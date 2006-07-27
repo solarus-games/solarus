@@ -1,0 +1,8 @@
+ZSDX_ROOT = /home/christophe/documents/programmation/cpp/zsdx/zsdx
+SRC_DIR = $(ZSDX_ROOT)/src
+BIN_DIR = $(ZSDX_ROOT)/bin
+WARNING_FLAGS = -O0 -Wall -Werror -ansi
+
+CC = g++
+CPPFLAGS = -g $(WARNING_FLAGS) -I$(ZSDX_ROOT)/include `sdl-config --cflags`
+LIBS = `sdl-config --libs` -lSDL_image

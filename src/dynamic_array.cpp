@@ -62,6 +62,7 @@ void DynamicArray<T>::add(T &element) {
     elements = new T[capacity];
     set(size, element);
     size++;
+    delete [] old;
   }
 }
 

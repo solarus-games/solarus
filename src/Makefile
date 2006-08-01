@@ -1,7 +1,7 @@
 include ../Makedefs
 
-objects = main.o map.o map_object.o dynamic_array.o
-headers = $(INCLUDE_DIR)/zsdx.h $(INCLUDE_DIR)/map.h $(INCLUDE_DIR)/map_object.h $(INCLUDE_DIR)/dynamic_array.h
+objects = main.o map.o map_object.o
+headers = $(INCLUDE_DIR)/zsdx.h $(INCLUDE_DIR)/map.h $(INCLUDE_DIR)/map_object.h #$(INCLUDE_DIR)/dynamic_array.h
 executable = $(BIN_DIR)/zsdx
 
 all: $(executable)

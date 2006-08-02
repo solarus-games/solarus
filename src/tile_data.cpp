@@ -1,18 +1,7 @@
+#include "SDL/SDL.h"
 #include "map_object.h"
 #include "tile_data.h"
-
-// Tile
-
-Tile::Tile(TileData *tile_data, SDL_Rect &where_in_map) {
-  this->tile_data = tile_data;
-  this->where_in_map = where_in_map;
-}
-
-/* Tile::Tile(Tile &tile) { */
-/*   this->tile_data = tile.tile_data; */
-/*   this->where_int_map = tile->where_in_map; // hum */
-/*   this->obstacle = tile.obstacle; */
-/* } */
+#include "global.h"
 
 // SimpleTile
 
@@ -50,4 +39,25 @@ void ExtensibleTile::display_on_map(SDL_Surface *map, SDL_Rect &where_in_map) {
     dst.y += where_in_src.h;
     dst.x = where_in_map.x;
   }
+}
+
+// AnimatedTile
+
+AnimatedTile::~AnimatedTile(void) {
+
+}
+
+AnimatedTile::AnimatedTile(SDL_Surface *src_image,
+			   const SDL_Rect *where_in_src,
+			   animation_sequence_t sequence,
+			   tile_obstacle_t obstacle):
+  TileData(obstacle), src_image(src_image), sequence(sequence) {
+  this->where_in_src[0] = where_in_src[0];
+  this->where_in_src[1] = where_in_src[1];
+  this->where_in_src[2] = where_in_src[2];
+}
+
+void AnimatedTile::display_on_map(SDL_Surface *map, SDL_Rect &where_in_map) {
+  short current_frame = zsdx_global.animation_frame_handler.get_current_frame(sequence);
+  SDL_BlitSurface(src_image, &where_in_src[current_frame], map, &where_in_map);
 }

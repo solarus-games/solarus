@@ -1,25 +1,24 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include "main.h"
 #include "map.h"
+#include "global.h"
 
-void create_map(SDL_Surface *surface);
-void destroy_map();
+void create_map(void);
+void destroy_map(void);
 
-const int TILE_NUMBER = 2;
-SDL_Surface *screen;
+const int TILE_NUMBER = 3;
 SDL_Surface *tileset;
 SimpleTile *little_tree;
-SimpleTile *grass;
+ExtensibleTile *grass;
+AnimatedTile *little_flower;
 Tile *tiles[TILE_NUMBER];
 Map *map;
 
 int main(int argc, char **argv) {
-  SDL_Init(SDL_INIT_VIDEO);
-  
-  //  SDL_Surface *screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
-  SDL_Surface *screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  zsdx_init();
 
-  create_map(screen);
+  create_map();
 
   SDL_Event event;
   bool quit = false;
@@ -43,16 +42,15 @@ int main(int argc, char **argv) {
       break;
     }
 
-    map->display(screen);
-    SDL_Flip(screen);
+    map->display(zsdx_global.screen);
+    SDL_Flip(zsdx_global.screen);
   }
   destroy_map();
-  SDL_Quit();
+  zsdx_exit();
 }
 
-void create_map(SDL_Surface *surface) {
-  map = new Map(320, 240,
-		     SDL_MapRGB(surface->format, 128, 128, 128));
+void create_map(void) {
+  map = new Map(320, 240, SDL_MapRGB(zsdx_global.screen->format, 128, 128, 128));
 
   // load the tileset
   tileset = IMG_Load("../images/tilesets/outside.png");
@@ -68,6 +66,16 @@ void create_map(SDL_Surface *surface) {
     grass = new ExtensibleTile(tileset, where_in_tileset, NO_OBSTACLE, 10, 2);
   }
 
+  {
+    SDL_Rect where_in_tileset[3] = {
+      {0, 96, 16, 16}, // frame 1
+      {16, 96, 16, 16}, // frame 2
+      {32, 96, 16, 16}, // frame 3
+    };
+    
+    little_flower = new AnimatedTile(tileset, where_in_tileset, ANIMATION_SEQUENCE_123, NO_OBSTACLE);
+  }
+
   // create the tiles
   {
     SDL_Rect where_in_map = {32, 16};
@@ -79,6 +87,11 @@ void create_map(SDL_Surface *surface) {
     tiles[1] = new Tile(little_tree, where_in_map);
   }
 
+  {
+    SDL_Rect where_in_map = {96, 24};
+    tiles[2] = new Tile(little_flower, where_in_map);
+  }
+
   for (int i = 0; i < TILE_NUMBER; i++) {
     map->add_object(tiles[i]);
   }
@@ -87,6 +100,8 @@ void create_map(SDL_Surface *surface) {
 void destroy_map(void) {
   SDL_FreeSurface(tileset);
   delete little_tree;
+  delete grass;
+  delete little_flower;
 
   for (int i = 0; i < TILE_NUMBER; i++) {
     delete tiles[i];

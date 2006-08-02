@@ -26,8 +26,8 @@ class SimpleTile: public TileData {
   SimpleTile(SDL_Surface *src_image, SDL_Rect &where_in_src, tile_obstacle_t obstacle);
   ~SimpleTile(void);
 
-  inline int get_w(void) { return where_in_src.w; }
-  inline int get_h(void) { return where_in_src.h; }
+  inline int get_w(void) const { return where_in_src.w; }
+  inline int get_h(void) const { return where_in_src.h; }
 
   void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map);
 };
@@ -42,14 +42,31 @@ class ExtensibleTile: public SimpleTile {
   ExtensibleTile(SDL_Surface *src_image, SDL_Rect &where_in_src, tile_obstacle_t obstacle, int repeat_x, int repeat_y);
   ~ExtensibleTile(void);
 
-  inline int get_w(void) { return where_in_src.w * repeat_x; }
-  inline int get_h(void) { return where_in_src.h * repeat_y; }
+  inline int get_w(void) const { return where_in_src.w * repeat_x; }
+  inline int get_h(void) const { return where_in_src.h * repeat_y; }
 
-  void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map);  
+  void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map);
 };
 
-/* class AnimatedTile: public TileData { */
+class AnimatedTile: public TileData {
 
-/* }; */
+ private:
+  SDL_Surface *src_image;
+  animation_sequence_t sequence;
+
+  SDL_Rect where_in_src[3]; /* array of 3 rect */
+
+ public:
+  AnimatedTile(SDL_Surface *src_image,
+	       const SDL_Rect *where_in_src,
+	       animation_sequence_t sequence,
+	       tile_obstacle_t obstacle);
+  ~AnimatedTile(void);
+
+  inline int get_w(void) const { return where_in_src[0].w; } // we assume the dimensions are constant
+  inline int get_h(void) const { return where_in_src[0].h; }
+
+  void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map);
+};
 
 #endif

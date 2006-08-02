@@ -14,4 +14,9 @@ enum tile_obstacle_t {
   OBSTACLE_DOWN_RIGHT,
 };
 
+enum animation_sequence_t {
+  ANIMATION_SEQUENCE_1232,
+  ANIMATION_SEQUENCE_123,
+};
+
 #endif

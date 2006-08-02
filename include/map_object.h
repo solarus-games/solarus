@@ -2,19 +2,20 @@
 #define ZSDX_MAP_OBJECT_H
 
 #include <SDL/SDL.h>
+#include "tile_data.h"
 
 class MapObject {
 
- private:
-  SDL_Rect rectangle;
+ protected:
+  SDL_Rect where_in_map;
 
  public:
-  virtual ~MapObject(void) = 0;
+  virtual ~MapObject(void) { };
 
-  inline int get_x(void) { return rectangle.x; }
-  inline int get_y(void) { return rectangle.y; }
-  inline int get_width(void) { return rectangle.w; }
-  inline int get_height(void) { return rectangle.h; }
+  inline int get_x(void) { return where_in_map.x; }
+  inline int get_y(void) { return where_in_map.y; }
+  inline int get_width(void) { return where_in_map.w; }
+  inline int get_height(void) { return where_in_map.h; }
 
   virtual void display_on_map(SDL_Surface *map) = 0;
 
@@ -25,25 +26,16 @@ class MapObject {
 
 // Tiles
 
-enum tile_obstacle_t {
-  NO_OBSTACLE,
-  OBSTACLE,
-  OBSTACLE_UP_RIGHT,
-  OBSTACLE_UP_LEFT,
-  OBSTACLE_DOWN_LEFT,
-  OBSTACLE_DOWN_RIGHT,
-};
-
 class Tile: public MapObject {
 
  private:
-  int x, y;
-  tile_obstacle_t obstacle;
-  // TODO: TileData tile_data;
+  TileData *tile_data;
 
  public:
-  inline int get_x(void) { return -1; } // redefinition because a tile is shared on the map: TODO: throw an exception?
-  inline int get_y(void) { return -1; }
+  Tile(TileData *tile_data, SDL_Rect &where_in_map);
+/*   Tile(Tile &tile); */
+  inline ~Tile() { }
+  inline void display_on_map(SDL_Surface *map) { tile_data->display_on_map(map, where_in_map); }
 };
 
 #endif

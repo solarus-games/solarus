@@ -1,6 +1,7 @@
 #ifndef ZSDX_MAP_H
 #define ZSDX_MAP_H
 
+#include "datatypes.h"
 #include "map_object.h"
 #include "dynamic_array.h"
 
@@ -29,6 +30,8 @@ class Map {
   Map(int width, int height, zsdx_color_t background_color);
   ~Map();
 
+  inline void add_object(MapObject *object) { objects->add(object); }
+  
   void display(SDL_Surface *surface);
 };
 

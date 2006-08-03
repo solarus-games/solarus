@@ -8,6 +8,7 @@ objects =	main.o				\
 
 headers = 	$(INCLUDE_DIR)/datatypes.h		\
 		$(INCLUDE_DIR)/global.h			\
+		$(INCLUDE_DIR)/sdl_user_events.h	\
 		$(INCLUDE_DIR)/dynamic_array.h		\
 		$(INCLUDE_DIR)/main.h			\
 		$(INCLUDE_DIR)/map.h			\

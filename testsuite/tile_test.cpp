@@ -1,11 +1,16 @@
+#include <iostream>
+using namespace std;
+
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "main.h"
 #include "map.h"
 #include "global.h"
+#include "sdl_user_events.h"
 
 void create_map(void);
 void destroy_map(void);
+void list_video_modes(void);
 
 const int TILE_NUMBER = 3;
 SDL_Surface *tileset;
@@ -17,40 +22,50 @@ Map *map;
 
 int main(int argc, char **argv) {
   zsdx_init();
+  list_video_modes();
 
   create_map();
 
   SDL_Event event;
   bool quit = false;
   while (!quit) {
-    SDL_WaitEvent(&event);
+    if (SDL_PollEvent(&event)) {
 
-    switch (event.type) {
-      
-    case SDL_QUIT:
-      quit = true;
-      break;
-       
-    case SDL_KEYDOWN:
-      switch (event.key.keysym.sym) {
-      case SDLK_ESCAPE:
+      switch (event.type) {
+	
+      case SDL_QUIT:
 	quit = true;
 	break;
-      default:
+	
+      case SDL_KEYDOWN:
+	switch (event.key.keysym.sym) {
+	case SDLK_ESCAPE:
+	  quit = true;
+	  break;
+	default:
+	  break;
+	}
+	break;
+	
+      case SDL_USEREVENT:
+	switch (event.user.type) {
+	case EVENT_ANIMATION_FRAME_FINISHED:
+	  // just redraw the screen
+	  break;
+	}
 	break;
       }
-      break;
-    }
 
-    map->display(zsdx_global.screen);
-    SDL_Flip(zsdx_global.screen);
+      map->display(zsdx_global.screen);
+      SDL_Flip(zsdx_global.screen);
+    }
   }
   destroy_map();
   zsdx_exit();
 }
 
 void create_map(void) {
-  map = new Map(320, 240, SDL_MapRGB(zsdx_global.screen->format, 128, 128, 128));
+  map = new Map(320, 240, SDL_MapRGB(SDL_GetVideoSurface()->format, 128, 128, 128));
 
   // load the tileset
   tileset = IMG_Load("../images/tilesets/outside.png");
@@ -108,4 +123,30 @@ void destroy_map(void) {
   }
 
   delete map;
+}
+
+void list_video_modes(void) {
+  SDL_Rect **modes;
+  int i;
+
+  /* Get available fullscreen/hardware modes */
+  modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
+  
+  /* Check if there are any modes available */
+  if (modes == NULL) {
+    cout << "No modes available!" << endl;
+    return;
+  }
+
+  /* Check if our resolution is restricted */
+  if (modes == (SDL_Rect **)-1) {
+    printf("All resolutions available.\n");
+  }
+  else {
+    /* Print valid modes */
+    printf("Available Modes\n");
+    for(i = 0; modes[i] != NULL; i++) {
+      cout << "  " << modes[i]->w << 'x' << modes[i]->h << endl;
+    }
+  }
 }

@@ -22,8 +22,10 @@ class AnimationFrameHandler {
   short current_frames[2]; /* 0, 1 or 2 */
 
  public:
-  inline AnimationFrameHandler(void) { frame_counter = current_frames[0] = current_frames[1] = 0; }
+  AnimationFrameHandler(void);
   inline ~AnimationFrameHandler(void) { }
+
+  SDL_Event event_animation_frame_finished;
 
   inline short get_current_frame(animation_sequence_t sequence) { return current_frames[sequence]; }
   inline void increment_frame_counter(void) {
@@ -32,5 +34,4 @@ class AnimationFrameHandler {
     current_frames[1] = frames[1][frame_counter];
   }
 };
-
 #endif

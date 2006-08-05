@@ -32,6 +32,7 @@ class Tile: public MapObject {
   TileData *tile_data;
 
  public:
+  inline Tile(void) { }
   Tile(TileData *tile_data, SDL_Rect &where_in_map);
 /*   Tile(Tile &tile); */
   inline ~Tile() { }

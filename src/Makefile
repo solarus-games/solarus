@@ -4,7 +4,10 @@ objects =	main.o				\
 		map.o				\
 	 	map_object.o			\
 		tile_data.o			\
-		animation_frame_handler.o	
+		animation_frame_handler.o	\
+		tileset_editor.o		\
+		tileset.o			\
+		tilesets/house.o			
 
 headers = 	$(INCLUDE_DIR)/datatypes.h		\
 		$(INCLUDE_DIR)/global.h			\
@@ -14,7 +17,10 @@ headers = 	$(INCLUDE_DIR)/datatypes.h		\
 		$(INCLUDE_DIR)/map.h			\
 		$(INCLUDE_DIR)/map_object.h		\
 		$(INCLUDE_DIR)/tile_data.h		\
-		$(INCLUDE_DIR)/animation_handler.h	
+		$(INCLUDE_DIR)/animation_handler.h	\
+		$(INCLUDE_DIR)/tileset_editor.h		\
+		$(INCLUDE_DIR)/tileset.h		\
+		$(INCLUDE_DIR)/tilesets/house.h		
 
 # executable = $(BIN_DIR)/zsdx
 

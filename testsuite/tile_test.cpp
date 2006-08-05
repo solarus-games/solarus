@@ -62,6 +62,7 @@ int main(int argc, char **argv) {
   }
   destroy_map();
   zsdx_exit();
+  return 0;
 }
 
 void create_map(void) {

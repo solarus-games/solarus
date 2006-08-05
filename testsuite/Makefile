@@ -1,15 +1,18 @@
 include ../Makedefs
 
-executables = dynamic_array_test tile_test
-headers = 	$(INCLUDE_DIR)/datatypes.h		\
-		$(INCLUDE_DIR)/global.h			\
-		$(INCLUDE_DIR)/sdl_user_events.h	\
-		$(INCLUDE_DIR)/dynamic_array.h		\
-		$(INCLUDE_DIR)/main.h			\
-		$(INCLUDE_DIR)/map.h			\
-		$(INCLUDE_DIR)/map_object.h		\
-		$(INCLUDE_DIR)/tile_data.h		\
-		$(INCLUDE_DIR)/animation_frame_handler.h	
+executables = dynamic_array_test tile_test tileset_editor_test
+headers = 	$(INCLUDE_DIR)/datatypes.h			\
+		$(INCLUDE_DIR)/global.h				\
+		$(INCLUDE_DIR)/sdl_user_events.h		\
+		$(INCLUDE_DIR)/dynamic_array.h			\
+		$(INCLUDE_DIR)/main.h				\
+		$(INCLUDE_DIR)/map.h				\
+		$(INCLUDE_DIR)/map_object.h			\
+		$(INCLUDE_DIR)/tile_data.h			\
+		$(INCLUDE_DIR)/animation_frame_handler.h	\
+		$(INCLUDE_DIR)/tileset_editor.h			\
+		$(INCLUDE_DIR)/tileset.h			\
+		$(INCLUDE_DIR)/tilesets/house.h			
 
 executables: $(executables) $(headers)
 
@@ -25,6 +28,10 @@ tile_test: 	tile_test.o				\
 		$(SRC_DIR)/map_object.o			\
 		$(SRC_DIR)/tile_data.o			\
 		$(SRC_DIR)/animation_frame_handler.o	
+	$(CC) $(LDFLAGS) $(CPPFLAGS) $^ $(LIBS) -o $@
+
+tileset_editor_test:	tileset_editor_test.o		\
+			$(SRC_DIR)/tileset_editor.o
 	$(CC) $(LDFLAGS) $(CPPFLAGS) $^ $(LIBS) -o $@
 
 %.o: %.cpp $(headers)

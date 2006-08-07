@@ -1,25 +1,10 @@
-#include <cstdlib>
-#include <iostream>
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include "tilesets/house.h"
 #include "tile_data.h"
 #include "datatypes.h"
 
-TilesetHouse::TilesetHouse(void):
-  tilenumber(0) {
-
-}
-
-TilesetHouse::load(void) {
-  const char *file = "images/tilesets/house.png";
-  SDL_Surface *tileset_image = IMG_Load(file);
-
-  if (tileset_image == NULL) {
-    std::cerr << "Unable to load " << file << std::endl;
-    return;
-  }
-
+void TilesetHouse::load(void) {
+  load_tileset_image("images/tilesets/house.png");
   SDL_Rect where_in_src;
 
   // tile 0

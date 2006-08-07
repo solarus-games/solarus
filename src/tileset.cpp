@@ -1,0 +1,27 @@
+#include <cstdlib>
+#include <iostream>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include "tileset.h"
+
+Tileset::~Tileset(void) {
+  if (is_loaded()) {
+    unload();
+  }
+}
+
+void Tileset::load_tileset_image(const char *file) {
+  tileset_image = IMG_Load(file);
+  
+  if (tileset_image == NULL) {
+    std::cerr << "Unable to load0 " << file << std::endl;
+  }
+}
+
+void Tileset::unload(void) {
+  for (int i = 0; i < tile_number; i++) {
+    delete tiles[i];
+  }
+  SDL_FreeSurface(tileset_image);
+  tile_number = 0;
+}

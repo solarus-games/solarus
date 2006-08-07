@@ -1,3 +1,6 @@
+#ifndef ZSDX_TILESETS_HOUSE_H
+#define ZSDX_TILESETS_HOUSE_H
+
 /*
  * Example of tileset written manually.
  * The tileset editor will generate classes like this one.
@@ -7,9 +10,10 @@
 class TilesetHouse: public Tileset {
 
  public:
-  TilesetHouse(void);
+  TilesetHouse(void) { }
   inline ~TilesetHouse(void) { }
 
   void load(void);
-  TileData *get_tile(int index);
 };
+
+#endif

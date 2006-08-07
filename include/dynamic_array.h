@@ -2,8 +2,6 @@
 #define ZSDX_DYNAMIC_ARRAY_H
 
 #include <cstdlib>
-//#include <iostream>
-//using namespace std;
 
 template <typename T>
 class DynamicArray {
@@ -29,6 +27,7 @@ class DynamicArray {
   inline void set(int index, const T &element) { elements[index] = element; }
   void add(const T &element);
   bool remove(const T &element);
+  void clear(void);
 
   inline bool contains(const T &element) const { return index_of(element) != -1; }
   int index_of(const T &element) const;
@@ -111,6 +110,11 @@ bool DynamicArray<T>::remove(const T &element) {
     elements[i] = elements[i + 1];
   }
   return true;
+}
+
+template <typename T>
+void DynamicArray<T>::clear(void) {
+  size = 0;
 }
 
 template <typename T>

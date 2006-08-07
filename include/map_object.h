@@ -2,7 +2,6 @@
 #define ZSDX_MAP_OBJECT_H
 
 #include <SDL/SDL.h>
-#include "tile_data.h"
 
 class MapObject {
 
@@ -21,22 +20,6 @@ class MapObject {
 
   // not good for extensible tiles...
   // virtual SDL_Surface *get_image(void) = 0;
-};
-
-
-// Tiles
-
-class Tile: public MapObject {
-
- private:
-  TileData *tile_data;
-
- public:
-  inline Tile(void) { }
-  Tile(TileData *tile_data, SDL_Rect &where_in_map);
-/*   Tile(Tile &tile); */
-  inline ~Tile() { }
-  inline void display_on_map(SDL_Surface *map) { tile_data->display_on_map(map, where_in_map); }
 };
 
 #endif

@@ -1,9 +1,10 @@
 #ifndef ZSDX_MAP_H
 #define ZSDX_MAP_H
 
-#include "datatypes.h"
+#include "color.h"
 #include "map_object.h"
 #include "dynamic_array.h"
+#include "tileset.h"
 
 /* A map is represented by:
  * - a background color
@@ -17,22 +18,27 @@
  * Handle oblique obstacles.
  * 2 layers of tiles? or even more? make layer handling global (with swags? or is the layer of an object constant?)
  */
+
 class Map {
 
- private:
+ protected:
   int width; // map width in pixel
   int height; // map height in pixel
   zsdx_color_t background_color;
-
   DynamicArray<MapObject*> *objects;
-
- public:
-  Map(int width, int height, zsdx_color_t background_color);
-  ~Map();
+  Tileset *tileset;
 
   inline void add_object(MapObject *object) { objects->add(object); }
-  
   void display(SDL_Surface *surface);
+
+ public:
+  Map(int width, int height, zsdx_color_t background_color,
+      Tileset *tileset);
+  virtual ~Map();
+
+  virtual void load(void) = 0;
+  void unload(void);
+  void launch(void);
 };
 
 #endif

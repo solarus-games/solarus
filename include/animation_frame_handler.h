@@ -4,13 +4,6 @@
 #include <SDL/SDL.h>
 #include "datatypes.h"
 
-const Uint32 frame_interval = 250; // interval in millisecond
-
-static const short frames[2][12] = {
-  {0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1}, // sequence 1-2-3-2
-  {0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2}, // sequence 1-2-3
-};
-
 // function called by the SDL timer every 250 ms
 Uint32 animation_next_frame(Uint32 interval, void *param);
 
@@ -28,10 +21,6 @@ class AnimationFrameHandler {
   SDL_Event event_animation_frame_finished;
 
   inline short get_current_frame(animation_sequence_t sequence) { return current_frames[sequence]; }
-  inline void increment_frame_counter(void) {
-    frame_counter = (frame_counter + 1) % 12;
-    current_frames[0] = frames[0][frame_counter];
-    current_frames[1] = frames[1][frame_counter];
-  }
+  void increment_frame_counter(void);
 };
 #endif

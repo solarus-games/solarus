@@ -1,16 +1,25 @@
-#include "tile_data.h" // Tile
-#include "dynamic_array.h"
+#ifndef ZSDX_TILESET_H
+#define ZSDX_TILESET_H
+
+#include <SDL/SDL.h>
+#include "tile_data.h"
 
 class Tileset {
 
- private:
+ protected:
   TileData *tiles[1024];
   int tile_number;
+  SDL_Surface *tileset_image;
   
  public:
-  ~Tileset(void);
+  inline Tileset(void): tile_number(0) { }
+  virtual ~Tileset(void);
 
+  void load_tileset_image(const char *file);
   virtual void load(void) = 0;
-  
-  TileData *get_tile(int index) = 0;
+  void unload(void);
+  inline bool is_loaded(void) { return tile_number != 0; }
+  inline TileData *get_tile(int index) { return tiles[index]; }
 };
+
+#endif

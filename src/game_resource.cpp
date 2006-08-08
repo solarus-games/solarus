@@ -7,6 +7,9 @@ GameResource::GameResource(void) {
 }
 
 void GameResource::create_resources(void) {
+  // we cannot create the resources in the constructor
+  // because some resources need other resources
+
   // tilesets
   tilesets[TILESET_HOUSE] = new TilesetHouse();
 

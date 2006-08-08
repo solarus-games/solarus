@@ -3,6 +3,7 @@
 
 #include <SDL/SDL.h>
 #include "datatypes.h"
+#include "animation_frame_handler.h"
 #include "map_object.h"
 
 class TileData {

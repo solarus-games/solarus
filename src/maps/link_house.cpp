@@ -8,7 +8,7 @@
 #include "color.h"
 
 MapLinkHouse::MapLinkHouse(void):
-  Map(320, 240, COLOR_BLACK, game_resource.tilesets[TILESET_HOUSE]) {
+  Map(320, 240, COLOR_BLACK, game_resource->get_tileset(TILESET_HOUSE)) {
 
 }
 

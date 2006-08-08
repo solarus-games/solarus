@@ -12,8 +12,7 @@ Game::~Game(void) {
 }
 
 void Game::launch_map(int map_id) {
-  // create_game_resource() must have been called
-  Map *map = game_resource.maps[map_id];
+  Map *map = game_resource->get_map(map_id);
   map->load();
   map->launch();
   map->unload();

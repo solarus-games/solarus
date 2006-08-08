@@ -2,17 +2,27 @@
 #include "tilesets/house.h"
 #include "maps/link_house.h"
 
-GameResource game_resource;
+GameResource::GameResource(void) {
 
-void create_game_resource(void) {
-  // tilesets
-  game_resource.tilesets[TILESET_HOUSE] = new TilesetHouse();
-
-  // maps
-  game_resource.maps[MAP_LINK_HOUSE] = new MapLinkHouse();
 }
 
-void destroy_game_resource(void) {
-  delete game_resource.tilesets[TILESET_HOUSE];
-  delete game_resource.maps[MAP_LINK_HOUSE];
+void GameResource::create_resources(void) {
+  // tilesets
+  tilesets[TILESET_HOUSE] = new TilesetHouse();
+
+  // maps
+  maps[MAP_LINK_HOUSE] = new MapLinkHouse();
+}
+
+GameResource::~GameResource(void) {
+  delete tilesets[TILESET_HOUSE];
+  delete maps[MAP_LINK_HOUSE];
+}
+
+Tileset *GameResource::get_tileset(int tileset_id) {
+  return tilesets[tileset_id];
+}
+
+Map *GameResource::get_map(int map_id) {
+  return maps[map_id];
 }

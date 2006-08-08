@@ -4,6 +4,7 @@
 #include "game_resource.h"
 
 Global zsdx_global;
+GameResource *game_resource;
 
 void zsdx_init(void) {
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
@@ -16,12 +17,11 @@ void zsdx_init(void) {
   SDL_AddTimer(250, animation_next_frame, NULL);
 
   // init the game resource
-  create_game_resource();
+  game_resource = new GameResource();
+  game_resource->create_resources();
 }
 
 void zsdx_exit(void) {
   SDL_Quit();
-
-  // free the game resource
-  destroy_game_resource();
+  delete game_resource;
 }

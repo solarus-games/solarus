@@ -39,12 +39,18 @@ class ExtensibleTile: public SimpleTile {
   int repeat_y;
 
  public:
-  ExtensibleTile(SDL_Surface *src_image, SDL_Rect &where_in_src, tile_obstacle_t obstacle, int repeat_x, int repeat_y);
+  ExtensibleTile(SDL_Surface *src_image,
+		 SDL_Rect &where_in_src,
+		 tile_obstacle_t obstacle);
+  ExtensibleTile(ExtensibleTile &other, int repeat_x, int repeat_y);
   ~ExtensibleTile(void);
 
   inline int get_w(void) const { return where_in_src.w * repeat_x; }
   inline int get_h(void) const { return where_in_src.h * repeat_y; }
 
+  inline void set_repeat_x(int repeat_x) { this->repeat_x = repeat_x; }
+  inline void set_repeat_y(int repeat_y) { this->repeat_y = repeat_y; }
+  
   void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map);
 };
 

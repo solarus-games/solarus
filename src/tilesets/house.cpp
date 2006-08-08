@@ -40,28 +40,28 @@ void TilesetHouse::load(void) {
   where_in_src.y = 0;
   where_in_src.w = 16;
   where_in_src.h = 24;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 5
   where_in_src.x = 48;
   where_in_src.y = 24;
   where_in_src.w = 16;
   where_in_src.h = 24;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 6
   where_in_src.x = 0;
   where_in_src.y = 48;
   where_in_src.w = 24;
   where_in_src.h = 16;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 7
   where_in_src.x = 24;
   where_in_src.y = 48;
   where_in_src.w = 24;
   where_in_src.h = 16;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 8
   where_in_src.x = 64;
@@ -96,28 +96,28 @@ void TilesetHouse::load(void) {
   where_in_src.y = 0;
   where_in_src.w = 16;
   where_in_src.h = 24;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 13
   where_in_src.x = 112;
   where_in_src.y = 24;
   where_in_src.w = 16;
   where_in_src.h = 24;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 14
   where_in_src.x = 64;
   where_in_src.y = 48;
   where_in_src.w = 24;
   where_in_src.h = 16;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 15
   where_in_src.x = 88;
   where_in_src.y = 48;
   where_in_src.w = 24;
   where_in_src.h = 16;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 16
   where_in_src.x = 0;
@@ -180,6 +180,6 @@ void TilesetHouse::load(void) {
   where_in_src.y = 64;
   where_in_src.w = 16;
   where_in_src.h = 16;
-  tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, NO_OBSTACLE);
+  tiles[tile_number++] = new ExtensibleTile(tileset_image, where_in_src, NO_OBSTACLE);
 
 }

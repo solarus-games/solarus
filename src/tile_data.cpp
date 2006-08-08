@@ -29,8 +29,8 @@ ExtensibleTile::ExtensibleTile(SDL_Surface *src_image, SDL_Rect &where_in_src, t
 
 }
 
-ExtensibleTile::ExtensibleTile(ExtensibleTile &other, int repeat_x, int repeat_y):
-  SimpleTile(other.src_image, other.where_in_src, other.obstacle), repeat_x(repeat_x), repeat_y(repeat_y) {
+ExtensibleTile::ExtensibleTile(ExtensibleTile *other, int repeat_x, int repeat_y):
+  SimpleTile(other->src_image, other->where_in_src, other->obstacle), repeat_x(repeat_x), repeat_y(repeat_y) {
 
 }
 

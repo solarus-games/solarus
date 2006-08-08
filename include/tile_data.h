@@ -42,7 +42,7 @@ class ExtensibleTile: public SimpleTile {
   ExtensibleTile(SDL_Surface *src_image,
 		 SDL_Rect &where_in_src,
 		 tile_obstacle_t obstacle);
-  ExtensibleTile(ExtensibleTile &other, int repeat_x, int repeat_y);
+  ExtensibleTile(ExtensibleTile *other, int repeat_x, int repeat_y);
   ~ExtensibleTile(void);
 
   inline int get_w(void) const { return where_in_src.w * repeat_x; }

@@ -5,6 +5,8 @@ headers = 	$(INCLUDE_DIR)/datatypes.h			\
 		$(INCLUDE_DIR)/global.h				\
 		$(INCLUDE_DIR)/sdl_user_events.h		\
 		$(INCLUDE_DIR)/dynamic_array.h			\
+		$(INCLUDE_DIR)/game.h				\
+		$(INCLUDE_DIR)/game_resource.h			\
 		$(INCLUDE_DIR)/main.h				\
 		$(INCLUDE_DIR)/map.h				\
 		$(INCLUDE_DIR)/map_object.h			\
@@ -14,7 +16,8 @@ headers = 	$(INCLUDE_DIR)/datatypes.h			\
 		$(INCLUDE_DIR)/color.h				\
 		$(INCLUDE_DIR)/tileset_editor.h			\
 		$(INCLUDE_DIR)/tileset.h			\
-		$(INCLUDE_DIR)/tilesets/house.h			
+		$(INCLUDE_DIR)/tilesets/house.h			\
+		$(INCLUDE_DIR)/maps/link_house.h		
 
 executables: $(executables) $(headers)
 

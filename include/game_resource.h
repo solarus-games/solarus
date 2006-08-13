@@ -25,6 +25,7 @@ class GameResource {
 
   void create_resources(void);
 
+  zsdx_color_t get_color(int r, int g, int b);
   Tileset *get_tileset(int tileset_id);
   Map *get_map(int map_id);
 

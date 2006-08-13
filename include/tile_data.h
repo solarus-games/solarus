@@ -9,11 +9,20 @@
 class TileData {
   
  protected:
-  tile_obstacle_t obstacle;
+  const tile_obstacle_t obstacle;
+  const int width;
+  const int height;
 
  public:
-  inline TileData(tile_obstacle_t obstacle) { this->obstacle = obstacle; }
+
+  inline TileData(tile_obstacle_t obstacle, int width, int height):
+    obstacle(obstacle), width(width), height(height) { }
   inline virtual ~TileData(void) { };
+
+  inline int get_width(void) const { return width; }
+  inline int get_height(void) const { return height; }
+  inline tile_obstacle_t get_obstacle(void) const { return obstacle; }
+
   virtual void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map) = 0;
 };
 
@@ -27,17 +36,16 @@ class SimpleTile: public TileData {
   SimpleTile(SDL_Surface *src_image, SDL_Rect &where_in_src, tile_obstacle_t obstacle);
   ~SimpleTile(void);
 
-  inline int get_w(void) const { return where_in_src.w; }
-  inline int get_h(void) const { return where_in_src.h; }
-
   void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map);
 };
 
-class ExtensibleTile: public SimpleTile {
+class ExtensibleTile: public TileData {
 
  private:
-  int repeat_x;
-  int repeat_y;
+  SDL_Surface *src_image;
+  SDL_Rect where_in_src;
+  const int repeat_x;
+  const int repeat_y;
 
  public:
   ExtensibleTile(SDL_Surface *src_image,
@@ -46,12 +54,6 @@ class ExtensibleTile: public SimpleTile {
   ExtensibleTile(ExtensibleTile *other, int repeat_x, int repeat_y);
   ~ExtensibleTile(void);
 
-  inline int get_w(void) const { return where_in_src.w * repeat_x; }
-  inline int get_h(void) const { return where_in_src.h * repeat_y; }
-
-  inline void set_repeat_x(int repeat_x) { this->repeat_x = repeat_x; }
-  inline void set_repeat_y(int repeat_y) { this->repeat_y = repeat_y; }
-  
   void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map);
 };
 
@@ -59,7 +61,7 @@ class AnimatedTile: public TileData {
 
  private:
   SDL_Surface *src_image;
-  animation_sequence_t sequence;
+  const animation_sequence_t sequence;
 
   SDL_Rect where_in_src[3]; /* array of 3 rect */
 

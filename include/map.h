@@ -21,15 +21,27 @@
 
 class Map {
 
+  // fields
  protected:
-  int width; // map width in pixel
-  int height; // map height in pixel
-  zsdx_color_t background_color;
-  DynamicArray<MapObject*> *objects;
+  const int width; // map width in pixel
+  const int height; // map height in pixel
+  const int width8; // width / 8
+  const int height8; // height / 8
+  const zsdx_color_t background_color;
   Tileset *tileset;
 
+ private:
+  DynamicArray<MapObject*> *objects;
+  int obstacle_tiles_size;
+  tile_obstacle_t *obstacle_tiles;
+
+  // methods
+ private:
+  void display(SDL_Surface *surface);  
+
+ protected:
   inline void add_object(MapObject *object) { objects->add(object); }
-  void display(SDL_Surface *surface);
+  void add_new_tile(TileData *tile_data, SDL_Rect &where_in_map);
 
  public:
   Map(int width, int height, zsdx_color_t background_color,

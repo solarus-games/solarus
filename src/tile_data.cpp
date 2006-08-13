@@ -6,7 +6,8 @@
 // SimpleTile
 
 SimpleTile::SimpleTile(SDL_Surface *src_image, SDL_Rect &where_in_src, tile_obstacle_t obstacle):
-  TileData(obstacle), src_image(src_image), where_in_src(where_in_src) {
+  TileData(obstacle, where_in_src.w, where_in_src.h),
+  src_image(src_image), where_in_src(where_in_src) {
 
 }
 
@@ -25,12 +26,16 @@ ExtensibleTile::~ExtensibleTile(void) {
 }
 
 ExtensibleTile::ExtensibleTile(SDL_Surface *src_image, SDL_Rect &where_in_src, tile_obstacle_t obstacle):
-  SimpleTile(src_image, where_in_src, obstacle), repeat_x(1), repeat_y(1) {
+  TileData(obstacle, where_in_src.w, where_in_src.h),
+  src_image(src_image), where_in_src(where_in_src),
+  repeat_x(1), repeat_y(1) {
 
 }
 
 ExtensibleTile::ExtensibleTile(ExtensibleTile *other, int repeat_x, int repeat_y):
-  SimpleTile(other->src_image, other->where_in_src, other->obstacle), repeat_x(repeat_x), repeat_y(repeat_y) {
+  TileData(other->obstacle, other->where_in_src.w * repeat_x, other->where_in_src.h * repeat_y),
+  src_image(other->src_image), where_in_src(other->where_in_src),
+  repeat_x(repeat_x), repeat_y(repeat_y) {
 
 }
 
@@ -56,7 +61,8 @@ AnimatedTile::AnimatedTile(SDL_Surface *src_image,
 			   const SDL_Rect *where_in_src,
 			   animation_sequence_t sequence,
 			   tile_obstacle_t obstacle):
-  TileData(obstacle), src_image(src_image), sequence(sequence) {
+  TileData(obstacle, where_in_src[0].w, where_in_src[0].h),
+  src_image(src_image), sequence(sequence) {
   this->where_in_src[0] = where_in_src[0];
   this->where_in_src[1] = where_in_src[1];
   this->where_in_src[2] = where_in_src[2];

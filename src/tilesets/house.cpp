@@ -134,15 +134,15 @@ void TilesetHouse::load(void) {
   tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 18
-  where_in_src.x = 88;
-  where_in_src.y = 16;
+  where_in_src.x = 120;
+  where_in_src.y = 0;
   where_in_src.w = 16;
   where_in_src.h = 16;
   tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);
 
   // tile 19
-  where_in_src.x = 104;
-  where_in_src.y = 16;
+  where_in_src.x = 136;
+  where_in_src.y = 0;
   where_in_src.w = 16;
   where_in_src.h = 16;
   tiles[tile_number++] = new SimpleTile(tileset_image, where_in_src, OBSTACLE);

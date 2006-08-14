@@ -30,6 +30,9 @@ class Map {
   const zsdx_color_t background_color;
   Tileset *tileset;
 
+  int link_start_x;
+  int link_start_y;
+
  private:
   DynamicArray<MapObject*> *objects;
   int obstacle_tiles_size;

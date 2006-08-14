@@ -22,6 +22,11 @@ void MapLinkHouse::load(void) {
     tileset->load();
   }
 
+  tile_data = tileset->get_new_extensible_tile(2, 16, 10);
+  where_in_map.x = 32;
+  where_in_map.y = 48;
+  add_new_tile(tile_data, where_in_map);
+
   tile_data = tileset->get_tile(20);
   where_in_map.x = 0;
   where_in_map.y = 16;
@@ -170,136 +175,99 @@ void MapLinkHouse::load(void) {
   where_in_map.y = 40;
   add_new_tile(tile_data, where_in_map);
 
-  /*
-  tile_data = new ExtensibleTile((ExtensibleTile*) tileset->get_tile(24), 16, 9);
-  {
-    SDL_Rect where_in_map = {32, 48};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_tile(4);
+  where_in_map.x = 24;
+  where_in_map.y = 40;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = tileset->get_tile(0);
-  {
-    SDL_Rect where_in_map = {0, 16};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {208, 16};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  where_in_map.x = 232;
+  where_in_map.y = 40;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = tileset->get_tile(1);
-  {
-    SDL_Rect where_in_map = {184, 16};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {296, 16};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_tile(5);
+  where_in_map.x = 176;
+  where_in_map.y = 40;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = tileset->get_tile(2);
-  {
-    SDL_Rect where_in_map = {0, 200};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {208, 200};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  where_in_map.x = 288;
+  where_in_map.y = 40;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = tileset->get_tile(3);
-  {
-    SDL_Rect where_in_map = {184, 200};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {296, 200};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_tile(6);
+  where_in_map.x = 24;
+  where_in_map.y = 192;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = new ExtensibleTile((ExtensibleTile*) tileset->get_tile(4), 10, 1);
-  {
-    SDL_Rect where_in_map = {24, 16};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  where_in_map.x = 232;
+  where_in_map.y = 192;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = new ExtensibleTile((ExtensibleTile*) tileset->get_tile(4), 4, 1);
-  {
-    SDL_Rect where_in_map = {232, 16};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_tile(7);
+  where_in_map.x = 176;
+  where_in_map.y = 192;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = new ExtensibleTile((ExtensibleTile*) tileset->get_tile(5), 10, 1);
-  {
-    SDL_Rect where_in_map = {24, 200};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  where_in_map.x = 288;
+  where_in_map.y = 192;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = new ExtensibleTile((ExtensibleTile*) tileset->get_tile(5), 4, 1);
-  {
-    SDL_Rect where_in_map = {232, 200};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_new_extensible_tile(13, 18, 1);
+  where_in_map.x = 32;
+  where_in_map.y = 40;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = new ExtensibleTile((ExtensibleTile*) tileset->get_tile(6), 1, 10);
-  {
-    SDL_Rect where_in_map = {0, 40};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {208, 40};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_new_extensible_tile(13, 6, 1);
+  where_in_map.x = 240;
+  where_in_map.y = 40;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = new ExtensibleTile((ExtensibleTile*) tileset->get_tile(7), 1, 10);
-  {
-    SDL_Rect where_in_map = {184, 40};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {296, 40};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_new_extensible_tile(15, 18, 1);
+  where_in_map.x = 32;
+  where_in_map.y = 192;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = tileset->get_tile(16);
-  {
-    SDL_Rect where_in_map = {24, 40};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {232, 40};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_new_extensible_tile(15, 6, 1);
+  where_in_map.x = 240;
+  where_in_map.y = 192;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = tileset->get_tile(17);
-  {
-    SDL_Rect where_in_map = {176, 40};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {288, 40};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  tile_data = tileset->get_new_extensible_tile(14, 1, 18);
+  where_in_map.x = 24;
+  where_in_map.y = 48;
+  add_new_tile(tile_data, where_in_map);
+
+  where_in_map.x = 232;
+  where_in_map.y = 48;
+  add_new_tile(tile_data, where_in_map);
+
+  tile_data = tileset->get_new_extensible_tile(12, 1, 18);
+  where_in_map.x = 176;
+  where_in_map.y = 48;
+  add_new_tile(tile_data, where_in_map);
+
+  where_in_map.x = 288;
+  where_in_map.y = 48;
+  add_new_tile(tile_data, where_in_map);
 
   tile_data = tileset->get_tile(18);
-  {
-    SDL_Rect where_in_map = {24, 192};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {232, 192};
-    add_object(new Tile(tile_data, where_in_map));
-  }
+  where_in_map.x = 0;
+  where_in_map.y = 48;
+  add_new_tile(tile_data, where_in_map);
 
-  tile_data = tileset->get_tile(19);
-  {
-    SDL_Rect where_in_map = {176, 192};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-  {
-    SDL_Rect where_in_map = {288, 192};
-    add_object(new Tile(tile_data, where_in_map));
-  }
-*/
+  where_in_map.x = 0;
+  where_in_map.y = 176;
+  add_new_tile(tile_data, where_in_map);
+  
+  tile_data = tileset->get_tile(16);
+  where_in_map.x = 304;
+  where_in_map.y = 48;
+  add_new_tile(tile_data, where_in_map);
 
+  where_in_map.x = 304;
+  where_in_map.y = 176;
+  add_new_tile(tile_data, where_in_map);
+  
+  // link start position
+  link_start_x = 80;
+  link_start_y = 80;
 }

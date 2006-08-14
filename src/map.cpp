@@ -1,5 +1,6 @@
 #include <SDL/SDL.h>
 #include "datatypes.h"
+#include "game_resource.h"
 #include "map.h"
 #include "map_object.h"
 #include "tile.h"
@@ -69,12 +70,21 @@ void Map::display(SDL_Surface *surface) {
   for (int i = 0; i < objects->get_size(); i++) {
     objects->get(i)->display_on_map(surface);
   }
+
+  // link
+  game_resource->get_link()->display(surface);
+
   SDL_Flip(surface);
 }
 
 void Map::launch(void) {
   SDL_Event event;
   bool quit = false;
+
+  Link *link = game_resource->get_link();
+  link->set_position(link_start_x, link_start_y);
+
+  SDL_EnableKeyRepeat(5, 10);
 
   while (!quit) {
     SDL_WaitEvent(&event);
@@ -88,6 +98,18 @@ void Map::launch(void) {
       switch (event.key.keysym.sym) {
       case SDLK_ESCAPE:
 	quit = true;
+	break;
+      case SDLK_RIGHT:
+	link->move_right();
+	break;
+      case SDLK_UP:
+	link->move_up();
+	break;
+      case SDLK_LEFT:
+	link->move_left();
+	break;
+      case SDLK_DOWN:
+	link->move_down();
 	break;
       default:
 	break;

@@ -1,6 +1,7 @@
 #include <SDL/SDL.h>
 #include "game_resource.h"
 #include "global.h"
+#include "link.h"
 #include "tilesets/house.h"
 #include "maps/link_house.h"
 
@@ -12,6 +13,9 @@ void GameResource::create_resources(void) {
   // we cannot create the resources in the constructor
   // because some resources need other resources
 
+  // link
+  link = new Link();
+
   // tilesets
   tilesets[TILESET_HOUSE] = new TilesetHouse();
 
@@ -20,6 +24,7 @@ void GameResource::create_resources(void) {
 }
 
 GameResource::~GameResource(void) {
+  delete link;
   delete tilesets[TILESET_HOUSE];
   delete maps[MAP_LINK_HOUSE];
 }

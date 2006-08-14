@@ -15,6 +15,7 @@ headers = 	$(INCLUDE_DIR)/datatypes.h			\
 		$(INCLUDE_DIR)/animation_frame_handler.h	\
 		$(INCLUDE_DIR)/color.h				\
 		$(INCLUDE_DIR)/tileset_editor.h			\
+		$(INCLUDE_DIR)/link.h				\
 		$(INCLUDE_DIR)/tileset.h			\
 		$(INCLUDE_DIR)/tilesets/house.h			\
 		$(INCLUDE_DIR)/maps/link_house.h		
@@ -36,6 +37,7 @@ game_test: 	game_test.o				\
 		$(SRC_DIR)/map.o			\
 		$(SRC_DIR)/tile.o			\
 		$(SRC_DIR)/tile_data.o			\
+		$(SRC_DIR)/link.o			\
 		$(SRC_DIR)/tileset.o			\
 		$(SRC_DIR)/tilesets/house.o		\
 		$(SRC_DIR)/maps/link_house.o

@@ -10,6 +10,7 @@ headers = 	$(INCLUDE_DIR)/datatypes.h			\
 		$(INCLUDE_DIR)/main.h				\
 		$(INCLUDE_DIR)/map.h				\
 		$(INCLUDE_DIR)/map_object.h			\
+		$(INCLUDE_DIR)/movable.h			\
 		$(INCLUDE_DIR)/tile.h				\
 		$(INCLUDE_DIR)/tile_data.h			\
 		$(INCLUDE_DIR)/animation_frame_handler.h	\
@@ -35,6 +36,7 @@ game_test: 	game_test.o				\
 		$(SRC_DIR)/animation_frame_handler.o	\
 		$(SRC_DIR)/color.o			\
 		$(SRC_DIR)/map.o			\
+		$(SRC_DIR)/movable.o			\
 		$(SRC_DIR)/tile.o			\
 		$(SRC_DIR)/tile_data.o			\
 		$(SRC_DIR)/link.o			\

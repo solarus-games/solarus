@@ -2,6 +2,7 @@
 #include "animation_frame_handler.h"
 #include "global.h"
 #include "game_resource.h"
+#include "movable.h"
 
 Global zsdx_global;
 GameResource *game_resource;
@@ -19,6 +20,9 @@ void zsdx_init(void) {
   // init the game resource
   game_resource = new GameResource();
   game_resource->create_resources();
+
+  // init the sprite engine
+  Movable::init();
 }
 
 void zsdx_exit(void) {

@@ -72,7 +72,7 @@ void Map::display(SDL_Surface *surface) {
   }
 
   // link
-  game_resource->get_link()->display(surface);
+  game_resource->get_link()->display_on_map(surface);
 
   SDL_Flip(surface);
 }
@@ -84,41 +84,63 @@ void Map::launch(void) {
   Link *link = game_resource->get_link();
   link->set_position(link_start_x, link_start_y);
 
-  SDL_EnableKeyRepeat(5, 10);
+  //  SDL_EnableKeyRepeat(5, 10);
 
   while (!quit) {
     SDL_WaitEvent(&event);
     switch (event.type) {
-    
+	
     case SDL_QUIT:
       quit = true;
       break;
-    
+	
     case SDL_KEYDOWN:
       switch (event.key.keysym.sym) {
       case SDLK_ESCAPE:
 	quit = true;
 	break;
       case SDLK_RIGHT:
-	link->move_right();
+	link->start_right();
 	break;
       case SDLK_UP:
-	link->move_up();
+	link->start_up();
 	break;
       case SDLK_LEFT:
-	link->move_left();
+	link->start_left();
 	break;
       case SDLK_DOWN:
-	link->move_down();
+	link->start_down();
 	break;
       default:
 	break;
       }
       break;
-    
+	
+    case SDL_KEYUP:
+      switch (event.key.keysym.sym) {
+      case SDLK_RIGHT:
+	link->stop_right();
+	break;
+      case SDLK_UP:
+	link->stop_up();
+	break;
+      case SDLK_LEFT:
+	link->stop_left();
+	break;
+      case SDLK_DOWN:
+	link->stop_down();
+	break;
+      default:
+	break;
+      }
+      break;
+	
     case SDL_USEREVENT:
       switch (event.user.type) {
       case EVENT_ANIMATION_FRAME_FINISHED:
+	// just redraw the screen
+	break;
+      case EVENT_SPRITE_MOVE:
 	// just redraw the screen
 	break;
       }

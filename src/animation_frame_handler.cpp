@@ -28,7 +28,7 @@ AnimationFrameHandler::AnimationFrameHandler(void) {
   event_animation_frame_finished.type = SDL_USEREVENT;
   event_animation_frame_finished.user.code = EVENT_ANIMATION_FRAME_FINISHED;
   event_animation_frame_finished.user.data1 = NULL;
-  event_animation_frame_finished.user.data2 = NULL;  
+  event_animation_frame_finished.user.data2 = NULL;
 }
 
 /**

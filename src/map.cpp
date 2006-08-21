@@ -8,6 +8,9 @@
 #include "global.h"
 #include "dynamic_array.h"
 
+const int FRAMES_PER_SECOND = 50;
+const int FRAME_DELAY = 1000 / FRAMES_PER_SECOND; // delay between two frames in millisecond
+
 Map::Map(int width, int height, zsdx_color_t background_color,
 	 Tileset *tileset):
   width(width), height(height), width8(width / 8), height8(height / 8),
@@ -79,6 +82,7 @@ void Map::display(SDL_Surface *surface) {
 
 void Map::launch(void) {
   SDL_Event event;
+  Uint32 ticks, last_frame_date = 0;
   bool quit = false;
 
   Link *link = game_resource->get_link();
@@ -87,65 +91,60 @@ void Map::launch(void) {
   //  SDL_EnableKeyRepeat(5, 10);
 
   while (!quit) {
-    SDL_WaitEvent(&event);
-    switch (event.type) {
+    if (SDL_PollEvent(&event)) {
+      switch (event.type) {
 	
-    case SDL_QUIT:
-      quit = true;
-      break;
-	
-    case SDL_KEYDOWN:
-      switch (event.key.keysym.sym) {
-      case SDLK_ESCAPE:
+      case SDL_QUIT:
 	quit = true;
 	break;
-      case SDLK_RIGHT:
-	link->start_right();
-	break;
-      case SDLK_UP:
-	link->start_up();
-	break;
-      case SDLK_LEFT:
-	link->start_left();
-	break;
-      case SDLK_DOWN:
-	link->start_down();
-	break;
-      default:
-	break;
-      }
-      break;
 	
-    case SDL_KEYUP:
-      switch (event.key.keysym.sym) {
-      case SDLK_RIGHT:
-	link->stop_right();
+      case SDL_KEYDOWN:
+	switch (event.key.keysym.sym) {
+	case SDLK_ESCAPE:
+	  quit = true;
+	  break;
+	case SDLK_RIGHT:
+	  link->start_right();
+	  break;
+	case SDLK_UP:
+	  link->start_up();
+	  break;
+	case SDLK_LEFT:
+	  link->start_left();
+	  break;
+	case SDLK_DOWN:
+	  link->start_down();
+	  break;
+	default:
+	  break;
+	}
 	break;
-      case SDLK_UP:
-	link->stop_up();
-	break;
-      case SDLK_LEFT:
-	link->stop_left();
-	break;
-      case SDLK_DOWN:
-	link->stop_down();
-	break;
-      default:
-	break;
-      }
-      break;
 	
-    case SDL_USEREVENT:
-      switch (event.user.type) {
-      case EVENT_ANIMATION_FRAME_FINISHED:
-	// just redraw the screen
-	break;
-      case EVENT_SPRITE_MOVE:
-	// just redraw the screen
+      case SDL_KEYUP:
+	switch (event.key.keysym.sym) {
+	case SDLK_RIGHT:
+	  link->stop_right();
+	  break;
+	case SDLK_UP:
+	  link->stop_up();
+	  break;
+	case SDLK_LEFT:
+	  link->stop_left();
+	  break;
+	case SDLK_DOWN:
+	  link->stop_down();
+	  break;
+	default:
+	  break;
+	}
 	break;
       }
-      break;
     }
-    display(zsdx_global.screen);
+
+    ticks = SDL_GetTicks();
+    if (ticks >= last_frame_date + FRAME_DELAY) {
+      last_frame_date = ticks;
+      display(zsdx_global.screen);
+    }
   }
 }

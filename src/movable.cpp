@@ -13,20 +13,36 @@ static const double SQRT_2 = M_SQRT2;
 
 //static inline int abs(int n) { return (n >= 0) ? n : -n; }
 
-static Uint32 move_x(Uint32 interval, Movable *movable);
-static Uint32 move_y(Uint32 interval, Movable *movable);
-
-static SDL_Event event_sprite_move;
-
 Movable::Movable(void):
-  x_speed(0), y_speed(0) {
+  x_speed(0), y_speed(0), x_move(0), y_move(0) {
 }
 
-void Movable::init(void) {
-  event_sprite_move.type = SDL_USEREVENT;
-  event_sprite_move.user.code = EVENT_SPRITE_MOVE;
-  event_sprite_move.user.data1 = NULL;
-  event_sprite_move.user.data2 = NULL;
+int Movable::get_x(void) {
+  update_x();
+  return where_in_map.x;
+}
+
+int Movable::get_y(void) {
+  update_y();
+  return where_in_map.y;
+}
+
+void Movable::update_x(void) {
+  if (x_move != 0) {
+    while (SDL_GetTicks() > next_move_date_x) {
+      where_in_map.x += x_move;
+      next_move_date_x += x_delay;
+    }
+  }
+}
+
+void Movable::update_y(void) {
+  if (y_move != 0) {
+    while (SDL_GetTicks() > next_move_date_y) {
+      where_in_map.y += y_move;
+      next_move_date_y += y_delay;
+    }
+  }
 }
 
 int Movable::get_speed(void) {
@@ -34,31 +50,37 @@ int Movable::get_speed(void) {
 }
 
 void Movable::set_x_speed(int x_speed) {
-  if (this->x_speed != 0) {
-    SDL_RemoveTimer(x_timer_id);
-  }
-
-  if (x_speed != 0) {
-//     cout << "create a timer: x_speed = " << x_speed << ", abs(x_speed) = " << abs(x_speed) << ", interval: " << (2000/abs(x_speed)) << endl
-      ;
-    x_timer_id = SDL_AddTimer(200 / abs(x_speed), (Uint32 (*)(Uint32, void*)) move_x, this);
-  }
-
   this->x_speed = x_speed;
+  if (x_speed > 0) {
+    x_delay = 200 / x_speed;
+    x_move = 2;
+    next_move_date_x = SDL_GetTicks() + x_delay;
+  }
+  else if (x_speed < 0) {
+    x_delay = 200 / (-x_speed);
+    x_move = -2;
+    next_move_date_x = SDL_GetTicks() + x_delay;
+  }
+  else {
+    x_move = 0;
+  }
 }
 
 void Movable::set_y_speed(int y_speed) {
-  if (this->y_speed != 0) {
-    SDL_RemoveTimer(y_timer_id);
-  }
-
-  if (y_speed != 0) {
-//     cout << "create a timer: y_speed = " << y_speed << ", abs(y_speed) = " << abs(y_speed) << ", interval: " << (2000/abs(y_speed)) << endl
-      ;
-    y_timer_id = SDL_AddTimer(200 / abs(y_speed), (Uint32 (*)(Uint32, void*)) move_y, this);
-  }
-
   this->y_speed = y_speed;
+  if (y_speed > 0) {
+    y_delay = 200 / y_speed;
+    y_move = 2;
+    next_move_date_y = SDL_GetTicks() + y_delay;
+  }
+  else if (y_speed < 0) {
+    y_delay = 200 / (-y_speed);
+    y_move = -2;
+    next_move_date_y = SDL_GetTicks() + y_delay;
+  }
+  else {
+    y_move = 0;
+  }
 }
 
 // direction: 0 to 359
@@ -70,6 +92,7 @@ void Movable::set_direction(int direction) {
   set_y_speed(speed * (int) sin(angle));
 }
 
+// change the speed keeping the same direction
 void Movable::set_speed(int speed) {
   double angle;
 
@@ -88,28 +111,4 @@ void Movable::set_speed(int speed) {
 
   set_x_speed(speed * (int) cos(angle));
   set_y_speed(speed * (int) sin(angle));
-}
-
-static Uint32 move_x(Uint32 interval, Movable *movable) {
-  if (movable->get_x_speed() > 0) {
-    movable->set_x(movable->get_x() + 2);
-  }
-  else {
-    movable->set_x(movable->get_x() - 2);
-  }
-  SDL_PushEvent(&event_sprite_move);
-//   cout << "x interval: " << interval << endl;
-  return interval;
-}
-
-static Uint32 move_y(Uint32 interval, Movable *movable) {
-  if (movable->get_y_speed() > 0) {
-    movable->set_y(movable->get_y() + 2);
-  }
-  else {
-    movable->set_y(movable->get_y() - 2);
-  }
-  SDL_PushEvent(&event_sprite_move);
-//   cout << "y interval: " << interval << endl;
-  return interval;
 }

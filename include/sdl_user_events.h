@@ -3,8 +3,7 @@
 
 // SDL user event types
 enum sdl_user_event_type_t {
-  EVENT_ANIMATION_FRAME_FINISHED,
-  EVENT_SPRITE_MOVE,
+  
 };
 
 #endif

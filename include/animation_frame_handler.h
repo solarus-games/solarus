@@ -36,9 +36,6 @@ class AnimationFrameHandler {
   // Current frame for each sequence
   short current_frames[2];
 
-  // SDL Event pushed when the timer expires to redraw the screen 
-  SDL_Event event_animation_frame_finished;
-
   void increment_frame_counter(void);
 
  public:

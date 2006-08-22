@@ -9,6 +9,7 @@ class MapObject {
   SDL_Rect where_in_map;
 
  public:
+  MapObject(void) { };
   virtual ~MapObject(void) { };
 
   inline int get_x(void) { return where_in_map.x; }

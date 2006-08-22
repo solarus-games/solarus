@@ -1,6 +1,5 @@
 all:
-	cd src; make all; cd ..
-	cd testsuite; make executables; cd ..
+	cd src && make all && cd .. && cd testsuite && make executables && cd ..
 
 check: all
 	cd testsuite; make check; cd ..

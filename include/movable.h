@@ -4,7 +4,7 @@
 #include <SDL/SDL.h>
 #include "map_object.h"
 
-class Movable: public MapObject {
+class Movable: virtual public MapObject {
 
  private:
   void update_x(void);

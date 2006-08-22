@@ -12,6 +12,9 @@ headers = 	$(INCLUDE_DIR)/datatypes.h			\
 		$(INCLUDE_DIR)/map_object.h			\
 		$(INCLUDE_DIR)/movable.h			\
 		$(INCLUDE_DIR)/movable_8_keyboard.h		\
+		$(INCLUDE_DIR)/animated_sprite.h		\
+		$(INCLUDE_DIR)/sprite_animation.h		\
+		$(INCLUDE_DIR)/sprite_animation_direction.h	\
 		$(INCLUDE_DIR)/tile.h				\
 		$(INCLUDE_DIR)/tile_data.h			\
 		$(INCLUDE_DIR)/animation_frame_handler.h	\
@@ -39,6 +42,9 @@ game_test: 	game_test.o				\
 		$(SRC_DIR)/map.o			\
 		$(SRC_DIR)/movable.o			\
 		$(SRC_DIR)/movable_8_keyboard.o		\
+		$(SRC_DIR)/animated_sprite.o		\
+		$(SRC_DIR)/sprite_animation.o		\
+		$(SRC_DIR)/sprite_animation_direction.o	\
 		$(SRC_DIR)/tile.o			\
 		$(SRC_DIR)/tile_data.o			\
 		$(SRC_DIR)/link.o			\

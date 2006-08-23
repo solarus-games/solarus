@@ -11,7 +11,7 @@ void zsdx_init(void) {
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
   SDL_ShowCursor(SDL_DISABLE);
   
-  //zsdx_global.screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+  //  zsdx_global.screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
   zsdx_global.screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
   // set the timer

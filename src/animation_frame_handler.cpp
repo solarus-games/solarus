@@ -3,13 +3,11 @@
 #include "global.h"
 #include "sdl_user_events.h"
 
-/**
- * Interval in millisecond between two frames of an animation
+/* Interval in millisecond between two frames of an animation
  */
 static const Uint32 frame_interval = 250;
 
-/**
- * Array to get the current frame (0, 1 or 2) depending on
+/* Array to get the current frame (0, 1 or 2) depending on
  * the sequence type and the frame counter
  */
 static const short frames[2][12] = {
@@ -17,8 +15,7 @@ static const short frames[2][12] = {
   {0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2}, // sequence 1-2-3
 };
 
-/**
- * Constructor.
+/* Constructor
  */
 AnimationFrameHandler::AnimationFrameHandler(void) {
   frame_counter = 0;
@@ -26,8 +23,7 @@ AnimationFrameHandler::AnimationFrameHandler(void) {
   current_frames[1] = 0;
 }
 
-/**
- * Increment the frame counter and updates current_frame.
+/* Increment the frame counter and updates current_frame.
  */
 void AnimationFrameHandler::increment_frame_counter(void) {
   frame_counter = (frame_counter + 1) % 12;
@@ -35,10 +31,8 @@ void AnimationFrameHandler::increment_frame_counter(void) {
   current_frames[1] = frames[1][frame_counter];
 }
 
-/**
- * Function called by the SDL timer every 250 ms.
- * It increments the frame counter and pushes an event
- * to redraw the screen.
+/* Function called by the SDL timer every 250 ms.
+ * It increments the frame counter.
  */
 Uint32 animation_next_frame(Uint32 interval, void *param) {
 

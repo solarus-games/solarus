@@ -3,8 +3,8 @@
 
 #include <SDL/SDL.h>
 
-/*
- * This class offer fonctionnalities to edit the properties of a tileset.
+/* Once implemented, this class will offer fonctionnalities
+ * to edit the properties of a tileset.
  * This properties are stored in a configuration file.
  */
 class TilesetEditor {

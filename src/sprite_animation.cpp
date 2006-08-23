@@ -2,7 +2,7 @@
 #include "sprite_animation.h"
 #include "sprite_animation_direction.h"
 
-SpriteAnimation::SpriteAnimation(int nb_directions, SpriteAnimationDirection **directions, Uint32 frame_interval, Uint32 next_frame_date):
+SpriteAnimation::SpriteAnimation(int nb_directions, SpriteAnimationDirection **directions, Uint32 frame_interval):
   nb_directions(nb_directions), current_direction(0), directions(directions),
   frame_interval(frame_interval), next_frame_date(SDL_GetTicks() + frame_interval) {
 

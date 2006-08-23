@@ -5,8 +5,7 @@
 #include "tileset.h"
 
 Tileset::Tileset(void):
-extensible_tiles(new DynamicArray<ExtensibleTile*>()),
-tile_number(0) {
+extensible_tiles(new DynamicArray<ExtensibleTile*>()), tile_number(0) {
 
 }
 

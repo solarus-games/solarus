@@ -6,53 +6,107 @@
 #include "dynamic_array.h"
 #include "tileset.h"
 
-/* A map is represented by:
- * - a background color
- * - some tiles
- * - enemies and characters
- * We need the following types of tiles:
- * - single tile
- * - extensible tile
- * - animated tile
- * The coordinates cannot be stored in class Tile because tiles can be shared on the map.
- * Handle oblique obstacles.
- * 2 layers of tiles? or even more? make layer handling global (with swags? or is the layer of an object constant?)
+/* Abstract class for the maps
+ * A map is where a game sequence takes place.
  */
-
 class Map {
 
   // fields
  protected:
-  const int width; // map width in pixel
-  const int height; // map height in pixel
-  const int width8; // width / 8
-  const int height8; // height / 8
+  /* Map width in pixels
+   */
+  const int width;
+
+  /* Map height in pixels
+   */
+  const int height;
+  
+  /* Map width in 8*8 squares
+   * width8 = width / 8
+   */
+  const int width8;
+
+  /* Map height in 8*8 squares
+   * height8 = height / 8
+   */
+  const int height8;
+
+  /* Background color of the map
+   */
   const zsdx_color_t background_color;
+
+  /* Tileset of the map
+   * Every tile of this map is extracted from this tileset
+   */
   Tileset *tileset;
 
+  /* X start position of Link
+   * This will be changed soon because most of the map can have several
+   * start positions for Link
+   */
   int link_start_x;
+
+  /* Y start position of Link
+   */
   int link_start_y;
 
  private:
+  /* All entities of the map (except Link)
+   */
   DynamicArray<MapObject*> *objects;
-  int obstacle_tiles_size;
+
+  /* Number of elements in the array obstacle_tiles
+   * obstacle_tiles_size = width8 * height8
+   */
+  const int obstacle_tiles_size;
+
+  /* Array of tile_obstacle_t representing which tiles
+   * are obstacles and how
+   */
   tile_obstacle_t *obstacle_tiles;
 
   // methods
  private:
-  void display(SDL_Surface *surface);  
+  /* Display the map with all its entities except Link on the screen
+   */
+  void display(SDL_Surface *surface);
 
  protected:
+  /* Add an entity into the map
+   */
   inline void add_object(MapObject *object) { objects->add(object); }
+
+  /* Add a tile into the map
+   * This function should be called only when loading the map.
+   * The tiles or a map are not supposed to change during the game.
+   */
   void add_new_tile(TileData *tile_data, SDL_Rect &where_in_map);
 
  public:
+  /* Constructor
+   */
   Map(int width, int height, zsdx_color_t background_color,
       Tileset *tileset);
+
+  /* Destructor
+   */
   virtual ~Map();
 
+  /* Load the map
+   * This function is abstract so that each subclass can define its own map
+   * by adding the appropriate entities.
+   */
   virtual void load(void) = 0;
+
+  /* Unload the map
+   * Destroy all entities in the map to free some memory. This function
+   * should be called when the player exists the map.
+   */
   void unload(void);
+
+  /* Launches the map
+   * Link is placed on the map and the player takes the control.
+   */
   void launch(void);
 };
 

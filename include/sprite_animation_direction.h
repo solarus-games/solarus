@@ -2,12 +2,7 @@
 #define ZSDX_SPRITE_ANIMATION_DIRECTION
 
 #include <SDL/SDL.h>
-
-/* TODO:
- * - choose whether the sequences loops or stop at the end
- * - if the sequence loop, allow to choose on which frame it loops
- * - allow the animation to be suspended (suspend / resume)
- */
+#include "map.h"
 
 /* An animation direction is a sequence of
  * frames representing a sprite with a particular
@@ -26,9 +21,9 @@ class SpriteAnimationDirection {
    */
   const int nb_frames;
 
-  /* Current frame of the sequence
+  /* The animation will loop on that frame if different from -1
    */
-  int current_frame;
+  const int loop_on_frame;
 
   /* Frames of the sequence
    */
@@ -37,7 +32,7 @@ class SpriteAnimationDirection {
  public:
   /* Constructor
    */
-  SpriteAnimationDirection(SDL_Surface *src_image, int nb_frames, SDL_Rect *frames);
+  SpriteAnimationDirection(SDL_Surface *src_image, int nb_frames, int loop_on_frame, SDL_Rect *frames);
 
   /* Simple constructor without nb_frames
    * You should call it if there is only one frame in your sequence
@@ -48,16 +43,14 @@ class SpriteAnimationDirection {
    */
   virtual ~SpriteAnimationDirection(void);
 
-  /* Change the current frame of the sequence
-   * current_frame is incremented or reset to zero when it reaches
-   * the end of the sequence. This function is called when necessary by
-   * SpriteAnimation::update_current_frame().
+  /* Return the next frame of the given frame
+   * Return -1 if the animation is over
    */
-  void next_frame(void);
+  int get_next_frame(int current_frame);
 
   /* Display the current frame on the map
    */
-  void display_on_map(SDL_Surface *map, SDL_Rect &where_in_map);
+  void display_on_map(Map *map, SDL_Rect &where_in_map, int current_frame);
 };
 
 #endif

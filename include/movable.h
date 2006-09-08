@@ -2,14 +2,14 @@
 #define ZSDX_MOVABLE_H
 
 #include <SDL/SDL.h>
-#include "map_object.h"
+#include "map_entity.h"
 
 /* Abstract class for every moving object on the map.
  * An instance of Movable has a speed vector that modifies
  * its coordinates. This class provides functions to get or
  * set the position, the speed and the direction of the entity.
  */
-class Movable: virtual public MapObject {
+class Movable: public MapEntity {
 
  private:
   /* Update the x position of the entity if necessary
@@ -85,13 +85,13 @@ class Movable: virtual public MapObject {
   // position
 
   /* Return the x position of the entity
-   * This is a redefinition of MapObject::get_x() because we may need
+   * This is a redefinition of MapEntity::get_x() because we may need
    * to update the x position is enough time has passed.
    */
   int get_x(void);
 
   /* Return the y position of the entity
-   * This is a redefinition of MapObject::get_y() because we may need
+   * This is a redefinition of MapEntity::get_y() because we may need
    * to update the y position is enough time has passed.
    */
   int get_y(void);

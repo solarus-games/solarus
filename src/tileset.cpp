@@ -13,6 +13,7 @@ Tileset::~Tileset(void) {
   if (is_loaded()) {
     unload();
   }
+  delete extensible_tiles;
 }
 
 void Tileset::load_tileset_image(const char *file) {
@@ -33,7 +34,6 @@ void Tileset::unload(void) {
   for (i = 0; i < extensible_tiles->get_size(); i++) {
     delete extensible_tiles->get(i);
   }
-  delete extensible_tiles;
 
   SDL_FreeSurface(tileset_image);
   tile_number = 0;

@@ -1,12 +1,7 @@
 #include <SDL/SDL.h>
-#include "datatypes.h"
-#include "game_resource.h"
 #include "map.h"
-#include "map_object.h"
 #include "tile.h"
-#include "sdl_user_events.h"
-#include "global.h"
-#include "dynamic_array.h"
+#include "zsdx.h"
 
 const int FRAMES_PER_SECOND = 50;
 const int FRAME_DELAY = 1000 / FRAMES_PER_SECOND; // delay between two frames in millisecond
@@ -16,7 +11,7 @@ Map::Map(int width, int height, zsdx_color_t background_color,
   width(width), height(height), width8(width / 8), height8(height / 8),
   background_color(background_color),
   tileset(tileset),
-  objects(new DynamicArray<MapObject*>(256)),
+  entities(new DynamicArray<MapEntity*>(256)),
   obstacle_tiles_size(width8 * height8),
   obstacle_tiles(new tile_obstacle_t[obstacle_tiles_size])
 {
@@ -28,13 +23,13 @@ Map::Map(int width, int height, zsdx_color_t background_color,
 
 Map::~Map() {
   unload();
-  delete objects;
+  delete entities;
   delete[] obstacle_tiles;
 }
 
 void Map::add_new_tile(TileData *tile_data, SDL_Rect &where_in_map) {
   // add the tile to the map objects
-  add_object(new Tile(tile_data, where_in_map));
+  add_entity(new Tile(tile_data, where_in_map));
 
   // update the collision list
   int tile_x8 = where_in_map.x / 8;
@@ -57,10 +52,14 @@ void Map::add_new_tile(TileData *tile_data, SDL_Rect &where_in_map) {
 }
 
 void Map::unload(void) {
-  for (int i = 0; i < objects->get_size(); i++) {
-    delete objects->get(i);
+  for (int i = 0; i < entities->get_size(); i++) {
+    delete entities->get(i);
   }
-  objects->clear();
+  entities->clear();
+}
+
+SDL_Surface *Map::get_surface(void) {
+  return zsdx.get_screen();
 }
 
 void Map::display(SDL_Surface *surface) {
@@ -70,12 +69,12 @@ void Map::display(SDL_Surface *surface) {
   SDL_FillRect(surface, NULL, background_color);
 
   // map objects
-  for (int i = 0; i < objects->get_size(); i++) {
-    objects->get(i)->display_on_map(surface);
+  for (int i = 0; i < entities->get_size(); i++) {
+    entities->get(i)->display_on_map(this);
   }
 
   // link
-  game_resource->get_link()->display_on_map(surface);
+  game_resource->get_link()->display_on_map(this);
 
   SDL_Flip(surface);
 }
@@ -144,7 +143,7 @@ void Map::launch(void) {
     ticks = SDL_GetTicks();
     if (ticks >= last_frame_date + FRAME_DELAY) {
       last_frame_date = ticks;
-      display(zsdx_global.screen);
+      display(zsdx.get_screen());
     }
   }
 }

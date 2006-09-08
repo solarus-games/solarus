@@ -1,13 +1,8 @@
 #include <SDL/SDL.h>
 #include "game_resource.h"
-#include "global.h"
 #include "link.h"
 #include "tilesets/house.h"
 #include "maps/link_house.h"
-
-GameResource::GameResource(void) {
-
-}
 
 void GameResource::create_resources(void) {
   // we cannot create the resources in the constructor
@@ -27,10 +22,6 @@ GameResource::~GameResource(void) {
   delete link;
   delete tilesets[TILESET_HOUSE];
   delete maps[MAP_LINK_HOUSE];
-}
-
-zsdx_color_t GameResource::get_color(int r, int g, int b) {
-  return SDL_MapRGB(zsdx_global.screen->format, r, g, b);
 }
 
 Tileset *GameResource::get_tileset(int tileset_id) {

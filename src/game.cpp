@@ -1,7 +1,6 @@
 #include <SDL/SDL.h>
 #include "game.h"
-#include "game_resource.h"
-#include "map.h"
+#include "zsdx.h"
 
 Game::Game(void) {
 

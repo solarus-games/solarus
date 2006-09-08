@@ -2,24 +2,25 @@
 #define ZSDX_LINK_H
 
 #include <SDL/SDL.h>
-#include "movable_8_keyboard.h"
+#include "map.h"
+#include "movable_8_by_player.h"
 #include "animated_sprite.h"
 
 /* Link's sprite
  * It is animated and can be controlled with an 8 directions system
  */
-class Link: public Movable8Keyboard, public AnimatedSprite {
-
- private:
-  /* Image from which link's stopped animation is extracted
-   */
-  SDL_Surface *link_stopped_image;
+class Link: public Movable8ByPlayer, public AnimatedSprite {
 
  protected:
   /* Create Link's animations
    * This function is called by the constructor.
    */
   void create_animations(void);
+
+  /* Redefinition of Movable8ByPlayer::update_movement
+   * to take care of link's animation
+   */
+  void update_movement(void);
 
  public:
   /* Constructor
@@ -52,7 +53,7 @@ class Link: public Movable8Keyboard, public AnimatedSprite {
   /* Display Link on the map with its current animation and
    * at its current position
    */
-  void display_on_map(SDL_Surface *map);
+  void display_on_map(Map *map);
 };
 
 #endif

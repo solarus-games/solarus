@@ -3,7 +3,6 @@
 #include <iostream>
 using namespace std;
 #include "movable.h"
-#include "sdl_user_events.h"
 
 static const double PI = M_PI;
 static const double TWO_PI = 2.0 * M_PI;

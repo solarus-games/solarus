@@ -2,7 +2,7 @@
 #define ZSDX_MAP_H
 
 #include "color.h"
-#include "map_object.h"
+#include "map_entity.h"
 #include "dynamic_array.h"
 #include "tileset.h"
 
@@ -53,7 +53,7 @@ class Map {
  private:
   /* All entities of the map (except Link)
    */
-  DynamicArray<MapObject*> *objects;
+  DynamicArray<MapEntity*> *entities;
 
   /* Number of elements in the array obstacle_tiles
    * obstacle_tiles_size = width8 * height8
@@ -74,7 +74,7 @@ class Map {
  protected:
   /* Add an entity into the map
    */
-  inline void add_object(MapObject *object) { objects->add(object); }
+  inline void add_entity(MapEntity *entity) { entities->add(entity); }
 
   /* Add a tile into the map
    * This function should be called only when loading the map.
@@ -91,6 +91,14 @@ class Map {
   /* Destructor
    */
   virtual ~Map();
+
+  /* Return the tileset of this map
+   */
+  inline Tileset *get_tileset(void) { return tileset; }
+
+  /* Return the SDL Surface on which the map is displayed
+   */
+  SDL_Surface *get_surface(void);
 
   /* Load the map
    * This function is abstract so that each subclass can define its own map

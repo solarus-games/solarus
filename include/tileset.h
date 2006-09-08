@@ -2,7 +2,7 @@
 #define ZSDX_TILESET_H
 
 #include <SDL/SDL.h>
-#include "tile_data.h"
+#include "extensible_tile.h"
 #include "dynamic_array.h"
 
 /* Abstract class for a tileset.
@@ -58,6 +58,10 @@ class Tileset {
   /* Return whether the tileset is loaded
    */
   inline bool is_loaded(void) { return tile_number != 0; }
+
+  /* Return the tileset image
+   */
+  inline SDL_Surface *get_image(void) { return tileset_image; }
 
   /* Return a tile
    */

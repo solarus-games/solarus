@@ -4,15 +4,13 @@
 #include <SDL/SDL.h>
 #include "movable.h"
 
-// TODO: rename into Movable8ByPlayer
-
 /* Abstract class for a moving entity with the 8 basic directions
  * This class is designed for a sprite controlled by the keyboard
  * but can be also used to control the entity with a joypad.
  */
-class Movable8Keyboard: public Movable {
+class Movable8ByPlayer: public Movable {
 
- private:
+ protected:
   /* True if the entity is moving
    */
   bool started;
@@ -26,9 +24,8 @@ class Movable8Keyboard: public Movable {
    * This function is called when an arrow is pressed or released
    * on the keyboard
    */
-  void update_movement(void);
+  virtual void update_movement(void);
 
- protected:
   /* Speed of the entity when it is moving
    */
   int speed;
@@ -36,11 +33,11 @@ class Movable8Keyboard: public Movable {
  public:
   /* Constructor
    */
-  Movable8Keyboard(int speed);
+  Movable8ByPlayer(int speed);
 
   /* Destructor
    */
-  virtual ~Movable8Keyboard(void) { }
+  virtual ~Movable8ByPlayer(void) { }
 
   /* Function called when the used presses the right arrow
    */
@@ -73,7 +70,6 @@ class Movable8Keyboard: public Movable {
   /* Function called when the used releases the down arrow
    */
   void stop_down(void);
-
 };
 
 #endif

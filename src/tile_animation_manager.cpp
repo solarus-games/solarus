@@ -1,7 +1,6 @@
 #include <SDL/SDL.h>
-#include "animation_frame_handler.h"
-#include "global.h"
-#include "sdl_user_events.h"
+#include "tile_animation_manager.h"
+#include "zsdx.h"
 
 /* Interval in millisecond between two frames of an animation
  */
@@ -17,7 +16,7 @@ static const short frames[2][12] = {
 
 /* Constructor
  */
-AnimationFrameHandler::AnimationFrameHandler(void) {
+TileAnimationManager::TileAnimationManager(void) {
   frame_counter = 0;
   current_frames[0] = 0;
   current_frames[1] = 0;
@@ -25,7 +24,7 @@ AnimationFrameHandler::AnimationFrameHandler(void) {
 
 /* Increment the frame counter and updates current_frame.
  */
-void AnimationFrameHandler::increment_frame_counter(void) {
+void TileAnimationManager::increment_frame_counter(void) {
   frame_counter = (frame_counter + 1) % 12;
   current_frames[0] = frames[0][frame_counter];
   current_frames[1] = frames[1][frame_counter];
@@ -34,10 +33,10 @@ void AnimationFrameHandler::increment_frame_counter(void) {
 /* Function called by the SDL timer every 250 ms.
  * It increments the frame counter.
  */
-Uint32 animation_next_frame(Uint32 interval, void *param) {
+Uint32 tile_animation_next_frame(Uint32 interval, void *param) {
 
   // we increment the frame counter
-  zsdx_global.animation_frame_handler.increment_frame_counter();
+  zsdx.get_tile_animation_manager()->increment_frame_counter();
 
   return interval; // should be 250
 }

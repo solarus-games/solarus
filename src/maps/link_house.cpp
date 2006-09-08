@@ -1,16 +1,16 @@
 #include <SDL/SDL.h>
 #include "map.h"
-#include "global.h"
 #include "game_resource.h"
 #include "maps/link_house.h"
 #include "tilesets/house.h"
 #include "tile.h"
 #include "color.h"
+#include "zsdx.h"
 
 MapLinkHouse::MapLinkHouse(void):
   Map(320, 240,
-      game_resource->get_color(88, 72, 72),
-      game_resource->get_tileset(TILESET_HOUSE)) {
+      get_color(88, 72, 72),
+      zsdx.get_game_resource()->get_tileset(TILESET_HOUSE)) {
 
 }
 

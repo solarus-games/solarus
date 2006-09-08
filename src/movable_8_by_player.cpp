@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 using namespace std;
-#include "movable_8_keyboard.h"
+#include "movable_8_by_player.h"
 
 static const double SQRT_2 = M_SQRT2;
 
@@ -30,53 +30,53 @@ const int directions[] = {
   -1,  // down + left + right + up: stop
 };
 
-Movable8Keyboard::Movable8Keyboard(int speed):
+Movable8ByPlayer::Movable8ByPlayer(int speed):
   started(false), direction_mask(0), speed(speed) {
 
 }
 
-void Movable8Keyboard::start_right(void) {
+void Movable8ByPlayer::start_right(void) {
   direction_mask |= right_mask;
   update_movement();
 }
 
-void Movable8Keyboard::start_up(void) {
+void Movable8ByPlayer::start_up(void) {
   direction_mask |= up_mask;
   update_movement();
 }
 
-void Movable8Keyboard::start_left(void) {
+void Movable8ByPlayer::start_left(void) {
   direction_mask |= left_mask;
   update_movement();
 }
 
-void Movable8Keyboard::start_down(void) {
+void Movable8ByPlayer::start_down(void) {
   direction_mask |= down_mask;
   update_movement();
 }
 
-void Movable8Keyboard::stop_right(void) {
+void Movable8ByPlayer::stop_right(void) {
   direction_mask &= ~right_mask;
   update_movement();
 }
 
-void Movable8Keyboard::stop_up(void) {
+void Movable8ByPlayer::stop_up(void) {
   direction_mask &= ~up_mask;
   update_movement();
 
   update_movement();}
 
-void Movable8Keyboard::stop_left(void) {
+void Movable8ByPlayer::stop_left(void) {
   direction_mask &= ~left_mask;
   update_movement();
 }
 
-void Movable8Keyboard::stop_down(void) {
+void Movable8ByPlayer::stop_down(void) {
   direction_mask &= ~down_mask;
   update_movement();
 }
 
-void Movable8Keyboard::update_movement(void) {
+void Movable8ByPlayer::update_movement(void) {
   int direction = directions[direction_mask];
   int x_speed, y_speed;
   if (direction == -1) {

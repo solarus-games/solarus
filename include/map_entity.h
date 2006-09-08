@@ -1,15 +1,15 @@
-#ifndef ZSDX_MAP_OBJECT_H
-#define ZSDX_MAP_OBJECT_H
+#ifndef ZSDX_MAP_ENTITY_H
+#define ZSDX_MAP_ENTITY_H
 
 #include <SDL/SDL.h>
-
-// TODO: rename into MapEntity
+#include "datatypes.h"
+#include "map.h"
 
 /* Abstract class for all objects attached to a map: tiles,
  * enemies, Link, interactive objects, etc.
- * A map object has a position in the map.
+ * A map entity has a position in the map.
  */
-class MapObject {
+class MapEntity {
 
  protected:
   /* Position in the map
@@ -19,11 +19,11 @@ class MapObject {
  public:
   /* Constructor
    */
-  inline MapObject(void) { };
+  inline MapEntity(void) { };
 
   /* Destructor
    */
-  virtual ~MapObject(void) { };
+  virtual ~MapEntity(void) { };
 
   /* Return the current x of the entity
    */
@@ -45,7 +45,7 @@ class MapObject {
    * This is an abstract function because a tile is not
    * displayed like an animated sprite.
    */
-  virtual void display_on_map(SDL_Surface *map) = 0;
+  virtual void display_on_map(Map *map) = 0;
 };
 
 #endif

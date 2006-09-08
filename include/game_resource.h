@@ -43,7 +43,7 @@ class GameResource {
  public:
   /* Constructor
    */
-  GameResource(void);
+  inline GameResource(void) { }
 
   /* Destructor
    */
@@ -52,11 +52,6 @@ class GameResource {
   /* Create all resources
    */
   void create_resources(void);
-
-  /* Return a color given its RGB values
-   * TODO: find a better place for this function?
-   */
-  zsdx_color_t get_color(int r, int g, int b);
 
   /* Return link
    */
@@ -71,9 +66,5 @@ class GameResource {
   Map *get_map(int map_id);
 
 };
-
-/* Global variable to get the game resources from anywhere
- */
-extern GameResource *game_resource;
 
 #endif

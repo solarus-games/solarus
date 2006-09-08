@@ -1,12 +1,12 @@
 #ifndef ZSDX_TILE_H
 #define ZSDX_TILE_H
 
-#include "map_object.h"
+#include "map_entity.h"
 #include "tile_data.h"
 
 /* A tile is a small piece of map with a image of size 8*8 or more. 
  */
-class Tile: public MapObject {
+class Tile: public MapEntity {
 
  private:
   /* Image of the tile
@@ -25,7 +25,7 @@ class Tile: public MapObject {
 
   /* Display the tile on the map
    */
-  inline void display_on_map(SDL_Surface *map) { tile_data->display_on_map(map, where_in_map); }
+  inline void display_on_map(Map *map) { tile_data->display_on_map(map, where_in_map); }
 };
 
 #endif

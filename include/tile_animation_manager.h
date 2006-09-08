@@ -1,14 +1,11 @@
-#ifndef ZSDX_ANIMATION_FRAME_HANDLER_H
-#define ZSDX_ANIMATION_FRAME_HANDLER_H
+#ifndef ZSDX_TILE_ANIMATION_MANAGER_H
+#define ZSDX_TILE_ANIMATION_MANAGER_H
 
 #include <SDL/SDL.h>
-#include "datatypes.h"
 
-// TODO: use class AnimatedSprite to represented animated tiles, and remove that class?
-
-/* Animation sequence type: 1-2-3-2 or 1-2-3
+/* Tile animation sequence type: 1-2-3-2 or 1-2-3
  */
-enum animation_sequence_t {
+enum tile_animation_sequence_t {
   ANIMATION_SEQUENCE_1232,
   ANIMATION_SEQUENCE_123,
 };
@@ -16,18 +13,18 @@ enum animation_sequence_t {
 /* Function called by the SDL timer every 250 ms
  * to change the animation frame
  */
-Uint32 animation_next_frame(Uint32 interval, void *param);
+Uint32 tile_animation_next_frame(Uint32 interval, void *param);
 
 /* This class updates during the game the animation frame
  * of the animated tiles.
  * Two kinds of animation sequences are handled: 1-2-3-2 and 1-2-3.
  */
-class AnimationFrameHandler {
+class TileAnimationManager {
 
   /* Function called by the SDL timer every 250 ms
    * to change the animation frame
    */
-  friend Uint32 animation_next_frame(Uint32 interval, void *param);
+  friend Uint32 tile_animation_next_frame(Uint32 interval, void *param);
 
  private:
   /* Frame counter (0 to 11), increased every 250 ms
@@ -45,15 +42,15 @@ class AnimationFrameHandler {
  public:
   /* Constructor
    */
-  AnimationFrameHandler(void);
+  TileAnimationManager(void);
 
   /* Destructor
    */
-  inline ~AnimationFrameHandler(void) { }
+  inline ~TileAnimationManager(void) { }
 
   /* Return the current_frame (0, 1 or 2) of a sequence
    * 1-2-3-2 or 1-2-3
    */
-  inline short get_current_frame(animation_sequence_t sequence) { return current_frames[sequence]; }
+  inline short get_current_frame(tile_animation_sequence_t sequence) { return current_frames[sequence]; }
 };
 #endif

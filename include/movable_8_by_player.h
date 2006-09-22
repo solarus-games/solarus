@@ -39,6 +39,12 @@ class Movable8ByPlayer: public Movable {
    */
   virtual ~Movable8ByPlayer(void) { }
 
+  /* Return the current direction of the movement.
+   * The returned direction is an angle (0 to 359) or -1 if the
+   * movement is stopped.
+   */
+  int get_direction(void);
+
   /* Function called when the used presses the right arrow
    */
   void start_right(void);

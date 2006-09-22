@@ -68,7 +68,7 @@ void LinkAnimations::create_animations(void) {
   position_in_src.h = 24;
   directions[3] = new SpriteAnimationDirection(link_stopped_image, position_in_src);
 
-  animations[0] = new SpriteAnimation(4, directions);
+  animations[0] = new SpriteAnimation(4, directions, 12, 24);
 
   // stopped
   directions = new SpriteAnimationDirection*[4];
@@ -113,5 +113,5 @@ void LinkAnimations::create_animations(void) {
   }
   directions[3] = new SpriteAnimationDirection(link_walking_image, 8, 0, positions_in_src);
 
-  animations[1] = new SpriteAnimation(4, directions, 100);
+  animations[1] = new SpriteAnimation(4, directions, 12, 32, 100);
 }

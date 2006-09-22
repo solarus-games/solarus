@@ -34,21 +34,21 @@ class Link: public Movable8ByPlayer, public AnimatedSprite {
   // redefinition of these methods from Movable8Keyboard
   // to take care of Link's animation direction 
   
-  /* Function called when the player wants to go right
-   */
-  void start_right(void);
+/*   /\* Function called when the player wants to go right */
+/*    *\/ */
+/*   void start_right(void); */
 
-  /* Function called when the player wants to go upwards
-   */
-  void start_up(void);
+/*   /\* Function called when the player wants to go upwards */
+/*    *\/ */
+/*   void start_up(void); */
 
-  /* Function called when the player wants to go left
-   */
-  void start_left(void);
+/*   /\* Function called when the player wants to go left */
+/*    *\/ */
+/*   void start_left(void); */
 
-  /* Function called when the player wants to go downwards
-   */
-  void start_down(void);
+/*   /\* Function called when the player wants to go downwards */
+/*    *\/ */
+/*   void start_down(void); */
 
   /* Display Link on the map with its current animation and
    * at its current position

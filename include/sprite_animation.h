@@ -21,6 +21,14 @@ class SpriteAnimation {
    */
   SpriteAnimationDirection **directions;
 
+  /* X coordinate of the origin
+   */
+  const int x_hotspot;
+
+  /* Y coordinate of the origin
+   */
+  const int y_hotspot;
+
   /* Interval in milliseconds between two frames
    * This interval is the same for all directions.
    * If there is only one frame in every directions, this field is set to zero.
@@ -30,12 +38,12 @@ class SpriteAnimation {
  public:
   /* Constructor
    */
-  SpriteAnimation(int nb_directions, SpriteAnimationDirection **directions, Uint32 frame_interval);
+  SpriteAnimation(int nb_directions, SpriteAnimationDirection **directions, int x_hotspot, int y_hotspot, Uint32 frame_interval);
 
   /* Simple constructor without frame_interval
    * You can use this constructor if your directions contains only one frame.
    */
-  SpriteAnimation(int nb_directions, SpriteAnimationDirection **directions);
+  SpriteAnimation(int nb_directions, SpriteAnimationDirection **directions, int x_hotspot, int y_hotspot);
 
   /* Destructor
    */

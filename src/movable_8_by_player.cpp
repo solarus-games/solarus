@@ -6,12 +6,12 @@ using namespace std;
 
 static const double SQRT_2 = M_SQRT2;
 
-const short right_mask = 0x0001;
-const short up_mask = 0x0002;
-const short left_mask = 0x0004;
-const short down_mask = 0x0008;
+static const short right_mask = 0x0001;
+static const short up_mask = 0x0002;
+static const short left_mask = 0x0004;
+static const short down_mask = 0x0008;
 
-const int directions[] = {
+static const int directions[] = {
   -1,  // none: stop
   0,   // right
   90,  // up
@@ -33,6 +33,10 @@ const int directions[] = {
 Movable8ByPlayer::Movable8ByPlayer(int speed):
   started(false), direction_mask(0), speed(speed) {
 
+}
+
+int Movable8ByPlayer::get_direction(void) {
+  return directions[direction_mask];
 }
 
 void Movable8ByPlayer::start_right(void) {
@@ -63,8 +67,7 @@ void Movable8ByPlayer::stop_right(void) {
 void Movable8ByPlayer::stop_up(void) {
   direction_mask &= ~up_mask;
   update_movement();
-
-  update_movement();}
+}
 
 void Movable8ByPlayer::stop_left(void) {
   direction_mask &= ~left_mask;

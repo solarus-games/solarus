@@ -17,15 +17,23 @@ ExtensibleTile::ExtensibleTile(ExtensibleTile *other, int repeat_x, int repeat_y
 }
 
 void ExtensibleTile::display_on_map(Map *map, SDL_Rect &where_in_map) {
-  SDL_Rect dst = where_in_map;
+  static SDL_Rect dst;
+
+  int x;
+  int width = where_in_tileset.w;
+  int height = where_in_tileset.h;
+
+  dst.x = x = where_in_map.x;
+  dst.y = where_in_map.y;
+
   SDL_Surface *tileset_image = map->get_tileset()->get_image();
   SDL_Surface *map_image = map->get_surface();
   for (int j = 0; j < repeat_y; j++) {
     for (int i = 0; i < repeat_x; i++) {
       SDL_BlitSurface(tileset_image, &where_in_tileset, map_image, &dst);
-      dst.x += where_in_tileset.w;
+      dst.x += width;
     }
-    dst.y += where_in_tileset.h;
-    dst.x = where_in_map.x;
+    dst.y += height;
+    dst.x = x;
   }
 }

@@ -10,8 +10,6 @@ static const double PI_OVER_2 = M_PI_2;
 static const double THREE_PI_OVER_2 = 3 * M_PI_2;
 static const double SQRT_2 = M_SQRT2;
 
-//static inline int abs(int n) { return (n >= 0) ? n : -n; }
-
 Movable::Movable(void):
   x_speed(0), y_speed(0), x_move(0), y_move(0) {
 }

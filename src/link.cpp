@@ -4,6 +4,25 @@
 #include "animated_sprite.h"
 #include "link_animations.h"
 
+static const int animation_directions[] = {
+  -1,  // none: no change
+  0,   // right
+  1,   // up
+  0,   // right + up
+  2,   // left
+  -1,  // left + right: no change
+  2,   // left + up
+  -1,  // left + right + up: no change
+  3,   // down
+  0,   // down + right
+  -1,  // down + up: no change
+  -1,  // down + right + up: no change
+  2,   // down + left
+  -1,  // down + left + right: no change
+  -1,  // down + left + up: no change
+  -1,  // down + left + right + up: no change
+};
+
 Link::Link(void):
 Movable8ByPlayer(12), AnimatedSprite(LinkAnimations::get_instance()) {
 
@@ -18,29 +37,19 @@ void Link::display_on_map(Map *map) {
   AnimatedSprite::display_on_map(map, where_in_map);
 }
 
-void Link::start_right(void) {
-  Movable8ByPlayer::start_right();
-  set_current_animation_direction(0);
-}
-
-void Link::start_up(void) {
-  Movable8ByPlayer::start_up();
-  set_current_animation_direction(1);
-}
-
-void Link::start_left(void) {
-  Movable8ByPlayer::start_left();
-  set_current_animation_direction(2);
-}
-
-void Link::start_down(void) {
-  Movable8ByPlayer::start_down();
-  set_current_animation_direction(3);
-}
-
 void Link::update_movement(void) {
   bool old_started = started;
   Movable8ByPlayer::update_movement();
+
+  // has the direction changed?
+  int direction = get_direction();
+  if (direction != -1) {
+    int old_animation_direction = get_current_animation_direction();
+    int animation_direction = animation_directions[direction_mask];
+    if (animation_direction != old_animation_direction) {
+      set_current_animation_direction(animation_directions[direction_mask]);
+    }
+  }
 
   // stopped to walking
   if (!old_started && started) {

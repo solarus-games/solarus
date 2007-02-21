@@ -2,8 +2,10 @@
 #define ZSDX_TILESET_H
 
 #include <SDL/SDL.h>
-#include "extensible_tile.h"
 #include "dynamic_array.h"
+
+class ExtensibleTile;
+class TileData;
 
 /* Abstract class for a tileset.
  * A tileset is an image with a set of graphics to compose a map.

@@ -1,4 +1,4 @@
-ZSDX_ROOT = /home/christophe/documents/programmation/cpp/zsdx/zsdx
+ZSDX_ROOT = /home/christophe/zsdx
 SRC_DIR = $(ZSDX_ROOT)/src
 BIN_DIR = $(ZSDX_ROOT)/bin
 INCLUDE_DIR = $(ZSDX_ROOT)/include

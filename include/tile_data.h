@@ -2,7 +2,7 @@
 #define ZSDX_TILE_DATA_H
 
 #include <SDL/SDL.h>
-#include "datatypes.h"
+#include "map.h"
 
 /* Abstract class for a tile image
  */

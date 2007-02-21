@@ -2,8 +2,8 @@
 #define ZSDX_MAP_ENTITY_H
 
 #include <SDL/SDL.h>
-#include "datatypes.h"
-#include "map.h"
+
+class Map;
 
 /* Abstract class for all objects attached to a map: tiles,
  * enemies, Link, interactive objects, etc.

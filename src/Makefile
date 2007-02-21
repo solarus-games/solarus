@@ -24,7 +24,6 @@ objects =	zsdx.o				\
 		maps/link_house.o
 
 headers = 	$(INCLUDE_DIR)/zsdx.h				\
-		$(INCLUDE_DIR)/datatypes.h			\
 		$(INCLUDE_DIR)/game_resource.h			\
 		$(INCLUDE_DIR)/game.h				\
 		$(INCLUDE_DIR)/dynamic_array.h			\

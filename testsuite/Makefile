@@ -2,7 +2,6 @@ include ../Makedefs
 
 executables = dynamic_array_test game_test #tile_test tileset_editor_test
 headers =	$(INCLUDE_DIR)/zsdx.h				\
-		$(INCLUDE_DIR)/datatypes.h			\
 		$(INCLUDE_DIR)/dynamic_array.h			\
 		$(INCLUDE_DIR)/game.h				\
 		$(INCLUDE_DIR)/game_resource.h			\

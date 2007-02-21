@@ -2,7 +2,10 @@
 #define ZSDX_COLOR_H
 
 #include <SDL/SDL.h>
-#include "datatypes.h"
+
+/* Color type
+ */
+typedef Uint32 zsdx_color_t;
 
 /* Black
  */

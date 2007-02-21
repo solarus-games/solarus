@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "tileset.h"
+#include "extensible_tile.h"
 
 Tileset::Tileset(void):
 extensible_tiles(new DynamicArray<ExtensibleTile*>()), tile_number(0) {

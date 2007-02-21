@@ -2,7 +2,6 @@
 #define ZSDX_EXTENSIBLE_TILE_H
 
 #include <SDL/SDL.h>
-#include "datatypes.h"
 #include "tile_data.h"
 
 /* Tile pattern that can be extended

@@ -5,6 +5,7 @@
 #include "map_entity.h"
 #include "dynamic_array.h"
 #include "tileset.h"
+#include "music.h"
 
 /* Obstacle types for the tiles
  */
@@ -50,6 +51,11 @@ class Map {
    * Every tile of this map is extracted from this tileset
    */
   Tileset *tileset;
+
+  /**
+   * Background music of the map.
+   */
+  Music *background_music;
 
   /* X start position of Link
    * This will be changed soon because most of the map can have several
@@ -97,7 +103,7 @@ class Map {
   /* Constructor
    */
   Map(int width, int height, zsdx_color_t background_color,
-      Tileset *tileset);
+      Tileset *tileset, Music *background_music);
 
   /* Destructor
    */
@@ -123,10 +129,33 @@ class Map {
    */
   void unload(void);
 
-  /* Launches the map
+  /* Launches the map.
    * Link is placed on the map and the player takes the control.
    */
-  void launch(void);
+  void start(void);
+
+  /**
+   * Exits the map.
+   * This function is called when Link leaves the map.
+   */
+  void exit(void);
+
+  /**
+   * Test if the given point collides with a map tile.
+   * The coordinates are in pixels.
+   */
+  bool collides_with(int x, int y);
+
+  /**
+   * Tests if the given rectangle collides with the map tiles
+   * when moving to a specific direction. The direction permits
+   * to make the test faster.
+   * direction_mask should be 0, 45, 90, 135, 180, 225, 270 or 315
+   * collision_box.w and collision_box.h should be multiples of 8
+   * TODO killer feature: return something more precise than bool
+   * too handle oblic walls!!!
+   */
+  bool collides_with(SDL_Rect &collision_box);
 };
 
 #endif

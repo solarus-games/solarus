@@ -5,6 +5,7 @@ objects =	zsdx.o				\
 		game_resource.o			\
 		map.o				\
 		movable.o			\
+		movable_with_collision.o	\
 		movable_8_by_player.o		\
 		animated_sprite.o		\
 		sprite_animations.o		\
@@ -21,7 +22,8 @@ objects =	zsdx.o				\
 		link_animations.o		\
 		tileset.o			\
 		tilesets/house.o		\
-		maps/link_house.o
+		maps/link_house.o		\
+		music.o				
 
 headers = 	$(INCLUDE_DIR)/zsdx.h				\
 		$(INCLUDE_DIR)/game_resource.h			\
@@ -30,6 +32,7 @@ headers = 	$(INCLUDE_DIR)/zsdx.h				\
 		$(INCLUDE_DIR)/map.h				\
 		$(INCLUDE_DIR)/map_entity.h			\
 		$(INCLUDE_DIR)/movable.h			\
+		$(INCLUDE_DIR)/movable_with_collision.h		\
 		$(INCLUDE_DIR)/movable_8_by_player.h		\
 		$(INCLUDE_DIR)/animated_sprite.h		\
 		$(INCLUDE_DIR)/sprite_animations.h		\
@@ -47,7 +50,8 @@ headers = 	$(INCLUDE_DIR)/zsdx.h				\
 		$(INCLUDE_DIR)/link_animations.h		\
 		$(INCLUDE_DIR)/tileset.h			\
 		$(INCLUDE_DIR)/tilesets/house.h			\
-		$(INCLUDE_DIR)/maps/link_house.h		
+		$(INCLUDE_DIR)/maps/link_house.h		\
+		$(INCLUDE_DIR)/music.h				
 
 # executable = $(BIN_DIR)/zsdx
 

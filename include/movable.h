@@ -4,23 +4,22 @@
 #include <SDL/SDL.h>
 #include "map_entity.h"
 
-/* Abstract class for every moving object on the map.
+/* Abstract class for every moving object on the map, visible or not.
  * An instance of Movable has a speed vector that modifies
  * its coordinates. This class provides functions to get or
  * set the position, the speed and the direction of the entity.
  */
 class Movable: public MapEntity {
 
- private:
+ protected:
   /* Update the x position of the entity if necessary
    */
-  void update_x(void);
+  virtual void update_x(void);
 
   /* Update the y position of the entity if necessary
    */
-  void update_y(void);
+  virtual void update_y(void);
 
- protected:
   // speed vector
 
   /* X speed

@@ -25,6 +25,7 @@ int Movable::get_y(void) {
 }
 
 void Movable::update_x(void) {
+  cout << "update_x de Movable\n";
   if (x_move != 0) {
     while (SDL_GetTicks() > next_move_date_x) {
       where_in_map.x += x_move;

@@ -4,6 +4,10 @@
 #include "animated_sprite.h"
 #include "link_animations.h"
 
+/**
+ * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
+ * depending on the arrows pressed on the keyboard.
+ */
 static const int animation_directions[] = {
   -1,  // none: no change
   0,   // right
@@ -25,11 +29,20 @@ static const int animation_directions[] = {
 
 Link::Link(void):
 Movable8ByPlayer(12), AnimatedSprite(LinkAnimations::get_instance()) {
-
+  SDL_Rect collision_box;
+  collision_box.x = -8;
+  collision_box.y = -16;
+  collision_box.w = 16;
+  collision_box.h = 16;
+  set_collision_box(collision_box);
 }
 
 Link::~Link(void) {
   LinkAnimations::destroy_instance();
+}
+
+void Link::set_map(Map *map) {
+  MovableWithCollision::set_map(map);
 }
 
 void Link::display_on_map(Map *map) {
@@ -43,6 +56,7 @@ void Link::update_movement(void) {
 
   // has the direction changed?
   int direction = get_direction();
+
   if (direction != -1) {
     int old_animation_direction = get_current_animation_direction();
     int animation_direction = animation_directions[direction_mask];

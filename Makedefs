@@ -6,4 +6,4 @@ WARNING_FLAGS = -O0 -Wall -Werror -ansi
 
 CC = g++
 CPPFLAGS = -g $(WARNING_FLAGS) -I$(INCLUDE_DIR) `sdl-config --cflags`
-LIBS = `sdl-config --libs` -lSDL_image
+LIBS = `sdl-config --libs` -lSDL_image -lfmod-3.75

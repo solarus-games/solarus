@@ -8,6 +8,7 @@ headers =	$(INCLUDE_DIR)/zsdx.h				\
 		$(INCLUDE_DIR)/map.h				\
 		$(INCLUDE_DIR)/map_entity.h			\
 		$(INCLUDE_DIR)/movable.h			\
+		$(INCLUDE_DIR)/movable_with_collision.h		\
 		$(INCLUDE_DIR)/movable_8_by_player.h		\
 		$(INCLUDE_DIR)/animated_sprite.h		\
 		$(INCLUDE_DIR)/sprite_animations.h		\
@@ -25,7 +26,8 @@ headers =	$(INCLUDE_DIR)/zsdx.h				\
 		$(INCLUDE_DIR)/link_animations.h		\
 		$(INCLUDE_DIR)/tileset.h			\
 		$(INCLUDE_DIR)/tilesets/house.h			\
-		$(INCLUDE_DIR)/maps/link_house.h		
+		$(INCLUDE_DIR)/maps/link_house.h		\
+		$(INCLUDE_DIR)/music.h			
 
 executables: $(executables) $(headers)
 
@@ -43,6 +45,7 @@ game_test: 	game_test.o				\
 		$(SRC_DIR)/color.o			\
 		$(SRC_DIR)/map.o			\
 		$(SRC_DIR)/movable.o			\
+		$(SRC_DIR)/movable_with_collision.o	\
 		$(SRC_DIR)/movable_8_by_player.o	\
 		$(SRC_DIR)/animated_sprite.o		\
 		$(SRC_DIR)/sprite_animations.o		\
@@ -53,10 +56,11 @@ game_test: 	game_test.o				\
 		$(SRC_DIR)/extensible_tile.o		\
 		$(SRC_DIR)/animated_tile.o		\
 		$(SRC_DIR)/link.o			\
-		$(SRC_DIR)/link_animations.o			\
+		$(SRC_DIR)/link_animations.o		\
 		$(SRC_DIR)/tileset.o			\
 		$(SRC_DIR)/tilesets/house.o		\
-		$(SRC_DIR)/maps/link_house.o
+		$(SRC_DIR)/maps/link_house.o		\
+		$(SRC_DIR)/music.o			
 	$(CC) $(LDFLAGS) $(CPPFLAGS) $^ $(LIBS) -o $@
 
 tile_test: 	tile_test.o				\

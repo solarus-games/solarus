@@ -11,6 +11,9 @@ static const int TILESET_HOUSE = 0;
 // maps
 static const int MAP_LINK_HOUSE = 0;
 
+// musics
+static const int MUSIC_VILLAGE = 0;
+
 /* This class is a database of all game resources:
  * - the tileset list
  * - the map list
@@ -33,6 +36,10 @@ class GameResource {
   /* The maps
    */
   Map *maps[1];
+
+  /* The musics
+   */
+  Music *musics[1];
 
   // musics
   // sounds
@@ -64,6 +71,11 @@ class GameResource {
   /* Return a map given its id
    */
   Map *get_map(int map_id);
+
+  /**
+   * Returns a music given its id
+   */
+  Music *get_music(int music_id);
 
 };
 

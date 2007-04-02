@@ -2,15 +2,18 @@
 #include "map.h"
 #include "tile.h"
 #include "zsdx.h"
+using namespace std;
+#include <iostream>
 
 const int FRAMES_PER_SECOND = 50;
 const int FRAME_DELAY = 1000 / FRAMES_PER_SECOND; // delay between two frames in millisecond
 
 Map::Map(int width, int height, zsdx_color_t background_color,
-	 Tileset *tileset):
+	 Tileset *tileset, Music *background_music):
   width(width), height(height), width8(width / 8), height8(height / 8),
   background_color(background_color),
   tileset(tileset),
+  background_music(background_music),
   entities(new DynamicArray<MapEntity*>(256)),
   obstacle_tiles_size(width8 * height8),
   obstacle_tiles(new tile_obstacle_t[obstacle_tiles_size])
@@ -44,9 +47,7 @@ void Map::add_new_tile(TileData *tile_data, SDL_Rect &where_in_map) {
     index = (tile_y8 + j) * width8 + tile_x8;
     for (int i = 0; i < tile_width8; i++) {
       obstacle = &obstacle_tiles[index++];
-      if (*obstacle != NO_OBSTACLE) {
-	*obstacle = tile_data->get_obstacle();
-      }
+      *obstacle = tile_data->get_obstacle();
     }
   }
 }
@@ -79,12 +80,18 @@ void Map::display(SDL_Surface *surface) {
   SDL_Flip(surface);
 }
 
-void Map::launch(void) {
+void Map::start(void) {
   SDL_Event event;
   Uint32 ticks, last_frame_date = 0;
   bool quit = false;
 
+  // start the background music
+  if (background_music != NULL) {
+    background_music->play();
+  }
+
   Link *link = game_resource->get_link();
+  link->set_map(this);
   link->set_position(link_start_x, link_start_y);
 
   //  SDL_EnableKeyRepeat(5, 10);
@@ -137,6 +144,16 @@ void Map::launch(void) {
 	  break;
 	}
 	break;
+
+	// check the obstacles
+//     case SDL_MOUSEBUTTONDOWN:
+// 	if (event.button.button == SDL_BUTTON_LEFT) {
+// 	  int x = event.button.x;
+// 	  int y = event.button.y;
+// 	  tile_obstacle_t obstacle = obstacle_tiles[width8*(y/8) + (x/8)];
+// 	  cout << "obstacle: " << obstacle << "\n";
+// 	}
+// 	break;
       }
     }
 
@@ -146,4 +163,42 @@ void Map::launch(void) {
       display(zsdx.get_screen());
     }
   }
+}
+
+void Map::exit(void) {
+  if (background_music != NULL) {
+    background_music->stop();
+  }
+}
+
+/**
+ * Returns true if the given point collides with an obstacle.
+ * The coordinates are in pixels.
+ */
+bool Map::collides_with(int x, int y) {
+  tile_obstacle_t obstacle;
+  obstacle = obstacle_tiles[(y / 8) * width8 + (x / 8)];
+  return obstacle;
+}
+
+bool Map::collides_with(SDL_Rect &collision_box) {
+  // TODO: check only in the direction of the moving object
+  int x1, x2, y1, y2;
+  bool collision;
+  
+
+  // uncomment the following line to show the collision box
+  //  SDL_FillRect(zsdx.get_screen(), &collision_box, background_color);
+  
+  // we check the 4 corners of each 8*8 square in the collision box
+  for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1 += 8) {
+    y2 = y1 + 7;
+    for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1 += 8) {
+      x2 = x1 + 7;
+      collision = collides_with(x1, y1) || collides_with(x2, y1)
+	|| collides_with(x1, y2) || collides_with(x2, y2);
+    }
+  }
+  
+  return collision;   
 }

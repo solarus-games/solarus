@@ -10,7 +10,8 @@
 MapLinkHouse::MapLinkHouse(void):
   Map(320, 240,
       get_color(88, 72, 72),
-      zsdx.get_game_resource()->get_tileset(TILESET_HOUSE)) {
+      zsdx.get_game_resource()->get_tileset(TILESET_HOUSE),
+      zsdx.get_game_resource()->get_music(MUSIC_VILLAGE)) {
 
 }
 

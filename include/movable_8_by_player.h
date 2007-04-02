@@ -2,13 +2,13 @@
 #define ZSDX_MOVABLE_8_KEYBOARD
 
 #include <SDL/SDL.h>
-#include "movable.h"
+#include "movable_with_collision.h"
 
 /* Abstract class for a moving entity with the 8 basic directions
  * This class is designed for a sprite controlled by the keyboard
  * but can be also used to control the entity with a joypad.
  */
-class Movable8ByPlayer: public Movable {
+class Movable8ByPlayer: public MovableWithCollision {
 
  protected:
   /* True if the entity is moving

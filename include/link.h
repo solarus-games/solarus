@@ -50,6 +50,19 @@ class Link: public Movable8ByPlayer, public AnimatedSprite {
 /*    *\/ */
 /*   void start_down(void); */
 
+/*   void stop_right(void); */
+
+/*   void stop_up(void); */
+
+/*   void stop_left(void); */
+
+/*   void stop_down(void); */
+
+  /**
+   * Sets Link's current map.
+   */
+  void set_map(Map *map);
+
   /* Display Link on the map with its current animation and
    * at its current position
    */

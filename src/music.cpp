@@ -5,23 +5,39 @@ using namespace std;
 #include <iostream>
 #include "music.h"
 
+/**
+ * True if the sound system has been initialized, i.e. if
+ * the method initialize() has been called.
+ */
 bool Music::initialized = false;
 
+/**
+ * Creates a new music.
+ * @param file_name name of the music file (should end with .it)
+ */
 Music::Music(const char *file_name):
   module(NULL) {
   //  this->file_name = new char[strlen(file_name) + 7];
   sprintf(this->file_name, "music/%s", file_name);
 }
 
+/**
+ * Destructor.
+ */
 Music::~Music(void) {
 }
 
+/**
+ * Initializes the sound system.
+ * This method should be called when the application starts.
+ */
 void Music::initialize(void) {
+  // first we try to initialize FMOD with the default configuration
   if (FSOUND_Init(44100, 32, 0)) {
     initialized = true;
   }
   else {
-    // try with ESD, for Linux
+    // it didn't work: we try with ESD for Linux
     FSOUND_SetOutput(FSOUND_OUTPUT_ESD);
     if (FSOUND_Init(44100, 32, 0)) {
       initialized = true;
@@ -32,12 +48,20 @@ void Music::initialize(void) {
   }
 }
 
+/**
+ * Closes the sound system.
+ * This method should be called when exiting the application.
+ */
 void Music::exit(void) {
   if (initialized) {
     FSOUND_Close();
+    initialized = false;
   }
 }
 
+/**
+ * Loads the file and plays the music.
+ */
 void Music::play(void) {
   if (initialized) {
     module = FMUSIC_LoadSong(file_name);
@@ -50,6 +74,9 @@ void Music::play(void) {
   }
 }
 
+/**
+ * Stops playing the music.
+ */
 void Music::stop(void) {
   if (initialized) {
     FMUSIC_StopSong(module);
@@ -57,16 +84,19 @@ void Music::stop(void) {
   }
 }
 
-bool Music::isPaused(void) {
-  if (initialized) {
-    return FMUSIC_GetPaused(module);
-  }
-  else {
-    return false;
-  }
+/**
+ * Returns whether the music is paused.
+ * @return true if the music is paused, false otherwise
+ */
+bool Music::is_paused(void) {
+  return initialized && FMUSIC_GetPaused(module);
 }
 
-void Music::setPaused(bool pause) {
+/**
+ * Pauses or resumes the music.
+ * @param pause true to pause the music, false to resume it
+ */
+void Music::set_paused(bool pause) {
   if (initialized) {
     FMUSIC_SetPaused(module, pause);
   }

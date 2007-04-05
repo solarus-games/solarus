@@ -106,21 +106,32 @@ void Map::start(void) {
 	
       case SDL_KEYDOWN:
 	switch (event.key.keysym.sym) {
+
+	  // pour martin
+// 	case SDLK_SPACE:
+// 	  background_music->set_paused(!background_music->is_paused());
+// 	  break;
+
 	case SDLK_ESCAPE:
 	  quit = true;
 	  break;
+
 	case SDLK_RIGHT:
 	  link->start_right();
 	  break;
+
 	case SDLK_UP:
 	  link->start_up();
 	  break;
+
 	case SDLK_LEFT:
 	  link->start_left();
 	  break;
+
 	case SDLK_DOWN:
 	  link->start_down();
 	  break;
+
 	default:
 	  break;
 	}

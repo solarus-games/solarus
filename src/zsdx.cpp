@@ -10,11 +10,11 @@ GameResource *game_resource = zsdx.get_game_resource();
 ZSDX::ZSDX(void) {
   // initialise SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
-  SDL_ShowCursor(SDL_DISABLE);
-  //  SDL_ShowCursor(SDL_ENABLE);
+  //  SDL_ShowCursor(SDL_DISABLE);
+  SDL_ShowCursor(SDL_ENABLE);
  
-  //  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
-  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+  //  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
   color_init();
 
   // set the timer

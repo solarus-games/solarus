@@ -144,18 +144,25 @@ class Map {
    * Test if the given point collides with a map tile.
    * The coordinates are in pixels.
    */
-  bool collides_with(int x, int y);
+  tile_obstacle_t pixel_collision(int x, int y);
 
   /**
-   * Tests if the given rectangle collides with the map tiles
-   * when moving to a specific direction. The direction permits
-   * to make the test faster.
-   * direction_mask should be 0, 45, 90, 135, 180, 225, 270 or 315
-   * collision_box.w and collision_box.h should be multiples of 8
-   * TODO killer feature: return something more precise than bool
-   * too handle oblic walls!!!
+   * Tests if a rectangle collides with the map tiles.
+   * @param collision_box the rectangle to check
+   * (its dimensions should be multiples of 8)
+   * @return true if the rectangles is overlapping an obstacle, false otherwise
    */
-  bool collides_with(SDL_Rect &collision_box);
+  bool simple_collision(SDL_Rect &collision_box);
+
+  /**
+   * When link's moving rectangle collides with the map tiles, this function can be called
+   * to check whether Link can "slide", i.e. change its direction of 45° to continue walking.
+   * If yes, the new proposition of direction is returned.
+   * @param collision_box Link's collision box
+   * @param direction Link's current direction (0, 45, 90, ... , 315)
+   * @return a proposition of new direction for Link, or -1 if there is no hope
+   */
+/*   int link_collision_slide(SDL_Rect &collision_box, int direction); */
 };
 
 #endif

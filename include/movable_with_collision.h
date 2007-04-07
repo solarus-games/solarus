@@ -24,15 +24,10 @@ class MovableWithCollision: public Movable {
   SDL_Rect collision_box;
 
  protected:
-  /* Update the x position of the entity if necessary,
+  /* Update the x and y position of the entity if necessary,
    * stopping the movement if a collision is detected.
    */
-  void update_x(void);
-
-  /* Update the y position of the entity if necessary,
-   * stopping the movement if a collision is detected.
-   */
-  void update_y(void);
+  virtual void update_position(void);
 
   /**
    * Sets the collision box of the object.

@@ -15,17 +15,19 @@ Movable::Movable(void):
 }
 
 int Movable::get_x(void) {
-  update_x();
   return where_in_map.x;
 }
 
 int Movable::get_y(void) {
-  update_y();
   return where_in_map.y;
 }
 
+void Movable::update_position(void) {
+  update_x();
+  update_y();
+}
+
 void Movable::update_x(void) {
-  cout << "update_x de Movable\n";
   if (x_move != 0) {
     while (SDL_GetTicks() > next_move_date_x) {
       where_in_map.x += x_move;

@@ -52,6 +52,7 @@ void Link::display_on_map(Map *map) {
 
 void Link::update_movement(void) {
   bool old_started = started;
+
   Movable8ByPlayer::update_movement();
 
   // has the direction changed?

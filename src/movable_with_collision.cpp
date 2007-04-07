@@ -16,25 +16,25 @@ void MovableWithCollision::set_collision_box(SDL_Rect &collision_box) {
 }
 
 /**
- * Redefinition of update_x from Movable
- * to detect the collisions.
+ * Redefinition of update_position from Movable
+ * to detect the collisions. If there is a collision, the
+ * movement is stopped.
  */
-void MovableWithCollision::update_x(void) {
-  bool collision = false;
+void MovableWithCollision::update_position(void) {
   SDL_Rect absolute_collision_box;
   absolute_collision_box.w = collision_box.w;
   absolute_collision_box.h = collision_box.h;
-  absolute_collision_box.y = where_in_map.y + collision_box.y;
 
+  // update x
   if (x_move != 0) {
-    while (SDL_GetTicks() > next_move_date_x && !collision) {
+    absolute_collision_box.y = where_in_map.y + collision_box.y;
+    while (SDL_GetTicks() > next_move_date_x) {
 
-      /* check the collisions */
+      // check the collisions
       absolute_collision_box.x = where_in_map.x + collision_box.x + x_move;
-      if (map->collides_with(absolute_collision_box)) {
-	/* cancel and stop the movement */
-	stop();
-	collision = true;
+      if (map->simple_collision(absolute_collision_box)) {
+	// stop the x movement
+	set_x_speed(0);
       }
       else {
 	where_in_map.x += x_move;
@@ -42,24 +42,17 @@ void MovableWithCollision::update_x(void) {
       }
     }
   }
-}
 
-void MovableWithCollision::update_y(void) {
-  bool collision = false;
-  SDL_Rect absolute_collision_box;
-  absolute_collision_box.w = collision_box.w;
-  absolute_collision_box.h = collision_box.h;
-  absolute_collision_box.x = where_in_map.x + collision_box.x;
-
+  // update y
   if (y_move != 0) {
-    while (SDL_GetTicks() > next_move_date_y && !collision) {
+    absolute_collision_box.x = where_in_map.x + collision_box.x;
+    while (SDL_GetTicks() > next_move_date_y) {
 
-      /* check the collisions */
+      // check the collisions
       absolute_collision_box.y = where_in_map.y + collision_box.y + y_move;
-      if (map->collides_with(absolute_collision_box)) {
-	/* cancel and stop the movement */
-	stop();
-	collision = true;
+      if (map->simple_collision(absolute_collision_box)) {
+	// stop the y movement
+	set_y_speed(0);
       }
       else {
 	where_in_map.y += y_move;

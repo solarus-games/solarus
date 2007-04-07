@@ -186,14 +186,52 @@ void Map::exit(void) {
  * Returns true if the given point collides with an obstacle.
  * The coordinates are in pixels.
  */
-bool Map::collides_with(int x, int y) {
-  tile_obstacle_t obstacle;
-  obstacle = obstacle_tiles[(y / 8) * width8 + (x / 8)];
-  return obstacle;
+tile_obstacle_t Map::pixel_collision(int x, int y) {
+  tile_obstacle_t obstacle_type;
+  bool on_obstacle;
+  int x_in_tile, y_in_tile;
+
+  obstacle_type = obstacle_tiles[(y / 8) * width8 + (x / 8)];
+
+  switch (obstacle_type) {
+
+  case NO_OBSTACLE:
+    on_obstacle = false;
+    break;
+
+  case OBSTACLE:
+    on_obstacle = true;
+
+    break;
+  case OBSTACLE_UP_RIGHT:
+    x_in_tile = x % 8;
+    y_in_tile = y % 8;
+    on_obstacle = y_in_tile > x_in_tile;
+    break;
+
+  case OBSTACLE_UP_LEFT:
+    x_in_tile = x % 8;
+    y_in_tile = y % 8;
+    on_obstacle = y_in_tile > 1 - x_in_tile;
+    break;
+    
+  case OBSTACLE_DOWN_LEFT:
+    x_in_tile = x % 8;
+    y_in_tile = y % 8;
+    on_obstacle = y_in_tile < x_in_tile;
+    break;
+    
+  case OBSTACLE_DOWN_RIGHT:
+    x_in_tile = x % 8;
+    y_in_tile = y % 8;
+    on_obstacle = y_in_tile < 1 - x_in_tile;
+    break;
+  }
+
+  return on_obstacle ? obstacle_type : NO_OBSTACLE;
 }
 
-bool Map::collides_with(SDL_Rect &collision_box) {
-  // TODO: check only in the direction of the moving object
+bool Map::simple_collision(SDL_Rect &collision_box) {
   int x1, x2, y1, y2;
   bool collision;
   
@@ -206,8 +244,8 @@ bool Map::collides_with(SDL_Rect &collision_box) {
     y2 = y1 + 7;
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1 += 8) {
       x2 = x1 + 7;
-      collision = collides_with(x1, y1) || collides_with(x2, y1)
-	|| collides_with(x1, y2) || collides_with(x2, y2);
+      collision = pixel_collision(x1, y1) || pixel_collision(x2, y1)
+	|| pixel_collision(x1, y2) || pixel_collision(x2, y2);
     }
   }
   

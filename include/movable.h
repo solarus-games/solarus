@@ -11,15 +11,16 @@
  */
 class Movable: public MapEntity {
 
- protected:
+ private:
   /* Update the x position of the entity if necessary
    */
-  virtual void update_x(void);
+  void update_x(void);
 
   /* Update the y position of the entity if necessary
    */
-  virtual void update_y(void);
+  void update_y(void);
 
+ protected:
   // speed vector
 
   /* X speed
@@ -70,7 +71,7 @@ class Movable: public MapEntity {
 
   /* Update the x and y position of the sprite if necessary
    */
-  inline void update_position(void) { update_x(); update_y(); }
+  virtual void update_position(void);
 
  public:
   /* Constructor

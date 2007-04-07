@@ -13,8 +13,8 @@ ZSDX::ZSDX(void) {
   //  SDL_ShowCursor(SDL_DISABLE);
   SDL_ShowCursor(SDL_ENABLE);
  
-  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
-  //  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  //  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
   color_init();
 
   // set the timer

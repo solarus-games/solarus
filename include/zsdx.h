@@ -22,6 +22,7 @@ class ZSDX {
   GameResource *game_resource;
   SDL_Surface *screen;
   TileAnimationManager tile_animation_manager;
+  bool fullscreen;
 
  public:
   /* Initialize the game engine
@@ -31,6 +32,12 @@ class ZSDX {
   /* Clean everything
    */
   ~ZSDX(void);
+
+  void set_fullscreen(bool fullscreen);
+
+  bool is_fullscreen(void);
+
+  void switch_fullscreen(void);
 
   inline GameResource *get_game_resource(void) { return game_resource; }
   inline SDL_Surface *get_screen(void) { return screen; }

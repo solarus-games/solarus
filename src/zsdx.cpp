@@ -12,9 +12,8 @@ ZSDX::ZSDX(void) {
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
   //  SDL_ShowCursor(SDL_DISABLE);
   SDL_ShowCursor(SDL_ENABLE);
+  set_fullscreen(false);
  
-  //  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
-  screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
   color_init();
 
   // set the timer
@@ -32,4 +31,22 @@ ZSDX::~ZSDX(void) {
   SDL_Quit();
   Music::exit();
   delete game_resource;
+}
+
+void ZSDX::set_fullscreen(bool fullscreen) {
+  if (fullscreen) {
+    screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+  }
+  else {
+    screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  }
+  this->fullscreen = fullscreen;
+}
+
+bool ZSDX::is_fullscreen(void) {
+  return fullscreen;
+}
+
+void ZSDX::switch_fullscreen(void) {
+  set_fullscreen(!fullscreen);
 }

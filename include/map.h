@@ -84,9 +84,17 @@ class Map {
 
   // methods
  private:
+  /**
+   * Updates the animation and the position of each sprite.
+   */
+  void update_sprites(void);
+  
   /* Display the map with all its entities except Link on the screen
    */
   void display(SDL_Surface *surface);
+
+  // temporary for Martin
+  void play_music(int music_id);
 
  protected:
   /* Add an entity into the map
@@ -154,15 +162,6 @@ class Map {
    */
   bool simple_collision(SDL_Rect &collision_box);
 
-  /**
-   * When link's moving rectangle collides with the map tiles, this function can be called
-   * to check whether Link can "slide", i.e. change its direction of 45° to continue walking.
-   * If yes, the new proposition of direction is returned.
-   * @param collision_box Link's collision box
-   * @param direction Link's current direction (0, 45, 90, ... , 315)
-   * @return a proposition of new direction for Link, or -1 if there is no hope
-   */
-/*   int link_collision_slide(SDL_Rect &collision_box, int direction); */
 };
 
 #endif

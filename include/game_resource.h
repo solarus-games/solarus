@@ -12,7 +12,20 @@ static const int TILESET_HOUSE = 0;
 static const int MAP_LINK_HOUSE = 0;
 
 // musics
+static const int NB_MUSICS = 13;
 static const int MUSIC_VILLAGE = 0;
+static const int MUSIC_OVERWORLD = 1;
+static const int MUSIC_BOSS = 2;
+static const int MUSIC_CASTLE = 3;
+static const int MUSIC_CREDITS = 4;
+static const int MUSIC_TITLE_SCREEN = 5;
+static const int MUSIC_FANFARE = 6;
+static const int MUSIC_GAME_OVER = 7;
+static const int MUSIC_RABBIT = 8;
+static const int MUSIC_MENU = 9;
+static const int MUSIC_MINI_GAME = 10;
+static const int MUSIC_DARK_WORLD = 11;
+static const int MUSIC_SOLDIERS = 12;
 
 /* This class is a database of all game resources:
  * - the tileset list
@@ -39,7 +52,7 @@ class GameResource {
 
   /* The musics
    */
-  Music *musics[1];
+  Music *musics[NB_MUSICS];
 
   // musics
   // sounds
@@ -76,7 +89,6 @@ class GameResource {
    * Returns a music given its id
    */
   Music *get_music(int music_id);
-
 };
 
 #endif

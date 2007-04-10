@@ -63,6 +63,10 @@ SDL_Surface *Map::get_surface(void) {
   return zsdx.get_screen();
 }
 
+void Map::update_sprites(void) {
+  game_resource->get_link()->update_position();
+}
+
 void Map::display(SDL_Surface *surface) {
   // for now we don't care about the scrolling
 
@@ -78,6 +82,13 @@ void Map::display(SDL_Surface *surface) {
   game_resource->get_link()->display_on_map(this);
 
   SDL_Flip(surface);
+}
+
+// temporary for Martin...
+void Map::play_music(int music_id) {
+  background_music->stop();
+  background_music = game_resource->get_music(music_id);
+  background_music->play();
 }
 
 void Map::start(void) {
@@ -107,13 +118,12 @@ void Map::start(void) {
       case SDL_KEYDOWN:
 	switch (event.key.keysym.sym) {
 
-	  // pour martin
-// 	case SDLK_SPACE:
-// 	  background_music->set_paused(!background_music->is_paused());
-// 	  break;
-
 	case SDLK_ESCAPE:
 	  quit = true;
+	  break;
+
+	case SDLK_F5:
+	  zsdx.switch_fullscreen();
 	  break;
 
 	case SDLK_RIGHT:
@@ -130,6 +140,63 @@ void Map::start(void) {
 
 	case SDLK_DOWN:
 	  link->start_down();
+	  break;
+	  
+	  // pour martin
+	case SDLK_SPACE:
+	  background_music->set_paused(!background_music->is_paused());
+	  break;
+
+	case SDLK_KP0:
+	  play_music(MUSIC_VILLAGE);
+	  break;
+
+	case SDLK_KP1:
+	  play_music(MUSIC_OVERWORLD);
+	  break;
+
+	case SDLK_KP2:
+	  play_music(MUSIC_BOSS);
+	  break;
+
+	case SDLK_KP3:
+	  play_music(MUSIC_CASTLE);
+	  break;
+
+	case SDLK_KP4:
+	  play_music(MUSIC_CREDITS);
+	  break;
+
+	case SDLK_KP5:
+	  play_music(MUSIC_TITLE_SCREEN);
+	  break;
+
+	case SDLK_KP6:
+	  play_music(MUSIC_FANFARE);
+	  break;
+
+	case SDLK_KP7:
+	  play_music(MUSIC_GAME_OVER);
+	  break;
+
+	case SDLK_KP8:
+	  play_music(MUSIC_RABBIT);
+	  break;
+
+	case SDLK_KP9:
+	  play_music(MUSIC_MENU);
+	  break;
+
+	case SDLK_KP_PERIOD:
+	  play_music(MUSIC_MINI_GAME);
+	  break;
+
+	case SDLK_KP_ENTER:
+	  play_music(MUSIC_DARK_WORLD);
+	  break;
+
+	case SDLK_KP_PLUS:
+	  play_music(MUSIC_SOLDIERS);
 	  break;
 
 	default:
@@ -167,6 +234,8 @@ void Map::start(void) {
 // 	break;
       }
     }
+
+    update_sprites(); // update the sprites animations and positions
 
     ticks = SDL_GetTicks();
     if (ticks >= last_frame_date + FRAME_DELAY) {

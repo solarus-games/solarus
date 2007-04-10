@@ -69,10 +69,6 @@ class Movable: public MapEntity {
    */
   int y_move;
 
-  /* Update the x and y position of the sprite if necessary
-   */
-  virtual void update_position(void);
-
  public:
   /* Constructor
    */
@@ -83,6 +79,10 @@ class Movable: public MapEntity {
   virtual ~Movable(void) { }
 
   // position
+
+  /* Updates the x and y position of the sprite if necessary
+   */
+  virtual void update_position(void);
 
   /* Return the x position of the entity
    * This is a redefinition of MapEntity::get_x() because we may need

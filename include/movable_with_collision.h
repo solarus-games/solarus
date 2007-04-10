@@ -24,11 +24,6 @@ class MovableWithCollision: public Movable {
   SDL_Rect collision_box;
 
  protected:
-  /* Update the x and y position of the entity if necessary,
-   * stopping the movement if a collision is detected.
-   */
-  virtual void update_position(void);
-
   /**
    * Sets the collision box of the object.
    */
@@ -47,6 +42,11 @@ class MovableWithCollision: public Movable {
   /* Destructor
    */
   virtual ~MovableWithCollision(void) { }
+
+  /* Update the x and y position of the entity if necessary,
+   * stopping the movement if a collision is detected.
+   */
+  virtual void update_position(void);
 
 };
 

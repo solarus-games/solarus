@@ -6,12 +6,14 @@
 #include "movable_8_by_player.h"
 #include "animated_sprite.h"
 
-/* Link's sprite
+/* Link's entity.
  * It is animated and can be controlled with an 8 directions system
  */
-class Link: public Movable8ByPlayer, public AnimatedSprite {
+class Link: public Movable8ByPlayer {
 
  protected:
+  AnimatedSprite *sprite;
+
   /* Create Link's animations
    * This function is called by the constructor.
    */

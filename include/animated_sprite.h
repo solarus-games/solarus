@@ -58,7 +58,7 @@ class AnimatedSprite {
       get_direction(current_direction)->get_next_frame(current_frame);    
   }
 
- protected:
+ public:
   /* Constructor
    */
   AnimatedSprite(SpriteAnimations *animations);
@@ -67,7 +67,6 @@ class AnimatedSprite {
    */
   inline ~AnimatedSprite(void) { }
 
- public:
   /* Return the current animation of the sprite
    */
   inline int get_current_animation(void) { return current_animation; }

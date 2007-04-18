@@ -28,7 +28,7 @@ static const int animation_directions[] = {
 };
 
 Link::Link(void):
-Movable8ByPlayer(12), AnimatedSprite(LinkAnimations::get_instance()) {
+Movable8ByPlayer(12), sprite(new AnimatedSprite(LinkAnimations::get_instance())) {
   SDL_Rect collision_box;
   collision_box.x = -8;
   collision_box.y = -16;
@@ -46,8 +46,7 @@ void Link::set_map(Map *map) {
 }
 
 void Link::display_on_map(Map *map) {
-  update_position();
-  AnimatedSprite::display_on_map(map, where_in_map);
+  sprite->display_on_map(map, where_in_map);
 }
 
 void Link::update_movement(void) {
@@ -59,20 +58,20 @@ void Link::update_movement(void) {
   int direction = get_direction();
 
   if (direction != -1) {
-    int old_animation_direction = get_current_animation_direction();
+    int old_animation_direction = sprite->get_current_animation_direction();
     int animation_direction = animation_directions[direction_mask];
     if (animation_direction != old_animation_direction) {
-      set_current_animation_direction(animation_directions[direction_mask]);
+      sprite->set_current_animation_direction(animation_direction);
     }
   }
 
   // stopped to walking
   if (!old_started && started) {
-    set_current_animation(1);
+    sprite->set_current_animation(1);
   }
 
   // walking to stopped
   else if (old_started && !started) {
-    set_current_animation(0);
+    sprite->set_current_animation(0);
   }
 }

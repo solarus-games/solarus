@@ -50,12 +50,12 @@ headers = 	$(INCLUDE_DIR)/zsdx.h				\
 		$(INCLUDE_DIR)/maps/link_house.h		\
 		$(INCLUDE_DIR)/music.h				
 
-# executable = $(BIN_DIR)/zsdx
+executables = $(BIN_DIR)/tileset_editor
 
-# all: $(executable)
+all: $(executables)
 
-# $(executable): $(objects)
-# 	$(CC) $(LDFLAGS) $(CPPFLAGS) $(objects) $(LIBS) -o $(executable)
+$(BIN_DIR)/tileset_editor: tileset_editor.o simple_tile_image.o animated_tile_image.o
+	$(CC) -o $@ $(CPPFLAGS) $(LDFLAGS) $(objects) $(LIBS)
 
 all: $(objects)
 

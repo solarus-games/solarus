@@ -24,15 +24,19 @@ AnimatedTileImage::AnimatedTileImage(const SDL_Rect *position_in_tileset,
 }
 
 /**
- * Displays the tile image on the map.
- * @param map the map
- * @param position_in_map position of the tile on the map
+ * Displays the tile image on a surface.
+ * This function is abstract because the way the image is displayed
+ * depends on the type of tile image (animated or not).
+ * @param surface the destination surface
+ * @param position_in_surface position of the tile on the surface
+ * @param tileset_image the tileset image of this tile
  */
-void AnimatedTileImage::display_on_map(Map *map, SDL_Rect &position_in_map) {
+void AnimatedTileImage::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
   short current_frame = ZSDX::get_tile_animation_manager()->get_current_frame(sequence);
 
-  SDL_BlitSurface(map->get_tileset()->get_image(),
+  SDL_BlitSurface(tileset_image,
 		  &position_in_tileset[current_frame],
-		  map->get_surface(),
-		  &position_in_map);
+		  surface,
+		  &position_in_surface);
+
 }

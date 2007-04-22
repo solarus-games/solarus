@@ -53,7 +53,7 @@ void Tile::display_on_map(Map *map) {
   for (dst.y = position_in_map.y; dst.y < limit_y; dst.y += position_in_map.h) {
     dst.x = position_in_map.x;
     for (dst.x = position_in_map.x; dst.x < limit_x; dst.x += position_in_map.w) {
-      tile_image->display_on_map(map, dst);
+      tile_image->display(map->get_surface(), dst, map->get_tileset()->get_image());
     }
   }
 }

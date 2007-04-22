@@ -48,11 +48,15 @@ class AnimatedTileImage: public TileImage {
   inline ~AnimatedTileImage(void) { }
 
   /**
-   * Displays the tile image on the map.
-   * @param map the map
-   * @param position_in_map position of the tile on the map
+   * Displays the tile image on a surface.
+   * This function is abstract because the way the image is displayed
+   * depends on the type of tile image (animated or not).
+   * @param surface the destination surface
+   * @param position_in_surface position of the tile on the surface
+   * @param tileset_image the tileset image of this tile
    */
-  void display_on_map(Map *map, SDL_Rect &position_in_map);
+  void display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image);
+
 };
 
 #endif

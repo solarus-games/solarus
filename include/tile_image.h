@@ -65,13 +65,14 @@ class TileImage {
   inline tile_obstacle_t get_obstacle(void) const { return obstacle; }
 
   /**
-   * Displays the tile image on the map.
+   * Displays the tile image on a surface.
    * This function is abstract because the way the image is displayed
    * depends on the type of tile image (animated or not).
-   * @param map the map
-   * @param position_in_map position of the tile on the map
+   * @param surface the destination surface
+   * @param position_in_surface position of the tile on the surface
+   * @param tileset_image the tileset image of this tile
    */
-  virtual void display_on_map(Map *map, SDL_Rect &position_in_map) = 0;
+  virtual void display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) = 0;
 };
 
 #endif

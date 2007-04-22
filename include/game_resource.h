@@ -1,3 +1,7 @@
+/**
+ * This module handles the game resources.
+ */
+
 #ifndef ZSDX_GAME_RESOURCE_H
 #define ZSDX_GAME_RESOURCE_H
 
@@ -6,26 +10,34 @@
 #include "map.h"
 
 // tilesets
-static const int TILESET_HOUSE = 0;
+enum TilesetID {
+  TILESET_HOUSE,
+  NB_TILESETS
+};
 
 // maps
-static const int MAP_LINK_HOUSE = 0;
+enum MapID {
+  MAP_LINK_HOUSE,
+  NB_MAPS
+};
 
 // musics
-static const int NB_MUSICS = 13;
-static const int MUSIC_VILLAGE = 0;
-static const int MUSIC_OVERWORLD = 1;
-static const int MUSIC_BOSS = 2;
-static const int MUSIC_CASTLE = 3;
-static const int MUSIC_CREDITS = 4;
-static const int MUSIC_TITLE_SCREEN = 5;
-static const int MUSIC_FANFARE = 6;
-static const int MUSIC_GAME_OVER = 7;
-static const int MUSIC_RABBIT = 8;
-static const int MUSIC_MENU = 9;
-static const int MUSIC_MINI_GAME = 10;
-static const int MUSIC_DARK_WORLD = 11;
-static const int MUSIC_SOLDIERS = 12;
+enum MusicID {
+  MUSIC_VILLAGE,
+  MUSIC_OVERWORLD,
+  MUSIC_BOSS,
+  MUSIC_CASTLE,
+  MUSIC_CREDITS,
+  MUSIC_TITLE_SCREEN,
+  MUSIC_FANFARE,
+  MUSIC_GAME_OVER,
+  MUSIC_RABBIT,
+  MUSIC_MENU,
+  MUSIC_MINI_GAME,
+  MUSIC_DARK_WORLD,
+  MUSIC_SOLDIERS,
+  NB_MUSICS
+};
 
 /* This class is a database of all game resources:
  * - the tileset list
@@ -38,19 +50,24 @@ static const int MUSIC_SOLDIERS = 12;
 class GameResource {
 
  private:
-  /* Link
+
+  /**
+   * Link.
    */
   Link *link;
 
-  /* The tilesets
+  /**
+   * The tilesets.
    */
-  Tileset *tilesets[1];
+  Tileset *tilesets[NB_TILESETS];
 
-  /* The maps
+  /**
+   * The maps.
    */
-  Map *maps[1];
+  Map *maps[NB_MAPS];
 
-  /* The musics
+  /**
+   * The musics.
    */
   Music *musics[NB_MUSICS];
 
@@ -61,34 +78,46 @@ class GameResource {
   // ...
 
  public:
-  /* Constructor
+
+  /**
+   * Constructor.
    */
   inline GameResource(void) { }
 
-  /* Destructor
+  /**
+   * Destructor.
+   * Destroys all the game resources.
    */
   ~GameResource(void);
 
-  /* Create all resources
+  /**
+   * Creates all resources.
    */
   void create_resources(void);
 
-  /* Return link
+  /**
+   * Returns Link.
+   * @return Link
    */
   inline Link *get_link() { return link; }
 
-  /* Return a tileset given its id
+  /**
+   * Returns a tileset.
+   * @param tileset_id id of the tileset to get
    */
-  Tileset *get_tileset(int tileset_id);
-
-  /* Return a map given its id
-   */
-  Map *get_map(int map_id);
+  Tileset *get_tileset(TilesetID tileset_id);
 
   /**
-   * Returns a music given its id
+   * Returns a map.
+   * @param map_id id of the map to get
    */
-  Music *get_music(int music_id);
+  Map *get_map(MapID map_id);
+
+  /**
+   * Returns a music.
+   * @param music_id id of the music to get
+   */
+  Music *get_music(MusicID music_id);
 };
 
 #endif

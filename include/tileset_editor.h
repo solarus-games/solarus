@@ -3,7 +3,7 @@
 
 #include <SDL/SDL.h>
 
-/* Once implemented, this class will offer fonctionnalities
+/* Once implemented, this class will provide fonctionnalities
  * to edit the properties of a tileset.
  * This properties are stored in a configuration file.
  */

@@ -1,3 +1,7 @@
+/**
+ * This module defines the class MapEntity.
+ */
+
 #ifndef ZSDX_MAP_ENTITY_H
 #define ZSDX_MAP_ENTITY_H
 
@@ -5,43 +9,57 @@
 
 class Map;
 
-/* Abstract class for all objects attached to a map: tiles,
+/**
+ * Abstract class for all objects attached to a map: tiles,
  * enemies, Link, interactive objects, etc.
- * A map entity has a position in the map.
+ * Each entity has a position on the map.
  */
 class MapEntity {
 
  protected:
-  /* Position in the map
+  /**
+   * Position on the map.
    */
-  SDL_Rect where_in_map;
+  SDL_Rect position_in_map;
 
- public:
-  /* Constructor
+  /**
+   * Constructor.
    */
   inline MapEntity(void) { };
 
-  /* Destructor
+ public:
+
+  /**
+   * Destructor.
    */
   virtual ~MapEntity(void) { };
 
-  /* Return the current x of the entity
+  /**
+   * Returns the current x position of the entity.
+   * @return the x position of the entity
    */
-  inline int get_x(void) { return where_in_map.x; }
+  inline int get_x(void) { return position_in_map.x; }
 
-  /* Return the current y of the entity
+  /**
+   * Returns the current y position of the entity.
+   * @return the y position of the entity
    */
-  inline int get_y(void) { return where_in_map.y; }
+  inline int get_y(void) { return position_in_map.y; }
 
-  /* Return the width of the entity
+  /**
+   * Returns the width of the entity
+   * @return the width of the entity
    */
-  inline int get_width(void) { return where_in_map.w; }
+  inline int get_width(void) { return position_in_map.w; }
 
-  /* Return the height of the entity
+  /**
+   * Returns the height of the entity
+   * @return the height of the entity
    */
-  inline int get_height(void) { return where_in_map.h; }
+  inline int get_height(void) { return position_in_map.h; }
 
-  /* Display the entity on the map
+  /**
+   * Displays the entity on the map.
    * This is an abstract function because a tile is not
    * displayed like an animated sprite.
    */

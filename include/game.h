@@ -1,25 +1,34 @@
+/**
+ * This module defines the class Game.
+ */
+
 #ifndef ZSDX_GAME_H
 #define ZSDX_GAME_H
 
-/* This class represents the game.
+#include "game_resource.h"
+
+/**
+ * This class represents the game.
  * I think that the saves will be handled here.
  */
 class Game {
 
- private:
-
  public:
-  /* Constructor
+  /**
+   * Constructor.
    */
-  Game(void);
+  inline Game(void) { }
 
-  /* Destructor
+  /**
+   * Destructor.
    */
-  ~Game(void);
+  inline ~Game(void) { }
   
-  /* Launch a map given its id
+  /**
+   * Launches a map.
+   * @param map_id id of the map to get
    */
-  void launch_map(int map_id);
+  void launch_map(MapID map_id);
 };
 
 #endif

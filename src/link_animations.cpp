@@ -1,20 +1,36 @@
+/**
+ * This module defines the class LinkAnimations.
+ */
+
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "link_animations.h"
 #include "sprite_animation_direction.h"
 
+/**
+ * Constructor.
+ */
 LinkAnimations::LinkAnimations(void):
 SpriteAnimations(2) {
   create_animations();
 }
 
+/**
+ * Destructor.
+ */
 LinkAnimations::~LinkAnimations(void) {
   SDL_FreeSurface(link_stopped_image);
   SDL_FreeSurface(link_walking_image);
 }
 
+/**
+ * Only instance of LinkAnimations.
+ */
 LinkAnimations *LinkAnimations::instance = NULL;
 
+/**
+ * Returns the only instance.
+ */
 LinkAnimations *LinkAnimations::get_instance(void) {
   if (instance == NULL) {
     instance = new LinkAnimations();
@@ -22,13 +38,20 @@ LinkAnimations *LinkAnimations::get_instance(void) {
   return instance;
 }
 
+/**
+ * Destroys the instance.
+ */
 void LinkAnimations::destroy_instance(void) {
   delete instance;
   instance = NULL;
 }
 
+/**
+ * Creates the animations. This function is called by
+ * the constructor.
+ */
 void LinkAnimations::create_animations(void) {
-  // only green link for now
+  // create only green link for now
   SDL_Rect position_in_src;
   SDL_Rect *positions_in_src;
   SpriteAnimationDirection **directions;
@@ -81,7 +104,7 @@ void LinkAnimations::create_animations(void) {
     positions_in_src[i].w = 24;
     positions_in_src[i].h = 32;
   }
-  directions[0] = new SpriteAnimationDirection(link_walking_image, 8, 0, positions_in_src);
+  directions[0] = new SpriteAnimationDirection(link_walking_image, 8, positions_in_src, 0);
 
   // up
   positions_in_src = new SDL_Rect[8];
@@ -91,7 +114,7 @@ void LinkAnimations::create_animations(void) {
     positions_in_src[i].w = 24;
     positions_in_src[i].h = 32;
   }
-  directions[1] = new SpriteAnimationDirection(link_walking_image, 8, 0, positions_in_src);
+  directions[1] = new SpriteAnimationDirection(link_walking_image, 8, positions_in_src, 0);
 
   // left
   positions_in_src = new SDL_Rect[8];
@@ -101,7 +124,7 @@ void LinkAnimations::create_animations(void) {
     positions_in_src[i].w = 24;
     positions_in_src[i].h = 32;
   }
-  directions[2] = new SpriteAnimationDirection(link_walking_image, 8, 0, positions_in_src);
+  directions[2] = new SpriteAnimationDirection(link_walking_image, 8, positions_in_src, 0);
 
   // down
   positions_in_src = new SDL_Rect[8];
@@ -111,7 +134,7 @@ void LinkAnimations::create_animations(void) {
     positions_in_src[i].w = 24;
     positions_in_src[i].h = 32;
   }
-  directions[3] = new SpriteAnimationDirection(link_walking_image, 8, 0, positions_in_src);
+  directions[3] = new SpriteAnimationDirection(link_walking_image, 8, positions_in_src, 0);
 
   animations[1] = new SpriteAnimation(4, directions, 12, 32, 100);
 }

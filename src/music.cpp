@@ -1,8 +1,15 @@
+/**
+ * This modules defines the class Music.
+ * The class Music plays a music and
+ * also handles the initialization of the whole sound system.
+ * The sound and the music are played with the library FMOD 3.75.
+ */
+
+using namespace std;
+#include <iostream>
 #include <fmod/fmod.h>
 #include <fmod/fmod_errors.h>
 #include <stdlib.h>
-using namespace std;
-#include <iostream>
 #include "music.h"
 
 /**
@@ -17,12 +24,11 @@ bool Music::initialized = false;
  */
 Music::Music(const char *file_name):
   module(NULL) {
-  //  this->file_name = new char[strlen(file_name) + 7];
   sprintf(this->file_name, "music/%s", file_name);
 }
 
 /**
- * Destructor.
+ * Destroys the music.
  */
 Music::~Music(void) {
 }
@@ -32,6 +38,7 @@ Music::~Music(void) {
  * This method should be called when the application starts.
  */
 void Music::initialize(void) {
+
   // first we try to initialize FMOD with the default configuration
   if (FSOUND_Init(44100, 32, 0)) {
     initialized = true;

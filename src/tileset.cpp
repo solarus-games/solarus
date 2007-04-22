@@ -1,47 +1,60 @@
-#include <cstdlib>
+/**
+ * Abstract class for a tileset.
+ * A tileset is an image with a set of elements (tiles)
+ * one can use to compose a map.
+ * See the directory images/tilesets.
+ */
+
+using namespace std;
 #include <iostream>
+#include <cstdlib>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "tileset.h"
-#include "extensible_tile.h"
+#include "tile_image.h"
 
+/**
+ * Constructor.
+ * Creates an empty tileset.
+ */
 Tileset::Tileset(void):
-extensible_tiles(new DynamicArray<ExtensibleTile*>()), tile_number(0) {
+nb_tiles(0) {
 
 }
 
+/**
+ * Destructor.
+ */
 Tileset::~Tileset(void) {
   if (is_loaded()) {
-    unload();
+    unload(); // destory the tiles
   }
-  delete extensible_tiles;
 }
 
-void Tileset::load_tileset_image(const char *file) {
-  tileset_image = IMG_Load(file);
+/**
+ * Loads the tileset image.
+ * This function should be called by load().
+ * @param file_name name of the tileset image file
+ */
+void Tileset::load_tileset_image(const char *file_name) {
+  tileset_image = IMG_Load(file_name);
   
   if (tileset_image == NULL) {
-    std::cerr << "Unable to load0 " << file << std::endl;
+    cerr << "Unable to load file '" << file_name << "'" << endl;
   }
 }
 
+/**
+ * Destroys the tiles and frees the memory used
+ * by the tileset image.
+ */
 void Tileset::unload(void) {
   int i;
 
-  for (i = 0; i < tile_number; i++) {
+  for (i = 0; i < nb_tiles; i++) {
     delete tiles[i];
   }
 
-  for (i = 0; i < extensible_tiles->get_size(); i++) {
-    delete extensible_tiles->get(i);
-  }
-
   SDL_FreeSurface(tileset_image);
-  tile_number = 0;
-}
-
-TileData *Tileset::get_new_extensible_tile(int index, int repeat_x, int repeat_y) {
-  ExtensibleTile *tile = new ExtensibleTile((ExtensibleTile*) get_tile(index), repeat_x, repeat_y);
-  extensible_tiles->add(tile);
-  return tile;
+  nb_tiles = 0;
 }

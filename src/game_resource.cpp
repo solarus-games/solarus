@@ -4,11 +4,14 @@
 #include "tilesets/house.h"
 #include "maps/link_house.h"
 
+/**
+ * Creates all resources.
+ */
 void GameResource::create_resources(void) {
   // we cannot create the resources in the constructor
   // because some resources need other resources
 
-  // link
+  // Link
   link = new Link();
 
   // tilesets
@@ -33,26 +36,46 @@ void GameResource::create_resources(void) {
   maps[MAP_LINK_HOUSE] = new MapLinkHouse();
 }
 
+/**
+ * Destructor.
+ * Destroys all the game resources.
+ */
 GameResource::~GameResource(void) {
   int i;
 
   delete link;
-  delete tilesets[TILESET_HOUSE];
-  delete maps[MAP_LINK_HOUSE];
 
+  for (i = 0; i < NB_TILESETS; i++) {
+    delete tilesets[i];
+  }
+  for (i = 0; i < NB_MAPS; i++) {
+    delete maps[i];
+  }
   for (i = 0; i < NB_MUSICS; i++) {
     delete musics[i];
   }
 }
 
-Tileset *GameResource::get_tileset(int tileset_id) {
+/**
+ * Returns a tileset.
+ * @param tileset_id id of the tileset to get
+ */
+Tileset *GameResource::get_tileset(TilesetID tileset_id) {
   return tilesets[tileset_id];
 }
 
-Map *GameResource::get_map(int map_id) {
+/**
+ * Returns a map.
+ * @param map_id id of the map to get
+ */
+Map *GameResource::get_map(MapID map_id) {
   return maps[map_id];
 }
 
-Music *GameResource::get_music(int music_id) {
+/**
+ * Returns a music.
+ * @param music_id id of the music to get
+ */
+Music *GameResource::get_music(MusicID music_id) {
   return musics[music_id];
 }

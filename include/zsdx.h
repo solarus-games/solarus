@@ -1,55 +1,86 @@
+/**
+ * This module initializes the game engine and handles the screen.
+ */
+
 #ifndef ZSDX_ZSDX_H
 #define ZSDX_ZSDX_H
 
+using namespace std;
+#include <iostream>
 #include <SDL/SDL.h>
 #include "game_resource.h"
 #include "tile_animation_manager.h"
 
-/* Number of times the screen is redrawn is a second
+/**
+ * Number of times the screen is redrawn is a second.
  */
 extern const int FRAMES_PER_SECOND;
 
-/* Delay between two frames in millisecond
+/**
+ * Delay between two frames in millisecond
  * FRAME_DELAY = 1000 / FRAMES_PER_SECOND
  */
-extern const int FRAME_DELAY;
+extern const int FRAME_INTERVAL;
 
-/* Main class of the game engine
+/**
+ * Main class of the game engine. It contains objects to
+ * initialize the game engine and handles the screen.
  */
 class ZSDX {
 
  private:
-  GameResource *game_resource;
-  SDL_Surface *screen;
-  TileAnimationManager tile_animation_manager;
-  bool fullscreen;
+
+  static SDL_Surface *screen;
+  static bool fullscreen;
+  static TileAnimationManager tile_animation_manager;
 
  public:
-  /* Initialize the game engine
+
+  /**
+   * The game resource object.
+   * It contains the whole game database: the maps, the tilesets,
+   * the sprites, the musics, etc.
    */
-  ZSDX(void);
+  static GameResource *game_resource;
 
-  /* Clean everything
+  /**
+   * Initializes the game engine.
    */
-  ~ZSDX(void);
+  static void initialize(void);
 
-  void set_fullscreen(bool fullscreen);
+  /**
+   * Cleans everything.
+   */
+  static void exit(void);
 
-  bool is_fullscreen(void);
+  /**
+   * Sets the full screen mode or the windowed mode.
+   * @param fullscreen true for full screen mode, false for the windowed mode
+   */
+  static void set_fullscreen(bool fullscreen);
 
-  void switch_fullscreen(void);
+  /**
+   * Returns whether the game is in full screen.
+   * @return true if the game is in full screen mode, false otherwise
+   */
+  static bool is_fullscreen(void);
+  
+  /**
+   * Switches between full screen mode and windowed mode.
+   */
+  static void switch_fullscreen(void);
 
-  inline GameResource *get_game_resource(void) { return game_resource; }
-  inline SDL_Surface *get_screen(void) { return screen; }
-  inline TileAnimationManager *get_tile_animation_manager() { return &tile_animation_manager; }
+  /**
+   * Returns the screen.
+   * @return the screen
+   */
+  static inline SDL_Surface *get_screen(void) { return screen; }
+
+  /**
+   * Returns the tile animation manager object.
+   * This object handles the tile animations.
+   */
+  static inline TileAnimationManager *get_tile_animation_manager() { return &tile_animation_manager; }
 };
-
-/* Global variable to access ZSDX data
- */
-extern ZSDX zsdx;
-
-/* Global variable to access the game resources
- */
-extern GameResource *game_resource;
 
 #endif

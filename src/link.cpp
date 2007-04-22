@@ -27,32 +27,56 @@ static const int animation_directions[] = {
   -1,  // down + left + right + up: no change
 };
 
+/**
+ * Constructor.
+ */
 Link::Link(void):
-Movable8ByPlayer(12), sprite(new AnimatedSprite(LinkAnimations::get_instance())) {
+Moving8ByPlayer(12), sprite(new AnimatedSprite(LinkAnimations::get_instance())) {
   SDL_Rect collision_box;
+
   collision_box.x = -8;
   collision_box.y = -16;
   collision_box.w = 16;
   collision_box.h = 16;
+
   set_collision_box(collision_box);
 }
 
+/**
+ * Destructor.
+ */
 Link::~Link(void) {
   LinkAnimations::destroy_instance();
 }
 
+/**
+ * Sets Link's current map.
+ * @param map the map
+ */
 void Link::set_map(Map *map) {
-  MovableWithCollision::set_map(map);
+  MovingWithCollision::set_map(map);
 }
 
+/**
+ * Displays Link on the map with its current animation and
+ * at its current position
+ * @param map the map
+ */
 void Link::display_on_map(Map *map) {
-  sprite->display_on_map(map, where_in_map);
+  sprite->display_on_map(map, position_in_map);
 }
 
+/**
+ * Redefinition of Moving8ByPlayer::update_movement
+ * to take care of link's animation.
+ * This function is called when the user has pressed or
+ * released a keyboard arrow.
+ */
 void Link::update_movement(void) {
   bool old_started = started;
 
-  Movable8ByPlayer::update_movement();
+  // update the movement
+  Moving8ByPlayer::update_movement();
 
   // has the direction changed?
   int direction = get_direction();
@@ -60,10 +84,15 @@ void Link::update_movement(void) {
   if (direction != -1) {
     int old_animation_direction = sprite->get_current_animation_direction();
     int animation_direction = animation_directions[direction_mask];
+
     if (animation_direction != old_animation_direction) {
+      // if the direction defined by the arrows has changed,
+      // update the sprite's direction of animation
       sprite->set_current_animation_direction(animation_direction);
     }
   }
+
+  // update the animation
 
   // stopped to walking
   if (!old_started && started) {

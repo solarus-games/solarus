@@ -1,16 +1,32 @@
+/**
+ * This module defines the class Moving8ByPlayer.
+ */
+
+using namespace std;
+#include <iostream>
 #include <SDL/SDL_image.h>
 #include <cmath>
-#include <iostream>
-using namespace std;
-#include "movable_8_by_player.h"
+#include "moving_8_by_player.h"
 
-static const double SQRT_2 = M_SQRT2;
+/**
+ * Bit masks associated to each arrow on the keyboard.
+ * A combination of arrows is stored in a simple integer.
+ */
+static const Uint16 right_mask = 0x0001;
+static const Uint16 up_mask = 0x0002;
+static const Uint16 left_mask = 0x0004;
+static const Uint16 down_mask = 0x0008;
 
-static const short right_mask = 0x0001;
-static const short up_mask = 0x0002;
-static const short left_mask = 0x0004;
-static const short down_mask = 0x0008;
-
+/**
+ * Associates to each combination of keyboard arrows
+ * a movement direction: 0 to 359, or -1 to indicate
+ * that the movement is stopped.
+ *
+ * For example:
+ *   Uint16 arrows_pressed = right_mask | up_mask;
+ *   int angle = directions[arrows_pressed];
+ * Here the angle is 45°.
+ */
 static const int directions[] = {
   -1,  // none: stop
   0,   // right
@@ -30,58 +46,78 @@ static const int directions[] = {
   -1,  // down + left + right + up: stop
 };
 
-Movable8ByPlayer::Movable8ByPlayer(int speed):
+/**
+ * Constructor.
+ * @param speed movement speed
+ */
+Moving8ByPlayer::Moving8ByPlayer(int speed):
   started(false), direction_mask(0), speed(speed) {
 
 }
 
-int Movable8ByPlayer::get_direction(void) {
+/**
+ * Returns the current direction of the movement.
+ * The returned direction is an angle (0 to 359), or -1 if the
+ * movement is stopped.
+ */
+int Moving8ByPlayer::get_direction(void) {
   return directions[direction_mask];
 }
 
-void Movable8ByPlayer::start_right(void) {
+/**
+ * Function called when the user presses the right arrow
+ */
+void Moving8ByPlayer::start_right(void) {
   direction_mask |= right_mask;
   update_movement();
 }
 
-void Movable8ByPlayer::start_up(void) {
+void Moving8ByPlayer::start_up(void) {
   direction_mask |= up_mask;
   update_movement();
 }
 
-void Movable8ByPlayer::start_left(void) {
+void Moving8ByPlayer::start_left(void) {
   direction_mask |= left_mask;
   update_movement();
 }
 
-void Movable8ByPlayer::start_down(void) {
+void Moving8ByPlayer::start_down(void) {
   direction_mask |= down_mask;
   update_movement();
 }
 
-void Movable8ByPlayer::stop_right(void) {
+void Moving8ByPlayer::stop_right(void) {
   direction_mask &= ~right_mask;
   update_movement();
 }
 
-void Movable8ByPlayer::stop_up(void) {
+void Moving8ByPlayer::stop_up(void) {
   direction_mask &= ~up_mask;
   update_movement();
 }
 
-void Movable8ByPlayer::stop_left(void) {
+void Moving8ByPlayer::stop_left(void) {
   direction_mask &= ~left_mask;
   update_movement();
 }
 
-void Movable8ByPlayer::stop_down(void) {
+void Moving8ByPlayer::stop_down(void) {
   direction_mask &= ~down_mask;
   update_movement();
 }
 
-void Movable8ByPlayer::update_movement(void) {
-  int direction = directions[direction_mask];
+/**
+ * Updates the movement of the entity.
+ * This function is called when an arrow is pressed or released
+ * on the keyboard.
+ */
+void Moving8ByPlayer::update_movement(void) {
   int x_speed, y_speed;
+
+  // direction in degrees specified by the user (or -1)
+  int direction = directions[direction_mask];
+
   if (direction == -1) {
     stop();
     started = false;
@@ -90,6 +126,9 @@ void Movable8ByPlayer::update_movement(void) {
     if (!started) {
       started = true;
     }
+
+    // we could call Moving::set_direction(direction) but with the 8
+    // basic directions, we don't need to make complex computations
 
     switch (direction) {
     case 0: // right

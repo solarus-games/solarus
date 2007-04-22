@@ -1,78 +1,90 @@
+/**
+ * This module defines the class Tileset.
+ */
+
 #ifndef ZSDX_TILESET_H
 #define ZSDX_TILESET_H
 
 #include <SDL/SDL.h>
-#include "dynamic_array.h"
 
-class ExtensibleTile;
-class TileData;
+class TileImage;
 
-/* Abstract class for a tileset.
- * A tileset is an image with a set of graphics to compose a map.
+/**
+ * Abstract class for a tileset.
+ * A tileset is an image with a set of elements (tiles)
+ * one can use to compose a map.
  * See the directory images/tilesets.
  */
 class Tileset {
 
- private:
-  /* Extensible tiles created by get_new_extensible_tiles()
-   * This field is just here to keep references to these tiles
-   * in order to delete them in unload().
-   */
-  DynamicArray<ExtensibleTile*> *extensible_tiles;
-  
  protected:
-  /* Tiles of the tileset
+  /**
+   * Tiles of the tileset.
+   * A tileset cannot have more than 1024 tiles.
    */
-  TileData *tiles[1024];
+  TileImage *tiles[1024];
   
-  /* Number of tiles in the tileset
+  /**
+   * Number of tiles in the tileset.
    */
-  int tile_number;
+  int nb_tiles;
   
-  /* Image from which the tiles are extracted
+  /**
+   * Image from which the tiles are extracted.
    */
   SDL_Surface *tileset_image;
   
- public:
-  /* Constructor
+  /**
+   * Constructor.
    */
   Tileset(void);
 
-  /* Destructor
+  /**
+   * Loads the tileset image.
+   * This function should be called by load().
+   * @param file_name name of the tileset image file
+   */
+  void load_tileset_image(const char *file_name);
+
+ public:
+
+  /**
+   * Destructor.
    */
   virtual ~Tileset(void);
 
-  /* Load the given tileset image
-   */
-  void load_tileset_image(const char *file);
-
-  /* Load the tileset by creating all tiles.
-   * This function is abstract so that each tileset can load
-   * its own tiles.
+  /**
+   * Loads the tileset by creating all tiles.
+   * This function is abstract so that each tileset can load its own tiles.
+   * The tiles can be instances of SimpleTile, AnimatedTile and ExtensibleTiles.
+   * Extensible tiles are handled
    */
   virtual void load(void) = 0;
 
-  /* Unload the tileset to free some memory
-   * Destroy all tiles
+  /**
+   * Destroys the tiles and frees the memory used
+   * by the tileset image.
    */
   void unload(void);
 
-  /* Return whether the tileset is loaded
+  /**
+   * Returns whether the tileset is loaded.
+   * @return true if the tileset is loaded
    */
-  inline bool is_loaded(void) { return tile_number != 0; }
+  inline bool is_loaded(void) { return nb_tiles != 0; }
 
-  /* Return the tileset image
+  /**
+   * Returns the tileset image.
+   * @return the tileset image
    */
   inline SDL_Surface *get_image(void) { return tileset_image; }
 
-  /* Return a tile
+  /**
+   * Returns a tile image.
+   * @param index index of the tile to get
+   * @return the tile image at this index
    */
-  inline TileData *get_tile(int index) { return tiles[index]; }
-
-  /* Create a new extensible tile given the index of an extensible tile
-   * and how many times you want its pattern to be repeated 
-   */
-  TileData *get_new_extensible_tile(int index, int repeat_x, int repeat_y);
+  inline TileImage *get_tile(int index) { return tiles[index]; }
 };
 
 #endif

@@ -1,17 +1,18 @@
+/**
+ * This module defines the class Game.
+ */
+
 #include <SDL/SDL.h>
 #include "game.h"
 #include "zsdx.h"
 
-Game::Game(void) {
+/**
+ * Launches a map.
+ * @param map_id id of the map to get
+ */
+void Game::launch_map(MapID map_id) {
+  Map *map = ZSDX::game_resource->get_map(map_id);
 
-}
-
-Game::~Game(void) {
-
-}
-
-void Game::launch_map(int map_id) {
-  Map *map = game_resource->get_map(map_id);
   map->load();
   map->start();
   map->exit();

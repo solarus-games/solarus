@@ -8,7 +8,7 @@ zsdx_color_t COLOR_WHITE;
 static SDL_PixelFormat *format;
 
 void color_init(void) {
-  format = zsdx.get_screen()->format;
+  format = ZSDX::get_screen()->format;
   COLOR_BLACK = SDL_MapRGB(format, 0, 0, 0);
   COLOR_WHITE = SDL_MapRGB(format, 255, 255, 255);
 }

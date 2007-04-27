@@ -20,18 +20,41 @@ class TilesetEditor {
 
  private:
 
+  /**
+   * Name of the tileset file, for example
+   * src/tilesets/house.zsd
+   */
   char tileset_file_name[MAX_FILE_NAME];
 
+  /**
+   * Name of the tileset image file, for example
+   * images/tilesets/house.png
+   */
   char image_file_name[MAX_FILE_NAME];
 
+  /**
+   * Name of the C++ source file generated, for example
+   * src/tilesets/house.cpp 
+   */
   char source_file_name[MAX_FILE_NAME];
 
+  /**
+   * Name of the C++ header file generated, for example
+   * include/tilesets/house.h 
+   */
   char header_file_name[MAX_FILE_NAME];
 
   /**
    * Number of tiles in the tileset.
    */
   int nb_tiles;
+
+  /**
+   * Displays the control panel.
+   * @param dst the surface
+   * @param dst_rect position of the control panel on this surface
+   */
+  static void display_control_panel(SDL_Surface *dst, SDL_Rect &dst_rect);
 
   /**
    * The tiles.

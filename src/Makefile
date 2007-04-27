@@ -54,7 +54,7 @@ executables = $(BIN_DIR)/tileset_editor
 
 all: $(executables)
 
-$(BIN_DIR)/tileset_editor: tileset_editor.o simple_tile_image.o animated_tile_image.o
+$(BIN_DIR)/tileset_editor: tileset_editor.o simple_tile_image.o animated_tile_image.o color.o
 	$(CC) -o $@ $(CPPFLAGS) $(LDFLAGS) $(objects) $(LIBS)
 
 all: $(objects)

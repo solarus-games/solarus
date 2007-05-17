@@ -6,10 +6,9 @@ import javax.swing.*;
 import java.io.*;
 
 /**
- * This component provides buttons to create, edit or delete a tile
- * and shows a text field to set ZSDX root directory.
+ * This component provides a text field to set ZSDX root directory.
  */
-public class CommandPanel extends JPanel {
+public class ConfigurationPanel extends JPanel {
 
     /**
      * Text field containing the root directory of ZSDX. 
@@ -19,19 +18,19 @@ public class CommandPanel extends JPanel {
     /**
      * Constructor.
      */
-    public CommandPanel() {
+    public ConfigurationPanel() {
 	super(new BorderLayout());
-	
+
 	// create the panel
-	JPanel configurationPanel = new JPanel(new FlowLayout());
-	configurationPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
+	JPanel contentPanel = new JPanel(new FlowLayout());
+	contentPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
 
 	// create the components and put them into the panel
-	configurationPanel.add(new JLabel("ZSDX root directory:"));
-	textFieldPath = new JTextField(20);
-	configurationPanel.add(textFieldPath);
+	contentPanel.add(new JLabel("ZSDX root directory:"));
+	textFieldPath = new JTextField(40);
+	contentPanel.add(textFieldPath);
 	JButton buttonBrowse = new JButton("Browse...");
-	configurationPanel.add(buttonBrowse);
+	contentPanel.add(buttonBrowse);
 
 	// add the action listener to the button
 	buttonBrowse.addActionListener(new ActionListener() {
@@ -57,7 +56,7 @@ public class CommandPanel extends JPanel {
 	    // just left the text field blank if we couldn't get the default path
 	}
 
-	add(configurationPanel, BorderLayout.WEST);
+	add(contentPanel, BorderLayout.WEST);
     }
 
     /**

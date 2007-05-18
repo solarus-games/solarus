@@ -38,14 +38,13 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	super("Zelda Solarus Deluxe - Tileset Editor");
 
 	// set a nice look and feel
-	setLookAndFeel();
+ 	setLookAndFeel();
 
 	// create the menu bar
 	createMenuBar();
 	
 	// create the panels
-	Container container = getContentPane();
-	container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+	Box globalPanel = new Box(BoxLayout.Y_AXIS);
 	configurationPanel = new ConfigurationPanel();
  	configurationPanel.setMaximumSize(new Dimension(500, 80));
 	configurationPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -54,7 +53,6 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	tilesetPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	tileList = new TileList();
- 	tileList.setMaximumSize(new Dimension(300, 500));
 	tileList.setAlignmentY(Component.TOP_ALIGNMENT);
 
 	tilesetImageView = new TilesetImageView();
@@ -64,9 +62,15 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	tilesetPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 	tilesetPanel.add(tilesetImageView);
 
-	container.add(configurationPanel);
-	container.add(Box.createRigidArea(new Dimension(0, 5)));
-	container.add(tilesetPanel);
+	globalPanel.add(configurationPanel);
+	globalPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+	globalPanel.add(tilesetPanel);
+
+	// we must put our global panel in an intermediate panel
+	// otherwise the background color of the window is bad
+	JPanel rootPanel = new JPanel(new BorderLayout());
+	rootPanel.add(globalPanel);
+	setContentPane(rootPanel);
     }
 
     /**

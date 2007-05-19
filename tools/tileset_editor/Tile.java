@@ -61,4 +61,11 @@ public class Tile implements Serializable {
 	this.animationSeparation = animationSeparation;
     }
 
+    /**
+     * Returns the tile's rectangle.
+     * @return the tile's rectangle
+     */
+    public Rectangle getPositionInTileset() {
+	return positionInTileset;
+    }
 }

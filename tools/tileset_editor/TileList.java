@@ -3,6 +3,7 @@ package tileset_editor;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.swing.event.*;
 import java.util.*;
 
 /**
@@ -20,9 +21,18 @@ public class TileList extends JPanel implements Observer {
      */
     private JLabel labelTilesetName;
 
-    // the three buttons
+    /**
+     * The tile table.
+     */
+    private JTable tileTable;
+
+    /**
+     * The tile table model.
+     */
+    private TileTableModel tileTableModel;
+
+    // the buttons
     private JButton buttonAdd;
-//     private JButton buttonEdit;
     private JButton buttonRemove;
 
     /**
@@ -49,20 +59,24 @@ public class TileList extends JPanel implements Observer {
 	add(Box.createHorizontalGlue());
 	add(Box.createHorizontalGlue());
 	buttonAdd = new JButton("Add");
-// 	buttonEdit = new JButton("Edit");
 	buttonRemove = new JButton("Remove");
 	buttonAdd.setEnabled(false);
-// 	buttonEdit.setEnabled(false);
 	buttonRemove.setEnabled(false);
 	buttons.add(buttonAdd);
-// 	buttons.add(buttonEdit);
 	buttons.add(buttonRemove);
 
 
 	// table
-	JTable table = new JTable(new TileTableModel());
-	JScrollPane tableScroll = new JScrollPane(table);
-// 	tableScroll.setMaximumSize(new Dimension(400, 400));
+	tileTableModel = new TileTableModel();
+	tileTable = new JTable(tileTableModel);
+	tileTable.setColumnSelectionAllowed(false);
+	tileTable.setRowSelectionAllowed(true);
+	tileTable.setDragEnabled(false);
+	tileTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	tileTable.getSelectionModel().addListSelectionListener(new TileListSelectionListener());
+
+	JScrollPane tableScroll = new JScrollPane(tileTable);
 	tableScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	add(labelTilesetName);
@@ -86,11 +100,16 @@ public class TileList extends JPanel implements Observer {
      * This function is called when the tileset changes.
      */
     public void update(Observable o, Object obj) {
+
 	// update the tileset name
 	labelTilesetName.setText("Tileset name: " + tileset.getName());
 
 	// update the enabled state of the buttons
 	int selectedTileIndex = tileset.getSelectedTileIndex();
+	int selectedRow = tileTable.getSelectedRow();
+
+ 	System.out.println("updating the tiletable: selected row = " + selectedRow +
+ 			   ", selected tile = " + selectedTileIndex);
 
 	buttonAdd.setEnabled(false);
 	buttonRemove.setEnabled(false);
@@ -99,11 +118,38 @@ public class TileList extends JPanel implements Observer {
 	    // a new tile is selected, let's authorise the user to create it
 	    buttonAdd.setEnabled(true);
 	}
-	else if (selectedTileIndex > 0) {
+	else if (selectedTileIndex >= 0) {
 	    // an existing tile is selected, so the user can remove it
 	    buttonRemove.setEnabled(true);
+
+	    if (selectedRow != selectedTileIndex) {
+		System.out.println("selecting row " + selectedTileIndex);
+		tileTable.getSelectionModel().setSelectionInterval(selectedTileIndex, selectedTileIndex);
+		System.out.println("done");
+	    }
 	}
-	
+	else {
+	    // no tile is selected
+	    if (selectedRow != -1) {
+		System.out.println("trying to unselect\n");
+		tileTable.getSelectionModel().removeSelectionInterval(selectedRow, selectedRow);
+	    }
+	}
+
+
+	// update the tile list
+	tileTable.repaint();
+	//	tileTableModel.fireTableDataChanged();
+
+	// also select the row in the table
+// 	System.out.println("updating the tiletable selection: selected row = " + tileTable.getSelectedRow() +
+// 			   ", selected tile = " + selectedTileIndex);
+// 	if (tileTable.getSelectedRow() != selectedTileIndex) {
+// 	    System.out.println("selecting row " + selectedTileIndex);
+// 	    tileTable.setRowSelectionInterval(selectedTileIndex, selectedTileIndex);
+// 	    System.out.println("done");
+// 	}
+
     }
 
     /**
@@ -172,6 +218,35 @@ public class TileList extends JPanel implements Observer {
 	 */
 	public Object getValueAt(int row, int column) {
 	    return "1";
+	}
+    }
+
+    /**
+     * List selection listener associated to the tile table.
+     * When the user selects a row, the corresponding tileset becomes selected in the image.
+     */
+    private class TileListSelectionListener implements ListSelectionListener {
+
+	/**
+	 * This function is called when the selection is changed.
+	 */
+	public void valueChanged(ListSelectionEvent e) {
+	    // get the row whose state has changed
+	    int changedRow = e.getFirstIndex();
+
+	    System.out.println("row " + changedRow + " has changed");
+
+	    if (tileTable.isRowSelected(changedRow)) {
+		System.out.println("it became selected");
+		// the row has just been selected		
+		tileset.setSelectedTileIndex(changedRow);
+	    }
+	    else {
+		System.out.println("it became unselected");
+		//throw new RuntimeException("where the hell do i come from?");
+		// the row has just been unselected
+		tileset.setSelectedTileIndex(-1);
+	    }
 	}
     }
 }

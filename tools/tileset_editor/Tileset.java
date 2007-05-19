@@ -11,7 +11,7 @@ public class Tileset extends Observable implements Serializable {
     /**
      * Version number of the class serialization.
      */
-    public static final long serialVersionUID = 1L;
+    public static final long serialVersionUID = 2L;
 
     // common data for all tilesets 
 
@@ -28,14 +28,9 @@ public class Tileset extends Observable implements Serializable {
     private String name;
 
     /**
-     * Number of tiles in the tileset.
-     */
-    private int nbTiles;
-
-    /**
      * The tiles.
      */
-    private Tile[] tiles;
+    private Vector<Tile> tiles;
 
     // information about the user actions on the tileset
 
@@ -63,6 +58,9 @@ public class Tileset extends Observable implements Serializable {
 	this.name = name;
 	this.isSaved = false;
 	this.selectedTileIndex = -1; // none
+	tiles = new Vector<Tile>();
+
+	tiles.add(new Tile(new Rectangle(16, 32, 16, 16), Tile.OBSTACLE, Tile.NO_ANIMATION, 0));
     }
 
     /**
@@ -89,6 +87,92 @@ public class Tileset extends Observable implements Serializable {
 	return getZsdxRootPath() + File.separator + "tools" +
 	    File.separator + "tileset_editor" +
 	    File.separator + "tilesets";
+    }
+
+    /**
+     * Returns the name of the tileset.
+     * @return the name of the tileset, for example "house"
+     */
+    public String getName() {
+	return name;
+    }
+
+    /**
+     * Returns the path of the file containing the tileset's image.
+     * @return the image file path
+     */
+    public String getImagePath() {
+	return zsdxRootPath + File.separator + "images" +
+	    File.separator + "tilesets" + File.separator + name + ".png";
+    }
+
+    /**
+     * Returns the number of tiles in the tileset.
+     * @return the number of tiles
+     */
+    public int getNbTiles() {
+	return tiles.size();
+    }
+
+    /**
+     * Returns a tile.
+     * @param index index of the tile to get
+     * @return the tile with this index
+     */
+    public Tile getTile(int index) {
+	return tiles.get(index);
+    }
+
+    /**
+     * Returns the index of the selected tile.
+     * @return -1 if no tile is selected, 0 to nbTiles - 1 if an existing tile is selected,
+     * or nbTiles if a new tile is selected
+     */
+    public int getSelectedTileIndex() {
+	return selectedTileIndex;
+    }
+
+    /**
+     * Sets the index of the selected tile and notifies the observers.
+     * Does nothing if the index is not changed.
+     * @param selectedTileIndex -1 if no tile is selected, 0 to nbTiles - 1 if an existing tile is selected,
+     * or nbTiles if a new tile is selected
+     */
+    public void setSelectedTileIndex(int selectedTileIndex) {
+	if (selectedTileIndex != this.selectedTileIndex) {
+	    this.selectedTileIndex = selectedTileIndex;
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Returns the selected tile.
+     * @return the selected tile, or null if there is no selected tile or if doesn't exist yet
+     */
+    public Tile getSelectedTile() {
+	if (selectedTileIndex >= 0 && selectedTileIndex < getNbTiles()) {
+	    return getTile(selectedTileIndex);
+	}
+	else {
+	    return null;
+	}	
+    }
+
+    /**
+     * Returns whether the tileset has changed since the last save.
+     * @return true if there has been no modifications, false otherwise
+     */
+    public boolean isSaved() {
+	return isSaved;
+    }
+
+    /**
+     * Sets whether the tileset has changed since the last save.
+     * @param isSaved true if there has been no modifications, false otherwise
+     */
+    public void setSaved(boolean isSaved) {
+	this.isSaved = isSaved;
     }
 
     /**
@@ -133,70 +217,4 @@ public class Tileset extends Observable implements Serializable {
 	tileset.setSaved(true);
     }
 
-    /**
-     * Returns whether the tileset has changed since the last save.
-     * @return true if there has been no modifications, false otherwise
-     */
-    public boolean isSaved() {
-	return isSaved;
-    }
-
-    /**
-     * Sets whether the tileset has changed since the last save.
-     * @param isSaved true if there has been no modifications, false otherwise
-     */
-    public void setSaved(boolean isSaved) {
-	this.isSaved = isSaved;
-    }
-
-    /**
-     * Redefinition of setChanged from Observable to make a call to setSaved(false). 
-     */
-    public void setChanged() {
-	super.setChanged();
-	setSaved(false);
-    }
-
-    /**
-     * Returns the name of the tileset.
-     * @return the name of the tileset, for example "house"
-     */
-    public String getName() {
-	return name;
-    }
-
-    /**
-     * Returns the path of the file containing the tileset's image.
-     * @return the image file path
-     */
-    public String getImagePath() {
-	return zsdxRootPath + File.separator + "images" +
-	    File.separator + "tilesets" + File.separator + name + ".png";
-    }
-
-    /**
-     * Returns the number of tiles in the tileset.
-     * @return the number of tiles
-     */
-    public int getNbTiles() {
-	return nbTiles;
-    }
-
-    /**
-     * Returns the index of the selected tile.
-     * @return -1 if no tile is selected, 0 to nbTiles - 1 if an existing tile is selected,
-     * or nbTiles if a new tile is selected
-     */
-    public int getSelectedTileIndex() {
-	return selectedTileIndex;
-    }
-
-    /**
-     * Sets the index of the selected tile.
-     * @param selectedTileIndex -1 if no tile is selected, 0 to nbTiles - 1 if an existing tile is selected,
-     * or nbTiles if a new tile is selected
-     */
-    public void setSelectedTileIndex(int selectedTileIndex) {
-	this.selectedTileIndex = selectedTileIndex;
-    }
 }

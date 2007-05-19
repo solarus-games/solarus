@@ -6,12 +6,16 @@ import java.io.*;
 /**
  * This class describes a tileset.
  */
-public class Tileset extends Observable {
+public class Tileset extends Observable implements Serializable {
+
+    // common data for all tilesets 
 
     /**
-     * File of the tileset.
+     * Root path of ZSDX.
      */
-    private File tilesetFile;
+    private static String zsdxRootPath;
+
+    // tileset data 
 
     /**
      * Name of the tileset.
@@ -26,59 +30,122 @@ public class Tileset extends Observable {
     /**
      * The tiles.
      */
-    private TileImage[] tiles;
+    private Tile[] tiles;
+
+    // information about the user actions on the tileset
+
+    /**
+     * Index of the tile currently selected by the user.
+     * -1: no tile is selected
+     * 0 to nbTiles - 1: an existing tile is selected
+     * nbTiles: a new tile is selected, ready to be added
+     */
+    private transient int selectedTileIndex;
 
     /**
      * Creates a new tileset.
-     * @param tilesetFile file of the tileset (should be a new file)
-     * @param name name of the tileset, for example "house"
+     * @param tilesetFile file of the tileset (should be a one)
+     * @param name name of the tileset to create
      */
-    public Tileset(File tilesetFile, String name) throws IOException {
+    public Tileset(String name) {
 	super();
-
-	this.tilesetFile = tilesetFile;
 	this.name = name;
-
-	// save the initial file
-	save();
     }
 
     /**
-     * Opens an existing tileset.
-     * @param tilesetFile file of the tileset
+     * Returns the root path of ZSDX.
+     * @return the root path
      */
-    public Tileset(File tilesetFile) throws IOException {
-	super();
-
-	this.tilesetFile = tilesetFile;
-
-	// laod the tileset file
-	load();
+    public static String getZsdxRootPath() {
+	return zsdxRootPath;
     }
 
     /**
-     * Loads the data from the tileset file.
+     * Sets the root path of ZSDX.
+     * @param path the root path
      */
-    public void load() throws IOException {
-	// open the tileset file
-	BufferedReader reader = new BufferedReader(new FileReader(tilesetFile));
+    public static void setZsdxRootPath(String path) {
+	zsdxRootPath = path;
+    }
 
-	// the first line is the tileset name
-	this.name = reader.readLine();
+    /**
+     * Returns the default path of the tileset files, determined with ZSDX root path.
+     * @return the default path of the tileset files
+     */
+    public static String getDefaultTilesetPath() {
+	return getZsdxRootPath() + File.separator + "tools" +
+	    File.separator + "tileset_editor" +
+	    File.separator + "tilesets";
+    }
 
-	reader.close();
+    /**
+     * Loads a tileset from the tileset file.
+     */
+    public static Tileset load(File tilesetFile) throws IOException {
+
+ 	// open the tileset file
+	ObjectInputStream in = new ObjectInputStream(new FileInputStream(tilesetFile));
+	Tileset tileset = null;
+
+	// read the object
+	try {
+	    tileset = (Tileset) in.readObject();
+	}
+	catch (ClassNotFoundException e) {
+	    System.err.println("Unable to read the object: " + e.getMessage());
+	    e.printStackTrace();
+	    System.exit(1);
+	}
+
+	in.close();
+
+	return tileset;
     }
 
     /**
      * Saves the data into the tileset file.
      */
-    public void save() throws IOException {
-	// open the tileset file
-	PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
+    public static void save(File tilesetFile, Tileset tileset) throws IOException {
 
-	// the first line is the tileset name
-	writer.println(name);
+ 	// open the tileset file
+	ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(tilesetFile));
 
-	writer.close();
+	// write the object
+	out.writeObject(tileset);
+	out.close();
+    }
+
+    /**
+     * Returns the name of the tileset.
+     * @return the name of the tileset, for example "house"
+     */
+    public String getName() {
+	return name;
+    }
+
+    /**
+     * Returns the path of the file containing the tileset's image.
+     * @return the image file path
+     */
+    public String getImagePath() {
+	return zsdxRootPath + File.separator + "images" +
+	    File.separator + "tilesets" + File.separator + name + ".png";
+    }
+
+    /**
+     * Returns the number of tiles in the tileset.
+     * @return the number of tiles
+     */
+    public int getNbTiles() {
+	return nbTiles;
+    }
+
+    /**
+     * Returns the index of the selected tile.
+     * @return -1 if no tile is selected, 0 to nbTiles - 1 if an existing tile is selected,
+     * or nbTiles if a new tile is selected
+     */
+    public int getSelectedTileIndex() {
+	return selectedTileIndex;
     }
 }

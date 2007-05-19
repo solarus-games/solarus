@@ -28,7 +28,7 @@ public class ConfigurationPanel extends JPanel {
 
 	// create the components and put them into the panel
 	textFieldPath = new JTextField(50);
-	JButton buttonBrowse = new JButton("Browse...");
+	JButton buttonBrowse = new JButton("Change...");
 
 	add(new JLabel("ZSDX root directory:"));
 	add(Box.createRigidArea(new Dimension(5, 0)));
@@ -40,10 +40,7 @@ public class ConfigurationPanel extends JPanel {
 	buttonBrowse.addActionListener(new ActionListener() {
 
 		public void actionPerformed(ActionEvent e) {
-		    String path = askZsdxRootPath();
-		    if (path != null) {
-			textFieldPath.setText(path);
-		    }
+		    askZsdxRootPath();
 		}
 
 	    });
@@ -54,7 +51,9 @@ public class ConfigurationPanel extends JPanel {
 	 */
 	File defaultDirectory = new File("..");
 	try {
-	    textFieldPath.setText(defaultDirectory.getCanonicalPath());
+	    String path = defaultDirectory.getCanonicalPath();
+	    Tileset.setZsdxRootPath(path);
+	    textFieldPath.setText(path);
 	}
 	catch (IOException e) {
 	    // just left the text field blank if we couldn't get the default path
@@ -65,7 +64,7 @@ public class ConfigurationPanel extends JPanel {
      * Asks to the user the root directory of ZSDX.
      * @return ZSDX root path, or null if the user didn't select any directory
      */
-    private String askZsdxRootPath() {
+    private void askZsdxRootPath() {
 	String path = null;
 
 	JFileChooser fileChooser = new JFileChooser(textFieldPath.getText());
@@ -82,15 +81,10 @@ public class ConfigurationPanel extends JPanel {
 	    catch (IOException e) {
 	    }
 	}
-	
-	return path;
-    }
 
-    /**
-     * Returns the path entered by the user.
-     * @return ZSDX root path
-     */
-    public String getZsdxRootPath() {
-	return textFieldPath.getText();
+	if (path != null) {
+	    Tileset.setZsdxRootPath(path);
+	    textFieldPath.setText(path);
+	}
     }
 }

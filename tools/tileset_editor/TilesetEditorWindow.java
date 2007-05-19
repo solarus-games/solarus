@@ -32,17 +32,27 @@ public class TilesetEditorWindow extends JFrame implements Observer {
     private TilesetImageView tilesetImageView;
 
     /**
+     * Current file of the tileset (null if this is a new tileset).
+     */
+    private File tilesetFile;
+
+    // menu items memorized to enable them later
+    private JMenuItem menuItemSave;
+    private JMenuItem menuItemSaveAs;
+    private JMenuItem menuItemGenerate;
+
+    /**
      * Creates a new window.
      */
     public TilesetEditorWindow() {
 	super("Zelda Solarus Deluxe - Tileset Editor");
 
 	// set a nice look and feel
- 	setLookAndFeel();
+	//	setLookAndFeel();
 
 	// create the menu bar
 	createMenuBar();
-	
+
 	// create the panels
 	Box globalPanel = new Box(BoxLayout.Y_AXIS);
 	configurationPanel = new ConfigurationPanel();
@@ -56,11 +66,12 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	tileList.setAlignmentY(Component.TOP_ALIGNMENT);
 
 	tilesetImageView = new TilesetImageView();
-	tilesetImageView.setAlignmentY(Component.TOP_ALIGNMENT);
+	JScrollPane tilesetImageViewScroll = new JScrollPane(tilesetImageView);
+	tilesetImageViewScroll.setAlignmentY(Component.TOP_ALIGNMENT);
 
 	tilesetPanel.add(tileList);
 	tilesetPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-	tilesetPanel.add(tilesetImageView);
+	tilesetPanel.add(tilesetImageViewScroll);
 
 	globalPanel.add(configurationPanel);
 	globalPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -125,20 +136,26 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	item = new JMenuItem("Open...");
 	item.setMnemonic(KeyEvent.VK_O);
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+	item.addActionListener(new ActionOpen());
 	menu.add(item);
 
-	item = new JMenuItem("Save");
-	item.setMnemonic(KeyEvent.VK_S);
-	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-	menu.add(item);
+	menuItemSave = new JMenuItem("Save");
+	menuItemSave.setMnemonic(KeyEvent.VK_S);
+	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+	menuItemSave.addActionListener(new ActionSave());
+	menuItemSave.setEnabled(false);
+	menu.add(menuItemSave);
 
-	item = new JMenuItem("Save as...");
-	menu.add(item);
+	menuItemSaveAs = new JMenuItem("Save as...");
+	menuItemSaveAs.addActionListener(new ActionSaveAs());
+	menuItemSaveAs.setEnabled(false);
+	menu.add(menuItemSaveAs);
 
-	item = new JMenuItem("Generate C++");
-	item.setMnemonic(KeyEvent.VK_G);
-	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
-	menu.add(item);
+	menuItemGenerate = new JMenuItem("Generate C++");
+	menuItemGenerate.setMnemonic(KeyEvent.VK_G);
+	menuItemGenerate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
+	menuItemGenerate.setEnabled(false);
+	menu.add(menuItemGenerate);
 
 	item = new JMenuItem("Quit");
 	item.setMnemonic(KeyEvent.VK_Q);
@@ -168,9 +185,18 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	
 	this.tileset = tileset;
 
+	// add the tileset as observer
 	tileset.addObserver(this);
+	update(tileset, null);
+	
+	// enable the menu items
+	menuItemSave.setEnabled(true);
+	menuItemSaveAs.setEnabled(true);
+	menuItemGenerate.setEnabled(true);
+
+	// notify the views
 	tileList.setTileset(tileset);
-	// TODO: add other GUI components as observers
+	tilesetImageView.setTileset(tileset);
     }
 
     /**
@@ -181,54 +207,124 @@ public class TilesetEditorWindow extends JFrame implements Observer {
     }
 
     /**
+     * Returns a file chooser adapted to select a tileset file.
+     * TODO: make a filter
+     * @param dialogTitle title of the dialog box
+     */
+    private static JFileChooser getTilesetFileChooser(String dialogTitle) {
+
+	JFileChooser fileChooser = new JFileChooser(Tileset.getDefaultTilesetPath());
+	fileChooser.setDialogTitle(dialogTitle);
+	fileChooser.setDragEnabled(false);
+	fileChooser.setMultiSelectionEnabled(false);
+
+	return fileChooser;
+    }
+
+    /**
+     * Shows a dialog box with an error message.
+     * @param error message the error message to show
+     */
+    private void errorDialog(String errorMessage) {
+	JOptionPane.showMessageDialog(this,
+				      errorMessage,
+				      "Error",
+				      JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
      * Action performed when the user clicks on Tileset > New.
+     * Creates a new tileset, asking to the user the tileset name and the tileset file.
      */
     private class ActionNew implements ActionListener {
 	
-	/**
-	 * Creates a new tileset, asking to the user the tileset name and the tileset file.
-	 */
 	public void actionPerformed(ActionEvent ev) {
-	    
 
 	    // ask the tileset name
 	    String name = JOptionPane.showInputDialog(TilesetEditorWindow.this,
-						  "Please enter the name of your new tileset",
-						  "Tileset name",
-						  JOptionPane.QUESTION_MESSAGE);
+						      "Please enter the name of your new tileset",
+						      "Tileset name",
+						      JOptionPane.QUESTION_MESSAGE);
 	    
 	    if (name == null || name.length() == 0) {
 		return;
 	    }
 
+	    tilesetFile = null;
+	    tileset = new Tileset(name);
+	    setTileset(tileset);
+	}
+    }
+
+    /**
+     * Action performed when the user clicks on Tileset > Open.
+     * Opens an existing tileset, asking to the user the tileset file.
+     */
+    private class ActionOpen implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+
 	    // ask the tileset file
-	    String defaultTilesetPath = configurationPanel.getZsdxRootPath() +
-		File.separator + "tools" + File.separator + "tileset_editor" +
-		File.separator + "tilesets";
-	    
-	    String defaultTilesetFile = defaultTilesetPath + File.separator + name + ".zsd";
-
-	    JFileChooser fileChooser = new JFileChooser(defaultTilesetPath);
-	    fileChooser.setDialogTitle("Save tileset as...");
-	    fileChooser.setDragEnabled(false);
-	    fileChooser.setMultiSelectionEnabled(false);
-	    fileChooser.setSelectedFile(new File(defaultTilesetFile));
-	    int result = fileChooser.showSaveDialog(TilesetEditorWindow.this);
-
-	    if (result != JFileChooser.APPROVE_OPTION) {
-		return;
-	    }
-
-	    // create the tileset
+	    JFileChooser fileChooser = getTilesetFileChooser("Open a tileset");
 	    try {
-		Tileset tileset = new Tileset(fileChooser.getSelectedFile(), name);
-		setTileset(tileset);
+		if (fileChooser.showOpenDialog(TilesetEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
+		    tilesetFile = fileChooser.getSelectedFile();
+		    Tileset tileset = Tileset.load(tilesetFile);
+		    setTileset(tileset);
+		}
 	    }
 	    catch (IOException e) {
-		JOptionPane.showMessageDialog(TilesetEditorWindow.this,
-					      "Could not create the tileset file",
-					      "Error",
-					      JOptionPane.ERROR_MESSAGE);
+		errorDialog("Could not open the tileset file: " + e.getMessage());
+	    }
+	}
+    }
+
+    /**
+     * Action performed when the user clicks on Tileset > Save.
+     * Saves the tileset into its file.
+     */
+    private class ActionSave implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+	    // if this is a new tileset, make a "save as..."
+	    if (tilesetFile == null) {
+		// default file
+		String path = Tileset.getDefaultTilesetPath() +
+		    File.separator + tileset.getName() + ".zsd";
+
+		tilesetFile = new File(path);
+		new ActionSaveAs().actionPerformed(ev);
+	    }
+	    else {
+		try {
+		    Tileset.save(tilesetFile, tileset);
+		}
+		catch (IOException e) {
+		    errorDialog("Could not save the tileset file: " + e.getMessage());
+		}
+	    }
+	}
+    }
+
+    /**
+     * Action performed when the user clicks on Tileset > Save as.
+     * Saves the tileset into its file.
+     */
+    private class ActionSaveAs implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+
+	    // ask the tileset file
+	    JFileChooser fileChooser = getTilesetFileChooser("Save the tileset as...");
+	    fileChooser.setSelectedFile(tilesetFile);
+	    try {
+		if (fileChooser.showSaveDialog(TilesetEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
+		    tilesetFile = fileChooser.getSelectedFile();
+		    Tileset.save(tilesetFile, tileset);
+		}
+	    }
+	    catch (IOException e) {
+		errorDialog("Could not save the tileset file: " + e.getMessage());
 	    }
 	}
     }

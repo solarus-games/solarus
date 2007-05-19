@@ -8,6 +8,11 @@ import java.io.*;
  */
 public class Tileset extends Observable implements Serializable {
 
+    /**
+     * Version number of the class serialization.
+     */
+    public static final long serialVersionUID = 1L;
+
     // common data for all tilesets 
 
     /**
@@ -35,6 +40,12 @@ public class Tileset extends Observable implements Serializable {
     // information about the user actions on the tileset
 
     /**
+     * Tells whether the tileset has changed since the last save.
+     * True if there has been no modifications, false otherwise.
+     */
+    private transient boolean isSaved; 
+
+    /**
      * Index of the tile currently selected by the user.
      * -1: no tile is selected
      * 0 to nbTiles - 1: an existing tile is selected
@@ -50,6 +61,8 @@ public class Tileset extends Observable implements Serializable {
     public Tileset(String name) {
 	super();
 	this.name = name;
+	this.isSaved = false;
+	this.selectedTileIndex = -1; // none
     }
 
     /**
@@ -99,6 +112,9 @@ public class Tileset extends Observable implements Serializable {
 
 	in.close();
 
+	tileset.setSaved(true);
+	tileset.setSelectedTileIndex(-1); // none
+
 	return tileset;
     }
 
@@ -113,6 +129,32 @@ public class Tileset extends Observable implements Serializable {
 	// write the object
 	out.writeObject(tileset);
 	out.close();
+
+	tileset.setSaved(true);
+    }
+
+    /**
+     * Returns whether the tileset has changed since the last save.
+     * @return true if there has been no modifications, false otherwise
+     */
+    public boolean isSaved() {
+	return isSaved;
+    }
+
+    /**
+     * Sets whether the tileset has changed since the last save.
+     * @param isSaved true if there has been no modifications, false otherwise
+     */
+    public void setSaved(boolean isSaved) {
+	this.isSaved = isSaved;
+    }
+
+    /**
+     * Redefinition of setChanged from Observable to make a call to setSaved(false). 
+     */
+    public void setChanged() {
+	super.setChanged();
+	setSaved(false);
     }
 
     /**
@@ -147,5 +189,14 @@ public class Tileset extends Observable implements Serializable {
      */
     public int getSelectedTileIndex() {
 	return selectedTileIndex;
+    }
+
+    /**
+     * Sets the index of the selected tile.
+     * @param selectedTileIndex -1 if no tile is selected, 0 to nbTiles - 1 if an existing tile is selected,
+     * or nbTiles if a new tile is selected
+     */
+    public void setSelectedTileIndex(int selectedTileIndex) {
+	this.selectedTileIndex = selectedTileIndex;
     }
 }

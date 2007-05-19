@@ -14,11 +14,19 @@ public class ConfigurationPanel extends JPanel {
      * Text field containing the root directory of ZSDX. 
      */
     private JTextField textFieldPath;
+    
+    /**
+     * The tileset image component, notified when
+     * ZSDX root path is changed.
+     */
+    private TilesetImageView tilesetImageView;
 
     /**
      * Constructor.
+     * @param tilesetImageView the tileset image component, to be notified when
+     * ZSDX root path is changed.
      */
-    public ConfigurationPanel() {
+    public ConfigurationPanel(TilesetImageView tilesetImageView) {
 	super();
 
  	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -28,6 +36,7 @@ public class ConfigurationPanel extends JPanel {
 
 	// create the components and put them into the panel
 	textFieldPath = new JTextField(50);
+	textFieldPath.setEditable(false);
 	JButton buttonBrowse = new JButton("Change...");
 
 	add(new JLabel("ZSDX root directory:"));
@@ -58,6 +67,8 @@ public class ConfigurationPanel extends JPanel {
 	catch (IOException e) {
 	    // just left the text field blank if we couldn't get the default path
 	}
+
+	this.tilesetImageView = tilesetImageView;
     }
 
     /**
@@ -85,6 +96,7 @@ public class ConfigurationPanel extends JPanel {
 	if (path != null) {
 	    Tileset.setZsdxRootPath(path);
 	    textFieldPath.setText(path);
+	    tilesetImageView.reloadImage();
 	}
     }
 }

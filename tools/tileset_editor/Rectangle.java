@@ -8,6 +8,11 @@ import java.io.*;
 public class Rectangle implements Serializable {
 
     /**
+     * Version number of the class serialization.
+     */
+    public static final long serialVersionUID = 1L;
+
+    /**
      * X coordinate of the rectangle.
      */
     public int x;

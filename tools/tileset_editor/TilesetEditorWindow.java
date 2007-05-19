@@ -55,16 +55,16 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 
 	// create the panels
 	Box globalPanel = new Box(BoxLayout.Y_AXIS);
-	configurationPanel = new ConfigurationPanel();
- 	configurationPanel.setMaximumSize(new Dimension(500, 80));
-	configurationPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+	// tile table and tileset image
 	Box tilesetPanel = new Box(BoxLayout.X_AXIS);
 	tilesetPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+	// tile table
 	tileList = new TileList();
 	tileList.setAlignmentY(Component.TOP_ALIGNMENT);
 
+	// tileset image
 	tilesetImageView = new TilesetImageView();
 	JScrollPane tilesetImageViewScroll = new JScrollPane(tilesetImageView);
 	tilesetImageViewScroll.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -73,11 +73,17 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	tilesetPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 	tilesetPanel.add(tilesetImageViewScroll);
 
+	// ZSDX root path configuration
+	configurationPanel = new ConfigurationPanel(tilesetImageView);
+ 	configurationPanel.setMaximumSize(new Dimension(500, 80));
+	configurationPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+	// add the panels
 	globalPanel.add(configurationPanel);
 	globalPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 	globalPanel.add(tilesetPanel);
 
-	// we must put our global panel in an intermediate panel
+	// we must put our global panel in another panel
 	// otherwise the background color of the window is bad
 	JPanel rootPanel = new JPanel(new BorderLayout());
 	rootPanel.add(globalPanel);
@@ -233,6 +239,32 @@ public class TilesetEditorWindow extends JFrame implements Observer {
     }
 
     /**
+     * This function is called when the user wants to open a tileset or create a new one.
+     * If the current tileset is not saved, we propose to save it.
+     * @return false if the user cancelled
+     */
+    private boolean checkCurrentTilesetSaved() {
+	boolean result = true;
+
+	if (tileset != null && !tileset.isSaved()) {
+	    int answer =  JOptionPane.showConfirmDialog(this,
+							"The tileset has been modified. Do you want to save it?",
+							"Save the modifications",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.WARNING_MESSAGE);
+	    if (answer == JOptionPane.YES_OPTION) {
+		new ActionSave().actionPerformed(null);
+	    }
+	    else if (answer == JOptionPane.CANCEL_OPTION) {
+		result = false;
+	    }
+	}
+
+	return result;
+    }
+
+
+    /**
      * Action performed when the user clicks on Tileset > New.
      * Creates a new tileset, asking to the user the tileset name and the tileset file.
      */
@@ -240,12 +272,16 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	
 	public void actionPerformed(ActionEvent ev) {
 
+	    if (!checkCurrentTilesetSaved()) {
+		return;
+	    }
+
 	    // ask the tileset name
 	    String name = JOptionPane.showInputDialog(TilesetEditorWindow.this,
 						      "Please enter the name of your new tileset",
 						      "Tileset name",
 						      JOptionPane.QUESTION_MESSAGE);
-	    
+
 	    if (name == null || name.length() == 0) {
 		return;
 	    }
@@ -263,6 +299,10 @@ public class TilesetEditorWindow extends JFrame implements Observer {
     private class ActionOpen implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
+
+	    if (!checkCurrentTilesetSaved()) {
+		return;
+	    }
 
 	    // ask the tileset file
 	    JFileChooser fileChooser = getTilesetFileChooser("Open a tileset");

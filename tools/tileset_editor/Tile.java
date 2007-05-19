@@ -7,6 +7,11 @@ import java.io.*;
  */
 public class Tile implements Serializable {
 
+    /**
+     * Version number of the class serialization.
+     */
+    public static final long serialVersionUID = 1L;
+
     // Constants to identify the obstacles
 
     public static final int NO_OSTACLE = 0;

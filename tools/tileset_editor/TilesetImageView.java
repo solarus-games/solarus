@@ -57,15 +57,21 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	tileset.addObserver(this);
 
 	// load the tileset's image
+	reloadImage();
+    }
+
+    /**
+     * Reads the image from the file.
+     */
+    public void reloadImage() {
 	try {
 	    tilesetImage = ImageIO.read(new File(tileset.getImagePath()));
-	    repaint();
 	}
 	catch (IOException e) {
-	    JOptionPane.showMessageDialog(this,
-					  "Cannot read the tileset file: " + tileset.getImagePath(),
-					  "Error",
-					  JOptionPane.ERROR_MESSAGE);
+// 	    JOptionPane.showMessageDialog(this,
+// 					  "Cannot read the tileset image file: " + tileset.getImagePath(),
+// 					  "Error",
+// 					  JOptionPane.ERROR_MESSAGE);
 	    tilesetImage = null;
 	}
 
@@ -89,8 +95,15 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 
     /**
      * This function is called to display the component.
+     * @param g the graphic context
      */
     public void paint(Graphics g) {
-	g.drawImage(tilesetImage, 0, 0, this);
+	if (tilesetImage != null) {
+	    g.drawImage(tilesetImage, 0, 0, this);
+	}
+	else if (tileset != null) {
+	    // display an error message
+	    g.drawString("Unable to load image '" + tileset.getImagePath() + "'.", 10, 20);
+	}
     }
 }

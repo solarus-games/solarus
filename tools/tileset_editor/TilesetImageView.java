@@ -177,7 +177,6 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 			    found = true;
 			}
 		    }
-		    
 		}
 		else {
 		    // a tile was selected: unselect it

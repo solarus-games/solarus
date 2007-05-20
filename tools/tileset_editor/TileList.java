@@ -73,6 +73,7 @@ public class TileList extends JPanel implements Observer {
 	tileTable.setRowSelectionAllowed(true);
 	tileTable.setDragEnabled(false);
 	tileTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	tileTable.getTableHeader().setReorderingAllowed(false);
 
 	tileTable.getSelectionModel().addListSelectionListener(new TileListSelectionListener());
 
@@ -108,9 +109,6 @@ public class TileList extends JPanel implements Observer {
 	int selectedTileIndex = tileset.getSelectedTileIndex();
 	int selectedRow = tileTable.getSelectedRow();
 
- 	System.out.println("updating the tiletable: selected row = " + selectedRow +
- 			   ", selected tile = " + selectedTileIndex);
-
 	buttonAdd.setEnabled(false);
 	buttonRemove.setEnabled(false);
 
@@ -121,35 +119,22 @@ public class TileList extends JPanel implements Observer {
 	else if (selectedTileIndex >= 0) {
 	    // an existing tile is selected, so the user can remove it
 	    buttonRemove.setEnabled(true);
-
-	    if (selectedRow != selectedTileIndex) {
-		System.out.println("selecting row " + selectedTileIndex);
-		tileTable.getSelectionModel().setSelectionInterval(selectedTileIndex, selectedTileIndex);
-		System.out.println("done");
-	    }
 	}
 	else {
 	    // no tile is selected
 	    if (selectedRow != -1) {
-		System.out.println("trying to unselect\n");
 		tileTable.getSelectionModel().removeSelectionInterval(selectedRow, selectedRow);
 	    }
 	}
 
-
-	// update the tile list
+	// redraw the table
+	tileTable.revalidate();
 	tileTable.repaint();
-	//	tileTableModel.fireTableDataChanged();
 
 	// also select the row in the table
-// 	System.out.println("updating the tiletable selection: selected row = " + tileTable.getSelectedRow() +
-// 			   ", selected tile = " + selectedTileIndex);
-// 	if (tileTable.getSelectedRow() != selectedTileIndex) {
-// 	    System.out.println("selecting row " + selectedTileIndex);
-// 	    tileTable.setRowSelectionInterval(selectedTileIndex, selectedTileIndex);
-// 	    System.out.println("done");
-// 	}
-
+	if (selectedTileIndex != -1) {
+	    tileTable.setRowSelectionInterval(selectedTileIndex, selectedTileIndex);
+	}
     }
 
     /**
@@ -234,16 +219,11 @@ public class TileList extends JPanel implements Observer {
 	    // get the row whose state has changed
 	    int changedRow = e.getFirstIndex();
 
-	    System.out.println("row " + changedRow + " has changed");
-
 	    if (tileTable.isRowSelected(changedRow)) {
-		System.out.println("it became selected");
 		// the row has just been selected		
 		tileset.setSelectedTileIndex(changedRow);
 	    }
 	    else {
-		System.out.println("it became unselected");
-		//throw new RuntimeException("where the hell do i come from?");
 		// the row has just been unselected
 		tileset.setSelectedTileIndex(-1);
 	    }

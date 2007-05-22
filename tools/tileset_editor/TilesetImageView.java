@@ -23,10 +23,19 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
      */
     private Image tilesetImage;
 
+    // information about the selection
+
     /**
-     * The rectangle drawn by the user in order to create a new tile.
+     * Point where the selection started,
+     * or null if there in no new tile selection.
      */
-    private Rectangle newTileArea;
+    private Point selectionStartPoint;
+
+    /**
+     * Point where the selection ends currently,
+     * or null if there in no new tile selection.
+     */
+    private Point selectionCurrentPoint;
 
     /**
      * Constructor.
@@ -34,6 +43,7 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
     public TilesetImageView() {
 	super();
 	addMouseListener(new TilesetImageMouseListener());
+	addMouseMotionListener(new TilesetImageMouseMotionListener());
     }
 
     /**
@@ -73,6 +83,9 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
     public void reloadImage() {
 	try {
 	    tilesetImage = ImageIO.read(new File(tileset.getImagePath()));
+	    tilesetImage = tilesetImage.getScaledInstance(tilesetImage.getWidth(this) * 2,
+							  tilesetImage.getHeight(this) * 2,
+							  Image.SCALE_FAST);
 	}
 	catch (IOException e) {
 // 	    JOptionPane.showMessageDialog(this,
@@ -109,32 +122,49 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	if (tilesetImage != null) { // the image is loaded
 
 	    // draw the image
+// 	    g.drawImage(tilesetImage, 0, 0, tilesetImage.getWidth(this) * 2, tilesetImage.getHeight(this) * 2, this);
 	    g.drawImage(tilesetImage, 0, 0, this);
 
 	    // determine the selected area
 	    int selectedTileIndex = tileset.getSelectedTileIndex();
 	    Rectangle selectedRectangle = null;
 	    if (selectedTileIndex == tileset.getNbTiles()) {
+
 		// the selected tile doesn't exist yet
-		selectedRectangle = newTileArea;		
+		selectedRectangle = tileset.getNewTileArea();
+
+		if (tileset.isNewTileAreaOverlapping()) {
+		    // invalid area
+		    g.setColor(Color.RED);
+		}
+		else {
+		    // valid area
+		    g.setColor(Color.GREEN);
+		}
 	    }
 	    else if (selectedTileIndex > -1) {
 		// an existing tile is selected
 		selectedRectangle = tileset.getTile(selectedTileIndex).getPositionInTileset();
+		g.setColor(Color.BLUE);
 	    }
 	    
 	    // draw the selected rectangle
 	    if (selectedRectangle != null) {
-		int x1 = selectedRectangle.x;
-		int x2 = selectedRectangle.x + selectedRectangle.width - 1;
-		int y1 = selectedRectangle.y;
-		int y2 = selectedRectangle.y + selectedRectangle.height - 1;
 
-		g.setColor(Color.MAGENTA);
+		int x1 = selectedRectangle.x * 2;
+		int x2 = (selectedRectangle.x + selectedRectangle.width) * 2 - 1;
+		int y1 = selectedRectangle.y * 2;
+		int y2 = (selectedRectangle.y + selectedRectangle.height) * 2 - 1;
+
 		g.drawLine(x1, y1, x2, y1);
 		g.drawLine(x2, y1, x2, y2);
 		g.drawLine(x2, y2, x1, y2);
 		g.drawLine(x1, y2, x1, y1);
+
+		g.drawLine(x1, y1 + 1, x2, y1 + 1);
+		g.drawLine(x2 - 1, y1, x2 - 1, y2);
+		g.drawLine(x2, y2 - 1, x1, y2 - 1);
+		g.drawLine(x1 + 1, y2, x1 + 1, y1);
 	    }
 
 	}
@@ -154,7 +184,6 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	 * This function is called when the user clicks on the tileset image.
 	 * Only left clicks are considered.
 	 * If no tile was selected, then the tile clicked (if any) is selected.
-	 * If a tile was selected, it becomes unselected.
 	 * @param mouseEvent information about the click
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
@@ -162,26 +191,137 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	    // only consider left clicks
 	    if (tilesetImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-		int x = mouseEvent.getX();
-		int y = mouseEvent.getY();
+		int x = Math.min(Math.max(mouseEvent.getX(), 0), tilesetImage.getWidth(TilesetImageView.this)) / 2;
+		int y = Math.min(Math.max(mouseEvent.getY(), 0), tilesetImage.getHeight(TilesetImageView.this)) / 2;
 
-		if (tileset.getSelectedTileIndex() == -1) {
+		if (tileset.getSelectedTileIndex() < 0) {
 		    // no tile was selected, search a tile at the click location
 		    
 		    boolean found = false;
 		    for (int i = 0; i < tileset.getNbTiles() && !found; i++) {
 
 			Rectangle tileRectangle = tileset.getTile(i).getPositionInTileset();
-			if (tileRectangle.isPointInside(x, y)) {
+			if (tileRectangle.contains(x, y)) {
 			    tileset.setSelectedTileIndex(i);
 			    found = true;
 			}
 		    }
 		}
-		else {
-		    // a tile was selected: unselect it
+	    }
+	}
+
+	/**
+	 * This function is called when the mouse button is pressed on the tileset image.
+	 * Only left clicks are considered.
+	 * @param mouseEvent information about the click
+	 */
+	public void mousePressed(MouseEvent mouseEvent) {
+
+	    // only consider left clicks
+	    if (tilesetImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+		
+		int x = Math.min(Math.max(mouseEvent.getX(), 0), tilesetImage.getWidth(TilesetImageView.this)) / 2;
+		int y = Math.min(Math.max(mouseEvent.getY(), 0), tilesetImage.getHeight(TilesetImageView.this)) / 2;
+
+		Tile selectedTile = tileset.getSelectedTile();
+
+		if (selectedTile != null && !selectedTile.getPositionInTileset().contains(x,y)) {
+		    // an existing tile was selected and the user pressed the mouse button outside: unselect it
+		    tileset.setSelectedTileIndex(-1);
+		}
+
+		else if (tileset.getNewTileArea() != null) {
+		    // a new tile was selected: unselect it
+		    tileset.setSelectedTileIndex(-1);
+		    selectionStartPoint = null;
+		}
+
+		// begin a selection
+		if (selectionStartPoint == null) {
+		    selectionStartPoint = mouseEvent.getPoint();
+
+		    selectionStartPoint.x = (x + 4) / 8 * 8;
+		    selectionStartPoint.y = (y + 4) / 8 * 8;
+		}
+
+	    }
+	}
+
+	/**
+	 * This function is called when the mouse button is released on the tileset image.
+	 * Only left clicks are considered.
+	 * @param mouseEvent information about the click
+	 */
+	public void mouseReleased(MouseEvent mouseEvent) {
+
+	    // only consider left clicks
+	    if (tilesetImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+
+		// keep the new selected tile only if it really exists
+		Rectangle newTileArea = tileset.getNewTileArea();
+		if (newTileArea == null
+		    || newTileArea.width == 0
+		    || newTileArea.height == 0
+		    || tileset.isNewTileAreaOverlapping()) {
+
+		    // the area doesn't exist or is not valid: we cancel the selection
+		    selectionStartPoint = null;
+		    selectionCurrentPoint = null;
 		    tileset.setSelectedTileIndex(-1);
 		    newTileArea = null;
+		}
+	    }
+	}
+    }
+
+    /**
+     * The mouse motion listener associated to the tileset image.
+     */
+    private class TilesetImageMouseMotionListener extends MouseAdapter {
+	
+	/**
+	 * This method is called when a mouse button is pressed on the component and then dragged.
+	 * It is called again until the mouse button is released.
+	 */
+	public void mouseDragged(MouseEvent mouseEvent) {
+
+	    if (tilesetImage != null && selectionStartPoint != null) {
+
+		// compute the selected area
+		Point selectionPreviousPoint = selectionCurrentPoint;
+		selectionCurrentPoint = mouseEvent.getPoint();
+
+		selectionCurrentPoint.x = Math.min(Math.max(mouseEvent.getX(), 0), tilesetImage.getWidth(TilesetImageView.this));
+		selectionCurrentPoint.y = Math.min(Math.max(mouseEvent.getY(), 0), tilesetImage.getHeight(TilesetImageView.this));
+
+		selectionCurrentPoint.x = (selectionCurrentPoint.x + 8) / 16 * 8;
+		selectionCurrentPoint.y = (selectionCurrentPoint.y + 8) / 16 * 8;
+		
+		if (!selectionCurrentPoint.equals(selectionPreviousPoint)) {
+
+		    Rectangle newTileArea = new Rectangle();
+
+		    // the selected area has changed: recalculate the rectangle
+		    if (selectionStartPoint.x < selectionCurrentPoint.x) {
+			newTileArea.x = selectionStartPoint.x;
+			newTileArea.width = selectionCurrentPoint.x - selectionStartPoint.x;
+		    }
+		    else {
+			newTileArea.x = selectionCurrentPoint.x;
+			newTileArea.width = selectionStartPoint.x - selectionCurrentPoint.x;
+		    }
+		    
+		    if (selectionStartPoint.y < selectionCurrentPoint.y) {
+			newTileArea.y = selectionStartPoint.y;
+			newTileArea.height = selectionCurrentPoint.y - selectionStartPoint.y;
+		    }
+		    else {
+			newTileArea.y = selectionCurrentPoint.y;
+			newTileArea.height = selectionStartPoint.y - selectionCurrentPoint.y;
+		    }
+		    
+		    tileset.setSelectedTileIndex(tileset.getNbTiles());
+		    tileset.setNewTileArea(newTileArea);
 		}
 	    }
 	}

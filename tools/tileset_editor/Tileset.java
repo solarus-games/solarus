@@ -2,6 +2,7 @@ package tileset_editor;
 
 import java.util.*;
 import java.io.*;
+import java.awt.*;
 
 /**
  * This class describes a tileset.
@@ -49,6 +50,18 @@ public class Tileset extends Observable implements Serializable {
     private transient int selectedTileIndex;
 
     /**
+     * Position of the tile the user is creating,
+     * or null if there no new tile selected.
+     */
+    private transient Rectangle newTileArea;
+
+    /**
+     * True if the new tile area is overlapping a tile.
+     * Is so, the tile cannot be created.
+     */
+    private transient boolean isNewTileAreaOverlapping;
+
+    /**
      * Creates a new tileset.
      * @param tilesetFile file of the tileset (should be a one)
      * @param name name of the tileset to create
@@ -60,7 +73,7 @@ public class Tileset extends Observable implements Serializable {
 	this.selectedTileIndex = -1; // none
 	tiles = new Vector<Tile>();
 
-	tiles.add(new Tile(new Rectangle(16, 32, 16, 16), Tile.OBSTACLE, Tile.NO_ANIMATION, 0));
+ 	tiles.add(new Tile(new Rectangle(16, 32, 16, 16), Tile.OBSTACLE, Tile.NO_ANIMATION, 0));
     }
 
     /**
@@ -141,6 +154,11 @@ public class Tileset extends Observable implements Serializable {
     public void setSelectedTileIndex(int selectedTileIndex) {
 	if (selectedTileIndex != this.selectedTileIndex) {
 	    this.selectedTileIndex = selectedTileIndex;
+
+	    if (selectedTileIndex != getNbTiles()) {
+		newTileArea = null;
+	    }
+
 	    setChanged();
 	    notifyObservers();
 	}
@@ -160,7 +178,45 @@ public class Tileset extends Observable implements Serializable {
     }
 
     /**
-     * Returns whether the tileset has changed since the last save.
+     * Returns the position of the tile the user is creating,
+     * @return position of the new tile, or null if there no new tile selected
+     */
+    public Rectangle getNewTileArea() {
+	return newTileArea;
+    }
+
+    /**
+     * Changes the position of the tile the user is creating.
+     * If the specified area is the same, nothing is done. 
+     * @param newTileArea position of the new tile, or null if there no new tile selected
+     */
+    public void setNewTileArea(Rectangle newTileArea) {
+	if (!newTileArea.equals(this.newTileArea)) {
+
+	    this.newTileArea = newTileArea;
+	    
+	    // determine whether or not the new tile area is overlapping an existing tile
+	    isNewTileAreaOverlapping = false;
+	    for (int i = 0; i < getNbTiles() && !isNewTileAreaOverlapping; i++) {
+		isNewTileAreaOverlapping = getTile(i).getPositionInTileset().intersects(newTileArea);
+	    }
+	    
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Returns whether or not the area selected by the user to make a new tile
+     * is overlapping an existing tile.
+     * @return true if the new tile area is overlapping an existing tile, false otherwise
+     */
+    public boolean isNewTileAreaOverlapping() {
+	return isNewTileAreaOverlapping;
+    }
+
+    /**
+     * Returns whether or not the tileset has changed since the last save.
      * @return true if there has been no modifications, false otherwise
      */
     public boolean isSaved() {

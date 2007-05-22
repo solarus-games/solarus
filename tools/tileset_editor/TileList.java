@@ -1,6 +1,7 @@
 package tileset_editor;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.event.*;
@@ -65,6 +66,7 @@ public class TileList extends JPanel implements Observer {
 	buttons.add(buttonAdd);
 	buttons.add(buttonRemove);
 
+	buttonAdd.addActionListener(new ActionAdd());
 
 	// table
 	tileTableModel = new TileTableModel();
@@ -112,13 +114,16 @@ public class TileList extends JPanel implements Observer {
 	buttonAdd.setEnabled(false);
 	buttonRemove.setEnabled(false);
 
+	boolean existingTileSelected = false;
+
 	if (selectedTileIndex == tileset.getNbTiles()) {
-	    // a new tile is selected, let's authorise the user to create it
-	    buttonAdd.setEnabled(true);
+	    // a new tile is selected: if it is valid, we authorize the user to create it
+	    buttonAdd.setEnabled(!tileset.isNewTileAreaOverlapping());
 	}
 	else if (selectedTileIndex >= 0) {
 	    // an existing tile is selected, so the user can remove it
 	    buttonRemove.setEnabled(true);
+	    existingTileSelected = true;
 	}
 	else {
 	    // no tile is selected
@@ -132,7 +137,7 @@ public class TileList extends JPanel implements Observer {
 	tileTable.repaint();
 
 	// also select the row in the table
-	if (selectedTileIndex != -1) {
+	if (existingTileSelected) {
 	    tileTable.setRowSelectionInterval(selectedTileIndex, selectedTileIndex);
 	}
     }
@@ -228,5 +233,20 @@ public class TileList extends JPanel implements Observer {
 		tileset.setSelectedTileIndex(-1);
 	    }
 	}
+    }
+    
+    /**
+     * Action listener associated to the button Add.
+     * A tile is created.
+     */
+    private class ActionAdd implements ActionListener {
+
+	/**
+	 *
+	 */
+	public void actionPerformed(ActionEvent e) {
+	    System.out.println("add");
+	}
+
     }
 }

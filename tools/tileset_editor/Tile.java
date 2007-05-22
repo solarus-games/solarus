@@ -1,5 +1,6 @@
 package tileset_editor;
 
+import java.awt.*;
 import java.io.*;
 
 /**

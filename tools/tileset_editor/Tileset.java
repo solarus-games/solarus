@@ -3,6 +3,7 @@ package tileset_editor;
 import java.util.*;
 import java.io.*;
 import java.awt.*;
+import javax.imageio.*;
 
 /**
  * This class describes a tileset.
@@ -33,6 +34,11 @@ public class Tileset extends Observable implements Serializable {
      */
     private Vector<Tile> tiles;
 
+    /**
+     * The tileset image.
+     */
+    private transient Image image;
+    
     // information about the user actions on the tileset
 
     /**
@@ -73,7 +79,7 @@ public class Tileset extends Observable implements Serializable {
 	this.selectedTileIndex = -1; // none
 	tiles = new Vector<Tile>();
 
- 	tiles.add(new Tile(new Rectangle(16, 32, 16, 16), Tile.OBSTACLE, Tile.NO_ANIMATION, 0));
+//  	tiles.add(new Tile(new Rectangle(16, 32, 16, 16), Tile.OBSTACLE, Tile.NO_ANIMATION, 0));
     }
 
     /**
@@ -117,6 +123,33 @@ public class Tileset extends Observable implements Serializable {
     public String getImagePath() {
 	return zsdxRootPath + File.separator + "images" +
 	    File.separator + "tilesets" + File.separator + name + ".png";
+    }
+
+    /**
+     * Reloads the tileset's image.
+     * This function is called when ZSDX root path is changed.
+     * The observers are notified with the new image as parameter.
+     */
+    public void reloadImage() {
+	try {
+	    image = ImageIO.read(new File(getImagePath()));
+	    setChanged();
+	    notifyObservers(image);
+	}
+	catch (IOException e) {
+	    image = null;
+	}
+    }
+
+    /**
+     * Returns the tileset's image, previously loaded by reloadImage().
+     * @return the tileset's image
+     */
+    public Image getImage() {
+	if (image == null) {
+	    reloadImage();
+	}
+	return image;
     }
 
     /**
@@ -178,6 +211,14 @@ public class Tileset extends Observable implements Serializable {
     }
 
     /**
+     * Returns whether or not the user is selecting a new tile.
+     * @return true if the user is selecting a new tile, i.e. if getSelectedTileIndex() == getNbTiles()
+     */
+    public boolean isSelectingNewTile() {
+	return selectedTileIndex == getNbTiles();
+    }
+
+    /**
      * Returns the position of the tile the user is creating,
      * @return position of the new tile, or null if there no new tile selected
      */
@@ -213,6 +254,52 @@ public class Tileset extends Observable implements Serializable {
      */
     public boolean isNewTileAreaOverlapping() {
 	return isNewTileAreaOverlapping;
+    }
+
+    /**
+     * Creates the tile specified by the current selection area and adds it to the tileset.
+     * @return the tile created, or null if the selection was not valid
+     */
+    public Tile addTile() {
+	Tile tile = null;
+
+	if (isSelectingNewTile() && !isNewTileAreaOverlapping) {
+	    tile = new Tile(newTileArea);
+	    
+	    tiles.add(tile);
+	    setSelectedTileIndex(getNbTiles() - 1);
+	    
+	    isSaved = false;
+	    
+	    setChanged();
+	    notifyObservers();
+	}
+
+	return tile;
+    }
+
+    /**
+     * Removes the selected tile.
+     * @return index of the tile removed, or -1 if there was no tile selected
+     */
+    public int removeTile() {
+	int result = -1;
+	int index = getSelectedTileIndex();
+	Tile tile = getSelectedTile();
+
+	if (tile != null) {
+	    tiles.remove(tile);
+	    setSelectedTileIndex(-1);
+
+	    isSaved = false;
+
+	    setChanged();
+	    notifyObservers();
+
+	    result = index;
+	}
+
+	return result;
     }
 
     /**

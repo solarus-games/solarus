@@ -16,17 +16,17 @@ public class ConfigurationPanel extends JPanel {
     private JTextField textFieldPath;
     
     /**
-     * The tileset image component, notified when
+     * The tileset, notified when
      * ZSDX root path is changed.
      */
-    private TilesetImageView tilesetImageView;
+    private Tileset tileset;
 
     /**
      * Constructor.
-     * @param tilesetImageView the tileset image component, to be notified when
+     * @param tileset the tileset, to be notified when
      * ZSDX root path is changed.
      */
-    public ConfigurationPanel(TilesetImageView tilesetImageView) {
+    public ConfigurationPanel() {
 	super();
 
  	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -67,8 +67,13 @@ public class ConfigurationPanel extends JPanel {
 	catch (IOException e) {
 	    // just left the text field blank if we couldn't get the default path
 	}
+    }
 
-	this.tilesetImageView = tilesetImageView;
+    /**
+     * Sets the tileset.
+     */
+    public void setTileset(Tileset tileset) {
+	this.tileset = tileset;
     }
 
     /**
@@ -96,7 +101,10 @@ public class ConfigurationPanel extends JPanel {
 	if (path != null) {
 	    Tileset.setZsdxRootPath(path);
 	    textFieldPath.setText(path);
-	    tilesetImageView.reloadImage();
+	    
+	    if (tileset != null) {
+		tileset.reloadImage();
+	    }
 	}
     }
 }

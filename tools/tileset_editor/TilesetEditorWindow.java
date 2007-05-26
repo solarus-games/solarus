@@ -74,7 +74,7 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	tilesetPanel.add(tilesetImageViewScroll);
 
 	// ZSDX root path configuration
-	configurationPanel = new ConfigurationPanel(tilesetImageView);
+	configurationPanel = new ConfigurationPanel();
  	configurationPanel.setMaximumSize(new Dimension(500, 80));
 	configurationPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 

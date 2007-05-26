@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.*;
-import javax.imageio.*;
 import java.io.*;
 
 /**
@@ -19,9 +18,9 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
     private Tileset tileset;
 
     /**
-     * The tileset's image.
+     * The tileset's image, scaled of 200%.
      */
-    private Image tilesetImage;
+    private Image scaledImage;
 
     // information about the selection
 
@@ -54,13 +53,13 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
     public Dimension getPreferredSize() {
 	int width, height;
 
-	if (tilesetImage == null) {
+	if (scaledImage == null) {
 	    width = 500;
 	    height = 500;
 	}
 	else {
-	    width = tilesetImage.getWidth(this);
-	    height = tilesetImage.getHeight(this);
+	    width = scaledImage.getWidth(this);
+	    height = scaledImage.getHeight(this);
 	}
 
 	return new Dimension(width, height);
@@ -74,27 +73,6 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	tileset.addObserver(this);
 
 	// load the tileset's image
-	reloadImage();
-    }
-
-    /**
-     * Reads the image from the file.
-     */
-    public void reloadImage() {
-	try {
-	    tilesetImage = ImageIO.read(new File(tileset.getImagePath()));
-	    tilesetImage = tilesetImage.getScaledInstance(tilesetImage.getWidth(this) * 2,
-							  tilesetImage.getHeight(this) * 2,
-							  Image.SCALE_FAST);
-	}
-	catch (IOException e) {
-// 	    JOptionPane.showMessageDialog(this,
-// 					  "Cannot read the tileset image file: " + tileset.getImagePath(),
-// 					  "Error",
-// 					  JOptionPane.ERROR_MESSAGE);
-	    tilesetImage = null;
-	}
-
 	update(tileset, null);
     }
 
@@ -102,6 +80,14 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
      * This function is called when the tileset changes.
      */
     public void update(Observable o, Object obj) {
+
+	// compute the scaled image if it was not done yet or if the image has changed
+	if (scaledImage == null || obj instanceof Image) {
+	    scaledImage = tileset.getImage().getScaledInstance(tileset.getImage().getWidth(this) * 2,
+							       tileset.getImage().getHeight(this) * 2,
+							       Image.SCALE_FAST);
+	}
+
 	repaint();
     }
 
@@ -119,16 +105,15 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
      */
     public void paint(Graphics g) {
 
-	if (tilesetImage != null) { // the image is loaded
+	if (scaledImage != null) { // the image is loaded
 
 	    // draw the image
-// 	    g.drawImage(tilesetImage, 0, 0, tilesetImage.getWidth(this) * 2, tilesetImage.getHeight(this) * 2, this);
-	    g.drawImage(tilesetImage, 0, 0, this);
+// 	    g.drawImage(scaledImage, 0, 0, scaledImage.getWidth(this) * 2, scaledImage.getHeight(this) * 2, this);
+	    g.drawImage(scaledImage, 0, 0, this);
 
 	    // determine the selected area
-	    int selectedTileIndex = tileset.getSelectedTileIndex();
 	    Rectangle selectedRectangle = null;
-	    if (selectedTileIndex == tileset.getNbTiles()) {
+	    if (tileset.isSelectingNewTile()) {
 
 		// the selected tile doesn't exist yet
 		selectedRectangle = tileset.getNewTileArea();
@@ -142,10 +127,14 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 		    g.setColor(Color.GREEN);
 		}
 	    }
-	    else if (selectedTileIndex > -1) {
-		// an existing tile is selected
-		selectedRectangle = tileset.getTile(selectedTileIndex).getPositionInTileset();
-		g.setColor(Color.BLUE);
+	    else {
+		Tile selectedTile = tileset.getSelectedTile();
+
+		if (selectedTile != null) {
+		    // an existing tile is selected
+		    selectedRectangle = selectedTile.getPositionInTileset();
+		    g.setColor(Color.BLUE);
+		}
 	    }
 	    
 	    // draw the selected rectangle
@@ -187,24 +176,19 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	 * @param mouseEvent information about the click
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
-
 	    // only consider left clicks
-	    if (tilesetImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+	    if (scaledImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-		int x = Math.min(Math.max(mouseEvent.getX(), 0), tilesetImage.getWidth(TilesetImageView.this)) / 2;
-		int y = Math.min(Math.max(mouseEvent.getY(), 0), tilesetImage.getHeight(TilesetImageView.this)) / 2;
+		int x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this)) / 2;
+		int y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this)) / 2;
 
-		if (tileset.getSelectedTileIndex() < 0) {
-		    // no tile was selected, search a tile at the click location
+		boolean found = false;
+		for (int i = 0; i < tileset.getNbTiles() && !found; i++) {
 		    
-		    boolean found = false;
-		    for (int i = 0; i < tileset.getNbTiles() && !found; i++) {
-
-			Rectangle tileRectangle = tileset.getTile(i).getPositionInTileset();
-			if (tileRectangle.contains(x, y)) {
-			    tileset.setSelectedTileIndex(i);
-			    found = true;
-			}
+		    Rectangle tileRectangle = tileset.getTile(i).getPositionInTileset();
+		    if (tileRectangle.contains(x, y)) {
+			tileset.setSelectedTileIndex(i);
+			found = true;
 		    }
 		}
 	    }
@@ -218,10 +202,10 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	public void mousePressed(MouseEvent mouseEvent) {
 
 	    // only consider left clicks
-	    if (tilesetImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+	    if (scaledImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 		
-		int x = Math.min(Math.max(mouseEvent.getX(), 0), tilesetImage.getWidth(TilesetImageView.this)) / 2;
-		int y = Math.min(Math.max(mouseEvent.getY(), 0), tilesetImage.getHeight(TilesetImageView.this)) / 2;
+		int x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this)) / 2;
+		int y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this)) / 2;
 
 		Tile selectedTile = tileset.getSelectedTile();
 
@@ -230,20 +214,18 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 		    tileset.setSelectedTileIndex(-1);
 		}
 
-		else if (tileset.getNewTileArea() != null) {
+		else if (tileset.isSelectingNewTile()) {
 		    // a new tile was selected: unselect it
 		    tileset.setSelectedTileIndex(-1);
-		    selectionStartPoint = null;
 		}
 
 		// begin a selection
-		if (selectionStartPoint == null) {
+		if (!tileset.isSelectingNewTile()) {
 		    selectionStartPoint = mouseEvent.getPoint();
 
 		    selectionStartPoint.x = (x + 4) / 8 * 8;
 		    selectionStartPoint.y = (y + 4) / 8 * 8;
 		}
-
 	    }
 	}
 
@@ -255,7 +237,7 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	public void mouseReleased(MouseEvent mouseEvent) {
 
 	    // only consider left clicks
-	    if (tilesetImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+	    if (scaledImage != null && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
 		// keep the new selected tile only if it really exists
 		Rectangle newTileArea = tileset.getNewTileArea();
@@ -285,14 +267,14 @@ public class TilesetImageView extends JComponent implements Observer, ImageObser
 	 */
 	public void mouseDragged(MouseEvent mouseEvent) {
 
-	    if (tilesetImage != null && selectionStartPoint != null) {
+	    if (scaledImage != null && selectionStartPoint != null) {
 
 		// compute the selected area
 		Point selectionPreviousPoint = selectionCurrentPoint;
 		selectionCurrentPoint = mouseEvent.getPoint();
 
-		selectionCurrentPoint.x = Math.min(Math.max(mouseEvent.getX(), 0), tilesetImage.getWidth(TilesetImageView.this));
-		selectionCurrentPoint.y = Math.min(Math.max(mouseEvent.getY(), 0), tilesetImage.getHeight(TilesetImageView.this));
+		selectionCurrentPoint.x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this));
+		selectionCurrentPoint.y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this));
 
 		selectionCurrentPoint.x = (selectionCurrentPoint.x + 8) / 16 * 8;
 		selectionCurrentPoint.y = (selectionCurrentPoint.y + 8) / 16 * 8;

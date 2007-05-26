@@ -32,6 +32,11 @@ public class TileList extends JPanel implements Observer {
      */
     private TileTableModel tileTableModel;
 
+    /**
+     * The graphical components associated to each tile.
+     */
+    private Vector<TileViewer> tileViewers;
+
     // the buttons
     private JButton buttonAdd;
     private JButton buttonRemove;
@@ -41,6 +46,8 @@ public class TileList extends JPanel implements Observer {
      */
     public TileList() {
 	super();
+
+	tileViewers = new Vector<TileViewer>();
 
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -67,17 +74,18 @@ public class TileList extends JPanel implements Observer {
 	buttons.add(buttonRemove);
 
 	buttonAdd.addActionListener(new ActionAdd());
+	buttonRemove.addActionListener(new ActionRemove());
 
 	// table
 	tileTableModel = new TileTableModel();
 	tileTable = new JTable(tileTableModel);
-	tileTable.setColumnSelectionAllowed(false);
 	tileTable.setRowSelectionAllowed(true);
+	tileTable.setColumnSelectionAllowed(false);
 	tileTable.setDragEnabled(false);
 	tileTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	tileTable.getTableHeader().setReorderingAllowed(false);
 
-	tileTable.getSelectionModel().addListSelectionListener(new TileListSelectionListener());
+ 	tileTable.getSelectionModel().addListSelectionListener(new TileListSelectionListener());
 
 	JScrollPane tableScroll = new JScrollPane(tileTable);
 	tableScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -95,6 +103,11 @@ public class TileList extends JPanel implements Observer {
     public void setTileset(Tileset tileset) {
 	this.tileset = tileset;
 	tileset.addObserver(this);
+
+	tileViewers.clear();
+	for (int i = 0; i < tileset.getNbTiles(); i++) {
+	    tileViewers.add(new TileViewer(tileset.getTile(i), tileset));
+	}
 
 	update(tileset, null);
     }
@@ -114,8 +127,6 @@ public class TileList extends JPanel implements Observer {
 	buttonAdd.setEnabled(false);
 	buttonRemove.setEnabled(false);
 
-	boolean existingTileSelected = false;
-
 	if (selectedTileIndex == tileset.getNbTiles()) {
 	    // a new tile is selected: if it is valid, we authorize the user to create it
 	    buttonAdd.setEnabled(!tileset.isNewTileAreaOverlapping());
@@ -123,7 +134,7 @@ public class TileList extends JPanel implements Observer {
 	else if (selectedTileIndex >= 0) {
 	    // an existing tile is selected, so the user can remove it
 	    buttonRemove.setEnabled(true);
-	    existingTileSelected = true;
+	    tileTable.setRowSelectionInterval(selectedTileIndex, selectedTileIndex);
 	}
 	else {
 	    // no tile is selected
@@ -135,11 +146,6 @@ public class TileList extends JPanel implements Observer {
 	// redraw the table
 	tileTable.revalidate();
 	tileTable.repaint();
-
-	// also select the row in the table
-	if (existingTileSelected) {
-	    tileTable.setRowSelectionInterval(selectedTileIndex, selectedTileIndex);
-	}
     }
 
     /**
@@ -154,7 +160,8 @@ public class TileList extends JPanel implements Observer {
 	    "Image",
 	    "Coordinates",
 	    "Obstacle",
-	    "Animation"
+	    "Animation sequence",
+	    "Animation separation"
 	};
 
 	/**
@@ -177,7 +184,7 @@ public class TileList extends JPanel implements Observer {
 	 * @return the number of columns
 	 */
 	public int getColumnCount() {
-	    return 4;
+	    return 5;
 	}
 
 	/**
@@ -197,7 +204,7 @@ public class TileList extends JPanel implements Observer {
 	 */
 	public boolean isCellEditable(int row, int column) {
 	    // all columns are editable except the first one (the image)
-	    return row > 0 && column > 0;
+	    return column > 0;
 	}
 
 	/**
@@ -207,7 +214,41 @@ public class TileList extends JPanel implements Observer {
 	 * @return the object to display in this cell
 	 */
 	public Object getValueAt(int row, int column) {
-	    return "1";
+	    Object result = null;
+	    Tile tile = tileset.getTile(row);
+	    TileViewer tileViewer = tileViewers.get(row);
+
+	    switch (column) {
+		
+		// image
+	    case 0:
+		result = null;
+		break;
+
+		// coordinates
+	    case 1:
+	 	result = tileViewer.getCoordinatesView();
+		//	result = null;
+		break;
+
+		// obstacle
+	    case 2:
+		result = null;
+		break;
+
+		// animation sequence
+	    case 3:
+		result = tileViewer.getAnimationView().listSequence;
+		//		result = null;
+		break;
+
+		// animation separation
+	    case 4:
+		result = tileViewer.getAnimationView().listSeparation;
+		//		result = null;
+		break;
+	    }
+	    return result;
 	}
     }
 
@@ -221,17 +262,7 @@ public class TileList extends JPanel implements Observer {
 	 * This function is called when the selection is changed.
 	 */
 	public void valueChanged(ListSelectionEvent e) {
-	    // get the row whose state has changed
-	    int changedRow = e.getFirstIndex();
-
-	    if (tileTable.isRowSelected(changedRow)) {
-		// the row has just been selected		
-		tileset.setSelectedTileIndex(changedRow);
-	    }
-	    else {
-		// the row has just been unselected
-		tileset.setSelectedTileIndex(-1);
-	    }
+	    tileset.setSelectedTileIndex(tileTable.getSelectedRow());
 	}
     }
     
@@ -241,12 +272,28 @@ public class TileList extends JPanel implements Observer {
      */
     private class ActionAdd implements ActionListener {
 
-	/**
-	 *
-	 */
 	public void actionPerformed(ActionEvent e) {
-	    System.out.println("add");
+	    Tile tileAdded = tileset.addTile();
+
+	    if (tileAdded != null) {
+		tileViewers.add(new TileViewer(tileAdded, tileset));
+	    }
 	}
 
+    }
+
+    /**
+     * Action listener associated to the button Remove.
+     * The selected tile (if any) is removed.
+     */
+    private class ActionRemove implements ActionListener {
+
+	public void actionPerformed(ActionEvent e) {
+	    int index = tileset.removeTile();
+
+	    if (index != -1) {
+		tileViewers.remove(index);
+	    }
+	}
     }
 }

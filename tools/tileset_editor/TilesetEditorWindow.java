@@ -277,6 +277,7 @@ public class TilesetEditorWindow extends JFrame {
 
 	    tilesetFile = null;
 	    tileset = new Tileset(name);
+	    tileset.reloadImage();
 	    setTileset(tileset);
 	}
     }
@@ -299,6 +300,7 @@ public class TilesetEditorWindow extends JFrame {
 		if (fileChooser.showOpenDialog(TilesetEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
 		    tilesetFile = fileChooser.getSelectedFile();
 		    Tileset tileset = Tileset.load(tilesetFile);
+		    tileset.reloadImage();
 		    setTileset(tileset);
 		}
 	    }

@@ -3,13 +3,12 @@ package tileset_editor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.*;
 import java.io.*;
 
 /**
  * Main window of the tileset editor.
  */
-public class TilesetEditorWindow extends JFrame implements Observer {
+public class TilesetEditorWindow extends JFrame {
 
     /**
      * The current tileset.
@@ -56,22 +55,22 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	// create the panels
 	Box globalPanel = new Box(BoxLayout.Y_AXIS);
 
-	// tile table and tileset image
+	// tile list and tileset image
 	Box tilesetPanel = new Box(BoxLayout.X_AXIS);
 	tilesetPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-	// tile table
+	// tile list
 	tileList = new TileList();
 	tileList.setAlignmentY(Component.TOP_ALIGNMENT);
 
 	// tileset image
 	tilesetImageView = new TilesetImageView();
-	JScrollPane tilesetImageViewScroll = new JScrollPane(tilesetImageView);
-	tilesetImageViewScroll.setAlignmentY(Component.TOP_ALIGNMENT);
+	JScrollPane tilesetImageScroller = new JScrollPane(tilesetImageView);
+	tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 
 	tilesetPanel.add(tileList);
 	tilesetPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-	tilesetPanel.add(tilesetImageViewScroll);
+	tilesetPanel.add(tilesetImageScroller);
 
 	// ZSDX root path configuration
 	configurationPanel = new ConfigurationPanel();
@@ -191,25 +190,15 @@ public class TilesetEditorWindow extends JFrame implements Observer {
 	
 	this.tileset = tileset;
 
-	// add the tileset as observer
-	tileset.addObserver(this);
-	update(tileset, null);
-	
 	// enable the menu items
 	menuItemSave.setEnabled(true);
 	menuItemSaveAs.setEnabled(true);
 	menuItemGenerate.setEnabled(true);
 
 	// notify the views
+	configurationPanel.setTileset(tileset);
 	tileList.setTileset(tileset);
 	tilesetImageView.setTileset(tileset);
-    }
-
-    /**
-     * This function is called when the tileset changes.
-     */
-    public void update(Observable o, Object obj) {
-	
     }
 
     /**

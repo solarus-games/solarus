@@ -3,14 +3,13 @@ package tileset_editor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.table.*;
 import javax.swing.event.*;
 import java.util.*;
 
 /**
- * This component shows a list of tiles and allows the user to edit them.
+ * This component shows a list of tiles and allows the user to select them.
  */
-public class TileList extends JPanel implements Observer {
+public class TileList extends JPanel {
 
     /**
      * The current tileset.
@@ -23,19 +22,19 @@ public class TileList extends JPanel implements Observer {
     private JLabel labelTilesetName;
 
     /**
-     * The tile table.
+     * The tile list.
      */
-    private JTable tileTable;
+    private JList tileList;
 
     /**
-     * The tile table model.
+     * The tile list model.
      */
-    private TileTableModel tileTableModel;
+    private TileListModel tileListModel;
 
     /**
-     * The graphical components associated to each tile.
+     * The icon associated to each tile.
      */
-    private Vector<TileViewer> tileViewers;
+    private Vector<TileIcon> tileIcons;
 
     // the buttons
     private JButton buttonAdd;
@@ -47,12 +46,13 @@ public class TileList extends JPanel implements Observer {
     public TileList() {
 	super();
 
-	tileViewers = new Vector<TileViewer>();
+	tileIcons = new Vector<TileIcon>();
 
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-	// north : a vertical box layout with the tileset name and the buttons
-	// center : the table
+	// north: a vertical box layout with the tileset name and the buttons
+	// center: the list
+	// south: view of the current tile
 
 	// tileset name
 	labelTilesetName = new JLabel("Tileset name: ");
@@ -76,25 +76,37 @@ public class TileList extends JPanel implements Observer {
 	buttonAdd.addActionListener(new ActionAdd());
 	buttonRemove.addActionListener(new ActionRemove());
 
-	// table
-	tileTableModel = new TileTableModel();
-	tileTable = new JTable(tileTableModel);
-	tileTable.setRowSelectionAllowed(true);
-	tileTable.setColumnSelectionAllowed(false);
-	tileTable.setDragEnabled(false);
-	tileTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	tileTable.getTableHeader().setReorderingAllowed(false);
+	// list
+	tileListModel = new TileListModel();
+	tileList = new JList(tileListModel);
+	tileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	tileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+	tileList.setVisibleRowCount(-1); // make the rows as wide as possible
+ 	tileList.getSelectionModel().addListSelectionListener(new TileListSelectionListener());
+	tileList.setCellRenderer(new TileListRenderer());
 
- 	tileTable.getSelectionModel().addListSelectionListener(new TileListSelectionListener());
+	JScrollPane listScroller = new JScrollPane(tileList);
+	listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-	JScrollPane tableScroll = new JScrollPane(tileTable);
-	tableScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
+	// tile view
+	SelectedTileView tileView = new SelectedTileView();
+	tileView.setMaximumSize(new Dimension(200, 300));
+	tileView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	add(labelTilesetName);
 	add(Box.createRigidArea(new Dimension(0, 5)));
 	add(buttons);
 	add(Box.createRigidArea(new Dimension(0, 5)));
-	add(tableScroll);
+	add(listScroller);
+	add(Box.createRigidArea(new Dimension(0, 5)));
+	add(tileView);
+    }
+
+    /**
+     * Returns the component's size.
+     */
+    public Dimension getPreferredSize() {
+	return new Dimension(400, 600);
     }
 
     /**
@@ -102,154 +114,15 @@ public class TileList extends JPanel implements Observer {
      */
     public void setTileset(Tileset tileset) {
 	this.tileset = tileset;
-	tileset.addObserver(this);
 
-	tileViewers.clear();
+	tileset.addObserver(tileListModel);
+
+	tileIcons.clear();
 	for (int i = 0; i < tileset.getNbTiles(); i++) {
-	    tileViewers.add(new TileViewer(tileset.getTile(i), tileset));
+	    tileIcons.add(new TileIcon(tileset.getTile(i), tileset));
 	}
 
-	update(tileset, null);
-    }
-
-    /**
-     * This function is called when the tileset changes.
-     */
-    public void update(Observable o, Object obj) {
-
-	// update the tileset name
-	labelTilesetName.setText("Tileset name: " + tileset.getName());
-
-	// update the enabled state of the buttons
-	int selectedTileIndex = tileset.getSelectedTileIndex();
-	int selectedRow = tileTable.getSelectedRow();
-
-	buttonAdd.setEnabled(false);
-	buttonRemove.setEnabled(false);
-
-	if (selectedTileIndex == tileset.getNbTiles()) {
-	    // a new tile is selected: if it is valid, we authorize the user to create it
-	    buttonAdd.setEnabled(!tileset.isNewTileAreaOverlapping());
-	}
-	else if (selectedTileIndex >= 0) {
-	    // an existing tile is selected, so the user can remove it
-	    buttonRemove.setEnabled(true);
-	    tileTable.setRowSelectionInterval(selectedTileIndex, selectedTileIndex);
-	}
-	else {
-	    // no tile is selected
-	    if (selectedRow != -1) {
-		tileTable.getSelectionModel().removeSelectionInterval(selectedRow, selectedRow);
-	    }
-	}
-
-	// redraw the table
-	tileTable.revalidate();
-	tileTable.repaint();
-    }
-
-    /**
-     * The table model for the tile table.
-     */
-    private class TileTableModel extends AbstractTableModel {
-
-	/**
-	 * The column names.
-	 */
-	private final String[] columnNames = {
-	    "Image",
-	    "Coordinates",
-	    "Obstacle",
-	    "Animation sequence",
-	    "Animation separation"
-	};
-
-	/**
-	 * Returns the number of rows.
-	 * @return the number of rows
-	 */
-	public int getRowCount() {
-	    if (tileset == null) {
-		// no tileset loaded yet
-		return 0;
-	    }
-	    else {
-		// number of tiles + a header row
-		return tileset.getNbTiles();
-	    }
-	}
-
-	/**
-	 * Returns the number of columns.
-	 * @return the number of columns
-	 */
-	public int getColumnCount() {
-	    return 5;
-	}
-
-	/**
-	 * Returns the name of a column.
-	 * @param column number
-	 * @return name of this column
-	 */
-	public String getColumnName(int column) {
-	    return columnNames[column];
-	}
-
-	/**
-	 * Returns whether a cell is editable or not.
-	 * @param row the cell's row
-	 * @param column the cell's column
-	 * @return true if the cell is editable, false otherwise
-	 */
-	public boolean isCellEditable(int row, int column) {
-	    // all columns are editable except the first one (the image)
-	    return column > 0;
-	}
-
-	/**
-	 * Returns the object to display in a cell.
-	 * @param row the cell's row
-	 * @param column the cell's column
-	 * @return the object to display in this cell
-	 */
-	public Object getValueAt(int row, int column) {
-	    Object result = null;
-	    Tile tile = tileset.getTile(row);
-	    TileViewer tileViewer = tileViewers.get(row);
-
-	    switch (column) {
-		
-		// image
-	    case 0:
-		result = null;
-		break;
-
-		// coordinates
-	    case 1:
-	 	result = tileViewer.getCoordinatesView();
-		//	result = null;
-		break;
-
-		// obstacle
-	    case 2:
-		result = null;
-		break;
-
-		// animation sequence
-	    case 3:
-		result = tileViewer.getAnimationView().listSequence;
-		//		result = null;
-		break;
-
-		// animation separation
-	    case 4:
-		result = tileViewer.getAnimationView().listSeparation;
-		//		result = null;
-		break;
-	    }
-	    return result;
-	}
+	tileListModel.update(tileset, null);
     }
 
     /**
@@ -262,7 +135,7 @@ public class TileList extends JPanel implements Observer {
 	 * This function is called when the selection is changed.
 	 */
 	public void valueChanged(ListSelectionEvent e) {
-	    tileset.setSelectedTileIndex(tileTable.getSelectedRow());
+	    tileset.setSelectedTileIndex(tileList.getSelectedIndex());
 	}
     }
     
@@ -276,10 +149,9 @@ public class TileList extends JPanel implements Observer {
 	    Tile tileAdded = tileset.addTile();
 
 	    if (tileAdded != null) {
-		tileViewers.add(new TileViewer(tileAdded, tileset));
+		tileIcons.add(new TileIcon(tileAdded, tileset));
 	    }
 	}
-
     }
 
     /**
@@ -292,8 +164,90 @@ public class TileList extends JPanel implements Observer {
 	    int index = tileset.removeTile();
 
 	    if (index != -1) {
-		tileViewers.remove(index);
+		tileIcons.remove(index);
 	    }
+	}
+    }
+
+    /**
+     * List model for the tile list.
+     */
+    private class TileListModel extends AbstractListModel implements Observer {
+
+	/**
+	 * Returns the number of tiles.
+	 */
+	public int getSize() {
+	    int size = 0;
+
+	    if (tileset != null) {
+		size = tileset.getNbTiles();
+	    }
+
+	    return size;
+	}
+
+	/**
+	 * Returns the a component with a 16*16 image of the specified tile. 
+	 */
+	public Object getElementAt(int index) {
+	    Tile tile = null;
+
+	    if (tileset != null) {
+		tile = tileset.getTile(index);
+	    }
+	    
+	    return tile;
+	}
+
+	/**
+	 * This function is called when the tileset changes.
+	 */
+	public void update(Observable o, Object obj) {
+
+	    // update the tileset name
+	    labelTilesetName.setText("Tileset name: " + tileset.getName());
+
+	    // update the enabled state of the buttons
+	    int tilesetSelectedIndex = tileset.getSelectedTileIndex();
+	    int listSelectedIndex = tileList.getSelectedIndex();
+
+	    buttonAdd.setEnabled(false);
+	    buttonRemove.setEnabled(false);
+
+	    if (tilesetSelectedIndex == tileset.getNbTiles()) {
+		// a new tile is selected: if it is valid, we authorize the user to create it
+		buttonAdd.setEnabled(!tileset.isNewTileAreaOverlapping());
+	    }
+	    else if (tilesetSelectedIndex >= 0) {
+		// an existing tile is selected, so the user can remove it
+		buttonRemove.setEnabled(true);
+		tileList.setSelectedIndex(tilesetSelectedIndex);
+		tileList.ensureIndexIsVisible(tilesetSelectedIndex);
+	    }
+	    else {
+		// no tile is selected
+		if (listSelectedIndex != -1) {
+		    tileList.removeSelectionInterval(listSelectedIndex, listSelectedIndex);
+		}
+	    }
+
+	    // redraw the table
+	    fireContentsChanged(this, 0, tileset.getNbTiles() - 1);
+	}
+    }
+
+    /**
+     * This class defines how the list elements are displayed.
+     */
+    private class TileListRenderer implements ListCellRenderer {
+
+	/**
+	 * Returns a component representing a tile.
+	 */
+	public Component getListCellRendererComponent(JList list, Object value, int index,
+						      boolean isSelected, boolean cellHasFocus) {
+	    return tileIcons.get(index);
 	}
     }
 }

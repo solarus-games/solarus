@@ -3,12 +3,13 @@ package tileset_editor;
 import java.util.*;
 import java.io.*;
 import java.awt.*;
+import java.awt.image.*;
 import javax.imageio.*;
 
 /**
  * This class describes a tileset.
  */
-public class Tileset extends Observable implements Serializable {
+public class Tileset extends Observable implements Serializable, ImageObserver {
 
     /**
      * Version number of the class serialization.
@@ -38,6 +39,11 @@ public class Tileset extends Observable implements Serializable {
      * The tileset image.
      */
     private transient Image image;
+    
+    /**
+     * The tileset image scaled by 2.
+     */
+    private transient Image doubleImage;
     
     // information about the user actions on the tileset
 
@@ -133,12 +139,17 @@ public class Tileset extends Observable implements Serializable {
     public void reloadImage() {
 	try {
 	    image = ImageIO.read(new File(getImagePath()));
-	    setChanged();
-	    notifyObservers(image);
+	    doubleImage = image.getScaledInstance(image.getWidth(this) * 2,
+						  image.getHeight(this) * 2,
+						  Image.SCALE_FAST);
 	}
 	catch (IOException e) {
 	    image = null;
+	    doubleImage = null;
 	}
+
+	setChanged();
+	notifyObservers(image);
     }
 
     /**
@@ -146,10 +157,29 @@ public class Tileset extends Observable implements Serializable {
      * @return the tileset's image
      */
     public Image getImage() {
-	if (image == null) {
-	    reloadImage();
-	}
+// 	if (image == null) {
+// 	    reloadImage();
+// 	}
 	return image;
+    }
+
+    /**
+     * Returns the 200% scaled version of the tileset's image, previously loaded by reloadImage().
+     * @return the tileset's image in 200%
+     */
+    public Image getDoubleImage() {
+// 	if (doubleImage == null) {
+// 	    reloadImage();
+// 	}
+	return doubleImage;
+    }
+
+    /**
+     * This function is called when some requested information about the image comes.
+     * @return true
+     */
+    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+	return true;
     }
 
     /**

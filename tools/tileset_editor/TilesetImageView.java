@@ -32,12 +32,54 @@ public class TilesetImageView extends JComponent implements Observer {
     private Point selectionCurrentPoint;
 
     /**
+     * A popup menu with an item "Create", displayed when the user selects a new tile.
+     */
+    private JPopupMenu popupMenuCreate;
+
+    /**
+     * A popup menu with an item "Delete", displayed when the user right-clicks on a tile.
+     */
+    private JPopupMenu popupMenuDelete;
+
+    /**
      * Constructor.
      */
     public TilesetImageView() {
 	super();
+
 	addMouseListener(new TilesetImageMouseListener());
 	addMouseMotionListener(new TilesetImageMouseMotionListener());
+
+	JMenuItem item;
+	JMenuItem itemCancelCreate = new JMenuItem("Cancel");
+
+	// popup menu to create a tile
+	popupMenuCreate = new JPopupMenu();
+	item = new JMenuItem("Create");
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    tileset.addTile();
+		}
+	    });
+	popupMenuCreate.add(item);
+	itemCancelCreate.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    tileset.setSelectedTileIndex(-1);
+		}
+	    });
+	popupMenuCreate.add(itemCancelCreate);
+
+	// popup menu to delete a tile
+	popupMenuDelete = new JPopupMenu();
+	item = new JMenuItem("Delete");
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    tileset.removeTile();
+		}
+	    });
+	popupMenuDelete.add(item);
+	popupMenuDelete.add(new JMenuItem("Cancel"));
+
     }
 
     /**
@@ -161,31 +203,46 @@ public class TilesetImageView extends JComponent implements Observer {
 	
 	/**
 	 * This function is called when the user clicks on the tileset image.
-	 * Only left clicks are considered.
 	 * If no tile was selected, then the tile clicked (if any) is selected.
+	 * For a right click: a popup menu allow to removed the tile clicked.
 	 * @param mouseEvent information about the click
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
-	    // only consider left clicks
-	    if (isImageLoaded() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+	    if (isImageLoaded()) {
 
 		Image scaledImage = tileset.getDoubleImage();
-
+		
 		int x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this)) / 2;
 		int y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this)) / 2;
-
+		
+		// search the tile clicked
 		boolean found = false;
+		int clickedTileIndex = -1;
 		for (int i = 0; i < tileset.getNbTiles() && !found; i++) {
-		    
+			
 		    Rectangle tileRectangle = tileset.getTile(i).getPositionInTileset();
 		    if (tileRectangle.contains(x, y)) {
-			tileset.setSelectedTileIndex(i);
 			found = true;
+			clickedTileIndex = i;
+		    }
+		}
+		
+		// a tile was just clicked
+		if (clickedTileIndex != -1) {
+
+		    // select the tile
+		    tileset.setSelectedTileIndex(clickedTileIndex);
+		    
+		    // right click: show a popup menu to remove the tile
+		    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+			popupMenuDelete.show(TilesetImageView.this,
+					     mouseEvent.getX(),
+					     mouseEvent.getY());
 		    }
 		}
 	    }
 	}
-
+	
 	/**
 	 * This function is called when the mouse button is pressed on the tileset image.
 	 * Only left clicks are considered.
@@ -237,11 +294,17 @@ public class TilesetImageView extends JComponent implements Observer {
 
 		// keep the new selected tile only if it really exists
 		Rectangle newTileArea = tileset.getNewTileArea();
-		if (newTileArea == null
-		    || newTileArea.width == 0
-		    || newTileArea.height == 0
-		    || tileset.isNewTileAreaOverlapping()) {
+		if (newTileArea != null
+		    && newTileArea.width > 0
+		    && newTileArea.height > 0
+		    && !tileset.isNewTileAreaOverlapping()) {
 
+		    // the area is valid: show a popup menu with an item "Create"
+		    popupMenuCreate.show(TilesetImageView.this,
+					 mouseEvent.getX(),
+					 mouseEvent.getY());
+		}
+		else {
 		    // the area doesn't exist or is not valid: we cancel the selection
 		    selectionStartPoint = null;
 		    selectionCurrentPoint = null;
@@ -255,7 +318,7 @@ public class TilesetImageView extends JComponent implements Observer {
     /**
      * The mouse motion listener associated to the tileset image.
      */
-    private class TilesetImageMouseMotionListener extends MouseAdapter {
+    private class TilesetImageMouseMotionListener extends MouseMotionAdapter {
 	
 	/**
 	 * This method is called when a mouse button is pressed on the component and then dragged.

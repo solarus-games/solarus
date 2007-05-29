@@ -37,8 +37,8 @@ public class TileList extends JPanel {
     private Vector<TileIcon> tileIcons;
 
     // the buttons
-    private JButton buttonAdd;
-    private JButton buttonRemove;
+    private JButton buttonCreate;
+    private JButton buttonDelete;
 
     /**
      * Constructor.
@@ -66,15 +66,24 @@ public class TileList extends JPanel {
 
 	add(Box.createHorizontalGlue());
 	add(Box.createHorizontalGlue());
-	buttonAdd = new JButton("Add");
-	buttonRemove = new JButton("Remove");
-	buttonAdd.setEnabled(false);
-	buttonRemove.setEnabled(false);
-	buttons.add(buttonAdd);
-	buttons.add(buttonRemove);
+	buttonCreate = new JButton("Create");
+	buttonDelete = new JButton("Delete");
+	buttonCreate.setEnabled(false);
+	buttonDelete.setEnabled(false);
+	buttons.add(buttonCreate);
+	buttons.add(buttonDelete);
 
-	buttonAdd.addActionListener(new ActionAdd());
-	buttonRemove.addActionListener(new ActionRemove());
+	buttonCreate.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    tileset.addTile();
+		}
+	    });
+
+	buttonDelete.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    tileset.removeTile();
+		}
+	    });
 
 	// list
 	tileListModel = new TileListModel();
@@ -140,36 +149,6 @@ public class TileList extends JPanel {
     }
     
     /**
-     * Action listener associated to the button Add.
-     * A tile is created.
-     */
-    private class ActionAdd implements ActionListener {
-
-	public void actionPerformed(ActionEvent e) {
-	    Tile tileAdded = tileset.addTile();
-
-	    if (tileAdded != null) {
-		tileIcons.add(new TileIcon(tileAdded, tileset));
-	    }
-	}
-    }
-
-    /**
-     * Action listener associated to the button Remove.
-     * The selected tile (if any) is removed.
-     */
-    private class ActionRemove implements ActionListener {
-
-	public void actionPerformed(ActionEvent e) {
-	    int index = tileset.removeTile();
-
-	    if (index != -1) {
-		tileIcons.remove(index);
-	    }
-	}
-    }
-
-    /**
      * List model for the tile list.
      */
     private class TileListModel extends AbstractListModel implements Observer {
@@ -186,7 +165,7 @@ public class TileList extends JPanel {
 
 	    return size;
 	}
-
+	
 	/**
 	 * Returns the a component with a 16*16 image of the specified tile. 
 	 */
@@ -202,26 +181,43 @@ public class TileList extends JPanel {
 
 	/**
 	 * This function is called when the tileset changes.
+	 * @param o the tileset
+	 * @param params information about what has changed:
+	 *   - a Tile: indicates that this tile has just been created
+	 *   - an Integer: indicates that the tile at this index has just been removed
+	 *   - null: other cases
 	 */
-	public void update(Observable o, Object obj) {
+	public void update(Observable o, Object params) {
 
 	    // update the tileset name
 	    labelTilesetName.setText("Tileset name: " + tileset.getName());
+
+	    // was a tile just removed?
+	    if (params instanceof Integer) {
+		int deletedTileIndex = ((Integer) params).intValue();
+		tileIcons.remove(deletedTileIndex);		
+	    }
+
+	    // was a tile just created?
+	    else if (params instanceof Tile) {
+		Tile tileAdded = (Tile) params;
+		tileIcons.add(new TileIcon(tileAdded, tileset));		
+	    }
 
 	    // update the enabled state of the buttons
 	    int tilesetSelectedIndex = tileset.getSelectedTileIndex();
 	    int listSelectedIndex = tileList.getSelectedIndex();
 
-	    buttonAdd.setEnabled(false);
-	    buttonRemove.setEnabled(false);
+	    buttonCreate.setEnabled(false);
+	    buttonDelete.setEnabled(false);
 
 	    if (tilesetSelectedIndex == tileset.getNbTiles()) {
 		// a new tile is selected: if it is valid, we authorize the user to create it
-		buttonAdd.setEnabled(!tileset.isNewTileAreaOverlapping());
+		buttonCreate.setEnabled(!tileset.isNewTileAreaOverlapping());
 	    }
 	    else if (tilesetSelectedIndex >= 0) {
 		// an existing tile is selected, so the user can remove it
-		buttonRemove.setEnabled(true);
+		buttonDelete.setEnabled(true);
 		tileList.setSelectedIndex(tilesetSelectedIndex);
 		tileList.ensureIndexIsVisible(tilesetSelectedIndex);
 	    }

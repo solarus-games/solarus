@@ -8,6 +8,11 @@ import javax.imageio.*;
 
 /**
  * This class describes a tileset.
+ * A tileset is observable. When it changes, the observers are notified with
+ * a parameter indicating what has just changed:
+ *   - a Tile: indicates that this tile was created
+ *   - an Integer: indicates that the tile at this index was removed
+ *   - null: other cases
  */
 public class Tileset extends Observable implements Serializable, ImageObserver {
 
@@ -288,9 +293,9 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 
     /**
      * Creates the tile specified by the current selection area and adds it to the tileset.
-     * @return the tile created, or null if the selection was not valid
+     * The observers are notified with the created Tile as parameter.
      */
-    public Tile addTile() {
+    public void addTile() {
 	Tile tile = null;
 
 	if (isSelectingNewTile() && !isNewTileAreaOverlapping) {
@@ -302,18 +307,15 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 	    isSaved = false;
 	    
 	    setChanged();
-	    notifyObservers();
+	    notifyObservers(tile); // indicates that a tile has been created
 	}
-
-	return tile;
     }
 
     /**
      * Removes the selected tile.
-     * @return index of the tile removed, or -1 if there was no tile selected
+     * The oberservers are notified with the removed tile as parameter.
      */
-    public int removeTile() {
-	int result = -1;
+    public void removeTile() {
 	int index = getSelectedTileIndex();
 	Tile tile = getSelectedTile();
 
@@ -324,12 +326,8 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 	    isSaved = false;
 
 	    setChanged();
-	    notifyObservers();
-
-	    result = index;
+	    notifyObservers(new Integer(index)); // indicates that the tile has been removed
 	}
-
-	return result;
     }
 
     /**

@@ -87,6 +87,16 @@ public class TilesetEditorWindow extends JFrame {
 	JPanel rootPanel = new JPanel(new BorderLayout());
 	rootPanel.add(globalPanel);
 	setContentPane(rootPanel);
+
+	// add a window listener to confirm when the user closes the window
+	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	addWindowListener(new WindowAdapter() {
+		public void windowClosing(WindowEvent e) {
+		    if (checkCurrentTilesetSaved()) {
+			dispose();
+		    }
+		}
+	    });
     }
 
     /**
@@ -167,7 +177,9 @@ public class TilesetEditorWindow extends JFrame {
 	item.getAccessibleContext().setAccessibleDescription("Exit the tileset editor");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
-		    System.exit(0);
+		    if (checkCurrentTilesetSaved()) {
+			dispose();
+		    }
 		}
 	    });
 	menu.add(item);
@@ -228,8 +240,8 @@ public class TilesetEditorWindow extends JFrame {
     }
 
     /**
-     * This function is called when the user wants to open a tileset or create a new one.
-     * If the current tileset is not saved, we propose to save it.
+     * This function is called when the user wants to close the current tileset.
+     * If the tileset is not saved, we propose to save it.
      * @return false if the user cancelled
      */
     private boolean checkCurrentTilesetSaved() {

@@ -14,7 +14,6 @@ public class TilesetEditor {
 
 	// create the main window
 	TilesetEditorWindow window = new TilesetEditorWindow();
-	window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	window.pack();
 	window.setVisible(true);
     }

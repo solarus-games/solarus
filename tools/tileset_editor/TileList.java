@@ -41,6 +41,11 @@ public class TileList extends JPanel {
     private JButton buttonDelete;
 
     /**
+     * View of the selected tile.
+     */
+    private SelectedTileView tileView;
+
+    /**
      * Constructor.
      */
     public TileList() {
@@ -56,7 +61,7 @@ public class TileList extends JPanel {
 
 	// tileset name
 	labelTilesetName = new JLabel("Tileset name: ");
-	labelTilesetName.setMaximumSize(new Dimension(400, 30));
+	labelTilesetName.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 	labelTilesetName.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	// buttons
@@ -98,8 +103,8 @@ public class TileList extends JPanel {
 	listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	// tile view
-	SelectedTileView tileView = new SelectedTileView();
-	tileView.setMaximumSize(new Dimension(200, 300));
+	tileView = new SelectedTileView();
+ 	tileView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
 	tileView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	add(labelTilesetName);
@@ -114,9 +119,9 @@ public class TileList extends JPanel {
     /**
      * Returns the component's size.
      */
-    public Dimension getPreferredSize() {
-	return new Dimension(400, 600);
-    }
+//     public Dimension getPreferredSize() {
+// 	return new Dimension(400, 600);
+//     }
 
     /**
      * Sets the observed tileset.
@@ -227,9 +232,11 @@ public class TileList extends JPanel {
 		    tileList.removeSelectionInterval(listSelectedIndex, listSelectedIndex);
 		}
 	    }
-
 	    // redraw the table
 	    fireContentsChanged(this, 0, tileset.getNbTiles() - 1);
+
+	    // notify the tile view
+	    tileView.setCurrentTile(tileset.getSelectedTile());
 	}
     }
 

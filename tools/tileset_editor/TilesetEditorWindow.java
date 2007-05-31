@@ -56,21 +56,20 @@ public class TilesetEditorWindow extends JFrame {
 	Box globalPanel = new Box(BoxLayout.Y_AXIS);
 
 	// tile list and tileset image
-	Box tilesetPanel = new Box(BoxLayout.X_AXIS);
-	tilesetPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	// tile list
 	tileList = new TileList();
 	tileList.setAlignmentY(Component.TOP_ALIGNMENT);
+ 	tileList.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
 	// tileset image
 	tilesetImageView = new TilesetImageView();
 	JScrollPane tilesetImageScroller = new JScrollPane(tilesetImageView);
 	tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
+ 	tilesetImageScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
-	tilesetPanel.add(tileList);
-	tilesetPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-	tilesetPanel.add(tilesetImageScroller);
+	JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tileList, tilesetImageScroller);
+	tilesetPanel.setContinuousLayout(true); 
 
 	// ZSDX root path configuration
 	configurationPanel = new ConfigurationPanel();

@@ -23,76 +23,77 @@ public class AnimationView extends JPanel implements Observer {
     /**
      * List to select the animation type of the tile.
      */
-    public JList listSequence;
+    public JComboBox listSequence;
 
     /**
      * List to select how the 3 animations are separated in the tileset.
      */
-    public JList listSeparation;
+    public JComboBox listSeparation;
     
     /**
      * Text displayed in the first list.
      */
-    private static final String[] sequenceNames = {
-	"No animation",
-	"Animation 1-2-3",
-	"Animation 1-2-3-2"
+    private static final String[] itemsSequence = {
+	"None",
+	"1-2-3",
+	"1-2-3-2"
     };
 
     /**
      * Text displayed in the second list.
      */
-    private static final String[] separationNames = {
-	"Horizontal separation",
-	"Vertical separation"
-    };
+    private static final ImageIcon[] itemsSeparation;
+
+    // load the icons
+    static {
+	String path = "tileset_editor/images/";
+
+	itemsSeparation = new ImageIcon[2];
+	itemsSeparation[Tile.ANIMATION_SEPARATION_HORIZONTAL] = new ImageIcon(path + "animation_separation_horizontal.png");
+	itemsSeparation[Tile.ANIMATION_SEPARATION_VERTICAL] = new ImageIcon(path + "animation_separation_vertical.png");
+    }
 
     /**
      * Constructor.
      */
-    public AnimationView(Tile tile) {
+    public AnimationView() {
 	super();
-	this.tile = tile;
-	tile.addObserver(this);
 
 	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 	// list for the animation sequence
-	listSequence = new JList(new AbstractListModel() {
-
-		public Object getElementAt(int index) {
-		    return sequenceNames[index];
-		}
-
-		public int getSize() {
-		    return 3;
-		}
-	    });
-
-	listSequence.setDragEnabled(false);
-	listSequence.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	listSequence = new JComboBox(itemsSequence);
 
 	// list for the separation
-	listSeparation = new JList(new AbstractListModel() {
-
-		public Object getElementAt(int index) {
-		    return separationNames[index];
-		}
-
-		public int getSize() {
-		    return 2;
-		}
-	    });
-
-	listSeparation.setDragEnabled(false);
-	listSeparation.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	listSeparation = new JComboBox(itemsSeparation);
 
 	// add the two lists
 	add(listSequence);
-	add(Box.createRigidArea(new Dimension(2,0)));
+	add(Box.createRigidArea(new Dimension(5, 0)));
 	add(listSeparation);
 
-	update(tile, null);
+	setCurrentTile(null);
+    }
+
+    /**
+     * Sets the current tile observed.
+     */
+    public void setCurrentTile(Tile tile) {
+	if (this.tile != null) {
+	    this.tile.deleteObserver(this);
+	}
+
+	this.tile = tile;
+	
+	if (tile != null) {
+	    tile.addObserver(this);
+	    listSequence.setEnabled(true);
+	    update(tile, null);
+	}
+	else {
+	    listSequence.setEnabled(false);
+	    listSeparation.setEnabled(false);
+	}
     }
 
     /**
@@ -102,7 +103,7 @@ public class AnimationView extends JPanel implements Observer {
 	int sequence = tile.getAnimationSequence();
 	listSequence.setSelectedIndex(sequence);
 
-	if (sequence == Tile.NO_ANIMATION) {
+	if (sequence == Tile.ANIMATION_NONE) {
 	    listSeparation.setEnabled(false);
 	}
 	else {

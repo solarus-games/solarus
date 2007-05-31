@@ -16,21 +16,21 @@ public class Tile extends Observable implements Serializable {
 
     // Constants to identify the obstacles
 
-    public static final int NO_OBSTACLE = 0;
+    public static final int OBSTACLE_NONE = 0;
     public static final int OBSTACLE = 1;
-    public static final int OBSTACLE_UP_RIGHT = 2;
-    public static final int OBSTACLE_UP_LEFT = 3;
-    public static final int OBSTACLE_DOWN_LEFT = 4;
-    public static final int OBSTACLE_DOWN_RIGHT = 5;
+    public static final int OBSTACLE_TOP_RIGHT = 2;
+    public static final int OBSTACLE_TOP_LEFT = 3;
+    public static final int OBSTACLE_BOTTOM_LEFT = 4;
+    public static final int OBSTACLE_BOTTOM_RIGHT = 5;
 
     // Constants to identify the animation type
 
-    public static final int NO_ANIMATION = 0;
+    public static final int ANIMATION_NONE = 0;
     public static final int ANIMATION_SEQUENCE_012 = 1;
     public static final int ANIMATION_SEQUENCE_0121 = 2;
 
-    public static final int ANIMATION_HORIZONTAL_SEPARATION = 0;
-    public static final int ANIMATION_VERTICAL_SEPARATION = 1;
+    public static final int ANIMATION_SEPARATION_HORIZONTAL = 0;
+    public static final int ANIMATION_SEPARATION_VERTICAL = 1;
 
     /**
      * Coordinates and dimensions of the tile.
@@ -56,7 +56,7 @@ public class Tile extends Observable implements Serializable {
      * Simple constructor with default parameters: obstacle and no animation.
      */
     public Tile(Rectangle positionInTileset) {
-	this(positionInTileset, NO_OBSTACLE, NO_ANIMATION, 0);
+	this(positionInTileset, OBSTACLE_NONE, ANIMATION_NONE, 0);
     }
 
     /**
@@ -78,6 +78,26 @@ public class Tile extends Observable implements Serializable {
      */
     public Rectangle getPositionInTileset() {
 	return positionInTileset;
+    }
+
+    /**
+     * Returns the tile's obstacle property.
+     * @return Tile.OBSTACLE_NONE, Tile.OBSTACLE, Tile.OBSTACLE_TOP_RIGHT,
+     * Tile.OBSTACLE_TOP_LEFT, Tile.OBSTACLE_BOTTOM_LEFT or Tile.OBSTACLE_BOTTOM_RIGHT
+     */
+    public int getObstacle() {
+	return obstacle;
+    }
+
+    /**
+     * Changes the tile's obstacle property.
+     * @param obstacle Tile.OBSTACLE_NONE, Tile.OBSTACLE, Tile.OBSTACLE_TOP_RIGHT,
+     * Tile.OBSTACLE_TOP_LEFT, Tile.OBSTACLE_BOTTOM_LEFT or Tile.OBSTACLE_BOTTOM_RIGHT
+     */
+    public void setObstacle(int obstacle) {
+	this.obstacle = obstacle;
+	setChanged();
+	notifyObservers();
     }
 
     /**

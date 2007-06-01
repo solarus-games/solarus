@@ -9,33 +9,12 @@ import java.io.*;
  * This component shows information about the current tile and lets the user edit it.
  * TODO: make a class ObstacleView (like AnimationView)
  */
-public class SelectedTileView extends JPanel implements Observer {
-
-    /**
-     * The tile shown.
-     */
-    private Tile tile;
+public class SelectedTileView extends JPanel {
 
     // the components
 
-    private JComboBox obstacleView;
+    private ObstacleView obstacleView;
     private AnimationView animationView;
-
-    private static ImageIcon[] obstacleIcons;
-
-    // load the icons
-    static {
-	String path = "tileset_editor/images/";
-
-	obstacleIcons = new ImageIcon[6];
-	obstacleIcons[Tile.OBSTACLE_NONE] = new ImageIcon(path + "obstacle_none.png");
-	obstacleIcons[Tile.OBSTACLE] = new ImageIcon(path + "obstacle.png");
-	obstacleIcons[Tile.OBSTACLE_TOP_RIGHT] = new ImageIcon(path + "obstacle_top_right.png");
-	obstacleIcons[Tile.OBSTACLE_TOP_LEFT] = new ImageIcon(path + "obstacle_top_left.png");
-	obstacleIcons[Tile.OBSTACLE_BOTTOM_LEFT] = new ImageIcon(path + "obstacle_bottom_left.png");
-	obstacleIcons[Tile.OBSTACLE_BOTTOM_RIGHT] = new ImageIcon(path + "obstacle_bottom_right.png");
-    }
-    
 
     /**
      * Constructor.
@@ -51,7 +30,7 @@ public class SelectedTileView extends JPanel implements Observer {
 	constraints.gridx = 0;
 	constraints.gridy = 0;
 	add(new JLabel("Obstacle:"), constraints);
-	obstacleView = new JComboBox(obstacleIcons);
+	obstacleView = new ObstacleView();
 
 	// animation
 	constraints.gridy = 1;
@@ -74,28 +53,7 @@ public class SelectedTileView extends JPanel implements Observer {
      * @param tile the new current tile (can be null)
      */
     public void setCurrentTile(Tile tile) {
-	if (this.tile != null) {
-	    this.tile.deleteObserver(this);
-	}
-
-	this.tile = tile;
-	
-	if (tile != null) {
-	    tile.addObserver(this);
-	    obstacleView.setEnabled(true);
-	    update(tile, null);
-	}
-	else {
-	    obstacleView.setEnabled(false);
-	}
-
+	obstacleView.setCurrentTile(tile);
 	animationView.setCurrentTile(tile);
-    }
-
-    /**
-     * This function is called when the tile changes.
-     */
-    public void update(Observable o, Object params) {
-	obstacleView.setSelectedIndex(tile.getObstacle());
     }
 }

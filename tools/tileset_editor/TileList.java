@@ -54,6 +54,7 @@ public class TileList extends JPanel {
 	tileIcons = new Vector<TileIcon>();
 
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+	setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 	// north: a vertical box layout with the tileset name and the buttons
 	// center: the list
@@ -66,6 +67,8 @@ public class TileList extends JPanel {
 
 	// buttons
 	JPanel buttons = new JPanel(new GridLayout(1, 3, 5, 0));
+	buttons.setMinimumSize(new Dimension(200, 30));
+	buttons.setPreferredSize(new Dimension(200, 30));
 	buttons.setMaximumSize(new Dimension(200, 30));
 	buttons.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -100,6 +103,7 @@ public class TileList extends JPanel {
 	tileList.setCellRenderer(new TileListRenderer());
 
 	JScrollPane listScroller = new JScrollPane(tileList);
+ 	listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 	listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	// tile view

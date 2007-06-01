@@ -17,6 +17,11 @@ public class TilesetImageView extends JComponent implements Observer {
      */
     private Tileset tileset;
 
+    /**
+     * The current selected tile.
+     */
+    private Tile currentSelectedTile;
+
     // information about the selection
 
     /**
@@ -118,6 +123,23 @@ public class TilesetImageView extends JComponent implements Observer {
      * This function is called when the tileset changes.
      */
     public void update(Observable o, Object obj) {
+
+	// observe the new selected tile
+	Tile newSelectedTile = tileset.getSelectedTile();
+	if (newSelectedTile != currentSelectedTile) {
+
+	    if (currentSelectedTile != null) {
+		currentSelectedTile.deleteObserver(this);
+	    }
+
+	    if (newSelectedTile != null) {
+		newSelectedTile.addObserver(this);
+	    }
+
+	    currentSelectedTile = newSelectedTile;
+	}
+
+	// redraw the image
 	repaint();
     }
 
@@ -137,6 +159,7 @@ public class TilesetImageView extends JComponent implements Observer {
 
 	if (isImageLoaded()) { // the image exists
 
+	    Tile selectedTile = null;
 	    Image scaledImage = tileset.getDoubleImage();
 
 	    // draw the image
@@ -160,7 +183,7 @@ public class TilesetImageView extends JComponent implements Observer {
 		}
 	    }
 	    else {
-		Tile selectedTile = tileset.getSelectedTile();
+		selectedTile = tileset.getSelectedTile();
 
 		if (selectedTile != null) {
 		    // an existing tile is selected
@@ -186,6 +209,31 @@ public class TilesetImageView extends JComponent implements Observer {
 		g.drawLine(x2 - 1, y1, x2 - 1, y2);
 		g.drawLine(x2, y2 - 1, x1, y2 - 1);
 		g.drawLine(x1 + 1, y2, x1 + 1, y1);
+
+		// for an animated tile, also draw the separation between the 3 frames
+		if (selectedTile != null && selectedTile.isAnimated()) {
+
+		    if (selectedTile.getAnimationSeparation() == Tile.ANIMATION_SEPARATION_HORIZONTAL) {
+			int frame_width = (x2 - x1 + 1) / 3;
+			x1 += frame_width;
+			x2 -= frame_width;
+
+			g.drawLine(x2, y1, x2, y2);
+			g.drawLine(x1, y2, x1, y1);
+			g.drawLine(x2 - 1, y1, x2 - 1, y2);
+			g.drawLine(x1 + 1, y2, x1 + 1, y1);
+		    }
+		    else {
+			int frame_height = (y2 - y1 + 1) / 3;
+			y1 += frame_height;
+			y2 -= frame_height;
+			
+			g.drawLine(x1, y1, x2, y1);
+			g.drawLine(x2, y2, x1, y2);
+			g.drawLine(x1, y1 + 1, x2, y1 + 1);
+			g.drawLine(x2, y2 - 1, x1, y2 - 1);
+		    }
+		}
 	    }
 
 	}

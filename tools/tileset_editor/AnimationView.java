@@ -1,6 +1,7 @@
 package tileset_editor;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 
@@ -13,7 +14,7 @@ import java.util.*;
  * how the 3 animations are separated in the tileset (vertically or
  * horizontally).
  */
-public class AnimationView extends JPanel implements Observer {
+public class AnimationView extends JPanel implements Observer, ActionListener {
 
     /**
      * The tile observed.
@@ -63,9 +64,12 @@ public class AnimationView extends JPanel implements Observer {
 
 	// list for the animation sequence
 	listSequence = new JComboBox(itemsSequence);
+	listSequence.addActionListener(this);
 
 	// list for the separation
 	listSeparation = new JComboBox(itemsSeparation);
+	listSeparation.addActionListener(this);
+
 
 	// add the two lists
 	add(listSequence);
@@ -103,13 +107,46 @@ public class AnimationView extends JPanel implements Observer {
 	int sequence = tile.getAnimationSequence();
 	listSequence.setSelectedIndex(sequence);
 
-	if (sequence == Tile.ANIMATION_NONE) {
-	    listSeparation.setEnabled(false);
+	if (tile.isAnimated()) {
+	    listSeparation.setSelectedIndex(tile.getAnimationSeparation());
+	    listSeparation.setEnabled(true);
 	}
 	else {
-	    listSeparation.setEnabled(true);
-	    listSeparation.setSelectedIndex(tile.getAnimationSeparation());
+	    listSeparation.setEnabled(false);
 	}
     }
+    
+    /**
+     * This method is called when the selection of one of the two combo boxes is changed.
+     */
+    public void actionPerformed(ActionEvent ev) {
 
+	listSequence.hidePopup();
+	listSeparation.hidePopup();
+
+	try {
+	    if (ev.getSource() == listSequence) {
+		int listIndex = listSequence.getSelectedIndex();
+		int animationIndex = tile.getAnimationSequence();
+		if (listIndex != animationIndex) {
+		    // the tile's animation sequence has changed
+		    tile.setAnimationSequence(listIndex);
+		}
+	    }
+	    else {
+		int listIndex = listSeparation.getSelectedIndex();
+		int animationIndex = tile.getAnimationSeparation();
+		if (listIndex != animationIndex) {
+		    // the direction of the animation separation has changed
+		    tile.setAnimationSeparation(listIndex);
+		}
+	    }
+	}
+	catch (TilesetException ex) {
+	    JOptionPane.showMessageDialog(null,
+					  ex.getMessage(),
+					  "Error",
+					  JOptionPane.ERROR_MESSAGE);
+	}
+    }
 }

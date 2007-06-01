@@ -6,6 +6,7 @@ import java.util.*;
 
 /**
  * Represents a tile for the tileset editor.
+ * The tile's dimensions must be multiples of 8 but this is not checked.
  */
 public class Tile extends Observable implements Serializable {
 
@@ -111,13 +112,54 @@ public class Tile extends Observable implements Serializable {
 
     /**
      * Sets the tile's animation sequence.
+     * If the specified animation makes the tile animated, a valid separation is chosen
+     * between Tile.ANIMATION_SEPARATION_HORIZONTAL or Tile.ANIMATION_SEPARATION_VERTICAL.
+     * You can change it with setAnimationSeparation.
+     * If both directions are invalid, an TilesetException is thrown.
      * @param animationSequence the tile's animation sequence: Tile.NO_ANIMATION,
      * Tile.ANIMATION_012 or Tile.ANIMATION_0121
+     * @throws TilesetException if the tile cannot be divided in 3 frames
      */
-    public void setAnimationSequence(int animationSequence) {
+    public void setAnimationSequence(int animationSequence) throws TilesetException {
+
+	if (animationSequence != ANIMATION_NONE) {
+
+	    // try to set the animation separation
+	    int width = positionInTileset.width;
+	    int height = positionInTileset.height;
+
+	    // try to divide the tile in the biggest direction
+	    if (width >= height) {
+		try {
+		    trySetAnimationSeparation(ANIMATION_SEPARATION_HORIZONTAL);
+		}
+		catch (TilesetException e) {
+		    trySetAnimationSeparation(ANIMATION_SEPARATION_VERTICAL);
+		    // an exception is thrown if this doesn't work either
+		}
+	    }
+	    else {
+		try {
+		    trySetAnimationSeparation(ANIMATION_SEPARATION_VERTICAL);
+		}
+		catch (TilesetException e) {
+		    trySetAnimationSeparation(ANIMATION_SEPARATION_HORIZONTAL);
+		}
+	    }
+	}
+
 	this.animationSequence = animationSequence;
+
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Returns whether or not the tile is animated.
+     * @return true if the tile is animated, false otherwise
+     */
+    public boolean isAnimated() {
+	return animationSequence != ANIMATION_NONE;
     }
 
     /**
@@ -131,13 +173,43 @@ public class Tile extends Observable implements Serializable {
 
     /**
      * Sets the type of separation of the 3 animation frames if the tile is animated.
+     * Nothing is done if the tile is not animated.
      * @param animationSeparation the type of separation of the 3 animation frames:
      * Tile.ANIMATION_HORIZONTAL_SEPARATION or Tile.ANIMATION_VERTICAL_SEPARATION
+     * @throws TilesetException thrown if the separation is not valid, i.e.
+     * if the size of the 3 frames formed are not multiple of 8.
      */
-    public void setAnimationSeparation(int animationSeparation) {
-	this.animationSeparation = animationSeparation;
+    public void setAnimationSeparation(int animationSeparation) throws TilesetException {
+	if (!isAnimated()) {
+	    return;
+	}
+
+	trySetAnimationSeparation(animationSeparation);
+
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Sets the type of separation of the 3 animation frames.
+     * @param animationSeparation the type of separation of the 3 animation frames:
+     * Tile.ANIMATION_HORIZONTAL_SEPARATION or Tile.ANIMATION_VERTICAL_SEPARATION
+     * @throws TilesetException thrown if the separation is not valid, i.e.
+     * if the size of the 3 frames formed are not multiple of 8.
+     */
+    private void trySetAnimationSeparation(int animationSeparation) throws TilesetException {
+	
+	// check whether the tile can be separated in 3 frames
+	if (animationSeparation == ANIMATION_SEPARATION_HORIZONTAL
+	    && positionInTileset.width % 24 != 0) {
+	    throw new TilesetException("Cannot divide the tile in 3 frames : the size of each frame must be a multiple of 8 pixels");
+	}
+	else if (animationSeparation == ANIMATION_SEPARATION_VERTICAL
+		 && positionInTileset.height % 24 != 0) {
+	    throw new TilesetException("Cannot divide the tile in 3 frames : the size of each frame must be a multiple of 8 pixels");
+	}
+
+	this.animationSeparation = animationSeparation;
     }
 
 }

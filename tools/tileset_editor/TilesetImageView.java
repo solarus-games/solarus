@@ -42,9 +42,15 @@ public class TilesetImageView extends JComponent implements Observer {
     private JPopupMenu popupMenuCreate;
 
     /**
-     * A popup menu with an item "Delete", displayed when the user right-clicks on a tile.
+     * A popup menu with an item "Obstacle and an item "Delete", displayed
+     * when the user right-clicks on a tile.
      */
-    private JPopupMenu popupMenuDelete;
+    private JPopupMenu popupMenuSelectedTile;
+
+    /**
+     * Items in the popup menu to set the type of obstacle of the selected tile.
+     */
+    private JRadioButtonMenuItem[] itemsObstacle;
 
     /**
      * Constructor.
@@ -74,16 +80,28 @@ public class TilesetImageView extends JComponent implements Observer {
 	    });
 	popupMenuCreate.add(itemCancelCreate);
 
-	// popup menu to delete a tile
-	popupMenuDelete = new JPopupMenu();
+	// popup menu for a selectedTile
+	popupMenuSelectedTile = new JPopupMenu();
+	itemsObstacle = new JRadioButtonMenuItem[6];
+	ButtonGroup itemsObstacleGroup = new ButtonGroup();
+
+	for (int i = 0; i < 6; i++) {
+	    itemsObstacle[i] = new JRadioButtonMenuItem(ObstacleIcons.getName(i),
+							ObstacleIcons.getIcon(i));
+	    itemsObstacle[i].addActionListener(new ActionChangeObstacle(i));
+	    popupMenuSelectedTile.add(itemsObstacle[i]);
+	    itemsObstacleGroup.add(itemsObstacle[i]);
+	}
+
+	popupMenuSelectedTile.addSeparator();
+
 	item = new JMenuItem("Delete");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    tileset.removeTile();
 		}
 	    });
-	popupMenuDelete.add(item);
-	popupMenuDelete.add(new JMenuItem("Cancel"));
+	popupMenuSelectedTile.add(item);
 
     }
 
@@ -115,32 +133,39 @@ public class TilesetImageView extends JComponent implements Observer {
 	this.tileset = tileset;
 	tileset.addObserver(this);
 
+	// initialize the popup menu of the selected tile
+	update(tileset.getSelectedTile(), null);
+
 	// load the tileset's image
 	update(tileset, null);
     }
 
     /**
-     * This function is called when the tileset changes.
+     * This function is called when the tileset or the selected tile change.
      */
     public void update(Observable o, Object obj) {
 
-	// observe the new selected tile
-	Tile newSelectedTile = tileset.getSelectedTile();
-	if (newSelectedTile != currentSelectedTile) {
-
-	    if (currentSelectedTile != null) {
-		currentSelectedTile.deleteObserver(this);
+	if (o instanceof Tileset) {
+	    // the tileset has changed
+	    
+	    Tile newSelectedTile = tileset.getSelectedTile();
+	    if (newSelectedTile != currentSelectedTile) {
+		// observe the new selected tile
+		
+		if (currentSelectedTile != null) {
+		    currentSelectedTile.deleteObserver(this);
+		}
+		
+		if (newSelectedTile != null) {
+		    newSelectedTile.addObserver(this);
+		}
+		
+		currentSelectedTile = newSelectedTile;
 	    }
 
-	    if (newSelectedTile != null) {
-		newSelectedTile.addObserver(this);
-	    }
-
-	    currentSelectedTile = newSelectedTile;
+	    // redraw the image
+	    repaint();
 	}
-
-	// redraw the image
-	repaint();
     }
 
     /**
@@ -281,11 +306,13 @@ public class TilesetImageView extends JComponent implements Observer {
 		    // select the tile
 		    tileset.setSelectedTileIndex(clickedTileIndex);
 		    
-		    // right click: show a popup menu to remove the tile
+		    // right click: show a popup menu
 		    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
-			popupMenuDelete.show(TilesetImageView.this,
-					     mouseEvent.getX(),
-					     mouseEvent.getY());
+			int obstacle = tileset.getSelectedTile().getObstacle();
+			itemsObstacle[obstacle].setSelected(true);
+			popupMenuSelectedTile.show(TilesetImageView.this,
+						   mouseEvent.getX(),
+						   mouseEvent.getY());
 		    }
 		}
 	    }
@@ -414,6 +441,38 @@ public class TilesetImageView extends JComponent implements Observer {
 		    tileset.setSelectedTileIndex(tileset.getNbTiles());
 		    tileset.setNewTileArea(newTileArea);
 		}
+	    }
+	}
+    }
+
+    /**
+     * Action listener invoked when the user changes the type of obstacle of a tile
+     * from the popup menu after a right click.
+     */
+    private class ActionChangeObstacle implements ActionListener {
+
+	/**
+	 * Type of obstacle to set when the action is invoked.
+	 */
+	private int obstacle;
+
+	/**
+	 * Constructor.
+	 * @param obstacle type of obstacle to set when the action is invoked.
+	 */
+	public ActionChangeObstacle(int obstacle) {
+	    this.obstacle = obstacle;
+	}
+
+	/**
+	 * Method called when the user sets the type of obstacle of the selected tile.
+	 */
+	public void actionPerformed(ActionEvent e) {
+	    Tile tile = tileset.getSelectedTile();
+	    int currentObstacle = tile.getObstacle();
+
+	    if (currentObstacle != obstacle) {
+		tile.setObstacle(obstacle);
 	    }
 	}
     }

@@ -22,28 +22,10 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
     private Tile tile;
 
     /**
-     * Icons displayed in the combo box
-     */
-    private static ImageIcon[] obstacleIcons;
-
-    // load the icons
-    static {
-	String path = "tileset_editor/images/";
-
-	obstacleIcons = new ImageIcon[6];
-	obstacleIcons[Tile.OBSTACLE_NONE] = new ImageIcon(path + "obstacle_none.png");
-	obstacleIcons[Tile.OBSTACLE] = new ImageIcon(path + "obstacle.png");
-	obstacleIcons[Tile.OBSTACLE_TOP_RIGHT] = new ImageIcon(path + "obstacle_top_right.png");
-	obstacleIcons[Tile.OBSTACLE_TOP_LEFT] = new ImageIcon(path + "obstacle_top_left.png");
-	obstacleIcons[Tile.OBSTACLE_BOTTOM_LEFT] = new ImageIcon(path + "obstacle_bottom_left.png");
-	obstacleIcons[Tile.OBSTACLE_BOTTOM_RIGHT] = new ImageIcon(path + "obstacle_bottom_right.png");
-    }
-    
-    /**
      * Constructor.
      */
     public ObstacleView() {
-	super(obstacleIcons);
+	super(ObstacleIcons.getIcons());
 	addActionListener(this);
 	setCurrentTile(null);
     }
@@ -81,6 +63,10 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
      * The tile is then updated.
      */
     public void actionPerformed(ActionEvent e) {
-	tile.setObstacle(getSelectedIndex());
+	int listIndex = getSelectedIndex();
+	if (listIndex != tile.getObstacle()) {
+	    // the type of obstacle has changed
+	    tile.setObstacle(listIndex);
+	}
     }
 }

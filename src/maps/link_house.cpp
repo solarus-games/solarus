@@ -2,7 +2,7 @@
 #include "map.h"
 #include "game_resource.h"
 #include "maps/link_house.h"
-#include "tilesets/house.h"
+#include "tilesets/TilesetHouse.h"
 #include "tile.h"
 #include "color.h"
 #include "zsdx.h"

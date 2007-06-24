@@ -10,8 +10,9 @@
 #include "map.h"
 
 // tilesets
+
 enum TilesetID {
-  TILESET_HOUSE,
+#include "enum_tilesets.inc.h"
   NB_TILESETS
 };
 

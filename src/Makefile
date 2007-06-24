@@ -16,11 +16,11 @@ objects =	zsdx.o				\
 		tile.o				\
 		tile_animation_manager.o	\
 		color.o				\
-		tileset_editor.o		\
+#		tileset_editor.o		\
 		link.o				\
 		link_animations.o		\
 		tileset.o			\
-		tilesets/house.o		\
+		tilesets/TilesetHouse.o		\
 		maps/link_house.o		\
 		music.o				
 
@@ -42,20 +42,20 @@ headers = 	$(INCLUDE_DIR)/zsdx.h				\
 		$(INCLUDE_DIR)/animated_tile_image.h		\
 		$(INCLUDE_DIR)/tile_animation_manager.h		\
 		$(INCLUDE_DIR)/color.h				\
-		$(INCLUDE_DIR)/tileset_editor.h			\
+#		$(INCLUDE_DIR)/tileset_editor.h			\
 		$(INCLUDE_DIR)/link.h				\
 		$(INCLUDE_DIR)/link_animations.h		\
 		$(INCLUDE_DIR)/tileset.h			\
-		$(INCLUDE_DIR)/tilesets/house.h			\
+		$(INCLUDE_DIR)/tilesets/TilesetHouse.h		\
 		$(INCLUDE_DIR)/maps/link_house.h		\
 		$(INCLUDE_DIR)/music.h				
 
-executables = $(BIN_DIR)/tileset_editor
+#executables = $(BIN_DIR)/tileset_editor
 
-all: $(executables)
+#all: $(executables)
 
-$(BIN_DIR)/tileset_editor: tileset_editor.o simple_tile_image.o animated_tile_image.o color.o
-	$(CC) -o $@ $(CPPFLAGS) $(LDFLAGS) $(objects) $(LIBS)
+#$(BIN_DIR)/tileset_editor: tileset_editor.o simple_tile_image.o animated_tile_image.o color.o
+#	$(CC) -o $@ $(CPPFLAGS) $(LDFLAGS) $(objects) $(LIBS)
 
 all: $(objects)
 

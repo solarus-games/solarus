@@ -5,7 +5,7 @@
  */
 
 #include <SDL/SDL.h>
-#include "tilesets/house.h"
+#include "tilesets/TilesetHouse.h"
 #include "simple_tile_image.h"
 #include "animated_tile_image.h"
 
@@ -13,7 +13,7 @@
  * Loads the map.
  */
 void TilesetHouse::load(void) {
-  load_tileset_image("images/tilesets/house.png");
+  load_tileset_image("images/tilesets/House.png");
   SDL_Rect position_in_tileset;
   //   SDL_Rect positions_in_tileset[3]; // for animated tiles
 

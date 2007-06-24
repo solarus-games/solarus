@@ -23,7 +23,7 @@ headers =	$(INCLUDE_DIR)/zsdx.h				\
 		$(INCLUDE_DIR)/link.h				\
 		$(INCLUDE_DIR)/link_animations.h		\
 		$(INCLUDE_DIR)/tileset.h			\
-		$(INCLUDE_DIR)/tilesets/house.h			\
+		$(INCLUDE_DIR)/tilesets/TilesetHouse.h		\
 		$(INCLUDE_DIR)/maps/link_house.h		\
 		$(INCLUDE_DIR)/music.h			
 
@@ -52,7 +52,7 @@ game_test: 	game_test.o				\
 		$(SRC_DIR)/link.o			\
 		$(SRC_DIR)/link_animations.o		\
 		$(SRC_DIR)/tileset.o			\
-		$(SRC_DIR)/tilesets/house.o		\
+		$(SRC_DIR)/tilesets/TilesetHouse.o	\
 		$(SRC_DIR)/maps/link_house.o		\
 		$(SRC_DIR)/music.o			
 	$(CC) $(LDFLAGS) $(CPPFLAGS) $^ $(LIBS) -o $@

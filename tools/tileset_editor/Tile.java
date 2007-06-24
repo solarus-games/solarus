@@ -54,10 +54,10 @@ public class Tile extends Observable implements Serializable {
     private int animationSeparation;
 
     /**
-     * Simple constructor with default parameters: obstacle and no animation.
+     * Simple constructor with no animation.
      */
-    public Tile(Rectangle positionInTileset) {
-	this(positionInTileset, OBSTACLE_NONE, ANIMATION_NONE, 0);
+    public Tile(Rectangle positionInTileset, int obstacle) {
+	this(positionInTileset, obstacle, ANIMATION_NONE, 0);
     }
 
     /**

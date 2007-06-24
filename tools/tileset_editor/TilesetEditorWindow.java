@@ -168,6 +168,7 @@ public class TilesetEditorWindow extends JFrame {
 	menuItemGenerate = new JMenuItem("Generate C++");
 	menuItemGenerate.setMnemonic(KeyEvent.VK_G);
 	menuItemGenerate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
+	menuItemGenerate.addActionListener(new ActionGenerate());
 	menuItemGenerate.setEnabled(false);
 	menu.add(menuItemGenerate);
 
@@ -367,6 +368,28 @@ public class TilesetEditorWindow extends JFrame {
 	    }
 	    catch (IOException e) {
 		errorDialog("Could not save the tileset file: " + e.getMessage());
+	    }
+	}
+    }
+
+    /**
+     * Action performed when the user clicks on Tileset > Generate C++.
+     * Generates the C++ code for the current tileset.
+     */
+    private class ActionGenerate implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+	    CodeGenerator generator = new CodeGenerator();
+	    
+	    try {
+		generator.generate(tileset);
+		JOptionPane.showMessageDialog(TilesetEditorWindow.this,
+					      "Tileset code generated!",
+					      "Done",
+					      JOptionPane.INFORMATION_MESSAGE);
+	    }
+	    catch (IOException e) {
+		errorDialog("Could not generate the C++ code: " + e.getMessage());
 	    }
 	}
     }

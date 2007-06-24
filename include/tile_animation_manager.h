@@ -13,11 +13,11 @@
 #include <SDL/SDL.h>
 
 /**
- * Tile animation sequence type: 0-1-2-1 or 0-1-2
+ * Tile animation sequence type: 0-1-2 or 0-1-2-1
  */
 enum tile_animation_sequence_t {
-  ANIMATION_SEQUENCE_0121,
   ANIMATION_SEQUENCE_012,
+  ANIMATION_SEQUENCE_0121,
 };
 
 /**

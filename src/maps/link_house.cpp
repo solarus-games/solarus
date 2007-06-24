@@ -64,27 +64,26 @@ void MapLinkHouse::load(void) {
   position_in_map.y = 216;
   add_new_tile(tile_image, position_in_map);
 
-  tile_image = tileset->get_tile(29);
-  position_in_map.x = 8;
-  position_in_map.y = 16;
-  add_new_tile(tile_image, position_in_map, 24, 1);
-
-  tile_image = tileset->get_tile(29);
-  position_in_map.x = 216;
-  position_in_map.y = 16;
-  add_new_tile(tile_image, position_in_map, 12, 1);
-
-  tile_image = tileset->get_tile(31);
-  position_in_map.x = 8;
-  position_in_map.y = 216;
-  add_new_tile(tile_image, position_in_map, 24, 1);
-
-  tile_image = tileset->get_tile(31);
-  position_in_map.x = 216;
-  position_in_map.y = 216;
-  add_new_tile(tile_image, position_in_map, 12, 1);
-
   tile_image = tileset->get_tile(30);
+  position_in_map.x = 8;
+  position_in_map.y = 16;
+  add_new_tile(tile_image, position_in_map, 24, 1);
+
+  position_in_map.x = 216;
+  position_in_map.y = 16;
+  add_new_tile(tile_image, position_in_map, 12, 1);
+
+  tile_image = tileset->get_tile(31);
+  position_in_map.x = 8;
+  position_in_map.y = 216;
+  add_new_tile(tile_image, position_in_map, 24, 1);
+
+  tile_image = tileset->get_tile(31);
+  position_in_map.x = 216;
+  position_in_map.y = 216;
+  add_new_tile(tile_image, position_in_map, 12, 1);
+
+  tile_image = tileset->get_tile(29);
   position_in_map.x = 0;
   position_in_map.y = 24;
   add_new_tile(tile_image, position_in_map, 1, 24);

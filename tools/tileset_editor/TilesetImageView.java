@@ -66,10 +66,17 @@ public class TilesetImageView extends JComponent implements Observer {
 
 	// popup menu to create a tile
 	popupMenuCreate = new JPopupMenu();
-	item = new JMenuItem("Create");
+	item = new JMenuItem("Create (no obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE_NONE));
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    tileset.addTile();
+		    tileset.addTile(Tile.OBSTACLE_NONE);
+		}
+	    });
+	popupMenuCreate.add(item);
+	item = new JMenuItem("Create (obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE));
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    tileset.addTile(Tile.OBSTACLE);
 		}
 	    });
 	popupMenuCreate.add(item);
@@ -78,6 +85,7 @@ public class TilesetImageView extends JComponent implements Observer {
 		    tileset.setSelectedTileIndex(-1);
 		}
 	    });
+	popupMenuCreate.addSeparator();
 	popupMenuCreate.add(itemCancelCreate);
 
 	// popup menu for a selectedTile

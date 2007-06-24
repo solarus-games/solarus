@@ -294,12 +294,13 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     /**
      * Creates the tile specified by the current selection area and adds it to the tileset.
      * The observers are notified with the created Tile as parameter.
+     * @param obstacle type of obstacle for the created tile
      */
-    public void addTile() {
+    public void addTile(int obstacle) {
 	Tile tile = null;
 
 	if (isSelectingNewTile() && !isNewTileAreaOverlapping) {
-	    tile = new Tile(newTileArea);
+	    tile = new Tile(newTileArea, obstacle);
 	    
 	    tiles.add(tile);
 	    setSelectedTileIndex(getNbTiles() - 1);

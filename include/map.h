@@ -17,7 +17,7 @@ using namespace std;
  * Obstacle property for the tiles.
  */
 enum tile_obstacle_t {
-  NO_OBSTACLE,         // the tile is not an obstacle
+  OBSTACLE_NONE,       // the tile is not an obstacle
   OBSTACLE,            // the tile is entirely an obstacle
   OBSTACLE_UP_RIGHT,   // the upper-right half of the tile is an obstacle
   OBSTACLE_UP_LEFT,    // the upper-left half of the tile is an obstacle

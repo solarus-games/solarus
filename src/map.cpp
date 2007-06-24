@@ -29,7 +29,7 @@ Map::Map(int width, int height, zsdx_color_t background_color,
 
   // initialize obstacle tile
   for (int i = 0; i < obstacle_tiles_size; i++) {
-    obstacle_tiles[i] = NO_OBSTACLE;
+    obstacle_tiles[i] = OBSTACLE_NONE;
   }
 }
 
@@ -283,7 +283,7 @@ tile_obstacle_t Map::pixel_collision(int x, int y) {
   // test the obstacle property of this square
   switch (obstacle_type) {
 
-  case NO_OBSTACLE:
+  case OBSTACLE_NONE:
     // the square is not an obstacle
     on_obstacle = false;
     break;
@@ -321,7 +321,7 @@ tile_obstacle_t Map::pixel_collision(int x, int y) {
     break;
   }
 
-  return on_obstacle ? obstacle_type : NO_OBSTACLE;
+  return on_obstacle ? obstacle_type : OBSTACLE_NONE;
 }
 
 /**

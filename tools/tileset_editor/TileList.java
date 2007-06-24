@@ -83,7 +83,7 @@ public class TileList extends JPanel {
 
 	buttonCreate.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    tileset.addTile();
+		    tileset.addTile(Tile.OBSTACLE_NONE);
 		}
 	    });
 

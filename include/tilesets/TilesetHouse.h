@@ -1,12 +1,11 @@
 #ifndef ZSDX_TILESETS_HOUSE_H
 #define ZSDX_TILESETS_HOUSE_H
 
-/*
- * Example of tileset written manually.
- * The tileset editor will generate classes like this one.
- */
 #include "tileset.h"
 
+/*
+ * Tileset generated automatically by the tileset editor.
+ */
 class TilesetHouse: public Tileset {
 
  public:

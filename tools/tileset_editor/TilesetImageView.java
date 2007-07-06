@@ -58,6 +58,8 @@ public class TilesetImageView extends JComponent implements Observer {
     public TilesetImageView() {
 	super();
 
+	Configuration.getInstance().addObserver(this);
+	
 	addMouseListener(new TilesetImageMouseListener());
 	addMouseMotionListener(new TilesetImageMouseMotionListener());
 
@@ -149,7 +151,7 @@ public class TilesetImageView extends JComponent implements Observer {
     }
 
     /**
-     * This function is called when the tileset or the selected tile change.
+     * This function is called when the tileset, the selected tile or the configuration changes.
      */
     public void update(Observable o, Object obj) {
 
@@ -173,6 +175,9 @@ public class TilesetImageView extends JComponent implements Observer {
 
 	    // redraw the image
 	    repaint();
+	}
+	else if (o instanceof Configuration) {
+	    tileset.reloadImage();
 	}
     }
 

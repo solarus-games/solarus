@@ -21,13 +21,6 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      */
     public static final long serialVersionUID = 2L;
 
-    // common data for all tilesets 
-
-    /**
-     * Root path of ZSDX.
-     */
-    private static String zsdxRootPath;
-
     // tileset data 
 
     /**
@@ -94,27 +87,11 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     }
 
     /**
-     * Returns the root path of ZSDX.
-     * @return the root path
-     */
-    public static String getZsdxRootPath() {
-	return zsdxRootPath;
-    }
-
-    /**
-     * Sets the root path of ZSDX.
-     * @param path the root path
-     */
-    public static void setZsdxRootPath(String path) {
-	zsdxRootPath = path;
-    }
-
-    /**
      * Returns the default path of the tileset files, determined with ZSDX root path.
      * @return the default path of the tileset files
      */
     public static String getDefaultTilesetPath() {
-	return getZsdxRootPath() + File.separator + "tools" +
+	return Configuration.getInstance().getZsdxRootPath() + File.separator + "tools" +
 	    File.separator + "tileset_editor" +
 	    File.separator + "tilesets";
     }
@@ -132,7 +109,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      * @return the image file path
      */
     public String getImagePath() {
-	return zsdxRootPath + File.separator + "images" +
+	return Configuration.getInstance().getZsdxRootPath() + File.separator + "images" +
 	    File.separator + "tilesets" + File.separator + name + ".png";
     }
 

@@ -208,7 +208,6 @@ public class TilesetEditorWindow extends JFrame {
 	menuItemGenerate.setEnabled(true);
 
 	// notify the views
-	configurationPanel.setTileset(tileset);
 	tileList.setTileset(tileset);
 	tilesetImageView.setTileset(tileset);
     }

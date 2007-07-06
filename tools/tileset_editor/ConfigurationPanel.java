@@ -4,22 +4,22 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import java.util.*;
 
 /**
  * This component provides a text field to set ZSDX root directory.
  */
-public class ConfigurationPanel extends JPanel {
+public class ConfigurationPanel extends JPanel implements Observer {
+
+    /**
+     * The configuration object observed.
+     */
+    private Configuration configuration;
 
     /**
      * Text field containing the root directory of ZSDX. 
      */
     private JTextField textFieldPath;
-    
-    /**
-     * The tileset, notified when
-     * ZSDX root path is changed.
-     */
-    private Tileset tileset;
 
     /**
      * Constructor.
@@ -28,6 +28,9 @@ public class ConfigurationPanel extends JPanel {
      */
     public ConfigurationPanel() {
 	super();
+
+	configuration = Configuration.getInstance();
+	configuration.addObserver(this);
 
  	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
@@ -54,31 +57,11 @@ public class ConfigurationPanel extends JPanel {
 
 	    });
 
-	/* We put a default path into the text field.
-	 * Assuming that we are in the directory 'tools',
-	 * ZSDX should be the parent directory.
-	 */
-	File defaultDirectory = new File("..");
-	try {
-	    String path = defaultDirectory.getCanonicalPath();
-	    Tileset.setZsdxRootPath(path);
-	    textFieldPath.setText(path);
-	}
-	catch (IOException e) {
-	    // just left the text field blank if we couldn't get the default path
-	}
-    }
-
-    /**
-     * Sets the tileset.
-     */
-    public void setTileset(Tileset tileset) {
-	this.tileset = tileset;
+	update(null, null);
     }
 
     /**
      * Asks to the user the root directory of ZSDX.
-     * @return ZSDX root path, or null if the user didn't select any directory
      */
     private void askZsdxRootPath() {
 	String path = null;
@@ -99,12 +82,15 @@ public class ConfigurationPanel extends JPanel {
 	}
 
 	if (path != null) {
-	    Tileset.setZsdxRootPath(path);
-	    textFieldPath.setText(path);
-	    
-	    if (tileset != null) {
-		tileset.reloadImage();
-	    }
+	    configuration.setZsdxRootPath(path);
 	}
+    }
+
+    /**
+     * This method is called when the configuration is changed.
+     * The component is updated.
+     */
+    public void update(Observable o, Object obj) {
+	textFieldPath.setText(configuration.getZsdxRootPath());
     }
 }

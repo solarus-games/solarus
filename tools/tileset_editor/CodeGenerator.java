@@ -47,7 +47,7 @@ public class CodeGenerator {
      */
     public void generate(Tileset tileset) throws IOException {
 	this.tileset = tileset;
-	zsdxRootPath = Tileset.getZsdxRootPath();
+	zsdxRootPath = Configuration.getInstance().getZsdxRootPath();
 	name = tileset.getName();
 	upperCaseName = name.toUpperCase();
 	

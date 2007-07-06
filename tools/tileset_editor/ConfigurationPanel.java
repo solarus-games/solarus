@@ -4,12 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
-import java.util.*;
 
 /**
- * This component provides a text field to set ZSDX root directory.
+ * This component provides a text field to choose ZSDX root directory.
  */
-public class ConfigurationPanel extends JPanel implements Observer {
+public class ConfigurationPanel extends JPanel {
 
     /**
      * The configuration object observed.
@@ -23,14 +22,11 @@ public class ConfigurationPanel extends JPanel implements Observer {
 
     /**
      * Constructor.
-     * @param tileset the tileset, to be notified when
-     * ZSDX root path is changed.
      */
     public ConfigurationPanel() {
 	super();
 
 	configuration = Configuration.getInstance();
-	configuration.addObserver(this);
 
  	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
@@ -38,7 +34,7 @@ public class ConfigurationPanel extends JPanel implements Observer {
 	setBorder(BorderFactory.createTitledBorder("Configuration"));
 
 	// create the components and put them into the panel
-	textFieldPath = new JTextField(50);
+	textFieldPath = new JTextField(20);
 	textFieldPath.setEditable(false);
 	JButton buttonBrowse = new JButton("Change...");
 
@@ -57,7 +53,7 @@ public class ConfigurationPanel extends JPanel implements Observer {
 
 	    });
 
-	update(null, null);
+	textFieldPath.setText(configuration.getZsdxRootPath());
     }
 
     /**
@@ -82,15 +78,15 @@ public class ConfigurationPanel extends JPanel implements Observer {
 	}
 
 	if (path != null) {
-	    configuration.setZsdxRootPath(path);
+	    textFieldPath.setText(path);
 	}
     }
 
     /**
-     * This method is called when the configuration is changed.
-     * The component is updated.
+     * Returns the root path entered by the user.
+     * @return ZSDX root path as chosen by the user
      */
-    public void update(Observable o, Object obj) {
-	textFieldPath.setText(configuration.getZsdxRootPath());
+    public String getZsdxRootPathEntered() {
+	return textFieldPath.getText();
     }
 }

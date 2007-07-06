@@ -16,11 +16,6 @@ public class TilesetEditorWindow extends JFrame {
     private Tileset tileset;
 
     /**
-     * The configuration panel (with the text field to set ZSDX root path).
-     */
-    private ConfigurationPanel configurationPanel;
-
-    /**
      * The list of tiles.
      */
     private TileList tileList;
@@ -52,9 +47,6 @@ public class TilesetEditorWindow extends JFrame {
 	// create the menu bar
 	createMenuBar();
 
-	// create the panels
-	Box globalPanel = new Box(BoxLayout.Y_AXIS);
-
 	// tile list and tileset image
 
 	// tile list
@@ -71,20 +63,10 @@ public class TilesetEditorWindow extends JFrame {
 	JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tileList, tilesetImageScroller);
 	tilesetPanel.setContinuousLayout(true); 
 
-	// ZSDX root path configuration
-	configurationPanel = new ConfigurationPanel();
- 	configurationPanel.setMaximumSize(new Dimension(500, 80));
-	configurationPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-	// add the panels
-	globalPanel.add(configurationPanel);
-	globalPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-	globalPanel.add(tilesetPanel);
-
-	// we must put our global panel in another panel
+	// we must put our main panel in another panel
 	// otherwise the background color of the window is bad
 	JPanel rootPanel = new JPanel(new BorderLayout());
-	rootPanel.add(globalPanel);
+	rootPanel.add(tilesetPanel);
 	setContentPane(rootPanel);
 
 	// add a window listener to confirm when the user closes the window
@@ -111,17 +93,17 @@ public class TilesetEditorWindow extends JFrame {
 	catch (Exception e) {
 	}
 
-	// otherwise, try GTK
+	// try Mac OS
 	try {
-	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+	    UIManager.setLookAndFeel("it.unitn.ing.swing.plaf.macos.MacOSLookAndFeel");
 	    return;
 	}
 	catch (Exception e) {
 	}
 
-	// try Mac OS
+	// otherwise, try GTK
 	try {
-	    UIManager.setLookAndFeel("it.unitn.ing.swing.plaf.macos.MacOSLookAndFeel");
+	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 	    return;
 	}
 	catch (Exception e) {
@@ -137,7 +119,7 @@ public class TilesetEditorWindow extends JFrame {
 	JMenu menu;
 	JMenuItem item;
 
-	// menu File
+	// menu Tileset
 	menu = new JMenu("Tileset");
 	menu.setMnemonic(KeyEvent.VK_T);
 	
@@ -149,28 +131,49 @@ public class TilesetEditorWindow extends JFrame {
 
 	item = new JMenuItem("Open...");
 	item.setMnemonic(KeyEvent.VK_O);
+	item.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 	item.addActionListener(new ActionOpen());
 	menu.add(item);
 
 	menuItemSave = new JMenuItem("Save");
 	menuItemSave.setMnemonic(KeyEvent.VK_S);
+	menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current tileset");
 	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 	menuItemSave.addActionListener(new ActionSave());
 	menuItemSave.setEnabled(false);
 	menu.add(menuItemSave);
 
 	menuItemSaveAs = new JMenuItem("Save as...");
+	menuItemSaveAs.getAccessibleContext().setAccessibleDescription("Save the tileset into a new file");
 	menuItemSaveAs.addActionListener(new ActionSaveAs());
 	menuItemSaveAs.setEnabled(false);
 	menu.add(menuItemSaveAs);
 
+	menu.addSeparator();
+
 	menuItemGenerate = new JMenuItem("Generate C++");
 	menuItemGenerate.setMnemonic(KeyEvent.VK_G);
+	menuItemGenerate.getAccessibleContext().setAccessibleDescription("Generate the C++ code for the current tileset");
 	menuItemGenerate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 	menuItemGenerate.addActionListener(new ActionGenerate());
 	menuItemGenerate.setEnabled(false);
 	menu.add(menuItemGenerate);
+
+	item = new JMenuItem("Configuration...");
+	item.setMnemonic(KeyEvent.VK_C);
+	item.getAccessibleContext().setAccessibleDescription("Changes some settings");
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+		    ConfigurationDialog dialog = new ConfigurationDialog();
+		    dialog.setLocationRelativeTo(TilesetEditorWindow.this);
+		    dialog.pack();
+		    dialog.setVisible(true);
+		}
+	    });
+	menu.add(item);
+
+	menu.addSeparator();
 
 	item = new JMenuItem("Quit");
 	item.setMnemonic(KeyEvent.VK_Q);

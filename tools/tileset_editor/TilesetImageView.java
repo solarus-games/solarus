@@ -176,7 +176,7 @@ public class TilesetImageView extends JComponent implements Observer {
 	    // redraw the image
 	    repaint();
 	}
-	else if (o instanceof Configuration) {
+	else if (o instanceof Configuration && tileset != null) {
 	    tileset.reloadImage();
 	}
     }

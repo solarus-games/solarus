@@ -1,4 +1,4 @@
-package tileset_editor;
+package editors;
 
 /**
  * Exception thrown if the user tries to make something wrong in a tileset.

@@ -1,4 +1,4 @@
-package tileset_editor;
+package editors;
 
 import java.awt.*;
 import javax.swing.*;
@@ -7,7 +7,6 @@ import java.io.*;
 
 /**
  * This component shows information about the current tile and lets the user edit it.
- * TODO: make a class ObstacleView (like AnimationView)
  */
 public class SelectedTileView extends JPanel {
 

@@ -1,4 +1,4 @@
-package tileset_editor;
+package editors;
 
 import java.util.*;
 import java.io.*;

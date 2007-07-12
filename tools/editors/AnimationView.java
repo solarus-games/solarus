@@ -47,7 +47,7 @@ public class AnimationView extends JPanel implements Observer, ActionListener {
 
     // load the icons
     static {
-	String path = "tileset_editor/images/";
+	String path = "editors/images/";
 
 	itemsSeparation = new ImageIcon[2];
 	itemsSeparation[Tile.ANIMATION_SEPARATION_HORIZONTAL] = new ImageIcon(path + "animation_separation_horizontal.png");

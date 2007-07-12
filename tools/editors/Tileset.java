@@ -73,7 +73,6 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 
     /**
      * Creates a new tileset.
-     * @param tilesetFile file of the tileset (should be a one)
      * @param name name of the tileset to create
      */
     public Tileset(String name) {
@@ -82,8 +81,6 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 	this.isSaved = false;
 	this.selectedTileIndex = -1; // none
 	tiles = new Vector<Tile>();
-
-//  	tiles.add(new Tile(new Rectangle(16, 32, 16, 16), Tile.OBSTACLE, Tile.NO_ANIMATION, 0));
     }
 
     /**
@@ -92,8 +89,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      */
     public static String getDefaultTilesetPath() {
 	return Configuration.getInstance().getZsdxRootPath() + File.separator + "tools" +
-	    File.separator + "tileset_editor" +
-	    File.separator + "tilesets";
+	    File.separator + "editors" + File.separator + "tilesets";
     }
 
     /**

@@ -26,7 +26,7 @@ public class ObstacleIcons {
 
     // load the icons
     static {
-	String path = "tileset_editor/images/";
+	String path = "editors/images/";
 
 	obstacleIcons = new ImageIcon[6];
 	obstacleIcons[Tile.OBSTACLE_NONE] = new ImageIcon(path + "obstacle_none.png");

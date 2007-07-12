@@ -8,27 +8,22 @@ import java.io.*;
 /**
  * Main window of the tileset editor.
  */
-public class TilesetEditorWindow extends JFrame {
+public class MapEditorWindow extends JFrame {
 
     /**
-     * The current tileset.
+     * The current map.
      */
-    private Tileset tileset;
+    private Map map;
+
+    // components
+    private MapPropertiesView mapPropertiesView;
+    private TilePicker tilePicker;
+    private MapView mapView;
 
     /**
-     * The list of tiles.
+     * Current file of the map (null if this is a new map).
      */
-    private TileList tileList;
-
-    /**
-     * The tileset image.
-     */
-    private TilesetImageView tilesetImageView;
-
-    /**
-     * Current file of the tileset (null if this is a new tileset).
-     */
-    private File tilesetFile;
+    private File mapFile;
 
     // menu items memorized to enable them later
     private JMenuItem menuItemSave;
@@ -38,8 +33,8 @@ public class TilesetEditorWindow extends JFrame {
     /**
      * Creates a new window.
      */
-    public TilesetEditorWindow() {
-	super("Zelda Solarus Deluxe - Tileset Editor");
+    public MapEditorWindow() {
+	super("Zelda Solarus Deluxe - Map Editor");
 
 	// set a nice look and feel
 	//	setLookAndFeel();
@@ -47,26 +42,19 @@ public class TilesetEditorWindow extends JFrame {
 	// create the menu bar
 	createMenuBar();
 
-	// tile list and tileset image
+	mapPropertiesView = new MapPropertiesView();
+	tilePicker = new TilePicker();
+	
+	JPanel leftPanel = new JPanel(new BorderLayout());
+	leftPanel.add(mapPropertiesView, BorderLayout.NORTH);
+	leftPanel.add(tilePicker, BorderLayout.CENTER);
 
-	// tile list
-	tileList = new TileList();
-	tileList.setAlignmentY(Component.TOP_ALIGNMENT);
- 	tileList.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+	mapView = new MapView();
+	JScrollPane mapViewScroller = new JScrollPane(mapView);
 
-	// tileset image
-	tilesetImageView = new TilesetImageView();
-	JScrollPane tilesetImageScroller = new JScrollPane(tilesetImageView);
-	tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
- 	tilesetImageScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+	JSplitPane rootPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, mapViewScroller);
+	rootPanel.setContinuousLayout(true); 
 
-	JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tileList, tilesetImageScroller);
-	tilesetPanel.setContinuousLayout(true); 
-
-	// we must put our main panel in another panel
-	// otherwise the background color of the window is bad
-	JPanel rootPanel = new JPanel(new BorderLayout());
-	rootPanel.add(tilesetPanel);
 	setContentPane(rootPanel);
 
 	// add a window listener to confirm when the user closes the window
@@ -120,32 +108,32 @@ public class TilesetEditorWindow extends JFrame {
 	JMenuItem item;
 
 	// menu Tileset
-	menu = new JMenu("Tileset");
+	menu = new JMenu("Map");
 	menu.setMnemonic(KeyEvent.VK_T);
 	
 	item = new JMenuItem("New");
 	item.setMnemonic(KeyEvent.VK_N);
-	item.getAccessibleContext().setAccessibleDescription("Create a new tileset");
+	item.getAccessibleContext().setAccessibleDescription("Create a new map");
 	item.addActionListener(new ActionNew());
 	menu.add(item);
 
 	item = new JMenuItem("Open...");
 	item.setMnemonic(KeyEvent.VK_O);
-	item.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
+	item.getAccessibleContext().setAccessibleDescription("Open an existing map");
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 	item.addActionListener(new ActionOpen());
 	menu.add(item);
 
 	menuItemSave = new JMenuItem("Save");
 	menuItemSave.setMnemonic(KeyEvent.VK_S);
-	menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current tileset");
+	menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current map");
 	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 	menuItemSave.addActionListener(new ActionSave());
 	menuItemSave.setEnabled(false);
 	menu.add(menuItemSave);
 
 	menuItemSaveAs = new JMenuItem("Save as...");
-	menuItemSaveAs.getAccessibleContext().setAccessibleDescription("Save the tileset into a new file");
+	menuItemSaveAs.getAccessibleContext().setAccessibleDescription("Save the map into a new file");
 	menuItemSaveAs.addActionListener(new ActionSaveAs());
 	menuItemSaveAs.setEnabled(false);
 	menu.add(menuItemSaveAs);
@@ -154,7 +142,7 @@ public class TilesetEditorWindow extends JFrame {
 
 	menuItemGenerate = new JMenuItem("Generate C++");
 	menuItemGenerate.setMnemonic(KeyEvent.VK_G);
-	menuItemGenerate.getAccessibleContext().setAccessibleDescription("Generate the C++ code for the current tileset");
+	menuItemGenerate.getAccessibleContext().setAccessibleDescription("Generate the C++ code for the current map");
 	menuItemGenerate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 	menuItemGenerate.addActionListener(new ActionGenerate());
 	menuItemGenerate.setEnabled(false);
@@ -166,7 +154,7 @@ public class TilesetEditorWindow extends JFrame {
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
 		    ConfigurationDialog dialog = new ConfigurationDialog();
-		    dialog.setLocationRelativeTo(TilesetEditorWindow.this);
+		    dialog.setLocationRelativeTo(MapEditorWindow.this);
 		    dialog.pack();
 		    dialog.setVisible(true);
 		}
@@ -177,7 +165,7 @@ public class TilesetEditorWindow extends JFrame {
 
 	item = new JMenuItem("Quit");
 	item.setMnemonic(KeyEvent.VK_Q);
-	item.getAccessibleContext().setAccessibleDescription("Exit the tileset editor");
+	item.getAccessibleContext().setAccessibleDescription("Exit the map editor");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
 		    if (checkCurrentFileSaved()) {
@@ -193,17 +181,17 @@ public class TilesetEditorWindow extends JFrame {
     }
 
     /**
-     * Sets the current tileset. This method is called when the user opens a tileset,
-     * closes the tileset, or creates a new one.
-     * @param tileset the new tileset
+     * Sets the current map. This method is called when the user opens a map,
+     * closes the map, or creates a new one.
+     * @param map the new map
      */
-    private void setTileset(Tileset tileset) {
-	// if there was already a tileset, remove its observers
-	if (this.tileset != null) {
-	    tileset.deleteObservers();
+    private void setMap(Map map) {
+	// if there was already a map, remove its observers
+	if (this.map != null) {
+	    map.deleteObservers();
 	}
 	
-	this.tileset = tileset;
+	this.map = map;
 
 	// enable the menu items
 	menuItemSave.setEnabled(true);
@@ -211,18 +199,20 @@ public class TilesetEditorWindow extends JFrame {
 	menuItemGenerate.setEnabled(true);
 
 	// notify the views
-	tileList.setTileset(tileset);
-	tilesetImageView.setTileset(tileset);
+	// TODO
+	mapPropertiesView.setMap(map);
+	tilePicker.setMap(map);
+	mapView.setMap(map);
     }
 
     /**
-     * Returns a file chooser adapted to select a tileset file.
+     * Returns a file chooser adapted to select a map file.
      * TODO: make a filter
      * @param dialogTitle title of the dialog box
      */
-    private static JFileChooser getTilesetFileChooser(String dialogTitle) {
+    private static JFileChooser getMapFileChooser(String dialogTitle) {
 
-	JFileChooser fileChooser = new JFileChooser(Tileset.getDefaultTilesetPath());
+	JFileChooser fileChooser = new JFileChooser(Map.getDefaultMapPath());
 	fileChooser.setDialogTitle(dialogTitle);
 	fileChooser.setDragEnabled(false);
 	fileChooser.setMultiSelectionEnabled(false);
@@ -242,16 +232,16 @@ public class TilesetEditorWindow extends JFrame {
     }
 
     /**
-     * This function is called when the user wants to close the current tileset.
-     * If the tileset is not saved, we propose to save it.
+     * This function is called when the user wants to close the current map.
+     * If the map is not saved, we propose to save it.
      * @return false if the user cancelled
      */
     private boolean checkCurrentFileSaved() {
 	boolean result = true;
 
-	if (tileset != null && !tileset.isSaved()) {
+	if (map != null && !map.isSaved()) {
 	    int answer =  JOptionPane.showConfirmDialog(this,
-							"The tileset has been modified. Do you want to save it?",
+							"The map has been modified. Do you want to save it?",
 							"Save the modifications",
 							JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.WARNING_MESSAGE);
@@ -268,8 +258,8 @@ public class TilesetEditorWindow extends JFrame {
 
 
     /**
-     * Action performed when the user clicks on Tileset > New.
-     * Creates a new tileset, asking to the user the tileset name and the tileset file.
+     * Action performed when the user clicks on Map > New.
+     * Creates a new map, asking to the user the map name and the map file.
      */
     private class ActionNew implements ActionListener {
 	
@@ -280,25 +270,25 @@ public class TilesetEditorWindow extends JFrame {
 	    }
 
 	    // ask the tileset name
-	    String name = JOptionPane.showInputDialog(TilesetEditorWindow.this,
-						      "Please enter the name of your new tileset",
-						      "Tileset name",
+	    String name = JOptionPane.showInputDialog(MapEditorWindow.this,
+						      "Please enter the name of your new map",
+						      "Map name",
 						      JOptionPane.QUESTION_MESSAGE);
 
 	    if (name == null || name.length() == 0) {
 		return;
 	    }
 
-	    tilesetFile = null;
-	    tileset = new Tileset(name);
-	    tileset.reloadImage();
-	    setTileset(tileset);
+	    mapFile = null;
+	    map = new Map(name);
+	    // map.reloadImage();
+	    setMap(map);
 	}
     }
 
     /**
-     * Action performed when the user clicks on Tileset > Open.
-     * Opens an existing tileset, asking to the user the tileset file.
+     * Action performed when the user clicks on Map > Open.
+     * Opens an existing map, asking to the user the map file.
      */
     private class ActionOpen implements ActionListener {
 	
@@ -309,63 +299,63 @@ public class TilesetEditorWindow extends JFrame {
 	    }
 
 	    // ask the tileset file
-	    JFileChooser fileChooser = getTilesetFileChooser("Open a tileset");
+	    JFileChooser fileChooser = getMapFileChooser("Open a map");
 	    try {
-		if (fileChooser.showOpenDialog(TilesetEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
-		    tilesetFile = fileChooser.getSelectedFile();
-		    Tileset tileset = Tileset.load(tilesetFile);
-		    tileset.reloadImage();
-		    setTileset(tileset);
+		if (fileChooser.showOpenDialog(MapEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
+		    mapFile = fileChooser.getSelectedFile();
+		    Map map = Map.load(mapFile);
+		    // map.reloadImage();
+		    setMap(map);
 		}
 	    }
 	    catch (IOException e) {
-		errorDialog("Could not open the tileset file: " + e.getMessage());
+		errorDialog("Could not open the map file: " + e.getMessage());
 	    }
 	}
     }
 
     /**
-     * Action performed when the user clicks on Tileset > Save.
-     * Saves the tileset into its file.
+     * Action performed when the user clicks on Map > Save.
+     * Saves the map into its file.
      */
     private class ActionSave implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-	    // if this is a new tileset, make a "save as..."
-	    if (tilesetFile == null) {
+	    // if this is a new map, make a "save as..."
+	    if (mapFile == null) {
 		// default file
-		String path = Tileset.getDefaultTilesetPath() +
-		    File.separator + tileset.getName() + ".zsd";
+		String path = Map.getDefaultMapPath() +
+		    File.separator + map.getName() + ".zsd";
 
-		tilesetFile = new File(path);
+		mapFile = new File(path);
 		new ActionSaveAs().actionPerformed(ev);
 	    }
 	    else {
 		try {
-		    Tileset.save(tilesetFile, tileset);
+		    Map.save(mapFile, map);
 		}
 		catch (IOException e) {
-		    errorDialog("Could not save the tileset file: " + e.getMessage());
+		    errorDialog("Could not save the map file: " + e.getMessage());
 		}
 	    }
 	}
     }
 
     /**
-     * Action performed when the user clicks on Tileset > Save as.
-     * Saves the tileset into its file.
+     * Action performed when the user clicks on Map > Save as.
+     * Saves the map into its file.
      */
     private class ActionSaveAs implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
 
-	    // ask the tileset file
-	    JFileChooser fileChooser = getTilesetFileChooser("Save the tileset as...");
-	    fileChooser.setSelectedFile(tilesetFile);
+	    // ask the map file
+	    JFileChooser fileChooser = getMapFileChooser("Save the map as...");
+	    fileChooser.setSelectedFile(mapFile);
 	    try {
-		if (fileChooser.showSaveDialog(TilesetEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
-		    tilesetFile = fileChooser.getSelectedFile();
-		    Tileset.save(tilesetFile, tileset);
+		if (fileChooser.showSaveDialog(MapEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
+		    mapFile = fileChooser.getSelectedFile();
+		    Map.save(mapFile, map);
 		}
 	    }
 	    catch (IOException e) {
@@ -375,18 +365,18 @@ public class TilesetEditorWindow extends JFrame {
     }
 
     /**
-     * Action performed when the user clicks on Tileset > Generate C++.
-     * Generates the C++ code for the current tileset.
+     * Action performed when the user clicks on Map > Generate C++.
+     * Generates the C++ code for the current map.
      */
     private class ActionGenerate implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-	    TilesetCodeGenerator generator = new TilesetCodeGenerator();
+	    MapCodeGenerator generator = new MapCodeGenerator();
 	    
 	    try {
-		generator.generate(tileset);
-		JOptionPane.showMessageDialog(TilesetEditorWindow.this,
-					      "Tileset code generated!",
+		generator.generate(map);
+		JOptionPane.showMessageDialog(MapEditorWindow.this,
+					      "Map code generated!",
 					      "Done",
 					      JOptionPane.INFORMATION_MESSAGE);
 	    }

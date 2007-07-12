@@ -7,7 +7,7 @@ import java.awt.*;
  * This class provides functionnalities to generate
  * the C++ code corresponding to a tileset.
  */
-public class CodeGenerator {
+public class TilesetCodeGenerator {
 
     private Tileset tileset;       // the tileset
     private String name;           // the tileset's name
@@ -38,7 +38,7 @@ public class CodeGenerator {
     /**
      * Constructor.
      */
-    public CodeGenerator() {
+    public TilesetCodeGenerator() {
     }
 
     /**

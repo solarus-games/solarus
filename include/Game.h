@@ -5,7 +5,7 @@
 #ifndef ZSDX_GAME_H
 #define ZSDX_GAME_H
 
-#include "game_resource.h"
+#include "GameResource.h"
 
 /**
  * This class represents the game.

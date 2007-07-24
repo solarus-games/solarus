@@ -6,7 +6,7 @@
 #define ZSDX_SPRITE_ANIMATION_DIRECTION
 
 #include <SDL/SDL.h>
-#include "map.h"
+#include "Map.h"
 
 /**
  * An animation direction is a sequence of

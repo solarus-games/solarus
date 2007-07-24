@@ -10,8 +10,8 @@ using namespace std;
 #include <cstdlib>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "tileset.h"
-#include "tile_image.h"
+#include "Tileset.h"
+#include "Tile.h"
 
 /**
  * Constructor.

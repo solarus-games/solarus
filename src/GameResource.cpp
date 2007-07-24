@@ -1,8 +1,8 @@
 #include <SDL/SDL.h>
-#include "game_resource.h"
-#include "link.h"
+#include "GameResource.h"
+#include "Link.h"
 #include "tilesets/TilesetHouse.h"
-#include "maps/link_house.h"
+#include "maps/LinkHouse.h"
 
 /**
  * Creates all resources.
@@ -15,7 +15,7 @@ void GameResource::create_resources(void) {
   link = new Link();
 
   // tilesets
-#include "creation_tilesets.inc.cpp"
+#include "TilesetsCreation.inc.cpp"
   
   // musics
   musics[MUSIC_VILLAGE] = new Music("village.it");

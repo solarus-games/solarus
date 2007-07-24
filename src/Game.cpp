@@ -3,8 +3,8 @@
  */
 
 #include <SDL/SDL.h>
-#include "game.h"
-#include "zsdx.h"
+#include "Game.h"
+#include "ZSDX.h"
 
 /**
  * Launches a map.

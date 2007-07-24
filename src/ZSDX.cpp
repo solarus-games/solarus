@@ -3,7 +3,7 @@
  */
 
 #include <fmod/fmod.h>
-#include "zsdx.h"
+#include "ZSDX.h"
 
 /**
  * Number of times the screen is redrawn is a second.

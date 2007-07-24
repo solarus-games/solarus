@@ -10,7 +10,7 @@ using namespace std;
 #include <fmod/fmod.h>
 #include <fmod/fmod_errors.h>
 #include <stdlib.h>
-#include "music.h"
+#include "Music.h"
 
 /**
  * True if the sound system has been initialized, i.e. if

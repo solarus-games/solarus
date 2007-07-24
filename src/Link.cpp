@@ -1,8 +1,8 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "link.h"
-#include "animated_sprite.h"
-#include "link_animations.h"
+#include "Link.h"
+#include "AnimatedSprite.h"
+#include "LinkAnimations.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)

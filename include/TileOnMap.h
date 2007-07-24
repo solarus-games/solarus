@@ -1,27 +1,27 @@
 /**
- * This module defines the class Tile.
+ * This module defines the class TileOnMap.
  */
 
 #ifndef ZSDX_TILE_H
 #define ZSDX_TILE_H
 
-#include "map_entity.h"
-#include "tile_image.h"
+#include "MapEntity.h"
+#include "Tile.h"
 
 /**
- * A tile is a small fixed piece of the map background.
- * It is composed of an image (SimpleTileImage or AnimatedTileImage)
- * and a position on the map, possibly with an x or y repetition of the pattern.
+ * A tile on a map is a small fixed piece of the map background.
+ * It is composed of a tile (SimpleTile or AnimatedTile)
+ * and how it is placed on the map: its position and an x or y repetition of the pattern.
  */
-class Tile: public MapEntity {
+class TileOnMap: public MapEntity {
 
  private:
 
   /**
-   * Image of the tile.
-   * It can be an instance of SimpleTileImage or AnimatedTileImage
+   * Pattern of the tile.
+   * It can be an instance of SimpleTile or AnimatedTile.
    */
-  TileImage *tile_image;
+  Tile *tile;
 
   /**
    * Number of times the pattern is repeated on x.
@@ -36,26 +36,26 @@ class Tile: public MapEntity {
  public:
 
   /**
-   * Creates a new tile without repeating its pattern.
-   * It is equivalent to Tile(tile_image, position_in_map, 1, 1).
-   * @param tile_image image of the tile (SimpleTileImage or AnimatedTileImage)
+   * Creates a new tile on the map without repeating its pattern.
+   * It is equivalent to TileOnMap(tile, position_in_map, 1, 1).
+   * @param tile_image image of the tile (SimpleTile or AnimatedTile)
    * @param position_in_map position of the tile on the map
    */
-  Tile(TileImage *tile_image, SDL_Rect &position_in_map);
+  TileOnMap(Tile *tile, SDL_Rect &position_in_map);
 
   /**
    * Creates a new tile.
-   * @param tile_image image of the tile (SimpleTileImage or AnimatedTileImage)
+   * @param tile image of the tile (SimpleTile or AnimatedTile)
    * @param position_in_map position of the tile on the map
    * @param repeat_x number of times the pattern is repeated on x
    * @param repeat_y number of times the pattern is repeated on y
    */
-  Tile(TileImage *tile_image, SDL_Rect &position_in_map, int repeat_x, int repeat_y);
+  TileOnMap(Tile *tile, SDL_Rect &position_in_map, int repeat_x, int repeat_y);
 
   /**
    * Destructor.
    */
-  inline ~Tile() { }
+  inline ~TileOnMap() { }
 
   /**
    * Displays the tile on the map.

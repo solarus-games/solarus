@@ -4,8 +4,8 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "link_animations.h"
-#include "sprite_animation_direction.h"
+#include "LinkAnimations.h"
+#include "SpriteAnimationDirection.h"
 
 /**
  * Constructor.

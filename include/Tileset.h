@@ -7,7 +7,7 @@
 
 #include <SDL/SDL.h>
 
-class TileImage;
+class Tile;
 
 /**
  * Abstract class for a tileset.
@@ -22,7 +22,7 @@ class Tileset {
    * Tiles of the tileset.
    * A tileset cannot have more than 1024 tiles.
    */
-  TileImage *tiles[1024];
+  Tile *tiles[1024];
   
   /**
    * Number of tiles in the tileset.
@@ -80,11 +80,11 @@ class Tileset {
   inline SDL_Surface *get_image(void) { return tileset_image; }
 
   /**
-   * Returns a tile image.
+   * Returns a tile from this tileset.
    * @param index index of the tile to get
-   * @return the tile image at this index
+   * @return the tile at this index
    */
-  inline TileImage *get_tile(int index) { return tiles[index]; }
+  inline Tile *get_tile(int index) { return tiles[index]; }
 };
 
 #endif

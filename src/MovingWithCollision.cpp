@@ -6,7 +6,7 @@ using namespace std;
 #include <iostream>
 #include <SDL/SDL_image.h>
 #include <cmath>
-#include "moving_with_collision.h"
+#include "MovingWithCollision.h"
 
 /**
  * Sets the current map of the object.

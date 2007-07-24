@@ -6,7 +6,7 @@
 #define ZSDX_MOVING_8_BY_PLAYER
 
 #include <SDL/SDL.h>
-#include "moving_with_collision.h"
+#include "MovingWithCollision.h"
 
 /**
  * Abstract class for a moving entity with the 8 basic directions.

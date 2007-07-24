@@ -1,7 +1,7 @@
 #ifndef ZSDX_TILESETS_HOUSE_H
 #define ZSDX_TILESETS_HOUSE_H
 
-#include "tileset.h"
+#include "Tileset.h"
 
 /*
  * Tileset generated automatically by the tileset editor.

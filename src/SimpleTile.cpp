@@ -3,16 +3,16 @@
  */
 
 #include "SDL/SDL.h"
-#include "simple_tile_image.h"
-#include "map.h"
+#include "SimpleTile.h"
+#include "Map.h"
 
 /**
  * Creates a simple tile.
  * @param position_in_tileset position of the tile in the tileset
  * @param obstacle is the tile an obstacle?
  */
-SimpleTileImage::SimpleTileImage(SDL_Rect &position_in_tileset, tile_obstacle_t obstacle):
-  TileImage(obstacle, position_in_tileset.w, position_in_tileset.h),
+SimpleTile::SimpleTile(SDL_Rect &position_in_tileset, tile_obstacle_t obstacle):
+  Tile(obstacle, position_in_tileset.w, position_in_tileset.h),
   position_in_tileset(position_in_tileset) {
 
 }
@@ -25,7 +25,7 @@ SimpleTileImage::SimpleTileImage(SDL_Rect &position_in_tileset, tile_obstacle_t 
  * @param position_in_surface position of the tile on the surface
  * @param tileset_image the tileset image of this tile
  */
-void SimpleTileImage::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
+void SimpleTile::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
   SDL_BlitSurface(tileset_image, &position_in_tileset, surface, &position_in_surface);
 
 }

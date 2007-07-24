@@ -1,54 +1,52 @@
 include ../Makedefs
 
-objects =	zsdx.o				\
-		game.o				\
-		game_resource.o			\
-		map.o				\
-		moving.o			\
-		moving_with_collision.o		\
-		moving_8_by_player.o		\
-		animated_sprite.o		\
-		sprite_animations.o		\
-		sprite_animation.o		\
-		sprite_animation_direction.o	\
-		simple_tile_image.o		\
-		animated_tile_image.o		\
-		tile.o				\
-		tile_animation_manager.o	\
-		color.o				\
-#		tileset_editor.o		\
-		link.o				\
-		link_animations.o		\
-		tileset.o			\
+objects =	ZSDX.o				\
+		Game.o				\
+		GameResource.o			\
+		Map.o				\
+		Moving.o			\
+		MovingWithCollision.o		\
+		Moving8ByPlayer.o		\
+		AnimatedSprite.o		\
+		SpriteAnimations.o		\
+		SpriteAnimation.o		\
+		SpriteAnimationDirection.o	\
+		SimpleTile.o			\
+		AnimatedTile.o			\
+		TileOnMap.o			\
+		TileAnimationManager.o		\
+		Color.o				\
+		Link.o				\
+		LinkAnimations.o		\
+		Tileset.o			\
 		tilesets/TilesetHouse.o		\
-		maps/link_house.o		\
-		music.o				
+		maps/LinkHouse.o		\
+		Music.o				
 
-headers = 	$(INCLUDE_DIR)/zsdx.h				\
-		$(INCLUDE_DIR)/game_resource.h			\
-		$(INCLUDE_DIR)/game.h				\
-		$(INCLUDE_DIR)/map.h				\
-		$(INCLUDE_DIR)/map_entity.h			\
-		$(INCLUDE_DIR)/moving.h				\
-		$(INCLUDE_DIR)/moving_with_collision.h		\
-		$(INCLUDE_DIR)/moving_8_by_player.h		\
-		$(INCLUDE_DIR)/animated_sprite.h		\
-		$(INCLUDE_DIR)/sprite_animations.h		\
-		$(INCLUDE_DIR)/sprite_animation.h		\
-		$(INCLUDE_DIR)/sprite_animation_direction.h	\
-		$(INCLUDE_DIR)/tile.h				\
-		$(INCLUDE_DIR)/tile_image.h			\
-		$(INCLUDE_DIR)/simple_tile_image.h		\
-		$(INCLUDE_DIR)/animated_tile_image.h		\
-		$(INCLUDE_DIR)/tile_animation_manager.h		\
-		$(INCLUDE_DIR)/color.h				\
-#		$(INCLUDE_DIR)/tileset_editor.h			\
-		$(INCLUDE_DIR)/link.h				\
-		$(INCLUDE_DIR)/link_animations.h		\
-		$(INCLUDE_DIR)/tileset.h			\
+headers = 	$(INCLUDE_DIR)/ZSDX.h				\
+		$(INCLUDE_DIR)/GameResource.h			\
+		$(INCLUDE_DIR)/Game.h				\
+		$(INCLUDE_DIR)/Map.h				\
+		$(INCLUDE_DIR)/MapEntity.h			\
+		$(INCLUDE_DIR)/Moving.h				\
+		$(INCLUDE_DIR)/MovingWithCollision.h		\
+		$(INCLUDE_DIR)/Moving8ByPlayer.h		\
+		$(INCLUDE_DIR)/AnimatedSprite.h			\
+		$(INCLUDE_DIR)/SpriteAnimations.h		\
+		$(INCLUDE_DIR)/SpriteAnimation.h		\
+		$(INCLUDE_DIR)/SpriteAnimationDirection.h	\
+		$(INCLUDE_DIR)/TileOnMap.h			\
+		$(INCLUDE_DIR)/Tile.h				\
+		$(INCLUDE_DIR)/SimpleTile.h			\
+		$(INCLUDE_DIR)/AnimatedTile.h			\
+		$(INCLUDE_DIR)/TileAnimationManager.h		\
+		$(INCLUDE_DIR)/Color.h				\
+		$(INCLUDE_DIR)/Link.h				\
+		$(INCLUDE_DIR)/LinkAnimations.h			\
+		$(INCLUDE_DIR)/Tileset.h			\
 		$(INCLUDE_DIR)/tilesets/TilesetHouse.h		\
-		$(INCLUDE_DIR)/maps/link_house.h		\
-		$(INCLUDE_DIR)/music.h				
+		$(INCLUDE_DIR)/maps/LinkHouse.h			\
+		$(INCLUDE_DIR)/Music.h				
 
 #executables = $(BIN_DIR)/tileset_editor
 

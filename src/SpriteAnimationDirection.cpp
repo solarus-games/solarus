@@ -3,7 +3,7 @@
  */
 
 #include <SDL/SDL.h>
-#include "sprite_animation_direction.h"
+#include "SpriteAnimationDirection.h"
 
 /**
  * Constructor.

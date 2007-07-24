@@ -1,31 +1,31 @@
 include ../Makedefs
 
 executables = game_test #tile_test tileset_editor_test
-headers =	$(INCLUDE_DIR)/zsdx.h				\
-		$(INCLUDE_DIR)/game.h				\
-		$(INCLUDE_DIR)/game_resource.h			\
-		$(INCLUDE_DIR)/map.h				\
-		$(INCLUDE_DIR)/map_entity.h			\
-		$(INCLUDE_DIR)/moving.h				\
-		$(INCLUDE_DIR)/moving_with_collision.h		\
-		$(INCLUDE_DIR)/moving_8_by_player.h		\
-		$(INCLUDE_DIR)/animated_sprite.h		\
-		$(INCLUDE_DIR)/sprite_animations.h		\
-		$(INCLUDE_DIR)/sprite_animation.h		\
-		$(INCLUDE_DIR)/sprite_animation_direction.h	\
-		$(INCLUDE_DIR)/tile.h				\
-		$(INCLUDE_DIR)/tile_image.h			\
-		$(INCLUDE_DIR)/simple_tile_image.h		\
-		$(INCLUDE_DIR)/animated_tile_image.h		\
-		$(INCLUDE_DIR)/tile_animation_manager.h		\
-		$(INCLUDE_DIR)/color.h				\
-		$(INCLUDE_DIR)/tileset_editor.h			\
-		$(INCLUDE_DIR)/link.h				\
-		$(INCLUDE_DIR)/link_animations.h		\
-		$(INCLUDE_DIR)/tileset.h			\
+
+headers = 	$(INCLUDE_DIR)/ZSDX.h				\
+		$(INCLUDE_DIR)/GameResource.h			\
+		$(INCLUDE_DIR)/Game.h				\
+		$(INCLUDE_DIR)/Map.h				\
+		$(INCLUDE_DIR)/MapEntity.h			\
+		$(INCLUDE_DIR)/Moving.h				\
+		$(INCLUDE_DIR)/MovingWithCollision.h		\
+		$(INCLUDE_DIR)/Moving8ByPlayer.h		\
+		$(INCLUDE_DIR)/AnimatedSprite.h			\
+		$(INCLUDE_DIR)/SpriteAnimations.h		\
+		$(INCLUDE_DIR)/SpriteAnimation.h		\
+		$(INCLUDE_DIR)/SpriteAnimationDirection.h	\
+		$(INCLUDE_DIR)/TileOnMap.h			\
+		$(INCLUDE_DIR)/Tile.h				\
+		$(INCLUDE_DIR)/SimpleTile.h			\
+		$(INCLUDE_DIR)/AnimatedTile.h			\
+		$(INCLUDE_DIR)/TileAnimationManager.h		\
+		$(INCLUDE_DIR)/Color.h				\
+		$(INCLUDE_DIR)/Link.h				\
+		$(INCLUDE_DIR)/LinkAnimations.h			\
+		$(INCLUDE_DIR)/Tileset.h			\
 		$(INCLUDE_DIR)/tilesets/TilesetHouse.h		\
-		$(INCLUDE_DIR)/maps/link_house.h		\
-		$(INCLUDE_DIR)/music.h			
+		$(INCLUDE_DIR)/maps/LinkHouse.h			\
+		$(INCLUDE_DIR)/Music.h				
 
 executables: $(executables) $(headers)
 
@@ -33,28 +33,28 @@ check: executables
 
 
 game_test: 	game_test.o				\
-		$(SRC_DIR)/zsdx.o			\
-		$(SRC_DIR)/game.o			\
-		$(SRC_DIR)/game_resource.o		\
-		$(SRC_DIR)/tile.o			\
-		$(SRC_DIR)/tile_animation_manager.o	\
-		$(SRC_DIR)/color.o			\
-		$(SRC_DIR)/map.o			\
-		$(SRC_DIR)/moving.o			\
-		$(SRC_DIR)/moving_with_collision.o	\
-		$(SRC_DIR)/moving_8_by_player.o		\
-		$(SRC_DIR)/animated_sprite.o		\
-		$(SRC_DIR)/sprite_animations.o		\
-		$(SRC_DIR)/sprite_animation.o		\
-		$(SRC_DIR)/sprite_animation_direction.o	\
-		$(SRC_DIR)/simple_tile_image.o		\
-		$(SRC_DIR)/animated_tile_image.o	\
-		$(SRC_DIR)/link.o			\
-		$(SRC_DIR)/link_animations.o		\
-		$(SRC_DIR)/tileset.o			\
+		$(SRC_DIR)/ZSDX.o			\
+		$(SRC_DIR)/Game.o			\
+		$(SRC_DIR)/GameResource.o		\
+		$(SRC_DIR)/Tile.o			\
+		$(SRC_DIR)/TileAnimationManager.o	\
+		$(SRC_DIR)/Color.o			\
+		$(SRC_DIR)/Map.o			\
+		$(SRC_DIR)/Moving.o			\
+		$(SRC_DIR)/MovingWithCollision.o	\
+		$(SRC_DIR)/Moving8ByPlayer.o		\
+		$(SRC_DIR)/AnimatedSprite.o		\
+		$(SRC_DIR)/SpriteAnimations.o		\
+		$(SRC_DIR)/SpriteAnimation.o		\
+		$(SRC_DIR)/SpriteAnimationDirection.o	\
+		$(SRC_DIR)/SimpleTile.o			\
+		$(SRC_DIR)/AnimatedTile.o		\
+		$(SRC_DIR)/Link.o			\
+		$(SRC_DIR)/LinkAnimations.o		\
+		$(SRC_DIR)/Tileset.o			\
 		$(SRC_DIR)/tilesets/TilesetHouse.o	\
-		$(SRC_DIR)/maps/link_house.o		\
-		$(SRC_DIR)/music.o			
+		$(SRC_DIR)/maps/LinkHouse.o		\
+		$(SRC_DIR)/Music.o			
 	$(CC) $(LDFLAGS) $(CPPFLAGS) $^ $(LIBS) -o $@
 
 tile_test: 	tile_test.o				\

@@ -5,9 +5,9 @@
 using namespace std;
 #include <iostream>
 #include <SDL/SDL.h>
-#include "map.h"
-#include "tile.h"
-#include "zsdx.h"
+#include "Map.h"
+#include "TileOnMap.h"
+#include "ZSDX.h"
 
 /**
  * Creates a new map.
@@ -44,14 +44,14 @@ Map::~Map() {
 
 /**
  * Creates a tile on the map.
- * It is equivalent to add_new_tile(tile_image, position_in_map, 1, 1).
+ * It is equivalent to add_new_tile(tile, position_in_map, 1, 1).
  * This function is called for each tile, when loading the map.
  * The tiles on a map are not supposed to change during the game.
  * @param tile_image image of the tile to create
  * @param position_in_map position of the tile on the map
  */
-void Map::add_new_tile(TileImage *tile_image, SDL_Rect &position_in_map) {
-  add_new_tile(tile_image, position_in_map, 1, 1);
+void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map) {
+  add_new_tile(tile, position_in_map, 1, 1);
 }
 
 /**
@@ -63,15 +63,15 @@ void Map::add_new_tile(TileImage *tile_image, SDL_Rect &position_in_map) {
  * @param repeat_x how many times the pattern is repeated on x
  * @param repeat_x how many times the pattern is repeated on y
  */
-void Map::add_new_tile(TileImage *tile_image, SDL_Rect &position_in_map, int repeat_x, int repeat_y) {
+void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, int repeat_x, int repeat_y) {
   // add the tile to the map objects
-  add_entity(new Tile(tile_image, position_in_map, repeat_x, repeat_y));
+  add_entity(new TileOnMap(tile, position_in_map, repeat_x, repeat_y));
 
   // update the collision list
   int tile_x8 = position_in_map.x / 8;
   int tile_y8 = position_in_map.y / 8;
-  int tile_width8 = (tile_image->get_width() / 8) * repeat_x;
-  int tile_height8 = (tile_image->get_height() / 8) * repeat_y;
+  int tile_width8 = (tile->get_width() / 8) * repeat_x;
+  int tile_height8 = (tile->get_height() / 8) * repeat_y;
 
   // we traverse each 8*8 square in the tile
   tile_obstacle_t *obstacle;
@@ -80,7 +80,7 @@ void Map::add_new_tile(TileImage *tile_image, SDL_Rect &position_in_map, int rep
     index = (tile_y8 + j) * width8 + tile_x8;
     for (int i = 0; i < tile_width8; i++) {
       obstacle = &obstacle_tiles[index++];
-      *obstacle = tile_image->get_obstacle();
+      *obstacle = tile->get_obstacle();
     }
   }
 }
@@ -294,7 +294,7 @@ tile_obstacle_t Map::pixel_collision(int x, int y) {
     on_obstacle = true;
     break;
 
-  case OBSTACLE_UP_RIGHT:
+  case OBSTACLE_TOP_RIGHT:
     // the upper right half of the square is an obstacle
     // sp we have to test the position of the point
     x_in_tile = x % 8;
@@ -302,20 +302,20 @@ tile_obstacle_t Map::pixel_collision(int x, int y) {
     on_obstacle = y_in_tile > x_in_tile;
     break;
 
-  case OBSTACLE_UP_LEFT:
+  case OBSTACLE_TOP_LEFT:
     // same thing
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile > 1 - x_in_tile;
     break;
     
-  case OBSTACLE_DOWN_LEFT:
+  case OBSTACLE_BOTTOM_LEFT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile < x_in_tile;
     break;
     
-  case OBSTACLE_DOWN_RIGHT:
+  case OBSTACLE_BOTTOM_RIGHT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile < 1 - x_in_tile;

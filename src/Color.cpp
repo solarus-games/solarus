@@ -1,5 +1,5 @@
 #include <SDL/SDL.h>
-#include "color.h"
+#include "Color.h"
 
 zsdx_color_t COLOR_BLACK;
 zsdx_color_t COLOR_WHITE;

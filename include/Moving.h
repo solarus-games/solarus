@@ -6,7 +6,7 @@
 #define ZSDX_MOVING_H
 
 #include <SDL/SDL.h>
-#include "map_entity.h"
+#include "MapEntity.h"
 
 /**
  * Mathematic constants.

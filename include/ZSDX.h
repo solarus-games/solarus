@@ -8,8 +8,8 @@
 using namespace std;
 #include <iostream>
 #include <SDL/SDL.h>
-#include "game_resource.h"
-#include "tile_animation_manager.h"
+#include "GameResource.h"
+#include "TileAnimationManager.h"
 
 /**
  * Number of times the screen is redrawn is a second.

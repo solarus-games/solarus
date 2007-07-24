@@ -5,14 +5,14 @@
 #ifndef ZSDX_GAME_RESOURCE_H
 #define ZSDX_GAME_RESOURCE_H
 
-#include "link.h"
-#include "tileset.h"
-#include "map.h"
+#include "Link.h"
+#include "Tileset.h"
+#include "Map.h"
 
 // tilesets
 
 enum TilesetID {
-#include "enum_tilesets.inc.h"
+#include "TilesetList.inc.h"
   NB_TILESETS
 };
 

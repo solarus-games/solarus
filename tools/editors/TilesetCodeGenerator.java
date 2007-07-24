@@ -57,10 +57,10 @@ public class TilesetCodeGenerator {
 	// generate the source file
 	generateSourceFile();
 
-	// update include/enum_tilesets.inc.h
+	// update include/TilesetList.inc.h
 	updateTilesetsEnumFile();
 
-	// update src/creation_tilesets.inc.cpp
+	// update src/TilesetsCreation.inc.cpp
 	updateTilesetsCreationFile();
     }
 
@@ -78,7 +78,7 @@ public class TilesetCodeGenerator {
 	out.println("#ifndef ZSDX_TILESETS_" + upperCaseName + "_H");
 	out.println("#define ZSDX_TILESETS_" + upperCaseName + "_H");
 	out.println();
-	out.println("#include \"tileset.h\"");
+	out.println("#include \"Tileset.h\"");
 	out.println();
 	out.println("/*");
 	out.println(" * Tileset generated automatically by the tileset editor.");
@@ -209,7 +209,7 @@ public class TilesetCodeGenerator {
      */
     private void updateTilesetsEnumFile() throws IOException {
 	String fileName = zsdxRootPath + File.separator + "include" +
-	    File.separator + "enum_tilesets.inc.h";
+	    File.separator + "TilesetList.inc.h";
 	
 	// we have to put the following line into the file unless it is already present
 	String lineWanted = "TILESET_" + upperCaseName + ",";
@@ -223,7 +223,7 @@ public class TilesetCodeGenerator {
      */
     private void updateTilesetsCreationFile() throws IOException {
 	String fileName = zsdxRootPath + File.separator + "src" +
-	    File.separator + "creation_tilesets.inc.cpp";
+	    File.separator + "TilesetsCreation.inc.cpp";
 	
 	// we have to put the following line into the file unless it is already present
 	String lineWanted = "tilesets[TILESET_" + upperCaseName + "] = new Tileset" + name + "();";

@@ -5,7 +5,7 @@
 #ifndef ZSDX_ANIMATED_SPRITE_H
 #define ZSDX_ANIMATED_SPRITE_H
 
-#include "sprite_animations.h"
+#include "SpriteAnimations.h"
 
 /**
  * Represents an animated sprite

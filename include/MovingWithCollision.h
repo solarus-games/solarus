@@ -5,8 +5,8 @@
 #ifndef ZSDX_MOVING_WITH_COLLISION_H
 #define ZSDX_MOVING_WITH_COLLISION_H
 
-#include "moving.h"
-#include "map.h"
+#include "Moving.h"
+#include "Map.h"
 
 /**
  * Abstract class for all moving objects on a map, visible or not,

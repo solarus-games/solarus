@@ -1,7 +1,7 @@
 #ifndef ZSDX_LINKHOUSE_H
 #define ZSDX_LINKHOUSE_H
 
-#include "map.h"
+#include "Map.h"
 
 class MapLinkHouse: public Map {
 

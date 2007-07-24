@@ -8,21 +8,21 @@
 using namespace std;
 #include <iostream>
 #include <vector>
-#include "color.h"
-#include "map_entity.h"
-#include "tileset.h"
-#include "music.h"
+#include "Color.h"
+#include "MapEntity.h"
+#include "Tileset.h"
+#include "Music.h"
 
 /**
  * Obstacle property for the tiles.
  */
 enum tile_obstacle_t {
-  OBSTACLE_NONE,       // the tile is not an obstacle
-  OBSTACLE,            // the tile is entirely an obstacle
-  OBSTACLE_UP_RIGHT,   // the upper-right half of the tile is an obstacle
-  OBSTACLE_UP_LEFT,    // the upper-left half of the tile is an obstacle
-  OBSTACLE_DOWN_LEFT,  // the lower-left half of the tile is an obstacle
-  OBSTACLE_DOWN_RIGHT, // the lower-right half of the tile is an obstacle
+  OBSTACLE_NONE,         // the tile is not an obstacle
+  OBSTACLE,              // the tile is entirely an obstacle
+  OBSTACLE_TOP_RIGHT,    // the upper-right half of the tile is an obstacle
+  OBSTACLE_TOP_LEFT,     // the upper-left half of the tile is an obstacle
+  OBSTACLE_BOTTOM_LEFT,  // the lower-left half of the tile is an obstacle
+  OBSTACLE_BOTTOM_RIGHT, // the lower-right half of the tile is an obstacle
 };
 
 /**
@@ -136,7 +136,7 @@ class Map {
    * @param tile_image image of the tile to create
    * @param position_in_map position of the tile on the map
    */
-  void add_new_tile(TileImage *tile_image, SDL_Rect &position_in_map);
+  void add_new_tile(Tile *tile, SDL_Rect &position_in_map);
 
   /**
    * Creates a tile on the map, repeating its pattern.
@@ -147,7 +147,7 @@ class Map {
    * @param repeat_x how many times the pattern is repeated on x
    * @param repeat_x how many times the pattern is repeated on y
    */
-  void add_new_tile(TileImage *tile_image, SDL_Rect &position_in_map, int repeat_x, int repeat_y);
+  void add_new_tile(Tile *tile, SDL_Rect &position_in_map, int repeat_x, int repeat_y);
 
  public:
 

@@ -1,10 +1,10 @@
 /**
- * This module defines the class AnimatedTileImage.
+ * This module defines the class AnimatedTile.
  */
 
 #include <SDL/SDL.h>
-#include "animated_tile_image.h"
-#include "zsdx.h"
+#include "AnimatedTile.h"
+#include "ZSDX.h"
 
 /**
  * Constructor.
@@ -13,9 +13,9 @@
  * @param sequence animation sequence type
  * @param obstacle is the tile an obstacle?
  */
-AnimatedTileImage::AnimatedTileImage(const SDL_Rect *position_in_tileset,
-				     tile_animation_sequence_t sequence,
-				     tile_obstacle_t obstacle):
+AnimatedTile::AnimatedTile(const SDL_Rect *position_in_tileset,
+			   tile_animation_sequence_t sequence,
+			   tile_obstacle_t obstacle):
   TileImage(obstacle, position_in_tileset[0].w, position_in_tileset[0].h), sequence(sequence) {
 
   this->position_in_tileset[0] = position_in_tileset[0];
@@ -24,14 +24,14 @@ AnimatedTileImage::AnimatedTileImage(const SDL_Rect *position_in_tileset,
 }
 
 /**
- * Displays the tile image on a surface.
+ * Displays the tile on a surface.
  * This function is abstract because the way the image is displayed
  * depends on the type of tile image (animated or not).
  * @param surface the destination surface
  * @param position_in_surface position of the tile on the surface
  * @param tileset_image the tileset image of this tile
  */
-void AnimatedTileImage::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
+void AnimatedTile::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
   short current_frame = ZSDX::get_tile_animation_manager()->get_current_frame(sequence);
 
   SDL_BlitSurface(tileset_image,

@@ -6,8 +6,8 @@
 #define ZSDX_SPRITE_ANIMATIONS_H
 
 #include <SDL/SDL.h>
-#include "sprite_animation.h"
-#include "map.h"
+#include "SpriteAnimation.h"
+#include "Map.h"
 
 /**
  * Abstract class for a set of animations.

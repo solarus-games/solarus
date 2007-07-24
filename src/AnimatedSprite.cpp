@@ -2,7 +2,7 @@
  * This module defines the class AnimatedSprite.
  */
 
-#include "animated_sprite.h"
+#include "AnimatedSprite.h"
 
 /**
  * Constructor.

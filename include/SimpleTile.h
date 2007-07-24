@@ -1,17 +1,17 @@
 /**
- * This module defines the class SimpleTileImage.
+ * This module defines the class SimpleTile.
  */
 
 #ifndef ZSDX_SIMPLE_TILE_H
 #define ZSDX_SIMPLE_TILE_H
 
 #include <SDL/SDL.h>
-#include "tile_image.h"
+#include "Tile.h"
 
 /**
  * Static tile image.
  */
-class SimpleTileImage: public TileImage {
+class SimpleTile: public Tile {
 
  protected:
 
@@ -27,17 +27,15 @@ class SimpleTileImage: public TileImage {
    * @param position_in_tileset position of the tile in the tileset
    * @param obstacle is the tile an obstacle?
    */
-  SimpleTileImage(SDL_Rect &position_in_tileset, tile_obstacle_t obstacle);
+  SimpleTile(SDL_Rect &position_in_tileset, tile_obstacle_t obstacle);
 
   /**
    * Destructor.
    */
-  inline ~SimpleTileImage(void) { }
+  inline ~SimpleTile(void) { }
 
   /**
-   * Displays the tile image on a surface.
-   * This function is abstract because the way the image is displayed
-   * depends on the type of tile image (animated or not).
+   * Displays the tile on a surface.
    * @param surface the destination surface
    * @param position_in_surface position of the tile on the surface
    * @param tileset the tileset of this tile

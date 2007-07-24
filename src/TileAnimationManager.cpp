@@ -8,11 +8,11 @@
  */
 
 #include <SDL/SDL.h>
-#include "tile_animation_manager.h"
-#include "zsdx.h"
+#include "TileAnimationManager.h"
+#include "ZSDX.h"
 
 /**
- * Interval in millisecond between two frames of an animation
+ * Interval in millisecond between two frames of an animation.
  */
 static const Uint32 TILE_FRAME_INTERVAL = 250;
 

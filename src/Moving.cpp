@@ -6,7 +6,7 @@ using namespace std;
 #include <iostream>
 #include <SDL/SDL.h>
 #include <cmath>
-#include "moving.h"
+#include "Moving.h"
 
 /**
  * Mathematic constants.

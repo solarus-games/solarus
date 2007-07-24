@@ -6,8 +6,8 @@
 #define ZSDX_SPRITE_ANIMATION_H
 
 #include <SDL/SDL.h>
-#include "sprite_animation_direction.h"
-#include "map.h"
+#include "SpriteAnimationDirection.h"
+#include "Map.h"
 
 /**
  * A sprite animation is a list of animated sequences.

@@ -6,7 +6,7 @@
 #define ZSDX_LINK_ANIMATIONS_H
 
 #include <SDL/SDL.h>
-#include "sprite_animations.h"
+#include "SpriteAnimations.h"
 
 /**
  * Link's animations.

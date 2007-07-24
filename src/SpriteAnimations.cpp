@@ -2,7 +2,7 @@
  * This module defines the class SpriteAnimations.
  */
 
-#include "sprite_animations.h"
+#include "SpriteAnimations.h"
 
 /**
  * Constructor.

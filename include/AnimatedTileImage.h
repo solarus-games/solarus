@@ -1,19 +1,19 @@
 /**
- * This module defines the class AnimatedTileImage.
+ * This module defines the class AnimatedTile.
  */
 
 #ifndef ZSDX_ANIMATED_TILE_H
 #define ZSDX_ANIMATED_TILE_H
 
 #include <SDL/SDL.h>
-#include "tile_image.h"
-#include "tile_animation_manager.h"
+#include "Tile.h"
+#include "TileAnimationManager.h"
 
 /**
- * Animated tile image.
+ * Animated tile.
  * An animated tile has always three frames.
  */
-class AnimatedTileImage: public TileImage {
+class AnimatedTile: public Tile {
 
  private:
 
@@ -38,14 +38,14 @@ class AnimatedTileImage: public TileImage {
    * @param sequence animation sequence type
    * @param obstacle is the tile an obstacle?
    */
-  AnimatedTileImage(const SDL_Rect *position_in_tileset,
+  AnimatedTile(const SDL_Rect *position_in_tileset,
 		    tile_animation_sequence_t sequence,
 		    tile_obstacle_t obstacle);
 
   /**
    * Destructor.
    */
-  inline ~AnimatedTileImage(void) { }
+  inline ~AnimatedTile(void) { }
 
   /**
    * Displays the tile image on a surface.

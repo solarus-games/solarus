@@ -6,7 +6,7 @@ using namespace std;
 #include <iostream>
 #include <SDL/SDL_image.h>
 #include <cmath>
-#include "moving_8_by_player.h"
+#include "Moving8ByPlayer.h"
 
 /**
  * Bit masks associated to each arrow on the keyboard.

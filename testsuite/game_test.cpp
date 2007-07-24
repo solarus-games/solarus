@@ -1,6 +1,6 @@
-#include "zsdx.h"
-#include "game.h"
-#include "game_resource.h"
+#include "ZSDX.h"
+#include "Game.h"
+#include "GameResource.h"
 #include <iostream>
 
 int main(int argc, char **argv) {

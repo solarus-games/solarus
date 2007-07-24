@@ -17,8 +17,8 @@ TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map):
 
   this->position_in_map.x = position_in_map.x;
   this->position_in_map.y = position_in_map.y;
-  this->position_in_map.w = tile_image->get_width();
-  this->position_in_map.h = tile_image->get_height();
+  this->position_in_map.w = tile->get_width();
+  this->position_in_map.h = tile->get_height();
 };
 
 /**
@@ -33,15 +33,15 @@ TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map, int repeat_x, int re
 
   this->position_in_map.x = position_in_map.x;
   this->position_in_map.y = position_in_map.y;
-  this->position_in_map.w = tile_image->get_width();
-  this->position_in_map.h = tile_image->get_height();
+  this->position_in_map.w = tile->get_width();
+  this->position_in_map.h = tile->get_height();
 };
 
 /**
  * Displays the tile on the map.
  * @param map the map
  */
-void Tile::display_on_map(Map *map) {
+void TileOnMap::display_on_map(Map *map) {
   SDL_Rect dst;
 
   dst.w = position_in_map.w;

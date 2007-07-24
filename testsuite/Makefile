@@ -36,7 +36,7 @@ game_test: 	game_test.o				\
 		$(SRC_DIR)/ZSDX.o			\
 		$(SRC_DIR)/Game.o			\
 		$(SRC_DIR)/GameResource.o		\
-		$(SRC_DIR)/Tile.o			\
+		$(SRC_DIR)/TileOnMap.o			\
 		$(SRC_DIR)/TileAnimationManager.o	\
 		$(SRC_DIR)/Color.o			\
 		$(SRC_DIR)/Map.o			\

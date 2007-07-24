@@ -114,8 +114,8 @@ public class TilesetCodeGenerator {
 	out.println();
 	out.println("#include <SDL/SDL.h>");
 	out.println("#include \"tilesets/" + headerFileName + "\"");
-	out.println("#include \"simple_tile_image.h\"");
-	out.println("#include \"animated_tile_image.h\"");
+	out.println("#include \"SimpleTile.h\"");
+	out.println("#include \"AnimatedTile.h\"");
 	out.println();
 	out.println("/**");
 	out.println(" * Loads the tileset.");
@@ -153,7 +153,7 @@ public class TilesetCodeGenerator {
 		out.println("  position_in_tileset.y = " + y + ";");
 		out.println("  position_in_tileset.w = " + width + ";");
 		out.println("  position_in_tileset.h = " + height + ";");
-		out.println("  tiles[nb_tiles++] = new SimpleTileImage(position_in_tileset, " + obstacleConstant + ");");
+		out.println("  tiles[nb_tiles++] = new SimpleTile(position_in_tileset, " + obstacleConstant + ");");
 		
 	    }
 	    else {
@@ -194,7 +194,7 @@ public class TilesetCodeGenerator {
 		out.println("  positions_in_tileset[2].w = " + width + ";");
 		out.println("  positions_in_tileset[2].h = " + height + ";");
 		out.println();
-		out.println("  tiles[nb_tiles++] = new AnimatedTileImage(positions_in_tileset, " + animationSequenceConstant + ", " + obstacleConstant + ");");
+		out.println("  tiles[nb_tiles++] = new AnimatedTile(positions_in_tileset, " + animationSequenceConstant + ", " + obstacleConstant + ");");
 
 	    }
 	}

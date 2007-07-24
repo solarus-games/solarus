@@ -16,7 +16,7 @@
 AnimatedTile::AnimatedTile(const SDL_Rect *position_in_tileset,
 			   tile_animation_sequence_t sequence,
 			   tile_obstacle_t obstacle):
-  TileImage(obstacle, position_in_tileset[0].w, position_in_tileset[0].h), sequence(sequence) {
+  Tile(obstacle, position_in_tileset[0].w, position_in_tileset[0].h), sequence(sequence) {
 
   this->position_in_tileset[0] = position_in_tileset[0];
   this->position_in_tileset[1] = position_in_tileset[1];

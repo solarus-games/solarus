@@ -147,6 +147,7 @@ public class AnimationView extends JPanel implements Observer, ActionListener {
 					  ex.getMessage(),
 					  "Error",
 					  JOptionPane.ERROR_MESSAGE);
+	    update(null, null);
 	}
     }
 }

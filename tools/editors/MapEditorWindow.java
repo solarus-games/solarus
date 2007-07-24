@@ -42,12 +42,23 @@ public class MapEditorWindow extends JFrame {
 	// create the menu bar
 	createMenuBar();
 
+	// left panel : the map properties and the tile picker
+	JPanel leftPanel = new JPanel();
+	leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+	leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
 	mapPropertiesView = new MapPropertiesView();
+	mapPropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
+	mapPropertiesView.setMinimumSize(new Dimension(300, 200));
+	mapPropertiesView.setMaximumSize(new Dimension(300, 200));
+
 	tilePicker = new TilePicker();
+	tilePicker.setAlignmentX(Component.LEFT_ALIGNMENT);
+	tilePicker.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 	
-	JPanel leftPanel = new JPanel(new BorderLayout());
-	leftPanel.add(mapPropertiesView, BorderLayout.NORTH);
-	leftPanel.add(tilePicker, BorderLayout.CENTER);
+	leftPanel.add(mapPropertiesView);
+	leftPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+	leftPanel.add(tilePicker);
 
 	mapView = new MapView();
 	JScrollPane mapViewScroller = new JScrollPane(mapView);
@@ -199,7 +210,6 @@ public class MapEditorWindow extends JFrame {
 	menuItemGenerate.setEnabled(true);
 
 	// notify the views
-	// TODO
 	mapPropertiesView.setMap(map);
 	tilePicker.setMap(map);
 	mapView.setMap(map);
@@ -212,7 +222,7 @@ public class MapEditorWindow extends JFrame {
      */
     private static JFileChooser getMapFileChooser(String dialogTitle) {
 
-	JFileChooser fileChooser = new JFileChooser(Map.getDefaultMapPath());
+	JFileChooser fileChooser = new JFileChooser(Configuration.getInstance().getDefaultMapPath());
 	fileChooser.setDialogTitle(dialogTitle);
 	fileChooser.setDragEnabled(false);
 	fileChooser.setMultiSelectionEnabled(false);
@@ -324,7 +334,7 @@ public class MapEditorWindow extends JFrame {
 	    // if this is a new map, make a "save as..."
 	    if (mapFile == null) {
 		// default file
-		String path = Map.getDefaultMapPath() +
+		String path = Configuration.getInstance().getDefaultMapPath() +
 		    File.separator + map.getName() + ".zsd";
 
 		mapFile = new File(path);

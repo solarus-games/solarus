@@ -8,7 +8,7 @@ import java.util.*;
  * This component shows the tileset and allows the user to pick a tile
  * in order to put it into the map.
  */
-public class TilePicker extends JComponent implements Observer {
+public class TilePicker extends JScrollPane implements Observer {
 
     /**
      * The current map.
@@ -16,12 +16,18 @@ public class TilePicker extends JComponent implements Observer {
     private Map map;
 
     /**
+     * The component in the scroll pane.
+     */
+    private TilesetImageView tilesetImageView;
+
+    /**
      * Constructor.
      */
     public TilePicker() {
 	super();
 
-	Configuration.getInstance().addObserver(this);
+	tilesetImageView = new TilesetImageView(false);
+	setViewportView(tilesetImageView);
     }
 
     /**
@@ -39,26 +45,12 @@ public class TilePicker extends JComponent implements Observer {
     }
     
     /**
-     * This function is called when the map or the configuration changes.
+     * This function is called when the map changes.
      */
     public void update(Observable o, Object obj) {
-
-	if (o instanceof Map) {
-	    // the map has changed
-	    
-	    // redraw the image
-	    repaint();
+	if (map != null) {
+	    tilesetImageView.setTileset(map.getTileset());
 	}
-	else if (o instanceof Configuration && map != null) {
-	    // TODO
-	}
-    }
-
-    /**
-     * This function is called to display the component.
-     * @param g the graphic context
-     */
-    public void paint(Graphics g) {
-
+	tilesetImageView.update(o, obj);
     }
 }

@@ -214,7 +214,7 @@ public class TilesetCodeGenerator {
 	// we have to put the following line into the file unless it is already present
 	String lineWanted = "TILESET_" + upperCaseName + ",";
 
-	ensureLineIsInFile(fileName, lineWanted);
+	FileTools.ensureFileHasLine(fileName, lineWanted);
     }
     
     /** 
@@ -228,33 +228,6 @@ public class TilesetCodeGenerator {
 	// we have to put the following line into the file unless it is already present
 	String lineWanted = "tilesets[TILESET_" + upperCaseName + "] = new Tileset" + name + "();";
 	
-	ensureLineIsInFile(fileName, lineWanted);
-    }
-
-    /**
-     * Opens a file and looks for a specified line.
-     * The line is added to the file if it was not there.
-     */
-    private void ensureLineIsInFile(String fileName, String lineWanted) throws IOException {
-
-	// read the file to determine whether or not the line is already there
-	BufferedReader in = new BufferedReader(new FileReader(fileName));
-	String line;
-	boolean found = false;
-	
-	line = in.readLine();
-	while (line != null && !found) {
-	    found = line.equals(lineWanted);
-	    line = in.readLine();
-	}
-	in.close();
-
-	if (!found) {
-	    // the line has not been found: let's add it to the file
-	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
-	    out.println(lineWanted);
-	    out.close();
-	}
-
+	FileTools.ensureFileHasLine(fileName, lineWanted);
     }
 }

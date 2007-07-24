@@ -81,15 +81,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 	this.isSaved = false;
 	this.selectedTileIndex = -1; // none
 	tiles = new Vector<Tile>();
-    }
-
-    /**
-     * Returns the default path of the tileset files, determined with ZSDX root path.
-     * @return the default path of the tileset files
-     */
-    public static String getDefaultTilesetPath() {
-	return Configuration.getInstance().getZsdxRootPath() + File.separator + "tools" +
-	    File.separator + "editors" + File.separator + "tilesets";
+	reloadImage();
     }
 
     /**
@@ -237,7 +229,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     /**
      * Changes the position of the tile the user is creating.
      * If the specified area is the same, nothing is done. 
-     * @param newTileArea position of the new tile, or null if there no new tile selected
+     * @param newTileArea position of the new tile, or null if there is currently no new tile selected
      */
     public void setNewTileArea(Rectangle newTileArea) {
 	if (!newTileArea.equals(this.newTileArea)) {
@@ -343,6 +335,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 
 	tileset.setSaved(true);
 	tileset.setSelectedTileIndex(-1); // none
+	tileset.reloadImage();
 
 	return tileset;
     }

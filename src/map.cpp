@@ -154,6 +154,7 @@ void Map::start(void) {
   link->set_map(this);
   link->set_position(link_start_x, link_start_y);
 
+
   //  SDL_EnableKeyRepeat(5, 10);
 
   // SDL main loop

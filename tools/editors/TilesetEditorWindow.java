@@ -55,7 +55,7 @@ public class TilesetEditorWindow extends JFrame {
  	tileList.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
 	// tileset image
-	tilesetImageView = new TilesetImageView();
+	tilesetImageView = new TilesetImageView(true);
 	JScrollPane tilesetImageScroller = new JScrollPane(tilesetImageView);
 	tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
  	tilesetImageScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -222,7 +222,7 @@ public class TilesetEditorWindow extends JFrame {
      */
     private static JFileChooser getTilesetFileChooser(String dialogTitle) {
 
-	JFileChooser fileChooser = new JFileChooser(Tileset.getDefaultTilesetPath());
+	JFileChooser fileChooser = new JFileChooser(Configuration.getInstance().getDefaultTilesetPath());
 	fileChooser.setDialogTitle(dialogTitle);
 	fileChooser.setDragEnabled(false);
 	fileChooser.setMultiSelectionEnabled(false);
@@ -291,7 +291,6 @@ public class TilesetEditorWindow extends JFrame {
 
 	    tilesetFile = null;
 	    tileset = new Tileset(name);
-	    tileset.reloadImage();
 	    setTileset(tileset);
 	}
     }
@@ -314,7 +313,6 @@ public class TilesetEditorWindow extends JFrame {
 		if (fileChooser.showOpenDialog(TilesetEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
 		    tilesetFile = fileChooser.getSelectedFile();
 		    Tileset tileset = Tileset.load(tilesetFile);
-		    tileset.reloadImage();
 		    setTileset(tileset);
 		}
 	    }
@@ -334,7 +332,7 @@ public class TilesetEditorWindow extends JFrame {
 	    // if this is a new tileset, make a "save as..."
 	    if (tilesetFile == null) {
 		// default file
-		String path = Tileset.getDefaultTilesetPath() +
+		String path = Configuration.getInstance().getDefaultTilesetPath() +
 		    File.separator + tileset.getName() + ".zsd";
 
 		tilesetFile = new File(path);

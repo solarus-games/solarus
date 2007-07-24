@@ -68,4 +68,30 @@ public class Configuration extends Observable {
 	}
     }
 
+    /**
+     * Returns the default path of the tileset files, determined with ZSDX root path.
+     * @return the default path of the tileset files
+     */
+    public String getDefaultTilesetPath() {
+	return getZsdxRootPath() + File.separator + "tools" +
+	    File.separator + "editors" + File.separator + "tilesets";
+    }
+
+    /**
+     * Returns the default path of the map files, determined with ZSDX root path.
+     * @return the default path of the map files
+     */
+    public String getDefaultMapPath() {
+	return getZsdxRootPath() + File.separator + "tools" +
+	    File.separator + "editors" + File.separator + "maps";
+    }
+    
+    /**
+     * Returns the default path of the music files, determined with ZSDX root path.
+     * @return the default path of the music files
+     */
+    public String getDefaultMusicPath() {
+	return getZsdxRootPath() + File.separator + "music";
+    }
+
 }

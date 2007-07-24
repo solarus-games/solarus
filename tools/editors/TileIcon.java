@@ -79,6 +79,16 @@ public class TileIcon extends JComponent implements Observer {
 	    int width = positionInTileset.width;
 	    int height = positionInTileset.height;
 
+	    // if the tile is animated, let's display only the first frame
+	    if (tile.isAnimated()) {
+		if (tile.getAnimationSeparation() == Tile.ANIMATION_SEPARATION_HORIZONTAL) {
+		    width = width / 3;
+		}
+		else {
+		    height = height / 3;
+		}
+	    }
+
 	    // coordinates of the tile in the tileset
 	    sx1 = positionInTileset.x * 2;
 	    sx2 = sx1 + width * 2;

@@ -56,9 +56,10 @@ public class TileList extends JPanel {
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-	// north: a vertical box layout with the tileset name and the buttons
-	// center: the list
-	// south: view of the current tile
+	// tileset name
+	// buttons
+	// the tile list
+	// view of the current tile
 
 	// tileset name
 	labelTilesetName = new JLabel("Tileset name: ");
@@ -72,8 +73,6 @@ public class TileList extends JPanel {
 	buttons.setMaximumSize(new Dimension(200, 30));
 	buttons.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-	add(Box.createHorizontalGlue());
-	add(Box.createHorizontalGlue());
 	buttonCreate = new JButton("Create");
 	buttonDelete = new JButton("Delete");
 	buttonCreate.setEnabled(false);

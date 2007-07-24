@@ -18,6 +18,11 @@ public class TilesetImageView extends JComponent implements Observer {
     private Tileset tileset;
 
     /**
+     * True if the tileset is editable, false if the user can only pick a tile.
+     */
+    private boolean editable;
+
+    /**
      * The current selected tile.
      */
     private Tile currentSelectedTile;
@@ -54,65 +59,70 @@ public class TilesetImageView extends JComponent implements Observer {
 
     /**
      * Constructor.
+     * @param editable true to make the tileset editable, false otherwise
+     * (if so, the user can only pick a tile)
      */
-    public TilesetImageView() {
+    public TilesetImageView(boolean editable) {
 	super();
+
+	this.editable = editable;
 
 	Configuration.getInstance().addObserver(this);
 	
 	addMouseListener(new TilesetImageMouseListener());
 	addMouseMotionListener(new TilesetImageMouseMotionListener());
 
-	JMenuItem item;
-	JMenuItem itemCancelCreate = new JMenuItem("Cancel");
-
-	// popup menu to create a tile
-	popupMenuCreate = new JPopupMenu();
-	item = new JMenuItem("Create (no obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE_NONE));
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    tileset.addTile(Tile.OBSTACLE_NONE);
-		}
-	    });
-	popupMenuCreate.add(item);
-	item = new JMenuItem("Create (obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE));
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    tileset.addTile(Tile.OBSTACLE);
-		}
-	    });
-	popupMenuCreate.add(item);
-	itemCancelCreate.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    tileset.setSelectedTileIndex(-1);
-		}
-	    });
-	popupMenuCreate.addSeparator();
-	popupMenuCreate.add(itemCancelCreate);
-
-	// popup menu for a selectedTile
-	popupMenuSelectedTile = new JPopupMenu();
-	itemsObstacle = new JRadioButtonMenuItem[6];
-	ButtonGroup itemsObstacleGroup = new ButtonGroup();
-
-	for (int i = 0; i < 6; i++) {
-	    itemsObstacle[i] = new JRadioButtonMenuItem(ObstacleIcons.getName(i),
-							ObstacleIcons.getIcon(i));
-	    itemsObstacle[i].addActionListener(new ActionChangeObstacle(i));
-	    popupMenuSelectedTile.add(itemsObstacle[i]);
-	    itemsObstacleGroup.add(itemsObstacle[i]);
+	if (editable) {
+	    JMenuItem item;
+	    JMenuItem itemCancelCreate = new JMenuItem("Cancel");
+	    
+	    // popup menu to create a tile
+	    popupMenuCreate = new JPopupMenu();
+	    item = new JMenuItem("Create (no obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE_NONE));
+	    item.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+			tileset.addTile(Tile.OBSTACLE_NONE);
+		    }
+		});
+	    popupMenuCreate.add(item);
+	    item = new JMenuItem("Create (obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE));
+	    item.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+			tileset.addTile(Tile.OBSTACLE);
+		    }
+		});
+	    popupMenuCreate.add(item);
+	    itemCancelCreate.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+			tileset.setSelectedTileIndex(-1);
+		    }
+		});
+	    popupMenuCreate.addSeparator();
+	    popupMenuCreate.add(itemCancelCreate);
+	    
+	    // popup menu for a selectedTile
+	    popupMenuSelectedTile = new JPopupMenu();
+	    itemsObstacle = new JRadioButtonMenuItem[6];
+	    ButtonGroup itemsObstacleGroup = new ButtonGroup();
+	    
+	    for (int i = 0; i < 6; i++) {
+		itemsObstacle[i] = new JRadioButtonMenuItem(ObstacleIcons.getName(i),
+							    ObstacleIcons.getIcon(i));
+		itemsObstacle[i].addActionListener(new ActionChangeObstacle(i));
+		popupMenuSelectedTile.add(itemsObstacle[i]);
+		itemsObstacleGroup.add(itemsObstacle[i]);
+	    }
+	    
+	    popupMenuSelectedTile.addSeparator();
+	    
+	    item = new JMenuItem("Delete");
+	    item.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+			tileset.removeTile();
+		    }
+		});
+	    popupMenuSelectedTile.add(item);
 	}
-
-	popupMenuSelectedTile.addSeparator();
-
-	item = new JMenuItem("Delete");
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    tileset.removeTile();
-		}
-	    });
-	popupMenuSelectedTile.add(item);
-
     }
 
     /**
@@ -177,7 +187,12 @@ public class TilesetImageView extends JComponent implements Observer {
 	    repaint();
 	}
 	else if (o instanceof Configuration && tileset != null) {
+	    // the configuration has changed
 	    tileset.reloadImage();
+	}
+	else if (o instanceof Tile) {
+	    // the selected tile has changed
+	    repaint();
 	}
     }
 
@@ -211,7 +226,9 @@ public class TilesetImageView extends JComponent implements Observer {
 		// the selected tile doesn't exist yet
 		selectedRectangle = tileset.getNewTileArea();
 
-		if (tileset.isNewTileAreaOverlapping()) {
+		if (selectedRectangle.width == 0
+		    || selectedRectangle.height == 0
+		    || tileset.isNewTileAreaOverlapping()) {
 		    // invalid area
 		    g.setColor(Color.RED);
 		}
@@ -290,7 +307,8 @@ public class TilesetImageView extends JComponent implements Observer {
 	/**
 	 * This function is called when the user clicks on the tileset image.
 	 * If no tile was selected, then the tile clicked (if any) is selected.
-	 * For a right click: a popup menu allow to removed the tile clicked.
+	 * For a right click: a popup menu allows to remove the tile clicked
+	 * (if the tileset is editable).
 	 * @param mouseEvent information about the click
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
@@ -319,8 +337,8 @@ public class TilesetImageView extends JComponent implements Observer {
 		    // select the tile
 		    tileset.setSelectedTileIndex(clickedTileIndex);
 		    
-		    // right click: show a popup menu
-		    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+		    // right click: if the tileset is editable, we show a popup menu
+		    if (mouseEvent.getButton() == MouseEvent.BUTTON3 && editable) {
 			int obstacle = tileset.getSelectedTile().getObstacle();
 			itemsObstacle[obstacle].setSelected(true);
 			popupMenuSelectedTile.show(TilesetImageView.this,
@@ -334,6 +352,8 @@ public class TilesetImageView extends JComponent implements Observer {
 	/**
 	 * This function is called when the mouse button is pressed on the tileset image.
 	 * Only left clicks are considered.
+	 * If a tile was selected, it becomes unselected. Otherwise, the selection for a new tile
+	 * begins (only if the tileset is editable).
 	 * @param mouseEvent information about the click
 	 */
 	public void mousePressed(MouseEvent mouseEvent) {
@@ -359,7 +379,7 @@ public class TilesetImageView extends JComponent implements Observer {
 		}
 
 		// begin a selection
-		if (!tileset.isSelectingNewTile()) {
+		if (!tileset.isSelectingNewTile() && editable) {
 		    selectionStartPoint = mouseEvent.getPoint();
 
 		    selectionStartPoint.x = (x + 4) / 8 * 8;

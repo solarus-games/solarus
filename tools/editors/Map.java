@@ -2,12 +2,11 @@ package editors;
 
 import java.util.*;
 import java.io.*;
+import java.awt.*; // Color, Dimension
 
 /**
  * This class describes a map.
- * A map is observable. When it changes, the observers are notified with
- * a parameter indicating what has just changed:
- *   TODO
+ * A map is observable.
  */
 public class Map extends Observable implements Serializable {
 
@@ -22,6 +21,28 @@ public class Map extends Observable implements Serializable {
     private String name;
 
     /**
+     * Size of the map, in pixels (the width and the height
+     * should be multiples of 8).
+     */
+    private Dimension size;
+
+    /**
+     * Tileset of the map.
+     * The tileset is the set of small images (tiles) used to build the map. 
+     */
+    private Tileset tileset;
+
+    /**
+     * Background music.
+     */
+    private String music;
+
+    /**
+     * Background color (default is black).
+     */
+    private Color backgroundColor;
+
+    /**
      * Tells whether the map has changed since the last save.
      * True if there has been no modifications, false otherwise.
      */
@@ -34,16 +55,12 @@ public class Map extends Observable implements Serializable {
     public Map(String name) {
 	super();
 	this.name = name;
-	this.isSaved = false;
-    }
+	this.size = new Dimension(320, 240);
+	this.tileset = null;
+	this.music = null;
+	this.backgroundColor = Color.BLACK;
 
-    /**
-     * Returns the default path of the map files, determined with ZSDX root path.
-     * @return the default path of the map files
-     */
-    public static String getDefaultMapPath() {
-	return Configuration.getInstance().getZsdxRootPath() + File.separator + "tools" +
-	    File.separator + "editors" + File.separator + "maps";
+	this.isSaved = false;
     }
 
     /**
@@ -52,6 +69,91 @@ public class Map extends Observable implements Serializable {
      */
     public String getName() {
 	return name;
+    }
+
+    /**
+     * Returns the map size.
+     * @return the map size (in pixels)
+     */
+    public Dimension getSize() {
+	return size;
+    }
+
+    /**
+     * Changes the map size.
+     * If the new size is lower than the old one, the tiles in the removed area
+     * are destroyed.
+     * The width and the height must be multiples of 8.
+     * @param size the new map size (in pixels)
+     * @throws NumberFormatException if the width and the height are incorrect
+     */
+    public void setSize(Dimension size) {
+	if (size.width <= 0 || size.height <= 0 || size.width % 8 != 0 || size.height % 8 != 0) {
+	    throw new NumberFormatException();
+	}
+
+	this.size = size;
+	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Returns the tileset associated to this map.
+     * The tileset is the set of small images (tiles) used to build the map. 
+     * @return the tileset
+     */
+    public Tileset getTileset() {
+	return tileset;
+    }
+
+    /**
+     * Changes the tileset of the map.
+     * @param tileset the new tileset
+     */
+    public void setTileset(Tileset tileset) {
+	this.tileset = tileset;
+	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Returns the default background music of the map.
+     * @return the name of the new music, i.e. a music file name without the extension ".it".
+     */
+    public String getMusic() {
+	return music;
+    }
+
+    /**
+     * Changes the default background music of the map.
+     * @param music the name of the music, i.e. a music file name without the extension ".it".
+     */
+    public void setMusic(String music) {
+	this.music = music;
+	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Returns the background color of the map.
+     * @return the background color
+     */
+    public Color getBackgroundColor() {
+	return backgroundColor;
+    }
+
+    /**
+     * Changes the background color of the map.
+     * @param backgroundColor the new background color
+     */
+    public void setBackgroundColor(Color backgroundColor) {
+	this.backgroundColor = backgroundColor;
+	setSaved(false);
+	setChanged();
+	notifyObservers();
     }
 
     /**

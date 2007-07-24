@@ -132,7 +132,7 @@ class Moving: public MapEntity {
    * @param x the new x position
    * @param y the new y position
    */
-  inline void set_position(int x, int y) { position_in_map.x = y; position_in_map.y = y; }
+  inline void set_position(int x, int y) { position_in_map.x = x; position_in_map.y = y; }
 
   // movement
 

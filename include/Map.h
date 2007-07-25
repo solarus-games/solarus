@@ -14,15 +14,24 @@ using namespace std;
 #include "Music.h"
 
 /**
- * Obstacle property for the tiles.
+ * Obstacle property for the tiles or the active objects.
  */
-enum tile_obstacle_t {
-  OBSTACLE_NONE,         // the tile is not an obstacle
-  OBSTACLE,              // the tile is entirely an obstacle
-  OBSTACLE_TOP_RIGHT,    // the upper-right half of the tile is an obstacle
-  OBSTACLE_TOP_LEFT,     // the upper-left half of the tile is an obstacle
-  OBSTACLE_BOTTOM_LEFT,  // the lower-left half of the tile is an obstacle
-  OBSTACLE_BOTTOM_RIGHT, // the lower-right half of the tile is an obstacle
+enum Obstacle {
+  OBSTACLE_NONE,         // the entity is not an obstacle
+  OBSTACLE,              // the entity is entirely an obstacle
+  OBSTACLE_TOP_RIGHT,    // the upper-right half of the entity is an obstacle
+  OBSTACLE_TOP_LEFT,     // the upper-left half of the entity is an obstacle
+  OBSTACLE_BOTTOM_LEFT,  // the lower-left half of the entity is an obstacle
+  OBSTACLE_BOTTOM_RIGHT, // the lower-right half of the entity is an obstacle
+};
+
+/**
+ * Layer of a tile or an active object.
+ */
+enum Layer {
+  LAYER_BELOW,           // the entity is always below Link (floor, walls...)
+  LAYER_INTERMEDIAITE,   // Link can be below or above the entity (platforms)
+  LAYER_ABOVE,           // the entity is always above Link (trees, top of the doors...)
 };
 
 /**
@@ -103,9 +112,9 @@ class Map {
   const int obstacle_tiles_size;
   
   /**
-   * Array of tile_obstacle_t representing which tiles are obstacles and how.
+   * Array of Obstacle representing which tiles are obstacles and how.
    */
-  tile_obstacle_t *obstacle_tiles;
+  Obstacle *obstacle_tiles;
   
   // methods
   
@@ -135,8 +144,9 @@ class Map {
    * The tiles on a map are not supposed to change during the game.
    * @param tile_image image of the tile to create
    * @param position_in_map position of the tile on the map
+   * @param layer layer of the tile
    */
-  void add_new_tile(Tile *tile, SDL_Rect &position_in_map);
+  void add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer);
 
   /**
    * Creates a tile on the map, repeating its pattern.
@@ -144,10 +154,11 @@ class Map {
    * The tiles on a map are not supposed to change during the game.
    * @param tile_image image of the tile to create
    * @param position_in_map position of the tile on the map
+   * @param layer layer of the tile
    * @param repeat_x how many times the pattern is repeated on x
    * @param repeat_x how many times the pattern is repeated on y
    */
-  void add_new_tile(Tile *tile, SDL_Rect &position_in_map, int repeat_x, int repeat_y);
+  void add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer, int repeat_x, int repeat_y);
 
  public:
 
@@ -214,7 +225,7 @@ class Map {
    * @param y y of the point in pixels
    * @return the obstacle property of this point
    */
-  tile_obstacle_t pixel_collision(int x, int y);
+  Obstacle pixel_collision(int x, int y);
 
   /**
    * Tests whether a rectangle collides with the map tiles.

@@ -11,9 +11,10 @@ using namespace std;
  * It is equivalent to TileOnMap(tile_image, position_in_map, 1, 1).
  * @param tile image of the tile (SimpleTile or AnimatedTile)
  * @param position_in_map position of the tile on the map
+   * @param layer layer of the tile
  */
-TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map):
-  tile(tile), repeat_x(1), repeat_y(1) {
+TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map, Layer layer):
+  tile(tile), layer(layer), repeat_x(1), repeat_y(1) {
 
   this->position_in_map.x = position_in_map.x;
   this->position_in_map.y = position_in_map.y;
@@ -28,8 +29,8 @@ TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map):
  * @param repeat_x number of times the pattern is repeated on x
  * @param repeat_y number of times the pattern is repeated on y
  */
-TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map, int repeat_x, int repeat_y):
-  tile(tile), repeat_x(repeat_x), repeat_y(repeat_y) {
+TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map, Layer layer, int repeat_x, int repeat_y):
+  tile(tile), layer(layer),repeat_x(repeat_x), repeat_y(repeat_y) {
 
   this->position_in_map.x = position_in_map.x;
   this->position_in_map.y = position_in_map.y;

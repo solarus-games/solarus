@@ -14,8 +14,8 @@
  * @param obstacle is the tile an obstacle?
  */
 AnimatedTile::AnimatedTile(const SDL_Rect *position_in_tileset,
-			   tile_animation_sequence_t sequence,
-			   tile_obstacle_t obstacle):
+			   TileAnimationSequence sequence,
+			   Obstacle obstacle):
   Tile(obstacle, position_in_tileset[0].w, position_in_tileset[0].h), sequence(sequence) {
 
   this->position_in_tileset[0] = position_in_tileset[0];

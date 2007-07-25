@@ -2,8 +2,8 @@
  * This module defines the class Tile.
  */
 
-#ifndef ZSDX_TILE_IMAGE_H
-#define ZSDX_TILE_IMAGE_H
+#ifndef ZSDX_TILE_H
+#define ZSDX_TILE_H
 
 #include <SDL/SDL.h>
 #include "Map.h"
@@ -18,9 +18,10 @@ class Tile {
  protected:
 
   /**
-   * Is the tile an obstacle?
+   * Is the tile an obstacle: OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
+   * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT.
    */
-  const tile_obstacle_t obstacle;
+  const Obstacle obstacle;
 
   /**
    * Tile width (multiple of 8).
@@ -36,7 +37,7 @@ class Tile {
    * Constructor.
    * It is called by the subclasses. 
    */
-  inline Tile(tile_obstacle_t obstacle, int width, int height):
+  inline Tile(Obstacle obstacle, int width, int height):
     obstacle(obstacle), width(width), height(height) { }
 
  public:
@@ -63,7 +64,7 @@ class Tile {
    * @return the obstacle property of the tile: OBSTACLE_NONE, OBSTACLE,
    * OBSTACLE_TOP_RIGHT, OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
    */
-  inline tile_obstacle_t get_obstacle(void) const { return obstacle; }
+  inline Obstacle get_obstacle(void) const { return obstacle; }
 
   /**
    * Displays the tile on a surface.

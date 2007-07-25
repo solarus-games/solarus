@@ -15,7 +15,7 @@
 /**
  * Tile animation sequence type: 0-1-2 or 0-1-2-1
  */
-enum tile_animation_sequence_t {
+enum TileAnimationSequence {
   ANIMATION_SEQUENCE_012,
   ANIMATION_SEQUENCE_0121,
 };
@@ -56,7 +56,7 @@ class TileAnimationManager {
    * Returns the current_frame (0, 1 or 2) of a sequence 0-1-2-1 or 0-1-2.
    * @param sequence the kind of sequence: ANIMATION_SEQUENCE_0121 or ANIMATION_SEQUENCE_012
    */
-  static inline short get_current_frame(tile_animation_sequence_t sequence) { return current_frames[sequence]; }
+  static inline short get_current_frame(TileAnimationSequence sequence) { return current_frames[sequence]; }
 };
 
 #endif

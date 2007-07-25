@@ -27,7 +27,7 @@ class SimpleTile: public Tile {
    * @param position_in_tileset position of the tile in the tileset
    * @param obstacle is the tile an obstacle?
    */
-  SimpleTile(SDL_Rect &position_in_tileset, tile_obstacle_t obstacle);
+  SimpleTile(SDL_Rect &position_in_tileset, Obstacle obstacle);
 
   /**
    * Destructor.

@@ -25,7 +25,7 @@ Map::Map(int width, int height, zsdx_color_t background_color,
   background_music(background_music),
   entities(new vector<MapEntity*>()),
   obstacle_tiles_size(width8 * height8),
-  obstacle_tiles(new tile_obstacle_t[obstacle_tiles_size]) {
+  obstacle_tiles(new Obstacle[obstacle_tiles_size]) {
 
   // initialize obstacle tile
   for (int i = 0; i < obstacle_tiles_size; i++) {
@@ -49,9 +49,10 @@ Map::~Map() {
  * The tiles on a map are not supposed to change during the game.
  * @param tile_image image of the tile to create
  * @param position_in_map position of the tile on the map
+ * @param layer layer of the tile
  */
-void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map) {
-  add_new_tile(tile, position_in_map, 1, 1);
+void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer) {
+  add_new_tile(tile, position_in_map, layer, 1, 1);
 }
 
 /**
@@ -60,12 +61,13 @@ void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map) {
  * The tiles on a map are not supposed to change during the game.
  * @param tile_image image of the tile to create
  * @param position_in_map position of the tile on the map
+ * @param layer layer of the tile
  * @param repeat_x how many times the pattern is repeated on x
  * @param repeat_x how many times the pattern is repeated on y
  */
-void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, int repeat_x, int repeat_y) {
+void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer, int repeat_x, int repeat_y) {
   // add the tile to the map objects
-  add_entity(new TileOnMap(tile, position_in_map, repeat_x, repeat_y));
+  add_entity(new TileOnMap(tile, position_in_map, layer, repeat_x, repeat_y));
 
   // update the collision list
   int tile_x8 = position_in_map.x / 8;
@@ -74,7 +76,7 @@ void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, int repeat_x, int 
   int tile_height8 = (tile->get_height() / 8) * repeat_y;
 
   // we traverse each 8*8 square in the tile
-  tile_obstacle_t *obstacle;
+  Obstacle *obstacle;
   int index;
   for (int j = 0; j < tile_height8; j++) {
     index = (tile_y8 + j) * width8 + tile_x8;
@@ -238,7 +240,7 @@ void Map::start(void) {
 // 	if (event.button.button == SDL_BUTTON_LEFT) {
 // 	  int x = event.button.x;
 // 	  int y = event.button.y;
-// 	  tile_obstacle_t obstacle = obstacle_tiles[width8*(y/8) + (x/8)];
+// 	  Obstacle obstacle = obstacle_tiles[width8*(y/8) + (x/8)];
 // 	  cout << "obstacle: " << obstacle << "\n";
 // 	}
 // 	break;
@@ -273,8 +275,8 @@ void Map::exit(void) {
  * @param y y of the point in pixels
  * @return the obstacle property of this point
  */
-tile_obstacle_t Map::pixel_collision(int x, int y) {
-  tile_obstacle_t obstacle_type;
+Obstacle Map::pixel_collision(int x, int y) {
+  Obstacle obstacle_type;
   bool on_obstacle;
   int x_in_tile, y_in_tile;
 

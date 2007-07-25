@@ -20,7 +20,7 @@ class AnimatedTile: public Tile {
   /**
    * Animation sequence type: 0-1-2-1 or 0-1-2.
    */
-  const tile_animation_sequence_t sequence;
+  const TileAnimationSequence sequence;
   
   /**
    * Array of 3 SDL_Rect representing the 3 animation frames
@@ -39,8 +39,8 @@ class AnimatedTile: public Tile {
    * @param obstacle is the tile an obstacle?
    */
   AnimatedTile(const SDL_Rect *position_in_tileset,
-		    tile_animation_sequence_t sequence,
-		    tile_obstacle_t obstacle);
+		    TileAnimationSequence sequence,
+		    Obstacle obstacle);
 
   /**
    * Destructor.

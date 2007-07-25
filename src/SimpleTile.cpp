@@ -11,7 +11,7 @@
  * @param position_in_tileset position of the tile in the tileset
  * @param obstacle is the tile an obstacle?
  */
-SimpleTile::SimpleTile(SDL_Rect &position_in_tileset, tile_obstacle_t obstacle):
+SimpleTile::SimpleTile(SDL_Rect &position_in_tileset, Obstacle obstacle):
   Tile(obstacle, position_in_tileset.w, position_in_tileset.h),
   position_in_tileset(position_in_tileset) {
 

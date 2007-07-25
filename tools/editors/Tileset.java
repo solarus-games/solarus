@@ -265,7 +265,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 	Tile tile = null;
 
 	if (isSelectingNewTile() && !isNewTileAreaOverlapping) {
-	    tile = new Tile(newTileArea, obstacle);
+	    tile = new Tile(newTileArea, Tile.LAYER_BELOW, obstacle);
 	    
 	    tiles.add(tile);
 	    setSelectedTileIndex(getNbTiles() - 1);

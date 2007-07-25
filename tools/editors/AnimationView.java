@@ -75,8 +75,6 @@ public class AnimationView extends JPanel implements Observer, ActionListener {
 	add(listSequence);
 	add(Box.createRigidArea(new Dimension(5, 0)));
 	add(listSeparation);
-
-	setCurrentTile(null);
     }
 
     /**

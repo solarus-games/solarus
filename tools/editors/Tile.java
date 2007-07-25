@@ -13,7 +13,7 @@ public class Tile extends Observable implements Serializable {
     /**
      * Version number of the class serialization.
      */
-    public static final long serialVersionUID = 1L;
+    public static final long serialVersionUID = 2L;
 
     // Constants to identify the obstacles
 
@@ -32,6 +32,12 @@ public class Tile extends Observable implements Serializable {
 
     public static final int ANIMATION_SEPARATION_HORIZONTAL = 0;
     public static final int ANIMATION_SEPARATION_VERTICAL = 1;
+
+    // Constants to identify the layer
+
+    public static final int LAYER_BELOW = 0;
+    public static final int LAYER_INTERMEDIATE = 1;
+    public static final int LAYER_ABOVE = 2;
 
     /**
      * Coordinates and dimensions of the tile.
@@ -54,21 +60,29 @@ public class Tile extends Observable implements Serializable {
     private int animationSeparation;
 
     /**
+     * Default layer of the tile.
+     * It can be changed in the map editor once the tile is placed on a map.
+     * So several instances of the same tile placed on a map can be on different layers.
+     */
+    private int defaultLayer;
+
+    /**
      * Simple constructor with no animation.
      */
-    public Tile(Rectangle positionInTileset, int obstacle) {
-	this(positionInTileset, obstacle, ANIMATION_NONE, 0);
+    public Tile(Rectangle positionInTileset, int defaultLayer, int obstacle) {
+	this(positionInTileset, defaultLayer, obstacle, ANIMATION_NONE, 0);
     }
 
     /**
      * Constructor.
      */
-    public Tile(Rectangle positionInTileset, int obstacle,
+    public Tile(Rectangle positionInTileset, int defaultLayer, int obstacle,
 		int animationSequence, int animationSeparation) {
 	super();
 
 	this.positionInTileset = positionInTileset;
 	this.obstacle = obstacle;
+	this.defaultLayer = defaultLayer;
 	this.animationSequence = animationSequence;
 	this.animationSeparation = animationSeparation;
     }
@@ -97,6 +111,26 @@ public class Tile extends Observable implements Serializable {
      */
     public void setObstacle(int obstacle) {
 	this.obstacle = obstacle;
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Returns the default layer of the tile.
+     * @return the default layer of the tile: Tile.LAYER_BELOW (most of the tiles),
+     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE.
+     */
+    public int getDefaultLayer() {
+	return defaultLayer;
+    }
+
+    /**
+     * Changes the default layer of the tile.
+     * @param defaultLayer the default layer of the tile: Tile.LAYER_BELOW (most of the tiles),
+     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE.
+     */
+    public void setDefaultLayer(int defaultLayer) {
+	this.defaultLayer = defaultLayer;
 	setChanged();
 	notifyObservers();
     }

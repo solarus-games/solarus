@@ -6,15 +6,21 @@ import javax.swing.*;
 import java.util.*;
 
 /**
- * Graphical component to select the obstacle properties of a tile:
- * - no obstacle
- * - obstacle
- * - obstacle top right
- * - obstacle top left
- * - obstacle bottom left
- * - obstacle bottom right
+ * Graphical component to select the default layer of a tile in the tileset editor:
+ * - below
+ * - intermediate
+ * - above
  */
-public class ObstacleView extends JComboBox implements Observer, ActionListener {
+public class DefaultLayerView extends JComboBox implements Observer, ActionListener {
+
+    /**
+     * Text displayed in the list.
+     */
+    private static final String[] items = {
+	"Below",
+	"Intermediate",
+	"Above"
+    };
 
     /**
      * The tile observed.
@@ -24,8 +30,8 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
     /**
      * Constructor.
      */
-    public ObstacleView() {
-	super(ObstacleIcons.getIcons());
+    public DefaultLayerView() {
+	super(items);
 	addActionListener(this);
     }
 
@@ -54,7 +60,7 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
      * The selection is then updated.
      */
     public void update(Observable o, Object params) {
-	setSelectedIndex(tile.getObstacle());
+	setSelectedIndex(tile.getDefaultLayer());
     }
     
     /**
@@ -63,9 +69,9 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
      */
     public void actionPerformed(ActionEvent e) {
 	int listIndex = getSelectedIndex();
-	if (listIndex != tile.getObstacle()) {
-	    // the type of obstacle has changed
-	    tile.setObstacle(listIndex);
+	if (listIndex != tile.getDefaultLayer()) {
+	    // the layer has changed
+	    tile.setDefaultLayer(listIndex);
 	}
     }
 }

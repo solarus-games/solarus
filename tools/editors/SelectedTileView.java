@@ -14,6 +14,7 @@ public class SelectedTileView extends JPanel {
 
     private ObstacleView obstacleView;
     private AnimationView animationView;
+    private DefaultLayerView defaultLayerView;
 
     /**
      * Constructor.
@@ -36,6 +37,11 @@ public class SelectedTileView extends JPanel {
 	add(new JLabel("Animation:"), constraints);
 	animationView = new AnimationView();
 
+	// default layer
+	constraints.gridy = 2;
+	add(new JLabel("Default layer:"), constraints);
+	defaultLayerView = new DefaultLayerView();
+
 	constraints.weightx = 1;
 	constraints.gridx = 1;
 	constraints.gridy = 0;
@@ -43,6 +49,9 @@ public class SelectedTileView extends JPanel {
 
 	constraints.gridy = 1;
 	add(animationView, constraints);
+
+	constraints.gridy = 2;
+	add(defaultLayerView, constraints);
 
 	setCurrentTile(null);
     }
@@ -54,5 +63,6 @@ public class SelectedTileView extends JPanel {
     public void setCurrentTile(Tile tile) {
 	obstacleView.setCurrentTile(tile);
 	animationView.setCurrentTile(tile);
+	defaultLayerView.setCurrentTile(tile);
     }
 }

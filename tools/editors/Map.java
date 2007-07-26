@@ -13,7 +13,7 @@ public class Map extends Observable implements Serializable {
     /**
      * Version number of the class serialization.
      */
-    public static final long serialVersionUID = 1L;
+    public static final long serialVersionUID = 2L;
 
     /**
      * Name of the map.
@@ -27,12 +27,6 @@ public class Map extends Observable implements Serializable {
     private Dimension size;
 
     /**
-     * Tileset of the map.
-     * The tileset is the set of small images (tiles) used to build the map. 
-     */
-    private Tileset tileset;
-
-    /**
      * Background music.
      */
     private String music;
@@ -42,6 +36,18 @@ public class Map extends Observable implements Serializable {
      */
     private Color backgroundColor;
 
+    /**
+     * Tileset of the map.
+     * The tileset is the set of small images (tiles) used to build the map. 
+     */
+    private Tileset tileset;
+
+    /**
+     * Tiles of the map.
+     * This is an array of three tile vectors, one for each layer.
+     */
+    private TileOnMapVector[] tiles;
+    
     /**
      * Tells whether the map has changed since the last save.
      * True if there has been no modifications, false otherwise.
@@ -60,6 +66,11 @@ public class Map extends Observable implements Serializable {
 	this.music = null;
 	this.backgroundColor = Color.BLACK;
 
+	this.tiles = new TileOnMapVector[3];
+	for (int i = 0; i < 3; i++) {
+	    this.tiles[i] = new TileOnMapVector();
+	}
+
 	this.isSaved = false;
     }
 
@@ -77,6 +88,22 @@ public class Map extends Observable implements Serializable {
      */
     public Dimension getSize() {
 	return size;
+    }
+
+    /**
+     * Returns the map width.
+     * @return the map width (in pixels)
+     */
+    public int getWidth() {
+	return size.width;
+    }
+
+    /**
+     * Returns the map height.
+     * @return the map height (in pixels)
+     */
+    public int getHeight() {
+	return size.height;
     }
 
     /**
@@ -114,6 +141,43 @@ public class Map extends Observable implements Serializable {
     public void setTileset(Tileset tileset) {
 	this.tileset = tileset;
 	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Returns the total number of tiles of the map.
+     * @return the total number of tiles of the map.
+     */
+    public int getNbTiles() {
+	return tiles[Tile.LAYER_BELOW].size()
+	    + tiles[Tile.LAYER_INTERMEDIATE].size()
+	    + tiles[Tile.LAYER_ABOVE].size();
+    }
+
+    /**
+     * Returns the tiles of the map.
+     * @return an array of 3 vectors of TileOnMap: a vector for each layer
+     */
+    public TileOnMapVector[] getTiles() {
+	return tiles;
+    }
+
+    /**
+     * Returns the tiles of the map on a given layer.
+     * @param layer the layer: Tile.LAYER_BELOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE
+     * @return the vector of TileOnMap for this layer
+     */
+    public TileOnMapVector getTiles(int layer) {
+	return tiles[layer];
+    }
+
+    /**
+     * Adds a new tile on the map.
+     * @param tile the tile to add
+     */
+    public void addTile(TileOnMap tile) {
+	tiles[tile.getLayer()].add(tile);
 	setChanged();
 	notifyObservers();
     }
@@ -202,6 +266,9 @@ public class Map extends Observable implements Serializable {
      * Saves the data into the map file.
      */
     public static void save(File mapFile, Map map) throws IOException {
+
+	// TEMPORARY
+	// map.addTile(new TileOnMap(19, new Point(0, 16), Tile.LAYER_BELOW));
 
  	// open the tileset file
 	ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(mapFile));

@@ -18,6 +18,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 
     // components
     private JLabel mapNameView;
+    private JLabel mapNbTilesView;
     private MapSizeView mapSizeView;
     private MapTilesetView mapTilesetView;
     private MapMusicView mapMusicView;
@@ -41,20 +42,24 @@ public class MapPropertiesView extends JPanel implements Observer {
 	constraints.gridy = 0;
 	add(new JLabel("Map name"), constraints);
 
+	// number of tiles
+	constraints.gridy++;
+	add(new JLabel("Number of tiles"), constraints);
+
 	// size
-	constraints.gridy = 1;
+	constraints.gridy++;
 	add(new JLabel("Size"), constraints);
 
 	// tileset
-	constraints.gridy = 2;
+	constraints.gridy++;
 	add(new JLabel("Tileset"), constraints);
 	
 	// music
-	constraints.gridy = 3;
+	constraints.gridy++;
 	add(new JLabel("Music"), constraints);
 
 	// background color
-	constraints.gridy = 4;
+	constraints.gridy++;
 	add(new JLabel("Background color"), constraints);
 
 	constraints.gridx = 1;
@@ -62,19 +67,23 @@ public class MapPropertiesView extends JPanel implements Observer {
 	mapNameView = new JLabel();
 	add(mapNameView, constraints);
 
-       	constraints.gridy = 1;
+       	constraints.gridy++;
+	mapNbTilesView = new JLabel(); 
+	add(mapNbTilesView, constraints);
+
+       	constraints.gridy++;
 	mapSizeView = new MapSizeView(); 
 	add(mapSizeView, constraints);
 
-	constraints.gridy = 2;
+	constraints.gridy++;
 	mapTilesetView = new MapTilesetView();
        	add(mapTilesetView, constraints);
 
-	constraints.gridy = 3;
+	constraints.gridy++;
 	mapMusicView = new MapMusicView();
 	add(mapMusicView, constraints);
 
-	constraints.gridy = 4;
+	constraints.gridy++;
 	mapBackgroundColorView = new MapBackgroundColorView();
 	add(mapBackgroundColorView, constraints);
     }
@@ -98,6 +107,7 @@ public class MapPropertiesView extends JPanel implements Observer {
      */
     public void update(Observable o, Object obj) {
 	mapNameView.setText(map.getName());
+	mapNbTilesView.setText(Integer.toString(map.getNbTiles()));
 	mapSizeView.update(o);
 	mapTilesetView.update(o);
 	mapMusicView.update(o);

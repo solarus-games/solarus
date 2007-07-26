@@ -56,6 +56,14 @@ public class TileOnMap extends Observable implements Serializable {
     }
 
     /**
+     * Returns the index of the tile in the tileset.
+     * @return the index of the tile in the tileset.
+     */
+    public int getIndex() {
+	return tileIndex;
+    }
+
+    /**
      * Returns the position of the tile on the map.
      * @return the position of the tile on the map
      */

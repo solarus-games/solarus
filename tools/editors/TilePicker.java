@@ -48,7 +48,7 @@ public class TilePicker extends JScrollPane implements Observer {
      * This function is called when the map changes.
      */
     public void update(Observable o, Object obj) {
-	if (map != null) {
+	if (map != null && map.getTileset() != null) {
 	    tilesetImageView.setTileset(map.getTileset());
 	}
 	tilesetImageView.update(o, obj);

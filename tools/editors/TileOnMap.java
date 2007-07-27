@@ -175,5 +175,4 @@ public class TileOnMap extends Observable implements Serializable {
 	setChanged();
 	notifyObservers();
     }
-
 }

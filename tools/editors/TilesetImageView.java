@@ -47,7 +47,7 @@ public class TilesetImageView extends JComponent implements Observer {
     private JPopupMenu popupMenuCreate;
 
     /**
-     * A popup menu with an item "Obstacle and an item "Delete", displayed
+     * A popup menu with an item "Obstacle" and an item "Delete", displayed
      * when the user right-clicks on a tile.
      */
     private JPopupMenu popupMenuSelectedTile;

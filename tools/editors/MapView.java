@@ -29,6 +29,31 @@ public class MapView extends JComponent implements Observer {
     private int cursorY = -1;
 
     /**
+     * Tells whether or not the user is expanding a tile on the map.
+     */
+    private boolean isExpanding;
+
+    /**
+     * The current selected tile on the map.
+     */
+    private TileOnMap currentSelectedTile;
+
+    /**
+     * A popup menu displayed when the user right-clicks on a tile.
+     */
+    private JPopupMenu popupMenuSelectedTile;
+
+    /**
+     * Items for the layers in the popup menu.
+     */
+    private JRadioButtonMenuItem[] itemsLayers;
+
+    /**
+     * Name of the layers, for the items in the popup menu.
+     */
+    private static final String[] layerNames = {"Low layer", "Intermediate layer", "High layer"};
+
+    /**
      * Constructor.
      */
     public MapView() {
@@ -38,6 +63,40 @@ public class MapView extends JComponent implements Observer {
 
 	addMouseListener(new MapMouseListener());
 	addMouseMotionListener(new MapMouseMotionListener());
+
+	// create the popup menu for a selectedTile
+	// items: expand, layer, destroy
+	popupMenuSelectedTile = new JPopupMenu();
+
+	JMenuItem item = new JMenuItem("Expand");
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    isExpanding = true;
+		}
+	    });
+	popupMenuSelectedTile.add(item);
+
+	popupMenuSelectedTile.addSeparator();
+
+	itemsLayers = new JRadioButtonMenuItem[3];
+	ButtonGroup itemsLayersGroup = new ButtonGroup();
+	    
+	for (int i = 0; i < 3; i++) {
+	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
+	    itemsLayers[i].addActionListener(new ActionChangeLayer(i));
+	    popupMenuSelectedTile.add(itemsLayers[i]);
+	    itemsLayersGroup.add(itemsLayers[i]);
+	}
+
+	popupMenuSelectedTile.addSeparator();
+
+	item = new JMenuItem("Destroy");
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    map.removeSelectedTile();
+		}
+	    });
+	popupMenuSelectedTile.add(item);
     }
 
     /**
@@ -91,10 +150,33 @@ public class MapView extends JComponent implements Observer {
 		tileset.addObserver(this);
 		update(tileset, null);
 	    }
+
+	    // not necessary?
+// 	    else {
+// 		TileOnMap newSelectedTile = map.getSelectedTile();
+// 		if (newSelectedTile != currentSelectedTile) {
+// 		    // observe the new selected tile
+		
+// 		    if (currentSelectedTile != null) {
+// 			currentSelectedTile.deleteObserver(this);
+// 		    }
+		    
+// 		    if (newSelectedTile != null) {
+// 			newSelectedTile.addObserver(this);
+// 		    }
+		
+// 		    currentSelectedTile = newSelectedTile;
+// 		}
+// 	    }
 	    
 	    // redraw the image
 	    repaint();
 	}
+// 	else if (o instanceof TileOnMap) {
+// 	    // the selected tile in the map has changed
+	    
+	    
+// 	}
 	else if (o instanceof Configuration && map != null) {
 	    // TODO
 	}
@@ -102,12 +184,19 @@ public class MapView extends JComponent implements Observer {
 	    // the selected tile in the tileset has changed
 	    
 	    Tileset tileset = map.getTileset();
-	    if (tileset.getSelectedTile() != null && map.getSelectedTile() != null) {
+	    if (tileset.getSelectedTile() == null) {
+		// no tile is selected anymore in the tileset
+		cursorX = -1;
+		cursorY = -1;
+		repaint();
+	    }
+	    else if (map.getSelectedTile() != null) {
 
 		// if a tile was just selected in the tileset whereas there is already
 		// a tile selected in the map, unselected the tile in the map
 		map.setSelectedTile(null);
 	    }
+	    
 	}
     }
 
@@ -117,6 +206,15 @@ public class MapView extends JComponent implements Observer {
      */
     public boolean isImageLoaded() {
 	return map != null && map.getTileset() != null && map.getTileset().getDoubleImage() != null;
+    }
+
+    /**
+     * Returns whether or not the user is placing a tile on the map, i.e. whether he has selected
+     * a tile in the tileset.
+     * @return true if a tile from the tileset is selected, false otherwise
+     */
+    public boolean isAddingTile() {
+	return cursorX != -1 && cursorY != -1;
     }
 
     /**
@@ -235,7 +333,8 @@ public class MapView extends JComponent implements Observer {
 	/**
 	 * This method is called when the mouse is clicked on the map view.
 	 * If a tile is selected in the tileset, an instance of this tile is added to the map
-	 * at the cursor location.
+	 * at the cursor location. Otherwise, the tile clicked becomes selected in the map.
+	 * A right click on a tile of the map shows a popup menu.
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -243,19 +342,42 @@ public class MapView extends JComponent implements Observer {
 		return;
 	    }
 
-	    // place a new tile
-	    if (cursorX != -1 && cursorY != -1) {
-		Tileset tileset = map.getTileset();
-		map.addTile(new TileOnMap(tileset.getSelectedTile(), tileset.getSelectedTileIndex(),
-					  cursorX / 2, cursorY / 2));
-	    }
-
-	    // select an existing tile
-	    else {
+	    // select an existing tile unless the user is placing a tile
+	    if (!isAddingTile()) {
 		int x = mouseEvent.getX();
 		int y = mouseEvent.getY();
 		map.setSelectedTile(x / 2, y / 2);
+
+		// right click: popup menu on the selected tile
+		if (mouseEvent.getButton() == MouseEvent.BUTTON3 && map.getSelectedTile() != null) {
+		    
+		    int layer = map.getSelectedTile().getLayer();
+		    itemsLayers[layer].setSelected(true);
+		    popupMenuSelectedTile.show(MapView.this,
+					       mouseEvent.getX(),
+					       mouseEvent.getY());
+		}
 	    }
+
+	    // the user is adding a tile
+	    else {
+		
+		// left click: place the new tile
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+
+		    // place a new tile
+		    if (cursorX != -1 && cursorY != -1) {
+			Tileset tileset = map.getTileset();
+			map.addTile(new TileOnMap(tileset.getSelectedTile(), tileset.getSelectedTileIndex(),
+						  cursorX / 2, cursorY / 2));
+		    }
+		}
+		// right click: cancel
+		else {
+		    map.getTileset().setSelectedTileIndex(-1);
+		}
+	    }
+	    
 	}
     }
 
@@ -300,6 +422,38 @@ public class MapView extends JComponent implements Observer {
 			}
 		    }
 		}
+	    }
+	}
+    }
+    
+    /**
+     * Action listener invoked when the user changes the layer of a tile
+     * from the popup menu after a right click.
+     */
+    private class ActionChangeLayer implements ActionListener {
+
+	/**
+	 * Layer to set when the action is invoked.
+	 */
+	private int layer;
+
+	/**
+	 * Constructor.
+	 * @param layer layer to set when the action is invoked.
+	 */
+	public ActionChangeLayer(int layer) {
+	    this.layer = layer;
+	}
+
+	/**
+	 * Method called when the user sets the layer of the selected tile.
+	 */
+	public void actionPerformed(ActionEvent e) {
+	    TileOnMap tileOnMap = map.getSelectedTile();
+	    int currentLayer = tileOnMap.getLayer();
+
+	    if (currentLayer != layer) {
+		map.selectedTileSetLayer(layer);
 	    }
 	}
     }

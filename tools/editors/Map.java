@@ -225,6 +225,17 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
+     * Removes the selected tile from the map.
+     */
+    public void removeSelectedTile() {
+	tiles[selectedTile.getLayer()].remove(selectedTile);
+	selectedTile = null;
+	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
      * Returns the default background music of the map.
      * @return the name of the new music, i.e. a music file name without the extension ".it".
      */
@@ -378,6 +389,23 @@ public class Map extends Observable implements Serializable {
 		notifyObservers();
 		return;
 	    }
+	}
+    }
+
+    /**
+     * Changes the layer of the selected tile. You should call this method instead of
+     * calling directly TileOnMap.setLayer() because the tiles of the 3 layes are
+     * stored in 3 different arrays. 
+     */
+    public void selectedTileSetLayer(int layer) {
+
+	TileOnMap tile = selectedTile;
+	int oldLayer = selectedTile.getLayer();
+
+	if (layer != oldLayer) {
+	    tile.setLayer(layer);
+	    tiles[oldLayer].remove(tile);
+	    tiles[layer].add(tile);
 	}
     }
 }

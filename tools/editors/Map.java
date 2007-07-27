@@ -13,7 +13,7 @@ public class Map extends Observable implements Serializable {
     /**
      * Version number of the class serialization.
      */
-    public static final long serialVersionUID = 2L;
+    public static final long serialVersionUID = 3L;
 
     /**
      * Name of the map.
@@ -40,7 +40,13 @@ public class Map extends Observable implements Serializable {
      * Tileset of the map.
      * The tileset is the set of small images (tiles) used to build the map. 
      */
-    private Tileset tileset;
+    private transient Tileset tileset;
+
+    /**
+     * Name of the tileset of the map.
+     * The name is saved when the map is serialized, not the tileset itself.
+     */
+    private String tilesetName;
 
     /**
      * Tiles of the map.
@@ -63,6 +69,7 @@ public class Map extends Observable implements Serializable {
 	this.name = name;
 	this.size = new Dimension(320, 240);
 	this.tileset = null;
+	this.tilesetName = null;
 	this.music = null;
 	this.backgroundColor = Color.BLACK;
 
@@ -135,14 +142,43 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
-     * Changes the tileset of the map.
-     * @param tileset the new tileset
+     * Returns the name of the tileset associated to this map.
+     * The tileset is the set of small images (tiles) used to build the map. 
+     * @return the tileset name
      */
-    public void setTileset(Tileset tileset) {
-	this.tileset = tileset;
-	setSaved(false);
-	setChanged();
-	notifyObservers();
+    public String getTilesetName() {
+	return tilesetName;
+    }
+
+    /**
+     * Changes the tileset of the map.
+     * @param tileset name of the new tileset
+     * @throws IOException if this tileset cannot be loaded
+     */
+    public void setTileset(String tilesetName) throws IOException {
+
+	// if the tileset is removed
+	if (tilesetName == null) {
+
+	    this.tilesetName = null;
+	    this.tileset = null;
+	    setSaved(false);
+	    setChanged();
+	    notifyObservers();
+	}
+
+	// if a tileset is set for the first time, or the tileset is changed
+	else if (tileset == null || !tilesetName.equals(this.tilesetName)) {
+	
+	    String path = Configuration.getInstance().getDefaultTilesetPath()
+		+ File.separator + tilesetName + ".zsd";
+	    
+	    this.tileset = Tileset.load(new File(path));
+	    this.tilesetName = tilesetName;
+	    setSaved(false);
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**
@@ -178,6 +214,7 @@ public class Map extends Observable implements Serializable {
      */
     public void addTile(TileOnMap tile) {
 	tiles[tile.getLayer()].add(tile);
+	setSaved(false);
 	setChanged();
 	notifyObservers();
     }
@@ -248,6 +285,7 @@ public class Map extends Observable implements Serializable {
 	// read the object
 	try {
 	    map = (Map) in.readObject();
+	    map.setTileset(map.getTilesetName());
 	}
 	catch (ClassNotFoundException e) {
 	    System.err.println("Unable to read the object: " + e.getMessage());
@@ -267,10 +305,7 @@ public class Map extends Observable implements Serializable {
      */
     public static void save(File mapFile, Map map) throws IOException {
 
-	// TEMPORARY
-	// map.addTile(new TileOnMap(19, new Point(0, 16), Tile.LAYER_BELOW));
-
- 	// open the tileset file
+ 	// open the map file
 	ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(mapFile));
 
 	// write the object

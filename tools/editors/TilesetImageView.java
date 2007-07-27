@@ -150,14 +150,33 @@ public class TilesetImageView extends JComponent implements Observer {
      * Sets the observed tileset.
      */
     public void setTileset(Tileset tileset) {
-	this.tileset = tileset;
-	tileset.addObserver(this);
+	//	System.out.println("setTileset, avant : "
+	//		   + ((this.tileset != null) ? this.tileset.getName() : null) + ", après : "
+	//		   + ((tileset != null) ? tileset.getName() : null));
 
-	// initialize the popup menu of the selected tile
-	update(tileset.getSelectedTile(), null);
+	if (tileset == null) {
 
-	// load the tileset's image
-	update(tileset, null);
+	    if (this.tileset != null) {
+		this.tileset.deleteObserver(this);
+		this.tileset = null;
+		repaint();
+	    }
+	}
+	else if (!tileset.equals(this.tileset)) {
+
+	    if (this.tileset != null) {
+		this.tileset.deleteObserver(this);
+	    }
+
+	    this.tileset = tileset;
+	    tileset.addObserver(this);
+	    
+	    // initialize the popup menu of the selected tile
+	    update(tileset.getSelectedTile(), null);
+	    
+	    // load the tileset's image
+	    update(tileset, null);
+	}
     }
 
     /**
@@ -167,7 +186,7 @@ public class TilesetImageView extends JComponent implements Observer {
 
 	if (o instanceof Tileset) {
 	    // the tileset has changed
-	    
+
 	    Tile newSelectedTile = tileset.getSelectedTile();
 	    if (newSelectedTile != currentSelectedTile) {
 		// observe the new selected tile

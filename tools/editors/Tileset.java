@@ -311,6 +311,15 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     public void setSaved(boolean isSaved) {
 	this.isSaved = isSaved;
     }
+    
+    /**
+     * Compares this tileset to another one.
+     * @param other another tileset
+     * @return true if the tilesets have the same name
+     */
+    public boolean equals(Object other) {
+	return other != null && ((Tileset) other).getName() == this.getName();
+    }
 
     /**
      * Loads a tileset from the tileset file.

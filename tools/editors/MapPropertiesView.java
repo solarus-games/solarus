@@ -245,10 +245,10 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    else {
 		// the map has changed
 		setEnabled(true);
-		Tileset tileset = map.getTileset();
+		String tilesetName = map.getTilesetName();
 
-		if (tileset != null) {
-		    setSelectedItem(tileset.getName());
+		if (tilesetName != null && !tilesetName.equals(getSelectedItem())) {
+		    setSelectedItem(tilesetName);
 		}
 	    }
 	}
@@ -262,16 +262,18 @@ public class MapPropertiesView extends JPanel implements Observer {
 		return;
 	    }
 
-	    String name = (String) getSelectedItem();
+	    String tilesetName = (String) getSelectedItem();
 	    
-	    Tileset tileset;
-	    if (name.length() == 0) {
-		tileset = null;
+	    if (tilesetName.length() == 0) {
+		tilesetName = null;
 	    }
-	    else {
-		tileset = tilesets[getSelectedIndex() - 1];
+
+	    try {
+		map.setTileset(tilesetName);
 	    }
-	    map.setTileset(tileset);
+	    catch (IOException e) {
+		System.out.println("Cannot load the tileset '" + tilesetName + ": " + e.getMessage());		
+	    }
 	}
     }
 

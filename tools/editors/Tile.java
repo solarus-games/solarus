@@ -96,6 +96,22 @@ public class Tile extends Observable implements Serializable {
     }
 
     /**
+     * Returns the tile's width.
+     * @return the tile's width in pixels
+     */
+    public int getWidth() {
+	return positionInTileset.width;
+    }
+
+    /**
+     * Returns the tile's height.
+     * @return the tile's height in pixels
+     */
+    public int getHeight() {
+	return positionInTileset.height;
+    }
+
+    /**
      * Returns the tile's obstacle property.
      * @return Tile.OBSTACLE_NONE, Tile.OBSTACLE, Tile.OBSTACLE_TOP_RIGHT,
      * Tile.OBSTACLE_TOP_LEFT, Tile.OBSTACLE_BOTTOM_LEFT or Tile.OBSTACLE_BOTTOM_RIGHT

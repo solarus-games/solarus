@@ -316,6 +316,7 @@ public class MapEditorWindow extends JFrame {
 		    Map map = Map.load(mapFile);
 		    // map.reloadImage();
 		    setMap(map);
+		    map.setSaved(true);
 		}
 	    }
 	    catch (IOException e) {

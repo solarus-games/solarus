@@ -17,13 +17,13 @@ public class MapView extends JComponent implements Observer {
     private Map map;
 
     /**
-     * X of the tile image displayd under the pointer in the map image.
+     * X of the tile image displayed under the pointer in the map image.
      * -1 indicates that no tile image is displayed under the pointer
      */
     private int cursorX = -1;
     
     /**
-     * Y of the tile image displayd under the pointer in the map image.
+     * Y of the tile image displayed under the pointer in the map image.
      * -1 indicates that no tile image is displayed under the pointer
      */
     private int cursorY = -1;
@@ -50,6 +50,9 @@ public class MapView extends JComponent implements Observer {
 
 	this.map = map;
 	map.addObserver(this);
+	if (map.getTileset() != null) {
+	    map.getTileset().addObserver(this);
+	}
 
 	update(map, null);
     }
@@ -75,18 +78,36 @@ public class MapView extends JComponent implements Observer {
     }
     
     /**
-     * This function is called when the map or the configuration changes.
+     * This function is called when the map, the tileset or the configuration changes.
      */
     public void update(Observable o, Object obj) {
 
 	if (o instanceof Map) {
-	    // the map has changed
+	    // the map has been modified
+
+	    if (obj instanceof Tileset) {
+		// the tileset has changed
+		Tileset tileset = map.getTileset();
+		tileset.addObserver(this);
+		update(tileset, null);
+	    }
 	    
 	    // redraw the image
 	    repaint();
 	}
 	else if (o instanceof Configuration && map != null) {
 	    // TODO
+	}
+	else if (o instanceof Tileset) {
+	    // the selected tile in the tileset has changed
+	    
+	    Tileset tileset = map.getTileset();
+	    if (tileset.getSelectedTile() != null && map.getSelectedTile() != null) {
+
+		// if a tile was just selected in the tileset whereas there is already
+		// a tile selected in the map, unselected the tile in the map
+		map.setSelectedTile(null);
+	    }
 	}
     }
 
@@ -123,22 +144,21 @@ public class MapView extends JComponent implements Observer {
 		    for (int i = 0; i < tiles.size(); i++) {
 			
 			TileOnMap tileOnMap = tiles.get(i);
-			Tile tile = tileset.getTile(tileOnMap.getIndex());
+			Tile tile = tileOnMap.getTile();
+
+			// source image
 			Rectangle positionInTileset = tile.getPositionInTileset();
-			Point positionInMap = tileOnMap.getPositionInMap();
-			
-			int width = positionInTileset.width;
-			int height = positionInTileset.height;
-			
 			int sx1 = positionInTileset.x * 2;
-			int sx2 = sx1 + width * 2;
+			int sx2 = sx1 + positionInTileset.width * 2;
 			int sy1 = positionInTileset.y * 2;
-			int sy2 = sy1 + height * 2;
+			int sy2 = sy1 + positionInTileset.height * 2;
 			
+			// destination image
+			Rectangle positionInMap = tileOnMap.getPositionInMap();
 			int dx1 = positionInMap.x * 2;
-			int dx2 = dx1 + width * tileOnMap.getRepeatX() * 2;
+			int dx2 = dx1 + positionInMap.width * 2;
 			int dy1 = positionInMap.y * 2;
-			int dy2 = dy1 + height * tileOnMap.getRepeatY() * 2;
+			int dy2 = dy1 + positionInMap.height * 2;
 			
 			g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
 		    } // for
@@ -163,6 +183,32 @@ public class MapView extends JComponent implements Observer {
 		    int dy2 = dy1 + height * 2;
 			
 		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+		}
+
+		// selected tile in the map
+		else {
+		    
+		    TileOnMap selectedTileInMap = map.getSelectedTile();
+		    if (selectedTileInMap != null) {
+
+			g.setColor(Color.GREEN);
+
+			Rectangle selectedRectangle = selectedTileInMap.getPositionInMap();
+			int x1 = selectedRectangle.x * 2;
+			int x2 = (selectedRectangle.x + selectedRectangle.width) * 2 - 1;
+			int y1 = selectedRectangle.y * 2;
+			int y2 = (selectedRectangle.y + selectedRectangle.height) * 2 - 1;
+
+			g.drawLine(x1, y1, x2, y1);
+			g.drawLine(x2, y1, x2, y2);
+			g.drawLine(x2, y2, x1, y2);
+			g.drawLine(x1, y2, x1, y1);
+			
+			g.drawLine(x1, y1 + 1, x2, y1 + 1);
+			g.drawLine(x2 - 1, y1, x2 - 1, y2);
+			g.drawLine(x2, y2 - 1, x1, y2 - 1);
+			g.drawLine(x1 + 1, y2, x1 + 1, y1);
+		    }
 		}
 	    }
 	}
@@ -193,13 +239,22 @@ public class MapView extends JComponent implements Observer {
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
 
+	    if (!isImageLoaded()) {
+		return;
+	    }
+
 	    // place a new tile
-	    if (isImageLoaded() && cursorX != -1 && cursorY != -1) {
+	    if (cursorX != -1 && cursorY != -1) {
 		Tileset tileset = map.getTileset();
-		int selectedTileIndex = tileset.getSelectedTileIndex();
-		Point positionInMap = new Point(cursorX / 2, cursorY / 2);
-		map.addTile(new TileOnMap(selectedTileIndex, positionInMap, Tile.LAYER_BELOW));
-		tileset.setSelectedTileIndex(selectedTileIndex);
+		map.addTile(new TileOnMap(tileset.getSelectedTile(), tileset.getSelectedTileIndex(),
+					  cursorX / 2, cursorY / 2));
+	    }
+
+	    // select an existing tile
+	    else {
+		int x = mouseEvent.getX();
+		int y = mouseEvent.getY();
+		map.setSelectedTile(x / 2, y / 2);
 	    }
 	}
     }

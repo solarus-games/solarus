@@ -13,14 +13,20 @@ import java.util.*;
 public class TileOnMap extends Observable implements Serializable {
 
     /**
+     * The tile from the tileset.
+     */
+    private final Tile tile;
+
+    /**
      * Index of the tile in the tileset.
+     * It is used only to generate the C++ code.
      */
     private final int tileIndex;
 
     /**
-     * Coordinates of the tile in the map.
+     * Position of the tile in the map.
      */
-    private Point positionInMap;
+    private Rectangle positionInMap;
 
     /**
      * Layer of the map.
@@ -38,28 +44,48 @@ public class TileOnMap extends Observable implements Serializable {
     private int repeatY;
 
     /**
-     * Simple constructor, without repeating the pattern.
+     * Simple constructor.
+     * @param tile the tile from the tileset
+     * @param tileIndex index of the tile in the tileset
+     * @param x x position of the tile on the map
+     * @param y y position of the tile on the map
      */
-    public TileOnMap(int tileIndex, Point positionInMap, int layer) {
-	this(tileIndex, positionInMap, layer, 1, 1);
+    public TileOnMap(Tile tile, int tileIndex, int x, int y) {
+	this(tile, tileIndex, x, y, tile.getDefaultLayer(), 1, 1);
     }
 
     /**
      * Constructor.
+     * @param tile the tile from the tileset
+     * @param tileIndex index of the tile in the tileset
+     * @param x x position of the tile on the map
+     * @param y y position of the tile on the map
+     * @param layer layer of the tile
+     * @param repeatX number of times the pattern is repeated on x
+     * @param repeatY number of times the pattern is repeated on y
      */
-    public TileOnMap(int tileIndex, Point positionInMap, int layer, int repeatX, int repeatY) {
+    public TileOnMap(Tile tile, int tileIndex, int x, int y, int layer, int repeatX, int repeatY) {
+	this.tile = tile;
 	this.tileIndex = tileIndex;
-	this.positionInMap = positionInMap;
+	this.positionInMap = new Rectangle(x, y, tile.getWidth() * repeatX, tile.getHeight() * repeatY);
 	this.layer = layer;
 	this.repeatX = repeatX;
 	this.repeatY = repeatY;
     }
 
     /**
+     * Returns the tile of the tileset.
+     * @return the tile of the tileset
+     */
+    public Tile getTile() {
+	return tile;
+    }
+
+    /**
      * Returns the index of the tile in the tileset.
      * @return the index of the tile in the tileset.
      */
-    public int getIndex() {
+    public int getTileIndex() {
 	return tileIndex;
     }
 
@@ -67,7 +93,7 @@ public class TileOnMap extends Observable implements Serializable {
      * Returns the position of the tile on the map.
      * @return the position of the tile on the map
      */
-    public Point getPositionInMap() {
+    public Rectangle getPositionInMap() {
 	return positionInMap;
     }
 
@@ -76,10 +102,20 @@ public class TileOnMap extends Observable implements Serializable {
      * Changes the position of the tile on the map.
      * @param positionInMap the position of the tile on the map
      */
-    public void setPositionInMap(Point positionInMap) {
+    public void setPositionInMap(Rectangle positionInMap) {
 	this.positionInMap = positionInMap;
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Returns whether or not a point is in the tile.
+     * @param x x of the point
+     * @param y y of the point
+     * @return true if the point is in the tile, false otherwise
+     */
+    public boolean containsPoint(int x, int y) {
+	return positionInMap.contains(x, y);
     }
 
     /**
@@ -116,6 +152,7 @@ public class TileOnMap extends Observable implements Serializable {
      */
     public void setRepeatX(int repeatX) {
 	this.repeatX = repeatX;
+	positionInMap.width = tile.getWidth() * repeatX;
 	setChanged();
 	notifyObservers();
     }
@@ -134,6 +171,7 @@ public class TileOnMap extends Observable implements Serializable {
      */
     public void setRepeatY(int repeatY) {
 	this.repeatY = repeatY;
+	positionInMap.height = tile.getHeight() * repeatY;
 	setChanged();
 	notifyObservers();
     }

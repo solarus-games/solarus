@@ -13,6 +13,11 @@ import java.util.*;
 public class TileOnMap extends Observable implements Serializable {
 
     /**
+     * Version number of the class serialization.
+     */
+    public static final long serialVersionUID = 1L;
+
+    /**
      * The tile from the tileset.
      */
     private final Tile tile;
@@ -102,11 +107,46 @@ public class TileOnMap extends Observable implements Serializable {
      * Changes the position of the tile on the map.
      * @param positionInMap the position of the tile on the map
      */
-    public void setPositionInMap(Rectangle positionInMap) {
-	this.positionInMap = positionInMap;
-	setChanged();
-	notifyObservers();
-    }
+//     public void setPositionInMap(Rectangle positionInMap) {
+// 	this.positionInMap = positionInMap;
+// 	setChanged();
+// 	notifyObservers();
+//     }
+
+    /**
+     * Changes the position of the tile on the map, by specifying two points.
+     * The tile is resized (i.e. repeatX and repeatY are updated) so that
+     * the tile fits exactly in the rectangle formed by the two points.
+     * @param x1 x coordinate of the second point
+     * @param y1 y coordinate of the second point
+     * @param x2 x coordinate of the second point
+     * @param y2 y coordinate of the second point
+     * @throws MapException if the rectangle width or its height is zero
+     * (no other checks are performed)
+     */
+     public void setPositionInMap(int x1, int y1, int x2, int y2) throws MapException {
+
+	 // check the rectangle validity
+	 if (x1 == x2 || y1 == y2) {
+	     throw new MapException("No rectangle defined");
+	 }
+
+	 Rectangle positionInTileset = this.tile.getPositionInTileset();
+
+	 // x
+	 positionInMap.x = Math.min(x1, x2);
+	 positionInMap.width = Math.abs(x2 - x1);
+	 repeatX = positionInMap.width / positionInTileset.width;
+
+	 // y
+	 positionInMap.y = Math.min(y1, y2);
+	 positionInMap.height = Math.abs(y2 - y1);
+	 repeatY = positionInMap.height / positionInTileset.height;
+
+	 // notify
+	 setChanged();
+	 notifyObservers();
+     }
 
     /**
      * Returns whether or not a point is in the tile.
@@ -133,9 +173,51 @@ public class TileOnMap extends Observable implements Serializable {
      * Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE.
      */
     public void setLayer(int layer) {
-	this.layer = layer;
-	setChanged();
-	notifyObservers();
+	if (layer != this.layer) {
+	    this.layer = layer;
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Returns the x coordinate of the tile on the map.
+     * @return the x coordinate of the tile on the map
+     */
+    public int getX() {
+	return positionInMap.x;
+    }
+
+    /**
+     * Changes the x coordinate of the tile on the map.
+     * @param x the x coordinate of the tile on the map
+     */
+    public void setX(int x) {
+	if (x != positionInMap.x) {
+	    positionInMap.x = x;
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Returns the y coordinate of the tile on the map.
+     * @return the y coordinate of the tile on the map
+     */
+    public int getY() {
+	return positionInMap.y;
+    }
+
+    /**
+     * Changes the y coordinate of the tile on the map.
+     * @param y the y coordinate of the tile on the map
+     */
+    public void setY(int y) {
+	if (y != positionInMap.y) {
+	    positionInMap.y = y;
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**
@@ -151,10 +233,12 @@ public class TileOnMap extends Observable implements Serializable {
      * @param repeatX the number of times the pattern is repeated on x
      */
     public void setRepeatX(int repeatX) {
-	this.repeatX = repeatX;
-	positionInMap.width = tile.getWidth() * repeatX;
-	setChanged();
-	notifyObservers();
+	if (repeatX != this.repeatX) {
+	    this.repeatX = repeatX;
+	    positionInMap.width = tile.getWidth() * repeatX;
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**
@@ -170,9 +254,11 @@ public class TileOnMap extends Observable implements Serializable {
      * @param repeatY the number of times the pattern is repeated on y
      */
     public void setRepeatY(int repeatY) {
-	this.repeatY = repeatY;
-	positionInMap.height = tile.getHeight() * repeatY;
-	setChanged();
-	notifyObservers();
+	if (repeatY != this.repeatY) {
+	    this.repeatY = repeatY;
+	    positionInMap.height = tile.getHeight() * repeatY;
+	    setChanged();
+	    notifyObservers();
+	}
     }
 }

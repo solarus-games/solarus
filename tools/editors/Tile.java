@@ -146,9 +146,11 @@ public class Tile extends Observable implements Serializable {
      * Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE.
      */
     public void setDefaultLayer(int defaultLayer) {
-	this.defaultLayer = defaultLayer;
-	setChanged();
-	notifyObservers();
+	if (defaultLayer != this.defaultLayer) {
+	    this.defaultLayer = defaultLayer;
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**

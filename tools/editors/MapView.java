@@ -74,13 +74,13 @@ public class MapView extends JComponent implements Observer {
 	addKeyListener(new MapKeyListener());
 
 	// create the popup menu for a selectedTile
-	// items: expand, layer, destroy
+	// items: resize, layer, destroy
 	popupMenuSelectedTile = new JPopupMenu();
 
 	JMenuItem item = new JMenuItem("Resize");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    state = STATE_RESIZING_TILE;
+		    startResizingSelectedTile();
 		}
 	    });
 	popupMenuSelectedTile.add(item);
@@ -124,14 +124,6 @@ public class MapView extends JComponent implements Observer {
 	}
 
 	update(map, null);
-    }
-
-    /**
-     * Removes the selected tile from the map.
-     */
-    private void destroySelectedTile() {
-	state = STATE_NORMAL;
-	map.removeSelectedTile();
     }
 
     /**
@@ -247,6 +239,7 @@ public class MapView extends JComponent implements Observer {
 	g.setColor(map.getBackgroundColor());
 	g.fillRect(0, 0, map.getWidth() * 2, map.getHeight() * 2);
 
+	TileOnMap selectedTileInMap;
 	Tileset tileset = map.getTileset();
 	if (tileset != null) {
 
@@ -268,22 +261,41 @@ public class MapView extends JComponent implements Observer {
 			int sy1 = positionInTileset.y * 2;
 			int sy2 = sy1 + positionInTileset.height * 2;
 			
-			// destination image
+			// destination image: we have to repeat the pattern
+			int repeatX = tileOnMap.getRepeatX();
+			int repeatY = tileOnMap.getRepeatY();
 			Rectangle positionInMap = tileOnMap.getPositionInMap();
-			int dx1 = positionInMap.x * 2;
-			int dx2 = dx1 + positionInMap.width * 2;
-			int dy1 = positionInMap.y * 2;
-			int dy2 = dy1 + positionInMap.height * 2;
+
+			int dx1;
+			int dx2;
+			int dy1;
+			int dy2;
+
+			dx2 = positionInMap.x * 2;
+			for (int j = 0; j < repeatX; j++) {
+			    dx1 = dx2;
+			    dx2 += positionInTileset.width * 2;
+			    dy2 = positionInMap.y * 2;
+			    for (int k = 0; k < repeatY; k++) {
+				dy1 = dy2;
+				dy2 += positionInTileset.height * 2;
+				g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+			    }
+			}
 			
-			g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
 		    } // for
 		} // for
 
-		// selected tile in the tileset
-		if (state == STATE_ADDING_TILE) {
+		// special display for each state
+
+		switch (state) {
+
+		    // the selected tile in the tileset is going to be added to the map
+		case STATE_ADDING_TILE:
+
 		    Tile selectedTileInTileset = tileset.getSelectedTile();
 		    Rectangle positionInTileset = selectedTileInTileset.getPositionInTileset();
-
+		    
 		    int width = positionInTileset.width;
 		    int height = positionInTileset.height;
 			
@@ -298,12 +310,13 @@ public class MapView extends JComponent implements Observer {
 		    int dy2 = dy1 + height * 2;
 			
 		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
-		}
 
-		// selected tile in the map
-		else if (state == STATE_TILE_SELECTED) {
+		    break;
+
+		    // a tile is selected in the map
+		case STATE_TILE_SELECTED:
 		    
-		    TileOnMap selectedTileInMap = map.getSelectedTile();
+		    selectedTileInMap = map.getSelectedTile();
 		    
 		    g.setColor(Color.GREEN);
 
@@ -322,8 +335,128 @@ public class MapView extends JComponent implements Observer {
 		    g.drawLine(x2 - 1, y1, x2 - 1, y2);
 		    g.drawLine(x2, y2 - 1, x1, y2 - 1);
 		    g.drawLine(x1 + 1, y2, x1 + 1, y1);
+		
+		    break;
+
+		    // the user is resizing the selected tile
+		case STATE_RESIZING_TILE:
+		    
+		    selectedTileInMap = map.getSelectedTile();
+		    
+		    Rectangle positionInMap = selectedTileInMap.getPositionInMap();
+
+		    // A is the initial point corresponding to the top-left corner of the tile
+		    int xA = positionInMap.x * 2;
+		    int yA = positionInMap.y * 2;
+
+		    // B is the point corresponding to the cursor
+		    int xB = cursorLocation.x;
+		    int yB = cursorLocation.y;
+
+		    if (xA < xB) {
+			x1 = xA;
+			x2 = xB;
+		    }
+		    else {
+			x1 = xB;
+			x2 = xA;
+		    }
+
+		    if (yA < yB) {
+			y1 = yA;
+			y2 = yB;
+		    }
+		    else {
+			y1 = yB;
+			y2 = yA;
+		    }
+
+		    g.setColor(Color.GREEN);
+
+		    g.drawLine(x1, y1, x2, y1);
+		    g.drawLine(x2, y1, x2, y2);
+		    g.drawLine(x2, y2, x1, y2);
+		    g.drawLine(x1, y2, x1, y1);
+		    
+		    g.drawLine(x1, y1 + 1, x2, y1 + 1);
+		    g.drawLine(x2 - 1, y1, x2 - 1, y2);
+		    g.drawLine(x2, y2 - 1, x1, y2 - 1);
+		    g.drawLine(x1 + 1, y2, x1 + 1, y1);
+
+		    break;
 		}
 	    }
+	}
+    }
+
+    /**
+     * Adds the current tile to the map.
+     * The current tile selected in the tileset is placed on the map at the mouse location.
+     * @param selectNewTile true to make selected the new tile after its creation
+     */
+    private void addCurrentTileToMap(boolean selectNewTile) {
+
+	// create the tile
+	Tileset tileset = map.getTileset();
+	TileOnMap tile = new TileOnMap(tileset.getSelectedTile(), tileset.getSelectedTileIndex(),
+				       cursorLocation.x / 2, cursorLocation.y / 2);
+
+	// add it to the map
+	map.addTile(tile);
+
+	// make it selected if required
+	if (selectNewTile) {
+	    map.setSelectedTile(tile);
+	    map.getTileset().setSelectedTileIndex(-1);
+	    state = STATE_TILE_SELECTED;
+	}
+    }
+
+    /**
+     * Removes the selected tile from the map.
+     */
+    private void destroySelectedTile() {
+	state = STATE_NORMAL;
+	map.removeSelectedTile();
+    }
+
+    /**
+     * Lets the user resize the tile selected on the map.
+     */
+    private void startResizingSelectedTile() {
+	
+	Rectangle tilePositionInMap = map.getSelectedTile().getPositionInMap();
+	cursorLocation.x = (tilePositionInMap.x + tilePositionInMap.width) * 2;
+	cursorLocation.y = (tilePositionInMap.y + tilePositionInMap.height) * 2;
+	state = STATE_RESIZING_TILE;
+	repaint();
+    }
+
+    /**
+     * Validates the new size of the tile that was being resized.
+     */
+    private void endResizingSelectedTile() {
+
+	TileOnMap tileOnMap = map.getSelectedTile();
+	Rectangle positionInMap = tileOnMap.getPositionInMap();
+	Rectangle positionInTileset = tileOnMap.getTile().getPositionInTileset();
+
+	// first point: the initial point, the top-left corner of the tile
+	int x1 = positionInMap.x;
+	int y1 = positionInMap.y;
+		
+	// second point: the point corresponding to the cursor
+	int x2 = cursorLocation.x / 2;
+	int y2 = cursorLocation.y / 2;
+	
+	try {
+	    tileOnMap.setPositionInMap(x1, y1, x2, y2);
+	    state = STATE_NORMAL;
+	    repaint();
+	}
+	catch (MapException e) {
+	    // nothing to do, the modification has just been cancelled if it was impossible
+	    System.out.println("ex: " + e.getMessage());
 	}
     }
 
@@ -347,8 +480,8 @@ public class MapView extends JComponent implements Observer {
 	/**
 	 * This method is called when the mouse is clicked on the map view.
 	 * If a tile is selected in the tileset, an instance of this tile is added to the map
-	 * at the cursor location. Otherwise, the tile clicked becomes selected in the map.
-	 * A right click on a tile of the map shows a popup menu.
+	 * (and if it is a right click, the user can than place other instances of this tile).
+	 * at the cursor location.
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -358,8 +491,34 @@ public class MapView extends JComponent implements Observer {
 
 	    requestFocusInWindow();
 
+	    // if the user is adding a tile
+	    if (state == STATE_ADDING_TILE) {
+		
+		// place the new tile
+		boolean selectNewTile = (mouseEvent.getButton() != MouseEvent.BUTTON3);
+		addCurrentTileToMap(selectNewTile);
+	    }
+	}
+
+	/**
+	 * This method is called when the mouse is pressed on the map view.
+	 * If a tile is selected in the tileset, an instance of this tile is added to the map
+	 * at the cursor location and this tile can be resized
+	 * until the mouse button is released.
+	 * Otherwise, the tile clicked becomes selected in the map.
+	 * A right click on a tile of the map shows a popup menu.
+	 */
+	public void mousePressed(MouseEvent mouseEvent) {
+
+	    if (!isImageLoaded()) {
+		return;
+	    }
+
+	    requestFocusInWindow();
+
 	    switch (state) {
 
+		// select or unselect a tile
 	    case STATE_NORMAL:
 	    case STATE_TILE_SELECTED:
 		
@@ -371,6 +530,7 @@ public class MapView extends JComponent implements Observer {
 		// a tile has just been selected
 		if (map.getSelectedTile() != null) {
 		    state = STATE_TILE_SELECTED;
+		    repaint();
 
 		    // right click: popup menu on the selected tile
 		    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
@@ -384,32 +544,42 @@ public class MapView extends JComponent implements Observer {
 		}
 		else {
 		    state = STATE_NORMAL;
+		    repaint();
 		}
 
 		break;
 
-	    case STATE_ADDING_TILE:
-	    // the user is adding a tile
-		
-		// left click: place the new tile
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
-
-		    // place a new tile
-		    Tileset tileset = map.getTileset();
-		    map.addTile(new TileOnMap(tileset.getSelectedTile(), tileset.getSelectedTileIndex(),
-					      cursorLocation.x / 2, cursorLocation.y / 2));
-		}
-
-		// right click: cancel
-		else {
-		    map.getTileset().setSelectedTileIndex(-1);
-		}
-
-		break;
-
+		// validate the new size
 	    case STATE_RESIZING_TILE:
-		// TODO
+
+		endResizingSelectedTile();
+
 		break;
+	    }
+	}
+
+	/**
+	 * This function is called when the mouse is released on the component.
+	 * If a tile was being resized (by dragging the mouse), the new size is validated.
+	 */
+	public void mouseReleased(MouseEvent mouseEvent) {
+	    
+	    if (isImageLoaded() && state == STATE_RESIZING_TILE) {
+
+		endResizingSelectedTile();
+	    }
+	}
+
+	/**
+	 * This function is called when the mouse is dragged on the component.
+	 * If a tile is selected in the tileset, it is placed and can be resized
+	 * immediately.
+	 */
+	public void mouseDragged(MouseEvent mouseEvent) {
+
+	    if (isImageLoaded() && state == STATE_ADDING_TILE) {
+		addCurrentTileToMap(true);
+		startResizingSelectedTile();
 	    }
 	}
     }
@@ -427,28 +597,29 @@ public class MapView extends JComponent implements Observer {
 
 	    if (isImageLoaded()) {
 
-		int x = mouseEvent.getX();
-		int y = mouseEvent.getY();
+		int x, y;
 
-		// if we are adding a tile but the mouse is outside the map, 
-		// remove the tile displayed under the cursor
-		if (state == STATE_ADDING_TILE && (x >= map.getWidth() * 2 || y >= map.getHeight() * 2)) {
-
-		    state = STATE_NORMAL;
-		    repaint();
-		}
-		else {
-
-		    // if a tile is selected in the tileset, make the state STATE_ADDING_TILE
-		    Tile selectedTileInTileset = map.getTileset().getSelectedTile();
+		switch (state) {
 		    
-		    if (selectedTileInTileset != null && state != STATE_ADDING_TILE) {
+		case STATE_NORMAL:
+		    // if a tile is selected in the tileset, display it on the map under the cursor
+		    if (map.getTileset().getSelectedTile() != null) {
 			state = STATE_ADDING_TILE;
 		    }
-		}
 
-		// update the cursor location if necessary
-		if (state == STATE_ADDING_TILE || state == STATE_RESIZING_TILE) {
+		    break;
+		    
+		case STATE_ADDING_TILE:
+		    // if we are adding a tile but the mouse is outside the map, 
+		    // remove the tile displayed under the cursor
+
+		    x = mouseEvent.getX();
+		    y = mouseEvent.getY();
+
+		    if (x >= map.getWidth() * 2 || y >= map.getHeight() * 2) {
+			state = STATE_NORMAL;
+			repaint();
+		    }
 
 		    // snap the tile to the 16*16 grid
 		    x -= x % 16;
@@ -459,6 +630,44 @@ public class MapView extends JComponent implements Observer {
 			cursorLocation.y = y;
 			repaint();
 		    }
+
+		    break;
+
+		case STATE_RESIZING_TILE:
+		    // if we are resizing a tile, calculate the coordinates of
+		    // the second point of the rectangle formed by the pointer
+
+		    x = mouseEvent.getX() / 2;
+		    y = mouseEvent.getY() / 2;
+
+		    if (x < map.getWidth() && y < map.getHeight()) {
+
+			Rectangle selectedTilePosition = map.getSelectedTile().getPositionInMap();
+			Tile originalTile = map.getSelectedTile().getTile();
+			int width = originalTile.getWidth();
+			int height = originalTile.getHeight();
+			
+			// snap the coordinates to the grid
+			x += width / 2;
+			y += height / 2;
+
+			x -= x % 8;
+			y -= y % 8;
+			
+			// snap the coordinates to the size of the tile
+			x = x - (Math.abs(x - selectedTilePosition.x)) % width;
+			y = y - (Math.abs(y - selectedTilePosition.y)) % width;
+			
+			x *= 2;
+			y *= 2;
+			
+			if (x != cursorLocation.x || y != cursorLocation.y) {
+			    cursorLocation.x = x;
+			    cursorLocation.y = y;
+			    repaint();
+			}
+		    }
+		    break;
 		}
 	    }
 	}

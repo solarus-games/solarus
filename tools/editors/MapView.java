@@ -7,7 +7,7 @@ import java.util.*;
 import java.io.*;
 
 /**
- * This component shows the map image and allow the user to modify it.
+ * This component shows the map image and allows the user to modify it.
  */
 public class MapView extends JComponent implements Observer {
 
@@ -16,30 +16,36 @@ public class MapView extends JComponent implements Observer {
      */
     private Map map;
 
-    /**
-     * X of the tile image displayed under the pointer in the map image.
-     * -1 indicates that no tile image is displayed under the pointer
-     */
-    private int cursorX = -1;
-    
-    /**
-     * Y of the tile image displayed under the pointer in the map image.
-     * -1 indicates that no tile image is displayed under the pointer
-     */
-    private int cursorY = -1;
+    // state of the map view
+
+    // static constants to identify the state
+    private static final int STATE_NORMAL = 0;
+    private static final int STATE_TILE_SELECTED = 1;
+    private static final int STATE_RESIZING_TILE = 2;
+    private static final int STATE_ADDING_TILE = 3;
 
     /**
-     * Tells whether or not the user is expanding a tile on the map.
+     * State of the map view: STATE_NORMAL, STATE_TILE_SELECTED,
+     * STATE_ADDING_TILE or STATE_RESIZING_TILE.
      */
-    private boolean isExpanding;
+    private int state;
 
     /**
-     * The current selected tile on the map.
+     * Coordinates:
+     * - of the tile displayed under the pointer in state STATE_ADDING_TILE
+     * - of the second point of the tile's rectangle in state STATE_RESIZING_TILE
+     */
+    private Point cursorLocation;
+
+    /**
+     * The current selected tile on the map (in states STATE_TILE_SELECTED and STATE_RESIZING_TILE).
      */
     private TileOnMap currentSelectedTile;
 
+    // popup menu
+
     /**
-     * A popup menu displayed when the user right-clicks on a tile.
+     * A popup menu displayed when the user right-clicks on a tile (state STATE_TILE_SELECTED).
      */
     private JPopupMenu popupMenuSelectedTile;
 
@@ -59,19 +65,22 @@ public class MapView extends JComponent implements Observer {
     public MapView() {
 	super();
 
+	this.cursorLocation = new Point(0, 0);
+
 	Configuration.getInstance().addObserver(this);
 
 	addMouseListener(new MapMouseListener());
 	addMouseMotionListener(new MapMouseMotionListener());
+	addKeyListener(new MapKeyListener());
 
 	// create the popup menu for a selectedTile
 	// items: expand, layer, destroy
 	popupMenuSelectedTile = new JPopupMenu();
 
-	JMenuItem item = new JMenuItem("Expand");
+	JMenuItem item = new JMenuItem("Resize");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    isExpanding = true;
+		    state = STATE_RESIZING_TILE;
 		}
 	    });
 	popupMenuSelectedTile.add(item);
@@ -93,7 +102,7 @@ public class MapView extends JComponent implements Observer {
 	item = new JMenuItem("Destroy");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    map.removeSelectedTile();
+		    destroySelectedTile();
 		}
 	    });
 	popupMenuSelectedTile.add(item);
@@ -108,12 +117,21 @@ public class MapView extends JComponent implements Observer {
 	}
 
 	this.map = map;
+	this.state = STATE_NORMAL;
 	map.addObserver(this);
 	if (map.getTileset() != null) {
 	    map.getTileset().addObserver(this);
 	}
 
 	update(map, null);
+    }
+
+    /**
+     * Removes the selected tile from the map.
+     */
+    private void destroySelectedTile() {
+	state = STATE_NORMAL;
+	map.removeSelectedTile();
     }
 
     /**
@@ -134,6 +152,14 @@ public class MapView extends JComponent implements Observer {
 	}
 	
 	return new Dimension(width, height);
+    }
+
+    /**
+     * Returns whether or not the component is focusable.
+     * @return true
+     */
+    public boolean isFocusable() {
+	return true;
     }
     
     /**
@@ -186,14 +212,14 @@ public class MapView extends JComponent implements Observer {
 	    Tileset tileset = map.getTileset();
 	    if (tileset.getSelectedTile() == null) {
 		// no tile is selected anymore in the tileset
-		cursorX = -1;
-		cursorY = -1;
+		state = STATE_NORMAL;
 		repaint();
 	    }
 	    else if (map.getSelectedTile() != null) {
 
 		// if a tile was just selected in the tileset whereas there is already
 		// a tile selected in the map, unselected the tile in the map
+		state = STATE_NORMAL;
 		map.setSelectedTile(null);
 	    }
 	    
@@ -206,15 +232,6 @@ public class MapView extends JComponent implements Observer {
      */
     public boolean isImageLoaded() {
 	return map != null && map.getTileset() != null && map.getTileset().getDoubleImage() != null;
-    }
-
-    /**
-     * Returns whether or not the user is placing a tile on the map, i.e. whether he has selected
-     * a tile in the tileset.
-     * @return true if a tile from the tileset is selected, false otherwise
-     */
-    public boolean isAddingTile() {
-	return cursorX != -1 && cursorY != -1;
     }
 
     /**
@@ -263,8 +280,8 @@ public class MapView extends JComponent implements Observer {
 		} // for
 
 		// selected tile in the tileset
-		Tile selectedTileInTileset = tileset.getSelectedTile();
-		if (selectedTileInTileset != null && cursorX != -1 && cursorY != -1) {
+		if (state == STATE_ADDING_TILE) {
+		    Tile selectedTileInTileset = tileset.getSelectedTile();
 		    Rectangle positionInTileset = selectedTileInTileset.getPositionInTileset();
 
 		    int width = positionInTileset.width;
@@ -275,38 +292,36 @@ public class MapView extends JComponent implements Observer {
 		    int sy1 = positionInTileset.y * 2;
 		    int sy2 = sy1 + height * 2;
 			
-		    int dx1 = cursorX;
+		    int dx1 = cursorLocation.x;
 		    int dx2 = dx1 + width * 2;
-		    int dy1 = cursorY;
+		    int dy1 = cursorLocation.y;
 		    int dy2 = dy1 + height * 2;
 			
 		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
 		}
 
 		// selected tile in the map
-		else {
+		else if (state == STATE_TILE_SELECTED) {
 		    
 		    TileOnMap selectedTileInMap = map.getSelectedTile();
-		    if (selectedTileInMap != null) {
+		    
+		    g.setColor(Color.GREEN);
 
-			g.setColor(Color.GREEN);
-
-			Rectangle selectedRectangle = selectedTileInMap.getPositionInMap();
-			int x1 = selectedRectangle.x * 2;
-			int x2 = (selectedRectangle.x + selectedRectangle.width) * 2 - 1;
-			int y1 = selectedRectangle.y * 2;
-			int y2 = (selectedRectangle.y + selectedRectangle.height) * 2 - 1;
-
-			g.drawLine(x1, y1, x2, y1);
-			g.drawLine(x2, y1, x2, y2);
-			g.drawLine(x2, y2, x1, y2);
-			g.drawLine(x1, y2, x1, y1);
-			
-			g.drawLine(x1, y1 + 1, x2, y1 + 1);
-			g.drawLine(x2 - 1, y1, x2 - 1, y2);
-			g.drawLine(x2, y2 - 1, x1, y2 - 1);
-			g.drawLine(x1 + 1, y2, x1 + 1, y1);
-		    }
+		    Rectangle selectedRectangle = selectedTileInMap.getPositionInMap();
+		    int x1 = selectedRectangle.x * 2;
+		    int x2 = (selectedRectangle.x + selectedRectangle.width) * 2 - 1;
+		    int y1 = selectedRectangle.y * 2;
+		    int y2 = (selectedRectangle.y + selectedRectangle.height) * 2 - 1;
+		    
+		    g.drawLine(x1, y1, x2, y1);
+		    g.drawLine(x2, y1, x2, y2);
+		    g.drawLine(x2, y2, x1, y2);
+		    g.drawLine(x1, y2, x1, y1);
+		    
+		    g.drawLine(x1, y1 + 1, x2, y1 + 1);
+		    g.drawLine(x2 - 1, y1, x2 - 1, y2);
+		    g.drawLine(x2, y2 - 1, x1, y2 - 1);
+		    g.drawLine(x1 + 1, y2, x1 + 1, y1);
 		}
 	    }
 	}
@@ -323,9 +338,8 @@ public class MapView extends JComponent implements Observer {
 	 * the last cursor location on the map view, to we have to remove it.
 	 */
 	public void mouseExited(MouseEvent mouseEvent) {
-	    if (cursorX != -1 || cursorY != -1) {
-		cursorX = -1;
-		cursorY = -1;
+	    if (state == STATE_ADDING_TILE) {
+		state = STATE_NORMAL;
 		repaint();
 	    }
 	}
@@ -342,42 +356,61 @@ public class MapView extends JComponent implements Observer {
 		return;
 	    }
 
-	    // select an existing tile unless the user is placing a tile
-	    if (!isAddingTile()) {
+	    requestFocusInWindow();
+
+	    switch (state) {
+
+	    case STATE_NORMAL:
+	    case STATE_TILE_SELECTED:
+		
+		// select the tile clicked
 		int x = mouseEvent.getX();
 		int y = mouseEvent.getY();
 		map.setSelectedTile(x / 2, y / 2);
 
-		// right click: popup menu on the selected tile
-		if (mouseEvent.getButton() == MouseEvent.BUTTON3 && map.getSelectedTile() != null) {
-		    
-		    int layer = map.getSelectedTile().getLayer();
-		    itemsLayers[layer].setSelected(true);
-		    popupMenuSelectedTile.show(MapView.this,
-					       mouseEvent.getX(),
-					       mouseEvent.getY());
-		}
-	    }
+		// a tile has just been selected
+		if (map.getSelectedTile() != null) {
+		    state = STATE_TILE_SELECTED;
 
+		    // right click: popup menu on the selected tile
+		    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+			
+			int layer = map.getSelectedTile().getLayer();
+			itemsLayers[layer].setSelected(true);
+			popupMenuSelectedTile.show(MapView.this,
+						   mouseEvent.getX(),
+						   mouseEvent.getY());
+		    }
+		}
+		else {
+		    state = STATE_NORMAL;
+		}
+
+		break;
+
+	    case STATE_ADDING_TILE:
 	    // the user is adding a tile
-	    else {
 		
 		// left click: place the new tile
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
 		    // place a new tile
-		    if (cursorX != -1 && cursorY != -1) {
-			Tileset tileset = map.getTileset();
-			map.addTile(new TileOnMap(tileset.getSelectedTile(), tileset.getSelectedTileIndex(),
-						  cursorX / 2, cursorY / 2));
-		    }
+		    Tileset tileset = map.getTileset();
+		    map.addTile(new TileOnMap(tileset.getSelectedTile(), tileset.getSelectedTileIndex(),
+					      cursorLocation.x / 2, cursorLocation.y / 2));
 		}
+
 		// right click: cancel
 		else {
 		    map.getTileset().setSelectedTileIndex(-1);
 		}
+
+		break;
+
+	    case STATE_RESIZING_TILE:
+		// TODO
+		break;
 	    }
-	    
 	}
     }
 
@@ -397,35 +430,56 @@ public class MapView extends JComponent implements Observer {
 		int x = mouseEvent.getX();
 		int y = mouseEvent.getY();
 
-		// if the mouse is outside the map, remove the tile displayed under the cursor
-		if (x >= map.getWidth() * 2 || y >= map.getHeight() * 2) {
+		// if we are adding a tile but the mouse is outside the map, 
+		// remove the tile displayed under the cursor
+		if (state == STATE_ADDING_TILE && (x >= map.getWidth() * 2 || y >= map.getHeight() * 2)) {
 
-		    cursorX = -1;
-		    cursorY = -1;
+		    state = STATE_NORMAL;
 		    repaint();
 		}
 		else {
 
-		    // else display the tile under the cursor
-		    Tileset tileset = map.getTileset();
-		    Tile selectedTileInTileset = tileset.getSelectedTile();
+		    // if a tile is selected in the tileset, make the state STATE_ADDING_TILE
+		    Tile selectedTileInTileset = map.getTileset().getSelectedTile();
 		    
-		    if (selectedTileInTileset != null) {
-			// snap the tile to the 16*16 grid
-			x -= x % 16;
-			y -= y % 16;
-			
-			if (x != cursorX || y != cursorY) {
-			    cursorX = x;
-			    cursorY = y;
-			    repaint();
-			}
+		    if (selectedTileInTileset != null && state != STATE_ADDING_TILE) {
+			state = STATE_ADDING_TILE;
+		    }
+		}
+
+		// update the cursor location if necessary
+		if (state == STATE_ADDING_TILE || state == STATE_RESIZING_TILE) {
+
+		    // snap the tile to the 16*16 grid
+		    x -= x % 16;
+		    y -= y % 16;
+		    
+		    if (x != cursorLocation.x || y != cursorLocation.y) {
+			cursorLocation.x = x;
+			cursorLocation.y = y;
+			repaint();
 		    }
 		}
 	    }
 	}
     }
     
+    /**
+     * The key listener associated to the map image.
+     */
+    private class MapKeyListener extends KeyAdapter {
+	
+	/**
+	 * This method is invoked when a key is pressed on the map image.
+	 */
+	public void keyPressed(KeyEvent keyEvent) {
+
+	    if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE && state == STATE_TILE_SELECTED) {
+		destroySelectedTile();
+	    }
+	}
+    }
+
     /**
      * Action listener invoked when the user changes the layer of a tile
      * from the popup menu after a right click.

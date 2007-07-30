@@ -357,8 +357,9 @@ public class Map extends Observable implements Serializable {
      */
     public void setSelectedTile(int x, int y) {
 
-	setSelectedTile(Tile.LAYER_ABOVE, x, y);
+	TileOnMap oldSelectedTile = selectedTile;
 
+	setSelectedTile(Tile.LAYER_ABOVE, x, y);
 	if (selectedTile == null) {
 	    setSelectedTile(Tile.LAYER_INTERMEDIATE, x, y);
 	    if (selectedTile == null) {
@@ -366,8 +367,10 @@ public class Map extends Observable implements Serializable {
 	    }
 	}
 
-	setChanged();
-	notifyObservers();
+	if (oldSelectedTile != null && selectedTile == null) {
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**

@@ -9,7 +9,7 @@ import java.io.*;
 /**
  * This component shows the map image and allows the user to modify it.
  */
-public class MapView extends JComponent implements Observer {
+public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * The current map.
@@ -20,13 +20,11 @@ public class MapView extends JComponent implements Observer {
 
     // static constants to identify the state
     private static final int STATE_NORMAL = 0;
-    private static final int STATE_TILE_SELECTED = 1;
-    private static final int STATE_RESIZING_TILE = 2;
-    private static final int STATE_ADDING_TILE = 3;
+    private static final int STATE_RESIZING_TILE = 1;
+    private static final int STATE_ADDING_TILE = 2;
 
     /**
-     * State of the map view: STATE_NORMAL, STATE_TILE_SELECTED,
-     * STATE_ADDING_TILE or STATE_RESIZING_TILE.
+     * State of the map view: STATE_NORMAL, STATE_ADDING_TILE or STATE_RESIZING_TILE.
      */
     private int state;
 
@@ -37,17 +35,17 @@ public class MapView extends JComponent implements Observer {
      */
     private Point cursorLocation;
 
-    /**
-     * The current selected tile on the map (in states STATE_TILE_SELECTED and STATE_RESIZING_TILE).
-     */
-    private TileOnMap currentSelectedTile;
-
     // popup menu
 
     /**
-     * A popup menu displayed when the user right-clicks on a tile (state STATE_TILE_SELECTED).
+     * A popup menu displayed when the user right-clicks on a tile.
      */
-    private JPopupMenu popupMenuSelectedTile;
+    private JPopupMenu popupMenuSelectedTiles;
+
+    /**
+     * Item in the popup menu to resize the selected tile.
+     */
+    private JMenuItem itemResize;
 
     /**
      * Items for the layers in the popup menu.
@@ -75,17 +73,17 @@ public class MapView extends JComponent implements Observer {
 
 	// create the popup menu for a selectedTile
 	// items: resize, layer, destroy
-	popupMenuSelectedTile = new JPopupMenu();
+	popupMenuSelectedTiles = new JPopupMenu();
 
-	JMenuItem item = new JMenuItem("Resize");
-	item.addActionListener(new ActionListener() {
+	itemResize = new JMenuItem("Resize");
+	itemResize.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    startResizingSelectedTile();
 		}
 	    });
-	popupMenuSelectedTile.add(item);
+	popupMenuSelectedTiles.add(itemResize);
 
-	popupMenuSelectedTile.addSeparator();
+	popupMenuSelectedTiles.addSeparator();
 
 	itemsLayers = new JRadioButtonMenuItem[3];
 	ButtonGroup itemsLayersGroup = new ButtonGroup();
@@ -93,19 +91,19 @@ public class MapView extends JComponent implements Observer {
 	for (int i = 0; i < 3; i++) {
 	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
 	    itemsLayers[i].addActionListener(new ActionChangeLayer(i));
-	    popupMenuSelectedTile.add(itemsLayers[i]);
+	    popupMenuSelectedTiles.add(itemsLayers[i]);
 	    itemsLayersGroup.add(itemsLayers[i]);
 	}
 
-	popupMenuSelectedTile.addSeparator();
+	popupMenuSelectedTiles.addSeparator();
 
-	item = new JMenuItem("Destroy");
+	JMenuItem item = new JMenuItem("Destroy");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    destroySelectedTile();
+		    destroySelectedTiles();
 		}
 	    });
-	popupMenuSelectedTile.add(item);
+	popupMenuSelectedTiles.add(item);
     }
 
     /**
@@ -113,12 +111,15 @@ public class MapView extends JComponent implements Observer {
      */
     public void setMap(Map map) {
 	if (this.map != null) {
+	    this.map.getTileSelection().deleteObserver(this);
 	    this.map.deleteObserver(this);
 	}
 
 	this.map = map;
 	this.state = STATE_NORMAL;
+
 	map.addObserver(this);
+	map.getTileSelection().addObserver(this);
 	if (map.getTileset() != null) {
 	    map.getTileset().addObserver(this);
 	}
@@ -146,6 +147,27 @@ public class MapView extends JComponent implements Observer {
 	return new Dimension(width, height);
     }
 
+    // interface Scrollable
+    public Dimension getPreferredScrollableViewportSize() {
+	return getPreferredSize();
+    }
+
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+	return 16;
+    }
+
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+	return 160;
+    }
+
+    public boolean getScrollableTracksViewportWidth() {
+	return false;
+    }
+
+    public boolean getScrollableTracksViewportHeight() {
+	return false;
+    }
+
     /**
      * Returns whether or not the component is focusable.
      * @return true
@@ -155,7 +177,9 @@ public class MapView extends JComponent implements Observer {
     }
     
     /**
-     * This function is called when the map, the tileset or the configuration changes.
+     * This function is called when the map, the selected tiles, the tileset or the configuration changes.
+     * @param o the object changed
+     * @param obj parameters
      */
     public void update(Observable o, Object obj) {
 
@@ -169,35 +193,25 @@ public class MapView extends JComponent implements Observer {
 		update(tileset, null);
 	    }
 
-	    // not necessary?
-// 	    else {
-// 		TileOnMap newSelectedTile = map.getSelectedTile();
-// 		if (newSelectedTile != currentSelectedTile) {
-// 		    // observe the new selected tile
-		
-// 		    if (currentSelectedTile != null) {
-// 			currentSelectedTile.deleteObserver(this);
-// 		    }
-		    
-// 		    if (newSelectedTile != null) {
-// 			newSelectedTile.addObserver(this);
-// 		    }
-		
-// 		    currentSelectedTile = newSelectedTile;
-// 		}
-// 	    }
-	    
 	    // redraw the image
 	    repaint();
 	}
-// 	else if (o instanceof TileOnMap) {
-// 	    // the selected tile in the map has changed
-	    
-	    
-// 	}
-	else if (o instanceof Configuration && map != null) {
-	    // TODO
+
+	else if (o instanceof MapTileSelection) {
+	    // the tile selection has changed
+
+	    // update the popup menu to enable or not the item "Resize"
+	    boolean enable = (map.getTileSelection().getNbTilesSelected() == 1);
+	    itemResize.setEnabled(enable);
+
+	    // redraw the map
+	    repaint();
 	}
+
+	else if (o instanceof Configuration && map != null) {
+	    // TODO?
+	}
+
 	else if (o instanceof Tileset) {
 	    // the selected tile in the tileset has changed
 	    
@@ -207,14 +221,13 @@ public class MapView extends JComponent implements Observer {
 		state = STATE_NORMAL;
 		repaint();
 	    }
-	    else if (map.getSelectedTile() != null) {
+	    else if (!map.getTileSelection().isEmpty()) {
 
 		// if a tile was just selected in the tileset whereas there is already
 		// a tile selected in the map, unselected the tile in the map
 		state = STATE_NORMAL;
-		map.setSelectedTile(null);
+		map.getTileSelection().unSelectAll();
 	    }
-	    
 	}
     }
 
@@ -239,109 +252,57 @@ public class MapView extends JComponent implements Observer {
 	g.setColor(map.getBackgroundColor());
 	g.fillRect(0, 0, map.getWidth() * 2, map.getHeight() * 2);
 
-	TileOnMap selectedTileInMap;
 	Tileset tileset = map.getTileset();
 	if (tileset != null) {
 
 	    Image tilesetImage = tileset.getDoubleImage();
 	    if (tilesetImage != null) {
 
+		int x, y, width, height;
+
 		// the tiles
 		for (int layer = 0; layer < 3; layer++) {
 		    TileOnMapVector tiles = map.getTiles(layer);
 		    for (int i = 0; i < tiles.size(); i++) {
 			
-			TileOnMap tileOnMap = tiles.get(i);
-			Tile tile = tileOnMap.getTile();
+			TileOnMap tile = tiles.get(i);
 
-			// source image
-			Rectangle positionInTileset = tile.getPositionInTileset();
-			int sx1 = positionInTileset.x * 2;
-			int sx2 = sx1 + positionInTileset.width * 2;
-			int sy1 = positionInTileset.y * 2;
-			int sy2 = sy1 + positionInTileset.height * 2;
+			// draw the tile
+			tile.paint(g, tileset, 2);
 			
-			// destination image: we have to repeat the pattern
-			int repeatX = tileOnMap.getRepeatX();
-			int repeatY = tileOnMap.getRepeatY();
-			Rectangle positionInMap = tileOnMap.getPositionInMap();
-
-			int dx1;
-			int dx2;
-			int dy1;
-			int dy2;
-
-			dx2 = positionInMap.x * 2;
-			for (int j = 0; j < repeatX; j++) {
-			    dx1 = dx2;
-			    dx2 += positionInTileset.width * 2;
-			    dy2 = positionInMap.y * 2;
-			    for (int k = 0; k < repeatY; k++) {
-				dy1 = dy2;
-				dy2 += positionInTileset.height * 2;
-				g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
-			    }
+			// draw the selection rectangle if necessary
+			if (map.getTileSelection().isSelected(tile)) {
+			    
+			    Rectangle positionInMap = tile.getPositionInMap();
+			    
+			    x = positionInMap.x * 2;
+			    y = positionInMap.y * 2;
+			    width = positionInMap.width * 2 - 1;
+			    height = positionInMap.height * 2 - 1;
+			    
+			    g.setColor(Color.GREEN);
+			    g.drawRect(x, y, width, height);
+			    g.drawRect(x + 1, y + 1, width - 2, height - 2);
 			}
-			
+
 		    } // for
 		} // for
 
 		// special display for each state
-
 		switch (state) {
 
 		    // the selected tile in the tileset is going to be added to the map
 		case STATE_ADDING_TILE:
 
 		    Tile selectedTileInTileset = tileset.getSelectedTile();
-		    Rectangle positionInTileset = selectedTileInTileset.getPositionInTileset();
-		    
-		    int width = positionInTileset.width;
-		    int height = positionInTileset.height;
-			
-		    int sx1 = positionInTileset.x * 2;
-		    int sx2 = sx1 + width * 2;
-		    int sy1 = positionInTileset.y * 2;
-		    int sy2 = sy1 + height * 2;
-			
-		    int dx1 = cursorLocation.x;
-		    int dx2 = dx1 + width * 2;
-		    int dy1 = cursorLocation.y;
-		    int dy2 = dy1 + height * 2;
-			
-		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+		    selectedTileInTileset.paint(g, tileset, cursorLocation.x / 2, cursorLocation.y / 2, 2);
 
-		    break;
-
-		    // a tile is selected in the map
-		case STATE_TILE_SELECTED:
-		    
-		    selectedTileInMap = map.getSelectedTile();
-		    
-		    g.setColor(Color.GREEN);
-
-		    Rectangle selectedRectangle = selectedTileInMap.getPositionInMap();
-		    int x1 = selectedRectangle.x * 2;
-		    int x2 = (selectedRectangle.x + selectedRectangle.width) * 2 - 1;
-		    int y1 = selectedRectangle.y * 2;
-		    int y2 = (selectedRectangle.y + selectedRectangle.height) * 2 - 1;
-		    
-		    g.drawLine(x1, y1, x2, y1);
-		    g.drawLine(x2, y1, x2, y2);
-		    g.drawLine(x2, y2, x1, y2);
-		    g.drawLine(x1, y2, x1, y1);
-		    
-		    g.drawLine(x1, y1 + 1, x2, y1 + 1);
-		    g.drawLine(x2 - 1, y1, x2 - 1, y2);
-		    g.drawLine(x2, y2 - 1, x1, y2 - 1);
-		    g.drawLine(x1 + 1, y2, x1 + 1, y1);
-		
 		    break;
 
 		    // the user is resizing the selected tile
 		case STATE_RESIZING_TILE:
 		    
-		    selectedTileInMap = map.getSelectedTile();
+		    TileOnMap selectedTileInMap = map.getTileSelection().getTile(0);
 		    
 		    Rectangle positionInMap = selectedTileInMap.getPositionInMap();
 
@@ -353,35 +314,15 @@ public class MapView extends JComponent implements Observer {
 		    int xB = cursorLocation.x;
 		    int yB = cursorLocation.y;
 
-		    if (xA < xB) {
-			x1 = xA;
-			x2 = xB;
-		    }
-		    else {
-			x1 = xB;
-			x2 = xA;
-		    }
+		    x = Math.min(xA, xB);
+		    width = Math.abs(xB - xA) - 1;
 
-		    if (yA < yB) {
-			y1 = yA;
-			y2 = yB;
-		    }
-		    else {
-			y1 = yB;
-			y2 = yA;
-		    }
+		    y = Math.min(yA, yB);
+		    height = Math.abs(yB - yA) - 1;
 
 		    g.setColor(Color.GREEN);
-
-		    g.drawLine(x1, y1, x2, y1);
-		    g.drawLine(x2, y1, x2, y2);
-		    g.drawLine(x2, y2, x1, y2);
-		    g.drawLine(x1, y2, x1, y1);
-		    
-		    g.drawLine(x1, y1 + 1, x2, y1 + 1);
-		    g.drawLine(x2 - 1, y1, x2 - 1, y2);
-		    g.drawLine(x2, y2 - 1, x1, y2 - 1);
-		    g.drawLine(x1 + 1, y2, x1 + 1, y1);
+		    g.drawRect(x, y, width, height);
+		    g.drawRect(x + 1, y + 1, width - 2, height - 2);
 
 		    break;
 		}
@@ -406,30 +347,33 @@ public class MapView extends JComponent implements Observer {
 
 	// make it selected if required
 	if (selectNewTile) {
-	    map.setSelectedTile(tile);
+	    map.getTileSelection().select(tile);
 	    map.getTileset().setSelectedTileIndex(-1);
-	    state = STATE_TILE_SELECTED;
 	}
     }
 
     /**
-     * Removes the selected tile from the map.
+     * Removes the selected tiles from the map.
      */
-    private void destroySelectedTile() {
-	state = STATE_NORMAL;
-	map.removeSelectedTile();
+    private void destroySelectedTiles() {
+	map.getTileSelection().removeFromMap();
     }
 
     /**
      * Lets the user resize the tile selected on the map.
+     * There must be exactly one tile selected.
      */
     private void startResizingSelectedTile() {
 	
-	Rectangle tilePositionInMap = map.getSelectedTile().getPositionInMap();
-	cursorLocation.x = (tilePositionInMap.x + tilePositionInMap.width) * 2;
-	cursorLocation.y = (tilePositionInMap.y + tilePositionInMap.height) * 2;
-	state = STATE_RESIZING_TILE;
-	repaint();
+	MapTileSelection tileSelection = map.getTileSelection();
+
+	if (tileSelection.getNbTilesSelected() == 1) {
+	    Rectangle tilePositionInMap = tileSelection.getTile(0).getPositionInMap();
+	    cursorLocation.x = (tilePositionInMap.x + tilePositionInMap.width) * 2;
+	    cursorLocation.y = (tilePositionInMap.y + tilePositionInMap.height) * 2;
+	    state = STATE_RESIZING_TILE;
+	    repaint();
+	}
     }
 
     /**
@@ -437,7 +381,7 @@ public class MapView extends JComponent implements Observer {
      */
     private void endResizingSelectedTile() {
 
-	TileOnMap tileOnMap = map.getSelectedTile();
+	TileOnMap tileOnMap = map.getTileSelection().getTile(0);
 	Rectangle positionInMap = tileOnMap.getPositionInMap();
 	Rectangle positionInTileset = tileOnMap.getTile().getPositionInTileset();
 
@@ -456,8 +400,19 @@ public class MapView extends JComponent implements Observer {
 	}
 	catch (MapException e) {
 	    // nothing to do, the modification has just been cancelled if it was impossible
-	    System.out.println("ex: " + e.getMessage());
 	}
+    }
+
+    /**
+     * Shows the popup menu associated to the selected tiles.
+     * @param x x coordinate of where the popup menu has to be shown
+     * @param y y coordinate of where the popup menu has to be shown
+     */
+    private void showPopupMenu(int x, int y) {
+
+	int layer = map.getTileSelection().getTile(0).getLayer();
+	itemsLayers[layer].setSelected(true);
+	popupMenuSelectedTiles.show(this, x, y);
     }
 
     /**
@@ -520,31 +475,21 @@ public class MapView extends JComponent implements Observer {
 
 		// select or unselect a tile
 	    case STATE_NORMAL:
-	    case STATE_TILE_SELECTED:
+		
+		// unselect all tiles
+		map.getTileSelection().unSelectAll();
 		
 		// select the tile clicked
 		int x = mouseEvent.getX();
 		int y = mouseEvent.getY();
-		map.setSelectedTile(x / 2, y / 2);
+		
+		boolean justSelected = map.getTileSelection().select(x / 2, y / 2);
 
 		// a tile has just been selected
-		if (map.getSelectedTile() != null) {
-		    state = STATE_TILE_SELECTED;
-		    repaint();
+		if (justSelected && mouseEvent.getButton() == MouseEvent.BUTTON3) {
 
-		    // right click: popup menu on the selected tile
-		    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
-			
-			int layer = map.getSelectedTile().getLayer();
-			itemsLayers[layer].setSelected(true);
-			popupMenuSelectedTile.show(MapView.this,
-						   mouseEvent.getX(),
-						   mouseEvent.getY());
-		    }
-		}
-		else {
-		    state = STATE_NORMAL;
-		    repaint();
+		    // right click: popup menu on the tile selected
+		    showPopupMenu(mouseEvent.getX(), mouseEvent.getY());
 		}
 
 		break;
@@ -642,8 +587,10 @@ public class MapView extends JComponent implements Observer {
 
 		    if (x < map.getWidth() && y < map.getHeight()) {
 
-			Rectangle selectedTilePosition = map.getSelectedTile().getPositionInMap();
-			Tile originalTile = map.getSelectedTile().getTile();
+			TileOnMap selectedTileOnMap = map.getTileSelection().getTile(0);
+
+			Rectangle selectedTilePosition = selectedTileOnMap.getPositionInMap();
+			Tile originalTile = selectedTileOnMap.getTile();
 			int width = originalTile.getWidth();
 			int height = originalTile.getHeight();
 			
@@ -683,8 +630,8 @@ public class MapView extends JComponent implements Observer {
 	 */
 	public void keyPressed(KeyEvent keyEvent) {
 
-	    if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE && state == STATE_TILE_SELECTED) {
-		destroySelectedTile();
+	    if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
+		destroySelectedTiles();
 	    }
 	}
     }
@@ -709,15 +656,10 @@ public class MapView extends JComponent implements Observer {
 	}
 
 	/**
-	 * Method called when the user sets the layer of the selected tile.
+	 * Method called when the user sets the layer of the selected tiles.
 	 */
 	public void actionPerformed(ActionEvent e) {
-	    TileOnMap tileOnMap = map.getSelectedTile();
-	    int currentLayer = tileOnMap.getLayer();
-
-	    if (currentLayer != layer) {
-		map.selectedTileSetLayer(layer);
-	    }
+	    map.getTileSelection().setLayer(layer);
 	}
     }
 }

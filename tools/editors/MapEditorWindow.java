@@ -50,6 +50,7 @@ public class MapEditorWindow extends JFrame {
 	mapPropertiesView = new MapPropertiesView();
 	mapPropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
 	mapPropertiesView.setMinimumSize(new Dimension(300, 200));
+	mapPropertiesView.setPreferredSize(new Dimension(300, 200));
 	mapPropertiesView.setMaximumSize(new Dimension(300, 200));
 
 	tilePicker = new TilePicker();

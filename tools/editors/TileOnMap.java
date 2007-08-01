@@ -1,6 +1,6 @@
 package editors;
 
-import java.awt.*; // Point
+import java.awt.*;
 import java.io.*;
 import java.util.*;
 
@@ -102,23 +102,12 @@ public class TileOnMap extends Observable implements Serializable {
 	return positionInMap;
     }
 
-
-    /**
-     * Changes the position of the tile on the map.
-     * @param positionInMap the position of the tile on the map
-     */
-//     public void setPositionInMap(Rectangle positionInMap) {
-// 	this.positionInMap = positionInMap;
-// 	setChanged();
-// 	notifyObservers();
-//     }
-
     /**
      * Changes the position of the tile on the map, by specifying two points.
      * The tile is resized (i.e. repeatX and repeatY are updated) so that
      * the tile fits exactly in the rectangle formed by the two points.
-     * @param x1 x coordinate of the second point
-     * @param y1 y coordinate of the second point
+     * @param x1 x coordinate of the first point
+     * @param y1 y coordinate of the first point
      * @param x2 x coordinate of the second point
      * @param y2 y coordinate of the second point
      * @throws MapException if the rectangle width or its height is zero
@@ -142,6 +131,22 @@ public class TileOnMap extends Observable implements Serializable {
 	 positionInMap.y = Math.min(y1, y2);
 	 positionInMap.height = Math.abs(y2 - y1);
 	 repeatY = positionInMap.height / positionInTileset.height;
+
+	 // notify
+	 setChanged();
+	 notifyObservers();
+     }
+
+    /**
+     * Changes the position of the tile on the map, by specifying a point.
+     * The size of the tile is not changed.
+     * @param x x coordinate of the point
+     * @param y y coordinate of the point
+     */
+     public void setPositionInMap(int x, int y) throws MapException {
+
+	 positionInMap.x = x;
+	 positionInMap.y = y;
 
 	 // notify
 	 setChanged();
@@ -260,5 +265,45 @@ public class TileOnMap extends Observable implements Serializable {
 	    setChanged();
 	    notifyObservers();
 	}
+    }
+
+    /**
+     * Draws the tile on the map view.
+     * @param g graphic context
+     * @param tileset the tileset
+     * @param scale scale of the image (1: unchanged, 2: zoom of 200%)
+     */
+    public void paint(Graphics g, Tileset tileset, int scale) {
+
+	// source image
+	Image tilesetImage = (scale == 2) ? tileset.getDoubleImage() : tileset.getImage();
+	Rectangle positionInTileset = tile.getPositionInTileset();
+	int sx1 = positionInTileset.x * scale;
+	int sx2 = sx1 + positionInTileset.width * scale;
+	int sy1 = positionInTileset.y * scale;
+	int sy2 = sy1 + positionInTileset.height * scale;
+	
+	// destination image: we have to repeat the pattern
+	
+	int width = positionInTileset.width * scale;
+	int height = positionInTileset.width * scale;
+
+	int dx1;
+	int dx2;
+	int dy1;
+	int dy2;
+	
+	dx2 = positionInMap.x * scale;
+	for (int j = 0; j < repeatX; j++) {
+	    dx1 = dx2;
+	    dx2 += width;
+	    dy2 = positionInMap.y * scale;
+	    for (int k = 0; k < repeatY; k++) {
+		dy1 = dy2;
+		dy2 += height;
+		g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+	    }
+	}
+
     }
 }

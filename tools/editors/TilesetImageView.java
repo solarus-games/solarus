@@ -10,7 +10,7 @@ import java.io.*;
 /**
  * This component shows the tileset image and allow the user to select the tiles.
  */
-public class TilesetImageView extends JComponent implements Observer {
+public class TilesetImageView extends JComponent implements Observer, Scrollable {
 
     /**
      * The current tileset.
@@ -134,7 +134,7 @@ public class TilesetImageView extends JComponent implements Observer {
 	int width, height;
 
 	if (!isImageLoaded()) {
-	    width = 500;
+	    width = 300;
 	    height = 500;
 	}
 	else {
@@ -144,6 +144,27 @@ public class TilesetImageView extends JComponent implements Observer {
 	}
 
 	return new Dimension(width, height);
+    }
+
+    // interface Scrollable
+    public Dimension getPreferredScrollableViewportSize() {
+	return getPreferredSize();
+    }
+
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+	return 16;
+    }
+
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+	return 160;
+    }
+
+    public boolean getScrollableTracksViewportWidth() {
+	return false;
+    }
+
+    public boolean getScrollableTracksViewportHeight() {
+	return false;
     }
 
     /**

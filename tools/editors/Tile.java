@@ -264,4 +264,32 @@ public class Tile extends Observable implements Serializable {
 	this.animationSeparation = animationSeparation;
     }
 
+    /**
+     * Draws the tile on a component.
+     * @param g graphic context
+     * @param tileset the tileset
+     * @param x x coordinate of where the tile has to be painted
+     * @param y y coordinate of where the tile has to be painted
+     * @param scale scale of the image (1: unchanged, 2: zoom of 200%)
+     */
+    public void paint(Graphics g, Tileset tileset, int x, int y, int scale) {
+	
+	Image tilesetImage = (scale == 2) ? tileset.getDoubleImage() : tileset.getImage();
+
+	int width = positionInTileset.width * scale;
+	int height = positionInTileset.height * scale;
+	
+	int sx1 = positionInTileset.x * scale;
+	int sx2 = sx1 + width;
+	int sy1 = positionInTileset.y * scale;
+	int sy2 = sy1 + height;
+	
+	int dx1 = x * scale;
+	int dx2 = dx1 + width;
+	int dy1 = y * scale;
+	int dy2 = dy1 + height;
+			
+	g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+
+    }
 }

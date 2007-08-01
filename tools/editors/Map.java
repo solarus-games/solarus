@@ -53,17 +53,17 @@ public class Map extends Observable implements Serializable {
      * This is an array of three tile vectors, one for each layer.
      */
     private TileOnMapVector[] tiles;
+
+    /**
+     * The tiles selected.
+     */
+    private transient MapTileSelection tileSelection;
     
     /**
      * Tells whether the map has changed since the last save.
      * True if there has been no modifications, false otherwise.
      */
     private transient boolean isSaved;
-
-    /**
-     * The tile currently selected by the user.
-     */
-    private transient TileOnMap selectedTile;
 
     /**
      * Creates a new map.
@@ -83,6 +83,7 @@ public class Map extends Observable implements Serializable {
 	    this.tiles[i] = new TileOnMapVector();
 	}
 
+	this.tileSelection = new MapTileSelection(this);
 	this.isSaved = false;
     }
 
@@ -225,11 +226,11 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
-     * Removes the selected tile from the map.
+     * Removes a tile from the map.
+     * @param tile the tile to remove
      */
-    public void removeSelectedTile() {
-	tiles[selectedTile.getLayer()].remove(selectedTile);
-	selectedTile = null;
+    public void removeTile(TileOnMap tile) {
+	tiles[tile.getLayer()].remove(tile);
 	setSaved(false);
 	setChanged();
 	notifyObservers();
@@ -248,10 +249,13 @@ public class Map extends Observable implements Serializable {
      * @param music the name of the music, i.e. a music file name without the extension ".it".
      */
     public void setMusic(String music) {
-	this.music = music;
-	setSaved(false);
-	setChanged();
-	notifyObservers();
+	if (music != this.music) {
+
+	    this.music = music;
+	    setSaved(false);
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**
@@ -271,6 +275,32 @@ public class Map extends Observable implements Serializable {
 	setSaved(false);
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Returns the tiles selected by the user.
+     * @return the tiles selected by the user
+     */
+    public MapTileSelection getTileSelection() {
+	return tileSelection;
+    }
+    
+    /**
+     * Changes the layer of a tile. You should call this method instead of
+     * calling directly TileOnMap.setLayer(), because the tiles of the 3 layers are
+     * stored in 3 different arrays.
+     * @param tile the tile to move
+     * @param layer the new layer
+     */
+    public void tileSetLayer(TileOnMap tile, int layer) {
+
+	int oldLayer = tile.getLayer();
+
+	if (layer != oldLayer) {
+	    tile.setLayer(layer);
+	    tiles[oldLayer].remove(tile);
+	    tiles[layer].add(tile);
+	}
     }
 
     /**
@@ -302,6 +332,7 @@ public class Map extends Observable implements Serializable {
 	try {
 	    map = (Map) in.readObject();
 	    map.setTileset(map.getTilesetName());
+	    map.tileSelection = new MapTileSelection(map);
 	}
 	catch (ClassNotFoundException e) {
 	    System.err.println("Unable to read the object: " + e.getMessage());
@@ -331,84 +362,4 @@ public class Map extends Observable implements Serializable {
 	map.setSaved(true);
     }
 
-    /**
-     * Returns the tile selected by the user.
-     * @return the tile selected by the user, or null if no tile is currently selected
-     */
-    public TileOnMap getSelectedTile() {
-	return selectedTile;
-    }
-    
-    /**
-     * Changes the selected tile.
-     * @param tile the tile selected by the user (can be null)
-     */
-    public void setSelectedTile(TileOnMap tile) {
-	this.selectedTile = tile;
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
-     * Selects the first tile under a point of the map, in the three layers,
-     * starting with the high layer.
-     * @param x x of the point
-     * @param y y of the point
-     */
-    public void setSelectedTile(int x, int y) {
-
-	TileOnMap oldSelectedTile = selectedTile;
-
-	setSelectedTile(Tile.LAYER_ABOVE, x, y);
-	if (selectedTile == null) {
-	    setSelectedTile(Tile.LAYER_INTERMEDIATE, x, y);
-	    if (selectedTile == null) {
-		setSelectedTile(Tile.LAYER_BELOW, x, y);
-	    }
-	}
-
-	if (oldSelectedTile != null && selectedTile == null) {
-	    setChanged();
-	    notifyObservers();
-	}
-    }
-
-    /**
-     * Selects the first tile under a point of the map, in a specified layer.
-     * @param layer a layer: Tile.LAYER_BELOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE
-     * @param x x of the point
-     * @param y y of the point
-     */
-    public void setSelectedTile(int layer, int x, int y) {
-	selectedTile = null;
-
-	TileOnMapVector tileVector = tiles[layer];
-	for (int i = tileVector.size() - 1; i >= 0; i--) {
-		
-	    TileOnMap tile = tileVector.get(i);
-	    if (tile.containsPoint(x, y)) {
-		selectedTile = tile;
-		setChanged();
-		notifyObservers();
-		return;
-	    }
-	}
-    }
-
-    /**
-     * Changes the layer of the selected tile. You should call this method instead of
-     * calling directly TileOnMap.setLayer() because the tiles of the 3 layes are
-     * stored in 3 different arrays. 
-     */
-    public void selectedTileSetLayer(int layer) {
-
-	TileOnMap tile = selectedTile;
-	int oldLayer = selectedTile.getLayer();
-
-	if (layer != oldLayer) {
-	    tile.setLayer(layer);
-	    tiles[oldLayer].remove(tile);
-	    tiles[layer].add(tile);
-	}
-    }
 }

@@ -135,6 +135,13 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	    textFieldWidth = new JTextField(3);
 	    textFieldHeight = new JTextField(3);
+
+	    Dimension size = new Dimension(40, 25);
+	    textFieldWidth.setMinimumSize(size);
+	    textFieldHeight.setMinimumSize(size);
+// 	    textFieldWidth.setMaximumSize(size);
+// 	    textFieldHeight.setMaximumSize(size);
+
 	    buttonSet = new JButton("Set");
 
 	    textFieldWidth.setEnabled(false);
@@ -224,6 +231,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 		
 		String tilesetPath = Configuration.getInstance().getDefaultTilesetPath();
 		File[] tilesetFiles = FileTools.getFilesWithExtension(tilesetPath, "zsd");
+
+		if (tilesetFiles == null) {
+		    return;
+		}
+
 		tilesets = new Tileset[tilesetFiles.length];
 		
 		File tilesetFile;
@@ -242,11 +254,12 @@ public class MapPropertiesView extends JPanel implements Observer {
 		    addItem(name);
 		}
 	    }
-	    else {
-		// the map has changed
+
+	    // select the tileset
+	    if (map != null) {
 		setEnabled(true);
 		String tilesetName = map.getTilesetName();
-
+		
 		if (tilesetName != null && !tilesetName.equals(getSelectedItem())) {
 		    setSelectedItem(tilesetName);
 		}
@@ -264,15 +277,18 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	    String tilesetName = (String) getSelectedItem();
 	    
-	    if (tilesetName.length() == 0) {
-		tilesetName = null;
-	    }
+	    if (tilesetName != null) {
 
-	    try {
-		map.setTileset(tilesetName);
-	    }
-	    catch (IOException e) {
-		System.out.println("Cannot load the tileset '" + tilesetName + ": " + e.getMessage());		
+		if (tilesetName.length() == 0) {
+		    tilesetName = null;
+		}
+
+		try {
+		    map.setTileset(tilesetName);
+		}
+		catch (IOException e) {
+		    System.out.println("Cannot load the tileset '" + tilesetName + ": " + e.getMessage());		
+		}
 	    }
 	}
     }
@@ -301,25 +317,32 @@ public class MapPropertiesView extends JPanel implements Observer {
 	public void update(Observable o) {
 
 	    if (o instanceof Configuration) {
+
 		removeAllItems();
 		addItem("");
 		
 		String musicPath = Configuration.getInstance().getDefaultMusicPath();
 		File[] musicFiles = FileTools.getFilesWithExtension(musicPath, "it");
 		
+		if (musicFiles == null) {
+		    return;
+		}
+
 		for (int i = 0; i < musicFiles.length; i++) {
 		    addItem(FileTools.getFileNameWithoutExtension(musicFiles[i]));
 		}
 	    }
-	    else {
-		// the map has changed
+
+	    // select the music
+	    if (map != null) {
+
 		setEnabled(true);
 		String music = map.getMusic();
-
+		
 		if (music != null) {
 		    setSelectedItem(music);
 		}
-		else {
+		else if (getItemCount() > 0) {
 		    setSelectedIndex(0);
 		}
 	    }
@@ -336,10 +359,13 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	    String music = (String) getSelectedItem();
 	    
-	    if (music.length() == 0) {
-		music = null;
+	    if (music != null) {
+
+		if (music.length() == 0) {
+		    music = null;
+		}
+		map.setMusic(music);
 	    }
-	    map.setMusic(music);
 	}
     }
 

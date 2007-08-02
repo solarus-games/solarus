@@ -133,10 +133,14 @@ public class MapTileSelection extends Observable {
      */
     public boolean select(int x, int y) {
 
-	return select(Tile.LAYER_ABOVE, x, y)
-	    || select(Tile.LAYER_INTERMEDIATE, x, y)
-	    || select(Tile.LAYER_BELOW, x, y);
+	TileOnMap tile = map.getTileAt(x, y);
 
+	if (tile == null) {
+	    return false;
+	}
+
+	select(tile);
+	return true;
     }
 
     /**
@@ -148,17 +152,32 @@ public class MapTileSelection extends Observable {
      */
     public boolean select(int layer, int x, int y) {
 
-	TileOnMapVector tileVector = map.getTiles(layer);
-	for (int i = tileVector.size() - 1; i >= 0; i--) {
+	TileOnMap tile = map.getTileAt(layer, x, y);
 
-	    TileOnMap tile = tileVector.get(i);
-	    if (tile.containsPoint(x, y)) {
-		select(tile);
-		return true;
+	if (tile == null) {
+	    return false;
+	}
+
+	select(tile);
+	return true;
+    }
+
+    /**
+     * Returns the layer of the selected tiles, if all selected tiles have the same layer.
+     * Otherwise, returns -1.
+     * @return the common layer, or -1 if all selected tiles have not the same layer
+     */
+    public int getLayer() {
+	
+	int layer = tiles.get(0).getLayer();
+	
+	for (int i = 1; i < tiles.size(); i++) {
+	    if (tiles.get(i).getLayer() != layer) {
+		return -1;
 	    }
 	}
 
-	return false;
+	return layer;
     }
 
     /**
@@ -169,10 +188,7 @@ public class MapTileSelection extends Observable {
      */
     public void setLayer(int layer) {
 
-	Enumeration<TileOnMap> e = tiles.elements();
-	while (e.hasMoreElements()) {
-	    
-	    TileOnMap tile = e.nextElement();
+	for (TileOnMap tile: tiles) {
 	    map.tileSetLayer(tile, layer);
 	}
     }

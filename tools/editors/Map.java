@@ -215,6 +215,49 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
+     * Returns the first tile under a point of the map, in the three layers,
+     * starting with the high layer.
+     * @param x x of the point
+     * @param y y of the point
+     * @return the tile found, or null if there is no tile here
+     */
+    public TileOnMap getTileAt(int x, int y) {
+
+	TileOnMap tile = getTileAt(Tile.LAYER_ABOVE, x, y);
+
+	if (tile == null) {
+	    tile = getTileAt(Tile.LAYER_INTERMEDIATE, x, y);
+
+	    if (tile == null) {
+		tile = getTileAt(Tile.LAYER_BELOW, x, y);
+	    }
+	}
+
+	return tile;
+    }
+
+    /**
+     * Returns the first tile under a point of the map, in the specified layer
+     * @param layer the layer
+     * @param x x of the point
+     * @param y y of the point
+     * @return the tile found, or null if there is no tile here
+     */
+    public TileOnMap getTileAt(int layer, int x, int y) {
+		
+	TileOnMapVector tileVector = tiles[layer];
+	for (int i = tileVector.size() - 1; i >= 0; i--) {
+
+	    TileOnMap tile = tileVector.get(i);
+	    if (tile.containsPoint(x, y)) {
+		return tile;
+	    }
+	}
+
+	return null;
+    }
+
+    /**
      * Adds a new tile on the map.
      * @param tile the tile to add
      */

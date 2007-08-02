@@ -16,12 +16,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private Map map;
 
-    // state of the map view
-
     // static constants to identify the state
     private static final int STATE_NORMAL = 0;
     private static final int STATE_RESIZING_TILE = 1;
     private static final int STATE_ADDING_TILE = 2;
+
+    // state of the map view
 
     /**
      * State of the map view: STATE_NORMAL, STATE_ADDING_TILE or STATE_RESIZING_TILE.
@@ -410,8 +410,19 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private void showPopupMenu(int x, int y) {
 
-	int layer = map.getTileSelection().getTile(0).getLayer();
-	itemsLayers[layer].setSelected(true);
+	itemsLayers[Tile.LAYER_BELOW].setSelected(false);
+	itemsLayers[Tile.LAYER_INTERMEDIATE].setSelected(false);
+	itemsLayers[Tile.LAYER_ABOVE].setSelected(false);
+
+	int layer = map.getTileSelection().getLayer();
+
+	System.out.println("layer = " + layer);
+
+	// if all the selected tiles have the same layer, we check its item
+	if (layer != -1) {
+	    itemsLayers[layer].setSelected(true);
+	}
+
 	popupMenuSelectedTiles.show(this, x, y);
     }
 
@@ -434,9 +445,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	/**
 	 * This method is called when the mouse is clicked on the map view.
-	 * If a tile is selected in the tileset, an instance of this tile is added to the map
-	 * (and if it is a right click, the user can than place other instances of this tile).
-	 * at the cursor location.
+	 * The focus is given to the component and nothing else is done here.
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -445,14 +454,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    }
 
 	    requestFocusInWindow();
-
-	    // if the user is adding a tile
-	    if (state == STATE_ADDING_TILE) {
-		
-		// place the new tile
-		boolean selectNewTile = (mouseEvent.getButton() != MouseEvent.BUTTON3);
-		addCurrentTileToMap(selectNewTile);
-	    }
 	}
 
 	/**
@@ -470,26 +471,55 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    }
 
 	    requestFocusInWindow();
+	    MapTileSelection tileSelection = map.getTileSelection();
 
 	    switch (state) {
 
 		// select or unselect a tile
 	    case STATE_NORMAL:
-		
-		// unselect all tiles
-		map.getTileSelection().unSelectAll();
-		
-		// select the tile clicked
-		int x = mouseEvent.getX();
-		int y = mouseEvent.getY();
-		
-		boolean justSelected = map.getTileSelection().select(x / 2, y / 2);
 
-		// a tile has just been selected
-		if (justSelected && mouseEvent.getButton() == MouseEvent.BUTTON3) {
+		switch (mouseEvent.getButton()) {
 
-		    // right click: popup menu on the tile selected
-		    showPopupMenu(mouseEvent.getX(), mouseEvent.getY());
+		case MouseEvent.BUTTON3:
+		    // right click: show a popup menu for the tiles selected
+
+		    if (!tileSelection.isEmpty()) {
+			
+			showPopupMenu(mouseEvent.getX(), mouseEvent.getY());
+		    }
+		    
+		    break;
+
+		case MouseEvent.BUTTON1:
+		    // left click: select or unselect
+
+		    // detect whether CTRL or SHIFT is pressed
+		    boolean enableMultipleSelection = ((mouseEvent.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK)) != 0);
+		    
+		    // unselect all tiles, unless CTRL or SHIFT is pressed
+		    if (!enableMultipleSelection) {
+			map.getTileSelection().unSelectAll();
+		    }
+		    
+		    // find the tile clicked
+		    int x = mouseEvent.getX();
+		    int y = mouseEvent.getY();
+		    
+		    TileOnMap tileClicked = map.getTileAt(x / 2, y / 2);
+		    
+		    // select or unselect the tile clicked
+		    if (tileClicked != null) {
+			if (!enableMultipleSelection) {
+			    // make the tile selected
+			    tileSelection.select(tileClicked);
+			}
+			else {
+			    // switch the selection state of the tile
+			    tileSelection.switchSelection(tileClicked);
+			}
+		    }
+		    
+		    break;
 		}
 
 		break;
@@ -500,6 +530,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		endResizingSelectedTile();
 
 		break;
+		
+		// place the new tile
+	    case STATE_ADDING_TILE:
+
+		boolean selectNewTile = (mouseEvent.getButton() != MouseEvent.BUTTON3);
+		addCurrentTileToMap(selectNewTile);
 	    }
 	}
 
@@ -517,14 +553,18 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	/**
 	 * This function is called when the mouse is dragged on the component.
-	 * If a tile is selected in the tileset, it is placed and can be resized
-	 * immediately.
 	 */
 	public void mouseDragged(MouseEvent mouseEvent) {
 
-	    if (isImageLoaded() && state == STATE_ADDING_TILE) {
-		addCurrentTileToMap(true);
-		startResizingSelectedTile();
+	    if (!isImageLoaded()) {
+		return;
+	    }
+
+	    switch (state) {
+
+	    case STATE_NORMAL:
+
+		break;
 	    }
 	}
     }
@@ -627,11 +667,18 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	
 	/**
 	 * This method is invoked when a key is pressed on the map image.
+	 * If the user presses Delete, the selected tiles are removed from the map.
 	 */
 	public void keyPressed(KeyEvent keyEvent) {
 
-	    if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-		destroySelectedTiles();
+	    if (state == STATE_NORMAL) {
+
+		switch (keyEvent.getKeyCode()) {
+		    
+		case KeyEvent.VK_DELETE:
+		    destroySelectedTiles();
+		    break;
+		}
 	    }
 	}
     }

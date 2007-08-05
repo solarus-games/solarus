@@ -38,6 +38,7 @@ public class Tile extends Observable implements Serializable {
     public static final int LAYER_BELOW = 0;
     public static final int LAYER_INTERMEDIATE = 1;
     public static final int LAYER_ABOVE = 2;
+    public static final int LAYER_NB = 3;
 
     /**
      * Coordinates and dimensions of the tile.

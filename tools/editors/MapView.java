@@ -53,6 +53,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private JRadioButtonMenuItem[] itemsLayers;
 
     /**
+     * Group of radio buttons for the layers.
+     */
+    private ButtonGroup itemsLayersGroup;
+
+    /**
      * Name of the layers, for the items in the popup menu.
      */
     private static final String[] layerNames = {"Low layer", "Intermediate layer", "High layer"};
@@ -85,15 +90,18 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	popupMenuSelectedTiles.addSeparator();
 
-	itemsLayers = new JRadioButtonMenuItem[3];
-	ButtonGroup itemsLayersGroup = new ButtonGroup();
+	itemsLayers = new JRadioButtonMenuItem[Tile.LAYER_NB + 1];
+	itemsLayersGroup = new ButtonGroup();
 	    
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < Tile.LAYER_NB; i++) {
 	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
 	    itemsLayers[i].addActionListener(new ActionChangeLayer(i));
 	    popupMenuSelectedTiles.add(itemsLayers[i]);
 	    itemsLayersGroup.add(itemsLayers[i]);
 	}
+	itemsLayers[Tile.LAYER_NB] = new JRadioButtonMenuItem();
+	itemsLayers[Tile.LAYER_NB].addActionListener(new ActionChangeLayer(Tile.LAYER_NB));
+	itemsLayersGroup.add(itemsLayers[Tile.LAYER_NB]);
 
 	popupMenuSelectedTiles.addSeparator();
 
@@ -187,7 +195,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    // the map has been modified
 
 	    if (obj instanceof Tileset) {
-		// the tileset has changed
+		// the tileset has been changed
 		Tileset tileset = map.getTileset();
 		tileset.addObserver(this);
 		update(tileset, null);
@@ -410,17 +418,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private void showPopupMenu(int x, int y) {
 
-	itemsLayers[Tile.LAYER_BELOW].setSelected(false);
-	itemsLayers[Tile.LAYER_INTERMEDIATE].setSelected(false);
-	itemsLayers[Tile.LAYER_ABOVE].setSelected(false);
-
 	int layer = map.getTileSelection().getLayer();
-
-	System.out.println("layer = " + layer);
 
 	// if all the selected tiles have the same layer, we check its item
 	if (layer != -1) {
 	    itemsLayers[layer].setSelected(true);
+	}
+	else {
+	    itemsLayers[Tile.LAYER_NB].setSelected(true);
 	}
 
 	popupMenuSelectedTiles.show(this, x, y);
@@ -707,6 +712,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	 */
 	public void actionPerformed(ActionEvent e) {
 	    map.getTileSelection().setLayer(layer);
+	    repaint();
 	}
     }
 }

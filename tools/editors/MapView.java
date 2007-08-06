@@ -445,50 +445,60 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// select or unselect a tile
 	    case STATE_NORMAL:
 
-		switch (mouseEvent.getButton()) {
+		// detect the mouse button
+		int button = mouseEvent.getButton();
 
-		case MouseEvent.BUTTON3:
-		    // right click: show a popup menu for the tiles selected
-
-		    if (!tileSelection.isEmpty()) {
-			
-			popupMenu.show(mouseEvent.getX(), mouseEvent.getY());
-		    }
+		// detect whether CTRL or SHIFT is pressed
+		boolean enableMultipleSelection = ((mouseEvent.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK)) != 0);
 		    
-		    break;
+		// find the tile clicked
+		int x = mouseEvent.getX();
+		int y = mouseEvent.getY();
+		
+		TileOnMap tileClicked = map.getTileAt(x / 2, y / 2);
+		
+		// left click
+		if (button == MouseEvent.BUTTON1) {
 
-		case MouseEvent.BUTTON1:
-		    // left click: select or unselect
-
-		    // detect whether CTRL or SHIFT is pressed
-		    boolean enableMultipleSelection = ((mouseEvent.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK)) != 0);
-		    
-		    // unselect all tiles, unless CTRL or SHIFT is pressed
-		    if (!enableMultipleSelection) {
+		    // unselect all tiles unless CTRL or SHIFT is pressed
+		    if (!enableMultipleSelection && (tileClicked == null || !tileSelection.isSelected(tileClicked))) {
 			map.getTileSelection().unSelectAll();
 		    }
-		    
-		    // find the tile clicked
-		    int x = mouseEvent.getX();
-		    int y = mouseEvent.getY();
-		    
-		    TileOnMap tileClicked = map.getTileAt(x / 2, y / 2);
-		    
-		    // select or unselect the tile clicked
+
 		    if (tileClicked != null) {
 			if (!enableMultipleSelection) {
 			    // make the tile selected
 			    tileSelection.select(tileClicked);
 			}
 			else {
+			    // CTRL + left click or SHIFT + left click:
 			    // switch the selection state of the tile
 			    tileSelection.switchSelection(tileClicked);
 			}
 		    }
-		    
-		    break;
 		}
+		
+		// right click
+		else if (button == MouseEvent.BUTTON3) {
 
+		    // If a tile is selected and the user right clicks on another tile,
+		    // we will select the new one instead of the old one.
+		    // Note that if several tiles are selected, the selection is kept.
+		    if (tileSelection.getNbTilesSelected() == 1 && tileClicked != null && !tileSelection.isSelected(tileClicked)) {
+			map.getTileSelection().unSelectAll();
+		    }
+
+		    // select the tile clicked if no previous selection was kept
+		    if (tileSelection.isEmpty() && tileClicked != null) {
+			tileSelection.select(tileClicked);
+		    }
+		    
+		    // show a popup menu for the tiles selected
+		    if (!tileSelection.isEmpty()) {
+			popupMenu.show(x, y);
+		    }
+		}
+		
 		break;
 
 		// validate the new size

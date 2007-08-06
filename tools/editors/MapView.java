@@ -17,50 +17,59 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private Map map;
 
     // static constants to identify the state
-    private static final int STATE_NORMAL = 0;
-    private static final int STATE_RESIZING_TILE = 1;
-    private static final int STATE_ADDING_TILE = 2;
-
-    // state of the map view
 
     /**
-     * State of the map view: STATE_NORMAL, STATE_ADDING_TILE or STATE_RESIZING_TILE.
+     * The user is not performing any special operation.
+     * He can select or unselect tiles.
+     */
+    private static final int STATE_NORMAL = 0; 
+
+    /**
+     * The user is drawing a rectangle to select several tiles.
+     */
+    private static final int STATE_SELECTING_AREA = 1;
+
+    /**
+     * The user is moving the selected tiles (drag and drop).
+     */
+    private static final int STATE_MOVING_TILES = 2;
+
+    /**
+     * The user is resizing the selected tile.
+     */
+    private static final int STATE_RESIZING_TILE = 3;
+
+    /**
+     * A tile is selected in the tileset.
+     * This tile is displayed under the cursor and the user
+     * can place the new tile by clicking on the map. 
+     */
+    private static final int STATE_ADDING_TILE = 4;
+
+    /**
+     * State of the map view.
      */
     private int state;
 
     /**
-     * Coordinates:
-     * - of the tile displayed under the pointer in state STATE_ADDING_TILE
-     * - of the second point of the tile's rectangle in state STATE_RESIZING_TILE
+     * Location of the point or the rectangle defined by the mouse.
+     * - in state STATE_NORMAL: unused
+     * - in state STATE_SELECTING_AREA: the rectangle drawn by the mouse
+     * - in state STATE_MOVING_TILES: unused
+     * - in state STATE_RESIZING_TILE: coordinates of the second point of the rectangle, defined by the cursor
+     * - in state STATE_ADDING_TILE: coordinates of the tile displayed under the cursor
      */
-    private Point cursorLocation;
-
-    // popup menu
-
-    /**
-     * A popup menu displayed when the user right-clicks on a tile.
-     */
-    private JPopupMenu popupMenuSelectedTiles;
+    private Rectangle cursorLocation;
 
     /**
-     * Item in the popup menu to resize the selected tile.
+     * Fixed area of the tile that is being resized.
      */
-    private JMenuItem itemResize;
+    private Rectangle fixedRectangle;
 
     /**
-     * Items for the layers in the popup menu.
+     * The popup menu shown when the user right clicks on the selected tiles.
      */
-    private JRadioButtonMenuItem[] itemsLayers;
-
-    /**
-     * Group of radio buttons for the layers.
-     */
-    private ButtonGroup itemsLayersGroup;
-
-    /**
-     * Name of the layers, for the items in the popup menu.
-     */
-    private static final String[] layerNames = {"Low layer", "Intermediate layer", "High layer"};
+    private MapViewPopupMenu popupMenu;
 
     /**
      * Constructor.
@@ -68,7 +77,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
     public MapView() {
 	super();
 
-	this.cursorLocation = new Point(0, 0);
+	this.cursorLocation = new Rectangle();
+	this.fixedRectangle = new Rectangle();
+
+
+	// create the popup menu for the selected tiles
+	// items: resize, layer, destroy
+	popupMenu = new MapViewPopupMenu(this);
 
 	Configuration.getInstance().addObserver(this);
 
@@ -76,42 +91,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	addMouseMotionListener(new MapMouseMotionListener());
 	addKeyListener(new MapKeyListener());
 
-	// create the popup menu for a selectedTile
-	// items: resize, layer, destroy
-	popupMenuSelectedTiles = new JPopupMenu();
-
-	itemResize = new JMenuItem("Resize");
-	itemResize.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    startResizingSelectedTile();
-		}
-	    });
-	popupMenuSelectedTiles.add(itemResize);
-
-	popupMenuSelectedTiles.addSeparator();
-
-	itemsLayers = new JRadioButtonMenuItem[Tile.LAYER_NB + 1];
-	itemsLayersGroup = new ButtonGroup();
-	    
-	for (int i = 0; i < Tile.LAYER_NB; i++) {
-	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
-	    itemsLayers[i].addActionListener(new ActionChangeLayer(i));
-	    popupMenuSelectedTiles.add(itemsLayers[i]);
-	    itemsLayersGroup.add(itemsLayers[i]);
-	}
-	itemsLayers[Tile.LAYER_NB] = new JRadioButtonMenuItem();
-	itemsLayers[Tile.LAYER_NB].addActionListener(new ActionChangeLayer(Tile.LAYER_NB));
-	itemsLayersGroup.add(itemsLayers[Tile.LAYER_NB]);
-
-	popupMenuSelectedTiles.addSeparator();
-
-	JMenuItem item = new JMenuItem("Destroy");
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    destroySelectedTiles();
-		}
-	    });
-	popupMenuSelectedTiles.add(item);
     }
 
     /**
@@ -131,6 +110,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	if (map.getTileset() != null) {
 	    map.getTileset().addObserver(this);
 	}
+
+	popupMenu.setMap(map);
 
 	update(map, null);
     }
@@ -207,10 +188,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	else if (o instanceof MapTileSelection) {
 	    // the tile selection has changed
-
-	    // update the popup menu to enable or not the item "Resize"
-	    boolean enable = (map.getTileSelection().getNbTilesSelected() == 1);
-	    itemResize.setEnabled(enable);
 
 	    // redraw the map
 	    repaint();
@@ -308,31 +285,47 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    break;
 
 		    // the user is resizing the selected tile
-		case STATE_RESIZING_TILE:
+// 		case STATE_RESIZING_TILE:
 		    
-		    TileOnMap selectedTileInMap = map.getTileSelection().getTile(0);
+// 		    TileOnMap selectedTileInMap = map.getTileSelection().getTile(0);
+// 		    Tile originalTile = selectedTileInMap.getTile();
 		    
-		    Rectangle positionInMap = selectedTileInMap.getPositionInMap();
+// 		    Rectangle positionInMap = selectedTileInMap.getPositionInMap();
 
-		    // A is the initial point corresponding to the top-left corner of the tile
-		    int xA = positionInMap.x * 2;
-		    int yA = positionInMap.y * 2;
+// 		    // A is the initial point corresponding to the top-left corner of the tile
+// 		    int xA = positionInMap.x * 2;
+// 		    int yA = positionInMap.y * 2;
 
-		    // B is the point corresponding to the cursor
-		    int xB = cursorLocation.x;
-		    int yB = cursorLocation.y;
+// 		    // B is the point corresponding to the cursor
+// 		    int xB = cursorLocation.x;
+// 		    int yB = cursorLocation.y;
 
-		    x = Math.min(xA, xB);
-		    width = Math.abs(xB - xA) - 1;
+// 		    // calculate the rectangle we will draw
+// 		    if (xA < xB) {
+// 			x = xA;
+// 			width = xB - xA - 1;
+// 		    }
+// 		    else {
+// 			x = xB;
+// 			width = xA - xB + originalTile.getWidth() - 1;
+// 		    }
 
-		    y = Math.min(yA, yB);
-		    height = Math.abs(yB - yA) - 1;
+// 		    if (yA < yB) {
+// 			y = yA;
+// 			height = yB - yA - 1;
+// 		    }
+// 		    else {
+// 			y = yB;
+// 			width = yA - yB + originalTile.getHeight() - 1;
+// 		    }
 
-		    g.setColor(Color.GREEN);
-		    g.drawRect(x, y, width, height);
-		    g.drawRect(x + 1, y + 1, width - 2, height - 2);
+// 		    // draw the tile
 
-		    break;
+// 		    g.setColor(Color.GREEN);
+// 		    g.drawRect(x, y, width, height);
+// 		    g.drawRect(x + 1, y + 1, width - 2, height - 2);
+
+// 		    break;
 		}
 	    }
 	}
@@ -363,7 +356,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * Removes the selected tiles from the map.
      */
-    private void destroySelectedTiles() {
+    public void destroySelectedTiles() {
 	map.getTileSelection().removeFromMap();
     }
 
@@ -371,14 +364,21 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Lets the user resize the tile selected on the map.
      * There must be exactly one tile selected.
      */
-    private void startResizingSelectedTile() {
+    public void startResizingSelectedTile() {
 	
 	MapTileSelection tileSelection = map.getTileSelection();
 
 	if (tileSelection.getNbTilesSelected() == 1) {
-	    Rectangle tilePositionInMap = tileSelection.getTile(0).getPositionInMap();
+	    TileOnMap tileOnMap = tileSelection.getTile(0);
+	    Rectangle tilePositionInMap = tileOnMap.getPositionInMap();
 	    cursorLocation.x = (tilePositionInMap.x + tilePositionInMap.width) * 2;
 	    cursorLocation.y = (tilePositionInMap.y + tilePositionInMap.height) * 2;
+	    
+	    fixedRectangle.x = tilePositionInMap.x;
+	    fixedRectangle.y = tilePositionInMap.y;
+	    fixedRectangle.width = tileOnMap.getTile().getWidth();
+	    fixedRectangle.height = tileOnMap.getTile().getHeight();
+
 	    state = STATE_RESIZING_TILE;
 	    repaint();
 	}
@@ -389,46 +389,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private void endResizingSelectedTile() {
 
-	TileOnMap tileOnMap = map.getTileSelection().getTile(0);
-	Rectangle positionInMap = tileOnMap.getPositionInMap();
-	Rectangle positionInTileset = tileOnMap.getTile().getPositionInTileset();
-
-	// first point: the initial point, the top-left corner of the tile
-	int x1 = positionInMap.x;
-	int y1 = positionInMap.y;
-		
-	// second point: the point corresponding to the cursor
-	int x2 = cursorLocation.x / 2;
-	int y2 = cursorLocation.y / 2;
-	
-	try {
-	    tileOnMap.setPositionInMap(x1, y1, x2, y2);
-	    state = STATE_NORMAL;
-	    repaint();
-	}
-	catch (MapException e) {
-	    // nothing to do, the modification has just been cancelled if it was impossible
-	}
-    }
-
-    /**
-     * Shows the popup menu associated to the selected tiles.
-     * @param x x coordinate of where the popup menu has to be shown
-     * @param y y coordinate of where the popup menu has to be shown
-     */
-    private void showPopupMenu(int x, int y) {
-
-	int layer = map.getTileSelection().getLayer();
-
-	// if all the selected tiles have the same layer, we check its item
-	if (layer != -1) {
-	    itemsLayers[layer].setSelected(true);
-	}
-	else {
-	    itemsLayers[Tile.LAYER_NB].setSelected(true);
-	}
-
-	popupMenuSelectedTiles.show(this, x, y);
+	state = STATE_NORMAL;
+	repaint();
     }
 
     /**
@@ -490,7 +452,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 		    if (!tileSelection.isEmpty()) {
 			
-			showPopupMenu(mouseEvent.getX(), mouseEvent.getY());
+			popupMenu.show(mouseEvent.getX(), mouseEvent.getY());
 		    }
 		    
 		    break;
@@ -610,15 +572,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
 			state = STATE_NORMAL;
 			repaint();
 		    }
+		    else {
 
-		    // snap the tile to the 16*16 grid
-		    x -= x % 16;
-		    y -= y % 16;
+			// snap the tile to the 16*16 grid
+			x -= x % 16;
+			y -= y % 16;
 		    
-		    if (x != cursorLocation.x || y != cursorLocation.y) {
-			cursorLocation.x = x;
-			cursorLocation.y = y;
-			repaint();
+			if (x != cursorLocation.x || y != cursorLocation.y) {
+			    cursorLocation.x = x;
+			    cursorLocation.y = y;
+			    repaint();
+			}
 		    }
 
 		    break;
@@ -627,10 +591,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    // if we are resizing a tile, calculate the coordinates of
 		    // the second point of the rectangle formed by the pointer
 
-		    x = mouseEvent.getX() / 2;
-		    y = mouseEvent.getY() / 2;
+		    int xA, yA; // A is the original point of the rectangle we are drawing
+		    int xB, yB; // B is the second point, defined by the cursor location
 
-		    if (x < map.getWidth() && y < map.getHeight()) {
+		    xB = mouseEvent.getX() / 2;
+		    yB = mouseEvent.getY() / 2;
+
+		    if (xB < map.getWidth() && yB < map.getHeight()) {
 
 			TileOnMap selectedTileOnMap = map.getTileSelection().getTile(0);
 
@@ -638,25 +605,47 @@ public class MapView extends JComponent implements Observer, Scrollable {
 			Tile originalTile = selectedTileOnMap.getTile();
 			int width = originalTile.getWidth();
 			int height = originalTile.getHeight();
+
+			xA = fixedRectangle.x;
+			yA = fixedRectangle.y;
 			
 			// snap the coordinates to the grid
-			x += width / 2;
-			y += height / 2;
+			xB += width / 2;
+			yB += height / 2;
 
-			x -= x % 8;
-			y -= y % 8;
+			xB -= xB % 8;
+			yB -= yB % 8;
 			
 			// snap the coordinates to the size of the tile
-			x = x - (Math.abs(x - selectedTilePosition.x)) % width;
-			y = y - (Math.abs(y - selectedTilePosition.y)) % width;
-			
-			x *= 2;
-			y *= 2;
-			
-			if (x != cursorLocation.x || y != cursorLocation.y) {
-			    cursorLocation.x = x;
-			    cursorLocation.y = y;
-			    repaint();
+			xB = xB - (Math.abs(xB - xA)) % width;
+			yB = yB - (Math.abs(yB - yA)) % width;
+
+			if (xB != cursorLocation.x || yB != cursorLocation.y) {
+
+			    // the rectangle has changed
+			    cursorLocation.x = xB;
+			    cursorLocation.y = yB;
+
+			    // (xA,yA) depends on the rectangle direction:
+			    // they may have to be updated so that the rectangle size is not zero
+			    if (xB <= xA) {
+				xA += width;
+			    }
+			    
+			    if (yB <= yA) {
+				yA += height;
+			    }
+			    
+			    // now let's update the tile
+			    try {
+				selectedTileOnMap.setPositionInMap(xA, yA, xB, yB);
+				repaint();
+			    }
+			    catch (MapException e) {
+				// should not happen as long setPositionInMap() checks only
+				// the width and the height of the rectangle
+				System.out.println("Unexpected error when trying to resize the tile: " + e.getMessage());
+			    }
 			}
 		    }
 		    break;
@@ -685,34 +674,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    break;
 		}
 	    }
-	}
-    }
-
-    /**
-     * Action listener invoked when the user changes the layer of a tile
-     * from the popup menu after a right click.
-     */
-    private class ActionChangeLayer implements ActionListener {
-
-	/**
-	 * Layer to set when the action is invoked.
-	 */
-	private int layer;
-
-	/**
-	 * Constructor.
-	 * @param layer layer to set when the action is invoked.
-	 */
-	public ActionChangeLayer(int layer) {
-	    this.layer = layer;
-	}
-
-	/**
-	 * Method called when the user sets the layer of the selected tiles.
-	 */
-	public void actionPerformed(ActionEvent e) {
-	    map.getTileSelection().setLayer(layer);
-	    repaint();
 	}
     }
 }

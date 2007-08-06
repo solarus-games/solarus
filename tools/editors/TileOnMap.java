@@ -111,7 +111,7 @@ public class TileOnMap extends Observable implements Serializable {
      * @param x2 x coordinate of the second point
      * @param y2 y coordinate of the second point
      * @throws MapException if the rectangle width or its height is zero
-     * (no other checks are performed)
+     * (no other verifications are performed)
      */
      public void setPositionInMap(int x1, int y1, int x2, int y2) throws MapException {
 

@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * This component shows a list of tiles and allows the user to select them.
  */
-public class TileList extends JPanel {
+public class TilesView extends JPanel {
 
     /**
      * The current tileset.
@@ -48,7 +48,7 @@ public class TileList extends JPanel {
     /**
      * Constructor.
      */
-    public TileList() {
+    public TilesView() {
 	super();
 
 	tileIcons = new Vector<TileIcon>();

@@ -10,7 +10,7 @@ public class MapTileSelection extends Observable {
     /**
      * The selected tiles.
      */
-    private TileOnMapVector tiles;
+    private TileOnMapList tiles;
 
     /**
      * The map.
@@ -23,7 +23,7 @@ public class MapTileSelection extends Observable {
      */
     public MapTileSelection(Map map) {
 	this.map = map;
-	this.tiles = new TileOnMapVector();
+	this.tiles = new TileOnMapList();
     }
 
     /**
@@ -114,7 +114,7 @@ public class MapTileSelection extends Observable {
 	if (tiles.size() > 0) {
 
 	    while (tiles.size() > 0) {
-		TileOnMap tile = tiles.firstElement();
+		TileOnMap tile = tiles.getFirst();
 		tiles.remove(0);
 		map.removeTile(tile);
 	    }
@@ -163,6 +163,20 @@ public class MapTileSelection extends Observable {
     }
 
     /**
+     * Selects all tiles in a rectangle defined by two points.
+     * @param x1 x coordinate of the first point
+     * @param y1 y coordinate of the first point
+     * @param x2 x coordinate of the second point
+     * @param y2 y coordinate of the second point
+     */
+    public void selectRectangle(int x1, int y1, int x2, int y2) {
+
+	this.tiles = map.getTilesInRectangle(x1, y1, x2, y2);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
      * Returns the layer of the selected tiles, if all selected tiles have the same layer.
      * Otherwise, returns -1.
      * @return the common layer, or -1 if all selected tiles have not the same layer
@@ -191,5 +205,21 @@ public class MapTileSelection extends Observable {
 	for (TileOnMap tile: tiles) {
 	    map.tileSetLayer(tile, layer);
 	}
+    }
+
+    /**
+     * Brings the selected tiles to the front in their layer.
+     */
+    public void bringToFront() {
+
+	map.bringToFront(tiles);
+    }
+
+    /**
+     * Brings the selected tiles to the back in their layer.
+     */
+    public void bringToBack() {
+
+	map.bringToBack(tiles);
     }
 }

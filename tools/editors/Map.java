@@ -13,7 +13,7 @@ public class Map extends Observable implements Serializable {
     /**
      * Version number of the class serialization.
      */
-    public static final long serialVersionUID = 3L;
+    public static final long serialVersionUID = 5L;
 
     /**
      * Name of the map.
@@ -50,9 +50,9 @@ public class Map extends Observable implements Serializable {
 
     /**
      * Tiles of the map.
-     * This is an array of three tile vectors, one for each layer.
+     * This is an array of three tile lists, one for each layer.
      */
-    private TileOnMapVector[] tiles;
+    private TileOnMapList[] allTiles;
 
     /**
      * The tiles selected.
@@ -78,9 +78,9 @@ public class Map extends Observable implements Serializable {
 	this.music = null;
 	this.backgroundColor = Color.BLACK;
 
-	this.tiles = new TileOnMapVector[3];
+	this.allTiles = new TileOnMapList[3];
 	for (int i = 0; i < 3; i++) {
-	    this.tiles[i] = new TileOnMapVector();
+	    this.allTiles[i] = new TileOnMapList();
 	}
 
 	this.tileSelection = new MapTileSelection(this);
@@ -192,17 +192,23 @@ public class Map extends Observable implements Serializable {
      * @return the total number of tiles of the map.
      */
     public int getNbTiles() {
-	return tiles[Tile.LAYER_BELOW].size()
-	    + tiles[Tile.LAYER_INTERMEDIATE].size()
-	    + tiles[Tile.LAYER_ABOVE].size();
+	
+	int nbTiles = 0;
+
+	// add the tiles of each layer
+	for (TileOnMapList tiles: allTiles) {
+	    nbTiles += tiles.size();
+	}
+
+	return nbTiles;
     }
 
     /**
      * Returns the tiles of the map.
      * @return an array of 3 vectors of TileOnMap: a vector for each layer
      */
-    public TileOnMapVector[] getTiles() {
-	return tiles;
+    public TileOnMapList[] getTiles() {
+	return allTiles;
     }
 
     /**
@@ -210,8 +216,8 @@ public class Map extends Observable implements Serializable {
      * @param layer the layer: Tile.LAYER_BELOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE
      * @return the vector of TileOnMap for this layer
      */
-    public TileOnMapVector getTiles(int layer) {
-	return tiles[layer];
+    public TileOnMapList getTiles(int layer) {
+	return allTiles[layer];
     }
 
     /**
@@ -245,10 +251,10 @@ public class Map extends Observable implements Serializable {
      */
     public TileOnMap getTileAt(int layer, int x, int y) {
 		
-	TileOnMapVector tileVector = tiles[layer];
-	for (int i = tileVector.size() - 1; i >= 0; i--) {
+	TileOnMapList tileList = allTiles[layer];
+	for (int i = tileList.size() - 1; i >= 0; i--) {
 
-	    TileOnMap tile = tileVector.get(i);
+	    TileOnMap tile = tileList.get(i);
 	    if (tile.containsPoint(x, y)) {
 		return tile;
 	    }
@@ -258,11 +264,45 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
+     * Returns the tiles located in a rectangle defined by two points.
+     * @param x1 x coordinate of the first point
+     * @param y1 y coordinate of the first point
+     * @param x2 x coordinate of the second point
+     * @param y2 y coordinate of the second point
+     */
+    public TileOnMapList getTilesInRectangle(int x1, int y1, int x2, int y2) {
+
+	TileOnMapList tilesInRectangle = new TileOnMapList();
+
+	int x = Math.min(x1, x2);
+	int width = Math.abs(x2 - x1);
+
+	int y = Math.min(y1, y2);
+	int height = Math.abs(y2 - y1);
+
+	Rectangle rectangle = new Rectangle(x, y, width, height);
+
+	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+
+	    TileOnMapList tiles = getTiles(layer);
+	    
+	    for (TileOnMap tile: tiles) {
+		if (rectangle.contains(tile.getPositionInMap())) {
+		    tilesInRectangle.add(tile);
+		}
+	    }
+	}
+	
+	return tilesInRectangle;
+    }
+
+    /**
      * Adds a new tile on the map.
      * @param tile the tile to add
      */
     public void addTile(TileOnMap tile) {
-	tiles[tile.getLayer()].add(tile);
+
+	allTiles[tile.getLayer()].add(tile);
 	setSaved(false);
 	setChanged();
 	notifyObservers();
@@ -273,7 +313,8 @@ public class Map extends Observable implements Serializable {
      * @param tile the tile to remove
      */
     public void removeTile(TileOnMap tile) {
-	tiles[tile.getLayer()].remove(tile);
+
+	allTiles[tile.getLayer()].remove(tile);
 	setSaved(false);
 	setChanged();
 	notifyObservers();
@@ -292,6 +333,7 @@ public class Map extends Observable implements Serializable {
      * @param music the name of the music, i.e. a music file name without the extension ".it".
      */
     public void setMusic(String music) {
+
 	if (music != this.music) {
 
 	    this.music = music;
@@ -306,6 +348,7 @@ public class Map extends Observable implements Serializable {
      * @return the background color
      */
     public Color getBackgroundColor() {
+
 	return backgroundColor;
     }
 
@@ -314,6 +357,7 @@ public class Map extends Observable implements Serializable {
      * @param backgroundColor the new background color
      */
     public void setBackgroundColor(Color backgroundColor) {
+
 	this.backgroundColor = backgroundColor;
 	setSaved(false);
 	setChanged();
@@ -325,6 +369,7 @@ public class Map extends Observable implements Serializable {
      * @return the tiles selected by the user
      */
     public MapTileSelection getTileSelection() {
+
 	return tileSelection;
     }
     
@@ -341,9 +386,83 @@ public class Map extends Observable implements Serializable {
 
 	if (layer != oldLayer) {
 	    tile.setLayer(layer);
-	    tiles[oldLayer].remove(tile);
-	    tiles[layer].add(tile);
+	    allTiles[oldLayer].remove(tile);
+	    allTiles[layer].add(tile);
 	}
+
+	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Returns the specified tiles, sorted in the order of the map.
+     * The first tile is the lowest one, the last tile is the highest one.
+     * @param tiles the tiles to sort
+     * @return the same tiles, sorted as they are in the map
+     */
+    private TileOnMapList getSortedTiles(TileOnMapList tiles) {
+	
+	TileOnMapList sortedTiles = new TileOnMapList();
+	
+	// sort the selected tiles so that they have the same order as in the map
+	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+
+	    for (TileOnMap tile: allTiles[layer]) {
+
+		if (tiles.contains(tile)) {
+		    sortedTiles.add(tile);
+		}
+	    }
+	}
+
+	// now sortedTiles contains all selected tiles, sorted in the same order as in the map
+	return sortedTiles;
+    }
+
+    /**
+     * Brings the specified tiles to the back, keeping their layer.
+     * The order of the specified tiles in the map is unchanged.
+     * @param tiles the tiles to move
+     */
+    public void bringToBack(TileOnMapList tiles) {
+
+	TileOnMapList sortedTiles = getSortedTiles(tiles);
+
+	// bring to back each tile from sortedTiles
+	for (int i = sortedTiles.size() - 1; i >= 0; i--) {
+
+	    TileOnMap tile = sortedTiles.get(i);
+	    int layer = tile.getLayer();
+	    allTiles[layer].remove(tile);
+	    allTiles[layer].addFirst(tile);
+	}
+
+	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Brings the specified tiles to the front, keeping their layer.
+     * The order of the specified tiles in the map is unchanged.
+     * @param tiles the tiles to move
+     */
+    public void bringToFront(TileOnMapList tiles) {
+
+	TileOnMapList sortedTiles = getSortedTiles(tiles);
+
+	// bring to front each tile from sortedTiles
+	for (TileOnMap tile: sortedTiles) {
+
+	    int layer = tile.getLayer();
+	    allTiles[layer].remove(tile);
+	    allTiles[layer].addLast(tile);
+	}
+
+	setSaved(false);
+	setChanged();
+	notifyObservers();
     }
 
     /**

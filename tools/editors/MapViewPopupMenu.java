@@ -40,14 +40,16 @@ public class MapViewPopupMenu extends JPopupMenu {
     public MapViewPopupMenu(MapView theMapView) {
 	super();
 
+	JMenuItem item;
+
 	this.mapView = theMapView;
 
-	// items: resize, layer, destroy
+	// items: resize, layer, bring to front, bring to back, destroy
 
 	itemResize = new JMenuItem("Resize");
 	itemResize.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    mapView.startResizingSelectedTile();
+		    mapView.startResizingTile();
 		}
 	    });
 	add(itemResize);
@@ -69,7 +71,17 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	addSeparator();
 
-	JMenuItem item = new JMenuItem("Destroy");
+	item = new JMenuItem("Bring to front");
+	item.addActionListener(new ActionBringToFront());
+	add(item);
+
+	item = new JMenuItem("Bring to back");
+	item.addActionListener(new ActionBringToBack());
+	add(item);
+
+	addSeparator();
+
+	item = new JMenuItem("Destroy");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    mapView.destroySelectedTiles();
@@ -141,7 +153,34 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 */
 	public void actionPerformed(ActionEvent e) {
 	    map.getTileSelection().setLayer(layer);
-	    repaint();
+	}
+    }
+
+    /**
+     * Action listener invoker when the user clicks on "Bring to front".
+     * The selected tiles are moved to the front in their layer.
+     */
+    private class ActionBringToFront implements ActionListener {
+
+	/**
+	 * Method called when the action is performed.
+	 */
+	public void actionPerformed(ActionEvent e) {
+	    map.getTileSelection().bringToFront();
+	}
+    }
+
+    /**
+     * Action listener invoker when the user clicks on "Bring to back".
+     * The selected tiles are moved to the back in their layer.
+     */
+    private class ActionBringToBack implements ActionListener {
+
+	/**
+	 * Method called when the action is performed.
+	 */
+	public void actionPerformed(ActionEvent e) {
+	    map.getTileSelection().bringToBack();
 	}
     }
 }

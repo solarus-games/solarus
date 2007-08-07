@@ -18,7 +18,7 @@ public class TilesetEditorWindow extends JFrame {
     /**
      * The list of tiles.
      */
-    private TileList tileList;
+    private TilesView tilesView;
 
     /**
      * The tileset image.
@@ -50,9 +50,9 @@ public class TilesetEditorWindow extends JFrame {
 	// tile list and tileset image
 
 	// tile list
-	tileList = new TileList();
-	tileList.setAlignmentY(Component.TOP_ALIGNMENT);
- 	tileList.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+	tilesView = new TilesView();
+	tilesView.setAlignmentY(Component.TOP_ALIGNMENT);
+ 	tilesView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
 	// tileset image
 	tilesetImageView = new TilesetImageView(true);
@@ -60,7 +60,7 @@ public class TilesetEditorWindow extends JFrame {
 	tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
  	tilesetImageScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
-	JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tileList, tilesetImageScroller);
+	JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tilesView, tilesetImageScroller);
 	tilesetPanel.setContinuousLayout(true); 
 
 	// we must put our main panel in another panel
@@ -211,7 +211,7 @@ public class TilesetEditorWindow extends JFrame {
 	menuItemGenerate.setEnabled(true);
 
 	// notify the views
-	tileList.setTileset(tileset);
+	tilesView.setTileset(tileset);
 	tilesetImageView.setTileset(tileset);
     }
 

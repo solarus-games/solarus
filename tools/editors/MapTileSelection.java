@@ -36,6 +36,14 @@ public class MapTileSelection extends Observable {
     }
 
     /**
+     * Returns all the selected tiles.
+     * @return the selected tiles
+     */
+    public TileOnMapList getTiles() {
+	return tiles;
+    }
+
+    /**
      * Returns whether or not a tile is selected.
      * @param tile a tile
      * @return true if the tile is selected, false otherwise
@@ -164,6 +172,7 @@ public class MapTileSelection extends Observable {
 
     /**
      * Selects all tiles in a rectangle defined by two points.
+     * The other tiles selected are unselected.
      * @param x1 x coordinate of the first point
      * @param y1 y coordinate of the first point
      * @param x2 x coordinate of the second point
@@ -221,5 +230,18 @@ public class MapTileSelection extends Observable {
     public void bringToBack() {
 
 	map.bringToBack(tiles);
+    }
+
+    /**
+     * Changes the position of the selected tiles.
+     * @param dx number of pixels to move on x
+     * @param dy number of pixels to move on y
+     */
+    public void move(int dx, int dy) {
+	
+	for (TileOnMap tile: tiles) {
+	    
+	    tile.move(dx, dy);
+	}
     }
 }

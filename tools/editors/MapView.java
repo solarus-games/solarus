@@ -55,7 +55,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Location of the point defined by the mouse.
      * - in state STATE_NORMAL: unused
      * - in state STATE_SELECTING_AREA: coordinates of the second point of the rectangle, defined by the cursor
-     * - in state STATE_MOVING_TILES: unused
+     * - in state STATE_MOVING_TILES: coordinates of the pointer
      * - in state STATE_RESIZING_TILE: coordinates of the second point of the rectangle, defined by the cursor
      * - in state STATE_ADDING_TILE: coordinates of the tile displayed under the cursor
      */
@@ -67,6 +67,16 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * - in state STATE_RESIZING_TILE: top-left rectangle of the tile before resizing 
      */
     private Rectangle fixedLocation;
+
+    /**
+     * The tiles selected, saved here before drawing a selection rectangle.
+     */
+    private TileOnMapList initialSelection;
+
+    /**
+     * True if the last tile on which the mouse was pressed was not already selected.
+     */
+    private boolean tileJustSelected;
 
     /**
      * The popup menu shown when the user right clicks on the selected tiles.
@@ -81,7 +91,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	this.cursorLocation = new Point();
 	this.fixedLocation = new Rectangle();
-
+	this.initialSelection = new TileOnMapList();
 
 	// create the popup menu for the selected tiles
 	// items: resize, layer, destroy
@@ -353,9 +363,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * In state STATE_ADDING_TILE, adds the current tile to the map and returns to the normal state.
      * The current tile selected in the tileset is placed on the map at the mouse location.
-     * @param selectNewTile true to make selected the new tile after its creation
+     * @param selectTileCreated true to make selected the new tile after its creation
      */
-    private void endAddingTile(boolean selectNewTile) {
+    private void endAddingTile(boolean selectTileCreated) {
 
 	// create the tile
 	Tileset tileset = map.getTileset();
@@ -366,7 +376,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	map.addTile(tile);
 
 	// make it selected if required
-	if (selectNewTile) {
+	if (selectTileCreated) {
 	    map.getTileSelection().select(tile);
 	    map.getTileset().setSelectedTileIndex(-1);
 	    startResizingTile(); // let the user resize the tile until the mouse is released
@@ -392,6 +402,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	// second point of the rectangle
 	cursorLocation.x = fixedLocation.x;
 	cursorLocation.y = fixedLocation.y;
+
+	// save the tiles already selected (useful for a multiple selection)
+	TileOnMapList currentSelection = map.getTileSelection().getTiles();
+	initialSelection.clear();
+	for (TileOnMap tile: currentSelection) {
+	    initialSelection.add(tile);
+	}
 
 	state = STATE_SELECTING_AREA;
 	repaint();
@@ -419,8 +436,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    // update the selection
 	    MapTileSelection tileSelection = map.getTileSelection();
 	    tileSelection.unSelectAll();
+	    
+	    // select the rectangle's content
 	    tileSelection.selectRectangle(fixedLocation.x, fixedLocation.y,
 					  cursorLocation.x, cursorLocation.y);
+
+	    // restore the initial selection (for a multiple selection)
+	    for (TileOnMap tile: initialSelection) {
+		tileSelection.select(tile);
+	    }
 	}
     }
 
@@ -485,7 +509,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    
 	    // snap the coordinates to the size of the tile
 	    xB = xB - (Math.abs(xB - xA)) % width;
-	    yB = yB - (Math.abs(yB - yA)) % width;
+	    yB = yB - (Math.abs(yB - yA)) % height;
 	    
 	    if (xB != cursorLocation.x || yB != cursorLocation.y) {
 		
@@ -518,6 +542,52 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
+     * Moves to the state STATE_MOVING_TILES.
+     * Lets the user moving the tiles selected on the map.
+     * @param x x coordinate of the pointer
+     * @param y y coordinate of the pointer
+     */
+    public void startMovingTiles(int x, int y) {
+
+	x -= x % 8;
+	y -= y % 8;
+
+	cursorLocation.x = x;
+	cursorLocation.y = y;
+
+	state = STATE_MOVING_TILES;
+    }
+
+    /**
+     * In state STATE_MOVING_TILES, updates with the new mouse coordinates
+     * the position of the selected tiles.
+     * @param x x coordinate of the pointer
+     * @param y y coordinate of the pointer
+     */
+    private void updateMovingTiles(int x, int y) {
+
+	x -= x % 8;
+	y -= y % 8;
+
+	x = Math.min(Math.max(0, x), map.getWidth());
+	y = Math.min(Math.max(0, y), map.getHeight());
+
+	if (x != cursorLocation.x || y != cursorLocation.y) {
+	    
+	    int dx = x - cursorLocation.x;
+	    int dy = y - cursorLocation.y;
+
+	    // we have to move all selected tiles from (offsetX, offsetY) pixels
+	    map.getTileSelection().move(dx, dy);
+
+	    cursorLocation.x = x;
+	    cursorLocation.y = y;
+
+	    repaint();
+	}
+    }
+
+    /**
      * The mouse listener associated to the map image.
      */
     private class MapMouseListener extends MouseAdapter {
@@ -537,7 +607,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	/**
 	 * This method is called when the mouse is clicked on the map view.
-	 * The focus is given to the component (nothing else is done here).
 	 */
 	public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -546,6 +615,32 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    }
 
 	    requestFocusInWindow();
+
+	    if (state == STATE_NORMAL && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+		
+		// detect whether CTRL or SHIFT is pressed
+		boolean enableMultipleSelection =
+		    ((mouseEvent.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK)) != 0);
+
+		if (enableMultipleSelection) {
+
+		    MapTileSelection tileSelection = map.getTileSelection();
+		
+		    // find the tile clicked
+		    int x = mouseEvent.getX() / 2;
+		    int y = mouseEvent.getY() / 2;
+		    
+		    TileOnMap tileClicked = map.getTileAt(x, y);
+
+		    if (tileClicked != null && !tileJustSelected
+			&& tileSelection.isSelected(tileClicked)) {
+
+			// CTRL + left click or SHIFT + left click:
+			// unselect the tile clicked
+			tileSelection.unSelect(tileClicked);
+		    }
+		}
+	    }
 	}
 
 	/**
@@ -574,32 +669,36 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		int button = mouseEvent.getButton();
 
 		// detect whether CTRL or SHIFT is pressed
-		boolean enableMultipleSelection = ((mouseEvent.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK)) != 0);
-		    
+		boolean enableMultipleSelection =
+		    ((mouseEvent.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK)) != 0);
+		
 		// find the tile clicked
 		int x = mouseEvent.getX() / 2;
 		int y = mouseEvent.getY() / 2;
 		
 		TileOnMap tileClicked = map.getTileAt(x, y);
+		boolean alreadySelected = tileSelection.isSelected(tileClicked);
 		
 		// left click
 		if (button == MouseEvent.BUTTON1) {
 
 		    // unselect all tiles unless CTRL or SHIFT is pressed
-		    if (!enableMultipleSelection && (tileClicked == null || !tileSelection.isSelected(tileClicked))) {
+		    if (!enableMultipleSelection &&
+			(tileClicked == null || !alreadySelected)) {
+
 			map.getTileSelection().unSelectAll();
 		    }
 
 		    if (tileClicked != null) {
-			if (!enableMultipleSelection) {
-			    // make the tile selected
-			    tileSelection.select(tileClicked);
-			}
-			else {
-			    // CTRL + left click or SHIFT + left click:
-			    // switch the selection state of the tile
-			    tileSelection.switchSelection(tileClicked);
-			}
+
+			// make the tile selected
+			tileSelection.select(tileClicked);
+			tileJustSelected = !alreadySelected;
+		    }
+		    
+		    // the user may want to move the selected tiles
+		    if (tileSelection.isSelected(tileClicked)) {
+			startMovingTiles(x, y);
 		    }
 		}
 		
@@ -609,7 +708,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    // If a tile is selected and the user right clicks on another tile,
 		    // we will select the new one instead of the old one.
 		    // Note that if several tiles are selected, the selection is kept.
-		    if (tileSelection.getNbTilesSelected() == 1 && tileClicked != null && !tileSelection.isSelected(tileClicked)) {
+		    if (tileSelection.getNbTilesSelected() == 1 && tileClicked != null
+			&& !tileSelection.isSelected(tileClicked)) {
+
 			map.getTileSelection().unSelectAll();
 		    }
 
@@ -635,8 +736,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// place the new tile
 	    case STATE_ADDING_TILE:
 
-		boolean selectNewTile = (mouseEvent.getButton() != MouseEvent.BUTTON3);
-		endAddingTile(selectNewTile); // add the tile to the map
+		boolean selectTileCreated = (mouseEvent.getButton() != MouseEvent.BUTTON3);
+		endAddingTile(selectTileCreated); // add the tile to the map
 		break;
 	    }
 	}
@@ -659,6 +760,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    case STATE_SELECTING_AREA:
 		returnToNormalState();
+
+		if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+		    popupMenu.show(mouseEvent.getX(), mouseEvent.getY());
+		}
+		break;
+
+	    case STATE_MOVING_TILES:
+		returnToNormalState();
 		break;
 	    }
 	}
@@ -676,14 +785,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	public void mouseMoved(MouseEvent mouseEvent) {
 
 	    if (isImageLoaded()) {
-
+		
 		int x = mouseEvent.getX() / 2;
 		int y = mouseEvent.getY() / 2;
 
 		switch (state) {
 		    
 		case STATE_NORMAL:
-		    // if a tile is selected in the tileset, display it on the map under the cursor
+		    // if a tile is selected in the tileset,
+		    // display it on the map under the cursor
 		    if (map.getTileset().getSelectedTile() != null) {
 			startAddingTile();
 		    }
@@ -720,11 +830,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	 * This function is called when the mouse is dragged on the component.
 	 * In STATE_NORMAL, when to tile was clicked, a selection rectangle appears.
 	 * In STATE_SELECTING_AREA, the selection rectangle is updated.
+	 * In STATE_RESIZING_TILE, the rectangle of the tile is updated.
 	 */
 	public void mouseDragged(MouseEvent mouseEvent) {
 
-	    // consider only left clicks
-	    if (!isImageLoaded() || (mouseEvent.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == 0) {
+	    if (!isImageLoaded()
+		|| (mouseEvent.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == 0) {
+		// enable only left clicks here
+
 		return;
 	    }
 
@@ -737,9 +850,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    case STATE_NORMAL:
 		
-		// if no tile is selected (i.e. the mouse was not pressed on a tile),
+		// determine if a tile was clicked
+		TileOnMap tileClicked = map.getTileAt(x, y);
+		
+		// if the mouse was not pressed on a tile,
 		// we start a selection rectangle
-		if (tileSelection.isEmpty()) {
+		if (tileClicked == null) {
+		    
+		    // first, unselect all tiles unless CTRL or SHIFT is pressed
+		    if ((mouseEvent.getModifiersEx() & (InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK)) == 0) {
+			tileSelection.unSelectAll();
+		    }		
 
 		    startSelectingArea(x, y);
 		}
@@ -756,6 +877,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// the second point of the rectangle formed by the pointer
 		
 		updateResizingTile(x, y);
+		break;
+
+	    case STATE_MOVING_TILES:
+		// if we are moving tiles, update their position
+		
+		updateMovingTiles(x, y);
 		break;
 	    }
 	}

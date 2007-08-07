@@ -49,6 +49,11 @@ public class TileOnMap extends Observable implements Serializable {
     private int repeatY;
 
     /**
+     * Color to display instead of the transparent pixels of the image.
+     */
+    private static final Color bgColor = new Color(128, 128, 255);
+
+    /**
      * Simple constructor.
      * @param tile the tile from the tileset
      * @param tileIndex index of the tile in the tileset
@@ -113,45 +118,59 @@ public class TileOnMap extends Observable implements Serializable {
      * @throws MapException if the rectangle width or its height is zero
      * (no other verifications are performed)
      */
-     public void setPositionInMap(int x1, int y1, int x2, int y2) throws MapException {
-
-	 // check the rectangle validity
-	 if (x1 == x2 || y1 == y2) {
-	     throw new MapException("No rectangle defined");
-	 }
-
-	 Rectangle positionInTileset = this.tile.getPositionInTileset();
-
-	 // x
-	 positionInMap.x = Math.min(x1, x2);
-	 positionInMap.width = Math.abs(x2 - x1);
-	 repeatX = positionInMap.width / positionInTileset.width;
-
-	 // y
-	 positionInMap.y = Math.min(y1, y2);
-	 positionInMap.height = Math.abs(y2 - y1);
-	 repeatY = positionInMap.height / positionInTileset.height;
-
-	 // notify
-	 setChanged();
-	 notifyObservers();
-     }
-
+    public void setPositionInMap(int x1, int y1, int x2, int y2) throws MapException {
+	
+	// check the rectangle validity
+	if (x1 == x2 || y1 == y2) {
+	    throw new MapException("No rectangle defined");
+	}
+	
+	Rectangle positionInTileset = this.tile.getPositionInTileset();
+	
+	// x
+	positionInMap.x = Math.min(x1, x2);
+	positionInMap.width = Math.abs(x2 - x1);
+	repeatX = positionInMap.width / positionInTileset.width;
+	
+	// y
+	positionInMap.y = Math.min(y1, y2);
+	positionInMap.height = Math.abs(y2 - y1);
+	repeatY = positionInMap.height / positionInTileset.height;
+	
+	// notify
+	setChanged();
+	notifyObservers();
+    }
+    
     /**
      * Changes the position of the tile on the map, by specifying a point.
      * The size of the tile is not changed.
      * @param x x coordinate of the point
      * @param y y coordinate of the point
      */
-     public void setPositionInMap(int x, int y) throws MapException {
+    public void setPositionInMap(int x, int y) throws MapException {
 
-	 positionInMap.x = x;
-	 positionInMap.y = y;
+	positionInMap.x = x;
+	positionInMap.y = y;
+	
+	// notify
+	setChanged();
+	notifyObservers();
+    }
 
-	 // notify
-	 setChanged();
-	 notifyObservers();
-     }
+    /**
+     * Changes the position of the selected tiles.
+     * @param dx number of pixels to move on x
+     * @param dy number of pixels to move on y
+     */
+    public void move(int dx, int dy) {
+	
+	positionInMap.x += dx;
+	positionInMap.y += dy;
+
+	setChanged();
+	notifyObservers();
+    }
 
     /**
      * Returns whether or not a point is in the tile.
@@ -286,7 +305,7 @@ public class TileOnMap extends Observable implements Serializable {
 	// destination image: we have to repeat the pattern
 	
 	int width = positionInTileset.width * scale;
-	int height = positionInTileset.width * scale;
+	int height = positionInTileset.height * scale;
 
 	int dx1;
 	int dx2;
@@ -301,7 +320,7 @@ public class TileOnMap extends Observable implements Serializable {
 	    for (int k = 0; k < repeatY; k++) {
 		dy1 = dy2;
 		dy2 += height;
-		g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+		g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgColor, tileset);
 	    }
 	}
 

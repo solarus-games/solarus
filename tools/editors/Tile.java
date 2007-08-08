@@ -291,6 +291,19 @@ public class Tile extends Observable implements Serializable {
 	int dy2 = dy1 + height;
 			
 	g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+    }
 
+    /**
+     * Compares this tile to another one.
+     * @return true if it the tiles have exactly the same properties
+     */
+    public boolean equals(Object other) {
+
+	Tile tile = (Tile) other;
+
+	return obstacle == tile.obstacle
+	    && animationSequence == tile.animationSequence
+	    && animationSeparation == tile.animationSeparation
+	    && positionInTileset.equals(tile.positionInTileset);
     }
 }

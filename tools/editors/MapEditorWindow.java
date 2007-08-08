@@ -323,6 +323,9 @@ public class MapEditorWindow extends JFrame {
 	    catch (IOException e) {
 		errorDialog("Could not open the map file: " + e.getMessage());
 	    }
+	    catch (TilesetException e) {
+		errorDialog("Could not load the map: " + e.getMessage());
+	    }
 	}
     }
 

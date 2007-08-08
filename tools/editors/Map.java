@@ -159,9 +159,12 @@ public class Map extends Observable implements Serializable {
     /**
      * Changes the tileset of the map.
      * @param tileset name of the new tileset
-     * @throws IOException if this tileset cannot be loaded
+     * @throws IOException if this tileset file cannot be loaded
+     * @throws TilesetException if a tile on the map refers to a tile in the
+     * tileset that doesn't exist, or if a tile on the map has not the same
+     * properties
      */
-    public void setTileset(String tilesetName) throws IOException {
+    public void setTileset(String tilesetName) throws IOException, TilesetException {
 
 	// if the tileset is removed
 	if (tilesetName == null) {
@@ -180,6 +183,13 @@ public class Map extends Observable implements Serializable {
 		+ File.separator + tilesetName + ".zsd";
 	    
 	    this.tileset = Tileset.load(new File(path));
+
+	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+		for (TileOnMap tile: allTiles[layer]) {
+		    tile.setTileset(tileset);
+		}
+	    }
+
 	    this.tilesetName = tilesetName;
 	    setSaved(false);
 	    setChanged();
@@ -483,8 +493,12 @@ public class Map extends Observable implements Serializable {
 
     /**
      * Loads a map from the map file.
+     * @param mapFile the file of the map
+     * @return the map loaded
+     * @throws TilesetException if a tile on the map refers to a tile in the
+     * tileset that doesn't exist
      */
-    public static Map load(File mapFile) throws IOException {
+    public static Map load(File mapFile) throws IOException, TilesetException {
 
  	// open the map file
 	ObjectInputStream in = new ObjectInputStream(new FileInputStream(mapFile));

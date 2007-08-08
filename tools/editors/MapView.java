@@ -264,7 +264,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    for (TileOnMap tile: tiles) {
 
 			// draw the tile
-			tile.paint(g, tileset, 2);
+			tile.paint(g, 2);
 			
 			// draw the selection rectangle if the tile is selected
 			if (map.getTileSelection().isSelected(tile)) {
@@ -369,7 +369,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	// create the tile
 	Tileset tileset = map.getTileset();
-	TileOnMap tile = new TileOnMap(tileset.getSelectedTile(), tileset.getSelectedTileIndex(),
+	TileOnMap tile = new TileOnMap(tileset, tileset.getSelectedTileIndex(),
 				       cursorLocation.x, cursorLocation.y);
 
 	// add it to the map
@@ -460,11 +460,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	if (tileSelection.getNbTilesSelected() == 1) {
 	    TileOnMap tileOnMap = tileSelection.getTile(0);
 	    Rectangle tilePositionInMap = tileOnMap.getPositionInMap();
+	    Tile originalTile = map.getTileset().getTile(tileOnMap.getTileIndex());
 	    
 	    fixedLocation.x = tilePositionInMap.x;
 	    fixedLocation.y = tilePositionInMap.y;
-	    fixedLocation.width = tileOnMap.getTile().getWidth();
-	    fixedLocation.height = tileOnMap.getTile().getHeight();
+	    fixedLocation.width = originalTile.getWidth();
+	    fixedLocation.height = originalTile.getHeight();
 
 	    cursorLocation.x = tilePositionInMap.x + tilePositionInMap.width;
 	    cursorLocation.y = tilePositionInMap.y + tilePositionInMap.height;
@@ -493,7 +494,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    TileOnMap selectedTileOnMap = map.getTileSelection().getTile(0);
 	    
 	    Rectangle selectedTilePosition = selectedTileOnMap.getPositionInMap();
-	    Tile originalTile = selectedTileOnMap.getTile();
+	    Tile originalTile = map.getTileset().getTile(selectedTileOnMap.getTileIndex());
 	    int width = originalTile.getWidth();
 	    int height = originalTile.getHeight();
 	    

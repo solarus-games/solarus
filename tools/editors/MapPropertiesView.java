@@ -289,6 +289,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 		catch (IOException e) {
 		    System.out.println("Cannot load the tileset '" + tilesetName + ": " + e.getMessage());		
 		}
+		catch (TilesetException e) {
+		    System.out.println("Cannot change the tileset: " + e.getMessage());
+		}
 	    }
 	}
     }

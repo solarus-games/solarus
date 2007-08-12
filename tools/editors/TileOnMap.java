@@ -355,7 +355,8 @@ public class TileOnMap extends Observable implements Serializable {
 	    for (int k = 0; k < repeatY; k++) {
 		dy1 = dy2;
 		dy2 += height;
-		g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgColor, tileset);
+// 		g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+ 		g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgColor, tileset);
 	    }
 	}
 

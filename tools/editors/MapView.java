@@ -509,8 +509,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    yB -= yB % 8;
 	    
 	    // snap the coordinates to the size of the tile
-	    xB = xB - (Math.abs(xB - xA)) % width;
-	    yB = yB - (Math.abs(yB - yA)) % height;
+	    xB = xB - (xB - xA) % width;
+	    yB = yB - (yB - yA) % height;
 	    
 	    if (xB != cursorLocation.x || yB != cursorLocation.y) {
 		

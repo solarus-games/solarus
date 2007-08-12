@@ -1,0 +1,4 @@
+pour compiler sous windows :
+- Makedefs personnalisé
+- constantes mathématiques
+- problème de makefile

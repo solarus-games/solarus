@@ -29,9 +29,10 @@ enum Obstacle {
  * Layer of a tile or an active object.
  */
 enum Layer {
-  LAYER_BELOW,           // the entity is always below Link (floor, walls...)
-  LAYER_INTERMEDIAITE,   // Link can be below or above the entity (platforms)
-  LAYER_ABOVE,           // the entity is always above Link (trees, top of the doors...)
+  LAYER_BELOW,           // the entity is always below Link (floor, walls, chests,
+                         // enemies and 99% of the tiles and active objects)
+  LAYER_INTERMEDIATE,    // Link can be below or above the entity (platforms or objects on a plaform)
+  LAYER_ABOVE,           // the entity is always above Link (trees, top of doors...)
 };
 
 /**

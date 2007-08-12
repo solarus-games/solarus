@@ -1,4 +1,15 @@
-pour compiler sous windows :
-- Makedefs personnalisé
-- constantes mathématiques
-- problème de makefile
+
+
+- Rendre le projet accessibles pour d'autres développeurs, sous Linux dans un premier temps et sous Windows ensuite
+	- Pour compiler sous Windows :
+		- Makedefs personnalisé
+		- constantes mathématiques
+		- problème de makefile
+
+- Compléter l'éditeur de maps et de tilesets :
+	- Ranger les tiles d'un tileset dans une Hashtable et non un Vector, pour qu'un tile supprimé ne décale pas les indices de tous les tiles suivants
+	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
+	- Ajouter une barre d'outils avec des cases à cocher pour afficher ou non les obstacles et chaque couche
+	- Trouver un moyen de mixer l'ajout de tiles au clic droit et le redimensionnement immédiat
+	- Compléter le tileset pour ajouter toutes les portes
+	- Générer le code

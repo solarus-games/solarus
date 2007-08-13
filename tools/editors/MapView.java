@@ -378,7 +378,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	// make it selected if required
 	if (selectTileCreated) {
 	    map.getTileSelection().select(tile);
-	    map.getTileset().setSelectedTileIndex(-1);
+	    map.getTileset().unSelectTile();
 	    startResizingTile(); // let the user resize the tile until the mouse is released
 	}
 	else {

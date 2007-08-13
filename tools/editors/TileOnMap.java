@@ -24,7 +24,6 @@ public class TileOnMap extends Observable implements Serializable {
 
     /**
      * Index of the tile in the tileset.
-     * It is used only to generate the C++ code.
      */
     private final int tileIndex;
 
@@ -118,8 +117,8 @@ public class TileOnMap extends Observable implements Serializable {
 		
 		this.tileset = tileset;
 	    }
-	    catch (ArrayIndexOutOfBoundsException e) {
-		throw new TilesetException("Unable to apply the tileset because the tile #" + tileIndex + "doesn't exist in this tileset.");
+	    catch (NoSuchElementException e) {
+		throw new TilesetException("Unable to apply the tileset because the tile #" + tileIndex + " doesn't exist in this tileset.");
 	    }
 	}
     }

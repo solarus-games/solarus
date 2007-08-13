@@ -8,6 +8,10 @@ import java.util.*;
 
 /**
  * This component shows a list of tiles and allows the user to select them.
+ * The list is displayed as a JList with an icon for each tile.
+ * The indexes of the tiles are different from the indexes of the list items,
+ * because in a tileset, when a tile is removed, the other tiles keep the same
+ * indexes.
  */
 public class TilesView extends JPanel {
 
@@ -120,31 +124,40 @@ public class TilesView extends JPanel {
     }
 
     /**
-     * Returns the component's size.
-     */
-//     public Dimension getPreferredSize() {
-// 	return new Dimension(400, 600);
-//     }
-
-    /**
      * Sets the observed tileset.
      */
     public void setTileset(Tileset tileset) {
-	this.tileset = tileset;
+	if (tileset != this.tileset) {
 
-	tileset.addObserver(tileListModel);
+	    if (this.tileset != null) {
+		tileset.deleteObserver(tileListModel);
+	    }
+
+	    this.tileset = tileset;
+
+	    tileset.addObserver(tileListModel);
+	    
+	    loadIcons();
+
+	    tileListModel.update(tileset, null);
+	}
+    }
+
+    /**
+     * Loads the icons for the tile list.
+     */
+    private void loadIcons() {
 
 	tileIcons.clear();
-	for (int i = 0; i < tileset.getNbTiles(); i++) {
-	    tileIcons.add(new TileIcon(tileset.getTile(i), tileset));
-	}
 
-	tileListModel.update(tileset, null);
+	for (Tile tile: tileset.getTiles()) {
+	    tileIcons.add(new TileIcon(tile, tileset));
+	}
     }
 
     /**
      * List selection listener associated to the tile table.
-     * When the user selects a row, the corresponding tileset becomes selected in the image.
+     * When the user selects a row, the corresponding tile becomes selected in the tileset.
      */
     private class TileListSelectionListener implements ListSelectionListener {
 
@@ -152,7 +165,17 @@ public class TilesView extends JPanel {
 	 * This function is called when the selection is changed.
 	 */
 	public void valueChanged(ListSelectionEvent e) {
-	    tileset.setSelectedTileIndex(tileList.getSelectedIndex());
+
+	    // get the rank of the tile just selected in the list (0 to nbTiles)
+	    int selectedTileRank = tileList.getSelectedIndex();
+
+	    // select this tile in the tileset
+	    if (selectedTileRank != -1) {
+		tileset.setSelectedTileIndex(tileset.tileRankToTileIndex(selectedTileRank));
+	    }
+	    else {
+		tileset.unSelectTile();
+	    }
 	}
     }
     
@@ -177,14 +200,9 @@ public class TilesView extends JPanel {
 	/**
 	 * Returns the a component with a 16*16 image of the specified tile. 
 	 */
-	public Object getElementAt(int index) {
-	    Tile tile = null;
+	public Object getElementAt(int rank) {
 
-	    if (tileset != null) {
-		tile = tileset.getTile(index);
-	    }
-	    
-	    return tile;
+	    return tileset.getTile(tileset.tileRankToTileIndex(rank));
 	}
 
 	/**
@@ -200,40 +218,48 @@ public class TilesView extends JPanel {
 	    // update the tileset name
 	    labelTilesetName.setText("Tileset name: " + tileset.getName());
 
-	    // was a tile just removed?
-	    if (params instanceof Integer) {
-		int deletedTileIndex = ((Integer) params).intValue();
-		tileIcons.remove(deletedTileIndex);		
+	    // reload the icons if a tile was added or removed
+	    if (params instanceof Integer || params instanceof Tile) {
+		loadIcons();
 	    }
 
-	    // was a tile just created?
-	    else if (params instanceof Tile) {
-		Tile tileAdded = (Tile) params;
-		tileIcons.add(new TileIcon(tileAdded, tileset));		
-	    }
+// 	    // was a tile just removed?
+// 	    if (params instanceof Integer) {
+// 		int deletedTileIndex = ((Integer) params).intValue();
+// 		tileIcons.remove(deletedTileIndex);		
+// 	    }
+
+// 	    // was a tile just created?
+// 	    else if (params instanceof Tile) {
+// 		Tile tileAdded = (Tile) params;
+// 		tileIcons.add(new TileIcon(tileAdded, tileset));		
+// 	    }
 
 	    // update the enabled state of the buttons
 	    int tilesetSelectedIndex = tileset.getSelectedTileIndex();
-	    int listSelectedIndex = tileList.getSelectedIndex();
+	    int listSelectedRank = tileList.getSelectedIndex();
 
 	    buttonCreate.setEnabled(false);
 	    buttonDelete.setEnabled(false);
 
-	    if (tilesetSelectedIndex == tileset.getNbTiles()) {
+	    if (tileset.isSelectingNewTile()) {
 		// a new tile is selected: if it is valid, we authorize the user to create it
 		buttonCreate.setEnabled(!tileset.isNewTileAreaOverlapping());
 	    }
-	    else if (tilesetSelectedIndex >= 0) {
+	    else if (tileset.getSelectedTile() != null) {
 		// an existing tile is selected, so the user can remove it
 		buttonDelete.setEnabled(true);
-		tileList.setSelectedIndex(tilesetSelectedIndex);
-		tileList.ensureIndexIsVisible(tilesetSelectedIndex);
+
+		// make this tile selected in the list
+		int listRank = tileset.tileIndexToTileRank(tilesetSelectedIndex);
+		if (listRank != listSelectedRank) {
+		    tileList.setSelectedIndex(listRank);
+		    tileList.ensureIndexIsVisible(listRank);
+		}
 	    }
 	    else {
-		// no tile is selected
-		if (listSelectedIndex != -1) {
-		    tileList.removeSelectionInterval(listSelectedIndex, listSelectedIndex);
-		}
+		// no tile is selected anymore
+		tileList.removeSelectionInterval(listSelectedRank, listSelectedRank);
 	    }
 	    // redraw the table
 	    fireContentsChanged(this, 0, tileset.getNbTiles() - 1);

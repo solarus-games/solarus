@@ -82,6 +82,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	    item.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 			tileset.addTile(Tile.OBSTACLE_NONE);
+			
 		    }
 		});
 	    popupMenuCreate.add(item);
@@ -94,7 +95,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	    popupMenuCreate.add(item);
 	    itemCancelCreate.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-			tileset.setSelectedTileIndex(-1);
+			tileset.unSelectTile();
 		    }
 		});
 	    popupMenuCreate.addSeparator();
@@ -171,9 +172,6 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      * Sets the observed tileset.
      */
     public void setTileset(Tileset tileset) {
-	//	System.out.println("setTileset, avant : "
-	//		   + ((this.tileset != null) ? this.tileset.getName() : null) + ", après : "
-	//		   + ((tileset != null) ? tileset.getName() : null));
 
 	if (tileset == null) {
 
@@ -334,7 +332,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	}
 	else if (tileset != null) {
 
-	    // a tileset is open but the image doesn't exist: display an error message
+	    // a tileset is open but the image doesn't exist: draw an error message
 	    g.drawString("Unable to load image '" + tileset.getImagePath() + "'.", 10, 20);
 	}
     }
@@ -361,18 +359,11 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 		
 		// search the tile clicked
 		boolean found = false;
-		int clickedTileIndex = -1;
-		for (int i = 0; i < tileset.getNbTiles() && !found; i++) {
-			
-		    Rectangle tileRectangle = tileset.getTile(i).getPositionInTileset();
-		    if (tileRectangle.contains(x, y)) {
-			found = true;
-			clickedTileIndex = i;
-		    }
-		}
 		
+		int clickedTileIndex = tileset.getIndexOfTileAt(x, y);
+
 		// a tile was just clicked
-		if (clickedTileIndex != -1) {
+		if (clickedTileIndex > 0) {
 
 		    // select the tile
 		    tileset.setSelectedTileIndex(clickedTileIndex);
@@ -410,12 +401,12 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 		if (selectedTile != null && !selectedTile.getPositionInTileset().contains(x,y)) {
 		    // an existing tile was selected and the user pressed the mouse button outside: unselect it
-		    tileset.setSelectedTileIndex(-1);
+		    tileset.unSelectTile();
 		}
 
 		else if (tileset.isSelectingNewTile()) {
 		    // a new tile was selected: unselect it
-		    tileset.setSelectedTileIndex(-1);
+		    tileset.unSelectTile();
 		}
 
 		// begin a selection
@@ -442,7 +433,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 		// keep the new selected tile only if it really exists
 		Rectangle newTileArea = tileset.getNewTileArea();
-		if (newTileArea != null
+		if (tileset.isSelectingNewTile()
+		    && newTileArea != null
 		    && newTileArea.width > 0
 		    && newTileArea.height > 0
 		    && !tileset.isNewTileAreaOverlapping()) {
@@ -456,7 +448,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 		    // the area doesn't exist or is not valid: we cancel the selection
 		    selectionStartPoint = null;
 		    selectionCurrentPoint = null;
-		    tileset.setSelectedTileIndex(-1);
+		    tileset.unSelectTile();
 		    newTileArea = null;
 		}
 	    }
@@ -511,7 +503,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 			newTileArea.height = selectionStartPoint.y - selectionCurrentPoint.y;
 		    }
 		    
-		    tileset.setSelectedTileIndex(tileset.getNbTiles());
+		    tileset.startSelectingNewTile();
 		    tileset.setNewTileArea(newTileArea);
 		}
 	    }

@@ -66,6 +66,12 @@ public class Map extends Observable implements Serializable {
     private transient boolean isSaved;
 
     /**
+     * True if some tiles could not be found in the tileset
+     * when the tileset was loaded.
+     */
+    private transient boolean badTiles;
+
+    /**
      * Creates a new map.
      * @param name name of the map to create
      */
@@ -160,11 +166,12 @@ public class Map extends Observable implements Serializable {
      * Changes the tileset of the map.
      * @param tileset name of the new tileset
      * @throws IOException if this tileset file cannot be loaded
-     * @throws TilesetException if a tile on the map refers to a tile in the
-     * tileset that doesn't exist, or if a tile on the map has not the same
-     * properties
+     * @return true if the tileset was loaded successfuly, false if some tiles could
+     * not be loaded in this tileset
      */
-    public void setTileset(String tilesetName) throws IOException, TilesetException {
+    public boolean setTileset(String tilesetName) throws IOException {
+
+	badTiles = false;
 
 	// if the tileset is removed
 	if (tilesetName == null) {
@@ -185,8 +192,18 @@ public class Map extends Observable implements Serializable {
 	    this.tileset = Tileset.load(new File(path));
 
 	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
-		for (TileOnMap tile: allTiles[layer]) {
-		    tile.setTileset(tileset);
+		for (int i = 0; i < allTiles[layer].size(); i++) {
+
+		    try {
+			TileOnMap tile = allTiles[layer].get(i);
+			tile.setTileset(tileset);
+		    }
+		    catch (TilesetException ex) {
+			// the tile is not valid anymore, we should remove it from the map
+			allTiles[layer].remove(i);
+			i--;
+			badTiles = true;
+		    }
 		}
 	    }
 
@@ -195,6 +212,8 @@ public class Map extends Observable implements Serializable {
 	    setChanged();
 	    notifyObservers(tileset);
 	}
+
+	return !badTiles;
     }
 
     /**
@@ -492,13 +511,22 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
+     * Returns whether or not when the tileset was loaded, some tiles of the map refered
+     * to non existent tiles in the tileset. These bad tiles were removed.
+     * @return true if there was bad tiles when the tiles was loaded, false if all tiles
+     * were loaded successfuly.
+     */
+    public boolean badTiles() {
+	return badTiles;
+    }
+
+    /**
      * Loads a map from the map file.
      * @param mapFile the file of the map
      * @return the map loaded
-     * @throws TilesetException if a tile on the map refers to a tile in the
-     * tileset that doesn't exist
+     * @throws IOException if the map file could not be read
      */
-    public static Map load(File mapFile) throws IOException, TilesetException {
+    public static Map load(File mapFile) throws IOException {
 
  	// open the map file
 	ObjectInputStream in = new ObjectInputStream(new FileInputStream(mapFile));
@@ -518,7 +546,9 @@ public class Map extends Observable implements Serializable {
 
 	in.close();
 
-	map.setSaved(true);
+	if (!map.badTiles()) {
+	    map.setSaved(true);
+	}
 
 	return map;
     }

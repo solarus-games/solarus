@@ -18,6 +18,7 @@ public class MapEditorWindow extends JFrame {
     // components
     private MapPropertiesView mapPropertiesView;
     private TilePicker tilePicker;
+    private MapViewRenderingOptionsView mapViewRenderingOptionsView;
     private MapView mapView;
 
     /**
@@ -64,7 +65,13 @@ public class MapEditorWindow extends JFrame {
 	mapView = new MapView();
 	JScrollPane mapViewScroller = new JScrollPane(mapView);
 
-	JSplitPane rootPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, mapViewScroller);
+	mapViewRenderingOptionsView = new MapViewRenderingOptionsView(mapView.getRenderingOptions());
+
+	JPanel rightPanel = new JPanel(new BorderLayout());
+	rightPanel.add(mapViewRenderingOptionsView, BorderLayout.NORTH);
+	rightPanel.add(mapViewScroller, BorderLayout.CENTER);
+
+	JSplitPane rootPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
 	rootPanel.setContinuousLayout(true); 
 
 	setContentPane(rootPanel);
@@ -316,15 +323,18 @@ public class MapEditorWindow extends JFrame {
 		    mapFile = fileChooser.getSelectedFile();
 		    Map map = Map.load(mapFile);
 		    // map.reloadImage();
+
+		    if (map.badTiles()) {
+			JOptionPane.showMessageDialog(MapEditorWindow.this,
+						      "Some tiles of the map have been removed because they don't exist in the tileset.",
+						      "Warning",
+						      JOptionPane.WARNING_MESSAGE);
+		    }
 		    setMap(map);
-		    map.setSaved(true);
 		}
 	    }
 	    catch (IOException e) {
 		errorDialog("Could not open the map file: " + e.getMessage());
-	    }
-	    catch (TilesetException e) {
-		errorDialog("Could not load the map: " + e.getMessage());
 	    }
 	}
     }

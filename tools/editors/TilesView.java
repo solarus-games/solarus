@@ -279,6 +279,11 @@ public class TilesView extends JPanel {
 	 */
 	public Component getListCellRendererComponent(JList list, Object value, int index,
 						      boolean isSelected, boolean cellHasFocus) {
+	    if (index >= tileIcons.size()) {
+		// the icon doesn't exist yet
+		loadIcons();
+	    }
+
 	    return tileIcons.get(index);
 	}
     }

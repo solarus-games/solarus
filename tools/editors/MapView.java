@@ -84,6 +84,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private MapViewPopupMenu popupMenu;
 
     /**
+     * The display options (what layers are displayed, etc.).
+     */
+    private MapViewRenderingOptions renderingOptions;
+
+    /**
      * Constructor.
      */
     public MapView() {
@@ -92,6 +97,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	this.cursorLocation = new Point();
 	this.fixedLocation = new Rectangle();
 	this.initialSelection = new TileOnMapList();
+	this.renderingOptions = new MapViewRenderingOptions(this);
 
 	// create the popup menu for the selected tiles
 	// items: resize, layer, destroy
@@ -126,6 +132,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	popupMenu.setMap(map);
 
 	update(map, null);
+    }
+
+    /**
+     * Returns the rendering options of the map view, i.e. how the tiles are displayed.
+     * @return the rendering options
+     */
+    public MapViewRenderingOptions getRenderingOptions() {
+	return renderingOptions;
     }
 
     /**
@@ -246,8 +260,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	}
 
 	// background color
-	g.setColor(map.getBackgroundColor());
-	g.fillRect(0, 0, map.getWidth() * 2, map.getHeight() * 2);
+	if (renderingOptions.getShowLayer(Tile.LAYER_BELOW)) {
+	    g.setColor(map.getBackgroundColor());
+	    g.fillRect(0, 0, map.getWidth() * 2, map.getHeight() * 2);
+	}
 
 	Tileset tileset = map.getTileset();
 	if (tileset != null) {
@@ -260,25 +276,33 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// the tiles
 		for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 
-		    TileOnMapList tiles = map.getTiles(layer);
-		    for (TileOnMap tile: tiles) {
+		    // nothing to do if this layer is not shown
+		    if (renderingOptions.getShowLayer(layer)) {
 
-			// draw the tile
-			tile.paint(g, 2);
-			
-			// draw the selection rectangle if the tile is selected
-			if (map.getTileSelection().isSelected(tile)) {
+			TileOnMapList tiles = map.getTiles(layer);
+			for (TileOnMap tile: tiles) {
 			    
-			    Rectangle positionInMap = tile.getPositionInMap();
+			    // should we draw this tile?
+			    if (renderingOptions.isTileShown(tileset, tile)) {
 			    
-			    x = positionInMap.x * 2;
-			    y = positionInMap.y * 2;
-			    width = positionInMap.width * 2 - 1;
-			    height = positionInMap.height * 2 - 1;
-			    
-			    g.setColor(Color.GREEN);
-			    g.drawRect(x, y, width, height);
-			    g.drawRect(x + 1, y + 1, width - 2, height - 2);
+				// draw the tile
+				tile.paint(g, 2, renderingOptions.getShowTransparency());
+				
+				// draw the selection rectangle if the tile is selected
+				if (map.getTileSelection().isSelected(tile)) {
+				    
+				    Rectangle positionInMap = tile.getPositionInMap();
+				    
+				    x = positionInMap.x * 2;
+				    y = positionInMap.y * 2;
+				    width = positionInMap.width * 2 - 1;
+				    height = positionInMap.height * 2 - 1;
+				    
+				    g.setColor(Color.GREEN);
+				    g.drawRect(x, y, width, height);
+				    g.drawRect(x + 1, y + 1, width - 2, height - 2);
+				}
+			    }
 			}
 
 		    } // for
@@ -437,11 +461,19 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    MapTileSelection tileSelection = map.getTileSelection();
 	    tileSelection.unSelectAll();
 	    
-	    // select the rectangle's content
-	    tileSelection.selectRectangle(fixedLocation.x, fixedLocation.y,
-					  cursorLocation.x, cursorLocation.y);
+	    // get the rectangle's content
+	    TileOnMapList tilesInRectangle = map.getTilesInRectangle(fixedLocation.x, fixedLocation.y,
+								     cursorLocation.x, cursorLocation.y);
 
-	    // restore the initial selection (for a multiple selection)
+	    // select the tiles in the rectangle, except the hidden ones
+	    Tileset tileset = map.getTileset();
+	    for (TileOnMap tile: tilesInRectangle) {
+		if (renderingOptions.isTileShown(tileset, tile)) {
+		    tileSelection.select(tile);
+		}
+	    }
+
+	    // also restore the initial selection (for a multiple selection)
 	    for (TileOnMap tile: initialSelection) {
 		tileSelection.select(tile);
 	    }

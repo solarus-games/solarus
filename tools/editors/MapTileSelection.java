@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Represents the tiles selected in the map editor.
  */
-public class MapTileSelection extends Observable {
+public class MapTileSelection extends Observable implements Iterable {
 
     /**
      * The selected tiles.
@@ -41,6 +41,14 @@ public class MapTileSelection extends Observable {
      */
     public TileOnMapList getTiles() {
 	return tiles;
+    }
+
+    /**
+     * Returns an iterator over the selected tiles.
+     * @return an iterator over the selected tiles.
+     */
+    public Iterator iterator() {
+	return tiles.iterator();
     }
 
     /**
@@ -168,21 +176,6 @@ public class MapTileSelection extends Observable {
 
 	select(tile);
 	return true;
-    }
-
-    /**
-     * Selects all tiles in a rectangle defined by two points.
-     * The other tiles selected are unselected.
-     * @param x1 x coordinate of the first point
-     * @param y1 y coordinate of the first point
-     * @param x2 x coordinate of the second point
-     * @param y2 y coordinate of the second point
-     */
-    public void selectRectangle(int x1, int y1, int x2, int y2) {
-
-	this.tiles = map.getTilesInRectangle(x1, y1, x2, y2);
-	setChanged();
-	notifyObservers();
     }
 
     /**

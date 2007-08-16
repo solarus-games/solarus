@@ -1,5 +1,5 @@
-#ifndef ZSDX_TILESETS_HOUSE_H
-#define ZSDX_TILESETS_HOUSE_H
+#ifndef ZSDX_TILESET_HOUSE_H
+#define ZSDX_TILESET_HOUSE_H
 
 #include "Tileset.h"
 

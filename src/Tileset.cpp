@@ -19,7 +19,7 @@ using namespace std;
  */
 Tileset::Tileset(void):
 nb_tiles(0) {
-
+  
 }
 
 /**
@@ -27,8 +27,18 @@ nb_tiles(0) {
  */
 Tileset::~Tileset(void) {
   if (is_loaded()) {
-    unload(); // destory the tiles
+    unload(); // destroy the tiles
   }
+}
+
+/**
+ * Creates a new tile in the tileset.
+ * This function is called by load().
+ * @param tile the tile to add
+ * @param id id of this tile (1 to 1024)
+ */
+void Tileset::create_tile(Tile *tile, int id) {
+  tiles[id - 1] = tile;
 }
 
 /**

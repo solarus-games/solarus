@@ -20,7 +20,7 @@ objects =	ZSDX.o				\
 		LinkAnimations.o		\
 		Tileset.o			\
 		tilesets/TilesetHouse.o		\
-		maps/LinkHouse.o		\
+		maps/MapLinkHouse.o		\
 		Music.o				
 
 headers = 	$(INCLUDE_DIR)/ZSDX.h				\
@@ -45,7 +45,7 @@ headers = 	$(INCLUDE_DIR)/ZSDX.h				\
 		$(INCLUDE_DIR)/LinkAnimations.h			\
 		$(INCLUDE_DIR)/Tileset.h			\
 		$(INCLUDE_DIR)/tilesets/TilesetHouse.h		\
-		$(INCLUDE_DIR)/maps/LinkHouse.h			\
+		$(INCLUDE_DIR)/maps/MapLinkHouse.h			\
 		$(INCLUDE_DIR)/Music.h				
 
 #executables = $(BIN_DIR)/tileset_editor

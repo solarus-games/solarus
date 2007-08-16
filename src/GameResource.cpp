@@ -2,7 +2,7 @@
 #include "GameResource.h"
 #include "Link.h"
 #include "tilesets/TilesetHouse.h"
-#include "maps/LinkHouse.h"
+#include "maps/MapLinkHouse.h"
 
 /**
  * Creates all resources.
@@ -33,7 +33,7 @@ void GameResource::create_resources(void) {
   musics[MUSIC_SOLDIERS] = new Music("soldiers.it");
 
   // maps
-  maps[MAP_LINK_HOUSE] = new MapLinkHouse();
+#include "MapsCreation.inc.cpp"
 }
 
 /**

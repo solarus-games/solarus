@@ -58,10 +58,10 @@ public class TilesetCodeGenerator {
 	generateSourceFile();
 
 	// update include/TilesetList.inc.h
-	updateTilesetsEnumFile();
+	updateEnumFile();
 
 	// update src/TilesetsCreation.inc.cpp
-	updateTilesetsCreationFile();
+	updateCreationFile();
     }
 
     /**
@@ -75,8 +75,8 @@ public class TilesetCodeGenerator {
 
 	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 	
-	out.println("#ifndef ZSDX_TILESETS_" + upperCaseName + "_H");
-	out.println("#define ZSDX_TILESETS_" + upperCaseName + "_H");
+	out.println("#ifndef ZSDX_TILESET_" + upperCaseName + "_H");
+	out.println("#define ZSDX_TILESET_" + upperCaseName + "_H");
 	out.println();
 	out.println("#include \"Tileset.h\"");
 	out.println();
@@ -126,18 +126,19 @@ public class TilesetCodeGenerator {
 
 	// create the local variable positions_in_tileset[] only if there is at least one animated tile
 	boolean found = false;
-	for (int i = 0; i < tileset.getNbTiles() && !found; i++) {
-	    if (tileset.getTile(i).isAnimated()) {
+	for (Tile tile: tileset.getTiles()) {
+	    if (tile.isAnimated()) {
 		out.println("  SDL_Rect positions_in_tileset[3]; // for animated tiles");
-		found = true;
+		break;
 	    }
 	}
 
 	out.println();
 
 	// create each tile
-	for (int i = 0; i < tileset.getNbTiles(); i++) {
-	    Tile tile = tileset.getTile(i);
+	for (int id: tileset.getTileIds()) {
+
+	    Tile tile = tileset.getTile(id);
 	    Rectangle positionInTileset = tile.getPositionInTileset();
 	    int x = positionInTileset.x;
 	    int y = positionInTileset.y;
@@ -146,15 +147,15 @@ public class TilesetCodeGenerator {
 
 	    String obstacleConstant = obstacleConstants[tile.getObstacle()];
 
-	    out.println("  // tile " + i);
+	    out.println("  // tile " + id);
 	    if (!tile.isAnimated()) {
 		// simple tile
 		out.println("  position_in_tileset.x = " + x + ";");
 		out.println("  position_in_tileset.y = " + y + ";");
 		out.println("  position_in_tileset.w = " + width + ";");
 		out.println("  position_in_tileset.h = " + height + ";");
-		out.println("  tiles[nb_tiles++] = new SimpleTile(position_in_tileset, " + obstacleConstant + ");");
-		
+		out.println("  create_tile(new SimpleTile(position_in_tileset, " + obstacleConstant + "), " + id + ");");
+		out.println();
 	    }
 	    else {
 		// animated tile
@@ -194,7 +195,7 @@ public class TilesetCodeGenerator {
 		out.println("  positions_in_tileset[2].w = " + width + ";");
 		out.println("  positions_in_tileset[2].h = " + height + ";");
 		out.println();
-		out.println("  tiles[nb_tiles++] = new AnimatedTile(positions_in_tileset, " + animationSequenceConstant + ", " + obstacleConstant + ");");
+		out.println("  create_tile(new AnimatedTile(positions_in_tileset, " + animationSequenceConstant + ", " + obstacleConstant + "), 1);");
 
 	    }
 	}
@@ -204,10 +205,10 @@ public class TilesetCodeGenerator {
     }
 
     /**
-     * Updates (if needed) the file include/enum_tilesets.inc.h.
-     * This file contains the declaration of the tilesets symbolic constants.
+     * Updates (if needed) the file include/TilesetList.inc.h.
+     * This file contains the declaration of the tileset symbolic constants.
      */
-    private void updateTilesetsEnumFile() throws IOException {
+    private void updateEnumFile() throws IOException {
 	String fileName = zsdxRootPath + File.separator + "include" +
 	    File.separator + "TilesetList.inc.h";
 	
@@ -218,10 +219,10 @@ public class TilesetCodeGenerator {
     }
     
     /** 
-     * Updates (if needed) the file src/creation_tilesets.inc.cpp.
-     * This file contains the creation of each tileset objects.
+     * Updates (if needed) the file src/TilesetsCreation.inc.cpp.
+     * This file contains the creation of each tileset object.
      */
-    private void updateTilesetsCreationFile() throws IOException {
+    private void updateCreationFile() throws IOException {
 	String fileName = zsdxRootPath + File.separator + "src" +
 	    File.separator + "TilesetsCreation.inc.cpp";
 	

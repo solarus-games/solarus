@@ -35,9 +35,9 @@ public class Tile extends Observable implements Serializable {
 
     // Constants to identify the layer
 
-    public static final int LAYER_BELOW = 0;
+    public static final int LAYER_LOW = 0;
     public static final int LAYER_INTERMEDIATE = 1;
-    public static final int LAYER_ABOVE = 2;
+    public static final int LAYER_HIGH = 2;
     public static final int LAYER_NB = 3;
 
     /**
@@ -134,8 +134,8 @@ public class Tile extends Observable implements Serializable {
 
     /**
      * Returns the default layer of the tile.
-     * @return the default layer of the tile: Tile.LAYER_BELOW (most of the tiles),
-     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE.
+     * @return the default layer of the tile: Tile.LAYER_LOW (most of the tiles),
+     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH.
      */
     public int getDefaultLayer() {
 	return defaultLayer;
@@ -143,8 +143,8 @@ public class Tile extends Observable implements Serializable {
 
     /**
      * Changes the default layer of the tile.
-     * @param defaultLayer the default layer of the tile: Tile.LAYER_BELOW (most of the tiles),
-     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE.
+     * @param defaultLayer the default layer of the tile: Tile.LAYER_LOW (most of the tiles),
+     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH.
      */
     public void setDefaultLayer(int defaultLayer) {
 	if (defaultLayer != this.defaultLayer) {

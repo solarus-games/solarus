@@ -20,7 +20,7 @@ class Tileset {
  protected:
   /**
    * Tiles of the tileset.
-   * A tileset cannot have more than 1024 tiles.
+   * The maximum id is 1024.
    */
   Tile *tiles[1024];
   
@@ -45,6 +45,14 @@ class Tileset {
    * @param file_name name of the tileset image file
    */
   void load_tileset_image(const char *file_name);
+
+  /**
+   * Creates a new tile in the tileset.
+   * This function is called by load().
+   * @param tile the tile to add
+   * @param id id of this tile (1 to 1024)
+   */
+  void create_tile(Tile *tile, int id);
 
  public:
 
@@ -81,10 +89,10 @@ class Tileset {
 
   /**
    * Returns a tile from this tileset.
-   * @param index index of the tile to get
-   * @return the tile at this index
+   * @param id id of the tile to get
+   * @return the tile with this id
    */
-  inline Tile *get_tile(int index) { return tiles[index]; }
+  inline Tile *get_tile(int id) { return tiles[id - 1]; }
 };
 
 #endif

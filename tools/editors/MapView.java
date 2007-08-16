@@ -260,7 +260,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	}
 
 	// background color
-	if (renderingOptions.getShowLayer(Tile.LAYER_BELOW)) {
+	if (renderingOptions.getShowLayer(Tile.LAYER_LOW)) {
 	    g.setColor(map.getBackgroundColor());
 	    g.fillRect(0, 0, map.getWidth() * 2, map.getHeight() * 2);
 	}
@@ -393,7 +393,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	// create the tile
 	Tileset tileset = map.getTileset();
-	TileOnMap tile = new TileOnMap(tileset, tileset.getSelectedTileIndex(),
+	TileOnMap tile = new TileOnMap(tileset, tileset.getSelectedTileId(),
 				       cursorLocation.x, cursorLocation.y);
 
 	// add it to the map
@@ -492,7 +492,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	if (tileSelection.getNbTilesSelected() == 1) {
 	    TileOnMap tileOnMap = tileSelection.getTile(0);
 	    Rectangle tilePositionInMap = tileOnMap.getPositionInMap();
-	    Tile originalTile = map.getTileset().getTile(tileOnMap.getTileIndex());
+	    Tile originalTile = map.getTileset().getTile(tileOnMap.getTileId());
 	    
 	    fixedLocation.x = tilePositionInMap.x;
 	    fixedLocation.y = tilePositionInMap.y;
@@ -526,7 +526,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    TileOnMap selectedTileOnMap = map.getTileSelection().getTile(0);
 	    
 	    Rectangle selectedTilePosition = selectedTileOnMap.getPositionInMap();
-	    Tile originalTile = map.getTileset().getTile(selectedTileOnMap.getTileIndex());
+	    Tile originalTile = map.getTileset().getTile(selectedTileOnMap.getTileId());
 	    int width = originalTile.getWidth();
 	    int height = originalTile.getHeight();
 	    

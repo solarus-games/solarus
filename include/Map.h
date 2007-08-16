@@ -8,32 +8,12 @@
 using namespace std;
 #include <iostream>
 #include <vector>
+#include "Types.h"
 #include "Color.h"
 #include "MapEntity.h"
 #include "Tileset.h"
 #include "Music.h"
-
-/**
- * Obstacle property for the tiles or the active objects.
- */
-enum Obstacle {
-  OBSTACLE_NONE,         // the entity is not an obstacle
-  OBSTACLE,              // the entity is entirely an obstacle
-  OBSTACLE_TOP_RIGHT,    // the upper-right half of the entity is an obstacle
-  OBSTACLE_TOP_LEFT,     // the upper-left half of the entity is an obstacle
-  OBSTACLE_BOTTOM_LEFT,  // the lower-left half of the entity is an obstacle
-  OBSTACLE_BOTTOM_RIGHT, // the lower-right half of the entity is an obstacle
-};
-
-/**
- * Layer of a tile or an active object.
- */
-enum Layer {
-  LAYER_BELOW,           // the entity is always below Link (floor, walls, chests,
-                         // enemies and 99% of the tiles and active objects)
-  LAYER_INTERMEDIATE,    // Link can be below or above the entity (platforms or objects on a plaform)
-  LAYER_ABOVE,           // the entity is always above Link (trees, top of doors...)
-};
+#include "TileOnMap.h"
 
 /**
  * Abstract class for the maps
@@ -102,9 +82,9 @@ class Map {
  private:
   
   /**
-   * All entities of the map (except Link).
+   * All tiles of the map (a vector for each layer).
    */
-  vector<MapEntity*> *entities;
+  vector<TileOnMap*> *tiles[LAYER_NB];
   
   /**
    * Number of elements in the array obstacle_tiles.
@@ -125,7 +105,7 @@ class Map {
   void update_sprites(void);
   
   /**
-   * Displays the map with all its entities except Link on the screen.
+   * Displays the map with all its entities on the screen.
    * @param surface the map surface
    */
   void display(SDL_Surface *surface);
@@ -136,7 +116,7 @@ class Map {
    * Adds an entity onto the map.
    * @param entity the entity to add
    */
-  inline void add_entity(MapEntity *entity) { entities->push_back(entity); }
+  //  inline void add_entity(MapEntity *entity) { entities->push_back(entity); }
 
   /**
    * Creates a tile on the map.

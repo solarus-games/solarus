@@ -6,6 +6,7 @@
 #define ZSDX_MAP_ENTITY_H
 
 #include <SDL/SDL.h>
+#include "Types.h"
 
 class Map;
 
@@ -17,15 +18,23 @@ class Map;
 class MapEntity {
 
  protected:
+
   /**
    * Position on the map.
    */
   SDL_Rect position_in_map;
 
   /**
+   * Layer of the tile: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
+   * The layer is constant for the tiles and can change for Link and the enemies.
+   */
+  Layer layer;
+
+  /**
    * Constructor.
    */
-  inline MapEntity(void) { };
+  inline MapEntity(Layer layer):
+    layer(layer) { };
 
  public:
 
@@ -47,16 +56,22 @@ class MapEntity {
   inline int get_y(void) { return position_in_map.y; }
 
   /**
-   * Returns the width of the entity
+   * Returns the width of the entity.
    * @return the width of the entity
    */
   inline int get_width(void) { return position_in_map.w; }
 
   /**
-   * Returns the height of the entity
+   * Returns the height of the entity.
    * @return the height of the entity
    */
   inline int get_height(void) { return position_in_map.h; }
+
+  /**
+   * Returns the layer of the entity on the map.
+   * @return the layer of the entity on the map.
+   */
+  inline Layer get_layer() { return layer; }
 
   /**
    * Displays the entity on the map.

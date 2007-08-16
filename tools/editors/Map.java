@@ -242,7 +242,7 @@ public class Map extends Observable implements Serializable {
 
     /**
      * Returns the tiles of the map on a given layer.
-     * @param layer the layer: Tile.LAYER_BELOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE
+     * @param layer the layer: Tile.LAYER_LOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH
      * @return the vector of TileOnMap for this layer
      */
     public TileOnMapList getTiles(int layer) {
@@ -258,13 +258,13 @@ public class Map extends Observable implements Serializable {
      */
     public TileOnMap getTileAt(int x, int y) {
 
-	TileOnMap tile = getTileAt(Tile.LAYER_ABOVE, x, y);
+	TileOnMap tile = getTileAt(Tile.LAYER_HIGH, x, y);
 
 	if (tile == null) {
 	    tile = getTileAt(Tile.LAYER_INTERMEDIATE, x, y);
 
 	    if (tile == null) {
-		tile = getTileAt(Tile.LAYER_BELOW, x, y);
+		tile = getTileAt(Tile.LAYER_LOW, x, y);
 	    }
 	}
 

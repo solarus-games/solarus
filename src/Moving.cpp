@@ -6,6 +6,7 @@ using namespace std;
 #include <iostream>
 #include <SDL/SDL.h>
 #include <cmath>
+#include "Types.h"
 #include "Moving.h"
 
 /**
@@ -23,7 +24,7 @@ const double SQRT_2 = 1.41421356237309504880;
  * Constructor.
  */
 Moving::Moving(void):
-  x_speed(0), y_speed(0), x_move(0), y_move(0) {
+  MapEntity(LAYER_LOW), x_speed(0), y_speed(0), x_move(0), y_move(0) {
   
 }
 

@@ -23,9 +23,14 @@ Map::Map(int width, int height, zsdx_color_t background_color,
   width(width), height(height), width8(width / 8), height8(height / 8),
   background_color(background_color), tileset(tileset),
   background_music(background_music),
-  entities(new vector<MapEntity*>()),
+ 
   obstacle_tiles_size(width8 * height8),
   obstacle_tiles(new Obstacle[obstacle_tiles_size]) {
+
+  // create the vectors of entities
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    tiles[layer] = new vector<TileOnMap*>();
+  }
 
   // initialize obstacle tile
   for (int i = 0; i < obstacle_tiles_size; i++) {
@@ -38,7 +43,9 @@ Map::Map(int width, int height, zsdx_color_t background_color,
  */
 Map::~Map() {
   unload();
-  delete entities;
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    delete tiles[layer];
+  }
   delete[] obstacle_tiles;
 }
 
@@ -66,8 +73,12 @@ void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer) {
  * @param repeat_x how many times the pattern is repeated on y
  */
 void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer, int repeat_x, int repeat_y) {
-  // add the tile to the map objects
-  add_entity(new TileOnMap(tile, position_in_map, layer, repeat_x, repeat_y));
+
+  // create the tile object
+  TileOnMap *tileOnMap = new TileOnMap(tile, position_in_map, layer, repeat_x, repeat_y);
+
+  // add it to the map
+  tiles[layer]->push_back(tileOnMap);
 
   // update the collision list
   int tile_x8 = position_in_map.x / 8;
@@ -94,10 +105,12 @@ void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer, int r
  * come back on the map, you can keep the map loaded.
  */
 void Map::unload(void) {
-  for (unsigned int i = 0; i < entities->size(); i++) {
-    delete entities->at(i);
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
+      delete tiles[layer]->at(i);
+    }
+    tiles[layer]->clear();
   }
-  entities->clear();
 }
 
 /**
@@ -116,7 +129,7 @@ void Map::update_sprites(void) {
 }
 
 /**
- * Displays the map with all its entities except Link on the screen.
+ * Displays the map with all its entities on the screen.
  * @param surface the map surface
  */
 void Map::display(SDL_Surface *surface) {
@@ -126,12 +139,20 @@ void Map::display(SDL_Surface *surface) {
   SDL_FillRect(surface, NULL, background_color);
 
   // map entities
-  for (unsigned int i = 0; i < entities->size(); i++) {
-    entities->at(i)->display_on_map(this);
-  }
 
-  // link
-  ZSDX::game_resource->get_link()->display_on_map(this);
+  Link* link = ZSDX::game_resource->get_link();
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+
+    // put the tiles
+    for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
+      tiles[layer]->at(i)->display_on_map(this);
+    }
+
+    // put link if we are in his layer
+    if (link->get_layer() == layer) {
+      link->display_on_map(this);
+    }
+  }
 
   SDL_Flip(surface);
 }

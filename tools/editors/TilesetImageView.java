@@ -360,13 +360,13 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 		// search the tile clicked
 		boolean found = false;
 		
-		int clickedTileIndex = tileset.getIndexOfTileAt(x, y);
+		int clickedTileId = tileset.getIdOfTileAt(x, y);
 
 		// a tile was just clicked
-		if (clickedTileIndex > 0) {
+		if (clickedTileId > 0) {
 
 		    // select the tile
-		    tileset.setSelectedTileIndex(clickedTileIndex);
+		    tileset.setSelectedTileId(clickedTileId);
 		    
 		    // right click: if the tileset is editable, we show a popup menu
 		    if (mouseEvent.getButton() == MouseEvent.BUTTON3 && editable) {

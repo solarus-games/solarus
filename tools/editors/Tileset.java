@@ -11,7 +11,7 @@ import javax.imageio.*;
  * A tileset is observable. When it changes, the observers are notified with
  * a parameter indicating what has just changed:
  *   - a Tile: indicates that this tile was created
- *   - an Integer: indicates that the tile at this index was removed
+ *   - an Integer: indicates that the tile with this id was removed
  *   - null: other cases
  */
 public class Tileset extends Observable implements Serializable, ImageObserver {
@@ -30,14 +30,14 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 
     /**
      * The tiles.
-     * The key of a tile is its index in the tileset. The first key is 1.
+     * The key of a tile is its id in the tileset. The first id is 1.
      */
     private TreeMap<Integer,Tile> tiles;
 
     /**
-     * Maximum index of a tile in the hashtable.
+     * Maximum id of a tile in the hashtable.
      */
-    private int maxIndex;
+    private int maxId;
 
     /**
      * The tileset image.
@@ -58,12 +58,12 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     private transient boolean isSaved; 
 
     /**
-     * Index of the tile currently selected by the user.
+     * Id of the tile currently selected by the user.
      * 0: no tile is selected
      * 1 or more: an existing tile is selected
-     * -1: a new tile is selected, ready to be added
+     * -1: a new tile is selected, ready to be created
      */
-    private transient int selectedTileIndex;
+    private transient int selectedTileId;
 
     /**
      * Position of the tile the user is creating,
@@ -85,8 +85,8 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 	super();
 	this.name = name;
 	this.isSaved = false;
-	this.selectedTileIndex = 0; // none
-	this.maxIndex = 0;
+	this.selectedTileId = 0; // none
+	this.maxId = 0;
 	tiles = new TreeMap<Integer,Tile>();
 	reloadImage();
     }
@@ -168,10 +168,10 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     }
 
     /**
-     * Returns the indexes of the tiles.
-     * @return the indexes of the tiles
+     * Returns the ids of the tiles
+     * @return the ids of the tiles
      */
-    public Set<Integer> getTileIndexes() {
+    public Set<Integer> getTileIds() {
 	return tiles.keySet();
     }
 
@@ -185,60 +185,59 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 
     /**
      * Returns a tile.
-     * @param index index of the tile to get
-     * @return the tile with this index
-     * @throws NoSuchElementException if there is no tile with this index
+     * @param id id of the tile to get
+     * @return the tile with this id
+     * @throws NoSuchElementException if there is no tile with this id
      */
-    public Tile getTile(int index) throws NoSuchElementException {
+    public Tile getTile(int id) throws NoSuchElementException {
 
-	Tile tile = tiles.get(index);
+	Tile tile = tiles.get(id);
 
 	if (tile == null) {
-	    throw new NoSuchElementException("There is no tile with index " + index + " in the tileset.");
+	    throw new NoSuchElementException("There is no tile with id " + id + " in the tileset.");
 	}
 
 	return tile;
     }
 
     /**
-     * Returns the index of the tile at a location in the tileset,
+     * Returns the id of the tile at a location in the tileset,
      * or 0 if there is no tile there.
      * @param x x coordinate of the point
      * @param y y coordinate of the point
-     * @return index of the tile at this point, or 0 if there is no tile here
+     * @return id of the tile at this point, or 0 if there is no tile here
      */
-    public int getIndexOfTileAt(int x, int y) {
+    public int getIdOfTileAt(int x, int y) {
 
-	for (int index: getTileIndexes()) {
-	    Rectangle tileRectangle = getTile(index).getPositionInTileset();
+	for (int id: getTileIds()) {
+	    Rectangle tileRectangle = getTile(id).getPositionInTileset();
 	    if (tileRectangle.contains(x, y)) {
-		return index; // a tile was found at this point
-	    }	    
+		return id; // a tile was found at this point
+	    }
 	}
 
 	return 0; // no tile found
     }
 
     /**
-     * Returns the index of the selected tile.
+     * Returns the id of the selected tile.
      * @return 0 if no tile is selected, 1 or more if an existing tile is selected,
      * or -1 if a new tile is selected
      */
-    public int getSelectedTileIndex() {
-	return selectedTileIndex;
+    public int getSelectedTileId() {
+	return selectedTileId;
     }
 
     /**
-     * Sets the index of the selected tile and notifies the observers.
-     * Does nothing if the index is not changed.
-     * @param selectedTileIndex 0 if no tile is selected, 1 or more if an existing tile is selected,
-     * or -1 if a new tile is selected
+     * Selects a tile and notifies the observers.
+     * @param selectedTileId 0 to select no tile, 1 or more to select the existing
+     * tile with this id or -1 if a new tile is selected
      */
-    public void setSelectedTileIndex(int selectedTileIndex) {
-	if (selectedTileIndex != this.selectedTileIndex) {
-	    this.selectedTileIndex = selectedTileIndex;
+    public void setSelectedTileId(int selectedTileId) {
+	if (selectedTileId != this.selectedTileId) {
+	    this.selectedTileId = selectedTileId;
 
-	    if (selectedTileIndex != getNbTiles()) {
+	    if (selectedTileId != getNbTiles()) {
 		newTileArea = null;
 	    }
 
@@ -249,18 +248,18 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 
     /**
      * Unselects the current tile.
-     * This is equivalent to call setSelectedTileIndex(0).
+     * This is equivalent to call setSelectedTileId(0).
      */
     public void unSelectTile() {
-	setSelectedTileIndex(0);
+	setSelectedTileId(0);
     }
 
     /**
      * Starts the selection of a new tile.
-     * This is equivalent to call setSelectedTileIndex(-1).
+     * This is equivalent to call setSelectedTileId(-1).
      */
     public void startSelectingNewTile() {
-	setSelectedTileIndex(-1);
+	setSelectedTileId(-1);
     }
 
     /**
@@ -268,8 +267,8 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      * @return the selected tile, or null if there is no selected tile or if doesn't exist yet
      */
     public Tile getSelectedTile() {
-	if (selectedTileIndex > 0) {
-	    return getTile(selectedTileIndex);
+	if (selectedTileId > 0) {
+	    return getTile(selectedTileId);
 	}
 	else {
 	    return null;
@@ -278,49 +277,49 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 
     /**
      * Returns whether or not the user is selecting a new tile.
-     * @return true if the user is selecting a new tile, i.e. if getSelectedTileIndex() == -1
+     * @return true if the user is selecting a new tile, i.e. if getSelectedTileId() == -1
      */
     public boolean isSelectingNewTile() {
-	return selectedTileIndex == -1;
+	return selectedTileId == -1;
     }
 
     /**
-     * Returns the rank of a tile, knowing its index.
-     * The rank is the position of the tile if you consider all tiles are sorted by their indexes.
-     * It is different from the index because all indexes don't exist necessarily.
-     * @param index index of the tile in the tileset
-     * @return rank of this tile, [0, getNbTiles() - 1].
+     * Returns the rank of a tile, knowing its id.
+     * The rank is the position of the tile if you consider all tiles sorted by their ids.
+     * It is different from the id because all ids don't exist necessarily.
+     * @param id id of the tile in the tileset
+     * @return rank of this tile, in [0, getNbTiles()[.
      */
-    public int tileIndexToTileRank(int index) {
+    public int tileIdToTileRank(int id) {
 	
-	// counts the tiles until we find the good one
+	// count the tiles until we find the right one
 	int rank = 0;
-	for (int indexFound: getTileIndexes()) {
+	for (int idFound: getTileIds()) {
 	    
-	    if (indexFound == index) {
+	    if (idFound == id) {
 		return rank;
 	    }
 	    rank++;
 	}
 
-	throw new NoSuchElementException("There is no tile at index " + index + " in the tileset.");
+	throw new NoSuchElementException("There is no tile at id " + id + " in the tileset.");
     }
 
     /**
-     * Returns the index of the tile, knowing its rank.
-     * The rank is the position of the tile if you consider all tiles are sorted by their indexes.
-     * It is different from the index because all indexes don't exist necessarily.
-     * @param ranks rank of the tile considered (in [0, getNbTiles() - 1])
-     * @return the index of the tile with this rank
+     * Returns the id of a tile knowing its rank.
+     * The rank is the position of the tile if you consider all tiles sorted by their ids.
+     * It is different from the id because all ids don't exist necessarily.
+     * @param ranks rank of the tile considered, in [0, getNbTiles()[
+     * @return the id of the tile with this rank
      */
-    public int tileRankToTileIndex(int rank) {
+    public int tileRankToTileId(int rank) {
 	
-	// count sequentialIndex tiles
+	// count rank tiles
 	int i = 0;
-	for (int currentIndex: getTileIndexes()) {
+	for (int currentId: getTileIds()) {
 	    
 	    if (i == rank) {
-		return currentIndex;
+		return currentId;
 	    }
 	    i++;
 	}
@@ -338,7 +337,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 
     /**
      * Changes the position of the tile the user is creating.
-     * If the specified area is the same, nothing is done. 
+     * If the specified area is the same than before, nothing is done. 
      * @param newTileArea position of the new tile, or null if there is currently no new tile selected
      */
     public void setNewTileArea(Rectangle newTileArea) {
@@ -379,12 +378,12 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 	Tile tile = null;
 
 	if (isSelectingNewTile() && !isNewTileAreaOverlapping) {
-	    tile = new Tile(newTileArea, Tile.LAYER_BELOW, obstacle);
+	    tile = new Tile(newTileArea, Tile.LAYER_LOW, obstacle);
 	    
-	    maxIndex++;
-	    tiles.put(maxIndex, tile);
+	    maxId++;
+	    tiles.put(maxId, tile);
 
-	    setSelectedTileIndex(maxIndex);
+	    setSelectedTileId(maxId);
 	    
 	    isSaved = false;
 	    
@@ -398,16 +397,16 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      * The oberservers are notified with the removed tile as parameter.
      */
     public void removeTile() {
-	Integer index = new Integer(getSelectedTileIndex());
+	Integer id = new Integer(getSelectedTileId());
 
-	if (index > 0) {
-	    tiles.remove(index);
-	    setSelectedTileIndex(0);
+	if (id > 0) {
+	    tiles.remove(id);
+	    setSelectedTileId(0);
 
 	    isSaved = false;
 
 	    setChanged();
-	    notifyObservers(index); // indicate that the tile has been removed
+	    notifyObservers(id); // indicate that the tile has been removed
 	}
     }
 
@@ -458,7 +457,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
 	in.close();
 
 	tileset.setSaved(true);
-	tileset.setSelectedTileIndex(0); // none
+	tileset.setSelectedTileId(0); // none
 	tileset.reloadImage();
 
 	return tileset;

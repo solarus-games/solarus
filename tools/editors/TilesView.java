@@ -9,9 +9,8 @@ import java.util.*;
 /**
  * This component shows a list of tiles and allows the user to select them.
  * The list is displayed as a JList with an icon for each tile.
- * The indexes of the tiles are different from the indexes of the list items,
- * because in a tileset, when a tile is removed, the other tiles keep the same
- * indexes.
+ * The id of the tile in the tileset is different from it index in the list items,
+ * because in a tileset, when a tile is removed, the other tiles keep their ids.
  */
 public class TilesView extends JPanel {
 
@@ -171,7 +170,7 @@ public class TilesView extends JPanel {
 
 	    // select this tile in the tileset
 	    if (selectedTileRank != -1) {
-		tileset.setSelectedTileIndex(tileset.tileRankToTileIndex(selectedTileRank));
+		tileset.setSelectedTileId(tileset.tileRankToTileId(selectedTileRank));
 	    }
 	    else {
 		tileset.unSelectTile();
@@ -202,7 +201,7 @@ public class TilesView extends JPanel {
 	 */
 	public Object getElementAt(int rank) {
 
-	    return tileset.getTile(tileset.tileRankToTileIndex(rank));
+	    return tileset.getTile(tileset.tileRankToTileId(rank));
 	}
 
 	/**
@@ -210,7 +209,7 @@ public class TilesView extends JPanel {
 	 * @param o the tileset
 	 * @param params information about what has changed:
 	 *   - a Tile: indicates that this tile has just been created
-	 *   - an Integer: indicates that the tile at this index has just been removed
+	 *   - an Integer: indicates that the tile with this id has just been removed
 	 *   - null: other cases
 	 */
 	public void update(Observable o, Object params) {
@@ -225,8 +224,8 @@ public class TilesView extends JPanel {
 
 // 	    // was a tile just removed?
 // 	    if (params instanceof Integer) {
-// 		int deletedTileIndex = ((Integer) params).intValue();
-// 		tileIcons.remove(deletedTileIndex);		
+// 		int deletedTileId = ((Integer) params).intValue();
+// 		tileIcons.remove(deletedTileId);		
 // 	    }
 
 // 	    // was a tile just created?
@@ -236,7 +235,7 @@ public class TilesView extends JPanel {
 // 	    }
 
 	    // update the enabled state of the buttons
-	    int tilesetSelectedIndex = tileset.getSelectedTileIndex();
+	    int tilesetSelectedTileId = tileset.getSelectedTileId();
 	    int listSelectedRank = tileList.getSelectedIndex();
 
 	    buttonCreate.setEnabled(false);
@@ -251,7 +250,7 @@ public class TilesView extends JPanel {
 		buttonDelete.setEnabled(true);
 
 		// make this tile selected in the list
-		int listRank = tileset.tileIndexToTileRank(tilesetSelectedIndex);
+		int listRank = tileset.tileIdToTileRank(tilesetSelectedTileId);
 		if (listRank != listSelectedRank) {
 		    tileList.setSelectedIndex(listRank);
 		    tileList.ensureIndexIsVisible(listRank);
@@ -277,14 +276,14 @@ public class TilesView extends JPanel {
 	/**
 	 * Returns a component representing a tile.
 	 */
-	public Component getListCellRendererComponent(JList list, Object value, int index,
+	public Component getListCellRendererComponent(JList list, Object value, int rank,
 						      boolean isSelected, boolean cellHasFocus) {
-	    if (index >= tileIcons.size()) {
+	    if (rank >= tileIcons.size()) {
 		// the icon doesn't exist yet
 		loadIcons();
 	    }
 
-	    return tileIcons.get(index);
+	    return tileIcons.get(rank);
 	}
     }
 }

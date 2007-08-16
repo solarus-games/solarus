@@ -23,7 +23,7 @@ public class TileOnMap extends Observable implements Serializable {
     private transient Tileset tileset;
 
     /**
-     * Index of the tile in the tileset.
+     * Id of the tile in the tileset.
      */
     private final int tileIndex;
 
@@ -55,7 +55,7 @@ public class TileOnMap extends Observable implements Serializable {
     /**
      * Simple constructor.
      * @param tileset the tileset
-     * @param tileIndex index of the tile in the tileset
+     * @param tileIndex id of the tile in the tileset
      * @param x x position of the tile on the map
      * @param y y position of the tile on the map
      */
@@ -66,7 +66,7 @@ public class TileOnMap extends Observable implements Serializable {
     /**
      * Constructor.
      * @param tileset the tileset
-     * @param tileIndex index of the tile in the tileset
+     * @param tileIndex id of the tile in the tileset
      * @param x x position of the tile on the map
      * @param y y position of the tile on the map
      * @param layer layer of the tile
@@ -87,7 +87,7 @@ public class TileOnMap extends Observable implements Serializable {
     /**
      * Changes the tileset used to represent this tile on the map.
      * The corresponding tile from the new tileset (i.e. the tile
-     * with the same index) must have exactly the same properties,
+     * with the same id) must have exactly the same properties,
      * otherwise a TilesetException is thrown.
      * @param tileset the tileset
      * @throws TilesetException if the new tileset could not be applied
@@ -124,10 +124,10 @@ public class TileOnMap extends Observable implements Serializable {
     }
 
     /**
-     * Returns the index of the tile in the tileset.
-     * @return the index of the tile in the tileset.
+     * Returns the id of the tile in the tileset.
+     * @return the id of the tile in the tileset.
      */
-    public int getTileIndex() {
+    public int getTileId() {
 	return tileIndex;
     }
 
@@ -216,8 +216,8 @@ public class TileOnMap extends Observable implements Serializable {
 
     /**
      * Returns the layer of the tile.
-     * @return the layer of the tile: Tile.LAYER_BELOW (most of the tiles),
-     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE.
+     * @return the layer of the tile: Tile.LAYER_LOW (most of the tiles),
+     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH.
      */
     public int getLayer() {
 	return layer;
@@ -225,8 +225,8 @@ public class TileOnMap extends Observable implements Serializable {
 
     /**
      * Changes the layer of the tile.
-     * @param layer the layer of the tile: Tile.LAYER_BELOW (most of the tiles),
-     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE.
+     * @param layer the layer of the tile: Tile.LAYER_LOW (most of the tiles),
+     * Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH.
      */
     public void setLayer(int layer) {
 	if (layer != this.layer) {
@@ -239,10 +239,10 @@ public class TileOnMap extends Observable implements Serializable {
 //     /**
 //      * Returns the x coordinate of the tile on the map.
 //      * @return the x coordinate of the tile on the map
-//      */
-//     public int getX() {
-// 	return positionInMap.x;
-//     }
+//
+    public int getX() {
+	return positionInMap.x;
+    }
 
 //     /**
 //      * Changes the x coordinate of the tile on the map.
@@ -256,13 +256,13 @@ public class TileOnMap extends Observable implements Serializable {
 // 	}
 //     }
 
-//     /**
-//      * Returns the y coordinate of the tile on the map.
-//      * @return the y coordinate of the tile on the map
-//      */
-//     public int getY() {
-// 	return positionInMap.y;
-//     }
+    /**
+     * Returns the y coordinate of the tile on the map.
+     * @return the y coordinate of the tile on the map
+     */
+    public int getY() {
+	return positionInMap.y;
+    }
 
 //     /**
 //      * Changes the y coordinate of the tile on the map.
@@ -276,13 +276,13 @@ public class TileOnMap extends Observable implements Serializable {
 // 	}
 //     }
 
-//     /**
-//      * Returns the number of times the pattern is repeated on x.
-//      * @return the number of times the pattern is repeated on x
-//      */
-//     public int getRepeatX() {
-// 	return repeatX;
-//     }
+    /**
+     * Returns the number of times the pattern is repeated on x.
+     * @return the number of times the pattern is repeated on x
+     */
+    public int getRepeatX() {
+	return repeatX;
+    }
 
 //     /**
 //      * Changes the number of times the pattern is repeated on x.
@@ -297,13 +297,13 @@ public class TileOnMap extends Observable implements Serializable {
 // 	}
 //     }
 
-//     /**
-//      * Returns the number of times the pattern is repeated on y.
-//      * @return the number of times the pattern is repeated on y
-//      */
-//     public int getRepeatY() {
-// 	return repeatY;
-//     }
+    /**
+     * Returns the number of times the pattern is repeated on y.
+     * @return the number of times the pattern is repeated on y
+     */
+    public int getRepeatY() {
+	return repeatY;
+    }
 
 //     /**
 //      * Changes the number of times the pattern is repeated on y.
@@ -364,6 +364,5 @@ public class TileOnMap extends Observable implements Serializable {
 		}
 	    }
 	}
-
     }
 }

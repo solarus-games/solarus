@@ -28,7 +28,7 @@ public class MapTileSelection extends Observable implements Iterable {
 
     /**
      * Returns a selected tile.
-     * @param index index of the tile to get
+     * @param index of the tile to get
      * @return the tile at this index
      */
     public TileOnMap getTile(int index) {
@@ -161,7 +161,7 @@ public class MapTileSelection extends Observable implements Iterable {
 
     /**
      * Selects the first tile under a point of the map, in a specified layer.
-     * @param layer a layer: Tile.LAYER_BELOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_ABOVE
+     * @param layer a layer: Tile.LAYER_LOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH
      * @param x x of the point
      * @param y y of the point
      * @return true if a tile was found and selected, false otherwise

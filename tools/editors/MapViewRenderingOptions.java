@@ -67,9 +67,9 @@ public class MapViewRenderingOptions {
      * @param showHighLayer true to show the tiles of the high layer
      */
     public void setShowLayers(boolean showLowLayer, boolean showIntermediateLayer, boolean showHighLayer) {
-	showLayers[Tile.LAYER_BELOW] = showLowLayer;
+	showLayers[Tile.LAYER_LOW] = showLowLayer;
 	showLayers[Tile.LAYER_INTERMEDIATE] = showIntermediateLayer;
-	showLayers[Tile.LAYER_ABOVE] = showHighLayer;
+	showLayers[Tile.LAYER_HIGH] = showHighLayer;
 	mapView.repaint();
     }
 
@@ -151,7 +151,7 @@ public class MapViewRenderingOptions {
      */
     public boolean isTileShown(Tileset tileset, TileOnMap tile) {
 	int layer = tile.getLayer();
-	int obstacle = tileset.getTile(tile.getTileIndex()).getObstacle();
+	int obstacle = tileset.getTile(tile.getTileId()).getObstacle();
 	return showLayers[layer] && showObstacles[obstacle];
     }
 }

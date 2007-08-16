@@ -5,8 +5,9 @@
 #ifndef ZSDX_TILE_ON_MAP_H
 #define ZSDX_TILE_ON_MAP_H
 
-#include "MapEntity.h"
+#include "Types.h"
 #include "Tile.h"
+#include "MapEntity.h"
 
 /**
  * A tile on a map is a small fixed piece of the map background.
@@ -22,12 +23,6 @@ class TileOnMap: public MapEntity {
    * It can be an instance of SimpleTile or AnimatedTile.
    */
   Tile *tile;
-
-  /**
-   * Layer of the tile: LAYER_BELOW, LAYER_INTERMEDIATE or LAYER_ABOVE.
-   * TODO: move into MapEntity because of the active objects?
-   */
-  const Layer layer;
 
   /**
    * Number of times the pattern is repeated on x.

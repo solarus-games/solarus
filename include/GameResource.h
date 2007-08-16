@@ -18,7 +18,7 @@ enum TilesetID {
 
 // maps
 enum MapID {
-  MAP_LINK_HOUSE,
+#include "MapList.inc.h"
   NB_MAPS
 };
 

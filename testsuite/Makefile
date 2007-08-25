@@ -22,39 +22,43 @@ headers = 	$(INCLUDE_DIR)/ZSDX.h				\
 		$(INCLUDE_DIR)/Color.h				\
 		$(INCLUDE_DIR)/Link.h				\
 		$(INCLUDE_DIR)/LinkAnimations.h			\
+		$(INCLUDE_DIR)/Music.h				\
 		$(INCLUDE_DIR)/Tileset.h			\
 		$(INCLUDE_DIR)/tilesets/TilesetHouse.h		\
-		$(INCLUDE_DIR)/maps/MapLinkHouse.h			\
-		$(INCLUDE_DIR)/Music.h				
+		$(INCLUDE_DIR)/maps/MapLinkHouse.h		\
+		$(INCLUDE_DIR)/maps/MapLinkHouseSecretRoom.h	\
+		$(INCLUDE_DIR)/maps/MapRupeeHouse.h		
 
 executables: $(executables) $(headers)
 
 check: executables
 
 
-game_test: 	game_test.o				\
-		$(SRC_DIR)/ZSDX.o			\
-		$(SRC_DIR)/Game.o			\
-		$(SRC_DIR)/GameResource.o		\
-		$(SRC_DIR)/TileOnMap.o			\
-		$(SRC_DIR)/TileAnimationManager.o	\
-		$(SRC_DIR)/Color.o			\
-		$(SRC_DIR)/Map.o			\
-		$(SRC_DIR)/Moving.o			\
-		$(SRC_DIR)/MovingWithCollision.o	\
-		$(SRC_DIR)/Moving8ByPlayer.o		\
-		$(SRC_DIR)/AnimatedSprite.o		\
-		$(SRC_DIR)/SpriteAnimations.o		\
-		$(SRC_DIR)/SpriteAnimation.o		\
-		$(SRC_DIR)/SpriteAnimationDirection.o	\
-		$(SRC_DIR)/SimpleTile.o			\
-		$(SRC_DIR)/AnimatedTile.o		\
-		$(SRC_DIR)/Link.o			\
-		$(SRC_DIR)/LinkAnimations.o		\
-		$(SRC_DIR)/Tileset.o			\
-		$(SRC_DIR)/tilesets/TilesetHouse.o	\
-		$(SRC_DIR)/maps/MapLinkHouse.o		\
-		$(SRC_DIR)/Music.o			
+game_test: 	game_test.o					\
+		$(SRC_DIR)/ZSDX.o				\
+		$(SRC_DIR)/Game.o				\
+		$(SRC_DIR)/GameResource.o			\
+		$(SRC_DIR)/TileOnMap.o				\
+		$(SRC_DIR)/TileAnimationManager.o		\
+		$(SRC_DIR)/Color.o				\
+		$(SRC_DIR)/Map.o				\
+		$(SRC_DIR)/Moving.o				\
+		$(SRC_DIR)/MovingWithCollision.o		\
+		$(SRC_DIR)/Moving8ByPlayer.o			\
+		$(SRC_DIR)/AnimatedSprite.o			\
+		$(SRC_DIR)/SpriteAnimations.o			\
+		$(SRC_DIR)/SpriteAnimation.o			\
+		$(SRC_DIR)/SpriteAnimationDirection.o		\
+		$(SRC_DIR)/SimpleTile.o				\
+		$(SRC_DIR)/AnimatedTile.o			\
+		$(SRC_DIR)/Link.o				\
+		$(SRC_DIR)/LinkAnimations.o			\
+		$(SRC_DIR)/Music.o				\
+		$(SRC_DIR)/Tileset.o				\
+		$(SRC_DIR)/tilesets/TilesetHouse.o		\
+		$(SRC_DIR)/maps/MapLinkHouse.o			\
+		$(SRC_DIR)/maps/MapLinkHouseSecretRoom.o	\
+		$(SRC_DIR)/maps/MapRupeeHouse.o		
 	$(CC) $(LDFLAGS) $(CPPFLAGS) $^ $(LIBS) -o $@
 
 tile_test: 	tile_test.o				\

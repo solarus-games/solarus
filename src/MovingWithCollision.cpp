@@ -27,7 +27,7 @@ void MovingWithCollision::set_collision_box(SDL_Rect &collision_box) {
 
 /**
  * Updates the position (x and y) of the entity if it has moved.
- * This is a redefinition of Movable::update_position to stop
+ * This is a redefinition of Moving::update_position to stop
  * the movement if a collision with the map is detected.
  */
 void MovingWithCollision::update_position(void) {
@@ -45,14 +45,15 @@ void MovingWithCollision::update_position(void) {
 
       // check the collisions
 
-      if (map->simple_collision(absolute_collision_box)) {
+      next_move_date_x += x_delay;
+      if (map->simple_collision(layer, absolute_collision_box)) {
 	// stop the x movement
 	set_x_speed(0);
+	break;
       }
       else {
 	// make the move
 	position_in_map.x += x_move;
-	next_move_date_x += x_delay;
       }
     }
   }
@@ -65,14 +66,15 @@ void MovingWithCollision::update_position(void) {
 
       // check the collisions
 
-      if (map->simple_collision(absolute_collision_box)) {
+      next_move_date_y += y_delay;
+      if (map->simple_collision(layer, absolute_collision_box)) {
 	// stop the y movement
 	set_y_speed(0);
+	break;
       }
       else {
 	// make the move
 	position_in_map.y += y_move;
-	next_move_date_y += y_delay;
       }
     }
   }

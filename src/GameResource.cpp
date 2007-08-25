@@ -3,6 +3,8 @@
 #include "Link.h"
 #include "tilesets/TilesetHouse.h"
 #include "maps/MapLinkHouse.h"
+#include "maps/MapLinkHouseSecretRoom.h"
+#include "maps/MapRupeeHouse.h"
 
 /**
  * Creates all resources.

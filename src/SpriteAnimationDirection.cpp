@@ -68,5 +68,12 @@ void SpriteAnimationDirection::display_on_map(Map *map, SDL_Rect &position_in_ma
 // 	 frames[current_frame].x, frames[current_frame].y, frames[current_frame].w, frames[current_frame].h,
 // 	 position_in_map.x, position_in_map.y, position_in_map.w, position_in_map.h);
 
-  SDL_BlitSurface(src_image, &frames[current_frame], map->get_surface(), &position_in_map);
+  SDL_Rect *current_frame_rect = &frames[current_frame];
+  SDL_Rect *screen_position = map->get_screen_position();
+  SDL_Rect position_in_screen = position_in_map;
+
+  position_in_screen.x -= screen_position->x;
+  position_in_screen.y -= screen_position->y;
+
+  SDL_BlitSurface(src_image, current_frame_rect, map->get_surface(), &position_in_screen);
 }

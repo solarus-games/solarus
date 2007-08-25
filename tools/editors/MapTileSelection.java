@@ -140,43 +140,43 @@ public class MapTileSelection extends Observable implements Iterable {
 	}
     }
 
-    /**
-     * Selects the first tile under a point of the map, in the three layers,
-     * starting with the high layer.
-     * @param x x of the point
-     * @param y y of the point
-     * @return true if a tile was found and selected, false otherwise
-     */
-    public boolean select(int x, int y) {
+ //    /**
+//      * Selects the first tile under a point of the map, in the three layers,
+//      * starting with the high layer.
+//      * @param x x of the point
+//      * @param y y of the point
+//      * @return true if a tile was found and selected, false otherwise
+//      */
+//     public boolean select(int x, int y) {
 
-	TileOnMap tile = map.getTileAt(x, y);
+// 	TileOnMap tile = map.getTileAt(x, y);
 
-	if (tile == null) {
-	    return false;
-	}
+// 	if (tile == null) {
+// 	    return false;
+// 	}
 
-	select(tile);
-	return true;
-    }
+// 	select(tile);
+// 	return true;
+//     }
 
-    /**
-     * Selects the first tile under a point of the map, in a specified layer.
-     * @param layer a layer: Tile.LAYER_LOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH
-     * @param x x of the point
-     * @param y y of the point
-     * @return true if a tile was found and selected, false otherwise
-     */
-    public boolean select(int layer, int x, int y) {
+//     /**
+//      * Selects the first tile under a point of the map, in a specified layer.
+//      * @param layer a layer: Tile.LAYER_LOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH
+//      * @param x x of the point
+//      * @param y y of the point
+//      * @return true if a tile was found and selected, false otherwise
+//      */
+//     public boolean select(int layer, int x, int y) {
 
-	TileOnMap tile = map.getTileAt(layer, x, y);
+// 	TileOnMap tile = map.getTileAt(layer, x, y);
 
-	if (tile == null) {
-	    return false;
-	}
+// 	if (tile == null) {
+// 	    return false;
+// 	}
 
-	select(tile);
-	return true;
-    }
+// 	select(tile);
+// 	return true;
+//     }
 
     /**
      * Returns the layer of the selected tiles, if all selected tiles have the same layer.

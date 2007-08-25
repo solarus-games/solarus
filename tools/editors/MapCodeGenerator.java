@@ -83,7 +83,7 @@ public class MapCodeGenerator {
 	    out.println("class Map" + name + ": public Map {");
 	    out.println();
 	    out.println(" public:");
-	    out.println("  Map" + name + "(void) { }");
+	    out.println("  Map" + name + "(void);");
 	    out.println("  inline ~Map" + name + "(void) { }");
 	    out.println();
 	    out.println("  void load(void);");
@@ -156,7 +156,7 @@ public class MapCodeGenerator {
 	    out.println("  link_start_x = 80;");
 	    out.println("  link_start_y = 80;");
 	    out.println();
-	    out.println("#include \"../src/maps/MapLinkHouseEntities.inc.cpp\"");
+	    out.println("#include \"../src/maps/" + className + "Entities.inc.cpp\"");
 	    out.println("}");
 
 	    out.close();

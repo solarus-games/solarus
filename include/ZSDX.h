@@ -11,6 +11,9 @@ using namespace std;
 #include "GameResource.h"
 #include "TileAnimationManager.h"
 
+#define MIN(x,y) ((x > y) ? (y) : (x))
+#define MAX(x,y) ((x > y) ? (x) : (y))
+
 /**
  * Number of times the screen is redrawn is a second.
  */

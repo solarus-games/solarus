@@ -44,18 +44,28 @@ TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map, Layer layer, int rep
  * @param map the map
  */
 void TileOnMap::display_on_map(Map *map) {
+  SDL_Surface *map_surface = map->get_surface();
+  SDL_Surface *tileset_image = map->get_tileset()->get_image();
+
   SDL_Rect dst;
+  SDL_Rect *screen_position = map->get_screen_position();
 
   dst.w = position_in_map.w;
   dst.h = position_in_map.h;
 
-  int limit_x = position_in_map.x + position_in_map.w * repeat_x;
-  int limit_y = position_in_map.y + position_in_map.h * repeat_y;
+  int limit_x = position_in_map.x - screen_position->x + position_in_map.w * repeat_x;
+  int limit_y = position_in_map.y - screen_position->y + position_in_map.h * repeat_y;
 
-  for (dst.y = position_in_map.y; dst.y < limit_y; dst.y += position_in_map.h) {
-    dst.x = position_in_map.x;
-    for (dst.x = position_in_map.x; dst.x < limit_x; dst.x += position_in_map.w) {
-      tile->display(map->get_surface(), dst, map->get_tileset()->get_image());
+  for (dst.y = position_in_map.y - screen_position->y; dst.y < limit_y; dst.y += position_in_map.h) {
+
+    if (dst.y <= 240 && dst.y + position_in_map.h > 0) {
+
+      for (dst.x = position_in_map.x - screen_position->x; dst.x < limit_x; dst.x += position_in_map.w) {
+
+	if (dst.x <= 320 && dst.x + position_in_map.w > 0) {
+	  tile->display(map_surface, dst, tileset_image);
+	}
+      }
     }
   }
 }

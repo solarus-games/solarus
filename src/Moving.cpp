@@ -40,7 +40,7 @@ void Moving::update_position(void) {
  * Updates the x position of the entity if it has changed.
  */
 void Moving::update_x(void) {
-  if (x_move != 0) { // if there is a move on x
+  if (x_speed != 0) { // if there is a move on x
 
     // update the x position while next_move_date_x is past
     while (SDL_GetTicks() > next_move_date_x) {
@@ -54,7 +54,7 @@ void Moving::update_x(void) {
  * Updates the y position of the entity if it has changed.
  */
 void Moving::update_y(void) {
-  if (y_move != 0) { // if there is a move on y
+  if (y_speed != 0) { // if there is a move on y
 
     // update the x position while next_move_date_y is past
     while (SDL_GetTicks() > next_move_date_y) {
@@ -90,9 +90,9 @@ void Moving::set_x_speed(int x_speed) {
     x_move = -2;
     next_move_date_x = SDL_GetTicks() + x_delay;
   }
-  else {
-    x_move = 0;
-  }
+//   else {
+//     x_move = 0;
+//   }
 }
 
 /**
@@ -113,9 +113,9 @@ void Moving::set_y_speed(int y_speed) {
     y_move = -2;
     next_move_date_y = SDL_GetTicks() + y_delay;
   }
-  else {
-    y_move = 0;
-  }
+//   else {
+//     y_move = 0;
+//   }
 }
 
 /**

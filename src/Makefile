@@ -21,6 +21,8 @@ objects =	ZSDX.o				\
 		Tileset.o			\
 		tilesets/TilesetHouse.o		\
 		maps/MapLinkHouse.o		\
+		maps/MapLinkHouseSecretRoom.o	\
+		maps/MapRupeeHouse.o		\
 		Music.o				
 
 headers = 	$(INCLUDE_DIR)/ZSDX.h				\
@@ -45,7 +47,9 @@ headers = 	$(INCLUDE_DIR)/ZSDX.h				\
 		$(INCLUDE_DIR)/LinkAnimations.h			\
 		$(INCLUDE_DIR)/Tileset.h			\
 		$(INCLUDE_DIR)/tilesets/TilesetHouse.h		\
-		$(INCLUDE_DIR)/maps/MapLinkHouse.h			\
+		$(INCLUDE_DIR)/maps/MapLinkHouse.h		\
+		$(INCLUDE_DIR)/maps/MapLinkHouseSecretRoom.h	\
+		$(INCLUDE_DIR)/maps/MapRupeeHouse.h		\
 		$(INCLUDE_DIR)/Music.h				
 
 #executables = $(BIN_DIR)/tileset_editor
@@ -61,4 +65,4 @@ all: $(objects)
 	$(CC) -o $@ -c $< $(CPPFLAGS)
 
 clean:
-	rm -f *.o *~
+	rm -f *.o *~ tilesets/*.o tilesets/*~ maps/*.o maps/*~

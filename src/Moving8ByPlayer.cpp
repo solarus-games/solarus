@@ -89,21 +89,25 @@ void Moving8ByPlayer::start_down(void) {
 
 void Moving8ByPlayer::stop_right(void) {
   direction_mask &= ~right_mask;
+  x_move = 0;
   update_movement();
 }
 
 void Moving8ByPlayer::stop_up(void) {
   direction_mask &= ~up_mask;
+  y_move = 0;
   update_movement();
 }
 
 void Moving8ByPlayer::stop_left(void) {
   direction_mask &= ~left_mask;
+  x_move = 0;
   update_movement();
 }
 
 void Moving8ByPlayer::stop_down(void) {
   direction_mask &= ~down_mask;
+  y_move = 0;
   update_movement();
 }
 
@@ -170,4 +174,14 @@ void Moving8ByPlayer::update_movement(void) {
     set_x_speed(x_speed);
     set_y_speed(y_speed);
   }
+}
+
+/**
+ * Updates the position (x and y) of the entity if it has moved.
+ * This is a redefinition of MovingWithCollision::update_position to update
+ * x_move and y_move depending on the arrows pressed.
+ */
+void Moving8ByPlayer::update_position(void) {
+  
+  MovingWithCollision::update_position();
 }

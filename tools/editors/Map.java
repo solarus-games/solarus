@@ -272,7 +272,7 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
-     * Returns the first tile under a point of the map, in the specified layer
+     * Returns the first tile under a point of the map, in the specified layer.
      * @param layer the layer
      * @param x x of the point
      * @param y y of the point

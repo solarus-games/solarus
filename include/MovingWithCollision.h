@@ -57,7 +57,7 @@ class MovingWithCollision: public Moving {
 
   /**
    * Updates the position (x and y) of the entity if it has moved.
-   * This is a redefinition of Movable::update_position to stop
+   * This is a redefinition of Moving::update_position to stop
    * the movement if a collision with the map is detected.
    */
   virtual void update_position(void);

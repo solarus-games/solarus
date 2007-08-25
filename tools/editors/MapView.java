@@ -708,8 +708,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// find the tile clicked
 		int x = mouseEvent.getX() / 2;
 		int y = mouseEvent.getY() / 2;
-		
-		TileOnMap tileClicked = map.getTileAt(x, y);
+
+		TileOnMap tileClicked = null;
+		for (int layer = Tile.LAYER_HIGH; layer >= Tile.LAYER_LOW && tileClicked == null; layer--) {
+		    
+		    if (renderingOptions.getShowLayer(layer)) {
+			tileClicked = map.getTileAt(layer, x, y);
+		    }
+		}
+
 		boolean alreadySelected = tileSelection.isSelected(tileClicked);
 		
 		// left click

@@ -95,8 +95,13 @@ class Map {
   /**
    * Array of Obstacle representing which tiles are obstacles and how.
    */
-  Obstacle *obstacle_tiles;
-  
+  Obstacle *obstacle_tiles[LAYER_NB];
+
+  /**
+   * Position of the screen in the map.
+   */
+  SDL_Rect screen_position;
+
   // methods
   
   /**
@@ -170,6 +175,12 @@ class Map {
    * @return the surface where the map is displayed
    */
   SDL_Surface *get_surface(void);
+  
+  /**
+   * Returns the position of the screen in the map.
+   * @return the position of the screen in the map
+   */
+  inline SDL_Rect *get_screen_position(void) { return &screen_position; }
 
   /**
    * Loads the map.
@@ -202,19 +213,21 @@ class Map {
 
   /**
    * Tests whether a point collides with a map tile.
+ * @param layer layer of the point
    * @param x x of the point in pixels
    * @param y y of the point in pixels
    * @return the obstacle property of this point
    */
-  Obstacle pixel_collision(int x, int y);
+  Obstacle pixel_collision(int layer, int x, int y);
 
   /**
    * Tests whether a rectangle collides with the map tiles.
+   * @param layer layer of the rectangle in the map
    * @param collision_box the rectangle to check
    * (its dimensions should be multiples of 8)
    * @return true if the rectangle is overlapping an obstacle, false otherwise
    */
-  bool simple_collision(SDL_Rect &collision_box);
+  bool simple_collision(int layer, SDL_Rect &collision_box);
 
 };
 

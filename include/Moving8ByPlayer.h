@@ -98,6 +98,14 @@ class Moving8ByPlayer: public MovingWithCollision {
    * Function called when the user releases the down arrow
    */
   void stop_down(void);
+
+  /**
+   * Updates the position (x and y) of the entity if it has moved.
+   * This is a redefinition of MovingWithCollision::update_position to update
+   * x_move and y_move depending on the arrows pressed.
+   */
+  virtual void update_position(void);
+
 };
 
 #endif

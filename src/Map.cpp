@@ -23,18 +23,20 @@ Map::Map(int width, int height, zsdx_color_t background_color,
   width(width), height(height), width8(width / 8), height8(height / 8),
   background_color(background_color), tileset(tileset),
   background_music(background_music),
- 
-  obstacle_tiles_size(width8 * height8),
-  obstacle_tiles(new Obstacle[obstacle_tiles_size]) {
+  obstacle_tiles_size(width8 * height8) {
 
-  // create the vectors of entities
+  screen_position.w = 320;
+  screen_position.h = 240;
+
+  // create the vectors of entities and initialize obstacle tile
   for (int layer = 0; layer < LAYER_NB; layer++) {
-    tiles[layer] = new vector<TileOnMap*>();
-  }
 
-  // initialize obstacle tile
-  for (int i = 0; i < obstacle_tiles_size; i++) {
-    obstacle_tiles[i] = OBSTACLE_NONE;
+    tiles[layer] = new vector<TileOnMap*>();
+
+    obstacle_tiles[layer] = new Obstacle[obstacle_tiles_size];
+    for (int i = 0; i < obstacle_tiles_size; i++) {
+      obstacle_tiles[layer][i] = OBSTACLE_NONE;
+    }
   }
 }
 
@@ -45,8 +47,8 @@ Map::~Map() {
   unload();
   for (int layer = 0; layer < LAYER_NB; layer++) {
     delete tiles[layer];
+    delete[] obstacle_tiles[layer];
   }
-  delete[] obstacle_tiles;
 }
 
 /**
@@ -87,13 +89,11 @@ void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer, int r
   int tile_height8 = (tile->get_height() / 8) * repeat_y;
 
   // we traverse each 8*8 square in the tile
-  Obstacle *obstacle;
   int index;
   for (int j = 0; j < tile_height8; j++) {
     index = (tile_y8 + j) * width8 + tile_x8;
     for (int i = 0; i < tile_width8; i++) {
-      obstacle = &obstacle_tiles[index++];
-      *obstacle = tile->get_obstacle();
+      obstacle_tiles[layer][index++] = tile->get_obstacle();
     }
   }
 }
@@ -133,14 +133,18 @@ void Map::update_sprites(void) {
  * @param surface the map surface
  */
 void Map::display(SDL_Surface *surface) {
-  // TODO: handle the scrolling
+
+  // Link
+  Link* link = ZSDX::game_resource->get_link();
+
+  // screen
+  screen_position.x = MIN(MAX(link->get_x() - 160, 0), width - 320);
+  screen_position.y = MIN(MAX(link->get_y() - 120, 0), height - 240);  
 
   // background color
   SDL_FillRect(surface, NULL, background_color);
 
   // map entities
-
-  Link* link = ZSDX::game_resource->get_link();
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // put the tiles
@@ -261,7 +265,7 @@ void Map::start(void) {
 // 	if (event.button.button == SDL_BUTTON_LEFT) {
 // 	  int x = event.button.x;
 // 	  int y = event.button.y;
-// 	  Obstacle obstacle = obstacle_tiles[width8*(y/8) + (x/8)];
+// 	  Obstacle obstacle = obstacle_tiles[LAYER_LOW][width8*(y/8) + (x/8)];
 // 	  cout << "obstacle: " << obstacle << "\n";
 // 	}
 // 	break;
@@ -292,17 +296,18 @@ void Map::exit(void) {
 
 /**
  * Tests whether a point collides with a map tile.
+ * @param layer layer of the point
  * @param x x of the point in pixels
  * @param y y of the point in pixels
  * @return the obstacle property of this point
  */
-Obstacle Map::pixel_collision(int x, int y) {
+Obstacle Map::pixel_collision(int layer, int x, int y) {
   Obstacle obstacle_type;
   bool on_obstacle;
   int x_in_tile, y_in_tile;
 
   // get the obstacle property of this point's 8*8 square
-  obstacle_type = obstacle_tiles[(y / 8) * width8 + (x / 8)];
+  obstacle_type = obstacle_tiles[layer][(y / 8) * width8 + (x / 8)];
 
   // test the obstacle property of this square
   switch (obstacle_type) {
@@ -350,11 +355,12 @@ Obstacle Map::pixel_collision(int x, int y) {
 
 /**
  * Tests whether a rectangle collides with the map tiles.
+ * @param layer layer of the rectangle in the map
  * @param collision_box the rectangle to check
  * (its dimensions should be multiples of 8)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::simple_collision(SDL_Rect &collision_box) {
+bool Map::simple_collision(int layer, SDL_Rect &collision_box) {
   int x1, x2, y1, y2;
   bool collision;
 
@@ -366,8 +372,8 @@ bool Map::simple_collision(SDL_Rect &collision_box) {
     y2 = y1 + 7;
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1 += 8) {
       x2 = x1 + 7;
-      collision = pixel_collision(x1, y1) || pixel_collision(x2, y1)
-	|| pixel_collision(x1, y2) || pixel_collision(x2, y2);
+      collision = pixel_collision(layer, x1, y1) || pixel_collision(layer, x2, y1)
+	|| pixel_collision(layer, x1, y2) || pixel_collision(layer, x2, y2);
     }
   }
   

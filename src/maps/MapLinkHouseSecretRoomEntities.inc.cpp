@@ -130,7 +130,7 @@
 
   tile = tileset->get_tile(120);
   position_in_map.x = 40;
-  position_in_map.y = 56;
+  position_in_map.y = 64;
   add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
 
   tile = tileset->get_tile(120);
@@ -140,8 +140,8 @@
 
   tile = tileset->get_tile(122);
   position_in_map.x = 40;
-  position_in_map.y = 64;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 2);
+  position_in_map.y = 72;
+  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
 
   tile = tileset->get_tile(121);
   position_in_map.x = 48;

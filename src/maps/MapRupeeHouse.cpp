@@ -36,5 +36,5 @@ void MapRupeeHouse::load(void) {
   link_start_x = 80;
   link_start_y = 80;
 
-#include "../src/maps/MapRupeeHouseEntities.inc.cpp"
+#include "../src/maps/MapRupeeHouseEntities.inc"
 }

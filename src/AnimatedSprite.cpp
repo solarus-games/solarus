@@ -63,7 +63,7 @@ void AnimatedSprite::update_current_frame(void) {
 void AnimatedSprite::display_on_map(Map *map, SDL_Rect &position_in_map) {
   // we update the frame if necessary
   if (!is_over() && !is_suspended()) {
-    update_current_frame();
+    update_current_frame(); // TODO: do that in update_sprites!!!
   }
   animations->display_on_map(map, position_in_map, current_animation, current_direction, current_frame);
 }

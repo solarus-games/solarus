@@ -17,7 +17,7 @@ void GameResource::create_resources(void) {
   link = new Link();
 
   // tilesets
-#include "TilesetsCreation.inc.cpp"
+#include "TilesetsCreation.inc"
   
   // musics
   musics[MUSIC_VILLAGE] = new Music("village.it");
@@ -35,7 +35,7 @@ void GameResource::create_resources(void) {
   musics[MUSIC_SOLDIERS] = new Music("soldiers.it");
 
   // maps
-#include "MapsCreation.inc.cpp"
+#include "MapsCreation.inc"
 }
 
 /**

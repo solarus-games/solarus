@@ -36,5 +36,5 @@ void MapLinkHouseSecretRoom::load(void) {
   link_start_x = 80;
   link_start_y = 80;
 
-#include "../src/maps/MapLinkHouseSecretRoomEntities.inc.cpp"
+#include "../src/maps/MapLinkHouseSecretRoomEntities.inc"
 }

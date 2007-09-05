@@ -117,7 +117,8 @@ void Moving8ByPlayer::stop_down(void) {
  * on the keyboard.
  */
 void Moving8ByPlayer::update_movement(void) {
-  int x_speed, y_speed;
+  int x_speed = 0;
+  int y_speed = 0;
 
   // direction in degrees specified by the user (or -1)
   int direction = directions[direction_mask];

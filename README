@@ -1,0 +1,51 @@
+This file explains how to compile Zelda Solarus Deluxe.
+Only the developing team has to compile the project. To preserve the secrets of the game, the source code is not public.
+The users download directly a compiled binary for Windows or Linux.
+
+-----------------
+Required packages
+-----------------
+
+The following libraries are required to make ZSDX work:
+
+SDL
+SDL_image
+fmod-3.75
+
+
+------------------------
+Compilation instructions
+------------------------
+
+To compile and install ZSDX, just use the standard Unix procedure:
+
+$ ./configure
+$ make
+# make install
+
+This will install the zsdx binary in a default directory such as /usr/local/bin. So you must be root to run the last command. Then you can launch the game with the simple command:
+
+$ zsdx
+
+You can instead install the binary in another directory, so that no root access is necessary. You can specify this directory as a parameter of configure like this:
+
+$ ./configure --prefix=/home/your_directory
+$ make
+$ make install
+
+This will install the zsdx binary in /home/your_directory/bin. Then you can launch the game with:
+
+$ /home/your_directory/bin/zsdx
+
+or just with:
+
+$ zsdx
+
+if /home/your_directory/bin is in your PATH.
+
+
+------------------
+Windows developers
+------------------
+
+If you want to compile the application under Windows, the same procedure works in the MSYS/MinGW environment and generates a zsdx.exe file.

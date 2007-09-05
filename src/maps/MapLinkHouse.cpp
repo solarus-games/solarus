@@ -36,5 +36,5 @@ void MapLinkHouse::load(void) {
   link_start_x = 80;
   link_start_y = 80;
 
-#include "../src/maps/MapLinkHouseEntities.inc.cpp"
+#include "../src/maps/MapLinkHouseEntities.inc"
 }

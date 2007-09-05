@@ -303,7 +303,7 @@ void Map::exit(void) {
  */
 Obstacle Map::pixel_collision(int layer, int x, int y) {
   Obstacle obstacle_type;
-  bool on_obstacle;
+  bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
   // get the obstacle property of this point's 8*8 square
@@ -362,11 +362,8 @@ Obstacle Map::pixel_collision(int layer, int x, int y) {
  */
 bool Map::simple_collision(int layer, SDL_Rect &collision_box) {
   int x1, x2, y1, y2;
-  bool collision;
+  bool collision = false;
 
-  // debug: uncomment the following line to show the collision box
-  // SDL_FillRect(zsdx::get_screen(), &collision_box, background_color);
-  
   // we check the 4 corners of each 8*8 square in the collision box
   for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1 += 8) {
     y2 = y1 + 7;

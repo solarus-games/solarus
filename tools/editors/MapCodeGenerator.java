@@ -156,7 +156,7 @@ public class MapCodeGenerator {
 	    out.println("  link_start_x = 80;");
 	    out.println("  link_start_y = 80;");
 	    out.println();
-	    out.println("#include \"../src/maps/" + className + "Entities.inc.cpp\"");
+	    out.println("#include \"../src/maps/" + className + "Entities.inc\"");
 	    out.println("}");
 
 	    out.close();
@@ -171,7 +171,7 @@ public class MapCodeGenerator {
 	
 	String fileName = zsdxRootPath + File.separator + "src" +
 	    File.separator + "maps" + File.separator + "Map" +
-	    name + "Entities.inc.cpp";
+	    name + "Entities.inc";
 	
 	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 	
@@ -196,7 +196,7 @@ public class MapCodeGenerator {
      */
     private void updateEnumFile() throws IOException {
 	String fileName = zsdxRootPath + File.separator + "include" +
-	    File.separator + "MapList.inc.h";
+	    File.separator + "MapList.inc";
 	
 	// we have to put the following line into the file unless it is already present
 	String lineWanted = "MAP_" + upperCaseName + ",";

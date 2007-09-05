@@ -216,8 +216,8 @@ zsdx_SOURCES = \
   $(zsdxincludedir)/Link.h				\
   $(zsdxincludedir)/LinkAnimations.h			\
   $(zsdxincludedir)/Music.h				\
-  $(zsdxincludedir)/MapList.inc.h			\
-  $(zsdxincludedir)/TilesetList.inc.h			\
+  $(zsdxincludedir)/MapList.inc				\
+  $(zsdxincludedir)/TilesetList.inc			\
   $(zsdxincludedir)/Tileset.h				\
   $(zsdxincludedir)/tilesets/TilesetHouse.h		\
   $(zsdxincludedir)/maps/MapLinkHouse.h			\

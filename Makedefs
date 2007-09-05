@@ -1,9 +1,0 @@
-ZSDX_ROOT = /home/christophe/zsdx
-SRC_DIR = $(ZSDX_ROOT)/src
-BIN_DIR = $(ZSDX_ROOT)/bin
-INCLUDE_DIR = $(ZSDX_ROOT)/include
-WARNING_FLAGS = -O0 -Wall -Werror -ansi
-
-CC = g++
-CPPFLAGS = -g $(WARNING_FLAGS) -I$(INCLUDE_DIR) `sdl-config --cflags`
-LIBS = `sdl-config --libs` -lSDL_image -lfmod-3.75

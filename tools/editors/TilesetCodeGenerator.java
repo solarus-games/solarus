@@ -210,7 +210,7 @@ public class TilesetCodeGenerator {
      */
     private void updateEnumFile() throws IOException {
 	String fileName = zsdxRootPath + File.separator + "include" +
-	    File.separator + "TilesetList.inc.h";
+	    File.separator + "TilesetList.inc";
 	
 	// we have to put the following line into the file unless it is already present
 	String lineWanted = "TILESET_" + upperCaseName + ",";
@@ -224,7 +224,7 @@ public class TilesetCodeGenerator {
      */
     private void updateCreationFile() throws IOException {
 	String fileName = zsdxRootPath + File.separator + "src" +
-	    File.separator + "TilesetsCreation.inc.cpp";
+	    File.separator + "TilesetsCreation.inc";
 	
 	// we have to put the following line into the file unless it is already present
 	String lineWanted = "tilesets[TILESET_" + upperCaseName + "] = new Tileset" + name + "();";

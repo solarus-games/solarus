@@ -12,13 +12,13 @@
 // tilesets
 
 enum TilesetID {
-#include "TilesetList.inc.h"
+#include "TilesetList.inc"
   NB_TILESETS
 };
 
 // maps
 enum MapID {
-#include "MapList.inc.h"
+#include "MapList.inc"
   NB_MAPS
 };
 

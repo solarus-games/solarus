@@ -3773,80 +3773,9 @@ fi
 # Checks for libraries.
 
 
-{ echo "$as_me:$LINENO: checking for WinMain in -lmingw32" >&5
-echo $ECHO_N "checking for WinMain in -lmingw32... $ECHO_C" >&6; }
-if test "${ac_cv_lib_mingw32_WinMain+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lmingw32  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char WinMain ();
-int
-main ()
-{
-return WinMain ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext &&
-       $as_test_x conftest$ac_exeext; then
-  ac_cv_lib_mingw32_WinMain=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_mingw32_WinMain=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_mingw32_WinMain" >&5
-echo "${ECHO_T}$ac_cv_lib_mingw32_WinMain" >&6; }
-if test $ac_cv_lib_mingw32_WinMain = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBMINGW32 1
-_ACEOF
-
-  LIBS="-lmingw32 $LIBS"
-
-fi
-
-
-{ echo "$as_me:$LINENO: checking for SDL_main in -lSDLmain" >&5
-echo $ECHO_N "checking for SDL_main in -lSDLmain... $ECHO_C" >&6; }
-if test "${ac_cv_lib_SDLmain_SDL_main+set}" = set; then
+{ echo "$as_me:$LINENO: checking for main in -lSDLmain" >&5
+echo $ECHO_N "checking for main in -lSDLmain... $ECHO_C" >&6; }
+if test "${ac_cv_lib_SDLmain_main+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -3858,17 +3787,11 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char SDL_main ();
+
 int
 main ()
 {
-return SDL_main ();
+return main ();
   ;
   return 0;
 }
@@ -3891,21 +3814,21 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
 	 test ! -s conftest.err
        } && test -s conftest$ac_exeext &&
        $as_test_x conftest$ac_exeext; then
-  ac_cv_lib_SDLmain_SDL_main=yes
+  ac_cv_lib_SDLmain_main=yes
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	ac_cv_lib_SDLmain_SDL_main=no
+	ac_cv_lib_SDLmain_main=no
 fi
 
 rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
       conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_SDLmain_SDL_main" >&5
-echo "${ECHO_T}$ac_cv_lib_SDLmain_SDL_main" >&6; }
-if test $ac_cv_lib_SDLmain_SDL_main = yes; then
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_SDLmain_main" >&5
+echo "${ECHO_T}$ac_cv_lib_SDLmain_main" >&6; }
+if test $ac_cv_lib_SDLmain_main = yes; then
   cat >>confdefs.h <<_ACEOF
 #define HAVE_LIBSDLMAIN 1
 _ACEOF
@@ -4057,9 +3980,9 @@ _ACEOF
 fi
 
 
-{ echo "$as_me:$LINENO: checking for FSOUND_Init in -lfmod" >&5
-echo $ECHO_N "checking for FSOUND_Init in -lfmod... $ECHO_C" >&6; }
-if test "${ac_cv_lib_fmod_FSOUND_Init+set}" = set; then
+{ echo "$as_me:$LINENO: checking for main in -lfmod" >&5
+echo $ECHO_N "checking for main in -lfmod... $ECHO_C" >&6; }
+if test "${ac_cv_lib_fmod_main+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -4071,17 +3994,11 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char FSOUND_Init ();
+
 int
 main ()
 {
-return FSOUND_Init ();
+return main ();
   ;
   return 0;
 }
@@ -4104,26 +4021,91 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
 	 test ! -s conftest.err
        } && test -s conftest$ac_exeext &&
        $as_test_x conftest$ac_exeext; then
-  ac_cv_lib_fmod_FSOUND_Init=yes
+  ac_cv_lib_fmod_main=yes
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	ac_cv_lib_fmod_FSOUND_Init=no
+	ac_cv_lib_fmod_main=no
 fi
 
 rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
       conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_fmod_FSOUND_Init" >&5
-echo "${ECHO_T}$ac_cv_lib_fmod_FSOUND_Init" >&6; }
-if test $ac_cv_lib_fmod_FSOUND_Init = yes; then
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_fmod_main" >&5
+echo "${ECHO_T}$ac_cv_lib_fmod_main" >&6; }
+if test $ac_cv_lib_fmod_main = yes; then
   cat >>confdefs.h <<_ACEOF
 #define HAVE_LIBFMOD 1
 _ACEOF
 
   LIBS="-lfmod $LIBS"
+
+fi
+
+
+{ echo "$as_me:$LINENO: checking for main in -lmingw32" >&5
+echo $ECHO_N "checking for main in -lmingw32... $ECHO_C" >&6; }
+if test "${ac_cv_lib_mingw32_main+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lmingw32  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext &&
+       $as_test_x conftest$ac_exeext; then
+  ac_cv_lib_mingw32_main=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_mingw32_main=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_mingw32_main" >&5
+echo "${ECHO_T}$ac_cv_lib_mingw32_main" >&6; }
+if test $ac_cv_lib_mingw32_main = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBMINGW32 1
+_ACEOF
+
+  LIBS="-lmingw32 $LIBS"
 
 fi
 

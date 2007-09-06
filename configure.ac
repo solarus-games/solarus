@@ -13,10 +13,10 @@ AC_PROG_CXX
 AC_PROG_CC
 
 # Checks for libraries.
-AC_CHECK_LIB(SDLmain, main)
-AC_CHECK_LIB(SDL, SDL_Init)
-AC_CHECK_LIB(SDL_image, IMG_Load)
 AC_CHECK_LIB(fmod, main)
+AC_CHECK_LIB(SDL_image, IMG_Load)
+AC_CHECK_LIB(SDL, SDL_Init)
+AC_CHECK_LIB(SDLmain, main)
 AC_CHECK_LIB(mingw32, main)
 
 # Checks for header files.

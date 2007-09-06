@@ -6,8 +6,14 @@
 /* Define to 1 if you have the `fmod' library (-lfmod). */
 #undef HAVE_LIBFMOD
 
+/* Define to 1 if you have the `mingw32' library (-lmingw32). */
+#undef HAVE_LIBMINGW32
+
 /* Define to 1 if you have the `SDL' library (-lSDL). */
 #undef HAVE_LIBSDL
+
+/* Define to 1 if you have the `SDLmain' library (-lSDLmain). */
+#undef HAVE_LIBSDLMAIN
 
 /* Define to 1 if you have the `SDL_image' library (-lSDL_image). */
 #undef HAVE_LIBSDL_IMAGE

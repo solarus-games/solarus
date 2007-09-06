@@ -3,7 +3,7 @@ AM_CXXFLAGS = -O0 -Wall -Werror -ansi
 
 zsdxincludedir = $(top_srcdir)/include
 bin_PROGRAMS = zsdx
-zsdx_LDADD = -lSDL -lSDL_image -lfmod-3.75
+zsdx_LDADD = -lSDL -lSDL_image -lfmod
 zsdx_SOURCES = 						\
   ZSDX.cpp						\
   Game.cpp						\

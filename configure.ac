@@ -15,7 +15,7 @@ AC_PROG_CC
 # Checks for libraries.
 AC_CHECK_LIB(SDL, SDL_Init)
 AC_CHECK_LIB(SDL_image, IMG_Load)
-AC_CHECK_LIB(fmod-3.75, FSOUND_Init)
+AC_CHECK_LIB(fmod, FSOUND_Init)
 
 # Checks for header files.
 AC_HEADER_STDC

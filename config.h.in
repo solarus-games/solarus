@@ -3,8 +3,8 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define to 1 if you have the `fmod-3.75' library (-lfmod-3.75). */
-#undef HAVE_LIBFMOD_3_75
+/* Define to 1 if you have the `fmod' library (-lfmod). */
+#undef HAVE_LIBFMOD
 
 /* Define to 1 if you have the `SDL' library (-lSDL). */
 #undef HAVE_LIBSDL

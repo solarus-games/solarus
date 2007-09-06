@@ -12,6 +12,18 @@ SDL
 SDL_image
 fmod-3.75
 
+There exists SDL packages for Ubuntu:
+
+libsdl-image1.2-dev
+libsdl1.2-dev
+
+But there is no FMOD package for Ubuntu. So you have to install the files manually:
+- Download the FMOD archive: http://www.fmod.org/index.php/release/version/fmodapi375linux.tar.gz
+- Create a directory for the FMOD .h files: /usr/include/fmod
+- Copy into this directory every .h file from the subdirectory api/inc of the FMOD archive
+- Copy api/libfmod-3.75.so into /usr/lib
+- Make a symbolic link: ln -s /usr/lib/libfmod-3.75.so /usr/lib/libfmod.so
+
 
 ------------------------
 Compilation instructions
@@ -48,4 +60,4 @@ if /home/your_directory/bin is in your PATH.
 Windows developers
 ------------------
 
-If you want to compile the application under Windows, the same procedure works in the MSYS/MinGW environment and generates a zsdx.exe file.
+If you want to compile the application under Windows, the same procedure works in an Unix environment such as MinGW or Cygwin. A zsdx.exe file is generated.

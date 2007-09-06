@@ -7,6 +7,14 @@
 
 #include <SDL/SDL.h>
 
+/**
+ * Macros used by the generated code to define a tile in the tileset.
+ */
+#define SIMPLE_TILE(tile_id, obstacle, x, y, w, h) \
+  create_tile(tile_id, new SimpleTile(obstacle, x, y, w, h))
+#define ANIMATED_TILE(tile_id, obstacle, sequence, w, h, x1, y1, x2, y2, x3, y3) \
+  create_tile(tile_id, new AnimatedTile(obstacle, sequence, w, h, x1, y1, x2, y2, x3, y3))
+
 class Tile;
 
 /**
@@ -49,10 +57,10 @@ class Tileset {
   /**
    * Creates a new tile in the tileset.
    * This function is called by load().
-   * @param tile the tile to add
    * @param id id of this tile (1 to 1024)
+   * @param tile the tile to add
    */
-  void create_tile(Tile *tile, int id);
+  void create_tile(int id, Tile *tile);
 
  public:
 

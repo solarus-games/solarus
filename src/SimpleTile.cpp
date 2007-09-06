@@ -8,13 +8,19 @@
 
 /**
  * Creates a simple tile.
- * @param position_in_tileset position of the tile in the tileset
+ * @param x x position of the tile in the tileset
+ * @param y y position of the tile in the tileset
+ * @param width width of the tile in the tileset
+ * @param height height of the tile in the tileset
  * @param obstacle is the tile an obstacle?
  */
-SimpleTile::SimpleTile(SDL_Rect &position_in_tileset, Obstacle obstacle):
-  Tile(obstacle, position_in_tileset.w, position_in_tileset.h),
-  position_in_tileset(position_in_tileset) {
+SimpleTile::SimpleTile(Obstacle obstacle, int x, int y, int width, int height):
+  Tile(obstacle, width, height) {
 
+  position_in_tileset.x = x;
+  position_in_tileset.y = y;
+  position_in_tileset.w = width;
+  position_in_tileset.h = height;
 }
 
 /**

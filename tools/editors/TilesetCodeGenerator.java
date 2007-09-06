@@ -122,16 +122,6 @@ public class TilesetCodeGenerator {
 	out.println(" */");
 	out.println("void Tileset" + name + "::load(void) {");
 	out.println("  load_tileset_image(\"images/tilesets/" + name + ".png\");");
-	out.println("  SDL_Rect position_in_tileset;");
-
-	// create the local variable positions_in_tileset[] only if there is at least one animated tile
-	boolean found = false;
-	for (Tile tile: tileset.getTiles()) {
-	    if (tile.isAnimated()) {
-		out.println("  SDL_Rect positions_in_tileset[3]; // for animated tiles");
-		break;
-	    }
-	}
 
 	out.println();
 
@@ -147,15 +137,9 @@ public class TilesetCodeGenerator {
 
 	    String obstacleConstant = obstacleConstants[tile.getObstacle()];
 
-	    out.println("  // tile " + id);
 	    if (!tile.isAnimated()) {
 		// simple tile
-		out.println("  position_in_tileset.x = " + x + ";");
-		out.println("  position_in_tileset.y = " + y + ";");
-		out.println("  position_in_tileset.w = " + width + ";");
-		out.println("  position_in_tileset.h = " + height + ";");
-		out.println("  create_tile(new SimpleTile(position_in_tileset, " + obstacleConstant + "), " + id + ");");
-		out.println();
+		out.println("  SIMPLE_TILE(" + id + ", " + obstacleConstant + ", " + x + ", " + y + ", " + width + ", " + height + ");");
 	    }
 	    else {
 		// animated tile
@@ -172,31 +156,10 @@ public class TilesetCodeGenerator {
 		}
 
 		String animationSequenceConstant = animationSequenceConstants[tile.getAnimationSequence()];
-	    
-		// generate the three images
-		out.println("  positions_in_tileset[0].x = " + x + ";");
-		out.println("  positions_in_tileset[0].y = " + y + ";");
-		out.println("  positions_in_tileset[0].w = " + width + ";");
-		out.println("  positions_in_tileset[0].h = " + height + ";");
-		out.println();
-
-		x += dx; 
-		y += dy;
-		out.println("  positions_in_tileset[1].x = " + x + ";");
-		out.println("  positions_in_tileset[1].y = " + y + ";");
-		out.println("  positions_in_tileset[1].w = " + width + ";");
-		out.println("  positions_in_tileset[1].h = " + height + ";");
-		out.println();
-
-		x += dx; 
-		y += dy;
-		out.println("  positions_in_tileset[2].x = " + x + ";");
-		out.println("  positions_in_tileset[2].y = " + y + ";");
-		out.println("  positions_in_tileset[2].w = " + width + ";");
-		out.println("  positions_in_tileset[2].h = " + height + ";");
-		out.println();
-		out.println("  create_tile(new AnimatedTile(positions_in_tileset, " + animationSequenceConstant + ", " + obstacleConstant + "), 1);");
-
+		
+		out.println("  ANIMATED_TILE(" + id + ", " + obstacleConstant + ", " + animationSequenceConstant + ", "
+			    + width + ", " + height + ", " + x + ", " + y + ", " + (x + dx) + ", " + (y + dy) + ", "
+			    + (x + 2 * dx) + ", " + (y + 2 * y) + ");");
 	    }
 	}
 	

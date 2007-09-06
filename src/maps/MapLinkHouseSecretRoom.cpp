@@ -25,8 +25,6 @@ MapLinkHouseSecretRoom::MapLinkHouseSecretRoom(void):
  * Loads the map.
  */
 void MapLinkHouseSecretRoom::load(void) {
-  Tile *tile;
-  SDL_Rect position_in_map;
 
   if (!tileset->is_loaded()) {
     tileset->load();

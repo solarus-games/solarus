@@ -53,38 +53,29 @@ Map::~Map() {
 
 /**
  * Creates a tile on the map.
- * It is equivalent to add_new_tile(tile, position_in_map, 1, 1).
- * This function is called for each tile, when loading the map.
+ * This function is called for each tile when loading the map.
  * The tiles on a map are not supposed to change during the game.
- * @param tile_image image of the tile to create
- * @param position_in_map position of the tile on the map
- * @param layer layer of the tile
+ * @param tile_id id of the tile in the tileset
+ * @param layer layer of the tile to create
+ * @param position_in_map x position of the tile on the map
+ * @param position_in_map y position of the tile on the map
+ * @param repeat_x how many times the tile pattern is repeated on x
+ * @param repeat_x how many times the tile pattern is repeated on y
  */
-void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer) {
-  add_new_tile(tile, position_in_map, layer, 1, 1);
-}
+void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int repeat_y) {
 
-/**
- * Creates a tile on the map, repeating its pattern.
- * This function is called for each tile, when loading the map.
- * The tiles on a map are not supposed to change during the game.
- * @param tile_image image of the tile to create
- * @param position_in_map position of the tile on the map
- * @param layer layer of the tile
- * @param repeat_x how many times the pattern is repeated on x
- * @param repeat_x how many times the pattern is repeated on y
- */
-void Map::add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer, int repeat_x, int repeat_y) {
+  // get the tile in the tileset
+  Tile *tile = tileset->get_tile(tile_id);
 
   // create the tile object
-  TileOnMap *tileOnMap = new TileOnMap(tile, position_in_map, layer, repeat_x, repeat_y);
+  TileOnMap *tileOnMap = new TileOnMap(tile, layer, x, y, repeat_x, repeat_y);
 
   // add it to the map
   tiles[layer]->push_back(tileOnMap);
 
   // update the collision list
-  int tile_x8 = position_in_map.x / 8;
-  int tile_y8 = position_in_map.y / 8;
+  int tile_x8 = x / 8;
+  int tile_y8 = y / 8;
   int tile_width8 = (tile->get_width() / 8) * repeat_x;
   int tile_height8 = (tile->get_height() / 8) * repeat_y;
 

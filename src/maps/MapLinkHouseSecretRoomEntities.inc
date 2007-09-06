@@ -1,225 +1,45 @@
-  tile = tileset->get_tile(49);
-  position_in_map.x = 0;
-  position_in_map.y = 16;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(51);
-  position_in_map.x = 0;
-  position_in_map.y = 200;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(55);
-  position_in_map.x = 0;
-  position_in_map.y = 40;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 10);
-
-  tile = tileset->get_tile(145);
-  position_in_map.x = 8;
-  position_in_map.y = 112;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(141);
-  position_in_map.x = 8;
-  position_in_map.y = 104;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(143);
-  position_in_map.x = 8;
-  position_in_map.y = 128;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(56);
-  position_in_map.x = 24;
-  position_in_map.y = 200;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 4, 1);
-
-  tile = tileset->get_tile(52);
-  position_in_map.x = 88;
-  position_in_map.y = 200;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(53);
-  position_in_map.x = 24;
-  position_in_map.y = 16;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 4, 1);
-
-  tile = tileset->get_tile(50);
-  position_in_map.x = 88;
-  position_in_map.y = 16;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(54);
-  position_in_map.x = 88;
-  position_in_map.y = 40;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 10);
-
-  tile = tileset->get_tile(100);
-  position_in_map.x = 88;
-  position_in_map.y = 104;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(18);
-  position_in_map.x = 24;
-  position_in_map.y = 40;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(22);
-  position_in_map.x = 32;
-  position_in_map.y = 40;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 6, 1);
-
-  tile = tileset->get_tile(19);
-  position_in_map.x = 80;
-  position_in_map.y = 40;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(23);
-  position_in_map.x = 80;
-  position_in_map.y = 48;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 18);
-
-  tile = tileset->get_tile(21);
-  position_in_map.x = 80;
-  position_in_map.y = 192;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(20);
-  position_in_map.x = 24;
-  position_in_map.y = 192;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(25);
-  position_in_map.x = 32;
-  position_in_map.y = 192;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 6, 1);
-
-  tile = tileset->get_tile(24);
-  position_in_map.x = 24;
-  position_in_map.y = 48;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 18);
-
-  tile = tileset->get_tile(6);
-  position_in_map.x = 32;
-  position_in_map.y = 48;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 3, 9);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 24;
-  position_in_map.y = 104;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 64;
-  position_in_map.y = 104;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(121);
-  position_in_map.x = 32;
-  position_in_map.y = 104;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 4, 1);
-
-  tile = tileset->get_tile(122);
-  position_in_map.x = 64;
-  position_in_map.y = 112;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 5);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 24;
-  position_in_map.y = 128;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 40;
-  position_in_map.y = 64;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 40;
-  position_in_map.y = 80;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(122);
-  position_in_map.x = 40;
-  position_in_map.y = 72;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(121);
-  position_in_map.x = 48;
-  position_in_map.y = 80;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 4, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 80;
-  position_in_map.y = 80;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 64;
-  position_in_map.y = 152;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(121);
-  position_in_map.x = 32;
-  position_in_map.y = 128;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 40;
-  position_in_map.y = 128;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(121);
-  position_in_map.x = 48;
-  position_in_map.y = 152;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 2, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 40;
-  position_in_map.y = 152;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 40;
-  position_in_map.y = 176;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 64;
-  position_in_map.y = 176;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(122);
-  position_in_map.x = 40;
-  position_in_map.y = 160;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 2);
-
-  tile = tileset->get_tile(98);
-  position_in_map.x = 32;
-  position_in_map.y = 16;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(122);
-  position_in_map.x = 64;
-  position_in_map.y = 184;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 2);
-
-  tile = tileset->get_tile(120);
-  position_in_map.x = 64;
-  position_in_map.y = 192;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 1);
-
-  tile = tileset->get_tile(1);
-  position_in_map.x = 0;
-  position_in_map.y = 112;
-  add_new_tile(tile, position_in_map, LAYER_LOW, 1, 2);
-
-  tile = tileset->get_tile(151);
-  position_in_map.x = 0;
-  position_in_map.y = 72;
-  add_new_tile(tile, position_in_map, LAYER_HIGH, 1, 1);
-
-  tile = tileset->get_tile(171);
-  position_in_map.x = 0;
-  position_in_map.y = 104;
-  add_new_tile(tile, position_in_map, LAYER_HIGH, 1, 1);
-
+  TILE(49, LAYER_LOW, 0, 16, 1, 1);
+  TILE(51, LAYER_LOW, 0, 200, 1, 1);
+  TILE(55, LAYER_LOW, 0, 40, 1, 10);
+  TILE(145, LAYER_LOW, 8, 112, 1, 1);
+  TILE(141, LAYER_LOW, 8, 104, 1, 1);
+  TILE(143, LAYER_LOW, 8, 128, 1, 1);
+  TILE(56, LAYER_LOW, 24, 200, 4, 1);
+  TILE(52, LAYER_LOW, 88, 200, 1, 1);
+  TILE(53, LAYER_LOW, 24, 16, 4, 1);
+  TILE(50, LAYER_LOW, 88, 16, 1, 1);
+  TILE(54, LAYER_LOW, 88, 40, 1, 10);
+  TILE(100, LAYER_LOW, 88, 104, 1, 1);
+  TILE(18, LAYER_LOW, 24, 40, 1, 1);
+  TILE(22, LAYER_LOW, 32, 40, 6, 1);
+  TILE(19, LAYER_LOW, 80, 40, 1, 1);
+  TILE(23, LAYER_LOW, 80, 48, 1, 18);
+  TILE(21, LAYER_LOW, 80, 192, 1, 1);
+  TILE(20, LAYER_LOW, 24, 192, 1, 1);
+  TILE(25, LAYER_LOW, 32, 192, 6, 1);
+  TILE(24, LAYER_LOW, 24, 48, 1, 18);
+  TILE(6, LAYER_LOW, 32, 48, 3, 9);
+  TILE(120, LAYER_LOW, 24, 104, 1, 1);
+  TILE(120, LAYER_LOW, 64, 104, 1, 1);
+  TILE(121, LAYER_LOW, 32, 104, 4, 1);
+  TILE(122, LAYER_LOW, 64, 112, 1, 5);
+  TILE(120, LAYER_LOW, 24, 128, 1, 1);
+  TILE(120, LAYER_LOW, 40, 64, 1, 1);
+  TILE(120, LAYER_LOW, 40, 80, 1, 1);
+  TILE(122, LAYER_LOW, 40, 72, 1, 1);
+  TILE(121, LAYER_LOW, 48, 80, 4, 1);
+  TILE(120, LAYER_LOW, 80, 80, 1, 1);
+  TILE(120, LAYER_LOW, 64, 152, 1, 1);
+  TILE(121, LAYER_LOW, 32, 128, 1, 1);
+  TILE(120, LAYER_LOW, 40, 128, 1, 1);
+  TILE(121, LAYER_LOW, 48, 152, 2, 1);
+  TILE(120, LAYER_LOW, 40, 152, 1, 1);
+  TILE(120, LAYER_LOW, 40, 176, 1, 1);
+  TILE(120, LAYER_LOW, 64, 176, 1, 1);
+  TILE(122, LAYER_LOW, 40, 160, 1, 2);
+  TILE(98, LAYER_LOW, 32, 16, 1, 1);
+  TILE(122, LAYER_LOW, 64, 184, 1, 2);
+  TILE(120, LAYER_LOW, 64, 192, 1, 1);
+  TILE(1, LAYER_LOW, 0, 112, 1, 2);
+  TILE(151, LAYER_HIGH, 0, 72, 1, 1);
+  TILE(171, LAYER_HIGH, 0, 104, 1, 1);

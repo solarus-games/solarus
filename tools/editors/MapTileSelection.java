@@ -231,10 +231,7 @@ public class MapTileSelection extends Observable implements Iterable {
      * @param dy number of pixels to move on y
      */
     public void move(int dx, int dy) {
-	
-	for (TileOnMap tile: tiles) {
-	    
-	    tile.move(dx, dy);
-	}
+
+	map.moveTiles(tiles, dx, dy);	
     }
 }

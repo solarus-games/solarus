@@ -58,7 +58,7 @@ am_zsdx_OBJECTS = ZSDX.$(OBJEXT) Game.$(OBJEXT) GameResource.$(OBJEXT) \
 	TilesetHouse.$(OBJEXT) MapLinkHouse.$(OBJEXT) \
 	MapLinkHouseSecretRoom.$(OBJEXT) MapRupeeHouse.$(OBJEXT)
 zsdx_OBJECTS = $(am_zsdx_OBJECTS)
-zsdx_DEPENDENCIES =
+zsdx_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -163,7 +163,6 @@ target_alias = @target_alias@
 INCLUDES = -I$(top_srcdir)/include
 AM_CXXFLAGS = -O0 -Wall -Werror -ansi
 zsdxincludedir = $(top_srcdir)/include
-zsdx_LDADD = -lSDL -lSDL_image -lfmod
 zsdx_SOURCES = \
   ZSDX.cpp						\
   Game.cpp						\

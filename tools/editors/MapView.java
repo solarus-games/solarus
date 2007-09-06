@@ -562,8 +562,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		
 		// now let's update the tile
 		try {
-		    selectedTileOnMap.setPositionInMap(xA, yA, xB, yB);
-		    repaint();
+		    map.setTilePosition(selectedTileOnMap, xA, yA, xB, yB);
 		}
 		catch (MapException e) {
 		    // should not happen as long as setPositionInMap() checks only
@@ -615,8 +614,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    cursorLocation.x = x;
 	    cursorLocation.y = y;
-
-	    repaint();
 	}
     }
 

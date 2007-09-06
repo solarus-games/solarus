@@ -25,8 +25,6 @@ MapLinkHouse::MapLinkHouse(void):
  * Loads the map.
  */
 void MapLinkHouse::load(void) {
-  Tile *tile;
-  SDL_Rect position_in_map;
 
   if (!tileset->is_loaded()) {
     tileset->load();

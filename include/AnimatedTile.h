@@ -33,14 +33,19 @@ class AnimatedTile: public Tile {
 
   /**
    * Constructor.
-   * @param position_in_tileset array of 3 SDL_Rect
-   * representing the 3 animation frames in the tileset image
-   * @param sequence animation sequence type
    * @param obstacle is the tile an obstacle?
+   * @param sequence animation sequence type
+   * @param width width of the tile (the same for each frame of the animation)
+   * @param height height of the tile (the same for each frame of the animation)
+   * @param x1 x position of the first frame in the tileset
+   * @param y1 y position of the first frame in the tileset
+   * @param x2 x position of the second frame in the tileset
+   * @param y2 y position of the second frame in the tileset
+   * @param x3 x position of the third frame in the tileset
+   * @param y3 y position of the third frame in the tileset
    */
-  AnimatedTile(const SDL_Rect *position_in_tileset,
-		    TileAnimationSequence sequence,
-		    Obstacle obstacle);
+  AnimatedTile(Obstacle obstacle, TileAnimationSequence sequence,
+	       int width, int height, int x1, int y1, int x2, int y2, int x3, int y3);
 
   /**
    * Destructor.

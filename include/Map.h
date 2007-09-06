@@ -16,6 +16,11 @@ using namespace std;
 #include "TileOnMap.h"
 
 /**
+ * A macro used by the generated code to put a tile on the map.
+ */
+#define TILE(tile_id, layer, x, y, repeat_x, repeat_y) add_new_tile(tile_id, layer, x, y, repeat_x, repeat_y)
+
+/**
  * Abstract class for the maps
  * A map is where a game sequence takes place. It contains many information:
  * - the map dimensions
@@ -125,26 +130,16 @@ class Map {
 
   /**
    * Creates a tile on the map.
-   * It is equivalent to add_new_tile(tile_image, position_in_map, 1, 1).
-   * This function is called for each tile, when loading the map.
+   * This function is called for each tile when loading the map.
    * The tiles on a map are not supposed to change during the game.
-   * @param tile_image image of the tile to create
-   * @param position_in_map position of the tile on the map
-   * @param layer layer of the tile
+   * @param tile_id id of the tile in the tileset
+   * @param layer layer of the tile to create
+   * @param position_in_map x position of the tile on the map
+   * @param position_in_map y position of the tile on the map
+   * @param repeat_x how many times the tile pattern is repeated on x
+   * @param repeat_x how many times the tile pattern is repeated on y
    */
-  void add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer);
-
-  /**
-   * Creates a tile on the map, repeating its pattern.
-   * This function is called for each tile, when loading the map.
-   * The tiles on a map are not supposed to change during the game.
-   * @param tile_image image of the tile to create
-   * @param position_in_map position of the tile on the map
-   * @param layer layer of the tile
-   * @param repeat_x how many times the pattern is repeated on x
-   * @param repeat_x how many times the pattern is repeated on y
-   */
-  void add_new_tile(Tile *tile, SDL_Rect &position_in_map, Layer layer, int repeat_x, int repeat_y);
+  void add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int repeat_y);
 
  public:
 

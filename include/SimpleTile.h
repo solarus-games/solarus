@@ -24,10 +24,13 @@ class SimpleTile: public Tile {
 
   /**
    * Creates a simple tile.
-   * @param position_in_tileset position of the tile in the tileset
+   * @param x x position of the tile in the tileset
+   * @param y y position of the tile in the tileset
+   * @param width width of the tile in the tileset
+   * @param height height of the tile in the tileset
    * @param obstacle is the tile an obstacle?
    */
-  SimpleTile(SDL_Rect &position_in_tileset, Obstacle obstacle);
+  SimpleTile(Obstacle obstacle, int x, int y, int width, int height);
 
   /**
    * Destructor.

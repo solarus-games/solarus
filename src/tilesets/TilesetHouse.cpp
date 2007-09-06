@@ -12,1217 +12,178 @@
  */
 void TilesetHouse::load(void) {
   load_tileset_image("images/tilesets/House.png");
-  SDL_Rect position_in_tileset;
 
-  // tile 1
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 1);
-
-  // tile 2
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 2);
-
-  // tile 3
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 3);
-
-  // tile 4
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 4);
-
-  // tile 5
-  position_in_tileset.x = 16;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 5);
-
-  // tile 6
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 6);
-
-  // tile 7
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 7);
-
-  // tile 8
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 8);
-
-  // tile 9
-  position_in_tileset.x = 72;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 9);
-
-  // tile 10
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 10);
-
-  // tile 11
-  position_in_tileset.x = 72;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 11);
-
-  // tile 12
-  position_in_tileset.x = 80;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 12);
-
-  // tile 13
-  position_in_tileset.x = 88;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 13);
-
-  // tile 14
-  position_in_tileset.x = 80;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 14);
-
-  // tile 15
-  position_in_tileset.x = 88;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 15);
-
-  // tile 16
-  position_in_tileset.x = 96;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 16);
-
-  // tile 17
-  position_in_tileset.x = 112;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 17);
-
-  // tile 18
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 18);
-
-  // tile 19
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 19);
-
-  // tile 20
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 24;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 20);
-
-  // tile 21
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 24;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 21);
-
-  // tile 22
-  position_in_tileset.x = 16;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 22);
-
-  // tile 23
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 23);
-
-  // tile 24
-  position_in_tileset.x = 16;
-  position_in_tileset.y = 24;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 24);
-
-  // tile 25
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 24;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 25);
-
-  // tile 26
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 26);
-
-  // tile 27
-  position_in_tileset.x = 40;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 27);
-
-  // tile 28
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 24;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 28);
-
-  // tile 29
-  position_in_tileset.x = 40;
-  position_in_tileset.y = 24;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 29);
-
-  // tile 30
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 32;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 30);
-
-  // tile 31
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 32;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 31);
-
-  // tile 32
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 32);
-
-  // tile 33
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 33);
-
-  // tile 34
-  position_in_tileset.x = 16;
-  position_in_tileset.y = 32;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 34);
-
-  // tile 35
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 32;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 35);
-
-  // tile 36
-  position_in_tileset.x = 16;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 36);
-
-  // tile 37
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 37);
-
-  // tile 38
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 32;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 38);
-
-  // tile 39
-  position_in_tileset.x = 40;
-  position_in_tileset.y = 32;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 39);
-
-  // tile 40
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 40);
-
-  // tile 41
-  position_in_tileset.x = 40;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 41);
-
-  // tile 42
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 42);
-
-  // tile 43
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 43);
-
-  // tile 44
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 32;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 44);
-
-  // tile 45
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 32;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 45);
-
-  // tile 46
-  position_in_tileset.x = 80;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 46);
-
-  // tile 47
-  position_in_tileset.x = 96;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 47);
-
-  // tile 48
-  position_in_tileset.x = 112;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 48);
-
-  // tile 49
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 49);
-
-  // tile 50
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 50);
-
-  // tile 51
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 72;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 51);
-
-  // tile 52
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 72;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 52);
-
-  // tile 53
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 53);
-
-  // tile 54
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 54);
-
-  // tile 55
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 72;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 55);
-
-  // tile 56
-  position_in_tileset.x = 72;
-  position_in_tileset.y = 64;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 56);
-
-  // tile 57
-  position_in_tileset.x = 88;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 57);
-
-  // tile 58
-  position_in_tileset.x = 112;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 58);
-
-  // tile 59
-  position_in_tileset.x = 88;
-  position_in_tileset.y = 72;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 59);
-
-  // tile 60
-  position_in_tileset.x = 112;
-  position_in_tileset.y = 72;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 60);
-
-  // tile 61
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 96;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 61);
-
-  // tile 62
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 96;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 62);
-
-  // tile 63
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 120;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 63);
-
-  // tile 64
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 120;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 64);
-
-  // tile 65
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 96;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 65);
-
-  // tile 66
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 96;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 66);
-
-  // tile 67
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 120;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 67);
-
-  // tile 68
-  position_in_tileset.x = 72;
-  position_in_tileset.y = 112;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 68);
-
-  // tile 69
-  position_in_tileset.x = 88;
-  position_in_tileset.y = 96;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 69);
-
-  // tile 70
-  position_in_tileset.x = 112;
-  position_in_tileset.y = 96;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 70);
-
-  // tile 71
-  position_in_tileset.x = 88;
-  position_in_tileset.y = 120;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 71);
-
-  // tile 72
-  position_in_tileset.x = 112;
-  position_in_tileset.y = 120;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 72);
-
-  // tile 79
-  position_in_tileset.x = 128;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 79);
-
-  // tile 80
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 80);
-
-  // tile 81
-  position_in_tileset.x = 168;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 81);
-
-  // tile 82
-  position_in_tileset.x = 168;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 82);
-
-  // tile 83
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 83);
-
-  // tile 84
-  position_in_tileset.x = 176;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 84);
-
-  // tile 85
-  position_in_tileset.x = 184;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 85);
-
-  // tile 86
-  position_in_tileset.x = 176;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 86);
-
-  // tile 87
-  position_in_tileset.x = 184;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 87);
-
-  // tile 88
-  position_in_tileset.x = 192;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 88);
-
-  // tile 89
-  position_in_tileset.x = 200;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 89);
-
-  // tile 90
-  position_in_tileset.x = 192;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 90);
-
-  // tile 91
-  position_in_tileset.x = 200;
-  position_in_tileset.y = 8;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 91);
-
-  // tile 92
-  position_in_tileset.x = 208;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 92);
-
-  // tile 93
-  position_in_tileset.x = 128;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 93);
-
-  // tile 94
-  position_in_tileset.x = 144;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 94);
-
-  // tile 95
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 95);
-
-  // tile 96
-  position_in_tileset.x = 176;
-  position_in_tileset.y = 16;
-  position_in_tileset.w = 48;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 96);
-
-  // tile 97
-  position_in_tileset.x = 192;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 97);
-
-  // tile 98
-  position_in_tileset.x = 192;
-  position_in_tileset.y = 72;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 98);
-
-  // tile 99
-  position_in_tileset.x = 136;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 99);
-
-  // tile 100
-  position_in_tileset.x = 168;
-  position_in_tileset.y = 48;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 100);
-
-  // tile 101
-  position_in_tileset.x = 136;
-  position_in_tileset.y = 72;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 101);
-
-  // tile 102
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 80;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 102);
-
-  // tile 110
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 110);
-
-  // tile 111
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 111);
-
-  // tile 112
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 160;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 112);
-
-  // tile 113
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 160;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 113);
-
-  // tile 114
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 114);
-
-  // tile 115
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 160;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 115);
-
-  // tile 116
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 116);
-
-  // tile 117
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 117);
-
-  // tile 118
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 168;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 118);
-
-  // tile 119
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 168;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 119);
-
-  // tile 120
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 136;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 120);
-
-  // tile 121
-  position_in_tileset.x = 56;
-  position_in_tileset.y = 136;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 121);
-
-  // tile 122
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 136;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 122);
-
-  // tile 123
-  position_in_tileset.x = 136;
-  position_in_tileset.y = 104;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 123);
-
-  // tile 124
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 104;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 124);
-
-  // tile 125
-  position_in_tileset.x = 144;
-  position_in_tileset.y = 104;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 125);
-
-  // tile 126
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 152;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 126);
-
-  // tile 127
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 152;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 127);
-
-  // tile 128
-  position_in_tileset.x = 224;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 128);
-
-  // tile 129
-  position_in_tileset.x = 240;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 129);
-
-  // tile 130
-  position_in_tileset.x = 256;
-  position_in_tileset.y = 40;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 130);
-
-  // tile 131
-  position_in_tileset.x = 224;
-  position_in_tileset.y = 64;
-  position_in_tileset.w = 48;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 131);
-
-  // tile 132
-  position_in_tileset.x = 272;
-  position_in_tileset.y = 64;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 132);
-
-  // tile 133
-  position_in_tileset.x = 224;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 40;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 133);
-
-  // tile 134
-  position_in_tileset.x = 256;
-  position_in_tileset.y = 0;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 40;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 134);
-
-  // tile 135
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 176;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 135);
-
-  // tile 136
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 176;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 136);
-
-  // tile 137
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 192;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 137);
-
-  // tile 138
-  position_in_tileset.x = 24;
-  position_in_tileset.y = 192;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 138);
-
-  // tile 139
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 176;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 139);
-
-  // tile 140
-  position_in_tileset.x = 8;
-  position_in_tileset.y = 192;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 140);
-
-  // tile 141
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 176;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 141);
-
-  // tile 142
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 176;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 142);
-
-  // tile 143
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 200;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 143);
-
-  // tile 144
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 200;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 144);
-
-  // tile 145
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 184;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 145);
-
-  // tile 146
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 184;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 146);
-
-  // tile 147
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 208;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 147);
-
-  // tile 148
-  position_in_tileset.x = 0;
-  position_in_tileset.y = 224;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 148);
-
-  // tile 149
-  position_in_tileset.x = 32;
-  position_in_tileset.y = 208;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 149);
-
-  // tile 150
-  position_in_tileset.x = 48;
-  position_in_tileset.y = 208;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 150);
-
-  // tile 151
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 96;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 151);
-
-  // tile 152
-  position_in_tileset.x = 72;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 96;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 152);
-
-  // tile 153
-  position_in_tileset.x = 80;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 96;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 153);
-
-  // tile 154
-  position_in_tileset.x = 96;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 96;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 154);
-
-  // tile 155
-  position_in_tileset.x = 128;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 96;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 155);
-
-  // tile 156
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 144;
-  position_in_tileset.w = 96;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 156);
-
-  // tile 157
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 152;
-  position_in_tileset.w = 96;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 157);
-
-  // tile 158
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 160;
-  position_in_tileset.w = 96;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 158);
-
-  // tile 159
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 176;
-  position_in_tileset.w = 96;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 159);
-
-  // tile 160
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 208;
-  position_in_tileset.w = 96;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 160);
-
-  // tile 161
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 161);
-
-  // tile 162
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 248;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 162);
-
-  // tile 163
-  position_in_tileset.x = 96;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 163);
-
-  // tile 164
-  position_in_tileset.x = 96;
-  position_in_tileset.y = 248;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 164);
-
-  // tile 165
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 256;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 165);
-
-  // tile 166
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 264;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 166);
-
-  // tile 167
-  position_in_tileset.x = 96;
-  position_in_tileset.y = 256;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 167);
-
-  // tile 168
-  position_in_tileset.x = 96;
-  position_in_tileset.y = 264;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 168);
-
-  // tile 169
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 272;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 169);
-
-  // tile 170
-  position_in_tileset.x = 64;
-  position_in_tileset.y = 280;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 8;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 170);
-
-  // tile 171
-  position_in_tileset.x = 128;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 171);
-
-  // tile 172
-  position_in_tileset.x = 136;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 172);
-
-  // tile 173
-  position_in_tileset.x = 144;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 173);
-
-  // tile 174
-  position_in_tileset.x = 152;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 174);
-
-  // tile 175
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 175);
-
-  // tile 176
-  position_in_tileset.x = 168;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 8;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 176);
-
-  // tile 177
-  position_in_tileset.x = 96;
-  position_in_tileset.y = 272;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 177);
-
-  // tile 178
-  position_in_tileset.x = 112;
-  position_in_tileset.y = 272;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 178);
-
-  // tile 179
-  position_in_tileset.x = 128;
-  position_in_tileset.y = 272;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 179);
-
-  // tile 180
-  position_in_tileset.x = 144;
-  position_in_tileset.y = 272;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 180);
-
-  // tile 181
-  position_in_tileset.x = 160;
-  position_in_tileset.y = 272;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 181);
-
-  // tile 182
-  position_in_tileset.x = 176;
-  position_in_tileset.y = 272;
-  position_in_tileset.w = 16;
-  position_in_tileset.h = 16;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE_NONE), 182);
-
-  // tile 183
-  position_in_tileset.x = 200;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 183);
-
-  // tile 184
-  position_in_tileset.x = 232;
-  position_in_tileset.y = 240;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 184);
-
-  // tile 185
-  position_in_tileset.x = 200;
-  position_in_tileset.y = 264;
-  position_in_tileset.w = 24;
-  position_in_tileset.h = 32;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 185);
-
-  // tile 186
-  position_in_tileset.x = 224;
-  position_in_tileset.y = 272;
-  position_in_tileset.w = 32;
-  position_in_tileset.h = 24;
-  create_tile(new SimpleTile(position_in_tileset, OBSTACLE), 186);
-
+  SIMPLE_TILE(1, OBSTACLE_NONE, 0, 0, 8, 8);
+  SIMPLE_TILE(2, OBSTACLE_NONE, 0, 8, 8, 8);
+  SIMPLE_TILE(3, OBSTACLE_NONE, 8, 0, 8, 8);
+  SIMPLE_TILE(4, OBSTACLE_NONE, 8, 8, 8, 8);
+  SIMPLE_TILE(5, OBSTACLE_NONE, 16, 0, 16, 16);
+  SIMPLE_TILE(6, OBSTACLE_NONE, 32, 0, 16, 16);
+  SIMPLE_TILE(7, OBSTACLE_NONE, 48, 0, 16, 16);
+  SIMPLE_TILE(8, OBSTACLE_NONE, 64, 0, 8, 8);
+  SIMPLE_TILE(9, OBSTACLE_NONE, 72, 0, 8, 8);
+  SIMPLE_TILE(10, OBSTACLE_NONE, 64, 8, 8, 8);
+  SIMPLE_TILE(11, OBSTACLE_NONE, 72, 8, 8, 8);
+  SIMPLE_TILE(12, OBSTACLE_NONE, 80, 0, 8, 8);
+  SIMPLE_TILE(13, OBSTACLE_NONE, 88, 0, 8, 8);
+  SIMPLE_TILE(14, OBSTACLE_NONE, 80, 8, 8, 8);
+  SIMPLE_TILE(15, OBSTACLE_NONE, 88, 8, 8, 8);
+  SIMPLE_TILE(16, OBSTACLE, 96, 0, 16, 16);
+  SIMPLE_TILE(17, OBSTACLE, 112, 0, 16, 16);
+  SIMPLE_TILE(18, OBSTACLE_NONE, 0, 16, 8, 8);
+  SIMPLE_TILE(19, OBSTACLE_NONE, 8, 16, 8, 8);
+  SIMPLE_TILE(20, OBSTACLE_NONE, 0, 24, 8, 8);
+  SIMPLE_TILE(21, OBSTACLE_NONE, 8, 24, 8, 8);
+  SIMPLE_TILE(22, OBSTACLE_NONE, 16, 16, 8, 8);
+  SIMPLE_TILE(23, OBSTACLE_NONE, 24, 16, 8, 8);
+  SIMPLE_TILE(24, OBSTACLE_NONE, 16, 24, 8, 8);
+  SIMPLE_TILE(25, OBSTACLE_NONE, 24, 24, 8, 8);
+  SIMPLE_TILE(26, OBSTACLE_NONE, 32, 16, 8, 8);
+  SIMPLE_TILE(27, OBSTACLE_NONE, 40, 16, 8, 8);
+  SIMPLE_TILE(28, OBSTACLE_NONE, 32, 24, 8, 8);
+  SIMPLE_TILE(29, OBSTACLE_NONE, 40, 24, 8, 8);
+  SIMPLE_TILE(30, OBSTACLE_NONE, 0, 32, 8, 8);
+  SIMPLE_TILE(31, OBSTACLE_NONE, 8, 32, 8, 8);
+  SIMPLE_TILE(32, OBSTACLE_NONE, 0, 40, 8, 8);
+  SIMPLE_TILE(33, OBSTACLE_NONE, 8, 40, 8, 8);
+  SIMPLE_TILE(34, OBSTACLE_NONE, 16, 32, 8, 8);
+  SIMPLE_TILE(35, OBSTACLE_NONE, 24, 32, 8, 8);
+  SIMPLE_TILE(36, OBSTACLE_NONE, 16, 40, 8, 8);
+  SIMPLE_TILE(37, OBSTACLE_NONE, 24, 40, 8, 8);
+  SIMPLE_TILE(38, OBSTACLE_NONE, 32, 32, 8, 8);
+  SIMPLE_TILE(39, OBSTACLE_NONE, 40, 32, 8, 8);
+  SIMPLE_TILE(40, OBSTACLE_NONE, 32, 40, 8, 8);
+  SIMPLE_TILE(41, OBSTACLE_NONE, 40, 40, 8, 8);
+  SIMPLE_TILE(42, OBSTACLE, 48, 16, 16, 16);
+  SIMPLE_TILE(43, OBSTACLE, 64, 16, 16, 16);
+  SIMPLE_TILE(44, OBSTACLE, 48, 32, 16, 16);
+  SIMPLE_TILE(45, OBSTACLE, 64, 32, 16, 16);
+  SIMPLE_TILE(46, OBSTACLE, 80, 16, 16, 32);
+  SIMPLE_TILE(47, OBSTACLE, 96, 16, 16, 32);
+  SIMPLE_TILE(48, OBSTACLE, 112, 16, 16, 32);
+  SIMPLE_TILE(49, OBSTACLE, 0, 48, 24, 24);
+  SIMPLE_TILE(50, OBSTACLE, 24, 48, 24, 24);
+  SIMPLE_TILE(51, OBSTACLE, 0, 72, 24, 24);
+  SIMPLE_TILE(52, OBSTACLE, 24, 72, 24, 24);
+  SIMPLE_TILE(53, OBSTACLE, 48, 48, 16, 24);
+  SIMPLE_TILE(54, OBSTACLE, 64, 48, 24, 16);
+  SIMPLE_TILE(55, OBSTACLE, 48, 72, 24, 16);
+  SIMPLE_TILE(56, OBSTACLE, 72, 64, 16, 24);
+  SIMPLE_TILE(57, OBSTACLE_NONE, 88, 48, 24, 24);
+  SIMPLE_TILE(58, OBSTACLE, 112, 48, 24, 24);
+  SIMPLE_TILE(59, OBSTACLE, 88, 72, 24, 24);
+  SIMPLE_TILE(60, OBSTACLE, 112, 72, 24, 24);
+  SIMPLE_TILE(61, OBSTACLE, 0, 96, 24, 24);
+  SIMPLE_TILE(62, OBSTACLE, 24, 96, 24, 24);
+  SIMPLE_TILE(63, OBSTACLE, 0, 120, 24, 24);
+  SIMPLE_TILE(64, OBSTACLE, 24, 120, 24, 24);
+  SIMPLE_TILE(65, OBSTACLE, 48, 96, 16, 24);
+  SIMPLE_TILE(66, OBSTACLE, 64, 96, 24, 16);
+  SIMPLE_TILE(67, OBSTACLE, 48, 120, 24, 16);
+  SIMPLE_TILE(68, OBSTACLE, 72, 112, 16, 24);
+  SIMPLE_TILE(69, OBSTACLE, 88, 96, 24, 24);
+  SIMPLE_TILE(70, OBSTACLE, 112, 96, 24, 24);
+  SIMPLE_TILE(71, OBSTACLE, 88, 120, 24, 24);
+  SIMPLE_TILE(72, OBSTACLE, 112, 120, 24, 24);
+  SIMPLE_TILE(79, OBSTACLE, 128, 0, 32, 16);
+  SIMPLE_TILE(80, OBSTACLE, 160, 0, 8, 8);
+  SIMPLE_TILE(81, OBSTACLE, 168, 0, 8, 8);
+  SIMPLE_TILE(82, OBSTACLE, 168, 8, 8, 8);
+  SIMPLE_TILE(83, OBSTACLE, 160, 8, 8, 8);
+  SIMPLE_TILE(84, OBSTACLE, 176, 0, 8, 8);
+  SIMPLE_TILE(85, OBSTACLE, 184, 0, 8, 8);
+  SIMPLE_TILE(86, OBSTACLE, 176, 8, 8, 8);
+  SIMPLE_TILE(87, OBSTACLE, 184, 8, 8, 8);
+  SIMPLE_TILE(88, OBSTACLE, 192, 0, 8, 8);
+  SIMPLE_TILE(89, OBSTACLE, 200, 0, 8, 8);
+  SIMPLE_TILE(90, OBSTACLE, 192, 8, 8, 8);
+  SIMPLE_TILE(91, OBSTACLE, 200, 8, 8, 8);
+  SIMPLE_TILE(92, OBSTACLE, 208, 0, 8, 16);
+  SIMPLE_TILE(93, OBSTACLE, 128, 16, 16, 32);
+  SIMPLE_TILE(94, OBSTACLE, 144, 16, 16, 32);
+  SIMPLE_TILE(95, OBSTACLE, 160, 16, 16, 32);
+  SIMPLE_TILE(96, OBSTACLE, 176, 16, 48, 32);
+  SIMPLE_TILE(97, OBSTACLE, 192, 48, 32, 24);
+  SIMPLE_TILE(98, OBSTACLE, 192, 72, 32, 32);
+  SIMPLE_TILE(99, OBSTACLE, 136, 48, 32, 24);
+  SIMPLE_TILE(100, OBSTACLE, 168, 48, 24, 32);
+  SIMPLE_TILE(101, OBSTACLE, 136, 72, 24, 32);
+  SIMPLE_TILE(102, OBSTACLE, 160, 80, 32, 24);
+  SIMPLE_TILE(110, OBSTACLE, 0, 144, 8, 16);
+  SIMPLE_TILE(111, OBSTACLE, 24, 144, 8, 16);
+  SIMPLE_TILE(112, OBSTACLE, 0, 160, 8, 16);
+  SIMPLE_TILE(113, OBSTACLE, 24, 160, 8, 16);
+  SIMPLE_TILE(114, OBSTACLE_NONE, 8, 144, 16, 16);
+  SIMPLE_TILE(115, OBSTACLE_NONE, 8, 160, 16, 16);
+  SIMPLE_TILE(116, OBSTACLE, 32, 144, 16, 8);
+  SIMPLE_TILE(117, OBSTACLE, 48, 144, 16, 8);
+  SIMPLE_TILE(118, OBSTACLE, 32, 168, 16, 8);
+  SIMPLE_TILE(119, OBSTACLE, 48, 168, 16, 8);
+  SIMPLE_TILE(120, OBSTACLE, 48, 136, 8, 8);
+  SIMPLE_TILE(121, OBSTACLE, 56, 136, 8, 8);
+  SIMPLE_TILE(122, OBSTACLE, 64, 136, 8, 8);
+  SIMPLE_TILE(123, OBSTACLE, 136, 104, 8, 32);
+  SIMPLE_TILE(124, OBSTACLE, 160, 104, 8, 32);
+  SIMPLE_TILE(125, OBSTACLE_NONE, 144, 104, 16, 32);
+  SIMPLE_TILE(126, OBSTACLE_NONE, 32, 152, 16, 16);
+  SIMPLE_TILE(127, OBSTACLE_NONE, 48, 152, 16, 16);
+  SIMPLE_TILE(128, OBSTACLE, 224, 40, 16, 24);
+  SIMPLE_TILE(129, OBSTACLE, 240, 40, 16, 24);
+  SIMPLE_TILE(130, OBSTACLE, 256, 40, 16, 24);
+  SIMPLE_TILE(131, OBSTACLE, 224, 64, 48, 24);
+  SIMPLE_TILE(132, OBSTACLE, 272, 64, 16, 24);
+  SIMPLE_TILE(133, OBSTACLE, 224, 0, 32, 40);
+  SIMPLE_TILE(134, OBSTACLE, 256, 0, 24, 40);
+  SIMPLE_TILE(135, OBSTACLE, 0, 176, 8, 16);
+  SIMPLE_TILE(136, OBSTACLE, 24, 176, 8, 16);
+  SIMPLE_TILE(137, OBSTACLE, 0, 192, 8, 16);
+  SIMPLE_TILE(138, OBSTACLE, 24, 192, 8, 16);
+  SIMPLE_TILE(139, OBSTACLE_NONE, 8, 176, 16, 16);
+  SIMPLE_TILE(140, OBSTACLE_NONE, 8, 192, 16, 16);
+  SIMPLE_TILE(141, OBSTACLE, 32, 176, 16, 8);
+  SIMPLE_TILE(142, OBSTACLE, 48, 176, 16, 8);
+  SIMPLE_TILE(143, OBSTACLE, 32, 200, 16, 8);
+  SIMPLE_TILE(144, OBSTACLE, 48, 200, 16, 8);
+  SIMPLE_TILE(145, OBSTACLE_NONE, 32, 184, 16, 16);
+  SIMPLE_TILE(146, OBSTACLE_NONE, 48, 184, 16, 16);
+  SIMPLE_TILE(147, OBSTACLE, 0, 208, 32, 16);
+  SIMPLE_TILE(148, OBSTACLE, 0, 224, 32, 16);
+  SIMPLE_TILE(149, OBSTACLE, 32, 208, 16, 32);
+  SIMPLE_TILE(150, OBSTACLE, 48, 208, 16, 32);
+  SIMPLE_TILE(151, OBSTACLE_NONE, 64, 144, 8, 96);
+  SIMPLE_TILE(152, OBSTACLE_NONE, 72, 144, 8, 96);
+  SIMPLE_TILE(153, OBSTACLE_NONE, 80, 144, 16, 96);
+  SIMPLE_TILE(154, OBSTACLE_NONE, 96, 144, 32, 96);
+  SIMPLE_TILE(155, OBSTACLE_NONE, 128, 144, 32, 96);
+  SIMPLE_TILE(156, OBSTACLE_NONE, 160, 144, 96, 8);
+  SIMPLE_TILE(157, OBSTACLE_NONE, 160, 152, 96, 8);
+  SIMPLE_TILE(158, OBSTACLE_NONE, 160, 160, 96, 16);
+  SIMPLE_TILE(159, OBSTACLE_NONE, 160, 176, 96, 32);
+  SIMPLE_TILE(160, OBSTACLE_NONE, 160, 208, 96, 32);
+  SIMPLE_TILE(161, OBSTACLE_NONE, 64, 240, 32, 8);
+  SIMPLE_TILE(162, OBSTACLE_NONE, 64, 248, 32, 8);
+  SIMPLE_TILE(163, OBSTACLE_NONE, 96, 240, 32, 8);
+  SIMPLE_TILE(164, OBSTACLE_NONE, 96, 248, 32, 8);
+  SIMPLE_TILE(165, OBSTACLE_NONE, 64, 256, 32, 8);
+  SIMPLE_TILE(166, OBSTACLE_NONE, 64, 264, 32, 8);
+  SIMPLE_TILE(167, OBSTACLE_NONE, 96, 256, 32, 8);
+  SIMPLE_TILE(168, OBSTACLE_NONE, 96, 264, 32, 8);
+  SIMPLE_TILE(169, OBSTACLE_NONE, 64, 272, 32, 8);
+  SIMPLE_TILE(170, OBSTACLE_NONE, 64, 280, 32, 8);
+  SIMPLE_TILE(171, OBSTACLE_NONE, 128, 240, 8, 32);
+  SIMPLE_TILE(172, OBSTACLE_NONE, 136, 240, 8, 32);
+  SIMPLE_TILE(173, OBSTACLE_NONE, 144, 240, 8, 32);
+  SIMPLE_TILE(174, OBSTACLE_NONE, 152, 240, 8, 32);
+  SIMPLE_TILE(175, OBSTACLE_NONE, 160, 240, 8, 32);
+  SIMPLE_TILE(176, OBSTACLE_NONE, 168, 240, 8, 32);
+  SIMPLE_TILE(177, OBSTACLE_NONE, 96, 272, 16, 16);
+  SIMPLE_TILE(178, OBSTACLE_NONE, 112, 272, 16, 16);
+  SIMPLE_TILE(179, OBSTACLE_NONE, 128, 272, 16, 16);
+  SIMPLE_TILE(180, OBSTACLE_NONE, 144, 272, 16, 16);
+  SIMPLE_TILE(181, OBSTACLE_NONE, 160, 272, 16, 16);
+  SIMPLE_TILE(182, OBSTACLE_NONE, 176, 272, 16, 16);
+  SIMPLE_TILE(183, OBSTACLE, 200, 240, 32, 24);
+  SIMPLE_TILE(184, OBSTACLE, 232, 240, 24, 32);
+  SIMPLE_TILE(185, OBSTACLE, 200, 264, 24, 32);
+  SIMPLE_TILE(186, OBSTACLE, 224, 272, 32, 24);
 }

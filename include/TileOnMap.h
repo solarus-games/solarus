@@ -37,23 +37,15 @@ class TileOnMap: public MapEntity {
  public:
 
   /**
-   * Creates a new tile on the map without repeating its pattern.
-   * It is equivalent to TileOnMap(tile, position_in_map, 1, 1).
-   * @param tile_image image of the tile (SimpleTile or AnimatedTile)
-   * @param position_in_map position of the tile on the map
+   * Creates a new tile on a map.
+   * @param tile the tile in the tileset (SimpleTile or AnimatedTile)
    * @param layer layer of the tile
-   */
-  TileOnMap(Tile *tile, SDL_Rect &position_in_map, Layer layer);
-
-  /**
-   * Creates a new tile.
-   * @param tile image of the tile (SimpleTile or AnimatedTile)
-   * @param position_in_map position of the tile on the map
-   * @param layer layer of the tile
+   * @param x x position of the tile on the map
+   * @param y y position of the tile on the map
    * @param repeat_x number of times the pattern is repeated on x
    * @param repeat_y number of times the pattern is repeated on y
    */
-  TileOnMap(Tile *tile, SDL_Rect &position_in_map, Layer layer, int repeat_x, int repeat_y);
+  TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int repeat_y);
 
   /**
    * Destructor.

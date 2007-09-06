@@ -22,7 +22,7 @@ But there is no FMOD package for Ubuntu. So you have to install the files manual
 - Create a directory for the FMOD .h files: /usr/include/fmod
 - Copy into this directory every .h file from the subdirectory api/inc of the FMOD archive
 - Copy api/libfmod-3.75.so into /usr/lib
-- Make a symbolic link: ln -s /usr/lib/libfmod-3.75.so /usr/lib/libfmod.so
+- Make a symbolic link: sudo ln -s /usr/lib/libfmod-3.75.so /usr/lib/libfmod.so
 
 
 ------------------------

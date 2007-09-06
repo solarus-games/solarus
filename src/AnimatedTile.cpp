@@ -8,19 +8,36 @@
 
 /**
  * Constructor.
- * @param position_in_tileset array of 3 SDL_Rect
- * representing the 3 animation frames in the tileset image
- * @param sequence animation sequence type
  * @param obstacle is the tile an obstacle?
+ * @param sequence animation sequence type
+ * @param width width of the tile (the same for each frame of the animation)
+ * @param height height of the tile (the same for each frame of the animation)
+ * @param x1 x position of the first frame in the tileset
+ * @param y1 y position of the first frame in the tileset
+ * @param x2 x position of the second frame in the tileset
+ * @param y2 y position of the second frame in the tileset
+ * @param x3 x position of the third frame in the tileset
+ * @param y3 y position of the third frame in the tileset
  */
-AnimatedTile::AnimatedTile(const SDL_Rect *position_in_tileset,
+AnimatedTile::AnimatedTile(Obstacle obstacle,
 			   TileAnimationSequence sequence,
-			   Obstacle obstacle):
-  Tile(obstacle, position_in_tileset[0].w, position_in_tileset[0].h), sequence(sequence) {
+			   int width, int height,
+			   int x1, int y1,
+			   int x2, int y2,
+			   int x3, int y3):
+  Tile(obstacle, width, height), sequence(sequence) {
 
-  this->position_in_tileset[0] = position_in_tileset[0];
-  this->position_in_tileset[1] = position_in_tileset[1];
-  this->position_in_tileset[2] = position_in_tileset[2];
+  this->position_in_tileset[0].x = x1;
+  this->position_in_tileset[0].y = y1;
+  this->position_in_tileset[1].x = x2;
+  this->position_in_tileset[1].y = y2;
+  this->position_in_tileset[2].x = x3;
+  this->position_in_tileset[2].y = y3;
+
+  for (int i = 0; i < 3; i++) {
+    this->position_in_tileset[i].w = width;
+    this->position_in_tileset[i].h = height;
+  }
 }
 
 /**

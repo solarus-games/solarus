@@ -8,33 +8,19 @@ using namespace std;
 #include "TileOnMap.h"
 
 /**
- * Creates a new tile on a map without repeating its pattern.
- * It is equivalent to TileOnMap(tile_image, position_in_map, 1, 1).
- * @param tile image of the tile (SimpleTile or AnimatedTile)
- * @param position_in_map position of the tile on the map
- * @param layer layer of the tile
- */
-TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map, Layer layer):
-  MapEntity(layer), tile(tile), repeat_x(1), repeat_y(1) {
-
-  this->position_in_map.x = position_in_map.x;
-  this->position_in_map.y = position_in_map.y;
-  this->position_in_map.w = tile->get_width();
-  this->position_in_map.h = tile->get_height();
-}
-
-/**
  * Creates a new tile on a map.
- * @param tile_image image of the tile (SimpleTileImage or AnimatedTileImage)
- * @param position_in_map position of the tile on the map
+ * @param tile the tile in the tileset (SimpleTile or AnimatedTile)
+ * @param layer layer of the tile
+ * @param x x position of the tile on the map
+ * @param y y position of the tile on the map
  * @param repeat_x number of times the pattern is repeated on x
  * @param repeat_y number of times the pattern is repeated on y
  */
-TileOnMap::TileOnMap(Tile *tile, SDL_Rect &position_in_map, Layer layer, int repeat_x, int repeat_y):
+TileOnMap::TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int repeat_y):
   MapEntity(layer), tile(tile), repeat_x(repeat_x), repeat_y(repeat_y) {
 
-  this->position_in_map.x = position_in_map.x;
-  this->position_in_map.y = position_in_map.y;
+  this->position_in_map.x = x;
+  this->position_in_map.y = y;
   this->position_in_map.w = tile->get_width();
   this->position_in_map.h = tile->get_height();
 }

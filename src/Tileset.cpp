@@ -34,10 +34,10 @@ Tileset::~Tileset(void) {
 /**
  * Creates a new tile in the tileset.
  * This function is called by load().
- * @param tile the tile to add
  * @param id id of this tile (1 to 1024)
+ * @param tile the tile to add
  */
-void Tileset::create_tile(Tile *tile, int id) {
+void Tileset::create_tile(int id, Tile *tile) {
   tiles[id - 1] = tile;
 }
 

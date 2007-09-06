@@ -50,10 +50,10 @@ public class MapCodeGenerator {
 	// generate the creation of the entities
 	generateEntityFile();
 
-	// update include/MapList.inc.h
+	// update include/MapList.inc
 	updateEnumFile();
 
-	// update src/MapsCreation.inc.cpp
+	// update src/MapsCreation.inc
 	updateCreationFile();
     }
 
@@ -145,8 +145,6 @@ public class MapCodeGenerator {
 	    out.println(" * Loads the map.");
 	    out.println(" */");
 	    out.println("void " + className + "::load(void) {");
-	    out.println("  Tile *tile;");
-	    out.println("  SDL_Rect position_in_map;");
 	    out.println();
 	    out.println("  if (!tileset->is_loaded()) {");
 	    out.println("    tileset->load();");
@@ -178,13 +176,10 @@ public class MapCodeGenerator {
 	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 
 	    for (TileOnMap tile: map.getTiles(layer)) {
-		
-		out.println("  tile = tileset->get_tile(" + tile.getTileId() + ");");
-		out.println("  position_in_map.x = " + tile.getX() + ";");
-		out.println("  position_in_map.y = " + tile.getY() + ";");
-		out.println("  add_new_tile(tile, position_in_map, " + layerConstants[layer] + ", "
+
+		out.println("  TILE(" + tile.getTileId() + ", " + layerConstants[layer] + ", "
+			    + tile.getX() + ", " + tile.getY() + ", "
 			    + tile.getRepeatX() + ", " + tile.getRepeatY() + ");");
-		out.println();
 	    }
 	}
 	out.close();
@@ -210,7 +205,7 @@ public class MapCodeGenerator {
      */
     private void updateCreationFile() throws IOException {
 	String fileName = zsdxRootPath + File.separator + "src" +
-	    File.separator + "MapsCreation.inc.cpp";
+	    File.separator + "MapsCreation.inc";
 	
 	// we have to put the following line into the file unless it is already present
 	String lineWanted = "maps[MAP_" + upperCaseName + "] = new Map" + name + "();";

@@ -350,6 +350,42 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
+     * Changes the position of a tile on the map, by specifying two points.
+     * The tile is resized (i.e. repeatX and repeatY are updated) so that
+     * the tile fits exactly in the rectangle formed by the two points.
+     * @param tile a tile
+     * @param x1 x coordinate of the first point
+     * @param y1 y coordinate of the first point
+     * @param x2 x coordinate of the second point
+     * @param y2 y coordinate of the second point
+     * @throws MapException if the rectangle width or its height is zero
+     * (no other verifications are performed)
+     */
+    public void setTilePosition(TileOnMap tile, int x1, int y1, int x2, int y2) throws MapException {
+	tile.setPositionInMap(x1, y1, x2, y2);
+	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Changes the position of a group of tiles.
+     * @param tiles the tiles to move
+     * @param dx number of pixels to move on x
+     * @param dy number of pixels to move on y
+     */
+    public void moveTiles(TileOnMapList tiles, int dx, int dy) {
+			  
+	for (TileOnMap tile: tiles) {
+	    
+	    tile.move(dx, dy);
+	}
+	setSaved(false);
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
      * Returns the default background music of the map.
      * @return the name of the new music, i.e. a music file name without the extension ".it".
      */
@@ -363,7 +399,7 @@ public class Map extends Observable implements Serializable {
      */
     public void setMusic(String music) {
 
-	if (music != this.music) {
+	if ((music == null && this.music != null) || !music.equals(this.music)) {
 
 	    this.music = music;
 	    setSaved(false);

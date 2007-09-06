@@ -69,7 +69,7 @@ void Moving::update_y(void) {
  * sqrt(x_speed^2 + y_speed^2)
  */
 int Moving::get_speed(void) {
-  return (int) sqrt(x_speed * x_speed + y_speed * y_speed);
+  return (int) sqrt((double) (x_speed * x_speed + y_speed * y_speed));
 }
 
 /**
@@ -147,7 +147,7 @@ void Moving::set_speed(int speed) {
     angle = (y_speed > 0) ? THREE_PI_OVER_2 : PI_OVER_2;
   }
   else {
-    angle = atan(y_speed / x_speed);
+    angle = atan((double) (y_speed / x_speed));
     if (x_speed < 0) {
       angle = angle + PI;
     }

@@ -34,6 +34,11 @@ void AnimatedSprite::set_suspended(bool suspended) {
  */
 void AnimatedSprite::update_current_frame(void) {
   int next_frame;
+
+  if (suspended) {
+    return;
+  }
+
   Uint32 now = SDL_GetTicks();
 
   //  printf("update current frame: now = %d, next_frame_date = %d, frame_interval = %d\n", now, next_frame_date, get_frame_interval());
@@ -61,9 +66,6 @@ void AnimatedSprite::update_current_frame(void) {
  * @param position_in_map position of the sprite on the map
  */
 void AnimatedSprite::display_on_map(Map *map, SDL_Rect &position_in_map) {
-  // we update the frame if necessary
-  if (!is_over() && !is_suspended()) {
-    update_current_frame(); // TODO: do that in update_sprites!!!
-  }
+
   animations->display_on_map(map, position_in_map, current_animation, current_direction, current_frame);
 }

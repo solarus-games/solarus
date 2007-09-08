@@ -30,12 +30,12 @@ class Moving: public MapEntity {
  private:
 
   /**
-   * Updates the x position of the entity if it has changed.
+   * Updates the x position of the entity if it wants to move on x (i.e. x_move != 0).
    */
   void update_x(void);
 
   /**
-   * Updates the y position of the entity if it has changed.
+   * Updates the y position of the entity if it wants to move on y (i.e. y_move != 0).
    */
   void update_y(void);
 
@@ -85,14 +85,14 @@ class Moving: public MapEntity {
   Uint32 y_delay;
 
   /**
-   * Number of pixels of an x move : 0, 2 or -2.
+   * Number of pixels of the next x move : 0, 2 or -2.
    * The smallest move is two pixels because a sprite
    * doesn't need to make a move of only one pixel. 
    */
   int x_move;
 
   /**
-   * Number of pixels of an y move : 0, 2 or -2.
+   * Number of pixels of the next y move : 0, 2 or -2.
    */
   int y_move;
 
@@ -184,9 +184,9 @@ class Moving: public MapEntity {
   void set_speed(int speed);
 
   /**
-   * Sets the speed to zero.
+   * Sets the speed to zero and resets x_move and y_move.
    */
-  inline void stop(void) { set_x_speed(0); set_y_speed(0); }
+  void stop(void);
 };
 
 #endif

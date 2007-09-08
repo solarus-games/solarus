@@ -24,12 +24,6 @@ class Link: public Moving8ByPlayer {
   AnimatedSprite *sprite;
 
   /**
-   * Create Link's animations.
-   * This function is called by the constructor.
-   */
-  void create_animations(void);
-
-  /**
    * Redefinition of Moving8ByPlayer::update_movement
    * to take care of link's animation.
    * This function is called when the user presses or
@@ -48,6 +42,14 @@ class Link: public Moving8ByPlayer {
    * Destructor.
    */
   ~Link(void);
+
+  /**
+   * Returns Link's sprite.
+   * @return Link's sprite
+   */
+  inline AnimatedSprite *get_sprite(void) {
+    return sprite;
+  }
 
   /**
    * Sets Link's current map.

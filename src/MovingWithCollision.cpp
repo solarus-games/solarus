@@ -7,6 +7,7 @@ using namespace std;
 #include <SDL/SDL_image.h>
 #include <cmath>
 #include "MovingWithCollision.h"
+#include "ZSDX.h"
 
 /**
  * Sets the current map of the object.
@@ -26,56 +27,53 @@ void MovingWithCollision::set_collision_box(SDL_Rect &collision_box) {
 }
 
 /**
- * Updates the position (x and y) of the entity if it has moved.
- * This is a redefinition of Moving::update_position to stop
- * the movement if a collision with the map is detected.
+ * Updates the position (x and y) of the entity if it wants to move
+ * (i.e. if x_move or y_move are not zero).
+ * This is a redefinition of Moving::update_position to make the move
+ * only if there is no collision with the map.
  */
 void MovingWithCollision::update_position(void) {
-  // collision box from the upper-left corner of the map
+
+  // collision rectangle of the entity from the upper-left corner of the map
   SDL_Rect absolute_collision_box;
+
   absolute_collision_box.w = collision_box.w;
   absolute_collision_box.h = collision_box.h;
 
   // update x
-  if (x_move != 0) {
+  if (x_move != 0) { // the entity wants to move on x
+
+    // place the collision box where the entity wants to go
     absolute_collision_box.y = position_in_map.y + collision_box.y;
+    absolute_collision_box.x = position_in_map.x + collision_box.x + x_move;
 
-    while (SDL_GetTicks() > next_move_date_x) {
-      absolute_collision_box.x = position_in_map.x + collision_box.x + x_move;
+    while (SDL_GetTicks() > next_move_date_x) { // while it's time to try a move
 
-      // check the collisions
+      // make the move only if there is no collision
+      if (!map->simple_collision(layer, absolute_collision_box)) {
+	position_in_map.x += x_move;
+	absolute_collision_box.x += x_move;
+      }
 
       next_move_date_x += x_delay;
-      if (map->simple_collision(layer, absolute_collision_box)) {
-	// stop the x movement
-	set_x_speed(0);
-	break;
-      }
-      else {
-	// make the move
-	position_in_map.x += x_move;
-      }
     }
   }
 
   // update y
   if (y_move != 0) {
-    absolute_collision_box.x = position_in_map.x + collision_box.x;
-    while (SDL_GetTicks() > next_move_date_y) {
-      absolute_collision_box.y = position_in_map.y + collision_box.y + y_move;
 
-      // check the collisions
+    absolute_collision_box.x = position_in_map.x + collision_box.x;
+    absolute_collision_box.y = position_in_map.y + collision_box.y + y_move;
+
+    while (SDL_GetTicks() > next_move_date_y) { // while it's time to try a move
+
+      // make the move only if there is no collision
+      if (!map->simple_collision(layer, absolute_collision_box)) {
+	position_in_map.y += y_move;
+	absolute_collision_box.y += y_move;
+      }
 
       next_move_date_y += y_delay;
-      if (map->simple_collision(layer, absolute_collision_box)) {
-	// stop the y movement
-	set_y_speed(0);
-	break;
-      }
-      else {
-	// make the move
-	position_in_map.y += y_move;
-      }
     }
   }
 }

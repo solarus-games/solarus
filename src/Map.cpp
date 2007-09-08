@@ -116,7 +116,9 @@ SDL_Surface *Map::get_surface(void) {
  * Updates the animation and the position of each sprite, including Link.
  */
 void Map::update_sprites(void) {
-  ZSDX::game_resource->get_link()->update_position();
+  Link *link = ZSDX::game_resource->get_link();
+  link->update_position();
+  link->get_sprite()->update_current_frame();
 }
 
 /**

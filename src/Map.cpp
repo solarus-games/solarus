@@ -66,6 +66,7 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
 
   // get the tile in the tileset
   Tile *tile = tileset->get_tile(tile_id);
+  Obstacle obstacle = tile->get_obstacle();
 
   // create the tile object
   TileOnMap *tileOnMap = new TileOnMap(tile, layer, x, y, repeat_x, repeat_y);
@@ -79,13 +80,48 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
   int tile_width8 = (tile->get_width() / 8) * repeat_x;
   int tile_height8 = (tile->get_height() / 8) * repeat_y;
 
-  // we traverse each 8*8 square in the tile
-  int index;
-  for (int j = 0; j < tile_height8; j++) {
-    index = (tile_y8 + j) * width8 + tile_x8;
-    for (int i = 0; i < tile_width8; i++) {
-      obstacle_tiles[layer][index++] = tile->get_obstacle();
+  int index, i, j;
+
+  switch (obstacle) {
+
+    /* If the tile is entirely an obstacle or entirely no obstacle,
+     * then all 8*8 squares of the tile have the same property.
+     */
+  case OBSTACLE_NONE:
+  case OBSTACLE:
+    for (j = 0; j < tile_height8; j++) {
+      index = (tile_y8 + j) * width8 + tile_x8;
+      for (i = 0; i < tile_width8; i++) {
+	obstacle_tiles[layer][index++] = obstacle;
+      }
     }
+    break;
+
+    /* If the top right corner of the tile is an obstacle,
+     * then the top right 8*8 squares are OBSTACLE, the bottom left
+     * 8*8 squares are NO_OBSTACLE and the 8*8 squares on the diagonal
+     * are OBSTACLE_TOP_RIGHT.
+     */
+  case OBSTACLE_TOP_RIGHT:
+    // we traverse each row of 8*8 squares on the tile
+    for (j = 0; j < tile_height8; j++) {
+
+      index = (tile_y8 + j) * width8 + tile_x8 + j;
+
+      // 8*8 square on the diagonal
+      obstacle_tiles[layer][index++] = OBSTACLE_TOP_RIGHT;
+
+      // right part of the row: we are in the top-right corner
+      for (i = j + 1; i < tile_width8; i++) {
+	obstacle_tiles[layer][index++] = OBSTACLE;
+      }
+    }
+
+    break;
+    
+  default:
+    // TODO: make the 3 other cases if it works for top-right, and move this code into another function
+    break;
   }
 }
 
@@ -145,7 +181,7 @@ void Map::display(SDL_Surface *surface) {
       tiles[layer]->at(i)->display_on_map(this);
     }
 
-    // put link if we are in his layer
+    // put link if he is in this layer
     if (link->get_layer() == layer) {
       link->display_on_map(this);
     }
@@ -317,29 +353,29 @@ Obstacle Map::pixel_collision(int layer, int x, int y) {
 
   case OBSTACLE_TOP_RIGHT:
     // the upper right half of the square is an obstacle
-    // sp we have to test the position of the point
+    // so we have to test the position of the point
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile > x_in_tile;
+    on_obstacle = y_in_tile < x_in_tile;
     break;
 
   case OBSTACLE_TOP_LEFT:
     // same thing
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile > 1 - x_in_tile;
+    on_obstacle = y_in_tile < 1 - x_in_tile;
     break;
     
   case OBSTACLE_BOTTOM_LEFT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile < x_in_tile;
+    on_obstacle = y_in_tile > x_in_tile;
     break;
     
   case OBSTACLE_BOTTOM_RIGHT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile < 1 - x_in_tile;
+    on_obstacle = y_in_tile > 1 - x_in_tile;
     break;
   }
 

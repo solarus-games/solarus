@@ -184,5 +184,5 @@ void Moving8ByPlayer::update_movement(void) {
  */
 void Moving8ByPlayer::update_position(void) {
   
-  MovingWithCollision::update_position();
+  MovingWithSmoothCollision::update_position();
 }

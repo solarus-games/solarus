@@ -15,7 +15,7 @@ using namespace std;
 #define MAX(x,y) ((x > y) ? (x) : (y))
 
 /**
- * Number of times the screen is redrawn is a second.
+ * Number of times the screen in redrawn is a second.
  */
 extern const int FRAMES_PER_SECOND;
 

@@ -49,14 +49,15 @@ binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_zsdx_OBJECTS = ZSDX.$(OBJEXT) Game.$(OBJEXT) GameResource.$(OBJEXT) \
 	Map.$(OBJEXT) Moving.$(OBJEXT) MovingWithCollision.$(OBJEXT) \
-	Moving8ByPlayer.$(OBJEXT) AnimatedSprite.$(OBJEXT) \
-	SpriteAnimations.$(OBJEXT) SpriteAnimation.$(OBJEXT) \
-	SpriteAnimationDirection.$(OBJEXT) SimpleTile.$(OBJEXT) \
-	AnimatedTile.$(OBJEXT) TileOnMap.$(OBJEXT) \
-	TileAnimationManager.$(OBJEXT) Color.$(OBJEXT) Link.$(OBJEXT) \
-	LinkAnimations.$(OBJEXT) Music.$(OBJEXT) Tileset.$(OBJEXT) \
-	TilesetHouse.$(OBJEXT) MapLinkHouse.$(OBJEXT) \
-	MapLinkHouseSecretRoom.$(OBJEXT) MapRupeeHouse.$(OBJEXT)
+	MovingWithSmoothCollision.$(OBJEXT) Moving8ByPlayer.$(OBJEXT) \
+	AnimatedSprite.$(OBJEXT) SpriteAnimations.$(OBJEXT) \
+	SpriteAnimation.$(OBJEXT) SpriteAnimationDirection.$(OBJEXT) \
+	SimpleTile.$(OBJEXT) AnimatedTile.$(OBJEXT) \
+	TileOnMap.$(OBJEXT) TileAnimationManager.$(OBJEXT) \
+	Color.$(OBJEXT) Link.$(OBJEXT) LinkAnimations.$(OBJEXT) \
+	Music.$(OBJEXT) Tileset.$(OBJEXT) TilesetHouse.$(OBJEXT) \
+	MapLinkHouse.$(OBJEXT) MapLinkHouseSecretRoom.$(OBJEXT) \
+	MapRupeeHouse.$(OBJEXT)
 zsdx_OBJECTS = $(am_zsdx_OBJECTS)
 zsdx_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -170,6 +171,7 @@ zsdx_SOURCES = \
   Map.cpp						\
   Moving.cpp						\
   MovingWithCollision.cpp				\
+  MovingWithSmoothCollision.cpp				\
   Moving8ByPlayer.cpp					\
   AnimatedSprite.cpp					\
   SpriteAnimations.cpp					\
@@ -201,6 +203,7 @@ zsdx_SOURCES = \
   $(zsdxincludedir)/MapEntity.h				\
   $(zsdxincludedir)/Moving.h				\
   $(zsdxincludedir)/MovingWithCollision.h		\
+  $(zsdxincludedir)/MovingWithSmoothCollision.h		\
   $(zsdxincludedir)/Moving8ByPlayer.h			\
   $(zsdxincludedir)/AnimatedSprite.h			\
   $(zsdxincludedir)/SpriteAnimations.h			\
@@ -303,6 +306,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Moving.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Moving8ByPlayer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MovingWithCollision.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MovingWithSmoothCollision.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Music.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SimpleTile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimation.Po@am__quote@

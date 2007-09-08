@@ -14,7 +14,7 @@
  */
 class MovingWithCollision: public Moving {
   
- private:
+ protected:
 
   /**
    * The map containing the object.
@@ -27,8 +27,6 @@ class MovingWithCollision: public Moving {
    * of the object.
    */
   SDL_Rect collision_box;
-
- protected:
 
   /**
    * Sets the collision box of the object.

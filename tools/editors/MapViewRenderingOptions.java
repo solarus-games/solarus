@@ -152,6 +152,11 @@ public class MapViewRenderingOptions {
     public boolean isTileShown(Tileset tileset, TileOnMap tile) {
 	int layer = tile.getLayer();
 	int obstacle = tileset.getTile(tile.getTileId()).getObstacle();
+
+	if (obstacle > Tile.OBSTACLE) {
+	    obstacle = Tile.OBSTACLE;
+	}
+
 	return showLayers[layer] && showObstacles[obstacle];
     }
 }

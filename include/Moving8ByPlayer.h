@@ -6,14 +6,14 @@
 #define ZSDX_MOVING_8_BY_PLAYER
 
 #include <SDL/SDL.h>
-#include "MovingWithCollision.h"
+#include "MovingWithSmoothCollision.h"
 
 /**
  * Abstract class for a moving entity with the 8 basic directions.
  * This class is designed for an entity controlled by the keyboard
  * but could be also used to control the entity with a joypad.
  */
-class Moving8ByPlayer: public MovingWithCollision {
+class Moving8ByPlayer: public MovingWithSmoothCollision {
 
  protected:
 

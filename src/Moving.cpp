@@ -39,22 +39,15 @@ void Moving::stop(void) {
 }
 
 /**
- * Updates the position (x and y) of the entity if it wants to move.
- */
-void Moving::update_position(void) {
-  update_x();
-  update_y();
-}
-
-/**
  * Updates the x position of the entity if it has to be changed.
  */
 void Moving::update_x(void) {
+
   if (x_move != 0) { // if we want to move on x
 
     // update the x position while next_move_date_x is past
     while (SDL_GetTicks() > next_move_date_x) {
-      position_in_map.x += x_move;
+      translate_x(x_move);
       next_move_date_x += x_delay;
     }
   }
@@ -64,14 +57,47 @@ void Moving::update_x(void) {
  * Updates the y position of the entity if it has changed.
  */
 void Moving::update_y(void) {
+
   if (y_move != 0) { // if we want to move on y
 
     // update the x position while next_move_date_y is past
     while (SDL_GetTicks() > next_move_date_y) {
-      position_in_map.y += y_move;
+      translate_y(y_move);
       next_move_date_y += y_delay;
     }
   }
+}
+
+/**
+ * Sets the x position of the entity.
+ * @param x the new x position
+ */
+void Moving::set_x(int x) {
+  position_in_map.x = x;
+}
+
+/**
+ * Sets the y position of the entity.
+ * @param y the new y position
+ */
+void Moving::set_y(int y) {
+  position_in_map.y = y;
+}
+
+/**
+ * Moves the entity on x.
+ * @param dx number of pixels of the move
+ */
+void Moving::translate_x(int dx) {
+  set_x(get_x() + dx);
+}
+
+/**
+ * Moves the entity on y.
+ * @param dy number of pixels of the move
+ */
+void Moving::translate_y(int dy) {
+  set_y(get_y() + dy);
 }
 
 /**

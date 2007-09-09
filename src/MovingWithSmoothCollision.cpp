@@ -10,98 +10,109 @@ using namespace std;
 #include "ZSDX.h"
 
 /**
- * Updates the position (x and y) of the entity if it wants to move
- * (i.e. if x_move or y_move are not zero).
- * This is a redefinition of Moving::update_position to make the move
- * only if there is no collision with the map.
+ * Updates the x position of the entity if it wants to move
+ * (i.e. if x_move != 0).
+ * This is a redefinition of MovingWithCollision::update_x to
+ * handle the smooth collisions.
  */
-void MovingWithSmoothCollision::update_position(void) {
+void MovingWithSmoothCollision::update_x(void) {
 
-  // collision rectangle of the entity from the upper-left corner of the map
-  SDL_Rect absolute_collision_box;
-
-  absolute_collision_box.w = collision_box.w;
-  absolute_collision_box.h = collision_box.h;
-
-  // update x
   if (x_move != 0) { // the entity wants to move on x
-
-    // place the collision box where the entity wants to go
-    absolute_collision_box.y = position_in_map.y + collision_box.y;
-    absolute_collision_box.x = position_in_map.x + collision_box.x + x_move;
 
     while (SDL_GetTicks() > next_move_date_x) { // while it's time to try a move
 
-      if (!map->simple_collision(layer, absolute_collision_box)) {
-	position_in_map.x += x_move; // make the move
-	absolute_collision_box.x += x_move; // prepare for next loop
+      if (!collision_with_map(x_move, 0)) {
+	translate_x(x_move); // make the move
       }
       else if (y_move == 0) {
+	/* The move on x is not possible: let's try
+	 * to add a move on y to make a diagonal move.
+	 */
 
-	// the move on x is not possible: let's try to add a move on y
-	absolute_collision_box.y += 2;
-
-	if (!map->simple_collision(layer, absolute_collision_box)) {
-	  position_in_map.x += x_move;
-	  position_in_map.y += 2;
-	  absolute_collision_box.x += x_move;
+	if (!collision_with_map(x_move, 2)) {
+	  translate(x_move, 2);
+	  next_move_date_x += (int) (x_delay * SQRT_2) - x_delay; // fix the speed
+	}
+	else if (!collision_with_map(x_move, -2)) {
+	  translate(x_move, -2);
 	  next_move_date_x += (int) (x_delay * SQRT_2) - x_delay;
 	}
 	else {
-	  absolute_collision_box.y -= 4;
-	  if (!map->simple_collision(layer, absolute_collision_box)) {
-	    position_in_map.x += x_move;
-	    position_in_map.y -= 2;
-	    absolute_collision_box.x += x_move;
-	    next_move_date_x += (int) (x_delay * SQRT_2) - x_delay;
-	  }
-	  else {
-	    absolute_collision_box.y += 2; // abort and restore the collision box
+	  /* The diagonal moves didn't work either.
+	   * So we look for a place (up to 8 pixels on the left and on the right)
+	   * where the required move would be allowed.
+	   * If we find a such place, then we move towards this place.
+	   */
+
+	  bool moved = false;
+	  for (int i = 4; i <= 8 && !moved; i += 2) {
+
+	    if (!collision_with_map(x_move, i)) {
+	      translate_y(2);
+	      moved = true;
+	    }
+	    else if (!collision_with_map(x_move, -i)) {
+	      translate_y(-2);
+	      moved = true;
+	    }
 	  }
 	}
       }
       next_move_date_x += x_delay;
-    }
-  }
+     }
+   }
+}
 
-  // update y
-  if (y_move != 0) { // the entity wants to move on y
+/**
+ * Updates the y position of the entity if it wants to move
+ * (i.e. if y_move != 0).
+ * This is a redefinition of MovingWithCollision::update_y to to
+ * handle the smooth collisions.
+ */
+void MovingWithSmoothCollision::update_y(void) {
 
-    // place the collision box where the entity wants to go
-    absolute_collision_box.x = position_in_map.x + collision_box.x;
-    absolute_collision_box.y = position_in_map.y + collision_box.y + y_move;
+  if (y_move != 0) { // the entity wants to move on x
 
     while (SDL_GetTicks() > next_move_date_y) { // while it's time to try a move
 
-      if (!map->simple_collision(layer, absolute_collision_box)) {
-	position_in_map.y += y_move; // make the move
-	absolute_collision_box.y += y_move; // prepare for next loop
+      if (!collision_with_map(0, y_move)) {
+	translate_y(y_move); // make the move
       }
       else if (x_move == 0) {
+	/* The move on x is not possible: let's try
+	 * to add a move on y to make a diagonal move.
+	 */
 
-	// the move on y is not possible: let's try to add a move on x
-	absolute_collision_box.x += 2;
-
-	if (!map->simple_collision(layer, absolute_collision_box)) {
-	  position_in_map.y += y_move;
-	  position_in_map.x += 2;
-	  absolute_collision_box.y += y_move;
+	if (!collision_with_map(2, y_move)) {
+	  translate(2, y_move);
+	  next_move_date_y += (int) (y_delay * SQRT_2) - y_delay; // fix the speed
+	}
+	else if (!collision_with_map(-2, y_move)) {
+	  translate(-2, y_move);
 	  next_move_date_y += (int) (y_delay * SQRT_2) - y_delay;
 	}
 	else {
-	  absolute_collision_box.x -= 4;
-	  if (!map->simple_collision(layer, absolute_collision_box)) {
-	    position_in_map.y += y_move;
-	    position_in_map.x -= 2;
-	    absolute_collision_box.y += y_move;
-	    next_move_date_y += (int) (y_delay * SQRT_2) - y_delay;
-	  }
-	  else {
-	    absolute_collision_box.x += 2; // abort and restore the collision box
+	  /* The diagonal moves didn't work either.
+	   * So we look for a place (up to 8 pixels on the left and on the right)
+	   * where the required move would be allowed.
+	   * If we find a such place, then we move towards this place.
+	   */
+
+	  bool moved = false;
+	  for (int i = 4; i <= 8 && !moved; i += 2) {
+
+	    if (!collision_with_map(i, y_move)) {
+	      translate_x(2);
+	      moved = true;
+	    }
+	    else if (!collision_with_map(-i, y_move)) {
+	      translate_x(-2);
+	      moved = true;
+	    }
 	  }
 	}
       }
       next_move_date_y += y_delay;
-    }
-  }
+     }
+   }
 }

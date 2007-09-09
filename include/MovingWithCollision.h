@@ -22,12 +22,35 @@ class MovingWithCollision: public Moving {
   Map *map;
 
   /**
-   * A rectangle defining the collision box of the object.
+   * A rectangle defining the position of the collision box on the object.
    * The collision box is positioned from the upper-left corner
    * of the object.
    */
   SDL_Rect collision_box;
 
+  /**
+   * A rectangle defining the collision box of the object on the map.
+   * The collision box is positioned from the upper-left corner
+   * of the map.
+   */
+  SDL_Rect absolute_collision_box;
+
+  /**
+   * Sets the x position of the entity.
+   * This is a redefinition of Moving::set_x() because we also need
+   * to update the position of absolute_collision_box.
+   * @param x the new x position
+   */
+  void set_x(int x);
+  
+  /**
+   * Sets the y position of the entity.
+   * This is a redefinition of Moving::set_y() because we also need
+   * to update the position of absolute_collision_box.
+   * @param y the new y position
+   */
+  void set_y(int y);
+  
   /**
    * Sets the collision box of the object.
    * @param collision_box the collision box, positioned
@@ -41,6 +64,15 @@ class MovingWithCollision: public Moving {
    */
   void set_map(Map *map);
 
+  /**
+   * Returns whether the entity would collide with the map
+   * if it was moved a few pixels from its position.
+   * @param dx x distance between the current position and the position to check
+   * @param dy y distance between the current position and the position to check
+   * @return true if the entity would overlap the map tiles in this position
+   */
+  bool collision_with_map(int dx, int dy);
+
  public:
 
   /**
@@ -52,14 +84,22 @@ class MovingWithCollision: public Moving {
    * Destructor.
    */
   virtual ~MovingWithCollision(void) { }
-
+  
   /**
-   * Updates the position (x and y) of the entity if it wants to move
-   * (i.e. if x_move or y_move are not zero).
-   * This is a redefinition of Moving::update_position to make the move
+   * Updates the x position of the entity if it wants to move
+   * (i.e. if x_move != 0).
+   * This is a redefinition of Moving::update_x to make the move
    * only if there is no collision with the map.
    */
-  virtual void update_position(void);
+  virtual void update_x(void);
+  
+  /**
+   * Updates the y position of the entity if it wants to move
+   * (i.e. if y_move != 0).
+   * This is a redefinition of Moving::update_y to make the move
+   * only if there is no collision with the map.
+   */
+  virtual void update_y(void);
 
 };
 

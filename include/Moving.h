@@ -32,12 +32,12 @@ class Moving: public MapEntity {
   /**
    * Updates the x position of the entity if it wants to move on x (i.e. x_move != 0).
    */
-  void update_x(void);
+  virtual void update_x(void);
 
   /**
    * Updates the y position of the entity if it wants to move on y (i.e. y_move != 0).
    */
-  void update_y(void);
+  virtual void update_y(void);
 
  protected:
 
@@ -96,6 +96,37 @@ class Moving: public MapEntity {
    */
   int y_move;
 
+  /**
+   * Moves the entity on x.
+   * @param dx number of pixels of the move
+   */
+  void translate_x(int dx);
+
+  /**
+   * Moves the entity on y.
+   * @param dy number of pixels of the move
+   */
+  void translate_y(int dy);
+
+  /**
+   * Moves the entity.
+   * @param dx number of pixels of the move on x
+   * @param dy number of pixels of the move on y
+   */
+  inline void translate(int dx, int dy) { translate_x(dx); translate_y(dy); }
+
+  /**
+   * Sets the x position of the entity.
+   * @param x the new x position
+   */
+  virtual void set_x(int x);
+
+  /**
+   * Sets the y position of the entity.
+   * @param y the new y position
+   */
+  virtual void set_y(int y);
+
  public:
 
   /**
@@ -111,28 +142,16 @@ class Moving: public MapEntity {
   // position
 
   /**
-   * Updates the position (x and y) of the entity if it has changed.
-   */
-  virtual void update_position(void);
-
-  /**
-   * Sets the x position of the entity.
-   * @param x the new x position
-   */
-  inline void set_x(int x) { position_in_map.x = x; }
-
-  /**
-   * Sets the y position of the entity.
-   * @param y the new y position
-   */
-  inline void set_y(int y) { position_in_map.y = y; }
-
-  /**
    * Sets the position of the entity.
    * @param x the new x position
    * @param y the new y position
    */
-  inline void set_position(int x, int y) { position_in_map.x = x; position_in_map.y = y; }
+  inline void set_position(int x, int y) { set_x(x); set_y(y); }
+
+  /**
+   * Updates the position (x and y) of the entity if it has changed.
+   */
+  inline void update_position(void) { update_x(); update_y(); }
 
   // movement
 

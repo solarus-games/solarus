@@ -26,13 +26,20 @@ class MovingWithSmoothCollision: public MovingWithCollision {
   virtual ~MovingWithSmoothCollision(void) { }
 
   /**
-   * Updates the position (x and y) of the entity if it wants to move
-   * (i.e. if x_move or y_move are not zero).
-   * This is a redefinition of MovingWithCollision::update_position to
+   * Updates the x position of the entity if it wants to move
+   * (i.e. if x_move != 0).
+   * This is a redefinition of MovingWithCollision::update_x to
    * handle the smooth collisions.
    */
-  virtual void update_position(void);
-
+  virtual void update_x(void);
+  
+  /**
+   * Updates the y position of the entity if it wants to move
+   * (i.e. if y_move != 0).
+   * This is a redefinition of MovingWithCollision::update_y to to
+   * handle the smooth collisions.
+   */
+  virtual void update_y(void);
 };
 
 #endif

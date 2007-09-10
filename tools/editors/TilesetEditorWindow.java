@@ -42,7 +42,7 @@ public class TilesetEditorWindow extends JFrame {
 	super("Zelda Solarus Deluxe - Tileset Editor");
 
 	// set a nice look and feel
-	//	setLookAndFeel();
+	setLookAndFeel();
 
 	// create the menu bar
 	createMenuBar();
@@ -102,12 +102,12 @@ public class TilesetEditorWindow extends JFrame {
 	}
 
 	// otherwise, try GTK
-	try {
-	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-	    return;
-	}
-	catch (Exception e) {
-	}
+// 	try {
+// 	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+// 	    return;
+// 	}
+// 	catch (Exception e) {
+// 	}
     }
 
     /**

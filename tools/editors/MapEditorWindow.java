@@ -38,7 +38,7 @@ public class MapEditorWindow extends JFrame {
 	super("Zelda Solarus Deluxe - Map Editor");
 
 	// set a nice look and feel
-	//	setLookAndFeel();
+	setLookAndFeel();
 
 	// create the menu bar
 	createMenuBar();
@@ -109,12 +109,12 @@ public class MapEditorWindow extends JFrame {
 	}
 
 	// otherwise, try GTK
-	try {
-	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-	    return;
-	}
-	catch (Exception e) {
-	}
+// 	try {
+// 	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+// 	    return;
+// 	}
+// 	catch (Exception e) {
+// 	}
     }
 
     /**

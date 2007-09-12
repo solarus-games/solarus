@@ -137,8 +137,10 @@ public class MapCodeGenerator {
 	    out.println("" + className + "::" + className + "(void):");
 	    out.println("  Map(" + map.getWidth() + ", " + map.getHeight() + ",");
 	    out.println("  get_color(" + bgColor.getRed() + ", " + bgColor.getGreen() + ", " + bgColor.getBlue() + "),");
-	    out.println("  ZSDX::game_resource->get_tileset(" + tilesetConstant + "),");
-	    out.println("  ZSDX::game_resource->get_music(" + musicConstant + ")) {");
+	    out.println("    " + tilesetConstant + ",");
+	    out.println("    " + musicConstant + ") {");
+	    out.println();
+	    out.println("  default_initial_state = /* TO COMPLETE */;");
 	    out.println("}");
 	    out.println();
 	    out.println("/**");
@@ -149,10 +151,6 @@ public class MapCodeGenerator {
 	    out.println("  if (!tileset->is_loaded()) {");
 	    out.println("    tileset->load();");
 	    out.println("  }");
-	    out.println();
-	    out.println("  // link start position");
-	    out.println("  link_start_x = 80;");
-	    out.println("  link_start_y = 80;");
 	    out.println();
 	    out.println("#include \"../src/maps/" + className + "Entities.inc\"");
 	    out.println("}");

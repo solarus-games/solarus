@@ -1,5 +1,5 @@
 /**
- * Some definition of tiles.
+ * Some definition of types.
  */
 
 #ifndef ZSDX_TYPES_H
@@ -26,6 +26,45 @@ enum Layer {
   LAYER_INTERMEDIATE,    // Link can be below or above the entity (platforms or objects on a plaform)
   LAYER_HIGH,            // the entity is always above Link (trees, top of doors...)
   LAYER_NB               // number of layers
+};
+
+/**
+ * Constants to identify each music.
+ */
+enum MusicID {
+  MUSIC_NONE      = -3, // special value to stop the music
+  MUSIC_NO_CHANGE = -2, // special value to keep the current music
+  MUSIC_DEFAULT   = -1, // special value to refer to the default music of the map
+  MUSIC_VILLAGE,
+  MUSIC_OVERWORLD,
+  MUSIC_BOSS,
+  MUSIC_CASTLE,
+  MUSIC_CREDITS,
+  MUSIC_TITLE_SCREEN,
+  MUSIC_FANFARE,
+  MUSIC_GAME_OVER,
+  MUSIC_RABBIT,
+  MUSIC_MENU,
+  MUSIC_MINI_GAME,
+  MUSIC_DARK_WORLD,
+  MUSIC_SOLDIERS,
+  NB_MUSICS,            // special value to get the number of musics
+};
+
+/**
+ * Constants to identify each tileset.
+ */
+enum TilesetID {
+#include "TilesetList.inc"
+  NB_TILESETS
+};
+
+/**
+ * Constants to identify each map.
+ */
+enum MapID {
+#include "MapList.inc"
+  NB_MAPS
 };
 
 #endif

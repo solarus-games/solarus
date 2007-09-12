@@ -16,6 +16,11 @@ const int FRAMES_PER_SECOND = 50;
 const int FRAME_INTERVAL = 1000 / FRAMES_PER_SECOND;
 
 /**
+ * The game.
+ */
+Game *ZSDX::game;
+
+/**
  * The screen.
  */
 SDL_Surface *ZSDX::screen;
@@ -55,9 +60,12 @@ void ZSDX::initialize(void) {
   // initialize FMOD
   Music::initialize();
 
-  // initialise the game resource
+  // initialize the game resource
   game_resource = new GameResource();
   game_resource->create_resources();
+  
+  // create the game
+  game = new Game();
 }
 
 /**
@@ -67,6 +75,7 @@ void ZSDX::exit(void) {
   SDL_Quit();
   Music::exit();
   delete game_resource;
+  delete game;
 }
 
 /**
@@ -98,21 +107,31 @@ void ZSDX::switch_fullscreen(void) {
   set_fullscreen(!fullscreen);
 }
 
+/**
+ * Launches the game.
+ */
+void ZSDX::main(void) {
+
+  // initialize the game engine
+  initialize();
+
+  // first map
+  //  game->set_current_map(MAP_LINKHOUSE);
+  //  game->set_current_map(MAP_LINKHOUSESECRETROOM);
+  game->set_current_map(MAP_RUPEEHOUSE);
+
+  game->play();
+
+  // close the game engine
+  exit();
+}
+
+/**
+ * Entry point of the program.
+ */
 int main(int argc, char **argv) {
 
-  ZSDX::initialize();
-
-//   Map *map = ZSDX::game_resource->get_map(MAP_LINKHOUSE);
-//   Map *map = ZSDX::game_resource->get_map(MAP_LINKHOUSESECRETROOM);
-  Map *map = ZSDX::game_resource->get_map(MAP_RUPEEHOUSE);
-  for (int i = 0; i < 1; i++) {
-    map->load();
-    map->start();
-    map->exit();
-    map->unload();
-  }
-
-  ZSDX::exit();
+  ZSDX::main();
   
   return 0;
 }

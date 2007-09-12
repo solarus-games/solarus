@@ -8,6 +8,7 @@ zsdx_SOURCES = 						\
   Game.cpp						\
   GameResource.cpp					\
   Map.cpp						\
+  MapInitialState.cpp					\
   Moving.cpp						\
   MovingWithCollision.cpp				\
   MovingWithSmoothCollision.cpp				\
@@ -39,6 +40,7 @@ zsdx_SOURCES = 						\
   $(zsdxincludedir)/GameResource.h			\
   $(zsdxincludedir)/Game.h				\
   $(zsdxincludedir)/Map.h				\
+  $(zsdxincludedir)/MapInitialState.h			\
   $(zsdxincludedir)/MapEntity.h				\
   $(zsdxincludedir)/Moving.h				\
   $(zsdxincludedir)/MovingWithCollision.h		\

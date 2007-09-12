@@ -5,40 +5,10 @@
 #ifndef ZSDX_GAME_RESOURCE_H
 #define ZSDX_GAME_RESOURCE_H
 
+#include "Types.h"
 #include "Link.h"
 #include "Tileset.h"
 #include "Map.h"
-
-// tilesets
-
-enum TilesetID {
-#include "TilesetList.inc"
-  NB_TILESETS
-};
-
-// maps
-enum MapID {
-#include "MapList.inc"
-  NB_MAPS
-};
-
-// musics
-enum MusicID {
-  MUSIC_VILLAGE,
-  MUSIC_OVERWORLD,
-  MUSIC_BOSS,
-  MUSIC_CASTLE,
-  MUSIC_CREDITS,
-  MUSIC_TITLE_SCREEN,
-  MUSIC_FANFARE,
-  MUSIC_GAME_OVER,
-  MUSIC_RABBIT,
-  MUSIC_MENU,
-  MUSIC_MINI_GAME,
-  MUSIC_DARK_WORLD,
-  MUSIC_SOLDIERS,
-  NB_MUSICS
-};
 
 /* This class is a database of all game resources:
  * - the tileset list

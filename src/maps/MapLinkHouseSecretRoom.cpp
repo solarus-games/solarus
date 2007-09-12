@@ -16,9 +16,12 @@
  */
 MapLinkHouseSecretRoom::MapLinkHouseSecretRoom(void):
   Map(320, 240,
-  get_color(88, 72, 72),
-  ZSDX::game_resource->get_tileset(TILESET_HOUSE),
-  ZSDX::game_resource->get_music(MUSIC_VILLAGE)) {
+      get_color(88, 72, 72),
+      TILESET_HOUSE,
+      MUSIC_VILLAGE),
+  initial_state(16, 128, 0) {
+
+  default_initial_state = &initial_state;
 }
 
 /**
@@ -29,10 +32,6 @@ void MapLinkHouseSecretRoom::load(void) {
   if (!tileset->is_loaded()) {
     tileset->load();
   }
-
-  // link start position
-  link_start_x = 80;
-  link_start_y = 80;
 
 #include "../src/maps/MapLinkHouseSecretRoomEntities.inc"
 }

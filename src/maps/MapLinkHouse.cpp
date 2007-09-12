@@ -16,9 +16,13 @@
  */
 MapLinkHouse::MapLinkHouse(void):
   Map(320, 240,
-  get_color(88, 72, 72),
-  ZSDX::game_resource->get_tileset(TILESET_HOUSE),
-  ZSDX::game_resource->get_music(MUSIC_VILLAGE)) {
+      get_color(88, 72, 72),
+      TILESET_HOUSE,
+      MUSIC_VILLAGE),
+  initial_state_south(112, 216, 1),
+  initial_state_east(304, 128, 2) {
+
+  default_initial_state = &initial_state_south;
 }
 
 /**
@@ -29,10 +33,6 @@ void MapLinkHouse::load(void) {
   if (!tileset->is_loaded()) {
     tileset->load();
   }
-
-  // link start position
-  link_start_x = 80;
-  link_start_y = 80;
 
 #include "../src/maps/MapLinkHouseEntities.inc"
 }

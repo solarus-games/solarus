@@ -48,7 +48,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_zsdx_OBJECTS = ZSDX.$(OBJEXT) Game.$(OBJEXT) GameResource.$(OBJEXT) \
-	Map.$(OBJEXT) Moving.$(OBJEXT) MovingWithCollision.$(OBJEXT) \
+	Map.$(OBJEXT) MapInitialState.$(OBJEXT) Moving.$(OBJEXT) \
+	MovingWithCollision.$(OBJEXT) \
 	MovingWithSmoothCollision.$(OBJEXT) Moving8ByPlayer.$(OBJEXT) \
 	AnimatedSprite.$(OBJEXT) SpriteAnimations.$(OBJEXT) \
 	SpriteAnimation.$(OBJEXT) SpriteAnimationDirection.$(OBJEXT) \
@@ -169,6 +170,7 @@ zsdx_SOURCES = \
   Game.cpp						\
   GameResource.cpp					\
   Map.cpp						\
+  MapInitialState.cpp					\
   Moving.cpp						\
   MovingWithCollision.cpp				\
   MovingWithSmoothCollision.cpp				\
@@ -200,6 +202,7 @@ zsdx_SOURCES = \
   $(zsdxincludedir)/GameResource.h			\
   $(zsdxincludedir)/Game.h				\
   $(zsdxincludedir)/Map.h				\
+  $(zsdxincludedir)/MapInitialState.h			\
   $(zsdxincludedir)/MapEntity.h				\
   $(zsdxincludedir)/Moving.h				\
   $(zsdxincludedir)/MovingWithCollision.h		\
@@ -300,6 +303,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Link.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LinkAnimations.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Map.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapInitialState.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapLinkHouse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapLinkHouseSecretRoom.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapRupeeHouse.Po@am__quote@

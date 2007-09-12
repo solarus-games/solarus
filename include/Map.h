@@ -14,6 +14,7 @@ using namespace std;
 #include "Tileset.h"
 #include "Music.h"
 #include "TileOnMap.h"
+#include "MapInitialState.h"
 
 /**
  * A macro used by the generated code to put a tile on the map.
@@ -32,7 +33,28 @@ using namespace std;
  */
 class Map {
 
-  // fields
+ private:
+  
+  /**
+   * All tiles of the map (a vector for each layer).
+   */
+  vector<TileOnMap*> *tiles[LAYER_NB];
+  
+  /**
+   * Array of Obstacle representing which tiles are obstacles and how.
+   */
+  Obstacle *obstacle_tiles[LAYER_NB];
+
+  /**
+   * Position of the screen in the map.
+   */
+  SDL_Rect screen_position;
+
+  /**
+   * Initial state of the map when it is loaded.
+   */
+  MapInitialState *initial_state;
+
  protected:
 
   /**
@@ -57,6 +79,16 @@ class Map {
    */
   const int height8;
 
+ private:
+
+  /**
+   * Number of elements in the array obstacle_tiles.
+   * obstacle_tiles_size = width8 * height8
+   */
+  const int obstacle_tiles_size;
+  
+ protected:
+
   /**
    * Background color of the map.
    */
@@ -69,64 +101,14 @@ class Map {
   Tileset *tileset;
 
   /**
-   * Background music of the map.
+   * ID of the default music of the map (can be a valid music, MUSIC_NONE or MUSIC_NO_CHANGE).
    */
-  Music *background_music;
+  MusicID default_music_id;
 
   /**
-   * X start position of Link.
-   * TODO: most of the maps can have several start positions for Link
+   * Default initial state of the map when it is loaded.
    */
-  int link_start_x;
-
-  /**
-   * Y start position of Link.
-   */
-  int link_start_y;
-
- private:
-  
-  /**
-   * All tiles of the map (a vector for each layer).
-   */
-  vector<TileOnMap*> *tiles[LAYER_NB];
-  
-  /**
-   * Number of elements in the array obstacle_tiles.
-   * obstacle_tiles_size = width8 * height8
-   */
-  const int obstacle_tiles_size;
-  
-  /**
-   * Array of Obstacle representing which tiles are obstacles and how.
-   */
-  Obstacle *obstacle_tiles[LAYER_NB];
-
-  /**
-   * Position of the screen in the map.
-   */
-  SDL_Rect screen_position;
-
-  // methods
-  
-  /**
-   * Updates the animation and the position of each sprite, including Link.
-   */
-  void update_sprites(void);
-  
-  /**
-   * Displays the map with all its entities on the screen.
-   * @param surface the map surface
-   */
-  void display(SDL_Surface *surface);
-  
- protected:
-
-  /**
-   * Adds an entity onto the map.
-   * @param entity the entity to add
-   */
-  //  inline void add_entity(MapEntity *entity) { entities->push_back(entity); }
+  MapInitialState *default_initial_state;
 
   /**
    * Creates a tile on the map.
@@ -148,11 +130,11 @@ class Map {
    * @param width the map width in pixels
    * @param height the map height in pixels
    * @param background_color the background_color
-   * @param tileset the map tileset
-   * @param background_music the map music
+   * @param tileset_id the map tileset
+   * @param default_music_id the map music
    */
   Map(int width, int height, zsdx_color_t background_color,
-      Tileset *tileset, Music *background_music);
+      TilesetID tileset_id, MusicID default_music_id);
 
   /**
    * Destructor.
@@ -194,9 +176,8 @@ class Map {
   void unload(void);
 
   /**
-   * Launches the map. The map must be loaded.
-   * Link is placed on the map, the player takes the control.
-   * The SDL main loop is started.
+   * Starts the map. The map must be loaded.
+   * Link is placed on the map and the background music starts.
    */
   void start(void);
 
@@ -204,11 +185,33 @@ class Map {
    * Exits the map.
    * This function is called when Link leaves the map.
    */
-  void exit(void);
+  void leave(void);
 
   /**
+   * Sets the initial state of the map when it is loaded.
+   * @param initial_state the initial state you want to load
+   */
+  void set_initial_state(MapInitialState *initial_state);
+
+  /**
+   * Gets the default initial state of the map when it is loaded.
+   * @return the default initial state of the map
+   */
+  MapInitialState *get_default_initial_state(void);
+
+  /**
+   * Updates the animation and the position of each sprite, including Link.
+   */
+  void update_sprites(void);
+  
+  /**
+   * Displays the map with all its entities on the screen.
+   */
+  void display();
+  
+  /**
    * Tests whether a point collides with a map tile.
- * @param layer layer of the point
+   * @param layer layer of the point
    * @param x x of the point in pixels
    * @param y y of the point in pixels
    * @return the obstacle property of this point

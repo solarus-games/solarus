@@ -10,6 +10,7 @@ using namespace std;
 #include <SDL/SDL.h>
 #include "GameResource.h"
 #include "TileAnimationManager.h"
+#include "Game.h"
 
 #define MIN(x,y) ((x > y) ? (y) : (x))
 #define MAX(x,y) ((x > y) ? (x) : (y))
@@ -37,15 +38,6 @@ class ZSDX {
   static bool fullscreen;
   static TileAnimationManager tile_animation_manager;
 
- public:
-
-  /**
-   * The game resource object.
-   * It contains the whole game database: the maps, the tilesets,
-   * the sprites, the musics, etc.
-   */
-  static GameResource *game_resource;
-
   /**
    * Initializes the game engine.
    */
@@ -55,6 +47,26 @@ class ZSDX {
    * Cleans everything.
    */
   static void exit(void);
+
+ public:
+
+  /**
+   * Launches the game.
+   */
+  static void main(void);
+
+  /**
+   * The game resource object.
+   * It contains the whole game database: the maps, the tilesets,
+   * the sprites, the musics, etc.
+   */
+  static GameResource *game_resource;
+
+  /**
+   * The game object.
+   * It provides all game functions to the maps.
+   */
+  static Game *game;
 
   /**
    * Sets the full screen mode or the windowed mode.

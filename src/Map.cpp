@@ -6,7 +6,6 @@ using namespace std;
 #include <iostream>
 #include <SDL/SDL.h>
 #include "Map.h"
-#include "TileOnMap.h"
 #include "ZSDX.h"
 
 /**
@@ -14,16 +13,17 @@ using namespace std;
  * @param width the map width in pixels
  * @param height the map height in pixels
  * @param background_color the background_color
- * @param tileset the map tileset
- * @param background_music the map music
+ * @param tileset_id the map tileset
+ * @param default_music_id the map default music
  */
 Map::Map(int width, int height, zsdx_color_t background_color,
-	 Tileset *tileset, Music *background_music):
+	 TilesetID tileset_id, MusicID default_music_id):
 
   width(width), height(height), width8(width / 8), height8(height / 8),
-  background_color(background_color), tileset(tileset),
-  background_music(background_music),
-  obstacle_tiles_size(width8 * height8) {
+  obstacle_tiles_size(width8 * height8),
+  background_color(background_color),
+  tileset(ZSDX::game_resource->get_tileset(tileset_id)),
+  default_music_id(default_music_id) {
 
   screen_position.w = 320;
   screen_position.h = 240;
@@ -141,6 +141,22 @@ void Map::unload(void) {
 }
 
 /**
+ * Sets the initial state of the map when it is loaded.
+ * @param initial_state the initial state you want to load
+ */
+void Map::set_initial_state(MapInitialState *initial_state) {
+  this->initial_state = initial_state;
+}
+
+/**
+ * Gets the default initial state of the map when it is loaded.
+ * @return the default initial state of the map
+ */
+MapInitialState *Map::get_default_initial_state(void) {
+  return default_initial_state;
+}
+
+/**
  * Returns the SDL surface where the map is displayed (normally the screen).
  * @return the surface where the map is displayed
  */
@@ -159,14 +175,14 @@ void Map::update_sprites(void) {
 
 /**
  * Displays the map with all its entities on the screen.
- * @param surface the map surface
  */
-void Map::display(SDL_Surface *surface) {
-
+void Map::display() {
+  
   // Link
   Link* link = ZSDX::game_resource->get_link();
 
   // screen
+  SDL_Surface *surface = get_surface();
   screen_position.x = MIN(MAX(link->get_x() - 160, 0), width - 320);
   screen_position.y = MIN(MAX(link->get_y() - 120, 0), height - 240);  
 
@@ -191,136 +207,34 @@ void Map::display(SDL_Surface *surface) {
 }
 
 /**
- * Launches the map. The map must be loaded.
- * Link is placed on the map, the player takes the control.
- * The SDL main loop is started.
+ * Starts the map. The map must be loaded.
+ * Link is placed on the map and the background music starts.
  */
 void Map::start(void) {
-  SDL_Event event;
-  Uint32 ticks, last_frame_date = 0;
-  bool quit = false;
 
-  // start the background music
-  if (background_music != NULL) {
-    background_music->play();
+  // get the new music to play
+  MusicID new_music_id = initial_state->get_background_music();
+
+  if (new_music_id == MUSIC_DEFAULT) {
+    new_music_id = default_music_id;
   }
+
+  ZSDX::game->play_music(new_music_id);
 
   // put Link
   Link *link = ZSDX::game_resource->get_link();
   link->set_map(this);
-  link->set_position(link_start_x, link_start_y);
-
-
-  //  SDL_EnableKeyRepeat(5, 10);
-
-  // SDL main loop
-  while (!quit) {
-    if (SDL_PollEvent(&event)) {
-      switch (event.type) {
-	
-	// quit if the user closes the window
-      case SDL_QUIT:
-	quit = true;
-	break;
-	
-	// a key is pressed
-      case SDL_KEYDOWN:
-	switch (event.key.keysym.sym) {
-
-	  // escape: quit
-	case SDLK_ESCAPE:
-	  quit = true;
-	  break;
-	  
-	  // F5: full screen / windowed mode
-	case SDLK_F5:
-	  ZSDX::switch_fullscreen();
-	  break;
-
-	  // move Link
-	case SDLK_RIGHT:
-	  link->start_right();
-	  break;
-
-	case SDLK_UP:
-	  link->start_up();
-	  break;
-
-	case SDLK_LEFT:
-	  link->start_left();
-	  break;
-
-	case SDLK_DOWN:
-	  link->start_down();
-	  break;
-	  
-	  // space: pause the music
-	case SDLK_SPACE:
-	  background_music->set_paused(!background_music->is_paused());
-	  break;
-
-	default:
-	  break;
-	}
-	break;
-	
-	// stop Link's movement
-      case SDL_KEYUP:
-	switch (event.key.keysym.sym) {
-
-	case SDLK_RIGHT:
-	  link->stop_right();
-	  break;
-
-	case SDLK_UP:
-	  link->stop_up();
-	  break;
-
-	case SDLK_LEFT:
-	  link->stop_left();
-	  break;
-
-	case SDLK_DOWN:
-	  link->stop_down();
-	  break;
-
-	default:
-	  break;
-	}
-	break;
-
-	// check the obstacles
-//     case SDL_MOUSEBUTTONDOWN:
-// 	if (event.button.button == SDL_BUTTON_LEFT) {
-// 	  int x = event.button.x;
-// 	  int y = event.button.y;
-// 	  Obstacle obstacle = obstacle_tiles[LAYER_LOW][width8*(y/8) + (x/8)];
-// 	  cout << "obstacle: " << obstacle << "\n";
-// 	}
-// 	break;
-      }
-    }
-    
-    // update the sprites animations and positions
-    update_sprites();
-
-    // display everything each time frame
-    ticks = SDL_GetTicks();
-    if (ticks >= last_frame_date + FRAME_INTERVAL) {
-      last_frame_date = ticks;
-      display(get_surface());
-    }
-  }
+  link->set_position(initial_state->get_link_x(), initial_state->get_link_y());
+  link->get_sprite()->set_current_animation_direction(initial_state->get_link_direction());
+  // TODO: specify link's animation in the initial states
 }
 
 /**
  * Exits the map.
  * This function is called when Link leaves the map.
  */
-void Map::exit(void) {
-  if (background_music != NULL) {
-    background_music->stop();
-  }
+void Map::leave(void) {
+  // nothing is done for now
 }
 
 /**

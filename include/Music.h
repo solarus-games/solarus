@@ -60,8 +60,9 @@ class Music {
 
   /**
    * Loads the file and plays the music.
+   * @return true if the music was loaded successfully, false otherwise
    */
-  void play(void);
+  bool play(void);
 
   /**
    * Stops playing the music.

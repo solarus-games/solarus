@@ -9,6 +9,8 @@
 class MapRupeeHouse: public Map {
 
  public:
+  MapInitialState initial_state;
+
   MapRupeeHouse(void);
   inline ~MapRupeeHouse(void) { }
 

@@ -68,8 +68,11 @@ void Music::exit(void) {
 
 /**
  * Loads the file and plays the music.
+ * @return true if the music was loaded successfully, false otherwise
  */
-void Music::play(void) {
+bool Music::play(void) {
+
+  bool success = false;
   if (initialized) {
     module = FMUSIC_LoadSong(file_name);
     if (module == NULL) {
@@ -77,8 +80,10 @@ void Music::play(void) {
     }
     else {
       FMUSIC_PlaySong(module);
+      success = true;
     }
   }
+  return success;
 }
 
 /**

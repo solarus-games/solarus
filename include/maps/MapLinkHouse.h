@@ -9,6 +9,9 @@
 class MapLinkHouse: public Map {
 
  public:
+  MapInitialState initial_state_south;
+  MapInitialState initial_state_east;
+
   MapLinkHouse(void);
   inline ~MapLinkHouse(void) { }
 

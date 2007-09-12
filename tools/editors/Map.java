@@ -399,7 +399,11 @@ public class Map extends Observable implements Serializable {
      */
     public void setMusic(String music) {
 
-	if ((music == null && this.music != null) || !music.equals(this.music)) {
+	if (this.music == null && music == null) {
+	    return;
+	}
+
+	if (music == null || !music.equals(this.music)) {
 
 	    this.music = music;
 	    setSaved(false);

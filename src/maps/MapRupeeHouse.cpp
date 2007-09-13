@@ -10,6 +10,7 @@
 #include "ZSDX.h"
 #include "tilesets/TilesetHouse.h"
 #include "maps/MapRupeeHouse.h"
+#include "maps/MapLinkHouse.h"
 
 /**
  * Constructor.
@@ -32,6 +33,8 @@ void MapRupeeHouse::load(void) {
   }
 
   INITIAL_STATE(MUSIC_DEFAULT, 120, 296, 1);
+
+  EXIT(LAYER_LOW, 120, 320, 16, 16, MAP_LINKHOUSE, MAP_LINKHOUSE_INITIAL_STATE_EAST);
 
 #include "../src/maps/MapRupeeHouseEntities.inc"
 }

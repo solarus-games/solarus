@@ -7,6 +7,8 @@
 
 #include "Types.h"
 
+// TODO: add the layer in the initial state, rename class to MapEntrance?
+
 /**
  * Describes a possible state of the map when it is loaded.
  */

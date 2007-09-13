@@ -15,11 +15,11 @@
  * Constructor.
  */
 MapLinkHouse::MapLinkHouse(void):
-  Map(320, 240,
+  Map(384, 240,
       get_color(88, 72, 72),
       TILESET_HOUSE,
       MUSIC_VILLAGE) {
-
+  // TODO: when the map size is changed in the map editor, the values above are not updated
 }
 
 /**
@@ -31,10 +31,10 @@ void MapLinkHouse::load(void) {
     tileset->load();
   }
 
-  INITIAL_STATE(MUSIC_DEFAULT, 112, 216, 1);
-  INITIAL_STATE(MUSIC_DEFAULT, 304, 128, 2);
+  INITIAL_STATE(MUSIC_DEFAULT, 128, 216, 1);
+  INITIAL_STATE(MUSIC_DEFAULT, 352, 128, 2);
 
-  EXIT(LAYER_LOW, 104, 240, 16, 16, MAP_LINKHOUSESECRETROOM, 0);
+  EXIT(LAYER_LOW, 120, 240, 16, 16, MAP_LINKHOUSESECRETROOM, 0);
 
 #include "../src/maps/MapLinkHouseEntities.inc"
 }

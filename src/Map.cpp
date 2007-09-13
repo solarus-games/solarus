@@ -28,6 +28,8 @@ Map::Map(int width, int height, zsdx_color_t background_color,
   screen_position.w = 320;
   screen_position.h = 240;
 
+  initial_states = new vector<MapInitialState*>();
+
   // create the vectors of entities and initialize obstacle tile
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
@@ -49,6 +51,8 @@ Map::~Map() {
     delete tiles[layer];
     delete[] obstacle_tiles[layer];
   }
+
+  delete initial_states;
 }
 
 /**
@@ -126,6 +130,22 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
 }
 
 /**
+ * Creates an initial state on the map.
+ * @param music_id id of the music to play in this state
+ * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
+ * @param link_x x initial position of link in this state
+ * (set -1 to indicate that the x coordinate is kept the same from the previous map)
+ * @param link_y y initial position of link in this state
+ * (set -1 to indicate that the y coordinate is kept the same from the previous map)
+ * @param link_direction initial direction of link in this state (0 to 3)
+ */
+void Map::add_initial_state(MusicID music_id, int link_x, int link_y, int link_direction) {
+  
+  MapInitialState *initial_state = new MapInitialState(music_id, link_x, link_y, link_direction);
+  initial_states->push_back(initial_state);
+}
+
+/**
  * Unloads the map.
  * Destroys all entities in the map to free some memory. This function
  * can be called when the player exists the map. If the player is likely to
@@ -138,22 +158,19 @@ void Map::unload(void) {
     }
     tiles[layer]->clear();
   }
+
+  for (unsigned int i = 0; i < initial_states->size(); i++) {
+    delete initial_states->at(i);
+  }
+  initial_states->clear();
 }
 
 /**
  * Sets the initial state of the map when it is loaded.
- * @param initial_state the initial state you want to load
+ * @param initial_state_index index of the initial state you want to load
  */
-void Map::set_initial_state(MapInitialState *initial_state) {
-  this->initial_state = initial_state;
-}
-
-/**
- * Gets the default initial state of the map when it is loaded.
- * @return the default initial state of the map
- */
-MapInitialState *Map::get_default_initial_state(void) {
-  return default_initial_state;
+void Map::set_initial_state(unsigned int initial_state_index) {
+  this->initial_state_index = initial_state_index;
 }
 
 /**
@@ -212,8 +229,14 @@ void Map::display() {
  */
 void Map::start(void) {
 
+  if (initial_states->size() == 0) {
+    cerr << "Fatal error: no initial state defined on the map\n";
+  }
+
+  MapInitialState *initial_state = initial_states->at(initial_state_index);
+
   // get the new music to play
-  MusicID new_music_id = initial_state->get_background_music();
+  MusicID new_music_id = initial_state->get_music_id();
 
   if (new_music_id == MUSIC_DEFAULT) {
     new_music_id = default_music_id;
@@ -224,9 +247,20 @@ void Map::start(void) {
   // put Link
   Link *link = ZSDX::game_resource->get_link();
   link->set_map(this);
-  link->set_position(initial_state->get_link_x(), initial_state->get_link_y());
   link->get_sprite()->set_current_animation_direction(initial_state->get_link_direction());
-  // TODO: specify link's animation in the initial states
+
+  int x = initial_state->get_link_x();
+  int y = initial_state->get_link_y();
+
+  if (x != -1) {
+    link->set_x(x);
+  }
+
+  if (y != -1) {
+    link->set_y(y);
+  }
+
+  // TODO: specify link's animation in the initial states?
 }
 
 /**

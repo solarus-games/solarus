@@ -22,6 +22,11 @@ using namespace std;
 #define TILE(tile_id, layer, x, y, repeat_x, repeat_y) add_new_tile(tile_id, layer, x, y, repeat_x, repeat_y)
 
 /**
+ * A macro used to define an initial state on the map.
+ */
+#define INITIAL_STATE(music_id, link_x, link_y, link_direction) add_initial_state(music_id, link_x, link_y, link_direction)
+
+/**
  * Abstract class for the maps
  * A map is where a game sequence takes place. It contains many information:
  * - the map dimensions
@@ -51,9 +56,14 @@ class Map {
   SDL_Rect screen_position;
 
   /**
-   * Initial state of the map when it is loaded.
+   * Vector of all possible initial states of the map.
    */
-  MapInitialState *initial_state;
+  vector<MapInitialState*> *initial_states;
+
+  /**
+   * Initial state of the map.
+   */
+  unsigned int initial_state_index;
 
  protected:
 
@@ -103,12 +113,7 @@ class Map {
   /**
    * ID of the default music of the map (can be a valid music, MUSIC_NONE or MUSIC_NO_CHANGE).
    */
-  MusicID default_music_id;
-
-  /**
-   * Default initial state of the map when it is loaded.
-   */
-  MapInitialState *default_initial_state;
+  const MusicID default_music_id;
 
   /**
    * Creates a tile on the map.
@@ -122,6 +127,18 @@ class Map {
    * @param repeat_x how many times the tile pattern is repeated on y
    */
   void add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int repeat_y);
+
+  /**
+   * Creates an initial state on the map.
+   * @param music_id id of the music to play in this state
+   * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
+   * @param link_x x initial position of link in this state
+   * (set -1 to indicate that the x coordinate is kept the same from the previous map)
+   * @param link_y y initial position of link in this state
+   * (set -1 to indicate that the y coordinate is kept the same from the previous map)
+   * @param link_direction initial direction of link in this state (0 to 3)
+   */
+  void add_initial_state(MusicID music_id, int link_x, int link_y, int link_direction);
 
  public:
 
@@ -189,15 +206,9 @@ class Map {
 
   /**
    * Sets the initial state of the map when it is loaded.
-   * @param initial_state the initial state you want to load
+   * @param initial_state index of the initial state you want to load
    */
-  void set_initial_state(MapInitialState *initial_state);
-
-  /**
-   * Gets the default initial state of the map when it is loaded.
-   * @return the default initial state of the map
-   */
-  MapInitialState *get_default_initial_state(void);
+  void set_initial_state(unsigned int initial_state_index);
 
   /**
    * Updates the animation and the position of each sprite, including Link.

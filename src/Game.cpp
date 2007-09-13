@@ -39,7 +39,7 @@ void Game::play(void) {
     // load the new map
     map = current_map;
     map->load();
-
+ 
     // start the map (background music, etc)
     map->start();
 
@@ -98,11 +98,16 @@ void Game::play(void) {
 
 	    // temporary
 	  case SDLK_F2:
-	    set_current_map(MAP_LINKHOUSESECRETROOM);
+	    set_current_map(MAP_LINKHOUSE, 1);
 	    break;
 
 	    // temporary
 	  case SDLK_F3:
+	    set_current_map(MAP_LINKHOUSESECRETROOM);
+	    break;
+
+	    // temporary
+	  case SDLK_F4:
 	    set_current_map(MAP_RUPEEHOUSE);
 	    break;
 
@@ -167,29 +172,24 @@ void Game::play(void) {
 /**
  * Changes the current map.
  * Call this function when you want Link to go to another map.
- * The map will be loaded with its default initial state.
+ * The map will be loaded with its first initial state.
  * @param map_id id of the map to launch
  */
 void Game::set_current_map(MapID map_id) {
 
-  current_map = ZSDX::game_resource->get_map(map_id);
-  current_map->set_initial_state(current_map->get_default_initial_state());
+  set_current_map(map_id, 0);
 }
 
 /**
  * Changes the current map.
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
- * @param initial_state initial state of the map
+ * @param initial_state_index index of the initial state of the map
  */
-void Game::set_current_map(MapID map_id, MapInitialState *initial_state) {
-
-  // TODO: simplify the API
-  // and don't force to specify everything in a state
-  // for example let the user just specify the music
+void Game::set_current_map(MapID map_id, unsigned int initial_state_index) {
 
   current_map = ZSDX::game_resource->get_map(map_id);
-  current_map->set_initial_state(initial_state);
+  current_map->set_initial_state(initial_state_index);
 }
 
 /**

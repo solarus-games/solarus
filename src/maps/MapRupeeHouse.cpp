@@ -18,10 +18,8 @@ MapRupeeHouse::MapRupeeHouse(void):
   Map(464, 320,
       get_color(88, 72, 72),
       TILESET_HOUSE,
-      MUSIC_MINI_GAME),
-  initial_state(120, 296, 1) {
+      MUSIC_MINI_GAME) {
 
-  default_initial_state = &initial_state;
 }
 
 /**
@@ -32,6 +30,8 @@ void MapRupeeHouse::load(void) {
   if (!tileset->is_loaded()) {
     tileset->load();
   }
+
+  INITIAL_STATE(MUSIC_DEFAULT, 120, 296, 1);
 
 #include "../src/maps/MapRupeeHouseEntities.inc"
 }

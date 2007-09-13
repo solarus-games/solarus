@@ -57,7 +57,7 @@ class Game {
   /**
    * Changes the current map.
    * Call this function when you want Link to go to another map.
-   * The map will be loaded with its default initial state.
+   * The map will be loaded with its first initial state.
    * @param map_id id of the map to launch
    */
   void set_current_map(MapID map_id);
@@ -66,9 +66,9 @@ class Game {
    * Changes the current map.
    * Call this function when you want Link to go to another map.
    * @param map_id id of the map to launch
-   * @param initial_state initial state of the map
+   * @param initial_state_index index of the initial state of the map
    */
-  void set_current_map(MapID map_id, MapInitialState *initial_state);
+  void set_current_map(MapID map_id, unsigned int initial_state_index);
 
   /**
    * Returns the music currently played.

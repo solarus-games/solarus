@@ -8,8 +8,8 @@
 /**
  * Constructor.
  */
-MapInitialState::MapInitialState(MusicID background_music, int link_x, int link_y, int link_direction):
-  background_music(background_music), link_x(link_x), link_y(link_y), link_direction(link_direction) {
+MapInitialState::MapInitialState(MusicID music_id, int link_x, int link_y, int link_direction):
+  music_id(music_id), link_x(link_x), link_y(link_y), link_direction(link_direction) {
 
 }
 
@@ -17,16 +17,17 @@ MapInitialState::MapInitialState(MusicID background_music, int link_x, int link_
  * Constructor.
  */
 MapInitialState::MapInitialState(int link_x, int link_y, int link_direction):
-  background_music(MUSIC_DEFAULT), link_x(link_x), link_y(link_y), link_direction(link_direction) {
+  music_id(MUSIC_DEFAULT), link_x(link_x), link_y(link_y), link_direction(link_direction) {
 
 }
 
 /**
  * Returns the background music to play in this initial state.
- * @return the background music to play (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
+ * @return the background music to play
+ * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
  */
-MusicID MapInitialState::get_background_music(void) {
-  return background_music;
+MusicID MapInitialState::get_music_id(void) {
+  return music_id;
 }
 
 /**

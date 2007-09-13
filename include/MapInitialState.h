@@ -13,7 +13,7 @@
 class MapInitialState {
 
  private:
-  const MusicID background_music;
+  const MusicID music_id;
   const int link_x;
   const int link_y;
   const int link_direction;
@@ -22,13 +22,13 @@ class MapInitialState {
 
   /**
    * Constructor.
-   * @param background_music the background music to play in this state
+   * @param music_id the background music to play in this state
    * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
    * @param link_x initial x position of Link in this state
    * @param link_y initial y position of Link in this state
    * @param link_direction initial direction of Link in this state (0 to 3)
    */
-  MapInitialState(MusicID background_music, int link_x, int link_y, int link_direction);
+  MapInitialState(MusicID music_id, int link_x, int link_y, int link_direction);
 
   /**
    * Constructor.
@@ -45,9 +45,10 @@ class MapInitialState {
 
   /**
    * Returns the background music to play in this initial state.
-   * @return the background music to play (can be a real music, MUSIC_NONE or MUSIC_NO_CHANGE)
+   * @return the background music to play
+   * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
    */
-  MusicID get_background_music(void);
+  MusicID get_music_id(void);
 
   /**
    * Returns the x coordinate of Link's position in this initial state.

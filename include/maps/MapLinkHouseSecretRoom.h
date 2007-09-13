@@ -9,8 +9,6 @@
 class MapLinkHouseSecretRoom: public Map {
 
  public:
-  MapInitialState initial_state;
-
   MapLinkHouseSecretRoom(void);
   inline ~MapLinkHouseSecretRoom(void) { }
 

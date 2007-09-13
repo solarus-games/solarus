@@ -115,18 +115,6 @@ class Moving: public MapEntity {
    */
   inline void translate(int dx, int dy) { translate_x(dx); translate_y(dy); }
 
-  /**
-   * Sets the x position of the entity.
-   * @param x the new x position
-   */
-  virtual void set_x(int x);
-
-  /**
-   * Sets the y position of the entity.
-   * @param y the new y position
-   */
-  virtual void set_y(int y);
-
  public:
 
   /**
@@ -140,6 +128,18 @@ class Moving: public MapEntity {
   virtual ~Moving(void) { }
 
   // position
+
+  /**
+   * Sets the x position of the entity.
+   * @param x the new x position
+   */
+  virtual void set_x(int x);
+
+  /**
+   * Sets the y position of the entity.
+   * @param y the new y position
+   */
+  virtual void set_y(int y);
 
   /**
    * Sets the position of the entity.

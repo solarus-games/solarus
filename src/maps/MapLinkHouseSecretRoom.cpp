@@ -18,10 +18,8 @@ MapLinkHouseSecretRoom::MapLinkHouseSecretRoom(void):
   Map(320, 240,
       get_color(88, 72, 72),
       TILESET_HOUSE,
-      MUSIC_VILLAGE),
-  initial_state(16, 128, 0) {
+      MUSIC_VILLAGE) {
 
-  default_initial_state = &initial_state;
 }
 
 /**
@@ -32,6 +30,8 @@ void MapLinkHouseSecretRoom::load(void) {
   if (!tileset->is_loaded()) {
     tileset->load();
   }
+
+  INITIAL_STATE(MUSIC_DEFAULT, 16, 128, 0);
 
 #include "../src/maps/MapLinkHouseSecretRoomEntities.inc"
 }

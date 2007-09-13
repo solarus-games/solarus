@@ -36,22 +36,6 @@ class MovingWithCollision: public Moving {
   SDL_Rect absolute_collision_box;
 
   /**
-   * Sets the x position of the entity.
-   * This is a redefinition of Moving::set_x() because we also need
-   * to update the position of absolute_collision_box.
-   * @param x the new x position
-   */
-  void set_x(int x);
-  
-  /**
-   * Sets the y position of the entity.
-   * This is a redefinition of Moving::set_y() because we also need
-   * to update the position of absolute_collision_box.
-   * @param y the new y position
-   */
-  void set_y(int y);
-  
-  /**
    * Sets the collision box of the object.
    * @param collision_box the collision box, positioned
    * from the object's upper-left corner
@@ -84,6 +68,22 @@ class MovingWithCollision: public Moving {
    * Destructor.
    */
   virtual ~MovingWithCollision(void) { }
+  
+  /**
+   * Sets the x position of the entity.
+   * This is a redefinition of Moving::set_x() because we also need
+   * to update the position of absolute_collision_box.
+   * @param x the new x position
+   */
+  void set_x(int x);
+  
+  /**
+   * Sets the y position of the entity.
+   * This is a redefinition of Moving::set_y() because we also need
+   * to update the position of absolute_collision_box.
+   * @param y the new y position
+   */
+  void set_y(int y);
   
   /**
    * Updates the x position of the entity if it wants to move

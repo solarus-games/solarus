@@ -29,6 +29,7 @@ Map::Map(int width, int height, zsdx_color_t background_color,
   screen_position.h = 240;
 
   initial_states = new vector<MapInitialState*>();
+  entity_detectors = new vector<EntityDetector*>();
 
   // create the vectors of entities and initialize obstacle tile
   for (int layer = 0; layer < LAYER_NB; layer++) {
@@ -53,6 +54,7 @@ Map::~Map() {
   }
 
   delete initial_states;
+  delete entity_detectors;
 }
 
 /**
@@ -146,12 +148,31 @@ void Map::add_initial_state(MusicID music_id, int link_x, int link_y, int link_d
 }
 
 /**
+ * Creates an exit on the map.
+ * When Link walks on the exit, he leaves the map and enters another one.
+ * @param layer layer of the exit to create
+ * @param x x position of the exit rectangle
+ * @param y y position of the exit rectangle
+ * @param w width of the exit rectangle
+ * @param h height of the exit rectangle
+ * @param map_id id of the next map
+ * @param initial_state_index initial state of the next map
+ */
+void Map::add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int initial_state_index) {
+  
+  MapExit *exit = new MapExit(layer, x, y, w, h, map_id, initial_state_index);
+  entity_detectors->push_back(exit);
+}
+
+/**
  * Unloads the map.
  * Destroys all entities in the map to free some memory. This function
  * can be called when the player exists the map. If the player is likely to
  * come back on the map, you can keep the map loaded.
  */
 void Map::unload(void) {
+
+  // delete the tiles
   for (int layer = 0; layer < LAYER_NB; layer++) {
     for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
       delete tiles[layer]->at(i);
@@ -159,10 +180,17 @@ void Map::unload(void) {
     tiles[layer]->clear();
   }
 
+  // delete the initial states
   for (unsigned int i = 0; i < initial_states->size(); i++) {
     delete initial_states->at(i);
   }
   initial_states->clear();
+
+  // delete the entity detectors
+  for (unsigned int i = 0; i < entity_detectors->size(); i++) {
+    delete entity_detectors->at(i);
+  }
+  entity_detectors->clear();
 }
 
 /**
@@ -337,7 +365,7 @@ Obstacle Map::pixel_collision(int layer, int x, int y) {
  * (its dimensions should be multiples of 8)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::simple_collision(int layer, SDL_Rect &collision_box) {
+bool Map::collision_with_tiles(int layer, SDL_Rect &collision_box) {
   int x1, x2, y1, y2;
   bool collision = false;
 
@@ -352,4 +380,37 @@ bool Map::simple_collision(int layer, SDL_Rect &collision_box) {
   }
   
   return collision;   
+}
+
+/**
+ * This function is called by an entity sensible to the obstacles
+ * when this entity has just moved on the map.
+ * We check whether or not the entity overlaps an entity detector.
+ * @param entity the entity that has just moved
+ */
+void Map::entity_just_moved(MovingWithCollision *entity) {
+
+  EntityDetector *detector;
+
+  // check each detector
+  for (unsigned int i = 0; i < entity_detectors->size(); i++) {
+    
+    detector = entity_detectors->at(i);
+    if (detector->get_layer() == entity->get_layer()
+	&& entity->overlaps(detector->get_position_in_map())) {
+
+      detector->entity_overlaps(entity); // notify the detector
+    }
+  }
+  // TODO: don't notify again if the entity was already on the detector?
+}
+
+/**
+ * This function is called by the game engine when an entity overlaps a detector.
+ * Redefine this function to create a behavior for your detectors.
+ * @param detector the detector
+ * @param entity the entity
+ */
+void Map::event_entity_on_detector(EntityDetector *dectector, MapEntity *entity) {
+
 }

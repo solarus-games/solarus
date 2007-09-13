@@ -33,5 +33,7 @@ void MapLinkHouseSecretRoom::load(void) {
 
   INITIAL_STATE(MUSIC_DEFAULT, 16, 128, 0);
 
+  EXIT(LAYER_LOW, -16, 128, 8, 16, MAP_RUPEEHOUSE, 0);
+
 #include "../src/maps/MapLinkHouseSecretRoomEntities.inc"
 }

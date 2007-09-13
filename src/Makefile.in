@@ -48,9 +48,10 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_zsdx_OBJECTS = ZSDX.$(OBJEXT) Game.$(OBJEXT) GameResource.$(OBJEXT) \
-	Map.$(OBJEXT) MapInitialState.$(OBJEXT) Moving.$(OBJEXT) \
-	MovingWithCollision.$(OBJEXT) \
+	Map.$(OBJEXT) MapInitialState.$(OBJEXT) MapEntity.$(OBJEXT) \
+	Moving.$(OBJEXT) MovingWithCollision.$(OBJEXT) \
 	MovingWithSmoothCollision.$(OBJEXT) Moving8ByPlayer.$(OBJEXT) \
+	EntityDetector.$(OBJEXT) MapExit.$(OBJEXT) \
 	AnimatedSprite.$(OBJEXT) SpriteAnimations.$(OBJEXT) \
 	SpriteAnimation.$(OBJEXT) SpriteAnimationDirection.$(OBJEXT) \
 	SimpleTile.$(OBJEXT) AnimatedTile.$(OBJEXT) \
@@ -171,10 +172,13 @@ zsdx_SOURCES = \
   GameResource.cpp					\
   Map.cpp						\
   MapInitialState.cpp					\
+  MapEntity.cpp						\
   Moving.cpp						\
   MovingWithCollision.cpp				\
   MovingWithSmoothCollision.cpp				\
   Moving8ByPlayer.cpp					\
+  EntityDetector.cpp					\
+  MapExit.cpp						\
   AnimatedSprite.cpp					\
   SpriteAnimations.cpp					\
   SpriteAnimation.cpp					\
@@ -208,6 +212,8 @@ zsdx_SOURCES = \
   $(zsdxincludedir)/MovingWithCollision.h		\
   $(zsdxincludedir)/MovingWithSmoothCollision.h		\
   $(zsdxincludedir)/Moving8ByPlayer.h			\
+  $(zsdxincludedir)/EntityDetector.h			\
+  $(zsdxincludedir)/MapExit.h				\
   $(zsdxincludedir)/AnimatedSprite.h			\
   $(zsdxincludedir)/SpriteAnimations.h			\
   $(zsdxincludedir)/SpriteAnimation.h			\
@@ -298,11 +304,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AnimatedSprite.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AnimatedTile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Color.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EntityDetector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Game.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GameResource.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Link.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LinkAnimations.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Map.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapEntity.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapExit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapInitialState.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapLinkHouse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapLinkHouseSecretRoom.Po@am__quote@

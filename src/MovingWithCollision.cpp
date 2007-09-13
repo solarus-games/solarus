@@ -37,6 +37,7 @@ void MovingWithCollision::set_collision_box(SDL_Rect &collision_box) {
 void MovingWithCollision::set_x(int x) {
   Moving::set_x(x);
   absolute_collision_box.x = x + collision_box.x;
+  map->entity_just_moved(this);
 }
 
 /**
@@ -48,6 +49,7 @@ void MovingWithCollision::set_x(int x) {
 void MovingWithCollision::set_y(int y) {
   Moving::set_y(y);  
   absolute_collision_box.y = y + collision_box.y;
+  map->entity_just_moved(this);
 }
 
 /**
@@ -63,7 +65,7 @@ bool MovingWithCollision::collision_with_map(int dx, int dy) {
   absolute_collision_box.x += dx;
   absolute_collision_box.y += dy;
 
-  bool collision = map->simple_collision(layer, absolute_collision_box);
+  bool collision = map->collision_with_tiles(layer, absolute_collision_box);
 
   // restore the collision box
   absolute_collision_box.x -= dx;

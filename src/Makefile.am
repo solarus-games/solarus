@@ -9,10 +9,13 @@ zsdx_SOURCES = 						\
   GameResource.cpp					\
   Map.cpp						\
   MapInitialState.cpp					\
+  MapEntity.cpp						\
   Moving.cpp						\
   MovingWithCollision.cpp				\
   MovingWithSmoothCollision.cpp				\
   Moving8ByPlayer.cpp					\
+  EntityDetector.cpp					\
+  MapExit.cpp						\
   AnimatedSprite.cpp					\
   SpriteAnimations.cpp					\
   SpriteAnimation.cpp					\
@@ -46,6 +49,8 @@ zsdx_SOURCES = 						\
   $(zsdxincludedir)/MovingWithCollision.h		\
   $(zsdxincludedir)/MovingWithSmoothCollision.h		\
   $(zsdxincludedir)/Moving8ByPlayer.h			\
+  $(zsdxincludedir)/EntityDetector.h			\
+  $(zsdxincludedir)/MapExit.h				\
   $(zsdxincludedir)/AnimatedSprite.h			\
   $(zsdxincludedir)/SpriteAnimations.h			\
   $(zsdxincludedir)/SpriteAnimation.h			\

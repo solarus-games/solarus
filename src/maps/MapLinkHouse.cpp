@@ -34,5 +34,7 @@ void MapLinkHouse::load(void) {
   INITIAL_STATE(MUSIC_DEFAULT, 112, 216, 1);
   INITIAL_STATE(MUSIC_DEFAULT, 304, 128, 2);
 
+  EXIT(LAYER_LOW, 104, 240, 16, 16, MAP_LINKHOUSESECRETROOM, 0);
+
 #include "../src/maps/MapLinkHouseEntities.inc"
 }

@@ -116,9 +116,9 @@ void ZSDX::main(void) {
   initialize();
 
   // first map
-  //  game->set_current_map(MAP_LINKHOUSE);
+  game->set_current_map(MAP_LINKHOUSE);
   //  game->set_current_map(MAP_LINKHOUSESECRETROOM);
-  game->set_current_map(MAP_RUPEEHOUSE);
+  //  game->set_current_map(MAP_RUPEEHOUSE);
 
   game->play();
 

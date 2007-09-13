@@ -10,10 +10,10 @@ using namespace std;
 #include <vector>
 #include "Types.h"
 #include "Color.h"
-#include "MapEntity.h"
 #include "Tileset.h"
 #include "Music.h"
 #include "TileOnMap.h"
+#include "MapExit.h"
 #include "MapInitialState.h"
 
 /**
@@ -25,6 +25,12 @@ using namespace std;
  * A macro used to define an initial state on the map.
  */
 #define INITIAL_STATE(music_id, link_x, link_y, link_direction) add_initial_state(music_id, link_x, link_y, link_direction)
+
+/**
+ * A macro used to define an exit on the map.
+ * When Link walks on the exit, he leaves the map and enters another one.
+ */
+#define EXIT(layer, x, y, w, h, map_id, initial_state) add_exit(layer, x, y, w, h, map_id, initial_state)
 
 /**
  * Abstract class for the maps
@@ -64,6 +70,11 @@ class Map {
    * Initial state of the map.
    */
   unsigned int initial_state_index;
+
+  /**
+   * Vector of all entity detectors of the map.
+   */
+  vector<EntityDetector*> *entity_detectors;
 
  protected:
 
@@ -139,6 +150,19 @@ class Map {
    * @param link_direction initial direction of link in this state (0 to 3)
    */
   void add_initial_state(MusicID music_id, int link_x, int link_y, int link_direction);
+
+  /**
+   * Creates an exit on the map.
+   * When Link walks on the exit, he leaves the map and enters another one.
+   * @param layer layer of the exit to create
+   * @param x x position of the exit rectangle
+   * @param y y position of the exit rectangle
+   * @param w width of the exit rectangle
+   * @param h height of the exit rectangle
+   * @param map_id id of the next map
+   * @param initial_state_index initial state of the next map
+   */
+  void add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int initial_state_index);
 
  public:
 
@@ -236,7 +260,25 @@ class Map {
    * (its dimensions should be multiples of 8)
    * @return true if the rectangle is overlapping an obstacle, false otherwise
    */
-  bool simple_collision(int layer, SDL_Rect &collision_box);
+  bool collision_with_tiles(int layer, SDL_Rect &collision_box);
+
+  /**
+   * This function is called by an entity sensible to the obstacles
+   * when this entity has just moved on the map.
+   * We check whether or not the entity overlaps an entity detector.
+   * @param entity the entity that has just moved
+   */
+  void entity_just_moved(MovingWithCollision *entity);
+
+  // Events
+
+  /**
+   * This function is called by the game engine when an entity overlaps a detector.
+   * Redefine this function to create a behavior for your detectors.
+   * @param detector the detector
+   * @param entity the entity
+   */
+  virtual void event_entity_on_detector(EntityDetector *dectector, MapEntity *entity);
 
 };
 

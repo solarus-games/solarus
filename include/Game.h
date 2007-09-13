@@ -71,6 +71,12 @@ class Game {
   void set_current_map(MapID map_id, unsigned int initial_state_index);
 
   /**
+   * Returns the current map.
+   * @return the current map
+   */
+  inline Map *get_current_map(void) { return current_map; }
+
+  /**
    * Returns the music currently played.
    * @return the current music, or NULL is no music is being played
    */

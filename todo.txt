@@ -1,15 +1,14 @@
-
-
-- Rendre le projet accessibles pour d'autres développeurs, sous Linux dans un premier temps et sous Windows ensuite
-	- Pour compiler sous Windows :
-		- Makedefs personnalisé
-		- constantes mathématiques
-		- problème de makefile
-
+- Obstacles diagonaux : vérifier que le tile est carré
+- Mettre la couleur de fond dans le tileset et pas dans la map ?
+- Renommer MapInitialState en MapEntrance ?
+- Mettre le layer dans InitialState
+- Code du constructeur d'une map : données générées une seule fois, impossible de les changer depuis l'éditeur
+- Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - Compléter l'éditeur de maps et de tilesets :
-	- Ranger les tiles d'un tileset dans une Hashtable et non un Vector, pour qu'un tile supprimé ne décale pas les indices de tous les tiles suivants
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
-	- Ajouter une barre d'outils avec des cases à cocher pour afficher ou non les obstacles et chaque couche
 	- Trouver un moyen de mixer l'ajout de tiles au clic droit et le redimensionnement immédiat
-	- Compléter le tileset pour ajouter toutes les portes
-	- Générer le code
+	- Indiquer les coordonnées de la souris dans l'éditeur de maps
+	- Editeur de maps : permettre de placer d'autres objets que les tiles (entrées et sorties notamment)
+	- Bug de la map qui ne s'affiche pas tout de suite entièrement dans l'éditeur
+	- Bug quand on désactive l'affichage des obstacles / non obstacles : on peut sélectionner des tiles non affichés
+	- Masquer les fichiers des maps et des tilesets

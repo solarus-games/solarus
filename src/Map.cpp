@@ -95,9 +95,9 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
      */
   case OBSTACLE_NONE:
   case OBSTACLE:
-    for (j = 0; j < tile_height8; j++) {
-      index = (tile_y8 + j) * width8 + tile_x8;
-      for (i = 0; i < tile_width8; i++) {
+    for (i = 0; i < tile_height8; i++) {
+      index = (tile_y8 + i) * width8 + tile_x8;
+      for (j = 0; j < tile_width8; j++) {
 	obstacle_tiles[layer][index++] = obstacle;
       }
     }
@@ -110,23 +110,68 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
      */
   case OBSTACLE_TOP_RIGHT:
     // we traverse each row of 8*8 squares on the tile
-    for (j = 0; j < tile_height8; j++) {
+    for (i = 0; i < tile_height8; i++) {
 
-      index = (tile_y8 + j) * width8 + tile_x8 + j;
+      index = (tile_y8 + i) * width8 + tile_x8;
 
       // 8*8 square on the diagonal
+      index += i;
       obstacle_tiles[layer][index++] = OBSTACLE_TOP_RIGHT;
 
       // right part of the row: we are in the top-right corner
-      for (i = j + 1; i < tile_width8; i++) {
+      for (j = i + 1; j < tile_width8; j++) {
 	obstacle_tiles[layer][index++] = OBSTACLE;
       }
     }
-
     break;
     
-  default:
-    // TODO: make the 3 other cases if it works for top-right, and move this code into another function
+  case OBSTACLE_TOP_LEFT:
+    // we traverse each row of 8*8 squares on the tile
+    for (i = 0; i < tile_height8; i++) {
+
+      index = (tile_y8 + i) * width8 + tile_x8;
+
+      // left part of the row: we are in the top-left corner
+      for (j = 0; j < tile_width8 - i - 1; j++) {
+	obstacle_tiles[layer][index++] = OBSTACLE;
+      }
+
+      // 8*8 square on the diagonal
+      obstacle_tiles[layer][index] = OBSTACLE_TOP_LEFT;
+    }
+    break;
+    
+  case OBSTACLE_BOTTOM_LEFT:
+    // we traverse each row of 8*8 squares on the tile
+    for (i = 0; i < tile_height8; i++) {
+
+      index = (tile_y8 + i) * width8 + tile_x8;
+
+      // left part of the row: we are in the bottom-left corner
+      for (j = 0; j < i; j++) {
+	obstacle_tiles[layer][index++] = OBSTACLE;
+      }
+
+      // 8*8 square on the diagonal
+      obstacle_tiles[layer][index] = OBSTACLE_BOTTOM_LEFT;
+    }
+    break;
+    
+  case OBSTACLE_BOTTOM_RIGHT:
+    // we traverse each row of 8*8 squares on the tile
+    for (i = 0; i < tile_height8; i++) {
+
+      index = (tile_y8 + i) * width8 + tile_x8;
+
+      // 8*8 square on the diagonal
+      index += tile_height8 - i - 1;
+      obstacle_tiles[layer][index++] = OBSTACLE_BOTTOM_RIGHT;
+
+      // right part of the row: we are in the bottom-right corner
+      for (j = tile_width8 - i - 1; j < tile_width8; j++) {
+	obstacle_tiles[layer][index++] = OBSTACLE;
+      }
+    }
     break;
   }
 }
@@ -287,8 +332,6 @@ void Map::start(void) {
   if (y != -1) {
     link->set_y(y);
   }
-
-  // TODO: specify link's animation in the initial states?
 }
 
 /**
@@ -339,7 +382,7 @@ Obstacle Map::pixel_collision(int layer, int x, int y) {
     // same thing
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile < 1 - x_in_tile;
+    on_obstacle = y_in_tile < 8 - x_in_tile;
     break;
     
   case OBSTACLE_BOTTOM_LEFT:
@@ -351,7 +394,7 @@ Obstacle Map::pixel_collision(int layer, int x, int y) {
   case OBSTACLE_BOTTOM_RIGHT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile > 1 - x_in_tile;
+    on_obstacle = y_in_tile > 8 - x_in_tile;
     break;
   }
 
@@ -402,7 +445,6 @@ void Map::entity_just_moved(MovingWithCollision *entity) {
       detector->entity_overlaps(entity); // notify the detector
     }
   }
-  // TODO: don't notify again if the entity was already on the detector?
 }
 
 /**

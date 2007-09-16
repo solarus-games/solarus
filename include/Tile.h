@@ -36,10 +36,13 @@ class Tile {
 
   /**
    * Constructor.
-   * It is called by the subclasses. 
+   * It is called by the subclasses.
+   * @param obstacle type of obstacle: OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
+   * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
+   * @param width width of the tile in pixels (must be a multiple of 8)
+   * @param height height of the tile in pixels (must be a multiple of 8)
    */
-  inline Tile(Obstacle obstacle, int width, int height):
-    obstacle(obstacle), width(width), height(height) { }
+  Tile(Obstacle obstacle, int width, int height);
 
  public:
 

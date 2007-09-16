@@ -23,6 +23,7 @@ zsdx_SOURCES = 						\
   SimpleTile.cpp					\
   AnimatedTile.cpp					\
   TileOnMap.cpp						\
+  Tile.cpp						\
   TileAnimationManager.cpp				\
   Color.cpp						\
   Link.cpp						\

@@ -55,11 +55,11 @@ am_zsdx_OBJECTS = ZSDX.$(OBJEXT) Game.$(OBJEXT) GameResource.$(OBJEXT) \
 	AnimatedSprite.$(OBJEXT) SpriteAnimations.$(OBJEXT) \
 	SpriteAnimation.$(OBJEXT) SpriteAnimationDirection.$(OBJEXT) \
 	SimpleTile.$(OBJEXT) AnimatedTile.$(OBJEXT) \
-	TileOnMap.$(OBJEXT) TileAnimationManager.$(OBJEXT) \
-	Color.$(OBJEXT) Link.$(OBJEXT) LinkAnimations.$(OBJEXT) \
-	Music.$(OBJEXT) Tileset.$(OBJEXT) TilesetHouse.$(OBJEXT) \
-	MapLinkHouse.$(OBJEXT) MapLinkHouseSecretRoom.$(OBJEXT) \
-	MapRupeeHouse.$(OBJEXT)
+	TileOnMap.$(OBJEXT) Tile.$(OBJEXT) \
+	TileAnimationManager.$(OBJEXT) Color.$(OBJEXT) Link.$(OBJEXT) \
+	LinkAnimations.$(OBJEXT) Music.$(OBJEXT) Tileset.$(OBJEXT) \
+	TilesetHouse.$(OBJEXT) MapLinkHouse.$(OBJEXT) \
+	MapLinkHouseSecretRoom.$(OBJEXT) MapRupeeHouse.$(OBJEXT)
 zsdx_OBJECTS = $(am_zsdx_OBJECTS)
 zsdx_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -186,6 +186,7 @@ zsdx_SOURCES = \
   SimpleTile.cpp					\
   AnimatedTile.cpp					\
   TileOnMap.cpp						\
+  Tile.cpp						\
   TileAnimationManager.cpp				\
   Color.cpp						\
   Link.cpp						\
@@ -325,6 +326,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimationDirection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimations.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileAnimationManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileOnMap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tileset.Po@am__quote@

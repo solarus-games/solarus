@@ -69,23 +69,41 @@ public class Tile extends Observable implements Serializable {
 
     /**
      * Simple constructor with no animation.
+     * @param positionInTileset position of the tile in the tileset
+     * @param defaultLayer default layer of the the tile
+     * @param obstacle type of obstacle
+     * @throws TilesetException if the tile size is incorrect
      */
-    public Tile(Rectangle positionInTileset, int defaultLayer, int obstacle) {
+    public Tile(Rectangle positionInTileset, int defaultLayer, int obstacle) throws TilesetException {
 	this(positionInTileset, defaultLayer, obstacle, ANIMATION_NONE, 0);
     }
 
     /**
      * Constructor.
+     * @param positionInTileset position of the tile in the tileset
+     * @param defaultLayer default layer of the the tile
+     * @param obstacle type of obstacle
+     * @param animationSequence type of animation: ANIMATION_NONE ANIMATION_SEQUENCE_012
+     * or ANIMATION_SEQUENCE_0121
+     * @param animationSeparation separation of the 3 animation frames in the tileset image:
+     * ANIMATION_SEPARATION_HORIZONTAL or ANIMATION_SEPARATION_VERTICAL
+     * @throws TilesetException if the tile size is incorrect
      */
     public Tile(Rectangle positionInTileset, int defaultLayer, int obstacle,
-		int animationSequence, int animationSeparation) {
+		int animationSequence, int animationSeparation) throws TilesetException {
 	super();
-
+	
+	// check the width and the height
+	if (positionInTileset.width <= 0 || positionInTileset.height <= 0 ||
+	    positionInTileset.width % 8 != 0 || positionInTileset.height % 8 != 0) {
+	    throw new TilesetException("The size of a tile must be positive and multiple of 8 pixels");
+	}
+	
 	this.positionInTileset = positionInTileset;
-	this.obstacle = obstacle;
 	this.defaultLayer = defaultLayer;
-	this.animationSequence = animationSequence;
-	this.animationSeparation = animationSeparation;
+	setObstacle(obstacle);
+	setAnimationSequence(animationSequence);
+	setAnimationSeparation(animationSeparation);
     }
 
     /**
@@ -125,8 +143,16 @@ public class Tile extends Observable implements Serializable {
      * Changes the tile's obstacle property.
      * @param obstacle Tile.OBSTACLE_NONE, Tile.OBSTACLE, Tile.OBSTACLE_TOP_RIGHT,
      * Tile.OBSTACLE_TOP_LEFT, Tile.OBSTACLE_BOTTOM_LEFT or Tile.OBSTACLE_BOTTOM_RIGHT
+     * @throws TilesetException if the obstacle specified is diagonal and the tile is not square
      */
-    public void setObstacle(int obstacle) {
+    public void setObstacle(int obstacle) throws TilesetException {
+
+	// diagonal obstacle: check that the tile is square
+	if (obstacle != OBSTACLE_NONE && obstacle != OBSTACLE
+	    && positionInTileset.width != positionInTileset.height) {
+	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile");
+	}
+
 	this.obstacle = obstacle;
 	setChanged();
 	notifyObservers();

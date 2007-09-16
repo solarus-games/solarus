@@ -1,6 +1,7 @@
 package editors;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 import java.io.*;
@@ -10,11 +11,15 @@ import java.io.*;
  */
 public class SelectedTileView extends JPanel {
 
+    // the tileset
+    private Tileset tileset;
+
     // the components
 
     private ObstacleView obstacleView;
     private AnimationView animationView;
     private DefaultLayerView defaultLayerView;
+    private JButton buttonDelete;
 
     /**
      * Constructor.
@@ -53,7 +58,28 @@ public class SelectedTileView extends JPanel {
 	constraints.gridy = 2;
 	add(defaultLayerView, constraints);
 
+	// bouton delete
+	buttonDelete = new JButton("Delete tile");
+	buttonDelete.setEnabled(false);
+	buttonDelete.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+		    tileset.removeTile();
+		}
+	    });
+	constraints.gridx = 0;
+	constraints.gridy = 3;
+	constraints.gridwidth = 2;
+	add(buttonDelete, constraints);
+
 	setCurrentTile(null);
+    }
+
+    /**
+     * Sets the tileset.
+     * @param tileset the tileset
+     */
+    public void setTileset(Tileset tileset) {
+	this.tileset = tileset;
     }
 
     /**
@@ -61,6 +87,8 @@ public class SelectedTileView extends JPanel {
      * @param tile the new current tile (can be null)
      */
     public void setCurrentTile(Tile tile) {
+	buttonDelete.setEnabled(tile != null);
+
 	obstacleView.setCurrentTile(tile);
 	animationView.setCurrentTile(tile);
 	defaultLayerView.setCurrentTile(tile);

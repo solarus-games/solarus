@@ -78,21 +78,15 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	    
 	    // popup menu to create a tile
 	    popupMenuCreate = new JPopupMenu();
+
 	    item = new JMenuItem("Create (no obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE_NONE));
-	    item.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-			tileset.addTile(Tile.OBSTACLE_NONE);
-			
-		    }
-		});
+	    item.addActionListener(new ActionCreateTile(Tile.OBSTACLE_NONE));
 	    popupMenuCreate.add(item);
+
 	    item = new JMenuItem("Create (obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE));
-	    item.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-			tileset.addTile(Tile.OBSTACLE);
-		    }
-		});
+	    item.addActionListener(new ActionCreateTile(Tile.OBSTACLE));
 	    popupMenuCreate.add(item);
+
 	    itemCancelCreate.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 			tileset.unSelectTile();
@@ -511,6 +505,40 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     }
 
     /**
+     * Action listener invoked when the user creates a tile.
+     */
+    private class ActionCreateTile implements ActionListener {
+
+	/**
+	 * Type of obstacle to set when the action is invoked.
+	 */
+	private int obstacle;
+
+	/**
+	 * Constructor.
+	 * @param obstacle type of obstacle of the tile to create
+	 */
+	public ActionCreateTile(int obstacle) {
+	    this.obstacle = obstacle;
+	}
+
+	/**
+	 * Method called when the user wants to create a tile.
+	 */
+	public void actionPerformed(ActionEvent ev) {
+	    try {
+		tileset.addTile(obstacle);
+	    }
+	    catch (TilesetException e) {
+		JOptionPane.showMessageDialog(null,
+					      "Unable to create the tile: " + e.getMessage(),
+					      "Error",
+					      JOptionPane.ERROR_MESSAGE);
+	    }
+	}
+    }
+
+    /**
      * Action listener invoked when the user changes the type of obstacle of a tile
      * from the popup menu after a right click.
      */
@@ -532,12 +560,21 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	/**
 	 * Method called when the user sets the type of obstacle of the selected tile.
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent ev) {
 	    Tile tile = tileset.getSelectedTile();
 	    int currentObstacle = tile.getObstacle();
 
 	    if (currentObstacle != obstacle) {
-		tile.setObstacle(obstacle);
+
+		try {
+		    tile.setObstacle(obstacle);
+		}
+		catch (TilesetException e) {
+		    JOptionPane.showMessageDialog(null,
+						  "Unable to set this type of obstacle: " + e.getMessage(),
+						  "Error",
+						  JOptionPane.ERROR_MESSAGE);
+		}
 	    }
 	}
     }

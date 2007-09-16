@@ -39,10 +39,6 @@ public class TilesView extends JPanel {
      */
     private Vector<TileIcon> tileIcons;
 
-    // the buttons
-    private JButton buttonCreate;
-    private JButton buttonDelete;
-
     /**
      * View of the selected tile.
      */
@@ -60,7 +56,6 @@ public class TilesView extends JPanel {
 	setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 	// tileset name
-	// buttons
 	// the tile list
 	// view of the current tile
 
@@ -68,32 +63,6 @@ public class TilesView extends JPanel {
 	labelTilesetName = new JLabel("Tileset name: ");
 	labelTilesetName.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 	labelTilesetName.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-	// buttons
-	JPanel buttons = new JPanel(new GridLayout(1, 3, 5, 0));
-	buttons.setMinimumSize(new Dimension(200, 30));
-	buttons.setPreferredSize(new Dimension(200, 30));
-	buttons.setMaximumSize(new Dimension(200, 30));
-	buttons.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-	buttonCreate = new JButton("Create");
-	buttonDelete = new JButton("Delete");
-	buttonCreate.setEnabled(false);
-	buttonDelete.setEnabled(false);
-	buttons.add(buttonCreate);
-	buttons.add(buttonDelete);
-
-	buttonCreate.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    tileset.addTile(Tile.OBSTACLE_NONE);
-		}
-	    });
-
-	buttonDelete.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    tileset.removeTile();
-		}
-	    });
 
 	// list
 	tileListModel = new TileListModel();
@@ -103,6 +72,16 @@ public class TilesView extends JPanel {
 	tileList.setVisibleRowCount(-1); // make the rows as wide as possible
  	tileList.getSelectionModel().addListSelectionListener(new TileListSelectionListener());
 	tileList.setCellRenderer(new TileListRenderer());
+
+	tileList.addKeyListener(new KeyAdapter() {
+		public void keyPressed(KeyEvent keyEvent) {
+		    if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
+			if (tileset != null && tileset.getSelectedTile() != null) {
+			    tileset.removeTile();
+			}
+		    }
+		}
+	    });
 
 	JScrollPane listScroller = new JScrollPane(tileList);
  	listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -115,15 +94,14 @@ public class TilesView extends JPanel {
 
 	add(labelTilesetName);
 	add(Box.createRigidArea(new Dimension(0, 5)));
-	add(buttons);
-	add(Box.createRigidArea(new Dimension(0, 5)));
 	add(listScroller);
 	add(Box.createRigidArea(new Dimension(0, 5)));
 	add(tileView);
     }
 
     /**
-     * Sets the observed tileset.
+     * Sets the tileset observed.
+     * @param tileset the tileset
      */
     public void setTileset(Tileset tileset) {
 	if (tileset != this.tileset) {
@@ -135,9 +113,9 @@ public class TilesView extends JPanel {
 	    this.tileset = tileset;
 
 	    tileset.addObserver(tileListModel);
-	    
-	    loadIcons();
+	    tileView.setTileset(tileset);
 
+	    loadIcons();
 	    tileListModel.update(tileset, null);
 	}
     }
@@ -238,17 +216,8 @@ public class TilesView extends JPanel {
 	    int tilesetSelectedTileId = tileset.getSelectedTileId();
 	    int listSelectedRank = tileList.getSelectedIndex();
 
-	    buttonCreate.setEnabled(false);
-	    buttonDelete.setEnabled(false);
-
-	    if (tileset.isSelectingNewTile()) {
-		// a new tile is selected: if it is valid, we authorize the user to create it
-		buttonCreate.setEnabled(!tileset.isNewTileAreaOverlapping());
-	    }
-	    else if (tileset.getSelectedTile() != null) {
-		// an existing tile is selected, so the user can remove it
-		buttonDelete.setEnabled(true);
-
+	    if (tileset.getSelectedTile() != null) {
+		// an existing tile is selected
 		// make this tile selected in the list
 		int listRank = tileset.tileIdToTileRank(tilesetSelectedTileId);
 		if (listRank != listSelectedRank) {
@@ -256,7 +225,7 @@ public class TilesView extends JPanel {
 		    tileList.ensureIndexIsVisible(listRank);
 		}
 	    }
-	    else {
+	    else if (tileset.getSelectedTile() == null) {
 		// no tile is selected anymore
 		tileList.removeSelectionInterval(listSelectedRank, listSelectedRank);
 	    }

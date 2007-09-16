@@ -61,11 +61,20 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
      * This method is called when the selection the combo box is changed.
      * The tile is then updated.
      */
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent ev) {
 	int listIndex = getSelectedIndex();
 	if (listIndex != tile.getObstacle()) {
 	    // the type of obstacle has changed
-	    tile.setObstacle(listIndex);
+	    try {
+		tile.setObstacle(listIndex);
+	    }
+	    catch (TilesetException e) {
+		JOptionPane.showMessageDialog(null,
+					      "Unable to set this type of obstacle: " + e.getMessage(),
+					      "Error",
+					      JOptionPane.ERROR_MESSAGE);
+		update(null, null);
+	    }
 	}
     }
 }

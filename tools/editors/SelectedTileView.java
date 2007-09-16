@@ -15,7 +15,6 @@ public class SelectedTileView extends JPanel {
     private Tileset tileset;
 
     // the components
-
     private ObstacleView obstacleView;
     private AnimationView animationView;
     private DefaultLayerView defaultLayerView;
@@ -34,17 +33,17 @@ public class SelectedTileView extends JPanel {
 	// obstacle
 	constraints.gridx = 0;
 	constraints.gridy = 0;
-	add(new JLabel("Obstacle:"), constraints);
+	add(new JLabel("Obstacle"), constraints);
 	obstacleView = new ObstacleView();
 
 	// animation
 	constraints.gridy = 1;
-	add(new JLabel("Animation:"), constraints);
+	add(new JLabel("Animation"), constraints);
 	animationView = new AnimationView();
 
 	// default layer
 	constraints.gridy = 2;
-	add(new JLabel("Default layer:"), constraints);
+	add(new JLabel("Default layer"), constraints);
 	defaultLayerView = new DefaultLayerView();
 
 	constraints.weightx = 1;

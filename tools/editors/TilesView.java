@@ -20,9 +20,9 @@ public class TilesView extends JPanel {
     private Tileset tileset;
 
     /**
-     * Text indicating the tileset name.
+     * Component with the properties of the tileset.
      */
-    private JLabel labelTilesetName;
+    private TilesetPropertiesView tilesetPropertiesView;
 
     /**
      * The tile list.
@@ -55,14 +55,14 @@ public class TilesView extends JPanel {
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-	// tileset name
+	// tileset properties
 	// the tile list
 	// view of the current tile
 
-	// tileset name
-	labelTilesetName = new JLabel("Tileset name: ");
-	labelTilesetName.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-	labelTilesetName.setAlignmentX(Component.LEFT_ALIGNMENT);
+	// tileset properties
+	tilesetPropertiesView = new TilesetPropertiesView();
+	tilesetPropertiesView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+	tilesetPropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	// list
 	tileListModel = new TileListModel();
@@ -92,7 +92,7 @@ public class TilesView extends JPanel {
  	tileView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
 	tileView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-	add(labelTilesetName);
+	add(tilesetPropertiesView);
 	add(Box.createRigidArea(new Dimension(0, 5)));
 	add(listScroller);
 	add(Box.createRigidArea(new Dimension(0, 5)));
@@ -113,6 +113,7 @@ public class TilesView extends JPanel {
 	    this.tileset = tileset;
 
 	    tileset.addObserver(tileListModel);
+	    tilesetPropertiesView.setTileset(tileset);
 	    tileView.setTileset(tileset);
 
 	    loadIcons();
@@ -191,9 +192,6 @@ public class TilesView extends JPanel {
 	 *   - null: other cases
 	 */
 	public void update(Observable o, Object params) {
-
-	    // update the tileset name
-	    labelTilesetName.setText("Tileset name: " + tileset.getName());
 
 	    // reload the icons if a tile was added or removed
 	    if (params instanceof Integer || params instanceof Tile) {

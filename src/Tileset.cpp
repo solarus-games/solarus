@@ -16,9 +16,10 @@ using namespace std;
 /**
  * Constructor.
  * Creates an empty tileset.
+ * @param background_color the background_color
  */
-Tileset::Tileset(void):
-nb_tiles(0) {
+Tileset::Tileset(zsdx_color_t background_color):
+nb_tiles(0), background_color(background_color) {
   
 }
 

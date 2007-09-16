@@ -6,7 +6,6 @@
 #include "Map.h"
 #include "GameResource.h"
 #include "Tile.h"
-#include "Color.h"
 #include "ZSDX.h"
 #include "tilesets/TilesetHouse.h"
 #include "maps/MapLinkHouse.h"
@@ -16,11 +15,9 @@
  */
 MapLinkHouse::MapLinkHouse(void):
   Map(384, 240,
-      get_color(88, 72, 72),
-      TILESET_HOUSE,
-      MUSIC_VILLAGE) {
-  // TODO: when the map size (for example) is changed in the map editor, the values above are not updated
-  // can be wait until load, to specify these properties from the generated file?
+    TILESET_HOUSE,
+    MUSIC_VILLAGE) {
+
 }
 
 /**

@@ -1,5 +1,3 @@
-- Obstacles diagonaux : vérifier que le tile est carré
-- Mettre la couleur de fond dans le tileset et pas dans la map ?
 - Renommer MapInitialState en MapEntrance ?
 - Mettre le layer dans InitialState
 - Code du constructeur d'une map : données générées une seule fois, impossible de les changer depuis l'éditeur
@@ -9,6 +7,8 @@
 	- Trouver un moyen de mixer l'ajout de tiles au clic droit et le redimensionnement immédiat
 	- Indiquer les coordonnées de la souris dans l'éditeur de maps
 	- Editeur de maps : permettre de placer d'autres objets que les tiles (entrées et sorties notamment)
-	- Bug de la map qui ne s'affiche pas tout de suite entièrement dans l'éditeur
+	- Bug de la map / du tileset qui ne s'affiche pas tout de suite entièrement dans l'éditeur
 	- Bug quand on désactive l'affichage des obstacles / non obstacles : on peut sélectionner des tiles non affichés
 	- Masquer les fichiers des maps et des tilesets
+	- Création d'une nouvelle map : le tileset de la précédente reste sélectionné dans la liste
+	- Taille minimale d'une map : 320*240 ?

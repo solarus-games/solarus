@@ -114,7 +114,6 @@ public class MapCodeGenerator {
 	    String tilesetConstant = "TILESET_" + tileset.getName().toUpperCase();
 	    String musicConstant = "MUSIC_" + map.getMusic().toUpperCase();
 	    String className = "Map" + map.getName();
-	    Color bgColor = map.getBackgroundColor();
 	    
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 	    
@@ -126,7 +125,6 @@ public class MapCodeGenerator {
 	    out.println("#include \"Map.h\"");
 	    out.println("#include \"GameResource.h\"");
 	    out.println("#include \"Tile.h\"");
-	    out.println("#include \"Color.h\"");
 	    out.println("#include \"ZSDX.h\"");
 	    out.println("#include \"tilesets/" + tilesetHeaderFileName + "\"");
 	    out.println("#include \"maps/" + headerFileName + "\"");
@@ -136,11 +134,9 @@ public class MapCodeGenerator {
 	    out.println(" */");
 	    out.println("" + className + "::" + className + "(void):");
 	    out.println("  Map(" + map.getWidth() + ", " + map.getHeight() + ",");
-	    out.println("  get_color(" + bgColor.getRed() + ", " + bgColor.getGreen() + ", " + bgColor.getBlue() + "),");
 	    out.println("    " + tilesetConstant + ",");
 	    out.println("    " + musicConstant + ") {");
 	    out.println();
-	    out.println("  default_initial_state = /* TO COMPLETE */;");
 	    out.println("}");
 	    out.println();
 	    out.println("/**");

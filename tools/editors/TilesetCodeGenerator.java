@@ -86,7 +86,7 @@ public class TilesetCodeGenerator {
 	out.println("class Tileset" + name + ": public Tileset {");
 	out.println();
 	out.println(" public:");
-	out.println("  Tileset" + name + "(void) { }");
+	out.println("  Tileset" + name + "(void);");
 	out.println("  inline ~Tileset" + name + "(void) { }");
 	out.println();
 	out.println("  void load(void);");
@@ -106,6 +106,9 @@ public class TilesetCodeGenerator {
 	    File.separator + "tilesets" + File.separator + "Tileset" +
 	    name + ".cpp";
 
+	String className = "Tileset" + name;
+	Color bgColor = tileset.getBackgroundColor();
+
 	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 	
 	out.println("/*");
@@ -116,11 +119,20 @@ public class TilesetCodeGenerator {
 	out.println("#include \"tilesets/" + headerFileName + "\"");
 	out.println("#include \"SimpleTile.h\"");
 	out.println("#include \"AnimatedTile.h\"");
+	out.println("#include \"Color.h\"");
+	out.println();
+	out.println("/**");
+	out.println(" * Constructor.");
+	out.println(" */");
+	out.println(className + "::" + className + "(void):");
+	out.println("  Tileset(get_color(" + bgColor.getRed() + ", "
+		    + bgColor.getGreen() + ", " + bgColor.getBlue() + ")) {");
+	out.println("}");
 	out.println();
 	out.println("/**");
 	out.println(" * Loads the tileset.");
 	out.println(" */");
-	out.println("void Tileset" + name + "::load(void) {");
+	out.println("void " + className + "::load(void) {");
 	out.println("  load_tileset_image(\"images/tilesets/" + name + ".png\");");
 
 	out.println();

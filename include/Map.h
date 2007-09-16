@@ -9,7 +9,6 @@ using namespace std;
 #include <iostream>
 #include <vector>
 #include "Types.h"
-#include "Color.h"
 #include "Tileset.h"
 #include "Music.h"
 #include "TileOnMap.h"
@@ -111,11 +110,6 @@ class Map {
  protected:
 
   /**
-   * Background color of the map.
-   */
-  const zsdx_color_t background_color;
-
-  /**
    * Tileset of the map.
    * Every tile of this map is extracted from this tileset.
    */
@@ -170,12 +164,10 @@ class Map {
    * Creates a new map.
    * @param width the map width in pixels
    * @param height the map height in pixels
-   * @param background_color the background_color
    * @param tileset_id the map tileset
    * @param default_music_id the map music
    */
-  Map(int width, int height, zsdx_color_t background_color,
-      TilesetID tileset_id, MusicID default_music_id);
+  Map(int width, int height, TilesetID tileset_id, MusicID default_music_id);
 
   /**
    * Destructor.

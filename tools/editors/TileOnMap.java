@@ -15,7 +15,7 @@ public class TileOnMap extends Observable implements Serializable {
     /**
      * Version number of the class serialization.
      */
-    public static final long serialVersionUID = 2L;
+    public static final long serialVersionUID = 3L;
 
     /**
      * The tileset from which this tile is extracted.
@@ -25,7 +25,7 @@ public class TileOnMap extends Observable implements Serializable {
     /**
      * Id of the tile in the tileset.
      */
-    private final int tileIndex;
+    private final int tileId;
 
     /**
      * Position of the tile in the map.
@@ -55,32 +55,32 @@ public class TileOnMap extends Observable implements Serializable {
     /**
      * Simple constructor.
      * @param tileset the tileset
-     * @param tileIndex id of the tile in the tileset
+     * @param tileId id of the tile in the tileset
      * @param x x position of the tile on the map
      * @param y y position of the tile on the map
      */
-    public TileOnMap(Tileset tileset, int tileIndex, int x, int y) {
-	this(tileset, tileIndex, x, y, tileset.getTile(tileIndex).getDefaultLayer(), 1, 1);
+    public TileOnMap(Tileset tileset, int tileId, int x, int y) {
+	this(tileset, tileId, x, y, tileset.getTile(tileId).getDefaultLayer(), 1, 1);
     }
 
     /**
      * Constructor.
      * @param tileset the tileset
-     * @param tileIndex id of the tile in the tileset
+     * @param tileId id of the tile in the tileset
      * @param x x position of the tile on the map
      * @param y y position of the tile on the map
      * @param layer layer of the tile
      * @param repeatX number of times the pattern is repeated on x
      * @param repeatY number of times the pattern is repeated on y
      */
-    public TileOnMap(Tileset tileset, int tileIndex, int x, int y, int layer, int repeatX, int repeatY) {
+    public TileOnMap(Tileset tileset, int tileId, int x, int y, int layer, int repeatX, int repeatY) {
 	this.tileset = tileset;
-	this.tileIndex = tileIndex;
+	this.tileId = tileId;
 	this.layer = layer;
 	this.repeatX = repeatX;
 	this.repeatY = repeatY;
 
-	Tile tile = tileset.getTile(tileIndex); // get the original tile from the tileset
+	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 	this.positionInMap = new Rectangle(x, y, tile.getWidth() * repeatX, tile.getHeight() * repeatY);
     }
 
@@ -98,16 +98,16 @@ public class TileOnMap extends Observable implements Serializable {
 	if (tileset != this.tileset) {
 		
 	    try {
-		Tile newTile = tileset.getTile(tileIndex);
+		Tile newTile = tileset.getTile(tileId);
 		
 		// if a tileset was already defined, check that the
 		// tile has the same properties
 		if (this.tileset != null) {
 		    
-		    Tile oldTile = this.tileset.getTile(tileIndex);
+		    Tile oldTile = this.tileset.getTile(tileId);
 		    
 		    if (!newTile.equals(oldTile)) {
-			throw new TilesetException("Unable to apply the tileset because the tile #" + tileIndex + " is different in this tileset.");
+			throw new TilesetException("Unable to apply the tileset because the tile #" + tileId + " is different in this tileset.");
 		    }
 
 		    // update the size on the map if the size in the tileset has changed
@@ -118,7 +118,7 @@ public class TileOnMap extends Observable implements Serializable {
 		this.tileset = tileset;
 	    }
 	    catch (NoSuchElementException e) {
-		throw new TilesetException("Unable to apply the tileset because the tile #" + tileIndex + " doesn't exist in this tileset.");
+		throw new TilesetException("Unable to apply the tileset because the tile #" + tileId + " doesn't exist in this tileset.");
 	    }
 	}
     }
@@ -128,7 +128,7 @@ public class TileOnMap extends Observable implements Serializable {
      * @return the id of the tile in the tileset.
      */
     public int getTileId() {
-	return tileIndex;
+	return tileId;
     }
 
     /**
@@ -157,7 +157,7 @@ public class TileOnMap extends Observable implements Serializable {
 	    throw new MapException("No rectangle defined");
 	}
 	
-	Rectangle positionInTileset = tileset.getTile(tileIndex).getPositionInTileset();
+	Rectangle positionInTileset = tileset.getTile(tileId).getPositionInTileset();
 	
 	// x
 	positionInMap.x = Math.min(x1, x2);
@@ -329,7 +329,7 @@ public class TileOnMap extends Observable implements Serializable {
     public void paint(Graphics g, int scale, boolean showTransparency) {
 
 	// source image
-	Tile tile = tileset.getTile(tileIndex); // get the original tile from the tileset
+	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 	Rectangle positionInTileset = tile.getPositionInTileset();
 	int sx1 = positionInTileset.x * scale;
 	int sx2 = sx1 + positionInTileset.width * scale;

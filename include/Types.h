@@ -67,7 +67,6 @@ enum MapID {
   NB_MAPS
 };
 
-
 class MovingWithCollision;
 
 #endif

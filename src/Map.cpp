@@ -12,16 +12,13 @@ using namespace std;
  * Creates a new map.
  * @param width the map width in pixels
  * @param height the map height in pixels
- * @param background_color the background_color
  * @param tileset_id the map tileset
  * @param default_music_id the map default music
  */
-Map::Map(int width, int height, zsdx_color_t background_color,
-	 TilesetID tileset_id, MusicID default_music_id):
+Map::Map(int width, int height, TilesetID tileset_id, MusicID default_music_id):
 
   width(width), height(height), width8(width / 8), height8(height / 8),
   obstacle_tiles_size(width8 * height8),
-  background_color(background_color),
   tileset(ZSDX::game_resource->get_tileset(tileset_id)),
   default_music_id(default_music_id) {
 
@@ -277,7 +274,7 @@ void Map::display() {
   screen_position.y = MIN(MAX(link->get_y() - 120, 0), height - 240);  
 
   // background color
-  SDL_FillRect(surface, NULL, background_color);
+  SDL_FillRect(surface, NULL, tileset->get_background_color());
 
   // map entities
   for (int layer = 0; layer < LAYER_NB; layer++) {

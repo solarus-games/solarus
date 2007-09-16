@@ -2,7 +2,7 @@ package editors;
 
 import java.util.*;
 import java.io.*;
-import java.awt.*; // Color, Dimension
+import java.awt.*; // Dimension
 
 /**
  * This class describes a map.
@@ -13,7 +13,7 @@ public class Map extends Observable implements Serializable {
     /**
      * Version number of the class serialization.
      */
-    public static final long serialVersionUID = 5L;
+    public static final long serialVersionUID = 6L;
 
     /**
      * Name of the map.
@@ -30,11 +30,6 @@ public class Map extends Observable implements Serializable {
      * Background music.
      */
     private String music;
-
-    /**
-     * Background color (default is black).
-     */
-    private Color backgroundColor;
 
     /**
      * Tileset of the map.
@@ -82,7 +77,6 @@ public class Map extends Observable implements Serializable {
 	this.tileset = null;
 	this.tilesetName = null;
 	this.music = null;
-	this.backgroundColor = Color.BLACK;
 
 	this.allTiles = new TileOnMapList[3];
 	for (int i = 0; i < 3; i++) {
@@ -413,32 +407,10 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
-     * Returns the background color of the map.
-     * @return the background color
-     */
-    public Color getBackgroundColor() {
-
-	return backgroundColor;
-    }
-
-    /**
-     * Changes the background color of the map.
-     * @param backgroundColor the new background color
-     */
-    public void setBackgroundColor(Color backgroundColor) {
-
-	this.backgroundColor = backgroundColor;
-	setSaved(false);
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
      * Returns the tiles selected by the user.
      * @return the tiles selected by the user
      */
     public MapTileSelection getTileSelection() {
-
 	return tileSelection;
     }
     

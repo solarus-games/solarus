@@ -19,7 +19,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     /**
      * Version number of the class serialization.
      */
-    public static final long serialVersionUID = 4L;
+    public static final long serialVersionUID = 5L;
 
     // tileset data 
 
@@ -27,6 +27,11 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      * Name of the tileset.
      */
     private String name;
+
+    /**
+     * Background color (default is black).
+     */
+    private Color backgroundColor;
 
     /**
      * The tiles.
@@ -84,6 +89,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     public Tileset(String name) {
 	super();
 	this.name = name;
+	this.backgroundColor = Color.BLACK;
 	this.isSaved = false;
 	this.selectedTileId = 0; // none
 	this.maxId = 0;
@@ -97,6 +103,25 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      */
     public String getName() {
 	return name;
+    }
+
+    /**
+     * Returns the background color of the tileset.
+     * @return the background color
+     */
+    public Color getBackgroundColor() {
+	return backgroundColor;
+    }
+
+    /**
+     * Changes the background color of the tileset.
+     * @param backgroundColor the new background color
+     */
+    public void setBackgroundColor(Color backgroundColor) {
+	this.backgroundColor = backgroundColor;
+	setSaved(false);
+	setChanged();
+	notifyObservers();
     }
 
     /**

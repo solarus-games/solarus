@@ -6,6 +6,7 @@
 #define ZSDX_TILESET_H
 
 #include <SDL/SDL.h>
+#include "Color.h"
 
 /**
  * Macros used by the generated code to define a tile in the tileset.
@@ -38,14 +39,20 @@ class Tileset {
   int nb_tiles;
   
   /**
+   * Background color of the tileset.
+   */
+  const zsdx_color_t background_color;
+
+  /**
    * Image from which the tiles are extracted.
    */
   SDL_Surface *tileset_image;
   
   /**
    * Constructor.
+   * @param background_color the background_color
    */
-  Tileset(void);
+  Tileset(zsdx_color_t background_color);
 
   /**
    * Loads the tileset image.
@@ -68,6 +75,12 @@ class Tileset {
    * Destructor.
    */
   virtual ~Tileset(void);
+
+  /**
+   * Returns the background color of the tileset.
+   * @return the background color
+   */
+  inline zsdx_color_t get_background_color(void) { return background_color; }
 
   /**
    * Loads the tileset by creating all tiles.

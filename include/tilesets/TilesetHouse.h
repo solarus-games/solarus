@@ -9,7 +9,7 @@
 class TilesetHouse: public Tileset {
 
  public:
-  TilesetHouse(void) { }
+  TilesetHouse(void);
   inline ~TilesetHouse(void) { }
 
   void load(void);

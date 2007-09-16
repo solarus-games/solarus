@@ -3,6 +3,7 @@
 
 #include "Map.h"
 
+// names of the initial states
 enum {
   MAP_LINKHOUSE_INITIAL_STATE_SOUTH = 0,
   MAP_LINKHOUSE_INITIAL_STATE_EAST  = 1,

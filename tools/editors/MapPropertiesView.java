@@ -22,7 +22,6 @@ public class MapPropertiesView extends JPanel implements Observer {
     private MapSizeView mapSizeView;
     private MapTilesetView mapTilesetView;
     private MapMusicView mapMusicView;
-    private MapBackgroundColorView mapBackgroundColorView;
 
     /**
      * Constructor.
@@ -58,10 +57,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	constraints.gridy++;
 	add(new JLabel("Music"), constraints);
 
-	// background color
-	constraints.gridy++;
-	add(new JLabel("Background color"), constraints);
-
+	constraints.weightx = 1;
 	constraints.gridx = 1;
 	constraints.gridy = 0;
 	mapNameView = new JLabel();
@@ -82,10 +78,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 	constraints.gridy++;
 	mapMusicView = new MapMusicView();
 	add(mapMusicView, constraints);
-
-	constraints.gridy++;
-	mapBackgroundColorView = new MapBackgroundColorView();
-	add(mapBackgroundColorView, constraints);
     }
 
     /**
@@ -111,7 +103,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 	mapSizeView.update(o);
 	mapTilesetView.update(o);
 	mapMusicView.update(o);
-	mapBackgroundColorView.update(o);
     }
 
     // components for the editable properties
@@ -373,61 +364,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 		    music = null;
 		}
 		map.setMusic(music);
-	    }
-	}
-    }
-
-    /**
-     * Component to change the background color of the map.
-     */
-    private class MapBackgroundColorView extends JComponent {
-	
-	/**
-	 * Constructor.
-	 */
-	public MapBackgroundColorView() {
-	    super();
-	    setMinimumSize(new Dimension(20,20));
-	    setPreferredSize(new Dimension(20,20));
-	    setMaximumSize(new Dimension(20,20));
-
-	    addMouseListener(new MouseAdapter() {
-
-		    public void mouseClicked(MouseEvent mouseEvent) {
-
-			if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
-			    ColorChooserDialog colorChooserDialog = new ColorChooserDialog();
-			    Color color = colorChooserDialog.display(map.getBackgroundColor());
-			    if (color != null) {
-				map.setBackgroundColor(color);
-			    }
-			}
-		    }
-		});
-	}
-	
-	/**
-	 * This function is called when the map or the configuration is changed.
-	 * If it is the map, the component is updated.
-	 */
-	public void update(Observable o) {
-
-	    if (o instanceof Map) {
-		repaint();
-	    }
-	}
-
-	/**
-	 * Draws the component.
-	 * @param g graphic context
-	 */
-	public void paint(Graphics g) {
-	    // the map is null if no map is open yet
-	    if (map != null) {
-		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, 19, 19);
-		g.setColor(map.getBackgroundColor());
-		g.fillRect(1, 1, 18, 18);
 	    }
 	}
     }

@@ -6,7 +6,6 @@
 #include "Map.h"
 #include "GameResource.h"
 #include "Tile.h"
-#include "Color.h"
 #include "ZSDX.h"
 #include "tilesets/TilesetHouse.h"
 #include "maps/MapRupeeHouse.h"
@@ -17,9 +16,8 @@
  */
 MapRupeeHouse::MapRupeeHouse(void):
   Map(464, 320,
-      get_color(88, 72, 72),
-      TILESET_HOUSE,
-      MUSIC_MINI_GAME) {
+    TILESET_HOUSE,
+    MUSIC_MINI_GAME) {
 
 }
 

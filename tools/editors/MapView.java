@@ -259,13 +259,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    return;
 	}
 
+	Tileset tileset = map.getTileset();
+
 	// background color
-	if (renderingOptions.getShowLayer(Tile.LAYER_LOW)) {
-	    g.setColor(map.getBackgroundColor());
+	if (renderingOptions.getShowLayer(Tile.LAYER_LOW) && tileset != null) {
+	    g.setColor(tileset.getBackgroundColor());
 	    g.fillRect(0, 0, map.getWidth() * 2, map.getHeight() * 2);
 	}
 
-	Tileset tileset = map.getTileset();
 	if (tileset != null) {
 
 	    Image tilesetImage = tileset.getDoubleImage();

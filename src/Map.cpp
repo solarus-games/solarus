@@ -25,7 +25,7 @@ Map::Map(int width, int height, TilesetID tileset_id, MusicID default_music_id):
   screen_position.w = 320;
   screen_position.h = 240;
 
-  initial_states = new vector<MapInitialState*>();
+  entrances = new vector<MapEntrance*>();
   entity_detectors = new vector<EntityDetector*>();
 
   // create the vectors of entities and initialize obstacle tile
@@ -50,7 +50,7 @@ Map::~Map() {
     delete[] obstacle_tiles[layer];
   }
 
-  delete initial_states;
+  delete entrances;
   delete entity_detectors;
 }
 
@@ -174,19 +174,20 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
 }
 
 /**
- * Creates an initial state on the map.
+ * Creates an entrance on the map.
  * @param music_id id of the music to play in this state
  * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
+ * @param layer the layer of Link's position
  * @param link_x x initial position of link in this state
  * (set -1 to indicate that the x coordinate is kept the same from the previous map)
  * @param link_y y initial position of link in this state
  * (set -1 to indicate that the y coordinate is kept the same from the previous map)
  * @param link_direction initial direction of link in this state (0 to 3)
  */
-void Map::add_initial_state(MusicID music_id, int link_x, int link_y, int link_direction) {
+void Map::add_entrance(MusicID music_id, Layer layer, int link_x, int link_y, int link_direction) {
   
-  MapInitialState *initial_state = new MapInitialState(music_id, link_x, link_y, link_direction);
-  initial_states->push_back(initial_state);
+  MapEntrance *entrance = new MapEntrance(music_id, layer, link_x, link_y, link_direction);
+  entrances->push_back(entrance);
 }
 
 /**
@@ -198,11 +199,11 @@ void Map::add_initial_state(MusicID music_id, int link_x, int link_y, int link_d
  * @param w width of the exit rectangle
  * @param h height of the exit rectangle
  * @param map_id id of the next map
- * @param initial_state_index initial state of the next map
+ * @param entrance_index index of the entrance of the next map
  */
-void Map::add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int initial_state_index) {
+void Map::add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int entrance_index) {
   
-  MapExit *exit = new MapExit(layer, x, y, w, h, map_id, initial_state_index);
+  MapExit *exit = new MapExit(layer, x, y, w, h, map_id, entrance_index);
   entity_detectors->push_back(exit);
 }
 
@@ -222,11 +223,11 @@ void Map::unload(void) {
     tiles[layer]->clear();
   }
 
-  // delete the initial states
-  for (unsigned int i = 0; i < initial_states->size(); i++) {
-    delete initial_states->at(i);
+  // delete the entrances
+  for (unsigned int i = 0; i < entrances->size(); i++) {
+    delete entrances->at(i);
   }
-  initial_states->clear();
+  entrances->clear();
 
   // delete the entity detectors
   for (unsigned int i = 0; i < entity_detectors->size(); i++) {
@@ -236,11 +237,11 @@ void Map::unload(void) {
 }
 
 /**
- * Sets the initial state of the map when it is loaded.
- * @param initial_state_index index of the initial state you want to load
+ * Sets the current entrance of the map.
+ * @param entrance_index index of the entrance you want to use
  */
-void Map::set_initial_state(unsigned int initial_state_index) {
-  this->initial_state_index = initial_state_index;
+void Map::set_entrance(unsigned int entrance_index) {
+  this->entrance_index = entrance_index;
 }
 
 /**
@@ -299,14 +300,14 @@ void Map::display() {
  */
 void Map::start(void) {
 
-  if (initial_states->size() == 0) {
-    cerr << "Fatal error: no initial state defined on the map\n";
+  if (entrances->size() == 0) {
+    cerr << "Fatal error: no entrance defined on the map\n";
   }
 
-  MapInitialState *initial_state = initial_states->at(initial_state_index);
+  MapEntrance *entrance = entrances->at(entrance_index);
 
   // get the new music to play
-  MusicID new_music_id = initial_state->get_music_id();
+  MusicID new_music_id = entrance->get_music_id();
 
   if (new_music_id == MUSIC_DEFAULT) {
     new_music_id = default_music_id;
@@ -317,10 +318,10 @@ void Map::start(void) {
   // put Link
   Link *link = ZSDX::game_resource->get_link();
   link->set_map(this);
-  link->get_sprite()->set_current_animation_direction(initial_state->get_link_direction());
+  link->get_sprite()->set_current_animation_direction(entrance->get_link_direction());
 
-  int x = initial_state->get_link_x();
-  int y = initial_state->get_link_y();
+  int x = entrance->get_link_x();
+  int y = entrance->get_link_y();
 
   if (x != -1) {
     link->set_x(x);

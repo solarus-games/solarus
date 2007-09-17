@@ -29,7 +29,7 @@ void MapLinkHouseSecretRoom::load(void) {
     tileset->load();
   }
 
-  INITIAL_STATE(MUSIC_DEFAULT, 32, 128, 0);
+  ENTRANCE(MUSIC_DEFAULT, LAYER_LOW, 32, 128, 0);
 
   EXIT(LAYER_LOW, 0, 128, 8, 16, MAP_RUPEEHOUSE, 0);
 

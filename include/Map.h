@@ -13,7 +13,7 @@ using namespace std;
 #include "Music.h"
 #include "TileOnMap.h"
 #include "MapExit.h"
-#include "MapInitialState.h"
+#include "MapEntrance.h"
 
 /**
  * A macro used by the generated code to put a tile on the map.
@@ -21,15 +21,15 @@ using namespace std;
 #define TILE(tile_id, layer, x, y, repeat_x, repeat_y) add_new_tile(tile_id, layer, x, y, repeat_x, repeat_y)
 
 /**
- * A macro used to define an initial state on the map.
+ * A macro used to define an entrance on the map.
  */
-#define INITIAL_STATE(music_id, link_x, link_y, link_direction) add_initial_state(music_id, link_x, link_y, link_direction)
+#define ENTRANCE(music_id, layer, link_x, link_y, link_direction) add_entrance(music_id, layer, link_x, link_y, link_direction)
 
 /**
  * A macro used to define an exit on the map.
  * When Link walks on the exit, he leaves the map and enters another one.
  */
-#define EXIT(layer, x, y, w, h, map_id, initial_state) add_exit(layer, x, y, w, h, map_id, initial_state)
+#define EXIT(layer, x, y, w, h, map_id, entrance) add_exit(layer, x, y, w, h, map_id, entrance)
 
 /**
  * Abstract class for the maps
@@ -61,14 +61,14 @@ class Map {
   SDL_Rect screen_position;
 
   /**
-   * Vector of all possible initial states of the map.
+   * Vector of all possible entrance of the map.
    */
-  vector<MapInitialState*> *initial_states;
+  vector<MapEntrance*> *entrances;
 
   /**
-   * Initial state of the map.
+   * Current entrance of the map.
    */
-  unsigned int initial_state_index;
+  unsigned int entrance_index;
 
   /**
    * Vector of all entity detectors of the map.
@@ -134,16 +134,17 @@ class Map {
   void add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int repeat_y);
 
   /**
-   * Creates an initial state on the map.
+   * Creates an entrance on the map.
    * @param music_id id of the music to play in this state
    * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
+   * @param layer the layer of Link's position
    * @param link_x x initial position of link in this state
    * (set -1 to indicate that the x coordinate is kept the same from the previous map)
    * @param link_y y initial position of link in this state
    * (set -1 to indicate that the y coordinate is kept the same from the previous map)
    * @param link_direction initial direction of link in this state (0 to 3)
    */
-  void add_initial_state(MusicID music_id, int link_x, int link_y, int link_direction);
+  void add_entrance(MusicID music_id, Layer layer, int link_x, int link_y, int link_direction);
 
   /**
    * Creates an exit on the map.
@@ -154,9 +155,9 @@ class Map {
    * @param w width of the exit rectangle
    * @param h height of the exit rectangle
    * @param map_id id of the next map
-   * @param initial_state_index initial state of the next map
+   * @param entrance_index_index index of the entrance of the next map
    */
-  void add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int initial_state_index);
+  void add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int entrance_index);
 
  public:
 
@@ -221,10 +222,10 @@ class Map {
   void leave(void);
 
   /**
-   * Sets the initial state of the map when it is loaded.
-   * @param initial_state index of the initial state you want to load
+   * Sets the current entrance of the map.
+   * @param entrance_index index of the entrance you want to use
    */
-  void set_initial_state(unsigned int initial_state_index);
+  void set_entrance(unsigned int entrance_index);
 
   /**
    * Updates the animation and the position of each sprite, including Link.

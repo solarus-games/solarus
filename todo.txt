@@ -11,4 +11,4 @@
 	- Bug quand on désactive l'affichage des obstacles / non obstacles : on peut sélectionner des tiles non affichés
 	- Masquer les fichiers des maps et des tilesets
 	- Création d'une nouvelle map : le tileset de la précédente reste sélectionné dans la liste
-	- Taille minimale d'une map : 320*240 ?
+	- Taille minimale d'une map : 320*240 ?!

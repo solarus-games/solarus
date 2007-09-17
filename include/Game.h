@@ -6,7 +6,7 @@
 #define ZSDX_GAME_H
 
 #include "GameResource.h"
-#include "MapInitialState.h"
+#include "MapEntrance.h"
 
 /**
  * This class provides the game API for the maps.

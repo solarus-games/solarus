@@ -6,7 +6,6 @@
 #define ZSDX_TILE_H
 
 #include "Common.h"
-#include "Map.h"
 
 /**
  * Abstract class for a tile image.

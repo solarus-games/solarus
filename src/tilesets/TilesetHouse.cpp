@@ -2,11 +2,7 @@
  * Tileset generated automatically by the tileset editor.
  */
 
-#include <SDL/SDL.h>
 #include "tilesets/TilesetHouse.h"
-#include "SimpleTile.h"
-#include "AnimatedTile.h"
-#include "Color.h"
 
 /**
  * Constructor.

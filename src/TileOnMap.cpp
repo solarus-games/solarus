@@ -3,6 +3,7 @@
  */
 
 #include "TileOnMap.h"
+#include "Map.h"
 
 /**
  * Creates a new tile on a map.

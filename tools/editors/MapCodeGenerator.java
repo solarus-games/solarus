@@ -121,13 +121,8 @@ public class MapCodeGenerator {
 	    out.println(" * Map generated automatically by the map editor.");
 	    out.println(" */");
 	    out.println();
-	    out.println("#include <SDL/SDL.h>");
-	    out.println("#include \"Map.h\"");
-	    out.println("#include \"GameResource.h\"");
-	    out.println("#include \"Tile.h\"");
-	    out.println("#include \"ZSDX.h\"");
-	    out.println("#include \"tilesets/" + tilesetHeaderFileName + "\"");
 	    out.println("#include \"maps/" + headerFileName + "\"");
+	    out.println("#include \"tilesets/" + tilesetHeaderFileName + "\"");
 	    out.println();
 	    out.println("/**");
 	    out.println(" * Constructor.");

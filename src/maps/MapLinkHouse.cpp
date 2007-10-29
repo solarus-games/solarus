@@ -2,13 +2,8 @@
  * Map generated automatically by the map editor.
  */
 
-#include <SDL/SDL.h>
-#include "Map.h"
-#include "GameResource.h"
-#include "Tile.h"
-#include "ZSDX.h"
-#include "tilesets/TilesetHouse.h"
 #include "maps/MapLinkHouse.h"
+#include "tilesets/TilesetHouse.h"
 
 /**
  * Constructor.

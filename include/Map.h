@@ -35,7 +35,7 @@
 #define EXIT(layer, x, y, w, h, map_id, entrance) add_exit(layer, x, y, w, h, map_id, entrance)
 
 /**
- * Abstract class for the maps
+ * Abstract class for the maps.
  * A map is where a game sequence takes place. It contains many information:
  * - the map dimensions
  * - the tileset

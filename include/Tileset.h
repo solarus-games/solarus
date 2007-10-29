@@ -6,6 +6,8 @@
 #define ZSDX_TILESET_H
 
 #include "Common.h"
+#include "SimpleTile.h"
+#include "AnimatedTile.h"
 #include "Color.h"
 
 /**
@@ -15,8 +17,6 @@
   create_tile(tile_id, new SimpleTile(obstacle, x, y, w, h))
 #define ANIMATED_TILE(tile_id, obstacle, sequence, w, h, x1, y1, x2, y2, x3, y3) \
   create_tile(tile_id, new AnimatedTile(obstacle, sequence, w, h, x1, y1, x2, y2, x3, y3))
-
-class Tile;
 
 /**
  * Abstract class for a tileset.

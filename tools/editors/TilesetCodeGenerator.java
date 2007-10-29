@@ -115,11 +115,7 @@ public class TilesetCodeGenerator {
 	out.println(" * Tileset generated automatically by the tileset editor.");
 	out.println(" */");
 	out.println();
-	out.println("#include <SDL/SDL.h>");
 	out.println("#include \"tilesets/" + headerFileName + "\"");
-	out.println("#include \"SimpleTile.h\"");
-	out.println("#include \"AnimatedTile.h\"");
-	out.println("#include \"Color.h\"");
 	out.println();
 	out.println("/**");
 	out.println(" * Constructor.");

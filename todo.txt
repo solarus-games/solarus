@@ -1,5 +1,5 @@
-- Code généré d'une map : virer le test tileset->is_loaded() et faire ça là on appelle map->load (Game.cpp je crois), macro MAP
-- Code du constructeur d'une map : données générées une seule fois, impossible de les changer depuis l'éditeur -> tout faire dans load, laisser vide le constructeur et du coup le mettre en inline dans le .h pour alléger le .cpp généré
+- Code généré d'une map : virer le test tileset->is_loaded() et faire ça là on appelle map->load (Game.cpp je crois)
+- Code du constructeur d'une map : données générées une seule fois, impossible de les changer depuis l'éditeur -> tout faire dans load, laisser vide le constructeur et du coup le mettre en inline dans le .h pour alléger le .cpp généré, macro MAP
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - Entrée d'une map : virer la musique ? De toute façon la musique ne change qu'en cas d'événement particulier du type séquence animée, et dans ce cas du code spécifique sera de toute façon appelé d'une manière où d'une autre (style event_entrance(int entrance_index)).
 - Faire en sorte que les images et les sons soient trouvés quel que soit le répertoire courant (utiliser argv[0] et chdir !)

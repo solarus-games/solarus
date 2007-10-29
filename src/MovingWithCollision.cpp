@@ -2,9 +2,6 @@
  * This module defines the class MovingWithCollision.
  */
 
-using namespace std;
-#include <iostream>
-#include <SDL/SDL_image.h>
 #include <cmath>
 #include "MovingWithCollision.h"
 #include "ZSDX.h"

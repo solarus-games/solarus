@@ -1,5 +1,6 @@
 /**
  * Some definition of types.
+ * This header is included by Common.h and every file should include Common.h.
  */
 
 #ifndef ZSDX_TYPES_H
@@ -67,6 +68,12 @@ enum MapID {
   NB_MAPS
 };
 
+/**
+ * Declaration of some classes to break cycling dependencies between the header files.
+ */
+
+class Map;
+class TileOnMap;
 class MovingWithCollision;
 
 #endif

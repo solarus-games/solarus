@@ -5,7 +5,7 @@
 #ifndef ZSDX_TILE_ON_MAP_H
 #define ZSDX_TILE_ON_MAP_H
 
-#include "Types.h"
+#include "Common.h"
 #include "Tile.h"
 #include "MapEntity.h"
 

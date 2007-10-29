@@ -5,7 +5,7 @@
 #ifndef ZSDX_MAP_ENTRANCE_H
 #define ZSDX_MAP_ENTRANCE_H
 
-#include "Types.h"
+#include "Common.h"
 
 /**
  * Describes an entrance of a map, i.e. a possible state

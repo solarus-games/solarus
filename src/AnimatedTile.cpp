@@ -2,7 +2,6 @@
  * This module defines the class AnimatedTile.
  */
 
-#include <SDL/SDL.h>
 #include "AnimatedTile.h"
 #include "ZSDX.h"
 

@@ -5,7 +5,7 @@
 #ifndef ZSDX_ANIMATED_TILE_H
 #define ZSDX_ANIMATED_TILE_H
 
-#include <SDL/SDL.h>
+#include "Common.h"
 #include "Tile.h"
 #include "TileAnimationManager.h"
 

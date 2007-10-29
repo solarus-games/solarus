@@ -7,7 +7,6 @@
  * 0-1-2-1... or 0-1-2...
  */
 
-#include <SDL/SDL.h>
 #include "TileAnimationManager.h"
 #include "ZSDX.h"
 

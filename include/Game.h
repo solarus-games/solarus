@@ -5,6 +5,7 @@
 #ifndef ZSDX_GAME_H
 #define ZSDX_GAME_H
 
+#include "Common.h"
 #include "GameResource.h"
 #include "MapEntrance.h"
 

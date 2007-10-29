@@ -5,15 +5,10 @@
 #ifndef ZSDX_ZSDX_H
 #define ZSDX_ZSDX_H
 
-using namespace std;
-#include <iostream>
-#include <SDL/SDL.h>
+#include "Common.h"
 #include "GameResource.h"
 #include "TileAnimationManager.h"
 #include "Game.h"
-
-#define MIN(x,y) ((x > y) ? (y) : (x))
-#define MAX(x,y) ((x > y) ? (x) : (y))
 
 /**
  * Number of times the screen in redrawn is a second.

@@ -5,7 +5,7 @@
 #ifndef ZSDX_LINK_ANIMATIONS_H
 #define ZSDX_LINK_ANIMATIONS_H
 
-#include <SDL/SDL.h>
+#include "Common.h"
 #include "SpriteAnimations.h"
 
 /**

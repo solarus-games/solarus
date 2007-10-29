@@ -5,6 +5,7 @@
 #ifndef ZSDX_MOVING_WITH_SMOOTH_COLLISION_H
 #define ZSDX_MOVING_WITH_SMOOTH_COLLISION_H
 
+#include "Common.h"
 #include "MovingWithCollision.h"
 
 /**

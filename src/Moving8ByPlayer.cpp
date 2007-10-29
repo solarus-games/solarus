@@ -2,9 +2,6 @@
  * This module defines the class Moving8ByPlayer.
  */
 
-using namespace std;
-#include <iostream>
-#include <SDL/SDL_image.h>
 #include <cmath>
 #include "Moving8ByPlayer.h"
 

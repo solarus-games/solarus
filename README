@@ -15,8 +15,8 @@ fmod-3.75
 
 There exists SDL packages for Ubuntu:
 
-libsdl-image1.2-dev
 libsdl1.2-dev
+libsdl-image1.2-dev
 
 But there is no FMOD package for Ubuntu. So you have to install the library manually:
 - Download the FMOD archive: http://www.fmod.org/index.php/release/version/fmodapi375linux.tar.gz
@@ -48,6 +48,7 @@ $ ./configure
 $ make
 # make install
 
+Of course you need gcc and make.
 This will install the zsdx binary in a default directory such as /usr/local/bin. So you must be root to run the last command. Then you can launch the game with the simple command:
 
 $ zsdx
@@ -73,4 +74,4 @@ if /home/your_directory/bin is in your PATH.
 Windows developers
 ------------------
 
-If you want to compile the application under Windows, the same procedure works in an Unix environment such as MinGW or Cygwin. A zsdx.exe file is generated.
+If you want to compile the application under Windows, the same procedure works in an Unix environment such as MinGW or Cygwin. But you have to install the Windows version of SDL and FMOD, which is a little more complicated. A zsdx.exe file is generated.

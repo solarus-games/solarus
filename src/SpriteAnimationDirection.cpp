@@ -2,7 +2,6 @@
  * This module defines the class SpriteAnimationDirection.
  */
 
-#include <SDL/SDL.h>
 #include "SpriteAnimationDirection.h"
 
 /**

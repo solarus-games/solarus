@@ -5,7 +5,7 @@
 #ifndef ZSDX_SPRITE_ANIMATIONS_H
 #define ZSDX_SPRITE_ANIMATIONS_H
 
-#include <SDL/SDL.h>
+#include "Common.h"
 #include "SpriteAnimation.h"
 #include "Map.h"
 

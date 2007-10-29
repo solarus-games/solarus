@@ -5,6 +5,7 @@
 #ifndef ZSDX_ENTITY_DETECTOR_H
 #define ZSDX_ENTITY_DETECTOR_H
 
+#include "Common.h"
 #include "MapEntity.h"
 
 /**

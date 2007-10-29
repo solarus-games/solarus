@@ -2,11 +2,9 @@
  * This module defines the class Map.
  */
 
-using namespace std;
-#include <iostream>
-#include <SDL/SDL.h>
 #include "Map.h"
 #include "ZSDX.h"
+#include "TileOnMap.h"
 
 /**
  * Creates a new map.

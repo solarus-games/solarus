@@ -2,9 +2,6 @@
  * This module defines the class TileOnMap.
  */
 
-using namespace std;
-#include <iostream>
-#include "Map.h"
 #include "TileOnMap.h"
 
 /**

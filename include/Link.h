@@ -5,7 +5,7 @@
 #ifndef ZSDX_LINK_H
 #define ZSDX_LINK_H
 
-#include <SDL/SDL.h>
+#include "Common.h"
 #include "Map.h"
 #include "Moving8ByPlayer.h"
 #include "AnimatedSprite.h"

@@ -2,9 +2,6 @@
  * This module defines the class Game.
  */
 
-#include <SDL/SDL.h>
-#include "Types.h"
-#include "maps/MapLinkHouse.h"
 #include "Game.h"
 #include "ZSDX.h"
 

@@ -5,7 +5,7 @@
 #ifndef ZSDX_MOVING_H
 #define ZSDX_MOVING_H
 
-#include <SDL/SDL.h>
+#include "Common.h"
 #include "MapEntity.h"
 
 /**

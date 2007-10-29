@@ -1,7 +1,4 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include "Link.h"
-#include "AnimatedSprite.h"
 #include "LinkAnimations.h"
 
 /**

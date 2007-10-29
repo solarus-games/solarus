@@ -2,7 +2,6 @@
  * This module defines the class SimpleTileImage.
  */
 
-#include "SDL/SDL.h"
 #include "SimpleTile.h"
 #include "Map.h"
 

@@ -5,11 +5,6 @@
  * See the directory images/tilesets.
  */
 
-using namespace std;
-#include <iostream>
-#include <cstdlib>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include "Tileset.h"
 #include "Tile.h"
 

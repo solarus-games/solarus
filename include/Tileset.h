@@ -5,7 +5,7 @@
 #ifndef ZSDX_TILESET_H
 #define ZSDX_TILESET_H
 
-#include <SDL/SDL.h>
+#include "Common.h"
 #include "Color.h"
 
 /**

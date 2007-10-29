@@ -5,7 +5,7 @@
 #ifndef ZSDX_GAME_RESOURCE_H
 #define ZSDX_GAME_RESOURCE_H
 
-#include "Types.h"
+#include "Common.h"
 #include "Link.h"
 #include "Tileset.h"
 #include "Map.h"

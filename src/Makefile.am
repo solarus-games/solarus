@@ -39,8 +39,9 @@ zsdx_SOURCES = 						\
   maps/MapLinkHouseSecretRoomEntities.inc		\
   maps/MapRupeeHouse.cpp				\
   maps/MapRupeeHouseEntities.inc			\
-  $(zsdxincludedir)/ZSDX.h				\
+  $(zsdxincludedir)/Common.h				\
   $(zsdxincludedir)/Types.h				\
+  $(zsdxincludedir)/ZSDX.h				\
   $(zsdxincludedir)/GameResource.h			\
   $(zsdxincludedir)/Game.h				\
   $(zsdxincludedir)/Map.h				\

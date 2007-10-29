@@ -10,7 +10,7 @@
 #ifndef ZSDX_TILE_ANIMATION_MANAGER_H
 #define ZSDX_TILE_ANIMATION_MANAGER_H
 
-#include <SDL/SDL.h>
+#include "Common.h"
 
 /**
  * Tile animation sequence type: 0-1-2 or 0-1-2-1

@@ -1,4 +1,3 @@
-#include <SDL/SDL.h>
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 

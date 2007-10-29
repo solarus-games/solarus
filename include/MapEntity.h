@@ -5,10 +5,7 @@
 #ifndef ZSDX_MAP_ENTITY_H
 #define ZSDX_MAP_ENTITY_H
 
-#include <SDL/SDL.h>
-#include "Types.h"
-
-class Map;
+#include "Common.h"
 
 /**
  * Abstract class for all objects attached to a map: tiles,

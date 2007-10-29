@@ -2,11 +2,7 @@
  * This module defines the class Moving.
  */
 
-using namespace std;
-#include <iostream>
-#include <SDL/SDL.h>
 #include <cmath>
-#include "Types.h"
 #include "Moving.h"
 
 /**

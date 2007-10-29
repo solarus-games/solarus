@@ -1,4 +1,3 @@
-#include <SDL/SDL.h>
 #include "GameResource.h"
 #include "Link.h"
 #include "tilesets/TilesetHouse.h"

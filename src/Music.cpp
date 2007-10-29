@@ -5,12 +5,8 @@
  * The sound and the music are played with the library FMOD 3.75.
  */
 
-using namespace std;
-#include <iostream>
-#include <fmod/fmod.h>
-#include <fmod/fmod_errors.h>
-#include <stdlib.h>
 #include "Music.h"
+#include <fmod/fmod_errors.h>
 
 /**
  * True if the sound system has been initialized, i.e. if

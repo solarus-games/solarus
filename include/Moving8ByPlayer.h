@@ -5,7 +5,7 @@
 #ifndef ZSDX_MOVING_8_BY_PLAYER
 #define ZSDX_MOVING_8_BY_PLAYER
 
-#include <SDL/SDL.h>
+#include "Common.h"
 #include "MovingWithSmoothCollision.h"
 
 /**

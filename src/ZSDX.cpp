@@ -2,7 +2,6 @@
  * This module initializes the game engine and handles the screen.
  */
 
-#include <fmod/fmod.h>
 #include "ZSDX.h"
 
 /**
@@ -130,6 +129,17 @@ void ZSDX::main(void) {
  * Entry point of the program.
  */
 int main(int argc, char **argv) {
+
+#ifdef HAVE_CHDIR
+  char *path = (char *) malloc(strlen(argv[0]) + 1);
+  strcpy(path, argv[0]);
+  char *slash = strrchr(path, '/');
+  if (slash != NULL) {
+    slash[0] = '\0';
+    cout << "path = " << path << "\n";
+    chdir(path);
+  }
+#endif
 
   ZSDX::main();
   

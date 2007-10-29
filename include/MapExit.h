@@ -5,7 +5,7 @@
 #ifndef ZSDX_MAP_EXIT_H
 #define ZSDX_MAP_EXIT_H
 
-#include "Types.h"
+#include "Common.h"
 #include "EntityDetector.h"
 
 /**

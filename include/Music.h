@@ -1,11 +1,13 @@
 /**
  * This module defines the class Music.
+ * This should be the only FMOD dependent module.
  */
 
 #ifndef ZSDX_MUSIC_H
 #define ZSDX_MUSIC_H
 
 #include <fmod/fmod.h>
+#include "Common.h"
 
 /**
  * This class represents a music that can be played on a map.

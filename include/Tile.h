@@ -5,8 +5,7 @@
 #ifndef ZSDX_TILE_H
 #define ZSDX_TILE_H
 
-#include <SDL/SDL.h>
-#include "Types.h"
+#include "Common.h"
 #include "Map.h"
 
 /**

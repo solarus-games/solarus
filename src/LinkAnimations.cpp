@@ -2,8 +2,6 @@
  * This module defines the class LinkAnimations.
  */
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include "LinkAnimations.h"
 #include "SpriteAnimationDirection.h"
 

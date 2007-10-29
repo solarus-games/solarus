@@ -5,15 +5,18 @@
 #ifndef ZSDX_MAP_H
 #define ZSDX_MAP_H
 
-using namespace std;
-#include <iostream>
 #include <vector>
-#include "Types.h"
+#include "Common.h"
 #include "Tileset.h"
 #include "Music.h"
-#include "TileOnMap.h"
 #include "MapExit.h"
 #include "MapEntrance.h"
+
+/**
+ * A macro used by the generated code to define the parameters of the map.
+ * This macro is called at the beginning of the load() function in the generated code.
+ */
+#define MAP(width, height, tileset_id, music_id) map_init(width, height, tileset_id, music_id)
 
 /**
  * A macro used by the generated code to put a tile on the map.
@@ -35,7 +38,6 @@ using namespace std;
  * Abstract class for the maps
  * A map is where a game sequence takes place. It contains many information:
  * - the map dimensions
- * - the background color
  * - the tileset
  * - the tiles
  * - the obstacles

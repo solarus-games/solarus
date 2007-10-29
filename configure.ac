@@ -29,7 +29,7 @@ AC_C_CONST
 AC_C_INLINE
 
 # Checks for library functions.
-AC_CHECK_FUNCS([sqrt])
+AC_CHECK_FUNCS([sqrt chdir])
 
 AC_CONFIG_FILES(Makefile src/Makefile)
 

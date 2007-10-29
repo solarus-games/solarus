@@ -26,7 +26,7 @@
 /**
  * A macro used to define an entrance on the map.
  */
-#define ENTRANCE(music_id, layer, link_x, link_y, link_direction) add_entrance(music_id, layer, link_x, link_y, link_direction)
+#define ENTRANCE(layer, link_x, link_y, link_direction) add_entrance(layer, link_x, link_y, link_direction)
 
 /**
  * A macro used to define an exit on the map.
@@ -146,7 +146,7 @@ class Map {
    * (set -1 to indicate that the y coordinate is kept the same from the previous map)
    * @param link_direction initial direction of link in this state (0 to 3)
    */
-  void add_entrance(MusicID music_id, Layer layer, int link_x, int link_y, int link_direction);
+  void add_entrance(Layer layer, int link_x, int link_y, int link_direction);
 
   /**
    * Creates an exit on the map.

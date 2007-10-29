@@ -25,7 +25,7 @@ void MapRupeeHouse::load(void) {
     tileset->load();
   }
 
-  ENTRANCE(MUSIC_DEFAULT, LAYER_LOW, 120, 296, 1);
+  ENTRANCE(LAYER_LOW, 120, 296, 1);
 
   EXIT(LAYER_LOW, 120, 320, 16, 16, MAP_LINKHOUSE, MAP_LINKHOUSE_INITIAL_STATE_EAST);
 

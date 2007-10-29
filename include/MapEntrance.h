@@ -14,7 +14,6 @@
 class MapEntrance {
 
  private:
-  const MusicID music_id;
   const Layer layer;
   const int link_x;
   const int link_y;
@@ -24,17 +23,6 @@ class MapEntrance {
 
   /**
    * Creates a new entrance.
-   * @param music_id the background music to play in this state
-   * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
-   * @param layer layer of link's position in this state
-   * @param link_x initial x position of Link in this state
-   * @param link_y initial y position of Link in this state
-   * @param link_direction initial direction of Link in this state (0 to 3)
-   */
-  MapEntrance(MusicID music_id, Layer layer, int link_x, int link_y, int link_direction);
-
-  /**
-   * Creates a new entrance with the default music.
    * @param layer layer of link's position in this state
    * @param link_x initial x position of Link in this state
    * @param link_y initial y position of Link in this state
@@ -46,13 +34,6 @@ class MapEntrance {
    * Destructor.
    */
   inline ~MapEntrance(void) { };
-
-  /**
-   * Returns the background music to play in this initial state.
-   * @return the background music to play
-   * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
-   */
-  MusicID get_music_id(void);
 
   /**
    * Returns the layer of Link in this initial state.

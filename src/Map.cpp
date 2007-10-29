@@ -173,8 +173,6 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
 
 /**
  * Creates an entrance on the map.
- * @param music_id id of the music to play in this state
- * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
  * @param layer the layer of Link's position
  * @param link_x x initial position of link in this state
  * (set -1 to indicate that the x coordinate is kept the same from the previous map)
@@ -182,9 +180,9 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
  * (set -1 to indicate that the y coordinate is kept the same from the previous map)
  * @param link_direction initial direction of link in this state (0 to 3)
  */
-void Map::add_entrance(MusicID music_id, Layer layer, int link_x, int link_y, int link_direction) {
+void Map::add_entrance(Layer layer, int link_x, int link_y, int link_direction) {
   
-  MapEntrance *entrance = new MapEntrance(music_id, layer, link_x, link_y, link_direction);
+  MapEntrance *entrance = new MapEntrance(layer, link_x, link_y, link_direction);
   entrances->push_back(entrance);
 }
 
@@ -304,14 +302,7 @@ void Map::start(void) {
 
   MapEntrance *entrance = entrances->at(entrance_index);
 
-  // get the new music to play
-  MusicID new_music_id = entrance->get_music_id();
-
-  if (new_music_id == MUSIC_DEFAULT) {
-    new_music_id = default_music_id;
-  }
-
-  ZSDX::game->play_music(new_music_id);
+  ZSDX::game->play_music(default_music_id);
 
   // put Link
   Link *link = ZSDX::game_resource->get_link();

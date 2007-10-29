@@ -7,26 +7,9 @@
 /**
  * Constructor.
  */
-MapEntrance::MapEntrance(MusicID music_id, Layer layer, int link_x, int link_y, int link_direction):
-  music_id(music_id), layer(layer), link_x(link_x), link_y(link_y), link_direction(link_direction) {
-
-}
-
-/**
- * Constructor.
- */
 MapEntrance::MapEntrance(Layer layer, int link_x, int link_y, int link_direction):
-  music_id(MUSIC_DEFAULT), layer(layer), link_x(link_x), link_y(link_y), link_direction(link_direction) {
+  layer(layer), link_x(link_x), link_y(link_y), link_direction(link_direction) {
 
-}
-
-/**
- * Returns the background music to play in this initial state.
- * @return the background music to play
- * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
- */
-MusicID MapEntrance::get_music_id(void) {
-  return music_id;
 }
 
 /**

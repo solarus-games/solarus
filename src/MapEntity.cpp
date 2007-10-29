@@ -5,8 +5,8 @@
  * @param layer layer of the entity
  * @param x x position of the entity
  * @param y y position of the entity
- * @param w width of the entity
- * @param h height of the entity
+ * @param width width of the entity
+ * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   layer(layer) {

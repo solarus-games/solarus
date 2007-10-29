@@ -334,7 +334,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      * Returns the id of a tile knowing its rank.
      * The rank is the position of the tile if you consider all tiles sorted by their ids.
      * It is different from the id because all ids don't exist necessarily.
-     * @param ranks rank of the tile considered, in [0, getNbTiles()[
+     * @param rank rank of the tile considered, in [0, getNbTiles()[
      * @return the id of the tile with this rank
      */
     public int tileRankToTileId(int rank) {

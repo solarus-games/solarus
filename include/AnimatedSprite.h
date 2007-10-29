@@ -9,7 +9,7 @@
 #include "SpriteAnimations.h"
 
 /**
- * Represents an animated sprite
+ * Represents an animated sprite.
  * You must inherit this class to make an animated sprite.
  * An animated sprite is represented as a set of animations, a current animation,
  * a current direction and a current frame.

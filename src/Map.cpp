@@ -435,11 +435,13 @@ void Map::entity_just_moved(MovingWithCollision *entity) {
 }
 
 /**
- * This function is called by the game engine when an entity overlaps a detector.
- * Redefine this function to create a behavior for your detectors.
+ * This function is called by a detector when an entity is overlapping it.
+ * Redefine this function to create a behavior for the detectors on your maps.
+ * Note that all detectors don't notify the map (i.e. they don't call this function)
+ * because they may have their own behavior.
  * @param detector the detector
  * @param entity the entity
  */
-void Map::event_entity_on_detector(EntityDetector *dectector, MapEntity *entity) {
+void Map::event_entity_on_detector(EntityDetector *detector, MapEntity *entity) {
 
 }

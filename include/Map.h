@@ -128,8 +128,8 @@ class Map {
    * The tiles on a map are not supposed to change during the game.
    * @param tile_id id of the tile in the tileset
    * @param layer layer of the tile to create
-   * @param position_in_map x position of the tile on the map
-   * @param position_in_map y position of the tile on the map
+   * @param x x position of the tile on the map
+   * @param y y position of the tile on the map
    * @param repeat_x how many times the tile pattern is repeated on x
    * @param repeat_x how many times the tile pattern is repeated on y
    */
@@ -137,8 +137,6 @@ class Map {
 
   /**
    * Creates an entrance on the map.
-   * @param music_id id of the music to play in this state
-   * (can be a real music, MUSIC_NONE, MUSIC_NO_CHANGE or MUSIC_DEFAULT)
    * @param layer the layer of Link's position
    * @param link_x x initial position of link in this state
    * (set -1 to indicate that the x coordinate is kept the same from the previous map)
@@ -157,7 +155,7 @@ class Map {
    * @param w width of the exit rectangle
    * @param h height of the exit rectangle
    * @param map_id id of the next map
-   * @param entrance_index_index index of the entrance of the next map
+   * @param entrance_index index of the entrance of the next map
    */
   void add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int entrance_index);
 
@@ -273,7 +271,7 @@ class Map {
    * @param detector the detector
    * @param entity the entity
    */
-  virtual void event_entity_on_detector(EntityDetector *dectector, MapEntity *entity);
+  virtual void event_entity_on_detector(EntityDetector *detector, MapEntity *entity);
 
 };
 

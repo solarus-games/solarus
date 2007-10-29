@@ -39,9 +39,6 @@ TileAnimationManager ZSDX::tile_animation_manager;
  */
 GameResource *ZSDX::game_resource;
 
-/**
- * Sets the current directory to the location of the binary.
- */
 static void initialize_current_directory(int argc, char **argv);
 
 /**

@@ -41,7 +41,7 @@ class SimpleTile: public Tile {
    * Displays the tile on a surface.
    * @param surface the destination surface
    * @param position_in_surface position of the tile on the surface
-   * @param tileset the tileset of this tile
+   * @param tileset_image image of the tileset of this tile
    */
   void display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image);
 };

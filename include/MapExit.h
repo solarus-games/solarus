@@ -33,8 +33,8 @@ class MapExit: public EntityDetector {
    * @param layer layer of the exit
    * @param x x position of the exit's rectangle
    * @param y y position of the exit's rectangle
-   * @param w width of the exit's rectangle
-   * @param h height of the exit's rectangle
+   * @param width width of the exit's rectangle
+   * @param height height of the exit's rectangle
    * @param destination_map_id id of the destination map
    * @param initial_state_index initial state of the destination map
    */

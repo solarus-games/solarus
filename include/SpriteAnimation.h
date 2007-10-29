@@ -78,7 +78,7 @@ class SpriteAnimation {
   /**
    * Returns a direction.
    * @param direction the direction
-   * @param the sequence of images corresponding to this direction
+   * @return the sequence of images corresponding to this direction
    */
   inline SpriteAnimationDirection *get_direction(int direction) { return directions[direction]; }
 

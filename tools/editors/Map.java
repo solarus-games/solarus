@@ -158,7 +158,7 @@ public class Map extends Observable implements Serializable {
 
     /**
      * Changes the tileset of the map.
-     * @param tileset name of the new tileset
+     * @param tilesetName name of the new tileset
      * @throws IOException if this tileset file cannot be loaded
      * @return true if the tileset was loaded successfuly, false if some tiles could
      * not be loaded in this tileset

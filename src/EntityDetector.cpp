@@ -27,8 +27,8 @@ void EntityDetector::display_on_map(Map *map) {
 }
 
 /**
- * This function is called by the engine when an entity overlaps the detector.
- * The map is notified.
+ * This function is called when an entity overlaps the detector.
+ * By default, the map is notified.
  * @param entity_overlapping the entity overlapping the detector
  */
 void EntityDetector::entity_overlaps(MapEntity *entity_overlapping) {

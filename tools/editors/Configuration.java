@@ -58,7 +58,7 @@ public class Configuration extends Observable {
 
     /**
      * Sets the root path of ZSDX.
-     * @param path the root path
+     * @param zsdxRootPath the root path
      */
     public void setZsdxRootPath(String zsdxRootPath) {
 	if (zsdxRootPath != this.zsdxRootPath) {

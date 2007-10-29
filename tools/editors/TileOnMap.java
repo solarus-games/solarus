@@ -321,7 +321,6 @@ public class TileOnMap extends Observable implements Serializable {
     /**
      * Draws the tile on the map view.
      * @param g graphic context
-     * @param tileset the tileset
      * @param scale scale of the image (1: unchanged, 2: zoom of 200%)
      * @param showTransparency true to make transparent pixels,
      * false to replace them by a background color

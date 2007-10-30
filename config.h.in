@@ -3,6 +3,9 @@
 /* Define to 1 if you have the `chdir' function. */
 #undef HAVE_CHDIR
 
+/* Define to 1 if you have the <fmod/fmod.h> header file. */
+#undef HAVE_FMOD_FMOD_H
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
@@ -24,8 +27,11 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
-/* Define to 1 if you have the `sqrt' function. */
-#undef HAVE_SQRT
+/* Define to 1 if you have the <SDL/SDL.h> header file. */
+#undef HAVE_SDL_SDL_H
+
+/* Define to 1 if you have the <SDL/SDL_image.h> header file. */
+#undef HAVE_SDL_SDL_IMAGE_H
 
 /* Define to 1 if stdbool.h conforms to C99. */
 #undef HAVE_STDBOOL_H

@@ -1,5 +1,4 @@
-INCLUDES = -I$(top_srcdir)/include
-AM_CXXFLAGS = -O0 -Wall -Werror -ansi
+AM_CPPFLAGS = -O3 -Wall -Werror -ansi -I$(top_srcdir)/include
 
 zsdxincludedir = $(top_srcdir)/include
 bin_PROGRAMS = zsdx

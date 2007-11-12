@@ -83,7 +83,7 @@ public class MapCodeGenerator {
 	    out.println("class Map" + name + ": public Map {");
 	    out.println();
 	    out.println(" public:");
-	    out.println("  Map" + name + "(void);");
+	    out.println("  inline Map" + name + "(void) { }");
 	    out.println("  inline ~Map" + name + "(void) { }");
 	    out.println();
 	    out.println("  void load(void);");
@@ -111,8 +111,6 @@ public class MapCodeGenerator {
 	    // get some info about the map
 	    Tileset tileset = map.getTileset();
 	    String tilesetHeaderFileName = "Tileset" + tileset.getName() + ".h";
-	    String tilesetConstant = "TILESET_" + tileset.getName().toUpperCase();
-	    String musicConstant = "MUSIC_" + map.getMusic().toUpperCase();
 	    String className = "Map" + map.getName();
 	    
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
@@ -125,23 +123,9 @@ public class MapCodeGenerator {
 	    out.println("#include \"tilesets/" + tilesetHeaderFileName + "\"");
 	    out.println();
 	    out.println("/**");
-	    out.println(" * Constructor.");
-	    out.println(" */");
-	    out.println("" + className + "::" + className + "(void):");
-	    out.println("  Map(" + map.getWidth() + ", " + map.getHeight() + ",");
-	    out.println("    " + tilesetConstant + ",");
-	    out.println("    " + musicConstant + ") {");
-	    out.println();
-	    out.println("}");
-	    out.println();
-	    out.println("/**");
 	    out.println(" * Loads the map.");
 	    out.println(" */");
 	    out.println("void " + className + "::load(void) {");
-	    out.println();
-	    out.println("  if (!tileset->is_loaded()) {");
-	    out.println("    tileset->load();");
-	    out.println("  }");
 	    out.println();
 	    out.println("#include \"../src/maps/" + className + "Entities.inc\"");
 	    out.println("}");
@@ -161,7 +145,14 @@ public class MapCodeGenerator {
 	    name + "Entities.inc";
 	
 	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+
+	Tileset tileset = map.getTileset(); 
+	String tilesetConstant = "TILESET_" + tileset.getName().toUpperCase();
+	String musicConstant = "MUSIC_" + map.getMusic().toUpperCase();
 	
+	out.println("  MAP(" + map.getWidth() + ", " + map.getHeight() + ","
+		    + tilesetConstant + "," + musicConstant + ")");
+
 	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 
 	    for (TileOnMap tile: map.getTiles(layer)) {

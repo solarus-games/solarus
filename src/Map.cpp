@@ -8,20 +8,80 @@
 
 /**
  * Creates a new map.
+ */
+Map::Map(void) {
+
+  this->width = 0;
+}
+
+/**
+ * Destructor.
+ */
+Map::~Map(void) {
+
+  if (this->width != 0) {
+    unload();
+  }
+}
+
+/**
+ * Unloads the map.
+ * Destroys all entities in the map to free some memory. This function
+ * can be called when the player exists the map. If the player is likely to
+ * come back on the map, you can keep the map loaded.
+ */
+void Map::unload(void) {
+
+  // delete the tiles
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
+      delete tiles[layer]->at(i);
+    }
+    tiles[layer]->clear();
+  }
+
+  // delete the entrances
+  for (unsigned int i = 0; i < entrances->size(); i++) {
+    delete entrances->at(i);
+  }
+  entrances->clear();
+  delete entrances;
+
+  // delete the entity detectors
+  for (unsigned int i = 0; i < entity_detectors->size(); i++) {
+    delete entity_detectors->at(i);
+  }
+  entity_detectors->clear();
+  delete entity_detectors;
+
+  // delete the tiles
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    delete tiles[layer];
+    delete[] obstacle_tiles[layer];
+  }
+}
+
+/**
+ * Initializes the map.
+ * This function is called by the generated code in the load() function of the map.
  * @param width the map width in pixels
  * @param height the map height in pixels
  * @param tileset_id the map tileset
- * @param default_music_id the map default music
+ * @param music_id the map music
  */
-Map::Map(int width, int height, TilesetID tileset_id, MusicID default_music_id):
+void Map::map_init(int width, int height, TilesetID tileset_id, MusicID music_id) {
 
-  width(width), height(height), width8(width / 8), height8(height / 8),
-  obstacle_tiles_size(width8 * height8),
-  tileset(ZSDX::game_resource->get_tileset(tileset_id)),
-  default_music_id(default_music_id) {
+  this->width = width;
+  this->height = height;
+  this->width8 = width / 8;
+  this->height8 = height / 8;
+  this->obstacle_tiles_size = width8 * height8;
+  this->music_id = music_id;
 
-  screen_position.w = 320;
-  screen_position.h = 240;
+  tileset = ZSDX::game_resource->get_tileset(tileset_id);
+  if (!tileset->is_loaded()) {
+    tileset->load();
+  }
 
   entrances = new vector<MapEntrance*>();
   entity_detectors = new vector<EntityDetector*>();
@@ -36,20 +96,6 @@ Map::Map(int width, int height, TilesetID tileset_id, MusicID default_music_id):
       obstacle_tiles[layer][i] = OBSTACLE_NONE;
     }
   }
-}
-
-/**
- * Destructor.
- */
-Map::~Map() {
-  unload();
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-    delete tiles[layer];
-    delete[] obstacle_tiles[layer];
-  }
-
-  delete entrances;
-  delete entity_detectors;
 }
 
 /**
@@ -204,35 +250,6 @@ void Map::add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int en
 }
 
 /**
- * Unloads the map.
- * Destroys all entities in the map to free some memory. This function
- * can be called when the player exists the map. If the player is likely to
- * come back on the map, you can keep the map loaded.
- */
-void Map::unload(void) {
-
-  // delete the tiles
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-    for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
-      delete tiles[layer]->at(i);
-    }
-    tiles[layer]->clear();
-  }
-
-  // delete the entrances
-  for (unsigned int i = 0; i < entrances->size(); i++) {
-    delete entrances->at(i);
-  }
-  entrances->clear();
-
-  // delete the entity detectors
-  for (unsigned int i = 0; i < entity_detectors->size(); i++) {
-    delete entity_detectors->at(i);
-  }
-  entity_detectors->clear();
-}
-
-/**
  * Sets the current entrance of the map.
  * @param entrance_index index of the entrance you want to use
  */
@@ -302,7 +319,7 @@ void Map::start(void) {
 
   MapEntrance *entrance = entrances->at(entrance_index);
 
-  ZSDX::game->play_music(default_music_id);
+  ZSDX::game->play_music(music_id);
 
   // put Link
   Link *link = ZSDX::game_resource->get_link();

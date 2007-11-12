@@ -34,7 +34,8 @@ sudo mkdir /usr/include/fmod
 sudo cp api/inc/*.h /usr/include/fmod
 sudo cp api/libfmod-3.75.so /usr/lib
 sudo ln -s /usr/lib/libfmod-3.75.so /usr/lib/libfmod.so
-rm -r fmodapi375linux
+cd ..
+rm -rf fmodapi375linux
 rm fmodapi375linux.tar.gz
 
 

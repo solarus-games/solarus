@@ -10,7 +10,12 @@ using namespace std;
 #include <cstdlib>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+
+#ifndef ZSDX_CONFIG_H
+#define ZSDX_CONFIG_H
 #include "config.h"
+#endif
+
 #include "Types.h"
 
 #define MIN(x,y) ((x > y) ? (y) : (x))

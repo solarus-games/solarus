@@ -9,7 +9,7 @@
 class MapRupeeHouse: public Map {
 
  public:
-  MapRupeeHouse(void);
+  inline MapRupeeHouse(void) { }
   inline ~MapRupeeHouse(void) { }
 
   void load(void);

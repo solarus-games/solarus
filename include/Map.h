@@ -82,24 +82,24 @@ class Map {
   /**
    * Map width in pixels.
    */
-  const int width;
+  int width;
 
   /**
    * Map height in pixels.
    */
-  const int height;
+  int height;
   
   /**
    * Map width in 8*8 squares.
    * width8 = width / 8
    */
-  const int width8;
+  int width8;
   
   /**
    * Map height in 8*8 squares.
    * height8 = height / 8
    */
-  const int height8;
+  int height8;
 
  private:
 
@@ -107,7 +107,7 @@ class Map {
    * Number of elements in the array obstacle_tiles.
    * obstacle_tiles_size = width8 * height8
    */
-  const int obstacle_tiles_size;
+  int obstacle_tiles_size;
   
  protected:
 
@@ -120,7 +120,17 @@ class Map {
   /**
    * ID of the default music of the map (can be a valid music, MUSIC_NONE or MUSIC_NO_CHANGE).
    */
-  const MusicID default_music_id;
+  MusicID music_id;
+
+  /**
+   * Initializes the map.
+   * This function is called by the generated code in the load() function of the map.
+   * @param width the map width in pixels
+   * @param height the map height in pixels
+   * @param tileset_id the map tileset
+   * @param music_id the map music
+   */
+  void map_init(int width, int height, TilesetID tileset_id, MusicID music_id);
 
   /**
    * Creates a tile on the map.
@@ -163,17 +173,13 @@ class Map {
 
   /**
    * Creates a new map.
-   * @param width the map width in pixels
-   * @param height the map height in pixels
-   * @param tileset_id the map tileset
-   * @param default_music_id the map music
    */
-  Map(int width, int height, TilesetID tileset_id, MusicID default_music_id);
+  Map(void);
 
   /**
    * Destructor.
    */
-  virtual ~Map();
+  virtual ~Map(void);
 
   /**
    * Returns the tileset of this map.

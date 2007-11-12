@@ -1,8 +1,6 @@
-- Code généré d'une map : virer le test tileset->is_loaded() et faire ça là on appelle map->load (Game.cpp je crois)
-- Code du constructeur d'une map : données générées une seule fois, impossible de les changer depuis l'éditeur -> tout faire dans load, laisser vide le constructeur et du coup le mettre en inline dans le .h pour alléger le .cpp généré, macro MAP
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - FMOD : enlever le répertoire /usr/include/fmod ? (Chichi)
-- Autoconf : tester la présence des headers (notamment fmod.h)
+
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
 	- Trouver un moyen de mixer l'ajout de tiles au clic droit et le redimensionnement immédiat

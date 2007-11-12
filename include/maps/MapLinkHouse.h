@@ -15,7 +15,7 @@ enum {
 class MapLinkHouse: public Map {
 
  public:
-  MapLinkHouse(void);
+  inline MapLinkHouse(void) { }
   inline ~MapLinkHouse(void) { }
 
   void load(void);

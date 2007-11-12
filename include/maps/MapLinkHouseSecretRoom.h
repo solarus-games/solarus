@@ -9,7 +9,7 @@
 class MapLinkHouseSecretRoom: public Map {
 
  public:
-  MapLinkHouseSecretRoom(void);
+  inline MapLinkHouseSecretRoom(void) { }
   inline ~MapLinkHouseSecretRoom(void) { }
 
   void load(void);

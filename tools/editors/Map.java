@@ -27,9 +27,19 @@ public class Map extends Observable implements Serializable {
     private Dimension size;
 
     /**
-     * Background music.
+     * Background music: (name of the music file, musicNone or musicUnchanged)
      */
     private String music;
+
+    /**
+     * String indicating that there is no music on the map.
+     */
+    public static final String musicNone = "<No music>";
+
+    /**
+     * String indicating that the music is unchanged on the map.
+     */
+    public static final String musicUnchanged = "<Same as previous map>";
 
     /**
      * Tileset of the map.
@@ -76,7 +86,7 @@ public class Map extends Observable implements Serializable {
 	this.size = new Dimension(320, 240);
 	this.tileset = null;
 	this.tilesetName = null;
-	this.music = null;
+	this.music = musicNone;
 
 	this.allTiles = new TileOnMapList[3];
 	for (int i = 0; i < 3; i++) {
@@ -380,8 +390,9 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
-     * Returns the default background music of the map.
-     * @return the name of the new music, i.e. a music file name without the extension ".it".
+     * Returns the background music of the map.
+     * @return the name of the music, i.e. a music file name without the extension ".it",
+     * or Map.musicNone or Map.musicUnchanged
      */
     public String getMusic() {
 	return music;
@@ -389,15 +400,12 @@ public class Map extends Observable implements Serializable {
 
     /**
      * Changes the default background music of the map.
-     * @param music the name of the music, i.e. a music file name without the extension ".it".
+     * @param music the name of the music, i.e. a music file name without the extension ".it",
+     * or Map.musicNone or Map.musicUnchanged
      */
     public void setMusic(String music) {
 
-	if (this.music == null && music == null) {
-	    return;
-	}
-
-	if (music == null || !music.equals(this.music)) {
+	if (!music.equals(this.music)) {
 
 	    this.music = music;
 	    setSaved(false);

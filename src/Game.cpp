@@ -201,12 +201,12 @@ void Game::set_current_map(MapID map_id, unsigned int entrance_index) {
  * Plays a music. If the music is different from the current one,
  * the current one is stopped.
  * The music specified can also be MUSIC_NONE (then the current music is just stopped)
- * or even MUSIC_NO_CHANGE (nothing is done in this case).
+ * or even MUSIC_UNCHANGED (nothing is done in this case).
  * @param new_music_id id of the music to play
  */
 void Game::play_music(MusicID new_music_id) {
   
-  if (new_music_id != MUSIC_NO_CHANGE && new_music_id != current_music_id) {
+  if (new_music_id != MUSIC_UNCHANGED && new_music_id != current_music_id) {
     // the music is changed
 
     if (new_music_id == MUSIC_NONE) {

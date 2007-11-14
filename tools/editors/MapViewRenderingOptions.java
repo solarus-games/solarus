@@ -44,6 +44,14 @@ public class MapViewRenderingOptions {
     }
 
     /**
+     * Returns the map.
+     * @return the map
+     */
+    public Map getMap() {
+	return mapView.getMap();
+    }
+
+    /**
      * Returns whether or not each layer is shown.
      * @return for each layer, true if it is shown and false otherwise
      */

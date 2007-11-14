@@ -33,9 +33,8 @@ enum Layer {
  * Constants to identify each music.
  */
 enum MusicID {
-  MUSIC_NONE      = -3, // special value to stop the music
-  MUSIC_NO_CHANGE = -2, // special value to keep the current music
-  MUSIC_DEFAULT   = -1, // special value to refer to the default music of the map
+  MUSIC_NONE      = -2, // special value to stop the music
+  MUSIC_UNCHANGED = -1, // special value to keep the current music
   MUSIC_VILLAGE,
   MUSIC_OVERWORLD,
   MUSIC_BOSS,

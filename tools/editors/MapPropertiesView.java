@@ -251,7 +251,10 @@ public class MapPropertiesView extends JPanel implements Observer {
 		setEnabled(true);
 		String tilesetName = map.getTilesetName();
 		
-		if (tilesetName != null && !tilesetName.equals(getSelectedItem())) {
+		if (tilesetName == null) {
+		    setSelectedIndex(0);
+		}
+		else if (!tilesetName.equals(getSelectedItem())) {
 		    setSelectedItem(tilesetName);
 		}
 	    }
@@ -318,8 +321,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    if (o instanceof Configuration) {
 
 		removeAllItems();
-		addItem("");
-		
+		addItem(Map.musicNone);
+		addItem(Map.musicUnchanged);
+
 		String musicPath = Configuration.getInstance().getDefaultMusicPath();
 		File[] musicFiles = FileTools.getFilesWithExtension(musicPath, "it");
 		
@@ -360,9 +364,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    
 	    if (music != null) {
 
-		if (music.length() == 0) {
-		    music = null;
-		}
 		map.setMusic(music);
 	    }
 	}

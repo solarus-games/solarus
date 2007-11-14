@@ -112,6 +112,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
+     * Returns the map.
+     * @return the map
+     */
+    public Map getMap() {
+	return map;
+    }
+
+    /**
      * Sets the observed map.
      */
     public void setMap(Map map) {
@@ -132,6 +140,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	popupMenu.setMap(map);
 
 	update(map, null);
+	setSize(getPreferredSize());
     }
 
     /**
@@ -255,6 +264,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @param g the graphic context
      */
     public void paint(Graphics g) {
+
 	if (map == null) {
 	    return;
 	}

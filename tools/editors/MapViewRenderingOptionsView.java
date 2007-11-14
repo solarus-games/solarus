@@ -79,6 +79,9 @@ public class MapViewRenderingOptionsView extends JPanel {
 	 * Method invoked when the user clicks on the checkbox.
 	 */
 	public void itemStateChanged(ItemEvent itemEvent) {
+
+	    // unselect everything
+	    renderingOptions.getMap().getTileSelection().unSelectAll();
 	    
 	    // get the new checkbox state
 	    boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
@@ -110,6 +113,9 @@ public class MapViewRenderingOptionsView extends JPanel {
 	 * Method invoked when the user clicks on the checkbox.
 	 */
 	public void itemStateChanged(ItemEvent itemEvent) {
+	    
+	    // unselect everything
+	    renderingOptions.getMap().getTileSelection().unSelectAll();
 	    
 	    // get the new checkbox state
 	    boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);

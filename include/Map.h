@@ -16,23 +16,23 @@
  * A macro used by the generated code to define the parameters of the map.
  * This macro is called at the beginning of the load() function in the generated code.
  */
-#define MAP(width, height, tileset_id, music_id) map_init(width, height, tileset_id, music_id)
+#define MAP(width, height, tileset_id, music_id) map_init(width, height, tileset_id, music_id);
 
 /**
  * A macro used by the generated code to put a tile on the map.
  */
-#define TILE(tile_id, layer, x, y, repeat_x, repeat_y) add_new_tile(tile_id, layer, x, y, repeat_x, repeat_y)
+#define TILE(tile_id, layer, x, y, repeat_x, repeat_y) add_new_tile(tile_id, layer, x, y, repeat_x, repeat_y);
 
 /**
  * A macro used to define an entrance on the map.
  */
-#define ENTRANCE(layer, link_x, link_y, link_direction) add_entrance(layer, link_x, link_y, link_direction)
+#define ENTRANCE(layer, link_x, link_y, link_direction) add_entrance(layer, link_x, link_y, link_direction);
 
 /**
  * A macro used to define an exit on the map.
  * When Link walks on the exit, he leaves the map and enters another one.
  */
-#define EXIT(layer, x, y, w, h, map_id, entrance) add_exit(layer, x, y, w, h, map_id, entrance)
+#define EXIT(layer, x, y, w, h, map_id, entrance) add_exit(layer, x, y, w, h, map_id, entrance);
 
 /**
  * Abstract class for the maps.
@@ -118,7 +118,7 @@ class Map {
   Tileset *tileset;
 
   /**
-   * ID of the default music of the map (can be a valid music, MUSIC_NONE or MUSIC_NO_CHANGE).
+   * ID of the background music of the map (can be a valid music, MUSIC_NONE or MUSIC_UNCHANGED).
    */
   MusicID music_id;
 

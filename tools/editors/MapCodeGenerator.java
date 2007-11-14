@@ -148,10 +148,25 @@ public class MapCodeGenerator {
 
 	Tileset tileset = map.getTileset(); 
 	String tilesetConstant = "TILESET_" + tileset.getName().toUpperCase();
-	String musicConstant = "MUSIC_" + map.getMusic().toUpperCase();
-	
-	out.println("  MAP(" + map.getWidth() + ", " + map.getHeight() + ","
-		    + tilesetConstant + "," + musicConstant + ")");
+
+	String music = map.getMusic();
+	String musicConstant;
+
+	if (music.equals(Map.musicNone)) {
+	    // no music
+	    musicConstant = "MUSIC_NONE";
+	}
+	else if (music.equals(Map.musicUnchanged)) {
+	    // music unchanged
+	    musicConstant = "MUSIC_UNCHANGED";
+	}
+	else {
+	    // normal music
+	    musicConstant = music.toUpperCase();
+	}
+
+	out.println("  MAP(" + map.getWidth() + ", " + map.getHeight() + ", "
+		    + tilesetConstant + ", " + musicConstant + ")");
 
 	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 
@@ -159,7 +174,7 @@ public class MapCodeGenerator {
 
 		out.println("  TILE(" + tile.getTileId() + ", " + layerConstants[layer] + ", "
 			    + tile.getX() + ", " + tile.getY() + ", "
-			    + tile.getRepeatX() + ", " + tile.getRepeatY() + ");");
+			    + tile.getRepeatX() + ", " + tile.getRepeatY() + ")");
 	    }
 	}
 	out.close();

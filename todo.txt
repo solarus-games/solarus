@@ -8,4 +8,5 @@
 	- Editeur de maps : permettre de placer d'autres objets que les tiles (entrées et sorties notamment)
 	- Masquer les fichiers des maps et des tilesets
 	- Taille minimale d'une map : 320*240 ?!
-	- Permettre de choisir comme musiques MUSIC_NONE et MUSIC_NO_CHANGE
+	- Annuler / Rétablir
+	

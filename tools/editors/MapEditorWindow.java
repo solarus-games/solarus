@@ -18,7 +18,6 @@ public class MapEditorWindow extends JFrame {
     // components
     private MapPropertiesView mapPropertiesView;
     private TilePicker tilePicker;
-    private MapViewRenderingOptionsView mapViewRenderingOptionsView;
     private MapView mapView;
 
     /**
@@ -65,11 +64,16 @@ public class MapEditorWindow extends JFrame {
 	mapView = new MapView();
 	JScrollPane mapViewScroller = new JScrollPane(mapView);
 
-	mapViewRenderingOptionsView = new MapViewRenderingOptionsView(mapView.getRenderingOptions());
+	MapViewRenderingOptionsView mapViewRenderingOptionsView =
+	    new MapViewRenderingOptionsView(mapView.getRenderingOptions());
+
+	MapViewMouseCoordinates mapViewMouseCoordinates =
+	    new MapViewMouseCoordinates(mapView);
 
 	JPanel rightPanel = new JPanel(new BorderLayout());
 	rightPanel.add(mapViewRenderingOptionsView, BorderLayout.NORTH);
 	rightPanel.add(mapViewScroller, BorderLayout.CENTER);
+	rightPanel.add(mapViewMouseCoordinates, BorderLayout.SOUTH);
 
 	JSplitPane rootPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
 	rootPanel.setContinuousLayout(true); 

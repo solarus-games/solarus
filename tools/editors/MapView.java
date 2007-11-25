@@ -89,6 +89,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private MapViewRenderingOptions renderingOptions;
 
     /**
+     * Zoom of the map view.
+     */
+    private double zoom;
+
+    /**
      * Constructor.
      */
     public MapView() {
@@ -98,6 +103,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	this.fixedLocation = new Rectangle();
 	this.initialSelection = new TileOnMapList();
 	this.renderingOptions = new MapViewRenderingOptions(this);
+	this.zoom = 2;
 
 	// create the popup menu for the selected tiles
 	// items: resize, layer, destroy
@@ -141,6 +147,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	update(map, null);
 	setSize(getPreferredSize());
+    }
+
+    /**
+     * Returns the zoom of the map view.
+     * @return the zoom
+     */
+    public double getZoom() {
+	return zoom;
     }
 
     /**

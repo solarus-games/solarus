@@ -146,7 +146,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	popupMenu.setMap(map);
 
 	update(map, null);
-	setSize(getPreferredSize());
     }
 
     /**
@@ -232,7 +231,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    }
 
 	    // redraw the image
+	    
 	    repaint();
+	    setSize(getPreferredSize());
 	}
 
 	else if (o instanceof MapTileSelection) {

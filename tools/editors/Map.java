@@ -65,16 +65,15 @@ public class Map extends Observable implements Serializable {
     private transient MapTileSelection tileSelection;
     
     /**
-     * Tells whether the map has changed since the last save.
-     * True if there has been no modifications, false otherwise.
-     */
-    private transient boolean isSaved;
-
-    /**
      * True if some tiles could not be found in the tileset
      * when the tileset was loaded.
      */
     private transient boolean badTiles;
+
+    /**
+     * The history of the actions made by the user on the map.
+     */
+    private transient MapEditorHistory history;
 
     /**
      * Creates a new map.
@@ -94,7 +93,15 @@ public class Map extends Observable implements Serializable {
 	}
 
 	this.tileSelection = new MapTileSelection(this);
-	this.isSaved = false;
+	this.history = new MapEditorHistory(this);
+    }
+
+    /**
+     * Returns the history of actions of the map.
+     * @return the map history
+     */
+    public MapEditorHistory getHistory() {
+	return history;
     }
 
     /**
@@ -143,7 +150,7 @@ public class Map extends Observable implements Serializable {
 	}
 
 	this.size = size;
-	setSaved(false);
+
 	setChanged();
 	notifyObservers();
     }
@@ -182,7 +189,7 @@ public class Map extends Observable implements Serializable {
 
 	    this.tilesetName = null;
 	    this.tileset = null;
-	    setSaved(false);
+
 	    setChanged();
 	    notifyObservers();
 	}
@@ -212,7 +219,7 @@ public class Map extends Observable implements Serializable {
 	    }
 
 	    this.tilesetName = tilesetName;
-	    setSaved(false);
+
 	    setChanged();
 	    notifyObservers(tileset);
 	}
@@ -336,7 +343,7 @@ public class Map extends Observable implements Serializable {
     public void addTile(TileOnMap tile) {
 
 	allTiles[tile.getLayer()].add(tile);
-	setSaved(false);
+
 	setChanged();
 	notifyObservers();
     }
@@ -348,7 +355,7 @@ public class Map extends Observable implements Serializable {
     public void removeTile(TileOnMap tile) {
 
 	allTiles[tile.getLayer()].remove(tile);
-	setSaved(false);
+
 	setChanged();
 	notifyObservers();
     }
@@ -367,7 +374,7 @@ public class Map extends Observable implements Serializable {
      */
     public void setTilePosition(TileOnMap tile, int x1, int y1, int x2, int y2) throws MapException {
 	tile.setPositionInMap(x1, y1, x2, y2);
-	setSaved(false);
+
 	setChanged();
 	notifyObservers();
     }
@@ -384,7 +391,7 @@ public class Map extends Observable implements Serializable {
 	    
 	    tile.move(dx, dy);
 	}
-	setSaved(false);
+
 	setChanged();
 	notifyObservers();
     }
@@ -408,7 +415,7 @@ public class Map extends Observable implements Serializable {
 	if (!music.equals(this.music)) {
 
 	    this.music = music;
-	    setSaved(false);
+
 	    setChanged();
 	    notifyObservers();
 	}
@@ -439,7 +446,6 @@ public class Map extends Observable implements Serializable {
 	    allTiles[layer].add(tile);
 	}
 
-	setSaved(false);
 	setChanged();
 	notifyObservers();
     }
@@ -487,7 +493,6 @@ public class Map extends Observable implements Serializable {
 	    allTiles[layer].addFirst(tile);
 	}
 
-	setSaved(false);
 	setChanged();
 	notifyObservers();
     }
@@ -509,25 +514,8 @@ public class Map extends Observable implements Serializable {
 	    allTiles[layer].addLast(tile);
 	}
 
-	setSaved(false);
 	setChanged();
 	notifyObservers();
-    }
-
-    /**
-     * Returns whether or not the tileset has changed since the last save.
-     * @return true if there has been no modifications, false otherwise
-     */
-    public boolean isSaved() {
-	return isSaved;
-    }
-
-    /**
-     * Sets whether the tileset has changed since the last save.
-     * @param isSaved true if there has been no modifications, false otherwise
-     */
-    public void setSaved(boolean isSaved) {
-	this.isSaved = isSaved;
     }
 
     /**
@@ -557,6 +545,7 @@ public class Map extends Observable implements Serializable {
 	    map = (Map) in.readObject();
 	    map.setTileset(map.getTilesetName());
 	    map.tileSelection = new MapTileSelection(map);
+	    map.history = new MapEditorHistory(map);
 	}
 	catch (ClassNotFoundException e) {
 	    System.err.println("Unable to read the object: " + e.getMessage());
@@ -567,7 +556,7 @@ public class Map extends Observable implements Serializable {
 	in.close();
 
 	if (!map.badTiles()) {
-	    map.setSaved(true);
+	    map.getHistory().setSaved();
 	}
 
 	return map;
@@ -585,7 +574,6 @@ public class Map extends Observable implements Serializable {
 	out.writeObject(map);
 	out.close();
 
-	map.setSaved(true);
+	map.getHistory().setSaved();
     }
-
 }

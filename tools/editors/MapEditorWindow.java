@@ -4,11 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import java.util.*;
 
 /**
  * Main window of the tileset editor.
  */
-public class MapEditorWindow extends JFrame {
+public class MapEditorWindow extends JFrame implements Observer {
 
     /**
      * The current map.
@@ -29,6 +30,8 @@ public class MapEditorWindow extends JFrame {
     private JMenuItem menuItemSave;
     private JMenuItem menuItemSaveAs;
     private JMenuItem menuItemGenerate;
+    private JMenuItem menuItemUndo;
+    private JMenuItem menuItemRedo;
 
     /**
      * Creates a new window.
@@ -130,7 +133,7 @@ public class MapEditorWindow extends JFrame {
 	JMenu menu;
 	JMenuItem item;
 
-	// menu Tileset
+	// menu Map
 	menu = new JMenu("Map");
 	menu.setMnemonic(KeyEvent.VK_T);
 	
@@ -171,19 +174,6 @@ public class MapEditorWindow extends JFrame {
 	menuItemGenerate.setEnabled(false);
 	menu.add(menuItemGenerate);
 
-	item = new JMenuItem("Configuration...");
-	item.setMnemonic(KeyEvent.VK_C);
-	item.getAccessibleContext().setAccessibleDescription("Changes some settings");
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    ConfigurationDialog dialog = new ConfigurationDialog();
-		    dialog.setLocationRelativeTo(MapEditorWindow.this);
-		    dialog.pack();
-		    dialog.setVisible(true);
-		}
-	    });
-	menu.add(item);
-
 	menu.addSeparator();
 
 	item = new JMenuItem("Quit");
@@ -194,6 +184,43 @@ public class MapEditorWindow extends JFrame {
 		    if (checkCurrentFileSaved()) {
 			dispose();
 		    }
+		}
+	    });
+	menu.add(item);
+
+	menuBar.add(menu);
+
+	// menu Edit
+	menu = new JMenu("Edit");
+	menu.setMnemonic(KeyEvent.VK_E);
+	
+	menuItemUndo = new JMenuItem("Undo");
+	menuItemUndo.setMnemonic(KeyEvent.VK_U);
+	menuItemUndo.getAccessibleContext().setAccessibleDescription("Undo the last action");
+	menuItemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+	menuItemUndo.addActionListener(new ActionUndo());
+	menuItemUndo.setEnabled(false);
+	menu.add(menuItemUndo);
+
+	menuItemRedo = new JMenuItem("Redo");
+	menuItemRedo.setMnemonic(KeyEvent.VK_R);
+	menuItemRedo.getAccessibleContext().setAccessibleDescription("Redo the last action undone");
+	menuItemRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
+	menuItemRedo.addActionListener(new ActionRedo());
+	menuItemRedo.setEnabled(false);
+	menu.add(menuItemRedo);
+
+	menu.addSeparator();
+
+	item = new JMenuItem("Configuration...");
+	item.setMnemonic(KeyEvent.VK_C);
+	item.getAccessibleContext().setAccessibleDescription("Changes some settings");
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+		    ConfigurationDialog dialog = new ConfigurationDialog();
+		    dialog.setLocationRelativeTo(MapEditorWindow.this);
+		    dialog.pack();
+		    dialog.setVisible(true);
 		}
 	    });
 	menu.add(item);
@@ -225,6 +252,24 @@ public class MapEditorWindow extends JFrame {
 	mapPropertiesView.setMap(map);
 	tilePicker.setMap(map);
 	mapView.setMap(map);
+
+	// observe the history to enable or disable the items Save, Undo and Redo
+	map.getHistory().addObserver(this);
+	update(null, null);
+    }
+
+    /**
+     * This function is called when the history changes.
+     * @param o the history
+     * @param obj additional parameter
+     */
+    public void update(Observable o, Object obj) {
+
+	MapEditorHistory history = map.getHistory();
+
+	menuItemSave.setEnabled(!history.isSaved());
+	menuItemUndo.setEnabled(history.canUndo());
+	menuItemRedo.setEnabled(history.canRedo());
     }
 
     /**
@@ -261,7 +306,7 @@ public class MapEditorWindow extends JFrame {
     private boolean checkCurrentFileSaved() {
 	boolean result = true;
 
-	if (map != null && !map.isSaved()) {
+	if (map != null && !map.getHistory().isSaved()) {
 	    int answer =  JOptionPane.showConfirmDialog(this,
 							"The map has been modified. Do you want to save it?",
 							"Save the modifications",
@@ -411,6 +456,38 @@ public class MapEditorWindow extends JFrame {
 	    }
 	    catch (IOException e) {
 		errorDialog("Could not generate the C++ code: " + e.getMessage());
+	    }
+	}
+    }
+
+    /**
+     * Action performed when user the user clicks on Edit > Undo or presses Ctrl + Z.
+     * The last action (if any) on the map is cancelled.
+     */
+    private class ActionUndo implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+	    try {
+		map.getHistory().undo();
+	    }
+	    catch (MapException e) {
+
+	    }
+	}
+    }
+
+    /**
+     * Action performed when user the user clicks on Edit > Redo or presses Ctrl + Y.
+     * The last action cancelled (if any) is done again.
+     */
+    private class ActionRedo implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+	    try {
+		map.getHistory().redo();
+	    }
+	    catch (MapException e) {
+
 	    }
 	}
     }

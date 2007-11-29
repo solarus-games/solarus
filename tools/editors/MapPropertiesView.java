@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 import java.io.*;
+import editors.map_editor_actions.*;
 
 /**
  * This component shows the properties of a map and allows to edit them.
@@ -146,7 +147,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 			    int width = Integer.parseInt(textFieldWidth.getText());
 			    int height = Integer.parseInt(textFieldHeight.getText());
 			    Dimension size = new Dimension(width, height);
-			    map.setSize(size);
+			    map.getHistory().addAction(new ActionChangeMapSize(map, size));
 			}
 			catch (NumberFormatException e) {
 			    JOptionPane.showMessageDialog(null,

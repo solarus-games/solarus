@@ -142,11 +142,11 @@ public class Map extends Observable implements Serializable {
      * are destroyed.
      * The width and the height must be multiples of 8.
      * @param size the new map size (in pixels)
-     * @throws NumberFormatException if the width and the height are incorrect
+     * @throws MapException if the width or the height is incorrect
      */
-    public void setSize(Dimension size) {
+    public void setSize(Dimension size) throws MapException {
 	if (size.width <= 0 || size.height <= 0 || size.width % 8 != 0 || size.height % 8 != 0) {
-	    throw new NumberFormatException();
+	    throw new MapException("The width and the height of the map must be positive numbers and multiples of 8.");
 	}
 
 	this.size = size;
@@ -176,11 +176,11 @@ public class Map extends Observable implements Serializable {
     /**
      * Changes the tileset of the map.
      * @param tilesetName name of the new tileset
-     * @throws IOException if this tileset file cannot be loaded
      * @return true if the tileset was loaded successfuly, false if some tiles could
      * not be loaded in this tileset
+     * @throws MapException if this tileset file cannot be loaded
      */
-    public boolean setTileset(String tilesetName) throws IOException {
+    public boolean setTileset(String tilesetName) throws MapException {
 
 	badTiles = false;
 
@@ -200,7 +200,13 @@ public class Map extends Observable implements Serializable {
 	    String path = Configuration.getInstance().getDefaultTilesetPath()
 		+ File.separator + tilesetName + ".zsd";
 	    
-	    this.tileset = Tileset.load(new File(path));
+	    try {
+		this.tileset = Tileset.load(new File(path));
+	    }
+	    catch (IOException ex) {
+		// the tileset file could not be loaded
+		throw new MapException("Cannot open the tileset file");
+	    }
 
 	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 		for (int i = 0; i < allTiles[layer].size(); i++) {
@@ -247,8 +253,19 @@ public class Map extends Observable implements Serializable {
      * Returns the tiles of the map.
      * @return an array of 3 vectors of TileOnMap: a vector for each layer
      */
-    public TileOnMapList[] getTiles() {
+    public TileOnMapList[] getAllTiles() {
 	return allTiles;
+    }
+
+    /**
+     * Sets the tiles of the map.
+     * @param allTiles an array of 3 vectors of TileOnMap: a vector for each layer
+     */
+    public void setAllTiles(TileOnMapList[] allTiles) {
+	this.allTiles = allTiles;
+
+	setChanged();
+	notifyObservers();
     }
 
     /**
@@ -533,8 +550,9 @@ public class Map extends Observable implements Serializable {
      * @param mapFile the file of the map
      * @return the map loaded
      * @throws IOException if the map file could not be read
+     * @throws MapException if the tileset of the map could not be loaded
      */
-    public static Map load(File mapFile) throws IOException {
+    public static Map load(File mapFile) throws IOException, MapException {
 
  	// open the map file
 	ObjectInputStream in = new ObjectInputStream(new FileInputStream(mapFile));

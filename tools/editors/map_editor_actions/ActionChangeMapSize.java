@@ -8,31 +8,31 @@ import editors.*;
  */
 public class ActionChangeMapSize extends MapEditorAction {
 
-    private final Dimension sizeBefore;
-    private final Dimension sizeAfter;
+    private Dimension sizeBefore;
+    private Dimension sizeAfter;
 
     /**
      * Constructor.
      * @param map the map
+     * @param size the new size of the map, in pixels
      */
-    public ActionChangeMapSize(Map map, Dimension sizeAfter) {
+    public ActionChangeMapSize(Map map, Dimension size) {
 	super(map);
-
-	this.sizeBefore = map.getSize();
-	this.sizeAfter = sizeAfter;
+	this.sizeAfter = size;
     }
 
     /**
      * Executes the action.
      */
-    public void execute() {
+    public void execute() throws MapException {
+	this.sizeBefore = map.getSize();
 	map.setSize(sizeAfter);
     }
 
     /**
      * Undoes the action.
      */
-    public void undo() {
+    public void undo() throws MapException {
 	map.setSize(sizeBefore);
     }
 

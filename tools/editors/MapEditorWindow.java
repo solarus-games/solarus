@@ -288,17 +288,6 @@ public class MapEditorWindow extends JFrame implements Observer {
     }
 
     /**
-     * Shows a dialog box with an error message.
-     * @param error message the error message to show
-     */
-    private void errorDialog(String errorMessage) {
-	JOptionPane.showMessageDialog(this,
-				      errorMessage,
-				      "Error",
-				      JOptionPane.ERROR_MESSAGE);
-    }
-
-    /**
      * This function is called when the user wants to close the current map.
      * If the map is not saved, we propose to save it.
      * @return false if the user cancelled
@@ -383,7 +372,10 @@ public class MapEditorWindow extends JFrame implements Observer {
 		}
 	    }
 	    catch (IOException e) {
-		errorDialog("Could not open the map file: " + e.getMessage());
+		WindowTools.errorDialog("Could not open the map file: " + e.getMessage());
+	    }
+	    catch (MapException e) {
+		WindowTools.errorDialog("Could not load the map: " + e.getMessage());
 	    }
 	}
     }
@@ -409,7 +401,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 		    Map.save(mapFile, map);
 		}
 		catch (IOException e) {
-		    errorDialog("Could not save the map file: " + e.getMessage());
+		    WindowTools.errorDialog("Could not save the map file: " + e.getMessage());
 		}
 	    }
 	}
@@ -433,7 +425,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 		}
 	    }
 	    catch (IOException e) {
-		errorDialog("Could not save the tileset file: " + e.getMessage());
+		WindowTools.errorDialog("Could not save the tileset file: " + e.getMessage());
 	    }
 	}
     }
@@ -455,7 +447,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 					      JOptionPane.INFORMATION_MESSAGE);
 	    }
 	    catch (IOException e) {
-		errorDialog("Could not generate the C++ code: " + e.getMessage());
+		WindowTools.errorDialog("Could not generate the C++ code: " + e.getMessage());
 	    }
 	}
     }
@@ -471,7 +463,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 		map.getHistory().undo();
 	    }
 	    catch (MapException e) {
-
+		WindowTools.errorDialog("Cannot undo: " + e.getMessage());
 	    }
 	}
     }
@@ -487,7 +479,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 		map.getHistory().redo();
 	    }
 	    catch (MapException e) {
-
+		WindowTools.errorDialog("Cannot redo: " + e.getMessage());
 	    }
 	}
     }

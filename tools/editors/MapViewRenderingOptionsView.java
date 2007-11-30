@@ -80,12 +80,16 @@ public class MapViewRenderingOptionsView extends JPanel {
 	 */
 	public void itemStateChanged(ItemEvent itemEvent) {
 
-	    // unselect everything
-	    renderingOptions.getMap().getTileSelection().unSelectAll();
+	    Map map = renderingOptions.getMap();
 	    
+	    if (map != null) {
+		// unselect everything
+		map.getTileSelection().unSelectAll();
+	    }
+
 	    // get the new checkbox state
 	    boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
-
+	    
 	    // update the options
 	    renderingOptions.setShowLayer(layer, show);
 	}
@@ -114,9 +118,13 @@ public class MapViewRenderingOptionsView extends JPanel {
 	 */
 	public void itemStateChanged(ItemEvent itemEvent) {
 	    
-	    // unselect everything
-	    renderingOptions.getMap().getTileSelection().unSelectAll();
+	    Map map = renderingOptions.getMap();
 	    
+	    if (map != null) {
+		// unselect everything
+		map.getTileSelection().unSelectAll();
+	    }
+
 	    // get the new checkbox state
 	    boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
 

@@ -147,15 +147,12 @@ public class MapPropertiesView extends JPanel implements Observer {
 			    int width = Integer.parseInt(textFieldWidth.getText());
 			    int height = Integer.parseInt(textFieldHeight.getText());
 			    Dimension size = new Dimension(width, height);
-			    map.getHistory().addAction(new ActionChangeMapSize(map, size));
+			    map.getHistory().doAction(new ActionChangeMapSize(map, size));
 			}
-			catch (NumberFormatException e) {
-			    JOptionPane.showMessageDialog(null,
-							  "The width and the height of the map must be multiples of 8.",
-							  "Error",
-							  JOptionPane.ERROR_MESSAGE);
-			    update(map);
+			catch (MapException e) {
+			    WindowTools.errorDialog("Cannot change the map size: " + e.getMessage());
 			}
+			update(map);
 		    }
 		};
 
@@ -279,18 +276,14 @@ public class MapPropertiesView extends JPanel implements Observer {
 		}
 
 		try {
-		    map.setTileset(tilesetName);
+		    map.getHistory().doAction(new ActionChangeTileset(map, tilesetName));
 
 		    if (map.badTiles()) {
-			JOptionPane.showMessageDialog(this,
-						      "Some tiles of the map have been removed because they don't exist in this tileset!",
-						      "Error",
-						      JOptionPane.ERROR_MESSAGE);
-
+			WindowTools.errorDialog("Some tiles of the map have been removed because they don't exist in this tileset!");
 		    }
 		}
-		catch (IOException e) {
-		    System.out.println("Cannot load the tileset '" + tilesetName + ": " + e.getMessage());		
+		catch (MapException e) {
+		    System.out.println("Cannot load the tileset '" + tilesetName + "': " + e.getMessage());		
 		}
 	    }
 	}

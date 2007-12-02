@@ -21,12 +21,6 @@ public class ActionChangeTileset extends MapEditorAction {
 	super(map);
 
 	this.tilesetNameAfter = tilesetName;
-    }
-
-    /**
-     * Executes the action.
-     */
-    public void execute() throws MapException {
 	this.tilesetNameBefore = map.getTilesetName();
 	this.allTilesBefore = new TileOnMapList[Tile.LAYER_NB];
 
@@ -35,7 +29,12 @@ public class ActionChangeTileset extends MapEditorAction {
 	for (int i = 0; i < Tile.LAYER_NB; i++ ) {
 	    allTilesBefore[i] = new TileOnMapList(allTiles[i]);
 	}
+    }
 
+    /**
+     * Executes the action.
+     */
+    public void execute() throws MapException {
 	map.setTileset(tilesetNameAfter);
     }
 

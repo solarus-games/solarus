@@ -162,7 +162,7 @@ public class MapCodeGenerator {
 	}
 	else {
 	    // normal music
-	    musicConstant = music.toUpperCase();
+	    musicConstant = "MUSIC_" + music.toUpperCase();
 	}
 
 	out.println("  MAP(" + map.getWidth() + ", " + map.getHeight() + ", "

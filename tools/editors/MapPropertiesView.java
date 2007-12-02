@@ -275,15 +275,18 @@ public class MapPropertiesView extends JPanel implements Observer {
 		    tilesetName = null;
 		}
 
-		try {
-		    map.getHistory().doAction(new ActionChangeTileset(map, tilesetName));
+		if (tilesetName != map.getTilesetName()) {
 
-		    if (map.badTiles()) {
-			WindowTools.errorDialog("Some tiles of the map have been removed because they don't exist in this tileset!");
+		    try {
+			map.getHistory().doAction(new ActionChangeTileset(map, tilesetName));
+			
+			if (map.badTiles()) {
+			    WindowTools.errorDialog("Some tiles of the map have been removed because they don't exist in this tileset!");
+			}
 		    }
-		}
-		catch (MapException e) {
-		    System.out.println("Cannot load the tileset '" + tilesetName + "': " + e.getMessage());		
+		    catch (MapException e) {
+			System.out.println("Cannot load the tileset '" + tilesetName + "': " + e.getMessage());		
+		    }
 		}
 	    }
 	}

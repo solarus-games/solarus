@@ -140,27 +140,27 @@ public class MapEditorWindow extends JFrame implements Observer {
 	item = new JMenuItem("New");
 	item.setMnemonic(KeyEvent.VK_N);
 	item.getAccessibleContext().setAccessibleDescription("Create a new map");
-	item.addActionListener(new ActionNew());
+	item.addActionListener(new ActionListenerNew());
 	menu.add(item);
 
 	item = new JMenuItem("Open...");
 	item.setMnemonic(KeyEvent.VK_O);
 	item.getAccessibleContext().setAccessibleDescription("Open an existing map");
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-	item.addActionListener(new ActionOpen());
+	item.addActionListener(new ActionListenerOpen());
 	menu.add(item);
 
 	menuItemSave = new JMenuItem("Save");
 	menuItemSave.setMnemonic(KeyEvent.VK_S);
 	menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current map");
 	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-	menuItemSave.addActionListener(new ActionSave());
+	menuItemSave.addActionListener(new ActionListenerSave());
 	menuItemSave.setEnabled(false);
 	menu.add(menuItemSave);
 
 	menuItemSaveAs = new JMenuItem("Save as...");
 	menuItemSaveAs.getAccessibleContext().setAccessibleDescription("Save the map into a new file");
-	menuItemSaveAs.addActionListener(new ActionSaveAs());
+	menuItemSaveAs.addActionListener(new ActionListenerSaveAs());
 	menuItemSaveAs.setEnabled(false);
 	menu.add(menuItemSaveAs);
 
@@ -170,7 +170,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuItemGenerate.setMnemonic(KeyEvent.VK_G);
 	menuItemGenerate.getAccessibleContext().setAccessibleDescription("Generate the C++ code for the current map");
 	menuItemGenerate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
-	menuItemGenerate.addActionListener(new ActionGenerate());
+	menuItemGenerate.addActionListener(new ActionListenerGenerate());
 	menuItemGenerate.setEnabled(false);
 	menu.add(menuItemGenerate);
 
@@ -198,7 +198,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuItemUndo.setMnemonic(KeyEvent.VK_U);
 	menuItemUndo.getAccessibleContext().setAccessibleDescription("Undo the last action");
 	menuItemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
-	menuItemUndo.addActionListener(new ActionUndo());
+	menuItemUndo.addActionListener(new ActionListenerUndo());
 	menuItemUndo.setEnabled(false);
 	menu.add(menuItemUndo);
 
@@ -206,7 +206,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuItemRedo.setMnemonic(KeyEvent.VK_R);
 	menuItemRedo.getAccessibleContext().setAccessibleDescription("Redo the last action undone");
 	menuItemRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
-	menuItemRedo.addActionListener(new ActionRedo());
+	menuItemRedo.addActionListener(new ActionListenerRedo());
 	menuItemRedo.setEnabled(false);
 	menu.add(menuItemRedo);
 
@@ -302,7 +302,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 							JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 	    if (answer == JOptionPane.YES_OPTION) {
-		new ActionSave().actionPerformed(null);
+		new ActionListenerSave().actionPerformed(null);
 	    }
 	    else if (answer == JOptionPane.CANCEL_OPTION) {
 		result = false;
@@ -317,7 +317,7 @@ public class MapEditorWindow extends JFrame implements Observer {
      * Action performed when the user clicks on Map > New.
      * Creates a new map, asking to the user the map name and the map file.
      */
-    private class ActionNew implements ActionListener {
+    private class ActionListenerNew implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
 
@@ -346,7 +346,7 @@ public class MapEditorWindow extends JFrame implements Observer {
      * Action performed when the user clicks on Map > Open.
      * Opens an existing map, asking to the user the map file.
      */
-    private class ActionOpen implements ActionListener {
+    private class ActionListenerOpen implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
 
@@ -384,7 +384,7 @@ public class MapEditorWindow extends JFrame implements Observer {
      * Action performed when the user clicks on Map > Save.
      * Saves the map into its file.
      */
-    private class ActionSave implements ActionListener {
+    private class ActionListenerSave implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
 	    // if this is a new map, make a "save as..."
@@ -394,7 +394,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 		    File.separator + map.getName() + ".zsd";
 
 		mapFile = new File(path);
-		new ActionSaveAs().actionPerformed(ev);
+		new ActionListenerSaveAs().actionPerformed(ev);
 	    }
 	    else {
 		try {
@@ -411,7 +411,7 @@ public class MapEditorWindow extends JFrame implements Observer {
      * Action performed when the user clicks on Map > Save as.
      * Saves the map into its file.
      */
-    private class ActionSaveAs implements ActionListener {
+    private class ActionListenerSaveAs implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
 
@@ -434,7 +434,7 @@ public class MapEditorWindow extends JFrame implements Observer {
      * Action performed when the user clicks on Map > Generate C++.
      * Generates the C++ code for the current map.
      */
-    private class ActionGenerate implements ActionListener {
+    private class ActionListenerGenerate implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
 	    MapCodeGenerator generator = new MapCodeGenerator();
@@ -456,7 +456,7 @@ public class MapEditorWindow extends JFrame implements Observer {
      * Action performed when user the user clicks on Edit > Undo or presses Ctrl + Z.
      * The last action (if any) on the map is cancelled.
      */
-    private class ActionUndo implements ActionListener {
+    private class ActionListenerUndo implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
 	    try {
@@ -472,7 +472,7 @@ public class MapEditorWindow extends JFrame implements Observer {
      * Action performed when user the user clicks on Edit > Redo or presses Ctrl + Y.
      * The last action cancelled (if any) is done again.
      */
-    private class ActionRedo implements ActionListener {
+    private class ActionListenerRedo implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
 	    try {

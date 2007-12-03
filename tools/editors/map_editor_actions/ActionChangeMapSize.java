@@ -19,13 +19,13 @@ public class ActionChangeMapSize extends MapEditorAction {
     public ActionChangeMapSize(Map map, Dimension size) {
 	super(map);
 	this.sizeAfter = size;
+	this.sizeBefore = map.getSize();
     }
 
     /**
      * Executes the action.
      */
     public void execute() throws MapException {
-	this.sizeBefore = map.getSize();
 	map.setSize(sizeAfter);
     }
 

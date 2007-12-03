@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
+import editors.map_editor_actions.*;
 
 /**
  * This component shows the map image and allows the user to modify it.
@@ -46,6 +47,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private static final int STATE_ADDING_TILE = 4;
 
+    // information about the current state
+
     /**
      * State of the map view.
      */
@@ -64,9 +67,19 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * Location of the fixed area of the rectangle the user is drawing.
      * - in state STATE_SELECTING_AREA: coordinates of the initial point (width and height are not used)
-     * - in state STATE_RESIZING_TILE: top-left rectangle of the tile before resizing 
+     * - in state STATE_RESIZING_TILE: top-left rectangle of the tile before being resized
      */
     private Rectangle fixedLocation;
+
+    /**
+     * In state STATE_MOVING_TILES: total x translation
+     */
+    private int total_dx;
+
+    /**
+     * In state STATE_MOVING_TILES: total y translation
+     */
+    private int total_dy;
 
     /**
      * The tiles selected, saved here before drawing a selection rectangle.
@@ -77,6 +90,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * True if the last tile on which the mouse was pressed was not already selected.
      */
     private boolean tileJustSelected;
+
+    // other map view stuff
 
     /**
      * The popup menu shown when the user right clicks on the selected tiles.
@@ -367,7 +382,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Removes the selected tiles from the map.
      */
     public void destroySelectedTiles() {
-	map.getTileSelection().removeFromMap();
+	try {
+	    map.getTileSelection().removeFromMap();
+	}
+	catch (MapException e) {
+	    WindowTools.errorDialog("Cannot remove the tiles: " + e.getMessage());
+	}
     }
 
     /**
@@ -423,18 +443,24 @@ public class MapView extends JComponent implements Observer, Scrollable {
 				       cursorLocation.x, cursorLocation.y);
 
 	// add it to the map
-	map.addTile(tile);
+	try {
+	    map.getHistory().doAction(new ActionAddTile(map, tile));
 
-	// make it selected if required
-	if (selectTileCreated) {
-	    map.getTileSelection().select(tile);
-	    map.getTileset().unSelectTile();
-	    startResizingTile(); // let the user resize the tile until the mouse is released
+	    // make it selected if required
+	    if (selectTileCreated) {
+		map.getTileSelection().select(tile);
+		map.getTileset().unSelectTile();
+		startResizingTile(); // let the user resize the tile until the mouse is released
+	    }
+	    else {
+		returnToNormalState();
+	    }
+	    repaint();
 	}
-	else {
-	    returnToNormalState();
+	catch (MapException e) {
+	    // should never happen (adding a tile doesn't throw any exception)
+	    WindowTools.errorDialog("Cannot add the tile: " + e.getMessage());
 	}
-	repaint();
     }
 
     /**
@@ -522,8 +548,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    
 	    fixedLocation.x = tilePositionInMap.x;
 	    fixedLocation.y = tilePositionInMap.y;
-	    fixedLocation.width = originalTile.getWidth();
-	    fixedLocation.height = originalTile.getHeight();
+	    fixedLocation.width = tilePositionInMap.width;
+	    fixedLocation.height = tilePositionInMap.height;
 
 	    cursorLocation.x = tilePositionInMap.x + tilePositionInMap.width;
 	    cursorLocation.y = tilePositionInMap.y + tilePositionInMap.height;
@@ -593,15 +619,47 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		catch (MapException e) {
 		    // should not happen as long as setPositionInMap() checks only
 		    // the width and the height of the rectangle
-		    System.out.println("Unexpected error when trying to resize the tile: " + e.getMessage());
+		    WindowTools.errorDialog("Cannot resize the tile: " + e.getMessage());
 		}
 	    }
 	}
     }
 
     /**
+     * In state STATE_RESIZING_TILE, stops the resizing and saves it into the undo/redo history.
+     */
+    private void endResizingTile() {
+
+	TileOnMap tile = map.getTileSelection().getTile(0);
+
+	// get a copy of the final rectangle before we restore the initial one
+	Rectangle finalPosition = new Rectangle(tile.getPositionInMap());
+	
+	if (!finalPosition.equals(fixedLocation)) { // if the tile's rectangle has changed
+
+	    /**
+	     * While dragging the mouse, the tile's rectangle has followed the mouse, being
+	     * resized with small steps. Now we want to consider the whole resizing process
+	     * as one step only, so that it can be undone or redone directly later.
+	     */
+	    
+	    try {
+		// we restore the tile at its initial size
+		map.setTilePosition(tile, fixedLocation);
+		
+		// we make the resizing in one step,  this time saving itinto the undo/redo history
+		map.getHistory().doAction(new ActionResizeTile(map, tile, finalPosition));
+	    }
+	    catch (MapException e) {
+		WindowTools.errorDialog("Cannot resize the tile: " + e.getMessage());
+	    }
+	}
+	returnToNormalState();
+    }
+
+    /**
      * Moves to the state STATE_MOVING_TILES.
-     * Lets the user moving the tiles selected on the map.
+     * Lets the user move the tiles selected on the map.
      * @param x x coordinate of the pointer
      * @param y y coordinate of the pointer
      */
@@ -612,6 +670,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	cursorLocation.x = x;
 	cursorLocation.y = y;
+	
+	total_dx = 0;
+	total_dy = 0;
 
 	state = STATE_MOVING_TILES;
     }
@@ -635,12 +696,46 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    int dx = x - cursorLocation.x;
 	    int dy = y - cursorLocation.y;
 
-	    // we have to move all selected tiles from (offsetX, offsetY) pixels
-	    map.getTileSelection().move(dx, dy);
+	    // we move the tiles during the dragging, to make them follow the mouse while dragging
+	    TileOnMapList tiles = map.getTileSelection().getTiles();
+	    map.moveTiles(tiles, dx, dy);
+
+	    // but we also save the total move because only the total move will be undoable
+	    this.total_dx += dx;
+	    this.total_dy += dy;
 
 	    cursorLocation.x = x;
 	    cursorLocation.y = y;
 	}
+    }
+
+    /**
+     * In state STATE_MOVING_TILES, stops the move and saves it into the undo/redo history.
+     */
+    private void endMovingTiles() {
+
+	if (total_dx != 0 || total_dy != 0) {
+
+	    /**
+	     * While dragging the mouse, the selected tiles have followed the mouse, moving with
+	     * small 8-pixel steps. Now we want to consider the whole move as one step only, so that
+	     * it can be undone or redone directly later.
+	     */
+	    
+	    TileOnMapList tiles = map.getTileSelection().getTiles();
+	    
+	    // we restore the tiles at their initial position
+	    map.moveTiles(tiles, -total_dx, -total_dy);
+	    
+	    // we make the whole move in one step, this time saving it into the undo/redo history
+	    try {
+		map.getHistory().doAction(new ActionMoveTiles(map, tiles, total_dx, total_dy));
+	    }
+	    catch (MapException e) {
+		WindowTools.errorDialog("Cannot move the tiles: " + e.getMessage());
+	    }
+	}
+	returnToNormalState();
     }
 
     /**
@@ -793,7 +888,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// validate the new size
 	    case STATE_RESIZING_TILE:
 
-		returnToNormalState();
+		endResizingTile();
 		break;
 		
 		// place the new tile
@@ -818,7 +913,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    switch (state) {
 
 	    case STATE_RESIZING_TILE:
-		returnToNormalState();
+		endResizingTile();
 		break;
 
 	    case STATE_SELECTING_AREA:
@@ -830,7 +925,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		break;
 
 	    case STATE_MOVING_TILES:
-		returnToNormalState();
+		endMovingTiles();
 		break;
 	    }
 	}

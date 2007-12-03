@@ -175,6 +175,24 @@ public class TileOnMap extends Observable implements Serializable {
     }
     
     /**
+     * Changes the position of a tile on the map, by specifying its rectangle.
+     * The tile is resized (i.e. repeatX and repeatY are updated) so that
+     * the tile fits exactly in the rectangle.
+     * @param position a rectangle
+     * @throws MapException if the rectangle width or its height is zero
+     * (no other verifications are performed)
+     */
+    public void setPositionInMap(Rectangle position) throws MapException {
+
+	int x1 = position.x;
+	int y1 = position.y;
+	int x2 = x1 + position.width;
+	int y2 = y1 + position.height;
+
+	setPositionInMap(x1, y1, x2, y2);
+    }
+    
+    /**
      * Changes the position of the tile on the map, by specifying a point.
      * The size of the tile is not changed.
      * @param x x coordinate of the point

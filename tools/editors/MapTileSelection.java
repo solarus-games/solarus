@@ -1,6 +1,7 @@
 package editors;
 
 import java.util.*;
+import editors.map_editor_actions.*;
 
 /**
  * Represents the tiles selected in the map editor.
@@ -124,19 +125,12 @@ public class MapTileSelection extends Observable implements Iterable {
 
     /**
      * Removes the selected tiles from the map.
+     * If there is no tile selecting, nothing is done.
      */
-    public void removeFromMap() {
+    public void removeFromMap() throws MapException {
 
 	if (tiles.size() > 0) {
-
-	    while (tiles.size() > 0) {
-		TileOnMap tile = tiles.getFirst();
-		tiles.remove(0);
-		map.removeTile(tile);
-	    }
-	    
-	    setChanged();
-	    notifyObservers();
+	    map.getHistory().doAction(new ActionRemoveTiles(map, tiles));
 	}
     }
 
@@ -197,41 +191,37 @@ public class MapTileSelection extends Observable implements Iterable {
     }
 
     /**
-     * Changes the layer of the selected tiles. You should call this method instead of
-     * calling directly TileOnMap.setLayer() because the tiles of the 3 layers are
-     * stored in 3 different arrays.
+     * Changes the layer of the selected tiles.
      * @param layer the new layer
      */
-    public void setLayer(int layer) {
+    public void setLayer(int layer) throws MapException {
 
-	for (TileOnMap tile: tiles) {
-	    map.tileSetLayer(tile, layer);
-	}
+	map.getHistory().doAction(new ActionChangeLayer(map, tiles, layer));
     }
 
     /**
      * Brings the selected tiles to the front in their layer.
      */
-    public void bringToFront() {
+    public void bringToFront() throws MapException {
 
-	map.bringToFront(tiles);
+	map.getHistory().doAction(new ActionBringToFront(map, tiles));
     }
 
     /**
      * Brings the selected tiles to the back in their layer.
      */
-    public void bringToBack() {
+    public void bringToBack() throws MapException {
 
-	map.bringToBack(tiles);
+	map.getHistory().doAction(new ActionBringToBack(map, tiles));
     }
 
-    /**
-     * Changes the position of the selected tiles.
-     * @param dx number of pixels to move on x
-     * @param dy number of pixels to move on y
-     */
-    public void move(int dx, int dy) {
+//     /**
+//      * Changes the position of the selected tiles.
+//      * @param dx number of pixels to move on x
+//      * @param dy number of pixels to move on y
+//      */
+//     public void move(int dx, int dy) throws MapException {
 
-	map.moveTiles(tiles, dx, dy);	
-    }
+// 	map.getHistory().doAction(new ActionMoveTiles(map, tiles, dx, dy));
+//     }
 }

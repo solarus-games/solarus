@@ -50,7 +50,7 @@ public class MapEditorHistory extends Observable {
      * @throws MapException if an error occurs while undoing the action
      */
     public void doAction(MapEditorAction action) throws MapException {
-	
+
 	action.execute();
 	actions.setSize(nextActionIndex + 1);
 	actions.setElementAt(action, nextActionIndex);

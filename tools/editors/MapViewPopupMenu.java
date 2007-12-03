@@ -61,22 +61,22 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    
 	for (int i = 0; i < Tile.LAYER_NB; i++) {
 	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
-	    itemsLayers[i].addActionListener(new ActionChangeLayer(i));
+	    itemsLayers[i].addActionListener(new ActionListenerChangeLayer(i));
 	    add(itemsLayers[i]);
 	    itemsLayersGroup.add(itemsLayers[i]);
 	}
 	itemsLayers[Tile.LAYER_NB] = new JRadioButtonMenuItem();
-	itemsLayers[Tile.LAYER_NB].addActionListener(new ActionChangeLayer(Tile.LAYER_NB));
+	itemsLayers[Tile.LAYER_NB].addActionListener(new ActionListenerChangeLayer(Tile.LAYER_NB));
 	itemsLayersGroup.add(itemsLayers[Tile.LAYER_NB]);
 
 	addSeparator();
 
 	item = new JMenuItem("Bring to front");
-	item.addActionListener(new ActionBringToFront());
+	item.addActionListener(new ActionListenerBringToFront());
 	add(item);
 
 	item = new JMenuItem("Bring to back");
-	item.addActionListener(new ActionBringToBack());
+	item.addActionListener(new ActionListenerBringToBack());
 	add(item);
 
 	addSeparator();
@@ -133,7 +133,7 @@ public class MapViewPopupMenu extends JPopupMenu {
      * Action listener invoked when the user changes the layer of a tile
      * from the popup menu after a right click.
      */
-    private class ActionChangeLayer implements ActionListener {
+    private class ActionListenerChangeLayer implements ActionListener {
 
 	/**
 	 * Layer to set when the action is invoked.
@@ -144,15 +144,20 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 * Constructor.
 	 * @param layer layer to set when the action is invoked.
 	 */
-	public ActionChangeLayer(int layer) {
+	public ActionListenerChangeLayer(int layer) {
 	    this.layer = layer;
 	}
 
 	/**
 	 * Method called when the user sets the layer of the selected tiles.
 	 */
-	public void actionPerformed(ActionEvent e) {
-	    map.getTileSelection().setLayer(layer);
+	public void actionPerformed(ActionEvent ev) {
+	    try {
+		map.getTileSelection().setLayer(layer);
+	    }
+	    catch (MapException e) {
+		WindowTools.errorDialog("Cannot change the layer: " + e.getMessage());
+	    }
 	}
     }
 
@@ -160,13 +165,18 @@ public class MapViewPopupMenu extends JPopupMenu {
      * Action listener invoker when the user clicks on "Bring to front".
      * The selected tiles are moved to the front in their layer.
      */
-    private class ActionBringToFront implements ActionListener {
+    private class ActionListenerBringToFront implements ActionListener {
 
 	/**
 	 * Method called when the action is performed.
 	 */
-	public void actionPerformed(ActionEvent e) {
-	    map.getTileSelection().bringToFront();
+	public void actionPerformed(ActionEvent ev) {
+	    try {
+		map.getTileSelection().bringToFront();
+	    }
+	    catch (MapException e) {
+		WindowTools.errorDialog("Cannot bring the tiles to front: " + e.getMessage());
+	    }
 	}
     }
 
@@ -174,13 +184,18 @@ public class MapViewPopupMenu extends JPopupMenu {
      * Action listener invoker when the user clicks on "Bring to back".
      * The selected tiles are moved to the back in their layer.
      */
-    private class ActionBringToBack implements ActionListener {
+    private class ActionListenerBringToBack implements ActionListener {
 
 	/**
 	 * Method called when the action is performed.
 	 */
-	public void actionPerformed(ActionEvent e) {
-	    map.getTileSelection().bringToBack();
+	public void actionPerformed(ActionEvent ev) {
+	    try {
+		map.getTileSelection().bringToBack();
+	    }
+	    catch (MapException e) {
+		WindowTools.errorDialog("Cannot bring the tiles to back: " + e.getMessage());
+	    }
 	}
     }
 }

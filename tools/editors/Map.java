@@ -397,6 +397,22 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
+     * Changes the position of a tile on the map, by specifying its rectangle.
+     * The tile is resized (i.e. repeatX and repeatY are updated) so that
+     * the tile fits exactly in the rectangle.
+     * @param tile the tile
+     * @param position a rectangle
+     * @throws MapException if the rectangle width or its height is zero
+     * (no other verifications are performed)
+     */
+    public void setTilePosition(TileOnMap tile, Rectangle position) throws MapException {
+	tile.setPositionInMap(position);
+
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
      * Changes the position of a group of tiles.
      * @param tiles the tiles to move
      * @param dx number of pixels to move on x
@@ -405,7 +421,6 @@ public class Map extends Observable implements Serializable {
     public void moveTiles(TileOnMapList tiles, int dx, int dy) {
 			  
 	for (TileOnMap tile: tiles) {
-	    
 	    tile.move(dx, dy);
 	}
 

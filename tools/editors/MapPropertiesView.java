@@ -147,7 +147,12 @@ public class MapPropertiesView extends JPanel implements Observer {
 			    int width = Integer.parseInt(textFieldWidth.getText());
 			    int height = Integer.parseInt(textFieldHeight.getText());
 			    Dimension size = new Dimension(width, height);
-			    map.getHistory().doAction(new ActionChangeMapSize(map, size));
+			    if (!size.equals(map.getSize())) {
+				map.getHistory().doAction(new ActionChangeMapSize(map, size));
+			    }
+			}
+			catch (NumberFormatException e) {
+
 			}
 			catch (MapException e) {
 			    WindowTools.errorDialog("Cannot change the map size: " + e.getMessage());
@@ -268,25 +273,25 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    }
 
 	    String tilesetName = (String) getSelectedItem();
+	    String currentTilesetName = map.getTilesetName();
 	    
-	    if (tilesetName != null) {
-
-		if (tilesetName.length() == 0) {
-		    tilesetName = null;
-		}
-
-		if (tilesetName != map.getTilesetName()) {
-
-		    try {
-			map.getHistory().doAction(new ActionChangeTileset(map, tilesetName));
+	    if (tilesetName.length() == 0) {
+		tilesetName = null;
+	    }
+	    
+	    if (tilesetName == null && currentTilesetName != null
+		|| tilesetName != null && currentTilesetName == null
+		|| tilesetName != null && currentTilesetName != null && !tilesetName.equals(map.getTilesetName())) {
+		
+		try {
+		    map.getHistory().doAction(new ActionChangeTileset(map, tilesetName));
 			
-			if (map.badTiles()) {
-			    WindowTools.errorDialog("Some tiles of the map have been removed because they don't exist in this tileset!");
-			}
+		    if (map.badTiles()) {
+			WindowTools.errorDialog("Some tiles of the map have been removed because they don't exist in this tileset!");
 		    }
-		    catch (MapException e) {
-			System.out.println("Cannot load the tileset '" + tilesetName + "': " + e.getMessage());		
-		    }
+		}
+		catch (MapException e) {
+		    System.out.println("Cannot load the tileset '" + tilesetName + "': " + e.getMessage());		
 		}
 	    }
 	}
@@ -359,9 +364,14 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	    String music = (String) getSelectedItem();
 	    
-	    if (music != null) {
+	    if (music != null && !music.equals(map.getMusic())) {
 
-		map.setMusic(music);
+		try {
+		    map.getHistory().doAction(new ActionChangeMusic(map, music));
+		}
+		catch (MapException e) {
+		    WindowTools.errorDialog("Cannot change the background music: " + e.getMessage());
+		}
 	    }
 	}
     }

@@ -3,24 +3,22 @@ package editors.map_editor_actions;
 import editors.*;
 
 /**
- * Changing the tileset of the map.
+ * Bringing some tiles to front.
  */
-public class ActionChangeTileset extends MapEditorAction {
+public class ActionBringToFront extends MapEditorAction {
 
-    private String tilesetNameBefore;
-    private String tilesetNameAfter;
+    private TileOnMapList tiles;
     private TileOnMapList[] allTilesBefore;
     
     /**
      * Constructor.
      * @param map the map
-     * @param tilesetName name of the new tileset
+     * @param tiles the tiles to bring to front
      */
-    public ActionChangeTileset(Map map, String tilesetName) {
+    public ActionBringToFront(Map map, TileOnMapList tiles) {
 	super(map);
-
-	this.tilesetNameAfter = tilesetName;
-	this.tilesetNameBefore = map.getTilesetName();
+	
+	this.tiles = new TileOnMapList(tiles);
 	this.allTilesBefore = new TileOnMapList[Tile.LAYER_NB];
 
 	// copy allTiles
@@ -34,14 +32,13 @@ public class ActionChangeTileset extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws MapException {
-	map.setTileset(tilesetNameAfter);
+	map.bringToFront(tiles);
     }
 
     /**
      * Undoes the action.
      */
     public void undo() throws MapException {
-	map.setTileset(tilesetNameBefore);
 	map.setAllTiles(allTilesBefore);
     }
 

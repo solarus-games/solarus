@@ -139,14 +139,18 @@ public class Map extends Observable implements Serializable {
     /**
      * Changes the map size.
      * If the new size is lower than the old one, the tiles in the removed area
-     * are destroyed.
+     * are not destroyed. The minimum size of a map is 320*240.
      * The width and the height must be multiples of 8.
      * @param size the new map size (in pixels)
      * @throws MapException if the width or the height is incorrect
      */
     public void setSize(Dimension size) throws MapException {
-	if (size.width <= 0 || size.height <= 0 || size.width % 8 != 0 || size.height % 8 != 0) {
-	    throw new MapException("The width and the height of the map must be positive numbers and multiples of 8.");
+	if (size.width < 320 || size.height < 240) {
+	    throw new MapException("The minimum size of a map is 320*240.");
+	}
+	
+	if (size.width % 8 != 0 || size.height % 8 != 0) {
+	    throw new MapException("The width and the height of the map must be multiples of 8.");
 	}
 
 	this.size = size;

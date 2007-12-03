@@ -20,8 +20,12 @@ public class MapViewMouseCoordinates extends JLabel {
 
 		public void mouseMoved(MouseEvent e) {
 		    if (mapView.getMap() != null) {
-			setCoordinates(e.getX() / mapView.getZoom(), e.getY() / mapView.getZoom());
+			setCoordinates((int) (e.getX() / mapView.getZoom()), (int) (e.getY() / mapView.getZoom()));
 		    }
+		}
+
+		public void mouseDragged(MouseEvent e) {
+		    mouseMoved(e);
 		}
 
 	    });
@@ -32,10 +36,10 @@ public class MapViewMouseCoordinates extends JLabel {
      * @param x the new x coordinate (will be rounded)
      * @param y the new y coordinate (will be rounded)
      */
-    private void setCoordinates(double x, double y) {
+    private void setCoordinates(int x, int y) {
 
-	int xShown = 8 * ((int) (x + 4) / 8);
-	int yShown = 8 * ((int) (y + 4) / 8);
+	int xShown = (x + 4) / 8 * 8;
+	int yShown = (y + 4) / 8 * 8;
 	setText("(" + xShown + ", " + yShown + ")");
     }
     

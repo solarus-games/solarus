@@ -263,10 +263,13 @@ public class Map extends Observable implements Serializable {
 
     /**
      * Sets the tiles of the map.
-     * @param allTiles an array of 3 vectors of TileOnMap: a vector for each layer
+     * @param allTiles an array of 3 vectors of TileOnMap: a vector for each layer (this array is copied)
      */
     public void setAllTiles(TileOnMapList[] allTiles) {
-	this.allTiles = allTiles;
+
+	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+	    this.allTiles[layer] = new TileOnMapList(allTiles[layer]);
+	}
 
 	setChanged();
 	notifyObservers();

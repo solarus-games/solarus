@@ -425,7 +425,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 		}
 	    }
 	    catch (IOException e) {
-		WindowTools.errorDialog("Could not save the tileset file: " + e.getMessage());
+		WindowTools.errorDialog("Could not save the map file: " + e.getMessage());
 	    }
 	}
     }

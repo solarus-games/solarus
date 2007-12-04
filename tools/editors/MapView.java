@@ -765,10 +765,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    if (state == STATE_NORMAL && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 		
 		// detect whether CTRL or SHIFT is pressed
-		boolean enableMultipleSelection =
-		    ((mouseEvent.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK)) != 0);
-
-		if (enableMultipleSelection) {
+		if (mouseEvent.isControlDown() || mouseEvent.isShiftDown()) {
 
 		    MapTileSelection tileSelection = map.getTileSelection();
 		
@@ -814,10 +811,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// detect the mouse button
 		int button = mouseEvent.getButton();
 
-		// detect whether CTRL or SHIFT is pressed
-		boolean enableMultipleSelection =
-		    ((mouseEvent.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK)) != 0);
-		
 		// find the tile clicked
 		int x = (int) (mouseEvent.getX() / zoom);
 		int y = (int) (mouseEvent.getY() / zoom);
@@ -836,29 +829,24 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		if (button == MouseEvent.BUTTON1) {
 
 		    // unselect all tiles unless CTRL or SHIFT is pressed
-		    if (!enableMultipleSelection &&
+		    if (!mouseEvent.isControlDown() && !mouseEvent.isShiftDown() &&
 			(tileClicked == null || !alreadySelected)) {
 
 			tileSelection.unSelectAll();
 		    }
 
-		    if (tileClicked != null) {
-
+		    // the user may want to select tiles
+		    if (tileClicked == null) {
+			startSelectingArea(x, y);
+		    }
+		    else {
 			// make the tile selected
 			tileSelection.select(tileClicked);
 			tileJustSelected = !alreadySelected;
-		    }
 		    
-		    // the user may want to select tiles
-		    if (tileSelection.isEmpty()) {
-			startSelectingArea(x, y);
-		    }
-
-		    // the user may want to move the selected tiles
-		    else if (tileSelection.isSelected(tileClicked)) {
+			// the user may want to move the selected tiles
 			startMovingTiles(x, y);
 		    }
-
 		}
 		
 		// right click
@@ -872,7 +860,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 			map.getTileSelection().unSelectAll();
 		    }
-
+		    
 		    // select the tile clicked if no previous selection was kept
 		    if (tileSelection.isEmpty() && tileClicked != null) {
 			tileSelection.select(tileClicked);

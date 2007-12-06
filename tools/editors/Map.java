@@ -48,7 +48,7 @@ public class Map extends Observable implements Serializable {
     private transient Tileset tileset;
 
     /**
-     * Name of the tileset of the map.
+     * Name of the tileset of the map (or an empty String if no tileset is set).
      * The name is saved when the map is serialized, not the tileset itself.
      */
     private String tilesetName;
@@ -84,7 +84,7 @@ public class Map extends Observable implements Serializable {
 	this.name = name;
 	this.size = new Dimension(320, 240);
 	this.tileset = null;
-	this.tilesetName = null;
+	this.tilesetName = "";
 	this.music = musicNone;
 
 	this.allTiles = new TileOnMapList[3];
@@ -105,8 +105,8 @@ public class Map extends Observable implements Serializable {
     }
 
     /**
-     * Returns the name of the tileset.
-     * @return the name of the tileset, for example "house"
+     * Returns the name of the map.
+     * @return the name of the map, for example "LinkHouse"
      */
     public String getName() {
 	return name;
@@ -162,7 +162,7 @@ public class Map extends Observable implements Serializable {
     /**
      * Returns the tileset associated to this map.
      * The tileset is the set of small images (tiles) used to build the map. 
-     * @return the tileset
+     * @return the tileset (null if no tileset is set)
      */
     public Tileset getTileset() {
 	return tileset;
@@ -170,8 +170,7 @@ public class Map extends Observable implements Serializable {
 
     /**
      * Returns the name of the tileset associated to this map.
-     * The tileset is the set of small images (tiles) used to build the map. 
-     * @return the tileset name
+     * @return the tileset name (or an empty string if no tileset is set)
      */
     public String getTilesetName() {
 	return tilesetName;
@@ -179,19 +178,19 @@ public class Map extends Observable implements Serializable {
 
     /**
      * Changes the tileset of the map.
-     * @param tilesetName name of the new tileset
+     * @param tilesetName name of the new tileset (or an empty string to set no tileset)
      * @return true if the tileset was loaded successfuly, false if some tiles could
      * not be loaded in this tileset
      * @throws MapException if this tileset file cannot be loaded
      */
     public boolean setTileset(String tilesetName) throws MapException {
 
-	badTiles = false;
+	this.badTiles = false;
 
 	// if the tileset is removed
-	if (tilesetName == null) {
+	if (tilesetName.length() == 0) {
 
-	    this.tilesetName = null;
+	    this.tilesetName = tilesetName;
 	    this.tileset = null;
 
 	    setChanged();
@@ -201,15 +200,14 @@ public class Map extends Observable implements Serializable {
 	// if a tileset is set for the first time, or the tileset is changed
 	else if (tileset == null || !tilesetName.equals(this.tilesetName)) {
 	
-	    String path = Configuration.getInstance().getDefaultTilesetPath()
-		+ File.separator + tilesetName + ".zsd";
+	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetName);
 	    
 	    try {
-		this.tileset = Tileset.load(new File(path));
+		this.tileset = Tileset.load(tilesetFile);
 	    }
-	    catch (IOException ex) {
+	    catch (IOException e) {
 		// the tileset file could not be loaded
-		throw new MapException("Cannot open the tileset file");
+		throw new MapException("Cannot open the tileset file: " + e.getMessage());
 	    }
 
 	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {

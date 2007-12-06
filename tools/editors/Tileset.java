@@ -85,9 +85,15 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     /**
      * Creates a new tileset.
      * @param name name of the tileset to create
+     * @throws TilesetException if the tileset name is not valid
      */
-    public Tileset(String name) {
+    public Tileset(String name) throws TilesetException {
 	super();
+
+	if (!isValidTilesetName(name)) {
+	    throw new TilesetException("The tileset name is not valid: the first letter must be uppercase and all characters must be letters or digits.");
+	}
+
 	this.name = name;
 	this.backgroundColor = Color.BLACK;
 	this.isSaved = false;
@@ -98,8 +104,30 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     }
 
     /**
+     * Checks whether or not a string is a valid tileset name.
+     * A tileset name must be composed of letters or digits, and the first
+     * character must be an uppercase letter.
+     * @param name the string to test
+     * @return true if it is a valid tilset name, false otherwise
+     */
+    public boolean isValidTilesetName(String name) {
+
+	if (name.length() == 0 || !Character.isUpperCase(name.charAt(0))) {
+	    return false;
+	}
+	
+	boolean valid = true;
+	for (int i = 1; i < name.length() && valid; i++) {
+
+	    valid = Character.isLetterOrDigit(name.charAt(i));
+	}
+
+	return valid;
+    }
+
+    /**
      * Returns the name of the tileset.
-     * @return the name of the tileset, for example "house"
+     * @return the name of the tileset, for example "House"
      */
     public String getName() {
 	return name;

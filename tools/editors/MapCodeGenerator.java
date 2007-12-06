@@ -35,26 +35,36 @@ public class MapCodeGenerator {
      * Generates the code corresponding to a map.
      * @param map the map
      */
-    public void generate(Map map) throws IOException {
+    public void generate(Map map) throws MapException {
 	this.map = map;
 	zsdxRootPath = Configuration.getInstance().getZsdxRootPath();
 	name = map.getName();
 	upperCaseName = name.toUpperCase();
-	
-	// generate the header file
-	generateHeaderFile();
 
-	// generate the source file
-	generateSourceFile();
+	// checks
+	if (map.getTileset() == null) {
+	    throw new MapException("No tileset defined for this map");
+	}
 
-	// generate the creation of the entities
-	generateEntityFile();
-
-	// update include/MapList.inc
-	updateEnumFile();
-
-	// update src/MapsCreation.inc
-	updateCreationFile();
+	try {
+	    // generate the header file
+	    generateHeaderFile();
+	    
+	    // generate the source file
+	    generateSourceFile();
+	    
+	    // generate the creation of the entities
+	    generateEntityFile();
+	    
+	    // update include/MapList.inc
+	    updateEnumFile();
+	    
+	    // update src/MapsCreation.inc
+	    updateCreationFile();
+	}
+	catch (IOException e) {
+	    throw new MapException("File error: " + e.getMessage());
+	}
     }
 
     /**

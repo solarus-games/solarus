@@ -194,70 +194,29 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the tileset associated to the map.
      */
-    private class MapTilesetView extends JComboBox implements ActionListener {
-
-	/**
-	 * The tilesets, loaded when the JComboBox is filled.
-	 */
-	private Tileset[] tilesets;
+    private class MapTilesetView extends TilesetChooser implements ActionListener {
 
 	/**
 	 * Constructor.
 	 */
 	public MapTilesetView() {
 
-	    super();
+	    super(true);
 	    setEnabled(false);
 	    addActionListener(this);
-	    update(Configuration.getInstance());
 	}
 
 	/**
 	 * This function is called when the map or the configuration is changed.
-	 * If it is the configuration, the tileset list is reloaded using ZSDX root path.
 	 * If it is the map, then the selection is updated.
 	 */
 	public void update(Observable o) {
 
-	    if (o instanceof Configuration) {
-		removeAllItems();
-		addItem("");
-		
-		String tilesetPath = Configuration.getInstance().getDefaultTilesetPath();
-		File[] tilesetFiles = FileTools.getFilesWithExtension(tilesetPath, "zsd");
+	    if (o instanceof Map) {
 
-		if (tilesetFiles == null) {
-		    return;
-		}
-
-		tilesets = new Tileset[tilesetFiles.length];
-		
-		File tilesetFile;
-		for (int i = 0; i < tilesetFiles.length; i++) {
-		    tilesetFile = tilesetFiles[i];
-		    //	System.out.println("file " + i + ": " + tilesetFile);
-		    
-		    String name = null;
-		    try {
-			tilesets[i] = Tileset.load(tilesetFile);
-			name = tilesets[i].getName();
-		    }
-		    catch (IOException e) {
-			System.out.println("Cannot load the tileset from file '" + tilesetFile.getName() + ": " + e.getMessage());
-		    }
-		    addItem(name);
-		}
-	    }
-
-	    // select the tileset
-	    if (map != null) {
 		setEnabled(true);
 		String tilesetName = map.getTilesetName();
-		
-		if (tilesetName == null) {
-		    setSelectedIndex(0);
-		}
-		else if (!tilesetName.equals(getSelectedItem())) {
+		if (!tilesetName.equals(getSelectedItem())) {
 		    setSelectedItem(tilesetName);
 		}
 	    }
@@ -275,13 +234,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    String tilesetName = (String) getSelectedItem();
 	    String currentTilesetName = map.getTilesetName();
 	    
-	    if (tilesetName.length() == 0) {
-		tilesetName = null;
-	    }
-	    
-	    if (tilesetName == null && currentTilesetName != null
-		|| tilesetName != null && currentTilesetName == null
-		|| tilesetName != null && currentTilesetName != null && !tilesetName.equals(map.getTilesetName())) {
+	    if (!tilesetName.equals(currentTilesetName)) {
 		
 		try {
 		    map.getHistory().doAction(new ActionChangeTileset(map, tilesetName));
@@ -326,7 +279,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 		addItem(Map.musicNone);
 		addItem(Map.musicUnchanged);
 
-		String musicPath = Configuration.getInstance().getDefaultMusicPath();
+		String musicPath = Configuration.getInstance().getMusicPath();
 		File[] musicFiles = FileTools.getFilesWithExtension(musicPath, "it");
 		
 		if (musicFiles == null) {

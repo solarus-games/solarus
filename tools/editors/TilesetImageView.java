@@ -129,7 +129,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	int width, height;
 
 	if (!isImageLoaded()) {
-	    width = 300;
+	    width = 600;
 	    height = 500;
 	}
 	else {

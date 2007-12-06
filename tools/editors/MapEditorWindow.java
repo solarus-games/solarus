@@ -274,12 +274,11 @@ public class MapEditorWindow extends JFrame implements Observer {
 
     /**
      * Returns a file chooser adapted to select a map file.
-     * TODO: make a filter
      * @param dialogTitle title of the dialog box
      */
     private static JFileChooser getMapFileChooser(String dialogTitle) {
 
-	JFileChooser fileChooser = new JFileChooser(Configuration.getInstance().getDefaultMapPath());
+	JFileChooser fileChooser = new JFileChooser(Configuration.getInstance().getMapPath());
 	fileChooser.setDialogTitle(dialogTitle);
 	fileChooser.setDragEnabled(false);
 	fileChooser.setMultiSelectionEnabled(false);
@@ -390,10 +389,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 	    // if this is a new map, make a "save as..."
 	    if (mapFile == null) {
 		// default file
-		String path = Configuration.getInstance().getDefaultMapPath() +
-		    File.separator + map.getName() + ".zsd";
-
-		mapFile = new File(path);
+		mapFile = Configuration.getInstance().getMapFile(map.getName());
 		new ActionListenerSaveAs().actionPerformed(ev);
 	    }
 	    else {
@@ -446,7 +442,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 					      "Done",
 					      JOptionPane.INFORMATION_MESSAGE);
 	    }
-	    catch (IOException e) {
+	    catch (MapException e) {
 		WindowTools.errorDialog("Could not generate the C++ code: " + e.getMessage());
 	    }
 	}

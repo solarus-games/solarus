@@ -69,28 +69,48 @@ public class Configuration extends Observable {
     }
 
     /**
-     * Returns the default path of the tileset files, determined with ZSDX root path.
-     * @return the default path of the tileset files
+     * Returns the path of the tileset files, determined with ZSDX root path.
+     * @return the path of the tileset files
      */
-    public String getDefaultTilesetPath() {
+    public String getTilesetPath() {
 	return getZsdxRootPath() + File.separator + "tools" +
 	    File.separator + "editors" + File.separator + "tilesets";
     }
 
     /**
-     * Returns the default path of the map files, determined with ZSDX root path.
-     * @return the default path of the map files
+     * Returns a tileset file from its name.
+     * @param tilesetName name of a tileset
+     * @return the corresponding tileset file
      */
-    public String getDefaultMapPath() {
+    public File getTilesetFile(String tilesetName) {
+	
+	return new File(getTilesetPath() + File.separator + tilesetName + ".zsd");
+    }
+
+    /**
+     * Returns the path of the map files, determined with ZSDX root path.
+     * @return the path of the map files
+     */
+    public String getMapPath() {
 	return getZsdxRootPath() + File.separator + "tools" +
 	    File.separator + "editors" + File.separator + "maps";
     }
     
     /**
-     * Returns the default path of the music files, determined with ZSDX root path.
-     * @return the default path of the music files
+     * Returns a map file from its name.
+     * @param mapName name of a map
+     * @return the corresponding map file
      */
-    public String getDefaultMusicPath() {
+    public File getMapFile(String mapName) {
+	
+	return new File(getMapPath() + File.separator + mapName + ".zsd");
+    }
+
+    /**
+     * Returns the path of the music files, determined with ZSDX root path.
+     * @return the path of the music files
+     */
+    public String getMusicPath() {
 	return getZsdxRootPath() + File.separator + "music";
     }
 

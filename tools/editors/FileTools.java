@@ -58,6 +58,7 @@ public class FileTools {
      * Returns the name of a file without its extension.
      * The path is not included.
      * @param file a file
+     * @return name of this file, without the extension
      */
     public static String getFileNameWithoutExtension(File file) {
 	String name = file.getName();

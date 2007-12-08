@@ -27,4 +27,15 @@ public class WindowTools {
 				      JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Shows a dialog box with a warning message.
+     * @param message message the warning message to show
+     */
+    public static void warningDialog(String message) {
+
+	JOptionPane.showMessageDialog(null,
+				      message,
+				      "Warning",
+				      JOptionPane.WARNING_MESSAGE);
+    }
 }

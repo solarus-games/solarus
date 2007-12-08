@@ -255,7 +255,6 @@ public class TilesetEditorWindow extends JFrame {
 		return;
 	    }
 
-
 	    // check that this tileset doesn't exist already
 	    tilesetFile = Configuration.getInstance().getTilesetFile(tilesetName);
 
@@ -318,7 +317,7 @@ public class TilesetEditorWindow extends JFrame {
 		Tileset.save(tilesetFile, tileset);
 	    }
 	    catch (IOException e) {
-		WindowTools.errorDialog("Could not save the tileset file: " + e.getMessage());
+		WindowTools.errorDialog("Could not save the tileset: " + e.getMessage());
 	    }
 	}
     }

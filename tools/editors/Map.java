@@ -78,9 +78,15 @@ public class Map extends Observable implements Serializable {
     /**
      * Creates a new map.
      * @param name name of the map to create
+     * @throws MapException if the tileset name is not valid
      */
-    public Map(String name) {
+    public Map(String name) throws MapException {
 	super();
+
+	if (!isValidMapName(name)) {
+	    throw new MapException("The map name is not valid: the first letter must be uppercase and all characters must be letters or digits.");
+	}
+
 	this.name = name;
 	this.size = new Dimension(320, 240);
 	this.tileset = null;
@@ -94,6 +100,28 @@ public class Map extends Observable implements Serializable {
 
 	this.tileSelection = new MapTileSelection(this);
 	this.history = new MapEditorHistory(this);
+    }
+
+    /**
+     * Checks whether or not a string is a valid map name.
+     * A map name must be composed of letters or digits, and the first
+     * character must be an uppercase letter.
+     * @param name the string to test
+     * @return true if it is a valid map name, false otherwise
+     */
+    public static boolean isValidMapName(String name) {
+
+	if (name.length() == 0 || !Character.isUpperCase(name.charAt(0))) {
+	    return false;
+	}
+	
+	boolean valid = true;
+	for (int i = 1; i < name.length() && valid; i++) {
+
+	    valid = Character.isLetterOrDigit(name.charAt(i));
+	}
+
+	return valid;
     }
 
     /**
@@ -586,9 +614,7 @@ public class Map extends Observable implements Serializable {
 	    map.history = new MapEditorHistory(map);
 	}
 	catch (ClassNotFoundException e) {
-	    System.err.println("Unable to read the object: " + e.getMessage());
-	    e.printStackTrace();
-	    System.exit(1);
+	    throw new MapException("Unexpected error: " + e.getMessage());
 	}
 
 	in.close();

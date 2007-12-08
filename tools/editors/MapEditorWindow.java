@@ -28,7 +28,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 
     // menu items memorized to enable them later
     private JMenuItem menuItemSave;
-    private JMenuItem menuItemSaveAs;
     private JMenuItem menuItemGenerate;
     private JMenuItem menuItemUndo;
     private JMenuItem menuItemRedo;
@@ -143,7 +142,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 	item.addActionListener(new ActionListenerNew());
 	menu.add(item);
 
-	item = new JMenuItem("Open...");
+	item = new JMenuItem("Load...");
 	item.setMnemonic(KeyEvent.VK_O);
 	item.getAccessibleContext().setAccessibleDescription("Open an existing map");
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
@@ -157,12 +156,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuItemSave.addActionListener(new ActionListenerSave());
 	menuItemSave.setEnabled(false);
 	menu.add(menuItemSave);
-
-	menuItemSaveAs = new JMenuItem("Save as...");
-	menuItemSaveAs.getAccessibleContext().setAccessibleDescription("Save the map into a new file");
-	menuItemSaveAs.addActionListener(new ActionListenerSaveAs());
-	menuItemSaveAs.setEnabled(false);
-	menu.add(menuItemSaveAs);
 
 	menu.addSeparator();
 
@@ -245,7 +238,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 
 	// enable the menu items
 	menuItemSave.setEnabled(true);
-	menuItemSaveAs.setEnabled(true);
 	menuItemGenerate.setEnabled(true);
 
 	// notify the views
@@ -270,20 +262,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuItemSave.setEnabled(!history.isSaved());
 	menuItemUndo.setEnabled(history.canUndo());
 	menuItemRedo.setEnabled(history.canRedo());
-    }
-
-    /**
-     * Returns a file chooser adapted to select a map file.
-     * @param dialogTitle title of the dialog box
-     */
-    private static JFileChooser getMapFileChooser(String dialogTitle) {
-
-	JFileChooser fileChooser = new JFileChooser(Configuration.getInstance().getMapPath());
-	fileChooser.setDialogTitle(dialogTitle);
-	fileChooser.setDragEnabled(false);
-	fileChooser.setMultiSelectionEnabled(false);
-
-	return fileChooser;
     }
 
     /**
@@ -325,24 +303,35 @@ public class MapEditorWindow extends JFrame implements Observer {
 	    }
 
 	    // ask the tileset name
-	    String name = JOptionPane.showInputDialog(MapEditorWindow.this,
-						      "Please enter the name of your new map",
+	    String mapName = JOptionPane.showInputDialog(MapEditorWindow.this,
+						      "Name of your new map (for example 'LinkHouse'):",
 						      "Map name",
 						      JOptionPane.QUESTION_MESSAGE);
 
-	    if (name == null || name.length() == 0) {
+	    if (mapName == null || mapName.length() == 0) {
 		return;
 	    }
 
-	    mapFile = null;
-	    map = new Map(name);
-	    // map.reloadImage();
-	    setMap(map);
+	    // check that this map doesn't exist already
+	    mapFile = Configuration.getInstance().getMapFile(mapName);
+
+	    if (mapFile.exists()) {
+		WindowTools.errorDialog("This map already exists.");
+	    }
+	    else {
+		try {
+		    map = new Map(mapName);
+		    setMap(map);
+		}
+		catch (MapException e) {
+		    WindowTools.errorDialog("Cannot create the map: " + e.getMessage());
+		}
+	    }
 	}
     }
 
     /**
-     * Action performed when the user clicks on Map > Open.
+     * Action performed when the user clicks on Map > Load.
      * Opens an existing map, asking to the user the map file.
      */
     private class ActionListenerOpen implements ActionListener {
@@ -353,22 +342,24 @@ public class MapEditorWindow extends JFrame implements Observer {
 		return;
 	    }
 
-	    // ask the tileset file
-	    JFileChooser fileChooser = getMapFileChooser("Open a map");
-	    try {
-		if (fileChooser.showOpenDialog(MapEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
-		    mapFile = fileChooser.getSelectedFile();
-		    Map map = Map.load(mapFile);
-		    // map.reloadImage();
+	    MapChooserDialog dialog = new MapChooserDialog();
+	    dialog.setLocationRelativeTo(MapEditorWindow.this);
+	    dialog.pack();
+	    dialog.setVisible(true);
+	    String mapName = dialog.getMapName();
 
-		    if (map.badTiles()) {
-			JOptionPane.showMessageDialog(MapEditorWindow.this,
-						      "Some tiles of the map have been removed because they don't exist in the tileset.",
-						      "Warning",
-						      JOptionPane.WARNING_MESSAGE);
-		    }
-		    setMap(map);
+	    if (mapName == null) {
+		return;
+	    }
+
+	    try {
+		mapFile = Configuration.getInstance().getMapFile(mapName);
+		Map map = Map.load(mapFile);
+		
+		if (map.badTiles()) {
+		    WindowTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
 		}
+		setMap(map);
 	    }
 	    catch (IOException e) {
 		WindowTools.errorDialog("Could not open the map file: " + e.getMessage());
@@ -386,42 +377,12 @@ public class MapEditorWindow extends JFrame implements Observer {
     private class ActionListenerSave implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-	    // if this is a new map, make a "save as..."
-	    if (mapFile == null) {
-		// default file
-		mapFile = Configuration.getInstance().getMapFile(map.getName());
-		new ActionListenerSaveAs().actionPerformed(ev);
-	    }
-	    else {
-		try {
-		    Map.save(mapFile, map);
-		}
-		catch (IOException e) {
-		    WindowTools.errorDialog("Could not save the map file: " + e.getMessage());
-		}
-	    }
-	}
-    }
-
-    /**
-     * Action performed when the user clicks on Map > Save as.
-     * Saves the map into its file.
-     */
-    private class ActionListenerSaveAs implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {
-
-	    // ask the map file
-	    JFileChooser fileChooser = getMapFileChooser("Save the map as...");
-	    fileChooser.setSelectedFile(mapFile);
+	    
 	    try {
-		if (fileChooser.showSaveDialog(MapEditorWindow.this) == JFileChooser.APPROVE_OPTION) {
-		    mapFile = fileChooser.getSelectedFile();
-		    Map.save(mapFile, map);
-		}
+		Map.save(mapFile, map);
 	    }
 	    catch (IOException e) {
-		WindowTools.errorDialog("Could not save the map file: " + e.getMessage());
+		WindowTools.errorDialog("Could not save the map: " + e.getMessage());
 	    }
 	}
     }

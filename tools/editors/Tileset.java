@@ -108,9 +108,9 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      * A tileset name must be composed of letters or digits, and the first
      * character must be an uppercase letter.
      * @param name the string to test
-     * @return true if it is a valid tilset name, false otherwise
+     * @return true if it is a valid tileset name, false otherwise
      */
-    public boolean isValidTilesetName(String name) {
+    public static boolean isValidTilesetName(String name) {
 
 	if (name.length() == 0 || !Character.isUpperCase(name.charAt(0))) {
 	    return false;

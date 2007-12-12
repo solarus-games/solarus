@@ -76,3 +76,14 @@ Windows developers
 ------------------
 
 If you want to compile the application under Windows, the same procedure works in an Unix environment such as MinGW or Cygwin. But you have to install the Windows version of SDL and FMOD, which is a little more complicated. A zsdx.exe file is generated.
+
+------------------
+Mac OS developers
+------------------
+
+The same procedure should work.
+Notes à traduire / prendre en compte :
+- Si SDL et SDL_image sont installés avec fink, un export CPPFLAGS="-I/sw/include -L/sw/lib" est nécessaire avant de lancer le configure
+- utiliser sdl-config
+- lien statique avec /usr/lib/libfmod.a
+- option de compilation à l'édition de liens : -framework Carbon

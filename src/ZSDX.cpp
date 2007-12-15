@@ -3,6 +3,7 @@
  */
 
 #include "ZSDX.h"
+#include "FileTools.h"
 
 /**
  * Number of times the screen is redrawn is a second.
@@ -38,8 +39,6 @@ TileAnimationManager ZSDX::tile_animation_manager;
  * The game resource.
  */
 GameResource *ZSDX::game_resource;
-
-static void initialize_current_directory(int argc, char **argv);
 
 /**
  * Initializes the game engine.
@@ -128,31 +127,12 @@ void ZSDX::main(void) {
 }
 
 /**
- * Sets the current directory to the location of the binary.
- */
-static void initialize_current_directory(int argc, char **argv) {
-
-  // set the current directory so that the external files are available
-
-#ifdef HAVE_CHDIR
-  char *path = new char[strlen(argv[0]) + 1];
-  strcpy(path, argv[0]);
-  char *slash = strrchr(path, '/');
-  if (slash != NULL) {
-    slash[0] = '\0';
-    chdir(path);
-  }
-  delete[] path;
-#endif
-
-}
-
-/**
  * Entry point of the program.
  */
 int main(int argc, char **argv) {
 
-  initialize_current_directory(argc, argv);
+  FileTools::open_data_file("maps/LinkHouse.map");
+  exit(0);
 
   ZSDX::main();
   

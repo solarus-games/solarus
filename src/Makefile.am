@@ -1,9 +1,9 @@
-AM_CPPFLAGS = -O3 -Wall -Werror -ansi -I$(top_srcdir)/include
+AM_CPPFLAGS = -DDATADIR_="$(datadir)/zsdx" -O3 -Wall -Werror -ansi -I$(top_srcdir)/include
 
-zsdxincludedir = $(top_srcdir)/include
 bin_PROGRAMS = zsdx
 zsdx_SOURCES = 						\
   ZSDX.cpp						\
+  FileTools.cpp						\
   Game.cpp						\
   GameResource.cpp					\
   Map.cpp						\
@@ -37,10 +37,16 @@ zsdx_SOURCES = 						\
   maps/MapLinkHouseSecretRoom.cpp			\
   maps/MapLinkHouseSecretRoomEntities.inc		\
   maps/MapRupeeHouse.cpp				\
-  maps/MapRupeeHouseEntities.inc			\
+  maps/MapRupeeHouseEntities.inc			
+
+
+# additional files to provide in a tarball release
+zsdxincludedir = $(top_srcdir)/include
+EXTRA_DIST = \
   $(zsdxincludedir)/Common.h				\
   $(zsdxincludedir)/Types.h				\
   $(zsdxincludedir)/ZSDX.h				\
+  $(zsdxincludedir)/FileTools.h				\
   $(zsdxincludedir)/GameResource.h			\
   $(zsdxincludedir)/Game.h				\
   $(zsdxincludedir)/Map.h				\

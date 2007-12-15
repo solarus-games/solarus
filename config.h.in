@@ -1,8 +1,5 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Define to 1 if you have the `chdir' function. */
-#undef HAVE_CHDIR
-
 /* Define to 1 if you have the <fmod/fmod.h> header file. */
 #undef HAVE_FMOD_FMOD_H
 

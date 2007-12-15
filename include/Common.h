@@ -21,4 +21,8 @@ using namespace std;
 #define MIN(x,y) ((x > y) ? (y) : (x))
 #define MAX(x,y) ((x > y) ? (x) : (y))
 
+#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__)
+#define WINDOWS 1
+#endif
+
 #endif

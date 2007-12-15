@@ -25,7 +25,7 @@
  * be the location of the executable file). This is the normal behavior on Windows
  * platforms, because the user downloads a binary version of the game.
  */
-#ifdef WIN32
+#ifdef WINDOWS
 #define DATADIR "./data"
 #else
 #define DATADIR STRING(DATADIR_)

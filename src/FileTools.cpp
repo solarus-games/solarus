@@ -15,7 +15,6 @@ FILE *FileTools::open_data_file(const char *file_name) {
   char file_name_in_datadir[MAX_FILE_NAME];
   
   sprintf(file_name_in_datadir, "%s/%s", DATADIR, file_name);
-  cout << "file_name: " << file_name_in_datadir << "\n";
   f = fopen(file_name_in_datadir, "r");
   
   return f;

@@ -131,9 +131,6 @@ void ZSDX::main(void) {
  */
 int main(int argc, char **argv) {
 
-  FileTools::open_data_file("maps/LinkHouse.map");
-  exit(0);
-
   ZSDX::main();
   
   return 0;

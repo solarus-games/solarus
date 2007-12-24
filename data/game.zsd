@@ -1,0 +1,27 @@
+# This file describes all resources of the game.
+# Syntax of a line:
+#
+# Resource type		ID			Name
+#
+# - Resource type: identifies the kind of resource (map, tileset, music)
+# - ID: an integer or a string to identify the resource
+# - Name: a human readable name (only used in the map editor) associated with this ID.
+
+
+map			0			Link House
+
+tileset			0			House
+
+music			boss.it			Boss
+music			castle.it		Castle
+music			credits.it		Credits
+music			dark_world.it		Dark World
+music			fanfare.it		Fanfare
+music			game_over.it		Game Over
+music			menu.it			Menu
+music			mini_game.it		Mini game
+music			overworld.it		Overworld
+music			rabbit.it		Rabbit
+music			soldiers.it		Soldiers
+music			title_screen.it		Title screen
+music			village.it		Kakariko Village

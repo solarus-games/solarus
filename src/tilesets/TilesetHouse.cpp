@@ -3,6 +3,7 @@
  */
 
 #include "tilesets/TilesetHouse.h"
+#include "FileTools.h"
 
 /**
  * Constructor.
@@ -15,7 +16,7 @@ TilesetHouse::TilesetHouse(void):
  * Loads the tileset.
  */
 void TilesetHouse::load(void) {
-  load_tileset_image("images/tilesets/House.png");
+  load_tileset_image(FileTools::data_file_add_prefix("images/tilesets/House.png"));
 
   SIMPLE_TILE(1, OBSTACLE_NONE, 0, 0, 8, 8);
   SIMPLE_TILE(2, OBSTACLE_NONE, 0, 8, 8, 8);

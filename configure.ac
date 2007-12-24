@@ -34,6 +34,6 @@ AC_C_INLINE
 # Checks for library functions.
 AC_SEARCH_LIBS([sqrt], [m], , AC_MSG_ERROR([Cannot locate the sqrt function]))
 
-AC_CONFIG_FILES(Makefile src/Makefile)
+AC_CONFIG_FILES(Makefile src/Makefile data/Makefile)
 
 AC_OUTPUT

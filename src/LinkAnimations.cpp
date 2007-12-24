@@ -4,6 +4,7 @@
 
 #include "LinkAnimations.h"
 #include "SpriteAnimationDirection.h"
+#include "FileTools.h"
 
 /**
  * Constructor.
@@ -55,8 +56,8 @@ void LinkAnimations::create_animations(void) {
   SpriteAnimationDirection **directions;
   int i;
 
-  link_stopped_image = IMG_Load("images/sprites/link/stopped.png");
-  link_walking_image = IMG_Load("images/sprites/link/walking.png");
+  link_stopped_image = IMG_Load(FileTools::data_file_add_prefix("images/sprites/link/stopped.png"));
+  link_walking_image = IMG_Load(FileTools::data_file_add_prefix("images/sprites/link/walking.png"));
 
   // stopped
   directions = new SpriteAnimationDirection*[4];

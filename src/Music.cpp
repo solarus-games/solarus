@@ -6,6 +6,7 @@
  */
 
 #include "Music.h"
+#include "FileTools.h"
 #include <fmod/fmod_errors.h>
 
 /**
@@ -70,7 +71,7 @@ bool Music::play(void) {
 
   bool success = false;
   if (initialized) {
-    module = FMUSIC_LoadSong(file_name);
+    module = FMUSIC_LoadSong(FileTools::data_file_add_prefix(file_name));
     if (module == NULL) {
       cerr << "Unable to play music: " << FMOD_ErrorString(FSOUND_GetError()) << '\n';
     }

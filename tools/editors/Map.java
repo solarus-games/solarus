@@ -3,17 +3,13 @@ package editors;
 import java.util.*;
 import java.io.*;
 import java.awt.*; // Dimension
+import java.text.*;
 
 /**
  * This class describes a map.
  * A map is observable.
  */
-public class Map extends Observable implements Serializable {
-
-    /**
-     * Version number of the class serialization.
-     */
-    public static final long serialVersionUID = 6L;
+public class Map extends Observable {
 
     /**
      * Name of the map.
@@ -21,15 +17,20 @@ public class Map extends Observable implements Serializable {
     private String name;
 
     /**
+     * The map file.
+     */
+    private File mapFile;
+
+    /**
      * Size of the map, in pixels (the width and the height
-     * should be multiples of 8).
+     * must be multiples of 8).
      */
     private Dimension size;
 
     /**
-     * Background music: (name of the music file, musicNone or musicUnchanged)
+     * Background music: name of a music file, "none" or "same".
      */
-    private String music;
+    private String musicID = null;
 
     /**
      * String indicating that there is no music on the map.
@@ -42,16 +43,15 @@ public class Map extends Observable implements Serializable {
     public static final String musicUnchanged = "<Same as previous map>";
 
     /**
+     * ID of the tileset of the map (or -1 if no tileset is set).
+     */
+    private int tilesetID = -1;
+
+    /**
      * Tileset of the map.
      * The tileset is the set of small images (tiles) used to build the map. 
      */
-    private transient Tileset tileset;
-
-    /**
-     * Name of the tileset of the map (or an empty String if no tileset is set).
-     * The name is saved when the map is serialized, not the tileset itself.
-     */
-    private String tilesetName;
+    private Tileset tileset;
 
     /**
      * Tiles of the map.
@@ -62,32 +62,32 @@ public class Map extends Observable implements Serializable {
     /**
      * The tiles selected.
      */
-    private transient MapTileSelection tileSelection;
+    private MapTileSelection tileSelection;
     
     /**
      * True if some tiles could not be found in the tileset
      * when the tileset was loaded.
      */
-    private transient boolean badTiles;
+    private boolean badTiles;
 
     /**
      * The history of the actions made by the user on the map.
      */
-    private transient MapEditorHistory history;
+    private MapEditorHistory history;
 
     /**
      * Creates a new map.
-     * @param name name of the map to create
      * @throws MapException if the tileset name is not valid
      */
-    public Map(String name) throws MapException {
+    public Map() throws MapException {
 	super();
 
 	if (!isValidMapName(name)) {
 	    throw new MapException("The map name is not valid: the first letter must be uppercase and all characters must be letters or digits.");
 	}
 
-	this.name = name;
+	this.name = ;
+	this.fileName = ;
 	this.size = new Dimension(320, 240);
 	this.tileset = null;
 	this.tilesetName = "";
@@ -100,6 +100,19 @@ public class Map extends Observable implements Serializable {
 
 	this.tileSelection = new MapTileSelection(this);
 	this.history = new MapEditorHistory(this);
+    }
+
+    /**
+     * Loads an existing map.
+     * @param mapID id of the map
+     */
+    public Map(int mapID) {
+	
+	NumberFormat nf = NumberFormat.getInstance();
+	nf.setMinimumIntegerDigits(4);
+	nf.setGroupingUsed(false);
+	String fileName = "maps/map" + nf.format(mapID) + ".zsd";
+	System.out.println("map " + mapID + ": " + fileName);
     }
 
     /**

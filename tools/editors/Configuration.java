@@ -73,8 +73,7 @@ public class Configuration extends Observable {
      * @return the path of the tileset files
      */
     public String getTilesetPath() {
-	return getZsdxRootPath() + File.separator + "tools" +
-	    File.separator + "editors" + File.separator + "tilesets";
+	return getZsdxRootPath() + File.separator + "data" + File.separator + "tilesets";
     }
 
     /**
@@ -84,7 +83,7 @@ public class Configuration extends Observable {
      */
     public File getTilesetFile(String tilesetName) {
 	
-	return new File(getTilesetPath() + File.separator + tilesetName + ".zsd");
+	return new File(getTilesetPath() + "/" + tilesetName + ".zsd");
     }
 
     /**
@@ -92,8 +91,7 @@ public class Configuration extends Observable {
      * @return the path of the map files
      */
     public String getMapPath() {
-	return getZsdxRootPath() + File.separator + "tools" +
-	    File.separator + "editors" + File.separator + "maps";
+	return getZsdxRootPath() + File.separator + "data" + File.separator + "maps";
     }
     
     /**
@@ -111,7 +109,7 @@ public class Configuration extends Observable {
      * @return the path of the music files
      */
     public String getMusicPath() {
-	return getZsdxRootPath() + File.separator + "music";
+	return getZsdxRootPath() + File.separator + "data" + File.separator + "music";
     }
 
 }

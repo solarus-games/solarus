@@ -3,7 +3,6 @@ package editors;
 import java.util.*;
 import java.io.*;
 import java.awt.*; // Dimension
-import java.text.*;
 
 /**
  * This class describes a map.
@@ -12,14 +11,14 @@ import java.text.*;
 public class Map extends Observable {
 
     /**
+     * Id of the map.
+     */
+    private int mapId;
+
+    /**
      * Name of the map.
      */
     private String name;
-
-    /**
-     * The map file.
-     */
-    private File mapFile;
 
     /**
      * Size of the map, in pixels (the width and the height
@@ -28,24 +27,14 @@ public class Map extends Observable {
     private Dimension size;
 
     /**
-     * Background music: name of a music file, "none" or "same".
+     * Id of the background music: name of a music file, Music.noneId or Music.unchangedId.
      */
-    private String musicID = null;
+    private String musicId;
 
     /**
-     * String indicating that there is no music on the map.
+     * Id of the tileset of the map (or -1 if no tileset is set).
      */
-    public static final String musicNone = "<No music>";
-
-    /**
-     * String indicating that the music is unchanged on the map.
-     */
-    public static final String musicUnchanged = "<Same as previous map>";
-
-    /**
-     * ID of the tileset of the map (or -1 if no tileset is set).
-     */
-    private int tilesetID = -1;
+    private int tilesetId;
 
     /**
      * Tileset of the map.
@@ -77,21 +66,16 @@ public class Map extends Observable {
 
     /**
      * Creates a new map.
-     * @throws MapException if the tileset name is not valid
      */
-    public Map() throws MapException {
+    public Map() {
 	super();
 
-	if (!isValidMapName(name)) {
-	    throw new MapException("The map name is not valid: the first letter must be uppercase and all characters must be letters or digits.");
-	}
-
-	this.name = ;
-	this.fileName = ;
+	this.mapId = -1; // not assigned yet
+	this.name = "New map";
 	this.size = new Dimension(320, 240);
 	this.tileset = null;
-	this.tilesetName = "";
-	this.music = musicNone;
+	this.tilesetId = -1;
+	this.musicId = Music.noneId;
 
 	this.allTiles = new TileOnMapList[3];
 	for (int i = 0; i < 3; i++) {
@@ -104,37 +88,34 @@ public class Map extends Observable {
 
     /**
      * Loads an existing map.
-     * @param mapID id of the map
+     * @param mapId id of the map to load
+     * @throws ZSDXException if the map could not be loaded
      */
-    public Map(int mapID) {
-	
-	NumberFormat nf = NumberFormat.getInstance();
-	nf.setMinimumIntegerDigits(4);
-	nf.setGroupingUsed(false);
-	String fileName = "maps/map" + nf.format(mapID) + ".zsd";
-	System.out.println("map " + mapID + ": " + fileName);
+    public Map(int mapId) throws ZSDXException {
+	this();
+	this.mapId = mapId;
+	load();
     }
 
     /**
-     * Checks whether or not a string is a valid map name.
-     * A map name must be composed of letters or digits, and the first
-     * character must be an uppercase letter.
-     * @param name the string to test
-     * @return true if it is a valid map name, false otherwise
+     * Returns the map name.
+     * @return the name of the map, for example "Link's House"
      */
-    public static boolean isValidMapName(String name) {
+    public String getName() {
+	return name;
+    }
 
-	if (name.length() == 0 || !Character.isUpperCase(name.charAt(0))) {
-	    return false;
+    /**
+     * Changes the name of the map
+     * @param name new name of the map
+     */
+    public void setName(String name) {
+
+	if (!name.equals(this.name)) {
+	    this.name = name;
+	    setChanged();
+	    notifyObservers();
 	}
-	
-	boolean valid = true;
-	for (int i = 1; i < name.length() && valid; i++) {
-
-	    valid = Character.isLetterOrDigit(name.charAt(i));
-	}
-
-	return valid;
     }
 
     /**
@@ -143,14 +124,6 @@ public class Map extends Observable {
      */
     public MapEditorHistory getHistory() {
 	return history;
-    }
-
-    /**
-     * Returns the name of the map.
-     * @return the name of the map, for example "LinkHouse"
-     */
-    public String getName() {
-	return name;
     }
 
     /**
@@ -210,38 +183,38 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the name of the tileset associated to this map.
-     * @return the tileset name (or an empty string if no tileset is set)
+     * Returns the id of the tileset associated to this map.
+     * @return the tileset id (or -1 if no tileset is set)
      */
-    public String getTilesetName() {
-	return tilesetName;
+    public int getTilesetId() {
+	return tilesetId;
     }
 
     /**
      * Changes the tileset of the map.
-     * @param tilesetName name of the new tileset (or an empty string to set no tileset)
+     * @param tilesetId id of the new tileset, or -1 to set no tileset
      * @return true if the tileset was loaded successfuly, false if some tiles could
      * not be loaded in this tileset
      * @throws MapException if this tileset file cannot be loaded
      */
-    public boolean setTileset(String tilesetName) throws MapException {
+    public boolean setTileset(int tilesetId) throws MapException {
 
 	this.badTiles = false;
 
 	// if the tileset is removed
-	if (tilesetName.length() == 0) {
+	if (tilesetId == -1 && this.tilesetId != -1) {
 
-	    this.tilesetName = tilesetName;
+	    this.tilesetId = -1;
 	    this.tileset = null;
 
 	    setChanged();
 	    notifyObservers();
 	}
 
-	// if a tileset is set for the first time, or the tileset is changed
-	else if (tileset == null || !tilesetName.equals(this.tilesetName)) {
+	// if the tileset is changed
+	else if (tilesetId != this.tilesetId) {
 	
-	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetName);
+	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetId);
 	    
 	    try {
 		this.tileset = Tileset.load(tilesetFile);
@@ -267,7 +240,7 @@ public class Map extends Observable {
 		}
 	    }
 
-	    this.tilesetName = tilesetName;
+	    this.tilesetId = tilesetId;
 
 	    setChanged();
 	    notifyObservers(tileset);
@@ -475,24 +448,24 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the background music of the map.
-     * @return the name of the music, i.e. a music file name without the extension ".it",
-     * or Map.musicNone or Map.musicUnchanged
+     * Returns the id of the background music of the map.
+     * @return the name of the music, i.e. a music file name with the extension,
+     * or Music.noneId or Music.unchangedId
      */
     public String getMusic() {
-	return music;
+	return musicId;
     }
 
     /**
      * Changes the default background music of the map.
-     * @param music the name of the music, i.e. a music file name without the extension ".it",
-     * or Map.musicNone or Map.musicUnchanged
+     * @param music the name of the music, i.e. a music file name with the extension,
+     * or Music.noneId or Music.unchangedId
      */
-    public void setMusic(String music) {
+    public void setMusic(String musicId) {
 
-	if (!music.equals(this.music)) {
+	if (!musicId.equals(this.musicId)) {
 
-	    this.music = music;
+	    this.musicId = musicId;
 
 	    setChanged();
 	    notifyObservers();
@@ -607,50 +580,125 @@ public class Map extends Observable {
     }
 
     /**
-     * Loads a map from the map file.
-     * @param mapFile the file of the map
-     * @return the map loaded
-     * @throws IOException if the map file could not be read
-     * @throws MapException if the tileset of the map could not be loaded
+     * Loads the map from a file.
+     * @param mapFile the file to read
+     * @throws ZSDXException if the file could not be read
      */
-    public static Map load(File mapFile) throws IOException, MapException {
-
- 	// open the map file
-	ObjectInputStream in = new ObjectInputStream(new FileInputStream(mapFile));
-	Map map = null;
-
-	// read the object
+    public void load() throws ZSDXException {
+	
+	int lineNumber = 0;
 	try {
-	    map = (Map) in.readObject();
-	    map.setTileset(map.getTilesetName());
-	    map.tileSelection = new MapTileSelection(map);
-	    map.history = new MapEditorHistory(map);
-	}
-	catch (ClassNotFoundException e) {
-	    throw new MapException("Unexpected error: " + e.getMessage());
-	}
 
-	in.close();
+	    // get the map name in the game resource database
+	    GameResourceList resourceList = GameResourceList.getInstance();
+	    setName(resourceList.getMapName(mapId));
+	    
+	    File mapFile = Configuration.getInstance().getMapFile(mapId);
+	    BufferedReader in = new BufferedReader(new FileReader(mapFile));
+	    StringTokenizer tokenizer;
 
-	if (!map.badTiles()) {
-	    map.getHistory().setSaved();
+	    // read the map general info
+	    String line = in.readLine();
+
+	    if (line == null) {
+		throw new ZSDXException("The map file is empty");
+	    }
+
+	    lineNumber++;
+	    tokenizer = new StringTokenizer(line);
+
+	    int width = Integer.parseInt(tokenizer.nextToken());
+	    int height = Integer.parseInt(tokenizer.nextToken());
+
+	    setSize(new Dimension(width, height));
+	    setTileset(Integer.parseInt(tokenizer.nextToken()));
+	    setMusic(tokenizer.nextToken());
+
+	    // read the map entities
+	    line = in.readLine();
+	    while (line != null) {
+		lineNumber++;
+
+		String entityType = tokenizer.nextToken();
+
+		if (entityType.equals("tile")) {
+		    int tileId = Integer.parseInt(tokenizer.nextToken());
+		    int layer = Integer.parseInt(tokenizer.nextToken());
+		    int x = Integer.parseInt(tokenizer.nextToken());
+		    int y = Integer.parseInt(tokenizer.nextToken());
+		    int repeatX = Integer.parseInt(tokenizer.nextToken());
+		    int repeatY = Integer.parseInt(tokenizer.nextToken());
+
+		    TileOnMap tileOnMap = new TileOnMap(tileset, tileId, x, y, repeatX, repeatY, layer);
+		    addTile(tileOnMap);
+		}
+		else {
+		    throw new ZSDXException("Line " + lineNumber + ": unknown entity type '" + entityType + "'");
+		}
+
+		line = in.readLine();
+	    }
 	}
-
-	return map;
+	catch (NumberFormatException ex) {
+	    throw new ZSDXException("Line " + lineNumber + ": integer expected");
+	}
+	catch (IOException ex) {
+	    throw new ZSDXException(ex.getMessage());
+	}
     }
 
     /**
-     * Saves the data into the map file.
+     * Saves the map into a file.
+     * @throws ZSDXException if the file could not be written
      */
-    public static void save(File mapFile, Map map) throws IOException {
+    public void save() throws ZSDXException {
 
- 	// open the map file
-	ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(mapFile));
+	// check that a tileset is selected
+	if (tilesetId == -1) {
+	    throw new ZSDXException("No tileset is selected");
+	}
 
-	// write the object
-	out.writeObject(map);
-	out.close();
+	try {
+	    
+	    // open the map file
+	    File mapFile = Configuration.getInstance().getMapFile(mapId);
+	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
+	    
+	    // print the map general info
+	    out.println(size.width + '\t' + size.height + '\t' + tilesetId + '\t' + musicId);
+	    
+	    // print the tiles
+	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 
-	map.getHistory().setSaved();
+		for (TileOnMap tile: getTiles(layer)) {
+		    
+		    out.println("tile\t" + tile.getTileId() + "\t" + layer + "\t"
+				+ tile.getX() + "\t" + tile.getY() + "\t"
+				+ tile.getRepeatX() + "\t" + tile.getRepeatY());
+		}
+	    }
+
+	    out.close();
+
+	    history.setSaved();
+
+
+	    // also update the map name in the global resource list
+	    GameResourceList resourceList = GameResourceList.getInstance();
+
+	    if (mapId == -1) {
+		// compute a map id if this map is new
+		mapId = resourceList.addMap(name);
+		resourceList.save();
+	    }
+	    else {
+		// normal case
+		resourceList.setMapName(mapId, name);
+		resourceList.save();
+	    }
+	}
+	catch (IOException ex) {
+	    throw new ZSDXException(ex.getMessage());
+	}
     }
 }

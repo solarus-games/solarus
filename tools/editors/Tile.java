@@ -8,12 +8,7 @@ import java.util.*;
  * Represents a tile for the tileset editor.
  * The tile's dimensions must be multiples of 8 but this is not checked.
  */
-public class Tile extends Observable implements Serializable {
-
-    /**
-     * Version number of the class serialization.
-     */
-    public static final long serialVersionUID = 2L;
+public class Tile extends Observable {
 
     // Constants to identify the obstacles
 

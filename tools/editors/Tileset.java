@@ -14,12 +14,7 @@ import javax.imageio.*;
  *   - an Integer: indicates that the tile with this id was removed
  *   - null: other cases
  */
-public class Tileset extends Observable implements Serializable, ImageObserver {
-
-    /**
-     * Version number of the class serialization.
-     */
-    public static final long serialVersionUID = 5L;
+public class Tileset extends Observable implements ImageObserver {
 
     // tileset data 
 
@@ -47,12 +42,12 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
     /**
      * The tileset image.
      */
-    private transient Image image;
+    private Image image;
     
     /**
      * The tileset image scaled by 2.
      */
-    private transient Image doubleImage;
+    private Image doubleImage;
     
     // information about the user actions on the tileset
 
@@ -60,7 +55,7 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      * Tells whether the tileset has changed since the last save.
      * True if there has been no modifications, false otherwise.
      */
-    private transient boolean isSaved; 
+    private boolean isSaved; 
 
     /**
      * Id of the tile currently selected by the user.
@@ -68,19 +63,19 @@ public class Tileset extends Observable implements Serializable, ImageObserver {
      * 1 or more: an existing tile is selected
      * -1: a new tile is selected, ready to be created
      */
-    private transient int selectedTileId;
+    private int selectedTileId;
 
     /**
      * Position of the tile the user is creating,
      * or null if there no new tile selected.
      */
-    private transient Rectangle newTileArea;
+    private Rectangle newTileArea;
 
     /**
      * True if the new tile area is overlapping a tile.
      * Is so, the tile cannot be created.
      */
-    private transient boolean isNewTileAreaOverlapping;
+    private boolean isNewTileAreaOverlapping;
 
     /**
      * Creates a new tileset.

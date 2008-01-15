@@ -7,20 +7,20 @@ import editors.*;
  */
 public class ActionChangeTileset extends MapEditorAction {
 
-    private String tilesetNameBefore;
-    private String tilesetNameAfter;
+    private int tilesetIdBefore;
+    private int tilesetIdAfter;
     private TileOnMapList[] allTilesBefore;
     
     /**
      * Constructor.
      * @param map the map
-     * @param tilesetName name of the new tileset
+     * @param tilesetId id of the new tileset
      */
-    public ActionChangeTileset(Map map, String tilesetName) {
+    public ActionChangeTileset(Map map, int tilesetId) {
 	super(map);
 
-	this.tilesetNameAfter = tilesetName;
-	this.tilesetNameBefore = map.getTilesetName();
+	this.tilesetIdAfter = tilesetId;
+	this.tilesetIdBefore = map.getTilesetId();
 	this.allTilesBefore = new TileOnMapList[Tile.LAYER_NB];
 
 	// copy allTiles
@@ -34,14 +34,14 @@ public class ActionChangeTileset extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws MapException {
-	map.setTileset(tilesetNameAfter);
+	map.setTileset(tilesetIdAfter);
     }
 
     /**
      * Undoes the action.
      */
     public void undo() throws MapException {
-	map.setTileset(tilesetNameBefore);
+	map.setTileset(tilesetIdBefore);
 	map.setAllTiles(allTilesBefore);
     }
 

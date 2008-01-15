@@ -2,6 +2,7 @@ package editors;
 
 import java.util.*;
 import java.io.*;
+import java.text.*;
 
 /**
  * This singleton class contains the information about the editor configuration: ZSDX root path.
@@ -69,6 +70,15 @@ public class Configuration extends Observable {
     }
 
     /**
+     * Returns the file containing the database of the game resources (game.zsd).
+     * @return the file containing the database of the game resources
+     */
+    public File getResourceDatabaseFile() {
+	return new File(getZsdxRootPath() + File.separator + "data" + File.separator + "game.zsd");
+
+    }
+
+    /**
      * Returns the path of the tileset files, determined with ZSDX root path.
      * @return the path of the tileset files
      */
@@ -77,13 +87,18 @@ public class Configuration extends Observable {
     }
 
     /**
-     * Returns a tileset file from its name.
-     * @param tilesetName name of a tileset
+     * Returns a tileset file from its Id.
+     * @param tilesetId id of a tileset
      * @return the corresponding tileset file
      */
-    public File getTilesetFile(String tilesetName) {
+    public File getTilesetFile(int tilesetId) {
 	
-	return new File(getTilesetPath() + "/" + tilesetName + ".zsd");
+	NumberFormat nf = NumberFormat.getInstance();
+	nf.setMinimumIntegerDigits(4);
+	nf.setGroupingUsed(false);
+
+	return new File(getTilesetPath() + File.separator + "tilesets" + File.separator +
+			"tileset" + nf.format(tilesetId) + ".zsd");
     }
 
     /**
@@ -93,15 +108,20 @@ public class Configuration extends Observable {
     public String getMapPath() {
 	return getZsdxRootPath() + File.separator + "data" + File.separator + "maps";
     }
-    
+
     /**
-     * Returns a map file from its name.
-     * @param mapName name of a map
-     * @return the corresponding map file
+     * Returns a map file knowing its id.
+     * @param mapId id of a map
+     * @return the file corresponding to this id
      */
-    public File getMapFile(String mapName) {
-	
-	return new File(getMapPath() + File.separator + mapName + ".zsd");
+    public File getMapFile(int mapId) {
+
+	NumberFormat nf = NumberFormat.getInstance();
+	nf.setMinimumIntegerDigits(4);
+	nf.setGroupingUsed(false);
+
+	return new File(getMapPath() + File.separator + "maps" + File.separator +
+			"map" + nf.format(mapId) + ".zsd");
     }
 
     /**

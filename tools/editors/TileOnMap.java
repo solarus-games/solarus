@@ -10,17 +10,12 @@ import java.util.*;
  * and how the tile is placed on the map: its position, its layer and
  * how the pattern is repeated or not.
  */
-public class TileOnMap extends Observable implements Serializable {
-
-    /**
-     * Version number of the class serialization.
-     */
-    public static final long serialVersionUID = 3L;
+public class TileOnMap extends Observable {
 
     /**
      * The tileset from which this tile is extracted.
      */
-    private transient Tileset tileset;
+    private Tileset tileset;
 
     /**
      * Id of the tile in the tileset.
@@ -73,7 +68,7 @@ public class TileOnMap extends Observable implements Serializable {
      * @param repeatX number of times the pattern is repeated on x
      * @param repeatY number of times the pattern is repeated on y
      */
-    public TileOnMap(Tileset tileset, int tileId, int x, int y, int layer, int repeatX, int repeatY) {
+    public TileOnMap(Tileset tileset, int tileId, int x, int y, int repeatX, int repeatY, int layer) {
 	this.tileset = tileset;
 	this.tileId = tileId;
 	this.layer = layer;

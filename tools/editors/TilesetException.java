@@ -3,7 +3,7 @@ package editors;
 /**
  * Exception thrown if the user tries to make something wrong in a tileset.
  */
-public class TilesetException extends Exception {
+public class TilesetException extends ZSDXException {
 
     /**
      * Constructor.

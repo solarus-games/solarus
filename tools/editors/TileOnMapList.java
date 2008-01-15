@@ -8,11 +8,6 @@ import java.util.*;
 public class TileOnMapList extends LinkedList<TileOnMap> {
 
     /**
-     * Version number of the class serialization.
-     */
-    public static final long serialVersionUID = 1L;
-    
-    /**
      * Constructor.
      */
     public TileOnMapList() {

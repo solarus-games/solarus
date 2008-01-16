@@ -19,6 +19,11 @@ public class Tileset extends Observable implements ImageObserver {
     // tileset data 
 
     /**
+     * Id of the tileset.
+     */
+    private int tilesetID;
+
+    /**
      * Name of the tileset.
      */
     private String name;
@@ -79,53 +84,59 @@ public class Tileset extends Observable implements ImageObserver {
 
     /**
      * Creates a new tileset.
-     * @param name name of the tileset to create
-     * @throws TilesetException if the tileset name is not valid
      */
-    public Tileset(String name) throws TilesetException {
+    public Tileset() throws TilesetException {
 	super();
 
-	if (!isValidTilesetName(name)) {
-	    throw new TilesetException("The tileset name is not valid: the first letter must be uppercase and all characters must be letters or digits.");
-	}
-
-	this.name = name;
+	this.name = "New tileset";
 	this.backgroundColor = Color.BLACK;
 	this.isSaved = false;
 	this.selectedTileId = 0; // none
 	this.maxId = 0;
 	tiles = new TreeMap<Integer,Tile>();
 	reloadImage();
+
+	// compute an id and a name for this tileset
+	GameResourceList resourceList = GameResourceList.getInstance();
+	this.name = "New tileset";
+	this.tilesetId = resourceList.addTileset(name);
+	resourceList.save();
+
+	setChanged();
+	notifyObservers();
     }
 
     /**
-     * Checks whether or not a string is a valid tileset name.
-     * A tileset name must be composed of letters or digits, and the first
-     * character must be an uppercase letter.
-     * @param name the string to test
-     * @return true if it is a valid tileset name, false otherwise
+     * Loads an existing tileset.
+     * @param tilesetId id of the tileset to load
+     * @throws ZSDXException if the tileset could not be loaded
      */
-    public static boolean isValidTilesetName(String name) {
-
-	if (name.length() == 0 || !Character.isUpperCase(name.charAt(0))) {
-	    return false;
-	}
-	
-	boolean valid = true;
-	for (int i = 1; i < name.length() && valid; i++) {
-
-	    valid = Character.isLetterOrDigit(name.charAt(i));
-	}
-
-	return valid;
+    public Tileset(int tilesetId) throws ZSDXException {
+	this();
+	this.tilesetId = tilesetId;
+	load();
     }
 
     /**
      * Returns the name of the tileset.
-     * @return the name of the tileset, for example "House"
+     * @return the name of the tileset, for example "Light World"
      */
     public String getName() {
 	return name;
+    }
+
+    /**
+     * Changes the name of the tileset.
+     * @param the name of the tileset, for example "Light World"
+     */
+    public void setName(String name) {
+
+	if (!name.equals(this.name)) {
+	    this.name = name;
+	    setSaved(false);
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**
@@ -148,22 +159,14 @@ public class Tileset extends Observable implements ImageObserver {
     }
 
     /**
-     * Returns the path of the file containing the tileset's image.
-     * @return the image file path
-     */
-    public String getImagePath() {
-	return Configuration.getInstance().getZsdxRootPath() + File.separator + "images" +
-	    File.separator + "tilesets" + File.separator + name + ".png";
-    }
-
-    /**
      * Reloads the tileset's image.
      * This function is called when ZSDX root path is changed.
      * The observers are notified with the new image as parameter.
      */
     public void reloadImage() {
 	try {
-	    image = ImageIO.read(new File(getImagePath()));
+	    File imageFile = Configuration.getInstance().getImageFile(tilesetID);
+	    image = ImageIO.read(imageFile);
 	    doubleImage = image.getScaledInstance(image.getWidth(this) * 2,
 						  image.getHeight(this) * 2,
 						  Image.SCALE_FAST);
@@ -476,55 +479,39 @@ public class Tileset extends Observable implements ImageObserver {
     }
     
     /**
-     * Compares this tileset to another one.
-     * @param other another tileset
-     * @return true if the tilesets have the same name
+     * Saves the tileset into its file.
+     * @throws ZSDXException if the file could not be written
      */
-    public boolean equals(Object other) {
-	return other != null && ((Tileset) other).getName() == this.getName();
-    }
+    public void save() throws ZSDXException {
 
-    /**
-     * Loads a tileset from the tileset file.
-     */
-    public static Tileset load(File tilesetFile) throws IOException {
-
- 	// open the tileset file
-	ObjectInputStream in = new ObjectInputStream(new FileInputStream(tilesetFile));
-	Tileset tileset = null;
-
-	// read the object
 	try {
-	    tileset = (Tileset) in.readObject();
+	    
+	    // open the tileset file
+	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetId);
+	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
+	    
+	    // print the tileset general info
+	    out.println(backgroundColor.getRed() + '\t' + backgroundColor.getGreen() + '\t' + backgroundColor.getBlue());
+	    
+	    // print the tiles
+	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+
+		for (int id: getTileIds()) {
+		    out.println(id + '\t' + getTile(id).toString());
+		}
+	    }
+
+	    out.close();
+
+	    setSaved(true);
+
+	    // also update the tileset name in the global resource list
+	    GameResourceList resourceList = GameResourceList.getInstance();
+	    resourceList.setTilesetName(tilesetId, name);
+	    resourceList.save();
 	}
-	catch (ClassNotFoundException e) {
-	    System.err.println("Unable to read the object: " + e.getMessage());
-	    e.printStackTrace();
-	    System.exit(1);
+	catch (IOException ex) {
+	    throw new ZSDXException(ex.getMessage());
 	}
-
-	in.close();
-
-	tileset.setSaved(true);
-	tileset.setSelectedTileId(0); // none
-	tileset.reloadImage();
-
-	return tileset;
     }
-
-    /**
-     * Saves the data into the tileset file.
-     */
-    public static void save(File tilesetFile, Tileset tileset) throws IOException {
-
- 	// open the tileset file
-	ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(tilesetFile));
-
-	// write the object
-	out.writeObject(tileset);
-	out.close();
-
-	tileset.setSaved(true);
-    }
-
 }

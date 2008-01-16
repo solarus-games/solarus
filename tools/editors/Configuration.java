@@ -79,6 +79,14 @@ public class Configuration extends Observable {
     }
 
     /**
+     * Returns the path of the image files, determined with ZSDX root path.
+     * @return the path of the image files
+     */
+    public String getImagePath() {
+	return getZsdxRootPath() + File.separator + "images";
+    }
+
+    /**
      * Returns the path of the tileset files, determined with ZSDX root path.
      * @return the path of the tileset files
      */
@@ -87,7 +95,7 @@ public class Configuration extends Observable {
     }
 
     /**
-     * Returns a tileset file from its Id.
+     * Returns a tileset file from its id.
      * @param tilesetId id of a tileset
      * @return the corresponding tileset file
      */
@@ -97,8 +105,23 @@ public class Configuration extends Observable {
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
-	return new File(getTilesetPath() + File.separator + "tilesets" + File.separator +
+	return new File(getTilesetPath() + File.separator +
 			"tileset" + nf.format(tilesetId) + ".zsd");
+    }
+
+    /**
+     * Returns the image file of a tileset from its id.
+     * @param tilesetId id of a tileset
+     * @return the corresponding tileset file
+     */
+    public File getTilesetImageFile(int tilesetId) {
+	
+	NumberFormat nf = NumberFormat.getInstance();
+	nf.setMinimumIntegerDigits(4);
+	nf.setGroupingUsed(false);
+
+	return new File(getImagePath() + File.separator + "tilesets" + File.separator +
+			"tileset" + nf.format(tilesetId) + ".png");
     }
 
     /**

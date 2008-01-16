@@ -327,4 +327,48 @@ public class Tile extends Observable {
 	    && animationSeparation == tile.animationSeparation
 	    && positionInTileset.equals(tile.positionInTileset);
     }
+
+    /**
+     * Returns a string describing this tile.
+     * @return a string representation of the tile
+     */
+    public String toString() {
+	
+	StringBuffer description = new StringBuffer();
+
+	if (animationSequence == ANIMATION_NONE) {
+
+	    description.append("simple\t");
+	    description.append('\t');
+	    description.append(obstacle);
+	    description.append('\t');
+	    description.append(defaultLayer);
+	    description.append('\t');
+	    description.append(positionInTileset.x);
+	    description.append('\t');
+	    description.append(positionInTileset.y);
+	    description.append('\t');
+	    description.append(positionInTileset.w);
+	    description.append('\t');
+	    description.append(positionInTileset.h);
+	}
+	else {
+
+	    description.append("animated\t");
+	    description.append('\t');
+	    description.append(obstacle);
+	    description.append('\t');
+	    description.append(defaultLayer);
+	    description.append('\t');
+	    description.append(animationSequence);
+	    description.append('\t');
+	    description.append(positionInTileset.w);
+	    description.append('\t');
+	    description.append(positionInTileset.h);
+	    description.append('\t');
+	    // TODO
+	}
+	
+	return description.toString();
+    }
 }

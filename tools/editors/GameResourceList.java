@@ -8,7 +8,7 @@ import java.util.*;
  * Each resource name is associated with an id.
  * This class contains the information of the file game.zsd.
  */
-public class GameResourceList {
+public class GameResourceList extends Observable {
 
     private static GameResourceList instance;
 
@@ -183,11 +183,16 @@ public class GameResourceList {
      */
     public void setMapName(int mapId, String name) throws ZSDXException {
 
-	if (!maps.containsKey(mapId)) {
+	String oldName = maps.get(mapID);
+	if (oldName == null) {
 	    throw new ZSDXException("There is no map with id " + mapId);
 	}
 
-	maps.put(mapId, name);
+	if (!name.equals(oldName)) {
+	    maps.put(mapId, name);
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**
@@ -199,6 +204,9 @@ public class GameResourceList {
 
 	maxMapId++;
 	maps.put(maxMapId, name);
+
+	setChanged();
+	notifyObservers();
 
 	return maxMapId;
     }
@@ -220,6 +228,9 @@ public class GameResourceList {
 	if (mapId > maxMapId) {
 	    maxMapId = mapId;
 	}
+
+	setChanged();
+	notifyObservers();
     }
 
     // tilesets
@@ -249,11 +260,16 @@ public class GameResourceList {
      */
     public void setTilesetName(int tilesetId, String name) throws ZSDXException {
 
-	if (!tilesets.containsKey(tilesetId)) {
+	String oldName = tilesets.get(tilesetID);
+	if (oldName == null) {
 	    throw new ZSDXException("There is no tileset with id " + tilesetId);
 	}
 
-	tilesets.put(tilesetId, name);
+	if (!name.equals(oldName)) {
+	    tilesets.put(tilesetId, name);
+	    setChanged();
+	    notifyObservers();
+	}
     }
 
     /**
@@ -265,6 +281,9 @@ public class GameResourceList {
 
 	maxTilesetId++;
 	tilesets.put(maxTilesetId, name);
+
+	setChanged();
+	notifyObservers();
 
 	return maxTilesetId;
     }
@@ -286,6 +305,9 @@ public class GameResourceList {
 	if (tilesetId > maxTilesetId) {
 	    maxTilesetId = tilesetId;
 	}
+
+	setChanged();
+	notifyObservers();
     }
 
     // musics

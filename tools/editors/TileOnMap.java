@@ -377,4 +377,50 @@ public class TileOnMap extends Observable {
 	    }
 	}
     }
+
+    /**
+     * Creates a tile on a map from a string.
+     * @param description a string representing the tile, as returned by toString()
+     * @param tileset the tileset
+     * @throws ZSDXException if there is a syntax error in the string
+     */
+    public TileOnMap(String description, Tileset tileset) throws ZSDXException {
+	
+	try {
+	    StringTokenizer tokenizer = new StringTokenizer(description);
+	    
+	    tokenizer.nextToken();
+	    int tileId = Integer.parseInt(tokenizer.nextToken());
+	    int layer = Integer.parseInt(tokenizer.nextToken());
+	    int x = Integer.parseInt(tokenizer.nextToken());
+	    int y = Integer.parseInt(tokenizer.nextToken());
+	    int repeatX = Integer.parseInt(tokenizer.nextToken());
+	    int repeatY = Integer.parseInt(tokenizer.nextToken());
+
+	    this.tileset = tileset;
+	    this.tileId = tileId;
+	    this.layer = layer;
+	    this.repeatX = repeatX;
+	    this.repeatY = repeatY;
+	    
+	    Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
+	    this.positionInMap = new Rectangle(x, y, tile.getWidth() * repeatX, tile.getHeight() * repeatY);
+	}
+	catch (NumberFormatException ex) {
+	    throw new ZSDXException("Integer expected");
+	}
+	catch (NoSuchElementException ex) {
+	    throw new ZSDXException("A value is missing");
+	}
+    }
+
+    /**
+     * Returns a string describing this tile.
+     * @return a string representation of the tile
+     */
+    public String toString() {
+
+	return "tile\t" + tileId + "\t" + layer + "\t" +
+	    x + "\t" + y + "\t" + repeatX + "\t" + repeatY;
+    }
 }

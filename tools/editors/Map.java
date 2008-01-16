@@ -70,8 +70,6 @@ public class Map extends Observable {
     public Map() {
 	super();
 
-	this.mapId = -1; // not assigned yet
-	this.name = "New map";
 	this.size = new Dimension(320, 240);
 	this.tileset = null;
 	this.tilesetId = -1;
@@ -84,6 +82,15 @@ public class Map extends Observable {
 
 	this.tileSelection = new MapTileSelection(this);
 	this.history = new MapEditorHistory(this);
+
+	// compute an id and a name for this map
+	GameResourceList resourceList = GameResourceList.getInstance();
+	this.name = "New map";
+	this.mapId = resourceList.addMap(name);
+	resourceList.save();
+
+	setChanged();
+	notifyObservers();
     }
 
     /**
@@ -595,7 +602,6 @@ public class Map extends Observable {
 	    
 	    File mapFile = Configuration.getInstance().getMapFile(mapId);
 	    BufferedReader in = new BufferedReader(new FileReader(mapFile));
-	    StringTokenizer tokenizer;
 
 	    // read the map general info
 	    String line = in.readLine();
@@ -605,7 +611,7 @@ public class Map extends Observable {
 	    }
 
 	    lineNumber++;
-	    tokenizer = new StringTokenizer(line);
+	    StringTokenizer tokenizer = new StringTokenizer(line);
 
 	    int width = Integer.parseInt(tokenizer.nextToken());
 	    int height = Integer.parseInt(tokenizer.nextToken());
@@ -619,28 +625,21 @@ public class Map extends Observable {
 	    while (line != null) {
 		lineNumber++;
 
-		String entityType = tokenizer.nextToken();
+		String entityType = line.substring(0, line.indexOf('\t'));
 
 		if (entityType.equals("tile")) {
-		    int tileId = Integer.parseInt(tokenizer.nextToken());
-		    int layer = Integer.parseInt(tokenizer.nextToken());
-		    int x = Integer.parseInt(tokenizer.nextToken());
-		    int y = Integer.parseInt(tokenizer.nextToken());
-		    int repeatX = Integer.parseInt(tokenizer.nextToken());
-		    int repeatY = Integer.parseInt(tokenizer.nextToken());
-
-		    TileOnMap tileOnMap = new TileOnMap(tileset, tileId, x, y, repeatX, repeatY, layer);
+		    TileOnMap tileOnMap = new TilesetOnMap(tileset, line);
 		    addTile(tileOnMap);
 		}
 		else {
-		    throw new ZSDXException("Line " + lineNumber + ": unknown entity type '" + entityType + "'");
+		    throw new ZSDXException("Unknown entity type '" + entityType + "'");
 		}
 
 		line = in.readLine();
 	    }
 	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": integer expected");
+	catch (ZSDXException ex) {
+	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
 	}
 	catch (IOException ex) {
 	    throw new ZSDXException(ex.getMessage());
@@ -648,7 +647,7 @@ public class Map extends Observable {
     }
 
     /**
-     * Saves the map into a file.
+     * Saves the map into its file.
      * @throws ZSDXException if the file could not be written
      */
     public void save() throws ZSDXException {
@@ -671,10 +670,7 @@ public class Map extends Observable {
 	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 
 		for (TileOnMap tile: getTiles(layer)) {
-		    
-		    out.println("tile\t" + tile.getTileId() + "\t" + layer + "\t"
-				+ tile.getX() + "\t" + tile.getY() + "\t"
-				+ tile.getRepeatX() + "\t" + tile.getRepeatY());
+		    out.println(tile.toString());
 		}
 	    }
 
@@ -685,17 +681,8 @@ public class Map extends Observable {
 
 	    // also update the map name in the global resource list
 	    GameResourceList resourceList = GameResourceList.getInstance();
-
-	    if (mapId == -1) {
-		// compute a map id if this map is new
-		mapId = resourceList.addMap(name);
-		resourceList.save();
-	    }
-	    else {
-		// normal case
-		resourceList.setMapName(mapId, name);
-		resourceList.save();
-	    }
+	    resourceList.setMapName(mapId, name);
+	    resourceList.save();
 	}
 	catch (IOException ex) {
 	    throw new ZSDXException(ex.getMessage());

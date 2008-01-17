@@ -183,7 +183,7 @@ public class GameResourceList extends Observable {
      */
     public void setMapName(int mapId, String name) throws ZSDXException {
 
-	String oldName = maps.get(mapID);
+	String oldName = maps.get(mapId);
 	if (oldName == null) {
 	    throw new ZSDXException("There is no map with id " + mapId);
 	}
@@ -260,7 +260,7 @@ public class GameResourceList extends Observable {
      */
     public void setTilesetName(int tilesetId, String name) throws ZSDXException {
 
-	String oldName = tilesets.get(tilesetID);
+	String oldName = tilesets.get(tilesetId);
 	if (oldName == null) {
 	    throw new ZSDXException("There is no tileset with id " + tilesetId);
 	}

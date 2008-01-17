@@ -102,6 +102,60 @@ public class Tile extends Observable {
     }
 
     /**
+     * Creates a tile from a string.
+     * @param description a string representing the tile, as returned by toString()
+     * @throws ZSDXException if there is a syntax error in the string
+     */
+    public Tile(String description) throws ZSDXException {
+	
+	try {
+	    StringTokenizer tokenizer = new StringTokenizer(description);
+	    
+	    String tileType = tokenizer.nextToken();
+	    this.obstacle = Integer.parseInt(tokenizer.nextToken());
+	    this.defaultLayer = Integer.parseInt(tokenizer.nextToken());
+
+	    if (tileType.equals("simple")) {
+		
+		// simple tile: "simple obstacle defaultLayer x y width height"
+		int x = Integer.parseInt(tokenizer.nextToken());
+		int y = Integer.parseInt(tokenizer.nextToken());
+		int width = Integer.parseInt(tokenizer.nextToken());
+		int height = Integer.parseInt(tokenizer.nextToken());
+		
+		this.positionInTileset = new Rectangle(x, y, width, height);
+		this.animationSequence = ANIMATION_NONE;
+	    }
+	    else if (tileType.equals("animated")) {
+
+		// animated tile: "animated obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
+		this.animationSequence = Integer.parseInt(tokenizer.nextToken());
+
+		int width = Integer.parseInt(tokenizer.nextToken());
+		int height = Integer.parseInt(tokenizer.nextToken());
+		int x1 = Integer.parseInt(tokenizer.nextToken());
+		int y1 = Integer.parseInt(tokenizer.nextToken());
+		int x2 = Integer.parseInt(tokenizer.nextToken());
+
+		this.positionInTileset = new Rectangle(x1, y1, width, height);
+		this.animationSeparation = (x1 == x2) ?
+		    ANIMATION_SEPARATION_HORIZONTAL : ANIMATION_SEPARATION_VERTICAL;
+
+		
+	    }
+	    else {
+		throw new ZSDXException("Unknown tile type '" + tileType + "'");
+	    }
+	}
+	catch (NumberFormatException ex) {
+	    throw new ZSDXException("Integer expected");
+	}
+	catch (NoSuchElementException ex) {
+	    throw new ZSDXException("A value is missing");
+	}
+    }
+
+    /**
      * Returns the tile's rectangle.
      * @return the tile's rectangle
      */
@@ -337,6 +391,7 @@ public class Tile extends Observable {
 	StringBuffer description = new StringBuffer();
 
 	if (animationSequence == ANIMATION_NONE) {
+	    // simple tile: "simple obstacle defaultLayer x y width height"
 
 	    description.append("simple\t");
 	    description.append('\t');
@@ -348,11 +403,12 @@ public class Tile extends Observable {
 	    description.append('\t');
 	    description.append(positionInTileset.y);
 	    description.append('\t');
-	    description.append(positionInTileset.w);
+	    description.append(positionInTileset.width);
 	    description.append('\t');
-	    description.append(positionInTileset.h);
+	    description.append(positionInTileset.height);
 	}
 	else {
+	    // animated tile: "animated obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
 
 	    description.append("animated\t");
 	    description.append('\t');
@@ -362,11 +418,39 @@ public class Tile extends Observable {
 	    description.append('\t');
 	    description.append(animationSequence);
 	    description.append('\t');
-	    description.append(positionInTileset.w);
+	    description.append(positionInTileset.width);
 	    description.append('\t');
-	    description.append(positionInTileset.h);
+	    description.append(positionInTileset.height);
 	    description.append('\t');
-	    // TODO
+
+	    int width, height, x, y, dx, dy;
+	    if (animationSeparation == Tile.ANIMATION_SEPARATION_HORIZONTAL) {
+		width = positionInTileset.width / 3;
+		height = positionInTileset.height;
+		dx = width;
+		dy = 0;
+	    }
+	    else {
+		width = positionInTileset.width;
+		height = positionInTileset.height / 3;
+		dx = 0;
+		dy = height;
+	    }
+
+	    x = positionInTileset.x;
+	    y = positionInTileset.y;
+	    
+	    description.append(x);
+	    description.append('\t');
+	    description.append(y);
+	    description.append('\t');
+	    description.append(x + dx);
+	    description.append('\t');
+	    description.append(y + dy);
+	    description.append('\t');
+	    description.append(x + 2 * dx);
+	    description.append('\t');
+	    description.append(y + 2 * dy);
 	}
 	
 	return description.toString();

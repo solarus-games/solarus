@@ -66,8 +66,9 @@ public class Map extends Observable {
 
     /**
      * Creates a new map.
+     * @throws ZSDXException if the resource list could not be updated after the map creation
      */
-    public Map() {
+    public Map() throws ZSDXException {
 	super();
 
 	this.size = new Dimension(320, 240);
@@ -202,9 +203,9 @@ public class Map extends Observable {
      * @param tilesetId id of the new tileset, or -1 to set no tileset
      * @return true if the tileset was loaded successfuly, false if some tiles could
      * not be loaded in this tileset
-     * @throws MapException if this tileset file cannot be loaded
+     * @throws ZSDXException if this tileset could be applied
      */
-    public boolean setTileset(int tilesetId) throws MapException {
+    public boolean setTileset(int tilesetId) throws ZSDXException {
 
 	this.badTiles = false;
 
@@ -221,15 +222,7 @@ public class Map extends Observable {
 	// if the tileset is changed
 	else if (tilesetId != this.tilesetId) {
 	
-	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetId);
-	    
-	    try {
-		this.tileset = Tileset.load(tilesetFile);
-	    }
-	    catch (IOException e) {
-		// the tileset file could not be loaded
-		throw new MapException("Cannot open the tileset file: " + e.getMessage());
-	    }
+	    this.tileset = new Tileset(tilesetId);
 
 	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 		for (int i = 0; i < allTiles[layer].size(); i++) {
@@ -628,7 +621,7 @@ public class Map extends Observable {
 		String entityType = line.substring(0, line.indexOf('\t'));
 
 		if (entityType.equals("tile")) {
-		    TileOnMap tileOnMap = new TilesetOnMap(tileset, line);
+		    TileOnMap tileOnMap = new TileOnMap(line, tileset);
 		    addTile(tileOnMap);
 		}
 		else {
@@ -644,6 +637,9 @@ public class Map extends Observable {
 	catch (IOException ex) {
 	    throw new ZSDXException(ex.getMessage());
 	}
+
+	setChanged();
+	notifyObservers();
     }
 
     /**

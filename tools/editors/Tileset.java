@@ -21,7 +21,7 @@ public class Tileset extends Observable implements ImageObserver {
     /**
      * Id of the tileset.
      */
-    private int tilesetID;
+    private int tilesetId;
 
     /**
      * Name of the tileset.
@@ -84,8 +84,9 @@ public class Tileset extends Observable implements ImageObserver {
 
     /**
      * Creates a new tileset.
+     * @throws ZSDXException if the resource list could not be updated after the map creation
      */
-    public Tileset() throws TilesetException {
+    public Tileset() throws ZSDXException {
 	super();
 
 	this.name = "New tileset";
@@ -165,7 +166,7 @@ public class Tileset extends Observable implements ImageObserver {
      */
     public void reloadImage() {
 	try {
-	    File imageFile = Configuration.getInstance().getImageFile(tilesetID);
+	    File imageFile = Configuration.getInstance().getTilesetImageFile(tilesetId);
 	    image = ImageIO.read(imageFile);
 	    doubleImage = image.getScaledInstance(image.getWidth(this) * 2,
 						  image.getHeight(this) * 2,
@@ -445,6 +446,15 @@ public class Tileset extends Observable implements ImageObserver {
     }
 
     /**
+     * Adds a tile to the tileset.
+     * @param tileId id of the tile
+     * @param tile the tile to add
+     */
+    private void addTile(int tileId, Tile tile) {
+	tiles.put(tileId, tile);
+    }
+
+    /**
      * Removes the selected tile.
      * The oberservers are notified with the removed tile as parameter.
      */
@@ -479,6 +489,63 @@ public class Tileset extends Observable implements ImageObserver {
     }
     
     /**
+     * Loads the tileset from a file.
+     * @param tilesetFile the file to read
+     * @throws ZSDXException if the file could not be read
+     */
+    public void load() throws ZSDXException {
+	
+	int lineNumber = 0;
+	try {
+
+	    // get the tileset name in the game resource database
+	    GameResourceList resourceList = GameResourceList.getInstance();
+	    setName(resourceList.getTilesetName(tilesetId));
+	    
+	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetId);
+	    BufferedReader in = new BufferedReader(new FileReader(tilesetFile));
+
+	    // read the tileset general info: "r g b"
+	    String line = in.readLine();
+
+	    if (line == null) {
+		throw new ZSDXException("The tileset file is empty");
+	    }
+
+	    lineNumber++;
+	    StringTokenizer tokenizer = new StringTokenizer(line);
+
+	    int r = Integer.parseInt(tokenizer.nextToken());
+	    int g = Integer.parseInt(tokenizer.nextToken());
+	    int b = Integer.parseInt(tokenizer.nextToken());
+
+	    setBackgroundColor(new Color(r, g, b));
+
+	    // read the tiles of the tileset
+	    line = in.readLine();
+	    while (line != null) {
+		lineNumber++;
+
+		int tabIndex = line.indexOf('\t');
+		int id = Integer.parseInt(line.substring(0, tabIndex));
+		Tile tile = new Tile(line.substring(tabIndex + 1));
+		addTile(id, tile);
+
+		line = in.readLine();
+	    }
+	}
+	catch (ZSDXException ex) {
+	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
+	}
+	catch (IOException ex) {
+	    throw new ZSDXException(ex.getMessage());
+	}
+
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
      * Saves the tileset into its file.
      * @throws ZSDXException if the file could not be written
      */
@@ -490,7 +557,7 @@ public class Tileset extends Observable implements ImageObserver {
 	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetId);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
 	    
-	    // print the tileset general info
+	    // print the tileset general info: "r g b"
 	    out.println(backgroundColor.getRed() + '\t' + backgroundColor.getGreen() + '\t' + backgroundColor.getBlue());
 	    
 	    // print the tiles

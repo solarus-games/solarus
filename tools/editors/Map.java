@@ -87,8 +87,7 @@ public class Map extends Observable {
 	// compute an id and a name for this map
 	GameResourceList resourceList = GameResourceList.getInstance();
 	this.name = "New map";
-	this.mapId = resourceList.addMap(name);
-	resourceList.save();
+	this.mapId = resourceList.computeTilesetId();
 
 	setChanged();
 	notifyObservers();
@@ -103,6 +102,14 @@ public class Map extends Observable {
 	this();
 	this.mapId = mapId;
 	load();
+    }
+
+    /**
+     * Returns the id of the map.
+     * @return the id of the map
+     */
+    public int getId() {
+	return mapId;
     }
 
     /**
@@ -630,6 +637,13 @@ public class Map extends Observable {
 
 		line = in.readLine();
 	    }
+
+	    in.close();
+
+	    history.setSaved();
+	}
+	catch (NumberFormatException ex) {
+	    throw new ZSDXException("Line " + lineNumber + ": Integer expected");
 	}
 	catch (ZSDXException ex) {
 	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
@@ -660,7 +674,14 @@ public class Map extends Observable {
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
 	    
 	    // print the map general info
-	    out.println(size.width + '\t' + size.height + '\t' + tilesetId + '\t' + musicId);
+	    out.print(size.width);
+	    out.print('\t');
+	    out.print(size.height);
+	    out.print('\t');
+	    out.print(tilesetId);
+	    out.print('\t');
+	    out.print(musicId);
+	    out.println();
 	    
 	    // print the tiles
 	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {

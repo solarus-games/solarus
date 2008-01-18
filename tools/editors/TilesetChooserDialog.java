@@ -10,9 +10,9 @@ import javax.swing.*;
 public class TilesetChooserDialog extends JDialog {
 
     /**
-     * Name of the tileset selected (or null if the user cancelled).
+     * Id of the tileset selected (or -1 if the user cancelled).
      */
-    private String tilesetName;
+    private int tilesetId = -1;
 
     /**
      * Constructor.
@@ -35,7 +35,7 @@ public class TilesetChooserDialog extends JDialog {
 	JButton buttonOK = new JButton("OK");
 	buttonOK.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
-		    tilesetName = (String) tilesetChooser.getSelectedItem();
+		    tilesetId = tilesetChooser.getSelectedTilesetId();
 		    dispose();
 		}
 	    });
@@ -43,7 +43,7 @@ public class TilesetChooserDialog extends JDialog {
 	tilesetChooser.addKeyListener(new KeyAdapter() {
 		public void keyPressed(KeyEvent ev) {
 		    if (ev.getKeyCode() == KeyEvent.VK_ENTER) {
-			tilesetName = (String) tilesetChooser.getSelectedItem();
+			tilesetId = tilesetChooser.getSelectedTilesetId();
 			dispose();
 		    }
 		}
@@ -84,12 +84,13 @@ public class TilesetChooserDialog extends JDialog {
     }
 
     /**
-     * Returns the name of tileset that the user has just selected.
-     * @return the name of the tileset, or null if he cancelled
+     * Returns the id of tileset that the user has just selected.
+     * @return the id of the tileset, or -1 if he cancelled
      */
-    public String getTilesetName() {
-	String name = tilesetName;
-	tilesetName = null;
-	return name;
+    public int getTilesetId() {
+
+	int id = tilesetId;
+	tilesetId = -1;
+	return id;
     }
 }

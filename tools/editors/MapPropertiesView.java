@@ -215,9 +215,10 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    if (o instanceof Map) {
 
 		setEnabled(true);
-		String tilesetName = map.getTilesetName();
-		if (!tilesetName.equals(getSelectedItem())) {
-		    setSelectedItem(tilesetName);
+		int tilesetId = map.getTilesetId();
+		int selectedId = getSelectedTilesetId();
+		if (tilesetId != selectedId) {
+		    setSelectedTilesetId(tilesetId);
 		}
 	    }
 	}
@@ -231,13 +232,13 @@ public class MapPropertiesView extends JPanel implements Observer {
 		return;
 	    }
 
-	    String tilesetName = (String) getSelectedItem();
-	    String currentTilesetName = map.getTilesetName();
+	    int selectedId = getSelectedTilesetId();
+	    int currentId = map.getTilesetId();
 	    
-	    if (!tilesetName.equals(currentTilesetName)) {
+	    if (selectedId != currentId) {
 		
 		try {
-		    map.getHistory().doAction(new ActionChangeTileset(map, tilesetName));
+		    map.getHistory().doAction(new ActionChangeTileset(map, tilesetId));
 			
 		    if (map.badTiles()) {
 			WindowTools.errorDialog("Some tiles of the map have been removed because they don't exist in this tileset!");

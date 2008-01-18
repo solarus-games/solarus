@@ -31,16 +31,31 @@ public class MapChooser extends JComboBox implements Observer {
 
 	removeAllItems();
 	
-	String mapPath = Configuration.getInstance().getMapPath();
-	File[] mapFiles = FileTools.getFilesWithExtension(mapPath, "zsd");
+
+	try {
 	
-	if (mapFiles == null) {
-	    return;
+	    GameResourceList resourceList = GameResourceList.getInstance();
+	    int[] mapIds = resourceList.getMapIds();
+	    String name;
+	    
+	    for (int i = 0; i < mapIds.length; i++) {
+		name = resourceList.getMapName(mapIds[i]);
+		addItem(new KeyValue(Integer.toString(mapIds[i]), name));
+	    }
 	}
-	
-	for (int i = 0; i < mapFiles.length; i++) {
-	    String mapName = FileTools.getFileNameWithoutExtension(mapFiles[i]);
-	    addItem(mapName);
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog("Unexpected error: " + ex.getMessage());
+	    System.exit(1);
 	}
+    }
+
+    /**
+     * Returns the id of the currently selected map.
+     * @return the id of the selected map, or -1 if no map is selected
+     */
+    public int getSelectedMapId() {
+
+	KeyValue item = (KeyValue) getSelectedItem();
+	return Integer.parseInt(item.getKey());
     }
 }

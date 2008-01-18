@@ -32,26 +32,51 @@ public class TilesetChooser extends JComboBox implements Observer {
 
     /**
      * This function is called when the configuration is changed.
-     * The tileset list is reloaded using ZSDX root path.
+     * The tileset list is reloaded using the game resource file.
      */
     public void update(Observable o, Object obj) {
 
 	removeAllItems();
 
 	if (showEmptyOption) {
-	    addItem("");
+	    addItem(new KeyValue("-1", ""));
 	}
+
+	try {
 	
-	String tilesetPath = Configuration.getInstance().getTilesetPath();
-	File[] tilesetFiles = FileTools.getFilesWithExtension(tilesetPath, "zsd");
-	
-	if (tilesetFiles == null) {
-	    return;
+	    GameResourceList resourceList = GameResourceList.getInstance();
+	    int[] tilesetIds = resourceList.getTilesetIds();
+	    String name;
+	    
+	    for (int i = 0; i < tilesetIds.length; i++) {
+		name = resourceList.getTilesetName(tilesetIds[i]);
+		addItem(new KeyValue(Integer.toString(tilesetIds[i]), name));
+	    }
 	}
-	
-	for (int i = 0; i < tilesetFiles.length; i++) {
-	    String tilesetName = FileTools.getFileNameWithoutExtension(tilesetFiles[i]);
-	    addItem(tilesetName);
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog("Unexpected error: " + ex.getMessage());
+	    System.exit(1);
 	}
+    }
+
+    /**
+     * Returns the id of the currently selected tileset.
+     * @return the id of the selected tileset, or -1 if no tileset is selected
+     */
+    public int getSelectedTilesetId() {
+
+	KeyValue item = (KeyValue) getSelectedItem();
+	return Integer.parseInt(item.getKey());
+    }
+
+    /**
+     * Changes the currently selected tileset.
+     * @param the id of the tileset you want to make selected in the combo box,
+     * or -1 to select no tileset
+     */
+    public void setSelectedTilesetId(int id) {
+
+	KeyValue item = new KeyValue(Integer.toString(id), null);
+	setSelectedItem(item);
     }
 }

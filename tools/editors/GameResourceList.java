@@ -77,28 +77,35 @@ public class GameResourceList extends Observable {
 
 		lineNumber++;
 
-		StringTokenizer tokenizer = new StringTokenizer(line, "\t");
-		String resourceType = tokenizer.nextToken();
-		String resourceId = tokenizer.nextToken();
-		String resourceName = tokenizer.nextToken();
-		int id;
+		if (line.length() != 0 && line.charAt(0) != '#') {
+		    // skip the comments and the empty lines
 
-		if (resourceType.equals(mapResourceType)) {
-		    addMap(Integer.parseInt(resourceId), resourceName);
-		}
-		else if (resourceType.equals(tilesetResourceType)) {
-		    addTileset(Integer.parseInt(resourceId), resourceName);
-		}
-		else if (resourceType.equals(musicResourceType)) {
-		    musics.put(resourceId, resourceName);
-		}
-		else {
-		    throw new ZSDXException("Unknown resource type '" + resourceType + "'");
+		    StringTokenizer tokenizer = new StringTokenizer(line, "\t");
+		    String resourceType = tokenizer.nextToken();
+		    String resourceId = tokenizer.nextToken();
+		    String resourceName = tokenizer.nextToken();
+		    int id;
+
+		    if (resourceType.equals(mapResourceType)) {
+			addMap(Integer.parseInt(resourceId), resourceName);
+		    }
+		    else if (resourceType.equals(tilesetResourceType)) {
+			addTileset(Integer.parseInt(resourceId), resourceName);
+		    }
+		    else if (resourceType.equals(musicResourceType)) {
+			musics.put(resourceId, resourceName);
+		    }
+		    else {
+			throw new ZSDXException("Unknown resource type '" + resourceType + "'");
+		    }
 		}
 
 		line = buff.readLine();
 	    }
 	    buff.close();
+	}
+	catch (NoSuchElementException ex) {
+	    throw new ZSDXException("Line " + lineNumber + ": Value expected");
 	}
 	catch (ZSDXException ex) {
 	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
@@ -159,6 +166,22 @@ public class GameResourceList extends Observable {
     // maps
     
     /**
+     * Returns an array with the id of all maps.
+     * @return an array with the id of all maps.
+     */
+    public int[] getMapIds() {
+	
+	int[] ids = new int[maps.size()];
+	int i = 0;
+
+	for (int id: maps.keySet()) {
+	    ids[i++] = id;
+	}
+
+	return ids;
+    }
+
+    /**
      * Returns the name of a map from its id.
      * @param mapId id of a map
      * @return the name of this map
@@ -176,19 +199,23 @@ public class GameResourceList extends Observable {
     }
 
     /**
-     * Changes the name of a map.
+     * Changes the name of a map. If the map doesn't exist in the
+     * database, it is added.
      * @param mapId id of a map
      * @return the name of this map
-     * @throws ZSDXException if this map doesn't exist
+     * @throws ZSDXException if the id is greater than maxMapId
      */
     public void setMapName(int mapId, String name) throws ZSDXException {
 
-	String oldName = maps.get(mapId);
-	if (oldName == null) {
-	    throw new ZSDXException("There is no map with id " + mapId);
+	if (mapId > maxMapId) {
+	    throw new ZSDXException("Invalid map id: " + mapId);
 	}
 
-	if (!name.equals(oldName)) {
+	String oldName = maps.get(mapId);
+
+	if (oldName == null || !name.equals(oldName)) {
+
+	    // the map doesn't exist yet, or its name has just been changed
 	    maps.put(mapId, name);
 	    setChanged();
 	    notifyObservers();
@@ -196,14 +223,12 @@ public class GameResourceList extends Observable {
     }
 
     /**
-     * Adds a new map in the database and computes an id for this map.
-     * @param name name of the map to add
-     * @return the id that was just assigned to the map
+     * Computes an id for a new map. This makes sure the id is not used yet.
+     * @return an available id you can assigne to a new map
      */
-    public int addMap(String name) {
+    public int computeMapId() {
 
 	maxMapId++;
-	maps.put(maxMapId, name);
 
 	setChanged();
 	notifyObservers();
@@ -219,21 +244,37 @@ public class GameResourceList extends Observable {
      */
     private void addMap(int mapId, String name) throws ZSDXException {
 
-	if (maps.containsKey(mapId)) {
-	    throw new ZSDXException("A map with the Id " + mapId + " already exists");
-	}
+        if (maps.containsKey(mapId)) {
+            throw new ZSDXException("A map with the Id " + mapId + " already exists");
+        }
 
-	maps.put(mapId, name);
+        maps.put(mapId, name);
 
-	if (mapId > maxMapId) {
-	    maxMapId = mapId;
-	}
+        if (mapId > maxMapId) {
+            maxMapId = mapId;
+        }
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     // tilesets
+
+    /**
+     * Returns an array with the id of all tilesets.
+     * @return an array with the id of all tilesets.
+     */
+    public int[] getTilesetIds() {
+	
+	int[] ids = new int[tilesets.size()];
+	int i = 0;
+
+	for (int id: tilesets.keySet()) {
+	    ids[i++] = id;
+	}
+
+	return ids;
+    }
 
     /**
      * Returns the name of a tileset from its id.
@@ -253,19 +294,23 @@ public class GameResourceList extends Observable {
     }
 
     /**
-     * Changes the name of a tileset.
+     * Changes the name of a tileset. If the tileset doesn't exist in the
+     * database, it is added.
      * @param tilesetId id of a tileset
      * @return the name of this tileset
-     * @throws ZSDXException if this tileset doesn't exist
+     * @throws ZSDXException if the id is greater than maxTilesetId
      */
     public void setTilesetName(int tilesetId, String name) throws ZSDXException {
 
-	String oldName = tilesets.get(tilesetId);
-	if (oldName == null) {
-	    throw new ZSDXException("There is no tileset with id " + tilesetId);
+	if (tilesetId > maxTilesetId) {
+	    throw new ZSDXException("Invalid tileset id: " + tilesetId);
 	}
 
-	if (!name.equals(oldName)) {
+	String oldName = tilesets.get(tilesetId);
+
+	if (oldName == null || !name.equals(oldName)) {
+
+	    // the tileset doesn't exist yet, or its name has just been changed
 	    tilesets.put(tilesetId, name);
 	    setChanged();
 	    notifyObservers();
@@ -273,14 +318,12 @@ public class GameResourceList extends Observable {
     }
 
     /**
-     * Adds a new tileset in the database and computes an id for this tileset.
-     * @param name name of the tileset to add
-     * @return the id that was just assigned to the tileset
+     * Computes an id for a new tileset. This makes sure the id is not used yet.
+     * @return an available id you can assigne to a new tileset
      */
-    public int addTileset(String name) {
+    public int computeTilesetId() {
 
 	maxTilesetId++;
-	tilesets.put(maxTilesetId, name);
 
 	setChanged();
 	notifyObservers();
@@ -296,18 +339,18 @@ public class GameResourceList extends Observable {
      */
     private void addTileset(int tilesetId, String name) throws ZSDXException {
 
-	if (tilesets.containsKey(tilesetId)) {
-	    throw new ZSDXException("A tileset with the Id " + tilesetId + " already exists");
-	}
+        if (tilesets.containsKey(tilesetId)) {
+            throw new ZSDXException("A tileset with the Id " + tilesetId + " already exists");
+        }
 
-	tilesets.put(tilesetId, name);
+        tilesets.put(tilesetId, name);
 
-	if (tilesetId > maxTilesetId) {
-	    maxTilesetId = tilesetId;
-	}
+        if (tilesetId > maxTilesetId) {
+            maxTilesetId = tilesetId;
+        }
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     // musics

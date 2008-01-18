@@ -30,9 +30,8 @@ public class TilesetEditorWindow extends JFrame {
      */
     private File tilesetFile;
 
-    // menu items memorized to enable them late
+    // menu item memorized to enable it later
     private JMenuItem menuItemSave;
-    private JMenuItem menuItemGenerate;
 
     /**
      * Creates a new window.
@@ -145,14 +144,6 @@ public class TilesetEditorWindow extends JFrame {
 
 	menu.addSeparator();
 
-	menuItemGenerate = new JMenuItem("Generate C++");
-	menuItemGenerate.setMnemonic(KeyEvent.VK_G);
-	menuItemGenerate.getAccessibleContext().setAccessibleDescription("Generate the C++ code for the current tileset");
-	menuItemGenerate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
-	menuItemGenerate.addActionListener(new ActionGenerate());
-	menuItemGenerate.setEnabled(false);
-	menu.add(menuItemGenerate);
-
 	item = new JMenuItem("Configuration...");
 	item.setMnemonic(KeyEvent.VK_C);
 	item.getAccessibleContext().setAccessibleDescription("Changes some settings");
@@ -165,8 +156,6 @@ public class TilesetEditorWindow extends JFrame {
 		}
 	    });
 	menu.add(item);
-
-	menu.addSeparator();
 
 	item = new JMenuItem("Quit");
 	item.setMnemonic(KeyEvent.VK_Q);
@@ -198,9 +187,8 @@ public class TilesetEditorWindow extends JFrame {
 	
 	this.tileset = tileset;
 
-	// enable the menu items
+	// enable the menu item
 	menuItemSave.setEnabled(true);
-	menuItemGenerate.setEnabled(true);
 
 	// notify the views
 	tilesView.setTileset(tileset);
@@ -245,30 +233,12 @@ public class TilesetEditorWindow extends JFrame {
 		return;
 	    }
 
-	    // ask the tileset name
-	    String tilesetName = JOptionPane.showInputDialog(TilesetEditorWindow.this,
-							     "Name of your new tileset (for example 'House'):",
-							     "Tileset name",
-							     JOptionPane.QUESTION_MESSAGE);
-
-	    if (tilesetName == null || tilesetName.length() == 0) {
-		return;
+	    try {
+		Tileset tileset = new Tileset();
+		setTileset(tileset);
 	    }
-
-	    // check that this tileset doesn't exist already
-	    tilesetFile = Configuration.getInstance().getTilesetFile(tilesetName);
-
-	    if (tilesetFile.exists()) {
-		WindowTools.errorDialog("This tileset already exists.");
-	    }
-	    else {
-		try {
-		    tileset = new Tileset(tilesetName);
-		    setTileset(tileset);
-		}
-		catch (TilesetException e) {
-		    WindowTools.errorDialog("Cannot create the tileset: " + e.getMessage());
-		}
+	    catch (ZSDXException e) {
+		WindowTools.errorDialog("Cannot create the tileset: " + e.getMessage());
 	    }
 	}
     }
@@ -289,18 +259,17 @@ public class TilesetEditorWindow extends JFrame {
 	    dialog.setLocationRelativeTo(TilesetEditorWindow.this);
 	    dialog.pack();
 	    dialog.setVisible(true);
-	    String tilesetName = dialog.getTilesetName();
+	    int tilesetId = dialog.getTilesetId();
 
-	    if (tilesetName == null) {
+	    if (tilesetId == -1) {
 		return;
 	    }
 
 	    try {
-		tilesetFile = Configuration.getInstance().getTilesetFile(tilesetName);
-		Tileset tileset = Tileset.load(tilesetFile);
+		Tileset tileset = new Tileset(tilesetId);
 		setTileset(tileset);
 	    }
-	    catch (IOException e) {
+	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Could not load the tileset: " + e.getMessage());
 	    } 
 	}
@@ -314,32 +283,10 @@ public class TilesetEditorWindow extends JFrame {
 	
 	public void actionPerformed(ActionEvent ev) {
 	    try {
-		Tileset.save(tilesetFile, tileset);
+		tileset.save();
 	    }
-	    catch (IOException e) {
+	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Could not save the tileset: " + e.getMessage());
-	    }
-	}
-    }
-
-    /**
-     * Action performed when the user clicks on Tileset > Generate C++.
-     * Generates the C++ code for the current tileset.
-     */
-    private class ActionGenerate implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {
-	    TilesetCodeGenerator generator = new TilesetCodeGenerator();
-	    
-	    try {
-		generator.generate(tileset);
-		JOptionPane.showMessageDialog(TilesetEditorWindow.this,
-					      "Tileset code generated!",
-					      "Done",
-					      JOptionPane.INFORMATION_MESSAGE);
-	    }
-	    catch (IOException e) {
-		WindowTools.errorDialog("Could not generate the C++ code: " + e.getMessage());
 	    }
 	}
     }

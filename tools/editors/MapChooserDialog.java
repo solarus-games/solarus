@@ -10,9 +10,9 @@ import javax.swing.*;
 public class MapChooserDialog extends JDialog {
 
     /**
-     * Name of the map selected (or null if the user cancelled).
+     * Id of the tileset selected (or -1 if the user cancelled).
      */
-    private String mapName;
+    private int mapId = -1;
 
     /**
      * Constructor.
@@ -35,7 +35,7 @@ public class MapChooserDialog extends JDialog {
 	JButton buttonOK = new JButton("OK");
 	buttonOK.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
-		    mapName = (String) mapChooser.getSelectedItem();
+		    mapId = mapChooser.getSelectedMapId();
 		    dispose();
 		}
 	    });
@@ -43,7 +43,7 @@ public class MapChooserDialog extends JDialog {
 	mapChooser.addKeyListener(new KeyAdapter() {
 		public void keyPressed(KeyEvent ev) {
 		    if (ev.getKeyCode() == KeyEvent.VK_ENTER) {
-			mapName = (String) mapChooser.getSelectedItem();
+			mapId = mapChooser.getSelectedMapId();
 			dispose();
 		    }
 		}
@@ -84,12 +84,13 @@ public class MapChooserDialog extends JDialog {
     }
 
     /**
-     * Returns the name of map that the user has just selected.
-     * @return the name of the map, or null if he cancelled
+     * Returns the id of map that the user has just selected.
+     * @return the id of the map, or -1 if he cancelled
      */
-    public String getMapName() {
-	String name = mapName;
-	mapName = null;
-	return name;
+    public int getMapId() {
+
+	int id = mapId;
+	mapId = -1;
+	return id;
     }
 }

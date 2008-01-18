@@ -95,13 +95,14 @@ public class Tileset extends Observable implements ImageObserver {
 	this.selectedTileId = 0; // none
 	this.maxId = 0;
 	tiles = new TreeMap<Integer,Tile>();
-	reloadImage();
 
 	// compute an id and a name for this tileset
 	GameResourceList resourceList = GameResourceList.getInstance();
 	this.name = "New tileset";
-	this.tilesetId = resourceList.addTileset(name);
-	resourceList.save();
+	this.tilesetId = resourceList.computeTilesetId();
+	reloadImage();
+
+	setSaved(true);
 
 	setChanged();
 	notifyObservers();
@@ -116,6 +117,14 @@ public class Tileset extends Observable implements ImageObserver {
 	this();
 	this.tilesetId = tilesetId;
 	load();
+    }
+
+    /**
+     * Returns the id of the tileset.
+     * @return the id of the tileset
+     */
+    public int getId() {
+	return tilesetId;
     }
 
     /**
@@ -166,8 +175,7 @@ public class Tileset extends Observable implements ImageObserver {
      */
     public void reloadImage() {
 	try {
-	    File imageFile = Configuration.getInstance().getTilesetImageFile(tilesetId);
-	    image = ImageIO.read(imageFile);
+	    image = ImageIO.read(getImageFile());
 	    doubleImage = image.getScaledInstance(image.getWidth(this) * 2,
 						  image.getHeight(this) * 2,
 						  Image.SCALE_FAST);
@@ -179,6 +187,14 @@ public class Tileset extends Observable implements ImageObserver {
 
 	setChanged();
 	notifyObservers(image);
+    }
+
+    /**
+     * Returns the tileset's image file.
+     * @return the image file of the tileset
+     */
+    public File getImageFile() {
+	return Configuration.getInstance().getTilesetImageFile(tilesetId);
     }
 
     /**
@@ -533,6 +549,13 @@ public class Tileset extends Observable implements ImageObserver {
 
 		line = in.readLine();
 	    }
+
+	    in.close();
+
+	    setSaved(true);
+	}
+	catch (NumberFormatException ex) {
+	    throw new ZSDXException("Line " + lineNumber + ": Integer expected");
 	}
 	catch (ZSDXException ex) {
 	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
@@ -558,14 +581,19 @@ public class Tileset extends Observable implements ImageObserver {
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
 	    
 	    // print the tileset general info: "r g b"
-	    out.println(backgroundColor.getRed() + '\t' + backgroundColor.getGreen() + '\t' + backgroundColor.getBlue());
+	    out.print(backgroundColor.getRed());
+	    out.print('\t');
+	    out.print(backgroundColor.getGreen());
+	    out.print('\t');
+	    out.print(backgroundColor.getBlue());
+	    out.println();
 	    
 	    // print the tiles
-	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
-
-		for (int id: getTileIds()) {
-		    out.println(id + '\t' + getTile(id).toString());
-		}
+	    for (int id: getTileIds()) {
+		out.print(id);
+		out.print('\t');
+		out.print(getTile(id).toString());
+		out.println();
 	    }
 
 	    out.close();

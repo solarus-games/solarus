@@ -155,7 +155,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    try {
 		map.getTileSelection().setLayer(layer);
 	    }
-	    catch (MapException e) {
+	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Cannot change the layer: " + e.getMessage());
 	    }
 	}
@@ -174,7 +174,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    try {
 		map.getTileSelection().bringToFront();
 	    }
-	    catch (MapException e) {
+	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Cannot bring the tiles to front: " + e.getMessage());
 	    }
 	}
@@ -193,7 +193,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    try {
 		map.getTileSelection().bringToBack();
 	    }
-	    catch (MapException e) {
+	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Cannot bring the tiles to back: " + e.getMessage());
 	    }
 	}

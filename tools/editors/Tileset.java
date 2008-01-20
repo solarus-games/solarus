@@ -21,7 +21,7 @@ public class Tileset extends Observable implements ImageObserver {
     /**
      * Id of the tileset.
      */
-    private int tilesetId;
+    private String tilesetId;
 
     /**
      * Name of the tileset.
@@ -97,9 +97,9 @@ public class Tileset extends Observable implements ImageObserver {
 	tiles = new TreeMap<Integer,Tile>();
 
 	// compute an id and a name for this tileset
-	GameResourceList resourceList = GameResourceList.getInstance();
 	this.name = "New tileset";
-	this.tilesetId = resourceList.computeTilesetId();
+	Resource tilesetResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_TILESET);
+	this.tilesetId = tilesetResource.computeNewId();
 	reloadImage();
 
 	setSaved(true);
@@ -113,7 +113,7 @@ public class Tileset extends Observable implements ImageObserver {
      * @param tilesetId id of the tileset to load
      * @throws ZSDXException if the tileset could not be loaded
      */
-    public Tileset(int tilesetId) throws ZSDXException {
+    public Tileset(String tilesetId) throws ZSDXException {
 	this();
 	this.tilesetId = tilesetId;
 	load();
@@ -123,7 +123,7 @@ public class Tileset extends Observable implements ImageObserver {
      * Returns the id of the tileset.
      * @return the id of the tileset
      */
-    public int getId() {
+    public String getId() {
 	return tilesetId;
     }
 
@@ -505,8 +505,7 @@ public class Tileset extends Observable implements ImageObserver {
     }
     
     /**
-     * Loads the tileset from a file.
-     * @param tilesetFile the file to read
+     * Loads the tileset from its file.
      * @throws ZSDXException if the file could not be read
      */
     public void load() throws ZSDXException {
@@ -515,8 +514,8 @@ public class Tileset extends Observable implements ImageObserver {
 	try {
 
 	    // get the tileset name in the game resource database
-	    GameResourceList resourceList = GameResourceList.getInstance();
-	    setName(resourceList.getTilesetName(tilesetId));
+	    Resource tilesetResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_TILESET);
+	    setName(tilesetResource.getElementName(tilesetId));
 	    
 	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetId);
 	    BufferedReader in = new BufferedReader(new FileReader(tilesetFile));
@@ -601,9 +600,9 @@ public class Tileset extends Observable implements ImageObserver {
 	    setSaved(true);
 
 	    // also update the tileset name in the global resource list
-	    GameResourceList resourceList = GameResourceList.getInstance();
-	    resourceList.setTilesetName(tilesetId, name);
-	    resourceList.save();
+	    Resource tilesetResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_TILESET);
+	    tilesetResource.setElementName(tilesetId, name);
+	    ResourceDatabase.save();
 	}
 	catch (IOException ex) {
 	    throw new ZSDXException(ex.getMessage());

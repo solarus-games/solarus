@@ -17,6 +17,11 @@ public class KeyValue {
      * @param value the value
      */
     public KeyValue(String key, String value) {
+
+	if (key == null) {
+	    throw new NullPointerException("The key is null");
+	}
+
 	this.key = key;
 	this.value = value;
     }
@@ -51,7 +56,9 @@ public class KeyValue {
      * @return true if the two objects have the same key (the value is ignored)
      */
     public boolean equals(Object o) {
+
 	KeyValue keyValue = (KeyValue) o;
-	return key.equals(keyValue.getKey());
+
+	return keyValue != null && key.equals(keyValue.getKey());
     }
 }

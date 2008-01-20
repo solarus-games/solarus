@@ -385,7 +385,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	try {
 	    map.getTileSelection().removeFromMap();
 	}
-	catch (MapException e) {
+	catch (ZSDXException e) {
 	    WindowTools.errorDialog("Cannot remove the tiles: " + e.getMessage());
 	}
     }
@@ -452,7 +452,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    startResizingTile(); // let the user resize the tile until the mouse is released
 	    repaint();
 	}
-	catch (MapException e) {
+	catch (ZSDXException e) {
 	    // should never happen (adding a tile doesn't throw any exception)
 	    WindowTools.errorDialog("Cannot add the tile: " + e.getMessage());
 	}
@@ -611,8 +611,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		try {
 		    map.setTilePosition(selectedTileOnMap, xA, yA, xB, yB);
 		}
-		catch (MapException e) {
-		    // should not happen as long as setPositionInMap() checks only
+		catch (ZSDXException e) {
+		    // should not happen as long as setTilePosition() checks only
 		    // the width and the height of the rectangle
 		    WindowTools.errorDialog("Cannot resize the tile: " + e.getMessage());
 		}
@@ -642,10 +642,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// we restore the tile at its initial size
 		map.setTilePosition(tile, fixedLocation);
 		
-		// we make the resizing in one step,  this time saving itinto the undo/redo history
+		// we make the resizing in one step, this time saving it into the undo/redo history
 		map.getHistory().doAction(new ActionResizeTile(map, tile, finalPosition));
 	    }
-	    catch (MapException e) {
+	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Cannot resize the tile: " + e.getMessage());
 	    }
 	}
@@ -726,7 +726,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    try {
 		map.getHistory().doAction(new ActionMoveTiles(map, tiles, total_dx, total_dy));
 	    }
-	    catch (MapException e) {
+	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Cannot move the tiles: " + e.getMessage());
 	    }
 	}

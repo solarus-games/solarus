@@ -10,11 +10,6 @@ import java.util.*;
  */
 public class ResourceDatabase extends Observable {
 
-    /**
-     * The only instance.
-     */
-    private static ResourceDatabase instance;
-
     // constants to identify the different kinds of resources
     public static final int RESOURCE_MAP = 0;
     public static final int RESOURCE_TILESET = 1;
@@ -27,17 +22,13 @@ public class ResourceDatabase extends Observable {
     private Resource[] resources;
 
     /**
-     * Creates the list of the game resources from the file game.zsd.
+     * The only instance.
      */
-    public ResourceDatabase() {
+    private static final ResourceDatabase instance = new ResourceDatabase();
 
+    static {
 	try {
-	    resources = new Resource[RESOURCE_NB];
-
-	    resources[RESOURCE_MAP] = new Resource(true);
-	    resources[RESOURCE_TILESET] = new Resource(true);
-	    resources[RESOURCE_MUSIC] = new Resource(false);
-	    load();
+	    instance.load();
 	}
 	catch (ZSDXException ex) {
 	    System.err.println("Cannot read the game resource database: " + ex.getMessage());
@@ -46,23 +37,41 @@ public class ResourceDatabase extends Observable {
     }
 
     /**
-     * Returns the only instance.
+     * Creates the list of the game resources from the file game.zsd.
+     */
+    public ResourceDatabase() {
+
+	resources = new Resource[RESOURCE_NB];
+
+	resources[RESOURCE_MAP] = new Resource(true);
+	resources[RESOURCE_TILESET] = new Resource(true);
+	resources[RESOURCE_MUSIC] = new Resource(false);
+    }
+
+    /**
+     * Returns the only instance. All static functions use this instance.
+     * This function is useful for the MVC system.
      * @return the only instance
      */
     public static ResourceDatabase getInstance() {
 
-	if (instance == null) {
-	    instance = new ResourceDatabase();
-	}
-
 	return instance;
+    }
+
+    /**
+     * Returns a resource.
+     * @param resourceType type of the resource to get: RESOURCE_MAP, RESOURCE_MUSIC, etc.
+     * @return the resource of this type
+     */
+    public static Resource getResource(int resourceType) {
+	return getInstance().resources[resourceType];
     }
 
     /**
      * Reads the file game.zsd, i.e. the list of the game resources and their name.
      * @throws ZSDXException if the file could not be read or contains an error
      */
-    public void load() throws ZSDXException {
+    public static void load() throws ZSDXException {
 	
 	int lineNumber = 0;
 
@@ -70,8 +79,8 @@ public class ResourceDatabase extends Observable {
 	    File dbFile = Configuration.getInstance().getResourceDatabaseFile();
 	    BufferedReader buff = new BufferedReader(new FileReader(dbFile));
 
-	    for (Resource resource: resources) {
-		resource.clear();
+	    for (int i = 0; i < RESOURCE_NB; i++) {
+		getResource(i).clear();
 	    }
 
 	    String line = buff.readLine();
@@ -91,7 +100,7 @@ public class ResourceDatabase extends Observable {
 		    
 		    String id = tokenizer.nextToken();
 		    String name = tokenizer.nextToken();
-		    resources[resourceType].setElementName(id, name);
+		    getResource(resourceType).setElementName(id, name);
 		}
 
 		line = buff.readLine();
@@ -116,7 +125,7 @@ public class ResourceDatabase extends Observable {
      * Saves the list of the game resources and their names into the file game.zsd.
      * @throws ZSDXException if the file could not be written
      */
-    public void save() throws ZSDXException {
+    public static void save() throws ZSDXException {
 
 	try {
 	    
@@ -126,11 +135,12 @@ public class ResourceDatabase extends Observable {
 	    
 	    // save each resource
 	    for (int i = 0; i < RESOURCE_NB; i++) {
-		it = resources[i].iterator();
+		Resource resource = getResource(i);
+		it = resource.iterator();
 
 		while (it.hasNext()) {
 		    String id = it.next();
-		    String name = resources[i].getElementName(id);
+		    String name = resource.getElementName(id);
 		    out.print(i);
 		    out.print('\t');
 		    out.print(id);

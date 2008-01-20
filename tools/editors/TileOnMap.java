@@ -55,7 +55,7 @@ public class TileOnMap extends Observable {
      * @param y y position of the tile on the map
      */
     public TileOnMap(Tileset tileset, int tileId, int x, int y) {
-	this(tileset, tileId, x, y, tileset.getTile(tileId).getDefaultLayer(), 1, 1);
+	this(tileset, tileId, x, y, 1, 1, tileset.getTile(tileId).getDefaultLayer());
     }
 
     /**

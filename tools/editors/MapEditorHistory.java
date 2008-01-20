@@ -49,7 +49,7 @@ public class MapEditorHistory extends Observable {
      * @param action the action to execute
      * @throws MapException if an error occurs while undoing the action
      */
-    public void doAction(MapEditorAction action) throws MapException {
+    public void doAction(MapEditorAction action) throws ZSDXException {
 
 	action.execute();
 	actions.setSize(nextActionIndex + 1);
@@ -75,7 +75,7 @@ public class MapEditorHistory extends Observable {
      * @throws MapException if there is no action to undo or an error
      * occurs while undoing the action
      */
-    public void undo() throws MapException {
+    public void undo() throws ZSDXException {
 	
 	if (!canUndo()) {
 	    throw new MapException("No further undo information");
@@ -95,7 +95,7 @@ public class MapEditorHistory extends Observable {
      * @throws MapException if there is no action to redo or an error
      * occurs while redoing the action
      */
-    public void redo() throws MapException {
+    public void redo() throws ZSDXException {
 
 	if (!canRedo()) {
 	    throw new MapException("No further redo information");

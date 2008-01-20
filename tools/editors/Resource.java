@@ -81,10 +81,14 @@ public class Resource extends Observable {
      * database, it is added.
      * @param id id of an element
      * @return the name of this element
-     * @throws ZSDXException if the id is not allowed
+     * @throws ZSDXException if the id is not valid
      */
     public void setElementName(String id, String name) throws ZSDXException {
-
+	
+	if (id.length() == 0) {
+	    throw new ZSDXException("Empty id for element '" + name);
+	}
+	
 	if (autoIncrementId) {
 	    
 	    try {
@@ -122,13 +126,13 @@ public class Resource extends Observable {
      * Computes an id for a new element. This makes sure the id is not used yet.
      * @return an available id you can assign to a new element
      */
-    public int computeNewId() {
+    public String computeNewId() {
 
 	maxId++;
 
 	setChanged();
 	notifyObservers();
 
-	return maxId;
+	return Integer.toString(maxId);
     }
 }

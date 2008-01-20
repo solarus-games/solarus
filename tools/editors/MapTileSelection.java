@@ -127,7 +127,7 @@ public class MapTileSelection extends Observable implements Iterable {
      * Removes the selected tiles from the map.
      * If there is no tile selecting, nothing is done.
      */
-    public void removeFromMap() throws MapException {
+    public void removeFromMap() throws ZSDXException {
 
 	if (tiles.size() > 0) {
 	    map.getHistory().doAction(new ActionRemoveTiles(map, tiles));
@@ -194,7 +194,7 @@ public class MapTileSelection extends Observable implements Iterable {
      * Changes the layer of the selected tiles.
      * @param layer the new layer
      */
-    public void setLayer(int layer) throws MapException {
+    public void setLayer(int layer) throws ZSDXException {
 
 	map.getHistory().doAction(new ActionChangeLayer(map, tiles, layer));
     }
@@ -202,7 +202,7 @@ public class MapTileSelection extends Observable implements Iterable {
     /**
      * Brings the selected tiles to the front in their layer.
      */
-    public void bringToFront() throws MapException {
+    public void bringToFront() throws ZSDXException {
 
 	map.getHistory().doAction(new ActionBringToFront(map, tiles));
     }
@@ -210,7 +210,7 @@ public class MapTileSelection extends Observable implements Iterable {
     /**
      * Brings the selected tiles to the back in their layer.
      */
-    public void bringToBack() throws MapException {
+    public void bringToBack() throws ZSDXException {
 
 	map.getHistory().doAction(new ActionBringToBack(map, tiles));
     }

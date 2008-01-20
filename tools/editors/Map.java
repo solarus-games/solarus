@@ -13,7 +13,7 @@ public class Map extends Observable {
     /**
      * Id of the map.
      */
-    private int mapId;
+    private String mapId;
 
     /**
      * Name of the map.
@@ -32,9 +32,9 @@ public class Map extends Observable {
     private String musicId;
 
     /**
-     * Id of the tileset of the map (or -1 if no tileset is set).
+     * Id of the tileset of the map (or an empty string if no tileset is set).
      */
-    private int tilesetId;
+    private String tilesetId;
 
     /**
      * Tileset of the map.
@@ -73,7 +73,7 @@ public class Map extends Observable {
 
 	this.size = new Dimension(320, 240);
 	this.tileset = null;
-	this.tilesetId = -1;
+	this.tilesetId = "";
 	this.musicId = Music.noneId;
 
 	this.allTiles = new TileOnMapList[3];
@@ -85,9 +85,9 @@ public class Map extends Observable {
 	this.history = new MapEditorHistory(this);
 
 	// compute an id and a name for this map
-	GameResourceList resourceList = GameResourceList.getInstance();
 	this.name = "New map";
-	this.mapId = resourceList.computeTilesetId();
+	Resource mapResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_MAP);
+	this.mapId = mapResource.computeNewId();
 
 	setChanged();
 	notifyObservers();
@@ -98,7 +98,7 @@ public class Map extends Observable {
      * @param mapId id of the map to load
      * @throws ZSDXException if the map could not be loaded
      */
-    public Map(int mapId) throws ZSDXException {
+    public Map(String mapId) throws ZSDXException {
 	this();
 	this.mapId = mapId;
 	load();
@@ -108,7 +108,7 @@ public class Map extends Observable {
      * Returns the id of the map.
      * @return the id of the map
      */
-    public int getId() {
+    public String getId() {
 	return mapId;
     }
 
@@ -199,27 +199,27 @@ public class Map extends Observable {
 
     /**
      * Returns the id of the tileset associated to this map.
-     * @return the tileset id (or -1 if no tileset is set)
+     * @return the tileset id (or an empty string if no tileset is set)
      */
-    public int getTilesetId() {
+    public String getTilesetId() {
 	return tilesetId;
     }
 
     /**
      * Changes the tileset of the map.
-     * @param tilesetId id of the new tileset, or -1 to set no tileset
+     * @param tilesetId id of the new tileset, or an empty string to set no tileset
      * @return true if the tileset was loaded successfuly, false if some tiles could
      * not be loaded in this tileset
-     * @throws ZSDXException if this tileset could be applied
+     * @throws MapException if this tileset could be applied
      */
-    public boolean setTileset(int tilesetId) throws ZSDXException {
+    public boolean setTileset(String tilesetId) throws ZSDXException {
 
 	this.badTiles = false;
 
 	// if the tileset is removed
-	if (tilesetId == -1 && this.tilesetId != -1) {
+	if (tilesetId.length() == 0 && this.tilesetId.length() != 0) {
 
-	    this.tilesetId = -1;
+	    this.tilesetId = tilesetId;
 	    this.tileset = null;
 
 	    setChanged();
@@ -227,7 +227,7 @@ public class Map extends Observable {
 	}
 
 	// if the tileset is changed
-	else if (tilesetId != this.tilesetId) {
+	else if (!tilesetId.equals(this.tilesetId)) {
 	
 	    this.tileset = new Tileset(tilesetId);
 
@@ -587,8 +587,7 @@ public class Map extends Observable {
     }
 
     /**
-     * Loads the map from a file.
-     * @param mapFile the file to read
+     * Loads the map from its file.
      * @throws ZSDXException if the file could not be read
      */
     public void load() throws ZSDXException {
@@ -597,8 +596,8 @@ public class Map extends Observable {
 	try {
 
 	    // get the map name in the game resource database
-	    GameResourceList resourceList = GameResourceList.getInstance();
-	    setName(resourceList.getMapName(mapId));
+	    Resource mapResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_MAP);
+	    setName(mapResource.getElementName(mapId));
 	    
 	    File mapFile = Configuration.getInstance().getMapFile(mapId);
 	    BufferedReader in = new BufferedReader(new FileReader(mapFile));
@@ -617,7 +616,7 @@ public class Map extends Observable {
 	    int height = Integer.parseInt(tokenizer.nextToken());
 
 	    setSize(new Dimension(width, height));
-	    setTileset(Integer.parseInt(tokenizer.nextToken()));
+	    setTileset(tokenizer.nextToken());
 	    setMusic(tokenizer.nextToken());
 
 	    // read the map entities
@@ -663,7 +662,7 @@ public class Map extends Observable {
     public void save() throws ZSDXException {
 
 	// check that a tileset is selected
-	if (tilesetId == -1) {
+	if (tilesetId.length() == 0) {
 	    throw new ZSDXException("No tileset is selected");
 	}
 
@@ -695,11 +694,10 @@ public class Map extends Observable {
 
 	    history.setSaved();
 
-
 	    // also update the map name in the global resource list
-	    GameResourceList resourceList = GameResourceList.getInstance();
-	    resourceList.setMapName(mapId, name);
-	    resourceList.save();
+	    Resource mapResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_MAP);
+	    mapResource.setElementName(mapId, name);
+	    ResourceDatabase.save();
 	}
 	catch (IOException ex) {
 	    throw new ZSDXException(ex.getMessage());

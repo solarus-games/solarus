@@ -237,8 +237,8 @@ public class TilesetEditorWindow extends JFrame {
 		Tileset tileset = new Tileset();
 		setTileset(tileset);
 	    }
-	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot create the tileset: " + e.getMessage());
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
 	    }
 	}
     }
@@ -255,13 +255,13 @@ public class TilesetEditorWindow extends JFrame {
 		return;
 	    }
 
-	    TilesetChooserDialog dialog = new TilesetChooserDialog();
+	    ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceDatabase.RESOURCE_TILESET);
 	    dialog.setLocationRelativeTo(TilesetEditorWindow.this);
 	    dialog.pack();
 	    dialog.setVisible(true);
-	    int tilesetId = dialog.getTilesetId();
+	    String tilesetId = dialog.getSelectedId();
 
-	    if (tilesetId == -1) {
+	    if (tilesetId.length() == 0) {
 		return;
 	    }
 
@@ -269,9 +269,9 @@ public class TilesetEditorWindow extends JFrame {
 		Tileset tileset = new Tileset(tilesetId);
 		setTileset(tileset);
 	    }
-	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Could not load the tileset: " + e.getMessage());
-	    } 
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Could not load the tileset: " + ex.getMessage());
+	    }
 	}
     }
 
@@ -285,8 +285,8 @@ public class TilesetEditorWindow extends JFrame {
 	    try {
 		tileset.save();
 	    }
-	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Could not save the tileset: " + e.getMessage());
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Could not save the tileset: " + ex.getMessage());
 	    }
 	}
     }

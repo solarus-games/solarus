@@ -107,14 +107,14 @@ public class Configuration extends Observable {
      * @param tilesetId id of a tileset
      * @return the corresponding tileset file
      */
-    public File getTilesetFile(int tilesetId) {
+    public File getTilesetFile(String tilesetId) {
 	
 	NumberFormat nf = NumberFormat.getInstance();
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
 	return new File(getTilesetPath() + File.separator +
-			"tileset" + nf.format(tilesetId) + ".zsd");
+			"tileset" + nf.format(Integer.parseInt(tilesetId)) + ".zsd");
     }
 
     /**
@@ -122,14 +122,14 @@ public class Configuration extends Observable {
      * @param tilesetId id of a tileset
      * @return the corresponding tileset file
      */
-    public File getTilesetImageFile(int tilesetId) {
+    public File getTilesetImageFile(String tilesetId) {
 	
 	NumberFormat nf = NumberFormat.getInstance();
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
 	return new File(getImagePath() + File.separator + "tilesets" + File.separator +
-			"tileset" + nf.format(tilesetId) + ".png");
+			"tileset" + nf.format(Integer.parseInt(tilesetId)) + ".png");
     }
 
     /**
@@ -145,14 +145,14 @@ public class Configuration extends Observable {
      * @param mapId id of a map
      * @return the file corresponding to this id
      */
-    public File getMapFile(int mapId) {
+    public File getMapFile(String mapId) {
 
 	NumberFormat nf = NumberFormat.getInstance();
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
-	return new File(getMapPath() + File.separator + "maps" + File.separator +
-			"map" + nf.format(mapId) + ".zsd");
+	return new File(getMapPath() + File.separator +
+			"map" + nf.format(Integer.parseInt(mapId)) + ".zsd");
     }
 
     /**

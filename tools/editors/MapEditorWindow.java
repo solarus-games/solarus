@@ -28,7 +28,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 
     // menu items memorized to enable them later
     private JMenuItem menuItemSave;
-    private JMenuItem menuItemGenerate;
     private JMenuItem menuItemUndo;
     private JMenuItem menuItemRedo;
 
@@ -51,9 +50,9 @@ public class MapEditorWindow extends JFrame implements Observer {
 
 	mapPropertiesView = new MapPropertiesView();
 	mapPropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
-	mapPropertiesView.setMinimumSize(new Dimension(300, 200));
-	mapPropertiesView.setPreferredSize(new Dimension(300, 200));
-	mapPropertiesView.setMaximumSize(new Dimension(300, 200));
+	mapPropertiesView.setMinimumSize(new Dimension(300, 210));
+	mapPropertiesView.setPreferredSize(new Dimension(300, 210));
+	mapPropertiesView.setMaximumSize(new Dimension(300, 210));
 
 	tilePicker = new TilePicker();
 	tilePicker.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -159,16 +158,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 
 	menu.addSeparator();
 
-	menuItemGenerate = new JMenuItem("Generate C++");
-	menuItemGenerate.setMnemonic(KeyEvent.VK_G);
-	menuItemGenerate.getAccessibleContext().setAccessibleDescription("Generate the C++ code for the current map");
-	menuItemGenerate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
-	menuItemGenerate.addActionListener(new ActionListenerGenerate());
-	menuItemGenerate.setEnabled(false);
-	menu.add(menuItemGenerate);
-
-	menu.addSeparator();
-
 	item = new JMenuItem("Quit");
 	item.setMnemonic(KeyEvent.VK_Q);
 	item.getAccessibleContext().setAccessibleDescription("Exit the map editor");
@@ -238,7 +227,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 
 	// enable the menu items
 	menuItemSave.setEnabled(true);
-	menuItemGenerate.setEnabled(true);
 
 	// notify the views
 	mapPropertiesView.setMap(map);
@@ -302,30 +290,12 @@ public class MapEditorWindow extends JFrame implements Observer {
 		return;
 	    }
 
-	    // ask the tileset name
-	    String mapName = JOptionPane.showInputDialog(MapEditorWindow.this,
-						      "Name of your new map (for example 'LinkHouse'):",
-						      "Map name",
-						      JOptionPane.QUESTION_MESSAGE);
-
-	    if (mapName == null || mapName.length() == 0) {
-		return;
+	    try {
+		Map map = new Map();
+		setMap(map);
 	    }
-
-	    // check that this map doesn't exist already
-	    mapFile = Configuration.getInstance().getMapFile(mapName);
-
-	    if (mapFile.exists()) {
-		WindowTools.errorDialog("This map already exists.");
-	    }
-	    else {
-		try {
-		    map = new Map(mapName);
-		    setMap(map);
-		}
-		catch (MapException e) {
-		    WindowTools.errorDialog("Cannot create the map: " + e.getMessage());
-		}
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Cannot create the map: " + ex.getMessage());
 	    }
 	}
     }
@@ -342,30 +312,26 @@ public class MapEditorWindow extends JFrame implements Observer {
 		return;
 	    }
 
-	    MapChooserDialog dialog = new MapChooserDialog();
+	    ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceDatabase.RESOURCE_MAP);
 	    dialog.setLocationRelativeTo(MapEditorWindow.this);
 	    dialog.pack();
 	    dialog.setVisible(true);
-	    String mapName = dialog.getMapName();
+	    String mapId = dialog.getSelectedId();
 
-	    if (mapName == null) {
+	    if (mapId.length() == 0) {
 		return;
 	    }
 
 	    try {
-		mapFile = Configuration.getInstance().getMapFile(mapName);
-		Map map = Map.load(mapFile);
+		Map map = new Map(mapId);
 		
 		if (map.badTiles()) {
 		    WindowTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
 		}
 		setMap(map);
 	    }
-	    catch (IOException e) {
-		WindowTools.errorDialog("Could not open the map file: " + e.getMessage());
-	    }
-	    catch (MapException e) {
-		WindowTools.errorDialog("Could not load the map: " + e.getMessage());
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Could not load the map: " + ex.getMessage());
 	    }
 	}
     }
@@ -379,32 +345,10 @@ public class MapEditorWindow extends JFrame implements Observer {
 	public void actionPerformed(ActionEvent ev) {
 	    
 	    try {
-		Map.save(mapFile, map);
+		map.save();
 	    }
-	    catch (IOException e) {
-		WindowTools.errorDialog("Could not save the map: " + e.getMessage());
-	    }
-	}
-    }
-
-    /**
-     * Action performed when the user clicks on Map > Generate C++.
-     * Generates the C++ code for the current map.
-     */
-    private class ActionListenerGenerate implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {
-	    MapCodeGenerator generator = new MapCodeGenerator();
-	    
-	    try {
-		generator.generate(map);
-		JOptionPane.showMessageDialog(MapEditorWindow.this,
-					      "Map code generated!",
-					      "Done",
-					      JOptionPane.INFORMATION_MESSAGE);
-	    }
-	    catch (MapException e) {
-		WindowTools.errorDialog("Could not generate the C++ code: " + e.getMessage());
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Could not save the map: " + ex.getMessage());
 	    }
 	}
     }
@@ -419,8 +363,8 @@ public class MapEditorWindow extends JFrame implements Observer {
 	    try {
 		map.getHistory().undo();
 	    }
-	    catch (MapException e) {
-		WindowTools.errorDialog("Cannot undo: " + e.getMessage());
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Cannot undo: " + ex.getMessage());
 	    }
 	}
     }
@@ -435,8 +379,8 @@ public class MapEditorWindow extends JFrame implements Observer {
 	    try {
 		map.getHistory().redo();
 	    }
-	    catch (MapException e) {
-		WindowTools.errorDialog("Cannot redo: " + e.getMessage());
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Cannot redo: " + ex.getMessage());
 	    }
 	}
     }

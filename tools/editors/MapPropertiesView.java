@@ -18,7 +18,8 @@ public class MapPropertiesView extends JPanel implements Observer {
     private Map map;
 
     // components
-    private JLabel mapNameView;
+    private JLabel mapIdView;
+    private MapNameView mapNameView;
     private JLabel mapNbTilesView;
     private MapSizeView mapSizeView;
     private MapTilesetView mapTilesetView;
@@ -37,9 +38,13 @@ public class MapPropertiesView extends JPanel implements Observer {
 	constraints.insets = new Insets(5, 5, 5, 5); // margins
 	constraints.anchor = GridBagConstraints.LINE_START;
 
-	// map name
+	// map id
 	constraints.gridx = 0;
 	constraints.gridy = 0;
+	add(new JLabel("Map id"), constraints);
+
+	// map name
+	constraints.gridy++;
 	add(new JLabel("Map name"), constraints);
 
 	// number of tiles
@@ -61,7 +66,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 	constraints.weightx = 1;
 	constraints.gridx = 1;
 	constraints.gridy = 0;
-	mapNameView = new JLabel();
+	mapIdView = new JLabel();
+	add(mapIdView, constraints);
+
+       	constraints.gridy++;
+	mapNameView = new MapNameView();
 	add(mapNameView, constraints);
 
        	constraints.gridy++;
@@ -99,7 +108,8 @@ public class MapPropertiesView extends JPanel implements Observer {
      * This function is called when the map or the configuration is changed.
      */
     public void update(Observable o, Object obj) {
-	mapNameView.setText(map.getName());
+	mapIdView.setText(map.getId());
+	mapNameView.update(o);
 	mapNbTilesView.setText(Integer.toString(map.getNbTiles()));
 	mapSizeView.update(o);
 	mapTilesetView.update(o);
@@ -108,6 +118,69 @@ public class MapPropertiesView extends JPanel implements Observer {
 
     // components for the editable properties
 
+    /**
+     * Component to change the name of the map.
+     */
+    private class MapNameView extends JPanel {
+
+	// subcomponents
+	private JTextField textFieldName;
+	private JButton buttonSet;	
+
+	/**
+	 * Constructor.
+	 */
+	public MapNameView() {
+	    super();
+	    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+	    textFieldName = new JTextField(10);
+
+	    Dimension size = new Dimension(120, 25);
+	    textFieldName.setMinimumSize(size);
+
+	    buttonSet = new JButton("Set");
+
+	    textFieldName.setEnabled(false);
+	    buttonSet.setEnabled(false);
+
+	    ActionListener listener = new ActionListener() {
+		    public void actionPerformed(ActionEvent ev) {
+
+			try {
+			    String name = textFieldName.getText();
+			    map.getHistory().doAction(new ActionRenameMap(map, name));
+			}
+			catch (ZSDXException ex) {
+			    WindowTools.errorDialog("Cannot change the map name: " + ex.getMessage());
+			}
+			update(map);
+		    }
+		};
+
+	    buttonSet.addActionListener(listener);
+	    textFieldName.addActionListener(listener);
+
+	    add(textFieldName);
+	    add(Box.createRigidArea(new Dimension(5, 0)));
+	    add(buttonSet);
+	}
+
+	/**
+	 * This function is called when the map or the configuration is changed.
+	 * If it is the map, the component is updated.
+	 */
+	public void update(Observable o) {
+
+	    if (o instanceof Map) {
+		textFieldName.setEnabled(true);
+		buttonSet.setEnabled(true);
+		
+		textFieldName.setText(map.getName());
+	    }
+	}
+    }
+    
     /**
      * Component to change the map size.
      */
@@ -151,11 +224,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 				map.getHistory().doAction(new ActionChangeMapSize(map, size));
 			    }
 			}
-			catch (NumberFormatException e) {
+			catch (NumberFormatException ex) {
 
 			}
-			catch (MapException e) {
-			    WindowTools.errorDialog("Cannot change the map size: " + e.getMessage());
+			catch (ZSDXException ex) {
+			    WindowTools.errorDialog("Cannot change the map size: " + ex.getMessage());
 			}
 			update(map);
 		    }
@@ -194,14 +267,14 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the tileset associated to the map.
      */
-    private class MapTilesetView extends TilesetChooser implements ActionListener {
+    private class MapTilesetView extends ResourceChooser implements ActionListener {
 
 	/**
 	 * Constructor.
 	 */
 	public MapTilesetView() {
 
-	    super(true);
+	    super(ResourceDatabase.RESOURCE_TILESET, true);
 	    setEnabled(false);
 	    addActionListener(this);
 	}
@@ -215,10 +288,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    if (o instanceof Map) {
 
 		setEnabled(true);
-		int tilesetId = map.getTilesetId();
-		int selectedId = getSelectedTilesetId();
-		if (tilesetId != selectedId) {
-		    setSelectedTilesetId(tilesetId);
+		String currentTilesetId = map.getTilesetId();
+		String selectedTilesetId = getSelectedId();
+		
+		if (!selectedTilesetId.equals(currentTilesetId)) {
+		    setSelectedId(currentTilesetId);
 		}
 	    }
 	}
@@ -232,20 +306,20 @@ public class MapPropertiesView extends JPanel implements Observer {
 		return;
 	    }
 
-	    int selectedId = getSelectedTilesetId();
-	    int currentId = map.getTilesetId();
+	    String selectedTilesetId = getSelectedId();
+	    String currentTilesetId = map.getTilesetId();
 	    
-	    if (selectedId != currentId) {
+	    if (!currentTilesetId.equals(selectedTilesetId)) {
 		
 		try {
-		    map.getHistory().doAction(new ActionChangeTileset(map, tilesetId));
+		    map.getHistory().doAction(new ActionChangeTileset(map, selectedTilesetId));
 			
 		    if (map.badTiles()) {
-			WindowTools.errorDialog("Some tiles of the map have been removed because they don't exist in this tileset!");
+			WindowTools.warningDialog("Some tiles of the map have been removed because they don't exist in this tileset.");
 		    }
 		}
-		catch (MapException e) {
-		    System.out.println("Cannot load the tileset '" + tilesetName + "': " + e.getMessage());		
+		catch (ZSDXException ex) {
+		    System.out.println("Cannot load the tileset '" + selectedTilesetId + "': " + ex.getMessage());		
 		}
 	    }
 	}
@@ -254,7 +328,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the tileset associated to the map.
      */
-    private class MapMusicView extends JComboBox implements ActionListener {
+    private class MapMusicView extends MusicChooser implements ActionListener {
 
 	/**
 	 * Constructor.
@@ -270,39 +344,23 @@ public class MapPropertiesView extends JPanel implements Observer {
 	/**
 	 * This function is called when the map or the configuration is changed.
 	 * If it is the configuration, the music list is reloaded using ZSDX root path.
-	 * If it is the map, then the selection is updated.
+	 * Then the selection is updated.
 	 */
 	public void update(Observable o) {
 
 	    if (o instanceof Configuration) {
-
-		removeAllItems();
-		addItem(Map.musicNone);
-		addItem(Map.musicUnchanged);
-
-		String musicPath = Configuration.getInstance().getMusicPath();
-		File[] musicFiles = FileTools.getFilesWithExtension(musicPath, "it");
-		
-		if (musicFiles == null) {
-		    return;
-		}
-
-		for (int i = 0; i < musicFiles.length; i++) {
-		    addItem(FileTools.getFileNameWithoutExtension(musicFiles[i]));
-		}
+		super.update(o, null);
 	    }
 
-	    // select the music
 	    if (map != null) {
-
 		setEnabled(true);
-		String music = map.getMusic();
+
+		// select the music
+		String selectedMusic = getSelectedId();
+		String currentMusic = map.getMusic();
 		
-		if (music != null) {
-		    setSelectedItem(music);
-		}
-		else if (getItemCount() > 0) {
-		    setSelectedIndex(0);
+		if (!selectedMusic.equals(currentMusic)) {
+		    setSelectedId(currentMusic);
 		}
 	    }
 	}
@@ -316,15 +374,15 @@ public class MapPropertiesView extends JPanel implements Observer {
 		return;
 	    }
 
-	    String music = (String) getSelectedItem();
+	    String music = getSelectedId();
 	    
-	    if (music != null && !music.equals(map.getMusic())) {
+	    if (!music.equals(map.getMusic())) {
 
 		try {
 		    map.getHistory().doAction(new ActionChangeMusic(map, music));
 		}
-		catch (MapException e) {
-		    WindowTools.errorDialog("Cannot change the background music: " + e.getMessage());
+		catch (ZSDXException ex) {
+		    WindowTools.errorDialog("Cannot change the background music: " + ex.getMessage());
 		}
 	    }
 	}

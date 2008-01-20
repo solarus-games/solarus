@@ -13,13 +13,12 @@ public class ActionRenameMap extends MapEditorAction {
     /**
      * Creates an action to change a map name.
      * @param map the map
-     * @param nameBefore old name of the map
-     * @param nameAfter new name of the map
+     * @param name new name of the map
      */
-    public ActionRenameMap(Map map, String nameBefore, String nameAfter) {
+    public ActionRenameMap(Map map, String name) {
 	super(map);
-	this.nameBefore = nameBefore;
-	this.nameAfter = nameAfter;
+	this.nameBefore = map.getName();
+	this.nameAfter = name;
     }
 
     /**

@@ -188,6 +188,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	    update(tileset.getSelectedTile(), null);
 	    
 	    // load the tileset's image
+	    tileset.reloadImage();
 	    update(tileset, null);
 	}
 

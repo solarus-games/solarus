@@ -7,8 +7,8 @@ import editors.*;
  */
 public class ActionChangeTileset extends MapEditorAction {
 
-    private int tilesetIdBefore;
-    private int tilesetIdAfter;
+    private String tilesetIdBefore;
+    private String tilesetIdAfter;
     private TileOnMapList[] allTilesBefore;
     
     /**
@@ -16,7 +16,7 @@ public class ActionChangeTileset extends MapEditorAction {
      * @param map the map
      * @param tilesetId id of the new tileset
      */
-    public ActionChangeTileset(Map map, int tilesetId) {
+    public ActionChangeTileset(Map map, String tilesetId) {
 	super(map);
 
 	this.tilesetIdAfter = tilesetId;
@@ -33,14 +33,14 @@ public class ActionChangeTileset extends MapEditorAction {
     /**
      * Executes the action.
      */
-    public void execute() throws MapException {
+    public void execute() throws ZSDXException {
 	map.setTileset(tilesetIdAfter);
     }
 
     /**
      * Undoes the action.
      */
-    public void undo() throws MapException {
+    public void undo() throws ZSDXException {
 	map.setTileset(tilesetIdBefore);
 	map.setAllTiles(allTilesBefore);
     }

@@ -23,11 +23,11 @@ public abstract class MapEditorAction {
     /**
      * Executes the action.
      */
-    public abstract void execute() throws MapException;
+    public abstract void execute() throws ZSDXException;
 
     /**
      * Undoes the action.
      */
-    public abstract void undo() throws MapException;
+    public abstract void undo() throws ZSDXException;
 
 }

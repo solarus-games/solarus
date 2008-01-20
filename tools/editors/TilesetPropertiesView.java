@@ -88,7 +88,7 @@ public class TilesetPropertiesView extends JPanel implements Observer {
      * This function is called when the tileset is changed.
      */
     public void update(Observable o, Object obj) {
-	tilesetIdView.setText(Integer.toString(tileset.getId()));
+	tilesetIdView.setText(tileset.getId());
 	tilesetNameView.update(o);
 	tilesetNbTilesView.setText(Integer.toString(tileset.getNbTiles()));
 	tilesetBackgroundColorView.update(o);
@@ -152,7 +152,7 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	    }
 	}
     }
-	
+    
     /**
      * Component to change the background color of the tileset.
      */

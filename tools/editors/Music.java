@@ -23,6 +23,6 @@ public class Music {
     /**
      * String indicating that the music is unchanged.
      */
-    public static final String unchangedName = "<Same as previous map>";
+    public static final String unchangedName = "<Same as before>";
 
 }

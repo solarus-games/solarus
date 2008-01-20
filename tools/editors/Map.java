@@ -76,14 +76,8 @@ public class Map extends Observable {
 	this.tilesetId = "";
 	this.musicId = Music.noneId;
 
-	this.allTiles = new TileOnMapList[3];
-	for (int i = 0; i < 3; i++) {
-	    this.allTiles[i] = new TileOnMapList();
-	}
-
-	this.tileSelection = new MapTileSelection(this);
-	this.history = new MapEditorHistory(this);
-
+	initialize();
+	
 	// compute an id and a name for this map
 	this.name = "New map";
 	Resource mapResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_MAP);
@@ -99,9 +93,22 @@ public class Map extends Observable {
      * @throws ZSDXException if the map could not be loaded
      */
     public Map(String mapId) throws ZSDXException {
-	this();
 	this.mapId = mapId;
+	initialize();
 	load();
+    }
+	
+    /**
+     * Initializes the object.
+     */
+    private void initialize() {
+	this.allTiles = new TileOnMapList[3];
+	for (int i = 0; i < Tile.LAYER_NB; i++) {
+	    this.allTiles[i] = new TileOnMapList();
+	}
+
+	this.tileSelection = new MapTileSelection(this);
+	this.history = new MapEditorHistory(this);
     }
 
     /**

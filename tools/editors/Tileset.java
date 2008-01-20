@@ -92,9 +92,9 @@ public class Tileset extends Observable implements ImageObserver {
 	this.name = "New tileset";
 	this.backgroundColor = Color.BLACK;
 	this.isSaved = false;
-	this.selectedTileId = 0; // none
 	this.maxId = 0;
-	tiles = new TreeMap<Integer,Tile>();
+	this.selectedTileId = 0; // none
+	this.tiles = new TreeMap<Integer,Tile>();
 
 	// compute an id and a name for this tileset
 	this.name = "New tileset";
@@ -114,7 +114,8 @@ public class Tileset extends Observable implements ImageObserver {
      * @throws ZSDXException if the tileset could not be loaded
      */
     public Tileset(String tilesetId) throws ZSDXException {
-	this();
+	this.selectedTileId = 0; // none
+	this.tiles = new TreeMap<Integer,Tile>();
 	this.tilesetId = tilesetId;
 	load();
     }

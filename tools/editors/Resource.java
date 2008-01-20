@@ -84,11 +84,11 @@ public class Resource extends Observable {
      * @throws ZSDXException if the id is not valid
      */
     public void setElementName(String id, String name) throws ZSDXException {
-	
+
 	if (id.length() == 0) {
 	    throw new ZSDXException("Empty id for element '" + name);
 	}
-	
+
 	if (autoIncrementId) {
 	    
 	    try {

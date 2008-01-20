@@ -546,6 +546,10 @@ public class Tileset extends Observable implements ImageObserver {
 		Tile tile = new Tile(line.substring(tabIndex + 1));
 		addTile(id, tile);
 
+		if (id > maxId) {
+		    maxId = id;
+		}
+
 		line = in.readLine();
 	    }
 

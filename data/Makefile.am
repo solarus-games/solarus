@@ -31,10 +31,14 @@ music__DATA = 					\
 
 tilesets_dir = $(zsdxdatadir)/tilesets
 tilesets__DATA =				\
-  tilesets/House.zsd
+  tilesets/tileset0000.zsd
 
 
 maps_dir = $(zsdxdatadir)/maps
 maps__DATA = 					\
-  maps/Map0001.zsd				\
-  maps/Map0001.lua
+  maps/map0000.zsd				\
+#  maps/map0000.lua				\
+  maps/map0001.zsd				\
+#  maps/map0001.lua				\
+  maps/map0002.zsd				#\
+#  maps/map0002.lua

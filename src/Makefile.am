@@ -28,16 +28,7 @@ zsdx_SOURCES = 						\
   Link.cpp						\
   LinkAnimations.cpp					\
   Music.cpp						\
-  TilesetsCreation.inc					\
-  MapsCreation.inc					\
-  Tileset.cpp						\
-  tilesets/TilesetHouse.cpp				\
-  maps/MapLinkHouse.cpp					\
-  maps/MapLinkHouseEntities.inc				\
-  maps/MapLinkHouseSecretRoom.cpp			\
-  maps/MapLinkHouseSecretRoomEntities.inc		\
-  maps/MapRupeeHouse.cpp				\
-  maps/MapRupeeHouseEntities.inc			
+  Tileset.cpp						
 
 
 # additional files to provide in a tarball release
@@ -71,10 +62,4 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Link.h				\
   $(zsdxincludedir)/LinkAnimations.h			\
   $(zsdxincludedir)/Music.h				\
-  $(zsdxincludedir)/MapList.inc				\
-  $(zsdxincludedir)/TilesetList.inc			\
   $(zsdxincludedir)/Tileset.h				\
-  $(zsdxincludedir)/tilesets/TilesetHouse.h		\
-  $(zsdxincludedir)/maps/MapLinkHouse.h			\
-  $(zsdxincludedir)/maps/MapLinkHouseSecretRoom.h	\
-  $(zsdxincludedir)/maps/MapRupeeHouse.h		

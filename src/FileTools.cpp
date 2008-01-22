@@ -1,7 +1,5 @@
 #include "FileTools.h"
 
-#define MAX_FILE_NAME 512
-
 /**
  * @brief Converts the parameter as a <code>char*</code> constant string.
  * @param x the text to convert

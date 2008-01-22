@@ -23,9 +23,9 @@ class Game {
   Map *current_map;
 
   /**
-   * ID of the music currently played (a valid music, or MUSIC_NONE if no music is being played).
+   * Id of the music currently played (a valid music, or MUSIC_NONE if no music is being played).
    */
-  MusicID current_music_id;
+  MusicId current_music_id;
 
   /**
    * The music currently played (a valid music, or NULL if no music is being played).
@@ -61,7 +61,7 @@ class Game {
    * The map will be loaded with its first initial state.
    * @param map_id id of the map to launch
    */
-  void set_current_map(MapID map_id);
+  void set_current_map(MapId map_id);
 
   /**
    * Changes the current map.
@@ -69,7 +69,7 @@ class Game {
    * @param map_id id of the map to launch
    * @param initial_state_index index of the initial state of the map
    */
-  void set_current_map(MapID map_id, unsigned int initial_state_index);
+  void set_current_map(MapId map_id, unsigned int initial_state_index);
 
   /**
    * Returns the current map.
@@ -90,7 +90,7 @@ class Game {
    * or even MUSIC_UNCHANGED (nothing is done in this case).
    * @param new_music_id id of the music to play
    */
-  void play_music(MusicID new_music_id);
+  void play_music(MusicId new_music_id);
   
   /**
    * Pauses or resumes the current music.

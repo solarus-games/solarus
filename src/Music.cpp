@@ -10,6 +10,16 @@
 #include <fmod/fmod_errors.h>
 
 /**
+ * Special id indicating that there is no music.
+ */
+const char *Music::none = "none";
+
+/**
+ * Special id indicating that the music is the same as before.
+ */
+const char *Music::unchanged = "same";
+
+/**
  * True if the sound system has been initialized, i.e. if
  * the method initialize() has been called.
  */
@@ -17,9 +27,9 @@ bool Music::initialized = false;
 
 /**
  * Creates a new music.
- * @param file_name name of the music file (should end with .it)
+ * @param music_id id of the music (a file name)
  */
-Music::Music(const char *file_name):
+Music::Music(MusicId music_id):
   module(NULL) {
   sprintf(this->file_name, "music/%s", file_name);
 }
@@ -61,6 +71,35 @@ void Music::exit(void) {
     FSOUND_Close();
     initialized = false;
   }
+}
+
+/**
+ * Returns whether a music id is the id for no music, i.e. if it is Music.none_id.
+ * @param music_id a music id
+ * @return true if music_id is the special id indicating that there is no music
+ */
+bool Music::isNoneId(MusicId music_id) {
+  return isEqualId(music_id, none);
+}
+
+/**
+ * Returns whether a music id is the id for no change, i.e. if it is Music.unchanged_id.
+ * @param music_id a music id
+ * @return true if music_id is the special id indicating that the music doesn't change
+ */
+bool Music::isUnchangedId(MusicId music_id) {
+  return isEqualId(music_id, unchanged);
+}
+
+/**
+ * Compares two music ids.
+ * @param music_id a music id
+ * @param other_music_id another music id
+ * @return true if the ids are the same
+ */
+bool Music::isEqualId(MusicId music_id, MusicId other_music_id) {
+  cout << "testing if two music ids are equal: '" << music_id << "' and '" << other_music_id << "': " << (music_id == other_music_id) << endl;
+  return music_id == other_music_id;
 }
 
 /**

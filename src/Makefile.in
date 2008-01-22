@@ -54,9 +54,7 @@ am_zsdx_OBJECTS = ZSDX.$(OBJEXT) FileTools.$(OBJEXT) Game.$(OBJEXT) \
 	SimpleTile.$(OBJEXT) AnimatedTile.$(OBJEXT) \
 	TileOnMap.$(OBJEXT) Tile.$(OBJEXT) \
 	TileAnimationManager.$(OBJEXT) Color.$(OBJEXT) Link.$(OBJEXT) \
-	LinkAnimations.$(OBJEXT) Music.$(OBJEXT) Tileset.$(OBJEXT) \
-	TilesetHouse.$(OBJEXT) MapLinkHouse.$(OBJEXT) \
-	MapLinkHouseSecretRoom.$(OBJEXT) MapRupeeHouse.$(OBJEXT)
+	LinkAnimations.$(OBJEXT) Music.$(OBJEXT) Tileset.$(OBJEXT)
 zsdx_OBJECTS = $(am_zsdx_OBJECTS)
 zsdx_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
@@ -67,10 +65,6 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(zsdx_SOURCES)
 DIST_SOURCES = $(zsdx_SOURCES)
 ETAGS = etags
@@ -192,16 +186,7 @@ zsdx_SOURCES = \
   Link.cpp						\
   LinkAnimations.cpp					\
   Music.cpp						\
-  TilesetsCreation.inc					\
-  MapsCreation.inc					\
-  Tileset.cpp						\
-  tilesets/TilesetHouse.cpp				\
-  maps/MapLinkHouse.cpp					\
-  maps/MapLinkHouseEntities.inc				\
-  maps/MapLinkHouseSecretRoom.cpp			\
-  maps/MapLinkHouseSecretRoomEntities.inc		\
-  maps/MapRupeeHouse.cpp				\
-  maps/MapRupeeHouseEntities.inc			
+  Tileset.cpp						
 
 
 # additional files to provide in a tarball release
@@ -235,13 +220,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Link.h				\
   $(zsdxincludedir)/LinkAnimations.h			\
   $(zsdxincludedir)/Music.h				\
-  $(zsdxincludedir)/MapList.inc				\
-  $(zsdxincludedir)/TilesetList.inc			\
-  $(zsdxincludedir)/Tileset.h				\
-  $(zsdxincludedir)/tilesets/TilesetHouse.h		\
-  $(zsdxincludedir)/maps/MapLinkHouse.h			\
-  $(zsdxincludedir)/maps/MapLinkHouseSecretRoom.h	\
-  $(zsdxincludedir)/maps/MapRupeeHouse.h		
+  $(zsdxincludedir)/Tileset.h				
 
 all: all-am
 
@@ -322,9 +301,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapEntity.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapEntrance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapExit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapLinkHouse.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapLinkHouseSecretRoom.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapRupeeHouse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Moving.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Moving8ByPlayer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MovingWithCollision.Po@am__quote@
@@ -338,7 +314,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileAnimationManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileOnMap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tileset.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TilesetHouse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ZSDX.Po@am__quote@
 
 .cpp.o:
@@ -354,62 +329,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-TilesetHouse.o: tilesets/TilesetHouse.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TilesetHouse.o -MD -MP -MF $(DEPDIR)/TilesetHouse.Tpo -c -o TilesetHouse.o `test -f 'tilesets/TilesetHouse.cpp' || echo '$(srcdir)/'`tilesets/TilesetHouse.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/TilesetHouse.Tpo $(DEPDIR)/TilesetHouse.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='tilesets/TilesetHouse.cpp' object='TilesetHouse.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TilesetHouse.o `test -f 'tilesets/TilesetHouse.cpp' || echo '$(srcdir)/'`tilesets/TilesetHouse.cpp
-
-TilesetHouse.obj: tilesets/TilesetHouse.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TilesetHouse.obj -MD -MP -MF $(DEPDIR)/TilesetHouse.Tpo -c -o TilesetHouse.obj `if test -f 'tilesets/TilesetHouse.cpp'; then $(CYGPATH_W) 'tilesets/TilesetHouse.cpp'; else $(CYGPATH_W) '$(srcdir)/tilesets/TilesetHouse.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/TilesetHouse.Tpo $(DEPDIR)/TilesetHouse.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='tilesets/TilesetHouse.cpp' object='TilesetHouse.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TilesetHouse.obj `if test -f 'tilesets/TilesetHouse.cpp'; then $(CYGPATH_W) 'tilesets/TilesetHouse.cpp'; else $(CYGPATH_W) '$(srcdir)/tilesets/TilesetHouse.cpp'; fi`
-
-MapLinkHouse.o: maps/MapLinkHouse.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MapLinkHouse.o -MD -MP -MF $(DEPDIR)/MapLinkHouse.Tpo -c -o MapLinkHouse.o `test -f 'maps/MapLinkHouse.cpp' || echo '$(srcdir)/'`maps/MapLinkHouse.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/MapLinkHouse.Tpo $(DEPDIR)/MapLinkHouse.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='maps/MapLinkHouse.cpp' object='MapLinkHouse.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MapLinkHouse.o `test -f 'maps/MapLinkHouse.cpp' || echo '$(srcdir)/'`maps/MapLinkHouse.cpp
-
-MapLinkHouse.obj: maps/MapLinkHouse.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MapLinkHouse.obj -MD -MP -MF $(DEPDIR)/MapLinkHouse.Tpo -c -o MapLinkHouse.obj `if test -f 'maps/MapLinkHouse.cpp'; then $(CYGPATH_W) 'maps/MapLinkHouse.cpp'; else $(CYGPATH_W) '$(srcdir)/maps/MapLinkHouse.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/MapLinkHouse.Tpo $(DEPDIR)/MapLinkHouse.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='maps/MapLinkHouse.cpp' object='MapLinkHouse.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MapLinkHouse.obj `if test -f 'maps/MapLinkHouse.cpp'; then $(CYGPATH_W) 'maps/MapLinkHouse.cpp'; else $(CYGPATH_W) '$(srcdir)/maps/MapLinkHouse.cpp'; fi`
-
-MapLinkHouseSecretRoom.o: maps/MapLinkHouseSecretRoom.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MapLinkHouseSecretRoom.o -MD -MP -MF $(DEPDIR)/MapLinkHouseSecretRoom.Tpo -c -o MapLinkHouseSecretRoom.o `test -f 'maps/MapLinkHouseSecretRoom.cpp' || echo '$(srcdir)/'`maps/MapLinkHouseSecretRoom.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/MapLinkHouseSecretRoom.Tpo $(DEPDIR)/MapLinkHouseSecretRoom.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='maps/MapLinkHouseSecretRoom.cpp' object='MapLinkHouseSecretRoom.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MapLinkHouseSecretRoom.o `test -f 'maps/MapLinkHouseSecretRoom.cpp' || echo '$(srcdir)/'`maps/MapLinkHouseSecretRoom.cpp
-
-MapLinkHouseSecretRoom.obj: maps/MapLinkHouseSecretRoom.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MapLinkHouseSecretRoom.obj -MD -MP -MF $(DEPDIR)/MapLinkHouseSecretRoom.Tpo -c -o MapLinkHouseSecretRoom.obj `if test -f 'maps/MapLinkHouseSecretRoom.cpp'; then $(CYGPATH_W) 'maps/MapLinkHouseSecretRoom.cpp'; else $(CYGPATH_W) '$(srcdir)/maps/MapLinkHouseSecretRoom.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/MapLinkHouseSecretRoom.Tpo $(DEPDIR)/MapLinkHouseSecretRoom.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='maps/MapLinkHouseSecretRoom.cpp' object='MapLinkHouseSecretRoom.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MapLinkHouseSecretRoom.obj `if test -f 'maps/MapLinkHouseSecretRoom.cpp'; then $(CYGPATH_W) 'maps/MapLinkHouseSecretRoom.cpp'; else $(CYGPATH_W) '$(srcdir)/maps/MapLinkHouseSecretRoom.cpp'; fi`
-
-MapRupeeHouse.o: maps/MapRupeeHouse.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MapRupeeHouse.o -MD -MP -MF $(DEPDIR)/MapRupeeHouse.Tpo -c -o MapRupeeHouse.o `test -f 'maps/MapRupeeHouse.cpp' || echo '$(srcdir)/'`maps/MapRupeeHouse.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/MapRupeeHouse.Tpo $(DEPDIR)/MapRupeeHouse.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='maps/MapRupeeHouse.cpp' object='MapRupeeHouse.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MapRupeeHouse.o `test -f 'maps/MapRupeeHouse.cpp' || echo '$(srcdir)/'`maps/MapRupeeHouse.cpp
-
-MapRupeeHouse.obj: maps/MapRupeeHouse.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MapRupeeHouse.obj -MD -MP -MF $(DEPDIR)/MapRupeeHouse.Tpo -c -o MapRupeeHouse.obj `if test -f 'maps/MapRupeeHouse.cpp'; then $(CYGPATH_W) 'maps/MapRupeeHouse.cpp'; else $(CYGPATH_W) '$(srcdir)/maps/MapRupeeHouse.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/MapRupeeHouse.Tpo $(DEPDIR)/MapRupeeHouse.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='maps/MapRupeeHouse.cpp' object='MapRupeeHouse.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MapRupeeHouse.obj `if test -f 'maps/MapRupeeHouse.cpp'; then $(CYGPATH_W) 'maps/MapRupeeHouse.cpp'; else $(CYGPATH_W) '$(srcdir)/maps/MapRupeeHouse.cpp'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

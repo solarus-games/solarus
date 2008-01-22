@@ -10,8 +10,7 @@ images_sprites_link__DATA = 			\
 
 images_tilesets_dir = $(zsdxdatadir)/images/tilesets
 images_tilesets__DATA = 			\
-  images/tilesets/House.png			\
-  images/tilesets/LightWorld.png
+  images/tilesets/tileset0000.png		
 
 music_dir = $(zsdxdatadir)/music
 music__DATA = 					\
@@ -37,8 +36,6 @@ tilesets__DATA =				\
 maps_dir = $(zsdxdatadir)/maps
 maps__DATA = 					\
   maps/map0000.zsd				\
-#  maps/map0000.lua				\
   maps/map0001.zsd				\
-#  maps/map0001.lua				\
-  maps/map0002.zsd				#\
-#  maps/map0002.lua
+  maps/map0002.zsd				
+

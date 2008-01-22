@@ -19,10 +19,6 @@ class Music {
 
  private:
 
-  /**
-   * True if the sound system has been initialized, i.e. if
-   * the static method initialize() has been called.
-   */
   static bool initialized;
 
   /**
@@ -32,55 +28,27 @@ class Music {
   
  public:
 
+  static const char *none;
+  static const char *unchanged;
+
   /**
    * Name of the music file.
    */
   char file_name[256];
 
-  /**
-   * Creates a new music.
-   * @param file_name name of the music file (should end with .its)
-   */
-  Music(const char *file_name);
-
-  /**
-   * Destroys the music.
-   */
+  Music(MusicId music_id);
   ~Music(void);
 
-  /**
-   * Initializes the sound system.
-   * This method should be called when the application starts.
-   */
   static void initialize(void);
-
-  /**
-   * Closes the sound system.
-   * This method should be called when exiting the application.
-   */
   static void exit(void);
 
-  /**
-   * Loads the file and plays the music.
-   * @return true if the music was loaded successfully, false otherwise
-   */
+  static bool isNoneId(MusicId music_id);
+  static bool isUnchangedId(MusicId music_id);
+  static bool isEqualId(MusicId music_id, MusicId other_music_id);
+
   bool play(void);
-
-  /**
-   * Stops playing the music.
-   */
   void stop(void);
-
-  /**
-   * Returns whether the music is paused.
-   * @return true if the music is paused, false otherwise
-   */
   bool is_paused(void);
-
-  /**
-   * Pauses or resumes the music.
-   * @param pause true to pause the music, false to resume it
-   */
   void set_paused(bool pause);
 };
 

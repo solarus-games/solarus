@@ -62,4 +62,4 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Link.h				\
   $(zsdxincludedir)/LinkAnimations.h			\
   $(zsdxincludedir)/Music.h				\
-  $(zsdxincludedir)/Tileset.h				\
+  $(zsdxincludedir)/Tileset.h				

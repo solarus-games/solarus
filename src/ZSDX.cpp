@@ -62,8 +62,7 @@ void ZSDX::initialize(void) {
 
   // initialize the game resource
   game_resource = new GameResource();
-  game_resource->create_resources();
-  
+
   // create the game
   game = new Game();
 }
@@ -74,8 +73,8 @@ void ZSDX::initialize(void) {
 void ZSDX::exit(void) {
   SDL_Quit();
   Music::exit();
-  delete game_resource;
   delete game;
+  delete game_resource;
 }
 
 /**
@@ -116,9 +115,7 @@ void ZSDX::main(void) {
   initialize();
 
   // first map
-  game->set_current_map(MAP_LINKHOUSE);
-  //  game->set_current_map(MAP_LINKHOUSESECRETROOM);
-  //  game->set_current_map(MAP_RUPEEHOUSE);
+  game->set_current_map(0);
 
   game->play();
 

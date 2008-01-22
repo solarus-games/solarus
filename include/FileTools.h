@@ -7,6 +7,8 @@
 
 #include "Common.h"
 
+#define MAX_FILE_NAME 512
+
 class FileTools {
 
  public:

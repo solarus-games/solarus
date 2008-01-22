@@ -2,15 +2,22 @@
  * This module defines the class Map.
  */
 
+#include <string>
+#include <sstream>
+#include <fstream>
 #include "Map.h"
 #include "ZSDX.h"
 #include "TileOnMap.h"
+#include "FileTools.h"
 
 /**
- * Creates a new map.
+ * Creates a map.
+ * @param id id of the map, used to determine the description file
+ * and the script file of the map
  */
-Map::Map(void) {
+Map::Map(MapId id) {
 
+  this->id = id;
   this->width = 0;
 }
 
@@ -62,21 +69,37 @@ void Map::unload(void) {
 }
 
 /**
- * Initializes the map.
- * This function is called by the generated code in the load() function of the map.
- * @param width the map width in pixels
- * @param height the map height in pixels
- * @param tileset_id the map tileset
- * @param music_id the map music
+ * Loads the map.
+ * Reads the description file of the map.
  */
-void Map::map_init(int width, int height, TilesetID tileset_id, MusicID music_id) {
+void Map::load() {
 
-  this->width = width;
-  this->height = height;
+  // read the file
+
+  char file_name[20];
+  sprintf(file_name, "maps/map%04d.zsd", id);
+  ifstream map_file(FileTools::data_file_add_prefix(file_name));
+
+  if (!map_file) {
+    cerr << "Cannot open file '" << file_name << "'" << endl;
+    exit(1);
+  }
+
+  string line;
+  TilesetId tileset_id;
+
+  // first line: map general info
+  if (!std::getline(map_file, line)) {
+    cerr << "Empty file '" << file_name << "'" << endl;
+    exit(1);
+  }
+
+  istringstream iss0(line);
+  iss0 >> width >> height >> tileset_id >> music_id;
+
   this->width8 = width / 8;
   this->height8 = height / 8;
   this->obstacle_tiles_size = width8 * height8;
-  this->music_id = music_id;
 
   tileset = ZSDX::game_resource->get_tileset(tileset_id);
   if (!tileset->is_loaded()) {
@@ -96,6 +119,32 @@ void Map::map_init(int width, int height, TilesetID tileset_id, MusicID music_id
       obstacle_tiles[layer][i] = OBSTACLE_NONE;
     }
   }
+
+  // read the entities
+  int entityType;
+  while (std::getline(map_file, line)) {
+
+    istringstream iss(line);
+    iss >> entityType;
+
+    cout << "entity: " << entityType;
+
+    switch (entityType) {
+
+    case ENTITY_TILE:
+      {
+	int tile_id, layer, x, y, repeat_x, repeat_y;
+
+	iss >> tile_id >> layer >> x >> y >> repeat_x >> repeat_y;
+	add_new_tile(tile_id, (Layer) layer, x, y, repeat_x, repeat_y);
+      }
+      break;
+    }
+  }
+
+  // temporary
+  add_entrance(LAYER_LOW, 120, 200, 1);
+
 }
 
 /**
@@ -243,7 +292,7 @@ void Map::add_entrance(Layer layer, int link_x, int link_y, int link_direction) 
  * @param map_id id of the next map
  * @param entrance_index index of the entrance of the next map
  */
-void Map::add_exit(Layer layer, int x, int y, int w, int h, MapID map_id, int entrance_index) {
+void Map::add_exit(Layer layer, int x, int y, int w, int h, MapId map_id, int entrance_index) {
   
   MapExit *exit = new MapExit(layer, x, y, w, h, map_id, entrance_index);
   entity_detectors->push_back(exit);
@@ -314,7 +363,8 @@ void Map::display() {
 void Map::start(void) {
 
   if (entrances->size() == 0) {
-    cerr << "Fatal error: no entrance defined on the map\n";
+    cerr << "Fatal error: no entrance defined on the map '" << id << '\'' << endl;
+    exit(1);
   }
 
   MapEntrance *entrance = entrances->at(entrance_index);

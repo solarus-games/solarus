@@ -90,7 +90,6 @@ public class TileOnMap extends Observable {
 	try {
 	    StringTokenizer tokenizer = new StringTokenizer(description);
 	    
-	    tokenizer.nextToken();
 	    this.tileId = Integer.parseInt(tokenizer.nextToken());
 	    this.layer = Integer.parseInt(tokenizer.nextToken());
 	    int x = Integer.parseInt(tokenizer.nextToken());
@@ -418,7 +417,18 @@ public class TileOnMap extends Observable {
      */
     public String toString() {
 
-	return "tile\t" + tileId + "\t" + layer + "\t" +
-	    positionInMap.x + "\t" + positionInMap.y + "\t" + repeatX + "\t" + repeatY;
+	StringBuffer buff = new StringBuffer();
+	buff.append(tileId);
+	buff.append('\t');
+	buff.append(layer);
+	buff.append('\t');
+	buff.append(positionInMap.x);
+	buff.append('\t');
+	buff.append(positionInMap.y);
+	buff.append('\t');
+	buff.append(repeatX);
+	buff.append('\t');
+	buff.append(repeatY);
+	return buff.toString();
     }
 }

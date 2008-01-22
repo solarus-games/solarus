@@ -111,11 +111,11 @@ public class Tile extends Observable {
 	try {
 	    StringTokenizer tokenizer = new StringTokenizer(description);
 	    
-	    String tileType = tokenizer.nextToken();
+	    int tileType = Integer.parseInt(tokenizer.nextToken());
 	    this.obstacle = Integer.parseInt(tokenizer.nextToken());
 	    this.defaultLayer = Integer.parseInt(tokenizer.nextToken());
 
-	    if (tileType.equals("simple")) {
+	    if (tileType == 0) {
 		
 		// simple tile: "simple obstacle defaultLayer x y width height"
 		int x = Integer.parseInt(tokenizer.nextToken());
@@ -126,7 +126,7 @@ public class Tile extends Observable {
 		this.positionInTileset = new Rectangle(x, y, width, height);
 		this.animationSequence = ANIMATION_NONE;
 	    }
-	    else if (tileType.equals("animated")) {
+	    else if (tileType == 1) {
 
 		// animated tile: "animated obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
 		this.animationSequence = Integer.parseInt(tokenizer.nextToken());
@@ -391,9 +391,9 @@ public class Tile extends Observable {
 	StringBuffer description = new StringBuffer();
 
 	if (animationSequence == ANIMATION_NONE) {
-	    // simple tile: "simple obstacle defaultLayer x y width height"
+	    // simple tile: "0 obstacle defaultLayer x y width height"
 
-	    description.append("simple\t");
+	    description.append('0');
 	    description.append('\t');
 	    description.append(obstacle);
 	    description.append('\t');
@@ -408,9 +408,9 @@ public class Tile extends Observable {
 	    description.append(positionInTileset.height);
 	}
 	else {
-	    // animated tile: "animated obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
+	    // animated tile: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
 
-	    description.append("animated\t");
+	    description.append('1');
 	    description.append('\t');
 	    description.append(obstacle);
 	    description.append('\t');

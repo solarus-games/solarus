@@ -30,42 +30,11 @@ enum Layer {
 };
 
 /**
- * Constants to identify each music.
+ * Types of the id of each resource.
  */
-enum MusicID {
-  MUSIC_NONE      = -2, // special value to stop the music
-  MUSIC_UNCHANGED = -1, // special value to keep the current music
-  MUSIC_VILLAGE,
-  MUSIC_OVERWORLD,
-  MUSIC_BOSS,
-  MUSIC_CASTLE,
-  MUSIC_CREDITS,
-  MUSIC_TITLE_SCREEN,
-  MUSIC_FANFARE,
-  MUSIC_GAME_OVER,
-  MUSIC_RABBIT,
-  MUSIC_MENU,
-  MUSIC_MINI_GAME,
-  MUSIC_DARK_WORLD,
-  MUSIC_SOLDIERS,
-  NB_MUSICS,            // special value to get the number of musics
-};
-
-/**
- * Constants to identify each tileset.
- */
-enum TilesetID {
-#include "TilesetList.inc"
-  NB_TILESETS
-};
-
-/**
- * Constants to identify each map.
- */
-enum MapID {
-#include "MapList.inc"
-  NB_MAPS
-};
+typedef int MapId;
+typedef int TilesetId;
+typedef std::string MusicId;
 
 /**
  * Declaration of some classes to break cycling dependencies between the header files.

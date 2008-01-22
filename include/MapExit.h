@@ -17,9 +17,9 @@ class MapExit: public EntityDetector {
  private:
 
   /**
-   * ID of the destination map.
+   * Id of the destination map.
    */
-  MapID destination_map_id;
+  MapId destination_map_id;
 
   /**
    * Initial state of the destination map.
@@ -39,7 +39,7 @@ class MapExit: public EntityDetector {
    * @param initial_state_index initial state of the destination map
    */
   MapExit(Layer layer, int x, int y, int width, int height,
-	  MapID destination_map_id, int initial_state_index);
+	  MapId destination_map_id, int initial_state_index);
   /**
    * Destructor.
    */

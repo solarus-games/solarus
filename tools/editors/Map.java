@@ -64,6 +64,9 @@ public class Map extends Observable {
      */
     private MapEditorHistory history;
 
+    // types of entities
+    private static final int ENTITY_TILE = 0;
+
     /**
      * Creates a new map.
      * @throws ZSDXException if the resource list could not be updated after the map creation
@@ -631,10 +634,11 @@ public class Map extends Observable {
 	    while (line != null) {
 		lineNumber++;
 
-		String entityType = line.substring(0, line.indexOf('\t'));
+		int tabIndex = line.indexOf('\t');
+		int entityType = Integer.parseInt(line.substring(0, tabIndex));
 
-		if (entityType.equals("tile")) {
-		    TileOnMap tileOnMap = new TileOnMap(line, tileset);
+		if (entityType == ENTITY_TILE) {
+		    TileOnMap tileOnMap = new TileOnMap(line.substring(tabIndex + 1), tileset);
 		    addTile(tileOnMap);
 		}
 		else {
@@ -650,6 +654,9 @@ public class Map extends Observable {
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Line " + lineNumber + ": Integer expected");
+	}
+	catch (IndexOutOfBoundsException ex) {
+	    throw new ZSDXException("Line " + lineNumber + ": Value expected");
 	}
 	catch (ZSDXException ex) {
 	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
@@ -693,7 +700,10 @@ public class Map extends Observable {
 	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
 
 		for (TileOnMap tile: getTiles(layer)) {
-		    out.println(tile.toString());
+		    out.print(ENTITY_TILE);
+		    out.print('\t');
+		    out.print(tile.toString());
+		    out.println();
 		}
 	    }
 

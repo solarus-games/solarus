@@ -9,6 +9,7 @@
 #include "Link.h"
 #include "Tileset.h"
 #include "Map.h"
+#include <map>
 
 /* This class is a database of all game resources:
  * - the tileset list
@@ -30,17 +31,17 @@ class GameResource {
   /**
    * The tilesets.
    */
-  Tileset *tilesets[NB_TILESETS];
+  std::map<TilesetId, Tileset*> tilesets;
 
   /**
    * The maps.
    */
-  Map *maps[NB_MAPS];
+  std::map<MapId, Map*> maps;
 
   /**
    * The musics.
    */
-  Music *musics[NB_MUSICS];
+  std::map<MusicId, Music*> musics;
 
   // musics
   // sounds
@@ -62,11 +63,6 @@ class GameResource {
   ~GameResource(void);
 
   /**
-   * Creates all resources.
-   */
-  void create_resources(void);
-
-  /**
    * Returns Link.
    * @return Link
    */
@@ -74,21 +70,21 @@ class GameResource {
 
   /**
    * Returns a tileset.
-   * @param tileset_id id of the tileset to get
+   * @param id id of the tileset to get
    */
-  Tileset *get_tileset(TilesetID tileset_id);
+  Tileset *get_tileset(TilesetId id);
 
   /**
    * Returns a map.
-   * @param map_id id of the map to get
+   * @param id id of the map to get
    */
-  Map *get_map(MapID map_id);
+  Map *get_map(MapId id);
 
   /**
    * Returns a music.
-   * @param music_id id of the music to get
+   * @param id id of the music to get
    */
-  Music *get_music(MusicID music_id);
+  Music *get_music(MusicId id);
 };
 
 #endif

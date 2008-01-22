@@ -4,12 +4,13 @@
 
 #include "Game.h"
 #include "ZSDX.h"
+#include "Music.h"
 
 /**
  * Constructor.
  */
 Game::Game(void):
-  current_map(NULL), current_music_id(MUSIC_NONE), current_music(NULL) {
+  current_map(NULL), current_music_id(Music::none), current_music(NULL) {
   
 }
 
@@ -90,22 +91,22 @@ void Game::play(void) {
 
 	    // temporary
 	  case SDLK_F1:
-	    set_current_map(MAP_LINKHOUSE);
+	    set_current_map(0);
 	    break;
 
 	    // temporary
 	  case SDLK_F2:
-	    set_current_map(MAP_LINKHOUSE, 1);
+	    set_current_map(0, 1);
 	    break;
 
 	    // temporary
 	  case SDLK_F3:
-	    set_current_map(MAP_LINKHOUSESECRETROOM);
+	    set_current_map(1);
 	    break;
 
 	    // temporary
 	  case SDLK_F4:
-	    set_current_map(MAP_RUPEEHOUSE);
+	    set_current_map(2);
 	    break;
 
 	  default:
@@ -172,7 +173,7 @@ void Game::play(void) {
  * The map will be loaded with its first entrance.
  * @param map_id id of the map to launch
  */
-void Game::set_current_map(MapID map_id) {
+void Game::set_current_map(MapId map_id) {
 
   set_current_map(map_id, 0);
 }
@@ -183,7 +184,7 @@ void Game::set_current_map(MapID map_id) {
  * @param map_id id of the map to launch
  * @param entrance_index index of the entrance of the map you want to use
  */
-void Game::set_current_map(MapID map_id, unsigned int entrance_index) {
+void Game::set_current_map(MapId map_id, unsigned int entrance_index) {
 
   current_map = ZSDX::game_resource->get_map(map_id);
   current_map->set_entrance(entrance_index);
@@ -200,16 +201,16 @@ void Game::set_current_map(MapID map_id, unsigned int entrance_index) {
 /**
  * Plays a music. If the music is different from the current one,
  * the current one is stopped.
- * The music specified can also be MUSIC_NONE (then the current music is just stopped)
- * or even MUSIC_UNCHANGED (nothing is done in this case).
+ * The music specified can also be Music::none_id (then the current music is just stopped)
+ * or even Music::unchanged_id (nothing is done in this case).
  * @param new_music_id id of the music to play
  */
-void Game::play_music(MusicID new_music_id) {
+void Game::play_music(MusicId new_music_id) {
   
-  if (new_music_id != MUSIC_UNCHANGED && new_music_id != current_music_id) {
+  if (!Music::isUnchangedId(new_music_id) && !Music::isEqualId(new_music_id, current_music_id)) {
     // the music is changed
 
-    if (new_music_id == MUSIC_NONE) {
+    if (!Music::isNoneId(new_music_id)) {
       // stop the music
       current_music->stop();
     }
@@ -226,7 +227,7 @@ void Game::play_music(MusicID new_music_id) {
 	current_music = new_music;
       }
       else {
-	current_music_id = MUSIC_NONE;
+	current_music_id = Music::none;
 	current_music = NULL;
       }
     }

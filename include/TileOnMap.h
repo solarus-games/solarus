@@ -5,6 +5,7 @@
 #ifndef ZSDX_TILE_ON_MAP_H
 #define ZSDX_TILE_ON_MAP_H
 
+#include <istream>
 #include "Common.h"
 #include "Tile.h"
 #include "MapEntity.h"
@@ -50,13 +51,14 @@ class TileOnMap: public MapEntity {
   /**
    * Destructor.
    */
-  inline ~TileOnMap() { }
+  inline ~TileOnMap(void) { }
 
   /**
    * Displays the tile on the map.
    * @param map the map
    */
   void display_on_map(Map *map);
+
 };
 
 #endif

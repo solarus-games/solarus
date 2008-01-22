@@ -13,8 +13,8 @@
  * Creates an empty tileset.
  * @param background_color the background_color
  */
-Tileset::Tileset(zsdx_color_t background_color):
-nb_tiles(0), background_color(background_color) {
+Tileset::Tileset(TilesetId id):
+id(id), nb_tiles(0) {
   
 }
 
@@ -48,6 +48,13 @@ void Tileset::load_tileset_image(const char *file_name) {
   if (tileset_image == NULL) {
     cerr << "Unable to load file '" << file_name << "'" << endl;
   }
+}
+
+/**
+ * Loads the tileset by creating all tiles.
+ */
+void Tileset::load(void) {
+
 }
 
 /**

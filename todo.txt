@@ -4,4 +4,5 @@
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
 	- Editeur de maps : permettre de placer d'autres objets que les tiles (entrées et sorties notamment)
-	- Obligé de refaire toutes les maps quand le serialVersionUID change
+
+	- Renommer Configuration en un truc qui évoque que ça gère les path

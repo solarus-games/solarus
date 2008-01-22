@@ -15,7 +15,7 @@
  * @param initial_state_index initial state of the destination map
  */
 MapExit::MapExit(Layer layer, int x, int y, int width, int height,
-		 MapID destination_map_id, int initial_state_index):
+		 MapId destination_map_id, int initial_state_index):
 EntityDetector(layer, x, y, width, height),
 destination_map_id(destination_map_id), initial_state_index(initial_state_index) {
   

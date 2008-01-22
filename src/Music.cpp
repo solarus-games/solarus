@@ -31,7 +31,8 @@ bool Music::initialized = false;
  */
 Music::Music(MusicId music_id):
   module(NULL) {
-  sprintf(this->file_name, "music/%s", file_name);
+
+  file_name = (string) FileTools::data_file_get_prefix() + "/music/" + music_id;
 }
 
 /**
@@ -111,7 +112,7 @@ bool Music::play(void) {
 
   bool success = false;
   if (initialized) {
-    module = FMUSIC_LoadSong(FileTools::data_file_add_prefix(file_name));
+    module = FMUSIC_LoadSong(file_name.c_str());
     if (module == NULL) {
       cerr << "Unable to play music: " << FMOD_ErrorString(FSOUND_GetError()) << '\n';
     }

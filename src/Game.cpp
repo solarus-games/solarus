@@ -210,11 +210,12 @@ void Game::play_music(MusicId new_music_id) {
   if (!Music::isUnchangedId(new_music_id) && !Music::isEqualId(new_music_id, current_music_id)) {
     // the music is changed
 
-    if (!Music::isNoneId(new_music_id)) {
-      // stop the music
+    if (Music::isNoneId(new_music_id) && current_music != NULL) {
+      
       current_music->stop();
     }
     else {
+
       // play another music
       if (current_music != NULL) {
 	current_music->stop();

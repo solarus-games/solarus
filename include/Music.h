@@ -34,7 +34,7 @@ class Music {
   /**
    * Name of the music file.
    */
-  char file_name[256];
+  string file_name;
 
   Music(MusicId music_id);
   ~Music(void);

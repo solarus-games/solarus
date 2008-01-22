@@ -23,6 +23,15 @@
 #endif
 
 /**
+ * @brief Returns the directory of the data files.
+ * @return the directory of the data files
+ */
+const char *FileTools::data_file_get_prefix(void) {
+
+  return DATADIR;
+}
+
+/**
  * @brief Returns the path of a data file.
  *
  * The \c file_name parameter is relative to the ZSDX data directory

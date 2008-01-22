@@ -12,7 +12,8 @@
 class FileTools {
 
  public:
-  static  const char *data_file_add_prefix(const char *file_name);
+  static const char *data_file_get_prefix(void);
+  static const char *data_file_add_prefix(const char *file_name);
   static FILE *open_data_file(const char *file_name);
 
 };

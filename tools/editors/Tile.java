@@ -117,7 +117,7 @@ public class Tile extends Observable {
 
 	    if (tileType == 0) {
 		
-		// simple tile: "simple obstacle defaultLayer x y width height"
+		// simple tile: "0 obstacle defaultLayer x y width height"
 		int x = Integer.parseInt(tokenizer.nextToken());
 		int y = Integer.parseInt(tokenizer.nextToken());
 		int width = Integer.parseInt(tokenizer.nextToken());
@@ -128,7 +128,7 @@ public class Tile extends Observable {
 	    }
 	    else if (tileType == 1) {
 
-		// animated tile: "animated obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
+		// animated tile: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
 		this.animationSequence = Integer.parseInt(tokenizer.nextToken());
 
 		int width = Integer.parseInt(tokenizer.nextToken());

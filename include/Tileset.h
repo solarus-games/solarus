@@ -45,13 +45,6 @@ class Tileset {
   SDL_Surface *tileset_image;
   
   /**
-   * Loads the tileset image.
-   * This function is called by load().
-   * @param file_name name of the tileset image file
-   */
-  void load_tileset_image(const char *file_name);
-
-  /**
    * Creates a new tile in the tileset.
    * This function is called by load().
    * @param id id of this tile (1 to 1024)

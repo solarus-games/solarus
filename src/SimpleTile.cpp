@@ -29,6 +29,7 @@ SimpleTile::SimpleTile(Obstacle obstacle, int x, int y, int width, int height):
  * @param tileset_image the tileset image of this tile
  */
 void SimpleTile::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
+
   SDL_Rect dst = position_in_surface;
   SDL_BlitSurface(tileset_image, &position_in_tileset, surface, &dst);
 }

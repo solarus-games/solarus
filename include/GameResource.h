@@ -54,7 +54,7 @@ class GameResource {
   /**
    * Constructor.
    */
-  inline GameResource(void) { }
+  GameResource(void);
 
   /**
    * Destructor.
@@ -66,25 +66,25 @@ class GameResource {
    * Returns Link.
    * @return Link
    */
-  inline Link *get_link() { return link; }
+  Link* get_link(void);
 
   /**
    * Returns a tileset.
    * @param id id of the tileset to get
    */
-  Tileset *get_tileset(TilesetId id);
+  Tileset* get_tileset(TilesetId id);
 
   /**
    * Returns a map.
    * @param id id of the map to get
    */
-  Map *get_map(MapId id);
+  Map* get_map(MapId id);
 
   /**
    * Returns a music.
    * @param id id of the music to get
    */
-  Music *get_music(MusicId id);
+  Music* get_music(MusicId id);
 };
 
 #endif

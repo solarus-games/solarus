@@ -5,8 +5,11 @@
  * See the directory images/tilesets.
  */
 
+#include <fstream>
+#include <sstream>
 #include "Tileset.h"
 #include "Tile.h"
+#include "FileTools.h"
 
 /**
  * Constructor.
@@ -38,23 +41,70 @@ void Tileset::create_tile(int id, Tile *tile) {
 }
 
 /**
- * Loads the tileset image.
- * This function should be called by load().
- * @param file_name name of the tileset image file
- */
-void Tileset::load_tileset_image(const char *file_name) {
-  tileset_image = IMG_Load(file_name);
-  
-  if (tileset_image == NULL) {
-    cerr << "Unable to load file '" << file_name << "'" << endl;
-  }
-}
-
-/**
  * Loads the tileset by creating all tiles.
  */
 void Tileset::load(void) {
 
+  // read the file
+  char file_name[40];
+  sprintf(file_name, "tilesets/tileset%04d.zsd", id);
+  ifstream tileset_file(FileTools::data_file_add_prefix(file_name));
+
+  if (!tileset_file) {
+    cerr << "Cannot open file '" << file_name << "'" << endl;
+    exit(1);
+  }
+
+  string line;
+
+  // first line: tileset general info
+  if (!std::getline(tileset_file, line)) {
+    cerr << "Empty file '" << file_name << "'" << endl;
+    exit(1);
+  }
+
+  int r, g, b;
+
+  istringstream iss0(line);
+  iss0 >> r >> g >> b;
+  background_color = get_color(r, g, b);
+
+  // read the tiles
+  int tile_id, is_animated, obstacle, defaultLayer;
+  while (std::getline(tileset_file, line)) {
+
+    istringstream iss(line);
+    iss >> tile_id >> is_animated >> obstacle >> defaultLayer;
+
+    int width, height;
+
+    if (!is_animated) {
+      
+      int x, y;
+
+      iss >> x >> y >> width >> height;
+
+      create_tile(tile_id, new SimpleTile((Obstacle) obstacle, x, y, width, height));
+    }
+    else {
+      int sequence, x1, y1, x2, y2, x3, y3;
+
+      iss >> sequence >> width >> height >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+      
+      create_tile(tile_id, new AnimatedTile((Obstacle) obstacle, (TileAnimationSequence) sequence,
+					    width, height, x1, y1, x2, y2, x3, y3));
+    }
+  }
+
+  // load the tileset image
+  sprintf(file_name, "images/tilesets/tileset%04d.png", id);
+
+  tileset_image = IMG_Load(FileTools::data_file_add_prefix(file_name));
+  
+  if (tileset_image == NULL) {
+    cerr << "Cannot load the image '" << file_name << "'" << endl;
+    exit(1);
+  }
 }
 
 /**

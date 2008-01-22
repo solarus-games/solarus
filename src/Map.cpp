@@ -66,6 +66,8 @@ void Map::unload(void) {
     delete tiles[layer];
     delete[] obstacle_tiles[layer];
   }
+
+  width = 0;
 }
 
 /**
@@ -126,8 +128,6 @@ void Map::load() {
 
     istringstream iss(line);
     iss >> entityType;
-
-    cout << "entity: " << entityType;
 
     switch (entityType) {
 

@@ -98,7 +98,8 @@ bool Music::isUnchangedId(MusicId music_id) {
  * @return true if the ids are the same
  */
 bool Music::isEqualId(MusicId music_id, MusicId other_music_id) {
-  cout << "testing if two music ids are equal: '" << music_id << "' and '" << other_music_id << "': " << (music_id == other_music_id) << endl;
+
+  //  cout << "testing if two music ids are equal: '" << music_id << "' and '" << other_music_id << "': " << (music_id == other_music_id) << endl;
   return music_id == other_music_id;
 }
 

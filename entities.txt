@@ -1,0 +1,14 @@
+map entities, dans l'ordre des plans :
+
+private MapEntityList[] entities = new MapEntityList[MapEntity.LAYER_NB];
+
+classe MapEntityList : contient une liste pour chaque type d'entité
+
+tiles
+objets actifs (coffres, jarres, portes, blocs, tiles actifs, herbes, buissons, téléporteurs, interrupteurs...)
+items (objets collectables, bombe posée, flèche lancée...)
+ennemis
+PNJ
+link
+entrées
+sorties

@@ -302,7 +302,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	Tileset tileset = map.getTileset();
 
 	// background color
-	if (renderingOptions.getShowLayer(Tile.LAYER_LOW) && tileset != null) {
+	if (renderingOptions.getShowLayer(MapEntity.LAYER_LOW) && tileset != null) {
 	    g.setColor(tileset.getBackgroundColor());
 	    g.fillRect(0, 0, (int) (map.getWidth() * zoom), (int) (map.getHeight() * zoom));
 	}
@@ -315,7 +315,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		int x, y, width, height;
 
 		// the tiles
-		for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+		for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
 		    // nothing to do if this layer is not shown
 		    if (renderingOptions.getShowLayer(layer)) {
@@ -437,13 +437,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private void endAddingTile() {
 
-	// create the tile
-	Tileset tileset = map.getTileset();
-	TileOnMap tile = new TileOnMap(tileset, tileset.getSelectedTileId(),
+	try {
+	    // create the tile
+	    Tileset tileset = map.getTileset();
+	    TileOnMap tile = new TileOnMap(tileset, tileset.getSelectedTileId(),
 				       cursorLocation.x, cursorLocation.y);
 
-	// add it to the map
-	try {
+	    // add it to the map
 	    map.getHistory().doAction(new ActionAddTile(map, tile));
 
 	    // make it selected
@@ -452,9 +452,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    startResizingTile(); // let the user resize the tile until the mouse is released
 	    repaint();
 	}
-	catch (ZSDXException e) {
+	catch (ZSDXException ex) {
 	    // should never happen (adding a tile doesn't throw any exception)
-	    WindowTools.errorDialog("Cannot add the tile: " + e.getMessage());
+	    WindowTools.errorDialog("Cannot add the tile: " + ex.getMessage());
 	}
     }
 
@@ -816,7 +816,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		int y = (int) (mouseEvent.getY() / zoom);
 
 		TileOnMap tileClicked = null;
-		for (int layer = Tile.LAYER_HIGH; layer >= Tile.LAYER_LOW && tileClicked == null; layer--) {
+		for (int layer = MapEntity.LAYER_HIGH; layer >= MapEntity.LAYER_LOW && tileClicked == null; layer--) {
 		    
 		    if (renderingOptions.getShowLayer(layer)) {
 			tileClicked = map.getTileAt(layer, x, y);

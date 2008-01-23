@@ -319,7 +319,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 		    }
 		}
 		catch (ZSDXException ex) {
-		    System.out.println("Cannot load the tileset '" + selectedTilesetId + "': " + ex.getMessage());		
+		    WindowTools.errorDialog("Cannot load the tileset '" + selectedTilesetId + "': " + ex.getMessage());		
 		}
 	    }
 	}

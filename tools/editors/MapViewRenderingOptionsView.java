@@ -27,18 +27,18 @@ public class MapViewRenderingOptionsView extends JPanel {
 	JCheckBox box;
 
 	box = new JCheckBox("Show low layer");
-	box.setSelected(renderingOptions.getShowLayer(Tile.LAYER_LOW));
-	box.addItemListener(new ItemListenerLayer(Tile.LAYER_LOW));
+	box.setSelected(renderingOptions.getShowLayer(MapEntity.LAYER_LOW));
+	box.addItemListener(new ItemListenerLayer(MapEntity.LAYER_LOW));
 	add(box);
 
 	box = new JCheckBox("Show intermediate layer");
-	box.setSelected(renderingOptions.getShowLayer(Tile.LAYER_INTERMEDIATE));
-	box.addItemListener(new ItemListenerLayer(Tile.LAYER_INTERMEDIATE));
+	box.setSelected(renderingOptions.getShowLayer(MapEntity.LAYER_INTERMEDIATE));
+	box.addItemListener(new ItemListenerLayer(MapEntity.LAYER_INTERMEDIATE));
 	add(box);
 
 	box = new JCheckBox("Show high layer");
-	box.setSelected(renderingOptions.getShowLayer(Tile.LAYER_HIGH));
-	box.addItemListener(new ItemListenerLayer(Tile.LAYER_HIGH));
+	box.setSelected(renderingOptions.getShowLayer(MapEntity.LAYER_HIGH));
+	box.addItemListener(new ItemListenerLayer(MapEntity.LAYER_HIGH));
 	add(box);
 
 	box = new JCheckBox("Show obstacles");

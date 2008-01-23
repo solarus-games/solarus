@@ -75,9 +75,9 @@ public class MapViewRenderingOptions {
      * @param showHighLayer true to show the tiles of the high layer
      */
     public void setShowLayers(boolean showLowLayer, boolean showIntermediateLayer, boolean showHighLayer) {
-	showLayers[Tile.LAYER_LOW] = showLowLayer;
-	showLayers[Tile.LAYER_INTERMEDIATE] = showIntermediateLayer;
-	showLayers[Tile.LAYER_HIGH] = showHighLayer;
+	showLayers[MapEntity.LAYER_LOW] = showLowLayer;
+	showLayers[MapEntity.LAYER_INTERMEDIATE] = showIntermediateLayer;
+	showLayers[MapEntity.LAYER_HIGH] = showHighLayer;
 	mapView.repaint();
     }
 

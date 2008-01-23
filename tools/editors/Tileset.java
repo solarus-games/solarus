@@ -448,7 +448,7 @@ public class Tileset extends Observable implements ImageObserver {
 	Tile tile = null;
 
 	if (isSelectingNewTile() && !isNewTileAreaOverlapping) {
-	    tile = new Tile(newTileArea, Tile.LAYER_LOW, obstacle);
+	    tile = new Tile(newTileArea, MapEntity.LAYER_LOW, obstacle);
 	    
 	    maxId++;
 	    tiles.put(maxId, tile);

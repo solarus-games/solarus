@@ -28,13 +28,6 @@ public class Tile extends Observable {
     public static final int ANIMATION_SEPARATION_HORIZONTAL = 0;
     public static final int ANIMATION_SEPARATION_VERTICAL = 1;
 
-    // Constants to identify the layer
-
-    public static final int LAYER_LOW = 0;
-    public static final int LAYER_INTERMEDIATE = 1;
-    public static final int LAYER_HIGH = 2;
-    public static final int LAYER_NB = 3;
-
     /**
      * Coordinates and dimensions of the tile.
      */

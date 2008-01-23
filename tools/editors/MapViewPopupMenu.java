@@ -56,18 +56,18 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	addSeparator();
 
-	itemsLayers = new JRadioButtonMenuItem[Tile.LAYER_NB + 1];
+	itemsLayers = new JRadioButtonMenuItem[MapEntity.LAYER_NB + 1];
 	ButtonGroup itemsLayersGroup = new ButtonGroup();
 	    
-	for (int i = 0; i < Tile.LAYER_NB; i++) {
+	for (int i = 0; i < MapEntity.LAYER_NB; i++) {
 	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
 	    itemsLayers[i].addActionListener(new ActionListenerChangeLayer(i));
 	    add(itemsLayers[i]);
 	    itemsLayersGroup.add(itemsLayers[i]);
 	}
-	itemsLayers[Tile.LAYER_NB] = new JRadioButtonMenuItem();
-	itemsLayers[Tile.LAYER_NB].addActionListener(new ActionListenerChangeLayer(Tile.LAYER_NB));
-	itemsLayersGroup.add(itemsLayers[Tile.LAYER_NB]);
+	itemsLayers[MapEntity.LAYER_NB] = new JRadioButtonMenuItem();
+	itemsLayers[MapEntity.LAYER_NB].addActionListener(new ActionListenerChangeLayer(MapEntity.LAYER_NB));
+	itemsLayersGroup.add(itemsLayers[MapEntity.LAYER_NB]);
 
 	addSeparator();
 
@@ -122,7 +122,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	}
 	else {
 	    // otherwise we select no item
-	    itemsLayers[Tile.LAYER_NB].setSelected(true);
+	    itemsLayers[MapEntity.LAYER_NB].setSelected(true);
 	}
 
 	// show the popup menu

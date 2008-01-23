@@ -106,7 +106,7 @@ public class Map extends Observable {
      */
     private void initialize() {
 	this.allTiles = new TileOnMapList[3];
-	for (int i = 0; i < Tile.LAYER_NB; i++) {
+	for (int i = 0; i < MapEntity.LAYER_NB; i++) {
 	    this.allTiles[i] = new TileOnMapList();
 	}
 
@@ -241,7 +241,7 @@ public class Map extends Observable {
 	
 	    this.tileset = new Tileset(tilesetId);
 
-	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 		for (int i = 0; i < allTiles[layer].size(); i++) {
 
 		    try {
@@ -296,7 +296,7 @@ public class Map extends Observable {
      */
     public void setAllTiles(TileOnMapList[] allTiles) {
 
-	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 	    this.allTiles[layer] = new TileOnMapList(allTiles[layer]);
 	}
 
@@ -306,7 +306,7 @@ public class Map extends Observable {
 
     /**
      * Returns the tiles of the map on a given layer.
-     * @param layer the layer: Tile.LAYER_LOW, Tile.LAYER_INTERMEDIATE or Tile.LAYER_HIGH
+     * @param layer the layer: MapEntity.LAYER_LOW, MapEntity.LAYER_INTERMEDIATE or MapEntity.LAYER_HIGH
      * @return the vector of TileOnMap for this layer
      */
     public TileOnMapList getTiles(int layer) {
@@ -322,13 +322,13 @@ public class Map extends Observable {
      */
     public TileOnMap getTileAt(int x, int y) {
 
-	TileOnMap tile = getTileAt(Tile.LAYER_HIGH, x, y);
+	TileOnMap tile = getTileAt(MapEntity.LAYER_HIGH, x, y);
 
 	if (tile == null) {
-	    tile = getTileAt(Tile.LAYER_INTERMEDIATE, x, y);
+	    tile = getTileAt(MapEntity.LAYER_INTERMEDIATE, x, y);
 
 	    if (tile == null) {
-		tile = getTileAt(Tile.LAYER_LOW, x, y);
+		tile = getTileAt(MapEntity.LAYER_LOW, x, y);
 	    }
 	}
 
@@ -375,7 +375,7 @@ public class Map extends Observable {
 
 	Rectangle rectangle = new Rectangle(x, y, width, height);
 
-	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
 	    TileOnMapList tiles = getTiles(layer);
 	    
@@ -529,7 +529,7 @@ public class Map extends Observable {
 	TileOnMapList sortedTiles = new TileOnMapList();
 	
 	// sort the selected tiles so that they have the same order as in the map
-	for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
 	    for (TileOnMap tile: allTiles[layer]) {
 
@@ -697,7 +697,7 @@ public class Map extends Observable {
 	    out.println();
 	    
 	    // print the tiles
-	    for (int layer = 0; layer < Tile.LAYER_NB; layer++) {
+	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
 		for (TileOnMap tile: getTiles(layer)) {
 		    out.print(ENTITY_TILE);

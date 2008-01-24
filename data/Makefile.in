@@ -188,6 +188,29 @@ maps__DATA = \
   maps/map0001.zsd				\
   maps/map0002.zsd				
 
+EXTRA_DIST = \
+  game.zsd					\
+  images/sprites/link/stopped.png		\
+  images/sprites/link/walking.png		\
+  images/tilesets/tileset0000.png		\
+  music/boss.it					\
+  music/castle.it				\
+  music/credits.it				\
+  music/dark_world.it				\
+  music/fanfare.it				\
+  music/game_over.it				\
+  music/menu.it					\
+  music/mini_game.it				\
+  music/overworld.it				\
+  music/rabbit.it				\
+  music/soldiers.it				\
+  music/title_screen.it				\
+  music/village.it				\
+  tilesets/tileset0000.zsd			\
+  maps/map0000.zsd				\
+  maps/map0001.zsd				\
+  maps/map0002.zsd				
+
 all: all-am
 
 .SUFFIXES:

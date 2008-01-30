@@ -16,7 +16,7 @@ public abstract class MapEntity extends Observable {
     protected Rectangle positionInMap;
 
     /**
-     * Layer of the map.
+     * Layer of the entity on the map.
      */
     protected int layer;
 
@@ -77,8 +77,8 @@ public abstract class MapEntity extends Observable {
      * @param y1 y coordinate of the first point
      * @param x2 x coordinate of the second point
      * @param y2 y coordinate of the second point
-     * @throws MapException if the rectangle width or its height is zero
-     * (no other verifications are performed)
+     * @throws MapException if the entity is not resizable, or the rectangle width
+     * or its height is zero
      */
     public void setPositionInMap(int x1, int y1, int x2, int y2) throws MapException {
 
@@ -117,9 +117,13 @@ public abstract class MapEntity extends Observable {
      * The location of the entity is not changed.
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
-     * @throws MapException if the size specified is zero
+     * @throws MapException if the entity is not resizable, or the size specified is zero
      */
     public void setSize(int width, int height) throws MapException {
+
+	if (!isResizable()) {
+	    throw new MapException("This entity is not resizable");
+	}
 
 	if (width == 0 || height == 0) {
 	    throw new MapException("The entity's size is zero"); 
@@ -131,6 +135,16 @@ public abstract class MapEntity extends Observable {
 	// notify
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Returns whether or not the entity is resizable.
+     * By default, an entity is not resizable. The subclasses which represent
+     * resizable entities should redefine this method and return true.
+     * @return whether or not the entity is resizable
+     */
+    public boolean isResizable() {
+	return false;
     }
 
     /**

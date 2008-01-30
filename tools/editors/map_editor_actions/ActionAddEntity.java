@@ -3,34 +3,34 @@ package editors.map_editor_actions;
 import editors.*;
 
 /**
- * Adding a tile on the map.
+ * Adding an entity on the map.
  */
-public class ActionAddTile extends MapEditorAction {
+public class ActionAddEntity extends MapEditorAction {
 
-    private TileOnMap tileAdded;
+    private MapEntity entityAdded;
 
     /**
      * Constructor.
      * @param map the map
-     * @param tile the tile to add
+     * @param entity the entity to add
      */
-    public ActionAddTile(Map map, TileOnMap tileToAdd) {
+    public ActionAddEntity(Map map, MapEntity entity) {
 	super(map);
-	this.tileAdded = tileToAdd;
+	this.entityAdded = entity;
     }
 
     /**
      * Executes the action.
      */
     public void execute() throws MapException {
-	map.addTile(tileAdded);
+	map.addEntity(entityAdded);
     }
 
     /**
      * Undoes the action.
      */
     public void undo() throws MapException {
-	map.removeTile(tileAdded);
+	map.removeEntity(entityAdded);
     }
 
 }

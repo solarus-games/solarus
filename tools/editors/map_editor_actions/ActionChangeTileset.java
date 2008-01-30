@@ -9,7 +9,7 @@ public class ActionChangeTileset extends MapEditorAction {
 
     private String tilesetIdBefore;
     private String tilesetIdAfter;
-    private TileOnMapList[] allTilesBefore;
+    private MapEntities[] allEntitiesBefore;
     
     /**
      * Constructor.
@@ -21,12 +21,12 @@ public class ActionChangeTileset extends MapEditorAction {
 
 	this.tilesetIdAfter = tilesetId;
 	this.tilesetIdBefore = map.getTilesetId();
-	this.allTilesBefore = new TileOnMapList[Tile.LAYER_NB];
+	this.allEntitiesBefore = new MapEntities[Tile.LAYER_NB];
 
-	// copy allTiles
-	TileOnMapList[] allTiles = map.getAllTiles();
+	// copy allEntities
+	MapEntities[] allTiles = map.getAllEntities();
 	for (int i = 0; i < Tile.LAYER_NB; i++ ) {
-	    allTilesBefore[i] = new TileOnMapList(allTiles[i]);
+	    allEntitiesBefore[i] = new MapEntities(allEntities[i]);
 	}
     }
 
@@ -42,7 +42,7 @@ public class ActionChangeTileset extends MapEditorAction {
      */
     public void undo() throws ZSDXException {
 	map.setTileset(tilesetIdBefore);
-	map.setAllTiles(allTilesBefore);
+	map.setAllEntities(allEntitiesBefore);
     }
 
 }

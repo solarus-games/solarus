@@ -104,6 +104,16 @@ public class TileOnMap extends MapEntity {
     }
 
     /**
+     * Returns whether or not the entity is resizable.
+     * A tile on a map is resizable (i.e. its pattern can be replicated
+     * horizontally or vertically).
+     * @return true
+     */
+    public boolean isResizable() {
+	return true;
+    }
+
+    /**
      * Changes the tileset used to represent this tile on the map.
      * The corresponding tile from the new tileset (i.e. the tile
      * with the same id) must have exactly the same properties,
@@ -186,7 +196,7 @@ public class TileOnMap extends MapEntity {
     }
 
     /**
-     * Draws the tile on the map view.
+     * Draws the tile.
      * @param g graphic context
      * @param scale scale of the image (1: unchanged, 2: zoom of 200%)
      * @param showTransparency true to make transparent pixels,

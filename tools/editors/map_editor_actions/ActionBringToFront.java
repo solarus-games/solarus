@@ -1,30 +1,31 @@
 package editors.map_editor_actions;
 
 import editors.*;
+import java.util.LinkedList;
 
 /**
  * Bringing some tiles to front.
  */
 public class ActionBringToFront extends MapEditorAction {
 
-    private TileOnMapList tiles;
-    private TileOnMapList[] allTilesBefore;
+    private LinkedList<MapEntity> entities;
+    private MapEntities[] allEntitiesBefore;
     
     /**
      * Constructor.
      * @param map the map
-     * @param tiles the tiles to bring to front
+     * @param entities the entities to bring to front
      */
-    public ActionBringToFront(Map map, TileOnMapList tiles) {
+    public ActionBringToFront(Map map, LinkedList<MapEntity> entities) {
 	super(map);
 	
-	this.tiles = new TileOnMapList(tiles);
-	this.allTilesBefore = new TileOnMapList[Tile.LAYER_NB];
+	this.tiles = new LinkedList<MapEntity>(entities);
+	this.allTilesBefore = new MapEntities[Tile.LAYER_NB];
 
-	// copy allTiles
-	TileOnMapList[] allTiles = map.getAllTiles();
+	// copy allEntities
+	MapEntities[] allEntities = map.getAllEntities();
 	for (int i = 0; i < Tile.LAYER_NB; i++ ) {
-	    allTilesBefore[i] = new TileOnMapList(allTiles[i]);
+	    allEntitiesBefore[i] = new MapEntities(allEntities[i]);
 	}
     }
 
@@ -32,14 +33,14 @@ public class ActionBringToFront extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws MapException {
-	map.bringToFront(tiles);
+	map.bringToFront(entities);
     }
 
     /**
      * Undoes the action.
      */
     public void undo() throws MapException {
-	map.setAllTiles(allTilesBefore);
+	map.setAllTiles(allEntitiesBefore);
     }
 
 }

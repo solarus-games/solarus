@@ -1,31 +1,32 @@
 package editors.map_editor_actions;
 
 import editors.*;
+import java.util.LinkedList;
 
 /**
  * Changing the layer of some tiles.
  */
 public class ActionChangeLayer extends MapEditorAction {
 
-    private TileOnMapList tiles;
+    private LinkedList<MapEntity> entities;
     private int[] layersBefore; // the layers before the action can be different
     private int layerAfter;
 
     /**
      * Constructor.
      * @param map the map
-     * @param tiles the tile for which the layer will be changed
+     * @param entities the entities for which the layer will be changed
      * @param layer the layer to set
      */
-    public ActionChangeLayer(Map map, TileOnMapList tiles, int layer) {
+    public ActionChangeLayer(Map map, LinkedList<MapEntity> entities, int layer) {
 	super(map);
-	this.tiles = new TileOnMapList(tiles);
+	this.entities = new LinkedList<MapEntity>(entities);
 	this.layerAfter = layer;
 
-	this.layersBefore = new int[tiles.size()];
+	this.layersBefore = new int[entities.size()];
 	int i = 0;
-	for (TileOnMap tile: tiles) {
-	    this.layersBefore[i] = tile.getLayer();
+	for (MapEntity entity: entities) {
+	    this.layersBefore[i] = entity.getLayer();
 	    i++;
 	}
     }
@@ -35,8 +36,8 @@ public class ActionChangeLayer extends MapEditorAction {
      */
     public void execute() throws MapException {
 
-	for (TileOnMap tile: tiles) {
-	    map.tileSetLayer(tile, layerAfter);
+	for (MapEntity entity: entities) {
+	    map.setEntityLayer(entity, layerAfter);
 	}
     }
 
@@ -46,8 +47,8 @@ public class ActionChangeLayer extends MapEditorAction {
     public void undo() throws MapException {
 
 	int i = 0;
-	for (TileOnMap tile: tiles) {
-	    map.tileSetLayer(tile, layersBefore[i]);
+	for (MapEntity entity: entities) {
+	    map.setEntityLayer(entity, layersBefore[i]);
 	    i++;
 	}
     }

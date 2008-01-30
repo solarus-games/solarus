@@ -1,0 +1,179 @@
+package editors;
+
+import java.util.*;
+import editors.map_editor_actions.*;
+
+/**
+ * Represents the entities selected in the map editor.
+ */
+public class MapEntitySelection extends Observable implements Iterable {
+
+    /**
+     * The selected entities.
+     */
+    private LinkedList<MapEntity> entities;
+
+    /**
+     * The map.
+     */
+    private Map map;
+
+    /**
+     * Constructor.
+     * @param map the map
+     */
+    public MapEntitySelection(Map map) {
+	this.map = map;
+	this.entities = new LinkedList<MapEntity>();
+    }
+
+    /**
+     * Returns a selected entity.
+     * @param index of the entity to get
+     * @return the entity at this index in the selection
+     */
+    public MapEntity getEntity(int index) {
+	return entities.get(index);
+    }
+
+    /**
+     * Returns all the selected entities.
+     * @return the selected entities
+     */
+    public LinkedList<MapEntity> getEntities() {
+	return entities;
+    }
+
+    /**
+     * Returns an iterator over the selected entities.
+     * @return an iterator over the selected entities.
+     */
+    public Iterator iterator() {
+	return entities.iterator();
+    }
+
+    /**
+     * Returns whether or not an entity is selected.
+     * @param entity an entity
+     * @return true if the entity is selected, false otherwise
+     */
+    public boolean isSelected(MapEntity entity) {
+	return entities.contains(entity);
+    }
+
+    /**
+     * Returns the number of entities selected.
+     * @return the number of entities selected.
+     */
+    public int getNbEntitiesSelected() {
+	return entities.size();
+    }
+
+    /**
+     * Returns whether or not the selection is empty.
+     * @return true if there is no entity selected, false otherwise
+     */
+    public boolean isEmpty() {
+	return entities.size() == 0;
+    }
+
+    /**
+     * Selects an entity.
+     * @param entity the entity to select
+     */
+    public void select(MapEntity entity) {
+	if (!isSelected(entity)) {
+	    entities.add(entity);
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Unselects an entity.
+     * @param entity the entity to unselect
+     */
+    public void unSelect(MapEntity entity) {
+	if (entities.contains(entity)) {
+	    entities.remove(entity);
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Unselects all entities.
+     */
+    public void unSelectAll() {
+	entities.clear();
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Changes the selection state of an entity.
+     * @param entity the entity to select or unselect
+     */
+    public void switchSelection(MapEntity entity) {
+	if (isSelected(entity)) {
+	    unSelect(entity);
+	}
+	else {
+	    select(entity);
+	}
+    }
+
+    /**
+     * Removes the selected entities from the map.
+     * If there is no entity selected, nothing is done.
+     */
+    public void removeFromMap() throws ZSDXException {
+
+	if (entities.size() > 0) {
+	    map.getHistory().doAction(new ActionRemoveEntities(map, entities));
+	}
+    }
+
+    /**
+     * Returns the layer of the selected entities, if all selected entities have the same layer.
+     * Otherwise, returns -1.
+     * @return the common layer, or -1 if all selected entities have not the same layer
+     */
+    public int getLayer() {
+	
+	int layer = entities.get(0).getLayer();
+	
+	for (int i = 1; i < entities.size(); i++) {
+	    if (entities.get(i).getLayer() != layer) {
+		return -1;
+	    }
+	}
+
+	return layer;
+    }
+
+    /**
+     * Changes the layer of the selected entities.
+     * @param layer the new layer
+     */
+    public void setLayer(int layer) throws ZSDXException {
+
+	map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
+    }
+
+    /**
+     * Brings the selected entities to the front in their layer.
+     */
+    public void bringToFront() throws ZSDXException {
+
+	map.getHistory().doAction(new ActionBringToFront(map, entities));
+    }
+
+    /**
+     * Brings the selected entities to the back in their layer.
+     */
+    public void bringToBack() throws ZSDXException {
+
+	map.getHistory().doAction(new ActionBringToBack(map, entities));
+    }
+}

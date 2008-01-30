@@ -43,15 +43,15 @@ public class Map extends Observable {
     private Tileset tileset;
 
     /**
-     * Tiles of the map.
-     * This is an array of three tile lists, one for each layer.
+     * Entities of the map.
+     * This is an array of three entity lists, one for each layer.
      */
-    private TileOnMapList[] allTiles;
+    private MapEntities[] allEntities;
 
     /**
-     * The tiles selected.
+     * The entities selected.
      */
-    private MapTileSelection tileSelection;
+    private MapEntitySelection entitySelection;
     
     /**
      * True if some tiles could not be found in the tileset
@@ -105,12 +105,12 @@ public class Map extends Observable {
      * Initializes the object.
      */
     private void initialize() {
-	this.allTiles = new TileOnMapList[3];
+	this.allEntities = new MapEntities[3];
 	for (int i = 0; i < MapEntity.LAYER_NB; i++) {
-	    this.allTiles[i] = new TileOnMapList();
+	    this.allEntities[i] = new MapEntities();
 	}
 
-	this.tileSelection = new MapTileSelection(this);
+	this.entitySelection = new MapEntitySelection(this);
 	this.history = new MapEditorHistory(this);
     }
 
@@ -242,15 +242,18 @@ public class Map extends Observable {
 	    this.tileset = new Tileset(tilesetId);
 
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-		for (int i = 0; i < allTiles[layer].size(); i++) {
+
+		LinkedList<TileOnMap> tiles = allEntities[layer].getTiles();
+
+		for (int i = 0; i < tiles.size(); i++) {
 
 		    try {
-			TileOnMap tile = allTiles[layer].get(i);
+			TileOnMap tile = tiles.get(i);
 			tile.setTileset(tileset);
 		    }
 		    catch (TilesetException ex) {
 			// the tile is not valid anymore, we should remove it from the map
-			allTiles[layer].remove(i);
+			tiles.remove(i);
 			i--;
 			badTiles = true;
 		    }
@@ -267,37 +270,37 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the total number of tiles of the map.
-     * @return the total number of tiles of the map.
+     * Returns the total number of entities of the map.
+     * @return the total number of entities of the map.
      */
-    public int getNbTiles() {
+    public int getNbEntities() {
 	
-	int nbTiles = 0;
+	int nbEntities = 0;
 
-	// add the tiles of each layer
-	for (TileOnMapList tiles: allTiles) {
-	    nbTiles += tiles.size();
+	// count the entities of each layer
+	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	    nbEntities += allEntities[layer].size();
 	}
 
-	return nbTiles;
+	return nbEntities;
     }
 
     /**
-     * Returns the tiles of the map.
-     * @return an array of 3 vectors of TileOnMap: a vector for each layer
+     * Returns the entities of the map.
+     * @return an array of 3 MapEntity sets: a set for each layer
      */
-    public TileOnMapList[] getAllTiles() {
-	return allTiles;
+    public MapEntities[] getAllEntities() {
+	return allEntities;
     }
 
     /**
-     * Sets the tiles of the map.
-     * @param allTiles an array of 3 vectors of TileOnMap: a vector for each layer (this array is copied)
+     * Sets the entities of the map.
+     * @param allEntities an array of 3 MapEntity sets: a set for each layer (this array is copied)
      */
-    public void setAllTiles(TileOnMapList[] allTiles) {
+    public void setAllEntities(MapEntities[] allEntities) {
 
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    this.allTiles[layer] = new TileOnMapList(allTiles[layer]);
+	    this.allEntities[layer] = new MapEntities(allEntities[layer]);
 	}
 
 	setChanged();
@@ -305,51 +308,52 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the tiles of the map on a given layer.
+     * Returns the entities of the map on a given layer.
      * @param layer the layer: MapEntity.LAYER_LOW, MapEntity.LAYER_INTERMEDIATE or MapEntity.LAYER_HIGH
-     * @return the vector of TileOnMap for this layer
+     * @return the entities placed on this layer
      */
-    public TileOnMapList getTiles(int layer) {
-	return allTiles[layer];
+    public MapEntities getEntities(int layer) {
+	return allEntities[layer];
     }
 
     /**
-     * Returns the first tile under a point of the map, in the three layers,
+     * Returns the first entity under a point of the map, in the three layers,
      * starting with the high layer.
      * @param x x of the point
      * @param y y of the point
-     * @return the tile found, or null if there is no tile here
+     * @return the entity found, or null if there is no entity here
      */
-    public TileOnMap getTileAt(int x, int y) {
+    public MapEntity getEntityAt(int x, int y) {
 
-	TileOnMap tile = getTileAt(MapEntity.LAYER_HIGH, x, y);
+	MapEntity entity = getEntityAt(MapEntity.LAYER_HIGH, x, y);
 
-	if (tile == null) {
-	    tile = getTileAt(MapEntity.LAYER_INTERMEDIATE, x, y);
+	if (entity == null) {
+	    entity = getEntityAt(MapEntity.LAYER_INTERMEDIATE, x, y);
 
-	    if (tile == null) {
-		tile = getTileAt(MapEntity.LAYER_LOW, x, y);
+	    if (entity == null) {
+		entity = getEntityAt(MapEntity.LAYER_LOW, x, y);
 	    }
 	}
 
-	return tile;
+	return entity;
     }
 
     /**
-     * Returns the first tile under a point of the map, in the specified layer.
+     * Returns the first en tity under a point of the map, in the specified layer.
      * @param layer the layer
      * @param x x of the point
      * @param y y of the point
-     * @return the tile found, or null if there is no tile here
+     * @return the entity found, or null if there is no entity here
      */
-    public TileOnMap getTileAt(int layer, int x, int y) {
+    public MapEntity getEntityAt(int layer, int x, int y) {
 		
-	TileOnMapList tileList = allTiles[layer];
-	for (int i = tileList.size() - 1; i >= 0; i--) {
+	MapEntities entities = allEntities[layer];
+	ListIterator<MapEntity> iterator = entities.listIterator(entities.size() - 1);
+	while (iterator.hasPrevious()) {
 
-	    TileOnMap tile = tileList.get(i);
-	    if (tile.containsPoint(x, y)) {
-		return tile;
+	    MapEntity entity = iterator.previous();
+	    if (entity.containsPoint(x, y)) {
+		return entity;
 	    }
 	}
 
@@ -357,15 +361,15 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the tiles located in a rectangle defined by two points.
+     * Returns the entities located in a rectangle defined by two points.
      * @param x1 x coordinate of the first point
      * @param y1 y coordinate of the first point
      * @param x2 x coordinate of the second point
      * @param y2 y coordinate of the second point
      */
-    public TileOnMapList getTilesInRectangle(int x1, int y1, int x2, int y2) {
+    public LinkedList<MapEntity> getEntitiesInRectangle(int x1, int y1, int x2, int y2) {
 
-	TileOnMapList tilesInRectangle = new TileOnMapList();
+	LinkedList<MapEntity> entitiesInRectangle = new LinkedList<MapEntity>();
 
 	int x = Math.min(x1, x2);
 	int width = Math.abs(x2 - x1);
@@ -376,88 +380,86 @@ public class Map extends Observable {
 	Rectangle rectangle = new Rectangle(x, y, width, height);
 
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-
-	    TileOnMapList tiles = getTiles(layer);
 	    
-	    for (TileOnMap tile: tiles) {
-		if (rectangle.contains(tile.getPositionInMap())) {
-		    tilesInRectangle.add(tile);
+	    for (MapEntity entity: allEntities[layer]) {
+		if (rectangle.contains(entity.getPositionInMap())) {
+		    entitiesInRectangle.add(entity);
 		}
 	    }
 	}
 	
-	return tilesInRectangle;
+	return entitiesInRectangle;
     }
 
     /**
-     * Adds a new tile on the map.
-     * @param tile the tile to add
+     * Adds a new entity on the map.
+     * @param entity the entity to add
      */
-    public void addTile(TileOnMap tile) {
+    public void addEntity(MapEntity entity) {
 
-	allTiles[tile.getLayer()].add(tile);
+	allEntities[entity.getLayer()].add(entity);
 
 	setChanged();
 	notifyObservers();
     }
 
     /**
-     * Removes a tile from the map.
-     * @param tile the tile to remove
+     * Removes an entity from the map.
+     * @param entity the entity to remove
      */
-    public void removeTile(TileOnMap tile) {
+    public void removeEntity(MapEntity entity) {
 
-	allTiles[tile.getLayer()].remove(tile);
+	allEntities[entity.getLayer()].remove(entity);
 
 	setChanged();
 	notifyObservers();
     }
 
     /**
-     * Changes the position of a tile on the map, by specifying two points.
-     * The tile is resized (i.e. repeatX and repeatY are updated) so that
-     * the tile fits exactly in the rectangle formed by the two points.
-     * @param tile a tile
+     * Changes the position of an entity on the map, by specifying two points.
+     * The entity is resized (i.e. repeatX and repeatY are updated) so that
+     * it fits exactly in the rectangle formed by the two points.
+     * @param entity an entity
      * @param x1 x coordinate of the first point
      * @param y1 y coordinate of the first point
      * @param x2 x coordinate of the second point
      * @param y2 y coordinate of the second point
-     * @throws MapException if the rectangle width or its height is zero
-     * (no other verifications are performed)
+     * @throws MapException if the entity is not resizable of the rectangle width
+     * or its height is zero
      */
-    public void setTilePosition(TileOnMap tile, int x1, int y1, int x2, int y2) throws MapException {
-	tile.setPositionInMap(x1, y1, x2, y2);
+    public void setEntityPosition(MapEntity entity, int x1, int y1, int x2, int y2) throws MapException {
+	entity.setPositionInMap(x1, y1, x2, y2);
 
 	setChanged();
 	notifyObservers();
     }
 
     /**
-     * Changes the position of a tile on the map, by specifying its rectangle.
-     * The tile is resized (i.e. repeatX and repeatY are updated) so that
-     * the tile fits exactly in the rectangle.
-     * @param tile the tile
+     * Changes the position of an entity on the map, by specifying its rectangle.
+     * The entity is resized (i.e. repeatX and repeatY are updated) so that
+     * it fits exactly in the rectangle.
+     * @param entity an entity
      * @param position a rectangle
-     * @throws MapException if the rectangle width or its height is zero
-     * (no other verifications are performed)
+     * @throws MapException if the entity is not resizable of the rectangle width
+     * or its height is zero
      */
-    public void setTilePosition(TileOnMap tile, Rectangle position) throws MapException {
-	tile.setPositionInMap(position);
+    public void setEntityPosition(MapEntity entity, Rectangle position) throws MapException {
+	entity.setPositionInMap(position);
 
 	setChanged();
 	notifyObservers();
     }
 
     /**
-     * Changes the position of a group of tiles.
-     * @param tiles the tiles to move
+     * Changes the position of a group of entities.
+     * @param entities the entities to move
      * @param dx number of pixels to move on x
      * @param dy number of pixels to move on y
      */
-    public void moveTiles(TileOnMapList tiles, int dx, int dy) {
+    public void moveEntities(LinkedList<MapEntity> entities, int dx, int dy) {
 			  
-	for (TileOnMap tile: tiles) {
-	    tile.move(dx, dy);
+	for (MapEntity entity: entities) {
+	    entity.move(dx, dy);
 	}
 
 	setChanged();
@@ -490,28 +492,28 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the tiles selected by the user.
-     * @return the tiles selected by the user
+     * Returns the entities selected by the user.
+     * @return the entities selected by the user
      */
-    public MapTileSelection getTileSelection() {
-	return tileSelection;
+    public MapEntitySelection getEntitySelection() {
+	return entitySelection;
     }
     
     /**
-     * Changes the layer of a tile. You should call this method instead of
-     * calling directly TileOnMap.setLayer(), because the tiles of the 3 layers are
-     * stored in 3 different arrays.
-     * @param tile the tile to move
+     * Changes the layer of an entity. You should call this method instead of
+     * calling directly MapEntity.setLayer(), because the entity of the 3 layers are
+     * stored in 3 different structures.
+     * @param entity the entity to change the layer
      * @param layer the new layer
      */
-    public void tileSetLayer(TileOnMap tile, int layer) {
+    public void setEntityLayer(MapEntity entity, int layer) {
 
-	int oldLayer = tile.getLayer();
+	int oldLayer = entity.getLayer();
 
 	if (layer != oldLayer) {
-	    tile.setLayer(layer);
-	    allTiles[oldLayer].remove(tile);
-	    allTiles[layer].add(tile);
+	    entity.setLayer(layer);
+	    allEntities[oldLayer].remove(entity);
+	    allEntities[layer].add(entity);
 	}
 
 	setChanged();
@@ -519,46 +521,47 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the specified tiles, sorted in the order of the map.
-     * The first tile is the lowest one, the last tile is the highest one.
-     * @param tiles the tiles to sort
-     * @return the same tiles, sorted as they are in the map
+     * Returns the specified entities, sorted in the order of the map.
+     * The first entity is the lowest one, the last entity is the highest one.
+     * @param entities the entities to sort
+     * @return the same entities, sorted as they are in the map
      */
-    private TileOnMapList getSortedTiles(TileOnMapList tiles) {
+    private LinkedList<MapEntity> getSortedEntities(LinkedList<MapEntity> entities) {
 	
-	TileOnMapList sortedTiles = new TileOnMapList();
+	LinkedList<MapEntity> sortedEntities = new LinkedList<MapEntity>();
 	
-	// sort the selected tiles so that they have the same order as in the map
+	// sort the entities so that they have the same order as in the map
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
-	    for (TileOnMap tile: allTiles[layer]) {
+	    for (MapEntity entity: allEntities[layer]) {
 
-		if (tiles.contains(tile)) {
-		    sortedTiles.add(tile);
+		if (entities.contains(entity)) {
+		    sortedEntities.add(entity);
 		}
 	    }
 	}
 
-	// now sortedTiles contains all selected tiles, sorted in the same order as in the map
-	return sortedTiles;
+	// now sortedEntities contains all selected entities, sorted in the same order as in the map
+	return sortedEntities;
     }
 
     /**
-     * Brings the specified tiles to the back, keeping their layer.
-     * The order of the specified tiles in the map is unchanged.
-     * @param tiles the tiles to move
+     * Brings the specified entities to the back, keeping their layer.
+     * The order of the specified entities in the map is unchanged.
+     * @param entities the entities to move
      */
-    public void bringToBack(TileOnMapList tiles) {
+    public void bringToBack(LinkedList<MapEntity> entities) {
 
-	TileOnMapList sortedTiles = getSortedTiles(tiles);
+	LinkedList<MapEntity> sortedEntities = getSortedEntities(entities);
 
-	// bring to back each tile from sortedTiles
-	for (int i = sortedTiles.size() - 1; i >= 0; i--) {
+	// bring to back each entity from sortedEntities
+	ListIterator<MapEntity> iterator = sortedEntities.listIterator(sortedEntities.size() - 1);
+	while (iterator.hasPrevious()) {
 
-	    TileOnMap tile = sortedTiles.get(i);
-	    int layer = tile.getLayer();
-	    allTiles[layer].remove(tile);
-	    allTiles[layer].addFirst(tile);
+	    MapEntity entity = iterator.previous();
+	    int layer = entity.getLayer();
+	    allEntities[layer].remove(entity);
+	    allEntities[layer].addFirst(entity);
 	}
 
 	setChanged();
@@ -566,20 +569,22 @@ public class Map extends Observable {
     }
 
     /**
-     * Brings the specified tiles to the front, keeping their layer.
-     * The order of the specified tiles in the map is unchanged.
-     * @param tiles the tiles to move
+     * Brings the specified entities to the front, keeping their layer.
+     * The order of the specified entities in the map is unchanged.
+     * @param entities the entities to move
      */
-    public void bringToFront(TileOnMapList tiles) {
+    public void bringToFront(LinkedList<MapEntity> entities) {
 
-	TileOnMapList sortedTiles = getSortedTiles(tiles);
+	LinkedList<MapEntity> sortedEntities = getSortedEntities(entities);
 
-	// bring to front each tile from sortedTiles
-	for (TileOnMap tile: sortedTiles) {
+	// bring to front each entity from sortedEntities
+	ListIterator<MapEntity> iterator = sortedEntities.listIterator(0);
+	while (iterator.hasNext()) {
 
-	    int layer = tile.getLayer();
-	    allTiles[layer].remove(tile);
-	    allTiles[layer].addLast(tile);
+	    MapEntity entity = iterator.next();
+	    int layer = entity.getLayer();
+	    allEntities[layer].remove(entity);
+	    allEntities[layer].addLast(entity);
 	}
 
 	setChanged();
@@ -639,7 +644,7 @@ public class Map extends Observable {
 
 		if (entityType == ENTITY_TILE) {
 		    TileOnMap tileOnMap = new TileOnMap(line.substring(tabIndex + 1), tileset);
-		    addTile(tileOnMap);
+		    addEntity(tileOnMap);
 		}
 		else {
 		    throw new ZSDXException("Unknown entity type '" + entityType + "'");
@@ -696,10 +701,12 @@ public class Map extends Observable {
 	    out.print(musicId);
 	    out.println();
 	    
-	    // print the tiles
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
-		for (TileOnMap tile: getTiles(layer)) {
+		MapEntities entities = allEntities[layer];
+
+		// print the tiles
+		for (TileOnMap tile: entities.getTiles()) {
 		    out.print(ENTITY_TILE);
 		    out.print('\t');
 		    out.print(tile.toString());

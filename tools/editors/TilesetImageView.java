@@ -79,12 +79,12 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	    // popup menu to create a tile
 	    popupMenuCreate = new JPopupMenu();
 
-	    item = new JMenuItem("Create (no obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE_NONE));
-	    item.addActionListener(new ActionCreateTile(Tile.OBSTACLE_NONE));
+	    item = new JMenuItem("Create (no obstacle)", ObstacleIcons.getIcon(MapEntity.OBSTACLE_NONE));
+	    item.addActionListener(new ActionCreateTile(MapEntity.OBSTACLE_NONE));
 	    popupMenuCreate.add(item);
 
-	    item = new JMenuItem("Create (obstacle)", ObstacleIcons.getIcon(Tile.OBSTACLE));
-	    item.addActionListener(new ActionCreateTile(Tile.OBSTACLE));
+	    item = new JMenuItem("Create (obstacle)", ObstacleIcons.getIcon(MapEntity.OBSTACLE));
+	    item.addActionListener(new ActionCreateTile(MapEntity.OBSTACLE));
 	    popupMenuCreate.add(item);
 
 	    itemCancelCreate.addActionListener(new ActionListener() {

@@ -176,4 +176,13 @@ public class MapEntitySelection extends Observable implements Iterable {
 
 	map.getHistory().doAction(new ActionBringToBack(map, entities));
     }
+
+    /**
+     * Returns whether the selection is resizable.
+     * @return true if there is exactly one entity selected, and if this entity is resizable
+     */
+    public boolean isResizable() {
+
+	return getNbEntitiesSelected() == 1 && getEntity(0).isResizable();
+    }
 }

@@ -21,6 +21,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     private JLabel mapIdView;
     private MapNameView mapNameView;
     private JLabel mapNbTilesView;
+    private JLabel mapNbActiveEntitiesView;
     private MapSizeView mapSizeView;
     private MapTilesetView mapTilesetView;
     private MapMusicView mapMusicView;
@@ -49,7 +50,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	// number of tiles
 	constraints.gridy++;
-	add(new JLabel("Number of tiles"), constraints);
+	add(new JLabel("Tiles"), constraints);
+
+	// number of tiles
+	constraints.gridy++;
+	add(new JLabel("Active entities"), constraints);
 
 	// size
 	constraints.gridy++;
@@ -76,6 +81,10 @@ public class MapPropertiesView extends JPanel implements Observer {
        	constraints.gridy++;
 	mapNbTilesView = new JLabel(); 
 	add(mapNbTilesView, constraints);
+
+       	constraints.gridy++;
+	mapNbActiveEntitiesView = new JLabel(); 
+	add(mapNbActiveEntitiesView, constraints);
 
        	constraints.gridy++;
 	mapSizeView = new MapSizeView(); 
@@ -111,6 +120,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	mapIdView.setText(map.getId());
 	mapNameView.update(o);
 	mapNbTilesView.setText(Integer.toString(map.getNbTiles()));
+	mapNbActiveEntitiesView.setText(Integer.toString(map.getNbInteractiveEntities() + map.getNbMovingEntities()));
 	mapSizeView.update(o);
 	mapTilesetView.update(o);
 	mapMusicView.update(o);

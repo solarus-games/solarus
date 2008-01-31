@@ -21,11 +21,11 @@ public class ActionChangeTileset extends MapEditorAction {
 
 	this.tilesetIdAfter = tilesetId;
 	this.tilesetIdBefore = map.getTilesetId();
-	this.allEntitiesBefore = new MapEntities[Tile.LAYER_NB];
+	this.allEntitiesBefore = new MapEntities[MapEntity.LAYER_NB];
 
 	// copy allEntities
-	MapEntities[] allTiles = map.getAllEntities();
-	for (int i = 0; i < Tile.LAYER_NB; i++ ) {
+	MapEntities[] allEntities = map.getAllEntities();
+	for (int i = 0; i < MapEntity.LAYER_NB; i++ ) {
 	    allEntitiesBefore[i] = new MapEntities(allEntities[i]);
 	}
     }

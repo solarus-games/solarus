@@ -4,25 +4,25 @@ import java.awt.Rectangle;
 import editors.*;
 
 /**
- * Bringing some tiles to back.
+ * Resizing a map entity.
  */
-public class ActionResizeTile extends MapEditorAction {
+public class ActionResizeEntity extends MapEditorAction {
 
-    private TileOnMap tile;
+    private MapEntity entity;
     private Rectangle positionBefore;
     private Rectangle positionAfter;
     
     /**
      * Constructor.
      * @param map the map
-     * @param tile the tile to resize
-     * @param position the new tile size (this object is not modified by this class)
+     * @param entity the entity to resize
+     * @param position the new entity size (this object is not modified by this class)
      */
-    public ActionResizeTile(Map map, TileOnMap tile, Rectangle position) {
+    public ActionResizeEntity(Map map, MapEntity entity, Rectangle position) {
 	super(map);
 	
-	this.tile = tile;
-	this.positionBefore = new Rectangle(tile.getPositionInMap());
+	this.entity = entity;
+	this.positionBefore = new Rectangle(entity.getPositionInMap());
 	this.positionAfter = new Rectangle(position);
     }
 
@@ -30,14 +30,14 @@ public class ActionResizeTile extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws MapException {
-	map.setTilePosition(tile, positionAfter);
+	map.setEntityPosition(entity, positionAfter);
     }
 
     /**
      * Undoes the action.
      */
     public void undo() throws MapException {
-	map.setTilePosition(tile, positionBefore);
+	map.setEntityPosition(entity, positionBefore);
     }
 
 }

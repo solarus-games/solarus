@@ -32,6 +32,15 @@ public abstract class MapEntity extends Observable {
     public static final int LAYER_HIGH = 2;
     public static final int LAYER_NB = 3;
 
+    // Constants to identify the obstacles
+
+    public static final int OBSTACLE_NONE = 0;
+    public static final int OBSTACLE = 1;
+    public static final int OBSTACLE_TOP_RIGHT = 2;
+    public static final int OBSTACLE_TOP_LEFT = 3;
+    public static final int OBSTACLE_BOTTOM_LEFT = 4;
+    public static final int OBSTACLE_BOTTOM_RIGHT = 5;
+
     /**
      * Empty constructor.
      */
@@ -50,6 +59,15 @@ public abstract class MapEntity extends Observable {
     protected MapEntity(int layer, int x, int y, int width, int height) {
 	this.layer = layer;
 	this.positionInMap = new Rectangle(x, y, width, height);
+    }
+
+    /**
+     * Returns the entity's obstacle property (default is OBSTACLE_NONE).
+     * @return OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
+     * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
+     */
+    public int getObstacle() {
+	return OBSTACLE_NONE;
     }
 
     /**
@@ -148,6 +166,24 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns the minimum width of the entity (for a resizable entity).
+     * When the entity is resized, its new width must be a multiple of this minimum size.
+     * @return the minimum width of the entity
+     */
+    public int getUnitWidth() {
+	return 8;
+    }
+
+    /**
+     * Returns the minimum height of the entity (for a resizable entity).
+     * When the entity is resized, its new height is a multiple of this minimum height.
+     * @return the minimum height of the entity
+     */
+    public int getUnitHeight() {
+	return 8;
+    }
+
+    /**
      * Changes the position of the entity.
      * @param dx number of pixels to move on x
      * @param dy number of pixels to move on y
@@ -212,9 +248,9 @@ public abstract class MapEntity extends Observable {
     /**
      * Draws the entity on the map view.
      * @param g graphic context
-     * @param scale scale of the image (1: unchanged, 2: zoom of 200%)
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
      * @param showTransparency true to make transparent pixels,
      * false to replace them by a background color
      */
-    public abstract void paint(Graphics g, int scale, boolean showTransparency);
+    public abstract void paint(Graphics g, double zoom, boolean showTransparency);
 }

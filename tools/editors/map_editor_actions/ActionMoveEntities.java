@@ -1,13 +1,15 @@
 package editors.map_editor_actions;
 
 import editors.*;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Moving some tiles on the map.
  */
 public class ActionMoveEntities extends MapEditorAction {
 
-    private LinkedList<MapEntity> entitiesToMove;
+    private List<MapEntity> entitiesToMove;
     private int dx;
     private int dy;
 
@@ -33,7 +35,7 @@ public class ActionMoveEntities extends MapEditorAction {
      * @param dx number of pixels to move on x
      * @param dy number of pixels to move on y
      */
-    public ActionMoveEntities(Map map, LinkedList<MapEntity> entitiesToMove, int dx, int dy) {
+    public ActionMoveEntities(Map map, List<MapEntity> entitiesToMove, int dx, int dy) {
 	super(map);
 	this.entitiesToMove = new LinkedList<MapEntity>(entitiesToMove);
 	this.dx = dx;

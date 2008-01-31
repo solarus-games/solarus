@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * The popup menu shown when the user right clicks on the selected tiles in the map view.
+ * The popup menu shown when the user right clicks on the selected entities in the map view.
  */
 public class MapViewPopupMenu extends JPopupMenu {
 
@@ -20,7 +20,7 @@ public class MapViewPopupMenu extends JPopupMenu {
     private MapView mapView;
 
     /**
-     * Item in the popup menu to resize the selected tile.
+     * Item in the popup menu to resize the selected entity.
      */
     private JMenuItem itemResize;
 
@@ -49,7 +49,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	itemResize = new JMenuItem("Resize");
 	itemResize.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    mapView.startResizingTile();
+		    mapView.startResizingEntity();
 		}
 	    });
 	add(itemResize);
@@ -84,7 +84,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	item = new JMenuItem("Destroy");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    mapView.destroySelectedTiles();
+		    mapView.destroySelectedEntities();
 		}
 	    });
 	add(item);
@@ -107,17 +107,16 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     public void show(int x, int y) {
 
-	MapTileSelection tileSelection = map.getTileSelection();
+	MapEntitySelection selection = map.getEntitySelection();
 	
 	// enable or not the item "Resize"
-	boolean enable = (tileSelection.getNbTilesSelected() == 1);
-	itemResize.setEnabled(enable);
+	itemResize.setEnabled(selection.isResizable());
 
 	// select the appropriate layer item
-	int layer = map.getTileSelection().getLayer();
+	int layer = selection.getLayer();
 
 	if (layer != -1) {
-	    // if all the selected tiles have the same layer, we check its item
+	    // if all the selected entities have the same layer, we check its item
 	    itemsLayers[layer].setSelected(true);
 	}
 	else {
@@ -130,8 +129,8 @@ public class MapViewPopupMenu extends JPopupMenu {
     }
 
     /**
-     * Action listener invoked when the user changes the layer of a tile
-     * from the popup menu after a right click.
+     * Action listener invoked when the user changes the layer of the selected
+     * entitiyes from the popup menu after a right click.
      */
     private class ActionListenerChangeLayer implements ActionListener {
 
@@ -149,11 +148,11 @@ public class MapViewPopupMenu extends JPopupMenu {
 	}
 
 	/**
-	 * Method called when the user sets the layer of the selected tiles.
+	 * Method called when the user sets the layer of the selected entities.
 	 */
 	public void actionPerformed(ActionEvent ev) {
 	    try {
-		map.getTileSelection().setLayer(layer);
+		map.getEntitySelection().setLayer(layer);
 	    }
 	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Cannot change the layer: " + e.getMessage());
@@ -162,8 +161,8 @@ public class MapViewPopupMenu extends JPopupMenu {
     }
 
     /**
-     * Action listener invoker when the user clicks on "Bring to front".
-     * The selected tiles are moved to the front in their layer.
+     * Action listener invoked when the user clicks on "Bring to front".
+     * The selected entities are moved to the front in their layer.
      */
     private class ActionListenerBringToFront implements ActionListener {
 
@@ -172,17 +171,17 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 */
 	public void actionPerformed(ActionEvent ev) {
 	    try {
-		map.getTileSelection().bringToFront();
+		map.getEntitySelection().bringToFront();
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot bring the tiles to front: " + e.getMessage());
+		WindowTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
 	    }
 	}
     }
 
     /**
      * Action listener invoker when the user clicks on "Bring to back".
-     * The selected tiles are moved to the back in their layer.
+     * The selected entities are moved to the back in their layer.
      */
     private class ActionListenerBringToBack implements ActionListener {
 
@@ -191,10 +190,10 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 */
 	public void actionPerformed(ActionEvent ev) {
 	    try {
-		map.getTileSelection().bringToBack();
+		map.getEntitySelection().bringToBack();
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot bring the tiles to back: " + e.getMessage());
+		WindowTools.errorDialog("Cannot bring the entities to back: " + e.getMessage());
 	    }
 	}
     }

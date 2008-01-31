@@ -1,10 +1,14 @@
 package editors;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.*;
+import javax.swing.*;
 import java.util.*;
-import java.io.*;
 import editors.map_editor_actions.*;
 
 /**
@@ -21,31 +25,31 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * The user is not performing any special operation.
-     * He can select or unselect tiles.
+     * He can select or unselect entities.
      */
     private static final int STATE_NORMAL = 0; 
 
     /**
-     * The user is drawing a rectangle to select several tiles.
+     * The user is drawing a rectangle to select several entities.
      */
     private static final int STATE_SELECTING_AREA = 1;
 
     /**
-     * The user is moving the selected tiles (drag and drop).
+     * The user is moving the selected entities (drag and drop).
      */
-    private static final int STATE_MOVING_TILES = 2;
+    private static final int STATE_MOVING_ENTITIES = 2;
 
     /**
-     * The user is resizing the selected tile.
+     * The user is resizing the selected entity.
      */
-    private static final int STATE_RESIZING_TILE = 3;
+    private static final int STATE_RESIZING_ENTITY = 3;
 
     /**
-     * A tile is selected in the tileset.
-     * This tile is displayed under the cursor and the user
-     * can place the new tile by clicking on the map. 
+     * An entity is being added on the map.
+     * This entity is displayed under the cursor and the user
+     * can place the new entity by clicking on the map. 
      */
-    private static final int STATE_ADDING_TILE = 4;
+    private static final int STATE_ADDING_ENTITY = 4;
 
     // information about the current state
 
@@ -58,43 +62,43 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Location of the point defined by the mouse.
      * - in state STATE_NORMAL: unused
      * - in state STATE_SELECTING_AREA: coordinates of the second point of the rectangle, defined by the cursor
-     * - in state STATE_MOVING_TILES: coordinates of the pointer
-     * - in state STATE_RESIZING_TILE: coordinates of the second point of the rectangle, defined by the cursor
-     * - in state STATE_ADDING_TILE: coordinates of the tile displayed under the cursor
+     * - in state STATE_MOVING_ENTITIES: coordinates of the pointer
+     * - in state STATE_RESIZING_ENTITY: coordinates of the second point of the rectangle, defined by the cursor
+     * - in state STATE_ADDING_ENTITY: coordinates of the entity displayed under the cursor
      */
     private Point cursorLocation;
 
     /**
      * Location of the fixed area of the rectangle the user is drawing.
      * - in state STATE_SELECTING_AREA: coordinates of the initial point (width and height are not used)
-     * - in state STATE_RESIZING_TILE: top-left rectangle of the tile before being resized
+     * - in state STATE_RESIZING_ENTITY: top-left rectangle of the entity before being resized
      */
     private Rectangle fixedLocation;
 
     /**
-     * In state STATE_MOVING_TILES: total x translation
+     * In state STATE_MOVING_ENTITIES: total x translation
      */
     private int total_dx;
 
     /**
-     * In state STATE_MOVING_TILES: total y translation
+     * In state STATE_MOVING_ENTITIES: total y translation
      */
     private int total_dy;
 
     /**
-     * The tiles selected, saved here before drawing a selection rectangle.
+     * The entities selected, saved here before drawing a selection rectangle.
      */
-    private TileOnMapList initialSelection;
+    private List<MapEntity> initialSelection;
 
     /**
-     * True if the last tile on which the mouse was pressed was not already selected.
+     * True if the last entity on which the mouse was pressed was not already selected.
      */
-    private boolean tileJustSelected;
+    private boolean entityJustSelected;
 
     // other map view stuff
 
     /**
-     * The popup menu shown when the user right clicks on the selected tiles.
+     * The popup menu shown when the user right clicks on the selected entities.
      */
     private MapViewPopupMenu popupMenu;
 
@@ -116,11 +120,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	this.cursorLocation = new Point();
 	this.fixedLocation = new Rectangle();
-	this.initialSelection = new TileOnMapList();
+	this.initialSelection = new LinkedList<MapEntity>();
 	this.renderingOptions = new MapViewRenderingOptions(this);
 	this.zoom = 2;
 
-	// create the popup menu for the selected tiles
+	// create the popup menu for the selected entities
 	// items: resize, layer, destroy
 	popupMenu = new MapViewPopupMenu(this);
 
@@ -129,7 +133,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	addMouseListener(new MapMouseListener());
 	addMouseMotionListener(new MapMouseMotionListener());
 	addKeyListener(new MapKeyListener());
-
     }
 
     /**
@@ -145,7 +148,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     public void setMap(Map map) {
 	if (this.map != null) {
-	    this.map.getTileSelection().deleteObserver(this);
+	    this.map.getEntitySelection().deleteObserver(this);
 	    this.map.deleteObserver(this);
 	}
 
@@ -153,7 +156,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	this.state = STATE_NORMAL;
 
 	map.addObserver(this);
-	map.getTileSelection().addObserver(this);
+	map.getEntitySelection().addObserver(this);
 	if (map.getTileset() != null) {
 	    map.getTileset().addObserver(this);
 	}
@@ -172,7 +175,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * Returns the rendering options of the map view, i.e. how the tiles are displayed.
+     * Returns the rendering options of the map view, i.e. how the entities are displayed.
      * @return the rendering options
      */
     public MapViewRenderingOptions getRenderingOptions() {
@@ -229,7 +232,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
     
     /**
-     * This function is called when the map, the selected tiles, the tileset or the configuration changes.
+     * This function is called when the map, the selected entities, the tileset or the configuration changes.
      * @param o the object changed
      * @param obj parameters
      */
@@ -251,7 +254,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    setSize(getPreferredSize());
 	}
 
-	else if (o instanceof MapTileSelection) {
+	else if (o instanceof MapEntitySelection) {
 	    // the tile selection has changed
 
 	    // redraw the map
@@ -271,12 +274,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		state = STATE_NORMAL;
 		repaint();
 	    }
-	    else if (!map.getTileSelection().isEmpty()) {
+	    else if (!map.getEntitySelection().isEmpty()) {
 
 		// if a tile was just selected in the tileset whereas there is already
-		// a tile selected in the map, unselected the tile in the map
+		// entities selected in the map, unselected the entities in the map
 		state = STATE_NORMAL;
-		map.getTileSelection().unSelectAll();
+		map.getEntitySelection().unSelectAll();
 	    }
 	}
     }
@@ -314,25 +317,25 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 		int x, y, width, height;
 
-		// the tiles
+		// the entities
 		for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
 		    // nothing to do if this layer is not shown
 		    if (renderingOptions.getShowLayer(layer)) {
 
-			TileOnMapList tiles = map.getTiles(layer);
-			for (TileOnMap tile: tiles) {
+			MapEntities entities = map.getEntities(layer);
+			for (MapEntity entity: entities) {
 			    
-			    // should we draw this tile?
-			    if (renderingOptions.isTileShown(tileset, tile)) {
+			    // should we draw this entity?
+			    if (renderingOptions.isEntityShown(entity)) {
 			    
-				// draw the tile
-				tile.paint(g, 2, renderingOptions.getShowTransparency());
+				// draw the entity
+				entity.paint(g, zoom, renderingOptions.getShowTransparency());
 				
-				// draw the selection rectangle if the tile is selected
-				if (map.getTileSelection().isSelected(tile)) {
+				// draw the selection rectangle if the entity is selected
+				if (map.getEntitySelection().isSelected(entity)) {
 				    
-				    Rectangle positionInMap = tile.getPositionInMap();
+				    Rectangle positionInMap = entity.getPositionInMap();
 				    
 				    x = (int) (positionInMap.x * zoom);
 				    y = (int) (positionInMap.y * zoom);
@@ -345,16 +348,16 @@ public class MapView extends JComponent implements Observer, Scrollable {
 				}
 			    }
 			}
-
 		    } // for
 		} // for
 
 		// special display for some states
 		switch (state) {
 
-		case STATE_ADDING_TILE:
-		    // display on the map, under the cursor, the tile selected in the tileset
+		case STATE_ADDING_ENTITY:
+		    // display on the map, under the cursor, the entity selected in the tileset
 
+		    // if it is a tile (only case for now)
 		    Tile selectedTileInTileset = tileset.getSelectedTile();
 		    selectedTileInTileset.paint(g, tileset, cursorLocation.x, cursorLocation.y, 2);
 
@@ -379,14 +382,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * Removes the selected tiles from the map.
+     * Removes the selected entities from the map.
      */
-    public void destroySelectedTiles() {
+    public void destroySelectedEntities() {
 	try {
-	    map.getTileSelection().removeFromMap();
+	    map.getEntitySelection().removeFromMap();
 	}
 	catch (ZSDXException e) {
-	    WindowTools.errorDialog("Cannot remove the tiles: " + e.getMessage());
+	    WindowTools.errorDialog("Cannot remove the entities: " + e.getMessage());
 	}
     }
 
@@ -400,25 +403,24 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * Move to the state STATE_ADDING_TILE.
-     * Allows the user to place on the map the current tile
-     *(i.e. the tile selected in the tileset).
-     * This tile is displayed under the cursor and the user
+     * Move to the state STATE_ADDING_ENTITY.
+     * Allows the user to place on the map an entity
+     * This entity is displayed under the cursor and the user
      * can place it by pressing the mouse
      * at the location he wants.
      */
-    private void startAddingTile() {
-
-	state = STATE_ADDING_TILE;
+    private void startAddingEntity() {
+	// TODO: parameter entity type?
+	state = STATE_ADDING_ENTITY;
     }
 
     /**
-     * In state STATE_ADDING_TILE, updates the position of the tile
+     * In state STATE_ADDING_ENTITY, updates the position of the entity
      * to add with the new mouse coordinates.
      * @param x x coordinate of the pointer
      * @param y y coordinate of the pointer
      */
-    private void updateAddingTile(int x, int y) {
+    private void updateAddingEntity(int x, int y) {
 
 	x -= x % 8;
 	y -= y % 8;
@@ -431,36 +433,36 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * In state STATE_ADDING_TILE, adds the current tile to the map.
-     * The current tile selected in the tileset is placed on the map at the mouse location.
-     * @param selectTileCreated true to make selected the new tile after its creation
+     * In state STATE_ADDING_ENTITY, adds the current entity to the map.
+     * The current entity selected in the tileset is placed on the map at the mouse location.
      */
-    private void endAddingTile() {
+    private void endAddingEntity() {
 
 	try {
-	    // create the tile
+	    // create the entity
 	    Tileset tileset = map.getTileset();
-	    TileOnMap tile = new TileOnMap(tileset, tileset.getSelectedTileId(),
-				       cursorLocation.x, cursorLocation.y);
+
+	    // if it is a tile (only case for now)
+	    MapEntity entity = new TileOnMap(tileset, tileset.getSelectedTileId(),
+					     cursorLocation.x, cursorLocation.y);
 
 	    // add it to the map
-	    map.getHistory().doAction(new ActionAddTile(map, tile));
+	    map.getHistory().doAction(new ActionAddEntity(map, entity));
 
 	    // make it selected
-	    map.getTileSelection().select(tile);
+	    map.getEntitySelection().select(entity);
 	    map.getTileset().unSelectTile();
-	    startResizingTile(); // let the user resize the tile until the mouse is released
+	    startResizingEntity(); // let the user resize the entity until the mouse is released
 	    repaint();
 	}
 	catch (ZSDXException ex) {
-	    // should never happen (adding a tile doesn't throw any exception)
-	    WindowTools.errorDialog("Cannot add the tile: " + ex.getMessage());
+	    WindowTools.errorDialog("Cannot add the entity: " + ex.getMessage());
 	}
     }
 
     /**
      * Moves to the state STATE_SELECTING_AREA.
-     * Lets the user draw a rectangle to select some tiles.
+     * Lets the user draw a rectangle to select some entities.
      * @param x x coordinate of where the selection starts
      * @param y y coordinate of where the selection starts
      */
@@ -474,11 +476,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	cursorLocation.x = fixedLocation.x;
 	cursorLocation.y = fixedLocation.y;
 
-	// save the tiles already selected (useful for a multiple selection)
-	TileOnMapList currentSelection = map.getTileSelection().getTiles();
+	// save the entities already selected (useful for a multiple selection)
+	List<MapEntity> currentSelection = map.getEntitySelection().getEntities();
 	initialSelection.clear();
-	for (TileOnMap tile: currentSelection) {
-	    initialSelection.add(tile);
+	for (MapEntity entity: currentSelection) {
+	    initialSelection.add(entity);
 	}
 
 	state = STATE_SELECTING_AREA;
@@ -505,41 +507,42 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    cursorLocation.y = y;
 	    
 	    // update the selection
-	    MapTileSelection tileSelection = map.getTileSelection();
-	    tileSelection.unSelectAll();
+	    MapEntitySelection entitySelection = map.getEntitySelection();
+	    entitySelection.unSelectAll();
 	    
 	    // get the rectangle's content
-	    TileOnMapList tilesInRectangle = map.getTilesInRectangle(fixedLocation.x, fixedLocation.y,
-								     cursorLocation.x, cursorLocation.y);
+	    List<MapEntity> entitiesInRectangle =
+		map.getEntitiesInRectangle(fixedLocation.x, fixedLocation.y,
+					   cursorLocation.x, cursorLocation.y);
 
-	    // select the tiles in the rectangle, except the hidden ones
+	    // select the entities in the rectangle, except the hidden ones
 	    Tileset tileset = map.getTileset();
-	    for (TileOnMap tile: tilesInRectangle) {
-		if (renderingOptions.isTileShown(tileset, tile)) {
-		    tileSelection.select(tile);
+	    for (MapEntity entity: entitiesInRectangle) {
+		if (renderingOptions.isEntityShown(entity)) {
+		    entitySelection.select(entity);
 		}
 	    }
 
 	    // also restore the initial selection (for a multiple selection)
-	    for (TileOnMap tile: initialSelection) {
-		tileSelection.select(tile);
+	    for (MapEntity entity: initialSelection) {
+		entitySelection.select(entity);
 	    }
 	}
     }
 
     /**
-     * Moves to the state STATE_RESIZING_TILE.
-     * Lets the user resize the tile selected on the map.
-     * There must be exactly one tile selected, otherwise nothing is done.
+     * Moves to the state STATE_RESIZING_ENTITY.
+     * Lets the user resize the entity selected on the map.
+     * There must be exactly one entity selected, and this entity must be resizable,
+     * otherwise nothing is done.
      */
-    public void startResizingTile() {
+    public void startResizingEntity() {
 
-	MapTileSelection tileSelection = map.getTileSelection();
+	MapEntitySelection entitySelection = map.getEntitySelection();
 
-	if (tileSelection.getNbTilesSelected() == 1) {
-	    TileOnMap tileOnMap = tileSelection.getTile(0);
-	    Rectangle tilePositionInMap = tileOnMap.getPositionInMap();
-	    Tile originalTile = map.getTileset().getTile(tileOnMap.getTileId());
+	if (entitySelection.isResizable()) {
+	    MapEntity entity = entitySelection.getEntity(0);
+	    Rectangle tilePositionInMap = entity.getPositionInMap();
 	    
 	    fixedLocation.x = tilePositionInMap.x;
 	    fixedLocation.y = tilePositionInMap.y;
@@ -549,18 +552,18 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    cursorLocation.x = tilePositionInMap.x + tilePositionInMap.width;
 	    cursorLocation.y = tilePositionInMap.y + tilePositionInMap.height;
 
-	    state = STATE_RESIZING_TILE;
+	    state = STATE_RESIZING_ENTITY;
 	    repaint();
 	}
     }
 
     /**
-     * In state STATE_RESIZING_TILE, updates with the new mouse coordinates
+     * In state STATE_RESIZING_ENTITY, updates with the new mouse coordinates
      * the rectangle of the tile that is being resized.
      * @param x x coordinate of the pointer
      * @param y y coordinate of the pointer
      */
-    private void updateResizingTile(int x, int y) {
+    private void updateResizingEntity(int x, int y) {
     
 	int xA, yA; // A is the original point of the rectangle we are drawing
 	int xB, yB; // B is the second point, defined by the cursor location
@@ -570,12 +573,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	
 	if (xB < map.getWidth() && yB < map.getHeight()) {
 	    
-	    TileOnMap selectedTileOnMap = map.getTileSelection().getTile(0);
+	    MapEntity selectedEntity = map.getEntitySelection().getEntity(0);
 	    
-	    Rectangle selectedTilePosition = selectedTileOnMap.getPositionInMap();
-	    Tile originalTile = map.getTileset().getTile(selectedTileOnMap.getTileId());
-	    int width = originalTile.getWidth();
-	    int height = originalTile.getHeight();
+	    Rectangle selectedEntityPosition = selectedEntity.getPositionInMap();
+	    int width = selectedEntity.getUnitWidth();
+	    int height = selectedEntity.getUnitHeight();
 	    
 	    xA = fixedLocation.x;
 	    yA = fixedLocation.y;
@@ -587,7 +589,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    xB -= xB % 8;
 	    yB -= yB % 8;
 	    
-	    // snap the coordinates to the size of the tile
+	    // snap the coordinates to the size of the entity
 	    xB = xB - (xB - xA) % width;
 	    yB = yB - (yB - yA) % height;
 	    
@@ -607,58 +609,56 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    yA += height;
 		}
 		
-		// now let's update the tile
+		// now let's update the entity
 		try {
-		    map.setTilePosition(selectedTileOnMap, xA, yA, xB, yB);
+		    map.setEntityPosition(selectedEntity, xA, yA, xB, yB);
 		}
 		catch (ZSDXException e) {
-		    // should not happen as long as setTilePosition() checks only
-		    // the width and the height of the rectangle
-		    WindowTools.errorDialog("Cannot resize the tile: " + e.getMessage());
+		    WindowTools.errorDialog("Cannot resize the entity: " + e.getMessage());
 		}
 	    }
 	}
     }
 
     /**
-     * In state STATE_RESIZING_TILE, stops the resizing and saves it into the undo/redo history.
+     * In state STATE_RESIZING_ENTITY, stops the resizing and saves it into the undo/redo history.
      */
-    private void endResizingTile() {
+    private void endResizingEntity() {
 
-	TileOnMap tile = map.getTileSelection().getTile(0);
+	MapEntity entity = map.getEntitySelection().getEntity(0);
 
 	// get a copy of the final rectangle before we restore the initial one
-	Rectangle finalPosition = new Rectangle(tile.getPositionInMap());
+	Rectangle finalPosition = new Rectangle(entity.getPositionInMap());
 	
 	if (!finalPosition.equals(fixedLocation)) { // if the tile's rectangle has changed
 
 	    /**
-	     * While dragging the mouse, the tile's rectangle has followed the mouse, being
+	     * While dragging the mouse, the entity's rectangle has followed the mouse, being
 	     * resized with small steps. Now we want to consider the whole resizing process
 	     * as one step only, so that it can be undone or redone directly later.
 	     */
 	    
 	    try {
-		// we restore the tile at its initial size
-		map.setTilePosition(tile, fixedLocation);
+		// we restore the entity at its initial size
+		map.setEntityPosition(entity, fixedLocation);
 		
 		// we make the resizing in one step, this time saving it into the undo/redo history
-		map.getHistory().doAction(new ActionResizeTile(map, tile, finalPosition));
+		map.getHistory().doAction(new ActionResizeEntity(map, entity, finalPosition));
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot resize the tile: " + e.getMessage());
+		WindowTools.errorDialog("Cannot resize the entity: " + e.getMessage());
 	    }
 	}
 	returnToNormalState();
     }
 
     /**
-     * Moves to the state STATE_MOVING_TILES.
-     * Lets the user move the tiles selected on the map.
+     * Moves to the state STATE_MOVING_ENTITIES.
+     * Lets the user move the entities selected on the map.
      * @param x x coordinate of the pointer
      * @param y y coordinate of the pointer
      */
-    public void startMovingTiles(int x, int y) {
+    public void startMovingEntities(int x, int y) {
 
 	x -= x % 8;
 	y -= y % 8;
@@ -669,16 +669,16 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	total_dx = 0;
 	total_dy = 0;
 
-	state = STATE_MOVING_TILES;
+	state = STATE_MOVING_ENTITIES;
     }
 
     /**
-     * In state STATE_MOVING_TILES, updates with the new mouse coordinates
-     * the position of the selected tiles.
+     * In state STATE_MOVING_ENTITIES, updates with the new mouse coordinates
+     * the position of the selected entities.
      * @param x x coordinate of the pointer
      * @param y y coordinate of the pointer
      */
-    private void updateMovingTiles(int x, int y) {
+    private void updateMovingEntities(int x, int y) {
 
 	x -= x % 8;
 	y -= y % 8;
@@ -691,9 +691,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    int dx = x - cursorLocation.x;
 	    int dy = y - cursorLocation.y;
 
-	    // we move the tiles during the dragging, to make them follow the mouse while dragging
-	    TileOnMapList tiles = map.getTileSelection().getTiles();
-	    map.moveTiles(tiles, dx, dy);
+	    // we move the entities during the dragging, to make them follow the mouse while dragging
+	    List<MapEntity> entities = map.getEntitySelection().getEntities();
+	    map.moveEntities(entities, dx, dy);
 
 	    // but we also save the total move because only the total move will be undoable
 	    this.total_dx += dx;
@@ -705,29 +705,29 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * In state STATE_MOVING_TILES, stops the move and saves it into the undo/redo history.
+     * In state STATE_MOVING_ENTITIES, stops the move and saves it into the undo/redo history.
      */
-    private void endMovingTiles() {
+    private void endMovingEntities() {
 
 	if (total_dx != 0 || total_dy != 0) {
 
 	    /**
-	     * While dragging the mouse, the selected tiles have followed the mouse, moving with
+	     * While dragging the mouse, the selected entities have followed the mouse, moving with
 	     * small 8-pixel steps. Now we want to consider the whole move as one step only, so that
 	     * it can be undone or redone directly later.
 	     */
 	    
-	    TileOnMapList tiles = map.getTileSelection().getTiles();
+	    List<MapEntity> entities = map.getEntitySelection().getEntities();
 	    
-	    // we restore the tiles at their initial position
-	    map.moveTiles(tiles, -total_dx, -total_dy);
+	    // we restore the entities at their initial position
+	    map.moveEntities(entities, -total_dx, -total_dy);
 	    
 	    // we make the whole move in one step, this time saving it into the undo/redo history
 	    try {
-		map.getHistory().doAction(new ActionMoveTiles(map, tiles, total_dx, total_dy));
+		map.getHistory().doAction(new ActionMoveEntities(map, entities, total_dx, total_dy));
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot move the tiles: " + e.getMessage());
+		WindowTools.errorDialog("Cannot move the entities: " + e.getMessage());
 	    }
 	}
 	returnToNormalState();
@@ -745,7 +745,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	 */
 	public void mouseExited(MouseEvent mouseEvent) {
 
-	    if (state == STATE_ADDING_TILE) {
+	    if (state == STATE_ADDING_ENTITY) {
 
 		returnToNormalState();
 	    }
@@ -767,20 +767,20 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// detect whether CTRL or SHIFT is pressed
 		if (mouseEvent.isControlDown() || mouseEvent.isShiftDown()) {
 
-		    MapTileSelection tileSelection = map.getTileSelection();
+		    MapEntitySelection entitySelection = map.getEntitySelection();
 		
-		    // find the tile clicked
+		    // find the entity clicked
 		    int x = (int) (mouseEvent.getX() / zoom);
 		    int y = (int) (mouseEvent.getY() / zoom);
 
-		    TileOnMap tileClicked = map.getTileAt(x, y);
+		    MapEntity entityClicked = map.getEntityAt(x, y);
 
-		    if (tileClicked != null && !tileJustSelected
-			&& tileSelection.isSelected(tileClicked)) {
+		    if (entityClicked != null && !entityJustSelected
+			&& entitySelection.isSelected(entityClicked)) {
 
 			// CTRL + left click or SHIFT + left click:
 			// unselect the tile clicked
-			tileSelection.unSelect(tileClicked);
+			entitySelection.unSelect(entityClicked);
 		    }
 		}
 	    }
@@ -788,11 +788,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	/**
 	 * This method is called when the mouse is pressed on the map view.
-	 * If a tile is selected in the tileset (i.e. the state is STATE_ADDING_TILE),
-	 * an instance of this tile is added to the map
-	 * at the cursor location.
-	 * Otherwise, the tile clicked becomes selected in the map.
-	 * A right click on a tile of the map shows a popup menu.
+	 * If the state is STATE_ADDING_ENTITY, an instance of the entity is
+	 * added to the map at the cursor location.
+	 * Otherwise, the entity clicked becomes selected in the map.
+	 * A right click on an entity of the map shows a popup menu.
 	 */
 	public void mousePressed(MouseEvent mouseEvent) {
 
@@ -801,73 +800,75 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    }
 
 	    requestFocusInWindow();
-	    MapTileSelection tileSelection = map.getTileSelection();
+	    MapEntitySelection entitySelection = map.getEntitySelection();
 
 	    switch (state) {
 
-		// select or unselect a tile
+		// select or unselect an entity
 	    case STATE_NORMAL:
 
 		// detect the mouse button
 		int button = mouseEvent.getButton();
 
-		// find the tile clicked
+		// find the entity clicked
 		int x = (int) (mouseEvent.getX() / zoom);
 		int y = (int) (mouseEvent.getY() / zoom);
 
-		TileOnMap tileClicked = null;
-		for (int layer = MapEntity.LAYER_HIGH; layer >= MapEntity.LAYER_LOW && tileClicked == null; layer--) {
+		MapEntity entityClicked = null;
+		for (int layer = MapEntity.LAYER_HIGH;
+		     layer >= MapEntity.LAYER_LOW && entityClicked == null;
+		     layer--) {
 		    
 		    if (renderingOptions.getShowLayer(layer)) {
-			tileClicked = map.getTileAt(layer, x, y);
+			entityClicked = map.getEntityAt(layer, x, y);
 		    }
 		}
 
-		boolean alreadySelected = tileSelection.isSelected(tileClicked);
+		boolean alreadySelected = entitySelection.isSelected(entityClicked);
 		
 		// left click
 		if (button == MouseEvent.BUTTON1) {
 
-		    // unselect all tiles unless CTRL or SHIFT is pressed
+		    // unselect all entities unless CTRL or SHIFT is pressed
 		    if (!mouseEvent.isControlDown() && !mouseEvent.isShiftDown() &&
-			(tileClicked == null || !alreadySelected)) {
+			(entityClicked == null || !alreadySelected)) {
 
-			tileSelection.unSelectAll();
+			entitySelection.unSelectAll();
 		    }
 
-		    // the user may want to select tiles
-		    if (tileClicked == null) {
+		    // the user may want to select entities
+		    if (entityClicked == null) {
 			startSelectingArea(x, y);
 		    }
 		    else {
 			// make the tile selected
-			tileSelection.select(tileClicked);
-			tileJustSelected = !alreadySelected;
+			entitySelection.select(entityClicked);
+			entityJustSelected = !alreadySelected;
 		    
-			// the user may want to move the selected tiles
-			startMovingTiles(x, y);
+			// the user may want to move the selected entities
+			startMovingEntities(x, y);
 		    }
 		}
 		
 		// right click
 		else if (button == MouseEvent.BUTTON3) {
 
-		    // If a tile is selected and the user right clicks on another tile,
+		    // If an entity is selected and the user right clicks on another tile,
 		    // we will select the new one instead of the old one.
-		    // Note that if several tiles are selected, the selection is kept.
-		    if (tileSelection.getNbTilesSelected() == 1 && tileClicked != null
-			&& !tileSelection.isSelected(tileClicked)) {
+		    // Note that if several entities are selected, the selection is kept.
+		    if (entitySelection.getNbEntitiesSelected() == 1 && entityClicked != null
+			&& !entitySelection.isSelected(entityClicked)) {
 
-			map.getTileSelection().unSelectAll();
+			map.getEntitySelection().unSelectAll();
 		    }
 		    
 		    // select the tile clicked if no previous selection was kept
-		    if (tileSelection.isEmpty() && tileClicked != null) {
-			tileSelection.select(tileClicked);
+		    if (entitySelection.isEmpty() && entityClicked != null) {
+			entitySelection.select(entityClicked);
 		    }
 		    
-		    // show a popup menu for the tiles selected
-		    if (!tileSelection.isEmpty()) {
+		    // show a popup menu for the entities selected
+		    if (!entitySelection.isEmpty()) {
 			popupMenu.show(mouseEvent.getX(), mouseEvent.getY());
 		    }
 		}
@@ -875,22 +876,22 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		break;
 
 		// validate the new size
-	    case STATE_RESIZING_TILE:
+	    case STATE_RESIZING_ENTITY:
 
-		endResizingTile();
+		endResizingEntity();
 		break;
 		
 		// place the new tile
-	    case STATE_ADDING_TILE:
+	    case STATE_ADDING_ENTITY:
 
-		endAddingTile(); // add the tile to the map
+		endAddingEntity(); // add the entity to the map
 		break;
 	    }
 	}
 
 	/**
 	 * This function is called when the mouse is released on the component.
-	 * If a tile was being resized (by dragging the mouse), the new size is validated.
+	 * If an entity was being resized (by dragging the mouse), the new size is validated.
 	 */
 	public void mouseReleased(MouseEvent mouseEvent) {
 	    
@@ -900,18 +901,22 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    switch (state) {
 
-	    case STATE_RESIZING_TILE:
-		endResizingTile();
+	    case STATE_RESIZING_ENTITY:
+		MapEntity entity = map.getEntitySelection().getEntity(0);
+		endResizingEntity();
 
 		if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
 		    
 		    int x = (int) (mouseEvent.getX() / zoom);
 		    int y = (int) (mouseEvent.getY() / zoom);
 
-		    int tileId = map.getTileSelection().getTile(0).getTileId();
+		    // move to the state STATE_ADDING_ENTITY
+
+		    // if it is a tile (only case for now):
+		    int tileId = ((TileOnMap) entity).getTileId();
 		    map.getTileset().setSelectedTileId(tileId);
- 		    startAddingTile();
-		    updateAddingTile(x, y);
+ 		    startAddingEntity();
+		    updateAddingEntity(x, y);
 		}
 		break;
 
@@ -923,8 +928,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		}
 		break;
 
-	    case STATE_MOVING_TILES:
-		endMovingTiles();
+	    case STATE_MOVING_ENTITIES:
+		endMovingEntities();
 		break;
 	    }
 	}
@@ -952,32 +957,31 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    // if a tile is selected in the tileset,
 		    // display it on the map under the cursor
 		    if (map.getTileset().getSelectedTile() != null) {
-			startAddingTile();
+			startAddingEntity();
 		    }
 
 		    break;
 		    
-		case STATE_ADDING_TILE:
-		    // if we are adding a tile but the mouse is outside the map, 
-		    // remove the tile displayed under the cursor
+		case STATE_ADDING_ENTITY:
+		    // if we are adding an entity but the mouse is outside the map, 
+		    // remove the entity displayed under the cursor
 
 		    if (x >= map.getWidth() || y >= map.getHeight()) {
 
 			returnToNormalState();
 		    }
 		    else {
-
-			// update the tile position
-			updateAddingTile(x, y);
+			// update the entity position
+			updateAddingEntity(x, y);
 		    }
 
 		    break;
 
-		case STATE_RESIZING_TILE:
-		    // if we are resizing a tile, calculate the coordinates of
+		case STATE_RESIZING_ENTITY:
+		    // if we are resizing an entity, calculate the coordinates of
 		    // the second point of the rectangle formed by the pointer
 
-		    updateResizingTile(x, y);
+		    updateResizingEntity(x, y);
 		    break;
 		}
 	    }
@@ -985,9 +989,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	/**
 	 * This function is called when the mouse is dragged on the component.
-	 * In STATE_NORMAL, when to tile was clicked, a selection rectangle appears.
+	 * In STATE_NORMAL, when no entity was clicked, a selection rectangle appears.
 	 * In STATE_SELECTING_AREA, the selection rectangle is updated.
-	 * In STATE_RESIZING_TILE, the rectangle of the tile is updated.
+	 * In STATE_RESIZING_ENTITY, the rectangle of the tile is updated.
 	 */
 	public void mouseDragged(MouseEvent mouseEvent) {
 
@@ -997,7 +1001,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    boolean leftClick = (mouseEvent.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0;
 
-	    MapTileSelection tileSelection = map.getTileSelection();
+	    MapEntitySelection entitySelection = map.getEntitySelection();
 
 	    int x = (int) (mouseEvent.getX() / zoom);
 	    int y = (int) (mouseEvent.getY() / zoom);
@@ -1012,17 +1016,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		}
 		break;
 
-	    case STATE_RESIZING_TILE:
+	    case STATE_RESIZING_ENTITY:
 		// if we are resizing a tile, calculate the coordinates of
 		// the second point of the rectangle formed by the pointer
-		updateResizingTile(x, y);
+		updateResizingEntity(x, y);
 		break;
 
-	    case STATE_MOVING_TILES:
-		// if we are moving tiles, update their position
+	    case STATE_MOVING_ENTITIES:
+		// if we are moving entities, update their position
 		
 		if (leftClick) {
-		    updateMovingTiles(x, y);
+		    updateMovingEntities(x, y);
 		}
 		break;
 	    }
@@ -1036,7 +1040,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	
 	/**
 	 * This method is invoked when a key is pressed on the map image.
-	 * If the user presses Delete, the selected tiles are removed from the map.
+	 * If the user presses Delete, the selected entities are removed from the map.
 	 */
 	public void keyPressed(KeyEvent keyEvent) {
 
@@ -1045,7 +1049,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		switch (keyEvent.getKeyCode()) {
 		    
 		case KeyEvent.VK_DELETE:
-		    destroySelectedTiles();
+		    destroySelectedEntities();
 		    break;
 		}
 	    }

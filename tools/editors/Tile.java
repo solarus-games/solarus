@@ -10,15 +10,6 @@ import java.util.*;
  */
 public class Tile extends Observable {
 
-    // Constants to identify the obstacles
-
-    public static final int OBSTACLE_NONE = 0;
-    public static final int OBSTACLE = 1;
-    public static final int OBSTACLE_TOP_RIGHT = 2;
-    public static final int OBSTACLE_TOP_LEFT = 3;
-    public static final int OBSTACLE_BOTTOM_LEFT = 4;
-    public static final int OBSTACLE_BOTTOM_RIGHT = 5;
-
     // Constants to identify the animation type
 
     public static final int ANIMATION_NONE = 0;
@@ -174,8 +165,8 @@ public class Tile extends Observable {
 
     /**
      * Returns the tile's obstacle property.
-     * @return Tile.OBSTACLE_NONE, Tile.OBSTACLE, Tile.OBSTACLE_TOP_RIGHT,
-     * Tile.OBSTACLE_TOP_LEFT, Tile.OBSTACLE_BOTTOM_LEFT or Tile.OBSTACLE_BOTTOM_RIGHT
+     * @return MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
+     * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT or MapEntity.OBSTACLE_BOTTOM_RIGHT
      */
     public int getObstacle() {
 	return obstacle;
@@ -183,14 +174,14 @@ public class Tile extends Observable {
 
     /**
      * Changes the tile's obstacle property.
-     * @param obstacle Tile.OBSTACLE_NONE, Tile.OBSTACLE, Tile.OBSTACLE_TOP_RIGHT,
-     * Tile.OBSTACLE_TOP_LEFT, Tile.OBSTACLE_BOTTOM_LEFT or Tile.OBSTACLE_BOTTOM_RIGHT
+     * @param obstacle MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
+     * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT or MapEntity.OBSTACLE_BOTTOM_RIGHT
      * @throws TilesetException if the obstacle specified is diagonal and the tile is not square
      */
     public void setObstacle(int obstacle) throws TilesetException {
 
 	// diagonal obstacle: check that the tile is square
-	if (obstacle != OBSTACLE_NONE && obstacle != OBSTACLE
+	if (obstacle != MapEntity.OBSTACLE_NONE && obstacle != MapEntity.OBSTACLE
 	    && positionInTileset.width != positionInTileset.height) {
 	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile");
 	}

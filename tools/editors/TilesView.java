@@ -37,7 +37,7 @@ public class TilesView extends JPanel {
     /**
      * The icon associated to each tile.
      */
-    private Vector<TileIcon> tileIcons;
+    private ArrayList<TileIcon> tileIcons;
 
     /**
      * View of the selected tile.
@@ -50,7 +50,7 @@ public class TilesView extends JPanel {
     public TilesView() {
 	super();
 
-	tileIcons = new Vector<TileIcon>();
+	tileIcons = new ArrayList<TileIcon>();
 
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

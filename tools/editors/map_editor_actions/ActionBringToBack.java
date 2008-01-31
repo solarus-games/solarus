@@ -4,7 +4,7 @@ import editors.*;
 import java.util.LinkedList;
 
 /**
- * Bringing some tiles to back.
+ * Bringing some entities to back.
  */
 public class ActionBringToBack extends MapEditorAction {
 
@@ -19,12 +19,12 @@ public class ActionBringToBack extends MapEditorAction {
     public ActionBringToBack(Map map, LinkedList<MapEntity> entities) {
 	super(map);
 	
-	this.tiles = new LinkedList<MapEntity>(entities);
-	this.allTilesBefore = new MapEntities[Tile.LAYER_NB];
+	this.entities = new LinkedList<MapEntity>(entities);
+	this.allEntitiesBefore = new MapEntities[MapEntity.LAYER_NB];
 
 	// copy allEntities
 	MapEntities[] allEntities = map.getAllEntities();
-	for (int i = 0; i < Tile.LAYER_NB; i++ ) {
+	for (int i = 0; i < MapEntity.LAYER_NB; i++ ) {
 	    allEntitiesBefore[i] = new MapEntities(allEntities[i]);
 	}
     }
@@ -40,7 +40,7 @@ public class ActionBringToBack extends MapEditorAction {
      * Undoes the action.
      */
     public void undo() throws MapException {
-	map.setAllTiles(allEntitiesBefore);
+	map.setAllEntities(allEntitiesBefore);
     }
 
 }

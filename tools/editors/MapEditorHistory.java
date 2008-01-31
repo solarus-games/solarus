@@ -16,7 +16,7 @@ public class MapEditorHistory extends Observable {
     /**
      * The stack of actions.
      */
-    private Vector<MapEditorAction> actions;
+    private Stack<MapEditorAction> actions;
 
     /**
      * Index of the next action.

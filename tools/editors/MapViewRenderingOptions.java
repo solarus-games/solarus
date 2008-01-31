@@ -5,7 +5,7 @@ package editors;
  * This options affect only the map editor, not the game.
  * This class allows to set:
  * - what layers are displayed
- * - show or not the obstacle or non obstacle tiles
+ * - show or not the obstacle or non obstacle entities
  * - show the transparency
  */
 public class MapViewRenderingOptions {
@@ -21,15 +21,15 @@ public class MapViewRenderingOptions {
     private boolean[] showLayers;
 
     /**
-     * Tells whether or not the non obstacle tiles are shown,
-     * and the same thing for the obstacle tiles.
+     * Tells whether or not the non obstacle entities are shown,
+     * and the same thing for the obstacle entities.
      */
     private boolean[] showObstacles;
 
     /**
      * True to render the transparency, false to replace the transparent pixels
      * by a background color.
-     * The transparency seems to make the program much slower with Linux.
+     * The transparency seems to make the program much slower with my Linux.
      */
     private boolean showTransparency;
 
@@ -62,7 +62,7 @@ public class MapViewRenderingOptions {
     /**
      * Returns whether or not a layer is shown.
      * @param layer a layer
-     * @return true if the tiles of this layer are show, false otherwise
+     * @return true if the entities of this layer are shown, false otherwise
      */
     public boolean getShowLayer(int layer) {
 	return showLayers[layer];
@@ -70,9 +70,9 @@ public class MapViewRenderingOptions {
 
     /**
      * Sets the layers shown.
-     * @param showLowLayer true to show the tiles of the low layer
-     * @param showIntermediateLayer true to show the tiles of the low layer
-     * @param showHighLayer true to show the tiles of the high layer
+     * @param showLowLayer true to show the entities of the low layer
+     * @param showIntermediateLayer true to show the entities of the low layer
+     * @param showHighLayer true to show the entities of the high layer
      */
     public void setShowLayers(boolean showLowLayer, boolean showIntermediateLayer, boolean showHighLayer) {
 	showLayers[MapEntity.LAYER_LOW] = showLowLayer;
@@ -92,38 +92,38 @@ public class MapViewRenderingOptions {
     }
 
     /**
-     * Returns whether or not the tiles without and with obstacles are shown.
-     * @return an array of two elements, the first one is true if the tiles without
-     * obstacle are shown, the second one represents the same thing for the obstacle tiles.
+     * Returns whether or not the entities without and with obstacles are shown.
+     * @return an array of two elements, the first one is true if the entities without
+     * obstacle are shown, the second one represents the same thing for the obstacle entities.
      */
     public boolean[] getShowObstacles() {
 	return showObstacles;
     }
 
     /**
-     * Returns whether or not the tiles with or without obstacles are shown.
-     * @param obstacle the type of obstacle to consider (Tile.OBSTACLE_NONE or Tile.OBSTACLE)
-     * @return true if the corresponding tiles are show, false otherwise
+     * Returns whether or not the entities with or without obstacles are shown.
+     * @param obstacle the type of obstacle to consider (MapEntity.OBSTACLE_NONE or MapEntity.OBSTACLE)
+     * @return true if the corresponding entities are show, false otherwise
      */
     public boolean getShowObstacle(int obstacle) {
 	return showObstacles[obstacle];
     }
 
     /**
-     * Sets whether or not the tiles with or without obstacle are shown.
-     * @param showNonObstacleTiles true to show the tiles without obstacles
-     * @param showObstacleTiles true to show the tiles with obstacles
+     * Sets whether or not the entities with or without obstacle are shown.
+     * @param showNonObstacleEntities true to show the entities without obstacles
+     * @param showObstacleEntities true to show the entities with obstacles
      */
-    public void setShowObstacles(boolean showNonObstacleTiles, boolean showObstacleTiles) {
-	showObstacles[Tile.OBSTACLE_NONE] = showNonObstacleTiles;
-	showObstacles[Tile.OBSTACLE] = showObstacleTiles;
+    public void setShowObstacles(boolean showNonObstacleEntities, boolean showObstacleEntities) {
+	showObstacles[MapEntity.OBSTACLE_NONE] = showNonObstacleEntities;
+	showObstacles[MapEntity.OBSTACLE] = showObstacleEntities;
 	mapView.repaint();
     }
     
     /**
-     * Sets whether or not the tiles with or without obstacles are shown.
-     * @param obstacle the tiles to show or not: Tile.OBSTACLE_NONE or Tile.OBSTACLE
-     * @param show true to make these tiles visible, false otherwise
+     * Sets whether or not the entities with or without obstacles are shown.
+     * @param obstacle the entities to show or not: MapEntity.OBSTACLE_NONE or MapEntity.OBSTACLE
+     * @param show true to make these entities visible, false otherwise
      */
     public void setShowObstacle(int obstacle, boolean show) {
 	showObstacles[obstacle] = show;
@@ -152,17 +152,17 @@ public class MapViewRenderingOptions {
     }
 
     /**
-     * Returns whether or not a tile is shown, depending on its layer and its obstacle property.
-     * @param tileset the tileset
-     * @param tile the tile considered
-     * @return true if this tile is shown with the current options
+     * Returns whether or not an entity is shown, depending on its type,
+     * its layer and its obstacle property.
+     * @param entity the entity considered
+     * @return true if this entity is shown with the current options
      */
-    public boolean isTileShown(Tileset tileset, TileOnMap tile) {
-	int layer = tile.getLayer();
-	int obstacle = tileset.getTile(tile.getTileId()).getObstacle();
+    public boolean isEntityShown(MapEntity entity) {
+	int layer = entity.getLayer();
+	int obstacle = entity.getObstacle();
 
-	if (obstacle > Tile.OBSTACLE) {
-	    obstacle = Tile.OBSTACLE;
+	if (obstacle > MapEntity.OBSTACLE) {
+	    obstacle = MapEntity.OBSTACLE;
 	}
 
 	return showLayers[layer] && showObstacles[obstacle];

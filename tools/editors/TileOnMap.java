@@ -104,16 +104,6 @@ public class TileOnMap extends MapEntity {
     }
 
     /**
-     * Returns whether or not the entity is resizable.
-     * A tile on a map is resizable (i.e. its pattern can be replicated
-     * horizontally or vertically).
-     * @return true
-     */
-    public boolean isResizable() {
-	return true;
-    }
-
-    /**
      * Changes the tileset used to represent this tile on the map.
      * The corresponding tile from the new tileset (i.e. the tile
      * with the same id) must have exactly the same properties,
@@ -161,6 +151,25 @@ public class TileOnMap extends MapEntity {
     }
 
     /**
+     * Returns the tile's obstacle property.
+     * @return OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
+     * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
+     */
+    public int getObstacle() {
+	return tileset.getTile(tileId).getObstacle();
+    }
+
+    /**
+     * Returns whether or not the entity is resizable.
+     * A tile on a map is resizable (i.e. its pattern can be replicated
+     * horizontally or vertically).
+     * @return true
+     */
+    public boolean isResizable() {
+	return true;
+    }
+
+    /**
      * Changes the size of the tile on the map.
      * This is a redefinition of MapEntity.setSize() to update repeatX and repeatY.
      * @param width width of the tile in pixels
@@ -180,6 +189,26 @@ public class TileOnMap extends MapEntity {
     }
     
     /**
+     * Returns the minimum width of the entity (for a resizable entity).
+     * When the entity is resized, its new width must be a multiple of this minimum size.
+     * @return the minimum width of the entity
+     */
+    public int getUnitWidth() {
+	Tile tile = tileset.getTile(tileId);
+	return tile.getWidth();
+    }
+
+    /**
+     * Returns the minimum height of the entity (for a resizable entity).
+     * When the entity is resized, its new height is a multiple of this minimum height.
+     * @return the minimum height of the entity
+     */
+    public int getUnitHeight() {
+	Tile tile = tileset.getTile(tileId);
+	return tile.getHeight();
+    }
+
+    /**
      * Returns the number of times the pattern is repeated on x.
      * @return the number of times the pattern is repeated on x
      */
@@ -198,11 +227,13 @@ public class TileOnMap extends MapEntity {
     /**
      * Draws the tile.
      * @param g graphic context
-     * @param scale scale of the image (1: unchanged, 2: zoom of 200%)
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
      * @param showTransparency true to make transparent pixels,
      * false to replace them by a background color
      */
-    public void paint(Graphics g, int scale, boolean showTransparency) {
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+
+	int scale = (int) zoom;
 
 	// source image
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset

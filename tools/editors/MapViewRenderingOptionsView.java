@@ -42,13 +42,13 @@ public class MapViewRenderingOptionsView extends JPanel {
 	add(box);
 
 	box = new JCheckBox("Show obstacles");
-	box.setSelected(renderingOptions.getShowObstacle(Tile.OBSTACLE));
-	box.addItemListener(new ItemListenerObstacle(Tile.OBSTACLE));
+	box.setSelected(renderingOptions.getShowObstacle(MapEntity.OBSTACLE));
+	box.addItemListener(new ItemListenerObstacle(MapEntity.OBSTACLE));
 	add(box);
 	
 	box = new JCheckBox("Show non obstacles");
-	box.setSelected(renderingOptions.getShowObstacle(Tile.OBSTACLE_NONE));
-	box.addItemListener(new ItemListenerObstacle(Tile.OBSTACLE_NONE));
+	box.setSelected(renderingOptions.getShowObstacle(MapEntity.OBSTACLE_NONE));
+	box.addItemListener(new ItemListenerObstacle(MapEntity.OBSTACLE_NONE));
 	add(box);
 
 	box = new JCheckBox("Show transparency");
@@ -84,7 +84,7 @@ public class MapViewRenderingOptionsView extends JPanel {
 	    
 	    if (map != null) {
 		// unselect everything
-		map.getTileSelection().unSelectAll();
+		map.getEntitySelection().unSelectAll();
 	    }
 
 	    // get the new checkbox state
@@ -122,7 +122,7 @@ public class MapViewRenderingOptionsView extends JPanel {
 	    
 	    if (map != null) {
 		// unselect everything
-		map.getTileSelection().unSelectAll();
+		map.getEntitySelection().unSelectAll();
 	    }
 
 	    // get the new checkbox state

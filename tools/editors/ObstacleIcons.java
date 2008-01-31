@@ -29,12 +29,12 @@ public class ObstacleIcons {
 	String path = "editors/images/";
 
 	obstacleIcons = new ImageIcon[6];
-	obstacleIcons[Tile.OBSTACLE_NONE] = new ImageIcon(path + "obstacle_none.png");
-	obstacleIcons[Tile.OBSTACLE] = new ImageIcon(path + "obstacle.png");
-	obstacleIcons[Tile.OBSTACLE_TOP_RIGHT] = new ImageIcon(path + "obstacle_top_right.png");
-	obstacleIcons[Tile.OBSTACLE_TOP_LEFT] = new ImageIcon(path + "obstacle_top_left.png");
-	obstacleIcons[Tile.OBSTACLE_BOTTOM_LEFT] = new ImageIcon(path + "obstacle_bottom_left.png");
-	obstacleIcons[Tile.OBSTACLE_BOTTOM_RIGHT] = new ImageIcon(path + "obstacle_bottom_right.png");
+	obstacleIcons[MapEntity.OBSTACLE_NONE] = new ImageIcon(path + "obstacle_none.png");
+	obstacleIcons[MapEntity.OBSTACLE] = new ImageIcon(path + "obstacle.png");
+	obstacleIcons[MapEntity.OBSTACLE_TOP_RIGHT] = new ImageIcon(path + "obstacle_top_right.png");
+	obstacleIcons[MapEntity.OBSTACLE_TOP_LEFT] = new ImageIcon(path + "obstacle_top_left.png");
+	obstacleIcons[MapEntity.OBSTACLE_BOTTOM_LEFT] = new ImageIcon(path + "obstacle_bottom_left.png");
+	obstacleIcons[MapEntity.OBSTACLE_BOTTOM_RIGHT] = new ImageIcon(path + "obstacle_bottom_right.png");
     }
 
     /**
@@ -46,8 +46,8 @@ public class ObstacleIcons {
     
     /**
      * Returns the icon representing a type of obstacle.
-     * @param obstacle type of obstacle: Tile.OBSTACLE_NONE, Tile.OBSTACLE, Tile.OBSTACLE_TOP_RIGHT,
-     * Tile.OBSTACLE_TOP_LEFT, Tile.OBSTACLE_BOTTOM_LEFT, Tile.OBSTACLE_BOTTOM_RIGHT
+     * @param obstacle type of obstacle: MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
+     * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT, MapEntity.OBSTACLE_BOTTOM_RIGHT
      */
     public static ImageIcon getIcon(int obstacle) {
 	return obstacleIcons[obstacle];
@@ -63,8 +63,8 @@ public class ObstacleIcons {
 
     /**
      * Returns the name of a type of obstacle.
-     * @param obstacle type of obstacle: Tile.OBSTACLE_NONE, Tile.OBSTACLE, Tile.OBSTACLE_TOP_RIGHT,
-     * Tile.OBSTACLE_TOP_LEFT, Tile.OBSTACLE_BOTTOM_LEFT, Tile.OBSTACLE_BOTTOM_RIGHT
+     * @param obstacle type of obstacle: MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
+     * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT, MapEntity.OBSTACLE_BOTTOM_RIGHT
      */
     public static String getName(int obstacle) {
 	return obstacleNames[obstacle];

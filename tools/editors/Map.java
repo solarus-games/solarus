@@ -2,7 +2,8 @@ package editors;
 
 import java.util.*;
 import java.io.*;
-import java.awt.*; // Dimension
+import java.awt.Dimension;
+import java.awt.Rectangle;
 
 /**
  * This class describes a map.
@@ -243,7 +244,7 @@ public class Map extends Observable {
 
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
-		LinkedList<TileOnMap> tiles = allEntities[layer].getTiles();
+		List<TileOnMap> tiles = allEntities[layer].getTiles();
 
 		for (int i = 0; i < tiles.size(); i++) {
 
@@ -283,6 +284,54 @@ public class Map extends Observable {
 	}
 
 	return nbEntities;
+    }
+
+    /**
+     * Returns the total number of tiles of the map.
+     * @return the total number of tiles of the map.
+     */
+    public int getNbTiles() {
+	
+	int nbTiles = 0;
+
+	// count the tiles of each layer
+	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	    nbTiles += allEntities[layer].getNbTiles();
+	}
+
+	return nbTiles;
+    }
+
+    /**
+     * Returns the total number of interactive entities of the map.
+     * @return the total number of interactive entities of the map.
+     */
+    public int getNbInteractiveEntities() {
+	
+	int nbInteractiveEntities = 0;
+
+	// count the interactive entities of each layer
+	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	    nbInteractiveEntities += allEntities[layer].getNbInteractiveEntities();
+	}
+
+	return nbInteractiveEntities;
+    }
+
+    /**
+     * Returns the total number of moving entities of the map.
+     * @return the total number of moving entities of the map.
+     */
+    public int getNbMovingEntities() {
+	
+	int nbMovingEntities = 0;
+
+	// count the moving entities of each layer
+	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	    nbMovingEntities += allEntities[layer].getNbMovingEntities();
+	}
+
+	return nbMovingEntities;
     }
 
     /**
@@ -348,7 +397,7 @@ public class Map extends Observable {
     public MapEntity getEntityAt(int layer, int x, int y) {
 		
 	MapEntities entities = allEntities[layer];
-	ListIterator<MapEntity> iterator = entities.listIterator(entities.size() - 1);
+	ListIterator<MapEntity> iterator = entities.listIterator(entities.size());
 	while (iterator.hasPrevious()) {
 
 	    MapEntity entity = iterator.previous();
@@ -367,9 +416,9 @@ public class Map extends Observable {
      * @param x2 x coordinate of the second point
      * @param y2 y coordinate of the second point
      */
-    public LinkedList<MapEntity> getEntitiesInRectangle(int x1, int y1, int x2, int y2) {
+    public List<MapEntity> getEntitiesInRectangle(int x1, int y1, int x2, int y2) {
 
-	LinkedList<MapEntity> entitiesInRectangle = new LinkedList<MapEntity>();
+	List<MapEntity> entitiesInRectangle = new LinkedList<MapEntity>();
 
 	int x = Math.min(x1, x2);
 	int width = Math.abs(x2 - x1);
@@ -456,7 +505,7 @@ public class Map extends Observable {
      * @param dx number of pixels to move on x
      * @param dy number of pixels to move on y
      */
-    public void moveEntities(LinkedList<MapEntity> entities, int dx, int dy) {
+    public void moveEntities(List<MapEntity> entities, int dx, int dy) {
 			  
 	for (MapEntity entity: entities) {
 	    entity.move(dx, dy);
@@ -526,9 +575,9 @@ public class Map extends Observable {
      * @param entities the entities to sort
      * @return the same entities, sorted as they are in the map
      */
-    private LinkedList<MapEntity> getSortedEntities(LinkedList<MapEntity> entities) {
+    private List<MapEntity> getSortedEntities(List<MapEntity> entities) {
 	
-	LinkedList<MapEntity> sortedEntities = new LinkedList<MapEntity>();
+	List<MapEntity> sortedEntities = new LinkedList<MapEntity>();
 	
 	// sort the entities so that they have the same order as in the map
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
@@ -550,12 +599,12 @@ public class Map extends Observable {
      * The order of the specified entities in the map is unchanged.
      * @param entities the entities to move
      */
-    public void bringToBack(LinkedList<MapEntity> entities) {
+    public void bringToBack(List<MapEntity> entities) {
 
-	LinkedList<MapEntity> sortedEntities = getSortedEntities(entities);
+	List<MapEntity> sortedEntities = getSortedEntities(entities);
 
 	// bring to back each entity from sortedEntities
-	ListIterator<MapEntity> iterator = sortedEntities.listIterator(sortedEntities.size() - 1);
+	ListIterator<MapEntity> iterator = sortedEntities.listIterator(sortedEntities.size());
 	while (iterator.hasPrevious()) {
 
 	    MapEntity entity = iterator.previous();
@@ -573,9 +622,9 @@ public class Map extends Observable {
      * The order of the specified entities in the map is unchanged.
      * @param entities the entities to move
      */
-    public void bringToFront(LinkedList<MapEntity> entities) {
+    public void bringToFront(List<MapEntity> entities) {
 
-	LinkedList<MapEntity> sortedEntities = getSortedEntities(entities);
+	List<MapEntity> sortedEntities = getSortedEntities(entities);
 
 	// bring to front each entity from sortedEntities
 	ListIterator<MapEntity> iterator = sortedEntities.listIterator(0);

@@ -16,7 +16,7 @@ public class ActionMoveEntities extends MapEditorAction {
     /**
      * Creates an action to move one entity.
      * @param map the map
-     * @param entityToMove the tile to remove
+     * @param entityToMove the entity to move
      * @param dx number of pixels to move on x
      * @param dy number of pixels to move on y
      */

@@ -65,9 +65,6 @@ public class Map extends Observable {
      */
     private MapEditorHistory history;
 
-    // types of entities
-    private static final int ENTITY_TILE = 0;
-
     /**
      * Creates a new map.
      * @throws ZSDXException if the resource list could not be updated after the map creation
@@ -688,16 +685,8 @@ public class Map extends Observable {
 	    while (line != null) {
 		lineNumber++;
 
-		int tabIndex = line.indexOf('\t');
-		int entityType = Integer.parseInt(line.substring(0, tabIndex));
-
-		if (entityType == ENTITY_TILE) {
-		    TileOnMap tileOnMap = new TileOnMap(line.substring(tabIndex + 1), tileset);
-		    addEntity(tileOnMap);
-		}
-		else {
-		    throw new ZSDXException("Unknown entity type '" + entityType + "'");
-		}
+		MapEntity entity = MapEntity.createFromString(line, this);
+		addEntity(entity);
 
 		line = in.readLine();
 	    }
@@ -754,11 +743,9 @@ public class Map extends Observable {
 
 		MapEntities entities = allEntities[layer];
 
-		// print the tiles
-		for (TileOnMap tile: entities.getTiles()) {
-		    out.print(ENTITY_TILE);
-		    out.print('\t');
-		    out.print(tile.toString());
+		// print the entities
+		for (MapEntity entity: entities) {
+		    out.print(entity.toString());
 		    out.println();
 		}
 	    }

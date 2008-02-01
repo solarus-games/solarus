@@ -41,6 +41,9 @@ public abstract class MapEntity extends Observable {
     public static final int OBSTACLE_BOTTOM_LEFT = 4;
     public static final int OBSTACLE_BOTTOM_RIGHT = 5;
 
+    // types of entities
+    public static final int ENTITY_TILE = 0;
+
     /**
      * Empty constructor.
      */
@@ -59,6 +62,36 @@ public abstract class MapEntity extends Observable {
     protected MapEntity(int layer, int x, int y, int width, int height) {
 	this.layer = layer;
 	this.positionInMap = new Rectangle(x, y, width, height);
+    }
+
+    /**
+     * Creates a map entity from a string description as returned by toString().
+     * @param description a string describing the entity, as returned by toString()
+     * @param map the map (needed for some types of entities)
+     * @throws ZSDXException if the string is incorrect
+     */
+    public static MapEntity createFromString(String description, Map map) throws ZSDXException {
+
+	StringTokenizer tokenizer = new StringTokenizer(description);
+
+	int layer = Integer.parseInt(tokenizer.nextToken());
+	int x = Integer.parseInt(tokenizer.nextToken());
+	int y = Integer.parseInt(tokenizer.nextToken());
+
+	MapEntity entity;
+	int entityType = Integer.parseInt(tokenizer.nextToken());
+
+	if (entityType == ENTITY_TILE) {
+	    entity = new TileOnMap(tokenizer, map);
+	}
+	else {
+	    throw new ZSDXException("Unknown entity type '" + entityType + "'");
+	}
+
+	entity.setLayer(layer);
+	entity.setPositionInMap(x, y);
+
+	return entity;
     }
 
     /**
@@ -253,4 +286,20 @@ public abstract class MapEntity extends Observable {
      * false to replace them by a background color
      */
     public abstract void paint(Graphics g, double zoom, boolean showTransparency);
+
+    /**
+     * Returns a string describing this entity: the layer and the coordinates.
+     * Subclasses should redefine this method to add their own information.
+     * @return a string representation of the entity.
+     */
+    public String toString() {
+
+	StringBuffer buff = new StringBuffer();
+	buff.append(layer);
+	buff.append('\t');
+	buff.append(positionInMap.x);
+	buff.append('\t');
+	buff.append(positionInMap.y);
+	return buff.toString();
+    }
 }

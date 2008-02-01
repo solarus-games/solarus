@@ -123,19 +123,19 @@ void Map::load() {
   }
 
   // read the entities
-  int entityType;
+  int layer, x, y, entityType;
   while (std::getline(map_file, line)) {
 
     istringstream iss(line);
-    iss >> entityType;
+    iss >> layer >> x >> y >> entityType;
 
     switch (entityType) {
 
     case ENTITY_TILE:
       {
-	int tile_id, layer, x, y, repeat_x, repeat_y;
+	int tile_id, repeat_x, repeat_y;
 
-	iss >> tile_id >> layer >> x >> y >> repeat_x >> repeat_y;
+	iss >> tile_id >> repeat_x >> repeat_y;
 	add_new_tile(tile_id, (Layer) layer, x, y, repeat_x, repeat_y);
       }
       break;

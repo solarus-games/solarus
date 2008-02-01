@@ -69,30 +69,24 @@ public class TileOnMap extends MapEntity {
 
     /**
      * Creates a tile on a map from a string.
-     * @param description a string representing the tile, as returned by toString()
-     * @param tileset the tileset
+     * @param tokenizer the string tokenizer, which has already parsed the common part of the string
+     * (i.e. the layer, the coordinates and the type of entity have already been handled)
+     * @param map the map
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public TileOnMap(String description, Tileset tileset) throws ZSDXException {
+    public TileOnMap(StringTokenizer tokenizer, Map map) throws ZSDXException {
 	super();
 	
-	int x = 0, y = 0;
 	Tile tile = null;
 
 	try {
-	    StringTokenizer tokenizer = new StringTokenizer(description);
-	    
 	    this.tileId = Integer.parseInt(tokenizer.nextToken());
-	    setLayer(Integer.parseInt(tokenizer.nextToken()));
-	    x = Integer.parseInt(tokenizer.nextToken());
-	    y = Integer.parseInt(tokenizer.nextToken());
 	    this.repeatX = Integer.parseInt(tokenizer.nextToken());
 	    this.repeatY = Integer.parseInt(tokenizer.nextToken());
 
-	    this.tileset = tileset;
+	    this.tileset = map.getTileset();
 	    
-	    tile = tileset.getTile(tileId); // get the original tile from the tileset
-	    setPositionInMap(x, y);
+	    tile = map.getTileset().getTile(tileId); // get the original tile from the tileset
 	    setSize(tile.getWidth() * repeatX, tile.getHeight() * repeatY);
 	}
 	catch (NumberFormatException ex) {
@@ -280,13 +274,14 @@ public class TileOnMap extends MapEntity {
     public String toString() {
 
 	StringBuffer buff = new StringBuffer();
+
+	// get the common part of the string (i.e. the layer and the coordinates)
+	buff.append(super.toString());
+
+	buff.append('\t');
+	buff.append(MapEntity.ENTITY_TILE);
+	buff.append('\t');
 	buff.append(tileId);
-	buff.append('\t');
-	buff.append(layer);
-	buff.append('\t');
-	buff.append(positionInMap.x);
-	buff.append('\t');
-	buff.append(positionInMap.y);
 	buff.append('\t');
 	buff.append(repeatX);
 	buff.append('\t');

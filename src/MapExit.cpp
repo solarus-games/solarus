@@ -11,13 +11,13 @@
  * @param y y position of the exit's rectangle
  * @param width width of the exit's rectangle
  * @param height height of the exit's rectangle
- * @param map_id id of the destination map
- * @param initial_state_index initial state of the destination map
+ * @param destination_map_id id of the destination map
+ * @param entrance_index initial state of the destination map
  */
 MapExit::MapExit(Layer layer, int x, int y, int width, int height,
-		 MapId destination_map_id, int initial_state_index):
+		 MapId destination_map_id, int entrance_index):
 EntityDetector(layer, x, y, width, height),
-destination_map_id(destination_map_id), initial_state_index(initial_state_index) {
+destination_map_id(destination_map_id), entrance_index(entrance_index) {
   
 }
 
@@ -30,6 +30,6 @@ destination_map_id(destination_map_id), initial_state_index(initial_state_index)
 void MapExit::entity_overlaps(MapEntity *entity_overlapping) {
   
   if (entity_overlapping == ZSDX::game_resource->get_link()) {
-    ZSDX::game->set_current_map(destination_map_id, initial_state_index);
+    ZSDX::game->set_current_map(destination_map_id, entrance_index);
   }
 }

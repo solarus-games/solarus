@@ -191,14 +191,6 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index) {
 }
 
 /**
- * Returns the music currently played.
- * @return the current music, or NULL is no music is being played
- */
-// Music *Game::get_current_music(void) {
-//   return current_music;
-// }
-
-/**
  * Plays a music. If the music is different from the current one,
  * the current one is stopped.
  * The music specified can also be Music::none_id (then the current music is just stopped)

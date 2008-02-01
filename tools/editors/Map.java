@@ -526,7 +526,7 @@ public class Map extends Observable {
 
     /**
      * Changes the default background music of the map.
-     * @param music the name of the music, i.e. a music file name with the extension,
+     * @param musicId the name of the music, i.e. a music file name with the extension,
      * or Music.noneId or Music.unchangedId
      */
     public void setMusic(String musicId) {

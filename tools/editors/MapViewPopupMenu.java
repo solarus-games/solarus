@@ -101,7 +101,6 @@ public class MapViewPopupMenu extends JPopupMenu {
 
     /**
      * Shows the popup menu.
-     * @param map the map
      * @param x x coordinate of where the popup menu has to be shown
      * @param y y coordinate of where the popup menu has to be shown
      */

@@ -138,7 +138,7 @@ public class Tileset extends Observable implements ImageObserver {
 
     /**
      * Changes the name of the tileset.
-     * @param the name of the tileset, for example "Light World"
+     * @param name the name of the tileset, for example "Light World"
      */
     public void setName(String name) {
 

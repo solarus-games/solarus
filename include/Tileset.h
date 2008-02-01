@@ -54,16 +54,8 @@ class Tileset {
 
  public:
 
-  /**
-   * Creates a tileset.
-   * @param id id of the tileset
-   */
   Tileset(TilesetId id);
-
-  /**
-   * Destructor.
-   */
-  virtual ~Tileset(void);
+  ~Tileset(void);
 
   /**
    * Returns the background color of the tileset.
@@ -71,15 +63,7 @@ class Tileset {
    */
   inline zsdx_color_t get_background_color(void) { return background_color; }
 
-  /**
-   * Loads the tileset by creating all tiles.
-   */
   void load(void);
-
-  /**
-   * Destroys the tiles and frees the memory used
-   * by the tileset image.
-   */
   void unload(void);
 
   /**

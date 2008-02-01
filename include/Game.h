@@ -39,37 +39,13 @@ class Game {
 
  public:
 
-  /**
-   * Constructor.
-   */
   Game(void);
-
-  /**
-   * Destructor.
-   */
   inline ~Game(void) { }
   
-  /**
-   * Lets the user play.
-   * The SDL main loop is executed here.
-   */
   void play(void);
 
-  /**
-   * Changes the current map.
-   * Call this function when you want Link to go to another map.
-   * The map will be loaded with its first initial state.
-   * @param map_id id of the map to launch
-   */
   void set_current_map(MapId map_id);
-
-  /**
-   * Changes the current map.
-   * Call this function when you want Link to go to another map.
-   * @param map_id id of the map to launch
-   * @param initial_state_index index of the initial state of the map
-   */
-  void set_current_map(MapId map_id, unsigned int initial_state_index);
+  void set_current_map(MapId map_id, unsigned int entrance_index);
 
   /**
    * Returns the current map.
@@ -77,31 +53,8 @@ class Game {
    */
   inline Map *get_current_map(void) { return current_map; }
 
-  /**
-  * Returns the music currently played.
-  * @return the current music, or NULL is no music is being played
-  */
-  //Music *get_current_music(void);
-  
-  /**
-   * Plays a music. If the music is different from the current one,
-   * the current one is stopped.
-   * The music specified can also be MUSIC_NONE (then the current music is just stopped)
-   * or even MUSIC_UNCHANGED (nothing is done in this case).
-   * @param new_music_id id of the music to play
-   */
   void play_music(MusicId new_music_id);
-  
-  /**
-   * Pauses or resumes the current music.
-   * If no music is being played, nothing is done.
-   */
   void pause_or_resume_music(void);
-
-  /**
-   * Stops playing the current music.
-   * If no music is being played, nothing is done.
-   */
   void stop_music(void);
 };
 

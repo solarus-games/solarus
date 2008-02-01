@@ -53,7 +53,7 @@ class Map {
   SDL_Rect screen_position;
 
   /**
-   * Vector of all possible entrance of the map.
+   * Vector of all possible entrances of the map.
    */
   vector<MapEntrance*> *entrances;
 
@@ -113,7 +113,7 @@ class Map {
  public:
 
   Map(MapId id);
-  virtual ~Map(void);
+  ~Map(void);
 
   inline Tileset *get_tileset(void) { return tileset; }
   SDL_Surface *get_surface(void);

@@ -80,7 +80,7 @@ public class Resource extends Observable {
      * Changes the name of an element. If the element doesn't exist in the
      * database, it is added.
      * @param id id of an element
-     * @return the name of this element
+     * @param name the name of the element
      * @throws ZSDXException if the id is not valid
      */
     public void setElementName(String id, String name) throws ZSDXException {

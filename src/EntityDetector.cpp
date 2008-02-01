@@ -9,8 +9,8 @@
  * @param layer layer of the detector
  * @param x x position of the detector's rectangle
  * @param y y position of the detector's rectangle
- * @param w width of the detector's rectangle
- * @param h height of the detector's rectangle
+ * @param width width of the detector's rectangle
+ * @param height height of the detector's rectangle
  */
 EntityDetector::EntityDetector(Layer layer, int x, int y, int width, int height):
 MapEntity(layer, x, y, width, height) {

@@ -35,7 +35,7 @@ Link* GameResource::get_link(void) {
 
 /**
  * Returns a tileset.
- * @param tileset_id id of the tileset to get
+ * @param id id of the tileset to get
  * @return the tileset
  */
 Tileset* GameResource::get_tileset(TilesetId id) {

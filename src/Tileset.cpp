@@ -13,8 +13,7 @@
 
 /**
  * Constructor.
- * Creates an empty tileset.
- * @param background_color the background_color
+ * @param id id of the tileset to create
  */
 Tileset::Tileset(TilesetId id):
 id(id), nb_tiles(0) {

@@ -17,6 +17,7 @@
  */
 enum EntityType {
   ENTITY_TILE = 0,
+  ENTITY_ENTRANCE = 1,
 };
 
 /**

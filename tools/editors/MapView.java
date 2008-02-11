@@ -325,10 +325,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 			MapEntities entities = map.getEntities(layer);
 			for (MapEntity entity: entities) {
-			    
+
 			    // should we draw this entity?
 			    if (renderingOptions.isEntityShown(entity)) {
-			    
+
 				// draw the entity
 				entity.paint(g, zoom, renderingOptions.getShowTransparency());
 				

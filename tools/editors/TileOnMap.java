@@ -1,7 +1,6 @@
 package editors;
 
 import java.awt.*;
-import java.io.*;
 import java.util.*;
 
 /**
@@ -41,30 +40,13 @@ public class TileOnMap extends MapEntity {
      * @throws MapException if the tile is not valid
      */
     public TileOnMap(Tileset tileset, int tileId, int x, int y) throws MapException {
-	this(tileset, tileId, x, y, 1, 1, tileset.getTile(tileId).getDefaultLayer());
-    }
-
-    /**
-     * Constructor.
-     * @param tileset the tileset
-     * @param tileId id of the tile in the tileset
-     * @param x x position of the tile on the map
-     * @param y y position of the tile on the map
-     * @param layer layer of the tile
-     * @param repeatX number of times the pattern is repeated on x
-     * @param repeatY number of times the pattern is repeated on y
-     * @throws MapException if repeatX or repeatY are zero
-     */
-    public TileOnMap(Tileset tileset, int tileId, int x, int y, int repeatX, int repeatY, int layer) throws MapException {
-	super(layer, x, y, 0, 0);
-
+	super(LAYER_LOW, x, y, 0, 0);
+	
 	this.tileset = tileset;
 	this.tileId = tileId;
-	this.repeatX = repeatX;
-	this.repeatY = repeatY;
 
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
-	setSize(tile.getWidth() * repeatX, tile.getHeight() * repeatY);
+	setSize(tile.getWidth(), tile.getHeight());
     }
 
     /**

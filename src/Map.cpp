@@ -137,14 +137,20 @@ void Map::load() {
 
 	iss >> tile_id >> repeat_x >> repeat_y;
 	add_new_tile(tile_id, (Layer) layer, x, y, repeat_x, repeat_y);
+	break;
       }
-      break;
+      
+    case ENTITY_ENTRANCE:
+      {
+	int link_direction;
+	
+	iss >> link_direction;
+	add_entrance((Layer) layer, x, y, link_direction);
+	break;
+      }
+
     }
   }
-
-  // temporary
-  add_entrance(LAYER_LOW, 120, 200, 1);
-
 }
 
 /**

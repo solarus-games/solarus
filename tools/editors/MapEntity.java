@@ -43,6 +43,8 @@ public abstract class MapEntity extends Observable {
 
     // types of entities
     public static final int ENTITY_TILE = 0;
+    public static final int ENTITY_ENTRANCE = 1;
+    public static final int ENTITY_EXIT = 2;
 
     /**
      * Empty constructor.
@@ -81,10 +83,21 @@ public abstract class MapEntity extends Observable {
 	MapEntity entity;
 	int entityType = Integer.parseInt(tokenizer.nextToken());
 
-	if (entityType == ENTITY_TILE) {
+	switch (entityType) {
+	    
+	case ENTITY_TILE:
 	    entity = new TileOnMap(tokenizer, map);
-	}
-	else {
+	    break;
+	    
+	case ENTITY_ENTRANCE:
+	    entity = new MapEntrance(tokenizer);
+	    break;
+
+	case ENTITY_EXIT:
+	    entity = new MapExit(tokenizer);
+	    break;
+
+	default:
 	    throw new ZSDXException("Unknown entity type '" + entityType + "'");
 	}
 

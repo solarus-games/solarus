@@ -185,4 +185,43 @@ public class MapEntitySelection extends Observable implements Iterable {
 
 	return getNbEntitiesSelected() == 1 && getEntity(0).isResizable();
     }
+
+    /**
+     * Returns the direction of the selected entities, if all selected entities have
+     * the same direction. Otherwise, returns -1. If at least an entity has no direction,
+     * -1 is returned as well.
+     * @return the common direction, or -1 if all selected entities have not the same direction
+     * or if an entity has no direction
+     */
+    public int getDirection() {
+
+	MapEntity entity = entities.get(0);
+	
+	if (!entity.hasDirection()) {
+	    return -1;
+	}
+
+	int direction = entity.getDirection();
+	
+	for (int i = 1; i < entities.size(); i++) {
+
+	    entity = entities.get(i);
+
+	    if (!entity.hasDirection() || entity.getDirection() != direction) {
+		return -1;
+	    }
+	}
+
+	return direction;
+    }
+
+    /**
+     * Changes the direction of the selected entities.
+     * @param direction the new direction
+     */
+    public void setDirection(int direction) throws ZSDXException {
+
+	map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
+    }
+
 }

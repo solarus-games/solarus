@@ -30,9 +30,24 @@ public class MapViewPopupMenu extends JPopupMenu {
     private JRadioButtonMenuItem[] itemsLayers;
 
     /**
+     * Submenu to select the direction of the selected entities.
+     */
+    private JMenu menuDirection;
+
+    /**
+     * Items for the directions in the submenu.
+     */
+    private JRadioButtonMenuItem[] itemsDirections;
+
+    /**
      * Name of the layers, for the items in the popup menu.
      */
     private static final String[] layerNames = {"Low layer", "Intermediate layer", "High layer"};
+
+    /**
+     * Name of the directions, for the items in the sub menu.
+     */
+    private static final String[] directionNames = {"Right", "Up", "Left", "Down"};
 
     /**
      * Constructor
@@ -44,7 +59,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	this.mapView = theMapView;
 
-	// items: resize, layer, bring to front, bring to back, destroy
+	// items: resize, layer, direction, bring to front, bring to back, destroy
 
 	itemResize = new JMenuItem("Resize");
 	itemResize.addActionListener(new ActionListener() {
@@ -58,7 +73,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	itemsLayers = new JRadioButtonMenuItem[MapEntity.LAYER_NB + 1];
 	ButtonGroup itemsLayersGroup = new ButtonGroup();
-	    
+	
 	for (int i = 0; i < MapEntity.LAYER_NB; i++) {
 	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
 	    itemsLayers[i].addActionListener(new ActionListenerChangeLayer(i));
@@ -68,6 +83,25 @@ public class MapViewPopupMenu extends JPopupMenu {
 	itemsLayers[MapEntity.LAYER_NB] = new JRadioButtonMenuItem();
 	itemsLayers[MapEntity.LAYER_NB].addActionListener(new ActionListenerChangeLayer(MapEntity.LAYER_NB));
 	itemsLayersGroup.add(itemsLayers[MapEntity.LAYER_NB]);
+
+	addSeparator();
+
+	menuDirection = new JMenu("Direction");
+	
+	itemsDirections = new JRadioButtonMenuItem[5];
+	ButtonGroup itemsDirectionsGroup = new ButtonGroup();
+	
+	for (int i = 0; i < 4; i++) {
+	    itemsDirections[i] = new JRadioButtonMenuItem(directionNames[i]);
+	    itemsDirections[i].addActionListener(new ActionListenerChangeDirection(i));
+	    menuDirection.add(itemsDirections[i]);
+	    itemsDirectionsGroup.add(itemsDirections[i]);
+	}
+	itemsDirections[4] = new JRadioButtonMenuItem();
+	itemsDirections[4].addActionListener(new ActionListenerChangeDirection(4));
+	itemsDirectionsGroup.add(itemsDirections[MapEntity.LAYER_NB]);
+
+	add(menuDirection);
 
 	addSeparator();
 
@@ -123,13 +157,28 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    itemsLayers[MapEntity.LAYER_NB].setSelected(true);
 	}
 
+	// enable or not the item "Direction"
+	int direction = selection.getDirection();
+	menuDirection.setEnabled(direction != -1);
+
+	// select the appropriate direction item
+
+	if (direction != -1) {
+	    // if all the selected entities have the same direction, we check its item
+	    itemsDirections[direction].setSelected(true);
+	}
+	else {
+	    // otherwise we select no item
+	    itemsDirections[4].setSelected(true);
+	}
+
 	// show the popup menu
 	show(mapView, x, y);
     }
 
     /**
      * Action listener invoked when the user changes the layer of the selected
-     * entitiyes from the popup menu after a right click.
+     * entities from the popup menu after a right click.
      */
     private class ActionListenerChangeLayer implements ActionListener {
 
@@ -155,6 +204,38 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    }
 	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Cannot change the layer: " + e.getMessage());
+	    }
+	}
+    }
+
+    /**
+     * Action listener invoked when the user changes the direction of the selected
+     * entities from the popup menu after a right click.
+     */
+    private class ActionListenerChangeDirection implements ActionListener {
+
+	/**
+	 * Direction to set when the action is invoked.
+	 */
+	private int direction;
+
+	/**
+	 * Constructor.
+	 * @param direction direction to set when the action is invoked.
+	 */
+	public ActionListenerChangeDirection(int direction) {
+	    this.direction = direction;
+	}
+
+	/**
+	 * Method called when the user sets the direction of the selected entities.
+	 */
+	public void actionPerformed(ActionEvent ev) {
+	    try {
+		map.getEntitySelection().setDirection(direction);
+	    }
+	    catch (ZSDXException e) {
+		WindowTools.errorDialog("Cannot change the direction: " + e.getMessage());
 	    }
 	}
     }

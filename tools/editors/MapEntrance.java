@@ -11,11 +11,6 @@ import java.util.*;
 public class MapEntrance extends InteractiveEntity implements ImageObserver {
     
     /**
-     * Direction of Link when entering the map from this entrance (0 to 3).
-     */
-    private int linkDirection;
-
-    /**
      * Icons of an entrance for each direction. 
      */
     private static ImageIcon[] icons;
@@ -38,7 +33,8 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
     public MapEntrance(int x, int y) {
 	super(LAYER_LOW, x, y, 16, 16);
 
-	this.linkDirection = 0;
+	setHotSpot(8, 16);
+	setDirection(1);
     }
 
     /**
@@ -48,10 +44,10 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
      * @throws ZSDXException if there is a syntax error in the string
      */
     public MapEntrance(StringTokenizer tokenizer) throws ZSDXException {
-	super(LAYER_LOW, 0, 0, 16, 16);
+	this(0, 0);
 	
 	try {
-	    this.linkDirection = Integer.parseInt(tokenizer.nextToken());
+	    setDirection(Integer.parseInt(tokenizer.nextToken()));
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -84,9 +80,7 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
 	int dx2 = dx1 + positionInMap.width * scale;
 	int dy2 = dy1 + positionInMap.height * scale;
 
-	g.drawImage(icons[linkDirection].getImage(), dx1, dy1, dx2, dy2, 0, 0, 16, 16, this);
-
-	// TODO : handle hot spot in MapEntity
+	g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 16, 16, this);
     }
 
     /**
@@ -111,8 +105,16 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
 	buff.append('\t');
 	buff.append(MapEntity.ENTITY_ENTRANCE);
 	buff.append('\t');
-	buff.append(linkDirection);
+	buff.append(getDirection());
 
 	return buff.toString();
+    }
+    
+    /**
+     * Returns whether the entity has a direction.
+     * @return true
+     */
+    public boolean hasDirection() {
+	return true;
     }
 }

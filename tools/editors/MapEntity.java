@@ -16,9 +16,20 @@ public abstract class MapEntity extends Observable {
     protected Rectangle positionInMap;
 
     /**
+     * Origin point of the entity (relative to the top-left corner of its rectangle).
+     */
+    protected Point hotSpot;
+
+    /**
      * Layer of the entity on the map.
      */
     protected int layer;
+
+    /**
+     * Direction of the entity (0 to 3).
+     * Not used by all kinds of entities.
+     */
+    protected int direction;
 
     /**
      * Color to display instead of the transparent pixels of the image.
@@ -64,6 +75,7 @@ public abstract class MapEntity extends Observable {
     protected MapEntity(int layer, int x, int y, int width, int height) {
 	this.layer = layer;
 	this.positionInMap = new Rectangle(x, y, width, height);
+	this.hotSpot = new Point(0, 0);
     }
 
     /**
@@ -108,6 +120,17 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Sets the hotspot of the entity.
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    protected void setHotSpot(int x, int y) {
+	
+	hotSpot.x = x;
+	hotSpot.y = y;
+    }
+
+    /**
      * Returns the entity's obstacle property (default is OBSTACLE_NONE).
      * @return OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
      * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
@@ -131,12 +154,15 @@ public abstract class MapEntity extends Observable {
      */
     public void setPositionInMap(Rectangle position) throws MapException {
 
-	setPositionInMap(position.x, position.y);
+	positionInMap.x = position.x;
+	positionInMap.y = position.y;
+	
 	setSize(position.width, position.height);
     }
     
     /**
-     * Changes the position of the entity on the map, by specifying two points.
+     * Changes the position of the entity on the map, by specifying two points
+     * (the top-left corner and the bottom-right corner).
      * @param x1 x coordinate of the first point
      * @param y1 y coordinate of the first point
      * @param x2 x coordinate of the second point
@@ -152,28 +178,36 @@ public abstract class MapEntity extends Observable {
 	int y = Math.min(y1, y2);
 	int height = Math.abs(y2 - y1);
 
-	setPositionInMap(x, y);
+	positionInMap.x = x;
+	positionInMap.y = y;
+	
 	setSize(width, height);
-
-	// notify
-	setChanged();
-	notifyObservers();
     }
     
     /**
-     * Changes the position of the entity on the map, by specifying a point.
+     * Changes the position of the entity on the map, by specifying the coordinates of its hotspot.
      * The size of the entity is not changed.
-     * @param x x coordinate of the point
-     * @param y y coordinate of the point
+     * @param x x coordinate of the hotspot
+     * @param y y coordinate of the hotspot
      */
     public void setPositionInMap(int x, int y) {
 
-	positionInMap.x = x;
-	positionInMap.y = y;
+	positionInMap.x = x - hotSpot.x;
+	positionInMap.y = y - hotSpot.y;
 	
 	// notify
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Returns whether or not the entity is resizable.
+     * By default, an entity is not resizable. The subclasses which represent
+     * resizable entities should redefine this method and return true.
+     * @return whether or not the entity is resizable
+     */
+    public boolean isResizable() {
+	return false;
     }
 
     /**
@@ -202,13 +236,40 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns whether or not the entity is resizable.
-     * By default, an entity is not resizable. The subclasses which represent
-     * resizable entities should redefine this method and return true.
-     * @return whether or not the entity is resizable
+     * Returns whether the entity has a direction.
+     * By default, an entity has no direction. The subclasses which represent
+     * entities with the 4 possible directions should redefine this method and return true.
+     * @return true if the entity has a direction, false otherwise
      */
-    public boolean isResizable() {
+    public boolean hasDirection() {
 	return false;
+    }
+
+    /**
+     * Changes the direction of the entity.
+     * The entity must have a direction (i.e. hasDirection() returns true).
+     * By default, an entity has no direction and this method throws a MapException.
+     * @param direction the entity's direction (0 to 3)
+     * @throws UnsupportedOperationException if the entity has no direction
+     */
+    public void setDirection(int direction) throws UnsupportedOperationException {
+
+	if (!hasDirection()) {
+	    throw new UnsupportedOperationException("This entity has no direction");
+	}
+
+	this.direction = direction;
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Returns the direction of the entity.
+     * The entity should have a direction (i.e. hasDirection() returns true).
+     * @return the entity's direction (0 to 3)
+     */
+    public int getDirection() {
+	return direction;
     }
 
     /**
@@ -276,19 +337,22 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns the x coordinate of the entity on the map.
-     * @return the x coordinate of the entity on the map
+     * Returns the x coordinate of the entity's hotspot on the map.
+     * @return the x coordinate of the entity's hotspot on the map
      */
     public int getX() {
-	return positionInMap.x;
+	if (this instanceof MapEntrance) {
+	    System.out.println("x = " + hotSpot.x);
+	}
+	return positionInMap.x + hotSpot.x;
     }
 
     /**
-     * Returns the y coordinate of the entity on the map.
-     * @return the y coordinate of the entity on the map
+     * Returns the y coordinate of the entity's hotspot on the map.
+     * @return the y coordinate of the entity's hotspot on the map
      */
     public int getY() {
-	return positionInMap.y;
+	return positionInMap.y + hotSpot.y;
     }
 
     /**
@@ -310,9 +374,9 @@ public abstract class MapEntity extends Observable {
 	StringBuffer buff = new StringBuffer();
 	buff.append(layer);
 	buff.append('\t');
-	buff.append(positionInMap.x);
+	buff.append(getX());
 	buff.append('\t');
-	buff.append(positionInMap.y);
+	buff.append(getY());
 	return buff.toString();
     }
 }

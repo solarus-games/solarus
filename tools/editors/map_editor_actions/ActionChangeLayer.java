@@ -4,7 +4,7 @@ import editors.*;
 import java.util.LinkedList;
 
 /**
- * Changing the layer of some tiles.
+ * Changing the layer of some entities.
  */
 public class ActionChangeLayer extends MapEditorAction {
 

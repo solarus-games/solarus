@@ -37,7 +37,7 @@ public class ActionChangeDirection extends MapEditorAction {
     public void execute() throws MapException {
 
 	for (MapEntity entity: entities) {
-	    entity.setDirection(directionAfter);
+	    map.setEntityDirection(entity, directionAfter);
 	}
     }
 
@@ -48,7 +48,7 @@ public class ActionChangeDirection extends MapEditorAction {
 
 	int i = 0;
 	for (MapEntity entity: entities) {
-	    entity.setDirection(directionsBefore[i]);
+	    map.setEntityDirection(entity, directionsBefore[i]);
 	    i++;
 	}
     }

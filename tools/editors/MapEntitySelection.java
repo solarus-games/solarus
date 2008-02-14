@@ -187,6 +187,22 @@ public class MapEntitySelection extends Observable implements Iterable {
     }
 
     /**
+     * Returns whether the entities selected have a direction.
+     * @return true if all selected entities have a direction, false otherwise
+     */
+    public boolean hasDirection() {
+	
+	for (MapEntity entity: entities) {
+	    
+	    if (!entity.hasDirection()) {
+		return false;
+	    }
+	}
+
+	return true;
+    }
+
+    /**
      * Returns the direction of the selected entities, if all selected entities have
      * the same direction. Otherwise, returns -1. If at least an entity has no direction,
      * -1 is returned as well.
@@ -195,17 +211,15 @@ public class MapEntitySelection extends Observable implements Iterable {
      */
     public int getDirection() {
 
-	MapEntity entity = entities.get(0);
+	MapEntity e = entities.get(0);
 	
-	if (!entity.hasDirection()) {
+	if (!e.hasDirection()) {
 	    return -1;
 	}
 
-	int direction = entity.getDirection();
+	int direction = e.getDirection();
 	
-	for (int i = 1; i < entities.size(); i++) {
-
-	    entity = entities.get(i);
+	for (MapEntity entity: entities) {
 
 	    if (!entity.hasDirection() || entity.getDirection() != direction) {
 		return -1;

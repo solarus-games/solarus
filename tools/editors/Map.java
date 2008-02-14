@@ -513,38 +513,24 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the id of the background music of the map.
-     * @return the name of the music, i.e. a music file name with the extension,
-     * or Music.noneId or Music.unchangedId
+     * Changes the direction of an entity.
+     * @param entity the entity to change the direction
+     * @param direction the new direction
+     * @throws MapException if this entity has no direction
      */
-    public String getMusic() {
-	return musicId;
-    }
+    public void setEntityDirection(MapEntity entity, int direction) throws MapException {
 
-    /**
-     * Changes the default background music of the map.
-     * @param musicId the name of the music, i.e. a music file name with the extension,
-     * or Music.noneId or Music.unchangedId
-     */
-    public void setMusic(String musicId) {
+	int oldDirection = entity.getDirection();
 
-	if (!musicId.equals(this.musicId)) {
-
-	    this.musicId = musicId;
-
+	if (direction != oldDirection) {
+	    
+	    entity.setDirection(direction);
+	    
 	    setChanged();
 	    notifyObservers();
 	}
     }
 
-    /**
-     * Returns the entities selected by the user.
-     * @return the entities selected by the user
-     */
-    public MapEntitySelection getEntitySelection() {
-	return entitySelection;
-    }
-    
     /**
      * Changes the layer of an entity. You should call this method instead of
      * calling directly MapEntity.setLayer(), because the entity of the 3 layers are
@@ -560,10 +546,10 @@ public class Map extends Observable {
 	    entity.setLayer(layer);
 	    allEntities[oldLayer].remove(entity);
 	    allEntities[layer].add(entity);
+	    
+	    setChanged();
+	    notifyObservers();
 	}
-
-	setChanged();
-	notifyObservers();
     }
 
     /**
@@ -637,6 +623,39 @@ public class Map extends Observable {
 	notifyObservers();
     }
 
+    /**
+     * Returns the id of the background music of the map.
+     * @return the name of the music, i.e. a music file name with the extension,
+     * or Music.noneId or Music.unchangedId
+     */
+    public String getMusic() {
+	return musicId;
+    }
+
+    /**
+     * Changes the default background music of the map.
+     * @param musicId the name of the music, i.e. a music file name with the extension,
+     * or Music.noneId or Music.unchangedId
+     */
+    public void setMusic(String musicId) {
+
+	if (!musicId.equals(this.musicId)) {
+
+	    this.musicId = musicId;
+
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Returns the entities selected by the user.
+     * @return the entities selected by the user
+     */
+    public MapEntitySelection getEntitySelection() {
+	return entitySelection;
+    }
+    
     /**
      * Returns whether or not when the tileset was loaded, some tiles of the map refered
      * to non existent tiles in the tileset. These bad tiles were removed.

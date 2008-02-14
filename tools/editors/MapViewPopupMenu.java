@@ -158,18 +158,23 @@ public class MapViewPopupMenu extends JPopupMenu {
 	}
 
 	// enable or not the item "Direction"
-	int direction = selection.getDirection();
-	menuDirection.setEnabled(direction != -1);
+	boolean hasDirection = selection.hasDirection();
 
-	// select the appropriate direction item
+	menuDirection.setEnabled(hasDirection);
+	if (hasDirection) {
 
-	if (direction != -1) {
-	    // if all the selected entities have the same direction, we check its item
-	    itemsDirections[direction].setSelected(true);
-	}
-	else {
-	    // otherwise we select no item
-	    itemsDirections[4].setSelected(true);
+	    int direction = selection.getDirection();
+	    
+	    // select the appropriate direction item
+	    
+	    if (direction != -1) {
+		// if all the selected entities have the same direction, we check its item
+		itemsDirections[direction].setSelected(true);
+	    }
+	    else {
+		// otherwise we select no item
+		itemsDirections[4].setSelected(true);
+	    }
 	}
 
 	// show the popup menu

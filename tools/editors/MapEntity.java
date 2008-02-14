@@ -341,9 +341,6 @@ public abstract class MapEntity extends Observable {
      * @return the x coordinate of the entity's hotspot on the map
      */
     public int getX() {
-	if (this instanceof MapEntrance) {
-	    System.out.println("x = " + hotSpot.x);
-	}
 	return positionInMap.x + hotSpot.x;
     }
 

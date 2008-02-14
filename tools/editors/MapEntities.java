@@ -12,6 +12,12 @@ public class MapEntities implements Iterable<MapEntity> {
     private List<InteractiveEntity> interactiveEntities;
     private List<MovingEntity> movingEntities;
 
+    private static final Class[] entityClasses = {
+	TileOnMap.class,          // ENTITY_TILE
+	MapEntrance.class,        // ENTITY_ENTRANCE
+	MapExit.class             // ENTITY_EXIT
+    };
+
     /**
      * Constructor.
      */
@@ -76,6 +82,41 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public int getNbMovingEntities() {
 	return movingEntities.size();
+    }
+
+    /**
+     * Returns all entities of a kind, except the tiles.
+     * @param entityType a type of entity:
+     * MapEntity.ENTITY_ENTRANCE, MapEntity.ENTITY_ENEMY...
+     * @return the list of the entities of this kind
+     */
+    public List<MapEntity> getEntities(int entityType) {
+	
+	Class cl = entityClasses[entityType];
+	List<MapEntity> list = new LinkedList<MapEntity>();
+
+	// interactive entity
+	if (InteractiveEntity.class.isAssignableFrom(cl)) {
+	    for (MapEntity e: interactiveEntities) {
+		
+		if (cl.isInstance(e)) {
+		    list.add(e);
+		}
+	    }
+	}
+
+	// moving entity
+	else {
+	
+	    for (MapEntity e: movingEntities) {
+		
+		if (cl.isInstance(e)) {
+		    list.add(e);
+		}
+	    }
+	}
+	
+	return list;
     }
 
     /**

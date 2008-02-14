@@ -7,3 +7,5 @@
 	- Editeur de maps : permettre de placer d'autres objets que les tiles (entrées et sorties notamment)
 
 	- Renommer Configuration en un truc qui évoque que ça gère les path
+	- id des entités : action changer id, attribuer un id par défaut, faire un chooser des entités d'un type donné
+	- vue arborescente de toutes les entités par type ?

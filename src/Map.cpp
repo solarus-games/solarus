@@ -123,13 +123,15 @@ void Map::load() {
   }
 
   // read the entities
-  int layer, x, y, entityType;
+  int layer, x, y, entity_type, direction;
+  string entity_name;
+	
   while (std::getline(map_file, line)) {
 
     istringstream iss(line);
-    iss >> layer >> x >> y >> entityType;
+    iss >> entity_type >> layer >> x >> y;
 
-    switch (entityType) {
+    switch (entity_type) {
 
     case ENTITY_TILE:
       {
@@ -142,13 +144,17 @@ void Map::load() {
       
     case ENTITY_ENTRANCE:
       {
-	int link_direction;
-	
-	iss >> link_direction;
-	add_entrance((Layer) layer, x, y, link_direction);
+	iss >> entity_name >> direction;
+	add_entrance((Layer) layer, x, y, entity_name, direction);
 	break;
       }
-
+      
+    case ENTITY_EXIT:
+      {
+	iss >> entity_name;
+	// TODO
+	break;
+      }
     }
   }
 }
@@ -279,10 +285,12 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
  * (set -1 to indicate that the x coordinate is kept the same from the previous map)
  * @param link_y y initial position of link in this state
  * (set -1 to indicate that the y coordinate is kept the same from the previous map)
+ * @param entrance_name a string identifying this entrance
  * @param link_direction initial direction of link in this state (0 to 3)
  */
-void Map::add_entrance(Layer layer, int link_x, int link_y, int link_direction) {
+void Map::add_entrance(Layer layer, int link_x, int link_y, string entrance_name, int link_direction) {
   
+  // TODO: entrance_id
   MapEntrance *entrance = new MapEntrance(layer, link_x, link_y, link_direction);
   entrances->push_back(entrance);
 }

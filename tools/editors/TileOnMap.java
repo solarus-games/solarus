@@ -80,6 +80,30 @@ public class TileOnMap extends MapEntity {
     }
 
     /**
+     * Returns an integer identifying the kind of entity.
+     * @return MapEntity.ENTITY_TILE
+     */
+    public int getType() {
+	return ENTITY_TILE;
+    }
+
+    /**
+     * Returns whether the entity has a name.
+     * @return false
+     */
+    public boolean hasName() {
+	return false;
+    }
+
+    /**
+     * Returns whether the entity has a direction.
+     * @return false
+     */
+    public boolean hasDirection() {
+	return false;
+    }
+
+    /**
      * Changes the tileset used to represent this tile on the map.
      * The corresponding tile from the new tileset (i.e. the tile
      * with the same id) must have exactly the same properties,
@@ -257,11 +281,9 @@ public class TileOnMap extends MapEntity {
 
 	StringBuffer buff = new StringBuffer();
 
-	// get the common part of the string (i.e. the layer and the coordinates)
+	// get the common part of the string (i.e. the kind of entity, the layer, the coordinates)
 	buff.append(super.toString());
 
-	buff.append('\t');
-	buff.append(MapEntity.ENTITY_TILE);
 	buff.append('\t');
 	buff.append(tileId);
 	buff.append('\t');

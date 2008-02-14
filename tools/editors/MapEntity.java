@@ -32,6 +32,12 @@ public abstract class MapEntity extends Observable {
     protected int direction;
 
     /**
+     * String identifying the entity.
+     * Not used by all kinds of entities.
+     */
+    protected String name;
+
+    /**
      * Color to display instead of the transparent pixels of the image.
      */
     protected static final Color bgColor = new Color(128, 128, 255);
@@ -88,12 +94,12 @@ public abstract class MapEntity extends Observable {
 
 	StringTokenizer tokenizer = new StringTokenizer(description);
 
+	int entityType = Integer.parseInt(tokenizer.nextToken());
 	int layer = Integer.parseInt(tokenizer.nextToken());
 	int x = Integer.parseInt(tokenizer.nextToken());
 	int y = Integer.parseInt(tokenizer.nextToken());
 
 	MapEntity entity;
-	int entityType = Integer.parseInt(tokenizer.nextToken());
 
 	switch (entityType) {
 	    
@@ -115,6 +121,14 @@ public abstract class MapEntity extends Observable {
 
 	entity.setLayer(layer);
 	entity.setPositionInMap(x, y);
+
+	if (entity.hasName()) {
+	    entity.setName(tokenizer.nextToken());
+	}
+
+	if (entity.hasDirection()) {
+	    entity.setDirection(Integer.parseInt(tokenizer.nextToken()));
+	}
 
 	return entity;
     }
@@ -237,19 +251,26 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Returns whether the entity has a direction.
-     * By default, an entity has no direction. The subclasses which represent
-     * entities with the 4 possible directions should redefine this method and return true.
+     * The subclasses which represent entities with a direction
+     * should return true.
      * @return true if the entity has a direction, false otherwise
      */
-    public boolean hasDirection() {
-	return false;
+    public abstract boolean hasDirection();
+
+    /**
+     * Returns the direction of the entity.
+     * The entity should have a direction (i.e. hasDirection() returns true).
+     * @return the entity's direction
+     */
+    public int getDirection() {
+	return direction;
     }
 
     /**
      * Changes the direction of the entity.
      * The entity must have a direction (i.e. hasDirection() returns true).
-     * By default, an entity has no direction and this method throws a MapException.
-     * @param direction the entity's direction (0 to 3)
+     * By default, an entity has no direction and this method throws an exception.
+     * @param direction the entity's direction
      * @throws UnsupportedOperationException if the entity has no direction
      */
     public void setDirection(int direction) throws UnsupportedOperationException {
@@ -264,12 +285,37 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns the direction of the entity.
-     * The entity should have a direction (i.e. hasDirection() returns true).
-     * @return the entity's direction (0 to 3)
+     * Returns whether the entity has a name.
+     * The subclasses which represent identifiable entities should return true.
+     * @return true if the entity has a name, false otherwise
      */
-    public int getDirection() {
-	return direction;
+    public abstract boolean hasName();
+
+    /**
+     * Returns the name of the entity.
+     * The name of an entity permits to identify it.
+     * @return the entity's name, or null if this entity is not identifiable
+     */
+    public String getName() {
+	return name;
+    }
+
+    /**
+     * Changes the name of the entity.
+     * The entity must be identifiable (i.e. hasName() returns true).
+     * By default, an entity is not identifiable and this method throws an exception.
+     * @param name the new entity's name
+     * @throws UnsupportedOperationException if the entity is not identifiable
+     */
+    public void setName(String name) throws UnsupportedOperationException {
+
+	if (!hasName()) {
+	    throw new UnsupportedOperationException("This entity is not identifiable");
+	}
+
+	this.name = name;
+	setChanged();
+	notifyObservers();
     }
 
     /**
@@ -362,18 +408,38 @@ public abstract class MapEntity extends Observable {
     public abstract void paint(Graphics g, double zoom, boolean showTransparency);
 
     /**
-     * Returns a string describing this entity: the layer and the coordinates.
-     * Subclasses should redefine this method to add their own information.
+     * Returns an integer identifying the kind of entity: ENTITY_TILE, ENTITY_ENTRANCE...
+     * @return the type of entity
+     */
+    public abstract int getType();
+
+    /**
+     * Returns a string describing this entity: the entity type, the layer, the coordinates,
+     * the id (if any) and the direction (if any).
+     * Subclasses should redefine this method to add their own information (if any).
      * @return a string representation of the entity.
      */
     public String toString() {
 
 	StringBuffer buff = new StringBuffer();
+	buff.append(getType());
+	buff.append('\t');
 	buff.append(layer);
 	buff.append('\t');
 	buff.append(getX());
 	buff.append('\t');
 	buff.append(getY());
+
+	if (hasName()) {
+	    buff.append('\t');
+	    buff.append(getName());
+	}
+	
+	if (hasDirection()) {
+	    buff.append('\t');
+	    buff.append(getDirection());
+	}
+
 	return buff.toString();
     }
 }

@@ -40,21 +40,19 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
     /**
      * Creates a map entrance from a string.
      * @param tokenizer the string tokenizer, which has already parsed the common part of the string
-     * (i.e. the layer, the coordinates and the type of entity have already been handled)
+     * (i.e. the layer, the coordinates, the direction and the type of entity have already been handled)
      * @throws ZSDXException if there is a syntax error in the string
      */
     public MapEntrance(StringTokenizer tokenizer) throws ZSDXException {
 	this(0, 0);
-	
-	try {
-	    setDirection(Integer.parseInt(tokenizer.nextToken()));
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
+    }
+
+    /**
+     * Returns an integer identifying the kind of entity.
+     * @return MapEntity.ENTITY_ENTRANCE
+     */
+    public int getType() {
+	return ENTITY_ENTRANCE;
     }
 
     /**
@@ -92,29 +90,18 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
     }
 
     /**
-     * Returns a string describing this map entrance.
-     * @return a string representation of the map entrance
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string (i.e. the layer and the coordinates)
-	buff.append(super.toString());
-
-	buff.append('\t');
-	buff.append(MapEntity.ENTITY_ENTRANCE);
-	buff.append('\t');
-	buff.append(getDirection());
-
-	return buff.toString();
-    }
-    
-    /**
      * Returns whether the entity has a direction.
      * @return true
      */
     public boolean hasDirection() {
+	return true;
+    }
+
+    /**
+     * Returns whether the entity has an identifier.
+     * @return true
+     */
+    public boolean hasName() {
 	return true;
     }
 }

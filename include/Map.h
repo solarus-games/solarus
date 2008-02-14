@@ -18,6 +18,7 @@
 enum EntityType {
   ENTITY_TILE = 0,
   ENTITY_ENTRANCE = 1,
+  ENTITY_EXIT = 2,
 };
 
 /**
@@ -108,7 +109,7 @@ class Map {
   MusicId music_id;
 
   void add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int repeat_y);
-  void add_entrance(Layer layer, int link_x, int link_y, int link_direction);
+  void add_entrance(Layer layer, int link_x, int link_y, string name, int link_direction);
   void add_exit(Layer layer, int x, int y, int w, int h, MapId map_id, int entrance_index);
 
  public:

@@ -52,6 +52,29 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
     }
 
     /**
+     * Returns an integer identifying the kind of entity.
+     * @return MapEntity.ENTITY_EXIT
+     */
+    public int getType() {
+	return ENTITY_EXIT;
+    }
+
+    /**
+     * Returns whether the entity has a direction.
+     * @return false
+     */
+    public boolean hasDirection() {
+	return false;
+    }
+
+    /**
+     * Returns whether the entity has an identifier.
+     * @return true
+     */
+    public boolean hasName() {
+	return true;
+    }
+    /**
      * Draws the exit on the map editor.
      * @param g graphic context
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)

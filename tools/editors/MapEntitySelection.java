@@ -238,4 +238,20 @@ public class MapEntitySelection extends Observable implements Iterable {
 	map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
     }
 
+    /**
+     * Returns whether the entities selected have a name.
+     * @return true if all selected entities have a name, false otherwise
+     */
+    public boolean hasName() {
+	
+	for (MapEntity entity: entities) {
+	    
+	    if (!entity.hasName()) {
+		return false;
+	    }
+	}
+
+	return true;
+    }
+
 }

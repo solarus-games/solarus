@@ -15,7 +15,7 @@ public class ResourceChooserDialog extends JDialog {
     private int resourceType;
     
     /**
-     * Id of the tileset element (or an empty string if the user cancelled).
+     * Id of the element chosen (or an empty string if the user cancelled).
      */
     private String id = "";
 

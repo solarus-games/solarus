@@ -9,3 +9,4 @@
 	- Renommer Configuration en un truc qui évoque que ça gère les path
 	- id des entités : action changer id, attribuer un id par défaut, faire un chooser des entités d'un type donné
 	- vue arborescente de toutes les entités par type ?
+	- faire des packages, en particulier séparer les vues des modèles

@@ -20,6 +20,11 @@ public class MapViewPopupMenu extends JPopupMenu {
     private MapView mapView;
 
     /**
+     * Item in the popup menu to edit the selected entity.
+     */
+    private JMenuItem itemEdit;
+
+    /**
      * Item in the popup menu to resize the selected entity.
      */
     private JMenuItem itemResize;
@@ -59,7 +64,11 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	this.mapView = theMapView;
 
-	// items: resize, layer, direction, bring to front, bring to back, destroy
+	// items: edit, resize, layer, direction, bring to front, bring to back, destroy
+
+	itemEdit = new JMenuItem("Edit");
+	itemEdit.addActionListener(new ActionListenerEditEntity());
+	add(itemEdit);
 
 	itemResize = new JMenuItem("Resize");
 	itemResize.addActionListener(new ActionListener() {
@@ -132,7 +141,6 @@ public class MapViewPopupMenu extends JPopupMenu {
 	this.map = map;
     }
 
-
     /**
      * Shows the popup menu.
      * @param x x coordinate of where the popup menu has to be shown
@@ -141,7 +149,11 @@ public class MapViewPopupMenu extends JPopupMenu {
     public void show(int x, int y) {
 
 	MapEntitySelection selection = map.getEntitySelection();
+	int nbSelected = selection.getNbEntitiesSelected();
 	
+	// enable or not the item "Edit"
+	itemResize.setEnabled(nbSelected == 1 && selection.hasName());
+
 	// enable or not the item "Resize"
 	itemResize.setEnabled(selection.isResizable());
 
@@ -280,6 +292,33 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    catch (ZSDXException e) {
 		WindowTools.errorDialog("Cannot bring the entities to back: " + e.getMessage());
 	    }
+	}
+    }
+
+    /**
+     * Action listener invoked when the user clicks on "Edit".
+     * A popup menu to edit the selected entity is shown.
+     */
+    private class ActionListenerEditEntity implements ActionListener {
+
+	/**
+	 * Constructor.
+	 */
+	public ActionListenerEditEntity() {
+	    
+	}
+
+	/**
+	 * Method called when the user clicks on "Edit".
+	 */
+	public void actionPerformed(ActionEvent ev) {
+
+	    MapEntity entity = map.getEntitySelection().getEntity(0);
+
+	    EditEntityDialog dialog = new EditEntityDialog(entity);
+	    dialog.setLocationRelativeTo(null);
+	    dialog.pack();
+	    dialog.setVisible(true);
 	}
     }
 }

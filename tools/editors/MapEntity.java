@@ -87,6 +87,9 @@ public abstract class MapEntity extends Observable {
     
     /**
      * Creates an entity.
+     * If map is not null and the entity is identifiable, a default name
+     * is given to the entity (this name is computed such that it is
+     * different from the other entities of the same kind on the map).
      * @param map the map
      * @param layer layer of the entity
      * @param x x position of the entity on the map

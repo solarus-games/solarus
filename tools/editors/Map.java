@@ -345,7 +345,7 @@ public class Map extends Observable {
      */
     public void setAllEntities(MapEntities[] allEntities) {
 
-	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	for (int layer = MapEntity.LAYER_LOW; layer < MapEntity.LAYER_NB; layer++) {
 	    this.allEntities[layer] = new MapEntities(allEntities[layer]);
 	}
 
@@ -362,6 +362,21 @@ public class Map extends Observable {
 	return allEntities[layer];
     }
 
+    /**
+     * Returns all entities of a kind, except the tiles.
+     * @param entityType a type of entity:
+     * MapEntity.ENTITY_ENTRANCE, MapEntity.ENTITY_ENEMY...
+     * @return the list of the entities of this kind on the map
+     */
+    public List<MapEntity> getEntitiesOfType(int entityType) {
+
+	List<MapEntity> list = new LinkedList<MapEntity>();
+	for (int layer = MapEntity.LAYER_LOW; layer < MapEntity.LAYER_NB; layer++) {
+	    list.addAll(allEntities[layer].getEntitiesOfType(entityType));
+	}
+	return list;
+    }
+	
     /**
      * Returns the first entity under a point of the map, in the three layers,
      * starting with the high layer.

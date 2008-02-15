@@ -12,12 +12,6 @@ public class MapEntities implements Iterable<MapEntity> {
     private List<InteractiveEntity> interactiveEntities;
     private List<MovingEntity> movingEntities;
 
-    private static final Class[] entityClasses = {
-	TileOnMap.class,          // ENTITY_TILE
-	MapEntrance.class,        // ENTITY_ENTRANCE
-	MapExit.class             // ENTITY_EXIT
-    };
-
     /**
      * Constructor.
      */
@@ -90,9 +84,9 @@ public class MapEntities implements Iterable<MapEntity> {
      * MapEntity.ENTITY_ENTRANCE, MapEntity.ENTITY_ENEMY...
      * @return the list of the entities of this kind
      */
-    public List<MapEntity> getEntities(int entityType) {
+    public List<MapEntity> getEntitiesOfType(int entityType) {
 	
-	Class cl = entityClasses[entityType];
+	Class cl = MapEntity.entityClasses[entityType];
 	List<MapEntity> list = new LinkedList<MapEntity>();
 
 	// interactive entity

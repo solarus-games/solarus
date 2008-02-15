@@ -1,7 +1,20 @@
 #include "MapEntity.h"
 
 /**
- * Constructor.
+ * Creates a map entity without specifying its properties yet.
+ */
+MapEntity::MapEntity(void):
+  layer(LAYER_LOW), name(""), direction(0) {
+
+  position_in_map.x = 0;
+  position_in_map.y = 0;
+  position_in_map.w = 0;
+  position_in_map.h = 0;
+}
+
+/**
+ * Creates a map entity, specifying its position.
+ * The entity has no name and no direction.
  * @param layer layer of the entity
  * @param x x position of the entity
  * @param y y position of the entity
@@ -9,7 +22,26 @@
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  layer(layer) {
+  layer(layer), name(""), direction(0) {
+
+  position_in_map.x = x;
+  position_in_map.y = y;
+  position_in_map.w = width;
+  position_in_map.h = height;
+}
+
+/**
+ * Creates an entity, specifying its position, its name and its direction.
+ * @param name a name identifying the entity
+ * @param direction direction of the entity
+ * @param layer layer of the entity
+ * @param x x position of the entity
+ * @param y y position of the entity
+ * @param width width of the entity
+ * @param height height of the entity
+ */
+MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
+  layer(layer), name(name), direction(direction) {
 
   position_in_map.x = x;
   position_in_map.y = y;

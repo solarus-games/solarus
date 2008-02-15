@@ -26,9 +26,17 @@ Map::Map(MapId id) {
  */
 Map::~Map(void) {
 
-  if (this->width != 0) {
+  if (is_loaded()) {
     unload();
   }
+}
+
+/**
+ * Returns whether the map is loaded.
+ * @return true if the map is loaded, false otherwise
+ */
+bool Map::is_loaded(void) {
+  return this->width != 0;
 }
 
 /**
@@ -145,7 +153,7 @@ void Map::load() {
     case ENTITY_ENTRANCE:
       {
 	iss >> entity_name >> direction;
-	add_entrance((Layer) layer, x, y, entity_name, direction);
+	add_entrance(entity_name, (Layer) layer, x, y, direction);
 	break;
       }
       
@@ -280,35 +288,36 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int
 
 /**
  * Creates an entrance on the map.
+ * @param entrance_name a string identifying this new entrance
  * @param layer the layer of Link's position
  * @param link_x x initial position of link in this state
  * (set -1 to indicate that the x coordinate is kept the same from the previous map)
  * @param link_y y initial position of link in this state
  * (set -1 to indicate that the y coordinate is kept the same from the previous map)
- * @param entrance_name a string identifying this entrance
  * @param link_direction initial direction of link in this state (0 to 3)
  */
-void Map::add_entrance(Layer layer, int link_x, int link_y, string entrance_name, int link_direction) {
+void Map::add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction) {
   
-  // TODO: entrance_id
-  MapEntrance *entrance = new MapEntrance(layer, link_x, link_y, link_direction);
+  MapEntrance *entrance = new MapEntrance(entrance_name, layer, link_x, link_y, link_direction);
   entrances->push_back(entrance);
 }
 
 /**
  * Creates an exit on the map.
  * When Link walks on the exit, he leaves the map and enters another one.
+ * @param exit_name a string identifying this new exit
  * @param layer layer of the exit to create
  * @param x x position of the exit rectangle
  * @param y y position of the exit rectangle
  * @param w width of the exit rectangle
  * @param h height of the exit rectangle
  * @param map_id id of the next map
- * @param entrance_index index of the entrance of the next map
+ * @param entrance_name name of the entrance of the next map
  */
-void Map::add_exit(Layer layer, int x, int y, int w, int h, MapId map_id, int entrance_index) {
+void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
+		   MapId map_id, string entrance_name) {
   
-  MapExit *exit = new MapExit(layer, x, y, w, h, map_id, entrance_index);
+  MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, map_id, entrance_name);
   entity_detectors->push_back(exit);
 }
 
@@ -317,7 +326,34 @@ void Map::add_exit(Layer layer, int x, int y, int w, int h, MapId map_id, int en
  * @param entrance_index index of the entrance you want to use
  */
 void Map::set_entrance(unsigned int entrance_index) {
+
+  if (entrance_index < 0 || entrance_index >= entrances->size()) {
+    cerr << "Fatal error: unknown entrance '" << entrance_index << "' on map '" << id << '\'' << endl;
+    exit(1);
+  }
+
   this->entrance_index = entrance_index;
+}
+
+/**
+ * Sets the current entrance of the map.
+ * @param entrance_name name of the entrance you want to use
+ */
+void Map::set_entrance(string entrance_name) {
+
+  bool found = false;
+  unsigned int i;
+  for (i = 0; i < entrances->size() && !found; i++) { 
+    found = (entrances->at(i)->get_name() == entrance_name);
+  }
+
+  if (found) {
+    this->entrance_index = i;
+  }
+  else {
+    cerr << "Fatal error: unknown entrance '" << entrance_name << "' on map '" << id << '\'' << endl;
+    exit(1);
+  }
 }
 
 /**
@@ -376,11 +412,6 @@ void Map::display() {
  */
 void Map::start(void) {
 
-  if (entrances->size() == 0) {
-    cerr << "Fatal error: no entrance defined on the map '" << id << '\'' << endl;
-    exit(1);
-  }
-
   MapEntrance *entrance = entrances->at(entrance_index);
 
   ZSDX::game->play_music(music_id);
@@ -388,10 +419,10 @@ void Map::start(void) {
   // put Link
   Link *link = ZSDX::game_resource->get_link();
   link->set_map(this);
-  link->get_sprite()->set_current_animation_direction(entrance->get_link_direction());
+  link->get_sprite()->set_current_animation_direction(entrance->get_direction());
 
-  int x = entrance->get_link_x();
-  int y = entrance->get_link_y();
+  int x = entrance->get_x();
+  int y = entrance->get_y();
 
   if (x != -1) {
     link->set_x(x);

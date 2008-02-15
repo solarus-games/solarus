@@ -17,15 +17,7 @@ class EntityDetector: public MapEntity {
 
  protected:
   
-  /**
-   * Constructor.
-   * @param layer layer of the detector
-   * @param x x position of the detector's rectangle
-   * @param y y position of the detector's rectangle
-   * @param width width of the detector's rectangle
-   * @param height height of the detector's rectangle
-   */
-  EntityDetector(Layer layer, int x, int y, int width, int height);
+  EntityDetector(string name, Layer layer, int x, int y, int width, int height);
 
  public:
 

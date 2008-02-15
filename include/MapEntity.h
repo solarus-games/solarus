@@ -28,21 +28,18 @@ class MapEntity {
   Layer layer;
 
   /**
-   * Constructor.
-   * @param layer layer of the entity
+   * Name of the entity (not used for all kinds of entities).
    */
-  inline MapEntity(Layer layer):
-    layer(layer) { };
+  string name;
 
   /**
-   * Constructor.
-   * @param layer layer of the entity
-   * @param x x position of the entity
-   * @param y y position of the entity
-   * @param width width of the entity
-   * @param height height of the entity
+   * Direction of the entity (not used for all kinds of entities).
    */
+  int direction;
+
+  MapEntity(void);
   MapEntity(Layer layer, int x, int y, int width, int height);
+  MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
 
  public:
 
@@ -74,6 +71,18 @@ class MapEntity {
    * @return the height of the entity
    */
   inline int get_height(void) { return position_in_map.h; }
+
+  /**
+   * Returns the name of the entity (if any).
+   * @return the name of the entity, or an empty string if the entity is not identifiable
+   */
+  inline string get_name(void) { return name; }
+
+  /**
+   * Returns the direction of the entity.
+   * @return the direction of the entity
+   */
+  inline int get_direction(void) { return direction; }
 
   /**
    * Returns the position of the entity.

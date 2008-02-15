@@ -15,12 +15,8 @@
  * @param repeat_y number of times the pattern is repeated on y
  */
 TileOnMap::TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int repeat_y):
-  MapEntity(layer), tile(tile), repeat_x(repeat_x), repeat_y(repeat_y) {
+  MapEntity(layer, x, y, tile->get_width(), tile->get_height()), tile(tile), repeat_x(repeat_x), repeat_y(repeat_y) {
 
-  this->position_in_map.x = x;
-  this->position_in_map.y = y;
-  this->position_in_map.w = tile->get_width();
-  this->position_in_map.h = tile->get_height();
 }
 
 /**

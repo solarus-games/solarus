@@ -109,8 +109,8 @@ class Map {
   MusicId music_id;
 
   void add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int repeat_y);
-  void add_entrance(Layer layer, int link_x, int link_y, string name, int link_direction);
-  void add_exit(Layer layer, int x, int y, int w, int h, MapId map_id, int entrance_index);
+  void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
+  void add_exit(string exit_name, Layer layer, int x, int y, int w, int h, MapId map_id, string entrance_name);
 
  public:
 
@@ -121,6 +121,7 @@ class Map {
   SDL_Surface *get_surface(void);
   inline SDL_Rect *get_screen_position(void) { return &screen_position; }
 
+  bool is_loaded(void);
   void load(void);
   void unload(void);
 
@@ -128,6 +129,7 @@ class Map {
   void leave(void);
 
   void set_entrance(unsigned int entrance_index);
+  void set_entrance(string entrance_name);
 
   void update_sprites(void);
   void display();

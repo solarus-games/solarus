@@ -32,17 +32,17 @@ public class TileOnMap extends MapEntity {
     private int repeatY;
 
     /**
-     * Simple constructor.
-     * @param tileset the tileset
+     * Creates a new tile on the map.
+     * @param map the map
      * @param tileId id of the tile in the tileset
      * @param x x position of the tile on the map
      * @param y y position of the tile on the map
      * @throws MapException if the tile is not valid
      */
-    public TileOnMap(Tileset tileset, int tileId, int x, int y) throws MapException {
-	super(LAYER_LOW, x, y, 0, 0);
+    public TileOnMap(Map map, int tileId, int x, int y) throws MapException {
+	super(map, LAYER_LOW, x, y, 0, 0);
 	
-	this.tileset = tileset;
+	this.tileset = map.getTileset();
 	this.tileId = tileId;
 
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset

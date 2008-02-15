@@ -22,14 +22,14 @@ class MapExit: public EntityDetector {
   MapId destination_map_id;
 
   /**
-   * Initial state of the destination map.
+   * Initial point of the destination map.
    */
-  int entrance_index;
+  string entrance_name;
 
  public:
 
-  MapExit(Layer layer, int x, int y, int width, int height,
-	  MapId destination_map_id, int entrance_index);
+  MapExit(string name, Layer layer, int x, int y, int width, int height,
+	  MapId destination_map_id, string entrance_name);
   virtual ~MapExit(void) { };
 
   void entity_overlaps(MapEntity *entity_overlapping);

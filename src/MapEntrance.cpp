@@ -7,37 +7,16 @@
 /**
  * Constructor.
  */
-MapEntrance::MapEntrance(Layer layer, int link_x, int link_y, int link_direction):
-  layer(layer), link_x(link_x), link_y(link_y), link_direction(link_direction) {
+MapEntrance::MapEntrance(string name, Layer layer, int link_x, int link_y, int link_direction):
+  MapEntity(name, link_direction, layer, link_x, link_y, 16, 16) {
 
 }
 
 /**
- * Returns the layer of Link in this initial state.
- * @return the layer
+ * Displays the entrance on the map.
+ * This function does nothing because an entrance is not visible.
+ * @param map the map
  */
-Layer MapEntrance::get_layer(void) {
-  return layer;
-}
+void MapEntrance::display_on_map(Map *map) {
 
-/**
- * Returns the x coordinate of Link's position.
- */
-int MapEntrance::get_link_x(void) {
-  return link_x;
 }
-
-/**
- * Returns the y coordinate of Link's position.
- */
-int MapEntrance::get_link_y(void) {
-  return link_y;
-}
-
-/**
- * Returns Link's initial direction.
- */
-int MapEntrance::get_link_direction(void) {
-  return link_direction;
-}
-

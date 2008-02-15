@@ -27,11 +27,12 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
 
     /**
      * Creates a map entrance at the specified location.
+     * @param map the map
      * @param x x coordinate of the entrance
      * @param y y coordinate of the entrance
      */
-    public MapEntrance(int x, int y) {
-	super(LAYER_LOW, x, y, 16, 16);
+    public MapEntrance(Map map, int x, int y) {
+	super(map, LAYER_LOW, x, y, 16, 16);
 
 	setHotSpot(8, 16);
 	setDirection(1);
@@ -41,10 +42,11 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
      * Creates a map entrance from a string.
      * @param tokenizer the string tokenizer, which has already parsed the common part of the string
      * (i.e. the layer, the coordinates, the direction and the type of entity have already been handled)
+     * @param map the map
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public MapEntrance(StringTokenizer tokenizer) throws ZSDXException {
-	this(0, 0);
+    public MapEntrance(StringTokenizer tokenizer, Map map) throws ZSDXException {
+	this(null, 0, 0);
     }
 
     /**

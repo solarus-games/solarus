@@ -19,11 +19,12 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
 
     /**
      * Creates an exit at the specified location.
+     * @param map the map
      * @param x x coordinate of the exit
      * @param y y coordinate of the exit
      */
-    public MapExit(int x, int y) {
-	super(LAYER_LOW, x, y, 16, 16);
+    public MapExit(Map map, int x, int y) {
+	super(map, LAYER_LOW, x, y, 16, 16);
 
 	// TODO fields
     }
@@ -32,10 +33,11 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
      * Creates a map exit from a string.
      * @param tokenizer the string tokenizer, which has already parsed the common part of the string
      * (i.e. the layer, the coordinates and the type of entity have already been handled)
+     * @param map the map
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public MapExit(StringTokenizer tokenizer) throws ZSDXException {
-	super();
+    public MapExit(StringTokenizer tokenizer, Map map) throws ZSDXException {
+	this(null, 0, 0);
 
 	// TODO
 	/*	
@@ -74,6 +76,16 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
     public boolean hasName() {
 	return true;
     }
+
+    /**
+     * Returns whether or not the entity is resizable.
+     * A map exit is resizable (i.e. its rectangle can have any size).
+     * @return true
+     */
+    public boolean isResizable() {
+	return true;
+    }
+
     /**
      * Draws the exit on the map editor.
      * @param g graphic context

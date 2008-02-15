@@ -34,9 +34,7 @@ void Game::play(void) {
       map->unload();
     }
     
-    // load the new map
     map = current_map;
-    map->load();
  
     // start the map (background music, etc)
     map->start();
@@ -87,26 +85,6 @@ void Game::play(void) {
 	    // space: pause the music
 	  case SDLK_SPACE:
 	    pause_or_resume_music();
-	    break;
-
-	    // temporary
-	  case SDLK_F1:
-	    set_current_map(0);
-	    break;
-
-	    // temporary
-	  case SDLK_F2:
-	    set_current_map(0, 1);
-	    break;
-
-	    // temporary
-	  case SDLK_F3:
-	    set_current_map(1);
-	    break;
-
-	    // temporary
-	  case SDLK_F4:
-	    set_current_map(2);
 	    break;
 
 	  default:
@@ -175,19 +153,30 @@ void Game::play(void) {
  */
 void Game::set_current_map(MapId map_id) {
 
-  set_current_map(map_id, 0);
+  current_map = ZSDX::game_resource->get_map(map_id);
+
+  if (!current_map->is_loaded()) {
+    current_map->load();
+  }
+
+  current_map->set_entrance(0);
 }
 
 /**
  * Changes the current map.
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
- * @param entrance_index index of the entrance of the map you want to use
+ * @param entrance_name name of the entrance of the map you want to use
  */
-void Game::set_current_map(MapId map_id, unsigned int entrance_index) {
+void Game::set_current_map(MapId map_id, string entrance_name) {
 
   current_map = ZSDX::game_resource->get_map(map_id);
-  current_map->set_entrance(entrance_index);
+
+  if (!current_map->is_loaded()) {
+    current_map->load();
+  }
+
+  current_map->set_entrance(entrance_name);
 }
 
 /**

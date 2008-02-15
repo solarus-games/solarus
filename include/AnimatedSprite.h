@@ -57,110 +57,27 @@ class AnimatedSprite {
    */
   bool over;
 
-  /**
-   * Returns the frame interval of the current animation
-   * @return the delay between two frames for the current animation
-   */
-  inline Uint32 get_frame_interval(void) {
-    return animations->get_animation(current_animation)->get_frame_interval();  
-  }
-  
-  /**
-   * Returns the next frame of the current frame.
-   * @return the next frame of the current frame (or -1 if the animation is over)
-   */
-  inline int get_next_frame(void) {
-    return animations->get_animation(current_animation)->
-      get_direction(current_direction)->get_next_frame(current_frame);    
-  }
+  Uint32 get_frame_interval(void);
+  int get_next_frame(void);
 
  public:
 
-  /**
-   * Constructor.
-   * @param animations the sprite's animations
-   */
   AnimatedSprite(SpriteAnimations *animations);
-
-  /**
-   * Destructor.
-   */
   inline ~AnimatedSprite(void) { }
 
-  /**
-   * Returns the current animation of the sprite.
-   * @return the current animation of the sprite
-   */
-  inline int get_current_animation(void) { return current_animation; }
+  int get_current_animation(void);
+  void set_current_animation(int current_animation);
+  int get_current_animation_direction(void);
+  void set_current_animation_direction(int current_direction);
+  int get_current_frame(void);
+  void set_current_frame(int current_frame);
 
-  /**
-   * Sets the current animation of the sprite.
-   * @param current_animation the new current animation of the sprite
-   */
-  inline void set_current_animation(int current_animation) {
-    this->current_animation = current_animation;
-    over = false;
-    set_current_frame(0);
-  }
-
-  /**
-   * Returns the current direction of the sprite's animation.
-   * @return the current direction
-   */
-  inline int get_current_animation_direction(void) { return current_direction; }
-
-  /**
-   * Sets the current direction of the sprite's animation.
-   * @param current_direction the current direction
-   */
-  inline void set_current_animation_direction(int current_direction) {
-    this->current_direction = current_direction;
-    set_current_frame(0);
-  }
-
-  /**
-   * Returns the current frame of the sprite's animation.
-   * @return the current frame
-   */
-  inline int get_current_frame(void) { return current_frame; }
-  
-  /**
-   * Sets the current frame of the sprite's animation.
-   * @param current_frame the current frame
-   */
-  inline void set_current_frame(int current_frame) {
-    this->current_frame = current_frame;
-  }
-
-  /**
-   * Returns true if the animation is suspended.
-   * @return true if the animation is suspended, false otherwise
-   */
-  inline bool is_suspended(void) { return suspended; }
-
-  /**
-   * Suspends or resumes the animation.
-   * @param suspended true to suspend the animation, false to resume it
-   */
-  void set_suspended(bool suspended);
-
-  /**
-   * Return true if the animation is over.
-   * @return true if the animation is over, false otherwise
-   */
-  inline bool is_over(void) { return over; }
-
-  /**
-   * Checks whether the frame has to be changed.
-   * If the frame changes, next_frame_date is updated.
-   */
   void update_current_frame(void);
 
-  /**
-   * Displays the sprite on the map with its current animation, direction and frame.
-   * @param map the map
-   * @param position_in_map position of the sprite on the map
-   */
+  bool is_suspended(void);
+  void set_suspended(bool suspended);
+  bool is_over(void);
+
   void display_on_map(Map *map, SDL_Rect &position_in_map);
 };
 

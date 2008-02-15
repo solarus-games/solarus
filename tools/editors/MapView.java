@@ -443,7 +443,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    Tileset tileset = map.getTileset();
 
 	    // if it is a tile (only case for now)
-	    MapEntity entity = new TileOnMap(tileset, tileset.getSelectedTileId(),
+	    MapEntity entity = new TileOnMap(map, tileset.getSelectedTileId(),
 					     cursorLocation.x, cursorLocation.y);
 
 	    // add it to the map
@@ -451,7 +451,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    // make it selected
 	    map.getEntitySelection().select(entity);
-	    map.getTileset().unSelectTile();
+	    tileset.unSelectTile();
 	    startResizingEntity(); // let the user resize the entity until the mouse is released
 	    repaint();
 	}

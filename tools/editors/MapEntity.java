@@ -1,6 +1,9 @@
 package editors;
 
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Graphics;
 import java.io.*;
 import java.util.*;
 
@@ -63,25 +66,42 @@ public abstract class MapEntity extends Observable {
     public static final int ENTITY_ENTRANCE = 1;
     public static final int ENTITY_EXIT = 2;
 
+    // names of the entity types
+    public static final String[] entityTypeNames = {
+	"tile", "entrance", "exit"
+    };
+
+    // concrete subclasses of MapEntity
+    public static final Class[] entityClasses = {
+	TileOnMap.class,          // ENTITY_TILE
+	MapEntrance.class,        // ENTITY_ENTRANCE
+	MapExit.class             // ENTITY_EXIT
+    };
+
     /**
      * Empty constructor.
      */
     protected MapEntity() {
-	this(LAYER_LOW, 0, 0, 0, 0);
+	this(null, LAYER_LOW, 0, 0, 0, 0);
     }
-
+    
     /**
-     * Constructor.
+     * Creates an entity.
+     * @param map the map
      * @param layer layer of the entity
      * @param x x position of the entity on the map
      * @param y y position of the entity on the map
      * @param width width of the entity
      * @param height height of the entity
      */
-    protected MapEntity(int layer, int x, int y, int width, int height) {
+    protected MapEntity(Map map, int layer, int x, int y, int width, int height) {
 	this.layer = layer;
 	this.positionInMap = new Rectangle(x, y, width, height);
-	this.hotSpot = new Point(0, 0);
+	this.hotSpot = new Point();
+
+	if (map != null && hasName()) {
+	    computeDefaultName(map);
+	}
     }
 
     /**
@@ -108,11 +128,11 @@ public abstract class MapEntity extends Observable {
 	    break;
 	    
 	case ENTITY_ENTRANCE:
-	    entity = new MapEntrance(tokenizer);
+	    entity = new MapEntrance(tokenizer, map);
 	    break;
 
 	case ENTITY_EXIT:
-	    entity = new MapExit(tokenizer);
+	    entity = new MapExit(tokenizer, map);
 	    break;
 
 	default:
@@ -316,6 +336,19 @@ public abstract class MapEntity extends Observable {
 	this.name = name;
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Sets a default name to the entity.
+     * @param map the map
+     */
+    private void computeDefaultName(Map map) {
+	
+	// count the entities of this type on the map
+	int entityType = getType();
+	List<MapEntity> entities = map.getEntitiesOfType(entityType);
+	
+	setName(entityTypeNames[entityType] + ' ' + entities.size());
     }
 
     /**

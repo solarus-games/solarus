@@ -45,7 +45,7 @@ class Game {
   void play(void);
 
   void set_current_map(MapId map_id);
-  void set_current_map(MapId map_id, unsigned int entrance_index);
+  void set_current_map(MapId map_id, string entrance_name);
 
   /**
    * Returns the current map.

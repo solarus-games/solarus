@@ -516,7 +516,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 					   cursorLocation.x, cursorLocation.y);
 
 	    // select the entities in the rectangle, except the hidden ones
-	    Tileset tileset = map.getTileset();
 	    for (MapEntity entity: entitiesInRectangle) {
 		if (renderingOptions.isEntityShown(entity)) {
 		    entitySelection.select(entity);
@@ -575,7 +574,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    
 	    MapEntity selectedEntity = map.getEntitySelection().getEntity(0);
 	    
-	    Rectangle selectedEntityPosition = selectedEntity.getPositionInMap();
 	    int width = selectedEntity.getUnitWidth();
 	    int height = selectedEntity.getUnitHeight();
 	    
@@ -1000,8 +998,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    }
 
 	    boolean leftClick = (mouseEvent.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0;
-
-	    MapEntitySelection entitySelection = map.getEntitySelection();
 
 	    int x = (int) (mouseEvent.getX() / zoom);
 	    int y = (int) (mouseEvent.getY() / zoom);

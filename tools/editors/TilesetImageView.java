@@ -356,8 +356,6 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 		int y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this)) / 2;
 		
 		// search the tile clicked
-		boolean found = false;
-		
 		int clickedTileId = tileset.getIdOfTileAt(x, y);
 
 		// a tile was just clicked
@@ -429,8 +427,6 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 	    // only consider left clicks
 	    if (isImageLoaded() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
-
-		Image scaledImage = tileset.getDoubleImage();
 
 		// keep the new selected tile only if it really exists
 		Rectangle newTileArea = tileset.getNewTileArea();

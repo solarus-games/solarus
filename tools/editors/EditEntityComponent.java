@@ -7,7 +7,7 @@ import javax.swing.*;
 /**
  * A component to edit a map entity.
  */
-public class EditEntityComponent extends JLabel {
+public class EditEntityComponent extends JPanel {
 
     /**
      * The map.
@@ -28,19 +28,23 @@ public class EditEntityComponent extends JLabel {
      *  - entity specific (make a subcomponent for each concrete subclass of MapEntity)
      */
 
+    private JTextField fieldName;
+    private JComboBox fieldDirection;
+    private JComboBox fieldLayer;
+
     private static final Class[] subComponentClasses = {
 	// make a subpackage
 	null,                               // ENTITY_TILE
 	null,                               // ENTITY_ENTRANCE
 	null /* EditExitComponent.class */  // ENTITY_EXIT: destination map and entrance
-    }
+    };
 
     private static final Class[] specificActionClasses = {
 	// make a subpackage
 	null,                            // ENTITY_TILE
 	null,                            // ENTITY_ENTRANCE
 	null /* ActionEditExit.class */  // ENTITY_EXIT: destination map and entrance
-    }
+    };
 
     /**
      * Constructor.
@@ -48,7 +52,7 @@ public class EditEntityComponent extends JLabel {
      * @param entity the entity to edit, or null to create a new entity
      */
     public EditEntityComponent(Map map, MapEntity entity) {
-	super("The entity");
+	super();
 	this.map = map;
 	this.entity = entity;
 

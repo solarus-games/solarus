@@ -17,7 +17,7 @@ public class EditEntityDialog extends JDialog {
     /**
      * Constructor.
      */
-    public EditEntityDialog(MapEntity entity) {
+    public EditEntityDialog(Map map, MapEntity entity) {
 
 	super((Frame) null, "Edit an entity", true);
 
@@ -27,7 +27,7 @@ public class EditEntityDialog extends JDialog {
 	contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 	setResizable(false);
 	
-	final EditEntityComponent entityComponent = new EditEntityComponent(entity);
+	final EditEntityComponent entityComponent = new EditEntityComponent(map, entity);
 
 	JPanel entityPanel = new JPanel();
 	entityPanel.add(entityComponent);

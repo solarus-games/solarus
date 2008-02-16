@@ -315,7 +315,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	    MapEntity entity = map.getEntitySelection().getEntity(0);
 
-	    EditEntityDialog dialog = new EditEntityDialog(entity);
+	    EditEntityDialog dialog = new EditEntityDialog(map, entity);
 	    dialog.setLocationRelativeTo(null);
 	    dialog.pack();
 	    dialog.setVisible(true);

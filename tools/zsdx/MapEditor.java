@@ -1,5 +1,7 @@
 package zsdx;
 
+import zsdx.gui.MapEditorWindow;
+
 /**
  * Main class of the map editor.
  */

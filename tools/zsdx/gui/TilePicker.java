@@ -1,6 +1,9 @@
-package zsdx;
+package zsdx.gui;
 
 import javax.swing.*;
+
+import zsdx.Map;
+
 import java.util.*;
 
 /**

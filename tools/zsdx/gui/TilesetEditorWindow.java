@@ -1,8 +1,12 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import zsdx.ResourceDatabase;
+import zsdx.Tileset;
+import zsdx.ZSDXException;
 
 /**
  * Main window of the tileset editor.

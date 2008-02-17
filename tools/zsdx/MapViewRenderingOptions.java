@@ -1,5 +1,7 @@
 package zsdx;
 
+import zsdx.gui.MapView;
+
 /**
  * Options indicating how to display the map in the map view of the map editor.
  * This options affect only the map editor, not the game.

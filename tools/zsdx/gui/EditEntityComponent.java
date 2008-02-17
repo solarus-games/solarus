@@ -1,7 +1,10 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.event.*;
 import javax.swing.*;
+
+import zsdx.Map;
+import zsdx.MapEntity;
 
 /**
  * A component to edit a map entity.

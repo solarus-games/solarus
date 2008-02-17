@@ -1,4 +1,4 @@
-package zsdx;
+package zsdx.gui;
 
 import javax.swing.*;
 

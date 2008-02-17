@@ -1,4 +1,7 @@
-package zsdx;
+package zsdx.gui;
+
+import zsdx.Music;
+import zsdx.ResourceDatabase;
 
 /**
  * A combo box component to select a music from the resource database.

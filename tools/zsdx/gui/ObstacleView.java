@@ -1,25 +1,24 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.event.*;
 import javax.swing.*;
+
+import zsdx.ObstacleIcons;
+import zsdx.Tile;
+import zsdx.TilesetException;
+
 import java.util.*;
 
 /**
- * Graphical component to select the default layer of a tile in the tileset editor:
- * - below
- * - intermediate
- * - above
+ * Graphical component to select the obstacle properties of a tile:
+ * - no obstacle
+ * - obstacle
+ * - obstacle top right
+ * - obstacle top left
+ * - obstacle bottom left
+ * - obstacle bottom right
  */
-public class DefaultLayerView extends JComboBox implements Observer, ActionListener {
-
-    /**
-     * Text displayed in the list.
-     */
-    private static final String[] items = {
-	"Below",
-	"Intermediate",
-	"Above"
-    };
+public class ObstacleView extends JComboBox implements Observer, ActionListener {
 
     /**
      * The tile observed.
@@ -29,8 +28,8 @@ public class DefaultLayerView extends JComboBox implements Observer, ActionListe
     /**
      * Constructor.
      */
-    public DefaultLayerView() {
-	super(items);
+    public ObstacleView() {
+	super(ObstacleIcons.getIcons());
 	addActionListener(this);
     }
 
@@ -59,18 +58,27 @@ public class DefaultLayerView extends JComboBox implements Observer, ActionListe
      * The selection is then updated.
      */
     public void update(Observable o, Object params) {
-	setSelectedIndex(tile.getDefaultLayer());
+	setSelectedIndex(tile.getObstacle());
     }
     
     /**
      * This method is called when the selection the combo box is changed.
      * The tile is then updated.
      */
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent ev) {
 	int listIndex = getSelectedIndex();
-	if (listIndex != tile.getDefaultLayer()) {
-	    // the layer has changed
-	    tile.setDefaultLayer(listIndex);
+	if (listIndex != tile.getObstacle()) {
+	    // the type of obstacle has changed
+	    try {
+		tile.setObstacle(listIndex);
+	    }
+	    catch (TilesetException e) {
+		JOptionPane.showMessageDialog(null,
+					      "Unable to set this type of obstacle: " + e.getMessage(),
+					      "Error",
+					      JOptionPane.ERROR_MESSAGE);
+		update(null, null);
+	    }
 	}
     }
 }

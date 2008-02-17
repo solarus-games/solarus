@@ -1,8 +1,14 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import zsdx.Map;
+import zsdx.MapEditorHistory;
+import zsdx.ResourceDatabase;
+import zsdx.ZSDXException;
+
 import java.util.*;
 
 /**

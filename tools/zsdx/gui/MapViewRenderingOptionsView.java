@@ -1,8 +1,12 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import zsdx.Map;
+import zsdx.MapEntity;
+import zsdx.MapViewRenderingOptions;
 
 /**
  * A component to set the rendering options of the map view,

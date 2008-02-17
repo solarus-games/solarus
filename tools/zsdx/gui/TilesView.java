@@ -1,9 +1,13 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+
+import zsdx.Tile;
+import zsdx.Tileset;
+
 import java.util.*;
 
 /**

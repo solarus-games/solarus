@@ -1,6 +1,12 @@
-package zsdx;
+package zsdx.gui;
 
 import javax.swing.*;
+
+import zsdx.Configuration;
+import zsdx.Resource;
+import zsdx.ResourceDatabase;
+import zsdx.ZSDXException;
+
 import java.util.*;
 
 /**

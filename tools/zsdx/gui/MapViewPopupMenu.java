@@ -1,7 +1,12 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.event.*;
 import javax.swing.*;
+
+import zsdx.Map;
+import zsdx.MapEntity;
+import zsdx.MapEntitySelection;
+import zsdx.ZSDXException;
 
 /**
  * The popup menu shown when the user right clicks on the selected entities in the map view.

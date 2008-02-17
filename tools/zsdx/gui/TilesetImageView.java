@@ -1,6 +1,14 @@
-package zsdx;
+package zsdx.gui;
 
 import javax.swing.*;
+
+import zsdx.Configuration;
+import zsdx.MapEntity;
+import zsdx.ObstacleIcons;
+import zsdx.Tile;
+import zsdx.Tileset;
+import zsdx.TilesetException;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;

@@ -1,8 +1,10 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import zsdx.Configuration;
 
 /**
  * A dialog box to set the configuration.

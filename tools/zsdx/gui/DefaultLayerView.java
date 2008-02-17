@@ -1,19 +1,28 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.event.*;
 import javax.swing.*;
+
+import zsdx.Tile;
+
 import java.util.*;
 
 /**
- * Graphical component to select the obstacle properties of a tile:
- * - no obstacle
- * - obstacle
- * - obstacle top right
- * - obstacle top left
- * - obstacle bottom left
- * - obstacle bottom right
+ * Graphical component to select the default layer of a tile in the tileset editor:
+ * - below
+ * - intermediate
+ * - above
  */
-public class ObstacleView extends JComboBox implements Observer, ActionListener {
+public class DefaultLayerView extends JComboBox implements Observer, ActionListener {
+
+    /**
+     * Text displayed in the list.
+     */
+    private static final String[] items = {
+	"Below",
+	"Intermediate",
+	"Above"
+    };
 
     /**
      * The tile observed.
@@ -23,8 +32,8 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
     /**
      * Constructor.
      */
-    public ObstacleView() {
-	super(ObstacleIcons.getIcons());
+    public DefaultLayerView() {
+	super(items);
 	addActionListener(this);
     }
 
@@ -53,27 +62,18 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
      * The selection is then updated.
      */
     public void update(Observable o, Object params) {
-	setSelectedIndex(tile.getObstacle());
+	setSelectedIndex(tile.getDefaultLayer());
     }
     
     /**
      * This method is called when the selection the combo box is changed.
      * The tile is then updated.
      */
-    public void actionPerformed(ActionEvent ev) {
+    public void actionPerformed(ActionEvent e) {
 	int listIndex = getSelectedIndex();
-	if (listIndex != tile.getObstacle()) {
-	    // the type of obstacle has changed
-	    try {
-		tile.setObstacle(listIndex);
-	    }
-	    catch (TilesetException e) {
-		JOptionPane.showMessageDialog(null,
-					      "Unable to set this type of obstacle: " + e.getMessage(),
-					      "Error",
-					      JOptionPane.ERROR_MESSAGE);
-		update(null, null);
-	    }
+	if (listIndex != tile.getDefaultLayer()) {
+	    // the layer has changed
+	    tile.setDefaultLayer(listIndex);
 	}
     }
 }

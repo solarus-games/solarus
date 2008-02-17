@@ -1,4 +1,4 @@
-package zsdx;
+package zsdx.gui;
 
 import java.awt.Point;
 import java.awt.Dimension;
@@ -9,6 +9,16 @@ import java.awt.Image;
 import java.awt.event.*;
 import javax.swing.*;
 
+import zsdx.Configuration;
+import zsdx.Map;
+import zsdx.MapEntities;
+import zsdx.MapEntity;
+import zsdx.MapEntitySelection;
+import zsdx.MapViewRenderingOptions;
+import zsdx.Tile;
+import zsdx.TileOnMap;
+import zsdx.Tileset;
+import zsdx.ZSDXException;
 import zsdx.map_editor_actions.*;
 
 import java.util.*;

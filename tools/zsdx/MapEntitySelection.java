@@ -7,7 +7,7 @@ import zsdx.map_editor_actions.*;
 /**
  * Represents the entities selected in the map editor.
  */
-public class MapEntitySelection extends Observable implements Iterable {
+public class MapEntitySelection extends Observable implements Iterable<MapEntity> {
 
     /**
      * The selected entities.
@@ -49,7 +49,7 @@ public class MapEntitySelection extends Observable implements Iterable {
      * Returns an iterator over the selected entities.
      * @return an iterator over the selected entities.
      */
-    public Iterator iterator() {
+    public Iterator<MapEntity> iterator() {
 	return entities.iterator();
     }
 

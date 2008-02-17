@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Graphics;
-import java.io.*;
 import java.util.*;
 
 /**
@@ -43,7 +42,7 @@ public abstract class MapEntity extends Observable {
     /**
      * Color to display instead of the transparent pixels of the image.
      */
-    protected static final Color bgColor = new Color(128, 128, 255);
+    protected static final Color bgColor = new Color(255, 0, 255);
 
     // Constants to identify the layer
 
@@ -72,7 +71,7 @@ public abstract class MapEntity extends Observable {
     };
 
     // concrete subclasses of MapEntity
-    public static final Class[] entityClasses = {
+    public static final Class<?>[] entityClasses = {
 	TileOnMap.class,          // ENTITY_TILE
 	MapEntrance.class,        // ENTITY_ENTRANCE
 	MapExit.class             // ENTITY_EXIT

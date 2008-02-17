@@ -86,7 +86,7 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public List<MapEntity> getEntitiesOfType(int entityType) {
 	
-	Class cl = MapEntity.entityClasses[entityType];
+	Class<?> cl = MapEntity.entityClasses[entityType];
 	List<MapEntity> list = new LinkedList<MapEntity>();
 
 	// interactive entity
@@ -193,13 +193,13 @@ public class MapEntities implements Iterable<MapEntity> {
     public void remove(MapEntity entity) {
 
 	if (entity instanceof TileOnMap) {
-	    tiles.remove((TileOnMap) entity);
+	    tiles.remove(entity);
 	}
 	else if (entity instanceof InteractiveEntity) {
-	    interactiveEntities.remove((InteractiveEntity) entity);
+	    interactiveEntities.remove(entity);
 	}
 	else if (entity instanceof MovingEntity) {
-	    movingEntities.remove((MovingEntity) entity);
+	    movingEntities.remove(entity);
 	}
 	else {
 	    throw new IllegalArgumentException("Unknown entity type: " + entity);

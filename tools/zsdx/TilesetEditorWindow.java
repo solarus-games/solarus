@@ -3,7 +3,6 @@ package zsdx;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.io.*;
 
 /**
  * Main window of the tileset editor.
@@ -24,11 +23,6 @@ public class TilesetEditorWindow extends JFrame {
      * The tileset image.
      */
     private TilesetImageView tilesetImageView;
-
-    /**
-     * Current file of the tileset (null if this is a new tileset).
-     */
-    private File tilesetFile;
 
     // menu item memorized to enable it later
     private JMenuItem menuItemSave;

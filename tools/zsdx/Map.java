@@ -109,7 +109,7 @@ public class Map extends Observable {
 	}
 
 	this.entitySelection = new MapEntitySelection(this);
-	this.history = new MapEditorHistory(this);
+	this.history = new MapEditorHistory();
     }
 
     /**

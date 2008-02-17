@@ -10,11 +10,6 @@ import javax.swing.*;
 public class ResourceChooserDialog extends JDialog {
 
     /**
-     * The kind of resource displayed in the combo box (maps, musics...).
-     */
-    private int resourceType;
-    
-    /**
      * Id of the element chosen (or an empty string if the user cancelled).
      */
     private String id = "";
@@ -32,8 +27,6 @@ public class ResourceChooserDialog extends JDialog {
     public ResourceChooserDialog(int resourceType) {
 
 	super((Frame) null, "Select a " + resourceNames[resourceType], true);
-
-	this.resourceType = resourceType;
 
 	Container contentPane = getContentPane();
 	contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));

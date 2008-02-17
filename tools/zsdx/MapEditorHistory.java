@@ -9,11 +9,6 @@ import java.util.*;
 public class MapEditorHistory extends Observable {
 
     /**
-     * The map associated to this history.
-     */
-    private Map map;
-
-    /**
      * The stack of actions.
      */
     private Stack<MapEditorAction> actions;
@@ -37,9 +32,8 @@ public class MapEditorHistory extends Observable {
      * Constructor.
      * @param map the map
      */
-    public MapEditorHistory(Map map) {
+    public MapEditorHistory() {
 	
-	this.map = map;
 	actions = new Stack<MapEditorAction>();
 	nextActionIndex = 0;
     }

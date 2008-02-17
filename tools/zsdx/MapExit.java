@@ -15,7 +15,7 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
     /**
      * Icon of an exit point.
      */
-    private static ImageIcon icon = new ImageIcon("editor/images/map_exit.png");;
+    private static ImageIcon icon = new ImageIcon("zsdx/images/map_exit.png");;
 
     /**
      * Creates an exit at the specified location.

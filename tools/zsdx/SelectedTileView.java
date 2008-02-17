@@ -3,8 +3,6 @@ package zsdx;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * This component shows information about the current tile and lets the user edit it.

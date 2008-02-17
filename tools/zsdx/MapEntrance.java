@@ -17,7 +17,7 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
 
     // load the icons
     static {
-	String path = "editors/images/";
+	String path = "zsdx/images/";
 
 	icons = new ImageIcon[4];
 	for (int i = 0; i < 4; i++) {
@@ -75,12 +75,15 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
 	int dx1 = positionInMap.x * scale;
 	int dy1 = positionInMap.y * scale;
 
-	// TODO: make a 32*32 icon
-
 	int dx2 = dx1 + positionInMap.width * scale;
 	int dy2 = dy1 + positionInMap.height * scale;
 
-	g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 16, 16, this);
+	if (showTransparency) {
+	g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, this);
+	}
+	else {
+		g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, bgColor, this);		
+	}
     }
 
     /**

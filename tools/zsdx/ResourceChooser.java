@@ -1,10 +1,7 @@
 package zsdx;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-import java.io.*;
 
 /**
  * A combo box component to select an element from the resource database.

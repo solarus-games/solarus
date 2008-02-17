@@ -28,7 +28,7 @@ public class ResourceDatabase extends Observable {
 
     static {
 	try {
-	    instance.load();
+	    load();
 	}
 	catch (ZSDXException ex) {
 	    System.err.println("Cannot read the game resource database: " + ex.getMessage());

@@ -3,9 +3,7 @@ package zsdx;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import java.util.*;
-import java.io.*;
 
 /**
  * This component shows the tileset image and allow the user to select the tiles.

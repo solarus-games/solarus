@@ -3,7 +3,6 @@ package zsdx;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.io.*;
 import java.util.*;
 
 /**
@@ -20,11 +19,6 @@ public class MapEditorWindow extends JFrame implements Observer {
     private MapPropertiesView mapPropertiesView;
     private TilePicker tilePicker;
     private MapView mapView;
-
-    /**
-     * Current file of the map (null if this is a new map).
-     */
-    private File mapFile;
 
     // menu items memorized to enable them later
     private JMenuItem menuItemSave;

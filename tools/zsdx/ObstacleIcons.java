@@ -26,7 +26,7 @@ public class ObstacleIcons {
 
     // load the icons
     static {
-	String path = "editors/images/";
+	String path = "zsdx/images/";
 
 	obstacleIcons = new ImageIcon[6];
 	obstacleIcons[MapEntity.OBSTACLE_NONE] = new ImageIcon(path + "obstacle_none.png");

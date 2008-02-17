@@ -3,11 +3,8 @@ package zsdx;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.map_editor_actions.*;
-
 import java.util.*;
-import java.io.*;
+import zsdx.map_editor_actions.*;
 
 /**
  * This component shows the properties of a map and allows to edit them.

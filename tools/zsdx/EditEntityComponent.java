@@ -31,14 +31,14 @@ public class EditEntityComponent extends JPanel {
     private JComboBox fieldDirection;
     private JComboBox fieldLayer;
 
-    private static final Class[] subComponentClasses = {
+    private static final Class<?>[] subComponentClasses = {
 	// make a subpackage
 	null,                               // ENTITY_TILE
 	null,                               // ENTITY_ENTRANCE
 	null /* EditExitComponent.class */  // ENTITY_EXIT: destination map and entrance
     };
 
-    private static final Class[] specificActionClasses = {
+    private static final Class<?>[] specificActionClasses = {
 	// make a subpackage
 	null,                            // ENTITY_TILE
 	null,                            // ENTITY_ENTRANCE

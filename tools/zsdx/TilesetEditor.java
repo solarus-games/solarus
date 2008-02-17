@@ -1,7 +1,5 @@
 package zsdx;
 
-import javax.swing.*;
-
 /**
  * Main class of the tileset editor.
  */

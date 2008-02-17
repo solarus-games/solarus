@@ -204,11 +204,36 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     }
 
     /**
+     * Returns the number of possible directions of the selected entities, if all selected
+     * entities have the same number of directions. Otherwise, 0 is returned.
+     * @return the common number of possible direction, or 0 if all selected entities
+     * have not the same number of directions
+     */
+    public int getNbDirections() {
+
+	MapEntity e = entities.get(0);
+	
+	if (!e.hasDirection()) {
+	    return 0;
+	}
+
+	int nbDirections = e.getNbDirections();
+	
+	for (MapEntity entity: entities) {
+
+	    if (entity.getNbDirections() != nbDirections) {
+		return 0;
+	    }
+	}
+
+	return nbDirections;
+    }
+
+    /**
      * Returns the direction of the selected entities, if all selected entities have
-     * the same direction. Otherwise, returns -1. If at least an entity has no direction,
+     * the same direction. Otherwise, -1 is returned. If at least an entity has no direction,
      * -1 is returned as well.
      * @return the common direction, or -1 if all selected entities have not the same direction
-     * or if an entity has no direction
      */
     public int getDirection() {
 
@@ -254,5 +279,4 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
 
 	return true;
     }
-
 }

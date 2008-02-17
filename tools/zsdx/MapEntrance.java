@@ -95,13 +95,13 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
     }
 
     /**
-     * Returns whether the entity has a direction.
-     * @return true
+     * Returns the number of possible directions of the entity.
+     * @return 4
      */
-    public boolean hasDirection() {
-	return true;
+    public int getNbDirections() {
+	return 4;
     }
-
+    
     /**
      * Returns whether the entity has an identifier.
      * @return true

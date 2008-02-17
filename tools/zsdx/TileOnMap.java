@@ -96,13 +96,13 @@ public class TileOnMap extends MapEntity {
     }
 
     /**
-     * Returns whether the entity has a direction.
-     * @return false
+     * Returns the number of directions of the entity.
+     * @return 0 (a tile has no direction)
      */
-    public boolean hasDirection() {
-	return false;
+    public int getNbDirections() {
+	return 0;
     }
-
+    
     /**
      * Changes the tileset used to represent this tile on the map.
      * The corresponding tile from the new tileset (i.e. the tile

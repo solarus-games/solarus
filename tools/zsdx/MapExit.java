@@ -62,13 +62,13 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
     }
 
     /**
-     * Returns whether the entity has a direction.
-     * @return false
+     * Returns the number of directions of the entity.
+     * @return 0 (an exit has no direction)
      */
-    public boolean hasDirection() {
-	return false;
+    public int getNbDirections() {
+	return 0;
     }
-
+    
     /**
      * Returns whether the entity has an identifier.
      * @return true

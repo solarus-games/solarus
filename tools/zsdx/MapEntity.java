@@ -1,10 +1,8 @@
 package zsdx;
 
-import java.awt.Rectangle;
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Represents an entity placed on the map with the map editor,
@@ -272,12 +270,22 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns whether the entity has a direction.
+     * Returns whether the entity has a direction property.
      * The subclasses which represent entities with a direction
      * should return true.
      * @return true if the entity has a direction, false otherwise
      */
-    public abstract boolean hasDirection();
+    public boolean hasDirection() {
+	return getNbDirections() > 1;
+    }
+
+    /**
+     * Returns the number of possible directions of the entity.
+     * The entity should have a direction (i.e. hasDirection() returns true).
+     * @return the number of possible directions of the entity (or 0
+     * if the entity has not a direction property)
+     */
+    public abstract int getNbDirections();
 
     /**
      * Returns the direction of the entity.
@@ -294,11 +302,17 @@ public abstract class MapEntity extends Observable {
      * By default, an entity has no direction and this method throws an exception.
      * @param direction the entity's direction
      * @throws UnsupportedOperationException if the entity has no direction
+     * @throws IllegalArgumentException if the direction is invalid
      */
-    public void setDirection(int direction) throws UnsupportedOperationException {
+    public void setDirection(int direction) throws UnsupportedOperationException, IllegalArgumentException {
 
 	if (!hasDirection()) {
 	    throw new UnsupportedOperationException("This entity has no direction");
+	}
+
+	if (direction < 0 || direction >= getNbDirections()) {
+	    throw new IllegalArgumentException("The direction '" + direction
+		    	+ "' is incorrect: the number of possible directions is " + getNbDirections());
 	}
 
 	this.direction = direction;
@@ -431,6 +445,22 @@ public abstract class MapEntity extends Observable {
      */
     public int getY() {
 	return positionInMap.y + hotSpot.y;
+    }
+    
+    /**
+     * Returns the width of the entity
+     * @return the entity's width
+     */
+    public int getWidth() {
+	return positionInMap.width;
+    }
+
+    /**
+     * Returns the height of the entity
+     * @return the entity's height
+     */
+    public int getHeight() {
+	return positionInMap.height;
     }
 
     /**

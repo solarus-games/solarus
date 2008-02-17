@@ -34,7 +34,6 @@ public class EditEntityDialog extends JDialog {
 
 	JPanel entityPanel = new JPanel();
 	entityPanel.add(entityComponent);
-	entityPanel.setBorder(BorderFactory.createTitledBorder("Entity properties"));
 
 	JButton buttonOK = new JButton("OK");
 	buttonOK.addActionListener(new ActionListener() {

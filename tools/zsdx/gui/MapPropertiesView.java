@@ -198,42 +198,19 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the map size.
      */
-    private class MapSizeView extends JPanel {
-
-	// subcomponents
-	private JTextField textFieldWidth;
-	private JTextField textFieldHeight;
-	private JButton buttonSet;
+    private class MapSizeView extends CoordinatesField {
 
 	/**
 	 * Constructor.
 	 */
 	public MapSizeView() {
-	    super();
-	    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
-	    textFieldWidth = new JTextField(3);
-	    textFieldHeight = new JTextField(3);
-
-	    Dimension size = new Dimension(40, 25);
-	    textFieldWidth.setMinimumSize(size);
-	    textFieldHeight.setMinimumSize(size);
-// 	    textFieldWidth.setMaximumSize(size);
-// 	    textFieldHeight.setMaximumSize(size);
-
-	    buttonSet = new JButton("Set");
-
-	    textFieldWidth.setEnabled(false);
-	    textFieldHeight.setEnabled(false);
-	    buttonSet.setEnabled(false);
-
+	    super(true);
+	    
 	    ActionListener listener = new ActionListener() {
 		    public void actionPerformed(ActionEvent ev) {
 
 			try {
-			    int width = Integer.parseInt(textFieldWidth.getText());
-			    int height = Integer.parseInt(textFieldHeight.getText());
-			    Dimension size = new Dimension(width, height);
+			    Dimension size = getCoordinates();
 			    if (!size.equals(map.getSize())) {
 				map.getHistory().doAction(new ActionChangeMapSize(map, size));
 			    }
@@ -248,17 +225,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 		    }
 		};
 
-	    buttonSet.addActionListener(listener);
-	    textFieldWidth.addActionListener(listener);
-	    textFieldHeight.addActionListener(listener);
-
-	    add(textFieldWidth);
-	    add(Box.createRigidArea(new Dimension(5, 0)));
-	    add(new JLabel("x"));
-	    add(Box.createRigidArea(new Dimension(5, 0)));
-	    add(textFieldHeight);
-	    add(Box.createRigidArea(new Dimension(5, 0)));
-	    add(buttonSet);
+	    addActionListener(listener);
 	}
 
 	/**
@@ -268,12 +235,8 @@ public class MapPropertiesView extends JPanel implements Observer {
 	public void update(Observable o) {
 
 	    if (o instanceof Map) {
-		textFieldWidth.setEnabled(true);
-		textFieldHeight.setEnabled(true);
-		buttonSet.setEnabled(true);
-		
-		textFieldWidth.setText(Integer.toString(map.getSize().width));
-		textFieldHeight.setText(Integer.toString(map.getSize().height));
+		setEnabled(true);		
+		setCoordinates(map.getSize());
 	    }
 	}
     }

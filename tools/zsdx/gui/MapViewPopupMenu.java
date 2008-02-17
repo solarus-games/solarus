@@ -41,12 +41,18 @@ public class MapViewPopupMenu extends JPopupMenu {
     /**
      * Submenu to select the direction of the selected entities.
      */
-    private JMenu menuDirection;
+    private JMenu menuDirection4;
+    private JMenu menuDirection8;
 
     /**
-     * Items for the directions in the submenu.
+     * Items for the 4 directions in the submenu.
      */
-    private JRadioButtonMenuItem[] itemsDirections;
+    private JRadioButtonMenuItem[] itemsDirections4;
+
+    /**
+     * Items for the 8 directions in the submenu.
+     */
+    private JRadioButtonMenuItem[] itemsDirections8;
 
     /**
      * Name of the layers, for the items in the popup menu.
@@ -54,9 +60,15 @@ public class MapViewPopupMenu extends JPopupMenu {
     private static final String[] layerNames = {"Low layer", "Intermediate layer", "High layer"};
 
     /**
-     * Name of the directions, for the items in the sub menu.
+     * Name of the 4 directions, for the items in the sub menu.
      */
-    private static final String[] directionNames = {"Right", "Up", "Left", "Down"};
+    private static final String[] directionNames4 = {"Right", "Up", "Left", "Down"};
+
+    /**
+     * Name of the 8 directions, for the items in the sub menu.
+     */
+    private static final String[] directionNames8 = {"Right", "Right-Up", "Up", "Left-Up",
+		"Left", "Left-Down", "Down", "Right-Down"};
 
     /**
      * Constructor
@@ -72,6 +84,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	itemEdit = new JMenuItem("Edit");
 	itemEdit.addActionListener(new ActionListenerEditEntity());
+	itemEdit.setEnabled(true);
 	add(itemEdit);
 
 	itemResize = new JMenuItem("Resize");
@@ -99,25 +112,46 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	addSeparator();
 
-	menuDirection = new JMenu("Direction");
+	// build the "Direction" menus
 	
-	itemsDirections = new JRadioButtonMenuItem[5];
+	// 4 directions
+	menuDirection4 = new JMenu("Direction");
+	
+	itemsDirections4 = new JRadioButtonMenuItem[5];
 	ButtonGroup itemsDirectionsGroup = new ButtonGroup();
-	
-	for (int i = 0; i < 4; i++) {
-	    itemsDirections[i] = new JRadioButtonMenuItem(directionNames[i]);
-	    itemsDirections[i].addActionListener(new ActionListenerChangeDirection(i));
-	    menuDirection.add(itemsDirections[i]);
-	    itemsDirectionsGroup.add(itemsDirections[i]);
-	}
-	itemsDirections[4] = new JRadioButtonMenuItem();
-	itemsDirections[4].addActionListener(new ActionListenerChangeDirection(4));
-	itemsDirectionsGroup.add(itemsDirections[MapEntity.LAYER_NB]);
 
-	add(menuDirection);
+	for (int i = 0; i < 4; i++) {
+	    itemsDirections4[i] = new JRadioButtonMenuItem(directionNames4[i]);
+	    itemsDirections4[i].addActionListener(new ActionListenerChangeDirection(i));
+	    menuDirection4.add(itemsDirections4[i]);
+	    itemsDirectionsGroup.add(itemsDirections4[i]);
+	}
+	itemsDirections4[4] = new JRadioButtonMenuItem();
+	itemsDirections4[4].addActionListener(new ActionListenerChangeDirection(4));
+	itemsDirectionsGroup.add(itemsDirections4[MapEntity.LAYER_NB]);
+	
+	add(menuDirection4);
+
+	// 8 directions
+	menuDirection8 = new JMenu("Direction");
+	
+	itemsDirections8 = new JRadioButtonMenuItem[9];
+	itemsDirectionsGroup = new ButtonGroup();
+
+	for (int i = 0; i < 8; i++) {
+	    itemsDirections8[i] = new JRadioButtonMenuItem(directionNames8[i]);
+	    itemsDirections8[i].addActionListener(new ActionListenerChangeDirection(i));
+	    menuDirection8.add(itemsDirections8[i]);
+	    itemsDirectionsGroup.add(itemsDirections8[i]);
+	}
+	itemsDirections8[4] = new JRadioButtonMenuItem();
+	itemsDirections8[4].addActionListener(new ActionListenerChangeDirection(8));
+	itemsDirectionsGroup.add(itemsDirections8[MapEntity.LAYER_NB]);
+
+	add(menuDirection8);
 
 	addSeparator();
-
+	
 	item = new JMenuItem("Bring to front");
 	item.addActionListener(new ActionListenerBringToFront());
 	add(item);
@@ -141,7 +175,6 @@ public class MapViewPopupMenu extends JPopupMenu {
      * Sets the observed map.
      */
     public void setMap(Map map) {
-
 	this.map = map;
     }
 
@@ -153,11 +186,7 @@ public class MapViewPopupMenu extends JPopupMenu {
     public void show(int x, int y) {
 
 	MapEntitySelection selection = map.getEntitySelection();
-	int nbSelected = selection.getNbEntitiesSelected();
 	
-	// enable or not the item "Edit"
-	itemResize.setEnabled(nbSelected == 1 && selection.hasName());
-
 	// enable or not the item "Resize"
 	itemResize.setEnabled(selection.isResizable());
 
@@ -174,22 +203,44 @@ public class MapViewPopupMenu extends JPopupMenu {
 	}
 
 	// enable or not the item "Direction"
-	boolean hasDirection = selection.hasDirection();
-
-	menuDirection.setEnabled(hasDirection);
-	if (hasDirection) {
-
+	int nbDirections = selection.getNbDirections();
+	if (nbDirections == 0) {
+	    menuDirection4.setVisible(true);
+	    menuDirection4.setEnabled(false);
+	    menuDirection8.setVisible(false);
+	}
+	else {
 	    int direction = selection.getDirection();
-	    
-	    // select the appropriate direction item
-	    
-	    if (direction != -1) {
-		// if all the selected entities have the same direction, we check its item
-		itemsDirections[direction].setSelected(true);
+
+	    if (nbDirections == 4) {
+		menuDirection4.setVisible(true);
+		menuDirection4.setEnabled(true);
+		menuDirection8.setVisible(false);
+		
+		// select the appropriate direction item
+		if (direction != -1) {
+		    // if all the selected entities have the same direction, we check its item
+		    itemsDirections4[direction].setSelected(true);
+		}
+		else {
+		    // otherwise we select no item
+		    itemsDirections4[4].setSelected(true);
+		}
 	    }
-	    else {
-		// otherwise we select no item
-		itemsDirections[4].setSelected(true);
+	    else { // 8 directions
+		menuDirection8.setVisible(true);
+		menuDirection8.setEnabled(true);
+		menuDirection4.setVisible(false);
+		
+		// select the appropriate direction item
+		if (direction != -1) {
+		    // if all the selected entities have the same direction, we check its item
+		    itemsDirections8[direction].setSelected(true);
+		}
+		else {
+		    // otherwise we select no item
+		    itemsDirections8[4].setSelected(true);
+		}
 	    }
 	}
 

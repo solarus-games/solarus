@@ -451,6 +451,25 @@ public class Map extends Observable {
 	
 	return entitiesInRectangle;
     }
+    
+    /**
+     * Returns an entity, specifying its type and its name.
+     * @param type the type of entity
+     * @param name the name of the entity
+     * @return the entity, or null if there is no entity with this name
+     */
+    public MapEntity getEntityWithName(int type, String name) {
+
+	MapEntity entity = null;
+	for (int layer = MapEntity.LAYER_LOW;
+		layer < MapEntity.LAYER_NB && entity == null;
+		layer++) {
+	    
+	    entity = allEntities[layer].getEntityWithName(type, name);
+	}
+	
+	return entity;
+    }
 
     /**
      * Adds a new entity on the map.

@@ -10,7 +10,9 @@ import java.util.*;
  */
 public class MapExit extends InteractiveEntity implements ImageObserver {
 
-    // TODO private fields
+    private int transition;
+    private String destinationMapId;
+    private String entranceName;
 
     /**
      * Icon of an exit point.
@@ -18,31 +20,42 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
     private static ImageIcon icon = new ImageIcon("zsdx/images/map_exit.png");;
 
     /**
-     * Creates an exit at the specified location.
+     * Common constructor to create a new or an existing map exit
      * @param map the map
-     * @param x x coordinate of the exit
-     * @param y y coordinate of the exit
+     * @param x x coordinate of the exit (can be zero to set it later)
+     * @param y y coordinate of the exit (can be zero to set it later)
+     * @param computeDefaultName true if this is a new exit
      */
-    public MapExit(Map map, int x, int y) {
-	super(map, LAYER_LOW, x, y, 16, 16);
+    private MapExit(Map map, int x, int y, boolean computeDefaultName) {
+	super(map, LAYER_LOW, x, y, 16, 16, computeDefaultName);
 
 	// TODO fields
     }
 
     /**
-     * Creates a map exit from a string.
+     * Creates a new exit at the specified location.
+     * @param map the map
+     * @param x x coordinate of the exit
+     * @param y y coordinate of the exit
+     */
+    public MapExit(Map map, int x, int y) {
+	this(map, x, y, true);
+    }
+
+    /**
+     * Creates an existing map exit from a string.
      * @param tokenizer the string tokenizer, which has already parsed the common part of the string
      * (i.e. the layer, the coordinates and the type of entity have already been handled)
      * @param map the map
      * @throws ZSDXException if there is a syntax error in the string
      */
     public MapExit(StringTokenizer tokenizer, Map map) throws ZSDXException {
-	this(null, 0, 0);
+	this(map, 0, 0, false);
 
-	// TODO
-	/*	
 	try {
-	    // TODO
+	    this.transition = Integer.parseInt(tokenizer.nextToken());
+	    this.destinationMapId = tokenizer.nextToken();
+	    this.entranceName = tokenizer.nextToken();	    
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -50,7 +63,6 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
 	catch (NoSuchElementException ex) {
 	    throw new ZSDXException("A value is missing");
 	}
-	*/
     }
 
     /**
@@ -85,6 +97,63 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
     public boolean isResizable() {
 	return true;
     }
+    
+    /**
+     * Returns the type of transition between the two maps.
+     * @return the transition type
+     */
+    public int getTransition() {
+	return transition;
+    }
+    
+    /**
+     * Sets the type of transition between the two maps.
+     * @param transition the transition type
+     */
+    public void setTransition(int transition) {
+	this.transition = transition;
+
+	setChanged();
+	notifyObservers();
+    }
+    
+    /**
+     * Returns the id of the destination map.
+     * @return the id of the destination map
+     */
+    public String getDestinationMapId() {
+	return destinationMapId;
+    }
+
+    /**
+     * Sets the destination map.
+     * @param destinationMapId the id of the destination map
+     */
+    public void setDestinationMapId(String destinationMapId) {
+	this.destinationMapId = destinationMapId;
+
+	setChanged();
+	notifyObservers();
+    }
+    
+    /**
+     * Returns the entrance on the destination map.
+     * @return the name of the entrance on the destination map
+     */
+    public String getEntranceName() {
+	return entranceName;
+    }
+
+    /**
+     * Sets the entrance on the destination map.
+     * @param entranceName the name of the entrance on the destination map
+     */
+    public void setEntranceName(String entranceName) {
+	this.entranceName = entranceName;
+
+	setChanged();
+	notifyObservers();
+    }
 
     /**
      * Draws the exit on the map editor.
@@ -106,12 +175,7 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
 	int dx2 = dx1 + 16;
 	int dy2 = dy1 + 16;
 
-	if (showTransparency) {
-	    g.drawImage(icon.getImage(), dx1, dy1, dx2, dy2, this);
-	}
-	else {
-
-	}
+	g.drawImage(icon.getImage(), dx1, dy1, dx2, dy2, this);
     }
 
     /**
@@ -134,9 +198,11 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
 	buff.append(super.toString());
 
 	buff.append('\t');
-	buff.append(MapEntity.ENTITY_EXIT);
-
-	// TODO
+	buff.append(getTransition());
+	buff.append('\t');
+	buff.append(getDestinationMapId());
+	buff.append('\t');
+	buff.append(getEntranceName());
 
 	return buff.toString();
     }

@@ -3,9 +3,7 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.Map;
-import zsdx.MapEntity;
+import zsdx.*;
 
 /**
  * A dialog box with some options to edit a map entity.
@@ -13,9 +11,9 @@ import zsdx.MapEntity;
 public class EditEntityDialog extends JDialog {
 
     /**
-     * The entity to edit
+     * The component to edit the entity.
      */
-    private MapEntity entity;
+    private EditEntityComponent entityComponent;
     
     /**
      * Constructor.
@@ -24,13 +22,11 @@ public class EditEntityDialog extends JDialog {
 
 	super((Frame) null, "Edit an entity", true);
 
-	this.entity = entity;
-
 	Container contentPane = getContentPane();
 	contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 	setResizable(false);
 	
-	final EditEntityComponent entityComponent = new EditEntityComponent(map, entity);
+	EditEntityComponent entityComponent = new EditEntityComponent(map, entity);
 
 	JPanel entityPanel = new JPanel();
 	entityPanel.add(entityComponent);
@@ -38,16 +34,14 @@ public class EditEntityDialog extends JDialog {
 	JButton buttonOK = new JButton("OK");
 	buttonOK.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
-		    entityComponent.applyModifications();
-		    dispose();
+		    applyModificationsAndDispose();
 		}
 	    });
 
 	entityComponent.addKeyListener(new KeyAdapter() {
 		public void keyPressed(KeyEvent ev) {
 		    if (ev.getKeyCode() == KeyEvent.VK_ENTER) {
-			entityComponent.applyModifications();
-			dispose();
+			applyModificationsAndDispose();
 		    }
 		}
 	    });
@@ -84,5 +78,21 @@ public class EditEntityDialog extends JDialog {
 	add(Box.createVerticalStrut(20));
 	add(bottomPanel);
 	add(Box.createVerticalStrut(10));
+    }
+    
+    /**
+     * Applies the modifications to the entity and closes the dialog.
+     * If the modifications are invalid, an error message is displayed
+     * and the dialog is not closed.
+     */
+    private void applyModificationsAndDispose() {
+
+	try {
+	    entityComponent.applyModifications();
+	    dispose();
+	}
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog(ex.getMessage());
+	}
     }
 }

@@ -2,7 +2,6 @@ package zsdx;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Represents an entity placed on the map with the map editor,
@@ -10,6 +9,11 @@ import java.util.List;
  */
 public abstract class MapEntity extends Observable {
 
+    /**
+     * The map.
+     */
+    protected Map map;
+    
     /**
      * Position of the entity in the map.
      */
@@ -79,12 +83,12 @@ public abstract class MapEntity extends Observable {
      * Empty constructor.
      */
     protected MapEntity() {
-	this(null, LAYER_LOW, 0, 0, 0, 0);
+	this(null, LAYER_LOW, 0, 0, 0, 0, false);
     }
     
     /**
      * Creates an entity.
-     * If map is not null and the entity is identifiable, a default name
+     * If the entity is identifiable, a default name
      * is given to the entity (this name is computed such that it is
      * different from the other entities of the same kind on the map).
      * @param map the map
@@ -93,14 +97,20 @@ public abstract class MapEntity extends Observable {
      * @param y y position of the entity on the map
      * @param width width of the entity
      * @param height height of the entity
+     * @param computeDefaultName true to give a default name to the entity
+     * (this name is computed such that it is different from the other
+     * entities of the same kind on the map) or false if the entity is
+     * not identifiable or if you want to set its name later 
      */
-    protected MapEntity(Map map, int layer, int x, int y, int width, int height) {
+    protected MapEntity(Map map, int layer, int x, int y,
+	    int width, int height, boolean computeDefaultName) {
+	this.map = map;
 	this.layer = layer;
 	this.positionInMap = new Rectangle(x, y, width, height);
 	this.hotSpot = new Point();
 
-	if (map != null && hasName()) {
-	    computeDefaultName(map);
+	if (hasName() && computeDefaultName) {
+	    computeDefaultName();
 	}
     }
 
@@ -342,11 +352,17 @@ public abstract class MapEntity extends Observable {
      * By default, an entity is not identifiable and this method throws an exception.
      * @param name the new entity's name
      * @throws UnsupportedOperationException if the entity is not identifiable
+     * @throws MapException if this name is already used by another entity of the same type
      */
-    public void setName(String name) throws UnsupportedOperationException {
+    public void setName(String name) throws UnsupportedOperationException, MapException {
 
 	if (!hasName()) {
 	    throw new UnsupportedOperationException("This entity is not identifiable");
+	}
+	
+	MapEntity other = map.getEntityWithName(getType(), name);
+	if (other != null && other != this) {
+	    throw new MapException("This name is already used by another entity of this map");
 	}
 
 	this.name = name;
@@ -358,13 +374,25 @@ public abstract class MapEntity extends Observable {
      * Sets a default name to the entity.
      * @param map the map
      */
-    private void computeDefaultName(Map map) {
+    private void computeDefaultName() {
 	
-	// count the entities of this type on the map
-	int entityType = getType();
-	List<MapEntity> entities = map.getEntitiesOfType(entityType);
+	int entityType = getType();	
+	String prefix = entityTypeNames[entityType] + ' ';
+	int i = 1;
 	
-	setName(entityTypeNames[entityType] + ' ' + entities.size());
+	// compute an unused name
+	while (map.getEntityWithName(entityType, prefix + i) != null) {
+	    i++;	    
+	}
+	
+	try {
+	    setName(entityTypeNames[entityType] + i);
+	}
+	catch (MapException ex) {
+	    // should not happen if the while above works
+	    System.err.println("Unexcepted error: " + ex.getMessage());
+	    System.exit(1);
+	}
     }
 
     /**
@@ -461,6 +489,14 @@ public abstract class MapEntity extends Observable {
      */
     public int getHeight() {
 	return positionInMap.height;
+    }
+    
+    /**
+     * Returns the size of the entity
+     * @return the entity's size
+     */
+    public Dimension getSize() {
+	return new Dimension(getWidth(), getHeight());
     }
 
     /**

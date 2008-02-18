@@ -19,7 +19,7 @@ public class TileOnMap extends MapEntity {
     /**
      * Id of the tile in the tileset.
      */
-    private final int tileId;
+    private int tileId;
 
     /**
      * Number of times the pattern is repeated on x.
@@ -32,6 +32,19 @@ public class TileOnMap extends MapEntity {
     private int repeatY;
 
     /**
+     * Common constructor to creates a new or an existing tile on the map.
+     * @param map the map
+     * @param x x position of the tile on the map
+     * @param y y position of the tile on the map
+     * @throws MapException if the tile is not valid
+     */
+    private TileOnMap(Map map, int x, int y) throws MapException {
+	super(map, LAYER_LOW, x, y, 0, 0, false);
+	
+	this.tileset = map.getTileset();
+    }
+    
+    /**
      * Creates a new tile on the map.
      * @param map the map
      * @param tileId id of the tile in the tileset
@@ -40,24 +53,22 @@ public class TileOnMap extends MapEntity {
      * @throws MapException if the tile is not valid
      */
     public TileOnMap(Map map, int tileId, int x, int y) throws MapException {
-	super(map, LAYER_LOW, x, y, 0, 0);
-	
-	this.tileset = map.getTileset();
-	this.tileId = tileId;
+	this(map, x, y);
 
+	this.tileId = tileId;
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 	setSize(tile.getWidth(), tile.getHeight());
     }
 
     /**
-     * Creates a tile on a map from a string.
+     * Creates an existing tile on a map from a string.
      * @param tokenizer the string tokenizer, which has already parsed the common part of the string
      * (i.e. the layer, the coordinates and the type of entity have already been handled)
      * @param map the map
      * @throws ZSDXException if there is a syntax error in the string
      */
     public TileOnMap(StringTokenizer tokenizer, Map map) throws ZSDXException {
-	super();
+	this(map, 0, 0);
 	
 	Tile tile = null;
 

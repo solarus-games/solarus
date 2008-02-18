@@ -13,15 +13,10 @@ public abstract class InteractiveEntity extends MapEntity {
      * @param y y position of the entity on the map
      * @param width width of the entity
      * @param height height of the entity
+     * @param computeDefaultName true if this is a new entity, false otherwise
      */
-    protected InteractiveEntity(Map map, int layer, int x, int y, int width, int height) {
-	super(map, layer, x, y, width, height);
-    }
-
-    /**
-     * Empty constructor.
-     */
-    protected InteractiveEntity() {
-	super();
+    protected InteractiveEntity(Map map, int layer, int x, int y,
+	    int width, int height, boolean computeDefaultName) {
+	super(map, layer, x, y, width, height, computeDefaultName);
     }
 }

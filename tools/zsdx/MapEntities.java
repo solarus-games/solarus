@@ -114,6 +114,39 @@ public class MapEntities implements Iterable<MapEntity> {
     }
 
     /**
+     * Returns an entity, specifying its type and its name.
+     * @param type the type of entity
+     * @param name the name of the entity
+     * @return the entity, or null if there is no entity with this name
+     */
+    public MapEntity getEntityWithName(int type, String name) {
+
+	Class<?> cl = MapEntity.entityClasses[type];
+
+	// interactive entity
+	if (InteractiveEntity.class.isAssignableFrom(cl)) {
+	    for (MapEntity e: interactiveEntities) {
+		
+		if (e.hasName() && e.getName().equals(name)) {
+		    return e;
+		}
+	    }
+	}
+
+	// moving entity
+	else {
+	    for (MapEntity e: movingEntities) {
+
+		if (e.hasName() && e.getName().equals(name)) {
+		    return e;
+		}
+	    }
+	}
+	
+	return null;
+    }
+    
+    /**
      * Returns the number of entities.
      * @return the number of entities
      */

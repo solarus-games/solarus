@@ -60,17 +60,6 @@ public class MapViewPopupMenu extends JPopupMenu {
     private static final String[] layerNames = {"Low layer", "Intermediate layer", "High layer"};
 
     /**
-     * Name of the 4 directions, for the items in the sub menu.
-     */
-    private static final String[] directionNames4 = {"Right", "Up", "Left", "Down"};
-
-    /**
-     * Name of the 8 directions, for the items in the sub menu.
-     */
-    private static final String[] directionNames8 = {"Right", "Right-Up", "Up", "Left-Up",
-		"Left", "Left-Down", "Down", "Right-Down"};
-
-    /**
      * Constructor
      */
     public MapViewPopupMenu(MapView theMapView) {
@@ -121,7 +110,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	ButtonGroup itemsDirectionsGroup = new ButtonGroup();
 
 	for (int i = 0; i < 4; i++) {
-	    itemsDirections4[i] = new JRadioButtonMenuItem(directionNames4[i]);
+	    itemsDirections4[i] = new JRadioButtonMenuItem(DirectionChooser.directionNames4[i]);
 	    itemsDirections4[i].addActionListener(new ActionListenerChangeDirection(i));
 	    menuDirection4.add(itemsDirections4[i]);
 	    itemsDirectionsGroup.add(itemsDirections4[i]);
@@ -139,7 +128,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	itemsDirectionsGroup = new ButtonGroup();
 
 	for (int i = 0; i < 8; i++) {
-	    itemsDirections8[i] = new JRadioButtonMenuItem(directionNames8[i]);
+	    itemsDirections8[i] = new JRadioButtonMenuItem(DirectionChooser.directionNames8[i]);
 	    itemsDirections8[i].addActionListener(new ActionListenerChangeDirection(i));
 	    menuDirection8.add(itemsDirections8[i]);
 	    itemsDirectionsGroup.add(itemsDirections8[i]);

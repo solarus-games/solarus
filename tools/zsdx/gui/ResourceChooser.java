@@ -1,13 +1,8 @@
 package zsdx.gui;
 
 import javax.swing.*;
-
-import zsdx.Configuration;
-import zsdx.Resource;
-import zsdx.ResourceDatabase;
-import zsdx.ZSDXException;
-
 import java.util.*;
+import zsdx.*;
 
 /**
  * A combo box component to select an element from the resource database.

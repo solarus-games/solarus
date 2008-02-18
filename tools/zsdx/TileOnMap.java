@@ -22,29 +22,6 @@ public class TileOnMap extends MapEntity {
     private int tileId;
 
     /**
-     * Number of times the pattern is repeated on x.
-     */
-    private int repeatX;
-
-    /**
-     * Number of times the pattern is repeated on y.
-     */
-    private int repeatY;
-
-    /**
-     * Common constructor to creates a new or an existing tile on the map.
-     * @param map the map
-     * @param x x position of the tile on the map
-     * @param y y position of the tile on the map
-     * @throws MapException if the tile is not valid
-     */
-    private TileOnMap(Map map, int x, int y) throws MapException {
-	super(map, LAYER_LOW, x, y, 0, 0, false);
-	
-	this.tileset = map.getTileset();
-    }
-    
-    /**
      * Creates a new tile on the map.
      * @param map the map
      * @param tileId id of the tile in the tileset
@@ -53,8 +30,9 @@ public class TileOnMap extends MapEntity {
      * @throws MapException if the tile is not valid
      */
     public TileOnMap(Map map, int tileId, int x, int y) throws MapException {
-	this(map, x, y);
+	super(map, LAYER_LOW, x, y, 0, 0, false);
 
+	this.tileset = map.getTileset();
 	this.tileId = tileId;
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 	setSize(tile.getWidth(), tile.getHeight());
@@ -62,25 +40,19 @@ public class TileOnMap extends MapEntity {
 
     /**
      * Creates an existing tile on a map from a string.
-     * @param tokenizer the string tokenizer, which has already parsed the common part of the string
-     * (i.e. the layer, the coordinates and the type of entity have already been handled)
      * @param map the map
+     * @param tokenizer the string tokenizer, which has already parsed the type of entity
+     * but not yet the common properties
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public TileOnMap(StringTokenizer tokenizer, Map map) throws ZSDXException {
-	this(map, 0, 0);
+    public TileOnMap(Map map, StringTokenizer tokenizer) throws ZSDXException {
+	super(map, tokenizer);
 	
-	Tile tile = null;
-
 	try {
 	    this.tileId = Integer.parseInt(tokenizer.nextToken());
-	    this.repeatX = Integer.parseInt(tokenizer.nextToken());
-	    this.repeatY = Integer.parseInt(tokenizer.nextToken());
-
 	    this.tileset = map.getTileset();
 	    
-	    tile = map.getTileset().getTile(tileId); // get the original tile from the tileset
-	    setSize(tile.getWidth() * repeatX, tile.getHeight() * repeatY);
+	    map.getTileset().getTile(tileId); // check the original tile from the tileset
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -88,6 +60,26 @@ public class TileOnMap extends MapEntity {
 	catch (NoSuchElementException ex) {
 	    throw new ZSDXException("A value is missing");
 	}
+	catch (IllegalArgumentException ex) {
+	    throw new ZSDXException(ex.getMessage()); // unknown tile id
+	}
+    }
+
+    /**
+     * Returns a string describing this tile.
+     * @return a string representation of the tile
+     */
+    public String toString() {
+
+	StringBuffer buff = new StringBuffer();
+
+	// get the common part of the string
+	buff.append(super.toString());
+
+	// add the specific properties of a tile
+	buff.append('\t');
+	buff.append(tileId);
+	return buff.toString();
     }
 
     /**
@@ -141,8 +133,8 @@ public class TileOnMap extends MapEntity {
 		    }
 
 		    // update the size on the map if the size in the tileset has changed
-		    positionInMap.width = newTile.getWidth() * repeatX;
-		    positionInMap.height = newTile.getHeight() * repeatY;
+		    positionInMap.width = newTile.getWidth() * getRepeatX();
+		    positionInMap.height = newTile.getHeight() * getRepeatY();
 		}
 		
 		this.tileset = tileset;
@@ -181,25 +173,6 @@ public class TileOnMap extends MapEntity {
     }
 
     /**
-     * Changes the size of the tile on the map.
-     * This is a redefinition of MapEntity.setSize() to update repeatX and repeatY.
-     * @param width width of the tile in pixels
-     * @param height height of the tile in pixels
-     * @throws MapException if the size specified is zero
-     */
-    public void setSize(int width, int height) throws MapException {
-
-	super.setSize(width, height);
-	
-	Rectangle positionInTileset = tileset.getTile(tileId).getPositionInTileset();	
-	repeatX = positionInMap.width / positionInTileset.width;
-	repeatY = positionInMap.height / positionInTileset.height;
-
-	setChanged();
-	notifyObservers();
-    }
-    
-    /**
      * Returns the minimum width of the entity (for a resizable entity).
      * When the entity is resized, its new width must be a multiple of this minimum size.
      * @return the minimum width of the entity
@@ -224,7 +197,7 @@ public class TileOnMap extends MapEntity {
      * @return the number of times the pattern is repeated on x
      */
     public int getRepeatX() {
-	return repeatX;
+	return positionInMap.width / getUnitWidth();
     }
 
     /*
@@ -232,7 +205,7 @@ public class TileOnMap extends MapEntity {
      * @return the number of times the pattern is repeated on y
      */
     public int getRepeatY() {
-	return repeatY;
+	return positionInMap.height / getUnitHeight();
     }
 
     /**
@@ -260,6 +233,9 @@ public class TileOnMap extends MapEntity {
 	
 	int width = positionInTileset.width * scale;
 	int height = positionInTileset.height * scale;
+	
+	int repeatX = getRepeatX();
+	int repeatY = getRepeatY();
 
 	int dx1;
 	int dx2;
@@ -282,25 +258,5 @@ public class TileOnMap extends MapEntity {
 		}
 	    }
 	}
-    }
-
-    /**
-     * Returns a string describing this tile.
-     * @return a string representation of the tile
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string (i.e. the kind of entity, the layer, the coordinates)
-	buff.append(super.toString());
-
-	buff.append('\t');
-	buff.append(tileId);
-	buff.append('\t');
-	buff.append(repeatX);
-	buff.append('\t');
-	buff.append(repeatY);
-	return buff.toString();
     }
 }

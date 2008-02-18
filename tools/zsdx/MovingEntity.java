@@ -5,4 +5,8 @@ package zsdx;
  */
 public abstract class MovingEntity extends MapEntity {
 
+    // temporary
+    protected MovingEntity(Map map) {
+	super(map, LAYER_LOW, 0, 0, 0, 0, false);
+    }
 }

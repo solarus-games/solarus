@@ -496,6 +496,20 @@ public class Map extends Observable {
     }
 
     /**
+     * Changes the position of an entity on the map, by specifying the coordinates
+     * of its hotspot.
+     * @param entity an entity
+     * @param x x coordinate of the hotspot
+     * @param y y coordinate of the hotspot
+     */
+    public void setEntityPosition(MapEntity entity, int x, int y) {
+	entity.setPositionInMap(x, y);
+
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
      * Changes the position of an entity on the map, by specifying two points.
      * The entity is resized (i.e. repeatX and repeatY are updated) so that
      * it fits exactly in the rectangle formed by the two points.
@@ -516,8 +530,7 @@ public class Map extends Observable {
 
     /**
      * Changes the position of an entity on the map, by specifying its rectangle.
-     * The entity is resized (i.e. repeatX and repeatY are updated) so that
-     * it fits exactly in the rectangle.
+     * The entity is resized so that it fits exactly in the rectangle.
      * @param entity an entity
      * @param position a rectangle
      * @throws MapException if the entity is not resizable of the rectangle width
@@ -525,6 +538,21 @@ public class Map extends Observable {
      */
     public void setEntityPosition(MapEntity entity, Rectangle position) throws MapException {
 	entity.setPositionInMap(position);
+
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
+     * Changes the size of an entity on the map.
+     * @param entity an entity
+     * @param width the new width
+     * @param height the new height
+     * @throws MapException if the entity is not resizable or the size
+     * specified is lower than or equal to zero
+     */
+    public void setEntitySize(MapEntity entity, int width, int height) throws MapException {
+	entity.setSize(width, height);
 
 	setChanged();
 	notifyObservers();
@@ -738,7 +766,7 @@ public class Map extends Observable {
 	    while (line != null) {
 		lineNumber++;
 
-		MapEntity entity = MapEntity.createFromString(line, this);
+		MapEntity entity = MapEntity.createFromString(this, line);
 		addEntity(entity);
 
 		line = in.readLine();

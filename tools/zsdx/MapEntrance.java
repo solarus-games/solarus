@@ -26,38 +26,29 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
     }
     
     /**
-     * Common constructor to create a new or an existing map entrance
-     * @param map the map
-     * @param x x coordinate of the entrance (can be zero to set it later)
-     * @param y y coordinate of the entrance (can be zero to set it later)
-     * @param computeDefaultName true if this is a new entrance
-     */
-    private MapEntrance(Map map, int x, int y, boolean computeDefaultName) {
-	super(map, LAYER_LOW, x, y, 16, 16, computeDefaultName);
-
-	setHotSpot(8, 16);
-	setDirection(1);
-    }
-
-    /**
      * Creates a new map entrance at the specified location.
      * @param map the map
      * @param x x coordinate of the entrance
      * @param y y coordinate of the entrance
      */
     public MapEntrance(Map map, int x, int y) {
-	this(map, x, y, true);
+	super(map, LAYER_LOW, x, y, 16, 16);
+	setHotSpot(8, 16);
+	setDirection(1);
     }
 
     /**
      * Creates an existing map entrance from a string.
-     * @param tokenizer the string tokenizer, which has already parsed the common part of the string
-     * (i.e. the layer, the coordinates, the direction and the type of entity have already been handled)
      * @param map the map
+     * @param tokenizer the string tokenizer, which has already parsed the type of entity
+     * but not yet the common properties
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public MapEntrance(StringTokenizer tokenizer, Map map) throws ZSDXException {
-	this(map, 0, 0, false);
+    public MapEntrance(Map map, StringTokenizer tokenizer) throws ZSDXException {
+	super(map, tokenizer);
+
+	setHotSpot(8, 16);
+	setSizeImpl(16, 16);
     }
 
     /**
@@ -90,10 +81,10 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
 	int dy2 = dy1 + positionInMap.height * scale;
 
 	if (showTransparency) {
-	g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, this);
+	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, this);
 	}
 	else {
-		g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, bgColor, this);		
+	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, bgColor, this);		
 	}
     }
 

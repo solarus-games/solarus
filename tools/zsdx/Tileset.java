@@ -258,12 +258,12 @@ public class Tileset extends Observable implements ImageObserver {
      * @return the tile with this id
      * @throws NoSuchElementException if there is no tile with this id
      */
-    public Tile getTile(int id) throws NoSuchElementException {
+    public Tile getTile(int id) throws IllegalArgumentException {
 
 	Tile tile = tiles.get(id);
 
 	if (tile == null) {
-	    throw new NoSuchElementException("There is no tile with id " + id + " in the tileset.");
+	    throw new IllegalArgumentException("There is no tile with id " + id + " in the tileset.");
 	}
 
 	return tile;

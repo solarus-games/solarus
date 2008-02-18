@@ -12,20 +12,21 @@ public class ActionEditEntity extends MapEditorAction {
 
     protected MapEntity entity; // the entity modified
     
+    // common data of the entity
     private String nameBefore;
     private String nameAfter;
     
     private int layerBefore;
     private int layerAfter;
     
-    private Dimension positionBefore;
-    private Dimension positionAfter;
-    
-    private Dimension sizeBefore;
-    private Dimension sizeAfter;
+    private Rectangle positionBefore;
+    private Rectangle positionAfter;
     
     private int directionBefore;
     private int directionAfter;
+    
+    // additional action specific to each entity type
+    private MapEditorAction specificAction; 
     
     /**
      * Constructor.
@@ -46,6 +47,7 @@ public class ActionEditEntity extends MapEditorAction {
 	super(map);
 	
 	this.entity = entity;
+	this.specificAction = null;
 	
 	// name
 	if (entity.hasName()) {
@@ -57,14 +59,14 @@ public class ActionEditEntity extends MapEditorAction {
 	this.layerBefore = entity.getLayer();
 	this.layerAfter = layer;
 	
-	// position
-	this.positionBefore = new Dimension(entity.getX(), entity.getY());
-	this.positionAfter = new Dimension(position);
+	// position and size
+	this.positionBefore = new Rectangle(entity.getX(), entity.getY(), 0, 0);
+	this.positionAfter = new Rectangle(position.width, position.height, 0, 0);
 	
 	// size
 	if (entity.isResizable()) {
-	    this.sizeBefore = new Dimension(entity.getWidth(), entity.getHeight());
-	    this.sizeAfter = new Dimension(size);
+	    this.positionBefore.setSize(entity.getSize());
+	    this.positionAfter.setSize(size);
 	}
 	
 	// direction
@@ -78,26 +80,31 @@ public class ActionEditEntity extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-
+	
 	// name
 	if (entity.hasName()) {
 	    entity.setName(nameAfter);
 	}
 	
 	// layer
-	entity.setLayer(layerAfter);
+	map.setEntityLayer(entity, layerAfter);
 	
 	// position
-	entity.setPositionInMap(positionAfter.width, positionAfter.height);
-	
+	map.setEntityPosition(entity, positionAfter.x, positionAfter.y);
+
 	// size
 	if (entity.isResizable()) {
-	    entity.setSize(sizeAfter.width, sizeAfter.height);
+	    map.setEntitySize(entity, positionAfter.width, positionAfter.height);
 	}
 	
 	// direction
 	if (entity.hasDirection()) {
-	    entity.setDirection(directionAfter);
+	    map.setEntityDirection(entity, directionAfter);
+	}
+	
+	// specific data
+	if (specificAction != null) {
+	    specificAction.execute();
 	}
     }
 
@@ -112,19 +119,32 @@ public class ActionEditEntity extends MapEditorAction {
 	}
 	
 	// layer
-	entity.setLayer(layerBefore);
+	map.setEntityLayer(entity, layerBefore);
 	
 	// position
-	entity.setPositionInMap(positionBefore.width, positionBefore.height);
+	map.setEntityPosition(entity, positionBefore.x, positionBefore.y);
 	
 	// size
 	if (entity.isResizable()) {
-	    entity.setSize(sizeBefore.width, sizeBefore.height);
+	    map.setEntitySize(entity, positionBefore.width, positionBefore.height);
 	}
 	
 	// direction
 	if (entity.hasDirection()) {
-	    entity.setDirection(directionBefore);
+	    map.setEntityDirection(entity, directionBefore);
 	}
+	
+	// specific data
+	if (specificAction != null) {
+	    specificAction.undo();
+	}
+    }
+    
+    /**
+     * Sets an additional action, specific to the entity type.
+     * @param action the specific action to add
+     */
+    public void setSpecificAction(MapEditorAction specificAction) {
+	this.specificAction = specificAction;
     }
 }

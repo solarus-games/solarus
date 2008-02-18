@@ -16,12 +16,12 @@ public class EditEntityComponent extends JPanel {
     /**
      * The map.
      */
-    private Map map;
+    protected Map map;
 
     /**
      * The map entity to edit.
      */
-    private MapEntity entity;
+    protected MapEntity entity;
 
     // common subcomponents
     private JTextField fieldName;
@@ -161,11 +161,11 @@ public class EditEntityComponent extends JPanel {
      */
     protected ActionEditEntity getAction() {
 
-	String name = entity.hasName() ? entity.getName() : null;
-	int layer = entity.getLayer();
-	Dimension position = new Dimension(entity.getX(), entity.getY());
-	Dimension size = entity.isResizable() ? entity.getSize() : null;
-	int direction = entity.hasDirection() ? entity.getDirection() : -1;
+	String name = entity.hasName() ? fieldName.getText() : null;
+	int layer = fieldLayer.getLayer();
+	Dimension position = fieldPosition.getCoordinates();
+	Dimension size = entity.isResizable() ? fieldSize.getCoordinates() : null;
+	int direction = entity.hasDirection() ? fieldDirection.getDirection() : -1;
 	
 	return new ActionEditEntity(map, entity, name,
 		layer, position, size, direction);
@@ -175,10 +175,15 @@ public class EditEntityComponent extends JPanel {
     /**
      * Applies the modifications to the entity.
      * This function calls getAction() and executes it.
-     * @throws ZSDXException if the modifications are invalid
+     * @throws ZSDXException if the modifications cannot be applied
      */
     public final void applyModifications() throws ZSDXException {
 	
-	map.getHistory().doAction(getAction());
+	try {
+	    map.getHistory().doAction(getAction());
+	}
+	catch (NumberFormatException ex) {
+	    throw new MapException("Integer expected");
+	}
     }
 }

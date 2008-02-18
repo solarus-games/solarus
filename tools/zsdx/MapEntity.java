@@ -1,6 +1,7 @@
 package zsdx;
 
 import java.awt.*;
+import java.lang.reflect.*;
 import java.util.*;
 
 /**
@@ -66,6 +67,7 @@ public abstract class MapEntity extends Observable {
     public static final int ENTITY_TILE = 0;
     public static final int ENTITY_ENTRANCE = 1;
     public static final int ENTITY_EXIT = 2;
+    public static final int ENTITY_NB_TYPES = 3;
 
     // names of the entity types
     public static final String[] entityTypeNames = {
@@ -79,13 +81,6 @@ public abstract class MapEntity extends Observable {
 	MapExit.class             // ENTITY_EXIT
     };
 
-    /**
-     * Empty constructor.
-     */
-    protected MapEntity() {
-	this(null, LAYER_LOW, 0, 0, 0, 0, false);
-    }
-    
     /**
      * Creates an entity.
      * If the entity is identifiable, a default name
@@ -115,63 +110,92 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Creates a map entity from a string description as returned by toString().
-     * @param description a string describing the entity, as returned by toString()
-     * @param map the map (needed for some types of entities)
-     * @throws ZSDXException if the string is incorrect
+     * Parses the common information of the entity, i.e. the layer, the position,
+     * the size (if the entity is resizable), the name (if the entity is identifiable)
+     * and the direction (if the entity have a direction property).
+     * This constructor should be called by the subclasses before parsing the specific part of the line.
+     * @param map the map
+     * @param tokenizer the string tokenizer parsing the entity line (the entity type has already been parsed)
      */
-    public static MapEntity createFromString(String description, Map map) throws ZSDXException {
+    protected MapEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
+	this(map, LAYER_LOW, 0, 0, 0, 0, false);
 
-	StringTokenizer tokenizer = new StringTokenizer(description);
-
-	int entityType = Integer.parseInt(tokenizer.nextToken());
 	int layer = Integer.parseInt(tokenizer.nextToken());
 	int x = Integer.parseInt(tokenizer.nextToken());
 	int y = Integer.parseInt(tokenizer.nextToken());
 
-	MapEntity entity;
+	setLayer(layer);
+	setPositionInMap(x, y);
 
-	switch (entityType) {
-	    
-	case ENTITY_TILE:
-	    entity = new TileOnMap(tokenizer, map);
-	    break;
-	    
-	case ENTITY_ENTRANCE:
-	    entity = new MapEntrance(tokenizer, map);
-	    break;
-
-	case ENTITY_EXIT:
-	    entity = new MapExit(tokenizer, map);
-	    break;
-
-	default:
-	    throw new ZSDXException("Unknown entity type '" + entityType + "'");
+	if (isResizable()) {
+	    int width = Integer.parseInt(tokenizer.nextToken());
+	    int height = Integer.parseInt(tokenizer.nextToken());
+	    setSize(width, height);
 	}
 
-	entity.setLayer(layer);
-	entity.setPositionInMap(x, y);
-
-	if (entity.hasName()) {
-	    entity.setName(tokenizer.nextToken());
+	if (hasName()) {
+	    setName(tokenizer.nextToken());
 	}
 
-	if (entity.hasDirection()) {
-	    entity.setDirection(Integer.parseInt(tokenizer.nextToken()));
+	if (hasDirection()) {
+	    setDirection(Integer.parseInt(tokenizer.nextToken()));
 	}
-
-	return entity;
     }
 
+    /**
+     * Creates a map entity from a string description as returned by toString().
+     * @param map the map (needed for some types of entities)
+     * @param description a string describing the entity, as returned by toString()
+     * @throws ZSDXException if the string is incorrect
+     */
+    public static MapEntity createFromString(Map map, String description) throws ZSDXException {
+
+	StringTokenizer tokenizer = new StringTokenizer(description);
+	int entityType = Integer.parseInt(tokenizer.nextToken());
+	
+	if (entityType < 0 || entityType >= ENTITY_NB_TYPES) {
+	    throw new MapException("Unknown entity type: " + entityType);
+	}
+	
+	MapEntity entity = null;
+	
+	Class<?> entityClass = entityClasses[entityType];
+	Constructor<?> constructor;
+	
+	try {
+	    constructor = entityClass.getConstructor(Map.class, StringTokenizer.class);
+	    entity = (MapEntity) constructor.newInstance(map, tokenizer);
+	}
+	catch (NoSuchMethodException ex) {
+	    System.err.println("Unexpected error: " + ex.getMessage());
+	    System.exit(1);
+	}
+	catch (IllegalAccessException ex) {
+	    System.err.println("Unexpected error: " + ex.getMessage());
+	    System.exit(1);
+	}
+	catch (InstantiationException ex) {
+	    System.err.println("Unexpected error: " + ex.getMessage());
+	    System.exit(1);
+	}
+	catch (InvocationTargetException ex) {
+	    throw (ZSDXException) ex.getCause();
+	}
+	
+	return entity;
+    }
+    
     /**
      * Sets the hotspot of the entity.
      * @param x x coordinate
      * @param y y coordinate
      */
-    protected void setHotSpot(int x, int y) {
-	
+    protected void setHotSpot(int x, int y) {	
 	hotSpot.x = x;
 	hotSpot.y = y;
+	
+	// update the position to place to hotspot where the top-left corner was
+	move(-x, -y);
     }
 
     /**
@@ -259,7 +283,8 @@ public abstract class MapEntity extends Observable {
      * The location of the entity is not changed.
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
-     * @throws MapException if the entity is not resizable, or the size specified is zero
+     * @throws MapException if the entity is not resizable,
+     * or the size specified is lower than or equal to zero
      */
     public void setSize(int width, int height) throws MapException {
 
@@ -267,16 +292,25 @@ public abstract class MapEntity extends Observable {
 	    throw new MapException("This entity is not resizable");
 	}
 
-	if (width == 0 || height == 0) {
-	    throw new MapException("The entity's size is zero"); 
+	if (width <= 0 || height <= 0) {
+	    throw new MapException("The entity's size must be positive"); 
 	}
 
-	positionInMap.width = width;
-	positionInMap.height = height;
-
+	setSizeImpl(width, height);
+	
 	// notify
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Changes the size of the entity.
+     * @param width width of the entity in pixels
+     * @param height height of the entity in pixels
+     */
+    protected void setSizeImpl(int width, int height) {
+	positionInMap.width = width;
+	positionInMap.height = height;
     }
 
     /**
@@ -530,6 +564,13 @@ public abstract class MapEntity extends Observable {
 	buff.append(getX());
 	buff.append('\t');
 	buff.append(getY());
+	
+	if (isResizable()) {
+	    buff.append('\t');
+	    buff.append(getWidth());
+	    buff.append('\t');
+	    buff.append(getHeight());
+	}
 
 	if (hasName()) {
 	    buff.append('\t');

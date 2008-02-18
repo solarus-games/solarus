@@ -20,37 +20,24 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
     private static ImageIcon icon = new ImageIcon("zsdx/images/map_exit.png");;
 
     /**
-     * Common constructor to create a new or an existing map exit
-     * @param map the map
-     * @param x x coordinate of the exit (can be zero to set it later)
-     * @param y y coordinate of the exit (can be zero to set it later)
-     * @param computeDefaultName true if this is a new exit
-     */
-    private MapExit(Map map, int x, int y, boolean computeDefaultName) {
-	super(map, LAYER_LOW, x, y, 16, 16, computeDefaultName);
-
-	// TODO fields
-    }
-
-    /**
      * Creates a new exit at the specified location.
      * @param map the map
      * @param x x coordinate of the exit
      * @param y y coordinate of the exit
      */
     public MapExit(Map map, int x, int y) {
-	this(map, x, y, true);
+	super(map, LAYER_LOW, x, y, 16, 16);
     }
 
     /**
      * Creates an existing map exit from a string.
-     * @param tokenizer the string tokenizer, which has already parsed the common part of the string
-     * (i.e. the layer, the coordinates and the type of entity have already been handled)
      * @param map the map
+     * @param tokenizer the string tokenizer, which has already parsed the type of entity
+     * but not yet the common properties
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public MapExit(StringTokenizer tokenizer, Map map) throws ZSDXException {
-	this(map, 0, 0, false);
+    public MapExit(Map map, StringTokenizer tokenizer) throws ZSDXException {
+	super(map, tokenizer);
 
 	try {
 	    this.transition = Integer.parseInt(tokenizer.nextToken());
@@ -63,6 +50,28 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
 	catch (NoSuchElementException ex) {
 	    throw new ZSDXException("A value is missing");
 	}
+    }
+    
+    /**
+     * Returns a string describing this map entrance.
+     * @return a string representation of the map entrance
+     */
+    public String toString() {
+
+	StringBuffer buff = new StringBuffer();
+
+	// get the common part of the string
+	buff.append(super.toString());
+
+	// add the specific properties of a map exit
+	buff.append('\t');
+	buff.append(getTransition());
+	buff.append('\t');
+	buff.append(getDestinationMapId());
+	buff.append('\t');
+	buff.append(getEntranceName());
+
+	return buff.toString();
     }
 
     /**
@@ -184,26 +193,5 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
      */
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
 	return true;
-    }
-    
-    /**
-     * Returns a string describing this map entrance.
-     * @return a string representation of the map entrance
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string (i.e. the layer and the coordinates)
-	buff.append(super.toString());
-
-	buff.append('\t');
-	buff.append(getTransition());
-	buff.append('\t');
-	buff.append(getDestinationMapId());
-	buff.append('\t');
-	buff.append(getEntranceName());
-
-	return buff.toString();
     }
 }

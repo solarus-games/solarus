@@ -279,14 +279,13 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Changes the size of the entity on the map.
-     * The location of the entity is not changed.
-     * @param width width of the entity in pixels
-     * @param height height of the entity in pixels
-     * @throws MapException if the entity is not resizable,
-     * or the size specified is lower than or equal to zero
+     * Checks whether the specified size of the entity is correct (i.e. whether it is
+     * a multiple of getUnitWidth() and getUnitHeight()).
+     * @param width the width to check
+     * @param height the height to check
+     * @throws MapException if the size is not correct
      */
-    public void setSize(int width, int height) throws MapException {
+    protected void checkSize(int width, int height) throws MapException {
 
 	if (!isResizable()) {
 	    throw new MapException("This entity is not resizable");
@@ -295,7 +294,30 @@ public abstract class MapEntity extends Observable {
 	if (width <= 0 || height <= 0) {
 	    throw new MapException("The entity's size must be positive"); 
 	}
+	
+	if (width % getUnitWidth() != 0) {
+	    throw new MapException("The entity's width must be a multiple of " + getUnitWidth()
+		    + " (the width specified is " + width + ')');
+	}
 
+	if (height % getUnitHeight() != 0) {
+	    throw new MapException("The entity's height must be a multiple of " + getUnitHeight()
+		    + " (the height specified is " + height + ')');
+	}
+    }
+
+    /**
+     * Changes the size of the entity on the map.
+     * The location of the entity is not changed.
+     * @param width width of the entity in pixels
+     * @param height height of the entity in pixels
+     * @throws MapException if the entity is not resizable,
+     * or the size specified is lower than or equal to zero,
+     * or the size specified is not divisible by 8
+     */
+    public void setSize(int width, int height) throws MapException {
+
+	checkSize(width, height);
 	setSizeImpl(width, height);
 	
 	// notify

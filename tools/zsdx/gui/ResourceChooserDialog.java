@@ -41,36 +41,27 @@ public class ResourceChooserDialog extends JDialog {
 
 	JButton buttonOK = new JButton("OK");
 	buttonOK.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    id = chooser.getSelectedId();
-		    dispose();
-		}
-	    });
+	    public void actionPerformed(ActionEvent ev) {
+		id = chooser.getSelectedId();
+		dispose();
+	    }
+	});
 
-	chooser.addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent ev) {
-		    if (ev.getKeyCode() == KeyEvent.VK_ENTER) {
-			id = chooser.getSelectedId();
-			dispose();
-		    }
-		}
-	    });
-
-	chooser.addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent ev) {
-		    if (ev.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			dispose();
-		    }
-		}
-	    });
+	getRootPane().setDefaultButton(buttonOK);
 
 	JButton buttonCancel = new JButton("Cancel");
-	buttonCancel.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    dispose();
-		}
-	    });
+	Action cancelAction = new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		dispose();
+	    }
+	};
 
+	buttonCancel.addActionListener(cancelAction);
+
+	KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);	 
+	getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+	getRootPane().getActionMap().put("ESCAPE", cancelAction);
+	
 	GridLayout gridLayout = new GridLayout(1, 2); 
 	JPanel buttonPanel = new JPanel(gridLayout);
 	gridLayout.setHgap(10);

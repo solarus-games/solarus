@@ -2,7 +2,9 @@ package zsdx.gui;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import zsdx.*;
 
 /**
@@ -28,39 +30,28 @@ public class EditEntityDialog extends JDialog {
 	
 	entityComponent = new EditEntityComponent(map, entity);
 
-	JPanel entityPanel = new JPanel();
-	entityPanel.add(entityComponent);
-
 	JButton buttonOK = new JButton("OK");
 	buttonOK.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    applyModificationsAndDispose();
-		}
-	    });
+	    public void actionPerformed(ActionEvent ev) {
+		applyModificationsAndDispose();
+	    }
+	});
 
-	entityComponent.addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent ev) {
-		    if (ev.getKeyCode() == KeyEvent.VK_ENTER) {
-			applyModificationsAndDispose();
-		    }
-		}
-	    });
-
-	entityComponent.addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent ev) {
-		    if (ev.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			dispose();
-		    }
-		}
-	    });
+	getRootPane().setDefaultButton(buttonOK);
 
 	JButton buttonCancel = new JButton("Cancel");
-	buttonCancel.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    dispose();
-		}
-	    });
+	Action cancelAction = new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		dispose();
+	    }
+	};
 
+	buttonCancel.addActionListener(cancelAction);
+
+	KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);	 
+	getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+	getRootPane().getActionMap().put("ESCAPE", cancelAction);
+	
 	GridLayout gridLayout = new GridLayout(1, 2); 
 	JPanel buttonPanel = new JPanel(gridLayout);
 	gridLayout.setHgap(10);
@@ -74,7 +65,7 @@ public class EditEntityDialog extends JDialog {
 	bottomPanel.add(Box.createHorizontalGlue());
 	bottomPanel.add(buttonPanel);
 
-	add(entityPanel);
+	add(entityComponent);
 	add(Box.createVerticalStrut(20));
 	add(bottomPanel);
 	add(Box.createVerticalStrut(10));

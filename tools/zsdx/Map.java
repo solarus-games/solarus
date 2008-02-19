@@ -550,6 +550,7 @@ public class Map extends Observable {
      * @param height the new height
      * @throws MapException if the entity is not resizable or the size
      * specified is lower than or equal to zero
+     * or the size specified is not divisible by 8
      */
     public void setEntitySize(MapEntity entity, int width, int height) throws MapException {
 	entity.setSize(width, height);

@@ -53,6 +53,7 @@ public class TileOnMap extends MapEntity {
 	    this.tileset = map.getTileset();
 	    
 	    map.getTileset().getTile(tileId); // check the original tile from the tileset
+	    checkSize(getWidth(), getHeight()); // check the tile size on the map (only now because we didn't have the tileset before)
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -171,13 +172,18 @@ public class TileOnMap extends MapEntity {
     public boolean isResizable() {
 	return true;
     }
-
+    
     /**
      * Returns the minimum width of the entity (for a resizable entity).
      * When the entity is resized, its new width must be a multiple of this minimum size.
      * @return the minimum width of the entity
      */
     public int getUnitWidth() {
+	
+	if (tileset == null) { // special case when the tileset is not initialized yet
+	    return super.getUnitWidth();
+	}
+	
 	Tile tile = tileset.getTile(tileId);
 	return tile.getWidth();
     }
@@ -188,6 +194,11 @@ public class TileOnMap extends MapEntity {
      * @return the minimum height of the entity
      */
     public int getUnitHeight() {
+	
+	if (tileset == null) { // special case when the tileset is not initialized yet
+	    return super.getUnitHeight();
+	}
+	
 	Tile tile = tileset.getTile(tileId);
 	return tile.getHeight();
     }

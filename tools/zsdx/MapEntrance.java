@@ -46,7 +46,7 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
      */
     public MapEntrance(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	super(map, tokenizer);
-
+	
 	setHotSpot(8, 16);
 	setSizeImpl(16, 16);
     }

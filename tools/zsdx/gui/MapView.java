@@ -1,27 +1,15 @@
 package zsdx.gui;
 
-import java.awt.Point;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.Configuration;
-import zsdx.Map;
-import zsdx.MapEntities;
-import zsdx.MapEntity;
-import zsdx.MapEntitySelection;
-import zsdx.MapViewRenderingOptions;
-import zsdx.Tile;
-import zsdx.TileOnMap;
-import zsdx.Tileset;
-import zsdx.ZSDXException;
-import zsdx.map_editor_actions.*;
-
+import javax.swing.event.*;
 import java.util.*;
+import java.util.List;
+
+import zsdx.*;
+import zsdx.Map;
+import zsdx.map_editor_actions.*;
 
 /**
  * This component shows the map image and allows the user to modify it.
@@ -142,8 +130,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	Configuration.getInstance().addObserver(this);
 
-	addMouseListener(new MapMouseListener());
-	addMouseMotionListener(new MapMouseMotionListener());
+	MouseInputListener mouseListener = new MapMouseInputListener();
+	addMouseListener(mouseListener);
+	addMouseMotionListener(mouseListener);
 	addKeyListener(new MapKeyListener());
     }
 
@@ -746,7 +735,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * The mouse listener associated to the map image.
      */
-    private class MapMouseListener extends MouseAdapter {
+    private class MapMouseInputListener extends MouseInputAdapter {
 
 	/**
 	 * This method is called when the mouse exits the map view.
@@ -773,24 +762,34 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    requestFocusInWindow();
 
 	    if (state == STATE_NORMAL && mouseEvent.getButton() == MouseEvent.BUTTON1) {
-		
+
+		// find the entity clicked
+		int x = (int) (mouseEvent.getX() / zoom);
+		int y = (int) (mouseEvent.getY() / zoom);
+
+		MapEntity entityClicked = map.getEntityAt(x, y);
+
 		// detect whether CTRL or SHIFT is pressed
 		if (mouseEvent.isControlDown() || mouseEvent.isShiftDown()) {
 
 		    MapEntitySelection entitySelection = map.getEntitySelection();
 		
-		    // find the entity clicked
-		    int x = (int) (mouseEvent.getX() / zoom);
-		    int y = (int) (mouseEvent.getY() / zoom);
-
-		    MapEntity entityClicked = map.getEntityAt(x, y);
-
 		    if (entityClicked != null && !entityJustSelected
 			&& entitySelection.isSelected(entityClicked)) {
 
 			// CTRL + left click or SHIFT + left click:
 			// unselect the tile clicked
 			entitySelection.unSelect(entityClicked);
+		    }
+		}
+		else if (mouseEvent.getClickCount() == 2) {
+		    // double-click on an entity: show the edit dialog
+
+		    if (entityClicked != null) {
+			EditEntityDialog dialog = new EditEntityDialog(map, entityClicked);
+		    	dialog.setLocationRelativeTo(null);
+		    	dialog.pack();
+		    	dialog.setVisible(true);
 		    }
 		}
 	    }
@@ -943,13 +942,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		break;
 	    }
 	}
-    }
-
-    /**
-     * The mouse motion listener associated to the map image.
-     */
-    private class MapMouseMotionListener extends MouseMotionAdapter {
-
+	
 	/**
 	 * This method is called when the cursor is moved onto the map view.
 	 * If a tile is selected in the tileset, it is displayed under the cursor.

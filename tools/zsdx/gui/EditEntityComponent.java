@@ -129,7 +129,7 @@ public class EditEntityComponent extends JPanel {
 	add(field, gridBagConstraints);
 	gridBagConstraints.gridy++;
     }
-    
+
     /**
      * Updates the common information displayed in the fields.
      * The subclasses should redefine this method to display their

@@ -108,7 +108,7 @@ class Map {
    */
   MusicId music_id;
 
-  void add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int repeat_y);
+  void add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height);
   void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
   void add_exit(string exit_name, Layer layer, int x, int y, int w, int h, MapId map_id, string entrance_name);
 

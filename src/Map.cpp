@@ -131,7 +131,7 @@ void Map::load() {
   }
 
   // read the entities
-  int layer, x, y, entity_type, direction;
+  int entity_type, layer, x, y, width, height, direction;
   string entity_name;
 	
   while (std::getline(map_file, line)) {
@@ -143,10 +143,10 @@ void Map::load() {
 
     case ENTITY_TILE:
       {
-	int tile_id, repeat_x, repeat_y;
+	int tile_id;
 
-	iss >> tile_id >> repeat_x >> repeat_y;
-	add_new_tile(tile_id, (Layer) layer, x, y, repeat_x, repeat_y);
+	iss >> width >> height >> tile_id;
+	add_new_tile(tile_id, (Layer) layer, x, y, width, height);
 	break;
       }
       
@@ -159,7 +159,7 @@ void Map::load() {
       
     case ENTITY_EXIT:
       {
-	iss >> entity_name;
+	iss >> width >> height >> entity_name;
 	// TODO
 	break;
       }
@@ -175,14 +175,17 @@ void Map::load() {
  * @param layer layer of the tile to create
  * @param position_in_map x position of the tile on the map
  * @param position_in_map y position of the tile on the map
- * @param repeat_x how many times the tile pattern is repeated on x
- * @param repeat_x how many times the tile pattern is repeated on y
+ * @param width width in pixels (the pattern will be repeated on x to fit this width)
+ * @param height height in pixels (the pattern will be repeated on y to fit this height
  */
-void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int repeat_x, int repeat_y) {
+void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height) {
 
   // get the tile in the tileset
   Tile *tile = tileset->get_tile(tile_id);
   Obstacle obstacle = tile->get_obstacle();
+
+  int repeat_x = width / tile->get_width();
+  int repeat_y = height / tile->get_height();
 
   // create the tile object
   TileOnMap *tileOnMap = new TileOnMap(tile, layer, x, y, repeat_x, repeat_y);

@@ -8,3 +8,4 @@
 	- vue arborescente de toutes les entités par type ?
 	- choisir les types d'entités affichés
 	- permettre d'ajouter des entités
+	- unifier les classes de dialogues avec OK / Annuler

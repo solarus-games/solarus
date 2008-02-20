@@ -41,8 +41,7 @@ public class ResourceChooser extends JComboBox implements Observer {
      */
     public void update(Observable o, Object obj) {
 
-	removeAllItems();
-	buildList();
+	reloadList();
     }
 
     /**
@@ -55,7 +54,6 @@ public class ResourceChooser extends JComboBox implements Observer {
 	}
 
 	try {
-	
 	    Resource resource = ResourceDatabase.getResource(resourceType);
 	    String[] ids = resource.getIds();
 	    String name;
@@ -72,6 +70,20 @@ public class ResourceChooser extends JComboBox implements Observer {
     }
 
     /**
+     * Reloads the list using the game resource database.
+     * After the list is reloaded, the same item is selected again if it still exists.
+     */
+    protected void reloadList() {
+	
+	String selectedId = getSelectedId();
+	
+	removeAllItems();
+	buildList();
+	
+	setSelectedId(selectedId);
+    }
+    
+    /**
      * Returns the id of the currently selected element.
      * @return the id of the selected element, or an empty string if no element is selected
      */
@@ -87,7 +99,9 @@ public class ResourceChooser extends JComboBox implements Observer {
     }
 
     /**
-     * Changes the currently selected elements.
+     * Changes the currently selected element.
+     * If the specified element doesn't exist, no exception is raised and
+     * the selection is not changed.
      * @param id id of the element you want to make selected in the combo box,
      * or an empty string to select no element
      */

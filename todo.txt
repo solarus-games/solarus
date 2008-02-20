@@ -8,4 +8,5 @@
 	- vue arborescente de toutes les entités par type ?
 	- choisir les types d'entités affichés
 	- permettre d'ajouter des entités
-	- unifier les classes de dialogues avec OK / Annuler
+	- finir d'unifier les classes de dialogues avec OK / Annuler
+	- virer Configuration ? resource database ne l'utilise même pas

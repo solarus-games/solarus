@@ -121,13 +121,15 @@ public class MapPropertiesView extends JPanel implements Observer {
      * This function is called when the map or the configuration is changed.
      */
     public void update(Observable o, Object obj) {
-	mapIdView.setText(map.getId());
-	mapNameView.update(o);
-	mapNbTilesView.setText(Integer.toString(map.getNbTiles()));
-	mapNbActiveEntitiesView.setText(Integer.toString(map.getNbInteractiveEntities() + map.getNbMovingEntities()));
-	mapSizeView.update(o);
-	mapTilesetView.update(o);
-	mapMusicView.update(o);
+	if (map != null) {
+	    mapIdView.setText(map.getId());
+	    mapNameView.update(o);
+	    mapNbTilesView.setText(Integer.toString(map.getNbTiles()));
+	    mapNbActiveEntitiesView.setText(Integer.toString(map.getNbInteractiveEntities() + map.getNbMovingEntities()));
+	    mapSizeView.update(o);
+	    mapTilesetView.update(o);
+	    mapMusicView.update(o);
+	}
     }
 
     // components for the editable properties
@@ -326,7 +328,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	public void update(Observable o) {
 
 	    if (o instanceof Configuration) {
-		super.update(o, null);
+		reloadList();
 	    }
 
 	    if (map != null) {

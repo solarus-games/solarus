@@ -23,7 +23,6 @@ public class ColorChooserDialog extends OkCancelDialog {
      */
     public ColorChooserDialog() {
 	super("Please pick a color", false);
-	colorChooser = new JColorChooser();
     }
 
     /**
@@ -38,6 +37,7 @@ public class ColorChooserDialog extends OkCancelDialog {
      * @return the component to show in the dialog box
      */
     protected JComponent createComponent() {
+	colorChooser = new JColorChooser();
 	return colorChooser;
     }
 

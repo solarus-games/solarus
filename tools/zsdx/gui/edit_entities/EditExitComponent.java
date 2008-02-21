@@ -28,6 +28,8 @@ public class EditExitComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 	
+	MapExit exit = (MapExit) entity;
+	
 	// transition
 	transitionField = new TransitionChooser();
 	addField("Transition", transitionField);
@@ -37,7 +39,15 @@ public class EditExitComponent extends EditEntityComponent {
 	addField("Destination map", mapField);
 	
 	// entrance
-	entranceField = new EntityChooser(map, MapEntity.ENTITY_ENTRANCE, true);
+	Map currentDestinationMap = null;
+	
+	try {
+	    currentDestinationMap = new Map(exit.getDestinationMapId());
+	}
+	catch (ZSDXException ex) {
+	    
+	}
+	entranceField = new EntityChooser(currentDestinationMap, MapEntity.ENTITY_ENTRANCE, true);
 	addField("Entrance", entranceField);
 	
 	// TODO: add a changelistener to the destination map field, which reloads the entrance field

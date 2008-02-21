@@ -21,6 +21,12 @@ public class EditExitComponent extends EditEntityComponent {
      */
     public EditExitComponent(Map map, MapEntity entity) {
 	super(map, entity);
+    }
+    
+    /**
+     * Creates the specific fields for this kind of entity.
+     */
+    protected void createSpecificFields() {
 	
 	// transition
 	transitionField = new TransitionChooser();
@@ -33,6 +39,9 @@ public class EditExitComponent extends EditEntityComponent {
 	// entrance
 	entranceField = new EntityChooser(map, MapEntity.ENTITY_ENTRANCE, true);
 	addField("Entrance", entranceField);
+	
+	// TODO: add a changelistener to the destination map field, which reloads the entrance field
+	// (make a setMap method in EntityChooser) 
     }
 
     /**
@@ -52,8 +61,9 @@ public class EditExitComponent extends EditEntityComponent {
      * Creates the map editor action object which corresponds
      * to the modifications indicated in the fields.
      * @return the action object corresponding to the modifications made
+     * @throws ZSDXException if the destination map or the entrance name are left blank
      */
-    protected ActionEditEntity getAction() {
+    protected ActionEditEntity getAction() throws ZSDXException {
 	
 	// retrieve the action corresponding to the common entity properties
 	ActionEditEntity action = super.getAction();
@@ -64,6 +74,14 @@ public class EditExitComponent extends EditEntityComponent {
 	int transition = transitionField.getTransition();
 	String destinationMapId = mapField.getSelectedId();
 	String entranceName = entranceField.getSelectedName();
+	
+	if (destinationMapId.length() == 0) {
+	    throw new ZSDXException("Please select a destination map");
+	}
+
+	if (entranceName.length() == 0) {
+	    throw new ZSDXException("Please select an entrance on the destination map");
+	}
 	
 	action.setSpecificAction(new ActionEditExit(map, exit, transition, destinationMapId, entranceName));
 	

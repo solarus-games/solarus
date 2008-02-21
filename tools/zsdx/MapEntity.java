@@ -418,7 +418,8 @@ public abstract class MapEntity extends Observable {
 	
 	MapEntity other = map.getEntityWithName(getType(), name);
 	if (other != null && other != this) {
-	    throw new MapException("This name is already used by another entity of this map");
+	    throw new MapException("The name '" + name
+		    + "'is already used by another entity of this map");
 	}
 
 	this.name = name;

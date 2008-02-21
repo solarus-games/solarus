@@ -179,12 +179,12 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
 	    throw new UnsupportedOperationException("Zoom mode not yet supported: " + zoom);
 	}
 	
-	int dx1 = positionInMap.width * scale;
-	int dy1 = positionInMap.height * scale;
-	int dx2 = dx1 + 16;
-	int dy2 = dy1 + 16;
+	int dx1 = positionInMap.x * scale;
+	int dy1 = positionInMap.y * scale;
+	int dx2 = dx1 + positionInMap.width * scale;
+	int dy2 = dy1 + positionInMap.height * scale;
 
-	g.drawImage(icon.getImage(), dx1, dy1, dx2, dy2, this);
+	g.drawImage(icon.getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, this);
     }
 
     /**

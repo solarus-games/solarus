@@ -42,11 +42,14 @@ public class EditEntityComponent extends JPanel {
     // TODO new entity?
     
     /**
-     * Constructor.
+     * Creates a component to edit the common properties of a map entity.
+     * If the map entity has specific properties, you should call instead
+     * the static method EditEntityComponent.create() which instantiate
+     * the specific subclass for this kind of entity.
      * @param map the map
      * @param entity the entity to edit, or null to create a new entity
      */
-    protected EditEntityComponent(Map map, MapEntity entity) {
+    public EditEntityComponent(Map map, MapEntity entity) {
 	super(new GridBagLayout());
 	this.map = map;
 	this.entity = entity;
@@ -86,6 +89,9 @@ public class EditEntityComponent extends JPanel {
 	    addField("Direction", fieldDirection);
 	}
 	
+	// specific fields
+	createSpecificFields();
+	
 	update();
     }
 
@@ -108,12 +114,25 @@ public class EditEntityComponent extends JPanel {
 	    constructor = componentClass.getConstructor(Map.class, MapEntity.class);
 	    component = (EditEntityComponent) constructor.newInstance(map, entity);
 	}
+	catch (InvocationTargetException ex) {
+	    throw (RuntimeException) ex.getCause();
+	}
 	catch (Exception ex) {
-	    System.err.println("Unexpected error: " + ex.getMessage());
+	    System.err.println("Unexpected error: " + ex);
 	    System.exit(1);
 	}
 	
 	return component;
+    }
+    
+    /**
+     * Creates the specific fields for this kind of entity.
+     * The subclasses should redefine this method to create their specific fields
+     * and add them by callind the addField() method.
+     * This method is called by the super constructor.
+     */
+    protected void createSpecificFields() {
+	
     }
     
     /**
@@ -158,8 +177,10 @@ public class EditEntityComponent extends JPanel {
      * to the modifications indicated in the fields.
      * The subclasses should redefine this method to add their specific handling.
      * @return the action object corresponding to the modifications made
+     * @throws ZSDXException if the action could not be created (typically because
+     * some fields are left blank)
      */
-    protected ActionEditEntity getAction() {
+    protected ActionEditEntity getAction() throws ZSDXException {
 
 	String name = entity.hasName() ? fieldName.getText() : null;
 	int layer = fieldLayer.getLayer();

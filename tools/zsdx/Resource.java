@@ -58,6 +58,15 @@ public class Resource extends Observable {
 
 	return ids;
     }
+    
+    /**
+     * Returns whether an element exists.
+     * @param id id of the element
+     * @return true if it exists in the resource, false otherwise
+     */
+    public boolean exists(String id) {
+	return elements.containsKey(id);
+    }
 
     /**
      * Returns the name of an element from its id.

@@ -9,4 +9,4 @@
 	- choisir les types d'entités affichés
 	- permettre d'ajouter des entités
 	- finir d'unifier les classes de dialogues avec OK / Annuler
-	- virer Configuration ? resource database ne l'utilise même pas
+	- virer configuration et faire un seul exécutable avec la notion de Projet

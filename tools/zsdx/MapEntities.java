@@ -127,7 +127,7 @@ public class MapEntities implements Iterable<MapEntity> {
 	if (InteractiveEntity.class.isAssignableFrom(cl)) {
 	    for (MapEntity e: interactiveEntities) {
 		
-		if (e.hasName() && e.getName().equals(name)) {
+		if (e.getType() == type && e.hasName() && e.getName().equals(name)) {
 		    return e;
 		}
 	    }
@@ -137,7 +137,7 @@ public class MapEntities implements Iterable<MapEntity> {
 	else {
 	    for (MapEntity e: movingEntities) {
 
-		if (e.hasName() && e.getName().equals(name)) {
+		if (e.getType() == type && e.hasName() && e.getName().equals(name)) {
 		    return e;
 		}
 	    }

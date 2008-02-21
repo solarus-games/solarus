@@ -41,7 +41,7 @@ public class EntityChooser extends JComboBox {
 */
 	
 	if (showEmptyOption) {
-	    addItem(new KeyValue("", ""));
+	    addItem("");
 	}
 
 	List<MapEntity> entities = map.getEntitiesOfType(entityType);

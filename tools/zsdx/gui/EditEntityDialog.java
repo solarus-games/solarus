@@ -28,7 +28,7 @@ public class EditEntityDialog extends JDialog {
 	contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 	setResizable(false);
 	
-	entityComponent = new EditEntityComponent(map, entity);
+	entityComponent = EditEntityComponent.create(map, entity);
 
 	JButton buttonOK = new JButton("OK");
 	buttonOK.addActionListener(new ActionListener() {

@@ -12,7 +12,16 @@ public class Configuration extends Observable {
     /**
      * The only instance.
      */
-    private static Configuration instance;
+    private static Configuration instance = new Configuration();
+    
+    static {
+	try {
+	    ResourceDatabase.load();
+	}
+	catch (ZSDXException ex) {
+	    // no resource database was found at this location
+	}
+    }
 
     /**
      * Root path of ZSDX.
@@ -29,10 +38,10 @@ public class Configuration extends Observable {
 	 */
 	File defaultDirectory = new File("..");
 	try {
-	    zsdxRootPath = defaultDirectory.getCanonicalPath();
+	    zsdxRootPath = defaultDirectory.getCanonicalPath() + File.separator;
 	}
-	catch (IOException e) {
-	    // just left the path blank if we couldn't get the default path
+	catch (IOException ex) {
+	    zsdxRootPath = "." + File.separator;
 	}
     }
 
@@ -41,11 +50,6 @@ public class Configuration extends Observable {
      * @return the only instance of Configuration
      */
     public static Configuration getInstance() {
-
-	if (instance == null) {
-	    instance = new Configuration();
-	}
-
 	return instance;
     }
 
@@ -53,35 +57,40 @@ public class Configuration extends Observable {
      * Returns the root path of ZSDX.
      * @return the root path
      */
-    public String getZsdxRootPath() {
-	return zsdxRootPath;
+    public static String getZsdxRootPath() {
+	return instance.zsdxRootPath;
+    }
+
+    /**
+     * Sets the root path of ZSDX and loads the project located at this path.
+     * @param zsdxRootPath the root path
+     * @param ZSDXException if the specified path doesn't contain a valid ZSDX project
+     */
+    public static void setZsdxRootPath(String zsdxRootPath) throws ZSDXException {
+	instance.zsdxRootPath = zsdxRootPath;
+
+	try {
+	    ResourceDatabase.load();
+	}
+	finally {
+	    instance.setChanged();
+	    instance.notifyObservers();
+	}
     }
 
     /**
      * Returns the data path of ZSDX.
      * @return the path of all data files
      */
-    public String getDataPath() {
+    public static String getDataPath() {
 	return getZsdxRootPath() + File.separator + "data";
-    }
-
-    /**
-     * Sets the root path of ZSDX.
-     * @param zsdxRootPath the root path
-     */
-    public void setZsdxRootPath(String zsdxRootPath) {
-	if (zsdxRootPath != this.zsdxRootPath) {
-	    this.zsdxRootPath = zsdxRootPath;
-	    setChanged();
-	    notifyObservers();
-	}
     }
 
     /**
      * Returns the file containing the database of the game resources (game.zsd).
      * @return the file containing the database of the game resources
      */
-    public File getResourceDatabaseFile() {
+    public static File getResourceDatabaseFile() {
 	return new File(getDataPath() + File.separator + "game.zsd");
 
     }
@@ -90,7 +99,7 @@ public class Configuration extends Observable {
      * Returns the path of the image files, determined with ZSDX root path.
      * @return the path of the image files
      */
-    public String getImagePath() {
+    public static String getImagePath() {
 	return getDataPath() + File.separator + "images";
     }
 
@@ -98,7 +107,7 @@ public class Configuration extends Observable {
      * Returns the path of the tileset files, determined with ZSDX root path.
      * @return the path of the tileset files
      */
-    public String getTilesetPath() {
+    public static String getTilesetPath() {
 	return getDataPath() + File.separator + "tilesets";
     }
 
@@ -107,7 +116,7 @@ public class Configuration extends Observable {
      * @param tilesetId id of a tileset
      * @return the corresponding tileset file
      */
-    public File getTilesetFile(String tilesetId) {
+    public static File getTilesetFile(String tilesetId) {
 	
 	NumberFormat nf = NumberFormat.getInstance();
 	nf.setMinimumIntegerDigits(4);
@@ -122,7 +131,7 @@ public class Configuration extends Observable {
      * @param tilesetId id of a tileset
      * @return the corresponding tileset file
      */
-    public File getTilesetImageFile(String tilesetId) {
+    public static File getTilesetImageFile(String tilesetId) {
 	
 	NumberFormat nf = NumberFormat.getInstance();
 	nf.setMinimumIntegerDigits(4);
@@ -136,7 +145,7 @@ public class Configuration extends Observable {
      * Returns the path of the map files, determined with ZSDX root path.
      * @return the path of the map files
      */
-    public String getMapPath() {
+    public static String getMapPath() {
 	return getDataPath() + File.separator + "maps";
     }
 
@@ -145,7 +154,7 @@ public class Configuration extends Observable {
      * @param mapId id of a map
      * @return the file corresponding to this id
      */
-    public File getMapFile(String mapId) {
+    public static File getMapFile(String mapId) {
 
 	NumberFormat nf = NumberFormat.getInstance();
 	nf.setMinimumIntegerDigits(4);
@@ -159,7 +168,7 @@ public class Configuration extends Observable {
      * Returns the path of the music files, determined with ZSDX root path.
      * @return the path of the music files
      */
-    public String getMusicPath() {
+    public static String getMusicPath() {
 	return getDataPath() + File.separator + "music";
     }
 

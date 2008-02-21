@@ -3,6 +3,7 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import zsdx.*;
 
 /**
  * Abstract class to make a modal dialog box with the standard OK and Cancel button,
@@ -28,8 +29,7 @@ public abstract class OkCancelDialog extends JDialog {
 	JButton buttonOK = new JButton("OK");
 	buttonOK.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
-		applyModifications();
-		dispose();
+		tryToApplyModifications(true);
 	    }
 	});
 	
@@ -65,7 +65,7 @@ public abstract class OkCancelDialog extends JDialog {
 	    JButton buttonApply = new JButton("Apply");
 	    buttonApply.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    applyModifications();
+		    tryToApplyModifications(false);
 		}
 	    });
 	    
@@ -78,28 +78,54 @@ public abstract class OkCancelDialog extends JDialog {
 	bottomPanel.add(Box.createHorizontalGlue());
 	bottomPanel.add(buttonPanel);
 
-	add(getComponent());
+	add(createComponent());
 	add(Box.createVerticalStrut(20));
 	add(bottomPanel);
 	add(Box.createVerticalStrut(10));
     }
     
     /**
-     * Returns the component to show in the dialog box.
+     * Creates and returns the component to show in the dialog box.
      * The subclasses must implement this method and return whatever they
      * want to display.
      * They don't have to care about the buttons (OK, Cancel, Apply).
-     * This method is called by the constructor when creating the dialob box content.
+     * This method is called by the super constructor (to set up the dialob box content)
+     * so don't create your component in your constructor, because this method is called
+     * before.
      * @return the component to show in the dialog box
      */
-    protected abstract JComponent getComponent();
+    protected abstract JComponent createComponent();
     
     /**
      * Takes into account the modifications made by the user in the dialog box.
      * This method is called when the user clicks on OK (or presses the Enter key),
      * just before the dialog box is closed, or when he clicks on Apply.
+     * The subclasses must implement this method and do whatever they have to do
+     * to apply the user choices. They can throw a ZSDXException which will show
+     * an error message.
+     * @throws ZSDXException if the user has made incorrect modifications
      */
-    protected abstract void applyModifications();
+    protected abstract void applyModifications() throws ZSDXException;
+
+    /**
+     * Takes into account the modifications made by the user in the dialog box.
+     * This method is called when the user clicks on OK (or presses the Enter key),
+     * just before the dialog box is closed, or when he clicks on Apply.
+     * This method called applyModifications() and show an error message if the
+     * modifications are incorrect.
+     * @param closeWindow true to close the window if there is no error
+     */
+    private void tryToApplyModifications(boolean closeWindow) {
+	try {
+	    applyModifications();
+	    if (closeWindow) {
+		dispose();
+	    }
+	}
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog(ex.getMessage());
+	}
+    }
     
     /**
      * Displays the dialog box.

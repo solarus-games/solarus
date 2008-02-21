@@ -3,20 +3,14 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.Configuration;
-
 import java.io.*;
+import zsdx.*;
+
 
 /**
  * This component provides a text field to choose ZSDX root directory.
  */
 public class ConfigurationPanel extends JPanel {
-
-    /**
-     * The configuration object observed.
-     */
-    private Configuration configuration;
 
     /**
      * Text field containing the root directory of ZSDX. 
@@ -28,8 +22,6 @@ public class ConfigurationPanel extends JPanel {
      */
     public ConfigurationPanel() {
 	super();
-
-	configuration = Configuration.getInstance();
 
  	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
@@ -56,7 +48,7 @@ public class ConfigurationPanel extends JPanel {
 
 	    });
 
-	textFieldPath.setText(configuration.getZsdxRootPath());
+	textFieldPath.setText(Configuration.getZsdxRootPath());
     }
 
     /**

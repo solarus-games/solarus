@@ -742,7 +742,7 @@ public class Map extends Observable {
 	    Resource mapResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_MAP);
 	    setName(mapResource.getElementName(mapId));
 	    
-	    File mapFile = Configuration.getInstance().getMapFile(mapId);
+	    File mapFile = Configuration.getMapFile(mapId);
 	    BufferedReader in = new BufferedReader(new FileReader(mapFile));
 
 	    // read the map general info
@@ -808,7 +808,7 @@ public class Map extends Observable {
 	try {
 	    
 	    // open the map file
-	    File mapFile = Configuration.getInstance().getMapFile(mapId);
+	    File mapFile = Configuration.getMapFile(mapId);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
 	    
 	    // print the map general info

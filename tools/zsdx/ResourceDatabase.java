@@ -26,16 +26,6 @@ public class ResourceDatabase extends Observable {
      */
     private static final ResourceDatabase instance = new ResourceDatabase();
 
-    static {
-	try {
-	    load();
-	}
-	catch (ZSDXException ex) {
-	    System.err.println("Cannot read the game resource database: " + ex.getMessage());
-	    System.exit(1);
-	}
-    }
-
     /**
      * Creates the list of the game resources from the file game.zsd.
      */
@@ -49,12 +39,11 @@ public class ResourceDatabase extends Observable {
     }
 
     /**
-     * Returns the only instance. All static functions use this instance.
+     * Returns the only instance. All static functions actually use this instance.
      * This function is useful for the MVC system.
      * @return the only instance
      */
     public static ResourceDatabase getInstance() {
-
 	return instance;
     }
 
@@ -68,6 +57,16 @@ public class ResourceDatabase extends Observable {
     }
 
     /**
+     * Clears all resources.
+     */
+    public static void clear() {
+
+	for (int i = 0; i < RESOURCE_NB; i++) {
+	    getResource(i).clear();
+	}
+    }
+    
+    /**
      * Reads the file game.zsd, i.e. the list of the game resources and their name.
      * @throws ZSDXException if the file could not be read or contains an error
      */
@@ -76,12 +75,10 @@ public class ResourceDatabase extends Observable {
 	int lineNumber = 0;
 
 	try {
-	    File dbFile = Configuration.getInstance().getResourceDatabaseFile();
-	    BufferedReader buff = new BufferedReader(new FileReader(dbFile));
+	    clear();
 
-	    for (int i = 0; i < RESOURCE_NB; i++) {
-		getResource(i).clear();
-	    }
+	    File dbFile = Configuration.getResourceDatabaseFile();
+	    BufferedReader buff = new BufferedReader(new FileReader(dbFile));
 
 	    String line = buff.readLine();
 	    while (line != null) {
@@ -108,16 +105,16 @@ public class ResourceDatabase extends Observable {
 	    buff.close();
 	}
 	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": Value expected");
-	}
-	catch (ZSDXException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
+	    throw new ZSDXException("game.zsd: Line " + lineNumber + ": Value expected");
 	}
 	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": Integer expected");
+	    throw new ZSDXException("game.zsd: Line " + lineNumber + ": Integer expected");
+	}
+	catch (ZSDXException ex) {
+	    throw new ZSDXException("game.zsd: Line " + lineNumber + ": " + ex.getMessage());
 	}
 	catch (IOException ex) {
-	    throw new ZSDXException(ex.getMessage());
+	    throw new ZSDXException("Cannot load the resources: " + ex.getMessage());
 	}
     }
     
@@ -129,7 +126,7 @@ public class ResourceDatabase extends Observable {
 
 	try {
 	    
-	    File dbFile = Configuration.getInstance().getResourceDatabaseFile();
+	    File dbFile = Configuration.getResourceDatabaseFile();
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)));
 	    Iterator<String> it;
 	    

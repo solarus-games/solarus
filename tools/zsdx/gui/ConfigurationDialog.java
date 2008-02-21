@@ -1,8 +1,7 @@
 package zsdx.gui;
 
 import javax.swing.*;
-
-import zsdx.Configuration;
+import zsdx.*;
 
 /**
  * A dialog box to set the configuration.
@@ -17,15 +16,15 @@ public class ConfigurationDialog extends OkCancelDialog {
      */
     public ConfigurationDialog() {
 	super("ZSDX configuration", true);
-	configurationPanel = new ConfigurationPanel();
-	configurationPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
     }
     
     /**
-     * Returns the component to show in the dialog box.
+     * Creates and returns the component to show in the dialog box.
      * @return the component to show in the dialog box
      */
-    public JComponent getComponent() {
+    public JComponent createComponent() {
+	configurationPanel = new ConfigurationPanel();
+	configurationPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
 	return configurationPanel;
     }
     
@@ -33,7 +32,7 @@ public class ConfigurationDialog extends OkCancelDialog {
      * Takes into account the modifications made by
      * the user (i.e. updates the ZSDX root path).
      */
-    public void applyModifications() {
-	Configuration.getInstance().setZsdxRootPath(configurationPanel.getZsdxRootPathEntered());
+    public void applyModifications() throws ZSDXException {
+	Configuration.setZsdxRootPath(configurationPanel.getZsdxRootPathEntered());
     }
 }

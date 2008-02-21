@@ -34,10 +34,10 @@ public class ColorChooserDialog extends OkCancelDialog {
     }
 
     /**
-     * Returns the component to show in the dialog box.
+     * Creates and returns the component to show in the dialog box.
      * @return the component to show in the dialog box
      */
-    protected JComponent getComponent() {
+    protected JComponent createComponent() {
 	return colorChooser;
     }
 

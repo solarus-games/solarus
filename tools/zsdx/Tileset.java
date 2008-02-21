@@ -195,7 +195,7 @@ public class Tileset extends Observable implements ImageObserver {
      * @return the image file of the tileset
      */
     public File getImageFile() {
-	return Configuration.getInstance().getTilesetImageFile(tilesetId);
+	return Configuration.getTilesetImageFile(tilesetId);
     }
 
     /**
@@ -518,7 +518,7 @@ public class Tileset extends Observable implements ImageObserver {
 	    Resource tilesetResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_TILESET);
 	    setName(tilesetResource.getElementName(tilesetId));
 	    
-	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetId);
+	    File tilesetFile = Configuration.getTilesetFile(tilesetId);
 	    BufferedReader in = new BufferedReader(new FileReader(tilesetFile));
 
 	    // read the tileset general info: "r g b"
@@ -581,7 +581,7 @@ public class Tileset extends Observable implements ImageObserver {
 	try {
 	    
 	    // open the tileset file
-	    File tilesetFile = Configuration.getInstance().getTilesetFile(tilesetId);
+	    File tilesetFile = Configuration.getTilesetFile(tilesetId);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
 	    
 	    // print the tileset general info: "r g b"

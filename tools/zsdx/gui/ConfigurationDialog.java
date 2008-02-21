@@ -17,6 +17,8 @@ public class ConfigurationDialog extends OkCancelDialog {
      */
     public ConfigurationDialog() {
 	super("ZSDX configuration", true);
+	configurationPanel = new ConfigurationPanel();
+	configurationPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
     }
     
     /**
@@ -24,9 +26,6 @@ public class ConfigurationDialog extends OkCancelDialog {
      * @return the component to show in the dialog box
      */
     public JComponent getComponent() {
-	
-	configurationPanel = new ConfigurationPanel();
-	configurationPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
 	return configurationPanel;
     }
     

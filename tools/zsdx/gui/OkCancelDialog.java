@@ -100,4 +100,13 @@ public abstract class OkCancelDialog extends JDialog {
      * just before the dialog box is closed, or when he clicks on Apply.
      */
     protected abstract void applyModifications();
+    
+    /**
+     * Displays the dialog box.
+     */
+    public void display() {
+	setLocationRelativeTo(null);
+ 	pack();
+ 	setVisible(true);	
+    }
 }

@@ -1,13 +1,12 @@
 package zsdx.gui;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 /**
  * A simple dialog with a JColorChooser.
  */
-public class ColorChooserDialog extends JDialog {
+public class ColorChooserDialog extends OkCancelDialog {
 
     /**
      * The JColorChooser component.
@@ -23,44 +22,23 @@ public class ColorChooserDialog extends JDialog {
      * Constructor.
      */
     public ColorChooserDialog() {
-	super((Frame) null, "Please pick a color", true);
-
-	setResizable(false);
-	((BorderLayout) getLayout()).setHgap(10);
-
+	super("Please pick a color", false);
 	colorChooser = new JColorChooser();
+    }
 
-	JButton buttonOK = new JButton("OK");
-	buttonOK.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    selectedColor = colorChooser.getColor();
-		    dispose();
-		}
-	    });
+    /**
+     * Takes into account the color choice made by the user.
+     */
+    protected void applyModifications() {
+	this.selectedColor = colorChooser.getColor();
+    }
 
-	JButton buttonCancel = new JButton("Cancel");
-	buttonCancel.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    selectedColor = null;
-		    dispose();
-		}
-	    });
-
-	GridLayout gridLayout = new GridLayout(1, 2); 
-	JPanel buttonPanel = new JPanel(gridLayout);
-	gridLayout.setHgap(10);
-
-	buttonPanel.add(buttonOK);
-	buttonPanel.add(buttonCancel);
-
-	JPanel bottomPanel = new JPanel();
-	bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
-
-	bottomPanel.add(Box.createHorizontalGlue());
-	bottomPanel.add(buttonPanel);
-
-	add(colorChooser, BorderLayout.CENTER);
-	add(bottomPanel, BorderLayout.SOUTH);
+    /**
+     * Returns the component to show in the dialog box.
+     * @return the component to show in the dialog box
+     */
+    protected JComponent getComponent() {
+	return colorChooser;
     }
 
     /**
@@ -70,9 +48,9 @@ public class ColorChooserDialog extends JDialog {
      */
     public Color display(Color initialColor) {
 	colorChooser.setColor(initialColor);
-	pack();
-	setVisible(true);
+	super.display();
 
 	return selectedColor;
     }
+
 }

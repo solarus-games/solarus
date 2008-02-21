@@ -200,9 +200,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
 		    ConfigurationDialog dialog = new ConfigurationDialog();
-		    dialog.setLocationRelativeTo(MapEditorWindow.this);
-		    dialog.pack();
-		    dialog.setVisible(true);
+		    dialog.display();
 		}
 	    });
 	menu.add(item);

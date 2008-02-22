@@ -32,7 +32,7 @@ Moving8ByPlayer(12), sprite(new AnimatedSprite(LinkAnimations::get_instance())) 
   SDL_Rect collision_box;
 
   collision_box.x = -8;
-  collision_box.y = -16;
+  collision_box.y = -15;
   collision_box.w = 16;
   collision_box.h = 16;
 

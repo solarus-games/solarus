@@ -10,7 +10,7 @@
  * Constructor.
  */
 Game::Game(void):
-  current_map(NULL), current_music_id(Music::none), current_music(NULL) {
+  current_map(NULL), transition(TRANSITION_IMMEDIATE), current_music_id(Music::none), current_music(NULL) {
   
 }
 
@@ -30,6 +30,7 @@ void Game::play(void) {
     
     // close the old map
     if (map != NULL) {
+      //      TransitionDisplayer::showOutTransition(transition);
       map->leave();
       map->unload();
     }
@@ -136,7 +137,15 @@ void Game::play(void) {
       ticks = SDL_GetTicks();
       if (ticks >= last_frame_date + FRAME_INTERVAL) {
 	last_frame_date = ticks;
+
+	// TODO: dedicated function for this
+	SDL_FillRect(ZSDX::get_screen(), NULL, 0);
+
+	//	SDL_SetAlpha(map->get_surface(), SDL_SRCALPHA, 128);
 	map->display();
+	SDL_BlitSurface(map->get_surface(), NULL, ZSDX::get_screen(), NULL); // TODO optimize
+
+	SDL_Flip(ZSDX::get_screen());
       }
     }
   }
@@ -148,7 +157,7 @@ void Game::play(void) {
 /**
  * Changes the current map.
  * Call this function when you want Link to go to another map.
- * The map will be loaded with its first entrance.
+ * The map will be loaded with its first entrance and without any transition effect.
  * @param map_id id of the map to launch
  */
 void Game::set_current_map(MapId map_id) {
@@ -167,8 +176,9 @@ void Game::set_current_map(MapId map_id) {
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
  * @param entrance_name name of the entrance of the map you want to use
+ * @param transition type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, string entrance_name) {
+void Game::set_current_map(MapId map_id, string entrance_name, Transition transition) {
 
   current_map = ZSDX::game_resource->get_map(map_id);
 
@@ -177,6 +187,7 @@ void Game::set_current_map(MapId map_id, string entrance_name) {
   }
 
   current_map->set_entrance(entrance_name);
+  this->transition = transition;
 }
 
 /**

@@ -33,21 +33,11 @@ class ZSDX {
   static bool fullscreen;
   static TileAnimationManager tile_animation_manager;
 
-  /**
-   * Initializes the game engine.
-   */
   static void initialize(void);
-
-  /**
-   * Cleans everything.
-   */
   static void exit(void);
 
  public:
 
-  /**
-   * Launches the game.
-   */
   static void main(void);
 
   /**
@@ -63,21 +53,8 @@ class ZSDX {
    */
   static Game *game;
 
-  /**
-   * Sets the full screen mode or the windowed mode.
-   * @param fullscreen true for full screen mode, false for the windowed mode
-   */
   static void set_fullscreen(bool fullscreen);
-
-  /**
-   * Returns whether the game is in full screen.
-   * @return true if the game is in full screen mode, false otherwise
-   */
   static bool is_fullscreen(void);
-  
-  /**
-   * Switches between full screen mode and windowed mode.
-   */
   static void switch_fullscreen(void);
 
   /**

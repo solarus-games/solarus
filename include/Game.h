@@ -23,6 +23,11 @@ class Game {
   Map *current_map;
 
   /**
+   * Type of transition between the current map and the next one.
+   */
+  Transition transition;
+
+  /**
    * Id of the music currently played (a valid music, or MUSIC_NONE if no music is being played).
    */
   MusicId current_music_id;
@@ -45,7 +50,7 @@ class Game {
   void play(void);
 
   void set_current_map(MapId map_id);
-  void set_current_map(MapId map_id, string entrance_name);
+  void set_current_map(MapId map_id, string entrance_name, Transition transition);
 
   /**
    * Returns the current map.

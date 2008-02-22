@@ -19,6 +19,8 @@ Map::Map(MapId id) {
 
   this->id = id;
   this->width = 0;
+
+  this->surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 }
 
 /**
@@ -159,8 +161,12 @@ void Map::load() {
       
     case ENTITY_EXIT:
       {
-	iss >> width >> height >> entity_name;
-	// TODO
+	int transition;
+	MapId destination_map_id;	
+	string entrance_name;
+	iss >> width >> height >> entity_name >> transition >> destination_map_id >> entrance_name;
+	add_exit(entity_name, (Layer) layer, x, y, width, height,
+		 (Transition) transition, destination_map_id, entrance_name);
 	break;
       }
     }
@@ -314,13 +320,14 @@ void Map::add_entrance(string entrance_name, Layer layer, int link_x, int link_y
  * @param y y position of the exit rectangle
  * @param w width of the exit rectangle
  * @param h height of the exit rectangle
+ * @param transition type of transition between the two maps
  * @param map_id id of the next map
  * @param entrance_name name of the entrance of the next map
  */
 void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
-		   MapId map_id, string entrance_name) {
+		   Transition transition, MapId map_id, string entrance_name) {
   
-  MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, map_id, entrance_name);
+  MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, transition, map_id, entrance_name);
   entity_detectors->push_back(exit);
 }
 
@@ -351,7 +358,7 @@ void Map::set_entrance(string entrance_name) {
   }
 
   if (found) {
-    this->entrance_index = i;
+    this->entrance_index = i - 1;
   }
   else {
     cerr << "Fatal error: unknown entrance '" << entrance_name << "' on map '" << id << '\'' << endl;
@@ -360,11 +367,11 @@ void Map::set_entrance(string entrance_name) {
 }
 
 /**
- * Returns the SDL surface where the map is displayed (normally the screen).
+ * Returns the SDL surface where the map is displayed.
  * @return the surface where the map is displayed
  */
 SDL_Surface *Map::get_surface(void) {
-  return ZSDX::get_screen();
+  return surface;
 }
 
 /**
@@ -385,7 +392,6 @@ void Map::display() {
   Link* link = ZSDX::game_resource->get_link();
 
   // screen
-  SDL_Surface *surface = get_surface();
   screen_position.x = MIN(MAX(link->get_x() - 160, 0), width - 320);
   screen_position.y = MIN(MAX(link->get_y() - 120, 0), height - 240);  
 
@@ -406,7 +412,7 @@ void Map::display() {
     }
   }
 
-  SDL_Flip(surface);
+  // rupees, hearts...
 }
 
 /**

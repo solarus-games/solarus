@@ -30,6 +30,14 @@ enum Layer {
 };
 
 /**
+ * Type of transition between two maps.
+ */
+enum Transition {
+  TRANSITION_IMMEDIATE,  // no transition between the two maps
+  TRANSITION_FADE        // fade in and fade out
+};
+
+/**
  * Types of the id of each resource.
  */
 typedef int MapId;

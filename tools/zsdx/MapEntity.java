@@ -21,11 +21,6 @@ public abstract class MapEntity extends Observable {
     protected Rectangle positionInMap;
 
     /**
-     * Origin point of the entity (relative to the top-left corner of its rectangle).
-     */
-    protected Point hotSpot;
-
-    /**
      * Layer of the entity on the map.
      */
     protected int layer;
@@ -102,7 +97,6 @@ public abstract class MapEntity extends Observable {
 	this.map = map;
 	this.layer = layer;
 	this.positionInMap = new Rectangle(x, y, width, height);
-	this.hotSpot = new Point();
 
 	if (hasName() && computeDefaultName) {
 	    computeDefaultName();
@@ -116,6 +110,7 @@ public abstract class MapEntity extends Observable {
      * This constructor should be called by the subclasses before parsing the specific part of the line.
      * @param map the map
      * @param tokenizer the string tokenizer parsing the entity line (the entity type has already been parsed)
+     * @throws ZSDXException if the line contains an error
      */
     protected MapEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	this(map, LAYER_LOW, 0, 0, 0, 0, false);
@@ -186,26 +181,32 @@ public abstract class MapEntity extends Observable {
     }
     
     /**
-     * Sets the hotspot of the entity.
-     * @param x x coordinate
-     * @param y y coordinate
-     */
-    protected void setHotSpot(int x, int y) {	
-	hotSpot.x = x;
-	hotSpot.y = y;
-	
-	// update the position to place to hotspot where the top-left corner was
-	positionInMap.x -= x;
-	positionInMap.y -= y;
-    }
-
-    /**
      * Returns the entity's obstacle property (default is OBSTACLE_NONE).
      * @return OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
      * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
      */
     public int getObstacle() {
 	return OBSTACLE_NONE;
+    }
+    
+    /**
+     * Returns the x coordinate of the origin point of the entity.
+     * By default, it is zero (the origin is the top-left corner).
+     * Redefine this method in a subclass to change the origin.
+     * @return 0
+     */
+    protected int getHotSpotX() {
+	return 0;
+    }
+
+    /**
+     * Returns the y coordinate of the origin point of the entity.
+     * By default, it is zero (the origin is the top-left corner).
+     * Redefine this method in a subclass to change the origin.
+     * @return 0
+     */
+    protected int getHotSpotY() {
+	return 0;
     }
 
     /**
@@ -265,7 +266,7 @@ public abstract class MapEntity extends Observable {
     public void setPositionInMap(int x, int y) throws MapException {
 	
 	// calculate the new coordinates of the top-left corner
-	setPositionTopLeft(x - hotSpot.x, y - hotSpot.y);
+	setPositionTopLeft(x - getHotSpotX(), y - getHotSpotY());
     }
 
     /**
@@ -570,7 +571,7 @@ public abstract class MapEntity extends Observable {
      * @return the x coordinate of the entity's hotspot on the map
      */
     public int getX() {
-	return positionInMap.x + hotSpot.x;
+	return positionInMap.x + getHotSpotX();
     }
 
     /**
@@ -578,7 +579,7 @@ public abstract class MapEntity extends Observable {
      * @return the y coordinate of the entity's hotspot on the map
      */
     public int getY() {
-	return positionInMap.y + hotSpot.y;
+	return positionInMap.y + getHotSpotY();
     }
     
     /**

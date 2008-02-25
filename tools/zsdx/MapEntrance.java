@@ -33,7 +33,6 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
      */
     public MapEntrance(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
-	setHotSpot(8, 15);
 	setDirection(1);
     }
 
@@ -47,7 +46,6 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
     public MapEntrance(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	super(map, tokenizer);
 	
-	setHotSpot(8, 15);
 	setSizeImpl(16, 16);
     }
 
@@ -57,6 +55,22 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
      */
     public int getType() {
 	return ENTITY_ENTRANCE;
+    }
+
+    /**
+     * Returns the x coordinate of the origin point of the entity.
+     * @return 8
+     */
+    protected int getHotSpotX() {
+	return 8;
+    }
+
+    /**
+     * Returns the y coordinate of the origin point of the entity.
+     * @return 15
+     */
+    protected int getHotSpotY() {
+	return 15;
     }
 
     /**

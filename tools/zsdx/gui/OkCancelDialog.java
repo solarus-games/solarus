@@ -12,6 +12,16 @@ import zsdx.*;
 public abstract class OkCancelDialog extends JDialog {
 
     /**
+     * The panel containing the buttons.
+     */
+    private JPanel bottomPanel;
+    
+    /**
+     * Title of the optional border.
+     */
+    private String borderTitle;
+
+    /**
      * Creates a new dialog box.
      * @param title the text displayed in the dialog box title bar
      * @param showApplyButton true to add an "Apply" button, false
@@ -72,29 +82,40 @@ public abstract class OkCancelDialog extends JDialog {
 	    buttonPanel.add(buttonApply);
 	}
 
-	JPanel bottomPanel = new JPanel();
+	bottomPanel = new JPanel();
 	bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
 
 	bottomPanel.add(Box.createHorizontalGlue());
 	bottomPanel.add(buttonPanel);
+    }
 
-	add(createComponent());
-	add(Box.createVerticalStrut(20));
-	add(bottomPanel);
-	add(Box.createVerticalStrut(10));
+    /**
+     * Adds a titled border with the specified title.
+     * This method must be called before setComponent().
+     * @param title the title
+     */
+    protected void setBorderTitle(String title) {
+	this.borderTitle = title;
     }
     
     /**
-     * Creates and returns the component to show in the dialog box.
-     * The subclasses must implement this method and return whatever they
+     * Sets the component to show in the dialog box.
+     * The constructor of a subclasses must call this method to set what they
      * want to display.
      * They don't have to care about the buttons (OK, Cancel, Apply).
-     * This method is called by the super constructor (to set up the dialob box content)
-     * so don't create your component in your constructor, because this method is called
-     * before.
-     * @return the component to show in the dialog box
+     * param component the component to show in the dialog box.
+     * The dialog box will be empty until this method is called.
      */
-    protected abstract JComponent createComponent();
+    protected void setComponent(JComponent component) {
+	add(component);
+	add(Box.createVerticalStrut(20));
+	add(bottomPanel);
+	add(Box.createVerticalStrut(10));
+	
+	if (borderTitle != null) {
+	    component.setBorder(BorderFactory.createTitledBorder(borderTitle));
+	}
+    }
     
     /**
      * Takes into account the modifications made by the user in the dialog box.

@@ -1,6 +1,5 @@
 package zsdx.gui;
 
-import javax.swing.*;
 import zsdx.*;
 
 /**
@@ -16,16 +15,9 @@ public class ConfigurationDialog extends OkCancelDialog {
      */
     public ConfigurationDialog() {
 	super("ZSDX configuration", true);
-    }
-    
-    /**
-     * Creates and returns the component to show in the dialog box.
-     * @return the component to show in the dialog box
-     */
-    public JComponent createComponent() {
 	configurationPanel = new ConfigurationPanel();
-	configurationPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
-	return configurationPanel;
+	setBorderTitle("Configuration");
+	setComponent(configurationPanel);
     }
     
     /**

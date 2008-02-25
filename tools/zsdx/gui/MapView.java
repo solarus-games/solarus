@@ -692,8 +692,16 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    // we move the entities during the dragging, to make them follow the mouse while dragging
 	    List<MapEntity> entities = map.getEntitySelection().getEntities();
-	    map.moveEntities(entities, dx, dy);
-
+	    
+	    try {
+		map.moveEntities(entities, dx, dy);
+	    }
+	    catch (MapException ex) {
+		System.err.println("Unexpected error: " + ex.getMessage());
+		ex.printStackTrace();
+		System.exit(1);
+	    }
+	    
 	    // but we also save the total move because only the total move will be undoable
 	    this.total_dx += dx;
 	    this.total_dy += dy;
@@ -719,7 +727,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    List<MapEntity> entities = map.getEntitySelection().getEntities();
 	    
 	    // we restore the entities at their initial position
-	    map.moveEntities(entities, -total_dx, -total_dy);
+	    try {
+		map.moveEntities(entities, -total_dx, -total_dy);
+	    }
+	    catch (MapException ex) {
+		System.err.println("Unexpected error: " + ex.getMessage());
+		ex.printStackTrace();
+		System.exit(1);
+	    }
 	    
 	    // we make the whole move in one step, this time saving it into the undo/redo history
 	    try {

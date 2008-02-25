@@ -501,8 +501,9 @@ public class Map extends Observable {
      * @param entity an entity
      * @param x x coordinate of the hotspot
      * @param y y coordinate of the hotspot
+     * @throws MapException if the coordinates are not multiple of 8
      */
-    public void setEntityPosition(MapEntity entity, int x, int y) {
+    public void setEntityPosition(MapEntity entity, int x, int y) throws MapException {
 	entity.setPositionInMap(x, y);
 
 	setChanged();
@@ -519,7 +520,7 @@ public class Map extends Observable {
      * @param x2 x coordinate of the second point
      * @param y2 y coordinate of the second point
      * @throws MapException if the entity is not resizable of the rectangle width
-     * or its height is zero
+     * or its height is zero or the coordinates or the coordinates are not multiple of 8
      */
     public void setEntityPosition(MapEntity entity, int x1, int y1, int x2, int y2) throws MapException {
 	entity.setPositionInMap(x1, y1, x2, y2);
@@ -564,8 +565,9 @@ public class Map extends Observable {
      * @param entities the entities to move
      * @param dx number of pixels to move on x
      * @param dy number of pixels to move on y
+     * @throws MapException if the coordinates of an entity are not multiple of 8
      */
-    public void moveEntities(List<MapEntity> entities, int dx, int dy) {
+    public void moveEntities(List<MapEntity> entities, int dx, int dy) throws MapException {
 			  
 	for (MapEntity entity: entities) {
 	    entity.move(dx, dy);

@@ -195,7 +195,8 @@ public abstract class MapEntity extends Observable {
 	hotSpot.y = y;
 	
 	// update the position to place to hotspot where the top-left corner was
-	move(-x, -y);
+	positionInMap.x -= x;
+	positionInMap.y -= y;
     }
 
     /**
@@ -222,10 +223,11 @@ public abstract class MapEntity extends Observable {
      */
     public void setPositionInMap(Rectangle position) throws MapException {
 
-	positionInMap.x = position.x;
-	positionInMap.y = position.y;
+	checkPositionTopLeft(position.x, position.y);
+	checkSize(position.width, position.height);
 	
-	setSize(position.width, position.height);
+	setPositionTopLeftImpl(position.x, position.y);
+	setSizeImpl(position.width, position.height);
     }
     
     /**
@@ -236,7 +238,7 @@ public abstract class MapEntity extends Observable {
      * @param x2 x coordinate of the second point
      * @param y2 y coordinate of the second point
      * @throws MapException if the entity is not resizable, or the rectangle width
-     * or its height is zero
+     * or its height is zero, or the coordinates are wrong
      */
     public void setPositionInMap(int x1, int y1, int x2, int y2) throws MapException {
 
@@ -246,10 +248,11 @@ public abstract class MapEntity extends Observable {
 	int y = Math.min(y1, y2);
 	int height = Math.abs(y2 - y1);
 
-	positionInMap.x = x;
-	positionInMap.y = y;
+	checkPositionTopLeft(x, y);
+	checkSize(width, height);
 	
-	setSize(width, height);
+	setPositionTopLeftImpl(x, y);
+	setSizeImpl(width, height);
     }
     
     /**
@@ -257,15 +260,58 @@ public abstract class MapEntity extends Observable {
      * The size of the entity is not changed.
      * @param x x coordinate of the hotspot
      * @param y y coordinate of the hotspot
+     * @throws MapException if the coordinates of the top-left corner are not divisible by 8
      */
-    public void setPositionInMap(int x, int y) {
+    public void setPositionInMap(int x, int y) throws MapException {
+	
+	// calculate the new coordinates of the top-left corner
+	setPositionTopLeft(x - hotSpot.x, y - hotSpot.y);
+    }
 
-	positionInMap.x = x - hotSpot.x;
-	positionInMap.y = y - hotSpot.y;
+    /**
+     * Checks whether the specified position of the entity is correct (i.e. whether the
+     * coordinates of the top-left corner are multiple of 8).
+     * @param x the x coordinate of the top-left corner to check
+     * @param y the y coordinate of the top-left corner to check
+     * @throws MapException if the coordinates specified are not divisible by 8
+     */
+    protected void checkPositionTopLeft(int x, int y) throws MapException {
+
+	if (x % 8 != 0) {
+	    throw new MapException("Wrong x value: the coordinates of the top-left corner must divisible by 8");
+	}
+
+	if (y % 8 != 0) {
+	    throw new MapException("Wrong y value: the coordinates of the top-left corner must divisible by 8");
+	}
+    }
+
+    /**
+     * Changes the position of the entity on the map, by specifying the coordinates of its
+     * top-left corner.
+     * @param x x coordinate of the top-left corner
+     * @param y y coordinate of the top-left corner
+     * @throws MapException if the coordinates specified are not divisible by 8
+     */
+    public void setPositionTopLeft(int x, int y) throws MapException {
+	
+	checkPositionTopLeft(x, y);
+	setPositionTopLeftImpl(x, y);
 	
 	// notify
 	setChanged();
 	notifyObservers();
+    }
+    
+    /**
+     * Changes the position of the entity on the map, by specifying the coordinates of its
+     * top-left corner.
+     * @param x x coordinate of the top-left corner
+     * @param y y coordinate of the top-left corner
+     */
+    protected void setPositionTopLeftImpl(int x, int y) throws MapException {
+	positionInMap.x = x;
+	positionInMap.y = y;
     }
 
     /**
@@ -474,11 +520,14 @@ public abstract class MapEntity extends Observable {
      * Changes the position of the entity.
      * @param dx number of pixels to move on x
      * @param dy number of pixels to move on y
+     * @throws MapException if the new coordinates are not divisible by 8
      */
-    public void move(int dx, int dy) {
+    public void move(int dx, int dy) throws MapException {
 	
-	positionInMap.x += dx;
-	positionInMap.y += dy;
+	int x = getX() + dx;
+	int y = getY() + dy;
+
+	setPositionInMap(x, y);
 
 	setChanged();
 	notifyObservers();

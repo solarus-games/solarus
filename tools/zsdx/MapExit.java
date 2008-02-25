@@ -1,14 +1,13 @@
 package zsdx;
 
 import java.awt.*;
-import java.awt.image.*;
 import javax.swing.*;
 import java.util.*;
 
 /**
  * Represents an exit point in a map.
  */
-public class MapExit extends InteractiveEntity implements ImageObserver {
+public class MapExit extends InteractiveEntity {
 
     private int transition;
     private String destinationMapId;
@@ -106,7 +105,25 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
     public boolean isResizable() {
 	return true;
     }
-    
+
+    /**
+     * Returns the minimum width of the entity (for a resizable entity).
+     * When the entity is resized, its new width must be a multiple of this minimum size.
+     * @return 16
+     */
+    public int getUnitWidth() {
+	return 16;
+    }
+
+    /**
+     * Returns the minimum height of the entity (for a resizable entity).
+     * When the entity is resized, its new height is a multiple of this minimum height.
+     * @return 16
+     */
+    public int getUnitHeight() {
+	return 16;
+    }
+
     /**
      * Returns the type of transition between the two maps.
      * @return the transition type
@@ -183,15 +200,27 @@ public class MapExit extends InteractiveEntity implements ImageObserver {
 	int dy1 = positionInMap.y * scale;
 	int dx2 = dx1 + positionInMap.width * scale;
 	int dy2 = dy1 + positionInMap.height * scale;
+	
+	g.drawImage(icon.getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, null);
+	
+	g.setColor(Color.black);
+	g.drawLine(dx1, dy1, dx2 - 1, dy1);
+	g.drawLine(dx1 + 3, dy1 + 3, dx2 - 4, dy1 + 3);
+	g.drawLine(dx1, dy2 - 1, dx2 - 1, dy2 - 1);
+	g.drawLine(dx1 + 3, dy2 - 4, dx2 - 4, dy2 - 4);
+	g.drawLine(dx1, dy1, dx1, dy2 - 1);
+	g.drawLine(dx1 + 3, dy1 + 3, dx1 + 3, dy2 - 4);
+	g.drawLine(dx2 - 1, dy1, dx2 - 1, dy2 - 1);
+	g.drawLine(dx2 - 4, dy1 + 3, dx2 - 4, dy2 - 4);
 
-	g.drawImage(icon.getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, this);
-    }
-
-    /**
-     * This function is called when some requested information about the image comes.
-     * @return true
-     */
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-	return true;
+	g.setColor(new Color(192, 255, 192));
+	g.drawLine(dx1 + 1, dy1 + 1, dx2 - 2, dy1 + 1);
+	g.drawLine(dx1 + 2, dy1 + 2, dx2 - 3, dy1 + 2);
+	g.drawLine(dx1 + 2, dy2 - 3, dx2 - 3, dy2 - 3);
+	g.drawLine(dx1 + 1, dy2 - 2, dx2 - 2, dy2 - 2);
+	g.drawLine(dx1 + 1, dy1 + 1, dx1 + 1, dy2 - 2);
+	g.drawLine(dx1 + 2, dy1 + 2, dx1 + 2, dy2 - 3);
+	g.drawLine(dx2 - 3, dy1 + 2, dx2 - 3, dy2 - 3);
+	g.drawLine(dx2 - 2, dy1 + 1, dx2 - 2, dy2 - 2);
     }
 }

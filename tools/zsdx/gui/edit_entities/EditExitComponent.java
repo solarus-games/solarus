@@ -1,5 +1,7 @@
 package zsdx.gui.edit_entities;
 
+import java.awt.event.*;
+
 import zsdx.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
@@ -28,8 +30,6 @@ public class EditExitComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 	
-	MapExit exit = (MapExit) entity;
-	
 	// transition
 	transitionField = new TransitionChooser();
 	addField("Transition", transitionField);
@@ -39,19 +39,11 @@ public class EditExitComponent extends EditEntityComponent {
 	addField("Destination map", mapField);
 	
 	// entrance
-	Map currentDestinationMap = null;
-	
-	try {
-	    currentDestinationMap = new Map(exit.getDestinationMapId());
-	}
-	catch (ZSDXException ex) {
-	    
-	}
-	entranceField = new EntityChooser(currentDestinationMap, MapEntity.ENTITY_ENTRANCE, true);
+	entranceField = new EntityChooser(null, MapEntity.ENTITY_ENTRANCE, true);
 	addField("Entrance", entranceField);
 	
-	// TODO: add a changelistener to the destination map field, which reloads the entrance field
-	// (make a setMap method in EntityChooser) 
+	// load the entrance list for the selected map
+	mapField.addActionListener(new ActionListenerChangeDestinationMap());
     }
 
     /**
@@ -97,5 +89,25 @@ public class EditExitComponent extends EditEntityComponent {
 	
 	return action;
     }
+    
+    /**
+     * Action performed when the destination map field is changed.
+     * The entrance field is reloaded to show the entrances of this map.
+     */
+    private class ActionListenerChangeDestinationMap implements ActionListener {
 
+	public void actionPerformed(ActionEvent ev) {
+	    
+	    try {
+		String mapId = mapField.getSelectedId();
+		
+		if (mapId != null) { // a map has just been selected
+		    entranceField.setMap(new Map(mapId));
+		}
+	    }
+	    catch (ZSDXException ex) {
+		WindowTools.warningDialog("The destination map is invalid: " + ex.getMessage());
+	    }
+	}
+    }
 }

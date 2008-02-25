@@ -115,25 +115,33 @@ public abstract class MapEntity extends Observable {
     protected MapEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	this(map, LAYER_LOW, 0, 0, 0, 0, false);
 
-	int layer = Integer.parseInt(tokenizer.nextToken());
-	int x = Integer.parseInt(tokenizer.nextToken());
-	int y = Integer.parseInt(tokenizer.nextToken());
+	try {
+	    int layer = Integer.parseInt(tokenizer.nextToken());
+	    int x = Integer.parseInt(tokenizer.nextToken());
+	    int y = Integer.parseInt(tokenizer.nextToken());
 
-	setLayer(layer);
-	setPositionInMap(x, y);
+	    setLayer(layer);
+	    setPositionInMap(x, y);
 
-	if (isResizable()) {
-	    int width = Integer.parseInt(tokenizer.nextToken());
-	    int height = Integer.parseInt(tokenizer.nextToken());
-	    setSize(width, height);
+	    if (isResizable()) {
+		int width = Integer.parseInt(tokenizer.nextToken());
+		int height = Integer.parseInt(tokenizer.nextToken());
+		setSize(width, height);
+	    }
+
+	    if (hasName()) {
+		setName(tokenizer.nextToken());
+	    }
+
+	    if (hasDirection()) {
+		setDirection(Integer.parseInt(tokenizer.nextToken()));
+	    }
 	}
-
-	if (hasName()) {
-	    setName(tokenizer.nextToken());
+	catch (NoSuchElementException ex) {
+	    throw new ZSDXException("Value expected");
 	}
-
-	if (hasDirection()) {
-	    setDirection(Integer.parseInt(tokenizer.nextToken()));
+	catch (NumberFormatException ex) {
+	    throw new ZSDXException("Integer expected: " + ex.getMessage());
 	}
     }
 
@@ -145,7 +153,7 @@ public abstract class MapEntity extends Observable {
      */
     public static MapEntity createFromString(Map map, String description) throws ZSDXException {
 
-	StringTokenizer tokenizer = new StringTokenizer(description);
+	StringTokenizer tokenizer = new StringTokenizer(description, "\t");
 	int entityType = Integer.parseInt(tokenizer.nextToken());
 	
 	if (entityType < 0 || entityType >= ENTITY_NB_TYPES) {

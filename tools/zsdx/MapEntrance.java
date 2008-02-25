@@ -1,14 +1,13 @@
 package zsdx;
 
 import java.awt.*;
-import java.awt.image.*;
 import javax.swing.*;
 import java.util.*;
 
 /**
  * Represents an entry point in a map.
  */
-public class MapEntrance extends InteractiveEntity implements ImageObserver {
+public class MapEntrance extends InteractiveEntity {
     
     /**
      * Icons of an entrance for each direction. 
@@ -95,19 +94,11 @@ public class MapEntrance extends InteractiveEntity implements ImageObserver {
 	int dy2 = dy1 + positionInMap.height * scale;
 
 	if (showTransparency) {
-	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, this);
+	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, null);
 	}
 	else {
-	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, bgColor, this);		
+	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, bgColor, null);		
 	}
-    }
-
-    /**
-     * This function is called when some requested information about the image comes.
-     * @return true
-     */
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-	return true;
     }
 
     /**

@@ -7,7 +7,6 @@ import javax.swing.*;
 import zsdx.*;
 import zsdx.Map;
 
-
 /**
  * Main window of the tileset editor.
  */
@@ -24,6 +23,7 @@ public class MapEditorWindow extends JFrame implements Observer {
     private MapView mapView;
 
     // menu items memorized to enable them later
+    private JMenu menuMap;
     private JMenuItem menuItemSave;
     private JMenuItem menuItemUndo;
     private JMenuItem menuItemRedo;
@@ -87,6 +87,8 @@ public class MapEditorWindow extends JFrame implements Observer {
 		    }
 		}
 	    });
+	
+	new ActionLoadProject().actionPerformed(null);
     }
 
     /**
@@ -127,6 +129,38 @@ public class MapEditorWindow extends JFrame implements Observer {
 
 	JMenu menu;
 	JMenuItem item;
+
+	// menu Project
+	menu = new JMenu("Project");
+	menu.setMnemonic(KeyEvent.VK_P);
+
+	item = new JMenuItem("New project...");
+	item.setMnemonic(KeyEvent.VK_N);
+	item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX project");
+	item.addActionListener(new ActionNewProject());
+	menu.add(item);
+
+	item = new JMenuItem("Load project...");
+	item.setMnemonic(KeyEvent.VK_O);
+	item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX project");
+	item.addActionListener(new ActionLoadProject());
+	menu.add(item);
+
+	menu.addSeparator();
+
+	item = new JMenuItem("Quit");
+	item.setMnemonic(KeyEvent.VK_Q);
+	item.getAccessibleContext().setAccessibleDescription("Exit the tileset editor");
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+		    if (checkCurrentFileSaved()) {
+			dispose();
+		    }
+		}
+	    });
+	menu.add(item);
+
+	menuBar.add(menu);
 
 	// menu Map
 	menu = new JMenu("Map");
@@ -232,6 +266,13 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuItemSave.setEnabled(!history.isSaved());
 	menuItemUndo.setEnabled(history.canUndo());
 	menuItemRedo.setEnabled(history.canRedo());
+    }
+    
+    /**
+     * This method is called just after a project is loaded.
+     */
+    private void projectJustLoaded() {
+	menuMap.setEnabled(true);
     }
 
     /**
@@ -363,6 +404,76 @@ public class MapEditorWindow extends JFrame implements Observer {
 	    }
 	    catch (ZSDXException ex) {
 		WindowTools.errorDialog("Cannot redo: " + ex.getMessage());
+	    }
+	}
+    }
+    
+    /**
+     * Action performed when the user clicks on Project > New project.
+     * Creates a new project, asking to the user the project path.
+     */
+    private class ActionNewProject implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+
+	    if (!checkCurrentFileSaved()) {
+		return;
+	    }
+
+	    ProjectFileChooser chooser = new ProjectFileChooser();
+	    String projectPath = chooser.getProjectPath();
+
+	    if (projectPath != null) {
+		Project project = Project.createNew(projectPath);
+		
+		if (project == null) {
+		    WindowTools.warningDialog("A project already exists in this directory.");
+		}
+		else {
+		    projectJustLoaded();
+		}
+	    }
+	}
+    }
+
+    /**
+     * Action performed when the user clicks on Project > Load project.
+     * Loads an existing project, asking to the user the project path.
+     */
+    private class ActionLoadProject implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+
+	    if (!checkCurrentFileSaved()) {
+		return;
+	    }
+	    
+	    ProjectFileChooser chooser = new ProjectFileChooser();
+	    String projectPath = chooser.getProjectPath();
+
+	    if (projectPath != null) {
+		try {
+		    Project project = Project.createExisting(projectPath);
+		    
+		    if (project == null) {
+			if (WindowTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
+			    Project.createNew(projectPath);
+
+			    if (project == null) {
+				WindowTools.warningDialog("A project already exists in this directory.");
+			    }
+			    else {
+				projectJustLoaded();
+			    }
+			}
+		    }
+		    else {
+			projectJustLoaded();
+		    }
+		}
+		catch (ZSDXException ex) {
+		    WindowTools.errorDialog("Cannot load the project: " + ex.getMessage());
+		}
 	    }
 	}
     }

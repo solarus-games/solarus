@@ -94,6 +94,14 @@ public class Project {
 	return new File(projectPath + File.separator + "data" + File.separator
 		+ ResourceDatabase.fileName);
     }
+    
+    /**
+     * Returns whether a project is currently loaded.
+     * @return true if a project is loaded
+     */
+    public static boolean isLoaded() {
+	return currentProject != null;
+    }
 
     /**
      * Returns the resource database object of the current project project.

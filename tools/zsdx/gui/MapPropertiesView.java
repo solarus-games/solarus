@@ -255,7 +255,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The selection is updated.
 	 */
 	public void update(Observable o) {
-
+	    
 	    setEnabled(true);
 	    String currentTilesetId = map.getTilesetId();
 	    String selectedTilesetId = getSelectedId();

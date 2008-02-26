@@ -128,7 +128,6 @@ public class TilesetEditorWindow extends JFrame {
 	item = new JMenuItem("Load project...");
 	item.setMnemonic(KeyEvent.VK_O);
 	item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX project");
-	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 	item.addActionListener(new ActionLoadProject());
 	menu.add(item);
 

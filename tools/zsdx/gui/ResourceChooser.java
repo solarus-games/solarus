@@ -37,6 +37,10 @@ public class ResourceChooser extends JComboBox {
      * Loads the list using the game resource database.
      */
     protected void buildList() {
+	
+	if (!Project.isLoaded()) {
+	    return;
+	}
 
 	if (showEmptyOption) {
 	    addItem(new KeyValue("", ""));

@@ -49,7 +49,7 @@ public class FileTools {
     public static File[] getFilesWithExtension(String directory, String extension) {
 	
 	File directoryFile = new File(directory);
-	FileFilter fileFilter = new ExtensionFileFilter(extension);
+	java.io.FileFilter fileFilter = new ExtensionFileFilter(extension);
 	File[] files = directoryFile.listFiles(fileFilter);
 	return files;
     }

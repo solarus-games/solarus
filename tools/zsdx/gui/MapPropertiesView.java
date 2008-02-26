@@ -4,11 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-
-import zsdx.Configuration;
+import zsdx.*;
 import zsdx.Map;
-import zsdx.ResourceDatabase;
-import zsdx.ZSDXException;
 import zsdx.map_editor_actions.*;
 
 /**
@@ -36,7 +33,6 @@ public class MapPropertiesView extends JPanel implements Observer {
     public MapPropertiesView() {
 	super(new GridBagLayout());
 
-	Configuration.getInstance().addObserver(this);
 	setBorder(BorderFactory.createTitledBorder("Map properties"));
 
 	GridBagConstraints constraints = new GridBagConstraints();
@@ -118,7 +114,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     }
     
     /**
-     * This function is called when the map or the configuration is changed.
+     * This function is called when the map is changed.
      */
     public void update(Observable o, Object obj) {
 	if (map != null) {
@@ -183,17 +179,15 @@ public class MapPropertiesView extends JPanel implements Observer {
 	}
 
 	/**
-	 * This function is called when the map or the configuration is changed.
-	 * If it is the map, the component is updated.
+	 * This function is called when the map is changed.
+	 * The component is updated.
 	 */
 	public void update(Observable o) {
 
-	    if (o instanceof Map) {
-		textFieldName.setEnabled(true);
-		buttonSet.setEnabled(true);
-		
-		textFieldName.setText(map.getName());
-	    }
+	    textFieldName.setEnabled(true);
+	    buttonSet.setEnabled(true);
+
+	    textFieldName.setText(map.getName());
 	}
     }
     
@@ -231,15 +225,13 @@ public class MapPropertiesView extends JPanel implements Observer {
 	}
 
 	/**
-	 * This function is called when the map or the configuration is changed.
-	 * If it is the map, the component is updated.
+	 * This function is called when the map is changed.
+	 * The component is updated.
 	 */
 	public void update(Observable o) {
 
-	    if (o instanceof Map) {
-		setEnabled(true);		
-		setCoordinates(map.getSize());
-	    }
+	    setEnabled(true);		
+	    setCoordinates(map.getSize());
 	}
     }
 
@@ -259,20 +251,17 @@ public class MapPropertiesView extends JPanel implements Observer {
 	}
 
 	/**
-	 * This function is called when the map or the configuration is changed.
-	 * If it is the map, then the selection is updated.
+	 * This function is called when the map is changed.
+	 * The selection is updated.
 	 */
 	public void update(Observable o) {
 
-	    if (o instanceof Map) {
+	    setEnabled(true);
+	    String currentTilesetId = map.getTilesetId();
+	    String selectedTilesetId = getSelectedId();
 
-		setEnabled(true);
-		String currentTilesetId = map.getTilesetId();
-		String selectedTilesetId = getSelectedId();
-		
-		if (!selectedTilesetId.equals(currentTilesetId)) {
-		    setSelectedId(currentTilesetId);
-		}
+	    if (!selectedTilesetId.equals(currentTilesetId)) {
+		setSelectedId(currentTilesetId);
 	    }
 	}
 
@@ -317,19 +306,14 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    super();
 	    setEnabled(false);
 	    addActionListener(this);
-	    update(Configuration.getInstance());
+	    reloadList();
 	}
 
 	/**
-	 * This function is called when the map or the configuration is changed.
-	 * If it is the configuration, the music list is reloaded using ZSDX root path.
+	 * This function is called when the map is changed.
 	 * Then the selection is updated.
 	 */
 	public void update(Observable o) {
-
-	    if (o instanceof Configuration) {
-		reloadList();
-	    }
 
 	    if (map != null) {
 		setEnabled(true);

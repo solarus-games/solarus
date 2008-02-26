@@ -81,7 +81,7 @@ public class Map extends Observable {
 	
 	// compute an id and a name for this map
 	this.name = "New map";
-	Resource mapResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_MAP);
+	Resource mapResource = Project.getResource(ResourceDatabase.RESOURCE_MAP);
 	this.mapId = mapResource.computeNewId();
 
 	setChanged();
@@ -741,10 +741,10 @@ public class Map extends Observable {
 	try {
 
 	    // get the map name in the game resource database
-	    Resource mapResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_MAP);
+	    Resource mapResource = Project.getResource(ResourceDatabase.RESOURCE_MAP);
 	    setName(mapResource.getElementName(mapId));
 	    
-	    File mapFile = Configuration.getMapFile(mapId);
+	    File mapFile = Project.getMapFile(mapId);
 	    BufferedReader in = new BufferedReader(new FileReader(mapFile));
 
 	    // read the map general info
@@ -810,7 +810,7 @@ public class Map extends Observable {
 	try {
 	    
 	    // open the map file
-	    File mapFile = Configuration.getMapFile(mapId);
+	    File mapFile = Project.getMapFile(mapId);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
 	    
 	    // print the map general info
@@ -839,9 +839,9 @@ public class Map extends Observable {
 	    history.setSaved();
 
 	    // also update the map name in the global resource list
-	    Resource mapResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_MAP);
+	    Resource mapResource = Project.getResource(ResourceDatabase.RESOURCE_MAP);
 	    mapResource.setElementName(mapId, name);
-	    ResourceDatabase.save();
+	    Project.getResourceDatabase().save();
 	}
 	catch (IOException ex) {
 	    throw new ZSDXException(ex.getMessage());

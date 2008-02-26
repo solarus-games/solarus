@@ -2,14 +2,11 @@ package zsdx.gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-
-import zsdx.Map;
-import zsdx.MapEditorHistory;
-import zsdx.ResourceDatabase;
-import zsdx.ZSDXException;
-
 import java.util.*;
+import javax.swing.*;
+import zsdx.*;
+import zsdx.Map;
+
 
 /**
  * Main window of the tileset editor.
@@ -191,19 +188,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuItemRedo.addActionListener(new ActionListenerRedo());
 	menuItemRedo.setEnabled(false);
 	menu.add(menuItemRedo);
-
-	menu.addSeparator();
-
-	item = new JMenuItem("Configuration...");
-	item.setMnemonic(KeyEvent.VK_C);
-	item.getAccessibleContext().setAccessibleDescription("Changes some settings");
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    ConfigurationDialog dialog = new ConfigurationDialog();
-		    dialog.display();
-		}
-	    });
-	menu.add(item);
 
 	menuBar.add(menu);
 

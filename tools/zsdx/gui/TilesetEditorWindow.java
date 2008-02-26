@@ -3,10 +3,7 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.ResourceDatabase;
-import zsdx.Tileset;
-import zsdx.ZSDXException;
+import zsdx.*;
 
 /**
  * Main window of the tileset editor.
@@ -28,7 +25,8 @@ public class TilesetEditorWindow extends JFrame {
      */
     private TilesetImageView tilesetImageView;
 
-    // menu item memorized to enable it later
+    // menus or menu items memorized to enable it later
+    private JMenu menuTileset;
     private JMenuItem menuItemSave;
 
     /**
@@ -74,6 +72,8 @@ public class TilesetEditorWindow extends JFrame {
 		    }
 		}
 	    });
+	
+	new ActionLoadProject().actionPerformed(null);
     }
 
     /**
@@ -115,45 +115,24 @@ public class TilesetEditorWindow extends JFrame {
 	JMenu menu;
 	JMenuItem item;
 
-	// menu Tileset
-	menu = new JMenu("Tileset");
-	menu.setMnemonic(KeyEvent.VK_T);
-	
-	item = new JMenuItem("New");
+	// menu Project
+	menu = new JMenu("Project");
+	menu.setMnemonic(KeyEvent.VK_P);
+
+	item = new JMenuItem("New project...");
 	item.setMnemonic(KeyEvent.VK_N);
-	item.getAccessibleContext().setAccessibleDescription("Create a new tileset");
-	item.addActionListener(new ActionNew());
+	item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX project");
+	item.addActionListener(new ActionNewProject());
 	menu.add(item);
 
-	item = new JMenuItem("Load...");
+	item = new JMenuItem("Load project...");
 	item.setMnemonic(KeyEvent.VK_O);
-	item.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
+	item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX project");
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-	item.addActionListener(new ActionOpen());
+	item.addActionListener(new ActionLoadProject());
 	menu.add(item);
-
-	menuItemSave = new JMenuItem("Save");
-	menuItemSave.setMnemonic(KeyEvent.VK_S);
-	menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current tileset");
-	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-	menuItemSave.addActionListener(new ActionSave());
-	menuItemSave.setEnabled(false);
-	menu.add(menuItemSave);
 
 	menu.addSeparator();
-
-	item = new JMenuItem("Configuration...");
-	item.setMnemonic(KeyEvent.VK_C);
-	item.getAccessibleContext().setAccessibleDescription("Changes some settings");
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    ConfigurationDialog dialog = new ConfigurationDialog();
-		    dialog.setLocationRelativeTo(TilesetEditorWindow.this);
-		    dialog.pack();
-		    dialog.setVisible(true);
-		}
-	    });
-	menu.add(item);
 
 	item = new JMenuItem("Quit");
 	item.setMnemonic(KeyEvent.VK_Q);
@@ -168,6 +147,34 @@ public class TilesetEditorWindow extends JFrame {
 	menu.add(item);
 
 	menuBar.add(menu);
+
+	// menu Tileset
+	menuTileset = new JMenu("Tileset");
+	menuTileset.setEnabled(false);
+	menuTileset.setMnemonic(KeyEvent.VK_T);
+	
+	item = new JMenuItem("New");
+	item.setMnemonic(KeyEvent.VK_N);
+	item.getAccessibleContext().setAccessibleDescription("Create a new tileset");
+	item.addActionListener(new ActionNew());
+	menuTileset.add(item);
+
+	item = new JMenuItem("Load...");
+	item.setMnemonic(KeyEvent.VK_O);
+	item.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
+	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+	item.addActionListener(new ActionOpen());
+	menuTileset.add(item);
+
+	menuItemSave = new JMenuItem("Save");
+	menuItemSave.setMnemonic(KeyEvent.VK_S);
+	menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current tileset");
+	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+	menuItemSave.addActionListener(new ActionSave());
+	menuItemSave.setEnabled(false);
+	menuTileset.add(menuItemSave);
+
+	menuBar.add(menuTileset);
 
 	setJMenuBar(menuBar);
     }
@@ -217,7 +224,6 @@ public class TilesetEditorWindow extends JFrame {
 
 	return result;
     }
-
 
     /**
      * Action performed when the user clicks on Tileset > New.
@@ -285,6 +291,76 @@ public class TilesetEditorWindow extends JFrame {
 	    }
 	    catch (ZSDXException ex) {
 		WindowTools.errorDialog("Could not save the tileset: " + ex.getMessage());
+	    }
+	}
+    }
+
+    /**
+     * Action performed when the user clicks on Project > New project.
+     * Creates a new project, asking to the user the project path.
+     */
+    private class ActionNewProject implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+
+	    if (!checkCurrentFileSaved()) {
+		return;
+	    }
+
+	    ProjectFileChooser chooser = new ProjectFileChooser();
+	    String projectPath = chooser.getProjectPath();
+
+	    if (projectPath != null) {
+		Project project = Project.createNew(projectPath);
+		
+		if (project == null) {
+		    WindowTools.warningDialog("A project already exists in this directory.");
+		}
+		else {
+		    menuTileset.setEnabled(true);
+		}
+	    }
+	}
+    }
+
+    /**
+     * Action performed when the user clicks on Project > Load project.
+     * Loads an existing project, asking to the user the project path.
+     */
+    private class ActionLoadProject implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+
+	    if (!checkCurrentFileSaved()) {
+		return;
+	    }
+	    
+	    ProjectFileChooser chooser = new ProjectFileChooser();
+	    String projectPath = chooser.getProjectPath();
+
+	    if (projectPath != null) {
+		try {
+		    Project project = Project.createExisting(projectPath);
+		    
+		    if (project == null) {
+			if (WindowTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
+			    Project.createNew(projectPath);
+
+			    if (project == null) {
+				WindowTools.warningDialog("A project already exists in this directory.");
+			    }
+			    else {
+				menuTileset.setEnabled(true);
+			    }
+			}
+		    }
+		    else {
+			menuTileset.setEnabled(true);
+		    }
+		}
+		catch (ZSDXException ex) {
+		    WindowTools.errorDialog("Cannot load the project: " + ex.getMessage());
+		}
 	    }
 	}
     }

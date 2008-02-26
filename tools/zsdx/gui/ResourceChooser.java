@@ -1,13 +1,12 @@
 package zsdx.gui;
 
 import javax.swing.*;
-import java.util.*;
 import zsdx.*;
 
 /**
  * A combo box component to select an element from the resource database.
  */
-public class ResourceChooser extends JComboBox implements Observer {
+public class ResourceChooser extends JComboBox {
 
     /**
      * The kind of resource displayed in the combo box (maps, musics...).
@@ -31,16 +30,6 @@ public class ResourceChooser extends JComboBox implements Observer {
 	this.resourceType = resourceType;
 	this.showEmptyOption = showEmptyOption;
 
-	Configuration.getInstance().addObserver(this);
-	update(Configuration.getInstance(), null);
-    }
-
-    /**
-     * This function is called when the configuration is changed.
-     * The list is reloaded using the game resource database.
-     */
-    public void update(Observable o, Object obj) {
-
 	reloadList();
     }
 
@@ -54,7 +43,7 @@ public class ResourceChooser extends JComboBox implements Observer {
 	}
 
 	try {
-	    Resource resource = ResourceDatabase.getResource(resourceType);
+	    Resource resource = Project.getResource(resourceType);
 	    String[] ids = resource.getIds();
 	    String name;
 	    

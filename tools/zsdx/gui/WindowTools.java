@@ -37,4 +37,19 @@ public class WindowTools {
 				      "Warning",
 				      JOptionPane.WARNING_MESSAGE);
     }
+    
+    /**
+     * Shows a dialog box with a question and the "yes" and "no" options.
+     * @param message message the question to show
+     * @return true if the user chose "yes"
+     */
+    public static boolean yesNoDialog(String message) {
+
+	int result = JOptionPane.showConfirmDialog(null,
+		message,
+		"Warning",
+		JOptionPane.YES_NO_OPTION);
+	
+	return (result == JOptionPane.YES_OPTION);
+    }
 }

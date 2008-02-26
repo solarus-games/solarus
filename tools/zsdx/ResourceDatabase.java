@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * This class contains the list of the game resources and their name.
+ * This class contains the list of the game resources and their name in the project.
  * Each resource name is associated with an id.
  * This class contains the information of the file game.zsd.
  */
@@ -15,22 +15,26 @@ public class ResourceDatabase extends Observable {
     public static final int RESOURCE_TILESET = 1;
     public static final int RESOURCE_MUSIC = 2;
     public static final int RESOURCE_NB = 3;
+    
+    public static final String fileName = "project_db.zsd";
 
+    /**
+     * The project.
+     */
+    private Project project;
+    
     /**
      * The resources.
      */
     private Resource[] resources;
 
     /**
-     * The only instance.
+     * Creates the list of the game resources from the file project_db.zsd.
      */
-    private static final ResourceDatabase instance = new ResourceDatabase();
+    public ResourceDatabase(Project project) {
 
-    /**
-     * Creates the list of the game resources from the file game.zsd.
-     */
-    public ResourceDatabase() {
-
+	this.project = project;
+	
 	resources = new Resource[RESOURCE_NB];
 
 	resources[RESOURCE_MAP] = new Resource(true);
@@ -39,27 +43,18 @@ public class ResourceDatabase extends Observable {
     }
 
     /**
-     * Returns the only instance. All static functions actually use this instance.
-     * This function is useful for the MVC system.
-     * @return the only instance
-     */
-    public static ResourceDatabase getInstance() {
-	return instance;
-    }
-
-    /**
      * Returns a resource.
      * @param resourceType type of the resource to get: RESOURCE_MAP, RESOURCE_MUSIC, etc.
      * @return the resource of this type
      */
-    public static Resource getResource(int resourceType) {
-	return getInstance().resources[resourceType];
+    public Resource getResource(int resourceType) {
+	return resources[resourceType];
     }
 
     /**
      * Clears all resources.
      */
-    public static void clear() {
+    public void clear() {
 
 	for (int i = 0; i < RESOURCE_NB; i++) {
 	    getResource(i).clear();
@@ -67,17 +62,19 @@ public class ResourceDatabase extends Observable {
     }
     
     /**
-     * Reads the file game.zsd, i.e. the list of the game resources and their name.
-     * @throws ZSDXException if the file could not be read or contains an error
+     * Reads the file project_db.zsd of the project, i.e. the list
+     * of the game resources and their name.
+     * @throws ZSDXException if the file contains an error
+     * @throws IOException if the file could not be loaded
      */
-    public static void load() throws ZSDXException {
+    public void load() throws ZSDXException, IOException {
 	
 	int lineNumber = 0;
 
 	try {
 	    clear();
 
-	    File dbFile = Configuration.getResourceDatabaseFile();
+	    File dbFile = project.getResourceDatabaseFile();
 	    BufferedReader buff = new BufferedReader(new FileReader(dbFile));
 
 	    String line = buff.readLine();
@@ -113,20 +110,17 @@ public class ResourceDatabase extends Observable {
 	catch (ZSDXException ex) {
 	    throw new ZSDXException("game.zsd: Line " + lineNumber + ": " + ex.getMessage());
 	}
-	catch (IOException ex) {
-	    throw new ZSDXException("Cannot load the resources: " + ex.getMessage());
-	}
     }
     
     /**
      * Saves the list of the game resources and their names into the file game.zsd.
-     * @throws ZSDXException if the file could not be written
+     * @throws IOException if the file could not be written
      */
-    public static void save() throws ZSDXException {
+    public void save() throws IOException {
 
 	try {
 	    
-	    File dbFile = Configuration.getResourceDatabaseFile();
+	    File dbFile = project.getResourceDatabaseFile();
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)));
 	    Iterator<String> it;
 	    
@@ -148,8 +142,10 @@ public class ResourceDatabase extends Observable {
 	    }
 	    out.close();
 	}
-	catch (IOException ex) {
-	    throw new ZSDXException(ex.getMessage());
+	catch (ZSDXException ex) {
+	    System.err.println("Unexpected error: " + ex.getMessage());
+	    ex.printStackTrace();
+	    System.exit(1);
 	}
     }
 }

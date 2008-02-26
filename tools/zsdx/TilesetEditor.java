@@ -17,5 +17,4 @@ public class TilesetEditor {
 	window.pack();
 	window.setVisible(true);
     }
-
 }

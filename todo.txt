@@ -8,5 +8,5 @@
 	- vue arborescente de toutes les entités par type ?
 	- choisir les types d'entités affichés
 	- permettre d'ajouter des entités
-	- finir d'unifier les classes de dialogues avec OK / Annuler
 	- virer configuration et faire un seul exécutable avec la notion de Projet
+	- utiliser JSpinner

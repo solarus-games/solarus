@@ -98,7 +98,7 @@ public class Tileset extends Observable implements ImageObserver {
 
 	// compute an id and a name for this tileset
 	this.name = "New tileset";
-	Resource tilesetResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_TILESET);
+	Resource tilesetResource = Project.getResource(ResourceDatabase.RESOURCE_TILESET);
 	this.tilesetId = tilesetResource.computeNewId();
 	reloadImage();
 
@@ -195,7 +195,7 @@ public class Tileset extends Observable implements ImageObserver {
      * @return the image file of the tileset
      */
     public File getImageFile() {
-	return Configuration.getTilesetImageFile(tilesetId);
+	return Project.getTilesetImageFile(tilesetId);
     }
 
     /**
@@ -515,10 +515,10 @@ public class Tileset extends Observable implements ImageObserver {
 	try {
 
 	    // get the tileset name in the game resource database
-	    Resource tilesetResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_TILESET);
+	    Resource tilesetResource = Project.getResource(ResourceDatabase.RESOURCE_TILESET);
 	    setName(tilesetResource.getElementName(tilesetId));
 	    
-	    File tilesetFile = Configuration.getTilesetFile(tilesetId);
+	    File tilesetFile = Project.getTilesetFile(tilesetId);
 	    BufferedReader in = new BufferedReader(new FileReader(tilesetFile));
 
 	    // read the tileset general info: "r g b"
@@ -581,7 +581,7 @@ public class Tileset extends Observable implements ImageObserver {
 	try {
 	    
 	    // open the tileset file
-	    File tilesetFile = Configuration.getTilesetFile(tilesetId);
+	    File tilesetFile = Project.getTilesetFile(tilesetId);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
 	    
 	    // print the tileset general info: "r g b"
@@ -605,9 +605,9 @@ public class Tileset extends Observable implements ImageObserver {
 	    setSaved(true);
 
 	    // also update the tileset name in the global resource list
-	    Resource tilesetResource = ResourceDatabase.getResource(ResourceDatabase.RESOURCE_TILESET);
+	    Resource tilesetResource = Project.getResource(ResourceDatabase.RESOURCE_TILESET);
 	    tilesetResource.setElementName(tilesetId, name);
-	    ResourceDatabase.save();
+	    Project.getResourceDatabase().save();
 	}
 	catch (IOException ex) {
 	    throw new ZSDXException(ex.getMessage());

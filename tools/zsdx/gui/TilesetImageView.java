@@ -1,17 +1,10 @@
 package zsdx.gui;
 
-import javax.swing.*;
-
-import zsdx.Configuration;
-import zsdx.MapEntity;
-import zsdx.ObstacleIcons;
-import zsdx.Tile;
-import zsdx.Tileset;
-import zsdx.TilesetException;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.*;
+import zsdx.*;
 
 /**
  * This component shows the tileset image and allow the user to select the tiles.
@@ -73,8 +66,6 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 	this.editable = editable;
 
-	Configuration.getInstance().addObserver(this);
-	
 	addMouseListener(new TilesetImageMouseListener());
 	addMouseMotionListener(new TilesetImageMouseMotionListener());
 
@@ -202,7 +193,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     }
 
     /**
-     * This function is called when the tileset, the selected tile or the configuration changes.
+     * This function is called when the tileset or the selected tile changes.
      */
     public void update(Observable o, Object obj) {
 
@@ -226,10 +217,6 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 	    // redraw the image
 	    repaint();
-	}
-	else if (o instanceof Configuration && tileset != null) {
-	    // the configuration has changed
-	    tileset.reloadImage();
 	}
 	else if (o instanceof Tile) {
 	    // the selected tile has changed

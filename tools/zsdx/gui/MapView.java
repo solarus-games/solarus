@@ -128,8 +128,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	// items: resize, layer, destroy
 	popupMenu = new MapViewPopupMenu(this);
 
-	Configuration.getInstance().addObserver(this);
-
 	MouseInputListener mouseListener = new MapMouseInputListener();
 	addMouseListener(mouseListener);
 	addMouseMotionListener(mouseListener);
@@ -233,7 +231,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
     
     /**
-     * This function is called when the map, the selected entities, the tileset or the configuration changes.
+     * This function is called when the map, the selected entities or the tileset changes.
      * @param o the object changed
      * @param obj parameters
      */
@@ -260,10 +258,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    // redraw the map
 	    repaint();
-	}
-
-	else if (o instanceof Configuration && map != null) {
-	    // TODO?
 	}
 
 	else if (o instanceof Tileset) {

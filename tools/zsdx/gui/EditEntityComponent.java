@@ -72,13 +72,14 @@ public class EditEntityComponent extends JPanel {
 	addField("Layer", fieldLayer);
 	
 	// position
-	this.fieldPosition = new CoordinatesField(false);
+	this.fieldPosition = new CoordinatesField();
+	fieldPosition.setStepSize(8, 8);
 	fieldPosition.setEnabled(true);
 	addField("Position", fieldPosition);
 
 	// size
 	if (entity.isResizable()) {
-	    this.fieldSize = new CoordinatesField(false);
+	    this.fieldSize = new CoordinatesField();
 	    fieldSize.setEnabled(true);
 	    addField("Size", fieldSize);
 	}
@@ -161,9 +162,11 @@ public class EditEntityComponent extends JPanel {
 	}
 	
 	fieldLayer.setLayer(entity.getLayer());
+	
 	fieldPosition.setCoordinates(entity.getX(), entity.getY());
 	
 	if (entity.isResizable()) {
+	    fieldSize.setStepSize(entity.getUnitWidth(), entity.getUnitHeight());
 	    fieldSize.setCoordinates(entity.getWidth(), entity.getHeight());
 	}
 	

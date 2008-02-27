@@ -8,5 +8,5 @@
 	- vue arborescente de toutes les entités par type ?
 	- choisir les types d'entités affichés
 	- permettre d'ajouter des entités
-	- utiliser JSpinner
 	- nouveau projet : créer le fichier resource_db.zsd automatiquement, le répertoire data et les sous-répertoires
+	- afficher la partie extérieure de la map

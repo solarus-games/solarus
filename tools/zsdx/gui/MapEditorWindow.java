@@ -167,20 +167,6 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	menuItemSave.setEnabled(false);
 	menuMap.add(menuItemSave);
 
-	menuMap.addSeparator();
-
-	item = new JMenuItem("Quit");
-	item.setMnemonic(KeyEvent.VK_Q);
-	item.getAccessibleContext().setAccessibleDescription("Exit the map editor");
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    if (checkCurrentFileSaved()) {
-			dispose();
-		    }
-		}
-	    });
-	menuMap.add(item);
-
 	menuBar.add(menuMap);
 
 	// menu Edit

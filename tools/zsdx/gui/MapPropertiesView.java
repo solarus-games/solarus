@@ -221,7 +221,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * Constructor.
 	 */
 	public MapSizeView() {
-	    super(true);
+	    super();
+	    setMinimum(Map.MINIMUM_WIDTH, Map.MINIMUM_HEIGHT);
+	    setStepSize(8, 8);
 	    
 	    ActionListener listener = new ActionListener() {
 		    public void actionPerformed(ActionEvent ev) {
@@ -252,7 +254,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	public void update(Observable o) {
 
 	    if (map != null) {
-		setEnabled(true);		
+		setEnabled(true);
 		setCoordinates(map.getSize());
 	    }
 	    else {

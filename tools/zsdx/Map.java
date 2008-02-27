@@ -66,13 +66,23 @@ public class Map extends Observable {
     private MapEditorHistory history;
 
     /**
+     * Minimum width of a map in pixels.
+     */
+    public static final int MINIMUM_WIDTH = 320;
+
+    /**
+     * Minimum height of a map in pixels.
+     */
+    public static final int MINIMUM_HEIGHT = 240;
+    
+    /**
      * Creates a new map.
      * @throws ZSDXException if the resource list could not be updated after the map creation
      */
     public Map() throws ZSDXException {
 	super();
 
-	this.size = new Dimension(320, 240);
+	this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
 	this.tileset = null;
 	this.tilesetId = "";
 	this.musicId = Music.noneId;
@@ -182,8 +192,15 @@ public class Map extends Observable {
      * @throws MapException if the width or the height is incorrect
      */
     public void setSize(Dimension size) throws MapException {
-	if (size.width < 320 || size.height < 240) {
-	    throw new MapException("The minimum size of a map is 320*240.");
+	if (size.width < MINIMUM_WIDTH || size.height < MINIMUM_HEIGHT) {
+	    throw new RuntimeException("The minimum size of a map is " +
+		    MINIMUM_WIDTH + '*' + MINIMUM_HEIGHT + '.');
+	}
+	
+	
+	if (size.width < MINIMUM_WIDTH || size.height < MINIMUM_HEIGHT) {
+	    throw new MapException("The minimum size of a map is " +
+		    MINIMUM_WIDTH + '*' + MINIMUM_HEIGHT + '.');
 	}
 	
 	if (size.width % 8 != 0 || size.height % 8 != 0) {

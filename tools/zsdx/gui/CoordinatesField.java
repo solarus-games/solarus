@@ -3,6 +3,7 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 /**
  * This components shows two text fields to set the coordinates (or the size) of something.
@@ -10,24 +11,26 @@ import javax.swing.*;
 public class CoordinatesField extends JPanel {
 
     // subcomponents
-    private JTextField fieldX;
-    private JTextField fieldY;
-    private JButton buttonSet;
-	
+    private JSpinner fieldX;
+    private JSpinner fieldY;
+    
     /**
      * Constructor.
-     * @param showButtonSet true to add a button "Set" next to the two text fields
-     * (this button will have any action listener you add by calling addActionListener())
      */
-    public CoordinatesField(boolean showButtonSet) {
+    public CoordinatesField() {
 	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-	fieldX = new JTextField(3);
-	fieldY = new JTextField(3);
+	fieldX = new JSpinner();
+	fieldY = new JSpinner();
 
-	Dimension size = new Dimension(40, 25);
+	Dimension size = new Dimension(80, 25);
 	fieldX.setMinimumSize(size);
 	fieldY.setMinimumSize(size);
+
+	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) fieldX.getEditor();
+	editor.getTextField().setColumns(3);
+	editor = (JSpinner.DefaultEditor) fieldY.getEditor();
+	editor.getTextField().setColumns(3);
 
 	size = new Dimension(5, 0);
 	add(fieldX);
@@ -36,29 +39,10 @@ public class CoordinatesField extends JPanel {
 	add(Box.createRigidArea(size));
 	add(fieldY);
 
-	if (showButtonSet) {
-	    buttonSet = new JButton("Set");
-	    add(Box.createRigidArea(new Dimension(5, 0)));
-	    add(buttonSet);
-	}
-	
 	setCoordinates(0, 0);
 	setEnabled(false);
     }
-    
-    /**
-     * Adds an action listener to the two text fields.
-     * @param listener the action listener to add
-     */
-    public void addActionListener(ActionListener listener) {
-	fieldX.addActionListener(listener);
-	fieldY.addActionListener(listener);
-	
-	if (buttonSet != null) {
-	    buttonSet.addActionListener(listener);
-	}
-    }
-    
+        
     /**
      * Enables or disables the two text fields.
      * @param enable true to make the text fields enabled, false to disable them
@@ -66,9 +50,63 @@ public class CoordinatesField extends JPanel {
     public void setEnabled(boolean enable) {
 	fieldX.setEnabled(enable);
 	fieldY.setEnabled(enable);
+    }
+    
+    /**
+     * Adds an action listener to the two number fields.
+     * @param actionListener the action listener to add
+     */
+    public void addActionListener(final ActionListener actionListener) {
 
-	if (buttonSet != null) {
-	    buttonSet.setEnabled(enable);
+	// add the action listener to the two text fields
+	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) fieldX.getEditor();
+	editor.getTextField().addActionListener(actionListener);
+	
+	editor = (JSpinner.DefaultEditor) fieldY.getEditor();
+	editor.getTextField().addActionListener(actionListener);
+
+	// create a corresponding change listener to the arrows
+	ChangeListener changeListener = new ChangeListener() {
+	    public void stateChanged(ChangeEvent arg0) {
+		actionListener.actionPerformed(null);		
+	    }
+	};
+	fieldX.addChangeListener(changeListener);
+	fieldY.addChangeListener(changeListener);
+    }
+
+    /**
+     * Sets the difference between two elements of the sequences
+     * @param dx the difference between two elements of the X field sequence
+     * @param dy the difference between two elements of the Y field sequence
+     */
+    public void setStepSize(int dx, int dy) {
+	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) fieldX.getModel();
+	spinnerModel.setStepSize(dx);
+	
+	spinnerModel = (SpinnerNumberModel) fieldY.getModel();
+	spinnerModel.setStepSize(dy);
+    }
+    
+    /**
+     * Sets the minimum values of the two fields.
+     * If the current values are lower than the minimum, they are updated.
+     * @param x minimum x value
+     * @param y minimum y value
+     */
+    public void setMinimum(int x, int y) {
+	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) fieldX.getModel();
+	spinnerModel.setMinimum(x);
+	
+	spinnerModel = (SpinnerNumberModel) fieldY.getModel();
+	spinnerModel.setMinimum(y);
+	
+	if (getXValue() < x) {
+	    setXValue(x);
+	}
+	
+	if (getYValue() < y) {
+	    setYValue(y);
 	}
     }
     
@@ -77,7 +115,8 @@ public class CoordinatesField extends JPanel {
      * @return x
      */
     private int getXValue() {
-	return Integer.parseInt(fieldX.getText());
+	Number n = (Number) fieldX.getValue();
+	return n.intValue();
     }
 
     /**
@@ -85,7 +124,8 @@ public class CoordinatesField extends JPanel {
      * @return y
      */
     private int getYValue() {
-	return Integer.parseInt(fieldY.getText());
+	Number n = (Number) fieldY.getValue();
+	return n.intValue();
     }
     
     /**
@@ -100,16 +140,16 @@ public class CoordinatesField extends JPanel {
      * Changes the value of the X field.
      * @param x the new x value
      */
-    public void setXValue(int x) {	
-	fieldX.setText(Integer.toString(x));
+    public void setXValue(int x) {
+	fieldX.setValue(new Integer(x));
     }
 
     /**
      * Changes the value of the Y field.
      * @param y the new y value
      */
-    public void setYValue(int y) {	
-	fieldY.setText(Integer.toString(y));
+    public void setYValue(int y) {
+	fieldY.setValue(new Integer(y));
     }
 
     /**

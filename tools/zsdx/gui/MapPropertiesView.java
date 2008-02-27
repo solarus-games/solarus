@@ -244,7 +244,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * Constructor.
 	 */
 	public MapTilesetView() {
-
 	    super(ResourceDatabase.RESOURCE_TILESET, true);
 	    setEnabled(false);
 	    addActionListener(this);
@@ -256,13 +255,13 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 */
 	public void update(Observable o) {
 	    
-	    setEnabled(true);
 	    String currentTilesetId = map.getTilesetId();
 	    String selectedTilesetId = getSelectedId();
 
 	    if (!selectedTilesetId.equals(currentTilesetId)) {
 		setSelectedId(currentTilesetId);
 	    }
+	    setEnabled(true);
 	}
 
 	/**
@@ -270,13 +269,16 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The tileset of the map is changed.
 	 */
 	public void actionPerformed(ActionEvent ev) {
+	    
+	    new Exception().printStackTrace();
+	    
 	    if (map == null) {
 		return;
 	    }
 
 	    String selectedTilesetId = getSelectedId();
 	    String currentTilesetId = map.getTilesetId();
-	    
+
 	    if (!currentTilesetId.equals(selectedTilesetId)) {
 		
 		try {
@@ -302,11 +304,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * Constructor.
 	 */
 	public MapMusicView() {
-
 	    super();
 	    setEnabled(false);
 	    addActionListener(this);
-	    reloadList();
 	}
 
 	/**

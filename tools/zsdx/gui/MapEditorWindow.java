@@ -10,7 +10,7 @@ import zsdx.Map;
 /**
  * Main window of the tileset editor.
  */
-public class MapEditorWindow extends JFrame implements Observer {
+public class MapEditorWindow extends JFrame implements Observer, ProjectObserver {
 
     /**
      * The current map.
@@ -33,6 +33,7 @@ public class MapEditorWindow extends JFrame implements Observer {
      */
     public MapEditorWindow() {
 	super("Zelda Solarus Deluxe - Map Editor");
+	Project.addProjectObserver(this);
 
 	// set a nice look and feel
 	setLookAndFeel();
@@ -163,21 +164,21 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuBar.add(menu);
 
 	// menu Map
-	menu = new JMenu("Map");
-	menu.setMnemonic(KeyEvent.VK_T);
+	menuMap = new JMenu("Map");
+	menuMap.setMnemonic(KeyEvent.VK_T);
 	
 	item = new JMenuItem("New");
 	item.setMnemonic(KeyEvent.VK_N);
 	item.getAccessibleContext().setAccessibleDescription("Create a new map");
 	item.addActionListener(new ActionListenerNew());
-	menu.add(item);
+	menuMap.add(item);
 
 	item = new JMenuItem("Load...");
 	item.setMnemonic(KeyEvent.VK_O);
 	item.getAccessibleContext().setAccessibleDescription("Open an existing map");
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 	item.addActionListener(new ActionListenerOpen());
-	menu.add(item);
+	menuMap.add(item);
 
 	menuItemSave = new JMenuItem("Save");
 	menuItemSave.setMnemonic(KeyEvent.VK_S);
@@ -185,9 +186,9 @@ public class MapEditorWindow extends JFrame implements Observer {
 	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 	menuItemSave.addActionListener(new ActionListenerSave());
 	menuItemSave.setEnabled(false);
-	menu.add(menuItemSave);
+	menuMap.add(menuItemSave);
 
-	menu.addSeparator();
+	menuMap.addSeparator();
 
 	item = new JMenuItem("Quit");
 	item.setMnemonic(KeyEvent.VK_Q);
@@ -199,9 +200,9 @@ public class MapEditorWindow extends JFrame implements Observer {
 		    }
 		}
 	    });
-	menu.add(item);
+	menuMap.add(item);
 
-	menuBar.add(menu);
+	menuBar.add(menuMap);
 
 	// menu Edit
 	menu = new JMenu("Edit");
@@ -271,7 +272,7 @@ public class MapEditorWindow extends JFrame implements Observer {
     /**
      * This method is called just after a project is loaded.
      */
-    private void projectJustLoaded() {
+    public void currentProjectChanged() {
 	menuMap.setEnabled(true);
     }
 
@@ -429,9 +430,6 @@ public class MapEditorWindow extends JFrame implements Observer {
 		if (project == null) {
 		    WindowTools.warningDialog("A project already exists in this directory.");
 		}
-		else {
-		    projectJustLoaded();
-		}
 	    }
 	}
     }
@@ -462,13 +460,7 @@ public class MapEditorWindow extends JFrame implements Observer {
 			    if (project == null) {
 				WindowTools.warningDialog("A project already exists in this directory.");
 			    }
-			    else {
-				projectJustLoaded();
-			    }
 			}
-		    }
-		    else {
-			projectJustLoaded();
 		    }
 		}
 		catch (ZSDXException ex) {

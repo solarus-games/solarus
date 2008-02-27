@@ -105,23 +105,29 @@ public class TilesView extends JPanel {
 
     /**
      * Sets the tileset observed.
-     * @param tileset the tileset
+     * @param tileset the current tileset, or null if there is no tileset 
      */
     public void setTileset(Tileset tileset) {
+	
 	if (tileset != this.tileset) {
 
 	    if (this.tileset != null) {
-		tileset.deleteObserver(tileListModel);
+		this.tileset.deleteObserver(tileListModel);
 	    }
 
 	    this.tileset = tileset;
-
-	    tileset.addObserver(tileListModel);
 	    tilesetPropertiesView.setTileset(tileset);
 	    tileView.setTileset(tileset);
 
-	    loadIcons();
-	    tileListModel.update(tileset, null);
+	    if (tileset != null) {
+		tileset.addObserver(tileListModel);
+	    
+		loadIcons();
+		tileListModel.update(tileset, null);
+	    }
+	    else {
+		repaint();
+	    }
 	}
     }
 

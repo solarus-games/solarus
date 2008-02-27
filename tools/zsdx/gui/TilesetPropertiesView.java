@@ -82,19 +82,23 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	}
 
 	this.tileset = tileset;
-	tileset.addObserver(this);
-
+	
+	if (tileset != null) {
+	    tileset.addObserver(this);
+	}
 	update(tileset, null);
     }
     
     /**
      * This function is called when the tileset is changed.
+     * @param o the tileset, or null if no tileset is set
+     * @param obj not used
      */
     public void update(Observable o, Object obj) {
-	tilesetIdView.setText(tileset.getId());
-	tilesetNameView.update(o);
-	tilesetNbTilesView.setText(Integer.toString(tileset.getNbTiles()));
-	tilesetBackgroundColorView.update(o);
+	tilesetIdView.setText( (tileset == null) ? "" : tileset.getId());
+	tilesetNameView.update(tileset);
+	tilesetNbTilesView.setText( (tileset == null) ? "" : Integer.toString(tileset.getNbTiles()));
+	tilesetBackgroundColorView.update(tileset);
     }
 
     /**
@@ -142,15 +146,20 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	}
 
 	/**
-	 * This function is called when the tileset or the configuration is changed.
-	 * If it is the tileset, the component is updated.
+	 * This function is called when the tileset is changed.
+	 * The component is updated.
+	 * @param o the tileset, or null if no tileset is loaded
 	 */
 	public void update(Observable o) {
-
-	    if (o instanceof Tileset) {
+	    
+	    if (o == null) {
+		textFieldName.setEnabled(false);
+		buttonSet.setEnabled(false);
+		textFieldName.setText(null);
+	    }
+	    else {
 		textFieldName.setEnabled(true);
-		buttonSet.setEnabled(true);
-		
+		buttonSet.setEnabled(true);		
 		textFieldName.setText(tileset.getName());
 	    }
 	}
@@ -187,6 +196,7 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	
 	/**
 	 * This function is called when the tileset is changed.
+	 * @param o the tileset, or null if no tileset is loaded
 	 */
 	public void update(Observable o) {
 	    repaint();

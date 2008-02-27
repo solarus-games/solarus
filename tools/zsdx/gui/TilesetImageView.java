@@ -161,18 +161,22 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
     /**
      * Sets the observed tileset.
+     * @param tileset the current tileset, or null if there is no tileset loaded
      */
     public void setTileset(Tileset tileset) {
 
 	if (tileset == null) {
 
 	    if (this.tileset != null) {
+		// the tileset has just been closed
+		
 		this.tileset.deleteObserver(this);
 		this.tileset = null;
 		repaint();
 	    }
 	}
-	else if (!tileset.equals(this.tileset)) {
+	else if (tileset != this.tileset) {
+	    // a tileset has just been loaded
 
 	    if (this.tileset != null) {
 		this.tileset.deleteObserver(this);

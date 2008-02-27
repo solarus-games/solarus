@@ -8,5 +8,7 @@
 	- vue arborescente de toutes les entités par type ?
 	- choisir les types d'entités affichés
 	- permettre d'ajouter des entités
-	- virer configuration et faire un seul exécutable avec la notion de Projet
+	- ajouter un item Map > Close dans l'éditeur de maps, comme pour les tilesets
+	- fermer le tileset et la map ouverts quand on change de projet
 	- utiliser JSpinner
+	- nouveau projet : créer le fichier resource_db.zsd automatiquement

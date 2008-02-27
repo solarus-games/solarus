@@ -6,7 +6,7 @@ import zsdx.*;
 /**
  * A combo box component to select an element from the resource database.
  */
-public class ResourceChooser extends JComboBox {
+public class ResourceChooser extends JComboBox implements ProjectObserver {
 
     /**
      * The kind of resource displayed in the combo box (maps, musics...).
@@ -30,20 +30,22 @@ public class ResourceChooser extends JComboBox {
 	this.resourceType = resourceType;
 	this.showEmptyOption = showEmptyOption;
 
-	reloadList();
+	Project.addProjectObserver(this);
+	
+	buildList();
     }
 
     /**
      * Loads the list using the game resource database.
      */
     protected void buildList() {
-	
+
 	if (!Project.isLoaded()) {
 	    return;
 	}
-
+	
 	if (showEmptyOption) {
-	    addItem(new KeyValue("", ""));
+	    addItem(new KeyValue("", "          "));
 	}
 
 	try {
@@ -69,11 +71,13 @@ public class ResourceChooser extends JComboBox {
     protected void reloadList() {
 	
 	String selectedId = getSelectedId();
-	
+
 	removeAllItems();
 	buildList();
 	
-	setSelectedId(selectedId);
+	if (selectedId.length() > 0) {
+	    setSelectedId(selectedId);
+	}
     }
     
     /**
@@ -102,5 +106,13 @@ public class ResourceChooser extends JComboBox {
 
 	KeyValue item = new KeyValue(id, null);
 	setSelectedItem(item);
+    }
+
+    /**
+     * This method is called when a project has just been loaded.
+     * The resource list is then loaded.
+     */
+    public void currentProjectChanged() {
+	reloadList();
     }
 }

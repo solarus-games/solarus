@@ -3,12 +3,13 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import zsdx.*;
 
 /**
  * Main window of the tileset editor.
  */
-public class TilesetEditorWindow extends JFrame {
+public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 
     /**
      * The current tileset.
@@ -27,6 +28,7 @@ public class TilesetEditorWindow extends JFrame {
 
     // menus or menu items memorized to enable it later
     private JMenu menuTileset;
+    private JMenuItem menuItemClose;
     private JMenuItem menuItemSave;
 
     /**
@@ -34,6 +36,7 @@ public class TilesetEditorWindow extends JFrame {
      */
     public TilesetEditorWindow() {
 	super("Zelda Solarus Deluxe - Tileset Editor");
+	Project.addProjectObserver(this);
 
 	// set a nice look and feel
 	setLookAndFeel();
@@ -158,12 +161,19 @@ public class TilesetEditorWindow extends JFrame {
 	item.addActionListener(new ActionNew());
 	menuTileset.add(item);
 
-	item = new JMenuItem("Load...");
+	item = new JMenuItem("Open...");
 	item.setMnemonic(KeyEvent.VK_O);
 	item.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 	item.addActionListener(new ActionOpen());
 	menuTileset.add(item);
+
+	menuItemClose = new JMenuItem("Close");
+	menuItemClose.setMnemonic(KeyEvent.VK_C);
+	menuItemClose.getAccessibleContext().setAccessibleDescription("Close the current tileset");
+	menuItemClose.addActionListener(new ActionClose());
+	menuItemClose.setEnabled(false);
+	menuTileset.add(menuItemClose);
 
 	menuItemSave = new JMenuItem("Save");
 	menuItemSave.setMnemonic(KeyEvent.VK_S);
@@ -179,20 +189,28 @@ public class TilesetEditorWindow extends JFrame {
     }
 
     /**
+     * This method is called when a project has just been loaded.
+     * The tileset menu is enabled.
+     */
+    public void currentProjectChanged() {
+	menuTileset.setEnabled(true);
+    }
+    /**
      * Sets the current tileset. This method is called when the user opens a tileset,
      * closes the tileset, or creates a new one.
-     * @param tileset the new tileset
+     * @param tileset the new tileset, or null if no tileset is loaded
      */
     private void setTileset(Tileset tileset) {
 	// if there was already a tileset, remove its observers
 	if (this.tileset != null) {
-	    tileset.deleteObservers();
+	    this.tileset.deleteObservers();
 	}
 	
 	this.tileset = tileset;
 
-	// enable the menu item
-	menuItemSave.setEnabled(true);
+	// enable or disable the menu items
+	menuItemClose.setEnabled(tileset != null);
+	menuItemSave.setEnabled(tileset != null);
 
 	// notify the views
 	tilesView.setTileset(tileset);
@@ -279,6 +297,21 @@ public class TilesetEditorWindow extends JFrame {
     }
 
     /**
+     * Action performed when the user clicks on Tileset > Close.
+     * Closes the current tileset.
+     */
+    private class ActionClose implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+
+	    if (!checkCurrentFileSaved()) {
+		return;
+	    }
+
+	    setTileset(null);
+	}
+    }
+    /**
      * Action performed when the user clicks on Tileset > Save.
      * Saves the tileset into its file.
      */
@@ -315,9 +348,6 @@ public class TilesetEditorWindow extends JFrame {
 		if (project == null) {
 		    WindowTools.warningDialog("A project already exists in this directory.");
 		}
-		else {
-		    menuTileset.setEnabled(true);
-		}
 	    }
 	}
     }
@@ -352,9 +382,6 @@ public class TilesetEditorWindow extends JFrame {
 				menuTileset.setEnabled(true);
 			    }
 			}
-		    }
-		    else {
-			menuTileset.setEnabled(true);
 		    }
 		}
 		catch (ZSDXException ex) {

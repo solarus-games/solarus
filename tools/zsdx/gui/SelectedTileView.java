@@ -71,7 +71,7 @@ public class SelectedTileView extends JPanel {
 	constraints.gridwidth = 2;
 	add(buttonDelete, constraints);
 
-	setCurrentTile(null);
+	setTileset(null);
     }
 
     /**
@@ -80,6 +80,7 @@ public class SelectedTileView extends JPanel {
      */
     public void setTileset(Tileset tileset) {
 	this.tileset = tileset;
+	setCurrentTile(null);
     }
 
     /**

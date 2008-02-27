@@ -2,6 +2,7 @@ package zsdx;
 
 import java.io.*;
 import java.text.*;
+import java.util.*;
 
 /**
  * This class contains the information about the ZSDX project currently open.
@@ -18,6 +19,11 @@ public class Project {
      * The game resources associated to this project.
      */
     private ResourceDatabase resourceDatabase;
+    
+    /**
+     * Objects to notify when a project is loaded.
+     */
+    private static List<ProjectObserver> observers = new ArrayList<ProjectObserver>();
     
     /**
      * The project currently open.
@@ -51,7 +57,7 @@ public class Project {
 	}
 	catch (IOException ex) {
 	    // normal case: there is no project file yet
-	    currentProject = project;
+	    setCurrentProject(project);
 	}
 	catch (ZSDXException ex) {
 	    // a project exists (and the project file is not valid)
@@ -76,7 +82,7 @@ public class Project {
 	    project.resourceDatabase.load();
 	    
 	    // normal case: a project exists and has been successfully loaded
-	    currentProject = project;
+	    setCurrentProject(project);
 	}
 	catch (IOException ex) {
 	    // the project doesn't exist
@@ -84,6 +90,18 @@ public class Project {
 	}
 	
 	return project;
+    }
+    
+    /**
+     * Sets the specified project as the current ZSDX project.
+     * The project observers are notified.
+     * @param project the current project
+     */
+    private static void setCurrentProject(Project project) {
+	currentProject = project;
+	for (ProjectObserver o: observers) {
+	    o.currentProjectChanged();
+	}
     }
 
     /**
@@ -211,5 +229,21 @@ public class Project {
      */
     public static String getMusicPath() {
 	return getDataPath() + File.separator + "music";
+    }
+    
+    /**
+     * Adds an object to notify when a project is created or loaded.
+     * @param observer the object to notify
+     */
+    public static void addProjectObserver(ProjectObserver observer) {
+	observers.add(observer);
+    }
+    
+    /**
+     * Removes an object to notify when a project is created or loaded.
+     * @param observer the object to stop notifying
+     */
+    public static void removeProjectObserver(ProjectObserver observer) {
+	observers.remove(observer);
     }
 }

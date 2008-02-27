@@ -162,6 +162,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 
     /**
      * Sets the observed map.
+     * @param the current map, or null if no map is loaded
      */
     public void setMap(Map map) {
 	this.map = map;

@@ -327,8 +327,9 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	else if (tileset != null) {
 
 	    // a tileset is open but the image doesn't exist: draw an error message
-	    g.drawString("Please create a tileset image named '" + tileset.getImageFile().getAbsolutePath() + "'.", 10, 20);
-	    g.drawString("Then click on this area to show the tileset image.", 10, 40);
+	    g.drawString("Please create a tileset image named:", 10, 20);
+	    g.drawString(tileset.getImageFile().getAbsolutePath() + "", 10, 40);
+	    g.drawString("Then click on this area to show the tileset image.", 10, 60);
 	}
     }
 

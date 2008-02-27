@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+
 import zsdx.*;
 import zsdx.Map;
 
@@ -24,6 +25,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
     // menu items memorized to enable them later
     private JMenu menuMap;
+    private JMenuItem menuItemClose;
     private JMenuItem menuItemSave;
     private JMenuItem menuItemUndo;
     private JMenuItem menuItemRedo;
@@ -36,7 +38,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	Project.addProjectObserver(this);
 
 	// set a nice look and feel
-	setLookAndFeel();
+	WindowTools.setLookAndFeel();
 
 	// create the menu bar
 	createMenuBar();
@@ -89,37 +91,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 		}
 	    });
 	
-	new ActionLoadProject().actionPerformed(null);
-    }
-
-    /**
-     * Tries to set a nice look and feel.
-     */
-    private void setLookAndFeel() {
-
-	// set Windows look and feel by default
-	try {
-	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-	    return;
-	}
-	catch (Exception e) {
-	}
-
-	// try Mac OS
-	try {
-	    UIManager.setLookAndFeel("it.unitn.ing.swing.plaf.macos.MacOSLookAndFeel");
-	    return;
-	}
-	catch (Exception e) {
-	}
-
-	// otherwise, try GTK
-// 	try {
-// 	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-// 	    return;
-// 	}
-// 	catch (Exception e) {
-// 	}
+	new ActionListenerLoadProject().actionPerformed(null);
     }
 
     /**
@@ -138,13 +110,13 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	item = new JMenuItem("New project...");
 	item.setMnemonic(KeyEvent.VK_N);
 	item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX project");
-	item.addActionListener(new ActionNewProject());
+	item.addActionListener(new ActionListenerNewProject());
 	menu.add(item);
 
 	item = new JMenuItem("Load project...");
 	item.setMnemonic(KeyEvent.VK_O);
 	item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX project");
-	item.addActionListener(new ActionLoadProject());
+	item.addActionListener(new ActionListenerLoadProject());
 	menu.add(item);
 
 	menu.addSeparator();
@@ -173,12 +145,19 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	item.addActionListener(new ActionListenerNew());
 	menuMap.add(item);
 
-	item = new JMenuItem("Load...");
+	item = new JMenuItem("Open...");
 	item.setMnemonic(KeyEvent.VK_O);
 	item.getAccessibleContext().setAccessibleDescription("Open an existing map");
 	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 	item.addActionListener(new ActionListenerOpen());
 	menuMap.add(item);
+
+	menuItemClose = new JMenuItem("Close");
+	menuItemClose.setMnemonic(KeyEvent.VK_C);
+	menuItemClose.getAccessibleContext().setAccessibleDescription("Close the current map");
+	menuItemClose.addActionListener(new ActionListenerClose());
+	menuItemClose.setEnabled(false);
+	menuMap.add(menuItemClose);
 
 	menuItemSave = new JMenuItem("Save");
 	menuItemSave.setMnemonic(KeyEvent.VK_S);
@@ -230,29 +209,42 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
     }
 
     /**
+     * This method is called just after a project is loaded.
+     */
+    public void currentProjectChanged() {
+	menuMap.setEnabled(true);
+	
+	if (map != null) {
+	    closeMap(); // close the map that was open with the previous project 
+	}
+    }
+
+    /**
      * Sets the current map. This method is called when the user opens a map,
      * closes the map, or creates a new one.
-     * @param map the new map
+     * @param map the new map, or null if there is no map loaded
      */
     private void setMap(Map map) {
 	// if there was already a map, remove its observers
 	if (this.map != null) {
-	    map.deleteObservers();
+	    this.map.deleteObservers();
 	}
 	
 	this.map = map;
 
-	// enable the menu items
-	menuItemSave.setEnabled(true);
+	// enable or disable the menu items
+	menuItemClose.setEnabled(map != null);
 
 	// notify the views
 	mapPropertiesView.setMap(map);
 	tilePicker.setMap(map);
 	mapView.setMap(map);
 
-	// observe the history to enable or disable the items Save, Undo and Redo
-	map.getHistory().addObserver(this);
-	update(null, null);
+	if (map != null) {
+	    // observe the history to enable or disable the items Save, Undo and Redo
+	    map.getHistory().addObserver(this);
+	    update(null, null);
+	}
     }
 
     /**
@@ -261,7 +253,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
      * @param obj additional parameter
      */
     public void update(Observable o, Object obj) {
-
+	
 	MapEditorHistory history = map.getHistory();
 
 	menuItemSave.setEnabled(!history.isSaved());
@@ -269,13 +261,6 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	menuItemRedo.setEnabled(history.canRedo());
     }
     
-    /**
-     * This method is called just after a project is loaded.
-     */
-    public void currentProjectChanged() {
-	menuMap.setEnabled(true);
-    }
-
     /**
      * This function is called when the user wants to close the current map.
      * If the map is not saved, we propose to save it.
@@ -301,6 +286,135 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	return result;
     }
 
+    /**
+     * Prompts the user for a directory and creates a new project
+     * in that directory.
+     */
+    private void newProject() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	ProjectFileChooser chooser = new ProjectFileChooser();
+	String projectPath = chooser.getProjectPath();
+
+	if (projectPath != null) {
+	    Project project = Project.createNew(projectPath);
+
+	    if (project == null) {
+		WindowTools.warningDialog("A project already exists in this directory.");
+	    }
+	}
+    }
+
+    /**
+     * Prompts the user for a directory and loads the project
+     * located in that directory.
+     */
+    private void loadProject() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	ProjectFileChooser chooser = new ProjectFileChooser();
+	String projectPath = chooser.getProjectPath();
+
+	if (projectPath != null) {
+	    try {
+		Project project = Project.createExisting(projectPath);
+
+		if (project == null) {
+		    if (WindowTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
+			Project.createNew(projectPath);
+
+			if (project == null) {
+			    WindowTools.warningDialog("A project already exists in this directory.");
+			}
+		    }
+		}
+	    }
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Cannot load the project: " + ex.getMessage());
+	    }
+	}
+    }
+
+    /**
+     * Creates a new map in the project and sets it as the current map.
+     */
+    private void newMap() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	try {
+	    Map map = new Map();
+	    setMap(map);
+	}
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog("Cannot create the map: " + ex.getMessage());
+	}
+    }
+
+    /**
+     * Loads a map of the project ans sets it as the current map.
+     */
+    private void openMap() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceDatabase.RESOURCE_MAP);
+	dialog.setLocationRelativeTo(MapEditorWindow.this);
+	dialog.pack();
+	dialog.setVisible(true);
+	String mapId = dialog.getSelectedId();
+
+	if (mapId.length() == 0) {
+	    return;
+	}
+
+	try {
+	    Map map = new Map(mapId);
+
+	    if (map.badTiles()) {
+		WindowTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
+	    }
+	    setMap(map);
+	}
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog("Could not load the map: " + ex.getMessage());
+	}
+    }
+
+    /**
+     * Closes the current map.
+     */
+    private void closeMap() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	setMap(null);
+    }
+
+    /**
+     * Saves the current map.
+     */
+    private void saveMap() {
+
+	try {
+	    map.save();
+	}
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog("Could not save the map: " + ex.getMessage());
+	}
+    }
 
     /**
      * Action performed when the user clicks on Map > New.
@@ -309,18 +423,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
     private class ActionListenerNew implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-
-	    try {
-		Map map = new Map();
-		setMap(map);
-	    }
-	    catch (ZSDXException ex) {
-		WindowTools.errorDialog("Cannot create the map: " + ex.getMessage());
-	    }
+	    newMap();
 	}
     }
 
@@ -331,35 +434,20 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
     private class ActionListenerOpen implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-
-	    ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceDatabase.RESOURCE_MAP);
-	    dialog.setLocationRelativeTo(MapEditorWindow.this);
-	    dialog.pack();
-	    dialog.setVisible(true);
-	    String mapId = dialog.getSelectedId();
-
-	    if (mapId.length() == 0) {
-		return;
-	    }
-
-	    try {
-		Map map = new Map(mapId);
-		
-		if (map.badTiles()) {
-		    WindowTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
-		}
-		setMap(map);
-	    }
-	    catch (ZSDXException ex) {
-		WindowTools.errorDialog("Could not load the map: " + ex.getMessage());
-	    }
+	    openMap();
 	}
     }
 
+    /**
+     * Action performed when the user clicks on Map > Close.
+     * Closes the current map.
+     */
+    private class ActionListenerClose implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+	    closeMap();
+	}
+    }
     /**
      * Action performed when the user clicks on Map > Save.
      * Saves the map into its file.
@@ -367,13 +455,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
     private class ActionListenerSave implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-	    
-	    try {
-		map.save();
-	    }
-	    catch (ZSDXException ex) {
-		WindowTools.errorDialog("Could not save the map: " + ex.getMessage());
-	    }
+	    saveMap();
 	}
     }
 
@@ -413,24 +495,10 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
      * Action performed when the user clicks on Project > New project.
      * Creates a new project, asking to the user the project path.
      */
-    private class ActionNewProject implements ActionListener {
+    private class ActionListenerNewProject implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-
-	    ProjectFileChooser chooser = new ProjectFileChooser();
-	    String projectPath = chooser.getProjectPath();
-
-	    if (projectPath != null) {
-		Project project = Project.createNew(projectPath);
-		
-		if (project == null) {
-		    WindowTools.warningDialog("A project already exists in this directory.");
-		}
-	    }
+	    newProject();
 	}
     }
 
@@ -438,35 +506,10 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
      * Action performed when the user clicks on Project > Load project.
      * Loads an existing project, asking to the user the project path.
      */
-    private class ActionLoadProject implements ActionListener {
+    private class ActionListenerLoadProject implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-	    
-	    ProjectFileChooser chooser = new ProjectFileChooser();
-	    String projectPath = chooser.getProjectPath();
-
-	    if (projectPath != null) {
-		try {
-		    Project project = Project.createExisting(projectPath);
-		    
-		    if (project == null) {
-			if (WindowTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
-			    Project.createNew(projectPath);
-
-			    if (project == null) {
-				WindowTools.warningDialog("A project already exists in this directory.");
-			    }
-			}
-		    }
-		}
-		catch (ZSDXException ex) {
-		    WindowTools.errorDialog("Cannot load the project: " + ex.getMessage());
-		}
-	    }
+	    loadProject();
 	}
     }
 }

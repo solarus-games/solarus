@@ -34,6 +34,7 @@ public class TilePicker extends JScrollPane implements Observer {
 
     /**
      * Sets the observed map.
+     * @param map the current map, or null if no map is loaded
      */
     public void setMap(Map map) {
 	if (this.map != null) {
@@ -41,7 +42,10 @@ public class TilePicker extends JScrollPane implements Observer {
 	}
 
 	this.map = map;
-	map.addObserver(this);
+	
+	if (map != null) {
+	    map.addObserver(this);
+	}
 
 	update(map, null);
     }
@@ -52,6 +56,9 @@ public class TilePicker extends JScrollPane implements Observer {
     public void update(Observable o, Object obj) {
 	if (map != null) {
 	    tilesetImageView.setTileset(map.getTileset());
+	}
+	else {
+	    tilesetImageView.setTileset(null);
 	}
     }
 }

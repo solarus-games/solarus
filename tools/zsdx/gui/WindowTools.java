@@ -15,6 +15,36 @@ public class WindowTools {
     }
 
     /**
+     * Tries to set a nice look and feel.
+     */
+    public static void setLookAndFeel() {
+
+	// set Windows look and feel by default
+	try {
+	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	    return;
+	}
+	catch (Exception e) {
+	}
+
+	// try Mac OS
+	try {
+	    UIManager.setLookAndFeel("it.unitn.ing.swing.plaf.macos.MacOSLookAndFeel");
+	    return;
+	}
+	catch (Exception e) {
+	}
+
+	// otherwise, try GTK
+// 	try {
+// 	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+// 	    return;
+// 	}
+// 	catch (Exception e) {
+// 	}
+    }
+
+    /**
      * Shows a dialog box with an error message.
      * @param message message the error message to show
      */

@@ -144,8 +144,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * Sets the observed map.
+     * @param map the current map, or null if no map is loaded 
      */
     public void setMap(Map map) {
+	
 	if (this.map != null) {
 	    this.map.getEntitySelection().deleteObserver(this);
 	    this.map.deleteObserver(this);
@@ -154,10 +156,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	this.map = map;
 	this.state = STATE_NORMAL;
 
-	map.addObserver(this);
-	map.getEntitySelection().addObserver(this);
-	if (map.getTileset() != null) {
-	    map.getTileset().addObserver(this);
+	if (map != null) {
+	    map.addObserver(this);
+	    map.getEntitySelection().addObserver(this);
+	    if (map.getTileset() != null) {
+		map.getTileset().addObserver(this);
+	    }
 	}
 
 	popupMenu.setMap(map);
@@ -236,6 +240,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @param obj parameters
      */
     public void update(Observable o, Object obj) {
+	
+	if (map == null) { // the map has just been closed
+	    repaint();
+	    return;
+	}
 
 	if (o instanceof Map) {
 	    // the map has been modified

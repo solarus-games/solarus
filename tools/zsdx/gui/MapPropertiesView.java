@@ -101,6 +101,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 
     /**
      * Sets the observed map.
+     * @param map the current map, or null if no map is loaded
      */
     public void setMap(Map map) {
 	if (this.map != null) {
@@ -108,24 +109,39 @@ public class MapPropertiesView extends JPanel implements Observer {
 	}
 
 	this.map = map;
-	map.addObserver(this);
-
+	
+	if (map != null) {
+	    map.addObserver(this);
+	}
+	
 	update(map, null);
     }
     
     /**
      * This function is called when the map is changed.
+     * @param o the map (or null if the map has just been closed)
+     * @param obj unused
      */
     public void update(Observable o, Object obj) {
+
+	// update the elementary components here
 	if (map != null) {
 	    mapIdView.setText(map.getId());
-	    mapNameView.update(o);
 	    mapNbTilesView.setText(Integer.toString(map.getNbTiles()));
-	    mapNbActiveEntitiesView.setText(Integer.toString(map.getNbInteractiveEntities() + map.getNbMovingEntities()));
-	    mapSizeView.update(o);
-	    mapTilesetView.update(o);
-	    mapMusicView.update(o);
+	    mapNbActiveEntitiesView.setText(Integer.toString(
+		    map.getNbInteractiveEntities() + map.getNbMovingEntities()));
 	}
+	else {
+	    mapIdView.setText("");
+	    mapNbTilesView.setText("");
+	    mapNbActiveEntitiesView.setText("");
+	}
+
+	// tell the complex components to update themselves
+	mapNameView.update(map);
+	mapSizeView.update(map);
+	mapTilesetView.update(map);
+	mapMusicView.update(map);
     }
 
     // components for the editable properties
@@ -153,9 +169,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	    buttonSet = new JButton("Set");
 
-	    textFieldName.setEnabled(false);
-	    buttonSet.setEnabled(false);
-
 	    ActionListener listener = new ActionListener() {
 		    public void actionPerformed(ActionEvent ev) {
 
@@ -176,6 +189,8 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    add(textFieldName);
 	    add(Box.createRigidArea(new Dimension(5, 0)));
 	    add(buttonSet);
+	    
+	    update((Map) null);
 	}
 
 	/**
@@ -184,10 +199,16 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 */
 	public void update(Observable o) {
 
-	    textFieldName.setEnabled(true);
-	    buttonSet.setEnabled(true);
-
-	    textFieldName.setText(map.getName());
+	    if (map != null) {
+		textFieldName.setEnabled(true);
+		buttonSet.setEnabled(true);
+		textFieldName.setText(map.getName());
+	    }
+	    else {
+		textFieldName.setEnabled(false);
+		buttonSet.setEnabled(false);
+		textFieldName.setText("");
+	    }
 	}
     }
     
@@ -230,8 +251,13 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 */
 	public void update(Observable o) {
 
-	    setEnabled(true);		
-	    setCoordinates(map.getSize());
+	    if (map != null) {
+		setEnabled(true);		
+		setCoordinates(map.getSize());
+	    }
+	    else {
+		setEnabled(false);
+	    }
 	}
     }
 
@@ -245,8 +271,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 */
 	public MapTilesetView() {
 	    super(ResourceDatabase.RESOURCE_TILESET, true);
-	    setEnabled(false);
 	    addActionListener(this);
+	    
+	    update((Map) null);
 	}
 
 	/**
@@ -255,13 +282,19 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 */
 	public void update(Observable o) {
 	    
-	    String currentTilesetId = map.getTilesetId();
-	    String selectedTilesetId = getSelectedId();
+	    if (map != null) {
 
-	    if (!selectedTilesetId.equals(currentTilesetId)) {
-		setSelectedId(currentTilesetId);
+		String currentTilesetId = map.getTilesetId();
+		String selectedTilesetId = getSelectedId();
+
+		if (!selectedTilesetId.equals(currentTilesetId)) {
+		    setSelectedId(currentTilesetId);
+		}
+		setEnabled(true);
 	    }
-	    setEnabled(true);
+	    else {
+		setEnabled(false);
+	    }
 	}
 
 	/**
@@ -269,8 +302,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The tileset of the map is changed.
 	 */
 	public void actionPerformed(ActionEvent ev) {
-	    
-	    new Exception().printStackTrace();
 	    
 	    if (map == null) {
 		return;
@@ -305,8 +336,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 */
 	public MapMusicView() {
 	    super();
-	    setEnabled(false);
 	    addActionListener(this);
+	    
+	    update((Map) null);
 	}
 
 	/**
@@ -325,6 +357,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 		if (!selectedMusic.equals(currentMusic)) {
 		    setSelectedId(currentMusic);
 		}
+	    }
+	    else {
+		setEnabled(false);
 	    }
 	}
 	

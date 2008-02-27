@@ -39,7 +39,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	Project.addProjectObserver(this);
 
 	// set a nice look and feel
-	setLookAndFeel();
+	WindowTools.setLookAndFeel();
 
 	// create the menu bar
 	createMenuBar();
@@ -76,37 +76,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 		}
 	    });
 	
-	new ActionLoadProject().actionPerformed(null);
-    }
-
-    /**
-     * Tries to set a nice look and feel.
-     */
-    private void setLookAndFeel() {
-
-	// set Windows look and feel by default
-	try {
-	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-	    return;
-	}
-	catch (Exception e) {
-	}
-
-	// try Mac OS
-	try {
-	    UIManager.setLookAndFeel("it.unitn.ing.swing.plaf.macos.MacOSLookAndFeel");
-	    return;
-	}
-	catch (Exception e) {
-	}
-
-	// otherwise, try GTK
-// 	try {
-// 	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-// 	    return;
-// 	}
-// 	catch (Exception e) {
-// 	}
+	loadProject();
     }
 
     /**
@@ -194,7 +164,12 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      */
     public void currentProjectChanged() {
 	menuTileset.setEnabled(true);
+	
+	if (tileset != null) {
+	    closeTileset(); // close the tileset that was open with the previous project 
+	}
     }
+    
     /**
      * Sets the current tileset. This method is called when the user opens a tileset,
      * closes the tileset, or creates a new one.
@@ -243,24 +218,142 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
     }
 
     /**
+     * Prompts the user for a directory and creates a new project
+     * in that directory.
+     */
+    private void newProject() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	ProjectFileChooser chooser = new ProjectFileChooser();
+	String projectPath = chooser.getProjectPath();
+
+	if (projectPath != null) {
+	    Project project = Project.createNew(projectPath);
+
+	    if (project == null) {
+		WindowTools.warningDialog("A project already exists in this directory.");
+	    }
+	}
+    }
+
+    /**
+     * Prompts the user for a directory and loads the project
+     * located in that directory.
+     */
+    private void loadProject() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	ProjectFileChooser chooser = new ProjectFileChooser();
+	String projectPath = chooser.getProjectPath();
+
+	if (projectPath != null) {
+	    try {
+		Project project = Project.createExisting(projectPath);
+
+		if (project == null) {
+		    if (WindowTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
+			Project.createNew(projectPath);
+
+			if (project == null) {
+			    WindowTools.warningDialog("A project already exists in this directory.");
+			}
+			else {
+			    menuTileset.setEnabled(true);
+			}
+		    }
+		}
+	    }
+	    catch (ZSDXException ex) {
+		WindowTools.errorDialog("Cannot load the project: " + ex.getMessage());
+	    }
+	}
+    }
+
+    /**
+     * Creates a new tileset in the project and sets it as the current tileset.
+     */
+    private void newTileset() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	try {
+	    Tileset tileset = new Tileset();
+	    setTileset(tileset);
+	}
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
+	}
+    }
+
+    /**
+     * Loads a tileset of the project ans sets it as the current tileset.
+     */
+    private void openTileset() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceDatabase.RESOURCE_TILESET);
+	dialog.setLocationRelativeTo(TilesetEditorWindow.this);
+	dialog.pack();
+	dialog.setVisible(true);
+	String tilesetId = dialog.getSelectedId();
+
+	if (tilesetId.length() == 0) {
+	    return;
+	}
+
+	try {
+	    Tileset tileset = new Tileset(tilesetId);
+	    setTileset(tileset);
+	}
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog("Could not load the tileset: " + ex.getMessage());
+	}
+    }
+
+    /**
+     * Closes the current tileset.
+     */
+    private void closeTileset() {
+
+	if (!checkCurrentFileSaved()) {
+	    return;
+	}
+
+	setTileset(null);
+    }
+
+    /**
+     * Saves the current tileset.
+     */
+    private void saveTileset() {
+
+	try {
+	    tileset.save();
+	}
+	catch (ZSDXException ex) {
+	    WindowTools.errorDialog("Could not save the tileset: " + ex.getMessage());
+	}
+    }
+
+    /**
      * Action performed when the user clicks on Tileset > New.
      * Creates a new tileset, asking to the user the tileset name and the tileset file.
      */
     private class ActionNew implements ActionListener {
 	
-	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-
-	    try {
-		Tileset tileset = new Tileset();
-		setTileset(tileset);
-	    }
-	    catch (ZSDXException ex) {
-		WindowTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
-	    }
+	public void actionPerformed(ActionEvent ev) {	    
+	    newTileset();
 	}
     }
 
@@ -270,29 +363,8 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      */
     private class ActionOpen implements ActionListener {
 	
-	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-
-	    ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceDatabase.RESOURCE_TILESET);
-	    dialog.setLocationRelativeTo(TilesetEditorWindow.this);
-	    dialog.pack();
-	    dialog.setVisible(true);
-	    String tilesetId = dialog.getSelectedId();
-
-	    if (tilesetId.length() == 0) {
-		return;
-	    }
-
-	    try {
-		Tileset tileset = new Tileset(tilesetId);
-		setTileset(tileset);
-	    }
-	    catch (ZSDXException ex) {
-		WindowTools.errorDialog("Could not load the tileset: " + ex.getMessage());
-	    }
+	public void actionPerformed(ActionEvent ev) {	    
+	    openTileset();
 	}
     }
 
@@ -303,14 +375,10 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
     private class ActionClose implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-
-	    setTileset(null);
+	    closeTileset();
 	}
     }
+    
     /**
      * Action performed when the user clicks on Tileset > Save.
      * Saves the tileset into its file.
@@ -318,12 +386,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
     private class ActionSave implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-	    try {
-		tileset.save();
-	    }
-	    catch (ZSDXException ex) {
-		WindowTools.errorDialog("Could not save the tileset: " + ex.getMessage());
-	    }
+	    saveTileset();
 	}
     }
 
@@ -334,21 +397,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
     private class ActionNewProject implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-
-	    ProjectFileChooser chooser = new ProjectFileChooser();
-	    String projectPath = chooser.getProjectPath();
-
-	    if (projectPath != null) {
-		Project project = Project.createNew(projectPath);
-		
-		if (project == null) {
-		    WindowTools.warningDialog("A project already exists in this directory.");
-		}
-	    }
+	    newProject();
 	}
     }
 
@@ -359,35 +408,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
     private class ActionLoadProject implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
-
-	    if (!checkCurrentFileSaved()) {
-		return;
-	    }
-	    
-	    ProjectFileChooser chooser = new ProjectFileChooser();
-	    String projectPath = chooser.getProjectPath();
-
-	    if (projectPath != null) {
-		try {
-		    Project project = Project.createExisting(projectPath);
-		    
-		    if (project == null) {
-			if (WindowTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
-			    Project.createNew(projectPath);
-
-			    if (project == null) {
-				WindowTools.warningDialog("A project already exists in this directory.");
-			    }
-			    else {
-				menuTileset.setEnabled(true);
-			    }
-			}
-		    }
-		}
-		catch (ZSDXException ex) {
-		    WindowTools.errorDialog("Cannot load the project: " + ex.getMessage());
-		}
-	    }
+	    loadProject();
 	}
     }
 }

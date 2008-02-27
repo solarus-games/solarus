@@ -95,9 +95,19 @@ public class TilesetPropertiesView extends JPanel implements Observer {
      * @param obj not used
      */
     public void update(Observable o, Object obj) {
-	tilesetIdView.setText( (tileset == null) ? "" : tileset.getId());
+
+	// update the elementary components here
+	if (tileset == null) {
+	    tilesetIdView.setText("");
+	    tilesetNbTilesView.setText("");
+	}
+	else {
+	    tilesetIdView.setText(tileset.getId());
+	    tilesetNbTilesView.setText(Integer.toString(tileset.getNbTiles()));
+	}
+	
+	// tell the complex components to update themselves
 	tilesetNameView.update(tileset);
-	tilesetNbTilesView.setText( (tileset == null) ? "" : Integer.toString(tileset.getNbTiles()));
 	tilesetBackgroundColorView.update(tileset);
     }
 

@@ -4,6 +4,8 @@
 
 #include "TileOnMap.h"
 #include "Map.h"
+#include "Tileset.h"
+#include "Tile.h"
 
 /**
  * Creates a new tile on a map.

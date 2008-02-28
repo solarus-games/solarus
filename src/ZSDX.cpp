@@ -4,6 +4,10 @@
 
 #include "ZSDX.h"
 #include "FileTools.h"
+#include "Color.h"
+#include "Music.h"
+#include "Game.h"
+#include "GameResource.h"
 
 /**
  * Number of times the screen is redrawn is a second.

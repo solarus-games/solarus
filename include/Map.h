@@ -7,19 +7,6 @@
 
 #include <vector>
 #include "Common.h"
-#include "Tileset.h"
-#include "Music.h"
-#include "MapExit.h"
-#include "MapEntrance.h"
-
-/**
- * Constants to identify each kind of map entity.
- */
-enum EntityType {
-  ENTITY_TILE = 0,
-  ENTITY_ENTRANCE = 1,
-  ENTITY_EXIT = 2,
-};
 
 /**
  * Abstract class for the maps.

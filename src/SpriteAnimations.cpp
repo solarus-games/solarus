@@ -3,6 +3,7 @@
  */
 
 #include "SpriteAnimations.h"
+#include "SpriteAnimation.h"
 
 /**
  * Constructor.

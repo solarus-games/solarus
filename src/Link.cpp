@@ -1,5 +1,6 @@
 #include "Link.h"
 #include "LinkAnimations.h"
+#include "AnimatedSprite.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)

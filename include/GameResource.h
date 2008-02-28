@@ -6,9 +6,6 @@
 #define ZSDX_GAME_RESOURCE_H
 
 #include "Common.h"
-#include "Link.h"
-#include "Tileset.h"
-#include "Map.h"
 #include <map>
 
 /* This class is a database of all game resources:

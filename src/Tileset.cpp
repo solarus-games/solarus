@@ -8,7 +8,8 @@
 #include <fstream>
 #include <sstream>
 #include "Tileset.h"
-#include "Tile.h"
+#include "SimpleTile.h"
+#include "AnimatedTile.h"
 #include "FileTools.h"
 
 /**

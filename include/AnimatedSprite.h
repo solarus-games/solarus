@@ -6,7 +6,6 @@
 #define ZSDX_ANIMATED_SPRITE_H
 
 #include "Common.h"
-#include "SpriteAnimations.h"
 
 /**
  * Represents an animated sprite.

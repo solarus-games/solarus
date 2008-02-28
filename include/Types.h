@@ -38,6 +38,15 @@ enum Transition {
 };
 
 /**
+ * Constants to identify each kind of map entity.
+ */
+enum EntityType {
+  ENTITY_TILE = 0,
+  ENTITY_ENTRANCE = 1,
+  ENTITY_EXIT = 2,
+};
+
+/**
  * Types of the id of each resource.
  */
 typedef int MapId;
@@ -45,12 +54,30 @@ typedef int TilesetId;
 typedef std::string MusicId;
 
 /**
- * Declaration of some classes to break cycling dependencies between the header files.
+ * Declaration of some classes to avoid dependencies between the header files.
  */
+class Game;
+class GameResource;
 
 class Map;
-class TileOnMap;
-class MovingWithCollision;
+class Tileset;
 class Music;
+
+class AnimatedSprite;
+class SpriteAnimations;
+class SpriteAnimation;
+class SpriteAnimationDirection;
+
+class Tile;
+class SimpleTile;
+class AnimatedTile;
+
+class MapEntity;
+class Link;
+class MovingWithCollision;
+class EntityDetector;
+class TileOnMap;
+class MapExit;
+class MapEntrance;
 
 #endif

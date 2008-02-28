@@ -7,7 +7,15 @@
 #include <fstream>
 #include "Map.h"
 #include "ZSDX.h"
+#include "Game.h"
+#include "GameResource.h"
+#include "AnimatedSprite.h"
+#include "Link.h"
+#include "Tileset.h"
+#include "Tile.h"
 #include "TileOnMap.h"
+#include "MapEntrance.h"
+#include "MapExit.h"
 #include "FileTools.h"
 
 /**

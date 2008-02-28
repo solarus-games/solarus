@@ -6,9 +6,7 @@
 #define ZSDX_LINK_H
 
 #include "Common.h"
-#include "Map.h"
 #include "Moving8ByPlayer.h"
-#include "AnimatedSprite.h"
 
 /**
  * Link's entity.

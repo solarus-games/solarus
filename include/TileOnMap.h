@@ -7,7 +7,6 @@
 
 #include <istream>
 #include "Common.h"
-#include "Tile.h"
 #include "MapEntity.h"
 
 /**

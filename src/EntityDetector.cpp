@@ -3,6 +3,8 @@
  */
 #include "EntityDetector.h"
 #include "ZSDX.h"
+#include "Game.h"
+#include "Map.h"
 
 /**
  * Constructor.

@@ -3,6 +3,9 @@
  */
 #include "MapExit.h"
 #include "ZSDX.h"
+#include "Game.h"
+#include "GameResource.h"
+#include "Link.h"
 
 /**
  * Constructor.

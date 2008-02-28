@@ -6,8 +6,6 @@
 #define ZSDX_TILESET_H
 
 #include "Common.h"
-#include "SimpleTile.h"
-#include "AnimatedTile.h"
 #include "Color.h"
 
 /**

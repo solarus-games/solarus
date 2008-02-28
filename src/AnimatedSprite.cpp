@@ -3,6 +3,9 @@
  */
 
 #include "AnimatedSprite.h"
+#include "SpriteAnimations.h"
+#include "SpriteAnimation.h"
+#include "SpriteAnimationDirection.h"
 
 /**
  * Constructor.

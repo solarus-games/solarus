@@ -6,9 +6,7 @@
 #define ZSDX_ZSDX_H
 
 #include "Common.h"
-#include "GameResource.h"
 #include "TileAnimationManager.h"
-#include "Game.h"
 
 /**
  * Number of times the screen in redrawn is a second.

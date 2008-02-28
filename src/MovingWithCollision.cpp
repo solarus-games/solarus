@@ -5,6 +5,7 @@
 #include <cmath>
 #include "MovingWithCollision.h"
 #include "ZSDX.h"
+#include "Map.h"
 
 /**
  * Sets the current map of the object.

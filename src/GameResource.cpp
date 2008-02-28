@@ -1,5 +1,8 @@
 #include "GameResource.h"
 #include "Link.h"
+#include "Map.h"
+#include "Tileset.h"
+#include "Music.h"
 
 /**
  * Constructor.

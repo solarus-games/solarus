@@ -3,6 +3,7 @@
  */
 
 #include "LinkAnimations.h"
+#include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "FileTools.h"
 

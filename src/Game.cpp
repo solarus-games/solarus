@@ -6,6 +6,9 @@
 #include "ZSDX.h"
 #include "Music.h"
 #include "TransitionDisplayer.h"
+#include "Link.h"
+#include "Map.h"
+#include "GameResource.h"
 
 /**
  * Constructor.

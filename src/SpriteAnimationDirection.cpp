@@ -3,6 +3,7 @@
  */
 
 #include "SpriteAnimationDirection.h"
+#include "Map.h"
 
 /**
  * Constructor.

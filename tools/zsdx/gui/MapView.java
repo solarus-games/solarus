@@ -84,6 +84,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * In state STATE_MOVING_ENTITIES: total y translation
      */
     private int total_dy;
+    
+    /**
+     * True if the mouse is in the map view.
+     */
+    private boolean mouseInMapView;
 
     /**
      * The entities selected, saved here before drawing a selection rectangle.
@@ -290,8 +295,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    Tileset tileset = map.getTileset();
 	    if (tileset.getSelectedTile() == null) {
 		// no tile is selected anymore in the tileset
-		state = STATE_NORMAL;
-		repaint();
+		returnToNormalState();
 	    }
 	    else if (!map.getEntitySelection().isEmpty()) {
 
@@ -380,12 +384,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		switch (state) {
 
 		case STATE_ADDING_ENTITY:
-		    // display on the map, under the cursor, the entity selected in the tileset
 
-		    // if it is a tile (only case for now)
-		    Tile selectedTileInTileset = tileset.getSelectedTile();
-		    selectedTileInTileset.paint(g, tileset, cursorLocation.x, cursorLocation.y, 2);
+		    if (mouseInMapView) {
+			// display on the map, under the cursor, the entity selected in the tileset
 
+			// if it is a tile (only case for now)
+			Tile selectedTileInTileset = tileset.getSelectedTile();
+			selectedTileInTileset.paint(g, tileset, cursorLocation.x, cursorLocation.y, 2);
+		    }
 		    break;
 
 		case STATE_SELECTING_AREA:
@@ -805,15 +811,39 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	/**
 	 * This method is called when the mouse exits the map view.
-	 * If a tile is selected in the tileset, it is still displayed at
-	 * the last cursor location on the map view, so we have to remove it.
 	 */
 	public void mouseExited(MouseEvent mouseEvent) {
-
-	    if (state == STATE_ADDING_ENTITY) {
-
-		returnToNormalState();
+	    
+	    if (!isImageLoaded()) {
+		return;
 	    }
+
+	    mouseInMapView = false;
+	    repaint(); // useful when adding an entity
+	}
+
+	/**
+	 * This method is called when the mouse enters the map view.
+	 */
+	public void mouseEntered(MouseEvent mouseEvent) {
+	    
+	    if (!isImageLoaded()) {
+		return;
+	    }
+
+	    mouseInMapView = true;
+	    
+	    if (state == STATE_NORMAL && map.getTileset().getSelectedTile() != null) {
+		startAddingEntity();
+	    }
+
+	    /*
+	    if (state == STATE_ADDING_ENTITY) {
+		int x = getMouseInMapX(mouseEvent);
+		int y = getMouseInMapY(mouseEvent);
+		updateAddingEntity(x, y);
+	    }
+	    */
 	}
 
 	/**
@@ -1032,18 +1062,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    break;
 		    
 		case STATE_ADDING_ENTITY:
-		    // if we are adding an entity but the mouse is outside the map view, 
-		    // remove the entity displayed under the cursor
-
-		    if (x >= map.getWidth() + 2 * AREA_AROUND_MAP || y >= map.getHeight() + 2 * AREA_AROUND_MAP) {
-
-			returnToNormalState();
-		    }
-		    else {
-			// update the entity position
-			updateAddingEntity(x, y);
-		    }
-
+		    // update the entity position
+		    
+		    updateAddingEntity(x, y);
 		    break;
 
 		case STATE_RESIZING_ENTITY:

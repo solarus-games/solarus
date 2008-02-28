@@ -16,7 +16,7 @@ public class MapExit extends InteractiveEntity {
     /**
      * Icon of an exit point.
      */
-    private static ImageIcon icon = new ImageIcon("zsdx/images/map_exit.png");;
+    private static ImageIcon icon = new ImageIcon("zsdx/images/map_exit.png");
 
     /**
      * Creates a new exit at the specified location.
@@ -26,6 +26,11 @@ public class MapExit extends InteractiveEntity {
      */
     public MapExit(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
+	
+	// default field values
+	transition = Transition.IMMEDIATE;
+	destinationMapId = "";
+	entranceName = "";
     }
 
     /**

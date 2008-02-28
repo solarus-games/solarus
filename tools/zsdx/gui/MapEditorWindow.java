@@ -25,6 +25,8 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
     // menu items memorized to enable them later
     private JMenu menuMap;
+    private JMenu menuEdit;
+    private JMenu menuEntity;
     private JMenuItem menuItemClose;
     private JMenuItem menuItemSave;
     private JMenuItem menuItemUndo;
@@ -91,6 +93,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 		}
 	    });
 	
+	setMap(null);
 	new ActionListenerLoadProject().actionPerformed(null);
     }
 
@@ -138,6 +141,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	// menu Map
 	menuMap = new JMenu("Map");
 	menuMap.setMnemonic(KeyEvent.VK_T);
+	menuMap.setEnabled(false);
 	
 	item = new JMenuItem("New");
 	item.setMnemonic(KeyEvent.VK_N);
@@ -156,7 +160,6 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	menuItemClose.setMnemonic(KeyEvent.VK_C);
 	menuItemClose.getAccessibleContext().setAccessibleDescription("Close the current map");
 	menuItemClose.addActionListener(new ActionListenerClose());
-	menuItemClose.setEnabled(false);
 	menuMap.add(menuItemClose);
 
 	menuItemSave = new JMenuItem("Save");
@@ -164,14 +167,13 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current map");
 	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 	menuItemSave.addActionListener(new ActionListenerSave());
-	menuItemSave.setEnabled(false);
 	menuMap.add(menuItemSave);
 
 	menuBar.add(menuMap);
 
 	// menu Edit
-	menu = new JMenu("Edit");
-	menu.setMnemonic(KeyEvent.VK_E);
+	menuEdit = new JMenu("Edit");
+	menuEdit.setMnemonic(KeyEvent.VK_E);
 	
 	menuItemUndo = new JMenuItem("Undo");
 	menuItemUndo.setMnemonic(KeyEvent.VK_U);
@@ -179,7 +181,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	menuItemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 	menuItemUndo.addActionListener(new ActionListenerUndo());
 	menuItemUndo.setEnabled(false);
-	menu.add(menuItemUndo);
+	menuEdit.add(menuItemUndo);
 
 	menuItemRedo = new JMenuItem("Redo");
 	menuItemRedo.setMnemonic(KeyEvent.VK_R);
@@ -187,9 +189,27 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	menuItemRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 	menuItemRedo.addActionListener(new ActionListenerRedo());
 	menuItemRedo.setEnabled(false);
-	menu.add(menuItemRedo);
+	menuEdit.add(menuItemRedo);
 
-	menuBar.add(menu);
+	menuBar.add(menuEdit);
+
+	// menu Entity
+	menuEntity = new JMenu("Entity");
+	menuEntity.setMnemonic(KeyEvent.VK_E);
+	
+	item = new JMenuItem("Add entrance");
+	item.setMnemonic(KeyEvent.VK_E);
+	item.getAccessibleContext().setAccessibleDescription("Add an entrance on the map");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_ENTRANCE));
+	menuEntity.add(item);
+
+	item = new JMenuItem("Add exit");
+	item.setMnemonic(KeyEvent.VK_X);
+	item.getAccessibleContext().setAccessibleDescription("Add an exit on the map");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_EXIT));
+	menuEntity.add(item);
+	
+	menuBar.add(menuEntity);
 
 	setJMenuBar(menuBar);
     }
@@ -220,6 +240,9 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
 	// enable or disable the menu items
 	menuItemClose.setEnabled(map != null);
+	menuItemSave.setEnabled(map != null);
+	menuEdit.setEnabled(map != null);
+	menuEntity.setEnabled(map != null);
 
 	// notify the views
 	mapPropertiesView.setMap(map);
@@ -496,6 +519,23 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	
 	public void actionPerformed(ActionEvent ev) {
 	    loadProject();
+	}
+    }
+
+    /**
+     * Action performed when the user wants to add an entity.
+     */
+    private class ActionListenerAddEntity implements ActionListener {
+
+	// type of entity to add
+	private int entityType;
+	
+	public ActionListenerAddEntity(int entityType) {
+	    this.entityType = entityType;
+	}
+	
+	public void actionPerformed(ActionEvent ev) {
+	    mapView.startAddingEntity(entityType);
 	}
     }
 }

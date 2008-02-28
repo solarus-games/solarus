@@ -464,11 +464,16 @@ public abstract class MapEntity extends Observable {
      * @param name the new entity's name
      * @throws UnsupportedOperationException if the entity is not identifiable
      * @throws MapException if this name is already used by another entity of the same type
+     * or not valid
      */
     public void setName(String name) throws UnsupportedOperationException, MapException {
 
 	if (!hasName()) {
 	    throw new UnsupportedOperationException("This entity is not identifiable");
+	}
+	
+	if (name.indexOf(' ') != -1 || name.indexOf('\t') != -1) {
+	    throw new MapException("The entity name cannot have whitespaces");
 	}
 	
 	MapEntity other = map.getEntityWithName(getType(), name);
@@ -489,7 +494,7 @@ public abstract class MapEntity extends Observable {
     private void computeDefaultName() {
 	
 	int entityType = getType();	
-	String prefix = entityTypeNames[entityType] + ' ';
+	String prefix = entityTypeNames[entityType];
 	int i = 1;
 	
 	// compute an unused name

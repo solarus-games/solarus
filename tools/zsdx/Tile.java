@@ -347,7 +347,7 @@ public class Tile extends Observable {
 	int dx2 = dx1 + width;
 	int dy1 = y * scale;
 	int dy2 = dy1 + height;
-			
+	
 	g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
     }
 

@@ -19,7 +19,7 @@ public class MapViewMouseCoordinates extends JLabel {
 
 		public void mouseMoved(MouseEvent e) {
 		    if (mapView.getMap() != null) {
-			setCoordinates((int) (e.getX() / mapView.getZoom()), (int) (e.getY() / mapView.getZoom()));
+			setCoordinates(mapView.getMouseInMapX(e), mapView.getMouseInMapY(e));
 		    }
 		}
 
@@ -37,8 +37,8 @@ public class MapViewMouseCoordinates extends JLabel {
      */
     private void setCoordinates(int x, int y) {
 
-	int xShown = (x + 4) / 8 * 8;
-	int yShown = (y + 4) / 8 * 8;
+	int xShown = GuiTools.round8(x);
+	int yShown = GuiTools.round8(y);
 	setText("(" + xShown + ", " + yShown + ")");
     }
     

@@ -59,7 +59,7 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
 	    }
 	}
 	catch (ZSDXException ex) {
-	    WindowTools.errorDialog("Unexpected error: " + ex.getMessage());
+	    GuiTools.errorDialog("Unexpected error: " + ex.getMessage());
 	    System.exit(1);
 	}
     }

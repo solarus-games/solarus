@@ -287,11 +287,11 @@ public abstract class MapEntity extends Observable {
     protected void checkPositionTopLeft(int x, int y) throws MapException {
 
 	if (x % 8 != 0) {
-	    throw new MapException("Wrong x value: the coordinates of the top-left corner must divisible by 8");
+	    throw new MapException("Wrong x value (" + x + "): the coordinates of the top-left corner must divisible by 8");
 	}
 
 	if (y % 8 != 0) {
-	    throw new MapException("Wrong y value: the coordinates of the top-left corner must divisible by 8");
+	    throw new MapException("Wrong y value (" + y + "): the coordinates of the top-left corner must divisible by 8");
 	}
     }
 

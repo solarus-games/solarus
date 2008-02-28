@@ -265,7 +265,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 		map.getEntitySelection().setLayer(layer);
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot change the layer: " + e.getMessage());
+		GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
 	    }
 	}
     }
@@ -297,7 +297,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 		map.getEntitySelection().setDirection(direction);
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot change the direction: " + e.getMessage());
+		GuiTools.errorDialog("Cannot change the direction: " + e.getMessage());
 	    }
 	}
     }
@@ -316,7 +316,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 		map.getEntitySelection().bringToFront();
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
+		GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
 	    }
 	}
     }
@@ -335,7 +335,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 		map.getEntitySelection().bringToBack();
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot bring the entities to back: " + e.getMessage());
+		GuiTools.errorDialog("Cannot bring the entities to back: " + e.getMessage());
 	    }
 	}
     }

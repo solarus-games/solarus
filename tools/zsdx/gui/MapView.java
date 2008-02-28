@@ -111,6 +111,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Zoom of the map view.
      */
     private double zoom;
+    
+    /**
+     * Width (or height) of the area displayed around the map.
+     */
+    private static final int AREA_AROUND_MAP = 48;
+
+    /**
+     * Width (or height) displayed of the area outside the map,
+     * scaled after applying the zoom.
+     */
+    private int scaledAreaAroundMap;
 
     /**
      * Constructor.
@@ -123,6 +134,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	this.initialSelection = new LinkedList<MapEntity>();
 	this.renderingOptions = new MapViewRenderingOptions(this);
 	this.zoom = 2;
+	scaledAreaAroundMap = (int) (AREA_AROUND_MAP * zoom);
 
 	// create the popup menu for the selected entities
 	// items: resize, layer, destroy
@@ -194,13 +206,16 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	int width, height;
 
 	if (map == null) {
-	    width = 640;
-	    height = 480;
+	    width = Map.MINIMUM_WIDTH;
+	    height = Map.MINIMUM_HEIGHT;
 	}
 	else {
-	    width = (int) (map.getWidth() * zoom);
-	    height = (int) (map.getHeight() * zoom);
+	    width = map.getWidth();
+	    height = map.getHeight();
 	}
+
+	width = (int) ((width + 2 * AREA_AROUND_MAP) * zoom);
+	height = (int) ((height + 2 * AREA_AROUND_MAP) * zoom);
 	
 	return new Dimension(width, height);
     }
@@ -307,6 +322,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	}
 
 	Tileset tileset = map.getTileset();
+	
+	// outside the map	
+	g.setColor(Color.LIGHT_GRAY);
+	g.fillRect(0, 0, (int) (map.getWidth() * zoom) + 2 * scaledAreaAroundMap,
+		(int) (map.getHeight() * zoom) + 2 * scaledAreaAroundMap);
+	g.translate(scaledAreaAroundMap, scaledAreaAroundMap);
 
 	// background color
 	if (renderingOptions.getShowLayer(MapEntity.LAYER_LOW) && tileset != null) {
@@ -393,7 +414,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    map.getEntitySelection().removeFromMap();
 	}
 	catch (ZSDXException e) {
-	    WindowTools.errorDialog("Cannot remove the entities: " + e.getMessage());
+	    GuiTools.errorDialog("Cannot remove the entities: " + e.getMessage());
 	}
     }
 
@@ -426,8 +447,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private void updateAddingEntity(int x, int y) {
 
-	x -= x % 8;
-	y -= y % 8;
+	int width, height;
+
+	// if it is a tile (only case for now)
+	Tile tile = map.getTileset().getSelectedTile();
+	width = tile.getWidth();
+	height = tile.getHeight();
+
+	x = GuiTools.round8(x - width / 2); // center the entity around the cursor
+	y = GuiTools.round8(y - height / 2);
 	
 	if (x != cursorLocation.x || y != cursorLocation.y) {
 	    cursorLocation.x = x;
@@ -460,7 +488,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    repaint();
 	}
 	catch (ZSDXException ex) {
-	    WindowTools.errorDialog("Cannot add the entity: " + ex.getMessage());
+	    GuiTools.errorDialog("Cannot add the entity: " + ex.getMessage());
 	}
     }
 
@@ -473,8 +501,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private void startSelectingArea(int x, int y) {
 
 	// initial point of the rectangle
-	fixedLocation.x = (x + 4) / 8 * 8;
-	fixedLocation.y = (y + 4) / 8 * 8;
+	fixedLocation.x = GuiTools.round8(x);
+	fixedLocation.y = GuiTools.round8(y);
 
 	// second point of the rectangle
 	cursorLocation.x = fixedLocation.x;
@@ -499,11 +527,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private void updateSelectingArea(int x, int y) {
 
-	x = (x + 4) / 8 * 8;
-	y = (y + 4) / 8 * 8;
+	x = GuiTools.round8(x);
+	y = GuiTools.round8(y);
 
-	x = Math.min(Math.max(0, x), map.getWidth());
-	y = Math.min(Math.max(0, y), map.getHeight());
+	x = Math.min(Math.max(-AREA_AROUND_MAP, x), map.getWidth() + 2 * AREA_AROUND_MAP);
+	y = Math.min(Math.max(-AREA_AROUND_MAP, y), map.getHeight() + 2 * AREA_AROUND_MAP);
 
 	// update the second point of the rectangle if necessary
 	if (x != cursorLocation.x || y != cursorLocation.y) {
@@ -545,15 +573,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	if (entitySelection.isResizable()) {
 	    MapEntity entity = entitySelection.getEntity(0);
-	    Rectangle tilePositionInMap = entity.getPositionInMap();
+	    Rectangle positionInMap = entity.getPositionInMap();
 	    
-	    fixedLocation.x = tilePositionInMap.x;
-	    fixedLocation.y = tilePositionInMap.y;
-	    fixedLocation.width = tilePositionInMap.width;
-	    fixedLocation.height = tilePositionInMap.height;
+	    fixedLocation.x = positionInMap.x;
+	    fixedLocation.y = positionInMap.y;
+	    fixedLocation.width = positionInMap.width;
+	    fixedLocation.height = positionInMap.height;
 
-	    cursorLocation.x = tilePositionInMap.x + tilePositionInMap.width;
-	    cursorLocation.y = tilePositionInMap.y + tilePositionInMap.height;
+	    cursorLocation.x = positionInMap.x + positionInMap.width;
+	    cursorLocation.y = positionInMap.y + positionInMap.height;
 
 	    state = STATE_RESIZING_ENTITY;
 	    repaint();
@@ -574,7 +602,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	xB = x;
 	yB = y;
 	
-	if (xB < map.getWidth() && yB < map.getHeight()) {
+	if (xB < map.getWidth() + AREA_AROUND_MAP && yB < map.getHeight() + 2 * AREA_AROUND_MAP) {
 	    
 	    MapEntity selectedEntity = map.getEntitySelection().getEntity(0);
 	    
@@ -583,17 +611,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    
 	    xA = fixedLocation.x;
 	    yA = fixedLocation.y;
-	    
-	    // snap the coordinates to the grid
-	    xB += width / 2;
-	    yB += height / 2;
-	    
-	    xB -= xB % 8;
-	    yB -= yB % 8;
-	    
-	    // snap the coordinates to the size of the entity
-	    xB = xB - (xB - xA) % width;
-	    yB = yB - (yB - yA) % height;
+
+	    // trust me: this awful formula calculates the coordinates such
+	    // that the entity is resized at the mouse point
+	    int diffX = xB - xA;
+	    int diffY = yB - yA;	    
+	    int signX = (diffX >= 0) ? 1 : -1;
+	    int signY = (diffY >= 0) ? 1 : -1;
+	    xB = xB + signX * (width - ((Math.abs(diffX) + width) % width));
+	    yB = yB + signY * (height - ((Math.abs(diffY) + height) % height));
 	    
 	    if (xB != cursorLocation.x || yB != cursorLocation.y) {
 		
@@ -615,8 +641,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		try {
 		    map.setEntityPosition(selectedEntity, xA, yA, xB, yB);
 		}
-		catch (ZSDXException e) {
-		    WindowTools.errorDialog("Cannot resize the entity: " + e.getMessage());
+		catch (ZSDXException ex) {
+		    GuiTools.errorDialog("Cannot resize the entity: " + ex.getMessage());
 		}
 	    }
 	}
@@ -648,7 +674,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		map.getHistory().doAction(new ActionResizeEntity(map, entity, finalPosition));
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot resize the entity: " + e.getMessage());
+		GuiTools.errorDialog("Cannot resize the entity: " + e.getMessage());
 	    }
 	}
 	returnToNormalState();
@@ -662,8 +688,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     public void startMovingEntities(int x, int y) {
 
-	x -= x % 8;
-	y -= y % 8;
+	x = GuiTools.round8(x);
+	y = GuiTools.round8(y);
 
 	cursorLocation.x = x;
 	cursorLocation.y = y;
@@ -682,11 +708,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private void updateMovingEntities(int x, int y) {
 
-	x -= x % 8;
-	y -= y % 8;
+	x = GuiTools.round8(x);
+	y = GuiTools.round8(y);
 
-	x = Math.min(Math.max(0, x), map.getWidth());
-	y = Math.min(Math.max(0, y), map.getHeight());
+	x = Math.min(Math.max(-AREA_AROUND_MAP, x), map.getWidth() + 2 * AREA_AROUND_MAP);
+	y = Math.min(Math.max(-AREA_AROUND_MAP, y), map.getHeight() + 2 * AREA_AROUND_MAP);
 
 	if (x != cursorLocation.x || y != cursorLocation.y) {
 	    
@@ -744,10 +770,32 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		map.getHistory().doAction(new ActionMoveEntities(map, entities, total_dx, total_dy));
 	    }
 	    catch (ZSDXException e) {
-		WindowTools.errorDialog("Cannot move the entities: " + e.getMessage());
+		GuiTools.errorDialog("Cannot move the entities: " + e.getMessage());
 	    }
 	}
 	returnToNormalState();
+    }
+    
+    /**
+     * Returns the x coordinate of a mouse event in the map coordinate system.
+     * The map coordinate system differs from the map view coordinate system
+     * because of the zoom and the area displayed around the map.
+     * @param mouseEvent the mouse event
+     * @return the x coordinate of the mouse event in the map coordinate system
+     */
+    public int getMouseInMapX(MouseEvent mouseEvent) {
+	return (int) ((mouseEvent.getX() - scaledAreaAroundMap) / zoom);
+    }
+
+    /**
+     * Returns the y coordinate of a mouse event in the map coordinate system.
+     * The map coordinate system differs from the map view coordinate system
+     * because of the zoom and the area displayed around the map.
+     * @param mouseEvent the mouse event
+     * @return the y coordinate of the mouse event in the map coordinate system
+     */
+    public int getMouseInMapY(MouseEvent mouseEvent) {
+	return (int) ((mouseEvent.getY() - scaledAreaAroundMap) / zoom);
     }
 
     /**
@@ -782,8 +830,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    if (state == STATE_NORMAL && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
 		// find the entity clicked
-		int x = (int) (mouseEvent.getX() / zoom);
-		int y = (int) (mouseEvent.getY() / zoom);
+		int x = getMouseInMapX(mouseEvent);
+		int y = getMouseInMapY(mouseEvent);
 
 		MapEntity entityClicked = map.getEntityAt(x, y);
 
@@ -838,8 +886,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		int button = mouseEvent.getButton();
 
 		// find the entity clicked
-		int x = (int) (mouseEvent.getX() / zoom);
-		int y = (int) (mouseEvent.getY() / zoom);
+		int x = getMouseInMapX(mouseEvent);
+		int y = getMouseInMapY(mouseEvent);
 
 		MapEntity entityClicked = null;
 		for (int layer = MapEntity.LAYER_HIGH;
@@ -933,9 +981,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		endResizingEntity();
 
 		if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
-		    
-		    int x = (int) (mouseEvent.getX() / zoom);
-		    int y = (int) (mouseEvent.getY() / zoom);
+
+		    int x = getMouseInMapX(mouseEvent);
+		    int y = getMouseInMapY(mouseEvent);
 
 		    // move to the state STATE_ADDING_ENTITY
 
@@ -968,12 +1016,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	public void mouseMoved(MouseEvent mouseEvent) {
 
 	    if (isImageLoaded()) {
-		
-		int x = (int) (mouseEvent.getX() / zoom);
-		int y = (int) (mouseEvent.getY() / zoom);
+
+		int x = getMouseInMapX(mouseEvent);
+		int y = getMouseInMapY(mouseEvent);
 
 		switch (state) {
-		    
+		
 		case STATE_NORMAL:
 		    // if a tile is selected in the tileset,
 		    // display it on the map under the cursor
@@ -984,10 +1032,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    break;
 		    
 		case STATE_ADDING_ENTITY:
-		    // if we are adding an entity but the mouse is outside the map, 
+		    // if we are adding an entity but the mouse is outside the map view, 
 		    // remove the entity displayed under the cursor
 
-		    if (x >= map.getWidth() || y >= map.getHeight()) {
+		    if (x >= map.getWidth() + 2 * AREA_AROUND_MAP || y >= map.getHeight() + 2 * AREA_AROUND_MAP) {
 
 			returnToNormalState();
 		    }
@@ -1022,8 +1070,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    boolean leftClick = (mouseEvent.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0;
 
-	    int x = (int) (mouseEvent.getX() / zoom);
-	    int y = (int) (mouseEvent.getY() / zoom);
+	    int x = getMouseInMapX(mouseEvent);
+	    int y = getMouseInMapY(mouseEvent);
 
 	    switch (state) {
 

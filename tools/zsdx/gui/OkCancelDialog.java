@@ -144,7 +144,7 @@ public abstract class OkCancelDialog extends JDialog {
 	    }
 	}
 	catch (ZSDXException ex) {
-	    WindowTools.errorDialog(ex.getMessage());
+	    GuiTools.errorDialog(ex.getMessage());
 	}
     }
     

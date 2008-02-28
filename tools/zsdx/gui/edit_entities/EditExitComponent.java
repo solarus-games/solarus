@@ -106,7 +106,7 @@ public class EditExitComponent extends EditEntityComponent {
 		}
 	    }
 	    catch (ZSDXException ex) {
-		WindowTools.warningDialog("The destination map is invalid: " + ex.getMessage());
+		GuiTools.warningDialog("The destination map is invalid: " + ex.getMessage());
 	    }
 	}
     }

@@ -177,7 +177,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 			    map.getHistory().doAction(new ActionRenameMap(map, name));
 			}
 			catch (ZSDXException ex) {
-			    WindowTools.errorDialog("Cannot change the map name: " + ex.getMessage());
+			    GuiTools.errorDialog("Cannot change the map name: " + ex.getMessage());
 			}
 			update(map);
 		    }
@@ -238,7 +238,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 			}
 			catch (ZSDXException ex) {
-			    WindowTools.errorDialog("Cannot change the map size: " + ex.getMessage());
+			    GuiTools.errorDialog("Cannot change the map size: " + ex.getMessage());
 			}
 			update(map);
 		    }
@@ -318,11 +318,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 		    map.getHistory().doAction(new ActionChangeTileset(map, selectedTilesetId));
 			
 		    if (map.badTiles()) {
-			WindowTools.warningDialog("Some tiles of the map have been removed because they don't exist in this tileset.");
+			GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in this tileset.");
 		    }
 		}
 		catch (ZSDXException ex) {
-		    WindowTools.errorDialog("Cannot load the tileset '" + selectedTilesetId + "': " + ex.getMessage());		
+		    GuiTools.errorDialog("Cannot load the tileset '" + selectedTilesetId + "': " + ex.getMessage());		
 		}
 	    }
 	}
@@ -382,7 +382,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 		    map.getHistory().doAction(new ActionChangeMusic(map, music));
 		}
 		catch (ZSDXException ex) {
-		    WindowTools.errorDialog("Cannot change the background music: " + ex.getMessage());
+		    GuiTools.errorDialog("Cannot change the background music: " + ex.getMessage());
 		}
 	    }
 	}

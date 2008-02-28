@@ -5,12 +5,12 @@ import javax.swing.*;
 /**
  * This class provides some tools for the graphical components.
  */
-public class WindowTools {
+public class GuiTools {
 
     /**
      * You don't need to instanciate this class.
      */
-    private WindowTools() {
+    private GuiTools() {
 
     }
 
@@ -81,5 +81,26 @@ public class WindowTools {
 		JOptionPane.YES_NO_OPTION);
 	
 	return (result == JOptionPane.YES_OPTION);
+    }
+    
+    /**
+     * Rounds an integer number to the closest multiple of 8.
+     * This method is useful to handle the clicks on the game components.
+     * @param x an integer (can be negative)
+     * @return the multiple of 8 the closest to the parameter 
+     */
+    public static int round8(int x) {
+	return roundN(x, 8);
+    }
+    
+    /**
+     * Rounds an integer number to the closest multiple of n.
+     * This method is useful to handle the clicks on the game components.
+     * @param x an integer (can be negative)
+     * @param n a stepsize
+     * @return the multiple of n the closest to the x 
+     */
+    public static int roundN(int x, int n) {
+	return (x + (n / 2) * Integer.signum(x)) / n * n;
     }
 }

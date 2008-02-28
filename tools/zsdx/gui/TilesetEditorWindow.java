@@ -39,7 +39,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	Project.addProjectObserver(this);
 
 	// set a nice look and feel
-	WindowTools.setLookAndFeel();
+	GuiTools.setLookAndFeel();
 
 	// create the menu bar
 	createMenuBar();
@@ -234,7 +234,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	    Project project = Project.createNew(projectPath);
 
 	    if (project == null) {
-		WindowTools.warningDialog("A project already exists in this directory.");
+		GuiTools.warningDialog("A project already exists in this directory.");
 	    }
 	}
     }
@@ -257,11 +257,11 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 		Project project = Project.createExisting(projectPath);
 
 		if (project == null) {
-		    if (WindowTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
+		    if (GuiTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
 			Project.createNew(projectPath);
 
 			if (project == null) {
-			    WindowTools.warningDialog("A project already exists in this directory.");
+			    GuiTools.warningDialog("A project already exists in this directory.");
 			}
 			else {
 			    menuTileset.setEnabled(true);
@@ -270,7 +270,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 		}
 	    }
 	    catch (ZSDXException ex) {
-		WindowTools.errorDialog("Cannot load the project: " + ex.getMessage());
+		GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
 	    }
 	}
     }
@@ -289,7 +289,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	    setTileset(tileset);
 	}
 	catch (ZSDXException ex) {
-	    WindowTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
+	    GuiTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
 	}
     }
 
@@ -317,7 +317,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	    setTileset(tileset);
 	}
 	catch (ZSDXException ex) {
-	    WindowTools.errorDialog("Could not load the tileset: " + ex.getMessage());
+	    GuiTools.errorDialog("Could not load the tileset: " + ex.getMessage());
 	}
     }
 
@@ -342,7 +342,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	    tileset.save();
 	}
 	catch (ZSDXException ex) {
-	    WindowTools.errorDialog("Could not save the tileset: " + ex.getMessage());
+	    GuiTools.errorDialog("Could not save the tileset: " + ex.getMessage());
 	}
     }
 

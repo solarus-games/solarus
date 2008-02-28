@@ -9,4 +9,4 @@
 	- choisir les types d'entités affichés
 	- permettre d'ajouter des entités
 	- nouveau projet : créer le fichier resource_db.zsd automatiquement, le répertoire data et les sous-répertoires
-	- afficher la partie extérieure de la map
+	- empêcher de mettre des entités au-delà de la partie extérieure d'une map

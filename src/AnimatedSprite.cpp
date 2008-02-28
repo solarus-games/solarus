@@ -28,6 +28,7 @@ Uint32 AnimatedSprite::get_frame_interval(void) {
  * @return the next frame of the current frame (or -1 if the animation is over)
  */
 int AnimatedSprite::get_next_frame(void) {
+
   return animations->get_animation(current_animation)->
     get_direction(current_direction)->get_next_frame(current_frame);    
 }
@@ -116,6 +117,7 @@ int AnimatedSprite::get_current_animation_direction(void) {
  * @param current_direction the current direction
  */
 void AnimatedSprite::set_current_animation_direction(int current_direction) {
+
   this->current_direction = current_direction;
   set_current_frame(0);
 }

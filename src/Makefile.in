@@ -54,7 +54,8 @@ am_zsdx_OBJECTS = ZSDX.$(OBJEXT) FileTools.$(OBJEXT) Game.$(OBJEXT) \
 	SimpleTile.$(OBJEXT) AnimatedTile.$(OBJEXT) \
 	TileOnMap.$(OBJEXT) Tile.$(OBJEXT) \
 	TileAnimationManager.$(OBJEXT) Color.$(OBJEXT) Link.$(OBJEXT) \
-	LinkAnimations.$(OBJEXT) Music.$(OBJEXT) Tileset.$(OBJEXT)
+	LinkAnimations.$(OBJEXT) Music.$(OBJEXT) Tileset.$(OBJEXT) \
+	TransitionDisplayer.$(OBJEXT)
 zsdx_OBJECTS = $(am_zsdx_OBJECTS)
 zsdx_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
@@ -186,7 +187,8 @@ zsdx_SOURCES = \
   Link.cpp						\
   LinkAnimations.cpp					\
   Music.cpp						\
-  Tileset.cpp						
+  Tileset.cpp						\
+  TransitionDisplayer.cpp
 
 
 # additional files to provide in a tarball release
@@ -220,7 +222,8 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Link.h				\
   $(zsdxincludedir)/LinkAnimations.h			\
   $(zsdxincludedir)/Music.h				\
-  $(zsdxincludedir)/Tileset.h				
+  $(zsdxincludedir)/Tileset.h				\
+  $(zsdxincludedir)/TransitionDisplayer.h		
 
 all: all-am
 
@@ -314,6 +317,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileAnimationManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileOnMap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tileset.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransitionDisplayer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ZSDX.Po@am__quote@
 
 .cpp.o:

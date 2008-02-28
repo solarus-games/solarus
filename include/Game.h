@@ -6,8 +6,6 @@
 #define ZSDX_GAME_H
 
 #include "Common.h"
-#include "GameResource.h"
-#include "MapEntrance.h"
 
 /**
  * This class provides the game API for the maps.
@@ -37,17 +35,13 @@ class Game {
    */
   Music *current_music;
 
-  /**
-   * Launches the new map.
-   */
-  void launch_map(void);
-
  public:
 
   Game(void);
   inline ~Game(void) { }
   
   void play(void);
+  void redraw_screen(Map *map);
 
   void set_current_map(MapId map_id);
   void set_current_map(MapId map_id, string entrance_name, Transition transition);

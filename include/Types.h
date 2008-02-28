@@ -51,5 +51,6 @@ typedef std::string MusicId;
 class Map;
 class TileOnMap;
 class MovingWithCollision;
+class Music;
 
 #endif

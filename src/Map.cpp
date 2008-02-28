@@ -411,8 +411,6 @@ void Map::display() {
       link->display_on_map(this);
     }
   }
-
-  // rupees, hearts...
 }
 
 /**

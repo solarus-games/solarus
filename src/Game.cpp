@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "ZSDX.h"
 #include "Music.h"
+#include "TransitionDisplayer.h"
 
 /**
  * Constructor.
@@ -30,7 +31,7 @@ void Game::play(void) {
     
     // close the old map
     if (map != NULL) {
-      //      TransitionDisplayer::showOutTransition(transition);
+      TransitionDisplayer::showOutTransition(map, transition);
       map->leave();
       map->unload();
     }
@@ -39,11 +40,13 @@ void Game::play(void) {
  
     // start the map (background music, etc)
     map->start();
+    TransitionDisplayer::showInTransition(map, transition);
 
     //  SDL_EnableKeyRepeat(5, 10);
 
     // SDL main loop
     while (this->current_map == map && !quit) { // loop until the map is changed
+
       if (SDL_PollEvent(&event)) {
 	switch (event.type) {
 	  
@@ -136,22 +139,31 @@ void Game::play(void) {
       // display everything each time frame
       ticks = SDL_GetTicks();
       if (ticks >= last_frame_date + FRAME_INTERVAL) {
+	
 	last_frame_date = ticks;
 
-	// TODO: dedicated function for this
-	SDL_FillRect(ZSDX::get_screen(), NULL, 0);
-
-	//	SDL_SetAlpha(map->get_surface(), SDL_SRCALPHA, 128);
-	map->display();
-	SDL_BlitSurface(map->get_surface(), NULL, ZSDX::get_screen(), NULL); // TODO optimize
-
-	SDL_Flip(ZSDX::get_screen());
+	redraw_screen(map);
       }
     }
   }
 
   // quit the game
   stop_music();
+}
+
+/**
+ * Redraws the screen.
+ */
+void Game::redraw_screen(Map *map) {
+
+  SDL_FillRect(ZSDX::get_screen(), NULL, 0);
+
+  map->display();
+  SDL_BlitSurface(map->get_surface(), NULL, ZSDX::get_screen(), NULL); // TODO optimize
+
+  // TODO rupees, hearts...
+
+  SDL_Flip(ZSDX::get_screen());
 }
 
 /**

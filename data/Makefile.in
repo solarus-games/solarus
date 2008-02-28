@@ -152,7 +152,7 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 zsdxdatadir = $(datadir)/zsdx
-zsdxdata_DATA = game.zsd
+zsdxdata_DATA = project_db.zsd
 images_sprites_link_dir = $(zsdxdatadir)/images/sprites/link
 images_sprites_link__DATA = \
   images/sprites/link/stopped.png		\

@@ -476,45 +476,49 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * In state State.ADDING_ENTITY, adds the current entity to the map.
      * The current entity selected in the tileset is placed on the map at the mouse location.
+     * If the entity is resizable, the resulting state is State.RESIZING_ENTITY.
+     * Otherwise it is State.NORMAL.
+     * @returns the entity added (or null if there was a problem) 
      */
-    private void endAddingEntity() {
+    private MapEntity endAddingEntity() {
+	
+	MapEntity entityAdded = null;
 
 	try {
 	    Tileset tileset = map.getTileset();
 
-	    // get the entity
-	    MapEntity entity;
-	    
 	    // if it is a tile (TODO: only one case)
 	    if (entityTypeBeingAdded == MapEntity.ENTITY_TILE) {
-		entity = new TileOnMap(map, tileset.getSelectedTileId(),
+		entityBeingAdded = new TileOnMap(map, tileset.getSelectedTileId(),
 			cursorLocation.x, cursorLocation.y);
-	    }
-	    else {
-		entity = entityBeingAdded;
 	    }
 
 	    // add it to the map
-	    map.getHistory().doAction(new ActionAddEntity(map, entity));
+	    map.getHistory().doAction(new ActionAddEntity(map, entityBeingAdded));
 
 	    // make it selected
 	    map.getEntitySelection().unSelectAll();
-	    map.getEntitySelection().select(entity);
+	    map.getEntitySelection().select(entityBeingAdded);
 	    
 	    if (tileset.getSelectedTile() != null) {
 		tileset.unSelectTile();
 	    }
 
-	    if (entity.isResizable()) {
+	    if (entityBeingAdded.isResizable()) {
 		startResizingEntity(); // let the user resize the entity until the mouse is released
 	    }
+	    else {
+		returnToNormalState();
+	    }
 	    entityBeingAdded = null;
-	    returnToNormalState();
+	    entityAdded = entityBeingAdded;
 	    repaint();
 	}
 	catch (ZSDXException ex) {
 	    GuiTools.errorDialog("Cannot add the entity: " + ex.getMessage());
 	}
+	
+	return entityAdded;
     }
 
     /**
@@ -926,18 +930,18 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    requestFocusInWindow();
 	    MapEntitySelection entitySelection = map.getEntitySelection();
 
+	    // detect the mouse button
+	    int button = mouseEvent.getButton();
+
+	    int x = getMouseInMapX(mouseEvent);
+	    int y = getMouseInMapY(mouseEvent);
+
 	    switch (state) {
 
 		// select or unselect an entity
 	    case NORMAL:
 
-		// detect the mouse button
-		int button = mouseEvent.getButton();
-
 		// find the entity clicked
-		int x = getMouseInMapX(mouseEvent);
-		int y = getMouseInMapY(mouseEvent);
-
 		MapEntity entityClicked = null;
 		for (int layer = MapEntity.LAYER_HIGH;
 		     layer >= MapEntity.LAYER_LOW && entityClicked == null;
@@ -1008,7 +1012,21 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// place the new entity
 	    case ADDING_ENTITY:
 
-		endAddingEntity(); // add the entity to the map
+		MapEntity entityAdded = endAddingEntity(); // add the entity to the map
+		
+		// if the entity was added with a right click and is not being
+		// resized, we propose to add another entity of the same type
+		if (button == MouseEvent.BUTTON3 && state == State.NORMAL) {
+		    
+		    if (entityTypeBeingAdded == MapEntity.ENTITY_TILE) {
+			int tileId = ((TileOnMap) entityAdded).getTileId();
+			map.getTileset().setSelectedTileId(tileId);
+		    }
+		    
+ 		    startAddingEntity(entityTypeBeingAdded);
+		    updateAddingEntity(x, y);
+		}
+		
 		break;
 	    }
 	}
@@ -1036,10 +1054,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 		    // move to the state State.ADDING_ENTITY
 
-		    // if it is a tile (only case for now):
-		    int tileId = ((TileOnMap) entity).getTileId();
-		    map.getTileset().setSelectedTileId(tileId);
- 		    startAddingEntity(entityTypeBeingAdded);
+		    // if it is a tile
+		    if (entityTypeBeingAdded == MapEntity.ENTITY_TILE) {
+			int tileId = ((TileOnMap) entity).getTileId();
+			map.getTileset().setSelectedTileId(tileId);
+		    }
+		    startAddingEntity(entityTypeBeingAdded);
 		    updateAddingEntity(x, y);
 		}
 		break;

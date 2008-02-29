@@ -1,4 +1,4 @@
-320	240	0	village.it
+320	240	0	game_over.it
 0	0	16	16	24	24	45
 0	0	16	200	24	24	47
 0	0	40	16	64	24	49
@@ -37,4 +37,5 @@
 0	0	56	160	8	16	71
 0	0	80	184	8	8	71
 0	0	80	152	8	8	69
-1	0	32	127	secret_room_entrance	0
+1	0	64	127	secret_room_entrance	0
+2	0	40	112	16	16	exit1	0	0	south_entrance

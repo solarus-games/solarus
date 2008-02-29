@@ -29,9 +29,9 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
 	super();
 	this.resourceType = resourceType;
 	this.showEmptyOption = showEmptyOption;
-
-	Project.addProjectObserver(this);
 	
+	Project.addProjectObserver(this);
+
 	buildList();
     }
 

@@ -101,8 +101,11 @@ public class EditExitComponent extends EditEntityComponent {
 	    try {
 		String mapId = mapField.getSelectedId();
 		
-		if (mapId != null && mapId.length() != 0) { // a map has just been selected
+		if (mapId.length() != 0) { // a map has just been selected
 		    entranceField.setMap(new Map(mapId));
+		}
+		else {
+		    entranceField.setMap(null);
 		}
 	    }
 	    catch (ZSDXException ex) {

@@ -1,7 +1,7 @@
 package zsdx.gui;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.List;
 import zsdx.*;
 import zsdx.Map;
 
@@ -38,7 +38,7 @@ public class EntityChooser extends JComboBox {
 	this.map = map;
 	this.entityType = entityType;
 	this.showEmptyOption = showEmptyOption;
-
+	
 	buildList();
     }
     
@@ -63,12 +63,16 @@ public class EntityChooser extends JComboBox {
 	    if (entities.size() == 1) {
 		setSelectedIndex(showEmptyOption ? 1 : 0);
 	    }
-	}	
+	    setEnabled(true);
+	}
+	else {
+	    setEnabled(false);
+	}
     }
     
     /**
      * Returns the name of the selected entity.
-     * @return the name of the selected entity, or null if no entity is selected
+     * @return the name of the selected entity, or an empty string if no entity is selected
      */
     public String getSelectedName() {
 	return (String) getSelectedItem();
@@ -76,7 +80,7 @@ public class EntityChooser extends JComboBox {
     
     /**
      * Selects an entity in a combo box.
-     * @param name the name of the entity to select
+     * to select no entity
      */
     public void setSelectedName(String name) {
 	setSelectedItem(name);

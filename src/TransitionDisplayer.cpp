@@ -79,6 +79,7 @@ void TransitionDisplayer::showInTransition(Map *map, Transition transition) {
     break;
   }
 
+  SDL_SetAlpha(map->get_surface(), SDL_SRCALPHA, 255);
 }
 
 /**

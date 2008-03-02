@@ -54,7 +54,7 @@ am_zsdx_OBJECTS = ZSDX.$(OBJEXT) FileTools.$(OBJEXT) Game.$(OBJEXT) \
 	SimpleTile.$(OBJEXT) AnimatedTile.$(OBJEXT) \
 	TileOnMap.$(OBJEXT) Tile.$(OBJEXT) \
 	TileAnimationManager.$(OBJEXT) Color.$(OBJEXT) Link.$(OBJEXT) \
-	LinkAnimations.$(OBJEXT) Music.$(OBJEXT) Tileset.$(OBJEXT) \
+	Music.$(OBJEXT) Tileset.$(OBJEXT) \
 	TransitionDisplayer.$(OBJEXT)
 zsdx_OBJECTS = $(am_zsdx_OBJECTS)
 zsdx_LDADD = $(LDADD)
@@ -185,7 +185,6 @@ zsdx_SOURCES = \
   TileAnimationManager.cpp				\
   Color.cpp						\
   Link.cpp						\
-  LinkAnimations.cpp					\
   Music.cpp						\
   Tileset.cpp						\
   TransitionDisplayer.cpp
@@ -220,7 +219,6 @@ EXTRA_DIST = \
   $(zsdxincludedir)/TileAnimationManager.h		\
   $(zsdxincludedir)/Color.h				\
   $(zsdxincludedir)/Link.h				\
-  $(zsdxincludedir)/LinkAnimations.h			\
   $(zsdxincludedir)/Music.h				\
   $(zsdxincludedir)/Tileset.h				\
   $(zsdxincludedir)/TransitionDisplayer.h		
@@ -299,7 +297,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Game.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GameResource.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Link.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LinkAnimations.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Map.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapEntity.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapEntrance.Po@am__quote@

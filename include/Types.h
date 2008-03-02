@@ -52,6 +52,7 @@ enum EntityType {
 typedef int MapId;
 typedef int TilesetId;
 typedef std::string MusicId;
+typedef std::string SpriteId;
 
 /**
  * Declaration of some classes to avoid dependencies between the header files.

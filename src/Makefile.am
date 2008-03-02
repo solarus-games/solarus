@@ -26,7 +26,6 @@ zsdx_SOURCES = 						\
   TileAnimationManager.cpp				\
   Color.cpp						\
   Link.cpp						\
-  LinkAnimations.cpp					\
   Music.cpp						\
   Tileset.cpp						\
   TransitionDisplayer.cpp
@@ -61,7 +60,6 @@ EXTRA_DIST = \
   $(zsdxincludedir)/TileAnimationManager.h		\
   $(zsdxincludedir)/Color.h				\
   $(zsdxincludedir)/Link.h				\
-  $(zsdxincludedir)/LinkAnimations.h			\
   $(zsdxincludedir)/Music.h				\
   $(zsdxincludedir)/Tileset.h				\
   $(zsdxincludedir)/TransitionDisplayer.h		

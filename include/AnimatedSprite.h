@@ -23,9 +23,14 @@ class AnimatedSprite {
   SpriteAnimations *animations;
 
   /**
-   * Current animation (the first one is number 0).
+   * Name of the current animation.
    */
-  int current_animation;
+  string animation_name;
+
+  /**
+   * The current animation.
+   */
+  SpriteAnimation *current_animation;
 
   /**
    * Current direction of the animation (the first one is number 0).
@@ -64,8 +69,8 @@ class AnimatedSprite {
   AnimatedSprite(SpriteAnimations *animations);
   inline ~AnimatedSprite(void) { }
 
-  int get_current_animation(void);
-  void set_current_animation(int current_animation);
+  string get_current_animation(void);
+  void set_current_animation(string animation_name);
   int get_current_animation_direction(void);
   void set_current_animation_direction(int current_direction);
   int get_current_frame(void);

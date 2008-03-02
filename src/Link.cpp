@@ -1,6 +1,8 @@
 #include "Link.h"
 #include "LinkAnimations.h"
 #include "AnimatedSprite.h"
+#include "ZSDX.h"
+#include "GameResource.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -29,7 +31,7 @@ static const int animation_directions[] = {
  * Constructor.
  */
 Link::Link(void):
-Moving8ByPlayer(12), sprite(new AnimatedSprite(LinkAnimations::get_instance())) {
+Moving8ByPlayer(12), sprite(new AnimatedSprite(ZSDX::game_resource->get_sprite("link_green"))) {
   SDL_Rect collision_box;
 
   collision_box.x = -8;
@@ -44,7 +46,7 @@ Moving8ByPlayer(12), sprite(new AnimatedSprite(LinkAnimations::get_instance())) 
  * Destructor.
  */
 Link::~Link(void) {
-  LinkAnimations::destroy_instance();
+  delete sprite;
 }
 
 /**
@@ -94,11 +96,11 @@ void Link::update_movement(void) {
 
   // stopped to walking
   if (!old_started && started) {
-    sprite->set_current_animation(1);
+    sprite->set_current_animation("walking");
   }
 
   // walking to stopped
   else if (old_started && !started) {
-    sprite->set_current_animation(0);
+    sprite->set_current_animation("stopped");
   }
 }

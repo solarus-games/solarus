@@ -12,7 +12,7 @@
  * @param animations the sprite's animations
  */
 AnimatedSprite::AnimatedSprite(SpriteAnimations *animations):
-animations(animations), current_animation(0), current_direction(0),
+animations(animations), current_animation(animations->get_default_animation()), current_direction(0),
 current_frame(0), next_frame_date(SDL_GetTicks() + get_frame_interval()),
 suspended(false), over(false) {
 
@@ -23,17 +23,16 @@ suspended(false), over(false) {
  * @return the delay between two frames for the current animation
  */
 Uint32 AnimatedSprite::get_frame_interval(void) {
-  return animations->get_animation(current_animation)->get_frame_interval();  
+  return current_animation->get_frame_interval();  
 }
-  
+
 /**
  * Returns the next frame of the current frame.
  * @return the next frame of the current frame (or -1 if the animation is over)
  */
 int AnimatedSprite::get_next_frame(void) {
 
-  return animations->get_animation(current_animation)->
-    get_direction(current_direction)->get_next_frame(current_frame);    
+  return current_animation->get_next_frame(current_direction, current_frame);    
 }
 
 /**
@@ -88,21 +87,22 @@ void AnimatedSprite::update_current_frame(void) {
  */
 void AnimatedSprite::display_on_map(Map *map, SDL_Rect &position_in_map) {
 
-  animations->display_on_map(map, position_in_map, current_animation, current_direction, current_frame);
+  current_animation->display_on_map(map, position_in_map, current_direction, current_frame);
 }
 
 /**
  * Returns the current animation of the sprite.
- * @return the current animation of the sprite
+ * @return the name of the current animation of the sprite
  */
-int AnimatedSprite::get_current_animation(void) { return current_animation; }
+string AnimatedSprite::get_current_animation(void) { return animation_name; }
 
 /**
  * Sets the current animation of the sprite.
- * @param current_animation the new current animation of the sprite
+ * @param animation_name name of the new animation of the sprite
  */
-void AnimatedSprite::set_current_animation(int current_animation) {
-  this->current_animation = current_animation;
+void AnimatedSprite::set_current_animation(string animation_name) {
+  this->animation_name = animation_name;
+  this->current_animation = animations->get_animation(animation_name);
   over = false;
   set_current_frame(0);
 }

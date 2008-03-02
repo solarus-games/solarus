@@ -6,9 +6,10 @@
 #define ZSDX_SPRITE_ANIMATIONS_H
 
 #include "Common.h"
+#include <map>
 
 /**
- * Abstract class for a set of animations.
+ * A set of animations.
  * Each animation correspond to a specific situation
  * of a sprite.
  *
@@ -17,59 +18,38 @@
  */
 class SpriteAnimations {
 
- protected:
+ private:
 
   /**
-   * Number of animations.
+   * The animations.
+   * This structure is allocated in the constructor and
+   * freed in the destructor.
    */
-  const int nb_animations;
+  std::map<string, SpriteAnimation*> animations;
 
   /**
-   * Array of SpriteAnimation* containing the animations.
-   * This array is allocated in the constructor and
-   * freed in the destructor. It is filled in the
-   * abstract function create_animations.
+   * The default animation.
    */
-  SpriteAnimation **animations;
+  SpriteAnimation *default_animation;
+  
+ public:
 
-  /**
-   * Constructor.
-   * @param nb_animations number of animations to create
-   */
-  SpriteAnimations(int nb_animations);
-
-  /**
-   * Destructor.
-   */
+  SpriteAnimations(SpriteId id);
   virtual ~SpriteAnimations(void);
 
   /**
-   * Creates the animations.
-   * This function should be called by the constructor
-   * of your subclass.
-   */
-  virtual void create_animations(void) = 0;
-
- public:
-
-  /**
    * Returns an animation.
-   * @param animation_number animation number (the first one is number 0)
+   * @param animation_name name of the animation to get
    * @return the specified animation
    */
-  inline SpriteAnimation *get_animation(int animation_number) { return animations[animation_number]; }
+  inline SpriteAnimation *get_animation(string animation_name) { return animations[animation_name]; }
 
   /**
-   * Displays a specific frame of the animation on the map.
-   * This function just calls display_on_map() on the current animation.
-   * @param map the map
-   * @param position_in_map position of the sprite on the map
-   * @param current_animation animation number to show
-   * @param current_direction the sprite's direction
-   * @param current_frame the frame to show
+   * Returns the default animation, i.e. the first one.
+   * @return the default animation
    */
-  void display_on_map(Map *map, SDL_Rect &position_in_map,
-		      int current_animation, int current_direction, int current_frame);
+  SpriteAnimation *get_default_animation(void) { return default_animation; }
+
 };
 
 

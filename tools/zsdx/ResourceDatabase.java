@@ -14,7 +14,8 @@ public class ResourceDatabase extends Observable {
     public static final int RESOURCE_MAP = 0;
     public static final int RESOURCE_TILESET = 1;
     public static final int RESOURCE_MUSIC = 2;
-    public static final int RESOURCE_NB = 3;
+    public static final int RESOURCE_SPRITE = 3;
+    public static final int RESOURCE_NB = 4;
     
     public static final String fileName = "project_db.zsd";
 
@@ -40,6 +41,7 @@ public class ResourceDatabase extends Observable {
 	resources[RESOURCE_MAP] = new Resource(true);
 	resources[RESOURCE_TILESET] = new Resource(true);
 	resources[RESOURCE_MUSIC] = new Resource(false);
+	resources[RESOURCE_SPRITE] = new Resource(false);
     }
 
     /**

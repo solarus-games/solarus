@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Tileset.h"
 #include "Music.h"
+#include "SpriteAnimations.h"
 
 /**
  * Constructor.
@@ -76,4 +77,18 @@ Music* GameResource::get_music(MusicId id) {
   }
   
   return musics[id];
+}
+
+/**
+ * Returns a sprite.
+ * @param id id of the sprite to get
+ * @return the sprite
+ */
+SpriteAnimations* GameResource::get_sprite(SpriteId id) {
+  
+  if (sprites[id] == NULL) {
+    sprites[id] = new SpriteAnimations(id);
+  }
+  
+  return sprites[id];
 }

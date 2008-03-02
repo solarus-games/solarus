@@ -39,6 +39,12 @@ maps__DATA = 					\
   maps/map0001.zsd				\
   maps/map0002.zsd				
 
+sprites_dir = $(zsdxdatadir)/sprites
+sprites__DATA = 				\
+  sprites/link_green.zsd			\
+  sprites/link_blue.zsd				\
+  sprites/link_red.zsd				
+
 EXTRA_DIST =					\
   game.zsd					\
   images/sprites/link/stopped.png		\

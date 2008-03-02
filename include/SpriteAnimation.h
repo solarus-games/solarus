@@ -15,6 +15,12 @@
 class SpriteAnimation {
 
  private:
+  /**
+   * Image from which the frames are extracted
+   * This image is the same for
+   * all directions of the sprite's animation.
+   */
+  SDL_Surface *src_image;
 
   /**
    * Number of directions of the animation.
@@ -46,31 +52,15 @@ class SpriteAnimation {
    */
   const Uint32 frame_interval;
   
+  /**
+   * Number of the frame to loop on, or -1 to make no loop.
+   */
+  const int loop_on_frame;
+
  public:
 
-  /**
-   * Constructor.
-   * @param nb_directions number of directions in this animation
-   * @param directions the image sequence of each direction
-   * @param x_hotspot x coordinate of the sprite's origin
-   * @param y_hotspot y coordinate of the sprite's origin
-   * @param frame_interval interval in millisecond between two frames for this sprite animation
-   */
-  SpriteAnimation(int nb_directions, SpriteAnimationDirection **directions, int x_hotspot, int y_hotspot, Uint32 frame_interval);
-
-  /**
-   * Simple constructor without specifying frame interval.
-   * You can use this constructor if your directions contains only one frame.
-   * @param nb_directions number of directions in this animation
-   * @param directions the image sequence of each direction
-   * @param x_hotspot x coordinate of the sprite's origin
-   * @param y_hotspot y coordinate of the sprite's origin
-   */
-  SpriteAnimation(int nb_directions, SpriteAnimationDirection **directions, int x_hotspot, int y_hotspot);
-
-  /**
-   * Destructor.
-   */
+  SpriteAnimation(SDL_Surface *src_image, int nb_directions, SpriteAnimationDirection **directions,
+		  int x_hotspot, int y_hotspot, Uint32 frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 
   /**
@@ -86,13 +76,7 @@ class SpriteAnimation {
    */
   inline Uint32 get_frame_interval(void) { return frame_interval; }
 
-  /**
-   * Displays a specific frame of this animation on the map.
-   * @param map the map
-   * @param position_in_map position of the sprite on the map
-   * @param current_direction the direction to show
-   * @param current_frame the frame to show in this direction
-   */
+  int get_next_frame(int current_direction, int current_frame);
   void display_on_map(Map *map, SDL_Rect &position_in_map, int current_direction, int current_frame);
 };
 

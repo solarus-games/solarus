@@ -40,48 +40,27 @@ class GameResource {
    */
   std::map<MusicId, Music*> musics;
 
-  // musics
+  /**
+   * The sprites.
+   */
+  std::map<SpriteId, SpriteAnimations*> sprites;
+
+  // sprites
   // sounds
   // items
   // saved data?
   // ...
 
  public:
-
-  /**
-   * Constructor.
-   */
   GameResource(void);
-
-  /**
-   * Destructor.
-   * Destroys all the game resources.
-   */
   ~GameResource(void);
 
-  /**
-   * Returns Link.
-   * @return Link
-   */
-  Link* get_link(void);
+  Link* get_link(void); // TODO: is link a resource?
 
-  /**
-   * Returns a tileset.
-   * @param id id of the tileset to get
-   */
   Tileset* get_tileset(TilesetId id);
-
-  /**
-   * Returns a map.
-   * @param id id of the map to get
-   */
   Map* get_map(MapId id);
-
-  /**
-   * Returns a music.
-   * @param id id of the music to get
-   */
   Music* get_music(MusicId id);
+  SpriteAnimations* get_sprite(SpriteId id);
 };
 
 #endif

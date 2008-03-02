@@ -187,6 +187,61 @@ public abstract class MapEntity extends Observable {
 	
 	return entity;
     }
+
+    /**
+     * Returns a string describing this entity: the entity type, the layer, the coordinates,
+     * the id (if any) and the direction (if any).
+     * Subclasses should redefine this method to add their own information (if any).
+     * @return a string representation of the entity.
+     */
+    public String toString() {
+
+	StringBuffer buff = new StringBuffer();
+	buff.append(getType());
+	buff.append('\t');
+	buff.append(layer);
+	buff.append('\t');
+	buff.append(getX());
+	buff.append('\t');
+	buff.append(getY());
+	
+	if (isResizable()) {
+	    buff.append('\t');
+	    buff.append(getWidth());
+	    buff.append('\t');
+	    buff.append(getHeight());
+	}
+
+	if (hasName()) {
+	    buff.append('\t');
+	    buff.append(getName());
+	}
+	
+	if (hasDirection()) {
+	    buff.append('\t');
+	    buff.append(getDirection());
+	}
+
+	return buff.toString();
+    }
+    /**
+     * Checks the entity validity. An entity must be valid before it is saved.
+     * @return true if the entity is valid
+     */
+    public boolean isValid() {
+	
+	try {
+	    checkPositionTopLeft(positionInMap.x, positionInMap.y);
+	    
+	    if (isResizable()) {
+		checkSize(positionInMap.width, positionInMap.height);
+	    }
+	    return true;
+	}
+	catch (MapException ex) {
+	    return false;
+	}
+    }
     
     /**
      * Returns the entity's obstacle property (default is OBSTACLE_NONE).
@@ -594,6 +649,22 @@ public abstract class MapEntity extends Observable {
     public int getY() {
 	return positionInMap.y + getHotSpotY();
     }
+
+    /**
+     * Returns the x coordinate of the entity's top left corner.
+     * @return the x coordinate of the entity's top left corner
+     */
+    public int getXTopLeft() {
+	return positionInMap.x;
+    }
+
+    /**
+     * Returns the y coordinate of the entity's top left corner.
+     * @return the y coordinate of the entity's top left corner
+     */
+    public int getYTopLeft() {
+	return positionInMap.y;
+    }
     
     /**
      * Returns the width of the entity
@@ -633,41 +704,4 @@ public abstract class MapEntity extends Observable {
      * @return the type of entity
      */
     public abstract int getType();
-
-    /**
-     * Returns a string describing this entity: the entity type, the layer, the coordinates,
-     * the id (if any) and the direction (if any).
-     * Subclasses should redefine this method to add their own information (if any).
-     * @return a string representation of the entity.
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-	buff.append(getType());
-	buff.append('\t');
-	buff.append(layer);
-	buff.append('\t');
-	buff.append(getX());
-	buff.append('\t');
-	buff.append(getY());
-	
-	if (isResizable()) {
-	    buff.append('\t');
-	    buff.append(getWidth());
-	    buff.append('\t');
-	    buff.append(getHeight());
-	}
-
-	if (hasName()) {
-	    buff.append('\t');
-	    buff.append(getName());
-	}
-	
-	if (hasDirection()) {
-	    buff.append('\t');
-	    buff.append(getDirection());
-	}
-
-	return buff.toString();
-    }
 }

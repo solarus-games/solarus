@@ -79,6 +79,13 @@ public class MapExit extends InteractiveEntity {
     }
 
     /**
+     * Checks the entity validity. An entity must be valid before it is saved.
+     * @return true if the entity is valid
+     */
+    public boolean isValid() {
+	return destinationMapId.length() != 0 && entranceName.length() != 0;	
+    }
+    /**
      * Returns an integer identifying the kind of entity.
      * @return MapEntity.ENTITY_EXIT
      */

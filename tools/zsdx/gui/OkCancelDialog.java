@@ -20,6 +20,11 @@ public abstract class OkCancelDialog extends JDialog {
      * Title of the optional border.
      */
     private String borderTitle;
+    
+    /**
+     * True if the user applied some modifications, false if he cancelled.
+     */
+    private boolean appliedModifications;
 
     /**
      * Creates a new dialog box.
@@ -30,6 +35,8 @@ public abstract class OkCancelDialog extends JDialog {
     public OkCancelDialog(String title, boolean showApplyButton) {
 
 	super((Frame) null, title, true);
+	
+	this.appliedModifications = false;
 
 	Container contentPane = getContentPane();
 	contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
@@ -139,6 +146,7 @@ public abstract class OkCancelDialog extends JDialog {
     private void tryToApplyModifications(boolean closeWindow) {
 	try {
 	    applyModifications();
+	    this.appliedModifications = true;
 	    if (closeWindow) {
 		dispose();
 	    }
@@ -150,10 +158,13 @@ public abstract class OkCancelDialog extends JDialog {
     
     /**
      * Displays the dialog box.
+     * @return true if the user applied modifications, false if he cancelled
      */
-    public void display() {
+    public boolean display() {
 	setLocationRelativeTo(null);
  	pack();
- 	setVisible(true);	
+ 	setVisible(true);
+ 	
+ 	return appliedModifications;
     }
 }

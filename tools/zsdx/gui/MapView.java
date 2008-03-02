@@ -353,16 +353,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		case ADDING_ENTITY:
 
 		    if (isMouseInMapView) {
-			// display on the map, under the cursor, the entity selected in the tileset
-
-			if (entityTypeBeingAdded == MapEntity.ENTITY_TILE) {
-			    // if it is a tile (special case for now)
-			    Tile selectedTileInTileset = tileset.getSelectedTile();
-			    selectedTileInTileset.paint(g, tileset, cursorLocation.x, cursorLocation.y, zoom);
-			}
-			else {
-			    entityBeingAdded.paint(g, zoom, renderingOptions.getShowTransparency());
-			}
+			// display the entity on the map, under the cursor
+			entityBeingAdded.paint(g, zoom, renderingOptions.getShowTransparency());
 		    }
 		    break;
 
@@ -420,15 +412,22 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	switch (entityType) {
 	
 	case MapEntity.ENTITY_TILE:
-	    entityBeingAdded = null;
+	    int tileId = map.getTileset().getSelectedTileId();
+	    
+	    try {
+		entityBeingAdded = new TileOnMap(map, tileId, 0, 0);
+	    }
+	    catch (MapException ex) {
+		GuiTools.errorDialog("Cannot create the tile: " + ex.getMessage());
+	    }
 	    break;
 
 	case MapEntity.ENTITY_ENTRANCE:
-	    entityBeingAdded = new MapEntrance(map, cursorLocation.x, cursorLocation.y);
+	    entityBeingAdded = new MapEntrance(map, 0, 0);
 	    break;
 
 	case MapEntity.ENTITY_EXIT:
-	    entityBeingAdded = new MapExit(map, cursorLocation.x, cursorLocation.y);
+	    entityBeingAdded = new MapExit(map, 0, 0);
 	    break;
 
 	}
@@ -444,31 +443,18 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	int width, height;
 
-	// TODO: only one case (create the tile on map sooner)
-	if (entityTypeBeingAdded == MapEntity.ENTITY_TILE) {
-	    Tile tile = map.getTileset().getSelectedTile();
-	    width = tile.getWidth();
-	    height = tile.getHeight();
-	    x = GuiTools.round8(x - width / 2); // center the entity around the cursor
-	    y = GuiTools.round8(y - height / 2);
-	}
-	else {
-	    width = entityBeingAdded.getWidth();
-	    height = entityBeingAdded.getHeight();
-	    x = GuiTools.round8(x - width / 2); // center the entity around the cursor
-	    y = GuiTools.round8(y - height / 2);
-	    
+	width = entityBeingAdded.getWidth();
+	height = entityBeingAdded.getHeight();
+	x = GuiTools.round8(x - width / 2); // center the entity around the cursor
+	y = GuiTools.round8(y - height / 2);
+
+	if (x != entityBeingAdded.getXTopLeft() || y != entityBeingAdded.getYTopLeft()) {
 	    try {
 		entityBeingAdded.setPositionTopLeft(x, y);
 	    }
 	    catch (MapException ex) {
 		GuiTools.errorDialog("Unexpected error: " + ex.getMessage());
 	    }
-	}
-
-	if (x != cursorLocation.x || y != cursorLocation.y) {
-	    cursorLocation.x = x;
-	    cursorLocation.y = y;
 	    repaint();
 	}
     }
@@ -483,36 +469,50 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private MapEntity endAddingEntity() {
 	
 	MapEntity entityAdded = null;
+	EditEntityDialog dialog = null;
 
 	try {
-	    Tileset tileset = map.getTileset();
 
-	    // if it is a tile (TODO: only one case)
-	    if (entityTypeBeingAdded == MapEntity.ENTITY_TILE) {
-		entityBeingAdded = new TileOnMap(map, tileset.getSelectedTileId(),
-			cursorLocation.x, cursorLocation.y);
+	    boolean valid = entityBeingAdded.isValid();
+	    if (!valid) {
+		// if the entity is not valid yet, this is because some information is missing:
+		// we show a dialog box to let the user edit the entity
+		
+		dialog = new EditEntityDialog(map, entityBeingAdded);
+		if (dialog.display()) { // if the user filled the dialog box
+		    valid = true;
+		}
+		else { // the user cancelled the dialog box
+		    returnToNormalState();
+		}
 	    }
-
-	    // add it to the map
-	    map.getHistory().doAction(new ActionAddEntity(map, entityBeingAdded));
-
-	    // make it selected
-	    map.getEntitySelection().unSelectAll();
-	    map.getEntitySelection().select(entityBeingAdded);
 	    
-	    if (tileset.getSelectedTile() != null) {
-		tileset.unSelectTile();
-	    }
+	    if (valid) {
+		// add the entity to the map
+		map.getHistory().doAction(new ActionAddEntity(map, entityBeingAdded));
 
-	    if (entityBeingAdded.isResizable()) {
-		startResizingEntity(); // let the user resize the entity until the mouse is released
+		// make it selected
+		map.getEntitySelection().unSelectAll();
+		map.getEntitySelection().select(entityBeingAdded);
+	    
+		// unselect the tile in the tileset (if any)
+		if (map.getTileset().getSelectedTile() != null) {
+		    map.getTileset().unSelectTile();
+		}
+
+		// let the user resize the entity until the mouse is released
+		// (unless the dialog box was shown) 
+		if (entityBeingAdded.isResizable() && dialog == null) {
+		    startResizingEntity();
+		}
+		else {
+		    returnToNormalState();
+		}
+		
+		entityAdded = entityBeingAdded;
+		entityBeingAdded = null;
+		repaint();
 	    }
-	    else {
-		returnToNormalState();
-	    }
-	    entityBeingAdded = null;
-	    entityAdded = entityBeingAdded;
-	    repaint();
 	}
 	catch (ZSDXException ex) {
 	    GuiTools.errorDialog("Cannot add the entity: " + ex.getMessage());
@@ -857,16 +857,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    isMouseInMapView = true;
 	    
 	    if (state == State.NORMAL && map.getTileset().getSelectedTile() != null) {
-		startAddingEntity(MapEntity.ENTITY_TILE);
-	    }
-
-	    /*
-	    if (state == State.ADDING_ENTITY) {
+		
 		int x = getMouseInMapX(mouseEvent);
 		int y = getMouseInMapY(mouseEvent);
+
+		startAddingEntity(MapEntity.ENTITY_TILE);
 		updateAddingEntity(x, y);
 	    }
-	    */
 	}
 
 	/**
@@ -906,9 +903,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 		    if (entityClicked != null) {
 			EditEntityDialog dialog = new EditEntityDialog(map, entityClicked);
-		    	dialog.setLocationRelativeTo(null);
-		    	dialog.pack();
-		    	dialog.setVisible(true);
+		    	dialog.display();
 		    }
 		}
 	    }
@@ -1096,6 +1091,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    // display it on the map under the cursor
 		    if (map.getTileset().getSelectedTile() != null) {
 			startAddingEntity(MapEntity.ENTITY_TILE);
+			updateAddingEntity(x, y);
 		    }
 
 		    break;

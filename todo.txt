@@ -4,7 +4,6 @@
 - Revoir FileTools avec des string et des fstream
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
-	- Renommer Configuration en un truc qui évoque que ça gère les path
 	- vue arborescente de toutes les entités par type ?
 	- choisir les types d'entités affichés
 	- nouveau projet : créer le fichier resource_db.zsd automatiquement, le répertoire data et les sous-répertoires

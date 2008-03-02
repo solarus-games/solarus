@@ -9,5 +9,4 @@
 	- choisir les types d'entités affichés
 	- nouveau projet : créer le fichier resource_db.zsd automatiquement, le répertoire data et les sous-répertoires
 	- empêcher de mettre des entités au-delà de la partie extérieure d'une map
-	- problèmes si exit mène à une entrée de la même map : set_current_map n'a pas d'effet
 	

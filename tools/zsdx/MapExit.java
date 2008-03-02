@@ -166,8 +166,14 @@ public class MapExit extends InteractiveEntity {
     /**
      * Sets the destination map.
      * @param destinationMapId the id of the destination map
+     * @throws MapException if the destination map is the same map
      */
-    public void setDestinationMapId(String destinationMapId) {
+    public void setDestinationMapId(String destinationMapId) throws MapException {
+	
+	if (destinationMapId.equals(map.getId())) {
+	    throw new MapException("The destination map cannot be the same map.");
+	}
+	
 	this.destinationMapId = destinationMapId;
 
 	setChanged();

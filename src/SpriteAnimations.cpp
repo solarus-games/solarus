@@ -48,14 +48,14 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
     iss0 >> name >> image_file_name >> nb_directions >> nb_frames
 	 >> x_hotspot >> y_hotspot >> frame_delay >> loop_on_frame;
 
-    cout << "name: " << name << endl;
+    //    cout << "name: " << name << endl;
 
     image_file_name = "images/sprites/" + image_file_name;
     src_image = IMG_Load(FileTools::data_file_add_prefix(image_file_name.c_str()));
 
     directions = new SpriteAnimationDirection*[nb_directions];
 
-    cout << "nb_directions = " << nb_directions << ", nb_frames = " << nb_frames << endl;
+    //    cout << "nb_directions = " << nb_directions << ", nb_frames = " << nb_frames << endl;
 
     for (int i = 0; i < nb_directions; i++) {
 

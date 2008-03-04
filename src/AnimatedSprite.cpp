@@ -101,10 +101,20 @@ string AnimatedSprite::get_current_animation(void) { return animation_name; }
  * @param animation_name name of the new animation of the sprite
  */
 void AnimatedSprite::set_current_animation(string animation_name) {
-  this->animation_name = animation_name;
-  this->current_animation = animations->get_animation(animation_name);
-  over = false;
-  set_current_frame(0);
+
+  if (animation_name != this->animation_name) {
+    SpriteAnimation *animation = animations->get_animation(animation_name);
+
+    if (animation == NULL) {
+      cerr << "Unknown animation '" << animation_name << "'\n";
+      exit(1);
+    }
+    
+    this->animation_name = animation_name;
+    this->current_animation = animation;
+    over = false;
+    set_current_frame(0);
+  }
 }
 
 /**

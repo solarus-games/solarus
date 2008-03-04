@@ -1,5 +1,4 @@
 #include "Link.h"
-#include "LinkAnimations.h"
 #include "AnimatedSprite.h"
 #include "ZSDX.h"
 #include "GameResource.h"

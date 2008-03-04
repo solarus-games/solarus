@@ -7,6 +7,7 @@
 #include "SpriteAnimationDirection.h"
 #include "FileTools.h"
 #include <fstream>
+#include <sstream>
 
 /**
  * Loads the animations of a sprite from a file.
@@ -27,107 +28,64 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
 
   string line;
 
-  // read each animation
-  //  while (std::getline(sprite_file, line)) {
-
-    // first line: animation info
-
-  // don't forget default_animation
-  //  }
-
-  // TODO: replace below by parsing the file!
-
-  
-  // green link for now
   SDL_Rect *positions_in_src;
   SpriteAnimationDirection **directions;
-  int i;
+  string name, image_file_name;
+  int nb_directions, nb_frames, x_hotspot, y_hotspot, loop_on_frame;
+  Uint32 frame_delay;
+  SDL_Surface *src_image;
 
-  SDL_Surface *link_stopped_image = IMG_Load(FileTools::data_file_add_prefix("images/sprites/link/stopped.png"));
-  SDL_Surface *link_walking_image = IMG_Load(FileTools::data_file_add_prefix("images/sprites/link/walking.png"));
+  // read each animation
+  while (std::getline(sprite_file, line)) {
 
-  // stopped
-  directions = new SpriteAnimationDirection*[4];
+    if (line.size() == 0) {
+      continue;
+    }
 
-  // right
-  positions_in_src = new SDL_Rect[1];
-  positions_in_src[0].x = 0;
-  positions_in_src[0].y = 0;
-  positions_in_src[0].w = 24;
-  positions_in_src[0].h = 24;
-  directions[0] = new SpriteAnimationDirection(1, positions_in_src);
+    // first line: animation info
+    
+    istringstream iss0(line);
+    iss0 >> name >> image_file_name >> nb_directions >> nb_frames
+	 >> x_hotspot >> y_hotspot >> frame_delay >> loop_on_frame;
 
-  // up
-  positions_in_src = new SDL_Rect[1];
-  positions_in_src[0].x = 24;
-  positions_in_src[0].y = 0;
-  positions_in_src[0].w = 24;
-  positions_in_src[0].h = 24;
-  directions[1] = new SpriteAnimationDirection(1, positions_in_src);
+    cout << "name: " << name << endl;
 
-  // left
-  positions_in_src = new SDL_Rect[1];
-  positions_in_src[0].x = 48;
-  positions_in_src[0].y = 0;
-  positions_in_src[0].w = 24;
-  positions_in_src[0].h = 24;
-  directions[2] = new SpriteAnimationDirection(1, positions_in_src);
+    image_file_name = "images/sprites/" + image_file_name;
+    src_image = IMG_Load(FileTools::data_file_add_prefix(image_file_name.c_str()));
 
-  // down
-  positions_in_src = new SDL_Rect[1];
-  positions_in_src[0].x = 72;
-  positions_in_src[0].y = 0;
-  positions_in_src[0].w = 24;
-  positions_in_src[0].h = 24;
-  directions[3] = new SpriteAnimationDirection(1, positions_in_src);
+    directions = new SpriteAnimationDirection*[nb_directions];
 
-  animations["stopped"] = new SpriteAnimation(link_stopped_image, 4, directions, 12, 23, 0, -1);
-  default_animation = animations["stopped"];
+    cout << "nb_directions = " << nb_directions << ", nb_frames = " << nb_frames << endl;
 
-  // walking
-  directions = new SpriteAnimationDirection*[4];
+    for (int i = 0; i < nb_directions; i++) {
 
-  // right
-  positions_in_src = new SDL_Rect[8];
-  for (i = 0; i < 8; i++) {
-    positions_in_src[i].x = 24 * i;
-    positions_in_src[i].y = 0;
-    positions_in_src[i].w = 24;
-    positions_in_src[i].h = 32;
+      positions_in_src = new SDL_Rect[nb_frames];
+
+      for (int j = 0; j < nb_frames; j++) {
+
+	do {
+	  std::getline(sprite_file, line);
+	}
+	while (line.size() == 0);
+
+	//	cout << "parsing direction " << i << " (frame " << j << ")\n";
+	
+	istringstream iss(line);
+	iss >> positions_in_src[j].x >> positions_in_src[j].y
+	    >> positions_in_src[j].w >> positions_in_src[j].h;
+      }
+
+      directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src);
+    }
+
+    animations[name] = new SpriteAnimation(src_image, nb_directions, directions,
+					   x_hotspot, y_hotspot, frame_delay, loop_on_frame);
+
+    // default animation
+    if (animations.size() == 1) {
+      default_animation = animations[name];
+    }
   }
-  directions[0] = new SpriteAnimationDirection(8, positions_in_src);
-
-  // up
-  positions_in_src = new SDL_Rect[8];
-  for (i = 0; i < 8; i++) {
-    positions_in_src[i].x = 192 + 24 * i;
-    positions_in_src[i].y = 0;
-    positions_in_src[i].w = 24;
-    positions_in_src[i].h = 32;
-  }
-  directions[1] = new SpriteAnimationDirection(8, positions_in_src);
-
-  // left
-  positions_in_src = new SDL_Rect[8];
-  for (i = 0; i < 8; i++) {
-    positions_in_src[i].x = 24 * i;
-    positions_in_src[i].y = 96;
-    positions_in_src[i].w = 24;
-    positions_in_src[i].h = 32;
-  }
-  directions[2] = new SpriteAnimationDirection(8, positions_in_src);
-
-  // down
-  positions_in_src = new SDL_Rect[8];
-  for (i = 0; i < 8; i++) {
-    positions_in_src[i].x = 192 + 24 * i;
-    positions_in_src[i].y = 96;
-    positions_in_src[i].w = 24;
-    positions_in_src[i].h = 32;
-  }
-  directions[3] = new SpriteAnimationDirection(8, positions_in_src);
-
-  animations["walking"] = new SpriteAnimation(link_walking_image, 4, directions, 12, 31, 100, 0);
 }
 
 /**

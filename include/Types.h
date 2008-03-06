@@ -59,6 +59,7 @@ typedef std::string SpriteId;
  */
 class Game;
 class GameResource;
+class Savegame;
 
 class Map;
 class Tileset;

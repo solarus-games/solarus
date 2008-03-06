@@ -38,17 +38,7 @@ class ZSDX {
 
   static void main(void);
 
-  /**
-   * The game resource object.
-   * It contains the whole game database: the maps, the tilesets,
-   * the sprites, the musics, etc.
-   */
   static GameResource *game_resource;
-
-  /**
-   * The game object.
-   * It provides all game functions to the maps.
-   */
   static Game *game;
 
   static void set_fullscreen(bool fullscreen);

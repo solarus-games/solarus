@@ -16,6 +16,11 @@ class Game {
  private:
 
   /**
+   * The game data saved.
+   */
+  Savegame *savegame;
+
+  /**
    * The map to display.
    */
   Map *current_map;
@@ -37,9 +42,11 @@ class Game {
 
  public:
 
-  Game(void);
-  inline ~Game(void) { }
-  
+  Game(Savegame *savegame);
+  ~Game(void);
+
+  Savegame *get_savegame(void);
+
   void play(void);
   void redraw_screen(Map *map);
 

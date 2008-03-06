@@ -9,13 +9,31 @@
 #include "Link.h"
 #include "Map.h"
 #include "GameResource.h"
+#include "Savegame.h"
 
 /**
- * Constructor.
+ * Creates a game.
+ * @param savegame the saved data of this game
  */
-Game::Game(void):
-  current_map(NULL), transition(TRANSITION_IMMEDIATE), current_music_id(Music::none), current_music(NULL) {
+Game::Game(Savegame *savegame):
+  savegame(savegame), current_map(NULL), transition(TRANSITION_IMMEDIATE),
+  current_music_id(Music::none), current_music(NULL) {
   
+}
+
+/**
+ * Destroys the game.
+ */
+Game::~Game(void) {
+  delete savegame;
+}
+
+/**
+ * Returns the saved data associated to this game.
+ * @return the saved data
+ */
+Savegame * Game::get_savegame(void) {
+  return savegame;
 }
 
 /**

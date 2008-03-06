@@ -6,6 +6,7 @@ zsdx_SOURCES = 						\
   FileTools.cpp						\
   Game.cpp						\
   GameResource.cpp					\
+  Savegame.cpp						\
   Map.cpp						\
   MapEntrance.cpp					\
   MapEntity.cpp						\
@@ -38,8 +39,9 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Types.h				\
   $(zsdxincludedir)/ZSDX.h				\
   $(zsdxincludedir)/FileTools.h				\
-  $(zsdxincludedir)/GameResource.h			\
   $(zsdxincludedir)/Game.h				\
+  $(zsdxincludedir)/GameResource.h			\
+  $(zsdxincludedir)/Savegame.h				\
   $(zsdxincludedir)/Map.h				\
   $(zsdxincludedir)/MapEntrance.h			\
   $(zsdxincludedir)/MapEntity.h				\

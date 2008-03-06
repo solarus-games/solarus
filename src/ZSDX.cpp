@@ -8,6 +8,7 @@
 #include "Music.h"
 #include "Game.h"
 #include "GameResource.h"
+#include "Savegame.h"
 
 /**
  * Number of times the screen is redrawn is a second.
@@ -40,7 +41,9 @@ bool ZSDX::fullscreen;
 TileAnimationManager ZSDX::tile_animation_manager;
 
 /**
- * The game resource.
+ * The game resource object.
+ * It contains the whole game database: the maps, the tilesets,
+ * the sprites, the musics, etc.
  */
 GameResource *ZSDX::game_resource;
 
@@ -66,9 +69,6 @@ void ZSDX::initialize(void) {
 
   // initialize the game resource
   game_resource = new GameResource();
-
-  // create the game
-  game = new Game();
 }
 
 /**
@@ -117,6 +117,19 @@ void ZSDX::main(void) {
 
   // initialize the game engine
   initialize();
+
+  /* testing the savegame system
+  savegame = new Savegame("Link");
+  savegame->load("save1.zsd");
+  //  savegame->set_bool(85, true);
+  savegame->get_bool(85);
+  savegame->get_bool(86);
+  savegame->get_bool(53);
+  savegame->save("save1.zsd");
+  */
+
+  // create the game
+  game = new Game(new Savegame("save1.zsd")); // TODO: selection menu
 
   // first map
   game->set_current_map(0);

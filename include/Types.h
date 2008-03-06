@@ -49,8 +49,8 @@ enum EntityType {
 /**
  * Types of the id of each resource.
  */
-typedef int MapId;
-typedef int TilesetId;
+typedef Uint32 MapId;
+typedef Uint32 TilesetId;
 typedef std::string MusicId;
 typedef std::string SpriteId;
 

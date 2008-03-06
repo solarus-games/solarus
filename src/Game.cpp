@@ -190,10 +190,11 @@ void Game::redraw_screen(Map *map) {
 /**
  * Changes the current map.
  * Call this function when you want Link to go to another map.
- * The map will be loaded with its first entrance and without any transition effect.
  * @param map_id id of the map to launch
+ * @param entrance_index index of the entrance of the map you want to use
+ * @param transition type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id) {
+void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition transition) {
 
   current_map = ZSDX::game_resource->get_map(map_id);
 
@@ -201,7 +202,8 @@ void Game::set_current_map(MapId map_id) {
     current_map->load();
   }
 
-  current_map->set_entrance(0);
+  current_map->set_entrance(entrance_index);
+  this->transition = transition;
 }
 
 /**

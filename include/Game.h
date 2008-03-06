@@ -50,7 +50,7 @@ class Game {
   void play(void);
   void redraw_screen(Map *map);
 
-  void set_current_map(MapId map_id);
+  void set_current_map(MapId map_id, unsigned int entrance_index, Transition transition);
   void set_current_map(MapId map_id, string entrance_name, Transition transition);
 
   /**

@@ -21,7 +21,7 @@ extern const int FRAME_INTERVAL;
 
 /**
  * Main class of the game engine. It contains objects to
- * initialize the game engine and handles the screen.
+ * initialize the game and handles the screen.
  */
 class ZSDX {
 
@@ -32,7 +32,12 @@ class ZSDX {
   static TileAnimationManager tile_animation_manager;
 
   static void initialize(void);
-  static void exit(void);
+  static void exit(void);  
+  static void show_title_screen(void);
+  static bool show_main_menu(void);
+  static void launch_adventure_mode(void);
+  static void show_game_file_selection(void);
+  static void launch_solarus_dreams_mode(void);
 
  public:
 

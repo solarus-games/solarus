@@ -69,26 +69,14 @@ void Game::play(void) {
     while (this->current_map == map && !quit) { // loop until the map is changed
 
       if (SDL_PollEvent(&event)) {
+
+	quit = ZSDX::handle_event(event);
+
 	switch (event.type) {
 	  
-	  // quit if the user closes the window
-	case SDL_QUIT:
-	  quit = true;
-	  break;
-	
 	  // a key is pressed
 	case SDL_KEYDOWN:
 	  switch (event.key.keysym.sym) {
-
-	    // escape: quit
-	  case SDLK_ESCAPE:
-	    quit = true;
-	    break;
-	  
-	    // F5: full screen / windowed mode
-	  case SDLK_F5:
-	    ZSDX::switch_fullscreen();
-	    break;
 
 	    // move Link
 	  case SDLK_RIGHT:

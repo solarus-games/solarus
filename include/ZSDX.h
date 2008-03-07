@@ -45,6 +45,7 @@ class ZSDX {
   static GameResource *game_resource;
   static Game *game;
 
+  static bool handle_event(const SDL_Event &event);
   static void set_fullscreen(bool fullscreen);
   static bool is_fullscreen(void);
   static void switch_fullscreen(void);

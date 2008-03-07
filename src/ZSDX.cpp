@@ -139,6 +139,47 @@ void ZSDX::main(void) {
 }
 
 /**
+ * This function handles an SDL event.
+ * In any SDL main loop, you should get the event
+ * with SDL_PollEvent() and call this function.
+ * @return true if the user closed the window
+ */
+bool ZSDX::handle_event(const SDL_Event &event) {
+
+  bool quit = false;
+
+  switch (event.type) {
+    
+    // quit if the user closes the window
+  case SDL_QUIT:
+    quit = true;
+    break;
+	
+    // a key is pressed
+  case SDL_KEYDOWN:
+    switch (event.key.keysym.sym) {
+
+      // escape: quit
+    case SDLK_ESCAPE:
+      quit = true;
+      break;
+	  
+      // F5: full screen / windowed mode
+    case SDLK_F5:
+      ZSDX::switch_fullscreen();
+      break;
+
+    default:
+      break;
+    }
+    break;
+  }
+
+  return quit;
+}
+
+
+/**
  * Shows the title screen.
  * The player can choose Adventure, Solarus Dreams or Quit.
  * @return true if the user wants to quit ZSDX.

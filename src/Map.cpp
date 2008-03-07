@@ -583,7 +583,7 @@ void Map::entity_just_moved(MovingWithCollision *entity) {
 
 /**
  * This function is called by a detector when an entity is overlapping it.
- * Redefine this function to create a behavior for the detectors on your maps.
+ * I think think function (as all "events") should call the LUA script of the map.
  * Note that all detectors don't notify the map (i.e. they don't call this function)
  * because they may have their own behavior.
  * @param detector the detector

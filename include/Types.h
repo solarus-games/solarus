@@ -38,6 +38,14 @@ enum Transition {
 };
 
 /**
+ * Direction of the transition.
+ */
+enum TransitionDirection {
+  TRANSITION_IN,
+  TRANSITION_OUT
+};
+
+/**
  * Constants to identify each kind of map entity.
  */
 enum EntityType {

@@ -13,13 +13,11 @@ class TransitionDisplayer {
 
   TransitionDisplayer();
 
-  static void fadeIn(Map *map);
-  static void fadeOut(Map *map);
+  static void fade(Map *map, TransitionDirection direction);
   
  public:
 
-  static void showOutTransition(Map *map, Transition transition);
-  static void showInTransition(Map *map, Transition transition);
+  static void showTransition(Map *map, Transition transition, TransitionDirection direction);
 };
 
 #endif

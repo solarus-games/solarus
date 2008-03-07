@@ -31,7 +31,7 @@ static const int animation_directions[] = {
  * Constructor.
  */
 Link::Link(void):
-Moving8ByPlayer(12), sprite(new AnimatedSprite(ZSDX::game_resource->get_sprite("link_green"))) {
+Moving8ByPlayer(12), sprite(new AnimatedSprite(ZSDX::game_resource->get_sprite("link_red"))) {
   SDL_Rect collision_box;
 
   collision_box.x = -8;

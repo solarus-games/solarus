@@ -2,6 +2,8 @@
 - FMOD : enlever le répertoire /usr/include/fmod ? (Chichi)
 - utiliser sdl-config malgré les autotools
 - Revoir FileTools avec des string et des fstream
+- Transitions : ignorer le contrôle pendant une transition (faire une seule SDL main loop quelque part ?)
+
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
 	- vue arborescente de toutes les entités par type ?

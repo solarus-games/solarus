@@ -52,7 +52,7 @@ void Game::play(void) {
     
     // close the old map
     if (map != NULL) {
-      TransitionDisplayer::showOutTransition(map, transition);
+      TransitionDisplayer::showTransition(map, transition, TRANSITION_OUT);
       map->leave();
       map->unload();
     }
@@ -61,7 +61,7 @@ void Game::play(void) {
  
     // start the map (background music, etc)
     map->start();
-    TransitionDisplayer::showInTransition(map, transition);
+    TransitionDisplayer::showTransition(map, transition, TRANSITION_IN);
 
     //  SDL_EnableKeyRepeat(5, 10);
 

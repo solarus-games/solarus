@@ -77,7 +77,7 @@ class SpriteAnimation {
   inline Uint32 get_frame_interval(void) { return frame_interval; }
 
   int get_next_frame(int current_direction, int current_frame);
-  void display_on_map(Map *map, SDL_Rect &position_in_map, int current_direction, int current_frame);
+  void display(SDL_Surface *destination, const SDL_Rect &position, int current_direction, int current_frame);
 };
 
 #endif

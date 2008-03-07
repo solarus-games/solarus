@@ -26,7 +26,7 @@ TileOnMap::TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int re
  * @param map the map
  */
 void TileOnMap::display_on_map(Map *map) {
-  SDL_Surface *map_surface = map->get_surface();
+  SDL_Surface *map_surface = map->get_visible_surface();
   SDL_Surface *tileset_image = map->get_tileset()->get_image();
 
   SDL_Rect dst;

@@ -81,13 +81,14 @@ void AnimatedSprite::update_current_frame(void) {
 }
 
 /**
- * Displays the sprite on the map with its current animation, direction and frame.
- * @param map the map
- * @param position_in_map position of the sprite on the map
+ * Displays the sprite on a surface, with its current animation, direction and frame.
+ * @param destination the surface on which the sprite will be displayed
+ * @param position position of the sprite on this surface
+ * (the hotspot will be placed at this position)
  */
-void AnimatedSprite::display_on_map(Map *map, SDL_Rect &position_in_map) {
+void AnimatedSprite::display(SDL_Surface *destination, const SDL_Rect &position) {
 
-  current_animation->display_on_map(map, position_in_map, current_direction, current_frame);
+  current_animation->display(destination, position, current_direction, current_frame);
 }
 
 /**

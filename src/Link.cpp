@@ -2,6 +2,7 @@
 #include "AnimatedSprite.h"
 #include "ZSDX.h"
 #include "GameResource.h"
+#include "Map.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -62,7 +63,8 @@ void Link::set_map(Map *map) {
  * @param map the map
  */
 void Link::display_on_map(Map *map) {
-  sprite->display_on_map(map, position_in_map);
+
+  map->display_sprite(get_sprite(), &position_in_map);
 }
 
 /**

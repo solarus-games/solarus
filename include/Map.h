@@ -42,6 +42,14 @@ class Map {
   SDL_Rect screen_position;
 
   /**
+   * Surface where the map is displayed.
+   * This surface is only the visible part of the map, so the
+   * coordinates on this surface are relative to the screen,
+   * not to the map.
+   */
+  SDL_Surface *visible_surface;
+
+  /**
    * Vector of all possible entrances of the map.
    */
   vector<MapEntrance*> *entrances;
@@ -95,11 +103,7 @@ class Map {
    */
   MusicId music_id;
 
-  /**
-   * Surface where the map is displayed.
-   */
-  SDL_Surface *surface;
-
+  // entities
   void add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height);
   void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
   void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
@@ -111,7 +115,7 @@ class Map {
   ~Map(void);
 
   inline Tileset *get_tileset(void) { return tileset; }
-  SDL_Surface *get_surface(void);
+  SDL_Surface *get_visible_surface(void);
   inline SDL_Rect *get_screen_position(void) { return &screen_position; }
 
   bool is_loaded(void);
@@ -126,6 +130,7 @@ class Map {
 
   void update_sprites(void);
   void display();
+  void display_sprite(AnimatedSprite *sprite, const SDL_Rect *position_in_map);
   
   Obstacle pixel_collision(int layer, int x, int y);
   bool collision_with_tiles(int layer, SDL_Rect &collision_box);

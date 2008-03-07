@@ -52,19 +52,19 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) {
 }
 
 /**
- * Displays a specific frame of this animation on the map.
- * @param map the map
- * @param position_in_map position of the sprite on the map
+ * Displays a specific frame of this animation on a surface.
+ * @param destination the surface on which the sprite will be displayed
+ * @param position position of the sprite on this surface
  * (the hotspot will be placed at this position)
  * @param current_direction the direction to show
  * @param current_frame the frame to show in this direction
  */
-void SpriteAnimation::display_on_map(Map *map, SDL_Rect &position_in_map,
-				     int current_direction, int current_frame) {
-  static SDL_Rect position_in_map_up_left; // position of the sprite's upper left corner
+void SpriteAnimation::display(SDL_Surface *destination, const SDL_Rect &position,
+			      int current_direction, int current_frame) {
+  SDL_Rect position_up_left; // position of the sprite's upper left corner
 
-  position_in_map_up_left.x = position_in_map.x - x_hotspot;
-  position_in_map_up_left.y = position_in_map.y - y_hotspot;
+  position_up_left.x = position.x - x_hotspot;
+  position_up_left.y = position.y - y_hotspot;
 
-  directions[current_direction]->display_on_map(map, position_in_map_up_left, current_frame, src_image);
+  directions[current_direction]->display(destination, position_up_left, current_frame, src_image);
 }

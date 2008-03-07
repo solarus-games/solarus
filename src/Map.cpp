@@ -28,7 +28,7 @@ Map::Map(MapId id) {
   this->id = id;
   this->width = 0;
 
-  this->surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  this->visible_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 }
 
 /**
@@ -376,10 +376,13 @@ void Map::set_entrance(string entrance_name) {
 
 /**
  * Returns the SDL surface where the map is displayed.
+ * This surface is only the visible part of the map, so the
+ * coordinates on this surface are relative to the screen,
+ * not to the map.
  * @return the surface where the map is displayed
  */
-SDL_Surface *Map::get_surface(void) {
-  return surface;
+SDL_Surface *Map::get_visible_surface(void) {
+  return visible_surface;
 }
 
 /**
@@ -404,7 +407,7 @@ void Map::display() {
   screen_position.y = MIN(MAX(link->get_y() - 120, 0), height - 240);  
 
   // background color
-  SDL_FillRect(surface, NULL, tileset->get_background_color());
+  SDL_FillRect(visible_surface, NULL, tileset->get_background_color());
 
   // map entities
   for (int layer = 0; layer < LAYER_NB; layer++) {
@@ -416,9 +419,26 @@ void Map::display() {
 
     // put link if he is in this layer
     if (link->get_layer() == layer) {
-      link->display_on_map(this);
+      display_sprite(link->get_sprite(), link->get_position_in_map());
     }
   }
+}
+
+/**
+ * Displays a sprite on the map surface.
+ * @param sprite the sprite to display
+ * @param position_in_map position of the sprite on the map
+ */
+void Map::display_sprite(AnimatedSprite *sprite, const SDL_Rect *position_in_map) {
+  
+  // the position is given in the map coordinate system:
+  // convert it to the visible surface coordinate system
+  SDL_Rect position_in_visible_surface = *position_in_map;
+
+  position_in_visible_surface.x -= screen_position.x;
+  position_in_visible_surface.y -= screen_position.y;
+
+  sprite->display(visible_surface, position_in_visible_surface);
 }
 
 /**

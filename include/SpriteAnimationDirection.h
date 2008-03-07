@@ -32,7 +32,7 @@ class SpriteAnimationDirection {
   virtual ~SpriteAnimationDirection(void);
 
   inline int get_nb_frames() { return nb_frames; }
-  void display_on_map(Map *map, SDL_Rect &position_in_map, int current_frame, SDL_Surface *src_image);
+  void display(SDL_Surface *destination, SDL_Rect &position, int current_frame, SDL_Surface *src_image);
 };
 
 #endif

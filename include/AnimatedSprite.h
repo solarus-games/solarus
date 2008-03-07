@@ -82,7 +82,7 @@ class AnimatedSprite {
   void set_suspended(bool suspended);
   bool is_over(void);
 
-  void display_on_map(Map *map, SDL_Rect &position_in_map);
+  void display(SDL_Surface *destination, const SDL_Rect &position);
 };
 
 #endif

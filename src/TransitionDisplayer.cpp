@@ -27,7 +27,7 @@ void TransitionDisplayer::fadeIn(Map *map) {
     if (ticks >= last_frame_date + interval) {
       last_frame_date = ticks;
       
-      SDL_SetAlpha(map->get_surface(), SDL_SRCALPHA, alpha);
+      SDL_SetAlpha(map->get_visible_surface(), SDL_SRCALPHA, alpha);
       ZSDX::game->redraw_screen(map);
 
       alpha += 16;
@@ -56,7 +56,7 @@ void TransitionDisplayer::fadeOut(Map *map) {
       
       alpha -= 16;
 
-      SDL_SetAlpha(map->get_surface(), SDL_SRCALPHA, alpha);
+      SDL_SetAlpha(map->get_visible_surface(), SDL_SRCALPHA, alpha);
       ZSDX::game->redraw_screen(map);
     }
   }
@@ -79,7 +79,7 @@ void TransitionDisplayer::showInTransition(Map *map, Transition transition) {
     break;
   }
 
-  SDL_SetAlpha(map->get_surface(), SDL_SRCALPHA, 255);
+  SDL_SetAlpha(map->get_visible_surface(), SDL_SRCALPHA, 255);
 }
 
 /**

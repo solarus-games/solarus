@@ -180,7 +180,7 @@ void Game::redraw_screen(Map *map) {
   SDL_FillRect(ZSDX::screen, NULL, 0);
 
   map->display();
-  SDL_BlitSurface(map->get_surface(), NULL, ZSDX::screen, NULL); // TODO optimize
+  SDL_BlitSurface(map->get_visible_surface(), NULL, ZSDX::screen, NULL); // TODO optimize
 
   // TODO rupees, hearts...
 

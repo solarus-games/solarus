@@ -50,6 +50,11 @@ class Map {
   SDL_Surface *visible_surface;
 
   /**
+   * True if this is the current map.
+   */
+  bool started;
+
+  /**
    * Vector of all possible entrances of the map.
    */
   vector<MapEntrance*> *entrances;
@@ -107,7 +112,7 @@ class Map {
   void add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height);
   void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
   void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
-		Transition transition, MapId map_id, string entrance_name);
+		TransitionType transition_type, MapId map_id, string entrance_name);
 
  public:
 
@@ -122,6 +127,7 @@ class Map {
   void load(void);
   void unload(void);
 
+  bool is_started(void);
   void start(void);
   void leave(void);
 

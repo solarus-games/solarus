@@ -1,15 +1,47 @@
-/**
- * This module handles the transition effects between two maps.
- */
+#include "TransitionFade.h"
 
-#include "TransitionDisplayer.h"
-#include "Map.h"
-#include "Game.h"
-#include "ZSDX.h"
+/**
+ * Constructor.
+ */
+TransitionFade::TransitionFade(TransitionDirection direction):
+TransitionEffect(direction) {
+
+}
+
+/**
+ * Destructor.
+ */
+TransitionFade::~TransitionFade(void) {
+
+}
+
+/**
+ * Starts this transition effect.
+ */
+void TransitionFade::start(void) {
+  
+}
+
+/**
+ * Returns whether the transition effect is over.
+ * @return true
+ */
+bool TransitionFade::is_over(void) {
+  return true;
+}
+
+/**
+ * Displays the transition effect on a surface.
+ */
+void TransitionFade::display(SDL_Surface *surface) {
+
+}
+
 
 /**
  * Displays a fade in or a fade out effect.
  */
+/*
 void TransitionDisplayer::fade(Map *map, TransitionDirection direction) {
 
   Uint32 interval = 20; // interval between two updates
@@ -47,11 +79,12 @@ void TransitionDisplayer::fade(Map *map, TransitionDirection direction) {
 
   SDL_SetAlpha(map->get_visible_surface(), SDL_SRCALPHA, 255);
 }
-
+*/
 
 /**
  * Displays a specified entering transition effect .
  */
+/*
 void TransitionDisplayer::showTransition(Map *map, Transition transition,
 					 TransitionDirection direction) {
 
@@ -66,3 +99,4 @@ void TransitionDisplayer::showTransition(Map *map, Transition transition,
     break;
   }
 }
+*/

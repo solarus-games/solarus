@@ -54,8 +54,8 @@ am_zsdx_OBJECTS = ZSDX.$(OBJEXT) FileTools.$(OBJEXT) Game.$(OBJEXT) \
 	SimpleTile.$(OBJEXT) AnimatedTile.$(OBJEXT) \
 	TileOnMap.$(OBJEXT) Tile.$(OBJEXT) \
 	TileAnimationManager.$(OBJEXT) Color.$(OBJEXT) Link.$(OBJEXT) \
-	Music.$(OBJEXT) Tileset.$(OBJEXT) \
-	TransitionDisplayer.$(OBJEXT)
+	Music.$(OBJEXT) Tileset.$(OBJEXT) TransitionEffect.$(OBJEXT) \
+	TransitionImmediate.$(OBJEXT) TransitionFade.$(OBJEXT)
 zsdx_OBJECTS = $(am_zsdx_OBJECTS)
 zsdx_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
@@ -188,7 +188,9 @@ zsdx_SOURCES = \
   Link.cpp						\
   Music.cpp						\
   Tileset.cpp						\
-  TransitionDisplayer.cpp
+  TransitionEffect.cpp					\
+  TransitionImmediate.cpp				\
+  TransitionFade.cpp
 
 
 # additional files to provide in a tarball release
@@ -223,7 +225,9 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Link.h				\
   $(zsdxincludedir)/Music.h				\
   $(zsdxincludedir)/Tileset.h				\
-  $(zsdxincludedir)/TransitionDisplayer.h		
+  $(zsdxincludedir)/TransitionEffect.h			\
+  $(zsdxincludedir)/TransitionImmediate.h		\
+  $(zsdxincludedir)/TransitionFade.h
 
 all: all-am
 
@@ -317,7 +321,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileAnimationManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileOnMap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tileset.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransitionDisplayer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransitionEffect.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransitionFade.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransitionImmediate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ZSDX.Po@am__quote@
 
 .cpp.o:

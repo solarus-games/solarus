@@ -32,7 +32,7 @@ enum Layer {
 /**
  * Type of transition between two maps.
  */
-enum Transition {
+enum TransitionType {
   TRANSITION_IMMEDIATE,  // no transition between the two maps
   TRANSITION_FADE        // fade in and fade out
 };
@@ -69,6 +69,7 @@ class Game;
 class GameResource;
 class Savegame;
 
+class TransitionEffect;
 class Map;
 class Tileset;
 class Music;

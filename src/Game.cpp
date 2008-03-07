@@ -5,7 +5,7 @@
 #include "Game.h"
 #include "ZSDX.h"
 #include "Music.h"
-#include "TransitionDisplayer.h"
+#include "TransitionEffect.h"
 #include "Link.h"
 #include "Map.h"
 #include "GameResource.h"
@@ -16,7 +16,8 @@
  * @param savegame the saved data of this game
  */
 Game::Game(Savegame *savegame):
-  savegame(savegame), current_map(NULL), transition(TRANSITION_IMMEDIATE),
+  savegame(savegame), current_map(NULL),
+  transition_type(TRANSITION_IMMEDIATE), transition(NULL),
   current_music_id(Music::none), current_music(NULL) {
   
 }
@@ -47,12 +48,13 @@ void Game::play(void) {
   Map *map  = NULL;
   Link *link = ZSDX::game_resource->get_link();
   bool quit = false;
-
+  /*
   while (!quit) {
     
     // close the old map
     if (map != NULL) {
-      TransitionDisplayer::showTransition(map, transition, TRANSITION_OUT);
+      transition = TransitionEffect::get_transition(transition_type, TRANSITION_OUT);
+      transition->start();
       map->leave();
       map->unload();
     }
@@ -64,63 +66,96 @@ void Game::play(void) {
     TransitionDisplayer::showTransition(map, transition, TRANSITION_IN);
 
     //  SDL_EnableKeyRepeat(5, 10);
+*/
+  // SDL main loop
+  while (!quit) {
 
-    // SDL main loop
-    while (this->current_map == map && !quit) { // loop until the map is changed
+    // close the map if needed
+    if (map != NULL && current_map != map) { // the map has changed (i.e. set_current_map has been called)
+      transition = TransitionEffect::create_transition(transition_type, TRANSITION_OUT);
+      transition->start();
+    }
 
-      if (SDL_PollEvent(&event)) {
+    // if a transition just finished
+    if (transition != NULL && transition->is_over()) {
 
-	quit = ZSDX::handle_event(event);
+      if (transition->get_direction() == TRANSITION_OUT) {
+	// change the map
+	map->leave();
+	map->unload();
+	map = current_map;
+      }
+      else {
+	set_control_enabled(true);
+      }
 
-	switch (event.type) {
-	  
-	  // a key is pressed
-	case SDL_KEYDOWN:
+      delete transition;
+      transition = NULL;
+    }
+
+    // start the map if needed
+    if (!current_map->is_started()) {
+      current_map->start();
+      set_control_enabled(false);
+      transition = TransitionEffect::create_transition(transition_type, TRANSITION_IN);
+      transition->start();
+
+      map = current_map;
+    }
+
+    // handle the SDL events
+    if (SDL_PollEvent(&event)) {
+
+      quit = ZSDX::handle_event(event);
+
+      switch (event.type) {
+	
+	// a key is pressed
+      case SDL_KEYDOWN:
+
+	if (is_control_enabled()) {
 	  switch (event.key.keysym.sym) {
-
+	    
 	    // move Link
 	  case SDLK_RIGHT:
 	    link->start_right();
 	    break;
-
+	    
 	  case SDLK_UP:
 	    link->start_up();
 	    break;
-
+	    
 	  case SDLK_LEFT:
 	    link->start_left();
 	    break;
-
+	    
 	  case SDLK_DOWN:
 	    link->start_down();
-	    break;
-	  
-	    // space: pause the music
-	  case SDLK_SPACE:
-	    pause_or_resume_music();
 	    break;
 
 	  default:
 	    break;
 	  }
-	  break;
+	}
+	break;
 	
-	  // stop Link's movement
-	case SDL_KEYUP:
+	// stop Link's movement
+      case SDL_KEYUP:
+	if (is_control_enabled()) {
 	  switch (event.key.keysym.sym) {
-
+	    
 	  case SDLK_RIGHT:
 	    link->stop_right();
 	    break;
-
+	    
 	  case SDLK_UP:
 	    link->stop_up();
 	    break;
-
+	    
 	  case SDLK_LEFT:
 	    link->stop_left();
 	    break;
-
+	    
 	  case SDLK_DOWN:
 	    link->stop_down();
 	    break;
@@ -128,31 +163,20 @@ void Game::play(void) {
 	  default:
 	    break;
 	  }
-	  break;
-
-	  // check the obstacles
-	  //     case SDL_MOUSEBUTTONDOWN:
-	  // 	if (event.button.button == SDL_BUTTON_LEFT) {
-	  // 	  int x = event.button.x;
-	  // 	  int y = event.button.y;
-	  // 	  Obstacle obstacle = obstacle_tiles[LAYER_LOW][width8*(y/8) + (x/8)];
-	  // 	  cout << "obstacle: " << obstacle << "\n";
-	  // 	}
-	  // 	break;
 	}
+	break;
       }
+    }
     
-      // update the sprites animations and positions
-      map->update_sprites();
+    // update the sprites animations and positions
+    map->update_sprites();
 
-      // display everything each time frame
-      ticks = SDL_GetTicks();
-      if (ticks >= last_frame_date + FRAME_INTERVAL) {
+    // display everything each time frame
+    ticks = SDL_GetTicks();
+    if (ticks >= last_frame_date + FRAME_INTERVAL) {
 	
-	last_frame_date = ticks;
-
-	redraw_screen(map);
-      }
+      last_frame_date = ticks;
+      redraw_screen(map);
     }
   }
 
@@ -164,8 +188,11 @@ void Game::play(void) {
  * Redraws the screen.
  */
 void Game::redraw_screen(Map *map) {
-
   SDL_FillRect(ZSDX::screen, NULL, 0);
+
+  if (transition != NULL) {
+    transition->display(map->get_visible_surface());
+  }
 
   map->display();
   SDL_BlitSurface(map->get_visible_surface(), NULL, ZSDX::screen, NULL); // TODO optimize
@@ -180,9 +207,9 @@ void Game::redraw_screen(Map *map) {
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
  * @param entrance_index index of the entrance of the map you want to use
- * @param transition type of transition between the two maps
+ * @param transition_type type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition transition) {
+void Game::set_current_map(MapId map_id, unsigned int entrance_index, TransitionType transition_type) {
 
   current_map = ZSDX::game_resource->get_map(map_id);
 
@@ -191,7 +218,7 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
   }
 
   current_map->set_entrance(entrance_index);
-  this->transition = transition;
+  this->transition_type = transition_type;
 }
 
 /**
@@ -199,9 +226,9 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
  * @param entrance_name name of the entrance of the map you want to use
- * @param transition type of transition between the two maps
+ * @param transition_type type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, string entrance_name, Transition transition) {
+void Game::set_current_map(MapId map_id, string entrance_name, TransitionType transition_type) {
 
   current_map = ZSDX::game_resource->get_map(map_id);
 
@@ -210,7 +237,7 @@ void Game::set_current_map(MapId map_id, string entrance_name, Transition transi
   }
 
   current_map->set_entrance(entrance_name);
-  this->transition = transition;
+  this->transition_type = transition_type;
 }
 
 /**
@@ -269,3 +296,19 @@ void Game::stop_music(void) {
     current_music->stop();
   }
 }
+
+/**
+ * Returns whether the player has control.
+ * @return true if the player has control
+ */
+ bool Game::is_control_enabled(void) {
+   return control_enabled;
+ }
+
+ /**
+  * Sets whether the player has control.
+  * @param true to enable the control
+  */
+ void Game::set_control_enabled(bool enable) {
+   this->control_enabled = enable;
+ }

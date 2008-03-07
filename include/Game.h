@@ -26,9 +26,10 @@ class Game {
   Map *current_map;
 
   /**
-   * Type of transition between the current map and the next one.
+   * The transition between the current map and the next one.
    */
-  Transition transition;
+  TransitionType transition_type;
+  TransitionEffect *transition;
 
   /**
    * Id of the music currently played (a valid music, or MUSIC_NONE if no music is being played).
@@ -40,6 +41,11 @@ class Game {
    */
   Music *current_music;
 
+  /**
+   * True if the player has control.
+   */
+  bool control_enabled;
+
  public:
 
   Game(Savegame *savegame);
@@ -50,14 +56,17 @@ class Game {
   void play(void);
   void redraw_screen(Map *map);
 
-  void set_current_map(MapId map_id, unsigned int entrance_index, Transition transition);
-  void set_current_map(MapId map_id, string entrance_name, Transition transition);
+  void set_current_map(MapId map_id, unsigned int entrance_index, TransitionType transition_type);
+  void set_current_map(MapId map_id, string entrance_name, TransitionType transition_type);
 
   /**
    * Returns the current map.
    * @return the current map
    */
   inline Map *get_current_map(void) { return current_map; }
+
+  bool is_control_enabled(void);
+  void set_control_enabled(bool enable);
 
   void play_music(MusicId new_music_id);
   void pause_or_resume_music(void);

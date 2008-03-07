@@ -29,7 +29,9 @@ zsdx_SOURCES = 						\
   Link.cpp						\
   Music.cpp						\
   Tileset.cpp						\
-  TransitionDisplayer.cpp
+  TransitionEffect.cpp					\
+  TransitionImmediate.cpp				\
+  TransitionFade.cpp
 
 
 # additional files to provide in a tarball release
@@ -64,4 +66,6 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Link.h				\
   $(zsdxincludedir)/Music.h				\
   $(zsdxincludedir)/Tileset.h				\
-  $(zsdxincludedir)/TransitionDisplayer.h		
+  $(zsdxincludedir)/TransitionEffect.h			\
+  $(zsdxincludedir)/TransitionImmediate.h		\
+  $(zsdxincludedir)/TransitionFade.h

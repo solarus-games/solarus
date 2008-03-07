@@ -19,7 +19,7 @@ class MapExit: public EntityDetector {
   /**
    * Type of transition between the two maps.
    */
-  Transition transition;
+  TransitionType transition_type;
 
   /**
    * Id of the destination map.
@@ -34,7 +34,7 @@ class MapExit: public EntityDetector {
  public:
 
   MapExit(string name, Layer layer, int x, int y, int width, int height,
-	  Transition transition, MapId destination_map_id, string entrance_name);
+	  TransitionType transition_type, MapId destination_map_id, string entrance_name);
   virtual ~MapExit(void) { };
 
   void entity_overlaps(MapEntity *entity_overlapping);

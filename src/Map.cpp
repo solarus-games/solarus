@@ -27,6 +27,7 @@ Map::Map(MapId id) {
 
   this->id = id;
   this->width = 0;
+  this->started = false;
 
   this->visible_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 }
@@ -169,12 +170,12 @@ void Map::load() {
       
     case ENTITY_EXIT:
       {
-	int transition;
+	int transition_type;
 	MapId destination_map_id;	
 	string entrance_name;
-	iss >> width >> height >> entity_name >> transition >> destination_map_id >> entrance_name;
+	iss >> width >> height >> entity_name >> transition_type >> destination_map_id >> entrance_name;
 	add_exit(entity_name, (Layer) layer, x, y, width, height,
-		 (Transition) transition, destination_map_id, entrance_name);
+		 (TransitionType) transition_type, destination_map_id, entrance_name);
 	break;
       }
     }
@@ -328,14 +329,14 @@ void Map::add_entrance(string entrance_name, Layer layer, int link_x, int link_y
  * @param y y position of the exit rectangle
  * @param w width of the exit rectangle
  * @param h height of the exit rectangle
- * @param transition type of transition between the two maps
+ * @param transition_type type of transition between the two maps
  * @param map_id id of the next map
  * @param entrance_name name of the entrance of the next map
  */
 void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
-		   Transition transition, MapId map_id, string entrance_name) {
+		   TransitionType transition_type, MapId map_id, string entrance_name) {
   
-  MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, transition, map_id, entrance_name);
+  MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, transition_type, map_id, entrance_name);
   entity_detectors->push_back(exit);
 }
 
@@ -466,6 +467,8 @@ void Map::start(void) {
   if (y != -1) {
     link->set_y(y);
   }
+
+  started = true;
 }
 
 /**
@@ -473,7 +476,16 @@ void Map::start(void) {
  * This function is called when Link leaves the map.
  */
 void Map::leave(void) {
-  // nothing is done for now
+  started = false;
+}
+
+/**
+ * Returns whether the map is started, i.e. whether it is the current
+ * map and Link is on it.
+ * @return true if the map is started
+ */
+bool Map::is_started(void) {
+  return started;
 }
 
 /**

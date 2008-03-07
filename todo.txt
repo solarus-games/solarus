@@ -3,6 +3,7 @@
 - utiliser sdl-config malgré les autotools
 - Revoir FileTools avec des string et des fstream
 - Transitions : ignorer le contrôle pendant une transition (faire une seule SDL main loop quelque part ?)
+- comment gérer la sdl main loop ? idée à étudier : lorsqu'une game est lancée, faire une seule et unique sdl loop, qui appelle la fonction de traitement des sdl_event globaux dans ZSDX, puis traite ses propres événements s'il y en a, puis update ce qu'il faut, puis réaffiche ce qu'il faut réafficher. Le délai de réaffichage est global à l'application, donc à mettre dans la classe ZSDX et pas dans Game. L'écran-titre et les autres écrans ont leur propre boucle SDL. Dans Game, faire des fonctions ignore_control() et restore_control() (ou une seule fonction set_control_enabled(bool)). Au début de ignore_control, faire comme si les 4 flèches venaient d'être lâchées (link->stop_left(), etc...). Au début de restore_control, faire comme si les flèches actuellement appuyées venaient juste de l'être.
 
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)

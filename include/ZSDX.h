@@ -27,14 +27,12 @@ class ZSDX {
 
  private:
 
-  static SDL_Surface *screen;
   static bool fullscreen;
   static TileAnimationManager tile_animation_manager;
 
   static void initialize(void);
   static void exit(void);  
-  static void show_title_screen(void);
-  static bool show_main_menu(void);
+  static bool show_title_screen(void);
   static void launch_adventure_mode(void);
   static void show_game_file_selection(void);
   static void launch_solarus_dreams_mode(void);
@@ -43,18 +41,13 @@ class ZSDX {
 
   static void main(void);
 
+  static SDL_Surface *screen;
   static GameResource *game_resource;
   static Game *game;
 
   static void set_fullscreen(bool fullscreen);
   static bool is_fullscreen(void);
   static void switch_fullscreen(void);
-
-  /**
-   * Returns the screen.
-   * @return the screen
-   */
-  static inline SDL_Surface *get_screen(void) { return screen; }
 
   /**
    * Returns the tile animation manager object.

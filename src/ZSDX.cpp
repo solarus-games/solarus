@@ -130,11 +130,8 @@ void ZSDX::main(void) {
   bool quit = false;
   while (!quit) {
     
-    // title screen
-    show_title_screen();
-    
-    // choose the game mode: Adventure or Solarus Dreams
-    quit = show_main_menu();
+    // title screen + choose the game mode: Adventure or Solarus Dreams
+    quit = show_title_screen();
   }
 
   // close the game engine
@@ -143,17 +140,11 @@ void ZSDX::main(void) {
 
 /**
  * Shows the title screen.
- */
-void ZSDX::show_title_screen(void) {
-  // TODO
-}
-
-/**
- * Shows the main menu.
  * The player can choose Adventure, Solarus Dreams or Quit.
  * @return true if the user wants to quit ZSDX.
  */
-bool ZSDX::show_main_menu(void) {
+bool ZSDX::show_title_screen(void) {
+
   bool quit = false;
 
   // TODO

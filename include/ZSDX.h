@@ -33,9 +33,9 @@ class ZSDX {
   static void initialize(void);
   static void exit(void);  
   static bool show_title_screen(void);
-  static void launch_adventure_mode(void);
   static void show_game_file_selection(void);
-  static void launch_solarus_dreams_mode(void);
+  static void launch_adventure_mode(Savegame *savegame);
+  static void launch_solarus_dreams_mode(Savegame *savegame);
 
  public:
 

@@ -49,10 +49,12 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(images_sprites_link_dir)" \
+am__installdirs = "$(DESTDIR)$(images_dir)" \
+	"$(DESTDIR)$(images_sprites_link_dir)" \
 	"$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" \
 	"$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sprites_dir)" \
 	"$(DESTDIR)$(tilesets_dir)" "$(DESTDIR)$(zsdxdatadir)"
+images_DATA_INSTALL = $(INSTALL_DATA)
 images_sprites_link_DATA_INSTALL = $(INSTALL_DATA)
 images_tilesets_DATA_INSTALL = $(INSTALL_DATA)
 maps_DATA_INSTALL = $(INSTALL_DATA)
@@ -60,9 +62,9 @@ music_DATA_INSTALL = $(INSTALL_DATA)
 sprites_DATA_INSTALL = $(INSTALL_DATA)
 tilesets_DATA_INSTALL = $(INSTALL_DATA)
 zsdxdataDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(images_sprites_link__DATA) $(images_tilesets__DATA) \
-	$(maps__DATA) $(music__DATA) $(sprites__DATA) \
-	$(tilesets__DATA) $(zsdxdata_DATA)
+DATA = $(images__DATA) $(images_sprites_link__DATA) \
+	$(images_tilesets__DATA) $(maps__DATA) $(music__DATA) \
+	$(sprites__DATA) $(tilesets__DATA) $(zsdxdata_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -154,12 +156,16 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 zsdxdatadir = $(datadir)/zsdx
 zsdxdata_DATA = project_db.zsd
-images_sprites_link_dir = $(zsdxdatadir)/images/sprites/link
+images_dir = $(zsdxdatadir)/images
+images__DATA = \
+  images/title.png
+
+images_sprites_link_dir = $(images_dir)/sprites/link
 images_sprites_link__DATA = \
   images/sprites/link/stopped.png		\
   images/sprites/link/walking.png
 
-images_tilesets_dir = $(zsdxdatadir)/images/tilesets
+images_tilesets_dir = $(images_dir)/tilesets
 images_tilesets__DATA = \
   images/tilesets/tileset0000.png		
 
@@ -197,6 +203,7 @@ sprites__DATA = \
 
 EXTRA_DIST = \
   game.zsd					\
+  images/title.png				\
   images/sprites/link/stopped.png		\
   images/sprites/link/walking.png		\
   images/tilesets/tileset0000.png		\
@@ -213,6 +220,9 @@ EXTRA_DIST = \
   music/soldiers.it				\
   music/title_screen.it				\
   music/village.it				\
+  sprites/link_green.zsd			\
+  sprites/link_blue.zsd				\
+  sprites/link_red.zsd				\
   tilesets/tileset0000.zsd			\
   maps/map0000.zsd				\
   maps/map0001.zsd				\
@@ -250,6 +260,23 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+install-images_DATA: $(images__DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(images_dir)" || $(MKDIR_P) "$(DESTDIR)$(images_dir)"
+	@list='$(images__DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(images_DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(images_dir)/$$f'"; \
+	  $(images_DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(images_dir)/$$f"; \
+	done
+
+uninstall-images_DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(images__DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(images_dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(images_dir)/$$f"; \
+	done
 install-images_sprites_link_DATA: $(images_sprites_link__DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(images_sprites_link_dir)" || $(MKDIR_P) "$(DESTDIR)$(images_sprites_link_dir)"
@@ -406,7 +433,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(images_sprites_link_dir)" "$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" "$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(tilesets_dir)" "$(DESTDIR)$(zsdxdatadir)"; do \
+	for dir in "$(DESTDIR)$(images_dir)" "$(DESTDIR)$(images_sprites_link_dir)" "$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" "$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(tilesets_dir)" "$(DESTDIR)$(zsdxdatadir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -451,7 +478,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-images_sprites_link_DATA \
+install-data-am: install-images_DATA install-images_sprites_link_DATA \
 	install-images_tilesets_DATA install-maps_DATA \
 	install-music_DATA install-sprites_DATA install-tilesets_DATA \
 	install-zsdxdataDATA
@@ -488,7 +515,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-images_sprites_link_DATA \
+uninstall-am: uninstall-images_DATA uninstall-images_sprites_link_DATA \
 	uninstall-images_tilesets_DATA uninstall-maps_DATA \
 	uninstall-music_DATA uninstall-sprites_DATA \
 	uninstall-tilesets_DATA uninstall-zsdxdataDATA
@@ -499,14 +526,15 @@ uninstall-am: uninstall-images_sprites_link_DATA \
 	distclean-generic distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-images_sprites_link_DATA \
-	install-images_tilesets_DATA install-info install-info-am \
-	install-man install-maps_DATA install-music_DATA install-pdf \
-	install-pdf-am install-ps install-ps-am install-sprites_DATA \
-	install-strip install-tilesets_DATA install-zsdxdataDATA \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-html-am install-images_DATA \
+	install-images_sprites_link_DATA install-images_tilesets_DATA \
+	install-info install-info-am install-man install-maps_DATA \
+	install-music_DATA install-pdf install-pdf-am install-ps \
+	install-ps-am install-sprites_DATA install-strip \
+	install-tilesets_DATA install-zsdxdataDATA installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am \
+	pdf-am ps ps-am uninstall uninstall-am uninstall-images_DATA \
 	uninstall-images_sprites_link_DATA \
 	uninstall-images_tilesets_DATA uninstall-maps_DATA \
 	uninstall-music_DATA uninstall-sprites_DATA \

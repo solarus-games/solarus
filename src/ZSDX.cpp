@@ -11,15 +11,6 @@
 #include "Savegame.h"
 
 /**
- * Possible choices in the main menu.
- */
-enum MainMenuChoice {
-  MAIN_MENU_ADVENTURE,
-  MAIN_MENU_SOLARUS_DREAMS,
-  MAIN_MENU_QUIT
-};
-
-/**
  * Number of times the screen is redrawn is a second.
  */
 const int FRAMES_PER_SECOND = 50;
@@ -130,8 +121,13 @@ void ZSDX::main(void) {
   bool quit = false;
   while (!quit) {
     
-    // title screen + choose the game mode: Adventure or Solarus Dreams
+    // title screen
     quit = show_title_screen();
+
+    if (!quit) {
+      // savegame selection menu + launch the game
+      show_game_file_selection();
+    }
   }
 
   // close the game engine
@@ -186,53 +182,36 @@ bool ZSDX::handle_event(const SDL_Event &event) {
  */
 bool ZSDX::show_title_screen(void) {
 
+  // play the title screen music
+  Music *title_screen_music = ZSDX::game_resource->get_music("title_screen.it");
+
+  title_screen_music->play();
+
+  // show the title screen
+  SDL_Surface *image = IMG_Load(FileTools::data_file_add_prefix("images/title.png"));
+  SDL_BlitSurface(image, NULL, screen, NULL);
+  SDL_Flip(screen);
+
+  // wait until the user presses the space bar
   bool quit = false;
+  bool start = false;
+  SDL_Event event;
 
-  // TODO
-  MainMenuChoice choice = MAIN_MENU_ADVENTURE;
+  while (!start && !quit) {
 
-  switch (choice) {
+    SDL_PollEvent(&event);
+
+    quit = handle_event(event);
     
-  case MAIN_MENU_ADVENTURE:
-    launch_adventure_mode();
-    quit = true; // TODO: remove this (temporary because we should display a menu to let the user choose to continue or quit)
-    break;
-    
-  case MAIN_MENU_SOLARUS_DREAMS:
-    launch_solarus_dreams_mode();
-    break;
-    
-  case MAIN_MENU_QUIT:
-    quit = true;
-    break;
+    if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
+      start = true;
+    }
   }
+
+  // stop the title screen music
+  title_screen_music->stop();
 
   return quit;
-}
-
-/**
- * Launches the adventure mode: shows the game file selection screen
- * and starts the game with the selected file.
- */
-void ZSDX::launch_adventure_mode(void) {
-
-  // choose the game file (1, 2 or 3)
-  game = NULL;
-  show_game_file_selection();
-  
-  // if the user chose a savegame (i.e. he didn't cancelled)
-  if (game != NULL) {
-    
-    // launch the starting map
-    game->set_current_map(game->get_savegame()->get_starting_map(),
-			  game->get_savegame()->get_starting_entrance(),
-			  TRANSITION_IMMEDIATE);
-    
-    game->play();
-
-    delete game;
-    game = NULL;
-  }
 }
 
 /**
@@ -251,14 +230,33 @@ void ZSDX::show_game_file_selection(void) {
   Savegame *savegame = new Savegame(game_file_name);
   savegame->set_player_name(player_name);
 
+  launch_adventure_mode(savegame);
+}
+
+/**
+ * Launches the adventure mode: shows the game file selection screen
+ * and starts the game with the selected file.
+ */
+void ZSDX::launch_adventure_mode(Savegame *savegame) {
+
   // create the game
   game = new Game(savegame);
+  
+  // launch the starting map
+  game->set_current_map(game->get_savegame()->get_starting_map(),
+			game->get_savegame()->get_starting_entrance(),
+			TRANSITION_IMMEDIATE);
+  
+  game->play();
+
+  delete game;
+  game = NULL;
 }
 
 /**
  * Launches the Solarus Dreams mode.
  */
-void ZSDX::launch_solarus_dreams_mode(void) {
+void ZSDX::launch_solarus_dreams_mode(Savegame *savegame) {
 
   /* TODO: make another class to display the menus of this mode
 

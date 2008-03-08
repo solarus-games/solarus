@@ -3,12 +3,16 @@
 zsdxdatadir = $(datadir)/zsdx
 zsdxdata_DATA = project_db.zsd
 
-images_sprites_link_dir = $(zsdxdatadir)/images/sprites/link
+images_dir = $(zsdxdatadir)/images
+images__DATA =					\
+  images/title.png
+
+images_sprites_link_dir = $(images_dir)/sprites/link
 images_sprites_link__DATA = 			\
   images/sprites/link/stopped.png		\
   images/sprites/link/walking.png
 
-images_tilesets_dir = $(zsdxdatadir)/images/tilesets
+images_tilesets_dir = $(images_dir)/tilesets
 images_tilesets__DATA = 			\
   images/tilesets/tileset0000.png		
 
@@ -47,6 +51,7 @@ sprites__DATA = 				\
 
 EXTRA_DIST =					\
   game.zsd					\
+  images/title.png				\
   images/sprites/link/stopped.png		\
   images/sprites/link/walking.png		\
   images/tilesets/tileset0000.png		\
@@ -63,6 +68,9 @@ EXTRA_DIST =					\
   music/soldiers.it				\
   music/title_screen.it				\
   music/village.it				\
+  sprites/link_green.zsd			\
+  sprites/link_blue.zsd				\
+  sprites/link_red.zsd				\
   tilesets/tileset0000.zsd			\
   maps/map0000.zsd				\
   maps/map0001.zsd				\

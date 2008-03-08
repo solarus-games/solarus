@@ -117,6 +117,7 @@ bool Music::play(void) {
       cerr << "Unable to play music: " << FMOD_ErrorString(FSOUND_GetError()) << '\n';
     }
     else {
+      FMUSIC_SetLooping(module, 0);
       FMUSIC_PlaySong(module);
       success = true;
     }
@@ -128,6 +129,7 @@ bool Music::play(void) {
  * Stops playing the music.
  */
 void Music::stop(void) {
+  
   if (initialized) {
     FMUSIC_StopSong(module);
     FMUSIC_FreeSong(module);

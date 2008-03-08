@@ -114,7 +114,7 @@ bool Music::play(void) {
   if (initialized) {
     module = FMUSIC_LoadSong(file_name.c_str());
     if (module == NULL) {
-      cerr << "Unable to play music: " << FMOD_ErrorString(FSOUND_GetError()) << '\n';
+      cerr << "Unable to play music: " << FMOD_ErrorString(FSOUND_GetError()) << endl;
     }
     else {
       FMUSIC_SetLooping(module, 0);
@@ -131,7 +131,10 @@ bool Music::play(void) {
 void Music::stop(void) {
   
   if (initialized) {
-    FMUSIC_StopSong(module);
+  
+    if (!FMUSIC_StopSong(module)) {
+      cerr << "Cannot stop the module: " << FMOD_ErrorString(FSOUND_GetError()) << endl;
+    }
     FMUSIC_FreeSong(module);
   }
 }

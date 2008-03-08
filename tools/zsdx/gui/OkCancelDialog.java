@@ -114,14 +114,19 @@ public abstract class OkCancelDialog extends JDialog {
      * The dialog box will be empty until this method is called.
      */
     protected void setComponent(JComponent component) {
-	add(component);
-	add(Box.createVerticalStrut(20));
-	add(bottomPanel);
-	add(Box.createVerticalStrut(10));
+	
+	JPanel panel = new JPanel();
+	panel.add(component); // create an intermediate panel to give it the possible title border
 	
 	if (borderTitle != null) {
-	    component.setBorder(BorderFactory.createTitledBorder(borderTitle));
+	    panel.setBorder(BorderFactory.createTitledBorder(borderTitle));
 	}
+		
+	getContentPane().add(panel);
+	getContentPane().add(Box.createVerticalStrut(20));
+	getContentPane().add(bottomPanel);
+	getContentPane().add(Box.createVerticalStrut(10));
+	
     }
     
     /**

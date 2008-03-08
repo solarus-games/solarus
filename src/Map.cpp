@@ -95,7 +95,7 @@ void Map::load() {
   // read the file
 
   char file_name[20];
-  sprintf(file_name, "maps/map%04d.zsd", id);
+  sprintf(file_name, "maps/map%04d.zsd", (int) id);
   ifstream map_file(FileTools::data_file_add_prefix(file_name));
 
   if (!map_file) {

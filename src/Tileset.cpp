@@ -47,7 +47,7 @@ void Tileset::load(void) {
 
   // read the file
   char file_name[40];
-  sprintf(file_name, "tilesets/tileset%04d.zsd", id);
+  sprintf(file_name, "tilesets/tileset%04d.zsd", (int) id);
   ifstream tileset_file(FileTools::data_file_add_prefix(file_name));
 
   if (!tileset_file) {
@@ -97,7 +97,7 @@ void Tileset::load(void) {
   }
 
   // load the tileset image
-  sprintf(file_name, "images/tilesets/tileset%04d.png", id);
+  sprintf(file_name, "images/tilesets/tileset%04d.png", (int) id);
 
   tileset_image = IMG_Load(FileTools::data_file_add_prefix(file_name));
   

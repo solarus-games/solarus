@@ -11,10 +11,10 @@
 class TransitionFade: public TransitionEffect {
 
  private:
-  Uint32 alpha_start;
-  Uint32 alpha_limit;
-  Uint32 alpha_increment;
-  Uint32 alpha; // current alpha value of the surface
+  int alpha_start;
+  int alpha_limit;
+  int alpha_increment;
+  int alpha; // current alpha value of the surface
 
   Uint32 next_frame_date;
   

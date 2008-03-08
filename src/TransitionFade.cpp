@@ -6,6 +6,16 @@
 TransitionFade::TransitionFade(TransitionDirection direction):
 TransitionEffect(direction) {
 
+  if (direction == TRANSITION_OUT) {
+    alpha_start = 256;
+    alpha_limit = 0;
+    alpha_increment = -16;
+  }
+  else {
+    alpha_start = 0;
+    alpha_limit = 256;
+    alpha_increment = 16;
+  }  
 }
 
 /**
@@ -19,7 +29,8 @@ TransitionFade::~TransitionFade(void) {
  * Starts this transition effect.
  */
 void TransitionFade::start(void) {
-  
+  alpha = alpha_start;
+  next_frame_date = SDL_GetTicks();
 }
 
 /**
@@ -27,7 +38,7 @@ void TransitionFade::start(void) {
  * @return true
  */
 bool TransitionFade::is_over(void) {
-  return true;
+  return alpha == alpha_limit;
 }
 
 /**
@@ -35,68 +46,14 @@ bool TransitionFade::is_over(void) {
  */
 void TransitionFade::display(SDL_Surface *surface) {
 
+  Uint32 ticks = SDL_GetTicks();
+
+  // update the transition effect if needed
+  while (next_frame_date < ticks && alpha != alpha_limit) {
+    alpha += alpha_increment;
+    next_frame_date += 20; // 20 ms between two frame updates
+  }
+
+  // display the transition effect on the surface
+  SDL_SetAlpha(surface, SDL_SRCALPHA, MIN(alpha, 255));
 }
-
-
-/**
- * Displays a fade in or a fade out effect.
- */
-/*
-void TransitionDisplayer::fade(Map *map, TransitionDirection direction) {
-
-  Uint32 interval = 20; // interval between two updates
-  Uint32 last_frame_date = SDL_GetTicks();
-  Uint32 ticks;
-
-  Uint32 alpha_start, alpha_limit, alpha_increment;
-  
-  if (direction == TRANSITION_IN) {
-    alpha_start = 0;
-    alpha_limit = 256;
-    alpha_increment = 16;
-  }
-  else {
-    alpha_start = 256;
-    alpha_limit = 0;
-    alpha_increment = -16;
-  }
-  
-  // SDL main loop
-  Uint32 alpha = alpha_start + alpha_increment;
-  while (alpha != alpha_limit) { // loop until the transition is finished
-    
-    // display everything each time frame
-    ticks = SDL_GetTicks();
-    if (ticks >= last_frame_date + interval) {
-      last_frame_date = ticks;
-      
-      SDL_SetAlpha(map->get_visible_surface(), SDL_SRCALPHA, alpha);
-      ZSDX::game->redraw_screen(map);
-      
-      alpha += alpha_increment;
-    }
-  }
-
-  SDL_SetAlpha(map->get_visible_surface(), SDL_SRCALPHA, 255);
-}
-*/
-
-/**
- * Displays a specified entering transition effect .
- */
-/*
-void TransitionDisplayer::showTransition(Map *map, Transition transition,
-					 TransitionDirection direction) {
-
-  switch (transition) {
-
-  case TRANSITION_IMMEDIATE:
-    // nothing to do
-    break;
-
-  case TRANSITION_FADE:
-    fade(map, direction);
-    break;
-  }
-}
-*/

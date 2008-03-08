@@ -16,7 +16,7 @@
  * @param savegame the saved data of this game
  */
 Game::Game(Savegame *savegame):
-  savegame(savegame), current_map(NULL),
+  savegame(savegame), control_enabled(false), current_map(NULL), next_map(NULL),
   transition_type(TRANSITION_IMMEDIATE), transition(NULL),
   current_music_id(Music::none), current_music(NULL) {
   
@@ -45,63 +45,13 @@ void Game::play(void) {
 
   SDL_Event event;
   Uint32 ticks, last_frame_date = 0;
-  Map *map  = NULL;
   Link *link = ZSDX::game_resource->get_link();
   bool quit = false;
-  /*
-  while (!quit) {
-    
-    // close the old map
-    if (map != NULL) {
-      transition = TransitionEffect::get_transition(transition_type, TRANSITION_OUT);
-      transition->start();
-      map->leave();
-      map->unload();
-    }
-    
-    map = current_map;
- 
-    // start the map (background music, etc)
-    map->start();
-    TransitionDisplayer::showTransition(map, transition, TRANSITION_IN);
 
-    //  SDL_EnableKeyRepeat(5, 10);
-*/
   // SDL main loop
   while (!quit) {
 
-    // close the map if needed
-    if (map != NULL && current_map != map) { // the map has changed (i.e. set_current_map has been called)
-      transition = TransitionEffect::create_transition(transition_type, TRANSITION_OUT);
-      transition->start();
-    }
-
-    // if a transition just finished
-    if (transition != NULL && transition->is_over()) {
-
-      if (transition->get_direction() == TRANSITION_OUT) {
-	// change the map
-	map->leave();
-	map->unload();
-	map = current_map;
-      }
-      else {
-	set_control_enabled(true);
-      }
-
-      delete transition;
-      transition = NULL;
-    }
-
-    // start the map if needed
-    if (!current_map->is_started()) {
-      current_map->start();
-      set_control_enabled(false);
-      transition = TransitionEffect::create_transition(transition_type, TRANSITION_IN);
-      transition->start();
-
-      map = current_map;
-    }
+    handle_transitions();
 
     // handle the SDL events
     if (SDL_PollEvent(&event)) {
@@ -169,14 +119,14 @@ void Game::play(void) {
     }
     
     // update the sprites animations and positions
-    map->update_sprites();
+    current_map->update_sprites();
 
     // display everything each time frame
     ticks = SDL_GetTicks();
     if (ticks >= last_frame_date + FRAME_INTERVAL) {
 	
       last_frame_date = ticks;
-      redraw_screen(map);
+      display_map(current_map);
     }
   }
 
@@ -185,9 +135,59 @@ void Game::play(void) {
 }
 
 /**
- * Redraws the screen.
+ * Handles the transitions.
+ * This functions changes the map when needed and plays the
+ * transitions between the two maps. This function is called
+ * by the SDL main loop.
  */
-void Game::redraw_screen(Map *map) {
+void Game::handle_transitions(void) {
+
+  // if the map has just changed, close the current map if any and play an out transition
+  if (next_map != NULL && transition == NULL) { // the map has changed (e.g. set_current_map has been called)
+
+    if (current_map == NULL) { // special case: no map was playing, so we don't have any out transition to do
+      current_map = next_map;
+      next_map = NULL;
+    }
+    else { // normal case: stop the control and play an out transition before leaving the current map
+      set_control_enabled(false);
+      transition = TransitionEffect::create_transition(transition_type, TRANSITION_OUT);
+      transition->start();
+    }
+  }
+
+  // if a transition was playing and has just been finished
+  if (transition != NULL && transition->is_over()) {
+
+    if (transition->get_direction() == TRANSITION_OUT) {
+      // change the map
+      current_map->leave();
+      current_map->unload();
+      current_map = next_map;
+      next_map = NULL;
+    }
+    else {
+      // let the player play
+      set_control_enabled(true);
+    }
+
+    delete transition;
+    transition = NULL;
+  }
+
+  // if a map has just been set as the current map, start it and play the in transition
+  if (!current_map->is_started()) {
+    current_map->start();
+    transition = TransitionEffect::create_transition(transition_type, TRANSITION_IN);
+    transition->start();
+  }
+}
+
+/**
+ * Displays the specified map on the screen.
+ * @param map the map to display
+ */
+void Game::display_map(Map *map) {
   SDL_FillRect(ZSDX::screen, NULL, 0);
 
   if (transition != NULL) {
@@ -211,13 +211,13 @@ void Game::redraw_screen(Map *map) {
  */
 void Game::set_current_map(MapId map_id, unsigned int entrance_index, TransitionType transition_type) {
 
-  current_map = ZSDX::game_resource->get_map(map_id);
+  next_map = ZSDX::game_resource->get_map(map_id);
 
-  if (!current_map->is_loaded()) {
-    current_map->load();
+  if (!next_map->is_loaded()) {
+    next_map->load();
   }
 
-  current_map->set_entrance(entrance_index);
+  next_map->set_entrance(entrance_index);
   this->transition_type = transition_type;
 }
 
@@ -230,13 +230,13 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
  */
 void Game::set_current_map(MapId map_id, string entrance_name, TransitionType transition_type) {
 
-  current_map = ZSDX::game_resource->get_map(map_id);
+  next_map = ZSDX::game_resource->get_map(map_id);
 
-  if (!current_map->is_loaded()) {
-    current_map->load();
+  if (!next_map->is_loaded()) {
+    next_map->load();
   }
 
-  current_map->set_entrance(entrance_name);
+  next_map->set_entrance(entrance_name);
   this->transition_type = transition_type;
 }
 
@@ -310,5 +310,40 @@ void Game::stop_music(void) {
   * @param true to enable the control
   */
  void Game::set_control_enabled(bool enable) {
-   this->control_enabled = enable;
+
+   if (enable != this->control_enabled) {
+
+     Link *link = ZSDX::game_resource->get_link();
+
+     if (enable) {
+
+       // if the control has just been restored, let's take
+       // into account the possible arrows pressed
+
+       Uint8 *key_state = SDL_GetKeyState(NULL);
+
+       if (key_state[SDLK_RIGHT]) {
+	 link->start_right();
+       }
+       if (key_state[SDLK_UP]) {
+	 link->start_up();
+       }
+       if (key_state[SDLK_LEFT]) {
+	 link->start_left();
+       }
+       if (key_state[SDLK_DOWN]) {
+	 link->start_down();
+       }
+     }
+     else {
+       // if the player has just lost the control, stop Link
+
+       link->stop_right();
+       link->stop_up();
+       link->stop_left();
+       link->stop_down();
+     }
+
+     this->control_enabled = enable;
+   }
  }

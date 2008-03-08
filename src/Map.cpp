@@ -23,11 +23,8 @@
  * @param id id of the map, used to determine the description file
  * and the script file of the map
  */
-Map::Map(MapId id) {
-
-  this->id = id;
-  this->width = 0;
-  this->started = false;
+Map::Map(MapId id):
+id(id), started(false), width(0) {
 
   this->visible_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 }
@@ -467,6 +464,8 @@ void Map::start(void) {
   if (y != -1) {
     link->set_y(y);
   }
+
+  SDL_SetAlpha(visible_surface, SDL_SRCALPHA, 255);
 
   started = true;
 }

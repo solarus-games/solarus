@@ -21,9 +21,21 @@ class Game {
   Savegame *savegame;
 
   /**
-   * The map to display.
+   * True if the player has control.
+   */
+  bool control_enabled;
+
+  /**
+   * The map currently displayed.
    */
   Map *current_map;
+  
+  /**
+   * The map where Link is going to.
+   * If not NULL, it means that Link is changing from
+   * current_map to next_map.
+   */
+  Map *next_map;
 
   /**
    * The transition between the current map and the next one.
@@ -41,10 +53,8 @@ class Game {
    */
   Music *current_music;
 
-  /**
-   * True if the player has control.
-   */
-  bool control_enabled;
+  void handle_transitions(void);
+  void display_map(Map *map);
 
  public:
 
@@ -54,7 +64,6 @@ class Game {
   Savegame *get_savegame(void);
 
   void play(void);
-  void redraw_screen(Map *map);
 
   void set_current_map(MapId map_id, unsigned int entrance_index, TransitionType transition_type);
   void set_current_map(MapId map_id, string entrance_name, TransitionType transition_type);

@@ -7,14 +7,46 @@
 /*
  * Saved data:
  *
- * - Reserved strings (for the game engine):
+ * - 64 reserved strings (for the game engine):
  *   0: player name
  *
- * - Reserved integers (for the game engine):
+ * - 1024 reserved integers (for the game engine):
+ *
+ *   Last game status
+ *
  *   0: starting map id
  *   1: starting entrance index
+ *   2: last screen shown in the pause menu
+ *   3: row of the last item selected in the inventary
+ *   4: column of the last item selected in the inventary
+ *   5: current object associated to the X button
+ *   6: current object associated to the V button
  *
+ *   Rupees, hearts and others
  *
+ *   10: current number of hearts filled (counted in 1/4 of hearts)
+ *   11: current number of rupees
+ *   12: current level of magic
+ *   13: current number of bombs
+ *   14: current number of arrows
+ *   15: current number of pains au chocolat
+ *   16: current number of croissants
+ *
+ *   Maximum values
+ *
+ *   20: maximum number of hearts
+ *   21: maximum number of rupees
+ *   22: maximum level of magic (0: no magic, 1: 14 points maxi, 2: 28 points maxi)
+ *   23: maximum number of bombs
+ *   24: maximum number of arrows
+ *   
+ *   Equipment and quest status
+ *
+ *   30: number of heart fragments obtained
+ *   31: Link's tunique (0: green, 1: blue, 2: red)
+ *   32: Link's shield (0: no shield, 1 to 3: shields 1 to 3)
+ *   33: Link's sword (0: no sword, 1 to 4: swords 1 to 4)
+ *   
  *
  *
  */

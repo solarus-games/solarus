@@ -231,6 +231,8 @@ void ZSDX::show_game_file_selection(void) {
   savegame->set_player_name(player_name);
 
   launch_adventure_mode(savegame);
+
+  delete savegame;
 }
 
 /**
@@ -238,15 +240,9 @@ void ZSDX::show_game_file_selection(void) {
  * and starts the game with the selected file.
  */
 void ZSDX::launch_adventure_mode(Savegame *savegame) {
-
+  
   // create the game
   game = new Game(savegame);
-  
-  // launch the starting map
-  game->set_current_map(game->get_savegame()->get_starting_map(),
-			game->get_savegame()->get_starting_entrance(),
-			TRANSITION_IMMEDIATE);
-  
   game->play();
 
   delete game;

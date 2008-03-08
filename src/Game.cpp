@@ -26,7 +26,7 @@ Game::Game(Savegame *savegame):
  * Destroys the game.
  */
 Game::~Game(void) {
-  delete savegame;
+
 }
 
 /**
@@ -43,12 +43,17 @@ Savegame * Game::get_savegame(void) {
  */
 void Game::play(void) {
 
+  // launch the starting map
+  set_current_map(savegame->get_starting_map(),
+		  savegame->get_starting_entrance(),
+		  TRANSITION_FADE);
+  
+  // SDL main loop
   SDL_Event event;
   Uint32 ticks, last_frame_date = 0;
   Link *link = ZSDX::game_resource->get_link();
   bool quit = false;
 
-  // SDL main loop
   while (!quit) {
 
     handle_transitions();
@@ -131,6 +136,7 @@ void Game::play(void) {
   }
 
   // quit the game
+  current_map->leave(); // tell the map that Link is not there anymore
   stop_music();
 }
 

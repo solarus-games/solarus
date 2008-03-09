@@ -21,7 +21,45 @@ GameResource::~GameResource(void) {
 
   delete link;
 
-  // TODO: delete the other resources
+  // tilesets
+  {
+    map<TilesetId, Tileset*>::const_iterator it;
+    
+    for (it = tilesets.begin(); it != tilesets.end(); it++) {
+      delete it->second;
+    }
+    tilesets.clear();
+  }
+
+  // maps
+  {
+    map<MapId, Map*>::const_iterator it;
+    
+    for (it = maps.begin(); it != maps.end(); it++) {
+      delete it->second;
+    }
+    maps.clear();
+  }
+
+  // musics
+  {
+    map<MusicId, Music*>::const_iterator it;
+    
+    for (it = musics.begin(); it != musics.end(); it++) {
+      delete it->second;
+    }
+    musics.clear();
+  }
+
+  // sprites
+  {
+    map<SpriteId, SpriteAnimations*>::const_iterator it;
+    
+    for (it = sprites.begin(); it != sprites.end(); it++) {
+      delete it->second;
+    }
+    sprites.clear();
+  }
 }
 
 /**

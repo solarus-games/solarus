@@ -1,22 +1,24 @@
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
+#include "FileTools.h"
 
 /**
  * Constructor.
- * @param src_image the image from which the frames are extracted
+ * @param image_file_name the image from which the frames are extracted
  * @param nb_directions number of directions in this animation
  * @param directions the image sequence of each direction
  * @param x_hotspot x coordinate of the sprite's origin
  * @param y_hotspot y coordinate of the sprite's origin
  * @param frame_interval interval in millisecond between two frames for this sprite animation
  */
-SpriteAnimation::SpriteAnimation(SDL_Surface *src_image, int nb_directions,
+SpriteAnimation::SpriteAnimation(string image_file_name, int nb_directions,
 				 SpriteAnimationDirection **directions,
 				 int x_hotspot, int y_hotspot, Uint32 frame_interval, int loop_on_frame):
-  src_image(src_image), nb_directions(nb_directions), directions(directions),
+  nb_directions(nb_directions), directions(directions),
   x_hotspot(x_hotspot), y_hotspot(y_hotspot),
   frame_interval(frame_interval), loop_on_frame(loop_on_frame) {
 
+  src_image = IMG_Load(FileTools::data_file_add_prefix(image_file_name.c_str()));
 }
 
 /**
@@ -28,6 +30,8 @@ SpriteAnimation::~SpriteAnimation(void) {
   }
 
   delete[] directions;
+
+  SDL_FreeSurface(src_image);
 }
 
 /**

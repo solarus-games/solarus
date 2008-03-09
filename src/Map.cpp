@@ -26,7 +26,6 @@
 Map::Map(MapId id):
 id(id), started(false), width(0) {
 
-  this->visible_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 }
 
 /**
@@ -55,12 +54,16 @@ bool Map::is_loaded(void) {
  */
 void Map::unload(void) {
 
+  SDL_FreeSurface(visible_surface);
+
   // delete the tiles
   for (int layer = 0; layer < LAYER_NB; layer++) {
     for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
       delete tiles[layer]->at(i);
     }
     tiles[layer]->clear();
+    delete tiles[layer];
+    delete[] obstacle_tiles[layer];
   }
 
   // delete the entrances
@@ -77,12 +80,6 @@ void Map::unload(void) {
   entity_detectors->clear();
   delete entity_detectors;
 
-  // delete the tiles
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-    delete tiles[layer];
-    delete[] obstacle_tiles[layer];
-  }
-
   width = 0;
 }
 
@@ -91,6 +88,8 @@ void Map::unload(void) {
  * Reads the description file of the map.
  */
 void Map::load() {
+
+  this->visible_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 
   // read the file
 
@@ -498,6 +497,12 @@ Obstacle Map::pixel_collision(int layer, int x, int y) {
   Obstacle obstacle_type;
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
+
+  // if the point is outside the map, there is no obstacle (useful when Link goes on a map exit)
+  if (x < 0 || x >= width
+      || y < 0 || y >= height) {
+    return OBSTACLE_NONE;
+  }
 
   // get the obstacle property of this point's 8*8 square
   obstacle_type = obstacle_tiles[layer][(y / 8) * width8 + (x / 8)];

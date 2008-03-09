@@ -17,7 +17,7 @@
  * @param id id of the tileset to create
  */
 Tileset::Tileset(TilesetId id):
-id(id), nb_tiles(0) {
+id(id), nb_tiles(0), tileset_image(NULL) {
   
 }
 
@@ -38,6 +38,7 @@ Tileset::~Tileset(void) {
  */
 void Tileset::create_tile(int id, Tile *tile) {
   tiles[id - 1] = tile;
+  nb_tiles++;
 }
 
 /**
@@ -117,7 +118,7 @@ void Tileset::unload(void) {
   for (i = 0; i < nb_tiles; i++) {
     delete tiles[i];
   }
+  nb_tiles = 0;
 
   SDL_FreeSurface(tileset_image);
-  nb_tiles = 0;
 }

@@ -211,6 +211,7 @@ bool ZSDX::show_title_screen(void) {
 
   // stop the title screen music
   title_screen_music->stop();
+  SDL_FreeSurface(image);
 
   return quit;
 }

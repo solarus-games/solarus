@@ -68,7 +68,7 @@ class Tileset {
    * Returns whether the tileset is loaded.
    * @return true if the tileset is loaded
    */
-  inline bool is_loaded(void) { return nb_tiles != 0; }
+  inline bool is_loaded(void) { return tileset_image != NULL; }
 
   /**
    * Returns the tileset image.

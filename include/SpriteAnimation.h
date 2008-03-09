@@ -59,7 +59,7 @@ class SpriteAnimation {
 
  public:
 
-  SpriteAnimation(SDL_Surface *src_image, int nb_directions, SpriteAnimationDirection **directions,
+  SpriteAnimation(string image_file_name, int nb_directions, SpriteAnimationDirection **directions,
 		  int x_hotspot, int y_hotspot, Uint32 frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 

@@ -33,7 +33,6 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
   string name, image_file_name;
   int nb_directions, nb_frames, x_hotspot, y_hotspot, loop_on_frame;
   Uint32 frame_delay;
-  SDL_Surface *src_image;
 
   // read each animation
   while (std::getline(sprite_file, line)) {
@@ -51,7 +50,6 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
     //    cout << "name: " << name << endl;
 
     image_file_name = "images/sprites/" + image_file_name;
-    src_image = IMG_Load(FileTools::data_file_add_prefix(image_file_name.c_str()));
 
     directions = new SpriteAnimationDirection*[nb_directions];
 
@@ -78,7 +76,7 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
       directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src);
     }
 
-    animations[name] = new SpriteAnimation(src_image, nb_directions, directions,
+    animations[name] = new SpriteAnimation(image_file_name, nb_directions, directions,
 					   x_hotspot, y_hotspot, frame_delay, loop_on_frame);
 
     // default animation

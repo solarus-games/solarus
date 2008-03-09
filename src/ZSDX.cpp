@@ -55,8 +55,8 @@ void ZSDX::initialize(void) {
 
   // initialise SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
-
-  //  SDL_ShowCursor(SDL_DISABLE);
+  SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
+ 
   SDL_ShowCursor(SDL_ENABLE);
   set_fullscreen(false);
  
@@ -88,9 +88,11 @@ void ZSDX::exit(void) {
 void ZSDX::set_fullscreen(bool fullscreen) {
   if (fullscreen) {
     screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+    SDL_ShowCursor(SDL_DISABLE);
   }
   else {
     screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    SDL_ShowCursor(SDL_ENABLE);
   }
   ZSDX::fullscreen = fullscreen;
 }
@@ -190,8 +192,6 @@ bool ZSDX::show_title_screen(void) {
 
   // show the title screen
   SDL_Surface *image = IMG_Load(FileTools::data_file_add_prefix("images/title.png"));
-  SDL_BlitSurface(image, NULL, screen, NULL);
-  SDL_Flip(screen);
 
   // wait until the user presses the space bar
   bool quit = false;
@@ -207,6 +207,9 @@ bool ZSDX::show_title_screen(void) {
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
       start = true;
     }
+    
+    SDL_BlitSurface(image, NULL, screen, NULL);
+    SDL_Flip(screen);
   }
 
   // stop the title screen music

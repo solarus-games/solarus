@@ -13,7 +13,7 @@ AC_PROG_CXX
 AC_PROG_CC
 
 # Checks for libraries.
-AC_CHECK_LIB([fmod], [main], , AC_MSG_ERROR([The FMOD library is missing]))
+AC_CHECK_LIB([fmodex], [main], , AC_MSG_ERROR([The FMOD Ex library is missing]))
 AC_CHECK_LIB([SDL_image], [IMG_Load], , AC_MSG_ERROR([The SDL_image library is missing]))
 AC_CHECK_LIB([SDL], [SDL_Init], , AC_MSG_ERROR([The SDL library is missing]))
 AC_CHECK_LIB([SDLmain], [main], , AC_MSG_ERROR([The SDLmain library is missing]))

@@ -1,13 +1,6 @@
-/**
- * This modules defines the class Music.
- * The class Music plays a music and
- * also handles the initialization of the whole sound system.
- * The sound and the music are played with the library FMOD 3.75.
- */
-
 #include "Music.h"
 #include "FileTools.h"
-#include <fmod/fmod_errors.h>
+#include <fmodex/fmod_errors.h>
 
 /**
  * Special id indicating that there is no music.
@@ -24,6 +17,9 @@ const char *Music::unchanged = "same";
  * the method initialize() has been called.
  */
 bool Music::initialized = false;
+
+FMOD_SYSTEM *Music::system = NULL;
+FMOD_CHANNEL *Music::channel = NULL;
 
 /**
  * Creates a new music.
@@ -47,19 +43,24 @@ Music::~Music(void) {
  */
 void Music::initialize(void) {
 
+  FMOD_System_Create(&system);
+
   // first we try to initialize FMOD with the default configuration
-  if (FSOUND_Init(44100, 32, 0)) {
+  FMOD_RESULT result = FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL);
+
+  if (result == FMOD_OK) {
     initialized = true;
   }
   else {
+    /*
     // it didn't work: we try with ESD for Linux
     FSOUND_SetOutput(FSOUND_OUTPUT_ESD);
     if (FSOUND_Init(44100, 32, 0)) {
       initialized = true;
     }
-    else {
-      cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(FSOUND_GetError()) << '\n';
-    }
+    else {*/
+    cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result) << '\n';
+    //   }
   }
 }
 
@@ -69,7 +70,7 @@ void Music::initialize(void) {
  */
 void Music::exit(void) {
   if (initialized) {
-    FSOUND_Close();
+    FMOD_System_Release(system);
     initialized = false;
   }
 }
@@ -111,17 +112,27 @@ bool Music::isEqualId(MusicId music_id, MusicId other_music_id) {
 bool Music::play(void) {
 
   bool success = false;
+  FMOD_RESULT result;
+
   if (initialized) {
-    module = FMUSIC_LoadSong(file_name.c_str());
-    if (module == NULL) {
-      cerr << "Unable to play music: " << FMOD_ErrorString(FSOUND_GetError()) << endl;
+
+    result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &module);
+
+    if (result != FMOD_OK) {
+      cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
     }
     else {
-      FMUSIC_SetLooping(module, 0);
-      FMUSIC_PlaySong(module);
-      success = true;
+      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, module, false, &channel);
+
+      if (result != FMOD_OK) {
+	cerr << "Unable to play music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
+      }
+      else {
+	success = true;
+      }
     }
   }
+
   return success;
 }
 
@@ -132,10 +143,12 @@ void Music::stop(void) {
   
   if (initialized) {
   
-    if (!FMUSIC_StopSong(module)) {
-      cerr << "Cannot stop the module: " << FMOD_ErrorString(FSOUND_GetError()) << endl;
+    FMOD_RESULT result = FMOD_Channel_Stop(channel);
+
+    if (result != FMOD_OK) {
+      cerr << "Cannot stop the module: " << FMOD_ErrorString(result) << endl;
     }
-    FMUSIC_FreeSong(module);
+    FMOD_Sound_Release(module);
   }
 }
 
@@ -144,7 +157,15 @@ void Music::stop(void) {
  * @return true if the music is paused, false otherwise
  */
 bool Music::is_paused(void) {
-  return initialized && FMUSIC_GetPaused(module);
+
+  if (!initialized) {
+    return false;
+  }
+
+  FMOD_BOOL pause;
+  FMOD_Channel_GetPaused(channel, &pause);
+
+  return pause;
 }
 
 /**
@@ -153,6 +174,6 @@ bool Music::is_paused(void) {
  */
 void Music::set_paused(bool pause) {
   if (initialized) {
-    FMUSIC_SetPaused(module, pause);
+    FMOD_Channel_SetPaused(channel, pause);
   }
 }

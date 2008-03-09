@@ -184,6 +184,7 @@ bool ZSDX::show_title_screen(void) {
 
   // play the title screen music
   Music *title_screen_music = ZSDX::game_resource->get_music("title_screen.it");
+  //  Music *title_screen_music = ZSDX::game_resource->get_music("fanfare.it");
 
   title_screen_music->play();
 

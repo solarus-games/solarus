@@ -6,25 +6,27 @@
 #ifndef ZSDX_MUSIC_H
 #define ZSDX_MUSIC_H
 
-#include <fmod/fmod.h>
+#include <fmodex/fmod.h>
 #include "Common.h"
 
 /**
  * This class represents a music that can be played on a map.
  * A music should be in format .it (Impulse Tracker Module).
  * This class also handles the initialization of the whole sound system.
- * The sound and the music are played with the library FMOD 3.75.
+ * The sound and the music are played with the library FMOD Ex.
  */
 class Music {
 
  private:
 
   static bool initialized;
+  static FMOD_SYSTEM *system;
+  static FMOD_CHANNEL *channel;
 
   /**
    * The module corresponding to this music.
    */
-  FMUSIC_MODULE *module;
+  FMOD_SOUND *module;
   
  public:
 

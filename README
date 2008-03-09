@@ -11,7 +11,7 @@ The following libraries are required to make ZSDX work:
 SDL
 SDLmain
 SDL_image
-fmod-3.75
+fmodex
 
 There exists SDL packages for Ubuntu:
 
@@ -19,24 +19,19 @@ libsdl1.2-dev
 libsdl-image1.2-dev
 
 But there is no FMOD package for Ubuntu. So you have to install the library manually:
-- Download the FMOD archive: http://www.fmod.org/index.php/release/version/fmodapi375linux.tar.gz
-- Create a directory for the FMOD .h files: /usr/include/fmod
-- Copy into this directory every .h file from the subdirectory api/inc of the FMOD archive
-- Copy api/libfmod-3.75.so into /usr/lib
-- Make a symbolic link: sudo ln -s /usr/lib/libfmod-3.75.so /usr/lib/libfmod.so
+- Download the latest FMOD Ex release on http://www.fmod.org/index.php/download
+- Uncompress the archive
+- Install the FMOD Ex librairies and headers with 'make install'
 
 The following sequence of commands installs FMOD as explained above:
 
-wget http://www.fmod.org/index.php/release/version/fmodapi375linux.tar.gz
-tar xvzf fmodapi375linux.tar.gz
-cd fmodapi375linux
-sudo mkdir /usr/include/fmod
-sudo cp api/inc/*.h /usr/include/fmod
-sudo cp api/libfmod-3.75.so /usr/lib
-sudo ln -s /usr/lib/libfmod-3.75.so /usr/lib/libfmod.so
+wget http://www.fmod.org/index.php/release/version/fmodapi41304linux.tar.gz
+tar xvzf fmodapi41304linux.tar.gz
+cd fmodapi41304linux
+sudo make install
 cd ..
-rm -rf fmodapi375linux
-rm fmodapi375linux.tar.gz
+rm -rf fmodapi41304linux
+rm fmodapi41304linux.tar.gz
 
 
 ------------------------

@@ -43,26 +43,29 @@ Music::~Music(void) {
  */
 void Music::initialize(void) {
 
+  FMOD_RESULT result;
+
   FMOD_System_Create(&system);
 
   // first we try to initialize FMOD with the default configuration
-  FMOD_RESULT result = FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL);
-
-  if (result == FMOD_OK) {
+  if (FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL) == FMOD_OK) {
     initialized = true;
   }
   else {
-    /*
-    // it didn't work: we try with ESD for Linux
-    FSOUND_SetOutput(FSOUND_OUTPUT_ESD);
-    if (FSOUND_Init(44100, 32, 0)) {
+    // if it doesn't work, we try other output types for Linux
+    FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
+    result = FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL);
+
+    if (result == FMOD_OK) {
       initialized = true;
     }
-    else {*/
-    cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result) << '\n';
-    //   }
+    else {
+      cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
+	   << ". No music will be played." << endl;
+    }
   }
 }
+
 
 /**
  * Closes the sound system.

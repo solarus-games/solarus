@@ -35,9 +35,6 @@ class ZSDX {
   bool fullscreen;
   TileAnimationManager tile_animation_manager;
 
-  ZSDX(void);
-  ~ZSDX(void);
-
   bool show_title_screen(void);
   void show_game_file_selection(void);
   void launch_adventure_mode(Savegame *savegame);
@@ -45,7 +42,8 @@ class ZSDX {
 
  public:
 
-  static ZSDX instance;
+  ZSDX(void);
+  ~ZSDX(void);
 
   void main(void);
 

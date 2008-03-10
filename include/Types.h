@@ -69,6 +69,7 @@ class ZSDX;
 class Game;
 class GameResource;
 class Savegame;
+class SelectionMenu;
 
 class TransitionEffect;
 class Map;

@@ -44,8 +44,9 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_zsdx_OBJECTS = ZSDX.$(OBJEXT) FileTools.$(OBJEXT) Game.$(OBJEXT) \
-	GameResource.$(OBJEXT) Savegame.$(OBJEXT) Map.$(OBJEXT) \
-	MapEntrance.$(OBJEXT) MapEntity.$(OBJEXT) Moving.$(OBJEXT) \
+	GameResource.$(OBJEXT) Savegame.$(OBJEXT) \
+	SelectionMenu.$(OBJEXT) Map.$(OBJEXT) MapEntrance.$(OBJEXT) \
+	MapEntity.$(OBJEXT) Moving.$(OBJEXT) \
 	MovingWithCollision.$(OBJEXT) \
 	MovingWithSmoothCollision.$(OBJEXT) Moving8ByPlayer.$(OBJEXT) \
 	EntityDetector.$(OBJEXT) MapExit.$(OBJEXT) \
@@ -166,6 +167,7 @@ zsdx_SOURCES = \
   Game.cpp						\
   GameResource.cpp					\
   Savegame.cpp						\
+  SelectionMenu.cpp					\
   Map.cpp						\
   MapEntrance.cpp					\
   MapEntity.cpp						\
@@ -203,6 +205,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Game.h				\
   $(zsdxincludedir)/GameResource.h			\
   $(zsdxincludedir)/Savegame.h				\
+  $(zsdxincludedir)/SelectionMenu.h			\
   $(zsdxincludedir)/Map.h				\
   $(zsdxincludedir)/MapEntrance.h			\
   $(zsdxincludedir)/MapEntity.h				\
@@ -313,6 +316,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MovingWithSmoothCollision.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Music.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Savegame.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SelectionMenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SimpleTile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimationDirection.Po@am__quote@

@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "GameResource.h"
 #include "Savegame.h"
+#include "SelectionMenu.h"
 
 /**
  * Number of times the screen is redrawn is a second.
@@ -21,16 +22,10 @@ const int FRAMES_PER_SECOND = 50;
 const int FRAME_INTERVAL = 1000 / FRAMES_PER_SECOND;
 
 /**
- * The only ZSDX instance.
+ * Global variable to get the ZSDX instance
+ * from anywhere in the code.
  */
-ZSDX ZSDX::instance;
-
-/**
- * Global variable to get the ZSDX instance easier
- * for example, access the game with: zsdx->game
- * instead of ZSDX::instance->game
- */
-ZSDX *zsdx = &ZSDX::instance;
+ZSDX *zsdx = NULL;
 
 /**
  * Initializes the game engine.
@@ -79,7 +74,7 @@ void ZSDX::set_fullscreen(bool fullscreen) {
     screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_ShowCursor(SDL_ENABLE);
   }
-  ZSDX::fullscreen = fullscreen;
+  this->fullscreen = fullscreen;
 }
 
 /**
@@ -109,8 +104,30 @@ void ZSDX::main(void) {
     quit = show_title_screen();
 
     if (!quit) {
-      // savegame selection menu + launch the game
-      show_game_file_selection();
+
+      // savegame selection menu
+      SelectionMenu *menu = new SelectionMenu();
+      menu->show();
+
+      // get the savegame selected (if any)
+      Savegame *savegame = menu->get_selected_save();
+
+      if (savegame == NULL) {
+	quit = true;
+      }
+      else {
+
+	// launch the mode selected by the player
+	bool is_adventure_mode = menu->is_adventure_mode();
+	delete menu;
+
+	if (is_adventure_mode) {
+	  launch_adventure_mode(savegame);
+	}
+	else {
+	  launch_solarus_dreams_mode(savegame);
+	}
+      }
     }
   }
 }
@@ -143,7 +160,7 @@ bool ZSDX::handle_event(const SDL_Event &event) {
 	  
       // F5: full screen / windowed mode
     case SDLK_F5:
-      ZSDX::switch_fullscreen();
+      switch_fullscreen();
       break;
 
     default:
@@ -164,8 +181,8 @@ bool ZSDX::handle_event(const SDL_Event &event) {
 bool ZSDX::show_title_screen(void) {
 
   // play the title screen music
-  Music *title_screen_music = ZSDX::game_resource->get_music("title_screen.it");
-  //  Music *title_screen_music = ZSDX::game_resource->get_music("fanfare.it");
+  Music *title_screen_music = game_resource->get_music("title_screen.it");
+  // TODO: stop the music when finished
 
   title_screen_music->play();
 
@@ -204,7 +221,13 @@ bool ZSDX::show_title_screen(void) {
  * or create a new one.
  * After this 
  */
+/*
 void ZSDX::show_game_file_selection(void) {
+
+  SelectionMenu *menu = new SelectionMenu();
+  menu->show();
+
+  delete menu;
 
   // TODO: selection menu
 
@@ -218,6 +241,7 @@ void ZSDX::show_game_file_selection(void) {
 
   delete savegame;
 }
+*/
 
 /**
  * Launches the adventure mode: shows the game file selection screen
@@ -229,7 +253,7 @@ void ZSDX::launch_adventure_mode(Savegame *savegame) {
   game = new Game(savegame);
   game->play();
 
-  // change link's tunic to test the savegame system
+  // debug: change link's tunic to test the savegame system
   int tunic_number = savegame->get_reserved_integer(SAVEGAME_LINK_TUNIC);
   savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, (tunic_number + 1) % 3);
   savegame->save();
@@ -259,7 +283,9 @@ Lorsqu'il lance ce mode, le jeu affiche les écrans suivants :
  */
 int main(int argc, char **argv) {
 
+  zsdx = new ZSDX();
   zsdx->main();
-  
+  delete zsdx;
+
   return 0;
 }

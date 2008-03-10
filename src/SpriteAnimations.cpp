@@ -32,6 +32,7 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
   SpriteAnimationDirection **directions;
   string name, image_file_name;
   int nb_directions, nb_frames, x_hotspot, y_hotspot, loop_on_frame;
+  int x, y, width, height, rows, columns;
   Uint32 frame_delay;
 
   // read each animation
@@ -44,8 +45,8 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
     // first line: animation info
     
     istringstream iss0(line);
-    iss0 >> name >> image_file_name >> nb_directions >> nb_frames
-	 >> x_hotspot >> y_hotspot >> frame_delay >> loop_on_frame;
+    iss0 >> name >> image_file_name >> nb_directions
+	 >> frame_delay >> loop_on_frame;
 
     //    cout << "name: " << name << endl;
 
@@ -53,31 +54,37 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
 
     directions = new SpriteAnimationDirection*[nb_directions];
 
-    //    cout << "nb_directions = " << nb_directions << ", nb_frames = " << nb_frames << endl;
-
     for (int i = 0; i < nb_directions; i++) {
 
+      do {
+	std::getline(sprite_file, line);
+      }
+      while (line.size() == 0);
+
+      istringstream iss(line);
+      iss >> x >> y >> width >> height >> x_hotspot >> y_hotspot
+	  >> nb_frames >> rows >> columns;
+
       positions_in_src = new SDL_Rect[nb_frames];
+      int j = 0; // frame number
+      for (int r = 0; r < rows && j < nb_frames; r++) {	
+	for (int c = 0; c < columns && j < nb_frames; c++) {
 
-      for (int j = 0; j < nb_frames; j++) {
+	  positions_in_src[j].x = x + c * width;
+	  positions_in_src[j].y = y + r * height;
+	  positions_in_src[j].w = width;
+	  positions_in_src[j].h = height;
 
-	do {
-	  std::getline(sprite_file, line);
+	  j++;
 	}
-	while (line.size() == 0);
-
-	//	cout << "parsing direction " << i << " (frame " << j << ")\n";
-	
-	istringstream iss(line);
-	iss >> positions_in_src[j].x >> positions_in_src[j].y
-	    >> positions_in_src[j].w >> positions_in_src[j].h;
       }
 
-      directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src);
+      directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src,
+						   x_hotspot, y_hotspot);
     }
 
     animations[name] = new SpriteAnimation(image_file_name, nb_directions, directions,
-					   x_hotspot, y_hotspot, frame_delay, loop_on_frame);
+					   frame_delay, loop_on_frame);
 
     // default animation
     if (animations.size() == 1) {

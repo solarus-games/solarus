@@ -83,8 +83,8 @@ void AnimatedSprite::update_current_frame(void) {
 /**
  * Displays the sprite on a surface, with its current animation, direction and frame.
  * @param destination the surface on which the sprite will be displayed
- * @param position position of the sprite on this surface
- * (the hotspot will be placed at this position)
+ * @param position position of the sprite on this surface (only x and y are considered),
+ * the hotspot will be placed at this position
  */
 void AnimatedSprite::display(SDL_Surface *destination, const SDL_Rect &position) {
 

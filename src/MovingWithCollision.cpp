@@ -22,8 +22,8 @@ void MovingWithCollision::set_map(Map *map) {
  */
 void MovingWithCollision::set_collision_box(SDL_Rect &collision_box) {
   this->collision_box = collision_box;
-  this->absolute_collision_box.w = collision_box.w;
-  this->absolute_collision_box.h = collision_box.h;
+  this->absolute_collision_box.w = this->position_in_map.w = collision_box.w;
+  this->absolute_collision_box.h = this->position_in_map.h = collision_box.h;
 }
 
 /**

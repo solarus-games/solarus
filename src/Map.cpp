@@ -424,13 +424,20 @@ void Map::display() {
 /**
  * Displays a sprite on the map surface.
  * @param sprite the sprite to display
- * @param position_in_map position of the sprite on the map
+ * @param position_in_map position of the sprite on the map (only x and y
+ * are considered here: the size of the sprite is specified in the sprite object,
+ * because it can differ from the real position of the entity in the map)
  */
 void Map::display_sprite(AnimatedSprite *sprite, const SDL_Rect *position_in_map) {
   
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
   SDL_Rect position_in_visible_surface = *position_in_map;
+
+  /* debug
+  cout << "position_in_map is (" << position_in_map->x << ", " << position_in_map->y
+       << ") * (" << position_in_map->w << ", " << position_in_map->h << ")" << endl;
+  */
 
   position_in_visible_surface.x -= screen_position.x;
   position_in_visible_surface.y -= screen_position.y;

@@ -34,18 +34,6 @@ class SpriteAnimation {
   SpriteAnimationDirection **directions;
 
   /**
-   * X coordinate of the sprite's origin from the
-   * upper-left corner of its image.
-   */
-  const int x_hotspot;
-
-  /**
-   * Y coordinate of the sprite's origin from the
-   * upper-left corner of its image.
-   */
-  const int y_hotspot;
-
-  /**
    * Interval in milliseconds between two frames.
    * This interval is the same for all directions.
    * If there is only one frame in every direction, this field is set to zero.
@@ -60,7 +48,7 @@ class SpriteAnimation {
  public:
 
   SpriteAnimation(string image_file_name, int nb_directions, SpriteAnimationDirection **directions,
-		  int x_hotspot, int y_hotspot, Uint32 frame_interval, int loop_on_frame);
+		  Uint32 frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 
   /**

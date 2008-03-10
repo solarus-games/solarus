@@ -119,7 +119,7 @@ bool Music::play(void) {
 
   if (initialized) {
 
-    result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &module);
+    result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &module);
 
     if (result != FMOD_OK) {
       cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << endl;

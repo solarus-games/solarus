@@ -43,15 +43,18 @@ Savegame * Game::get_savegame(void) {
  */
 void Game::play(void) {
 
+  // initialize Link
+  Link *link = zsdx->game_resource->get_link();
+  link->set_sprite();
+
   // launch the starting map
-  set_current_map(savegame->get_starting_map(),
-		  savegame->get_starting_entrance(),
+  set_current_map(savegame->get_reserved_integer(SAVEGAME_STARTING_MAP),
+		  savegame->get_reserved_integer(SAVEGAME_STARTING_ENTRANCE),
 		  TRANSITION_FADE);
   
   // SDL main loop
   SDL_Event event;
   Uint32 ticks, last_frame_date = 0;
-  Link *link = ZSDX::game_resource->get_link();
   bool quit = false;
 
   while (!quit) {
@@ -61,7 +64,7 @@ void Game::play(void) {
     // handle the SDL events
     if (SDL_PollEvent(&event)) {
 
-      quit = ZSDX::handle_event(event);
+      quit = zsdx->handle_event(event);
 
       switch (event.type) {
 	
@@ -194,18 +197,18 @@ void Game::handle_transitions(void) {
  * @param map the map to display
  */
 void Game::display_map(Map *map) {
-  SDL_FillRect(ZSDX::screen, NULL, 0);
+  SDL_FillRect(zsdx->screen, NULL, 0);
 
   if (transition != NULL) {
     transition->display(map->get_visible_surface());
   }
 
   map->display();
-  SDL_BlitSurface(map->get_visible_surface(), NULL, ZSDX::screen, NULL); // TODO optimize
+  SDL_BlitSurface(map->get_visible_surface(), NULL, zsdx->screen, NULL); // TODO optimize
 
   // TODO rupees, hearts...
 
-  SDL_Flip(ZSDX::screen);
+  SDL_Flip(zsdx->screen);
 }
 
 /**
@@ -217,7 +220,7 @@ void Game::display_map(Map *map) {
  */
 void Game::set_current_map(MapId map_id, unsigned int entrance_index, TransitionType transition_type) {
 
-  next_map = ZSDX::game_resource->get_map(map_id);
+  next_map = zsdx->game_resource->get_map(map_id);
 
   if (!next_map->is_loaded()) {
     next_map->load();
@@ -236,7 +239,7 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
  */
 void Game::set_current_map(MapId map_id, string entrance_name, TransitionType transition_type) {
 
-  next_map = ZSDX::game_resource->get_map(map_id);
+  next_map = zsdx->game_resource->get_map(map_id);
 
   if (!next_map->is_loaded()) {
     next_map->load();
@@ -269,7 +272,7 @@ void Game::play_music(MusicId new_music_id) {
 	current_music->stop();
       }
 
-      Music *new_music = ZSDX::game_resource->get_music(new_music_id);
+      Music *new_music = zsdx->game_resource->get_music(new_music_id);
 
       if (new_music->play()) {
 	current_music_id = new_music_id;
@@ -319,7 +322,7 @@ void Game::stop_music(void) {
 
    if (enable != this->control_enabled) {
 
-     Link *link = ZSDX::game_resource->get_link();
+     Link *link = zsdx->game_resource->get_link();
 
      if (enable) {
 

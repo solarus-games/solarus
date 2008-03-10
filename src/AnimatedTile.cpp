@@ -48,7 +48,8 @@ AnimatedTile::AnimatedTile(Obstacle obstacle,
  * @param tileset_image the tileset image of this tile
  */
 void AnimatedTile::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
-  short current_frame = ZSDX::get_tile_animation_manager()->get_current_frame(sequence);
+
+  short current_frame = zsdx->get_tile_animation_manager()->get_current_frame(sequence);
 
   SDL_BlitSurface(tileset_image,
 		  &position_in_tileset[current_frame],

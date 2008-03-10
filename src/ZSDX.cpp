@@ -21,37 +21,21 @@ const int FRAMES_PER_SECOND = 50;
 const int FRAME_INTERVAL = 1000 / FRAMES_PER_SECOND;
 
 /**
- * The game.
+ * The only ZSDX instance.
  */
-Game *ZSDX::game;
+ZSDX ZSDX::instance;
 
 /**
- * The screen.
+ * Global variable to get the ZSDX instance easier
+ * for example, access the game with: zsdx->game
+ * instead of ZSDX::instance->game
  */
-SDL_Surface *ZSDX::screen;
-
-/**
- * True if we are in full screen mode.
- */
-bool ZSDX::fullscreen;
-
-/**
- * The tile animation manager object.
- */
-TileAnimationManager ZSDX::tile_animation_manager;
-
-/**
- * The game resource object.
- * It contains the whole game database: the maps, the tilesets,
- * the sprites, the musics, etc.
- */
-GameResource *ZSDX::game_resource;
-
+ZSDX *zsdx = &ZSDX::instance;
 
 /**
  * Initializes the game engine.
  */
-void ZSDX::initialize(void) {
+ZSDX::ZSDX(void) {
 
   // initialise SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
@@ -70,12 +54,13 @@ void ZSDX::initialize(void) {
 
   // initialize the game resource
   game_resource = new GameResource();
+  game = NULL;
 }
 
 /**
  * Cleans everything.
  */
-void ZSDX::exit(void) {
+ZSDX::~ZSDX(void) {
   SDL_Quit();
   Music::exit();
   delete game_resource;
@@ -117,9 +102,6 @@ void ZSDX::switch_fullscreen(void) {
  */
 void ZSDX::main(void) {
 
-  // initialize the game engine
-  initialize();
-
   bool quit = false;
   while (!quit) {
     
@@ -131,9 +113,6 @@ void ZSDX::main(void) {
       show_game_file_selection();
     }
   }
-
-  // close the game engine
-  exit();
 }
 
 /**
@@ -233,7 +212,7 @@ void ZSDX::show_game_file_selection(void) {
   char player_name[32] = "Link";
 
   Savegame *savegame = new Savegame(game_file_name);
-  savegame->set_player_name(player_name);
+  savegame->set_reserved_string(SAVEGAME_PLAYER_NAME, player_name);
 
   launch_adventure_mode(savegame);
 
@@ -245,10 +224,15 @@ void ZSDX::show_game_file_selection(void) {
  * and starts the game with the selected file.
  */
 void ZSDX::launch_adventure_mode(Savegame *savegame) {
-  
+
   // create the game
   game = new Game(savegame);
   game->play();
+
+  // change link's tunic to test the savegame system
+  int tunic_number = savegame->get_reserved_integer(SAVEGAME_LINK_TUNIC);
+  savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, (tunic_number + 1) % 3);
+  savegame->save();
 
   delete game;
   game = NULL;
@@ -275,7 +259,7 @@ Lorsqu'il lance ce mode, le jeu affiche les écrans suivants :
  */
 int main(int argc, char **argv) {
 
-  ZSDX::main();
+  zsdx->main();
   
   return 0;
 }

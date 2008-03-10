@@ -22,6 +22,11 @@ class Link: public Moving8ByPlayer {
   AnimatedSprite *sprite;
 
   /**
+   * String constants corresponding to Link sprite's description.
+   */
+  static const SpriteId link_sprite_ids[3];
+
+  /**
    * Redefinition of Moving8ByPlayer::update_movement
    * to take care of link's animation.
    * This function is called when the user presses or
@@ -31,14 +36,7 @@ class Link: public Moving8ByPlayer {
 
  public:
 
-  /**
-   * Constructor.
-   */
   Link(void);
-
-  /**
-   * Destructor.
-   */
   ~Link(void);
 
   /**
@@ -49,17 +47,9 @@ class Link: public Moving8ByPlayer {
     return sprite;
   }
 
-  /**
-   * Sets Link's current map.
-   * @param map the map
-   */
-  void set_map(Map *map);
+  void set_sprite(void);
 
-  /**
-   * Displays Link on the map with its current animation and
-   * at its current position.
-   * @param map the map
-   */
+  void set_map(Map *map);
   void display_on_map(Map *map);
 };
 

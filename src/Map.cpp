@@ -118,7 +118,7 @@ void Map::load() {
   this->height8 = height / 8;
   this->obstacle_tiles_size = width8 * height8;
 
-  tileset = ZSDX::game_resource->get_tileset(tileset_id);
+  tileset = zsdx->game_resource->get_tileset(tileset_id);
   if (!tileset->is_loaded()) {
     tileset->load();
   }
@@ -386,7 +386,7 @@ SDL_Surface *Map::get_visible_surface(void) {
  * Updates the animation and the position of each sprite, including Link.
  */
 void Map::update_sprites(void) {
-  Link *link = ZSDX::game_resource->get_link();
+  Link *link = zsdx->game_resource->get_link();
   link->update_position();
   link->get_sprite()->update_current_frame();
 }
@@ -397,7 +397,7 @@ void Map::update_sprites(void) {
 void Map::display() {
   
   // Link
-  Link* link = ZSDX::game_resource->get_link();
+  Link* link = zsdx->game_resource->get_link();
 
   // screen
   screen_position.x = MIN(MAX(link->get_x() - 160, 0), width - 320);
@@ -446,10 +446,10 @@ void Map::start(void) {
 
   MapEntrance *entrance = entrances->at(entrance_index);
 
-  ZSDX::game->play_music(music_id);
+  zsdx->game->play_music(music_id);
 
   // put Link
-  Link *link = ZSDX::game_resource->get_link();
+  Link *link = zsdx->game_resource->get_link();
   link->set_map(this);
   link->get_sprite()->set_current_animation_direction(entrance->get_direction());
 

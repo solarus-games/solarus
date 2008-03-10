@@ -1,8 +1,10 @@
 #include "Link.h"
 #include "AnimatedSprite.h"
 #include "ZSDX.h"
+#include "Game.h"
 #include "GameResource.h"
 #include "Map.h"
+#include "Savegame.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -28,18 +30,29 @@ static const int animation_directions[] = {
 };
 
 /**
+ * String constants corresponding to Link sprite's description.
+ */
+const SpriteId Link::link_sprite_ids[3] = {
+  "link_green", // tunic 0
+  "link_blue",  // tunic 1
+  "link_red",   // tunic 2
+};
+
+/**
  * Constructor.
  */
 Link::Link(void):
-Moving8ByPlayer(12), sprite(new AnimatedSprite(ZSDX::game_resource->get_sprite("link_red"))) {
-  SDL_Rect collision_box;
+  Moving8ByPlayer(12), sprite(NULL) {
 
+  SDL_Rect collision_box;
+  
   collision_box.x = -8;
   collision_box.y = -15;
   collision_box.w = 16;
   collision_box.h = 16;
 
   set_collision_box(collision_box);
+  set_sprite();
 }
 
 /**
@@ -65,6 +78,24 @@ void Link::set_map(Map *map) {
 void Link::display_on_map(Map *map) {
 
   map->display_sprite(get_sprite(), &position_in_map);
+}
+
+/**
+ * Sets the sprite of Link, depending on its equipment
+ * as specified in the savegame.
+ */
+void Link::set_sprite(void) {
+
+  if (sprite != NULL) {
+    delete sprite;
+  }
+
+  Savegame *save = zsdx->game->get_savegame();
+  GameResource *resource = zsdx->game_resource;
+
+  int tunic_number = save->get_reserved_integer(SAVEGAME_LINK_TUNIC);
+
+  sprite = new AnimatedSprite(resource->get_sprite(link_sprite_ids[tunic_number]));
 }
 
 /**

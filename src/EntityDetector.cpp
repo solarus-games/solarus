@@ -36,6 +36,6 @@ void EntityDetector::display_on_map(Map *map) {
  */
 void EntityDetector::entity_overlaps(MapEntity *entity_overlapping) {
 
-  Map *map = ZSDX::game->get_current_map();
+  Map *map = zsdx->game->get_current_map();
   map->event_entity_on_detector(this, entity_overlapping);
 }

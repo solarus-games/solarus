@@ -65,6 +65,7 @@ typedef std::string SpriteId;
 /**
  * Declaration of some classes to avoid dependencies between the header files.
  */
+class ZSDX;
 class Game;
 class GameResource;
 class Savegame;

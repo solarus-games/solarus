@@ -34,7 +34,7 @@ transition_type(transition_type), destination_map_id(destination_map_id), entran
  */
 void MapExit::entity_overlaps(MapEntity *entity_overlapping) {
   
-  if (entity_overlapping == ZSDX::game_resource->get_link()) {
-    ZSDX::game->set_current_map(destination_map_id, entrance_name, transition_type);
+  if (entity_overlapping == zsdx->game_resource->get_link()) {
+    zsdx->game->set_current_map(destination_map_id, entrance_name, transition_type);
   }
 }

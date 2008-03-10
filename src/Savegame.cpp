@@ -4,53 +4,6 @@
 
 #include "Savegame.h"
 
-/*
- * Saved data:
- *
- * - 64 reserved strings (for the game engine):
- *   0: player name
- *
- * - 1024 reserved integers (for the game engine):
- *
- *   Last game status
- *
- *   0: starting map id
- *   1: starting entrance index
- *   2: last screen shown in the pause menu
- *   3: row of the last item selected in the inventary
- *   4: column of the last item selected in the inventary
- *   5: current object associated to the X button
- *   6: current object associated to the V button
- *
- *   Rupees, hearts and others
- *
- *   10: current number of hearts filled (counted in 1/4 of hearts)
- *   11: current number of rupees
- *   12: current level of magic
- *   13: current number of bombs
- *   14: current number of arrows
- *   15: current number of pains au chocolat
- *   16: current number of croissants
- *
- *   Maximum values
- *
- *   20: maximum number of hearts
- *   21: maximum number of rupees
- *   22: maximum level of magic (0: no magic, 1: 14 points maxi, 2: 28 points maxi)
- *   23: maximum number of bombs
- *   24: maximum number of arrows
- *   
- *   Equipment and quest status
- *
- *   30: number of heart fragments obtained
- *   31: Link's tunique (0: green, 1: blue, 2: red)
- *   32: Link's shield (0: no shield, 1 to 3: shields 1 to 3)
- *   33: Link's sword (0: no sword, 1 to 4: swords 1 to 4)
- *   
- *
- *
- */
-
 /**
  * Creates a savegame with a specified file name, existing or not.
  * @param file_name name of the savegame file (can be a new file)
@@ -104,34 +57,40 @@ void Savegame::save(void) {
 
 }
 
-/** Returns the name of the player. */
-const char * Savegame::get_player_name(void) {
-  return saved_data.reserved_strings[0];
+/**
+ * Returns an engine string value saved.
+ * @param index index of the value to get, between 0 and 63
+ * @return the string value saved at this index
+ */
+const char * Savegame::get_reserved_string(SavegameReservedStringIndex index) {
+  return saved_data.reserved_strings[index];
 }
 
-/** Sets the name of the player. */
-void Savegame::set_player_name(const char *player_name) {
-  strncpy(saved_data.reserved_strings[0], player_name, 32);
+/**
+ * Sets the name of the player.
+ * @param index index of the value to set, between 0 and 63
+ * @param value the string value to store at this index
+ */
+void Savegame::set_reserved_string(SavegameReservedStringIndex index, const char *value) {
+  strncpy(saved_data.reserved_strings[index], value, 64);
 }
 
-/** Returns the id of the map to start when the savegame is loaded. */
-MapId Savegame::get_starting_map(void) {
-  return saved_data.reserved_integers[0];
+/**
+ * Returns a engine integer value saved.
+ * @param index index of the value to get, between 0 and 1023
+ * @return the integer value saved at this index
+ */
+Uint32 Savegame::get_reserved_integer(SavegameReservedIntegerIndex index) {
+  return saved_data.reserved_integers[index];
 }
 
-/** Sets the map to start when the save game is loaded. */
-void Savegame::set_starting_map(MapId mapId) {
-  saved_data.reserved_integers[0] = mapId;
-}
-
-/** Returns the index of the entrance where the player starts. */
-Uint32 Savegame::get_starting_entrance(void) {
-  return saved_data.reserved_integers[1];
-}
-
-/** Sets the index of the entrance where the player starts. */
-void Savegame::set_starting_entrance(Uint32 entrance_index) {
-  saved_data.reserved_integers[1] = entrance_index;
+/**
+ * Sets a engine integer value int the savegame.
+ * @param index index of the value to set, between 0 and 1023
+ * @param value the integer value to store at this index
+ */
+void Savegame::set_reserved_integer(SavegameReservedIntegerIndex index, Uint32 value) {
+  saved_data.reserved_integers[index] = value;
 }
 
 /**

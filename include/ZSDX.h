@@ -20,6 +20,11 @@ extern const int FRAMES_PER_SECOND;
 extern const int FRAME_INTERVAL;
 
 /**
+ * Only instance.
+ */
+extern ZSDX *zsdx;
+
+/**
  * Main class of the game engine. It contains objects to
  * initialize the game and handles the screen.
  */
@@ -27,34 +32,37 @@ class ZSDX {
 
  private:
 
-  static bool fullscreen;
-  static TileAnimationManager tile_animation_manager;
+  bool fullscreen;
+  TileAnimationManager tile_animation_manager;
 
-  static void initialize(void);
-  static void exit(void);  
-  static bool show_title_screen(void);
-  static void show_game_file_selection(void);
-  static void launch_adventure_mode(Savegame *savegame);
-  static void launch_solarus_dreams_mode(Savegame *savegame);
+  ZSDX(void);
+  ~ZSDX(void);
+
+  bool show_title_screen(void);
+  void show_game_file_selection(void);
+  void launch_adventure_mode(Savegame *savegame);
+  void launch_solarus_dreams_mode(Savegame *savegame);
 
  public:
 
-  static void main(void);
+  static ZSDX instance;
 
-  static SDL_Surface *screen;
-  static GameResource *game_resource;
-  static Game *game;
+  void main(void);
 
-  static bool handle_event(const SDL_Event &event);
-  static void set_fullscreen(bool fullscreen);
-  static bool is_fullscreen(void);
-  static void switch_fullscreen(void);
+  SDL_Surface *screen;
+  GameResource *game_resource;
+  Game *game;
+
+  bool handle_event(const SDL_Event &event);
+  void set_fullscreen(bool fullscreen);
+  bool is_fullscreen(void);
+  void switch_fullscreen(void);
 
   /**
    * Returns the tile animation manager object.
    * This object handles the tile animations.
    */
-  static inline TileAnimationManager *get_tile_animation_manager() { return &tile_animation_manager; }
+  inline TileAnimationManager *get_tile_animation_manager() { return &tile_animation_manager; }
 };
 
 #endif

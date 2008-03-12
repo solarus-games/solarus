@@ -43,7 +43,7 @@ const SpriteId Link::link_sprite_ids[3] = {
  * Constructor.
  */
 Link::Link(void):
-  Moving8ByPlayer(12), sprite(NULL) {
+  Moving8ByPlayer(12), state(LINK_STATE_FREE), sprite(NULL) {
 
   SDL_Rect collision_box;
   
@@ -112,29 +112,31 @@ void Link::update_movement(void) {
   Moving8ByPlayer::update_movement();
 
   // has the direction changed?
-  int direction = get_direction();
-
-  if (direction != -1) {
-    int old_animation_direction = sprite->get_current_animation_direction();
-    int animation_direction = animation_directions[direction_mask];
-
-    if (animation_direction != old_animation_direction) {
-      // if the direction defined by the arrows has changed,
-      // update the sprite's direction of animation
-      sprite->set_current_animation_direction(animation_direction);
+  if (state <= LINK_STATE_SWIMMING) {
+    int direction = get_direction();
+    
+    if (direction != -1) {
+      int old_animation_direction = sprite->get_current_animation_direction();
+      int animation_direction = animation_directions[direction_mask];
+      
+      if (animation_direction != old_animation_direction) {
+	// if the direction defined by the arrows has changed,
+	// update the sprite's direction of animation
+	sprite->set_current_animation_direction(animation_direction);
+      }
     }
-  }
 
-  // update the animation
+    // update the animation
 
-  // stopped to walking
-  if (!old_started && started) {
-    sprite->set_current_animation("walking");
-  }
-
-  // walking to stopped
-  else if (old_started && !started) {
-    sprite->set_current_animation("stopped");
+    // stopped to walking
+    if (!old_started && started) {
+      sprite->set_current_animation("walking");
+    }
+    
+    // walking to stopped
+    else if (old_started && !started) {
+      sprite->set_current_animation("stopped");
+    }
   }
 }
 

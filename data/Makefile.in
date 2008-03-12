@@ -228,8 +228,8 @@ sound__DATA = \
   sounds/sword2.wav				\
   sounds/sword3.wav				\
   sounds/sword4.wav				\
-  sounds/sword_cyclone_load.wav			\
-  sounds/sword_cyclone_release.wav		\
+  sounds/sword_spin_attack_load.wav			\
+  sounds/sword_spin_attack_release.wav		\
   sounds/throw.wav				\
   sounds/treasure.wav				\
   sounds/victory.wav				\

@@ -29,6 +29,7 @@ zsdx_SOURCES = 						\
   Color.cpp						\
   Link.cpp						\
   Music.cpp						\
+  Sound.cpp						\
   Tileset.cpp						\
   TransitionEffect.cpp					\
   TransitionImmediate.cpp				\
@@ -67,6 +68,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Color.h				\
   $(zsdxincludedir)/Link.h				\
   $(zsdxincludedir)/Music.h				\
+  $(zsdxincludedir)/Sound.h				\
   $(zsdxincludedir)/Tileset.h				\
   $(zsdxincludedir)/TransitionEffect.h			\
   $(zsdxincludedir)/TransitionImmediate.h		\

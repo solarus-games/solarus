@@ -1,6 +1,6 @@
 /**
  * This module defines the class Music.
- * This should be the only FMOD dependent module.
+ * Music and Sound should be the only FMOD dependent modules.
  */
 
 #ifndef ZSDX_MUSIC_H
@@ -10,7 +10,7 @@
 #include "Common.h"
 
 /**
- * This class represents a music that can be played on a map.
+ * This class represents a music that can be played.
  * A music should be in format .it (Impulse Tracker Module).
  * This class also handles the initialization of the whole sound system.
  * The sound and the music are played with the library FMOD Ex.
@@ -24,9 +24,9 @@ class Music {
   static FMOD_CHANNEL *channel;
 
   /**
-   * The module corresponding to this music.
+   * The FMOD music played.
    */
-  FMOD_SOUND *module;
+  FMOD_SOUND *stream;
   
  public:
 
@@ -41,8 +41,12 @@ class Music {
   Music(MusicId music_id);
   ~Music(void);
 
+  // TODO: make Music inherit Sound and remove this
+  static inline FMOD_SYSTEM *get_fmod_system(void) { return system; }
+
   static void initialize(void);
   static void exit(void);
+  static bool is_initialized(void);
 
   static bool isNoneId(MusicId music_id);
   static bool isUnchangedId(MusicId music_id);

@@ -60,6 +60,7 @@ enum EntityType {
 typedef Uint32 MapId;
 typedef Uint32 TilesetId;
 typedef std::string MusicId;
+typedef std::string SoundId;
 typedef std::string SpriteId;
 
 /**
@@ -75,6 +76,7 @@ class TransitionEffect;
 class Map;
 class Tileset;
 class Music;
+class Sound;
 
 class AnimatedSprite;
 class SpriteAnimations;

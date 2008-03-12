@@ -9,6 +9,21 @@
 #include "Moving8ByPlayer.h"
 
 /**
+ * Possible states of Link.
+ */
+enum LinkState {
+  LINK_STATE_FREE,                    /**< Normal state. */
+  LINK_STATE_CARRYING,                /**< Link is carrying a pot or a bush */
+  LINK_STATE_SWORD_LOADING,           /**< Link is loading his sword for a cyclon attack */
+  LINK_STATE_SWORD_SWINGING,          /**< */          
+  LINK_STATE_PUSHING_OR_PULLING,
+  LINK_STATE_SWIMING,
+  LINK_STATE,
+};
+// TODO check this in start_left, start_right etc
+// modify in set_control_enabled
+
+/**
  * Link's entity.
  * It is animated and can be controlled with an 8 directions system.
  */
@@ -51,6 +66,8 @@ class Link: public Moving8ByPlayer {
 
   void set_map(Map *map);
   void display_on_map(Map *map);
+
+  void start_sword(void);
 };
 
 #endif

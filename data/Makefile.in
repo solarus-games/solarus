@@ -52,19 +52,22 @@ am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(images_dir)" \
 	"$(DESTDIR)$(images_sprites_link_dir)" \
 	"$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" \
-	"$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sprites_dir)" \
-	"$(DESTDIR)$(tilesets_dir)" "$(DESTDIR)$(zsdxdatadir)"
+	"$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sound_dir)" \
+	"$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(tilesets_dir)" \
+	"$(DESTDIR)$(zsdxdatadir)"
 images_DATA_INSTALL = $(INSTALL_DATA)
 images_sprites_link_DATA_INSTALL = $(INSTALL_DATA)
 images_tilesets_DATA_INSTALL = $(INSTALL_DATA)
 maps_DATA_INSTALL = $(INSTALL_DATA)
 music_DATA_INSTALL = $(INSTALL_DATA)
+sound_DATA_INSTALL = $(INSTALL_DATA)
 sprites_DATA_INSTALL = $(INSTALL_DATA)
 tilesets_DATA_INSTALL = $(INSTALL_DATA)
 zsdxdataDATA_INSTALL = $(INSTALL_DATA)
 DATA = $(images__DATA) $(images_sprites_link__DATA) \
 	$(images_tilesets__DATA) $(maps__DATA) $(music__DATA) \
-	$(sprites__DATA) $(tilesets__DATA) $(zsdxdata_DATA)
+	$(sound__DATA) $(sprites__DATA) $(tilesets__DATA) \
+	$(zsdxdata_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -163,11 +166,77 @@ images__DATA = \
 images_sprites_link_dir = $(images_dir)/sprites/link
 images_sprites_link__DATA = \
   images/sprites/link/stopped.png		\
-  images/sprites/link/walking.png
+  images/sprites/link/walking.png		\
+  images/sprites/link/sword_tunic0.png		\
+  images/sprites/link/sword_tunic1.png		\
+  images/sprites/link/sword_tunic2.png
 
 images_tilesets_dir = $(images_dir)/tilesets
 images_tilesets__DATA = \
   images/tilesets/tileset0000.png		
+
+sound_dir = $(zsdxdatadir)/sounds
+sound__DATA = \
+  sounds/agahnim_blue_ball.wav			\
+  sounds/agahnim_orange_ball.wav		\
+  sounds/bomb.wav				\
+  sounds/boss_dead.wav				\
+  sounds/boss_hurt.wav				\
+  sounds/bounce.wav				\
+  sounds/bow.wav				\
+  sounds/bush.wav				\
+  sounds/chest_appears.wav			\
+  sounds/chest_open.wav				\
+  sounds/cursor.wav				\
+  sounds/door_closed.wav			\
+  sounds/door_open.wav				\
+  sounds/drowning.wav				\
+  sounds/enemy_awake.wav			\
+  sounds/enemy_hurt.wav				\
+  sounds/enemy_dead.wav				\
+  sounds/explosion.wav				\
+  sounds/heart.wav				\
+  sounds/hookshot.wav				\
+  sounds/ice.wav				\
+  sounds/item_in_water.wav			\
+  sounds/jump.wav				\
+  sounds/lamp.wav				\
+  sounds/lens_of_truth_end.wav			\
+  sounds/lens_of_truth_start.wav		\
+  sounds/lift.wav				\
+  sounds/link_falls.wav				\
+  sounds/link_hurt.wav				\
+  sounds/link_pushes.wav			\
+  sounds/link_seen.wav				\
+  sounds/magic_bar.wav				\
+  sounds/message_end.wav			\
+  sounds/monster_hurt.wav			\
+  sounds/octorok.wav				\
+  sounds/pause_closed.wav			\
+  sounds/pause_open.wav				\
+  sounds/picked_item.wav			\
+  sounds/picked_rupee.wav			\
+  sounds/picked_small_key.wav			\
+  sounds/piece_of_heart.wav			\
+  sounds/rupee_counter_end.wav			\
+  sounds/rupee_counter.wav			\
+  sounds/secret.wav				\
+  sounds/shield.wav				\
+  sounds/stone.wav				\
+  sounds/switch.wav				\
+  sounds/sword1.wav				\
+  sounds/sword2.wav				\
+  sounds/sword3.wav				\
+  sounds/sword4.wav				\
+  sounds/sword_cyclone_load.wav			\
+  sounds/sword_cyclone_release.wav		\
+  sounds/throw.wav				\
+  sounds/treasure.wav				\
+  sounds/victory.wav				\
+  sounds/walk_on_grass.wav			\
+  sounds/walk_on_water.wav			\
+  sounds/wrong.wav				\
+  sounds/zora.wav				
 
 music_dir = $(zsdxdatadir)/music
 music__DATA = \
@@ -202,31 +271,15 @@ sprites__DATA = \
   sprites/link_red.zsd				
 
 EXTRA_DIST = \
-  game.zsd					\
-  images/title.png				\
-  images/sprites/link/stopped.png		\
-  images/sprites/link/walking.png		\
-  images/tilesets/tileset0000.png		\
-  music/boss.it					\
-  music/castle.it				\
-  music/credits.it				\
-  music/dark_world.it				\
-  music/fanfare.it				\
-  music/game_over.it				\
-  music/menu.it					\
-  music/mini_game.it				\
-  music/overworld.it				\
-  music/rabbit.it				\
-  music/soldiers.it				\
-  music/title_screen.it				\
-  music/village.it				\
-  sprites/link_green.zsd			\
-  sprites/link_blue.zsd				\
-  sprites/link_red.zsd				\
-  tilesets/tileset0000.zsd			\
-  maps/map0000.zsd				\
-  maps/map0001.zsd				\
-  maps/map0002.zsd				
+  $(zsdxdata_DATA)				\
+  $(images__DATA)				\
+  $(images_sprites_link__DATA)			\
+  $(images_tilesets__DATA)			\
+  $(sound__DATA)				\
+  $(music__DATA)				\
+  $(sprite__DATA)				\
+  $(tilesets__DATA)				\
+  $(maps__DATA)					
 
 all: all-am
 
@@ -345,6 +398,23 @@ uninstall-music_DATA:
 	  echo " rm -f '$(DESTDIR)$(music_dir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(music_dir)/$$f"; \
 	done
+install-sound_DATA: $(sound__DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(sound_dir)" || $(MKDIR_P) "$(DESTDIR)$(sound_dir)"
+	@list='$(sound__DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(sound_DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(sound_dir)/$$f'"; \
+	  $(sound_DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(sound_dir)/$$f"; \
+	done
+
+uninstall-sound_DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(sound__DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(sound_dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(sound_dir)/$$f"; \
+	done
 install-sprites_DATA: $(sprites__DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(sprites_dir)" || $(MKDIR_P) "$(DESTDIR)$(sprites_dir)"
@@ -433,7 +503,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(images_dir)" "$(DESTDIR)$(images_sprites_link_dir)" "$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" "$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(tilesets_dir)" "$(DESTDIR)$(zsdxdatadir)"; do \
+	for dir in "$(DESTDIR)$(images_dir)" "$(DESTDIR)$(images_sprites_link_dir)" "$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" "$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sound_dir)" "$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(tilesets_dir)" "$(DESTDIR)$(zsdxdatadir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -480,8 +550,8 @@ info-am:
 
 install-data-am: install-images_DATA install-images_sprites_link_DATA \
 	install-images_tilesets_DATA install-maps_DATA \
-	install-music_DATA install-sprites_DATA install-tilesets_DATA \
-	install-zsdxdataDATA
+	install-music_DATA install-sound_DATA install-sprites_DATA \
+	install-tilesets_DATA install-zsdxdataDATA
 
 install-dvi: install-dvi-am
 
@@ -517,8 +587,9 @@ ps-am:
 
 uninstall-am: uninstall-images_DATA uninstall-images_sprites_link_DATA \
 	uninstall-images_tilesets_DATA uninstall-maps_DATA \
-	uninstall-music_DATA uninstall-sprites_DATA \
-	uninstall-tilesets_DATA uninstall-zsdxdataDATA
+	uninstall-music_DATA uninstall-sound_DATA \
+	uninstall-sprites_DATA uninstall-tilesets_DATA \
+	uninstall-zsdxdataDATA
 
 .MAKE: install-am install-strip
 
@@ -530,16 +601,43 @@ uninstall-am: uninstall-images_DATA uninstall-images_sprites_link_DATA \
 	install-images_sprites_link_DATA install-images_tilesets_DATA \
 	install-info install-info-am install-man install-maps_DATA \
 	install-music_DATA install-pdf install-pdf-am install-ps \
-	install-ps-am install-sprites_DATA install-strip \
-	install-tilesets_DATA install-zsdxdataDATA installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install-ps-am install-sound_DATA install-sprites_DATA \
+	install-strip install-tilesets_DATA install-zsdxdataDATA \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-am uninstall-images_DATA \
 	uninstall-images_sprites_link_DATA \
 	uninstall-images_tilesets_DATA uninstall-maps_DATA \
-	uninstall-music_DATA uninstall-sprites_DATA \
-	uninstall-tilesets_DATA uninstall-zsdxdataDATA
+	uninstall-music_DATA uninstall-sound_DATA \
+	uninstall-sprites_DATA uninstall-tilesets_DATA \
+	uninstall-zsdxdataDATA
 
+
+#  project_db.zsd				\
+#  images/title.png				\
+#  images/sprites/link/stopped.png		\
+#  images/sprites/link/walking.png		\
+#  images/tilesets/tileset0000.png		\
+#  music/boss.it					\
+#  music/castle.it				\
+#  music/credits.it				\
+#  music/dark_world.it				\
+#  music/fanfare.it				\
+#  music/game_over.it				\
+#  music/menu.it					\
+#  music/mini_game.it				\
+#  music/overworld.it				\
+#  music/rabbit.it				\
+#  music/soldiers.it				\
+#  music/title_screen.it				\
+#  music/village.it				\
+#  sprites/link_green.zsd			\
+#  sprites/link_blue.zsd				\
+#  sprites/link_red.zsd				\
+#  tilesets/tileset0000.zsd			\
+#  maps/map0000.zsd				\
+#  maps/map0001.zsd				\
+#  maps/map0002.zsd				
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

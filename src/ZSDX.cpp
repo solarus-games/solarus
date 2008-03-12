@@ -6,10 +6,12 @@
 #include "FileTools.h"
 #include "Color.h"
 #include "Music.h"
+#include "Sound.h"
 #include "Game.h"
 #include "GameResource.h"
 #include "Savegame.h"
 #include "SelectionMenu.h"
+
 
 /**
  * Number of times the screen is redrawn is a second.
@@ -157,6 +159,16 @@ bool ZSDX::handle_event(const SDL_Event &event) {
     case SDLK_ESCAPE:
       quit = true;
       break;
+      
+      // TODO: temporary
+    case SDLK_F1:
+      {
+	Sound *s = game_resource->get_sound("sword1.wav");
+	if (!s->is_playing()) {
+	  s->play();
+	}
+	break;
+      }
 	  
       // F5: full screen / windowed mode
     case SDLK_F5:
@@ -254,9 +266,11 @@ void ZSDX::launch_adventure_mode(Savegame *savegame) {
   game->play();
 
   // debug: change link's tunic to test the savegame system
+  /*
   int tunic_number = savegame->get_reserved_integer(SAVEGAME_LINK_TUNIC);
   savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, (tunic_number + 1) % 3);
   savegame->save();
+  */
 
   delete game;
   game = NULL;

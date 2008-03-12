@@ -159,3 +159,11 @@ void AnimatedSprite::set_current_frame(int current_frame) {
 bool AnimatedSprite::is_suspended(void) {
   return suspended;
 }
+
+/**
+ * Returns true if the animation is finished.
+ * @return true if the animation is finished
+ */
+bool AnimatedSprite::is_over(void) {
+  return over;
+}

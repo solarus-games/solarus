@@ -5,6 +5,7 @@
 #include "GameResource.h"
 #include "Map.h"
 #include "Savegame.h"
+#include "Sound.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -135,4 +136,12 @@ void Link::update_movement(void) {
   else if (old_started && !started) {
     sprite->set_current_animation("stopped");
   }
+}
+
+/**
+ * Lets Link swinging his sword if possible.
+ */
+void Link::start_sword(void) {
+  zsdx->game_resource->get_sound("sword1.wav")->play();
+  sprite->set_current_animation("sword");
 }

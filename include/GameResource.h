@@ -13,7 +13,6 @@
  * - the map list
  * - the music list
  * - the sound list
- * - the colors
  * - ...
  */
 class GameResource {
@@ -41,14 +40,16 @@ class GameResource {
   std::map<MusicId, Music*> musics;
 
   /**
+   * The sounds.
+   */
+  std::map<SoundId, Sound*> sounds;
+
+  /**
    * The sprites.
    */
   std::map<SpriteId, SpriteAnimations*> sprites;
 
-  // sprites
-  // sounds
   // items
-  // saved data?
   // ...
 
  public:
@@ -60,6 +61,7 @@ class GameResource {
   Tileset* get_tileset(TilesetId id);
   Map* get_map(MapId id);
   Music* get_music(MusicId id);
+  Sound* get_sound(SoundId id);
   SpriteAnimations* get_sprite(SpriteId id);
 };
 

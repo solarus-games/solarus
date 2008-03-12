@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Tileset.h"
 #include "Music.h"
+#include "Sound.h"
 #include "SpriteAnimations.h"
 
 /**
@@ -49,6 +50,16 @@ GameResource::~GameResource(void) {
       delete it->second;
     }
     musics.clear();
+  }
+
+  // sounds
+  {
+    map<SoundId, Sound*>::const_iterator it;
+    
+    for (it = sounds.begin(); it != sounds.end(); it++) {
+      delete it->second;
+    }
+    sounds.clear();
   }
 
   // sprites
@@ -115,6 +126,20 @@ Music* GameResource::get_music(MusicId id) {
   }
   
   return musics[id];
+}
+
+/**
+ * Returns a sound.
+ * @param id id of the sound to get
+ * @return the sound
+ */
+Sound* GameResource::get_sound(SoundId id) {
+  
+  if (sounds[id] == NULL) {
+    sounds[id] = new Sound(id);
+  }
+  
+  return sounds[id];
 }
 
 /**

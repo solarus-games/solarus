@@ -91,6 +91,10 @@ void Game::play(void) {
 	    link->start_down();
 	    break;
 
+	  case SDLK_c:
+	    link->start_sword();
+	    break;
+
 	  default:
 	    break;
 	  }

@@ -22,6 +22,12 @@ class MapEntity {
   SDL_Rect position_in_map;
 
   /**
+   * Coordinates of the hotspot (i.e. the origin point of the entity),
+   * relative to the top-left corner.
+   */
+  SDL_Rect hotspot;
+
+  /**
    * Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
    * The layer is constant for the tiles and can change for Link and the enemies.
    */
@@ -41,6 +47,9 @@ class MapEntity {
   MapEntity(Layer layer, int x, int y, int width, int height);
   MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
 
+  void set_size(int width, int height);
+  void set_hotspot(int x, int y);
+
  public:
 
   /**
@@ -52,13 +61,13 @@ class MapEntity {
    * Returns the current x position of the entity.
    * @return the x position of the entity
    */
-  inline int get_x(void) { return position_in_map.x; }
+  inline int get_x(void) { return position_in_map.x + hotspot.x; }
 
   /**
    * Returns the current y position of the entity.
    * @return the y position of the entity
    */
-  inline int get_y(void) { return position_in_map.y; }
+  inline int get_y(void) { return position_in_map.y + hotspot.y; }
 
   /**
    * Returns the width of the entity.
@@ -103,13 +112,8 @@ class MapEntity {
    */
   virtual void display_on_map(Map *map) = 0;
 
-  /**
-   * Returns whether or not this entity's rectangle overlaps
-   * a specified rectangle.
-   * @param rectangle the rectangle to check
-   * @return true if this entity's rectangle overlaps the rectangle specified, false otherwise
-   */
   bool overlaps(const SDL_Rect *rectangle);
+  bool is_hotspot_in(const SDL_Rect *rectangle);
 };
 
 #endif

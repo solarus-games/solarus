@@ -136,7 +136,7 @@ class Map {
 
   void update_sprites(void);
   void display();
-  void display_sprite(AnimatedSprite *sprite, const SDL_Rect *position_in_map);
+  void display_sprite(AnimatedSprite *sprite, int x, int y);
   
   Obstacle pixel_collision(int layer, int x, int y);
   bool collision_with_tiles(int layer, SDL_Rect &collision_box);

@@ -16,17 +16,6 @@ void MovingWithCollision::set_map(Map *map) {
 }
 
 /**
- * Sets the collision box of the object.
- * @param collision_box the collision box, positioned
- * from the object's upper-left corner
- */
-void MovingWithCollision::set_collision_box(SDL_Rect &collision_box) {
-  this->collision_box = collision_box;
-  this->absolute_collision_box.w = this->position_in_map.w = collision_box.w;
-  this->absolute_collision_box.h = this->position_in_map.h = collision_box.h;
-}
-
-/**
  * Sets the x position of the entity.
  * This is a redefinition of Moving::set_x() because we also need
  * to update the position of absolute_collision_box.
@@ -34,7 +23,6 @@ void MovingWithCollision::set_collision_box(SDL_Rect &collision_box) {
  */
 void MovingWithCollision::set_x(int x) {
   Moving::set_x(x);
-  absolute_collision_box.x = x + collision_box.x;
   map->entity_just_moved(this);
 }
 
@@ -46,7 +34,6 @@ void MovingWithCollision::set_x(int x) {
  */
 void MovingWithCollision::set_y(int y) {
   Moving::set_y(y);  
-  absolute_collision_box.y = y + collision_box.y;
   map->entity_just_moved(this);
 }
 
@@ -60,14 +47,11 @@ void MovingWithCollision::set_y(int y) {
 bool MovingWithCollision::collision_with_map(int dx, int dy) {
 
   // place the collision box where we want to check the collisions
-  absolute_collision_box.x += dx;
-  absolute_collision_box.y += dy;
+  SDL_Rect collision_box = position_in_map;
+  collision_box.x += dx;
+  collision_box.y += dy;
 
-  bool collision = map->collision_with_tiles(layer, absolute_collision_box);
-
-  // restore the collision box
-  absolute_collision_box.x -= dx;
-  absolute_collision_box.y -= dy;
+  bool collision = map->collision_with_tiles(layer, collision_box);
 
   return collision;
 }

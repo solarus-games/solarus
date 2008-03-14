@@ -48,7 +48,7 @@ static const int directions[] = {
  * @param speed movement speed
  */
 Moving8ByPlayer::Moving8ByPlayer(int speed):
-  started(false), direction_mask(0), speed(speed) {
+  started(false), direction_mask(0), can_move(true), speed(speed) {
 
 }
 
@@ -62,50 +62,111 @@ int Moving8ByPlayer::get_direction(void) {
 }
 
 /**
- * Function called when the user presses the right arrow
+ * Sets whether the player can move the entity.
+ * @param true to enable the movements
+ */
+void Moving8ByPlayer::set_moving_enabled(bool can_move) {
+
+  if (can_move != this->can_move) {
+
+    if (can_move) {
+      // if the control has just been restored, let's take
+      // into account the possible arrows pressed
+
+      this->can_move = true;
+
+      stop_right();
+      stop_up();
+      stop_left();
+      stop_down();
+
+      Uint8 *key_state = SDL_GetKeyState(NULL);
+
+      if (key_state[SDLK_RIGHT]) {
+	start_right();
+      }
+      if (key_state[SDLK_UP]) {
+	start_up();
+      }
+      if (key_state[SDLK_LEFT]) {
+	start_left();
+      }
+      if (key_state[SDLK_DOWN]) {
+	start_down();
+      }
+    }
+    else {
+      stop_right();
+      stop_up();
+      stop_left();
+      stop_down();
+
+      this->can_move = false;
+    }
+  }
+}
+
+/**
+ * Function called when the user presses the right arrow.
  */
 void Moving8ByPlayer::start_right(void) {
-  direction_mask |= right_mask;
-  update_movement();
+  if (can_move) {
+    direction_mask |= right_mask;
+    update_movement();
+  }
 }
 
 void Moving8ByPlayer::start_up(void) {
-  direction_mask |= up_mask;
-  update_movement();
+  if (can_move) {
+    direction_mask |= up_mask;
+    update_movement();
+  }
 }
 
 void Moving8ByPlayer::start_left(void) {
-  direction_mask |= left_mask;
-  update_movement();
+  if (can_move) {
+    direction_mask |= left_mask;
+    update_movement();
+  }
 }
 
 void Moving8ByPlayer::start_down(void) {
-  direction_mask |= down_mask;
-  update_movement();
+  if (can_move) {
+    direction_mask |= down_mask;
+    update_movement();
+  }
 }
 
 void Moving8ByPlayer::stop_right(void) {
-  direction_mask &= ~right_mask;
-  x_move = 0;
-  update_movement();
+  if (can_move) {
+    direction_mask &= ~right_mask;
+    x_move = 0;
+    update_movement();
+  }
 }
 
 void Moving8ByPlayer::stop_up(void) {
-  direction_mask &= ~up_mask;
-  y_move = 0;
-  update_movement();
+  if (can_move) {
+    direction_mask &= ~up_mask;
+    y_move = 0;
+    update_movement();
+  }
 }
 
 void Moving8ByPlayer::stop_left(void) {
-  direction_mask &= ~left_mask;
-  x_move = 0;
-  update_movement();
+  if (can_move) {
+    direction_mask &= ~left_mask;
+    x_move = 0;
+    update_movement();
+  }
 }
 
 void Moving8ByPlayer::stop_down(void) {
-  direction_mask &= ~down_mask;
-  y_move = 0;
-  update_movement();
+  if (can_move) {
+    direction_mask &= ~down_mask;
+    y_move = 0;
+    update_movement();
+  }
 }
 
 /**

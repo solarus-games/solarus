@@ -22,27 +22,6 @@ class MovingWithCollision: public Moving {
   Map *map;
 
   /**
-   * A rectangle defining the position of the collision box on the object.
-   * The collision box is positioned from the upper-left corner
-   * of the object.
-   */
-  SDL_Rect collision_box;
-
-  /**
-   * A rectangle defining the collision box of the object on the map.
-   * The collision box is positioned from the upper-left corner
-   * of the map.
-   */
-  SDL_Rect absolute_collision_box;
-
-  /**
-   * Sets the collision box of the object.
-   * @param collision_box the collision box, positioned
-   * from the object's upper-left corner
-   */
-  void set_collision_box(SDL_Rect &collision_box);
-
-  /**
    * Sets the current map of the object.
    * @param map the map
    */

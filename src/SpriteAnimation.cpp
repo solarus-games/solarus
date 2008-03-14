@@ -55,13 +55,15 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) {
 /**
  * Displays a specific frame of this animation on a surface.
  * @param destination the surface on which the sprite will be displayed
- * @param position position of the sprite on this surface (only x and y
- * are considered), the hotspot will be placed at this position
+ * @param x x coordinate of the sprite on this surface
+ * (the hotspot will be placed at this position)
+ * @param y y coordinate of the sprite on this surface
+ * (the hotspot will be placed at this position)
  * @param current_direction the direction to show
  * @param current_frame the frame to show in this direction
  */
-void SpriteAnimation::display(SDL_Surface *destination, const SDL_Rect &position,
+void SpriteAnimation::display(SDL_Surface *destination, int x, int y,
 			      int current_direction, int current_frame) {
 
-  directions[current_direction]->display(destination, position, current_frame, src_image);
+  directions[current_direction]->display(destination, x, y, current_frame, src_image);
 }

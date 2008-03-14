@@ -69,7 +69,7 @@ void Moving::update_y(void) {
  * @param x the new x position
  */
 void Moving::set_x(int x) {
-  position_in_map.x = x;
+  position_in_map.x = x - hotspot.x;
 }
 
 /**
@@ -77,7 +77,7 @@ void Moving::set_x(int x) {
  * @param y the new y position
  */
 void Moving::set_y(int y) {
-  position_in_map.y = y;
+  position_in_map.y = y - hotspot.y;
 }
 
 /**

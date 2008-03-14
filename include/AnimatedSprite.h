@@ -61,6 +61,11 @@ class AnimatedSprite {
    */
   bool over;
 
+  /**
+   * The possible animation listener associated to this sprite.
+   */
+  AnimationListener *listener;
+
   Uint32 get_frame_interval(void);
   int get_next_frame(void);
 
@@ -82,7 +87,9 @@ class AnimatedSprite {
   void set_suspended(bool suspended);
   bool is_over(void);
 
-  void display(SDL_Surface *destination, const SDL_Rect &position);
+  void set_animation_listener(AnimationListener *listener);
+
+  void display(SDL_Surface *destination, int x, int y);
 };
 
 #endif

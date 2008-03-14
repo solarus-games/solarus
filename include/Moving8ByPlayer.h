@@ -28,82 +28,35 @@ class Moving8ByPlayer: public MovingWithSmoothCollision {
   Uint16 direction_mask;
 
   /**
-   * Updates the movement of the entity.
-   * This function is called when an arrow is pressed or released
-   * on the keyboard.
+   * True if the player can move the entity.
    */
-  virtual void update_movement(void);
+  bool can_move;
 
   /**
    * Speed of the entity when it is moving.
    */
   const int speed;
 
+  virtual void update_movement(void);
+
  public:
 
-  /**
-   * Constructor.
-   * @param speed movement speed
-   */
   Moving8ByPlayer(int speed);
-
-  /**
-   * Destructor.
-   */
   virtual ~Moving8ByPlayer(void) { }
 
-  /**
-   * Returns the current direction of the movement.
-   * The returned direction is an angle (0 to 359), or -1 if the
-   * movement is stopped.
-   */
   int get_direction(void);
 
-  /**
-   * Function called when the user presses the right arrow
-   */
+  void set_moving_enabled(bool can_move);
+
   void start_right(void);
-
-  /**
-   * Function called when the user presses the up arrow
-   */
   void start_up(void);
-
-  /**
-   * Function called when the user presses the left arrow
-   */
   void start_left(void);
-
-  /**
-   * Function called when the user presses the down arrow
-   */
   void start_down(void);
-
-  /**
-   * Function called when the user releases the right arrow
-   */
   void stop_right(void);
-
-  /**
-   * Function called when the user releases the up arrow
-   */
   void stop_up(void);
-
-  /**
-   * Function called when the user releases the left arrow
-   */
   void stop_left(void);
-
-  /**
-   * Function called when the user releases the down arrow
-   */
   void stop_down(void);
 
-  /**
-   * Updates the position (x and y) of the entity if it has moved.
-   * This is a redefinition of MovingWithCollision::update_position to update
-   * x_move and y_move depending on the arrows pressed.
-   */
   virtual void update_position(void);
 
 };

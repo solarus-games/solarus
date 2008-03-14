@@ -416,7 +416,7 @@ void Map::display() {
 
     // put link if he is in this layer
     if (link->get_layer() == layer) {
-      display_sprite(link->get_sprite(), link->get_position_in_map());
+      link->display_on_map(this);
     }
   }
 }
@@ -424,25 +424,14 @@ void Map::display() {
 /**
  * Displays a sprite on the map surface.
  * @param sprite the sprite to display
- * @param position_in_map position of the sprite on the map (only x and y
- * are considered here: the size of the sprite is specified in the sprite object,
- * because it can differ from the real position of the entity in the map)
+ * @param x x coordinate of the sprite's hotspot in the map
+ * @param x y coordinate of the sprite's hotspot in the map
  */
-void Map::display_sprite(AnimatedSprite *sprite, const SDL_Rect *position_in_map) {
+void Map::display_sprite(AnimatedSprite *sprite, int x, int y) {
   
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  SDL_Rect position_in_visible_surface = *position_in_map;
-
-  /* debug
-  cout << "position_in_map is (" << position_in_map->x << ", " << position_in_map->y
-       << ") * (" << position_in_map->w << ", " << position_in_map->h << ")" << endl;
-  */
-
-  position_in_visible_surface.x -= screen_position.x;
-  position_in_visible_surface.y -= screen_position.y;
-
-  sprite->display(visible_surface, position_in_visible_surface);
+  sprite->display(visible_surface, x - screen_position.x, y - screen_position.y);
 }
 
 /**
@@ -597,7 +586,7 @@ void Map::entity_just_moved(MovingWithCollision *entity) {
     
     detector = entity_detectors->at(i);
     if (detector->get_layer() == entity->get_layer()
-	&& entity->overlaps(detector->get_position_in_map())) {
+	&& entity->is_hotspot_in(detector->get_position_in_map())) {
 
       detector->entity_overlaps(entity); // notify the detector
     }

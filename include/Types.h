@@ -82,6 +82,7 @@ class AnimatedSprite;
 class SpriteAnimations;
 class SpriteAnimation;
 class SpriteAnimationDirection;
+class AnimationListener;
 
 class Tile;
 class SimpleTile;

@@ -182,6 +182,7 @@ void Game::handle_transitions(void) {
     else {
       // let the player play
       set_control_enabled(true);
+      zsdx->game_resource->get_link()->set_state(LINK_STATE_FREE);
     }
 
     delete transition;
@@ -327,35 +328,7 @@ void Game::stop_music(void) {
    if (enable != this->control_enabled) {
 
      Link *link = zsdx->game_resource->get_link();
-
-     if (enable) {
-
-       // if the control has just been restored, let's take
-       // into account the possible arrows pressed
-
-       Uint8 *key_state = SDL_GetKeyState(NULL);
-
-       if (key_state[SDLK_RIGHT]) {
-	 link->start_right();
-       }
-       if (key_state[SDLK_UP]) {
-	 link->start_up();
-       }
-       if (key_state[SDLK_LEFT]) {
-	 link->start_left();
-       }
-       if (key_state[SDLK_DOWN]) {
-	 link->start_down();
-       }
-     }
-     else {
-       // if the player has just lost the control, stop Link
-
-       link->stop_right();
-       link->stop_up();
-       link->stop_left();
-       link->stop_down();
-     }
+     link->set_moving_enabled(enable);
 
      this->control_enabled = enable;
    }

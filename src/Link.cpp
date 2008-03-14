@@ -43,16 +43,10 @@ const SpriteId Link::link_sprite_ids[3] = {
  * Constructor.
  */
 Link::Link(void):
-  Moving8ByPlayer(12), state(LINK_STATE_FREE), sprite(NULL) {
+  Moving8ByPlayer(12), sprite(NULL) {
 
-  SDL_Rect collision_box;
-  
-  collision_box.x = -8;
-  collision_box.y = -15;
-  collision_box.w = 16;
-  collision_box.h = 16;
-
-  set_collision_box(collision_box);
+  set_size(16, 16);
+  set_hotspot(8, 15);
   set_sprite();
 }
 
@@ -78,7 +72,7 @@ void Link::set_map(Map *map) {
  */
 void Link::display_on_map(Map *map) {
 
-  map->display_sprite(get_sprite(), &position_in_map);
+  map->display_sprite(get_sprite(), get_x(), get_y());
 }
 
 /**
@@ -97,6 +91,7 @@ void Link::set_sprite(void) {
   int tunic_number = save->get_reserved_integer(SAVEGAME_LINK_TUNIC);
 
   sprite = new AnimatedSprite(resource->get_sprite(link_sprite_ids[tunic_number]));
+  sprite->set_animation_listener(this); // to be notified when an animation of Link is over
 }
 
 /**
@@ -141,9 +136,54 @@ void Link::update_movement(void) {
 }
 
 /**
+ * Returns Link's state.
+ * @return the state of Link
+ */
+LinkState Link::get_state(void) {
+  return state;
+}
+
+/**
+ * Sets Link's state.
+ * @param state the state of Link
+ */
+void Link::set_state(LinkState state) {
+
+  this->state = state;
+
+  set_moving_enabled(state <= LINK_STATE_SWIMMING);
+
+  switch (state) {
+
+  case LINK_STATE_FREE:
+    update_movement();
+    sprite->set_current_animation(started ? "walking" : "stopped");
+    break;
+
+  default:
+    break;
+
+  }
+}
+
+/**
  * Lets Link swinging his sword if possible.
  */
 void Link::start_sword(void) {
+  set_state(LINK_STATE_SWORD_SWINGING);
   zsdx->game_resource->get_sound("sword1.wav")->play();
   sprite->set_current_animation("sword");
 }
+
+/**
+ * This function is called when an animation of Link's sprite is over.
+ */
+void Link::animation_over(AnimatedSprite *sprite) {
+
+  string animation_name = sprite->get_current_animation();
+
+  if (animation_name == "sword") {
+    set_state(LINK_STATE_FREE);
+  }
+}
+

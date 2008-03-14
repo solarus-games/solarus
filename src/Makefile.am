@@ -60,6 +60,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/SpriteAnimations.h			\
   $(zsdxincludedir)/SpriteAnimation.h			\
   $(zsdxincludedir)/SpriteAnimationDirection.h		\
+  $(zsdxincludedir)/AnimationListener.h			\
   $(zsdxincludedir)/TileOnMap.h				\
   $(zsdxincludedir)/Tile.h				\
   $(zsdxincludedir)/SimpleTile.h			\

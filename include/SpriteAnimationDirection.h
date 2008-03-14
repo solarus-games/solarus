@@ -45,7 +45,7 @@ class SpriteAnimationDirection {
   virtual ~SpriteAnimationDirection(void);
 
   inline int get_nb_frames() { return nb_frames; }
-  void display(SDL_Surface *destination, const SDL_Rect &position,
+  void display(SDL_Surface *destination, int x, int y,
 	       int current_frame, SDL_Surface *src_image);
 };
 

@@ -28,9 +28,9 @@ class SpriteAnimations {
   std::map<string, SpriteAnimation*> animations;
 
   /**
-   * The default animation.
+   * The name of the default animation.
    */
-  SpriteAnimation *default_animation;
+  string default_animation_name;
   
  public:
 
@@ -45,10 +45,10 @@ class SpriteAnimations {
   inline SpriteAnimation *get_animation(string animation_name) { return animations[animation_name]; }
 
   /**
-   * Returns the default animation, i.e. the first one.
-   * @return the default animation
+   * Returns the name of the default animation, i.e. the first one.
+   * @return the name of the default animation
    */
-  SpriteAnimation *get_default_animation(void) { return default_animation; }
+  string get_default_animation(void) { return default_animation_name; }
 
 };
 

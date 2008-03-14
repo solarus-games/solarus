@@ -30,21 +30,22 @@ SpriteAnimationDirection::~SpriteAnimationDirection(void) {
 /**
  * Displays a specific frame on the map.
  * @param destination the surface on which the frame will be displayed
- * @param position_in_map position of the top left corner of the sprite
- * in the destination surface (only x and y are considered),
- * the hotspot will be placed at this position
+ * @param x x coordinate of the sprite on this surface
+ * (the hotspot will be placed at this position)
+ * @param y y coordinate of the sprite on this surface
+ * (the hotspot will be placed at this position)
  * @param current_frame the frame to show
  * @param src_image the image from wich the frame is extracted
  */
-void SpriteAnimationDirection::display(SDL_Surface *destination, const SDL_Rect &position,
+void SpriteAnimationDirection::display(SDL_Surface *destination, int x, int y,
 				       int current_frame, SDL_Surface *src_image) {
 
   SDL_Rect position_up_left; // position of the sprite's upper left corner
 
   SDL_Rect *current_frame_rect = &frames[current_frame];
 
-  position_up_left.x = position.x - x_hotspot;
-  position_up_left.y = position.y - y_hotspot;
+  position_up_left.x = x - x_hotspot;
+  position_up_left.y = y - y_hotspot;
   position_up_left.w = current_frame_rect->w;
   position_up_left.h = current_frame_rect->h;
 

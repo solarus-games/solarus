@@ -88,7 +88,7 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
 
     // default animation
     if (animations.size() == 1) {
-      default_animation = animations[name];
+      default_animation_name = name;
     }
   }
 }

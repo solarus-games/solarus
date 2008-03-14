@@ -16,13 +16,13 @@ static const int animation_directions[] = {
   -1,  // none: no change
   0,   // right
   1,   // up
-  0,   // right + up
+  -1,  // right + up: no change
   2,   // left
   -1,  // left + right: no change
   2,   // left + up
   -1,  // left + right + up: no change
   3,   // down
-  0,   // down + right
+  -1,  // down + right: no change
   -1,  // down + up: no change
   -1,  // down + right + up: no change
   2,   // down + left
@@ -155,6 +155,7 @@ void Link::update_sprites(void) {
  * set by set_direction().
  */
 void Link::set_animation_direction(int direction) {
+  
   sprite->set_current_animation_direction(direction);
   
   if (is_sword_started()) {
@@ -182,7 +183,8 @@ void Link::update_movement(void) {
       int old_animation_direction = sprite->get_current_animation_direction();
       int animation_direction = animation_directions[direction_mask];
       
-      if (animation_direction != old_animation_direction) {
+      if (animation_direction != old_animation_direction
+	  && animation_direction != -1) {
 	// if the direction defined by the arrows has changed,
 	// update the sprite's direction of animation
 	set_animation_direction(animation_direction);

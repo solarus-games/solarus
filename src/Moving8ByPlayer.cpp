@@ -73,36 +73,36 @@ void Moving8ByPlayer::set_moving_enabled(bool can_move) {
       // if the control has just been restored, let's take
       // into account the possible arrows pressed
 
-      this->can_move = true;
-
+      /*
       stop_right();
       stop_up();
       stop_left();
       stop_down();
+      */
 
       Uint8 *key_state = SDL_GetKeyState(NULL);
 
       if (key_state[SDLK_RIGHT]) {
-	start_right();
+	direction_mask |= right_mask;
       }
       if (key_state[SDLK_UP]) {
-	start_up();
+	direction_mask |= up_mask;
       }
       if (key_state[SDLK_LEFT]) {
-	start_left();
+	direction_mask |= left_mask;
       }
       if (key_state[SDLK_DOWN]) {
-	start_down();
+	direction_mask |= down_mask;
       }
     }
     else {
-      stop_right();
-      stop_up();
-      stop_left();
-      stop_down();
-
-      this->can_move = false;
+      direction_mask = 0x0000;
+      x_move = 0;
+      y_move = 0;
     }
+
+    update_movement();
+    this->can_move = can_move;
   }
 }
 

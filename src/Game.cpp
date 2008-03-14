@@ -66,12 +66,12 @@ void Game::play(void) {
 
       quit = zsdx->handle_event(event);
 
-      switch (event.type) {
-	
-	// a key is pressed
-      case SDL_KEYDOWN:
+      if (is_control_enabled()) {
+	switch (event.type) {
+	  
+	  // a key is pressed
+	case SDL_KEYDOWN:
 
-	if (is_control_enabled()) {
 	  switch (event.key.keysym.sym) {
 	    
 	    // move Link
@@ -90,7 +90,7 @@ void Game::play(void) {
 	  case SDLK_DOWN:
 	    link->start_down();
 	    break;
-
+	    
 	  case SDLK_c:
 	    link->start_sword();
 	    break;
@@ -98,12 +98,10 @@ void Game::play(void) {
 	  default:
 	    break;
 	  }
-	}
-	break;
+	  break;
 	
-	// stop Link's movement
-      case SDL_KEYUP:
-	if (is_control_enabled()) {
+	  // stop Link's movement
+	case SDL_KEYUP:
 	  switch (event.key.keysym.sym) {
 	    
 	  case SDLK_RIGHT:
@@ -121,12 +119,12 @@ void Game::play(void) {
 	  case SDLK_DOWN:
 	    link->stop_down();
 	    break;
-
+	    
 	  default:
 	    break;
 	  }
+	  break;
 	}
-	break;
       }
     }
     

@@ -1,7 +1,6 @@
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - utiliser sdl-config malgré les autotools
 - Revoir FileTools avec des string et des fstream
-- entités : position_in_map n'est pas le vrai rectangle de l'entité à cause du hotspot. En fait, c'est absolute_collision_box. => Remplacer absolute_collision_box par position_in_map mais mémoriser le hotspot - comment lier un sprite à une entité ? le hotspot d'un sprite est différent du hotspot de l'entité
 - Faire hériter Music de Sound (pour l'instant l'API de Music déclare du FMOD car sound en a besoin :/)
 
 - Compléter l'éditeur de maps et de tilesets :

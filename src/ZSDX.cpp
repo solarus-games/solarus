@@ -193,7 +193,8 @@ bool ZSDX::handle_event(const SDL_Event &event) {
 bool ZSDX::show_title_screen(void) {
 
   // play the title screen music
-  Music *title_screen_music = game_resource->get_music("title_screen.it");
+  Music *title_screen_music = game_resource->get_music("title_screen_full.it");
+
   // TODO: stop the music when finished
 
   title_screen_music->play();
@@ -262,8 +263,8 @@ void ZSDX::show_game_file_selection(void) {
 void ZSDX::launch_adventure_mode(Savegame *savegame) {
 
   // debug: test Link's equipment
-  savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, 0); // green tunic
-  savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, 1); // first sword
+  savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, 1); // green tunic
+  savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, 4); // first sword
 
   // create the game
   game = new Game(savegame);

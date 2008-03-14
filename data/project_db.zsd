@@ -2,18 +2,22 @@
 0	1	Link's House - Secret room
 0	2	Rupee House
 1	0	House
+2	beginning	ALTTP Beginning
 2	boss.it	Boss
 2	castle.it	Castle
-2	credits.it	Credits
+2	credits.it	ALTTP Credits
 2	dark_world.it	Dark World
+2	excalibur.it	Excalibur
 2	fanfare.it	Fanfare
-2	game_over.it	Game Over
+2	game_over.it	Fairy & Game Over
+2	lost_woords.it	Lost Woods
 2	menu.it	Menu
 2	mini_game.it	Mini game
 2	overworld.it	Overworld
-2	rabbit.it	Rabbit
+2	rabbit.it	Turned into a rabbit
 2	soldiers.it	Soldiers
-2	title_screen.it	Title screen
+2	title_screen_full.it	Title screen (full)
+2	title_screen_short.it	Title screen (short, without intro)
 2	village.it	Kakariko Village
 3	link_blue	Blue Link
 3	link_green	Green Link
@@ -33,8 +37,8 @@
 4	door_open	door_open
 4	drowning	drowning
 4	enemy_awake	enemy_awake
-4	enemy_hurt	enemy_hurt
 4	enemy_dead	enemy_dead
+4	enemy_hurt	enemy_hurt
 4	explosion	explosion
 4	heart	heart
 4	hookshot	hookshot
@@ -59,8 +63,8 @@
 4	picked_rupee	picked_rupee
 4	picked_small_key	picked_small_key
 4	piece_of_heart	piece_of_heart
-4	rupee_counter_end	rupee_counter_end
 4	rupee_counter	rupee_counter
+4	rupee_counter_end	rupee_counter_end
 4	secret	secret
 4	shield	shield
 4	stone	stone

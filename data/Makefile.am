@@ -73,18 +73,22 @@ sound__DATA =					\
 
 music_dir = $(zsdxdatadir)/music
 music__DATA = 					\
+  music/beginning.it				\
   music/boss.it					\
   music/castle.it				\
   music/credits.it				\
   music/dark_world.it				\
+  music/excalibur.it				\
   music/fanfare.it				\
   music/game_over.it				\
+  music/lost_woods.it				\
   music/menu.it					\
   music/mini_game.it				\
   music/overworld.it				\
   music/rabbit.it				\
   music/soldiers.it				\
-  music/title_screen.it				\
+  music/title_screen_full.it			\
+  music/title_screen_short.it			\
   music/village.it					
 
 tilesets_dir = $(zsdxdatadir)/tilesets

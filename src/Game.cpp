@@ -45,7 +45,7 @@ void Game::play(void) {
 
   // initialize Link
   Link *link = zsdx->game_resource->get_link();
-  link->set_sprite();
+  link->initialize_sprites();
 
   // launch the starting map
   set_current_map(savegame->get_reserved_integer(SAVEGAME_STARTING_MAP),

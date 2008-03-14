@@ -37,15 +37,13 @@ class Link: public Moving8ByPlayer, AnimationListener {
    */
   LinkState state;
 
-  /**
-   * Link's sprite.
-   */
+  // Link's sprites.
   AnimatedSprite *sprite;
+  AnimatedSprite *sword_sprite;
 
-  /**
-   * String constants corresponding to Link sprite's description.
-   */
   static const SpriteId link_sprite_ids[3];
+  static const SpriteId sword_sprite_ids[4];
+  static const SoundId sword_sound_ids[4];
 
   void update_movement(void);
 
@@ -54,23 +52,18 @@ class Link: public Moving8ByPlayer, AnimationListener {
   Link(void);
   ~Link(void);
 
-  /**
-   * Returns Link's sprite.
-   * @return Link's sprite
-   */
-  inline AnimatedSprite *get_sprite(void) {
-    return sprite;
-  }
+  void initialize_sprites(void);
+  void update_sprites(void);
+  void set_animation_direction(int direction);
 
-  void set_sprite(void);
-
-  void set_map(Map *map);
+  void set_map(Map *map, int initial_direction);
   void display_on_map(Map *map);
 
   LinkState get_state(void);
   void set_state(LinkState state);
 
   void start_sword(void);
+  bool is_sword_started(void);
 
   void animation_over(AnimatedSprite *sprite);
 };

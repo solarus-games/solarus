@@ -388,7 +388,7 @@ SDL_Surface *Map::get_visible_surface(void) {
 void Map::update_sprites(void) {
   Link *link = zsdx->game_resource->get_link();
   link->update_position();
-  link->get_sprite()->update_current_frame();
+  link->update_sprites();
 }
 
 /**
@@ -446,8 +446,7 @@ void Map::start(void) {
 
   // put Link
   Link *link = zsdx->game_resource->get_link();
-  link->set_map(this);
-  link->get_sprite()->set_current_animation_direction(entrance->get_direction());
+  link->set_map(this, entrance->get_direction());
 
   int x = entrance->get_x();
   int y = entrance->get_y();

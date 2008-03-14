@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * This class contains the list of the game resources and their name in the project.
  * Each resource name is associated with an id.
- * This class contains the information of the file game.zsd.
+ * This class contains the information of the file project_db.zsd.
  */
 public class ResourceDatabase extends Observable {
 
@@ -15,7 +15,8 @@ public class ResourceDatabase extends Observable {
     public static final int RESOURCE_TILESET = 1;
     public static final int RESOURCE_MUSIC = 2;
     public static final int RESOURCE_SPRITE = 3;
-    public static final int RESOURCE_NB = 4;
+    public static final int RESOURCE_SOUND = 4;
+    public static final int RESOURCE_NB = 5;
     
     public static final String fileName = "project_db.zsd";
 
@@ -42,6 +43,7 @@ public class ResourceDatabase extends Observable {
 	resources[RESOURCE_TILESET] = new Resource(true);
 	resources[RESOURCE_MUSIC] = new Resource(false);
 	resources[RESOURCE_SPRITE] = new Resource(false);
+	resources[RESOURCE_SOUND] = new Resource(false);
     }
 
     /**
@@ -104,18 +106,18 @@ public class ResourceDatabase extends Observable {
 	    buff.close();
 	}
 	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("game.zsd: Line " + lineNumber + ": Value expected");
+	    throw new ZSDXException(fileName + " line " + lineNumber + ": Value expected");
 	}
 	catch (NumberFormatException ex) {
-	    throw new ZSDXException("game.zsd: Line " + lineNumber + ": Integer expected");
+	    throw new ZSDXException(fileName + " line " + lineNumber + ": Integer expected");
 	}
 	catch (ZSDXException ex) {
-	    throw new ZSDXException("game.zsd: Line " + lineNumber + ": " + ex.getMessage());
+	    throw new ZSDXException(fileName + " line " + lineNumber + ": " + ex.getMessage());
 	}
     }
     
     /**
-     * Saves the list of the game resources and their names into the file game.zsd.
+     * Saves the list of the game resources and their names into the file project_db.zsd.
      * @throws IOException if the file could not be written
      */
     public void save() throws IOException {

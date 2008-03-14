@@ -105,7 +105,7 @@ public class Project {
     }
 
     /**
-     * Returns the file containing the database of the game resources (game.zsd).
+     * Returns the file containing the database of the game resources (projet_db.zsd).
      * @return the file containing the database of the game resources
      */
     public File getResourceDatabaseFile() {

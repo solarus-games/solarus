@@ -10,7 +10,7 @@
 Sound::Sound(SoundId sound_id):
   sound(NULL), channel(NULL) {
 
-  file_name = (string) FileTools::data_file_get_prefix() + "/sounds/" + sound_id;
+  file_name = (string) FileTools::data_file_get_prefix() + "/sounds/" + sound_id + ".wav";
 }
 
 /**

@@ -7,18 +7,6 @@ images_dir = $(zsdxdatadir)/images
 images__DATA =					\
   images/title.png
 
-images_sprites_link_dir = $(images_dir)/sprites/link
-images_sprites_link__DATA = 			\
-  images/sprites/link/stopped.png		\
-  images/sprites/link/walking.png		\
-  images/sprites/link/sword_tunic0.png		\
-  images/sprites/link/sword_tunic1.png		\
-  images/sprites/link/sword_tunic2.png
-
-images_tilesets_dir = $(images_dir)/tilesets
-images_tilesets__DATA = 			\
-  images/tilesets/tileset0000.png		
-
 sound_dir = $(zsdxdatadir)/sounds
 sound__DATA =					\
   sounds/agahnim_blue_ball.wav			\
@@ -72,7 +60,7 @@ sound__DATA =					\
   sounds/sword2.wav				\
   sounds/sword3.wav				\
   sounds/sword4.wav				\
-  sounds/sword_spin_attack_load.wav			\
+  sounds/sword_spin_attack_load.wav		\
   sounds/sword_spin_attack_release.wav		\
   sounds/throw.wav				\
   sounds/treasure.wav				\
@@ -103,6 +91,9 @@ tilesets_dir = $(zsdxdatadir)/tilesets
 tilesets__DATA =				\
   tilesets/tileset0000.zsd
 
+images_tilesets_dir = $(images_dir)/tilesets
+images_tilesets__DATA = 			\
+  images/tilesets/tileset0000.png		
 
 maps_dir = $(zsdxdatadir)/maps
 maps__DATA = 					\
@@ -110,11 +101,27 @@ maps__DATA = 					\
   maps/map0001.zsd				\
   maps/map0002.zsd				
 
-sprites_dir = $(zsdxdatadir)/sprites
-sprites__DATA = 				\
-  sprites/link_green.zsd			\
-  sprites/link_blue.zsd				\
-  sprites/link_red.zsd				
+sprites_link_dir = $(zsdxdatadir)/sprites/link
+sprites_link__DATA = 				\
+  sprites/link/link_green.zsd			\
+  sprites/link/link_blue.zsd			\
+  sprites/link/link_red.zsd			\
+  sprites/link/sword1.zsd			\
+  sprites/link/sword2.zsd			\
+  sprites/link/sword3.zsd			\
+  sprites/link/sword4.zsd			
+
+images_sprites_link_dir = $(images_dir)/sprites/link
+images_sprites_link__DATA = 			\
+  images/sprites/link/stopped.png		\
+  images/sprites/link/walking.png		\
+  images/sprites/link/sword_tunic0.png		\
+  images/sprites/link/sword_tunic1.png		\
+  images/sprites/link/sword_tunic2.png		\
+  images/sprites/link/sword1.png		\
+  images/sprites/link/sword2.png		\
+  images/sprites/link/sword3.png		\
+  images/sprites/link/sword4.png		
 
 EXTRA_DIST =					\
   $(zsdxdata_DATA)				\
@@ -123,32 +130,6 @@ EXTRA_DIST =					\
   $(images_tilesets__DATA)			\
   $(sound__DATA)				\
   $(music__DATA)				\
-  $(sprite__DATA)				\
+  $(sprite_link__DATA)				\
   $(tilesets__DATA)				\
   $(maps__DATA)					
-
-#  project_db.zsd				\
-#  images/title.png				\
-#  images/sprites/link/stopped.png		\
-#  images/sprites/link/walking.png		\
-#  images/tilesets/tileset0000.png		\
-#  music/boss.it					\
-#  music/castle.it				\
-#  music/credits.it				\
-#  music/dark_world.it				\
-#  music/fanfare.it				\
-#  music/game_over.it				\
-#  music/menu.it					\
-#  music/mini_game.it				\
-#  music/overworld.it				\
-#  music/rabbit.it				\
-#  music/soldiers.it				\
-#  music/title_screen.it				\
-#  music/village.it				\
-#  sprites/link_green.zsd			\
-#  sprites/link_blue.zsd				\
-#  sprites/link_red.zsd				\
-#  tilesets/tileset0000.zsd			\
-#  maps/map0000.zsd				\
-#  maps/map0001.zsd				\
-#  maps/map0002.zsd				

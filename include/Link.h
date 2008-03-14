@@ -40,10 +40,12 @@ class Link: public Moving8ByPlayer, AnimationListener {
   // Link's sprites.
   AnimatedSprite *sprite;
   AnimatedSprite *sword_sprite;
+  AnimatedSprite *shield_sprite;
 
-  static const SpriteId link_sprite_ids[3];
-  static const SpriteId sword_sprite_ids[4];
-  static const SoundId sword_sound_ids[4];
+  static const SpriteId link_sprite_ids[];
+  static const SpriteId sword_sprite_ids[];
+  static const SpriteId shield_sprite_ids[];
+  static const SoundId sword_sound_ids[];
 
   void update_movement(void);
 

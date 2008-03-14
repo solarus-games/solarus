@@ -51,6 +51,15 @@ const SpriteId Link::sword_sprite_ids[4] = {
 };
 
 /**
+ * String constants corresponding to the sprites of the shields.
+ */
+const SpriteId Link::shield_sprite_ids[3] = {
+  "link/shield1",
+  "link/shield2",
+  "link/shield3",
+};
+
+/**
  * String constants corresponding to the sounds of the swords.
  */
 const SoundId Link::sword_sound_ids[4] = {
@@ -65,7 +74,7 @@ const SoundId Link::sword_sound_ids[4] = {
  */
 Link::Link(void):
   Moving8ByPlayer(12), state(LINK_STATE_FREE),
-  sprite(NULL), sword_sprite(NULL) {
+  sprite(NULL), sword_sprite(NULL), shield_sprite(NULL) {
 
   set_size(16, 16);
   set_hotspot(8, 15);
@@ -100,6 +109,10 @@ void Link::display_on_map(Map *map) {
   if (is_sword_started()) {
     map->display_sprite(sword_sprite, get_x(), get_y());
   }
+
+  if (shield_sprite != NULL) {
+    map->display_sprite(shield_sprite, get_x(), get_y());
+  }
 }
 
 /**
@@ -126,6 +139,7 @@ void Link::initialize_sprites(void) {
   // Link's sword
   if (sword_sprite != NULL) {
     delete sword_sprite;
+    sword_sprite = NULL;
   }
 
   int sword_number = save->get_reserved_integer(SAVEGAME_LINK_SWORD);
@@ -135,6 +149,19 @@ void Link::initialize_sprites(void) {
     sword_sprite = new AnimatedSprite(resource->get_sprite(sword_sprite_ids[sword_number - 1]));
     sword_sprite->set_animation_listener(this); // to be notified when an animation of the sword is over
   }
+
+  // Link's shield
+  if (shield_sprite != NULL) {
+    delete shield_sprite;
+    shield_sprite = NULL;
+  }
+
+  int shield_number = save->get_reserved_integer(SAVEGAME_LINK_SHIELD);
+
+  if (shield_number > 0) {
+    // Link has a shield
+    shield_sprite = new AnimatedSprite(resource->get_sprite(shield_sprite_ids[shield_number - 1]));
+  }  
 }
 
 
@@ -146,6 +173,10 @@ void Link::update_sprites(void) {
 
   if (is_sword_started()) {
     sword_sprite->update_current_frame();
+  }
+
+  if (shield_sprite != NULL) {
+    shield_sprite->update_current_frame();
   }
 }
 
@@ -160,6 +191,10 @@ void Link::set_animation_direction(int direction) {
   
   if (is_sword_started()) {
     sword_sprite->set_current_animation_direction(direction);
+  }
+
+  if (shield_sprite != NULL) {
+    shield_sprite->set_current_animation_direction(direction);
   }
 }
 
@@ -247,12 +282,20 @@ void Link::start_sword(void) {
   // if Link has a sword
   if (sword_number > 0) {
 
+    int direction = sprite->get_current_animation_direction();
+
     set_state(LINK_STATE_SWORD_SWINGING);
     zsdx->game_resource->get_sound(sword_sound_ids[sword_number - 1])->play();
     sprite->set_current_animation("sword");
 
     sword_sprite->set_current_animation("sword");
-    sword_sprite->set_current_animation_direction(sprite->get_current_animation_direction());
+    sword_sprite->set_current_animation_direction(direction);
+
+    // if Link has a shield
+    if (shield_sprite != NULL) {
+      shield_sprite->set_current_animation("sword");
+      shield_sprite->set_current_animation_direction(direction);
+    }
   }
 }
 

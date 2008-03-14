@@ -268,7 +268,10 @@ sprites_link__DATA = \
   sprites/link/sword1.zsd			\
   sprites/link/sword2.zsd			\
   sprites/link/sword3.zsd			\
-  sprites/link/sword4.zsd			
+  sprites/link/sword4.zsd			\
+  sprites/link/shield1.zsd			\
+  sprites/link/shield2.zsd			\
+  sprites/link/shield3.zsd			
 
 images_sprites_link_dir = $(images_dir)/sprites/link
 images_sprites_link__DATA = \
@@ -280,7 +283,10 @@ images_sprites_link__DATA = \
   images/sprites/link/sword1.png		\
   images/sprites/link/sword2.png		\
   images/sprites/link/sword3.png		\
-  images/sprites/link/sword4.png		
+  images/sprites/link/sword4.png		\
+  images/sprites/link/shield1.png		\
+  images/sprites/link/shield2.png		\
+  images/sprites/link/shield3.png		
 
 EXTRA_DIST = \
   $(zsdxdata_DATA)				\

@@ -263,8 +263,9 @@ void ZSDX::show_game_file_selection(void) {
 void ZSDX::launch_adventure_mode(Savegame *savegame) {
 
   // debug: test Link's equipment
-  savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, 1); // green tunic
-  savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, 4); // first sword
+  savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, 0); // green tunic
+  savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, 1); // first sword
+  savegame->set_reserved_integer(SAVEGAME_LINK_SHIELD, 1); // first shield
 
   // create the game
   game = new Game(savegame);

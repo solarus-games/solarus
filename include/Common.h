@@ -10,6 +10,7 @@ using namespace std;
 #include <cstdlib>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 
 #ifndef ZSDX_CONFIG_H
 #define ZSDX_CONFIG_H

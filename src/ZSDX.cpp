@@ -38,9 +38,16 @@ ZSDX::ZSDX(void) {
   // initialise SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
   SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
- 
+
   SDL_ShowCursor(SDL_ENABLE);
   set_fullscreen(false);
+ 
+  TTF_Init();
+  font = TTF_OpenFont(FileTools::data_file_add_prefix("zsdx.ttf"), 11);
+  if (font == NULL) {
+    cerr << "Cannot load font 'zsdx.ttf'." << endl;
+    exit(1);
+  }
  
   color_init();
 
@@ -59,6 +66,8 @@ ZSDX::ZSDX(void) {
  * Cleans everything.
  */
 ZSDX::~ZSDX(void) {
+  TTF_CloseFont(font);
+  TTF_Quit();
   SDL_Quit();
   Music::exit();
   delete game_resource;

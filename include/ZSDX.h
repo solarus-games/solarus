@@ -46,6 +46,7 @@ class ZSDX {
   void main(void);
 
   SDL_Surface *screen;
+  TTF_Font *font;
   GameResource *game_resource;
   Game *game;
 

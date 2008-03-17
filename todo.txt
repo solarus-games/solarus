@@ -1,7 +1,6 @@
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - utiliser sdl-config malgré les autotools
 - Revoir FileTools avec des string et des fstream
-- Faire hériter Music de Sound (pour l'instant l'API de Music déclare du FMOD car sound en a besoin :/)
 
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)

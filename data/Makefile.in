@@ -158,7 +158,10 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 zsdxdatadir = $(datadir)/zsdx
-zsdxdata_DATA = project_db.zsd
+zsdxdata_DATA = \
+  project_db.zsd				\
+  zsdx.ttf
+
 images_dir = $(zsdxdatadir)/images
 images__DATA = \
   images/title.png

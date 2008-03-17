@@ -32,15 +32,16 @@ SelectionMenu::~SelectionMenu(void) {
 void SelectionMenu::show(void) {
 
   // TODO
-  
+  SDL_Color white = {255, 255, 255};
+  SDL_Surface *text = TTF_RenderText_Solid(zsdx->font, "Welcome to ZSDX!", white);
+  SDL_Rect position = {100, 200, 0, 0};
+
   // play the selection menu music
   Music *music = zsdx->game_resource->get_music("game_over.it");
 
   music->play();
 
 
-  SDL_FillRect(zsdx->screen, NULL, 0);
-  SDL_Flip(zsdx->screen);
 
   bool quit = false;
   SDL_Event event;
@@ -55,6 +56,10 @@ void SelectionMenu::show(void) {
       savegame = new Savegame("save1.zsd");
       quit = true;
     }
+
+    SDL_FillRect(zsdx->screen, NULL, 0);
+    SDL_BlitSurface(text, NULL, zsdx->screen, &position);
+    SDL_Flip(zsdx->screen);
   }
 
   // stop the music

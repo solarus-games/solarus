@@ -16,6 +16,7 @@ AC_PROG_CC
 AC_CHECK_LIB([SDL_image], [IMG_Load], , AC_MSG_ERROR([The SDL_image library is missing]))
 AC_CHECK_LIB([SDL], [SDL_Init], , AC_MSG_ERROR([The SDL library is missing]))
 AC_CHECK_LIB([SDLmain], [main], , AC_MSG_ERROR([The SDLmain library is missing]))
+AC_CHECK_LIB([SDL_ttf], [TTF_Init], , AC_MSG_ERROR([The SDL_ttf library is missing]))
 AC_CHECK_LIB([fmodex], [main], , AC_MSG_ERROR([The FMOD Ex library is missing]))
 AC_CHECK_LIB([mingw32], [main])
 
@@ -24,6 +25,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([stdlib.h], , AC_MSG_ERROR([Cannot locate stdlib.h]))
 AC_CHECK_HEADERS([SDL/SDL.h], , AC_MSG_ERROR([The SDL header file (SDL/SDL.h) is missing]))
 AC_CHECK_HEADERS([SDL/SDL_image.h], , AC_MSG_ERROR([The SDL_image header file (SDL/SDL_image.h) is missing]))
+AC_CHECK_HEADERS([SDL/SDL_ttf.h], , AC_MSG_ERROR([The SDL_ttf header file (SDL/SDL_ttf.h) is missing]))
 AC_CHECK_HEADERS([fmodex/fmod.h], , AC_MSG_ERROR([The FMOD Ex header file (fmodex/fmod.h) is missing]))
 
 # Checks for typedefs, structures, and compiler characteristics.

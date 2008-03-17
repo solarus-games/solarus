@@ -1,7 +1,9 @@
 # data files needed by the game
 
 zsdxdatadir = $(datadir)/zsdx
-zsdxdata_DATA = project_db.zsd
+zsdxdata_DATA = 				\
+  project_db.zsd				\
+  zsdx.ttf
 
 images_dir = $(zsdxdatadir)/images
 images__DATA =					\

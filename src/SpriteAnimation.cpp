@@ -15,7 +15,14 @@ SpriteAnimation::SpriteAnimation(string image_file_name, int nb_directions,
   nb_directions(nb_directions), directions(directions),
   frame_interval(frame_interval), loop_on_frame(loop_on_frame) {
 
-  src_image = IMG_Load(FileTools::data_file_add_prefix(image_file_name.c_str()));
+  const char *file_name = FileTools::data_file_add_prefix(image_file_name.c_str());
+
+  src_image = IMG_Load(file_name);
+
+  if (src_image == NULL) {
+    cerr << "Cannot open the image '" << file_name << "\n";
+    exit(1);
+  }
 }
 
 /**

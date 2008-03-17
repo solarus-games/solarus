@@ -1,14 +1,14 @@
-stopped link/stopped.png 4 0 -1
+stopped link/stopped_tunic.png 4 0 -1
 0	48	24	24	12	23	1	1	1
 24	48	24	24	12	23	1	1	1
 48	48	24	24	12	23	1	1	1
 72	48	24	24	12	23	1	1	1
 
-walking link/walking.png 4 100 0
+walking link/walking_tunic.png 4 100 0
 0	64	24	32	12	31	8	1	8
-192	64	24	32	12	31	8	1	8
 0	160	24	32	12	31	8	1	8
-192	160	24	32	12	31	8	1	8
+0	256	24	32	12	31	8	1	8
+0	352	24	32	12	31	8	1	8
 
 sword link/sword_tunic2.png 4 30 -1
 0	0	96	96	48	57	12	1	12

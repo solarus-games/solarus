@@ -32,16 +32,16 @@ static const int animation_directions[] = {
 };
 
 /**
- * String constants corresponding to Link sprite's description.
+ * String constants corresponding to the sprites of Link's tunics.
  */
-const SpriteId Link::link_sprite_ids[3] = {
-  "link/link_green", // tunic 0
-  "link/link_blue",  // tunic 1
-  "link/link_red",   // tunic 2
+const SpriteId Link::tunic_sprite_ids[3] = {
+  "link/tunic0", // green tunic
+  "link/tunic1", // blue tunic
+  "link/tunic2", // red tunic
 };
 
 /**
- * String constants corresponding to the sprites of the swords.
+ * String constants corresponding to the sprites of Link's swords.
  */
 const SpriteId Link::sword_sprite_ids[4] = {
   "link/sword1",
@@ -74,7 +74,7 @@ const SoundId Link::sword_sound_ids[4] = {
  */
 Link::Link(void):
   Moving8ByPlayer(12), state(LINK_STATE_FREE),
-  sprite(NULL), sword_sprite(NULL), shield_sprite(NULL) {
+  tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL) {
 
   set_size(16, 16);
   set_hotspot(8, 15);
@@ -84,7 +84,15 @@ Link::Link(void):
  * Destructor.
  */
 Link::~Link(void) {
-  delete sprite;
+  delete tunic_sprite;
+  
+  if (sword_sprite != NULL) {
+    delete sword_sprite;
+  }
+
+  if (shield_sprite != NULL) {
+    delete shield_sprite;
+  }
 }
 
 /**
@@ -104,13 +112,13 @@ void Link::set_map(Map *map, int initial_direction) {
  */
 void Link::display_on_map(Map *map) {
 
-  map->display_sprite(sprite, get_x(), get_y());
+  map->display_sprite(tunic_sprite, get_x(), get_y());
 
-  if (is_sword_started()) {
+  if (is_sword_visible()) {
     map->display_sprite(sword_sprite, get_x(), get_y());
   }
 
-  if (shield_sprite != NULL) {
+  if (is_shield_visible()) {
     map->display_sprite(shield_sprite, get_x(), get_y());
   }
 }
@@ -127,14 +135,14 @@ void Link::initialize_sprites(void) {
   GameResource *resource = zsdx->game_resource;
 
   // Link
-  if (sprite != NULL) {
-    delete sprite;
+  if (tunic_sprite != NULL) {
+    delete tunic_sprite;
   }
 
   int tunic_number = save->get_reserved_integer(SAVEGAME_LINK_TUNIC);
 
-  sprite = new AnimatedSprite(resource->get_sprite(link_sprite_ids[tunic_number]));
-  sprite->set_animation_listener(this); // to be notified when an animation of Link is over
+  tunic_sprite = new AnimatedSprite(resource->get_sprite(tunic_sprite_ids[tunic_number]));
+  tunic_sprite->set_animation_listener(this); // to be notified when an animation of Link is over
 
   // Link's sword
   if (sword_sprite != NULL) {
@@ -169,32 +177,14 @@ void Link::initialize_sprites(void) {
  * Updates the animation of Link's sprites if necessary.
  */
 void Link::update_sprites(void) {
-  sprite->update_current_frame();
+  tunic_sprite->update_current_frame();
 
-  if (is_sword_started()) {
+  if (is_sword_visible()) {
     sword_sprite->update_current_frame();
   }
 
-  if (shield_sprite != NULL) {
+  if (is_shield_visible()) {
     shield_sprite->update_current_frame();
-  }
-}
-
-/**
- * Changes the direction of Link's sprites.
- * It is different from the movement direction, which you can
- * set by set_direction().
- */
-void Link::set_animation_direction(int direction) {
-  
-  sprite->set_current_animation_direction(direction);
-  
-  if (is_sword_started()) {
-    sword_sprite->set_current_animation_direction(direction);
-  }
-
-  if (shield_sprite != NULL) {
-    shield_sprite->set_current_animation_direction(direction);
   }
 }
 
@@ -215,7 +205,7 @@ void Link::update_movement(void) {
     int direction = get_direction();
     
     if (direction != -1) {
-      int old_animation_direction = sprite->get_current_animation_direction();
+      int old_animation_direction = tunic_sprite->get_current_animation_direction();
       int animation_direction = animation_directions[direction_mask];
       
       if (animation_direction != old_animation_direction
@@ -230,12 +220,12 @@ void Link::update_movement(void) {
 
     // stopped to walking
     if (!old_started && started) {
-      sprite->set_current_animation("walking");
+      set_animation_walking();
     }
     
     // walking to stopped
     else if (old_started && !started) {
-      sprite->set_current_animation("stopped");
+      set_animation_stopped();
     }
   }
 }
@@ -262,7 +252,13 @@ void Link::set_state(LinkState state) {
 
   case LINK_STATE_FREE:
     update_movement();
-    sprite->set_current_animation(started ? "walking" : "stopped");
+
+    if (started) {
+      set_animation_walking();
+    }
+    else {
+      set_animation_stopped();
+    }
     break;
 
   default:
@@ -282,20 +278,10 @@ void Link::start_sword(void) {
   // if Link has a sword
   if (sword_number > 0) {
 
-    int direction = sprite->get_current_animation_direction();
-
     set_state(LINK_STATE_SWORD_SWINGING);
     zsdx->game_resource->get_sound(sword_sound_ids[sword_number - 1])->play();
-    sprite->set_current_animation("sword");
 
-    sword_sprite->set_current_animation("sword");
-    sword_sprite->set_current_animation_direction(direction);
-
-    // if Link has a shield
-    if (shield_sprite != NULL) {
-      shield_sprite->set_current_animation("sword");
-      shield_sprite->set_current_animation_direction(direction);
-    }
+    set_animation_sword();
   }
 }
 
@@ -303,20 +289,110 @@ void Link::start_sword(void) {
  * Returns whether Link is swinging or loading his sword.
  * @return true if Link is swinging or loading his sword
  */
-bool Link::is_sword_started(void) {
+bool Link::is_sword_visible(void) {
   return (state == LINK_STATE_SWORD_SWINGING 
 	  || state == LINK_STATE_SWORD_LOADING);
 }
 
 /**
+ * Returns whether Link's shield is visible.
+ * @return true if Link's shield is visible
+ */
+bool Link::is_shield_visible(void) {
+
+  if (state != LINK_STATE_SWORD_SWINGING) {
+    return true;
+  }
+
+  int direction = tunic_sprite->get_current_animation_direction();
+  if (direction == 1 || direction == 3) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * This function is called when an animation of Link's sprite is over.
+ * @param the sprite
  */
 void Link::animation_over(AnimatedSprite *sprite) {
 
-  string animation_name = sprite->get_current_animation();
+  string animation_name = tunic_sprite->get_current_animation();
 
   if (animation_name == "sword") {
     set_state(LINK_STATE_FREE);
   }
 }
 
+/**
+ * Changes the direction of Link's sprites.
+ * It is different from the movement direction, which you can
+ * set by set_direction().
+ * @param direction the direction to set (0 to 3)
+ */
+void Link::set_animation_direction(int direction) {
+  
+  tunic_sprite->set_current_animation_direction(direction);
+  
+  if (is_sword_visible()) {
+    sword_sprite->set_current_animation_direction(direction);
+  }
+
+  if (is_shield_visible()) {
+    shield_sprite->set_current_animation_direction(direction);
+  }
+}
+
+/**
+ * Starts the "stopped" animation of Link's sprites.
+ * Link's state should be LINK_STATE_FREE.
+ */
+void Link::set_animation_stopped(void) {
+  
+  tunic_sprite->set_current_animation("stopped");
+
+  if (is_shield_visible()) {
+
+    int direction = tunic_sprite->get_current_animation_direction();
+  
+    shield_sprite->set_current_animation("stopped");
+    shield_sprite->set_current_animation_direction(direction);
+  }
+}
+
+/**
+ * Starts the "walking" animation of Link's sprites.
+ * Link's state should be LINK_STATE_FREE.
+ */
+void Link::set_animation_walking(void) {
+  
+  tunic_sprite->set_current_animation("walking");
+
+  if (is_shield_visible()) {
+
+    int direction = tunic_sprite->get_current_animation_direction();
+  
+    shield_sprite->set_current_animation("walking");
+    shield_sprite->set_current_animation_direction(direction);
+  }
+}
+
+/**
+ * Starts the "sword" animation of Link's sprites.
+ * Link's state should be LINK_STATE_SWORD.
+ */
+void Link::set_animation_sword(void) {
+
+  int direction = tunic_sprite->get_current_animation_direction();
+  
+  tunic_sprite->set_current_animation("sword");
+
+  sword_sprite->set_current_animation("sword");
+  sword_sprite->set_current_animation_direction(direction);
+
+  if (is_shield_visible()) {
+    shield_sprite->set_current_animation("sword");
+    shield_sprite->set_current_animation_direction(direction / 2);
+  }
+}

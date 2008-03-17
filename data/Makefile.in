@@ -262,9 +262,9 @@ maps__DATA = \
 
 sprites_link_dir = $(zsdxdatadir)/sprites/link
 sprites_link__DATA = \
-  sprites/link/link_green.zsd			\
-  sprites/link/link_blue.zsd			\
-  sprites/link/link_red.zsd			\
+  sprites/link/tunic0.zsd			\
+  sprites/link/tunic1.zsd			\
+  sprites/link/tunic2.zsd			\
   sprites/link/sword1.zsd			\
   sprites/link/sword2.zsd			\
   sprites/link/sword3.zsd			\
@@ -275,18 +275,20 @@ sprites_link__DATA = \
 
 images_sprites_link_dir = $(images_dir)/sprites/link
 images_sprites_link__DATA = \
-  images/sprites/link/stopped.png		\
-  images/sprites/link/walking.png		\
+  images/sprites/link/stopped_tunic.png		\
+  images/sprites/link/stopped_shield.png	\
+  images/sprites/link/walking_tunic.png		\
+  images/sprites/link/walking_shield.png	\
   images/sprites/link/sword_tunic0.png		\
   images/sprites/link/sword_tunic1.png		\
   images/sprites/link/sword_tunic2.png		\
-  images/sprites/link/sword1.png		\
-  images/sprites/link/sword2.png		\
-  images/sprites/link/sword3.png		\
-  images/sprites/link/sword4.png		\
-  images/sprites/link/shield1.png		\
-  images/sprites/link/shield2.png		\
-  images/sprites/link/shield3.png		
+  images/sprites/link/sword_sword1.png		\
+  images/sprites/link/sword_sword2.png		\
+  images/sprites/link/sword_sword3.png		\
+  images/sprites/link/sword_sword4.png		\
+  images/sprites/link/sword_shield1.png		\
+  images/sprites/link/sword_shield2.png		\
+  images/sprites/link/sword_shield3.png		
 
 EXTRA_DIST = \
   $(zsdxdata_DATA)				\

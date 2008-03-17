@@ -38,16 +38,20 @@ class Link: public Moving8ByPlayer, AnimationListener {
   LinkState state;
 
   // Link's sprites.
-  AnimatedSprite *sprite;
+  AnimatedSprite *tunic_sprite;
   AnimatedSprite *sword_sprite;
   AnimatedSprite *shield_sprite;
 
-  static const SpriteId link_sprite_ids[];
+  static const SpriteId tunic_sprite_ids[];
   static const SpriteId sword_sprite_ids[];
   static const SpriteId shield_sprite_ids[];
   static const SoundId sword_sound_ids[];
 
   void update_movement(void);
+  void set_animation_direction(int direction);
+  void set_animation_stopped(void);
+  void set_animation_walking(void);
+  void set_animation_sword(void);
 
  public:
 
@@ -56,7 +60,6 @@ class Link: public Moving8ByPlayer, AnimationListener {
 
   void initialize_sprites(void);
   void update_sprites(void);
-  void set_animation_direction(int direction);
 
   void set_map(Map *map, int initial_direction);
   void display_on_map(Map *map);
@@ -65,7 +68,8 @@ class Link: public Moving8ByPlayer, AnimationListener {
   void set_state(LinkState state);
 
   void start_sword(void);
-  bool is_sword_started(void);
+  bool is_sword_visible(void);
+  bool is_shield_visible(void);
 
   void animation_over(AnimatedSprite *sprite);
 };

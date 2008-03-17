@@ -10,6 +10,7 @@
 #include "Game.h"
 #include "GameResource.h"
 #include "Savegame.h"
+#include "TitleScreen.h"
 #include "SelectionMenu.h"
 
 
@@ -103,7 +104,9 @@ void ZSDX::main(void) {
   while (!quit) {
     
     // title screen
-    quit = show_title_screen();
+    TitleScreen *title_screen = new TitleScreen();
+    quit = title_screen->show();
+    delete title_screen;
 
     if (!quit) {
 
@@ -116,6 +119,7 @@ void ZSDX::main(void) {
 
       if (savegame == NULL) {
 	quit = true;
+	delete menu;
       }
       else {
 
@@ -160,16 +164,6 @@ bool ZSDX::handle_event(const SDL_Event &event) {
       quit = true;
       break;
       
-      // TODO: temporary
-    case SDLK_F1:
-      {
-	Sound *s = game_resource->get_sound("sword1.wav");
-	if (!s->is_playing()) {
-	  s->play();
-	}
-	break;
-      }
-	  
       // F5: full screen / windowed mode
     case SDLK_F5:
       switch_fullscreen();
@@ -183,78 +177,6 @@ bool ZSDX::handle_event(const SDL_Event &event) {
 
   return quit;
 }
-
-
-/**
- * Shows the title screen.
- * The player can choose Adventure, Solarus Dreams or Quit.
- * @return true if the user wants to quit ZSDX.
- */
-bool ZSDX::show_title_screen(void) {
-
-  // play the title screen music
-  Music *title_screen_music = game_resource->get_music("title_screen_full.it");
-
-  // TODO: stop the music when finished
-
-  title_screen_music->play();
-
-  // show the title screen
-  SDL_Surface *image = IMG_Load(FileTools::data_file_add_prefix("images/title.png"));
-
-  // wait until the user presses the space bar
-  bool quit = false;
-  bool start = false;
-  SDL_Event event;
-
-  while (!start && !quit) {
-
-    SDL_PollEvent(&event);
-
-    quit = handle_event(event);
-    
-    if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
-      start = true;
-    }
-    
-    SDL_BlitSurface(image, NULL, screen, NULL);
-    SDL_Flip(screen);
-  }
-
-  // stop the title screen music
-  title_screen_music->stop();
-  SDL_FreeSurface(image);
-
-  return quit;
-}
-
-/**
- * Shows the selection menu of the savegames.
- * The player can choose an existing game file
- * or create a new one.
- * After this 
- */
-/*
-void ZSDX::show_game_file_selection(void) {
-
-  SelectionMenu *menu = new SelectionMenu();
-  menu->show();
-
-  delete menu;
-
-  // TODO: selection menu
-
-  char game_file_name[32] = "save1.zsd";
-  char player_name[32] = "Link";
-
-  Savegame *savegame = new Savegame(game_file_name);
-  savegame->set_reserved_string(SAVEGAME_PLAYER_NAME, player_name);
-
-  launch_adventure_mode(savegame);
-
-  delete savegame;
-}
-*/
 
 /**
  * Launches the adventure mode: shows the game file selection screen

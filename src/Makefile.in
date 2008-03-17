@@ -45,8 +45,8 @@ binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_zsdx_OBJECTS = ZSDX.$(OBJEXT) FileTools.$(OBJEXT) Game.$(OBJEXT) \
 	GameResource.$(OBJEXT) Savegame.$(OBJEXT) \
-	SelectionMenu.$(OBJEXT) Map.$(OBJEXT) MapEntrance.$(OBJEXT) \
-	MapEntity.$(OBJEXT) Moving.$(OBJEXT) \
+	TitleScreen.$(OBJEXT) SelectionMenu.$(OBJEXT) Map.$(OBJEXT) \
+	MapEntrance.$(OBJEXT) MapEntity.$(OBJEXT) Moving.$(OBJEXT) \
 	MovingWithCollision.$(OBJEXT) \
 	MovingWithSmoothCollision.$(OBJEXT) Moving8ByPlayer.$(OBJEXT) \
 	EntityDetector.$(OBJEXT) MapExit.$(OBJEXT) \
@@ -168,6 +168,7 @@ zsdx_SOURCES = \
   Game.cpp						\
   GameResource.cpp					\
   Savegame.cpp						\
+  TitleScreen.cpp					\
   SelectionMenu.cpp					\
   Map.cpp						\
   MapEntrance.cpp					\
@@ -207,6 +208,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/Game.h				\
   $(zsdxincludedir)/GameResource.h			\
   $(zsdxincludedir)/Savegame.h				\
+  $(zsdxincludedir)/TitleScreen.h			\
   $(zsdxincludedir)/SelectionMenu.h			\
   $(zsdxincludedir)/Map.h				\
   $(zsdxincludedir)/MapEntrance.h			\
@@ -330,6 +332,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileAnimationManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileOnMap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tileset.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TitleScreen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransitionEffect.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransitionFade.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransitionImmediate.Po@am__quote@

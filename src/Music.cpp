@@ -12,8 +12,6 @@ const char *Music::none = "none";
  */
 const char *Music::unchanged = "same";
 
-FMOD_CHANNEL *Music::channel = NULL;
-
 /**
  * Creates a new music.
  * @param music_id id of the music (a file name)
@@ -62,7 +60,7 @@ bool Music::isEqualId(MusicId music_id, MusicId other_music_id) {
 }
 
 /**
- * Loads the file and plays the music.
+ * Loads the file and plays the music repeatedly.
  * @return true if the music was loaded successfully, false otherwise
  */
 bool Music::play(void) {
@@ -72,7 +70,7 @@ bool Music::play(void) {
 
   if (is_initialized()) {
 
-    result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
+    result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_NORMAL, 0, &sound);
 
     if (result != FMOD_OK) {
       cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
@@ -98,6 +96,10 @@ bool Music::play(void) {
 void Music::stop(void) {
   
   if (is_initialized()) {
+
+    if (!is_playing()) {
+      cerr << "This music is already stopped.\n";
+    }
   
     FMOD_RESULT result = FMOD_Channel_Stop(channel);
 

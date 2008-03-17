@@ -35,8 +35,6 @@ class ZSDX {
   bool fullscreen;
   TileAnimationManager tile_animation_manager;
 
-  bool show_title_screen(void);
-  void show_game_file_selection(void);
   void launch_adventure_mode(Savegame *savegame);
   void launch_solarus_dreams_mode(Savegame *savegame);
 

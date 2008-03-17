@@ -18,10 +18,6 @@
  */
 class Music: public Sound {
 
- private:
-
-  static FMOD_CHANNEL *channel; // only one channel for all musics
-
  public:
 
   static const char *none;

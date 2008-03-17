@@ -3,6 +3,8 @@
 #include "FileTools.h"
 #include <fmodex/fmod_errors.h>
 
+FMOD_SYSTEM *Sound::system = NULL;
+
 /**
  * Creates a new sound.
  * @param sound_id id of the sound (a file name)
@@ -17,6 +19,52 @@ Sound::Sound(SoundId sound_id):
  * Destroys the sound.
  */
 Sound::~Sound(void) {
+  if (sound != NULL) {
+    FMOD_Sound_Release(sound);
+  }
+}
+
+/**
+ * Initializes the music and sound system.
+ * This method should be called when the application starts.
+ */
+void Sound::initialize(void) {
+
+  FMOD_RESULT result;
+
+  FMOD_System_Create(&system);
+
+  // first we try to initialize FMOD with the default configuration
+  if (FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL) != FMOD_OK) {
+
+    // if it doesn't work, we try other output types for Linux
+    FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
+    result = FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL);
+
+    if (result != FMOD_OK) {
+      cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
+	   << ". No music or sound will be played." << endl;
+    }
+  }
+}
+
+/**
+ * Closes the music and sound system.
+ * This method should be called when exiting the application.
+ */
+void Sound::exit(void) {
+  if (is_initialized()) {
+    FMOD_System_Release(system);
+    system = NULL;
+  }
+}
+
+/**
+ * Returns whether the music and sound system is initialized.
+ * @return true if the audio system is initilialized
+ */
+bool Sound::is_initialized(void) {
+  return system != NULL;
 }
 
 /**
@@ -28,15 +76,15 @@ bool Sound::play(void) {
   bool success = false;
   FMOD_RESULT result;
 
-  if (Music::is_initialized()) {
+  if (is_initialized()) {
 
-    result = FMOD_System_CreateSound(Music::get_fmod_system(), file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
+    result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
 
     if (result != FMOD_OK) {
       cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
     }
     else {
-      result = FMOD_System_PlaySound(Music::get_fmod_system(), FMOD_CHANNEL_REUSE, sound, false, &channel);
+      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, false, &channel);
 
       if (result != FMOD_OK) {
 	cerr << "Unable to play sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;

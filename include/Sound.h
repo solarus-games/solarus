@@ -10,26 +10,35 @@
 
 /**
  * This class represents a sound effet that can be played in ZSDX.
- * Before using this class, the audio system should have been
- * initialized, by calling Music::initialize().
+ * This class also handles the initialization of the whole sound system.
+ * The sound and the music are played with the library FMOD Ex.
  */
 class Sound {
 
- private:
+ protected:
+
+  static FMOD_SYSTEM *system;
+
   FMOD_SOUND *sound;
   FMOD_CHANNEL *channel;
-
- public:
 
   /**
    * Name of the sound file.
    */
   string file_name;
 
-  Sound(SoundId sound_id);
-  ~Sound(void);
+  inline Sound(void) { }
 
-  bool play(void);
+ public:
+
+  Sound(SoundId sound_id);
+  virtual ~Sound(void);
+
+  static void initialize(void);
+  static void exit(void);
+  static bool is_initialized(void);
+
+  virtual bool play(void);
   bool is_playing(void);
 };
 

@@ -8,45 +8,27 @@
 
 #include <fmodex/fmod.h>
 #include "Common.h"
+#include "Sound.h"
 
 /**
  * This class represents a music that can be played.
  * A music should be in format .it (Impulse Tracker Module).
- * This class also handles the initialization of the whole sound system.
- * The sound and the music are played with the library FMOD Ex.
+ * Before using this class, the audio system should have been
+ * initialized, by calling Sound::initialize().
  */
-class Music {
+class Music: public Sound {
 
  private:
 
-  static bool initialized;
-  static FMOD_SYSTEM *system;
-  static FMOD_CHANNEL *channel;
+  static FMOD_CHANNEL *channel; // only one channel for all musics
 
-  /**
-   * The FMOD music played.
-   */
-  FMOD_SOUND *stream;
-  
  public:
 
   static const char *none;
   static const char *unchanged;
 
-  /**
-   * Name of the music file.
-   */
-  string file_name;
-
   Music(MusicId music_id);
   ~Music(void);
-
-  // TODO: make Music inherit Sound and remove this
-  static inline FMOD_SYSTEM *get_fmod_system(void) { return system; }
-
-  static void initialize(void);
-  static void exit(void);
-  static bool is_initialized(void);
 
   static bool isNoneId(MusicId music_id);
   static bool isUnchangedId(MusicId music_id);

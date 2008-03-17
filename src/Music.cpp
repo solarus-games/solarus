@@ -12,22 +12,15 @@ const char *Music::none = "none";
  */
 const char *Music::unchanged = "same";
 
-/**
- * True if the sound system has been initialized, i.e. if
- * the method initialize() has been called.
- */
-bool Music::initialized = false;
-
-FMOD_SYSTEM *Music::system = NULL;
 FMOD_CHANNEL *Music::channel = NULL;
 
 /**
  * Creates a new music.
  * @param music_id id of the music (a file name)
  */
-Music::Music(MusicId music_id):
-  stream(NULL) {
+Music::Music(MusicId music_id) {
 
+  sound = NULL;
   file_name = (string) FileTools::data_file_get_prefix() + "/music/" + music_id;
 }
 
@@ -35,54 +28,7 @@ Music::Music(MusicId music_id):
  * Destroys the music.
  */
 Music::~Music(void) {
-}
 
-/**
- * Initializes the music and sound system.
- * This method should be called when the application starts.
- */
-void Music::initialize(void) {
-
-  FMOD_RESULT result;
-
-  FMOD_System_Create(&system);
-
-  // first we try to initialize FMOD with the default configuration
-  if (FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL) == FMOD_OK) {
-    initialized = true;
-  }
-  else {
-    // if it doesn't work, we try other output types for Linux
-    FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
-    result = FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL);
-
-    if (result == FMOD_OK) {
-      initialized = true;
-    }
-    else {
-      cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
-	   << ". No music or sound will be played." << endl;
-    }
-  }
-}
-
-/**
- * Closes the music and sound system.
- * This method should be called when exiting the application.
- */
-void Music::exit(void) {
-  if (initialized) {
-    FMOD_System_Release(system);
-    initialized = false;
-  }
-}
-
-/**
- * Returns whether the music and sound system is initialized.
- * @return true if the audio system is initilialized
- */
-bool Music::is_initialized(void) {
-  return initialized;
 }
 
 /**
@@ -124,15 +70,15 @@ bool Music::play(void) {
   bool success = false;
   FMOD_RESULT result;
 
-  if (initialized) {
+  if (is_initialized()) {
 
-    result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &stream);
+    result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
 
     if (result != FMOD_OK) {
       cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
     }
     else {
-      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, stream, false, &channel);
+      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);
 
       if (result != FMOD_OK) {
 	cerr << "Unable to play music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
@@ -151,14 +97,15 @@ bool Music::play(void) {
  */
 void Music::stop(void) {
   
-  if (initialized) {
+  if (is_initialized()) {
   
     FMOD_RESULT result = FMOD_Channel_Stop(channel);
 
     if (result != FMOD_OK) {
       cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << endl;
     }
-    FMOD_Sound_Release(stream);
+    FMOD_Sound_Release(sound);
+    sound = NULL;
   }
 }
 
@@ -168,7 +115,7 @@ void Music::stop(void) {
  */
 bool Music::is_paused(void) {
 
-  if (!initialized) {
+  if (!is_initialized()) {
     return false;
   }
 
@@ -183,7 +130,7 @@ bool Music::is_paused(void) {
  * @param pause true to pause the music, false to resume it
  */
 void Music::set_paused(bool pause) {
-  if (initialized) {
+  if (is_initialized()) {
     FMOD_Channel_SetPaused(channel, pause);
   }
 }

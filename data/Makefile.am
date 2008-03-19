@@ -84,13 +84,13 @@ music__DATA = 					\
   music/fanfare.it				\
   music/game_over.it				\
   music/lost_woods.it				\
-  music/menu.it					\
   music/mini_game.it				\
   music/overworld.it				\
   music/rabbit.it				\
   music/soldiers.it				\
   music/title_screen_full.it			\
   music/title_screen_short.it			\
+  music/triforce.it				\
   music/village.it					
 
 tilesets_dir = $(zsdxdatadir)/tilesets
@@ -136,6 +136,16 @@ images_sprites_link__DATA = 			\
   images/sprites/link/sword_shield1.png		\
   images/sprites/link/sword_shield2.png		\
   images/sprites/link/sword_shield3.png		
+
+images_menus_dir = $(images_dir)/menus
+images_menus__DATA = 				\
+  images/menus/cloud.png			\
+  images/menus/select_a_file.png		\
+  images/menus/save1.png			\
+  images/menus/save2.png			\
+  images/menus/save3.png			\
+  images/menus/icon_blue.png			\
+  images/menus/icon_red.png			
 
 EXTRA_DIST =					\
   $(zsdxdata_DATA)				\

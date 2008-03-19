@@ -22,6 +22,15 @@ class SelectionMenu {
    */
   bool adventure_mode;
 
+  // images
+  SDL_Surface *img_cloud, *img_menu, *img_1, *img_2, *img_3;
+
+  SDL_Rect cloud_positions[16];
+  Uint32 next_cloud_move;
+
+  void update(void);
+  void redraw(void);
+
  public:
 
   SelectionMenu(void);

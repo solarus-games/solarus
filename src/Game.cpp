@@ -56,6 +56,7 @@ void Game::play(void) {
   SDL_Event event;
   Uint32 ticks, last_frame_date = 0;
   bool quit = false;
+  SDL_EnableKeyRepeat(0, 0);
 
   while (!quit) {
 

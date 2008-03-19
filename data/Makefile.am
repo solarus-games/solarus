@@ -5,10 +5,6 @@ zsdxdata_DATA = 				\
   project_db.zsd				\
   zsdx.ttf
 
-images_dir = $(zsdxdatadir)/images
-images__DATA =					\
-  images/title.png
-
 sound_dir = $(zsdxdatadir)/sounds
 sound__DATA =					\
   sounds/agahnim_blue_ball.wav			\
@@ -72,7 +68,6 @@ sound__DATA =					\
   sounds/wrong.wav				\
   sounds/zora.wav				
 
-
 music_dir = $(zsdxdatadir)/music
 music__DATA = 					\
   music/beginning.it				\
@@ -97,17 +92,20 @@ tilesets_dir = $(zsdxdatadir)/tilesets
 tilesets__DATA =				\
   tilesets/tileset0000.zsd
 
-images_tilesets_dir = $(images_dir)/tilesets
-images_tilesets__DATA = 			\
-  images/tilesets/tileset0000.png		
-
 maps_dir = $(zsdxdatadir)/maps
 maps__DATA = 					\
   maps/map0000.zsd				\
   maps/map0001.zsd				\
   maps/map0002.zsd				
 
-sprites_link_dir = $(zsdxdatadir)/sprites/link
+sprites_dir = $(zsdxdatadir)/sprites
+sprites__DATA = 				
+
+sprites_menus_dir = $(sprites_dir)/menus
+sprites_menus__DATA = 				\
+  sprites/menus/cursor.zsd			
+
+sprites_link_dir = $(sprites_dir)/link
 sprites_link__DATA = 				\
   sprites/link/tunic0.zsd			\
   sprites/link/tunic1.zsd			\
@@ -119,6 +117,17 @@ sprites_link__DATA = 				\
   sprites/link/shield1.zsd			\
   sprites/link/shield2.zsd			\
   sprites/link/shield3.zsd			
+
+images_dir = $(zsdxdatadir)/images
+images__DATA =					\
+  images/title.png
+
+images_tilesets_dir = $(images_dir)/tilesets
+images_tilesets__DATA = 			\
+  images/tilesets/tileset0000.png		
+
+images_sprites_dir = $(images_dir)/sprites
+images_sprites__DATA =					
 
 images_sprites_link_dir = $(images_dir)/sprites/link
 images_sprites_link__DATA = 			\
@@ -137,23 +146,30 @@ images_sprites_link__DATA = 			\
   images/sprites/link/sword_shield2.png		\
   images/sprites/link/sword_shield3.png		
 
+images_sprites_menus_dir = $(images_sprites_dir)/menus
+images_sprites_menus__DATA =			\
+  images/sprites/menus/cursor.png
+
 images_menus_dir = $(images_dir)/menus
 images_menus__DATA = 				\
   images/menus/cloud.png			\
   images/menus/select_a_file.png		\
   images/menus/save1.png			\
   images/menus/save2.png			\
-  images/menus/save3.png			\
-  images/menus/icon_blue.png			\
-  images/menus/icon_red.png			
+  images/menus/save3.png			
 
 EXTRA_DIST =					\
   $(zsdxdata_DATA)				\
-  $(images__DATA)				\
-  $(images_sprites_link__DATA)			\
-  $(images_tilesets__DATA)			\
   $(sound__DATA)				\
   $(music__DATA)				\
-  $(sprite_link__DATA)				\
   $(tilesets__DATA)				\
-  $(maps__DATA)					
+  $(maps__DATA)					\
+  $(sprites__DATA)				\
+  $(sprites_link__DATA)				\
+  $(sprites_menus__DATA)			\
+  $(images__DATA)				\
+  $(images_tilesets__DATA)			\
+  $(images_sprites__DATA)			\
+  $(images_sprites_link__DATA)			\
+  $(images_sprites_menus__DATA)			\
+  $(images_menu__DATA)				

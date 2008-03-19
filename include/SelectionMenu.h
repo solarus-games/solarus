@@ -24,6 +24,8 @@ class SelectionMenu {
 
   // images
   SDL_Surface *img_cloud, *img_menu, *img_1, *img_2, *img_3;
+  AnimatedSprite *cursor;
+  int cursor_position; // 1 to 5
 
   SDL_Rect cloud_positions[16];
   Uint32 next_cloud_move;

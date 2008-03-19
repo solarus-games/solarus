@@ -7,6 +7,7 @@
 #include "ZSDX.h"
 #include "Music.h"
 #include "GameResource.h"
+#include "AnimatedSprite.h"
 #include "Color.h"
 #include "FileTools.h"
 
@@ -22,6 +23,8 @@ SelectionMenu::SelectionMenu(void):
   img_1 = IMG_Load(FileTools::data_file_add_prefix("images/menus/save1.png"));
   img_2 = IMG_Load(FileTools::data_file_add_prefix("images/menus/save2.png"));
   img_3 = IMG_Load(FileTools::data_file_add_prefix("images/menus/save3.png"));
+
+  cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/cursor"));
 
   // initialize the clouds
   int i;
@@ -107,6 +110,8 @@ SelectionMenu::~SelectionMenu(void) {
   SDL_FreeSurface(img_1);
   SDL_FreeSurface(img_2);
   SDL_FreeSurface(img_3);
+
+  delete cursor;
 }
 
 /**
@@ -124,21 +129,68 @@ void SelectionMenu::show(void) {
   Music *music = zsdx->game_resource->get_music("game_over.it");
   music->play();
 
+  cursor->set_current_animation("blue");
+  cursor_position = 1;
+  Sound *cursor_sound = zsdx->game_resource->get_sound("cursor");
+
   bool quit = false;
   SDL_Event event;
+  SDL_EnableKeyRepeat(500, 500);
 
   while (!quit) {
 
-    SDL_PollEvent(&event);
+    // if there is an event
+    if (SDL_PollEvent(&event)) {
+      
+      quit = zsdx->handle_event(event);
+    
+      if (event.type == SDL_KEYDOWN) {
 
-    quit = zsdx->handle_event(event);
-    
-    // TODO: remove
-    if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
-      savegame = new Savegame("save1.zsd");
-      quit = true;
+	switch (event.key.keysym.sym) {
+
+	  // TODO remove
+	case SDLK_SPACE:
+	  savegame = new Savegame("save1.zsd");
+	  quit = true;
+	  break;
+
+	case SDLK_DOWN:
+	  cursor_sound->play();
+	  cursor_position++;
+	  if (cursor_position >= 5) {
+	    cursor_position = 1;
+	  }
+	  break;
+	
+	case SDLK_UP:
+	  cursor_sound->play();
+	  cursor_position--;
+	  if (cursor_position == 0) {
+	    cursor_position = 4;
+	  }
+	  else if (cursor_position == 4) {
+	    cursor_position = 3;
+	  }
+	  break;
+
+	case SDLK_RIGHT:
+	case SDLK_LEFT:
+	  if (cursor_position == 4) {
+	    cursor_sound->play();
+	    cursor_position = 5;
+	  }
+	  else if (cursor_position == 5) {
+	    cursor_sound->play();
+	    cursor_position = 4;
+	  }
+	  break;
+
+	default:
+	  break;
+	}
+      }
     }
-    
+
     // update the sprites
     update();
 
@@ -229,7 +281,20 @@ void SelectionMenu::redraw(void) {
   SDL_BlitSurface(img_menu, NULL, zsdx->screen, &position);
 
   // cursor
-  // TODO
+  if (cursor_position != 5) {
+    position.x = 57;
+  }
+  else {
+    position.x = 170;
+  }
+
+  if (cursor_position < 4) {
+    position.y = 48 + cursor_position * 27;
+  }
+  else {
+    position.y = 158;
+  }
+  cursor->display(zsdx->screen, position.x, position.y);
 
   // save numbers
   position.x = 62;
@@ -266,4 +331,7 @@ void SelectionMenu::update(void) {
 
     next_cloud_move += 100;
   }
+
+  // update the animation of the cursor
+  cursor->update_current_frame();
 }

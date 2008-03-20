@@ -80,6 +80,7 @@ class AnimatedSprite {
   void set_current_animation_direction(int current_direction);
   int get_current_frame(void);
   void set_current_frame(int current_frame);
+  void restart_animation(void);
 
   void update_current_frame(void);
 

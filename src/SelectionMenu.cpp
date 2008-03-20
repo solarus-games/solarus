@@ -156,6 +156,7 @@ void SelectionMenu::show(void) {
 
 	case SDLK_DOWN:
 	  cursor_sound->play();
+	  cursor->restart_animation();
 	  cursor_position++;
 	  if (cursor_position >= 5) {
 	    cursor_position = 1;
@@ -164,6 +165,7 @@ void SelectionMenu::show(void) {
 	
 	case SDLK_UP:
 	  cursor_sound->play();
+	  cursor->restart_animation();
 	  cursor_position--;
 	  if (cursor_position == 0) {
 	    cursor_position = 4;
@@ -177,10 +179,12 @@ void SelectionMenu::show(void) {
 	case SDLK_LEFT:
 	  if (cursor_position == 4) {
 	    cursor_sound->play();
+	    cursor->restart_animation();
 	    cursor_position = 5;
 	  }
 	  else if (cursor_position == 5) {
 	    cursor_sound->play();
+	    cursor->restart_animation();
 	    cursor_position = 4;
 	  }
 	  break;
@@ -282,17 +286,17 @@ void SelectionMenu::redraw(void) {
 
   // cursor
   if (cursor_position != 5) {
-    position.x = 57;
+    position.x = 58;
   }
   else {
-    position.x = 170;
+    position.x = 172;
   }
 
   if (cursor_position < 4) {
-    position.y = 48 + cursor_position * 27;
+    position.y = 49 + cursor_position * 27;
   }
   else {
-    position.y = 158;
+    position.y = 159;
   }
   cursor->display(zsdx->screen, position.x, position.y);
 

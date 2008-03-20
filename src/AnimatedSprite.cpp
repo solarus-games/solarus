@@ -163,6 +163,14 @@ void AnimatedSprite::set_current_frame(int current_frame) {
 }
 
 /**
+ * Restarts the animation.
+ */
+void AnimatedSprite::restart_animation(void) {
+  set_current_frame(0);
+  set_suspended(false);
+}
+
+/**
  * Returns true if the animation is suspended.
  * @return true if the animation is suspended, false otherwise
  */

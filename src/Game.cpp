@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "GameResource.h"
 #include "Savegame.h"
+#include "Color.h"
 
 /**
  * Creates a game.
@@ -201,14 +202,14 @@ void Game::handle_transitions(void) {
  * @param map the map to display
  */
 void Game::display_map(Map *map) {
-  SDL_FillRect(zsdx->screen, NULL, 0);
+  SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
 
   if (transition != NULL) {
     transition->display(map->get_visible_surface());
   }
 
   map->display();
-  SDL_BlitSurface(map->get_visible_surface(), NULL, zsdx->screen, NULL); // TODO optimize
+  SDL_BlitSurface(map->get_visible_surface(), NULL, zsdx->screen, NULL);
 
   // TODO rupees, hearts...
 

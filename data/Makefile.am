@@ -28,6 +28,7 @@ sound__DATA =					\
   sounds/heart.wav				\
   sounds/hookshot.wav				\
   sounds/ice.wav				\
+  sounds/intro.wav				\
   sounds/item_in_water.wav			\
   sounds/jump.wav				\
   sounds/lamp.wav				\
@@ -120,7 +121,8 @@ sprites_link__DATA = 				\
 
 images_dir = $(zsdxdatadir)/images
 images__DATA =					\
-  images/title.png
+  images/title.png				\
+  images/zelda_solarus_presents.png		
 
 images_tilesets_dir = $(images_dir)/tilesets
 images_tilesets__DATA = 			\

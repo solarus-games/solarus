@@ -170,10 +170,11 @@ void SelectionMenu::show(void) {
   Sound *cursor_sound = zsdx->game_resource->get_sound("cursor");
 
   bool quit = false;
+  bool start = false;
   SDL_Event event;
   SDL_EnableKeyRepeat(0, 0); // no repeat
 
-  while (!quit) {
+  while (!start && !quit) {
 
     // if there is an event
     if (SDL_PollEvent(&event)) {
@@ -185,7 +186,15 @@ void SelectionMenu::show(void) {
 	switch (event.key.keysym.sym) {
 
 	case SDLK_SPACE:
-	  quit = true;
+	  if (cursor_position == 5) {
+	    quit = true;
+	  }
+	  else if (cursor_position == 4) {
+	    // TODO
+	  }
+	  else {
+	    start = true;
+	  }
 	  break;
 
 	case SDLK_DOWN:
@@ -241,6 +250,10 @@ void SelectionMenu::show(void) {
 
   // stop the music
   music->stop();
+
+  if (quit) {
+    cursor_position = 5;
+  }
 }
 
 /**

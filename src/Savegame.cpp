@@ -22,6 +22,7 @@ Savegame::Savegame(const char *file_name) {
     // a save already exists, let's load it
     empty = false;
     fread(&saved_data, sizeof(SavedData), 1, file);
+    fclose(file);
   }
 }
 
@@ -54,6 +55,7 @@ void Savegame::save(void) {
   }
 
   fwrite(&saved_data, sizeof(SavedData), 1, file);
+  fclose(file);
 
   empty = false;
 }
@@ -73,7 +75,7 @@ const char * Savegame::get_reserved_string(SavegameReservedStringIndex index) {
  * @param value the string value to store at this index
  */
 void Savegame::set_reserved_string(SavegameReservedStringIndex index, const char *value) {
-  strncpy(saved_data.reserved_strings[index], value, 64);
+  strncpy(saved_data.reserved_strings[index], value, 63);
 }
 
 /**

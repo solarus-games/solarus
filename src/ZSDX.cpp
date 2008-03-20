@@ -12,6 +12,7 @@
 #include "Savegame.h"
 #include "TitleScreen.h"
 #include "SelectionMenu.h"
+#include "TextDisplayer.h"
 
 
 /**
@@ -35,42 +36,36 @@ ZSDX *zsdx = NULL;
  */
 ZSDX::ZSDX(void) {
 
-  // initialise SDL
+  // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
   SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
 
   SDL_ShowCursor(SDL_ENABLE);
   set_fullscreen(false);
  
-  TTF_Init();
-  font = TTF_OpenFont(FileTools::data_file_add_prefix("zsdx.ttf"), 11);
-  if (font == NULL) {
-    cerr << "Cannot load font 'zsdx.ttf'." << endl;
-    exit(1);
-  }
- 
   color_init();
 
   // set the timer
   SDL_AddTimer(250, TileAnimationManager::increment_frame_counter, NULL);
 
-  // initialize FMOD
+  // initialize the audio system
   Music::initialize();
 
   // initialize the game resource
   game_resource = new GameResource();
   game = NULL;
+
+  text_displayer = new TextDisplayer();
 }
 
 /**
  * Cleans everything.
  */
 ZSDX::~ZSDX(void) {
-  TTF_CloseFont(font);
-  TTF_Quit();
   SDL_Quit();
   Music::exit();
   delete game_resource;
+  delete text_displayer;
 }
 
 /**
@@ -142,6 +137,8 @@ void ZSDX::main(void) {
 	else {
 	  launch_solarus_dreams_mode(savegame);
 	}
+
+	delete savegame;
       }
     }
   }

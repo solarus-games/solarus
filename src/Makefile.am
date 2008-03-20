@@ -8,6 +8,7 @@ zsdx_SOURCES = 						\
   Game.cpp						\
   GameResource.cpp					\
   Savegame.cpp						\
+  TextDisplayer.cpp					\
   TitleScreen.cpp					\
   SelectionMenu.cpp					\
   Map.cpp						\
@@ -47,6 +48,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/FileTools.h				\
   $(zsdxincludedir)/Game.h				\
   $(zsdxincludedir)/GameResource.h			\
+  $(zsdxincludedir)/TextDisplayer.h			\
   $(zsdxincludedir)/Savegame.h				\
   $(zsdxincludedir)/TitleScreen.h			\
   $(zsdxincludedir)/SelectionMenu.h			\

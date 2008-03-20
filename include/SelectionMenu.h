@@ -26,9 +26,16 @@ class SelectionMenu {
   AnimatedSprite *cursor;
   int cursor_position; // 1 to 5
 
+  // savegames data
+  char player_names[3][64];
+  int hearts[3];
+  int max_hearts[3];
+
+  // clouds data
   SDL_Rect cloud_positions[16];
   Uint32 next_cloud_move;
 
+  void read_saves(void);
   void update(void);
   void redraw(void);
 

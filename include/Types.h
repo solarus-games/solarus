@@ -69,6 +69,7 @@ typedef std::string SpriteId;
 class ZSDX;
 class Game;
 class GameResource;
+class TextDisplayer;
 class Savegame;
 class SelectionMenu;
 

@@ -10,6 +10,7 @@
 #include "AnimatedSprite.h"
 #include "Color.h"
 #include "FileTools.h"
+#include "TextDisplayer.h"
 
 /**
  * Creates a selection menu.
@@ -17,12 +18,8 @@
 SelectionMenu::SelectionMenu(void):
   adventure_mode(true), next_cloud_move(0) {
 
-  // load the 3 saves
-  char file_name[10];
-  for (int i = 0; i < 3; i++) {
-    sprintf(file_name, "save%d.zsd", i);
-    savegames[i] = new Savegame(file_name);
-  }
+  // read the saves
+  read_saves();
 
   // load the images
   img_cloud = IMG_Load(FileTools::data_file_add_prefix("images/menus/cloud.png"));
@@ -32,6 +29,11 @@ SelectionMenu::SelectionMenu(void):
   img_3 = IMG_Load(FileTools::data_file_add_prefix("images/menus/save3.png"));
 
   cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/cursor"));
+
+  // initialize the text
+  zsdx->text_displayer->set_rendering_mode(TEXT_SOLID);
+  zsdx->text_displayer->set_text_color(255, 255, 255);
+  zsdx->text_displayer->set_alignment(ALIGN_LEFT, ALIGN_MIDDLE);
 
   // initialize the clouds
   int i;
@@ -106,6 +108,7 @@ SelectionMenu::SelectionMenu(void):
   cloud_positions[i].x = 170;
   cloud_positions[i].y = 220;
   i++;
+
 }
 
 /**
@@ -119,6 +122,32 @@ SelectionMenu::~SelectionMenu(void) {
   SDL_FreeSurface(img_3);
 
   delete cursor;
+}
+
+/**
+ * Loads the data of the 3 savegames
+ */
+void SelectionMenu::read_saves(void) {
+
+  // load the 3 saves
+  char file_name[10];
+  for (int i = 0; i < 3; i++) {
+
+    sprintf(file_name, "save%d.zsd", i + 1);
+    Savegame *savegame = new Savegame(file_name);
+
+    // get the data
+    if (!savegame->is_empty()) {
+      strncpy(player_names[i], savegame->get_reserved_string(SAVEGAME_PLAYER_NAME), 20);
+      max_hearts[i] = savegame->get_reserved_integer(SAVEGAME_MAX_HEARTS);
+      hearts[i] = savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS);
+    }
+    else {
+      strcpy(player_names[i], "- Vide -");
+      max_hearts[i] = 0;
+    }
+    delete savegame;
+  }
 }
 
 /**
@@ -142,7 +171,7 @@ void SelectionMenu::show(void) {
 
   bool quit = false;
   SDL_Event event;
-  SDL_EnableKeyRepeat(500, 500);
+  SDL_EnableKeyRepeat(0, 0); // no repeat
 
   while (!quit) {
 
@@ -204,8 +233,9 @@ void SelectionMenu::show(void) {
     update();
 
     // redraw if necessary
-    if (SDL_GetTicks() >= next_redraw) {
+    while (SDL_GetTicks() >= next_redraw) {
       redraw();
+      next_redraw += 50;
     }
   }
 
@@ -223,7 +253,10 @@ void SelectionMenu::show(void) {
 Savegame * SelectionMenu::get_selected_save(void) {
 
   if (cursor_position <= 3) {
-    return savegames[cursor_position - 1];
+
+    char file_name[10];
+    sprintf(file_name, "save%d.zsd", cursor_position - 1);
+    return new Savegame(file_name);
   }
   
   return NULL;
@@ -251,14 +284,6 @@ void SelectionMenu::redraw(void) {
 
   // background color
   SDL_FillRect(zsdx->screen, NULL, get_color(104, 144, 240));
-
-  /*
-  SDL_Color text_color = {0, 0, 0};
-  SDL_Surface *text = TTF_RenderText_Blended(zsdx->font, "Bienvenue dans ZSDX !", text_color);
-  SDL_Rect position = {100, 200, 0, 0};
-  SDL_FillRect(zsdx->screen, NULL, get_color(104, 144, 240));
-  SDL_BlitSurface(text, NULL, zsdx->screen, &position);
-  */
 
   // display the clouds
   SDL_Rect position;
@@ -294,12 +319,24 @@ void SelectionMenu::redraw(void) {
   position.h = 165;
   SDL_BlitSurface(img_menu, NULL, zsdx->screen, &position);
 
+  // savegame names
+  int x = 87;
+  int y;
+  for (i = 0; i < 3; i++) {
+    y = 88 + i * 27;
+    zsdx->text_displayer->show_text(player_names[i], zsdx->screen, x, y);
+  }
+
+  // erase + quit
+  zsdx->text_displayer->show_text("Effacer", zsdx->screen, 91, 171);
+  zsdx->text_displayer->show_text("Quitter", zsdx->screen, 199, 171);
+
   // cursor
   if (cursor_position != 5) {
     position.x = 58;
   }
   else {
-    position.x = 172;
+    position.x = 166;
   }
 
   if (cursor_position < 4) {
@@ -331,15 +368,15 @@ void SelectionMenu::update(void) {
   while (SDL_GetTicks() >= next_cloud_move) {
     
     for (int i = 0; i < 16; i++) {
-      cloud_positions[i].x += 2;
+      cloud_positions[i].x += 1;
       cloud_positions[i].y -= 1;
 
       if (cloud_positions[i].x >= 320) {
 	cloud_positions[i].x = 0;
       }
 
-      if (cloud_positions[i].y >= 240) {
-	cloud_positions[i].y = 0;
+      if (cloud_positions[i].y <= -44) {
+	cloud_positions[i].y = 240 - 44;
       }
     }
 

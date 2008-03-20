@@ -300,10 +300,19 @@ bool Link::is_sword_visible(void) {
  */
 bool Link::is_shield_visible(void) {
 
+  // if Link has no shield, then there is no visible shield
+  if (shield_sprite == NULL) {
+    return false;
+  }
+
+  // for now, the shield is visible in all states except when
+  // Link is swinging his sword
   if (state != LINK_STATE_SWORD_SWINGING) {
     return true;
   }
 
+  // if Link is swinging his sword, the shield is visible
+  // only in directions up and down
   int direction = tunic_sprite->get_current_animation_direction();
   if (direction == 1 || direction == 3) {
     return true;
@@ -332,9 +341,9 @@ void Link::animation_over(AnimatedSprite *sprite) {
  * @param direction the direction to set (0 to 3)
  */
 void Link::set_animation_direction(int direction) {
-  
+
   tunic_sprite->set_current_animation_direction(direction);
-  
+
   if (is_sword_visible()) {
     sword_sprite->set_current_animation_direction(direction);
   }

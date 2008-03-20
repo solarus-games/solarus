@@ -1,5 +1,5 @@
-AM_CPPFLAGS = -DDATADIR_="$(datadir)/zsdx" -O3 -Wall -Werror -ansi -I$(top_srcdir)/include
-#AM_CPPFLAGS = -DDATADIR_="$(datadir)/zsdx" -g -Wall -Werror -ansi -I$(top_srcdir)/include
+#AM_CPPFLAGS = -DDATADIR_="$(datadir)/zsdx" -O3 -Wall -Werror -ansi -I$(top_srcdir)/include
+AM_CPPFLAGS = -DDATADIR_="$(datadir)/zsdx" -g -Wall -Werror -ansi -I$(top_srcdir)/include
 
 bin_PROGRAMS = zsdx
 zsdx_SOURCES = 						\

@@ -11,10 +11,9 @@ class SelectionMenu {
  private:
 
   /**
-   * The savegame selected by the user, or NULL
-   * if he cancelled.
+   * The savegames shown in the menu.
    */
-  Savegame *savegame;
+  Savegame *savegames[3];
 
   /**
    * True if the user selected the Adventure mode,

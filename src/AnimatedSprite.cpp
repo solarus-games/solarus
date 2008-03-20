@@ -139,7 +139,6 @@ int AnimatedSprite::get_current_animation_direction(void) {
  * @param current_direction the current direction
  */
 void AnimatedSprite::set_current_animation_direction(int current_direction) {
-
   this->current_direction = current_direction;
   set_current_frame(0);
 }

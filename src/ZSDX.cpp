@@ -193,10 +193,12 @@ bool ZSDX::handle_event(const SDL_Event &event) {
  */
 void ZSDX::launch_adventure_mode(Savegame *savegame) {
 
+  /*
   // debug: test Link's equipment
   savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, 0); // green tunic
   savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, 1); // first sword
   savegame->set_reserved_integer(SAVEGAME_LINK_SHIELD, 1); // first shield
+  */
 
   // create the game
   game = new Game(savegame);

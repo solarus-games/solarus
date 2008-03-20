@@ -55,6 +55,7 @@ void Savegame::save(void) {
 
   fwrite(&saved_data, sizeof(SavedData), 1, file);
 
+  empty = false;
 }
 
 /**

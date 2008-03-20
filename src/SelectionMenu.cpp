@@ -15,7 +15,14 @@
  * Creates a selection menu.
  */
 SelectionMenu::SelectionMenu(void):
-  savegame(NULL), adventure_mode(true), next_cloud_move(0) {
+  adventure_mode(true), next_cloud_move(0) {
+
+  // load the 3 saves
+  char file_name[10];
+  for (int i = 0; i < 3; i++) {
+    sprintf(file_name, "save%d.zsd", i);
+    savegames[i] = new Savegame(file_name);
+  }
 
   // load the images
   img_cloud = IMG_Load(FileTools::data_file_add_prefix("images/menus/cloud.png"));
@@ -148,9 +155,7 @@ void SelectionMenu::show(void) {
 
 	switch (event.key.keysym.sym) {
 
-	  // TODO remove
 	case SDLK_SPACE:
-	  savegame = new Savegame("save1.zsd");
 	  quit = true;
 	  break;
 
@@ -162,7 +167,7 @@ void SelectionMenu::show(void) {
 	    cursor_position = 1;
 	  }
 	  break;
-	
+
 	case SDLK_UP:
 	  cursor_sound->play();
 	  cursor->restart_animation();
@@ -216,7 +221,12 @@ void SelectionMenu::show(void) {
  * if he wants to quit.
  */
 Savegame * SelectionMenu::get_selected_save(void) {
-  return savegame;
+
+  if (cursor_position <= 3) {
+    return savegames[cursor_position - 1];
+  }
+  
+  return NULL;
 }
 
 /**

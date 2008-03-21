@@ -22,6 +22,7 @@ class TransitionEffect {
   TransitionDirection get_direction(void);
 
   virtual void start(void) = 0;
+  virtual bool is_started(void) = 0;
   virtual bool is_over(void) = 0;
   virtual void display(SDL_Surface *surface) = 0;
 

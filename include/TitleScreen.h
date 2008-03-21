@@ -8,6 +8,12 @@
  */
 class TitleScreen {
 
+ private:
+
+  bool phase_1_black_screen(void);
+  bool phase_2_zs_presents(void);
+  bool phase_3_title(void);
+
  public:
 
   TitleScreen(void);

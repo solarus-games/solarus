@@ -4,7 +4,7 @@
  * Constructor.
  */
 TransitionFade::TransitionFade(TransitionDirection direction):
-TransitionEffect(direction) {
+TransitionEffect(direction), alpha(-1) {
 
   if (direction == TRANSITION_OUT) {
     alpha_start = 256;
@@ -31,6 +31,14 @@ TransitionFade::~TransitionFade(void) {
 void TransitionFade::start(void) {
   alpha = alpha_start;
   next_frame_date = SDL_GetTicks();
+}
+
+/**
+ * Returns whether the transition effect is started.
+ * @return true if the transition effect is started
+ */
+bool TransitionFade::is_started(void) {
+  return alpha != -1 && !is_over();
 }
 
 /**

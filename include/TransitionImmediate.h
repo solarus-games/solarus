@@ -15,6 +15,7 @@ class TransitionImmediate: public TransitionEffect {
   ~TransitionImmediate(void);
 
   void start(void);
+  bool is_started(void);
   bool is_over(void);
   void display(SDL_Surface *surface);
 

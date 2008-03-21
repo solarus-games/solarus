@@ -23,6 +23,14 @@ void TransitionImmediate::start(void) {
 }
 
 /**
+ * Returns whether the transition effect is started.
+ * @return false
+ */
+bool TransitionImmediate::is_started(void) {
+  return false;
+}
+
+/**
  * Returns whether the transition effect is over.
  * @return true
  */

@@ -27,9 +27,10 @@ class SelectionMenu {
   int cursor_position; // 1 to 5
 
   // savegames data
-  char player_names[3][64];
-  int hearts[3];
-  int max_hearts[3];
+  TextDisplayed *text_player_names[3];
+  SDL_Surface *img_max_hearts[3];
+  SDL_Surface *img_current_hearts[3];
+  // TODO img_link
 
   // clouds data
   SDL_Rect cloud_positions[16];

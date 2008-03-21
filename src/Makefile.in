@@ -45,7 +45,7 @@ binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_zsdx_OBJECTS = ZSDX.$(OBJEXT) FileTools.$(OBJEXT) Game.$(OBJEXT) \
 	GameResource.$(OBJEXT) Savegame.$(OBJEXT) \
-	TextDisplayer.$(OBJEXT) TitleScreen.$(OBJEXT) \
+	TextDisplayed.$(OBJEXT) TitleScreen.$(OBJEXT) \
 	SelectionMenu.$(OBJEXT) Map.$(OBJEXT) MapEntrance.$(OBJEXT) \
 	MapEntity.$(OBJEXT) Moving.$(OBJEXT) \
 	MovingWithCollision.$(OBJEXT) \
@@ -171,7 +171,7 @@ zsdx_SOURCES = \
   Game.cpp						\
   GameResource.cpp					\
   Savegame.cpp						\
-  TextDisplayer.cpp					\
+  TextDisplayed.cpp					\
   TitleScreen.cpp					\
   SelectionMenu.cpp					\
   Map.cpp						\
@@ -211,7 +211,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/FileTools.h				\
   $(zsdxincludedir)/Game.h				\
   $(zsdxincludedir)/GameResource.h			\
-  $(zsdxincludedir)/TextDisplayer.h			\
+  $(zsdxincludedir)/TextDisplayed.h			\
   $(zsdxincludedir)/Savegame.h				\
   $(zsdxincludedir)/TitleScreen.h			\
   $(zsdxincludedir)/SelectionMenu.h			\
@@ -333,7 +333,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimationDirection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpriteAnimations.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TextDisplayer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TextDisplayed.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileAnimationManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TileOnMap.Po@am__quote@

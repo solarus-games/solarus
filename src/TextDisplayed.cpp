@@ -1,15 +1,16 @@
 /**
- * This module defines the class TextDisplayer.
+ * This module defines the class TextDisplayed.
  */
-#include "TextDisplayer.h"
+#include "TextDisplayed.h"
 #include "FileTools.h"
+#include "ZSDX.h"
 
 /**
- * Constructor.
+ * Creates a text to display with the default properties.
  */
-TextDisplayer::TextDisplayer(void):
+TextDisplayed::TextDisplayed(void):
 horizontal_alignment(ALIGN_LEFT), vertical_alignment(ALIGN_MIDDLE),
-rendering_mode(TEXT_SOLID) {
+rendering_mode(TEXT_SOLID), text_surface(NULL) {
 
   text_color.r = 255;
   text_color.g = 255;
@@ -18,21 +19,34 @@ rendering_mode(TEXT_SOLID) {
   background_color.r = 0;
   background_color.g = 0;
   background_color.b = 0;
+}
 
-  TTF_Init();
-  font = TTF_OpenFont(FileTools::data_file_add_prefix("zsdx.ttf"), 11);
-  if (font == NULL) {
-    cerr << "Cannot load font 'zsdx.ttf'." << endl;
-    exit(1);
-  } 
+/**
+ * Creates a text to display with the specified properties.
+ */
+TextDisplayed::TextDisplayed(TextRenderingMode rendering_mode,
+			     HorizontalAlignment horizontal_alignment,
+			     VerticalAlignment vertical_alignment):
+
+horizontal_alignment(horizontal_alignment),
+vertical_alignment(vertical_alignment),
+rendering_mode(rendering_mode),
+text_surface(NULL) {
+
+  text_color.r = 255;
+  text_color.g = 255;
+  text_color.b = 255;
+
+  background_color.r = 0;
+  background_color.g = 0;
+  background_color.b = 0;  
 }
 
 /**
  * Destructor.
  */
-TextDisplayer::~TextDisplayer(void) {
-  TTF_CloseFont(font);
-  TTF_Quit();
+TextDisplayed::~TextDisplayed(void) {
+  SDL_FreeSurface(text_surface);
 }
 
 /**
@@ -42,7 +56,7 @@ TextDisplayer::~TextDisplayer(void) {
  * @param vertical_alignment vertical alignment of the text: ALIGN_TOP,
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
-void TextDisplayer::set_alignment(HorizontalAlignment horizontal_alignment,
+void TextDisplayed::set_alignment(HorizontalAlignment horizontal_alignment,
 				  VerticalAlignment vertical_alignment) {
   this->horizontal_alignment = horizontal_alignment;
   this->vertical_alignment = vertical_alignment;
@@ -52,7 +66,7 @@ void TextDisplayer::set_alignment(HorizontalAlignment horizontal_alignment,
  * Sets the rendering mode of the text.
  * @param rendering_mode rendering mode: TEXT_SOLID, TEXT_SHADED or TEXT_BLENDED
  */
-void TextDisplayer::set_rendering_mode(TextRenderingMode rendering_mode) {
+void TextDisplayed::set_rendering_mode(TextRenderingMode rendering_mode) {
   this->rendering_mode = rendering_mode;
 }
 
@@ -62,7 +76,7 @@ void TextDisplayer::set_rendering_mode(TextRenderingMode rendering_mode) {
  * @param g green component (0 to 255)
  * @param b blue component (0 to 255)
  */
-void TextDisplayer::set_text_color(int r, int g, int b) {
+void TextDisplayed::set_text_color(int r, int g, int b) {
   this->text_color.r = r;
   this->text_color.g = g;
   this->text_color.b = b;
@@ -75,43 +89,45 @@ void TextDisplayer::set_text_color(int r, int g, int b) {
  * @param g green component (0 to 255)
  * @param b blue component (0 to 255)
  */
-void TextDisplayer::set_background_color(int r, int g, int b) {
+void TextDisplayed::set_background_color(int r, int g, int b) {
   this->background_color.r = r;
   this->background_color.g = g;
   this->background_color.b = b;  
 }
 
 /**
- * Displays the text specified with the current color and the current alignment.
+ * Create the text surface with the current color and the current alignment.
  * The coordinate system depends on the current alignment.
  * @param text the text to display
- * @param destination the destination surface
  * @param x x coordinate of the text
  * @param y y coordinate of the text
  */
-void TextDisplayer::show_text(const char *text,
-			      SDL_Surface *destination,
-			      int x, int y) {
+void TextDisplayed::create_text(const char *text,
+				int x, int y) {
+
+  if (text_surface != NULL) {
+    SDL_FreeSurface(text_surface);
+    text_surface = NULL;
+  }
   
   if (text[0] == '\0') {
     return;
   }
   
   // create the text surface
-  SDL_Surface *text_surface = NULL;
 
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    text_surface = TTF_RenderText_Solid(font, text, text_color);
+    text_surface = TTF_RenderText_Solid(zsdx->font, text, text_color);
     break;
 
   case TEXT_SHADED:
-    text_surface = TTF_RenderText_Shaded(font, text, text_color, background_color);
+    text_surface = TTF_RenderText_Shaded(zsdx->font, text, text_color, background_color);
     break;
 
   case TEXT_BLENDED:
-    text_surface = TTF_RenderText_Blended(font, text, text_color);
+    text_surface = TTF_RenderText_Blended(zsdx->font, text, text_color);
     break;
   }
 
@@ -148,8 +164,17 @@ void TextDisplayer::show_text(const char *text,
     break;
   }
 
-  SDL_Rect position = {x_left, y_top, 0, 0};
-  SDL_BlitSurface(text_surface, NULL, destination, &position);
+  text_position.x = x_left;
+  text_position.y = y_top;
+}
 
-  delete text_surface;
+/**
+ * Displays the text on a surface.
+ * @param destination the destination surface
+ */
+void TextDisplayed::display(SDL_Surface *destination) {
+
+  if (text_surface != NULL) {
+    SDL_BlitSurface(text_surface, NULL, destination, &text_position);
+  }
 }

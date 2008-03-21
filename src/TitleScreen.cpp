@@ -78,8 +78,9 @@ bool TitleScreen::phase_2_zs_presents(void) {
 
   while (!quit && !transition->is_over()) {
     
-    SDL_PollEvent(&event);
-    quit = zsdx->handle_event(event);
+    if (SDL_PollEvent(&event)) {
+      quit = zsdx->handle_event(event);
+    }
 
     if (SDL_GetTicks() >= end_intro_time && !transition->is_started()) {
       transition->start();
@@ -111,7 +112,7 @@ bool TitleScreen::phase_3_title(void) {
 
   SDL_Surface *img_title = IMG_Load(FileTools::data_file_add_prefix("images/title.png"));
   Music *title_screen_music = zsdx->game_resource->get_music("title_screen_full.it");
-  Uint32 end_music_time = SDL_GetTicks() + 16000; // the music lasts 16 seconds
+  Uint32 end_music_time = SDL_GetTicks() + 15500; // the music lasts 16 seconds
   title_screen_music->play();
   TransitionEffect *transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
   transition->start();
@@ -120,13 +121,14 @@ bool TitleScreen::phase_3_title(void) {
   bool start = false;
   while (!start && !quit) {
 
-    SDL_PollEvent(&event);
-    quit = zsdx->handle_event(event);
-    
-    if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
-      start = true;
+    if (SDL_PollEvent(&event)) {
+      quit = zsdx->handle_event(event);
+
+      if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
+	start = true;
+      }
     }
-    
+
     SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
     if (!transition->is_over()) {
       transition->display(img_title);

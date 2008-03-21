@@ -10,13 +10,17 @@
 #include "AnimatedSprite.h"
 #include "Color.h"
 #include "FileTools.h"
-#include "TextDisplayer.h"
+#include "TextDisplayed.h"
 
 /**
  * Creates a selection menu.
  */
 SelectionMenu::SelectionMenu(void):
   adventure_mode(true), next_cloud_move(0) {
+
+  for (int i = 0; i < 3; i++) {
+    text_player_names[i] = NULL;
+  }
 
   // read the saves
   read_saves();
@@ -30,10 +34,15 @@ SelectionMenu::SelectionMenu(void):
 
   cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/cursor"));
 
-  // initialize the text
-  zsdx->text_displayer->set_rendering_mode(TEXT_SOLID);
-  zsdx->text_displayer->set_text_color(255, 255, 255);
-  zsdx->text_displayer->set_alignment(ALIGN_LEFT, ALIGN_MIDDLE);
+  // erase + quit
+  TextDisplayed *text = new TextDisplayed(TEXT_SOLID, ALIGN_LEFT, ALIGN_MIDDLE);
+  text->set_text_color(255, 255, 255);
+  text->create_text("Effacer", 54, 133);
+  text->display(img_menu);
+
+  text->create_text("Quitter", 162, 133);
+  text->display(img_menu);
+  delete text;
 
   // initialize the clouds
   int i;
@@ -121,11 +130,15 @@ SelectionMenu::~SelectionMenu(void) {
   SDL_FreeSurface(img_2);
   SDL_FreeSurface(img_3);
 
+  for (int i = 0; i < 3; i++) {
+    delete text_player_names[i];
+  }
+
   delete cursor;
 }
 
 /**
- * Loads the data of the 3 savegames
+ * Loads the data of the 3 savegames and creates the surfaces to display.
  */
 void SelectionMenu::read_saves(void) {
 
@@ -137,15 +150,24 @@ void SelectionMenu::read_saves(void) {
     Savegame *savegame = new Savegame(file_name);
 
     // get the data
+    const char *player_name;
     if (!savegame->is_empty()) {
-      strncpy(player_names[i], savegame->get_reserved_string(SAVEGAME_PLAYER_NAME), 20);
-      max_hearts[i] = savegame->get_reserved_integer(SAVEGAME_MAX_HEARTS);
-      hearts[i] = savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS);
+
+      // player name
+      player_name = savegame->get_reserved_string(SAVEGAME_PLAYER_NAME);
     }
     else {
-      strcpy(player_names[i], "- Vide -");
-      max_hearts[i] = 0;
+      player_name = "- Vide -";
     }
+
+    if (text_player_names[i] != NULL) {
+      delete text_player_names[i];
+    }
+
+    text_player_names[i] = new TextDisplayed(TEXT_SOLID, ALIGN_LEFT, ALIGN_MIDDLE);
+    text_player_names[i]->set_text_color(255, 255, 255);
+    text_player_names[i]->create_text(player_name, 87, 88 + i * 27);
+    
     delete savegame;
   }
 }
@@ -333,16 +355,9 @@ void SelectionMenu::redraw(void) {
   SDL_BlitSurface(img_menu, NULL, zsdx->screen, &position);
 
   // savegame names
-  int x = 87;
-  int y;
   for (i = 0; i < 3; i++) {
-    y = 88 + i * 27;
-    zsdx->text_displayer->show_text(player_names[i], zsdx->screen, x, y);
+    text_player_names[i]->display(zsdx->screen);
   }
-
-  // erase + quit
-  zsdx->text_displayer->show_text("Effacer", zsdx->screen, 91, 171);
-  zsdx->text_displayer->show_text("Quitter", zsdx->screen, 199, 171);
 
   // cursor
   if (cursor_position != 5) {

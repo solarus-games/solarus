@@ -1,5 +1,5 @@
-#ifndef ZSDX_TEXT_DISPLAYER_H
-#define ZSDX_TEXT_DISPLAYER_H
+#ifndef ZSDX_TEXT_DISPLAYED_H
+#define ZSDX_TEXT_DISPLAYED_H
 
 #include "Common.h"
 
@@ -33,7 +33,7 @@ enum TextRenderingMode {
 /**
  * This class displays some text with the ZSDX font.
  */
-class TextDisplayer {
+class TextDisplayed {
 
  private:
 
@@ -44,10 +44,18 @@ class TextDisplayer {
   SDL_Color text_color;
   SDL_Color background_color; // only for the TEXT_SHADED rendering
 
+  int x_left;
+  int y_top;
+  SDL_Surface *text_surface;
+  SDL_Rect text_position;
+
  public:
 
-  TextDisplayer(void);
-  ~TextDisplayer(void);
+  TextDisplayed(void);
+  TextDisplayed(TextRenderingMode rendering_mode,
+		HorizontalAlignment horizontal_alignment,
+		VerticalAlignment vertical_alignment);
+  ~TextDisplayed(void);
 
   void set_alignment(HorizontalAlignment horizontal_alignment,
 		     VerticalAlignment vertical_alignment);
@@ -57,9 +65,8 @@ class TextDisplayer {
   void set_text_color(int r, int g, int b);
   void set_background_color(int r, int g, int b);
 
-  void show_text(const char *text,
-		 SDL_Surface *destination,
-		 int x, int y);
+  void create_text(const char *text, int x, int y);
+  void display(SDL_Surface *destination);
 };
 
 #endif

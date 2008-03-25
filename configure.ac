@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT([zsdx], [1.0], [christopho128@zelda-solarus.com])
-AM_INIT_AUTOMAKE([zsdx], [1.0])
+AC_INIT([zsdx], [0.1], [christopho128@zelda-solarus.com])
+AM_INIT_AUTOMAKE([zsdx], [0.1])
 
 AC_CONFIG_SRCDIR([src/ZSDX.cpp])
 AC_CONFIG_HEADERS([config.h])

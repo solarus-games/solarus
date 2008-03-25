@@ -174,4 +174,4 @@ EXTRA_DIST =					\
   $(images_sprites__DATA)			\
   $(images_sprites_link__DATA)			\
   $(images_sprites_menus__DATA)			\
-  $(images_menu__DATA)				
+  $(images_menus__DATA)				

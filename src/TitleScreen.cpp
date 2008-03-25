@@ -112,7 +112,6 @@ bool TitleScreen::phase_3_title(void) {
 
   SDL_Surface *img_title = IMG_Load(FileTools::data_file_add_prefix("images/title.png"));
   Music *title_screen_music = zsdx->game_resource->get_music("title_screen_full.it");
-  Uint32 end_music_time = SDL_GetTicks() + 15500; // the music lasts 16 seconds
   title_screen_music->play();
   TransitionEffect *transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
   transition->start();
@@ -135,18 +134,12 @@ bool TitleScreen::phase_3_title(void) {
     }
     SDL_BlitSurface(img_title, NULL, zsdx->screen, NULL);
     SDL_Flip(zsdx->screen);
-
-    if (SDL_GetTicks() >= end_music_time && title_screen_music->is_playing()) {
-      title_screen_music->stop();
-    }
   }
   delete transition;
   SDL_FreeSurface(img_title);
 
   // stop the title screen music
-  if (title_screen_music->is_playing()) {
-    title_screen_music->stop();
-  }
+  title_screen_music->stop();
 
   return quit;
 }

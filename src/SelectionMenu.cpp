@@ -11,6 +11,7 @@
 #include "Color.h"
 #include "FileTools.h"
 #include "TextDisplayed.h"
+#include "TransitionEffect.h"
 
 /**
  * Creates a selection menu.
@@ -196,6 +197,10 @@ void SelectionMenu::show(void) {
   SDL_Event event;
   SDL_EnableKeyRepeat(0, 0); // no repeat
 
+  destination_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
+  transition->start();
+
   while (!start && !quit) {
 
     // if there is an event
@@ -266,9 +271,29 @@ void SelectionMenu::show(void) {
     // redraw if necessary
     while (SDL_GetTicks() >= next_redraw) {
       redraw();
-      next_redraw += 50;
+      next_redraw += 10;
     }
   }
+
+  delete transition;
+
+  // transition
+  if (!quit) {
+
+    transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
+    transition->start();
+    while (!quit && !transition->is_over()) {
+
+      if (SDL_PollEvent(&event)) {
+	quit = zsdx->handle_event(event);
+      }
+
+      redraw();
+    }
+    delete transition;
+  }
+
+  SDL_FreeSurface(destination_surface);
 
   // stop the music
   music->stop();
@@ -318,7 +343,7 @@ void SelectionMenu::redraw(void) {
   int i;
 
   // background color
-  SDL_FillRect(zsdx->screen, NULL, get_color(104, 144, 240));
+  SDL_FillRect(destination_surface, NULL, get_color(104, 144, 240));
 
   // display the clouds
   SDL_Rect position;
@@ -326,24 +351,24 @@ void SelectionMenu::redraw(void) {
 
     position = cloud_positions[i];
 
-    SDL_BlitSurface(img_cloud, NULL, zsdx->screen, &position);
+    SDL_BlitSurface(img_cloud, NULL, destination_surface, &position);
 
     if (cloud_positions[i].x >= 320 - 80) {
       position.x = cloud_positions[i].x - 320;
       position.y = cloud_positions[i].y;
-      SDL_BlitSurface(img_cloud, NULL, zsdx->screen, &position);
+      SDL_BlitSurface(img_cloud, NULL, destination_surface, &position);
 
       if (cloud_positions[i].y <= 0) {
 	position.x = cloud_positions[i].x - 320;
 	position.y = cloud_positions[i].y + 240;
-	SDL_BlitSurface(img_cloud, NULL, zsdx->screen, &position);
+	SDL_BlitSurface(img_cloud, NULL, destination_surface, &position);
       }
     }
 
     if (cloud_positions[i].y <= 0) {
       position.x = cloud_positions[i].x;
       position.y = cloud_positions[i].y + 240;
-      SDL_BlitSurface(img_cloud, NULL, zsdx->screen, &position);
+      SDL_BlitSurface(img_cloud, NULL, destination_surface, &position);
     }
   }
 
@@ -352,11 +377,11 @@ void SelectionMenu::redraw(void) {
   position.y = 38;
   position.w = 246;
   position.h = 165;
-  SDL_BlitSurface(img_menu, NULL, zsdx->screen, &position);
+  SDL_BlitSurface(img_menu, NULL, destination_surface, &position);
 
   // savegame names
   for (i = 0; i < 3; i++) {
-    text_player_names[i]->display(zsdx->screen);
+    text_player_names[i]->display(destination_surface);
   }
 
   // cursor
@@ -373,17 +398,24 @@ void SelectionMenu::redraw(void) {
   else {
     position.y = 159;
   }
-  cursor->display(zsdx->screen, position.x, position.y);
+  cursor->display(destination_surface, position.x, position.y);
 
   // save numbers
   position.x = 62;
   position.y = 80;
-  SDL_BlitSurface(img_1, NULL, zsdx->screen, &position);
+  SDL_BlitSurface(img_1, NULL, destination_surface, &position);
   position.y = 107;
-  SDL_BlitSurface(img_2, NULL, zsdx->screen, &position);
+  SDL_BlitSurface(img_2, NULL, destination_surface, &position);
   position.y = 134;
-  SDL_BlitSurface(img_3, NULL, zsdx->screen, &position);
+  SDL_BlitSurface(img_3, NULL, destination_surface, &position);
 
+
+  // transition
+  SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
+  if (transition != NULL && transition->is_started()) {
+    transition->display(destination_surface);
+  }
+  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
   SDL_Flip(zsdx->screen);
 }
 

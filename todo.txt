@@ -4,6 +4,11 @@
 - Remplacer tous les IMG_Load par une fonction qui arrête le jeu sur un message d'erreur si l'image n'est pas trouvée
 - images/sprites/menus images/menus sprites/menus : compliqué
 
+- 1er avril :
+  affichage des coeurs / rubis...
+  screen avec l'épée 4
+  tileset extérieur
+
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
 	- vue arborescente de toutes les entités par type ?

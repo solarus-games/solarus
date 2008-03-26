@@ -23,8 +23,10 @@ class SelectionMenu {
 
   // images
   SDL_Surface *img_cloud, *img_menu, *img_1, *img_2, *img_3;
+  SDL_Surface *destination_surface;
   AnimatedSprite *cursor;
   int cursor_position; // 1 to 5
+  TransitionEffect *transition;
 
   // savegames data
   TextDisplayed *text_player_names[3];

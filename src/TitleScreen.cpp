@@ -91,7 +91,6 @@ bool TitleScreen::phase_2_zs_presents(void) {
     if (transition->is_started()) {
       transition->display(img_zs_presents);
     }
-
     SDL_BlitSurface(img_zs_presents, NULL, zsdx->screen, &position);
     SDL_Flip(zsdx->screen);
   }
@@ -136,6 +135,28 @@ bool TitleScreen::phase_3_title(void) {
     SDL_Flip(zsdx->screen);
   }
   delete transition;
+
+  // transition
+  if (!quit) {
+
+    transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
+    transition->start();
+    while (!quit && !transition->is_over()) {
+
+      if (SDL_PollEvent(&event)) {
+	quit = zsdx->handle_event(event);
+      }
+
+      SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
+      if (!transition->is_over()) {
+	transition->display(img_title);
+      }
+      SDL_BlitSurface(img_title, NULL, zsdx->screen, NULL);
+      SDL_Flip(zsdx->screen);
+    }
+    delete transition;
+  }
+
   SDL_FreeSurface(img_title);
 
   // stop the title screen music

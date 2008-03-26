@@ -204,11 +204,10 @@ void Game::handle_transitions(void) {
 void Game::display_map(Map *map) {
   SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
 
+  map->display();
   if (transition != NULL) {
     transition->display(map->get_visible_surface());
   }
-
-  map->display();
   SDL_BlitSurface(map->get_visible_surface(), NULL, zsdx->screen, NULL);
 
   // TODO rupees, hearts...

@@ -217,7 +217,7 @@ void SelectionMenu::show(void) {
 	    quit = true;
 	  }
 	  else if (cursor_position == 4) {
-	    // TODO
+	    cursor->set_current_animation("red");
 	  }
 	  else {
 	    start = true;
@@ -408,7 +408,6 @@ void SelectionMenu::redraw(void) {
   SDL_BlitSurface(img_2, NULL, destination_surface, &position);
   position.y = 134;
   SDL_BlitSurface(img_3, NULL, destination_surface, &position);
-
 
   // transition
   SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);

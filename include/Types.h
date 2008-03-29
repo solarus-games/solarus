@@ -72,6 +72,7 @@ class GameResource;
 class TextDisplayed;
 class Savegame;
 class SelectionMenu;
+class HUD;
 
 class TransitionEffect;
 class Map;

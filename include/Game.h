@@ -44,6 +44,11 @@ class Game {
   TransitionEffect *transition;
 
   /**
+   * The game HUD (displaying hearts, rupees, etc.).
+   */
+  HUD *hud;
+
+  /**
    * Id of the music currently played (a valid music, or MUSIC_NONE if no music is being played).
    */
   MusicId current_music_id;

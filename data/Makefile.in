@@ -54,7 +54,8 @@ am__installdirs = "$(DESTDIR)$(images_dir)" \
 	"$(DESTDIR)$(images_menus_dir)" \
 	"$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" \
 	"$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sound_dir)" \
-	"$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(sprites_link_dir)" \
+	"$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(sprites_hud_dir)" \
+	"$(DESTDIR)$(sprites_link_dir)" \
 	"$(DESTDIR)$(sprites_menus_dir)" "$(DESTDIR)$(tilesets_dir)" \
 	"$(DESTDIR)$(zsdxdatadir)"
 images_DATA_INSTALL = $(INSTALL_DATA)
@@ -66,6 +67,7 @@ maps_DATA_INSTALL = $(INSTALL_DATA)
 music_DATA_INSTALL = $(INSTALL_DATA)
 sound_DATA_INSTALL = $(INSTALL_DATA)
 sprites_DATA_INSTALL = $(INSTALL_DATA)
+sprites_hud_DATA_INSTALL = $(INSTALL_DATA)
 sprites_link_DATA_INSTALL = $(INSTALL_DATA)
 sprites_menus_DATA_INSTALL = $(INSTALL_DATA)
 tilesets_DATA_INSTALL = $(INSTALL_DATA)
@@ -73,8 +75,8 @@ zsdxdataDATA_INSTALL = $(INSTALL_DATA)
 DATA = $(images__DATA) $(images_hud__DATA) $(images_link__DATA) \
 	$(images_menus__DATA) $(images_tilesets__DATA) $(maps__DATA) \
 	$(music__DATA) $(sound__DATA) $(sprites__DATA) \
-	$(sprites_link__DATA) $(sprites_menus__DATA) $(tilesets__DATA) \
-	$(zsdxdata_DATA)
+	$(sprites_hud__DATA) $(sprites_link__DATA) \
+	$(sprites_menus__DATA) $(tilesets__DATA) $(zsdxdata_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -284,6 +286,10 @@ sprites_link__DATA = \
   sprites/link/shield2.zsd			\
   sprites/link/shield3.zsd			
 
+sprites_hud_dir = $(sprites_dir)/hud
+sprites_hud__DATA = \
+  sprites/hud/empty_heart.zsd			
+
 images_dir = $(zsdxdatadir)/images
 images__DATA = 
 images_tilesets_dir = $(images_dir)/tilesets
@@ -333,6 +339,7 @@ EXTRA_DIST = \
   $(sprites__DATA)				\
   $(sprites_link__DATA)				\
   $(sprites_menus__DATA)			\
+  $(sprites_hud__DATA)				\
   $(images__DATA)				\
   $(images_tilesets__DATA)			\
   $(images_link__DATA)				\
@@ -524,6 +531,23 @@ uninstall-sprites_DATA:
 	  echo " rm -f '$(DESTDIR)$(sprites_dir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(sprites_dir)/$$f"; \
 	done
+install-sprites_hud_DATA: $(sprites_hud__DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(sprites_hud_dir)" || $(MKDIR_P) "$(DESTDIR)$(sprites_hud_dir)"
+	@list='$(sprites_hud__DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(sprites_hud_DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(sprites_hud_dir)/$$f'"; \
+	  $(sprites_hud_DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(sprites_hud_dir)/$$f"; \
+	done
+
+uninstall-sprites_hud_DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(sprites_hud__DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(sprites_hud_dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(sprites_hud_dir)/$$f"; \
+	done
 install-sprites_link_DATA: $(sprites_link__DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(sprites_link_dir)" || $(MKDIR_P) "$(DESTDIR)$(sprites_link_dir)"
@@ -629,7 +653,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(images_dir)" "$(DESTDIR)$(images_hud_dir)" "$(DESTDIR)$(images_link_dir)" "$(DESTDIR)$(images_menus_dir)" "$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" "$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sound_dir)" "$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(sprites_link_dir)" "$(DESTDIR)$(sprites_menus_dir)" "$(DESTDIR)$(tilesets_dir)" "$(DESTDIR)$(zsdxdatadir)"; do \
+	for dir in "$(DESTDIR)$(images_dir)" "$(DESTDIR)$(images_hud_dir)" "$(DESTDIR)$(images_link_dir)" "$(DESTDIR)$(images_menus_dir)" "$(DESTDIR)$(images_tilesets_dir)" "$(DESTDIR)$(maps_dir)" "$(DESTDIR)$(music_dir)" "$(DESTDIR)$(sound_dir)" "$(DESTDIR)$(sprites_dir)" "$(DESTDIR)$(sprites_hud_dir)" "$(DESTDIR)$(sprites_link_dir)" "$(DESTDIR)$(sprites_menus_dir)" "$(DESTDIR)$(tilesets_dir)" "$(DESTDIR)$(zsdxdatadir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -678,8 +702,9 @@ install-data-am: install-images_DATA install-images_hud_DATA \
 	install-images_link_DATA install-images_menus_DATA \
 	install-images_tilesets_DATA install-maps_DATA \
 	install-music_DATA install-sound_DATA install-sprites_DATA \
-	install-sprites_link_DATA install-sprites_menus_DATA \
-	install-tilesets_DATA install-zsdxdataDATA
+	install-sprites_hud_DATA install-sprites_link_DATA \
+	install-sprites_menus_DATA install-tilesets_DATA \
+	install-zsdxdataDATA
 
 install-dvi: install-dvi-am
 
@@ -717,9 +742,9 @@ uninstall-am: uninstall-images_DATA uninstall-images_hud_DATA \
 	uninstall-images_link_DATA uninstall-images_menus_DATA \
 	uninstall-images_tilesets_DATA uninstall-maps_DATA \
 	uninstall-music_DATA uninstall-sound_DATA \
-	uninstall-sprites_DATA uninstall-sprites_link_DATA \
-	uninstall-sprites_menus_DATA uninstall-tilesets_DATA \
-	uninstall-zsdxdataDATA
+	uninstall-sprites_DATA uninstall-sprites_hud_DATA \
+	uninstall-sprites_link_DATA uninstall-sprites_menus_DATA \
+	uninstall-tilesets_DATA uninstall-zsdxdataDATA
 
 .MAKE: install-am install-strip
 
@@ -732,18 +757,18 @@ uninstall-am: uninstall-images_DATA uninstall-images_hud_DATA \
 	install-images_tilesets_DATA install-info install-info-am \
 	install-man install-maps_DATA install-music_DATA install-pdf \
 	install-pdf-am install-ps install-ps-am install-sound_DATA \
-	install-sprites_DATA install-sprites_link_DATA \
-	install-sprites_menus_DATA install-strip install-tilesets_DATA \
-	install-zsdxdataDATA installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-images_DATA uninstall-images_hud_DATA \
-	uninstall-images_link_DATA uninstall-images_menus_DATA \
-	uninstall-images_tilesets_DATA uninstall-maps_DATA \
-	uninstall-music_DATA uninstall-sound_DATA \
-	uninstall-sprites_DATA uninstall-sprites_link_DATA \
-	uninstall-sprites_menus_DATA uninstall-tilesets_DATA \
-	uninstall-zsdxdataDATA
+	install-sprites_DATA install-sprites_hud_DATA \
+	install-sprites_link_DATA install-sprites_menus_DATA \
+	install-strip install-tilesets_DATA install-zsdxdataDATA \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am uninstall uninstall-am uninstall-images_DATA \
+	uninstall-images_hud_DATA uninstall-images_link_DATA \
+	uninstall-images_menus_DATA uninstall-images_tilesets_DATA \
+	uninstall-maps_DATA uninstall-music_DATA uninstall-sound_DATA \
+	uninstall-sprites_DATA uninstall-sprites_hud_DATA \
+	uninstall-sprites_link_DATA uninstall-sprites_menus_DATA \
+	uninstall-tilesets_DATA uninstall-zsdxdataDATA
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

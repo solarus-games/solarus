@@ -121,6 +121,10 @@ sprites_link__DATA = 				\
   sprites/link/shield2.zsd			\
   sprites/link/shield3.zsd			
 
+sprites_hud_dir = $(sprites_dir)/hud
+sprites_hud__DATA = 				\
+  sprites/hud/empty_heart.zsd			
+
 images_dir = $(zsdxdatadir)/images
 images__DATA =					
 
@@ -171,6 +175,7 @@ EXTRA_DIST =					\
   $(sprites__DATA)				\
   $(sprites_link__DATA)				\
   $(sprites_menus__DATA)			\
+  $(sprites_hud__DATA)				\
   $(images__DATA)				\
   $(images_tilesets__DATA)			\
   $(images_link__DATA)				\

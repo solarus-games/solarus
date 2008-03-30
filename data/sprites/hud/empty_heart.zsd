@@ -1,0 +1,5 @@
+normal hud/hearts.png 1 0 -1
+0	9	9	9	0	0	1	1	1
+
+danger hud/hearts.png 1 100 0
+0	9	9	9	0	0	4	1	4

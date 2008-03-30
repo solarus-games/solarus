@@ -9,16 +9,16 @@
 #include "ZSDX.h"
 #include "GameResource.h"
 #include "Sound.h"
+#include "AnimatedSprite.h"
 
 /**
  * Position of the hearts in the PNG image.
  */
-SDL_Rect HeartsView::empty_heart_position = {0, 0, 9, 9};
-SDL_Rect HeartsView::full_heart_position = {36, 0, 9, 9};
+SDL_Rect HeartsView::full_heart_position = {27, 0, 9, 9};
 SDL_Rect HeartsView::fraction_heart_positions[3] = {
+  {0, 0, 9, 9},
   {9, 0, 9, 9},
-  {18, 0, 9, 9},
-  {27, 0, 9, 9}
+  {18, 0, 9, 9}
 };
 
 /**
@@ -32,6 +32,7 @@ HeartsView::HeartsView(Savegame *savegame, int x, int y):
   next_danger_sound_date(SDL_GetTicks()) {
 
   img_hearts = FileTools::open_image("hud/hearts.png");
+  empty_heart_sprite = new AnimatedSprite(zsdx->game_resource->get_sprite("hud/empty_heart"));
 
   if (!savegame->is_empty()) {
     
@@ -47,6 +48,7 @@ HeartsView::HeartsView(Savegame *savegame, int x, int y):
  */
 HeartsView::~HeartsView(void) {
   SDL_FreeSurface(img_hearts);
+  delete empty_heart_sprite;
 }
 
 /**
@@ -75,8 +77,7 @@ void HeartsView::update(void) {
     else {
       nb_current_hearts_displayed++;
 
-      if (nb_current_hearts_displayed % 4 == 0 
-	  && !zsdx->game_resource->get_sound("picked_item")->is_playing()) {
+      if (nb_current_hearts_displayed % 4 == 0) {
 	zsdx->game_resource->get_sound("heart")->play();
       }
     }
@@ -114,7 +115,8 @@ void HeartsView::rebuild(void) {
   for (int i = 0; i < nb_max_hearts_displayed; i++) {
     heart_position.x = (i % 10) * 9;
     heart_position.y = (i / 10) * 9;
-    SDL_BlitSurface(img_hearts, &empty_heart_position, surface_drawn, &heart_position);
+    // TODO sprite
+    //    SDL_BlitSurface(img_hearts, &empty_heart_position, surface_drawn, &heart_position);
   }
 
   

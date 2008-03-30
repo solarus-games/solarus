@@ -28,13 +28,17 @@ TitleScreen::~TitleScreen(void) {
  * Shows the title screen.
  * @return true if the user wants to quit the program
  */
-bool TitleScreen::show(void) {
+void TitleScreen::show(void) {
 
-  bool quit = phase_1_black_screen()
-    || phase_2_zs_presents()
-    || phase_3_title();
+  phase_1_black_screen();
 
-  return quit;
+  if (!zsdx->is_exiting()) {
+    phase_2_zs_presents();
+
+    if (!zsdx->is_exiting()) {
+      phase_3_title();
+    }
+  }
 }
 
 /**
@@ -42,44 +46,41 @@ bool TitleScreen::show(void) {
  * for a fraction of second.
  * @return true if the user wants to quit the program, false otherwise
  */
-bool TitleScreen::phase_1_black_screen(void) {
+void TitleScreen::phase_1_black_screen(void) {
 
-  bool quit = false;
   SDL_Event event;
 
   // wait 0.3 second
   Uint32 start_intro_time = SDL_GetTicks() + 300;
-  while (SDL_GetTicks() < start_intro_time && !quit) {
+  while (!zsdx->is_exiting() && SDL_GetTicks() < start_intro_time) {
 
-    SDL_PollEvent(&event);
-    quit = zsdx->handle_event(event);
+    if (SDL_PollEvent(&event)) {
+      zsdx->handle_event(event);
+    }
 
     SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
     SDL_Flip(zsdx->screen);
   }
-
-  return quit;
 }
 
 /**
  * Phase 2 of the title screen: shows the message "Zelda Solarus presents".
  * @return true if the user wants to quit the program, false otherwise
  */
-bool TitleScreen::phase_2_zs_presents(void) {
+void TitleScreen::phase_2_zs_presents(void) {
 
-  bool quit = false;
   SDL_Event event;
 
-  SDL_Surface *img_zs_presents = IMG_Load(FileTools::data_file_add_prefix("images/zelda_solarus_presents.png"));
+  SDL_Surface *img_zs_presents = FileTools::open_image("zelda_solarus_presents.png");
   zsdx->game_resource->get_sound("intro")->play();
   SDL_Rect position = {112, 96, 0, 0};
   Uint32 end_intro_time = SDL_GetTicks() + 2000; // intro: 2 seconds
   TransitionEffect *transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
 
-  while (!quit && !transition->is_over()) {
+  while (!zsdx->is_exiting() && !transition->is_over()) {
     
     if (SDL_PollEvent(&event)) {
-      quit = zsdx->handle_event(event);
+      zsdx->handle_event(event);
     }
 
     if (SDL_GetTicks() >= end_intro_time && !transition->is_started()) {
@@ -96,20 +97,17 @@ bool TitleScreen::phase_2_zs_presents(void) {
   }
   SDL_FreeSurface(img_zs_presents);
   delete transition;
-
-  return quit;
 }
 
 /**
  * Phase 3 of the title screen: shows the title screen.
  * @return true if the user wants to quit the program, false otherwise
  */
-bool TitleScreen::phase_3_title(void) {
+void TitleScreen::phase_3_title(void) {
 
-  bool quit = false;
   SDL_Event event;
 
-  SDL_Surface *img_title = IMG_Load(FileTools::data_file_add_prefix("images/title.png"));
+  SDL_Surface *img_title = FileTools::open_image("title.png");
   Music *title_screen_music = zsdx->game_resource->get_music("title_screen_full.it");
   title_screen_music->play();
   TransitionEffect *transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
@@ -117,10 +115,10 @@ bool TitleScreen::phase_3_title(void) {
 
   // wait until the user presses the space bar
   bool start = false;
-  while (!start && !quit) {
+  while (!zsdx->is_exiting() && !start) {
 
     if (SDL_PollEvent(&event)) {
-      quit = zsdx->handle_event(event);
+      zsdx->handle_event(event);
 
       if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
 	start = true;
@@ -137,14 +135,14 @@ bool TitleScreen::phase_3_title(void) {
   delete transition;
 
   // transition
-  if (!quit) {
+  if (!zsdx->is_exiting()) {
 
     transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
     transition->start();
-    while (!quit && !transition->is_over()) {
+    while (!zsdx->is_exiting() && !transition->is_over()) {
 
       if (SDL_PollEvent(&event)) {
-	quit = zsdx->handle_event(event);
+	zsdx->handle_event(event);
       }
 
       SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
@@ -161,6 +159,4 @@ bool TitleScreen::phase_3_title(void) {
 
   // stop the title screen music
   title_screen_music->stop();
-
-  return quit;
 }

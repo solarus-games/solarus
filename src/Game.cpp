@@ -57,17 +57,16 @@ void Game::play(void) {
   // SDL main loop
   SDL_Event event;
   Uint32 ticks, last_frame_date = 0;
-  bool quit = false;
   SDL_EnableKeyRepeat(0, 0);
 
-  while (!quit) {
+  while (!zsdx->is_exiting()) {
 
     handle_transitions();
 
     // handle the SDL events
     if (SDL_PollEvent(&event)) {
 
-      quit = zsdx->handle_event(event);
+      zsdx->handle_event(event);
 
       if (is_control_enabled()) {
 	switch (event.type) {

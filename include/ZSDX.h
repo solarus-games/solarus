@@ -50,10 +50,13 @@ class ZSDX {
   GameResource *game_resource;
   Game *game;
 
-  bool handle_event(const SDL_Event &event);
+  bool exiting;
+
+  void handle_event(const SDL_Event &event);
   void set_fullscreen(bool fullscreen);
   bool is_fullscreen(void);
   void switch_fullscreen(void);
+  bool is_exiting(void);
 
   /**
    * Returns the tile animation manager object.

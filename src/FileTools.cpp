@@ -43,10 +43,10 @@ const char *FileTools::data_file_get_prefix(void) {
  */
 const char *FileTools::data_file_add_prefix(const char *file_name) {
 
-  static char file_name_in_datadir[MAX_FILE_NAME];
+  static char prefixed_file_name[MAX_FILE_NAME];
 
-  sprintf(file_name_in_datadir, "%s/%s", DATADIR, file_name);
-  return file_name_in_datadir;
+  sprintf(prefixed_file_name, "%s/%s", DATADIR, file_name);
+  return prefixed_file_name;
 }
 
 /**
@@ -64,4 +64,44 @@ FILE *FileTools::open_data_file(const char *file_name) {
   f = fopen(data_file_add_prefix(file_name), "r");
   
   return f;
+}
+
+/**
+ * @brief Loads an image file.
+ * 
+ * The file name is relative to the ZSDX images directory (which could be
+ * for example /usr/local/share/zsdx/data/images or C:\Program Files\zsdx\data\images).
+ * The program is stopped with an error message if the image cannot be loaded.
+ *
+ * @param file_name name of the image file to open
+ * @return the file
+ */
+SDL_Surface *FileTools::open_image(const char *file_name) {
+
+  static char prefixed_file_name[MAX_FILE_NAME];
+
+  sprintf(prefixed_file_name, "%s/images/%s", DATADIR, file_name);
+  SDL_Surface *image = IMG_Load(prefixed_file_name);
+
+  if (image == NULL) {
+    cerr << "Cannot load image '" << prefixed_file_name << "'" << endl;
+    exit(1);
+  }
+
+  return image;
+}
+
+/**
+ * @brief Loads an image file.
+ * 
+ * The file name is relative to the ZSDX images directory (which could be
+ * for example /usr/local/share/zsdx/data/images or C:\Program Files\zsdx\data\images).
+ * The program is stopped with an error message if the image cannot be loaded.
+ *
+ * @param file_name name of the image file to open
+ * @return the file
+ */
+SDL_Surface *FileTools::open_image(string file_name) {
+
+  return open_image(file_name.c_str());
 }

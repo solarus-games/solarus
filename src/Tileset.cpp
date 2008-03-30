@@ -98,9 +98,8 @@ void Tileset::load(void) {
   }
 
   // load the tileset image
-  sprintf(file_name, "images/tilesets/tileset%04d.png", (int) id);
-
-  tileset_image = IMG_Load(FileTools::data_file_add_prefix(file_name));
+  sprintf(file_name, "tilesets/tileset%04d.png", (int) id);
+  tileset_image = FileTools::open_image(file_name);
   
   if (tileset_image == NULL) {
     cerr << "Cannot load the image '" << file_name << "'" << endl;

@@ -50,7 +50,7 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
 
     //    cout << "name: " << name << endl;
 
-    image_file_name = "images/sprites/" + image_file_name;
+    image_file_name = "sprites/" + image_file_name;
 
     directions = new SpriteAnimationDirection*[nb_directions];
 

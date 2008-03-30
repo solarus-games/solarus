@@ -43,6 +43,7 @@ sound__DATA =					\
   sounds/message_end.wav			\
   sounds/monster_hurt.wav			\
   sounds/octorok.wav				\
+  sounds/ok.wav					\
   sounds/pause_closed.wav			\
   sounds/pause_open.wav				\
   sounds/picked_item.wav			\
@@ -160,6 +161,10 @@ images_menus__DATA = 				\
   images/menus/save2.png			\
   images/menus/save3.png			
 
+images_hud_dir = $(images_dir)/hud
+images_hud__DATA =				\
+  images/hud/hearts.png				
+
 EXTRA_DIST =					\
   $(zsdxdata_DATA)				\
   $(sound__DATA)				\
@@ -174,4 +179,5 @@ EXTRA_DIST =					\
   $(images_sprites__DATA)			\
   $(images_sprites_link__DATA)			\
   $(images_sprites_menus__DATA)			\
-  $(images_menus__DATA)				
+  $(images_menus__DATA)				\
+  $(images_hud__DATA)				

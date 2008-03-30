@@ -10,16 +10,16 @@ class TitleScreen {
 
  private:
 
-  bool phase_1_black_screen(void);
-  bool phase_2_zs_presents(void);
-  bool phase_3_title(void);
+  void phase_1_black_screen(void);
+  void phase_2_zs_presents(void);
+  void phase_3_title(void);
 
  public:
 
   TitleScreen(void);
   ~TitleScreen(void);
 
-  bool show(void);
+  void show(void);
 };
 
 #endif

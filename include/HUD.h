@@ -13,6 +13,11 @@
  */
 class HUD {
 
+ private:
+
+  // all images
+  SDL_Surface *img_hearts;
+
  public:
 
   HUD(void);

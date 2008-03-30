@@ -16,6 +16,9 @@ class FileTools {
   static const char *data_file_add_prefix(const char *file_name);
   static FILE *open_data_file(const char *file_name);
 
+  static SDL_Surface *open_image(const char *file_name);
+  static SDL_Surface *open_image(string file_name);
+
 };
 
 #endif

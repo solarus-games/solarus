@@ -27,11 +27,11 @@ SelectionMenu::SelectionMenu(void):
   read_saves();
 
   // load the images
-  img_cloud = IMG_Load(FileTools::data_file_add_prefix("images/menus/cloud.png"));
-  img_menu = IMG_Load(FileTools::data_file_add_prefix("images/menus/select_a_file.png"));
-  img_1 = IMG_Load(FileTools::data_file_add_prefix("images/menus/save1.png"));
-  img_2 = IMG_Load(FileTools::data_file_add_prefix("images/menus/save2.png"));
-  img_3 = IMG_Load(FileTools::data_file_add_prefix("images/menus/save3.png"));
+  img_cloud = FileTools::open_image("menus/cloud.png");
+  img_menu = FileTools::open_image("menus/select_a_file.png");
+  img_1 = FileTools::open_image("menus/save1.png");
+  img_2 = FileTools::open_image("menus/save2.png");
+  img_3 = FileTools::open_image("menus/save3.png");
 
   cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/cursor"));
 
@@ -191,9 +191,10 @@ void SelectionMenu::show(void) {
   cursor->set_current_animation("blue");
   cursor_position = 1;
   Sound *cursor_sound = zsdx->game_resource->get_sound("cursor");
+  Sound *ok_sound = zsdx->game_resource->get_sound("ok");
 
-  bool quit = false;
   bool start = false;
+  bool quit = false;
   SDL_Event event;
   SDL_EnableKeyRepeat(0, 0); // no repeat
 
@@ -201,12 +202,12 @@ void SelectionMenu::show(void) {
   transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
   transition->start();
 
-  while (!start && !quit) {
+  while (!zsdx->is_exiting() && !start && !quit) {
 
     // if there is an event
     if (SDL_PollEvent(&event)) {
       
-      quit = zsdx->handle_event(event);
+      zsdx->handle_event(event);
     
       if (event.type == SDL_KEYDOWN) {
 
@@ -218,9 +219,11 @@ void SelectionMenu::show(void) {
 	  }
 	  else if (cursor_position == 4) {
 	    cursor->set_current_animation("red");
+	    ok_sound->play();
 	  }
 	  else {
 	    start = true;
+	    ok_sound->play();
 	  }
 	  break;
 
@@ -278,14 +281,14 @@ void SelectionMenu::show(void) {
   delete transition;
 
   // transition
-  if (!quit) {
+  if (!zsdx->is_exiting() && !quit) {
 
     transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
     transition->start();
-    while (!quit && !transition->is_over()) {
+    while (!zsdx->is_exiting() && !transition->is_over()) {
 
       if (SDL_PollEvent(&event)) {
-	quit = zsdx->handle_event(event);
+	zsdx->handle_event(event);
       }
 
       redraw();
@@ -297,10 +300,6 @@ void SelectionMenu::show(void) {
 
   // stop the music
   music->stop();
-
-  if (quit) {
-    cursor_position = 5;
-  }
 }
 
 /**
@@ -312,7 +311,7 @@ void SelectionMenu::show(void) {
  */
 Savegame * SelectionMenu::get_selected_save(void) {
 
-  if (cursor_position <= 3) {
+  if (cursor_position <= 3 && !zsdx->is_exiting()) {
 
     char file_name[10];
     sprintf(file_name, "save%d.zsd", cursor_position - 1);

@@ -106,19 +106,28 @@ void ZSDX::switch_fullscreen(void) {
 }
 
 /**
+ * Returns whether the user just closed the window.
+ * When this function returns true, you should stop immediately
+ * whatever you are doing, free your memory and let the program quit.
+ * @return true if the user wants to exit the program
+ */
+bool ZSDX::is_exiting(void) {
+  return exiting;
+}
+
+/**
  * Launches the game.
  */
 void ZSDX::main(void) {
 
-  bool quit = false;
-  while (!quit) {
+  while (!is_exiting()) {
     
     // title screen
     TitleScreen *title_screen = new TitleScreen();
-    quit = title_screen->show();
+    title_screen->show();
     delete title_screen;
 
-    if (!quit) {
+    if (!is_exiting()) {
 
       // savegame selection menu
       SelectionMenu *menu = new SelectionMenu();
@@ -128,7 +137,7 @@ void ZSDX::main(void) {
       Savegame *savegame = menu->get_selected_save();
 
       if (savegame == NULL) {
-	quit = true;
+	exiting = true;
 	delete menu;
       }
       else {
@@ -154,17 +163,14 @@ void ZSDX::main(void) {
  * This function handles an SDL event.
  * In any SDL main loop, you should get the event
  * with SDL_PollEvent() and call this function.
- * @return true if the user closed the window
  */
-bool ZSDX::handle_event(const SDL_Event &event) {
-
-  bool quit = false;
+void ZSDX::handle_event(const SDL_Event &event) {
 
   switch (event.type) {
     
     // quit if the user closes the window
   case SDL_QUIT:
-    quit = true;
+    exiting = true;
     break;
 	
     // a key is pressed
@@ -173,7 +179,7 @@ bool ZSDX::handle_event(const SDL_Event &event) {
 
       // escape: quit
     case SDLK_ESCAPE:
-      quit = true;
+      exiting = true;
       break;
       
       // F5: full screen / windowed mode
@@ -186,8 +192,6 @@ bool ZSDX::handle_event(const SDL_Event &event) {
     }
     break;
   }
-
-  return quit;
 }
 
 /**

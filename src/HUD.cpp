@@ -6,6 +6,7 @@
 #include "FileTools.h"
 #include "Savegame.h"
 #include "HeartsView.h"
+#include "RupeesView.h"
 
 /**
  * Constructor.
@@ -13,21 +14,31 @@
 HUD::HUD(Savegame *savegame):
   savegame(savegame) {
 
-  hearts_view = new HeartsView(savegame, 216, 14);
+  nb_elements = 0;
+
+  // hearts
+  elements[nb_elements++] = new HeartsView(savegame, 216, 14);
+  elements[nb_elements++] = new RupeesView(savegame, 8, 216);
 }
 
 /**
  * Destructor.
  */
 HUD::~HUD(void) {
-  delete hearts_view;
+
+  for (int i = 0; i < nb_elements; i++) {
+    delete elements[i];
+  }
 }
 
 /**
- * Update the HUD.
+ * Updates the information displayed by HUD.
  */
 void HUD::update(void) {
-  hearts_view->update();
+
+  for (int i = 0; i < nb_elements; i++) {
+    elements[i]->update();
+  }
 }
 
 /**
@@ -36,12 +47,7 @@ void HUD::update(void) {
  */
 void HUD::display(SDL_Surface *destination) {
 
-  // hearts
-  hearts_view->display(destination);
-
-  // rupees
-  // magic bar
-  // objects
-  // icons
-  
+  for (int i = 0; i < nb_elements; i++) {
+    elements[i]->display(destination);
+  }
 }

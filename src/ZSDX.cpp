@@ -61,6 +61,8 @@ ZSDX::ZSDX(void) {
   // initialize the game resource
   game_resource = new GameResource();
   game = NULL;
+
+  exiting = false;
 }
 
 /**

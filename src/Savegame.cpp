@@ -49,6 +49,8 @@ void Savegame::set_default_values(void) {
 
   set_reserved_integer(SAVEGAME_MAX_HEARTS, 3);
   set_reserved_integer(SAVEGAME_CURRENT_HEARTS, 12);
+
+  set_reserved_integer(SAVEGAME_MAX_RUPEES, 99);
 }
 
 /**

@@ -85,6 +85,8 @@ SDL_Surface *FileTools::open_image(const char *file_name) {
 
   if (image == NULL) {
     cerr << "Cannot load image '" << prefixed_file_name << "'" << endl;
+
+    SDL_Quit();
     exit(1);
   }
 

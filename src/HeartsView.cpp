@@ -18,7 +18,7 @@ SDL_Rect HeartsView::full_heart_position = {36, 0, 9, 9};
 SDL_Rect HeartsView::fraction_heart_positions[3] = {
   {9, 0, 9, 9},
   {18, 0, 9, 9},
-  {27, 0, 9, 9},
+  {27, 0, 9, 9}
 };
 
 /**
@@ -27,23 +27,17 @@ SDL_Rect HeartsView::fraction_heart_positions[3] = {
  * @param y y coordinate of the top-left corner of the hearts on the destination surface
  */
 HeartsView::HeartsView(Savegame *savegame, int x, int y):
-  savegame(savegame), next_heart_update_date(SDL_GetTicks()) {
-
-  destination_position.x = x;
-  destination_position.y = y;
-  destination_position.w = 9;
-  destination_position.h = 9;
+  HudElement(savegame, x, y, 90, 18),
+  next_heart_update_date(SDL_GetTicks()) {
 
   img_hearts = FileTools::open_image("hud/hearts.png");
-  hearts_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 90, 18, 32, 0, 0, 0, 0);
-  SDL_SetColorKey(hearts_surface, SDL_SRCCOLORKEY, COLOR_BLACK);
 
   if (!savegame->is_empty()) {
     
     nb_max_hearts_displayed = savegame->get_reserved_integer(SAVEGAME_MAX_HEARTS);
     nb_current_hearts_displayed = savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS);
     
-    redraw();
+    rebuild();
   }
 }
 
@@ -52,7 +46,6 @@ HeartsView::HeartsView(Savegame *savegame, int x, int y):
  */
 HeartsView::~HeartsView(void) {
   SDL_FreeSurface(img_hearts);
-  SDL_FreeSurface(hearts_surface);
 }
 
 /**
@@ -60,13 +53,13 @@ HeartsView::~HeartsView(void) {
  */
 void HeartsView::update(void) {
 
-  bool need_redraw = false;
+  bool need_rebuild = false;
 
   // max hearts
   int nb_max_hearts = savegame->get_reserved_integer(SAVEGAME_MAX_HEARTS);
   if (nb_max_hearts != nb_max_hearts_displayed) {
     nb_max_hearts_displayed = nb_max_hearts;
-    need_redraw = true;
+    need_rebuild = true;
   }
 
   // current hearts
@@ -86,21 +79,21 @@ void HeartsView::update(void) {
       }
     }
 
-    need_redraw = true;
+    need_rebuild = true;
   }
 
-  // redraw the screen if something has changed
-  if (need_redraw) {
-    redraw();
+  // redraw the surface if something has changed
+  if (need_rebuild) {
+    rebuild();
   }
 }
 
 /**
  * Redraws the hearts on the surface.
  */
-void HeartsView::redraw(void) {
+void HeartsView::rebuild(void) {
 
-  SDL_FillRect(hearts_surface, NULL, COLOR_BLACK);
+  SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
 
   // max hearts
 
@@ -110,7 +103,7 @@ void HeartsView::redraw(void) {
   for (int i = 0; i < nb_max_hearts_displayed; i++) {
     heart_position.x = (i % 10) * 9;
     heart_position.y = (i / 10) * 9;
-    SDL_BlitSurface(img_hearts, &empty_heart_position, hearts_surface, &heart_position);
+    SDL_BlitSurface(img_hearts, &empty_heart_position, surface_drawn, &heart_position);
   }
 
   
@@ -120,7 +113,7 @@ void HeartsView::redraw(void) {
   for (i = 0; i < nb_current_hearts_displayed / 4; i++) {
     heart_position.x = (i % 10) * 9;
     heart_position.y = (i / 10) * 9;
-    SDL_BlitSurface(img_hearts, &full_heart_position, hearts_surface, &heart_position);
+    SDL_BlitSurface(img_hearts, &full_heart_position, surface_drawn, &heart_position);
   }
 
   // last heart: fraction of heart
@@ -129,17 +122,6 @@ void HeartsView::redraw(void) {
 
     heart_position.x = (i % 10) * 9;
     SDL_BlitSurface(img_hearts, &fraction_heart_positions[remaining_fraction - 1],
-		    hearts_surface, &heart_position);
-  }
-}
-
-/**
- * Displays the hearts on a surface.
- * @param destination the destination surface
- */
-void HeartsView::display(SDL_Surface *destination) {
-
-  if (!savegame->is_empty()) {
-    SDL_BlitSurface(hearts_surface, NULL, destination, &destination_position);
+		    surface_drawn, &heart_position);
   }
 }

@@ -99,11 +99,13 @@ void Game::play(void) {
 
 	    // TODO remove
 	  case SDLK_p:
-	    savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS) + 10);
+	    //	    savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS) + 10);
+	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) + 23);
 	    break;
 
 	  case SDLK_m:
-	    savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS) - 10);
+	    //	    savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS) - 10);
+	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) - 15);
 	    break;
 
 	  default:

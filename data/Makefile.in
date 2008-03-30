@@ -330,7 +330,9 @@ images_menus__DATA = \
 
 images_hud_dir = $(images_dir)/hud
 images_hud__DATA = \
-  images/hud/hearts.png				
+  images/hud/hearts.png				\
+  images/hud/rupee_icon.png			\
+  images/hud/digits.png				
 
 EXTRA_DIST = \
   $(zsdxdata_DATA)				\

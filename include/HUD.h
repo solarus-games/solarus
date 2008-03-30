@@ -2,6 +2,7 @@
 #define ZSDX_HUD_H
 
 #include "Common.h"
+#include "HudElement.h"
 
 /**
  * This class displays information on the screen such as the rupees,
@@ -13,8 +14,8 @@ class HUD {
 
   Savegame *savegame;
 
-  // hearts
-  HeartsView *hearts_view;
+  int nb_elements;
+  HudElement *elements[2];
 
  public:
 

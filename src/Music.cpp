@@ -100,14 +100,16 @@ void Music::stop(void) {
     if (!is_playing()) {
       cerr << "This music is already stopped.\n";
     }
+    else {
   
-    FMOD_RESULT result = FMOD_Channel_Stop(channel);
-
-    if (result != FMOD_OK) {
-      cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << endl;
+      FMOD_RESULT result = FMOD_Channel_Stop(channel);
+      
+      if (result != FMOD_OK) {
+	cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << endl;
+      }
+      FMOD_Sound_Release(sound);
+      sound = NULL;
     }
-    FMOD_Sound_Release(sound);
-    sound = NULL;
   }
 }
 

@@ -72,10 +72,14 @@ class GameResource;
 class TextDisplayed;
 class Savegame;
 class SelectionMenu;
-class HUD;
-class HeartsView;
-
 class TransitionEffect;
+
+class HUD;
+class HudElement;
+class CounterView;
+class HeartsView;
+class RupeesView;
+
 class Map;
 class Tileset;
 class Music;

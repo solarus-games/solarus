@@ -69,7 +69,7 @@ void RupeesView::update(void) {
 
   // max rupees
   int nb_max_rupees = savegame->get_reserved_integer(SAVEGAME_MAX_RUPEES);
-  if (nb_max_rupees != nb_max_rupees_displayed) {
+  if (nb_max_rupees_displayed != nb_max_rupees) {
     nb_max_rupees_displayed = nb_max_rupees;
 
     if (nb_max_rupees_displayed == 99) {
@@ -86,13 +86,14 @@ void RupeesView::update(void) {
   }
 
   // current rupees
-  int nb_current_rupees = savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES);
-  int nb_current_rupees_displayed = rupee_counter->get_value();
+  Uint32 nb_current_rupees = savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES);
+  unsigned int nb_current_rupees_displayed = rupee_counter->get_value();
 
-  if (nb_current_rupees != nb_current_rupees_displayed && SDL_GetTicks() > next_rupee_update_date) {
+  if (nb_current_rupees_displayed != nb_current_rupees && SDL_GetTicks() > next_rupee_update_date) {
 
     next_rupee_update_date = SDL_GetTicks() + 40;
-
+    
+    // increment or decrement the counter until the right value is reached
     if (nb_current_rupees < nb_current_rupees_displayed) {
       rupee_counter->decrement();
     }
@@ -100,7 +101,13 @@ void RupeesView::update(void) {
       rupee_counter->increment();
     }
 
-    if (nb_current_rupees_displayed % 3 == 0) {
+    // if we have just reached the right value, we play a specific sound
+    if (rupee_counter->get_value() == nb_current_rupees) {
+      zsdx->game_resource->get_sound("rupee_counter_end")->play();
+    }
+
+    // while the counter is scrolling, play a sound (every 3 values)
+    else if (nb_current_rupees_displayed % 3 == 0) {
       zsdx->game_resource->get_sound("rupee_counter")->play();
     }
 

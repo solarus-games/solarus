@@ -35,11 +35,11 @@ void Sound::initialize(void) {
   FMOD_System_Create(&system);
 
   // first we try to initialize FMOD with the default configuration
-  if (FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL) != FMOD_OK) {
+  if (FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL) != FMOD_OK) {
 
     // if it doesn't work, we try other output types for Linux
     FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
-    result = FMOD_System_Init(system, 4, FMOD_INIT_NORMAL, NULL);
+    result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
 
     if (result != FMOD_OK) {
       cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
@@ -67,6 +67,10 @@ bool Sound::is_initialized(void) {
   return system != NULL;
 }
 
+void Sound::update(void) {
+  FMOD_System_Update(system);
+}
+
 /**
  * Loads the file and plays the sound.
  * @return true if the sound was loaded successfully, false otherwise
@@ -84,7 +88,7 @@ bool Sound::play(void) {
       cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
     }
     else {
-      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, false, &channel);
+      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);
 
       if (result != FMOD_OK) {
 	cerr << "Unable to play sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;

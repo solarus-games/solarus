@@ -20,6 +20,7 @@ class Sound {
   static FMOD_SYSTEM *system;
 
   FMOD_SOUND *sound;
+  FMOD_CHANNEL *channel;
 
   /**
    * Name of the sound file.
@@ -29,7 +30,6 @@ class Sound {
   inline Sound(void) { }
 
  public:
-  FMOD_CHANNEL *channel;
 
   Sound(SoundId sound_id);
   virtual ~Sound(void);
@@ -37,6 +37,7 @@ class Sound {
   static void initialize(void);
   static void exit(void);
   static bool is_initialized(void);
+  static void update(void);
 
   virtual bool play(void);
   bool is_playing(void);

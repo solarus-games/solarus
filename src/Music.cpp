@@ -20,13 +20,19 @@ Music::Music(MusicId music_id) {
 
   sound = NULL;
   file_name = (string) FileTools::data_file_get_prefix() + "/music/" + music_id;
+
+  /*
+   * The musics are played with the highest priority.
+   * Otherwise, they would be interrupted by the sound effects sometimes.
+   */
+  FMOD_System_GetChannel(system, 0, &channel);
+  FMOD_Channel_SetPriority(channel, 0);
 }
 
 /**
  * Destroys the music.
  */
 Music::~Music(void) {
-
 }
 
 /**
@@ -76,7 +82,8 @@ bool Music::play(void) {
       cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
     }
     else {
-      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);
+      
+      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, false, &channel);
 
       if (result != FMOD_OK) {
 	cerr << "Unable to play music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
@@ -98,7 +105,7 @@ void Music::stop(void) {
   if (is_initialized()) {
 
     if (!is_playing()) {
-      cerr << "This music is already stopped.\n";
+      cerr << "The music '" << file_name << "' is already stopped.\n";
     }
     else {
   
@@ -107,9 +114,10 @@ void Music::stop(void) {
       if (result != FMOD_OK) {
 	cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << endl;
       }
-      FMOD_Sound_Release(sound);
-      sound = NULL;
     }
+
+    FMOD_Sound_Release(sound);
+    sound = NULL;
   }
 }
 

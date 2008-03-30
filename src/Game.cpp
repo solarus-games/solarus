@@ -12,6 +12,7 @@
 #include "Savegame.h"
 #include "Color.h"
 #include "HUD.h"
+#include "Sound.h"
 
 /**
  * Creates a game.
@@ -146,6 +147,9 @@ void Game::play(void) {
 
     // update the HUD
     hud->update();
+
+    // update the sound system
+    Sound::update();
 
     // display everything each time frame
     ticks = SDL_GetTicks();
@@ -284,6 +288,8 @@ void Game::play_music(MusicId new_music_id) {
     if (Music::isNoneId(new_music_id) && current_music != NULL) {
       
       current_music->stop();
+      current_music_id = Music::none;
+      current_music = NULL;
     }
     else {
 

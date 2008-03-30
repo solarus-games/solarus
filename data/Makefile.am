@@ -18,6 +18,7 @@ sound__DATA =					\
   sounds/chest_appears.wav			\
   sounds/chest_open.wav				\
   sounds/cursor.wav				\
+  sounds/danger.wav				\
   sounds/door_closed.wav			\
   sounds/door_open.wav				\
   sounds/drowning.wav				\
@@ -121,45 +122,39 @@ sprites_link__DATA = 				\
   sprites/link/shield3.zsd			
 
 images_dir = $(zsdxdatadir)/images
-images__DATA =					\
-  images/title.png				\
-  images/zelda_solarus_presents.png		
+images__DATA =					
 
 images_tilesets_dir = $(images_dir)/tilesets
 images_tilesets__DATA = 			\
   images/tilesets/tileset0000.png		
 
-images_sprites_dir = $(images_dir)/sprites
-images_sprites__DATA =					
-
-images_sprites_link_dir = $(images_dir)/sprites/link
-images_sprites_link__DATA = 			\
-  images/sprites/link/stopped_tunic.png		\
-  images/sprites/link/stopped_shield.png	\
-  images/sprites/link/walking_tunic.png		\
-  images/sprites/link/walking_shield.png	\
-  images/sprites/link/sword_tunic0.png		\
-  images/sprites/link/sword_tunic1.png		\
-  images/sprites/link/sword_tunic2.png		\
-  images/sprites/link/sword_sword1.png		\
-  images/sprites/link/sword_sword2.png		\
-  images/sprites/link/sword_sword3.png		\
-  images/sprites/link/sword_sword4.png		\
-  images/sprites/link/sword_shield1.png		\
-  images/sprites/link/sword_shield2.png		\
-  images/sprites/link/sword_shield3.png		
-
-images_sprites_menus_dir = $(images_sprites_dir)/menus
-images_sprites_menus__DATA =			\
-  images/sprites/menus/cursor.png
+images_link_dir = $(images_dir)/link
+images_link__DATA = 				\
+  images/link/stopped_tunic.png			\
+  images/link/stopped_shield.png		\
+  images/link/walking_tunic.png			\
+  images/link/walking_shield.png		\
+  images/link/sword_tunic0.png			\
+  images/link/sword_tunic1.png			\
+  images/link/sword_tunic2.png			\
+  images/link/sword_sword1.png			\
+  images/link/sword_sword2.png			\
+  images/link/sword_sword3.png			\
+  images/link/sword_sword4.png			\
+  images/link/sword_shield1.png			\
+  images/link/sword_shield2.png			\
+  images/link/sword_shield3.png			
 
 images_menus_dir = $(images_dir)/menus
 images_menus__DATA = 				\
+  images/menus/title.png			\
+  images/menus/zelda_solarus_presents.png	\
   images/menus/cloud.png			\
   images/menus/select_a_file.png		\
   images/menus/save1.png			\
   images/menus/save2.png			\
-  images/menus/save3.png			
+  images/menus/save3.png			\
+  images/menus/cursor.png
 
 images_hud_dir = $(images_dir)/hud
 images_hud__DATA =				\
@@ -178,8 +173,6 @@ EXTRA_DIST =					\
   $(sprites_menus__DATA)			\
   $(images__DATA)				\
   $(images_tilesets__DATA)			\
-  $(images_sprites__DATA)			\
-  $(images_sprites_link__DATA)			\
-  $(images_sprites_menus__DATA)			\
+  $(images_link__DATA)				\
   $(images_menus__DATA)				\
   $(images_hud__DATA)				

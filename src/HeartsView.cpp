@@ -28,7 +28,8 @@ SDL_Rect HeartsView::fraction_heart_positions[3] = {
  */
 HeartsView::HeartsView(Savegame *savegame, int x, int y):
   HudElement(savegame, x, y, 90, 18),
-  next_heart_update_date(SDL_GetTicks()) {
+  next_heart_update_date(SDL_GetTicks()),
+  next_danger_sound_date(SDL_GetTicks()) {
 
   img_hearts = FileTools::open_image("hud/hearts.png");
 
@@ -74,7 +75,8 @@ void HeartsView::update(void) {
     else {
       nb_current_hearts_displayed++;
 
-      if (nb_current_hearts_displayed % 4 == 0) {
+      if (nb_current_hearts_displayed % 4 == 0 
+	  && !zsdx->game_resource->get_sound("picked_item")->is_playing()) {
 	zsdx->game_resource->get_sound("heart")->play();
       }
     }
@@ -85,6 +87,15 @@ void HeartsView::update(void) {
   // redraw the surface if something has changed
   if (need_rebuild) {
     rebuild();
+  }
+
+  // play the 'danger' sound if the player has less than 1/4 of his hearts left
+  if (nb_current_hearts_displayed <= nb_max_hearts
+      && SDL_GetTicks() > next_danger_sound_date) {
+
+    next_danger_sound_date = SDL_GetTicks() + 750;
+
+    zsdx->game_resource->get_sound("danger")->play();
   }
 }
 

@@ -41,6 +41,7 @@
 4	chest_appears	chest_appears
 4	chest_open	chest_open
 4	cursor	cursor
+4	danger	danger
 4	door_closed	door_closed
 4	door_open	door_open
 4	drowning	drowning

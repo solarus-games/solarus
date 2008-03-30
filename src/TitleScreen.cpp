@@ -71,7 +71,7 @@ void TitleScreen::phase_2_zs_presents(void) {
 
   SDL_Event event;
 
-  SDL_Surface *img_zs_presents = FileTools::open_image("zelda_solarus_presents.png");
+  SDL_Surface *img_zs_presents = FileTools::open_image("menus/zelda_solarus_presents.png");
   zsdx->game_resource->get_sound("intro")->play();
   SDL_Rect position = {112, 96, 0, 0};
   Uint32 end_intro_time = SDL_GetTicks() + 2000; // intro: 2 seconds
@@ -107,7 +107,7 @@ void TitleScreen::phase_3_title(void) {
 
   SDL_Event event;
 
-  SDL_Surface *img_title = FileTools::open_image("title.png");
+  SDL_Surface *img_title = FileTools::open_image("menus/title.png");
   Music *title_screen_music = zsdx->game_resource->get_music("title_screen_full.it");
   title_screen_music->play();
   TransitionEffect *transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);

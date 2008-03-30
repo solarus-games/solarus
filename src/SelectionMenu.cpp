@@ -12,6 +12,7 @@
 #include "FileTools.h"
 #include "TextDisplayed.h"
 #include "TransitionEffect.h"
+#include "HeartsView.h"
 
 /**
  * Creates a selection menu.
@@ -133,6 +134,8 @@ SelectionMenu::~SelectionMenu(void) {
 
   for (int i = 0; i < 3; i++) {
     delete text_player_names[i];
+    delete hearts_views[i];
+    delete savegames[i];
   }
 
   delete cursor;
@@ -148,14 +151,15 @@ void SelectionMenu::read_saves(void) {
   for (int i = 0; i < 3; i++) {
 
     sprintf(file_name, "save%d.zsd", i + 1);
-    Savegame *savegame = new Savegame(file_name);
+    savegames[i] = new Savegame(file_name);
 
     // get the data
-    const char *player_name;
-    if (!savegame->is_empty()) {
 
-      // player name
-      player_name = savegame->get_reserved_string(SAVEGAME_PLAYER_NAME);
+    // player name
+    const char *player_name;
+    if (!savegames[i]->is_empty()) {
+
+      player_name = savegames[i]->get_reserved_string(SAVEGAME_PLAYER_NAME);
     }
     else {
       player_name = "- Vide -";
@@ -168,8 +172,9 @@ void SelectionMenu::read_saves(void) {
     text_player_names[i] = new TextDisplayed(TEXT_SOLID, ALIGN_LEFT, ALIGN_MIDDLE);
     text_player_names[i]->set_text_color(255, 255, 255);
     text_player_names[i]->create_text(player_name, 87, 88 + i * 27);
-    
-    delete savegame;
+
+    // hearts
+    hearts_views[i] = new HeartsView(savegames[i], 168, 78 + i * 27);
   }
 }
 
@@ -222,6 +227,13 @@ void SelectionMenu::show(void) {
 	    ok_sound->play();
 	  }
 	  else {
+	    
+	    // temporary (the savegame should be created when the user typed the name
+	    if (savegames[cursor_position - 1]->is_empty()) {
+	      savegames[cursor_position - 1]->set_reserved_string(SAVEGAME_PLAYER_NAME, "Link");
+	      savegames[cursor_position - 1]->save();
+	    }
+	    
 	    start = true;
 	    ok_sound->play();
 	  }
@@ -314,7 +326,7 @@ Savegame * SelectionMenu::get_selected_save(void) {
   if (cursor_position <= 3 && !zsdx->is_exiting()) {
 
     char file_name[10];
-    sprintf(file_name, "save%d.zsd", cursor_position - 1);
+    sprintf(file_name, "save%d.zsd", cursor_position);
     return new Savegame(file_name);
   }
   
@@ -378,9 +390,10 @@ void SelectionMenu::redraw(void) {
   position.h = 165;
   SDL_BlitSurface(img_menu, NULL, destination_surface, &position);
 
-  // savegame names
+  // savegame names + hearts
   for (i = 0; i < 3; i++) {
     text_player_names[i]->display(destination_surface);
+    hearts_views[i]->display(destination_surface);
   }
 
   // cursor

@@ -106,6 +106,8 @@ class Savegame {
   char file_name[32];
   SavedData saved_data;
 
+  void set_default_values(void);
+
  public:
   
   Savegame(const char *file_name);

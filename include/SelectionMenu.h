@@ -30,8 +30,7 @@ class SelectionMenu {
 
   // savegames data
   TextDisplayed *text_player_names[3];
-  SDL_Surface *img_max_hearts[3];
-  SDL_Surface *img_current_hearts[3];
+  HeartsView *hearts_views[3];
   // TODO img_link
 
   // clouds data

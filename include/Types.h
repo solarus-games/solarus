@@ -73,6 +73,7 @@ class TextDisplayed;
 class Savegame;
 class SelectionMenu;
 class HUD;
+class HeartsView;
 
 class TransitionEffect;
 class Map;

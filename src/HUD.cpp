@@ -4,19 +4,30 @@
 
 #include "HUD.h"
 #include "FileTools.h"
+#include "Savegame.h"
+#include "HeartsView.h"
 
 /**
  * Constructor.
  */
-HUD::HUD(void) {
-  img_hearts = FileTools::open_image("hud/hearts.png");
+HUD::HUD(Savegame *savegame):
+  savegame(savegame) {
+
+  hearts_view = new HeartsView(savegame, 216, 14);
 }
 
 /**
  * Destructor.
  */
 HUD::~HUD(void) {
-  SDL_FreeSurface(img_hearts);
+  delete hearts_view;
+}
+
+/**
+ * Update the HUD.
+ */
+void HUD::update(void) {
+  hearts_view->update();
 }
 
 /**
@@ -26,6 +37,8 @@ HUD::~HUD(void) {
 void HUD::display(SDL_Surface *destination) {
 
   // hearts
+  hearts_view->display(destination);
+
   // rupees
   // magic bar
   // objects

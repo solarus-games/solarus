@@ -9,7 +9,6 @@
  * @param file_name name of the savegame file (can be a new file)
  */
 Savegame::Savegame(const char *file_name) {
-  memset(&saved_data, 0x0000, sizeof(SavedData));
   strncpy(this->file_name, file_name, 32);
 
   FILE *file = fopen(file_name, "r");
@@ -17,6 +16,7 @@ Savegame::Savegame(const char *file_name) {
   if (file == NULL) {
     // this save slot is free
     empty = true;
+    set_default_values();
   }
   else {
     // a save already exists, let's load it
@@ -41,6 +41,15 @@ bool Savegame::is_empty() {
   return empty;
 }
 
+/**
+ * Loads the default values.
+ */
+void Savegame::set_default_values(void) {
+  memset(&saved_data, 0x0000, sizeof(SavedData));
+
+  set_reserved_integer(SAVEGAME_MAX_HEARTS, 3);
+  set_reserved_integer(SAVEGAME_CURRENT_HEARTS, 12);
+}
 
 /**
  * Saves the data into a file.

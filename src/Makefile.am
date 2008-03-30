@@ -12,6 +12,7 @@ zsdx_SOURCES = 						\
   TitleScreen.cpp					\
   SelectionMenu.cpp					\
   HUD.cpp						\
+  HeartsView.cpp					\
   Map.cpp						\
   MapEntrance.cpp					\
   MapEntity.cpp						\
@@ -54,6 +55,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/TitleScreen.h			\
   $(zsdxincludedir)/SelectionMenu.h			\
   $(zsdxincludedir)/HUD.h				\
+  $(zsdxincludedir)/HeartsView.h			\
   $(zsdxincludedir)/Map.h				\
   $(zsdxincludedir)/MapEntrance.h			\
   $(zsdxincludedir)/MapEntity.h				\

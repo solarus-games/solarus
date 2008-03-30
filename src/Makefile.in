@@ -46,9 +46,9 @@ PROGRAMS = $(bin_PROGRAMS)
 am_zsdx_OBJECTS = ZSDX.$(OBJEXT) FileTools.$(OBJEXT) Game.$(OBJEXT) \
 	GameResource.$(OBJEXT) Savegame.$(OBJEXT) \
 	TextDisplayed.$(OBJEXT) TitleScreen.$(OBJEXT) \
-	SelectionMenu.$(OBJEXT) HUD.$(OBJEXT) Map.$(OBJEXT) \
-	MapEntrance.$(OBJEXT) MapEntity.$(OBJEXT) Moving.$(OBJEXT) \
-	MovingWithCollision.$(OBJEXT) \
+	SelectionMenu.$(OBJEXT) HUD.$(OBJEXT) HeartsView.$(OBJEXT) \
+	Map.$(OBJEXT) MapEntrance.$(OBJEXT) MapEntity.$(OBJEXT) \
+	Moving.$(OBJEXT) MovingWithCollision.$(OBJEXT) \
 	MovingWithSmoothCollision.$(OBJEXT) Moving8ByPlayer.$(OBJEXT) \
 	EntityDetector.$(OBJEXT) MapExit.$(OBJEXT) \
 	AnimatedSprite.$(OBJEXT) SpriteAnimations.$(OBJEXT) \
@@ -175,6 +175,7 @@ zsdx_SOURCES = \
   TitleScreen.cpp					\
   SelectionMenu.cpp					\
   HUD.cpp						\
+  HeartsView.cpp					\
   Map.cpp						\
   MapEntrance.cpp					\
   MapEntity.cpp						\
@@ -217,6 +218,7 @@ EXTRA_DIST = \
   $(zsdxincludedir)/TitleScreen.h			\
   $(zsdxincludedir)/SelectionMenu.h			\
   $(zsdxincludedir)/HUD.h				\
+  $(zsdxincludedir)/HeartsView.h			\
   $(zsdxincludedir)/Map.h				\
   $(zsdxincludedir)/MapEntrance.h			\
   $(zsdxincludedir)/MapEntity.h				\
@@ -319,6 +321,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Game.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GameResource.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HUD.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HeartsView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Link.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Map.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MapEntity.Po@am__quote@

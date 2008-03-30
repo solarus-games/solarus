@@ -1,7 +1,3 @@
-/**
- * This module defines the class HUD.
- */
-
 #ifndef ZSDX_HUD_H
 #define ZSDX_HUD_H
 
@@ -15,14 +11,17 @@ class HUD {
 
  private:
 
-  // all images
-  SDL_Surface *img_hearts;
+  Savegame *savegame;
+
+  // hearts
+  HeartsView *hearts_view;
 
  public:
 
-  HUD(void);
+  HUD(Savegame *savegame);
   ~HUD(void);
 
+  void update();
   void display(SDL_Surface *destination);
 
 };

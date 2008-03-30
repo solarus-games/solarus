@@ -19,7 +19,7 @@
  */
 Game::Game(Savegame *savegame):
   savegame(savegame), control_enabled(false), current_map(NULL), next_map(NULL),
-  transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(new HUD()),
+  transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(new HUD(savegame)),
   current_music_id(Music::none), current_music(NULL) {
   
 }
@@ -97,6 +97,15 @@ void Game::play(void) {
 	    link->start_sword();
 	    break;
 
+	    // TODO remove
+	  case SDLK_p:
+	    savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS) + 10);
+	    break;
+
+	  case SDLK_m:
+	    savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS) - 10);
+	    break;
+
 	  default:
 	    break;
 	  }
@@ -132,6 +141,9 @@ void Game::play(void) {
     
     // update the sprites animations and positions
     current_map->update_sprites();
+
+    // update the HUD
+    hud->update();
 
     // display everything each time frame
     ticks = SDL_GetTicks();

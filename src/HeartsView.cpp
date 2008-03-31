@@ -85,18 +85,34 @@ void HeartsView::update(void) {
     need_rebuild = true;
   }
 
+  /* If we are in game and the player has less than 1/4 of his hearts left,
+   * play the 'danger' sound and animate the empty hearts
+   */
+  if (zsdx->game != NULL) {
+
+    if (nb_current_hearts_displayed <= nb_max_hearts) {
+
+      if (empty_heart_sprite->get_current_animation() != "danger") {
+	empty_heart_sprite->set_current_animation("danger");
+      }
+      empty_heart_sprite->update_current_frame();
+
+      if (SDL_GetTicks() > next_danger_sound_date) {
+	next_danger_sound_date = SDL_GetTicks() + 750;
+	zsdx->game_resource->get_sound("danger")->play();
+      }
+
+      need_rebuild = true;
+    }
+    else if (empty_heart_sprite->get_current_animation() != "normal") {
+      empty_heart_sprite->set_current_animation("normal");
+      need_rebuild = true;
+    }
+  }
+
   // redraw the surface if something has changed
   if (need_rebuild) {
     rebuild();
-  }
-
-  // play the 'danger' sound if the player has less than 1/4 of his hearts left
-  if (nb_current_hearts_displayed <= nb_max_hearts
-      && SDL_GetTicks() > next_danger_sound_date) {
-
-    next_danger_sound_date = SDL_GetTicks() + 750;
-
-    zsdx->game_resource->get_sound("danger")->play();
   }
 }
 
@@ -110,18 +126,17 @@ void HeartsView::rebuild(void) {
   // max hearts
 
   // blit each empty heart on the hearts surface
-  SDL_Rect heart_position = {0, 0, 9, 9};
   
   for (int i = 0; i < nb_max_hearts_displayed; i++) {
-    heart_position.x = (i % 10) * 9;
-    heart_position.y = (i / 10) * 9;
-    // TODO sprite
-    //    SDL_BlitSurface(img_hearts, &empty_heart_position, surface_drawn, &heart_position);
+    int x = (i % 10) * 9;
+    int y = (i / 10) * 9;
+
+    empty_heart_sprite->display(surface_drawn, x, y);
   }
 
   
   // current hearts
-  heart_position.x = 36;
+  SDL_Rect heart_position = {0, 0, 9, 9};
   int i;
   for (i = 0; i < nb_current_hearts_displayed / 4; i++) {
     heart_position.x = (i % 10) * 9;

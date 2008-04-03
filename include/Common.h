@@ -5,8 +5,13 @@
 #ifndef ZSDX_COMMON_H
 #define ZSDX_COMMON_H
 
-using namespace std;
+#define _CRT_SECURE_NO_DEPRECATE // allow sprintf in Visual C++...
+
+#include <string>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+using namespace std;
 #include <cstdlib>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
@@ -21,8 +26,10 @@ using namespace std;
 #define MIN(x,y) ((x > y) ? (y) : (x))
 #define MAX(x,y) ((x > y) ? (x) : (y))
 
+/*
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__)
 #define WINDOWS 1
 #endif
+*/
 
 #endif

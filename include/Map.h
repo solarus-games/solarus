@@ -5,8 +5,8 @@
 #ifndef ZSDX_MAP_H
 #define ZSDX_MAP_H
 
-#include <vector>
 #include "Common.h"
+#include <vector>
 
 /**
  * Abstract class for the maps.

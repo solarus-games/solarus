@@ -134,7 +134,7 @@ bool Music::is_paused(void) {
   FMOD_BOOL pause;
   FMOD_Channel_GetPaused(channel, &pause);
 
-  return pause;
+  return pause != 0;
 }
 
 /**

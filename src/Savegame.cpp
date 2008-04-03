@@ -136,7 +136,7 @@ bool Savegame::get_boolean(int index) {
 
   //  cout << "getting value at index " << index << ": " << ((word >> (index % 32)) & 0x0001 != 0x0000) << endl;
 
-  return (word >> (index % 32)) & 0x0001 != 0x0000;
+  return ((word >> (index % 32)) & 0x0001) != 0x0000;
 }
 
 /**

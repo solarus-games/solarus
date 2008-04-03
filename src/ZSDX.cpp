@@ -69,11 +69,11 @@ ZSDX::ZSDX(void) {
  * Cleans everything.
  */
 ZSDX::~ZSDX(void) {
+  delete game_resource;
   TTF_CloseFont(font);
   TTF_Quit();
   SDL_Quit();
   Music::exit();
-  delete game_resource;
 }
 
 /**
@@ -235,7 +235,6 @@ Lorsqu'il lance ce mode, le jeu affiche les écrans suivants :
  * Entry point of the program.
  */
 int main(int argc, char **argv) {
-
   zsdx = new ZSDX();
   zsdx->main();
   delete zsdx;

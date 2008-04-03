@@ -1,11 +1,11 @@
 # Under Windows, the data are installed in $(ZSDX_INSTALL_PATH)/data
 # instead of ${ZSDX_INSTALL_PATH}/share/zsdx
 
-if (NOT CMAKE_HOST_WIN32)
+if (NOT WIN32)
    set (ZSDX_INSTALL_DATA_PATH share/zsdx)
-else (NOT CMAKE_HOST_WIN32)
+else (NOT WIN32)
    set (ZSDX_INSTALL_DATA_PATH data)
-endif (NOT CMAKE_HOST_WIN32)
+endif (NOT WIN32)
 
 INSTALL(FILES
 	project_db.zsd

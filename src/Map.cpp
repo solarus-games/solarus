@@ -2,9 +2,6 @@
  * This module defines the class Map.
  */
 
-#include <string>
-#include <sstream>
-#include <fstream>
 #include "Map.h"
 #include "ZSDX.h"
 #include "Game.h"

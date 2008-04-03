@@ -5,8 +5,6 @@
  * See the directory images/tilesets.
  */
 
-#include <fstream>
-#include <sstream>
 #include "Tileset.h"
 #include "SimpleTile.h"
 #include "AnimatedTile.h"

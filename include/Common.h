@@ -14,7 +14,6 @@ using namespace std;
 
 #ifndef ZSDX_CONFIG_H
 #define ZSDX_CONFIG_H
-#include "config.h"
 #endif
 
 #include "Types.h"

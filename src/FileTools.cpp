@@ -16,10 +16,10 @@
  * be the location of the executable file). This is the normal behavior on Windows
  * platforms, because the user downloads a binary version of the game.
  */
-#ifdef WINDOWS
-#define DATADIR "./data"
-#else
+#ifdef DATADIR_ 
 #define DATADIR STRING(DATADIR_)
+#else
+#define DATADIR "./data"
 #endif
 
 /**

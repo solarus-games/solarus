@@ -42,10 +42,20 @@ add_executable (zsdx
 	       TransitionFade.cpp
 )
 
+# Under Windows, at runtime, the data directory is relative to the current directory
+if (NOT CMAKE_HOST_WIN32)
+   SET_TARGET_PROPERTIES(zsdx PROPERTIES
+			 COMPILE_FLAGS -DDATADIR_="${CMAKE_INSTALL_PREFIX}/share/zsdx")
+endif (NOT CMAKE_HOST_WIN32)
+
 target_link_libraries (zsdx
 		      SDL
 		      SDLmain
 		      SDL_image
 		      SDL_ttf
 		      fmodex
+)
+
+INSTALL(TARGETS	zsdx
+	RUNTIME DESTINATION bin
 )

@@ -109,6 +109,15 @@ void Game::play(void) {
 	    //	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) - 15);
 	    break;
 
+	    // TODO remove
+	  case SDLK_o:
+	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) + 23);
+	    break;
+
+	  case SDLK_l:
+	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) - 15);
+	    break;
+
 	  case SDLK_s:
 	    savegame->save();
 	    break;

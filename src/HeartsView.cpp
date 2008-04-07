@@ -133,7 +133,6 @@ void HeartsView::rebuild(void) {
 
     empty_heart_sprite->display(surface_drawn, x, y);
   }
-
   
   // current hearts
   SDL_Rect heart_position = {0, 0, 9, 9};

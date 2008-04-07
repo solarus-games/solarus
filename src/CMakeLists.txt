@@ -3,6 +3,7 @@ include_directories (${ZSDX_SOURCE_DIR}/include)
 add_executable (zsdx
 	       ZSDX.cpp
 	       FileTools.cpp
+	       KeysEffect.cpp
 	       Game.cpp
 	       GameResource.cpp
 	       Savegame.cpp

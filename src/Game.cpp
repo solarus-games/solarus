@@ -13,13 +13,15 @@
 #include "Color.h"
 #include "HUD.h"
 #include "Sound.h"
+#include "KeysEffect.h"
 
 /**
  * Creates a game.
  * @param savegame the saved data of this game
  */
 Game::Game(Savegame *savegame):
-  savegame(savegame), control_enabled(false), current_map(NULL), next_map(NULL),
+  savegame(savegame), control_enabled(false), keys_effect(new KeysEffect()),
+  current_map(NULL), next_map(NULL),
   transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(new HUD(savegame)),
   current_music_id(Music::none), current_music(NULL) {
   
@@ -29,6 +31,7 @@ Game::Game(Savegame *savegame):
  * Destroys the game.
  */
 Game::~Game(void) {
+  delete keys_effect;
   delete hud;
 }
 

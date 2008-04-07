@@ -23,7 +23,14 @@ class Game {
   /**
    * True if the player has control.
    */
+  // TODO: useless since keys_effect exists?
   bool control_enabled;
+
+  /**
+   * Current effect associated to the main game keys
+   * (represented on the HUD by the action icon, the objects icons, etc.).
+   */
+  KeysEffect *keys_effect;
 
   /**
    * The map currently displayed.

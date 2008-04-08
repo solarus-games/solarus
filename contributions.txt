@@ -1,0 +1,27 @@
+Ce fichier donne la liste de toutes les personnes qui ont contribué au projet,
+même pour des petites contributions.
+Il servira pour le générique de fin.
+
+Equipe officielle :
+
+Christopho
+Metallizer
+Geomaster
+Irzul
+Linkdu83
+Vaatiking01
+Noxneo
+
+Contributions annexes :
+
+Newlink + Yoshi04 (boss brute initialement prévu pour Spherdon's Crystals)
+
+Pas encore sûrs :
+
+Julien Clément ? (éditeur de maps)
+Kuro ? (dessins)
+Binbin (maps, donjon ou phase inédite, trailer)
+
+Ancien ZS :
+
+Guillaume Fuss (scénario)

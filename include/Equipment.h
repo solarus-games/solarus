@@ -41,8 +41,8 @@ class Equipment {
 
   int get_rupees(void);
   void set_rupees(int rupees);
-  void add_rupees(int rupees);
-  void remove_rupees(int rupees);
+  void add_rupees(int rupees_to_add);
+  void remove_rupees(int rupees_to_remove);
 
   // hearts
   int get_max_hearts(void);
@@ -51,8 +51,8 @@ class Equipment {
 
   int get_hearts(void);
   void set_hearts(int hearts);
-  void add_hearts(int hearts);
-  void remove_hearts(int hearts);
+  void add_hearts(int hearts_to_add);
+  void remove_hearts(int hearts_to_remove);
   void restore_all_hearts(void);
 
   void add_piece_of_heart(int piece_of_heart_id);

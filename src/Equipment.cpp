@@ -22,6 +22,8 @@ Equipment::~Equipment(void) {
 
 }
 
+// tunic
+
 /**
  * Returns the number of Link's tunic.
  * @return Link's tunic number (0: green tunic,
@@ -51,6 +53,8 @@ void Equipment::set_tunic_number(int tunic_number) {
     link->initialize_sprites(); // reinitialize Link's sprites
   }
 }
+
+// sword
 
 /**
  * Returns whether Link has a sword.
@@ -90,6 +94,8 @@ void Equipment::set_sword_number(int sword_number) {
   }
 }
 
+// shield
+
 /**
  * Returns whether Link has a shield.
  * @return true if Link has a shield, i.e. if get_shield_number() > 0
@@ -126,4 +132,75 @@ void Equipment::set_shield_number(int shield_number) {
     savegame->set_reserved_integer(SAVEGAME_LINK_SHIELD, shield_number);
     link->initialize_sprites();
   }
+}
+
+// rupees
+
+/**
+ * Returns the maximum number of rupees of Link.
+ * @return Link's maximum number of rupees (99, 199 or 999)
+ */
+int Equipment::get_max_rupees(void) {
+  return savegame->get_reserved_integer(SAVEGAME_MAX_RUPEES);
+}
+
+/**
+ * Sets the maximum number of rupees of Link.
+ * @param max_rupees Link's maximum number of rupees (99, 199 or 999)
+ */
+void Equipment::set_max_rupees(int max_rupees) {
+  
+  if (max_rupees != 99 && max_rupees != 199 && max_rupees != 999) {
+    cerr << "Illegal maximum number of rupees: " << max_rupees << endl;
+    exit(1);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_MAX_RUPEES, max_rupees);
+}
+
+/**
+ * Returns Link's current number of rupees.
+ * @return Link's current number of rupees
+ */
+int Equipment::get_rupees(void) {
+  return savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES);
+}
+
+/**
+ * Sets Link's current number of rupees.
+ * Exits with an error message if the given number of rupees is not valid.
+ * @param rupees Link's new number of rupees
+ */
+void Equipment::set_rupees(int rupees) {
+
+  if (rupees < 0 || rupees > get_max_rupees()) {
+    cerr << "Illegal number of rupees: " << rupees << endl;
+    exit(1);
+  }
+  
+  savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, rupees);
+}
+
+/**
+ * Adds some rupees to Link.
+ * If the maximum number of rupees is achieved, no more rupees are added.
+ * @param rupees number of rupees to add
+ */
+void Equipment::add_rupees(int rupees_to_add) {
+
+  int max_rupees = get_max_rupees();
+  int total = get_rupees() + rupees_to_add;
+
+  set_rupees(MIN(total, max_rupees));
+}
+
+/**
+ * Removes some rupees to Link.
+ * If the number of rupees achieves zero, no more rupees are removed.
+ */
+void Equipment::remove_rupees(int rupees) {
+
+  int total = get_rupees() - rupees;
+  
+  set_rupees(MAX(total, 0));
 }

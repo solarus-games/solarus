@@ -1,0 +1,75 @@
+#ifndef ZSDX_EQUIPMENT_H
+#define ZSDX_EQUIPMENT_H
+
+#include "Common.h"
+
+/**
+ * This class represents Link's equipment. It makes the interface
+ * between the savegame and other engine classes.
+ * You should call this class to know his current equipment
+ * (sword, rupees, objects...) and to modify it.
+ */
+class Equipment {
+
+ private:
+
+  Savegame *savegame;
+  Link *link;
+
+ public:
+
+  Equipment(Link *link);
+  ~Equipment(void);
+
+  // tunic
+  int get_tunic_number(void);
+  void set_tunic_number(int tunic_number);
+
+  // sword
+  bool has_sword(void);
+  int get_sword_number(void);
+  void set_sword_number(int sword_number);
+
+  // shield
+  bool has_shield(void);
+  int get_shield_number(void);
+  void set_shield_number(int shield_number);
+
+  // rupees
+  int get_max_rupees(void);
+  void set_max_rupees(int max_rupees);
+
+  int get_rupees(void);
+  void set_rupees(int rupees);
+  void add_rupees(int rupees);
+  void remove_rupees(int rupees);
+
+  // hearts
+  int get_max_hearts(void);
+  void set_max_hearts(int max_hearts);
+  void increase_max_hearts(void);
+
+  int get_hearts(void);
+  void set_hearts(int hearts);
+  void add_hearts(int hearts);
+  void remove_hearts(int hearts);
+  void restore_all_hearts(void);
+
+  void add_piece_of_heart(int piece_of_heart_id);
+
+  // magic
+  int get_max_magic(void);
+  void set_max_magic(int max_magic);
+
+  int get_magic(void);
+  void set_magic(int magic);
+  void add_magic(int magic);
+  void remove_magic(int magic);
+  void start_removing_magic(int delay);
+  void stop_removing_magic(void);
+
+  // TODO: objects, dungeon objects...
+  
+};
+
+#endif

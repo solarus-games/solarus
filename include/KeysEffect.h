@@ -55,10 +55,10 @@ class KeysEffect {
 
  private:
 
-  ActionKeyEffect action_key_effect; // effect of the Action key
+  ActionKeyEffect action_key_effect; // effect of the action key
   bool action_key_enabled;
 
-  SwordKeyEffect sword_key_effect; // effect of the Sword key
+  SwordKeyEffect sword_key_effect; // effect of the sword key
   bool sword_key_enabled;
 
   PauseKeyEffect pause_key_effect; // effect of the pause key
@@ -73,28 +73,28 @@ class KeysEffect {
   KeysEffect(void);
   ~KeysEffect(void);
 
-  // Action key
+  // action key
 
   ActionKeyEffect get_action_key_effect(void);
   void set_action_key_effect(ActionKeyEffect action_key_effect);
   bool is_action_key_enabled(void);
   void set_action_key_enabled(bool enable);
 
-  // Sword key
+  // sword key
 
   SwordKeyEffect get_sword_key_effect(void);
   void set_sword_key_effect(SwordKeyEffect sword_key_effect);
   bool is_sword_key_enabled(void);
   void set_sword_key_enabled(bool enable);
 
-  // Pause key
+  // pause key
 
   PauseKeyEffect get_pause_key_effect(void);
   void set_pause_key_effect(PauseKeyEffect pause_key_effect);
   bool is_pause_key_enabled(void);
   void set_pause_key_enabled(bool enable);
 
-  // Item keys
+  // item keys
 
   int get_current_item_1(void);
   void set_current_item_1(int item);

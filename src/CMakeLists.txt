@@ -7,6 +7,7 @@ add_executable (zsdx
 	       Game.cpp
 	       GameResource.cpp
 	       Savegame.cpp
+	       Equipment.cpp
 	       TextDisplayed.cpp
 	       TitleScreen.cpp
 	       SelectionMenu.cpp

@@ -16,7 +16,6 @@ HUD::HUD(Savegame *savegame):
 
   nb_elements = 0;
 
-  // hearts
   elements[nb_elements++] = new HeartsView(savegame, 216, 14);
   elements[nb_elements++] = new RupeesView(savegame, 8, 216);
 }

@@ -23,7 +23,6 @@ class Game {
   /**
    * True if the player has control.
    */
-  // TODO: useless since keys_effect exists?
   bool control_enabled;
 
   /**
@@ -65,7 +64,7 @@ class Game {
    */
   Music *current_music;
 
-  void handle_transitions(void);
+  void update_transitions(void);
   void display_map(Map *map);
 
  public:

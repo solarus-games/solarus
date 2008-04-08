@@ -3,10 +3,11 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "GameResource.h"
+#include "Equipment.h"
 #include "Map.h"
-#include "Savegame.h"
 #include "Sound.h"
 #include "MapEntrance.h"
+#include "Equipment.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -73,7 +74,8 @@ const SoundId Link::sword_sound_ids[4] = {
  * Constructor.
  */
 Link::Link(void):
-  Moving8ByPlayer(12), state(LINK_STATE_FREE),
+  Moving8ByPlayer(12),
+  state(LINK_STATE_FREE), equipment(new Equipment(this)),
   tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL) {
 
   set_size(16, 16);
@@ -84,6 +86,7 @@ Link::Link(void):
  * Destructor.
  */
 Link::~Link(void) {
+  delete equipment;
   delete tunic_sprite;
   
   if (sword_sprite != NULL) {
@@ -126,7 +129,7 @@ void Link::display_on_map(Map *map) {
 /**
  * Initializes the sprites of Link and his equipment,
  * depending on its equipment as specified in the savegame.
- * This function has to be called at the game beginning
+ * This function is called at the game beginning
  * and when Link's equipment is changed.
  */
 void Link::initialize_sprites(void) {
@@ -134,12 +137,17 @@ void Link::initialize_sprites(void) {
   Savegame *save = zsdx->game->get_savegame();
   GameResource *resource = zsdx->game_resource;
 
+  int animation_direction = -1;
+
   // Link
   if (tunic_sprite != NULL) {
+    // save the animation direction
+    animation_direction = tunic_sprite->get_current_animation_direction();
+    set_state(LINK_STATE_FREE);
     delete tunic_sprite;
   }
 
-  int tunic_number = save->get_reserved_integer(SAVEGAME_LINK_TUNIC);
+  int tunic_number = equipment->get_tunic_number();
 
   tunic_sprite = new AnimatedSprite(resource->get_sprite(tunic_sprite_ids[tunic_number]));
   tunic_sprite->set_animation_listener(this); // to be notified when an animation of Link is over
@@ -150,12 +158,14 @@ void Link::initialize_sprites(void) {
     sword_sprite = NULL;
   }
 
-  int sword_number = save->get_reserved_integer(SAVEGAME_LINK_SWORD);
+  int sword_number = equipment->get_sword_number();
 
   if (sword_number > 0) {
-    // Link has a sword
+    // Link has a sword: get the sprite and the sound
     sword_sprite = new AnimatedSprite(resource->get_sprite(sword_sprite_ids[sword_number - 1]));
     sword_sprite->set_animation_listener(this); // to be notified when an animation of the sword is over
+
+    sword_sound = resource->get_sound(sword_sound_ids[sword_number - 1]);
   }
 
   // Link's shield
@@ -164,12 +174,17 @@ void Link::initialize_sprites(void) {
     shield_sprite = NULL;
   }
 
-  int shield_number = save->get_reserved_integer(SAVEGAME_LINK_SHIELD);
+  int shield_number = equipment->get_shield_number();
 
   if (shield_number > 0) {
     // Link has a shield
     shield_sprite = new AnimatedSprite(resource->get_sprite(shield_sprite_ids[shield_number - 1]));
-  }  
+  }
+
+  // restore the animation direction
+  if (animation_direction != -1) {
+    set_animation_direction(animation_direction);
+  }
 }
 
 
@@ -268,19 +283,23 @@ void Link::set_state(LinkState state) {
 }
 
 /**
+ * Returns the player's equipment.
+ * @return the equipment
+ */
+Equipment * Link::get_equipment(void) {
+  return equipment;
+}
+
+/**
  * Lets Link swinging his sword if possible.
  */
 void Link::start_sword(void) {
 
-  Savegame *save = zsdx->game->get_savegame();
-  int sword_number = save->get_reserved_integer(SAVEGAME_LINK_SWORD);
-
   // if Link has a sword
-  if (sword_number > 0) {
+  if (equipment->has_sword()) {
 
     set_state(LINK_STATE_SWORD_SWINGING);
-    zsdx->game_resource->get_sound(sword_sound_ids[sword_number - 1])->play();
-
+    sword_sound->play();
     set_animation_sword();
   }
 }
@@ -301,7 +320,7 @@ bool Link::is_sword_visible(void) {
 bool Link::is_shield_visible(void) {
 
   // if Link has no shield, then there is no visible shield
-  if (shield_sprite == NULL) {
+  if (!equipment->has_shield()) {
     return false;
   }
 

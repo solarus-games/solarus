@@ -14,13 +14,15 @@
 #include "HUD.h"
 #include "Sound.h"
 #include "KeysEffect.h"
+#include "Equipment.h" // TODO remove
 
 /**
  * Creates a game.
  * @param savegame the saved data of this game
  */
 Game::Game(Savegame *savegame):
-  savegame(savegame), control_enabled(false), keys_effect(new KeysEffect()),
+  savegame(savegame),
+  control_enabled(false), keys_effect(new KeysEffect()),
   current_map(NULL), next_map(NULL),
   transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(new HUD(savegame)),
   current_music_id(Music::none), current_music(NULL) {
@@ -64,8 +66,6 @@ void Game::play(void) {
   SDL_EnableKeyRepeat(0, 0);
 
   while (!zsdx->is_exiting()) {
-
-    handle_transitions();
 
     // handle the SDL events
     if (SDL_PollEvent(&event)) {
@@ -125,6 +125,30 @@ void Game::play(void) {
 	    savegame->save();
 	    break;
 
+	  case SDLK_KP1:
+	    link->get_equipment()->set_tunic_number(link->get_equipment()->get_tunic_number() - 1);
+	    break;
+
+	  case SDLK_KP4:
+	    link->get_equipment()->set_tunic_number(link->get_equipment()->get_tunic_number() + 1);
+	    break;
+
+	  case SDLK_KP2:
+	    link->get_equipment()->set_sword_number(link->get_equipment()->get_sword_number() - 1);
+	    break;
+
+	  case SDLK_KP5:
+	    link->get_equipment()->set_sword_number(link->get_equipment()->get_sword_number() + 1);
+	    break;
+
+	  case SDLK_KP3:
+	    link->get_equipment()->set_shield_number(link->get_equipment()->get_shield_number() - 1);
+	    break;
+
+	  case SDLK_KP6:
+	    link->get_equipment()->set_shield_number(link->get_equipment()->get_shield_number() + 1);
+	    break;
+
 	  default:
 	    break;
 	  }
@@ -158,6 +182,9 @@ void Game::play(void) {
       }
     }
     
+    // update the transitions between maps
+    update_transitions();
+
     // update the sprites animations and positions
     current_map->update_sprites();
 
@@ -187,7 +214,7 @@ void Game::play(void) {
  * transitions between the two maps. This function is called
  * by the SDL main loop.
  */
-void Game::handle_transitions(void) {
+void Game::update_transitions(void) {
 
   // if the map has just changed, close the current map if any and play an out transition
   if (next_map != NULL && transition == NULL) { // the map has changed (e.g. set_current_map has been called)

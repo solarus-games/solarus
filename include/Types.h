@@ -72,6 +72,7 @@ class GameResource;
 class KeysEffect;
 class TextDisplayed;
 class Savegame;
+class Equipment;
 class SelectionMenu;
 class TransitionEffect;
 

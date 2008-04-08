@@ -37,10 +37,16 @@ class Link: public Moving8ByPlayer, AnimationListener {
    */
   LinkState state;
 
-  // Link's sprites.
+  /**
+   * Equipment of the player.
+   */
+  Equipment *equipment;
+
+  // Link's sprites
   AnimatedSprite *tunic_sprite;
   AnimatedSprite *sword_sprite;
   AnimatedSprite *shield_sprite;
+  Sound *sword_sound;
 
   static const SpriteId tunic_sprite_ids[];
   static const SpriteId sword_sprite_ids[];
@@ -66,6 +72,8 @@ class Link: public Moving8ByPlayer, AnimationListener {
 
   LinkState get_state(void);
   void set_state(LinkState state);
+
+  Equipment *get_equipment(void);
 
   void start_sword(void);
   bool is_sword_visible(void);

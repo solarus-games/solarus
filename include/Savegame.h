@@ -82,7 +82,8 @@ typedef struct SavedData {
 
   /**
    * Data reserved for the game engine (the C++ code).
-   * See Savegame.cpp for the meaning of each string and integer used.
+   * See SavegameReservedStringIndex and SavegameReservedIntegerIndex
+   * for the meaning of each string and integer used.
    */
   char reserved_strings[64][64];   // 64 strings of 64 characters each (4 Ko)
   Uint32 reserved_integers[1024];  // 1024 integers (4 Ko)

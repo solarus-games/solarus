@@ -1,14 +1,8 @@
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - utiliser sdl-config malgré les autotools
 - Revoir FileTools avec des string et des fstream
+- Link arrêté vers le haut : sans bouclier, son bras est plié
 
-- images/sprites/menus images/menus sprites/menus : compliqué
-
-
-- 1er avril :
-  affichage des coeurs / rubis...
-  screen avec l'épée 4
-  tileset extérieur
 
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)

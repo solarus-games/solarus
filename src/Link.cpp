@@ -7,7 +7,6 @@
 #include "Equipment.h"
 #include "Map.h"
 #include "Sound.h"
-#include "MapEntrance.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)

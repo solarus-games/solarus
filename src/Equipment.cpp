@@ -24,11 +24,29 @@ Equipment::~Equipment(void) {
 }
 
 /**
- * This function should be called repeatedly.
- * It handles the 
+ * This function is be called repeatedly by the map.
+ * Most of the time, there is nothing to update in this
+ * class. The only element updated here is the magic bar
+ * when it decreases continuously.
  */
 void Equipment::update(void) {
 
+  if (magic_decrease_delay != 0) {
+    // the magic bar is decreasing
+
+    Uint32 ticks = SDL_GetTicks();
+    if (ticks > next_magic_decrease_date) {
+
+      remove_magic(1);
+
+      if (get_magic() > 0) {
+	next_magic_decrease_date += magic_decrease_delay;
+      }
+      else {
+	stop_removing_magic();
+      }
+    }
+  }
 }
 
 // tunic
@@ -299,8 +317,6 @@ void Equipment::remove_hearts(int hearts_to_remove) {
   int total = get_hearts() - hearts_to_remove;
   
   set_hearts(MAX(total, 0));
-
-  // TODO gameover
 }
 
 /**
@@ -366,4 +382,103 @@ void Equipment::add_piece_of_heart(int piece_of_heart_id) {
   }
 
   restore_all_hearts();
+}
+
+// magic
+
+/**
+ * Returns the maximum level of Link's magic bar.
+ * @return the maximum level of magic (0: no magic,
+ * 1: 14 points, 2: 28 points)
+ */
+int Equipment::get_max_magic(void) {
+  return savegame->get_reserved_integer(SAVEGAME_MAX_MAGIC);
+}
+
+/**
+ * Sets the maximum level of Link's magic bar.
+ * Exits with an error message if the value specified
+ * if not valid.
+ * @aparam max_magic the maximum level of magic (0: no magic,
+ * 1: 14 points, 2: 28 points)
+ */
+void Equipment::set_max_magic(int max_magic) {
+  
+  if (max_magic < 0 || max_magic > 2) {
+    cerr << "Illegal maximum number of magic points: " << max_magic << endl;
+    exit(1);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_MAX_MAGIC, max_magic);
+}
+
+/**
+ * Returns the current number of magic points of Link.
+ * @return Link's current number of magic points (0 to 28)
+ */
+int Equipment::get_magic(void) {
+  return savegame->get_reserved_integer(SAVEGAME_CURRENT_MAGIC);
+}
+
+/**
+ * Sets the current number of magic points of Link.
+ * The program exits with an error message if the given value
+ * is not valid.
+ * @param magic Link's new number of magic points (0 to 28)
+ */
+void Equipment::set_magic(int magic) {
+
+  if (magic < 0 || magic > get_max_magic()) {
+    cerr << "Illegal number of magic points: " << magic << endl;
+    exit(1);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_CURRENT_MAGIC, magic);
+}
+
+/**
+ * Adds some magic points to Link.
+ * If the maximum value is achieved, no more magic points are added.
+ * @param magic_to_add number of magic points to add
+ */
+void Equipment::add_magic(int magic_to_add) {
+
+  int max_magic = get_max_magic();
+  int total = get_magic() + magic_to_add;
+
+  set_magic(MIN(total, max_magic));
+}
+
+/**
+ * Removes some magic points to Link.
+ * If the number of magic points achieves zero, no more magic points
+ * are removed.
+ * @param magic_to_remove number of magic poits to remove
+ */
+void Equipment::remove_magic(int magic_to_remove) {
+
+  int total = get_magic() - magic_to_remove;
+  
+  set_magic(MAX(total, 0));
+}
+
+/**
+ * Starts removing magic continuously.
+ * @param delay delay in miliseconds between two decreases
+ */
+void Equipment::start_removing_magic(Uint32 delay) {
+
+  if (get_magic() > 0) {
+    this->magic_decrease_delay = delay;
+    this->next_magic_decrease_date = SDL_GetTicks();
+    
+    // the magic points will be removed by the update() function
+  }
+}
+
+/**
+ * Stops removing magic continuously.
+ */
+void Equipment::stop_removing_magic(void) {
+  this->magic_decrease_delay = 0;
 }

@@ -15,6 +15,10 @@ class Equipment {
 
   Savegame *savegame;
 
+  // magic bar decrease handling
+  Uint32 magic_decrease_delay;
+  Uint32 next_magic_decrease_date;
+
  public:
 
   Equipment(Savegame *savegame);
@@ -66,9 +70,11 @@ class Equipment {
 
   int get_magic(void);
   void set_magic(int magic);
-  void add_magic(int magic);
-  void remove_magic(int magic);
-  void start_removing_magic(int delay);
+  void add_magic(int magic_to_add);
+  void remove_magic(int magic_to_remove);
+
+  bool is_magic_decreasing(void);
+  void start_removing_magic(Uint32 delay);
   void stop_removing_magic(void);
 
   // TODO: objects, dungeon objects...

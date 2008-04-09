@@ -17,16 +17,16 @@ static const int animation_directions[] = {
   -1,  // none: no change
   0,   // right
   1,   // up
-  -1,  // right + up: no change
+  0,   // right + up: right
   2,   // left
   -1,  // left + right: no change
-  2,   // left + up
+  2,   // left + up: left
   -1,  // left + right + up: no change
   3,   // down
-  -1,  // down + right: no change
+  0,   // down + right: right
   -1,  // down + up: no change
   -1,  // down + right + up: no change
-  2,   // down + left
+  2,   // down + left: left
   -1,  // down + left + right: no change
   -1,  // down + left + up: no change
   -1,  // down + left + right + up: no change
@@ -87,7 +87,7 @@ Link::Link(void):
  */
 Link::~Link(void) {
   delete tunic_sprite;
-  
+
   if (sword_sprite != NULL) {
     delete sword_sprite;
   }

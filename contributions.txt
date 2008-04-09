@@ -10,6 +10,7 @@ Geomaster
 Irzul
 Linkdu83
 Vaatiking01
+Archangel
 Noxneo
 
 Contributions annexes :
@@ -19,9 +20,9 @@ Newlink + Yoshi04 (boss brute initialement prévu pour Spherdon's Crystals)
 Pas encore sûrs :
 
 Julien Clément (éditeur de maps)
+Archangel (artworks, programmation, graphismes)
 Binbin (maps, donjon ou phase inédite, trailer)
 Kuro (dessins)
-Archangel (artworks, pixel art dans le jeu (sprites, boss))
 Bruno de C (affiche, dessins)
 
 Ancien ZS :

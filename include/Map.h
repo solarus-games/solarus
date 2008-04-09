@@ -134,10 +134,10 @@ class Map {
   void set_entrance(unsigned int entrance_index);
   void set_entrance(string entrance_name);
 
-  void update_sprites(void);
+  void update_entities(void);
   void display();
   void display_sprite(AnimatedSprite *sprite, int x, int y);
-  
+
   Obstacle pixel_collision(int layer, int x, int y);
   bool collision_with_tiles(int layer, SDL_Rect &collision_box);
 

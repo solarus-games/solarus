@@ -36,26 +36,9 @@ class TileOnMap: public MapEntity {
 
  public:
 
-  /**
-   * Creates a new tile on a map.
-   * @param tile the tile in the tileset (SimpleTile or AnimatedTile)
-   * @param layer layer of the tile
-   * @param x x position of the tile on the map
-   * @param y y position of the tile on the map
-   * @param repeat_x number of times the pattern is repeated on x
-   * @param repeat_y number of times the pattern is repeated on y
-   */
   TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int repeat_y);
+  ~TileOnMap(void);
 
-  /**
-   * Destructor.
-   */
-  inline ~TileOnMap(void) { }
-
-  /**
-   * Displays the tile on the map.
-   * @param map the map
-   */
   void display_on_map(Map *map);
 
 };

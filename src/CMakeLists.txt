@@ -33,7 +33,6 @@ add_executable (zsdx
 	       AnimatedTile.cpp
 	       TileOnMap.cpp
 	       Tile.cpp
-	       TileAnimationManager.cpp
 	       Color.cpp
 	       Link.cpp
 	       Music.cpp

@@ -23,6 +23,14 @@ Equipment::~Equipment(void) {
 
 }
 
+/**
+ * This function should be called repeatedly.
+ * It handles the 
+ */
+void Equipment::update(void) {
+
+}
+
 // tunic
 
 /**

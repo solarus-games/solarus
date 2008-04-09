@@ -105,6 +105,8 @@ class MapEntity {
    */
   inline Layer get_layer() { return layer; }
 
+  virtual void update();
+
   /**
    * Displays the entity on the map.
    * This is an abstract function because a tile is not

@@ -22,6 +22,13 @@ TileOnMap::TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int re
 }
 
 /**
+ * Destructor.
+ */
+TileOnMap::~TileOnMap(void) {
+
+}
+
+/**
  * Displays the tile on the map.
  * @param map the map
  */

@@ -25,3 +25,10 @@ Tile::Tile(Obstacle obstacle, int width, int height):
     exit(1);
   }
 }
+
+/**
+ * Destructor.
+ */
+Tile::~Tile(void) {
+
+}

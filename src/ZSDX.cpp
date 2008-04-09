@@ -52,9 +52,6 @@ ZSDX::ZSDX(void) {
     exit(1);
   }
 
-  // set the timer
-  SDL_AddTimer(250, TileAnimationManager::increment_frame_counter, NULL);
-
   // initialize the audio system
   Music::initialize();
 

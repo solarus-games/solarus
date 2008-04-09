@@ -380,12 +380,21 @@ SDL_Surface *Map::get_visible_surface(void) {
 }
 
 /**
- * Updates the animation and the position of each sprite, including Link.
+ * Updates the animation and the position of each entity, including Link.
  */
-void Map::update_sprites(void) {
+void Map::update_entities(void) {
+
+  // update link's position and animation
   Link *link = zsdx->game_resource->get_link();
-  link->update_position();
-  link->update_sprites();
+  link->update();
+
+  // update the animated tiles
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    
+    for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
+      tiles[layer]->at(i)->update();
+    }
+  }
 }
 
 /**

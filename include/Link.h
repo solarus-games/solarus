@@ -68,6 +68,8 @@ class Link: public Moving8ByPlayer, AnimationListener {
   void update_sprites(void);
 
   void set_map(Map *map, int initial_direction);
+
+  void update(void);
   void display_on_map(Map *map);
 
   LinkState get_state(void);

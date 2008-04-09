@@ -57,7 +57,7 @@ class Moving8ByPlayer: public MovingWithSmoothCollision {
   void stop_left(void);
   void stop_down(void);
 
-  virtual void update_position(void);
+  virtual void update(void);
 
 };
 

@@ -73,6 +73,16 @@ void MapEntity::set_hotspot(int x, int y) {
 }
 
 /**
+ * Updates the entity.
+ * This function is called repeteadly by the map. By default, it does nothing.
+ * Redefine it in subclasses for the entities that should be updated
+ * repeatedly (such as animated tiles or moving entities).
+ */
+void MapEntity::update(void) {
+  
+}
+
+/**
  * Returns whether or not this entity's rectangle overlaps
  * a specified rectangle.
  * @param rectangle the rectangle to check

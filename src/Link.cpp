@@ -108,6 +108,15 @@ void Link::set_map(Map *map, int initial_direction) {
 }
 
 /**
+ * Updates Link's position and animation.
+ * This function is called repeteadly by the map.
+ */
+void Link::update(void) {
+  Moving::update(); // update the position
+  update_sprites();
+}
+
+/**
  * Displays Link on the map with its current animation and
  * at its current position
  * @param map the map

@@ -403,10 +403,6 @@ public class Tile extends Observable {
 	    description.append('\t');
 	    description.append(animationSequence);
 	    description.append('\t');
-	    description.append(positionInTileset.width);
-	    description.append('\t');
-	    description.append(positionInTileset.height);
-	    description.append('\t');
 
 	    int width, height, x, y, dx, dy;
 	    if (animationSeparation == Tile.ANIMATION_SEPARATION_HORIZONTAL) {
@@ -425,6 +421,10 @@ public class Tile extends Observable {
 	    x = positionInTileset.x;
 	    y = positionInTileset.y;
 	    
+	    description.append(width);
+	    description.append('\t');
+	    description.append(height);
+	    description.append('\t');
 	    description.append(x);
 	    description.append('\t');
 	    description.append(y);

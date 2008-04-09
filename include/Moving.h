@@ -151,7 +151,7 @@ class Moving: public MapEntity {
   /**
    * Updates the position (x and y) of the entity if it has changed.
    */
-  inline void update_position(void) { update_x(); update_y(); }
+  virtual void update(void);
 
   // movement
 

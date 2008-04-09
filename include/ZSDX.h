@@ -6,7 +6,6 @@
 #define ZSDX_ZSDX_H
 
 #include "Common.h"
-#include "TileAnimationManager.h"
 
 /**
  * Number of times the screen in redrawn is a second.
@@ -33,7 +32,6 @@ class ZSDX {
  private:
 
   bool fullscreen;
-  TileAnimationManager tile_animation_manager;
 
   void launch_adventure_mode(Savegame *savegame);
   void launch_solarus_dreams_mode(Savegame *savegame);
@@ -57,12 +55,6 @@ class ZSDX {
   bool is_fullscreen(void);
   void switch_fullscreen(void);
   bool is_exiting(void);
-
-  /**
-   * Returns the tile animation manager object.
-   * This object handles the tile animations.
-   */
-  inline TileAnimationManager *get_tile_animation_manager() { return &tile_animation_manager; }
 };
 
 #endif

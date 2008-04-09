@@ -20,6 +20,8 @@ class Equipment {
   Equipment(Savegame *savegame);
   ~Equipment(void);
 
+  void update(void);
+
   // tunic
   int get_tunic_number(void);
   void set_tunic_number(int tunic_number);

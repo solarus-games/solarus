@@ -14,7 +14,8 @@
 #include "HUD.h"
 #include "Sound.h"
 #include "KeysEffect.h"
-#include "Equipment.h" // TODO remove
+#include "Equipment.h"
+#include "AnimatedTile.h"
 
 /**
  * Creates a game.
@@ -183,10 +184,12 @@ void Game::play(void) {
     // update the transitions between maps
     update_transitions();
 
-    // update the sprites animations and positions
-    current_map->update_sprites();
+    // update the entity's positions and animations
+    AnimatedTile::update();
+    current_map->update_entities();
 
-    // update the HUD
+    // update the equipment and HUD
+    savegame->get_equipment()->update();
     hud->update();
 
     // update the sound system

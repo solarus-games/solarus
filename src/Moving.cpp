@@ -65,6 +65,15 @@ void Moving::update_y(void) {
 }
 
 /**
+ * Updates the entity's position.
+ * This function is called repeteadly by the map.
+ */
+void Moving::update(void) {
+  update_x();
+  update_y();
+}
+
+/**
  * Sets the x position of the entity.
  * @param x the new x position
  */

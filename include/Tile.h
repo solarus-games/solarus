@@ -32,22 +32,11 @@ class Tile {
    */
   const int height;
 
-  /**
-   * Constructor.
-   * It is called by the subclasses.
-   * @param obstacle type of obstacle: OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
-   * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
-   * @param width width of the tile in pixels (must be a multiple of 8)
-   * @param height height of the tile in pixels (must be a multiple of 8)
-   */
   Tile(Obstacle obstacle, int width, int height);
 
  public:
 
-  /**
-   * Destructor.
-   */
-  inline virtual ~Tile(void) { };
+  virtual ~Tile(void);
 
   /**
    * Returns the width of the tile.

@@ -237,10 +237,10 @@ void Moving8ByPlayer::update_movement(void) {
 
 /**
  * Updates the position (x and y) of the entity if it has moved.
- * This is a redefinition of MovingWithCollision::update_position to update
+ * This is a redefinition of MovingWithCollision::update to update
  * x_move and y_move depending on the arrows pressed.
  */
-void Moving8ByPlayer::update_position(void) {
+void Moving8ByPlayer::update(void) {
   
-  MovingWithSmoothCollision::update_position();
+  MovingWithSmoothCollision::update();
 }

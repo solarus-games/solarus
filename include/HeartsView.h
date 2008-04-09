@@ -10,6 +10,8 @@
 class HeartsView: public HudElement {
 
  private:
+
+  Equipment *equipment;
   
   // rectangles in the image
   static SDL_Rect full_heart_position;
@@ -26,11 +28,12 @@ class HeartsView: public HudElement {
   
  public:
 
-  HeartsView(Savegame *savegame, int x, int y);
+  HeartsView(Equipment *equipment, int x, int y);
   ~HeartsView(void);
 
   void update(void);
   void rebuild(void);
+  bool is_visible(void);
 };
 
 #endif

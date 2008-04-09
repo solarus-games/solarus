@@ -4,6 +4,7 @@
 
 #include "Equipment.h"
 #include "ZSDX.h"
+#include "GameResource.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Link.h"
@@ -11,8 +12,8 @@
 /**
  * Constructor.
  */
-Equipment::Equipment(Link *link):
-  link(link), savegame(zsdx->game->get_savegame()) {
+Equipment::Equipment(Savegame *savegame):
+  savegame(savegame) {
 }
 
 /**
@@ -50,7 +51,7 @@ void Equipment::set_tunic_number(int tunic_number) {
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, tunic_number);
-    link->initialize_sprites(); // reinitialize Link's sprites
+    zsdx->game_resource->get_link()->initialize_sprites(); // reinitialize Link's sprites
   }
 }
 
@@ -90,7 +91,7 @@ void Equipment::set_sword_number(int sword_number) {
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, sword_number);
-    link->initialize_sprites(); // reinitialize Link's sprites
+    zsdx->game_resource->get_link()->initialize_sprites(); // reinitialize Link's sprites
   }
 }
 
@@ -130,7 +131,7 @@ void Equipment::set_shield_number(int shield_number) {
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_SHIELD, shield_number);
-    link->initialize_sprites();
+    zsdx->game_resource->get_link()->initialize_sprites(); // reinitialize Link's sprites
   }
 }
 
@@ -184,7 +185,7 @@ void Equipment::set_rupees(int rupees) {
 /**
  * Adds some rupees to Link.
  * If the maximum number of rupees is achieved, no more rupees are added.
- * @param rupees number of rupees to add
+ * @param rupees_to_add number of rupees to add
  */
 void Equipment::add_rupees(int rupees_to_add) {
 
@@ -197,10 +198,164 @@ void Equipment::add_rupees(int rupees_to_add) {
 /**
  * Removes some rupees to Link.
  * If the number of rupees achieves zero, no more rupees are removed.
+ * @param rupees_to_remove number of rupees to remove
  */
-void Equipment::remove_rupees(int rupees) {
+void Equipment::remove_rupees(int rupees_to_remove) {
 
-  int total = get_rupees() - rupees;
+  int total = get_rupees() - rupees_to_remove;
   
   set_rupees(MAX(total, 0));
+}
+
+// hearts
+
+/**
+ * Returns the maximum number of hearts of Link.
+ * @return Link's maximum number of rupees
+ */
+int Equipment::get_max_hearts(void) {
+  return savegame->get_reserved_integer(SAVEGAME_MAX_HEARTS);
+}
+
+/**
+ * Sets the maximum number of hearts of Link.
+ * The program exits with an error message if the given maximum
+ * number of hearts is not valid.
+ * @param max_hearts Link's maximum number of rupees
+ */
+void Equipment::set_max_hearts(int max_hearts) {
+
+  if (max_hearts <= 0 || max_hearts > 20) {
+    cerr << "Illegal maximum number of hearts: " << max_hearts << endl;
+    exit(1);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_MAX_HEARTS, max_hearts);
+}
+
+/**
+ * Adds a heart container to Link.
+ */
+void Equipment::add_heart_container(void) {
+  set_max_hearts(get_max_hearts() + 1);
+}
+
+/**
+ * Returns the current number of hearts of Link.
+ * The value returned is actually the number of heart quarters,
+ * so a value of 4 means that Link has 1 heart left.
+ * @return Link's current number of hearts (in heart quarters)
+ */
+int Equipment::get_hearts(void) {
+  return savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS);
+}
+
+/**
+ * Sets the current number of hearts of Link.
+ * The given value is actually the number of heart quarters,
+ * so a value of 4 means that Link has 1 heart left.
+ * The program exits with an error message if the given number
+ * of hearts is not valid.
+ * @param hearts Link's new number of hearts (in heart quarters)
+ */
+void Equipment::set_hearts(int hearts) {
+
+  if (hearts < 0 || hearts > 20 * 4) {
+    cerr << "Illegal number of hearts: " << hearts << endl;
+    exit(1);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, hearts);
+}
+
+/**
+ * Gives some hearts to Link.
+ * If the maximum number of hearts is achieved, no more hearts are added.
+ * @param hearts_to_add number of hearts to add (in heart quarters)
+ */
+void Equipment::add_hearts(int hearts_to_add) {
+
+  int max_hearts = get_max_hearts() * 4;
+  int total = get_hearts() + hearts_to_add;
+
+  set_hearts(MIN(total, max_hearts));
+}
+
+/**
+ * Removes some hearts to Link.
+ * If the number of hearts achieves zero, the game over sequence is started.
+ * @param hearts_to_remove number of hearts to remove
+ */
+void Equipment::remove_hearts(int hearts_to_remove) {
+
+  int total = get_hearts() - hearts_to_remove;
+  
+  set_hearts(MAX(total, 0));
+
+  // TODO gameover
+}
+
+/**
+ * Restores all the hearts.
+ */
+void Equipment::restore_all_hearts(void) {
+  set_hearts(get_max_hearts());
+}
+
+/**
+ * Returns the current number of pieces of heart of Link.
+ * @returns Link's current number of pieces of heart, between 0 and 3
+ */
+int Equipment::get_nb_pieces_of_heart(void) {
+  return savegame->get_reserved_integer(SAVEGAME_PIECES_OF_HEART);
+}
+
+/**
+ * Returns whether Link has the specified piece of heart.
+ * @param piece_of_heart_id index of the piece of heart, between 0
+ * and the number of pieces of hearts in the game (which cannot
+ * be greater than 80)
+ */
+bool Equipment::has_piece_of_heart(int piece_of_heart_id) {
+
+  int index = SAVEGAME_FIRST_PIECE_OF_HEART + piece_of_heart_id;
+  
+  if (index < SAVEGAME_FIRST_PIECE_OF_HEART || index > SAVEGAME_LAST_PIECE_OF_HEART) {
+    cerr << "Illegal piece of heart index: " << piece_of_heart_id << endl;
+    exit(1);
+  }
+
+  return savegame->get_reserved_integer(index) != 0;
+}
+
+/**
+ * Adds a piece of heart to Link.
+ * @param piece_of_heart_id index of the piece of heart, between 1
+ * and the number of pieces of hearts in the game - 1
+ */
+void Equipment::add_piece_of_heart(int piece_of_heart_id) {
+
+  // note: the piece_of_heart sound is played by the collectable when it is picked
+
+  if (has_piece_of_heart(piece_of_heart_id)) {
+    cerr << "The player already has piece of heart #" << piece_of_heart_id << endl;
+    exit(1);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_FIRST_PIECE_OF_HEART + piece_of_heart_id, 1);
+
+  // check whether Link has a new heart
+
+  int nb_pieces_of_heart = get_nb_pieces_of_heart() + 1;
+  if (nb_pieces_of_heart < 4) {
+    // no new heart
+    savegame->set_reserved_integer(SAVEGAME_PIECES_OF_HEART, nb_pieces_of_heart);
+  }
+  else {
+    // new heart container
+    savegame->set_reserved_integer(SAVEGAME_PIECES_OF_HEART, 0);
+    add_heart_container();
+  }
+
+  restore_all_hearts();
 }

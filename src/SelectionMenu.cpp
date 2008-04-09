@@ -174,7 +174,7 @@ void SelectionMenu::read_saves(void) {
     text_player_names[i]->create_text(player_name, 87, 88 + i * 27);
 
     // hearts
-    hearts_views[i] = new HeartsView(savegames[i], 168, 78 + i * 27);
+    hearts_views[i] = new HeartsView(savegames[i]->get_equipment(), 168, 78 + i * 27);
   }
 }
 

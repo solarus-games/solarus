@@ -24,8 +24,8 @@ class CounterView {
 
   unsigned int get_value(void);
   void set_value(unsigned int value);
-  void increment(void);
-  void decrement(void);
+  void increase(void);
+  void decrease(void);
 
   void display(SDL_Surface *destination);
 };

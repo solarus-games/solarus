@@ -66,10 +66,24 @@ enum SavegameReservedIntegerIndex {
    * @name Equipment and quest status
    * @{
    */
-  SAVEGAME_HEART_FRAGMENTS                  = 30, /**< number of heart fragments obtained (0 to 28) */
+  SAVEGAME_PIECES_OF_HEART                  = 30, /**< current number of heart fragments (0 to 3) */
   SAVEGAME_LINK_TUNIC                       = 31, /**< Link's tunic (0: green, 1: blue, 2: red) */
   SAVEGAME_LINK_SHIELD                      = 32, /**< Link's shield (0: no shield, 1 to 3: shields 1 to 3) */
   SAVEGAME_LINK_SWORD                       = 33, /**< Link's sword (0: no sword, 1 to 4: swords 1 to 4) */
+  /**
+   * @}
+   */
+
+  /**
+   * @name Pieces of heart
+   * The variables 100 to 143 indicate whether the player has found each piece of heart.
+   * There is 44 pieces of hearts in Mystery of Solarus DX.
+   * @{
+   */
+  SAVEGAME_FIRST_PIECE_OF_HEART             = 100, /**< 1 if the player has the piece of heart #0, 0 otherwise */
+  SAVEGAME_LAST_PIECE_OF_HEART              = 143, /**< 1 if the player has the piece of heart #43, 0 otherwise */
+  SAVEGAME_RESERVED_PIECE_OF_HEART          = 199, /**< variables 144 to 199 are reserved for possible
+						    * additional pieces of heart in the future */
   /**
    * @}
    */
@@ -107,6 +121,8 @@ class Savegame {
   char file_name[32];
   SavedData saved_data;
 
+  Equipment *equipment;
+
   void set_default_values(void);
 
  public:
@@ -118,11 +134,11 @@ class Savegame {
   void save(void);
 
   // engine data
-  const char *get_reserved_string(SavegameReservedStringIndex index);
-  void set_reserved_string(SavegameReservedStringIndex index, const char *string);
+  const char *get_reserved_string(int index);
+  void set_reserved_string(int index, const char *string);
 
-  Uint32 get_reserved_integer(SavegameReservedIntegerIndex index);
-  void set_reserved_integer(SavegameReservedIntegerIndex index, Uint32 value);
+  Uint32 get_reserved_integer(int index);
+  void set_reserved_integer(int index, Uint32 value);
   
   // custom project data
   Uint32 get_integer(int index);
@@ -130,6 +146,9 @@ class Savegame {
 
   bool get_boolean(int index);
   void set_boolean(int index, bool value);
+
+  // not saved data
+  Equipment *get_equipment(void);
 };
 
 #endif

@@ -24,7 +24,7 @@ Game::Game(Savegame *savegame):
   savegame(savegame),
   control_enabled(false), keys_effect(new KeysEffect()),
   current_map(NULL), next_map(NULL),
-  transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(new HUD(savegame)),
+  transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(new HUD(this)),
   current_music_id(Music::none), current_music(NULL) {
   
 }
@@ -103,22 +103,20 @@ void Game::play(void) {
 
 	    // TODO remove
 	  case SDLK_p:
-	    savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS) + 2);
-	    //	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) + 23);
+	    savegame->get_equipment()->add_hearts(2);
 	    break;
 
 	  case SDLK_m:
-	    savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS) - 1);
-	    //	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) - 15);
+	    savegame->get_equipment()->remove_hearts(1);
 	    break;
 
 	    // TODO remove
 	  case SDLK_o:
-	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) + 23);
+	    savegame->get_equipment()->add_rupees(23);
 	    break;
 
 	  case SDLK_l:
-	    savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES) - 15);
+	    savegame->get_equipment()->remove_rupees(14);
 	    break;
 
 	  case SDLK_s:
@@ -126,27 +124,27 @@ void Game::play(void) {
 	    break;
 
 	  case SDLK_KP1:
-	    link->get_equipment()->set_tunic_number(link->get_equipment()->get_tunic_number() - 1);
+	    savegame->get_equipment()->set_tunic_number(savegame->get_equipment()->get_tunic_number() - 1);
 	    break;
 
 	  case SDLK_KP4:
-	    link->get_equipment()->set_tunic_number(link->get_equipment()->get_tunic_number() + 1);
+	    savegame->get_equipment()->set_tunic_number(savegame->get_equipment()->get_tunic_number() + 1);
 	    break;
 
 	  case SDLK_KP2:
-	    link->get_equipment()->set_sword_number(link->get_equipment()->get_sword_number() - 1);
+	    savegame->get_equipment()->set_sword_number(savegame->get_equipment()->get_sword_number() - 1);
 	    break;
 
 	  case SDLK_KP5:
-	    link->get_equipment()->set_sword_number(link->get_equipment()->get_sword_number() + 1);
+	    savegame->get_equipment()->set_sword_number(savegame->get_equipment()->get_sword_number() + 1);
 	    break;
 
 	  case SDLK_KP3:
-	    link->get_equipment()->set_shield_number(link->get_equipment()->get_shield_number() - 1);
+	    savegame->get_equipment()->set_shield_number(savegame->get_equipment()->get_shield_number() - 1);
 	    break;
 
 	  case SDLK_KP6:
-	    link->get_equipment()->set_shield_number(link->get_equipment()->get_shield_number() + 1);
+	    savegame->get_equipment()->set_shield_number(savegame->get_equipment()->get_shield_number() + 1);
 	    break;
 
 	  default:

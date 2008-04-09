@@ -14,11 +14,10 @@ class Equipment {
  private:
 
   Savegame *savegame;
-  Link *link;
 
  public:
 
-  Equipment(Link *link);
+  Equipment(Savegame *savegame);
   ~Equipment(void);
 
   // tunic
@@ -47,7 +46,7 @@ class Equipment {
   // hearts
   int get_max_hearts(void);
   void set_max_hearts(int max_hearts);
-  void increase_max_hearts(void);
+  void add_heart_container(void);
 
   int get_hearts(void);
   void set_hearts(int hearts);
@@ -55,6 +54,8 @@ class Equipment {
   void remove_hearts(int hearts_to_remove);
   void restore_all_hearts(void);
 
+  int get_nb_pieces_of_heart(void);
+  bool has_piece_of_heart(int piece_of_heart_id);
   void add_piece_of_heart(int piece_of_heart_id);
 
   // magic

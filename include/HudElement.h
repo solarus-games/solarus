@@ -15,11 +15,6 @@ class HudElement {
  protected:
 
   /**
-   * The savegame.
-   */
-  Savegame *savegame;
-
-  /**
    * The surface on which the hud element is drawn when rebuild() is called.
    * When display() is called, this surface is blitted
    * on the destination surface (usually the screen).
@@ -31,7 +26,7 @@ class HudElement {
    */
   SDL_Rect destination_position;
   
-  HudElement(Savegame *savegame, int x, int y, int width, int height);
+  HudElement(int x, int y, int width, int height);
 
  public:
 
@@ -39,6 +34,7 @@ class HudElement {
 
   virtual void update(void) = 0;
   virtual void rebuild(void) = 0;
+  virtual bool is_visible(void);
   void display(SDL_Surface *destination);
 };
 

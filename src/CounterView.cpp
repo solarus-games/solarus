@@ -75,7 +75,7 @@ void CounterView::set_value(unsigned int value) {
  * The surface is redrawn such that the counter displays
  * the new value.
  */
-void CounterView::increment(void) {
+void CounterView::increase(void) {
   set_value(value + 1);
 }
 
@@ -84,7 +84,7 @@ void CounterView::increment(void) {
  * The surface is redrawn such that the counter displays
  * the new value.
  */
-void CounterView::decrement(void) {
+void CounterView::decrease(void) {
   set_value(value - 1);
 }
 

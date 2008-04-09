@@ -3,11 +3,11 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "GameResource.h"
+#include "Savegame.h"
 #include "Equipment.h"
 #include "Map.h"
 #include "Sound.h"
 #include "MapEntrance.h"
-#include "Equipment.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -75,7 +75,7 @@ const SoundId Link::sword_sound_ids[4] = {
  */
 Link::Link(void):
   Moving8ByPlayer(12),
-  state(LINK_STATE_FREE), equipment(new Equipment(this)),
+  state(LINK_STATE_FREE), equipment(zsdx->game->get_savegame()->get_equipment()),
   tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL) {
 
   set_size(16, 16);
@@ -86,7 +86,6 @@ Link::Link(void):
  * Destructor.
  */
 Link::~Link(void) {
-  delete equipment;
   delete tunic_sprite;
   
   if (sword_sprite != NULL) {
@@ -280,14 +279,6 @@ void Link::set_state(LinkState state) {
     break;
 
   }
-}
-
-/**
- * Returns the player's equipment.
- * @return the equipment
- */
-Equipment * Link::get_equipment(void) {
-  return equipment;
 }
 
 /**

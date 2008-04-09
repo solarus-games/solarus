@@ -4,7 +4,7 @@
 
 #include "HeartsView.h"
 #include "FileTools.h"
-#include "Savegame.h"
+#include "Equipment.h"
 #include "Color.h"
 #include "ZSDX.h"
 #include "GameResource.h"
@@ -23,21 +23,24 @@ SDL_Rect HeartsView::fraction_heart_positions[3] = {
 
 /**
  * Constructor.
+ * @param equipment the player's equipment (this class actually represents this object),
+ * can be NULL (if the savegame doesn't exist yet)
  * @param x x coordinate of the top-left corner of the hearts on the destination surface
  * @param y y coordinate of the top-left corner of the hearts on the destination surface
  */
-HeartsView::HeartsView(Savegame *savegame, int x, int y):
-  HudElement(savegame, x, y, 90, 18),
+HeartsView::HeartsView(Equipment *equipment, int x, int y):
+  HudElement(x, y, 90, 18),
+  equipment(equipment),
   next_heart_update_date(SDL_GetTicks()),
   next_danger_sound_date(SDL_GetTicks()) {
 
   img_hearts = FileTools::open_image("hud/hearts.png");
   empty_heart_sprite = new AnimatedSprite(zsdx->game_resource->get_sprite("hud/empty_heart"));
 
-  if (!savegame->is_empty()) {
+  if (equipment != NULL) {
     
-    nb_max_hearts_displayed = savegame->get_reserved_integer(SAVEGAME_MAX_HEARTS);
-    nb_current_hearts_displayed = savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS);
+    nb_max_hearts_displayed = equipment->get_max_hearts();
+    nb_current_hearts_displayed = equipment->get_hearts();
     
     rebuild();
   }
@@ -59,14 +62,14 @@ void HeartsView::update(void) {
   bool need_rebuild = false;
 
   // max hearts
-  int nb_max_hearts = savegame->get_reserved_integer(SAVEGAME_MAX_HEARTS);
+  int nb_max_hearts = equipment->get_max_hearts();
   if (nb_max_hearts != nb_max_hearts_displayed) {
     nb_max_hearts_displayed = nb_max_hearts;
     need_rebuild = true;
   }
 
   // current hearts
-  int nb_current_hearts = savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS);
+  int nb_current_hearts = equipment->get_hearts();
   if (nb_current_hearts != nb_current_hearts_displayed && SDL_GetTicks() > next_heart_update_date) {
 
     next_heart_update_date = SDL_GetTicks() + 50;
@@ -151,4 +154,15 @@ void HeartsView::rebuild(void) {
     SDL_BlitSurface(img_hearts, &fraction_heart_positions[remaining_fraction - 1],
 		    surface_drawn, &heart_position);
   }
+}
+
+/**
+ * Returns whether this hud element is visible.
+ * The display() function does nothing if this function
+ * returns false.
+ * @return true if this hud element is visible, i.e. if
+ * equipment is not NULL
+ */
+bool HeartsView::is_visible(void) {
+  return equipment != NULL;
 }

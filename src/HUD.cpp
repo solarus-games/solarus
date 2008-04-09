@@ -3,7 +3,7 @@
  */
 
 #include "HUD.h"
-#include "FileTools.h"
+#include "Game.h"
 #include "Savegame.h"
 #include "HeartsView.h"
 #include "RupeesView.h"
@@ -11,13 +11,13 @@
 /**
  * Constructor.
  */
-HUD::HUD(Savegame *savegame):
-  savegame(savegame) {
+HUD::HUD(Game *game):
+  equipment(game->get_savegame()->get_equipment()) {
 
   nb_elements = 0;
 
-  elements[nb_elements++] = new HeartsView(savegame, 216, 14);
-  elements[nb_elements++] = new RupeesView(savegame, 8, 216);
+  elements[nb_elements++] = new HeartsView(equipment, 216, 14);
+  elements[nb_elements++] = new RupeesView(equipment, 8, 216);
 }
 
 /**

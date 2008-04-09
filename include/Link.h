@@ -73,8 +73,6 @@ class Link: public Moving8ByPlayer, AnimationListener {
   LinkState get_state(void);
   void set_state(LinkState state);
 
-  Equipment *get_equipment(void);
-
   void start_sword(void);
   bool is_sword_visible(void);
   bool is_shield_visible(void);

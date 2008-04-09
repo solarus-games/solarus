@@ -10,6 +10,9 @@
 class RupeesView: public HudElement {
 
  private:
+
+  Equipment *equipment;
+  
   // rectangles of the rupee icons in the image
   static SDL_Rect rupee_icon_positions[3];
 
@@ -23,7 +26,7 @@ class RupeesView: public HudElement {
   
  public:
 
-  RupeesView(Savegame *savegame, int x, int y);
+  RupeesView(Equipment *equipment, int x, int y);
   ~RupeesView(void);
   
   void update(void);

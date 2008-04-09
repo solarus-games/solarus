@@ -121,10 +121,15 @@ public class Tile extends Observable {
 		int x2 = Integer.parseInt(tokenizer.nextToken());
 
 		this.positionInTileset = new Rectangle(x1, y1, width, height);
-		this.animationSeparation = (x1 == x2) ?
-		    ANIMATION_SEPARATION_HORIZONTAL : ANIMATION_SEPARATION_VERTICAL;
 
-		
+		if (x1 == x2) {
+		    this.animationSeparation = ANIMATION_SEPARATION_VERTICAL;
+		    positionInTileset.height *= 3;
+		}
+		else {
+		    this.animationSeparation = ANIMATION_SEPARATION_HORIZONTAL;
+		    positionInTileset.width *= 3;
+		}
 	    }
 	    else {
 		throw new ZSDXException("Unknown tile type '" + tileType + "'");
@@ -139,7 +144,83 @@ public class Tile extends Observable {
     }
 
     /**
+     * Returns a string describing this tile.
+     * @return a string representation of the tile
+     */
+    public String toString() {
+	
+	StringBuffer description = new StringBuffer();
+
+	if (animationSequence == ANIMATION_NONE) {
+	    // simple tile: "0 obstacle defaultLayer x y width height"
+
+	    description.append('0');
+	    description.append('\t');
+	    description.append(obstacle);
+	    description.append('\t');
+	    description.append(defaultLayer);
+	    description.append('\t');
+	    description.append(positionInTileset.x);
+	    description.append('\t');
+	    description.append(positionInTileset.y);
+	    description.append('\t');
+	    description.append(positionInTileset.width);
+	    description.append('\t');
+	    description.append(positionInTileset.height);
+	}
+	else {
+	    // animated tile: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
+
+	    description.append('1');
+	    description.append('\t');
+	    description.append(obstacle);
+	    description.append('\t');
+	    description.append(defaultLayer);
+	    description.append('\t');
+	    description.append(animationSequence);
+	    description.append('\t');
+
+	    int width, height, x, y, dx, dy;
+	    if (animationSeparation == ANIMATION_SEPARATION_HORIZONTAL) {
+		width = positionInTileset.width / 3;
+		height = positionInTileset.height;
+		dx = width;
+		dy = 0;
+	    }
+	    else {
+		width = positionInTileset.width;
+		height = positionInTileset.height / 3;
+		dx = 0;
+		dy = height;
+	    }
+
+	    x = positionInTileset.x;
+	    y = positionInTileset.y;
+	    
+	    description.append(width);
+	    description.append('\t');
+	    description.append(height);
+	    description.append('\t');
+	    description.append(x);
+	    description.append('\t');
+	    description.append(y);
+	    description.append('\t');
+	    description.append(x + dx);
+	    description.append('\t');
+	    description.append(y + dy);
+	    description.append('\t');
+	    description.append(x + 2 * dx);
+	    description.append('\t');
+	    description.append(y + 2 * dy);
+	}
+	
+	return description.toString();
+    }
+
+    /**
      * Returns the tile's rectangle.
+     * Warning: if the tile is animated, a rectangle containing the 3 frames
+     * is returned.
      * @return the tile's rectangle
      */
     public Rectangle getPositionInTileset() {
@@ -147,19 +228,53 @@ public class Tile extends Observable {
     }
 
     /**
+     * Returns the x coordinate of the tile in the tileset image.
+     * @return the x coordinate of the tile in the tileset image
+     */
+    public int getX() {
+	return positionInTileset.x;
+    }
+
+    /**
+     * Returns the y coordinate of the tile in the tileset image.
+     * @return the y coordinate of the tile in the tileset image
+     */
+    public int getY() {
+	return positionInTileset.y;
+    }
+
+    /**
      * Returns the tile's width.
+     * If the tile is animated, the value returned is the width
+     * of one frame.
      * @return the tile's width in pixels
      */
     public int getWidth() {
-	return positionInTileset.width;
+
+	int width = positionInTileset.width;
+	
+	if (isAnimated() && animationSeparation == ANIMATION_SEPARATION_HORIZONTAL) {
+	    width = positionInTileset.width / 3;
+	}
+
+	return width;
     }
 
     /**
      * Returns the tile's height.
+     * If the tile is animated, the value returned is the height
+     * of one frame.
      * @return the tile's height in pixels
      */
     public int getHeight() {
-	return positionInTileset.height;
+
+	int height = positionInTileset.height;
+	
+	if (isAnimated() && animationSeparation == ANIMATION_SEPARATION_VERTICAL) {
+	    height = positionInTileset.height / 3;
+	}
+
+	return height;
     }
 
     /**
@@ -337,8 +452,8 @@ public class Tile extends Observable {
 	
 	Image tilesetImage = (scale == 2) ? tileset.getDoubleImage() : tileset.getImage();
 
-	int width = positionInTileset.width * scale;
-	int height = positionInTileset.height * scale;
+	int width = getWidth() * scale;
+	int height = getHeight() * scale;
 	
 	int sx1 = positionInTileset.x * scale;
 	int sx2 = sx1 + width;
@@ -365,79 +480,5 @@ public class Tile extends Observable {
 	    && animationSequence == tile.animationSequence
 	    && animationSeparation == tile.animationSeparation
 	    && positionInTileset.equals(tile.positionInTileset);
-    }
-
-    /**
-     * Returns a string describing this tile.
-     * @return a string representation of the tile
-     */
-    public String toString() {
-	
-	StringBuffer description = new StringBuffer();
-
-	if (animationSequence == ANIMATION_NONE) {
-	    // simple tile: "0 obstacle defaultLayer x y width height"
-
-	    description.append('0');
-	    description.append('\t');
-	    description.append(obstacle);
-	    description.append('\t');
-	    description.append(defaultLayer);
-	    description.append('\t');
-	    description.append(positionInTileset.x);
-	    description.append('\t');
-	    description.append(positionInTileset.y);
-	    description.append('\t');
-	    description.append(positionInTileset.width);
-	    description.append('\t');
-	    description.append(positionInTileset.height);
-	}
-	else {
-	    // animated tile: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
-
-	    description.append('1');
-	    description.append('\t');
-	    description.append(obstacle);
-	    description.append('\t');
-	    description.append(defaultLayer);
-	    description.append('\t');
-	    description.append(animationSequence);
-	    description.append('\t');
-
-	    int width, height, x, y, dx, dy;
-	    if (animationSeparation == Tile.ANIMATION_SEPARATION_HORIZONTAL) {
-		width = positionInTileset.width / 3;
-		height = positionInTileset.height;
-		dx = width;
-		dy = 0;
-	    }
-	    else {
-		width = positionInTileset.width;
-		height = positionInTileset.height / 3;
-		dx = 0;
-		dy = height;
-	    }
-
-	    x = positionInTileset.x;
-	    y = positionInTileset.y;
-	    
-	    description.append(width);
-	    description.append('\t');
-	    description.append(height);
-	    description.append('\t');
-	    description.append(x);
-	    description.append('\t');
-	    description.append(y);
-	    description.append('\t');
-	    description.append(x + dx);
-	    description.append('\t');
-	    description.append(y + dy);
-	    description.append('\t');
-	    description.append(x + 2 * dx);
-	    description.append('\t');
-	    description.append(y + 2 * dy);
-	}
-	
-	return description.toString();
     }
 }

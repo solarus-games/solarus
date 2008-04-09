@@ -232,18 +232,18 @@ public class TileOnMap extends MapEntity {
 
 	// source image
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
-	Rectangle positionInTileset = tile.getPositionInTileset();
-	int sx1 = positionInTileset.x * scale;
-	int sx2 = sx1 + positionInTileset.width * scale;
-	int sy1 = positionInTileset.y * scale;
-	int sy2 = sy1 + positionInTileset.height * scale;
+
+	int sx1 = tile.getX() * scale;
+	int sx2 = sx1 + tile.getWidth() * scale;
+	int sy1 = tile.getY() * scale;
+	int sy2 = sy1 + tile.getHeight() * scale;
 
 	Image tilesetImage = (scale == 2) ? tileset.getDoubleImage() : tileset.getImage();
 	
 	// destination image: we have to repeat the pattern
 	
-	int width = positionInTileset.width * scale;
-	int height = positionInTileset.height * scale;
+	int width = tile.getWidth() * scale;
+	int height = tile.getHeight() * scale;
 	
 	int repeatX = getRepeatX();
 	int repeatY = getRepeatY();

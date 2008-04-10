@@ -21,6 +21,11 @@ class Game {
   Savegame *savegame;
 
   /**
+   * Link.
+   */
+  Link *link;
+
+  /**
    * True if the player has control.
    */
   bool control_enabled;
@@ -87,6 +92,8 @@ class Game {
 
   bool is_control_enabled(void);
   void set_control_enabled(bool enable);
+  KeysEffect *get_keys_effect(void);
+  void update_keys_effect(void);
 
   void play_music(MusicId new_music_id);
   void pause_or_resume_music(void);

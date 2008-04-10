@@ -8,7 +8,19 @@
  * Constructor.
  */
 KeysEffect::KeysEffect(void) {
+  
+  action_key_effect = ACTION_KEY_NONE;
+  action_key_enabled = true;
 
+  sword_key_effect = SWORD_KEY_NONE;
+  sword_key_enabled = true;
+
+  pause_key_effect = PAUSE_KEY_NONE;
+  pause_key_enabled = true;
+
+  current_item_1 = 0; // item associated to the first item slot (0 means no item)
+  current_item_2 = 0;
+  item_keys_enabled = true;
 }
 
 /**

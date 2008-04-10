@@ -170,6 +170,7 @@ void Link::initialize_sprites(void) {
   if (sword_number > 0) {
     // Link has a sword: get the sprite and the sound
     sword_sprite = new AnimatedSprite(resource->get_sprite(sword_sprite_ids[sword_number - 1]));
+    sword_sprite->stop();
     sword_sprite->set_animation_listener(this); // to be notified when an animation of the sword is over
 
     sword_sound = resource->get_sound(sword_sound_ids[sword_number - 1]);
@@ -194,11 +195,11 @@ void Link::initialize_sprites(void) {
   }
 }
 
-
 /**
  * Updates the animation of Link's sprites if necessary.
  */
 void Link::update_sprites(void) {
+
   tunic_sprite->update_current_frame();
 
   if (is_sword_visible()) {
@@ -266,6 +267,7 @@ LinkState Link::get_state(void) {
  */
 void Link::set_state(LinkState state) {
 
+  this->previous_state = this->state;
   this->state = state;
 
   set_moving_enabled(state <= LINK_STATE_SWIMMING);
@@ -290,53 +292,36 @@ void Link::set_state(LinkState state) {
 }
 
 /**
- * Lets Link swinging his sword if possible.
+ * Restores the previous state of Link.
+ */
+void Link::restore_state(void) {
+  set_state(previous_state);
+}
+
+/**
+ * Lets Link swinging his sword.
  */
 void Link::start_sword(void) {
 
-  // if Link has a sword
-  if (equipment->has_sword()) {
-
-    set_state(LINK_STATE_SWORD_SWINGING);
-    sword_sound->play();
-    set_animation_sword();
-  }
+  set_state(LINK_STATE_SWORD_SWINGING);
+  sword_sound->play();
+  set_animation_sword();
 }
 
 /**
- * Returns whether Link is swinging or loading his sword.
- * @return true if Link is swinging or loading his sword
+ * Returns whether Link's sword is currently displayed on the screen.
+ * @return true if Link's sword is currently displayed on the screen
  */
 bool Link::is_sword_visible(void) {
-  return (state == LINK_STATE_SWORD_SWINGING 
-	  || state == LINK_STATE_SWORD_LOADING);
+  return equipment->has_sword() && sword_sprite->is_started();
 }
 
 /**
- * Returns whether Link's shield is visible.
- * @return true if Link's shield is visible
+ * Returns whether Link's shield is currently displayed on the screen.
+ * @return true if Link's shield is currently displayed on the screen
  */
 bool Link::is_shield_visible(void) {
-
-  // if Link has no shield, then there is no visible shield
-  if (!equipment->has_shield()) {
-    return false;
-  }
-
-  // for now, the shield is visible in all states except when
-  // Link is swinging his sword
-  if (state != LINK_STATE_SWORD_SWINGING) {
-    return true;
-  }
-
-  // if Link is swinging his sword, the shield is visible
-  // only in directions up and down
-  int direction = tunic_sprite->get_current_animation_direction();
-  if (direction == 1 || direction == 3) {
-    return true;
-  }
-
-  return false;
+  return equipment->has_shield() && shield_sprite->is_started();
 }
 
 /**
@@ -376,10 +361,14 @@ void Link::set_animation_direction(int direction) {
  * Link's state should be LINK_STATE_FREE.
  */
 void Link::set_animation_stopped(void) {
-  
+
   tunic_sprite->set_current_animation("stopped");
 
-  if (is_shield_visible()) {
+  if (is_sword_visible()) {
+    sword_sprite->stop();
+  }
+
+  if (equipment->has_shield()) {
 
     int direction = tunic_sprite->get_current_animation_direction();
   
@@ -396,12 +385,32 @@ void Link::set_animation_walking(void) {
   
   tunic_sprite->set_current_animation("walking");
 
-  if (is_shield_visible()) {
+  if (is_sword_visible()) {
+    sword_sprite->stop();
+  }
+
+  if (equipment->has_shield()) {
 
     int direction = tunic_sprite->get_current_animation_direction();
   
     shield_sprite->set_current_animation("walking");
     shield_sprite->set_current_animation_direction(direction);
+  }
+}
+
+/**
+ * Suspends or resumes the animation of Link's sprites.
+ * @param suspended true to suspend the animation, false to resume it
+ */
+void Link::set_animation_suspended(bool suspended) {
+  tunic_sprite->set_suspended(suspended);
+
+  if (equipment->has_sword()) {
+    sword_sprite->set_suspended(suspended);
+  }
+
+  if (equipment->has_shield()) {
+    shield_sprite->set_suspended(suspended);
   }
 }
 
@@ -418,8 +427,14 @@ void Link::set_animation_sword(void) {
   sword_sprite->set_current_animation("sword");
   sword_sprite->set_current_animation_direction(direction);
 
-  if (is_shield_visible()) {
-    shield_sprite->set_current_animation("sword");
-    shield_sprite->set_current_animation_direction(direction / 2);
+  if (equipment->has_shield()) {
+
+    if (direction % 2 != 0) {
+      shield_sprite->set_current_animation("sword");
+      shield_sprite->set_current_animation_direction(direction / 2);
+    }
+    else {
+      shield_sprite->stop();
+    }
   }
 }

@@ -27,7 +27,6 @@ Game::Game(Savegame *savegame):
   current_map(NULL), next_map(NULL),
   transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(new HUD(this)),
   current_music_id(Music::none), current_music(NULL) {
-  
 }
 
 /**
@@ -53,14 +52,14 @@ Savegame * Game::get_savegame(void) {
 void Game::play(void) {
 
   // initialize Link
-  Link *link = zsdx->game_resource->get_link();
+  link = zsdx->game_resource->get_link();
   link->initialize_sprites();
 
   // launch the starting map
   set_current_map(savegame->get_reserved_integer(SAVEGAME_STARTING_MAP),
 		  savegame->get_reserved_integer(SAVEGAME_STARTING_ENTRANCE),
 		  TRANSITION_FADE);
-  
+
   // SDL main loop
   SDL_Event event;
   Uint32 ticks, last_frame_date = 0;
@@ -75,7 +74,7 @@ void Game::play(void) {
 
       if (is_control_enabled()) {
 	switch (event.type) {
-	  
+
 	  // a key is pressed
 	case SDL_KEYDOWN:
 
@@ -99,7 +98,16 @@ void Game::play(void) {
 	    break;
 	    
 	  case SDLK_c:
-	    link->start_sword();
+	    
+	    switch (keys_effect->get_sword_key_effect()) {
+
+	    case SWORD_KEY_SWORD:
+	      link->start_sword();
+	      break;
+
+	    default:
+	      break;
+	    }
 	    break;
 
 	    // TODO remove
@@ -148,6 +156,22 @@ void Game::play(void) {
 	    savegame->get_equipment()->set_shield_number(savegame->get_equipment()->get_shield_number() + 1);
 	    break;
 
+	  case SDLK_d:
+
+	    // very simple code to make like the game is paused
+	    if (link->get_state() != LINK_STATE_NO_CONTROL) {
+
+	      link->set_state(LINK_STATE_NO_CONTROL);
+	      link->set_animation_suspended(true);
+	      keys_effect->set_sword_key_effect(SWORD_KEY_SAVE);
+	    }
+	    else {
+	      keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
+	      link->set_animation_suspended(false);
+	      link->restore_state();
+	    }
+	    break;
+
 	  default:
 	    break;
 	  }
@@ -190,6 +214,7 @@ void Game::play(void) {
 
     // update the equipment and HUD
     savegame->get_equipment()->update();
+    update_keys_effect();
     hud->update();
 
     // update the sound system
@@ -244,7 +269,7 @@ void Game::update_transitions(void) {
     else {
       // let the player play
       set_control_enabled(true);
-      zsdx->game_resource->get_link()->set_state(LINK_STATE_FREE);
+      link->set_state(LINK_STATE_FREE);
     }
 
     delete transition;
@@ -392,9 +417,49 @@ void Game::stop_music(void) {
 
    if (enable != this->control_enabled) {
 
-     Link *link = zsdx->game_resource->get_link();
-     link->set_moving_enabled(enable);
-
+     if (!enable) {
+       link->set_state(LINK_STATE_NO_CONTROL);
+     }
+     else {
+       link->restore_state();
+     }
      this->control_enabled = enable;
    }
  }
+
+/**
+ * Returns the current effect of the 3 main keys: action, sword and pause.
+ * @return the current effect of the 3 main keys: action, sword and pause
+ */
+KeysEffect * Game::get_keys_effect(void) {
+  return keys_effect;
+}
+
+/**
+ * Makes sure the keys effects are coherent with Link's equipment and abilities.
+ */
+void Game::update_keys_effect(void) {
+
+  switch (link->get_state()) {
+
+  case LINK_STATE_FREE:
+  case LINK_STATE_SWORD_SWINGING:
+  case LINK_STATE_SWORD_LOADING:
+
+    // the sword key swings the sword <=> Link has a sword
+    if (savegame->get_equipment()->has_sword()
+	&& keys_effect->get_sword_key_effect() != SWORD_KEY_SWORD) {
+
+      keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
+    }
+    else if (!savegame->get_equipment()->has_sword()
+	     && keys_effect->get_sword_key_effect() == SWORD_KEY_SWORD) {
+      
+      keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
+    }
+    break;
+
+  default:
+    break;
+  }  
+}

@@ -20,8 +20,11 @@ suspended(false), over(false), listener(NULL) {
 }
 
 /**
- * Returns the frame interval of the current animation
- * @return the delay between two frames for the current animation
+ * Returns the frame interval of the current animation.
+ * A value of 0 (only for 1-frame animations) means that the
+ * animation must continue to be displayed: in this case,
+ * is_over() returns always false.
+ * @return the delay between two frames for the current animation (in miliseconds)
  */
 Uint32 AnimatedSprite::get_frame_interval(void) {
   return current_animation->get_frame_interval();  
@@ -32,12 +35,6 @@ Uint32 AnimatedSprite::get_frame_interval(void) {
  * @return the next frame of the current frame (or -1 if the animation is over)
  */
 int AnimatedSprite::get_next_frame(void) {
-  /*
-  if (animation_name == "sword") {
-    cout << "next frame of frame " << current_frame << ": "
-	 << current_animation->get_next_frame(current_direction, current_frame) << "\n";
-  }
-*/
   return current_animation->get_next_frame(current_direction, current_frame);    
 }
 
@@ -61,22 +58,22 @@ void AnimatedSprite::set_suspended(bool suspended) {
 void AnimatedSprite::update_current_frame(void) {
   int next_frame;
 
-  if (suspended) {
+  if (suspended || get_frame_interval() == 0) {
     return;
   }
 
   Uint32 now = SDL_GetTicks();
 
-  while (!over && now >= next_frame_date) {
+  if (!over && now >= next_frame_date) {
 
     // we get the next frame
     next_frame = get_next_frame();
 
     // test whether the animation is over
     if (next_frame == -1) {
-
+  
       over = true;
-
+      
       // tell the listener the animation is over
       if (listener != NULL) {
 	listener->animation_over(this);
@@ -99,9 +96,11 @@ void AnimatedSprite::update_current_frame(void) {
  */
 void AnimatedSprite::display(SDL_Surface *destination, int x, int y) {
 
-  current_animation->display(destination, x, y, current_direction, current_frame);
+  if (!is_over()) {
+    current_animation->display(destination, x, y, current_direction, current_frame);
+  }
 }
-
+  
 /**
  * Returns the current animation of the sprite.
  * @return the name of the current animation of the sprite
@@ -170,6 +169,29 @@ void AnimatedSprite::restart_animation(void) {
 }
 
 /**
+ * Returns true if the animation is started.
+ * It can be suspended.
+ * @return true if the animation is started, false otherwise
+ */
+bool AnimatedSprite::is_started(void) {
+  return !is_over();
+}
+
+/**
+ * Starts the animation.
+ */
+void AnimatedSprite::start(void) {
+  restart_animation();
+}
+
+/**
+ * Stops the animation.
+ */
+void AnimatedSprite::stop(void) {
+  over = true;
+}
+
+/**
  * Returns true if the animation is suspended.
  * @return true if the animation is suspended, false otherwise
  */
@@ -179,6 +201,9 @@ bool AnimatedSprite::is_suspended(void) {
 
 /**
  * Returns true if the animation is finished.
+ * The animation is over after the last frame is reached
+ * and if the frame interval is not zero (a frame interval
+ * of zero should be used only for 1-frame animations).
  * @return true if the animation is finished
  */
 bool AnimatedSprite::is_over(void) {

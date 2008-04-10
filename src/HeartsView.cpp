@@ -23,7 +23,7 @@ SDL_Rect HeartsView::fraction_heart_positions[3] = {
 
 /**
  * Constructor.
- * @param equipment the player's equipment (this class actually represents this object),
+ * @param equipment the player's equipment,
  * can be NULL (if the savegame doesn't exist yet)
  * @param x x coordinate of the top-left corner of the hearts on the destination surface
  * @param y y coordinate of the top-left corner of the hearts on the destination surface

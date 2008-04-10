@@ -38,6 +38,11 @@ class Link: public Moving8ByPlayer, AnimationListener {
   LinkState state;
 
   /**
+   * Previous state of Link.
+   */
+  LinkState previous_state;
+
+  /**
    * Equipment of the player.
    */
   Equipment *equipment;
@@ -74,11 +79,13 @@ class Link: public Moving8ByPlayer, AnimationListener {
 
   LinkState get_state(void);
   void set_state(LinkState state);
+  void restore_state(void);
 
   void start_sword(void);
   bool is_sword_visible(void);
   bool is_shield_visible(void);
 
+  void set_animation_suspended(bool suspended);
   void animation_over(AnimatedSprite *sprite);
 };
 

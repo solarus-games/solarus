@@ -7,17 +7,25 @@
 #include "Savegame.h"
 #include "HeartsView.h"
 #include "RupeesView.h"
+#include "ActionIcon.h"
+#include "SwordIcon.h"
+#include "PauseIcon.h"
 
 /**
  * Constructor.
  */
-HUD::HUD(Game *game):
-  equipment(game->get_savegame()->get_equipment()) {
+HUD::HUD(Game *game) {
+
+  Equipment *equipment = game->get_savegame()->get_equipment();
+  KeysEffect *keys_effect = game->get_keys_effect();
 
   nb_elements = 0;
 
   elements[nb_elements++] = new HeartsView(equipment, 216, 14);
   elements[nb_elements++] = new RupeesView(equipment, 8, 216);
+  //  elements[nb_elements++] = new ActionIcon(keys_effect, 23, 51);
+  elements[nb_elements++] = new SwordIcon(equipment, keys_effect, 10, 29);
+  //  elements[nb_elements++] = new PauseIcon(keys_effect, -3, 7);
 }
 
 /**

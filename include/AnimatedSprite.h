@@ -57,7 +57,7 @@ class AnimatedSprite {
   bool suspended;
 
   /**
-   * True if the animation is over.
+   * True if the animation has been stopped because the last frame was reached.
    */
   bool over;
 
@@ -83,6 +83,10 @@ class AnimatedSprite {
   void restart_animation(void);
 
   void update_current_frame(void);
+
+  bool is_started(void);
+  void start(void);
+  void stop(void);
 
   bool is_suspended(void);
   void set_suspended(bool suspended);

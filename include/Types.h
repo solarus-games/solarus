@@ -81,6 +81,9 @@ class HudElement;
 class CounterView;
 class HeartsView;
 class RupeesView;
+class ActionIcon;
+class SwordIcon;
+class PauseIcon;
 
 class Map;
 class Tileset;

@@ -9,7 +9,7 @@
 enum ActionKeyEffect {
   ACTION_KEY_NONE,     /**< nothing happens when the user presses the Action key */
 
-  ACTION_KEY_OK,       /**< validate a choice */
+  ACTION_KEY_CHOOSE,   /**< validate a choice */
   ACTION_KEY_NEXT,     /**< display the next message in a dialog */
   ACTION_KEY_INFOS,    /**< display some information about the selected item in the menu */
   ACTION_KEY_RETURN,   /**< exit a dialog or a submenu */
@@ -26,10 +26,11 @@ enum ActionKeyEffect {
  * What happens when the user presses the Sword key.
  */
 enum SwordKeyEffect {
-  SWORD_KEY_NONE,      /**< nothing happens when the user presses the Sword key */
-  SWORD_KEY_SWORD,     /**< swing the sword (this is the case most of the time) */
-  SWORD_KEY_SAVE,      /**< save the game */
-  SWORD_KEY_RETURN,    /**< exit a dialog or a submenu */
+  SWORD_KEY_NONE   = 0,    /**< nothing happens when the user presses the Sword key */
+  SWORD_KEY_SAVE   = 1,    /**< save the game */
+  SWORD_KEY_RETURN = 2,    /**< exit a dialog or a submenu */
+  SWORD_KEY_CHOOSE = 3,    /**< choose a letter when typing the player's name in the selection menu */
+  SWORD_KEY_SWORD  = 4,    /**< swing the sword (this is the case most of the time) */
 };
 
 /**

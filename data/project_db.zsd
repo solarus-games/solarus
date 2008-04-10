@@ -22,6 +22,9 @@
 2	triforce.it	Triforce
 2	village.it	Kakariko Village
 3	hud/empty_heart	Empty heart
+3	hud/action_icon_flip	Action icon (flip)
+3	hud/sword_icon_flip	Sword icon (flip)
+3	hud/pause_icon_flip	Pause icon (flip)
 3	link/shield1	Shield 1
 3	link/shield2	Shield 2
 3	link/shield3	Shield 3

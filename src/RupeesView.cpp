@@ -22,7 +22,7 @@ SDL_Rect RupeesView::rupee_icon_positions[3] = {
 
 /**
  * Constructor.
- * @param equipment the player's equipment (this class actually represents this object)
+ * @param equipment the player's equipment
  * @param x x coordinate of the top-left corner of the rupees on the destination surface
  * @param y y coordinate of the top-left corner of the rupees on the destination surface
  */

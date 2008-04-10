@@ -47,6 +47,8 @@ bool HudElement::is_visible(void) {
 void HudElement::display(SDL_Surface *destination) {
 
   if (is_visible()) {
-    SDL_BlitSurface(surface_drawn, NULL, destination, &destination_position);
+    // we don't want destination_position to be modified
+    SDL_Rect destination_position_unsafe = destination_position;
+    SDL_BlitSurface(surface_drawn, NULL, destination, &destination_position_unsafe);
   }
 }

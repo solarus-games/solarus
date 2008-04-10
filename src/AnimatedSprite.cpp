@@ -159,6 +159,22 @@ void AnimatedSprite::set_current_frame(int current_frame) {
 }
 
 /**
+ * Returns true if the animation is started.
+ * It can be suspended.
+ * @return true if the animation is started, false otherwise
+ */
+bool AnimatedSprite::is_animation_started(void) {
+  return !is_over();
+}
+
+/**
+ * Starts the animation.
+ */
+void AnimatedSprite::start_animation(void) {
+  restart_animation();
+}
+
+/**
  * Restarts the animation.
  */
 void AnimatedSprite::restart_animation(void) {
@@ -167,25 +183,9 @@ void AnimatedSprite::restart_animation(void) {
 }
 
 /**
- * Returns true if the animation is started.
- * It can be suspended.
- * @return true if the animation is started, false otherwise
- */
-bool AnimatedSprite::is_started(void) {
-  return !is_over();
-}
-
-/**
- * Starts the animation.
- */
-void AnimatedSprite::start(void) {
-  restart_animation();
-}
-
-/**
  * Stops the animation.
  */
-void AnimatedSprite::stop(void) {
+void AnimatedSprite::stop_animation(void) {
   over = true;
 }
 

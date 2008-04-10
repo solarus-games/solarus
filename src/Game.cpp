@@ -164,12 +164,16 @@ void Game::play(void) {
 	    // very simple code to make like the game is paused
 	    if (link->get_state() != LINK_STATE_NO_CONTROL) {
 
+	      zsdx->game_resource->get_sound("pause_open")->play();
 	      link->set_state(LINK_STATE_NO_CONTROL);
 	      link->set_animation_suspended(true);
+	      keys_effect->set_pause_key_effect(PAUSE_KEY_RETURN);
 	      keys_effect->set_sword_key_effect(SWORD_KEY_SAVE);
 	    }
 	    else {
+	      zsdx->game_resource->get_sound("pause_closed")->play();
 	      keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
+	      keys_effect->set_pause_key_effect(PAUSE_KEY_PAUSE);
 	      link->set_animation_suspended(false);
 	      link->restore_state();
 	    }
@@ -253,6 +257,7 @@ void Game::update_transitions(void) {
       next_map = NULL;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
+      link->set_animation_stopped();
       set_control_enabled(false);
       transition = TransitionEffect::create_transition(transition_type, TRANSITION_OUT);
       transition->start();
@@ -272,7 +277,6 @@ void Game::update_transitions(void) {
     else {
       // let the player play
       set_control_enabled(true);
-      link->set_state(LINK_STATE_FREE);
     }
 
     delete transition;

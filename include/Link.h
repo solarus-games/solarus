@@ -60,8 +60,6 @@ class Link: public Moving8ByPlayer, AnimationListener {
 
   void update_movement(void);
   void set_animation_direction(int direction);
-  void set_animation_stopped(void);
-  void set_animation_walking(void);
   void set_animation_sword(void);
 
  public:
@@ -87,6 +85,9 @@ class Link: public Moving8ByPlayer, AnimationListener {
 
   void set_animation_suspended(bool suspended);
   void animation_over(AnimatedSprite *sprite);
+
+  void set_animation_stopped(void);
+  void set_animation_walking(void);
 };
 
 #endif

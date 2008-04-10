@@ -80,13 +80,13 @@ class AnimatedSprite {
   void set_current_animation_direction(int current_direction);
   int get_current_frame(void);
   void set_current_frame(int current_frame);
-  void restart_animation(void);
 
   void update_current_frame(void);
 
-  bool is_started(void);
-  void start(void);
-  void stop(void);
+  bool is_animation_started(void);
+  void start_animation(void);
+  void restart_animation(void);
+  void stop_animation(void);
 
   bool is_suspended(void);
   void set_suspended(bool suspended);

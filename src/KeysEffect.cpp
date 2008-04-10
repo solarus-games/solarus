@@ -15,7 +15,7 @@ KeysEffect::KeysEffect(void) {
   sword_key_effect = SWORD_KEY_NONE;
   sword_key_enabled = true;
 
-  pause_key_effect = PAUSE_KEY_NONE;
+  pause_key_effect = PAUSE_KEY_PAUSE;
   pause_key_enabled = true;
 
   current_item_1 = 0; // item associated to the first item slot (0 means no item)

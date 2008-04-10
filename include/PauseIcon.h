@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "HudElement.h"
+#include "KeysEffect.h"
 
 /**
  * This class displays the pause icon.
@@ -11,9 +12,16 @@ class PauseIcon: public HudElement {
 
  private:
 
+  // data object to observe
   KeysEffect *keys_effect;
 
-  AnimatedSprite *pause_icon_sprite;
+  // static icon
+  PauseKeyEffect pause_key_effect_displayed;
+  SDL_Surface *img_pause_icon;
+
+  // icon flipping
+  bool is_flipping;
+  AnimatedSprite *sprite_pause_icon;
 
  public:
 

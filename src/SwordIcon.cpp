@@ -23,8 +23,7 @@ SwordIcon::SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y
   keys_effect(keys_effect), equipment(equipment) {
 
   // static icon
-   this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword_number() : 0;
-
+  this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword_number() : 0;
   this->sword_key_effect_displayed = (sword_number_displayed > 0) ? SWORD_KEY_SWORD : SWORD_KEY_NONE;
   this->img_sword_icon = FileTools::open_image("hud/sword_icon.png");
 
@@ -64,7 +63,7 @@ void SwordIcon::update(void) {
       sword_key_effect_displayed = sword_key_effect;
       sword_number_displayed = sword_number;
 
-      sprite_sword_icon->restart_animation();
+      sprite_sword_icon->start_animation();
       is_flipping = true;
       need_rebuild = true;
     }

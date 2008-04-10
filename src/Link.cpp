@@ -170,7 +170,7 @@ void Link::initialize_sprites(void) {
   if (sword_number > 0) {
     // Link has a sword: get the sprite and the sound
     sword_sprite = new AnimatedSprite(resource->get_sprite(sword_sprite_ids[sword_number - 1]));
-    sword_sprite->stop();
+    sword_sprite->stop_animation();
     sword_sprite->set_animation_listener(this); // to be notified when an animation of the sword is over
 
     sword_sound = resource->get_sound(sword_sound_ids[sword_number - 1]);
@@ -313,7 +313,7 @@ void Link::start_sword(void) {
  * @return true if Link's sword is currently displayed on the screen
  */
 bool Link::is_sword_visible(void) {
-  return equipment->has_sword() && sword_sprite->is_started();
+  return equipment->has_sword() && sword_sprite->is_animation_started();
 }
 
 /**
@@ -321,7 +321,7 @@ bool Link::is_sword_visible(void) {
  * @return true if Link's shield is currently displayed on the screen
  */
 bool Link::is_shield_visible(void) {
-  return equipment->has_shield() && shield_sprite->is_started();
+  return equipment->has_shield() && shield_sprite->is_animation_started();
 }
 
 /**
@@ -358,14 +358,13 @@ void Link::set_animation_direction(int direction) {
 
 /**
  * Starts the "stopped" animation of Link's sprites.
- * Link's state should be LINK_STATE_FREE.
  */
 void Link::set_animation_stopped(void) {
 
   tunic_sprite->set_current_animation("stopped");
 
   if (is_sword_visible()) {
-    sword_sprite->stop();
+    sword_sprite->stop_animation();
   }
 
   if (equipment->has_shield()) {
@@ -379,14 +378,13 @@ void Link::set_animation_stopped(void) {
 
 /**
  * Starts the "walking" animation of Link's sprites.
- * Link's state should be LINK_STATE_FREE.
  */
 void Link::set_animation_walking(void) {
   
   tunic_sprite->set_current_animation("walking");
 
   if (is_sword_visible()) {
-    sword_sprite->stop();
+    sword_sprite->stop_animation();
   }
 
   if (equipment->has_shield()) {
@@ -434,7 +432,7 @@ void Link::set_animation_sword(void) {
       shield_sprite->set_current_animation_direction(direction / 2);
     }
     else {
-      shield_sprite->stop();
+      shield_sprite->stop_animation();
     }
   }
 }

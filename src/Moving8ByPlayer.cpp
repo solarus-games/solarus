@@ -48,7 +48,7 @@ static const int directions[] = {
  * @param speed movement speed
  */
 Moving8ByPlayer::Moving8ByPlayer(int speed):
-  started(false), direction_mask(0), can_move(true), speed(speed) {
+  started(false), direction_mask(0), can_move(false), speed(speed) {
 
 }
 

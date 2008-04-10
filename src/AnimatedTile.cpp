@@ -81,9 +81,9 @@ AnimatedTile::~AnimatedTile(void) {
  */
 void AnimatedTile::update(void) {
 
-  Uint32 ticks = SDL_GetTicks();
+  Uint32 now = SDL_GetTicks();
 
-  while (ticks > next_frame_date) {
+  while (now >= next_frame_date) {
 
     frame_counter = (frame_counter + 1) % 12;
     current_frames[0] = frames[0][frame_counter];

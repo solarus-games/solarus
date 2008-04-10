@@ -37,7 +37,7 @@ Savegame::Savegame(const char *file_name) {
  * Destructor.
  */
 Savegame::~Savegame(void) {
-
+  delete equipment;
 }
 
 /**

@@ -24,7 +24,7 @@ HUD::HUD(Game *game) {
   elements[nb_elements++] = new HeartsView(equipment, 216, 14);
   elements[nb_elements++] = new RupeesView(equipment, 8, 216);
   //  elements[nb_elements++] = new ActionIcon(keys_effect, 23, 51);
-  elements[nb_elements++] = new SwordIcon(equipment, keys_effect, 10, 29);
+  elements[nb_elements++] = new SwordIcon(keys_effect, equipment, 10, 29);
   //  elements[nb_elements++] = new PauseIcon(keys_effect, -3, 7);
 }
 

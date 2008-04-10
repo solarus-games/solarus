@@ -74,7 +74,8 @@ const SoundId Link::sword_sound_ids[4] = {
  */
 Link::Link(void):
   Moving8ByPlayer(12),
-  state(LINK_STATE_FREE), equipment(zsdx->game->get_savegame()->get_equipment()),
+  state(LINK_STATE_FREE), previous_state(LINK_STATE_FREE),
+  equipment(zsdx->game->get_savegame()->get_equipment()),
   tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL) {
 
   set_size(16, 16);
@@ -141,7 +142,6 @@ void Link::display_on_map(Map *map) {
  */
 void Link::initialize_sprites(void) {
 
-  Savegame *save = zsdx->game->get_savegame();
   GameResource *resource = zsdx->game_resource;
 
   int animation_direction = -1;

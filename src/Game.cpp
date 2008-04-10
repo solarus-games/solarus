@@ -25,7 +25,7 @@ Game::Game(Savegame *savegame):
   savegame(savegame),
   control_enabled(false), keys_effect(new KeysEffect()),
   current_map(NULL), next_map(NULL),
-  transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(new HUD(this)),
+  transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(NULL),
   current_music_id(Music::none), current_music(NULL) {
 }
 
@@ -50,6 +50,9 @@ Savegame * Game::get_savegame(void) {
  * The SDL main loop is executed here.
  */
 void Game::play(void) {
+
+  // initialize the HUD
+  hud = new HUD(this);
 
   // initialize Link
   link = zsdx->game_resource->get_link();

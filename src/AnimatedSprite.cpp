@@ -56,15 +56,13 @@ void AnimatedSprite::set_suspended(bool suspended) {
  * If the frame changes, next_frame_date is updated.
  */
 void AnimatedSprite::update_current_frame(void) {
-  int next_frame;
 
-  if (suspended || get_frame_interval() == 0) {
-    return;
-  }
+  int next_frame;
 
   Uint32 now = SDL_GetTicks();
 
-  if (!over && now >= next_frame_date) {
+  while (!over && !suspended && get_frame_interval() > 0
+	 && now >= next_frame_date) {
 
     // we get the next frame
     next_frame = get_next_frame();

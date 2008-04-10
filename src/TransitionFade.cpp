@@ -54,10 +54,10 @@ bool TransitionFade::is_over(void) {
  */
 void TransitionFade::display(SDL_Surface *surface) {
 
-  Uint32 ticks = SDL_GetTicks();
+  Uint32 now = SDL_GetTicks();
 
   // update the transition effect if needed
-  while (next_frame_date < ticks && alpha != alpha_limit) {
+  while (now >= next_frame_date && alpha != alpha_limit) {
     alpha += alpha_increment;
     next_frame_date += 20; // 20 ms between two frame updates
   }

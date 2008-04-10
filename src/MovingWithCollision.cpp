@@ -66,7 +66,8 @@ void MovingWithCollision::update_x(void) {
 
   if (x_move != 0) { // the entity wants to move on x
 
-    while (SDL_GetTicks() > next_move_date_x) { // while it's time to try a move
+    Uint32 now = SDL_GetTicks();
+    while (now >= next_move_date_x) { // while it's time to try a move
 
       // make the move only if there is no collision
       if (!collision_with_map(x_move, 0)) {
@@ -88,7 +89,8 @@ void MovingWithCollision::update_y(void) {
 
   if (y_move != 0) { // the entity wants to move on y
 
-    while (SDL_GetTicks() > next_move_date_y) { // while it's time to try a move
+    Uint32 now = SDL_GetTicks();
+    while (now >= next_move_date_y) { // while it's time to try a move
 
       // make the move only if there is no collision
       if (!collision_with_map(0, y_move)) {

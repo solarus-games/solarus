@@ -49,8 +49,11 @@ add_executable (zsdx
 # Under Windows, at runtime, the data directory is relative to the current directory
 if (NOT WIN32)
    SET_TARGET_PROPERTIES(zsdx PROPERTIES
-			 COMPILE_FLAGS -DDATADIR_="${CMAKE_INSTALL_PREFIX}/share/zsdx")
+			      COMPILE_FLAGS -DDATADIR_="${CMAKE_INSTALL_PREFIX}/share/zsdx")
 endif (NOT WIN32)
+
+SET_TARGET_PROPERTIES(zsdx PROPERTIES
+			   COMPILE_FLAGS "-g -ansi -Wall -Werror")
 
 target_link_libraries (zsdx
 		      SDL

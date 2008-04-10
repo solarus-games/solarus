@@ -27,7 +27,7 @@ class SwordIcon: public HudElement {
 
  public:
 
-  SwordIcon(Equipment *equipment, KeysEffect *keys_effect, int x, int y);
+  SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y);
   ~SwordIcon(void);
   
   void update(void);

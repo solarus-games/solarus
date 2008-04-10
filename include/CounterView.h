@@ -16,6 +16,8 @@ class CounterView {
   SDL_Surface *surface_drawn;
   SDL_Rect destination_position;
   SDL_Surface *img_digits;
+
+  void rebuild_with_value(unsigned int value);
  
  public:
   

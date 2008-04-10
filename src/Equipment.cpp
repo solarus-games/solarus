@@ -13,7 +13,7 @@
  * Constructor.
  */
 Equipment::Equipment(Savegame *savegame):
-  savegame(savegame) {
+  savegame(savegame), magic_decrease_delay(0) {
 }
 
 /**

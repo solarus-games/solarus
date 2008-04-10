@@ -42,7 +42,8 @@ void Moving::update_x(void) {
   if (x_move != 0) { // if we want to move on x
 
     // update the x position while next_move_date_x is past
-    while (SDL_GetTicks() > next_move_date_x) {
+    Uint32 now = SDL_GetTicks();
+    while (now >= next_move_date_x) {
       translate_x(x_move);
       next_move_date_x += x_delay;
     }
@@ -57,7 +58,8 @@ void Moving::update_y(void) {
   if (y_move != 0) { // if we want to move on y
 
     // update the x position while next_move_date_y is past
-    while (SDL_GetTicks() > next_move_date_y) {
+    Uint32 now = SDL_GetTicks();
+    while (now >= next_move_date_y) {
       translate_y(y_move);
       next_move_date_y += y_delay;
     }

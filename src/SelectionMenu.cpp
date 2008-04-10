@@ -286,7 +286,7 @@ void SelectionMenu::show(void) {
     // redraw if necessary
     while (SDL_GetTicks() >= next_redraw) {
       redraw();
-      next_redraw += 10;
+      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
     }
   }
 
@@ -436,7 +436,8 @@ void SelectionMenu::redraw(void) {
 void SelectionMenu::update(void) {
 
   // move the clouds
-  while (SDL_GetTicks() >= next_cloud_move) {
+  Uint32 now = SDL_GetTicks();
+  while (now >= next_cloud_move) {
     
     for (int i = 0; i < 16; i++) {
       cloud_positions[i].x += 1;

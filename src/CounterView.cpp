@@ -22,7 +22,7 @@ CounterView::CounterView(unsigned int nb_digits, int x, int y):
   destination_position.x = x;
   destination_position.y = y;
 
-  set_value(0);
+  rebuild_with_value(0);
 }
 
 /**
@@ -30,10 +30,12 @@ CounterView::CounterView(unsigned int nb_digits, int x, int y):
  */
 CounterView::~CounterView(void) {
   SDL_FreeSurface(surface_drawn);
+  SDL_FreeSurface(img_digits);
 }
 
 /**
  * Returns the value currently displayed by the counter.
+ * @return the value currently displayed by the counter
  */
 unsigned int CounterView::get_value(void) {
   return value;
@@ -43,30 +45,40 @@ unsigned int CounterView::get_value(void) {
  * Changes the counter's value.
  * The surface is redrawn such that the counter displays
  * the new value.
+ * Nothing is done if the value is the same.
+ * @param value the new value to display
  */
 void CounterView::set_value(unsigned int value) {
 
   if (value != this->value) {
+    rebuild_with_value(value);
+  }
+}
 
-    this->value = value;
+/**
+ * Redraws the surface to represent a new value.
+ * @param value the new value to display
+ */
+void CounterView::rebuild_with_value(unsigned int value) {
 
-    SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
+  this->value = value;
 
-    SDL_Rect digit_position_in_src = {0, 0, 8, 8};
-    SDL_Rect digit_position_in_counter = {0, 0, 8, 8};
+  SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
 
-    for (int i = nb_digits - 1; i >= 0; i--) {
+  SDL_Rect digit_position_in_src = {0, 0, 8, 8};
+  SDL_Rect digit_position_in_counter = {0, 0, 8, 8};
 
-      // compute each digit
-      Uint8 digit = value % 10;
-      value /= 10;
+  for (int i = nb_digits - 1; i >= 0; i--) {
+
+    // compute each digit
+    Uint8 digit = value % 10;
+    value /= 10;
       
-      // draw the surface
-      digit_position_in_src.x = digit * 8;
-      digit_position_in_counter.x = i * 8;
-      
-      SDL_BlitSurface(img_digits, &digit_position_in_src, surface_drawn, &digit_position_in_counter); 
-    }
+    // draw the surface
+    digit_position_in_src.x = digit * 8;
+    digit_position_in_counter.x = i * 8;
+
+    SDL_BlitSurface(img_digits, &digit_position_in_src, surface_drawn, &digit_position_in_counter); 
   }
 }
 

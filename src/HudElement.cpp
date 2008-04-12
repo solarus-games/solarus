@@ -30,6 +30,15 @@ HudElement::~HudElement(void) {
 }
 
 /**
+ * Redefine this method to redraw the element on the surface.
+ * You have to call this method from the subclasses to initialize
+ * the surface with transparent color.
+ */
+void HudElement::rebuild(void) {
+  SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
+}
+
+/**
  * Returns whether this hud element is visible.
  * The display() function does nothing if this function
  * returns false.

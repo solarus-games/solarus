@@ -124,8 +124,8 @@ void HeartsView::update(void) {
  */
 void HeartsView::rebuild(void) {
 
-  SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
-
+  HudElement::rebuild();
+  
   // max hearts
 
   // blit each empty heart on the hearts surface

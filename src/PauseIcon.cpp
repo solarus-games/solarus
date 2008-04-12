@@ -79,8 +79,8 @@ void PauseIcon::update(void) {
  */
 void PauseIcon::rebuild(void) {
 
-  SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
-
+  HudElement::rebuild();
+  
   if (!is_flipping) {
 
     // draw the static image of the icon, with the current

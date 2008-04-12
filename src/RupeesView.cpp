@@ -124,8 +124,8 @@ void RupeesView::update(void) {
  */
 void RupeesView::rebuild(void) {
 
-  SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
-
+  HudElement::rebuild();
+  
   // max rupees (icon)
   SDL_BlitSurface(img_rupee_icon, &rupee_icon_positions[icon_displayed], surface_drawn, NULL);
 

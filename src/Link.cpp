@@ -150,7 +150,6 @@ void Link::initialize_sprites(void) {
   if (tunic_sprite != NULL) {
     // save the animation direction
     animation_direction = tunic_sprite->get_current_animation_direction();
-    set_state(LINK_STATE_FREE);
     delete tunic_sprite;
   }
 
@@ -193,6 +192,8 @@ void Link::initialize_sprites(void) {
   if (animation_direction != -1) {
     set_animation_direction(animation_direction);
   }
+
+  set_state(LINK_STATE_FREE);
 }
 
 /**

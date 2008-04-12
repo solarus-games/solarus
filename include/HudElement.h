@@ -33,7 +33,7 @@ class HudElement {
   virtual ~HudElement(void);
 
   virtual void update(void) = 0;
-  virtual void rebuild(void) = 0;
+  virtual void rebuild(void);
   virtual bool is_visible(void);
   void display(SDL_Surface *destination);
 };

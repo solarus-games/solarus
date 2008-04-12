@@ -179,6 +179,20 @@ void Game::play(void) {
 	    }
 	    break;
 
+	  case SDLK_a:
+
+	    if (keys_effect->get_action_key_effect() == ACTION_KEY_NONE) {
+	      keys_effect->set_action_key_effect(ACTION_KEY_ACTION);
+	    }
+	    else if (keys_effect->get_action_key_effect() == ACTION_KEY_ACTION) {
+	      keys_effect->set_action_key_effect(ACTION_KEY_THROW);
+	    }
+	    else if (keys_effect->get_action_key_effect() == ACTION_KEY_THROW) {
+	      keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+	    }
+	    
+	    break;
+
 	  default:
 	    break;
 	  }

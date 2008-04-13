@@ -19,7 +19,7 @@ ActionIcon::ActionIcon(KeysEffect *keys_effect, int x, int y):
   HudElement(x, y, 72, 24), keys_effect(keys_effect) {
 
   // static icon
-  this->action_key_effect_displayed = ACTION_KEY_NONE;
+  this->action_key_effect_displayed = keys_effect->get_action_key_effect();
   this->img_action_icon = FileTools::open_image("hud/action_icon.png");
 
   // flipping icon

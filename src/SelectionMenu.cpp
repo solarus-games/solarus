@@ -13,6 +13,8 @@
 #include "TextDisplayed.h"
 #include "TransitionEffect.h"
 #include "HeartsView.h"
+#include "ActionIcon.h"
+#include "SwordIcon.h"
 
 /**
  * Creates a selection menu.
@@ -45,6 +47,14 @@ SelectionMenu::SelectionMenu(void):
   text->create_text("Quitter", 162, 133);
   text->display(img_menu);
   delete text;
+
+  // icons
+  keys_effect = new KeysEffect();
+  keys_effect->set_action_key_effect(ACTION_KEY_VALIDATE);
+  keys_effect->set_sword_key_effect(SWORD_KEY_CHOOSE);
+  keys_effect->set_sword_key_enabled(false);
+  action_icon = new ActionIcon(keys_effect, 13, 31);
+  sword_icon = new SwordIcon(keys_effect, NULL, 0, 9);
 
   // initialize the clouds
   int i;
@@ -137,6 +147,10 @@ SelectionMenu::~SelectionMenu(void) {
     delete hearts_views[i];
     delete savegames[i];
   }
+
+  delete action_icon;
+  delete sword_icon;
+  delete keys_effect;
 
   delete cursor;
 }
@@ -421,6 +435,10 @@ void SelectionMenu::redraw(void) {
   position.y = 134;
   SDL_BlitSurface(img_3, NULL, destination_surface, &position);
 
+  // icons
+  action_icon->display(destination_surface);
+  sword_icon->display(destination_surface);
+
   // transition
   SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
   if (transition != NULL && transition->is_started()) {
@@ -457,4 +475,8 @@ void SelectionMenu::update(void) {
 
   // update the animation of the cursor
   cursor->update_current_frame();
+
+  // update the icons
+  action_icon->update();
+  sword_icon->update();
 }

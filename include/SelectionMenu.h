@@ -28,6 +28,11 @@ class SelectionMenu {
   int cursor_position; // 1 to 5
   TransitionEffect *transition;
 
+  // icons
+  KeysEffect *keys_effect;
+  ActionIcon *action_icon;
+  SwordIcon *sword_icon;
+
   // savegames data
   TextDisplayed *text_player_names[3];
   HeartsView *hearts_views[3];

@@ -9,7 +9,7 @@
 enum ActionKeyEffect {
   ACTION_KEY_NONE,     /**< nothing happens when the user presses the Action key */
 
-  ACTION_KEY_CHOOSE,   /**< validate a choice */
+  ACTION_KEY_VALIDATE, /**< validate a choice */
   ACTION_KEY_NEXT,     /**< display the next message in a dialog */
   ACTION_KEY_INFOS,    /**< display some information about the selected item in the menu */
   ACTION_KEY_RETURN,   /**< exit a dialog or a submenu */

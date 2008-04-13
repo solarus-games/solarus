@@ -23,7 +23,7 @@
  */
 Game::Game(Savegame *savegame):
   savegame(savegame),
-  control_enabled(false), keys_effect(new KeysEffect()),
+  control_enabled(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL),
   transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(NULL),
   current_music_id(Music::none), current_music(NULL) {
@@ -51,12 +51,14 @@ Savegame * Game::get_savegame(void) {
  */
 void Game::play(void) {
 
-  // initialize the HUD
-  hud = new HUD(this);
-
   // initialize Link
   link = zsdx->game_resource->get_link();
   link->initialize_sprites();
+
+  // initialize the keys effect and the HUD
+  keys_effect = new KeysEffect();
+  update_keys_effect();
+  hud = new HUD(this);
 
   // launch the starting map
   set_current_map(savegame->get_reserved_integer(SAVEGAME_STARTING_MAP),

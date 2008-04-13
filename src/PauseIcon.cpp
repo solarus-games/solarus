@@ -19,7 +19,7 @@ PauseIcon::PauseIcon(KeysEffect *keys_effect, int x, int y):
   HudElement(x, y, 72, 24), keys_effect(keys_effect) {
 
   // static icon
-  this->pause_key_effect_displayed = PAUSE_KEY_PAUSE;
+  this->pause_key_effect_displayed = keys_effect->get_pause_key_effect();
   this->img_pause_icon = FileTools::open_image("hud/pause_icon.png");
 
   // flipping icon

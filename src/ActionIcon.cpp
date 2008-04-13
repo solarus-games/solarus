@@ -22,6 +22,8 @@ ActionIcon::ActionIcon(KeysEffect *keys_effect, int x, int y):
   this->action_key_effect_displayed = keys_effect->get_action_key_effect();
   this->img_action_icon = FileTools::open_image("hud/action_icon.png");
 
+  this->is_enabled = true;
+
   // flipping icon
   this->is_flipping = false;
   this->sprite_action_icon = new AnimatedSprite(zsdx->game_resource->get_sprite("hud/action_icon_flip"));
@@ -56,6 +58,7 @@ void ActionIcon::update(void) {
 
   bool need_rebuild = false;
 
+  // text shown
   if (!is_flipping) {
 
     ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
@@ -93,6 +96,19 @@ void ActionIcon::update(void) {
     }
   }
 
+  // icon opacity
+  if (keys_effect->is_action_key_enabled() && !is_enabled) {
+    SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, 255);
+    is_enabled = true;
+    need_rebuild = true;
+  }
+  else if (!keys_effect->is_action_key_enabled() && is_enabled) {
+    SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, 128);
+    is_enabled = false;
+    need_rebuild = true;
+  }
+
+  // redraw the surface if something has changed
   if (need_rebuild) {
     rebuild();
   }

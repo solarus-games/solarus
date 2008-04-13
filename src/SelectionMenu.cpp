@@ -30,23 +30,27 @@ SelectionMenu::SelectionMenu(void):
   read_saves();
 
   // load the images
-  img_cloud = FileTools::open_image("menus/cloud.png");
-  img_menu = FileTools::open_image("menus/select_a_file.png");
-  img_1 = FileTools::open_image("menus/save1.png");
-  img_2 = FileTools::open_image("menus/save2.png");
-  img_3 = FileTools::open_image("menus/save3.png");
+  img_cloud = FileTools::open_image("menus/selection_menu_cloud.png");
+  img_background = FileTools::open_image("menus/selection_menu_background.png");
+  img_save_container = FileTools::open_image("menus/selection_menu_save_container.png");
+  img_option_container = FileTools::open_image("menus/selection_menu_option_container.png");
 
-  cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/cursor"));
+  img_text_select = FileTools::open_image("menus/selection_menu_text_select.png");
+  img_text_erase = FileTools::open_image("menus/selection_menu_text_erase.png");
+  img_text_confirm = FileTools::open_image("menus/selection_menu_text_confirm.png");
+  img_text_name = FileTools::open_image("menus/selection_menu_text_name.png");
+
+  char file_name[MAX_FILE_NAME];
+  for (int i = 0; i < 3; i++) {
+    sprintf(file_name, "menus/selection_menu_save%d.png", i + 1);
+    img_numbers[i] = FileTools::open_image(file_name);
+  }
+
+  cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/selection_menu_cursor"));
 
   // erase + quit
-  TextDisplayed *text = new TextDisplayed(TEXT_SOLID, ALIGN_LEFT, ALIGN_MIDDLE);
+  text = new TextDisplayed(TEXT_SOLID, ALIGN_LEFT, ALIGN_MIDDLE);
   text->set_text_color(255, 255, 255);
-  text->create_text("Effacer", 54, 133);
-  text->display(img_menu);
-
-  text->create_text("Quitter", 162, 133);
-  text->display(img_menu);
-  delete text;
 
   // icons
   keys_effect = new KeysEffect();
@@ -56,7 +60,51 @@ SelectionMenu::SelectionMenu(void):
   action_icon = new ActionIcon(keys_effect, 13, 31);
   sword_icon = new SwordIcon(keys_effect, NULL, 0, 9);
 
+  // sounds
+  cursor_sound = zsdx->game_resource->get_sound("cursor");
+  ok_sound = zsdx->game_resource->get_sound("ok");
+  letter_sound = zsdx->game_resource->get_sound("danger");
+  erase_sound = zsdx->game_resource->get_sound("boss_dead");
+  error_sound = zsdx->game_resource->get_sound("wrong");
+  
   // initialize the clouds
+  initialize_clouds();
+}
+
+/**
+ * Destroys the selection menu.
+ */
+SelectionMenu::~SelectionMenu(void) {
+  SDL_FreeSurface(img_cloud);
+  SDL_FreeSurface(img_background);
+  SDL_FreeSurface(img_save_container);
+  SDL_FreeSurface(img_option_container);
+  SDL_FreeSurface(img_text_select);
+  SDL_FreeSurface(img_text_erase);
+  SDL_FreeSurface(img_text_confirm);
+  SDL_FreeSurface(img_text_name);
+
+  delete text;
+
+  for (int i = 0; i < 3; i++) {
+    SDL_FreeSurface(img_numbers[i]);
+    delete text_player_names[i];
+    delete hearts_views[i];
+    delete savegames[i];
+  }
+
+  delete action_icon;
+  delete sword_icon;
+  delete keys_effect;
+
+  delete cursor;
+}
+
+/**
+ * Initializes the clouds position.
+ */
+void SelectionMenu::initialize_clouds(void) {
+
   int i;
 
   for (i = 0; i < 16; i++) {
@@ -129,30 +177,6 @@ SelectionMenu::SelectionMenu(void):
   cloud_positions[i].x = 170;
   cloud_positions[i].y = 220;
   i++;
-
-}
-
-/**
- * Destroys the selection menu.
- */
-SelectionMenu::~SelectionMenu(void) {
-  SDL_FreeSurface(img_cloud);
-  SDL_FreeSurface(img_menu);
-  SDL_FreeSurface(img_1);
-  SDL_FreeSurface(img_2);
-  SDL_FreeSurface(img_3);
-
-  for (int i = 0; i < 3; i++) {
-    delete text_player_names[i];
-    delete hearts_views[i];
-    delete savegames[i];
-  }
-
-  delete action_icon;
-  delete sword_icon;
-  delete keys_effect;
-
-  delete cursor;
 }
 
 /**
@@ -201,113 +225,22 @@ void SelectionMenu::read_saves(void) {
 void SelectionMenu::show(void) {
 
   // initialize the screen
-  Uint32 next_redraw = SDL_GetTicks();
+  destination_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 
   // play the selection menu music
   Music *music = zsdx->game_resource->get_music("game_over.it");
   music->play();
 
-  cursor->set_current_animation("blue");
-  cursor_position = 1;
-  Sound *cursor_sound = zsdx->game_resource->get_sound("cursor");
-  Sound *ok_sound = zsdx->game_resource->get_sound("ok");
-
-  bool start = false;
-  bool quit = false;
-  SDL_Event event;
-  SDL_EnableKeyRepeat(0, 0); // no repeat
-
-  destination_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
   transition->start();
 
-  while (!zsdx->is_exiting() && !start && !quit) {
-
-    // if there is an event
-    if (SDL_PollEvent(&event)) {
-      
-      zsdx->handle_event(event);
-    
-      if (event.type == SDL_KEYDOWN) {
-
-	switch (event.key.keysym.sym) {
-
-	case SDLK_SPACE:
-	  if (cursor_position == 5) {
-	    quit = true;
-	  }
-	  else if (cursor_position == 4) {
-	    cursor->set_current_animation("red");
-	    ok_sound->play();
-	  }
-	  else {
-	    
-	    // temporary (the savegame should be created when the user typed the name
-	    if (savegames[cursor_position - 1]->is_empty()) {
-	      savegames[cursor_position - 1]->set_reserved_string(SAVEGAME_PLAYER_NAME, "Link");
-	      savegames[cursor_position - 1]->save();
-	    }
-	    
-	    start = true;
-	    ok_sound->play();
-	  }
-	  break;
-
-	case SDLK_DOWN:
-	  cursor_sound->play();
-	  cursor->restart_animation();
-	  cursor_position++;
-	  if (cursor_position >= 5) {
-	    cursor_position = 1;
-	  }
-	  break;
-
-	case SDLK_UP:
-	  cursor_sound->play();
-	  cursor->restart_animation();
-	  cursor_position--;
-	  if (cursor_position == 0) {
-	    cursor_position = 4;
-	  }
-	  else if (cursor_position == 4) {
-	    cursor_position = 3;
-	  }
-	  break;
-
-	case SDLK_RIGHT:
-	case SDLK_LEFT:
-	  if (cursor_position == 4) {
-	    cursor_sound->play();
-	    cursor->restart_animation();
-	    cursor_position = 5;
-	  }
-	  else if (cursor_position == 5) {
-	    cursor_sound->play();
-	    cursor->restart_animation();
-	    cursor_position = 4;
-	  }
-	  break;
-
-	default:
-	  break;
-	}
-      }
-    }
-
-    // update the sprites
-    update();
-
-    // redraw if necessary
-    while (SDL_GetTicks() >= next_redraw) {
-      redraw();
-      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
-    }
-  }
+  show_main_screen();
 
   delete transition;
 
   // transition
-  if (!zsdx->is_exiting() && !quit) {
+  SDL_Event event;
+  if (!zsdx->is_exiting()) {
 
     transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
     transition->start();
@@ -317,7 +250,7 @@ void SelectionMenu::show(void) {
 	zsdx->handle_event(event);
       }
 
-      redraw();
+      redraw_main_screen();
     }
     delete transition;
   }
@@ -361,18 +294,17 @@ bool SelectionMenu::is_adventure_mode(void) {
 }
 
 /**
- * Redraws the screen.
+ * Redraws the elements common to all the screens of
+ * the selection menu.
  */
-void SelectionMenu::redraw(void) {
-
-  int i;
+void SelectionMenu::redraw_common(void) {
 
   // background color
   SDL_FillRect(destination_surface, NULL, get_color(104, 144, 240));
 
   // display the clouds
   SDL_Rect position;
-  for (i = 0; i < 16; i++) {
+  for (int i = 0; i < 16; i++) {
 
     position = cloud_positions[i];
 
@@ -397,43 +329,12 @@ void SelectionMenu::redraw(void) {
     }
   }
 
-  // display the menu
+  // display the background image
   position.x = 37;
   position.y = 38;
   position.w = 246;
   position.h = 165;
-  SDL_BlitSurface(img_menu, NULL, destination_surface, &position);
-
-  // savegame names + hearts
-  for (i = 0; i < 3; i++) {
-    text_player_names[i]->display(destination_surface);
-    hearts_views[i]->display(destination_surface);
-  }
-
-  // cursor
-  if (cursor_position != 5) {
-    position.x = 58;
-  }
-  else {
-    position.x = 166;
-  }
-
-  if (cursor_position < 4) {
-    position.y = 49 + cursor_position * 27;
-  }
-  else {
-    position.y = 159;
-  }
-  cursor->display(destination_surface, position.x, position.y);
-
-  // save numbers
-  position.x = 62;
-  position.y = 80;
-  SDL_BlitSurface(img_1, NULL, destination_surface, &position);
-  position.y = 107;
-  SDL_BlitSurface(img_2, NULL, destination_surface, &position);
-  position.y = 134;
-  SDL_BlitSurface(img_3, NULL, destination_surface, &position);
+  SDL_BlitSurface(img_background, NULL, destination_surface, &position);
 
   // icons
   action_icon->display(destination_surface);
@@ -444,14 +345,13 @@ void SelectionMenu::redraw(void) {
   if (transition != NULL && transition->is_started()) {
     transition->display(destination_surface);
   }
-  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
-  SDL_Flip(zsdx->screen);
 }
 
 /**
- * Updates the sprites animations and the position of the clouds.
+ * Updates the data common to all screens of the selection menu
+ * (i.e. the sprites animations and the position of the clouds).
  */
-void SelectionMenu::update(void) {
+void SelectionMenu::update_common(void) {
 
   // move the clouds
   Uint32 now = SDL_GetTicks();
@@ -473,10 +373,440 @@ void SelectionMenu::update(void) {
     next_cloud_move += 100;
   }
 
-  // update the animation of the cursor
-  cursor->update_current_frame();
-
   // update the icons
   action_icon->update();
   sword_icon->update();
+
+  // update the animation of the cursor
+  cursor->update_current_frame();
+}
+
+/**
+ * This function is called when the user wants to move the cursor
+ * upwards (except for the letter cursor).
+ */
+void SelectionMenu::move_cursor_up(void) {
+
+  cursor_sound->play();
+  cursor->restart_animation();
+  cursor_position--;
+  if (cursor_position == 0) {
+    cursor_position = 4;
+  }
+  else if (cursor_position == 4) {
+    cursor_position = 3;
+  }
+}
+
+/**
+ * This function is called when the user wants to move the cursor
+ * downwards (except for the letter cursor).
+ */
+void SelectionMenu::move_cursor_down(void) {
+
+  cursor_sound->play();
+  cursor->restart_animation();
+  cursor_position++;
+  if (cursor_position >= 5) {
+    cursor_position = 1;
+  }
+}
+
+/**
+ * This function is called when the user wants to move the cursor
+ * to the left or to the right (except for the letter cursor).
+ */
+void SelectionMenu::move_cursor_left_or_right(void) {
+
+  if (cursor_position == 4) {
+    cursor_sound->play();
+    cursor->restart_animation();
+    cursor_position = 5;
+  }
+  else if (cursor_position == 5) {
+    cursor_sound->play();
+    cursor->restart_animation();
+    cursor_position = 4;
+  }
+}
+
+/**
+ * Draws a title on the selection menu background.
+ * @param img_text image of the title to draw
+ */
+void SelectionMenu::display_title_text(SDL_Surface *img_text) {
+  
+  SDL_Rect position = {37, 38, 0, 0};
+  SDL_BlitSurface(img_text, NULL, destination_surface, &position);
+}
+
+/**
+ * Displays a savegame on the surface.
+ * @param save_number number of the savegame to display (0 to 2)
+ */
+void SelectionMenu::display_savegame(int save_number) {
+
+  SDL_Rect position;
+
+  // draw the container
+  position.x = 57;
+  position.y = 75 + save_number * 27;
+  SDL_BlitSurface(img_save_container, NULL, destination_surface, &position);
+
+  // draw the player's name
+  text_player_names[save_number]->display(destination_surface);
+
+  // draw the hearts
+  hearts_views[save_number]->display(destination_surface);
+}
+
+/**
+ * Displays the two options in the bottom of the screen.
+ * @param left text of the first option (on the left)
+ * @param right text of the second option (on the right)
+ */
+void SelectionMenu::display_options(const char *left, const char *right) {
+
+  SDL_Rect position;
+
+  position.x = 57;
+  position.y = 158;
+  SDL_BlitSurface(img_option_container, NULL, destination_surface, &position);
+  text->create_text(left, 90, 170);
+  text->display(destination_surface);
+
+  position.x = 165;
+  SDL_BlitSurface(img_option_container, NULL, destination_surface, &position);
+  text->create_text(right, 198, 170);
+  text->display(destination_surface);
+}
+
+/**
+ * Displays the normal cursor (i.e. the cursor to select a file)
+ * at its current position.
+ */
+void SelectionMenu::display_normal_cursor(void) {
+
+  SDL_Rect position;
+
+  if (cursor_position != 5) {
+    position.x = 58;
+  }
+  else {
+    position.x = 166;
+  }
+
+  if (cursor_position < 4) {
+    position.y = 49 + cursor_position * 27;
+  }
+  else {
+    position.y = 159;
+  }
+  cursor->display(destination_surface, position.x, position.y);
+}
+
+/**
+ * Displays the number of a savegame.
+ * This function is separate from the display_savegame() function
+ * because the cursor has to be displayed after the savegame images
+ * but before the savegame number.
+ * @param save_number number to display (0 to 2)
+ */
+void SelectionMenu::display_savegame_number(int save_number) {
+
+  SDL_Rect position;
+
+  position.x = 62;
+  position.y = 80 + 27 * save_number;
+  SDL_BlitSurface(img_numbers[save_number], NULL, destination_surface, &position);
+}
+
+/**
+ * Shows the main screen of the selection menu.
+ */
+void SelectionMenu::show_main_screen(void) {
+
+  cursor->set_current_animation("blue");
+  cursor_position = 1;
+
+  bool start = false;
+  SDL_Event event;
+  SDL_EnableKeyRepeat(0, 0); // no repeat
+
+  Uint32 next_redraw = SDL_GetTicks();
+  while (!zsdx->is_exiting() && !start) {
+
+    // if there is an event
+    if (SDL_PollEvent(&event)) {
+      
+      zsdx->handle_event(event);
+    
+      if (event.type == SDL_KEYDOWN) {
+
+	switch (event.key.keysym.sym) {
+
+	case SDLK_SPACE:
+	  if (cursor_position == 5) {
+	    // the user chose "Quit"
+	    zsdx->set_exiting();
+	  }
+	  else if (cursor_position == 4) {
+	    // the user chose "Erase"
+	    ok_sound->play();
+	    show_erase_choice_screen();
+	  }
+	  else {
+	    // the user chose a save
+	    ok_sound->play();
+	    show_choose_name_screen();
+
+	    if (savegames[cursor_position - 1]->is_empty()) {
+	      // the savegame doesn't exist: ask the name
+	      show_choose_name_screen();
+	    }
+	    else {
+	      // the savegame exists: start the game
+	      start = true;
+	    }
+	  }
+	  break;
+
+	case SDLK_DOWN:
+	  move_cursor_down();
+	  break;
+
+	case SDLK_UP:
+	  move_cursor_up();
+	  break;
+
+	case SDLK_RIGHT:
+	case SDLK_LEFT:
+	  move_cursor_left_or_right();
+	  break;
+
+	default:
+	  break;
+	}
+      }
+    }
+
+    // update the sprites
+    update_common();
+
+    // redraw if necessary
+    while (SDL_GetTicks() >= next_redraw) {
+      redraw_main_screen();
+      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
+    }
+  }
+}
+
+/**
+ * Redraws the main screen of the selection menu
+ * (i.e. the screen showing the 3 saves).
+ */
+void SelectionMenu::redraw_main_screen(void) {
+
+  redraw_common();
+
+  // title text
+  display_title_text(img_text_select);
+
+  // savegames
+  for (int i = 0; i < 3; i++) {
+    display_savegame(i);
+  }
+
+  // options
+  display_options("Effacer", "Quitter");
+
+  // cursor
+  display_normal_cursor();
+  
+  // save numbers
+  for (int i = 0; i < 3; i++) {
+    display_savegame_number(i);
+  }
+
+  // blit everything
+  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
+  SDL_Flip(zsdx->screen);
+}
+
+/**
+ * Updates the sprite animations of the main screen.
+ */
+/*void SelectionMenu::update_main_screen(void) {
+
+  update_common();
+
+  }*/
+
+/**
+ * Displays the "Which file do you want to erase?" screen.
+ */
+void SelectionMenu::show_erase_choice_screen(void) {
+
+  cursor->set_current_animation("red");
+
+  bool finished = false;
+  SDL_Event event;
+
+  Uint32 next_redraw = SDL_GetTicks();
+  while (!zsdx->is_exiting() && !finished) {
+
+    // if there is an event
+    if (SDL_PollEvent(&event)) {
+      
+      zsdx->handle_event(event);
+      
+      if (event.type == SDL_KEYDOWN) {
+
+	switch (event.key.keysym.sym) {
+
+	case SDLK_SPACE:
+	  if (cursor_position == 5) {
+	    // the user chose "Quit"
+	    zsdx->set_exiting();
+	  }
+	  else if (cursor_position == 4) {
+	    // the user chose "Cancel"
+	    finished = true;
+	  }
+	  else {
+
+	    if (savegames[cursor_position - 1]->is_empty()) {
+	      // the savegame doesn't exist: error sound
+	      error_sound->play();
+	    }
+	    else {
+	      // the savegame exists: confirm to delete it
+	      show_erase_confirm_screen();
+	      finished = true;
+	    }
+	  }
+	  break;
+
+	case SDLK_DOWN:
+	  move_cursor_down();
+	  break;
+
+	case SDLK_UP:
+	  move_cursor_up();
+	  break;
+
+	case SDLK_RIGHT:
+	case SDLK_LEFT:
+	  move_cursor_left_or_right();
+	  break;
+
+	default:
+	  break;
+	}
+      }
+    }
+
+    // update the sprites
+    update_common();
+
+    // redraw if necessary
+    while (SDL_GetTicks() >= next_redraw) {
+      redraw_erase_choice_screen();
+      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
+    }
+  }
+
+  cursor->set_current_animation("blue");
+}
+
+/**
+ * Updates the sprites of the "Which file do you want to erase?" screen.
+ */
+/*void SelectionMenu::update_erase_choice_screen(void) {
+
+  update_common();
+
+  }*/
+
+/**
+ * Redraws the "Which file do you want to erase?" screen.
+ */
+void SelectionMenu::redraw_erase_choice_screen(void) {
+
+  redraw_common();
+
+  // title text
+  display_title_text(img_text_erase);
+
+  // savegames
+  for (int i = 0; i < 3; i++) {
+    display_savegame(i);
+  }
+
+  // options
+  display_options("Annuler", "Quitter");
+
+  // cursor
+  display_normal_cursor();
+ 
+  // save numbers
+  for (int i = 0; i < 3; i++) {
+    display_savegame_number(i);
+  }
+
+  // blit everything
+  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
+  SDL_Flip(zsdx->screen);
+
+}
+
+/**
+ * Displays the "Are you sure?" screen.
+ */
+void SelectionMenu::show_erase_confirm_screen(void) {
+
+}
+
+/**
+ * Updates the sprites of the "Are you sure?" screen.
+ */
+/*void SelectionMenu::update_erase_confirm_screen(void) {
+
+  update_common();
+
+  }*/
+
+/**
+ * Redraws the "Are you sure?" screen.
+ */
+void SelectionMenu::redraw_erase_confirm_screen(void) {
+
+  redraw_common();
+
+}
+
+/**
+ * Displays the "What is your name?" screen.
+ */
+void SelectionMenu::show_choose_name_screen(void) {
+
+  cursor->set_current_animation("blue");
+}
+
+/**
+ * Updates the sprites of the "What is your name?" screen.
+ */
+/*void SelectionMenu::update_choose_name_screen(void) {
+
+  update_common();
+
+  }*/
+
+/**
+ * Redraws the "What is your name?" screen.
+ */
+void SelectionMenu::redraw_choose_name_screen(void) {
+
+  redraw_common();
+
 }

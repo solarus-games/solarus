@@ -115,6 +115,13 @@ bool ZSDX::is_exiting(void) {
 }
 
 /**
+ * Sets whether the user wants to quit the program.
+ */
+void ZSDX::set_exiting(void) {
+  exiting = true;
+}
+
+/**
  * Launches the game.
  */
 void ZSDX::main(void) {

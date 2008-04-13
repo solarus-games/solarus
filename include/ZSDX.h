@@ -54,7 +54,9 @@ class ZSDX {
   void set_fullscreen(bool fullscreen);
   bool is_fullscreen(void);
   void switch_fullscreen(void);
+
   bool is_exiting(void);
+  void set_exiting(void);
 };
 
 #endif

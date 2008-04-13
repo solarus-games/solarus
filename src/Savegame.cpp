@@ -79,6 +79,14 @@ void Savegame::save(void) {
 }
 
 /**
+ * Returns the name of the file where the data is saved.
+ * @return the file name of this savegame
+ */
+const char * Savegame::get_file_name(void) {
+  return file_name;
+}
+
+/**
  * Returns the player's equipment corresponding to this savegame.
  * @return the equipment
  */

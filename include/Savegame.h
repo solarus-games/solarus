@@ -132,6 +132,7 @@ class Savegame {
 
   bool is_empty(void);
   void save(void);
+  const char *get_file_name(void);
 
   // engine data
   const char *get_reserved_string(int index);

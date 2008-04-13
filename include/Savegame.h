@@ -55,7 +55,7 @@ enum SavegameReservedIntegerIndex {
    */
   SAVEGAME_MAX_HEARTS                       = 20, /**< maximum number of hearts (counted in entire hearts) */
   SAVEGAME_MAX_RUPEES                       = 21, /**< maximum number of rupees (99, 199 or 999) */
-  SAVEGAME_MAX_MAGIC                        = 22, /**< maximum level of magic (0: no magic, 1: 14 points, 2: 28 points) */
+  SAVEGAME_MAX_MAGIC                        = 22, /**< maximum level of magic (0, 42 or 84 points) */
   SAVEGAME_MAX_BOMBS                        = 23, /**< maximum number of bombs */
   SAVEGAME_MAX_ARROWS                       = 24, /**< maximum number of arrows */
   /**

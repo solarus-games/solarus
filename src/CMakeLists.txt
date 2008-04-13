@@ -16,6 +16,7 @@ add_executable (zsdx
 	       CounterView.cpp
 	       HeartsView.cpp
 	       RupeesView.cpp
+	       MagicBar.cpp
 	       ActionIcon.cpp
 	       SwordIcon.cpp
 	       PauseIcon.cpp

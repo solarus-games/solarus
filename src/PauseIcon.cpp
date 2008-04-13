@@ -7,7 +7,6 @@
 #include "FileTools.h"
 #include "GameResource.h"
 #include "AnimatedSprite.h"
-#include "Color.h"
 
 /**
  * Constructor.

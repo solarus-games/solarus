@@ -9,7 +9,6 @@
 #include "ZSDX.h"
 #include "GameResource.h"
 #include "Sound.h"
-#include "Color.h"
 
 /**
  * Position of the 3 rupee icons in the image.

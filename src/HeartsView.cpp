@@ -5,7 +5,6 @@
 #include "HeartsView.h"
 #include "FileTools.h"
 #include "Equipment.h"
-#include "Color.h"
 #include "ZSDX.h"
 #include "GameResource.h"
 #include "Sound.h"

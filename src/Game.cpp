@@ -122,13 +122,41 @@ void Game::play(void) {
 	    savegame->get_equipment()->remove_hearts(1);
 	    break;
 
-	    // TODO remove
 	  case SDLK_o:
 	    savegame->get_equipment()->add_rupees(23);
 	    break;
 
 	  case SDLK_l:
 	    savegame->get_equipment()->remove_rupees(14);
+	    break;
+
+	  case SDLK_i:
+	    savegame->get_equipment()->add_magic(10);
+	    break;
+
+	  case SDLK_k:
+	    savegame->get_equipment()->remove_magic(4);
+	    break;
+
+	  case SDLK_j:
+	    if (!savegame->get_equipment()->is_magic_decreasing()) {
+	      savegame->get_equipment()->start_removing_magic(200);
+	    }
+	    else {
+	      savegame->get_equipment()->stop_removing_magic();
+	    }
+	    break;
+
+	  case SDLK_KP7:
+	    savegame->get_equipment()->set_max_magic(0);
+	    break;
+
+	  case SDLK_KP8:
+	    savegame->get_equipment()->set_max_magic(42);
+	    break;
+
+	  case SDLK_KP9:
+	    savegame->get_equipment()->set_max_magic(84);
 	    break;
 
 	  case SDLK_s:
@@ -161,7 +189,7 @@ void Game::play(void) {
 
 	  case SDLK_d:
 
-	    // very simple code to make like the game is paused
+	    // temoporary code to make like the game is paused
 	    if (link->get_state() != LINK_STATE_NO_CONTROL) {
 
 	      zsdx->game_resource->get_sound("pause_open")->play();
@@ -180,7 +208,7 @@ void Game::play(void) {
 	    break;
 
 	  case SDLK_a:
-
+ 
 	    if (keys_effect->get_action_key_effect() == ACTION_KEY_NONE) {
 	      keys_effect->set_action_key_effect(ACTION_KEY_ACTION);
 	    }

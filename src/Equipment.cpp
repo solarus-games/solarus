@@ -388,8 +388,7 @@ void Equipment::add_piece_of_heart(int piece_of_heart_id) {
 
 /**
  * Returns the maximum level of Link's magic bar.
- * @return the maximum level of magic (0: no magic,
- * 1: 14 points, 2: 28 points)
+ * @return the maximum level of magic (0, 42 or 84 points)
  */
 int Equipment::get_max_magic(void) {
   return savegame->get_reserved_integer(SAVEGAME_MAX_MAGIC);
@@ -399,17 +398,18 @@ int Equipment::get_max_magic(void) {
  * Sets the maximum level of Link's magic bar.
  * Exits with an error message if the value specified
  * if not valid.
- * @aparam max_magic the maximum level of magic (0: no magic,
- * 1: 14 points, 2: 28 points)
+ * @aparam max_magic the maximum level of magic (0, 42 or 84 points)
  */
 void Equipment::set_max_magic(int max_magic) {
   
-  if (max_magic < 0 || max_magic > 2) {
+  if (max_magic != 0 && max_magic != 42 && max_magic != 84) {
     cerr << "Illegal maximum number of magic points: " << max_magic << endl;
     exit(1);
   }
 
   savegame->set_reserved_integer(SAVEGAME_MAX_MAGIC, max_magic);
+
+  restore_all_magic();
 }
 
 /**
@@ -424,7 +424,7 @@ int Equipment::get_magic(void) {
  * Sets the current number of magic points of Link.
  * The program exits with an error message if the given value
  * is not valid.
- * @param magic Link's new number of magic points (0 to 28)
+ * @param magic Link's new number of magic points (0 to 84)
  */
 void Equipment::set_magic(int magic) {
 
@@ -463,10 +463,30 @@ void Equipment::remove_magic(int magic_to_remove) {
 }
 
 /**
+ * Restores all magic points.
+ */
+void Equipment::restore_all_magic(void) {
+  set_magic(get_max_magic());
+}
+
+/**
+ * Returns whether the magic bar is decreasing continuously.
+ * @return true if the magic bar is decreasing, false otherwise
+ */
+bool Equipment::is_magic_decreasing(void) {
+  return this->magic_decrease_delay != 0;
+}
+
+/**
  * Starts removing magic continuously.
  * @param delay delay in miliseconds between two decreases
  */
 void Equipment::start_removing_magic(Uint32 delay) {
+
+  if (delay <= 0) {
+    cerr << "Illegal magic bar decrease delay: " << delay << endl;
+    exit(1);
+  }
 
   if (get_magic() > 0) {
     this->magic_decrease_delay = delay;

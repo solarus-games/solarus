@@ -31,13 +31,23 @@ enum TextRenderingMode {
 };
 
 /**
+ * The fonts available.
+ */
+enum FontId {
+  FONT_LA       = 0,   /**< Link's Awakening font (default) */
+  FONT_STANDARD = 1,   /**< a more common font, with fixed width too */
+};
+
+/**
  * This class displays some text with the ZSDX font.
  */
 class TextDisplayed {
 
  private:
 
-  TTF_Font *font;
+  static TTF_Font *fonts[2];
+
+  FontId font_id;
   HorizontalAlignment horizontal_alignment;
   VerticalAlignment vertical_alignment;
   TextRenderingMode rendering_mode;
@@ -51,17 +61,18 @@ class TextDisplayed {
 
  public:
 
+  static void initialize(void);
+  static void quit(void);
+
   TextDisplayed(void);
-  TextDisplayed(TextRenderingMode rendering_mode,
-		HorizontalAlignment horizontal_alignment,
+  TextDisplayed(HorizontalAlignment horizontal_alignment,
 		VerticalAlignment vertical_alignment);
   ~TextDisplayed(void);
 
+  void set_font(FontId font);
   void set_alignment(HorizontalAlignment horizontal_alignment,
 		     VerticalAlignment vertical_alignment);
-
   void set_rendering_mode(TextRenderingMode rendering_mode);
-
   void set_text_color(int r, int g, int b);
   void set_background_color(int r, int g, int b);
 

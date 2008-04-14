@@ -52,7 +52,7 @@ void Sound::initialize(void) {
  * Closes the music and sound system.
  * This method should be called when exiting the application.
  */
-void Sound::exit(void) {
+void Sound::quit(void) {
   if (is_initialized()) {
     FMOD_System_Release(system);
     system = NULL;

@@ -3,14 +3,51 @@
  */
 #include "TextDisplayed.h"
 #include "FileTools.h"
-#include "ZSDX.h"
+
+/**
+ * The two fonts, created in the initialize() function.
+ */
+TTF_Font *TextDisplayed::fonts[2] = {NULL, NULL};
+
+/**
+ * Initializes the font system.
+ */
+void TextDisplayed::initialize(void) {
+
+  TTF_Init();
+
+  fonts[FONT_LA] = TTF_OpenFont(FileTools::data_file_add_prefix("zsdx.ttf"), 11);
+  if (fonts[FONT_LA] == NULL) {
+    cerr << "Cannot load font 'zsdx.ttf'." << endl;
+    exit(1);
+  }
+
+  fonts[FONT_STANDARD] = TTF_OpenFont(FileTools::data_file_add_prefix("fixed8.fon"), 11);
+  if (fonts[FONT_STANDARD] == NULL) {
+    cerr << "Cannot load font 'fixed8.fon'." << endl;
+    exit(1);
+  }
+}
+
+/**
+ * Closes the font system.
+ */
+void TextDisplayed::quit(void) {
+
+  TTF_CloseFont(fonts[FONT_LA]);
+  TTF_CloseFont(fonts[FONT_STANDARD]);
+  TTF_Quit();
+}
 
 /**
  * Creates a text to display with the default properties.
  */
 TextDisplayed::TextDisplayed(void):
-horizontal_alignment(ALIGN_LEFT), vertical_alignment(ALIGN_MIDDLE),
-rendering_mode(TEXT_SOLID), text_surface(NULL) {
+  font_id(FONT_LA),
+  horizontal_alignment(ALIGN_LEFT),
+  vertical_alignment(ALIGN_MIDDLE),
+  rendering_mode(TEXT_SOLID),
+  text_surface(NULL) {
 
   text_color.r = 255;
   text_color.g = 255;
@@ -23,15 +60,19 @@ rendering_mode(TEXT_SOLID), text_surface(NULL) {
 
 /**
  * Creates a text to display with the specified properties.
+ * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
+ * ALIGN_CENTER or ALIGN_RIGHT
+ * @param vertical_alignment vertical alignment of the text: ALIGN_TOP,
+ * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
-TextDisplayed::TextDisplayed(TextRenderingMode rendering_mode,
-			     HorizontalAlignment horizontal_alignment,
+TextDisplayed::TextDisplayed(HorizontalAlignment horizontal_alignment,
 			     VerticalAlignment vertical_alignment):
 
-horizontal_alignment(horizontal_alignment),
-vertical_alignment(vertical_alignment),
-rendering_mode(rendering_mode),
-text_surface(NULL) {
+  font_id(FONT_LA),
+  horizontal_alignment(horizontal_alignment),
+  vertical_alignment(vertical_alignment),
+  rendering_mode(TEXT_SOLID),
+  text_surface(NULL) {
 
   text_color.r = 255;
   text_color.g = 255;
@@ -47,6 +88,14 @@ text_surface(NULL) {
  */
 TextDisplayed::~TextDisplayed(void) {
   SDL_FreeSurface(text_surface);
+}
+
+/**
+ * Sets the font to use.
+ * @param font_id a font: FONT_LA or FONT_STANDARD
+ */
+void TextDisplayed::set_font(FontId font_id) {
+  this->font_id = font_id;
 }
 
 /**
@@ -119,15 +168,15 @@ void TextDisplayed::create_text(const char *text,
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    text_surface = TTF_RenderText_Solid(zsdx->font, text, text_color);
+    text_surface = TTF_RenderText_Solid(fonts[font_id], text, text_color);
     break;
 
   case TEXT_SHADED:
-    text_surface = TTF_RenderText_Shaded(zsdx->font, text, text_color, background_color);
+    text_surface = TTF_RenderText_Shaded(fonts[font_id], text, text_color, background_color);
     break;
 
   case TEXT_BLENDED:
-    text_surface = TTF_RenderText_Blended(zsdx->font, text, text_color);
+    text_surface = TTF_RenderText_Blended(fonts[font_id], text, text_color);
     break;
   }
 

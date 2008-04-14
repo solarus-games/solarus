@@ -78,6 +78,9 @@ class SelectionMenu {
   void show_choose_name_screen(void);
   void redraw_choose_name_screen(void);
 
+  void show_choose_mode_screen(void);
+  void redraw_choose_mode_screen(void);
+
   // cursor handling
   void move_cursor_up(void);
   void move_cursor_down(void);

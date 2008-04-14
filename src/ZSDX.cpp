@@ -12,6 +12,7 @@
 #include "Savegame.h"
 #include "TitleScreen.h"
 #include "SelectionMenu.h"
+#include "TextDisplayed.h"
 
 
 /**
@@ -45,12 +46,7 @@ ZSDX::ZSDX(void) {
   color_init();
 
   // initialize the text displaying
-  TTF_Init();
-  font = TTF_OpenFont(FileTools::data_file_add_prefix("zsdx.ttf"), 11);
-  if (font == NULL) {
-    cerr << "Cannot load font 'zsdx.ttf'." << endl;
-    exit(1);
-  }
+  TextDisplayed::initialize();
 
   // initialize the audio system
   Music::initialize();
@@ -67,10 +63,9 @@ ZSDX::ZSDX(void) {
  */
 ZSDX::~ZSDX(void) {
   delete game_resource;
-  TTF_CloseFont(font);
-  TTF_Quit();
+  TextDisplayed::quit();
   SDL_Quit();
-  Music::exit();
+  Sound::quit();
 }
 
 /**

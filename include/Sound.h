@@ -35,7 +35,7 @@ class Sound {
   virtual ~Sound(void);
 
   static void initialize(void);
-  static void exit(void);
+  static void quit(void);
   static bool is_initialized(void);
   static void update(void);
 

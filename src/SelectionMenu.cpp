@@ -53,7 +53,7 @@ SelectionMenu::SelectionMenu(void):
   cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/selection_menu_cursor"));
 
   // erase + quit options
-  text = new TextDisplayed(TEXT_SOLID, ALIGN_LEFT, ALIGN_MIDDLE);
+  text = new TextDisplayed(ALIGN_LEFT, ALIGN_MIDDLE);
   text->set_text_color(255, 255, 255);
 
   // icons
@@ -217,7 +217,7 @@ void SelectionMenu::read_saves(void) {
       delete text_player_names[i];
     }
 
-    text_player_names[i] = new TextDisplayed(TEXT_SOLID, ALIGN_LEFT, ALIGN_MIDDLE);
+    text_player_names[i] = new TextDisplayed(ALIGN_LEFT, ALIGN_MIDDLE);
     text_player_names[i]->set_text_color(255, 255, 255);
     text_player_names[i]->create_text(player_name, 87, 88 + i * 27);
 
@@ -448,11 +448,11 @@ void SelectionMenu::move_cursor_left_or_right(void) {
 
 /**
  * Draws a title on the selection menu background.
- * @param img_text image of the title to draw
+ * @param img_text image of the title to draw (the size should be 206*26)
  */
 void SelectionMenu::display_title_text(SDL_Surface *img_text) {
   
-  SDL_Rect position = {37, 38, 0, 0};
+  SDL_Rect position = {57, 42, 0, 0};
   SDL_BlitSurface(img_text, NULL, destination_surface, &position);
 }
 
@@ -580,7 +580,8 @@ void SelectionMenu::show_main_screen(void) {
 	      show_choose_name_screen();
 	    }
 	    else {
-	      // the savegame exists: start the game
+	      // the savegame exists: choose the mode and then start the game
+	      show_choose_mode_screen();
 	      start = true;
 	    }
 	  }
@@ -1066,4 +1067,20 @@ bool SelectionMenu::validate_player_name(void) {
   read_saves();
 
   return true;
+}
+
+/**
+ * Displays the "Choose your game mode" screen.
+ */
+void SelectionMenu::show_choose_mode_screen(void) {
+
+}
+
+/**
+ * Redraws the "Choose your game mode" screen.
+ */
+void SelectionMenu::redraw_choose_mode_screen(void) {
+
+  redraw_common();
+
 }

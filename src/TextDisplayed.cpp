@@ -189,15 +189,15 @@ void TextDisplayed::set_text(const char *text) {
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    text_surface = TTF_RenderText_Solid(fonts[font_id], text, text_color);
+    text_surface = TTF_RenderUTF8_Solid(fonts[font_id], text, text_color);
     break;
 
   case TEXT_SHADED:
-    text_surface = TTF_RenderText_Shaded(fonts[font_id], text, text_color, background_color);
+    text_surface = TTF_RenderUTF8_Shaded(fonts[font_id], text, text_color, background_color);
     break;
 
   case TEXT_BLENDED:
-    text_surface = TTF_RenderText_Blended(fonts[font_id], text, text_color);
+    text_surface = TTF_RenderUTF8_Blended(fonts[font_id], text, text_color);
     break;
   }
 

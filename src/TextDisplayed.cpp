@@ -40,47 +40,52 @@ void TextDisplayed::quit(void) {
 }
 
 /**
- * Creates a text to display with the default properties.
+ * Creates a text to display with the default properties:
+ * - font: Link's Awakening
+ * - horizontal alignment: left
+ * - vertical alignment: middle
+ * - rendering mode: solid
+ * - text color: white
+ * - background color: black
+ * @param x x position of the text on the destination surface
+ * @param y y position of the text on the destination surface
  */
-TextDisplayed::TextDisplayed(void):
+TextDisplayed::TextDisplayed(int x, int y):
   font_id(FONT_LA),
   horizontal_alignment(ALIGN_LEFT),
   vertical_alignment(ALIGN_MIDDLE),
   rendering_mode(TEXT_SOLID),
-  text_surface(NULL) {
+  text_surface(NULL),
+  text(NULL) {
 
-  text_color.r = 255;
-  text_color.g = 255;
-  text_color.b = 255;
-
-  background_color.r = 0;
-  background_color.g = 0;
-  background_color.b = 0;
+  set_text_color(255, 255, 255);
+  set_background_color(0, 0, 0);
+  set_position(x, y);
 }
 
 /**
- * Creates a text to display with the specified properties.
+ * Creates a text to display with the specified alignment properties.
+ * @param x x position of the text on the destination surface
+ * @param y y position of the text on the destination surface
  * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
  * ALIGN_CENTER or ALIGN_RIGHT
  * @param vertical_alignment vertical alignment of the text: ALIGN_TOP,
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
-TextDisplayed::TextDisplayed(HorizontalAlignment horizontal_alignment,
+TextDisplayed::TextDisplayed(int x, int y,
+			     HorizontalAlignment horizontal_alignment,
 			     VerticalAlignment vertical_alignment):
 
   font_id(FONT_LA),
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
   rendering_mode(TEXT_SOLID),
-  text_surface(NULL) {
+  text_surface(NULL),
+  text(NULL) {
 
-  text_color.r = 255;
-  text_color.g = 255;
-  text_color.b = 255;
-
-  background_color.r = 0;
-  background_color.g = 0;
-  background_color.b = 0;  
+  set_text_color(255, 255, 255);
+  set_background_color(0, 0, 0);
+  set_position(x, y);
 }
 
 /**
@@ -145,21 +150,37 @@ void TextDisplayed::set_background_color(int r, int g, int b) {
 }
 
 /**
- * Create the text surface with the current color and the current alignment.
- * The coordinate system depends on the current alignment.
- * @param text the text to display
- * @param x x coordinate of the text
- * @param y y coordinate of the text
+ * Sets the position of the text on the destination surface.
+ * @param x x position of the text on the destination surface
+ * @param y y position of the text on the destination surface
  */
-void TextDisplayed::create_text(const char *text,
-				int x, int y) {
+void TextDisplayed::set_position(int x, int y) {
+  this->x = x;
+  this->y = y;
+}
+
+/**
+ * Creates the text surface with the current color and the current alignment.
+ * If the specified string is the same than the current text, nothing is done.
+ * @param text the text to display (cannot be NULL)
+ */
+void TextDisplayed::set_text(const char *text) {
+
+  if (this->text != NULL && (text == this->text || !strcmp(text, this->text))) {
+    // no change: nothing to do, everything is already okay
+    return;
+  }
 
   if (text_surface != NULL) {
+    // another text was previously set: delete it
     SDL_FreeSurface(text_surface);
     text_surface = NULL;
   }
   
+  this->text = text;
+
   if (text[0] == '\0') {
+    // empty string: don't create a surface
     return;
   }
   
@@ -219,6 +240,8 @@ void TextDisplayed::create_text(const char *text,
 
 /**
  * Displays the text on a surface.
+ * This method just blits on the given surface the text surface created
+ * when you called set_text().
  * @param destination the destination surface
  */
 void TextDisplayed::display(SDL_Surface *destination) {
@@ -226,4 +249,12 @@ void TextDisplayed::display(SDL_Surface *destination) {
   if (text_surface != NULL) {
     SDL_BlitSurface(text_surface, NULL, destination, &text_position);
   }
+}
+
+/**
+ * Returns the text currently displayed.
+ * @return the text currently displayed, or NULL if there is no text
+ */
+const char *TextDisplayed::get_text(void) {
+  return text;
 }

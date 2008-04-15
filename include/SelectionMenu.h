@@ -21,11 +21,15 @@ class SelectionMenu {
    */
   bool adventure_mode;
 
+  /**
+   * Screen currently displayed.
+   */
+  int current_screen;
+
   // images
   SDL_Surface *img_cloud, *img_background;
   SDL_Surface *img_save_container, *img_option_container;
   SDL_Surface *img_arrow, *img_letters;
-  SDL_Surface *img_text_select, *img_text_erase, *img_text_confirm, *img_text_name;
   SDL_Surface *img_numbers[3];
   SDL_Surface *destination_surface;
 
@@ -44,7 +48,12 @@ class SelectionMenu {
   SwordIcon *sword_icon;
 
   // text
-  TextDisplayed *text;
+  TextDisplayed *text_option1;
+  TextDisplayed *text_option2;
+  TextDisplayed *text_new_player_name;
+  TextDisplayed *text_title;
+
+  static const char *title_strings[5];
 
   // new player name
   char player_name[11]; // 10 letters max
@@ -66,14 +75,14 @@ class SelectionMenu {
   void update(void);
 
   // management of each screen
-  void show_main_screen(void);
-  void redraw_main_screen(void);
+  void show_select_file_screen(void);
+  void redraw_select_file_screen(void);
 
-  void show_erase_choice_screen(void);
-  void redraw_erase_choice_screen(void);
+  void show_erase_file_screen(void);
+  void redraw_erase_file_screen(void);
 
-  void show_erase_confirm_screen(void);
-  void redraw_erase_confirm_screen(void);
+  void show_confirm_erase_screen(void);
+  void redraw_confirm_erase_screen(void);
 
   void show_choose_name_screen(void);
   void redraw_choose_name_screen(void);
@@ -87,7 +96,7 @@ class SelectionMenu {
   void move_cursor_left_or_right(void);
 
   // displaying elements
-  void display_title_text(SDL_Surface *img_text);
+  void display_title_text(void);
   void display_savegame(int save_number);
   void display_options(const char *left, const char *right);
   void display_normal_cursor(void);

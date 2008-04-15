@@ -17,10 +17,32 @@
 #include "SwordIcon.h"
 
 /**
+ * The differents screens of the selection menu.
+ */
+enum SelectionMenuScreens {
+  SELECT_FILE   = 0,
+  ERASE_FILE    = 1,
+  CONFIRM_ERASE = 2,
+  CHOOSE_NAME   = 3,
+  CHOOSE_MODE   = 4,
+};
+
+/**
+ * The title text showed over the menu.
+ */
+const char *SelectionMenu::title_strings[5] = {
+  "Veuillez choisir un fichier",
+  "Quel fichier voulez-vous effacer ?",
+  "Etes-vous sûr ?",
+  "Quel est votre nom ?",
+  "Choisissez un mode de jeu",
+};
+
+/**
  * Creates a selection menu.
  */
 SelectionMenu::SelectionMenu(void):
-  adventure_mode(true), next_cloud_move(0) {
+  adventure_mode(true) {
 
   for (int i = 0; i < 3; i++) {
     savegames[i] = NULL;
@@ -39,11 +61,6 @@ SelectionMenu::SelectionMenu(void):
   img_arrow = FileTools::open_image("menus/selection_menu_arrow.png");
   img_letters = FileTools::open_image("menus/selection_menu_letters.png");
 
-  img_text_select = FileTools::open_image("menus/selection_menu_text_select.png");
-  img_text_erase = FileTools::open_image("menus/selection_menu_text_erase.png");
-  img_text_confirm = FileTools::open_image("menus/selection_menu_text_confirm.png");
-  img_text_name = FileTools::open_image("menus/selection_menu_text_name.png");
-
   char file_name[MAX_FILE_NAME];
   for (int i = 0; i < 3; i++) {
     sprintf(file_name, "menus/selection_menu_save%d.png", i + 1);
@@ -52,9 +69,12 @@ SelectionMenu::SelectionMenu(void):
 
   cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/selection_menu_cursor"));
 
-  // erase + quit options
-  text = new TextDisplayed(ALIGN_LEFT, ALIGN_MIDDLE);
-  text->set_text_color(255, 255, 255);
+  // texts
+  text_option1 = new TextDisplayed(90, 172, ALIGN_LEFT, ALIGN_MIDDLE);
+  text_option2 = new TextDisplayed(198, 172, ALIGN_LEFT, ALIGN_MIDDLE);
+  text_new_player_name = new TextDisplayed(67, 85, ALIGN_LEFT, ALIGN_MIDDLE);
+  text_title = new TextDisplayed(160, 54, ALIGN_CENTER, ALIGN_MIDDLE);
+  text_title->set_font(FONT_STANDARD);
 
   // icons
   keys_effect = new KeysEffect();
@@ -85,12 +105,11 @@ SelectionMenu::~SelectionMenu(void) {
   SDL_FreeSurface(img_option_container);
   SDL_FreeSurface(img_arrow);
   SDL_FreeSurface(img_letters);
-  SDL_FreeSurface(img_text_select);
-  SDL_FreeSurface(img_text_erase);
-  SDL_FreeSurface(img_text_confirm);
-  SDL_FreeSurface(img_text_name);
 
-  delete text;
+  delete text_option1;
+  delete text_option2;
+  delete text_new_player_name;
+  delete text_title;
 
   for (int i = 0; i < 3; i++) {
     SDL_FreeSurface(img_numbers[i]);
@@ -110,6 +129,8 @@ SelectionMenu::~SelectionMenu(void) {
  * Initializes the clouds position.
  */
 void SelectionMenu::initialize_clouds(void) {
+
+  next_cloud_move = SDL_GetTicks();
 
   int i;
 
@@ -217,9 +238,9 @@ void SelectionMenu::read_saves(void) {
       delete text_player_names[i];
     }
 
-    text_player_names[i] = new TextDisplayed(ALIGN_LEFT, ALIGN_MIDDLE);
-    text_player_names[i]->set_text_color(255, 255, 255);
-    text_player_names[i]->create_text(player_name, 87, 88 + i * 27);
+    text_player_names[i] = new TextDisplayed(87, 88 + i * 27,
+					     ALIGN_LEFT, ALIGN_MIDDLE);
+    text_player_names[i]->set_text(player_name);
 
     // hearts
     if (hearts_views[i] != NULL) {
@@ -248,7 +269,7 @@ void SelectionMenu::show(void) {
   transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
   transition->start();
 
-  show_main_screen();
+  show_select_file_screen();
 
   delete transition;
 
@@ -264,7 +285,7 @@ void SelectionMenu::show(void) {
 	zsdx->handle_event(event);
       }
 
-      redraw_main_screen();
+      redraw_select_file_screen();
     }
     delete transition;
   }
@@ -350,11 +371,14 @@ void SelectionMenu::redraw_common(void) {
   position.h = 165;
   SDL_BlitSurface(img_background, NULL, destination_surface, &position);
 
-  /* ni icons to simplify the keys
+  /* no icons to simplify the keys
   // icons
   action_icon->display(destination_surface);
   sword_icon->display(destination_surface);
   */
+
+  // title
+  display_title_text();
 
   // transition
   SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
@@ -448,12 +472,12 @@ void SelectionMenu::move_cursor_left_or_right(void) {
 
 /**
  * Draws a title on the selection menu background.
- * @param img_text image of the title to draw (the size should be 206*26)
+ * @param text the title to add
  */
-void SelectionMenu::display_title_text(SDL_Surface *img_text) {
+void SelectionMenu::display_title_text(void) {
   
-  SDL_Rect position = {57, 42, 0, 0};
-  SDL_BlitSurface(img_text, NULL, destination_surface, &position);
+  text_title->set_text(title_strings[current_screen]);
+  text_title->display(destination_surface);
 }
 
 /**
@@ -488,13 +512,15 @@ void SelectionMenu::display_options(const char *left, const char *right) {
   position.x = 57;
   position.y = 158;
   SDL_BlitSurface(img_option_container, NULL, destination_surface, &position);
-  text->create_text(left, 90, 172);
-  text->display(destination_surface);
-
   position.x = 165;
   SDL_BlitSurface(img_option_container, NULL, destination_surface, &position);
-  text->create_text(right, 198, 172);
-  text->display(destination_surface);
+
+  text_option1->set_text(left);
+  text_option1->display(destination_surface);
+
+  text_option2->set_text(right);
+  text_option2->display(destination_surface);
+
 }
 
 /**
@@ -540,7 +566,9 @@ void SelectionMenu::display_savegame_number(int save_number) {
 /**
  * Shows the main screen of the selection menu.
  */
-void SelectionMenu::show_main_screen(void) {
+void SelectionMenu::show_select_file_screen(void) {
+
+  current_screen = SELECT_FILE;
 
   cursor->set_current_animation("blue");
   cursor_position = 1;
@@ -554,9 +582,9 @@ void SelectionMenu::show_main_screen(void) {
 
     // if there is an event
     if (SDL_PollEvent(&event)) {
-      
+
       zsdx->handle_event(event);
-    
+
       if (event.type == SDL_KEYDOWN) {
 
 	switch (event.key.keysym.sym) {
@@ -569,7 +597,9 @@ void SelectionMenu::show_main_screen(void) {
 	  else if (cursor_position == 4) {
 	    // the user chose "Erase"
 	    ok_sound->play();
-	    show_erase_choice_screen();
+	    show_erase_file_screen();
+	    current_screen = SELECT_FILE;
+	    continue;
 	  }
 	  else {
 	    // the user chose a save
@@ -578,11 +608,14 @@ void SelectionMenu::show_main_screen(void) {
 	    if (savegames[cursor_position - 1]->is_empty()) {
 	      // the savegame doesn't exist: ask the name
 	      show_choose_name_screen();
+	      current_screen = SELECT_FILE;
+	      continue;
 	    }
 	    else {
 	      // the savegame exists: choose the mode and then start the game
 	      show_choose_mode_screen();
 	      start = true;
+	      continue;
 	    }
 	  }
 	  break;
@@ -611,7 +644,7 @@ void SelectionMenu::show_main_screen(void) {
 
     // redraw if necessary
     while (SDL_GetTicks() >= next_redraw) {
-      redraw_main_screen();
+      redraw_select_file_screen();
       next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
     }
   }
@@ -621,12 +654,9 @@ void SelectionMenu::show_main_screen(void) {
  * Redraws the main screen of the selection menu
  * (i.e. the screen showing the 3 saves).
  */
-void SelectionMenu::redraw_main_screen(void) {
+void SelectionMenu::redraw_select_file_screen(void) {
 
   redraw_common();
-
-  // title text
-  display_title_text(img_text_select);
 
   // savegames
   for (int i = 0; i < 3; i++) {
@@ -652,7 +682,9 @@ void SelectionMenu::redraw_main_screen(void) {
 /**
  * Displays the "Which file do you want to erase?" screen.
  */
-void SelectionMenu::show_erase_choice_screen(void) {
+void SelectionMenu::show_erase_file_screen(void) {
+
+  current_screen = ERASE_FILE;
 
   cursor->set_current_animation("red");
 
@@ -691,8 +723,10 @@ void SelectionMenu::show_erase_choice_screen(void) {
 	    else {
 	      // the savegame exists: confirm deleting it
 	      ok_sound->play();
-	      show_erase_confirm_screen();
+	      show_confirm_erase_screen();
+	      current_screen = ERASE_FILE;
 	      finished = true;
+	      continue;
 	    }
 	  }
 	  break;
@@ -721,7 +755,7 @@ void SelectionMenu::show_erase_choice_screen(void) {
 
     // redraw if necessary
     while (SDL_GetTicks() >= next_redraw) {
-      redraw_erase_choice_screen();
+      redraw_erase_file_screen();
       next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
     }
   }
@@ -732,12 +766,9 @@ void SelectionMenu::show_erase_choice_screen(void) {
 /**
  * Redraws the "Which file do you want to erase?" screen.
  */
-void SelectionMenu::redraw_erase_choice_screen(void) {
+void SelectionMenu::redraw_erase_file_screen(void) {
 
   redraw_common();
-
-  // title text
-  display_title_text(img_text_erase);
 
   // savegames
   for (int i = 0; i < 3; i++) {
@@ -763,7 +794,9 @@ void SelectionMenu::redraw_erase_choice_screen(void) {
 /**
  * Displays the "Are you sure?" screen.
  */
-void SelectionMenu::show_erase_confirm_screen(void) {
+void SelectionMenu::show_confirm_erase_screen(void) {
+
+  current_screen = CONFIRM_ERASE;
 
   bool finished = false;
   SDL_Event event;
@@ -813,7 +846,7 @@ void SelectionMenu::show_erase_confirm_screen(void) {
 
     // redraw if necessary
     while (SDL_GetTicks() >= next_redraw) {
-      redraw_erase_confirm_screen();
+      redraw_confirm_erase_screen();
       next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
     }
   }
@@ -822,12 +855,9 @@ void SelectionMenu::show_erase_confirm_screen(void) {
 /**
  * Redraws the "Are you sure?" screen.
  */
-void SelectionMenu::redraw_erase_confirm_screen(void) {
+void SelectionMenu::redraw_confirm_erase_screen(void) {
 
   redraw_common();
-
-  // title text
-  display_title_text(img_text_confirm);
 
   // savegame
   display_savegame(save_number_to_erase);
@@ -859,8 +889,10 @@ void SelectionMenu::delete_save_file(int save_number) {
  */
 void SelectionMenu::show_choose_name_screen(void) {
 
+  current_screen = CHOOSE_NAME;
+
   player_name[0] = '\0';
-  text->create_text(player_name, 67, 85);
+  text_new_player_name->set_text(player_name);
 
   keys_effect->set_sword_key_enabled(true);
   cursor->set_current_animation("letters");
@@ -892,7 +924,7 @@ void SelectionMenu::show_choose_name_screen(void) {
 	case SDLK_SPACE:
 	  // choose a letter
 	  finished = select_letter();
-	  text->create_text(player_name, 67, 85);
+	  text_new_player_name->set_text(player_name);
 	  break;
 
 	case SDLK_RIGHT:
@@ -942,9 +974,6 @@ void SelectionMenu::redraw_choose_name_screen(void) {
 
   redraw_common();
 
-  // title text
-  display_title_text(img_text_name);
-
   // cursor
   cursor->display(destination_surface,
 		  51 + 16 * x_letter_cursor,
@@ -953,7 +982,7 @@ void SelectionMenu::redraw_choose_name_screen(void) {
   // current name
   SDL_Rect position = {57, 76, 0, 0};
   SDL_BlitSurface(img_arrow, NULL, destination_surface, &position);
-  text->display(destination_surface);
+  text_new_player_name->display(destination_surface);
 
   // letters
   position.y = 98;
@@ -1073,6 +1102,8 @@ bool SelectionMenu::validate_player_name(void) {
  * Displays the "Choose your game mode" screen.
  */
 void SelectionMenu::show_choose_mode_screen(void) {
+
+  current_screen = CHOOSE_MODE;
 
 }
 

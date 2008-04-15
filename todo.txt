@@ -3,6 +3,7 @@
 - Revoir FileTools avec des string et des fstream
 - Link arrêté vers le haut : sans bouclier, son bras est plié
 - Messages d'erreur : au lieu de faire exit(1), quitter plus proprement (notamment fermer SDL)
+- fixed8.fon : pas d'accents
 
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)

@@ -54,18 +54,21 @@ class TextDisplayed {
   SDL_Color text_color;
   SDL_Color background_color; // only for the TEXT_SHADED rendering
 
-  int x_left;
-  int y_top;
+  int x;
+  int y;
   SDL_Surface *text_surface;
   SDL_Rect text_position;
+
+  const char *text;
 
  public:
 
   static void initialize(void);
   static void quit(void);
 
-  TextDisplayed(void);
-  TextDisplayed(HorizontalAlignment horizontal_alignment,
+  TextDisplayed(int x, int y);
+  TextDisplayed(int x, int y,
+		HorizontalAlignment horizontal_alignment,
 		VerticalAlignment vertical_alignment);
   ~TextDisplayed(void);
 
@@ -75,9 +78,12 @@ class TextDisplayed {
   void set_rendering_mode(TextRenderingMode rendering_mode);
   void set_text_color(int r, int g, int b);
   void set_background_color(int r, int g, int b);
+  void set_position(int x, int y);
 
-  void create_text(const char *text, int x, int y);
+  void set_text(const char *text);
   void display(SDL_Surface *destination);
+
+  const char *get_text(void);
 };
 
 #endif

@@ -431,7 +431,7 @@ void Map::display() {
  * Displays a sprite on the map surface.
  * @param sprite the sprite to display
  * @param x x coordinate of the sprite's hotspot in the map
- * @param x y coordinate of the sprite's hotspot in the map
+ * @param y y coordinate of the sprite's hotspot in the map
  */
 void Map::display_sprite(AnimatedSprite *sprite, int x, int y) {
   

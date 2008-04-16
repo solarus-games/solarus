@@ -56,6 +56,7 @@ Moving8ByPlayer::Moving8ByPlayer(int speed):
  * Returns the current direction of the movement.
  * The returned direction is an angle (0 to 359), or -1 if the
  * movement is stopped.
+ * @returns the current movement direction
  */
 int Moving8ByPlayer::get_direction(void) {
   return directions[direction_mask];
@@ -63,7 +64,7 @@ int Moving8ByPlayer::get_direction(void) {
 
 /**
  * Sets whether the player can move the entity.
- * @param true to enable the movements
+ * @param can_move true to enable the movements
  */
 void Moving8ByPlayer::set_moving_enabled(bool can_move) {
 

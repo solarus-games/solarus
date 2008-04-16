@@ -8,6 +8,8 @@
  * @param nb_directions number of directions in this animation
  * @param directions the image sequence of each direction
  * @param frame_interval interval in millisecond between two frames for this sprite animation
+ * (or 0 to make no animation, for example when you have only one frame)
+ * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
 SpriteAnimation::SpriteAnimation(string image_file_name, int nb_directions,
 				 SpriteAnimationDirection **directions,

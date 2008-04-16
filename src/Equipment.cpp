@@ -398,7 +398,7 @@ int Equipment::get_max_magic(void) {
  * Sets the maximum level of Link's magic bar.
  * Exits with an error message if the value specified
  * if not valid.
- * @aparam max_magic the maximum level of magic (0, 42 or 84 points)
+ * @param max_magic the maximum level of magic (0, 42 or 84 points)
  */
 void Equipment::set_max_magic(int max_magic) {
   

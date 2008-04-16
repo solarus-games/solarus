@@ -55,9 +55,9 @@ TextDisplayed::TextDisplayed(int x, int y):
   horizontal_alignment(ALIGN_LEFT),
   vertical_alignment(ALIGN_MIDDLE),
   rendering_mode(TEXT_SOLID),
-  text_surface(NULL),
-  text(NULL) {
+  text_surface(NULL) {
 
+  text[0] = '\0';
   set_text_color(255, 255, 255);
   set_background_color(0, 0, 0);
   set_position(x, y);
@@ -80,9 +80,9 @@ TextDisplayed::TextDisplayed(int x, int y,
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
   rendering_mode(TEXT_SOLID),
-  text_surface(NULL),
-  text(NULL) {
+  text_surface(NULL) {
 
+  text[0] = '\0';
   set_text_color(255, 255, 255);
   set_background_color(0, 0, 0);
   set_position(x, y);
@@ -114,6 +114,8 @@ void TextDisplayed::set_alignment(HorizontalAlignment horizontal_alignment,
 				  VerticalAlignment vertical_alignment) {
   this->horizontal_alignment = horizontal_alignment;
   this->vertical_alignment = vertical_alignment;
+
+  rebuild();
 }
 
 /**
@@ -122,6 +124,8 @@ void TextDisplayed::set_alignment(HorizontalAlignment horizontal_alignment,
  */
 void TextDisplayed::set_rendering_mode(TextRenderingMode rendering_mode) {
   this->rendering_mode = rendering_mode;
+
+  rebuild();
 }
 
 /**
@@ -134,6 +138,8 @@ void TextDisplayed::set_text_color(int r, int g, int b) {
   this->text_color.r = r;
   this->text_color.g = g;
   this->text_color.b = b;
+
+  rebuild();
 }
 
 /**
@@ -146,7 +152,9 @@ void TextDisplayed::set_text_color(int r, int g, int b) {
 void TextDisplayed::set_background_color(int r, int g, int b) {
   this->background_color.r = r;
   this->background_color.g = g;
-  this->background_color.b = b;  
+  this->background_color.b = b; 
+
+  rebuild(); 
 }
 
 /**
@@ -157,19 +165,38 @@ void TextDisplayed::set_background_color(int r, int g, int b) {
 void TextDisplayed::set_position(int x, int y) {
   this->x = x;
   this->y = y;
+
+  rebuild();
 }
 
 /**
- * Creates the text surface with the current color and the current alignment.
+ * Sets the string drawn.
  * If the specified string is the same than the current text, nothing is done.
  * @param text the text to display (cannot be NULL)
  */
 void TextDisplayed::set_text(const char *text) {
 
-  if (this->text != NULL && (text == this->text || !strcmp(text, this->text))) {
-    // no change: nothing to do, everything is already okay
-    return;
+  if (strcmp(text, this->text)) {
+
+    // there is a change
+    strncpy(this->text, text, 63);
+    rebuild();
   }
+}
+
+/**
+ * Returns the text currently displayed.
+ * @return the text currently displayed, or NULL if there is no text
+ */
+const char *TextDisplayed::get_text(void) {
+  return text;
+}
+
+/**
+ * Creates the text surface.
+ * This function is called when there is a change.
+ */
+void TextDisplayed::rebuild(void) {
 
   if (text_surface != NULL) {
     // another text was previously set: delete it
@@ -177,10 +204,8 @@ void TextDisplayed::set_text(const char *text) {
     text_surface = NULL;
   }
   
-  this->text = text;
-
   if (text[0] == '\0') {
-    // empty string: don't create a surface
+    // empty string: no surface to create
     return;
   }
   
@@ -199,6 +224,10 @@ void TextDisplayed::set_text(const char *text) {
   case TEXT_BLENDED:
     text_surface = TTF_RenderUTF8_Blended(fonts[font_id], text, text_color);
     break;
+  }
+
+  if (text_surface == NULL) {
+    cerr << "Cannot create the text surface for string '" << text << "'" << endl;
   }
 
   // calculate the coordinates of the top-left corner
@@ -249,12 +278,4 @@ void TextDisplayed::display(SDL_Surface *destination) {
   if (text_surface != NULL) {
     SDL_BlitSurface(text_surface, NULL, destination, &text_position);
   }
-}
-
-/**
- * Returns the text currently displayed.
- * @return the text currently displayed, or NULL if there is no text
- */
-const char *TextDisplayed::get_text(void) {
-  return text;
 }

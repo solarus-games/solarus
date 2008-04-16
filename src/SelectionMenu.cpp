@@ -266,14 +266,15 @@ void SelectionMenu::show(void) {
   Music *music = zsdx->game_resource->get_music("game_over.it");
   music->play();
 
+  // in transition
   transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
   transition->start();
 
+  // show the first screen
   show_select_file_screen();
 
+  // out transition (the selection menu is over now)
   delete transition;
-
-  // transition
   SDL_Event event;
   if (!zsdx->is_exiting()) {
 
@@ -285,21 +286,19 @@ void SelectionMenu::show(void) {
 	zsdx->handle_event(event);
       }
 
-      redraw_select_file_screen();
+      redraw_choose_mode_screen();
     }
     delete transition;
   }
 
   SDL_FreeSurface(destination_surface);
-
-  // stop the music
   music->stop();
 }
 
 /**
  * Returns the savegame selected by the user.
- * The savegame returned is not freed when the menu is freed.
  * The show() function must have been called first.
+ * The savegame returned is not freed when the menu is freed.
  * @return the savegame selected by the user, or NULL
  * if he wants to quit.
  */
@@ -501,6 +500,22 @@ void SelectionMenu::display_savegame(int save_number) {
 }
 
 /**
+ * Displays the number of a savegame.
+ * This function is separate from the display_savegame() function
+ * because the cursor has to be displayed after the savegame images
+ * but before the savegame number.
+ * @param save_number number to display (0 to 2)
+ */
+void SelectionMenu::display_savegame_number(int save_number) {
+
+  SDL_Rect position;
+
+  position.x = 62;
+  position.y = 80 + 27 * save_number;
+  SDL_BlitSurface(img_numbers[save_number], NULL, destination_surface, &position);
+}
+
+/**
  * Displays the two options in the bottom of the screen.
  * @param left text of the first option (on the left)
  * @param right text of the second option (on the right)
@@ -548,22 +563,6 @@ void SelectionMenu::display_normal_cursor(void) {
 }
 
 /**
- * Displays the number of a savegame.
- * This function is separate from the display_savegame() function
- * because the cursor has to be displayed after the savegame images
- * but before the savegame number.
- * @param save_number number to display (0 to 2)
- */
-void SelectionMenu::display_savegame_number(int save_number) {
-
-  SDL_Rect position;
-
-  position.x = 62;
-  position.y = 80 + 27 * save_number;
-  SDL_BlitSurface(img_numbers[save_number], NULL, destination_surface, &position);
-}
-
-/**
  * Shows the main screen of the selection menu.
  */
 void SelectionMenu::show_select_file_screen(void) {
@@ -573,12 +572,11 @@ void SelectionMenu::show_select_file_screen(void) {
   cursor->set_current_animation("blue");
   cursor_position = 1;
 
-  bool start = false;
   SDL_Event event;
   SDL_EnableKeyRepeat(0, 0); // no repeat
 
   Uint32 next_redraw = SDL_GetTicks();
-  while (!zsdx->is_exiting() && !start) {
+  while (!zsdx->is_exiting()) {
 
     // if there is an event
     if (SDL_PollEvent(&event)) {
@@ -614,8 +612,7 @@ void SelectionMenu::show_select_file_screen(void) {
 	    else {
 	      // the savegame exists: choose the mode and then start the game
 	      show_choose_mode_screen();
-	      start = true;
-	      continue;
+	      return; // don't redraw the select file screen any more
 	    }
 	  }
 	  break;
@@ -1105,6 +1102,63 @@ void SelectionMenu::show_choose_mode_screen(void) {
 
   current_screen = CHOOSE_MODE;
 
+  // move the savegame elements to the top
+  int save_number = cursor_position - 1;
+  delete hearts_views[save_number];
+  hearts_views[save_number] =
+    new HeartsView(savegames[save_number]->get_equipment(), 168, 78);
+
+  text_player_names[save_number]->set_position(87, 88);
+
+  bool finished = false;
+  SDL_Event event;
+
+  Uint32 next_redraw = SDL_GetTicks();
+  while (!zsdx->is_exiting() && !finished) {
+
+    // if there is an event
+    if (SDL_PollEvent(&event)) {
+      
+      zsdx->handle_event(event);
+      
+      if (event.type == SDL_KEYDOWN) {
+
+	switch (event.key.keysym.sym) {
+
+	case SDLK_SPACE:
+	  if (adventure_mode) {
+	    // the user chose "Adventure"
+	    ok_sound->play();
+	    finished = true;
+	  }
+	  else {
+	    // the user chose "Solarus Dreams"
+	    ok_sound->play();
+	    finished = true;
+	  }
+	  break;
+
+	case SDLK_RIGHT:
+	case SDLK_LEFT:
+	  cursor_sound->play();
+	  adventure_mode = !adventure_mode;
+	  break;
+
+	default:
+	  break;
+	}
+      }
+    }
+
+    // update the sprites
+    update();
+
+    // redraw if necessary
+    while (SDL_GetTicks() >= next_redraw) {
+      redraw_choose_mode_screen();
+      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
+    }
+  }
 }
 
 /**
@@ -1114,4 +1168,25 @@ void SelectionMenu::redraw_choose_mode_screen(void) {
 
   redraw_common();
 
+  // move the selected savegame to the top
+  int save_number = cursor_position - 1;
+  SDL_Rect position = {57, 75, 0, 0};
+  SDL_BlitSurface(img_save_container, NULL, destination_surface, &position);
+  text_player_names[save_number]->display(destination_surface);
+ 
+  hearts_views[save_number]->display(destination_surface);
+
+  position.x = 62;
+  position.y = 80;
+  SDL_BlitSurface(img_numbers[save_number], NULL, destination_surface, &position);
+
+  // the two boxes
+  
+  // highlight the selected box
+
+  // text
+
+  // blit everything
+  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
+  SDL_Flip(zsdx->screen);
 }

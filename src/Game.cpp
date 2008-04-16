@@ -462,7 +462,7 @@ void Game::stop_music(void) {
 
  /**
   * Sets whether the player has control.
-  * @param true to enable the control
+  * @param enable true to enable the control
   */
  void Game::set_control_enabled(bool enable) {
 

@@ -327,7 +327,7 @@ bool Link::is_shield_visible(void) {
 
 /**
  * This function is called when an animation of Link's sprite is over.
- * @param the sprite
+ * @param sprite the sprite
  */
 void Link::animation_over(AnimatedSprite *sprite) {
 

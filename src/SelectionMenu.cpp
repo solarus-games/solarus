@@ -60,6 +60,7 @@ SelectionMenu::SelectionMenu(void):
   img_option_container = FileTools::open_image("menus/selection_menu_option_container.png");
   img_arrow = FileTools::open_image("menus/selection_menu_arrow.png");
   img_letters = FileTools::open_image("menus/selection_menu_letters.png");
+  img_mode = FileTools::open_image("menus/selection_menu_mode.png");
 
   char file_name[MAX_FILE_NAME];
   for (int i = 0; i < 3; i++) {
@@ -105,6 +106,7 @@ SelectionMenu::~SelectionMenu(void) {
   SDL_FreeSurface(img_option_container);
   SDL_FreeSurface(img_arrow);
   SDL_FreeSurface(img_letters);
+  SDL_FreeSurface(img_mode);
 
   delete text_option1;
   delete text_option2;
@@ -1181,10 +1183,19 @@ void SelectionMenu::redraw_choose_mode_screen(void) {
   SDL_BlitSurface(img_numbers[save_number], NULL, destination_surface, &position);
 
   // the two boxes
-  
-  // highlight the selected box
+  SDL_Rect box_position = {0, 0, 73, 54};
+  if (adventure_mode) {
+    box_position.y = 54; // highlight the selected box
+  }
+  position.x = 70;
+  position.y = 115;
+  SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);  
 
-  // text
+  box_position.x = 73;
+  box_position.y = adventure_mode ? 0 : 54; // highlight the selected box
+  position.x = 170;
+  position.y = 115;
+  SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);  
 
   // blit everything
   SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);

@@ -31,6 +31,7 @@ class SelectionMenu {
   SDL_Surface *img_save_container, *img_option_container;
   SDL_Surface *img_arrow, *img_letters;
   SDL_Surface *img_numbers[3];
+  SDL_Surface *img_mode;
   SDL_Surface *destination_surface;
 
   AnimatedSprite *cursor;

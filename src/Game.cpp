@@ -166,27 +166,27 @@ void Game::play(void) {
 	    break;
 
 	  case SDLK_KP1:
-	    savegame->get_equipment()->set_tunic_number(savegame->get_equipment()->get_tunic_number() - 1);
+	    savegame->get_equipment()->set_tunic_number(MAX(savegame->get_equipment()->get_tunic_number() - 1, 0));
 	    break;
 
 	  case SDLK_KP4:
-	    savegame->get_equipment()->set_tunic_number(savegame->get_equipment()->get_tunic_number() + 1);
+	    savegame->get_equipment()->set_tunic_number(MIN(savegame->get_equipment()->get_tunic_number() + 1, 2));
 	    break;
 
 	  case SDLK_KP2:
-	    savegame->get_equipment()->set_sword_number(savegame->get_equipment()->get_sword_number() - 1);
+	    savegame->get_equipment()->set_sword_number(MAX(savegame->get_equipment()->get_sword_number() - 1, 0));
 	    break;
 
 	  case SDLK_KP5:
-	    savegame->get_equipment()->set_sword_number(savegame->get_equipment()->get_sword_number() + 1);
+	    savegame->get_equipment()->set_sword_number(MIN(savegame->get_equipment()->get_sword_number() + 1, 4));
 	    break;
 
 	  case SDLK_KP3:
-	    savegame->get_equipment()->set_shield_number(savegame->get_equipment()->get_shield_number() - 1);
+	    savegame->get_equipment()->set_shield_number(MAX(savegame->get_equipment()->get_shield_number() - 1, 0));
 	    break;
 
 	  case SDLK_KP6:
-	    savegame->get_equipment()->set_shield_number(savegame->get_equipment()->get_shield_number() + 1);
+	    savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
 	    break;
 
 	  case SDLK_d:

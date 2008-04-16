@@ -998,7 +998,7 @@ void SelectionMenu::redraw_choose_name_screen(void) {
  */
 bool SelectionMenu::select_letter(void) {
 
-  int length = strlen(player_name);
+  size_t length = strlen(player_name);
   char letter_to_add = '\0';
   bool finished = false;
 

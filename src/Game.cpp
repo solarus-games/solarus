@@ -83,24 +83,7 @@ void Game::play(void) {
 	  // a key is pressed
 	case SDL_KEYDOWN:
 
-	  switch (event.key.keysym.sym) {
-	    
-	    // move Link
-	  case SDLK_RIGHT:
-	    link->start_right();
-	    break;
-	    
-	  case SDLK_UP:
-	    link->start_up();
-	    break;
-	    
-	  case SDLK_LEFT:
-	    link->start_left();
-	    break;
-	    
-	  case SDLK_DOWN:
-	    link->start_down();
-	    break;
+	  switch (event.key.keysym.unicode) {
 	    
 	  case SDLK_c:
 	    
@@ -149,44 +132,8 @@ void Game::play(void) {
 	    }
 	    break;
 
-	  case SDLK_KP7:
-	    savegame->get_equipment()->set_max_magic(0);
-	    break;
-
-	  case SDLK_KP8:
-	    savegame->get_equipment()->set_max_magic(42);
-	    break;
-
-	  case SDLK_KP9:
-	    savegame->get_equipment()->set_max_magic(84);
-	    break;
-
 	  case SDLK_s:
 	    savegame->save();
-	    break;
-
-	  case SDLK_KP1:
-	    savegame->get_equipment()->set_tunic_number(MAX(savegame->get_equipment()->get_tunic_number() - 1, 0));
-	    break;
-
-	  case SDLK_KP4:
-	    savegame->get_equipment()->set_tunic_number(MIN(savegame->get_equipment()->get_tunic_number() + 1, 2));
-	    break;
-
-	  case SDLK_KP2:
-	    savegame->get_equipment()->set_sword_number(MAX(savegame->get_equipment()->get_sword_number() - 1, 0));
-	    break;
-
-	  case SDLK_KP5:
-	    savegame->get_equipment()->set_sword_number(MIN(savegame->get_equipment()->get_sword_number() + 1, 4));
-	    break;
-
-	  case SDLK_KP3:
-	    savegame->get_equipment()->set_shield_number(MAX(savegame->get_equipment()->get_shield_number() - 1, 0));
-	    break;
-
-	  case SDLK_KP6:
-	    savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
 	    break;
 
 	  case SDLK_d:
@@ -226,8 +173,66 @@ void Game::play(void) {
 	  default:
 	    break;
 	  }
+
+	  switch (event.key.keysym.sym) {
+	    
+	    // move Link
+	  case SDLK_RIGHT:
+	    link->start_right();
+	    break;
+	    
+	  case SDLK_UP:
+	    link->start_up();
+	    break;
+	    
+	  case SDLK_LEFT:
+	    link->start_left();
+	    break;
+	    
+	  case SDLK_DOWN:
+	    link->start_down();
+	    break;
+		
+		// TODO remove
+	  case SDLK_KP7:
+	    savegame->get_equipment()->set_max_magic(0);
+	    break;
+
+	  case SDLK_KP8:
+	    savegame->get_equipment()->set_max_magic(42);
+	    break;
+
+	  case SDLK_KP9:
+	    savegame->get_equipment()->set_max_magic(84);
+	    break;
+
+	  case SDLK_KP1:
+	    savegame->get_equipment()->set_tunic_number(MAX(savegame->get_equipment()->get_tunic_number() - 1, 0));
+	    break;
+
+	  case SDLK_KP4:
+	    savegame->get_equipment()->set_tunic_number(MIN(savegame->get_equipment()->get_tunic_number() + 1, 2));
+	    break;
+
+	  case SDLK_KP2:
+	    savegame->get_equipment()->set_sword_number(MAX(savegame->get_equipment()->get_sword_number() - 1, 0));
+	    break;
+
+	  case SDLK_KP5:
+	    savegame->get_equipment()->set_sword_number(MIN(savegame->get_equipment()->get_sword_number() + 1, 4));
+	    break;
+
+	  case SDLK_KP3:
+	    savegame->get_equipment()->set_shield_number(MAX(savegame->get_equipment()->get_shield_number() - 1, 0));
+	    break;
+
+	  case SDLK_KP6:
+	    savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
+	    break;
+
+	  }
 	  break;
-	
+	    
 	  // stop Link's movement
 	case SDL_KEYUP:
 	  switch (event.key.keysym.sym) {

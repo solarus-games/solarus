@@ -42,6 +42,7 @@ ZSDX::ZSDX(void) {
 
   SDL_ShowCursor(SDL_ENABLE);
   set_fullscreen(false);
+  SDL_EnableUNICODE(SDL_ENABLE);
  
   color_init();
 

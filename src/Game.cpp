@@ -230,6 +230,8 @@ void Game::play(void) {
 	    savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
 	    break;
 
+	  default:
+	    break;
 	  }
 	  break;
 	    

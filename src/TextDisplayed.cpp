@@ -227,7 +227,7 @@ void TextDisplayed::rebuild(void) {
   }
 
   if (text_surface == NULL) {
-    cerr << "Cannot create the text surface for string '" << text << "'" << endl;
+	  cerr << "Cannot create the text surface for string '" << text << ": " << SDL_GetError() << endl;
   }
 
   // calculate the coordinates of the top-left corner

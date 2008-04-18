@@ -51,10 +51,10 @@ add_executable (zsdx
 if (NOT WIN32)
    SET_TARGET_PROPERTIES(zsdx PROPERTIES
 			      COMPILE_FLAGS -DDATADIR_="${CMAKE_INSTALL_PREFIX}/share/zsdx")
-endif (NOT WIN32)
 
-SET_TARGET_PROPERTIES(zsdx PROPERTIES
-			   COMPILE_FLAGS "-g -ansi -Wall -Werror")
+   SET_TARGET_PROPERTIES(zsdx PROPERTIES
+			      COMPILE_FLAGS "-g -ansi -Wall -Werror")
+endif (NOT WIN32)
 
 target_link_libraries (zsdx
 		      SDL

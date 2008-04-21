@@ -84,10 +84,7 @@ SDL_Surface *FileTools::open_image(const char *file_name) {
   SDL_Surface *image = IMG_Load(prefixed_file_name);
 
   if (image == NULL) {
-    cerr << "Cannot load image '" << prefixed_file_name << "'" << endl;
-
-    SDL_Quit();
-    exit(1);
+    DIE("Cannot load image '" << prefixed_file_name << "'");
   }
 
   return image;

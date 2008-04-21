@@ -50,16 +50,14 @@ void Tileset::load(void) {
   ifstream tileset_file(FileTools::data_file_add_prefix(file_name));
 
   if (!tileset_file) {
-    cerr << "Cannot open file '" << file_name << "'" << endl;
-    exit(1);
+    DIE("Cannot open file '" << file_name << "'");
   }
 
   string line;
 
   // first line: tileset general info
   if (!std::getline(tileset_file, line)) {
-    cerr << "Empty file '" << file_name << "'" << endl;
-    exit(1);
+    DIE("Empty file '" << file_name << "'");
   }
 
   int r, g, b;
@@ -100,8 +98,7 @@ void Tileset::load(void) {
   tileset_image = FileTools::open_image(file_name);
   
   if (tileset_image == NULL) {
-    cerr << "Cannot load the image '" << file_name << "'" << endl;
-    exit(1);
+    DIE("Cannot load the image '" << file_name << "'");
   }
 }
 

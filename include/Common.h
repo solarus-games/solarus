@@ -17,19 +17,11 @@ using namespace std;
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 
-#ifndef ZSDX_CONFIG_H
-#define ZSDX_CONFIG_H
-#endif
-
 #include "Types.h"
 
-#define MIN(x,y) ((x > y) ? (y) : (x))
-#define MAX(x,y) ((x > y) ? (x) : (y))
+#define MIN(x,y) (((x) > (y)) ? (y) : (x))
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
-/*
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__)
-#define WINDOWS 1
-#endif
-*/
+#define DIE(message) do { ostringstream oss; oss << message; throw oss.str(); } while (0)
 
 #endif

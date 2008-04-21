@@ -114,8 +114,7 @@ void AnimatedSprite::set_current_animation(string animation_name) {
   SpriteAnimation *animation = animations->get_animation(animation_name);
   
   if (animation == NULL) {
-    cerr << "Unknown animation '" << animation_name << "'\n";
-    exit(1);
+    DIE("Unknown animation '" << animation_name << "'");
   }
   
   this->animation_name = animation_name;

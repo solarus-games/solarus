@@ -68,8 +68,7 @@ void Savegame::save(void) {
   FILE *file = fopen(file_name, "w");
 
   if (file == NULL) {
-    cerr << "Cannot write savegame file '" << file_name << "'" << endl;
-    exit(1);
+    DIE("Cannot write savegame file '" << file_name << "'");
   }
 
   fwrite(&saved_data, sizeof(SavedData), 1, file);

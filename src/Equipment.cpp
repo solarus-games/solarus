@@ -72,8 +72,7 @@ void Equipment::set_tunic_number(int tunic_number) {
     // the tunic has changed
 
     if (tunic_number < 0 || tunic_number > 2) {
-      cerr << "Illegal tunic number: " << tunic_number << endl;
-      exit(1);
+      DIE("Illegal tunic number: " << tunic_number);
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, tunic_number);
@@ -112,8 +111,7 @@ void Equipment::set_sword_number(int sword_number) {
     // the sword has changed
 
     if (sword_number < 0 || sword_number > 4) {
-      cerr << "Illegal sword number: " << sword_number << endl;
-      exit(1);
+      DIE("Illegal sword number: " << sword_number);
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, sword_number);
@@ -152,8 +150,7 @@ void Equipment::set_shield_number(int shield_number) {
     // the shield has changed
 
     if (shield_number < 0 || shield_number > 3) {
-      cerr << "Illegal shield number: " << shield_number << endl;
-      exit(1);
+      DIE("Illegal shield number: " << shield_number);
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_SHIELD, shield_number);
@@ -178,8 +175,7 @@ int Equipment::get_max_rupees(void) {
 void Equipment::set_max_rupees(int max_rupees) {
   
   if (max_rupees != 99 && max_rupees != 199 && max_rupees != 999) {
-    cerr << "Illegal maximum number of rupees: " << max_rupees << endl;
-    exit(1);
+    DIE("Illegal maximum number of rupees: " << max_rupees);
   }
 
   savegame->set_reserved_integer(SAVEGAME_MAX_RUPEES, max_rupees);
@@ -201,8 +197,7 @@ int Equipment::get_rupees(void) {
 void Equipment::set_rupees(int rupees) {
 
   if (rupees < 0 || rupees > get_max_rupees()) {
-    cerr << "Illegal number of rupees: " << rupees << endl;
-    exit(1);
+    DIE("Illegal number of rupees: " << rupees);
   }
   
   savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, rupees);
@@ -252,8 +247,7 @@ int Equipment::get_max_hearts(void) {
 void Equipment::set_max_hearts(int max_hearts) {
 
   if (max_hearts <= 0 || max_hearts > 20) {
-    cerr << "Illegal maximum number of hearts: " << max_hearts << endl;
-    exit(1);
+    DIE("Illegal maximum number of hearts: " << max_hearts);
   }
 
   savegame->set_reserved_integer(SAVEGAME_MAX_HEARTS, max_hearts);
@@ -287,8 +281,7 @@ int Equipment::get_hearts(void) {
 void Equipment::set_hearts(int hearts) {
 
   if (hearts < 0 || hearts > 20 * 4) {
-    cerr << "Illegal number of hearts: " << hearts << endl;
-    exit(1);
+    DIE("Illegal number of hearts: " << hearts);
   }
 
   savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, hearts);
@@ -345,8 +338,7 @@ bool Equipment::has_piece_of_heart(int piece_of_heart_id) {
   int index = SAVEGAME_FIRST_PIECE_OF_HEART + piece_of_heart_id;
   
   if (index < SAVEGAME_FIRST_PIECE_OF_HEART || index > SAVEGAME_LAST_PIECE_OF_HEART) {
-    cerr << "Illegal piece of heart index: " << piece_of_heart_id << endl;
-    exit(1);
+    DIE("Illegal piece of heart index: " << piece_of_heart_id);
   }
 
   return savegame->get_reserved_integer(index) != 0;
@@ -362,8 +354,7 @@ void Equipment::add_piece_of_heart(int piece_of_heart_id) {
   // note: the piece_of_heart sound is played by the collectable when it is picked
 
   if (has_piece_of_heart(piece_of_heart_id)) {
-    cerr << "The player already has piece of heart #" << piece_of_heart_id << endl;
-    exit(1);
+    DIE("The player already has piece of heart #" << piece_of_heart_id);
   }
 
   savegame->set_reserved_integer(SAVEGAME_FIRST_PIECE_OF_HEART + piece_of_heart_id, 1);
@@ -403,8 +394,7 @@ int Equipment::get_max_magic(void) {
 void Equipment::set_max_magic(int max_magic) {
   
   if (max_magic != 0 && max_magic != 42 && max_magic != 84) {
-    cerr << "Illegal maximum number of magic points: " << max_magic << endl;
-    exit(1);
+    DIE("Illegal maximum number of magic points: " << max_magic);
   }
 
   savegame->set_reserved_integer(SAVEGAME_MAX_MAGIC, max_magic);
@@ -429,8 +419,7 @@ int Equipment::get_magic(void) {
 void Equipment::set_magic(int magic) {
 
   if (magic < 0 || magic > get_max_magic()) {
-    cerr << "Illegal number of magic points: " << magic << endl;
-    exit(1);
+    DIE("Illegal number of magic points: " << magic);
   }
 
   savegame->set_reserved_integer(SAVEGAME_CURRENT_MAGIC, magic);
@@ -484,8 +473,7 @@ bool Equipment::is_magic_decreasing(void) {
 void Equipment::start_removing_magic(Uint32 delay) {
 
   if (delay <= 0) {
-    cerr << "Illegal magic bar decrease delay: " << delay << endl;
-    exit(1);
+    DIE("Illegal magic bar decrease delay: " << delay);
   }
 
   if (get_magic() > 0) {

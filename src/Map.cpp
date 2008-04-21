@@ -95,8 +95,7 @@ void Map::load() {
   ifstream map_file(FileTools::data_file_add_prefix(file_name));
 
   if (!map_file) {
-    cerr << "Cannot open file '" << file_name << "'" << endl;
-    exit(1);
+    DIE("Cannot open file '" << file_name << "'");
   }
 
   string line;
@@ -104,7 +103,7 @@ void Map::load() {
 
   // first line: map general info
   if (!std::getline(map_file, line)) {
-    cerr << "Empty file '" << file_name << "'" << endl;
+    DIE("Empty file '" << file_name << "'");
     exit(1);
   }
 
@@ -340,8 +339,7 @@ void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
 void Map::set_entrance(unsigned int entrance_index) {
 
   if (entrance_index < 0 || entrance_index >= entrances->size()) {
-    cerr << "Fatal error: unknown entrance '" << entrance_index << "' on map '" << id << '\'' << endl;
-    exit(1);
+    DIE("Unknown entrance '" << entrance_index << "' on map '" << id << '\'');
   }
 
   this->entrance_index = entrance_index;
@@ -363,8 +361,7 @@ void Map::set_entrance(string entrance_name) {
     this->entrance_index = i - 1;
   }
   else {
-    cerr << "Fatal error: unknown entrance '" << entrance_name << "' on map '" << id << '\'' << endl;
-    exit(1);
+    DIE("Unknown entrance '" << entrance_name << "' on map '" << id << '\'');
   }
 }
 

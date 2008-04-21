@@ -228,7 +228,7 @@ void Moving8ByPlayer::update_movement(void) {
       y_speed = x_speed;
       break;
     default:
-      cerr << "Bad basic direction: " << direction << endl;
+      DIE("Bad basic direction: " + direction);
       break;
     }
     set_x_speed(x_speed);

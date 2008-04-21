@@ -22,8 +22,7 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
   ifstream sprite_file(FileTools::data_file_add_prefix(file_name));
 
   if (!sprite_file) {
-    cerr << "Cannot open file '" << FileTools::data_file_add_prefix(file_name) << "'" << endl;
-    exit(1);
+    DIE("Cannot open file '" << FileTools::data_file_add_prefix(file_name) << "'");
   }
 
   string line;

@@ -236,7 +236,14 @@ Lorsqu'il lance ce mode, le jeu affiche les écrans suivants :
  */
 int main(int argc, char **argv) {
   zsdx = new ZSDX();
-  zsdx->main();
+
+  try {
+    zsdx->main();
+  }
+  catch (const string &s) {
+    cerr << "A fatal error occured: " << s << endl;
+  }
+
   delete zsdx;
 
   return 0;

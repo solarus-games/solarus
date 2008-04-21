@@ -18,14 +18,13 @@ void TextDisplayed::initialize(void) {
 
   fonts[FONT_LA] = TTF_OpenFont(FileTools::data_file_add_prefix("zsdx.ttf"), 11);
   if (fonts[FONT_LA] == NULL) {
-    cerr << "Cannot load font 'zsdx.ttf'." << endl;
+    DIE("Cannot load font 'zsdx.ttf'");
     exit(1);
   }
 
   fonts[FONT_STANDARD] = TTF_OpenFont(FileTools::data_file_add_prefix("fixed8.fon"), 11);
   if (fonts[FONT_STANDARD] == NULL) {
-    cerr << "Cannot load font 'fixed8.fon'." << endl;
-    exit(1);
+    DIE("Cannot load font 'fixed8.fon'");
   }
 }
 
@@ -227,7 +226,7 @@ void TextDisplayed::rebuild(void) {
   }
 
   if (text_surface == NULL) {
-	  cerr << "Cannot create the text surface for string '" << text << ": " << SDL_GetError() << endl;
+    DIE("Cannot create the text surface for string '" << text << "': " << SDL_GetError());
   }
 
   // calculate the coordinates of the top-left corner

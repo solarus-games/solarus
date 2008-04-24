@@ -303,10 +303,18 @@ void Link::restore_state(void) {
  * Lets Link swinging his sword.
  */
 void Link::start_sword(void) {
-
   set_state(LINK_STATE_SWORD_SWINGING);
   sword_sound->play();
   set_animation_sword();
+}
+
+/**
+ * Makes Link push something.
+ */
+void Link::start_pushing(void) {
+  set_state(LINK_STATE_PUSHING_OR_PULLING);
+  cout << "moving enabled: " << can_move << endl;
+  set_animation_pushing();
 }
 
 /**
@@ -435,5 +443,17 @@ void Link::set_animation_sword(void) {
     else {
       shield_sprite->stop_animation();
     }
+  }
+}
+
+/**
+ * Starts the "pushing" animation of Link's sprites.
+ * Link's state should be LINK_STATE_PUSHING_OR_PULLING.
+ */
+void Link::set_animation_pushing(void) {
+  tunic_sprite->set_current_animation("pushing");
+
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
   }
 }

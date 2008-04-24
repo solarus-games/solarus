@@ -166,8 +166,16 @@ void Game::play(void) {
 	    }
 	    else if (keys_effect->get_action_key_effect() == ACTION_KEY_THROW) {
 	      keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+	    }	    
+	    break;
+
+	  case SDLK_t:
+	    if (link->get_state() != LINK_STATE_PUSHING_OR_PULLING) {
+	      link->start_pushing();
 	    }
-	    
+	    else {
+	      link->set_state(LINK_STATE_FREE);
+	    }
 	    break;
 
 	  default:

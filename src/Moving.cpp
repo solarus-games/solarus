@@ -81,6 +81,7 @@ void Moving::update(void) {
  */
 void Moving::set_x(int x) {
   position_in_map.x = x - hotspot.x;
+  last_move_date = SDL_GetTicks();
 }
 
 /**
@@ -89,6 +90,7 @@ void Moving::set_x(int x) {
  */
 void Moving::set_y(int y) {
   position_in_map.y = y - hotspot.y;
+  last_move_date = SDL_GetTicks();
 }
 
 /**

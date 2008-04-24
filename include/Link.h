@@ -79,15 +79,18 @@ class Link: public Moving8ByPlayer, AnimationListener {
   void set_state(LinkState state);
   void restore_state(void);
 
-  void start_sword(void);
   bool is_sword_visible(void);
   bool is_shield_visible(void);
+
+  void start_sword(void);
+  void start_pushing(void);
 
   void set_animation_suspended(bool suspended);
   void animation_over(AnimatedSprite *sprite);
 
   void set_animation_stopped(void);
   void set_animation_walking(void);
+  void set_animation_pushing(void);
 };
 
 #endif

@@ -69,6 +69,11 @@ class Moving: public MapEntity {
    */
   Uint32 next_move_date_y;
 
+  /**
+   * Date of the last x or y move.
+   */
+  Uint32 last_move_date;
+
   // the following fields are redundant and can be computed
   // with x_speed and y_speed
 

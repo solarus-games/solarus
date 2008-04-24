@@ -6,6 +6,7 @@
 #include "FileTools.h"
 #include "Equipment.h"
 #include "ZSDX.h"
+#include "Game.h"
 #include "GameResource.h"
 #include "Sound.h"
 #include "AnimatedSprite.h"
@@ -64,17 +65,30 @@ void MagicBar::update(void) {
     need_rebuild = true;
   }
 
+  // are the magic points decreasing continuously?
   if (equipment->is_magic_decreasing()) {
 
+    // animate the magic bar 
     if (!is_magic_decreasing) {
       is_magic_decreasing = true;
       sprite_magic_bar_container->set_current_animation("decreasing");
+    }
+
+    // suspend the magic bar animation if the game is suspended
+    if (zsdx->game->is_suspended() && !sprite_magic_bar_container->is_suspended()) {
+      sprite_magic_bar_container->set_current_frame(1);
+      sprite_magic_bar_container->set_suspended(true);
+    }
+    else if (sprite_magic_bar_container->is_suspended() && !zsdx->game->is_suspended()) {
+      sprite_magic_bar_container->set_suspended(false);
     }
 
     sprite_magic_bar_container->update_current_frame();
     need_rebuild = true;
   }
   else if (!equipment->is_magic_decreasing() && is_magic_decreasing) {
+
+    // stop the magic bar animation
     is_magic_decreasing = false;
     sprite_magic_bar_container->set_current_animation("normal");
     need_rebuild = true;

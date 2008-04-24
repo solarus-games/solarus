@@ -102,8 +102,8 @@ void Moving8ByPlayer::set_moving_enabled(bool can_move) {
       y_move = 0;
     }
 
-    update_movement();
     this->can_move = can_move;
+    update_movement();
   }
 }
 
@@ -171,9 +171,10 @@ void Moving8ByPlayer::stop_down(void) {
 }
 
 /**
- * Updates the movement of the entity.
+ * Changes the movement of the entity depending on the arrows pressed.
  * This function is called when an arrow is pressed or released
- * on the keyboard.
+ * on the keyboard, or when the movement has just been enabled or
+ * disabled (i.e. when set_moving_enabled() is called).
  */
 void Moving8ByPlayer::update_movement(void) {
   int x_speed = 0;
@@ -238,8 +239,7 @@ void Moving8ByPlayer::update_movement(void) {
 
 /**
  * Updates the position (x and y) of the entity if it has moved.
- * This is a redefinition of MovingWithCollision::update to update
- * x_move and y_move depending on the arrows pressed.
+ * This is a redefinition of MovingWithCollision::update.
  */
 void Moving8ByPlayer::update(void) {
   

@@ -74,7 +74,7 @@ const SoundId Link::sword_sound_ids[4] = {
  */
 Link::Link(void):
   Moving8ByPlayer(12),
-  state(LINK_STATE_FREE), previous_state(LINK_STATE_FREE),
+  state(LINK_STATE_FREE),
   equipment(zsdx->game->get_savegame()->get_equipment()),
   tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL) {
 
@@ -109,16 +109,20 @@ void Link::set_map(Map *map, int initial_direction) {
 
 /**
  * Updates Link's position and animation.
- * This function is called repeteadly by the map.
+ * This function is called repeteadly by the game.
  */
 void Link::update(void) {
+
+  // update the movement
+  set_moving_enabled(!zsdx->game->is_suspended() && get_state() <= LINK_STATE_SWIMMING);
+
   Moving::update(); // update the position
-  update_sprites();
+  update_sprites(); // update the sprites
 }
 
 /**
  * Displays Link on the map with its current animation and
- * at its current position
+ * at its current position.
  * @param map the map
  */
 void Link::display_on_map(Map *map) {
@@ -170,7 +174,6 @@ void Link::initialize_sprites(void) {
     // Link has a sword: get the sprite and the sound
     sword_sprite = new AnimatedSprite(resource->get_sprite(sword_sprite_ids[sword_number - 1]));
     sword_sprite->stop_animation();
-    sword_sprite->set_animation_listener(this); // to be notified when an animation of the sword is over
 
     sword_sound = resource->get_sound(sword_sound_ids[sword_number - 1]);
   }
@@ -193,7 +196,7 @@ void Link::initialize_sprites(void) {
     set_animation_direction(animation_direction);
   }
 
-  set_state(LINK_STATE_FREE);
+  start_free();
 }
 
 /**
@@ -201,54 +204,64 @@ void Link::initialize_sprites(void) {
  */
 void Link::update_sprites(void) {
 
+  // suspend the animation when the game is suspended
+  if (zsdx->game->is_suspended() && !tunic_sprite->is_suspended()) {
+    set_animation_suspended(true);
+  }
+  else if (tunic_sprite->is_suspended() && !zsdx->game->is_suspended()) {
+    set_animation_suspended(false);
+  }
+
+  // update the frames
   tunic_sprite->update_current_frame();
 
   if (is_sword_visible()) {
-    sword_sprite->update_current_frame();
+    sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
   }
 
   if (is_shield_visible()) {
-    shield_sprite->update_current_frame();
+    shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
   }
 }
 
 /**
- * Redefinition of Moving8ByPlayer::update_movement
- * to take care of link's animation.
- * This function is called when the user has pressed or
- * released a keyboard arrow.
+ * Changes the movement of the entity depending on the arrows pressed.
+ * This function is called when an arrow is pressed or released
+ * on the keyboard, or when the movement has just been enabled or
+ * disabled (i.e. when set_moving_enabled() is called).
+ * This is a redefinition of Moving8ByPlayer::update_movement
+ * to take care of Link's animation.
  */
 void Link::update_movement(void) {
-  bool old_started = started;
 
-  // update the movement
+  // update the movement according to the arrows keys pressed
   Moving8ByPlayer::update_movement();
 
-  // has the direction changed?
-  if (state <= LINK_STATE_SWIMMING) {
-    int direction = get_direction();
-    
-    if (direction != -1) {
-      int old_animation_direction = tunic_sprite->get_current_animation_direction();
-      int animation_direction = animation_directions[direction_mask];
+  // update the animation direction according to the movement direction
+  int direction = get_direction();
+  if (direction != -1) {
+    int old_animation_direction = tunic_sprite->get_current_animation_direction();
+    int animation_direction = animation_directions[direction_mask];
       
-      if (animation_direction != old_animation_direction
-	  && animation_direction != -1) {
-	// if the direction defined by the arrows has changed,
-	// update the sprite's direction of animation
-	set_animation_direction(animation_direction);
-      }
+    if (animation_direction != old_animation_direction
+	&& animation_direction != -1) {
+      // if the direction defined by the arrows has changed,
+      // update the sprite's direction of animation
+      set_animation_direction(animation_direction);
     }
+  }
 
-    // update the animation
+  // show the animation corresponding to the movement tried by the player
+  if (can_move) {    
+    string animation = tunic_sprite->get_current_animation();
 
     // stopped to walking
-    if (!old_started && started) {
+    if (started && animation == "stopped") {
       set_animation_walking();
     }
-    
+      
     // walking to stopped
-    else if (old_started && !started) {
+    else if (!started && animation == "walking") {
       set_animation_stopped();
     }
   }
@@ -268,39 +281,29 @@ LinkState Link::get_state(void) {
  */
 void Link::set_state(LinkState state) {
 
-  this->previous_state = this->state;
   this->state = state;
-
   set_moving_enabled(state <= LINK_STATE_SWIMMING);
+}
 
-  switch (state) {
-
-  case LINK_STATE_FREE:
-    update_movement();
-
-    if (started) {
-      set_animation_walking();
-    }
-    else {
-      set_animation_stopped();
-    }
-    break;
-
-  default:
-    break;
-
+/**
+ * Lets Link can walk.
+ * Moves to the state LINK_STATE_FREE and updates the animations accordingly.
+ */
+void Link::start_free(void) {
+  set_state(LINK_STATE_FREE);
+  
+  if (started) {
+    set_animation_walking();
+  }
+  else {
+    set_animation_stopped();
   }
 }
 
 /**
- * Restores the previous state of Link.
- */
-void Link::restore_state(void) {
-  set_state(previous_state);
-}
-
-/**
  * Lets Link swinging his sword.
+ * Moves to the state LINK_STATE_SWORD_SWINGING, plays the sword sound
+ * and updates the animations accordingly.
  */
 void Link::start_sword(void) {
   set_state(LINK_STATE_SWORD_SWINGING);
@@ -310,10 +313,10 @@ void Link::start_sword(void) {
 
 /**
  * Makes Link push something.
+ * Moves to the state LINK_STATE_FREE and updates the animations accordingly.
  */
 void Link::start_pushing(void) {
-  set_state(LINK_STATE_PUSHING_OR_PULLING);
-  cout << "moving enabled: " << can_move << endl;
+  set_state(LINK_STATE_PUSHING);
   set_animation_pushing();
 }
 
@@ -342,7 +345,7 @@ void Link::animation_over(AnimatedSprite *sprite) {
   string animation_name = tunic_sprite->get_current_animation();
 
   if (animation_name == "sword") {
-    set_state(LINK_STATE_FREE);
+    start_free();
   }
 }
 
@@ -362,6 +365,39 @@ void Link::set_animation_direction(int direction) {
 
   if (is_shield_visible()) {
     shield_sprite->set_current_animation_direction(direction);
+  }
+}
+
+/**
+ * Suspends or resumes the animation of Link's sprites.
+ * @param suspended true to suspend the animation, false to resume it
+ */
+void Link::set_animation_suspended(bool suspended) {
+  tunic_sprite->set_suspended(suspended);
+
+  if (equipment->has_sword()) {
+    sword_sprite->set_suspended(suspended);
+  }
+
+  if (equipment->has_shield()) {
+    shield_sprite->set_suspended(suspended);
+  }
+}
+
+/**
+ * Restarts the animation of Link's sprites.
+ * This function is called when the sprites have to
+ * get back to their first frame.
+ */
+void Link::restart_animation(void) {
+  tunic_sprite->restart_animation();
+
+  if (is_sword_visible()) {
+    sword_sprite->restart_animation();
+  }
+
+  if (is_shield_visible()) {
+    shield_sprite->restart_animation();
   }
 }
 
@@ -406,23 +442,7 @@ void Link::set_animation_walking(void) {
 }
 
 /**
- * Suspends or resumes the animation of Link's sprites.
- * @param suspended true to suspend the animation, false to resume it
- */
-void Link::set_animation_suspended(bool suspended) {
-  tunic_sprite->set_suspended(suspended);
-
-  if (equipment->has_sword()) {
-    sword_sprite->set_suspended(suspended);
-  }
-
-  if (equipment->has_shield()) {
-    shield_sprite->set_suspended(suspended);
-  }
-}
-
-/**
- * Starts the "sword" animation of Link's sprites.
+ * Starts (or restarts) the "sword" animation of Link's sprites.
  * Link's state should be LINK_STATE_SWORD.
  */
 void Link::set_animation_sword(void) {
@@ -430,15 +450,18 @@ void Link::set_animation_sword(void) {
   int direction = tunic_sprite->get_current_animation_direction();
   
   tunic_sprite->set_current_animation("sword");
+  tunic_sprite->restart_animation();
 
   sword_sprite->set_current_animation("sword");
   sword_sprite->set_current_animation_direction(direction);
+  sword_sprite->restart_animation();
 
   if (equipment->has_shield()) {
 
     if (direction % 2 != 0) {
       shield_sprite->set_current_animation("sword");
       shield_sprite->set_current_animation_direction(direction / 2);
+      shield_sprite->restart_animation();
     }
     else {
       shield_sprite->stop_animation();
@@ -448,11 +471,12 @@ void Link::set_animation_sword(void) {
 
 /**
  * Starts the "pushing" animation of Link's sprites.
- * Link's state should be LINK_STATE_PUSHING_OR_PULLING.
+ * Link's state should be LINK_STATE_PUSHING.
  */
 void Link::set_animation_pushing(void) {
   tunic_sprite->set_current_animation("pushing");
 
+  // the shield is not visible when Link is pushing
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }

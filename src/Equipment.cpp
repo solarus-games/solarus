@@ -24,7 +24,7 @@ Equipment::~Equipment(void) {
 }
 
 /**
- * This function is be called repeatedly by the map.
+ * This function is be called repeatedly by the game.
  * Most of the time, there is nothing to update in this
  * class. The only element updated here is the magic bar
  * when it decreases continuously.
@@ -35,16 +35,23 @@ void Equipment::update(void) {
     // the magic bar is decreasing
 
     Uint32 ticks = SDL_GetTicks();
-    if (ticks > next_magic_decrease_date) {
+    if (!zsdx->game->is_suspended()) {
 
-      remove_magic(1);
-
-      if (get_magic() > 0) {
-	next_magic_decrease_date += magic_decrease_delay;
+      if (ticks > next_magic_decrease_date) {
+	
+	remove_magic(1);
+	
+	if (get_magic() > 0) {
+	  next_magic_decrease_date += magic_decrease_delay;
+	}
+	else {
+	  stop_removing_magic();
+	}
       }
-      else {
-	stop_removing_magic();
-      }
+    }
+    else {
+      // delay the next decrease while the game is suspended
+      next_magic_decrease_date = SDL_GetTicks();
     }
   }
 }

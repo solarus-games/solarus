@@ -26,9 +26,9 @@ class Game {
   Link *link;
 
   /**
-   * True if the player has control.
+   * True if the game is paused.
    */
-  bool control_enabled;
+  bool paused;
 
   /**
    * Current effect associated to the main game keys
@@ -52,7 +52,7 @@ class Game {
    * The transition between the current map and the next one.
    */
   TransitionType transition_type;
-  TransitionEffect *transition;
+  TransitionEffect *transition; // NULL if no transition is playing
 
   /**
    * The game HUD (displaying hearts, rupees, etc.).
@@ -90,8 +90,8 @@ class Game {
    */
   inline Map *get_current_map(void) { return current_map; }
 
-  bool is_control_enabled(void);
-  void set_control_enabled(bool enable);
+  bool is_paused(void);
+  bool is_suspended(void);
   KeysEffect *get_keys_effect(void);
   void update_keys_effect(void);
 

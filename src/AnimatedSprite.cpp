@@ -40,14 +40,18 @@ int AnimatedSprite::get_next_frame(void) {
 
 /**
  * Suspends or resumes the animation.
+ * Nothing is done if the parameter specified does not change.
  * @param suspended true to suspend the animation, false to resume it
  */
 void AnimatedSprite::set_suspended(bool suspended) {
-  this->suspended = suspended;
 
-  // compte next_frame_date if necessary
-  if (!suspended) {
-    next_frame_date = SDL_GetTicks() + get_frame_interval();
+  if (suspended != this->suspended) {
+    this->suspended = suspended;
+    
+    // compte next_frame_date if necessary
+    if (!suspended) {
+      next_frame_date = SDL_GetTicks() + get_frame_interval();
+    }
   }
 }
 
@@ -107,19 +111,24 @@ string AnimatedSprite::get_current_animation(void) { return animation_name; }
 
 /**
  * Sets the current animation of the sprite.
+ * If the sprite is already playing another animation, this animation is interrupted.
+ * If the sprite is already playing the same animation, nothing is done.
  * @param animation_name name of the new animation of the sprite
  */
 void AnimatedSprite::set_current_animation(string animation_name) {
 
-  SpriteAnimation *animation = animations->get_animation(animation_name);
+  if (animation_name != this->animation_name || !is_animation_started()) {
   
-  if (animation == NULL) {
-    DIE("Unknown animation '" << animation_name << "'");
+    SpriteAnimation *animation = animations->get_animation(animation_name);
+    
+    if (animation == NULL) {
+      DIE("Unknown animation '" << animation_name << "'");
+    }
+    
+    this->animation_name = animation_name;
+    this->current_animation = animation;
+    set_current_frame(0);
   }
-  
-  this->animation_name = animation_name;
-  this->current_animation = animation;
-  set_current_frame(0);
 }
 
 /**
@@ -131,12 +140,16 @@ int AnimatedSprite::get_current_animation_direction(void) {
 }
 
 /**
- * Sets the current direction of the sprite's animation.
+ * Sets the current direction of the sprite's animation and restarts the animation.
+ * If the specified direction is the current direction, nothing is done.
  * @param current_direction the current direction
  */
 void AnimatedSprite::set_current_animation_direction(int current_direction) {
-  this->current_direction = current_direction;
-  set_current_frame(0);
+
+  if (current_direction != this->current_direction) {
+    this->current_direction = current_direction;
+    set_current_frame(0);
+  }
 }
 
 /**
@@ -149,9 +162,13 @@ int AnimatedSprite::get_current_frame(void) {
 
 /**
  * Sets the current frame of the sprite's animation.
+ * If the animation was over, it is restarted.
+ * If the animation is suspended, it remains suspended
+ * but the specified frame is displayed. 
  * @param current_frame the current frame
  */
 void AnimatedSprite::set_current_frame(int current_frame) {
+  
   this->current_frame = current_frame;
   over = false;
   next_frame_date = SDL_GetTicks() + get_frame_interval();

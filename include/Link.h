@@ -56,8 +56,14 @@ class Link: public Moving8ByPlayer, AnimationListener {
   static const SpriteId shield_sprite_ids[];
   static const SoundId sword_sound_ids[];
 
+  // pushing
+  int pushing_counter;
+  Uint32 next_pushing_counter_date;
+  Uint16 pushing_direction_mask;
+
   // update functions
   void update_movement(void);
+  void update_position(void);
   void update_sprites(void);
 
   // Link's state

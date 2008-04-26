@@ -38,6 +38,10 @@ class Moving8ByPlayer: public MovingWithSmoothCollision {
   const int speed;
 
   virtual void update_movement(void);
+  void add_direction_mask(Uint16 direction_mask);
+  void remove_direction_mask(Uint16 direction_mask);
+  void set_direction_mask(Uint16 direction_mask);
+  virtual void direction_mask_just_changed(void);
 
  public:
 

@@ -201,3 +201,17 @@ void Moving::set_speed(int speed) {
   set_x_speed((int) (speed * cos(angle)));
   set_y_speed((int) (speed * sin(angle)));
 }
+
+/**
+ * Returns true if the entity is about to try to move
+ * on the next update(), i.e. if x_move is not equal to zero
+ * and next_move_date_x is past, or the same thing for y.
+ * @return true if the entity is about to try to move
+ * 
+ */
+bool Moving::has_to_move_now(void) {
+  
+  Uint32 now = SDL_GetTicks();
+  return (x_move != 0 && now >= next_move_date_x)
+    || (y_move != 0 && now >= next_move_date_y);
+}

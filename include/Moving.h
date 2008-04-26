@@ -157,6 +157,7 @@ class Moving: public MapEntity {
    * Updates the position (x and y) of the entity if it has changed.
    */
   virtual void update(void);
+  bool has_to_move_now(void);
 
   // movement
 
@@ -172,44 +173,12 @@ class Moving: public MapEntity {
    */
   inline int get_y_speed() { return y_speed; }
 
-  /**
-   * Returns the total speed of the entity:
-   * sqrt(x_speed^2 + y_speed^2)
-   */
   int get_speed(void);
-
-  /**
-   * Sets the x speed.
-   * @param x_speed the x speed of the entity, between -100 and 100
-   */
   void set_x_speed(int x_speed);
-  
-  /**
-   * Sets the y speed.
-   * @param y_speed the y speed of the entity, between -100 and 100
-   */
   void set_y_speed(int y_speed);
 
-  /**
-   * Changes the direction of the movement, keeping the same speed.
-   * x_speed and y_speed are recomputed so that the total speed is unchanged.
-   * Warning: if x_speed and y_speed are both equal to zero, this function has no effect.
-   * @param direction the new movement direction, between 0 and 359
-   */
   void set_direction(int direction);
-
-  /**
-   * Changes the speed, keeping the same direction of the movement.
-   * x_speed and y_speed are recomputed so that the movement direction is unchanged.
-   * Warning: if x_speed and y_speed are both equal to zero, there is no
-   * direction so you're getting into trouble.
-   * @param speed the new speed
-   */
   void set_speed(int speed);
-
-  /**
-   * Sets the speed to zero and resets x_move and y_move.
-   */
   void stop(void);
 };
 

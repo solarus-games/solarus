@@ -76,7 +76,8 @@ Link::Link(void):
   Moving8ByPlayer(12),
   state(LINK_STATE_FREE),
   equipment(zsdx->game->get_savegame()->get_equipment()),
-  tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL) {
+  tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL),
+  pushing_counter(0), next_pushing_counter_date(0) {
 
   set_size(16, 16);
   set_hotspot(8, 15);
@@ -116,8 +117,8 @@ void Link::update(void) {
   // update the movement
   set_moving_enabled(!zsdx->game->is_suspended() && get_state() <= LINK_STATE_SWIMMING);
 
-  Moving::update(); // update the position
-  update_sprites(); // update the sprites
+  update_position();
+  update_sprites();
 }
 
 /**
@@ -263,6 +264,77 @@ void Link::update_movement(void) {
     // walking to stopped
     else if (!started && animation == "walking") {
       set_animation_stopped();
+    }
+  }
+}
+
+/**
+ * Updates Link's position.
+ * This function is called repeatedly by update().
+ */
+void Link::update_position(void) {
+
+  Uint32 now = SDL_GetTicks();
+
+  // no position change when the game is suspended
+  if (zsdx->game->is_suspended()) {
+    next_pushing_counter_date = now;
+    return;
+  }
+
+  bool move_tried = has_to_move_now();
+  int old_x = 0, old_y = 0;
+  if (move_tried) {
+    // save the current coordinates
+    old_x = get_x();
+    old_y = get_y();
+
+    // try to move Link
+    Moving::update();
+  }
+  
+  // the rest of the function handles the "pushing" animation
+
+  if (state == LINK_STATE_FREE && move_tried) {
+    // Link is trying to move with animation "walking"
+
+    // see if the move has failed (i.e. if Link's coordinates have not changed)
+    if (get_x() == old_x && get_y() == old_y) {
+
+      // Link is facing an obstacle
+
+      Uint32 now = SDL_GetTicks();
+      if (pushing_counter == 0) {
+	next_pushing_counter_date = now;
+	pushing_direction_mask = direction_mask;
+      }
+
+      while (now >= next_pushing_counter_date) {
+	pushing_counter++;
+	next_pushing_counter_date += 100;
+      }
+      
+      if (pushing_counter >= 8) {
+	start_pushing(); // start animation "pushing" when the pushing counter gets to 8
+      }
+    }
+    else {
+      pushing_counter = 0;
+    }
+  }
+  else {
+    
+    // stop pushing if the player changes his direction
+    if (state == LINK_STATE_PUSHING && direction_mask != pushing_direction_mask) {
+      start_free();
+    }
+
+    // reset the pushing counter if the state changes (for example when Link swing his sword)
+    // of if the player changes his direction
+    if (pushing_counter > 0 &&
+	(state != LINK_STATE_FREE || direction_mask != pushing_direction_mask)) {
+
+      pushing_counter = 0;
     }
   }
 }

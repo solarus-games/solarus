@@ -2,7 +2,6 @@
  * This module defines the class MovingWithCollision.
  */
 
-#include <cmath>
 #include "MovingWithSmoothCollision.h"
 #include "ZSDX.h"
 
@@ -16,11 +15,22 @@ void MovingWithSmoothCollision::update_x(void) {
 
   if (x_move != 0) { // the entity wants to move on x
 
+    // by default, next_move_date_x will be incremented by x_delay,
+    // unless we modify the movement in such a way that the
+    // x speed needs to be fixed
+    Uint32 next_move_date_x_increment = x_delay;
+
     Uint32 now = SDL_GetTicks();
     while (now >= next_move_date_x) { // while it's time to try a move
 
       if (!collision_with_map(x_move, 0)) {
 	translate_x(x_move); // make the move
+
+	if (y_move != 0 && collision_with_map(0, y_move)) {
+	  // if there is also an y move, and if this y move is illegal,
+	  // we still allow the x move and we give it all the speed
+	  next_move_date_x_increment = (int) (x_delay / SQRT_2);
+	}
       }
       else if (y_move == 0) {
 	/* The move on x is not possible: let's try
@@ -29,11 +39,11 @@ void MovingWithSmoothCollision::update_x(void) {
 
 	if (!collision_with_map(x_move, 2)) {
 	  translate(x_move, 2);
-	  next_move_date_x += (int) (x_delay * SQRT_2) - x_delay; // fix the speed
+	  next_move_date_x_increment = (int) (x_delay * SQRT_2); // fix the speed
 	}
 	else if (!collision_with_map(x_move, -2)) {
 	  translate(x_move, -2);
-	  next_move_date_x += (int) (x_delay * SQRT_2) - x_delay;
+	  next_move_date_x_increment += (int) (x_delay * SQRT_2);
 	}
 	else {
 	  /* The diagonal moves didn't work either.
@@ -56,9 +66,9 @@ void MovingWithSmoothCollision::update_x(void) {
 	  }
 	}
       }
-      next_move_date_x += x_delay;
-     }
-   }
+      next_move_date_x += next_move_date_x_increment;
+    }
+  }
 }
 
 /**
@@ -69,26 +79,37 @@ void MovingWithSmoothCollision::update_x(void) {
  */
 void MovingWithSmoothCollision::update_y(void) {
 
-  if (y_move != 0) { // the entity wants to move on x
+  if (y_move != 0) { // the entity wants to move on y
+
+    // by default, next_move_date_y will be incremented by y_delay,
+    // unless we modify the movement in such a way that the
+    // y speed needs to be fixed
+    Uint32 next_move_date_y_increment = y_delay;
 
     Uint32 now = SDL_GetTicks();
     while (now >= next_move_date_y) { // while it's time to try a move
 
       if (!collision_with_map(0, y_move)) {
 	translate_y(y_move); // make the move
+
+	if (x_move != 0 && collision_with_map(x_move, 0)) {
+	  // if there is also an x move, and if this x move is illegal,
+	  // we still allow the x move and we give it all the speed
+	  next_move_date_y_increment = (int) (y_delay / SQRT_2);
+	}
       }
       else if (x_move == 0) {
-	/* The move on x is not possible: let's try
-	 * to add a move on y to make a diagonal move.
+	/* The move on y is not possible: let's try
+	 * to add a move on x to make a diagonal move.
 	 */
 
 	if (!collision_with_map(2, y_move)) {
 	  translate(2, y_move);
-	  next_move_date_y += (int) (y_delay * SQRT_2) - y_delay; // fix the speed
+	  next_move_date_y_increment = (int) (y_delay * SQRT_2); // fix the speed
 	}
 	else if (!collision_with_map(-2, y_move)) {
 	  translate(-2, y_move);
-	  next_move_date_y += (int) (y_delay * SQRT_2) - y_delay;
+	  next_move_date_y_increment = (int) (y_delay * SQRT_2);
 	}
 	else {
 	  /* The diagonal moves didn't work either.
@@ -111,7 +132,7 @@ void MovingWithSmoothCollision::update_y(void) {
 	  }
 	}
       }
-      next_move_date_y += y_delay;
-     }
-   }
+      next_move_date_y += next_move_date_y_increment;
+    }
+  }
 }

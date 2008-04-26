@@ -84,20 +84,20 @@ void Moving8ByPlayer::set_moving_enabled(bool can_move) {
       Uint8 *key_state = SDL_GetKeyState(NULL);
 
       if (key_state[SDLK_RIGHT]) {
-	direction_mask |= right_mask;
+	add_direction_mask(right_mask);
       }
       if (key_state[SDLK_UP]) {
-	direction_mask |= up_mask;
+	add_direction_mask(up_mask);
       }
       if (key_state[SDLK_LEFT]) {
-	direction_mask |= left_mask;
+	add_direction_mask(left_mask);
       }
       if (key_state[SDLK_DOWN]) {
-	direction_mask |= down_mask;
+	add_direction_mask(down_mask);
       }
     }
     else {
-      direction_mask = 0x0000;
+      set_direction_mask(0x0000);
       x_move = 0;
       y_move = 0;
     }
@@ -112,35 +112,35 @@ void Moving8ByPlayer::set_moving_enabled(bool can_move) {
  */
 void Moving8ByPlayer::start_right(void) {
   if (can_move) {
-    direction_mask |= right_mask;
+    add_direction_mask(right_mask);
     update_movement();
   }
 }
 
 void Moving8ByPlayer::start_up(void) {
   if (can_move) {
-    direction_mask |= up_mask;
+    add_direction_mask(up_mask);
     update_movement();
   }
 }
 
 void Moving8ByPlayer::start_left(void) {
   if (can_move) {
-    direction_mask |= left_mask;
+    add_direction_mask(left_mask);
     update_movement();
   }
 }
 
 void Moving8ByPlayer::start_down(void) {
   if (can_move) {
-    direction_mask |= down_mask;
+    add_direction_mask(down_mask);
     update_movement();
   }
 }
 
 void Moving8ByPlayer::stop_right(void) {
   if (can_move) {
-    direction_mask &= ~right_mask;
+    remove_direction_mask(right_mask);
     x_move = 0;
     update_movement();
   }
@@ -148,7 +148,7 @@ void Moving8ByPlayer::stop_right(void) {
 
 void Moving8ByPlayer::stop_up(void) {
   if (can_move) {
-    direction_mask &= ~up_mask;
+    remove_direction_mask(up_mask);
     y_move = 0;
     update_movement();
   }
@@ -156,7 +156,7 @@ void Moving8ByPlayer::stop_up(void) {
 
 void Moving8ByPlayer::stop_left(void) {
   if (can_move) {
-    direction_mask &= ~left_mask;
+    remove_direction_mask(left_mask);
     x_move = 0;
     update_movement();
   }
@@ -164,10 +164,47 @@ void Moving8ByPlayer::stop_left(void) {
 
 void Moving8ByPlayer::stop_down(void) {
   if (can_move) {
-    direction_mask &= ~down_mask;
+    remove_direction_mask(down_mask);
     y_move = 0;
     update_movement();
   }
+}
+
+/**
+ * Adds one of the four directions to the direction mask.
+ * The direction mask represents what arrow keys are currently
+ * pressed by the player.
+ */
+void Moving8ByPlayer::add_direction_mask(Uint16 direction_mask) {
+  set_direction_mask(this->direction_mask | direction_mask);
+}
+
+/**
+ * Removes one of the four directions to the direction mask.
+ * The direction mask represents what arrow keys are currently
+ * pressed by the player.
+ */
+void Moving8ByPlayer::remove_direction_mask(Uint16 direction_mask) {
+  set_direction_mask(this->direction_mask & ~direction_mask);
+}
+
+/**
+ * Sets the direction mask.
+ * The direction mask represents what arrow keys are currently
+ * pressed by the player.
+ */
+void Moving8ByPlayer::set_direction_mask(Uint16 direction_mask) {
+  if (direction_mask != this->direction_mask) {
+    this->direction_mask = direction_mask;
+    direction_mask_just_changed();
+  }
+}
+
+/**
+ * This function is called when the direction mask has just been changed.
+ */
+void Moving8ByPlayer::direction_mask_just_changed(void) {
+  // nothing by default
 }
 
 /**
@@ -229,7 +266,7 @@ void Moving8ByPlayer::update_movement(void) {
       y_speed = x_speed;
       break;
     default:
-      DIE("Bad basic direction: " + direction);
+      DIE("Bad basic direction: " << direction);
       break;
     }
     set_x_speed(x_speed);

@@ -72,9 +72,11 @@ void MovingWithCollision::update_x(void) {
       // make the move only if there is no collision
       if (!collision_with_map(x_move, 0)) {
 	translate_x(x_move);
+	next_move_date_x += x_delay;
       }
-
-      next_move_date_x += x_delay;
+      else {
+	stop(); // also stop on y
+      }
     }
   }
 }
@@ -95,9 +97,11 @@ void MovingWithCollision::update_y(void) {
       // make the move only if there is no collision
       if (!collision_with_map(0, y_move)) {
 	translate_y(y_move);
+	next_move_date_y += y_delay;
       }
-
-      next_move_date_y += y_delay;
+      else {
+	stop(); // also stop on x
+      }
     }
   }
 }

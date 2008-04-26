@@ -1,7 +1,7 @@
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - utiliser sdl-config malgré les autotools
 - Revoir FileTools avec des string et des fstream
-- Link arrêté vers le haut : sans bouclier, son bras est plié
+- Link vers le haut : sans bouclier, son bras est plié (corrigé pour stopped, reste walking)
 - Icône d'action : ajouter "porter" ou "soulever"
 - Faire une classe Movement, avec set_movement dans la classe Moving
 

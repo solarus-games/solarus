@@ -74,9 +74,9 @@ const SoundId Link::sword_sound_ids[4] = {
  */
 Link::Link(void):
   Moving8ByPlayer(12),
-  state(LINK_STATE_FREE),
   equipment(zsdx->game->get_savegame()->get_equipment()),
   tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL),
+  state(LINK_STATE_FREE), walking(false),
   pushing_counter(0), next_pushing_counter_date(0) {
 
   set_size(16, 16);
@@ -257,12 +257,12 @@ void Link::update_movement(void) {
     string animation = tunic_sprite->get_current_animation();
 
     // stopped to walking
-    if (started && animation == "stopped") {
+    if (started && !walking) {
       set_animation_walking();
     }
       
     // walking to stopped
-    else if (!started && animation == "walking") {
+    else if (!started && walking) {
       set_animation_stopped();
     }
   }
@@ -478,19 +478,24 @@ void Link::restart_animation(void) {
  */
 void Link::set_animation_stopped(void) {
 
-  tunic_sprite->set_current_animation("stopped");
-
   if (is_sword_visible()) {
     sword_sprite->stop_animation();
   }
 
   if (equipment->has_shield()) {
 
+    tunic_sprite->set_current_animation("stopped_with_shield");
+
     int direction = tunic_sprite->get_current_animation_direction();
   
     shield_sprite->set_current_animation("stopped");
     shield_sprite->set_current_animation_direction(direction);
   }
+  else {
+    tunic_sprite->set_current_animation("stopped");
+  }
+
+  walking = false;
 }
 
 /**
@@ -498,19 +503,24 @@ void Link::set_animation_stopped(void) {
  */
 void Link::set_animation_walking(void) {
   
-  tunic_sprite->set_current_animation("walking");
-
   if (is_sword_visible()) {
     sword_sprite->stop_animation();
   }
 
   if (equipment->has_shield()) {
 
+    tunic_sprite->set_current_animation("walking_with_shield");
+
     int direction = tunic_sprite->get_current_animation_direction();
   
     shield_sprite->set_current_animation("walking");
     shield_sprite->set_current_animation_direction(direction);
   }
+  else {
+    tunic_sprite->set_current_animation("walking");
+  }
+
+  walking = true;
 }
 
 /**

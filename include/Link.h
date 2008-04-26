@@ -36,12 +36,6 @@ class Link: public Moving8ByPlayer, AnimationListener {
 
  private:
 
-  /**
-   * Current state of Link.
-   * The state is considered only when the game is not suspended.
-   */
-  LinkState state;
-
   // equipment of the player
   Equipment *equipment;
 
@@ -55,6 +49,13 @@ class Link: public Moving8ByPlayer, AnimationListener {
   static const SpriteId sword_sprite_ids[];
   static const SpriteId shield_sprite_ids[];
   static const SoundId sword_sound_ids[];
+
+  /**
+   * Current state of Link.
+   * The state is considered only when the game is not suspended.
+   */
+  LinkState state;
+  bool walking; // stopped or walking?
 
   // pushing
   int pushing_counter;

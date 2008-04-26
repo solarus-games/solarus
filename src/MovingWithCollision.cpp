@@ -2,7 +2,6 @@
  * This module defines the class MovingWithCollision.
  */
 
-#include <cmath>
 #include "MovingWithCollision.h"
 #include "ZSDX.h"
 #include "Map.h"

@@ -1,14 +1,26 @@
 stopped link/stopped_tunic.png 4 0 -1
 0	0	24	24	12	23	1	1	1
 24	0	24	24	12	23	1	1	1
+72	0	24	24	12	23	1	1	1
+96	0	24	24	12	23	1	1	1
+
+stopped_with_shield link/stopped_tunic.png 4 0 -1
+0	0	24	24	12	23	1	1	1
 48	0	24	24	12	23	1	1	1
 72	0	24	24	12	23	1	1	1
+96	0	24	24	12	23	1	1	1
 
 walking link/walking_tunic.png 4 100 0
 0	0	24	32	12	31	8	1	8
 0	96	24	32	12	31	8	1	8
+0	288	24	32	12	31	8	1	8
+0	384	24	32	12	31	8	1	8
+
+walking_with_shield link/walking_tunic.png 4 100 0
+0	0	24	32	12	31	8	1	8
 0	192	24	32	12	31	8	1	8
 0	288	24	32	12	31	8	1	8
+0	384	24	32	12	31	8	1	8
 
 sword link/sword_tunic0.png 4 30 -1
 0	0	96	96	48	57	12	1	12

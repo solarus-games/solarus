@@ -2,7 +2,7 @@
 - utiliser sdl-config malgré les autotools
 - Revoir FileTools avec des string et des fstream
 - Link vers le haut : sans bouclier, son bras est plié (corrigé pour stopped, reste walking)
-- Icône d'action : ajouter "porter" ou "soulever"
+- Icône d'action : ajouter "porter" ou "soulever", et "saisir"
 - Faire une classe Movement, avec set_movement dans la classe Moving
 
 - Animation "pousse" (travail en cours) :

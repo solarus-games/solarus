@@ -57,10 +57,18 @@ class Link: public Moving8ByPlayer, AnimationListener {
   LinkState state;
   bool walking; // stopped or walking?
 
+  /**
+   * Counter incremented every 100 ms in certain conditions.
+   * - In state LINK_STATE_FREE: counts for how long Link is trying to walk
+   * to a wall (animation pushing is triggered at 800 ms)
+   * - In state LINK_STATE_SWORD_LOADING: counts for how long Link is loading
+   * his sword (the spin attack is possible after TODO ms)
+   */
+  int counter;
+  Uint32 next_counter_date;
+
   // pushing
-  int pushing_counter;
-  Uint32 next_pushing_counter_date;
-  Uint16 pushing_direction_mask;
+  Uint16 pushing_direction_mask; // direction of Link's movement when pushing 
 
   // update functions
   void update_movement(void);
@@ -70,6 +78,7 @@ class Link: public Moving8ByPlayer, AnimationListener {
   // Link's state
   void set_state(LinkState state);
   void start_sword_loading(void);
+  void update_sword_loading(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);

@@ -77,7 +77,7 @@ Link::Link(void):
   equipment(zsdx->game->get_savegame()->get_equipment()),
   tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL),
   state(LINK_STATE_FREE), walking(false),
-  pushing_counter(0), next_pushing_counter_date(0) {
+  counter(0), next_counter_date(0) {
 
   set_size(16, 16);
   set_hotspot(8, 15);
@@ -114,8 +114,19 @@ void Link::set_map(Map *map, int initial_direction) {
  */
 void Link::update(void) {
 
-  // update the movement
-  set_moving_enabled(!zsdx->game->is_suspended() && get_state() <= LINK_STATE_SWIMMING);
+  if (zsdx->game->is_suspended()) {
+    set_moving_enabled(false);
+  }
+  else {
+    
+    // update the movement
+    set_moving_enabled(get_state() <= LINK_STATE_SWIMMING);
+    
+    // specific updates in some states
+    if (get_state() == LINK_STATE_SWORD_LOADING) {
+      update_sword_loading();
+    }
+  }
 
   update_position();
   update_sprites();
@@ -280,7 +291,7 @@ void Link::update_position(void) {
 
   // no position change when the game is suspended
   if (zsdx->game->is_suspended()) {
-    next_pushing_counter_date = now;
+    next_counter_date = now;
     return;
   }
 
@@ -306,22 +317,22 @@ void Link::update_position(void) {
       // Link is facing an obstacle
 
       Uint32 now = SDL_GetTicks();
-      if (pushing_counter == 0) {
-	next_pushing_counter_date = now;
+      if (counter == 0) { // we start counting to trigger animation "pushing"
+	next_counter_date = now;
 	pushing_direction_mask = direction_mask;
       }
 
-      while (now >= next_pushing_counter_date) {
-	pushing_counter++;
-	next_pushing_counter_date += 100;
+      while (now >= next_counter_date) {
+	counter++;
+	next_counter_date += 100;
       }
       
-      if (pushing_counter >= 8) {
-	start_pushing(); // start animation "pushing" when the pushing counter gets to 8
+      if (counter >= 8) {
+	start_pushing(); // start animation "pushing" when the counter gets to 8
       }
     }
     else {
-      pushing_counter = 0;
+      counter = 0;
     }
   }
   else {
@@ -333,10 +344,10 @@ void Link::update_position(void) {
 
     // reset the pushing counter if the state changes (for example when Link swing his sword)
     // of if the player changes his direction
-    if (pushing_counter > 0 &&
+    if (counter > 0 &&
 	(state != LINK_STATE_FREE || direction_mask != pushing_direction_mask)) {
 
-      pushing_counter = 0;
+      counter = 0;
     }
   }
 }
@@ -407,6 +418,28 @@ void Link::start_sword_loading(void) {
   }
   else {
     set_animation_stopped();
+  }
+}
+
+/**
+ * This function is called repeatedly when Link is loading his sword.
+ * It stops the loading if the sword key is released.
+ * The state must be LINK_STATE_SWORD_LOADING.
+ */
+void Link::update_sword_loading(void) {
+  
+  Uint8 *key_state = SDL_GetKeyState(NULL);
+  
+  if (!key_state[SDLK_c]) {
+
+    // stop loading the sword, go to normal state or spin attack (TODO)
+    start_free();
+    update_movement(); // because the direction was locked
+  }
+  else {
+
+    // TODO play the sound at the appropriate time
+
   }
 }
 

@@ -69,9 +69,11 @@ class Link: public Moving8ByPlayer, AnimationListener {
 
   // Link's state
   void set_state(LinkState state);
+  void start_sword_loading(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);
+  bool is_direction_locked(void);
 
   void set_animation_sword(void);
   void set_animation_stopped(void);

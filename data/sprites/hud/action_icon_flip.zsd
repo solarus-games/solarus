@@ -1,8 +1,8 @@
 flip hud/icons_flip.png 1 20 -1
-0	0	24	24	0	0	11	1	11
+0	0	24	24	0	0	11	1
 
 appearing hud/icons_flip.png 1 20 -1
-120	0	24	24	0	0	6	1	6
+120	0	24	24	0	0	6	1
 
 disappearing hud/icons_flip.png 1 20 -1
-0	0	24	24	0	0	6	1	6
+0	0	24	24	0	0	6	1

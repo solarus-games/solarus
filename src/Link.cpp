@@ -245,9 +245,11 @@ void Link::update_movement(void) {
     int animation_direction = animation_directions[direction_mask];
       
     if (animation_direction != old_animation_direction
-	&& animation_direction != -1) {
+	&& animation_direction != -1
+	&& !is_direction_locked()) {
       // if the direction defined by the arrows has changed,
       // update the sprite's direction of animation
+      // (unless Link is loading his sword)
       set_animation_direction(animation_direction);
     }
   }
@@ -393,6 +395,22 @@ void Link::start_pushing(void) {
 }
 
 /**
+ * Lets Link loading his sword.
+ * Moves to the state LINK_STATE_SWORD_LOADING
+ * and updates the animations accordingly.
+ */
+void Link::start_sword_loading(void) {
+  set_state(LINK_STATE_SWORD_LOADING);
+
+  if (started) {
+    set_animation_walking();
+  }
+  else {
+    set_animation_stopped();
+  }
+}
+
+/**
  * Returns whether Link's sword is currently displayed on the screen.
  * @return true if Link's sword is currently displayed on the screen
  */
@@ -417,8 +435,31 @@ void Link::animation_over(AnimatedSprite *sprite) {
   string animation_name = tunic_sprite->get_current_animation();
 
   if (animation_name == "sword") {
-    start_free();
+
+    // if the player is still pressing the sword key, set the "sword loading" animation
+
+    Uint8 *key_state = SDL_GetKeyState(NULL);
+
+    if (key_state[SDLK_c]) {
+      start_sword_loading();
+    }
+    else {
+      start_free();
+    }
   }
+}
+
+/**
+ * Returns whether the animation direction is locked.
+ * When this function returns false, which is the case most of the time,
+ * it means that the animation direction is set to the movement direction.
+ * When it returns false, it means that the animation direction is fixed
+ * and do not depends on the movement direction anymore (this is the case
+ * when Link is loading his sword).
+ * @return true if the animation direction is locked
+ */
+bool Link::is_direction_locked(void) {
+  return state == LINK_STATE_SWORD_LOADING;
 }
 
 /**
@@ -482,17 +523,46 @@ void Link::set_animation_stopped(void) {
     sword_sprite->stop_animation();
   }
 
-  if (equipment->has_shield()) {
-
-    tunic_sprite->set_current_animation("stopped_with_shield");
-
-    int direction = tunic_sprite->get_current_animation_direction();
+  int direction = tunic_sprite->get_current_animation_direction();
   
-    shield_sprite->set_current_animation("stopped");
-    shield_sprite->set_current_animation_direction(direction);
-  }
-  else {
-    tunic_sprite->set_current_animation("stopped");
+  switch (get_state()) {
+    
+  case LINK_STATE_FREE:
+
+    if (equipment->has_shield()) {
+      
+      tunic_sprite->set_current_animation("stopped_with_shield");
+      
+      shield_sprite->set_current_animation("stopped");
+      shield_sprite->set_current_animation_direction(direction);
+    }
+    else {
+      tunic_sprite->set_current_animation("stopped");
+    }
+
+    break;
+    
+  case LINK_STATE_SWORD_LOADING:
+
+    tunic_sprite->set_current_animation("sword_loading_stopped");
+    sword_sprite->set_current_animation("sword_loading_stopped");
+    sword_sprite->set_current_animation_direction(direction);
+    
+    if (equipment->has_shield()) {
+
+      if (direction % 2 != 0) {
+	shield_sprite->set_current_animation("sword_loading_stopped");
+	shield_sprite->set_current_animation_direction(direction / 2);
+      }
+      else {
+	shield_sprite->stop_animation();
+      }
+    }
+
+    break;
+
+  default:
+    break;
   }
 
   walking = false;
@@ -507,17 +577,46 @@ void Link::set_animation_walking(void) {
     sword_sprite->stop_animation();
   }
 
-  if (equipment->has_shield()) {
-
-    tunic_sprite->set_current_animation("walking_with_shield");
-
-    int direction = tunic_sprite->get_current_animation_direction();
+  int direction = tunic_sprite->get_current_animation_direction();
   
-    shield_sprite->set_current_animation("walking");
-    shield_sprite->set_current_animation_direction(direction);
-  }
-  else {
-    tunic_sprite->set_current_animation("walking");
+  switch (get_state()) {
+    
+  case LINK_STATE_FREE:
+
+    if (equipment->has_shield()) {
+
+      tunic_sprite->set_current_animation("walking_with_shield");
+      
+      shield_sprite->set_current_animation("walking");
+      shield_sprite->set_current_animation_direction(direction);
+    }
+    else {
+      tunic_sprite->set_current_animation("walking");
+    }
+
+    break;
+
+  case LINK_STATE_SWORD_LOADING:
+    
+    tunic_sprite->set_current_animation("sword_loading_walking");
+    sword_sprite->set_current_animation("sword_loading_walking");
+    sword_sprite->set_current_animation_direction(direction);
+    
+    if (equipment->has_shield()) {
+
+      if (direction % 2 != 0) {
+	shield_sprite->set_current_animation("sword_loading_walking");
+	shield_sprite->set_current_animation_direction(direction / 2);
+      }
+      else {
+	shield_sprite->stop_animation();
+      }
+    }
+
+    break;
+
+  default:
+    break;
   }
 
   walking = true;

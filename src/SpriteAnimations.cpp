@@ -47,8 +47,6 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
     iss0 >> name >> image_file_name >> nb_directions
 	 >> frame_delay >> loop_on_frame;
 
-    //    cout << "name: " << name << endl;
-
     directions = new SpriteAnimationDirection*[nb_directions];
 
     for (int i = 0; i < nb_directions; i++) {
@@ -60,7 +58,14 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
 
       istringstream iss(line);
       iss >> x >> y >> width >> height >> x_hotspot >> y_hotspot
-	  >> nb_frames >> rows >> columns;
+	  >> nb_frames >> rows;
+
+      if (nb_frames % rows == 0) {
+	columns = nb_frames / rows;
+      }
+      else {
+	columns = (nb_frames / rows) + 1;
+      }
 
       positions_in_src = new SDL_Rect[nb_frames];
       int j = 0; // frame number

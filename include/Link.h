@@ -18,7 +18,7 @@
  * LINK_STATE_SWIMMING and LINK_STATE_SPIN_ATTACK.
  */
 enum LinkState {
-  LINK_STATE_FREE,                    /**< normal state */
+  LINK_STATE_FREE,                    /**< normal state (stopped or walking) */
   LINK_STATE_PUSHING,                 /**< Link is trying to push an obstacle */
   LINK_STATE_CARRYING,                /**< Link can walk but he is carrying a pot or a bush */
   LINK_STATE_SWORD_LOADING,           /**< Link can walk but his sword is loading for a spin attack */
@@ -42,11 +42,13 @@ class Link: public Moving8ByPlayer, AnimationListener {
   // Link's sprites
   AnimatedSprite *tunic_sprite;
   AnimatedSprite *sword_sprite;
+  AnimatedSprite *sword_stars_sprite;
   AnimatedSprite *shield_sprite;
   Sound *sword_sound;
 
   static const SpriteId tunic_sprite_ids[];
   static const SpriteId sword_sprite_ids[];
+  static const SpriteId sword_stars_sprite_ids[];
   static const SpriteId shield_sprite_ids[];
   static const SoundId sword_sound_ids[];
 
@@ -68,7 +70,10 @@ class Link: public Moving8ByPlayer, AnimationListener {
   Uint32 next_counter_date;
 
   // pushing
-  Uint16 pushing_direction_mask; // direction of Link's movement when pushing 
+  Uint16 pushing_direction_mask; // direction of Link's movement when pushing
+
+  // spin attack
+  bool sword_loaded;
 
   // update functions
   void update_movement(void);
@@ -83,6 +88,7 @@ class Link: public Moving8ByPlayer, AnimationListener {
   // animation of the sprites
   void set_animation_direction(int direction);
   bool is_direction_locked(void);
+  void stop_displaying_sword(void);
 
   void set_animation_sword(void);
   void set_animation_stopped(void);
@@ -103,6 +109,7 @@ class Link: public Moving8ByPlayer, AnimationListener {
   // sprites
   void initialize_sprites(void);
   bool is_sword_visible(void);
+  bool is_sword_stars_visible(void);
   bool is_shield_visible(void);
 
   void set_animation_suspended(bool suspended);

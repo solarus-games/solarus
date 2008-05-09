@@ -4,18 +4,7 @@
 - Link vers le haut : sans bouclier, son bras est plié (corrigé pour stopped, reste walking)
 - Icône d'action : ajouter "porter" ou "soulever", et "saisir"
 - Faire une classe Movement, avec set_movement dans la classe Moving
-
-- Animation "pousse" (travail en cours) :
-
-Tant que Link tente d'avancer dans une des 4 directions sans succès dans l'état free, on incrémente un compteur tous les X milisecondes. Lorsque le compteur atteint une certaine valeur seuil, on déclenche l'animation "pousse".
-Dès que le joueur lâche la direction ou qu'il change de direction ou d'état, le compteur est remis à zéro. Si Link avait l'animation "pousse" (i.e. Link est dans l'état "pousse"), il se remet à marcher normalement.
-
-état correspondant : inférieur à épée (pushing)
-
-
-Link peut aussi saisir certains objets en appuyant sur la touche action. Il passe alors en animation "saisit" (équivalente à la première frame de l'animation "pousse") puis peut ensuite pousser ou tirer selon la direction appuyée. Les deux directions perpendiculaires n'ont pas d'effet. Link ne peut pas donner de coups d'épée.
-
-état correspondant : link ne peut pas marcher (grabbing = saisir, à la place de pushing_or_pulling)
+- Sprites de l'épée : faire des cases plus petites que 96*96 (la taille et le hot spot peuvent changer selon la direction)
 
 
 

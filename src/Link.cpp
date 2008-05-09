@@ -51,6 +51,16 @@ const SpriteId Link::sword_sprite_ids[4] = {
 };
 
 /**
+ * String constants corresponding to the sprites of the stars of Link's swords.
+ */
+const SpriteId Link::sword_stars_sprite_ids[4] = {
+  "link/sword_stars1",
+  "link/sword_stars2",
+  "link/sword_stars2",
+  "link/sword_stars2",
+};
+
+/**
  * String constants corresponding to the sprites of the shields.
  */
 const SpriteId Link::shield_sprite_ids[3] = {
@@ -75,7 +85,7 @@ const SoundId Link::sword_sound_ids[4] = {
 Link::Link(void):
   Moving8ByPlayer(12),
   equipment(zsdx->game->get_savegame()->get_equipment()),
-  tunic_sprite(NULL), sword_sprite(NULL), shield_sprite(NULL),
+  tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
   state(LINK_STATE_FREE), walking(false),
   counter(0), next_counter_date(0) {
 
@@ -91,6 +101,7 @@ Link::~Link(void) {
 
   if (sword_sprite != NULL) {
     delete sword_sprite;
+    delete sword_stars_sprite;
   }
 
   if (shield_sprite != NULL) {
@@ -145,6 +156,10 @@ void Link::display_on_map(Map *map) {
     map->display_sprite(sword_sprite, get_x(), get_y());
   }
 
+  if (is_sword_stars_visible()) {
+    map->display_sprite(sword_stars_sprite, get_x(), get_y());
+  }
+
   if (is_shield_visible()) {
     map->display_sprite(shield_sprite, get_x(), get_y());
   }
@@ -177,6 +192,7 @@ void Link::initialize_sprites(void) {
   // Link's sword
   if (sword_sprite != NULL) {
     delete sword_sprite;
+    delete sword_stars_sprite;
     sword_sprite = NULL;
   }
 
@@ -188,6 +204,9 @@ void Link::initialize_sprites(void) {
     sword_sprite->stop_animation();
 
     sword_sound = resource->get_sound(sword_sound_ids[sword_number - 1]);
+
+    sword_stars_sprite = new AnimatedSprite(resource->get_sprite(sword_stars_sprite_ids[sword_number - 1]));
+    sword_stars_sprite->stop_animation();
   }
 
   // Link's shield
@@ -229,6 +248,11 @@ void Link::update_sprites(void) {
 
   if (is_sword_visible()) {
     sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
+  }
+
+  if (is_sword_stars_visible()) {
+    // the stars are not synchronized with the other sprites
+    sword_stars_sprite->update_current_frame();
   }
 
   if (is_shield_visible()) {
@@ -365,7 +389,6 @@ LinkState Link::get_state(void) {
  * @param state the state of Link
  */
 void Link::set_state(LinkState state) {
-
   this->state = state;
   set_moving_enabled(state <= LINK_STATE_SWIMMING);
 }
@@ -412,6 +435,7 @@ void Link::start_pushing(void) {
  */
 void Link::start_sword_loading(void) {
   set_state(LINK_STATE_SWORD_LOADING);
+  sword_loaded = false;
 
   if (started) {
     set_animation_walking();
@@ -422,7 +446,7 @@ void Link::start_sword_loading(void) {
 }
 
 /**
- * This function is called repeatedly when Link is loading his sword.
+ * This function is called repeatedly while Link is loading his sword.
  * It stops the loading if the sword key is released.
  * The state must be LINK_STATE_SWORD_LOADING.
  */
@@ -431,15 +455,20 @@ void Link::update_sword_loading(void) {
   Uint8 *key_state = SDL_GetKeyState(NULL);
   
   if (!key_state[SDLK_c]) {
+    // the player just released the sword key
 
     // stop loading the sword, go to normal state or spin attack (TODO)
     start_free();
     update_movement(); // because the direction was locked
   }
   else {
-
-    // TODO play the sound at the appropriate time
-
+    // the player is still loading the sword
+    
+    // detect when the sword is loaded (i.e. ready for a spin attack)
+    if (!sword_loaded && sword_stars_sprite->get_current_frame() >= 21) {
+      zsdx->game_resource->get_sound("sword_spin_attack_load")->play();
+      sword_loaded = true;
+    }
   }
 }
 
@@ -452,11 +481,32 @@ bool Link::is_sword_visible(void) {
 }
 
 /**
+ * Returns whether the stars of Link's sword are currently displayed on the screen.
+ * @return true if the stars of Link's sword are currently displayed on the screen
+ */
+bool Link::is_sword_stars_visible(void) {
+  return equipment->has_sword() && sword_stars_sprite->is_animation_started();
+}
+
+/**
  * Returns whether Link's shield is currently displayed on the screen.
  * @return true if Link's shield is currently displayed on the screen
  */
 bool Link::is_shield_visible(void) {
   return equipment->has_shield() && shield_sprite->is_animation_started();
+}
+
+/**
+ * Stops displaying Link's sword (if any).
+ */
+void Link::stop_displaying_sword(void) {
+
+  if (is_sword_visible()) {
+    sword_sprite->stop_animation();
+    sword_stars_sprite->stop_animation();
+    // note that the stars might be visible while the sword is not visible;
+    // in this case, we let them visible
+  }
 }
 
 /**
@@ -509,6 +559,10 @@ void Link::set_animation_direction(int direction) {
     sword_sprite->set_current_animation_direction(direction);
   }
 
+  if (is_sword_stars_visible()) {
+    sword_stars_sprite->set_current_animation_direction(direction);
+  }
+
   if (is_shield_visible()) {
     shield_sprite->set_current_animation_direction(direction);
   }
@@ -523,6 +577,7 @@ void Link::set_animation_suspended(bool suspended) {
 
   if (equipment->has_sword()) {
     sword_sprite->set_suspended(suspended);
+    sword_stars_sprite->set_suspended(suspended);
   }
 
   if (equipment->has_shield()) {
@@ -542,6 +597,10 @@ void Link::restart_animation(void) {
     sword_sprite->restart_animation();
   }
 
+  if (is_sword_stars_visible()) {
+    sword_stars_sprite->restart_animation();
+  }
+
   if (is_shield_visible()) {
     shield_sprite->restart_animation();
   }
@@ -552,15 +611,13 @@ void Link::restart_animation(void) {
  */
 void Link::set_animation_stopped(void) {
 
-  if (is_sword_visible()) {
-    sword_sprite->stop_animation();
-  }
-
   int direction = tunic_sprite->get_current_animation_direction();
   
   switch (get_state()) {
     
   case LINK_STATE_FREE:
+
+    stop_displaying_sword();
 
     if (equipment->has_shield()) {
       
@@ -578,9 +635,13 @@ void Link::set_animation_stopped(void) {
   case LINK_STATE_SWORD_LOADING:
 
     tunic_sprite->set_current_animation("sword_loading_stopped");
+
     sword_sprite->set_current_animation("sword_loading_stopped");
     sword_sprite->set_current_animation_direction(direction);
     
+    sword_stars_sprite->set_current_animation("loading");
+    sword_stars_sprite->set_current_animation_direction(direction);
+
     if (equipment->has_shield()) {
 
       if (direction % 2 != 0) {
@@ -606,15 +667,13 @@ void Link::set_animation_stopped(void) {
  */
 void Link::set_animation_walking(void) {
   
-  if (is_sword_visible()) {
-    sword_sprite->stop_animation();
-  }
-
   int direction = tunic_sprite->get_current_animation_direction();
   
   switch (get_state()) {
     
   case LINK_STATE_FREE:
+    
+    stop_displaying_sword();
 
     if (equipment->has_shield()) {
 
@@ -632,9 +691,13 @@ void Link::set_animation_walking(void) {
   case LINK_STATE_SWORD_LOADING:
     
     tunic_sprite->set_current_animation("sword_loading_walking");
+
     sword_sprite->set_current_animation("sword_loading_walking");
     sword_sprite->set_current_animation_direction(direction);
-    
+
+    sword_stars_sprite->set_current_animation("loading");
+    sword_stars_sprite->set_current_animation_direction(direction);
+
     if (equipment->has_shield()) {
 
       if (direction % 2 != 0) {
@@ -663,6 +726,8 @@ void Link::set_animation_sword(void) {
 
   int direction = tunic_sprite->get_current_animation_direction();
   
+  stop_displaying_sword();
+
   tunic_sprite->set_current_animation("sword");
   tunic_sprite->restart_animation();
 

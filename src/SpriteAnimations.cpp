@@ -58,13 +58,13 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
 
       istringstream iss(line);
       iss >> x >> y >> width >> height >> x_hotspot >> y_hotspot
-	  >> nb_frames >> rows;
+	  >> nb_frames >> columns;
 
-      if (nb_frames % rows == 0) {
-	columns = nb_frames / rows;
+      if (nb_frames % columns == 0) {
+	rows = nb_frames / columns;
       }
       else {
-	columns = (nb_frames / rows) + 1;
+	rows = (nb_frames / columns) + 1;
       }
 
       positions_in_src = new SDL_Rect[nb_frames];

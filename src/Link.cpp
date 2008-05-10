@@ -116,6 +116,11 @@ Link::~Link(void) {
  */
 void Link::set_map(Map *map, int initial_direction) {
   MovingWithCollision::set_map(map);
+
+  if (get_state() == LINK_STATE_SWORD_LOADING) {
+    start_free();
+  }
+
   set_animation_direction(initial_direction);
 }
 

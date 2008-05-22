@@ -6,6 +6,10 @@
 #define ZSDX_MAP_H
 
 #include "Common.h"
+#include "Layer.h"
+#include "Obstacle.h"
+#include "TransitionEffect.h"
+#include "EntityType.h"
 #include <vector>
 
 /**

@@ -1,12 +1,27 @@
-/**
- * This module handles the transition effects between two screens.
- */
-
 #ifndef ZSDX_TRANSITION_H
 #define ZSDX_TRANSITION_H
 
 #include "Common.h"
 
+/**
+ * Type of transition between two maps.
+ */
+enum TransitionType {
+  TRANSITION_IMMEDIATE,  // no transition between the two maps
+  TRANSITION_FADE,       // fade in and fade out
+};
+
+/**
+ * Direction of the transition.
+ */
+enum TransitionDirection {
+  TRANSITION_IN,
+  TRANSITION_OUT
+};
+
+/**
+ * A transition effect between two screens (maps or not).
+ */
 class TransitionEffect {
 
  protected:

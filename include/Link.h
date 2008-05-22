@@ -1,7 +1,3 @@
-/**
- * This module defines the class Link.
- */
-
 #ifndef ZSDX_LINK_H
 #define ZSDX_LINK_H
 
@@ -14,8 +10,8 @@
  * The state is considered only when the game is not suspended.
  * Link can move in states LINK_STATE_FREE, LINK_STATE_PUSHING,
  * LINK_STATE_CARRYING, LINK_STATE_SWORD_LOADING and LINK_STATE_SWIMMING.
- * Link can swing his sword in all states except LINK_STATE_SWORD_LOADING,
- * LINK_STATE_SWIMMING and LINK_STATE_SPIN_ATTACK.
+ * Link can swing his sword in states LINK_STATE_FREE, LINK_STATE_PUSHING,
+ * LINK_STATE_CARRYING and LINK_STATE_SWORD_SWINGING.
  */
 enum LinkState {
   LINK_STATE_FREE,                    /**< normal state (stopped or walking) */
@@ -26,11 +22,13 @@ enum LinkState {
   LINK_STATE_GRABBING,                /**< Link is grabbing an object and can push or pull it */
   LINK_STATE_SWORD_SWINGING,          /**< Link is swinging his sword */
   LINK_STATE_SPIN_ATTACK,             /**< Link is releasing a spin attack */
+  LINK_STATE_LIFTING,                 /**< Link is lifting a pot or a bush */
 };
 
 /**
  * Link's entity.
  * It is animated and can be controlled with an 8 directions system.
+ * This class handles Link's actions: the movements and the animation of his sprites.
  */
 class Link: public Moving8ByPlayer, AnimationListener {
 
@@ -57,7 +55,7 @@ class Link: public Moving8ByPlayer, AnimationListener {
    * The state is considered only when the game is not suspended.
    */
   LinkState state;
-  bool walking; // stopped or walking?
+  bool walking; // stopped or walking? (used in states free, pushing and carrying)
 
   /**
    * Counter incremented every 100 ms in certain conditions.
@@ -74,7 +72,7 @@ class Link: public Moving8ByPlayer, AnimationListener {
                                  // 0xFFFF indicates that he is not trying to push
 
   // spin attack
-  bool sword_loaded;
+  bool sword_loaded; // in state LINK_STATE_SWORD_LOADING, becomes true when the spin attack is possible
 
   // update functions
   void update_movement(void);
@@ -86,8 +84,10 @@ class Link: public Moving8ByPlayer, AnimationListener {
   void start_sword_loading(void);
   void update_sword_loading(void);
   void start_spin_attack(void);
+  bool can_start_sword(void);
 
   // animation of the sprites
+  void set_animation_suspended(bool suspended);
   void set_animation_direction(int direction);
   bool is_direction_locked(void);
   void stop_displaying_sword(void);
@@ -114,7 +114,6 @@ class Link: public Moving8ByPlayer, AnimationListener {
   bool is_sword_stars_visible(void);
   bool is_shield_visible(void);
 
-  void set_animation_suspended(bool suspended);
   void restart_animation(void);
   void animation_over(AnimatedSprite *sprite);
 

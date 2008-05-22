@@ -418,14 +418,29 @@ void Link::start_free(void) {
 }
 
 /**
- * Lets Link swinging his sword.
+ * Lets Link swinging his sword if this action is possible.
+ * The game should not be suspended.
  * Moves to the state LINK_STATE_SWORD_SWINGING, plays the sword sound
  * and updates the animations accordingly.
  */
 void Link::start_sword(void) {
-  set_state(LINK_STATE_SWORD_SWINGING);
-  sword_sound->play();
-  set_animation_sword();
+  if (can_start_sword()) {
+    set_state(LINK_STATE_SWORD_SWINGING);
+    sword_sound->play();
+    set_animation_sword();
+  }
+}
+
+/**
+ * Returns whether Link can swing his sword right now.
+ * The function returns true if the game is not suspended and Link
+ * is in state LINK_STATE_FREE, LINK_STATE_PUSHING,
+ * LINK_STATE_CARRYING or LINK_STATE_SWORD_SWINGING.
+ * @return true if Link can swing his sword, false otherwise
+ */
+bool Link::can_start_sword(void) {
+  return !zsdx->game->is_suspended() &&
+    (state <= LINK_STATE_CARRYING || state == LINK_STATE_SWORD_SWINGING);
 }
 
 /**

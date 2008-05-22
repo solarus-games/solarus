@@ -6,6 +6,7 @@
 #define ZSDX_GAME_H
 
 #include "Common.h"
+#include "TransitionEffect.h"
 
 /**
  * This class provides the game API for the maps.

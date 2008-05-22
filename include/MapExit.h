@@ -7,6 +7,7 @@
 
 #include "Common.h"
 #include "EntityDetector.h"
+#include "TransitionEffect.h"
 
 /**
  * A map exit is a detector placed on a map.

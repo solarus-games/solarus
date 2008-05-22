@@ -6,6 +6,7 @@
 #define ZSDX_MAP_ENTITY_H
 
 #include "Common.h"
+#include "Layer.h"
 
 /**
  * Abstract class for all objects attached to a map: tiles,

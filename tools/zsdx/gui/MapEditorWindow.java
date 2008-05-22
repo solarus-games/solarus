@@ -279,11 +279,11 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	boolean result = true;
 
 	if (map != null && !map.getHistory().isSaved()) {
-	    int answer =  JOptionPane.showConfirmDialog(this,
-							"The map has been modified. Do you want to save it?",
-							"Save the modifications",
-							JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.WARNING_MESSAGE);
+	    int answer = JOptionPane.showConfirmDialog(this,
+						       "The map has been modified. Do you want to save it?",
+						       "Save the modifications",
+						       JOptionPane.YES_NO_CANCEL_OPTION,
+						       JOptionPane.WARNING_MESSAGE);
 	    if (answer == JOptionPane.YES_OPTION) {
 		new ActionListenerSave().actionPerformed(null);
 	    }

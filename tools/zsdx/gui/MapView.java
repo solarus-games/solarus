@@ -1093,7 +1093,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 			startAddingEntity(MapEntity.ENTITY_TILE);
 			updateAddingEntity(x, y);
 		    }
-
 		    break;
 		    
 		case ADDING_ENTITY:

@@ -77,7 +77,7 @@ public class GuiTools {
 
 	int result = JOptionPane.showConfirmDialog(null,
 		message,
-		"Warning",
+		"Question",
 		JOptionPane.YES_NO_OPTION);
 	
 	return (result == JOptionPane.YES_OPTION);
@@ -98,7 +98,7 @@ public class GuiTools {
      * This method is useful to handle the clicks on the game components.
      * @param x an integer (can be negative)
      * @param n a stepsize
-     * @return the multiple of n the closest to the x 
+     * @return the multiple of n the closest to x 
      */
     public static int roundN(int x, int n) {
 	return (x + (n / 2) * Integer.signum(x)) / n * n;

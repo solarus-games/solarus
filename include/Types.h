@@ -60,5 +60,7 @@ class EntityDetector;
 class TileOnMap;
 class MapExit;
 class MapEntrance;
+class SpriteOnMap;
+class PickableItem;
 
 #endif

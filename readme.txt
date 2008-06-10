@@ -69,7 +69,7 @@ archive:
 - Uncompress the archive (example: tar xvzf fmodapi41400linux.tar.gz)
 - Go to the subdirectory created (example: cd fmodapi41400linux)
 - In the beginning of the Makefile, ensure the DESTLIBDIR and DESTHDRDIR variables are correct.
-Note that with Ubuntu, these variable should be:
+Note that with Ubuntu, these variables should be:
 DESTLIBDIR = /usr/lib
 DESTHDRDIR = /usr/include/fmodex
 - Install the FMOD Ex librairies and headers with 'sudo make install'

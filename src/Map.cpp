@@ -1,7 +1,3 @@
-/**
- * This module defines the class Map.
- */
-
 #include "Map.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -13,6 +9,7 @@
 #include "TileOnMap.h"
 #include "MapEntrance.h"
 #include "MapExit.h"
+#include "PickableItem.h"
 #include "FileTools.h"
 
 /**
@@ -170,6 +167,24 @@ void Map::load() {
 		 (TransitionType) transition_type, destination_map_id, entrance_name);
 	break;
       }
+
+    case ENTITY_PICKABLE_ITEM:
+      {
+	int pickable_item_type;
+	iss >> pickable_item_type;
+	add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type);
+	break;
+      }
+
+    case ENTITY_TRANSPORTABLE_ITEM:
+      {
+
+	break;
+      }
+
+    default:
+      DIE("Error while loading map #" << id << ": unknown entity type '" << entity_type << "'");
+
     }
   }
 }
@@ -298,6 +313,7 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int width, int he
 
 /**
  * Creates an entrance on the map.
+ * This function is called for each entrance when loading the map.
  * @param entrance_name a string identifying this new entrance
  * @param layer the layer of Link's position
  * @param link_x x initial position of link in this state
@@ -314,6 +330,7 @@ void Map::add_entrance(string entrance_name, Layer layer, int link_x, int link_y
 
 /**
  * Creates an exit on the map.
+ * This function is called for each exit when loading the map.
  * When Link walks on the exit, he leaves the map and enters another one.
  * @param exit_name a string identifying this new exit
  * @param layer layer of the exit to create
@@ -330,6 +347,30 @@ void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
   
   MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, transition_type, map_id, entrance_name);
   entity_detectors->push_back(exit);
+}
+
+/**
+ * Creates a pickable item on the map.
+ * This function is called when loading the map if it already contains pickable items (e.g. fairies
+ * or rupees). It is also called when playing on the map, e.g. when Link lifts a pot or kill an enemy.
+ * When Link walks on the item, he picks it.
+ * @param layer layer of the pickable item
+ * @param x x position of the pickable item
+ * @param y y position of the pickable item
+ * @param pickable_item_type type of pickable item to create (can be a normal item, PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM)
+ */
+void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type) {
+  
+  PickableItem *item = PickableItem::create(layer, x, y, pickable_item_type);
+
+  // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
+  if (item != NULL) {
+    // TODO:
+    // in Map, make a vector with all sprite entities (enemies, pickable items, blocks, switchs, doors...)
+    // - to do this, make a subclass of MapEntity for an entity displayed by a sprite: SpriteOnMap?
+    // (doesn't work for Link since Link has several sprites)
+    // - replace Moving by Movement, and make a set_movement method in MapEntity.
+  }
 }
 
 /**

@@ -33,6 +33,8 @@ add_executable (zsdx
 	       SpriteAnimations.cpp
 	       SpriteAnimation.cpp
 	       SpriteAnimationDirection.cpp
+	       SpriteOnMap.cpp
+	       PickableItem.cpp
 	       SimpleTile.cpp
 	       AnimatedTile.cpp
 	       TileOnMap.cpp

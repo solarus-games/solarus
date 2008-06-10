@@ -1,0 +1,32 @@
+#ifndef ZSDX_PICKABLE_ITEM_TYPE_H
+#define ZSDX_PICKABLE_ITEM_TYPE_H
+
+/**
+ * Types of pickable items.
+ */
+enum PickableItemType {
+
+  PICKABLE_ITEM_RANDOM = -1,   /**< special value to indicate to choose another value randomly (including PICKABLE_ITEM_NONE) */
+  PICKABLE_ITEM_NONE = 0,      /**< special value to incicate that there is no pickable item */
+  PICKABLE_ITEM_GREEN_RUPEE,
+  PICKABLE_ITEM_BLUE_RUPEE,
+  PICKABLE_ITEM_RED_RUPEE,
+  PICKABLE_ITEM_HEART,
+  PICKABLE_ITEM_SMALL_MAGIC,
+  PICKABLE_ITEM_BIG_MAGIC,
+  PICKABLE_ITEM_FAIRY,
+  PICKABLE_ITEM_BOMB_1,
+  PICKABLE_ITEM_BOMB_5,
+  PICKABLE_ITEM_BOMB_10,
+  PICKABLE_ITEM_ARROW_1,
+  PICKABLE_ITEM_ARROW_5,
+  PICKABLE_ITEM_ARROW_10,
+  PICKABLE_ITEM_SMALL_KEY,
+
+  /*
+  PICKABLE_ITEM_BIG_KEY,
+  PICKABLE_ITEM_BOSS_KEY,
+  */
+};
+
+#endif

@@ -1,13 +1,12 @@
-/**
- * Fade in or fade out transition effect.
- */
-
 #ifndef ZSDX_TRANSITION_FADE_H
 #define ZSDX_TRANSITION_FADE_H
 
 #include "Common.h"
 #include "TransitionEffect.h"
 
+/**
+ * Fade in or fade out transition effect.
+ */
 class TransitionFade: public TransitionEffect {
 
  private:

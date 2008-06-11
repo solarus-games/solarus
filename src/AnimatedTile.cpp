@@ -1,7 +1,3 @@
-/**
- * This module defines the class AnimatedTile.
- */
-
 #include "AnimatedTile.h"
 #include "ZSDX.h"
 

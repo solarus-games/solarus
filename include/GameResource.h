@@ -1,7 +1,3 @@
-/**
- * This module handles the game resources.
- */
-
 #ifndef ZSDX_GAME_RESOURCE_H
 #define ZSDX_GAME_RESOURCE_H
 

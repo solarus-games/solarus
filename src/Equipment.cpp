@@ -1,7 +1,3 @@
-/**
- * This module defines the class Equipment.
- */
-
 #include "Equipment.h"
 #include "ZSDX.h"
 #include "GameResource.h"

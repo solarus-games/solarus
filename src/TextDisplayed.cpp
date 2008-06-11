@@ -1,6 +1,3 @@
-/**
- * This module defines the class TextDisplayed.
- */
 #include "TextDisplayed.h"
 #include "FileTools.h"
 

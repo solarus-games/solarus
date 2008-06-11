@@ -25,6 +25,7 @@ class Game {
    * Link.
    */
   Link *link;
+  Movement8ByPlayer *link_movement;
 
   /**
    * True if the game is paused.
@@ -71,7 +72,7 @@ class Game {
   Music *current_music;
 
   void update_transitions(void);
-  void display_map(Map *map);
+  void display(Map *map);
 
  public:
 

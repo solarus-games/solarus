@@ -53,9 +53,13 @@ class Tile;
 class SimpleTile;
 class AnimatedTile;
 
+class Movement;
+class Movement8ByPlayer;
+class MovementWithCollision;
+class MovementWithSmoothCollision;
+
 class MapEntity;
 class Link;
-class MovingWithCollision;
 class EntityDetector;
 class TileOnMap;
 class MapExit;

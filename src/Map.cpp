@@ -422,7 +422,7 @@ SDL_Surface *Map::get_visible_surface(void) {
  */
 void Map::update_entities(void) {
 
-  // update link's position and animation
+  // update link's position, movement and animation
   Link *link = zsdx->game_resource->get_link();
   link->update();
 
@@ -618,9 +618,10 @@ bool Map::collision_with_tiles(int layer, SDL_Rect &collision_box) {
  * This function is called by an entity sensible to the obstacles
  * when this entity has just moved on the map.
  * We check whether or not the entity overlaps an entity detector.
- * @param entity the entity that has just moved
+ * @param entity the entity that has just moved (this entity should have
+ * a movement sensible to the collisions)
  */
-void Map::entity_just_moved(MovingWithCollision *entity) {
+void Map::entity_just_moved(MapEntity *entity) {
 
   EntityDetector *detector;
 

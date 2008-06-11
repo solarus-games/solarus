@@ -1,7 +1,3 @@
-/**
- * This module defines the class SpriteAnimationDirection.
- */
-
 #ifndef ZSDX_SPRITE_ANIMATION_DIRECTION
 #define ZSDX_SPRITE_ANIMATION_DIRECTION
 

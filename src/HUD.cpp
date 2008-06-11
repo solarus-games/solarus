@@ -1,7 +1,3 @@
-/**
- * This module defines the class HUD.
- */
-
 #include "HUD.h"
 #include "Game.h"
 #include "Savegame.h"

@@ -1,7 +1,3 @@
-/**
- * This module initializes the game and handles the screen.
- */
-
 #include "ZSDX.h"
 #include "FileTools.h"
 #include "Color.h"

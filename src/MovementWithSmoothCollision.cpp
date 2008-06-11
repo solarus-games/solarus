@@ -1,17 +1,27 @@
-/**
- * This module defines the class MovingWithCollision.
- */
-
-#include "MovingWithSmoothCollision.h"
+#include "MovementWithSmoothCollision.h"
 #include "ZSDX.h"
+
+/**
+ * Constructor.
+ */
+MovementWithSmoothCollision::MovementWithSmoothCollision(void) {
+
+}
+
+/**
+ * Destructor.
+ */
+MovementWithSmoothCollision::~MovementWithSmoothCollision(void) {
+
+}
 
 /**
  * Updates the x position of the entity if it wants to move
  * (i.e. if x_move != 0).
- * This is a redefinition of MovingWithCollision::update_x to
+ * This is a redefinition of MovementWithCollision::update_x to
  * handle the smooth collisions.
  */
-void MovingWithSmoothCollision::update_x(void) {
+void MovementWithSmoothCollision::update_x(void) {
 
   if (x_move != 0) { // the entity wants to move on x
 
@@ -74,10 +84,10 @@ void MovingWithSmoothCollision::update_x(void) {
 /**
  * Updates the y position of the entity if it wants to move
  * (i.e. if y_move != 0).
- * This is a redefinition of MovingWithCollision::update_y to to
+ * This is a redefinition of MovementWithCollision::update_y to to
  * handle the smooth collisions.
  */
-void MovingWithSmoothCollision::update_y(void) {
+void MovementWithSmoothCollision::update_y(void) {
 
   if (y_move != 0) { // the entity wants to move on y
 

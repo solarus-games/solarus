@@ -1,8 +1,3 @@
-/**
- * This module defines the class Music.
- * Music and Sound should be the only FMOD dependent modules.
- */
-
 #ifndef ZSDX_MUSIC_H
 #define ZSDX_MUSIC_H
 
@@ -15,6 +10,7 @@
  * A music should be in format .it (Impulse Tracker Module).
  * Before using this class, the audio system should have been
  * initialized, by calling Sound::initialize().
+ * Music and Sound should be the only FMOD dependent modules.
  */
 class Music: public Sound {
 

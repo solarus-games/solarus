@@ -2,7 +2,7 @@
 #define ZSDX_LINK_H
 
 #include "Common.h"
-#include "Moving8ByPlayer.h"
+#include "MapEntity.h"
 #include "AnimationListener.h"
 
 /**
@@ -30,7 +30,7 @@ enum LinkState {
  * It is animated and can be controlled with an 8 directions system.
  * This class handles Link's actions: the movements and the animation of his sprites.
  */
-class Link: public Moving8ByPlayer, AnimationListener {
+class Link: public MapEntity, AnimationListener {
 
  private:
 
@@ -75,9 +75,10 @@ class Link: public Moving8ByPlayer, AnimationListener {
   bool sword_loaded; // in state LINK_STATE_SWORD_LOADING, becomes true when the spin attack is possible
 
   // update functions
-  void update_movement(void);
   void update_position(void);
   void update_sprites(void);
+
+  void movement_just_changed(void);
 
   // Link's state
   void set_state(LinkState state);
@@ -93,7 +94,6 @@ class Link: public Moving8ByPlayer, AnimationListener {
   void stop_displaying_sword(void);
 
   void set_animation_sword(void);
-  void set_animation_stopped(void);
   void set_animation_walking(void);
   void set_animation_pushing(void);
 
@@ -102,6 +102,9 @@ class Link: public Moving8ByPlayer, AnimationListener {
   // creation and destruction
   Link(void);
   ~Link(void);
+
+  // movement
+  Movement8ByPlayer *get_movement(void);
 
   // map
   void set_map(Map *map, int initial_direction);
@@ -116,6 +119,8 @@ class Link: public Moving8ByPlayer, AnimationListener {
 
   void restart_animation(void);
   void animation_over(AnimatedSprite *sprite);
+
+  void set_animation_stopped(void);
 
   // state of Link
   LinkState get_state(void);

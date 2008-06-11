@@ -1,7 +1,3 @@
-/**
- * This module defines the class HudElement.
- */
-
 #include "HudElement.h"
 #include "Color.h"
 #include "Savegame.h"

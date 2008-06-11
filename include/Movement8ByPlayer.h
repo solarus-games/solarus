@@ -1,19 +1,15 @@
-/**
- * This module defines the class Moving8ByPlayer.
- */
-
-#ifndef ZSDX_MOVING_8_BY_PLAYER
-#define ZSDX_MOVING_8_BY_PLAYER
+#ifndef ZSDX_MOVEMENT_8_BY_PLAYER
+#define ZSDX_MOVEMENT_8_BY_PLAYER
 
 #include "Common.h"
-#include "MovingWithSmoothCollision.h"
+#include "MovementWithSmoothCollision.h"
 
 /**
  * Abstract class for a moving entity with the 8 basic directions.
  * This class is designed for an entity controlled by the keyboard
  * but could be also used to control the entity with a joypad.
  */
-class Moving8ByPlayer: public MovingWithSmoothCollision {
+class Movement8ByPlayer: public MovementWithSmoothCollision {
 
  protected:
 
@@ -37,20 +33,21 @@ class Moving8ByPlayer: public MovingWithSmoothCollision {
    */
   const int speed;
 
-  virtual void update_movement(void);
   void add_direction_mask(Uint16 direction_mask);
   void remove_direction_mask(Uint16 direction_mask);
   void set_direction_mask(Uint16 direction_mask);
-  virtual void direction_mask_just_changed(void);
 
  public:
 
-  Moving8ByPlayer(int speed);
-  virtual ~Moving8ByPlayer(void) { }
+  Movement8ByPlayer(int speed);
+  ~Movement8ByPlayer(void);
 
   int get_direction(void);
+  Uint16 get_direction_mask(void);
 
   void set_moving_enabled(bool can_move);
+  bool is_started(void);
+  bool is_moving_enabled(void);
 
   void start_right(void);
   void start_up(void);
@@ -61,8 +58,7 @@ class Moving8ByPlayer: public MovingWithSmoothCollision {
   void stop_left(void);
   void stop_down(void);
 
-  virtual void update(void);
-
+  void compute_movement(void);
 };
 
 #endif

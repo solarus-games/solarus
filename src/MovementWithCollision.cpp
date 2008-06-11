@@ -1,39 +1,50 @@
-/**
- * This module defines the class MovingWithCollision.
- */
-
-#include "MovingWithCollision.h"
+#include "MovementWithCollision.h"
 #include "ZSDX.h"
 #include "Map.h"
+#include "MapEntity.h"
+
+/**
+ * Constructor.
+ */
+MovementWithCollision::MovementWithCollision(void) {
+
+}
+
+/**
+ * Destructor.
+ */
+MovementWithCollision::~MovementWithCollision(void) {
+
+}
 
 /**
  * Sets the current map of the object.
  * @param map the map
  */
-void MovingWithCollision::set_map(Map *map) {
+void MovementWithCollision::set_map(Map *map) {
   this->map = map;
 }
 
 /**
  * Sets the x position of the entity.
- * This is a redefinition of Moving::set_x() because we also need
+ * This is a redefinition of Movement::set_x() because we also need
  * to update the position of absolute_collision_box.
  * @param x the new x position
  */
-void MovingWithCollision::set_x(int x) {
-  Moving::set_x(x);
-  map->entity_just_moved(this);
+void MovementWithCollision::set_x(int x) {
+  Movement::set_x(x);
+  map->entity_just_moved(entity);
 }
 
 /**
  * Sets the y position of the entity.
- * This is a redefinition of Moving::set_y() because we also need
+ * This is a redefinition of Movement::set_y() because we also need
  * to update the position of absolute_collision_box.
  * @param y the new y position
  */
-void MovingWithCollision::set_y(int y) {
-  Moving::set_y(y);  
-  map->entity_just_moved(this);
+void MovementWithCollision::set_y(int y) {
+  Movement::set_y(y);  
+  map->entity_just_moved(entity);
 }
 
 /**
@@ -43,14 +54,14 @@ void MovingWithCollision::set_y(int y) {
  * @param dy y distance between the current position and the position to check
  * @return true if the entity would overlap the map tiles in this position
  */
-bool MovingWithCollision::collision_with_map(int dx, int dy) {
+bool MovementWithCollision::collision_with_map(int dx, int dy) {
 
   // place the collision box where we want to check the collisions
-  SDL_Rect collision_box = position_in_map;
+  SDL_Rect collision_box = *entity->get_position_in_map();
   collision_box.x += dx;
   collision_box.y += dy;
 
-  bool collision = map->collision_with_tiles(layer, collision_box);
+  bool collision = map->collision_with_tiles(entity->get_layer(), collision_box);
 
   return collision;
 }
@@ -58,10 +69,10 @@ bool MovingWithCollision::collision_with_map(int dx, int dy) {
 /**
  * Updates the x position of the entity if it wants to move
  * (i.e. if x_move != 0).
- * This is a redefinition of Moving::update_x to make the move
+ * This is a redefinition of Movement::update_x to make the move
  * only if there is no collision with the map.
  */
-void MovingWithCollision::update_x(void) {
+void MovementWithCollision::update_x(void) {
 
   if (x_move != 0) { // the entity wants to move on x
 
@@ -83,10 +94,10 @@ void MovingWithCollision::update_x(void) {
 /**
  * Updates the y position of the entity if it wants to move
  * (i.e. if y_move != 0).
- * This is a redefinition of Moving::update_y to make the move
+ * This is a redefinition of Movement::update_y to make the move
  * only if there is no collision with the map.
  */
-void MovingWithCollision::update_y(void) {
+void MovementWithCollision::update_y(void) {
 
   if (y_move != 0) { // the entity wants to move on y
 

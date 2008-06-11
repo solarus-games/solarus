@@ -1,7 +1,3 @@
-/**
- * This module defines the class EntityDetector.
- */
-
 #ifndef ZSDX_ENTITY_DETECTOR_H
 #define ZSDX_ENTITY_DETECTOR_H
 
@@ -21,24 +17,10 @@ class EntityDetector: public MapEntity {
 
  public:
 
-  /**
-   * Destructor.
-   */
-  virtual ~EntityDetector(void) { };
+  virtual ~EntityDetector(void);
 
-  /**
-   * Displays the entity on the map.
-   * This function does nothing because by default, an entity detector is invisible.
-   * @param map the map
-   */
   virtual void display_on_map(Map *map);
-
-  /**
-   * This function is called by the engine when an entity overlaps the detector.
-   * @param entity_overlapping the entity overlapping the detector
-   */
   virtual void entity_overlaps(MapEntity *entity_overlapping);
-
 };
 
 #endif

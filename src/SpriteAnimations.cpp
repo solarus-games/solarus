@@ -1,7 +1,3 @@
-/**
- * This module defines the class SpriteAnimations.
- */
-
 #include "SpriteAnimations.h"
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
@@ -106,4 +102,21 @@ SpriteAnimations::~SpriteAnimations(void) {
   for (it = animations.begin(); it != animations.end(); it++) {
     delete it->second;
   }
+}
+
+/**
+ * Returns an animation.
+ * @param animation_name name of the animation to get
+ * @return the specified animation
+ */
+SpriteAnimation * SpriteAnimations::get_animation(string animation_name) {
+  return animations[animation_name];
+}
+
+/**
+ * Returns the name of the default animation, i.e. the first one.
+ * @return the name of the default animation
+ */
+string SpriteAnimations::get_default_animation(void) {
+  return default_animation_name;
 }

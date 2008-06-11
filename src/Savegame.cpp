@@ -1,7 +1,3 @@
-/**
- * This module implements the class Savegame.
- */
-
 #include "Savegame.h"
 #include "Equipment.h"
 

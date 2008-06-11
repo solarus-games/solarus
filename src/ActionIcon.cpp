@@ -1,6 +1,3 @@
-/**
- * This module defines the class ActionIcon.
- */
 #include "ActionIcon.h"
 #include "KeysEffect.h"
 #include "FileTools.h"

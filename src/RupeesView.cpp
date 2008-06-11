@@ -1,7 +1,3 @@
-/**
- * This module defines the class RupeesView.
- */
-
 #include "RupeesView.h"
 #include "FileTools.h"
 #include "CounterView.h"

@@ -1,7 +1,3 @@
-/**
- * This module defines the class SpriteAnimation.
- */
-
 #ifndef ZSDX_SPRITE_ANIMATION_H
 #define ZSDX_SPRITE_ANIMATION_H
 

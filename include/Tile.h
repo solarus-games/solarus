@@ -1,7 +1,3 @@
-/**
- * This module defines the class Tile.
- */
-
 #ifndef ZSDX_TILE_H
 #define ZSDX_TILE_H
 

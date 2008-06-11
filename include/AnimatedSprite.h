@@ -1,7 +1,3 @@
-/**
- * This module defines the class AnimatedSprite.
- */
-
 #ifndef ZSDX_ANIMATED_SPRITE_H
 #define ZSDX_ANIMATED_SPRITE_H
 

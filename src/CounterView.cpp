@@ -1,7 +1,3 @@
-/**
- * This class defines the class CounterView.
- */
-
 #include "CounterView.h"
 #include "FileTools.h"
 #include "Color.h"

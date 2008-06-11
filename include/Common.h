@@ -28,4 +28,15 @@ using namespace std;
  */
 #define DIE(message) do { ostringstream oss; oss << message; throw oss.str(); } while (0)
 
+/**
+ * Mathematic constants.
+ * We don't use the constants from math.h
+ * because they are not ANSI.
+ */
+extern const double PI;
+extern const double TWO_PI;
+extern const double PI_OVER_2;
+extern const double THREE_PI_OVER_2;
+extern const double SQRT_2;
+
 #endif

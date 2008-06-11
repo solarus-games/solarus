@@ -1,7 +1,3 @@
-/**
- * This module shows the menu to select the save file and the game mode.
- */
-
 #include "SelectionMenu.h"
 #include "Savegame.h"
 #include "ZSDX.h"

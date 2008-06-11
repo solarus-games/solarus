@@ -6,6 +6,13 @@
 FMOD_SYSTEM *Sound::system = NULL;
 
 /**
+ * Constructor used by the Music SubClass.
+ */
+Sound::Sound(void) {
+
+}
+
+/**
  * Creates a new sound.
  * @param sound_id id of the sound (a file name)
  */

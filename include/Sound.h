@@ -1,7 +1,3 @@
-/**
- * This module defines the class Sound.
- */
-
 #ifndef ZSDX_SOUND_H
 #define ZSDX_SOUND_H
 
@@ -27,7 +23,7 @@ class Sound {
    */
   string file_name;
 
-  inline Sound(void) { }
+  Sound(void);
 
  public:
 

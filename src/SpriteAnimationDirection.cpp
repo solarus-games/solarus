@@ -1,7 +1,3 @@
-/**
- * This module defines the class SpriteAnimationDirection.
- */
-
 #include "SpriteAnimationDirection.h"
 #include "Map.h"
 

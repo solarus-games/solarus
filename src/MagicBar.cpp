@@ -1,7 +1,3 @@
-/**
- * This module defines the class MagicBar.
- */
-
 #include "MagicBar.h"
 #include "FileTools.h"
 #include "Equipment.h"

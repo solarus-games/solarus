@@ -1,6 +1,3 @@
-/**
- * This module defines the class PauseIcon.
- */
 #include "PauseIcon.h"
 #include "KeysEffect.h"
 #include "ZSDX.h"

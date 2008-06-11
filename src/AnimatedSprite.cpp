@@ -1,7 +1,3 @@
-/**
- * This module defines the class AnimatedSprite.
- */
-
 #include "AnimatedSprite.h"
 #include "SpriteAnimations.h"
 #include "SpriteAnimation.h"

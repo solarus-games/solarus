@@ -1,7 +1,3 @@
-/**
- * This module shows the title screen of the game.
- */
-
 #include "TitleScreen.h"
 #include "ZSDX.h"
 #include "Music.h"

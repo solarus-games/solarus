@@ -1,7 +1,3 @@
-/**
- * This module initializes the game engine and handles the screen.
- */
-
 #ifndef ZSDX_ZSDX_H
 #define ZSDX_ZSDX_H
 

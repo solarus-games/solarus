@@ -7,6 +7,7 @@
 #include "Equipment.h"
 #include "Map.h"
 #include "Sound.h"
+#include "Movement8ByPlayer.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -83,7 +84,6 @@ const SoundId Link::sword_sound_ids[4] = {
  * Constructor.
  */
 Link::Link(void):
-  Moving8ByPlayer(12),
   equipment(zsdx->game->get_savegame()->get_equipment()),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
   state(LINK_STATE_FREE), walking(false),
@@ -92,6 +92,7 @@ Link::Link(void):
 
   set_size(16, 16);
   set_hotspot(8, 15);
+  set_movement(new Movement8ByPlayer(12));
 }
 
 /**
@@ -111,12 +112,21 @@ Link::~Link(void) {
 }
 
 /**
+ * Returns Link's movement.
+ * @return Link's movement
+ */
+Movement8ByPlayer * Link::get_movement(void) {
+  return (Movement8ByPlayer*) movement;
+}
+
+/**
  * Sets Link's current map.
  * @param map the map
  * @param initial_direction the direction of Link (0 to 3)
  */
 void Link::set_map(Map *map, int initial_direction) {
-  MovingWithCollision::set_map(map);
+
+  get_movement()->set_map(map);
   
   stop_displaying_sword();
 
@@ -128,19 +138,19 @@ void Link::set_map(Map *map, int initial_direction) {
 }
 
 /**
- * Updates Link's position and animation.
+ * Updates Link's position, movement and animation.
  * This function is called repeteadly by the game.
  */
 void Link::update(void) {
 
   if (zsdx->game->is_suspended()) {
-    set_moving_enabled(false);
+    get_movement()->set_moving_enabled(false);
     next_counter_date = SDL_GetTicks();
   }
   else {
     
     // update the movement
-    set_moving_enabled(get_state() <= LINK_STATE_SWIMMING);
+    get_movement()->set_moving_enabled(get_state() <= LINK_STATE_SWIMMING);
     
     // specific updates in some states
     if (get_state() == LINK_STATE_SWORD_LOADING) {
@@ -270,21 +280,15 @@ void Link::update_sprites(void) {
 }
 
 /**
- * Changes the movement of the entity depending on the arrows pressed.
- * This function is called when an arrow is pressed or released
- * on the keyboard, or when the movement has just been enabled or
- * disabled (i.e. when set_moving_enabled() is called).
- * This is a redefinition of Moving8ByPlayer::update_movement
- * to take care of Link's animation.
+ * Updates Link depending on the arrows pressed.
  */
-void Link::update_movement(void) {
-
-  // update the movement according to the arrows keys pressed
-  Moving8ByPlayer::update_movement();
+void Link::movement_just_changed(void) {
 
   // update the animation direction according to the movement direction
   int direction = get_direction();
   if (direction != -1) {
+
+    Uint16 direction_mask = get_movement()->get_direction_mask();
     int old_animation_direction = tunic_sprite->get_current_animation_direction();
     int animation_direction = animation_directions[direction_mask];
       
@@ -299,8 +303,11 @@ void Link::update_movement(void) {
   }
 
   // show the animation corresponding to the movement tried by the player
-  if (can_move) {    
+  if (get_movement()->is_moving_enabled()) {
+    // the player can move
     string animation = tunic_sprite->get_current_animation();
+
+    bool started = get_movement()->is_started();
 
     // stopped to walking
     if (started && !walking) {
@@ -325,7 +332,7 @@ void Link::update_position(void) {
     return;
   }
 
-  bool move_tried = has_to_move_now();
+  bool move_tried = get_movement()->has_to_move_now();
   int old_x = 0, old_y = 0;
   if (move_tried) {
     // save the current coordinates
@@ -333,10 +340,12 @@ void Link::update_position(void) {
     old_y = get_y();
 
     // try to move Link
-    Moving::update();
+    movement->update();
   }
   
   // the rest of the function handles the "pushing" animation
+
+  Uint16 direction_mask = get_movement()->get_direction_mask();
 
   if (state == LINK_STATE_FREE && move_tried) {
     // Link is trying to move with animation "walking"
@@ -399,7 +408,7 @@ LinkState Link::get_state(void) {
  */
 void Link::set_state(LinkState state) {
   this->state = state;
-  set_moving_enabled(state <= LINK_STATE_SWIMMING);
+  get_movement()->set_moving_enabled(state <= LINK_STATE_SWIMMING);
 }
 
 /**
@@ -409,7 +418,7 @@ void Link::set_state(LinkState state) {
 void Link::start_free(void) {
   set_state(LINK_STATE_FREE);
   
-  if (started) {
+  if (get_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -465,7 +474,7 @@ void Link::start_sword_loading(void) {
   counter = 0;
   next_counter_date = SDL_GetTicks();
 
-  if (started) {
+  if (get_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -502,7 +511,7 @@ void Link::update_sword_loading(void) {
     if (!sword_loaded) {
       // the sword was not loaded yet: go to the normal state
       start_free();
-      update_movement(); // because the direction was locked
+      get_movement()->compute_movement(); // because the direction was locked
     }
     else {
       // the sword is loaded: release a spin attack

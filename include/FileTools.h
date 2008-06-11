@@ -1,7 +1,3 @@
-/**
- * This module provides some functions to open and analyse a data file.
- */
-
 #ifndef ZSDX_FILE_TOOLS_H
 #define ZSDX_FILE_TOOLS_H
 
@@ -9,6 +5,9 @@
 
 #define MAX_FILE_NAME 512
 
+/**
+ * This class provides some functions to open and analyse a data file.
+ */
 class FileTools {
 
  public:

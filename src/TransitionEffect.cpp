@@ -1,7 +1,3 @@
-/**
- * This module handles the transition effects between two screens.
- */
-
 #include "TransitionEffect.h"
 #include "TransitionImmediate.h"
 #include "TransitionFade.h"

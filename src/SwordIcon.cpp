@@ -1,6 +1,3 @@
-/**
- * This module defines the class SwordIcon.
- */
 #include "SwordIcon.h"
 #include "Equipment.h"
 #include "KeysEffect.h"

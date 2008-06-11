@@ -1,6 +1,3 @@
-/**
- * This module defines the class EntityDetector.
- */
 #include "EntityDetector.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -18,6 +15,13 @@
 EntityDetector::EntityDetector(string name, Layer layer, int x, int y, int width, int height):
   MapEntity(name, 0, layer, x, y, width, height) {
   
+}
+
+/**
+ * Destructor.
+ */
+EntityDetector::~EntityDetector(void) {
+
 }
 
 /**

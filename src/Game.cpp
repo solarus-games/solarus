@@ -1,7 +1,3 @@
-/**
- * This module defines the class Game.
- */
-
 #include "Game.h"
 #include "ZSDX.h"
 #include "Music.h"
@@ -16,6 +12,7 @@
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "AnimatedTile.h"
+#include "Movement8ByPlayer.h"
 
 /**
  * Creates a game.
@@ -54,6 +51,7 @@ void Game::play(void) {
   // initialize Link
   link = zsdx->game_resource->get_link();
   link->initialize_sprites();
+  link_movement = link->get_movement();
 
   // initialize the keys effect and the HUD
   keys_effect = new KeysEffect();
@@ -191,19 +189,19 @@ void Game::play(void) {
 	      
 	    // move Link
 	  case SDLK_RIGHT:
-	    link->start_right();
+	    link_movement->start_right();
 	    break;
 	    
 	  case SDLK_UP:
-	    link->start_up();
+	    link_movement->start_up();
 	    break;
 	    
 	  case SDLK_LEFT:
-	    link->start_left();
+	    link_movement->start_left();
 	    break;
 	    
 	  case SDLK_DOWN:
-	    link->start_down();
+	    link_movement->start_down();
 	    break;
 
 	  default:
@@ -261,19 +259,19 @@ void Game::play(void) {
 	  switch (event.key.keysym.sym) {
 	    
 	  case SDLK_RIGHT:
-	    link->stop_right();
+	    link_movement->stop_right();
 	    break;
 	    
 	  case SDLK_UP:
-	    link->stop_up();
+	    link_movement->stop_up();
 	    break;
 	    
 	  case SDLK_LEFT:
-	    link->stop_left();
+	    link_movement->stop_left();
 	    break;
 	    
 	  case SDLK_DOWN:
-	    link->stop_down();
+	    link_movement->stop_down();
 	    break;
 	    
 	  default:
@@ -300,7 +298,7 @@ void Game::play(void) {
     if (ticks >= last_frame_date + FRAME_INTERVAL) {
 	
       last_frame_date = ticks;
-      display_map(current_map);
+      display(current_map);
     }
   }
 
@@ -325,7 +323,7 @@ void Game::update_transitions(void) {
       next_map = NULL;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
-      link->restart_animation();
+      link->set_animation_stopped();
       transition = TransitionEffect::create_transition(transition_type, TRANSITION_OUT);
       transition->start();
     }
@@ -358,7 +356,7 @@ void Game::update_transitions(void) {
  * Displays the specified map on the screen.
  * @param map the map to display
  */
-void Game::display_map(Map *map) {
+void Game::display(Map *map) {
   SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
 
   // display the map

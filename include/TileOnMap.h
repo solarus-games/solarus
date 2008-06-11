@@ -1,7 +1,3 @@
-/**
- * This module defines the class TileOnMap.
- */
-
 #ifndef ZSDX_TILE_ON_MAP_H
 #define ZSDX_TILE_ON_MAP_H
 

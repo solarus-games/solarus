@@ -1,7 +1,3 @@
-/**
- * This module defines the class MapExit.
- */
-
 #ifndef ZSDX_MAP_EXIT_H
 #define ZSDX_MAP_EXIT_H
 
@@ -36,7 +32,7 @@ class MapExit: public EntityDetector {
 
   MapExit(string name, Layer layer, int x, int y, int width, int height,
 	  TransitionType transition_type, MapId destination_map_id, string entrance_name);
-  virtual ~MapExit(void) { };
+  ~MapExit(void);
 
   void entity_overlaps(MapEntity *entity_overlapping);
 

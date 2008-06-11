@@ -23,10 +23,10 @@ add_executable (zsdx
 	       Map.cpp
 	       MapEntrance.cpp
 	       MapEntity.cpp
-	       Moving.cpp
-	       MovingWithCollision.cpp
-	       MovingWithSmoothCollision.cpp
-	       Moving8ByPlayer.cpp
+	       Movement.cpp
+	       MovementWithCollision.cpp
+	       MovementWithSmoothCollision.cpp
+	       Movement8ByPlayer.cpp
 	       EntityDetector.cpp
 	       MapExit.cpp
 	       AnimatedSprite.cpp

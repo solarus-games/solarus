@@ -1,7 +1,3 @@
-/**
- * This module defines the class HeartsView.
- */
-
 #include "HeartsView.h"
 #include "FileTools.h"
 #include "Equipment.h"

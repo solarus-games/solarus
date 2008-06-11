@@ -1,7 +1,3 @@
-/**
- * This module defines the class SimpleTileImage.
- */
-
 #include "SimpleTile.h"
 #include "Map.h"
 
@@ -20,6 +16,13 @@ SimpleTile::SimpleTile(Obstacle obstacle, int x, int y, int width, int height):
   position_in_tileset.y = y;
   position_in_tileset.w = width;
   position_in_tileset.h = height;
+}
+
+/**
+ * Destructor.
+ */
+SimpleTile::~SimpleTile(void) {
+
 }
 
 /**

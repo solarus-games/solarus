@@ -1,7 +1,3 @@
-/**
- * This module defines the class MapEntrance.
- */
-
 #ifndef ZSDX_MAP_ENTRANCE_H
 #define ZSDX_MAP_ENTRANCE_H
 
@@ -17,11 +13,7 @@ class MapEntrance: public MapEntity {
  public:
 
   MapEntrance(string name, Layer layer, int link_x, int link_y, int link_direction);
-
-  /**
-   * Destructor.
-   */
-  inline ~MapEntrance(void) { };
+  ~MapEntrance(void);
 
   void display_on_map(Map *map);
 };

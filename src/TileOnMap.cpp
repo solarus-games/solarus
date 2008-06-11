@@ -1,7 +1,3 @@
-/**
- * This module defines the class TileOnMap.
- */
-
 #include "TileOnMap.h"
 #include "Map.h"
 #include "Tileset.h"

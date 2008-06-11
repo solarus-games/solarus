@@ -1,7 +1,3 @@
-/**
- * This module defines the abstract class SpriteAnimations.
- */
-
 #ifndef ZSDX_SPRITE_ANIMATIONS_H
 #define ZSDX_SPRITE_ANIMATIONS_H
 
@@ -37,18 +33,8 @@ class SpriteAnimations {
   SpriteAnimations(SpriteId id);
   virtual ~SpriteAnimations(void);
 
-  /**
-   * Returns an animation.
-   * @param animation_name name of the animation to get
-   * @return the specified animation
-   */
-  inline SpriteAnimation *get_animation(string animation_name) { return animations[animation_name]; }
-
-  /**
-   * Returns the name of the default animation, i.e. the first one.
-   * @return the name of the default animation
-   */
-  string get_default_animation(void) { return default_animation_name; }
+  SpriteAnimation *get_animation(string animation_name);
+  string get_default_animation(void);
 
 };
 

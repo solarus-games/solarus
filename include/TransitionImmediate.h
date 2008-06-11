@@ -1,13 +1,12 @@
-/**
- * Immediate transition effect.
- */
-
 #ifndef ZSDX_TRANSITION_IMMEDIATE_H
 #define ZSDX_TRANSITION_IMMEDIATE_H
 
 #include "Common.h"
 #include "TransitionEffect.h"
 
+/**
+ * Immediate transition effect.
+ */
 class TransitionImmediate: public TransitionEffect {
 
  public:

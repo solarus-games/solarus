@@ -1,6 +1,3 @@
-/**
- * This module defines the class MapExit.
- */
 #include "MapExit.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -21,9 +18,16 @@
  */
 MapExit::MapExit(string name, Layer layer, int x, int y, int width, int height,
 		 TransitionType transition_type, MapId destination_map_id, string entrance_name):
-EntityDetector(name, layer, x, y, width, height),
-transition_type(transition_type), destination_map_id(destination_map_id), entrance_name(entrance_name) {
+  EntityDetector(name, layer, x, y, width, height),
+  transition_type(transition_type), destination_map_id(destination_map_id), entrance_name(entrance_name) {
   
+}
+
+/**
+ * Destructor.
+ */
+MapExit::~MapExit(void) {
+
 }
 
 /**

@@ -1,10 +1,3 @@
-/**
- * Abstract class for a tileset.
- * A tileset is an image with a set of elements (tiles)
- * one can use to compose a map.
- * See the directory images/tilesets.
- */
-
 #include "Tileset.h"
 #include "SimpleTile.h"
 #include "AnimatedTile.h"

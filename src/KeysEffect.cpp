@@ -1,7 +1,3 @@
-/**
- * This module defines the class KeysEffect.
- */
-
 #include "KeysEffect.h"
 
 /**

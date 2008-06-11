@@ -1,7 +1,3 @@
-/**
- * This module defines the class Tileset.
- */
-
 #ifndef ZSDX_TILESET_H
 #define ZSDX_TILESET_H
 

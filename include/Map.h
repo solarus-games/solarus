@@ -1,7 +1,3 @@
-/**
- * This module defines the class Map.
- */
-
 #ifndef ZSDX_MAP_H
 #define ZSDX_MAP_H
 
@@ -14,7 +10,7 @@
 #include <vector>
 
 /**
- * Abstract class for the maps.
+ * Represents a map.
  * A map is where a game sequence takes place. It contains many information:
  * - the map dimensions
  * - the tileset
@@ -147,7 +143,7 @@ class Map {
   Obstacle pixel_collision(int layer, int x, int y);
   bool collision_with_tiles(int layer, SDL_Rect &collision_box);
 
-  void entity_just_moved(MovingWithCollision *entity);
+  void entity_just_moved(MapEntity *entity);
 
   // Events
 

@@ -50,14 +50,23 @@ void Map::unload(void) {
 
   SDL_FreeSurface(visible_surface);
 
-  // delete the tiles
+  // delete the tiles and the sprites
   for (int layer = 0; layer < LAYER_NB; layer++) {
+
     for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
       delete tiles[layer]->at(i);
     }
+
+    for (unsigned int i = 0; i < sprites[layer]->size(); i++) {
+      delete sprites[layer]->at(i);
+    }
+
     tiles[layer]->clear();
     delete tiles[layer];
     delete[] obstacle_tiles[layer];
+
+    sprites[layer]->clear();
+    delete sprites[layer];
   }
 
   // delete the entrances
@@ -123,6 +132,7 @@ void Map::load() {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     tiles[layer] = new vector<TileOnMap*>();
+    sprites[layer] = new vector<SpriteOnMap*>();
 
     obstacle_tiles[layer] = new Obstacle[obstacle_tiles_size];
     for (int i = 0; i < obstacle_tiles_size; i++) {
@@ -365,11 +375,7 @@ void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {
-    // TODO:
-    // in Map, make a vector with all sprite entities (enemies, pickable items, blocks, switchs, doors...)
-    // - to do this, make a subclass of MapEntity for an entity displayed by a sprite: SpriteOnMap?
-    // (doesn't work for Link since Link has several sprites)
-    // - replace Moving by Movement, and make a set_movement method in MapEntity.
+    sprites[layer]->push_back(item);
   }
 }
 

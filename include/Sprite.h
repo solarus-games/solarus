@@ -5,9 +5,11 @@
 
 /**
  * Represents an animated sprite.
- * You must inherit this class to make an animated sprite.
- * An animated sprite is represented as a set of animations, a current animation,
+ * An animated sprite is represented as a set of animations (an
+ * instance of SpriteAnimations), a current animation,
  * a current direction and a current frame.
+ * Several sprites can have the same animation set (i.e. they share
+ * the same SpriteAnimations object).
  */
 class Sprite {
 

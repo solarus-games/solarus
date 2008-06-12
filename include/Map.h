@@ -22,53 +22,17 @@ class Map {
 
  private:
 
+  // map properties
+
   /**
    * Id of the map.
    */
   MapId id;
-  
-  /**
-   * All tiles of the map (a vector for each layer).
-   */
-  vector<TileOnMap*> *tiles[LAYER_NB];
-  
-  /**
-   * Array of Obstacle representing which tiles are obstacles and how.
-   */
-  Obstacle *obstacle_tiles[LAYER_NB];
-
-  /**
-   * Position of the screen in the map.
-   */
-  SDL_Rect screen_position;
-
-  /**
-   * Surface where the map is displayed.
-   * This surface is only the visible part of the map, so the
-   * coordinates on this surface are relative to the screen,
-   * not to the map.
-   */
-  SDL_Surface *visible_surface;
 
   /**
    * True if this is the current map.
    */
   bool started;
-
-  /**
-   * Vector of all possible entrances of the map.
-   */
-  vector<MapEntrance*> *entrances;
-
-  /**
-   * Current entrance of the map.
-   */
-  unsigned int entrance_index;
-
-  /**
-   * Vector of all entity detectors of the map.
-   */
-  vector<EntityDetector*> *entity_detectors;
 
   /**
    * Map width in pixels.
@@ -109,7 +73,53 @@ class Map {
    */
   MusicId music_id;
 
+  // screen
+
+  /**
+   * Position of the screen in the map.
+   */
+  SDL_Rect screen_position;
+
+  /**
+   * Surface where the map is displayed.
+   * This surface is only the visible part of the map, so the
+   * coordinates on this surface are relative to the screen,
+   * not to the map.
+   */
+  SDL_Surface *visible_surface;
+
   // entities
+
+  /**
+   * All tiles of the map (a vector for each layer).
+   */
+  vector<TileOnMap*> *tiles[LAYER_NB];
+  
+  /**
+   * Array of Obstacle representing which tiles are obstacles and how.
+   */
+  Obstacle *obstacle_tiles[LAYER_NB];
+
+  /**
+   * All sprites of the map (a vector for each layer).
+   */
+  vector<SpriteOnMap*> *sprites[LAYER_NB];
+
+  /**
+   * Vector of all possible entrances of the map.
+   */
+  vector<MapEntrance*> *entrances;
+
+  /**
+   * Current entrance of the map.
+   */
+  unsigned int entrance_index;
+
+  /**
+   * Vector of all entity detectors of the map.
+   */
+  vector<EntityDetector*> *entity_detectors;
+  
   void add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height);
   void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
   void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,

@@ -14,7 +14,12 @@ class PickableItem: public SpriteOnMap {
 
  private:
 
-  PickableItem(void);
+  /**
+   * Type of pickable item.
+   */
+  PickableItemType type;
+
+  PickableItem(Layer layer, int x, int y, PickableItemType type);
 
  public:
 

@@ -281,6 +281,8 @@ void Link::update_sprites(void) {
 
 /**
  * Updates Link depending on the arrows pressed.
+ * This function is called when Link's direction changes (typically, because the player
+ * pressed or released an arrow). It updates Link's animations according to the new movement.
  */
 void Link::movement_just_changed(void) {
 

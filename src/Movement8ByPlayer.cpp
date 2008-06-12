@@ -2,18 +2,18 @@
 #include "Movement8ByPlayer.h"
 #include "MapEntity.h"
 
-/**
+/*
  * Bit masks associated to each arrow on the keyboard.
  * A combination of arrows is stored in a simple integer.
  */
-static const Uint16 right_mask = 0x0001;
-static const Uint16 up_mask = 0x0002;
-static const Uint16 left_mask = 0x0004;
-static const Uint16 down_mask = 0x0008;
+const Uint16 Movement8ByPlayer::right_mask = 0x0001;
+const Uint16 Movement8ByPlayer::up_mask = 0x0002;
+const Uint16 Movement8ByPlayer::left_mask = 0x0004;
+const Uint16 Movement8ByPlayer::down_mask = 0x0008;
 
 /**
- * Associates to each combination of keyboard arrows
- * a movement direction: 0 to 359, or -1 to indicate
+ * Associates to each possible combination of keyboard arrows
+ * a movement direction in degrees: 0 to 359, or -1 to indicate
  * that the movement is stopped.
  *
  * For example:
@@ -45,7 +45,7 @@ static const int directions[] = {
  * @param speed movement speed
  */
 Movement8ByPlayer::Movement8ByPlayer(int speed):
-  started(false), direction_mask(0), can_move(false), speed(speed) {
+  started(false), speed(speed), can_move(false), direction_mask(0) {
 
 }
 
@@ -76,6 +76,8 @@ bool Movement8ByPlayer::is_started(void) {
 
 /**
  * Returns whether the player can move the entity.
+ * This function returns false when the player does not
+ * currently have control of the entity.
  * @param true if the movements are enabled
  */
 bool Movement8ByPlayer::is_moving_enabled(void) {
@@ -84,22 +86,16 @@ bool Movement8ByPlayer::is_moving_enabled(void) {
 
 /**
  * Sets whether the player can move the entity.
- * @param can_move true to enable the movements
+ * This function permits to ignore or restore the keyboard control of the entity.
+ * @param can_move true to enable the movements, false to disable them.
  */
 void Movement8ByPlayer::set_moving_enabled(bool can_move) {
 
   if (can_move != this->can_move) {
 
     if (can_move) {
-      // if the control has just been restored, let's take
+      // if the control is being restored, let's take
       // into account the possible arrows pressed
-
-      /*
-      stop_right();
-      stop_up();
-      stop_left();
-      stop_down();
-      */
 
       Uint8 *key_state = SDL_GetKeyState(NULL);
 
@@ -116,13 +112,15 @@ void Movement8ByPlayer::set_moving_enabled(bool can_move) {
 	add_direction_mask(down_mask);
       }
     }
-    else {
+    else { // the control is being ignored
+
+      // we now consider that no arrow is currently pressed
       set_direction_mask(0x0000);
-      x_move = 0;
-      y_move = 0;
     }
 
     this->can_move = can_move;
+
+    // recalculate the movement since direction_mask may have changed
     compute_movement();
   }
 }
@@ -158,10 +156,12 @@ void Movement8ByPlayer::start_down(void) {
   }
 }
 
+/**
+ * Function called when the user releases the right arrow.
+ */
 void Movement8ByPlayer::stop_right(void) {
   if (can_move) {
     remove_direction_mask(right_mask);
-    x_move = 0;
     compute_movement();
   }
 }
@@ -169,7 +169,6 @@ void Movement8ByPlayer::stop_right(void) {
 void Movement8ByPlayer::stop_up(void) {
   if (can_move) {
     remove_direction_mask(up_mask);
-    y_move = 0;
     compute_movement();
   }
 }
@@ -177,7 +176,6 @@ void Movement8ByPlayer::stop_up(void) {
 void Movement8ByPlayer::stop_left(void) {
   if (can_move) {
     remove_direction_mask(left_mask);
-    x_move = 0;
     compute_movement();
   }
 }
@@ -185,7 +183,6 @@ void Movement8ByPlayer::stop_left(void) {
 void Movement8ByPlayer::stop_down(void) {
   if (can_move) {
     remove_direction_mask(down_mask);
-    y_move = 0;
     compute_movement();
   }
 }
@@ -204,6 +201,7 @@ Uint16 Movement8ByPlayer::get_direction_mask(void) {
  * Adds one of the four directions to the direction mask.
  * The direction mask represents what arrow keys are currently
  * pressed by the player.
+ * @param direction_mask the direction mask to add
  */
 void Movement8ByPlayer::add_direction_mask(Uint16 direction_mask) {
   set_direction_mask(this->direction_mask | direction_mask);
@@ -213,6 +211,7 @@ void Movement8ByPlayer::add_direction_mask(Uint16 direction_mask) {
  * Removes one of the four directions to the direction mask.
  * The direction mask represents what arrow keys are currently
  * pressed by the player.
+ * @param direction_mask the direction mask to remove
  */
 void Movement8ByPlayer::remove_direction_mask(Uint16 direction_mask) {
   set_direction_mask(this->direction_mask & ~direction_mask);
@@ -222,6 +221,7 @@ void Movement8ByPlayer::remove_direction_mask(Uint16 direction_mask) {
  * Sets the direction mask.
  * The direction mask represents what arrow keys are currently
  * pressed by the player.
+ * @param direction_mask the direction mask
  */
 void Movement8ByPlayer::set_direction_mask(Uint16 direction_mask) {
   if (direction_mask != this->direction_mask) {
@@ -230,7 +230,8 @@ void Movement8ByPlayer::set_direction_mask(Uint16 direction_mask) {
 }
 
 /**
- * Changes the movement of the entity depending on the arrows pressed.
+ * Changes the movement of the entity depending on the arrows pressed
+ * (i.e. depending on the value of direction_mask).
  * This function is called when an arrow is pressed or released
  * on the keyboard, or when the movement has just been enabled or
  * disabled (i.e. when set_moving_enabled() is called).
@@ -239,20 +240,26 @@ void Movement8ByPlayer::compute_movement(void) {
   int x_speed = 0;
   int y_speed = 0;
 
-  // direction in degrees specified by the user (or -1)
+  // get the direction in degrees specified by the user (or -1)
   int direction = directions[direction_mask];
 
   if (direction == -1) {
+    // no movement because the arrow combination is invalid
+    // (e.g. left and right at the same time)
     stop();
     started = false;
   }
   else {
+    // the arrows currently pressed define a valid movement
+
     if (!started) {
       started = true;
     }
 
-    // we could call Movement::set_direction(direction) but with the 8
-    // basic directions, we don't need to make complex computations
+    /* Now we need to calculte the speed vector (x_speed and y_speed) knowing the direction.
+     * We could call Movement::set_direction(direction) but with the 8
+     * basic directions, we don't need to make complex computations.
+     */
 
     switch (direction) {
     case 0: // right
@@ -295,5 +302,7 @@ void Movement8ByPlayer::compute_movement(void) {
     set_y_speed(y_speed);
   }
 
+  // notify the entity that its movement has just changed:
+  // indeed the entity may need to update its animations
   entity->movement_just_changed();
 }

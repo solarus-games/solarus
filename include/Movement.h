@@ -67,7 +67,7 @@ class Movement {
 
   /**
    * Number of pixels of the next x move : 0, 2 or -2.
-   * The smallest move is two pixels because a sprite
+   * The smallest move is two pixels because an entity
    * doesn't need to make a move of only one pixel. 
    */
   int x_move;

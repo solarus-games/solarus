@@ -9,7 +9,7 @@
  * Loads the animations of a sprite from a file.
  * @param id id of the sprite (used to determine the sprite file)
  */
-SpriteAnimations::SpriteAnimations(SpriteId id) {
+SpriteAnimations::SpriteAnimations(SpriteAnimationsId id) {
 
   // read the file
 
@@ -97,7 +97,7 @@ SpriteAnimations::SpriteAnimations(SpriteId id) {
 SpriteAnimations::~SpriteAnimations(void) {
 
   // delete the animations
-  map<SpriteId, SpriteAnimation*>::const_iterator it;
+  map<SpriteAnimationsId, SpriteAnimation*>::const_iterator it;
 
   for (it = animations.begin(); it != animations.end(); it++) {
     delete it->second;

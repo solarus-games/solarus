@@ -1,9 +1,7 @@
 #include "PauseIcon.h"
 #include "KeysEffect.h"
-#include "ZSDX.h"
 #include "FileTools.h"
-#include "GameResource.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 
 /**
  * Constructor.
@@ -23,7 +21,7 @@ PauseIcon::PauseIcon(KeysEffect *keys_effect, int x, int y):
 
   // flipping icon
   this->is_flipping = false;
-  this->sprite_pause_icon = new AnimatedSprite(zsdx->game_resource->get_sprite("hud/pause_icon_flip"));
+  this->sprite_pause_icon = new Sprite("hud/pause_icon_flip");
 
   rebuild();
 }

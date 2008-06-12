@@ -3,7 +3,7 @@
 #include "ZSDX.h"
 #include "Music.h"
 #include "GameResource.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 #include "Color.h"
 #include "FileTools.h"
 #include "TextDisplayed.h"
@@ -64,7 +64,7 @@ SelectionMenu::SelectionMenu(void):
     img_numbers[i] = FileTools::open_image(file_name);
   }
 
-  cursor = new AnimatedSprite(zsdx->game_resource->get_sprite("menus/selection_menu_cursor"));
+  cursor = new Sprite("menus/selection_menu_cursor");
 
   // texts
   text_option1 = new TextDisplayed(90, 172, ALIGN_LEFT, ALIGN_MIDDLE);

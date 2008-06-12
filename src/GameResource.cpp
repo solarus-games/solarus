@@ -20,7 +20,10 @@ GameResource::GameResource(void) {
  */
 GameResource::~GameResource(void) {
 
-  delete link;
+  // Link
+  if (link != NULL) {
+    delete link;
+  }
 
   // tilesets
   {
@@ -62,14 +65,14 @@ GameResource::~GameResource(void) {
     sounds.clear();
   }
 
-  // sprites
+  // sprite animations
   {
-    map<SpriteId, SpriteAnimations*>::const_iterator it;
+    map<SpriteAnimationsId, SpriteAnimations*>::const_iterator it;
     
-    for (it = sprites.begin(); it != sprites.end(); it++) {
+    for (it = sprite_animations.begin(); it != sprite_animations.end(); it++) {
       delete it->second;
     }
-    sprites.clear();
+    sprite_animations.clear();
   }
 }
 
@@ -143,15 +146,15 @@ Sound* GameResource::get_sound(SoundId id) {
 }
 
 /**
- * Returns a sprite.
- * @param id id of the sprite to get
- * @return the sprite
+ * Returns the animations of a sprite.
+ * @param id id of the sprite animations to get
+ * @return the sprite animations required
  */
-SpriteAnimations* GameResource::get_sprite(SpriteId id) {
+SpriteAnimations* GameResource::get_sprite_animations(SpriteAnimationsId id) {
   
-  if (sprites[id] == NULL) {
-    sprites[id] = new SpriteAnimations(id);
+  if (sprite_animations[id] == NULL) {
+    sprite_animations[id] = new SpriteAnimations(id);
   }
   
-  return sprites[id];
+  return sprite_animations[id];
 }

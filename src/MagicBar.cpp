@@ -5,7 +5,7 @@
 #include "Game.h"
 #include "GameResource.h"
 #include "Sound.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 
 /**
  * Constructor.
@@ -19,7 +19,7 @@ MagicBar::MagicBar(Equipment *equipment, int x, int y):
   next_magic_update_date(SDL_GetTicks()) {
 
   img_magic_bar = FileTools::open_image("hud/magic_bar.png");
-  sprite_magic_bar_container = new AnimatedSprite(zsdx->game_resource->get_sprite("hud/magic_bar"));
+  sprite_magic_bar_container = new Sprite("hud/magic_bar");
   sound_magic_bar = zsdx->game_resource->get_sound("magic_bar");
 
   current_magic_displayed = equipment->get_magic();

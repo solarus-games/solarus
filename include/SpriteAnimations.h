@@ -30,7 +30,7 @@ class SpriteAnimations {
   
  public:
 
-  SpriteAnimations(SpriteId id);
+  SpriteAnimations(SpriteAnimationsId id);
   virtual ~SpriteAnimations(void);
 
   SpriteAnimation *get_animation(string animation_name);

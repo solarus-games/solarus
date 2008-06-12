@@ -24,7 +24,7 @@ class SwordIcon: public HudElement {
 
   // icon flipping
   bool is_flipping;
-  AnimatedSprite *sprite_sword_icon;
+  Sprite *sprite_sword_icon;
 
  public:
 

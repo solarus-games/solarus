@@ -3,7 +3,7 @@
 #include "FileTools.h"
 #include "ZSDX.h"
 #include "GameResource.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 
 /**
  * Constructor.
@@ -23,7 +23,7 @@ ActionIcon::ActionIcon(KeysEffect *keys_effect, int x, int y):
 
   // flipping icon
   this->is_flipping = false;
-  this->sprite_action_icon = new AnimatedSprite(zsdx->game_resource->get_sprite("hud/action_icon_flip"));
+  this->sprite_action_icon = new Sprite(zsdx->game_resource->get_sprite_animations("hud/action_icon_flip"));
 
   rebuild();
 }

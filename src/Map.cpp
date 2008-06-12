@@ -2,7 +2,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "GameResource.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 #include "Link.h"
 #include "Tileset.h"
 #include "Tile.h"
@@ -471,7 +471,7 @@ void Map::display() {
  * @param x x coordinate of the sprite's hotspot in the map
  * @param y y coordinate of the sprite's hotspot in the map
  */
-void Map::display_sprite(AnimatedSprite *sprite, int x, int y) {
+void Map::display_sprite(Sprite *sprite, int x, int y) {
   
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system

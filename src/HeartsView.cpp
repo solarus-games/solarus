@@ -4,7 +4,7 @@
 #include "ZSDX.h"
 #include "GameResource.h"
 #include "Sound.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 
 /**
  * Position of the hearts in the PNG image.
@@ -30,7 +30,7 @@ HeartsView::HeartsView(Equipment *equipment, int x, int y):
   next_danger_sound_date(SDL_GetTicks()) {
 
   img_hearts = FileTools::open_image("hud/hearts.png");
-  empty_heart_sprite = new AnimatedSprite(zsdx->game_resource->get_sprite("hud/empty_heart"));
+  empty_heart_sprite = new Sprite("hud/empty_heart");
 
   if (equipment != NULL) {
     

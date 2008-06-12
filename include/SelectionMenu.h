@@ -34,7 +34,7 @@ class SelectionMenu {
   SDL_Surface *img_mode;
   SDL_Surface *destination_surface;
 
-  AnimatedSprite *cursor;
+  Sprite *cursor;
   int cursor_position; // 1 to 5
   int save_number_to_erase; // 0 to 2
   int x_letter_cursor, y_letter_cursor;

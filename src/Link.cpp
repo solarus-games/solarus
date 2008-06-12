@@ -1,5 +1,5 @@
 #include "Link.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "GameResource.h"
@@ -35,7 +35,7 @@ static const int animation_directions[] = {
 /**
  * String constants corresponding to the sprites of Link's tunics.
  */
-const SpriteId Link::tunic_sprite_ids[3] = {
+const SpriteAnimationsId Link::tunic_sprite_ids[3] = {
   "link/tunic0", // green tunic
   "link/tunic1", // blue tunic
   "link/tunic2", // red tunic
@@ -44,7 +44,7 @@ const SpriteId Link::tunic_sprite_ids[3] = {
 /**
  * String constants corresponding to the sprites of Link's swords.
  */
-const SpriteId Link::sword_sprite_ids[4] = {
+const SpriteAnimationsId Link::sword_sprite_ids[4] = {
   "link/sword1",
   "link/sword2",
   "link/sword3",
@@ -54,7 +54,7 @@ const SpriteId Link::sword_sprite_ids[4] = {
 /**
  * String constants corresponding to the sprites of the stars of Link's swords.
  */
-const SpriteId Link::sword_stars_sprite_ids[4] = {
+const SpriteAnimationsId Link::sword_stars_sprite_ids[4] = {
   "link/sword_stars1",
   "link/sword_stars1",
   "link/sword_stars2",
@@ -64,7 +64,7 @@ const SpriteId Link::sword_stars_sprite_ids[4] = {
 /**
  * String constants corresponding to the sprites of the shields.
  */
-const SpriteId Link::shield_sprite_ids[3] = {
+const SpriteAnimationsId Link::shield_sprite_ids[3] = {
   "link/shield1",
   "link/shield2",
   "link/shield3",
@@ -192,8 +192,6 @@ void Link::display_on_map(Map *map) {
  */
 void Link::initialize_sprites(void) {
 
-  GameResource *resource = zsdx->game_resource;
-
   int animation_direction = -1;
 
   // Link
@@ -205,7 +203,7 @@ void Link::initialize_sprites(void) {
 
   int tunic_number = equipment->get_tunic_number();
 
-  tunic_sprite = new AnimatedSprite(resource->get_sprite(tunic_sprite_ids[tunic_number]));
+  tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
   tunic_sprite->set_animation_listener(this); // to be notified when an animation of Link is over
 
   // Link's sword
@@ -219,12 +217,12 @@ void Link::initialize_sprites(void) {
 
   if (sword_number > 0) {
     // Link has a sword: get the sprite and the sound
-    sword_sprite = new AnimatedSprite(resource->get_sprite(sword_sprite_ids[sword_number - 1]));
+    sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
     sword_sprite->stop_animation();
 
-    sword_sound = resource->get_sound(sword_sound_ids[sword_number - 1]);
+    sword_sound = zsdx->game_resource->get_sound(sword_sound_ids[sword_number - 1]);
 
-    sword_stars_sprite = new AnimatedSprite(resource->get_sprite(sword_stars_sprite_ids[sword_number - 1]));
+    sword_stars_sprite = new Sprite(sword_stars_sprite_ids[sword_number - 1]);
     sword_stars_sprite->stop_animation();
   }
 
@@ -238,7 +236,7 @@ void Link::initialize_sprites(void) {
 
   if (shield_number > 0) {
     // Link has a shield
-    shield_sprite = new AnimatedSprite(resource->get_sprite(shield_sprite_ids[shield_number - 1]));
+    shield_sprite = new Sprite(shield_sprite_ids[shield_number - 1]);
   }
 
   // restore the animation direction
@@ -583,7 +581,7 @@ void Link::stop_displaying_sword(void) {
  * This function is called when an animation of Link's sprite is over.
  * @param sprite the sprite
  */
-void Link::animation_over(AnimatedSprite *sprite) {
+void Link::animation_over(Sprite *sprite) {
 
   Uint8 *key_state;
 

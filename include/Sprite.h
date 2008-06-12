@@ -1,5 +1,5 @@
-#ifndef ZSDX_ANIMATED_SPRITE_H
-#define ZSDX_ANIMATED_SPRITE_H
+#ifndef ZSDX_SPRITE_H
+#define ZSDX_SPRITE_H
 
 #include "Common.h"
 
@@ -9,7 +9,7 @@
  * An animated sprite is represented as a set of animations, a current animation,
  * a current direction and a current frame.
  */
-class AnimatedSprite {
+class Sprite {
 
  private:
 
@@ -67,8 +67,9 @@ class AnimatedSprite {
 
  public:
 
-  AnimatedSprite(SpriteAnimations *animations);
-  inline ~AnimatedSprite(void) { }
+  Sprite(SpriteAnimationsId id);
+  Sprite(SpriteAnimations *animations);
+  inline ~Sprite(void) { }
 
   string get_current_animation(void);
   void set_current_animation(string animation_name);

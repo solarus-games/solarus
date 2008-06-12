@@ -17,7 +17,7 @@ class HeartsView: public HudElement {
   static SDL_Rect full_heart_position;
   static SDL_Rect fraction_heart_positions[3];
 
-  AnimatedSprite *empty_heart_sprite;
+  Sprite *empty_heart_sprite;
 
   SDL_Surface *img_hearts;
   int nb_max_hearts_displayed;

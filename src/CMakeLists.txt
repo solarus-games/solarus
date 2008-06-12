@@ -29,7 +29,7 @@ add_executable (zsdx
 	       Movement8ByPlayer.cpp
 	       EntityDetector.cpp
 	       MapExit.cpp
-	       AnimatedSprite.cpp
+	       Sprite.cpp
 	       SpriteAnimations.cpp
 	       SpriteAnimation.cpp
 	       SpriteAnimationDirection.cpp

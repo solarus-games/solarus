@@ -22,7 +22,7 @@ class PauseIcon: public HudElement {
 
   // icon flipping
   bool is_flipping;
-  AnimatedSprite *sprite_pause_icon;
+  Sprite *sprite_pause_icon;
 
  public:
 

@@ -38,16 +38,16 @@ class Link: public MapEntity, AnimationListener {
   Equipment *equipment;
 
   // Link's sprites
-  AnimatedSprite *tunic_sprite;
-  AnimatedSprite *sword_sprite;
-  AnimatedSprite *sword_stars_sprite;
-  AnimatedSprite *shield_sprite;
+  Sprite *tunic_sprite;
+  Sprite *sword_sprite;
+  Sprite *sword_stars_sprite;
+  Sprite *shield_sprite;
   Sound *sword_sound;
 
-  static const SpriteId tunic_sprite_ids[];
-  static const SpriteId sword_sprite_ids[];
-  static const SpriteId sword_stars_sprite_ids[];
-  static const SpriteId shield_sprite_ids[];
+  static const SpriteAnimationsId tunic_sprite_ids[];
+  static const SpriteAnimationsId sword_sprite_ids[];
+  static const SpriteAnimationsId sword_stars_sprite_ids[];
+  static const SpriteAnimationsId shield_sprite_ids[];
   static const SoundId sword_sound_ids[];
 
   /**
@@ -118,7 +118,7 @@ class Link: public MapEntity, AnimationListener {
   bool is_shield_visible(void);
 
   void restart_animation(void);
-  void animation_over(AnimatedSprite *sprite);
+  void animation_over(Sprite *sprite);
 
   void set_animation_stopped(void);
 

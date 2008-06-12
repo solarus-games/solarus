@@ -6,7 +6,7 @@
 /**
  * Abstract class to detect when a sprite animation is over.
  * To associate an animation listener to a sprite, use
- * the add_animation_listener function of class AnimatedSprite.
+ * the add_animation_listener function of class Sprite.
  */
 class AnimationListener {
 
@@ -18,7 +18,7 @@ class AnimationListener {
   /**
    * This function is called when the sprite's animation finishes.
    */
-  virtual void animation_over(AnimatedSprite *sprite) = 0;
+  virtual void animation_over(Sprite *sprite) = 0;
 
 };
 

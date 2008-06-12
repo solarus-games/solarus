@@ -23,7 +23,7 @@ class MagicBar: public HudElement {
 
   // sprite representing the magic bar container
   int max_magic_displayed;
-  AnimatedSprite *sprite_magic_bar_container;
+  Sprite *sprite_magic_bar_container;
 
  public:
 

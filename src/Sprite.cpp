@@ -1,17 +1,31 @@
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 #include "SpriteAnimations.h"
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "AnimationListener.h"
+#include "ZSDX.h"
+#include "GameResource.h"
 
 /**
- * Constructor.
+ * Creates a sprite.
  * @param animations the sprite's animations
  */
-AnimatedSprite::AnimatedSprite(SpriteAnimations *animations):
+Sprite::Sprite(SpriteAnimations *animations):
 animations(animations), current_direction(0),
 suspended(false), over(false), listener(NULL) {
   
+  set_current_animation(animations->get_default_animation());
+}
+
+/**
+ * Creates a sprite.
+ * This is equivalent to Sprite(zsdx->game_resource->get_sprite_animations(id)).
+ * @param id id of the sprite's animations
+ */
+Sprite::Sprite(SpriteAnimationsId id):
+current_direction(0), suspended(false), over(false), listener(NULL) {
+  
+  animations = zsdx->game_resource->get_sprite_animations(id);
   set_current_animation(animations->get_default_animation());
 }
 
@@ -22,7 +36,7 @@ suspended(false), over(false), listener(NULL) {
  * is_over() returns always false.
  * @return the delay between two frames for the current animation (in miliseconds)
  */
-Uint32 AnimatedSprite::get_frame_interval(void) {
+Uint32 Sprite::get_frame_interval(void) {
   return current_animation->get_frame_interval();  
 }
 
@@ -30,7 +44,7 @@ Uint32 AnimatedSprite::get_frame_interval(void) {
  * Returns the next frame of the current frame.
  * @return the next frame of the current frame (or -1 if the animation is over)
  */
-int AnimatedSprite::get_next_frame(void) {
+int Sprite::get_next_frame(void) {
   return current_animation->get_next_frame(current_direction, current_frame);    
 }
 
@@ -39,7 +53,7 @@ int AnimatedSprite::get_next_frame(void) {
  * Nothing is done if the parameter specified does not change.
  * @param suspended true to suspend the animation, false to resume it
  */
-void AnimatedSprite::set_suspended(bool suspended) {
+void Sprite::set_suspended(bool suspended) {
 
   if (suspended != this->suspended) {
     this->suspended = suspended;
@@ -55,7 +69,7 @@ void AnimatedSprite::set_suspended(bool suspended) {
  * Checks whether the frame has to be changed.
  * If the frame changes, next_frame_date is updated.
  */
-void AnimatedSprite::update_current_frame(void) {
+void Sprite::update_current_frame(void) {
 
   int next_frame;
 
@@ -92,7 +106,7 @@ void AnimatedSprite::update_current_frame(void) {
  * @param y y coordinate of the sprite on this surface
  * (the hotspot will be placed at this position)
  */
-void AnimatedSprite::display(SDL_Surface *destination, int x, int y) {
+void Sprite::display(SDL_Surface *destination, int x, int y) {
 
   if (!is_over()) {
     current_animation->display(destination, x, y, current_direction, current_frame);
@@ -103,7 +117,7 @@ void AnimatedSprite::display(SDL_Surface *destination, int x, int y) {
  * Returns the current animation of the sprite.
  * @return the name of the current animation of the sprite
  */
-string AnimatedSprite::get_current_animation(void) { return animation_name; }
+string Sprite::get_current_animation(void) { return animation_name; }
 
 /**
  * Sets the current animation of the sprite.
@@ -111,7 +125,7 @@ string AnimatedSprite::get_current_animation(void) { return animation_name; }
  * If the sprite is already playing the same animation, nothing is done.
  * @param animation_name name of the new animation of the sprite
  */
-void AnimatedSprite::set_current_animation(string animation_name) {
+void Sprite::set_current_animation(string animation_name) {
 
   if (animation_name != this->animation_name || !is_animation_started()) {
   
@@ -131,7 +145,7 @@ void AnimatedSprite::set_current_animation(string animation_name) {
  * Returns the current direction of the sprite's animation.
  * @return the current direction
  */
-int AnimatedSprite::get_current_animation_direction(void) {
+int Sprite::get_current_animation_direction(void) {
   return current_direction;
 }
 
@@ -140,7 +154,7 @@ int AnimatedSprite::get_current_animation_direction(void) {
  * If the specified direction is the current direction, nothing is done.
  * @param current_direction the current direction
  */
-void AnimatedSprite::set_current_animation_direction(int current_direction) {
+void Sprite::set_current_animation_direction(int current_direction) {
 
   if (current_direction != this->current_direction) {
     this->current_direction = current_direction;
@@ -152,7 +166,7 @@ void AnimatedSprite::set_current_animation_direction(int current_direction) {
  * Returns the current frame of the sprite's animation.
  * @return the current frame
  */
-int AnimatedSprite::get_current_frame(void) {
+int Sprite::get_current_frame(void) {
   return current_frame;
 }
 
@@ -163,7 +177,7 @@ int AnimatedSprite::get_current_frame(void) {
  * but the specified frame is displayed. 
  * @param current_frame the current frame
  */
-void AnimatedSprite::set_current_frame(int current_frame) {
+void Sprite::set_current_frame(int current_frame) {
   
   this->current_frame = current_frame;
   over = false;
@@ -175,21 +189,21 @@ void AnimatedSprite::set_current_frame(int current_frame) {
  * It can be suspended.
  * @return true if the animation is started, false otherwise
  */
-bool AnimatedSprite::is_animation_started(void) {
+bool Sprite::is_animation_started(void) {
   return !is_over();
 }
 
 /**
  * Starts the animation.
  */
-void AnimatedSprite::start_animation(void) {
+void Sprite::start_animation(void) {
   restart_animation();
 }
 
 /**
  * Restarts the animation.
  */
-void AnimatedSprite::restart_animation(void) {
+void Sprite::restart_animation(void) {
   set_current_frame(0);
   set_suspended(false);
 }
@@ -197,7 +211,7 @@ void AnimatedSprite::restart_animation(void) {
 /**
  * Stops the animation.
  */
-void AnimatedSprite::stop_animation(void) {
+void Sprite::stop_animation(void) {
   over = true;
 }
 
@@ -205,7 +219,7 @@ void AnimatedSprite::stop_animation(void) {
  * Returns true if the animation is suspended.
  * @return true if the animation is suspended, false otherwise
  */
-bool AnimatedSprite::is_suspended(void) {
+bool Sprite::is_suspended(void) {
   return suspended;
 }
 
@@ -216,7 +230,7 @@ bool AnimatedSprite::is_suspended(void) {
  * of zero should be used only for 1-frame animations).
  * @return true if the animation is finished
  */
-bool AnimatedSprite::is_over(void) {
+bool Sprite::is_over(void) {
   return over;
 }
 
@@ -225,6 +239,6 @@ bool AnimatedSprite::is_over(void) {
  * @param listener the listener to associate,
  * or NULL to remove the previous listener
  */
-void AnimatedSprite::set_animation_listener(AnimationListener *listener) {
+void Sprite::set_animation_listener(AnimationListener *listener) {
   this->listener = listener;
 }

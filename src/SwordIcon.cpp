@@ -1,9 +1,7 @@
 #include "SwordIcon.h"
 #include "Equipment.h"
 #include "KeysEffect.h"
-#include "ZSDX.h"
-#include "GameResource.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
 #include "FileTools.h"
 
 /**
@@ -27,7 +25,7 @@ SwordIcon::SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y
 
   // flipping icon
   this->is_flipping = false;
-  this->sprite_sword_icon = new AnimatedSprite(zsdx->game_resource->get_sprite("hud/sword_icon_flip"));
+  this->sprite_sword_icon = new Sprite("hud/sword_icon_flip");
 
   rebuild();
 }

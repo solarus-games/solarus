@@ -22,7 +22,7 @@ class ActionIcon: public HudElement {
 
   // icon flipping
   bool is_flipping;
-  AnimatedSprite *sprite_action_icon;
+  Sprite *sprite_action_icon;
 
   bool is_visible(void);
 

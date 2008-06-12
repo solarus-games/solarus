@@ -41,9 +41,9 @@ class GameResource {
   std::map<SoundId, Sound*> sounds;
 
   /**
-   * The sprites.
+   * The sprite animations.
    */
-  std::map<SpriteId, SpriteAnimations*> sprites;
+  std::map<SpriteAnimationsId, SpriteAnimations*> sprite_animations;
 
   // items
   // ...
@@ -58,7 +58,7 @@ class GameResource {
   Map* get_map(MapId id);
   Music* get_music(MusicId id);
   Sound* get_sound(SoundId id);
-  SpriteAnimations* get_sprite(SpriteId id);
+  SpriteAnimations* get_sprite_animations(SpriteAnimationsId id);
 };
 
 #endif

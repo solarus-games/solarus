@@ -13,7 +13,7 @@ typedef Uint32 MapId;
 typedef Uint32 TilesetId;
 typedef std::string MusicId;
 typedef std::string SoundId;
-typedef std::string SpriteId;
+typedef std::string SpriteAnimationsId;
 
 /**
  * Declaration of all classes to avoid dependencies between the header files.
@@ -43,7 +43,7 @@ class Tileset;
 class Music;
 class Sound;
 
-class AnimatedSprite;
+class Sprite;
 class SpriteAnimations;
 class SpriteAnimation;
 class SpriteAnimationDirection;

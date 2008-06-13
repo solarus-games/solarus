@@ -9,6 +9,7 @@
 #include "TitleScreen.h"
 #include "SelectionMenu.h"
 #include "TextDisplayed.h"
+#include "Random.h"
 
 
 /**
@@ -41,6 +42,9 @@ ZSDX::ZSDX(void) {
   SDL_EnableUNICODE(SDL_ENABLE);
  
   color_init();
+
+  // initiliaze the random number generator
+  Random::initialize();
 
   // initialize the text displaying
   TextDisplayed::initialize();

@@ -27,6 +27,7 @@ class Savegame;
 class Equipment;
 class SelectionMenu;
 class TransitionEffect;
+class Random;
 
 class HUD;
 class HudElement;

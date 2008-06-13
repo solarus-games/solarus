@@ -1,5 +1,27 @@
 #include "PickableItem.h"
 #include "Sprite.h"
+#include "Random.h"
+
+/* probas :
+
+rien : 625/1000
+objet dont le joueur manque sérieusement : 100 (ou rien s'il ne manque de rien)
+coeur : 100
+rubis vert : 50
+petite fiole (ou rien si le joueur n'a pas d'objet magique) : 25
+rubis bleu : 15
+1 bombe (ou rien si le joueur n'a pas les bombes) : 20
+1 flèche (ou rien si le joueur n'a pas l'arc) : 20
+rubis rouge : 5
+5 bombes : 10
+10 bombes : 5
+5 flèches : 10
+10 flèches : 5
+fée : 2
+grande fiole : 8
+
+*/
+
 
 /**
  * Creates a pickable item with the specified type.
@@ -36,6 +58,15 @@ PickableItem::~PickableItem(void) {
  */
 PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItemType type) {
 
-  // TODO
-  return new PickableItem(layer, x, y, type);
+  if (type == PICKABLE_ITEM_RANDOM) {
+    // TODO
+    // int r = Random::get_number(1000);
+
+  }
+  
+  if (type != PICKABLE_ITEM_NONE) {
+    return new PickableItem(layer, x, y, type);
+  }
+
+  return NULL;
 }

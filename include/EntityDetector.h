@@ -8,6 +8,9 @@
  * An entity detector is an object placed somewhere on the map
  * to detect the presence of Link or other moving entities.
  * Examples of entity detectors are exits and switches.
+ *
+ * An entity is considered to be on a detector if its origin point
+ * is inside the detector's rectangle.
  */
 class EntityDetector: public MapEntity {
 
@@ -15,12 +18,14 @@ class EntityDetector: public MapEntity {
   
   EntityDetector(string name, Layer layer, int x, int y, int width, int height);
 
+  virtual void entity_overlaps(MapEntity *entity_overlapping);
+
  public:
 
   virtual ~EntityDetector(void);
 
-  virtual void display_on_map(Map *map);
-  virtual void entity_overlaps(MapEntity *entity_overlapping);
+  void check_entity_overlapping(MapEntity *entity);
+
 };
 
 #endif

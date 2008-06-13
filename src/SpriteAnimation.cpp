@@ -58,9 +58,9 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) {
  * Displays a specific frame of this animation on a surface.
  * @param destination the surface on which the sprite will be displayed
  * @param x x coordinate of the sprite on this surface
- * (the hotspot will be placed at this position)
+ * (the origin point will be displayed at this position)
  * @param y y coordinate of the sprite on this surface
- * (the hotspot will be placed at this position)
+ * (the origin point will be displayed at this position)
  * @param current_direction the direction to show
  * @param current_frame the frame to show in this direction
  */

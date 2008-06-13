@@ -26,7 +26,7 @@ SpriteAnimations::SpriteAnimations(SpriteAnimationsId id) {
   SDL_Rect *positions_in_src;
   SpriteAnimationDirection **directions;
   string name, image_file_name;
-  int nb_directions, nb_frames, x_hotspot, y_hotspot, loop_on_frame;
+  int nb_directions, nb_frames, x_origin, y_origin, loop_on_frame;
   int x, y, width, height, rows, columns;
   Uint32 frame_delay;
 
@@ -53,7 +53,7 @@ SpriteAnimations::SpriteAnimations(SpriteAnimationsId id) {
       while (line.size() == 0);
 
       istringstream iss(line);
-      iss >> x >> y >> width >> height >> x_hotspot >> y_hotspot
+      iss >> x >> y >> width >> height >> x_origin >> y_origin
 	  >> nb_frames >> columns;
 
       if (nb_frames % columns == 0) {
@@ -78,7 +78,7 @@ SpriteAnimations::SpriteAnimations(SpriteAnimationsId id) {
       }
 
       directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src,
-						   x_hotspot, y_hotspot);
+						   x_origin, y_origin);
     }
 
     animations[name] = new SpriteAnimation(image_file_name, nb_directions, directions,

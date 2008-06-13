@@ -7,22 +7,17 @@
 /**
  * Abstract class for all objects attached to a map: tiles,
  * enemies, Link, interactive objects, etc.
- * Each entity has a position on the map.
+ * Each entity has:
+ * - a layer on the map
+ * - a position on the map (a rectangle),
+ * - an origin point, relative to the rectangle's top-left corner
+ * - 
  */
 class MapEntity {
 
  protected:
 
-  /**
-   * Position on the map.
-   */
-  SDL_Rect position_in_map;
-
-  /**
-   * Coordinates of the hotspot (i.e. the origin point of the entity),
-   * relative to the top-left corner of its rectangle.
-   */
-  SDL_Rect hotspot;
+  // position (mandatory for all kinds of entities)
 
   /**
    * Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
@@ -31,17 +26,53 @@ class MapEntity {
   Layer layer;
 
   /**
+   * Position of the entity on the map. The position is defined as a rectangle.
+   * This rectangle represents the position of the entity of the map, it is
+   * used for the collision tests. It can be different from the sprite's
+   * rectangle of the entity.
+   * For example, Link's position is a 16*16 rectangle, but its sprite may be
+   * a 16*24 rectangle.
+   */
+  SDL_Rect position_in_map;
+
+  /**
+   * Coordinates of the origin point of the entity,
+   * relative to the top-left corner of its rectangle.
+   * Remember that when you call get_x() and get_y(), you get the coordinates
+   * of the origin point on the map, not the coordinates of the rectangle's
+   * top-left corner.
+   * This is useful because the top-left corner of the entity's rectangle does
+   * not represent the actual entity's coordinates.
+   */
+  SDL_Rect origin;
+
+  // other data, used for some kinds of entities
+
+  /**
    * Name of the entity (not used for all kinds of entities).
+   * The name identifies the entity in the game.
+   * An empty string indicates that the entity has no name.
    */
   string name;
 
   /**
    * Direction of the entity (not used for all kinds of entities).
+   * If the entity has a sprite, this direction is considered to be
+   * the direction of animation of the sprite.
    */
   int direction;
 
   /**
+   * Sprite representing the entity, not used for all kinds of entities because
+   * some of them are invisible, and some of them have several sprites and thus do
+   * not use this field.
+   * NULL indicates that the entity has no sprite.
+   */
+  Sprite *sprite;
+
+  /**
    * Movement of the entity (not used for all kinds of entities).
+   * NULL indicates that the entity has no movement.
    */
   Movement *movement;
 
@@ -50,7 +81,8 @@ class MapEntity {
   MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
 
   void set_size(int width, int height);
-  void set_hotspot(int x, int y);
+  void set_origin(int x, int y);
+  void set_sprite(SpriteAnimationsId id);
   void set_movement(Movement *movement);
   void clear_movement(void);
 
@@ -70,21 +102,16 @@ class MapEntity {
   Layer get_layer(void);
   const SDL_Rect * get_position_in_map(void);
 
+  Sprite * get_sprite(void);
+
   Movement * get_movement(void);
   virtual void movement_just_changed(void);
 
-  virtual void update();
-
   bool overlaps(const SDL_Rect *rectangle);
-  bool is_hotspot_in(const SDL_Rect *rectangle);
+  bool is_origin_point_in(const SDL_Rect *rectangle);
 
-  /**
-   * Displays the entity on the map.
-   * This is an abstract function because a tile is not
-   * displayed like an animated sprite and some entities
-   * are invisible.
-   */
-  virtual void display_on_map(Map *map) = 0;
+  virtual void update();
+  virtual void display_on_map(Map *map);
 };
 
 #endif

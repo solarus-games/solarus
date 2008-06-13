@@ -57,7 +57,7 @@ void MagicBar::update(void) {
   int max_magic = equipment->get_max_magic();
   if (max_magic != max_magic_displayed) {
     max_magic_displayed = max_magic;
-    sprite_magic_bar_container->set_current_animation_direction(max_magic_displayed / 42 - 1);
+    sprite_magic_bar_container->set_current_direction(max_magic_displayed / 42 - 1);
     need_rebuild = true;
   }
 

@@ -1,4 +1,5 @@
 #include "PickableItem.h"
+#include "Sprite.h"
 
 /**
  * Creates a pickable item with the specified type.
@@ -9,10 +10,17 @@
  * @param type type of pickable item to create (must be a normal item)
  */
 PickableItem::PickableItem(Layer layer, int x, int y, PickableItemType type):
-  SpriteOnMap(layer, x, y), type(type) {
+  EntityDetector("", layer, x, y, 0, 0), type(type) {
 
-  // TODO  set_size, set_hotspot, set_sprite
+  // TODO  set_size, set_origin, set_sprite
   set_movement(NULL); // TODO sauf la fée
+}
+
+/**
+ * Destructor.
+ */
+PickableItem::~PickableItem(void) {
+
 }
 
 /**
@@ -29,5 +37,5 @@ PickableItem::PickableItem(Layer layer, int x, int y, PickableItemType type):
 PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItemType type) {
 
   // TODO
-  return NULL;
+  return new PickableItem(layer, x, y, type);
 }

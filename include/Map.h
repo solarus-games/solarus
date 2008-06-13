@@ -101,9 +101,15 @@ class Map {
   Obstacle *obstacle_tiles[LAYER_NB];
 
   /**
-   * All sprites of the map (a vector for each layer).
+   * All map entities execpt the tiles.
+   * This vector is used to delete the entities when the map is unloaded.
    */
-  vector<SpriteOnMap*> *sprites[LAYER_NB];
+  vector<MapEntity*> *all_entities;
+
+  /**
+   * All map entities that are displayed by a sprite (a vector for each layer).
+   */
+  vector<MapEntity*> *sprite_entities[LAYER_NB];
 
   /**
    * Vector of all possible entrances of the map.

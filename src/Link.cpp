@@ -91,7 +91,7 @@ Link::Link(void):
   pushing_direction_mask(0xFFFF) {
 
   set_size(16, 16);
-  set_hotspot(8, 15);
+  set_origin(8, 15);
   set_movement(new Movement8ByPlayer(12));
 }
 
@@ -169,18 +169,21 @@ void Link::update(void) {
  */
 void Link::display_on_map(Map *map) {
 
-  map->display_sprite(tunic_sprite, get_x(), get_y());
+  int x = get_x();
+  int y = get_y();
+
+  map->display_sprite(tunic_sprite, x, y);
 
   if (is_sword_visible()) {
-    map->display_sprite(sword_sprite, get_x(), get_y());
+    map->display_sprite(sword_sprite, x, y);
   }
 
   if (is_sword_stars_visible()) {
-    map->display_sprite(sword_stars_sprite, get_x(), get_y());
+    map->display_sprite(sword_stars_sprite, x, y);
   }
 
   if (is_shield_visible()) {
-    map->display_sprite(shield_sprite, get_x(), get_y());
+    map->display_sprite(shield_sprite, x, y);
   }
 }
 
@@ -197,7 +200,7 @@ void Link::initialize_sprites(void) {
   // Link
   if (tunic_sprite != NULL) {
     // save the animation direction
-    animation_direction = tunic_sprite->get_current_animation_direction();
+    animation_direction = tunic_sprite->get_current_direction();
     delete tunic_sprite;
   }
 
@@ -289,7 +292,7 @@ void Link::movement_just_changed(void) {
   if (direction != -1) {
 
     Uint16 direction_mask = get_movement()->get_direction_mask();
-    int old_animation_direction = tunic_sprite->get_current_animation_direction();
+    int old_animation_direction = tunic_sprite->get_current_direction();
     int animation_direction = animation_directions[direction_mask];
       
     if (animation_direction != old_animation_direction
@@ -631,18 +634,18 @@ bool Link::is_direction_locked(void) {
  */
 void Link::set_animation_direction(int direction) {
 
-  tunic_sprite->set_current_animation_direction(direction);
+  tunic_sprite->set_current_direction(direction);
 
   if (is_sword_visible()) {
-    sword_sprite->set_current_animation_direction(direction);
+    sword_sprite->set_current_direction(direction);
   }
 
   if (is_sword_stars_visible()) {
-    sword_stars_sprite->set_current_animation_direction(direction);
+    sword_stars_sprite->set_current_direction(direction);
   }
 
   if (is_shield_visible()) {
-    shield_sprite->set_current_animation_direction(direction);
+    shield_sprite->set_current_direction(direction);
   }
 }
 
@@ -689,7 +692,7 @@ void Link::restart_animation(void) {
  */
 void Link::set_animation_stopped(void) {
 
-  int direction = tunic_sprite->get_current_animation_direction();
+  int direction = tunic_sprite->get_current_direction();
   
   switch (get_state()) {
     
@@ -702,7 +705,7 @@ void Link::set_animation_stopped(void) {
       tunic_sprite->set_current_animation("stopped_with_shield");
       
       shield_sprite->set_current_animation("stopped");
-      shield_sprite->set_current_animation_direction(direction);
+      shield_sprite->set_current_direction(direction);
     }
     else {
       tunic_sprite->set_current_animation("stopped");
@@ -715,16 +718,16 @@ void Link::set_animation_stopped(void) {
     tunic_sprite->set_current_animation("sword_loading_stopped");
 
     sword_sprite->set_current_animation("sword_loading_stopped");
-    sword_sprite->set_current_animation_direction(direction);
+    sword_sprite->set_current_direction(direction);
     
     sword_stars_sprite->set_current_animation("loading");
-    sword_stars_sprite->set_current_animation_direction(direction);
+    sword_stars_sprite->set_current_direction(direction);
 
     if (equipment->has_shield()) {
 
       if (direction % 2 != 0) {
 	shield_sprite->set_current_animation("sword_loading_stopped");
-	shield_sprite->set_current_animation_direction(direction / 2);
+	shield_sprite->set_current_direction(direction / 2);
       }
       else {
 	shield_sprite->stop_animation();
@@ -745,7 +748,7 @@ void Link::set_animation_stopped(void) {
  */
 void Link::set_animation_walking(void) {
   
-  int direction = tunic_sprite->get_current_animation_direction();
+  int direction = tunic_sprite->get_current_direction();
   
   switch (get_state()) {
     
@@ -758,7 +761,7 @@ void Link::set_animation_walking(void) {
       tunic_sprite->set_current_animation("walking_with_shield");
       
       shield_sprite->set_current_animation("walking");
-      shield_sprite->set_current_animation_direction(direction);
+      shield_sprite->set_current_direction(direction);
     }
     else {
       tunic_sprite->set_current_animation("walking");
@@ -771,16 +774,16 @@ void Link::set_animation_walking(void) {
     tunic_sprite->set_current_animation("sword_loading_walking");
 
     sword_sprite->set_current_animation("sword_loading_walking");
-    sword_sprite->set_current_animation_direction(direction);
+    sword_sprite->set_current_direction(direction);
 
     sword_stars_sprite->set_current_animation("loading");
-    sword_stars_sprite->set_current_animation_direction(direction);
+    sword_stars_sprite->set_current_direction(direction);
 
     if (equipment->has_shield()) {
 
       if (direction % 2 != 0) {
 	shield_sprite->set_current_animation("sword_loading_walking");
-	shield_sprite->set_current_animation_direction(direction / 2);
+	shield_sprite->set_current_direction(direction / 2);
       }
       else {
 	shield_sprite->stop_animation();
@@ -802,13 +805,13 @@ void Link::set_animation_walking(void) {
  */
 void Link::set_animation_sword(void) {
 
-  int direction = tunic_sprite->get_current_animation_direction();
+  int direction = tunic_sprite->get_current_direction();
   
   tunic_sprite->set_current_animation("sword");
   tunic_sprite->restart_animation();
 
   sword_sprite->set_current_animation("sword");
-  sword_sprite->set_current_animation_direction(direction);
+  sword_sprite->set_current_direction(direction);
   sword_sprite->restart_animation();
   sword_stars_sprite->stop_animation();
 
@@ -816,7 +819,7 @@ void Link::set_animation_sword(void) {
 
     if (direction % 2 != 0) {
       shield_sprite->set_current_animation("sword");
-      shield_sprite->set_current_animation_direction(direction / 2);
+      shield_sprite->set_current_direction(direction / 2);
       shield_sprite->restart_animation();
     }
     else {

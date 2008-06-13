@@ -4,7 +4,7 @@
 #include "Common.h"
 
 /**
- * Abstract class for the movement of an entity on the map, visible or not.
+ * The movement of an entity on the map, visible or not.
  * A moving entity has an instance of Movement which modifies its coordinates.
  * An instance of Movement is attached to one and only one instance of MapEntity.
  */

@@ -26,18 +26,18 @@ class SpriteAnimationDirection {
    * X coordinate of the sprite's origin from the
    * upper-left corner of its image.
    */
-  const int x_hotspot;
+  const int x_origin;
 
   /**
    * Y coordinate of the sprite's origin from the
    * upper-left corner of its image.
    */
-  const int y_hotspot;
+  const int y_origin;
 
  public:
 
   SpriteAnimationDirection(int nb_frames, SDL_Rect *frames,
-			   int x_hotspot, int y_hotspot);
+			   int x_origin, int y_origin);
   virtual ~SpriteAnimationDirection(void);
 
   inline int get_nb_frames() { return nb_frames; }

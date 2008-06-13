@@ -50,37 +50,26 @@ void Map::unload(void) {
 
   SDL_FreeSurface(visible_surface);
 
-  // delete the tiles and the sprites
+  // delete the tiles
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
       delete tiles[layer]->at(i);
     }
 
-    for (unsigned int i = 0; i < sprites[layer]->size(); i++) {
-      delete sprites[layer]->at(i);
-    }
-
     tiles[layer]->clear();
     delete tiles[layer];
     delete[] obstacle_tiles[layer];
 
-    sprites[layer]->clear();
-    delete sprites[layer];
+    delete sprite_entities[layer];
   }
 
-  // delete the entrances
-  for (unsigned int i = 0; i < entrances->size(); i++) {
-    delete entrances->at(i);
+  // delete the other entities
+  for (unsigned int i = 0; i < all_entities->size(); i++) {
+    delete all_entities->at(i);
   }
-  entrances->clear();
+  delete all_entities;
   delete entrances;
-
-  // delete the entity detectors
-  for (unsigned int i = 0; i < entity_detectors->size(); i++) {
-    delete entity_detectors->at(i);
-  }
-  entity_detectors->clear();
   delete entity_detectors;
 
   width = 0;
@@ -125,6 +114,7 @@ void Map::load() {
     tileset->load();
   }
 
+  all_entities = new vector<MapEntity*>();
   entrances = new vector<MapEntrance*>();
   entity_detectors = new vector<EntityDetector*>();
 
@@ -132,7 +122,7 @@ void Map::load() {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     tiles[layer] = new vector<TileOnMap*>();
-    sprites[layer] = new vector<SpriteOnMap*>();
+    sprite_entities[layer] = new vector<MapEntity*>();
 
     obstacle_tiles[layer] = new Obstacle[obstacle_tiles_size];
     for (int i = 0; i < obstacle_tiles_size; i++) {
@@ -336,6 +326,7 @@ void Map::add_entrance(string entrance_name, Layer layer, int link_x, int link_y
   
   MapEntrance *entrance = new MapEntrance(entrance_name, layer, link_x, link_y, link_direction);
   entrances->push_back(entrance);
+  all_entities->push_back(entrance);
 }
 
 /**
@@ -357,6 +348,7 @@ void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
   
   MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, transition_type, map_id, entrance_name);
   entity_detectors->push_back(exit);
+  all_entities->push_back(exit);
 }
 
 /**
@@ -375,8 +367,9 @@ void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {
-    sprites[layer]->push_back(item);
+    sprite_entities[layer]->push_back(item);
   }
+  all_entities->push_back(item);
 }
 
 /**
@@ -432,11 +425,15 @@ void Map::update_entities(void) {
   Link *link = zsdx->game_resource->get_link();
   link->update();
 
-  // update the animated tiles
+  // update the animated tiles and sprites
   for (int layer = 0; layer < LAYER_NB; layer++) {
     
     for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
       tiles[layer]->at(i)->update();
+    }
+
+    for (unsigned int i = 0; i < sprite_entities[layer]->size(); i++) {
+      sprite_entities[layer]->at(i)->update();
     }
   }
 }
@@ -464,7 +461,12 @@ void Map::display() {
       tiles[layer]->at(i)->display_on_map(this);
     }
 
-    // put link if he is in this layer
+    // put the visible entities
+    for (unsigned int i = 0; i < sprite_entities[layer]->size(); i++) {
+      sprite_entities[layer]->at(i)->display_on_map(this);
+    }
+
+    // put Link if he is in this layer
     if (link->get_layer() == layer) {
       link->display_on_map(this);
     }
@@ -474,8 +476,8 @@ void Map::display() {
 /**
  * Displays a sprite on the map surface.
  * @param sprite the sprite to display
- * @param x x coordinate of the sprite's hotspot in the map
- * @param y y coordinate of the sprite's hotspot in the map
+ * @param x x coordinate of the sprite's origin point in the map
+ * @param y y coordinate of the sprite's origin point in the map
  */
 void Map::display_sprite(Sprite *sprite, int x, int y) {
   
@@ -635,11 +637,7 @@ void Map::entity_just_moved(MapEntity *entity) {
   for (unsigned int i = 0; i < entity_detectors->size(); i++) {
     
     detector = entity_detectors->at(i);
-    if (detector->get_layer() == entity->get_layer()
-	&& entity->is_hotspot_in(detector->get_position_in_map())) {
-
-      detector->entity_overlaps(entity); // notify the detector
-    }
+    detector->check_entity_overlapping(entity);
   }
 }
 

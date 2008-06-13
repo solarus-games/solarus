@@ -10,20 +10,28 @@
  * a current direction and a current frame.
  * Several sprites can have the same animation set (i.e. they share
  * the same SpriteAnimations object).
+ *
+ * A sprite can be displayed directly on a surface, or it can
+ * be attached to a map entity, allowing it to have a position on
+ * the map and a movement.
  */
 class Sprite {
 
  private:
+
+  // animation set
 
   /**
    * Animation set of this sprite.
    */
   SpriteAnimations *animations;
 
+  // current state of the sprite
+
   /**
    * Name of the current animation.
    */
-  string animation_name;
+  string current_animation_name;
 
   /**
    * The current animation.
@@ -69,18 +77,21 @@ class Sprite {
 
  public:
 
+  // creation and destruction
   Sprite(SpriteAnimationsId id);
   Sprite(SpriteAnimations *animations);
-  inline ~Sprite(void) { }
+  ~Sprite(void);
+
+  // current animation, direction and frame
 
   string get_current_animation(void);
   void set_current_animation(string animation_name);
-  int get_current_animation_direction(void);
-  void set_current_animation_direction(int current_direction);
+  int get_current_direction(void);
+  void set_current_direction(int current_direction);
   int get_current_frame(void);
   void set_current_frame(int current_frame);
 
-  void update_current_frame(void);
+  // animation state
 
   bool is_animation_started(void);
   void start_animation(void);
@@ -91,8 +102,13 @@ class Sprite {
   void set_suspended(bool suspended);
   bool is_over(void);
 
+  // animation listener
+
   void set_animation_listener(AnimationListener *listener);
 
+  // udpate and display
+
+  void update_current_frame(void);
   void display(SDL_Surface *destination, int x, int y);
 };
 

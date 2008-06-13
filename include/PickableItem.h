@@ -2,7 +2,7 @@
 #define ZSDX_PICKABLE_ITEM_H
 
 #include "Common.h"
-#include "SpriteOnMap.h"
+#include "EntityDetector.h"
 #include "Layer.h"
 #include "PickableItemType.h"
 
@@ -10,7 +10,7 @@
  * A pickable item on the map (rupee, heart, bomb, fairy...).
  * This is a concrete class, used for any kind of pickable item.
  */
-class PickableItem: public SpriteOnMap {
+class PickableItem: public EntityDetector {
 
  private:
 

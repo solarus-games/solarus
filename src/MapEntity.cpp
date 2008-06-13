@@ -1,17 +1,19 @@
 #include "MapEntity.h"
 #include "Movement.h"
+#include "Sprite.h"
+#include "Map.h"
 
 /**
  * Creates a map entity without specifying its properties yet.
  */
 MapEntity::MapEntity(void):
-  layer(LAYER_LOW), name(""), direction(0), movement(NULL) {
+  layer(LAYER_LOW), name(""), direction(0), sprite(NULL), movement(NULL) {
 
   position_in_map.x = 0;
   position_in_map.y = 0;
 
   set_size(0, 0);
-  set_hotspot(0, 0);
+  set_origin(0, 0);
 }
 
 /**
@@ -24,13 +26,13 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  layer(layer), name(""), direction(0), movement(NULL) {
+  layer(layer), name(""), direction(0), sprite(NULL), movement(NULL) {
 
   position_in_map.x = x;
   position_in_map.y = y;
 
   set_size(width, height);
-  set_hotspot(0, 0);
+  set_origin(0, 0);
 }
 
 /**
@@ -44,20 +46,24 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * @param height height of the entity
  */
 MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
-  layer(layer), name(name), direction(direction), movement(NULL) {
+  layer(layer), name(name), direction(direction), sprite(NULL), movement(NULL) {
 
   position_in_map.x = x;
   position_in_map.y = y;
 
   set_size(width, height);
-  set_hotspot(0, 0);
+  set_origin(0, 0);
 }
 
 /**
  * Destructor.
- * The entity's movement is deleted (if any).
+ * The sprite and the movement of the entity are deleted (if any).
  */
 MapEntity::~MapEntity(void) {
+
+  if (sprite != NULL) {
+    delete sprite;
+  }
 
   if (movement != NULL) {
     clear_movement();
@@ -69,7 +75,7 @@ MapEntity::~MapEntity(void) {
  * @return the x position of the entity
  */
 int MapEntity::get_x(void) {
-  return position_in_map.x + hotspot.x;
+  return position_in_map.x + origin.x;
 }
 
 /**
@@ -77,7 +83,7 @@ int MapEntity::get_x(void) {
  * @return the y position of the entity
  */
 int MapEntity::get_y(void) {
-  return position_in_map.y + hotspot.y;
+  return position_in_map.y + origin.y;
 }
 
 /**
@@ -87,7 +93,7 @@ int MapEntity::get_y(void) {
  * @param x the new x position
  */
 void MapEntity::set_x(int x) {
-  position_in_map.x = x - hotspot.x;
+  position_in_map.x = x - origin.x;
 }
 
 /**
@@ -97,7 +103,7 @@ void MapEntity::set_x(int x) {
  * @param y the new y position
  */
 void MapEntity::set_y(int y) {
-  position_in_map.y = y - hotspot.y;
+  position_in_map.y = y - origin.y;
 }
 
 /**
@@ -114,6 +120,16 @@ int MapEntity::get_width(void) {
  */
 int MapEntity::get_height(void) {
   return position_in_map.h;
+}
+
+/**
+ * Returns the position of the entity.
+ * This function returns the rectangle defined by
+ * get_x(), get_y(), get_width() and get_height().
+ * @return the position of the entity
+ */
+const SDL_Rect * MapEntity::get_position_in_map(void) {
+  return &position_in_map;
 }
 
 /**
@@ -151,29 +167,43 @@ Layer MapEntity::get_layer(void) {
 }
 
 /**
- * Returns the position of the entity.
- * @return the position of the entity
+ * Sets the origin point of the entity
+ * relative to the top-left corner of its rectangle.
+ * @param x x coordinate of the origin
+ * @param y y coordinate of the origin
  */
-const SDL_Rect * MapEntity::get_position_in_map(void) {
-  return &position_in_map;
+void MapEntity::set_origin(int x, int y) {
+  origin.x = x;
+  origin.y = y;
 }
 
 /**
- * Sets the hotspot of the entity, i.e. its origin point,
- * relative to the top-left corner.
- * @param x hotspot x
- * @param y hotspot y
+ * Returns the sprite of the entity.
+ * @return the entity's sprite, or no sprite is associated to the entity
  */
-void MapEntity::set_hotspot(int x, int y) {
-  hotspot.x = x;
-  hotspot.y = y;
+Sprite * MapEntity::get_sprite(void) {
+  return sprite;
+}
+
+/**
+ * Sets the sprite of this entity.
+ * If a sprite was already set, it is deleted.
+ * @param id id of the sprite's animations to get
+ */
+void MapEntity::set_sprite(SpriteAnimationsId id) {
+
+  if (sprite != NULL) {
+    delete sprite;
+  }
+
+  sprite = new Sprite(id);
 }
 
 /**
  * Returns the current movement of the entity.
  * @return the entity's movement, or NULL if there is no movement
  */
-Movement *MapEntity::get_movement(void) {
+Movement * MapEntity::get_movement(void) {
   return movement;
 }
 
@@ -181,11 +211,14 @@ Movement *MapEntity::get_movement(void) {
  * Sets the movement of this entity.
  * If a movement was already set, it is not deleted (so that you can reassign
  * it later). If you want to delete it, call clear_movement() first.
- * @param movement the movement to set
+ * @param movement the movement to set, or NULL to set no movement
  */
 void MapEntity::set_movement(Movement *movement) {
   this->movement = movement;
-  movement->set_entity(this);
+
+  if (movement != NULL) {
+    movement->set_entity(this);
+  }
 }
 
 /**
@@ -198,27 +231,12 @@ void MapEntity::clear_movement(void) {
 }
 
 /**
- * This function is called to notify the entity when its movement
- * has just changed.
+ * This function is called by the movement object
+ * to notify the entity when its movement has just changed.
  * By default, it does nothing.
  */
 void MapEntity::movement_just_changed(void) {
 
-}
-
-/**
- * Updates the entity.
- * This function is called repeteadly by the map. By default, it updates the position
- * of the entity, according to its movement (if any).
- * Redefine it in subclasses for the entities that should be updated
- * for other treatments (such as animations), but don't forget to call this method
- * to handle the movement.
- */
-void MapEntity::update(void) {
-
-  if (movement != NULL) {
-    movement->update();
-  }
 }
 
 /**
@@ -247,15 +265,51 @@ bool MapEntity::overlaps(const SDL_Rect *rectangle) {
 }
 
 /**
- * Returns whether or not this entity's hotspot is in
+ * Returns whether or not this entity's origin point is in
  * a specified rectangle.
  * @param rectangle the rectangle to check
- * @return true if this entity's hotspot is in the rectangle specified, false otherwise
+ * @return true if this entity's origin point is in the rectangle specified, false otherwise
  */
-bool MapEntity::is_hotspot_in(const SDL_Rect *rectangle) {
+bool MapEntity::is_origin_point_in(const SDL_Rect *rectangle) {
 
-  return position_in_map.x + hotspot.x >= rectangle->x
-    && position_in_map.x + hotspot.x < rectangle->x + rectangle->w
-    && position_in_map.y + hotspot.y >= rectangle->y
-    && position_in_map.y + hotspot.y < rectangle->y + rectangle->h;
+  return position_in_map.x + origin.x >= rectangle->x
+    && position_in_map.x + origin.x < rectangle->x + rectangle->w
+    && position_in_map.y + origin.y >= rectangle->y
+    && position_in_map.y + origin.y < rectangle->y + rectangle->h;
+}
+
+/**
+ * Updates the entity.
+ * This function is called repeteadly by the map. By default, it updates the position
+ * of the entity according to its movement (if any), and it updates the sprite's frame
+ * (if there is a sprite) according the its direction.
+ * Redefine it in subclasses for the entities that should be updated
+ * for other treatments but don't forget to call this method
+ * to handle the movement and the sprite.
+ */
+void MapEntity::update(void) {
+
+  if (sprite != NULL) {
+
+    if (sprite->get_current_direction() != direction) {
+      sprite->set_current_direction(direction);
+    }
+
+    sprite->update_current_frame();
+  }
+
+  if (movement != NULL) {
+    movement->update();
+  }
+}
+
+/**
+ * Displays the entity on the map.
+ * By default, this function displays the entity's sprite (if any).
+ */
+void MapEntity::display_on_map(Map *map) {
+
+  if (sprite != NULL) {
+    map->display_sprite(sprite, get_x(), get_y());
+  }
 }

@@ -21,6 +21,8 @@ class PickableItem: public EntityDetector {
 
   PickableItem(Layer layer, int x, int y, PickableItemType type);
 
+  static PickableItemType choose_random_type(void);
+
  public:
 
   ~PickableItem(void);

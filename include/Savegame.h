@@ -40,7 +40,7 @@ enum SavegameReservedIntegerIndex {
    */
   SAVEGAME_CURRENT_HEARTS                   = 10, /**< current number of hearts filled (counted in 1/4 of hearts) */
   SAVEGAME_CURRENT_RUPEES                   = 11, /**< current number of rupees */
-  SAVEGAME_CURRENT_MAGIC                    = 12, /**< current level of magic (0 to 28) */
+  SAVEGAME_CURRENT_MAGIC                    = 12, /**< current level of magic (0 to 84) */
   SAVEGAME_CURRENT_BOMBS                    = 13, /**< current number of bombs */
   SAVEGAME_CURRENT_ARROWS                   = 14, /**< current number of arrows */
   SAVEGAME_CURRENT_PAINS_AU_CHOCOLAT        = 15, /**< current number of pains au chocolat */
@@ -56,8 +56,8 @@ enum SavegameReservedIntegerIndex {
   SAVEGAME_MAX_HEARTS                       = 20, /**< maximum number of hearts (counted in entire hearts) */
   SAVEGAME_MAX_RUPEES                       = 21, /**< maximum number of rupees (99, 199 or 999) */
   SAVEGAME_MAX_MAGIC                        = 22, /**< maximum level of magic (0, 42 or 84 points) */
-  SAVEGAME_MAX_BOMBS                        = 23, /**< maximum number of bombs */
-  SAVEGAME_MAX_ARROWS                       = 24, /**< maximum number of arrows */
+  SAVEGAME_MAX_BOMBS                        = 23, /**< maximum number of bombs (0, 30 or 50) */
+  SAVEGAME_MAX_ARROWS                       = 24, /**< maximum number of arrows (0, 30 or 50) */
   /**
    * @}
    */

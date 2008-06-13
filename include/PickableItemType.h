@@ -8,9 +8,9 @@ enum PickableItemType {
 
   PICKABLE_ITEM_RANDOM = -1,   /**< special value to indicate to choose another value randomly (including PICKABLE_ITEM_NONE) */
   PICKABLE_ITEM_NONE = 0,      /**< special value to incicate that there is no pickable item */
-  PICKABLE_ITEM_GREEN_RUPEE,
-  PICKABLE_ITEM_BLUE_RUPEE,
-  PICKABLE_ITEM_RED_RUPEE,
+  PICKABLE_ITEM_RUPEE_1,
+  PICKABLE_ITEM_RUPEE_5,
+  PICKABLE_ITEM_RUPEE_20,
   PICKABLE_ITEM_HEART,
   PICKABLE_ITEM_SMALL_MAGIC,
   PICKABLE_ITEM_BIG_MAGIC,

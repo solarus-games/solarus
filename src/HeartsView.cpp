@@ -88,7 +88,7 @@ void HeartsView::update(void) {
    */
   if (zsdx->game != NULL) {
 
-    if (nb_current_hearts_displayed <= nb_max_hearts) {
+    if (equipment->needs_hearts()) {
 
       if (empty_heart_sprite->get_current_animation() != "danger") {
 	empty_heart_sprite->set_current_animation("danger");

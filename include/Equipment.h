@@ -59,6 +59,7 @@ class Equipment {
   void add_hearts(int hearts_to_add);
   void remove_hearts(int hearts_to_remove);
   void restore_all_hearts(void);
+  bool needs_hearts(void);
 
   int get_nb_pieces_of_heart(void);
   bool has_piece_of_heart(int piece_of_heart_id);
@@ -73,6 +74,7 @@ class Equipment {
   void add_magic(int magic_to_add);
   void remove_magic(int magic_to_remove);
   void restore_all_magic(void);
+  bool needs_magic(void);
 
   bool is_magic_decreasing(void);
   void start_removing_magic(Uint32 delay);
@@ -80,6 +82,27 @@ class Equipment {
 
   // TODO: objects, dungeon objects...
   
+  // bombs
+  bool has_bombs(void);
+  int get_max_bombs(void);
+  void set_max_bombs(int max_bombs);
+
+  int get_bombs(void);
+  void set_bombs(int bombs);
+  void add_bombs(int bombs_to_add);
+  void remove_bomb(void);
+  bool needs_bombs(void);
+
+  // arrows
+  bool has_bow(void);
+  int get_max_arrows(void);
+  void set_max_arrows(int max_arrows);
+
+  int get_arrows(void);
+  void set_arrows(int arrows);
+  void add_arrows(int arrows_to_add);
+  void remove_arrow(void);
+  bool needs_arrows(void);
 };
 
 #endif

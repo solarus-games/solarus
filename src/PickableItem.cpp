@@ -1,27 +1,10 @@
 #include "PickableItem.h"
 #include "Sprite.h"
 #include "Random.h"
-
-/* probas :
-
-rien : 625/1000
-objet dont le joueur manque sérieusement : 100 (ou rien s'il ne manque de rien)
-coeur : 100
-rubis vert : 50
-petite fiole (ou rien si le joueur n'a pas d'objet magique) : 25
-rubis bleu : 15
-1 bombe (ou rien si le joueur n'a pas les bombes) : 20
-1 flèche (ou rien si le joueur n'a pas l'arc) : 20
-rubis rouge : 5
-5 bombes : 10
-10 bombes : 5
-5 flèches : 10
-10 flèches : 5
-fée : 2
-grande fiole : 8
-
-*/
-
+#include "ZSDX.h"
+#include "Game.h"
+#include "Savegame.h"
+#include "Equipment.h"
 
 /**
  * Creates a pickable item with the specified type.
@@ -59,14 +42,93 @@ PickableItem::~PickableItem(void) {
 PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItemType type) {
 
   if (type == PICKABLE_ITEM_RANDOM) {
-    // TODO
-    // int r = Random::get_number(1000);
-
+    // pick a type at random
+    type = choose_random_type();
   }
   
+  // create an object if the type is not PICKABLE_ITEM_NONE
   if (type != PICKABLE_ITEM_NONE) {
     return new PickableItem(layer, x, y, type);
   }
 
   return NULL;
+}
+
+/**
+ * Chooses a type of item randomly.
+ * This function is called when the type of item is PICKABLE_ITEM_RANDOM.
+ *
+ * Some items have a low probability (fairies, big bottles of magic...)
+ * while other have a high probability (hearts, rupees...).
+ * The function can return PICKABLE_ITEM_NONE (this is actually the case
+ * most of the time).
+ * If the player is running out of hearts, magic, bombs or arrows,
+ * the probability of getting what he needs is increased.
+ *
+ * @return a type of item (can be PICKABLE_ITEM_NONE or a normal item)
+ */
+PickableItemType PickableItem::choose_random_type(void) {
+
+  PickableItemType type;
+
+  int r = Random::get_number(1000);
+  Equipment *equipment = zsdx->game->get_savegame()->get_equipment();
+    
+  if (r < 625) {
+    // give the player nothing with probability 62.5%
+    type = PICKABLE_ITEM_NONE;
+  }
+
+  else if (r < 725) { // with probability 10%
+    // give the player what he needs, or nothing if he doesn't need anything
+    
+    // does he need hearts?
+    if (equipment->needs_hearts()) {
+      type = PICKABLE_ITEM_HEART;
+    }
+
+    // does he need magic?
+    else if (equipment->needs_magic()) {
+      type = PICKABLE_ITEM_SMALL_MAGIC;
+    }
+
+    // does he need bombs?
+    else if (equipment->needs_bombs()) {
+      type = PICKABLE_ITEM_BOMB_5;
+    }
+
+    // does he need arrows?
+    else if (equipment->needs_arrows()) {
+      type = PICKABLE_ITEM_ARROW_5;
+    }
+
+    // well, he does not need anything (we don't help him for the rupees)
+    else {
+      type = PICKABLE_ITEM_NONE;
+    }
+  }
+
+  // the remaining 27.5% are distributed as follows:
+
+  else if (r < 825) { type = PICKABLE_ITEM_HEART; }       // heart: 10%
+  else if (r < 875) { type = PICKABLE_ITEM_RUPEE_1; }     // 1 rupee: 5%
+  else if (r < 890) { type = PICKABLE_ITEM_RUPEE_5; }     // 5 rupees: 1.5%
+  else if (r < 895) { type = PICKABLE_ITEM_RUPEE_20; }    // 20 rupees: 0.5%
+  else if (r < 920) { type = PICKABLE_ITEM_SMALL_MAGIC; } // magic flask: 2.5%
+  else if (r < 928) { type = PICKABLE_ITEM_BIG_MAGIC; }   // magic bottle: 0.8%
+  else if (r < 930) { type = PICKABLE_ITEM_FAIRY; }       // fairy: 0.2%
+  else {
+
+    bool has_bombs = equipment->has_bombs();
+    bool has_bow = equipment->has_bow();
+
+    if (r < 950)      { type = has_bombs ? PICKABLE_ITEM_BOMB_1 : PICKABLE_ITEM_NONE; }
+    else if (r < 960) { type = has_bombs ? PICKABLE_ITEM_BOMB_5 : PICKABLE_ITEM_NONE; }
+    else if (r < 965) { type = has_bombs ? PICKABLE_ITEM_BOMB_10 : PICKABLE_ITEM_NONE; }
+    else if (r < 985) { type = has_bow ? PICKABLE_ITEM_ARROW_1 : PICKABLE_ITEM_NONE; }
+    else if (r < 995) { type = has_bow ? PICKABLE_ITEM_ARROW_5 : PICKABLE_ITEM_NONE; }
+    else              { type = has_bow ? PICKABLE_ITEM_ARROW_10 : PICKABLE_ITEM_NONE; }
+  }
+
+  return type;
 }

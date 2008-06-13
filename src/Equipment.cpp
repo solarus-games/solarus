@@ -220,7 +220,7 @@ void Equipment::add_rupees(int rupees_to_add) {
 }
 
 /**
- * Removes some rupees to Link.
+ * Removes some rupees from Link.
  * If the number of rupees achieves zero, no more rupees are removed.
  * @param rupees_to_remove number of rupees to remove
  */
@@ -304,7 +304,7 @@ void Equipment::add_hearts(int hearts_to_add) {
 }
 
 /**
- * Removes some hearts to Link.
+ * Removes some hearts from Link.
  * If the number of hearts achieves zero, the game over sequence is started.
  * @param hearts_to_remove number of hearts to remove
  */
@@ -320,6 +320,16 @@ void Equipment::remove_hearts(int hearts_to_remove) {
  */
 void Equipment::restore_all_hearts(void) {
   set_hearts(get_max_hearts());
+}
+
+/**
+ * Returns whether the player is running out of hearts.
+ * The function returns true if the number of hearts is lower
+ * than or equal to 25% of the maximum.
+ * @return true if the player is running out of hearts
+ */
+bool Equipment::needs_hearts(void) {
+  return get_hearts() <= get_max_hearts();
 }
 
 /**
@@ -442,7 +452,7 @@ void Equipment::add_magic(int magic_to_add) {
 }
 
 /**
- * Removes some magic points to Link.
+ * Removes some magic points from Link.
  * If the number of magic points achieves zero, no more magic points
  * are removed.
  * @param magic_to_remove number of magic poits to remove
@@ -459,6 +469,16 @@ void Equipment::remove_magic(int magic_to_remove) {
  */
 void Equipment::restore_all_magic(void) {
   set_magic(get_max_magic());
+}
+
+/**
+ * Returns whether the player needs magic.
+ * The function returns true if the player has a magic bar
+ * and has 0 magic points left.
+ * @return true if the player needs magic
+ */
+bool Equipment::needs_magic(void) {
+  return get_magic() == 0 && get_max_magic() != 0;
 }
 
 /**
@@ -492,4 +512,181 @@ void Equipment::start_removing_magic(Uint32 delay) {
  */
 void Equipment::stop_removing_magic(void) {
   this->magic_decrease_delay = 0;
+}
+
+// bombs
+
+/**
+ * Returns the maximum number of bombs of Link.
+ * @return Link's maximum number of bombs (0, 30 or 50)
+ */
+int Equipment::get_max_bombs(void) {
+  return savegame->get_reserved_integer(SAVEGAME_MAX_BOMBS);
+}
+
+/**
+ * Sets the maximum number of bombs of Link.
+ * @param max_bombs Link's maximum number of bombs (0, 30 or 50)
+ */
+void Equipment::set_max_bombs(int max_bombs) {
+  
+  if (max_bombs != 0 && max_bombs != 30 && max_bombs != 50) {
+    DIE("Illegal maximum number of bombs: " << max_bombs);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_MAX_BOMBS, max_bombs);
+}
+
+/**
+ * Returns whether the player has obtained the bombs.
+ * The function returns true if the maximum number of bombs is not zero
+ * (even if the player currently does not have any bombs left).
+ * @return true if the player has got the bombs
+ */
+bool Equipment::has_bombs(void) {
+  return get_max_bombs() != 0;
+}
+
+/**
+ * Returns the current number of bombs.
+ * @return Link's current number of bombs
+ */
+int Equipment::get_bombs(void) {
+  return savegame->get_reserved_integer(SAVEGAME_CURRENT_BOMBS);
+}
+
+/**
+ * Sets the current number of bombs of Link.
+ * The program exits with an error message if the given number
+ * of bombs is not valid.
+ * @param bombs Link's new number of bombs
+ */
+void Equipment::set_bombs(int bombs) {
+
+  if (bombs < 0 || bombs > 50) {
+    DIE("Illegal number of bombs: " << bombs);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_CURRENT_BOMBS, bombs);
+}
+
+/**
+ * Adds some bombs to Link.
+ * If the maximum number of bombs is achieved, no more bombs are added.
+ * @param bombs_to_add number of bombs to add
+ */
+void Equipment::add_bombs(int bombs_to_add) {
+
+  int max_bombs = get_max_bombs();
+  int total = get_bombs() + bombs_to_add;
+
+  set_bombs(MIN(total, max_bombs));
+}
+
+/**
+ * Removes a bomb from Link.
+ * If the number of bombs is already zero, nothing happens.
+ */
+void Equipment::remove_bomb(void) {
+
+  int total = get_bombs() - 1;
+  
+  set_bombs(MAX(total, 0));
+}
+
+/**
+ * Returns whether the player needs bombs.
+ * The function returns true if the player has obtained the bombs
+ * but has 0 bombs left.
+ * @return true if the player needs bombs
+ */
+bool Equipment::needs_bombs(void) {
+  return has_bombs() && get_bombs() == 0;
+}
+
+/**
+ * Returns the maximum number of arrows of Link.
+ * @return Link's maximum number of arrows (0, 30 or 50)
+ */
+int Equipment::get_max_arrows(void) {
+  return savegame->get_reserved_integer(SAVEGAME_MAX_ARROWS);
+}
+
+/**
+ * Sets the maximum number of arrows of Link.
+ * @param max_arrows Link's maximum number of arrows (0, 30 or 50)
+ */
+void Equipment::set_max_arrows(int max_arrows) {
+  
+  if (max_arrows != 0 && max_arrows != 30 && max_arrows != 50) {
+    DIE("Illegal maximum number of arrows: " << max_arrows);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_MAX_ARROWS, max_arrows);
+}
+
+/**
+ * Returns the current number of arrows.
+ * @return Link's current number of arrows
+ */
+int Equipment::get_arrows(void) {
+  return savegame->get_reserved_integer(SAVEGAME_CURRENT_ARROWS);
+}
+
+/**
+ * Sets the current number of arrows of Link.
+ * The program exits with an error message if the given number
+ * of arrows is not valid.
+ * @param arrows Link's new number of arrows
+ */
+void Equipment::set_arrows(int arrows) {
+
+  if (arrows < 0 || arrows > 50) {
+    DIE("Illegal number of arrows: " << arrows);
+  }
+
+  savegame->set_reserved_integer(SAVEGAME_CURRENT_ARROWS, arrows);
+}
+
+/**
+ * Adds some arrows to Link.
+ * If the maximum number of arrows is achieved, no more arrows are added.
+ * @param arrows_to_add number of arrows to add
+ */
+void Equipment::add_arrows(int arrows_to_add) {
+
+  int max_arrows = get_max_arrows();
+  int total = get_arrows() + arrows_to_add;
+
+  set_arrows(MIN(total, max_arrows));
+}
+
+/**
+ * Removes an arrow from Link.
+ * If the number of arrows is already zero, nothing happens.
+ */
+void Equipment::remove_arrow(void) {
+
+  int total = get_arrows() - 1;
+  
+  set_arrows(MAX(total, 0));
+}
+
+/**
+ * Returns whether the player needs arrows.
+ * The function returns true if the player has obtained the bow
+ * but has 0 arrows left.
+ * @return true if the player needs arrows
+ */
+bool Equipment::needs_arrows(void) {
+  return has_bow() && get_arrows() == 0;
+}
+
+/**
+ * Returns whether the player has obtained the bow.
+ * The function returns true if the maximum number of arrows is not zero
+ * @return true if the player has got the bow
+ */
+bool Equipment::has_bow(void) {
+  return get_max_arrows() != 0;
 }

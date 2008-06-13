@@ -19,15 +19,21 @@ class PickableItem: public EntityDetector {
    */
   PickableItemType type;
 
-  PickableItem(Layer layer, int x, int y, PickableItemType type);
+  /**
+   * Indicates whether the item is falling when it appears (except for a fairy).
+   */
+  bool falling;
+
+  PickableItem(Layer layer, int x, int y, PickableItemType type, bool falling);
 
   static PickableItemType choose_random_type(void);
+  void initialize_sprite(void);
 
  public:
 
   ~PickableItem(void);
 
-  static PickableItem * create(Layer layer, int x, int y, PickableItemType type);
+  static PickableItem * create(Layer layer, int x, int y, PickableItemType type, bool falling);
 
 };
 

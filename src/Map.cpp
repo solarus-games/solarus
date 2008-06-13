@@ -172,7 +172,7 @@ void Map::load() {
       {
 	int pickable_item_type;
 	iss >> pickable_item_type;
-	add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type);
+	add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type, false);
 	break;
       }
 
@@ -359,11 +359,13 @@ void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
  * @param layer layer of the pickable item
  * @param x x position of the pickable item
  * @param y y position of the pickable item
- * @param pickable_item_type type of pickable item to create (can be a normal item, PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM)
+ * @param pickable_item_type type of pickable item to create
+ * (can be a normal item, PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM)
+ * @param falling true to make the item falling when it appears (ignored for a fairy)
  */
-void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type) {
+void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type, bool falling) {
   
-  PickableItem *item = PickableItem::create(layer, x, y, pickable_item_type);
+  PickableItem *item = PickableItem::create(layer, x, y, pickable_item_type, falling);
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {

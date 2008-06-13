@@ -130,7 +130,7 @@ class Map {
   void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
   void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
 		TransitionType transition_type, MapId map_id, string entrance_name);
-  void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type);
+  void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type, bool falling);
 
  public:
 

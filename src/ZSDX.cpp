@@ -235,6 +235,7 @@ Lorsqu'il lance ce mode, le jeu affiche les écrans suivants :
  * Entry point of the program.
  */
 int main(int argc, char **argv) {
+
   zsdx = new ZSDX();
 
   try {

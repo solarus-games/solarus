@@ -7,17 +7,45 @@
 #include "Equipment.h"
 
 /**
+ * Animation set for each pickable item type.
+ */
+const SpriteAnimationsId sprite_animations_ids[] = {
+  "", "rupee", "rupee", "rupee", "heart", "magic", "magic",
+  "fairy", "bomb", "bomb", "bomb", "arrow", "arrow", "arrow",
+};
+
+/**
+ * Animation of the sprite for each pickable item type.
+ */
+const string animation_names[] = {
+  "", "green", "blue", "red", "stopped", "small", "big",
+  "normal", "1", "5", "10", "1", "5", "10", "small",
+};
+
+/**
+ * Size of the shadow below each sprite.
+ */
+/* TODO
+const ShadowSize shadow_sizes[] = {
+  
+};
+*/
+
+/**
  * Creates a pickable item with the specified type.
  * The type must a normal one (not PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM).
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (must be a normal item)
+ * @param falling true to make the item falling when it appears (ignored for a fairy)
  */
-PickableItem::PickableItem(Layer layer, int x, int y, PickableItemType type):
-  EntityDetector("", layer, x, y, 0, 0), type(type) {
+PickableItem::PickableItem(Layer layer, int x, int y, PickableItemType type, bool falling):
+  EntityDetector("", layer, x, y, 0, 0), type(type), falling(falling) {
 
-  // TODO  set_size, set_origin, set_sprite
+  initialize_sprite();
+
+  // TODO  set_size, set_origin
   set_movement(NULL); // TODO sauf la fée
 }
 
@@ -37,9 +65,12 @@ PickableItem::~PickableItem(void) {
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
- * @param type type of pickable item to create (can be a normal item, PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM)
+ * @param type type of pickable item to create (can be a normal item, PICKABLE_ITEM_NONE
+ * or PICKABLE_ITEM_RANDOM)
+ * @param falling true to make the item falling when it appears (ignored for a fairy)
+ * @return the pickable item created, or NULL depending on the type
  */
-PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItemType type) {
+PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItemType type, bool falling) {
 
   if (type == PICKABLE_ITEM_RANDOM) {
     // pick a type at random
@@ -48,7 +79,7 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItemType 
   
   // create an object if the type is not PICKABLE_ITEM_NONE
   if (type != PICKABLE_ITEM_NONE) {
-    return new PickableItem(layer, x, y, type);
+    return new PickableItem(layer, x, y, type, falling);
   }
 
   return NULL;
@@ -131,4 +162,24 @@ PickableItemType PickableItem::choose_random_type(void) {
   }
 
   return type;
+}
+
+/**
+ * Creates the sprite of this pickable item,
+ * depending on its type.
+ */
+void PickableItem::initialize_sprite(void) {
+
+  // create the sprite and set its animation
+  add_sprite(sprite_animations_ids[type]);
+  Sprite * item_sprite = get_sprite(0);
+  item_sprite->set_current_animation(animation_names[type]);
+
+  if (falling) {
+
+    // special animation of the heart when falling
+    if (type == PICKABLE_ITEM_HEART) {
+      item_sprite->set_current_animation("falling");
+    }
+  }
 }

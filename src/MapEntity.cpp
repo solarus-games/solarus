@@ -7,13 +7,15 @@
  * Creates a map entity without specifying its properties yet.
  */
 MapEntity::MapEntity(void):
-  layer(LAYER_LOW), name(""), direction(0), sprite(NULL), movement(NULL) {
+  layer(LAYER_LOW), name(""), direction(0), movement(NULL) {
 
   position_in_map.x = 0;
   position_in_map.y = 0;
 
   set_size(0, 0);
   set_origin(0, 0);
+
+  sprites = new vector<Sprite*>();
 }
 
 /**
@@ -26,13 +28,15 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  layer(layer), name(""), direction(0), sprite(NULL), movement(NULL) {
+  layer(layer), name(""), direction(0), movement(NULL) {
 
   position_in_map.x = x;
   position_in_map.y = y;
 
   set_size(width, height);
   set_origin(0, 0);
+
+  sprites = new vector<Sprite*>();
 }
 
 /**
@@ -46,13 +50,15 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * @param height height of the entity
  */
 MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
-  layer(layer), name(name), direction(direction), sprite(NULL), movement(NULL) {
+  layer(layer), name(name), direction(direction), movement(NULL) {
 
   position_in_map.x = x;
   position_in_map.y = y;
 
   set_size(width, height);
   set_origin(0, 0);
+
+  sprites = new vector<Sprite*>();
 }
 
 /**
@@ -61,9 +67,10 @@ MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int 
  */
 MapEntity::~MapEntity(void) {
 
-  if (sprite != NULL) {
-    delete sprite;
+  for (unsigned int i = 0; i < sprites->size(); i++) {
+    delete sprites->at(i);
   }
+  delete sprites;
 
   if (movement != NULL) {
     clear_movement();
@@ -178,25 +185,19 @@ void MapEntity::set_origin(int x, int y) {
 }
 
 /**
- * Returns the sprite of the entity.
- * @return the entity's sprite, or no sprite is associated to the entity
+ * Returns a sprite of the entity.
+ * @return the sprite at this index
  */
-Sprite * MapEntity::get_sprite(void) {
-  return sprite;
+Sprite * MapEntity::get_sprite(int index) {
+  return sprites->at(index);
 }
 
 /**
- * Sets the sprite of this entity.
- * If a sprite was already set, it is deleted.
- * @param id id of the sprite's animations to get
+ * Adds a sprite to this entity.
+ * @param id id of the sprite's animations to add
  */
-void MapEntity::set_sprite(SpriteAnimationsId id) {
-
-  if (sprite != NULL) {
-    delete sprite;
-  }
-
-  sprite = new Sprite(id);
+void MapEntity::add_sprite(SpriteAnimationsId id) {
+  sprites->push_back(new Sprite(id));
 }
 
 /**
@@ -281,15 +282,18 @@ bool MapEntity::is_origin_point_in(const SDL_Rect *rectangle) {
 /**
  * Updates the entity.
  * This function is called repeteadly by the map. By default, it updates the position
- * of the entity according to its movement (if any), and it updates the sprite's frame
- * (if there is a sprite) according the its direction.
+ * of the entity according to its movement (if any), and it updates the sprites frames
+ * (if there are sprites) according to the direction.
  * Redefine it in subclasses for the entities that should be updated
  * for other treatments but don't forget to call this method
- * to handle the movement and the sprite.
+ * to handle the movement and the sprites.
  */
 void MapEntity::update(void) {
 
-  if (sprite != NULL) {
+  // update the sprites
+  for (unsigned int i = 0; i < sprites->size(); i++) {
+
+    Sprite *sprite = sprites->at(i);
 
     if (sprite->get_current_direction() != direction) {
       sprite->set_current_direction(direction);
@@ -298,6 +302,7 @@ void MapEntity::update(void) {
     sprite->update_current_frame();
   }
 
+  // update the movement
   if (movement != NULL) {
     movement->update();
   }
@@ -309,7 +314,8 @@ void MapEntity::update(void) {
  */
 void MapEntity::display_on_map(Map *map) {
 
-  if (sprite != NULL) {
-    map->display_sprite(sprite, get_x(), get_y());
+  // display the sprites
+  for (unsigned int i = 0; i < sprites->size(); i++) {
+    map->display_sprite(sprites->at(i), get_x(), get_y());
   }
 }

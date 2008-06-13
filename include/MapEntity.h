@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "Layer.h"
+#include <vector>
 
 /**
  * Abstract class for all objects attached to a map: tiles,
@@ -63,12 +64,10 @@ class MapEntity {
   int direction;
 
   /**
-   * Sprite representing the entity, not used for all kinds of entities because
-   * some of them are invisible, and some of them have several sprites and thus do
-   * not use this field.
-   * NULL indicates that the entity has no sprite.
+   * Sprite(s) representing the entity, not used for all kinds of entities because
+   * some of them are invisible, and some of them handle their sprites themselves.
    */
-  Sprite *sprite;
+  vector<Sprite*> *sprites;
 
   /**
    * Movement of the entity (not used for all kinds of entities).
@@ -82,7 +81,7 @@ class MapEntity {
 
   void set_size(int width, int height);
   void set_origin(int x, int y);
-  void set_sprite(SpriteAnimationsId id);
+  void add_sprite(SpriteAnimationsId id);
   void set_movement(Movement *movement);
   void clear_movement(void);
 
@@ -102,7 +101,7 @@ class MapEntity {
   Layer get_layer(void);
   const SDL_Rect * get_position_in_map(void);
 
-  Sprite * get_sprite(void);
+  Sprite * get_sprite(int index);
 
   Movement * get_movement(void);
   virtual void movement_just_changed(void);

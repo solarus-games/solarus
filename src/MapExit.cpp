@@ -27,7 +27,6 @@ MapExit::MapExit(string name, Layer layer, int x, int y, int width, int height,
  * Destructor.
  */
 MapExit::~MapExit(void) {
-
 }
 
 /**

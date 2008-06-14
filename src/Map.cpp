@@ -133,7 +133,7 @@ void Map::load() {
   // read the entities
   int entity_type, layer, x, y, width, height, direction;
   string entity_name;
-	
+  
   while (std::getline(map_file, line)) {
 
     istringstream iss(line);
@@ -160,7 +160,7 @@ void Map::load() {
     case ENTITY_EXIT:
       {
 	int transition_type;
-	MapId destination_map_id;	
+	MapId destination_map_id;
 	string entrance_name;
 	iss >> width >> height >> entity_name >> transition_type >> destination_map_id >> entrance_name;
 	add_exit(entity_name, (Layer) layer, x, y, width, height,
@@ -370,8 +370,8 @@ void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {
     sprite_entities[layer]->push_back(item);
+    all_entities->push_back(item);
   }
-  all_entities->push_back(item);
 }
 
 /**

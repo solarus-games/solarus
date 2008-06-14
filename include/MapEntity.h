@@ -87,7 +87,7 @@ class MapEntity {
 
  public:
 
-  ~MapEntity(void);
+  virtual ~MapEntity(void);
 
   int get_x(void);
   int get_y(void);

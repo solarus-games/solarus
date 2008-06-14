@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "Map.h"
 
 // properties of each pickable item
 
@@ -12,8 +13,10 @@
  * Animation set for each pickable item type.
  */
 const SpriteAnimationsId sprite_animations_ids[] = {
-  "", "rupee", "rupee", "rupee", "heart", "magic", "magic",
-  "fairy", "bomb", "bomb", "bomb", "arrow", "arrow", "arrow",
+  "", "entities/rupee", "entities/rupee", "entities/rupee",
+  "entities/heart", "entities/magic", "entities/magic",
+  "entities/fairy", "entities/bomb", "entities/bomb", "entities/bomb",
+  "entities/arrow", "entities/arrow", "entities/arrow",
 };
 
 /**
@@ -35,6 +38,17 @@ const bool big_shadows[] = {
 };
 
 /**
+ * Height of the fall for each pickable item type
+ * (except for the fairy and the heart which have
+ * a special movement)
+ */
+/* TODO
+const int fall_heights[] = {
+  MOVEMENT_FALL_BIG, MOVEMENT_FALL_BIG, MOVEMENT_FALL_BIG,
+  MOVEMENT_FALL_BIG
+  }*/
+
+/**
  * Creates a pickable item with the specified type.
  * The type must a normal one (not PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM).
  * @param layer layer of the pickable item to create on the map
@@ -44,7 +58,8 @@ const bool big_shadows[] = {
  * @param falling true to make the item falling when it appears (ignored for a fairy)
  */
 PickableItem::PickableItem(Layer layer, int x, int y, PickableItemType type, bool falling):
-  EntityDetector("", layer, x, y, 0, 0), type(type), falling(falling) {
+  EntityDetector("", layer, x, y, 0, 0),
+  type(type), falling(falling), shadow_x(x), shadow_y(y) {
 
   initialize_sprites();
 
@@ -176,9 +191,18 @@ PickableItemType PickableItem::choose_random_type(void) {
  */
 void PickableItem::initialize_sprites(void) {
 
+  // create the shadow (except for a fairy)
+  if (type != PICKABLE_ITEM_FAIRY) {
+    shadow_sprite = new Sprite("entities/shadow");
+
+    if (big_shadows[type]) {
+      shadow_sprite->set_current_animation("big");
+    }
+  }
+
   // create the sprite and set its animation
-  add_sprite(sprite_animations_ids[type]);
-  Sprite * item_sprite = get_sprite(0);
+  create_sprite(sprite_animations_ids[type]);
+  Sprite * item_sprite = get_last_sprite();
   item_sprite->set_current_animation(animation_names[type]);
 
   if (falling) {
@@ -188,4 +212,18 @@ void PickableItem::initialize_sprites(void) {
       item_sprite->set_current_animation("falling");
     }
   }
+}
+
+/**
+ * Displays the pickable item on the map.
+ * This is a redefinition of MapEntity::display_on_map
+ * to display the shadow independently of the item movement.
+ */
+void PickableItem::display_on_map(Map *map) {
+
+  // display the shadow
+  map->display_sprite(shadow_sprite, shadow_x, shadow_y);
+
+  // display the sprite
+  MapEntity::display_on_map(map);
 }

@@ -29,6 +29,7 @@ add_executable (zsdx
 	       MovementWithCollision.cpp
 	       MovementWithSmoothCollision.cpp
 	       Movement8ByPlayer.cpp
+	       MovementFalling.cpp
 	       EntityDetector.cpp
 	       MapExit.cpp
 	       Sprite.cpp

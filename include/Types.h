@@ -59,6 +59,7 @@ class Movement;
 class Movement8ByPlayer;
 class MovementWithCollision;
 class MovementWithSmoothCollision;
+class MovementFalling;
 
 class MapEntity;
 class Link;

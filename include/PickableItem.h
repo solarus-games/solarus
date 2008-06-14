@@ -24,17 +24,30 @@ class PickableItem: public EntityDetector {
    */
   bool falling;
 
+  /**
+   * Sprite of the shadow (except for a fairy).
+   */
+  Sprite *shadow_sprite;
+
+  /**
+   * Coordinates of the shadow (which does not move when the item is falling).
+   */
+  int shadow_x;
+  int shadow_y;
+
+  // creation
   PickableItem(Layer layer, int x, int y, PickableItemType type, bool falling);
 
+  // initialization
   static PickableItemType choose_random_type(void);
   void initialize_sprites(void);
 
  public:
 
   ~PickableItem(void);
-
   static PickableItem * create(Layer layer, int x, int y, PickableItemType type, bool falling);
 
+  virtual void display_on_map(Map *map);
 };
 
 #endif

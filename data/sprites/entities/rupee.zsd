@@ -1,0 +1,8 @@
+green entities/rupee.png 1 100 0
+0	0	8	14	4	15	30	30
+
+blue entities/rupee.png 1 100 0
+0	14	8	14	4	15	30	30
+
+red entities/rupee.png 1 100 0
+0	28	8	14	4	15	30	30

@@ -78,19 +78,19 @@ MapEntity::~MapEntity(void) {
 }
 
 /**
+ * Returns the layer of the entity on the map.
+ * @return the layer of the entity on the map.
+ */
+Layer MapEntity::get_layer(void) {
+  return layer;
+}
+
+/**
  * Returns the current x position of the entity.
  * @return the x position of the entity
  */
 int MapEntity::get_x(void) {
   return position_in_map.x + origin.x;
-}
-
-/**
- * Returns the current y position of the entity.
- * @return the y position of the entity
- */
-int MapEntity::get_y(void) {
-  return position_in_map.y + origin.y;
 }
 
 /**
@@ -101,6 +101,14 @@ int MapEntity::get_y(void) {
  */
 void MapEntity::set_x(int x) {
   position_in_map.x = x - origin.x;
+}
+
+/**
+ * Returns the current y position of the entity.
+ * @return the y position of the entity
+ */
+int MapEntity::get_y(void) {
+  return position_in_map.y + origin.y;
 }
 
 /**
@@ -130,16 +138,6 @@ int MapEntity::get_height(void) {
 }
 
 /**
- * Returns the position of the entity.
- * This function returns the rectangle defined by
- * get_x(), get_y(), get_width() and get_height().
- * @return the position of the entity
- */
-const SDL_Rect * MapEntity::get_position_in_map(void) {
-  return &position_in_map;
-}
-
-/**
  * Sets the size of the entity.
  * @param width the entity's width
  * @param height the entity's height
@@ -147,6 +145,16 @@ const SDL_Rect * MapEntity::get_position_in_map(void) {
 void MapEntity::set_size(int width, int height) {
   position_in_map.w = width;
   position_in_map.h = height;
+}
+
+/**
+ * Returns the position of the entity.
+ * This function returns the rectangle defined by
+ * get_x(), get_y(), get_width() and get_height().
+ * @return the position of the entity
+ */
+const SDL_Rect * MapEntity::get_position_in_map(void) {
+  return &position_in_map;
 }
 
 /**
@@ -163,14 +171,6 @@ string MapEntity::get_name(void) {
  */
 int MapEntity::get_direction(void) {
   return direction;
-}
-
-/**
- * Returns the layer of the entity on the map.
- * @return the layer of the entity on the map.
- */
-Layer MapEntity::get_layer(void) {
-  return layer;
 }
 
 /**
@@ -193,10 +193,19 @@ Sprite * MapEntity::get_sprite(int index) {
 }
 
 /**
+ * Returns the sprite created with the last call to create_sprite()
+ * for this entity.
+ * @return the last sprite created
+ */
+Sprite * MapEntity::get_last_sprite(void) {
+  return sprites->back();
+}
+
+/**
  * Adds a sprite to this entity.
  * @param id id of the sprite's animations to add
  */
-void MapEntity::add_sprite(SpriteAnimationsId id) {
+void MapEntity::create_sprite(SpriteAnimationsId id) {
   sprites->push_back(new Sprite(id));
 }
 
@@ -310,7 +319,7 @@ void MapEntity::update(void) {
 
 /**
  * Displays the entity on the map.
- * By default, this function displays the entity's sprite (if any).
+ * By default, this function displays the entity's sprites (if any).
  */
 void MapEntity::display_on_map(Map *map) {
 

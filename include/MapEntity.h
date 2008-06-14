@@ -75,40 +75,50 @@ class MapEntity {
    */
   Movement *movement;
 
+  // creation
   MapEntity(void);
   MapEntity(Layer layer, int x, int y, int width, int height);
   MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
 
+  // method called by the subclasses to set their properties
   void set_size(int width, int height);
   void set_origin(int x, int y);
-  void add_sprite(SpriteAnimationsId id);
+  void create_sprite(SpriteAnimationsId id);
   void set_movement(Movement *movement);
   void clear_movement(void);
 
  public:
 
+  // destruction
   virtual ~MapEntity(void);
 
+  // position in the map
+  Layer get_layer(void);
   int get_x(void);
-  int get_y(void);
   void set_x(int x);
+  int get_y(void);
   void set_y(int y);
   int get_width(void);
   int get_height(void);
-
-  string get_name(void);
-  int get_direction(void);
-  Layer get_layer(void);
   const SDL_Rect * get_position_in_map(void);
 
-  Sprite * get_sprite(int index);
+  // properties
+  string get_name(void);
+  int get_direction(void);
 
+  // sprites
+  Sprite * get_sprite(int index);
+  Sprite * get_last_sprite(void);
+
+  // movement
   Movement * get_movement(void);
   virtual void movement_just_changed(void);
 
+  // collisions
   bool overlaps(const SDL_Rect *rectangle);
   bool is_origin_point_in(const SDL_Rect *rectangle);
 
+  // update and display
   virtual void update();
   virtual void display_on_map(Map *map);
 };

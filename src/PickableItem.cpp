@@ -6,6 +6,8 @@
 #include "Savegame.h"
 #include "Equipment.h"
 
+// properties of each pickable item
+
 /**
  * Animation set for each pickable item type.
  */
@@ -23,13 +25,14 @@ const string animation_names[] = {
 };
 
 /**
- * Size of the shadow below each sprite.
+ * Size of the shadow below each sprite:
+ * false for a small shadow, true for a big shadow.
+ * The bombs are the only pickable items with a big shadow.
  */
-/* TODO
-const ShadowSize shadow_sizes[] = {
-  
+const bool big_shadows[] = {
+  false, false, false, false, false, false, false,
+  false, true, true, true, false, false, false, false,
 };
-*/
 
 /**
  * Creates a pickable item with the specified type.
@@ -43,7 +46,7 @@ const ShadowSize shadow_sizes[] = {
 PickableItem::PickableItem(Layer layer, int x, int y, PickableItemType type, bool falling):
   EntityDetector("", layer, x, y, 0, 0), type(type), falling(falling) {
 
-  initialize_sprite();
+  initialize_sprites();
 
   // TODO  set_size, set_origin
   set_movement(NULL); // TODO sauf la fée
@@ -167,8 +170,11 @@ PickableItemType PickableItem::choose_random_type(void) {
 /**
  * Creates the sprite of this pickable item,
  * depending on its type.
+ * The pickable items are represented with two sprites:
+ * the item itself and its shadow, except the fairy whose
+ * shadow is part of its sprite.
  */
-void PickableItem::initialize_sprite(void) {
+void PickableItem::initialize_sprites(void) {
 
   // create the sprite and set its animation
   add_sprite(sprite_animations_ids[type]);

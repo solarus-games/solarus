@@ -40,6 +40,7 @@ class SwordIcon;
 class PauseIcon;
 
 class Map;
+class MapLoader;
 class Tileset;
 class Music;
 class Sound;

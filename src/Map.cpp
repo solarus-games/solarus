@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "MapLoader.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "GameResource.h"
@@ -11,6 +12,8 @@
 #include "MapExit.h"
 #include "PickableItem.h"
 #include "FileTools.h"
+
+MapLoader Map::map_loader;
 
 /**
  * Creates a map.
@@ -30,6 +33,22 @@ Map::~Map(void) {
   if (is_loaded()) {
     unload();
   }
+}
+
+/**
+ * Returns the id of the map.
+ * @return the map id
+ */
+MapId Map::get_id(void) {
+  return id;
+}
+
+/**
+ * Returns the tileset associated to this map.
+ * @return the tileset
+ */
+Tileset * Map::get_tileset(void) {
+  return tileset;
 }
 
 /**
@@ -83,110 +102,8 @@ void Map::load() {
 
   this->visible_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 
-  // read the file
-
-  char file_name[20];
-  sprintf(file_name, "maps/map%04d.zsd", (int) id);
-  ifstream map_file(FileTools::data_file_add_prefix(file_name));
-
-  if (!map_file) {
-    DIE("Cannot open file '" << file_name << "'");
-  }
-
-  string line;
-  TilesetId tileset_id;
-
-  // first line: map general info
-  if (!std::getline(map_file, line)) {
-    DIE("Empty file '" << file_name << "'");
-    exit(1);
-  }
-
-  istringstream iss0(line);
-  iss0 >> width >> height >> tileset_id >> music_id;
-
-  this->width8 = width / 8;
-  this->height8 = height / 8;
-  this->obstacle_tiles_size = width8 * height8;
-
-  tileset = zsdx->game_resource->get_tileset(tileset_id);
-  if (!tileset->is_loaded()) {
-    tileset->load();
-  }
-
-  all_entities = new vector<MapEntity*>();
-  entrances = new vector<MapEntrance*>();
-  entity_detectors = new vector<EntityDetector*>();
-
-  // create the vectors of entities and initialize obstacle tile
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    tiles[layer] = new vector<TileOnMap*>();
-    sprite_entities[layer] = new vector<MapEntity*>();
-
-    obstacle_tiles[layer] = new Obstacle[obstacle_tiles_size];
-    for (int i = 0; i < obstacle_tiles_size; i++) {
-      obstacle_tiles[layer][i] = OBSTACLE_NONE;
-    }
-  }
-
-  // read the entities
-  int entity_type, layer, x, y, width, height, direction;
-  string entity_name;
-  
-  while (std::getline(map_file, line)) {
-
-    istringstream iss(line);
-    iss >> entity_type >> layer >> x >> y;
-
-    switch (entity_type) {
-
-    case ENTITY_TILE:
-      {
-	int tile_id;
-
-	iss >> width >> height >> tile_id;
-	add_new_tile(tile_id, (Layer) layer, x, y, width, height);
-	break;
-      }
-      
-    case ENTITY_ENTRANCE:
-      {
-	iss >> entity_name >> direction;
-	add_entrance(entity_name, (Layer) layer, x, y, direction);
-	break;
-      }
-      
-    case ENTITY_EXIT:
-      {
-	int transition_type;
-	MapId destination_map_id;
-	string entrance_name;
-	iss >> width >> height >> entity_name >> transition_type >> destination_map_id >> entrance_name;
-	add_exit(entity_name, (Layer) layer, x, y, width, height,
-		 (TransitionType) transition_type, destination_map_id, entrance_name);
-	break;
-      }
-
-    case ENTITY_PICKABLE_ITEM:
-      {
-	int pickable_item_type;
-	iss >> pickable_item_type;
-	add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type, false);
-	break;
-      }
-
-    case ENTITY_TRANSPORTABLE_ITEM:
-      {
-
-	break;
-      }
-
-    default:
-      DIE("Error while loading map #" << id << ": unknown entity type '" << entity_type << "'");
-
-    }
-  }
+  // read the map file
+  map_loader.load_map(this);
 }
 
 /**
@@ -416,6 +333,15 @@ void Map::set_entrance(string entrance_name) {
  */
 SDL_Surface *Map::get_visible_surface(void) {
   return visible_surface;
+}
+
+/**
+ * Returns the position of the screen, relative to the map
+ * top-left corner.
+ * @return the screen position
+ */
+SDL_Rect * Map::get_screen_position(void) {
+  return &screen_position;
 }
 
 /**

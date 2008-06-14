@@ -22,6 +22,7 @@ add_executable (zsdx
 	       SwordIcon.cpp
 	       PauseIcon.cpp
 	       Map.cpp
+	       MapLoader.cpp
 	       MapEntrance.cpp
 	       MapEntity.cpp
 	       Movement.cpp

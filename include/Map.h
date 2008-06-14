@@ -22,6 +22,12 @@ class Map {
 
  private:
 
+  /**
+   * The map file parser.
+   */
+  static MapLoader map_loader;
+  friend class MapLoader; // the map loader modifies the private fields of Map
+
   // map properties
 
   /**
@@ -126,6 +132,7 @@ class Map {
    */
   vector<EntityDetector*> *entity_detectors;
   
+  // add and remove entities
   void add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height);
   void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
   void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
@@ -134,35 +141,43 @@ class Map {
 
  public:
 
+  // creation and destruction
   Map(MapId id);
   ~Map(void);
 
-  inline Tileset *get_tileset(void) { return tileset; }
-  SDL_Surface *get_visible_surface(void);
-  inline SDL_Rect *get_screen_position(void) { return &screen_position; }
+  // map properties
+  MapId get_id(void);
+  Tileset *get_tileset(void);
 
+  // screen
+  SDL_Surface *get_visible_surface(void);
+  SDL_Rect *get_screen_position(void);
+
+  // loading
   bool is_loaded(void);
   void load(void);
   void unload(void);
 
+  // Link's presence
   bool is_started(void);
   void start(void);
   void leave(void);
 
+  // current entrance
   void set_entrance(unsigned int entrance_index);
   void set_entrance(string entrance_name);
 
+  // collisions
+  Obstacle pixel_collision(int layer, int x, int y);
+  bool collision_with_tiles(int layer, SDL_Rect &collision_box);
+  void entity_just_moved(MapEntity *entity);
+
+  // update and display
   void update_entities(void);
   void display();
   void display_sprite(Sprite *sprite, int x, int y);
 
-  Obstacle pixel_collision(int layer, int x, int y);
-  bool collision_with_tiles(int layer, SDL_Rect &collision_box);
-
-  void entity_just_moved(MapEntity *entity);
-
-  // Events
-
+  // events
   void event_entity_on_detector(EntityDetector *detector, MapEntity *entity);
 
 };

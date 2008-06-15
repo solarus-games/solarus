@@ -26,7 +26,6 @@ Sound::Sound(SoundId sound_id):
  * Destroys the sound.
  */
 Sound::~Sound(void) {
-  cout << "destroying sound " << file_name << "\n";
   if (sound != NULL) {
     FMOD_Sound_Release(sound);
   }

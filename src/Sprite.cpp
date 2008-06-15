@@ -12,7 +12,7 @@
  */
 Sprite::Sprite(SpriteAnimations *animations):
 animations(animations), current_direction(0),
-suspended(false), over(false), listener(NULL) {
+suspended(false), over(false), listener(NULL), blink_delay(0) {
   
   set_current_animation(animations->get_default_animation());
 }
@@ -23,7 +23,7 @@ suspended(false), over(false), listener(NULL) {
  * @param id id of the sprite's animations
  */
 Sprite::Sprite(SpriteAnimationsId id):
-current_direction(0), suspended(false), over(false), listener(NULL) {
+current_direction(0), suspended(false), over(false), listener(NULL), blink_delay(0) {
   
   animations = zsdx->game_resource->get_sprite_animations(id);
   set_current_animation(animations->get_default_animation());
@@ -200,6 +200,7 @@ void Sprite::set_suspended(bool suspended) {
     // compte next_frame_date if the animation is being resumed
     if (!suspended) {
       next_frame_date = SDL_GetTicks() + get_frame_interval();
+      blink_next_change_date = SDL_GetTicks();
     }
   }
 }
@@ -213,6 +214,28 @@ void Sprite::set_suspended(bool suspended) {
  */
 bool Sprite::is_over(void) {
   return over;
+}
+
+/**
+ * Returns whether the sprite is blinking.
+ * @return true if the sprite is blinking
+ */
+bool Sprite::is_blinking(void) {
+  return blink_delay != 0;
+}
+
+/**
+ * Sets the blink delay of this sprite.
+ * @param blink_delay blink delay of the sprite in milliseconds,
+ * or zero to stop blinking.
+ */
+void Sprite::set_blinking(Uint16 blink_delay) {
+  this->blink_delay = blink_delay;
+
+  if (blink_delay > 0) {
+    blink_is_sprite_visible = false;
+    blink_next_change_date = SDL_GetTicks();
+  }
 }
 
 /**
@@ -231,10 +254,10 @@ void Sprite::set_animation_listener(AnimationListener *listener) {
  */
 void Sprite::update_current_frame(void) {
 
-  int next_frame;
-
   Uint32 now = SDL_GetTicks();
 
+  // update the current frame
+  int next_frame;
   while (!over && !suspended && get_frame_interval() > 0
 	 && now >= next_frame_date) {
 
@@ -256,6 +279,15 @@ void Sprite::update_current_frame(void) {
       next_frame_date += get_frame_interval();
     }
   }
+
+  // update the blink
+  if (is_blinking()) {
+
+    while (now > blink_next_change_date) {
+      blink_is_sprite_visible = !blink_is_sprite_visible;
+      blink_next_change_date += blink_delay;
+    }
+  }
 }
 
 /**
@@ -268,7 +300,7 @@ void Sprite::update_current_frame(void) {
  */
 void Sprite::display(SDL_Surface *destination, int x, int y) {
 
-  if (!is_over()) {
+  if (!is_over() && (blink_delay == 0 || blink_is_sprite_visible)) {
     current_animation->display(destination, x, y, current_direction, current_frame);
   }
 }

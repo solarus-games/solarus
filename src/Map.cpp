@@ -289,7 +289,7 @@ void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable
   PickableItem *item = PickableItem::create(this, layer, x, y, pickable_item_type, falling);
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
-  if (item != NULL) {
+  if (item != NULL) {    
     sprite_entities[layer]->push_back(item);
     entity_detectors->push_back(item);
     all_entities->push_back(item);

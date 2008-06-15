@@ -26,15 +26,13 @@ MovementFalling::~MovementFalling(void) {
 
 }
 
-#include "MapEntity.h" // TODO remove
-
 /**
  * Updates the y position.
  */
 void MovementFalling::update_y(void) {
-  
+
   Uint16 now = SDL_GetTicks();
-  
+
   while (now >= next_move_date_y && frame < 26) {
     translate_y(moves[height][frame]);
     frame++;

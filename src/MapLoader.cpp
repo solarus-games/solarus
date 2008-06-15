@@ -106,7 +106,7 @@ void MapLoader::load_map(Map *map) {
 	string entrance_name;
 	iss >> width >> height >> entity_name >> transition_type >> destination_map_id >> entrance_name;
 	map->add_exit(entity_name, (Layer) layer, x, y, width, height,
-		 (TransitionType) transition_type, destination_map_id, entrance_name);
+		      (TransitionType) transition_type, destination_map_id, entrance_name);
 	break;
       }
 

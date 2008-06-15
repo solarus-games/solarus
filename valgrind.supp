@@ -1,3 +1,15 @@
+# ERROR SUMMARY: suppressed: 1283 from 7
+# LEAK SUMMARY: suppressed: 80,485 bytes in 1,053 blocks.
+
+{
+   FMOD_2
+   Memcheck:Leak
+   fun:calloc
+   obj:/lib/ld-2.7.so
+   fun:_dl_allocate_tls
+   fun:pthread_create@@GLIBC_2.1
+   fun:_Z21FMOD_OS_Thread_CreatePKcPFjPvES1_20FMOD_THREAD_PRIORITYS1_iPS1_
+}
 
 {
    FMOD_3

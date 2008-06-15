@@ -9,7 +9,8 @@
  * Creates a map entity without specifying its properties yet.
  */
 MapEntity::MapEntity(void):
-  layer(LAYER_LOW), name(""), direction(0), movement(NULL), suspended(false) {
+  layer(LAYER_LOW), name(""), direction(0), movement(NULL),
+  suspended(false), when_suspended(0) {
 
   position_in_map.x = 0;
   position_in_map.y = 0;
@@ -32,7 +33,8 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  layer(layer), name(""), direction(0), movement(NULL), suspended(false) {
+  layer(layer), name(""), direction(0), movement(NULL),
+  suspended(false), when_suspended(0) {
 
   position_in_map.x = x;
   position_in_map.y = y;
@@ -56,7 +58,8 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * @param height height of the entity
  */
 MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
-  layer(layer), name(name), direction(direction), movement(NULL), suspended(false) {
+  layer(layer), name(name), direction(direction), movement(NULL),
+  suspended(false), when_suspended(0) {
 
   position_in_map.x = x;
   position_in_map.y = y;
@@ -217,7 +220,11 @@ void MapEntity::set_origin(SDL_Rect &origin) {
 
 /**
  * Sets the origin point and the size of the entity
- * from its first sprite created.
+ * like its sprite.
+ * You should call this function only if the entity's rectangle
+ * is the same as the sprite's rectangle.
+ * Otherwise, you have to call set_size() and set_origin()
+ * explicitely.
  */
 void MapEntity::set_rectangle_from_sprite(void) {
 
@@ -346,7 +353,12 @@ bool MapEntity::is_suspended(void) {
 void MapEntity::set_suspended(bool suspended) {
 
   this->suspended = suspended;
-  
+
+  // remember the date if the movement is being suspended
+  if (suspended) {
+    when_suspended = SDL_GetTicks();
+  }
+
   // suspend/unsuspend the sprites animations
   for (unsigned int i = 0; i < sprites->size(); i++) {
     Sprite *sprite = sprites->at(i);

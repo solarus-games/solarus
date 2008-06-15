@@ -80,6 +80,11 @@ class MapEntity {
    */
   bool suspended;
 
+  /**
+   * Indicates when this entity was suspended.
+   */
+  Uint16 when_suspended;
+
   // creation
   MapEntity(void);
   MapEntity(Layer layer, int x, int y, int width, int height);

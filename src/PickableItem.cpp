@@ -363,3 +363,26 @@ void PickableItem::give_item_to_player(void) {
 
   }
 }
+
+/**
+ * This function is called by the map when the game is suspended or resumed.
+ * This is a redefinition of MapEntity::set_suspended() to suspend the timer
+ * which makes the pickable item disappear after a few seconds.
+ * @param suspended true to suspend the entity, false to resume it
+ */
+void PickableItem::set_suspended(bool suspended) {
+
+  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+
+  // suspend the timer
+  Uint16 now = SDL_GetTicks();
+  
+  if (!suspended) {
+    // the game is being resumed
+    // recalculate the blinking date and the disappearing date
+    if (when_suspended != 0) {
+      blink_date = now + (blink_date - when_suspended);
+      disappear_date = now + (disappear_date - when_suspended);
+    }
+  }
+}

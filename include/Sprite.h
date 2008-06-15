@@ -72,6 +72,23 @@ class Sprite {
    */
   AnimationListener *listener;
 
+  // blink
+
+  /**
+   * Blink delay of the sprite, or zero if the sprite is not blinking.
+   */
+  Uint16 blink_delay;
+
+  /**
+   * When blinking, true if the sprite is visible or false if it is invisible.
+   */
+  bool blink_is_sprite_visible;
+
+  /**
+   * Date of the next change when blinking: visible or not.
+   */
+  Uint16 blink_next_change_date;
+
   Uint32 get_frame_interval(void);
   int get_next_frame(void);
 
@@ -103,6 +120,10 @@ class Sprite {
   bool is_suspended(void);
   void set_suspended(bool suspended);
   bool is_over(void);
+
+  // blink
+  bool is_blinking(void);
+  void set_blinking(Uint16 blink_delay);
 
   // animation listener
   void set_animation_listener(AnimationListener *listener);

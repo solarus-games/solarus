@@ -17,7 +17,8 @@ const double SQRT_2 = 1.41421356237309504880;
  * Constructor.
  */
 Movement::Movement(void):
-  x_speed(0), y_speed(0), x_move(0), y_move(0), suspended(false) {
+  x_speed(0), y_speed(0), x_move(0), y_move(0),
+  suspended(false), when_suspended(0) {
   
 }
 
@@ -249,22 +250,22 @@ bool Movement::is_suspended(void) {
 
 /**
  * Suspends or resumes the movement.
- * Nothing is done if the parameter specified does not change.
+ * This function is called by the entity when the game is suspended or resumed.
  * @param suspended true to suspend the movement, false to resume it
  */
 void Movement::set_suspended(bool suspended) {
-
-  if (suspended != this->suspended) {
-    this->suspended = suspended;
-    
-    Uint16 now = SDL_GetTicks();
-
-    if (suspended) {
-      // the movement is being suspended
-      when_suspended = now;
-    }
-    else {
-      // recalculate the next move date
+  
+  this->suspended = suspended;
+  
+  Uint16 now = SDL_GetTicks();
+  
+  if (suspended) {
+    // the movement is being suspended
+    when_suspended = now;
+  }
+  else {
+    // recalculate the next move date
+    if (when_suspended != 0) {
       next_move_date_x = now + (next_move_date_x - when_suspended);
       next_move_date_y = now + (next_move_date_y - when_suspended);
     }

@@ -40,6 +40,16 @@ class PickableItem: public EntityDetector {
   int shadow_x;
   int shadow_y;
 
+  /**
+   * Date when the item starts blinking.
+   */
+  Uint16 blink_date;
+  
+  /**
+   * Date when the item disappears.
+   */
+  Uint16 disappear_date;
+
   // creation and initialization
   PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling);
 
@@ -55,6 +65,7 @@ class PickableItem: public EntityDetector {
   ~PickableItem(void);
   static PickableItem * create(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling);
 
+  virtual void set_suspended(bool suspended);
   void entity_collision(MapEntity *entity_overlapping);
   virtual void display_on_map(Map *map);
 };

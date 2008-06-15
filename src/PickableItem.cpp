@@ -75,14 +75,22 @@ static const SoundId sounds[] = {
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (must be a normal item)
- * @param falling true to make the item falling when it appears (ignored for a fairy)
+ * @param falling true to make the item fall when it appears (ignored for a fairy)
+ * @param disappear true to make the item disappear after an amout of time
  */
-PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling):
+PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type,
+			   bool falling, bool will_disappear):
   EntityDetector(COLLISION_WITH_ENTITY_RECTANGLE, "", layer, x, y, 0, 0),
-  map(map), type(type), falling(falling), shadow_sprite(NULL), shadow_x(x), shadow_y(y) {
+  map(map), type(type), falling(falling), will_disappear(will_disappear), shadow_x(x), shadow_y(y) {
 
   initialize_sprites();
   initialize_movement();
+
+  if (will_disappear) {
+    Uint16 now = SDL_GetTicks();
+    blink_date = now + 8000; // blink at 8s
+    disappear_date = now + 10000; // disappear at 10s
+  }
 }
 
 /**
@@ -107,19 +115,21 @@ PickableItem::~PickableItem(void) {
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (can be a normal item, PICKABLE_ITEM_NONE
  * or PICKABLE_ITEM_RANDOM)
- * @param falling true to make the item falling when it appears (ignored for a fairy)
+ * @param falling true to make the item fall when it appears (ignored for a fairy)
+ * @param will_disappear true to make the item disappear after an amout of time
  * @return the pickable item created, or NULL depending on the type
  */
-PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling) {
+PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, PickableItemType type,
+				    bool falling, bool will_disappear) {
 
   if (type == PICKABLE_ITEM_RANDOM) {
     // pick a type at random
     type = choose_random_type();
   }
-  
+
   // create an object if the type is not PICKABLE_ITEM_NONE
   if (type != PICKABLE_ITEM_NONE) {
-    return new PickableItem(map, layer, x, y, type, falling);
+    return new PickableItem(map, layer, x, y, type, falling, will_disappear);
   }
 
   return NULL;
@@ -272,21 +282,6 @@ void PickableItem::entity_collision(MapEntity *entity_overlapping) {
   }
 }
 
-
-/**
- * Displays the pickable item on the map.
- * This is a redefinition of MapEntity::display_on_map
- * to display the shadow independently of the item movement.
- */
-void PickableItem::display_on_map(Map *map) {
-
-  // display the shadow
-  map->display_sprite(shadow_sprite, shadow_x, shadow_y);
-
-  // display the sprite
-  MapEntity::display_on_map(map);
-}
-
 /**
  * Gives the item to the player.
  */
@@ -385,4 +380,46 @@ void PickableItem::set_suspended(bool suspended) {
       disappear_date = now + (disappear_date - when_suspended);
     }
   }
+}
+
+/**
+ * Updates the pickable item.
+ * This function is called repeatedly by the map.
+ * This is a redefinition of MapEntity::update() to make
+ * the item blink and then disappear after an amount of time.
+ */
+void PickableItem::update(void) {
+
+  // update the animations and the movement
+  MapEntity::update();
+
+  // check the timer
+  Uint16 now = SDL_GetTicks();
+  Sprite *item_sprite = get_sprite(0);
+
+  if (now >= blink_date && !item_sprite->is_blinking()) {
+    item_sprite->set_blinking(75);
+    shadow_sprite->set_blinking(75);
+  }
+
+  if (now >= disappear_date) {
+    map->remove_pickable_item(this);
+  }
+
+  // update the shadow
+  shadow_sprite->update_current_frame();
+}
+
+/**
+ * Displays the pickable item on the map.
+ * This is a redefinition of MapEntity::display_on_map
+ * to display the shadow independently of the item movement.
+ */
+void PickableItem::display_on_map(Map *map) {
+
+  // display the shadow
+  map->display_sprite(shadow_sprite, shadow_x, shadow_y);
+
+  // display the sprite
+  MapEntity::display_on_map(map);
 }

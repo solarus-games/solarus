@@ -25,14 +25,19 @@ class PickableItem: public EntityDetector {
   PickableItemType type;
 
   /**
+   * Sprite of the shadow (except for a fairy).
+   */
+  Sprite *shadow_sprite;
+
+  /**
    * Indicates whether the item is falling when it appears (except for a fairy).
    */
   bool falling;
 
   /**
-   * Sprite of the shadow (except for a fairy).
+   * Indicates whether the item will disappear after an amount of time.
    */
-  Sprite *shadow_sprite;
+  bool will_disappear;
 
   /**
    * Coordinates of the shadow (which does not move when the item is falling).
@@ -51,7 +56,8 @@ class PickableItem: public EntityDetector {
   Uint16 disappear_date;
 
   // creation and initialization
-  PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling);
+  PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type,
+	       bool falling, bool will_disappear);
 
   static PickableItemType choose_random_type(void);
   void initialize_sprites(void);
@@ -63,11 +69,14 @@ class PickableItem: public EntityDetector {
  public:
 
   ~PickableItem(void);
-  static PickableItem * create(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling);
+  static PickableItem * create(Map *map, Layer layer, int x, int y, PickableItemType type,
+			       bool falling, bool will_disappear);
 
-  virtual void set_suspended(bool suspended);
+  void set_suspended(bool suspended);
   void entity_collision(MapEntity *entity_overlapping);
-  virtual void display_on_map(Map *map);
+
+  void update(void);
+  void display_on_map(Map *map);
 };
 
 #endif

@@ -283,10 +283,12 @@ void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
  * @param pickable_item_type type of pickable item to create
  * (can be a normal item, PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM)
  * @param falling true to make the item falling when it appears (ignored for a fairy)
+ * @param will_disappear true to make the item disappear after an amout of time
  */
-void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type, bool falling) {
-  
-  PickableItem *item = PickableItem::create(this, layer, x, y, pickable_item_type, falling);
+void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
+			    bool falling, bool will_disappear) {
+
+  PickableItem *item = PickableItem::create(this, layer, x, y, pickable_item_type, falling, will_disappear);
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {    
@@ -301,7 +303,7 @@ void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable
  * @param pickable_item the item to remove
  */
 void Map::remove_pickable_item(PickableItem *item) {
-  
+
   entities_to_remove->push_back(item);
 
   // erf... cannot remove it from the lists while the lists are being traversed
@@ -318,12 +320,12 @@ void Map::remove_pickable_item(PickableItem *item) {
 void Map::remove_marked_entities(void) {
 
   list<MapEntity*>::iterator it;
-  
+
   // remove the marked entities
   for (it = entities_to_remove->begin();
        it != entities_to_remove->end();
        it++) {
-    
+
     // remove it from the entity detectors list
     // (the cast may be invalid but this is just a pointer comparison)
     // okay this is awful... so:

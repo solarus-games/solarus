@@ -173,7 +173,8 @@ class Map {
   void unload(void);
 
   // entities
-  void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type, bool falling);
+  void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
+			 bool falling, bool will_disappear);
   void remove_pickable_item(PickableItem *item);
 
   // Link's presence

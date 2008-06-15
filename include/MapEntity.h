@@ -136,7 +136,7 @@ class MapEntity {
   virtual void set_suspended(bool suspended);
 
   // update and display
-  virtual void update();
+  virtual void update(void);
   virtual void display_on_map(Map *map);
 };
 

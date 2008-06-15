@@ -55,7 +55,7 @@ class PickableItem: public EntityDetector {
   ~PickableItem(void);
   static PickableItem * create(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling);
 
-  void entity_overlaps(MapEntity *entity_overlapping);
+  void entity_collision(MapEntity *entity_overlapping);
   virtual void display_on_map(Map *map);
 };
 

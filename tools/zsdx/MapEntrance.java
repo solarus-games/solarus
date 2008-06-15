@@ -66,10 +66,10 @@ public class MapEntrance extends InteractiveEntity {
 
     /**
      * Returns the y coordinate of the origin point of the entity.
-     * @return 15
+     * @return 13
      */
     protected int getHotSpotY() {
-	return 15;
+	return 13;
     }
 
     /**

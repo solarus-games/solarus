@@ -78,8 +78,8 @@ static const SoundId sounds[] = {
  * @param falling true to make the item falling when it appears (ignored for a fairy)
  */
 PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling):
-  EntityDetector("", layer, x, y, 0, 0),
-  map(map), type(type), falling(falling), shadow_x(x), shadow_y(y) {
+  EntityDetector(COLLISION_WITH_ENTITY_RECTANGLE, "", layer, x, y, 0, 0),
+  map(map), type(type), falling(falling), shadow_sprite(NULL), shadow_x(x), shadow_y(y) {
 
   initialize_sprites();
   initialize_movement();
@@ -90,6 +90,9 @@ PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType
  */
 PickableItem::~PickableItem(void) {
 
+  if (shadow_sprite != NULL) {
+    delete shadow_sprite;
+  }
 }
 
 /**
@@ -256,12 +259,12 @@ void PickableItem::initialize_movement(void) {
 
 /**
  * This function is called by the engine when an entity overlaps the pickable item.
- * This is a redefinition of EntityDetector::entity_overlaps().
+ * This is a redefinition of EntityDetector::entity_collision().
  * If the entity is the player, we give him the item, and the map is notified
  * to destroy it.
  * @param entity_overlapping the entity overlapping the detector
  */
-void PickableItem::entity_overlaps(MapEntity *entity_overlapping) {
+void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping == (MapEntity*) zsdx->game_resource->get_link()) {
     give_item_to_player();

@@ -313,6 +313,44 @@ void Map::remove_pickable_item(PickableItem *item) {
 }
 
 /**
+ * Removes and destroys the entities placed in the entities_to_remove list. 
+ */
+void Map::remove_marked_entities(void) {
+
+  list<MapEntity*>::iterator it;
+  
+  // remove the marked entities
+  for (it = entities_to_remove->begin();
+       it != entities_to_remove->end();
+       it++) {
+    
+    // remove it from the entity detectors list
+    // (the cast may be invalid but this is just a pointer comparison)
+    // okay this is awful... so:
+    // TODO:
+    // - the entity tells the map it wants to kill itself: map->schedule_remove_entity(this)
+    // - which adds the entity to a list of entities to be removed
+    // - right here, the map calls (*it)->remove_from_map()
+    // - which calls for example remove_pickable_item
+    // - which removes the entity from the appropriate lists, and adds the entity to a list of entities to destroy
+    // - then we destroy the entities to destroy
+    // or: each entity has a state: active or to be removed... well it's complicated
+
+    entity_detectors->remove((EntityDetector*) (*it));
+
+    // remove it from the sprite entities list
+    sprite_entities[(*it)->get_layer()]->remove(*it);
+
+    // remove it from the whole list
+    all_entities->remove(*it);
+
+    // destroy it
+    delete *it;
+  }
+  entities_to_remove->clear();
+}
+
+/**
  * Sets the current entrance of the map.
  * @param entrance_index index of the entrance you want to use
  */
@@ -418,38 +456,10 @@ void Map::update_entities(void) {
 	 it++) {
       (*it)->update();
     }
-
   }
 
-  // remove the marked entities
-  for (it = entities_to_remove->begin();
-       it != entities_to_remove->end();
-       it++) {
-    
-    // remove it from the entity detectors list
-    // (the cast may be invalid but this is just a pointer comparison)
-    // okay this is awful... so:
-    // TODO:
-    // - the entity tells the map it wants to kill itself: map->schedule_remove_entity(this)
-    // - which adds the entity to a list of entities to be removed
-    // - right here, the map calls (*it)->remove_from_map()
-    // - which calls for example remove_pickable_item
-    // - which removes the entity from the appropriate lists, and adds the entity to a list of entities to destroy
-    // - then we destroy the entities to destroy
-
-    // or: each entity has a state: active or to be removed... well it's complicated
-    entity_detectors->remove((EntityDetector*) (*it));
-
-    // remove it from the sprite entities list
-    sprite_entities[(*it)->get_layer()]->remove(*it);
-
-    // remove it from the whole list
-    all_entities->remove(*it);
-
-    // destroy it
-    delete *it;
-  }
-  entities_to_remove->clear();
+  // remove the entities that have to be removed now
+  remove_marked_entities();
 
   // game suspended
   bool game_suspended = zsdx->game->is_suspended();
@@ -661,8 +671,12 @@ void Map::entity_just_moved(MapEntity *entity) {
        i != entity_detectors->end();
        i++) {
     
-    (*i)->check_entity_overlapping(entity);
+    (*i)->check_entity_collision(entity);
   }
+
+  // some detectors might have to be removed now
+  // because of a collision
+  remove_marked_entities();
 }
 
 /**

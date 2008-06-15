@@ -151,6 +151,8 @@ class Map {
   void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
 		TransitionType transition_type, MapId map_id, string entrance_name);
 
+  void remove_marked_entities(void);
+
  public:
 
   // creation and destruction

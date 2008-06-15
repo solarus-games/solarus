@@ -6,6 +6,7 @@
 MapEntrance::MapEntrance(string name, Layer layer, int link_x, int link_y, int link_direction):
   MapEntity(name, link_direction, layer, link_x, link_y, 16, 16) {
 
+  set_origin(8, 13);
 }
 
 /**

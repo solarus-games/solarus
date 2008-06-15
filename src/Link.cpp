@@ -91,7 +91,7 @@ Link::Link(void):
   pushing_direction_mask(0xFFFF) {
 
   set_size(16, 16);
-  set_origin(8, 15);
+  set_origin(8, 13);
   set_movement(new Movement8ByPlayer(12));
 }
 

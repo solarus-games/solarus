@@ -6,7 +6,7 @@
 FMOD_SYSTEM *Sound::system = NULL;
 
 /**
- * Constructor used by the Music SubClass.
+ * Constructor used by the Music subclass.
  */
 Sound::Sound(void) {
 
@@ -26,6 +26,7 @@ Sound::Sound(SoundId sound_id):
  * Destroys the sound.
  */
 Sound::~Sound(void) {
+  cout << "destroying sound " << file_name << "\n";
   if (sound != NULL) {
     FMOD_Sound_Release(sound);
   }
@@ -89,10 +90,12 @@ bool Sound::play(void) {
 
   if (is_initialized()) {
 
-    result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
-
-    if (result != FMOD_OK) {
-      cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
+    if (sound == NULL) {
+      result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
+      
+      if (result != FMOD_OK) {
+	cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
+      }
     }
     else {
       result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);

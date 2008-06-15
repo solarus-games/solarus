@@ -34,7 +34,7 @@ class MapExit: public EntityDetector {
 	  TransitionType transition_type, MapId destination_map_id, string entrance_name);
   ~MapExit(void);
 
-  void entity_overlaps(MapEntity *entity_overlapping);
+  void entity_collision(MapEntity *entity_overlapping);
 
 };
 

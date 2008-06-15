@@ -10,9 +10,10 @@
  */
 SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, SDL_Rect *frames,
 						   int x_origin, int y_origin):
-  nb_frames(nb_frames), frames(frames),
-  x_origin(x_origin), y_origin(y_origin) {
+  nb_frames(nb_frames), frames(frames) {
 
+  origin.x = x_origin;
+  origin.y = y_origin;
 }
 
 /**
@@ -20,6 +21,24 @@ SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, SDL_Rect *fram
  */
 SpriteAnimationDirection::~SpriteAnimationDirection(void) {
   delete[] frames;
+}
+
+/**
+ * Returns the size of a frame.
+ * @return the size of a frame
+ */
+SDL_Rect& SpriteAnimationDirection::get_size(void) {
+
+  return frames[0];
+}
+
+/**
+ * Returns the origin point of a frame.
+ * @return the origin point of a frame
+ */
+SDL_Rect& SpriteAnimationDirection::get_origin(void) {
+
+  return origin;
 }
 
 /**
@@ -39,8 +58,8 @@ void SpriteAnimationDirection::display(SDL_Surface *destination, int x, int y,
 
   SDL_Rect *current_frame_rect = &frames[current_frame];
 
-  position_up_left.x = x - x_origin;
-  position_up_left.y = y - y_origin;
+  position_up_left.x = x - origin.x;
+  position_up_left.y = y - origin.y;
   position_up_left.w = current_frame_rect->w;
   position_up_left.h = current_frame_rect->h;
 

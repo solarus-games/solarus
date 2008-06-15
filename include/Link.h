@@ -88,7 +88,6 @@ class Link: public MapEntity, AnimationListener {
   bool can_start_sword(void);
 
   // animation of the sprites
-  void set_animation_suspended(bool suspended);
   void set_animation_direction(int direction);
   bool is_direction_locked(void);
   void stop_displaying_sword(void);
@@ -112,6 +111,8 @@ class Link: public MapEntity, AnimationListener {
   void display_on_map(Map *map);
 
   // sprites
+  void set_suspended(bool suspended);
+
   void initialize_sprites(void);
   bool is_sword_visible(void);
   bool is_sword_stars_visible(void);

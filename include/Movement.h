@@ -77,6 +77,16 @@ class Movement {
    */
   int y_move;
 
+  /**
+   * Indicates whether the movement is suspended.
+   */
+  bool suspended;
+
+  /**
+   * Indicates when the movement was suspended
+   */
+  Uint16 when_suspended;
+
   Movement(void);
 
   void translate_x(int dx);
@@ -114,6 +124,9 @@ class Movement {
   void set_y_speed(int y_speed);
   void set_speed(int speed);
   void stop(void);
+
+  bool is_suspended(void);
+  void set_suspended(bool suspended);
 
   void set_direction(int direction);
 };

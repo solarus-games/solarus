@@ -82,8 +82,11 @@ class Sprite {
   Sprite(SpriteAnimations *animations);
   ~Sprite(void);
 
-  // current animation, direction and frame
+  // size and origin point
+  SDL_Rect& get_size(void);
+  SDL_Rect& get_origin(void);
 
+  // current animation, direction and frame
   string get_current_animation(void);
   void set_current_animation(string animation_name);
   int get_current_direction(void);
@@ -92,7 +95,6 @@ class Sprite {
   void set_current_frame(int current_frame);
 
   // animation state
-
   bool is_animation_started(void);
   void start_animation(void);
   void restart_animation(void);
@@ -103,11 +105,9 @@ class Sprite {
   bool is_over(void);
 
   // animation listener
-
   void set_animation_listener(AnimationListener *listener);
 
   // udpate and display
-
   void update_current_frame(void);
   void display(SDL_Surface *destination, int x, int y);
 };

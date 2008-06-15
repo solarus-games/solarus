@@ -37,6 +37,26 @@ Sprite::~Sprite(void) {
 }
 
 /**
+ * Returns the size of a frame for the current animation and the current direction.
+ * @return the size of a frame
+ */
+SDL_Rect& Sprite::get_size(void) {
+
+  SpriteAnimation *animation = animations->get_animation(current_animation_name);
+  return animation->get_direction(current_direction)->get_size();
+}
+
+/**
+ * Returns the origin point of a frame for the current animation and the current direction.
+ * @return the origin point of a frame
+ */
+SDL_Rect& Sprite::get_origin(void) {
+
+  SpriteAnimation *animation = animations->get_animation(current_animation_name);
+  return animation->get_direction(current_direction)->get_origin();
+}
+
+/**
  * Returns the frame interval of the current animation.
  * A value of 0 (only for 1-frame animations) means that the
  * animation must continue to be displayed: in this case,

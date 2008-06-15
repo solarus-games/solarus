@@ -2,18 +2,22 @@
 #include "Movement.h"
 #include "Sprite.h"
 #include "Map.h"
+#include "ZSDX.h"
+#include "Game.h"
 
 /**
  * Creates a map entity without specifying its properties yet.
  */
 MapEntity::MapEntity(void):
-  layer(LAYER_LOW), name(""), direction(0), movement(NULL) {
+  layer(LAYER_LOW), name(""), direction(0), movement(NULL), suspended(false) {
 
   position_in_map.x = 0;
   position_in_map.y = 0;
 
+  origin.x = 0;
+  origin.y = 0;
+
   set_size(0, 0);
-  set_origin(0, 0);
 
   sprites = new vector<Sprite*>();
 }
@@ -28,13 +32,15 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  layer(layer), name(""), direction(0), movement(NULL) {
+  layer(layer), name(""), direction(0), movement(NULL), suspended(false) {
 
   position_in_map.x = x;
   position_in_map.y = y;
 
+  origin.x = 0;
+  origin.y = 0;
+
   set_size(width, height);
-  set_origin(0, 0);
 
   sprites = new vector<Sprite*>();
 }
@@ -50,13 +56,15 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * @param height height of the entity
  */
 MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
-  layer(layer), name(name), direction(direction), movement(NULL) {
+  layer(layer), name(name), direction(direction), movement(NULL), suspended(false) {
 
   position_in_map.x = x;
   position_in_map.y = y;
 
+  origin.x = 0;
+  origin.y = 0;
+
   set_size(width, height);
-  set_origin(0, 0);
 
   sprites = new vector<Sprite*>();
 }
@@ -148,6 +156,15 @@ void MapEntity::set_size(int width, int height) {
 }
 
 /**
+ * Sets the size of the entity.
+ * @param size the width and the height
+ */
+void MapEntity::set_size(SDL_Rect &size) {
+  position_in_map.w = size.w;
+  position_in_map.h = size.h;
+}
+
+/**
  * Returns the position of the entity.
  * This function returns the rectangle defined by
  * get_x(), get_y(), get_width() and get_height().
@@ -180,8 +197,33 @@ int MapEntity::get_direction(void) {
  * @param y y coordinate of the origin
  */
 void MapEntity::set_origin(int x, int y) {
+
+  position_in_map.x -= (x - origin.x);
+  position_in_map.y -= (y - origin.y);
+
   origin.x = x;
   origin.y = y;
+}
+
+/**
+ * Sets the origin point of the entity
+ * relative to the top-left corner of its rectangle.
+ * @param origin x and y coordinates of the origin
+ */
+void MapEntity::set_origin(SDL_Rect &origin) {
+
+  set_origin(origin.x, origin.y);
+}
+
+/**
+ * Sets the origin point and the size of the entity
+ * from its first sprite created.
+ */
+void MapEntity::set_rectangle_from_sprite(void) {
+
+  Sprite *sprite = sprites->at(0);
+  set_size(sprite->get_size());
+  set_origin(sprite->get_origin());
 }
 
 /**
@@ -289,6 +331,35 @@ bool MapEntity::is_origin_point_in(const SDL_Rect *rectangle) {
 }
 
 /**
+ * Returns whether the movement and the animations of this entity are suspended.
+ * @return true if the movement and the animations are suspended
+ */
+bool MapEntity::is_suspended(void) {
+  return suspended;
+}
+
+/**
+ * Suspends or resumes the movement and the animations of this entity.
+ * This function is called by the map when the game is suspended or resumed.
+ * @param suspended true to suspend the movement and the animations, false to resume them
+ */
+void MapEntity::set_suspended(bool suspended) {
+
+  this->suspended = suspended;
+  
+  // suspend/unsuspend the sprites animations
+  for (unsigned int i = 0; i < sprites->size(); i++) {
+    Sprite *sprite = sprites->at(i);
+    sprite->set_suspended(suspended);
+  }
+  
+  // suspend/unsuspend the movement
+  if (movement != NULL) {
+    movement->set_suspended(suspended);
+  }
+}
+
+/**
  * Updates the entity.
  * This function is called repeteadly by the map. By default, it updates the position
  * of the entity according to its movement (if any), and it updates the sprites frames
@@ -301,16 +372,16 @@ void MapEntity::update(void) {
 
   // update the sprites
   for (unsigned int i = 0; i < sprites->size(); i++) {
-
+    
     Sprite *sprite = sprites->at(i);
-
+    
     if (sprite->get_current_direction() != direction) {
       sprite->set_current_direction(direction);
     }
 
     sprite->update_current_frame();
   }
-
+  
   // update the movement
   if (movement != NULL) {
     movement->update();

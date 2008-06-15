@@ -15,6 +15,11 @@ class PickableItem: public EntityDetector {
  private:
 
   /**
+   * The map.
+   */
+  Map *map;
+
+  /**
    * Type of pickable item.
    */
   PickableItemType type;
@@ -35,18 +40,22 @@ class PickableItem: public EntityDetector {
   int shadow_x;
   int shadow_y;
 
-  // creation
-  PickableItem(Layer layer, int x, int y, PickableItemType type, bool falling);
+  // creation and initialization
+  PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling);
 
-  // initialization
   static PickableItemType choose_random_type(void);
   void initialize_sprites(void);
+  void initialize_movement(void);
+
+  // item
+  void give_item_to_player(void);
 
  public:
 
   ~PickableItem(void);
-  static PickableItem * create(Layer layer, int x, int y, PickableItemType type, bool falling);
+  static PickableItem * create(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling);
 
+  void entity_overlaps(MapEntity *entity_overlapping);
   virtual void display_on_map(Map *map);
 };
 

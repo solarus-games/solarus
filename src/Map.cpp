@@ -21,7 +21,7 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-id(id), started(false), width(0) {
+id(id), started(false), width(0), suspended(true) {
 
 }
 
@@ -84,10 +84,14 @@ void Map::unload(void) {
   }
 
   // delete the other entities
-  for (unsigned int i = 0; i < all_entities->size(); i++) {
-    delete all_entities->at(i);
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities->begin(); i != all_entities->end(); i++) {
+    delete *i;
   }
+
   delete all_entities;
+  delete entities_to_remove;
   delete entrances;
   delete entity_detectors;
 
@@ -282,13 +286,30 @@ void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
  */
 void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type, bool falling) {
   
-  PickableItem *item = PickableItem::create(layer, x, y, pickable_item_type, falling);
+  PickableItem *item = PickableItem::create(this, layer, x, y, pickable_item_type, falling);
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {
     sprite_entities[layer]->push_back(item);
+    entity_detectors->push_back(item);
     all_entities->push_back(item);
   }
+}
+
+/**
+ * Removes a pickable item from the map and destroys it.
+ * @param pickable_item the item to remove
+ */
+void Map::remove_pickable_item(PickableItem *item) {
+  
+  entities_to_remove->push_back(item);
+
+  // erf... cannot remove it from the lists while the lists are being traversed
+  /*
+  sprite_entities[item->get_layer()]->remove(item);
+  entity_detectors->remove(item);
+  */
+  // keep it in all_entities to have a reference and delete it when unloading the map
 }
 
 /**
@@ -311,6 +332,7 @@ void Map::set_entrance(unsigned int entrance_index) {
 void Map::set_entrance(string entrance_name) {
 
   bool found = false;
+
   unsigned int i;
   for (i = 0; i < entrances->size() && !found; i++) { 
     found = (entrances->at(i)->get_name() == entrance_name);
@@ -345,24 +367,94 @@ SDL_Rect * Map::get_screen_position(void) {
 }
 
 /**
+ * Suspends or resumes the movement and animations of the entities.
+ * This function is called when the game is being suspended
+ * or resumed.
+ * @param suspended true to suspend the movement and the animations,
+ * false to resume them
+ */
+void Map::set_suspended(bool suspended) {
+
+  this->suspended = suspended;
+
+  // Link
+  Link *link = zsdx->game_resource->get_link();
+  link->set_suspended(suspended);
+
+  // other entities
+  list<MapEntity*>::iterator i;
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+
+    for (i = sprite_entities[layer]->begin();
+	 i != sprite_entities[layer]->end();
+	 i++) {
+      (*i)->set_suspended(suspended);
+    }
+
+    // note that we don't suspend the animated tiles
+  }
+}
+
+/**
  * Updates the animation and the position of each entity, including Link.
  */
 void Map::update_entities(void) {
-
-  // update link's position, movement and animation
+  
+  list<MapEntity*>::iterator it;
+  
+  // update Link's position, movement and animation
   Link *link = zsdx->game_resource->get_link();
   link->update();
 
   // update the animated tiles and sprites
   for (int layer = 0; layer < LAYER_NB; layer++) {
-    
+
     for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
       tiles[layer]->at(i)->update();
     }
 
-    for (unsigned int i = 0; i < sprite_entities[layer]->size(); i++) {
-      sprite_entities[layer]->at(i)->update();
+    for (it = sprite_entities[layer]->begin();
+	 it != sprite_entities[layer]->end();
+	 it++) {
+      (*it)->update();
     }
+
+  }
+
+  // remove the marked entities
+  for (it = entities_to_remove->begin();
+       it != entities_to_remove->end();
+       it++) {
+    
+    // remove it from the entity detectors list
+    // (the cast may be invalid but this is just a pointer comparison)
+    // okay this is awful... so:
+    // TODO:
+    // - the entity tells the map it wants to kill itself: map->schedule_remove_entity(this)
+    // - which adds the entity to a list of entities to be removed
+    // - right here, the map calls (*it)->remove_from_map()
+    // - which calls for example remove_pickable_item
+    // - which removes the entity from the appropriate lists, and adds the entity to a list of entities to destroy
+    // - then we destroy the entities to destroy
+
+    // or: each entity has a state: active or to be removed... well it's complicated
+    entity_detectors->remove((EntityDetector*) (*it));
+
+    // remove it from the sprite entities list
+    sprite_entities[(*it)->get_layer()]->remove(*it);
+
+    // remove it from the whole list
+    all_entities->remove(*it);
+
+    // destroy it
+    delete *it;
+  }
+  entities_to_remove->clear();
+
+  // game suspended
+  bool game_suspended = zsdx->game->is_suspended();
+  if (suspended != game_suspended) {
+    set_suspended(game_suspended);
   }
 }
 
@@ -370,7 +462,7 @@ void Map::update_entities(void) {
  * Displays the map with all its entities on the screen.
  */
 void Map::display() {
-  
+
   // Link
   Link* link = zsdx->game_resource->get_link();
 
@@ -390,9 +482,13 @@ void Map::display() {
     }
 
     // put the visible entities
-    for (unsigned int i = 0; i < sprite_entities[layer]->size(); i++) {
-      sprite_entities[layer]->at(i)->display_on_map(this);
+    list<MapEntity*>::iterator i;
+    for (i = sprite_entities[layer]->begin();
+	 i != sprite_entities[layer]->end();
+	 i++) {
+      (*i)->display_on_map(this);
     }
+
 
     // put Link if he is in this layer
     if (link->get_layer() == layer) {
@@ -559,13 +655,13 @@ bool Map::collision_with_tiles(int layer, SDL_Rect &collision_box) {
  */
 void Map::entity_just_moved(MapEntity *entity) {
 
-  EntityDetector *detector;
-
   // check each detector
-  for (unsigned int i = 0; i < entity_detectors->size(); i++) {
+  list<EntityDetector*>::iterator i;
+  for (i = entity_detectors->begin();
+       i != entity_detectors->end();
+       i++) {
     
-    detector = entity_detectors->at(i);
-    detector->check_entity_overlapping(entity);
+    (*i)->check_entity_overlapping(entity);
   }
 }
 

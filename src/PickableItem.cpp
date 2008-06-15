@@ -6,13 +6,16 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "Map.h"
+#include "MovementFalling.h"
+#include "GameResource.h"
+#include "Sound.h"
 
 // properties of each pickable item
 
 /**
  * Animation set for each pickable item type.
  */
-const SpriteAnimationsId sprite_animations_ids[] = {
+static const SpriteAnimationsId sprite_animations_ids[] = {
   "", "entities/rupee", "entities/rupee", "entities/rupee",
   "entities/heart", "entities/magic", "entities/magic",
   "entities/fairy", "entities/bomb", "entities/bomb", "entities/bomb",
@@ -22,7 +25,7 @@ const SpriteAnimationsId sprite_animations_ids[] = {
 /**
  * Animation of the sprite for each pickable item type.
  */
-const string animation_names[] = {
+static const string animation_names[] = {
   "", "green", "blue", "red", "stopped", "small", "big",
   "normal", "1", "5", "10", "1", "5", "10", "small",
 };
@@ -32,7 +35,7 @@ const string animation_names[] = {
  * false for a small shadow, true for a big shadow.
  * The bombs are the only pickable items with a big shadow.
  */
-const bool big_shadows[] = {
+static const bool big_shadows[] = {
   false, false, false, false, false, false, false,
   false, true, true, true, false, false, false, false,
 };
@@ -42,29 +45,44 @@ const bool big_shadows[] = {
  * (except for the fairy and the heart which have
  * a special movement)
  */
-/* TODO
-const int fall_heights[] = {
-  MOVEMENT_FALL_BIG, MOVEMENT_FALL_BIG, MOVEMENT_FALL_BIG,
-  MOVEMENT_FALL_BIG
-  }*/
+static const MovementFallingHeight falling_heights[] = {
+  MOVEMENT_FALLING_NONE,
+  MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG,
+  MOVEMENT_FALLING_NONE,
+  MOVEMENT_FALLING_MEDIUM, MOVEMENT_FALLING_SMALL,
+  MOVEMENT_FALLING_NONE,
+  MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG,
+  MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG,
+  MOVEMENT_FALLING_MEDIUM,
+};
+
+/**
+ * Sound played when the player gets each item.
+ */
+static const SoundId sounds[] = {
+  "", "picked_rupee", "picked_rupee", "picked_rupee",
+  "picked_item", "picked_item", "picked_item", "picked_item",
+  "picked_item", "picked_item", "picked_item",
+  "picked_item", "picked_item", "picked_item",
+  "picked_small_key",
+};
 
 /**
  * Creates a pickable item with the specified type.
  * The type must a normal one (not PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM).
+ * @param map the map
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (must be a normal item)
  * @param falling true to make the item falling when it appears (ignored for a fairy)
  */
-PickableItem::PickableItem(Layer layer, int x, int y, PickableItemType type, bool falling):
+PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling):
   EntityDetector("", layer, x, y, 0, 0),
-  type(type), falling(falling), shadow_x(x), shadow_y(y) {
+  map(map), type(type), falling(falling), shadow_x(x), shadow_y(y) {
 
   initialize_sprites();
-
-  // TODO  set_size, set_origin
-  set_movement(NULL); // TODO sauf la fée
+  initialize_movement();
 }
 
 /**
@@ -80,6 +98,7 @@ PickableItem::~PickableItem(void) {
  * - if the specified type is PICKABLE_ITEM_NONE
  * or:
  * - if the specified type is PICKABLE_ITEM_RANDOM and the random type chosen is PICKABLE_ITEM_NONE
+ * @param map the map
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
@@ -88,7 +107,7 @@ PickableItem::~PickableItem(void) {
  * @param falling true to make the item falling when it appears (ignored for a fairy)
  * @return the pickable item created, or NULL depending on the type
  */
-PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItemType type, bool falling) {
+PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, PickableItemType type, bool falling) {
 
   if (type == PICKABLE_ITEM_RANDOM) {
     // pick a type at random
@@ -97,7 +116,7 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItemType 
   
   // create an object if the type is not PICKABLE_ITEM_NONE
   if (type != PICKABLE_ITEM_NONE) {
-    return new PickableItem(layer, x, y, type, falling);
+    return new PickableItem(map, layer, x, y, type, falling);
   }
 
   return NULL;
@@ -205,6 +224,9 @@ void PickableItem::initialize_sprites(void) {
   Sprite * item_sprite = get_last_sprite();
   item_sprite->set_current_animation(animation_names[type]);
 
+  // set the origin point and the size of the entity
+  set_rectangle_from_sprite();
+
   if (falling) {
 
     // special animation of the heart when falling
@@ -213,6 +235,40 @@ void PickableItem::initialize_sprites(void) {
     }
   }
 }
+
+/**
+ * Initializes the movement of the item (if it is falling),
+ * depending on its type.
+ */
+void PickableItem::initialize_movement(void) {
+  
+  if (falling && type != PICKABLE_ITEM_FAIRY) {
+
+    if (type != PICKABLE_ITEM_HEART) {
+      MovementFallingHeight height = falling_heights[type];
+      set_movement(new MovementFalling(height));
+    }
+    else {
+      // TODO special case of the heart
+    }
+  }
+}
+
+/**
+ * This function is called by the engine when an entity overlaps the pickable item.
+ * This is a redefinition of EntityDetector::entity_overlaps().
+ * If the entity is the player, we give him the item, and the map is notified
+ * to destroy it.
+ * @param entity_overlapping the entity overlapping the detector
+ */
+void PickableItem::entity_overlaps(MapEntity *entity_overlapping) {
+
+  if (entity_overlapping == (MapEntity*) zsdx->game_resource->get_link()) {
+    give_item_to_player();
+    map->remove_pickable_item(this); // TODO also remove after a time delay
+  }
+}
+
 
 /**
  * Displays the pickable item on the map.
@@ -226,4 +282,81 @@ void PickableItem::display_on_map(Map *map) {
 
   // display the sprite
   MapEntity::display_on_map(map);
+}
+
+/**
+ * Gives the item to the player.
+ */
+void PickableItem::give_item_to_player(void) {
+
+  // play the sound
+  Sound *sound = zsdx->game_resource->get_sound(sounds[type]);
+  sound->play();
+
+  // give the item
+  Equipment *equipment = zsdx->game->get_savegame()->get_equipment();
+
+  switch (type) {
+
+  case PICKABLE_ITEM_RUPEE_1:
+    equipment->add_rupees(1);
+    break;
+
+  case PICKABLE_ITEM_RUPEE_5:
+    equipment->add_rupees(5);
+    break;
+
+  case PICKABLE_ITEM_RUPEE_20:
+    equipment->add_rupees(20);
+    break;
+
+  case PICKABLE_ITEM_HEART:
+    equipment->add_hearts(1);
+    break;
+
+  case PICKABLE_ITEM_SMALL_MAGIC:
+    equipment->add_magic(6);
+    break;
+
+  case PICKABLE_ITEM_BIG_MAGIC:
+    equipment->add_magic(42);
+    break;
+
+  case PICKABLE_ITEM_FAIRY:
+    // TODO
+    break;
+
+  case PICKABLE_ITEM_BOMB_1:
+    equipment->add_bombs(1);
+    break;
+
+  case PICKABLE_ITEM_BOMB_5:
+    equipment->add_bombs(5);
+    break;
+
+  case PICKABLE_ITEM_BOMB_10:
+    equipment->add_bombs(10);
+    break;
+
+  case PICKABLE_ITEM_ARROW_1:
+    equipment->add_arrows(1);
+    break;
+
+  case PICKABLE_ITEM_ARROW_5:
+    equipment->add_arrows(5);
+    break;
+
+  case PICKABLE_ITEM_ARROW_10:
+    equipment->add_arrows(10);
+    break;
+
+  case PICKABLE_ITEM_SMALL_KEY:
+    // TODO
+    break;
+
+  default:
+    DIE("Unknown pickable item type '" << type << "'");
+    break;
+
+  }
 }

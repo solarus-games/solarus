@@ -75,6 +75,11 @@ class MapEntity {
    */
   Movement *movement;
 
+  /**
+   * Indicates whether the animation and movement of this entity are suspended.
+   */
+  bool suspended;
+
   // creation
   MapEntity(void);
   MapEntity(Layer layer, int x, int y, int width, int height);
@@ -82,7 +87,10 @@ class MapEntity {
 
   // method called by the subclasses to set their properties
   void set_size(int width, int height);
+  void set_size(SDL_Rect &size);
   void set_origin(int x, int y);
+  void set_origin(SDL_Rect &origin);
+  void set_rectangle_from_sprite(void);
   void create_sprite(SpriteAnimationsId id);
   void set_movement(Movement *movement);
   void clear_movement(void);
@@ -117,6 +125,10 @@ class MapEntity {
   // collisions
   bool overlaps(const SDL_Rect *rectangle);
   bool is_origin_point_in(const SDL_Rect *rectangle);
+
+  // suspended
+  bool is_suspended(void);
+  virtual void set_suspended(bool suspended);
 
   // update and display
   virtual void update();

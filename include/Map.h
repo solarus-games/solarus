@@ -8,6 +8,7 @@
 #include "EntityType.h"
 #include "PickableItemType.h"
 #include <vector>
+#include <list>
 
 /**
  * Represents a map.
@@ -110,12 +111,17 @@ class Map {
    * All map entities execpt the tiles.
    * This vector is used to delete the entities when the map is unloaded.
    */
-  vector<MapEntity*> *all_entities;
+  list<MapEntity*> *all_entities;
+
+  /**
+   * List of entities to remove now.
+   */
+  list<MapEntity*> *entities_to_remove;
 
   /**
    * All map entities that are displayed by a sprite (a vector for each layer).
    */
-  vector<MapEntity*> *sprite_entities[LAYER_NB];
+  list<MapEntity*> *sprite_entities[LAYER_NB];
 
   /**
    * Vector of all possible entrances of the map.
@@ -128,16 +134,22 @@ class Map {
   unsigned int entrance_index;
 
   /**
-   * Vector of all entity detectors of the map.
+   * All entity detectors of the map.
    */
-  vector<EntityDetector*> *entity_detectors;
+  list<EntityDetector*> *entity_detectors;
   
+  /**
+   * Indicates whether the game is suspended.
+   */
+  bool suspended;
+
+  void set_suspended(bool suspended);
+
   // add and remove entities
   void add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height);
   void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
   void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
 		TransitionType transition_type, MapId map_id, string entrance_name);
-  void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type, bool falling);
 
  public:
 
@@ -157,6 +169,10 @@ class Map {
   bool is_loaded(void);
   void load(void);
   void unload(void);
+
+  // entities
+  void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type, bool falling);
+  void remove_pickable_item(PickableItem *item);
 
   // Link's presence
   bool is_started(void);

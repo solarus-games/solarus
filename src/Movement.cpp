@@ -17,7 +17,7 @@ const double SQRT_2 = 1.41421356237309504880;
  * Constructor.
  */
 Movement::Movement(void):
-  x_speed(0), y_speed(0), x_move(0), y_move(0) {
+  x_speed(0), y_speed(0), x_move(0), y_move(0), suspended(false) {
   
 }
 
@@ -240,6 +240,38 @@ bool Movement::has_to_move_now(void) {
 }
 
 /**
+ * Returns whether the movement is suspended.
+ * @return true if the movement is suspended
+ */
+bool Movement::is_suspended(void) {
+  return suspended;
+}
+
+/**
+ * Suspends or resumes the movement.
+ * Nothing is done if the parameter specified does not change.
+ * @param suspended true to suspend the movement, false to resume it
+ */
+void Movement::set_suspended(bool suspended) {
+
+  if (suspended != this->suspended) {
+    this->suspended = suspended;
+    
+    Uint16 now = SDL_GetTicks();
+
+    if (suspended) {
+      // the movement is being suspended
+      when_suspended = now;
+    }
+    else {
+      // recalculate the next move date
+      next_move_date_x = now + (next_move_date_x - when_suspended);
+      next_move_date_y = now + (next_move_date_y - when_suspended);
+    }
+  }
+}
+
+/**
  * Updates the x position of the entity if it has to be changed.
  */
 void Movement::update_x(void) {
@@ -276,6 +308,9 @@ void Movement::update_y(void) {
  * This function is called repeteadly by the map.
  */
 void Movement::update(void) {
-  update_x();
-  update_y();
+
+  if (!suspended) {
+    update_x();
+    update_y();
+  }
 }

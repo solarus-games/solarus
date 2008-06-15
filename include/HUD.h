@@ -11,7 +11,7 @@ class HUD {
 
  private:
 
-  Equipment *equipment;;
+  Equipment *equipment;
 
   int nb_elements;
   HudElement *elements[16];

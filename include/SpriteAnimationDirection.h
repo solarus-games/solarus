@@ -23,23 +23,23 @@ class SpriteAnimationDirection {
   SDL_Rect *frames;
 
   /**
-   * X coordinate of the sprite's origin from the
+   * Coordinate of the sprite's origin from the
    * upper-left corner of its image.
    */
-  const int x_origin;
-
-  /**
-   * Y coordinate of the sprite's origin from the
-   * upper-left corner of its image.
-   */
-  const int y_origin;
+  SDL_Rect origin;
 
  public:
 
+  // creation and destruction
   SpriteAnimationDirection(int nb_frames, SDL_Rect *frames,
 			   int x_origin, int y_origin);
   virtual ~SpriteAnimationDirection(void);
 
+  // size and origin point
+  SDL_Rect& get_size(void);
+  SDL_Rect& get_origin(void);
+
+  // frames
   inline int get_nb_frames() { return nb_frames; }
   void display(SDL_Surface *destination, int x, int y,
 	       int current_frame, SDL_Surface *src_image);

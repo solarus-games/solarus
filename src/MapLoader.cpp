@@ -55,15 +55,16 @@ void MapLoader::load_map(Map *map) {
     map->tileset->load();
   }
 
-  map->all_entities = new vector<MapEntity*>();
+  map->all_entities = new list<MapEntity*>();
+  map->entities_to_remove = new list<MapEntity*>();
   map->entrances = new vector<MapEntrance*>();
-  map->entity_detectors = new vector<EntityDetector*>();
+  map->entity_detectors = new list<EntityDetector*>();
 
-  // create the vectors of entities and initialize obstacle tile
+  // create the lists of entities and initialize obstacle tile
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     map->tiles[layer] = new vector<TileOnMap*>();
-    map->sprite_entities[layer] = new vector<MapEntity*>();
+    map->sprite_entities[layer] = new list<MapEntity*>();
 
     map->obstacle_tiles[layer] = new Obstacle[map->obstacle_tiles_size];
     for (int i = 0; i < map->obstacle_tiles_size; i++) {
@@ -113,7 +114,7 @@ void MapLoader::load_map(Map *map) {
       {
 	int pickable_item_type;
 	iss >> pickable_item_type;
-	map->add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type, false);
+	map->add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type, true); // TODO false
 	break;
       }
 

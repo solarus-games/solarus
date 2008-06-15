@@ -255,14 +255,6 @@ void Link::initialize_sprites(void) {
  */
 void Link::update_sprites(void) {
 
-  // suspend the animation when the game is suspended
-  if (zsdx->game->is_suspended() && !tunic_sprite->is_suspended()) {
-    set_animation_suspended(true);
-  }
-  else if (tunic_sprite->is_suspended() && !zsdx->game->is_suspended()) {
-    set_animation_suspended(false);
-  }
-
   // update the frames
   tunic_sprite->update_current_frame();
 
@@ -651,9 +643,11 @@ void Link::set_animation_direction(int direction) {
 
 /**
  * Suspends or resumes the animation of Link's sprites.
+ * This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the animation, false to resume it
  */
-void Link::set_animation_suspended(bool suspended) {
+void Link::set_suspended(bool suspended) {
+
   tunic_sprite->set_suspended(suspended);
 
   if (equipment->has_sword()) {

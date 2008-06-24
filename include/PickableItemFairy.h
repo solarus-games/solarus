@@ -9,6 +9,10 @@
  */
 class PickableItemFairy: public PickableItem {
 
+ public:
+
+  PickableItemFairy(Map *map, Layer layer, int x, int y);
+  ~PickableItemFairy(void);
 };
 
 #endif

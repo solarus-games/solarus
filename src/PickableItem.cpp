@@ -9,6 +9,8 @@
 #include "MovementFalling.h"
 #include "GameResource.h"
 #include "Sound.h"
+#include "PickableItemHeart.h"
+#include "PickableItemFairy.h"
 
 // properties of each pickable item
 
@@ -81,9 +83,6 @@ PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType
   EntityDetector(COLLISION_WITH_ENTITY_RECTANGLE, "", layer, x, y, 0, 0),
   map(map), type(type), falling(falling), will_disappear(will_disappear), shadow_x(x), shadow_y(y) {
 
-  initialize_sprites();
-  initialize_movement();
-
   if (will_disappear) {
     Uint16 now = SDL_GetTicks();
     blink_date = now + 8000; // blink at 8s
@@ -132,20 +131,27 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
     return NULL;
   }
 
+  PickableItem *item;
+
   switch (type) {
-    /* TODO
+
     // special class for the heart
-    case PICKABLE_ITEM_HEART:
-    return new PickableItemHeart(map, layer, x, y, falling, will_disappear);
+  case PICKABLE_ITEM_HEART:
+    item = new PickableItemHeart(map, layer, x, y, falling, will_disappear);
     
     // special class for the fairy
-    case PICKABLE_ITEM_FAIRY:
-    return new PickableItemFairy(map, layer, x, y);
-    */
+  case PICKABLE_ITEM_FAIRY:
+    item = new PickableItemFairy(map, layer, x, y);
+    
     // other items: no special class, but directly PickableItem
   default:
-    return new PickableItem(map, layer, x, y, type, falling, will_disappear);
+    item = new PickableItem(map, layer, x, y, type, falling, will_disappear);
   }
+
+  item->initialize_sprites(); // TODO in constructor? does the dynamic dispatch work? 
+  item->initialize_movement();
+
+  return item;
 }
 
 /**
@@ -232,12 +238,12 @@ PickableItemType PickableItem::choose_random_type(void) {
  * depending on its type.
  * The pickable items are represented with two sprites:
  * the item itself and its shadow, except the fairy whose
- * shadow is part of its sprite.
+ * shadow is part of its sprite (TODO: this might change).
  */
 void PickableItem::initialize_sprites(void) {
 
   // create the shadow (except for a fairy)
-  if (type != PICKABLE_ITEM_FAIRY) {
+  if (type != PICKABLE_ITEM_FAIRY) { // TODO: for a fairy too?
     shadow_sprite = new Sprite("entities/shadow");
 
     if (big_shadows[type]) {
@@ -252,14 +258,6 @@ void PickableItem::initialize_sprites(void) {
 
   // set the origin point and the size of the entity
   set_rectangle_from_sprite();
-
-  if (falling) {
-
-    // special animation of the heart when falling
-    if (type == PICKABLE_ITEM_HEART) {
-      item_sprite->set_current_animation("falling");
-    }
-  }
 }
 
 /**
@@ -267,16 +265,10 @@ void PickableItem::initialize_sprites(void) {
  * depending on its type.
  */
 void PickableItem::initialize_movement(void) {
-  
-  if (falling && type != PICKABLE_ITEM_FAIRY) {
 
-    if (type != PICKABLE_ITEM_HEART) {
-      MovementFallingHeight height = falling_heights[type];
-      set_movement(new MovementFalling(height));
-    }
-    else {
-      // TODO special case of the heart
-    }
+  if (falling) {
+    MovementFallingHeight height = falling_heights[type];
+    set_movement(new MovementFalling(height));
   }
 }
 
@@ -402,21 +394,23 @@ void PickableItem::update(void) {
   // update the animations and the movement
   MapEntity::update();
 
-  // check the timer
-  Uint16 now = SDL_GetTicks();
-  Sprite *item_sprite = get_sprite(0);
-
-  if (now >= blink_date && !item_sprite->is_blinking()) {
-    item_sprite->set_blinking(75);
-    shadow_sprite->set_blinking(75);
-  }
-
-  if (now >= disappear_date) {
-    map->remove_pickable_item(this);
-  }
-
   // update the shadow
   shadow_sprite->update_current_frame();
+
+  // check the timer
+  if (will_disappear) {
+    Uint16 now = SDL_GetTicks();
+    Sprite *item_sprite = get_sprite(0);
+    
+    if (now >= blink_date && !item_sprite->is_blinking()) {
+      item_sprite->set_blinking(75);
+      shadow_sprite->set_blinking(75);
+    }
+    
+    if (now >= disappear_date) {
+      map->remove_pickable_item(this);
+    }
+  }
 }
 
 /**

@@ -12,7 +12,7 @@
  */
 class PickableItem: public EntityDetector {
 
- private:
+ protected:
 
   /**
    * The map.
@@ -60,23 +60,24 @@ class PickableItem: public EntityDetector {
 	       bool falling, bool will_disappear);
 
   static PickableItemType choose_random_type(void);
-  void initialize_sprites(void);
-  void initialize_movement(void);
+
+  virtual void initialize_sprites(void);
+  virtual void initialize_movement(void);
 
   // item
-  void give_item_to_player(void);
+  virtual void give_item_to_player(void);
 
  public:
 
-  ~PickableItem(void);
+  virtual ~PickableItem(void);
   static PickableItem * create(Map *map, Layer layer, int x, int y, PickableItemType type,
 			       bool falling, bool will_disappear);
 
-  void set_suspended(bool suspended);
+  virtual void set_suspended(bool suspended);
   void entity_collision(MapEntity *entity_overlapping);
 
-  void update(void);
-  void display_on_map(Map *map);
+  virtual void update(void);
+  virtual void display_on_map(Map *map);
 };
 
 #endif

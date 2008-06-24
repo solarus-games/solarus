@@ -9,6 +9,18 @@
  */
 class PickableItemHeart: public PickableItem {
 
+ protected:
+  
+  void initialize_sprites(void);
+  void initialize_movement(void);
+
+ public:
+
+  PickableItemHeart(Map *map, Layer layer, int x, int y,
+		    bool falling, bool will_disappear);
+  ~PickableItemHeart(void);
+
+  void update(void);
 };
 
 #endif

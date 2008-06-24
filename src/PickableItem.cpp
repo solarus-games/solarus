@@ -107,6 +107,8 @@ PickableItem::~PickableItem(void) {
  * - if the specified type is PICKABLE_ITEM_NONE
  * or:
  * - if the specified type is PICKABLE_ITEM_RANDOM and the random type chosen is PICKABLE_ITEM_NONE
+ * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
+ * or one of its subclasses (for more complex items).
  * @param map the map
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
@@ -125,12 +127,25 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
     type = choose_random_type();
   }
 
-  // create an object if the type is not PICKABLE_ITEM_NONE
-  if (type != PICKABLE_ITEM_NONE) {
-    return new PickableItem(map, layer, x, y, type, falling, will_disappear);
+  // don't create anything if the type is PICKABLE_ITEM_NONE
+  if (type == PICKABLE_ITEM_NONE) {
+    return NULL;
   }
 
-  return NULL;
+  switch (type) {
+    /* TODO
+    // special class for the heart
+    case PICKABLE_ITEM_HEART:
+    return new PickableItemHeart(map, layer, x, y, falling, will_disappear);
+    
+    // special class for the fairy
+    case PICKABLE_ITEM_FAIRY:
+    return new PickableItemFairy(map, layer, x, y);
+    */
+    // other items: no special class, but directly PickableItem
+  default:
+    return new PickableItem(map, layer, x, y, type, falling, will_disappear);
+  }
 }
 
 /**
@@ -319,7 +334,7 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case PICKABLE_ITEM_FAIRY:
-    // TODO
+    // done in the subclass
     break;
 
   case PICKABLE_ITEM_BOMB_1:

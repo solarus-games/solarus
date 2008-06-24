@@ -17,7 +17,10 @@ const double SQRT_2 = 1.41421356237309504880;
  * Constructor.
  */
 Movement::Movement(void):
-  x_speed(0), y_speed(0), x_move(0), y_move(0),
+  x_speed(0), y_speed(0), 
+  next_move_date_x(SDL_GetTicks()),
+  next_move_date_y(SDL_GetTicks()),
+  x_move(0), y_move(0),
   suspended(false), when_suspended(0) {
   
 }
@@ -307,6 +310,8 @@ void Movement::update_y(void) {
 /**
  * Updates the entity's position.
  * This function is called repeteadly by the map.
+ * By default, it calls update_x() and update_y().
+ * You can redefine this function.
  */
 void Movement::update(void) {
 

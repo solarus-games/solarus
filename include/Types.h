@@ -60,6 +60,7 @@ class Movement8ByPlayer;
 class MovementWithCollision;
 class MovementWithSmoothCollision;
 class MovementFalling;
+class MovementPath;
 
 class MapEntity;
 class Link;
@@ -67,6 +68,9 @@ class EntityDetector;
 class TileOnMap;
 class MapExit;
 class MapEntrance;
+
 class PickableItem;
+class PickableItemHeart;
+class PickableItemFairy;
 
 #endif

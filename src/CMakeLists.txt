@@ -30,6 +30,7 @@ add_executable (zsdx
 	       MovementWithSmoothCollision.cpp
 	       Movement8ByPlayer.cpp
 	       MovementFalling.cpp
+	       MovementPath.cpp
 	       EntityDetector.cpp
 	       MapExit.cpp
 	       Sprite.cpp
@@ -37,6 +38,8 @@ add_executable (zsdx
 	       SpriteAnimation.cpp
 	       SpriteAnimationDirection.cpp
 	       PickableItem.cpp
+	       PickableItemHeart.cpp
+	       PickableItemFairy.cpp
 	       SimpleTile.cpp
 	       AnimatedTile.cpp
 	       TileOnMap.cpp

@@ -2,7 +2,7 @@
 #define ZSDX_MOVEMENT_FALLING_H
 
 #include "Common.h"
-#include "Movement.h"
+#include "MovementPath.h"
 
 /**
  * Indicates from which height the entity falls.
@@ -20,16 +20,7 @@ enum MovementFallingHeight {
  * This movement is typically used by the pickable items
  * (rupees, hearts...) that appear when the player kill and enemy.
  */
-class MovementFalling: public Movement {
-
- private:
-
-  MovementFallingHeight height;
-  int frame;
-
- protected:
-
-  void update_y(void);
+class MovementFalling: public MovementPath {
 
  public:
 

@@ -27,7 +27,7 @@ static const SpriteAnimationsId sprite_animations_ids[] = {
  */
 static const string animation_names[] = {
   "", "green", "blue", "red", "stopped", "small", "big",
-  "normal", "1", "5", "10", "1", "5", "10", "small",
+  "normal", "1", "5", "10", "1", "5", "10"
 };
 
 /**
@@ -37,7 +37,7 @@ static const string animation_names[] = {
  */
 static const bool big_shadows[] = {
   false, false, false, false, false, false, false,
-  false, true, true, true, false, false, false, false,
+  false, true, true, true, false, false, false
 };
 
 /**
@@ -53,7 +53,6 @@ static const MovementFallingHeight falling_heights[] = {
   MOVEMENT_FALLING_NONE,
   MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG,
   MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG,
-  MOVEMENT_FALLING_MEDIUM,
 };
 
 /**
@@ -64,7 +63,6 @@ static const SoundId sounds[] = {
   "picked_item", "picked_item", "picked_item", "picked_item",
   "picked_item", "picked_item", "picked_item",
   "picked_item", "picked_item", "picked_item",
-  "picked_small_key",
 };
 
 /**
@@ -346,10 +344,6 @@ void PickableItem::give_item_to_player(void) {
 
   case PICKABLE_ITEM_ARROW_10:
     equipment->add_arrows(10);
-    break;
-
-  case PICKABLE_ITEM_SMALL_KEY:
-    // TODO
     break;
 
   default:

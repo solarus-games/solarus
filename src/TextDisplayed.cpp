@@ -13,13 +13,17 @@ void TextDisplayed::initialize(void) {
 
   TTF_Init();
 
-  fonts[FONT_LA] = TTF_OpenFont(FileTools::data_file_add_prefix("zsdx.ttf"), 11);
+  string file_name = FileTools::data_file_add_prefix("zsdx.ttf");
+
+  fonts[FONT_LA] = TTF_OpenFont(file_name.c_str(), 11);
   if (fonts[FONT_LA] == NULL) {
     DIE("Cannot load font 'zsdx.ttf'");
     exit(1);
   }
+  
+  file_name = FileTools::data_file_add_prefix("fixed8.fon");
 
-  fonts[FONT_STANDARD] = TTF_OpenFont(FileTools::data_file_add_prefix("fixed8.fon"), 11);
+  fonts[FONT_STANDARD] = TTF_OpenFont(file_name.c_str(), 11);
   if (fonts[FONT_STANDARD] == NULL) {
     DIE("Cannot load font 'fixed8.fon'");
   }

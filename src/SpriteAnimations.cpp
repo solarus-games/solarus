@@ -11,16 +11,16 @@
  */
 SpriteAnimations::SpriteAnimations(SpriteAnimationsId id) {
 
-  // read the file
+  // compute the file name
+  string file_name = "sprites/" + id + ".zsd";
 
-  char file_name[256];
-  sprintf(file_name, "sprites/%s.zsd", id.c_str());
-  ifstream sprite_file(FileTools::data_file_add_prefix(file_name));
-
+  // open the file
+  ifstream sprite_file(FileTools::data_file_add_prefix(file_name).c_str());
   if (!sprite_file) {
     DIE("Cannot open file '" << FileTools::data_file_add_prefix(file_name) << "'");
   }
 
+  // read the file
   string line;
 
   SDL_Rect *positions_in_src;

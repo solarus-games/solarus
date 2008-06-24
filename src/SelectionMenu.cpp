@@ -58,10 +58,10 @@ SelectionMenu::SelectionMenu(void):
   img_letters = FileTools::open_image("menus/selection_menu_letters.png");
   img_mode = FileTools::open_image("menus/selection_menu_mode.png");
 
-  char file_name[MAX_FILE_NAME];
   for (int i = 0; i < 3; i++) {
-    sprintf(file_name, "menus/selection_menu_save%d.png", i + 1);
-    img_numbers[i] = FileTools::open_image(file_name);
+    ostringstream oss;
+    oss << "menus/selection_menu_save" << (i + 1) << ".png";
+    img_numbers[i] = FileTools::open_image(oss.str());
   }
 
   cursor = new Sprite("menus/selection_menu_cursor");

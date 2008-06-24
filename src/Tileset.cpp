@@ -2,6 +2,7 @@
 #include "SimpleTile.h"
 #include "AnimatedTile.h"
 #include "FileTools.h"
+#include <iomanip>
 
 /**
  * Constructor.
@@ -37,15 +38,19 @@ void Tileset::create_tile(int id, Tile *tile) {
  */
 void Tileset::load(void) {
 
-  // read the file
-  char file_name[40];
-  sprintf(file_name, "tilesets/tileset%04d.zsd", (int) id);
-  ifstream tileset_file(FileTools::data_file_add_prefix(file_name));
+  // compute the file name, depending on the id
+  ostringstream oss(ostringstream::out);
+  oss << "tilesets/tileset" << setfill('0') << setw(4) << id << ".zsd";
+  string file_name = FileTools::data_file_add_prefix(oss.str());
+
+  // open the tileset file
+  ifstream tileset_file(file_name.c_str());
 
   if (!tileset_file) {
     DIE("Cannot open file '" << file_name << "'");
   }
 
+  // parse the tileset file
   string line;
 
   // first line: tileset general info
@@ -87,8 +92,9 @@ void Tileset::load(void) {
   }
 
   // load the tileset image
-  sprintf(file_name, "tilesets/tileset%04d.png", (int) id);
-  tileset_image = FileTools::open_image(file_name);
+  ostringstream oss2(ostringstream::out);
+  oss2 << "tilesets/tileset" << setfill('0') << setw(4) << id << ".png";
+  tileset_image = FileTools::open_image(oss2.str());
   
   if (tileset_image == NULL) {
     DIE("Cannot load the image '" << file_name << "'");

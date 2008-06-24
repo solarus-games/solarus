@@ -4,6 +4,7 @@
 #include "Tileset.h"
 #include "ZSDX.h"
 #include "GameResource.h"
+#include <iomanip>
 
 /**
  * Creates a map loader.
@@ -25,16 +26,21 @@ MapLoader::~MapLoader(void) {
  */
 void MapLoader::load_map(Map *map) {
 
+  // get the id of the map
   int id = (int) map->get_id();
 
-  char file_name[20];
-  sprintf(file_name, "maps/map%04d.zsd", id);
-  ifstream map_file(FileTools::data_file_add_prefix(file_name));
+  // compute the file name, depending on the id
+  ostringstream oss(ostringstream::out);
+  oss << "maps/map" << setfill('0') << setw(4) << id << ".zsd";
+  string file_name = FileTools::data_file_add_prefix(oss.str());
 
+  // open the map file
+  ifstream map_file(file_name.c_str());
   if (!map_file) {
     DIE("Cannot load map '" << id << "': unable to open map file '" << file_name << "'");
   }
 
+  // parse the map file
   string line;
   TilesetId tileset_id;
 

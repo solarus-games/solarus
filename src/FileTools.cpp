@@ -17,16 +17,16 @@
  * platforms, because the user downloads a binary version of the game.
  */
 #ifdef DATADIR_ 
-#define DATADIR STRING(DATADIR_)
+#define DATADIR ((string) STRING(DATADIR_))
 #else
-#define DATADIR "./data"
+#define DATADIR ((string) "./data")
 #endif
 
 /**
  * @brief Returns the directory of the data files.
  * @return the directory of the data files
  */
-const char *FileTools::data_file_get_prefix(void) {
+string FileTools::data_file_get_prefix(void) {
 
   return DATADIR;
 }
@@ -41,11 +41,9 @@ const char *FileTools::data_file_get_prefix(void) {
  *
  * @param file_name name of a data file
  */
-const char *FileTools::data_file_add_prefix(const char *file_name) {
+string FileTools::data_file_add_prefix(string file_name) {
 
-  static char prefixed_file_name[MAX_FILE_NAME];
-
-  sprintf(prefixed_file_name, "%s/%s", DATADIR, file_name);
+  string prefixed_file_name = DATADIR + "/" + file_name;
   return prefixed_file_name;
 }
 
@@ -58,36 +56,13 @@ const char *FileTools::data_file_add_prefix(const char *file_name) {
  * @param file_name name of the file to open
  * @return the file, or NULL if it couldn't be open.
  */
-FILE *FileTools::open_data_file(const char *file_name) {
-  
-  FILE *f;
-  f = fopen(data_file_add_prefix(file_name), "r");
-  
+FILE *FileTools::open_data_file(string file_name) {
+
+  string full_file_name = data_file_add_prefix(file_name);
+
+  FILE *f = fopen(full_file_name.c_str(), "r");
+
   return f;
-}
-
-/**
- * @brief Loads an image file.
- * 
- * The file name is relative to the ZSDX images directory (which could be
- * for example /usr/local/share/zsdx/data/images or C:\Program Files\zsdx\data\images).
- * The program is stopped with an error message if the image cannot be loaded.
- *
- * @param file_name name of the image file to open
- * @return the file
- */
-SDL_Surface *FileTools::open_image(const char *file_name) {
-
-  static char prefixed_file_name[MAX_FILE_NAME];
-
-  sprintf(prefixed_file_name, "%s/images/%s", DATADIR, file_name);
-  SDL_Surface *image = IMG_Load(prefixed_file_name);
-
-  if (image == NULL) {
-    DIE("Cannot load image '" << prefixed_file_name << "'");
-  }
-
-  return image;
 }
 
 /**
@@ -102,5 +77,13 @@ SDL_Surface *FileTools::open_image(const char *file_name) {
  */
 SDL_Surface *FileTools::open_image(string file_name) {
 
-  return open_image(file_name.c_str());
+  string full_file_name = DATADIR + "/images/" + file_name;
+
+  SDL_Surface *image = IMG_Load(full_file_name.c_str());
+
+  if (image == NULL) {
+    DIE("Cannot load image '" << full_file_name << "'");
+  }
+
+  return image;
 }

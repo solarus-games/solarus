@@ -1,10 +1,8 @@
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - utiliser sdl-config malgré les autotools
-- Revoir FileTools avec des string et des fstream
 - Icône d'action : ajouter "porter" ou "soulever", et "saisir"
-- Faire une classe Movement, avec set_movement dans la classe Moving
 - Sprites de l'épée : faire des cases plus petites que 96*96 (la taille et le hot spot peuvent changer selon la direction)
-
+- vectors et lists plus en pointeurs (at() remplaçable par [] ?)
 
 
 - Compléter l'éditeur de maps et de tilesets :

@@ -17,12 +17,9 @@ static const SDL_Rect falling_moves[24] = {
  * @param layer layer of the heart to create on the map
  * @param x x coordinate of the heart to create
  * @param y y coordinate of the heart to create
- * @param falling true to make the heart fall when it appears
- * @param disappear true to make the heart disappear after an amout of time
  */
-PickableItemHeart::PickableItemHeart(Map *map, Layer layer, int x, int y,
-				     bool falling, bool will_disappear):
-  PickableItem(map, layer, x, y, PICKABLE_ITEM_HEART, falling, will_disappear) {
+PickableItemHeart::PickableItemHeart(Map *map, Layer layer, int x, int y):
+  PickableItem(map, layer, x, y, PICKABLE_ITEM_HEART) {
 
 }
 
@@ -44,7 +41,7 @@ void PickableItemHeart::initialize_sprites(void) {
   // first initialize the sprites like any item
   PickableItem::initialize_sprites();
 
-  if (falling) {
+  if (is_falling()) {
     // special animation of the heart when falling
     get_sprite(0)->set_current_animation("falling");
   }
@@ -57,7 +54,7 @@ void PickableItemHeart::initialize_sprites(void) {
  */
 void PickableItemHeart::initialize_movement(void) {
   
-  if (falling) {
+  if (is_falling()) {
     set_movement(new MovementPath(falling_moves, 24, 100, false));
   }
 }
@@ -72,7 +69,7 @@ void PickableItemHeart::update(void) {
 
   PickableItem::update();
 
-  if (falling) {
+  if (is_falling()) {
     // move the shadow according to the heart x position
     shadow_x = get_x();
   }

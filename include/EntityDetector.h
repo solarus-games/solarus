@@ -33,6 +33,8 @@ class EntityDetector: public MapEntity {
  private:
 
   const CollisionMode mode;
+
+  bool layer_ignored;
   
   bool check_collision_origin(MapEntity *entity);
   bool check_collision_rectangle(MapEntity *entity);
@@ -43,13 +45,15 @@ class EntityDetector: public MapEntity {
   EntityDetector(CollisionMode collision_mode, string name, Layer layer,
 		 int x, int y, int width, int height);
 
+  void set_layer_ignored(bool layer_ignored);
+
   virtual void entity_collision(MapEntity *entity_overlapping);
 
  public:
 
   virtual ~EntityDetector(void);
 
-  void check_entity_collision(MapEntity *entity);
+  virtual void check_entity_collision(MapEntity *entity);
 
 };
 

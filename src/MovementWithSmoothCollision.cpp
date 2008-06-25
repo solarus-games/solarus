@@ -47,12 +47,12 @@ void MovementWithSmoothCollision::update_x(void) {
 	 * to add a move on y to make a diagonal move.
 	 */
 
-	if (!collision_with_map(x_move, 2)) {
-	  translate(x_move, 2);
+	if (!collision_with_map(x_move, 1)) {
+	  translate(x_move, 1);
 	  next_move_date_x_increment = (int) (x_delay * SQRT_2); // fix the speed
 	}
-	else if (!collision_with_map(x_move, -2)) {
-	  translate(x_move, -2);
+	else if (!collision_with_map(x_move, -1)) {
+	  translate(x_move, -1);
 	  next_move_date_x_increment += (int) (x_delay * SQRT_2);
 	}
 	else {
@@ -63,14 +63,14 @@ void MovementWithSmoothCollision::update_x(void) {
 	   */
 
 	  bool moved = false;
-	  for (int i = 4; i <= 8 && !moved; i += 2) {
+	  for (int i = 1; i <= 8 && !moved; i++) {
 
 	    if (!collision_with_map(x_move, i)) {
-	      translate_y(2);
+	      translate_y(1);
 	      moved = true;
 	    }
 	    else if (!collision_with_map(x_move, -i)) {
-	      translate_y(-2);
+	      translate_y(-1);
 	      moved = true;
 	    }
 	  }
@@ -113,12 +113,12 @@ void MovementWithSmoothCollision::update_y(void) {
 	 * to add a move on x to make a diagonal move.
 	 */
 
-	if (!collision_with_map(2, y_move)) {
-	  translate(2, y_move);
+	if (!collision_with_map(1, y_move)) {
+	  translate(1, y_move);
 	  next_move_date_y_increment = (int) (y_delay * SQRT_2); // fix the speed
 	}
-	else if (!collision_with_map(-2, y_move)) {
-	  translate(-2, y_move);
+	else if (!collision_with_map(-1, y_move)) {
+	  translate(-1, y_move);
 	  next_move_date_y_increment = (int) (y_delay * SQRT_2);
 	}
 	else {
@@ -129,14 +129,14 @@ void MovementWithSmoothCollision::update_y(void) {
 	   */
 
 	  bool moved = false;
-	  for (int i = 4; i <= 8 && !moved; i += 2) {
+	  for (int i = 1; i <= 8 && !moved; i++) {
 
 	    if (!collision_with_map(i, y_move)) {
-	      translate_x(2);
+	      translate_x(1);
 	      moved = true;
 	    }
 	    else if (!collision_with_map(-i, y_move)) {
-	      translate_x(-2);
+	      translate_x(-1);
 	      moved = true;
 	    }
 	  }

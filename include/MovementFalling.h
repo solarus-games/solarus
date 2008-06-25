@@ -3,22 +3,13 @@
 
 #include "Common.h"
 #include "MovementPath.h"
-
-/**
- * Indicates from which height the entity falls.
- */
-enum MovementFallingHeight {
-  MOVEMENT_FALLING_NONE = -1,
-  MOVEMENT_FALLING_SMALL = 0,
-  MOVEMENT_FALLING_MEDIUM,
-  MOVEMENT_FALLING_BIG
-};
+#include "MovementFallingHeight.h"
 
 /**
  * Movement of an item that falls on the floor and
  * bounces one or several times before it stops.
  * This movement is typically used by the pickable items
- * (rupees, hearts...) that appear when the player kill and enemy.
+ * (rupees, hearts...) that appear when the player kill an enemy.
  */
 class MovementFalling: public MovementPath {
 

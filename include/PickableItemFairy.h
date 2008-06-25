@@ -9,10 +9,23 @@
  */
 class PickableItemFairy: public PickableItem {
 
+ private:
+
+  Movement *movement;
+
+ protected:
+
+  // initialization
+  void initialize_movement(void);
+
  public:
 
-  PickableItemFairy(Map *map, Layer layer, int x, int y);
+  // creation and destruction
+  PickableItemFairy(Map *map, int x, int y);
   ~PickableItemFairy(void);
+
+  // update
+  void update(void);
 };
 
 #endif

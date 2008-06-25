@@ -31,6 +31,7 @@ add_executable (zsdx
 	       Movement8ByPlayer.cpp
 	       MovementFalling.cpp
 	       MovementPath.cpp
+	       FairyMovement.cpp
 	       EntityDetector.cpp
 	       MapExit.cpp
 	       Sprite.cpp

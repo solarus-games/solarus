@@ -7,6 +7,7 @@
 #include "TransitionEffect.h"
 #include "EntityType.h"
 #include "PickableItemType.h"
+#include "MovementFallingHeight.h"
 #include <vector>
 #include <list>
 
@@ -179,7 +180,7 @@ class Map {
 
   // entities
   void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
-			 bool falling, bool will_disappear);
+			 int unique_id, MovementFallingHeight falling, bool will_disappear);
   void remove_pickable_item(PickableItem *item);
 
   // Link's presence

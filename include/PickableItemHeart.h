@@ -16,8 +16,7 @@ class PickableItemHeart: public PickableItem {
 
  public:
 
-  PickableItemHeart(Map *map, Layer layer, int x, int y,
-		    bool falling, bool will_disappear);
+  PickableItemHeart(Map *map, Layer layer, int x, int y);
   ~PickableItemHeart(void);
 
   void update(void);

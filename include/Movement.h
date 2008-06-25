@@ -7,6 +7,10 @@
  * The movement of an entity on the map, visible or not.
  * A moving entity has an instance of Movement which modifies its coordinates.
  * An instance of Movement is attached to one and only one instance of MapEntity.
+ *
+ * This class implements a simple speed vector: you can set the speed and the direction.
+ * Subclassses can implement totally different movements, using or not what is
+ * provided by the Movement class.
  */
 class Movement {
 
@@ -25,7 +29,7 @@ class Movement {
    * positive value: moving to the right
    * negative value: moving to the left
    */
-  int x_speed;
+  double x_speed;
 
   /**
    * Y speed of the entity, between -100 and 100.
@@ -33,7 +37,7 @@ class Movement {
    * positive value: moving downwards
    * negative value: moving upwards
    */
-  int y_speed;
+  double y_speed;
 
   /**
    * Date of the next x move in ticks.
@@ -87,8 +91,6 @@ class Movement {
    */
   Uint16 when_suspended;
 
-  Movement(void);
-
   void translate_x(int dx);
   void translate_y(int dy);
   void translate(int dx, int dy);
@@ -98,6 +100,7 @@ class Movement {
 
  public:
 
+  Movement(void);
   virtual ~Movement(void);
 
   // entity
@@ -116,13 +119,13 @@ class Movement {
 
   // movement
 
-  int get_x_speed();
-  int get_y_speed();
-  int get_speed(void);
+  double get_x_speed();
+  double get_y_speed();
+  double get_speed(void);
 
-  void set_x_speed(int x_speed);
-  void set_y_speed(int y_speed);
-  void set_speed(int speed);
+  void set_x_speed(double x_speed);
+  void set_y_speed(double y_speed);
+  void set_speed(double speed);
   void stop(void);
 
   bool is_suspended(void);

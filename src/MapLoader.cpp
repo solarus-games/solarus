@@ -112,7 +112,7 @@ void MapLoader::load_map(Map *map) {
       {
 	int pickable_item_type;
 	iss >> pickable_item_type;
-	map->add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type, true, true); // TODO false
+	map->add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type, 0, MOVEMENT_FALLING_BIG, false); // TODO NONE
 	break;
       }
 

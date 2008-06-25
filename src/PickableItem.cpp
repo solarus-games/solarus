@@ -39,22 +39,7 @@ static const string animation_names[] = {
  */
 static const bool big_shadows[] = {
   false, false, false, false, false, false, false,
-  false, true, true, true, false, false, false
-};
-
-/**
- * Height of the fall for each pickable item type
- * (except for the fairy and the heart which have
- * a special movement)
- */
-static const MovementFallingHeight falling_heights[] = {
-  MOVEMENT_FALLING_NONE,
-  MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG,
-  MOVEMENT_FALLING_NONE,
-  MOVEMENT_FALLING_MEDIUM, MOVEMENT_FALLING_SMALL,
-  MOVEMENT_FALLING_NONE,
-  MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG,
-  MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG, MOVEMENT_FALLING_BIG,
+  true, true, true, true, false, false, false
 };
 
 /**
@@ -78,16 +63,9 @@ static const SoundId sounds[] = {
  * @param falling true to make the item fall when it appears (ignored for a fairy)
  * @param disappear true to make the item disappear after an amout of time
  */
-PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type,
-			   bool falling, bool will_disappear):
+PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type):
   EntityDetector(COLLISION_WITH_ENTITY_RECTANGLE, "", layer, x, y, 0, 0),
-  map(map), type(type), falling(falling), will_disappear(will_disappear), shadow_x(x), shadow_y(y) {
-
-  if (will_disappear) {
-    Uint16 now = SDL_GetTicks();
-    blink_date = now + 8000; // blink at 8s
-    disappear_date = now + 10000; // disappear at 10s
-  }
+  map(map), type(type), shadow_x(x), shadow_y(y) {
 }
 
 /**
@@ -109,17 +87,18 @@ PickableItem::~PickableItem(void) {
  * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
  * or one of its subclasses (for more complex items).
  * @param map the map
- * @param layer layer of the pickable item to create on the map
+ * @param layer layer of the pickable item to create on the map (ignored for a fairy)
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (can be a normal item, PICKABLE_ITEM_NONE
  * or PICKABLE_ITEM_RANDOM)
- * @param falling true to make the item fall when it appears (ignored for a fairy)
+ * @param unique_id unique id of the item, for certain kinds of items only (a key, a piece of heart...)
+ * @param falling_height to make the item fall when it appears (ignored for a fairy)
  * @param will_disappear true to make the item disappear after an amout of time
  * @return the pickable item created, or NULL depending on the type
  */
 PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, PickableItemType type,
-				    bool falling, bool will_disappear) {
+				    int unique_id, MovementFallingHeight falling_height, bool will_disappear) {
 
   if (type == PICKABLE_ITEM_RANDOM) {
     // pick a type at random
@@ -137,21 +116,27 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
 
     // special class for the heart
   case PICKABLE_ITEM_HEART:
-    item = new PickableItemHeart(map, layer, x, y, falling, will_disappear);
+    item = new PickableItemHeart(map, layer, x, y);
     break;
     
     // special class for the fairy
   case PICKABLE_ITEM_FAIRY:
-    item = new PickableItemFairy(map, layer, x, y);
+    item = new PickableItemFairy(map, x, y);
     break;
     
     // other items: no special class, but directly PickableItem
   default:
-    item = new PickableItem(map, layer, x, y, type, falling, will_disappear);
+    item = new PickableItem(map, layer, x, y, type);
     break;
   }
 
-  item->initialize_sprites(); // TODO in constructor? does the dynamic dispatch work? 
+  // set the item properties
+  item->unique_id = unique_id; 
+  item->falling_height = falling_height;
+  item->will_disappear = will_disappear;
+
+  // initialize the item
+  item->initialize_sprites();
   item->initialize_movement();
 
   return item;
@@ -245,13 +230,11 @@ PickableItemType PickableItem::choose_random_type(void) {
  */
 void PickableItem::initialize_sprites(void) {
 
-  // create the shadow (except for a fairy)
-  if (type != PICKABLE_ITEM_FAIRY) { // TODO: for a fairy too?
-    shadow_sprite = new Sprite("entities/shadow");
-
-    if (big_shadows[type]) {
-      shadow_sprite->set_current_animation("big");
-    }
+  // create the shadow
+  shadow_sprite = new Sprite("entities/shadow");
+  
+  if (big_shadows[type]) {
+    shadow_sprite->set_current_animation("big");
   }
 
   // create the sprite and set its animation
@@ -261,6 +244,13 @@ void PickableItem::initialize_sprites(void) {
 
   // set the origin point and the size of the entity
   set_rectangle_from_sprite();
+
+  // initialize the sprite removal
+  if (will_disappear) {
+    Uint16 now = SDL_GetTicks();
+    blink_date = now + 8000; // blink at 8s
+    disappear_date = now + 10000; // disappear at 10s
+  }
 }
 
 /**
@@ -269,10 +259,17 @@ void PickableItem::initialize_sprites(void) {
  */
 void PickableItem::initialize_movement(void) {
 
-  if (falling) {
-    MovementFallingHeight height = falling_heights[type];
-    set_movement(new MovementFalling(height));
+  if (is_falling()) {
+    set_movement(new MovementFalling(falling_height));
   }
+}
+
+/**
+ * Returns whether the entity is falling when it appears.
+ * @return true if the entity is falling when it appears
+ */
+bool PickableItem::is_falling(void) {
+  return falling_height != MOVEMENT_FALLING_NONE;
 }
 
 /**

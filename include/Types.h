@@ -61,6 +61,7 @@ class MovementWithCollision;
 class MovementWithSmoothCollision;
 class MovementFalling;
 class MovementPath;
+class FairyMovement;
 
 class MapEntity;
 class Link;

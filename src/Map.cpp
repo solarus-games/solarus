@@ -282,18 +282,22 @@ void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
  * @param y y position of the pickable item
  * @param pickable_item_type type of pickable item to create
  * (can be a normal item, PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM)
- * @param falling true to make the item falling when it appears (ignored for a fairy)
+ * @param unique_id unique id of the item, for certain kinds of items only (a key, a piece of heart...)
+ * @param falling_height to make the item falling when it appears (ignored for a fairy)
  * @param will_disappear true to make the item disappear after an amout of time
  */
 void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
-			    bool falling, bool will_disappear) {
+			    int unique_id, MovementFallingHeight falling_height, bool will_disappear) {
 
-  PickableItem *item = PickableItem::create(this, layer, x, y, pickable_item_type, falling, will_disappear);
+  PickableItem *item = PickableItem::create(this, layer, x, y, pickable_item_type, 0, falling_height, will_disappear);
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
-  if (item != NULL) {    
+  if (item != NULL) {
+
+    layer = item->get_layer(); // well, some item set their own layer
+
     sprite_entities[layer].push_back(item);
-    obstacle_entities.push_back(item);
+    entity_detectors.push_back(item);
     all_entities.push_back(item);
   }
 }

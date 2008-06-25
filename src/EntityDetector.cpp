@@ -16,7 +16,8 @@
  */
 EntityDetector::EntityDetector(CollisionMode collision_mode, string name, Layer layer,
 			       int x, int y, int width, int height):
-  MapEntity(name, 0, layer, x, y, width, height), mode(collision_mode) {
+  MapEntity(name, 0, layer, x, y, width, height),
+  mode(collision_mode), layer_ignored(false) {
   
 }
 
@@ -25,6 +26,16 @@ EntityDetector::EntityDetector(CollisionMode collision_mode, string name, Layer 
  */
 EntityDetector::~EntityDetector(void) {
 
+}
+
+/**
+ * Sets whether the detector can detect entities even if
+ * they are not on the same layer.
+ * @param layer_ignored true to detect all entities, false
+ * to detect only those on the same layer.
+ */
+void EntityDetector::set_layer_ignored(bool layer_ignored) {
+  this->layer_ignored = layer_ignored;
 }
 
 /**
@@ -37,7 +48,8 @@ EntityDetector::~EntityDetector(void) {
  */
 void EntityDetector::check_entity_collision(MapEntity *entity) {
   
-  if (get_layer() == entity->get_layer()) { // the entity is in the same layer as the detector
+  if (layer_ignored ||
+      get_layer() == entity->get_layer()) { // the entity is in the same layer as the detector
   
     bool collision;
   

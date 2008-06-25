@@ -5,6 +5,7 @@
 #include "EntityDetector.h"
 #include "Layer.h"
 #include "PickableItemType.h"
+#include "MovementFallingHeight.h"
 
 /**
  * A pickable item on the map (rupee, heart, bomb, fairy...).
@@ -25,6 +26,12 @@ class PickableItem: public EntityDetector {
   PickableItemType type;
 
   /**
+   * Unique id of the item, for certain kinds of items only:
+   * a key, a piece of heart...
+   */
+  int unique_id;
+
+  /**
    * Sprite of the shadow (except for a fairy).
    */
   Sprite *shadow_sprite;
@@ -32,7 +39,7 @@ class PickableItem: public EntityDetector {
   /**
    * Indicates whether the item is falling when it appears (except for a fairy).
    */
-  bool falling;
+  MovementFallingHeight falling_height;
 
   /**
    * Indicates whether the item will disappear after an amount of time.
@@ -56,13 +63,15 @@ class PickableItem: public EntityDetector {
   Uint16 disappear_date;
 
   // creation and initialization
-  PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type,
-	       bool falling, bool will_disappear);
+  PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type);
 
   static PickableItemType choose_random_type(void);
 
   virtual void initialize_sprites(void);
   virtual void initialize_movement(void);
+
+  // falling
+  bool is_falling(void);
 
   // item
   virtual void give_item_to_player(void);
@@ -71,7 +80,8 @@ class PickableItem: public EntityDetector {
 
   virtual ~PickableItem(void);
   static PickableItem * create(Map *map, Layer layer, int x, int y, PickableItemType type,
-			       bool falling, bool will_disappear);
+			       int unique_id,
+			       MovementFallingHeight falling_height, bool will_disappear);
 
   virtual void set_suspended(bool suspended);
   void entity_collision(MapEntity *entity_overlapping);

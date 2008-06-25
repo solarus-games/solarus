@@ -6,7 +6,7 @@
  * Translation vectors composing the movement of the falling heart.
  */
 static const SDL_Rect falling_moves[24] = {
-  { 0, 0}, { 0,-1}, { 0,-1}, { 0,-1}, { 0,-1}, { 0,-1}, { 0, 0}, { 0, 0},
+  { 0, 0}, { 0,-2}, { 0,-2}, { 0,-2}, { 0,-2}, { 0,-2}, { 0, 0}, { 0, 0},
   { 1, 1}, { 1, 1}, { 1, 0}, { 1, 1}, { 1, 1}, { 0, 0}, {-1, 0}, {-1, 1},
   {-1, 0}, {-1, 1}, {-1, 0}, {-1, 1}, { 0, 1}, { 1, 1}, { 1, 1}, {-1, 0}
 };
@@ -41,8 +41,6 @@ PickableItemHeart::~PickableItemHeart(void) {
  */
 void PickableItemHeart::initialize_sprites(void) {
 
-  cout << "is\n";
-
   // first initialize the sprites like any item
   PickableItem::initialize_sprites();
 
@@ -59,10 +57,8 @@ void PickableItemHeart::initialize_sprites(void) {
  */
 void PickableItemHeart::initialize_movement(void) {
   
-  cout << "im\n";
-
   if (falling) {
-    set_movement(new MovementPath(falling_moves, 24, 60, false));
+    set_movement(new MovementPath(falling_moves, 24, 100, false));
   }
 }
 
@@ -73,8 +69,6 @@ void PickableItemHeart::initialize_movement(void) {
  * update the shadow position when the heart is falling.
  */
 void PickableItemHeart::update(void) {
-
-  cout << "up\n";
 
   PickableItem::update();
 

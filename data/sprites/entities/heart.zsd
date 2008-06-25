@@ -1,5 +1,5 @@
 stopped entities/pickable_heart.png 1 0 -1
-0	0	8	8	4	7	1	1
+0	0	8	8	4	8	1	1
 
-falling entities/pickable_heart.png 1 60 24
-0	0	8	8	4	7	25	25
+falling entities/pickable_heart.png 1 100 24
+0	0	8	8	4	8	25	25

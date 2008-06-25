@@ -138,14 +138,17 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
     // special class for the heart
   case PICKABLE_ITEM_HEART:
     item = new PickableItemHeart(map, layer, x, y, falling, will_disappear);
+    break;
     
     // special class for the fairy
   case PICKABLE_ITEM_FAIRY:
     item = new PickableItemFairy(map, layer, x, y);
+    break;
     
     // other items: no special class, but directly PickableItem
   default:
     item = new PickableItem(map, layer, x, y, type, falling, will_disappear);
+    break;
   }
 
   item->initialize_sprites(); // TODO in constructor? does the dynamic dispatch work? 
@@ -314,7 +317,7 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case PICKABLE_ITEM_HEART:
-    equipment->add_hearts(1);
+    equipment->add_hearts(4);
     break;
 
   case PICKABLE_ITEM_SMALL_MAGIC:

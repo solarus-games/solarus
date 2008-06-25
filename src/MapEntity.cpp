@@ -171,6 +171,16 @@ const SDL_Rect * MapEntity::get_position_in_map(void) {
 }
 
 /**
+ * Returns the coordinates of the point the entity is looking at.
+ * You should redefine this method to define a facing point.
+ * @return the coordinates of the point the entity is looking at
+ */
+SDL_Rect MapEntity::get_facing_point(void) {
+  SDL_Rect point = {-1, -1};
+  return point;
+}
+
+/**
  * Returns the name of the entity (if any).
  * @return the name of the entity, or an empty string if the entity is not identifiable
  */
@@ -324,10 +334,25 @@ bool MapEntity::overlaps(const SDL_Rect *rectangle) {
  */
 bool MapEntity::is_origin_point_in(const SDL_Rect *rectangle) {
 
-  return position_in_map.x + origin.x >= rectangle->x
-    && position_in_map.x + origin.x < rectangle->x + rectangle->w
-    && position_in_map.y + origin.y >= rectangle->y
-    && position_in_map.y + origin.y < rectangle->y + rectangle->h;
+  int x = get_x();
+  int y = get_y();
+
+  return x >= rectangle->x && x < rectangle->x + rectangle->w
+    && y >= rectangle->y && y < rectangle->y + rectangle->h;
+}
+
+/**
+ * Returns whether or not this entity's facing point is in
+ * a specified rectangle.
+ * @param rectangle the rectangle to check
+ * @return true if this entity's facing point is in the rectangle specified, false otherwise
+ */
+bool MapEntity::is_facing_point_in(const SDL_Rect *rectangle) {
+
+  SDL_Rect facing_point = get_facing_point();
+
+  return facing_point.x >= rectangle->x && facing_point.x < rectangle->x + rectangle->w
+    && facing_point.y >= rectangle->y && facing_point.y < rectangle->y + rectangle->h;
 }
 
 /**

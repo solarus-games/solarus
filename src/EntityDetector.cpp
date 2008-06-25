@@ -44,12 +44,16 @@ void EntityDetector::check_entity_collision(MapEntity *entity) {
     // detect the collision depending on the collision mode
     switch (mode) {
       
-    case COLLISION_WITH_ENTITY_POINT:
-      collision = check_collision_point(entity);
+    case COLLISION_WITH_ENTITY_ORIGIN:
+      collision = check_collision_origin(entity);
       break;
 
     case COLLISION_WITH_ENTITY_RECTANGLE:
       collision = check_collision_rectangle(entity);
+      break;
+
+    case COLLISION_WITH_ENTITY_FACING_POINT:
+      collision = check_collision_facing_point(entity);
       break;
     }
 
@@ -63,11 +67,11 @@ void EntityDetector::check_entity_collision(MapEntity *entity) {
 /**
  * Checks whether the entity's origin point is overlapping the detector's rectangle.
  * This method is called by check_entity_collision() when the detector's collision
- * mode is COLLISION_WITH_ENTITY_POINT.
+ * mode is COLLISION_WITH_ENTITY_ORIGIN.
  * @param entity the entity
  * @return true if the entity's origin point is overlapping the detector's rectangle
  */
-bool EntityDetector::check_collision_point(MapEntity *entity) {
+bool EntityDetector::check_collision_origin(MapEntity *entity) {
 
   return entity->is_origin_point_in(get_position_in_map());
 }
@@ -94,4 +98,16 @@ void EntityDetector::entity_collision(MapEntity *entity_overlapping) {
 
   Map *map = zsdx->game->get_current_map();
   map->event_entity_on_detector(this, entity_overlapping);
+}
+
+/**
+ * Checks whether the entity's facing point is overlapping the detector's rectangle.
+ * This method is called by check_entity_collision() when the detector's collision
+ * mode is COLLISION_WITH_ENTITY_FACING_POINT.
+ * @param entity the entity
+ * @return true if the entity's facing point is overlapping the detector's rectangle
+ */
+bool EntityDetector::check_collision_facing_point(MapEntity *entity) {
+
+  return entity->is_facing_point_in(get_position_in_map());
 }

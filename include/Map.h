@@ -139,6 +139,11 @@ class Map {
   list<EntityDetector*> entity_detectors;
   
   /**
+   * All obstacle entities of the map.
+   */
+  list<EntityDetector*> obstacle_entities;
+  
+  /**
    * Indicates whether the game is suspended.
    */
   bool suspended;
@@ -187,8 +192,9 @@ class Map {
   void set_entrance(string entrance_name);
 
   // collisions
-  Obstacle pixel_collision(int layer, int x, int y);
-  bool collision_with_tiles(int layer, SDL_Rect &collision_box);
+  Obstacle pixel_collision_with_tiles(Layer layer, int x, int y);
+  bool collision_with_entities(Layer layer, SDL_Rect &collision_box);
+  bool collision_with_obstacles(Layer layer, SDL_Rect &collision_box);
   void entity_just_moved(MapEntity *entity);
 
   // update and display

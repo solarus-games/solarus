@@ -8,8 +8,9 @@
  * Collisions modes between an entity and the detector.
  */
 enum CollisionMode {
-  COLLISION_WITH_ENTITY_POINT,     /**< collision if the entity's origin point is inside the detector's rectangle */
-  COLLISION_WITH_ENTITY_RECTANGLE, /**< collision if the entity's rectangle overlaps the detector's rectangle */
+  COLLISION_WITH_ENTITY_ORIGIN,       /**< collision if the entity's origin point is inside the detector's rectangle */
+  COLLISION_WITH_ENTITY_RECTANGLE,    /**< collision if the entity's rectangle overlaps the detector's rectangle */
+  COLLISION_WITH_ENTITY_FACING_POINT, /**< collision if the entity's facing point overlaps the detector's rectangle */
 };
 
 /**
@@ -33,8 +34,9 @@ class EntityDetector: public MapEntity {
 
   const CollisionMode mode;
   
-  bool check_collision_point(MapEntity *entity);
+  bool check_collision_origin(MapEntity *entity);
   bool check_collision_rectangle(MapEntity *entity);
+  bool check_collision_facing_point(MapEntity *entity);
   
  protected:
 

@@ -18,7 +18,7 @@
  */
 MapExit::MapExit(string name, Layer layer, int x, int y, int width, int height,
 		 TransitionType transition_type, MapId destination_map_id, string entrance_name):
-  EntityDetector(COLLISION_WITH_ENTITY_POINT, name, layer, x, y, width, height),
+  EntityDetector(COLLISION_WITH_ENTITY_ORIGIN, name, layer, x, y, width, height),
   transition_type(transition_type), destination_map_id(destination_map_id), entrance_name(entrance_name) {
   
 }

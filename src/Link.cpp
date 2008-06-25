@@ -120,6 +120,45 @@ Movement8ByPlayer * Link::get_movement(void) {
 }
 
 /**
+ * Returns the point Link is looking at.
+ * @return the point Link is looking at
+ */
+SDL_Rect Link::get_facing_point(void) {
+
+  int direction = tunic_sprite->get_current_direction();
+  SDL_Rect facing_point;
+
+  switch (direction) {
+
+    // right
+  case 0:
+    facing_point.x = position_in_map.x + 16;
+    facing_point.y = position_in_map.y + 8;
+    break;
+
+    // up
+  case 1:
+    facing_point.x = position_in_map.x + 8;
+    facing_point.y = position_in_map.y - 1;
+    break;
+
+    // left
+  case 2:
+    facing_point.x = position_in_map.x - 1;
+    facing_point.y = position_in_map.y + 8;
+    break;
+
+    // down
+  case 3:
+    facing_point.x = position_in_map.x + 8;
+    facing_point.y = position_in_map.y + 16;
+    break;
+  }
+
+  return facing_point;
+}
+
+/**
  * Sets Link's current map.
  * @param map the map
  * @param initial_direction the direction of Link (0 to 3)

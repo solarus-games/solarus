@@ -115,6 +115,8 @@ class MapEntity {
   int get_height(void);
   const SDL_Rect * get_position_in_map(void);
 
+  virtual SDL_Rect get_facing_point(void);
+
   // properties
   string get_name(void);
   int get_direction(void);
@@ -130,6 +132,7 @@ class MapEntity {
   // collisions
   bool overlaps(const SDL_Rect *rectangle);
   bool is_origin_point_in(const SDL_Rect *rectangle);
+  bool is_facing_point_in(const SDL_Rect *rectangle);
 
   // suspended
   bool is_suspended(void);

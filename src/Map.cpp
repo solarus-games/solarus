@@ -92,6 +92,7 @@ void Map::unload(void) {
 
   entrances.clear();
   entity_detectors.clear();
+  obstacle_entities.clear();
   entities_to_remove.clear();
 
   width = 0;
@@ -292,7 +293,7 @@ void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {    
     sprite_entities[layer].push_back(item);
-    entity_detectors.push_back(item);
+    obstacle_entities.push_back(item);
     all_entities.push_back(item);
   }
 }
@@ -573,9 +574,10 @@ bool Map::is_started(void) {
  * @param layer layer of the point
  * @param x x of the point in pixels
  * @param y y of the point in pixels
- * @return the obstacle property of this point
+ * @return the obstacle property of this tile
  */
-Obstacle Map::pixel_collision(int layer, int x, int y) {
+Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
+
   Obstacle obstacle_type;
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
@@ -586,7 +588,7 @@ Obstacle Map::pixel_collision(int layer, int x, int y) {
     return OBSTACLE_NONE;
   }
 
-  // get the obstacle property of this point's 8*8 square
+  // get the obstacle property of the tile under that point
   obstacle_type = obstacle_tiles[layer][(y / 8) * width8 + (x / 8)];
 
   // test the obstacle property of this square
@@ -634,24 +636,54 @@ Obstacle Map::pixel_collision(int layer, int x, int y) {
 }
 
 /**
- * Tests whether a rectangle collides with the map tiles.
+ * Tests whether a rectangle overlaps an obstacle entity.
+ * @param collision_box the rectangle to check
+ * @return OBSTACLE if there is an obstacle entity at this point,
+ * OBSTACLE_NONE otherwise.
+ */
+bool Map::collision_with_entities(Layer layer, SDL_Rect &collision_box) {
+
+  bool collision = false;
+  
+  list<EntityDetector*>::iterator i;
+  for (i = obstacle_entities.begin();
+       i != obstacle_entities.end() && !collision;
+       i++) {
+    
+    collision = (*i)->overlaps(&collision_box);
+  }
+  
+  return collision;
+}
+
+/**
+ * Tests whether a rectangle collides with the map obstacles
+ * (tiles and active entities).
  * @param layer layer of the rectangle in the map
  * @param collision_box the rectangle to check
  * (its dimensions should be multiples of 8)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::collision_with_tiles(int layer, SDL_Rect &collision_box) {
+bool Map::collision_with_obstacles(Layer layer, SDL_Rect &collision_box) {
   int x1, x2, y1, y2;
   bool collision = false;
 
+  // collisions with tiles
   // we check the 4 corners of each 8*8 square in the collision box
   for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1 += 8) {
     y2 = y1 + 7;
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1 += 8) {
       x2 = x1 + 7;
-      collision = pixel_collision(layer, x1, y1) || pixel_collision(layer, x2, y1)
-	|| pixel_collision(layer, x1, y2) || pixel_collision(layer, x2, y2);
+      collision = pixel_collision_with_tiles(layer, x1, y1)
+	|| pixel_collision_with_tiles(layer, x2, y1)
+	|| pixel_collision_with_tiles(layer, x1, y2)
+	|| pixel_collision_with_tiles(layer, x2, y2);
     }
+  }
+
+  // collisions with entities
+  if (!collision) {
+    collision = collision_with_entities(layer, collision_box);
   }
   
   return collision;   

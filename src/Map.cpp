@@ -72,28 +72,27 @@ void Map::unload(void) {
   // delete the tiles
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
-      delete tiles[layer]->at(i);
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      delete tiles[layer][i];
     }
 
-    tiles[layer]->clear();
-    delete tiles[layer];
+    tiles[layer].clear();
     delete[] obstacle_tiles[layer];
 
-    delete sprite_entities[layer];
+    sprite_entities[layer].clear();
   }
 
   // delete the other entities
 
   list<MapEntity*>::iterator i;
-  for (i = all_entities->begin(); i != all_entities->end(); i++) {
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
     delete *i;
   }
+  all_entities.clear();
 
-  delete all_entities;
-  delete entities_to_remove;
-  delete entrances;
-  delete entity_detectors;
+  entrances.clear();
+  entity_detectors.clear();
+  entities_to_remove.clear();
 
   width = 0;
 }
@@ -134,7 +133,7 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int width, int he
   TileOnMap *tileOnMap = new TileOnMap(tile, layer, x, y, repeat_x, repeat_y);
 
   // add it to the map
-  tiles[layer]->push_back(tileOnMap);
+  tiles[layer].push_back(tileOnMap);
 
   // update the collision list
   int tile_x8 = x / 8;
@@ -246,8 +245,8 @@ void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int width, int he
 void Map::add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction) {
   
   MapEntrance *entrance = new MapEntrance(entrance_name, layer, link_x, link_y, link_direction);
-  entrances->push_back(entrance);
-  all_entities->push_back(entrance);
+  entrances.push_back(entrance);
+  all_entities.push_back(entrance);
 }
 
 /**
@@ -268,8 +267,8 @@ void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
 		   TransitionType transition_type, MapId map_id, string entrance_name) {
   
   MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, transition_type, map_id, entrance_name);
-  entity_detectors->push_back(exit);
-  all_entities->push_back(exit);
+  entity_detectors.push_back(exit);
+  all_entities.push_back(exit);
 }
 
 /**
@@ -292,9 +291,9 @@ void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {    
-    sprite_entities[layer]->push_back(item);
-    entity_detectors->push_back(item);
-    all_entities->push_back(item);
+    sprite_entities[layer].push_back(item);
+    entity_detectors.push_back(item);
+    all_entities.push_back(item);
   }
 }
 
@@ -304,12 +303,12 @@ void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable
  */
 void Map::remove_pickable_item(PickableItem *item) {
 
-  entities_to_remove->push_back(item);
+  entities_to_remove.push_back(item);
 
   // erf... cannot remove it from the lists while the lists are being traversed
   /*
-  sprite_entities[item->get_layer()]->remove(item);
-  entity_detectors->remove(item);
+  sprite_entities[item->get_layer()].remove(item);
+  entity_detectors.remove(item);
   */
   // keep it in all_entities to have a reference and delete it when unloading the map
 }
@@ -322,8 +321,8 @@ void Map::remove_marked_entities(void) {
   list<MapEntity*>::iterator it;
 
   // remove the marked entities
-  for (it = entities_to_remove->begin();
-       it != entities_to_remove->end();
+  for (it = entities_to_remove.begin();
+       it != entities_to_remove.end();
        it++) {
 
     // remove it from the entity detectors list
@@ -338,18 +337,18 @@ void Map::remove_marked_entities(void) {
     // - then we destroy the entities to destroy
     // or: each entity has a state: active or to be removed... well it's complicated
 
-    entity_detectors->remove((EntityDetector*) (*it));
+    entity_detectors.remove((EntityDetector*) (*it));
 
     // remove it from the sprite entities list
-    sprite_entities[(*it)->get_layer()]->remove(*it);
+    sprite_entities[(*it)->get_layer()].remove(*it);
 
     // remove it from the whole list
-    all_entities->remove(*it);
+    all_entities.remove(*it);
 
     // destroy it
     delete *it;
   }
-  entities_to_remove->clear();
+  entities_to_remove.clear();
 }
 
 /**
@@ -358,7 +357,7 @@ void Map::remove_marked_entities(void) {
  */
 void Map::set_entrance(unsigned int entrance_index) {
 
-  if (entrance_index < 0 || entrance_index >= entrances->size()) {
+  if (entrance_index < 0 || entrance_index >= entrances.size()) {
     DIE("Unknown entrance '" << entrance_index << "' on map '" << id << '\'');
   }
 
@@ -374,8 +373,8 @@ void Map::set_entrance(string entrance_name) {
   bool found = false;
 
   unsigned int i;
-  for (i = 0; i < entrances->size() && !found; i++) { 
-    found = (entrances->at(i)->get_name() == entrance_name);
+  for (i = 0; i < entrances.size() && !found; i++) { 
+    found = (entrances[i]->get_name() == entrance_name);
   }
 
   if (found) {
@@ -425,8 +424,8 @@ void Map::set_suspended(bool suspended) {
   list<MapEntity*>::iterator i;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    for (i = sprite_entities[layer]->begin();
-	 i != sprite_entities[layer]->end();
+    for (i = sprite_entities[layer].begin();
+	 i != sprite_entities[layer].end();
 	 i++) {
       (*i)->set_suspended(suspended);
     }
@@ -449,12 +448,12 @@ void Map::update_entities(void) {
   // update the animated tiles and sprites
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
-      tiles[layer]->at(i)->update();
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      tiles[layer][i]->update();
     }
 
-    for (it = sprite_entities[layer]->begin();
-	 it != sprite_entities[layer]->end();
+    for (it = sprite_entities[layer].begin();
+	 it != sprite_entities[layer].end();
 	 it++) {
       (*it)->update();
     }
@@ -489,14 +488,14 @@ void Map::display() {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // put the tiles
-    for (unsigned int i = 0; i < tiles[layer]->size(); i++) {
-      tiles[layer]->at(i)->display_on_map(this);
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      tiles[layer][i]->display_on_map(this);
     }
 
     // put the visible entities
     list<MapEntity*>::iterator i;
-    for (i = sprite_entities[layer]->begin();
-	 i != sprite_entities[layer]->end();
+    for (i = sprite_entities[layer].begin();
+	 i != sprite_entities[layer].end();
 	 i++) {
       (*i)->display_on_map(this);
     }
@@ -528,7 +527,7 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  */
 void Map::start(void) {
 
-  MapEntrance *entrance = entrances->at(entrance_index);
+  MapEntrance *entrance = entrances[entrance_index];
 
   zsdx->game->play_music(music_id);
 
@@ -669,8 +668,8 @@ void Map::entity_just_moved(MapEntity *entity) {
 
   // check each detector
   list<EntityDetector*>::iterator i;
-  for (i = entity_detectors->begin();
-       i != entity_detectors->end();
+  for (i = entity_detectors.begin();
+       i != entity_detectors.end();
        i++) {
     
     (*i)->check_entity_collision(entity);

@@ -19,8 +19,6 @@ MapEntity::MapEntity(void):
   origin.y = 0;
 
   set_size(0, 0);
-
-  sprites = new vector<Sprite*>();
 }
 
 /**
@@ -43,8 +41,6 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   origin.y = 0;
 
   set_size(width, height);
-
-  sprites = new vector<Sprite*>();
 }
 
 /**
@@ -68,8 +64,6 @@ MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int 
   origin.y = 0;
 
   set_size(width, height);
-
-  sprites = new vector<Sprite*>();
 }
 
 /**
@@ -78,10 +72,9 @@ MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int 
  */
 MapEntity::~MapEntity(void) {
 
-  for (unsigned int i = 0; i < sprites->size(); i++) {
-    delete sprites->at(i);
+  for (unsigned int i = 0; i < sprites.size(); i++) {
+    delete sprites[i];
   }
-  delete sprites;
 
   if (movement != NULL) {
     clear_movement();
@@ -228,7 +221,7 @@ void MapEntity::set_origin(SDL_Rect &origin) {
  */
 void MapEntity::set_rectangle_from_sprite(void) {
 
-  Sprite *sprite = sprites->at(0);
+  Sprite *sprite = sprites[0];
   set_size(sprite->get_size());
   set_origin(sprite->get_origin());
 }
@@ -238,7 +231,7 @@ void MapEntity::set_rectangle_from_sprite(void) {
  * @return the sprite at this index
  */
 Sprite * MapEntity::get_sprite(int index) {
-  return sprites->at(index);
+  return sprites[index];
 }
 
 /**
@@ -247,7 +240,7 @@ Sprite * MapEntity::get_sprite(int index) {
  * @return the last sprite created
  */
 Sprite * MapEntity::get_last_sprite(void) {
-  return sprites->back();
+  return sprites.back();
 }
 
 /**
@@ -255,7 +248,7 @@ Sprite * MapEntity::get_last_sprite(void) {
  * @param id id of the sprite's animations to add
  */
 void MapEntity::create_sprite(SpriteAnimationsId id) {
-  sprites->push_back(new Sprite(id));
+  sprites.push_back(new Sprite(id));
 }
 
 /**
@@ -360,8 +353,8 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the sprites animations
-  for (unsigned int i = 0; i < sprites->size(); i++) {
-    Sprite *sprite = sprites->at(i);
+  for (unsigned int i = 0; i < sprites.size(); i++) {
+    Sprite *sprite = sprites[i];
     sprite->set_suspended(suspended);
   }
   
@@ -383,9 +376,9 @@ void MapEntity::set_suspended(bool suspended) {
 void MapEntity::update(void) {
 
   // update the sprites
-  for (unsigned int i = 0; i < sprites->size(); i++) {
+  for (unsigned int i = 0; i < sprites.size(); i++) {
     
-    Sprite *sprite = sprites->at(i);
+    Sprite *sprite = sprites[i];
     
     if (sprite->get_current_direction() != direction) {
       sprite->set_current_direction(direction);
@@ -407,7 +400,7 @@ void MapEntity::update(void) {
 void MapEntity::display_on_map(Map *map) {
 
   // display the sprites
-  for (unsigned int i = 0; i < sprites->size(); i++) {
-    map->display_sprite(sprites->at(i), get_x(), get_y());
+  for (unsigned int i = 0; i < sprites.size(); i++) {
+    map->display_sprite(sprites[i], get_x(), get_y());
   }
 }

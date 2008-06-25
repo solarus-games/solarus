@@ -100,7 +100,7 @@ class Map {
   /**
    * All tiles of the map (a vector for each layer).
    */
-  vector<TileOnMap*> *tiles[LAYER_NB];
+  vector<TileOnMap*> tiles[LAYER_NB];
   
   /**
    * Array of Obstacle representing which tiles are obstacles and how.
@@ -111,22 +111,22 @@ class Map {
    * All map entities execpt the tiles.
    * This vector is used to delete the entities when the map is unloaded.
    */
-  list<MapEntity*> *all_entities;
+  list<MapEntity*> all_entities;
 
   /**
    * List of entities to remove now.
    */
-  list<MapEntity*> *entities_to_remove;
+  list<MapEntity*> entities_to_remove;
 
   /**
    * All map entities that are displayed by a sprite (a vector for each layer).
    */
-  list<MapEntity*> *sprite_entities[LAYER_NB];
+  list<MapEntity*> sprite_entities[LAYER_NB];
 
   /**
    * Vector of all possible entrances of the map.
    */
-  vector<MapEntrance*> *entrances;
+  vector<MapEntrance*> entrances;
 
   /**
    * Current entrance of the map.
@@ -136,7 +136,7 @@ class Map {
   /**
    * All entity detectors of the map.
    */
-  list<EntityDetector*> *entity_detectors;
+  list<EntityDetector*> entity_detectors;
   
   /**
    * Indicates whether the game is suspended.

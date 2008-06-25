@@ -2,7 +2,6 @@
 - utiliser sdl-config malgré les autotools
 - Icône d'action : ajouter "porter" ou "soulever", et "saisir"
 - Sprites de Link : faire des cases plus petites que 96*96 (la taille et le hot spot peuvent changer selon la direction) - fait pour les tuniques et les boucliers (ça peut encore être optimisé), reste à faire les épées
-- MovementFalling est juste un cas particulier de MovementPath
 
 
 - Compléter l'éditeur de maps et de tilesets :

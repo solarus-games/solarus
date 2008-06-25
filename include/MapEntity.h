@@ -67,7 +67,7 @@ class MapEntity {
    * Sprite(s) representing the entity, not used for all kinds of entities because
    * some of them are invisible, and some of them handle their sprites themselves.
    */
-  vector<Sprite*> *sprites;
+  vector<Sprite*> sprites;
 
   /**
    * Movement of the entity (not used for all kinds of entities).

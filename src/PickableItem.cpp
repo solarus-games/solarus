@@ -12,44 +12,36 @@
 #include "PickableItemHeart.h"
 #include "PickableItemFairy.h"
 
-// properties of each pickable item
 
 /**
- * Animation set for each pickable item type.
+ * This structure defines the properties of a pickable item type.
  */
-static const SpriteAnimationsId sprite_animations_ids[] = {
-  "", "entities/rupee", "entities/rupee", "entities/rupee",
-  "entities/heart", "entities/magic", "entities/magic",
-  "entities/fairy", "entities/bomb", "entities/bomb", "entities/bomb",
-  "entities/arrow", "entities/arrow", "entities/arrow",
+struct PickableItemProperties {
+  SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of pickable item */
+  string animation_name;                   /**< name of the animation */
+  bool big_shadow;                         /**< true if the pickable item has a big shadow, false for a small shadow */
+  SoundId sound;                           /**< the sound played when the player gets the item */
 };
 
-/**
- * Animation of the sprite for each pickable item type.
- */
-static const string animation_names[] = {
-  "", "green", "blue", "red", "stopped", "small", "big",
-  "normal", "1", "5", "10", "1", "5", "10"
-};
 
 /**
- * Size of the shadow below each sprite:
- * false for a small shadow, true for a big shadow.
- * The bombs are the only pickable items with a big shadow.
+ * Properties of each type of pickable item.
  */
-static const bool big_shadows[] = {
-  false, false, false, false, false, false, false,
-  true, true, true, true, false, false, false
-};
-
-/**
- * Sound played when the player gets each item.
- */
-static const SoundId sounds[] = {
-  "", "picked_rupee", "picked_rupee", "picked_rupee",
-  "picked_item", "picked_item", "picked_item", "picked_item",
-  "picked_item", "picked_item", "picked_item",
-  "picked_item", "picked_item", "picked_item",
+static const PickableItemProperties properties[] = {
+  {"", "", false, ""}, // none
+  {"entities/rupee", "green", false, "picked_rupee"},  // 1 rupee
+  {"entities/rupee", "blue", false, "picked_rupee"},   // 5 rupees
+  {"entities/rupee", "red", false, "picked_rupee"},    // 20 rupees
+  {"entities/heart", "stopped", false, "picked_item"}, // heart
+  {"entities/magic", "small", false, "picked_item"},   // small magic
+  {"entities/magic", "big", false, "picked_item"},     // big magic
+  {"entities/fairy", "normal", true, "picked_item"},   // fairy
+  {"entities/bomb", "1", true, "picked_item"},         // 1 bomb
+  {"entities/bomb", "5", true, "picked_item"},         // 5 bombs
+  {"entities/bomb", "10", true, "picked_item"},        // 10 bombs
+  {"entities/arrow", "1", false, "picked_item"},       // 1 arrow
+  {"entities/arrow", "5", false, "picked_item"},       // 5 arrows
+  {"entities/arrow", "10", false, "picked_item"},      // 10 arrows
 };
 
 /**
@@ -233,14 +225,14 @@ void PickableItem::initialize_sprites(void) {
   // create the shadow
   shadow_sprite = new Sprite("entities/shadow");
   
-  if (big_shadows[type]) {
+  if (properties[type].big_shadow) {
     shadow_sprite->set_current_animation("big");
   }
 
   // create the sprite and set its animation
-  create_sprite(sprite_animations_ids[type]);
+  create_sprite(properties[type].sprite_animations_id);
   Sprite * item_sprite = get_last_sprite();
-  item_sprite->set_current_animation(animation_names[type]);
+  item_sprite->set_current_animation(properties[type].animation_name);
 
   // set the origin point and the size of the entity
   set_rectangle_from_sprite();
@@ -283,7 +275,7 @@ void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping == (MapEntity*) zsdx->game_resource->get_link()) {
     give_item_to_player();
-    map->remove_pickable_item(this); // TODO also remove after a time delay
+    map->get_entities()->remove_pickable_item(this);
   }
 }
 
@@ -293,7 +285,7 @@ void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 void PickableItem::give_item_to_player(void) {
 
   // play the sound
-  Sound *sound = zsdx->game_resource->get_sound(sounds[type]);
+  Sound *sound = zsdx->game_resource->get_sound(properties[type].sound);
   sound->play();
 
   // give the item
@@ -408,7 +400,7 @@ void PickableItem::update(void) {
     }
     
     if (now >= disappear_date) {
-      map->remove_pickable_item(this);
+      map->get_entities()->remove_pickable_item(this);
     }
   }
 }

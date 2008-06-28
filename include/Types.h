@@ -63,6 +63,7 @@ class MovementFalling;
 class MovementPath;
 class FairyMovement;
 
+class MapEntities;
 class MapEntity;
 class Link;
 class EntityDetector;

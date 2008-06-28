@@ -283,7 +283,7 @@ void Game::play(void) {
     
     // update the entity's positions and animations
     AnimatedTile::update();
-    current_map->update_entities();
+    current_map->update();
 
     // update the equipment and HUD
     savegame->get_equipment()->update();

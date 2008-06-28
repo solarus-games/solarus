@@ -23,6 +23,7 @@ add_executable (zsdx
 	       PauseIcon.cpp
 	       Map.cpp
 	       MapLoader.cpp
+	       MapEntities.cpp
 	       MapEntrance.cpp
 	       MapEntity.cpp
 	       Movement.cpp

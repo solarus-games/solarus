@@ -8,8 +8,7 @@
 #include "EntityType.h"
 #include "PickableItemType.h"
 #include "MovementFallingHeight.h"
-#include <vector>
-#include <list>
+#include "MapEntities.h"
 
 /**
  * Represents a map.
@@ -65,12 +64,6 @@ class Map {
   int height8;
 
   /**
-   * Number of elements in the array obstacle_tiles.
-   * obstacle_tiles_size = width8 * height8
-   */
-  int obstacle_tiles_size;
-  
-  /**
    * Tileset of the map.
    * Every tile of this map is extracted from this tileset.
    */
@@ -96,38 +89,10 @@ class Map {
    */
   SDL_Surface *visible_surface;
 
-  // entities
-
   /**
-   * All tiles of the map (a vector for each layer).
+   * The entities of the map.
    */
-  vector<TileOnMap*> tiles[LAYER_NB];
-  
-  /**
-   * Array of Obstacle representing which tiles are obstacles and how.
-   */
-  Obstacle *obstacle_tiles[LAYER_NB];
-
-  /**
-   * All map entities execpt the tiles.
-   * This vector is used to delete the entities when the map is unloaded.
-   */
-  list<MapEntity*> all_entities;
-
-  /**
-   * List of entities to remove now.
-   */
-  list<MapEntity*> entities_to_remove;
-
-  /**
-   * All map entities that are displayed by a sprite (a vector for each layer).
-   */
-  list<MapEntity*> sprite_entities[LAYER_NB];
-
-  /**
-   * Vector of all possible entrances of the map.
-   */
-  vector<MapEntrance*> entrances;
+  MapEntities entities;
 
   /**
    * Current entrance of the map.
@@ -135,29 +100,11 @@ class Map {
   unsigned int entrance_index;
 
   /**
-   * All entity detectors of the map.
-   */
-  list<EntityDetector*> entity_detectors;
-  
-  /**
-   * All obstacle entities of the map.
-   */
-  list<EntityDetector*> obstacle_entities;
-  
-  /**
    * Indicates whether the game is suspended.
    */
   bool suspended;
 
   void set_suspended(bool suspended);
-
-  // add and remove entities
-  void add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height);
-  void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
-  void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
-		TransitionType transition_type, MapId map_id, string entrance_name);
-
-  void remove_marked_entities(void);
 
  public:
 
@@ -168,6 +115,10 @@ class Map {
   // map properties
   MapId get_id(void);
   Tileset *get_tileset(void);
+  int get_width(void);
+  int get_height(void);
+  int get_width8(void);
+  int get_height8(void);
 
   // screen
   SDL_Surface *get_visible_surface(void);
@@ -179,9 +130,7 @@ class Map {
   void unload(void);
 
   // entities
-  void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
-			 int unique_id, MovementFallingHeight falling, bool will_disappear);
-  void remove_pickable_item(PickableItem *item);
+  MapEntities *get_entities(void);
 
   // Link's presence
   bool is_started(void);
@@ -199,7 +148,7 @@ class Map {
   void entity_just_moved(MapEntity *entity);
 
   // update and display
-  void update_entities(void);
+  void update(void);
   void display();
   void display_sprite(Sprite *sprite, int x, int y);
 

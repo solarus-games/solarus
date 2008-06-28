@@ -4,14 +4,12 @@
 #include "Game.h"
 #include "GameResource.h"
 #include "Sprite.h"
-#include "Link.h"
 #include "Tileset.h"
-#include "Tile.h"
-#include "TileOnMap.h"
-#include "MapEntrance.h"
-#include "MapExit.h"
-#include "PickableItem.h"
+#include "Link.h"
 #include "FileTools.h"
+#include "MapEntities.h"
+#include "MapEntrance.h"
+#include "EntityDetector.h"
 
 MapLoader Map::map_loader;
 
@@ -21,7 +19,7 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-id(id), started(false), width(0), suspended(true) {
+id(id), started(false), width(0), entities(this), suspended(true) {
 
 }
 
@@ -52,6 +50,40 @@ Tileset * Map::get_tileset(void) {
 }
 
 /**
+ * Returns the map width in pixels.
+ * @param the map width
+ */
+int Map::get_width(void) {
+  return width;
+}
+
+/**
+ * Returns the map height in pixels.
+ * @param the map height
+ */
+int Map::get_height(void) {
+  return height;
+}
+
+/**
+ * Returns the map width in number of 8*8 squares.
+ * This is equivalent to get_width() / 8.
+ * @param the map width in number of 8*8 squares
+ */
+int Map::get_width8(void) {
+  return width8;
+}
+
+/**
+ * Returns the map height in number of 8*8 squares.
+ * This is equivalent to get_height() / 8.
+ * @param the map height in number of 8*8 squares
+ */
+int Map::get_height8(void) {
+  return height8;
+}
+
+/**
  * Returns whether the map is loaded.
  * @return true if the map is loaded, false otherwise
  */
@@ -69,32 +101,6 @@ void Map::unload(void) {
 
   SDL_FreeSurface(visible_surface);
 
-  // delete the tiles
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      delete tiles[layer][i];
-    }
-
-    tiles[layer].clear();
-    delete[] obstacle_tiles[layer];
-
-    sprite_entities[layer].clear();
-  }
-
-  // delete the other entities
-
-  list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    delete *i;
-  }
-  all_entities.clear();
-
-  entrances.clear();
-  entity_detectors.clear();
-  obstacle_entities.clear();
-  entities_to_remove.clear();
-
   width = 0;
 }
 
@@ -111,249 +117,10 @@ void Map::load() {
 }
 
 /**
- * Creates a tile on the map.
- * This function is called for each tile when loading the map.
- * The tiles on a map are not supposed to change during the game.
- * @param tile_id id of the tile in the tileset
- * @param layer layer of the tile to create
- * @param position_in_map x position of the tile on the map
- * @param position_in_map y position of the tile on the map
- * @param width width in pixels (the pattern will be repeated on x to fit this width)
- * @param height height in pixels (the pattern will be repeated on y to fit this height
+ * Return the entities on the map.
  */
-void Map::add_new_tile(int tile_id, Layer layer, int x, int y, int width, int height) {
-
-  // get the tile in the tileset
-  Tile *tile = tileset->get_tile(tile_id);
-  Obstacle obstacle = tile->get_obstacle();
-
-  int repeat_x = width / tile->get_width();
-  int repeat_y = height / tile->get_height();
-
-  // create the tile object
-  TileOnMap *tileOnMap = new TileOnMap(tile, layer, x, y, repeat_x, repeat_y);
-
-  // add it to the map
-  tiles[layer].push_back(tileOnMap);
-
-  // update the collision list
-  int tile_x8 = x / 8;
-  int tile_y8 = y / 8;
-  int tile_width8 = (tile->get_width() / 8) * repeat_x;
-  int tile_height8 = (tile->get_height() / 8) * repeat_y;
-
-  int index, i, j;
-
-  switch (obstacle) {
-
-    /* If the tile is entirely an obstacle or entirely no obstacle,
-     * then all 8*8 squares of the tile have the same property.
-     */
-  case OBSTACLE_NONE:
-  case OBSTACLE:
-    for (i = 0; i < tile_height8; i++) {
-      index = (tile_y8 + i) * width8 + tile_x8;
-      for (j = 0; j < tile_width8; j++) {
-	obstacle_tiles[layer][index++] = obstacle;
-      }
-    }
-    break;
-
-    /* If the top right corner of the tile is an obstacle,
-     * then the top right 8*8 squares are OBSTACLE, the bottom left
-     * 8*8 squares are NO_OBSTACLE and the 8*8 squares on the diagonal
-     * are OBSTACLE_TOP_RIGHT.
-     */
-  case OBSTACLE_TOP_RIGHT:
-    // we traverse each row of 8*8 squares on the tile
-    for (i = 0; i < tile_height8; i++) {
-
-      index = (tile_y8 + i) * width8 + tile_x8;
-
-      // 8*8 square on the diagonal
-      index += i;
-      obstacle_tiles[layer][index++] = OBSTACLE_TOP_RIGHT;
-
-      // right part of the row: we are in the top-right corner
-      for (j = i + 1; j < tile_width8; j++) {
-	obstacle_tiles[layer][index++] = OBSTACLE;
-      }
-    }
-    break;
-    
-  case OBSTACLE_TOP_LEFT:
-    // we traverse each row of 8*8 squares on the tile
-    for (i = 0; i < tile_height8; i++) {
-
-      index = (tile_y8 + i) * width8 + tile_x8;
-
-      // left part of the row: we are in the top-left corner
-      for (j = 0; j < tile_width8 - i - 1; j++) {
-	obstacle_tiles[layer][index++] = OBSTACLE;
-      }
-
-      // 8*8 square on the diagonal
-      obstacle_tiles[layer][index] = OBSTACLE_TOP_LEFT;
-    }
-    break;
-    
-  case OBSTACLE_BOTTOM_LEFT:
-    // we traverse each row of 8*8 squares on the tile
-    for (i = 0; i < tile_height8; i++) {
-
-      index = (tile_y8 + i) * width8 + tile_x8;
-
-      // left part of the row: we are in the bottom-left corner
-      for (j = 0; j < i; j++) {
-	obstacle_tiles[layer][index++] = OBSTACLE;
-      }
-
-      // 8*8 square on the diagonal
-      obstacle_tiles[layer][index] = OBSTACLE_BOTTOM_LEFT;
-    }
-    break;
-    
-  case OBSTACLE_BOTTOM_RIGHT:
-    // we traverse each row of 8*8 squares on the tile
-    for (i = 0; i < tile_height8; i++) {
-
-      index = (tile_y8 + i) * width8 + tile_x8;
-
-      // 8*8 square on the diagonal
-      index += tile_height8 - i - 1;
-      obstacle_tiles[layer][index++] = OBSTACLE_BOTTOM_RIGHT;
-
-      // right part of the row: we are in the bottom-right corner
-      for (j = tile_width8 - i - 1; j < tile_width8; j++) {
-	obstacle_tiles[layer][index++] = OBSTACLE;
-      }
-    }
-    break;
-  }
-}
-
-/**
- * Creates an entrance on the map.
- * This function is called for each entrance when loading the map.
- * @param entrance_name a string identifying this new entrance
- * @param layer the layer of Link's position
- * @param link_x x initial position of link in this state
- * (set -1 to indicate that the x coordinate is kept the same from the previous map)
- * @param link_y y initial position of link in this state
- * (set -1 to indicate that the y coordinate is kept the same from the previous map)
- * @param link_direction initial direction of link in this state (0 to 3)
- */
-void Map::add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction) {
-  
-  MapEntrance *entrance = new MapEntrance(entrance_name, layer, link_x, link_y, link_direction);
-  entrances.push_back(entrance);
-  all_entities.push_back(entrance);
-}
-
-/**
- * Creates an exit on the map.
- * This function is called for each exit when loading the map.
- * When Link walks on the exit, he leaves the map and enters another one.
- * @param exit_name a string identifying this new exit
- * @param layer layer of the exit to create
- * @param x x position of the exit rectangle
- * @param y y position of the exit rectangle
- * @param w width of the exit rectangle
- * @param h height of the exit rectangle
- * @param transition_type type of transition between the two maps
- * @param map_id id of the next map
- * @param entrance_name name of the entrance of the next map
- */
-void Map::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
-		   TransitionType transition_type, MapId map_id, string entrance_name) {
-  
-  MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, transition_type, map_id, entrance_name);
-  entity_detectors.push_back(exit);
-  all_entities.push_back(exit);
-}
-
-/**
- * Creates a pickable item on the map.
- * This function is called when loading the map if it already contains pickable items (e.g. fairies
- * or rupees). It is also called when playing on the map, e.g. when Link lifts a pot or kill an enemy.
- * When Link walks on the item, he picks it.
- * @param layer layer of the pickable item
- * @param x x position of the pickable item
- * @param y y position of the pickable item
- * @param pickable_item_type type of pickable item to create
- * (can be a normal item, PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM)
- * @param unique_id unique id of the item, for certain kinds of items only (a key, a piece of heart...)
- * @param falling_height to make the item falling when it appears (ignored for a fairy)
- * @param will_disappear true to make the item disappear after an amout of time
- */
-void Map::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
-			    int unique_id, MovementFallingHeight falling_height, bool will_disappear) {
-
-  PickableItem *item = PickableItem::create(this, layer, x, y, pickable_item_type, 0, falling_height, will_disappear);
-
-  // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
-  if (item != NULL) {
-
-    layer = item->get_layer(); // well, some item set their own layer
-
-    sprite_entities[layer].push_back(item);
-    entity_detectors.push_back(item);
-    all_entities.push_back(item);
-  }
-}
-
-/**
- * Removes a pickable item from the map and destroys it.
- * @param pickable_item the item to remove
- */
-void Map::remove_pickable_item(PickableItem *item) {
-
-  entities_to_remove.push_back(item);
-
-  // erf... cannot remove it from the lists while the lists are being traversed
-  /*
-  sprite_entities[item->get_layer()].remove(item);
-  entity_detectors.remove(item);
-  */
-  // keep it in all_entities to have a reference and delete it when unloading the map
-}
-
-/**
- * Removes and destroys the entities placed in the entities_to_remove list. 
- */
-void Map::remove_marked_entities(void) {
-
-  list<MapEntity*>::iterator it;
-
-  // remove the marked entities
-  for (it = entities_to_remove.begin();
-       it != entities_to_remove.end();
-       it++) {
-
-    // remove it from the entity detectors list
-    // (the cast may be invalid but this is just a pointer comparison)
-    // okay this is awful... so:
-    // TODO:
-    // - the entity tells the map it wants to kill itself: map->schedule_remove_entity(this)
-    // - which adds the entity to a list of entities to be removed
-    // - right here, the map calls (*it)->remove_from_map()
-    // - which calls for example remove_pickable_item
-    // - which removes the entity from the appropriate lists, and adds the entity to a list of entities to destroy
-    // - then we destroy the entities to destroy
-    // or: each entity has a state: active or to be removed... well it's complicated
-
-    entity_detectors.remove((EntityDetector*) (*it));
-
-    // remove it from the sprite entities list
-    sprite_entities[(*it)->get_layer()].remove(*it);
-
-    // remove it from the whole list
-    all_entities.remove(*it);
-
-    // destroy it
-    delete *it;
-  }
-  entities_to_remove.clear();
+MapEntities * Map::get_entities(void) {
+  return &entities;
 }
 
 /**
@@ -362,7 +129,7 @@ void Map::remove_marked_entities(void) {
  */
 void Map::set_entrance(unsigned int entrance_index) {
 
-  if (entrance_index < 0 || entrance_index >= entrances.size()) {
+  if (entrance_index < 0 || entrance_index >= entities.get_nb_entrances()) {
     DIE("Unknown entrance '" << entrance_index << "' on map '" << id << '\'');
   }
 
@@ -378,8 +145,8 @@ void Map::set_entrance(string entrance_name) {
   bool found = false;
 
   unsigned int i;
-  for (i = 0; i < entrances.size() && !found; i++) { 
-    found = (entrances[i]->get_name() == entrance_name);
+  for (i = 0; i < entities.get_nb_entrances() && !found; i++) { 
+    found = (entities.get_entrance(i)->get_name() == entrance_name);
   }
 
   if (found) {
@@ -420,54 +187,18 @@ SDL_Rect * Map::get_screen_position(void) {
 void Map::set_suspended(bool suspended) {
 
   this->suspended = suspended;
-
-  // Link
-  Link *link = zsdx->game_resource->get_link();
-  link->set_suspended(suspended);
-
-  // other entities
-  list<MapEntity*>::iterator i;
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    for (i = sprite_entities[layer].begin();
-	 i != sprite_entities[layer].end();
-	 i++) {
-      (*i)->set_suspended(suspended);
-    }
-
-    // note that we don't suspend the animated tiles
-  }
+  entities.set_suspended(suspended);
 }
 
 /**
  * Updates the animation and the position of each entity, including Link.
  */
-void Map::update_entities(void) {
+void Map::update(void) {
   
-  list<MapEntity*>::iterator it;
-  
-  // update Link's position, movement and animation
-  Link *link = zsdx->game_resource->get_link();
-  link->update();
+  // update the entities
+  entities.update();
 
-  // update the animated tiles and sprites
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      tiles[layer][i]->update();
-    }
-
-    for (it = sprite_entities[layer].begin();
-	 it != sprite_entities[layer].end();
-	 it++) {
-      (*it)->update();
-    }
-  }
-
-  // remove the entities that have to be removed now
-  remove_marked_entities();
-
-  // game suspended
+  // detect whether the game has just been suspended or resumed
   bool game_suspended = zsdx->game->is_suspended();
   if (suspended != game_suspended) {
     set_suspended(game_suspended);
@@ -479,38 +210,16 @@ void Map::update_entities(void) {
  */
 void Map::display() {
 
-  // Link
-  Link* link = zsdx->game_resource->get_link();
-
   // screen
+  Link *link = zsdx->game_resource->get_link();
   screen_position.x = MIN(MAX(link->get_x() - 160, 0), width - 320);
   screen_position.y = MIN(MAX(link->get_y() - 120, 0), height - 240);  
 
   // background color
   SDL_FillRect(visible_surface, NULL, tileset->get_background_color());
 
-  // map entities
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    // put the tiles
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      tiles[layer][i]->display_on_map(this);
-    }
-
-    // put the visible entities
-    list<MapEntity*>::iterator i;
-    for (i = sprite_entities[layer].begin();
-	 i != sprite_entities[layer].end();
-	 i++) {
-      (*i)->display_on_map(this);
-    }
-
-
-    // put Link if he is in this layer
-    if (link->get_layer() == layer) {
-      link->display_on_map(this);
-    }
-  }
+  // display all entities (including Link)
+  entities.display();
 }
 
 /**
@@ -532,7 +241,7 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  */
 void Map::start(void) {
 
-  MapEntrance *entrance = entrances[entrance_index];
+  MapEntrance *entrance = entities.get_entrance(entrance_index);
 
   zsdx->game->play_music(music_id);
 
@@ -593,7 +302,7 @@ Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
   }
 
   // get the obstacle property of the tile under that point
-  obstacle_type = obstacle_tiles[layer][(y / 8) * width8 + (x / 8)];
+  obstacle_type = entities.get_obstacle_tile(layer, x, y);
 
   // test the obstacle property of this square
   switch (obstacle_type) {
@@ -647,11 +356,13 @@ Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
  */
 bool Map::collision_with_entities(Layer layer, SDL_Rect &collision_box) {
 
+  list<MapEntity*> *obstacle_entities = entities.get_obstacle_entities();
+
   bool collision = false;
   
-  list<EntityDetector*>::iterator i;
-  for (i = obstacle_entities.begin();
-       i != obstacle_entities.end() && !collision;
+  list<MapEntity*>::iterator i;
+  for (i = obstacle_entities->begin();
+       i != obstacle_entities->end() && !collision;
        i++) {
     
     collision = (*i)->overlaps(&collision_box);
@@ -702,10 +413,12 @@ bool Map::collision_with_obstacles(Layer layer, SDL_Rect &collision_box) {
  */
 void Map::entity_just_moved(MapEntity *entity) {
 
+  list<EntityDetector*> *entity_detectors = entities.get_entity_detectors();
+
   // check each detector
   list<EntityDetector*>::iterator i;
-  for (i = entity_detectors.begin();
-       i != entity_detectors.end();
+  for (i = entity_detectors->begin();
+       i != entity_detectors->end();
        i++) {
     
     (*i)->check_entity_collision(entity);
@@ -713,7 +426,7 @@ void Map::entity_just_moved(MapEntity *entity) {
 
   // some detectors might have to be removed now
   // because of a collision
-  remove_marked_entities();
+  entities.remove_marked_entities();
 }
 
 /**

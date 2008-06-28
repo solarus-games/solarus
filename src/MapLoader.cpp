@@ -54,7 +54,6 @@ void MapLoader::load_map(Map *map) {
 
   map->width8 = map->width / 8;
   map->height8 = map->height / 8;
-  map->obstacle_tiles_size = map->width8 * map->height8;
 
   map->tileset = zsdx->game_resource->get_tileset(tileset_id);
   if (!map->tileset->is_loaded()) {
@@ -62,11 +61,13 @@ void MapLoader::load_map(Map *map) {
   }
 
   // create the lists of entities and initialize obstacle tile
+  MapEntities *entities = map->get_entities();
+  entities->obstacle_tiles_size = map->width8 * map->height8;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    map->obstacle_tiles[layer] = new Obstacle[map->obstacle_tiles_size];
-    for (int i = 0; i < map->obstacle_tiles_size; i++) {
-      map->obstacle_tiles[layer][i] = OBSTACLE_NONE;
+    entities->obstacle_tiles[layer] = new Obstacle[entities->obstacle_tiles_size];
+    for (int i = 0; i < entities->obstacle_tiles_size; i++) {
+      entities->obstacle_tiles[layer][i] = OBSTACLE_NONE;
     }
   }
 
@@ -86,14 +87,14 @@ void MapLoader::load_map(Map *map) {
 	int tile_id;
 
 	iss >> width >> height >> tile_id;
-	map->add_new_tile(tile_id, (Layer) layer, x, y, width, height);
+	entities->add_tile(tile_id, (Layer) layer, x, y, width, height);
 	break;
       }
       
     case ENTITY_ENTRANCE:
       {
 	iss >> entity_name >> direction;
-	map->add_entrance(entity_name, (Layer) layer, x, y, direction);
+	entities->add_entrance(entity_name, (Layer) layer, x, y, direction);
 	break;
       }
       
@@ -103,8 +104,8 @@ void MapLoader::load_map(Map *map) {
 	MapId destination_map_id;
 	string entrance_name;
 	iss >> width >> height >> entity_name >> transition_type >> destination_map_id >> entrance_name;
-	map->add_exit(entity_name, (Layer) layer, x, y, width, height,
-		      (TransitionType) transition_type, destination_map_id, entrance_name);
+	entities->add_exit(entity_name, (Layer) layer, x, y, width, height,
+			   (TransitionType) transition_type, destination_map_id, entrance_name);
 	break;
       }
 
@@ -112,7 +113,8 @@ void MapLoader::load_map(Map *map) {
       {
 	int pickable_item_type;
 	iss >> pickable_item_type;
-	map->add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type, 0, MOVEMENT_FALLING_BIG, false); // TODO NONE
+	entities->add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type,
+				    0, MOVEMENT_FALLING_NONE, false);
 	break;
       }
 

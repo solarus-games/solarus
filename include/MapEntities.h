@@ -7,6 +7,7 @@
 #include "TransitionEffect.h"
 #include "PickableItemType.h"
 #include "MovementFallingHeight.h"
+#include "TransportableItemType.h"
 #include <vector>
 #include <list>
 
@@ -99,12 +100,14 @@ class MapEntities {
 			 int unique_id, MovementFallingHeight falling, bool will_disappear);
   void remove_pickable_item(PickableItem *item);
 
+  void add_transportable_item(Layer layer, int x, int y, TransportableItemType transportable_item_type,
+			      PickableItemType pickable_item_type);
+  void remove_transportable_item(TransportableItem *item);
+
   void remove_marked_entities(void);
 
-  // suspend
-  void set_suspended(bool suspended);
-
   // update and display
+  void set_suspended(bool suspended);
   void update(void);
   void display(void);
 };

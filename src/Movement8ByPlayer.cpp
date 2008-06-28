@@ -303,6 +303,6 @@ void Movement8ByPlayer::compute_movement(void) {
   }
 
   // notify the entity that its movement has just changed:
-  // indeed the entity may need to update its animations
+  // indeed the entity may need to update its animations and its collisions
   entity->movement_just_changed();
 }

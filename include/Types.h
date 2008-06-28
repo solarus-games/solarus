@@ -74,5 +74,6 @@ class MapEntrance;
 class PickableItem;
 class PickableItemHeart;
 class PickableItemFairy;
+class TransportableItem;
 
 #endif

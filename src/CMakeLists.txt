@@ -42,6 +42,7 @@ add_executable (zsdx
 	       PickableItem.cpp
 	       PickableItemHeart.cpp
 	       PickableItemFairy.cpp
+	       TransportableItem.cpp
 	       SimpleTile.cpp
 	       AnimatedTile.cpp
 	       TileOnMap.cpp

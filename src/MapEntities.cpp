@@ -5,6 +5,7 @@
 #include "TileOnMap.h"
 #include "MapExit.h"
 #include "PickableItem.h"
+#include "TransportableItem.h"
 #include "MapEntrance.h"
 #include "ZSDX.h"
 #include "GameResource.h"
@@ -285,7 +286,7 @@ void MapEntities::add_pickable_item(Layer layer, int x, int y, PickableItemType 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {
 
-    layer = item->get_layer(); // well, some item set their own layer
+    layer = item->get_layer(); // well, some items set their own layer
 
     sprite_entities[layer].push_back(item);
     entity_detectors.push_back(item);
@@ -298,7 +299,35 @@ void MapEntities::add_pickable_item(Layer layer, int x, int y, PickableItemType 
  * @param pickable_item the item to remove
  */
 void MapEntities::remove_pickable_item(PickableItem *item) {
+  entities_to_remove.push_back(item);
+}
 
+/**
+ * Creates a transportable item on the map.
+ * @param layer layer of the transportable item
+ * @param x x position of the transportable item
+ * @param y y position of the transportable item
+ * @param transportable_item_type type of transportable item to create
+ * @param pickable_item_type type of pickable item that appears when the
+ transportable item is lifted
+ */
+void MapEntities::add_transportable_item(Layer layer, int x, int y,
+					 TransportableItemType transportable_item_type,
+					 PickableItemType pickable_item_type) {
+  TransportableItem *item = new TransportableItem(map, layer, x, y, transportable_item_type,
+						  pickable_item_type);
+  
+  sprite_entities[layer].push_back(item);
+  entity_detectors.push_back(item);
+  obstacle_entities.push_back(item);
+  all_entities.push_back(item);
+}
+
+/**
+ * Removes a transportable item from the map and destroys it.
+ * @param transportable_item the item to remove
+ */
+void MapEntities::remove_transportable_item(TransportableItem *item) {
   entities_to_remove.push_back(item);
 }
 

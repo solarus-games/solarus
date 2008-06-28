@@ -1,0 +1,20 @@
+#ifndef ZSDX_TRANSPORTABLE_ITEM_TYPE_H
+#define ZSDX_TRANSPORTABLE_ITEM_TYPE_H
+
+/**
+ * Types of transportable items.
+ */
+enum TransportableItemType {
+
+  TRANSPORTABLE_ITEM_POT               = 0,
+  TRANSPORTABLE_ITEM_SKULL             = 1,
+  TRANSPORTABLE_ITEM_BUSH              = 2,
+  TRANSPORTABLE_ITEM_STONE_WHITE_SMALL = 3,
+  TRANSPORTABLE_ITEM_STONE_WHITE_BIG   = 4,
+  TRANSPORTABLE_ITEM_STONE_BLACK_SMALL = 5,
+  TRANSPORTABLE_ITEM_STONE_BLACK_BIG   = 6,
+
+  //  TRANSPORTABLE_ITEM_SIGN              = 7,
+};
+
+#endif

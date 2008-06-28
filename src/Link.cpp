@@ -84,7 +84,7 @@ const SoundId Link::sword_sound_ids[4] = {
  * Constructor.
  */
 Link::Link(void):
-  equipment(zsdx->game->get_savegame()->get_equipment()),
+  map(NULL), equipment(zsdx->game->get_savegame()->get_equipment()),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
   state(LINK_STATE_FREE), walking(false),
   counter(0), next_counter_date(0),
@@ -160,10 +160,13 @@ SDL_Rect Link::get_facing_point(void) {
 
 /**
  * Sets Link's current map.
+ * This function is called when the map is changed.
  * @param map the map
  * @param initial_direction the direction of Link (0 to 3)
  */
 void Link::set_map(Map *map, int initial_direction) {
+
+  this->map = map;
 
   get_movement()->set_map(map);
   
@@ -314,7 +317,7 @@ void Link::update_sprites(void) {
 /**
  * Updates Link depending on the arrows pressed.
  * This function is called when Link's direction changes (typically, because the player
- * pressed or released an arrow). It updates Link's animations according to the new movement.
+ * pressed or released an arrow). It updates Link's animations and collisions according to the new movement.
  */
 void Link::movement_just_changed(void) {
 
@@ -352,6 +355,11 @@ void Link::movement_just_changed(void) {
     else if (!started && walking) {
       set_animation_stopped();
     }
+  }
+
+  // check the collisions
+  if (map != NULL) {
+    map->entity_just_moved(this);
   }
 }
 

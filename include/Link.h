@@ -34,6 +34,9 @@ class Link: public MapEntity, AnimationListener {
 
  private:
 
+  // the map
+  Map *map;
+
   // equipment of the player
   Equipment *equipment;
 

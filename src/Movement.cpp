@@ -17,12 +17,12 @@ const double SQRT_2 = 1.41421356237309504880;
  * Constructor.
  */
 Movement::Movement(void):
-  x_speed(0), y_speed(0), 
+  x_speed(0), y_speed(0),
   next_move_date_x(SDL_GetTicks()),
   next_move_date_y(SDL_GetTicks()),
   x_move(0), y_move(0),
   suspended(false), when_suspended(0) {
-  
+
 }
 
 /**
@@ -143,12 +143,12 @@ void Movement::set_x_speed(double x_speed) {
 
   // compute x_delay, x_move and next_move_date_x
   if (x_speed > 0) {
-    x_delay = 100 / x_speed;
+    x_delay = (Uint32) (100 / x_speed);
     x_move = 1;
     next_move_date_x = SDL_GetTicks() + x_delay;
   }
   else if (x_speed < 0) {
-    x_delay = 100 / (-x_speed);
+    x_delay = (Uint32) (100 / (-x_speed));
     x_move = -1;
     next_move_date_x = SDL_GetTicks() + x_delay;
   }
@@ -166,12 +166,12 @@ void Movement::set_y_speed(double y_speed) {
 
   // compute y_delay, y_move and next_move_date_y
   if (y_speed > 0) {
-    y_delay = 100 / y_speed;
+    y_delay = (Uint32) (100 / y_speed);
     y_move = 1;
     next_move_date_y = SDL_GetTicks() + y_delay;
   }
   else if (y_speed < 0) {
-    y_delay = 100 / (-y_speed);
+    y_delay = (Uint32) (100 / (-y_speed));
     y_move = -1;
     next_move_date_y = SDL_GetTicks() + y_delay;
   }
@@ -234,10 +234,10 @@ void Movement::set_direction(int direction) {
  * on the next update(), i.e. if x_move is not equal to zero
  * and next_move_date_x is past, or the same thing for y.
  * @return true if the entity is about to try to move
- * 
+ *
  */
 bool Movement::has_to_move_now(void) {
-  
+
   Uint32 now = SDL_GetTicks();
   return (x_move != 0 && now >= next_move_date_x)
     || (y_move != 0 && now >= next_move_date_y);
@@ -257,11 +257,11 @@ bool Movement::is_suspended(void) {
  * @param suspended true to suspend the movement, false to resume it
  */
 void Movement::set_suspended(bool suspended) {
-  
+
   this->suspended = suspended;
-  
+
   Uint16 now = SDL_GetTicks();
-  
+
   if (suspended) {
     // the movement is being suspended
     when_suspended = now;

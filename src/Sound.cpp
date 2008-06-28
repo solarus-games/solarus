@@ -96,7 +96,8 @@ bool Sound::play(void) {
 	cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
       }
     }
-    else {
+
+    if (sound != NULL) {
       result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);
 
       if (result != FMOD_OK) {

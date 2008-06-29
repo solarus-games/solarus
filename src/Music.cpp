@@ -78,9 +78,8 @@ bool Music::play(void) {
 
 /*  The beginning of any .it music is badly played on my windows
     workarounds: use FMOD_SOFTWARE or FMOD_OUTPUTTYPE_WINMM
+    */
     result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_NORMAL, 0, &sound);
-*/
-    result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_NORMAL | FMOD_SOFTWARE, 0, &sound);
 
     if (result != FMOD_OK) {
       cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << endl;

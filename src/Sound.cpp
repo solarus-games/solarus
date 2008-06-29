@@ -41,16 +41,28 @@ void Sound::initialize(void) {
 
   FMOD_System_Create(&system);
 
-  // first we try to initialize FMOD with the default configuration
-  if (FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL) != FMOD_OK) {
+  // first we try to initialize FMOD with WinMM instead of DirectSound
+  // because we have problems with DirectSound
+  FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_WINMM);
+  result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
 
-    // if it doesn't work, we try other output types for Linux
-    FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
+  if (result != FMOD_OK) {
+
+    // if it doesn't work, we try to auto-detect the output type
+    FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_AUTODETECT);
     result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
 
     if (result != FMOD_OK) {
-      cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
-	   << ". No music or sound will be played." << endl;
+
+      // it didn't work either: try Linux sound
+      FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
+      result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
+
+      if (result != FMOD_OK) {
+    cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
+         << ". No music or sound will be played." << endl;
+    system = NULL;
+      }
     }
   }
 }

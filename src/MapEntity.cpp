@@ -285,7 +285,6 @@ void MapEntity::set_movement(Movement *movement) {
 
 /**
  * Removes and deletes the movement of this entity.
- * @param movement the movement to set
  */
 void MapEntity::clear_movement(void) {
   delete movement;

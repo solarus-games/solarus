@@ -75,7 +75,7 @@ class MapEntities {
   /**
    * All obstacle entities of the map.
    */
-  list<MapEntity*> obstacle_entities;
+  list<MapEntity*> obstacle_entities[LAYER_NB];
 
  public:
 
@@ -87,7 +87,7 @@ class MapEntities {
   unsigned int get_nb_entrances(void);
   MapEntrance * get_entrance(int index);
   Obstacle get_obstacle_tile(Layer layer, int x, int y);
-  list<MapEntity*> * get_obstacle_entities(void);
+  list<MapEntity*> * get_obstacle_entities(Layer layer);
   list<EntityDetector*> * get_entity_detectors(void);
  
   // add and remove entities

@@ -23,7 +23,7 @@ MapEntities::MapEntities(Map *map) {
  */
 MapEntities::~MapEntities(void) {
 
-  // delete the tiles and the sprites
+  // delete the entities sorted by layer
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
@@ -34,6 +34,7 @@ MapEntities::~MapEntities(void) {
     delete[] obstacle_tiles[layer];
 
     sprite_entities[layer].clear();
+    obstacle_entities[layer].clear();
   }
 
   // delete the other entities
@@ -46,7 +47,6 @@ MapEntities::~MapEntities(void) {
 
   entrances.clear();
   entity_detectors.clear();
-  obstacle_entities.clear();
   entities_to_remove.clear();
 
 }
@@ -83,12 +83,13 @@ Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 }
 
 /**
- * Returns the entities such that Link cannot walk on them
+ * Returns the entities on a layer, such that Link cannot walk on them
  * (except the tiles).
+ * @param layer the layer
  * @return the obstacle entities
  */
-list<MapEntity*> * MapEntities::get_obstacle_entities(void) {
-  return &obstacle_entities;
+list<MapEntity*> * MapEntities::get_obstacle_entities(Layer layer) {
+  return &obstacle_entities[layer];
 }
 
 /**
@@ -105,8 +106,8 @@ list<EntityDetector*> * MapEntities::get_entity_detectors(void) {
  * The tiles on a map are not supposed to change during the game.
  * @param tile_id id of the tile in the tileset
  * @param layer layer of the tile to create
- * @param position_in_map x position of the tile on the map
- * @param position_in_map y position of the tile on the map
+ * @param x x position of the tile on the map
+ * @param y y position of the tile on the map
  * @param width width in pixels (the pattern will be repeated on x to fit this width)
  * @param height height in pixels (the pattern will be repeated on y to fit this height
  */
@@ -296,7 +297,7 @@ void MapEntities::add_pickable_item(Layer layer, int x, int y, PickableItemType 
 
 /**
  * Removes a pickable item from the map and destroys it.
- * @param pickable_item the item to remove
+ * @param item the pickable item to remove
  */
 void MapEntities::remove_pickable_item(PickableItem *item) {
   entities_to_remove.push_back(item);
@@ -319,13 +320,13 @@ void MapEntities::add_transportable_item(Layer layer, int x, int y,
   
   sprite_entities[layer].push_back(item);
   entity_detectors.push_back(item);
-  obstacle_entities.push_back(item);
+  obstacle_entities[layer].push_back(item);
   all_entities.push_back(item);
 }
 
 /**
  * Removes a transportable item from the map and destroys it.
- * @param transportable_item the item to remove
+ * @param item the transportable item to remove
  */
 void MapEntities::remove_transportable_item(TransportableItem *item) {
   entities_to_remove.push_back(item);

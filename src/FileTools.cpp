@@ -36,7 +36,7 @@ string FileTools::data_file_get_prefix(void) {
  *
  * The \c file_name parameter is relative to the ZSDX data directory
  * (which could be for example /usr/local/share/zsdx/data or
- * C:\Program Files\zsdx\data).
+ * C:\\Program Files\\zsdx\\data).
  * This function returns the same file name, prefixed by the data directory. 
  *
  * @param file_name name of a data file
@@ -51,7 +51,7 @@ string FileTools::data_file_add_prefix(string file_name) {
  * @brief Opens in reading a file in the ZSDX data directory.
  * 
  * The file name is relative to the ZSDX data directory (which could be
- * for example /usr/local/share/zsdx/data or C:\Program Files\zsdx\data).
+ * for example /usr/local/share/zsdx/data or C:\\Program Files\\zsdx\\data).
  *
  * @param file_name name of the file to open
  * @return the file, or NULL if it couldn't be open.
@@ -69,7 +69,7 @@ FILE *FileTools::open_data_file(string file_name) {
  * @brief Loads an image file.
  * 
  * The file name is relative to the ZSDX images directory (which could be
- * for example /usr/local/share/zsdx/data/images or C:\Program Files\zsdx\data\images).
+ * for example /usr/local/share/zsdx/data/images or C:\\Program Files\\zsdx\\data\\images).
  * The program is stopped with an error message if the image cannot be loaded.
  *
  * @param file_name name of the image file to open

@@ -51,8 +51,6 @@ static const PickableItemProperties properties[] = {
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (must be a normal item)
- * @param falling true to make the item fall when it appears (ignored for a fairy)
- * @param disappear true to make the item disappear after an amout of time
  */
 PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type):
   EntityDetector(COLLISION_WITH_ENTITY_RECTANGLE, "", layer, x, y, 0, 0),

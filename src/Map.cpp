@@ -51,7 +51,7 @@ Tileset * Map::get_tileset(void) {
 
 /**
  * Returns the map width in pixels.
- * @param the map width
+ * @return the map width
  */
 int Map::get_width(void) {
   return width;
@@ -59,7 +59,7 @@ int Map::get_width(void) {
 
 /**
  * Returns the map height in pixels.
- * @param the map height
+ * @return the map height
  */
 int Map::get_height(void) {
   return height;
@@ -68,7 +68,7 @@ int Map::get_height(void) {
 /**
  * Returns the map width in number of 8*8 squares.
  * This is equivalent to get_width() / 8.
- * @param the map width in number of 8*8 squares
+ * @return the map width in number of 8*8 squares
  */
 int Map::get_width8(void) {
   return width8;
@@ -77,7 +77,7 @@ int Map::get_width8(void) {
 /**
  * Returns the map height in number of 8*8 squares.
  * This is equivalent to get_height() / 8.
- * @param the map height in number of 8*8 squares
+ * @return the map height in number of 8*8 squares
  */
 int Map::get_height8(void) {
   return height8;
@@ -350,13 +350,14 @@ Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
 
 /**
  * Tests whether a rectangle overlaps an obstacle entity.
+ * @param layer the layer
  * @param collision_box the rectangle to check
  * @return OBSTACLE if there is an obstacle entity at this point,
  * OBSTACLE_NONE otherwise.
  */
 bool Map::collision_with_entities(Layer layer, SDL_Rect &collision_box) {
 
-  list<MapEntity*> *obstacle_entities = entities.get_obstacle_entities();
+  list<MapEntity*> *obstacle_entities = entities.get_obstacle_entities(layer);
 
   bool collision = false;
   

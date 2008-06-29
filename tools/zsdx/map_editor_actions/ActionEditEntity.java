@@ -142,7 +142,7 @@ public class ActionEditEntity extends MapEditorAction {
     
     /**
      * Sets an additional action, specific to the entity type.
-     * @param action the specific action to add
+     * @param specificAction the specific action to add
      */
     public void setSpecificAction(MapEditorAction specificAction) {
 	this.specificAction = specificAction;

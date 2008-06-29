@@ -30,7 +30,6 @@ public class MapEditorHistory extends Observable {
     
     /**
      * Constructor.
-     * @param map the map
      */
     public MapEditorHistory() {
 	

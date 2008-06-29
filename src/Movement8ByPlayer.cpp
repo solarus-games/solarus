@@ -78,7 +78,7 @@ bool Movement8ByPlayer::is_started(void) {
  * Returns whether the player can move the entity.
  * This function returns false when the player does not
  * currently have control of the entity.
- * @param true if the movements are enabled
+ * @return true if the movements are enabled
  */
 bool Movement8ByPlayer::is_moving_enabled(void) {
   return can_move;

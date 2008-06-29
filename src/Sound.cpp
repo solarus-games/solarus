@@ -91,7 +91,7 @@ bool Sound::play(void) {
 
     if (sound == NULL) {
       result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
-      
+
       if (result != FMOD_OK) {
 	cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
       }

@@ -2,6 +2,27 @@
 #include "ZSDX.h"
 #include "GameResource.h"
 
+
+/**
+ * This structure defines the properties of a transportable item type.
+ */
+struct TransportableItemProperties {
+  SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of transportable item */
+  
+};
+
+/**
+ * Properties of each type of transportable item.
+ */
+static const TransportableItemProperties properties[] = {
+  {"pot"},
+  {"skull"},
+  {"stone_white_small"},
+  {"stone_white_big"},
+  {"stone_black_small"},
+  {"stone_black_big"},
+};
+
 /**
  * Creates a new transportable item with the specified type.
  * @param map the map

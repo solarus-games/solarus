@@ -23,7 +23,6 @@ struct PickableItemProperties {
   SoundId sound;                           /**< the sound played when the player gets the item */
 };
 
-
 /**
  * Properties of each type of pickable item.
  */

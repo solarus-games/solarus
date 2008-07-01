@@ -1,9 +1,6 @@
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - utiliser sdl-config malgré les autotools
 - Icône d'action : ajouter "porter" ou "soulever", et "saisir"
-- Sprites de Link : faire des cases plus petites que 96*96 (la taille et le hot spot peuvent changer selon la direction) - fait pour les tuniques et les boucliers (ça peut encore être optimisé), reste à faire les épées
-- classe Map : délocaliser les fonctions add_* et les vectors + lists
-- fée coolectable
 
 
 - Compléter l'éditeur de maps et de tilesets :

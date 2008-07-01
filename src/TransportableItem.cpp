@@ -38,6 +38,7 @@ TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y,
   EntityDetector(COLLISION_WITH_ENTITY_FACING_POINT, "", layer, x, y, 16, 16),
   type(type), pickable_item(pickable_item) {
 
+  set_origin(8, 13);
 }
 
 /**

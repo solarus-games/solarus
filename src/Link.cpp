@@ -7,6 +7,7 @@
 #include "Equipment.h"
 #include "Map.h"
 #include "Sound.h"
+#include "KeysEffect.h"
 #include "Movement8ByPlayer.h"
 
 /**
@@ -359,8 +360,27 @@ void Link::movement_just_changed(void) {
 
   // check the collisions
   if (map != NULL) {
-    map->entity_just_moved(this);
+    just_moved();
   }
+}
+
+/**
+ * This function is called when Link's position is changed,
+ * or when his direction changes. 
+ */
+void Link::just_moved(void) {
+
+  zsdx->game->get_keys_effect()->set_action_key_entity(NULL);
+  MapEntity::just_moved();
+}
+
+/**
+ * Sets the entity Link is currently facing.
+ * This function is called when Link is just being
+ * facing another entity.
+ */
+void Link::set_facing_entity(EntityDetector *detector) {
+  zsdx->game->get_keys_effect()->set_action_key_entity(detector);  
 }
 
 /**

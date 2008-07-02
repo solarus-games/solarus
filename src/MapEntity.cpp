@@ -301,6 +301,24 @@ void MapEntity::movement_just_changed(void) {
 }
 
 /**
+ * This function is called when the entity has just moved.
+ * It just calls map->entity_just_moved(this).
+ */
+void MapEntity::just_moved(void) {
+  zsdx->game->get_current_map()->entity_just_moved(this);
+}
+
+/**
+ * Sets the entity this entity is currently facing.
+ * This function is called when this entity is just being
+ * facing another entity.
+ * By default, nothing is done.
+ */
+void MapEntity::set_facing_entity(EntityDetector *detector) {
+  
+}
+
+/**
  * Returns whether or not this entity's rectangle overlaps
  * a specified rectangle.
  * @param rectangle the rectangle to check

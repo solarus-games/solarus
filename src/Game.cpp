@@ -13,6 +13,7 @@
 #include "Equipment.h"
 #include "AnimatedTile.h"
 #include "Movement8ByPlayer.h"
+#include "EntityDetector.h"
 
 /**
  * Creates a game.
@@ -100,6 +101,16 @@ void Game::play(void) {
 	  }
 	  break;
 
+	case SDLK_SPACE:
+
+	  // TODO very temporary
+
+	  if (keys_effect->get_action_key_entity() != NULL) {
+	    current_map->get_entities()->remove_transportable_item((TransportableItem*) keys_effect->get_action_key_entity());
+	    zsdx->game_resource->get_sound("lift")->play();
+	  }
+	  break;
+	  
 	  // TODO remove
 	case SDLK_p:
 	  savegame->get_equipment()->add_hearts(2);
@@ -503,6 +514,7 @@ KeysEffect * Game::get_keys_effect(void) {
 void Game::update_keys_effect(void) {
 
   if (!is_suspended()) {
+
     switch (link->get_state()) {
 
     case LINK_STATE_FREE:

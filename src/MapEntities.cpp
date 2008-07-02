@@ -344,12 +344,17 @@ void MapEntities::remove_marked_entities(void) {
        it != entities_to_remove.end();
        it++) {
 
-    // remove it from the entity detectors list
+    Layer layer = (*it)->get_layer();
+
+    // remove it from the entity detectors list if present
     // (the cast may be invalid but this is just a pointer comparison)
     entity_detectors.remove((EntityDetector*) (*it));
 
+    // remove it from the obstacle entities list if present
+    obstacle_entities[layer].remove(*it);
+
     // remove it from the sprite entities list
-    sprite_entities[(*it)->get_layer()].remove(*it);
+    sprite_entities[layer].remove(*it);
 
     // remove it from the whole list
     all_entities.remove(*it);

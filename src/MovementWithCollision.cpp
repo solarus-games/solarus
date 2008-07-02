@@ -33,7 +33,7 @@ void MovementWithCollision::set_map(Map *map) {
  */
 void MovementWithCollision::set_x(int x) {
   Movement::set_x(x);
-  map->entity_just_moved(entity);
+  entity->just_moved();
 }
 
 /**
@@ -44,7 +44,7 @@ void MovementWithCollision::set_x(int x) {
  */
 void MovementWithCollision::set_y(int y) {
   Movement::set_y(y);  
-  map->entity_just_moved(entity);
+  entity->just_moved();
 }
 
 /**

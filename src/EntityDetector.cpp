@@ -1,7 +1,10 @@
 #include "EntityDetector.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "GameResource.h"
+#include "Link.h"
 #include "Map.h"
+#include "KeysEffect.h"
 
 /**
  * Constructor.
@@ -66,6 +69,16 @@ void EntityDetector::check_entity_collision(MapEntity *entity) {
 
     case COLLISION_WITH_ENTITY_FACING_POINT:
       collision = check_collision_facing_point(entity);
+
+      if (collision) {
+	entity->set_facing_entity(this);
+      }
+      
+      /*
+      if (collision && entity == zsdx->game_resource->get_link()) {
+	zsdx->game->get_keys_effect()->set_action_key_entity(this);
+	}*/
+
       break;
     }
 

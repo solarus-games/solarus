@@ -121,7 +121,7 @@ void MapLoader::load_map(Map *map) {
     case ENTITY_TRANSPORTABLE_ITEM:
       {
 	int transportable_item_type, pickable_item_type;
-	iss >> pickable_item_type >> pickable_item_type;
+	iss >> transportable_item_type >> pickable_item_type;
 	entities->add_transportable_item((Layer) layer, x, y,
 					 (TransportableItemType) transportable_item_type,
 					 (PickableItemType) pickable_item_type);

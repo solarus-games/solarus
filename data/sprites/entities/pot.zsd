@@ -1,12 +1,13 @@
-stopped
+stopped entities/pot.png 1 0 -1
+0	0	16	16	8	13	1	1
 
+walking entities/pot.png 4 100 0
+0	0	16	16	8	13	8	8
+0	16	16	16	8	13	8	8
+0	32	16	16	8	13	8	8
+0	48	16	16	8	13	8	8
 
-lift
-
-
-walking
-
-
-destroy
+destroy entities/pot.png 1 0 -1
+0	0	16	16	8	13	1	1
 
 

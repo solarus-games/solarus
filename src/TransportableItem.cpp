@@ -18,12 +18,12 @@ struct TransportableItemProperties {
  * Properties of each type of transportable item.
  */
 static const TransportableItemProperties properties[] = {
-  {"pot"},
-  {"skull"},
-  {"stone_white_small"},
-  {"stone_white_big"},
-  {"stone_black_small"},
-  {"stone_black_big"},
+  {"entities/pot"},
+  {"entities/skull"},
+  {"entities/stone_white_small"},
+  {"entities/stone_white_big"},
+  {"entities/stone_black_small"},
+  {"entities/stone_black_big"},
 };
 
 /**
@@ -42,6 +42,7 @@ TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y,
   type(type), pickable_item(pickable_item) {
 
   set_origin(8, 13);
+  create_sprite(properties[type].sprite_animations_id);
 }
 
 /**

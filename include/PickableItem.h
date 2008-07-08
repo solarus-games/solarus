@@ -53,6 +53,11 @@ class PickableItem: public EntityDetector {
   int shadow_y;
 
   /**
+   * Date when the item appears.
+   */
+  Uint16 appear_date;
+  
+  /**
    * Date when the item starts blinking.
    */
   Uint16 blink_date;

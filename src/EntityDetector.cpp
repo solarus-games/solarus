@@ -32,6 +32,14 @@ EntityDetector::~EntityDetector(void) {
 }
 
 /**
+ * Sets the collision mode of this detector.
+ * @param collision_mode the detector's collision mode
+ */
+void EntityDetector::set_collision_mode(CollisionMode collision_mode) {
+  this->mode = collision_mode;
+}
+
+/**
  * Sets whether the detector can detect entities even if
  * they are not on the same layer.
  * @param layer_ignored true to detect all entities, false
@@ -59,6 +67,10 @@ void EntityDetector::check_entity_collision(MapEntity *entity) {
     // detect the collision depending on the collision mode
     switch (mode) {
       
+    case COLLISION_NONE:
+      collision = false;
+      break;
+
     case COLLISION_WITH_ENTITY_ORIGIN:
       collision = check_collision_origin(entity);
       break;
@@ -136,8 +148,7 @@ bool EntityDetector::check_collision_facing_point(MapEntity *entity) {
  * This function is called by the game when the player
  * pressed the action key and Link is facing this transportable item.
  * This function is only used if the collision mode is COLLISION_WITH_ENTITY_FACING_POINT
- * @param map the map
  */
-void EntityDetector::action_key_pressed(Map *map) {
+void EntityDetector::action_key_pressed(void) {
 
 }

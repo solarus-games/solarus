@@ -8,6 +8,7 @@
  * Collisions modes between an entity and the detector.
  */
 enum CollisionMode {
+  COLLISION_NONE,                     /**< no collision will be detected (the detector is disabled) */
   COLLISION_WITH_ENTITY_ORIGIN,       /**< collision if the entity's origin point is inside the detector's rectangle */
   COLLISION_WITH_ENTITY_RECTANGLE,    /**< collision if the entity's rectangle overlaps the detector's rectangle */
   COLLISION_WITH_ENTITY_FACING_POINT, /**< collision if the entity's facing point overlaps the detector's rectangle */
@@ -32,7 +33,7 @@ class EntityDetector: public MapEntity {
 
  private:
 
-  const CollisionMode mode;
+  CollisionMode mode;
 
   bool layer_ignored;
   
@@ -45,6 +46,7 @@ class EntityDetector: public MapEntity {
   EntityDetector(CollisionMode collision_mode, string name, Layer layer,
 		 int x, int y, int width, int height);
 
+  void set_collision_mode(CollisionMode collision_mode);
   void set_layer_ignored(bool layer_ignored);
 
   virtual void entity_collision(MapEntity *entity_overlapping);
@@ -54,7 +56,7 @@ class EntityDetector: public MapEntity {
   virtual ~EntityDetector(void);
 
   virtual void check_entity_collision(MapEntity *entity);
-  virtual void action_key_pressed(Map *map);
+  virtual void action_key_pressed(void);
 
 };
 

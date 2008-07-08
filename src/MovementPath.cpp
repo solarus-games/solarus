@@ -47,3 +47,11 @@ void MovementPath::update_x(void) {
     }
   }
 }
+
+/**
+ * Returns whether the movement is finished, i.e.
+ * whether the end of the path was reached.
+ */
+bool MovementPath::is_finished(void) {
+  return path_ended;
+}

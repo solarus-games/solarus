@@ -22,7 +22,7 @@ enum LinkState {
   LINK_STATE_GRABBING,                /**< Link is grabbing an object and can push or pull it */
   LINK_STATE_SWORD_SWINGING,          /**< Link is swinging his sword */
   LINK_STATE_SPIN_ATTACK,             /**< Link is releasing a spin attack */
-  LINK_STATE_LIFTING,                 /**< Link is lifting a pot or a bush */
+  LINK_STATE_LIFTING,                 /**< Link is lifting an transportable item (a pot, a bush, etc.) */
 };
 
 /**
@@ -77,6 +77,9 @@ class Link: public MapEntity, AnimationListener {
   // spin attack
   bool sword_loaded; // in state LINK_STATE_SWORD_LOADING, becomes true when the spin attack is possible
 
+  // lift and carry an object
+  TransportableItem *item_carried;
+
   // update functions
   void update_position(void);
   void update_sprites(void);
@@ -98,6 +101,7 @@ class Link: public MapEntity, AnimationListener {
   void set_animation_sword(void);
   void set_animation_walking(void);
   void set_animation_pushing(void);
+  void set_animation_lifting(void);
 
  public:
 
@@ -117,6 +121,7 @@ class Link: public MapEntity, AnimationListener {
   void display_on_map(Map *map);
 
   // sprites
+  int get_animation_direction(void);
   void set_suspended(bool suspended);
 
   void initialize_sprites(void);
@@ -134,6 +139,8 @@ class Link: public MapEntity, AnimationListener {
   void start_free(void);
   void start_sword(void);
   void start_pushing(void);
+  void start_lifting(TransportableItem *item);
+  void start_carrying(void);
 };
 
 #endif

@@ -104,7 +104,7 @@ void Game::play(void) {
 	case SDLK_SPACE:
 
 	  if (keys_effect->get_action_key_entity() != NULL) {
-	    keys_effect->get_action_key_entity()->action_key_pressed(current_map);
+	    keys_effect->get_action_key_entity()->action_key_pressed();
 	  }
 	  break;
 	  

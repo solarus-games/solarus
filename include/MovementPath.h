@@ -61,6 +61,8 @@ class MovementPath: public Movement {
 	       Uint16 delay, bool loop);
   ~MovementPath(void);
 
+  bool is_finished(void);
+
 };
 
 #endif

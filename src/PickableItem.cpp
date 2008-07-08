@@ -11,7 +11,7 @@
 #include "Sound.h"
 #include "PickableItemHeart.h"
 #include "PickableItemFairy.h"
-
+#include "Link.h"
 
 /**
  * This structure defines the properties of a pickable item type.
@@ -54,7 +54,8 @@ static const PickableItemProperties properties[] = {
  */
 PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type):
   EntityDetector(COLLISION_WITH_ENTITY_RECTANGLE, "", layer, x, y, 0, 0),
-  map(map), type(type), shadow_x(x), shadow_y(y) {
+  map(map), type(type), shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
+
 }
 
 /**
@@ -270,7 +271,9 @@ bool PickableItem::is_falling(void) {
  */
 void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 
-  if (entity_overlapping == (MapEntity*) zsdx->game_resource->get_link()) {
+  if (entity_overlapping == zsdx->game_resource->get_link()
+      && SDL_GetTicks() >= (Uint16) (appear_date + 1000)) {
+
     give_item_to_player();
     map->get_entities()->remove_pickable_item(this);
   }

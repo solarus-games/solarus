@@ -89,7 +89,8 @@ Link::Link(void):
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
   state(LINK_STATE_FREE), walking(false),
   counter(0), next_counter_date(0),
-  pushing_direction_mask(0xFFFF) {
+  pushing_direction_mask(0xFFFF),
+  item_carried(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -545,6 +546,27 @@ void Link::start_sword_loading(void) {
 }
 
 /**
+ * Makes Link lift the specified item.
+ * @param item the item to lift
+ */
+void Link::start_lifting(TransportableItem *item) {
+
+  zsdx->game_resource->get_sound("lift")->play();
+  this->item_carried = item;
+  set_state(LINK_STATE_LIFTING);
+  set_animation_lifting();
+}
+
+/**
+ * Makes Link carry the item he was lifting.
+ */
+void Link::start_carrying(void) {
+  set_state(LINK_STATE_CARRYING);
+  // TODO  set_animation_carrying();
+  start_free();
+}
+
+/**
  * This function is called repeatedly while Link is loading his sword.
  * It stops the loading if the sword key is released.
  * The state must be LINK_STATE_SWORD_LOADING.
@@ -686,9 +708,17 @@ bool Link::is_direction_locked(void) {
 }
 
 /**
+ * Returns the direction of Link's sprites.
+ * It is different from the movement direction.
+ * @return the direction of Link's sprites (0 to 3)
+ */
+int Link::get_animation_direction(void) {
+  return tunic_sprite->get_current_direction();
+}
+
+/**
  * Changes the direction of Link's sprites.
- * It is different from the movement direction, which you can
- * set by set_direction().
+ * It is different from the movement direction.
  * @param direction the direction to set (0 to 3)
  */
 void Link::set_animation_direction(int direction) {
@@ -897,6 +927,19 @@ void Link::set_animation_pushing(void) {
   tunic_sprite->set_current_animation("pushing");
 
   // the shield is not visible when Link is pushing
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+}
+
+/**
+ * Starts the "lifting" animation of Link's sprites.
+ * Link's state should be LINK_STATE_LIFTING.
+ */
+void Link::set_animation_lifting(void) {
+  tunic_sprite->set_current_animation("lifting");
+
+  // the shield is not visible when Link is lifting
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }

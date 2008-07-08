@@ -33,6 +33,7 @@ add_executable (zsdx
 	       MovementFalling.cpp
 	       MovementPath.cpp
 	       FairyMovement.cpp
+	       FollowMovement.cpp
 	       EntityDetector.cpp
 	       MapExit.cpp
 	       Sprite.cpp
@@ -43,6 +44,7 @@ add_executable (zsdx
 	       PickableItemHeart.cpp
 	       PickableItemFairy.cpp
 	       TransportableItem.cpp
+	       CarriedItem.cpp
 	       SimpleTile.cpp
 	       AnimatedTile.cpp
 	       TileOnMap.cpp

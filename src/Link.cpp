@@ -9,6 +9,7 @@
 #include "Sound.h"
 #include "KeysEffect.h"
 #include "Movement8ByPlayer.h"
+#include "CarriedItem.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -90,7 +91,7 @@ Link::Link(void):
   state(LINK_STATE_FREE), walking(false),
   counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF),
-  item_carried(NULL) {
+  carried_item(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -110,6 +111,10 @@ Link::~Link(void) {
 
   if (shield_sprite != NULL) {
     delete shield_sprite;
+  }
+
+  if (carried_item != NULL) {
+    delete carried_item;
   }
 }
 
@@ -187,13 +192,12 @@ void Link::set_map(Map *map, int initial_direction) {
  */
 void Link::update(void) {
 
+  // update the movement
   if (zsdx->game->is_suspended()) {
     get_movement()->set_moving_enabled(false);
     next_counter_date = SDL_GetTicks();
   }
   else {
-    
-    // update the movement
     get_movement()->set_moving_enabled(get_state() <= LINK_STATE_SWIMMING);
     
     // specific updates in some states
@@ -204,6 +208,11 @@ void Link::update(void) {
 
   update_position();
   update_sprites();
+
+  // update the carried item
+  if (carried_item != NULL) {
+    carried_item->update();
+  }
 }
 
 /**
@@ -228,6 +237,10 @@ void Link::display_on_map(Map *map) {
 
   if (is_shield_visible()) {
     map->display_sprite(shield_sprite, x, y);
+  }
+
+  if (carried_item != NULL) {
+    carried_item->display_on_map(map);
   }
 }
 
@@ -546,27 +559,6 @@ void Link::start_sword_loading(void) {
 }
 
 /**
- * Makes Link lift the specified item.
- * @param item the item to lift
- */
-void Link::start_lifting(TransportableItem *item) {
-
-  zsdx->game_resource->get_sound("lift")->play();
-  this->item_carried = item;
-  set_state(LINK_STATE_LIFTING);
-  set_animation_lifting();
-}
-
-/**
- * Makes Link carry the item he was lifting.
- */
-void Link::start_carrying(void) {
-  set_state(LINK_STATE_CARRYING);
-  // TODO  set_animation_carrying();
-  start_free();
-}
-
-/**
  * This function is called repeatedly while Link is loading his sword.
  * It stops the loading if the sword key is released.
  * The state must be LINK_STATE_SWORD_LOADING.
@@ -602,6 +594,31 @@ void Link::update_sword_loading(void) {
       start_spin_attack();
     }
   }
+}
+
+/**
+ * Makes Link lift the specified item.
+ * @param item the item to lift
+ */
+void Link::start_lifting(TransportableItem *transportable_item) {
+
+  // play the sound
+  zsdx->game_resource->get_sound("lift")->play();
+
+  this->carried_item = new CarriedItem(this, transportable_item);
+
+  set_state(LINK_STATE_LIFTING);
+  set_animation_lifting();
+  set_facing_entity(NULL);
+}
+
+/**
+ * Makes Link carry the item he was lifting.
+ */
+void Link::start_carrying(void) {
+  set_state(LINK_STATE_CARRYING);
+  // TODO  set_animation_carrying();
+  start_free();
 }
 
 /**

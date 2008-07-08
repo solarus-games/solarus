@@ -7,17 +7,11 @@
 #include "PickableItemType.h"
 
 /**
- * The possible states of the transportable item.
- */
-enum TransportableItemState {
-  TRANSPORTABLE_ITEM_STATE_STOPPED,
-  TRANSPORTABLE_ITEM_STATE_LIFTING,
-  TRANSPORTABLE_ITEM_STATE_CARRIED,
-  TRANSPORTABLE_ITEM_STATE_THROWN,
-};
-
-/**
- * Represents an entity that Link can lift, transport and throw.
+ * Represents an entity that Link can lift
+ * (a pot, a bush, a stone, etc.).
+ * When Link lifts the item, it is destroyed
+ * and replaced by an instance of CarriedItem that is
+ * attached to Link.
  */
 class TransportableItem: public EntityDetector {
 
@@ -38,11 +32,6 @@ class TransportableItem: public EntityDetector {
    */
   PickableItemType pickable_item;
 
-  /**
-   * Current state of the transportable item.
-   */
-  TransportableItemState state;
-
  public:
   
   // creation and destruction
@@ -50,11 +39,10 @@ class TransportableItem: public EntityDetector {
 		    TransportableItemType type, PickableItemType pickable_item);
   ~TransportableItem(void);
 
+  string get_sprite_animations_id(void);
+
   void entity_collision(MapEntity *entity_overlapping);
   void action_key_pressed(void);
-
-  // update
-  void update(void);
 };
 
 

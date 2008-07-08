@@ -62,6 +62,7 @@ class MovementWithSmoothCollision;
 class MovementFalling;
 class MovementPath;
 class FairyMovement;
+class FollowMovement;
 
 class MapEntities;
 class MapEntity;
@@ -75,5 +76,6 @@ class PickableItem;
 class PickableItemHeart;
 class PickableItemFairy;
 class TransportableItem;
+class CarriedItem;
 
 #endif

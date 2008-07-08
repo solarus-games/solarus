@@ -90,6 +90,14 @@ Layer MapEntity::get_layer(void) {
 }
 
 /**
+ * Sets the layer of the entity on the map.
+ * @param layer the layer of the entity on the map.
+ */
+void MapEntity::set_layer(Layer layer) {
+  this->layer = layer;
+}
+
+/**
  * Returns the current x position of the entity.
  * @return the x position of the entity
  */

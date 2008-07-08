@@ -16,8 +16,10 @@ enum ActionKeyEffect {
 
   ACTION_KEY_CHECK,    /**< look at something */
   ACTION_KEY_OPEN,     /**< open a door or a chest */
-  ACTION_KEY_ACTION,   /**< perform an action (for example: take an object) */
+  ACTION_KEY_ACTION,   /**< perform an action */
+  ACTION_KEY_LIFT,     /**< lift an objet */
   ACTION_KEY_THROW,    /**< throw an object */
+  ACTION_KEY_GRAB,     /**< grab an object */
   ACTION_KEY_STOP,     /**< stop an action (for example: using an object which consumes magic) */
   ACTION_KEY_SPEAK,    /**< speak with an NPC */
 };

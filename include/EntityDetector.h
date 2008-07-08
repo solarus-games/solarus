@@ -54,6 +54,7 @@ class EntityDetector: public MapEntity {
   virtual ~EntityDetector(void);
 
   virtual void check_entity_collision(MapEntity *entity);
+  virtual void action_key_pressed(Map *map);
 
 };
 

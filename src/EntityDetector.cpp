@@ -74,11 +74,6 @@ void EntityDetector::check_entity_collision(MapEntity *entity) {
 	entity->set_facing_entity(this);
       }
       
-      /*
-      if (collision && entity == zsdx->game_resource->get_link()) {
-	zsdx->game->get_keys_effect()->set_action_key_entity(this);
-	}*/
-
       break;
     }
 
@@ -135,4 +130,14 @@ void EntityDetector::entity_collision(MapEntity *entity_overlapping) {
 bool EntityDetector::check_collision_facing_point(MapEntity *entity) {
 
   return entity->is_facing_point_in(get_position_in_map());
+}
+
+/**
+ * This function is called by the game when the player
+ * pressed the action key and Link is facing this transportable item.
+ * This function is only used if the collision mode is COLLISION_WITH_ENTITY_FACING_POINT
+ * @param map the map
+ */
+void EntityDetector::action_key_pressed(Map *map) {
+
 }

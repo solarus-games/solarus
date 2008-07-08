@@ -103,11 +103,8 @@ void Game::play(void) {
 
 	case SDLK_SPACE:
 
-	  // TODO very temporary
-
 	  if (keys_effect->get_action_key_entity() != NULL) {
-	    current_map->get_entities()->remove_transportable_item((TransportableItem*) keys_effect->get_action_key_entity());
-	    zsdx->game_resource->get_sound("lift")->play();
+	    keys_effect->get_action_key_entity()->action_key_pressed(current_map);
 	  }
 	  break;
 	  

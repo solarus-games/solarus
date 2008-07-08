@@ -31,6 +31,7 @@ class TransportableItem: public EntityDetector {
   ~TransportableItem(void);
 
   void entity_collision(MapEntity *entity_overlapping);
+  void action_key_pressed(Map *map);
 };
 
 

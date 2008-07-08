@@ -370,7 +370,7 @@ void Link::movement_just_changed(void) {
  */
 void Link::just_moved(void) {
 
-  zsdx->game->get_keys_effect()->set_action_key_entity(NULL);
+  set_facing_entity(NULL);
   MapEntity::just_moved();
 }
 

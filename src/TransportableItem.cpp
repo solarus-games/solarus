@@ -1,14 +1,17 @@
 #include "TransportableItem.h"
 #include "ZSDX.h"
 #include "GameResource.h"
-
+#include "Game.h"
+#include "KeysEffect.h"
+#include "Map.h"
+#include "Sound.h"
 
 /**
  * This structure defines the properties of a transportable item type.
  */
 struct TransportableItemProperties {
   SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of transportable item */
-  
+  // TODO weight
 };
 
 /**
@@ -57,6 +60,22 @@ TransportableItem::~TransportableItem(void) {
 void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping == (MapEntity*) zsdx->game_resource->get_link()) {
-    // TODO: keys effect: space -> lift
+    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    keys_effect->set_action_key_effect(ACTION_KEY_LIFT);
   }
+}
+
+/**
+ * This function is called by the game when the player
+ * pressed the action key and Link is facing this transportable item.
+ * The transportable item is then lifted by Link (if possible).
+ * @param map the map
+ */
+void TransportableItem::action_key_pressed(Map *map) {
+
+  // TODO check that Link can lift the object
+  map->get_entities()->remove_transportable_item(this);
+  zsdx->game_resource->get_sound("lift")->play();
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->set_action_key_entity(NULL);
 }

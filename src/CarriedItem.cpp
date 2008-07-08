@@ -4,11 +4,12 @@
 #include "MovementPath.h"
 #include "FollowMovement.h"
 #include "Layer.h"
+#include "Sprite.h"
 
 /**
  * Movement of the item when Link is lifting it.
  */
-static const SDL_Rect lift_translations[4][6] = {
+static const SDL_Rect lifting_translations[4][6] = {
   {{0,0}, {0,0}, {-3,-3}, {-5,-3}, {-5,-2}},
   {{0,0}, {0,0}, {0,-1}, {0,-1}, {0,0}},
   {{0,0}, {0,0}, {3,-3}, {5,-3}, {5,-2}},
@@ -39,7 +40,7 @@ CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
   }
 
   // create the movement and the sprite
-  MovementPath *movement = new MovementPath(lift_translations[direction], 6, 100, false);
+  MovementPath *movement = new MovementPath(lifting_translations[direction], 6, 100, false);
   create_sprite(transportable_item->get_sprite_animations_id());
   set_movement(movement);
 }
@@ -66,7 +67,26 @@ void CarriedItem::update(void) {
     if (movement->is_finished()) {
       is_lifting = false;
       link->start_carrying();
+      clear_movement();
       set_movement(new FollowMovement(link, 0, -18));
     }
   }
+}
+
+/**
+ * This function is called when Links stops walking while
+ * carrying the item. The item also stops moving.
+ */
+void CarriedItem::set_stopped(void) {
+  Sprite *sprite = get_last_sprite();
+  sprite->set_current_animation("stopped");
+}
+
+/**
+ * This function is called when Links starts walking while
+ * carrying the item. The item moves like him.
+ */
+void CarriedItem::set_walking(void) {
+  Sprite *sprite = get_last_sprite();
+  sprite->set_current_animation("walking");
 }

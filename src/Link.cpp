@@ -327,6 +327,10 @@ void Link::update_sprites(void) {
   if (is_shield_visible()) {
     shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
   }
+
+  if (carried_item != NULL && walking) {
+    carried_item->get_last_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
+  }
 }
 
 /**
@@ -617,8 +621,7 @@ void Link::start_lifting(TransportableItem *transportable_item) {
  */
 void Link::start_carrying(void) {
   set_state(LINK_STATE_CARRYING);
-  // TODO  set_animation_carrying();
-  start_free();
+  set_animation_stopped();
 }
 
 /**
@@ -844,6 +847,11 @@ void Link::set_animation_stopped(void) {
 
     break;
 
+  case LINK_STATE_CARRYING:
+    tunic_sprite->set_current_animation("carrying_stopped");
+    carried_item->set_stopped();
+    break;
+
   default:
     break;
   }
@@ -898,6 +906,11 @@ void Link::set_animation_walking(void) {
       }
     }
 
+    break;
+
+  case LINK_STATE_CARRYING:
+    tunic_sprite->set_current_animation("carrying_walking");
+    carried_item->set_walking();
     break;
 
   default:

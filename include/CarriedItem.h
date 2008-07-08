@@ -20,6 +20,8 @@ class CarriedItem: public MapEntity {
   CarriedItem(Link *link, TransportableItem *transportable_item);
   ~CarriedItem(void);
 
+  void set_stopped(void);
+  void set_walking(void);
   void update(void);
 };
 

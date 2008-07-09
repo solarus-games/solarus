@@ -42,7 +42,6 @@ ActionKeyEffect KeysEffect::get_action_key_effect(void) {
  * @param action_key_effect the current effect of the action key
  */
 void KeysEffect::set_action_key_effect(ActionKeyEffect action_key_effect) {
-
   this->action_key_effect = action_key_effect;
 }
 
@@ -53,9 +52,11 @@ void KeysEffect::set_action_key_effect(ActionKeyEffect action_key_effect) {
  */
 void KeysEffect::set_action_key_entity(EntityDetector *detector) {
 
+  /*
   if (this->action_key_entity != NULL && detector == NULL) {
     set_action_key_effect(ACTION_KEY_NONE);
   }
+  */
 
   this->action_key_entity = detector;
 }

@@ -103,7 +103,8 @@ void Game::play(void) {
 
 	case SDLK_SPACE:
 
-	  if (keys_effect->get_action_key_entity() != NULL) {
+	  if (keys_effect->get_action_key_effect() != ACTION_KEY_NONE
+	      && keys_effect->get_action_key_entity() != NULL) {
 	    keys_effect->get_action_key_entity()->action_key_pressed();
 	  }
 	  break;

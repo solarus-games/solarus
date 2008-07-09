@@ -398,7 +398,15 @@ void Link::just_moved(void) {
  * facing another entity.
  */
 void Link::set_facing_entity(EntityDetector *detector) {
-  zsdx->game->get_keys_effect()->set_action_key_entity(detector);  
+
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->set_action_key_entity(detector);
+
+  // if Link stops facing a transportable object
+  if (keys_effect->get_action_key_effect() == ACTION_KEY_LIFT
+      && detector == NULL) {
+    keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+  }
 }
 
 /**
@@ -605,9 +613,6 @@ void Link::update_sword_loading(void) {
  * @param item the item to lift
  */
 void Link::start_lifting(TransportableItem *transportable_item) {
-
-  // play the sound
-  zsdx->game_resource->get_sound("lift")->play();
 
   this->carried_item = new CarriedItem(this, transportable_item);
 

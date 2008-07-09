@@ -5,6 +5,9 @@
 #include "FollowMovement.h"
 #include "Layer.h"
 #include "Sprite.h"
+#include "ZSDX.h"
+#include "Game.h"
+#include "KeysEffect.h"
 
 /**
  * Movement of the item when Link is lifting it.
@@ -66,7 +69,15 @@ void CarriedItem::update(void) {
     MovementPath *movement = (MovementPath*) get_movement();
     if (movement->is_finished()) {
       is_lifting = false;
+
+      // make Link carry the item
       link->start_carrying();
+
+      // action icon "throw"
+      KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+      keys_effect->set_action_key_effect(ACTION_KEY_THROW);
+
+      // make the item follow Link
       clear_movement();
       set_movement(new FollowMovement(link, 0, -18));
     }

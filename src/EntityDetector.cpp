@@ -143,12 +143,3 @@ bool EntityDetector::check_collision_facing_point(MapEntity *entity) {
 
   return entity->is_facing_point_in(get_position_in_map());
 }
-
-/**
- * This function is called by the game when the player
- * pressed the action key and Link is facing this transportable item.
- * This function is only used if the collision mode is COLLISION_WITH_ENTITY_FACING_POINT
- */
-void EntityDetector::action_key_pressed(void) {
-
-}

@@ -78,6 +78,7 @@ class Link: public MapEntity, AnimationListener {
   bool sword_loaded; // in state LINK_STATE_SWORD_LOADING, becomes true when the spin attack is possible
 
   // lift and carry an object
+  MapEntity *facing_entity;
   CarriedItem *carried_item;
 
   // update functions
@@ -92,6 +93,8 @@ class Link: public MapEntity, AnimationListener {
   void update_sword_loading(void);
   void start_spin_attack(void);
   bool can_start_sword(void);
+  void start_lifting(void);
+  void start_throwing(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);
@@ -139,8 +142,8 @@ class Link: public MapEntity, AnimationListener {
   void start_free(void);
   void start_sword(void);
   void start_pushing(void);
-  void start_lifting(TransportableItem *transportable_item);
   void start_carrying(void);
+  void action_key_pressed(void);
 };
 
 #endif

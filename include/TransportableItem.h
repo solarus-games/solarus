@@ -42,7 +42,7 @@ class TransportableItem: public EntityDetector {
   string get_sprite_animations_id(void);
 
   void entity_collision(MapEntity *entity_overlapping);
-  void action_key_pressed(void);
+  void lift(void);
 };
 
 

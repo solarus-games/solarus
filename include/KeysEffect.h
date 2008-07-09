@@ -60,7 +60,6 @@ class KeysEffect {
 
   ActionKeyEffect action_key_effect; // effect of the action key
   bool action_key_enabled;
-  EntityDetector *action_key_entity; // the entity currently handled by the action key
 
   SwordKeyEffect sword_key_effect; // effect of the sword key
   bool sword_key_enabled;
@@ -81,8 +80,6 @@ class KeysEffect {
 
   ActionKeyEffect get_action_key_effect(void);
   void set_action_key_effect(ActionKeyEffect action_key_effect);
-  void set_action_key_entity(EntityDetector *detector);
-  EntityDetector *get_action_key_entity(void);
   bool is_action_key_enabled(void);
   void set_action_key_enabled(bool enable);
 

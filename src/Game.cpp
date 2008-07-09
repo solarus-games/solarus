@@ -102,11 +102,7 @@ void Game::play(void) {
 	  break;
 
 	case SDLK_SPACE:
-
-	  if (keys_effect->get_action_key_effect() != ACTION_KEY_NONE
-	      && keys_effect->get_action_key_entity() != NULL) {
-	    keys_effect->get_action_key_entity()->action_key_pressed();
-	  }
+	  link->action_key_pressed();
 	  break;
 	  
 	  // TODO remove
@@ -165,19 +161,6 @@ void Game::play(void) {
 	  }
 	  break;
 
-	case SDLK_a:
-	  
-	  if (keys_effect->get_action_key_effect() == ACTION_KEY_NONE) {
-	    keys_effect->set_action_key_effect(ACTION_KEY_ACTION);
-	  }
-	  else if (keys_effect->get_action_key_effect() == ACTION_KEY_ACTION) {
-	    keys_effect->set_action_key_effect(ACTION_KEY_THROW);
-	  }
-	  else if (keys_effect->get_action_key_effect() == ACTION_KEY_THROW) {
-	    keys_effect->set_action_key_effect(ACTION_KEY_NONE);
-	  }	    
-	  break;
-	  
 	case SDLK_t:
 	  if (!is_suspended()) {
 	    if (link->get_state() != LINK_STATE_PUSHING) {

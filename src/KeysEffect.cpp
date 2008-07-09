@@ -7,7 +7,6 @@ KeysEffect::KeysEffect(void) {
   
   action_key_effect = ACTION_KEY_NONE;
   action_key_enabled = true;
-  action_key_entity = NULL;
 
   sword_key_effect = SWORD_KEY_NONE;
   sword_key_enabled = true;
@@ -43,31 +42,6 @@ ActionKeyEffect KeysEffect::get_action_key_effect(void) {
  */
 void KeysEffect::set_action_key_effect(ActionKeyEffect action_key_effect) {
   this->action_key_effect = action_key_effect;
-}
-
-/**
- * Sets the entity for which the player can currently do something
- * by pressing the action key, i.e. the entity Link is facing (can be NULL).
- * @param detector the entity Link is currently facing
- */
-void KeysEffect::set_action_key_entity(EntityDetector *detector) {
-
-  /*
-  if (this->action_key_entity != NULL && detector == NULL) {
-    set_action_key_effect(ACTION_KEY_NONE);
-  }
-  */
-
-  this->action_key_entity = detector;
-}
-
-/**
- * Returns the entity for which the player can currently do something
- * by pressing the action key, i.e. the entity Link is facing (can be NULL).
- * @return the entity Link is currently facing
- */
-EntityDetector * KeysEffect::get_action_key_entity(void) {
-  return action_key_entity;
 }
 
 /**

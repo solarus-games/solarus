@@ -80,24 +80,12 @@ void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
 }
 
 /**
- * This function is called by the game when the player
- * presses the action key and Link is facing this transportable item.
- * The transportable item is then lifted by Link (if possible).
+ * This function is called by Link when he lifts this item.
  * @param map the map
  */
-void TransportableItem::action_key_pressed(void) {
+void TransportableItem::lift(void) {
 
   // TODO check that Link can lift the object
-
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-
-  // if the action icon is not "lift", don't lift the item
-  if (keys_effect->get_action_key_effect() != ACTION_KEY_LIFT) {
-    return;
-  }
-  
-  // remove the "lift" action icon
-  keys_effect->set_action_key_entity(NULL);
 
   // play the sound
   zsdx->game_resource->get_sound("lift")->play();
@@ -107,10 +95,6 @@ void TransportableItem::action_key_pressed(void) {
     map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
 					   0, MOVEMENT_FALLING_MEDIUM, true);
   }
-
-  // make Link lift the item
-  Link *link = zsdx->game_resource->get_link();
-  link->start_lifting(this);
 
   // remove the item from the map
   map->get_entities()->remove_transportable_item(this);

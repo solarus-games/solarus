@@ -9,7 +9,9 @@
 #include "Sound.h"
 #include "KeysEffect.h"
 #include "Movement8ByPlayer.h"
+#include "TransportableItem.h"
 #include "CarriedItem.h"
+#include "EntityDetector.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -91,7 +93,7 @@ Link::Link(void):
   state(LINK_STATE_FREE), walking(false),
   counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF),
-  carried_item(NULL) {
+  facing_entity(NULL), carried_item(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -304,7 +306,14 @@ void Link::initialize_sprites(void) {
     set_animation_direction(animation_direction);
   }
 
-  start_free();
+  // animation walking or stopped
+  set_state(LINK_STATE_FREE);
+  if (get_movement()->is_started()) {
+    set_animation_walking();
+  }
+  else {
+    set_animation_stopped();
+  }
 }
 
 /**
@@ -396,11 +405,13 @@ void Link::just_moved(void) {
  * Sets the entity Link is currently facing.
  * This function is called when Link is just being
  * facing another entity.
+ * @param detector the detector Link is facing
  */
 void Link::set_facing_entity(EntityDetector *detector) {
 
+  this->facing_entity = detector;
+
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->set_action_key_entity(detector);
 
   // if Link stops facing a transportable object
   if (keys_effect->get_action_key_effect() == ACTION_KEY_LIFT
@@ -512,6 +523,9 @@ void Link::start_free(void) {
   else {
     set_animation_stopped();
   }
+
+  // to check the facing entity
+  just_moved();
 }
 
 /**
@@ -609,16 +623,25 @@ void Link::update_sword_loading(void) {
 }
 
 /**
- * Makes Link lift the specified item.
- * @param item the item to lift
+ * Makes Link lift the facing entity.
  */
-void Link::start_lifting(TransportableItem *transportable_item) {
+void Link::start_lifting(void) {
 
-  this->carried_item = new CarriedItem(this, transportable_item);
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  if (keys_effect->get_action_key_effect() == ACTION_KEY_LIFT) {
 
-  set_state(LINK_STATE_LIFTING);
-  set_animation_lifting();
-  set_facing_entity(NULL);
+    // lift the item
+    TransportableItem *item_to_lift = (TransportableItem*) facing_entity;
+    item_to_lift->lift();
+    
+    // create the corresponding carried item
+    this->carried_item = new CarriedItem(this, item_to_lift);
+    
+    keys_effect->set_action_key_effect(ACTION_KEY_THROW);
+    set_state(LINK_STATE_LIFTING);
+    set_animation_lifting();
+    set_facing_entity(NULL);
+  }
 }
 
 /**
@@ -626,7 +649,34 @@ void Link::start_lifting(TransportableItem *transportable_item) {
  */
 void Link::start_carrying(void) {
   set_state(LINK_STATE_CARRYING);
-  set_animation_stopped();
+
+  if (get_movement()->is_started()) {
+    set_animation_walking();
+  }
+  else {
+    set_animation_stopped();
+  }
+}
+
+/**
+ * Makes Link throw the item he was carrying.
+ */
+void Link::start_throwing(void) {
+
+  // we check the state because the "throw" icon is actually shown as soon as
+  // Link starts lifting the item
+  if (state == LINK_STATE_CARRYING) {
+
+    zsdx->game_resource->get_sound("throw")->play();
+
+    delete carried_item;
+    carried_item = NULL;
+
+    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+
+    start_free();
+  }
 }
 
 /**
@@ -868,7 +918,7 @@ void Link::set_animation_stopped(void) {
  * Starts the "walking" animation of Link's sprites.
  */
 void Link::set_animation_walking(void) {
-  
+
   int direction = tunic_sprite->get_current_direction();
   
   switch (get_state()) {
@@ -977,5 +1027,28 @@ void Link::set_animation_lifting(void) {
   // the shield is not visible when Link is lifting
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
+  }
+}
+
+/**
+ * This function is called by the engine when the action key is pressed.
+ * Depending on its effect, an action may be performed.
+ */
+void Link::action_key_pressed(void) {
+
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  
+  switch (keys_effect->get_action_key_effect()) {
+
+  case ACTION_KEY_LIFT:
+    start_lifting();
+    break;
+
+  case ACTION_KEY_THROW:
+    start_throwing();
+    break;
+
+  default:
+    break;
   }
 }

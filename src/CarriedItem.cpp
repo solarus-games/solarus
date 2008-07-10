@@ -3,11 +3,14 @@
 #include "Link.h"
 #include "MovementPath.h"
 #include "FollowMovement.h"
+#include "ThrowItemMovement.h"
 #include "Layer.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
+#include "GameResource.h"
+#include "Sound.h"
 
 /**
  * Movement of the item when Link is lifting it.
@@ -26,7 +29,7 @@ static const SDL_Rect lifting_translations[4][6] = {
  * @param transportable_item a transportable item
  */
 CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
-  MapEntity(), link(link), is_lifting(true) {
+  MapEntity(), link(link), is_lifting(true), is_throwing(false) {
 
   // put the item on Link's layer
   set_layer(link->get_layer());
@@ -89,8 +92,11 @@ void CarriedItem::update(void) {
  * carrying the item. The item also stops moving.
  */
 void CarriedItem::set_stopped(void) {
-  Sprite *sprite = get_last_sprite();
-  sprite->set_current_animation("stopped");
+
+  if (!is_lifting && !is_throwing) {
+    Sprite *sprite = get_last_sprite();
+    sprite->set_current_animation("stopped");
+  }
 }
 
 /**
@@ -98,6 +104,32 @@ void CarriedItem::set_stopped(void) {
  * carrying the item. The item moves like him.
  */
 void CarriedItem::set_walking(void) {
+  if (!is_lifting && !is_throwing) {
+    Sprite *sprite = get_last_sprite();
+    sprite->set_current_animation("walking");
+  }
+}
+
+/**
+ * Throws the item.
+ * @param direction direction where Link throws the item (0 to 3)
+ */
+void CarriedItem::throw_item(int direction) {
+
+  is_throwing = true;
+
+  // play the sound
+  zsdx->game_resource->get_sound("throw")->play();
+
+  // stop the sprite animation
   Sprite *sprite = get_last_sprite();
-  sprite->set_current_animation("walking");
+  sprite->set_current_animation("stopped");
+
+  // remove the "throw" icon
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+
+  // set the movement
+  clear_movement();
+  set_movement(new ThrowItemMovement(direction));
 }

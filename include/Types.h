@@ -63,6 +63,7 @@ class MovementFalling;
 class MovementPath;
 class FairyMovement;
 class FollowMovement;
+class ThrowItemMovement;
 
 class MapEntities;
 class MapEntity;

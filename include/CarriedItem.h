@@ -14,6 +14,7 @@ class CarriedItem: public MapEntity {
   
   Link *link;
   bool is_lifting;
+  bool is_throwing;
 
  public:
 
@@ -22,6 +23,8 @@ class CarriedItem: public MapEntity {
 
   void set_stopped(void);
   void set_walking(void);
+  void throw_item(int direction);
+
   void update(void);
 };
 

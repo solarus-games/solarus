@@ -34,6 +34,7 @@ add_executable (zsdx
 	       MovementPath.cpp
 	       FairyMovement.cpp
 	       FollowMovement.cpp
+	       ThrowItemMovement.cpp
 	       EntityDetector.cpp
 	       MapExit.cpp
 	       Sprite.cpp

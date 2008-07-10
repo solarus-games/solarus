@@ -218,7 +218,7 @@ void Movement::stop(void) {
 /**
  * Changes the direction of the movement vector, keeping the same speed.
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
- * Warning: if x_speed and y_speed are both equal to zero, this function has no effect.
+ * Warning: if x_speed and y_speed are both equal to zero, this function has no effect!
  * @param direction the new movement direction, between 0 and 359
  */
 void Movement::set_direction(int direction) {

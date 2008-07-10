@@ -337,7 +337,7 @@ void Link::update_sprites(void) {
     shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
   }
 
-  if (carried_item != NULL && walking) {
+  if (state == LINK_STATE_CARRYING && walking) {
     carried_item->get_last_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
   }
 }
@@ -667,13 +667,7 @@ void Link::start_throwing(void) {
   // Link starts lifting the item
   if (state == LINK_STATE_CARRYING) {
 
-    zsdx->game_resource->get_sound("throw")->play();
-
-    delete carried_item;
-    carried_item = NULL;
-
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-    keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+    carried_item->throw_item(get_animation_direction());
 
     start_free();
   }

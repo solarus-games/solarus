@@ -427,16 +427,16 @@ void MapEntity::update(void) {
 
   // update the sprites
   for (unsigned int i = 0; i < sprites.size(); i++) {
-    
+
     Sprite *sprite = sprites[i];
-    
+
     if (sprite->get_current_direction() != direction) {
       sprite->set_current_direction(direction);
     }
 
     sprite->update_current_frame();
   }
-  
+
   // update the movement
   if (movement != NULL) {
     movement->update();

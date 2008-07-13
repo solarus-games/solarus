@@ -11,6 +11,7 @@
 #include "KeysEffect.h"
 #include "GameResource.h"
 #include "Sound.h"
+#include "Map.h"
 
 /**
  * Movement of the item when Link is lifting it.
@@ -44,11 +45,16 @@ CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
     set_x(link->get_x());
     set_y(transportable_item->get_y());
   }
+  set_origin(transportable_item->get_origin());
+  set_size(transportable_item->get_width(), transportable_item->get_height());
 
   // create the movement and the sprite
   MovementPath *movement = new MovementPath(lifting_translations[direction], 6, 100, false);
   create_sprite(transportable_item->get_sprite_animations_id());
   set_movement(movement);
+
+  // create the breaking sound
+  breaking_sound = transportable_item->get_breaking_sound();
 }
 
 /**
@@ -67,6 +73,8 @@ void CarriedItem::update(void) {
   // update the sprite and the position
   MapEntity::update();
   
+  Sprite *sprite = get_last_sprite();
+
   // when Link finishes lifting the item, start carrying it
   if (is_lifting) {
     MovementPath *movement = (MovementPath*) get_movement();
@@ -83,6 +91,17 @@ void CarriedItem::update(void) {
       // make the item follow Link
       clear_movement();
       set_movement(new FollowMovement(link, 0, -18));
+    }
+  }
+  else if (is_throwing) {
+
+    if (get_movement()->is_stopped()) {
+      // destroy the item
+      is_throwing = false;
+      is_breaking = true;
+      breaking_sound->play();
+      sprite->set_current_animation("destroy");
+      set_movement(NULL);
     }
   }
 }
@@ -112,9 +131,10 @@ void CarriedItem::set_walking(void) {
 
 /**
  * Throws the item.
+ * @param map the current map
  * @param direction direction where Link throws the item (0 to 3)
  */
-void CarriedItem::throw_item(int direction) {
+void CarriedItem::throw_item(Map *map, int direction) {
 
   is_throwing = true;
 
@@ -131,5 +151,13 @@ void CarriedItem::throw_item(int direction) {
 
   // set the movement
   clear_movement();
-  set_movement(new ThrowItemMovement(direction));
+  set_movement(new ThrowItemMovement(map, direction));
+}
+
+/**
+ * Returns whether the item is broken.
+ * @return true if the item is broken
+ */
+bool CarriedItem::is_broken(void) {
+  return is_breaking && get_last_sprite()->is_over() ;
 }

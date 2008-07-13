@@ -122,6 +122,7 @@ class Movement {
   double get_x_speed();
   double get_y_speed();
   double get_speed(void);
+  bool is_stopped(void);
 
   void set_x_speed(double x_speed);
   void set_y_speed(double y_speed);

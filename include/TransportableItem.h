@@ -40,6 +40,7 @@ class TransportableItem: public EntityDetector {
   ~TransportableItem(void);
 
   string get_sprite_animations_id(void);
+  Sound *get_breaking_sound(void);
 
   void entity_collision(MapEntity *entity_overlapping);
   void lift(void);

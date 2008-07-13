@@ -205,6 +205,14 @@ int MapEntity::get_direction(void) {
 }
 
 /**
+ * Returns the origin point of the entity.
+ * @return the origin point
+ */
+const SDL_Rect * MapEntity::get_origin(void) {
+  return &origin;
+}
+
+/**
  * Sets the origin point of the entity
  * relative to the top-left corner of its rectangle.
  * @param x x coordinate of the origin
@@ -224,9 +232,9 @@ void MapEntity::set_origin(int x, int y) {
  * relative to the top-left corner of its rectangle.
  * @param origin x and y coordinates of the origin
  */
-void MapEntity::set_origin(SDL_Rect &origin) {
+void MapEntity::set_origin(const SDL_Rect *origin) {
 
-  set_origin(origin.x, origin.y);
+  set_origin(origin->x, origin->y);
 }
 
 /**
@@ -241,7 +249,7 @@ void MapEntity::set_rectangle_from_sprite(void) {
 
   Sprite *sprite = sprites[0];
   set_size(sprite->get_size());
-  set_origin(sprite->get_origin());
+  set_origin(&sprite->get_origin());
 }
 
 /**

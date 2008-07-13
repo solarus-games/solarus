@@ -2,15 +2,18 @@
 #define ZSDX_THROW_ITEM_MOVEMENT_H
 
 #include "Common.h"
-#include "Movement.h"
+#include "MovementWithCollision.h"
 
 /**
  * Movement used for an item thrown by Link
  * (a pot, a bush, etc.).
  */
-class ThrowItemMovement: public Movement {
+class ThrowItemMovement: public MovementWithCollision {
 
+ private:
 
+  int y_increment;
+  Uint16 next_down_date;
 
  protected:
 
@@ -19,8 +22,10 @@ class ThrowItemMovement: public Movement {
 
  public:
 
-  ThrowItemMovement(int direction);
+  ThrowItemMovement(Map *map, int direction);
   ~ThrowItemMovement(void);
+
+  void set_suspended(bool suspended);
 };
 
 #endif

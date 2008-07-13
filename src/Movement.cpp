@@ -206,6 +206,14 @@ void Movement::set_speed(double speed) {
 }
 
 /**
+ * Returns whether the speed is zero.
+ * @return true if the entity is stopped, false otherwise
+ */
+bool Movement::is_stopped(void) {
+  return x_speed == 0 && y_speed == 0;
+}
+
+/**
  * Sets the speed to zero.
  */
 void Movement::stop(void) {

@@ -360,7 +360,7 @@ bool Map::collision_with_entities(Layer layer, SDL_Rect &collision_box) {
   list<MapEntity*> *obstacle_entities = entities.get_obstacle_entities(layer);
 
   bool collision = false;
-  
+
   list<MapEntity*>::iterator i;
   for (i = obstacle_entities->begin();
        i != obstacle_entities->end() && !collision;
@@ -368,7 +368,7 @@ bool Map::collision_with_entities(Layer layer, SDL_Rect &collision_box) {
     
     collision = (*i)->overlaps(&collision_box);
   }
-  
+
   return collision;
 }
 

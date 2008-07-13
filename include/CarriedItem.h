@@ -15,6 +15,8 @@ class CarriedItem: public MapEntity {
   Link *link;
   bool is_lifting;
   bool is_throwing;
+  bool is_breaking;
+  Sound *breaking_sound;
 
  public:
 
@@ -23,7 +25,8 @@ class CarriedItem: public MapEntity {
 
   void set_stopped(void);
   void set_walking(void);
-  void throw_item(int direction);
+  void throw_item(Map *map, int direction);
+  bool is_broken(void);
   
   void update(void);
 };

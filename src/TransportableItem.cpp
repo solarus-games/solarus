@@ -13,6 +13,7 @@
  */
 struct TransportableItemProperties {
   SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of transportable item */
+  SoundId breaking_sound_id;
   // TODO weight
 };
 
@@ -20,12 +21,13 @@ struct TransportableItemProperties {
  * Properties of each type of transportable item.
  */
 static const TransportableItemProperties properties[] = {
-  {"entities/pot"},
-  {"entities/skull"},
-  {"entities/stone_white_small"},
-  {"entities/stone_white_big"},
-  {"entities/stone_black_small"},
-  {"entities/stone_black_big"},
+  {"entities/pot", "stone"},
+  {"entities/skull", "stone"},
+  {"entities/bush", "bush"},
+  {"entities/stone_white_small", "stone"},
+  {"entities/stone_white_big", "stone"},
+  {"entities/stone_black_small", "stone"},
+  {"entities/stone_black_big", "stone"},
 };
 
 /**
@@ -60,6 +62,14 @@ TransportableItem::~TransportableItem(void) {
  */
 string TransportableItem::get_sprite_animations_id(void) {
   return properties[type].sprite_animations_id;
+}
+
+/**
+ * Returns the sound to play when this item is destroyed.
+ * @return the sound to play when this item is destroyed
+ */
+Sound * TransportableItem::get_breaking_sound(void) {
+  return zsdx->game_resource->get_sound(properties[type].breaking_sound_id);
 }
 
 /**

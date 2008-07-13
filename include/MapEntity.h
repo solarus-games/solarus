@@ -95,7 +95,7 @@ class MapEntity {
   void set_size(int width, int height);
   void set_size(SDL_Rect &size);
   void set_origin(int x, int y);
-  void set_origin(SDL_Rect &origin);
+  void set_origin(const SDL_Rect *origin);
   void set_rectangle_from_sprite(void);
   void create_sprite(SpriteAnimationsId id);
   void set_movement(Movement *movement);
@@ -115,6 +115,7 @@ class MapEntity {
   int get_width(void);
   int get_height(void);
   const SDL_Rect * get_position_in_map(void);
+  const SDL_Rect * get_origin(void);
 
   virtual SDL_Rect get_facing_point(void);
 

@@ -214,6 +214,11 @@ void Link::update(void) {
   // update the carried item
   if (carried_item != NULL) {
     carried_item->update();
+
+    if (carried_item->is_broken()) {
+      delete carried_item;
+      carried_item = NULL;
+    }
   }
 }
 
@@ -667,7 +672,7 @@ void Link::start_throwing(void) {
   // Link starts lifting the item
   if (state == LINK_STATE_CARRYING) {
 
-    carried_item->throw_item(get_animation_direction());
+    carried_item->throw_item(map, get_animation_direction());
 
     start_free();
   }

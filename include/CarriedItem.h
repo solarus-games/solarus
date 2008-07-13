@@ -24,7 +24,7 @@ class CarriedItem: public MapEntity {
   void set_stopped(void);
   void set_walking(void);
   void throw_item(int direction);
-
+  
   void update(void);
 };
 

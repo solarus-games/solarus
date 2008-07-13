@@ -80,6 +80,7 @@ class PickableItem: public EntityDetector {
 
   // item
   virtual void give_item_to_player(void);
+  void set_blinking(bool blinking);
 
  public:
 

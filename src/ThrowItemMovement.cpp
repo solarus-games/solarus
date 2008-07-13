@@ -22,7 +22,7 @@ ThrowItemMovement::~ThrowItemMovement(void) {
  * Updates the x position.
  */
 void ThrowItemMovement::update_x(void) {
-  Movement::update_x();  
+  Movement::update_x();
 }
 
 /**

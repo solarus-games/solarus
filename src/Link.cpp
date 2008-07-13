@@ -824,6 +824,10 @@ void Link::set_suspended(bool suspended) {
   if (equipment->has_shield()) {
     shield_sprite->set_suspended(suspended);
   }
+
+  if (carried_item != NULL) {
+    carried_item->set_suspended(suspended);
+  }
 }
 
 /**

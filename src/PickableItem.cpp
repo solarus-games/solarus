@@ -272,7 +272,8 @@ bool PickableItem::is_falling(void) {
 void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping == zsdx->game_resource->get_link()
-      && SDL_GetTicks() >= (Uint16) (appear_date + 1000)) {
+      && SDL_GetTicks() >= (Uint16) (appear_date + 500)) {
+    // wait 0.5 second before allowing Link to take the item
 
     give_item_to_player();
     map->get_entities()->remove_pickable_item(this);
@@ -353,6 +354,20 @@ void PickableItem::give_item_to_player(void) {
 }
 
 /**
+ * Sets whether the pickable item is blinking.
+ * @param blinking true to make it blink, false to make it stop blinking
+ */
+void PickableItem::set_blinking(bool blinking) {
+
+  Uint16 blink_delay = blinking ? 75 : 0;
+
+  Sprite *item_sprite = get_sprite(0);
+
+  item_sprite->set_blinking(blink_delay);
+  shadow_sprite->set_blinking(blink_delay);
+}
+
+/**
  * This function is called by the map when the game is suspended or resumed.
  * This is a redefinition of MapEntity::set_suspended() to suspend the timer
  * which makes the pickable item disappear after a few seconds.
@@ -372,6 +387,11 @@ void PickableItem::set_suspended(bool suspended) {
       blink_date = now + (blink_date - when_suspended);
       disappear_date = now + (disappear_date - when_suspended);
     }
+    set_blinking(true);
+  }
+  else {
+    // the game is being suspended
+    set_blinking(false);
   }
 }
 
@@ -390,13 +410,12 @@ void PickableItem::update(void) {
   shadow_sprite->update_current_frame();
 
   // check the timer
-  if (will_disappear) {
+  if (will_disappear && !is_suspended()) {
     Uint16 now = SDL_GetTicks();
     Sprite *item_sprite = get_sprite(0);
     
     if (now >= blink_date && !item_sprite->is_blinking()) {
-      item_sprite->set_blinking(75);
-      shadow_sprite->set_blinking(75);
+      set_blinking(true);
     }
     
     if (now >= disappear_date) {

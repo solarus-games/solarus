@@ -236,9 +236,8 @@ Lorsqu'il lance ce mode, le jeu affiche les écrans suivants :
  */
 int main(int argc, char **argv) {
 
-  zsdx = new ZSDX();
-
   try {
+    zsdx = new ZSDX();
     zsdx->main();
   }
   catch (const string &s) {

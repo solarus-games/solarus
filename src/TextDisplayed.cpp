@@ -17,8 +17,7 @@ void TextDisplayed::initialize(void) {
 
   fonts[FONT_LA] = TTF_OpenFont(file_name.c_str(), 11);
   if (fonts[FONT_LA] == NULL) {
-    DIE("Cannot load font 'zsdx.ttf'");
-    exit(1);
+    DIE("Cannot load font '" << file_name << "'");
   }
   
   file_name = FileTools::data_file_add_prefix("fixed8.fon");

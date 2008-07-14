@@ -222,7 +222,7 @@ void PickableItem::initialize_sprites(void) {
 
   // create the shadow
   shadow_sprite = new Sprite("entities/shadow");
-  
+
   if (properties[type].big_shadow) {
     shadow_sprite->set_current_animation("big");
   }

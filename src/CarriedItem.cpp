@@ -55,6 +55,10 @@ CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
 
   // create the breaking sound
   breaking_sound = transportable_item->get_breaking_sound();
+
+  // create the shadow
+  shadow_sprite = new Sprite("entities/shadow");
+  shadow_sprite->set_current_animation("big");
 }
 
 /**
@@ -62,48 +66,6 @@ CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
  */
 CarriedItem::~CarriedItem(void) {
 
-}
-
-/**
- * This function is called repeatedly by Link.
- * When the lift movement finishes, Link starts carrying the item.
- */
-void CarriedItem::update(void) {
-
-  // update the sprite and the position
-  MapEntity::update();
-  
-  Sprite *sprite = get_last_sprite();
-
-  // when Link finishes lifting the item, start carrying it
-  if (is_lifting) {
-    MovementPath *movement = (MovementPath*) get_movement();
-    if (movement->is_finished()) {
-      is_lifting = false;
-
-      // make Link carry the item
-      link->start_carrying();
-
-      // action icon "throw"
-      KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-      keys_effect->set_action_key_effect(ACTION_KEY_THROW);
-
-      // make the item follow Link
-      clear_movement();
-      set_movement(new FollowMovement(link, 0, -18));
-    }
-  }
-  else if (is_throwing) {
-
-    if (get_movement()->is_stopped()) {
-      // destroy the item
-      is_throwing = false;
-      is_breaking = true;
-      breaking_sound->play();
-      sprite->set_current_animation("destroy");
-      set_movement(NULL);
-    }
-  }
 }
 
 /**
@@ -160,4 +122,82 @@ void CarriedItem::throw_item(Map *map, int direction) {
  */
 bool CarriedItem::is_broken(void) {
   return is_breaking && get_last_sprite()->is_over() ;
+}
+
+/**
+ * This function is called by the map when the game is suspended or resumed.
+ * This is a redefinition of MapEntity::set_suspended() to suspend the movement
+ * of the shadow when the item is being thrown.
+ * @param suspended true to suspend the entity, false to resume it
+ */
+void CarriedItem::set_suspended(bool suspended) {
+
+  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+
+  if (is_throwing) {
+    // suspend the shadow
+    shadow_sprite->set_suspended(true);
+  }
+}
+
+/**
+ * This function is called repeatedly by Link.
+ * When the lift movement finishes, Link starts carrying the item.
+ */
+void CarriedItem::update(void) {
+
+  // update the sprite and the position
+  MapEntity::update();
+
+  Sprite *sprite = get_last_sprite();
+
+  // when Link finishes lifting the item, start carrying it
+  if (is_lifting) {
+    MovementPath *movement = (MovementPath*) get_movement();
+    if (movement->is_finished()) {
+      is_lifting = false;
+
+      // make Link carry the item
+      link->start_carrying();
+
+      // action icon "throw"
+      KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+      keys_effect->set_action_key_effect(ACTION_KEY_THROW);
+
+      // make the item follow Link
+      clear_movement();
+      set_movement(new FollowMovement(link, 0, -18));
+    }
+  }
+  else if (is_throwing) {
+
+    if (get_movement()->is_stopped()) {
+      // destroy the item
+      is_throwing = false;
+      is_breaking = true;
+      breaking_sound->play();
+      sprite->set_current_animation("destroy");
+      set_movement(NULL);
+    }
+    else {
+      shadow_sprite->update_current_frame();
+    }
+  }
+}
+
+/**
+ * Displays the carried item on the map.
+ * This is a redefinition of MapEntity::display_on_map
+ * to display the shadow independently of the item movement.
+ */
+void CarriedItem::display_on_map(Map *map) {
+
+  if (is_throwing) {
+    // display the shadow
+    ThrowItemMovement *movement = (ThrowItemMovement*) get_movement();
+    map->display_sprite(shadow_sprite, get_x(), get_y() + movement->get_item_height());
+  }
+
+  // display the sprite
+  MapEntity::display_on_map(map);
 }

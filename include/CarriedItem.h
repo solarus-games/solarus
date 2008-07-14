@@ -17,6 +17,8 @@ class CarriedItem: public MapEntity {
   bool is_throwing;
   bool is_breaking;
   Sound *breaking_sound;
+  Sprite *shadow_sprite;
+
 
  public:
 
@@ -28,7 +30,9 @@ class CarriedItem: public MapEntity {
   void throw_item(Map *map, int direction);
   bool is_broken(void);
   
+  void set_suspended(bool suspended);
   void update(void);
+  void display_on_map(Map *map);
 };
 
 #endif

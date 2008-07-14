@@ -9,7 +9,7 @@ ThrowItemMovement::ThrowItemMovement(Map *map, int direction):
   MovementWithCollision() {
 
   set_map(map);
-  set_speed(12);
+  set_speed(20);
   set_direction(direction * 90);
 
   y_increment = -2;
@@ -64,4 +64,12 @@ void ThrowItemMovement::set_suspended(bool suspended) {
       next_down_date = now + (next_down_date - when_suspended);
     }
   }
+}
+
+/**
+ * Returns the current height of the entity.
+ * @return the entity's height
+ */
+int ThrowItemMovement::get_item_height(void) {
+  return 18 - y_increment;
 }

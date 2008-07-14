@@ -25,6 +25,8 @@ class ThrowItemMovement: public MovementWithCollision {
   ThrowItemMovement(Map *map, int direction);
   ~ThrowItemMovement(void);
 
+  int get_item_height(void);
+
   void set_suspended(bool suspended);
 };
 

@@ -14,6 +14,7 @@ ThrowItemMovement::ThrowItemMovement(Map *map, int direction):
 
   y_increment = -2;
   next_down_date = SDL_GetTicks() + 40;
+  item_height = 18;
 }
 
 /**
@@ -41,6 +42,7 @@ void ThrowItemMovement::update_y(void) {
     while (now >= next_down_date) {
       translate_y(y_increment);
       next_down_date += 40;
+      item_height -= y_increment;
       y_increment++;
     }
   }
@@ -71,5 +73,5 @@ void ThrowItemMovement::set_suspended(bool suspended) {
  * @return the entity's height
  */
 int ThrowItemMovement::get_item_height(void) {
-  return 18 - y_increment;
+  return item_height;
 }

@@ -72,7 +72,7 @@ CarriedItem::~CarriedItem(void) {
  * This function is called when Links stops walking while
  * carrying the item. The item also stops moving.
  */
-void CarriedItem::set_stopped(void) {
+void CarriedItem::set_animation_stopped(void) {
 
   if (!is_lifting && !is_throwing) {
     Sprite *sprite = get_last_sprite();
@@ -84,7 +84,7 @@ void CarriedItem::set_stopped(void) {
  * This function is called when Links starts walking while
  * carrying the item. The item moves like him.
  */
-void CarriedItem::set_walking(void) {
+void CarriedItem::set_animation_walking(void) {
   if (!is_lifting && !is_throwing) {
     Sprite *sprite = get_last_sprite();
     sprite->set_current_animation("walking");

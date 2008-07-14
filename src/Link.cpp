@@ -93,7 +93,7 @@ Link::Link(void):
   state(LINK_STATE_FREE), walking(false),
   counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF),
-  facing_entity(NULL), carried_item(NULL) {
+  facing_entity(NULL), lifted_item(NULL), thrown_item(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -115,9 +115,7 @@ Link::~Link(void) {
     delete shield_sprite;
   }
 
-  if (carried_item != NULL) {
-    delete carried_item;
-  }
+  destroy_carried_items();
 }
 
 /**
@@ -134,7 +132,7 @@ Movement8ByPlayer * Link::get_movement(void) {
  */
 SDL_Rect Link::get_facing_point(void) {
 
-  int direction = tunic_sprite->get_current_direction();
+ int direction = tunic_sprite->get_current_direction();
   SDL_Rect facing_point;
 
   switch (direction) {
@@ -198,10 +196,7 @@ void Link::set_map(Map *map, int initial_direction) {
 
   }
 
-  if (carried_item != NULL) {
-    delete carried_item;
-    carried_item = NULL;
-  }
+  destroy_carried_items();
 
   set_animation_direction(initial_direction);
 }
@@ -229,15 +224,8 @@ void Link::update(void) {
   update_position();
   update_sprites();
 
-  // update the carried item
-  if (carried_item != NULL) {
-    carried_item->update();
-
-    if (carried_item->is_broken()) {
-      delete carried_item;
-      carried_item = NULL;
-    }
-  }
+  // update the carried items
+  update_carried_items();
 }
 
 /**
@@ -264,9 +252,7 @@ void Link::display_on_map(Map *map) {
     map->display_sprite(shield_sprite, x, y);
   }
 
-  if (carried_item != NULL) {
-    carried_item->display_on_map(map);
-  }
+  display_carried_items();
 }
 
 /**
@@ -361,7 +347,7 @@ void Link::update_sprites(void) {
   }
 
   if (state == LINK_STATE_CARRYING && walking) {
-    carried_item->get_last_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
+    lifted_item->get_last_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
   }
 }
 
@@ -658,7 +644,7 @@ void Link::start_lifting(void) {
     item_to_lift->lift();
 
     // create the corresponding carried item
-    this->carried_item = new CarriedItem(this, item_to_lift);
+    this->lifted_item = new CarriedItem(this, item_to_lift);
 
     keys_effect->set_action_key_effect(ACTION_KEY_THROW);
     set_state(LINK_STATE_LIFTING);
@@ -690,8 +676,75 @@ void Link::start_throwing(void) {
   // Link starts lifting the item
   if (state == LINK_STATE_CARRYING) {
 
-    carried_item->throw_item(map, get_animation_direction());
+    lifted_item->throw_item(map, get_animation_direction());
+    thrown_item = lifted_item;
+    lifted_item = NULL;
     start_free();
+  }
+}
+
+/**
+ * Suspends or resumes the animation of Link's carried items.
+ * This function is called when the game is suspended or resumed.
+ * @param suspended true to suspend the game, false to resume it
+ */
+void Link::set_suspended_carried_items(bool suspended) {
+  
+  if (lifted_item != NULL) {
+    lifted_item->set_suspended(suspended);
+  }
+
+  if (thrown_item != NULL) {
+    thrown_item->set_suspended(suspended);
+  }
+}
+
+/**
+ * Updates the carried items.
+ */
+void Link::update_carried_items(void) {
+
+  if (lifted_item != NULL) {
+    lifted_item->update();
+  }
+
+  if (thrown_item != NULL) {
+    thrown_item->update();
+
+    if (thrown_item->is_broken()) {
+      delete thrown_item;
+      thrown_item = NULL;
+    }
+  }
+}
+
+/**
+ * Displays the carried items.
+ */
+void Link::display_carried_items(void) {
+
+  if (lifted_item != NULL) {
+    lifted_item->display_on_map(map);
+  }
+  
+  if (thrown_item != NULL) {
+    thrown_item->display_on_map(map);
+  }
+}
+
+/**
+ * Deletes the carried items.
+ */
+void Link::destroy_carried_items(void) {
+
+  if (lifted_item != NULL) {
+    delete lifted_item;
+    lifted_item = NULL;
+  }
+
+  if (thrown_item != NULL) {
+    delete thrown_item;
+    thrown_item = NULL;
   }
 }
 
@@ -847,9 +900,7 @@ void Link::set_suspended(bool suspended) {
     shield_sprite->set_suspended(suspended);
   }
 
-  if (carried_item != NULL) {
-    carried_item->set_suspended(suspended);
-  }
+  set_suspended_carried_items(suspended);
 }
 
 /**
@@ -924,7 +975,7 @@ void Link::set_animation_stopped(void) {
 
   case LINK_STATE_CARRYING:
     tunic_sprite->set_current_animation("carrying_stopped");
-    carried_item->set_stopped();
+    lifted_item->set_animation_stopped();
     break;
 
   default:
@@ -985,7 +1036,7 @@ void Link::set_animation_walking(void) {
 
   case LINK_STATE_CARRYING:
     tunic_sprite->set_current_animation("carrying_walking");
-    carried_item->set_walking();
+    lifted_item->set_animation_walking();
     break;
 
   default:

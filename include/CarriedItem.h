@@ -25,8 +25,8 @@ class CarriedItem: public MapEntity {
   CarriedItem(Link *link, TransportableItem *transportable_item);
   ~CarriedItem(void);
 
-  void set_stopped(void);
-  void set_walking(void);
+  void set_animation_stopped(void);
+  void set_animation_walking(void);
   void throw_item(Map *map, int direction);
   bool is_broken(void);
   

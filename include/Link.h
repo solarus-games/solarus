@@ -79,7 +79,8 @@ class Link: public MapEntity, AnimationListener {
 
   // lift and carry an object
   MapEntity *facing_entity;
-  CarriedItem *carried_item;
+  CarriedItem *lifted_item; // item being lifted or carried
+  CarriedItem *thrown_item; // item thrown and not broken yet
 
   // update functions
   void update_position(void);
@@ -93,8 +94,13 @@ class Link: public MapEntity, AnimationListener {
   void update_sword_loading(void);
   void start_spin_attack(void);
   bool can_start_sword(void);
+
   void start_lifting(void);
   void start_throwing(void);
+  void set_suspended_carried_items(bool suspended);
+  void update_carried_items(void);
+  void display_carried_items(void);
+  void destroy_carried_items(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);

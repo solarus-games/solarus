@@ -181,8 +181,26 @@ void Link::set_map(Map *map, int initial_direction) {
   
   stop_displaying_sword();
 
-  if (get_state() == LINK_STATE_SWORD_LOADING) {
+  // remove the "throw" (or other) icon
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+
+  // stop loading the sword or carrying an item 
+  switch (get_state()) {
+
+  case LINK_STATE_CARRYING:
+  case LINK_STATE_SWORD_LOADING:
     start_free();
+    break;
+
+  default:
+    break;
+
+  }
+
+  if (carried_item != NULL) {
+    delete carried_item;
+    carried_item = NULL;
   }
 
   set_animation_direction(initial_direction);
@@ -638,10 +656,10 @@ void Link::start_lifting(void) {
     // lift the item
     TransportableItem *item_to_lift = (TransportableItem*) facing_entity;
     item_to_lift->lift();
-    
+
     // create the corresponding carried item
     this->carried_item = new CarriedItem(this, item_to_lift);
-    
+
     keys_effect->set_action_key_effect(ACTION_KEY_THROW);
     set_state(LINK_STATE_LIFTING);
     set_animation_lifting();
@@ -673,7 +691,6 @@ void Link::start_throwing(void) {
   if (state == LINK_STATE_CARRYING) {
 
     carried_item->throw_item(map, get_animation_direction());
-
     start_free();
   }
 }

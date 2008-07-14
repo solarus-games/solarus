@@ -92,7 +92,7 @@ class Map {
   /**
    * The entities of the map.
    */
-  MapEntities entities;
+  MapEntities *entities;
 
   /**
    * Current entrance of the map.

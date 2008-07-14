@@ -237,7 +237,7 @@ void PickableItem::initialize_sprites(void) {
 
   // initialize the sprite removal
   if (will_disappear) {
-    Uint16 now = SDL_GetTicks();
+    Uint32 now = SDL_GetTicks();
     blink_date = now + 8000; // blink at 8s
     disappear_date = now + 10000; // disappear at 10s
   }
@@ -272,7 +272,7 @@ bool PickableItem::is_falling(void) {
 void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping == zsdx->game_resource->get_link()
-      && SDL_GetTicks() >= (Uint16) (appear_date + 500)) {
+      && SDL_GetTicks() >= (Uint32) (appear_date + 500)) {
     // wait 0.5 second before allowing Link to take the item
 
     give_item_to_player();
@@ -359,7 +359,7 @@ void PickableItem::give_item_to_player(void) {
  */
 void PickableItem::set_blinking(bool blinking) {
 
-  Uint16 blink_delay = blinking ? 75 : 0;
+  Uint32 blink_delay = blinking ? 75 : 0;
 
   Sprite *item_sprite = get_sprite(0);
 
@@ -378,7 +378,7 @@ void PickableItem::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended); // suspend the animation and the movement
 
   // suspend the timer
-  Uint16 now = SDL_GetTicks();
+  Uint32 now = SDL_GetTicks();
   
   if (!suspended) {
     // the game is being resumed
@@ -411,7 +411,7 @@ void PickableItem::update(void) {
 
   // check the timer
   if (will_disappear && !is_suspended()) {
-    Uint16 now = SDL_GetTicks();
+    Uint32 now = SDL_GetTicks();
     Sprite *item_sprite = get_sprite(0);
     
     if (now >= blink_date && !item_sprite->is_blinking()) {
@@ -419,6 +419,7 @@ void PickableItem::update(void) {
     }
     
     if (now >= disappear_date) {
+      cout << "removing the pickable item: now = " << now << ", disappear_date = " << disappear_date << endl;
       map->get_entities()->remove_pickable_item(this);
     }
   }

@@ -38,4 +38,4 @@
 0	0	80	184	8	8	71
 0	0	80	152	8	8	69
 1	0	64	125	secret_room_entrance	0
-2	0	40	112	16	16	exit1	0	0	south_entrance
+2	0	40	112	16	16	exit1	1	0	south_entrance

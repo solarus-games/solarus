@@ -14,7 +14,7 @@ class FairyMovement: public Movement {
   /**
    * Date of the next direction change
    */
-  Uint16 next_direction_change;
+  Uint32 next_direction_change;
 
   void set_random_direction(void);
 

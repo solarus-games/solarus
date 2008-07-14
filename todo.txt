@@ -1,9 +1,9 @@
 - Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
 - utiliser sdl-config malgré les autotools
 - Diviser la classe Link en plusieurs parties (plus de 1000 lignes...) - LinkActions, LinkSprites ?
-- Ombre des objets lancés
 - Plusieurs objets lancés en même temps (mettre dans MapEntities au lieu de Link ? ou mettre dans Link un lifting_item en plus du carried_item ?)
 - Son d'un vase cassé : on n'entend rien
+- Link ne passe plus toujours dans les portes quand il arrive en diagonale
 
 
 - Compléter l'éditeur de maps et de tilesets :

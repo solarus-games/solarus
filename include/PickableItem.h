@@ -55,17 +55,17 @@ class PickableItem: public EntityDetector {
   /**
    * Date when the item appears.
    */
-  Uint16 appear_date;
+  Uint32 appear_date;
   
   /**
    * Date when the item starts blinking.
    */
-  Uint16 blink_date;
+  Uint32 blink_date;
   
   /**
    * Date when the item disappears.
    */
-  Uint16 disappear_date;
+  Uint32 disappear_date;
 
   // creation and initialization
   PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type);

@@ -83,7 +83,7 @@ class MapEntity {
   /**
    * Indicates when this entity was suspended.
    */
-  Uint16 when_suspended;
+  Uint32 when_suspended;
 
   // creation
   MapEntity(void);

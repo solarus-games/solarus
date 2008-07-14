@@ -12,7 +12,7 @@
  * once finished, false to stop it
  */
 MovementPath::MovementPath(const SDL_Rect *translation_vectors,
-			   int nb_vectors, Uint16 delay, bool loop):
+			   int nb_vectors, Uint32 delay, bool loop):
 translation_vectors(translation_vectors), nb_vectors(nb_vectors),
 delay(delay), loop(loop), vector_index(0), path_ended(false) {
 
@@ -30,7 +30,7 @@ MovementPath::~MovementPath(void) {
  */
 void MovementPath::update_x(void) {
 
-  Uint16 now = SDL_GetTicks();
+  Uint32 now = SDL_GetTicks();
 
   while (now >= next_move_date_x && !path_ended) {
     translate(translation_vectors[vector_index].x, translation_vectors[vector_index].y);

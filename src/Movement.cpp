@@ -268,7 +268,7 @@ void Movement::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  Uint16 now = SDL_GetTicks();
+  Uint32 now = SDL_GetTicks();
 
   if (suspended) {
     // the movement is being suspended

@@ -30,7 +30,7 @@ class MovementPath: public Movement {
   /**
    * Delay in milliseconds between two translations.
    */
-  const Uint16 delay;
+  const Uint32 delay;
 
   /**
    * Should the movement return to the beginning once finished?
@@ -58,7 +58,7 @@ class MovementPath: public Movement {
  public:
 
   MovementPath(const SDL_Rect *translation_vectors, int nb_vectors, 
-	       Uint16 delay, bool loop);
+	       Uint32 delay, bool loop);
   ~MovementPath(void);
 
   bool is_finished(void);

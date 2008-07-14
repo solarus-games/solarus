@@ -89,7 +89,7 @@ class Movement {
   /**
    * Indicates when the movement was suspended
    */
-  Uint16 when_suspended;
+  Uint32 when_suspended;
 
   void translate_x(int dx);
   void translate_y(int dy);

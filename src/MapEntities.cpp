@@ -22,6 +22,15 @@ MapEntities::MapEntities(Map *map) {
  * Destructor.
  */
 MapEntities::~MapEntities(void) {
+  destroy_all_entities();
+}
+
+/**
+ * Removes all entities from the map.
+ * This function is called by the destructor and when the map
+ * is unloaded.
+ */
+void MapEntities::destroy_all_entities(void) {
 
   // delete the entities sorted by layer
   for (int layer = 0; layer < LAYER_NB; layer++) {
@@ -48,7 +57,6 @@ MapEntities::~MapEntities(void) {
   entrances.clear();
   entity_detectors.clear();
   entities_to_remove.clear();
-
 }
 
 /**
@@ -353,7 +361,7 @@ void MapEntities::remove_marked_entities(void) {
     // remove it from the obstacle entities list if present
     obstacle_entities[layer].remove(*it);
 
-    // remove it from the sprite entities list
+    // remove it from the sprite entities list if present
     sprite_entities[layer].remove(*it);
 
     // remove it from the whole list

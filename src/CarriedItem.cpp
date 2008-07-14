@@ -30,7 +30,7 @@ static const SDL_Rect lifting_translations[4][6] = {
  * @param transportable_item a transportable item
  */
 CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
-  MapEntity(), link(link), is_lifting(true), is_throwing(false) {
+  MapEntity(), link(link), is_lifting(true), is_throwing(false), is_breaking(false) {
 
   // put the item on Link's layer
   set_layer(link->get_layer());

@@ -59,9 +59,10 @@ void Sound::initialize(void) {
       result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
 
       if (result != FMOD_OK) {
-    cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
-         << ". No music or sound will be played." << endl;
-    system = NULL;
+	cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
+	     << ". No music or sound will be played." << endl;
+	FMOD_System_Release(system);
+	system = NULL;
       }
     }
   }
@@ -86,8 +87,14 @@ bool Sound::is_initialized(void) {
   return system != NULL;
 }
 
+/**
+ * Updates the sound system.
+ * This function is called repeatedly by the game.
+ */
 void Sound::update(void) {
-  FMOD_System_Update(system);
+  if (is_initialized()) {
+    FMOD_System_Update(system);
+  }
 }
 
 /**
@@ -129,6 +136,10 @@ bool Sound::play(void) {
  * @return true if the sound is currently playing
  */
 bool Sound::is_playing(void) {
+
+  if (!is_initialized()) {
+    return false;
+  }
 
   FMOD_BOOL is_playing;
   FMOD_Channel_IsPlaying(channel, &is_playing);

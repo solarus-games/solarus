@@ -13,7 +13,7 @@ class ThrowItemMovement: public MovementWithCollision {
  private:
 
   int y_increment;
-  Uint16 next_down_date;
+  Uint32 next_down_date;
   int item_height;
 
  protected:

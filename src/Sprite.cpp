@@ -229,7 +229,7 @@ bool Sprite::is_blinking(void) {
  * @param blink_delay blink delay of the sprite in milliseconds,
  * or zero to stop blinking.
  */
-void Sprite::set_blinking(Uint16 blink_delay) {
+void Sprite::set_blinking(Uint32 blink_delay) {
   this->blink_delay = blink_delay;
 
   if (blink_delay > 0) {

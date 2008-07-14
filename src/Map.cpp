@@ -19,7 +19,7 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-id(id), started(false), width(0), entities(this), suspended(true) {
+id(id), started(false), width(0), entities(NULL), suspended(true) {
 
 }
 
@@ -100,7 +100,7 @@ bool Map::is_loaded(void) {
 void Map::unload(void) {
 
   SDL_FreeSurface(visible_surface);
-
+  delete entities;
   width = 0;
 }
 
@@ -111,6 +111,7 @@ void Map::unload(void) {
 void Map::load() {
 
   this->visible_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  entities = new MapEntities(this);
 
   // read the map file
   map_loader.load_map(this);
@@ -120,7 +121,7 @@ void Map::load() {
  * Return the entities on the map.
  */
 MapEntities * Map::get_entities(void) {
-  return &entities;
+  return entities;
 }
 
 /**
@@ -129,7 +130,7 @@ MapEntities * Map::get_entities(void) {
  */
 void Map::set_entrance(unsigned int entrance_index) {
 
-  if (entrance_index < 0 || entrance_index >= entities.get_nb_entrances()) {
+  if (entrance_index < 0 || entrance_index >= entities->get_nb_entrances()) {
     DIE("Unknown entrance '" << entrance_index << "' on map '" << id << '\'');
   }
 
@@ -145,8 +146,8 @@ void Map::set_entrance(string entrance_name) {
   bool found = false;
 
   unsigned int i;
-  for (i = 0; i < entities.get_nb_entrances() && !found; i++) { 
-    found = (entities.get_entrance(i)->get_name() == entrance_name);
+  for (i = 0; i < entities->get_nb_entrances() && !found; i++) { 
+    found = (entities->get_entrance(i)->get_name() == entrance_name);
   }
 
   if (found) {
@@ -187,7 +188,7 @@ SDL_Rect * Map::get_screen_position(void) {
 void Map::set_suspended(bool suspended) {
 
   this->suspended = suspended;
-  entities.set_suspended(suspended);
+  entities->set_suspended(suspended);
 }
 
 /**
@@ -196,7 +197,7 @@ void Map::set_suspended(bool suspended) {
 void Map::update(void) {
   
   // update the entities
-  entities.update();
+  entities->update();
 
   // detect whether the game has just been suspended or resumed
   bool game_suspended = zsdx->game->is_suspended();
@@ -219,7 +220,7 @@ void Map::display() {
   SDL_FillRect(visible_surface, NULL, tileset->get_background_color());
 
   // display all entities (including Link)
-  entities.display();
+  entities->display();
 }
 
 /**
@@ -241,7 +242,7 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  */
 void Map::start(void) {
 
-  MapEntrance *entrance = entities.get_entrance(entrance_index);
+  MapEntrance *entrance = entities->get_entrance(entrance_index);
 
   zsdx->game->play_music(music_id);
 
@@ -302,7 +303,7 @@ Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
   }
 
   // get the obstacle property of the tile under that point
-  obstacle_type = entities.get_obstacle_tile(layer, x, y);
+  obstacle_type = entities->get_obstacle_tile(layer, x, y);
 
   // test the obstacle property of this square
   switch (obstacle_type) {
@@ -357,7 +358,7 @@ Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
  */
 bool Map::collision_with_entities(Layer layer, SDL_Rect &collision_box) {
 
-  list<MapEntity*> *obstacle_entities = entities.get_obstacle_entities(layer);
+  list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
 
   bool collision = false;
 
@@ -414,7 +415,7 @@ bool Map::collision_with_obstacles(Layer layer, SDL_Rect &collision_box) {
  */
 void Map::entity_just_moved(MapEntity *entity) {
 
-  list<EntityDetector*> *entity_detectors = entities.get_entity_detectors();
+  list<EntityDetector*> *entity_detectors = entities->get_entity_detectors();
 
   // check each detector
   list<EntityDetector*>::iterator i;
@@ -427,7 +428,7 @@ void Map::entity_just_moved(MapEntity *entity) {
 
   // some detectors might have to be removed now
   // because of a collision
-  entities.remove_marked_entities();
+  entities->remove_marked_entities();
 }
 
 /**

@@ -104,7 +104,7 @@ void MovementWithSmoothCollision::update_y(void) {
 
 	if (x_move != 0 && collision_with_map(x_move, 0)) {
 	  // if there is also an x move, and if this x move is illegal,
-	  // we still allow the x move and we give it all the speed
+	  // we still allow the y move and we give it all the speed
 	  next_move_date_y_increment = (int) (y_delay / SQRT_2);
 	}
       }

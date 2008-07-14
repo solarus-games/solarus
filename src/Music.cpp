@@ -25,8 +25,10 @@ Music::Music(MusicId music_id) {
    * The musics are played with the highest priority.
    * Otherwise, they would be interrupted by the sound effects sometimes.
    */
-  FMOD_System_GetChannel(system, 15, &channel);
-  FMOD_Channel_SetPriority(channel, 15);
+  if (is_initialized()) {
+    FMOD_System_GetChannel(system, 15, &channel);
+    FMOD_Channel_SetPriority(channel, 15);
+  }
 }
 
 /**

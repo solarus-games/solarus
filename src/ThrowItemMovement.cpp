@@ -38,7 +38,7 @@ void ThrowItemMovement::update_y(void) {
   MovementWithCollision::update_y();
 
   if (y_increment < 7 && !is_stopped()) {
-    Uint16 now = SDL_GetTicks();
+    Uint32 now = SDL_GetTicks();
     while (now >= next_down_date) {
       translate_y(y_increment);
       next_down_date += 40;
@@ -62,7 +62,7 @@ void ThrowItemMovement::set_suspended(bool suspended) {
   if (!suspended) {
     // recalculate next_down_date
     if (when_suspended != 0) {
-      Uint16 now = SDL_GetTicks();
+      Uint32 now = SDL_GetTicks();
       next_down_date = now + (next_down_date - when_suspended);
     }
   }

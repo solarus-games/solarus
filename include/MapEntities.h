@@ -106,6 +106,8 @@ class MapEntities {
 
   void remove_marked_entities(void);
 
+  void destroy_all_entities(void);
+
   // update and display
   void set_suspended(bool suspended);
   void update(void);

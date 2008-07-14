@@ -36,7 +36,8 @@ class TransportableItem: public EntityDetector {
   
   // creation and destruction
   TransportableItem(Map *map, Layer layer, int x, int y,
-		    TransportableItemType type, PickableItemType pickable_item);
+		    TransportableItemType type,
+		    PickableItemType pickable_item, int unique_id);
   ~TransportableItem(void);
 
   string get_sprite_animations_id(void);

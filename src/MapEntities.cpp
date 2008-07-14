@@ -288,9 +288,9 @@ void MapEntities::add_exit(string exit_name, Layer layer, int x, int y, int w, i
  * @param will_disappear true to make the item disappear after an amout of time
  */
 void MapEntities::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
-			    int unique_id, MovementFallingHeight falling_height, bool will_disappear) {
+				    int unique_id, MovementFallingHeight falling_height, bool will_disappear) {
 
-  PickableItem *item = PickableItem::create(map, layer, x, y, pickable_item_type, 0, falling_height, will_disappear);
+  PickableItem *item = PickableItem::create(map, layer, x, y, pickable_item_type, unique_id, falling_height, will_disappear);
 
   // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
   if (item != NULL) {
@@ -319,12 +319,15 @@ void MapEntities::remove_pickable_item(PickableItem *item) {
  * @param transportable_item_type type of transportable item to create
  * @param pickable_item_type type of pickable item that appears when the
  transportable item is lifted
+ * @param unique_id unique id of the pickable item, for certain kinds of pickable
+ * items only (a key, a piece of heart...)
  */
 void MapEntities::add_transportable_item(Layer layer, int x, int y,
 					 TransportableItemType transportable_item_type,
-					 PickableItemType pickable_item_type) {
+					 PickableItemType pickable_item_type,
+					 int unique_id) {
   TransportableItem *item = new TransportableItem(map, layer, x, y, transportable_item_type,
-						  pickable_item_type);
+						  pickable_item_type, unique_id);
   
   sprite_entities[layer].push_back(item);
   entity_detectors.push_back(item);

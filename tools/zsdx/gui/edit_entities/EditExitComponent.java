@@ -11,7 +11,7 @@ import zsdx.map_editor_actions.edit_entities.*;
  * A component to edit a map exit.
  */
 public class EditExitComponent extends EditEntityComponent {
-    
+
     private TransitionChooser transitionField;
     private ResourceChooser mapField;
     private EntityChooser entranceField;
@@ -24,7 +24,7 @@ public class EditExitComponent extends EditEntityComponent {
     public EditExitComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
-    
+
     /**
      * Creates the specific fields for this kind of entity.
      */
@@ -58,7 +58,7 @@ public class EditExitComponent extends EditEntityComponent {
 	mapField.setSelectedId(exit.getDestinationMapId());
 	entranceField.setSelectedName(exit.getEntranceName());
     }
-    
+
     /**
      * Creates the map editor action object which corresponds
      * to the modifications indicated in the fields.
@@ -89,7 +89,7 @@ public class EditExitComponent extends EditEntityComponent {
 	
 	return action;
     }
-    
+
     /**
      * Action performed when the destination map field is changed.
      * The entrance field is reloaded to show the entrances of this map.

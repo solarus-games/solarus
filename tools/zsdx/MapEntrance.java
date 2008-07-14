@@ -60,7 +60,7 @@ public class MapEntrance extends InteractiveEntity {
      * Returns the x coordinate of the origin point of the entity.
      * @return 8
      */
-    protected int getHotSpotX() {
+    protected int getOriginX() {
 	return 8;
     }
 
@@ -68,7 +68,7 @@ public class MapEntrance extends InteractiveEntity {
      * Returns the y coordinate of the origin point of the entity.
      * @return 13
      */
-    protected int getHotSpotY() {
+    protected int getOriginY() {
 	return 13;
     }
 

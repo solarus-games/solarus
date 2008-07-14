@@ -62,18 +62,22 @@ public abstract class MapEntity extends Observable {
     public static final int ENTITY_TILE = 0;
     public static final int ENTITY_ENTRANCE = 1;
     public static final int ENTITY_EXIT = 2;
-    public static final int ENTITY_NB_TYPES = 3;
+    public static final int ENTITY_PICKABLE_ITEM = 3;
+    public static final int ENTITY_TRANSPORTABLE_ITEM = 4;
+    public static final int ENTITY_NB_TYPES = 5;
 
     // names of the entity types
     public static final String[] entityTypeNames = {
-	"tile", "entrance", "exit"
+	"tile", "entrance", "exit", "pickable item", "transportable item"
     };
 
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {
 	TileOnMap.class,          // ENTITY_TILE
 	MapEntrance.class,        // ENTITY_ENTRANCE
-	MapExit.class             // ENTITY_EXIT
+	MapExit.class,            // ENTITY_EXIT
+	PickableItem.class,       // ENTITY_PICKABLE_ITEM
+	TransportableItem.class   // ENTITY_TRANSPORTABLE_ITEM
     };
 
     /**
@@ -204,7 +208,7 @@ public abstract class MapEntity extends Observable {
 	buff.append(getX());
 	buff.append('\t');
 	buff.append(getY());
-	
+
 	if (isResizable()) {
 	    buff.append('\t');
 	    buff.append(getWidth());
@@ -216,7 +220,7 @@ public abstract class MapEntity extends Observable {
 	    buff.append('\t');
 	    buff.append(getName());
 	}
-	
+
 	if (hasDirection()) {
 	    buff.append('\t');
 	    buff.append(getDirection());
@@ -258,7 +262,7 @@ public abstract class MapEntity extends Observable {
      * Redefine this method in a subclass to change the origin.
      * @return 0
      */
-    protected int getHotSpotX() {
+    protected int getOriginX() {
 	return 0;
     }
 
@@ -268,7 +272,7 @@ public abstract class MapEntity extends Observable {
      * Redefine this method in a subclass to change the origin.
      * @return 0
      */
-    protected int getHotSpotY() {
+    protected int getOriginY() {
 	return 0;
     }
 
@@ -329,7 +333,7 @@ public abstract class MapEntity extends Observable {
     public void setPositionInMap(int x, int y) throws MapException {
 	
 	// calculate the new coordinates of the top-left corner
-	setPositionTopLeft(x - getHotSpotX(), y - getHotSpotY());
+	setPositionTopLeft(x - getOriginX(), y - getOriginY());
     }
 
     /**
@@ -639,7 +643,7 @@ public abstract class MapEntity extends Observable {
      * @return the x coordinate of the entity's hotspot on the map
      */
     public int getX() {
-	return positionInMap.x + getHotSpotX();
+	return positionInMap.x + getOriginX();
     }
 
     /**
@@ -647,7 +651,7 @@ public abstract class MapEntity extends Observable {
      * @return the y coordinate of the entity's hotspot on the map
      */
     public int getY() {
-	return positionInMap.y + getHotSpotY();
+	return positionInMap.y + getOriginY();
     }
 
     /**

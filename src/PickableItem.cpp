@@ -51,10 +51,13 @@ static const PickableItemProperties properties[] = {
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (must be a normal item)
+ * @param unique_id unique id of the item, for certain kinds of items only (a key, a piece of heart...)
  */
-PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type):
+PickableItem::PickableItem(Map *map, Layer layer, int x, int y,
+			   PickableItemType type, int unique_id):
   EntityDetector(COLLISION_WITH_ENTITY_RECTANGLE, "", layer, x, y, 0, 0),
-  map(map), type(type), shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
+  map(map), type(type), unique_id(unique_id),
+  shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
 
 }
 
@@ -116,7 +119,7 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
     
     // other items: no special class, but directly PickableItem
   default:
-    item = new PickableItem(map, layer, x, y, type);
+    item = new PickableItem(map, layer, x, y, type, unique_id);
     break;
   }
 

@@ -9,7 +9,7 @@
  * @param y y coordinate of the fairy to create
  */
 PickableItemFairy::PickableItemFairy(Map *map, int x, int y):
-  PickableItem(map, LAYER_HIGH, x, y, PICKABLE_ITEM_FAIRY) {
+  PickableItem(map, LAYER_HIGH, x, y, PICKABLE_ITEM_FAIRY, 0) {
 
   set_layer_ignored(true);
 }

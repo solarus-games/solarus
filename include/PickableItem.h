@@ -68,7 +68,8 @@ class PickableItem: public EntityDetector {
   Uint32 disappear_date;
 
   // creation and initialization
-  PickableItem(Map *map, Layer layer, int x, int y, PickableItemType type);
+  PickableItem(Map *map, Layer layer, int x, int y,
+	       PickableItemType type, int unique_id);
 
   static PickableItemType choose_random_type(void);
 
@@ -85,8 +86,8 @@ class PickableItem: public EntityDetector {
  public:
 
   virtual ~PickableItem(void);
-  static PickableItem * create(Map *map, Layer layer, int x, int y, PickableItemType type,
-			       int unique_id,
+  static PickableItem * create(Map *map, Layer layer, int x, int y,
+			       PickableItemType type, int unique_id,
 			       MovementFallingHeight falling_height, bool will_disappear);
 
   virtual void set_suspended(bool suspended);

@@ -17,7 +17,7 @@ public abstract class InteractiveEntity extends MapEntity {
      * @param height height of the entity
      */
     protected InteractiveEntity(Map map, int layer, int x, int y,
-	    int width, int height) {
+				int width, int height) {
 	super(map, layer, x, y, width, height, true);
     }
     

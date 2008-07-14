@@ -34,9 +34,11 @@ public class EditEntityComponent extends JPanel {
 
     private static final Class<?>[] editEntityComponentClasses = {
 	// make a subpackage
-	EditEntityComponent.class,          // ENTITY_TILE
-	EditEntityComponent.class,          // ENTITY_ENTRANCE
-	EditExitComponent.class             // ENTITY_EXIT
+	EditEntityComponent.class,             // ENTITY_TILE
+	EditEntityComponent.class,             // ENTITY_ENTRANCE
+	EditExitComponent.class,               // ENTITY_EXIT
+	EditPickableItemComponent.class,       // ENTITY_PICKABLE_ITEM
+	EditTransportableItemComponent.class   // ENTITY_TRANSPORTABLE_ITEM
     };
 
     // TODO new entity?

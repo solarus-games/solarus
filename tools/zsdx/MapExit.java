@@ -83,8 +83,10 @@ public class MapExit extends InteractiveEntity {
      * @return true if the entity is valid
      */
     public boolean isValid() {
-	return destinationMapId.length() != 0 && entranceName.length() != 0;	
+	return super.isValid()
+	    && destinationMapId.length() != 0 && entranceName.length() != 0;	
     }
+
     /**
      * Returns an integer identifying the kind of entity.
      * @return MapEntity.ENTITY_EXIT

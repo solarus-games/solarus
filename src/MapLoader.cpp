@@ -111,20 +111,20 @@ void MapLoader::load_map(Map *map) {
 
     case ENTITY_PICKABLE_ITEM:
       {
-	int pickable_item_type;
-	iss >> pickable_item_type;
+	int pickable_item_type, unique_id;
+	iss >> pickable_item_type >> unique_id;
 	entities->add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type,
-				    0, MOVEMENT_FALLING_NONE, false);
+				    unique_id, MOVEMENT_FALLING_NONE, false);
 	break;
       }
 
     case ENTITY_TRANSPORTABLE_ITEM:
       {
-	int transportable_item_type, pickable_item_type;
-	iss >> transportable_item_type >> pickable_item_type;
+	int transportable_item_type, pickable_item_type, unique_id;
+	iss >> transportable_item_type >> pickable_item_type >> unique_id;
 	entities->add_transportable_item((Layer) layer, x, y,
 					 (TransportableItemType) transportable_item_type,
-					 (PickableItemType) pickable_item_type);
+					 (PickableItemType) pickable_item_type, unique_id);
 	break;
       }
 

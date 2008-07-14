@@ -101,7 +101,7 @@ class MapEntities {
   void remove_pickable_item(PickableItem *item);
 
   void add_transportable_item(Layer layer, int x, int y, TransportableItemType transportable_item_type,
-			      PickableItemType pickable_item_type);
+			      PickableItemType pickable_item_type, int unique_id);
   void remove_transportable_item(TransportableItem *item);
 
   void remove_marked_entities(void);

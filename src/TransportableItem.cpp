@@ -39,9 +39,12 @@ static const TransportableItemProperties properties[] = {
  * @param type type of transportable item to create
  * @param pickable_item the type of pickable item that appears when the transportable
  * item is lifted
+ * @param unique_id unique id of the pickable item, for certain kinds of pickable
+ * items only (a key, a piece of heart...)
  */
 TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y,
-				     TransportableItemType type, PickableItemType pickable_item):
+				     TransportableItemType type,
+				     PickableItemType pickable_item, int unique_id):
   EntityDetector(COLLISION_WITH_ENTITY_FACING_POINT, "", layer, x, y, 16, 16),
   map(map), type(type), pickable_item(pickable_item) {
 

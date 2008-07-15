@@ -13,8 +13,8 @@ public class TransitionChooser extends JComboBox {
      */
     public TransitionChooser() {
 	super();
-	addItem(new KeyValue(Integer.toString(Transition.IMMEDIATE), "No transition"));
-	addItem(new KeyValue(Integer.toString(Transition.FADE), "Fade in/out"));
+	addItem(new KeyValue(Transition.IMMEDIATE, "No transition"));
+	addItem(new KeyValue(Transition.FADE, "Fade in/out"));
     }
     
     /**

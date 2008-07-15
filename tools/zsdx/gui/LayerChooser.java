@@ -13,19 +13,9 @@ public class LayerChooser extends JComboBox {
      */
     public LayerChooser() {
 	super();
-	addItem(new KeyValue(Integer.toString(MapEntity.LAYER_LOW), "Low"));
-	addItem(new KeyValue(Integer.toString(MapEntity.LAYER_INTERMEDIATE), "Intermediate"));
-	addItem(new KeyValue(Integer.toString(MapEntity.LAYER_HIGH), "High"));
-    }
-    
-    /**
-     * Selects a layer in the list.
-     * @param layer the layer to make selected
-     */
-    public void setLayer(int layer) {
-
-	KeyValue item = new KeyValue(Integer.toString(layer), null);
-	setSelectedItem(item);
+	addItem(new KeyValue(MapEntity.LAYER_LOW, "Low"));
+	addItem(new KeyValue(MapEntity.LAYER_INTERMEDIATE, "Intermediate"));
+	addItem(new KeyValue(MapEntity.LAYER_HIGH, "High"));
     }
     
     /**
@@ -37,4 +27,14 @@ public class LayerChooser extends JComboBox {
 	KeyValue item = (KeyValue) getSelectedItem();
 	return Integer.parseInt(item.getKey());
     }
+    
+    /**
+     * Selects a layer in the list.
+     * @param layer the layer to make selected
+     */
+    public void setLayer(int layer) {
+
+	KeyValue item = new KeyValue(Integer.toString(layer), null);
+	setSelectedItem(item);
+    }    
 }

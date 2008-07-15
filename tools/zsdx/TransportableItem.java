@@ -18,7 +18,26 @@ public class TransportableItem extends InteractiveEntity {
     public static final int TRANSPORTABLE_ITEM_STONE_WHITE_BIG   = 4;
     public static final int TRANSPORTABLE_ITEM_STONE_BLACK_SMALL = 5;
     public static final int TRANSPORTABLE_ITEM_STONE_BLACK_BIG   = 6;
+
+    // specific fields of a transportable item
+
+    /**
+     * Type of transportable item.
+     */
+    private int type;
+
+    /**
+     * Type of pickable item that appears when Link lifts
+     * the transportable item.
+     */
+    private int pickableItemType;
     
+    /**
+     * A number identifying the pickable item, used only for the pickable
+     * items that Link can obtain only once (keys, pieces of hearts, etc.).
+     */
+    private int uniqueId;
+
     /**
      * Creates a new transportable item at the specified location.
      * @param map the map
@@ -28,7 +47,9 @@ public class TransportableItem extends InteractiveEntity {
     public TransportableItem(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
 
-	// TODO default field values
+	type = TRANSPORTABLE_ITEM_POT;
+	pickableItemType = PickableItem.PICKABLE_ITEM_RANDOM;
+	uniqueId = 0;
     }
 
     /**
@@ -42,7 +63,18 @@ public class TransportableItem extends InteractiveEntity {
 	super(map, tokenizer);
 	setSizeImpl(16, 16);
 
-	// TODO parse the fields
+	// parse the fields
+	try {
+	    this.type = Integer.parseInt(tokenizer.nextToken());
+	    this.pickableItemType = Integer.parseInt(tokenizer.nextToken());
+	    this.uniqueId = Integer.parseInt(tokenizer.nextToken());
+	}
+	catch (NumberFormatException ex) {
+	    throw new ZSDXException("Integer expected");
+	}
+	catch (NoSuchElementException ex) {
+	    throw new ZSDXException("A value is missing");
+	}
     }
 
     /**
@@ -58,6 +90,11 @@ public class TransportableItem extends InteractiveEntity {
 
 	// TODO add the specific properties of a transportable item
 	buff.append('\t');
+	buff.append(getTransportableItemType());
+	buff.append('\t');
+	buff.append(getPickableItemType());
+	buff.append('\t');
+	buff.append(getUniqueId());
 
 	return buff.toString();
     }
@@ -95,6 +132,60 @@ public class TransportableItem extends InteractiveEntity {
 	return false;
     }
 
+    /**
+     * Returns the type of this transportable item.
+     * @return the type of transportable item
+     */
+    public int getTransportableItemType() {
+	return type;
+    }
+
+    /**
+     * Sets the type of this transportable item.
+     * @param type the type of transportable item
+     */
+    public void setTransportableItemType(int type) {
+	this.type = type;
+    }
+    
+    /**
+     * Returns the type of pickable item that appears when Link
+     * lifts the transportable item.
+     * @return the type of pickable item
+     */
+    public int getPickableItemType() {
+	return type;
+    }
+
+    /**
+     * Sets the type of this pickable item that appears when Link
+     * lifts the transportable item.
+     * @param type the type of pickable item
+     */
+    public void setPickableItemType(int type) {
+	this.type = type;
+    }
+    
+    /**
+     * Returns the id identifying the pickable item attached to
+     * this transportable item (if any).
+     * @return the unique id of this pickable item, or zero if
+     * this pickable item is not unique.
+     */
+    public int getUniqueId() {
+	return uniqueId;
+    }
+    
+    /**
+     * Sets the id identifying the pickable item attached to
+     * this transportable item (if any).
+     * @param uniqueId the unique id of this pickable item, or zero if
+     * this pickable item is not unique.
+     */
+    public void setUniqueId(int uniqueId) {
+	this.uniqueId = uniqueId;
+    }
+    
     /**
      * Draws the transportable item on the map editor.
      * @param g graphic context

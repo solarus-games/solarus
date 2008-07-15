@@ -39,7 +39,7 @@ public class PickableItem extends InteractiveEntity {
      * A number identifying the pickable item, used only for the pickable
      * items that Link can obtain only once (keys, pieces of hearts, etc.).
      */
-    private int unique_id;
+    private int uniqueId;
 
     /**
      * Creates a new pickable item at the specified location.
@@ -52,7 +52,7 @@ public class PickableItem extends InteractiveEntity {
 
 	// default field values
 	type = PICKABLE_ITEM_RUPEE_1;
-	unique_id = 0;
+	uniqueId = 0;
     }
 
     /**
@@ -69,7 +69,7 @@ public class PickableItem extends InteractiveEntity {
 	// parse the fields
 	try {
 	    this.type = Integer.parseInt(tokenizer.nextToken());
-	    this.unique_id = Integer.parseInt(tokenizer.nextToken());
+	    this.uniqueId = Integer.parseInt(tokenizer.nextToken());
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -90,9 +90,9 @@ public class PickableItem extends InteractiveEntity {
 	// get the common part of the string
 	buff.append(super.toString());
 
-	// TODO add the specific properties of a pickable item
+	// add the specific properties of a pickable item
 	buff.append('\t');
-	buff.append(getType());
+	buff.append(getPickableItemType());
 	buff.append('\t');
 	buff.append(getUniqueId());
 
@@ -136,18 +136,50 @@ public class PickableItem extends InteractiveEntity {
      * Returns the type of this pickable item.
      * @return the type of pickable item
      */
-    public int getType() {
+    public int getPickableItemType() {
 	return type;
     }
 
     /**
-     * Sets the type of this pickable item.
+     * Sets the properties of this pickable item.
      * @param type the type of pickable item
+     * @param uniqueId the unique id of this pickable item, or zero if
+     * this pickable item is not unique.
+     * @throws ZSDXException if the value of uniqueId doesn't correspond
+     * to the specified type
      */
-    public void setType(int type) {
-	this.type = type;
-    }
+    public void setPickableItem(int type, int uniqueId) throws ZSDXException {
+	
+	if (type > PICKABLE_ITEM_ARROW_10 && uniqueId == 0) {
+	    throw new ZSDXException("This type of pickable item must have a unique id");
+	}
 
+	if (type <= PICKABLE_ITEM_ARROW_10 && uniqueId != 0) {
+	    throw new ZSDXException("This type of pickable item cannot have a unique id");
+	}
+	
+	this.type = type;
+	this.uniqueId = uniqueId;
+    }
+    
+    /**
+     * Returns the id identifying this pickable item (if any).
+     * @return the unique id of this pickable item, or zero if
+     * this pickable item is not unique.
+     */
+    public int getUniqueId() {
+	return uniqueId;
+    }
+    
+    /**
+     * Sets the id identifying this pickable item.
+     * @param uniqueId the unique id of this pickable item, or zero if
+     * this pickable item is not unique.
+     */
+    public void setUniqueId(int uniqueId) {
+	this.uniqueId = uniqueId;
+    }
+    
     /**
      * Draws the pickable item on the map editor.
      * @param g graphic context

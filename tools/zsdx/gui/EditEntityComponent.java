@@ -41,8 +41,6 @@ public class EditEntityComponent extends JPanel {
 	EditTransportableItemComponent.class   // ENTITY_TRANSPORTABLE_ITEM
     };
 
-    // TODO new entity?
-    
     /**
      * Creates a component to edit the common properties of a map entity.
      * If the map entity has specific properties, you should call instead

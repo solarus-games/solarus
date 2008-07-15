@@ -27,12 +27,12 @@ public class DirectionChooser extends JComboBox {
 	
 	if (nbDirections == 4) {
 	    for (int i = 0; i < 4; i++) {
-		addItem(new KeyValue(Integer.toString(i), directionNames4[i]));
+		addItem(new KeyValue(i, directionNames4[i]));
 	    }
 	}
 	else {
 	    for (int i = 0; i < 8; i++) {
-		addItem(new KeyValue(Integer.toString(i), directionNames8[i]));
+		addItem(new KeyValue(i, directionNames8[i]));
 	    }
 	}
     }

@@ -25,6 +25,15 @@ public class KeyValue {
 	this.key = key;
 	this.value = value;
     }
+
+    /**
+     * Constructor.
+     * @param key the key
+     * @param value the value
+     */
+    public KeyValue(int key, String value) {
+	this(Integer.toString(key), value);
+    }
     
     /**
      * Returns the key.

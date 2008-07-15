@@ -131,7 +131,7 @@ public class EditEntityComponent extends JPanel {
     /**
      * Creates the specific fields for this kind of entity.
      * The subclasses should redefine this method to create their specific fields
-     * and add them by callind the addField() method.
+     * and add them by calling the addField() method.
      * This method is called by the super constructor.
      */
     protected void createSpecificFields() {

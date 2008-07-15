@@ -27,7 +27,20 @@ public class PickableItem extends InteractiveEntity {
     public static final int PICKABLE_ITEM_ARROW_1     = 11;
     public static final int PICKABLE_ITEM_ARROW_5     = 12;
     public static final int PICKABLE_ITEM_ARROW_10    = 13;
+
+    // specific fields of a pickable item
+
+    /**
+     * Type of pickable item.
+     */
+    private int type;
     
+    /**
+     * A number identifying the pickable item, used only for the pickable
+     * items that Link can obtain only once (keys, pieces of hearts, etc.).
+     */
+    private int unique_id;
+
     /**
      * Creates a new pickable item at the specified location.
      * @param map the map
@@ -37,7 +50,9 @@ public class PickableItem extends InteractiveEntity {
     public PickableItem(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
 
-	// TODO default field values
+	// default field values
+	type = PICKABLE_ITEM_RUPEE_1;
+	unique_id = 0;
     }
 
     /**
@@ -51,7 +66,17 @@ public class PickableItem extends InteractiveEntity {
 	super(map, tokenizer);
 	setSizeImpl(16, 16);
 
-	// TODO parse the fields
+	// parse the fields
+	try {
+	    this.type = Integer.parseInt(tokenizer.nextToken());
+	    this.unique_id = Integer.parseInt(tokenizer.nextToken());
+	}
+	catch (NumberFormatException ex) {
+	    throw new ZSDXException("Integer expected");
+	}
+	catch (NoSuchElementException ex) {
+	    throw new ZSDXException("A value is missing");
+	}
     }
 
     /**
@@ -67,6 +92,9 @@ public class PickableItem extends InteractiveEntity {
 
 	// TODO add the specific properties of a pickable item
 	buff.append('\t');
+	buff.append(getType());
+	buff.append('\t');
+	buff.append(getUniqueId());
 
 	return buff.toString();
     }
@@ -102,6 +130,22 @@ public class PickableItem extends InteractiveEntity {
      */
     public boolean isResizable() {
 	return false;
+    }
+
+    /**
+     * Returns the type of this pickable item.
+     * @return the type of pickable item
+     */
+    public int getType() {
+	return type;
+    }
+
+    /**
+     * Sets the type of this pickable item.
+     * @param type the type of pickable item
+     */
+    public void setType(int type) {
+	this.type = type;
     }
 
     /**

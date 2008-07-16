@@ -88,7 +88,7 @@ public class TransportableItem extends InteractiveEntity {
 	// get the common part of the string
 	buff.append(super.toString());
 
-	// TODO add the specific properties of a transportable item
+	// add the specific properties of a transportable item
 	buff.append('\t');
 	buff.append(getTransportableItemType());
 	buff.append('\t');
@@ -154,18 +154,9 @@ public class TransportableItem extends InteractiveEntity {
      * @return the type of pickable item
      */
     public int getPickableItemType() {
-	return type;
+	return pickableItemType;
     }
 
-    /**
-     * Sets the type of this pickable item that appears when Link
-     * lifts the transportable item.
-     * @param type the type of pickable item
-     */
-    public void setPickableItemType(int type) {
-	this.type = type;
-    }
-    
     /**
      * Returns the id identifying the pickable item attached to
      * this transportable item (if any).
@@ -177,12 +168,13 @@ public class TransportableItem extends InteractiveEntity {
     }
     
     /**
-     * Sets the id identifying the pickable item attached to
-     * this transportable item (if any).
-     * @param uniqueId the unique id of this pickable item, or zero if
-     * this pickable item is not unique.
+     * Sets the pickable item that appears when Link
+     * lifts the transportable item.
+     * @param type the type of pickable item
+     * @param uniqueId unique id of the pickable item
      */
-    public void setUniqueId(int uniqueId) {
+    public void setPickableItem(int type, int uniqueId) {
+	this.type = type;
 	this.uniqueId = uniqueId;
     }
     

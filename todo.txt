@@ -12,3 +12,6 @@
 	- nouveau projet : créer le fichier resource_db.zsd automatiquement, le répertoire data et les sous-répertoires
 	- empêcher de mettre des entités au-delà de la partie extérieure d'une map
 	- ResourceDatabase: créer les objets de chaque ressource depuis là, pour les fournir aux autres, ça évitera que chacun les recrée quand il a besoin (réfléchir au fait que les maps par exemple ne seront pas rechargées)
+
+	- chargement des images des entités : certaines utilisent le projet, d'autres non
+	- méthode paint() des sous-classes de MapEntity : factoriser le code

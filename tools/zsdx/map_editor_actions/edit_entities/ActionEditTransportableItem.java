@@ -29,6 +29,8 @@ public class ActionEditTransportableItem extends MapEditorAction {
     public ActionEditTransportableItem(Map map, TransportableItem transportableItem,
 	    int type, int pickableItemType, int pickableItemUniqueId) {
 	super(map);
+	
+	this.transportableItem = transportableItem;
 
 	typeBefore = transportableItem.getTransportableItemType();
 	typeAfter = type;

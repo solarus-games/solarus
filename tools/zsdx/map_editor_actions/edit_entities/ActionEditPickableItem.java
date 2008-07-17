@@ -26,6 +26,8 @@ public class ActionEditPickableItem extends MapEditorAction {
     public ActionEditPickableItem(Map map, PickableItem pickableItem, int type, int uniqueId) {
 	super(map);
 	
+	this.pickableItem = pickableItem;
+	
 	typeBefore = pickableItem.getPickableItemType();
 	typeAfter = type;
 	

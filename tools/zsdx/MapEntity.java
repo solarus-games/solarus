@@ -1,6 +1,7 @@
 package zsdx;
 
 import java.awt.*;
+import java.awt.image.*;
 import java.lang.reflect.*;
 import java.util.*;
 
@@ -8,7 +9,7 @@ import java.util.*;
  * Represents an entity placed on the map with the map editor,
  * and how the entity is placed on the map: its position and its layer.
  */
-public abstract class MapEntity extends Observable {
+public abstract class MapEntity extends Observable implements ImageObserver {
 
     /**
      * The map.
@@ -710,6 +711,14 @@ public abstract class MapEntity extends Observable {
      * false to replace them by a background color
      */
     public abstract void paint(Graphics g, double zoom, boolean showTransparency);
+
+    /**
+     * This function is called when some requested information about the image comes.
+     * @return true
+     */
+    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+	return true;
+    }
 
     /**
      * Returns an integer identifying the kind of entity: ENTITY_TILE, ENTITY_ENTRANCE...

@@ -35,7 +35,7 @@ public class EditTransportableItemComponent extends EditEntityComponent {
 
 	// pickable item type
 	pickableItemTypeField = new PickableItemTypeChooser(true);
-	addField("Pickable item", typeField);
+	addField("Pickable item", pickableItemTypeField);
 
 	// unique id
 	pickableItemUniqueIdField = new NumberChooser();

@@ -19,7 +19,7 @@ public abstract class MapEntity extends Observable {
      * Position of the entity in the map.
      */
     protected Rectangle positionInMap;
-
+    
     /**
      * Layer of the entity on the map.
      */
@@ -186,7 +186,15 @@ public abstract class MapEntity extends Observable {
 	    System.exit(1);
 	}
 	catch (InvocationTargetException ex) {
-	    throw (ZSDXException) ex.getCause();
+	    
+	    Throwable cause = ex.getCause();
+	    
+	    if (cause instanceof RuntimeException) {
+		throw (RuntimeException) cause;
+	    }
+	    else {
+		throw (ZSDXException) cause;
+	    }
 	}
 	
 	return entity;
@@ -260,7 +268,7 @@ public abstract class MapEntity extends Observable {
      * Returns the x coordinate of the origin point of the entity.
      * By default, it is zero (the origin is the top-left corner).
      * Redefine this method in a subclass to change the origin.
-     * @return 0
+     * @return the x coordinate of the origin point
      */
     protected int getOriginX() {
 	return 0;
@@ -270,12 +278,12 @@ public abstract class MapEntity extends Observable {
      * Returns the y coordinate of the origin point of the entity.
      * By default, it is zero (the origin is the top-left corner).
      * Redefine this method in a subclass to change the origin.
-     * @return 0
+     * @return the y coordinate of the origin point
      */
     protected int getOriginY() {
 	return 0;
     }
-
+    
     /**
      * Returns the position of the entity on the map.
      * @return the position of the entity on the map

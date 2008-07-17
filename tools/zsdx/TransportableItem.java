@@ -133,6 +133,22 @@ public class TransportableItem extends InteractiveEntity {
     }
 
     /**
+     * Returns the x coordinate of the origin point of the entity.
+     * @return 8
+     */
+    protected int getOriginX() {
+	return 8;
+    }
+
+    /**
+     * Returns the y coordinate of the origin point of the entity.
+     * @return 13
+     */
+    protected int getOriginY() {
+	return 13;
+    }
+
+    /**
      * Returns the type of this transportable item.
      * @return the type of transportable item
      */

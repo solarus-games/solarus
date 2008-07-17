@@ -40,13 +40,11 @@ public class ActionEditPickableItem extends MapEditorAction {
 	pickableItem.setPickableItem(typeAfter, uniqueIdAfter);
     }
 
-    /* (non-Javadoc)
-     * @see zsdx.MapEditorAction#undo()
+    /**
+     * Undoes the action.
      */
-    @Override
     public void undo() throws ZSDXException {
-	// TODO Raccord de méthode auto-généré
-
+	pickableItem.setPickableItem(typeBefore, uniqueIdBefore);
     }
 
 }

@@ -150,16 +150,24 @@ public class PickableItem extends InteractiveEntity {
      */
     public void setPickableItem(int type, int uniqueId) throws ZSDXException {
 	
-	if (type > PICKABLE_ITEM_ARROW_10 && uniqueId == 0) {
-	    throw new ZSDXException("This type of pickable item must have a unique id");
-	}
-
-	if (type <= PICKABLE_ITEM_ARROW_10 && uniqueId != 0) {
-	    throw new ZSDXException("This type of pickable item cannot have a unique id");
-	}
+	checkValidity(type, uniqueId);
 	
 	this.type = type;
 	this.uniqueId = uniqueId;
+    }
+    
+    /**
+     * Checks whether a value of uniqueId is valid depending on
+     * the specified type of pickable item.
+     * @throws ZSDXException if the value of uniqueId doesn't correspond
+     * to the specified type
+     */
+    public static void checkValidity(int type, int uniqueId) throws ZSDXException {
+	if ((type > PICKABLE_ITEM_ARROW_10 && uniqueId == 0)
+		|| (type <= PICKABLE_ITEM_ARROW_10 && uniqueId != 0)) {
+	    
+	    throw new ZSDXException("This type of pickable item cannot have a unique id");
+	}
     }
     
     /**

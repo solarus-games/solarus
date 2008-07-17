@@ -29,12 +29,12 @@ public class EditPickableItemComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 	
 	// pickable item type
-	typeField = new PickableItemChooser();
+	typeField = new PickableItemTypeChooser();
 	addField("Type", typeField);
 	
 	// unique id
 	uniqueIdField = new NumberChooser();
-	addField("", uniqueIdField);
+	addField("Unique id", uniqueIdField);
     }
 
     /**
@@ -46,7 +46,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	PickableItem pickableItem = (PickableItem) entity;
 	
 	typeField.setPickableItemType(pickableItem.getPickableItemType());
-	uniqueIdField.setValue(pickableItem.getUniqueId());
+	uniqueIdField.setNumber(pickableItem.getUniqueId());
     }
 
     /**
@@ -56,18 +56,18 @@ public class EditPickableItemComponent extends EditEntityComponent {
      * @throws ZSDXException if the fields are incorrectly filled
      */
     protected ActionEditEntity getAction() throws ZSDXException {
-	
+
 	// retrieve the action corresponding to the common entity properties
 	ActionEditEntity action = super.getAction();
 
 	// add the properties specific to a pickable item
 	PickableItem pickableItem = (PickableItem) entity;
-	
+
 	int type = typeField.getPickableItemType();
-	int uniqueId = uniqueIdField.getValue();
-	
+	int uniqueId = uniqueIdField.getNumber();
+
 	action.setSpecificAction(new ActionEditPickableItem(map, pickableItem, type, uniqueId));
-	
+
 	return action;
     }
 

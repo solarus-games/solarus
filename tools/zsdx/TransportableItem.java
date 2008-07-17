@@ -36,7 +36,7 @@ public class TransportableItem extends InteractiveEntity {
      * A number identifying the pickable item, used only for the pickable
      * items that Link can obtain only once (keys, pieces of hearts, etc.).
      */
-    private int uniqueId;
+    private int pickableItemUniqueId;
 
     /**
      * Creates a new transportable item at the specified location.
@@ -49,7 +49,7 @@ public class TransportableItem extends InteractiveEntity {
 
 	type = TRANSPORTABLE_ITEM_POT;
 	pickableItemType = PickableItem.PICKABLE_ITEM_RANDOM;
-	uniqueId = 0;
+	pickableItemUniqueId = 0;
     }
 
     /**
@@ -67,7 +67,7 @@ public class TransportableItem extends InteractiveEntity {
 	try {
 	    this.type = Integer.parseInt(tokenizer.nextToken());
 	    this.pickableItemType = Integer.parseInt(tokenizer.nextToken());
-	    this.uniqueId = Integer.parseInt(tokenizer.nextToken());
+	    this.pickableItemUniqueId = Integer.parseInt(tokenizer.nextToken());
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -94,7 +94,7 @@ public class TransportableItem extends InteractiveEntity {
 	buff.append('\t');
 	buff.append(getPickableItemType());
 	buff.append('\t');
-	buff.append(getUniqueId());
+	buff.append(getPickableItemUniqueId());
 
 	return buff.toString();
     }
@@ -163,8 +163,8 @@ public class TransportableItem extends InteractiveEntity {
      * @return the unique id of this pickable item, or zero if
      * this pickable item is not unique.
      */
-    public int getUniqueId() {
-	return uniqueId;
+    public int getPickableItemUniqueId() {
+	return pickableItemUniqueId;
     }
     
     /**
@@ -172,10 +172,15 @@ public class TransportableItem extends InteractiveEntity {
      * lifts the transportable item.
      * @param type the type of pickable item
      * @param uniqueId unique id of the pickable item
+     * @throws ZSDXException if the value of uniqueId doesn't correspond
+     * to the specified pickable item type
      */
-    public void setPickableItem(int type, int uniqueId) {
-	this.type = type;
-	this.uniqueId = uniqueId;
+    public void setPickableItem(int type, int uniqueId) throws ZSDXException {
+	
+	PickableItem.checkValidity(type, uniqueId);
+
+	this.pickableItemType = type;
+	this.pickableItemUniqueId = uniqueId;
     }
     
     /**

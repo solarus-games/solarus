@@ -1,5 +1,6 @@
 package zsdx.gui;
 
+import zsdx.*;
 import javax.swing.*;
 
 /**
@@ -8,19 +9,30 @@ import javax.swing.*;
 public class PickableItemTypeChooser extends JComboBox {
     
     private static final String[] names = {
-	"Random", "None", "1 Rupee", "5 Rupees", "20 Rupees",
+	"1 Rupee", "5 Rupees", "20 Rupees",
 	"Heart", "Magic flask", "Magic bottle", "Fairy",
 	"1 Bomb", "5 Bombs", "10 Bombs", "1 Arrow", "5 Arrows", "10 Arrows"
     };
 
     /**
      * Creates a new pickable item type chooser.
+     * @param allowNone true to include "None" in the combo box
      */
-    public PickableItemTypeChooser() {
+    public PickableItemTypeChooser(boolean allowNone) {
 	super();
+	
+	// random
+	addItem(new KeyValue(PickableItem.PICKABLE_ITEM_RANDOM, "Random"));
+	
+	// none
+	if (allowNone) {
+	    addItem(new KeyValue(PickableItem.PICKABLE_ITEM_NONE, "None"));
+	    setPickableItemType(PickableItem.PICKABLE_ITEM_NONE);
+	}
 
+	// normal items
 	for (int i = 0; i < names.length; i++) {
-	    addItem(new KeyValue(i - 1, names[i]));
+	    addItem(new KeyValue(i + 1, names[i]));
 	}
     }
     
@@ -40,7 +52,7 @@ public class PickableItemTypeChooser extends JComboBox {
      */
     public void setPickableItemType(int type) {
 
-	KeyValue item = (KeyValue) getSelectedItem();
+	KeyValue item = new KeyValue(type, null);
 	setSelectedItem(item);
     }
 }

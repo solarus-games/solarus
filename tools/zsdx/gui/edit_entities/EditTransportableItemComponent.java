@@ -13,7 +13,7 @@ public class EditTransportableItemComponent extends EditEntityComponent {
     // specific fields of a transportable item
     private TransportableItemTypeChooser typeField;
     private PickableItemTypeChooser pickableItemTypeField;
-    private NumberChooser pickableItemUniqueIdField; // enabled only for certain types of pickable items
+    private NumberChooser pickableItemUniqueIdField; // TODO enabled only for certain types of pickable items
 
     /**
      * Constructor.
@@ -34,7 +34,7 @@ public class EditTransportableItemComponent extends EditEntityComponent {
 	addField("Transportable item type", typeField);
 
 	// pickable item type
-	pickableItemTypeField = new PickableItemTypeChooser();
+	pickableItemTypeField = new PickableItemTypeChooser(true);
 	addField("Pickable item", typeField);
 
 	// unique id

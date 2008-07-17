@@ -32,6 +32,8 @@ public class PickableItem extends InteractiveEntity {
 
     /**
      * Type of pickable item.
+     * It cannot be PICKABLE_ITEM_RANDOM or PICKABLE_ITEM_NONE: these
+     * values are reserved for items obtained by destroying pots, bush, enemies, etc.
      */
     private int type;
     
@@ -159,10 +161,15 @@ public class PickableItem extends InteractiveEntity {
     /**
      * Checks whether a value of uniqueId is valid depending on
      * the specified type of pickable item.
-     * @throws ZSDXException if the value of uniqueId doesn't correspond
-     * to the specified type
+     * @throws ZSDXException if the type is incorrect of the value
+     * of uniqueId doesn't correspond to the specified type
      */
     public static void checkValidity(int type, int uniqueId) throws ZSDXException {
+	
+	if (type <= PICKABLE_ITEM_NONE) {
+	    throw new ZSDXException("The type of pickable item cannot be 'None' or 'Random'");
+	}
+	
 	if ((type > PICKABLE_ITEM_ARROW_10 && uniqueId == 0)
 		|| (type <= PICKABLE_ITEM_ARROW_10 && uniqueId != 0)) {
 	    

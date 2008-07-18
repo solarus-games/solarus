@@ -27,11 +27,11 @@ public class EditPickableItemComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-	
+
 	// pickable item type
 	typeField = new PickableItemTypeChooser(false);
-	addField("Type", typeField);
-	
+	addField("Pickable item type", typeField);
+
 	// unique id
 	uniqueIdField = new NumberChooser();
 	addField("Unique id", uniqueIdField);

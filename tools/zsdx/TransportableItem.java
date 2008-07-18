@@ -1,7 +1,11 @@
 package zsdx;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents an entity that Link can lift, carry and throw:
@@ -37,6 +41,12 @@ public class TransportableItem extends InteractiveEntity {
      * items that Link can obtain only once (keys, pieces of hearts, etc.).
      */
     private int pickableItemUniqueId;
+
+    /**
+     * The image used to display a transportable item.
+     */
+    private static Image image = null;
+
 
     /**
      * Creates a new transportable item at the specified location.
@@ -207,7 +217,41 @@ public class TransportableItem extends InteractiveEntity {
      * false to replace them by a background color
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
-	// TODO
-    }
 
+	// load the image
+	if (image == null) {
+	    File imageFile = new File("zsdx/images/transportable_items.png");
+	    try {
+		image = ImageIO.read(imageFile);
+	    }
+	    catch (IOException ex) {
+		System.err.println("Cannot find file '" + imageFile.getAbsolutePath() + "'");
+	    }
+	}
+	
+	// check the zoom
+	int scale = (int) zoom;
+
+	if (scale != 2) {
+	    throw new UnsupportedOperationException("Zoom mode not yet supported: " + zoom);
+	}
+	
+	// calculate the coordinates
+	int dx1 = positionInMap.x * scale;
+	int dy1 = positionInMap.y * scale;
+
+	int dx2 = dx1 + positionInMap.width * scale;
+	int dy2 = dy1 + positionInMap.height * scale;
+	
+	int sx1 = type * 16;
+	int sx2 = sx1 + 16;
+
+	// display the entity
+	if (showTransparency) {
+	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, 0, sx2, 16, this);
+	}
+	else {
+	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, 0, sx2, 16, bgColor, this);
+	}
+    }
 }

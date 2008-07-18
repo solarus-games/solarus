@@ -20,7 +20,7 @@ public class TransportableItemTypeChooser extends JComboBox {
 	super();
 
 	for (int i = 0; i < names.length; i++) {
-	    addItem(new KeyValue(i - 1, names[i]));
+	    addItem(new KeyValue(i, names[i]));
 	}
     }
     
@@ -40,7 +40,7 @@ public class TransportableItemTypeChooser extends JComboBox {
      */
     public void setTransportableItemType(int type) {
 
-	KeyValue item = (KeyValue) getSelectedItem();
+	KeyValue item = new KeyValue(type, null);
 	setSelectedItem(item);
     }
 }

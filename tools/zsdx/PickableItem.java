@@ -263,5 +263,4 @@ public class PickableItem extends InteractiveEntity {
 	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, 0, sx2, 16, bgColor, this);
 	}
     }
-
 }

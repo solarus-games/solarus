@@ -16,21 +16,19 @@ public class PickableItemTypeChooser extends JComboBox {
 
     /**
      * Creates a new pickable item type chooser.
-     * @param allowNone true to include "None" in the combo box
+     * @param allowRandomAndNone true to include "Random" and "None" in the combo box
      */
-    public PickableItemTypeChooser(boolean allowNone) {
+    public PickableItemTypeChooser(boolean allowRandomAndNone) {
 	super();
-	
-	// random
-	addItem(new KeyValue(PickableItem.PICKABLE_ITEM_RANDOM, "Random"));
-	
-	// none
-	if (allowNone) {
+
+	// special values: random and none
+	if (allowRandomAndNone) {
+	    addItem(new KeyValue(PickableItem.PICKABLE_ITEM_RANDOM, "Random"));
 	    addItem(new KeyValue(PickableItem.PICKABLE_ITEM_NONE, "None"));
 	    setPickableItemType(PickableItem.PICKABLE_ITEM_NONE);
 	}
 
-	// normal items
+	// normal value
 	for (int i = 0; i < names.length; i++) {
 	    addItem(new KeyValue(i + 1, names[i]));
 	}

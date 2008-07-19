@@ -35,6 +35,16 @@ public class NumberChooser extends JSpinner {
     }
 
     /**
+     * Returns the minimum value of the field.
+     * @return the minimum value
+     */
+    public int getMinimum() {
+
+	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) getModel();
+	return ((Integer) spinnerModel.getMinimum()).intValue();
+    }
+
+    /**
      * Sets the minimum value of the field.
      * @param minimum the minimum value
      */
@@ -49,13 +59,23 @@ public class NumberChooser extends JSpinner {
     }
 
     /**
+     * Returns the maximum value of the field.
+     * @return the maximum value
+     */
+    public int getMaximum() {
+
+	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) getModel();
+	return ((Integer) spinnerModel.getMaximum()).intValue();
+    }
+
+    /**
      * Sets the maximum value of the field.
      * @param maximum the minimum value
      */
     public void setMaximum(int maximum) {
 
 	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) getModel();
-	spinnerModel.setMinimum(maximum);
+	spinnerModel.setMaximum(maximum);
 		
 	if (getNumber() > maximum) {
 	    setNumber(maximum);
@@ -76,6 +96,7 @@ public class NumberChooser extends JSpinner {
      * @param number the new value of the field
      */
     public void setNumber(int number) {
+	number = Math.max(getMinimum(), Math.min(getMaximum(), number));
 	setValue(new Integer(number));
     }
 }

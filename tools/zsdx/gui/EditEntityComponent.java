@@ -54,7 +54,8 @@ public class EditEntityComponent extends JPanel {
 	this.map = map;
 	this.entity = entity;
 	
-	setBorder(BorderFactory.createTitledBorder("Entity properties"));
+	setBorder(BorderFactory.createTitledBorder(
+		MapEntity.entityTypeNames[entity.getType()] + " properties"));
 
 	gridBagConstraints = new GridBagConstraints();
 	gridBagConstraints.insets = new Insets(5, 5, 5, 5); // margins

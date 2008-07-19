@@ -1,5 +1,6 @@
 package zsdx.gui.edit_entities;
 
+import java.awt.event.*;
 import zsdx.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
@@ -13,7 +14,7 @@ public class EditTransportableItemComponent extends EditEntityComponent {
     // specific fields of a transportable item
     private TransportableItemTypeChooser typeField;
     private PickableItemTypeChooser pickableItemTypeField;
-    private NumberChooser pickableItemUniqueIdField; // TODO enabled only for certain types of pickable items
+    private NumberChooser pickableItemUniqueIdField;
 
     /**
      * Constructor.
@@ -40,6 +41,9 @@ public class EditTransportableItemComponent extends EditEntityComponent {
 	// unique id
 	pickableItemUniqueIdField = new NumberChooser();
 	addField("Pickable item unique id", pickableItemUniqueIdField);
+
+	// enable or disable the 'unique id' field depending on the pickable item type
+	typeField.addActionListener(new ActionListenerEnableUniqueId());
     }
 
     /**
@@ -53,6 +57,7 @@ public class EditTransportableItemComponent extends EditEntityComponent {
 	typeField.setTransportableItemType(transportableItem.getTransportableItemType());
 	pickableItemTypeField.setPickableItemType(transportableItem.getPickableItemType());
 	pickableItemUniqueIdField.setNumber(transportableItem.getPickableItemUniqueId());
+	new ActionListenerEnableUniqueId().actionPerformed(null);
     }
 
     /**
@@ -79,4 +84,21 @@ public class EditTransportableItemComponent extends EditEntityComponent {
 	return action;
     }
 
+    /**
+     * A listener associated to the 'pickable item type' field,
+     * to enable or disable the 'unique id' field depending on the type.
+     */
+    private class ActionListenerEnableUniqueId implements ActionListener {
+
+	public void actionPerformed(ActionEvent ev) {
+	    int type = pickableItemTypeField.getPickableItemType();
+	    if (type <= PickableItem.PICKABLE_ITEM_ARROW_10) {
+		pickableItemUniqueIdField.setEnabled(false);
+		pickableItemUniqueIdField.setNumber(0);
+	    }
+	    else {
+		pickableItemUniqueIdField.setEnabled(true);
+	    }
+	}
+    }
 }

@@ -67,9 +67,10 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     public static final int ENTITY_TRANSPORTABLE_ITEM = 4;
     public static final int ENTITY_NB_TYPES = 5;
 
-    // names of the entity types
+    // names of the entity types, used to compute the default name of a new
+    // entity and also in the GUI
     public static final String[] entityTypeNames = {
-	"tile", "entrance", "exit", "pickable item", "transportable item"
+	"Tile", "Entrance", "Exit", "Pickable item", "Transportable item"
     };
 
     // concrete subclasses of MapEntity

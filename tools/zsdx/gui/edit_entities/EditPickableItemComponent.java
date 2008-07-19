@@ -1,5 +1,6 @@
 package zsdx.gui.edit_entities;
 
+import java.awt.event.*;
 import zsdx.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
@@ -35,6 +36,9 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	// unique id
 	uniqueIdField = new NumberChooser();
 	addField("Unique id", uniqueIdField);
+
+	// enable or disable the 'unique id' field depending on the pickable item type
+	typeField.addActionListener(new ActionListenerEnableUniqueId());
     }
 
     /**
@@ -47,6 +51,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	
 	typeField.setPickableItemType(pickableItem.getPickableItemType());
 	uniqueIdField.setNumber(pickableItem.getUniqueId());
+	new ActionListenerEnableUniqueId().actionPerformed(null);
     }
 
     /**
@@ -71,4 +76,21 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	return action;
     }
 
+    /**
+     * A listener associated to the 'pickable item type' field,
+     * to enable or disable the 'unique id' field depending on the type.
+     */
+    private class ActionListenerEnableUniqueId implements ActionListener {
+
+	public void actionPerformed(ActionEvent ev) {
+	    int type = typeField.getPickableItemType();
+	    if (type <= PickableItem.PICKABLE_ITEM_ARROW_10) {
+		uniqueIdField.setEnabled(false);
+		uniqueIdField.setNumber(0);
+	    }
+	    else {
+		uniqueIdField.setEnabled(true);
+	    }
+	}
+    }
 }

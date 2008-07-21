@@ -712,7 +712,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * false to replace them by a background color
      */
     public abstract void paint(Graphics g, double zoom, boolean showTransparency);
-
+    
     /**
      * This function is called when some requested information about the image comes.
      * @return true

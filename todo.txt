@@ -4,6 +4,7 @@
 - Son d'un vase cassé : on n'entend rien
 - Link ne passe plus toujours dans les portes quand il arrive en diagonale
 
+- /home/christophe/workspace/zsdx : éditeur à commiter, /home/christophe/zsdx : moteur à commiter
 
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)

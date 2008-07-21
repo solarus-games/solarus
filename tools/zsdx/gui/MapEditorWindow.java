@@ -58,7 +58,6 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
 	tilePicker = new TilePicker();
 	tilePicker.setAlignmentX(Component.LEFT_ALIGNMENT);
-	tilePicker.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 	
 	leftPanel.add(mapPropertiesView);
 	leftPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -67,14 +66,13 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	mapView = new MapView();
 	JScrollPane mapViewScroller = new JScrollPane(mapView);
 
-	MapViewRenderingOptionsView mapViewRenderingOptionsView =
-	    new MapViewRenderingOptionsView(mapView.getRenderingOptions());
-
 	MapViewMouseCoordinates mapViewMouseCoordinates =
 	    new MapViewMouseCoordinates(mapView);
 
+	MapViewHeader mapViewHeader = new MapViewHeader(mapView);
+	
 	JPanel rightPanel = new JPanel(new BorderLayout());
-	rightPanel.add(mapViewRenderingOptionsView, BorderLayout.NORTH);
+	rightPanel.add(mapViewHeader, BorderLayout.NORTH);
 	rightPanel.add(mapViewScroller, BorderLayout.CENTER);
 	rightPanel.add(mapViewMouseCoordinates, BorderLayout.SOUTH);
 
@@ -207,6 +205,18 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	item.setMnemonic(KeyEvent.VK_X);
 	item.getAccessibleContext().setAccessibleDescription("Add an exit on the map");
 	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_EXIT));
+	menuEntity.add(item);
+
+	item = new JMenuItem("Add pickable item");
+	item.setMnemonic(KeyEvent.VK_P);
+	item.getAccessibleContext().setAccessibleDescription("Add a pickable item (rupee, heart, fairy, key...)");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_PICKABLE_ITEM));
+	menuEntity.add(item);
+
+	item = new JMenuItem("Add transportable item");
+	item.setMnemonic(KeyEvent.VK_T);
+	item.getAccessibleContext().setAccessibleDescription("Add a transportable item (pot, bush...)");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_TRANSPORTABLE_ITEM));
 	menuEntity.add(item);
 	
 	menuBar.add(menuEntity);

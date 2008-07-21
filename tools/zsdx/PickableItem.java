@@ -52,6 +52,7 @@ public class PickableItem extends InteractiveEntity {
 
     /**
      * Creates a new pickable item at the specified location.
+     * By default, the type is a rupee.
      * @param map the map
      * @param x x coordinate of the item
      * @param y y coordinate of the item
@@ -170,10 +171,14 @@ public class PickableItem extends InteractiveEntity {
      * @param type the type of pickable item
      * @param uniqueId the unique id of this pickable item, or zero if
      * this pickable item is not unique.
-     * @throws ZSDXException if the value of uniqueId doesn't correspond
-     * to the specified type
+     * @throws ZSDXException if the type is incorrect or if the value of
+     * uniqueId doesn't correspond to the specified type
      */
     public void setPickableItem(int type, int uniqueId) throws ZSDXException {
+	
+	if (type <= PICKABLE_ITEM_NONE) {
+	    throw new ZSDXException("The type of pickable item cannot be 'None' or 'Random'");
+	}
 	
 	checkValidity(type, uniqueId);
 	
@@ -184,14 +189,12 @@ public class PickableItem extends InteractiveEntity {
     /**
      * Checks whether a value of uniqueId is valid depending on
      * the specified type of pickable item.
+     * @param type a type of pickable item
+     * @param uniqueId a unique id for this type of pickable item
      * @throws ZSDXException if the type is incorrect of the value
      * of uniqueId doesn't correspond to the specified type
      */
     public static void checkValidity(int type, int uniqueId) throws ZSDXException {
-	
-	if (type <= PICKABLE_ITEM_NONE) {
-	    throw new ZSDXException("The type of pickable item cannot be 'None' or 'Random'");
-	}
 	
 	if ((type > PICKABLE_ITEM_ARROW_10 && uniqueId == 0)
 		|| (type <= PICKABLE_ITEM_ARROW_10 && uniqueId != 0)) {

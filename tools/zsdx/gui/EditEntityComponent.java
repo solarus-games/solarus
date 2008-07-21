@@ -203,12 +203,14 @@ public class EditEntityComponent extends JPanel {
      * @throws ZSDXException if the modifications cannot be applied
      */
     public final void applyModifications() throws ZSDXException {
-	
+
+	ActionEditEntity action = getAction();
 	try {
-	    map.getHistory().doAction(getAction());
+	    map.getHistory().doAction(action);
 	}
-	catch (NumberFormatException ex) {
-	    throw new MapException("Integer expected");
+	catch (ZSDXException ex) {
+	    action.undo(); // undo the action because it may be partially done
+	    throw ex; // throw the exception again
 	}
     }
 }

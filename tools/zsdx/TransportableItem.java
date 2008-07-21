@@ -50,6 +50,7 @@ public class TransportableItem extends InteractiveEntity {
 
     /**
      * Creates a new transportable item at the specified location.
+     * By default, the type is a pot and the pickable item is random. 
      * @param map the map
      * @param x x coordinate of the item
      * @param y y coordinate of the item
@@ -156,6 +157,14 @@ public class TransportableItem extends InteractiveEntity {
      */
     protected int getOriginY() {
 	return 13;
+    }
+
+    /**
+     * Returns the entity's obstacle property.
+     * @return OBSTACLE
+     */
+    public int getObstacle() {
+	return OBSTACLE;
     }
 
     /**

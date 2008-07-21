@@ -429,7 +429,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	case MapEntity.ENTITY_EXIT:
 	    entityBeingAdded = new MapExit(map, 0, 0);
 	    break;
+	    
+	case MapEntity.ENTITY_PICKABLE_ITEM:
+	    entityBeingAdded = new PickableItem(map, 0, 0);
+	    break;
+	    
+	case MapEntity.ENTITY_TRANSPORTABLE_ITEM:
+	    entityBeingAdded = new TransportableItem(map, 0, 0);
+	    break;
 
+	default:
+	    GuiTools.errorDialog("Cannot add the entity: unknown entity type");
 	}
     }
 

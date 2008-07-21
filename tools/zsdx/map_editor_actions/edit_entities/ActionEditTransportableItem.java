@@ -57,5 +57,4 @@ public class ActionEditTransportableItem extends MapEditorAction {
 	transportableItem.setTransportableItemType(typeBefore);
 	transportableItem.setPickableItem(pickableItemTypeBefore, pickableItemUniqueIdBefore);
     }
-
 }

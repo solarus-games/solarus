@@ -278,6 +278,14 @@ public class Tile extends Observable {
     }
 
     /**
+     * Returns the tile's size.
+     * @return the tile's size in pixels
+     */
+    public Dimension getSize() {
+	return new Dimension(getWidth(), getHeight());
+    }
+    
+    /**
      * Returns the tile's obstacle property.
      * @return MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
      * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT or MapEntity.OBSTACLE_BOTTOM_RIGHT

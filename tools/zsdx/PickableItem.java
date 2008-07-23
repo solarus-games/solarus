@@ -11,6 +11,16 @@ import javax.imageio.*;
  */
 public class PickableItem extends InteractiveEntity {
 
+    /**
+     * Name of this kind of entity.
+     */
+    public static final String entityTypeName = "Pickable items";
+
+    /**
+     * Origin point of a pickable item.
+     */
+    private static final Point origin = new Point(8, 13);
+    
     // types of pickable items
 
     public static final int PICKABLE_ITEM_RANDOM      = -1;   /**< special value to indicate to choose another value
@@ -143,19 +153,11 @@ public class PickableItem extends InteractiveEntity {
     }
 
     /**
-     * Returns the x coordinate of the origin point of the entity.
-     * @return 8
+     * Returns the coordinates of the origin point of the entity.
+     * @return (8,13)
      */
-    protected int getOriginX() {
-	return 8;
-    }
-
-    /**
-     * Returns the y coordinate of the origin point of the entity.
-     * @return 13
-     */
-    protected int getOriginY() {
-	return 13;
+    protected Point getOrigin() {
+	return origin;
     }
 
     /**

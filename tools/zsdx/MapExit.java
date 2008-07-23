@@ -9,6 +9,16 @@ import java.util.*;
  */
 public class MapExit extends InteractiveEntity {
 
+    /**
+     * Name of this kind of entity.
+     */
+    public static final String entityTypeName = "Exit";
+
+    /**
+     * Unit size of an exit.
+     */
+    private static final Dimension unitSize = new Dimension(16, 16);
+    
     private int transition;
     private String destinationMapId;
     private String entranceName;
@@ -121,21 +131,12 @@ public class MapExit extends InteractiveEntity {
     }
 
     /**
-     * Returns the minimum width of the entity (for a resizable entity).
-     * When the entity is resized, its new width must be a multiple of this minimum size.
-     * @return 16
+     * Returns the minimum size of the entity (for a resizable entity).
+     * When the entity is resized, its new size must be a multiple of this minimum size.
+     * @return (16,16)
      */
-    public int getUnitWidth() {
-	return 16;
-    }
-
-    /**
-     * Returns the minimum height of the entity (for a resizable entity).
-     * When the entity is resized, its new height is a multiple of this minimum height.
-     * @return 16
-     */
-    public int getUnitHeight() {
-	return 16;
+    public Dimension getUnitSize() {
+	return unitSize;
     }
 
     /**
@@ -145,7 +146,7 @@ public class MapExit extends InteractiveEntity {
     public int getTransition() {
 	return transition;
     }
-    
+
     /**
      * Sets the type of transition between the two maps.
      * @param transition the transition type

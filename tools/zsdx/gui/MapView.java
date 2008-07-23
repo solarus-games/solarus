@@ -645,8 +645,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    
 	    MapEntity selectedEntity = map.getEntitySelection().getEntity(0);
 	    
-	    int width = selectedEntity.getUnitWidth();
-	    int height = selectedEntity.getUnitHeight();
+	    int width = selectedEntity.getUnitSize().width;
+	    int height = selectedEntity.getUnitSize().height;
 	    
 	    xA = fixedLocation.x;
 	    yA = fixedLocation.y;
@@ -836,6 +836,31 @@ public class MapView extends JComponent implements Observer, Scrollable {
     public int getMouseInMapY(MouseEvent mouseEvent) {
 	return (int) ((mouseEvent.getY() - scaledAreaAroundMap) / zoom);
     }
+    
+    /**
+     * Returns the entity located under the mouse,
+     * taking into account the layers displayed.
+     * @param mouseEvent the mouse event
+     * @return the entity clicked
+     */
+    public MapEntity getEntityClicked(MouseEvent mouseEvent) {
+
+	MapEntity entityClicked = null;
+
+	int x = getMouseInMapX(mouseEvent);
+	int y = getMouseInMapY(mouseEvent);
+	
+	for (int layer = MapEntity.LAYER_HIGH;
+	layer >= MapEntity.LAYER_LOW && entityClicked == null;
+	layer--) {
+	    
+	    if (renderingOptions.getShowLayer(layer)) {
+		entityClicked = map.getEntityAt(layer, x, y);
+	    }
+	}
+	
+	return entityClicked;
+    }
 
     /**
      * The mouse listener associated to the map image.
@@ -890,10 +915,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    if (state == State.NORMAL && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
 		// find the entity clicked
-		int x = getMouseInMapX(mouseEvent);
-		int y = getMouseInMapY(mouseEvent);
-
-		MapEntity entityClicked = map.getEntityAt(x, y);
+		MapEntity entityClicked = getEntityClicked(mouseEvent);
 
 		// detect whether CTRL or SHIFT is pressed
 		if (mouseEvent.isControlDown() || mouseEvent.isShiftDown()) {
@@ -947,15 +969,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    case NORMAL:
 
 		// find the entity clicked
-		MapEntity entityClicked = null;
-		for (int layer = MapEntity.LAYER_HIGH;
-		     layer >= MapEntity.LAYER_LOW && entityClicked == null;
-		     layer--) {
-		    
-		    if (renderingOptions.getShowLayer(layer)) {
-			entityClicked = map.getEntityAt(layer, x, y);
-		    }
-		}
+		MapEntity entityClicked = getEntityClicked(mouseEvent);
 
 		boolean alreadySelected = entitySelection.isSelected(entityClicked);
 		

@@ -8,6 +8,16 @@ import java.util.*;
  * Represents an entry point in a map.
  */
 public class MapEntrance extends InteractiveEntity {
+
+    /**
+     * Name of this kind of entity.
+     */
+    public static final String entityTypeName = "Entrance";
+
+    /**
+     * Origin point of an entrance.
+     */
+    private static final Point origin = new Point(8, 13);
     
     /**
      * Icons of an entrance for each direction. 
@@ -57,21 +67,29 @@ public class MapEntrance extends InteractiveEntity {
     }
 
     /**
-     * Returns the x coordinate of the origin point of the entity.
-     * @return 8
+     * Returns the coordinates of the origin point of the entity.
+     * @return (8,13)
      */
-    protected int getOriginX() {
-	return 8;
+    protected Point getOrigin() {
+	return origin;
     }
 
     /**
-     * Returns the y coordinate of the origin point of the entity.
-     * @return 13
+     * Returns the number of possible directions of the entity.
+     * @return 4
      */
-    protected int getOriginY() {
-	return 13;
+    public int getNbDirections() {
+	return 4;
     }
-
+    
+    /**
+     * Returns whether the entity has an identifier.
+     * @return true
+     */
+    public boolean hasName() {
+	return true;
+    }
+    
     /**
      * Draws the entrance on the map editor.
      * @param g graphic context
@@ -99,21 +117,5 @@ public class MapEntrance extends InteractiveEntity {
 	else {
 	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, bgColor, null);		
 	}
-    }
-
-    /**
-     * Returns the number of possible directions of the entity.
-     * @return 4
-     */
-    public int getNbDirections() {
-	return 4;
-    }
-    
-    /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-	return true;
     }
 }

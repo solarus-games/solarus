@@ -8,6 +8,41 @@ import java.util.*;
 /**
  * Represents an entity placed on the map with the map editor,
  * and how the entity is placed on the map: its position and its layer.
+ * 
+ * To create a new kind of entity, you should make the following steps:
+ * - Add your class in the MapEntity.entityClasses array.
+ * - Create a field in your class to declare the entity name:
+ *     public static final String entityTypeName.
+ * - Create two constructors with the following signatures:
+ *     public YourEntity(Map map, int x, int y):
+ *         creates a new entity with some default properties
+ *     public YourEntity(Map map, String tokenizer) throws ZSDXException:
+ *         creates an existing entity from a string
+ * - Create the toString() method: public String toString()
+ *     to export the entity to a string
+ * - Define the getType() method: public int getType()
+ *     which returns the entity type number.
+ * - Redefine the getObstacle() method: public int getObstacle()
+ *     if your entity is an obstacle.
+ * - Redefine the methods getNbDirections(), hasName(), isResizable()
+ *     to indicate how the graphical components will be organized.
+ *     - public int getNbDirections(): returns the number of possible
+ *         directions of this kind of entity (can be zero)
+ *     - public boolean hasName(): indicates whether the entity has a 
+ *         name field (i.e. if it is identifiable)
+ *     - public boolean isResizable(): indicates whether the entity can
+ *         be resized. If the entity is resizable, you should also redefine
+ *         the getUnitSize() method.
+ * - Redefine the getOrigin() method: public Point getOrigin()
+ *     if the origin is not the top-left corner of the entity.
+ * - Redefine the isValid() method: public boolean isValid()
+ *     to check the validity of the fields (don't forget to call super.isValid()).    
+ * - TODO paint() method
+ * - Add the specific fields of your type of entity and the corresponding
+ *     get and set methods.
+ * - Create a subclass of EditEntityComponent and declare it in
+ *     EditEntityComponent.editEntityComponentClasses.
+ * - Create a subclass of ActionEditEntity
  */
 public abstract class MapEntity extends Observable implements ImageObserver {
 
@@ -42,7 +77,17 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * Color to display instead of the transparent pixels of the image.
      */
     protected static final Color bgColor = new Color(255, 0, 255);
+    
+    /**
+     * Coordinates of the origin point of an entity by default.
+     */
+    private static final Point defaultOrigin = new Point(0, 0);
 
+    /**
+     * Default minimum size of a resizable entity.
+     */
+    private static final Dimension defaultUnitSize = new Dimension(8, 8);
+    
     // Constants to identify the layer
 
     public static final int LAYER_LOW = 0;
@@ -66,12 +111,6 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     public static final int ENTITY_PICKABLE_ITEM = 3;
     public static final int ENTITY_TRANSPORTABLE_ITEM = 4;
     public static final int ENTITY_NB_TYPES = 5;
-
-    // names of the entity types, used to compute the default name of a new
-    // entity and also in the GUI
-    public static final String[] entityTypeNames = {
-	"Tile", "Entrance", "Exit", "Pickable item", "Transportable item"
-    };
 
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {
@@ -267,13 +306,13 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     }
     
     /**
-     * Returns the x coordinate of the origin point of the entity.
-     * By default, it is zero (the origin is the top-left corner).
+     * Returns the coordinates of the origin point of the entity.
+     * By default, it is (0,0) (the origin is the top-left corner).
      * Redefine this method in a subclass to change the origin.
-     * @return the x coordinate of the origin point
+     * @return the coordinates of the origin point
      */
-    protected int getOriginX() {
-	return 0;
+    protected Point getOrigin() {
+	return defaultOrigin;
     }
 
     /**
@@ -343,7 +382,8 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     public void setPositionInMap(int x, int y) throws MapException {
 	
 	// calculate the new coordinates of the top-left corner
-	setPositionTopLeft(x - getOriginX(), y - getOriginY());
+	Point origin = getOrigin();
+	setPositionTopLeft(x - origin.x, y - origin.y);
     }
 
     /**
@@ -419,13 +459,14 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	    throw new MapException("The entity's size must be positive"); 
 	}
 	
-	if (width % getUnitWidth() != 0) {
-	    throw new MapException("The entity's width must be a multiple of " + getUnitWidth()
+	Dimension unitSize = getUnitSize();
+	if (width % unitSize.width != 0) {
+	    throw new MapException("The entity's width must be a multiple of " + unitSize.width
 		    + " (the width specified is " + width + ')');
 	}
 
-	if (height % getUnitHeight() != 0) {
-	    throw new MapException("The entity's height must be a multiple of " + getUnitHeight()
+	if (height % unitSize.height != 0) {
+	    throw new MapException("The entity's height must be a multiple of " + unitSize.height
 		    + " (the height specified is " + height + ')');
 	}
     }
@@ -563,16 +604,16 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     private void computeDefaultName() {
 	
 	int entityType = getType();	
-	String prefix = entityTypeNames[entityType];
+	String prefix = getTypeName(entityType);
 	int i = 1;
 	
 	// compute an unused name
 	while (map.getEntityWithName(entityType, prefix + i) != null) {
-	    i++;	    
+	    i++;
 	}
 	
 	try {
-	    setName(entityTypeNames[entityType] + i);
+	    setName(getTypeName(entityType) + i);
 	}
 	catch (MapException ex) {
 	    // should not happen if the while above works
@@ -582,21 +623,12 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     }
 
     /**
-     * Returns the minimum width of the entity (for a resizable entity).
-     * When the entity is resized, its new width must be a multiple of this minimum size.
-     * @return the minimum width of the entity
+     * Returns the minimum size of the entity (for a resizable entity).
+     * When the entity is resized, its new size must be a multiple of this minimum size.
+     * @return the minimum size of the entity
      */
-    public int getUnitWidth() {
-	return 8;
-    }
-
-    /**
-     * Returns the minimum height of the entity (for a resizable entity).
-     * When the entity is resized, its new height is a multiple of this minimum height.
-     * @return the minimum height of the entity
-     */
-    public int getUnitHeight() {
-	return 8;
+    public Dimension getUnitSize() {
+	return defaultUnitSize;
     }
 
     /**
@@ -649,19 +681,19 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     }
 
     /**
-     * Returns the x coordinate of the entity's hotspot on the map.
-     * @return the x coordinate of the entity's hotspot on the map
+     * Returns the x coordinate of the entity's origin point on the map.
+     * @return the x coordinate of the entity's origin point on the map
      */
     public int getX() {
-	return positionInMap.x + getOriginX();
+	return positionInMap.x + getOrigin().x;
     }
 
     /**
-     * Returns the y coordinate of the entity's hotspot on the map.
-     * @return the y coordinate of the entity's hotspot on the map
+     * Returns the y coordinate of the entity's origin point on the map.
+     * @return the y coordinate of the entity's origin point on the map
      */
     public int getY() {
-	return positionInMap.y + getOriginY();
+	return positionInMap.y + getOrigin().y;
     }
 
     /**
@@ -726,4 +758,30 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * @return the type of entity
      */
     public abstract int getType();
+    
+    /**
+     * Returns the name of an entity type.
+     * This method uses the 'entityTypeName' static field
+     * that every concrete subclass of MapEntity must implement.
+     * @param type a type of entity
+     * @return the corresponding name
+     */
+    public static String getTypeName(int type) {
+
+	String typeName = null;
+	Class<?> entityClass = entityClasses[type];
+	try {
+	    Field typeNameField = entityClass.getField("entityTypeName");
+	    typeName = (String) typeNameField.get(null);
+	}
+	catch (NoSuchFieldException ex) {
+	    System.err.println("The field 'entityTypeName' is missing in class " + entityClass.getName());
+	    System.exit(1);
+	}
+	catch (IllegalAccessException ex) {
+	    System.err.println("The field 'entityTypeName' of class " + entityClass.getName() + " is not accessible");
+	    System.exit(1);
+	}
+	return typeName;
+    }
 }

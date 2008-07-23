@@ -32,15 +32,6 @@ public class EditEntityComponent extends JPanel {
     
     private GridBagConstraints gridBagConstraints;
 
-    private static final Class<?>[] editEntityComponentClasses = {
-	// make a subpackage
-	EditEntityComponent.class,             // ENTITY_TILE
-	EditEntityComponent.class,             // ENTITY_ENTRANCE
-	EditExitComponent.class,               // ENTITY_EXIT
-	EditPickableItemComponent.class,       // ENTITY_PICKABLE_ITEM
-	EditTransportableItemComponent.class   // ENTITY_TRANSPORTABLE_ITEM
-    };
-
     /**
      * Creates a component to edit the common properties of a map entity.
      * If the map entity has specific properties, you should call instead
@@ -55,7 +46,7 @@ public class EditEntityComponent extends JPanel {
 	this.entity = entity;
 	
 	setBorder(BorderFactory.createTitledBorder(
-		MapEntity.entityTypeNames[entity.getType()] + " properties"));
+		MapEntity.getTypeName(entity.getType()) + " properties"));
 
 	gridBagConstraints = new GridBagConstraints();
 	gridBagConstraints.insets = new Insets(5, 5, 5, 5); // margins
@@ -110,9 +101,11 @@ public class EditEntityComponent extends JPanel {
 	
 	EditEntityComponent component = null;
 	
-	Class<?> componentClass = editEntityComponentClasses[entity.getType()];
-	Constructor<?> constructor;
 	try {
+	    String entityClassName = MapEntity.entityClasses[entity.getType()].getName();
+	    Class<?> componentClass = Class.forName("ActionEdit" + entityClassName);
+	    Constructor<?> constructor;
+
 	    constructor = componentClass.getConstructor(Map.class, MapEntity.class);
 	    component = (EditEntityComponent) constructor.newInstance(map, entity);
 	}
@@ -120,7 +113,8 @@ public class EditEntityComponent extends JPanel {
 	    throw (RuntimeException) ex.getCause();
 	}
 	catch (Exception ex) {
-	    System.err.println("Unexpected error: " + ex);
+	    System.err.println("Cannot create the component to edit the entity: " + ex);
+	    ex.printStackTrace();
 	    System.exit(1);
 	}
 	
@@ -167,7 +161,7 @@ public class EditEntityComponent extends JPanel {
 	fieldPosition.setCoordinates(entity.getX(), entity.getY());
 	
 	if (entity.isResizable()) {
-	    fieldSize.setStepSize(entity.getUnitWidth(), entity.getUnitHeight());
+	    fieldSize.setStepSize(entity.getUnitSize().width, entity.getUnitSize().height);
 	    fieldSize.setCoordinates(entity.getWidth(), entity.getHeight());
 	}
 	

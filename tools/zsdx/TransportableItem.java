@@ -13,7 +13,17 @@ import javax.imageio.ImageIO;
  */
 public class TransportableItem extends InteractiveEntity {
 
-    // types of pickable items
+    /**
+     * Name of this kind of entity.
+     */
+    public static final String entityTypeName = "Transportable items";
+
+    /**
+     * Origin point of a transportable item.
+     */
+    private static final Point origin = new Point(8, 13);
+    
+    // types of transportable items
 
     public static final int TRANSPORTABLE_ITEM_POT               = 0;
     public static final int TRANSPORTABLE_ITEM_SKULL             = 1;
@@ -144,19 +154,11 @@ public class TransportableItem extends InteractiveEntity {
     }
 
     /**
-     * Returns the x coordinate of the origin point of the entity.
-     * @return 8
+     * Returns the coordinates of the origin point of the entity.
+     * @return (8,13)
      */
-    protected int getOriginX() {
-	return 8;
-    }
-
-    /**
-     * Returns the y coordinate of the origin point of the entity.
-     * @return 13
-     */
-    protected int getOriginY() {
-	return 13;
+    protected Point getOrigin() {
+	return origin;
     }
 
     /**

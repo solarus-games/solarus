@@ -10,6 +10,11 @@ import java.util.*;
  * how the pattern is repeated or not.
  */
 public class TileOnMap extends MapEntity {
+    
+    /**
+     * Name of this kind of entity.
+     */
+    public static final String entityTypeName = "Tile";
 
     /**
      * The tileset from which this tile is extracted.
@@ -174,33 +179,18 @@ public class TileOnMap extends MapEntity {
     }
     
     /**
-     * Returns the minimum width of the entity (for a resizable entity).
-     * When the entity is resized, its new width must be a multiple of this minimum size.
-     * @return the minimum width of the entity
+     * Returns the minimum size of the entity (for a resizable entity).
+     * When the entity is resized, its new size must be a multiple of this minimum size.
+     * @return the minimum size of the entity
      */
-    public int getUnitWidth() {
+    public Dimension getUnitSize() {
 	
 	if (tileset == null) { // special case when the tileset is not initialized yet
-	    return super.getUnitWidth();
+	    return super.getUnitSize();
 	}
 	
 	Tile tile = tileset.getTile(tileId);
-	return tile.getWidth();
-    }
-
-    /**
-     * Returns the minimum height of the entity (for a resizable entity).
-     * When the entity is resized, its new height is a multiple of this minimum height.
-     * @return the minimum height of the entity
-     */
-    public int getUnitHeight() {
-	
-	if (tileset == null) { // special case when the tileset is not initialized yet
-	    return super.getUnitHeight();
-	}
-	
-	Tile tile = tileset.getTile(tileId);
-	return tile.getHeight();
+	return tile.getSize();
     }
 
     /**
@@ -208,15 +198,15 @@ public class TileOnMap extends MapEntity {
      * @return the number of times the pattern is repeated on x
      */
     public int getRepeatX() {
-	return positionInMap.width / getUnitWidth();
+	return positionInMap.width / getUnitSize().width;
     }
 
-    /*
+    /**
      * Returns the number of times the pattern is repeated on y.
      * @return the number of times the pattern is repeated on y
      */
     public int getRepeatY() {
-	return positionInMap.height / getUnitHeight();
+	return positionInMap.height / getUnitSize().height;
     }
 
     /**

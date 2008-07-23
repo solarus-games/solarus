@@ -23,6 +23,7 @@ public class AddEntitiesToolbar extends JComponent {
     public AddEntitiesToolbar(MapView mapView) {
 	super();
 	this.mapView = mapView;
+	mapView.setAddEntitiesToolbar(this); // to be notified when the map view state changes
 	addMouseListener(new AddEntitiesToolbarMouseListener());
     }
     
@@ -50,17 +51,33 @@ public class AddEntitiesToolbar extends JComponent {
 	    return;
 	}
 
+	// get the entity type being added (if any)
+	int entityTypeBeingAdded = mapView.getEntityTypeBeingAdded();
+	
 	// draw the icons for all types of entities except TileOnMap
 	Class<?> entityClass = null;
 	try {
 	    for (int i = 1; i < MapEntity.ENTITY_NB_TYPES; i++) {
+		
+		// get the image properties
 		entityClass = MapEntity.entityClasses[i];
 		Field imageDescriptionField = entityClass.getField("imageDescription");
 		EntityImageDescription imageDescription = (EntityImageDescription) imageDescriptionField.get(null);
-		
-		Rectangle positionInDestinationImage = new Rectangle((i - 1) * 16, 0, 16, 16);
-		
+				
+		// draw the image
+		int x = (i - 1) * 16;
+		int y = 0;
+		Rectangle positionInDestinationImage = new Rectangle(x, y, 16, 16);
 		imageDescription.paint(g, 2, true, positionInDestinationImage);
+		
+		// draw the selection rectangle if we are currently adding this kind of entity
+		if (entityTypeBeingAdded == i) {
+		    x = x * 2;
+		    y = y * 2;
+		    g.setColor(Color.RED);
+		    g.drawRect(x, y, 32, 32);
+		    g.drawRect(x + 1, y + 1, 30, 30);
+		}
 	    }
 	}
 	catch (NoSuchFieldException ex) {

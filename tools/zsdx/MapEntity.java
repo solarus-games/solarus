@@ -49,6 +49,7 @@ import java.util.*;
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
  * - Create a subclass of ActionEditEntity.
+ * - Update the startAddingEntity() method of class MapView (for now)
  */
 public abstract class MapEntity extends Observable implements ImageObserver {
 

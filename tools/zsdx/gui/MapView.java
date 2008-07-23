@@ -63,6 +63,18 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private boolean entityJustSelected;       // true if the last entity on which the mouse was pressed was not already selected
     private int entityTypeBeingAdded;         // in state ADDING_ENTITY: type of the entity that is about to be added
     private MapEntity entityBeingAdded;       // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
+
+    // headers of the map view
+    
+    /**
+     * The display options (what layers are displayed, etc.).
+     */
+    private MapViewRenderingOptions renderingOptions;
+
+    /**
+     * The toolbar to add entities on the map.
+     */
+    private AddEntitiesToolbar addEntitiesToolbar;
     
     // other map view stuff
 
@@ -70,12 +82,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * The popup menu shown when the user right clicks on the selected entities.
      */
     private MapViewPopupMenu popupMenu;
-
-    /**
-     * The display options (what layers are displayed, etc.).
-     */
-    private MapViewRenderingOptions renderingOptions;
-
+    
     /**
      * Zoom of the map view.
      */
@@ -135,7 +142,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	}
 
 	this.map = map;
-	this.state = State.NORMAL;
+	setState(State.NORMAL);
 
 	if (map != null) {
 	    map.addObserver(this);
@@ -150,6 +157,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	update(map, null);
     }
 
+    /**
+     * Specifies the toolbar to add entities on the map.
+     * @param toolbar the toolbar
+     */
+    public void setAddEntitiesToolbar(AddEntitiesToolbar toolbar) {
+	this.addEntitiesToolbar = toolbar;
+    }
+    
     /**
      * Returns the zoom of the map view.
      * @return the zoom
@@ -240,8 +255,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		update(tileset, null);
 	    }
 
-	    // redraw the image
-	    
+	    // redraw the image	    
 	    repaint();
 	    setSize(getPreferredSize());
 	}
@@ -265,7 +279,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 		// if a tile was just selected in the tileset whereas there is already
 		// entities selected in the map, unselected the entities in the map
-		state = State.NORMAL;
+		setState(State.NORMAL);
 		map.getEntitySelection().unSelectAll();
 	    }
 	}
@@ -387,59 +401,77 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    GuiTools.errorDialog("Cannot remove the entities: " + e.getMessage());
 	}
     }
+    
+    /**
+     * Changes the current state of the map view.
+     */
+    private void setState(State state) {
+	this.state = state;
+	addEntitiesToolbar.repaint();
+    }
 
     /**
      * Returns to the normal state.
      * This function is called when the user exits another state.
      */
     private void returnToNormalState() {
-	state = State.NORMAL;
+	setState(State.NORMAL);
 	repaint();
     }
 
     /**
      * Move to the state State.ADDING_ENTITY.
-     * Allows the user to place on the map an entity
+     * Allows the user to place on the map an entity.
      * This entity is displayed under the cursor and the user
-     * can place it by pressing the mouse
-     * at the location he wants.
+     * can place it by pressing the mouse at the location he wants.
+     * If the user was already adding an entity of the same kind,
+     * we get back to the normal state.
      * @param entityType type of entity to add
      */
     public void startAddingEntity(int entityType) {
-	state = State.ADDING_ENTITY;
-	this.entityTypeBeingAdded = entityType;
 	
-	switch (entityType) {
-	
-	case MapEntity.ENTITY_TILE:
-	    int tileId = map.getTileset().getSelectedTileId();
-	    
-	    try {
-		entityBeingAdded = new TileOnMap(map, tileId, 0, 0);
+	if (state == State.ADDING_ENTITY && entityType == entityTypeBeingAdded) {
+	    returnToNormalState();
+	}
+	else {
+
+	    setState(State.ADDING_ENTITY);
+	    this.entityTypeBeingAdded = entityType;
+
+	    switch (entityType) {
+
+	    case MapEntity.ENTITY_TILE:
+		int tileId = map.getTileset().getSelectedTileId();
+
+		try {
+		    entityBeingAdded = new TileOnMap(map, tileId, 0, 0);
+		}
+		catch (MapException ex) {
+		    GuiTools.errorDialog("Cannot create the tile: " + ex.getMessage());
+		}
+		break;
+		
+		// TODO reflect
+
+	    case MapEntity.ENTITY_ENTRANCE:
+		entityBeingAdded = new MapEntrance(map, 0, 0);
+		break;
+
+	    case MapEntity.ENTITY_EXIT:
+		entityBeingAdded = new MapExit(map, 0, 0);
+		break;
+
+	    case MapEntity.ENTITY_PICKABLE_ITEM:
+		entityBeingAdded = new PickableItem(map, 0, 0);
+		break;
+
+	    case MapEntity.ENTITY_TRANSPORTABLE_ITEM:
+		entityBeingAdded = new TransportableItem(map, 0, 0);
+		break;
+
+	    default:
+		GuiTools.errorDialog("Cannot add the entity: unknown entity type");
 	    }
-	    catch (MapException ex) {
-		GuiTools.errorDialog("Cannot create the tile: " + ex.getMessage());
-	    }
-	    break;
-
-	case MapEntity.ENTITY_ENTRANCE:
-	    entityBeingAdded = new MapEntrance(map, 0, 0);
-	    break;
-
-	case MapEntity.ENTITY_EXIT:
-	    entityBeingAdded = new MapExit(map, 0, 0);
-	    break;
-	    
-	case MapEntity.ENTITY_PICKABLE_ITEM:
-	    entityBeingAdded = new PickableItem(map, 0, 0);
-	    break;
-	    
-	case MapEntity.ENTITY_TRANSPORTABLE_ITEM:
-	    entityBeingAdded = new TransportableItem(map, 0, 0);
-	    break;
-
-	default:
-	    GuiTools.errorDialog("Cannot add the entity: unknown entity type");
 	}
     }
 
@@ -530,6 +562,21 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	
 	return entityAdded;
     }
+    
+    /**
+     * Returns the type of the entity that is being added.
+     * If the state is not State.ADDING_ENTITY, -1 is returned.
+     * @return the type of the entity being added, or -1 if the user is
+     * not adding an entity
+     */
+    public int getEntityTypeBeingAdded() {
+
+	if (state != State.ADDING_ENTITY) {
+	    return -1;
+	}
+	
+	return entityBeingAdded.getType();
+    }
 
     /**
      * Moves to the state State.SELECTING_AREA.
@@ -554,7 +601,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    initialSelection.add(entity);
 	}
 
-	state = State.SELECTING_AREA;
+	setState(State.SELECTING_AREA);
 	repaint();
     }
 
@@ -622,7 +669,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    cursorLocation.x = positionInMap.x + positionInMap.width;
 	    cursorLocation.y = positionInMap.y + positionInMap.height;
 
-	    state = State.RESIZING_ENTITY;
+	    setState(State.RESIZING_ENTITY);
 	    repaint();
 	}
     }
@@ -736,7 +783,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	total_dx = 0;
 	total_dy = 0;
 
-	state = State.MOVING_ENTITIES;
+	setState(State.MOVING_ENTITIES);
     }
 
     /**

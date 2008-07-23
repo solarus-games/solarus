@@ -37,12 +37,18 @@ import java.util.*;
  *     if the origin is not the top-left corner of the entity.
  * - Redefine the isValid() method: public boolean isValid()
  *     to check the validity of the fields (don't forget to call super.isValid()).    
- * - TODO paint() method
  * - Add the specific fields of your type of entity and the corresponding
  *     get and set methods.
+ * - Define the static imageDescription field: public static final EntityImageDescription imageDescription
+ *     to define a default 16*16 image representing this kind of entity
+ * - Redefine the non-static getImageDescription() method: public EntityImageDescription getImageDescription()
+ *     which specify the image representing the current entity
+ * - If your entity is not drawn from an image file but in a more complex way,
+ *     you cannot use getImageDescription() and you have to redefine the paint() method:
+ *     public abstract void paint(Graphics g, double zoom, boolean showTransparency).
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
- * - Create a subclass of ActionEditEntity
+ * - Create a subclass of ActionEditEntity.
  */
 public abstract class MapEntity extends Observable implements ImageObserver {
 
@@ -76,7 +82,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     /**
      * Color to display instead of the transparent pixels of the image.
      */
-    protected static final Color bgColor = new Color(255, 0, 255);
+    public static final Color bgColor = new Color(255, 0, 255);
     
     /**
      * Coordinates of the origin point of an entity by default.
@@ -735,15 +741,58 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     public Dimension getSize() {
 	return new Dimension(getWidth(), getHeight());
     }
+    
+    /**
+     * Returns the description of the image currently representing the entity.
+     * By default, it returns the general image for this kind of entity.
+     * Redefine this method to display the entity with an image containing
+     * the entity's current properties.
+     * @return the image description of this entity
+     */
+    public EntityImageDescription getImageDescription() {
+	return getImageDescription(getType());
+    }
+
+    /**
+     * Returns the description of the image representing a specified kind entity.
+     * @param type a type of entity
+     * @return the image description of this kind of entity
+     */
+    public static EntityImageDescription getImageDescription(int type) {
+
+	EntityImageDescription imageDescription = null;
+	
+	Class<?> entityClass = entityClasses[type];
+	try {
+	    Field imageDescriptionField = entityClass.getField("imageDescription");
+	    imageDescription = (EntityImageDescription) imageDescriptionField.get(null);
+	}
+	catch (NoSuchFieldException ex) {
+	    System.err.println("The field 'imageDescription' is missing in class " + entityClass.getName());
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+	catch (IllegalAccessException ex) {
+	    System.err.println("Cannot access the field 'imageDescription' in class " + entityClass.getName());
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+	return imageDescription;
+    }
 
     /**
      * Draws the entity on the map view.
+     * This method draws the entity's image as described by the getImageDescription() method.
+     * To draw a more complex image, redefine the paint() method.
      * @param g graphic context
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
      * @param showTransparency true to make transparent pixels,
      * false to replace them by a background color
      */
-    public abstract void paint(Graphics g, double zoom, boolean showTransparency);
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+	EntityImageDescription imageDescription = getImageDescription();
+	imageDescription.paint(g, zoom, showTransparency, positionInMap);
+    }
     
     /**
      * This function is called when some requested information about the image comes.

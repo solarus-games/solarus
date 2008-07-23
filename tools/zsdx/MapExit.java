@@ -15,6 +15,12 @@ public class MapExit extends InteractiveEntity {
     public static final String entityTypeName = "Exit";
 
     /**
+     * Description of the default image representing this kind of entity.
+     */
+    public static final EntityImageDescription imageDescription =
+	new EntityImageDescription("map_exit_32.png", 0, 0, 32, 32);
+
+    /**
      * Unit size of an exit.
      */
     private static final Dimension unitSize = new Dimension(16, 16);

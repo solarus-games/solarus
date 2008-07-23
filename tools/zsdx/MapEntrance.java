@@ -13,6 +13,12 @@ public class MapEntrance extends InteractiveEntity {
      * Name of this kind of entity.
      */
     public static final String entityTypeName = "Entrance";
+    
+    /**
+     * Description of the default image representing this kind of entity.
+     */
+    public static final EntityImageDescription imageDescription =
+	new EntityImageDescription("map_entrance_1.png", 0, 0, 32, 32);
 
     /**
      * Origin point of an entrance.
@@ -88,34 +94,5 @@ public class MapEntrance extends InteractiveEntity {
      */
     public boolean hasName() {
 	return true;
-    }
-    
-    /**
-     * Draws the entrance on the map editor.
-     * @param g graphic context
-     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
-     * @param showTransparency true to make transparent pixels,
-     * false to replace them by a background color
-     */
-    public void paint(Graphics g, double zoom, boolean showTransparency) {
-	
-	int scale = (int) zoom;
-
-	if (scale != 2) {
-	    throw new UnsupportedOperationException("Zoom mode not yet supported: " + zoom);
-	}
-	
-	int dx1 = positionInMap.x * scale;
-	int dy1 = positionInMap.y * scale;
-
-	int dx2 = dx1 + positionInMap.width * scale;
-	int dy2 = dy1 + positionInMap.height * scale;
-
-	if (showTransparency) {
-	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, null);
-	}
-	else {
-	    g.drawImage(icons[getDirection()].getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, bgColor, null);		
-	}
     }
 }

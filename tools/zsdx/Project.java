@@ -3,6 +3,8 @@ package zsdx;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import java.awt.Image;
+import javax.imageio.*;
 
 /**
  * This class contains the information about the ZSDX project currently open.
@@ -21,6 +23,11 @@ public class Project {
     private ResourceDatabase resourceDatabase;
     
     /**
+     * Table of the images that have been read.
+     */
+    private TreeMap<String, Image> imagesLoaded;
+    
+    /**
      * Objects to notify when a project is loaded.
      */
     private static List<ProjectObserver> observers = new ArrayList<ProjectObserver>();
@@ -37,6 +44,7 @@ public class Project {
     private Project(String path) {
 	this.projectPath = path;
 	resourceDatabase = new ResourceDatabase(this);
+	imagesLoaded = new TreeMap<String, Image>();
     }
     
     /**
@@ -106,11 +114,11 @@ public class Project {
 
     /**
      * Returns the file containing the database of the game resources (projet_db.zsd).
+     * This method can be called event if this project is not the current project.
      * @return the file containing the database of the game resources
      */
     public File getResourceDatabaseFile() {
-	return new File(projectPath + File.separator + "data" + File.separator
-		+ ResourceDatabase.fileName);
+	return new File(projectPath + "/data/" + ResourceDatabase.fileName);
     }
     
     /**
@@ -151,15 +159,51 @@ public class Project {
      * @return the path of all data files
      */
     public static String getDataPath() {
-	return getRootPath() + File.separator + "data";
+	return getRootPath() + "/data";
     }
 
     /**
-     * Returns the path of the image files, determined with the current project root path.
+     * Returns the path of the image files of the game,
+     * determined with the current project root path.
+     * @return the path of the image files of the game
+     */
+    public static String getGameImagePath() {
+	return getDataPath() + "/images";
+    }
+
+    /**
+     * Returns the path of the image files needed for the map/tileset editor,
+     * determined with the current project root path.
      * @return the path of the image files
      */
-    public static String getImagePath() {
-	return getDataPath() + File.separator + "images";
+    public static String getEditorImagePath() {
+	return getRootPath() + "/tools/zsdx/images";
+    }
+    
+    /**
+     * Loads an image from a specified file name.
+     * If the image have been already loaded, it is not loaded again.
+     * @param imageFileName the name of the image file to read, relative to the editors image path
+     * @return the image
+     */
+    public static Image getEditorImage(String imageFileName) {
+	
+	// see if the image has been already loaded
+	imageFileName = getEditorImagePath() + "/" + imageFileName;
+	Image image = currentProject.imagesLoaded.get(imageFileName);
+	
+	if (image == null) {
+	    try {
+		image = ImageIO.read(new File(imageFileName));
+		currentProject.imagesLoaded.put(imageFileName, image);
+	    }
+	    catch (IOException ex) {
+		System.err.println("Cannot load image '" + imageFileName + "'");
+		System.exit(1);
+	    }
+	}
+		
+	return image;
     }
 
     /**
@@ -167,7 +211,7 @@ public class Project {
      * @return the path of the tileset files
      */
     public static String getTilesetPath() {
-	return getDataPath() + File.separator + "tilesets";
+	return getDataPath() + "/tilesets";
     }
 
     /**
@@ -181,8 +225,8 @@ public class Project {
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
-	return new File(getTilesetPath() + File.separator +
-			"tileset" + nf.format(Integer.parseInt(tilesetId)) + ".zsd");
+	return new File(getTilesetPath() + "/tileset"
+		+ nf.format(Integer.parseInt(tilesetId)) + ".zsd");
     }
 
     /**
@@ -196,8 +240,8 @@ public class Project {
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
-	return new File(getImagePath() + File.separator + "tilesets" + File.separator +
-			"tileset" + nf.format(Integer.parseInt(tilesetId)) + ".png");
+	return new File(getGameImagePath() + "/tilesets/tileset"
+		+ nf.format(Integer.parseInt(tilesetId)) + ".png");
     }
 
     /**
@@ -205,7 +249,7 @@ public class Project {
      * @return the path of the map files
      */
     public static String getMapPath() {
-	return getDataPath() + File.separator + "maps";
+	return getDataPath() + "/maps";
     }
 
     /**
@@ -219,8 +263,7 @@ public class Project {
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
-	return new File(getMapPath() + File.separator +
-			"map" + nf.format(Integer.parseInt(mapId)) + ".zsd");
+	return new File(getMapPath() + "/map" + nf.format(Integer.parseInt(mapId)) + ".zsd");
     }
 
     /**
@@ -228,7 +271,7 @@ public class Project {
      * @return the path of the music files
      */
     public static String getMusicPath() {
-	return getDataPath() + File.separator + "music";
+	return getDataPath() + "/music";
     }
     
     /**

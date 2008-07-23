@@ -13,6 +13,15 @@ import zsdx.gui.edit_entities.*;
  */
 public class EditEntityComponent extends JPanel {
 
+    private static final Class<?>[] editEntityComponentClasses = {
+	// make a subpackage
+	EditEntityComponent.class,             // ENTITY_TILE
+	EditEntityComponent.class,             // ENTITY_ENTRANCE
+	EditExitComponent.class,               // ENTITY_EXIT
+	EditPickableItemComponent.class,       // ENTITY_PICKABLE_ITEM
+	EditTransportableItemComponent.class   // ENTITY_TRANSPORTABLE_ITEM
+    };
+
     /**
      * The map.
      */
@@ -101,11 +110,9 @@ public class EditEntityComponent extends JPanel {
 	
 	EditEntityComponent component = null;
 	
+	Class<?> componentClass = editEntityComponentClasses[entity.getType()];
+	Constructor<?> constructor;
 	try {
-	    String entityClassName = MapEntity.entityClasses[entity.getType()].getName();
-	    Class<?> componentClass = Class.forName("ActionEdit" + entityClassName);
-	    Constructor<?> constructor;
-
 	    constructor = componentClass.getConstructor(Map.class, MapEntity.class);
 	    component = (EditEntityComponent) constructor.newInstance(map, entity);
 	}
@@ -113,7 +120,7 @@ public class EditEntityComponent extends JPanel {
 	    throw (RuntimeException) ex.getCause();
 	}
 	catch (Exception ex) {
-	    System.err.println("Cannot create the component to edit the entity: " + ex);
+	    System.err.println("Cannot create the component to edit this entity: " + ex);
 	    ex.printStackTrace();
 	    System.exit(1);
 	}

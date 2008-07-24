@@ -153,6 +153,7 @@ PickableItemType PickableItem::choose_random_type(void) {
   PickableItemType type;
 
   int r = Random::get_number(1000);
+
   Equipment *equipment = zsdx->game->get_savegame()->get_equipment();
     
   if (r < 625) {
@@ -380,21 +381,23 @@ void PickableItem::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended); // suspend the animation and the movement
 
-  // suspend the timer
-  Uint32 now = SDL_GetTicks();
-  
-  if (!suspended) {
-    // the game is being resumed
-    // recalculate the blinking date and the disappearing date
-    if (when_suspended != 0) {
-      blink_date = now + (blink_date - when_suspended);
-      disappear_date = now + (disappear_date - when_suspended);
+  if (will_disappear) {
+    // suspend the timer
+    Uint32 now = SDL_GetTicks();
+    
+    if (!suspended) {
+      // the game is being resumed
+      // recalculate the blinking date and the disappearing date
+      if (when_suspended != 0) {
+	blink_date = now + (blink_date - when_suspended);
+	disappear_date = now + (disappear_date - when_suspended);
+      }
+      set_blinking(true);
     }
-    set_blinking(true);
-  }
-  else {
-    // the game is being suspended
-    set_blinking(false);
+    else {
+      // the game is being suspended
+      set_blinking(false);
+    }
   }
 }
 
@@ -422,7 +425,6 @@ void PickableItem::update(void) {
     }
     
     if (now >= disappear_date) {
-      cout << "removing the pickable item: now = " << now << ", disappear_date = " << disappear_date << endl;
       map->get_entities()->remove_pickable_item(this);
     }
   }

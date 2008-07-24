@@ -12,7 +12,7 @@ public class TransportableItem extends InteractiveEntity {
     /**
      * Name of this kind of entity.
      */
-    public static final String entityTypeName = "Transportable items";
+    public static final String entityTypeName = "Transportable item";
 
     /**
      * Description of the default image representing this kind of entity.

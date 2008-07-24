@@ -12,7 +12,7 @@ public class PickableItem extends InteractiveEntity {
     /**
      * Name of this kind of entity.
      */
-    public static final String entityTypeName = "Pickable items";
+    public static final String entityTypeName = "Pickable item";
 
     /**
      * Description of the default image representing this kind of entity.

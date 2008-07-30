@@ -1,8 +1,8 @@
 stopped entities/pot.png 1 0 -1
-0	0	16	16	8	13	1	1
+0	32	16	16	8	13	1	1
 
 walking entities/pot.png 1 100 0
-0	0	16	16	8	13	3	3
+0	32	16	16	8	13	3	3
 
 destroy entities/pot.png 1 100 -1
-0	16	32	32	16	29	8	8
+0	0	32	32	16	29	8	8

@@ -33,6 +33,12 @@ class Game {
   bool paused;
 
   /**
+   * The dialog box currently shown
+   * or NULL if no message is being shown.
+   */
+  DialogBox *dialog_box;
+
+  /**
    * Current effect associated to the main game keys
    * (represented on the HUD by the action icon, the objects icons, etc.).
    */
@@ -72,6 +78,7 @@ class Game {
   Music *current_music;
 
   void update_transitions(void);
+  void update(void);
   void display(Map *map);
 
  public:
@@ -93,6 +100,7 @@ class Game {
   inline Map *get_current_map(void) { return current_map; }
 
   bool is_paused(void);
+  bool is_showing_message(void);
   bool is_suspended(void);
   KeysEffect *get_keys_effect(void);
   void update_keys_effect(void);
@@ -100,6 +108,8 @@ class Game {
   void play_music(MusicId new_music_id);
   void pause_or_resume_music(void);
   void stop_music(void);
+
+  void show_message(MessageId message_id);
 };
 
 #endif

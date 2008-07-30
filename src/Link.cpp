@@ -545,6 +545,12 @@ void Link::start_free(void) {
  */
 void Link::start_sword(void) {
   if (can_start_sword()) {
+
+    // remove the carried item
+    if (state == LINK_STATE_CARRYING) {
+      start_throwing();
+    }
+
     set_state(LINK_STATE_SWORD_SWINGING);
     sword_sound->play();
     set_animation_sword();
@@ -632,7 +638,7 @@ void Link::update_sword_loading(void) {
 }
 
 /**
- * Makes Link lift the facing entity.
+ * Makes Link lift the facing entity if possible.
  */
 void Link::start_lifting(void) {
 

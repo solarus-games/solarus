@@ -14,6 +14,7 @@
 #include "AnimatedTile.h"
 #include "Movement8ByPlayer.h"
 #include "EntityDetector.h"
+#include "DialogBox.h"
 
 /**
  * Creates a game.
@@ -21,7 +22,7 @@
  */
 Game::Game(Savegame *savegame):
   savegame(savegame),
-  paused(false), keys_effect(NULL),
+  paused(false), dialog_box(NULL), keys_effect(NULL),
   current_map(NULL), next_map(NULL),
   transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(NULL),
   current_music_id(Music::none), current_music(NULL) {
@@ -72,6 +73,7 @@ void Game::play(void) {
   while (!zsdx->is_exiting()) {
 
     // update the transitions between maps
+    // (before reading the keys)
     update_transitions();
 
     // handle the SDL events
@@ -102,7 +104,9 @@ void Game::play(void) {
 	  break;
 
 	case SDLK_SPACE:
-	  link->action_key_pressed();
+	  if (!is_suspended()) {
+	    link->action_key_pressed();
+	  }
 	  break;
 	  
 	  // TODO remove
@@ -161,14 +165,14 @@ void Game::play(void) {
 	  }
 	  break;
 
-	case SDLK_t:
-	  if (!is_suspended()) {
-	    if (link->get_state() != LINK_STATE_PUSHING) {
-	      link->start_pushing();
-	    }
-	    else {
-	      link->start_free();
-	    }
+	case SDLK_a:
+	  // temporary code to test the dialob box
+	  if (dialog_box == NULL) {
+	    show_message("msg");
+	  }
+	  else {
+	    delete dialog_box;
+	    dialog_box = NULL;
 	  }
 	  break;
 
@@ -272,18 +276,9 @@ void Game::play(void) {
 	}
       }
     }
-    
-    // update the entity's positions and animations
-    AnimatedTile::update();
-    current_map->update();
 
-    // update the equipment and HUD
-    savegame->get_equipment()->update();
-    update_keys_effect();
-    hud->update();
-
-    // update the sound system
-    Sound::update();
+    // update every element of the game
+    update();
 
     // display everything each time frame
     ticks = SDL_GetTicks();
@@ -345,6 +340,29 @@ void Game::update_transitions(void) {
 }
 
 /**
+ * Updates the game elements : the map, the equipment, the HUD, the sound system, etc.
+ */
+void Game::update(void) {
+
+    // update the entity's positions and animations
+    AnimatedTile::update();
+    current_map->update();
+
+    // update the equipment and HUD
+    savegame->get_equipment()->update();
+    update_keys_effect();
+    hud->update();
+
+    // update the dialog box (if any)
+    if (is_showing_message()) {
+      dialog_box->update();
+    }
+
+    // update the sound system
+    Sound::update();
+}
+
+/**
  * Displays the specified map on the screen.
  * @param map the map to display
  */
@@ -358,8 +376,16 @@ void Game::display(Map *map) {
   }
   SDL_BlitSurface(map->get_visible_surface(), NULL, zsdx->screen, NULL);
 
+  // display the pause screen if any
+  // TODO
+
   // display the hud
   hud->display(zsdx->screen);
+
+  // display the dialog box if any
+  if (is_showing_message()) {
+    dialog_box->display(zsdx->screen);
+  }
 
   SDL_Flip(zsdx->screen);
 }
@@ -470,6 +496,14 @@ bool Game::is_paused(void) {
 }
 
 /**
+ * Returns whether we are showing a message.
+ * @return true is a message is being shown.
+ */
+bool Game::is_showing_message(void) {
+  return dialog_box != NULL;
+}
+
+/**
  * Returns whether the game is suspended.
  * This is true in the following cases:
  * - the game is paused,
@@ -478,7 +512,7 @@ bool Game::is_paused(void) {
  * @return true if the game is suspended
  */
 bool Game::is_suspended(void) {
-  return is_paused() || transition != NULL;
+  return is_paused() || is_showing_message() || transition != NULL;
 }
 
 /**
@@ -519,4 +553,14 @@ void Game::update_keys_effect(void) {
       break;
     }
   }
+}
+
+/**
+ * Shows the specified message.
+ * If this message is followed by other messages, they will
+ * be displayed too.
+ */
+void Game::show_message(MessageId message_id) {
+
+  dialog_box = new DialogBox(message_id);
 }

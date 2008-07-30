@@ -83,10 +83,13 @@ Sound * TransportableItem::get_breaking_sound(void) {
  */
 void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
 
-  if (entity_overlapping == zsdx->game_resource->get_link()) {
+  Link *link = zsdx->game_resource->get_link();
+  if (entity_overlapping == link) {
 
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-    if (keys_effect->get_action_key_effect() == ACTION_KEY_NONE) {
+    
+    if (keys_effect->get_action_key_effect() == ACTION_KEY_NONE
+	&& link->get_state() == LINK_STATE_FREE) {
       keys_effect->set_action_key_effect(ACTION_KEY_LIFT);
     }
   }

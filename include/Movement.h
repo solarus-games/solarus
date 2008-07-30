@@ -130,7 +130,7 @@ class Movement {
   void stop(void);
 
   bool is_suspended(void);
-  void set_suspended(bool suspended);
+  virtual void set_suspended(bool suspended);
 
   void set_direction(int direction);
 };

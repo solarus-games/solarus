@@ -58,6 +58,8 @@ add_executable (zsdx
 	       TransitionEffect.cpp
 	       TransitionImmediate.cpp
 	       TransitionFade.cpp
+	       DialogBox.cpp
+	       Message.cpp
 )
 
 # Under Windows, at runtime, the data directory is relative to the current directory

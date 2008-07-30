@@ -415,7 +415,7 @@ void MapEntity::set_suspended(bool suspended) {
     Sprite *sprite = sprites[i];
     sprite->set_suspended(suspended);
   }
-  
+
   // suspend/unsuspend the movement
   if (movement != NULL) {
     movement->set_suspended(suspended);

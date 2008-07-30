@@ -17,9 +17,9 @@ public class PickableItem extends InteractiveEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription imageDescription =
+    public static final EntityImageDescription generalImageDescription =
 	new EntityImageDescription("pickable_items.png", 0, 0, 16, 16);
-
+    
     /**
      * Origin point of a pickable item.
      */
@@ -157,6 +157,15 @@ public class PickableItem extends InteractiveEntity {
      */
     protected Point getOrigin() {
 	return origin;
+    }
+    
+    /**
+     * Updates the description of the image currently representing the entity.
+     * @param the image description to update
+     */
+    public void updateImageDescription() {
+	int x = (getPickableItemType() - 1) * 16;
+	currentImageDescription.setX(x);
     }
 
     /**

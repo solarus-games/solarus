@@ -9,8 +9,7 @@ public class TransportableItemTypeChooser extends JComboBox {
 
     private static final String[] names = {
 	"Pot", "Skull", "Bush",
-	"White stone (small)", "White stone (big)",
-	"Black stone (small)", "Black stone (big)"
+	"Small white stone", "Small black stone"
     };
 
     /**

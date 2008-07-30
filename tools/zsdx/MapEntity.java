@@ -39,12 +39,14 @@ import java.util.*;
  *     to check the validity of the fields (don't forget to call super.isValid()).    
  * - Add the specific fields of your type of entity and the corresponding
  *     get and set methods.
- * - Define the static imageDescription field: public static final EntityImageDescription imageDescription
+ * - Define the static generalImageDescription field:
+ *     public static final EntityImageDescription generalImageDescription
  *     to define a default 16*16 image representing this kind of entity
- * - Redefine the non-static getImageDescription() method: public EntityImageDescription getImageDescription()
- *     which specify the image representing the current entity
+ * - Redefine the non-static updateImageDescription() method:
+ *     public void updateImageDescription()
+ *     which updates the current image description (used to draw the entity)
  * - If your entity is not drawn from an image file but in a more complex way,
- *     you cannot use getImageDescription() and you have to redefine the paint() method:
+ *     you cannot use updateImageDescription() and you have to redefine the paint() method:
  *     public abstract void paint(Graphics g, double zoom, boolean showTransparency).
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
@@ -94,6 +96,11 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * Default minimum size of a resizable entity.
      */
     private static final Dimension defaultUnitSize = new Dimension(8, 8);
+
+    /**
+     * Description of the image representing currently this particular entity.
+     */
+    protected EntityImageDescription currentImageDescription;
     
     // Constants to identify the layer
 
@@ -149,6 +156,8 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	this.map = map;
 	this.layer = layer;
 	this.positionInMap = new Rectangle(x, y, width, height);
+	
+	initializeImageDescription();
 
 	if (hasName() && computeDefaultName) {
 	    computeDefaultName();
@@ -196,7 +205,37 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	    throw new ZSDXException("Integer expected: " + ex.getMessage());
 	}
     }
-
+    
+    /**
+     * Creates a new map entity with the specified type.
+     * @param map the map
+     * @param entityType the type of entity to create (except TileOnMap)
+     */
+    public static MapEntity create(Map map, int entityType) throws MapException {
+	
+	MapEntity entity = null;
+	Class<?> entityClass = null;
+	try {
+	    entityClass = MapEntity.entityClasses[entityType];
+	    Class<?>[] paramTypes = {Map.class, int.class, int.class};
+	    Object[] paramValues = {map, 0, 0};
+	    Constructor<?> constructor = entityClass.getConstructor(paramTypes);
+	    entity = (MapEntity) constructor.newInstance(paramValues);
+	    entity.initializeImageDescription();
+	}
+	catch (NoSuchMethodException ex) {
+	    System.err.println("Cannot find the constructor of class " + entityClass);
+	    System.exit(1);
+	}
+	catch (Exception ex) {
+	    System.err.println("Cannot create the entity: " + ex.getMessage());
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+	
+	return entity;
+    }
+    
     /**
      * Creates a map entity from a string description as returned by toString().
      * @param map the map (needed for some types of entities)
@@ -220,6 +259,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	try {
 	    constructor = entityClass.getConstructor(Map.class, StringTokenizer.class);
 	    entity = (MapEntity) constructor.newInstance(map, tokenizer);
+	    entity.updateImageDescription();
 	}
 	catch (NoSuchMethodException ex) {
 	    System.err.println("Unexpected error: " + ex.getMessage());
@@ -744,14 +784,28 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     }
     
     /**
-     * Returns the description of the image currently representing the entity.
-     * By default, it returns the general image for this kind of entity.
-     * Redefine this method to display the entity with an image containing
-     * the entity's current properties.
-     * @return the image description of this entity
+     * Initializes the description of the image currently representing the entity.
+     * By default, the image description is initialize to a copy of the general
+     * image description of this kind of entity.
      */
-    public EntityImageDescription getImageDescription() {
-	return getImageDescription(getType());
+    protected void initializeImageDescription() {
+	
+	EntityImageDescription generalImageDescription = getImageDescription(getType());
+	
+	if (generalImageDescription != null) {
+	    currentImageDescription = new EntityImageDescription(generalImageDescription);
+	    updateImageDescription();
+	}
+    }
+    
+    /**
+     * Updates the description of the image currently representing the entity.
+     * By default, the image description is a copy of the general image description of this kind of entity.
+     * Redefine this method to display the entity with an image containing
+     * the entity's current properties, by modifying the currentImageDescription field.
+     */
+    public void updateImageDescription() {
+	// do nothing by default (the image description remains a copy of the description of the entity type)
     }
 
     /**
@@ -765,16 +819,16 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	
 	Class<?> entityClass = entityClasses[type];
 	try {
-	    Field imageDescriptionField = entityClass.getField("imageDescription");
+	    Field imageDescriptionField = entityClass.getField("generalImageDescription");
 	    imageDescription = (EntityImageDescription) imageDescriptionField.get(null);
 	}
 	catch (NoSuchFieldException ex) {
-	    System.err.println("The field 'imageDescription' is missing in class " + entityClass.getName());
+	    System.err.println("The field 'generalImageDescription' is missing in class " + entityClass.getName());
 	    ex.printStackTrace();
 	    System.exit(1);
 	}
 	catch (IllegalAccessException ex) {
-	    System.err.println("Cannot access the field 'imageDescription' in class " + entityClass.getName());
+	    System.err.println("Cannot access the field 'generalImageDescription' in class " + entityClass.getName());
 	    ex.printStackTrace();
 	    System.exit(1);
 	}
@@ -783,7 +837,8 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 
     /**
      * Draws the entity on the map view.
-     * This method draws the entity's image as described by the getImageDescription() method.
+     * This method draws the entity's image as described by the imageDescription method,
+     * which you can modify by redefining the updateImageDescription() method.
      * To draw a more complex image, redefine the paint() method.
      * @param g graphic context
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
@@ -791,8 +846,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * false to replace them by a background color
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
-	EntityImageDescription imageDescription = getImageDescription();
-	imageDescription.paint(g, zoom, showTransparency, positionInMap);
+	currentImageDescription.paint(g, zoom, showTransparency, positionInMap);
     }
     
     /**

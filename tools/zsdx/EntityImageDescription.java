@@ -15,7 +15,7 @@ public class EntityImageDescription implements ImageObserver {
 
     // the image
     private Image image;
-    
+
     /**
      * Constructor.
      * @param imageFileName name of the file containing the source image
@@ -31,11 +31,32 @@ public class EntityImageDescription implements ImageObserver {
     }
 
     /**
+     * Copy constructor.
+     * @param other another entity image description
+     */
+    public EntityImageDescription(EntityImageDescription other) {
+	this.imageFileName = other.getImageFileName();
+	this.rectangle = new Rectangle(other.getRectangle());
+	this.image = null;
+    }
+
+    /**
      * Returns the name of the image file.
      * @return the name of the image file
      */
     public String getImageFileName() {
 	return imageFileName;
+    }
+    
+    /**
+     * Sets the name of the image file.
+     * @param x x coordinate of the top-left corner of the rectangle to extract
+     * @param y y coordinate of the top-left corner of the rectangle to extract 
+     * @param width width of the rectangle
+     * @param height height of the rectangle
+     */
+    public void setImageFileName(String imageFileName) {
+	this.imageFileName = imageFileName;
     }
 
     /**
@@ -45,6 +66,34 @@ public class EntityImageDescription implements ImageObserver {
     public Rectangle getRectangle() {
 	return rectangle;
     }
+    
+    /**
+     * Sets the rectangle representing the entity in the image.
+     * @param x x coordinate of the top-left corner of the rectangle to extract
+     * @param y y coordinate of the top-left corner of the rectangle to extract 
+     * @param width width of the rectangle
+     * @param height height of the rectangle
+     */
+    public void setRectangle(int x, int y, int width, int height) {
+	rectangle.setRect(x, y, width, height);
+    }
+    
+    /**
+     * Sets the x coordinate of the rectangle representing the entity in the image.
+     * @param x x coordinate of the top-left corner of the rectangle
+     */
+    public void setX(int x) {
+	rectangle.x = x;
+    }
+    
+    /**
+     * Sets the y coordinate of the rectangle representing the entity in the image.
+     * @param y y coordinate of the top-left corner of the rectangle
+     */
+    public void setY(int y) {
+	rectangle.y = y;
+    }
+    
     
     /**
      * Draws the image.

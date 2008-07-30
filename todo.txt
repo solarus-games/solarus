@@ -2,9 +2,7 @@
 - utiliser sdl-config malgré les autotools
 - Diviser la classe Link en plusieurs parties (plus de 1000 lignes...) - LinkActions, LinkSprites ?
 - Son d'un vase cassé : on n'entend rien
-- Link ne passe plus toujours dans les portes quand il arrive en diagonale
-
-- /home/christophe/workspace/zsdx : éditeur à commiter, /home/christophe/zsdx : moteur à commiter
+- Link ne passe plus toujours dans les portes quand il arrive en diagonale (ou pas ? je n'arrive plus à reproduire le bug)
 
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
@@ -13,6 +11,3 @@
 	- nouveau projet : créer le fichier resource_db.zsd automatiquement, le répertoire data et les sous-répertoires
 	- empêcher de mettre des entités au-delà de la partie extérieure d'une map
 	- ResourceDatabase: créer les objets de chaque ressource depuis là, pour les fournir aux autres, ça évitera que chacun les recrée quand il a besoin (réfléchir au fait que les maps par exemple ne seront pas rechargées)
-
-	- chargement des images des entités : certaines utilisent le projet, d'autres non
-	- méthode paint() des sous-classes de MapEntity : factoriser le code

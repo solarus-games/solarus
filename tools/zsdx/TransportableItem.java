@@ -17,7 +17,7 @@ public class TransportableItem extends InteractiveEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription imageDescription =
+    public static final EntityImageDescription generalImageDescription =
 	new EntityImageDescription("transportable_items.png", 0, 0, 16, 16);
 
     /**
@@ -30,10 +30,10 @@ public class TransportableItem extends InteractiveEntity {
     public static final int TRANSPORTABLE_ITEM_POT               = 0;
     public static final int TRANSPORTABLE_ITEM_SKULL             = 1;
     public static final int TRANSPORTABLE_ITEM_BUSH              = 2;
-    public static final int TRANSPORTABLE_ITEM_STONE_WHITE_SMALL = 3;
-    public static final int TRANSPORTABLE_ITEM_STONE_WHITE_BIG   = 4;
-    public static final int TRANSPORTABLE_ITEM_STONE_BLACK_SMALL = 5;
-    public static final int TRANSPORTABLE_ITEM_STONE_BLACK_BIG   = 6;
+    public static final int TRANSPORTABLE_ITEM_STONE_SMALL_WHITE = 3;
+    public static final int TRANSPORTABLE_ITEM_STONE_SMALL_BLACK = 4;
+    public static final int TRANSPORTABLE_ITEM_STONE_BIG_WHITE   = 5;
+    public static final int TRANSPORTABLE_ITEM_STONE_BIG_BLACK   = 6;
 
     // specific fields of a transportable item
 
@@ -163,6 +163,15 @@ public class TransportableItem extends InteractiveEntity {
      */
     public int getObstacle() {
 	return OBSTACLE;
+    }
+
+    /**
+     * Updates the description of the image currently representing the entity.
+     * @param the image description to update
+     */
+    public void updateImageDescription() {
+	int x = getTransportableItemType() * 16;
+	currentImageDescription.setX(x);
     }
 
     /**

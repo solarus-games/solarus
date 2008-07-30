@@ -4,7 +4,6 @@ import zsdx.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.lang.reflect.*;
 
 /**
  * A toolbar to choose an entity to add onto the map.
@@ -55,48 +54,33 @@ public class AddEntitiesToolbar extends JComponent {
 	int entityTypeBeingAdded = mapView.getEntityTypeBeingAdded();
 	
 	// draw the icons for all types of entities except TileOnMap
-	Class<?> entityClass = null;
-	try {
-	    for (int i = 1; i < MapEntity.ENTITY_NB_TYPES; i++) {
-		
-		// get the image properties
-		entityClass = MapEntity.entityClasses[i];
-		Field imageDescriptionField = entityClass.getField("imageDescription");
-		EntityImageDescription imageDescription = (EntityImageDescription) imageDescriptionField.get(null);
-				
-		// draw the image
-		int x = (i - 1) * 16;
-		int y = 0;
-		Rectangle positionInDestinationImage = new Rectangle(x, y, 16, 16);
-		imageDescription.paint(g, 2, true, positionInDestinationImage);
-		
-		// draw the selection rectangle if we are currently adding this kind of entity
-		if (entityTypeBeingAdded == i) {
-		    x = x * 2;
-		    y = y * 2;
-		    g.setColor(Color.RED);
-		    g.drawRect(x, y, 32, 32);
-		    g.drawRect(x + 1, y + 1, 30, 30);
-		}
+	for (int i = 1; i < MapEntity.ENTITY_NB_TYPES; i++) {
+
+	    // get the image properties
+	    EntityImageDescription imageDescription = MapEntity.getImageDescription(i);
+
+	    // draw the image
+	    int x = (i - 1) * 16;
+	    int y = 0;
+	    Rectangle positionInDestinationImage = new Rectangle(x, y, 16, 16);
+	    imageDescription.paint(g, 2, true, positionInDestinationImage);
+
+	    // draw the selection rectangle if we are currently adding this kind of entity
+	    if (entityTypeBeingAdded == i) {
+		x = x * 2;
+		y = y * 2;
+		g.setColor(Color.RED);
+		g.drawRect(x, y, 32, 32);
+		g.drawRect(x + 1, y + 1, 30, 30);
 	    }
 	}
-	catch (NoSuchFieldException ex) {
-	    System.err.println("The field 'imageDescription' is missing in class " + entityClass.getName());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (IllegalAccessException ex) {
-	    System.err.println("Cannot access the field 'imageDescription' in class " + entityClass.getName());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
     }
-    
+
     /**
      * The mouse listener associated to this component.
      */
     class AddEntitiesToolbarMouseListener extends MouseAdapter {
-	
+
 	/**
 	 * Constructor.
 	 */

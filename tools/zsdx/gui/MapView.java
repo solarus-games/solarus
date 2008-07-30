@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
 import java.util.List;
-import java.lang.reflect.*;
 
 import zsdx.*;
 import zsdx.Map;
@@ -439,30 +438,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    setState(State.ADDING_ENTITY);
 	    this.entityTypeBeingAdded = entityType;
 
-	    Class<?> entityClass = null;
 	    try {
 		if (entityType == MapEntity.ENTITY_TILE) {
-
 		    int tileId = map.getTileset().getSelectedTileId();
-
 		    entityBeingAdded = new TileOnMap(map, tileId, 0, 0);
 		}
 		else {
-		    entityClass = MapEntity.entityClasses[entityType];
-		    Class<?>[] paramTypes = {Map.class, int.class, int.class};
-		    Object[] paramValues = {map, 0, 0};
-		    Constructor<?> constructor = entityClass.getConstructor(paramTypes);
-		    entityBeingAdded = (MapEntity) constructor.newInstance(paramValues);
+		    entityBeingAdded = MapEntity.create(map, entityType);		    
 		}
 	    }
 	    catch (MapException ex) {
-		GuiTools.errorDialog("Cannot create the tile: " + ex.getMessage());
-	    }
-	    catch (NoSuchMethodException ex) {
-		GuiTools.errorDialog("Cannot add the entity: cannot find the constructor of class " + entityClass);
-	    }
-	    catch (Exception ex) {
-		GuiTools.errorDialog("Cannot add the entity: " + ex.getMessage());
+		GuiTools.errorDialog("Cannot create the entity: " + ex.getMessage());
 	    }
 	}
     }

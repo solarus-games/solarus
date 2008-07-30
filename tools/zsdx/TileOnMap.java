@@ -17,6 +17,11 @@ public class TileOnMap extends MapEntity {
     public static final String entityTypeName = "Tile";
 
     /**
+     * Description of the default image representing this kind of entity.
+     */
+    public static final EntityImageDescription generalImageDescription = null;
+
+    /**
      * The tileset from which this tile is extracted.
      */
     private Tileset tileset;

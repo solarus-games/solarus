@@ -17,7 +17,7 @@ public class MapExit extends InteractiveEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription imageDescription =
+    public static final EntityImageDescription generalImageDescription =
 	new EntityImageDescription("map_exit_32.png", 0, 0, 32, 32);
 
     /**

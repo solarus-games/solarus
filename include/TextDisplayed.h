@@ -39,7 +39,7 @@ enum FontId {
 };
 
 /**
- * This class displays some text with the ZSDX font.
+ * This class displays some text on a surface.
  */
 class TextDisplayed {
 

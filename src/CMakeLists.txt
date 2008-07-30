@@ -76,6 +76,7 @@ target_link_libraries (zsdx
 		      SDLmain
 		      SDL_image
 		      SDL_ttf
+		      SDL_Config
 		      fmodex
 )
 

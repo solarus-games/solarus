@@ -11,7 +11,7 @@ class FileTools {
  public:
   static string data_file_get_prefix(void);
   static string data_file_add_prefix(string file_name);
-  static FILE *open_data_file(string ile_name);
+  static FILE *open_data_file(string file_name);
 
   static SDL_Surface *open_image(string file_name);
 

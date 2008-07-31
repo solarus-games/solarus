@@ -3,6 +3,8 @@
 - Diviser la classe Link en plusieurs parties (plus de 1000 lignes...) - LinkActions, LinkSprites ?
 - Son d'un vase cassé : on n'entend rien
 - Link ne passe plus toujours dans les portes quand il arrive en diagonale (ou pas ? je n'arrive plus à reproduire le bug)
+- TextDisplayed : utiliser des string
+- Fichiers de données : utiliser SDL_RWops et une archive cryptée
 
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)

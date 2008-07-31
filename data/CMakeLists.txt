@@ -9,7 +9,6 @@ endif (NOT WIN32)
 
 INSTALL(FILES
 	project_db.zsd
-	zsdx.ttf
 	DESTINATION ${ZSDX_INSTALL_DATA_PATH}
 )
 

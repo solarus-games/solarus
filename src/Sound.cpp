@@ -60,7 +60,7 @@ void Sound::initialize(void) {
 
       if (result != FMOD_OK) {
 	cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
-	     << ". No music or sound will be played." << endl;
+	     << "No music or sound will be played." << endl;
 	FMOD_System_Release(system);
 	system = NULL;
       }

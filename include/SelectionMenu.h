@@ -54,7 +54,7 @@ class SelectionMenu {
   TextDisplayed *text_new_player_name;
   TextDisplayed *text_title;
 
-  static const char *title_strings[5];
+  static string title_strings[5];
 
   // new player name
   char player_name[11]; // 10 letters max

@@ -50,7 +50,10 @@ class DialogBox {
   ~DialogBox(void);
 
   // dialog properties
+  DialogSpeed get_speed(void);
   void set_speed(DialogSpeed speed);
+
+  DialogCancelMode get_cancel_mode(void);
   void set_cancel_mode(DialogCancelMode cancel_mode);
 
   // update and display

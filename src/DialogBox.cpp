@@ -31,7 +31,7 @@ DialogBox::DialogBox(MessageId first_message_id) {
   sprite_message_end_arrow = new Sprite("hud/dialog_box_message_end");
 
   // initialize the current message
-  speed = DIALOG_SPEED_SLOW;
+  speed = DIALOG_SPEED_FAST;
   cancel_mode = DIALOG_CANCEL_NONE;
   current_message = new Message(this, first_message_id);
 }
@@ -41,6 +41,14 @@ DialogBox::DialogBox(MessageId first_message_id) {
  */
 DialogBox::~DialogBox(void) {
   delete sprite_message_end_arrow;
+}
+
+/**
+ * Returns the speed of the text.
+ * @return the speed
+ */
+DialogSpeed DialogBox::get_speed(void) {
+  return speed;
 }
 
 /**
@@ -57,6 +65,14 @@ void DialogBox::set_speed(DialogSpeed speed) {
  */
 void DialogBox::set_cancel_mode(DialogCancelMode cancel_mode) {
   this->cancel_mode = cancel_mode;
+}
+
+/**
+ * Returns the cancel mode of the dialog box.
+ * @return cancel_mode the cancel mode
+ */
+DialogCancelMode DialogBox::get_cancel_mode(void) {
+  return cancel_mode;
 }
 
 /**

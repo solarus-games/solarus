@@ -173,21 +173,29 @@ void TextDisplayed::set_position(int x, int y) {
  * If the specified string is the same than the current text, nothing is done.
  * @param text the text to display (cannot be NULL)
  */
-void TextDisplayed::set_text(const char *text) {
+void TextDisplayed::set_text(string text) {
 
-  if (strcmp(text, this->text)) {
+  if (text != this->text) {
 
     // there is a change
-    strncpy(this->text, text, 63);
+    this->text = text;
     rebuild();
   }
+}
+
+/**
+ * Adds a character to the string drawn.
+ * This is equivalent to set_text(get_text() + c)
+ */
+void TextDisplayed::add_char(char c) {
+  set_text(text + c);
 }
 
 /**
  * Returns the text currently displayed.
  * @return the text currently displayed, or NULL if there is no text
  */
-const char *TextDisplayed::get_text(void) {
+string TextDisplayed::get_text(void) {
   return text;
 }
 
@@ -203,7 +211,7 @@ void TextDisplayed::rebuild(void) {
     text_surface = NULL;
   }
   
-  if (text[0] == '\0') {
+  if (text == "") {
     // empty string: no surface to create
     return;
   }
@@ -213,15 +221,15 @@ void TextDisplayed::rebuild(void) {
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    text_surface = TTF_RenderUTF8_Solid(fonts[font_id], text, text_color);
+    text_surface = TTF_RenderUTF8_Solid(fonts[font_id], text.c_str(), text_color);
     break;
 
   case TEXT_SHADED:
-    text_surface = TTF_RenderUTF8_Shaded(fonts[font_id], text, text_color, background_color);
+    text_surface = TTF_RenderUTF8_Shaded(fonts[font_id], text.c_str(), text_color, background_color);
     break;
 
   case TEXT_BLENDED:
-    text_surface = TTF_RenderUTF8_Blended(fonts[font_id], text, text_color);
+    text_surface = TTF_RenderUTF8_Blended(fonts[font_id], text.c_str(), text_color);
     break;
   }
 

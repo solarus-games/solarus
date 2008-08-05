@@ -26,7 +26,7 @@ enum SelectionMenuScreens {
 /**
  * The title text showed over the menu.
  */
-const char *SelectionMenu::title_strings[5] = {
+string SelectionMenu::title_strings[5] = {
   "Veuillez choisir un fichier",
   "Quel fichier voulez-vous effacer ?",
   "Etes-vous sûr ?",
@@ -223,7 +223,7 @@ void SelectionMenu::read_saves(void) {
     // get the data
 
     // player name
-    const char *player_name;
+    string player_name;
     if (!savegames[i]->is_empty()) {
 
       player_name = savegames[i]->get_reserved_string(SAVEGAME_PLAYER_NAME);

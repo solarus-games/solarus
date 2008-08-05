@@ -59,7 +59,7 @@ class TextDisplayed {
   SDL_Surface *text_surface;
   SDL_Rect text_position;
 
-  char text[64];
+  string text;
 
   void rebuild(void);
 
@@ -81,11 +81,12 @@ class TextDisplayed {
   void set_text_color(int r, int g, int b);
   void set_background_color(int r, int g, int b);
   void set_position(int x, int y);
-  void set_text(const char *text);
+  void set_text(string text);
+  string get_text(void);
+  void add_char(char c);
 
   void display(SDL_Surface *destination);
 
-  const char *get_text(void);
 };
 
 #endif

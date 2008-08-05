@@ -34,7 +34,7 @@ class Message {
   Uint32 delay;
   Uint32 next_char_date;
 
-  void set_char_delay(DialogSpeed speed);
+  void update_char_delay(void);
   void add_character(void);
 
  public:

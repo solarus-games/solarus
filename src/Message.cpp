@@ -8,8 +8,8 @@
  * Delay between two chars, depending on the dialog speed.
  */
 static const Uint32 char_delays[3] = {
-  100, // slow
-  60,  // medium
+  200, // slow
+  100, // medium
   30   // fast (default)
 };
 
@@ -29,7 +29,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id) {
   this->line_index = 0;
   this->char_index = 0;
   this->next_char_date = SDL_GetTicks();
-  set_char_delay(dialog_box->get_speed());
+  update_char_delay();
 }
 
 /**
@@ -145,12 +145,12 @@ bool Message::is_over(void) {
 
 /**
  * Sets the delay between two chars, depending on the
- * speed specified.
+ * speed specified by the dialog box.
  * @param speed the speed
  */
-void Message::set_char_delay(DialogSpeed speed) {
+void Message::update_char_delay(void) {
 
-  delay = char_delays[speed];
+  delay = char_delays[dialog_box->get_speed()];
   next_char_date = SDL_GetTicks() + delay;
 }
 
@@ -161,7 +161,7 @@ void Message::set_char_delay(DialogSpeed speed) {
  */
 void Message::add_character(void) {
 
-  unsigned char current_char = lines[line_index][char_index];
+  unsigned char current_char = lines[line_index][char_index++];
 
   /*
    * TODO special characters:
@@ -171,20 +171,63 @@ void Message::add_character(void) {
    * - space: don't add the delay
    * - 110xxxx: multibyte character
    */
-  
-  text_surfaces[line_index]->add_char(current_char);
-  char_index++;
-  
-  // if this is a multibyte character, add the next byte
-  if ((current_char & 0xE0) == 0xC0) {
-    // the first byte is 110xxxxx: this means the character is stored with two bytes (utf-8)
-    
-    current_char = lines[line_index][char_index];
-    text_surfaces[line_index]->add_char(current_char);
-    char_index++;	
+
+  if (current_char == '$') {
+    // special character
+
+    current_char = lines[line_index][char_index++];
+
+    switch (current_char) {
+
+    case '0':
+      // pause
+      next_char_date += 1000;
+      break;
+
+    case '1':
+      // slow
+      dialog_box->set_speed(DIALOG_SPEED_SLOW);
+      update_char_delay();
+      break;
+
+    case '2':
+      // medium
+      dialog_box->set_speed(DIALOG_SPEED_MEDIUM);
+      update_char_delay();
+      break;
+
+    case '3':
+      // fast
+      dialog_box->set_speed(DIALOG_SPEED_FAST);
+      update_char_delay();
+      break;
+
+    case 'v':
+      // TODO
+      break;
+
+    default:
+      // not a special char, actually
+      text_surfaces[line_index]->add_char('$');
+      text_surfaces[line_index]->add_char(current_char);
+    }
   }
-  
-  next_char_date += delay;
+  else {
+    // normal character
+    text_surfaces[line_index]->add_char(current_char);
+    
+    // if this is a multibyte character, also add the next byte
+    if ((current_char & 0xE0) == 0xC0) {
+      // the first byte is 110xxxxx: this means the character is stored with two bytes (utf-8)
+      
+      current_char = lines[line_index][char_index++];
+      text_surfaces[line_index]->add_char(current_char);
+    }
+
+    if (current_char != ' ') {
+      next_char_date += delay;
+    }
+  }
 }
 
 /**

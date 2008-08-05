@@ -52,9 +52,11 @@ class DialogBox {
   // dialog properties
   DialogSpeed get_speed(void);
   void set_speed(DialogSpeed speed);
-
   DialogCancelMode get_cancel_mode(void);
   void set_cancel_mode(DialogCancelMode cancel_mode);
+
+  // current message
+  void action_key_pressed(void);
 
   // update and display
   void update(void);

@@ -12,14 +12,13 @@ line3 = "$2un peu moins lent"
 next = test2
 
 [test2]
-line1 = "La variable X de la"
-line2 = "boîte de message est"
-line3 = "égale à $x !"
+line1 = "La variable est"
+line3 = "égale à $v !"
 next = test3
 
 [test3]
 line1 = "Votre nom est :"
-line2 = "$t"
+line2 = "$v"
 next = test4
 
 [test4]

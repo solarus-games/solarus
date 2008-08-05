@@ -107,6 +107,11 @@ void Game::play(void) {
 	  if (!is_suspended()) {
 	    link->action_key_pressed();
 	  }
+	  else {
+	    if (is_showing_message()) {
+	      dialog_box->action_key_pressed();
+	    }
+	  }
 	  break;
 	  
 	  // TODO remove

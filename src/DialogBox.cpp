@@ -41,6 +41,7 @@ DialogBox::DialogBox(MessageId first_message_id) {
  */
 DialogBox::~DialogBox(void) {
   delete sprite_message_end_arrow;
+  delete current_message;
 }
 
 /**
@@ -73,6 +74,17 @@ void DialogBox::set_cancel_mode(DialogCancelMode cancel_mode) {
  */
 DialogCancelMode DialogBox::get_cancel_mode(void) {
   return cancel_mode;
+}
+
+/**
+ * This function is called when the user presses the action key.
+ */
+void DialogBox::action_key_pressed(void) {
+  if (current_message->is_over()) {
+    Message *next_message = new Message(this, current_message->get_next_message_id());
+    delete current_message;
+    current_message = next_message;
+  }
 }
 
 /**

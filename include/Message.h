@@ -5,7 +5,9 @@
 #include "DialogBox.h"
 
 /**
- * A message displayed in the dialog box.
+ * A message displayed in a dialog box.
+ * This class parses the message from a data file
+ * and displays it in a dialog box.
  */
 class Message {
 
@@ -13,7 +15,6 @@ class Message {
 
   // the dialog box where this message is displayed
   DialogBox *dialog_box;
-
 
   // properties of the message
 

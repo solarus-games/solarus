@@ -104,6 +104,7 @@ class Game {
   bool is_suspended(void);
   KeysEffect *get_keys_effect(void);
   void update_keys_effect(void);
+  void update_dialog_box(void);
 
   void play_music(MusicId new_music_id);
   void pause_or_resume_music(void);

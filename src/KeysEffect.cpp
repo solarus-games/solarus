@@ -60,6 +60,22 @@ void KeysEffect::set_action_key_enabled(bool enable) {
   this->action_key_enabled = enable;
 }
 
+/**
+ * Saves the current effect of the action key.
+ * Call restore_action_key_effect to restore the action key saved here.
+ */
+void KeysEffect::save_action_key_effect(void) {
+  this->action_key_effect_saved = get_action_key_effect();
+}
+
+/**
+ * Restores the action key effect saved by the last
+ * save_action_key_effect() call.
+ */
+void KeysEffect::restore_action_key_effect(void) {
+  this->action_key_effect = action_key_effect_saved;
+}
+
 // sword key
 
 /**
@@ -93,6 +109,23 @@ bool KeysEffect::is_sword_key_enabled(void) {
 void KeysEffect::set_sword_key_enabled(bool enable) {
   this->sword_key_enabled = enable;
 }
+
+/**
+ * Saves the current effect of the sword key.
+ * Call restore_sword_key_effect to restore the sword key saved here.
+ */
+void KeysEffect::save_sword_key_effect(void) {
+  this->sword_key_effect_saved = get_sword_key_effect();
+}
+
+/**
+ * Restores the sword key effect saved by the last
+ * save_sword_key_effect() call.
+ */
+void KeysEffect::restore_sword_key_effect(void) {
+  this->sword_key_effect = sword_key_effect_saved;
+}
+
 
 // pause key
 

@@ -58,10 +58,12 @@ class KeysEffect {
 
  private:
 
-  ActionKeyEffect action_key_effect; // effect of the action key
+  ActionKeyEffect action_key_effect;       // current effect of the action key
+  ActionKeyEffect action_key_effect_saved; // a previous effect of the action key
   bool action_key_enabled;
 
-  SwordKeyEffect sword_key_effect; // effect of the sword key
+  SwordKeyEffect sword_key_effect;         // current effect of the sword key
+  SwordKeyEffect sword_key_effect_saved;   // a previous effect of the sword key
   bool sword_key_enabled;
 
   PauseKeyEffect pause_key_effect; // effect of the pause key
@@ -82,6 +84,8 @@ class KeysEffect {
   void set_action_key_effect(ActionKeyEffect action_key_effect);
   bool is_action_key_enabled(void);
   void set_action_key_enabled(bool enable);
+  void save_action_key_effect(void);
+  void restore_action_key_effect(void);
 
   // sword key
 
@@ -89,6 +93,8 @@ class KeysEffect {
   void set_sword_key_effect(SwordKeyEffect sword_key_effect);
   bool is_sword_key_enabled(void);
   void set_sword_key_enabled(bool enable);
+  void save_sword_key_effect(void);
+  void restore_sword_key_effect(void);
 
   // pause key
 

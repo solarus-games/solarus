@@ -172,12 +172,8 @@ void Game::play(void) {
 
 	case SDLK_a:
 	  // temporary code to test the dialob box
-	  if (dialog_box == NULL) {
+	  if (!is_showing_message()) {
 	    show_message("msg");
-	  }
-	  else {
-	    delete dialog_box;
-	    dialog_box = NULL;
 	  }
 	  break;
 
@@ -360,11 +356,58 @@ void Game::update(void) {
 
     // update the dialog box (if any)
     if (is_showing_message()) {
-      dialog_box->update();
+      update_dialog_box();
     }
 
     // update the sound system
     Sound::update();
+}
+
+/**
+ * Makes sure the keys effects are coherent with Link's equipment and abilities.
+ */
+void Game::update_keys_effect(void) {
+
+  if (!is_suspended()) {
+
+    switch (link->get_state()) {
+
+    case LINK_STATE_FREE:
+    case LINK_STATE_SWORD_SWINGING:
+    case LINK_STATE_SWORD_LOADING:
+
+      // the sword key swings the sword <=> Link has a sword
+      if (savegame->get_equipment()->has_sword()
+	  && keys_effect->get_sword_key_effect() != SWORD_KEY_SWORD) {
+
+	keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
+      }
+      else if (!savegame->get_equipment()->has_sword()
+	       && keys_effect->get_sword_key_effect() == SWORD_KEY_SWORD) {
+      
+	keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
+      }
+      break;
+
+    default:
+      break;
+    }
+  }
+}
+
+/**
+ * Updates the dialog box.
+ * This function is called repeatedly while a dialog box is shown.
+ */
+void Game::update_dialog_box(void) {
+
+  if (!dialog_box->is_over()) {
+    dialog_box->update();
+  }
+  else {
+    delete dialog_box;
+    dialog_box = NULL;
+  }
 }
 
 /**
@@ -529,43 +572,10 @@ KeysEffect * Game::get_keys_effect(void) {
 }
 
 /**
- * Makes sure the keys effects are coherent with Link's equipment and abilities.
- */
-void Game::update_keys_effect(void) {
-
-  if (!is_suspended()) {
-
-    switch (link->get_state()) {
-
-    case LINK_STATE_FREE:
-    case LINK_STATE_SWORD_SWINGING:
-    case LINK_STATE_SWORD_LOADING:
-
-      // the sword key swings the sword <=> Link has a sword
-      if (savegame->get_equipment()->has_sword()
-	  && keys_effect->get_sword_key_effect() != SWORD_KEY_SWORD) {
-
-	keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
-      }
-      else if (!savegame->get_equipment()->has_sword()
-	       && keys_effect->get_sword_key_effect() == SWORD_KEY_SWORD) {
-      
-	keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
-      }
-      break;
-
-    default:
-      break;
-    }
-  }
-}
-
-/**
  * Shows the specified message.
  * If this message is followed by other messages, they will
  * be displayed too.
  */
 void Game::show_message(MessageId message_id) {
-
   dialog_box = new DialogBox(message_id);
 }

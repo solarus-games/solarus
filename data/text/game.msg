@@ -1,33 +1,44 @@
 [msg]
-#    |-----------------------|
+#       |-----------------------|
 line1 = "Voilà un message de"
 line2 = "test,"
 line3 = "le premier du jeu !"
-next = "test1"
+next = test_icon
 
-[test1]
+[test_icon]
+#       |--------------------|
+line1 = "Message avec icône !"
+next  = test_speed
+
+[test_speed]
 line1 = "$3Message rapide ;"
 line2 = "$1très lent ;"
-line3 = "$2un peu moins lent"
-next = test2
+line3 = "$2un peu moins lent$3"
+next = test_var
 
-[test2]
+[test_var]
 line1 = "La variable est"
 line3 = "égale à $v !"
-next = test3
+next = test_pause
 
-[test3]
+[test_pause]
+line1 = "Besoin d'une petite"
+line2 = "pause ?$0 Et on"
+line3 = "continue."
+next = test_name
+
+[test_name]
 line1 = "Votre nom est :"
 line2 = "$v"
-next = test4
+next = test_question
 
-[test4]
+[test_question]
 line1 = "Que voulez-vous faire ?"
-line2 = "Relire"
-line3 = "Quitter"
+line2 = "Retour au jeu"
+line3 = "Relire"
 question = 1
-next = test1
-next2 = test5
+next = test_exit
+next2 = msg
 
-[test5]
+[test_exit]
 line1 = "A bientôt"

@@ -208,11 +208,7 @@ void Link::set_map(Map *map, int initial_direction) {
 void Link::update(void) {
 
   // update the movement
-  if (zsdx->game->is_suspended()) {
-    get_movement()->set_moving_enabled(false);
-    next_counter_date = SDL_GetTicks();
-  }
-  else {
+  if (!zsdx->game->is_suspended()) {
     get_movement()->set_moving_enabled(get_state() <= LINK_STATE_SWIMMING);
     
     // specific updates in some states
@@ -395,7 +391,7 @@ void Link::movement_just_changed(void) {
   }
 
   // check the collisions
-  if (map != NULL) {
+  if (map != NULL && !zsdx->game->is_suspended()) {
     just_moved();
   }
 }
@@ -895,6 +891,7 @@ void Link::set_animation_direction(int direction) {
  */
 void Link::set_suspended(bool suspended) {
 
+  // sprites
   tunic_sprite->set_suspended(suspended);
 
   if (equipment->has_sword()) {
@@ -906,7 +903,14 @@ void Link::set_suspended(bool suspended) {
     shield_sprite->set_suspended(suspended);
   }
 
+  // carried items
   set_suspended_carried_items(suspended);
+
+  // movement
+  if (suspended) {
+    get_movement()->set_moving_enabled(false);
+    next_counter_date = SDL_GetTicks();
+  }
 }
 
 /**

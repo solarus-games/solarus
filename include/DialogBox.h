@@ -2,6 +2,8 @@
 #define ZSDX_DIALOG_BOX_H
 
 #include "Common.h"
+#include "KeysEffect.h"
+#include <vector>
 
 /**
  * The possible speeds of a dialog's text.
@@ -24,6 +26,8 @@ enum DialogCancelMode {
 
 /**
  * A dialog box where a succession of messages can be displayed.
+ * This class displays the dialog box and handles its properties:
+ * the text speed and the state of the action and sword keys.
  */
 class DialogBox {
 
@@ -31,6 +35,7 @@ class DialogBox {
   
   // current message
   Message *current_message;
+  vector<string> variables;
 
   // dialog properties
   DialogSpeed speed;
@@ -42,6 +47,8 @@ class DialogBox {
 
   // sounds
   static Sound *end_message_sound;
+
+  void show_message(MessageId messageId);
 
  public:
 
@@ -55,8 +62,13 @@ class DialogBox {
   DialogCancelMode get_cancel_mode(void);
   void set_cancel_mode(DialogCancelMode cancel_mode);
 
+  void add_variable(string value);
+  string get_variable(void);
+  
   // current message
   void action_key_pressed(void);
+  void sword_key_pressed(void);
+  bool is_over(void);
 
   // update and display
   void update(void);

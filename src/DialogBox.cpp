@@ -33,7 +33,11 @@ DialogBox::DialogBox(MessageId first_message_id) {
   // initialize the current message
   speed = DIALOG_SPEED_FAST;
   cancel_mode = DIALOG_CANCEL_NONE;
-  current_message = new Message(this, first_message_id);
+  show_message(first_message_id);
+
+  // save the action and sword keys
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->save_action_key_effect();
 }
 
 /**
@@ -77,14 +81,81 @@ DialogCancelMode DialogBox::get_cancel_mode(void) {
 }
 
 /**
+ * Specifies the value of a variable that will occur
+ * in a next message (with the '$v' sequence).
+ * You can specify several variables by calling this
+ * function more than once. The first '$v' will be
+ * substituted by the first value specified, and so on.
+ */
+void DialogBox::add_variable(string value) {
+  variables.push_back(value);
+}
+
+/**
+ * Returns the next variable specified by a previous
+ * call to add_variable(). This function is called by
+ * the message when it reads the '$v' sequence.
+ * The number of '$v' must be equal to the number
+ * of add_variable() previous calls.
+ */
+string DialogBox::get_variable(void) {
+
+  if (variables.empty()) {
+    DIE("Missing variable in message");
+  }
+
+  string variable = variables.front();
+  variables.erase(variables.begin());
+  return variable;
+}
+
+/**
+ * Shows a new message in the dialog box.
+ * @param message_id id of the message to create (must be a valid id)
+ */
+void DialogBox::show_message(MessageId message_id) {
+
+  // create the message
+  current_message = new Message(this, message_id);
+  
+  // hide the action icon
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+}
+
+/**
  * This function is called when the user presses the action key.
  */
 void DialogBox::action_key_pressed(void) {
-  if (current_message->is_over()) {
-    Message *next_message = new Message(this, current_message->get_next_message_id());
+
+  if (current_message->is_over()) { // the current message is over
+
+    // show the next message (if any)
+    MessageId next_message_id = current_message->get_next_message_id();
     delete current_message;
-    current_message = next_message;
+
+    if (next_message_id != "") {
+      show_message(next_message_id);
+    }
+    else {
+      current_message = NULL;
+    }
+
+    if (is_over()) { // the last message of the dialog is over
+      // restore the action and sword keys
+      KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+      keys_effect->restore_action_key_effect();
+    }
   }
+}
+
+/**
+ * Returns whether the dialog box has to be closed, i.e.
+ * whether the last message was shown and the
+ * user has pressed the key.
+ */
+bool DialogBox::is_over(void) {
+  return current_message == NULL;
 }
 
 /**

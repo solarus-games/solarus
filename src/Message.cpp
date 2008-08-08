@@ -162,6 +162,7 @@ void Message::update_char_delay(void) {
 void Message::add_character(void) {
 
   unsigned char current_char = lines[line_index][char_index++];
+  string value;
 
   /*
    * TODO special characters:
@@ -203,6 +204,7 @@ void Message::add_character(void) {
       break;
 
     case 'v':
+      value = dialog_box->get_variable();
       // TODO
       break;
 

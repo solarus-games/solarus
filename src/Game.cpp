@@ -90,7 +90,10 @@ void Game::play(void) {
 	  
 	case SDLK_c:
 	  
-	  switch (keys_effect->get_sword_key_effect()) {
+	  if (is_showing_message()) {
+	    dialog_box->sword_key_pressed();
+	  }
+	  else switch (keys_effect->get_sword_key_effect()) {
 	    
 	  case SWORD_KEY_SWORD:
 	    if (!is_suspended()) {
@@ -171,9 +174,11 @@ void Game::play(void) {
 	  break;
 
 	case SDLK_a:
-	  // temporary code to test the dialob box
+	  // temporary code to test the dialog box
 	  if (!is_showing_message()) {
 	    show_message("msg");
+	    dialog_box->add_variable(42);
+	    dialog_box->add_variable(savegame->get_reserved_string(SAVEGAME_PLAYER_NAME));
 	  }
 	  break;
 

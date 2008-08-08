@@ -40,6 +40,7 @@ class DialogBox {
   // dialog properties
   DialogSpeed speed;
   DialogCancelMode cancel_mode;
+  bool cancel_dialog;
 
   // graphics
   static SDL_Surface *img_box;
@@ -63,6 +64,7 @@ class DialogBox {
   void set_cancel_mode(DialogCancelMode cancel_mode);
 
   void add_variable(string value);
+  void add_variable(int value);
   string get_variable(void);
   
   // current message

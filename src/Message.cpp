@@ -9,7 +9,7 @@
  */
 static const Uint32 char_delays[3] = {
   200, // slow
-  100, // medium
+  80,  // medium
   30   // fast (default)
 };
 
@@ -29,6 +29,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id) {
   this->line_index = 0;
   this->char_index = 0;
   this->next_char_date = SDL_GetTicks();
+  this->show_all = false;
   update_char_delay();
 }
 
@@ -103,18 +104,21 @@ void Message::parse(MessageId message_id) {
   next_message_id_2 = CFG_ReadText("next2", "");
 
   // cancel mode
-  string cancel_mode_text = CFG_ReadText("cancel", "no");
-  DialogCancelMode cancel_mode;
-  if (cancel_mode_text == "current") {
-    cancel_mode = DIALOG_CANCEL_NONE;
+  string cancel_mode_text = CFG_ReadText("cancel", "");
+
+  if (cancel_mode_text != "") { // a cancel mode is specified
+    DialogCancelMode cancel_mode;
+    if (cancel_mode_text == "current") {
+      cancel_mode = DIALOG_CANCEL_CURRENT;
+    }
+    else if (cancel_mode_text == "all") {
+      cancel_mode = DIALOG_CANCEL_ALL;
+    }
+    else {
+      cancel_mode = DIALOG_CANCEL_NONE;
+    }
+    dialog_box->set_cancel_mode(cancel_mode);
   }
-  else if (cancel_mode_text == "all") {
-    cancel_mode = DIALOG_CANCEL_CURRENT;
-  }
-  else {
-    cancel_mode = DIALOG_CANCEL_NONE;
-  }
-  dialog_box->set_cancel_mode(cancel_mode);
 
   // close the file
   CFG_CloseFile(&ini);
@@ -144,13 +148,26 @@ bool Message::is_over(void) {
 }
 
 /**
+ * Shows all characters of the message now.
+ */
+void Message::show_all_now(void) {
+  show_all = true;
+  update_char_delay();
+}
+
+/**
  * Sets the delay between two chars, depending on the
  * speed specified by the dialog box.
  * @param speed the speed
  */
 void Message::update_char_delay(void) {
 
-  delay = char_delays[dialog_box->get_speed()];
+  if (!show_all) {
+    delay = char_delays[dialog_box->get_speed()];
+  }
+  else {
+    delay = 0;
+  }
   next_char_date = SDL_GetTicks() + delay;
 }
 
@@ -162,10 +179,9 @@ void Message::update_char_delay(void) {
 void Message::add_character(void) {
 
   unsigned char current_char = lines[line_index][char_index++];
-  string value;
 
   /*
-   * TODO special characters:
+   * Special characters:
    * - $1, $2 and $3: slow, medium and fast
    * - $0: pause
    * - $v: variable
@@ -204,8 +220,7 @@ void Message::add_character(void) {
       break;
 
     case 'v':
-      value = dialog_box->get_variable();
-      // TODO
+      set_variable(dialog_box->get_variable());
       break;
 
     default:
@@ -230,6 +245,15 @@ void Message::add_character(void) {
       next_char_date += delay;
     }
   }
+}
+
+/**
+ * Replaces the first occurence of "$v" by the specified value.
+ * @param value the value to set
+ */
+void Message::set_variable(string value) {
+  char_index -= 2;
+  lines[line_index] = lines[line_index].replace(char_index, 2, value);
 }
 
 /**

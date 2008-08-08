@@ -34,10 +34,12 @@ DialogBox::DialogBox(MessageId first_message_id) {
   speed = DIALOG_SPEED_FAST;
   cancel_mode = DIALOG_CANCEL_NONE;
   show_message(first_message_id);
+  cancel_dialog = false;
 
   // save the action and sword keys
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   keys_effect->save_action_key_effect();
+  keys_effect->save_sword_key_effect();
 }
 
 /**
@@ -86,9 +88,26 @@ DialogCancelMode DialogBox::get_cancel_mode(void) {
  * You can specify several variables by calling this
  * function more than once. The first '$v' will be
  * substituted by the first value specified, and so on.
+ * @param value the value to add
  */
 void DialogBox::add_variable(string value) {
   variables.push_back(value);
+}
+
+/**
+ * Specifies the value of a variable that will occur
+ * in a next message (with the '$v' sequence).
+ * You can specify several variables by calling this
+ * function more than once. The first '$v' will be
+ * substituted by the first value specified, and so on.
+ * This function just converts the int value to a string
+ * add calls add_variable(string).
+ * @param value the value to add
+ */
+void DialogBox::add_variable(int value) {
+  ostringstream oss;
+  oss << value;
+  add_variable(oss.str());
 }
 
 /**
@@ -121,6 +140,13 @@ void DialogBox::show_message(MessageId message_id) {
   // hide the action icon
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+
+  if (get_cancel_mode() != DIALOG_CANCEL_NONE) {
+    keys_effect->set_sword_key_effect(SWORD_KEY_SKIP);
+  }
+  else {
+    keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
+  }
 }
 
 /**
@@ -145,17 +171,34 @@ void DialogBox::action_key_pressed(void) {
       // restore the action and sword keys
       KeysEffect *keys_effect = zsdx->game->get_keys_effect();
       keys_effect->restore_action_key_effect();
+      keys_effect->restore_sword_key_effect();
     }
+  }
+}
+
+/**
+ * This function is called when the user presses the sword key.
+ */
+void DialogBox::sword_key_pressed(void) {
+
+  if (cancel_mode == DIALOG_CANCEL_ALL) {
+    cancel_dialog = true;
+  }
+  else if (current_message->is_over()) {
+    action_key_pressed();
+  }
+  else if (cancel_mode == DIALOG_CANCEL_CURRENT) {
+    current_message->show_all_now();
   }
 }
 
 /**
  * Returns whether the dialog box has to be closed, i.e.
  * whether the last message was shown and the
- * user has pressed the key.
+ * user has pressed the key, or the dialog was cancelled.
  */
 bool DialogBox::is_over(void) {
-  return current_message == NULL;
+  return current_message == NULL || cancel_dialog;
 }
 
 /**

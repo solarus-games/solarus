@@ -27,6 +27,7 @@ class Message {
   MessageId next_message_id_2;
 
   void parse(MessageId message_id);
+  void set_variable(string value);
 
   // current state of the display
   
@@ -34,6 +35,7 @@ class Message {
   unsigned int char_index;     // index of the next character to show
   Uint32 delay;
   Uint32 next_char_date;
+  bool show_all;
 
   void update_char_delay(void);
   void add_character(void);
@@ -49,6 +51,7 @@ class Message {
 
   // message current state
   bool is_over(void);
+  void show_all_now(void);
 
   // update and display
   void update(void);

@@ -210,6 +210,12 @@ void Game::play(void) {
 	    break;
 	  }
 	}
+	else if (is_showing_message()) {
+	  if (event.key.keysym.sym == SDLK_UP
+	      || event.key.keysym.sym == SDLK_DOWN) {
+	    dialog_box->switch_answer();
+	  }
+	}
 		
 	// TODO remove
 	switch (event.key.keysym.sym) {

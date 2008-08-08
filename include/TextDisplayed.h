@@ -81,6 +81,8 @@ class TextDisplayed {
   void set_text_color(int r, int g, int b);
   void set_background_color(int r, int g, int b);
   void set_position(int x, int y);
+  void set_x(int x);
+  void set_y(int y);
   void set_text(string text);
   string get_text(void);
   void add_char(char c);

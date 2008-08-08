@@ -25,6 +25,19 @@ Message::Message(DialogBox *dialog_box, MessageId message_id) {
   // parse the message
   parse(message_id);
 
+  // create the text surfaces
+  int x = (icon == NULL) ? 69 : 101;
+  for (int i = 0; i < 3; i++) {
+    text_surfaces[i] = new TextDisplayed(x, 158 + i * 13,
+					 ALIGN_LEFT, ALIGN_TOP);
+  }
+
+  if (question) {
+    x += 32; // TODO: not 32 obviously
+    text_surfaces[1]->set_x(x);
+    text_surfaces[2]->set_x(x);
+  }
+
   // initialize the state
   this->line_index = 0;
   this->char_index = 0;
@@ -81,11 +94,6 @@ void Message::parse(MessageId message_id) {
   lines[1] = CFG_ReadText("line2", "");
   lines[2] = CFG_ReadText("line3", "");
 
-  for (int i = 0; i < 3; i++) {
-    text_surfaces[i] = new TextDisplayed(69, 158 + i * 13,
-					 ALIGN_LEFT, ALIGN_TOP);
-  }
-
   // icon
   int icon_number = CFG_ReadInt("icon", 0);
   if (icon_number != 0) {
@@ -97,7 +105,6 @@ void Message::parse(MessageId message_id) {
 
   // question
   question = CFG_ReadBool("question", false);
-  first_answer = true;
 
   // next message
   next_message_id = CFG_ReadText("next", "");
@@ -125,6 +132,14 @@ void Message::parse(MessageId message_id) {
 }
 
 /**
+ * Returns whether this message is a question.
+ * @return true if the message is a question
+ */
+bool Message::is_question(void) {
+  return question;
+}
+
+/**
  * Returns the id of the next message to display, or
  * an empty string if this is the last message.
  * @return the id of the message to display when this one
@@ -132,7 +147,7 @@ void Message::parse(MessageId message_id) {
  */
 MessageId Message::get_next_message_id(void) {
 
-  if (question && !first_answer) {
+  if (question && !dialog_box->is_first_answer()) {
     return next_message_id_2;
   }
 

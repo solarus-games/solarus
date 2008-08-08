@@ -36,6 +36,7 @@ class DialogBox {
   // current message
   Message *current_message;
   vector<string> variables;
+  bool first_answer;           // the answer selected
 
   // dialog properties
   DialogSpeed speed;
@@ -48,6 +49,7 @@ class DialogBox {
 
   // sounds
   static Sound *end_message_sound;
+  static Sound *switch_answer_sound;
 
   void show_message(MessageId messageId);
 
@@ -71,6 +73,8 @@ class DialogBox {
   void action_key_pressed(void);
   void sword_key_pressed(void);
   bool is_over(void);
+  bool is_first_answer(void);
+  void switch_answer(void);
 
   // update and display
   void update(void);

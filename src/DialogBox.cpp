@@ -10,9 +10,13 @@
 
 SDL_Surface * DialogBox::img_box = NULL;
 Sound * DialogBox::end_message_sound = NULL;
+Sound * DialogBox::switch_answer_sound = NULL;
 
 static SDL_Rect box_src_position = {0, 0, 220, 60};
 static SDL_Rect box_dst_position = {51, 144, 0, 0};
+
+static SDL_Rect question_src_position = {48, 60, 8, 8};
+static SDL_Rect question_dst_position = {69, 171, 0, 0};
 
 /**
  * Creates a new dialog box.
@@ -21,10 +25,11 @@ static SDL_Rect box_dst_position = {51, 144, 0, 0};
  */
 DialogBox::DialogBox(MessageId first_message_id) {
 
-  // first instance: load the image and the sound
+  // first instance: load the image and the sounds
   if (img_box == NULL) {
     img_box = FileTools::open_image("hud/dialog_box.png");
     end_message_sound = zsdx->game_resource->get_sound("message_end");
+    switch_answer_sound = zsdx->game_resource->get_sound("cursor");
   }
 
   // create the sprite
@@ -136,6 +141,8 @@ void DialogBox::show_message(MessageId message_id) {
 
   // create the message
   current_message = new Message(this, message_id);
+  first_answer = true;
+  question_dst_position.y = 171;
   
   // hide the action icon
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
@@ -189,6 +196,28 @@ void DialogBox::sword_key_pressed(void) {
   }
   else if (cancel_mode == DIALOG_CANCEL_CURRENT) {
     current_message->show_all_now();
+  }
+}
+
+/**
+ * For a message with a question, returns true if the player
+ * has selected the first answer or false if he has selected
+ * the second one.
+ */
+bool DialogBox::is_first_answer(void) {
+  return first_answer;
+}
+
+/**
+ * For a message with a question, changes the answer selected.
+ * This function is called when the player presses the up or down arrow.
+ */
+void DialogBox::switch_answer(void) {
+
+  if (current_message->is_over()) {
+    first_answer = !first_answer;
+    question_dst_position.y = first_answer ? 171 : 184;
+    switch_answer_sound->play();
   }
 }
 
@@ -248,6 +277,11 @@ void DialogBox::display(SDL_Surface *destination_surface) {
 
   // display the message
   current_message->display(destination_surface);
+
+  // display the question arrow
+  if (current_message->is_question() && current_message->is_over()) {
+    SDL_BlitSurface(img_box, &question_src_position, destination_surface, &question_dst_position);
+  }
 
   // display the end message arrow
   if (current_message->is_over()) {

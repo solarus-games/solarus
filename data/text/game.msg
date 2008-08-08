@@ -3,7 +3,8 @@
 line1 = "Voilà un message de"
 line2 = "test,"
 line3 = "le premier du jeu !"
-next = test_icon
+#next = test_icon
+next = test_question
 
 [test_icon]
 #       |--------------------|
@@ -44,7 +45,7 @@ next = test_question
 line1 = "Que voulez-vous faire ?"
 line2 = "Retour au jeu"
 line3 = "Relire"
-question = 1
+question = true
 next = test_exit
 next2 = msg
 

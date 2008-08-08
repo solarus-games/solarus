@@ -22,7 +22,6 @@ class Message {
   TextDisplayed *text_surfaces[3];
   SDL_Surface *icon;           // the icon displayed, or NULL if there is no icon
   bool question;               // is this message a question?
-  bool first_answer;           // the answer selected
   MessageId next_message_id;   // id of the next message (or an empty string if this is the last message)
   MessageId next_message_id_2;
 
@@ -47,6 +46,7 @@ class Message {
   ~Message(void);
 
   // message properties
+  bool is_question(void);
   MessageId get_next_message_id(void);
 
   // message current state

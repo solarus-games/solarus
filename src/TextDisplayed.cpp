@@ -169,6 +169,24 @@ void TextDisplayed::set_position(int x, int y) {
 }
 
 /**
+ * Sets the x position of the text on the destination surface.
+ * @param x x position of the text
+ */
+void TextDisplayed::set_x(int x) {
+  this->x = x;
+  rebuild();
+}
+
+/**
+ * Sets the y position of the text on the destination surface.
+ * @param y y position of the text
+ */
+void TextDisplayed::set_y(int y) {
+  this->y = y;
+  rebuild();
+}
+
+/**
  * Sets the string drawn.
  * If the specified string is the same than the current text, nothing is done.
  * @param text the text to display (cannot be NULL)

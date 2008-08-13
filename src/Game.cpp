@@ -67,7 +67,8 @@ void Game::play(void) {
 
   // SDL main loop
   SDL_Event event;
-  Uint32 ticks, last_frame_date = 0;
+  Uint32 now, last_frame_date = 0;
+  int delay;
   SDL_EnableKeyRepeat(0, 0);
 
   while (!zsdx->is_exiting()) {
@@ -293,11 +294,14 @@ void Game::play(void) {
     update();
 
     // display everything each time frame
-    ticks = SDL_GetTicks();
-    if (ticks >= last_frame_date + FRAME_INTERVAL) {
-	
-      last_frame_date = ticks;
+    now = SDL_GetTicks();
+    delay = (last_frame_date + FRAME_INTERVAL) - now;
+    if (delay <= 0) { // delay is the time before the next display
+      last_frame_date = now;
       display(current_map);
+    }
+    else if (delay >= 10) { // if we have time, let's sleep
+      SDL_Delay(delay);
     }
   }
 

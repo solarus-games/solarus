@@ -1,6 +1,6 @@
 This file explains how to compile Zelda Solarus Deluxe.
 Only the developing team has to compile the project. To preserve the secrets of the game, the source code is not public.
-The users download directly a compiled binary for Windows or Linux.
+The users download directly a compiled binary for Windows, Linux or Mac OS.
 
 -----------------
 Required packages
@@ -12,6 +12,7 @@ SDL
 SDLmain
 SDL_image
 SDL_ttf
+SDL_Config
 fmodex
 
 ----------------
@@ -46,6 +47,20 @@ This may be something like C:\Program Files\Microsoft Visual Studio 9.0\VC\lib.
 Install the dynamic library files (the .dll files) in your system32 directory
 (which may be C:\WINDOWS\system32).
 
+-----------------------
+SDL_Config installation
+-----------------------
+
+The SDL_Config library can be downloaded here: http://downloads.sourceforge.net/sdl-cfg/SDL_Config_1.2.zip. We chose to make a static link with this library.
+
+Windows users:
+
+As in the previous section, you have to install the SDL_Config header files (sdl_config_lib.h and sdl_config_cfg.h) in the "SDL" subdirectory of your compiler's include directory, and the SDL_Config.lib file in your compiler's lib directory. The SDL_Config.dll file is not required since we want to make a static link.
+
+Linux / Mac OS X users:
+
+No compiled version for other systems than Windows are provided with the SDL_Config package, so we have to compile it ourselves. First, install the SDL_Config header files (sdl_config_lib.h and sdl_config_cfg.h) in an "SDL" subdirectory of your include directory (for example /usr/include/SDL). Then, create the static library (usually SDL_Config.a) from the .h and .c files located in the src directory of SDL_Config. If you are using Linux 32-bit, you can just take my SDL_Config.a in the SubVersion repository. Otherwise you must compile it yourself. Once the static library is compiled, install it in the lib directory (for example /usr/lib).
+
 --------------------
 FMOD Ex installation
 --------------------
@@ -63,8 +78,7 @@ your system32 directory (which may be C:\WINDOWS\system32).
 
 Linux users:
 
-There is no FMOD Ex package, you have to install the library manually from the .tar.gz
-archive:
+There is no FMOD Ex package, so you have to install the library manually from the .tar.gz archive:
 - Download the latest FMOD Ex stable release on http://www.fmod.org/index.php/download
 - Uncompress the archive (example: tar xvzf fmodapi41400linux.tar.gz)
 - Go to the subdirectory created (example: cd fmodapi41400linux)
@@ -80,18 +94,13 @@ Compilation instructions
 
 ZSDX uses CMake to manage the compilation process. CMake permits to compile
 the project on any OS. On Unix, it generates the appropriate makefiles; on Windows,
-it can generate a Visual C++ project.
+it can generate a project for most of the IDEs, including Visual C++, Code::Blocks
+or MinGW.
+You can also compile ZSDX without CMake, by creating a project from the sources with
+your IDE.
 
 
-Windows users:
-
-However, I don't recommand to use CMake to compile ZSDX under Windows because the
-Visual C++ project created seems too complicated. Just create a new project from the existing
-source code, specify the libraries (SDL.lib SDLmain.lib SDL_image.lib SDL_ttf.lib fmodex.lib)
-and the project should compile.
-
-
-Unix users:
+Linux users:
 
 Go to the zsdx directory and just type:
 
@@ -126,6 +135,12 @@ or just with:
 $ zsdx
 
 if /home/your_directory/bin is in your PATH.
+There is no need to be root.
+
+
+Windows users:
+
+I have managed to compile ZSDX with Code::Blocks, without using CMake.
 
 ------------------
 Mac OS developers
@@ -133,7 +148,10 @@ Mac OS developers
 
 The same procedure should work.
 
+
+------------------
 Notes à traduire / vérifier / prendre en compte :
+
 - Si SDL et SDL_image sont installés avec fink, un export CPPFLAGS="-I/sw/include -L/sw/lib" est nécessaire avant de lancer le configure
 - utiliser sdl-config
 - lien statique avec /usr/lib/libfmod.a

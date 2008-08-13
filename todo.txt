@@ -3,8 +3,20 @@
 - Diviser la classe Link en plusieurs parties (plus de 1000 lignes...) - LinkActions, LinkSprites ?
 - Son d'un vase cassé : on n'entend rien
 - Link ne passe plus toujours dans les portes quand il arrive en diagonale (ou pas ? je n'arrive plus à reproduire le bug)
-- TextDisplayed : utiliser des string
-- Fichiers de données : utiliser SDL_RWops et une archive cryptée
+- Réaffichage de l'écran : le faire depuis la classe ZSDX (par exemple), qui appellerait l'afficheur courant (TitleScreen, SelectionMenu ou Game...) tous les FRAME_INTERVAL, tout en faisant des sleep pour que le CPU se repose
+- zsdx->game_resource->get_link, zsdx->game->get_current_map, zsdx->game->get_savegame, zsdx->game->get_keys_effect... simplifier
+- classe Game: mettre les traitements des touches dans une classe dédiée
+
+
+- Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
+
+L'exécutable de ZSDX est installé dans un répertoire choisi par l'utilisateur.
+- Sous Windows, on a un programme d'installation classique. Les données sont mises dans $(INSTALL_PATH)/data.
+- Sous Linux, le programme d'installation est un shell-script. Les données sont placées dans un répertoire décidé au moment de l'installation. Le script d'installation alors crée un fichier $(HOME)/.zsdx/data_path qui contient le chemin de ce répertoire.
+
+A l'exécution, lorsque le jeu s'initialise, il détermine le répertoire des données. Pour cela, il regarde le fichier $(HOME)/.zsdx/data_path (à l'aide de getenv("HOME") pour récupérer le home directory de l'utilisateur). Si ce fichier n'existe pas, le répertoire des données sera le répertoire courant "." : c'est le cas sous Windows.
+Les sauvegardes sont stockées dans ce même répertoire.
+
 
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)

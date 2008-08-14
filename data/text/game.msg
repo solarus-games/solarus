@@ -4,7 +4,7 @@ line1 = "Voilà un message de"
 line2 = "test,"
 line3 = "le premier du jeu !"
 #next = test_icon
-next = test_question
+next = test_icon
 
 [test_icon]
 #       |--------------------|

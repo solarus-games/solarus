@@ -26,14 +26,14 @@ Message::Message(DialogBox *dialog_box, MessageId message_id) {
   parse(message_id);
 
   // create the text surfaces
-  int x = (icon == NULL) ? 69 : 101;
+  int x = (icon == NULL) ? 67 : 99;
   for (int i = 0; i < 3; i++) {
     text_surfaces[i] = new TextDisplayed(x, 158 + i * 13,
 					 ALIGN_LEFT, ALIGN_TOP);
   }
 
   if (question) {
-    x += 32; // TODO: not 32 obviously
+    x += 24;
     text_surfaces[1]->set_x(x);
     text_surfaces[2]->set_x(x);
   }

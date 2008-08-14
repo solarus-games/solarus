@@ -190,6 +190,9 @@ void DialogBox::sword_key_pressed(void) {
 
   if (cancel_mode == DIALOG_CANCEL_ALL) {
     cancel_dialog = true;
+    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    keys_effect->restore_action_key_effect();
+    keys_effect->restore_sword_key_effect();
   }
   else if (current_message->is_over()) {
     action_key_pressed();

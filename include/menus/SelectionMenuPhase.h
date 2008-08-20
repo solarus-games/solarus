@@ -42,9 +42,16 @@ class SelectionMenuPhase: public Screen {
 
   // savegames
   Savegame **get_savegames(void);
+  Savegame *get_savegame(int save_number);
+  void reload_savegames(void);
 
   // sounds
+  void play_cursor_sound(void);
   void play_ok_sound(void);
+  void play_error_sound(void);
+
+  // keys
+  KeysEffect * get_keys_effect(void);
 
   // cursor handling
   Sprite *get_cursor(void);

@@ -22,7 +22,7 @@ TransitionEffect::~TransitionEffect(void) {
  * @param type type of transition: TRANSITION_IMMEDIATE, TRANSITION_FADE, etc.
  * @param direction TRANSITION_IN or TRANSITION_OUT
  */
-TransitionEffect * TransitionEffect::create_transition(TransitionType type, TransitionDirection direction) {
+TransitionEffect * TransitionEffect::create(TransitionType type, TransitionDirection direction) {
 
   TransitionEffect *transition = NULL;
 

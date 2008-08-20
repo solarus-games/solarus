@@ -25,17 +25,14 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
     hearts_views[i] = NULL;
   }
 
-  // read the saves
-  read_saves();
+  // load the savegames
+  read_savegames();
 
   // load the images
   img_cloud = FileTools::open_image("menus/selection_menu_cloud.png");
   img_background = FileTools::open_image("menus/selection_menu_background.png");
   img_save_container = FileTools::open_image("menus/selection_menu_save_container.png");
   img_option_container = FileTools::open_image("menus/selection_menu_option_container.png");
-  img_arrow = FileTools::open_image("menus/selection_menu_arrow.png");
-  img_letters = FileTools::open_image("menus/selection_menu_letters.png");
-  img_mode = FileTools::open_image("menus/selection_menu_mode.png");
 
   for (int i = 0; i < 3; i++) {
     ostringstream oss;
@@ -48,7 +45,6 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   // texts
   text_option1 = new TextDisplayed(90, 172, ALIGN_LEFT, ALIGN_MIDDLE);
   text_option2 = new TextDisplayed(198, 172, ALIGN_LEFT, ALIGN_MIDDLE);
-  text_new_player_name = new TextDisplayed(67, 85, ALIGN_LEFT, ALIGN_MIDDLE);
   text_title = new TextDisplayed(160, 54, ALIGN_CENTER, ALIGN_MIDDLE);
   text_title->set_font(FONT_STANDARD);
 
@@ -63,6 +59,7 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   // sounds
   cursor_sound = zsdx->game_resource->get_sound("cursor");
   ok_sound = zsdx->game_resource->get_sound("ok");
+  error_sound = zsdx->game_resource->get_sound("wrong");
 
   // music
   music = zsdx->game_resource->get_music("game_over.it");
@@ -80,13 +77,9 @@ SelectionMenuCommon::~SelectionMenuCommon(void) {
   SDL_FreeSurface(img_background);
   SDL_FreeSurface(img_save_container);
   SDL_FreeSurface(img_option_container);
-  SDL_FreeSurface(img_arrow);
-  SDL_FreeSurface(img_letters);
-  SDL_FreeSurface(img_mode);
 
   delete text_option1;
   delete text_option2;
-  delete text_new_player_name;
   delete text_title;
 
   for (int i = 0; i < 3; i++) {
@@ -187,9 +180,9 @@ void SelectionMenuCommon::initialize_clouds(void) {
 }
 
 /**
- * Loads the data of the 3 savegames and creates the surfaces to display.
+ * Loads (or reloads) the data of the 3 savegames and creates the surfaces to display.
  */
-void SelectionMenuCommon::read_saves(void) {
+void SelectionMenuCommon::read_savegames(void) {
 
   // load the 3 saves
   char file_name[10];

@@ -26,7 +26,6 @@ Savegame::Savegame(const char *file_name) {
     
     this->equipment = new Equipment(this);
   }
-
 }
 
 /**

@@ -114,10 +114,32 @@ void SelectionMenuPhase::finish_display(SDL_Surface *screen_surface) {
 }
 
 /**
+ * Plays the "cursor" sound.
+ */
+void SelectionMenuPhase::play_cursor_sound(void) {
+  common_part->cursor_sound->play();
+}
+
+/**
  * Plays the "ok" sound.
  */
 void SelectionMenuPhase::play_ok_sound(void) {
   common_part->ok_sound->play();
+}
+
+/**
+ * Plays the "error" sound.
+ */
+void SelectionMenuPhase::play_error_sound(void) {
+  common_part->error_sound->play();
+}
+
+/**
+ * Returns the keys effects.
+ * @return the keys effects
+ */
+KeysEffect * SelectionMenuPhase::get_keys_effect(void) {
+  return common_part->keys_effect;
 }
 
 /**
@@ -126,6 +148,24 @@ void SelectionMenuPhase::play_ok_sound(void) {
  */
 Savegame ** SelectionMenuPhase::get_savegames(void) {
   return common_part->savegames;
+}
+
+/**
+ * Returns the specified savegame.
+ * @param save_number index of the savegame to get (0 to 2)
+ * @return the savegame
+ */
+Savegame * SelectionMenuPhase::get_savegame(int save_number) {
+  return common_part->savegames[save_number];
+}
+
+/**
+ * Reloads the savegames.
+ * The subclasses should function has to be called when
+ * they create or remove a savegame.
+ */
+void SelectionMenuPhase::reload_savegames(void) {
+  common_part->read_savegames();
 }
 
 /**
@@ -295,538 +335,3 @@ void SelectionMenuPhase::display_normal_cursor(void) {
   }
   common_part->cursor->display(destination_surface, position.x, position.y);
 }
-
-/**
- * Displays the "Which file do you want to erase?" phase.
- *
-void SelectionMenuPhase::start_erase_file_phase(void) {
-
-  current_phase = ERASE_FILE;
-
-  cursor->set_current_animation("red");
-
-  bool finished = false;
-  SDL_Event event;
-
-  Uint32 next_display = SDL_GetTicks();
-  while (!zsdx->is_exiting() && !finished) {
-
-    // if there is an event
-    if (SDL_PollEvent(&event)) {
-      
-      zsdx->handle_event(event);
-      
-      if (event.type == SDL_KEYDOWN) {
-
-	switch (event.key.keysym.sym) {
-
-	case SDLK_SPACE:
-	  if (cursor_position == 5) {
-	    // the user chose "Quit"
-	    zsdx->set_exiting();
-	  }
-	  else if (cursor_position == 4) {
-	    // the user chose "Cancel"
-	    ok_sound->play();
-	    finished = true;
-	  }
-	  else {
-
-	    save_number_to_erase = cursor_position - 1;
-	    if (savegames[save_number_to_erase]->is_empty()) {
-	      // the savegame doesn't exist: error sound
-	      error_sound->play();
-	    }
-	    else {
-	      // the savegame exists: confirm deleting it
-	      ok_sound->play();
-	      start_confirm_erase_phase();
-	      current_phase = ERASE_FILE;
-	      finished = true;
-	      continue;
-	    }
-	  }
-	  break;
-
-	case SDLK_DOWN:
-	  move_cursor_down();
-	  break;
-
-	case SDLK_UP:
-	  move_cursor_up();
-	  break;
-
-	case SDLK_RIGHT:
-	case SDLK_LEFT:
-	  move_cursor_left_or_right();
-	  break;
-
-	default:
-	  break;
-	}
-      }
-    }
-
-    // update the sprites
-    update();
-
-    // redraw if necessary
-    while (SDL_GetTicks() >= next_display) {
-      display_erase_file_phase();
-      next_display = SDL_GetTicks() + FRAME_INTERVAL;
-    }
-  }
-
-  cursor->set_current_animation("blue");
-}
-*/
-
-/**
- * Displays the "Which file do you want to erase?" phase.
- *
-void SelectionMenuPhase::display_erase_file_phase(void) {
-
-  display_common();
-
-  // savegames
-  for (int i = 0; i < 3; i++) {
-    display_savegame(i);
-  }
-
-  // options
-  display_options("Annuler", "Quitter");
-
-  // cursor
-  display_normal_cursor();
- 
-  // save numbers
-  for (int i = 0; i < 3; i++) {
-    display_savegame_number(i);
-  }
-
-  // blit everything
-  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
-  SDL_Flip(zsdx->screen);
-}
-*/
-
-/**
- * Displays the "Are you sure?" phase.
- *
-void SelectionMenuPhase::start_confirm_erase_phase(void) {
-
-  current_phase = CONFIRM_ERASE;
-
-  bool finished = false;
-  SDL_Event event;
-
-  cursor_position = 4; // select "no" by default
-
-  Uint32 next_display = SDL_GetTicks();
-  while (!zsdx->is_exiting() && !finished) {
-
-    // if there is an event
-    if (SDL_PollEvent(&event)) {
-      
-      zsdx->handle_event(event);
-      
-      if (event.type == SDL_KEYDOWN) {
-
-	switch (event.key.keysym.sym) {
-
-	case SDLK_SPACE:
-	  if (cursor_position == 5) {
-	    // the user chose "Yes"
-	    erase_sound->play();
-	    delete_save_file(save_number_to_erase);
-	    cursor_position = save_number_to_erase + 1;
-	    finished = true;
-	  }
-	  else if (cursor_position == 4) {
-	    // the user chose "No"
-	    ok_sound->play();
-	    finished = true;
-	  }
-	  break;
-
-	case SDLK_RIGHT:
-	case SDLK_LEFT:
-	  move_cursor_left_or_right();
-	  break;
-
-	default:
-	  break;
-	}
-      }
-    }
-
-    // update the sprites
-    update();
-
-    // redraw if necessary
-    while (SDL_GetTicks() >= next_display) {
-      display_confirm_erase_phase();
-      next_display = SDL_GetTicks() + FRAME_INTERVAL;
-    }
-  }
-}
-*/
-
-/**
- * Displays the "Are you sure?" phase.
- *
-void SelectionMenuPhase::display_confirm_erase_phase(void) {
-
-  display_common();
-
-  // savegame
-  display_savegame(save_number_to_erase);
-  display_savegame_number(save_number_to_erase);
-
-  // options
-  display_options("NON", "OUI");
-
-  // cursor
-  display_normal_cursor();
- 
-  // blit everything
-  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
-  SDL_Flip(zsdx->screen);
-}
-*/
-
-/**
- * Deletes a save file.
- * @param save_number number of the savegame to delete (0 to 2)
- *
-void SelectionMenuPhase::delete_save_file(int save_number) {
-  
-  remove(savegames[save_number]->get_file_name());
-  read_saves();
-}
-*/
-
-/**
- * Displays the "What is your name?" phase.
- *
-void SelectionMenuPhase::start_choose_name_phase(void) {
-
-  current_phase = CHOOSE_NAME;
-
-  player_name[0] = '\0';
-  text_new_player_name->set_text(player_name);
-
-  keys_effect->set_sword_key_enabled(true);
-  cursor->set_current_animation("letters");
-
-  x_letter_cursor = 0;
-  y_letter_cursor = 0;
-
-  bool finished = false;
-  SDL_Event event;
-
-  Uint32 next_display = SDL_GetTicks();
-  while (!zsdx->is_exiting() && !finished) {
-
-    // if there is an event
-    if (SDL_PollEvent(&event)) {
-      
-      zsdx->handle_event(event);
-    
-      if (event.type == SDL_KEYDOWN) {
-
-	switch (event.key.keysym.sym) {
-
-	case SDLK_RETURN:
-	  // directly validate the name
-	  finished = validate_player_name();
-	  break;
-
-	case SDLK_c:
-	case SDLK_SPACE:
-	  // choose a letter
-	  finished = select_letter();
-	  text_new_player_name->set_text(player_name);
-	  break;
-
-	case SDLK_RIGHT:
-	  cursor_sound->play();
-	  x_letter_cursor = (x_letter_cursor + 14) % 13;
-	  break;
-	  
-	case SDLK_UP:
-	  cursor_sound->play();
-	  y_letter_cursor = (y_letter_cursor + 4) % 5;
-	  break;
-	  
-	case SDLK_LEFT:
-	  cursor_sound->play();
-	  x_letter_cursor = (x_letter_cursor + 12) % 13;
-	  break;
-	  
-	case SDLK_DOWN:
-	  cursor_sound->play();
-	  y_letter_cursor = (y_letter_cursor + 6) % 5;
-	  break;
-	  
-	default:
-	  break;
-	}
-      }
-    }
-
-    // update the sprites
-    update();
-
-    // redraw if necessary
-    while (SDL_GetTicks() >= next_display) {
-      display_choose_name_phase();
-      next_display = SDL_GetTicks() + FRAME_INTERVAL;
-    }
-  }
-
-  cursor->set_current_animation("blue");
-  keys_effect->set_sword_key_enabled(false);
-}
-*/
-
-/**
- * Displays the "What is your name?" phase.
- *
-void SelectionMenuPhase::display_choose_name_phase(void) {
-
-  display_common();
-
-  // cursor
-  cursor->display(destination_surface,
-		  51 + 16 * x_letter_cursor,
-		  93 + 18 * y_letter_cursor);
- 
-  // current name
-  SDL_Rect position = {57, 76, 0, 0};
-  SDL_BlitSurface(img_arrow, NULL, destination_surface, &position);
-  text_new_player_name->display(destination_surface);
-
-  // letters
-  position.y = 98;
-  SDL_BlitSurface(img_letters, NULL, destination_surface, &position);
-
-  // blit everything
-  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
-  SDL_Flip(zsdx->screen);
-}
-*/
-
-/**
- * This function is called when the player chooses a letter
- * when typing his name.
- * @return true if he finished typing the name (because he validated
- * or cancelled), false otherwise
- *
-bool SelectionMenuPhase::select_letter(void) {
-
-  size_t length = strlen(player_name);
-  char letter_to_add = '\0';
-  bool finished = false;
-
-  switch (y_letter_cursor) {
-    
-  case 0:
-    // upper case letter from A to M
-    letter_to_add = 'A' + x_letter_cursor;
-    break;
-    
-  case 1:
-    // upper case letter from N to Z
-    letter_to_add = 'N' + x_letter_cursor;
-    break;
-
-  case 2:
-    // lower case letter from a to m
-    letter_to_add = 'a' + x_letter_cursor;
-    break;
-    
-  case 3:
-    // upper case letter from n to z
-    letter_to_add = 'n' + x_letter_cursor;
-    break;
-
-  case 4:
-    // digit or special command
-
-    if (x_letter_cursor <= 9) {
-      letter_to_add = '0' + x_letter_cursor;
-    }
-    else {
-      switch (x_letter_cursor) {
-
-      case 10:
-	// remove the last letter
-	if (length > 0) {
-	  player_name[length - 1] = '\0';
-	  letter_sound->play();
-	}
-	else {
-	  error_sound->play();
-	}
-	break;
-
-      case 11:
-	// validate the choice
-	finished = validate_player_name();
-	break;
-
-      case 12:
-	// cancel
-	letter_sound->play();
-	finished = true;
-	break;
-      }
-    }
-    break;
-  }
-
-  if (letter_to_add != '\0') {
-    // a letter was selected
-    if (length < 10) {
-      player_name[length] = letter_to_add;
-      player_name[length + 1] = '\0';
-      letter_sound->play();
-    }
-    else {
-      error_sound->play();
-    }
-  }  
-
-  return finished;
-}
-*/
-
-/**
- * This function is called when the player wants to choose a letter
- * when typing his name.
- * @return true if the new name is validated, false otherwise
- *
-bool SelectionMenuPhase::validate_player_name(void) {
-
-  if (strlen(player_name) == 0) {
-    error_sound->play();
-    return false;
-  }
-
-  ok_sound->play();
-
-  savegames[cursor_position - 1]->set_reserved_string(SAVEGAME_PLAYER_NAME, player_name);
-  savegames[cursor_position - 1]->save();
-  read_saves();
-
-  return true;
-}
-*/
-
-/**
- * Displays the "Choose your game mode" phase.
- *
-void SelectionMenuPhase::start_choose_mode_phase(void) {
-
-  current_phase = CHOOSE_MODE;
-
-  // move the savegame elements to the top
-  int save_number = cursor_position - 1;
-  delete hearts_views[save_number];
-  hearts_views[save_number] =
-    new HeartsView(savegames[save_number]->get_equipment(), 168, 78);
-
-  text_player_names[save_number]->set_position(87, 88);
-
-  bool finished = false;
-  SDL_Event event;
-
-  Uint32 next_display = SDL_GetTicks();
-  while (!zsdx->is_exiting() && !finished) {
-
-    // if there is an event
-    if (SDL_PollEvent(&event)) {
-      
-      zsdx->handle_event(event);
-      
-      if (event.type == SDL_KEYDOWN) {
-
-	switch (event.key.keysym.sym) {
-
-	case SDLK_SPACE:
-	  if (adventure_mode) {
-	    // the user chose "Adventure"
-	    ok_sound->play();
-	    finished = true;
-	  }
-	  else {
-	    // the user chose "Solarus Dreams"
-	    ok_sound->play();
-	    finished = true;
-	  }
-	  break;
-
-	case SDLK_RIGHT:
-	case SDLK_LEFT:
-	  cursor_sound->play();
-	  adventure_mode = !adventure_mode;
-	  break;
-
-	default:
-	  break;
-	}
-      }
-    }
-
-    // update the sprites
-    update();
-
-    // redraw if necessary
-    while (SDL_GetTicks() >= next_display) {
-      display_choose_mode_phase();
-      next_display = SDL_GetTicks() + FRAME_INTERVAL;
-    }
-  }
-}
-*/
-
-/**
- * Displays the "Choose your game mode" phase.
- *
-void SelectionMenuPhase::display_choose_mode_phase(void) {
-
-  display_common();
-
-  // move the selected savegame to the top
-  int save_number = cursor_position - 1;
-  SDL_Rect position = {57, 75, 0, 0};
-  SDL_BlitSurface(img_save_container, NULL, destination_surface, &position);
-  text_player_names[save_number]->display(destination_surface);
- 
-  hearts_views[save_number]->display(destination_surface);
-
-  position.x = 62;
-  position.y = 80;
-  SDL_BlitSurface(img_numbers[save_number], NULL, destination_surface, &position);
-
-  // the two boxes
-  SDL_Rect box_position = {0, 0, 73, 54};
-  if (adventure_mode) {
-    box_position.y = 54; // highlight the selected box
-  }
-  position.x = 70;
-  position.y = 115;
-  SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);  
-
-  box_position.x = 73;
-  box_position.y = adventure_mode ? 0 : 54; // highlight the selected box
-  position.x = 170;
-  position.y = 115;
-  SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);  
-
-  // blit everything
-  SDL_BlitSurface(destination_surface, NULL, zsdx->screen, NULL);
-  SDL_Flip(zsdx->screen);
-}
-*/

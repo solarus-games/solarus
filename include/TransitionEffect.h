@@ -32,7 +32,7 @@ class TransitionEffect {
 
  public:
   virtual ~TransitionEffect(void);
-  static TransitionEffect *create_transition(TransitionType type, TransitionDirection direction);
+  static TransitionEffect *create(TransitionType type, TransitionDirection direction);
 
   TransitionDirection get_direction(void);
 

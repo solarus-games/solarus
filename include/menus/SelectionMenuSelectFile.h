@@ -5,8 +5,8 @@
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * First phase of the selection menu:
- * the user can select a file.
+ * First phase of the selection menun
+ * where the user can select a file.
  */
 class SelectionMenuSelectFile: public SelectionMenuPhase {
 
@@ -18,7 +18,6 @@ class SelectionMenuSelectFile: public SelectionMenuPhase {
 
   // update and display
   void handle_event(const SDL_Event &event);
-  void update(void);
   void display(SDL_Surface *screen_surface);
 };
 

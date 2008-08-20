@@ -159,7 +159,7 @@ void TitleScreen::init_phase_zs_presents(void) {
   zs_presents_position.y = 96;
 
   next_phase_date = SDL_GetTicks() + 2000; // intro: 2 seconds
-  transition_out = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
+  transition_out = TransitionEffect::create(TRANSITION_FADE, TRANSITION_OUT);
 }
 
 /**
@@ -183,9 +183,9 @@ void TitleScreen::init_phase_title(void) {
   title_screen_music = zsdx->game_resource->get_music("title_screen_full.it");
   title_screen_music->play();
 
-  transition_in = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
+  transition_in = TransitionEffect::create(TRANSITION_FADE, TRANSITION_IN);
   transition_in->start();
-  transition_out = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
+  transition_out = TransitionEffect::create(TRANSITION_FADE, TRANSITION_OUT);
 }
 
 /**

@@ -328,7 +328,7 @@ void Game::update_transitions(void) {
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
       link->set_animation_stopped();
-      transition = TransitionEffect::create_transition(transition_type, TRANSITION_OUT);
+      transition = TransitionEffect::create(transition_type, TRANSITION_OUT);
       transition->start();
     }
   }
@@ -351,7 +351,7 @@ void Game::update_transitions(void) {
   // if a map has just been set as the current map, start it and play the in transition
   if (!current_map->is_started()) {
     current_map->start();
-    transition = TransitionEffect::create_transition(transition_type, TRANSITION_IN);
+    transition = TransitionEffect::create(transition_type, TRANSITION_IN);
     transition->start();
   }
 }

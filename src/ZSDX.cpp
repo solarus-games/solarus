@@ -11,7 +11,6 @@
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenuSelectFile.h"
 
-
 /**
  * Number of times the screen is redrawn is a second.
  */
@@ -41,7 +40,7 @@ ZSDX::ZSDX(void) {
   set_fullscreen(false);
   SDL_EnableUNICODE(SDL_ENABLE);
   SDL_EnableKeyRepeat(0, 0);
- 
+
   color_init();
 
   // initiliaze the random number generator
@@ -167,7 +166,6 @@ void ZSDX::main(void) {
       else if (delay >= 10) { // if we have time, let's sleep
 	SDL_Delay(delay);
       }
-
     }
   }
 }
@@ -221,37 +219,6 @@ void ZSDX::display_current_screen(void) {
   SDL_FillRect(root_surface, NULL, COLOR_BLACK);
   current_screen->display(root_surface);
   SDL_Flip(root_surface);
-}
-
-/**
- * Launches the adventure mode: shows the game file selection screen
- * and starts the game with the selected file.
- */
-void ZSDX::launch_adventure_mode(Savegame *savegame) {
-  /*
-  // create the game
-  game = new Game(savegame);
-  game->play();
-
-  delete game;
-  game = NULL;
-  */
-}
-
-/**
- * Launches the Solarus Dreams mode.
- */
-void ZSDX::launch_solarus_dreams_mode(Savegame *savegame) {
-
-  /* TODO: make another class to display the menus of this mode
-
-Lorsqu'il lance ce mode, le jeu affiche les écrans suivants :
-
-1. Le joueur doit saisir son login et son mot de passe du forum.
-2. Le jeu se connecte au serveur et en cas de réussite, télécharge les derniers niveaux éventuellement ajoutés.
-3. Ecran de sélection des niveaux. La liste des niveaux s'affiche, avec pour chaque niveau : son nom, le nom de son créateur, la difficulté, les médailles obtenues par le joueur.
-4. Une fois un niveau choisi, un écran plus détaillé affiche toutes les informations du niveau, avec une description textuelle, un screenshot, et le nombre de joueurs ayant déjà réussi chaque objectif. Le joueur doit choisir un des objectifs et peut ensuite lancer le jeu.
-  */
 }
 
 /**

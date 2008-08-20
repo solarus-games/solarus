@@ -56,7 +56,7 @@ TextDisplayed::TextDisplayed(int x, int y):
   rendering_mode(TEXT_SOLID),
   text_surface(NULL) {
 
-  text[0] = '\0';
+  text = "";
   set_text_color(255, 255, 255);
   set_background_color(0, 0, 0);
   set_position(x, y);
@@ -81,7 +81,7 @@ TextDisplayed::TextDisplayed(int x, int y,
   rendering_mode(TEXT_SOLID),
   text_surface(NULL) {
 
-  text[0] = '\0';
+  text = "";
   set_text_color(255, 255, 255);
   set_background_color(0, 0, 0);
   set_position(x, y);

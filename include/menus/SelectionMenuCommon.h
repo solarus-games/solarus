@@ -23,9 +23,7 @@ class SelectionMenuCommon {
   // images
   SDL_Surface *img_cloud, *img_background;
   SDL_Surface *img_save_container, *img_option_container;
-  SDL_Surface *img_arrow, *img_letters;
   SDL_Surface *img_numbers[3];
-  SDL_Surface *img_mode;
 
   Sprite *cursor;
   int cursor_position; // 1 to 5
@@ -33,6 +31,7 @@ class SelectionMenuCommon {
   // sounds
   Sound *cursor_sound;
   Sound *ok_sound;
+  Sound *error_sound;
 
   // music
   Music *music;
@@ -45,7 +44,6 @@ class SelectionMenuCommon {
   // text
   TextDisplayed *text_option1;
   TextDisplayed *text_option2;
-  TextDisplayed *text_new_player_name;
   TextDisplayed *text_title;
 
   // savegames data
@@ -58,7 +56,7 @@ class SelectionMenuCommon {
   
   // initialization functions
   void initialize_clouds(void);
-  void read_saves(void);
+  void read_savegames(void);
 
  public:
 

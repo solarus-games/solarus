@@ -1,5 +1,7 @@
 #include "menus/SelectionMenuSelectFile.h"
-#include "menus/SelectionMenuCommon.h"
+#include "menus/SelectionMenuEraseFile.h"
+#include "menus/SelectionMenuChooseName.h"
+#include "menus/SelectionMenuChooseMode.h"
 #include "TransitionEffect.h"
 #include "Savegame.h"
 #include "Sprite.h"
@@ -21,7 +23,7 @@ SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenuPhase *previous):
 
   if (previous == NULL) {
     // we don't come from another phase or the selection menu itself: make a transition
-    transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
+    transition = TransitionEffect::create(TRANSITION_FADE, TRANSITION_IN);
     transition->start();
   }
 }
@@ -53,8 +55,7 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
       else if (cursor_position == 4) {
 	// the user chose "Erase"
 	play_ok_sound();
-//	set_next_screen(new SelectionMenuEraseFile(this));
-	set_next_screen(NULL);
+	set_next_screen(new SelectionMenuEraseFile(this));
       }
       else {
 	// the user chose a save
@@ -63,13 +64,11 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
 	Savegame **savegames = get_savegames();
 	if (savegames[cursor_position - 1]->is_empty()) {
 	  // the savegame doesn't exist: ask the name
-//	  set_next_screen(new SelectionMenuChooseName(this));
-	  set_next_screen(NULL);
+	  set_next_screen(new SelectionMenuChooseName(this));
 	}
 	else {
 	  // the savegame exists: choose the mode and then start the game
-//	  set_next_screen(new SelectionMenuChooseMode(this));
-	  set_next_screen(NULL);
+	  set_next_screen(new SelectionMenuChooseMode(this));
 	}
       }
       break;
@@ -91,13 +90,6 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
       break;
     }
   }
-}
-
-/**
- * Updates the selection menu in this phase.
- */
-void SelectionMenuSelectFile::update(void) {
-  SelectionMenuPhase::update();
 }
 
 /**

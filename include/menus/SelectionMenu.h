@@ -102,7 +102,7 @@ class SelectionMenu: public Screen {
   void start_erase_file_phase(void);
   void update_erase_file_phase(void);
   void display_erase_file_phase(void);
-  void event_select_file_phase(const SDL_Event &event);
+  void event_erase_file_phase(const SDL_Event &event);
 
   void start_confirm_erase_phase(void);
   void update_confirm_erase_phase(void);

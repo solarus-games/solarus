@@ -1,6 +1,6 @@
-#include "PickableItemHeart.h"
+#include "entities/PickableItemHeart.h"
+#include "movements/MovementPath.h"
 #include "Sprite.h"
-#include "MovementPath.h"
 
 /**
  * Translation vectors composing the movement of the falling heart.

@@ -6,10 +6,10 @@
 #include "Game.h"
 #include "GameResource.h"
 #include "Savegame.h"
-#include "TitleScreen.h"
-#include "SelectionMenu.h"
 #include "TextDisplayed.h"
 #include "Random.h"
+#include "menus/TitleScreen.h"
+#include "menus/SelectionMenu.h"
 
 
 /**

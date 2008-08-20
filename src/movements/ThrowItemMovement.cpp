@@ -1,4 +1,4 @@
-#include "ThrowItemMovement.h"
+#include "movements/ThrowItemMovement.h"
 
 /**
  * Creates a throw item movement.

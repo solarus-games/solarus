@@ -1,7 +1,7 @@
-#include "TileOnMap.h"
+#include "entities/TileOnMap.h"
+#include "entities/Tileset.h"
+#include "entities/Tile.h"
 #include "Map.h"
-#include "Tileset.h"
-#include "Tile.h"
 
 /**
  * Creates a new tile on a map.

@@ -1,4 +1,8 @@
-#include "PickableItem.h"
+#include "entities/PickableItem.h"
+#include "entities/PickableItemHeart.h"
+#include "entities/PickableItemFairy.h"
+#include "entities/Link.h"
+#include "movements/MovementFalling.h"
 #include "Sprite.h"
 #include "Random.h"
 #include "ZSDX.h"
@@ -6,12 +10,8 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "Map.h"
-#include "MovementFalling.h"
 #include "GameResource.h"
 #include "Sound.h"
-#include "PickableItemHeart.h"
-#include "PickableItemFairy.h"
-#include "Link.h"
 
 /**
  * This structure defines the properties of a pickable item type.

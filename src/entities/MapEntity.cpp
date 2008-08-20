@@ -1,5 +1,5 @@
-#include "MapEntity.h"
-#include "Movement.h"
+#include "entities/MapEntity.h"
+#include "movements/Movement.h"
 #include "Sprite.h"
 #include "Map.h"
 #include "ZSDX.h"

@@ -1,9 +1,9 @@
 #include "MapLoader.h"
 #include "Map.h"
 #include "FileTools.h"
-#include "Tileset.h"
 #include "ZSDX.h"
 #include "GameResource.h"
+#include "entities/Tileset.h"
 #include <iomanip>
 
 /**

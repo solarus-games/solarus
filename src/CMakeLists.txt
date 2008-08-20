@@ -1,66 +1,91 @@
 include_directories (${ZSDX_SOURCE_DIR}/include)
 
 add_executable (zsdx
-	       ZSDX.cpp
-	       Screen.cpp
-	       TitleScreen.cpp
-#	       SelectionMenu.cpp
-	       FileTools.cpp
-	       Random.cpp
-	       KeysEffect.cpp
-	       Game.cpp
-	       GameResource.cpp
-	       Savegame.cpp
-	       Equipment.cpp
-	       TextDisplayed.cpp
-	       HUD.cpp
-	       HudElement.cpp
-	       CounterView.cpp
-	       HeartsView.cpp
-	       RupeesView.cpp
-	       MagicBar.cpp
-	       ActionIcon.cpp
-	       SwordIcon.cpp
-	       PauseIcon.cpp
-	       Map.cpp
-	       MapLoader.cpp
-	       MapEntities.cpp
-	       MapEntrance.cpp
-	       MapEntity.cpp
-	       Movement.cpp
-	       MovementWithCollision.cpp
-	       MovementWithSmoothCollision.cpp
-	       Movement8ByPlayer.cpp
-	       MovementFalling.cpp
-	       MovementPath.cpp
-	       FairyMovement.cpp
-	       FollowMovement.cpp
-	       ThrowItemMovement.cpp
-	       EntityDetector.cpp
-	       MapExit.cpp
-	       Sprite.cpp
-	       SpriteAnimations.cpp
-	       SpriteAnimation.cpp
-	       SpriteAnimationDirection.cpp
-	       PickableItem.cpp
-	       PickableItemHeart.cpp
-	       PickableItemFairy.cpp
-	       TransportableItem.cpp
-	       CarriedItem.cpp
-	       SimpleTile.cpp
-	       AnimatedTile.cpp
-	       TileOnMap.cpp
-	       Tile.cpp
-	       Color.cpp
-	       Link.cpp
-	       Music.cpp
-	       Sound.cpp
-	       Tileset.cpp
-	       TransitionEffect.cpp
-	       TransitionImmediate.cpp
-	       TransitionFade.cpp
-	       DialogBox.cpp
-	       Message.cpp
+
+  # main classes
+  ZSDX.cpp
+  Screen.cpp
+  FileTools.cpp
+  GameResource.cpp
+
+  # menus
+  TitleScreen.cpp
+  SelectionMenuPhase.cpp
+  SelectionMenuSelectFile.cpp
+  SelectionMenuEraseFile.cpp
+  SelectionMenuConfirmErase.cpp
+  SelectionMenuChooseName.cpp
+  SelectionMenuChooseMode.cpp
+
+  # game
+  Game.cpp
+  Savegame.cpp
+  Equipment.cpp
+  KeysEffect.cpp
+  Map.cpp
+  MapLoader.cpp
+  DialogBox.cpp
+  Message.cpp
+
+  # graphics
+  TextDisplayed.cpp
+  Color.cpp
+
+  # HUD
+  HUD.cpp
+  HudElement.cpp
+  ActionIcon.cpp
+  SwordIcon.cpp
+  PauseIcon.cpp
+  CounterView.cpp
+  HeartsView.cpp
+  RupeesView.cpp
+  MagicBar.cpp
+
+  # sprites
+  SpriteAnimation.cpp
+  SpriteAnimationDirection.cpp
+  SpriteAnimations.cpp
+  Sprite.cpp
+
+  # transition effects
+  TransitionEffect.cpp
+  TransitionFade.cpp
+  TransitionImmediate.cpp
+
+  # music and sound
+  Sound.cpp
+  Music.cpp
+
+  # map entities
+  entities/MapEntities.cpp
+  entities/MapEntity.cpp
+  entities/EntityDetector.cpp
+  entities/MapEntrance.cpp
+  entities/MapExit.cpp
+  entities/PickableItem.cpp
+  entities/PickableItemHeart.cpp
+  entities/PickableItemFairy.cpp
+  entities/CarriedItem.cpp
+  entities/TransportableItem.cpp
+  entities/Tileset.cpp
+  entities/Tile.cpp
+  entities/SimpleTile.cpp
+  entities/AnimatedTile.cpp
+  entities/TileOnMap.cpp
+  entities/Link.cpp
+
+  # movements
+  movements/Movement.cpp
+  movements/MovementWithCollision.cpp
+  movements/MovementWithSmoothCollision.cpp
+  movements/Movement8ByPlayer.cpp
+  movements/MovementFalling.cpp
+  movements/MovementPath.cpp
+  movements/FairyMovement.cpp
+  movements/FollowMovement.cpp
+  movements/ThrowItemMovement.cpp
+
 )
 
 if (NOT WIN32)

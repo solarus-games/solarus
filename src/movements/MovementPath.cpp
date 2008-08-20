@@ -1,4 +1,4 @@
-#include "MovementPath.h"
+#include "movements/MovementPath.h"
 
 /**
  * Creates a movement path object.

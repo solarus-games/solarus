@@ -3,7 +3,7 @@
 #include "GameResource.h"
 #include "Game.h"
 #include "Savegame.h"
-#include "Link.h"
+#include "entities/Link.h"
 
 /**
  * Constructor.

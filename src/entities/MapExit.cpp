@@ -1,8 +1,8 @@
-#include "MapExit.h"
+#include "entities/MapExit.h"
+#include "entities/Link.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "GameResource.h"
-#include "Link.h"
 
 /**
  * Constructor.

@@ -1,4 +1,4 @@
-#include "SDL/SDL_config_lib.h"
+#include <SDL/SDL_config_lib.h>
 #include "Message.h"
 #include "DialogBox.h"
 #include "FileTools.h"

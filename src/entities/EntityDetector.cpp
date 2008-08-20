@@ -1,4 +1,4 @@
-#include "EntityDetector.h"
+#include "entities/EntityDetector.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "GameResource.h"

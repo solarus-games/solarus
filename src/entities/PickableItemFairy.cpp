@@ -1,5 +1,5 @@
-#include "PickableItemFairy.h"
-#include "FairyMovement.h"
+#include "entities/PickableItemFairy.h"
+#include "movements/FairyMovement.h"
 
 /**
  * Creates a pickable fairy.

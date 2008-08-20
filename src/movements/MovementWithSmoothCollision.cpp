@@ -1,4 +1,4 @@
-#include "MovementWithSmoothCollision.h"
+#include "movements/MovementWithSmoothCollision.h"
 #include "ZSDX.h"
 
 /**

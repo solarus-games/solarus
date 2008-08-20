@@ -1,4 +1,4 @@
-#include "MapEntrance.h"
+#include "entities/MapEntrance.h"
 
 /**
  * Constructor.

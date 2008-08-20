@@ -1,11 +1,11 @@
-#include "TransportableItem.h"
+#include "Tentities/ransportableItem.h"
+#include "entities/Link.h"
+#include "movements/MovementPath.h"
 #include "ZSDX.h"
 #include "GameResource.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "Map.h"
-#include "Link.h"
-#include "MovementPath.h"
 #include "Sound.h"
 
 /**

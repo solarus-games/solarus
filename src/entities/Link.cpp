@@ -8,10 +8,10 @@
 #include "Map.h"
 #include "Sound.h"
 #include "KeysEffect.h"
-#include "Movement8ByPlayer.h"
-#include "TransportableItem.h"
-#include "CarriedItem.h"
-#include "EntityDetector.h"
+#include "movements/Movement8ByPlayer.h"
+#include "entities/TransportableItem.h"
+#include "entities/CarriedItem.h"
+#include "entities/EntityDetector.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)

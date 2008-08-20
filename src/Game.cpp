@@ -11,10 +11,10 @@
 #include "Sound.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
-#include "AnimatedTile.h"
-#include "Movement8ByPlayer.h"
-#include "EntityDetector.h"
 #include "DialogBox.h"
+#include "entities/AnimatedTile.h"
+#include "entities/EntityDetector.h"
+#include "movement/Movement8ByPlayer.h"
 
 /**
  * Creates a game.

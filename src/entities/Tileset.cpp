@@ -1,6 +1,6 @@
-#include "Tileset.h"
-#include "SimpleTile.h"
-#include "AnimatedTile.h"
+#include "entities/Tileset.h"
+#include "entities/SimpleTile.h"
+#include "entities/AnimatedTile.h"
 #include "FileTools.h"
 #include <iomanip>
 

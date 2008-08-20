@@ -4,12 +4,12 @@
 #include "Game.h"
 #include "GameResource.h"
 #include "Sprite.h"
-#include "Tileset.h"
-#include "Link.h"
 #include "FileTools.h"
-#include "MapEntities.h"
-#include "MapEntrance.h"
-#include "EntityDetector.h"
+#include "entities/Tileset.h"
+#include "entities/Link.h"
+#include "entities/MapEntities.h"
+#include "entities/MapEntrance.h"
+#include "entities/EntityDetector.h"
 
 MapLoader Map::map_loader;
 

@@ -2,12 +2,12 @@
 #define ZSDX_MAP_ENTITIES_H
 
 #include "Common.h"
-#include "Layer.h"
-#include "Obstacle.h"
 #include "TransitionEffect.h"
-#include "PickableItemType.h"
-#include "MovementFallingHeight.h"
-#include "TransportableItemType.h"
+#include "entities/Layer.h"
+#include "entities/Obstacle.h"
+#include "entities/PickableItemType.h"
+#include "entities/TransportableItemType.h"
+#include "movements/MovementFallingHeight.h"
 #include <vector>
 #include <list>
 

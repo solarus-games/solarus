@@ -9,7 +9,7 @@
 #include "TextDisplayed.h"
 #include "Random.h"
 #include "menus/TitleScreen.h"
-#include "menus/SelectionMenu.h"
+#include "menus/SelectionMenuSelectFile.h"
 
 
 /**
@@ -171,46 +171,6 @@ void ZSDX::main(void) {
     }
   }
 }
-/*
-old code of ZSDX::main():
-    
-    // title screen
-    TitleScreen *title_screen = new TitleScreen();
-    title_screen->show();
-    delete title_screen;
-
-    if (!is_exiting()) {
-
-      // savegame selection menu
-      SelectionMenu *menu = new SelectionMenu();
-      menu->show();
-
-      // get the savegame selected (if any)
-      Savegame *savegame = menu->get_selected_save();
-
-      if (savegame == NULL) {
-	exiting = true;
-	delete menu;
-      }
-      else {
-
-	// launch the mode selected by the player
-	bool is_adventure_mode = menu->is_adventure_mode();
-	delete menu;
-
-	if (is_adventure_mode) {
-	  launch_adventure_mode(savegame);
-	}
-	else {
-	  launch_solarus_dreams_mode(savegame);
-	}
-
-	delete savegame;
-      }
-    }
-  }
-}
-*/
 
 /**
  * This function handles an SDL event.
@@ -268,18 +228,14 @@ void ZSDX::display_current_screen(void) {
  * and starts the game with the selected file.
  */
 void ZSDX::launch_adventure_mode(Savegame *savegame) {
-
-  // debug: test Link's equipment
-  savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, 0); // green tunic
-  savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, 1); // first sword
-  savegame->set_reserved_integer(SAVEGAME_LINK_SHIELD, 1); // first shield
-
+  /*
   // create the game
   game = new Game(savegame);
   game->play();
 
   delete game;
   game = NULL;
+  */
 }
 
 /**

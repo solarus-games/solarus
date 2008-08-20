@@ -1,4 +1,5 @@
 #include "menus/TitleScreen.h"
+#include "menus/SelectionMenuSelectFile.h"
 #include "ZSDX.h"
 #include "Music.h"
 #include "GameResource.h"
@@ -21,7 +22,7 @@ TitleScreen::TitleScreen(void):
  */
 TitleScreen::~TitleScreen(void) {
 
-  if (!screen_finished) {
+  if (!is_screen_finished()) {
     
     switch (current_phase) {
       
@@ -80,8 +81,7 @@ void TitleScreen::update(void) {
 
     if (transition_out->is_over()) {
       exit_phase_title();
-      screen_finished = true;
-      next_screen = NULL;
+      set_next_screen(new SelectionMenuSelectFile(NULL));
     }
 
     break;

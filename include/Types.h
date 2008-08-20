@@ -23,69 +23,94 @@ typedef std::string MessageId;
 /**
  * Declaration of all classes to avoid dependencies between the header files.
  */
+
+// main classes
 class ZSDX;
 class Screen;
-class Game;
 class GameResource;
 class KeysEffect;
-class TextDisplayed;
-class Savegame;
-class Equipment;
-class SelectionMenu;
-class TransitionEffect;
+class FileTools;
 class Random;
 
+// menus
+class TitleScreen;
+class SelectionMenuPhase;
+class SelectionMenuCommon;
+class SelectionMenuEraseFile;
+class SelectionMenuConfirmErase;
+class SelectionMenuChooseName;
+class SelectionMenuChooseMode;
+
+// game
+class Game;
+class Savegame;
+class Equipment;
+class Map;
+class MapLoader;
+class DialogBox;
+class Message;
+
+// music and sound
+class Music;
+class Sound;
+
+// graphics
+class TextDisplayed;
+
+// HUD
 class HUD;
 class HudElement;
+class ActionIcon;
+class SwordIcon;
+class PauseIcon;
 class CounterView;
 class HeartsView;
 class RupeesView;
 class MagicBar;
-class ActionIcon;
-class SwordIcon;
-class PauseIcon;
 
-class Map;
-class MapLoader;
-class Tileset;
-class Music;
-class Sound;
-
+// sprites
 class Sprite;
 class SpriteAnimations;
 class SpriteAnimation;
 class SpriteAnimationDirection;
 class AnimationListener;
 
+// transition effects
+class TransitionEffect;
+class TransitionFade;
+class TransitionImmediate;
+
+// map entities
+class MapEntities;
+class MapEntity;
+class Link;
+class TileOnMap;
+class EntityDetector;
+class MapEntrance;
+class MapExit;
+class PickableItem;
+class PickableItemHeart;
+class PickableItemFairy;
+class CarriedItem;
+class TransportableItem;
+
+// tiles
+class Tileset;
 class Tile;
 class SimpleTile;
 class AnimatedTile;
 
+// movements
 class Movement;
-class Movement8ByPlayer;
 class MovementWithCollision;
 class MovementWithSmoothCollision;
+class Movement8ByPlayer;
 class MovementFalling;
 class MovementPath;
 class FairyMovement;
 class FollowMovement;
 class ThrowItemMovement;
 
-class MapEntities;
-class MapEntity;
-class Link;
-class EntityDetector;
-class TileOnMap;
-class MapExit;
-class MapEntrance;
 
-class PickableItem;
-class PickableItemHeart;
-class PickableItemFairy;
-class TransportableItem;
-class CarriedItem;
-
-class DialogBox;
-class Message;
 
 #endif

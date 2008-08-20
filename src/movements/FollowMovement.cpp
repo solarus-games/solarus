@@ -1,5 +1,5 @@
 #include "movements/FollowMovement.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
 
 /**
  * Creates a follow movement.

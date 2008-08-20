@@ -2,10 +2,10 @@
 #define ZSDX_PICKABLE_ITEM_H
 
 #include "Common.h"
-#include "EntityDetector.h"
-#include "Layer.h"
-#include "PickableItemType.h"
-#include "MovementFallingHeight.h"
+#include "entities/EntityDetector.h"
+#include "entities/Layer.h"
+#include "entities/PickableItemType.h"
+#include "movements/MovementFallingHeight.h"
 
 /**
  * A pickable item on the map (rupee, heart, bomb, fairy...).

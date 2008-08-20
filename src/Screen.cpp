@@ -12,9 +12,28 @@ Screen::Screen(void):
  * Destroys the screen.
  */
 Screen::~Screen(void) {
-  if (next_screen != NULL) {
-    delete next_screen;
-  }
+
+}
+
+/**
+ * This function can be called by the current screen
+ * to indicates that it is finished and to specify
+ * the next screen.
+ * @param next_screen the next screen to show, or NULL
+ * to restart the game.
+ */
+void Screen::set_next_screen(Screen *next_screen) {
+  this->screen_finished = true;
+  this->next_screen = next_screen;
+}
+
+/**
+ * When this screen is finished, returns the
+ * screen that should be displayed now.
+ * @return the next screen
+ */
+Screen * Screen::get_next_screen(void) {
+  return next_screen;
 }
 
 /**
@@ -26,13 +45,4 @@ Screen::~Screen(void) {
  */
 bool Screen::is_screen_finished(void) {
   return screen_finished;
-}
-
-/**
- * When this screen is finished, returns the
- * screen that should be displayed now.
- * @return the next screen
- */
-Screen * Screen::get_next_screen(void) {
-  return next_screen;
 }

@@ -1,6 +1,6 @@
 #include <cmath>
 #include "movements/Movement.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
 
 /**
  * Mathematic constants.

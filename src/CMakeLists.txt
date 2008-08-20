@@ -5,27 +5,33 @@ add_executable (zsdx
   # main classes
   ZSDX.cpp
   Screen.cpp
-  FileTools.cpp
   GameResource.cpp
+  KeysEffect.cpp
+  FileTools.cpp
+  Random.cpp
 
   # menus
-  TitleScreen.cpp
-  SelectionMenuPhase.cpp
-  SelectionMenuSelectFile.cpp
-  SelectionMenuEraseFile.cpp
-  SelectionMenuConfirmErase.cpp
-  SelectionMenuChooseName.cpp
-  SelectionMenuChooseMode.cpp
+  menus/TitleScreen.cpp
+  menus/SelectionMenuPhase.cpp
+  menus/SelectionMenuCommon.cpp
+  menus/SelectionMenuSelectFile.cpp
+  menus/SelectionMenuEraseFile.cpp
+  menus/SelectionMenuConfirmErase.cpp
+  menus/SelectionMenuChooseName.cpp
+  menus/SelectionMenuChooseMode.cpp
 
   # game
   Game.cpp
   Savegame.cpp
   Equipment.cpp
-  KeysEffect.cpp
   Map.cpp
   MapLoader.cpp
   DialogBox.cpp
   Message.cpp
+
+  # music and sound
+  Sound.cpp
+  Music.cpp
 
   # graphics
   TextDisplayed.cpp
@@ -43,23 +49,21 @@ add_executable (zsdx
   MagicBar.cpp
 
   # sprites
+  Sprite.cpp
+  SpriteAnimations.cpp
   SpriteAnimation.cpp
   SpriteAnimationDirection.cpp
-  SpriteAnimations.cpp
-  Sprite.cpp
 
   # transition effects
   TransitionEffect.cpp
   TransitionFade.cpp
   TransitionImmediate.cpp
 
-  # music and sound
-  Sound.cpp
-  Music.cpp
-
   # map entities
   entities/MapEntities.cpp
   entities/MapEntity.cpp
+  entities/Link.cpp
+  entities/TileOnMap.cpp
   entities/EntityDetector.cpp
   entities/MapEntrance.cpp
   entities/MapExit.cpp
@@ -68,12 +72,12 @@ add_executable (zsdx
   entities/PickableItemFairy.cpp
   entities/CarriedItem.cpp
   entities/TransportableItem.cpp
+
+  # tiles
   entities/Tileset.cpp
   entities/Tile.cpp
   entities/SimpleTile.cpp
   entities/AnimatedTile.cpp
-  entities/TileOnMap.cpp
-  entities/Link.cpp
 
   # movements
   movements/Movement.cpp

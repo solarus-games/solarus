@@ -1,7 +1,7 @@
 #include "movements/MovementWithCollision.h"
 #include "ZSDX.h"
 #include "Map.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
 
 /**
  * Constructor.

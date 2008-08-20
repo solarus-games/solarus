@@ -1,4 +1,8 @@
-#include "Link.h"
+#include "entities/Link.h"
+#include "entities/TransportableItem.h"
+#include "entities/CarriedItem.h"
+#include "entities/EntityDetector.h"
+#include "movements/Movement8ByPlayer.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -8,10 +12,6 @@
 #include "Map.h"
 #include "Sound.h"
 #include "KeysEffect.h"
-#include "movements/Movement8ByPlayer.h"
-#include "entities/TransportableItem.h"
-#include "entities/CarriedItem.h"
-#include "entities/EntityDetector.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)

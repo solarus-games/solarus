@@ -6,7 +6,7 @@
 - Réaffichage de l'écran : le faire depuis la classe ZSDX (par exemple), qui appellerait l'afficheur courant (TitleScreen, SelectionMenu ou Game...) tous les FRAME_INTERVAL, tout en faisant des sleep pour que le CPU se repose
 - zsdx->game_resource->get_link, zsdx->game->get_current_map, zsdx->game->get_savegame, zsdx->game->get_keys_effect... simplifier
 - classe Game: mettre les traitements des touches dans une classe dédiée
-
+- Gérer les transitions entre les screens depuis la classe Screen
 
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 

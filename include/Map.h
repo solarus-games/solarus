@@ -2,13 +2,13 @@
 #define ZSDX_MAP_H
 
 #include "Common.h"
-#include "Layer.h"
-#include "Obstacle.h"
 #include "TransitionEffect.h"
-#include "EntityType.h"
-#include "PickableItemType.h"
-#include "MovementFallingHeight.h"
-#include "MapEntities.h"
+#include "entities/EntityType.h"
+#include "entities/Layer.h"
+#include "entities/Obstacle.h"
+#include "entities/MapEntities.h"
+#include "entities/PickableItemType.h"
+#include "movements/MovementFallingHeight.h"
 
 /**
  * Represents a map.

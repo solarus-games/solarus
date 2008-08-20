@@ -2,7 +2,6 @@
 #include "ZSDX.h"
 #include "Music.h"
 #include "TransitionEffect.h"
-#include "Link.h"
 #include "Map.h"
 #include "GameResource.h"
 #include "Savegame.h"
@@ -12,9 +11,10 @@
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "DialogBox.h"
+#include "entities/Link.h"
 #include "entities/AnimatedTile.h"
 #include "entities/EntityDetector.h"
-#include "movement/Movement8ByPlayer.h"
+#include "movements/Movement8ByPlayer.h"
 
 /**
  * Creates a game.

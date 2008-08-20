@@ -11,12 +11,16 @@
  */
 class Screen {
 
- protected:
+ private:
 
   bool screen_finished;
   Screen *next_screen;
 
+ protected:
+
   Screen(void);
+
+  void set_next_screen(Screen *next_screen);
 
  public:
 

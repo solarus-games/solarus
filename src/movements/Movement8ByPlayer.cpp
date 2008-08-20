@@ -1,6 +1,6 @@
 #include <cmath>
 #include "movements/Movement8ByPlayer.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
 
 /*
  * Bit masks associated to each arrow on the keyboard.

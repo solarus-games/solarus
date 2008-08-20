@@ -65,11 +65,11 @@ void Game::play(void) {
 		  savegame->get_reserved_integer(SAVEGAME_STARTING_ENTRANCE),
 		  TRANSITION_FADE);
 
+  /*
   // SDL main loop
   SDL_Event event;
   Uint32 now, last_frame_date = 0;
   int delay;
-  SDL_EnableKeyRepeat(0, 0);
 
   while (!zsdx->is_exiting()) {
 
@@ -304,6 +304,7 @@ void Game::play(void) {
       SDL_Delay(delay);
     }
   }
+  */
 
   // quit the game
   current_map->leave(); // tell the map that Link is not there anymore
@@ -430,6 +431,7 @@ void Game::update_dialog_box(void) {
  * @param map the map to display
  */
 void Game::display(Map *map) {
+  /*
   SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
 
   // display the map
@@ -450,7 +452,7 @@ void Game::display(Map *map) {
     dialog_box->display(zsdx->screen);
   }
 
-  SDL_Flip(zsdx->screen);
+  SDL_Flip(zsdx->screen);*/
 }
 
 /**

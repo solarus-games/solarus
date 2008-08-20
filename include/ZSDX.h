@@ -26,11 +26,26 @@ extern ZSDX *zsdx;
 class ZSDX {
 
  private:
-
+ 
+  /**
+   * The current screen displayed: the title screen, the selection menu, the game, etc.
+   */
+  Screen *current_screen;
+  SDL_Surface *root_surface; 
   bool fullscreen;
+  bool exiting;
 
   void launch_adventure_mode(Savegame *savegame);
   void launch_solarus_dreams_mode(Savegame *savegame);
+
+  void set_fullscreen(bool fullscreen);
+  bool is_fullscreen(void);
+  void switch_fullscreen(void);
+
+  void handle_event(const SDL_Event &event);
+  void display_current_screen(void);
+
+  bool is_exiting(void);
 
  public:
 
@@ -39,20 +54,12 @@ class ZSDX {
 
   void main(void);
 
-  SDL_Surface *screen;
   TTF_Font *font;
   GameResource *game_resource;
   Game *game;
 
-  bool exiting;
-
-  void handle_event(const SDL_Event &event);
-  void set_fullscreen(bool fullscreen);
-  bool is_fullscreen(void);
-  void switch_fullscreen(void);
-
-  bool is_exiting(void);
   void set_exiting(void);
+
 };
 
 #endif

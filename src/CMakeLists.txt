@@ -2,6 +2,9 @@ include_directories (${ZSDX_SOURCE_DIR}/include)
 
 add_executable (zsdx
 	       ZSDX.cpp
+	       Screen.cpp
+	       TitleScreen.cpp
+#	       SelectionMenu.cpp
 	       FileTools.cpp
 	       Random.cpp
 	       KeysEffect.cpp
@@ -10,8 +13,6 @@ add_executable (zsdx
 	       Savegame.cpp
 	       Equipment.cpp
 	       TextDisplayed.cpp
-	       TitleScreen.cpp
-	       SelectionMenu.cpp
 	       HUD.cpp
 	       HudElement.cpp
 	       CounterView.cpp
@@ -62,11 +63,7 @@ add_executable (zsdx
 	       Message.cpp
 )
 
-# Under Windows, at runtime, the data directory is relative to the current directory
 if (NOT WIN32)
-   SET_TARGET_PROPERTIES(zsdx PROPERTIES
-			      COMPILE_FLAGS -DDATADIR_="${CMAKE_INSTALL_PREFIX}/share/zsdx")
-
    SET_TARGET_PROPERTIES(zsdx PROPERTIES
 			      COMPILE_FLAGS "-g -ansi -Wall -Werror")
 endif (NOT WIN32)

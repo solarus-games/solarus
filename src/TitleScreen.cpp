@@ -9,150 +9,192 @@
 /**
  * Creates a title screen.
  */
-TitleScreen::TitleScreen(void) {
-
+TitleScreen::TitleScreen(void):
+  Screen() {
+  
+  // go to phase 1
+  init_phase_black_screen();
 }
 
 /**
  * Destroys the title screen.
  */
 TitleScreen::~TitleScreen(void) {
-  
-}
 
-/**
- * Shows the title screen.
- * @return true if the user wants to quit the program
- */
-void TitleScreen::show(void) {
-
-  phase_1_black_screen();
-
-  if (!zsdx->is_exiting()) {
-    phase_2_zs_presents();
-
-    if (!zsdx->is_exiting()) {
-      phase_3_title();
-    }
-  }
-}
-
-/**
- * Phase 1 of the title screen: shows a black screen
- * for a fraction of second.
- * @return true if the user wants to quit the program, false otherwise
- */
-void TitleScreen::phase_1_black_screen(void) {
-
-  SDL_Event event;
-
-  // wait 0.3 second
-  Uint32 start_intro_time = SDL_GetTicks() + 300;
-  while (!zsdx->is_exiting() && SDL_GetTicks() < start_intro_time) {
-
-    if (SDL_PollEvent(&event)) {
-      zsdx->handle_event(event);
-    }
-
-    SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
-    SDL_Flip(zsdx->screen);
-  }
-}
-
-/**
- * Phase 2 of the title screen: shows the message "Zelda Solarus presents".
- * @return true if the user wants to quit the program, false otherwise
- */
-void TitleScreen::phase_2_zs_presents(void) {
-
-  SDL_Event event;
-
-  SDL_Surface *img_zs_presents = FileTools::open_image("menus/zelda_solarus_presents.png");
-  zsdx->game_resource->get_sound("intro")->play();
-  SDL_Rect position = {112, 96, 0, 0};
-  Uint32 end_intro_time = SDL_GetTicks() + 2000; // intro: 2 seconds
-  TransitionEffect *transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
-
-  while (!zsdx->is_exiting() && !transition->is_over()) {
+  if (!screen_finished) {
     
-    if (SDL_PollEvent(&event)) {
-      zsdx->handle_event(event);
-    }
+    switch (current_phase) {
+      
+    case PHASE_ZS_PRESENTS:
+      exit_phase_zs_presents();
+      break;
+      
+    case PHASE_TITLE:
+      exit_phase_title();
+      break;
 
-    if (SDL_GetTicks() >= end_intro_time && !transition->is_started()) {
-      transition->start();
+    default:
+      break;
     }
-
-    SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
-
-    if (transition->is_started()) {
-      transition->display(img_zs_presents);
-    }
-    SDL_BlitSurface(img_zs_presents, NULL, zsdx->screen, &position);
-    SDL_Flip(zsdx->screen);
   }
-  SDL_FreeSurface(img_zs_presents);
-  delete transition;
 }
 
 /**
- * Phase 3 of the title screen: shows the title screen.
- * @return true if the user wants to quit the program, false otherwise
+ * Updates the title screen.
  */
-void TitleScreen::phase_3_title(void) {
+void TitleScreen::update(void) {
 
-  SDL_Event event;
+  Uint32 now = SDL_GetTicks();
 
-  SDL_Surface *img_title = FileTools::open_image("menus/title.png");
-  Music *title_screen_music = zsdx->game_resource->get_music("title_screen_full.it");
-  title_screen_music->play();
-  TransitionEffect *transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
-  transition->start();
+  switch (current_phase) {
 
-  // wait until the user presses the space bar
-  bool start = false;
-  while (!zsdx->is_exiting() && !start) {
+  case PHASE_BLACK_SCREEN:
 
-    if (SDL_PollEvent(&event)) {
-      zsdx->handle_event(event);
+    if (now >= next_phase_date) {
+      // go to next phase after 0.3 second
+      init_phase_zs_presents();
+    }
 
-      if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
-	start = true;
+    break;
+
+  case PHASE_ZS_PRESENTS:
+
+    if (now >= next_phase_date) {
+
+      if (transition_out->is_over()) {
+
+	// unload current phase
+	exit_phase_zs_presents();
+
+	// go to next phase
+	init_phase_title();
+      }
+      else if (!transition_out->is_started()) {
+	transition_out->start();
       }
     }
 
-    SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
-    if (!transition->is_over()) {
-      transition->display(img_title);
+    break;
+
+  case PHASE_TITLE:
+
+    if (transition_out->is_over()) {
+      exit_phase_title();
+      screen_finished = true;
+      next_screen = NULL;
     }
-    SDL_BlitSurface(img_title, NULL, zsdx->screen, NULL);
-    SDL_Flip(zsdx->screen);
+
+    break;
   }
-  delete transition;
-
-  // transition
-  if (!zsdx->is_exiting()) {
-
-    transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
-    transition->start();
-    while (!zsdx->is_exiting() && !transition->is_over()) {
-
-      if (SDL_PollEvent(&event)) {
-	zsdx->handle_event(event);
-      }
-
-      SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
-      if (!transition->is_over()) {
-	transition->display(img_title);
-      }
-      SDL_BlitSurface(img_title, NULL, zsdx->screen, NULL);
-      SDL_Flip(zsdx->screen);
-    }
-    delete transition;
-  }
-
-  SDL_FreeSurface(img_title);
-
-  // stop the title screen music
-  title_screen_music->stop();
 }
+
+/**
+ * Displays the title screen.
+ */
+void TitleScreen::display(SDL_Surface *screen_surface) {
+
+  switch (current_phase) {
+
+  case PHASE_BLACK_SCREEN:
+    // nothing to display
+    break;
+
+  case PHASE_ZS_PRESENTS:
+    if (transition_out->is_started()) { // out transition
+      transition_out->display(img_zs_presents);
+    }
+    SDL_BlitSurface(img_zs_presents, NULL, screen_surface, &zs_presents_position);
+    break;
+
+  case PHASE_TITLE:
+    if (transition_in->is_started()) {
+      transition_in->display(img_title);
+    }
+    else if (transition_out->is_started()) {
+      transition_out->display(img_title);
+    }
+    SDL_BlitSurface(img_title, NULL, screen_surface, NULL);
+    break;
+  }
+}
+
+/**
+ * Handles an SDL event.
+ * This function is called by the SDL main loop when there is an event.
+ * @param event the SDL event to handle
+ */
+void TitleScreen::handle_event(const SDL_Event &event) {
+
+  if (current_phase == PHASE_TITLE
+      && event.type == SDL_KEYDOWN
+      && event.key.keysym.sym == SDLK_SPACE
+      && !transition_out->is_started()) {
+
+    transition_out->start();
+  }
+}
+
+/**
+ * Initializes phase 1 of the title screen.
+ * A black screen will be shown for a fraction of second.
+ */
+void TitleScreen::init_phase_black_screen(void) {
+
+  // black screen during 0.3 second
+  current_phase = PHASE_BLACK_SCREEN;
+  next_phase_date = SDL_GetTicks() + 300;
+}
+
+/**
+ * Initializes phase 2 of the title screen.
+ * The message "Zelda Solarus presents" will be shown.
+ */
+void TitleScreen::init_phase_zs_presents(void) {
+
+  current_phase = PHASE_ZS_PRESENTS;
+
+  img_zs_presents = FileTools::open_image("menus/zelda_solarus_presents.png");
+  zsdx->game_resource->get_sound("intro")->play();
+  zs_presents_position.x = 112;
+  zs_presents_position.y = 96;
+
+  next_phase_date = SDL_GetTicks() + 2000; // intro: 2 seconds
+  transition_out = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
+}
+
+/**
+ * Exits phase 2 of the title screen.
+ */
+ void TitleScreen::exit_phase_zs_presents(void) {
+ 
+   SDL_FreeSurface(img_zs_presents);
+   delete transition_out;
+ }
+
+/**
+ * Initializes phase 3 of the title screen.
+ * The title screen will be shown.
+ */
+void TitleScreen::init_phase_title(void) {
+
+  current_phase = PHASE_TITLE;
+
+  img_title = FileTools::open_image("menus/title.png");
+  title_screen_music = zsdx->game_resource->get_music("title_screen_full.it");
+  title_screen_music->play();
+
+  transition_in = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
+  transition_in->start();
+  transition_out = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_OUT);
+}
+
+/**
+ * Exits phase 3 of the title screen.
+ */
+ void TitleScreen::exit_phase_title(void) {
+
+   delete transition_in;
+   delete transition_out;
+   SDL_FreeSurface(img_title);
+   title_screen_music->stop();
+ }

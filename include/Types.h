@@ -24,6 +24,7 @@ typedef std::string MessageId;
  * Declaration of all classes to avoid dependencies between the header files.
  */
 class ZSDX;
+class Screen;
 class Game;
 class GameResource;
 class KeysEffect;

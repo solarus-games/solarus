@@ -13,17 +13,6 @@
 #include "SwordIcon.h"
 
 /**
- * The differents screens of the selection menu.
- */
-enum SelectionMenuScreens {
-  SELECT_FILE   = 0,
-  ERASE_FILE    = 1,
-  CONFIRM_ERASE = 2,
-  CHOOSE_NAME   = 3,
-  CHOOSE_MODE   = 4,
-};
-
-/**
  * The title text showed over the menu.
  */
 string SelectionMenu::title_strings[5] = {
@@ -66,6 +55,9 @@ SelectionMenu::SelectionMenu(void):
 
   cursor = new Sprite("menus/selection_menu_cursor");
 
+  // initialize the surface
+  destination_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+
   // texts
   text_option1 = new TextDisplayed(90, 172, ALIGN_LEFT, ALIGN_MIDDLE);
   text_option2 = new TextDisplayed(198, 172, ALIGN_LEFT, ALIGN_MIDDLE);
@@ -87,9 +79,19 @@ SelectionMenu::SelectionMenu(void):
   letter_sound = zsdx->game_resource->get_sound("danger");
   erase_sound = zsdx->game_resource->get_sound("boss_dead");
   error_sound = zsdx->game_resource->get_sound("wrong");
-  
+
+  // music
+  music = zsdx->game_resource->get_music("game_over.it");
+  music->play();
+
   // initialize the clouds
   initialize_clouds();
+
+  // in transition
+  transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
+  transition->start();
+
+  start_select_file_phase(); // with current_phase = PHASE_SELECT_FILE;
 }
 
 /**
@@ -103,6 +105,7 @@ SelectionMenu::~SelectionMenu(void) {
   SDL_FreeSurface(img_arrow);
   SDL_FreeSurface(img_letters);
   SDL_FreeSurface(img_mode);
+  SDL_FreeSurface(destination_surface);
 
   delete text_option1;
   delete text_option2;
@@ -121,6 +124,12 @@ SelectionMenu::~SelectionMenu(void) {
   delete keys_effect;
 
   delete cursor;
+
+  if (transition != NULL) {
+    delete transition;
+  }
+
+  music->stop();
 }
 
 /**
@@ -257,19 +266,8 @@ void SelectionMenu::read_saves(void) {
  */
 void SelectionMenu::show(void) {
 
-  // initialize the screen
-  destination_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
-
-  // play the selection menu music
-  Music *music = zsdx->game_resource->get_music("game_over.it");
-  music->play();
-
-  // in transition
-  transition = TransitionEffect::create_transition(TRANSITION_FADE, TRANSITION_IN);
-  transition->start();
-
-  // show the first screen
-  show_select_file_screen();
+  // show the first phase
+  show_select_file_phase();
 
   // out transition (the selection menu is over now)
   delete transition;
@@ -284,13 +282,9 @@ void SelectionMenu::show(void) {
 	zsdx->handle_event(event);
       }
 
-      redraw_choose_mode_screen();
+      display_choose_mode_phase();
     }
-    delete transition;
   }
-
-  SDL_FreeSurface(destination_surface);
-  music->stop();
 }
 
 /**
@@ -326,10 +320,110 @@ bool SelectionMenu::is_adventure_mode(void) {
 }
 
 /**
- * Redraws the elements common to all the screens of
+ * Updates the title screen.
+ */
+void SelectionMenu::update(void) {
+
+  // update the elements common to all phases
+  update_common();
+
+  // update the elements specific to the current phase
+  switch (current_phase) {
+
+  case PHASE_SELECT_FILE:
+    update_select_file_phase();
+    break;
+
+  case PHASE_ERASE_FILE:
+    update_erase_file_phase();
+    break;
+
+  case PHASE_CONFIRM_ERASE:
+    update_confirm_erase_phase();
+    break;
+
+  case PHASE_CHOOSE_NAME:
+    update_choose_name_phase();
+    break;
+
+  case PHASE_CHOOSE_MODE:
+    update_choose_mode_phase();
+    break;
+  }
+}
+
+/**
+ * Updates the data common to all phases of the selection menu
+ * (i.e. the sprites animations and the position of the clouds).
+ */
+void SelectionMenu::update_common(void) {
+
+  // move the clouds
+  Uint32 now = SDL_GetTicks();
+  while (now >= next_cloud_move) {
+    
+    for (int i = 0; i < 16; i++) {
+      cloud_positions[i].x += 1;
+      cloud_positions[i].y -= 1;
+
+      if (cloud_positions[i].x >= 320) {
+	cloud_positions[i].x = 0;
+      }
+
+      if (cloud_positions[i].y <= -44) {
+	cloud_positions[i].y = 240 - 44;
+      }
+    }
+
+    next_cloud_move += 100;
+  }
+
+  // update the icons
+  action_icon->update();
+  sword_icon->update();
+
+  // update the animation of the cursor
+  cursor->update_current_frame();
+}
+
+/**
+ * Displays the title screen.
+ */
+void SelectionMenu::display(SDL_Surface *screen_surface) {
+
+  // display the elements common to all phases
+  display_common();
+  
+  // display the elements specific to the current phase
+  switch (current_phase) {
+
+  case PHASE_SELECT_FILE:
+    display_select_file_phase();
+    break;
+
+  case PHASE_ERASE_FILE:
+    display_erase_file_phase();
+    break;
+
+  case PHASE_CONFIRM_ERASE:
+    display_confirm_erase_phase();
+    break;
+
+  case PHASE_CHOOSE_NAME:
+    display_choose_name_phase();
+    break;
+
+  case PHASE_CHOOSE_MODE:
+    display_choose_mode_phase();
+    break;
+  }
+}
+
+/**
+ * Displays the elements common to all the phases of
  * the selection menu.
  */
-void SelectionMenu::redraw_common(void) {
+void SelectionMenu::display_common(void) {
 
   // background color
   SDL_FillRect(destination_surface, NULL, get_color(104, 144, 240));
@@ -385,37 +479,12 @@ void SelectionMenu::redraw_common(void) {
 }
 
 /**
- * Updates the data common to all screens of the selection menu
- * (i.e. the sprites animations and the position of the clouds).
+ * Handles an SDL event.
+ * This function is called by the SDL main loop when there is an event.
+ * @param event the SDL event to handle
  */
-void SelectionMenu::update(void) {
+void SelectionMenu::handle_event(const SDL_Event &event) {
 
-  // move the clouds
-  Uint32 now = SDL_GetTicks();
-  while (now >= next_cloud_move) {
-    
-    for (int i = 0; i < 16; i++) {
-      cloud_positions[i].x += 1;
-      cloud_positions[i].y -= 1;
-
-      if (cloud_positions[i].x >= 320) {
-	cloud_positions[i].x = 0;
-      }
-
-      if (cloud_positions[i].y <= -44) {
-	cloud_positions[i].y = 240 - 44;
-      }
-    }
-
-    next_cloud_move += 100;
-  }
-
-  // update the icons
-  action_icon->update();
-  sword_icon->update();
-
-  // update the animation of the cursor
-  cursor->update_current_frame();
 }
 
 /**
@@ -473,7 +542,7 @@ void SelectionMenu::move_cursor_left_or_right(void) {
  */
 void SelectionMenu::display_title_text(void) {
   
-  text_title->set_text(title_strings[current_screen]);
+  text_title->set_text(title_strings[current_phase]);
   text_title->display(destination_surface);
 }
 
@@ -561,97 +630,41 @@ void SelectionMenu::display_normal_cursor(void) {
 }
 
 /**
- * Shows the main screen of the selection menu.
+ * Initializes the main phase of the selection menu.
  */
-void SelectionMenu::show_select_file_screen(void) {
+void SelectionMenu::start_select_file_phase(void) {
 
-  current_screen = SELECT_FILE;
+  current_phase = SELECT_FILE;
 
   cursor->set_current_animation("blue");
   cursor_position = 1;
 
-  SDL_Event event;
-  SDL_EnableKeyRepeat(0, 0); // no repeat
-
-  Uint32 next_redraw = SDL_GetTicks();
-  while (!zsdx->is_exiting()) {
 
     // if there is an event
     if (SDL_PollEvent(&event)) {
 
       zsdx->handle_event(event);
 
-      if (event.type == SDL_KEYDOWN) {
-
-	switch (event.key.keysym.sym) {
-
-	case SDLK_SPACE:
-	  if (cursor_position == 5) {
-	    // the user chose "Quit"
-	    zsdx->set_exiting();
-	  }
-	  else if (cursor_position == 4) {
-	    // the user chose "Erase"
-	    ok_sound->play();
-	    show_erase_file_screen();
-	    current_screen = SELECT_FILE;
-	    continue;
-	  }
-	  else {
-	    // the user chose a save
-	    ok_sound->play();
-
-	    if (savegames[cursor_position - 1]->is_empty()) {
-	      // the savegame doesn't exist: ask the name
-	      show_choose_name_screen();
-	      current_screen = SELECT_FILE;
-	      continue;
-	    }
-	    else {
-	      // the savegame exists: choose the mode and then start the game
-	      show_choose_mode_screen();
-	      return; // don't redraw the select file screen any more
-	    }
-	  }
-	  break;
-
-	case SDLK_DOWN:
-	  move_cursor_down();
-	  break;
-
-	case SDLK_UP:
-	  move_cursor_up();
-	  break;
-
-	case SDLK_RIGHT:
-	case SDLK_LEFT:
-	  move_cursor_left_or_right();
-	  break;
-
-	default:
-	  break;
-	}
-      }
     }
 
     // update the sprites
     update();
 
     // redraw if necessary
-    while (SDL_GetTicks() >= next_redraw) {
-      redraw_select_file_screen();
-      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
+    while (SDL_GetTicks() >= next_display) {
+      display_select_file_phase();
+      next_display = SDL_GetTicks() + FRAME_INTERVAL;
     }
-  }
+  
 }
 
 /**
- * Redraws the main screen of the selection menu
- * (i.e. the screen showing the 3 saves).
+ * Displays the main phase of the selection menu
+ * (i.e. the phase showing the 3 saves).
  */
-void SelectionMenu::redraw_select_file_screen(void) {
+void SelectionMenu::display_select_file_phase(void) {
 
-  redraw_common();
+  display_common();
 
   // savegames
   for (int i = 0; i < 3; i++) {
@@ -675,18 +688,73 @@ void SelectionMenu::redraw_select_file_screen(void) {
 }
 
 /**
- * Displays the "Which file do you want to erase?" screen.
+ * This function is called when there is an SDL event
+ * in the select file phase.
+ * @param event the event
  */
-void SelectionMenu::show_erase_file_screen(void) {
+void SelectionMenu::event_select_file_phase(const SDL_Event &event) {
 
-  current_screen = ERASE_FILE;
+  if (event.type == SDL_KEYDOWN) {
+    
+    switch (event.key.keysym.sym) {
+      
+    case SDLK_SPACE:
+      if (cursor_position == 5) {
+	// the user chose "Quit"
+	zsdx->set_exiting();
+      }
+      else if (cursor_position == 4) {
+	// the user chose "Erase"
+	ok_sound->play();
+	start_erase_file_phase();
+      }
+      else {
+	// the user chose a save
+	ok_sound->play();
+	
+	if (savegames[cursor_position - 1]->is_empty()) {
+	  // the savegame doesn't exist: ask the name
+	  start_choose_name_phase();
+	}
+	else {
+	  // the savegame exists: choose the mode and then start the game
+	  start_choose_mode_phase();
+	}
+      }
+      break;
+
+    case SDLK_DOWN:
+      move_cursor_down();
+      break;
+      
+    case SDLK_UP:
+      move_cursor_up();
+      break;
+
+    case SDLK_RIGHT:
+    case SDLK_LEFT:
+      move_cursor_left_or_right();
+      break;
+      
+    default:
+      break;
+    }
+  }
+}
+
+/**
+ * Displays the "Which file do you want to erase?" phase.
+ */
+void SelectionMenu::start_erase_file_phase(void) {
+
+  current_phase = ERASE_FILE;
 
   cursor->set_current_animation("red");
 
   bool finished = false;
   SDL_Event event;
 
-  Uint32 next_redraw = SDL_GetTicks();
+  Uint32 next_display = SDL_GetTicks();
   while (!zsdx->is_exiting() && !finished) {
 
     // if there is an event
@@ -718,8 +786,8 @@ void SelectionMenu::show_erase_file_screen(void) {
 	    else {
 	      // the savegame exists: confirm deleting it
 	      ok_sound->play();
-	      show_confirm_erase_screen();
-	      current_screen = ERASE_FILE;
+	      start_confirm_erase_phase();
+	      current_phase = ERASE_FILE;
 	      finished = true;
 	      continue;
 	    }
@@ -749,9 +817,9 @@ void SelectionMenu::show_erase_file_screen(void) {
     update();
 
     // redraw if necessary
-    while (SDL_GetTicks() >= next_redraw) {
-      redraw_erase_file_screen();
-      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
+    while (SDL_GetTicks() >= next_display) {
+      display_erase_file_phase();
+      next_display = SDL_GetTicks() + FRAME_INTERVAL;
     }
   }
 
@@ -759,11 +827,11 @@ void SelectionMenu::show_erase_file_screen(void) {
 }
 
 /**
- * Redraws the "Which file do you want to erase?" screen.
+ * Displays the "Which file do you want to erase?" phase.
  */
-void SelectionMenu::redraw_erase_file_screen(void) {
+void SelectionMenu::display_erase_file_phase(void) {
 
-  redraw_common();
+  display_common();
 
   // savegames
   for (int i = 0; i < 3; i++) {
@@ -787,18 +855,18 @@ void SelectionMenu::redraw_erase_file_screen(void) {
 }
 
 /**
- * Displays the "Are you sure?" screen.
+ * Displays the "Are you sure?" phase.
  */
-void SelectionMenu::show_confirm_erase_screen(void) {
+void SelectionMenu::start_confirm_erase_phase(void) {
 
-  current_screen = CONFIRM_ERASE;
+  current_phase = CONFIRM_ERASE;
 
   bool finished = false;
   SDL_Event event;
 
   cursor_position = 4; // select "no" by default
 
-  Uint32 next_redraw = SDL_GetTicks();
+  Uint32 next_display = SDL_GetTicks();
   while (!zsdx->is_exiting() && !finished) {
 
     // if there is an event
@@ -840,19 +908,19 @@ void SelectionMenu::show_confirm_erase_screen(void) {
     update();
 
     // redraw if necessary
-    while (SDL_GetTicks() >= next_redraw) {
-      redraw_confirm_erase_screen();
-      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
+    while (SDL_GetTicks() >= next_display) {
+      display_confirm_erase_phase();
+      next_display = SDL_GetTicks() + FRAME_INTERVAL;
     }
   }
 }
 
 /**
- * Redraws the "Are you sure?" screen.
+ * Displays the "Are you sure?" phase.
  */
-void SelectionMenu::redraw_confirm_erase_screen(void) {
+void SelectionMenu::display_confirm_erase_phase(void) {
 
-  redraw_common();
+  display_common();
 
   // savegame
   display_savegame(save_number_to_erase);
@@ -880,11 +948,11 @@ void SelectionMenu::delete_save_file(int save_number) {
 }
 
 /**
- * Displays the "What is your name?" screen.
+ * Displays the "What is your name?" phase.
  */
-void SelectionMenu::show_choose_name_screen(void) {
+void SelectionMenu::start_choose_name_phase(void) {
 
-  current_screen = CHOOSE_NAME;
+  current_phase = CHOOSE_NAME;
 
   player_name[0] = '\0';
   text_new_player_name->set_text(player_name);
@@ -898,7 +966,7 @@ void SelectionMenu::show_choose_name_screen(void) {
   bool finished = false;
   SDL_Event event;
 
-  Uint32 next_redraw = SDL_GetTicks();
+  Uint32 next_display = SDL_GetTicks();
   while (!zsdx->is_exiting() && !finished) {
 
     // if there is an event
@@ -952,9 +1020,9 @@ void SelectionMenu::show_choose_name_screen(void) {
     update();
 
     // redraw if necessary
-    while (SDL_GetTicks() >= next_redraw) {
-      redraw_choose_name_screen();
-      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
+    while (SDL_GetTicks() >= next_display) {
+      display_choose_name_phase();
+      next_display = SDL_GetTicks() + FRAME_INTERVAL;
     }
   }
 
@@ -963,11 +1031,11 @@ void SelectionMenu::show_choose_name_screen(void) {
 }
 
 /**
- * Redraws the "What is your name?" screen.
+ * Displays the "What is your name?" phase.
  */
-void SelectionMenu::redraw_choose_name_screen(void) {
+void SelectionMenu::display_choose_name_phase(void) {
 
-  redraw_common();
+  display_common();
 
   // cursor
   cursor->display(destination_surface,
@@ -1094,11 +1162,11 @@ bool SelectionMenu::validate_player_name(void) {
 }
 
 /**
- * Displays the "Choose your game mode" screen.
+ * Displays the "Choose your game mode" phase.
  */
-void SelectionMenu::show_choose_mode_screen(void) {
+void SelectionMenu::start_choose_mode_phase(void) {
 
-  current_screen = CHOOSE_MODE;
+  current_phase = CHOOSE_MODE;
 
   // move the savegame elements to the top
   int save_number = cursor_position - 1;
@@ -1111,7 +1179,7 @@ void SelectionMenu::show_choose_mode_screen(void) {
   bool finished = false;
   SDL_Event event;
 
-  Uint32 next_redraw = SDL_GetTicks();
+  Uint32 next_display = SDL_GetTicks();
   while (!zsdx->is_exiting() && !finished) {
 
     // if there is an event
@@ -1152,19 +1220,19 @@ void SelectionMenu::show_choose_mode_screen(void) {
     update();
 
     // redraw if necessary
-    while (SDL_GetTicks() >= next_redraw) {
-      redraw_choose_mode_screen();
-      next_redraw = SDL_GetTicks() + FRAME_INTERVAL;
+    while (SDL_GetTicks() >= next_display) {
+      display_choose_mode_phase();
+      next_display = SDL_GetTicks() + FRAME_INTERVAL;
     }
   }
 }
 
 /**
- * Redraws the "Choose your game mode" screen.
+ * Displays the "Choose your game mode" phase.
  */
-void SelectionMenu::redraw_choose_mode_screen(void) {
+void SelectionMenu::display_choose_mode_phase(void) {
 
-  redraw_common();
+  display_common();
 
   // move the selected savegame to the top
   int save_number = cursor_position - 1;

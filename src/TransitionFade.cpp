@@ -34,7 +34,7 @@ void TransitionFade::start(void) {
 }
 
 /**
- * Returns whether the transition effect is started.
+ * Returns whether the transition effect is started and not finished yet.
  * @return true if the transition effect is started
  */
 bool TransitionFade::is_started(void) {

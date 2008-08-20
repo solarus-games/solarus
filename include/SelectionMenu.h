@@ -6,9 +6,20 @@
 /**
  * This class shows the menu to select the save file and the game mode.
  */
-class SelectionMenu {
+class SelectionMenu: public Screen {
 
  private:
+
+  /**
+   * The differents phases of the selection menu.
+   */
+  enum SelectionMenuPhase {
+    PHASE_SELECT_FILE,
+    PHASE_ERASE_FILE,
+    PHASE_CONFIRM_ERASE,
+    PHASE_CHOOSE_NAME,
+    PHASE_CHOOSE_MODE
+  };
 
   /**
    * The savegames shown in the menu.
@@ -22,9 +33,9 @@ class SelectionMenu {
   bool adventure_mode;
 
   /**
-   * Screen currently displayed.
+   * Phase currently displayed.
    */
-  int current_screen;
+  SelectionMenuPhase current_phase;
 
   // images
   SDL_Surface *img_cloud, *img_background;
@@ -41,7 +52,14 @@ class SelectionMenu {
   TransitionEffect *transition;
 
   // sounds
-  Sound *cursor_sound, *ok_sound, *letter_sound, *erase_sound, *error_sound;
+  Sound *cursor_sound;
+  Sound *ok_sound;
+  Sound *letter_sound;
+  Sound *erase_sound;
+  Sound *error_sound;
+
+  // music
+  Music *music;
 
   // icons
   KeysEffect *keys_effect;
@@ -71,25 +89,35 @@ class SelectionMenu {
   void initialize_clouds(void);
   void read_saves(void);
 
-  // common functions for all screens
+  // common functions for all phases
   void redraw_common(void);
-  void update(void);
+  void update_common(void);
 
-  // management of each screen
-  void show_select_file_screen(void);
-  void redraw_select_file_screen(void);
+  // management of each phase
+  void start_select_file_phase(void);
+  void update_select_file_phase(void);
+  void display_select_file_phase(void);
+  void event_select_file_phase(const SDL_Event &event);
 
-  void show_erase_file_screen(void);
-  void redraw_erase_file_screen(void);
+  void start_erase_file_phase(void);
+  void update_erase_file_phase(void);
+  void display_erase_file_phase(void);
+  void event_select_file_phase(const SDL_Event &event);
 
-  void show_confirm_erase_screen(void);
-  void redraw_confirm_erase_screen(void);
+  void start_confirm_erase_phase(void);
+  void update_confirm_erase_phase(void);
+  void display_confirm_erase_phase(void);
+  void event_confirm_erase_phase(const SDL_Event &event);
 
-  void show_choose_name_screen(void);
-  void redraw_choose_name_screen(void);
+  void start_choose_name_phase(void);
+  void update_choose_name_phase(void);
+  void display_choose_name_phase(void);
+  void event_choose_name_phase(const SDL_Event &event);
 
-  void show_choose_mode_screen(void);
-  void redraw_choose_mode_screen(void);
+  void start_choose_mode_phase(void);
+  void update_choose_mode_phase(void);
+  void display_choose_mode_phase(void);
+  void event_choose_mode_phase(const SDL_Event &event);
 
   // cursor handling
   void move_cursor_up(void);
@@ -112,13 +140,18 @@ class SelectionMenu {
 
  public:
 
+  // creation and destruction
   SelectionMenu(void);
   ~SelectionMenu(void);
 
-  void show(void);
-
+  // information about the user choices
   Savegame *get_selected_save(void);
   bool is_adventure_mode(void);
+
+  // update and display
+  void handle_event(const SDL_Event &event);
+  void update(void);
+  void display(SDL_Surface *screen_surface);
 };
 
 #endif

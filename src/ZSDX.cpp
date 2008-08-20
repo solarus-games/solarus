@@ -40,6 +40,7 @@ ZSDX::ZSDX(void) {
   SDL_ShowCursor(SDL_ENABLE);
   set_fullscreen(false);
   SDL_EnableUNICODE(SDL_ENABLE);
+  SDL_EnableKeyRepeat(0, 0);
  
   color_init();
 
@@ -56,6 +57,8 @@ ZSDX::ZSDX(void) {
   game_resource = new GameResource();
   game = NULL;
 
+  // create the first screen
+  current_screen = new TitleScreen();
   exiting = false;
 }
 
@@ -63,6 +66,7 @@ ZSDX::ZSDX(void) {
  * Cleans everything.
  */
 ZSDX::~ZSDX(void) {
+  delete current_screen;
   delete game_resource;
   TextDisplayed::quit();
   SDL_Quit();
@@ -75,11 +79,11 @@ ZSDX::~ZSDX(void) {
  */
 void ZSDX::set_fullscreen(bool fullscreen) {
   if (fullscreen) {
-    screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+    root_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
     SDL_ShowCursor(SDL_DISABLE);
   }
   else {
-    screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    root_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_ShowCursor(SDL_ENABLE);
   }
   this->fullscreen = fullscreen;
@@ -118,11 +122,57 @@ void ZSDX::set_exiting(void) {
 }
 
 /**
- * Launches the game.
+ * The main function. The SDL loop is executed here.
+ * The SDL events are forwarded to the current screen.
+ * The current screen is redrawn when necessary.
  */
 void ZSDX::main(void) {
 
+  // SDL main loop
+  SDL_Event event;
+  Uint32 now, last_frame_date = 0;
+  int delay;
+
   while (!is_exiting()) {
+
+    // handle the SDL events
+    if (SDL_PollEvent(&event)) {
+      handle_event(event);
+    }
+
+    // update the current screen
+    current_screen->update();
+
+    // go to another screen?
+    if (current_screen->is_screen_finished()) {
+      Screen *next_screen = current_screen->get_next_screen();
+      delete current_screen;
+
+      if (next_screen != NULL) {
+	current_screen = next_screen;
+      }
+      else {
+	current_screen = new TitleScreen();
+      }
+    }
+    else {
+
+      // display everything each time frame
+      now = SDL_GetTicks();
+      delay = (last_frame_date + FRAME_INTERVAL) - now;
+      if (delay <= 0) { // delay is the time before the next display
+	last_frame_date = now;
+	display_current_screen();
+      }
+      else if (delay >= 10) { // if we have time, let's sleep
+	SDL_Delay(delay);
+      }
+
+    }
+  }
+}
+/*
+old code of ZSDX::main():
     
     // title screen
     TitleScreen *title_screen = new TitleScreen();
@@ -160,14 +210,18 @@ void ZSDX::main(void) {
     }
   }
 }
+*/
 
 /**
  * This function handles an SDL event.
- * In any SDL main loop, you should get the event
- * with SDL_PollEvent() and call this function.
+ * It handles the events common to all screens:
+ * closing the window and pressing escape or F5.
+ * The handle_event() method of the current screen
+ * is then called.
  */
 void ZSDX::handle_event(const SDL_Event &event) {
 
+  // handle the common events
   switch (event.type) {
     
     // quit if the user closes the window
@@ -194,6 +248,19 @@ void ZSDX::handle_event(const SDL_Event &event) {
     }
     break;
   }
+
+  // handle the specific events depending on the current screen
+  current_screen->handle_event(event);
+}
+
+/**
+ * Redraws the current screen.
+ */
+void ZSDX::display_current_screen(void) {
+
+  SDL_FillRect(root_surface, NULL, COLOR_BLACK);
+  current_screen->display(root_surface);
+  SDL_Flip(root_surface);
 }
 
 /**

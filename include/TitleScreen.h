@@ -2,24 +2,56 @@
 #define ZSDX_TITLE_SCREEN_H
 
 #include "Common.h"
+#include "Screen.h"
 
 /**
  * This class shows the title screen of the game.
  */
-class TitleScreen {
+class TitleScreen: public Screen {
 
  private:
 
-  void phase_1_black_screen(void);
-  void phase_2_zs_presents(void);
-  void phase_3_title(void);
+  /**
+   * The phases of the title screen.
+   */
+  enum TitleScreenPhase {
+    PHASE_BLACK_SCREEN,
+    PHASE_ZS_PRESENTS,
+    PHASE_TITLE
+  };
+  
+  TitleScreenPhase current_phase;
+  Uint32 next_phase_date;
+  TransitionEffect *transition_in;
+  TransitionEffect *transition_out;
+
+  // phase 1
+  void init_phase_black_screen(void);
+
+  // phase 2
+  SDL_Surface *img_zs_presents;
+  SDL_Rect zs_presents_position;
+
+  void init_phase_zs_presents(void);
+  void exit_phase_zs_presents(void);
+
+  // phase 3
+  SDL_Surface *img_title;
+  Music *title_screen_music;
+
+  void init_phase_title(void);
+  void exit_phase_title(void);
 
  public:
 
+  // creation and destruction
   TitleScreen(void);
   ~TitleScreen(void);
 
-  void show(void);
+  // update and display
+  void handle_event(const SDL_Event &event);
+  void update(void);
+  void display(SDL_Surface *screen_surface);
 };
 
 #endif

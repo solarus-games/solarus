@@ -212,7 +212,7 @@ void Map::update(void) {
 void Map::display() {
 
   // screen
-  Link *link = zsdx->game_resource->get_link();
+  Link *link = zsdx->game->get_link();
   screen_position.x = MIN(MAX(link->get_x() - 160, 0), width - 320);
   screen_position.y = MIN(MAX(link->get_y() - 120, 0), height - 240);  
 
@@ -247,7 +247,7 @@ void Map::start(void) {
   zsdx->game->play_music(music_id);
 
   // put Link
-  Link *link = zsdx->game_resource->get_link();
+  Link *link = zsdx->game->get_link();
   link->set_map(this, entrance->get_direction());
 
   int x = entrance->get_x();

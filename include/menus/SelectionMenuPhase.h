@@ -39,6 +39,8 @@ class SelectionMenuPhase: public Screen {
   SelectionMenuPhase(SelectionMenuPhase *previous,
 		     string title_string);
   virtual ~SelectionMenuPhase(void);
+  
+  void selection_menu_finished(void);
 
   // savegames
   Savegame **get_savegames(void);

@@ -26,32 +26,11 @@ Game::Game(Savegame *savegame):
   current_map(NULL), next_map(NULL),
   transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(NULL),
   current_music_id(Music::none), current_music(NULL) {
-}
 
-/**
- * Destroys the game.
- */
-Game::~Game(void) {
-  delete keys_effect;
-  delete hud;
-}
-
-/**
- * Returns the saved data associated to this game.
- * @return the saved data
- */
-Savegame * Game::get_savegame(void) {
-  return savegame;
-}
-
-/**
- * Lets the user play.
- * The SDL main loop is executed here.
- */
-void Game::play(void) {
+  zsdx->set_game(this);
 
   // initialize Link
-  link = zsdx->game_resource->get_link();
+  link = new Link(savegame->get_equipment());
   link->initialize_sprites();
   link_movement = link->get_movement();
 
@@ -65,250 +44,253 @@ void Game::play(void) {
 		  savegame->get_reserved_integer(SAVEGAME_STARTING_ENTRANCE),
 		  TRANSITION_FADE);
 
-  /*
-  // SDL main loop
-  SDL_Event event;
-  Uint32 now, last_frame_date = 0;
-  int delay;
+}
 
-  while (!zsdx->is_exiting()) {
-
-    // update the transitions between maps
-    // (before reading the keys)
-    update_transitions();
-
-    // handle the SDL events
-    if (SDL_PollEvent(&event)) {
-
-      zsdx->handle_event(event);
-
-      switch (event.type) {
-
-	// a key is pressed
-      case SDL_KEYDOWN:
-	
-	switch (event.key.keysym.unicode) {
-	  
-	case SDLK_c:
-	  
-	  if (is_showing_message()) {
-	    dialog_box->sword_key_pressed();
-	  }
-	  else switch (keys_effect->get_sword_key_effect()) {
-	    
-	  case SWORD_KEY_SWORD:
-	    if (!is_suspended()) {
-	      link->start_sword();
-	    }
-	    break;
-	    
-	  default:
-	    break;
-	  }
-	  break;
-
-	case SDLK_SPACE:
-	  if (!is_suspended()) {
-	    link->action_key_pressed();
-	  }
-	  else {
-	    if (is_showing_message()) {
-	      dialog_box->action_key_pressed();
-	    }
-	  }
-	  break;
-	  
-	  // TODO remove
-	case SDLK_p:
-	  savegame->get_equipment()->add_hearts(2);
-	  break;
-	  
-	case SDLK_m:
-	  savegame->get_equipment()->remove_hearts(1);
-	  break;
-	  
-	case SDLK_o:
-	  savegame->get_equipment()->add_rupees(23);
-	  break;
-	  
-	case SDLK_l:
-	  savegame->get_equipment()->remove_rupees(14);
-	  break;
-	  
-	case SDLK_i:
-	  savegame->get_equipment()->add_magic(10);
-	  break;
-	  
-	case SDLK_k:
-	  savegame->get_equipment()->remove_magic(4);
-	  break;
-	  
-	case SDLK_j:
-	  if (!savegame->get_equipment()->is_magic_decreasing()) {
-	    savegame->get_equipment()->start_removing_magic(200);
-	  }
-	  else {
-	    savegame->get_equipment()->stop_removing_magic();
-	  }
-	  break;
-	  
-	case SDLK_s:
-	  savegame->save();
-	  break;
-	  
-	case SDLK_d:
-	  
-	  // temoporary code to make like the game is paused
-	  if (!is_paused()) {
-	    
-	    zsdx->game_resource->get_sound("pause_open")->play();
-	    keys_effect->set_pause_key_effect(PAUSE_KEY_RETURN);
-	    keys_effect->set_sword_key_effect(SWORD_KEY_SAVE);
-	    paused = true;
-	  }
-	  else {
-	    zsdx->game_resource->get_sound("pause_closed")->play();
-	    keys_effect->set_pause_key_effect(PAUSE_KEY_PAUSE);
-	    keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
-	    paused = false;
-	  }
-	  break;
-
-	case SDLK_a:
-	  // temporary code to test the dialog box
-	  if (!is_showing_message()) {
-	    show_message("msg");
-	    dialog_box->add_variable(42);
-	    dialog_box->add_variable(savegame->get_reserved_string(SAVEGAME_PLAYER_NAME));
-	  }
-	  break;
-
-	default:
-	  break;
-	}
-
-	if (!is_suspended()) {
-	  switch (event.key.keysym.sym) {
-	      
-	    // move Link
-	  case SDLK_RIGHT:
-	    link_movement->start_right();
-	    break;
-	    
-	  case SDLK_UP:
-	    link_movement->start_up();
-	    break;
-	    
-	  case SDLK_LEFT:
-	    link_movement->start_left();
-	    break;
-	    
-	  case SDLK_DOWN:
-	    link_movement->start_down();
-	    break;
-
-	  default:
-	    break;
-	  }
-	}
-	else if (is_showing_message()) {
-	  if (event.key.keysym.sym == SDLK_UP
-	      || event.key.keysym.sym == SDLK_DOWN) {
-	    dialog_box->switch_answer();
-	  }
-	}
-		
-	// TODO remove
-	switch (event.key.keysym.sym) {
-	  
-	case SDLK_KP7:
-	  savegame->get_equipment()->set_max_magic(0);
-	  break;
-	  
-	case SDLK_KP8:
-	  savegame->get_equipment()->set_max_magic(42);
-	  break;
-	  
-	case SDLK_KP9:
-	  savegame->get_equipment()->set_max_magic(84);
-	  break;
-	  
-	case SDLK_KP1:
-	  savegame->get_equipment()->set_tunic_number(MAX(savegame->get_equipment()->get_tunic_number() - 1, 0));
-	  break;
-
-	case SDLK_KP4:
-	  savegame->get_equipment()->set_tunic_number(MIN(savegame->get_equipment()->get_tunic_number() + 1, 2));
-	  break;
-	  
-	case SDLK_KP2:
-	  savegame->get_equipment()->set_sword_number(MAX(savegame->get_equipment()->get_sword_number() - 1, 0));
-	  break;
-	  
-	case SDLK_KP5:
-	  savegame->get_equipment()->set_sword_number(MIN(savegame->get_equipment()->get_sword_number() + 1, 4));
-	  break;
-	  
-	case SDLK_KP3:
-	  savegame->get_equipment()->set_shield_number(MAX(savegame->get_equipment()->get_shield_number() - 1, 0));
-	  break;
-	  
-	case SDLK_KP6:
-	  savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
-	  break;
-	  
-	default:
-	  break;
-	}
-	break;
-	
-	// stop Link's movement
-      case SDL_KEYUP:
-	if (!is_suspended()) {
-	  switch (event.key.keysym.sym) {
-	    
-	  case SDLK_RIGHT:
-	    link_movement->stop_right();
-	    break;
-	    
-	  case SDLK_UP:
-	    link_movement->stop_up();
-	    break;
-	    
-	  case SDLK_LEFT:
-	    link_movement->stop_left();
-	    break;
-	    
-	  case SDLK_DOWN:
-	    link_movement->stop_down();
-	    break;
-	    
-	  default:
-	    break;
-	  }
-	}
-      }
-    }
-
-    // update every element of the game
-    update();
-
-    // display everything each time frame
-    now = SDL_GetTicks();
-    delay = (last_frame_date + FRAME_INTERVAL) - now;
-    if (delay <= 0) { // delay is the time before the next display
-      last_frame_date = now;
-      display(current_map);
-    }
-    else if (delay >= 10) { // if we have time, let's sleep
-      SDL_Delay(delay);
-    }
-  }
-  */
+/**
+ * Destroys the game.
+ */
+Game::~Game(void) {
 
   // quit the game
   current_map->leave(); // tell the map that Link is not there anymore
   stop_music();
+
+  delete keys_effect;
+  delete hud;
+  delete link;
+  delete savegame;
+
+  zsdx->set_game(NULL);
+}
+
+/**
+ * Returns the saved data associated to this game.
+ * @return the saved data
+ */
+Savegame * Game::get_savegame(void) {
+  return savegame;
+}
+
+/**
+ * Returns Link.
+ * @return Link
+ */
+Link * Game::get_link(void) {
+  return link;
+}
+
+/**
+ * This function is called by the SDL main loop
+ * when an SDL event occurs during the game.
+ */
+void Game::handle_event(const SDL_Event &event) {
+
+  switch (event.type) {
+
+    // a key is pressed
+  case SDL_KEYDOWN:
+	
+    switch (event.key.keysym.unicode) {
+	  
+    case SDLK_c:
+	  
+      if (is_showing_message()) {
+	dialog_box->sword_key_pressed();
+      }
+      else switch (keys_effect->get_sword_key_effect()) {
+	    
+      case SWORD_KEY_SWORD:
+	if (!is_suspended()) {
+	  link->start_sword();
+	}
+	break;
+	    
+      default:
+	break;
+      }
+      break;
+
+    case SDLK_SPACE:
+      if (!is_suspended()) {
+	link->action_key_pressed();
+      }
+      else {
+	if (is_showing_message()) {
+	  dialog_box->action_key_pressed();
+	}
+      }
+      break;
+	  
+      // TODO remove
+    case SDLK_p:
+      savegame->get_equipment()->add_hearts(2);
+      break;
+      
+    case SDLK_m:
+      savegame->get_equipment()->remove_hearts(1);
+      break;
+	  
+    case SDLK_o:
+      savegame->get_equipment()->add_rupees(23);
+      break;
+	  
+    case SDLK_l:
+      savegame->get_equipment()->remove_rupees(14);
+      break;
+	  
+    case SDLK_i:
+      savegame->get_equipment()->add_magic(10);
+      break;
+	  
+    case SDLK_k:
+      savegame->get_equipment()->remove_magic(4);
+      break;
+	  
+    case SDLK_j:
+      if (!savegame->get_equipment()->is_magic_decreasing()) {
+	savegame->get_equipment()->start_removing_magic(200);
+      }
+      else {
+	savegame->get_equipment()->stop_removing_magic();
+      }
+      break;
+	  
+    case SDLK_s:
+      savegame->save();
+      break;
+	  
+    case SDLK_d:
+	  
+      // temoporary code to make like the game is paused
+      if (!is_paused()) {
+	    
+	zsdx->game_resource->get_sound("pause_open")->play();
+	keys_effect->set_pause_key_effect(PAUSE_KEY_RETURN);
+	keys_effect->set_sword_key_effect(SWORD_KEY_SAVE);
+	paused = true;
+      }
+      else {
+	zsdx->game_resource->get_sound("pause_closed")->play();
+	keys_effect->set_pause_key_effect(PAUSE_KEY_PAUSE);
+	keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
+	paused = false;
+      }
+      break;
+
+    case SDLK_a:
+      // temporary code to test the dialog box
+      if (!is_showing_message()) {
+	show_message("msg");
+	dialog_box->add_variable(42);
+	dialog_box->add_variable(savegame->get_reserved_string(SAVEGAME_PLAYER_NAME));
+      }
+      break;
+
+    default:
+      break;
+    }
+
+    if (!is_suspended()) {
+      switch (event.key.keysym.sym) {
+	      
+	// move Link
+      case SDLK_RIGHT:
+	link_movement->start_right();
+	break;
+	    
+      case SDLK_UP:
+	link_movement->start_up();
+	break;
+	    
+      case SDLK_LEFT:
+	link_movement->start_left();
+	break;
+	    
+      case SDLK_DOWN:
+	link_movement->start_down();
+	break;
+
+      default:
+	break;
+      }
+    }
+    else if (is_showing_message()) {
+      if (event.key.keysym.sym == SDLK_UP
+	  || event.key.keysym.sym == SDLK_DOWN) {
+	dialog_box->switch_answer();
+      }
+    }
+
+    // TODO remove
+    switch (event.key.keysym.sym) {
+	  
+    case SDLK_KP7:
+      savegame->get_equipment()->set_max_magic(0);
+      break;
+	  
+    case SDLK_KP8:
+      savegame->get_equipment()->set_max_magic(42);
+      break;
+	  
+    case SDLK_KP9:
+      savegame->get_equipment()->set_max_magic(84);
+      break;
+	  
+    case SDLK_KP1:
+      savegame->get_equipment()->set_tunic_number(MAX(savegame->get_equipment()->get_tunic_number() - 1, 0));
+      break;
+
+    case SDLK_KP4:
+      savegame->get_equipment()->set_tunic_number(MIN(savegame->get_equipment()->get_tunic_number() + 1, 2));
+      break;
+	  
+    case SDLK_KP2:
+      savegame->get_equipment()->set_sword_number(MAX(savegame->get_equipment()->get_sword_number() - 1, 0));
+      break;
+	  
+    case SDLK_KP5:
+      savegame->get_equipment()->set_sword_number(MIN(savegame->get_equipment()->get_sword_number() + 1, 4));
+      break;
+	  
+    case SDLK_KP3:
+      savegame->get_equipment()->set_shield_number(MAX(savegame->get_equipment()->get_shield_number() - 1, 0));
+      break;
+	  
+    case SDLK_KP6:
+      savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
+      break;
+	  
+    default:
+      break;
+    }
+    break;
+	
+    // stop Link's movement
+  case SDL_KEYUP:
+    if (!is_suspended()) {
+      switch (event.key.keysym.sym) {
+	    
+      case SDLK_RIGHT:
+	link_movement->stop_right();
+	break;
+	    
+      case SDLK_UP:
+	link_movement->stop_up();
+	break;
+	    
+      case SDLK_LEFT:
+	link_movement->stop_left();
+	break;
+	    
+      case SDLK_DOWN:
+	link_movement->stop_down();
+	break;
+	    
+      default:
+	break;
+      }
+    }
+  }
 }
 
 /**
@@ -361,22 +343,25 @@ void Game::update_transitions(void) {
  */
 void Game::update(void) {
 
-    // update the entity's positions and animations
-    AnimatedTile::update();
-    current_map->update();
+  // update the transitions between maps
+  update_transitions();
 
-    // update the equipment and HUD
-    savegame->get_equipment()->update();
-    update_keys_effect();
-    hud->update();
+  // update the entity's positions and animations
+  AnimatedTile::update();
+  current_map->update();
 
-    // update the dialog box (if any)
-    if (is_showing_message()) {
-      update_dialog_box();
-    }
+  // update the equipment and HUD
+  savegame->get_equipment()->update();
+  update_keys_effect();
+  hud->update();
 
-    // update the sound system
-    Sound::update();
+  // update the dialog box (if any)
+  if (is_showing_message()) {
+    update_dialog_box();
+  }
+
+  // update the sound system
+  Sound::update();
 }
 
 /**
@@ -427,32 +412,36 @@ void Game::update_dialog_box(void) {
 }
 
 /**
- * Displays the specified map on the screen.
- * @param map the map to display
+ * Displays the game.
+ * @param screen_surface the surface where the game will be displayed
  */
-void Game::display(Map *map) {
-  /*
-  SDL_FillRect(zsdx->screen, NULL, COLOR_BLACK);
+void Game::display(SDL_Surface *screen_surface) {
 
   // display the map
-  map->display();
+  current_map->display();
   if (transition != NULL) {
-    transition->display(map->get_visible_surface());
+    transition->display(current_map->get_visible_surface());
   }
-  SDL_BlitSurface(map->get_visible_surface(), NULL, zsdx->screen, NULL);
+  SDL_BlitSurface(current_map->get_visible_surface(), NULL, screen_surface, NULL);
 
   // display the pause screen if any
   // TODO
 
   // display the hud
-  hud->display(zsdx->screen);
+  hud->display(screen_surface);
 
   // display the dialog box if any
   if (is_showing_message()) {
-    dialog_box->display(zsdx->screen);
+    dialog_box->display(screen_surface);
   }
+}
 
-  SDL_Flip(zsdx->screen);*/
+/**
+ * Returns the current map.
+ * @return the current map
+ */
+Map * Game::get_current_map(void) {
+  return current_map;
 }
 
 /**

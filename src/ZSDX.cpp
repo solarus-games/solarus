@@ -73,6 +73,14 @@ ZSDX::~ZSDX(void) {
 }
 
 /**
+ * Sets the current game.
+ * @param game the game
+ */
+void ZSDX::set_game(Game *game) {
+  this->game = game;
+}
+
+/**
  * Sets the full screen mode or the windowed mode.
  * @param fullscreen true for full screen mode, false for the windowed mode
  */

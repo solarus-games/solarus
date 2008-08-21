@@ -9,7 +9,7 @@
 #include "entities/Link.h"
 #include "Map.h"
 #include "ZSDX.h"
-#include "GameResource.h"
+#include "Game.h"
 
 /**
  * Constructor.
@@ -387,7 +387,7 @@ void MapEntities::remove_marked_entities(void) {
 void MapEntities::set_suspended(bool suspended) {
 
   // Link
-  Link *link = zsdx->game_resource->get_link();
+  Link *link = zsdx->game->get_link();
   link->set_suspended(suspended);
 
   // other entities
@@ -410,7 +410,7 @@ void MapEntities::set_suspended(bool suspended) {
 void MapEntities::update(void) {
   
   // update Link's position, movement and animation
-  Link *link = zsdx->game_resource->get_link();
+  Link *link = zsdx->game->get_link();
   link->update();
 
   // update the animated tiles and sprites
@@ -437,7 +437,7 @@ void MapEntities::update(void) {
  */
 void MapEntities::display() {
 
-  Link* link = zsdx->game_resource->get_link();
+  Link* link = zsdx->game->get_link();
 
   // map entities
   for (int layer = 0; layer < LAYER_NB; layer++) {

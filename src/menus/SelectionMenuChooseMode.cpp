@@ -2,6 +2,7 @@
 #include "TransitionEffect.h"
 #include "FileTools.h"
 #include "Savegame.h"
+#include "Game.h"
 
 /**
  * Creates a selection menu with the phase where the
@@ -21,7 +22,8 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
  */
 SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
   SDL_FreeSurface(img_mode);
-  SDL_FreeSurface(savegame_surface);;
+  SDL_FreeSurface(savegame_surface);
+  selection_menu_finished();
 }
 
 /**
@@ -73,13 +75,12 @@ void SelectionMenuChooseMode::update(void) {
 
   if (transition != NULL && transition->is_over()) {
 
-    // TODO Savegame *savegame = get_savegame(get_cursor_position() - 1);
-    // TODO    Savegame *savegame_copy = new Savegame(savegame->get_file_name());
+    Savegame *savegame = get_savegame(get_cursor_position() - 1);
+    Savegame *savegame_copy = new Savegame(savegame->get_file_name());
     // because the first one will be deleted
 
     if (adventure_mode) {
-      // TODO set_next_screen(new Game(savegame_copy));
-      set_next_screen(NULL);
+      set_next_screen(new Game(savegame_copy));
     }
     else {
       set_next_screen(NULL);

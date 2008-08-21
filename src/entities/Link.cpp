@@ -7,7 +7,6 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "GameResource.h"
-#include "Savegame.h"
 #include "Equipment.h"
 #include "Map.h"
 #include "Sound.h"
@@ -87,8 +86,8 @@ const SoundId Link::sword_sound_ids[4] = {
 /**
  * Constructor.
  */
-Link::Link(void):
-  map(NULL), equipment(zsdx->game->get_savegame()->get_equipment()),
+Link::Link(Equipment *equipment):
+  map(NULL), equipment(equipment),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
   state(LINK_STATE_FREE), walking(false),
   counter(0), next_counter_date(0),
@@ -116,6 +115,15 @@ Link::~Link(void) {
   }
 
   destroy_carried_items();
+}
+
+/**
+ * Returns whether this entity is the hero
+ * controlled by the player.
+ * @return true
+ */
+bool Link::is_hero(void) {
+  return true;
 }
 
 /**
@@ -183,7 +191,7 @@ void Link::set_map(Map *map, int initial_direction) {
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   keys_effect->set_action_key_effect(ACTION_KEY_NONE);
 
-  // stop loading the sword or carrying an item 
+  // stop loading the sword or carrying an item
   switch (get_state()) {
 
   case LINK_STATE_CARRYING:
@@ -196,8 +204,10 @@ void Link::set_map(Map *map, int initial_direction) {
 
   }
 
+  // destroy any carried item from the previous map
   destroy_carried_items();
 
+  // take the specified direction
   set_animation_direction(initial_direction);
 }
 

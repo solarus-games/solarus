@@ -1,6 +1,5 @@
 #include "Equipment.h"
 #include "ZSDX.h"
-#include "GameResource.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "entities/Link.h"
@@ -79,7 +78,10 @@ void Equipment::set_tunic_number(int tunic_number) {
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, tunic_number);
-    zsdx->game_resource->get_link()->initialize_sprites(); // reinitialize Link's sprites
+
+    if (zsdx->game != NULL) {
+      zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
+    }
   }
 }
 
@@ -118,7 +120,10 @@ void Equipment::set_sword_number(int sword_number) {
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, sword_number);
-    zsdx->game_resource->get_link()->initialize_sprites(); // reinitialize Link's sprites
+
+    if (zsdx->game != NULL) {
+      zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
+    }
   }
 }
 
@@ -157,7 +162,10 @@ void Equipment::set_shield_number(int shield_number) {
     }
 
     savegame->set_reserved_integer(SAVEGAME_LINK_SHIELD, shield_number);
-    zsdx->game_resource->get_link()->initialize_sprites(); // reinitialize Link's sprites
+
+    if (zsdx->game != NULL) {
+      zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
+    }
   }
 }
 

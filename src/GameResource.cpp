@@ -1,6 +1,5 @@
 #include "GameResource.h"
 #include "Map.h"
-#include "entities/Link.h"
 #include "entities/Tileset.h"
 #include "Music.h"
 #include "Sound.h"
@@ -11,7 +10,6 @@
  */
 GameResource::GameResource(void) {
 
-  link = NULL;
 }
 
 /**
@@ -19,11 +17,6 @@ GameResource::GameResource(void) {
  * Destroys all the game resources.
  */
 GameResource::~GameResource(void) {
-
-  // Link
-  if (link != NULL) {
-    delete link;
-  }
 
   // tilesets
   {
@@ -74,19 +67,6 @@ GameResource::~GameResource(void) {
     }
     sprite_animations.clear();
   }
-}
-
-/**
- * Returns Link.
- * @return link
- */
-Link* GameResource::get_link(void) {
-  
-  if (link == NULL) {
-    link = new Link();
-  }
-  
-  return link;
 }
 
 /**

@@ -65,7 +65,7 @@ CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
  * Destructor.
  */
 CarriedItem::~CarriedItem(void) {
-
+  delete shadow_sprite;
 }
 
 /**
@@ -177,7 +177,7 @@ void CarriedItem::update(void) {
       is_breaking = true;
       breaking_sound->play();
       sprite->set_current_animation("destroy");
-      set_movement(NULL);
+      clear_movement();
     }
     else {
       shadow_sprite->update_current_frame();

@@ -58,6 +58,7 @@ class ZSDX {
   GameResource *game_resource;
   Game *game;
 
+  void set_game(Game *game);
   void set_exiting(void);
 
 };

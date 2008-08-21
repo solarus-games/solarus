@@ -39,10 +39,14 @@ SelectionMenuPhase::~SelectionMenuPhase(void) {
   if (transition != NULL) {
     delete transition;
   }
+}
 
-  if (get_next_screen() == NULL) {
-    delete common_part;
-  }
+/**
+ * This function is called by the last selection menu phase
+ * when the selction menu is about to be closed.
+ */
+void SelectionMenuPhase::selection_menu_finished(void) {
+  delete common_part;
 }
 
 /**

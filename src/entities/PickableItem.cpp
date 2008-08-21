@@ -275,9 +275,9 @@ bool PickableItem::is_falling(void) {
  */
 void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 
-  if (entity_overlapping == zsdx->game_resource->get_link()
-      && SDL_GetTicks() >= (Uint32) (appear_date + 500)) {
-    // wait 0.5 second before allowing Link to take the item
+  if (entity_overlapping->is_hero()
+      && SDL_GetTicks() >= (Uint32) (appear_date + 700)) {
+    // wait 0.7 second before allowing Link to take the item
 
     give_item_to_player();
     map->get_entities()->remove_pickable_item(this);

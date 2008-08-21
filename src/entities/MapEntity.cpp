@@ -205,6 +205,15 @@ int MapEntity::get_direction(void) {
 }
 
 /**
+ * Returns whether this entity is the hero
+ * controlled by the player.
+ * @return false by default
+ */
+bool MapEntity::is_hero(void) {
+  return false;
+}
+
+/**
  * Returns the origin point of the entity.
  * @return the origin point
  */

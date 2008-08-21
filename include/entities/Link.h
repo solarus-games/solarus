@@ -115,8 +115,11 @@ class Link: public MapEntity, AnimationListener {
  public:
 
   // creation and destruction
-  Link(void);
+  Link(Equipment *equipment);
   ~Link(void);
+
+  // properties
+  bool is_hero(void);
 
   // movement
   Movement8ByPlayer *get_movement(void);

@@ -16,11 +16,6 @@ class GameResource {
  private:
 
   /**
-   * Link.
-   */
-  Link *link;
-
-  /**
    * The tilesets.
    */
   std::map<TilesetId, Tileset*> tilesets;
@@ -51,8 +46,6 @@ class GameResource {
  public:
   GameResource(void);
   ~GameResource(void);
-
-  Link* get_link(void); // TODO: is link a resource?
 
   Tileset* get_tileset(TilesetId id);
   Map* get_map(MapId id);

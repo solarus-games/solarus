@@ -1,8 +1,6 @@
 #include "entities/MapExit.h"
-#include "entities/Link.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "GameResource.h"
 
 /**
  * Constructor.
@@ -37,7 +35,7 @@ MapExit::~MapExit(void) {
  */
 void MapExit::entity_collision(MapEntity *entity_overlapping) {
   
-  if (entity_overlapping == zsdx->game_resource->get_link()) {
+  if (entity_overlapping->is_hero()) {
     zsdx->game->set_current_map(destination_map_id, entrance_name, transition_type);
   }
 }

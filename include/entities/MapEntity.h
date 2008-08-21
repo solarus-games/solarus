@@ -122,6 +122,7 @@ class MapEntity {
   // properties
   string get_name(void);
   int get_direction(void);
+  virtual bool is_hero(void);
 
   // sprites
   Sprite * get_sprite(int index);

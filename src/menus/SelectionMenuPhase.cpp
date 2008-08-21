@@ -46,27 +46,6 @@ SelectionMenuPhase::~SelectionMenuPhase(void) {
 }
 
 /**
- * Returns the savegame selected by the user.
- * The show() function must have been called first.
- * The savegame returned is not freed when the menu is freed.
- * @return the savegame selected by the user, or NULL
- * if he wants to quit.
- */
-/*
-Savegame * SelectionMenuPhase::get_selected_save(void) {
-
-  if (cursor_position <= 3 && !zsdx->is_exiting()) {
-
-    char file_name[10];
-    sprintf(file_name, "save%d.zsd", cursor_position);
-    return new Savegame(file_name);
-  }
-  
-  return NULL;
-}
-*/
-
-/**
  * Updates the selection menu in this phase.
  * The subclasses should call this function to
  * update the elements common to all phases of
@@ -76,6 +55,12 @@ void SelectionMenuPhase::update(void) {
 
   // update the elements common to all phases
   common_part->update();
+
+  // remove the transition if necessary
+  if (transition != NULL && transition->is_over()) {
+    delete transition;
+    transition = NULL;
+  }
 }
 
 /**
@@ -244,8 +229,7 @@ void SelectionMenuPhase::move_cursor_left_or_right(void) {
 }
 
 /**
- * Draws a title on the selection menu background.
- * @param text the title to add
+ * Draws the title string on destination_surface.
  */
 void SelectionMenuPhase::display_title_text(void) {
   
@@ -254,10 +238,21 @@ void SelectionMenuPhase::display_title_text(void) {
 }
 
 /**
- * Displays a savegame on the surface.
+ * Displays a savegame on the destination_surface.
  * @param save_number number of the savegame to display (0 to 2)
  */
 void SelectionMenuPhase::display_savegame(int save_number) {
+
+  display_savegame(save_number, destination_surface);
+}
+
+/**
+ * Displays a savegame on the specified surface.
+ * @param save_number number of the savegame to display (0 to 2)
+ * @param destination_surface the surface where you want to display
+ * the savegame (may be different from this->destination_surface)
+ */
+void SelectionMenuPhase::display_savegame(int save_number, SDL_Surface *destination_surface) {
 
   SDL_Rect position;
 
@@ -274,13 +269,27 @@ void SelectionMenuPhase::display_savegame(int save_number) {
 }
 
 /**
- * Displays the number of a savegame.
+ * Displays the number of a savegame on destination_surface.
  * This function is separate from the display_savegame() function
  * because the cursor has to be displayed after the savegame images
  * but before the savegame number.
  * @param save_number number to display (0 to 2)
  */
 void SelectionMenuPhase::display_savegame_number(int save_number) {
+
+  display_savegame_number(save_number, destination_surface);
+}
+
+/**
+ * Displays the number of a savegame.
+ * This function is separate from the display_savegame() function
+ * because the cursor has to be displayed after the savegame images
+ * but before the savegame number.
+ * @param save_number number to display (0 to 2)
+ * @param destination_surface the surface where you want to display
+ * the savegame (may be different from this->destination_surface)
+ */
+void SelectionMenuPhase::display_savegame_number(int save_number, SDL_Surface *destination_surface) {
 
   SDL_Rect position;
 

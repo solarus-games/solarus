@@ -41,7 +41,7 @@ void SelectionMenuConfirmErase::handle_event(const SDL_Event &event) {
     case SDLK_SPACE:
       if (cursor_position == 5) {
 	// the user chose "Yes"
-	zsdx->game_resource->get_sound("game_over")->play();
+	zsdx->game_resource->get_sound("boss_dead")->play();
 	delete_save_file(save_number_to_erase);
 	set_cursor_position(save_number_to_erase + 1);
 	set_next_screen(new SelectionMenuSelectFile(this));

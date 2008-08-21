@@ -19,12 +19,12 @@ SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenuPhase *previous):
 
   // initialize the cursor
   get_cursor()->set_current_animation("blue");
-  set_cursor_position(1);
 
   if (previous == NULL) {
     // we don't come from another phase or the selection menu itself: make a transition
     transition = TransitionEffect::create(TRANSITION_FADE, TRANSITION_IN);
     transition->start();
+    set_cursor_position(1);
   }
 }
 
@@ -41,7 +41,7 @@ SelectionMenuSelectFile::~SelectionMenuSelectFile(void) {
  */
 void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
 
-  if (event.type == SDL_KEYDOWN) {
+  if (transition == NULL && event.type == SDL_KEYDOWN) {
 
     int cursor_position = get_cursor_position();
     

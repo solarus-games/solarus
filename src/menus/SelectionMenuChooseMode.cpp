@@ -12,7 +12,8 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
   SelectionMenuPhase(previous, "Choisissez un mode de jeu"),
   adventure_mode(true) {
 
-  img_mode = FileTools::open_image("menus/selection_menu_mode.png");
+  this->img_mode = FileTools::open_image("menus/selection_menu_mode.png");
+  this->savegame_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 }
 
 /**
@@ -20,6 +21,7 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
  */
 SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
   SDL_FreeSurface(img_mode);
+  SDL_FreeSurface(savegame_surface);;
 }
 
 /**
@@ -59,6 +61,7 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
 
     if (finished) {
       transition = TransitionEffect::create(TRANSITION_FADE, TRANSITION_OUT);
+      transition->start();
     }
   }
 }
@@ -67,7 +70,7 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
  * Updates the selection menu in this phase.
  */
 void SelectionMenuChooseMode::update(void) {
-  
+
   if (transition != NULL && transition->is_over()) {
 
     // TODO Savegame *savegame = get_savegame(get_cursor_position() - 1);
@@ -92,6 +95,8 @@ void SelectionMenuChooseMode::update(void) {
       */
     }
   }
+
+  SelectionMenuPhase::update();
 }
 
 /**
@@ -101,13 +106,28 @@ void SelectionMenuChooseMode::display(SDL_Surface *screen_surface) {
 
   start_display(screen_surface);
 
+  // the savegame
+  int i = get_cursor_position() - 1;
+  display_savegame(i, savegame_surface);
+  display_savegame_number(i, savegame_surface);
+
+  // move the savegame to the top
+  SDL_Rect savegame_position;
+  savegame_position.x = 57;
+  savegame_position.y = 75 + i * 27;
+  savegame_position.w = 208;
+  savegame_position.h = 23;
+
+  SDL_Rect position = {57, 75};
+
+  SDL_BlitSurface(savegame_surface, &savegame_position, destination_surface, &position);
+
   // the two boxes
   SDL_Rect box_position = {0, 0, 73, 54};
   if (adventure_mode) {
     box_position.y = 54; // highlight the selected box
   }
 
-  SDL_Rect position;
   position.x = 70;
   position.y = 115;
   SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);

@@ -64,9 +64,11 @@ class SelectionMenuPhase: public Screen {
   // displaying elements
   void display_title_text(void);
   void display_savegame(int save_number);
+  void display_savegame(int save_number, SDL_Surface *destination_surface);
+  void display_savegame_number(int save_number);
+  void display_savegame_number(int save_number, SDL_Surface *destination_surface);
   void display_options(const char *left_string, const char *right_string);
   void display_normal_cursor(void);
-  void display_savegame_number(int save_number);
 
   // update and display for the common part
   virtual void update(void);

@@ -17,21 +17,19 @@
 SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
   SelectionMenuPhase(previous, "Quel est votre nom ?") {
 
+  get_keys_effect()->set_sword_key_enabled(true);
+  get_cursor()->set_current_animation("letters");
+
   player_name[0] = '\0';
 
   text_new_player_name = new TextDisplayed(67, 85, ALIGN_LEFT, ALIGN_MIDDLE);
   text_new_player_name->set_text(player_name);
-
-  get_keys_effect()->set_sword_key_enabled(true);
-  get_cursor()->set_current_animation("letters");
 
   x_letter_cursor = 0;
   y_letter_cursor = 0;
 
   img_arrow = FileTools::open_image("menus/selection_menu_arrow.png");
   img_letters = FileTools::open_image("menus/selection_menu_letters.png");
-
-  text_new_player_name = new TextDisplayed(67, 85, ALIGN_LEFT, ALIGN_MIDDLE);
 }
 
 /**
@@ -41,10 +39,9 @@ SelectionMenuChooseName::~SelectionMenuChooseName(void) {
 
   get_keys_effect()->set_sword_key_enabled(false);
 
+  delete text_new_player_name;
   SDL_FreeSurface(img_arrow);
   SDL_FreeSurface(img_letters);
-
-  delete text_new_player_name;
 }
 
 /**

@@ -20,6 +20,7 @@ class SelectionMenuChooseMode: public SelectionMenuPhase {
   bool adventure_mode;
 
   SDL_Surface *img_mode;
+  SDL_Surface *savegame_surface;
   
  public:
 

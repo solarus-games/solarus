@@ -89,22 +89,22 @@ void Game::handle_event(const SDL_Event &event) {
 
     // a key is pressed
   case SDL_KEYDOWN:
-	
+
     switch (event.key.keysym.unicode) {
-	  
+
     case SDLK_c:
-	  
+
       if (is_showing_message()) {
 	dialog_box->sword_key_pressed();
       }
       else switch (keys_effect->get_sword_key_effect()) {
-	    
+
       case SWORD_KEY_SWORD:
 	if (!is_suspended()) {
 	  link->start_sword();
 	}
 	break;
-	    
+
       default:
 	break;
       }
@@ -120,32 +120,32 @@ void Game::handle_event(const SDL_Event &event) {
 	}
       }
       break;
-	  
+
       // TODO remove
     case SDLK_p:
       savegame->get_equipment()->add_hearts(2);
       break;
-      
+
     case SDLK_m:
       savegame->get_equipment()->remove_hearts(1);
       break;
-	  
+
     case SDLK_o:
       savegame->get_equipment()->add_rupees(23);
       break;
-	  
+
     case SDLK_l:
       savegame->get_equipment()->remove_rupees(14);
       break;
-	  
+
     case SDLK_i:
       savegame->get_equipment()->add_magic(10);
       break;
-	  
+
     case SDLK_k:
       savegame->get_equipment()->remove_magic(4);
       break;
-	  
+
     case SDLK_j:
       if (!savegame->get_equipment()->is_magic_decreasing()) {
 	savegame->get_equipment()->start_removing_magic(200);
@@ -154,13 +154,13 @@ void Game::handle_event(const SDL_Event &event) {
 	savegame->get_equipment()->stop_removing_magic();
       }
       break;
-	  
+
     case SDLK_s:
       savegame->save();
       break;
-	  
+
     case SDLK_d:
-	  
+
       // temoporary code to make like the game is paused
       if (!is_paused()) {
 
@@ -192,20 +192,20 @@ void Game::handle_event(const SDL_Event &event) {
 
     if (!is_suspended()) {
       switch (event.key.keysym.sym) {
-	      
+
 	// move Link
       case SDLK_RIGHT:
 	link_movement->start_right();
 	break;
-	    
+
       case SDLK_UP:
 	link_movement->start_up();
 	break;
-	    
+
       case SDLK_LEFT:
 	link_movement->start_left();
 	break;
-	    
+
       case SDLK_DOWN:
 	link_movement->start_down();
 	break;
@@ -223,19 +223,19 @@ void Game::handle_event(const SDL_Event &event) {
 
     // TODO remove
     switch (event.key.keysym.sym) {
-	  
+
     case SDLK_KP7:
       savegame->get_equipment()->set_max_magic(0);
       break;
-	  
+
     case SDLK_KP8:
       savegame->get_equipment()->set_max_magic(42);
       break;
-	  
+
     case SDLK_KP9:
       savegame->get_equipment()->set_max_magic(84);
       break;
-	  
+
     case SDLK_KP1:
       savegame->get_equipment()->set_tunic_number(MAX(savegame->get_equipment()->get_tunic_number() - 1, 0));
       break;
@@ -243,23 +243,23 @@ void Game::handle_event(const SDL_Event &event) {
     case SDLK_KP4:
       savegame->get_equipment()->set_tunic_number(MIN(savegame->get_equipment()->get_tunic_number() + 1, 2));
       break;
-	  
+
     case SDLK_KP2:
       savegame->get_equipment()->set_sword_number(MAX(savegame->get_equipment()->get_sword_number() - 1, 0));
       break;
-	  
+
     case SDLK_KP5:
       savegame->get_equipment()->set_sword_number(MIN(savegame->get_equipment()->get_sword_number() + 1, 4));
       break;
-	  
+
     case SDLK_KP3:
       savegame->get_equipment()->set_shield_number(MAX(savegame->get_equipment()->get_shield_number() - 1, 0));
       break;
-	  
+
     case SDLK_KP6:
       savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
       break;
-	  
+
     default:
       break;
     }
@@ -269,23 +269,23 @@ void Game::handle_event(const SDL_Event &event) {
   case SDL_KEYUP:
     if (!is_suspended()) {
       switch (event.key.keysym.sym) {
-	    
+
       case SDLK_RIGHT:
 	link_movement->stop_right();
 	break;
-	    
+
       case SDLK_UP:
 	link_movement->stop_up();
 	break;
-	    
+
       case SDLK_LEFT:
 	link_movement->stop_left();
 	break;
-	    
+
       case SDLK_DOWN:
 	link_movement->stop_down();
 	break;
-	    
+
       default:
 	break;
       }

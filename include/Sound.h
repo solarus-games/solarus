@@ -8,6 +8,8 @@
  * This class represents a sound effet that can be played in ZSDX.
  * This class also handles the initialization of the whole sound system.
  * The sound and the music are played with the library FMOD Ex.
+ * To create a sound, prefer the ResourceManager::get_sound() method
+ * than calling directly the constructor of Sound.
  */
 class Sound {
 

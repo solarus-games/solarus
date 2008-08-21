@@ -8,8 +8,13 @@
  * This class provides access to all external resources:
  * images, sounds, maps...
  * Except for the images, all resources are stored into
- * memory when you get them for the first time and they
- * are deleted when the program ends.
+ * memory when you get them for the first time and you
+ * don't have to delete them. They are deleted when the application
+ * ends. This does not consumes much memory because:
+ * - the maps and tilesets have an unload() method you can call,
+ * - the musics and sounds close their audio files when they stop.
+ * The images are the only kind of resources that you have to
+ * free yourself.
  */
 class ResourceManager {
 

@@ -1,5 +1,5 @@
 #include "CounterView.h"
-#include "FileTools.h"
+#include "ResourceManager.h"
 #include "Color.h"
 
 /**
@@ -13,7 +13,7 @@ CounterView::CounterView(unsigned int nb_digits, int x, int y):
   nb_digits(nb_digits) {
   
   surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, 8 * nb_digits, 8, 32, 0, 0, 0, 0);
-  img_digits = FileTools::open_image("hud/digits.png");
+  img_digits = ResourceManager::load_image("hud/digits.png");
  
   destination_position.x = x;
   destination_position.y = y;

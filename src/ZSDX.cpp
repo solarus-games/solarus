@@ -4,7 +4,7 @@
 #include "Music.h"
 #include "Sound.h"
 #include "Game.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Savegame.h"
 #include "TextDisplayed.h"
 #include "Random.h"
@@ -43,6 +43,9 @@ ZSDX::ZSDX(void) {
 
   color_init();
 
+  // initiliaze the resource manager
+  ResourceManager::initialize();
+
   // initiliaze the random number generator
   Random::initialize();
 
@@ -52,13 +55,10 @@ ZSDX::ZSDX(void) {
   // initialize the audio system
   Music::initialize();
 
-  // initialize the game resource
-  game_resource = new GameResource();
-  game = NULL;
-
   // create the first screen
   current_screen = new TitleScreen();
   exiting = false;
+  game = NULL;
 }
 
 /**
@@ -66,7 +66,7 @@ ZSDX::ZSDX(void) {
  */
 ZSDX::~ZSDX(void) {
   delete current_screen;
-  delete game_resource;
+  ResourceManager::quit();
   TextDisplayed::quit();
   SDL_Quit();
   Sound::quit();

@@ -1,8 +1,7 @@
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenuSelectFile.h"
-#include "ZSDX.h"
 #include "Music.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "FileTools.h"
 #include "Color.h"
 #include "TransitionEffect.h"
@@ -153,8 +152,8 @@ void TitleScreen::init_phase_zs_presents(void) {
 
   current_phase = PHASE_ZS_PRESENTS;
 
-  img_zs_presents = FileTools::open_image("menus/zelda_solarus_presents.png");
-  zsdx->game_resource->get_sound("intro")->play();
+  img_zs_presents = ResourceManager::load_image("menus/zelda_solarus_presents.png");
+  ResourceManager::get_sound("intro")->play();
   zs_presents_position.x = 112;
   zs_presents_position.y = 96;
 
@@ -179,8 +178,8 @@ void TitleScreen::init_phase_title(void) {
 
   current_phase = PHASE_TITLE;
 
-  img_title = FileTools::open_image("menus/title.png");
-  title_screen_music = zsdx->game_resource->get_music("title_screen_full.it");
+  img_title = ResourceManager::load_image("menus/title.png");
+  title_screen_music = ResourceManager::get_music("title_screen_full.it");
   title_screen_music->play();
 
   transition_in = TransitionEffect::create(TRANSITION_FADE, TRANSITION_IN);

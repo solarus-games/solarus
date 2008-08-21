@@ -2,7 +2,7 @@
 #include "Equipment.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
-#include "FileTools.h"
+#include "ResourceManager.h"
 
 /**
  * Constructor.
@@ -19,7 +19,7 @@ SwordIcon::SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y
   // static icon
   this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword_number() : 0;
   this->sword_key_effect_displayed = keys_effect->get_sword_key_effect();
-  this->img_sword_icon = FileTools::open_image("hud/sword_icon.png");
+  this->img_sword_icon = ResourceManager::load_image("hud/sword_icon.png");
 
   this->is_enabled = true;
 

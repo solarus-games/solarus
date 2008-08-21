@@ -6,7 +6,7 @@
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Equipment.h"
 #include "Map.h"
 #include "Sound.h"
@@ -297,7 +297,7 @@ void Link::initialize_sprites(void) {
     sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
     sword_sprite->stop_animation();
 
-    sword_sound = zsdx->game_resource->get_sound(sword_sound_ids[sword_number - 1]);
+    sword_sound = ResourceManager::get_sound(sword_sound_ids[sword_number - 1]);
 
     sword_stars_sprite = new Sprite(sword_stars_sprite_ids[sword_number - 1]);
     sword_stars_sprite->stop_animation();
@@ -622,7 +622,7 @@ void Link::update_sword_loading(void) {
   
   // detect when the sword is loaded (i.e. ready for a spin attack)
   if (!sword_loaded && counter >= 10) {
-      zsdx->game_resource->get_sound("sword_spin_attack_load")->play();
+      ResourceManager::get_sound("sword_spin_attack_load")->play();
       sword_loaded = true;
       counter = 0;
   }
@@ -770,7 +770,7 @@ void Link::start_spin_attack(void) {
   sword_loaded = false;
   
   // play the sound
-  zsdx->game_resource->get_sound("sword_spin_attack_release")->play();
+  ResourceManager::get_sound("sword_spin_attack_release")->play();
 
   // start the animation
   tunic_sprite->set_current_animation("spin_attack");

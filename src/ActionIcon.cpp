@@ -1,8 +1,6 @@
 #include "ActionIcon.h"
 #include "KeysEffect.h"
-#include "FileTools.h"
-#include "ZSDX.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Sprite.h"
 
 /**
@@ -17,13 +15,13 @@ ActionIcon::ActionIcon(KeysEffect *keys_effect, int x, int y):
 
   // static icon
   this->action_key_effect_displayed = keys_effect->get_action_key_effect();
-  this->img_action_icon = FileTools::open_image("hud/action_icon.png");
+  this->img_action_icon = ResourceManager::load_image("hud/action_icon.png");
 
   this->is_enabled = true;
 
   // flipping icon
   this->is_flipping = false;
-  this->sprite_action_icon = new Sprite(zsdx->game_resource->get_sprite_animations("hud/action_icon_flip"));
+  this->sprite_action_icon = new Sprite("hud/action_icon_flip");
 
   rebuild();
 }

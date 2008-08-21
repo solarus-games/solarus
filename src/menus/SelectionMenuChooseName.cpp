@@ -1,7 +1,6 @@
 #include "menus/SelectionMenuChooseName.h"
 #include "menus/SelectionMenuSelectFile.h"
-#include "ZSDX.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Sound.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
@@ -28,8 +27,8 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
   x_letter_cursor = 0;
   y_letter_cursor = 0;
 
-  img_arrow = FileTools::open_image("menus/selection_menu_arrow.png");
-  img_letters = FileTools::open_image("menus/selection_menu_letters.png");
+  img_arrow = ResourceManager::load_image("menus/selection_menu_arrow.png");
+  img_letters = ResourceManager::load_image("menus/selection_menu_letters.png");
 }
 
 /**
@@ -132,7 +131,7 @@ bool SelectionMenuChooseName::select_letter(void) {
   size_t length = strlen(player_name);
   char letter_to_add = '\0';
   bool finished = false;
-  Sound *letter_sound = zsdx->game_resource->get_sound("danger");
+  Sound *letter_sound = ResourceManager::get_sound("danger");
 
   switch (y_letter_cursor) {
     

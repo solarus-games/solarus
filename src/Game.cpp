@@ -3,7 +3,7 @@
 #include "Music.h"
 #include "TransitionEffect.h"
 #include "Map.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Savegame.h"
 #include "Color.h"
 #include "HUD.h"
@@ -163,14 +163,14 @@ void Game::handle_event(const SDL_Event &event) {
 	  
       // temoporary code to make like the game is paused
       if (!is_paused()) {
-	    
-	zsdx->game_resource->get_sound("pause_open")->play();
+
+	ResourceManager::get_sound("pause_open")->play();
 	keys_effect->set_pause_key_effect(PAUSE_KEY_RETURN);
 	keys_effect->set_sword_key_effect(SWORD_KEY_SAVE);
 	paused = true;
       }
       else {
-	zsdx->game_resource->get_sound("pause_closed")->play();
+	ResourceManager::get_sound("pause_closed")->play();
 	keys_effect->set_pause_key_effect(PAUSE_KEY_PAUSE);
 	keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
 	paused = false;
@@ -453,7 +453,7 @@ Map * Game::get_current_map(void) {
  */
 void Game::set_current_map(MapId map_id, unsigned int entrance_index, TransitionType transition_type) {
 
-  next_map = zsdx->game_resource->get_map(map_id);
+  next_map = ResourceManager::get_map(map_id);
 
   if (!next_map->is_loaded()) {
     next_map->load();
@@ -472,7 +472,7 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
  */
 void Game::set_current_map(MapId map_id, string entrance_name, TransitionType transition_type) {
 
-  next_map = zsdx->game_resource->get_map(map_id);
+  next_map = ResourceManager::get_map(map_id);
 
   if (!next_map->is_loaded()) {
     next_map->load();
@@ -507,7 +507,7 @@ void Game::play_music(MusicId new_music_id) {
 	current_music->stop();
       }
 
-      Music *new_music = zsdx->game_resource->get_music(new_music_id);
+      Music *new_music = ResourceManager::get_music(new_music_id);
 
       if (new_music->play()) {
 	current_music_id = new_music_id;

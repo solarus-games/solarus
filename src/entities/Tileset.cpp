@@ -2,6 +2,7 @@
 #include "entities/SimpleTile.h"
 #include "entities/AnimatedTile.h"
 #include "FileTools.h"
+#include "ResourceManager.h"
 #include <iomanip>
 
 /**
@@ -94,7 +95,7 @@ void Tileset::load(void) {
   // load the tileset image
   ostringstream oss2(ostringstream::out);
   oss2 << "tilesets/tileset" << setfill('0') << setw(4) << id << ".png";
-  tileset_image = FileTools::open_image(oss2.str());
+  tileset_image = ResourceManager::load_image(oss2.str());
   
   if (tileset_image == NULL) {
     DIE("Cannot load the image '" << file_name << "'");

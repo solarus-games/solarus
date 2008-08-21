@@ -3,11 +3,10 @@
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "AnimationListener.h"
-#include "ZSDX.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 
 /**
- * Creates a sprite.
+ * Creates a sprite with the specified animation set.
  * @param animations the sprite's animations
  */
 Sprite::Sprite(SpriteAnimations *animations):
@@ -18,14 +17,14 @@ suspended(false), over(false), listener(NULL), blink_delay(0) {
 }
 
 /**
- * Creates a sprite.
- * This is equivalent to Sprite(zsdx->game_resource->get_sprite_animations(id)).
+ * Creates a sprite with the specified name of animation set.
+ * This is equivalent to Sprite(ResourceManager::get_sprite_animations(id)).
  * @param id id of the sprite's animations
  */
 Sprite::Sprite(SpriteAnimationsId id):
 current_direction(0), suspended(false), over(false), listener(NULL), blink_delay(0) {
   
-  animations = zsdx->game_resource->get_sprite_animations(id);
+  animations = ResourceManager::get_sprite_animations(id);
   set_current_animation(animations->get_default_animation());
 }
 

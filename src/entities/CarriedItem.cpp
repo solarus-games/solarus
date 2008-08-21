@@ -6,12 +6,12 @@
 #include "movements/FollowMovement.h"
 #include "movements/ThrowItemMovement.h"
 #include "Sprite.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Sound.h"
 #include "Map.h"
+#include "ZSDX.h"
 
 /**
  * Movement of the item when Link is lifting it.
@@ -101,7 +101,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
   is_throwing = true;
 
   // play the sound
-  zsdx->game_resource->get_sound("throw")->play();
+  ResourceManager::get_sound("throw")->play();
 
   // stop the sprite animation
   Sprite *sprite = get_last_sprite();

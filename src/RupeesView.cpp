@@ -2,8 +2,7 @@
 #include "FileTools.h"
 #include "CounterView.h"
 #include "Equipment.h"
-#include "ZSDX.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Sound.h"
 
 /**
@@ -27,7 +26,7 @@ RupeesView::RupeesView(Equipment *equipment, int x, int y):
   rupee_counter(new CounterView(3, 16, 2)),
   next_rupee_update_date(SDL_GetTicks()) {
 
-  img_rupee_icon = FileTools::open_image("hud/rupee_icon.png");
+  img_rupee_icon = ResourceManager::load_image("hud/rupee_icon.png");
 
   nb_max_rupees_displayed = equipment->get_max_rupees();
   
@@ -97,12 +96,12 @@ void RupeesView::update(void) {
 
     // if we have just reached the right value, we play a specific sound
     if (rupee_counter->get_value() == nb_current_rupees) {
-      zsdx->game_resource->get_sound("rupee_counter_end")->play();
+      ResourceManager::get_sound("rupee_counter_end")->play();
     }
 
     // while the counter is scrolling, play a sound (every 3 values)
     else if (nb_current_rupees_displayed % 3 == 0) {
-      zsdx->game_resource->get_sound("rupee_counter")->play();
+      ResourceManager::get_sound("rupee_counter")->play();
     }
 
     need_rebuild = true;

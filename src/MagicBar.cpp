@@ -1,11 +1,11 @@
 #include "MagicBar.h"
 #include "FileTools.h"
 #include "Equipment.h"
-#include "ZSDX.h"
 #include "Game.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Sound.h"
 #include "Sprite.h"
+#include "ZSDX.h"
 
 /**
  * Constructor.
@@ -18,9 +18,9 @@ MagicBar::MagicBar(Equipment *equipment, int x, int y):
   equipment(equipment),
   next_magic_update_date(SDL_GetTicks()) {
 
-  img_magic_bar = FileTools::open_image("hud/magic_bar.png");
+  img_magic_bar = ResourceManager::load_image("hud/magic_bar.png");
   sprite_magic_bar_container = new Sprite("hud/magic_bar");
-  sound_magic_bar = zsdx->game_resource->get_sound("magic_bar");
+  sound_magic_bar = ResourceManager::get_sound("magic_bar");
 
   current_magic_displayed = equipment->get_magic();
   max_magic_displayed = equipment->get_max_magic();

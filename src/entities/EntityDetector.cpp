@@ -2,7 +2,7 @@
 #include "entities/Link.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Map.h"
 #include "KeysEffect.h"
 

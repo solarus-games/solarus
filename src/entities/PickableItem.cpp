@@ -10,7 +10,7 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "Map.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Sound.h"
 
 /**
@@ -290,7 +290,7 @@ void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 void PickableItem::give_item_to_player(void) {
 
   // play the sound
-  Sound *sound = zsdx->game_resource->get_sound(properties[type].sound);
+  Sound *sound = ResourceManager::get_sound(properties[type].sound);
   sound->play();
 
   // give the item

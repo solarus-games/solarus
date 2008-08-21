@@ -1,10 +1,10 @@
 #include "HeartsView.h"
 #include "FileTools.h"
 #include "Equipment.h"
-#include "ZSDX.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Sound.h"
 #include "Sprite.h"
+#include "ZSDX.h"
 
 /**
  * Position of the hearts in the PNG image.
@@ -29,7 +29,7 @@ HeartsView::HeartsView(Equipment *equipment, int x, int y):
   next_heart_update_date(SDL_GetTicks()),
   next_danger_sound_date(SDL_GetTicks()) {
 
-  img_hearts = FileTools::open_image("hud/hearts.png");
+  img_hearts = ResourceManager::load_image("hud/hearts.png");
   empty_heart_sprite = new Sprite("hud/empty_heart");
 
   if (equipment != NULL) {
@@ -76,7 +76,7 @@ void HeartsView::update(void) {
       nb_current_hearts_displayed++;
 
       if (nb_current_hearts_displayed % 4 == 0) {
-	zsdx->game_resource->get_sound("heart")->play();
+	ResourceManager::get_sound("heart")->play();
       }
     }
 
@@ -97,7 +97,7 @@ void HeartsView::update(void) {
 
       if (SDL_GetTicks() > next_danger_sound_date) {
 	next_danger_sound_date = SDL_GetTicks() + 750;
-	zsdx->game_resource->get_sound("danger")->play();
+	ResourceManager::get_sound("danger")->play();
       }
 
       need_rebuild = true;

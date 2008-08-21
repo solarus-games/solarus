@@ -5,7 +5,7 @@ add_executable (zsdx
   # main classes
   ZSDX.cpp
   Screen.cpp
-  GameResource.cpp
+  ResourceManager.cpp
   KeysEffect.cpp
   FileTools.cpp
   Random.cpp

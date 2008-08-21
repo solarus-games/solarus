@@ -1,6 +1,6 @@
 #include "PauseIcon.h"
 #include "KeysEffect.h"
-#include "FileTools.h"
+#include "ResourceManager.h"
 #include "Sprite.h"
 
 /**
@@ -15,7 +15,7 @@ PauseIcon::PauseIcon(KeysEffect *keys_effect, int x, int y):
 
   // static icon
   this->pause_key_effect_displayed = keys_effect->get_pause_key_effect();
-  this->img_pause_icon = FileTools::open_image("hud/pause_icon.png");
+  this->img_pause_icon = ResourceManager::load_image("hud/pause_icon.png");
 
   this->is_enabled = true;
 

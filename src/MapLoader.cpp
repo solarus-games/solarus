@@ -1,8 +1,7 @@
 #include "MapLoader.h"
 #include "Map.h"
 #include "FileTools.h"
-#include "ZSDX.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "entities/Tileset.h"
 #include <iomanip>
 
@@ -55,7 +54,7 @@ void MapLoader::load_map(Map *map) {
   map->width8 = map->width / 8;
   map->height8 = map->height / 8;
 
-  map->tileset = zsdx->game_resource->get_tileset(tileset_id);
+  map->tileset = ResourceManager::get_tileset(tileset_id);
   if (!map->tileset->is_loaded()) {
     map->tileset->load();
   }

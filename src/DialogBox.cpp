@@ -5,7 +5,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Sound.h"
 
 SDL_Surface * DialogBox::img_box = NULL;
@@ -27,9 +27,9 @@ DialogBox::DialogBox(MessageId first_message_id) {
 
   // first instance: load the image and the sounds
   if (img_box == NULL) {
-    img_box = FileTools::open_image("hud/dialog_box.png");
-    end_message_sound = zsdx->game_resource->get_sound("message_end");
-    switch_answer_sound = zsdx->game_resource->get_sound("cursor");
+    img_box = ResourceManager::load_image("hud/dialog_box.png");
+    end_message_sound = ResourceManager::get_sound("message_end");
+    switch_answer_sound = ResourceManager::get_sound("cursor");
   }
 
   // create the sprite

@@ -2,7 +2,6 @@
 #include "MapLoader.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "GameResource.h"
 #include "Sprite.h"
 #include "FileTools.h"
 #include "entities/Tileset.h"

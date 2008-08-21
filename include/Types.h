@@ -9,6 +9,7 @@
 /**
  * Types of the id of each resource.
  */
+typedef std::string ImageId;
 typedef Uint32 MapId;
 typedef Uint32 TilesetId;
 typedef std::string MusicId;
@@ -27,7 +28,7 @@ typedef std::string MessageId;
 // main classes
 class ZSDX;
 class Screen;
-class GameResource;
+class ResourceManager;
 class KeysEffect;
 class FileTools;
 class Random;

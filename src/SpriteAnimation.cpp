@@ -1,6 +1,6 @@
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
-#include "FileTools.h"
+#include "ResourceManager.h"
 
 /**
  * Constructor.
@@ -17,7 +17,7 @@ SpriteAnimation::SpriteAnimation(string image_file_name, int nb_directions,
   nb_directions(nb_directions), directions(directions),
   frame_interval(frame_interval), loop_on_frame(loop_on_frame) {
 
-  src_image = FileTools::open_image(image_file_name);
+  src_image = ResourceManager::load_image(image_file_name);
 }
 
 /**

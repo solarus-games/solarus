@@ -55,7 +55,6 @@ class ZSDX {
   void main(void);
 
   TTF_Font *font;
-  GameResource *game_resource;
   Game *game;
 
   void set_game(Game *game);

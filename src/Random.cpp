@@ -1,6 +1,5 @@
 #include "Random.h"
 
-
 /**
  * Initializes the random number generator.
  */

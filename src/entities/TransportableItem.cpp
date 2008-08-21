@@ -1,12 +1,12 @@
 #include "entities/TransportableItem.h"
 #include "entities/Link.h"
 #include "movements/MovementPath.h"
-#include "ZSDX.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "Map.h"
 #include "Sound.h"
+#include "ZSDX.h"
 
 /**
  * This structure defines the properties of a transportable item type.
@@ -72,7 +72,7 @@ string TransportableItem::get_sprite_animations_id(void) {
  * @return the sound to play when this item is destroyed
  */
 Sound * TransportableItem::get_breaking_sound(void) {
-  return zsdx->game_resource->get_sound(properties[type].breaking_sound_id);
+  return ResourceManager::get_sound(properties[type].breaking_sound_id);
 }
 
 /**
@@ -104,7 +104,7 @@ void TransportableItem::lift(void) {
   // TODO check that Link can lift the object
 
   // play the sound
-  zsdx->game_resource->get_sound("lift")->play();
+  ResourceManager::get_sound("lift")->play();
 
   // create the pickable item
   if (pickable_item != PICKABLE_ITEM_NONE) {

@@ -1,5 +1,4 @@
 #include "menus/SelectionMenuCommon.h"
-#include "FileTools.h"
 #include "Sprite.h"
 #include "TextDisplayed.h"
 #include "Sound.h"
@@ -7,8 +6,7 @@
 #include "ActionIcon.h"
 #include "SwordIcon.h"
 #include "KeysEffect.h"
-#include "ZSDX.h"
-#include "GameResource.h"
+#include "ResourceManager.h"
 #include "HeartsView.h"
 #include "Savegame.h"
 #include "Color.h"
@@ -29,15 +27,15 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   read_savegames();
 
   // load the images
-  img_cloud = FileTools::open_image("menus/selection_menu_cloud.png");
-  img_background = FileTools::open_image("menus/selection_menu_background.png");
-  img_save_container = FileTools::open_image("menus/selection_menu_save_container.png");
-  img_option_container = FileTools::open_image("menus/selection_menu_option_container.png");
+  img_cloud = ResourceManager::load_image("menus/selection_menu_cloud.png");
+  img_background = ResourceManager::load_image("menus/selection_menu_background.png");
+  img_save_container = ResourceManager::load_image("menus/selection_menu_save_container.png");
+  img_option_container = ResourceManager::load_image("menus/selection_menu_option_container.png");
 
   for (int i = 0; i < 3; i++) {
     ostringstream oss;
     oss << "menus/selection_menu_save" << (i + 1) << ".png";
-    img_numbers[i] = FileTools::open_image(oss.str());
+    img_numbers[i] = ResourceManager::load_image(oss.str());
   }
 
   cursor = new Sprite("menus/selection_menu_cursor");
@@ -57,12 +55,12 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   sword_icon = new SwordIcon(keys_effect, NULL, 0, 9);
 
   // sounds
-  cursor_sound = zsdx->game_resource->get_sound("cursor");
-  ok_sound = zsdx->game_resource->get_sound("ok");
-  error_sound = zsdx->game_resource->get_sound("wrong");
+  cursor_sound = ResourceManager::get_sound("cursor");
+  ok_sound = ResourceManager::get_sound("ok");
+  error_sound = ResourceManager::get_sound("wrong");
 
   // music
-  music = zsdx->game_resource->get_music("game_over.it");
+  music = ResourceManager::get_music("game_over.it");
   music->play();
 
   // initialize the clouds

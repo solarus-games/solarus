@@ -19,7 +19,7 @@ const char *Music::unchanged = "same";
 Music::Music(MusicId music_id) {
 
   sound = NULL;
-  file_name = (string) FileTools::data_file_get_prefix() + "/music/" + music_id;
+  file_name = FileTools::data_file_add_prefix((string) "/music/" + music_id);
 
   /*
    * The musics are played with the highest priority.
@@ -78,8 +78,8 @@ bool Music::play(void) {
 
   if (is_initialized()) {
 
-/*  The beginning of any .it music is badly played on my windows
-    workarounds: use FMOD_SOFTWARE or FMOD_OUTPUTTYPE_WINMM
+/*  The beginning of any .it music is badly played on my windows with DirectX
+    other workarounds: use FMOD_SOFTWARE or FMOD_OUTPUTTYPE_WINMM?
     */
     result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_NORMAL, 0, &sound);
 

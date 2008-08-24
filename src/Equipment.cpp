@@ -253,7 +253,7 @@ int Equipment::get_max_hearts(void) {
  * Sets the maximum number of hearts of Link.
  * The program exits with an error message if the given maximum
  * number of hearts is not valid.
- * @param max_hearts Link's maximum number of rupees
+ * @param max_hearts Link's maximum number of hearts
  */
 void Equipment::set_max_hearts(int max_hearts) {
 
@@ -291,7 +291,7 @@ int Equipment::get_hearts(void) {
  */
 void Equipment::set_hearts(int hearts) {
 
-  if (hearts < 0 || hearts > 20 * 4) {
+  if (hearts < 0 || hearts > get_max_hearts() * 4) {
     DIE("Illegal number of hearts: " << hearts);
   }
 
@@ -546,13 +546,12 @@ void Equipment::set_max_bombs(int max_bombs) {
 }
 
 /**
- * Returns whether the player has obtained the bombs.
- * The function returns true if the maximum number of bombs is not zero
- * (even if the player currently does not have any bombs left).
- * @return true if the player has got the bombs
+ * Returns whether the player has at least one bomb.
+ * The function returns true if the current number of bombs is not zero.
+ * @return true if the player has at least one bomb
  */
 bool Equipment::has_bombs(void) {
-  return get_max_bombs() != 0;
+  return get_bombs() != 0;
 }
 
 /**
@@ -571,7 +570,7 @@ int Equipment::get_bombs(void) {
  */
 void Equipment::set_bombs(int bombs) {
 
-  if (bombs < 0 || bombs > 50) {
+  if (bombs < 0 || bombs > get_max_bombs()) {
     DIE("Illegal number of bombs: " << bombs);
   }
 
@@ -630,7 +629,22 @@ void Equipment::set_max_arrows(int max_arrows) {
     DIE("Illegal maximum number of arrows: " << max_arrows);
   }
 
+  int has_bow = has_inventory_item(InventoryItem::ITEM_BOW);
+  if (max_arrows == 0 && has_bow != 0) {
+    DIE("Cannot set the maximum number of arrows to 0 because"
+	" the player has got the bow");
+  }
+
   savegame->set_reserved_integer(SAVEGAME_MAX_ARROWS, max_arrows);
+}
+
+/**
+ * Returns whether the player has at least one arrow.
+ * The function returns true if the current number of arrows is not zero.
+ * @return true if the player has at least one arrow
+ */
+bool Equipment::has_arrows(void) {
+  return get_arrows() != 0;
 }
 
 /**
@@ -649,7 +663,7 @@ int Equipment::get_arrows(void) {
  */
 void Equipment::set_arrows(int arrows) {
 
-  if (arrows < 0 || arrows > 50) {
+  if (arrows < 0 || arrows > get_max_arrows()) {
     DIE("Illegal number of arrows: " << arrows);
   }
 
@@ -687,14 +701,51 @@ void Equipment::remove_arrow(void) {
  * @return true if the player needs arrows
  */
 bool Equipment::needs_arrows(void) {
-  return has_bow() && get_arrows() == 0;
+  return has_inventory_item(InventoryItem::ITEM_BOW)
+    && get_arrows() == 0;
 }
 
 /**
- * Returns whether the player has obtained the bow.
- * The function returns true if the maximum number of arrows is not zero
- * @return true if the player has got the bow
+ * Returns whether the player has obtained the specified item.
+ * For most of the items, the value returned is always 0 or 1.
+ * Some items have several variants (for example a bottle):
+ * for such items, the value returned indicates the variant
+ * and may be greater than 1.
+ * @param item_id id of the item
+ * @return a value indicating the possession state of this item.
  */
-bool Equipment::has_bow(void) {
-  return get_max_arrows() != 0;
+int Equipment::has_inventory_item(InventoryItem::ItemId item_id) {
+
+  int index = SAVEGAME_FIRST_INVENTORY_ITEM + item_id;
+  return savegame->get_reserved_integer(index);
+}
+
+/**
+ * Gives an item of the inventory to the player.
+ * This is equivalent to give_inventory_item(item_id, 1).
+ * @param item_id the item to give
+ */
+void Equipment::give_inventory_item(InventoryItem::ItemId item_id) {
+  give_inventory_item(item_id, 1);
+}
+
+/**
+ * Sets the possession state of an item.
+ * @param item_id the item to set
+ * @param variant the variant of the item to give to the player,
+ * or zero to remove the item
+ */
+void Equipment::give_inventory_item(InventoryItem::ItemId item_id, int variant) {
+
+  int index = SAVEGAME_FIRST_INVENTORY_ITEM + item_id;
+  savegame->set_reserved_integer(index, variant);
+}
+
+/**
+ * Removes from the player an item of the inventory.
+ * This is equivalent to give_inventory_item(item_id, 0).
+ * @param item_id the item to remove
+ */
+void Equipment::remove_inventory_item(InventoryItem::ItemId item_id) {
+  give_inventory_item(item_id, 0);
 }

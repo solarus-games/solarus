@@ -44,7 +44,9 @@ enum SavegameReservedIntegerIndex {
   SAVEGAME_CURRENT_BOMBS                    = 13, /**< current number of bombs */
   SAVEGAME_CURRENT_ARROWS                   = 14, /**< current number of arrows */
   SAVEGAME_CURRENT_PAINS_AU_CHOCOLAT        = 15, /**< current number of pains au chocolat */
-  SAVEGAME_CURRENT_CROISSANTS               = 16, /**< current number of croissants*/
+  SAVEGAME_CURRENT_CROISSANTS               = 16, /**< current number of croissants */
+  SAVEGAME_CURRENT_APPLES                   = 17, /**< current number of apples (0 to 10) */
+  SAVEGAME_NB_FIRE_STONES                   = 18, /**< number of fire stones already found (0 to 3) */
   /**
    * @}
    */
@@ -66,10 +68,11 @@ enum SavegameReservedIntegerIndex {
    * @name Equipment and quest status
    * @{
    */
-  SAVEGAME_PIECES_OF_HEART                  = 30, /**< current number of heart fragments (0 to 3) */
+  SAVEGAME_PIECES_OF_HEART                  = 30, /**< current pieces of heart number (0 to 3) */
   SAVEGAME_LINK_TUNIC                       = 31, /**< Link's tunic (0: green, 1: blue, 2: red) */
   SAVEGAME_LINK_SHIELD                      = 32, /**< Link's shield (0: no shield, 1 to 3: shields 1 to 3) */
   SAVEGAME_LINK_SWORD                       = 33, /**< Link's sword (0: no sword, 1 to 4: swords 1 to 4) */
+  SAVEGAME_WORLD_MAP                        = 34, /**< has Link got the world map (0: no, 1: yes) */
   /**
    * @}
    */
@@ -77,16 +80,39 @@ enum SavegameReservedIntegerIndex {
   /**
    * @name Pieces of heart
    * The variables 100 to 143 indicate whether the player has found each piece of heart.
-   * There is 44 pieces of hearts in Mystery of Solarus DX.
+   * There are 44 pieces of hearts in Mystery of Solarus DX.
    * @{
    */
   SAVEGAME_FIRST_PIECE_OF_HEART             = 100, /**< 1 if the player has the piece of heart #0, 0 otherwise */
   SAVEGAME_LAST_PIECE_OF_HEART              = 143, /**< 1 if the player has the piece of heart #43, 0 otherwise */
-  SAVEGAME_RESERVED_PIECE_OF_HEART          = 199, /**< variables 144 to 199 are reserved for possible
-						    * additional pieces of heart in the future */
+  SAVEGAME_EXTENSION_PIECE_OF_HEART         = 199, /**< variables 144 to 199 are reserved for possible
+						     * additional pieces of heart in the future */
+
   /**
    * @}
    */
+
+  /**
+   * @name Items of the inventory
+   * Variables 200 to 227 indicate whether the player has got each inventory item
+   * (see enum InventoryItem::ItemId to know the item numbers).
+   * Each value saved here corresponds to a slot in the inventory.
+   * Zero indicates that the player does not have the item
+   * of this slot.
+   * Some slots can contains several items during the game:
+   * the current variant of the item is then indicated by the value saved
+   * (1 for the first variant, 2 for the second one, etc.).
+   * @{
+   */
+  SAVEGAME_FIRST_INVENTORY_ITEM             = 200, /**< 0 if the player does not have item #0, 1 if he has
+						    * its first variant, 2 if he has the second one, etc. */
+  SAVEGAME_LAST_INVENTORY_ITEM              = 227, /**< same thing for item #27 */
+  SAVEGAME_EXTENSION_INVENTORY_ITEM         = 299, /**< variables 228 to 299 are reserved for possible
+						    * additional items in the future */
+  /**
+   * @}
+   */
+
 };
 
 /**

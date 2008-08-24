@@ -7,7 +7,7 @@
 enum PickableItemType {
 
   PICKABLE_ITEM_RANDOM      = -1,   /**< special value to indicate to choose another value randomly (including PICKABLE_ITEM_NONE) */
-  PICKABLE_ITEM_NONE        = 0,    /**< special value to incicate that there is no pickable item */
+  PICKABLE_ITEM_NONE        = 0,    /**< special value to indicate that there is no pickable item */
   PICKABLE_ITEM_RUPEE_1     = 1,
   PICKABLE_ITEM_RUPEE_5     = 2,
   PICKABLE_ITEM_RUPEE_20    = 3,

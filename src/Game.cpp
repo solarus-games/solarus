@@ -181,8 +181,8 @@ void Game::handle_event(const SDL_Event &event) {
       // temporary code to test the dialog box
       if (!is_showing_message()) {
 	show_message("msg");
-	dialog_box->add_variable(42);
-	dialog_box->add_variable(savegame->get_reserved_string(SAVEGAME_PLAYER_NAME));
+	dialog_box->set_variable("test_var", 42);
+	dialog_box->set_variable("test_name", savegame->get_reserved_string(SAVEGAME_PLAYER_NAME));
       }
       break;
 
@@ -217,7 +217,7 @@ void Game::handle_event(const SDL_Event &event) {
     else if (is_showing_message()) {
       if (event.key.keysym.sym == SDLK_UP
 	  || event.key.keysym.sym == SDLK_DOWN) {
-	dialog_box->switch_answer();
+	dialog_box->up_or_down_key_pressed();
       }
     }
 

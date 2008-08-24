@@ -8,6 +8,7 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 
+bool DialogBox::answer_1_selected = true;
 SDL_Surface * DialogBox::img_box = NULL;
 Sound * DialogBox::end_message_sound = NULL;
 Sound * DialogBox::switch_answer_sound = NULL;
@@ -89,48 +90,45 @@ DialogCancelMode DialogBox::get_cancel_mode(void) {
 
 /**
  * Specifies the value of a variable that will occur
- * in a next message (with the '$v' sequence).
- * You can specify several variables by calling this
- * function more than once. The first '$v' will be
- * substituted by the first value specified, and so on.
+ * in the specified message (with the '$v' sequence).
+ * You can specify several variables, but only one per message.
+ * If a variable was already specified for this message, it is replaced.
+ * @param message_id id of the message where this value will appear
  * @param value the value to add
  */
-void DialogBox::add_variable(string value) {
-  variables.push_back(value);
+void DialogBox::set_variable(MessageId message_id, string value) {
+
+  variables[message_id] = value;
 }
 
 /**
- * Specifies the value of a variable that will occur
- * in a next message (with the '$v' sequence).
- * You can specify several variables by calling this
- * function more than once. The first '$v' will be
- * substituted by the first value specified, and so on.
- * This function just converts the int value to a string
- * add calls add_variable(string).
+ * Same thing as add_variable(MessageId, string) but with an integer parameter.
+ * This function just converts the integer value to a string
+ * add calls the other function.
+ * @param message_id id of the message where this value will appear
  * @param value the value to add
  */
-void DialogBox::add_variable(int value) {
+void DialogBox::set_variable(MessageId message_id, int value) {
   ostringstream oss;
   oss << value;
-  add_variable(oss.str());
+  set_variable(message_id, oss.str());
 }
 
 /**
- * Returns the next variable specified by a previous
- * call to add_variable(). This function is called by
+ * Returns the variable specified by a previous
+ * call to add_variable(), for the current message.
+ * This function is called by
  * the message when it reads the '$v' sequence.
- * The number of '$v' must be equal to the number
- * of add_variable() previous calls.
  */
 string DialogBox::get_variable(void) {
 
-  if (variables.empty()) {
-    DIE("Missing variable in message");
-  }
+  string value = variables[current_message_id];
 
-  string variable = variables.front();
-  variables.erase(variables.begin());
-  return variable;
+  if (value == "") {
+    DIE("Missing variable in message '" << current_message_id << "'");
+  }
+  
+  return value;
 }
 
 /**
@@ -141,7 +139,11 @@ void DialogBox::show_message(MessageId message_id) {
 
   // create the message
   current_message = new Message(this, message_id);
-  first_answer = true;
+  current_message_id = message_id;
+
+  if (current_message->is_question()) {
+    answer_1_selected = true;
+  }
   question_dst_position.y = 171;
   
   // hide the action icon
@@ -203,25 +205,27 @@ void DialogBox::sword_key_pressed(void) {
 }
 
 /**
- * For a message with a question, returns true if the player
- * has selected the first answer or false if he has selected
- * the second one.
+ * This function is called when the user pressed the up or down arrow key.
  */
-bool DialogBox::is_first_answer(void) {
-  return first_answer;
+void DialogBox::up_or_down_key_pressed(void) {
+
+  if (current_message->is_question() && current_message->is_over()) {
+    
+    // switch the anser
+    answer_1_selected = !answer_1_selected;
+    question_dst_position.y = answer_1_selected ? 171 : 184;
+    switch_answer_sound->play();
+  }
 }
 
 /**
- * For a message with a question, changes the answer selected.
- * This function is called when the player presses the up or down arrow.
+ * For a message with a question, returns true if the player
+ * has selected the first answer or false if he has selected
+ * the second one.
+ * @return the answer selected
  */
-void DialogBox::switch_answer(void) {
-
-  if (current_message->is_over()) {
-    first_answer = !first_answer;
-    question_dst_position.y = first_answer ? 171 : 184;
-    switch_answer_sound->play();
-  }
+bool DialogBox::was_answer_1_selected(void) {
+  return answer_1_selected;
 }
 
 /**

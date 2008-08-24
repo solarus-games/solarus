@@ -46,6 +46,7 @@ class SelectionMenuChooseMode;
 class Game;
 class Savegame;
 class Equipment;
+class InventoryItem;
 class Map;
 class MapLoader;
 class DialogBox;

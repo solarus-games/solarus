@@ -10,6 +10,7 @@ next = test_icon
 #       |--------------------|
 line1 = "Message avec icône !"
 next  = test_speed
+icon = 1
 
 [test_speed]
 line1 = "$3Message annulable ;"

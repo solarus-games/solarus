@@ -2,6 +2,7 @@
 #define ZSDX_EQUIPMENT_H
 
 #include "Common.h"
+#include "InventoryItem.h"
 
 /**
  * This class represents Link's equipment. It makes the interface
@@ -79,8 +80,6 @@ class Equipment {
   bool is_magic_decreasing(void);
   void start_removing_magic(Uint32 delay);
   void stop_removing_magic(void);
-
-  // TODO: objects, dungeon objects...
   
   // bombs
   bool has_bombs(void);
@@ -94,7 +93,7 @@ class Equipment {
   bool needs_bombs(void);
 
   // arrows
-  bool has_bow(void);
+  bool has_arrows(void);
   int get_max_arrows(void);
   void set_max_arrows(int max_arrows);
 
@@ -103,6 +102,15 @@ class Equipment {
   void add_arrows(int arrows_to_add);
   void remove_arrow(void);
   bool needs_arrows(void);
+
+  // inventory items
+  int has_inventory_item(InventoryItem::ItemId item_id);
+  void give_inventory_item(InventoryItem::ItemId item_id);
+  void give_inventory_item(InventoryItem::ItemId item_id, int variant);
+  void remove_inventory_item(InventoryItem::ItemId item_id);
+
+  // TODO: quest status, dungeon items...
+
 };
 
 #endif

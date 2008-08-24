@@ -147,7 +147,7 @@ bool Message::is_question(void) {
  */
 MessageId Message::get_next_message_id(void) {
 
-  if (question && !dialog_box->is_first_answer()) {
+  if (question && !dialog_box->was_answer_1_selected()) {
     return next_message_id_2;
   }
 

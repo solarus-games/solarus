@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "KeysEffect.h"
+#include <map>
 #include <vector>
 
 /**
@@ -35,8 +36,9 @@ class DialogBox {
   
   // current message
   Message *current_message;
-  vector<string> variables;
-  bool first_answer;           // the answer selected
+  MessageId current_message_id;
+  std::map<MessageId, string> variables;
+  static bool answer_1_selected;           // the answer selected
 
   // dialog properties
   DialogSpeed speed;
@@ -65,16 +67,16 @@ class DialogBox {
   DialogCancelMode get_cancel_mode(void);
   void set_cancel_mode(DialogCancelMode cancel_mode);
 
-  void add_variable(string value);
-  void add_variable(int value);
+  void set_variable(MessageId messageId, string value);
+  void set_variable(MessageId messageId, int value);
   string get_variable(void);
   
   // current message
   void action_key_pressed(void);
   void sword_key_pressed(void);
+  void up_or_down_key_pressed(void);
   bool is_over(void);
-  bool is_first_answer(void);
-  void switch_answer(void);
+  static bool was_answer_1_selected(void);
 
   // update and display
   void update(void);

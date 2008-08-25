@@ -1,7 +1,7 @@
 #ifndef ZSDX_SOUND_H
 #define ZSDX_SOUND_H
 
-#include <fmodex/fmod.h>
+#include <fmodex/fmod.hpp>
 #include "Common.h"
 
 /**
@@ -15,10 +15,10 @@ class Sound {
 
  protected:
 
-  static FMOD_SYSTEM *system;
+  static FMOD::System *system;
 
-  FMOD_SOUND *sound;
-  FMOD_CHANNEL *channel;
+  FMOD::Sound *sound;
+  FMOD::Channel *channel;
 
   /**
    * Name of the sound file.

@@ -1,6 +1,6 @@
 #include "menus/SelectionMenuCommon.h"
 #include "Sprite.h"
-#include "TextDisplayed.h"
+#include "TextSurface.h"
 #include "Sound.h"
 #include "Music.h"
 #include "ActionIcon.h"
@@ -39,11 +39,12 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   }
 
   cursor = new Sprite("menus/selection_menu_cursor");
+  background_color = Color::create(104, 144, 240);
 
   // texts
-  text_option1 = new TextDisplayed(90, 172, ALIGN_LEFT, ALIGN_MIDDLE);
-  text_option2 = new TextDisplayed(198, 172, ALIGN_LEFT, ALIGN_MIDDLE);
-  text_title = new TextDisplayed(160, 54, ALIGN_CENTER, ALIGN_MIDDLE);
+  text_option1 = new TextSurface(90, 172, ALIGN_LEFT, ALIGN_MIDDLE);
+  text_option2 = new TextSurface(198, 172, ALIGN_LEFT, ALIGN_MIDDLE);
+  text_title = new TextSurface(160, 54, ALIGN_CENTER, ALIGN_MIDDLE);
   text_title->set_font(FONT_STANDARD);
 
   // icons
@@ -209,8 +210,8 @@ void SelectionMenuCommon::read_savegames(void) {
       delete text_player_names[i];
     }
 
-    text_player_names[i] = new TextDisplayed(87, 88 + i * 27,
-					     ALIGN_LEFT, ALIGN_MIDDLE);
+    text_player_names[i] = new TextSurface(87, 88 + i * 27,
+					   ALIGN_LEFT, ALIGN_MIDDLE);
     text_player_names[i]->set_text(player_name);
 
     // hearts
@@ -266,7 +267,7 @@ void SelectionMenuCommon::update(void) {
 void SelectionMenuCommon::display(SDL_Surface *destination_surface) {
 
   // background color
-  SDL_FillRect(destination_surface, NULL, get_color(104, 144, 240));
+  SDL_FillRect(destination_surface, NULL, background_color);
 
   // display the clouds
   SDL_Rect position;

@@ -59,7 +59,8 @@ void CounterView::rebuild_with_value(unsigned int value) {
 
   this->value = value;
 
-  SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
+  // fill with transparent color
+  SDL_FillRect(surface_drawn, NULL, Color::black);
 
   SDL_Rect digit_position_in_src = {0, 0, 8, 8};
   SDL_Rect digit_position_in_counter = {0, 0, 8, 8};

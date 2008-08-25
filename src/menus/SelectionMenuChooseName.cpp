@@ -4,7 +4,7 @@
 #include "Sound.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
-#include "TextDisplayed.h"
+#include "TextSurface.h"
 #include "Savegame.h"
 #include "FileTools.h"
 
@@ -21,7 +21,7 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
 
   player_name[0] = '\0';
 
-  text_new_player_name = new TextDisplayed(67, 85, ALIGN_LEFT, ALIGN_MIDDLE);
+  text_new_player_name = new TextSurface(67, 85, ALIGN_LEFT, ALIGN_MIDDLE);
   text_new_player_name->set_text(player_name);
 
   x_letter_cursor = 0;

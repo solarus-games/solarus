@@ -3,7 +3,7 @@
 #include "TransitionEffect.h"
 #include "Sound.h"
 #include "Sprite.h"
-#include "TextDisplayed.h"
+#include "TextSurface.h"
 #include "HeartsView.h"
 
 /**

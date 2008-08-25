@@ -19,7 +19,7 @@ class Message {
   // properties of the message
 
   string lines[3];             // the 3 lines of the message
-  TextDisplayed *text_surfaces[3];
+  TextSurface *text_surfaces[3];
   SDL_Surface *icon;           // the icon displayed, or NULL if there is no icon
   bool question;               // is this message a question?
   MessageId next_message_id;   // id of the next message (or an empty string if this is the last message)

@@ -26,8 +26,8 @@ Music::Music(MusicId music_id) {
    * Otherwise, they would be interrupted by the sound effects sometimes.
    */
   if (is_initialized()) {
-    FMOD_System_GetChannel(system, 15, &channel);
-    FMOD_Channel_SetPriority(channel, 15);
+    system->getChannel(15, &channel);
+    channel->setPriority(1);
   }
 }
 
@@ -63,7 +63,6 @@ bool Music::isUnchangedId(MusicId music_id) {
  */
 bool Music::isEqualId(MusicId music_id, MusicId other_music_id) {
 
-  //  cout << "testing if two music ids are equal: '" << music_id << "' and '" << other_music_id << "': " << (music_id == other_music_id) << endl;
   return music_id == other_music_id;
 }
 
@@ -78,17 +77,18 @@ bool Music::play(void) {
 
   if (is_initialized()) {
 
-/*  The beginning of any .it music is badly played on my windows with DirectX
-    other workarounds: use FMOD_SOFTWARE or FMOD_OUTPUTTYPE_WINMM?
-    */
-    result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_NORMAL, 0, &sound);
+    /*
+     *  The beginning of any .it music is badly played on my windows with DirectX
+     * other workarounds: use FMOD_SOFTWARE or FMOD_OUTPUTTYPE_WINMM?
+     */
+    result = system->createStream(file_name.c_str(), FMOD_LOOP_NORMAL, 0, &sound);
 
     if (result != FMOD_OK) {
       cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
     }
     else {
 
-      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, false, &channel);
+      result = system->playSound(FMOD_CHANNEL_REUSE, sound, false, &channel);
 
       if (result != FMOD_OK) {
 	cerr << "Unable to play music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
@@ -114,14 +114,14 @@ void Music::stop(void) {
     }
     else {
 
-      FMOD_RESULT result = FMOD_Channel_Stop(channel);
+      FMOD_RESULT result = channel->stop();
 
       if (result != FMOD_OK) {
 	cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << endl;
       }
     }
 
-    FMOD_Sound_Release(sound);
+    sound->release();
     sound = NULL;
   }
 }
@@ -136,10 +136,9 @@ bool Music::is_paused(void) {
     return false;
   }
 
-  FMOD_BOOL pause;
-  FMOD_Channel_GetPaused(channel, &pause);
-
-  return pause != 0;
+  bool pause;
+  channel->getPaused(&pause);
+  return pause;
 }
 
 /**
@@ -148,6 +147,6 @@ bool Music::is_paused(void) {
  */
 void Music::set_paused(bool pause) {
   if (is_initialized()) {
-    FMOD_Channel_SetPaused(channel, pause);
+    channel->setPaused(pause);
   }
 }

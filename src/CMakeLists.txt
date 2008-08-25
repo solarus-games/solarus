@@ -36,7 +36,7 @@ add_executable (zsdx
   Music.cpp
 
   # graphics
-  TextDisplayed.cpp
+  TextSurface.cpp
   Color.cpp
 
   # HUD

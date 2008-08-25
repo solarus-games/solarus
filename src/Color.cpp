@@ -4,18 +4,19 @@
  */
 #include "Color.h"
 
-zsdx_color_t COLOR_BLACK;
-zsdx_color_t COLOR_WHITE;
+Uint16 Color::black;
+Uint16 Color::white;
 
-static SDL_PixelFormat *format;
+SDL_PixelFormat * Color::format;
 
 /**
- * Initializes the global variables of colors.
+ * Initializes the color static fields.
  */
-void color_init(void) {
+void Color::initialize(void) {
   format = SDL_GetVideoSurface()->format;
-  COLOR_BLACK = SDL_MapRGB(format, 0, 0, 0);
-  COLOR_WHITE = SDL_MapRGB(format, 255, 255, 255);
+
+  black = SDL_MapRGB(format, 0, 0, 0);
+  white = SDL_MapRGB(format, 255, 255, 255);
 }
 
 /**
@@ -24,6 +25,6 @@ void color_init(void) {
  * @param g the green component (from 0 to 255)
  * @param b the blue component (from 0 to 255)
  */
-zsdx_color_t get_color(int r, int g, int b) {
+Uint16 Color::create(int r, int g, int b) {
   return SDL_MapRGB(format, r, g, b);
 }

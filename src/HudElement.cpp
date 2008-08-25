@@ -12,7 +12,7 @@
 HudElement::HudElement(int x, int y, int width, int height) {
 
   surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
-  SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, COLOR_BLACK);
+  SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
 
   destination_position.x = x;
   destination_position.y = y;
@@ -31,7 +31,7 @@ HudElement::~HudElement(void) {
  * the surface with transparent color.
  */
 void HudElement::rebuild(void) {
-  SDL_FillRect(surface_drawn, NULL, COLOR_BLACK);
+  SDL_FillRect(surface_drawn, NULL, Color::black);
 }
 
 /**

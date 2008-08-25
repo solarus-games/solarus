@@ -58,7 +58,8 @@ class Music;
 class Sound;
 
 // graphics
-class TextDisplayed;
+class Color;
+class TextSurface;
 
 // HUD
 class HUD;

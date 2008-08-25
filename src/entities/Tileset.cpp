@@ -63,7 +63,7 @@ void Tileset::load(void) {
 
   istringstream iss0(line);
   iss0 >> r >> g >> b;
-  background_color = get_color(r, g, b);
+  background_color = Color::create(r, g, b);
 
   // read the tiles
   int tile_id, is_animated, obstacle, defaultLayer;

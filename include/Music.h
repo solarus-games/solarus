@@ -1,7 +1,6 @@
 #ifndef ZSDX_MUSIC_H
 #define ZSDX_MUSIC_H
 
-#include <fmodex/fmod.h>
 #include "Common.h"
 #include "Sound.h"
 

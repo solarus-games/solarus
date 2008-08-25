@@ -20,7 +20,7 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
   SDL_Surface *img_arrow;
   SDL_Surface *img_letters;
 
-  TextDisplayed *text_new_player_name;
+  TextSurface *text_new_player_name;
 
   // player name
   bool select_letter(void);

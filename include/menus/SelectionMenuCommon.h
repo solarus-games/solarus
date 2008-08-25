@@ -28,6 +28,8 @@ class SelectionMenuCommon {
   Sprite *cursor;
   int cursor_position; // 1 to 5
 
+  Uint16 background_color;
+
   // sounds
   Sound *cursor_sound;
   Sound *ok_sound;
@@ -42,12 +44,12 @@ class SelectionMenuCommon {
   SwordIcon *sword_icon;
 
   // text
-  TextDisplayed *text_option1;
-  TextDisplayed *text_option2;
-  TextDisplayed *text_title;
+  TextSurface *text_option1;
+  TextSurface *text_option2;
+  TextSurface *text_title;
 
   // savegames data
-  TextDisplayed *text_player_names[3];
+  TextSurface *text_player_names[3];
   HeartsView *hearts_views[3];
 
   // clouds data

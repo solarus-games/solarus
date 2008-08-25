@@ -1,5 +1,5 @@
-#ifndef ZSDX_TEXT_DISPLAYED_H
-#define ZSDX_TEXT_DISPLAYED_H
+#ifndef ZSDX_TEXT_SURFACE_H
+#define ZSDX_TEXT_SURFACE_H
 
 #include "Common.h"
 
@@ -40,8 +40,10 @@ enum FontId {
 
 /**
  * This class displays some text on a surface.
+ * Basically, it encapsulates an SDL_Surface and handles horizontal
+ * and vertical text alignment, color and other properties.
  */
-class TextDisplayed {
+class TextSurface {
 
  private:
 
@@ -56,7 +58,7 @@ class TextDisplayed {
 
   int x;
   int y;
-  SDL_Surface *text_surface;
+  SDL_Surface *surface;
   SDL_Rect text_position;
 
   string text;
@@ -68,11 +70,11 @@ class TextDisplayed {
   static void initialize(void);
   static void quit(void);
 
-  TextDisplayed(int x, int y);
-  TextDisplayed(int x, int y,
-		HorizontalAlignment horizontal_alignment,
-		VerticalAlignment vertical_alignment);
-  ~TextDisplayed(void);
+  TextSurface(int x, int y);
+  TextSurface(int x, int y,
+	      HorizontalAlignment horizontal_alignment,
+	      VerticalAlignment vertical_alignment);
+  ~TextSurface(void);
 
   void set_font(FontId font);
   void set_alignment(HorizontalAlignment horizontal_alignment,

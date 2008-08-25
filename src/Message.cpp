@@ -2,7 +2,7 @@
 #include "Message.h"
 #include "DialogBox.h"
 #include "FileTools.h"
-#include "TextDisplayed.h"
+#include "TextSurface.h"
 
 /**
  * Delay between two chars, depending on the dialog speed.
@@ -28,8 +28,8 @@ Message::Message(DialogBox *dialog_box, MessageId message_id) {
   // create the text surfaces
   int x = (icon == NULL) ? 67 : 99;
   for (int i = 0; i < 3; i++) {
-    text_surfaces[i] = new TextDisplayed(x, 158 + i * 13,
-					 ALIGN_LEFT, ALIGN_TOP);
+    text_surfaces[i] = new TextSurface(x, 158 + i * 13,
+				       ALIGN_LEFT, ALIGN_TOP);
   }
 
   if (question) {

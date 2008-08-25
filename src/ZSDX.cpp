@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
-#include "TextDisplayed.h"
+#include "TextSurface.h"
 #include "Random.h"
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenuSelectFile.h"
@@ -41,7 +41,8 @@ ZSDX::ZSDX(void) {
   SDL_EnableUNICODE(SDL_ENABLE);
   SDL_EnableKeyRepeat(0, 0);
 
-  color_init();
+  // initialize the color system
+  Color::initialize();
 
   // initiliaze the resource manager
   ResourceManager::initialize();
@@ -50,7 +51,7 @@ ZSDX::ZSDX(void) {
   Random::initialize();
 
   // initialize the text displaying
-  TextDisplayed::initialize();
+  TextSurface::initialize();
 
   // initialize the audio system
   Music::initialize();
@@ -67,7 +68,7 @@ ZSDX::ZSDX(void) {
 ZSDX::~ZSDX(void) {
   delete current_screen;
   ResourceManager::quit();
-  TextDisplayed::quit();
+  TextSurface::quit();
   SDL_Quit();
   Sound::quit();
 }
@@ -224,7 +225,7 @@ void ZSDX::handle_event(const SDL_Event &event) {
  */
 void ZSDX::display_current_screen(void) {
 
-  SDL_FillRect(root_surface, NULL, COLOR_BLACK);
+  SDL_FillRect(root_surface, NULL, Color::black);
   current_screen->display(root_surface);
   SDL_Flip(root_surface);
 }

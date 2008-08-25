@@ -46,6 +46,7 @@ public class TileOnMap extends MapEntity {
 	this.tileId = tileId;
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 	setSize(tile.getWidth(), tile.getHeight());
+	setLayer(tile.getDefaultLayer());
     }
 
     /**
@@ -53,17 +54,18 @@ public class TileOnMap extends MapEntity {
      * @param map the map
      * @param tokenizer the string tokenizer, which has already parsed the type of entity
      * but not yet the common properties
-     * @throws ZSDXException if there is a syntax error in the string
+     * @throws IllegalArgumentException if a tile on the map doesn't exist in the tileset
+     * @throws ZSDXException if there is a syntax error in the string 
      */
-    public TileOnMap(Map map, StringTokenizer tokenizer) throws ZSDXException {
+    public TileOnMap(Map map, StringTokenizer tokenizer) throws IllegalArgumentException, ZSDXException {
 	super(map, tokenizer);
 	
 	try {
 	    this.tileId = Integer.parseInt(tokenizer.nextToken());
 	    this.tileset = map.getTileset();
-	    
-	    map.getTileset().getTile(tileId); // check the original tile from the tileset
-	    checkSize(getWidth(), getHeight()); // check the tile size on the map (only now because we didn't have the tileset before)
+
+	    // check the tile size on the map (only now because we didn't have the tileset before)
+	    checkSize(getWidth(), getHeight());
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -72,7 +74,7 @@ public class TileOnMap extends MapEntity {
 	    throw new ZSDXException("A value is missing");
 	}
 	catch (IllegalArgumentException ex) {
-	    throw new ZSDXException(ex.getMessage()); // unknown tile id
+	    throw new TilesetException(ex.getMessage());
 	}
     }
 

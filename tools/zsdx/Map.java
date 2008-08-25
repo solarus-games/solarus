@@ -786,9 +786,13 @@ public class Map extends Observable {
 	    while (line != null) {
 		lineNumber++;
 
-		MapEntity entity = MapEntity.createFromString(this, line);
-		addEntity(entity);
-
+		try {
+		    MapEntity entity = MapEntity.createFromString(this, line);
+		    addEntity(entity);
+		}
+		catch (TilesetException ex) {
+		    badTiles = true;
+		}
 		line = in.readLine();
 	    }
 

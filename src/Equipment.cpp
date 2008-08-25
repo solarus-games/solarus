@@ -546,15 +546,6 @@ void Equipment::set_max_bombs(int max_bombs) {
 }
 
 /**
- * Returns whether the player has at least one bomb.
- * The function returns true if the current number of bombs is not zero.
- * @return true if the player has at least one bomb
- */
-bool Equipment::has_bombs(void) {
-  return get_bombs() != 0;
-}
-
-/**
  * Returns the current number of bombs.
  * @return Link's current number of bombs
  */
@@ -608,7 +599,8 @@ void Equipment::remove_bomb(void) {
  * @return true if the player needs bombs
  */
 bool Equipment::needs_bombs(void) {
-  return has_bombs() && get_bombs() == 0;
+  return has_inventory_item(InventoryItem::ITEM_BOMBS)
+    && get_bombs() == 0;
 }
 
 /**
@@ -636,15 +628,6 @@ void Equipment::set_max_arrows(int max_arrows) {
   }
 
   savegame->set_reserved_integer(SAVEGAME_MAX_ARROWS, max_arrows);
-}
-
-/**
- * Returns whether the player has at least one arrow.
- * The function returns true if the current number of arrows is not zero.
- * @return true if the player has at least one arrow
- */
-bool Equipment::has_arrows(void) {
-  return get_arrows() != 0;
 }
 
 /**

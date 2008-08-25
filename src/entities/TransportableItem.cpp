@@ -9,18 +9,9 @@
 #include "ZSDX.h"
 
 /**
- * This structure defines the properties of a transportable item type.
- */
-struct TransportableItemProperties {
-  SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of transportable item */
-  SoundId breaking_sound_id;
-  // TODO weight
-};
-
-/**
  * Properties of each type of transportable item.
  */
-static const TransportableItemProperties properties[] = {
+const TransportableItem::ItemProperties TransportableItem::properties[] = {
   {"entities/pot", "stone"},
   {"entities/skull", "stone"},
   {"entities/bush", "bush"},
@@ -61,7 +52,7 @@ TransportableItem::~TransportableItem(void) {
 
 /**
  * Returns the animation set of this transportable item.
- * @param the animations of the sprite
+ * @return the animations of the sprite
  */
 string TransportableItem::get_sprite_animations_id(void) {
   return properties[type].sprite_animations_id;
@@ -96,8 +87,7 @@ void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
 }
 
 /**
- * This function is called by Link when he lifts this item.
- * @param map the map
+ * This function is called by Link when he tries to lift this item.
  */
 void TransportableItem::lift(void) {
 

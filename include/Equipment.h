@@ -82,7 +82,6 @@ class Equipment {
   void stop_removing_magic(void);
   
   // bombs
-  bool has_bombs(void);
   int get_max_bombs(void);
   void set_max_bombs(int max_bombs);
 
@@ -93,7 +92,6 @@ class Equipment {
   bool needs_bombs(void);
 
   // arrows
-  bool has_arrows(void);
   int get_max_arrows(void);
   void set_max_arrows(int max_arrows);
 

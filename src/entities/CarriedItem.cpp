@@ -27,6 +27,7 @@ static const SDL_Rect lifting_translations[4][6] = {
  * Creates a carried item (i.e. an item carried by Link)
  * based on a transportable item (i.e. the item placed on the map
  * before Link lifts it).
+ * @param link Link
  * @param transportable_item a transportable item
  */
 CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):

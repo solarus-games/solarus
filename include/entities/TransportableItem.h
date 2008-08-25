@@ -32,6 +32,17 @@ class TransportableItem: public EntityDetector {
    */
   PickableItemType pickable_item;
 
+  /**
+   * This structure defines the properties of a transportable item type.
+   */
+  struct ItemProperties {
+    SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of transportable item */
+    SoundId breaking_sound_id;               /**< sound played when the item is broken */
+    // TODO weight
+  };
+
+  static const ItemProperties properties[];
+
  public:
   
   // creation and destruction

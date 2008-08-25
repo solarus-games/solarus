@@ -22,6 +22,10 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
 
   TextDisplayed *text_new_player_name;
 
+  // player name
+  bool select_letter(void);
+  bool validate_player_name(void);
+
  public:
 
   // creation and destruction
@@ -31,10 +35,6 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
   // update and display
   void handle_event(const SDL_Event &event);
   void display(SDL_Surface *screen_surface);
-
-  // player name
-  bool select_letter(void);
-  bool validate_player_name(void);
 };
 
 #endif

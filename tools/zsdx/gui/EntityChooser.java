@@ -10,7 +10,7 @@ import zsdx.Map;
  * This component displays the name of the entities of this type in the map.
  */
 public class EntityChooser extends JComboBox {
-    
+
     /**
      * The map.
      */
@@ -20,7 +20,7 @@ public class EntityChooser extends JComboBox {
      * The kind of entity displayed in the combo box (doors, ennemies...).
      */
     private int entityType;
-    
+
     /**
      * Indicates whether the first element of the combo box should be
      * an empty option (showing that no element is selected).

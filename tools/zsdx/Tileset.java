@@ -256,7 +256,7 @@ public class Tileset extends Observable implements ImageObserver {
      * Returns a tile.
      * @param id id of the tile to get
      * @return the tile with this id
-     * @throws NoSuchElementException if there is no tile with this id
+     * @throws IllegalArgumentException if there is no tile with this id
      */
     public Tile getTile(int id) throws IllegalArgumentException {
 

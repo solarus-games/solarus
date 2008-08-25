@@ -184,7 +184,7 @@ PickableItemType PickableItem::choose_random_type(void) {
       type = PICKABLE_ITEM_ARROW_5;
     }
 
-    // well, he does not need anything (we don't help him for the rupees)
+    // well, he does not need anything
     else {
       type = PICKABLE_ITEM_NONE;
     }
@@ -196,15 +196,16 @@ PickableItemType PickableItem::choose_random_type(void) {
   else if (r < 875) { type = PICKABLE_ITEM_RUPEE_1; }     // 1 rupee: 5%
   else if (r < 890) { type = PICKABLE_ITEM_RUPEE_5; }     // 5 rupees: 1.5%
   else if (r < 895) { type = PICKABLE_ITEM_RUPEE_20; }    // 20 rupees: 0.5%
-  else if (r < 920) { type = PICKABLE_ITEM_SMALL_MAGIC; } // magic flask: 2.5%
-  else if (r < 928) { type = PICKABLE_ITEM_BIG_MAGIC; }   // magic bottle: 0.8%
-  else if (r < 930) { type = PICKABLE_ITEM_FAIRY; }       // fairy: 0.2%
+  else if (r < 897) { type = PICKABLE_ITEM_FAIRY; }       // fairy: 0.2%
   else {
 
     bool has_bombs = equipment->has_inventory_item(InventoryItem::ITEM_BOMBS);
     bool has_bow = equipment->has_inventory_item(InventoryItem::ITEM_BOW);
+    bool has_magic = equipment->get_max_magic() > 0;
 
-    if (r < 950)      { type = has_bombs ? PICKABLE_ITEM_BOMB_1 : PICKABLE_ITEM_NONE; }
+    if (r < 922)      { type = has_magic ? PICKABLE_ITEM_SMALL_MAGIC : PICKABLE_ITEM_NONE; }
+    else if (r < 930) { type = has_magic ? PICKABLE_ITEM_BIG_MAGIC : PICKABLE_ITEM_NONE; }
+    else if (r < 950) { type = has_bombs ? PICKABLE_ITEM_BOMB_1 : PICKABLE_ITEM_NONE; }
     else if (r < 960) { type = has_bombs ? PICKABLE_ITEM_BOMB_5 : PICKABLE_ITEM_NONE; }
     else if (r < 965) { type = has_bombs ? PICKABLE_ITEM_BOMB_10 : PICKABLE_ITEM_NONE; }
     else if (r < 985) { type = has_bow ? PICKABLE_ITEM_ARROW_1 : PICKABLE_ITEM_NONE; }
@@ -220,7 +221,7 @@ PickableItemType PickableItem::choose_random_type(void) {
  * depending on its type.
  * The pickable items are represented with two sprites:
  * the item itself and its shadow, except the fairy whose
- * shadow is part of its sprite (TODO: this might change).
+ * shadow is part of its sprite.
  */
 void PickableItem::initialize_sprites(void) {
 

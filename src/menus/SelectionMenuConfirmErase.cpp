@@ -9,7 +9,7 @@
  * Creates a selection menu with the phase where the
  * player has to confirm to erase a file.
  * @param previous the previous phase
- * @param save_number number of the savegame to delete (0 to 2)
+ * @param save_number_to_erase number of the savegame to delete (0 to 2)
  */
 SelectionMenuConfirmErase::SelectionMenuConfirmErase(SelectionMenuPhase *previous,
 						     int save_number_to_erase):

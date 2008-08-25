@@ -15,10 +15,21 @@ public class MapEntrance extends InteractiveEntity {
     public static final String entityTypeName = "Entrance";
     
     /**
+     * Description of the possible images representing the current entity
+     * (depending on its direction).
+     */
+    private static final EntityImageDescription[] imageDescriptions = {
+	new EntityImageDescription("map_entrance_0.png", 0, 0, 32, 32),
+	new EntityImageDescription("map_entrance_1.png", 0, 0, 32, 32),
+	new EntityImageDescription("map_entrance_2.png", 0, 0, 32, 32),
+	new EntityImageDescription("map_entrance_3.png", 0, 0, 32, 32)
+    };
+
+    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("map_entrance_1.png", 0, 0, 32, 32);
+	imageDescriptions[1];
 
     /**
      * Origin point of an entrance.
@@ -95,4 +106,13 @@ public class MapEntrance extends InteractiveEntity {
     public boolean hasName() {
 	return true;
     }
+
+    /**
+     * Updates the description of the image currently representing the entity.
+     * For an entrance of the map, the image depends on the entrance's direction.
+     */
+    public void updateImageDescription() {
+	currentImageDescription = imageDescriptions[getDirection()];
+    }
+
 }

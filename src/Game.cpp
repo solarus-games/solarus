@@ -407,3 +407,11 @@ DialogBox * Game::get_dialog_box(void) {
 void Game::show_message(MessageId message_id) {
   dialog_box = new DialogBox(message_id);
 }
+
+/**
+ * Pauses or resumes the game.
+ * @param pause true to pause the game, false to resume it.
+ */
+void Game::set_paused(bool paused) {
+  this->paused = paused;
+}

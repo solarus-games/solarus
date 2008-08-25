@@ -111,6 +111,8 @@ class Game: public Screen {
 
   DialogBox *get_dialog_box(void);
   void show_message(MessageId message_id);
+
+  void set_paused(bool paused);
 };
 
 #endif

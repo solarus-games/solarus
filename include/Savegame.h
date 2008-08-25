@@ -174,7 +174,7 @@ class Savegame {
   bool get_boolean(int index);
   void set_boolean(int index, bool value);
 
-  // not saved data
+  // unsaved data
   Equipment *get_equipment(void);
 };
 

@@ -5,10 +5,9 @@
  * @param map the map where the item is thrown
  * @param direction direction where the item is thrown (0 to 3)
  */
-ThrowItemMovement::ThrowItemMovement(Map *map, int direction):
-  MovementWithCollision() {
+ThrowItemMovement::ThrowItemMovement(int direction):
+  Movement() {
 
-  set_map(map);
   set_speed(20);
   set_direction(direction * 90);
 
@@ -28,14 +27,14 @@ ThrowItemMovement::~ThrowItemMovement(void) {
  * Updates the x position.
  */
 void ThrowItemMovement::update_x(void) {
-  MovementWithCollision::update_x();
+  Movement::update_x();
 }
 
 /**
  * Updates the y position.
  */
 void ThrowItemMovement::update_y(void) {
-  MovementWithCollision::update_y();
+  Movement::update_y();
 
   if (y_increment < 7 && !is_stopped()) {
     Uint32 now = SDL_GetTicks();
@@ -57,7 +56,7 @@ void ThrowItemMovement::update_y(void) {
  * @param suspended true to suspend the movement, false to resume it
  */
 void ThrowItemMovement::set_suspended(bool suspended) {
-  MovementWithCollision::set_suspended(suspended);
+  Movement::set_suspended(suspended);
 
   if (!suspended) {
     // recalculate next_down_date

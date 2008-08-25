@@ -99,6 +99,7 @@ void CarriedItem::set_animation_walking(void) {
  */
 void CarriedItem::throw_item(Map *map, int direction) {
 
+  this->map = map;
   is_throwing = true;
 
   // play the sound
@@ -114,7 +115,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
 
   // set the movement
   clear_movement();
-  set_movement(new ThrowItemMovement(map, direction));
+  set_movement(new ThrowItemMovement(direction));
 }
 
 /**
@@ -150,8 +151,6 @@ void CarriedItem::update(void) {
   // update the sprite and the position
   MapEntity::update();
 
-  Sprite *sprite = get_last_sprite();
-
   // when Link finishes lifting the item, start carrying it
   if (is_lifting) {
     MovementPath *movement = (MovementPath*) get_movement();
@@ -172,12 +171,21 @@ void CarriedItem::update(void) {
   }
   else if (is_throwing) {
 
-    if (get_movement()->is_stopped()) {
+    ThrowItemMovement *movement = (ThrowItemMovement*) get_movement();
+
+    SDL_Rect collision_box;
+    collision_box.x = position_in_map.x;
+    collision_box.y = position_in_map.y + movement->get_item_height();
+    collision_box.w = 16;
+    collision_box.h = 16;
+
+    if (movement->is_stopped() || map->collision_with_obstacles(get_layer(), collision_box)) {
       // destroy the item
+
       is_throwing = false;
       is_breaking = true;
       breaking_sound->play();
-      sprite->set_current_animation("destroy");
+      get_last_sprite()->set_current_animation("destroy");
       clear_movement();
     }
     else {

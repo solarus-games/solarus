@@ -8,7 +8,7 @@
  * Movement used for an item thrown by Link
  * (a pot, a bush, etc.).
  */
-class ThrowItemMovement: public MovementWithCollision {
+class ThrowItemMovement: public Movement {
 
  private:
 
@@ -23,7 +23,7 @@ class ThrowItemMovement: public MovementWithCollision {
 
  public:
 
-  ThrowItemMovement(Map *map, int direction);
+  ThrowItemMovement(int direction);
   ~ThrowItemMovement(void);
 
   int get_item_height(void);

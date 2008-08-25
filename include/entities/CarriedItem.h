@@ -12,13 +12,13 @@ class CarriedItem: public MapEntity {
 
  private:
   
+  Map *map;
   Link *link;
   bool is_lifting;
   bool is_throwing;
   bool is_breaking;
   Sound *breaking_sound;
   Sprite *shadow_sprite;
-
 
  public:
 

@@ -121,18 +121,6 @@ bool EntityDetector::check_collision_rectangle(MapEntity *entity) {
 }
 
 /**
- * This function is called by check_entity_overlapping()
- * when an entity overlaps the detector.
- * By default, the map is notified.
- * @param entity_overlapping the entity overlapping the detector
- */
-void EntityDetector::entity_collision(MapEntity *entity_overlapping) {
-
-  Map *map = zsdx->game->get_current_map();
-  map->event_entity_on_detector(this, entity_overlapping);
-}
-
-/**
  * Checks whether the entity's facing point is overlapping the detector's rectangle.
  * This method is called by check_entity_collision() when the detector's collision
  * mode is COLLISION_WITH_ENTITY_FACING_POINT.
@@ -142,4 +130,16 @@ void EntityDetector::entity_collision(MapEntity *entity_overlapping) {
 bool EntityDetector::check_collision_facing_point(MapEntity *entity) {
 
   return entity->is_facing_point_in(get_position_in_map());
+}
+
+/**
+ * This function is called by check_entity_overlapping()
+ * when an entity overlaps the detector.
+ * By default, the map is notified.
+ * @param entity_overlapping the entity overlapping the detector
+ */
+void EntityDetector::entity_collision(MapEntity *entity_overlapping) {
+
+  Map *map = zsdx->game->get_current_map();
+  map->event_entity_on_detector(this, entity_overlapping);
 }

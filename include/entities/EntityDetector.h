@@ -19,15 +19,15 @@ enum CollisionMode {
  * to detect the presence of Link or other moving entities.
  * Examples of entity detectors are exits and switches.
  *
- * For now, there are two possible collision modes:
+ * For now, there are three possible collision modes:
  * - The origin point of the entity is inside the detector's rectangle.
- * This means the entity really has to be on the detector. Example: a switch, an exit.
+ * This means the entity really has to be on the detector. Examples: a switch, an exit.
  * - The entity's rectangle overlaps the detector's rectangle.
- * This means the entity just has to touch the detector. Example:
+ * This means the entity just has to touch the detector. Examples:
  * a pickable item, an enemy.
+ * - The entity's is facing the detector and is touching it. Examples: a bush, a pot.
  *
- * Other collision modes will be implemented to handle detectors with obstacles
- * (such as pots, chests...) and pixel precise collisions.
+ * Other collision modes will be implemented to handle pixel precise collisions.
  */
 class EntityDetector: public MapEntity {
 

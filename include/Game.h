@@ -42,6 +42,11 @@ class Game: public Screen {
   KeysEffect *keys_effect;
 
   /**
+   * This object receives the SDL keyboard events and treats them.
+   */
+  Keyboard *keyboard;
+
+  /**
    * The map currently displayed.
    */
   Map *current_map;
@@ -74,6 +79,10 @@ class Game: public Screen {
    */
   Music *current_music;
 
+  void update_keys_effect(void);
+  void update_dialog_box(void);
+  void update_transitions(void);
+
  public:
 
   Game(Savegame *savegame);
@@ -94,14 +103,12 @@ class Game: public Screen {
   bool is_showing_message(void);
   bool is_suspended(void);
   KeysEffect *get_keys_effect(void);
-  void update_keys_effect(void);
-  void update_dialog_box(void);
-  void update_transitions(void);
 
   void play_music(MusicId new_music_id);
   void pause_or_resume_music(void);
   void stop_music(void);
 
+  DialogBox *get_dialog_box(void);
   void show_message(MessageId message_id);
 };
 

@@ -11,6 +11,7 @@
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "DialogBox.h"
+#include "Keyboard.h"
 #include "entities/Link.h"
 #include "entities/AnimatedTile.h"
 #include "entities/EntityDetector.h"
@@ -37,6 +38,7 @@ Game::Game(Savegame *savegame):
   // initialize the keys effect and the HUD
   keys_effect = new KeysEffect();
   update_keys_effect();
+  keyboard = new Keyboard(this);
   hud = new HUD(this);
 
   // launch the starting map
@@ -56,6 +58,7 @@ Game::~Game(void) {
   stop_music();
 
   delete keys_effect;
+  delete keyboard;
   delete hud;
   delete link;
   delete savegame;
@@ -89,207 +92,13 @@ void Game::handle_event(const SDL_Event &event) {
 
     // a key is pressed
   case SDL_KEYDOWN:
-
-    switch (event.key.keysym.unicode) {
-
-    case SDLK_c:
-
-      if (is_showing_message()) {
-	dialog_box->sword_key_pressed();
-      }
-      else switch (keys_effect->get_sword_key_effect()) {
-
-      case SWORD_KEY_SWORD:
-	if (!is_suspended()) {
-	  link->start_sword();
-	}
-	break;
-
-      default:
-	break;
-      }
-      break;
-
-    case SDLK_SPACE:
-      if (!is_suspended()) {
-	link->action_key_pressed();
-      }
-      else {
-	if (is_showing_message()) {
-	  dialog_box->action_key_pressed();
-	}
-      }
-      break;
-
-      // TODO remove
-    case SDLK_p:
-      savegame->get_equipment()->add_hearts(2);
-      break;
-
-    case SDLK_m:
-      savegame->get_equipment()->remove_hearts(1);
-      break;
-
-    case SDLK_o:
-      savegame->get_equipment()->add_rupees(23);
-      break;
-
-    case SDLK_l:
-      savegame->get_equipment()->remove_rupees(14);
-      break;
-
-    case SDLK_i:
-      savegame->get_equipment()->add_magic(10);
-      break;
-
-    case SDLK_k:
-      savegame->get_equipment()->remove_magic(4);
-      break;
-
-    case SDLK_j:
-      if (!savegame->get_equipment()->is_magic_decreasing()) {
-	savegame->get_equipment()->start_removing_magic(200);
-      }
-      else {
-	savegame->get_equipment()->stop_removing_magic();
-      }
-      break;
-
-    case SDLK_s:
-      savegame->save();
-      break;
-
-    case SDLK_d:
-
-      // temoporary code to make like the game is paused
-      if (!is_paused()) {
-
-	ResourceManager::get_sound("pause_open")->play();
-	keys_effect->set_pause_key_effect(PAUSE_KEY_RETURN);
-	keys_effect->set_sword_key_effect(SWORD_KEY_SAVE);
-	paused = true;
-      }
-      else {
-	ResourceManager::get_sound("pause_closed")->play();
-	keys_effect->set_pause_key_effect(PAUSE_KEY_PAUSE);
-	keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
-	paused = false;
-      }
-      break;
-
-    case SDLK_a:
-      // temporary code to test the dialog box
-      if (!is_showing_message()) {
-	show_message("msg");
-	dialog_box->set_variable("test_var", 42);
-	dialog_box->set_variable("test_name", savegame->get_reserved_string(SAVEGAME_PLAYER_NAME));
-      }
-      break;
-
-    default:
-      break;
-    }
-
-    if (!is_suspended()) {
-      switch (event.key.keysym.sym) {
-
-	// move Link
-      case SDLK_RIGHT:
-	link_movement->start_right();
-	break;
-
-      case SDLK_UP:
-	link_movement->start_up();
-	break;
-
-      case SDLK_LEFT:
-	link_movement->start_left();
-	break;
-
-      case SDLK_DOWN:
-	link_movement->start_down();
-	break;
-
-      default:
-	break;
-      }
-    }
-    else if (is_showing_message()) {
-      if (event.key.keysym.sym == SDLK_UP
-	  || event.key.keysym.sym == SDLK_DOWN) {
-	dialog_box->up_or_down_key_pressed();
-      }
-    }
-
-    // TODO remove
-    switch (event.key.keysym.sym) {
-
-    case SDLK_KP7:
-      savegame->get_equipment()->set_max_magic(0);
-      break;
-
-    case SDLK_KP8:
-      savegame->get_equipment()->set_max_magic(42);
-      break;
-
-    case SDLK_KP9:
-      savegame->get_equipment()->set_max_magic(84);
-      break;
-
-    case SDLK_KP1:
-      savegame->get_equipment()->set_tunic_number(MAX(savegame->get_equipment()->get_tunic_number() - 1, 0));
-      break;
-
-    case SDLK_KP4:
-      savegame->get_equipment()->set_tunic_number(MIN(savegame->get_equipment()->get_tunic_number() + 1, 2));
-      break;
-
-    case SDLK_KP2:
-      savegame->get_equipment()->set_sword_number(MAX(savegame->get_equipment()->get_sword_number() - 1, 0));
-      break;
-
-    case SDLK_KP5:
-      savegame->get_equipment()->set_sword_number(MIN(savegame->get_equipment()->get_sword_number() + 1, 4));
-      break;
-
-    case SDLK_KP3:
-      savegame->get_equipment()->set_shield_number(MAX(savegame->get_equipment()->get_shield_number() - 1, 0));
-      break;
-
-    case SDLK_KP6:
-      savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
-      break;
-
-    default:
-      break;
-    }
+    keyboard->key_pressed(event.key.keysym);
     break;
-	
-    // stop Link's movement
+
   case SDL_KEYUP:
-    if (!is_suspended()) {
-      switch (event.key.keysym.sym) {
+    keyboard->key_released(event.key.keysym);
+    break;
 
-      case SDLK_RIGHT:
-	link_movement->stop_right();
-	break;
-
-      case SDLK_UP:
-	link_movement->stop_up();
-	break;
-
-      case SDLK_LEFT:
-	link_movement->stop_left();
-	break;
-
-      case SDLK_DOWN:
-	link_movement->stop_down();
-	break;
-
-      default:
-	break;
-      }
-    }
   }
 }
 
@@ -570,11 +379,19 @@ bool Game::is_suspended(void) {
 }
 
 /**
- * Returns the current effect of the 3 main keys: action, sword and pause.
- * @return the current effect of the 3 main keys: action, sword and pause
+ * Returns the current effect of the main keys (action, sword, pause, etc.).
+ * @return the current effect of the main keys
  */
 KeysEffect * Game::get_keys_effect(void) {
   return keys_effect;
+}
+
+/**
+ * Returns the dialog box currently displayed.
+ * @return the dialog box, or NULL if no message is currently displayed
+ */
+DialogBox * Game::get_dialog_box(void) {
+  return dialog_box;
 }
 
 /**

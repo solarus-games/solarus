@@ -1143,3 +1143,22 @@ void Link::action_key_pressed(void) {
     break;
   }
 }
+
+/**
+ * This function is called by the engine when the sword key is pressed.
+ * Depending on its effect, an action may be performed.
+ */
+void Link::sword_key_pressed(void) {
+
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  
+  switch (keys_effect->get_sword_key_effect()) {
+
+  case SWORD_KEY_SWORD:
+    start_sword();
+    break;
+
+  default:
+    break;
+  }
+}

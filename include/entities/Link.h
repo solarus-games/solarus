@@ -153,6 +153,7 @@ class Link: public MapEntity, AnimationListener {
   void start_pushing(void);
   void start_carrying(void);
   void action_key_pressed(void);
+  void sword_key_pressed(void);
 };
 
 #endif

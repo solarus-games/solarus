@@ -2,11 +2,10 @@ package zsdx.gui;
 
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.LinkedList;
 
-import zsdx.Map;
-import zsdx.MapEntity;
-import zsdx.MapEntitySelection;
-import zsdx.ZSDXException;
+import zsdx.*;
+import zsdx.map_editor_actions.*;
 
 /**
  * The popup menu shown when the user right clicks on the selected entities in the map view.
@@ -262,7 +261,8 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 */
 	public void actionPerformed(ActionEvent ev) {
 	    try {
-		map.getEntitySelection().setLayer(layer);
+		LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+		map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
 	    }
 	    catch (ZSDXException e) {
 		GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
@@ -294,7 +294,8 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 */
 	public void actionPerformed(ActionEvent ev) {
 	    try {
-		map.getEntitySelection().setDirection(direction);
+		LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+		map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
 	    }
 	    catch (ZSDXException e) {
 		GuiTools.errorDialog("Cannot change the direction: " + e.getMessage());
@@ -313,7 +314,8 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 */
 	public void actionPerformed(ActionEvent ev) {
 	    try {
-		map.getEntitySelection().bringToFront();
+		LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+		map.getHistory().doAction(new ActionBringToFront(map, entities));
 	    }
 	    catch (ZSDXException e) {
 		GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
@@ -332,7 +334,8 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 */
 	public void actionPerformed(ActionEvent ev) {
 	    try {
-		map.getEntitySelection().bringToBack();
+		LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+		map.getHistory().doAction(new ActionBringToBack(map, entities));
 	    }
 	    catch (ZSDXException e) {
 		GuiTools.errorDialog("Cannot bring the entities to back: " + e.getMessage());

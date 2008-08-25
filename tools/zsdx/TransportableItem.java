@@ -167,7 +167,6 @@ public class TransportableItem extends InteractiveEntity {
 
     /**
      * Updates the description of the image currently representing the entity.
-     * @param the image description to update
      */
     public void updateImageDescription() {
 	int x = getTransportableItemType() * 16;

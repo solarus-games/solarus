@@ -161,7 +161,6 @@ public class PickableItem extends InteractiveEntity {
     
     /**
      * Updates the description of the image currently representing the entity.
-     * @param the image description to update
      */
     public void updateImageDescription() {
 	int x = (getPickableItemType() - 1) * 16;

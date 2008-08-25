@@ -50,10 +50,7 @@ public class EntityImageDescription implements ImageObserver {
     
     /**
      * Sets the name of the image file.
-     * @param x x coordinate of the top-left corner of the rectangle to extract
-     * @param y y coordinate of the top-left corner of the rectangle to extract 
-     * @param width width of the rectangle
-     * @param height height of the rectangle
+     * @param imageFileName name of the image file
      */
     public void setImageFileName(String imageFileName) {
 	this.imageFileName = imageFileName;
@@ -101,13 +98,10 @@ public class EntityImageDescription implements ImageObserver {
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
      * @param showTransparency true to make transparent pixels,
      * false to replace them by a background color
-     * @param x x coordinate of the entity
-     * @param y y coordinate of the entity
-     * @param width width of the entity
-     * @param height height of the entity
+     * @param positionInDestinationImage position of the entity on the destination image
      */
     public void paint(Graphics g, double zoom, boolean showTransparency,
-	    Rectangle positionInDestinationImage) {
+		      Rectangle positionInDestinationImage) {
 
 	// get the image
 	if (image == null) {

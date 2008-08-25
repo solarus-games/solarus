@@ -208,7 +208,6 @@ public class EditEntityComponent extends JPanel {
 	ActionEditEntity action = getAction();
 	try {
 	    map.getHistory().doAction(action);
-	    entity.updateImageDescription();
 	}
 	catch (ZSDXException ex) {
 	    action.undo(); // undo the action because it may be partially done

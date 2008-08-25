@@ -106,6 +106,8 @@ public class ActionEditEntity extends MapEditorAction {
 	if (specificAction != null) {
 	    specificAction.execute();
 	}
+
+	entity.updateImageDescription();
     }
 
     /**
@@ -138,6 +140,8 @@ public class ActionEditEntity extends MapEditorAction {
 	if (specificAction != null) {
 	    specificAction.undo();
 	}
+
+	entity.updateImageDescription();
     }
     
     /**

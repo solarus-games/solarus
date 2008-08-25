@@ -289,15 +289,6 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     }
 
     /**
-     * Redefinition of Observable::setChanged() to update the image of the entity
-     * when it has just been changed.
-     */
-    public void setChanged() {
-	super.setChanged();
-	updateImageDescription();
-    }
-
-    /**
      * Returns a string describing this entity: the entity type, the layer, the coordinates,
      * the id (if any) and the direction (if any).
      * Subclasses should redefine this method to add their own information (if any).

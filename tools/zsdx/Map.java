@@ -514,10 +514,10 @@ public class Map extends Observable {
 
     /**
      * Changes the position of an entity on the map, by specifying the coordinates
-     * of its hotspot.
+     * of its origin point.
      * @param entity an entity
-     * @param x x coordinate of the hotspot
-     * @param y y coordinate of the hotspot
+     * @param x x coordinate of the origin point
+     * @param y y coordinate of the origin point
      * @throws MapException if the coordinates are not multiple of 8
      */
     public void setEntityPosition(MapEntity entity, int x, int y) throws MapException {
@@ -607,6 +607,7 @@ public class Map extends Observable {
 	if (direction != oldDirection) {
 	    
 	    entity.setDirection(direction);
+	    entity.updateImageDescription();
 	    
 	    setChanged();
 	    notifyObservers();

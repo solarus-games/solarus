@@ -101,6 +101,7 @@ class Game: public Screen {
 
   bool is_paused(void);
   bool is_showing_message(void);
+  bool is_playing_transition(void);
   bool is_suspended(void);
   KeysEffect *get_keys_effect(void);
 

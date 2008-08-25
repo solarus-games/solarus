@@ -18,7 +18,7 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-id(id), started(false), width(0), entities(NULL), suspended(true) {
+id(id), started(false), width(0), entities(NULL), suspended(false) {
 
 }
 

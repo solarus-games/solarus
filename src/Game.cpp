@@ -45,7 +45,6 @@ Game::Game(Savegame *savegame):
   set_current_map(savegame->get_reserved_integer(SAVEGAME_STARTING_MAP),
 		  savegame->get_reserved_integer(SAVEGAME_STARTING_ENTRANCE),
 		  TRANSITION_FADE);
-
 }
 
 /**
@@ -178,30 +177,27 @@ void Game::update(void) {
  */
 void Game::update_keys_effect(void) {
 
-  if (!is_suspended()) {
+  switch (link->get_state()) {
+    
+  case LINK_STATE_FREE:
+  case LINK_STATE_SWORD_SWINGING:
+  case LINK_STATE_SWORD_LOADING:
 
-    switch (link->get_state()) {
+    // the sword key swings the sword <=> Link has a sword
+    if (savegame->get_equipment()->has_sword()
+	&& keys_effect->get_sword_key_effect() != SWORD_KEY_SWORD) {
 
-    case LINK_STATE_FREE:
-    case LINK_STATE_SWORD_SWINGING:
-    case LINK_STATE_SWORD_LOADING:
-
-      // the sword key swings the sword <=> Link has a sword
-      if (savegame->get_equipment()->has_sword()
-	  && keys_effect->get_sword_key_effect() != SWORD_KEY_SWORD) {
-
-	keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
-      }
-      else if (!savegame->get_equipment()->has_sword()
-	       && keys_effect->get_sword_key_effect() == SWORD_KEY_SWORD) {
-      
-	keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
-      }
-      break;
-
-    default:
-      break;
+      keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
     }
+    else if (!savegame->get_equipment()->has_sword()
+	     && keys_effect->get_sword_key_effect() == SWORD_KEY_SWORD) {
+      
+      keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
+    }
+    break;
+
+  default:
+    break;
   }
 }
 
@@ -360,10 +356,19 @@ bool Game::is_paused(void) {
 
 /**
  * Returns whether we are showing a message.
- * @return true is a message is being shown.
+ * @return true if a message is being shown.
  */
 bool Game::is_showing_message(void) {
   return dialog_box != NULL;
+}
+
+/**
+ * Returns whether we are playing a transition between two maps.
+ * @return true if there is a transition
+ */
+bool Game::is_playing_transition(void) {
+
+  return transition != NULL || next_map != NULL;
 }
 
 /**
@@ -375,7 +380,7 @@ bool Game::is_showing_message(void) {
  * @return true if the game is suspended
  */
 bool Game::is_suspended(void) {
-  return is_paused() || is_showing_message() || transition != NULL;
+  return current_map == NULL || is_paused() || is_showing_message() || is_playing_transition();
 }
 
 /**

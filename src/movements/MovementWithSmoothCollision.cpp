@@ -16,6 +16,53 @@ MovementWithSmoothCollision::~MovementWithSmoothCollision(void) {
 }
 
 /**
+ * Updates the position of the entity if it wants to move.
+ * This is a redefinition of Movement::update because we have
+ * to call update_x() and update_y() in the right order.
+ */
+void MovementWithSmoothCollision::update(void) {
+
+  if (!suspended) {
+
+    Uint32 now = SDL_GetTicks();
+    bool x_move_now = now >= next_move_date_x && x_move != 0;
+    bool y_move_now = now >= next_move_date_y && y_move != 0;
+
+    while (x_move_now || y_move_now) {
+
+      if (x_move_now) {
+	// it's time to make an x move
+
+	if (y_move_now) {
+	  // but it's also time to make a y move
+
+	  if (next_move_date_x <= next_move_date_y) {
+	    // x move first
+	    update_x();
+	    update_y();
+	  }
+	  else {
+	    // y move first
+	    update_y();
+	    update_x();
+	  }
+	}
+	else {
+	  update_x();
+	}
+      }
+      else if (y_move_now) {
+	update_y();
+      }
+
+      now = SDL_GetTicks();
+      x_move_now = x_move_now && now >= next_move_date_x;
+      y_move_now = y_move_now && now >= next_move_date_y;
+    }
+  }
+}
+
+/**
  * Updates the x position of the entity if it wants to move
  * (i.e. if x_move != 0).
  * This is a redefinition of MovementWithCollision::update_x to
@@ -31,13 +78,13 @@ void MovementWithSmoothCollision::update_x(void) {
     Uint32 next_move_date_x_increment = x_delay;
 
     Uint32 now = SDL_GetTicks();
-    while (now >= next_move_date_x) { // while it's time to try a move
+    if (now >= next_move_date_x) { // it's time to try a move
 
       if (!collision_with_map(x_move, 0)) {
 	translate_x(x_move); // make the move
-
+	
 	if (y_move != 0 && collision_with_map(0, y_move)) {
-	  // if there is also an y move, and if this y move is illegal,
+	  // if there is also a y move, and if this y move is illegal,
 	  // we still allow the x move and we give it all the speed
 	  next_move_date_x_increment = (int) (x_delay / SQRT_2);
 	}
@@ -97,11 +144,11 @@ void MovementWithSmoothCollision::update_y(void) {
     Uint32 next_move_date_y_increment = y_delay;
 
     Uint32 now = SDL_GetTicks();
-    while (now >= next_move_date_y) { // while it's time to try a move
+    if (now >= next_move_date_y) { // it's time to try a move
 
       if (!collision_with_map(0, y_move)) {
 	translate_y(y_move); // make the move
-
+	
 	if (x_move != 0 && collision_with_map(x_move, 0)) {
 	  // if there is also an x move, and if this x move is illegal,
 	  // we still allow the y move and we give it all the speed

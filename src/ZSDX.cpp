@@ -173,7 +173,7 @@ void ZSDX::main(void) {
 	display_current_screen();
       }
       else if (delay >= 10) { // if we have time, let's sleep
-	SDL_Delay(delay);
+	SDL_Delay(10);
       }
     }
   }

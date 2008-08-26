@@ -15,6 +15,7 @@ class MovementWithSmoothCollision: public MovementWithCollision {
   MovementWithSmoothCollision();
   virtual ~MovementWithSmoothCollision(void);
 
+  virtual void update(void);
   virtual void update_x(void);
   virtual void update_y(void);
 };

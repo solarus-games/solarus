@@ -398,9 +398,9 @@ icon = 24
 cancel = all
 
 [_item_description_17_3]
-# Eidelweiss / Eidelweiss
+# Edelweiss / Edelweiss
 #       |--------------------|
-line1 = "L'Eidelweiss est une"
+line1 = "L'Edelweiss est une"
 line2 = "fleur très rare dans"
 line3 = "le royaume d'Hyrule."
 icon = 25

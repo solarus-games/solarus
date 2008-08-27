@@ -39,7 +39,7 @@ class InventoryItem {
     ITEM_APPLES                      = 14,
     ITEM_PAINS_AU_CHOCOLAT           = 15,
     ITEM_CROISSANTS                  = 16,
-    ITEM_L4_WAY_BONE_KEY             = 17, /**< 1: apple pie, 2: gold bars, 3: eidelweiss, 4: bone key */
+    ITEM_L4_WAY_BONE_KEY             = 17, /**< 1: apple pie, 2: gold bars, 3: edelweiss, 4: bone key */
     ITEM_FLIPPERS                    = 18,
     ITEM_RED_KEY                     = 19,
     ITEM_20_TODO                     = 20, /**< free slot for a new item (or bottle 3 if no need) */

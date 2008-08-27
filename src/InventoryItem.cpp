@@ -25,7 +25,7 @@ const InventoryItem InventoryItem::items[28] = {
   {true, SAVEGAME_CURRENT_APPLES},  // apples
   {true, SAVEGAME_CURRENT_PAINS_AU_CHOCOLAT}, // pains au chocolats
   {true, SAVEGAME_CURRENT_CROISSANTS}, // croissants
-  {false, 0}, // apple pie + golden bars + eidelweiss + bone key 
+  {false, 0}, // apple pie + golden bars + edelweiss + bone key 
   {false, 0}, // flippers
   {false, 0}, // red key
   {false, 0}, // TODO item 20

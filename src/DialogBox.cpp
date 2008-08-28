@@ -51,6 +51,8 @@ DialogBox::DialogBox(MessageId first_message_id) {
  * Destructor.
  */
 DialogBox::~DialogBox(void) {
+  SDL_FreeSurface(img_box);
+  SDL_FreeSurface(img_icons);
   delete sprite_message_end_arrow;
   delete current_message;
 }

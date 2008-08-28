@@ -308,7 +308,9 @@ void MapEntities::add_pickable_item(Layer layer, int x, int y, PickableItemType 
  * @param item the pickable item to remove
  */
 void MapEntities::remove_pickable_item(PickableItem *item) {
+
   entities_to_remove.push_back(item);
+  item->set_being_removed();
 }
 
 /**
@@ -318,7 +320,7 @@ void MapEntities::remove_pickable_item(PickableItem *item) {
  * @param y y position of the transportable item
  * @param transportable_item_type type of transportable item to create
  * @param pickable_item_type type of pickable item that appears when the
- transportable item is lifted
+ * transportable item is lifted
  * @param unique_id unique id of the pickable item, for certain kinds of pickable
  * items only (a key, a piece of heart...)
  */
@@ -341,6 +343,7 @@ void MapEntities::add_transportable_item(Layer layer, int x, int y,
  */
 void MapEntities::remove_transportable_item(TransportableItem *item) {
   entities_to_remove.push_back(item);
+  item->set_being_removed();
 }
 
 /**
@@ -424,7 +427,10 @@ void MapEntities::update(void) {
     for (it = sprite_entities[layer].begin();
 	 it != sprite_entities[layer].end();
 	 it++) {
-      (*it)->update();
+
+      if (!(*it)->is_being_removed()) {
+	(*it)->update();
+      }
     }
   }
 

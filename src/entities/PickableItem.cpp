@@ -243,8 +243,10 @@ void PickableItem::initialize_sprites(void) {
   // initialize the sprite removal
   if (will_disappear) {
     Uint32 now = SDL_GetTicks();
-    blink_date = now + 8000; // blink at 8s
-    disappear_date = now + 10000; // disappear at 10s
+    allow_pick_date = now + 700;  // the player can take the item after 0.7s
+    can_be_picked = false;
+    blink_date = now + 8000;      // the item blinks at 8s
+    disappear_date = now + 10000; // the item disappears at 10s
   }
 }
 
@@ -276,8 +278,7 @@ bool PickableItem::is_falling(void) {
  */
 void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 
-  if (entity_overlapping->is_hero()
-      && SDL_GetTicks() >= (Uint32) (appear_date + 700)) {
+  if (entity_overlapping->is_hero() && can_be_picked) {
     // wait 0.7 second before allowing Link to take the item
 
     give_item_to_player();
@@ -417,16 +418,27 @@ void PickableItem::update(void) {
   shadow_sprite->update_current_frame();
 
   // check the timer
-  if (will_disappear && !is_suspended()) {
-    Uint32 now = SDL_GetTicks();
-    Sprite *item_sprite = get_sprite(0);
+  Uint32 now = SDL_GetTicks();
+
+
+  // wait 0.7 second before allowing Link to take the item
+  if (!can_be_picked && now >= allow_pick_date) {
+    can_be_picked = true;
+    map->check_collision_with_detectors(zsdx->game->get_link());
+  }
+  else {
+    // make the item blink and then disappear
+    if (will_disappear && !is_suspended()) {
+
+      Sprite *item_sprite = get_sprite(0);
     
-    if (now >= blink_date && !item_sprite->is_blinking()) {
-      set_blinking(true);
-    }
+      if (now >= blink_date && !item_sprite->is_blinking()) {
+	set_blinking(true);
+      }
     
-    if (now >= disappear_date) {
-      map->get_entities()->remove_pickable_item(this);
+      if (now >= disappear_date) {
+	map->get_entities()->remove_pickable_item(this);
+      }
     }
   }
 }

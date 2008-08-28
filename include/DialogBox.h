@@ -46,12 +46,13 @@ class DialogBox {
   bool cancel_dialog;
 
   // graphics
-  static SDL_Surface *img_box;
+  SDL_Surface *img_box;
+  SDL_Surface *img_icons;
   Sprite *sprite_message_end_arrow;
 
   // sounds
-  static Sound *end_message_sound;
-  static Sound *switch_answer_sound;
+  Sound *end_message_sound;
+  Sound *switch_answer_sound;
 
   void show_message(MessageId messageId);
 

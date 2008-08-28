@@ -157,6 +157,16 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
     }
     break;
 
+  case SDLK_a:
+    // temporary code to test the dialog box
+    if (!game->is_showing_message()) {
+      game->show_message("msg");
+      game->get_dialog_box()->set_variable("test_var", 42);
+      game->get_dialog_box()->set_variable("test_name", savegame->get_reserved_string(Savegame::PLAYER_NAME));
+
+    }
+    break;
+
   case SDLK_t:
     equipment->give_inventory_item(InventoryItem::BOW);
     equipment->set_max_arrows(30);

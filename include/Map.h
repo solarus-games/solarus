@@ -141,11 +141,13 @@ class Map {
   void set_entrance(unsigned int entrance_index);
   void set_entrance(string entrance_name);
 
-  // collisions
+  // collisions with obstacles (checked before a move)
   Obstacle pixel_collision_with_tiles(Layer layer, int x, int y);
   bool collision_with_entities(Layer layer, SDL_Rect &collision_box);
   bool collision_with_obstacles(Layer layer, SDL_Rect &collision_box);
-  void entity_just_moved(MapEntity *entity);
+
+  // collisions with detectors (checked after a move)
+  void check_collision_with_detectors(MapEntity *entity);
 
   // update and display
   void update(void);

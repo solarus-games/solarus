@@ -689,6 +689,11 @@ void Link::start_throwing(void) {
   if (state == LINK_STATE_CARRYING) {
 
     lifted_item->throw_item(map, get_animation_direction());
+
+    if (thrown_item != NULL) {
+      delete thrown_item;
+    }
+
     thrown_item = lifted_item;
     lifted_item = NULL;
     start_free();

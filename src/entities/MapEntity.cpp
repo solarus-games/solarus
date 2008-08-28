@@ -55,7 +55,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
   layer(layer), name(name), direction(direction), movement(NULL),
-  suspended(false), when_suspended(0) {
+  suspended(false), when_suspended(0), being_removed(false) {
 
   position_in_map.x = x;
   position_in_map.y = y;
@@ -79,6 +79,27 @@ MapEntity::~MapEntity(void) {
   if (movement != NULL) {
     clear_movement();
   }
+}
+
+/**
+ * Sets a flag indicating that this entity has been added
+ * to the list of entities that will be removed from the map
+ * and deleted from the memory as soon as possible.
+ * When this flag is on, this entity is not considered
+ * to be on the map anymore.
+ */
+void MapEntity::set_being_removed(void) {
+  being_removed = true;
+}
+
+/**
+ * Returns true if this entity is about to be deleted.
+ * When this function returns true, the entity is not
+ * considered to be on the map anymore.
+ * @return true if this entity is about to be deleted
+ */
+bool MapEntity::is_being_removed(void) {
+  return being_removed;
 }
 
 /**
@@ -327,10 +348,10 @@ void MapEntity::movement_just_changed(void) {
 
 /**
  * This function is called when the entity has just moved.
- * It just calls map->entity_just_moved(this).
+ * It just calls map->check_collision_with_detectors(this).
  */
 void MapEntity::just_moved(void) {
-  zsdx->game->get_current_map()->entity_just_moved(this);
+  zsdx->game->get_current_map()->check_collision_with_detectors(this);
 }
 
 /**

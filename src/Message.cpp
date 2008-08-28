@@ -26,7 +26,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id) {
   parse(message_id);
 
   // create the text surfaces
-  int x = (icon == NULL) ? 67 : 99;
+  int x = (icon_number == -1) ? 67 : 99;
   for (int i = 0; i < 3; i++) {
     text_surfaces[i] = new TextSurface(x, 158 + i * 13,
 				       ALIGN_LEFT, ALIGN_TOP);
@@ -50,10 +50,6 @@ Message::Message(DialogBox *dialog_box, MessageId message_id) {
  * Destructor.
  */
 Message::~Message(void) {
-
-  if (icon != NULL) {
-    SDL_FreeSurface(icon);
-  }
 
   for (int i = 0; i < 3; i++) {
     delete text_surfaces[i];
@@ -95,13 +91,7 @@ void Message::parse(MessageId message_id) {
   lines[2] = CFG_ReadText("line3", "");
 
   // icon
-  int icon_number = CFG_ReadInt("icon", 0);
-  if (icon_number != 0) {
-    icon = NULL; // TODO
-  }
-  else {
-    icon = NULL;
-  }
+  icon_number = CFG_ReadInt("icon", -1);
 
   // question
   question = CFG_ReadBool("question", false);
@@ -152,6 +142,15 @@ MessageId Message::get_next_message_id(void) {
   }
 
   return next_message_id;
+}
+
+/**
+ * Returns the index of the icon displayed in this message,
+ * or -1 if there is no icon.
+ * @return the icon numer of this message
+ */
+int Message::get_icon_number(void) {
+  return icon_number;
 }
 
 /**

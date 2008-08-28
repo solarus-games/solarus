@@ -9,15 +9,14 @@
 #include "Sound.h"
 
 bool DialogBox::answer_1_selected = true;
-SDL_Surface * DialogBox::img_box = NULL;
-Sound * DialogBox::end_message_sound = NULL;
-Sound * DialogBox::switch_answer_sound = NULL;
 
 static SDL_Rect box_src_position = {0, 0, 220, 60};
 static SDL_Rect box_dst_position = {51, 144, 0, 0};
 
 static SDL_Rect question_src_position = {48, 60, 8, 8};
 static SDL_Rect question_dst_position = {69, 171, 0, 0};
+
+static SDL_Rect icon_dst_position = {69, 166, 0, 0};
 
 /**
  * Creates a new dialog box.
@@ -26,12 +25,12 @@ static SDL_Rect question_dst_position = {69, 171, 0, 0};
  */
 DialogBox::DialogBox(MessageId first_message_id) {
 
-  // first instance: load the image and the sounds
-  if (img_box == NULL) {
-    img_box = ResourceManager::load_image("hud/dialog_box.png");
-    end_message_sound = ResourceManager::get_sound("message_end");
-    switch_answer_sound = ResourceManager::get_sound("cursor");
-  }
+  // load the images and the sounds
+  img_box = ResourceManager::load_image("hud/dialog_box.png");
+  img_icons = ResourceManager::load_image("hud/message_icons.png");
+
+  end_message_sound = ResourceManager::get_sound("message_end");
+  switch_answer_sound = ResourceManager::get_sound("cursor");
 
   // create the sprite
   sprite_message_end_arrow = new Sprite("hud/dialog_box_message_end");
@@ -284,6 +283,15 @@ void DialogBox::display(SDL_Surface *destination_surface) {
 
   // display the message
   current_message->display(destination_surface);
+
+  // display the icon
+  int icon_number = current_message->get_icon_number();
+  if (icon_number != -1) {
+    SDL_Rect src_position = {0, 0, 16, 16};
+    src_position.x = icon_number % 10;
+    src_position.y = icon_number / 10;
+    SDL_BlitSurface(img_icons, &src_position, destination_surface, &icon_dst_position);
+  }
 
   // display the question arrow
   if (current_message->is_question() && current_message->is_over()) {

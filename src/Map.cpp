@@ -406,13 +406,14 @@ bool Map::collision_with_obstacles(Layer layer, SDL_Rect &collision_box) {
 }
 
 /**
- * This function is called by an entity sensible to the obstacles
- * when this entity has just moved on the map.
+ * This function is called by an entity sensible to the entity detectors
+ * when this entity has just moved on the map, or when a detector
+ * wants to check this entity.
  * We check whether or not the entity overlaps an entity detector.
  * @param entity the entity that has just moved (this entity should have
  * a movement sensible to the collisions)
  */
-void Map::entity_just_moved(MapEntity *entity) {
+void Map::check_collision_with_detectors(MapEntity *entity) {
 
   list<EntityDetector*> *entity_detectors = entities->get_entity_detectors();
 
@@ -421,13 +422,12 @@ void Map::entity_just_moved(MapEntity *entity) {
   for (i = entity_detectors->begin();
        i != entity_detectors->end();
        i++) {
-    
-    (*i)->check_entity_collision(entity);
+
+    if (!(*i)->is_being_removed()) {
+      (*i)->check_entity_collision(entity);
+    }
   }
 
-  // some detectors might have to be removed now
-  // because of a collision
-  entities->remove_marked_entities();
 }
 
 /**

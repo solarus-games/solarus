@@ -85,6 +85,11 @@ class MapEntity {
    */
   Uint32 when_suspended;
 
+  /**
+   * Indicates that the entity is not valid anymore because it is about to be removed.
+   */
+  bool being_removed;
+
   // creation
   MapEntity(void);
   MapEntity(Layer layer, int x, int y, int width, int height);
@@ -105,6 +110,8 @@ class MapEntity {
 
   // destruction
   virtual ~MapEntity(void);
+  void set_being_removed(void);
+  bool is_being_removed(void);
 
   // position in the map
   Layer get_layer(void);

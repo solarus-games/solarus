@@ -56,6 +56,12 @@ class PickableItem: public EntityDetector {
    * Date when the item appears.
    */
   Uint32 appear_date;
+
+  /**
+   * Date when the item can be picked.
+   */
+  Uint32 allow_pick_date;
+  bool can_be_picked;
   
   /**
    * Date when the item starts blinking.

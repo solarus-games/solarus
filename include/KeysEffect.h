@@ -70,8 +70,6 @@ class KeysEffect {
   PauseKeyEffect pause_key_effect; // effect of the pause key
   bool pause_key_enabled;
 
-  int current_item_1; // item associated to the first item slot (0 means no item)
-  int current_item_2; // same thing for the second item slot
   bool item_keys_enabled;
 
  public:
@@ -105,11 +103,6 @@ class KeysEffect {
   void set_pause_key_enabled(bool enable);
 
   // item keys
-
-  int get_current_item_1(void);
-  void set_current_item_1(int item);
-  int get_current_item_2(void);
-  void set_current_item_2(int item);
   bool are_item_keys_enabled(void);
   void set_item_keys_enabled(bool enable);
 

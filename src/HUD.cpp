@@ -7,13 +7,15 @@
 #include "ActionIcon.h"
 #include "SwordIcon.h"
 #include "PauseIcon.h"
+#include "ItemIcon.h"
 
 /**
  * Constructor.
  */
 HUD::HUD(Game *game) {
 
-  Equipment *equipment = game->get_savegame()->get_equipment();
+  Savegame *savegame = game->get_savegame();
+  Equipment *equipment = savegame->get_equipment();
   KeysEffect *keys_effect = game->get_keys_effect();
 
   nb_elements = 0;
@@ -24,6 +26,8 @@ HUD::HUD(Game *game) {
   elements[nb_elements++] = new ActionIcon(keys_effect, 23, 51);
   elements[nb_elements++] = new SwordIcon(keys_effect, equipment, 10, 29);
   elements[nb_elements++] = new PauseIcon(keys_effect, -3, 7);
+  elements[nb_elements++] = new ItemIcon(0, savegame, 8, 29);
+  elements[nb_elements++] = new ItemIcon(1, savegame, 60, 29);
 }
 
 /**

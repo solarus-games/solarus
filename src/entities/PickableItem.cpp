@@ -199,8 +199,8 @@ PickableItemType PickableItem::choose_random_type(void) {
   else if (r < 897) { type = PICKABLE_ITEM_FAIRY; }       // fairy: 0.2%
   else {
 
-    bool has_bombs = equipment->has_inventory_item(InventoryItem::ITEM_BOMBS);
-    bool has_bow = equipment->has_inventory_item(InventoryItem::ITEM_BOW);
+    bool has_bombs = equipment->has_inventory_item(InventoryItem::BOMBS);
+    bool has_bow = equipment->has_inventory_item(InventoryItem::BOW);
     bool has_magic = equipment->get_max_magic() > 0;
 
     if (r < 922)      { type = has_magic ? PICKABLE_ITEM_SMALL_MAGIC : PICKABLE_ITEM_NONE; }

@@ -14,8 +14,6 @@ KeysEffect::KeysEffect(void) {
   pause_key_effect = PAUSE_KEY_PAUSE;
   pause_key_enabled = true;
 
-  current_item_1 = 0; // item associated to the first item slot (0 means no item)
-  current_item_2 = 0;
   item_keys_enabled = true;
 }
 
@@ -162,40 +160,6 @@ void KeysEffect::set_pause_key_enabled(bool enable) {
 }
 
 // item keys
-
-/**
- * Returns the number of the item currently associated
- * to the first item key.
- * @return item number currently associated to the first item key
- */
-int KeysEffect::get_current_item_1(void) {
-  return current_item_1;
-}
-
-/**
- * Sets the item currently associated to the first item key.
- * @param item number of the item to associate to the first item key
- */
-void KeysEffect::set_current_item_1(int item) {
-  this->current_item_1 = item;
-}
-
-/**
- * Returns the number of the item currently associated
- * to the second item key.
- * @return item number currently associated to the second item key
- */
-int KeysEffect::get_current_item_2(void) {
-  return current_item_2;
-}
-
-/**
- * Sets the item currently associated to the second item key.
- * @param item number of the item to associate to the second item key
- */
-void KeysEffect::set_current_item_2(int item) {
-  this->current_item_2 = item;
-}
 
 /**
  * Returns whether the two item keys are enabled.

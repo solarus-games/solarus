@@ -59,7 +59,7 @@ void Equipment::update(void) {
  * 1: blue tunic, 2: red tunic)
  */
 int Equipment::get_tunic_number(void) {
-  return savegame->get_reserved_integer(SAVEGAME_LINK_TUNIC);
+  return savegame->get_reserved_integer(Savegame::LINK_TUNIC);
 }
 
 /**
@@ -77,7 +77,7 @@ void Equipment::set_tunic_number(int tunic_number) {
       DIE("Illegal tunic number: " << tunic_number);
     }
 
-    savegame->set_reserved_integer(SAVEGAME_LINK_TUNIC, tunic_number);
+    savegame->set_reserved_integer(Savegame::LINK_TUNIC, tunic_number);
 
     if (zsdx->game != NULL) {
       zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
@@ -101,7 +101,7 @@ bool Equipment::has_sword(void) {
  * 1 to 4: sword 1 to 4)
  */
 int Equipment::get_sword_number(void) {
-  return savegame->get_reserved_integer(SAVEGAME_LINK_SWORD);
+  return savegame->get_reserved_integer(Savegame::LINK_SWORD);
 }
 
 /**
@@ -119,7 +119,7 @@ void Equipment::set_sword_number(int sword_number) {
       DIE("Illegal sword number: " << sword_number);
     }
 
-    savegame->set_reserved_integer(SAVEGAME_LINK_SWORD, sword_number);
+    savegame->set_reserved_integer(Savegame::LINK_SWORD, sword_number);
 
     if (zsdx->game != NULL) {
       zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
@@ -143,7 +143,7 @@ bool Equipment::has_shield(void) {
  * 1 to 3: shield 1 to 3)
  */
 int Equipment::get_shield_number(void) {
-  return savegame->get_reserved_integer(SAVEGAME_LINK_SHIELD);
+  return savegame->get_reserved_integer(Savegame::LINK_SHIELD);
 }
 
 /**
@@ -161,7 +161,7 @@ void Equipment::set_shield_number(int shield_number) {
       DIE("Illegal shield number: " << shield_number);
     }
 
-    savegame->set_reserved_integer(SAVEGAME_LINK_SHIELD, shield_number);
+    savegame->set_reserved_integer(Savegame::LINK_SHIELD, shield_number);
 
     if (zsdx->game != NULL) {
       zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
@@ -176,7 +176,7 @@ void Equipment::set_shield_number(int shield_number) {
  * @return Link's maximum number of rupees (99, 199 or 999)
  */
 int Equipment::get_max_rupees(void) {
-  return savegame->get_reserved_integer(SAVEGAME_MAX_RUPEES);
+  return savegame->get_reserved_integer(Savegame::MAX_RUPEES);
 }
 
 /**
@@ -189,7 +189,7 @@ void Equipment::set_max_rupees(int max_rupees) {
     DIE("Illegal maximum number of rupees: " << max_rupees);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_MAX_RUPEES, max_rupees);
+  savegame->set_reserved_integer(Savegame::MAX_RUPEES, max_rupees);
 }
 
 /**
@@ -197,7 +197,7 @@ void Equipment::set_max_rupees(int max_rupees) {
  * @return Link's current number of rupees
  */
 int Equipment::get_rupees(void) {
-  return savegame->get_reserved_integer(SAVEGAME_CURRENT_RUPEES);
+  return savegame->get_reserved_integer(Savegame::CURRENT_RUPEES);
 }
 
 /**
@@ -211,7 +211,7 @@ void Equipment::set_rupees(int rupees) {
     DIE("Illegal number of rupees: " << rupees);
   }
   
-  savegame->set_reserved_integer(SAVEGAME_CURRENT_RUPEES, rupees);
+  savegame->set_reserved_integer(Savegame::CURRENT_RUPEES, rupees);
 }
 
 /**
@@ -246,7 +246,7 @@ void Equipment::remove_rupees(int rupees_to_remove) {
  * @return Link's maximum number of rupees
  */
 int Equipment::get_max_hearts(void) {
-  return savegame->get_reserved_integer(SAVEGAME_MAX_HEARTS);
+  return savegame->get_reserved_integer(Savegame::MAX_HEARTS);
 }
 
 /**
@@ -261,7 +261,7 @@ void Equipment::set_max_hearts(int max_hearts) {
     DIE("Illegal maximum number of hearts: " << max_hearts);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_MAX_HEARTS, max_hearts);
+  savegame->set_reserved_integer(Savegame::MAX_HEARTS, max_hearts);
 }
 
 /**
@@ -278,7 +278,7 @@ void Equipment::add_heart_container(void) {
  * @return Link's current number of hearts (in heart quarters)
  */
 int Equipment::get_hearts(void) {
-  return savegame->get_reserved_integer(SAVEGAME_CURRENT_HEARTS);
+  return savegame->get_reserved_integer(Savegame::CURRENT_HEARTS);
 }
 
 /**
@@ -295,7 +295,7 @@ void Equipment::set_hearts(int hearts) {
     DIE("Illegal number of hearts: " << hearts);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_CURRENT_HEARTS, hearts);
+  savegame->set_reserved_integer(Savegame::CURRENT_HEARTS, hearts);
 }
 
 /**
@@ -345,7 +345,7 @@ bool Equipment::needs_hearts(void) {
  * @returns Link's current number of pieces of heart, between 0 and 3
  */
 int Equipment::get_nb_pieces_of_heart(void) {
-  return savegame->get_reserved_integer(SAVEGAME_PIECES_OF_HEART);
+  return savegame->get_reserved_integer(Savegame::PIECES_OF_HEART);
 }
 
 /**
@@ -356,9 +356,9 @@ int Equipment::get_nb_pieces_of_heart(void) {
  */
 bool Equipment::has_piece_of_heart(int piece_of_heart_id) {
 
-  int index = SAVEGAME_FIRST_PIECE_OF_HEART + piece_of_heart_id;
+  int index = Savegame::FIRST_PIECE_OF_HEART + piece_of_heart_id;
   
-  if (index < SAVEGAME_FIRST_PIECE_OF_HEART || index > SAVEGAME_LAST_PIECE_OF_HEART) {
+  if (index < Savegame::FIRST_PIECE_OF_HEART || index > Savegame::LAST_PIECE_OF_HEART) {
     DIE("Illegal piece of heart index: " << piece_of_heart_id);
   }
 
@@ -378,18 +378,18 @@ void Equipment::add_piece_of_heart(int piece_of_heart_id) {
     DIE("The player already has piece of heart #" << piece_of_heart_id);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_FIRST_PIECE_OF_HEART + piece_of_heart_id, 1);
+  savegame->set_reserved_integer(Savegame::FIRST_PIECE_OF_HEART + piece_of_heart_id, 1);
 
   // check whether Link has a new heart
 
   int nb_pieces_of_heart = get_nb_pieces_of_heart() + 1;
   if (nb_pieces_of_heart < 4) {
     // no new heart
-    savegame->set_reserved_integer(SAVEGAME_PIECES_OF_HEART, nb_pieces_of_heart);
+    savegame->set_reserved_integer(Savegame::PIECES_OF_HEART, nb_pieces_of_heart);
   }
   else {
     // new heart container
-    savegame->set_reserved_integer(SAVEGAME_PIECES_OF_HEART, 0);
+    savegame->set_reserved_integer(Savegame::PIECES_OF_HEART, 0);
     add_heart_container();
   }
 
@@ -403,7 +403,7 @@ void Equipment::add_piece_of_heart(int piece_of_heart_id) {
  * @return the maximum level of magic (0, 42 or 84 points)
  */
 int Equipment::get_max_magic(void) {
-  return savegame->get_reserved_integer(SAVEGAME_MAX_MAGIC);
+  return savegame->get_reserved_integer(Savegame::MAX_MAGIC);
 }
 
 /**
@@ -418,7 +418,7 @@ void Equipment::set_max_magic(int max_magic) {
     DIE("Illegal maximum number of magic points: " << max_magic);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_MAX_MAGIC, max_magic);
+  savegame->set_reserved_integer(Savegame::MAX_MAGIC, max_magic);
 
   restore_all_magic();
 }
@@ -428,7 +428,7 @@ void Equipment::set_max_magic(int max_magic) {
  * @return Link's current number of magic points (0 to 28)
  */
 int Equipment::get_magic(void) {
-  return savegame->get_reserved_integer(SAVEGAME_CURRENT_MAGIC);
+  return savegame->get_reserved_integer(Savegame::CURRENT_MAGIC);
 }
 
 /**
@@ -443,7 +443,7 @@ void Equipment::set_magic(int magic) {
     DIE("Illegal number of magic points: " << magic);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_CURRENT_MAGIC, magic);
+  savegame->set_reserved_integer(Savegame::CURRENT_MAGIC, magic);
 }
 
 /**
@@ -529,7 +529,7 @@ void Equipment::stop_removing_magic(void) {
  * @return Link's maximum number of bombs (0, 30 or 50)
  */
 int Equipment::get_max_bombs(void) {
-  return savegame->get_reserved_integer(SAVEGAME_MAX_BOMBS);
+  return savegame->get_reserved_integer(Savegame::MAX_BOMBS);
 }
 
 /**
@@ -542,7 +542,7 @@ void Equipment::set_max_bombs(int max_bombs) {
     DIE("Illegal maximum number of bombs: " << max_bombs);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_MAX_BOMBS, max_bombs);
+  savegame->set_reserved_integer(Savegame::MAX_BOMBS, max_bombs);
 }
 
 /**
@@ -550,7 +550,7 @@ void Equipment::set_max_bombs(int max_bombs) {
  * @return Link's current number of bombs
  */
 int Equipment::get_bombs(void) {
-  return savegame->get_reserved_integer(SAVEGAME_CURRENT_BOMBS);
+  return savegame->get_reserved_integer(Savegame::CURRENT_BOMBS);
 }
 
 /**
@@ -565,7 +565,7 @@ void Equipment::set_bombs(int bombs) {
     DIE("Illegal number of bombs: " << bombs);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_CURRENT_BOMBS, bombs);
+  savegame->set_reserved_integer(Savegame::CURRENT_BOMBS, bombs);
 }
 
 /**
@@ -599,7 +599,7 @@ void Equipment::remove_bomb(void) {
  * @return true if the player needs bombs
  */
 bool Equipment::needs_bombs(void) {
-  return has_inventory_item(InventoryItem::ITEM_BOMBS)
+  return has_inventory_item(InventoryItem::BOMBS)
     && get_bombs() == 0;
 }
 
@@ -608,7 +608,7 @@ bool Equipment::needs_bombs(void) {
  * @return Link's maximum number of arrows (0, 30 or 50)
  */
 int Equipment::get_max_arrows(void) {
-  return savegame->get_reserved_integer(SAVEGAME_MAX_ARROWS);
+  return savegame->get_reserved_integer(Savegame::MAX_ARROWS);
 }
 
 /**
@@ -621,13 +621,13 @@ void Equipment::set_max_arrows(int max_arrows) {
     DIE("Illegal maximum number of arrows: " << max_arrows);
   }
 
-  int has_bow = has_inventory_item(InventoryItem::ITEM_BOW);
+  int has_bow = has_inventory_item(InventoryItem::BOW);
   if (max_arrows == 0 && has_bow != 0) {
     DIE("Cannot set the maximum number of arrows to 0 because"
 	" the player has got the bow");
   }
 
-  savegame->set_reserved_integer(SAVEGAME_MAX_ARROWS, max_arrows);
+  savegame->set_reserved_integer(Savegame::MAX_ARROWS, max_arrows);
 }
 
 /**
@@ -635,7 +635,7 @@ void Equipment::set_max_arrows(int max_arrows) {
  * @return Link's current number of arrows
  */
 int Equipment::get_arrows(void) {
-  return savegame->get_reserved_integer(SAVEGAME_CURRENT_ARROWS);
+  return savegame->get_reserved_integer(Savegame::CURRENT_ARROWS);
 }
 
 /**
@@ -650,7 +650,7 @@ void Equipment::set_arrows(int arrows) {
     DIE("Illegal number of arrows: " << arrows);
   }
 
-  savegame->set_reserved_integer(SAVEGAME_CURRENT_ARROWS, arrows);
+  savegame->set_reserved_integer(Savegame::CURRENT_ARROWS, arrows);
 }
 
 /**
@@ -684,7 +684,7 @@ void Equipment::remove_arrow(void) {
  * @return true if the player needs arrows
  */
 bool Equipment::needs_arrows(void) {
-  return has_inventory_item(InventoryItem::ITEM_BOW)
+  return has_inventory_item(InventoryItem::BOW)
     && get_arrows() == 0;
 }
 
@@ -699,7 +699,7 @@ bool Equipment::needs_arrows(void) {
  */
 int Equipment::has_inventory_item(InventoryItem::ItemId item_id) {
 
-  int index = SAVEGAME_FIRST_INVENTORY_ITEM + item_id;
+  int index = Savegame::FIRST_INVENTORY_ITEM + item_id;
   return savegame->get_reserved_integer(index);
 }
 
@@ -720,7 +720,7 @@ void Equipment::give_inventory_item(InventoryItem::ItemId item_id) {
  */
 void Equipment::give_inventory_item(InventoryItem::ItemId item_id, int variant) {
 
-  int index = SAVEGAME_FIRST_INVENTORY_ITEM + item_id;
+  int index = Savegame::FIRST_INVENTORY_ITEM + item_id;
   savegame->set_reserved_integer(index, variant);
 }
 
@@ -731,4 +731,35 @@ void Equipment::give_inventory_item(InventoryItem::ItemId item_id, int variant) 
  */
 void Equipment::remove_inventory_item(InventoryItem::ItemId item_id) {
   give_inventory_item(item_id, 0);
+}
+
+/**
+ * Returns the item currently assigned to a slot.
+ * @param slot slot of the item to get (0 for X or 1 for V)
+ */
+InventoryItem::ItemId Equipment::get_current_item(int slot) {
+  int index = Savegame::ITEM_SLOT_0 + slot;
+  return (InventoryItem::ItemId) savegame->get_reserved_integer(index);
+}
+
+/**
+ * Assigns an item to a slot.
+ * The program exits with an error message if the specified item
+ * cannot be equiped or if the player does not have it
+ * @param slot slot to set (0 for X or 1 for V)
+ * @param item_id the item to assign to this slot
+ */
+void Equipment::set_current_item(int slot, InventoryItem::ItemId item_id) {
+
+  if (!has_inventory_item(item_id)) {
+    DIE("Cannot assign item " << item_id << " because the player does not have it");
+  }
+
+  InventoryItem *item = InventoryItem::get_item(item_id);
+  if (!item->is_attributable()) {
+    DIE("Cannot assign item " << item_id << " because it is not attributable");
+  }
+
+  int index = Savegame::ITEM_SLOT_0 + slot;
+  savegame->set_reserved_integer(index, item_id);
 }

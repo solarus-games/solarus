@@ -42,8 +42,8 @@ Game::Game(Savegame *savegame):
   hud = new HUD(this);
 
   // launch the starting map
-  set_current_map(savegame->get_reserved_integer(SAVEGAME_STARTING_MAP),
-		  savegame->get_reserved_integer(SAVEGAME_STARTING_ENTRANCE),
+  set_current_map(savegame->get_reserved_integer(Savegame::STARTING_MAP),
+		  savegame->get_reserved_integer(Savegame::STARTING_ENTRANCE),
 		  TRANSITION_FADE);
 }
 

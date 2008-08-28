@@ -6,11 +6,13 @@
  * Constructor.
  * The counter's value is initialized to zero.
  * @param nb_digits number of digits to display
+ * @param fill_with_zeros true to fill with zeros when the current number of digits is lower than nb_digits
  * @param x x coordinate of the top-left corner of the counter on the destination surface
  * @param y y coordinate of the top-left corner of the counter on the destination surface
  */
-CounterView::CounterView(unsigned int nb_digits, int x, int y):
-  nb_digits(nb_digits) {
+CounterView::CounterView(unsigned int nb_digits, bool fill_with_zeros,
+			 int x, int y):
+  nb_digits(nb_digits), fill_with_zeros(fill_with_zeros) {
   
   surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, 8 * nb_digits, 8, 32, 0, 0, 0, 0);
   img_digits = ResourceManager::load_image("hud/digits.png");
@@ -65,17 +67,22 @@ void CounterView::rebuild_with_value(unsigned int value) {
   SDL_Rect digit_position_in_src = {0, 0, 8, 8};
   SDL_Rect digit_position_in_counter = {0, 0, 8, 8};
 
+  // draw the digit from the right to the left
   for (int i = nb_digits - 1; i >= 0; i--) {
 
     // compute each digit
     Uint8 digit = value % 10;
     value /= 10;
-      
-    // draw the surface
-    digit_position_in_src.x = digit * 8;
-    digit_position_in_counter.x = i * 8;
 
-    SDL_BlitSurface(img_digits, &digit_position_in_src, surface_drawn, &digit_position_in_counter); 
+    if (digit != 0 || fill_with_zeros) {
+
+      // draw the surface
+      digit_position_in_src.x = digit * 8;
+      digit_position_in_counter.x = i * 8;
+
+      SDL_BlitSurface(img_digits, &digit_position_in_src,
+		      surface_drawn, &digit_position_in_counter); 
+    }
   }
 }
 

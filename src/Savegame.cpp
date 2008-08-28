@@ -14,7 +14,7 @@ Savegame::Savegame(const char *file_name) {
   if (file == NULL) {
     // this save slot is free
     empty = true;
-    set_default_values();
+    set_initial_values();
 
     this->equipment = NULL;
   }
@@ -23,7 +23,7 @@ Savegame::Savegame(const char *file_name) {
     empty = false;
     fread(&saved_data, sizeof(SavedData), 1, file);
     fclose(file);
-    
+
     this->equipment = new Equipment(this);
   }
 }
@@ -44,15 +44,21 @@ bool Savegame::is_empty() {
 }
 
 /**
- * Loads the default values.
+ * Loads the initial values.
  */
-void Savegame::set_default_values(void) {
+void Savegame::set_initial_values(void) {
+
+  // 0 is the initial value of most variables
   memset(&saved_data, 0x0000, sizeof(SavedData));
 
-  set_reserved_integer(SAVEGAME_MAX_HEARTS, 3);
-  set_reserved_integer(SAVEGAME_CURRENT_HEARTS, 12);
+  // a few variable have other initial values
+  set_reserved_integer(MAX_HEARTS, 3);
+  set_reserved_integer(CURRENT_HEARTS, 12);
 
-  set_reserved_integer(SAVEGAME_MAX_RUPEES, 99);
+  set_reserved_integer(MAX_RUPEES, 99);
+
+  set_reserved_integer(ITEM_SLOT_0, -1);
+  set_reserved_integer(ITEM_SLOT_1, -1);
 }
 
 /**

@@ -12,6 +12,8 @@ class CounterView {
  private:
 
   unsigned int nb_digits;
+  bool fill_with_zeros;
+
   unsigned int value;
   SDL_Surface *surface_drawn;
   SDL_Rect destination_position;
@@ -21,7 +23,8 @@ class CounterView {
  
  public:
   
-  CounterView(unsigned int max_digits, int x, int y);
+  CounterView(unsigned int nb_digits, bool fill_with_zeros,
+	      int x, int y);
   ~CounterView(void);
 
   unsigned int get_value(void);

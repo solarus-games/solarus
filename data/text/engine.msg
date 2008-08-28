@@ -506,3 +506,28 @@ cancel = all
 line1 = "???"
 icon = 36
 cancel = all
+
+# --------------------
+# Obtention d'un objet
+# --------------------
+# 
+# Les messages suivants sont affichés lorsque le joueur obtient
+# un objet, généralement en ouvrant un coffre ou en l'achetant
+# dans un magasin.
+
+[_got_item_0]
+# Plume
+#       |--------------------|
+icon = 0
+line1 = "Tu as trouvé la"
+line2 = "Plume ! Utilise-la"
+line3 = "pour sauter et"
+next = _got_item_0.1
+
+[_got_item_0.1]
+# Plume
+#       |--------------------|
+icon = 0
+line1 = "franchir des"
+line2 = "obstacles !"
+

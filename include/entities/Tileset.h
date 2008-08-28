@@ -27,6 +27,11 @@ class Tileset {
    * Number of tiles in the tileset.
    */
   int nb_tiles;
+
+  /**
+   * Maximum id of a tile.
+   */
+  int max_tile_id;
   
   /**
    * Background color of the tileset.

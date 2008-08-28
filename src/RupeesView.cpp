@@ -29,7 +29,7 @@ RupeesView::RupeesView(Equipment *equipment, int x, int y):
   img_rupee_icon = ResourceManager::load_image("hud/rupee_icon.png");
 
   nb_max_rupees_displayed = equipment->get_max_rupees();
-  
+
   if (nb_max_rupees_displayed == 99) {
     icon_displayed = 0;
   }
@@ -39,9 +39,9 @@ RupeesView::RupeesView(Equipment *equipment, int x, int y):
   else {
     icon_displayed = 2;
   }
-  
+
   rupee_counter->set_value(equipment->get_rupees());
-  
+
   rebuild();
 }
 

@@ -97,6 +97,7 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
 
   Savegame *savegame = game->get_savegame();
   KeysEffect *keys_effect = game->get_keys_effect();
+  Equipment *equipment = savegame->get_equipment();
 
   switch (keysym.unicode) {
 
@@ -157,14 +158,19 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
     break;
 
   case SDLK_t:
-    if (!game->is_suspended()) {
-      if (link->get_state() != LINK_STATE_PUSHING) {
-	link->start_pushing();
-      }
-      else {
-	link->start_free();
-      }
-    }
+    equipment->give_inventory_item(InventoryItem::BOW);
+    equipment->set_max_arrows(30);
+    equipment->set_current_item(0, InventoryItem::BOW);
+    equipment->give_inventory_item(InventoryItem::BOTTLE_2, 6);
+    equipment->set_current_item(1, InventoryItem::BOTTLE_2);
+    break;
+ 
+  case SDLK_g:
+    equipment->add_arrows(7);
+    break;
+
+  case SDLK_b:
+    equipment->remove_arrow();
     break;
 	  
   default:
@@ -173,39 +179,39 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
 
   switch (keysym.sym) {
   case SDLK_KP7:
-    savegame->get_equipment()->set_max_magic(0);
+    equipment->set_max_magic(0);
     break;
 	  
   case SDLK_KP8:
-    savegame->get_equipment()->set_max_magic(42);
+    equipment->set_max_magic(42);
     break;
 	  
   case SDLK_KP9:
-    savegame->get_equipment()->set_max_magic(84);
+    equipment->set_max_magic(84);
     break;
 	  
   case SDLK_KP1:
-    savegame->get_equipment()->set_tunic_number(MAX(savegame->get_equipment()->get_tunic_number() - 1, 0));
+    equipment->set_tunic_number(MAX(equipment->get_tunic_number() - 1, 0));
     break;
 
   case SDLK_KP4:
-    savegame->get_equipment()->set_tunic_number(MIN(savegame->get_equipment()->get_tunic_number() + 1, 2));
+    equipment->set_tunic_number(MIN(equipment->get_tunic_number() + 1, 2));
     break;
 	  
   case SDLK_KP2:
-    savegame->get_equipment()->set_sword_number(MAX(savegame->get_equipment()->get_sword_number() - 1, 0));
+    equipment->set_sword_number(MAX(equipment->get_sword_number() - 1, 0));
     break;
 	  
   case SDLK_KP5:
-    savegame->get_equipment()->set_sword_number(MIN(savegame->get_equipment()->get_sword_number() + 1, 4));
+    equipment->set_sword_number(MIN(equipment->get_sword_number() + 1, 4));
     break;
 	  
   case SDLK_KP3:
-    savegame->get_equipment()->set_shield_number(MAX(savegame->get_equipment()->get_shield_number() - 1, 0));
+    equipment->set_shield_number(MAX(equipment->get_shield_number() - 1, 0));
     break;
 	  
   case SDLK_KP6:
-    savegame->get_equipment()->set_shield_number(MIN(savegame->get_equipment()->get_shield_number() + 1, 3));
+    equipment->set_shield_number(MIN(equipment->get_shield_number() + 1, 3));
     break;
 	  
   default:

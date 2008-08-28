@@ -30,6 +30,8 @@ ItemIcon::ItemIcon(int slot, Savegame *savegame, int x, int y):
   this->item_variant_displayed = 0;
   this->counter = new CounterView(2, false, 8, 16);
   this->counter_value_displayed = -1;
+
+  rebuild();
 }
 
 /**
@@ -42,7 +44,7 @@ ItemIcon::~ItemIcon(void) {
 }
 
 /**
- * Updates the item image displayd and the counter's value.
+ * Updates the item image displayed and the counter's value.
  */
 void ItemIcon::update(void) {
 
@@ -52,7 +54,7 @@ void ItemIcon::update(void) {
 
   // item assigned
   InventoryItem::ItemId current_item = equipment->get_current_item(slot);
-  if (current_item != item_displayed) {
+  if (item_displayed != current_item) {
 
     need_rebuild = true;
     item_displayed = current_item;
@@ -61,21 +63,33 @@ void ItemIcon::update(void) {
 
   // variant of the item
   int current_item_variant = equipment->has_inventory_item(current_item);
-  if (current_item_variant != item_variant_displayed) {
+  if (item_variant_displayed != current_item_variant) {
 
-    item_variant_displayed = current_item_variant;
     need_rebuild = true;
+    item_variant_displayed = current_item_variant;
   }
 
   // counter index
   InventoryItem *item = InventoryItem::get_item(current_item);
   int counter_index = item->get_counter_index();
   if (counter_index != 0) {
-    counter_value_displayed = savegame->get_reserved_integer(counter_index);
-    counter->set_value(counter_value_displayed);
+
+    int current_counter_value = savegame->get_reserved_integer(counter_index);
+
+    if (counter_value_displayed != current_counter_value) {
+      need_rebuild = true;
+      counter_value_displayed = current_counter_value;
+      counter->set_value(counter_value_displayed);
+    }
   }
   else if (counter_value_displayed != -1) {
+    need_rebuild = true;
     counter_value_displayed = -1;
+  }
+
+  // redraw the icon if needed
+  if (need_rebuild) {
+    rebuild();
   }
 }
 
@@ -94,6 +108,7 @@ void ItemIcon::rebuild(void) {
 
     SDL_Rect dst_position = {4, 4, 0, 0};
     SDL_Rect src_position = {0, 0, 16, 16};
+
     src_position.x = 16 * item_displayed;
     src_position.y = 16 * (item_variant_displayed - 1);
 

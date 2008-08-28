@@ -10,8 +10,11 @@
  * @param id id of the tileset to create
  */
 Tileset::Tileset(TilesetId id):
-id(id), nb_tiles(0), tileset_image(NULL) {
+id(id), nb_tiles(0), max_tile_id(0), tileset_image(NULL) {
   
+  for (int i = 0; i < 1024; i++) {
+    tiles[i] = NULL;
+  }
 }
 
 /**
@@ -32,6 +35,8 @@ Tileset::~Tileset(void) {
 void Tileset::create_tile(int id, Tile *tile) {
   tiles[id - 1] = tile;
   nb_tiles++;
+
+  max_tile_id = MAX(id, max_tile_id);
 }
 
 /**
@@ -75,7 +80,7 @@ void Tileset::load(void) {
     int width, height;
 
     if (!is_animated) {
-      
+
       int x, y;
 
       iss >> x >> y >> width >> height;
@@ -86,7 +91,7 @@ void Tileset::load(void) {
       int sequence, x1, y1, x2, y2, x3, y3;
 
       iss >> sequence >> width >> height >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
-      
+
       create_tile(tile_id, new AnimatedTile((Obstacle) obstacle, (TileAnimationSequence) sequence,
 					    width, height, x1, y1, x2, y2, x3, y3));
     }
@@ -109,7 +114,7 @@ void Tileset::load(void) {
 void Tileset::unload(void) {
   int i;
 
-  for (i = 0; i < nb_tiles; i++) {
+  for (i = 0; i < max_tile_id; i++) {
     delete tiles[i];
   }
   nb_tiles = 0;

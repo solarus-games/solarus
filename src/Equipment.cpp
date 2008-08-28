@@ -651,6 +651,17 @@ void Equipment::set_arrows(int arrows) {
   }
 
   savegame->set_reserved_integer(Savegame::CURRENT_ARROWS, arrows);
+
+  if (has_inventory_item(InventoryItem::BOW)) {
+
+    // the bow item changes depending on whether the player has arrows
+    if (arrows == 0) {
+      give_inventory_item(InventoryItem::BOW, 1); // bow without arrows
+    }
+    else {
+      give_inventory_item(InventoryItem::BOW, 2); // bow with arrows
+    }
+  }
 }
 
 /**

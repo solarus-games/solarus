@@ -14,6 +14,7 @@
 #include "Keyboard.h"
 #include "entities/Link.h"
 #include "entities/AnimatedTile.h"
+#include "entities/Tileset.h"
 #include "entities/EntityDetector.h"
 #include "movements/Movement8ByPlayer.h"
 
@@ -55,6 +56,10 @@ Game::~Game(void) {
   // quit the game
   current_map->leave(); // tell the map that Link is not there anymore
   stop_music();
+
+  if (transition != NULL) {
+    delete transition;
+  }
 
   delete keys_effect;
   delete keyboard;
@@ -129,6 +134,14 @@ void Game::update_transitions(void) {
     if (transition->get_direction() == TRANSITION_OUT) {
       // change the map
       current_map->leave();
+
+      // unload the previous tileset if the new map uses another one
+      Tileset *old_tileset = current_map->get_tileset();
+      Tileset *new_tileset = next_map->get_tileset();
+      if (new_tileset != old_tileset) {
+	old_tileset->unload();
+      }
+
       current_map->unload();
       current_map = next_map;
       next_map = NULL;

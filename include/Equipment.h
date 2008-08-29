@@ -107,8 +107,8 @@ class Equipment {
   void give_inventory_item(InventoryItem::ItemId item_id, int variant);
   void remove_inventory_item(InventoryItem::ItemId item_id);
 
-  InventoryItem::ItemId get_current_item(int slot);
-  void set_current_item(int slot, InventoryItem::ItemId item_id);
+  InventoryItem::ItemId get_item_assigned(int slot);
+  void set_item_assigned(int slot, InventoryItem::ItemId item_id);
   
 
   // TODO: quest status, dungeon items...

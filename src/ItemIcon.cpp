@@ -53,7 +53,7 @@ void ItemIcon::update(void) {
   Equipment *equipment = savegame->get_equipment();
 
   // item assigned
-  InventoryItem::ItemId current_item = equipment->get_current_item(slot);
+  InventoryItem::ItemId current_item = equipment->get_item_assigned(slot);
   if (item_displayed != current_item) {
 
     need_rebuild = true;

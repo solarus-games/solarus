@@ -1,16 +1,16 @@
 [msg]
 #       |-----------------------|
+icon = -1
 line1 = "Voilà un message de"
 line2 = "test,"
 line3 = "le premier du jeu !"
-#next = test_icon
 next = test_icon
 
 [test_icon]
 #       |--------------------|
+icon = 1
 line1 = "Message avec icône !"
 next  = test_speed
-icon = 1
 
 [test_speed]
 line1 = "$3Message annulable ;"
@@ -43,7 +43,8 @@ line2 = "$v"
 next = test_question
 
 [test_question]
-line1 = "Que voulez-vous faire ?"
+#       |--------------------|
+line1 = "Que désirez-vous ?"
 line2 = "Retour au jeu"
 line3 = "Relire"
 question = true

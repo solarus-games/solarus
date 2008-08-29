@@ -20,7 +20,6 @@ class Message {
 
   string lines[3];             // the 3 lines of the message
   TextSurface *text_surfaces[3];
-  int icon_number;             // index of the 16*16 icon displayed, or -1 if there is no icon
   bool question;               // is this message a question?
   MessageId next_message_id;   // id of the next message (or an empty string if this is the last message)
   MessageId next_message_id_2;
@@ -48,7 +47,6 @@ class Message {
   // message properties
   bool is_question(void);
   MessageId get_next_message_id(void);
-  int get_icon_number(void);
 
   // message current state
   bool is_over(void);

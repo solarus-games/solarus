@@ -25,6 +25,7 @@ add_executable (zsdx
   Savegame.cpp
   Equipment.cpp
   Keyboard.cpp
+  Treasure.cpp
   InventoryItem.cpp
   Map.cpp
   MapLoader.cpp

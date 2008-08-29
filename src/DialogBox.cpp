@@ -27,7 +27,7 @@ DialogBox::DialogBox(MessageId first_message_id) {
 
   // load the images and the sounds
   img_box = ResourceManager::load_image("hud/dialog_box.png");
-  img_icons = ResourceManager::load_image("hud/message_icons.png");
+  img_icons = ResourceManager::load_image("hud/message_and_treasure_icons.png");
 
   end_message_sound = ResourceManager::get_sound("message_end");
   switch_answer_sound = ResourceManager::get_sound("cursor");
@@ -38,6 +38,7 @@ DialogBox::DialogBox(MessageId first_message_id) {
   // initialize the current message
   speed = DIALOG_SPEED_FAST;
   cancel_mode = DIALOG_CANCEL_NONE;
+  icon_number = -1;
   show_message(first_message_id);
   cancel_dialog = false;
 
@@ -87,6 +88,23 @@ void DialogBox::set_cancel_mode(DialogCancelMode cancel_mode) {
  */
 DialogCancelMode DialogBox::get_cancel_mode(void) {
   return cancel_mode;
+}
+
+/**
+ * Returns the index of the icon displayed in this dialog box,
+ * or -1 if there is no icon.
+ * @return the icon number
+ */
+int DialogBox::get_icon_number(void) {
+  return icon_number;
+}
+
+/**
+ * Sets the index of the icon displayed in this dialog box,
+ * @param icon_number the icon number, or -1 to remove a previous icon
+ */
+void DialogBox::set_icon_number(int icon_number) {
+  this->icon_number = icon_number;
 }
 
 /**
@@ -287,12 +305,16 @@ void DialogBox::display(SDL_Surface *destination_surface) {
   current_message->display(destination_surface);
 
   // display the icon
-  int icon_number = current_message->get_icon_number();
   if (icon_number != -1) {
     SDL_Rect src_position = {0, 0, 16, 16};
     src_position.x = icon_number % 10;
     src_position.y = icon_number / 10;
     SDL_BlitSurface(img_icons, &src_position, destination_surface, &icon_dst_position);
+
+    question_dst_position.x = 101;
+  }
+  else {
+    question_dst_position.x = 69;
   }
 
   // display the question arrow

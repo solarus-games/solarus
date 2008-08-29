@@ -74,8 +74,8 @@ class Savegame {
     CURRENT_MAGIC                    = 12, /**< current level of magic (0 to 84) */
     CURRENT_BOMBS                    = 13, /**< current number of bombs */
     CURRENT_ARROWS                   = 14, /**< current number of arrows */
-    CURRENT_PAINS_AU_CHOCOLAT        = 15, /**< current number of pains au chocolat */
-    CURRENT_CROISSANTS               = 16, /**< current number of croissants */
+    CURRENT_PAINS_AU_CHOCOLAT        = 15, /**< current number of pains au chocolat (0 to 10) */
+    CURRENT_CROISSANTS               = 16, /**< current number of croissants (0 to 10) */
     CURRENT_APPLES                   = 17, /**< current number of apples (0 to 10) */
     NB_FIRE_STONES                   = 18, /**< number of fire stones already found (0 to 3) */
     /**
@@ -89,8 +89,8 @@ class Savegame {
     MAX_HEARTS                       = 20, /**< maximum number of hearts (counted in entire hearts) */
     MAX_RUPEES                       = 21, /**< maximum number of rupees (99, 199 or 999) */
     MAX_MAGIC                        = 22, /**< maximum level of magic (0, 42 or 84 points) */
-    MAX_BOMBS                        = 23, /**< maximum number of bombs (0, 30 or 50) */
-    MAX_ARROWS                       = 24, /**< maximum number of arrows (0, 30 or 50) */
+    MAX_BOMBS                        = 23, /**< maximum number of bombs (0, 10, 30 or 99) */
+    MAX_ARROWS                       = 24, /**< maximum number of arrows (0, 10, 30 or 99) */
     /**
      * @}
      */

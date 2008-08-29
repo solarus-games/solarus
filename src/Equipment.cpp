@@ -526,7 +526,7 @@ void Equipment::stop_removing_magic(void) {
 
 /**
  * Returns the maximum number of bombs of Link.
- * @return Link's maximum number of bombs (0, 30 or 50)
+ * @return Link's maximum number of bombs (0, 10, 30 or 99)
  */
 int Equipment::get_max_bombs(void) {
   return savegame->get_reserved_integer(Savegame::MAX_BOMBS);
@@ -534,11 +534,11 @@ int Equipment::get_max_bombs(void) {
 
 /**
  * Sets the maximum number of bombs of Link.
- * @param max_bombs Link's maximum number of bombs (0, 30 or 50)
+ * @param max_bombs Link's maximum number of bombs (0, 10, 30 or 99)
  */
 void Equipment::set_max_bombs(int max_bombs) {
   
-  if (max_bombs != 0 && max_bombs != 30 && max_bombs != 50) {
+  if (max_bombs != 0 && max_bombs != 10 && max_bombs != 30 && max_bombs != 99) {
     DIE("Illegal maximum number of bombs: " << max_bombs);
   }
 
@@ -605,7 +605,7 @@ bool Equipment::needs_bombs(void) {
 
 /**
  * Returns the maximum number of arrows of Link.
- * @return Link's maximum number of arrows (0, 30 or 50)
+ * @return Link's maximum number of arrows (0, 10, 30 or 99)
  */
 int Equipment::get_max_arrows(void) {
   return savegame->get_reserved_integer(Savegame::MAX_ARROWS);
@@ -613,18 +613,12 @@ int Equipment::get_max_arrows(void) {
 
 /**
  * Sets the maximum number of arrows of Link.
- * @param max_arrows Link's maximum number of arrows (0, 30 or 50)
+ * @param max_arrows Link's maximum number of arrows (0, 10, 30 or 99)
  */
 void Equipment::set_max_arrows(int max_arrows) {
   
-  if (max_arrows != 0 && max_arrows != 30 && max_arrows != 50) {
+  if (max_arrows != 0 && max_arrows != 10 && max_arrows != 30 && max_arrows != 99) {
     DIE("Illegal maximum number of arrows: " << max_arrows);
-  }
-
-  int has_bow = has_inventory_item(InventoryItem::BOW);
-  if (max_arrows == 0 && has_bow != 0) {
-    DIE("Cannot set the maximum number of arrows to 0 because"
-	" the player has got the bow");
   }
 
   savegame->set_reserved_integer(Savegame::MAX_ARROWS, max_arrows);
@@ -748,7 +742,7 @@ void Equipment::remove_inventory_item(InventoryItem::ItemId item_id) {
  * Returns the item currently assigned to a slot.
  * @param slot slot of the item to get (0 for X or 1 for V)
  */
-InventoryItem::ItemId Equipment::get_current_item(int slot) {
+InventoryItem::ItemId Equipment::get_item_assigned(int slot) {
   int index = Savegame::ITEM_SLOT_0 + slot;
   return (InventoryItem::ItemId) savegame->get_reserved_integer(index);
 }
@@ -760,7 +754,7 @@ InventoryItem::ItemId Equipment::get_current_item(int slot) {
  * @param slot slot to set (0 for X or 1 for V)
  * @param item_id the item to assign to this slot
  */
-void Equipment::set_current_item(int slot, InventoryItem::ItemId item_id) {
+void Equipment::set_item_assigned(int slot, InventoryItem::ItemId item_id) {
 
   if (!has_inventory_item(item_id)) {
     DIE("Cannot assign item " << item_id << " because the player does not have it");

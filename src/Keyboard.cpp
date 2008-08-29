@@ -170,9 +170,9 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
   case SDLK_t:
     equipment->give_inventory_item(InventoryItem::BOW);
     equipment->set_max_arrows(30);
-    equipment->set_current_item(0, InventoryItem::BOW);
+    equipment->set_item_assigned(0, InventoryItem::BOW);
     equipment->give_inventory_item(InventoryItem::BOTTLE_2, 6);
-    equipment->set_current_item(1, InventoryItem::BOTTLE_2);
+    equipment->set_item_assigned(1, InventoryItem::BOTTLE_2);
     break;
  
   case SDLK_g:

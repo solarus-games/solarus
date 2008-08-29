@@ -44,6 +44,7 @@ class DialogBox {
   DialogSpeed speed;
   DialogCancelMode cancel_mode;
   bool cancel_dialog;
+  int icon_number;             // index of the 16*16 icon displayed, or -1 if there is no icon
 
   // graphics
   SDL_Surface *img_box;
@@ -67,6 +68,8 @@ class DialogBox {
   void set_speed(DialogSpeed speed);
   DialogCancelMode get_cancel_mode(void);
   void set_cancel_mode(DialogCancelMode cancel_mode);
+  int get_icon_number(void);
+  void set_icon_number(int icon_number);
 
   void set_variable(MessageId messageId, string value);
   void set_variable(MessageId messageId, int value);

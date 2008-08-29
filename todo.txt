@@ -1,21 +1,46 @@
-- Détecteurs : ne pas notifier à nouveau si l'entité était déjà sur le détecteur
-- utiliser sdl-config malgré les autotools
-- Diviser la classe Link en plusieurs parties (plus de 1000 lignes...) - LinkActions, LinkSprites ?
-- Son d'un vase cassé : on n'entend rien
-- Link ne passe plus toujours dans les portes quand il arrive en diagonale !
-- Gérer les transitions entre les screens depuis la classe Screen ?
-
+- Diviser la classe Link en plusieurs parties (plus de 1000 lignes...) - LinkActions, LinkSprites ? ou alors LinkStateFree, LinkStateSword...
+- Son d'un vase cassé : pas assez fort
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
+- Mettre de la couleur dans les messages
 
-L'exécutable de ZSDX est installé dans un répertoire choisi par l'utilisateur.
-- Sous Windows, on a un programme d'installation classique. Les données sont mises dans $(INSTALL_PATH)/data.
-- Sous Linux, le programme d'installation est un shell-script. Les données sont placées dans un répertoire décidé au moment de l'installation. Le script d'installation alors crée un fichier $(HOME)/.zsdx/data_path qui contient le chemin de ce répertoire.
+----------------
+Coffres :
+----------------
 
-A l'exécution, lorsque le jeu s'initialise, il détermine le répertoire des données. Pour cela, il regarde le fichier $(HOME)/.zsdx/data_path (à l'aide de getenv("HOME") pour récupérer le home directory de l'utilisateur). Si ce fichier n'existe pas, le répertoire des données sera le répertoire courant "." : c'est le cas sous Windows.
-Les sauvegardes sont stockées dans ce même répertoire.
+Un coffre est une entité qui a un nom, pour que les scripts puissent interagir avec les coffres.
+Certains coffres sont vides, produisant ou non le son "erreur".
+Données spécifiques d'un coffre : 3 nombres entiers :
+
+- Contenu : numéro indiquant quel est l'objet dans le coffre (erreur, aucun, 20 rubis, réceptacle de coeur, carte, grande clé, potion rouge, des bombes, grappin...), ce numéro correspond à message_icons.png
+- Info : numéro supplémentaire, seulement pour certains objets, qui ajoute une information (donne la quantité ou identifie un exemplaire) :
+    - pour les objets à compteur (bombes, flèches, pommes, pains au chocolat, croissants, rubis de chaque couleur) : indique la quantité obtenue, un compteur sera affiché
+    - pour une pierre de feu : indique le numéro de la pierre de feu obtenue (0, 1 ou 2)
+    - pour un flacon : indique le numéro du flacon obtenu (0 ou 1 en supposant qu'il y ait deux flacons dans le jeu)
+    - pour un quart de coeur : indique le numéro du quart de coeur obtenu
+- Sauvegarde : numéro indiquant le booléen qui sauvegarde l'état du coffre (ou 0 pour que le coffre ne soit pas sauvegardé)
+
+Pour faire un coffre dont le contenu est décidé au moment de l'exécution, par exemple pour un jeu avec des coffres à ouvrir, on peut créer un coffre vide (avec sauvegarde ou non selon le jeu) puis remplir de son contenu depuis le script de la map.
+
+Le numéro donnant le contenu du coffre induit automatiquement le message qui est affiché lorsqu'on l'ouvre et l'objet que Link brandit.
+
+Remarque : ces 3 nombres définissent un objet qu'on peut obtenir dans le jeu. Faire une classe qui les représente. Cette classe sera utilisée par les coffres, mais aussi par les magasins, notamment le bazar du coin, la boutique de potions...
+La version brandie peut être différente de la version d'un magasin et de la version dans le message.
 
 
+----------------
+Couper des buissons avec l'épée :
+----------------
+- utiliser le mode collision_pixel directement (voir comment faire 2 modes à la fois car on a déjà facing point pour soulever)
+- puis, en cas de collision au pixel près avec le sprite de l'épée :
+    - si c'est un coup d'épée normal : on coupe le buisson si le facing point de link est dans l'alignement du buisson (pas forcément dessus)
+    - si l'épée charge ou est chargée : on coupe le buisson et on stoppe le chargement
+    - si attaque tournoyante : on coupe le buisson et on laisse l'attaque tournoyante continuer (donc c'est le seul cas où on peut couper plusieurs buissons d'un coup)
+
+Même chose pour l'herbe sauf que rien ne se passe quand l'épée charge
+
+
+----------------------
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
 	- vue arborescente de toutes les entités par type ?

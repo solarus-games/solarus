@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "DungeonEquipment.h"
 #include "DialogBox.h"
 #include "InventoryItem.h"
 
@@ -14,9 +15,8 @@
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
  * green rupees, blue rupees and red rupees: indicates the amount;
  * if the amount is greater than 1, a counter will be shown.
- * @param savegame_index index of the savegame variable indicating that Link has found this treasure
- * or -1 if this treasure is not saved (for a piece of heart, this index is the piece of heart id,
- * between 0 and the total number of pieces of heart in the game)
+ * @param savegame_index index of the savegame boolean indicating that Link has found this treasure
+ * or -1 if this treasure is not saved
  */
 Treasure::Treasure(TreasureContent content, int amount, int savegame_index):
   content(content), amount(amount), savegame_index(savegame_index) {
@@ -157,7 +157,14 @@ void Treasure::add_item_to_equipment(void) {
   Game *game = zsdx->game;
   Savegame *savegame = game->get_savegame();
   Equipment *equipment = savegame->get_equipment();
+  DungeonEquipment *dungeon_equipment = savegame->get_dungeon_equipment();
 
+  // mark the treasure as found in the savegame
+  if (savegame_index != -1) {
+    savegame->set_boolean(savegame_index, true);
+  }
+
+  // give the item
   switch (content) {
     
   case FEATHER:
@@ -379,23 +386,27 @@ void Treasure::add_item_to_equipment(void) {
 
 
   case MAP:
-    // TODO dungeon_equipment->add_map();
+    dungeon_equipment->add_map();
     break;
 
   case COMPASS:
+    dungeon_equipment->add_compass();
     break;
 
   case SMALL_KEY:
+    dungeon_equipment->add_small_key();
     break;
 
   case BIG_KEY:
+    dungeon_equipment->add_big_key();
     break;
 
   case BOSS_KEY:
+    dungeon_equipment->add_boss_key();
     break;
 
   case PIECE_OF_HEART:
-    // TODO
+    equipment->add_piece_of_heart();
     break;
 
 

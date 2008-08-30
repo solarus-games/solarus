@@ -1400,7 +1400,7 @@ next = _treasure_79_4.2
 
 [_treasure_79_4.2]
 #       |--------------------|
-line1 = "Tu obtiens un Coeur
+line1 = "Tu obtiens un Coeur"
 line2 = "supplémentaire !"
 
 [_treasure_80]

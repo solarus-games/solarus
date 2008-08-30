@@ -8,16 +8,18 @@
  * (the map, the compass, the keys...).
  * Like class Equipment, it makes the interface between
  * the savegame storage and other engine classes.
+ * This class should be used only when the player is in a dungeon.
  */
 class DungeonEquipment {
 
  private:
 
-  int dungeon;
+  Savegame *savegame;
+  int get_current_dungeon(void);
 
  public:
 
-  DungeonEquipment(int dungeon);
+  DungeonEquipment(Savegame *savegame);
   ~DungeonEquipment(void);
 
   bool has_map(void);

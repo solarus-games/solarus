@@ -74,6 +74,11 @@ class Map {
    */
   MusicId music_id;
 
+  /**
+   * The dungeon where this map is (between 1 and 14), or zero if this map is not in a dungeon.
+   */
+  int dungeon;
+
   // screen
 
   /**
@@ -115,6 +120,8 @@ class Map {
   // map properties
   MapId get_id(void);
   Tileset *get_tileset(void);
+  int get_dungeon_number(void);
+
   int get_width(void);
   int get_height(void);
   int get_width8(void);

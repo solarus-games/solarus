@@ -63,8 +63,7 @@ class Equipment {
   bool needs_hearts(void);
 
   int get_nb_pieces_of_heart(void);
-  bool has_piece_of_heart(int piece_of_heart_id);
-  void add_piece_of_heart(int piece_of_heart_id);
+  void add_piece_of_heart(void);
 
   // magic
   int get_max_magic(void);

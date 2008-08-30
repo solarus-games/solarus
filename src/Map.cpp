@@ -49,6 +49,14 @@ Tileset * Map::get_tileset(void) {
 }
 
 /**
+ * Returns the number of the dungeon of this map.
+ * @return the dungeon (1 to 14), or zero is this map is not in a dungeon
+ */
+int Map::get_dungeon_number(void) {
+  return dungeon;
+}
+
+/**
  * Returns the map width in pixels.
  * @return the map width
  */

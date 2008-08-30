@@ -4,6 +4,8 @@
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
 - Message : afficher la boîte de dialogue plus haut pour éviter de cacher Link
+- Propriétés d'une map : numéro du donjon (entre 1 et 14, ou 0 pour pas de donjon)
+- items de linkdu83
 
 ----------------
 Coffres :

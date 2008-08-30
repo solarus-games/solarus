@@ -74,7 +74,7 @@ void ItemIcon::update(void) {
   int counter_index = item->get_counter_index();
   if (counter_index != 0) {
 
-    int current_counter_value = savegame->get_reserved_integer(counter_index);
+    int current_counter_value = savegame->get_integer(counter_index);
 
     if (counter_value_displayed != current_counter_value) {
       need_rebuild = true;

@@ -223,7 +223,7 @@ bool SelectionMenuChooseName::validate_player_name(void) {
 
   // create the savegame
   Savegame *savegame = get_savegame(get_cursor_position() - 1);
-  savegame->set_reserved_string(Savegame::PLAYER_NAME, player_name);
+  savegame->set_string(Savegame::PLAYER_NAME, player_name);
   savegame->save();
   reload_savegames();
 

@@ -4,31 +4,26 @@
 #include "Common.h"
 
 /**
- * This structure contains the data saved (16 Ko of data are stored).
- */
-typedef struct SavedData {
-
-  /**
-   * Data reserved for the game engine (the C++ code).
-   * See SavegameReservedStringIndex and SavegameReservedIntegerIndex
-   * for the meaning of each string and integer used.
-   */
-  char reserved_strings[64][64];   // 64 strings of 64 characters each (4 Ko)
-  Uint32 reserved_integers[1024];  // 1024 integers (4 Ko)
-
-  /**
-   * Custom data available to the maps of the project.
-   * The C++ code does not use it.
-   */
-  Uint32 custom_integers[1024];    // 1024 integers (4 Ko)
-  Uint32 custom_booleans[1024];    // 32768 boolean values (4 Ko)
-
-} SavedData;
-
-/**
  * This class handles the game data saved.
  */
 class Savegame {
+
+  /**
+   * This structure contains the data saved (16 Ko of data are stored).
+   */
+  typedef struct SavedData {
+
+    /**
+     * The system can save some strings, integers and boolean values.
+     * See StringIndex and IntegerIndex for the meaning of each string and integer used.
+     * The engine uses strings and integers. The booleans are only used the maps.
+     */
+
+    char strings[64][64];   /**< 64 strings of 64 characters each (4 Ko) */
+    Uint32 integers[2048];  /**< 2048 integers (8 Ko) */
+    Uint32 booleans[1024];  /**< 32768 boolean values (4 Ko) */
+    
+  } SavedData;
 
  public:
 
@@ -36,8 +31,10 @@ class Savegame {
    * Index of each reserved string saved in the file.
    * Do not change these numbers, otherwise you might break
    * the existing savegames.
+   * The 1024 first values are used by the engine.
+   * The 1024 last values are available for the maps.
    */
-  enum ReservedStringIndex {
+  enum StringIndex {
     PLAYER_NAME                 = 0,
   };
 
@@ -46,7 +43,7 @@ class Savegame {
    * Do not change these numbers, otherwise you might break
    * the existing savegames.
    */
-  enum ReservedIntegerIndex {
+  enum IntegerIndex {
 
     /**
      * @name Last game status
@@ -109,24 +106,8 @@ class Savegame {
      */
 
     /**
-     * @name Pieces of heart
-     * TODO useless?
-     * The variables 100 to 143 indicate whether the player has found each piece of heart.
-     * There are 44 pieces of hearts in Mystery of Solarus DX.
-     * @{
-     */
-    FIRST_PIECE_OF_HEART             = 100, /**< 1 if the player has the piece of heart #0, 0 otherwise */
-    LAST_PIECE_OF_HEART              = 143, /**< 1 if the player has the piece of heart #43, 0 otherwise */
-    EXTENSION_PIECE_OF_HEART         = 199, /**< variables 144 to 199 are reserved for possible
-					     * additional pieces of heart in the future */
-
-    /**
-     * @}
-     */
-
-    /**
      * @name Items of the inventory
-     * Variables 200 to 227 indicate whether the player has got each inventory item
+     * Variables 100 to 127 indicate whether the player has got each inventory item
      * (see enum InventoryItem::ItemId to know the item numbers).
      * Each value saved here corresponds to a slot in the inventory.
      * Zero indicates that the player does not have the item
@@ -136,16 +117,38 @@ class Savegame {
      * (1 for the first variant, 2 for the second one, etc.).
      * @{
      */
-    FIRST_INVENTORY_ITEM             = 200, /**< 0 if the player does not have item #0, 1 if he has
+    FIRST_INVENTORY_ITEM             = 100, /**< 0 if the player does not have item #0, 1 if he has
 					     * its first variant, 2 if he has the second one, etc. */
-    LAST_INVENTORY_ITEM              = 227, /**< same thing for item #27 */
-    EXTENSION_INVENTORY_ITEM         = 299, /**< variables 228 to 299 are reserved for possible
+    LAST_INVENTORY_ITEM              = 127, /**< same thing for item #27 */
+    EXTENSION_INVENTORY_ITEM         = 199, /**< variables 128 to 199 are reserved for possible
 					     * additional items in the future */
     /**
      * @}
      */
 
-    // TODO dungeon items: 7 variables per dungeon (5 used, 2 free) and 14 potential dungeons: 98 values
+    /**
+     * @name Dungeon items
+     * For each dungeon, 7 variables are reserved:
+     * - the map,
+     * - the compass,
+     * - the small keys,
+     * - the big key,
+     * - the boss key,
+     * - unused,
+     * - unused.
+     * Up to 14 dungeons can be saved. Thus, 98 variables are used for the dungeon items (14*7).
+     */
+    FIRST_DUNGEON_MAP                = 200, /**< 1 if the player has the map of dungeon #1 */
+    FIRST_DUNGEON_COMPASS            = 201, /**< 1 if the player has the map of dungeon #1 */
+    FIRST_DUNGEON_BIG_KEY            = 203, /**< 1 if the player has the big key of dungeon #1 */
+    FIRST_DUNGEON_BOSS_KEY           = 204, /**< 1 if the player has the boss key of dungeon #1 */
+    FIRST_DUNGEON_SMALL_KEYS         = 202, /**< number of small keys found in dungeon #1 */
+    FIRST_DUNGEON_UNUSED_1           = 205, /**< empty place for future new item in dungeon #1 */
+    FIRST_DUNGEON_UNUSED_2           = 206, /**< empty place for future new item in dungeon #1 */
+    // then, same thing for other dungeons
+    LAST_DUNGEON_UNUSED_2            = 297, /**< empty place for future new item in dungeon #14 */
+
+    // values above 1024 are available for the maps
   };
 
  private:
@@ -154,6 +157,7 @@ class Savegame {
   char file_name[32];
   SavedData saved_data;
 
+  DungeonEquipment *dungeon_equipment;
   Equipment *equipment;
 
   void set_initial_values(void);
@@ -169,22 +173,19 @@ class Savegame {
   void save(void);
   const char *get_file_name(void);
 
-  // engine data
-  const char *get_reserved_string(int index);
-  void set_reserved_string(int index, const char *string);
+  // data
+  const char *get_string(int index);
+  void set_string(int index, const char *string);
 
-  Uint32 get_reserved_integer(int index);
-  void set_reserved_integer(int index, Uint32 value);
-  
-  // custom project data
   Uint32 get_integer(int index);
   void set_integer(int index, Uint32 value);
-
+  
   bool get_boolean(int index);
   void set_boolean(int index, bool value);
 
   // unsaved data
   Equipment *get_equipment(void);
+  DungeonEquipment *get_dungeon_equipment(void);
 };
 
 #endif

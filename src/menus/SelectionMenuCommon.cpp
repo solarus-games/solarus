@@ -200,7 +200,7 @@ void SelectionMenuCommon::read_savegames(void) {
     string player_name;
     if (!savegames[i]->is_empty()) {
 
-      player_name = savegames[i]->get_reserved_string(Savegame::PLAYER_NAME);
+      player_name = savegames[i]->get_string(Savegame::PLAYER_NAME);
     }
     else {
       player_name = "- Vide -";

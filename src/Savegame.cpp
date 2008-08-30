@@ -1,5 +1,6 @@
 #include "Savegame.h"
 #include "Equipment.h"
+#include "DungeonEquipment.h"
 
 /**
  * Creates a savegame with a specified file name, existing or not.
@@ -17,6 +18,7 @@ Savegame::Savegame(const char *file_name) {
     set_initial_values();
 
     this->equipment = NULL;
+    this->dungeon_equipment = NULL;
   }
   else {
     // a save already exists, let's load it
@@ -25,6 +27,7 @@ Savegame::Savegame(const char *file_name) {
     fclose(file);
 
     this->equipment = new Equipment(this);
+    this->dungeon_equipment = new DungeonEquipment(this);
   }
 }
 
@@ -52,13 +55,13 @@ void Savegame::set_initial_values(void) {
   memset(&saved_data, 0x0000, sizeof(SavedData));
 
   // a few variable have other initial values
-  set_reserved_integer(MAX_HEARTS, 3);
-  set_reserved_integer(CURRENT_HEARTS, 12);
+  set_integer(MAX_HEARTS, 3);
+  set_integer(CURRENT_HEARTS, 12);
 
-  set_reserved_integer(MAX_RUPEES, 99);
+  set_integer(MAX_RUPEES, 99);
 
-  set_reserved_integer(ITEM_SLOT_0, -1);
-  set_reserved_integer(ITEM_SLOT_1, -1);
+  set_integer(ITEM_SLOT_0, -1);
+  set_integer(ITEM_SLOT_1, -1);
 }
 
 /**
@@ -95,61 +98,55 @@ Equipment * Savegame::get_equipment(void) {
 }
 
 /**
- * Returns an engine string value saved.
+ * Returns the player's dungeon equipment corresponding to this savegame.
+ * @return the dungeon equipment
+ */
+DungeonEquipment * Savegame::get_dungeon_equipment(void) {
+  return dungeon_equipment;
+}
+
+/**
+ * Returns a string value saved.
  * @param index index of the value to get, between 0 and 63
- * (see enum SavegameReservedStringIndex for their definition)
+ * (see enum StringIndex for their definition)
  * @return the string value saved at this index
  */
-const char * Savegame::get_reserved_string(int index) {
-  return saved_data.reserved_strings[index];
+const char * Savegame::get_string(int index) {
+  return saved_data.strings[index];
 }
 
 /**
- * Sets the name of the player.
+ * Sets a string value saved.
  * @param index index of the value to set, between 0 and 63
- * (see enum SavegameReservedStringIndex for their definition)
+ * (see enum StringIndex for their definition)
  * @param value the string value to store at this index
  */
-void Savegame::set_reserved_string(int index, const char *value) {
-  strncpy(saved_data.reserved_strings[index], value, 63);
+void Savegame::set_string(int index, const char *value) {
+  strncpy(saved_data.strings[index], value, 63);
 }
 
 /**
- * Returns a engine integer value saved.
- * @param index index of the value to get, between 0 and 1023
- * (see enum SavegameReservedIntegerIndex for their definition)
- * @return the integer value saved at this index
- */
-Uint32 Savegame::get_reserved_integer(int index) {
-  return saved_data.reserved_integers[index];
-}
-
-/**
- * Sets a engine integer value int the savegame.
- * @param index index of the value to set, between 0 and 1023
- * (see enum SavegameReservedIntegerIndex for their definition)
- * @param value the integer value to store at this index
- */
-void Savegame::set_reserved_integer(int index, Uint32 value) {
-  saved_data.reserved_integers[index] = value;
-}
-
-/**
- * Returns a custom integer value saved.
- * @param index index of the value to get, between 0 and 1023
+ * Returns a integer value saved.
+ * Values between 0 and 1023 are used by the engine (the C++ code)
+ * and values between 1024 and 2047 are available to the map scripts.
+ * @param index index of the value to get, between 0 and 2047
+ * (see enum IntegerIndex for their definition)
  * @return the integer value saved at this index
  */
 Uint32 Savegame::get_integer(int index) {
-  return saved_data.custom_integers[index];
+  return saved_data.integers[index];
 }
 
 /**
- * Sets a custom integer value int the savegame.
- * @param index index of the value to set, between 0 and 1023
+ * Sets an integer value saved.
+ * Values between 0 and 1023 are used by the engine (the C++ code)
+ * and values between 1024 and 2047 are available to the map scripts.
+ * @param index index of the value to set, between 0 and 2047
+ * (see enum IntegerIndex for their definition)
  * @param value the integer value to store at this index
  */
 void Savegame::set_integer(int index, Uint32 value) {
-  saved_data.custom_integers[index] = value;
+  saved_data.integers[index] = value;
 }
 
 /**
@@ -159,7 +156,7 @@ void Savegame::set_integer(int index, Uint32 value) {
  */
 bool Savegame::get_boolean(int index) {
 
-  Uint32 word = saved_data.custom_booleans[index / 32];
+  Uint32 word = saved_data.booleans[index / 32];
 
   //  cout << "getting value at index " << index << ": " << ((word >> (index % 32)) & 0x0001 != 0x0000) << endl;
 
@@ -174,7 +171,7 @@ bool Savegame::get_boolean(int index) {
 void Savegame::set_boolean(int index, bool value) {
 
   Uint32 mask = (value ? 0x0001 : 0x0000) << (index % 32);
-  saved_data.custom_booleans[index / 32] |= mask;
+  saved_data.booleans[index / 32] |= mask;
 
   //  cout << "setting value " << value << " at index " << index << endl;
 }

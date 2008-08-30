@@ -51,6 +51,8 @@ void MapLoader::load_map(Map *map) {
   istringstream iss0(line);
   iss0 >> map->width >> map->height >> tileset_id >> map->music_id;
 
+  map->dungeon = 0; // TODO
+
   map->width8 = map->width / 8;
   map->height8 = map->height / 8;
 

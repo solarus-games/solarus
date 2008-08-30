@@ -164,7 +164,7 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
     if (!game->is_showing_message()) {
       game->show_message("msg");
       game->get_dialog_box()->set_variable("test_var", 42);
-      game->get_dialog_box()->set_variable("test_name", savegame->get_reserved_string(Savegame::PLAYER_NAME));
+      game->get_dialog_box()->set_variable("test_name", savegame->get_string(Savegame::PLAYER_NAME));
 
     }
     break;

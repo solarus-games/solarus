@@ -1,15 +1,22 @@
 #include "Treasure.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "ZSDX.h"
+#include "Game.h"
+#include "Savegame.h"
+#include "Equipment.h"
+#include "DialogBox.h"
+#include "InventoryItem.h"
 
 /**
  * Creates a new treasure.
  * @param content content of the treasure
- * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, small magic bottles,
- * big magic bottles, green rupees, blue rupees and red rupees: indicates the amount; if the amount is
- * greater than 1, a counter will be shown.
+ * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
+ * green rupees, blue rupees and red rupees: indicates the amount;
+ * if the amount is greater than 1, a counter will be shown.
  * @param savegame_index index of the savegame variable indicating that Link has found this treasure
- * or -1 if this treasure is not saved
+ * or -1 if this treasure is not saved (for a piece of heart, this index is the piece of heart id,
+ * between 0 and the total number of pieces of heart in the game)
  */
 Treasure::Treasure(TreasureContent content, int amount, int savegame_index):
   content(content), amount(amount), savegame_index(savegame_index) {
@@ -24,6 +31,36 @@ Treasure::~Treasure(void) {
 }
 
 /**
+ * Returns whether this treasure content has an amount value.
+ * This only depends on the kind of content.
+ * @return true if there is an amount with this kind of content
+ */
+bool Treasure::has_amount(void) {
+
+  bool result;
+
+  switch (content) {
+
+  case BOMBS:
+  case ARROWS:
+  case APPLES:
+  case PAINS_AU_CHOCOLAT:
+  case CROISSANTS:
+  case HEARTS:
+  case GREEN_RUPEES:
+  case BLUE_RUPEES:
+  case RED_RUPEES:
+    result = true;
+    break;
+
+  default:
+    result = false;
+  }
+
+  return result;
+}
+
+/**
  * Give the treasure to the player: plays the treasure sound, makes Link
  * brandish the item and adds the item to Link's equipment.
  */
@@ -31,8 +68,8 @@ void Treasure::give_to_player(void) {
 
   play_treasure_sound();
   start_brandish_item();
-  add_item_to_equipment();
   show_message();
+  add_item_to_equipment();
   stop_brandish_item();
 }
 
@@ -72,13 +109,330 @@ void Treasure::stop_brandish_item(void) {
  * has found the item.
  */
 void Treasure::show_message(void) {
-  // particular cases:
-  // pieces of heart, items with counters
+
+  Game *game = zsdx->game;
+  Savegame *savegame = game->get_savegame();
+  Equipment *equipment = savegame->get_equipment();
+
+  // the message id is _treasure_x where x is the treasure content
+  ostringstream oss(ostringstream::out);
+  oss << "_treasure_" << content;
+
+  // but for some kinds of content, the message id is more complex and has a suffix
+  if (content == PIECE_OF_HEART) {
+
+    // for a piece of heart, the message shown depends on their number
+    int nb_pieces = equipment->get_nb_pieces_of_heart() + 1;
+    oss << "_" << nb_pieces;
+  }
+
+  else if (has_amount()) {
+
+    /* for an item with an amount (e.g. 10 bombs), if the amount
+     * is 1 we must display a message with the singular form, and
+     * if the amount is greater than 1 we must use the plural form.
+     */
+
+    if (amount == 1) {
+      oss << "_1";
+    }
+    else {
+      oss << "_2";
+    }
+  }
+
+  string messageId = oss.str();
+  game->show_message(messageId);
+
+  if (has_amount() && amount > 1) {
+    game->get_dialog_box()->set_variable(messageId, amount);
+  }
 }
 
 /**
  * Adds the item to Link's eqipment.
  */
 void Treasure::add_item_to_equipment(void) {
-  
+
+  Game *game = zsdx->game;
+  Savegame *savegame = game->get_savegame();
+  Equipment *equipment = savegame->get_equipment();
+
+  switch (content) {
+    
+  case FEATHER:
+    equipment->give_inventory_item(InventoryItem::FEATHER);
+    break;
+
+  case BOW:
+    equipment->give_inventory_item(InventoryItem::BOW);
+    equipment->set_max_arrows(10);
+    break;
+
+  case BOW_AND_ARROWS:
+    equipment->give_inventory_item(InventoryItem::BOW);
+    equipment->set_max_arrows(10);
+    equipment->add_arrows(10);
+    break;
+
+  case BOOMERANG:
+    equipment->give_inventory_item(InventoryItem::BOOMERANG);
+    break;
+
+  case LAMP:
+    equipment->give_inventory_item(InventoryItem::LAMP);
+    break;
+
+  case HOOK_SHOT:
+    equipment->give_inventory_item(InventoryItem::HOOK_SHOT);
+    break;
+
+  case BOTTLE:
+    equipment->add_bottle();
+    break;
+
+  case WATER:
+    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 2);
+    break;
+
+  case RED_POTION:
+    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 3);
+    break;
+
+
+  case GREEN_POTION:
+    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 4);
+    break;
+
+  case BLUE_POTION:
+    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 5);
+    break;
+
+  case FAIRY_IN_BOTTLE:
+    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 6);
+    break;
+
+  case PEGASUS_SHOES:
+    equipment->give_inventory_item(InventoryItem::PEGASUS_SHOES);
+    break;
+
+  case MYSTIC_MIRROR:
+    equipment->give_inventory_item(InventoryItem::MYSTIC_MIRROR);
+    break;
+
+  case CANE_OF_SOMARIA:
+    equipment->give_inventory_item(InventoryItem::CANE_OF_SOMARIA);
+    break;
+
+  case MAGIC_CAPE:
+    equipment->give_inventory_item(InventoryItem::MAGIC_CAPE);
+    break;
+
+  case IRON_GLOVE:
+    equipment->give_inventory_item(InventoryItem::GLOVE, 1);
+    break;
+
+  case GOLDEN_GLOVE:
+    equipment->give_inventory_item(InventoryItem::GLOVE, 2);
+    break;
+
+  case FIRE_STONE:
+    equipment->add_inventory_item_amount(InventoryItem::FIRE_STONES, 1);
+    break;
+
+
+  case APPLES:
+    equipment->give_inventory_item(InventoryItem::APPLES);
+    equipment->add_inventory_item_amount(InventoryItem::APPLES, amount);
+    break;
+
+  case PAINS_AU_CHOCOLAT:
+    equipment->give_inventory_item(InventoryItem::PAINS_AU_CHOCOLAT);
+    equipment->add_inventory_item_amount(InventoryItem::PAINS_AU_CHOCOLAT, amount);
+    break;
+
+  case CROISSANTS:
+    equipment->give_inventory_item(InventoryItem::CROISSANTS);
+    equipment->add_inventory_item_amount(InventoryItem::CROISSANTS, amount);
+    break;
+
+  case APPLE_PIE:
+    equipment->give_inventory_item(InventoryItem::L4_WAY_BONE_KEY, 1);
+    break;
+
+  case GOLDEN_BARS:
+    equipment->give_inventory_item(InventoryItem::L4_WAY_BONE_KEY, 2);
+    break;
+
+  case EDELWEISS:
+    equipment->give_inventory_item(InventoryItem::L4_WAY_BONE_KEY, 3);
+    break;
+
+  case BONE_KEY:
+    equipment->give_inventory_item(InventoryItem::L4_WAY_BONE_KEY, 4);
+    break;
+
+  case FLIPPERS:
+    equipment->give_inventory_item(InventoryItem::FLIPPERS);
+    break;
+
+  case RED_KEY:
+    equipment->give_inventory_item(InventoryItem::RED_KEY);
+    break;
+
+
+  case CLAY_KEY:
+    equipment->give_inventory_item(InventoryItem::CLAY_KEY);
+    break;
+
+  case ROCK_KEY:
+    equipment->give_inventory_item(InventoryItem::ROCK_KEY);
+    break;
+
+  case IRON_KEY:
+    equipment->give_inventory_item(InventoryItem::IRON_KEY);
+    break;
+
+  case STONE_KEY:
+    equipment->give_inventory_item(InventoryItem::STONE_KEY);
+    break;
+
+  case WOODEN_KEY:
+    equipment->give_inventory_item(InventoryItem::WOODEN_KEY);
+    break;
+
+  case ICE_KEY:
+    equipment->give_inventory_item(InventoryItem::ICE_KEY);
+    break;
+
+
+  case WORLD_MAP:
+    equipment->add_world_map();
+    break;
+
+  case LARGE_RUPEE_BAG:
+    equipment->set_max_rupees(199);
+    break;
+
+  case HUGE_RUPEE_BAG:
+    equipment->set_max_rupees(999);
+    break;
+
+  case SMALL_BOMB_BAG:
+    equipment->set_max_bombs(10);
+    equipment->give_inventory_item(InventoryItem::BOMBS);
+    equipment->add_bombs(10);
+    break;
+
+  case LARGE_BOMB_BAG:
+    equipment->set_max_bombs(30);
+    break;
+
+  case HUGE_BOMB_BAG:
+    equipment->set_max_bombs(99);
+    break;
+
+  case LARGE_QUIVER:
+    equipment->set_max_arrows(30);
+    break;
+
+  case HUGE_QUIVER:
+    equipment->set_max_arrows(100);
+    break;
+
+
+  case BLUE_TUNIC:
+    equipment->set_tunic(1);
+    break;
+
+  case RED_TUNIC:
+    equipment->set_tunic(2);
+    break;
+
+  case SHIELD_1:
+    equipment->set_shield(1);
+    break;
+
+  case SHIELD_2:
+    equipment->set_shield(2);
+    break;
+
+  case SHIELD_3:
+    equipment->set_shield(3);
+    break;
+
+  case SWORD_1:
+    equipment->set_sword(1);
+    break;
+
+  case SWORD_2:
+    equipment->set_sword(2);
+    break;
+
+  case SWORD_3:
+    equipment->set_sword(3);
+    break;
+
+  case SWORD_4:
+    equipment->set_sword(4);
+    break;
+
+
+  case MAP:
+    // TODO dungeon_equipment->add_map();
+    break;
+
+  case COMPASS:
+    break;
+
+  case SMALL_KEY:
+    break;
+
+  case BIG_KEY:
+    break;
+
+  case BOSS_KEY:
+    break;
+
+  case PIECE_OF_HEART:
+    // TODO
+    break;
+
+
+  case HEART_CONTAINER:
+    equipment->add_heart_container();
+    break;
+
+  case BOMBS:
+    equipment->add_inventory_item_amount(InventoryItem::BOMBS, amount);
+    break;
+
+  case ARROWS:
+    equipment->add_inventory_item_amount(InventoryItem::BOW, amount);
+    break;
+
+  case HEARTS:
+    equipment->add_hearts(amount);
+    break;
+
+  case SMALL_MAGIC:
+    equipment->add_magic(6);
+    break;
+
+  case BIG_MAGIC:
+    equipment->add_magic(42);
+    break;
+
+  case GREEN_RUPEES:
+    equipment->add_rupees(amount);
+    break;
+
+  case BLUE_RUPEES:
+    equipment->add_rupees(5 * amount);
+    break;
+
+  case RED_RUPEES:
+    equipment->add_rupees(20 * amount);
+    break;
+  }
 }

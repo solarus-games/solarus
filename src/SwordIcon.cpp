@@ -17,7 +17,7 @@ SwordIcon::SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y
   keys_effect(keys_effect), equipment(equipment) {
 
   // static icon
-  this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword_number() : 0;
+  this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword() : 0;
   this->sword_key_effect_displayed = keys_effect->get_sword_key_effect();
   this->img_sword_icon = ResourceManager::load_image("hud/sword_icon.png");
 
@@ -51,7 +51,7 @@ void SwordIcon::update(void) {
 
     SwordKeyEffect sword_key_effect = keys_effect->get_sword_key_effect();
 
-    int sword_number = (equipment != NULL) ? equipment->get_sword_number() : 0;
+    int sword_number = (equipment != NULL) ? equipment->get_sword() : 0;
 
     if (sword_key_effect_displayed != sword_key_effect
 	|| (sword_key_effect_displayed == SWORD_KEY_SWORD

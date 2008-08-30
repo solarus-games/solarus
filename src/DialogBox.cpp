@@ -307,8 +307,8 @@ void DialogBox::display(SDL_Surface *destination_surface) {
   // display the icon
   if (icon_number != -1) {
     SDL_Rect src_position = {0, 0, 16, 16};
-    src_position.x = icon_number % 10;
-    src_position.y = icon_number / 10;
+    src_position.x = 16 * (icon_number % 10);
+    src_position.y = 16 * (icon_number / 10);
     SDL_BlitSurface(img_icons, &src_position, destination_surface, &icon_dst_position);
 
     question_dst_position.x = 101;

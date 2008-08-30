@@ -9,6 +9,7 @@
 #include "Equipment.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "Treasure.h"
 
 /**
  * Constructor.
@@ -98,6 +99,7 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
   Savegame *savegame = game->get_savegame();
   KeysEffect *keys_effect = game->get_keys_effect();
   Equipment *equipment = savegame->get_equipment();
+  Treasure *treasure;
 
   switch (keysym.unicode) {
 
@@ -182,6 +184,24 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
   case SDLK_b:
     equipment->remove_arrow();
     break;
+
+  case SDLK_r:
+    treasure = new Treasure(Treasure::PIECE_OF_HEART, 0, 0);
+    treasure->give_to_player();
+    delete treasure;
+    break;
+
+  case SDLK_f:
+    treasure = new Treasure(Treasure::ARROWS, 1, 43);
+    treasure->give_to_player();
+    delete treasure;
+    break;
+
+  case SDLK_v:
+    treasure = new Treasure(Treasure::ARROWS, 10, 43);
+    treasure->give_to_player();
+    delete treasure;
+    break;
 	  
   default:
     break;
@@ -201,27 +221,27 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
     break;
 	  
   case SDLK_KP1:
-    equipment->set_tunic_number(MAX(equipment->get_tunic_number() - 1, 0));
+    equipment->set_tunic(MAX(equipment->get_tunic() - 1, 0));
     break;
 
   case SDLK_KP4:
-    equipment->set_tunic_number(MIN(equipment->get_tunic_number() + 1, 2));
+    equipment->set_tunic(MIN(equipment->get_tunic() + 1, 2));
     break;
 	  
   case SDLK_KP2:
-    equipment->set_sword_number(MAX(equipment->get_sword_number() - 1, 0));
+    equipment->set_sword(MAX(equipment->get_sword() - 1, 0));
     break;
 	  
   case SDLK_KP5:
-    equipment->set_sword_number(MIN(equipment->get_sword_number() + 1, 4));
+    equipment->set_sword(MIN(equipment->get_sword() + 1, 4));
     break;
 	  
   case SDLK_KP3:
-    equipment->set_shield_number(MAX(equipment->get_shield_number() - 1, 0));
+    equipment->set_shield(MAX(equipment->get_shield() - 1, 0));
     break;
 	  
   case SDLK_KP6:
-    equipment->set_shield_number(MIN(equipment->get_shield_number() + 1, 3));
+    equipment->set_shield(MIN(equipment->get_shield() + 1, 3));
     break;
 	  
   default:

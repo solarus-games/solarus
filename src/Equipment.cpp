@@ -58,26 +58,25 @@ void Equipment::update(void) {
  * @return Link's tunic number (0: green tunic,
  * 1: blue tunic, 2: red tunic)
  */
-int Equipment::get_tunic_number(void) {
+int Equipment::get_tunic(void) {
   return savegame->get_reserved_integer(Savegame::LINK_TUNIC);
 }
 
 /**
  * Sets Link's tunic.
- * The savegame data is modified.
- * @param tunic_number Link's tunic number (0: green tunic,
+ * @param tunic Link's tunic number (0: green tunic,
  * 1: blue tunic, 2: red tunic)
  */
-void Equipment::set_tunic_number(int tunic_number) {
+void Equipment::set_tunic(int tunic) {
 
-  if (tunic_number != get_tunic_number()) {
+  if (tunic != get_tunic()) {
     // the tunic has changed
 
-    if (tunic_number < 0 || tunic_number > 2) {
-      DIE("Illegal tunic number: " << tunic_number);
+    if (tunic < 0 || tunic > 2) {
+      DIE("Illegal tunic number: " << tunic);
     }
 
-    savegame->set_reserved_integer(Savegame::LINK_TUNIC, tunic_number);
+    savegame->set_reserved_integer(Savegame::LINK_TUNIC, tunic);
 
     if (zsdx->game != NULL) {
       zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
@@ -92,7 +91,7 @@ void Equipment::set_tunic_number(int tunic_number) {
  * @return true if Link has a sword, i.e. if get_sword_number() > 0
  */
 bool Equipment::has_sword(void) {
-  return get_sword_number() > 0;
+  return get_sword() > 0;
 }
 
 /**
@@ -100,26 +99,25 @@ bool Equipment::has_sword(void) {
  * @return Link's sword number (0: no sword,
  * 1 to 4: sword 1 to 4)
  */
-int Equipment::get_sword_number(void) {
+int Equipment::get_sword(void) {
   return savegame->get_reserved_integer(Savegame::LINK_SWORD);
 }
 
 /**
  * Sets Link's sword.
- * The savegame data is modified.
- * @param sword_number Link's sword number (0: no sword,
+ * @param sword Link's sword number (0: no sword,
  * 1 to 4: sword 1 to 4)
  */
-void Equipment::set_sword_number(int sword_number) {
+void Equipment::set_sword(int sword) {
 
-  if (sword_number != get_sword_number()) {
+  if (sword != get_sword()) {
     // the sword has changed
 
-    if (sword_number < 0 || sword_number > 4) {
-      DIE("Illegal sword number: " << sword_number);
+    if (sword < 0 || sword > 4) {
+      DIE("Illegal sword number: " << sword);
     }
 
-    savegame->set_reserved_integer(Savegame::LINK_SWORD, sword_number);
+    savegame->set_reserved_integer(Savegame::LINK_SWORD, sword);
 
     if (zsdx->game != NULL) {
       zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
@@ -134,7 +132,7 @@ void Equipment::set_sword_number(int sword_number) {
  * @return true if Link has a shield, i.e. if get_shield_number() > 0
  */
 bool Equipment::has_shield(void) {
-  return get_shield_number() > 0;
+  return get_shield() > 0;
 }
 
 /**
@@ -142,26 +140,25 @@ bool Equipment::has_shield(void) {
  * @return Link's shield number (0: no shield,
  * 1 to 3: shield 1 to 3)
  */
-int Equipment::get_shield_number(void) {
+int Equipment::get_shield(void) {
   return savegame->get_reserved_integer(Savegame::LINK_SHIELD);
 }
 
 /**
  * Sets Link's shield.
- * The savegame data is modified.
- * @param shield_number Link's shield number (0: no shield,
+ * @param shield Link's shield number (0: no shield,
  * 1 to 3: shield 1 to 3)
  */
-void Equipment::set_shield_number(int shield_number) {
+void Equipment::set_shield(int shield) {
 
-  if (shield_number != get_shield_number()) {
+  if (shield != get_shield()) {
     // the shield has changed
 
-    if (shield_number < 0 || shield_number > 3) {
-      DIE("Illegal shield number: " << shield_number);
+    if (shield < 0 || shield > 3) {
+      DIE("Illegal shield number: " << shield);
     }
 
-    savegame->set_reserved_integer(Savegame::LINK_SHIELD, shield_number);
+    savegame->set_reserved_integer(Savegame::LINK_SHIELD, shield);
 
     if (zsdx->game != NULL) {
       zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
@@ -693,6 +690,8 @@ bool Equipment::needs_arrows(void) {
     && get_arrows() == 0;
 }
 
+// inventory items
+
 /**
  * Returns whether the player has obtained the specified item.
  * For most of the items, the value returned is always 0 or 1.
@@ -739,6 +738,146 @@ void Equipment::remove_inventory_item(InventoryItem::ItemId item_id) {
 }
 
 /**
+ * Gives an empty bottle to Link.
+ * This function calls give_inventory_item() with the item id
+ * corresponding to the first bottle slot that the player
+ * doesn't have yet.
+ */
+void Equipment::add_bottle(void) {
+
+  if (!has_inventory_item(InventoryItem::BOTTLE_1)) {
+    give_inventory_item(InventoryItem::BOTTLE_1);
+  }
+  else if (!has_inventory_item(InventoryItem::BOTTLE_2)) {
+    give_inventory_item(InventoryItem::BOTTLE_2);
+  }
+  else {
+    DIE("The player already has all bottles");
+  }
+}
+
+/**
+ * Returns whether the player has at least one empty bottle.
+ * @return true if the player has at least one empty bottle
+ */
+bool Equipment::has_empty_bottle(void) {
+  return has_inventory_item(InventoryItem::BOTTLE_1) == 1
+    || has_inventory_item(InventoryItem::BOTTLE_2) == 1;
+}
+
+/**
+ * Returns the id of the first empty bottle.
+ * @return the id of the first empty bottle
+ */
+InventoryItem::ItemId Equipment::get_first_empty_bottle(void) {
+
+  if (has_inventory_item(InventoryItem::BOTTLE_1) == 1) {
+    return InventoryItem::BOTTLE_1;
+  }
+
+  if (has_inventory_item(InventoryItem::BOTTLE_2) == 1) {
+    return InventoryItem::BOTTLE_2;
+  }
+
+  DIE("The player does not have an empty bottle");
+}
+
+/**
+ * Returns the current amount of a specified inventory item.
+ * @param item_id id of the item to get
+ * @return Link's current amount of this item
+ */
+int Equipment::get_inventory_item_amount(InventoryItem::ItemId item_id) {
+
+  if (item_id == InventoryItem::BOMBS) {
+    return get_bombs();
+  }
+
+  if (item_id == InventoryItem::BOW) {
+    return get_arrows();
+  }
+
+  InventoryItem *item = InventoryItem::get_item(item_id);
+  int counter_index = item->get_counter_index();
+
+  return savegame->get_reserved_integer(counter_index);
+}
+
+/**
+ * Sets the current amount of a specified item.
+ * The program exits with an error message if the given number
+ * is not valid.
+ * @param item_id id of the item to set
+ * @param amount the new amount
+ */
+void Equipment::set_inventory_item_amount(InventoryItem::ItemId item_id, int amount) {
+
+  if (item_id == InventoryItem::BOMBS) {
+    set_bombs(amount);
+  }
+  else if (item_id == InventoryItem::BOW) {
+    set_arrows(amount);
+  }
+  else {
+
+    InventoryItem *item = InventoryItem::get_item(item_id);
+    int counter_index = item->get_counter_index();
+
+    // the item can be the fire stones, the apples,
+    // the pains au chocolat or the croissants
+    int max = (item_id == InventoryItem::FIRE_STONES) ? 3 : 10;
+
+    if (amount < 0 || amount > max) {
+      DIE("Illegal amount for item " << item_id << ": " << amount);
+    }
+
+    savegame->set_reserved_integer(counter_index, amount);
+  }
+}
+
+/**
+ * Adds an amount of a specified inventory item to Link.
+ * If the maximum amount is achieved, no more items are added.
+ * @param item_id id of the item to set
+ * @param amount_to_add the amount to add
+ */
+void Equipment::add_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_add) {
+
+  if (item_id == InventoryItem::BOMBS) {
+    add_bombs(amount_to_add);
+  }
+  else if (item_id == InventoryItem::BOW) {
+    add_arrows(amount_to_add);
+  }
+  else {
+    int total = get_inventory_item_amount(item_id) + amount_to_add;
+
+    if (item_id == InventoryItem::FIRE_STONES && amount_to_add != 1) {
+      DIE("Only one fire stone can be added");
+    }
+
+    set_inventory_item_amount(item_id, MIN(total, 10));
+  }
+}
+
+/**
+ * Removes an amount of a specified inventory item to Link.
+ * If the amount reaches zero, no more items are removed.
+ * @param item_id id of the item to set
+ * @param amount_to_remove the amount to remove
+ */
+void Equipment::remove_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_remove) {
+
+  if (item_id == InventoryItem::FIRE_STONES) {
+    DIE("Cannot remove a fire stone");
+  }
+  else {
+    int total = get_inventory_item_amount(item_id) - 1;
+    set_inventory_item_amount(item_id, MAX(total, 0));
+  }
+}
+
+/**
  * Returns the item currently assigned to a slot.
  * @param slot slot of the item to get (0 for X or 1 for V)
  */
@@ -767,4 +906,19 @@ void Equipment::set_item_assigned(int slot, InventoryItem::ItemId item_id) {
 
   int index = Savegame::ITEM_SLOT_0 + slot;
   savegame->set_reserved_integer(index, item_id);
+}
+
+/**
+ * Returns whether the player has got the world map.
+ * @return true if the player has got the world map
+ */
+bool Equipment::has_world_map(void) {
+  return savegame->get_reserved_integer(Savegame::WORLD_MAP) != 0;
+}
+
+/**
+ * Gives the world map to the player.
+ */
+void Equipment::add_world_map(void) {
+  savegame->set_reserved_integer(Savegame::WORLD_MAP, 1);
 }

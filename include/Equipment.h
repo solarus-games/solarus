@@ -28,18 +28,18 @@ class Equipment {
   void update(void);
 
   // tunic
-  int get_tunic_number(void);
-  void set_tunic_number(int tunic_number);
+  int get_tunic(void);
+  void set_tunic(int tunic);
 
   // sword
   bool has_sword(void);
-  int get_sword_number(void);
-  void set_sword_number(int sword_number);
+  int get_sword(void);
+  void set_sword(int sword);
 
   // shield
   bool has_shield(void);
-  int get_shield_number(void);
-  void set_shield_number(int shield_number);
+  int get_shield(void);
+  void set_shield(int shield);
 
   // rupees
   int get_max_rupees(void);
@@ -107,11 +107,23 @@ class Equipment {
   void give_inventory_item(InventoryItem::ItemId item_id, int variant);
   void remove_inventory_item(InventoryItem::ItemId item_id);
 
+  void add_bottle(void);
+  bool has_empty_bottle(void);
+  InventoryItem::ItemId get_first_empty_bottle(void);
+
+  int get_inventory_item_amount(InventoryItem::ItemId item_id);
+  void set_inventory_item_amount(InventoryItem::ItemId item_id, int amount);
+  void add_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_add);
+  void remove_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_remove);
+
   InventoryItem::ItemId get_item_assigned(int slot);
   void set_item_assigned(int slot, InventoryItem::ItemId item_id);
-  
 
-  // TODO: quest status, dungeon items...
+  // quest status
+  bool has_world_map(void);
+  void add_world_map(void);
+
+  // TODO: dungeon items
 
 };
 

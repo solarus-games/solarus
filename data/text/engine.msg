@@ -1338,16 +1338,15 @@ line1 = "accéder au repaire"
 line2 = "du maître des"
 line3 = "lieux !"
 
-[_treasure_79]
-# Fragment de Coeur
+[_treasure_79_1]
+# 1er Fragment de Coeur
 #       |--------------------|
 icon = 79
 line1 = "Tu as trouvé un"
 line2 = "Fragment de Coeur !"
-# Le message suivant dépend du nombre de fragments
+next = _treasure_79_1.1
 
-[_treasure_79_1]
-# Fragment de Coeur (suite si 1)
+[_treasure_79_1.1]
 #       |--------------------|
 icon = 75
 line1 = "Collecte-en quatre"
@@ -1355,7 +1354,14 @@ line2 = "pour former un"
 line3 = "nouveau Coeur."
 
 [_treasure_79_2]
-# Fragment de Coeur (suite si 2)
+# 2e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Tu as trouvé un"
+line2 = "Fragment de Coeur !"
+next = _treasure_79_2.1
+
+[_treasure_79_2.1]
 #       |--------------------|
 icon = 76
 line1 = "Encore deux et"
@@ -1363,7 +1369,14 @@ line2 = "tu obtiendras"
 line3 = "un nouveau Coeur."
 
 [_treasure_79_3]
-# Fragment de Coeur (suite si 3)
+# 3e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Tu as trouvé un"
+line2 = "Fragment de Coeur !"
+next = _treasure_79_3.1
+
+[_treasure_79_3.1]
 #       |--------------------|
 icon = 77
 line1 = "Plus qu'un à trouver"
@@ -1371,14 +1384,21 @@ line2 = "pour former un"
 line3 = "nouveau Coeur !"
 
 [_treasure_79_4]
-# Fragment de Coeur (suite si 4)
+# 4e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Tu as trouvé un"
+line2 = "Fragment de Coeur !"
+next = _treasure_79_4.1
+
+[_treasure_79_4.1]
 #       |--------------------|
 icon = 78
 line1 = "Tu as trouvé quatre"
 line2 = "Fragments de Coeur."
-next = _treasure_79_4.1
+next = _treasure_79_4.2
 
-[_treasure_79_4.1]
+[_treasure_79_4.2]
 #       |--------------------|
 line1 = "Tu obtiens un Coeur
 line2 = "supplémentaire !"
@@ -1396,7 +1416,7 @@ next = _treasure_79_4.1
 #       |--------------------|
 icon = 82
 line1 = "Tu as trouvé une"
-line2 = "Bombe!$0"
+line2 = "Bombe !$0"
 line3 = "Utilise une Bombe"
 next = _treasure_82_1.1
 
@@ -1404,7 +1424,7 @@ next = _treasure_82_1.1
 #       |--------------------|
 line1 = "pour faire exploser"
 line2 = "un ennemi ou un"
-line3 = "obstacle.
+line3 = "obstacle."
 
 [_treasure_82_2]
 # Plusieurs Bombes
@@ -1428,7 +1448,7 @@ next = _treasure_83_1.1
 #       |--------------------|
 line1 = "Flèches pour vaincre"
 line2 = "des ennemis coriaces"
-line3 = "à distance.
+line3 = "à distance."
 
 [_treasure_83_2]
 # Plusieurs Flèches
@@ -1436,13 +1456,14 @@ line3 = "à distance.
 icon = 83
 line1 = "Tu as trouvé $v"
 line2 = "Flèches !$0"
+line3 = "Utilise l'Arc et les"
 next = _treasure_83_1.1
 
 [_treasure_84_1]
 # 1 Coeur
 #       |--------------------|
 icon = 84
-line1 = "Tu as trouvé une"
+line1 = "Tu as trouvé un"
 line2 = "Coeur !"
 
 [_treasure_84_2]
@@ -1467,12 +1488,6 @@ icon = 86
 line1 = "Tu as trouvé une"
 line2 = "grande bouteille"
 line3 = "d'énergie magique !"
-next = _treasure_86_1.1
-
-[_treasure_86.1]
-#       |--------------------|
-line1 = "Ta jauge de magie"
-line2 = "est restaurée !"
 
 [_treasure_87_1]
 # 1 rubis vert

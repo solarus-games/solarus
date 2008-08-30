@@ -110,6 +110,7 @@ class Savegame {
 
     /**
      * @name Pieces of heart
+     * TODO useless?
      * The variables 100 to 143 indicate whether the player has found each piece of heart.
      * There are 44 pieces of hearts in Mystery of Solarus DX.
      * @{
@@ -143,6 +144,8 @@ class Savegame {
     /**
      * @}
      */
+
+    // TODO dungeon items: 7 variables per dungeon (5 used, 2 free) and 14 potential dungeons: 98 values
   };
 
  private:

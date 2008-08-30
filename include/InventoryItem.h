@@ -59,8 +59,8 @@ class InventoryItem {
 
   bool attributable;   /**< true if this item can be assigned to icon X or V */
   int counter_index;   /**< for an item with a counter (bombs, arrows, etc.),
-						   * index of the savegame variable indicating the
-						   * counter's value (0 if there is no counter) */
+			* index of the savegame variable indicating the
+			* counter's value (0 if there is no counter) */
   
   static InventoryItem items[28];
 

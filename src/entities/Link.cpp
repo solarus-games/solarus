@@ -278,7 +278,7 @@ void Link::initialize_sprites(void) {
     delete tunic_sprite;
   }
 
-  int tunic_number = equipment->get_tunic_number();
+  int tunic_number = equipment->get_tunic();
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
   tunic_sprite->set_animation_listener(this); // to be notified when an animation of Link is over
@@ -290,7 +290,7 @@ void Link::initialize_sprites(void) {
     sword_sprite = NULL;
   }
 
-  int sword_number = equipment->get_sword_number();
+  int sword_number = equipment->get_sword();
 
   if (sword_number > 0) {
     // Link has a sword: get the sprite and the sound
@@ -309,7 +309,7 @@ void Link::initialize_sprites(void) {
     shield_sprite = NULL;
   }
 
-  int shield_number = equipment->get_shield_number();
+  int shield_number = equipment->get_shield();
 
   if (shield_number > 0) {
     // Link has a shield

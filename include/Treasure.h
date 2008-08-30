@@ -22,7 +22,6 @@ class Treasure {
    * The values correspond to the icons in hud/message_and_treasure_icons.png
    */
   enum TreasureContent {
-    // inventory items
     FEATHER = 0,
     BOW = 2,
     BOW_AND_ARROWS,
@@ -45,7 +44,7 @@ class Treasure {
     FIRE_STONE,
 
     APPLES = 20,
-    PAINS_AUX_CHOCOLAT,
+    PAINS_AU_CHOCOLAT,
     CROISSANTS,
     APPLE_PIE,
     GOLDEN_BARS,
@@ -88,8 +87,7 @@ class Treasure {
     PIECE_OF_HEART = 79,
 
     HEART_CONTAINER = 80,
-    FAIRY,
-    BOMBS,
+    BOMBS = 82,
     ARROWS,
     HEARTS,
     SMALL_MAGIC,
@@ -111,6 +109,8 @@ class Treasure {
   void stop_brandish_item(void);
   void show_message(void);
   void add_item_to_equipment(void);
+
+  bool has_amount(void);
 
  public:
 

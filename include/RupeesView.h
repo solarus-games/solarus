@@ -20,7 +20,7 @@ class RupeesView: public HudElement {
 
   int nb_max_rupees_displayed;
   int icon_displayed;
-  CounterView *rupee_counter;
+  Counter *rupee_counter;
  
   Uint32 next_rupee_update_date;
   

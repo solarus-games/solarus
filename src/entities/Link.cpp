@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Sound.h"
 #include "KeysEffect.h"
+#include "Treasure.h"
 
 /**
  * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
@@ -89,10 +90,11 @@ const SoundId Link::sword_sound_ids[4] = {
 Link::Link(Equipment *equipment):
   map(NULL), equipment(equipment),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
-  state(LINK_STATE_FREE), walking(false),
+  state(FREE), walking(false),
   counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF),
-  facing_entity(NULL), lifted_item(NULL), thrown_item(NULL) {
+  facing_entity(NULL), lifted_item(NULL), thrown_item(NULL),
+  treasure(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -112,6 +114,10 @@ Link::~Link(void) {
 
   if (shield_sprite != NULL) {
     delete shield_sprite;
+  }
+
+  if (treasure != NULL) {
+    delete treasure;
   }
 
   destroy_carried_items();
@@ -194,8 +200,8 @@ void Link::set_map(Map *map, int initial_direction) {
   // stop loading the sword or carrying an item
   switch (get_state()) {
 
-  case LINK_STATE_CARRYING:
-  case LINK_STATE_SWORD_LOADING:
+  case CARRYING:
+  case SWORD_LOADING:
     start_free();
     break;
 
@@ -219,10 +225,10 @@ void Link::update(void) {
 
   // update the movement
   if (!zsdx->game->is_suspended()) {
-    get_movement()->set_moving_enabled(get_state() <= LINK_STATE_SWIMMING);
+    get_movement()->set_moving_enabled(get_state() <= SWIMMING);
     
     // specific updates in some states
-    if (get_state() == LINK_STATE_SWORD_LOADING) {
+    if (get_state() == SWORD_LOADING) {
       update_sword_loading();
     }
   }
@@ -230,8 +236,11 @@ void Link::update(void) {
   update_position();
   update_sprites();
 
-  // update the carried items
   update_carried_items();
+
+  if (treasure != NULL) {
+    update_treasure();
+  }
 }
 
 /**
@@ -259,6 +268,10 @@ void Link::display_on_map(Map *map) {
   }
 
   display_carried_items();
+
+  if (treasure != NULL) {
+    display_treasure();
+  }
 }
 
 /**
@@ -322,7 +335,7 @@ void Link::initialize_sprites(void) {
   }
 
   // animation walking or stopped
-  set_state(LINK_STATE_FREE);
+  set_state(FREE);
   if (get_movement()->is_started()) {
     set_animation_walking();
   }
@@ -352,7 +365,7 @@ void Link::update_sprites(void) {
     shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
   }
 
-  if (state == LINK_STATE_CARRYING && walking) {
+  if (state == CARRYING && walking) {
     lifted_item->get_last_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
   }
 }
@@ -461,7 +474,7 @@ void Link::update_position(void) {
 
   Uint16 direction_mask = get_movement()->get_direction_mask();
 
-  if (state == LINK_STATE_FREE && move_tried) {
+  if (state == FREE && move_tried) {
     // Link is trying to move with animation "walking"
 
     // see if the move has failed (i.e. if Link's coordinates have not changed)
@@ -501,7 +514,7 @@ void Link::update_position(void) {
       counter = 0;
       pushing_direction_mask = 0xFFFF;
 
-      if (state == LINK_STATE_PUSHING) {
+      if (state == PUSHING) {
 	start_free();
       }
     }
@@ -512,7 +525,7 @@ void Link::update_position(void) {
  * Returns Link's state.
  * @return the state of Link
  */
-LinkState Link::get_state(void) {
+Link::State Link::get_state(void) {
   return state;
 }
 
@@ -520,17 +533,17 @@ LinkState Link::get_state(void) {
  * Sets Link's state.
  * @param state the state of Link
  */
-void Link::set_state(LinkState state) {
+void Link::set_state(State state) {
   this->state = state;
-  get_movement()->set_moving_enabled(state <= LINK_STATE_SWIMMING);
+  get_movement()->set_moving_enabled(state <= SWIMMING);
 }
 
 /**
  * Lets Link can walk.
- * Moves to the state LINK_STATE_FREE and updates the animations accordingly.
+ * Moves to the state FREE and updates the animations accordingly.
  */
 void Link::start_free(void) {
-  set_state(LINK_STATE_FREE);
+  set_state(FREE);
   
   if (get_movement()->is_started()) {
     set_animation_walking();
@@ -546,18 +559,18 @@ void Link::start_free(void) {
 /**
  * Lets Link swinging his sword if this action is possible.
  * The game should not be suspended.
- * Moves to the state LINK_STATE_SWORD_SWINGING, plays the sword sound
+ * Moves to the state SWORD_SWINGING, plays the sword sound
  * and updates the animations accordingly.
  */
 void Link::start_sword(void) {
   if (can_start_sword()) {
 
     // remove the carried item
-    if (state == LINK_STATE_CARRYING) {
+    if (state == CARRYING) {
       start_throwing();
     }
 
-    set_state(LINK_STATE_SWORD_SWINGING);
+    set_state(SWORD_SWINGING);
     sword_sound->play();
     set_animation_sword();
   }
@@ -566,31 +579,31 @@ void Link::start_sword(void) {
 /**
  * Returns whether Link can swing his sword right now.
  * The function returns true if the game is not suspended and Link
- * is in state LINK_STATE_FREE, LINK_STATE_PUSHING,
- * LINK_STATE_CARRYING or LINK_STATE_SWORD_SWINGING.
+ * is in state FREE, PUSHING,
+ * CARRYING or SWORD_SWINGING.
  * @return true if Link can swing his sword, false otherwise
  */
 bool Link::can_start_sword(void) {
   return !zsdx->game->is_suspended() &&
-    (state <= LINK_STATE_CARRYING || state == LINK_STATE_SWORD_SWINGING);
+    (state <= CARRYING || state == SWORD_SWINGING);
 }
 
 /**
  * Makes Link push something.
- * Moves to the state LINK_STATE_FREE and updates the animations accordingly.
+ * Moves to the state FREE and updates the animations accordingly.
  */
 void Link::start_pushing(void) {
-  set_state(LINK_STATE_PUSHING);
+  set_state(PUSHING);
   set_animation_pushing();
 }
 
 /**
  * Lets Link loading his sword.
- * Moves to the state LINK_STATE_SWORD_LOADING
+ * Moves to the state SWORD_LOADING
  * and updates the animations accordingly.
  */
 void Link::start_sword_loading(void) {
-  set_state(LINK_STATE_SWORD_LOADING);
+  set_state(SWORD_LOADING);
   sword_loaded = false;
 
   // initialize the counter to detect when the sword is loaded
@@ -608,7 +621,7 @@ void Link::start_sword_loading(void) {
 /**
  * This function is called repeatedly while Link is loading his sword.
  * It stops the loading if the sword key is released.
- * The state must be LINK_STATE_SWORD_LOADING.
+ * The state must be SWORD_LOADING.
  */
 void Link::update_sword_loading(void) {
   
@@ -659,7 +672,7 @@ void Link::start_lifting(void) {
     this->lifted_item = new CarriedItem(this, item_to_lift);
 
     keys_effect->set_action_key_effect(ACTION_KEY_THROW);
-    set_state(LINK_STATE_LIFTING);
+    set_state(LIFTING);
     set_animation_lifting();
     set_facing_entity(NULL);
   }
@@ -669,7 +682,7 @@ void Link::start_lifting(void) {
  * Makes Link carry the item he was lifting.
  */
 void Link::start_carrying(void) {
-  set_state(LINK_STATE_CARRYING);
+  set_state(CARRYING);
 
   if (get_movement()->is_started()) {
     set_animation_walking();
@@ -686,7 +699,7 @@ void Link::start_throwing(void) {
 
   // we check the state because the "throw" icon is actually shown as soon as
   // Link starts lifting the item
-  if (state == LINK_STATE_CARRYING) {
+  if (state == CARRYING) {
 
     lifted_item->throw_item(map, get_animation_direction());
 
@@ -766,12 +779,76 @@ void Link::destroy_carried_items(void) {
 }
 
 /**
+ * Makes Link brandish a treasure.
+ * @param treasure the treasure to give him (will be deleted after Link brandishes it) 
+ */
+void Link::give_treasure(Treasure *treasure) {
+
+  this->treasure = treasure;
+
+  // goto the right state
+  state = BRANDISHING_TREASURE;
+
+  // show the animation
+  save_animation_direction();
+  tunic_sprite->set_current_animation("brandish");
+  tunic_sprite->set_current_direction(0);
+
+  // the shield and the sword are not visible when Link is brandishing a treasure
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+  stop_displaying_sword();
+
+  // give the treasure and show the message
+  treasure->give_to_player();
+}
+
+/**
+ * Updates Link when he is brandishing a treasure.
+ */
+void Link::update_treasure(void) {
+
+  if (!zsdx->game->is_showing_message()) {
+
+    /* The treasure message is over: if the treasure was a tunic,
+     * a sword or a shield, then we must reload Link's sprites now */
+    Treasure::Content content = treasure->get_content();
+    if (content >= Treasure::BLUE_TUNIC && content <= Treasure::SWORD_4) {
+      zsdx->game->get_link()->initialize_sprites();
+    }
+
+    // delete the treasure
+    delete treasure;
+    treasure = NULL;
+
+    // restore Link's state
+    start_free();
+    restore_animation_direction();
+  }
+}
+
+/**
+ * Displays the treasure Link is brandishing.
+ */
+void Link::display_treasure(void) {
+
+  int x = position_in_map.x;
+  int y = position_in_map.y;
+
+  SDL_Rect *screen_position = map->get_screen_position();
+  treasure->display(map->get_visible_surface(),
+		    x - screen_position->x,
+		    y - 24 - screen_position->y);
+}
+
+/**
  * Lets Link loading his sword.
- * Moves to the state LINK_STATE_SWORD_LOADING
+ * Moves to the state SWORD_LOADING
  * and updates the animations accordingly.
  */
 void Link::start_spin_attack(void) {
-  set_state(LINK_STATE_SPIN_ATTACK);
+  set_state(SPIN_ATTACK);
   sword_loaded = false;
   
   // play the sound
@@ -792,7 +869,7 @@ void Link::start_spin_attack(void) {
  * @return true if Link's sword is currently displayed on the screen
  */
 bool Link::is_sword_visible(void) {
-  return equipment->has_sword() && sword_sprite->is_animation_started();
+  return equipment->has_sword() && sword_sprite != NULL && sword_sprite->is_animation_started();
 }
 
 /**
@@ -800,7 +877,7 @@ bool Link::is_sword_visible(void) {
  * @return true if the stars of Link's sword are currently displayed on the screen
  */
 bool Link::is_sword_stars_visible(void) {
-  return equipment->has_sword() && sword_stars_sprite->is_animation_started();
+  return equipment->has_sword() && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
 }
 
 /**
@@ -808,7 +885,7 @@ bool Link::is_sword_stars_visible(void) {
  * @return true if Link's shield is currently displayed on the screen
  */
 bool Link::is_shield_visible(void) {
-  return equipment->has_shield() && shield_sprite->is_animation_started();
+  return equipment->has_shield() && shield_sprite != NULL && shield_sprite->is_animation_started();
 }
 
 /**
@@ -833,7 +910,7 @@ void Link::animation_over(Sprite *sprite) {
   int state = get_state();
   switch (state) {
 
-  case LINK_STATE_SWORD_SWINGING:
+  case SWORD_SWINGING:
     
     // if the player is still pressing the sword key, set the "sword loading" animation
 
@@ -848,7 +925,7 @@ void Link::animation_over(Sprite *sprite) {
     
     break;
     
-  case LINK_STATE_SPIN_ATTACK:
+  case SPIN_ATTACK:
     start_free();
     break;
 
@@ -865,7 +942,7 @@ void Link::animation_over(Sprite *sprite) {
  * @return true if the animation direction is locked
  */
 bool Link::is_direction_locked(void) {
-  return state == LINK_STATE_SWORD_LOADING;
+  return state == SWORD_LOADING;
 }
 
 /**
@@ -900,6 +977,22 @@ void Link::set_animation_direction(int direction) {
 }
 
 /**
+ * Saves the current direction of the Link's sprite.
+ * Call restore_animation_direction() to restore the direction saved here.
+ */
+void Link::save_animation_direction(void) {
+  this->animation_direction_saved = get_animation_direction();
+}
+
+/**
+ * Restores the direction of Link's sprite saved by the last
+ * save_animation_direction() call.
+ */
+void Link::restore_animation_direction(void) {
+  set_animation_direction(animation_direction_saved);
+}
+
+/**
  * Suspends or resumes the animation of Link's sprites.
  * This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the animation, false to resume it
@@ -909,12 +1002,12 @@ void Link::set_suspended(bool suspended) {
   // sprites
   tunic_sprite->set_suspended(suspended);
 
-  if (equipment->has_sword()) {
+  if (equipment->has_sword() && sword_sprite != NULL) {
     sword_sprite->set_suspended(suspended);
     sword_stars_sprite->set_suspended(suspended);
   }
 
-  if (equipment->has_shield()) {
+  if (equipment->has_shield() && shield_sprite != NULL) {
     shield_sprite->set_suspended(suspended);
   }
 
@@ -958,7 +1051,7 @@ void Link::set_animation_stopped(void) {
   
   switch (get_state()) {
     
-  case LINK_STATE_FREE:
+  case FREE:
 
     stop_displaying_sword();
 
@@ -975,7 +1068,7 @@ void Link::set_animation_stopped(void) {
 
     break;
     
-  case LINK_STATE_SWORD_LOADING:
+  case SWORD_LOADING:
 
     tunic_sprite->set_current_animation("sword_loading_stopped");
 
@@ -998,7 +1091,7 @@ void Link::set_animation_stopped(void) {
 
     break;
 
-  case LINK_STATE_CARRYING:
+  case CARRYING:
     tunic_sprite->set_current_animation("carrying_stopped");
     lifted_item->set_animation_stopped();
     break;
@@ -1019,7 +1112,7 @@ void Link::set_animation_walking(void) {
   
   switch (get_state()) {
     
-  case LINK_STATE_FREE:
+  case FREE:
     
     stop_displaying_sword();
 
@@ -1036,7 +1129,7 @@ void Link::set_animation_walking(void) {
 
     break;
 
-  case LINK_STATE_SWORD_LOADING:
+  case SWORD_LOADING:
     
     tunic_sprite->set_current_animation("sword_loading_walking");
 
@@ -1059,7 +1152,7 @@ void Link::set_animation_walking(void) {
 
     break;
 
-  case LINK_STATE_CARRYING:
+  case CARRYING:
     tunic_sprite->set_current_animation("carrying_walking");
     lifted_item->set_animation_walking();
     break;
@@ -1073,7 +1166,7 @@ void Link::set_animation_walking(void) {
 
 /**
  * Starts (or restarts) the "sword" animation of Link's sprites.
- * Link's state should be LINK_STATE_SWORD.
+ * Link's state should be SWORD.
  */
 void Link::set_animation_sword(void) {
 
@@ -1102,7 +1195,7 @@ void Link::set_animation_sword(void) {
 
 /**
  * Starts the "pushing" animation of Link's sprites.
- * Link's state should be LINK_STATE_PUSHING.
+ * Link's state should be PUSHING.
  */
 void Link::set_animation_pushing(void) {
   tunic_sprite->set_current_animation("pushing");
@@ -1115,7 +1208,7 @@ void Link::set_animation_pushing(void) {
 
 /**
  * Starts the "lifting" animation of Link's sprites.
- * Link's state should be LINK_STATE_LIFTING.
+ * Link's state should be LIFTING.
  */
 void Link::set_animation_lifting(void) {
   tunic_sprite->set_current_animation("lifting");

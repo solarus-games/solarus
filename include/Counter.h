@@ -1,5 +1,5 @@
-#ifndef ZSDX_COUNTER_VIEW_H
-#define ZSDX_COUNTER_VIEW_H
+#ifndef ZSDX_COUNTER_H
+#define ZSDX_COUNTER_H
 
 #include "Common.h"
 
@@ -7,7 +7,7 @@
  * This class displays a counter on a surface.
  * The counter can only display positive integer numbers.
  */
-class CounterView {
+class Counter {
 
  private:
 
@@ -23,9 +23,9 @@ class CounterView {
  
  public:
   
-  CounterView(unsigned int nb_digits, bool fill_with_zeros,
+  Counter(unsigned int nb_digits, bool fill_with_zeros,
 	      int x, int y);
-  ~CounterView(void);
+  ~Counter(void);
 
   unsigned int get_value(void);
   void set_value(unsigned int value);
@@ -33,6 +33,7 @@ class CounterView {
   void decrease(void);
 
   void display(SDL_Surface *destination);
+  void display(SDL_Surface *destination, int x, int y);
 };
 
 #endif

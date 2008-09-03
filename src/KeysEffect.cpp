@@ -60,7 +60,7 @@ void KeysEffect::set_action_key_enabled(bool enable) {
 
 /**
  * Saves the current effect of the action key.
- * Call restore_action_key_effect to restore the action key saved here.
+ * Call restore_action_key_effect() to restore the action key saved here.
  */
 void KeysEffect::save_action_key_effect(void) {
   this->action_key_effect_saved = get_action_key_effect();

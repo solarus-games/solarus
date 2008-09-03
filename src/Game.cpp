@@ -192,9 +192,9 @@ void Game::update_keys_effect(void) {
 
   switch (link->get_state()) {
     
-  case LINK_STATE_FREE:
-  case LINK_STATE_SWORD_SWINGING:
-  case LINK_STATE_SWORD_LOADING:
+  case Link::FREE:
+  case Link::SWORD_SWINGING:
+  case Link::SWORD_LOADING:
 
     // the sword key swings the sword <=> Link has a sword
     if (savegame->get_equipment()->has_sword()

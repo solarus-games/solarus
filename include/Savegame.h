@@ -57,7 +57,7 @@ class Savegame {
     ITEM_SLOT_0                      = 5, /**< current object associated to the first item slot
 					   * (X button by default), -1 means no item */
     ITEM_SLOT_1                      = 6, /**< current object associated to the second slot
-					   * (V button by default) */
+					   * (V button by default), -1 means no item */
     /**
      * @}
      */

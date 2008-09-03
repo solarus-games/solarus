@@ -35,23 +35,30 @@ DialogBox::DialogBox(MessageId first_message_id) {
   // create the sprite
   sprite_message_end_arrow = new Sprite("hud/dialog_box_message_end");
 
+  // save the action and sword keys
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->save_action_key_effect();
+  keys_effect->save_sword_key_effect();
+
   // initialize the current message
   speed = DIALOG_SPEED_FAST;
   cancel_mode = DIALOG_CANCEL_NONE;
   icon_number = -1;
   show_message(first_message_id);
   cancel_dialog = false;
-
-  // save the action and sword keys
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->save_action_key_effect();
-  keys_effect->save_sword_key_effect();
 }
 
 /**
  * Destructor.
  */
 DialogBox::~DialogBox(void) {
+
+  // the dialog box is being closed: restore the action and sword keys
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->restore_action_key_effect();
+  keys_effect->restore_sword_key_effect();
+
+  // free the memory
   SDL_FreeSurface(img_box);
   SDL_FreeSurface(img_icons);
   delete sprite_message_end_arrow;
@@ -193,13 +200,6 @@ void DialogBox::action_key_pressed(void) {
     }
     else {
       current_message = NULL;
-    }
-
-    if (is_over()) { // the last message of the dialog is over
-      // restore the action and sword keys
-      KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-      keys_effect->restore_action_key_effect();
-      keys_effect->restore_sword_key_effect();
     }
   }
 }

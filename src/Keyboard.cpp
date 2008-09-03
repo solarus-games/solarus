@@ -186,21 +186,39 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
     break;
 
   case SDLK_r:
-    treasure = new Treasure(Treasure::PIECE_OF_HEART, 0, 0);
-    treasure->give_to_player();
-    delete treasure;
+    {
+      if (game->is_showing_message()) {
+	break;
+      }
+      static int content = Treasure::SWORD_4 -1;
+      content++;
+
+      while (content == 1 ||
+	     (content >= 8 && content <= 11) ||
+	     content == 29 ||
+	     (content >= 36 && content <= 49) ||
+	     content == 51 ||
+	     content == 57 ||
+	     content == 60 ||
+	     (content >= 75 && content <= 78) ||
+	     content == 81) {
+	content++;
+      }
+
+      treasure = new Treasure((Treasure::Content) content, 13, 0);
+
+      link->give_treasure(treasure);
+    }
     break;
 
   case SDLK_f:
     treasure = new Treasure(Treasure::ARROWS, 1, 43);
-    treasure->give_to_player();
-    delete treasure;
+    link->give_treasure(treasure);
     break;
 
   case SDLK_v:
     treasure = new Treasure(Treasure::ARROWS, 10, 43);
-    treasure->give_to_player();
-    delete treasure;
+    link->give_treasure(treasure);
     break;
 	  
   default:

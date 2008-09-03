@@ -8,6 +8,8 @@
 #include "DungeonEquipment.h"
 #include "DialogBox.h"
 #include "InventoryItem.h"
+#include "Counter.h"
+#include "entities/Link.h"
 
 /**
  * Creates a new treasure.
@@ -18,9 +20,15 @@
  * @param savegame_index index of the savegame boolean indicating that Link has found this treasure
  * or -1 if this treasure is not saved
  */
-Treasure::Treasure(TreasureContent content, int amount, int savegame_index):
-  content(content), amount(amount), savegame_index(savegame_index) {
+Treasure::Treasure(Content content, int amount, int savegame_index):
+  content(content), amount(amount), savegame_index(savegame_index), counter(NULL) {
 
+  treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+
+  if (has_amount() && amount > 1) {
+    counter = new Counter(3, false, 0, 0);
+    counter->set_value(amount);
+  }
 }
 
 /**
@@ -28,6 +36,19 @@ Treasure::Treasure(TreasureContent content, int amount, int savegame_index):
  */
 Treasure::~Treasure(void) {
 
+  SDL_FreeSurface(treasures_img);
+
+  if (counter != NULL) {
+    delete counter;
+  }
+}
+
+/**
+ * Returns the content of this treasure.
+ * @return this treasure's content
+ */
+Treasure::Content Treasure::get_content(void) {
+  return content;
 }
 
 /**
@@ -65,12 +86,9 @@ bool Treasure::has_amount(void) {
  * brandish the item and adds the item to Link's equipment.
  */
 void Treasure::give_to_player(void) {
-
   play_treasure_sound();
-  start_brandish_item();
   show_message();
   add_item_to_equipment();
-  stop_brandish_item();
 }
 
 /**
@@ -88,20 +106,6 @@ void Treasure::play_treasure_sound(void) {
     sound_name = "piece_of_heart";
   }
   ResourceManager::get_sound(sound_name)->play();
-}
-
-/**
- * Makes Link brandish the item.
- */
-void Treasure::start_brandish_item(void) {
-  
-}
-
-/**
- * Makes Link stop brandish the item.
- */
-void Treasure::stop_brandish_item(void) {
-  
 }
 
 /**
@@ -344,7 +348,7 @@ void Treasure::add_item_to_equipment(void) {
     break;
 
   case HUGE_QUIVER:
-    equipment->set_max_arrows(100);
+    equipment->set_max_arrows(99);
     break;
 
 
@@ -447,3 +451,27 @@ void Treasure::add_item_to_equipment(void) {
     break;
   }
 }
+
+/**
+ * Displays the treasure.
+ * @param destination the surface where to draw
+ * @param x the treasure x position on this surface
+ * @param y the treasure y position on this surface
+ */
+void Treasure::display(SDL_Surface *destination, int x, int y) {
+
+  // display the item
+  SDL_Rect src_position = {0, 0, 16, 16};
+  src_position.x = 16 * (content % 10);
+  src_position.y = 16 * (content / 10);
+
+  SDL_Rect dst_position = {x, y, 0, 0};
+
+  SDL_BlitSurface(treasures_img, &src_position, destination, &dst_position);
+
+  // display the counter
+  if (counter != NULL) {
+    counter->display(destination, x - 4, y + 12);
+  }
+}
+

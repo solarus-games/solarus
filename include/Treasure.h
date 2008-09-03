@@ -21,7 +21,7 @@ class Treasure {
    * Identifies each possible treasure.
    * The values correspond to the icons in hud/message_and_treasure_icons.png
    */
-  enum TreasureContent {
+  enum Content {
     FEATHER = 0,
     BOW = 2,
     BOW_AND_ARROWS,
@@ -99,14 +99,16 @@ class Treasure {
 
  private:
 
-  TreasureContent content; /**< content of the treasure */
+  SDL_Surface *treasures_img;
+
+  Content content;         /**< content of the treasure */
   int amount;              /**< amount of item (for some kinds of treasures only) */
   int savegame_index;      /**< index of the savegame variable corresponding to this treasure,
 			    * or -1 if the treasure state is not saved */
 
+  Counter *counter;
+
   void play_treasure_sound(void);
-  void start_brandish_item(void);
-  void stop_brandish_item(void);
   void show_message(void);
   void add_item_to_equipment(void);
 
@@ -114,10 +116,13 @@ class Treasure {
 
  public:
 
-  Treasure(TreasureContent content, int amount, int savegame_index);
+  Treasure(Content content, int amount, int savegame_index);
   ~Treasure(void);
 
+  Content get_content(void);
+
   void give_to_player(void);
+  void display(SDL_Surface *destination, int x, int y);
 };
 
 #endif

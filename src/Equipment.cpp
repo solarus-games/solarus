@@ -2,7 +2,6 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
-#include "entities/Link.h"
 
 /**
  * Constructor.
@@ -77,10 +76,6 @@ void Equipment::set_tunic(int tunic) {
     }
 
     savegame->set_integer(Savegame::LINK_TUNIC, tunic);
-
-    if (zsdx->game != NULL) {
-      zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
-    }
   }
 }
 
@@ -118,10 +113,6 @@ void Equipment::set_sword(int sword) {
     }
 
     savegame->set_integer(Savegame::LINK_SWORD, sword);
-
-    if (zsdx->game != NULL) {
-      zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
-    }
   }
 }
 
@@ -159,10 +150,6 @@ void Equipment::set_shield(int shield) {
     }
 
     savegame->set_integer(Savegame::LINK_SHIELD, shield);
-
-    if (zsdx->game != NULL) {
-      zsdx->game->get_link()->initialize_sprites(); // reinitialize Link's sprites
-    }
   }
 }
 

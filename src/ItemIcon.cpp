@@ -1,5 +1,5 @@
 #include "ItemIcon.h"
-#include "CounterView.h"
+#include "Counter.h"
 #include "ResourceManager.h"
 #include "Equipment.h"
 
@@ -28,7 +28,7 @@ ItemIcon::ItemIcon(int slot, Savegame *savegame, int x, int y):
 
   this->item_displayed = InventoryItem::NONE;
   this->item_variant_displayed = 0;
-  this->counter = new CounterView(2, false, 8, 16);
+  this->counter = new Counter(2, false, 12, 20);
   this->counter_value_displayed = -1;
 
   rebuild();

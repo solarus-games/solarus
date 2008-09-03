@@ -22,7 +22,7 @@ class ItemIcon: public HudElement {
 
   InventoryItem::ItemId item_displayed;  /**< the item currently displayed on the icon */
   int item_variant_displayed;            /**< the item variant currently displayed */
-  CounterView *counter;                  /**< the counter associated to this item (if any) */
+  Counter *counter;                      /**< the counter associated to this item (if any) */
   int counter_value_displayed;           /**< the counter value currently displayed 
 					  * (-1 if there is no counter) */
 

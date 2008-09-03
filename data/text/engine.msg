@@ -647,7 +647,7 @@ line3 = "vie et ta magie !"
 icon = 12
 line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
-line3 = "viendra en aide si
+line3 = "viendra en aide si"
 next = _treasure_12.1
 cancel = all
 
@@ -670,13 +670,13 @@ line3 = "Coeurs."
 icon = 13
 line1 = "Tu as trouvé les"
 line2 = "Bottes de Pégase !$0"
-line3 = "Cours, fonce et"
 next = _treasure_13.1
 
 [_treasure_13.1]
 #       |--------------------|
-line1 = "fracasse les"
-line2 = "obstacles !"
+line1 = "Cours, fonce et"
+line2 = "fracasse les"
+line3 = "obstacles !"
 
 [_treasure_14]
 # Miroir Mystique
@@ -699,13 +699,13 @@ line3 = "quête..."
 icon = 15
 line1 = "Tu as trouvé la"
 line2 = "Canne de Somaria !$0"
-line3 = "Tu peux créer des"
 next = _treasure_15.1
 
 [_treasure_15.1]
 #       |--------------------|
-line1 = "blocs et t'accrocher"
-line2 = "à l'aide du Grappin."
+line1 = "Tu peux créer des"
+line2 = "blocs et t'accrocher"
+line3 = "à l'aide du Grappin."
 next = _warning_magic
 
 [_treasure_16]
@@ -714,13 +714,13 @@ next = _warning_magic
 icon = 16
 line1 = "Tu as trouvé la Cape"
 line2 = "Magique !$0"
-line3 = "Elle t'avertira si"
 next = _treasure_16.1
 
 [_treasure_16.1]
 #       |--------------------|
-line1 = "tu t'approchees d'un"
-line2 = "mur fragile."
+line1 = "Elle t'avertira si"
+line2 = "tu t'approchees d'un"
+line3 = "mur fragile."
 
 [_treasure_17]
 # Poigne de Fer
@@ -728,13 +728,13 @@ line2 = "mur fragile."
 icon = 17
 line1 = "Tu as trouvé la"
 line2 = "Poigne de Fer !$0"
-line3 = "Elle te permet de"
 next = _treasure_17.1
 
 [_treasure_17.1]
 #       |--------------------|
-line1 = "soulever les"
-line2 = "pierres."
+line1 = "Elle te permet de"
+line2 = "soulever les"
+line3 = "pierres."
 
 [_treasure_18]
 # Poigne d'Or
@@ -742,13 +742,13 @@ line2 = "pierres."
 icon = 18
 line1 = "Tu as trouvé la"
 line2 = "Poigne d'Or !$0"
-line3 = "Tu peux maintenant"
 next = _treasure_18.1
 
 [_treasure_18.1]
 #       |--------------------|
-line1 = "soulever les pierres"
-line2 = "noires !"
+line1 = "Tu peux maintenant"
+line2 = "soulever les pierres"
+line3 = "noires !"
 
 [_treasure_19]
 # Pierre de Feu
@@ -763,13 +763,13 @@ line2 = "Pierre de Feu !"
 icon = 20
 line1 = "Tu as trouvé une"
 line2 = "Pomme !$0"
-line3 = "Consomme-la plus"
 next = _treasure_20_1.1
 
 [_treasure_20_1.1]
 #       |--------------------|
-line1 = "tard pour récupérer"
-line2 = "un Coeur !"
+line1 = "Consomme-la plus"
+line2 = "tard pour récupérer"
+line3 = "un Coeur !"
 
 [_treasure_20_2]
 # Plusieurs Pommes
@@ -777,13 +777,13 @@ line2 = "un Coeur !"
 icon = 20
 line1 = "Tu as trouvé $v"
 line2 = "Pommes !$0"
-line3 = "Consomme-les plus"
 next = _treasure_20_2.1
 
 [_treasure_20_2.1]
 #       |--------------------|
-line1 = "tard pour récupérer"
-line2 = "des Coeurs !"
+line1 = "Consomme-les plus"
+line2 = "tard pour récupérer"
+line3 = "des Coeurs !"
 
 [_treasure_21_1]
 # 1 Pain au Chocolat
@@ -813,7 +813,7 @@ next = _treasure_21_1.1
 icon = 22
 line1 = "Tu as trouvé un"
 line2 = "Croissant !$0 Il est"
-line3 = "croustillant !
+line3 = "croustillant !"
 next = _treasure_22_1.1
 
 [_treasure_22_1.1]
@@ -851,13 +851,13 @@ line3 = "drôle d'aspect..."
 icon = 24
 line1 = "Tu as trouvé des"
 line2 = "Lingots d'or !!!$0"
-line3 = "Ils brillent et ont"
 next = _treasure_24.1
 
 [_treasure_24.1]
 #       |--------------------|
-line1 = "une valeur"
-line2 = "inestimable !"
+line1 = "Ils brillent et ont"
+line2 = "une valeur"
+line3 = "inestimable !"
 
 [_treasure_25]
 # Edelweiss
@@ -865,13 +865,13 @@ line2 = "inestimable !"
 icon = 25
 line1 = "Tu as trouvé un"
 line2 = "Edelweiss !$0"
-line3 = "Cette jolie fleur"
 next = _treasure_25.1
 
 [_treasure_25.1]
 #       |--------------------|
-line1 = "des montagnes est"
-line2 = "rarissime."
+line1 = "Cette jolie fleur"
+line2 = "des montagnes est"
+line3 = "rarissime !"
 
 [_treasure_26]
 # Clé d'os
@@ -892,13 +892,13 @@ line2 = "elle bien servir ?"
 icon = 27
 line1 = "Tu as trouvé les"
 line2 = "Palmes !$0"
-line3 = "Tu peux maintenant"
 next = _treasure_27.1
 
 [_treasure_27.1]
 #       |--------------------|
-line1 = "nager en eau"
-line2 = "profonde !"
+line1 = "Tu peux maintenant"
+line2 = "nager en eau"
+line3 = "profonde !"
 
 [_treasure_28]
 # Clé Rouge
@@ -933,13 +933,14 @@ line2 = "Clé de Roc !$0"
 #       |--------------------|
 icon = 32
 line1 = "Tu as trouvé la"
-line2 = "Clé de Fer !$0 Il doit"
-line3 = "bien y avoir une"
+line2 = "Clé de Fer !$0"
 next = _treasure_32.1
 
 [_treasure_32.1]
 #       |--------------------|
-line1 = "porte qui va avec !"
+line1 = "Il doit bien y"
+line2 = "avoir une porte qui"
+line3 = "va avec !"
 
 [_treasure_33]
 # Clé de Pierre
@@ -947,13 +948,13 @@ line1 = "porte qui va avec !"
 icon = 33
 line1 = "Tu as trouvé la"
 line2 = "Clé de Pierre !$0"
-line3 = "Mais où est la"
 next = _treasure_33.1
 
 [_treasure_33.1]
 #       |--------------------|
-line1 = "serrure qui"
-line2 = "correspond ?"
+line1 = "Mais où est la"
+line2 = "serrure qui"
+line3 = "correspond ?"
 
 [_treasure_34]
 # Clé de Bois
@@ -961,12 +962,12 @@ line2 = "correspond ?"
 icon = 34
 line1 = "Tu as trouvé la"
 line2 = "Clé de Bois !$0"
-line3 = "A toi de voir où"
 next = _treasure_34.1
 
 [_treasure_34.1]
 #       |--------------------|
-line1 = "tu peux l'utiliser !"
+line1 = "A toi de voir où"
+line2 = "tu peux l'utiliser !"
 
 [_treasure_35]
 # Clé de Glace
@@ -974,13 +975,13 @@ line1 = "tu peux l'utiliser !"
 icon = 35
 line1 = "Tu as trouvé la"
 line2 = "Clé de Glace !$0"
-line3 = "Elle protège sans"
 next = _treasure_35.1
 
 [_treasure_35.1]
 #       |--------------------|
-line1 = "doute l'entrée d'un"
-line2 = "lieu glacial..."
+line1 = "Elle protège sans"
+line2 = "doute l'entrée d'un"
+line3 = "lieu glacial..."
 
 [_treasure_50]
 # Carte du Monde
@@ -988,13 +989,13 @@ line2 = "lieu glacial..."
 icon = 50
 line1 = "Tu as trouvé la"
 line2 = "Carte du Monde !$0"
-line3 = "Tu peux l'afficher"
 next = _treasure_50.1
 
 [_treasure_50.1]
 #       |--------------------|
-line1 = "depuis l'écran"
-line2 = "Statut Quête."
+line1 = "Tu peux l'afficher"
+line2 = "depuis l'écran"
+line3 = "Statut Quête."
 
 [_treasure_52]
 # Grand sac de rubis
@@ -1002,12 +1003,12 @@ line2 = "Statut Quête."
 icon = 52
 line1 = "Tu as trouvé le"
 line2 = "Grand Sac de Rubis !$0"
-line3 = "Il peut contenir"
-next = _treasure_55.1
+next = _treasure_52.1
 
 [_treasure_52.1]
 #       |--------------------|
-line1 = "jusqu'à 199 rubis !"
+line1 = "Il peut contenir"
+line2 = "jusqu'à 199 rubis !"
 
 [_treasure_53]
 # Sac de rubis géant
@@ -1015,53 +1016,12 @@ line1 = "jusqu'à 199 rubis !"
 icon = 53
 line1 = "Tu as trouvé le"
 line2 = "Sac de Rubis Géant !$0"
-line3 = "Il peut contenir"
 next = _treasure_53.1
 
 [_treasure_53.1]
 #       |--------------------|
-line1 = "jusqu'à 999 rubis !"
-
-[_treasure_54]
-# Petit sac de bombes
-#       |--------------------|
-icon = 54
-line1 = "Tu as trouvé le"
-line2 = "Sac de Bombes !$0"
-line3 = "Il contient"
-next = _treasure_55.1
-
-[_treasure_54.1]
-#       |--------------------|
-line1 = "10 Bombes !"
-
-[_treasure_55]
-# Grand sac de bombes
-#       |--------------------|
-icon = 55
-line1 = "Tu as trouvé le"
-line2 = "Grand Sac de Bombes !$0"
-line3 = "Il peut contenir"
-next = _treasure_55.1
-
-[_treasure_55.1]
-#       |--------------------|
-line1 = "jusqu'à 30 bombes au"
-line2 = "lieu de 10 !"
-
-[_treasure_56]
-# Sac de bombes géant
-#       |--------------------|
-icon = 56
-line1 = "Tu as trouvé le Sac"
-line2 = "de Bombes Géant !$0"
-line3 = "Il peut contenir"
-next = _treasure_56.1
-
-[_treasure_56.1]
-#       |--------------------|
-line1 = "jusqu'à 100 Bombes"
-line2 = "au lieu de 30 !"
+line1 = "Il peut contenir"
+line2 = "jusqu'à 999 rubis !"
 
 [_treasure_54]
 # Petit sac de bombes
@@ -1070,7 +1030,7 @@ icon = 54
 line1 = "Tu as trouvé le Sac"
 line2 = "de Bombes !$0 Il"
 line3 = "contient 10 Bombes."
-next = _treasure_55.1
+next = _treasure_54.1
 
 [_treasure_54.1]
 #       |--------------------|
@@ -1084,13 +1044,13 @@ line3 = "sauter !"
 icon = 55
 line1 = "Tu as trouvé le"
 line2 = "Grand Sac de Bombes !$0"
-line3 = "Il peut contenir"
 next = _treasure_55.1
 
 [_treasure_55.1]
 #       |--------------------|
-line1 = "jusqu'à 30 Bombes au"
-line2 = "lieu de 10 !"
+line1 = "Il peut contenir"
+line2 = "jusqu'à 30 Bombes"
+line3 = "au lieu de 10 !"
 
 [_treasure_56]
 # Sac de bombes géant
@@ -1098,13 +1058,13 @@ line2 = "lieu de 10 !"
 icon = 56
 line1 = "Tu as trouvé le Sac"
 line2 = "de Bombes Géant !$0"
-line3 = "Il peut contenir"
 next = _treasure_56.1
 
 [_treasure_56.1]
 #       |--------------------|
-line1 = "jusqu'à 100 Bombes"
-line2 = "au lieu de 30 !"
+line1 = "Il peut contenir"
+line2 = "jusqu'à 100 Bombes"
+line3 = "au lieu de 30 !"
 
 [_treasure_58]
 # Grand carquois 
@@ -1112,13 +1072,13 @@ line2 = "au lieu de 30 !"
 icon = 58
 line1 = "Tu as trouvé le"
 line2 = "Grand Carquois !$0"
-line3 = "Il peut contenir"
 next = _treasure_58.1
 
 [_treasure_58.1]
 #       |--------------------|
-line1 = "jusqu'à 30 Flèches au"
-line2 = "lieu de 10 !"
+line1 = "Il peut contenir"
+line2 = "jusqu'à 30 Flèches"
+line3 = "au lieu de 10 !"
 
 [_treasure_59]
 # Carquois géant
@@ -1126,13 +1086,13 @@ line2 = "lieu de 10 !"
 icon = 59
 line1 = "Tu as trouvé le"
 line2 = "Carquois Géant !$0"
-line3 = "Il peut contenir"
-next = _treasure_56.1
+next = _treasure_59.1
 
 [_treasure_59.1]
 #       |--------------------|
-line1 = "jusqu'à 100 Flèches"
-line2 = "au lieu de 30 !"
+line1 = "Il peut contenir"
+line2 = "jusqu'à 100 Flèches"
+line3 = "au lieu de 30 !"
 
 [_treasure_61]
 # Cotte de mailles bleue
@@ -1170,13 +1130,13 @@ line3 = "les ennemis !"
 icon = 63
 line1 = "Tu as trouvé le"
 line2 = "Bouclier !$0"
-line3 = "Tu peux repousser"
 next = _treasure_63.1
 
 [_treasure_63.1]
 #       |--------------------|
-line1 = "les attaques des"
-line2 = "ennemis !"
+line1 = "Tu peux repousser"
+line2 = "les attaques des"
+line3 = "ennemis !"
 
 [_treasure_64]
 # Bouclier de Feu
@@ -1199,26 +1159,26 @@ line3 = "enflammées !"
 icon = 65
 line1 = "Tu as trouvé le"
 line2 = "Bouclier Miroir !$0"
-line3 = "Tu peux désormais"
 next = _treasure_65.1
 
 [_treasure_65.1]
 #       |--------------------|
-line1 = "contrer les lasers !"
+line1 = "Tu peux désormais"
+line2 = "contrer les lasers !"
 
 [_treasure_66]
 # Epée 1 (Epée du courage)
 #       |--------------------|
 icon = 66
 line1 = "Tu as trouvé l'Epée"
-line2 = "du Courage!$0 Tu peux"
-line3 = "maintenant croiser"
+line2 = "du Courage !$0"
 next = _treasure_66.1
 
 [_treasure_66.1]
 #       |--------------------|
-line1 = "le fer et affronter"
-line2 = "les ennemis !"
+line1 = "Tu peux croiser le"
+line2 = "fer et et affronter"
+line3 = "les ennemis !"
 
 [_treasure_67]
 # Epée 2 (Glaive Hylien)
@@ -1255,7 +1215,7 @@ next = _treasure_69.1
 
 [_treasure_69.1]
 #       |--------------------|
-line1 = "cette nouvelle épée"
+line1 = "cette épée ultime"
 line2 = "dépasse"
 line3 = "l'entendement..."
 
@@ -1265,13 +1225,13 @@ line3 = "l'entendement..."
 icon = 70
 line1 = "Tu as trouvé"
 line2 = "la Carte !"
-line3 = "Utilise-la pour"
 next = _treasure_70.1
 
 [_treasure_70.1]
 #       |--------------------|
-line1 = "connaître le plan"
-line2 = "du donjon."
+line1 = "Utilise-la pour"
+line2 = "connaître le plan"
+line3 = "du donjon."
 
 [_treasure_71]
 # Boussole
@@ -1508,7 +1468,7 @@ line2 = "Rubis !"
 #       |--------------------|
 icon = 91
 line1 = "Tu as trouvé un"
-line2 = "Rubis bleu.
+line2 = "Rubis bleu."
 line3 = "Il vaut 5 Rubis !"
 
 [_treasure_88_2]
@@ -1516,7 +1476,7 @@ line3 = "Il vaut 5 Rubis !"
 #       |--------------------|
 icon = 91
 line1 = "Tu as trouvé $v"
-line2 = "Rubis bleus ! Chacun
+line2 = "Rubis bleus ! Chacun"
 line3 = "d'eux vaut 5 Rubis !"
 
 [_treasure_89_1]
@@ -1524,7 +1484,7 @@ line3 = "d'eux vaut 5 Rubis !"
 #       |--------------------|
 icon = 92
 line1 = "Tu as trouvé un"
-line2 = "Rubis rouge !
+line2 = "Rubis rouge !"
 line3 = "Il vaut 20 Rubis !"
 
 [_treasure_88_2]
@@ -1533,9 +1493,9 @@ line3 = "Il vaut 20 Rubis !"
 icon = 91
 line1 = "Tu as trouvé $v"
 line2 = "Rubis rouges."
-line3 = "Chacun d'entre eux"
 next = _treasure_88_2.1
 
 [_treasure_88_2.1]
 #       |--------------------|
-line1 = "vaut 20 Rubis !"
+line1 = "Chacun d'entre eux"
+line2 = "vaut 20 Rubis !"

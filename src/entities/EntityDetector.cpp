@@ -1,5 +1,4 @@
 #include "entities/EntityDetector.h"
-#include "entities/Link.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "ResourceManager.h"

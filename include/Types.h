@@ -70,7 +70,7 @@ class ActionIcon;
 class SwordIcon;
 class PauseIcon;
 class ItemIcon;
-class CounterView;
+class Counter;
 class HeartsView;
 class RupeesView;
 class MagicBar;

@@ -80,7 +80,7 @@ void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
     
     if (keys_effect->get_action_key_effect() == ACTION_KEY_NONE
-	&& link->get_state() == LINK_STATE_FREE) {
+	&& link->get_state() == Link::FREE) {
       keys_effect->set_action_key_effect(ACTION_KEY_LIFT);
     }
   }

@@ -6,31 +6,32 @@
 #include "AnimationListener.h"
 
 /**
- * Possible states of Link.
- * The state is considered only when the game is not suspended.
- * Link can move in states LINK_STATE_FREE, LINK_STATE_PUSHING,
- * LINK_STATE_CARRYING, LINK_STATE_SWORD_LOADING and LINK_STATE_SWIMMING.
- * Link can swing his sword in states LINK_STATE_FREE, LINK_STATE_PUSHING,
- * LINK_STATE_CARRYING and LINK_STATE_SWORD_SWINGING.
- */
-enum LinkState {
-  LINK_STATE_FREE,                    /**< normal state (stopped or walking) */
-  LINK_STATE_PUSHING,                 /**< Link is trying to push an obstacle */
-  LINK_STATE_CARRYING,                /**< Link can walk but he is carrying a pot or a bush */
-  LINK_STATE_SWORD_LOADING,           /**< Link can walk but his sword is loading for a spin attack */
-  LINK_STATE_SWIMMING,                /**< Link is swimming */
-  LINK_STATE_GRABBING,                /**< Link is grabbing an object and can push or pull it */
-  LINK_STATE_SWORD_SWINGING,          /**< Link is swinging his sword */
-  LINK_STATE_SPIN_ATTACK,             /**< Link is releasing a spin attack */
-  LINK_STATE_LIFTING,                 /**< Link is lifting an transportable item (a pot, a bush, etc.) */
-};
-
-/**
  * Link's entity.
  * It is animated and can be controlled with an 8 directions system.
  * This class handles Link's actions: the movements and the animation of his sprites.
  */
 class Link: public MapEntity, AnimationListener {
+
+ public:
+
+  /**
+   * Possible states of Link.
+   * The state is considered only when the game is not suspended.
+   * Link can move in states FREE, PUSHING, CARRYING, SWORD_LOADING and SWIMMING.
+   * Link can swing his sword in states FREE, PUSHING, CARRYING and SWORD_SWINGING.
+   */
+  enum State {
+    FREE,                    /**< normal state (stopped or walking) */
+    PUSHING,                 /**< Link is trying to push an obstacle */
+    CARRYING,                /**< Link can walk but he is carrying a pot or a bush */
+    SWORD_LOADING,           /**< Link can walk but his sword is loading for a spin attack */
+    SWIMMING,                /**< Link is swimming */
+    GRABBING,                /**< Link is grabbing an object and can push or pull it */
+    SWORD_SWINGING,          /**< Link is swinging his sword */
+    SPIN_ATTACK,             /**< Link is releasing a spin attack */
+    LIFTING,                 /**< Link is lifting an transportable item (a pot, a bush, etc.) */
+    BRANDISHING_TREASURE,    /**< Link is brandishing a treasure */
+  };
 
  private:
 
@@ -57,14 +58,16 @@ class Link: public MapEntity, AnimationListener {
    * Current state of Link.
    * The state is considered only when the game is not suspended.
    */
-  LinkState state;
-  bool walking; // stopped or walking? (used in states free, pushing and carrying)
+  State state;
+  bool walking; // stopped or walking? (used in states FREE, PUSHING and CARRYING)
+  int animation_direction_saved; /* direction of Link's sprites, saved just before
+				  * showing a sprite animation having only one direction */
 
   /**
    * Counter incremented every 100 ms in certain conditions.
-   * - In state LINK_STATE_FREE: counts for how long Link is trying to walk
+   * - In state FREE: counts for how long Link is trying to walk
    * to a wall (animation pushing is triggered at 800 ms)
-   * - In state LINK_STATE_SWORD_LOADING: counts for how long Link is loading
+   * - In state SWORD_LOADING: counts for how long Link is loading
    * his sword (the spin attack is possible after 1000 ms)
    */
   int counter;
@@ -75,12 +78,15 @@ class Link: public MapEntity, AnimationListener {
                                  // 0xFFFF indicates that he is not trying to push
 
   // spin attack
-  bool sword_loaded; // in state LINK_STATE_SWORD_LOADING, becomes true when the spin attack is possible
+  bool sword_loaded; // in state SWORD_LOADING, becomes true when the spin attack is possible
 
   // lift and carry an object
   MapEntity *facing_entity;
   CarriedItem *lifted_item; // item being lifted or carried
   CarriedItem *thrown_item; // item thrown and not broken yet
+
+  // brandish a treasure
+  Treasure *treasure; // the treasure being brandished
 
   // update functions
   void update_position(void);
@@ -89,7 +95,7 @@ class Link: public MapEntity, AnimationListener {
   void movement_just_changed(void);
 
   // Link's state
-  void set_state(LinkState state);
+  void set_state(State state);
   void start_sword_loading(void);
   void update_sword_loading(void);
   void start_spin_attack(void);
@@ -102,6 +108,9 @@ class Link: public MapEntity, AnimationListener {
   void display_carried_items(void);
   void destroy_carried_items(void);
 
+  void update_treasure(void);
+  void display_treasure(void);
+
   // animation of the sprites
   void set_animation_direction(int direction);
   bool is_direction_locked(void);
@@ -111,6 +120,9 @@ class Link: public MapEntity, AnimationListener {
   void set_animation_walking(void);
   void set_animation_pushing(void);
   void set_animation_lifting(void);
+
+  void save_animation_direction(void);
+  void restore_animation_direction(void);
 
  public:
 
@@ -147,11 +159,12 @@ class Link: public MapEntity, AnimationListener {
   void set_animation_stopped(void);
 
   // state of Link
-  LinkState get_state(void);
+  State get_state(void);
   void start_free(void);
   void start_sword(void);
   void start_pushing(void);
   void start_carrying(void);
+  void give_treasure(Treasure *treasure);
   void action_key_pressed(void);
   void sword_key_pressed(void);
 };

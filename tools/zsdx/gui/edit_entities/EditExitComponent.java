@@ -8,10 +8,11 @@ import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;
 
 /**
- * A component to edit a map exit.
+ * A component to edit an exit.
  */
 public class EditExitComponent extends EditEntityComponent {
 
+    // specific fields of an exit
     private TransitionChooser transitionField;
     private ResourceChooser mapField;
     private EntityChooser entranceField;
@@ -70,7 +71,7 @@ public class EditExitComponent extends EditEntityComponent {
 	// retrieve the action corresponding to the common entity properties
 	ActionEditEntity action = super.getAction();
 
-	// add the properties specific to a map exit
+	// add the properties specific to an exit
 	Exit exit = (Exit) entity;
 	
 	int transition = transitionField.getTransition();

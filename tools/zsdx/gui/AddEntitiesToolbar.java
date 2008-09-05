@@ -53,7 +53,7 @@ public class AddEntitiesToolbar extends JComponent {
 	// get the entity type being added (if any)
 	int entityTypeBeingAdded = mapView.getEntityTypeBeingAdded();
 	
-	// draw the icons for all types of entities except TileOnMap
+	// draw the icons for all types of entities (except TileOnMap which has its own dedicated view)
 	for (int i = 1; i < MapEntity.ENTITY_NB_TYPES; i++) {
 
 	    // get the image properties

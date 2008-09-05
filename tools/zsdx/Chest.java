@@ -1,7 +1,5 @@
 package zsdx;
 
-import java.awt.*;
-import javax.swing.*;
 import java.util.*;
 
 /**
@@ -39,7 +37,7 @@ public class Chest extends InteractiveEntity {
 	bigChest = false;
 	content = TreasureContent.NOTHING;
 	amount = 1;
-	savegameIndex = -1;
+	savegameIndex = 0;
     }
 
     /**
@@ -57,6 +55,13 @@ public class Chest extends InteractiveEntity {
 	    this.content = TreasureContent.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.amount = Integer.parseInt(tokenizer.nextToken());
 	    this.savegameIndex = Integer.parseInt(tokenizer.nextToken());
+	    
+	    if (bigChest) {
+		setSizeImpl(32, 24);
+	    }
+	    else {
+		setSizeImpl(16, 16);
+	    }
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -104,6 +109,13 @@ public class Chest extends InteractiveEntity {
      */
     public void setBigChest(boolean bigChest) {
         this.bigChest = bigChest;
+
+        if (bigChest) {
+            setSizeImpl(32, 24);
+	}
+        else {
+            setSizeImpl(16, 16);
+	}
     }
 
     /**
@@ -176,7 +188,9 @@ public class Chest extends InteractiveEntity {
      */
     public boolean isValid() {
 	return super.isValid()
-	&& amount >= 1 && savegameIndex >= 0 && savegameIndex < 32768;
+	&& savegameIndex >= -1 && savegameIndex < 32768
+	&& amount >= 0
+	&& (!content.hasAmount() || amount > 0);
     }
 
     /**

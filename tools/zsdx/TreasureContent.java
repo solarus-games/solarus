@@ -1,5 +1,7 @@
 package zsdx;
 
+import java.util.NoSuchElementException;
+
 /**
  * All possible contents of a treasure.
  */
@@ -97,15 +99,16 @@ public enum TreasureContent {
      * Returns the treasure content with the specified index.
      * @param index index of the content to get
      * @return the treasure content with this index
+     * @throws NoSuchElementException if the index is incorrect
      */
-    public static TreasureContent get(int index) throws MapException {
+    public static TreasureContent get(int index) throws NoSuchElementException {
 	for (TreasureContent t: values()) {
 	    if (t.getIndex() == index) {
 		return t;
 	    }
 	}
 	
-	throw new MapException("Unknown treasure index: " + index);
+	throw new NoSuchElementException("Unknown treasure index: " + index);
     }
     
     /**

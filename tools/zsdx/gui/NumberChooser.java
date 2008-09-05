@@ -12,6 +12,16 @@ public class NumberChooser extends JSpinner {
      * Creates a new number chooser with the default properties.
      */
     public NumberChooser() {
+	this(0, 0, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Creates a new number chooser with the specified properties.
+     * @param initialValue initial value of the field
+     * @param minimum the minimum value
+     * @param maximum the maximum value
+     */
+    public NumberChooser(int initialValue, int minimum, int maximum) {
 	super();
 	
 	// set the size and the number of columns

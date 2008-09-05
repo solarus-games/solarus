@@ -3,7 +3,7 @@ package zsdx.map_editor_actions.edit_entities;
 import zsdx.*;
 
 /**
- * Editing the properties specific to a map exit:
+ * Editing the properties specific to an exit:
  * the destination map, the name of the entrance on that map and the transition.
  */
 public class ActionEditExit extends MapEditorAction {

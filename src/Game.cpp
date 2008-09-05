@@ -33,7 +33,6 @@ Game::Game(Savegame *savegame):
 
   // initialize Link
   link = new Link(savegame->get_equipment());
-  link->initialize_sprites();
   link_movement = link->get_movement();
 
   // initialize the keys effect and the HUD

@@ -97,6 +97,7 @@ Link::Link(Equipment *equipment):
   set_size(16, 16);
   set_origin(8, 13);
   set_movement(new Movement8ByPlayer(12));
+  rebuild_equipment();
 }
 
 /**
@@ -269,12 +270,12 @@ void Link::display_on_map(Map *map) {
 }
 
 /**
- * Initializes the sprites of Link and his equipment,
- * depending on its equipment as specified in the savegame.
- * This function is called at the game beginning
- * and when Link's equipment is changed.
+ * Loads (or reloads) the sprites and sounds of Link and his equipment,
+ * depending on its tunic, sword and shield as specified in the savegame.
+ * This function must be called at the game beginning
+ * and as soon as Link's equipment is changed.
  */
-void Link::initialize_sprites(void) {
+void Link::rebuild_equipment(void) {
 
   int animation_direction = -1;
 
@@ -816,7 +817,7 @@ void Link::update_treasure(void) {
      */
     Treasure::Content content = treasure->get_content();
     if (content >= Treasure::BLUE_TUNIC && content <= Treasure::SWORD_4) {
-      zsdx->game->get_link()->initialize_sprites();
+      rebuild_equipment();
     }
 
     // restore Link's state

@@ -150,7 +150,7 @@ class Link: public MapEntity, AnimationListener {
   int get_animation_direction(void);
   void set_suspended(bool suspended);
 
-  void initialize_sprites(void);
+  void rebuild_equipment(void);
   bool is_sword_visible(void);
   bool is_sword_stars_visible(void);
   bool is_shield_visible(void);

@@ -31,6 +31,7 @@ class Link: public MapEntity, AnimationListener {
     SPIN_ATTACK,             /**< Link is releasing a spin attack */
     LIFTING,                 /**< Link is lifting an transportable item (a pot, a bush, etc.) */
     BRANDISHING_TREASURE,    /**< Link is brandishing a treasure */
+    FREEZED,                 /**< Link cannot move for various possible reasons*/
   };
 
  private:
@@ -59,7 +60,7 @@ class Link: public MapEntity, AnimationListener {
    * The state is considered only when the game is not suspended.
    */
   State state;
-  bool walking; // stopped or walking? (used in states FREE, PUSHING and CARRYING)
+  EntityDetector *facing_entity;
   int animation_direction_saved; /* direction of Link's sprites, saved just before
 				  * showing a sprite animation having only one direction */
 
@@ -73,6 +74,9 @@ class Link: public MapEntity, AnimationListener {
   int counter;
   Uint32 next_counter_date;
 
+  // walking
+  bool walking; // stopped or walking? (used in states FREE, PUSHING and CARRYING)
+
   // pushing
   Uint16 pushing_direction_mask; // direction of Link's movement when pushing
                                  // 0xFFFF indicates that he is not trying to push
@@ -81,7 +85,6 @@ class Link: public MapEntity, AnimationListener {
   bool sword_loaded; // in state SWORD_LOADING, becomes true when the spin attack is possible
 
   // lift and carry an object
-  MapEntity *facing_entity;
   CarriedItem *lifted_item; // item being lifted or carried
   CarriedItem *thrown_item; // item thrown and not broken yet
 
@@ -101,7 +104,6 @@ class Link: public MapEntity, AnimationListener {
   void start_spin_attack(void);
   bool can_start_sword(void);
 
-  void start_lifting(void);
   void start_throwing(void);
   void set_suspended_carried_items(bool suspended);
   void update_carried_items(void);
@@ -163,7 +165,9 @@ class Link: public MapEntity, AnimationListener {
   void start_free(void);
   void start_sword(void);
   void start_pushing(void);
+  void start_lifting(TransportableItem *item_to_lift);
   void start_carrying(void);
+  void freeze(void);
   void give_treasure(Treasure *treasure);
   void action_key_pressed(void);
   void sword_key_pressed(void);

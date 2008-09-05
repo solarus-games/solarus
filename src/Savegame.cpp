@@ -36,6 +36,7 @@ Savegame::Savegame(const char *file_name) {
  */
 Savegame::~Savegame(void) {
   delete equipment;
+  delete dungeon_equipment;
 }
 
 /**

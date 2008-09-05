@@ -2,11 +2,13 @@
 #include "entities/Tileset.h"
 #include "entities/Tile.h"
 #include "entities/TileOnMap.h"
-#include "entities/MapExit.h"
+#include "entities/Exit.h"
 #include "entities/PickableItem.h"
 #include "entities/TransportableItem.h"
-#include "entities/MapEntrance.h"
+#include "entities/Entrance.h"
 #include "entities/Link.h"
+#include "entities/Chest.h"
+#include "Treasure.h"
 #include "Map.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -71,7 +73,7 @@ unsigned int MapEntities::get_nb_entrances(void) {
  * Returns an entrance.
  * @param index index of the entrance to get
  */
-MapEntrance * MapEntities::get_entrance(int index) {
+Entrance * MapEntities::get_entrance(int index) {
   return entrances[index];
 }
 
@@ -246,7 +248,7 @@ void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, in
  */
 void MapEntities::add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction) {
   
-  MapEntrance *entrance = new MapEntrance(entrance_name, layer, link_x, link_y, link_direction);
+  Entrance *entrance = new Entrance(entrance_name, layer, link_x, link_y, link_direction);
   entrances.push_back(entrance);
   all_entities.push_back(entrance);
 }
@@ -266,9 +268,9 @@ void MapEntities::add_entrance(string entrance_name, Layer layer, int link_x, in
  * @param entrance_name name of the entrance of the next map
  */
 void MapEntities::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
-		   TransitionType transition_type, MapId map_id, string entrance_name) {
+			   TransitionType transition_type, MapId map_id, string entrance_name) {
   
-  MapExit *exit = new MapExit(exit_name, layer, x, y, w, h, transition_type, map_id, entrance_name);
+  Exit *exit = new Exit(exit_name, layer, x, y, w, h, transition_type, map_id, entrance_name);
   entity_detectors.push_back(exit);
   all_entities.push_back(exit);
 }
@@ -347,6 +349,36 @@ void MapEntities::remove_transportable_item(TransportableItem *item) {
 }
 
 /**
+ * Creates a chest on the map.
+ * @param name name identifying the chest
+ * @param layer layer of the chest to create
+ * @param x x coordinate of the chest to create
+ * @param y y coordinate of the chest to create
+ * @param big_chest true to make a big chest, false to make a normal chest
+ * @param treasure_content content of the treasure in this chest, or -1 to make an empty chest
+ */
+void MapEntities::add_chest(string chest_name, Layer layer, int x, int y,
+			    bool big_chest, int treasure_content,
+			    int treasure_amount, int treasure_savegame_index) {
+  
+  Treasure *treasure;
+
+  if (treasure_content != -1) {
+    treasure = new Treasure((Treasure::Content) treasure_content, treasure_amount, treasure_savegame_index);
+  }
+  else {
+    treasure = NULL;
+  }
+
+  Chest *chest = new Chest(chest_name, layer, x, y, big_chest, treasure);
+
+  sprite_entities[layer].push_back(chest);
+  entity_detectors.push_back(chest);
+  obstacle_entities[layer].push_back(chest);
+  all_entities.push_back(chest);
+}
+
+/**
  * Removes and destroys the entities placed in the entities_to_remove list. 
  */
 void MapEntities::remove_marked_entities(void) {
@@ -408,7 +440,7 @@ void MapEntities::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the animation and the position of each entity.
+ * Updates the animation and position of each entity.
  */
 void MapEntities::update(void) {
   
@@ -453,7 +485,7 @@ void MapEntities::display() {
       tiles[layer][i]->display_on_map(map);
     }
 
-    // put the visible entities
+    // put the animated sprites
     list<MapEntity*>::iterator i;
     for (i = sprite_entities[layer].begin();
 	 i != sprite_entities[layer].end();

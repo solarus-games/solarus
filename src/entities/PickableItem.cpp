@@ -55,7 +55,7 @@ static const PickableItemProperties properties[] = {
  */
 PickableItem::PickableItem(Map *map, Layer layer, int x, int y,
 			   PickableItemType type, int unique_id):
-  EntityDetector(COLLISION_WITH_ENTITY_RECTANGLE, "", layer, x, y, 0, 0),
+  EntityDetector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
   map(map), type(type), unique_id(unique_id),
   shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
 
@@ -234,7 +234,7 @@ void PickableItem::initialize_sprites(void) {
 
   // create the sprite and set its animation
   create_sprite(properties[type].sprite_animations_id);
-  Sprite * item_sprite = get_last_sprite();
+  Sprite *item_sprite = get_last_sprite();
   item_sprite->set_current_animation(properties[type].animation_name);
 
   // set the origin point and the size of the entity

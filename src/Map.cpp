@@ -7,7 +7,7 @@
 #include "entities/Tileset.h"
 #include "entities/Link.h"
 #include "entities/MapEntities.h"
-#include "entities/MapEntrance.h"
+#include "entities/Entrance.h"
 #include "entities/EntityDetector.h"
 
 MapLoader Map::map_loader;
@@ -249,7 +249,7 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  */
 void Map::start(void) {
 
-  MapEntrance *entrance = entities->get_entrance(entrance_index);
+  Entrance *entrance = entities->get_entrance(entrance_index);
 
   zsdx->game->play_music(music_id);
 

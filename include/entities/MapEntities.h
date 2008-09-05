@@ -58,14 +58,14 @@ class MapEntities {
   list<MapEntity*> entities_to_remove;
 
   /**
-   * All map entities that are displayed by a sprite (a vector for each layer).
+   * All map entities that are displayed as a sprite (a vector for each layer).
    */
   list<MapEntity*> sprite_entities[LAYER_NB];
 
   /**
    * Vector of all possible entrances of the map.
    */
-  vector<MapEntrance*> entrances;
+  vector<Entrance*> entrances;
 
   /**
    * All entity detectors of the map.
@@ -85,7 +85,7 @@ class MapEntities {
 
   // information about the entities
   unsigned int get_nb_entrances(void);
-  MapEntrance * get_entrance(int index);
+  Entrance * get_entrance(int index);
   Obstacle get_obstacle_tile(Layer layer, int x, int y);
   list<MapEntity*> * get_obstacle_entities(Layer layer);
   list<EntityDetector*> * get_entity_detectors(void);
@@ -103,6 +103,10 @@ class MapEntities {
   void add_transportable_item(Layer layer, int x, int y, TransportableItemType transportable_item_type,
 			      PickableItemType pickable_item_type, int unique_id);
   void remove_transportable_item(TransportableItem *item);
+
+  void add_chest(string chest_name, Layer layer, int x, int y,
+		 bool big_chest, int treasure_content,
+		 int treasure_amount, int treasure_savegame_index);
 
   void remove_marked_entities(void);
 

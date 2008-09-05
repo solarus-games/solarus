@@ -1499,3 +1499,20 @@ next = _treasure_88_2.1
 #       |--------------------|
 line1 = "Chacun d'entre eux"
 line2 = "vaut 20 Rubis !"
+
+# ---------------
+# Autres messages
+# ---------------
+# 
+# Autres messages affichés par le moteur de jeu
+
+[_empty_chest]
+#       |-----------------------|
+line1 = "Ce coffre est vide !"
+
+[_big_key_required]
+#       |--------------------|
+icon = 73
+line1 = "Il te faut la Grande"
+line2 = "Clé pour ouvrir"
+line3 = "cette serrure !"

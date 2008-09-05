@@ -16,7 +16,8 @@
  * @param width width of the detector's rectangle
  * @param height height of the detector's rectangle
  */
-EntityDetector::EntityDetector(CollisionMode collision_mode, string name, Layer layer,
+EntityDetector::EntityDetector(EntityDetector::CollisionMode collision_mode,
+			       string name, Layer layer,
 			       int x, int y, int width, int height):
   MapEntity(name, 0, layer, x, y, width, height),
   mode(collision_mode), layer_ignored(false) {
@@ -34,7 +35,7 @@ EntityDetector::~EntityDetector(void) {
  * Sets the collision mode of this detector.
  * @param collision_mode the detector's collision mode
  */
-void EntityDetector::set_collision_mode(CollisionMode collision_mode) {
+void EntityDetector::set_collision_mode(EntityDetector::CollisionMode collision_mode) {
   this->mode = collision_mode;
 }
 
@@ -65,26 +66,30 @@ void EntityDetector::check_entity_collision(MapEntity *entity) {
   
     // detect the collision depending on the collision mode
     switch (mode) {
-      
+
     case COLLISION_NONE:
       collision = false;
       break;
 
-    case COLLISION_WITH_ENTITY_ORIGIN:
-      collision = check_collision_origin(entity);
-      break;
-
-    case COLLISION_WITH_ENTITY_RECTANGLE:
+    case COLLISION_RECTANGLE:
       collision = check_collision_rectangle(entity);
       break;
 
-    case COLLISION_WITH_ENTITY_FACING_POINT:
+    case COLLISION_ORIGIN_POINT:
+      collision = check_collision_origin_point(entity);
+      break;
+
+    case COLLISION_FACING_POINT:
       collision = check_collision_facing_point(entity);
 
       if (collision) {
 	entity->set_facing_entity(this);
       }
       
+      break;
+
+    case COLLISION_PIXEL:
+      collision = false; // TODO
       break;
     }
 
@@ -96,21 +101,9 @@ void EntityDetector::check_entity_collision(MapEntity *entity) {
 }
 
 /**
- * Checks whether the entity's origin point is overlapping the detector's rectangle.
- * This method is called by check_entity_collision() when the detector's collision
- * mode is COLLISION_WITH_ENTITY_ORIGIN.
- * @param entity the entity
- * @return true if the entity's origin point is overlapping the detector's rectangle
- */
-bool EntityDetector::check_collision_origin(MapEntity *entity) {
-
-  return entity->is_origin_point_in(get_position_in_map());
-}
-
-/**
  * Checks whether the entity's rectangle is overlapping the detector's rectangle.
  * This method is called by check_entity_collision() when the detector's collision
- * mode is COLLISION_WITH_ENTITY_RECTANGLE.
+ * mode is COLLISION_RECTANGLE.
  * @param entity the entity
  * @return true if the entity's rectangle is overlapping the detector's rectangle
  */
@@ -120,9 +113,21 @@ bool EntityDetector::check_collision_rectangle(MapEntity *entity) {
 }
 
 /**
+ * Checks whether the entity's origin point is overlapping the detector's rectangle.
+ * This method is called by check_entity_collision() when the detector's collision
+ * mode is COLLISION_ORIGIN_POINT.
+ * @param entity the entity
+ * @return true if the entity's origin point is overlapping the detector's rectangle
+ */
+bool EntityDetector::check_collision_origin_point(MapEntity *entity) {
+
+  return entity->is_origin_point_in(get_position_in_map());
+}
+
+/**
  * Checks whether the entity's facing point is overlapping the detector's rectangle.
  * This method is called by check_entity_collision() when the detector's collision
- * mode is COLLISION_WITH_ENTITY_FACING_POINT.
+ * mode is COLLISION_FACING_POINT.
  * @param entity the entity
  * @return true if the entity's facing point is overlapping the detector's rectangle
  */
@@ -141,4 +146,14 @@ void EntityDetector::entity_collision(MapEntity *entity_overlapping) {
 
   Map *map = zsdx->game->get_current_map();
   map->event_entity_on_detector(this, entity_overlapping);
+}
+
+/**
+ * This function is called when the player presses the action key
+ * when Link is facing this detector, and the action icon lets him do this.
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to allow Link interact with this entity.
+ */
+void EntityDetector::action_key_pressed(void) {
+
 }

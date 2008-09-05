@@ -12,7 +12,6 @@
  * - a layer on the map
  * - a position on the map (a rectangle),
  * - an origin point, relative to the rectangle's top-left corner
- * - 
  */
 class MapEntity {
 

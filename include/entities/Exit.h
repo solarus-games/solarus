@@ -1,5 +1,5 @@
-#ifndef ZSDX_MAP_EXIT_H
-#define ZSDX_MAP_EXIT_H
+#ifndef ZSDX_EXIT_H
+#define ZSDX_EXIT_H
 
 #include "Common.h"
 #include "EntityDetector.h"
@@ -9,7 +9,7 @@
  * A map exit is a detector placed on a map.
  * When Link walks on this detector, he leaves the map and enters another one.
  */
-class MapExit: public EntityDetector {
+class Exit: public EntityDetector {
 
  private:
 
@@ -30,9 +30,9 @@ class MapExit: public EntityDetector {
 
  public:
 
-  MapExit(string name, Layer layer, int x, int y, int width, int height,
+  Exit(string name, Layer layer, int x, int y, int width, int height,
 	  TransitionType transition_type, MapId destination_map_id, string entrance_name);
-  ~MapExit(void);
+  ~Exit(void);
 
   void entity_collision(MapEntity *entity_overlapping);
 

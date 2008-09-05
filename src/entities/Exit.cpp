@@ -1,4 +1,4 @@
-#include "entities/MapExit.h"
+#include "entities/Exit.h"
 #include "ZSDX.h"
 #include "Game.h"
 
@@ -14,9 +14,9 @@
  * @param destination_map_id id of the destination map
  * @param entrance_name initial state on the destination map
  */
-MapExit::MapExit(string name, Layer layer, int x, int y, int width, int height,
+Exit::Exit(string name, Layer layer, int x, int y, int width, int height,
 		 TransitionType transition_type, MapId destination_map_id, string entrance_name):
-  EntityDetector(COLLISION_WITH_ENTITY_ORIGIN, name, layer, x, y, width, height),
+  EntityDetector(COLLISION_ORIGIN_POINT, name, layer, x, y, width, height),
   transition_type(transition_type), destination_map_id(destination_map_id), entrance_name(entrance_name) {
   
 }
@@ -24,7 +24,7 @@ MapExit::MapExit(string name, Layer layer, int x, int y, int width, int height,
 /**
  * Destructor.
  */
-MapExit::~MapExit(void) {
+Exit::~Exit(void) {
 }
 
 /**
@@ -33,7 +33,7 @@ MapExit::~MapExit(void) {
  * The map is not notified anymore: here we just make Link leave the map.
  * @param entity_overlapping the entity overlapping the detector
  */
-void MapExit::entity_collision(MapEntity *entity_overlapping) {
+void Exit::entity_collision(MapEntity *entity_overlapping) {
   
   if (entity_overlapping->is_hero()) {
     zsdx->game->set_current_map(destination_map_id, entrance_name, transition_type);

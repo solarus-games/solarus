@@ -70,13 +70,14 @@ add_executable (zsdx
   entities/Link.cpp
   entities/TileOnMap.cpp
   entities/EntityDetector.cpp
-  entities/MapEntrance.cpp
-  entities/MapExit.cpp
+  entities/Entrance.cpp
+  entities/Exit.cpp
   entities/PickableItem.cpp
   entities/PickableItemHeart.cpp
   entities/PickableItemFairy.cpp
   entities/CarriedItem.cpp
   entities/TransportableItem.cpp
+  entities/Chest.cpp
 
   # tiles
   entities/Tileset.cpp

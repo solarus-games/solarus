@@ -82,6 +82,15 @@ bool Treasure::has_amount(void) {
 }
 
 /**
+ * Returns whether the player has got this treasure according to the savegame.
+ * Returns false if the treasure possession state is not saved.
+ * @return true if the player has found this treasure
+ */
+bool Treasure::is_found(void) {
+  return savegame_index != -1 && zsdx->game->get_savegame()->get_boolean(savegame_index);
+}
+
+/**
  * Give the treasure to the player: plays the treasure sound, makes Link
  * brandish the item and adds the item to Link's equipment.
  */

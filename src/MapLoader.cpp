@@ -129,6 +129,16 @@ void MapLoader::load_map(Map *map) {
 	break;
       }
 
+    case ENTITY_CHEST:
+      {
+	int big_chest, treasure_content, treasure_amount, treasure_savegame_index;
+	iss >> entity_name >> big_chest >> treasure_content >> treasure_amount >> treasure_savegame_index;
+	entities->add_chest(entity_name, (Layer) layer, x, y,
+			    (big_chest != 0), treasure_content,
+			    treasure_amount, treasure_savegame_index);
+	break;
+      }
+
     default:
       DIE("Error while loading map '" << id << "': unknown entity type '" << entity_type << "'");
 

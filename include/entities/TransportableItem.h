@@ -55,6 +55,7 @@ class TransportableItem: public EntityDetector {
   Sound *get_breaking_sound(void);
 
   void entity_collision(MapEntity *entity_overlapping);
+  void action_key_pressed(void);
   void lift(void);
 };
 

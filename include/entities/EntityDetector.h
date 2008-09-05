@@ -5,16 +5,6 @@
 #include "MapEntity.h"
 
 /**
- * Collisions modes between an entity and the detector.
- */
-enum CollisionMode {
-  COLLISION_NONE,                     /**< no collision will be detected (the detector is disabled) */
-  COLLISION_WITH_ENTITY_ORIGIN,       /**< collision if the entity's origin point is inside the detector's rectangle */
-  COLLISION_WITH_ENTITY_RECTANGLE,    /**< collision if the entity's rectangle overlaps the detector's rectangle */
-  COLLISION_WITH_ENTITY_FACING_POINT, /**< collision if the entity's facing point overlaps the detector's rectangle */
-};
-
-/**
  * An entity detector is an object placed somewhere on the map
  * to detect the presence of Link or other moving entities.
  * Examples of entity detectors are exits and switches.
@@ -31,14 +21,27 @@ enum CollisionMode {
  */
 class EntityDetector: public MapEntity {
 
+ public:
+
+  /**
+   * Collisions modes between an entity and the detector.
+   */
+  enum CollisionMode {
+    COLLISION_NONE,         /**< no collision will be detected (the detector is disabled) */
+    COLLISION_RECTANGLE,    /**< collision if the entity's rectangle overlaps the detector's rectangle */
+    COLLISION_ORIGIN_POINT, /**< collision if the entity's origin point is inside the detector's rectangle */
+    COLLISION_FACING_POINT, /**< collision if the entity's facing point overlaps the detector's rectangle */
+    COLLISION_PIXEL,        /**< collision if the entity's sprite has at least one pixel inside the detector's rectangle */
+  };
+
  private:
 
   CollisionMode mode;
 
   bool layer_ignored;
   
-  bool check_collision_origin(MapEntity *entity);
   bool check_collision_rectangle(MapEntity *entity);
+  bool check_collision_origin_point(MapEntity *entity);
   bool check_collision_facing_point(MapEntity *entity);
   
  protected:
@@ -56,6 +59,7 @@ class EntityDetector: public MapEntity {
   virtual ~EntityDetector(void);
 
   virtual void check_entity_collision(MapEntity *entity);
+  virtual void action_key_pressed(void);
 };
 
 #endif

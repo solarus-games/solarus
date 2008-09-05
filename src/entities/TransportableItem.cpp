@@ -36,7 +36,7 @@ const TransportableItem::ItemProperties TransportableItem::properties[] = {
 TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y,
 				     TransportableItemType type,
 				     PickableItemType pickable_item, int unique_id):
-  EntityDetector(COLLISION_WITH_ENTITY_FACING_POINT, "", layer, x, y, 16, 16),
+  EntityDetector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
   map(map), type(type), pickable_item(pickable_item) {
 
   set_origin(8, 13);
@@ -69,7 +69,7 @@ Sound * TransportableItem::get_breaking_sound(void) {
 /**
  * This function is called by the engine when an entity overlaps the transportable item.
  * This is a redefinition of EntityDetector::entity_collision().
- * If the entity is the player, we allow him to lift the item.
+ * If the entity is the hero, we allow him to lift the item.
  * @param entity_overlapping the entity overlapping the detector
  */
 void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
@@ -87,21 +87,31 @@ void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
 }
 
 /**
- * This function is called by Link when he tries to lift this item.
+ * This function is called when the player presses the action key
+ * when Link is facing this detector, and the action icon lets him do this.
+ * Link lifts the item if possible.
  */
-void TransportableItem::lift(void) {
+void TransportableItem::action_key_pressed(void) {
 
-  // TODO check that Link can lift the object
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  Link *link = zsdx->game->get_link();
 
-  // play the sound
-  ResourceManager::get_sound("lift")->play();
+  if (keys_effect->get_action_key_effect() == ACTION_KEY_LIFT) {
 
-  // create the pickable item
-  if (pickable_item != PICKABLE_ITEM_NONE) {
-    map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
+    // TODO check that Link can lift the item
+
+    link->start_lifting(this);
+
+    // play the sound
+    ResourceManager::get_sound("lift")->play();
+
+    // create the pickable item
+    if (pickable_item != PICKABLE_ITEM_NONE) {
+      map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
 					   0, MOVEMENT_FALLING_MEDIUM, true);
-  }
+    }
 
-  // remove the item from the map
-  map->get_entities()->remove_transportable_item(this);
+    // remove the item from the map
+    map->get_entities()->remove_transportable_item(this);
+  }
 }

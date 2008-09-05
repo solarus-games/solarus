@@ -90,11 +90,9 @@ const SoundId Link::sword_sound_ids[4] = {
 Link::Link(Equipment *equipment):
   map(NULL), equipment(equipment),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
-  state(FREE), walking(false),
-  counter(0), next_counter_date(0),
-  pushing_direction_mask(0xFFFF),
-  facing_entity(NULL), lifted_item(NULL), thrown_item(NULL),
-  treasure(NULL) {
+  state(FREE), facing_entity(NULL), counter(0), next_counter_date(0),
+  walking(false), pushing_direction_mask(0xFFFF),
+  lifted_item(NULL), thrown_item(NULL), treasure(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -114,10 +112,6 @@ Link::~Link(void) {
 
   if (shield_sprite != NULL) {
     delete shield_sprite;
-  }
-
-  if (treasure != NULL) {
-    delete treasure;
   }
 
   destroy_carried_items();
@@ -440,10 +434,13 @@ void Link::set_facing_entity(EntityDetector *detector) {
   this->facing_entity = detector;
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
 
-  // if Link stops facing a transportable object
-  if (keys_effect->get_action_key_effect() == ACTION_KEY_LIFT
-      && detector == NULL) {
+  // if Link stops facing an entity that showed an action icon
+  if (facing_entity == NULL &&
+      (action_key_effect == ACTION_KEY_LIFT
+       || action_key_effect == ACTION_KEY_OPEN)) {
+
     keys_effect->set_action_key_effect(ACTION_KEY_NONE);
   }
 }
@@ -657,25 +654,18 @@ void Link::update_sword_loading(void) {
 }
 
 /**
- * Makes Link lift the facing entity if possible.
+ * Makes Link lift a transportable item.
+ * @param item_to_lift the transportable item to lift
  */
-void Link::start_lifting(void) {
+void Link::start_lifting(TransportableItem *item_to_lift) {
 
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  if (keys_effect->get_action_key_effect() == ACTION_KEY_LIFT) {
+  // create the corresponding carried item
+  this->lifted_item = new CarriedItem(this, item_to_lift);
 
-    // lift the item
-    TransportableItem *item_to_lift = (TransportableItem*) facing_entity;
-    item_to_lift->lift();
-
-    // create the corresponding carried item
-    this->lifted_item = new CarriedItem(this, item_to_lift);
-
-    keys_effect->set_action_key_effect(ACTION_KEY_THROW);
-    set_state(LIFTING);
-    set_animation_lifting();
-    set_facing_entity(NULL);
-  }
+  zsdx->game->get_keys_effect()->set_action_key_effect(ACTION_KEY_THROW);
+  set_state(LIFTING);
+  set_animation_lifting();
+  set_facing_entity(NULL);
 }
 
 /**
@@ -779,6 +769,16 @@ void Link::destroy_carried_items(void) {
 }
 
 /**
+ * Forbids Link to move until start_free() is called.
+ * The current animation of Link's sprites is stopped and the "stopped" animation is played.
+ */
+void Link::freeze(void) {
+  get_movement()->set_moving_enabled(false);
+  set_animation_stopped();
+  set_state(FREEZED);
+}
+
+/**
  * Makes Link brandish a treasure.
  * @param treasure the treasure to give him (will be deleted after Link brandishes it) 
  */
@@ -787,7 +787,7 @@ void Link::give_treasure(Treasure *treasure) {
   this->treasure = treasure;
 
   // goto the right state
-  state = BRANDISHING_TREASURE;
+  set_state(BRANDISHING_TREASURE);
 
   // show the animation
   save_animation_direction();
@@ -812,17 +812,15 @@ void Link::update_treasure(void) {
   if (!zsdx->game->is_showing_message()) {
 
     /* The treasure message is over: if the treasure was a tunic,
-     * a sword or a shield, then we must reload Link's sprites now */
+     * a sword or a shield, then we must reload Link's sprites now
+     */
     Treasure::Content content = treasure->get_content();
     if (content >= Treasure::BLUE_TUNIC && content <= Treasure::SWORD_4) {
       zsdx->game->get_link()->initialize_sprites();
     }
 
-    // delete the treasure
-    delete treasure;
-    treasure = NULL;
-
     // restore Link's state
+    treasure = NULL;
     start_free();
     restore_animation_direction();
   }
@@ -1230,7 +1228,9 @@ void Link::action_key_pressed(void) {
   switch (keys_effect->get_action_key_effect()) {
 
   case ACTION_KEY_LIFT:
-    start_lifting();
+  case ACTION_KEY_OPEN:
+    // action on the facing entity
+    facing_entity->action_key_pressed();
     break;
 
   case ACTION_KEY_THROW:

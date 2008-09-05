@@ -93,13 +93,14 @@ class MapEntity;
 class Link;
 class TileOnMap;
 class EntityDetector;
-class MapEntrance;
-class MapExit;
+class Entrance;
+class Exit;
 class PickableItem;
 class PickableItemHeart;
 class PickableItemFairy;
 class CarriedItem;
 class TransportableItem;
+class Chest;
 
 // tiles
 class Tileset;
@@ -117,7 +118,5 @@ class MovementPath;
 class FairyMovement;
 class FollowMovement;
 class ThrowItemMovement;
-
-
 
 #endif

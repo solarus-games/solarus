@@ -104,22 +104,6 @@ public class TileOnMap extends MapEntity {
     }
 
     /**
-     * Returns whether the entity has a name.
-     * @return false
-     */
-    public boolean hasName() {
-	return false;
-    }
-
-    /**
-     * Returns the number of directions of the entity.
-     * @return 0 (a tile has no direction)
-     */
-    public int getNbDirections() {
-	return 0;
-    }
-    
-    /**
      * Changes the tileset used to represent this tile on the map.
      * The corresponding tile from the new tileset (i.e. the tile
      * with the same id) must have exactly the same properties,
@@ -190,10 +174,10 @@ public class TileOnMap extends MapEntity {
      * When the entity is resized, its new size must be a multiple of this minimum size.
      * @return the minimum size of the entity
      */
-    public Dimension getUnitSize() {
+    public Dimension getUnitarySize() {
 	
 	if (tileset == null) { // special case when the tileset is not initialized yet
-	    return super.getUnitSize();
+	    return super.getUnitarySize();
 	}
 	
 	Tile tile = tileset.getTile(tileId);
@@ -205,7 +189,7 @@ public class TileOnMap extends MapEntity {
      * @return the number of times the pattern is repeated on x
      */
     public int getRepeatX() {
-	return positionInMap.width / getUnitSize().width;
+	return positionInMap.width / getUnitarySize().width;
     }
 
     /**
@@ -213,7 +197,7 @@ public class TileOnMap extends MapEntity {
      * @return the number of times the pattern is repeated on y
      */
     public int getRepeatY() {
-	return positionInMap.height / getUnitSize().height;
+	return positionInMap.height / getUnitarySize().height;
     }
 
     /**

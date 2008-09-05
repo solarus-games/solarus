@@ -10,13 +10,16 @@ import java.util.*;
  * and how the entity is placed on the map: its position and its layer.
  * 
  * To create a new kind of entity, you should make the following steps:
+ * - Add a public static integer field in MapEntity to identify your new type of entity.
  * - Add your class in the MapEntity.entityClasses array.
  * - Create a field in your class to declare the entity name:
  *     public static final String entityTypeName.
+ * - Add the specific fields of your type of entity and the corresponding
+ *     get and set methods.
  * - Create two constructors with the following signatures:
  *     public YourEntity(Map map, int x, int y):
  *         creates a new entity with some default properties
- *     public YourEntity(Map map, String tokenizer) throws ZSDXException:
+ *     public YourEntity(Map map, StringTokenizer tokenizer) throws ZSDXException:
  *         creates an existing entity from a string
  * - Create the toString() method: public String toString()
  *     to export the entity to a string
@@ -24,34 +27,31 @@ import java.util.*;
  *     which returns the entity type number.
  * - Redefine the getObstacle() method: public int getObstacle()
  *     if your entity is an obstacle.
- * - Redefine the methods getNbDirections(), hasName(), isResizable()
+ * - Redefine if necessary the methods getNbDirections(), hasName(), isResizable()
  *     to indicate how the graphical components will be organized.
  *     - public int getNbDirections(): returns the number of possible
- *         directions of this kind of entity (can be zero)
+ *         directions of this kind of entity (default is zero)
  *     - public boolean hasName(): indicates whether the entity has a 
- *         name field (i.e. if it is identifiable)
+ *         name field, i.e. if it is identifiable (default is false)
  *     - public boolean isResizable(): indicates whether the entity can
- *         be resized. If the entity is resizable, you should also redefine
- *         the getUnitSize() method.
+ *         be resized (default is false). If the entity is resizable, you should
+ *         also redefine the getUnitSize() method.
  * - Redefine the getOrigin() method: public Point getOrigin()
  *     if the origin is not the top-left corner of the entity.
  * - Redefine the isValid() method: public boolean isValid()
  *     to check the validity of the fields (don't forget to call super.isValid()).    
- * - Add the specific fields of your type of entity and the corresponding
- *     get and set methods.
  * - Define the static generalImageDescription field:
  *     public static final EntityImageDescription generalImageDescription
  *     to define a default 16*16 image representing this kind of entity
  * - Redefine the non-static updateImageDescription() method:
  *     public void updateImageDescription()
- *     which updates the current image description (used to draw the entity)
+ *     which updates the current image description (used to draw the entity in its current state)
  * - If your entity is not drawn from an image file but in a more complex way,
- *     you cannot use updateImageDescription() and you have to redefine the paint() method:
+ *     you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *     public abstract void paint(Graphics g, double zoom, boolean showTransparency).
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
  * - Create a subclass of ActionEditEntity.
- * - Update the startAddingEntity() method of class MapView (for now)
  */
 public abstract class MapEntity extends Observable implements ImageObserver {
 
@@ -124,15 +124,17 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     public static final int ENTITY_EXIT = 2;
     public static final int ENTITY_PICKABLE_ITEM = 3;
     public static final int ENTITY_TRANSPORTABLE_ITEM = 4;
-    public static final int ENTITY_NB_TYPES = 5;
+    public static final int ENTITY_CHEST = 5;
+    public static final int ENTITY_NB_TYPES = 6;
 
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {
-	TileOnMap.class,          // ENTITY_TILE
-	Entrance.class,        // ENTITY_ENTRANCE
-	Exit.class,            // ENTITY_EXIT
-	PickableItem.class,       // ENTITY_PICKABLE_ITEM
-	TransportableItem.class   // ENTITY_TRANSPORTABLE_ITEM
+	TileOnMap.class,
+	Entrance.class,
+	Exit.class,
+	PickableItem.class,
+	TransportableItem.class,
+	Chest.class
     };
 
     /**
@@ -324,6 +326,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 
 	return buff.toString();
     }
+
     /**
      * Checks the entity validity. An entity must be valid before it is saved.
      * @return true if the entity is valid
@@ -506,7 +509,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	    throw new MapException("The entity's size must be positive"); 
 	}
 	
-	Dimension unitSize = getUnitSize();
+	Dimension unitSize = getUnitarySize();
 	if (width % unitSize.width != 0) {
 	    throw new MapException("The entity's width must be a multiple of " + unitSize.width
 		    + " (the width specified is " + width + ')');
@@ -559,11 +562,13 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 
     /**
      * Returns the number of possible directions of the entity.
-     * The entity should have a direction (i.e. hasDirection() returns true).
+     * By default, an entity has no direction property and this function returns 0.
      * @return the number of possible directions of the entity (or 0
      * if the entity has not a direction property)
      */
-    public abstract int getNbDirections();
+    public int getNbDirections() {
+	return 0;
+    }
 
     /**
      * Returns the direction of the entity.
@@ -600,10 +605,13 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 
     /**
      * Returns whether the entity has a name.
+     * By default, an entity has no name and this function returns false.
      * The subclasses which represent identifiable entities should return true.
      * @return true if the entity has a name, false otherwise
      */
-    public abstract boolean hasName();
+    public boolean hasName() {
+	return false;
+    }
 
     /**
      * Returns the name of the entity.
@@ -674,7 +682,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * When the entity is resized, its new size must be a multiple of this minimum size.
      * @return the minimum size of the entity
      */
-    public Dimension getUnitSize() {
+    public Dimension getUnitarySize() {
 	return defaultUnitSize;
     }
 
@@ -774,7 +782,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     public int getHeight() {
 	return positionInMap.height;
     }
-    
+
     /**
      * Returns the size of the entity
      * @return the entity's size

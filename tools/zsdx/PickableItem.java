@@ -127,31 +127,6 @@ public class PickableItem extends InteractiveEntity {
     }
 
     /**
-     * Returns the number of directions of the entity.
-     * @return 0 (a pickable item has no direction)
-     */
-    public int getNbDirections() {
-	return 0;
-    }
-    
-    /**
-     * Returns whether the entity has an identifier.
-     * @return false
-     */
-    public boolean hasName() {
-	return false;
-    }
-
-    /**
-     * Returns whether or not the entity is resizable.
-     * A pickable item is not resizable.
-     * @return false
-     */
-    public boolean isResizable() {
-	return false;
-    }
-
-    /**
      * Returns the coordinates of the origin point of the entity.
      * @return (8,13)
      */

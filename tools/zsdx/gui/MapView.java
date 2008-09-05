@@ -670,8 +670,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    
 	    MapEntity selectedEntity = map.getEntitySelection().getEntity(0);
 	    
-	    int width = selectedEntity.getUnitSize().width;
-	    int height = selectedEntity.getUnitSize().height;
+	    int width = selectedEntity.getUnitarySize().width;
+	    int height = selectedEntity.getUnitarySize().height;
 	    
 	    xA = fixedLocation.x;
 	    yA = fixedLocation.y;

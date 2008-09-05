@@ -21,9 +21,9 @@ public class Exit extends InteractiveEntity {
 	new EntityImageDescription("map_exit_32.png", 0, 0, 32, 32);
 
     /**
-     * Unit size of an exit.
+     * Unitary size of an exit.
      */
-    private static final Dimension unitSize = new Dimension(16, 16);
+    private static final Dimension unitarySize = new Dimension(16, 16);
     
     private int transition;
     private String destinationMapId;
@@ -73,8 +73,8 @@ public class Exit extends InteractiveEntity {
     }
     
     /**
-     * Returns a string describing this map entrance.
-     * @return a string representation of the map entrance
+     * Returns a string describing this exit.
+     * @return a string representation of the exit.
      */
     public String toString() {
 
@@ -110,14 +110,6 @@ public class Exit extends InteractiveEntity {
     public int getType() {
 	return ENTITY_EXIT;
     }
-
-    /**
-     * Returns the number of directions of the entity.
-     * @return 0 (an exit has no direction)
-     */
-    public int getNbDirections() {
-	return 0;
-    }
     
     /**
      * Returns whether the entity has an identifier.
@@ -141,8 +133,8 @@ public class Exit extends InteractiveEntity {
      * When the entity is resized, its new size must be a multiple of this minimum size.
      * @return (16,16)
      */
-    public Dimension getUnitSize() {
-	return unitSize;
+    public Dimension getUnitarySize() {
+	return unitarySize;
     }
 
     /**

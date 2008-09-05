@@ -168,7 +168,7 @@ public class EditEntityComponent extends JPanel {
 	fieldPosition.setCoordinates(entity.getX(), entity.getY());
 	
 	if (entity.isResizable()) {
-	    fieldSize.setStepSize(entity.getUnitSize().width, entity.getUnitSize().height);
+	    fieldSize.setStepSize(entity.getUnitarySize().width, entity.getUnitarySize().height);
 	    fieldSize.setCoordinates(entity.getWidth(), entity.getHeight());
 	}
 	

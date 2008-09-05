@@ -129,8 +129,8 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {
 	TileOnMap.class,          // ENTITY_TILE
-	MapEntrance.class,        // ENTITY_ENTRANCE
-	MapExit.class,            // ENTITY_EXIT
+	Entrance.class,        // ENTITY_ENTRANCE
+	Exit.class,            // ENTITY_EXIT
 	PickableItem.class,       // ENTITY_PICKABLE_ITEM
 	TransportableItem.class   // ENTITY_TRANSPORTABLE_ITEM
     };

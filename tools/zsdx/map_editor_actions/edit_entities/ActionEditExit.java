@@ -8,7 +8,7 @@ import zsdx.*;
  */
 public class ActionEditExit extends MapEditorAction {
     
-    private MapExit exit;
+    private Exit exit;
     
     private int transitionBefore;
     private int transitionAfter;
@@ -27,7 +27,7 @@ public class ActionEditExit extends MapEditorAction {
      * @param destinationMapId the id of the destination map
      * @param entranceName the entrance on the destination map
      */
-    public ActionEditExit(Map map, MapExit exit, int transition, String destinationMapId, String entranceName) {
+    public ActionEditExit(Map map, Exit exit, int transition, String destinationMapId, String entranceName) {
 	super(map);
 	
 	this.exit = exit;

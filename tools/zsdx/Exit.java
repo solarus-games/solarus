@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Represents an exit point in a map.
  */
-public class MapExit extends InteractiveEntity {
+public class Exit extends InteractiveEntity {
 
     /**
      * Name of this kind of entity.
@@ -40,7 +40,7 @@ public class MapExit extends InteractiveEntity {
      * @param x x coordinate of the exit
      * @param y y coordinate of the exit
      */
-    public MapExit(Map map, int x, int y) {
+    public Exit(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
 	
 	// default field values
@@ -56,7 +56,7 @@ public class MapExit extends InteractiveEntity {
      * but not yet the common properties
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public MapExit(Map map, StringTokenizer tokenizer) throws ZSDXException {
+    public Exit(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	super(map, tokenizer);
 
 	try {

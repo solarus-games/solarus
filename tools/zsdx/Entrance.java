@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Represents an entry point in a map.
  */
-public class MapEntrance extends InteractiveEntity {
+public class Entrance extends InteractiveEntity {
 
     /**
      * Name of this kind of entity.
@@ -15,21 +15,10 @@ public class MapEntrance extends InteractiveEntity {
     public static final String entityTypeName = "Entrance";
     
     /**
-     * Description of the possible images representing the current entity
-     * (depending on its direction).
-     */
-    private static final EntityImageDescription[] imageDescriptions = {
-	new EntityImageDescription("map_entrance_0.png", 0, 0, 32, 32),
-	new EntityImageDescription("map_entrance_1.png", 0, 0, 32, 32),
-	new EntityImageDescription("map_entrance_2.png", 0, 0, 32, 32),
-	new EntityImageDescription("map_entrance_3.png", 0, 0, 32, 32)
-    };
-
-    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription generalImageDescription =
-	imageDescriptions[1];
+	new EntityImageDescription("map_entrance_1.png", 0, 0, 32, 32);
 
     /**
      * Origin point of an entrance.
@@ -57,7 +46,7 @@ public class MapEntrance extends InteractiveEntity {
      * @param x x coordinate of the entrance
      * @param y y coordinate of the entrance
      */
-    public MapEntrance(Map map, int x, int y) {
+    public Entrance(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
 	setDirection(1);
     }
@@ -69,7 +58,7 @@ public class MapEntrance extends InteractiveEntity {
      * but not yet the common properties
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public MapEntrance(Map map, StringTokenizer tokenizer) throws ZSDXException {
+    public Entrance(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	super(map, tokenizer);
 	
 	setSizeImpl(16, 16);
@@ -106,13 +95,4 @@ public class MapEntrance extends InteractiveEntity {
     public boolean hasName() {
 	return true;
     }
-
-    /**
-     * Updates the description of the image currently representing the entity.
-     * For an entrance of the map, the image depends on the entrance's direction.
-     */
-    public void updateImageDescription() {
-	currentImageDescription = imageDescriptions[getDirection()];
-    }
-
 }

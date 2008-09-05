@@ -52,7 +52,7 @@ public class EditExitComponent extends EditEntityComponent {
     public void update() {
 	super.update(); // update the common fields
 
-	MapExit exit = (MapExit) entity;
+	Exit exit = (Exit) entity;
 	
 	transitionField.setTransition(exit.getTransition());
 	mapField.setSelectedId(exit.getDestinationMapId());
@@ -71,7 +71,7 @@ public class EditExitComponent extends EditEntityComponent {
 	ActionEditEntity action = super.getAction();
 
 	// add the properties specific to a map exit
-	MapExit exit = (MapExit) entity;
+	Exit exit = (Exit) entity;
 	
 	int transition = transitionField.getTransition();
 	String destinationMapId = mapField.getSelectedId();

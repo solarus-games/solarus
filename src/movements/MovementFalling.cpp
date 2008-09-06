@@ -28,7 +28,7 @@ static const int nb_moves[3] = {2, 12, 26};
  * Creates a movement falling object.
  * @param height height the entity will fall from
  */
-MovementFalling::MovementFalling(MovementFallingHeight height):
+MovementFalling::MovementFalling(MovementFalling::FallingHeight height):
   MovementPath(moves[height], nb_moves[height], 30, false) {
 
 }

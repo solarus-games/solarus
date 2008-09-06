@@ -147,14 +147,14 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
     if (!game->is_paused()) {
 	    
       ResourceManager::get_sound("pause_open")->play();
-      keys_effect->set_pause_key_effect(PAUSE_KEY_RETURN);
-      keys_effect->set_sword_key_effect(SWORD_KEY_SAVE);
+      keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
+      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SAVE);
       game->set_paused(true);
     }
     else {
       ResourceManager::get_sound("pause_closed")->play();
-      keys_effect->set_pause_key_effect(PAUSE_KEY_PAUSE);
-      keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
+      keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
+      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
       game->set_paused(false);
     }
     break;

@@ -190,7 +190,7 @@ void Link::set_map(Map *map, int initial_direction) {
 
   // remove the "throw" (or other) icon
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   // stop loading the sword or carrying an item
   switch (get_state()) {
@@ -435,14 +435,14 @@ void Link::set_facing_entity(EntityDetector *detector) {
   this->facing_entity = detector;
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
+  KeysEffect::ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
 
   // if Link stops facing an entity that showed an action icon
   if (facing_entity == NULL &&
-      (action_key_effect == ACTION_KEY_LIFT
-       || action_key_effect == ACTION_KEY_OPEN)) {
+      (action_key_effect == KeysEffect::ACTION_KEY_LIFT
+       || action_key_effect == KeysEffect::ACTION_KEY_OPEN)) {
 
-    keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
 
@@ -663,7 +663,7 @@ void Link::start_lifting(TransportableItem *item_to_lift) {
   // create the corresponding carried item
   this->lifted_item = new CarriedItem(this, item_to_lift);
 
-  zsdx->game->get_keys_effect()->set_action_key_effect(ACTION_KEY_THROW);
+  zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   set_state(LIFTING);
   set_animation_lifting();
   set_facing_entity(NULL);
@@ -781,7 +781,7 @@ void Link::freeze(void) {
 
 /**
  * Makes Link brandish a treasure.
- * @param treasure the treasure to give him (will be deleted after Link brandishes it) 
+ * @param treasure the treasure to give him (you have to delete it after Link brandishes it) 
  */
 void Link::give_treasure(Treasure *treasure) {
 
@@ -800,9 +800,6 @@ void Link::give_treasure(Treasure *treasure) {
     shield_sprite->stop_animation();
   }
   stop_displaying_sword();
-
-  // give the treasure and show the message
-  treasure->give_to_player();
 }
 
 /**
@@ -810,7 +807,7 @@ void Link::give_treasure(Treasure *treasure) {
  */
 void Link::update_treasure(void) {
 
-  if (!zsdx->game->is_showing_message()) {
+  if (!zsdx->game->is_giving_treasure()) {
 
     /* The treasure message is over: if the treasure was a tunic,
      * a sword or a shield, then we must reload Link's sprites now
@@ -1228,13 +1225,13 @@ void Link::action_key_pressed(void) {
   
   switch (keys_effect->get_action_key_effect()) {
 
-  case ACTION_KEY_LIFT:
-  case ACTION_KEY_OPEN:
+  case KeysEffect::ACTION_KEY_LIFT:
+  case KeysEffect::ACTION_KEY_OPEN:
     // action on the facing entity
     facing_entity->action_key_pressed();
     break;
 
-  case ACTION_KEY_THROW:
+  case KeysEffect::ACTION_KEY_THROW:
     start_throwing();
     break;
 
@@ -1253,7 +1250,7 @@ void Link::sword_key_pressed(void) {
   
   switch (keys_effect->get_sword_key_effect()) {
 
-  case SWORD_KEY_SWORD:
+  case KeysEffect::SWORD_KEY_SWORD:
     start_sword();
     break;
 

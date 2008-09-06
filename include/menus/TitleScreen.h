@@ -14,16 +14,16 @@ class TitleScreen: public Screen {
   /**
    * The phases of the title screen.
    */
-  enum TitleScreenPhase {
+  enum Phase {
     PHASE_BLACK_SCREEN,
     PHASE_ZS_PRESENTS,
     PHASE_TITLE
   };
   
-  TitleScreenPhase current_phase;
+  Phase current_phase;
   Uint32 next_phase_date;
-  TransitionEffect *transition_in;
-  TransitionEffect *transition_out;
+  Transition *transition_in;
+  Transition *transition_out;
 
   // phase 1
   void init_phase_black_screen(void);

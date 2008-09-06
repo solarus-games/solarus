@@ -1,7 +1,6 @@
 #include "entities/CarriedItem.h"
 #include "entities/TransportableItem.h"
 #include "entities/Link.h"
-#include "entities/Layer.h"
 #include "movements/MovementPath.h"
 #include "movements/FollowMovement.h"
 #include "movements/ThrowItemMovement.h"
@@ -111,7 +110,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
 
   // remove the "throw" icon
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   // set the movement
   clear_movement();
@@ -162,7 +161,7 @@ void CarriedItem::update(void) {
 
       // action icon "throw"
       KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-      keys_effect->set_action_key_effect(ACTION_KEY_THROW);
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
 
       // make the item follow Link
       clear_movement();

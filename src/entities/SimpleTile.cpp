@@ -9,7 +9,7 @@
  * @param height height of the tile in the tileset
  * @param obstacle is the tile an obstacle?
  */
-SimpleTile::SimpleTile(Obstacle obstacle, int x, int y, int width, int height):
+SimpleTile::SimpleTile(MapEntity::Obstacle obstacle, int x, int y, int width, int height):
   Tile(obstacle, width, height) {
 
   position_in_tileset.x = x;

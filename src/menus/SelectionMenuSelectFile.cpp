@@ -2,7 +2,7 @@
 #include "menus/SelectionMenuEraseFile.h"
 #include "menus/SelectionMenuChooseName.h"
 #include "menus/SelectionMenuChooseMode.h"
-#include "TransitionEffect.h"
+#include "Transition.h"
 #include "Savegame.h"
 #include "Sprite.h"
 #include "ZSDX.h"
@@ -22,7 +22,7 @@ SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenuPhase *previous):
 
   if (previous == NULL) {
     // we don't come from another phase or the selection menu itself: make a transition
-    transition = TransitionEffect::create(TRANSITION_FADE, TRANSITION_IN);
+    transition = Transition::create(Transition::FADE, Transition::IN);
     transition->start();
     set_cursor_position(1);
   }

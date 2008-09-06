@@ -16,7 +16,7 @@ class ActionIcon: public HudElement {
   KeysEffect *keys_effect;
 
   // static icon
-  ActionKeyEffect action_key_effect_displayed;
+  KeysEffect::ActionKeyEffect action_key_effect_displayed;
   bool is_enabled;
   SDL_Surface *img_action_icon;
 

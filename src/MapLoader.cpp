@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "FileTools.h"
 #include "ResourceManager.h"
+#include "entities/MapEntities.h"
 #include "entities/Tileset.h"
 #include <iomanip>
 
@@ -62,11 +63,11 @@ void MapLoader::load_map(Map *map) {
   // create the lists of entities and initialize obstacle tile
   MapEntities *entities = map->get_entities();
   entities->obstacle_tiles_size = map->width8 * map->height8;
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
 
-    entities->obstacle_tiles[layer] = new Obstacle[entities->obstacle_tiles_size];
+    entities->obstacle_tiles[layer] = new MapEntity::Obstacle[entities->obstacle_tiles_size];
     for (int i = 0; i < entities->obstacle_tiles_size; i++) {
-      entities->obstacle_tiles[layer][i] = OBSTACLE_NONE;
+      entities->obstacle_tiles[layer][i] = MapEntity::OBSTACLE_NONE;
     }
   }
 
@@ -81,57 +82,57 @@ void MapLoader::load_map(Map *map) {
 
     switch (entity_type) {
 
-    case ENTITY_TILE:
+    case MapEntity::TILE:
       {
 	int tile_id;
 
 	iss >> width >> height >> tile_id;
-	entities->add_tile(tile_id, (Layer) layer, x, y, width, height);
+	entities->add_tile(tile_id, (MapEntity::Layer) layer, x, y, width, height);
 	break;
       }
       
-    case ENTITY_ENTRANCE:
+    case MapEntity::ENTRANCE:
       {
 	iss >> entity_name >> direction;
-	entities->add_entrance(entity_name, (Layer) layer, x, y, direction);
+	entities->add_entrance(entity_name, (MapEntity::Layer) layer, x, y, direction);
 	break;
       }
       
-    case ENTITY_EXIT:
+    case MapEntity::EXIT:
       {
-	int transition_type;
+	int transition_style;
 	MapId destination_map_id;
 	string entrance_name;
-	iss >> width >> height >> entity_name >> transition_type >> destination_map_id >> entrance_name;
-	entities->add_exit(entity_name, (Layer) layer, x, y, width, height,
-			   (TransitionType) transition_type, destination_map_id, entrance_name);
+	iss >> width >> height >> entity_name >> transition_style >> destination_map_id >> entrance_name;
+	entities->add_exit(entity_name, (MapEntity::Layer) layer, x, y, width, height,
+			   (Transition::Style) transition_style, destination_map_id, entrance_name);
 	break;
       }
 
-    case ENTITY_PICKABLE_ITEM:
+    case MapEntity::PICKABLE_ITEM:
       {
-	int pickable_item_type, unique_id;
-	iss >> pickable_item_type >> unique_id;
-	entities->add_pickable_item((Layer) layer, x, y, (PickableItemType) pickable_item_type,
-				    unique_id, MOVEMENT_FALLING_NONE, false);
+	int pickable_item_type, savegame_index;
+	iss >> pickable_item_type >> savegame_index;
+	entities->add_pickable_item((MapEntity::Layer) layer, x, y, (PickableItem::ItemType) pickable_item_type,
+				    savegame_index, MovementFalling::NONE, false);
 	break;
       }
 
-    case ENTITY_TRANSPORTABLE_ITEM:
+    case MapEntity::TRANSPORTABLE_ITEM:
       {
-	int transportable_item_type, pickable_item_type, unique_id;
-	iss >> transportable_item_type >> pickable_item_type >> unique_id;
-	entities->add_transportable_item((Layer) layer, x, y,
-					 (TransportableItemType) transportable_item_type,
-					 (PickableItemType) pickable_item_type, unique_id);
+	int transportable_item_type, pickable_item_type, savegame_index;
+	iss >> transportable_item_type >> pickable_item_type >> savegame_index;
+	entities->add_transportable_item((MapEntity::Layer) layer, x, y,
+					 (TransportableItem::ItemType) transportable_item_type,
+					 (PickableItem::ItemType) pickable_item_type, savegame_index);
 	break;
       }
 
-    case ENTITY_CHEST:
+    case MapEntity::CHEST:
       {
 	int big_chest, treasure_content, treasure_amount, treasure_savegame_index;
 	iss >> entity_name >> big_chest >> treasure_content >> treasure_amount >> treasure_savegame_index;
-	entities->add_chest(entity_name, (Layer) layer, x, y,
+	entities->add_chest(entity_name, (MapEntity::Layer) layer, x, y,
 			    (big_chest != 0), treasure_content,
 			    treasure_amount, treasure_savegame_index);
 	break;

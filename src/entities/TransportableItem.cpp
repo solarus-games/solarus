@@ -1,5 +1,6 @@
 #include "entities/TransportableItem.h"
 #include "entities/Link.h"
+#include "entities/MapEntities.h"
 #include "movements/MovementPath.h"
 #include "ResourceManager.h"
 #include "Game.h"
@@ -30,12 +31,12 @@ const TransportableItem::ItemProperties TransportableItem::properties[] = {
  * @param type type of transportable item to create
  * @param pickable_item the type of pickable item that appears when the transportable
  * item is lifted
- * @param unique_id unique id of the pickable item, for certain kinds of pickable
- * items only (a key, a piece of heart...)
+ * @param savegame_index savegame index of the possession state of the pickable item,
+ * for certain kinds of pickable items only (a key, a piece of heart...)
  */
 TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y,
-				     TransportableItemType type,
-				     PickableItemType pickable_item, int unique_id):
+				     TransportableItem::ItemType type,
+				     PickableItem::ItemType pickable_item, int savegame_index):
   EntityDetector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
   map(map), type(type), pickable_item(pickable_item) {
 
@@ -79,9 +80,9 @@ void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
     Link *link = zsdx->game->get_link();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
     
-    if (keys_effect->get_action_key_effect() == ACTION_KEY_NONE
+    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& link->get_state() == Link::FREE) {
-      keys_effect->set_action_key_effect(ACTION_KEY_LIFT);
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
   }
 }
@@ -96,7 +97,7 @@ void TransportableItem::action_key_pressed(void) {
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   Link *link = zsdx->game->get_link();
 
-  if (keys_effect->get_action_key_effect() == ACTION_KEY_LIFT) {
+  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT) {
 
     // TODO check that Link can lift the item
 
@@ -106,9 +107,9 @@ void TransportableItem::action_key_pressed(void) {
     ResourceManager::get_sound("lift")->play();
 
     // create the pickable item
-    if (pickable_item != PICKABLE_ITEM_NONE) {
+    if (pickable_item != PickableItem::NONE) {
       map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
-					   0, MOVEMENT_FALLING_MEDIUM, true);
+					     0, MovementFalling::MEDIUM, true);
     }
 
     // remove the item from the map

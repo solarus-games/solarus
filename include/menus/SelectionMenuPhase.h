@@ -28,7 +28,7 @@ class SelectionMenuPhase: public Screen {
   /**
    * The transition currently displayed (may be NULL).
    */
-  TransitionEffect *transition;
+  Transition *transition;
 
   /**
    * The elements common to all phases.

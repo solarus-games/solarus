@@ -45,7 +45,7 @@ void PauseIcon::update(void) {
   // text shown
   if (!is_flipping) {
 
-    PauseKeyEffect pause_key_effect = keys_effect->get_pause_key_effect();
+    KeysEffect::PauseKeyEffect pause_key_effect = keys_effect->get_pause_key_effect();
 
     if (pause_key_effect_displayed != pause_key_effect) {
 

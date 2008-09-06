@@ -2,7 +2,6 @@
 #define ZSDX_MAP_ENTITY_H
 
 #include "Common.h"
-#include "Layer.h"
 #include <vector>
 
 /**
@@ -14,6 +13,44 @@
  * - an origin point, relative to the rectangle's top-left corner
  */
 class MapEntity {
+
+ public:
+
+  /**
+   * Constants to identify each kind of map entity.
+   */
+  enum EntityType {
+    TILE                      = 0, /**< a tile on the map, obstacle or not */
+    ENTRANCE                  = 1, /**< an entrance of the map */
+    EXIT                      = 2, /**< an exit: Link is transported to another map when walking on an exit */
+    PICKABLE_ITEM             = 3, /**< an item that Link can pick: a rupee, a heart, a fairy... */
+    TRANSPORTABLE_ITEM        = 4, /**< an item that Link can lift, carry and throw: a pot, a bush, a stone... */
+    CHEST                     = 5, /**< a chest (small or big) with a treasure */
+  };
+
+  /**
+   * Obstacle property for the tiles or the active objects.
+   */
+  enum Obstacle {
+    OBSTACLE_NONE,         /**< the entity is not an obstacle */
+    OBSTACLE,              /**< the entity is entirely an obstacle */
+    OBSTACLE_TOP_RIGHT,    /**< the upper-right half of the entity is an obstacle */
+    OBSTACLE_TOP_LEFT,     /**< the upper-left half of the entity is an obstacle */
+    OBSTACLE_BOTTOM_LEFT,  /**< the lower-left half of the entity is an obstacle */
+    OBSTACLE_BOTTOM_RIGHT, /**< the lower-right half of the entity is an obstacle */
+  };
+
+  /**
+   * Layer of a tile or an active object.
+   */
+  enum Layer {
+    LAYER_LOW,             /**< the entity is always below Link (floor, walls, chests,
+			      enemies and 99% of the tiles and active objects) */
+    LAYER_INTERMEDIATE,    /**< Link can be below or above the entity (platforms or objects on a plaform) */
+    LAYER_HIGH,            /**< the entity is always above Link (trees, top of doors...) */
+    LAYER_NB               /**< number of layers */
+  };
+
 
  protected:
 

@@ -2,13 +2,9 @@
 #define ZSDX_MAP_H
 
 #include "Common.h"
-#include "TransitionEffect.h"
-#include "entities/EntityType.h"
-#include "entities/Layer.h"
-#include "entities/Obstacle.h"
-#include "entities/MapEntities.h"
-#include "entities/PickableItemType.h"
-#include "movements/MovementFallingHeight.h"
+#include "Transition.h"
+#include "entities/PickableItem.h"
+#include "movements/MovementFalling.h"
 
 /**
  * Represents a map.
@@ -75,7 +71,7 @@ class Map {
   MusicId music_id;
 
   /**
-   * The dungeon where this map is (between 1 and 14), or zero if this map is not in a dungeon.
+   * The dungeon where this map is (between 0 and 13), or zero if this map is not in a dungeon.
    */
   int dungeon;
 
@@ -121,6 +117,7 @@ class Map {
   MapId get_id(void);
   Tileset *get_tileset(void);
   int get_dungeon_number(void);
+  bool is_in_dungeon(void);
 
   int get_width(void);
   int get_height(void);
@@ -149,9 +146,9 @@ class Map {
   void set_entrance(string entrance_name);
 
   // collisions with obstacles (checked before a move)
-  Obstacle pixel_collision_with_tiles(Layer layer, int x, int y);
-  bool collision_with_entities(Layer layer, SDL_Rect &collision_box);
-  bool collision_with_obstacles(Layer layer, SDL_Rect &collision_box);
+  MapEntity::Obstacle pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y);
+  bool collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box);
+  bool collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box);
 
   // collisions with detectors (checked after a move)
   void check_collision_with_detectors(MapEntity *entity);

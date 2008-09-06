@@ -30,7 +30,7 @@ MapEntity::MapEntity(void):
  * @param width width of the entity
  * @param height height of the entity
  */
-MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
+MapEntity::MapEntity(MapEntity::Layer layer, int x, int y, int width, int height):
   layer(layer), name(""), direction(0), movement(NULL),
   suspended(false), when_suspended(0) {
 
@@ -53,7 +53,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * @param width width of the entity
  * @param height height of the entity
  */
-MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
+MapEntity::MapEntity(string name, int direction, MapEntity::Layer layer, int x, int y, int width, int height):
   layer(layer), name(name), direction(direction), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
@@ -106,7 +106,7 @@ bool MapEntity::is_being_removed(void) {
  * Returns the layer of the entity on the map.
  * @return the layer of the entity on the map.
  */
-Layer MapEntity::get_layer(void) {
+MapEntity::Layer MapEntity::get_layer(void) {
   return layer;
 }
 

@@ -3,7 +3,7 @@
 
 #include "Common.h"
 #include "Screen.h"
-#include "TransitionEffect.h"
+#include "Transition.h"
 
 /**
  * This class handles the game.
@@ -36,6 +36,12 @@ class Game: public Screen {
   DialogBox *dialog_box;
 
   /**
+   * The treasure currently being given to the player
+   * or NULL if it is not the case.
+   */
+  Treasure *treasure;
+
+  /**
    * Current effect associated to the main game keys
    * (represented on the HUD by the action icon, the objects icons, etc.).
    */
@@ -61,8 +67,8 @@ class Game: public Screen {
   /**
    * The transition between the current map and the next one.
    */
-  TransitionType transition_type;
-  TransitionEffect *transition; // NULL if no transition is playing
+  Transition::Style transition_style;
+  Transition *transition; // NULL if no transition is playing
 
   /**
    * The game HUD (displaying hearts, rupees, etc.).
@@ -82,6 +88,7 @@ class Game: public Screen {
   void update_keys_effect(void);
   void update_dialog_box(void);
   void update_transitions(void);
+  void update_treasure(void);
 
  public:
 
@@ -96,8 +103,8 @@ class Game: public Screen {
   void display(SDL_Surface *screen_surface);
 
   Map *get_current_map(void);
-  void set_current_map(MapId map_id, unsigned int entrance_index, TransitionType transition_type);
-  void set_current_map(MapId map_id, string entrance_name, TransitionType transition_type);
+  void set_current_map(MapId map_id, unsigned int entrance_index, Transition::Style transition_style);
+  void set_current_map(MapId map_id, string entrance_name, Transition::Style transition_style);
 
   bool is_paused(void);
   bool is_showing_message(void);
@@ -111,6 +118,9 @@ class Game: public Screen {
 
   DialogBox *get_dialog_box(void);
   void show_message(MessageId message_id);
+
+  void give_treasure(Treasure *treasure);
+  bool is_giving_treasure(void);
 
   void set_paused(bool paused);
 };

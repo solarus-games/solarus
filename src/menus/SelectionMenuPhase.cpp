@@ -1,6 +1,6 @@
 #include "menus/SelectionMenuPhase.h"
 #include "menus/SelectionMenuCommon.h"
-#include "TransitionEffect.h"
+#include "Transition.h"
 #include "Sound.h"
 #include "Sprite.h"
 #include "TextSurface.h"

@@ -21,7 +21,7 @@
  * @param treasure the treasure in the chest (will be deleted by the chest destructor),
  * or NULL to make an empty chest
  */
-Chest::Chest(string name, Layer layer, int x, int y, bool big_chest, Treasure *treasure):
+Chest::Chest(string name, MapEntity::Layer layer, int x, int y, bool big_chest, Treasure *treasure):
   EntityDetector(EntityDetector::COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   big_chest(big_chest), treasure(treasure) {
 
@@ -33,7 +33,8 @@ Chest::Chest(string name, Layer layer, int x, int y, bool big_chest, Treasure *t
  * Destructor.
  */
 Chest::~Chest(void) {
-  if (treasure != NULL) {
+  if (treasure != NULL && !treasure_given) {
+    // delete the treasure only if the player didn't take it
     delete treasure;
   }
 }
@@ -78,13 +79,13 @@ void Chest::entity_collision(MapEntity *entity_overlapping) {
     Link *link = zsdx->game->get_link();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
     
-    if (keys_effect->get_action_key_effect() == ACTION_KEY_NONE
+    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& link->get_state() == Link::FREE
 	&& link->get_animation_direction() == 1
 	&& !is_open()) {
 
       // we show the 'open' icon, even if this is a big chest and the player does not have the big key
-      keys_effect->set_action_key_effect(ACTION_KEY_OPEN);
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
     }
   }
 }
@@ -104,7 +105,7 @@ void Chest::update(void) {
       Link *link = zsdx->game->get_link();
 
       if (treasure != NULL) {
-	link->give_treasure(treasure);
+	zsdx->game->give_treasure(treasure); // from now the game handles the treasure
       }
       else {
 	ResourceManager::get_sound("wrong")->play();
@@ -136,7 +137,7 @@ void Chest::action_key_pressed(void) {
       open = true;
       treasure_date = SDL_GetTicks() + 500;
   
-      keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
       link->freeze();
     }
     else {

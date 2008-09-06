@@ -16,7 +16,7 @@ class PauseIcon: public HudElement {
   KeysEffect *keys_effect;
 
   // static icon
-  PauseKeyEffect pause_key_effect_displayed;
+  KeysEffect::PauseKeyEffect pause_key_effect_displayed;
   bool is_enabled;
   SDL_Surface *img_pause_icon;
 

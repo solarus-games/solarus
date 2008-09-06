@@ -83,7 +83,7 @@ class SpriteAnimationDirection;
 class AnimationListener;
 
 // transition effects
-class TransitionEffect;
+class Transition;
 class TransitionFade;
 class TransitionImmediate;
 

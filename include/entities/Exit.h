@@ -3,7 +3,7 @@
 
 #include "Common.h"
 #include "EntityDetector.h"
-#include "TransitionEffect.h"
+#include "Transition.h"
 
 /**
  * A map exit is a detector placed on a map.
@@ -16,7 +16,7 @@ class Exit: public EntityDetector {
   /**
    * Type of transition between the two maps.
    */
-  TransitionType transition_type;
+  Transition::Style transition_style;
 
   /**
    * Id of the destination map.
@@ -31,7 +31,7 @@ class Exit: public EntityDetector {
  public:
 
   Exit(string name, Layer layer, int x, int y, int width, int height,
-	  TransitionType transition_type, MapId destination_map_id, string entrance_name);
+       Transition::Style transition_style, MapId destination_map_id, string entrance_name);
   ~Exit(void);
 
   void entity_collision(MapEntity *entity_overlapping);

@@ -28,13 +28,12 @@ DungeonEquipment::~DungeonEquipment(void) {
 int DungeonEquipment::get_current_dungeon(void) {
 
   Map *current_map = zsdx->game->get_current_map();
-  int dungeon = current_map->get_dungeon_number();
 
-  if (dungeon == -1) {
+  if (!current_map->is_in_dungeon()) {
     DIE("The player is not in a dungeon");
   }
 
-  return dungeon;
+  return current_map->get_dungeon_number();
 }
 
 /**

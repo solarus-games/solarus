@@ -72,8 +72,8 @@ TextSurface::TextSurface(int x, int y):
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
 TextSurface::TextSurface(int x, int y,
-			     HorizontalAlignment horizontal_alignment,
-			     VerticalAlignment vertical_alignment):
+			 TextSurface::HorizontalAlignment horizontal_alignment,
+			 TextSurface::VerticalAlignment vertical_alignment):
 
   font_id(FONT_LA),
   horizontal_alignment(horizontal_alignment),
@@ -121,7 +121,7 @@ void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
  * Sets the rendering mode of the text.
  * @param rendering_mode rendering mode: TEXT_SOLID, TEXT_SHADED or TEXT_BLENDED
  */
-void TextSurface::set_rendering_mode(TextRenderingMode rendering_mode) {
+void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) {
   this->rendering_mode = rendering_mode;
 
   rebuild();

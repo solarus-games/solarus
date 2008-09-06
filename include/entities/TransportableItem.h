@@ -3,8 +3,7 @@
 
 #include "Common.h"
 #include "EntityDetector.h"
-#include "TransportableItemType.h"
-#include "PickableItemType.h"
+#include "PickableItem.h"
 
 /**
  * Represents an entity that Link can lift
@@ -14,6 +13,26 @@
  * attached to Link.
  */
 class TransportableItem: public EntityDetector {
+
+ public:
+
+  /**
+   * Types of transportable items.
+   */
+  enum ItemType {
+
+    POT               = 0,
+    SKULL             = 1,
+    BUSH              = 2,
+    STONE_SMALL_WHITE = 3,
+    STONE_SMALL_BLACK = 4,
+
+    // not implemented
+    STONE_BIG_WHITE   = 5,
+    STONE_BIG_BLACK   = 6,
+
+    //  SIGN              = 7,
+};
 
  private:
 
@@ -25,12 +44,12 @@ class TransportableItem: public EntityDetector {
   /**
    * The type of transportable item.
    */
-  TransportableItemType type;
+  ItemType type;
 
   /**
    * The type of pickable item that appears when the item is lifted.
    */
-  PickableItemType pickable_item;
+  PickableItem::ItemType pickable_item;
 
   /**
    * This structure defines the properties of a transportable item type.
@@ -47,8 +66,7 @@ class TransportableItem: public EntityDetector {
   
   // creation and destruction
   TransportableItem(Map *map, Layer layer, int x, int y,
-		    TransportableItemType type,
-		    PickableItemType pickable_item, int unique_id);
+		    ItemType type, PickableItem::ItemType pickable_item, int savegame_index);
   ~TransportableItem(void);
 
   string get_sprite_animations_id(void);

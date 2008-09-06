@@ -3,10 +3,10 @@
 /**
  * Constructor.
  */
-TransitionFade::TransitionFade(TransitionDirection direction):
-TransitionEffect(direction), alpha(-1) {
+TransitionFade::TransitionFade(Transition::Direction direction):
+  Transition(direction), alpha(-1) {
 
-  if (direction == TRANSITION_OUT) {
+  if (direction == Transition::OUT) {
     alpha_start = 256;
     alpha_limit = 0;
     alpha_increment = -16;

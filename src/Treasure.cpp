@@ -12,6 +12,18 @@
 #include "entities/Link.h"
 
 /**
+ * Creates a new treasure without amount.
+ * @param content content of the treasure
+ * @param savegame_index index of the savegame boolean indicating that Link has found this treasure
+ * or -1 if this treasure is not saved
+ */
+Treasure::Treasure(Content content, int savegame_index):
+  content(content), amount(1), savegame_index(savegame_index), counter(NULL) {
+
+  treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+}
+
+/**
  * Creates a new treasure.
  * @param content content of the treasure
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 

@@ -35,7 +35,7 @@ MapEntities::~MapEntities(void) {
 void MapEntities::destroy_all_entities(void) {
 
   // delete the entities sorted by layer
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       delete tiles[layer][i];
@@ -85,7 +85,7 @@ Entrance * MapEntities::get_entrance(int index) {
  * @param y y coordiate of the point
  * @return the obstacle property of this tile
  */
-Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
+MapEntity::Obstacle MapEntities::get_obstacle_tile(MapEntity::Layer layer, int x, int y) {
 
   int width8 = map->get_width8();
   return obstacle_tiles[layer][(y / 8) * width8 + (x / 8)];
@@ -98,7 +98,7 @@ Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
  * @param layer the layer
  * @return the obstacle entities
  */
-list<MapEntity*> * MapEntities::get_obstacle_entities(Layer layer) {
+list<MapEntity*> * MapEntities::get_obstacle_entities(MapEntity::Layer layer) {
   return &obstacle_entities[layer];
 }
 
@@ -121,11 +121,11 @@ list<EntityDetector*> * MapEntities::get_entity_detectors(void) {
  * @param width width in pixels (the pattern will be repeated on x to fit this width)
  * @param height height in pixels (the pattern will be repeated on y to fit this height
  */
-void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, int height) {
+void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height) {
 
   // get the tile in the tileset
   Tile *tile = map->get_tileset()->get_tile(tile_id);
-  Obstacle obstacle = tile->get_obstacle();
+  MapEntity::Obstacle obstacle = tile->get_obstacle();
 
   int repeat_x = width / tile->get_width();
   int repeat_y = height / tile->get_height();
@@ -152,8 +152,8 @@ void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, in
     /* If the tile is entirely an obstacle or entirely no obstacle,
      * then all 8*8 squares of the tile have the same property.
      */
-  case OBSTACLE_NONE:
-  case OBSTACLE:
+  case MapEntity::OBSTACLE_NONE:
+  case MapEntity::OBSTACLE:
     for (i = 0; i < tile_height8; i++) {
       index = (tile_y8 + i) * width8 + tile_x8;
       for (j = 0; j < tile_width8; j++) {
@@ -167,7 +167,7 @@ void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, in
      * 8*8 squares are NO_OBSTACLE and the 8*8 squares on the diagonal
      * are OBSTACLE_TOP_RIGHT.
      */
-  case OBSTACLE_TOP_RIGHT:
+  case MapEntity::OBSTACLE_TOP_RIGHT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
@@ -175,16 +175,16 @@ void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, in
 
       // 8*8 square on the diagonal
       index += i;
-      obstacle_tiles[layer][index++] = OBSTACLE_TOP_RIGHT;
+      obstacle_tiles[layer][index++] = MapEntity::OBSTACLE_TOP_RIGHT;
 
       // right part of the row: we are in the top-right corner
       for (j = i + 1; j < tile_width8; j++) {
-	obstacle_tiles[layer][index++] = OBSTACLE;
+	obstacle_tiles[layer][index++] = MapEntity::OBSTACLE;
       }
     }
     break;
     
-  case OBSTACLE_TOP_LEFT:
+  case MapEntity::OBSTACLE_TOP_LEFT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
@@ -192,15 +192,15 @@ void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, in
 
       // left part of the row: we are in the top-left corner
       for (j = 0; j < tile_width8 - i - 1; j++) {
-	obstacle_tiles[layer][index++] = OBSTACLE;
+	obstacle_tiles[layer][index++] = MapEntity::OBSTACLE;
       }
 
       // 8*8 square on the diagonal
-      obstacle_tiles[layer][index] = OBSTACLE_TOP_LEFT;
+      obstacle_tiles[layer][index] = MapEntity::OBSTACLE_TOP_LEFT;
     }
     break;
     
-  case OBSTACLE_BOTTOM_LEFT:
+  case MapEntity::OBSTACLE_BOTTOM_LEFT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
@@ -208,15 +208,15 @@ void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, in
 
       // left part of the row: we are in the bottom-left corner
       for (j = 0; j < i; j++) {
-	obstacle_tiles[layer][index++] = OBSTACLE;
+	obstacle_tiles[layer][index++] = MapEntity::OBSTACLE;
       }
 
       // 8*8 square on the diagonal
-      obstacle_tiles[layer][index] = OBSTACLE_BOTTOM_LEFT;
+      obstacle_tiles[layer][index] = MapEntity::OBSTACLE_BOTTOM_LEFT;
     }
     break;
     
-  case OBSTACLE_BOTTOM_RIGHT:
+  case MapEntity::OBSTACLE_BOTTOM_RIGHT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
@@ -224,11 +224,11 @@ void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, in
 
       // 8*8 square on the diagonal
       index += tile_height8 - i - 1;
-      obstacle_tiles[layer][index++] = OBSTACLE_BOTTOM_RIGHT;
+      obstacle_tiles[layer][index++] = MapEntity::OBSTACLE_BOTTOM_RIGHT;
 
       // right part of the row: we are in the bottom-right corner
       for (j = tile_width8 - i - 1; j < tile_width8; j++) {
-	obstacle_tiles[layer][index++] = OBSTACLE;
+	obstacle_tiles[layer][index++] = MapEntity::OBSTACLE;
       }
     }
     break;
@@ -246,7 +246,7 @@ void MapEntities::add_tile(int tile_id, Layer layer, int x, int y, int width, in
  * (set -1 to indicate that the y coordinate is kept the same from the previous map)
  * @param link_direction initial direction of link in this state (0 to 3)
  */
-void MapEntities::add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction) {
+void MapEntities::add_entrance(string entrance_name, MapEntity::Layer layer, int link_x, int link_y, int link_direction) {
   
   Entrance *entrance = new Entrance(entrance_name, layer, link_x, link_y, link_direction);
   entrances.push_back(entrance);
@@ -263,14 +263,14 @@ void MapEntities::add_entrance(string entrance_name, Layer layer, int link_x, in
  * @param y y position of the exit rectangle
  * @param w width of the exit rectangle
  * @param h height of the exit rectangle
- * @param transition_type type of transition between the two maps
+ * @param transition_style type of transition between the two maps
  * @param map_id id of the next map
  * @param entrance_name name of the entrance of the next map
  */
-void MapEntities::add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
-			   TransitionType transition_type, MapId map_id, string entrance_name) {
+void MapEntities::add_exit(string exit_name, MapEntity::Layer layer, int x, int y, int w, int h,
+			   Transition::Style transition_style, MapId map_id, string entrance_name) {
   
-  Exit *exit = new Exit(exit_name, layer, x, y, w, h, transition_type, map_id, entrance_name);
+  Exit *exit = new Exit(exit_name, layer, x, y, w, h, transition_style, map_id, entrance_name);
   entity_detectors.push_back(exit);
   all_entities.push_back(exit);
 }
@@ -284,17 +284,18 @@ void MapEntities::add_exit(string exit_name, Layer layer, int x, int y, int w, i
  * @param x x position of the pickable item
  * @param y y position of the pickable item
  * @param pickable_item_type type of pickable item to create
- * (can be a normal item, PICKABLE_ITEM_NONE or PICKABLE_ITEM_RANDOM)
- * @param unique_id unique id of the item, for certain kinds of items only (a key, a piece of heart...)
+ * (can be a normal item, NONE or RANDOM)
+ * @param savegame_index savegame index of the possession state of the pickable item,
+ * for certain kinds of pickable items only (a key, a piece of heart...)
  * @param falling_height to make the item falling when it appears (ignored for a fairy)
  * @param will_disappear true to make the item disappear after an amout of time
  */
-void MapEntities::add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
-				    int unique_id, MovementFallingHeight falling_height, bool will_disappear) {
+void MapEntities::add_pickable_item(MapEntity::Layer layer, int x, int y, PickableItem::ItemType pickable_item_type,
+				    int savegame_index, MovementFalling::FallingHeight falling_height, bool will_disappear) {
 
-  PickableItem *item = PickableItem::create(map, layer, x, y, pickable_item_type, unique_id, falling_height, will_disappear);
+  PickableItem *item = PickableItem::create(map, layer, x, y, pickable_item_type, savegame_index, falling_height, will_disappear);
 
-  // item can be NULL if the type was PICKABLE_NONE or PICKABLE_RANDOM
+  // item can be NULL if the type was NONE or RANDOM
   if (item != NULL) {
 
     layer = item->get_layer(); // well, some items set their own layer
@@ -323,15 +324,15 @@ void MapEntities::remove_pickable_item(PickableItem *item) {
  * @param transportable_item_type type of transportable item to create
  * @param pickable_item_type type of pickable item that appears when the
  * transportable item is lifted
- * @param unique_id unique id of the pickable item, for certain kinds of pickable
- * items only (a key, a piece of heart...)
+ * @param savegame_index savegame index of the possession state of the pickable item,
+ * for certain kinds of pickable items only (a key, a piece of heart...)
  */
-void MapEntities::add_transportable_item(Layer layer, int x, int y,
-					 TransportableItemType transportable_item_type,
-					 PickableItemType pickable_item_type,
-					 int unique_id) {
+void MapEntities::add_transportable_item(MapEntity::Layer layer, int x, int y,
+					 TransportableItem::ItemType transportable_item_type,
+					 PickableItem::ItemType pickable_item_type,
+					 int savegame_index) {
   TransportableItem *item = new TransportableItem(map, layer, x, y, transportable_item_type,
-						  pickable_item_type, unique_id);
+						  pickable_item_type, savegame_index);
   
   sprite_entities[layer].push_back(item);
   entity_detectors.push_back(item);
@@ -357,7 +358,7 @@ void MapEntities::remove_transportable_item(TransportableItem *item) {
  * @param big_chest true to make a big chest, false to make a normal chest
  * @param treasure_content content of the treasure in this chest, or -1 to make an empty chest
  */
-void MapEntities::add_chest(string chest_name, Layer layer, int x, int y,
+void MapEntities::add_chest(string chest_name, MapEntity::Layer layer, int x, int y,
 			    bool big_chest, int treasure_content,
 			    int treasure_amount, int treasure_savegame_index) {
   
@@ -390,7 +391,7 @@ void MapEntities::remove_marked_entities(void) {
        it != entities_to_remove.end();
        it++) {
 
-    Layer layer = (*it)->get_layer();
+    MapEntity::Layer layer = (*it)->get_layer();
 
     // remove it from the entity detectors list if present
     // (the cast may be invalid but this is just a pointer comparison)
@@ -427,7 +428,7 @@ void MapEntities::set_suspended(bool suspended) {
 
   // other entities
   list<MapEntity*>::iterator i;
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
 
     for (i = sprite_entities[layer].begin();
 	 i != sprite_entities[layer].end();
@@ -450,7 +451,7 @@ void MapEntities::update(void) {
 
   // update the animated tiles and sprites
   list<MapEntity*>::iterator it;
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       tiles[layer][i]->update();
@@ -478,7 +479,7 @@ void MapEntities::display() {
   Link* link = zsdx->game->get_link();
 
   // map entities
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
 
     // put the tiles
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {

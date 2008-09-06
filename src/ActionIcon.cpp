@@ -37,11 +37,11 @@ ActionIcon::~ActionIcon(void) {
 /**
  * Returns whether the action icon is visible.
  * Unlike the other icons, the action icon is hidden when
- * the key effect is ACTION_KEY_NONE.
- * @return true if the action key effect is not ACTION_KEY_NONE
+ * the key effect is KeysEffect::ACTION_KEY_NONE.
+ * @return true if the action key effect is not KeysEffect::ACTION_KEY_NONE
  */
 bool ActionIcon::is_visible(void) {
-  return action_key_effect_displayed != ACTION_KEY_NONE
+  return action_key_effect_displayed != KeysEffect::ACTION_KEY_NONE
     || is_flipping;
 }
 
@@ -56,15 +56,15 @@ void ActionIcon::update(void) {
   // text shown
   if (!is_flipping) {
 
-    ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
+    KeysEffect::ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
 
     if (action_key_effect_displayed != action_key_effect) {
 
       // determine the appropriate animation
       string animation;
-      if (action_key_effect_displayed != ACTION_KEY_NONE) {
+      if (action_key_effect_displayed != KeysEffect::ACTION_KEY_NONE) {
 
-	if (action_key_effect != ACTION_KEY_NONE) {
+	if (action_key_effect != KeysEffect::ACTION_KEY_NONE) {
 	  animation = "flip";
 	}
 	else {

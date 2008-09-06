@@ -43,7 +43,7 @@ SwordIcon::~SwordIcon(void) {
  * @return true if the sword icon is visible.
  */
 bool SwordIcon::is_visible(void) {
-  return HudElement::is_visible() && keys_effect->get_sword_key_effect() != SWORD_KEY_HIDDEN;
+  return HudElement::is_visible() && keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_HIDDEN;
 }
 
 /**
@@ -57,12 +57,12 @@ void SwordIcon::update(void) {
   // text or sword shown
   if (!is_flipping) {
 
-    SwordKeyEffect sword_key_effect = keys_effect->get_sword_key_effect();
+    KeysEffect::SwordKeyEffect sword_key_effect = keys_effect->get_sword_key_effect();
 
     int sword_number = (equipment != NULL) ? equipment->get_sword() : 0;
 
     if (sword_key_effect_displayed != sword_key_effect
-	|| (sword_key_effect_displayed == SWORD_KEY_SWORD
+	|| (sword_key_effect_displayed == KeysEffect::SWORD_KEY_SWORD
 	    && sword_number_displayed != sword_number)) {
 
       sword_key_effect_displayed = sword_key_effect;
@@ -114,7 +114,7 @@ void SwordIcon::rebuild(void) {
 
     SDL_Rect icon_position = {0, 0, 72, 24};
 
-    if (sword_key_effect_displayed != SWORD_KEY_SWORD) {
+    if (sword_key_effect_displayed != KeysEffect::SWORD_KEY_SWORD) {
       // draw the sword icon with some text (Save, Return...)
       icon_position.y = 24 * sword_key_effect_displayed;
     }

@@ -2,12 +2,11 @@
 #define ZSDX_MAP_ENTITIES_H
 
 #include "Common.h"
-#include "TransitionEffect.h"
-#include "entities/Layer.h"
-#include "entities/Obstacle.h"
-#include "entities/PickableItemType.h"
-#include "entities/TransportableItemType.h"
-#include "movements/MovementFallingHeight.h"
+#include "MapEntity.h"
+#include "Transition.h"
+#include "entities/PickableItem.h"
+#include "entities/TransportableItem.h"
+#include "movements/MovementFalling.h"
 #include <vector>
 #include <list>
 
@@ -33,7 +32,7 @@ class MapEntities {
   /**
    * All tiles of the map (a vector for each layer).
    */
-  vector<TileOnMap*> tiles[LAYER_NB];
+  vector<TileOnMap*> tiles[MapEntity::LAYER_NB];
   
   /**
    * Number of elements in the array obstacle_tiles.
@@ -44,7 +43,7 @@ class MapEntities {
   /**
    * Array of Obstacle representing which tiles are obstacles and how.
    */
-  Obstacle *obstacle_tiles[LAYER_NB];
+  MapEntity::Obstacle *obstacle_tiles[MapEntity::LAYER_NB];
 
   /**
    * All map entities execept the tiles.
@@ -60,7 +59,7 @@ class MapEntities {
   /**
    * All map entities that are displayed as a sprite (a vector for each layer).
    */
-  list<MapEntity*> sprite_entities[LAYER_NB];
+  list<MapEntity*> sprite_entities[MapEntity::LAYER_NB];
 
   /**
    * Vector of all possible entrances of the map.
@@ -75,7 +74,7 @@ class MapEntities {
   /**
    * All obstacle entities of the map.
    */
-  list<MapEntity*> obstacle_entities[LAYER_NB];
+  list<MapEntity*> obstacle_entities[MapEntity::LAYER_NB];
 
  public:
 
@@ -86,25 +85,25 @@ class MapEntities {
   // information about the entities
   unsigned int get_nb_entrances(void);
   Entrance * get_entrance(int index);
-  Obstacle get_obstacle_tile(Layer layer, int x, int y);
-  list<MapEntity*> * get_obstacle_entities(Layer layer);
+  MapEntity::Obstacle get_obstacle_tile(MapEntity::Layer layer, int x, int y);
+  list<MapEntity*> * get_obstacle_entities(MapEntity::Layer layer);
   list<EntityDetector*> * get_entity_detectors(void);
  
   // add and remove entities
-  void add_tile(int tile_id, Layer layer, int x, int y, int width, int height);
-  void add_entrance(string entrance_name, Layer layer, int link_x, int link_y, int link_direction);
-  void add_exit(string exit_name, Layer layer, int x, int y, int w, int h,
-		TransitionType transition_type, MapId map_id, string entrance_name);
+  void add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height);
+  void add_entrance(string entrance_name, MapEntity::Layer layer, int link_x, int link_y, int link_direction);
+  void add_exit(string exit_name, MapEntity::Layer layer, int x, int y, int w, int h,
+		Transition::Style transition_style, MapId map_id, string entrance_name);
 
-  void add_pickable_item(Layer layer, int x, int y, PickableItemType pickable_item_type,
-			 int unique_id, MovementFallingHeight falling, bool will_disappear);
+  void add_pickable_item(MapEntity::Layer layer, int x, int y, PickableItem::ItemType pickable_item_type,
+			 int savegame_index, MovementFalling::FallingHeight falling, bool will_disappear);
   void remove_pickable_item(PickableItem *item);
 
-  void add_transportable_item(Layer layer, int x, int y, TransportableItemType transportable_item_type,
-			      PickableItemType pickable_item_type, int unique_id);
+  void add_transportable_item(MapEntity::Layer layer, int x, int y, TransportableItem::ItemType transportable_item_type,
+			      PickableItem::ItemType pickable_item_type, int savegame_index);
   void remove_transportable_item(TransportableItem *item);
 
-  void add_chest(string chest_name, Layer layer, int x, int y,
+  void add_chest(string chest_name, MapEntity::Layer layer, int x, int y,
 		 bool big_chest, int treasure_content,
 		 int treasure_amount, int treasure_savegame_index);
 

@@ -60,7 +60,7 @@ add_executable (zsdx
   SpriteAnimationDirection.cpp
 
   # transition effects
-  TransitionEffect.cpp
+  Transition.cpp
   TransitionFade.cpp
   TransitionImmediate.cpp
 

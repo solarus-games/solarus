@@ -2,12 +2,12 @@
 #define ZSDX_TRANSITION_FADE_H
 
 #include "Common.h"
-#include "TransitionEffect.h"
+#include "Transition.h"
 
 /**
  * Fade in or fade out transition effect.
  */
-class TransitionFade: public TransitionEffect {
+class TransitionFade: public Transition {
 
  private:
   int alpha_start;
@@ -18,7 +18,7 @@ class TransitionFade: public TransitionEffect {
   Uint32 next_frame_date;
   
  public:
-  TransitionFade(TransitionDirection direction);
+  TransitionFade(Direction direction);
   ~TransitionFade(void);
 
   void start(void);

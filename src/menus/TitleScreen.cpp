@@ -4,7 +4,7 @@
 #include "ResourceManager.h"
 #include "FileTools.h"
 #include "Color.h"
-#include "TransitionEffect.h"
+#include "Transition.h"
 
 /**
  * Creates a title screen.
@@ -158,7 +158,7 @@ void TitleScreen::init_phase_zs_presents(void) {
   zs_presents_position.y = 96;
 
   next_phase_date = SDL_GetTicks() + 2000; // intro: 2 seconds
-  transition_out = TransitionEffect::create(TRANSITION_FADE, TRANSITION_OUT);
+  transition_out = Transition::create(Transition::FADE, Transition::OUT);
 }
 
 /**
@@ -182,9 +182,9 @@ void TitleScreen::init_phase_title(void) {
   title_screen_music = ResourceManager::get_music("title_screen_full.it");
   title_screen_music->play();
 
-  transition_in = TransitionEffect::create(TRANSITION_FADE, TRANSITION_IN);
+  transition_in = Transition::create(Transition::FADE, Transition::IN);
   transition_in->start();
-  transition_out = TransitionEffect::create(TRANSITION_FADE, TRANSITION_OUT);
+  transition_out = Transition::create(Transition::FADE, Transition::OUT);
 }
 
 /**

@@ -127,6 +127,7 @@ class Treasure {
 
  public:
 
+  Treasure(Content content, int savegame_index);
   Treasure(Content content, int amount, int savegame_index);
   ~Treasure(void);
 

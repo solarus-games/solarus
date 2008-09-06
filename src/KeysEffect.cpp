@@ -30,7 +30,7 @@ KeysEffect::~KeysEffect(void) {
  * Returns the current effect of the action key.
  * @return the current effect of the action key
  */
-ActionKeyEffect KeysEffect::get_action_key_effect(void) {
+KeysEffect::ActionKeyEffect KeysEffect::get_action_key_effect(void) {
   return action_key_effect;
 }
 
@@ -38,7 +38,7 @@ ActionKeyEffect KeysEffect::get_action_key_effect(void) {
  * Sets the current effect of the action key.
  * @param action_key_effect the current effect of the action key
  */
-void KeysEffect::set_action_key_effect(ActionKeyEffect action_key_effect) {
+void KeysEffect::set_action_key_effect(KeysEffect::ActionKeyEffect action_key_effect) {
   this->action_key_effect = action_key_effect;
 }
 
@@ -80,7 +80,7 @@ void KeysEffect::restore_action_key_effect(void) {
  * Returns the current effect of the sword key.
  * @return the current effect of the sword key
  */
-SwordKeyEffect KeysEffect::get_sword_key_effect(void) {
+KeysEffect::SwordKeyEffect KeysEffect::get_sword_key_effect(void) {
   return sword_key_effect;
 }
 
@@ -88,7 +88,7 @@ SwordKeyEffect KeysEffect::get_sword_key_effect(void) {
  * Sets the current effect of the sword key.
  * @param sword_key_effect the current effect of the sword key
  */
-void KeysEffect::set_sword_key_effect(SwordKeyEffect sword_key_effect) {
+void KeysEffect::set_sword_key_effect(KeysEffect::SwordKeyEffect sword_key_effect) {
   this->sword_key_effect = sword_key_effect;
 }
 
@@ -131,7 +131,7 @@ void KeysEffect::restore_sword_key_effect(void) {
  * Returns the current effect of the pause key.
  * @return the current effect of the pause key
  */
-PauseKeyEffect KeysEffect::get_pause_key_effect(void) {
+KeysEffect::PauseKeyEffect KeysEffect::get_pause_key_effect(void) {
   return pause_key_effect;
 }
 
@@ -139,7 +139,7 @@ PauseKeyEffect KeysEffect::get_pause_key_effect(void) {
  * Sets the current effect of the pause key.
  * @param pause_key_effect the current effect of the pause key
  */
-void KeysEffect::set_pause_key_effect(PauseKeyEffect pause_key_effect) {
+void KeysEffect::set_pause_key_effect(KeysEffect::PauseKeyEffect pause_key_effect) {
   this->pause_key_effect = pause_key_effect;
 }
 

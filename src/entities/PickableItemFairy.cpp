@@ -9,7 +9,7 @@
  * @param y y coordinate of the fairy to create
  */
 PickableItemFairy::PickableItemFairy(Map *map, int x, int y):
-  PickableItem(map, LAYER_HIGH, x, y, PICKABLE_ITEM_FAIRY, 0) {
+  PickableItem(map, LAYER_HIGH, x, y, PickableItem::FAIRY, 0) {
 
   set_layer_ignored(true);
 }
@@ -28,7 +28,7 @@ PickableItemFairy::~PickableItemFairy(void) {
  */
 void PickableItemFairy::initialize_movement(void) {
 
-  falling_height = MOVEMENT_FALLING_NONE; // a fairy does not fall
+  falling_height = MovementFalling::NONE; // a fairy does not fall
 
   set_movement(new FairyMovement());
 }

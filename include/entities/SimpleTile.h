@@ -18,7 +18,7 @@ class SimpleTile: public Tile {
 
  public:
 
-  SimpleTile(Obstacle obstacle, int x, int y, int width, int height);
+  SimpleTile(MapEntity::Obstacle obstacle, int x, int y, int width, int height);
   ~SimpleTile(void);
 
   void display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image);

@@ -2,7 +2,7 @@
 #define ZSDX_TILE_H
 
 #include "Common.h"
-#include "Obstacle.h"
+#include "MapEntity.h"
 
 /**
  * Abstract class for a tile image.
@@ -17,7 +17,7 @@ class Tile {
    * Is the tile an obstacle: OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
    * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT.
    */
-  const Obstacle obstacle;
+  const MapEntity::Obstacle obstacle;
 
   /**
    * Tile width (multiple of 8).
@@ -29,7 +29,7 @@ class Tile {
    */
   const int height;
 
-  Tile(Obstacle obstacle, int width, int height);
+  Tile(MapEntity::Obstacle obstacle, int width, int height);
 
  public:
 
@@ -52,7 +52,7 @@ class Tile {
    * @return the obstacle property of the tile: OBSTACLE_NONE, OBSTACLE,
    * OBSTACLE_TOP_RIGHT, OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
    */
-  inline Obstacle get_obstacle(void) const { return obstacle; }
+  inline MapEntity::Obstacle get_obstacle(void) const { return obstacle; }
 
   /**
    * Displays the tile on a surface.

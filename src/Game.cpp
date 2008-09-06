@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "ZSDX.h"
 #include "Music.h"
-#include "TransitionEffect.h"
 #include "Map.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
@@ -11,6 +10,7 @@
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "DialogBox.h"
+#include "Treasure.h"
 #include "Keyboard.h"
 #include "entities/Link.h"
 #include "entities/AnimatedTile.h"
@@ -24,9 +24,9 @@
  */
 Game::Game(Savegame *savegame):
   savegame(savegame),
-  paused(false), dialog_box(NULL), keys_effect(NULL),
+  paused(false), dialog_box(NULL), treasure(NULL), keys_effect(NULL),
   current_map(NULL), next_map(NULL),
-  transition_type(TRANSITION_IMMEDIATE), transition(NULL), hud(NULL),
+  transition_style(Transition::IMMEDIATE), transition(NULL), hud(NULL),
   current_music_id(Music::none), current_music(NULL) {
 
   zsdx->set_game(this);
@@ -44,7 +44,7 @@ Game::Game(Savegame *savegame):
   // launch the starting map
   set_current_map(savegame->get_integer(Savegame::STARTING_MAP),
 		  savegame->get_integer(Savegame::STARTING_ENTRANCE),
-		  TRANSITION_FADE);
+		  Transition::FADE);
 }
 
 /**
@@ -58,6 +58,14 @@ Game::~Game(void) {
 
   if (transition != NULL) {
     delete transition;
+  }
+
+  if (dialog_box != NULL) {
+    delete dialog_box;
+  }
+
+  if (treasure != NULL) {
+    delete treasure;
   }
 
   delete keys_effect;
@@ -101,7 +109,6 @@ void Game::handle_event(const SDL_Event &event) {
   case SDL_KEYUP:
     keyboard->key_released(event.key.keysym);
     break;
-
   }
 }
 
@@ -122,7 +129,7 @@ void Game::update_transitions(void) {
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
       link->set_animation_stopped();
-      transition = TransitionEffect::create(transition_type, TRANSITION_OUT);
+      transition = Transition::create(transition_style, Transition::OUT);
       transition->start();
     }
   }
@@ -130,7 +137,7 @@ void Game::update_transitions(void) {
   // if a transition was playing and has just been finished
   if (transition != NULL && transition->is_over()) {
 
-    if (transition->get_direction() == TRANSITION_OUT) {
+    if (transition->get_direction() == Transition::OUT) {
       // change the map
       current_map->leave();
 
@@ -153,7 +160,7 @@ void Game::update_transitions(void) {
   // if a map has just been set as the current map, start it and play the in transition
   if (!current_map->is_started()) {
     current_map->start();
-    transition = TransitionEffect::create(transition_type, TRANSITION_IN);
+    transition = Transition::create(transition_style, Transition::IN);
     transition->start();
   }
 }
@@ -174,6 +181,11 @@ void Game::update(void) {
   savegame->get_equipment()->update();
   update_keys_effect();
   hud->update();
+
+  // update the treasure (if any)
+  if (treasure != NULL) {
+    update_treasure();
+  }
 
   // update the dialog box (if any)
   if (is_showing_message()) {
@@ -197,14 +209,14 @@ void Game::update_keys_effect(void) {
 
     // the sword key swings the sword <=> Link has a sword
     if (savegame->get_equipment()->has_sword()
-	&& keys_effect->get_sword_key_effect() != SWORD_KEY_SWORD) {
+	&& keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
-      keys_effect->set_sword_key_effect(SWORD_KEY_SWORD);
+      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
     }
     else if (!savegame->get_equipment()->has_sword()
-	     && keys_effect->get_sword_key_effect() == SWORD_KEY_SWORD) {
+	     && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
       
-      keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
+      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
     }
     break;
 
@@ -226,6 +238,41 @@ void Game::update_dialog_box(void) {
     delete dialog_box;
     dialog_box = NULL;
   }
+}
+
+/**
+ * Updates the treasure.
+ * This function is called repeatedly while a treasure is being given.
+ */
+void Game::update_treasure(void) {
+  if (treasure != NULL && !is_showing_message()) {
+    delete treasure;
+    treasure = NULL;
+  }
+}
+
+/**
+ * Gives a treasure to Link.
+ * Makes him brandish the treasure and shows a message.
+ * @param treasure the treasure to give him (will be deleted it after Link brandishes it) 
+ */
+void Game::give_treasure(Treasure *treasure) {
+
+  this->treasure = treasure;
+
+  // brandish the treasure
+  link->give_treasure(treasure);
+
+  // give the treasure and show the message
+  treasure->give_to_player();
+}
+
+/**
+ * Returns whether a treasure is being given to the player.
+ * @return true if a treasure is being given to the player.
+ */
+bool Game::is_giving_treasure(void) {
+  return treasure != NULL && is_showing_message();
 }
 
 /**
@@ -266,9 +313,9 @@ Map * Game::get_current_map(void) {
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
  * @param entrance_index index of the entrance of the map you want to use
- * @param transition_type type of transition between the two maps
+ * @param transition_style type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, unsigned int entrance_index, TransitionType transition_type) {
+void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition::Style transition_style) {
 
   next_map = ResourceManager::get_map(map_id);
 
@@ -277,7 +324,7 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
   }
 
   next_map->set_entrance(entrance_index);
-  this->transition_type = transition_type;
+  this->transition_style = transition_style;
 }
 
 /**
@@ -285,9 +332,9 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
  * @param entrance_name name of the entrance of the map you want to use
- * @param transition_type type of transition between the two maps
+ * @param transition_style type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, string entrance_name, TransitionType transition_type) {
+void Game::set_current_map(MapId map_id, string entrance_name, Transition::Style transition_style) {
 
   next_map = ResourceManager::get_map(map_id);
 
@@ -296,7 +343,7 @@ void Game::set_current_map(MapId map_id, string entrance_name, TransitionType tr
   }
 
   next_map->set_entrance(entrance_name);
-  this->transition_type = transition_type;
+  this->transition_style = transition_style;
 }
 
 /**

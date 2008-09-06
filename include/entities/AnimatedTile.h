@@ -5,18 +5,20 @@
 #include "Tile.h"
 
 /**
- * Tile animation sequence type: 0-1-2 or 0-1-2-1
- */
-enum TileAnimationSequence {
-  ANIMATION_SEQUENCE_012,
-  ANIMATION_SEQUENCE_0121,
-};
-
-/**
  * Animated tile.
  * An animated tile has always three frames.
  */
 class AnimatedTile: public Tile {
+
+ public:
+
+  /**
+   * Tile animation sequence mode: 0-1-2 or 0-1-2-1.
+   */
+  enum AnimationSequence {
+    ANIMATION_SEQUENCE_012,
+    ANIMATION_SEQUENCE_0121,
+  };
 
  private:
 
@@ -28,7 +30,7 @@ class AnimatedTile: public Tile {
   /**
    * Animation sequence type of this tile: 0-1-2-1 or 0-1-2.
    */
-  const TileAnimationSequence sequence;
+  const AnimationSequence sequence;
 
   /**
    * Array of 3 SDL_Rect representing the 3 animation frames
@@ -39,7 +41,7 @@ class AnimatedTile: public Tile {
 
  public:
 
-  AnimatedTile(Obstacle obstacle, TileAnimationSequence sequence,
+  AnimatedTile(MapEntity::Obstacle obstacle, AnimationSequence sequence,
 	       int width, int height, int x1, int y1, int x2, int y2, int x3, int y3);
   ~AnimatedTile(void);
 

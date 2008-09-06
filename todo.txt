@@ -3,8 +3,8 @@
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
-- Message : afficher la boîte de dialogue plus haut pour éviter de cacher Link (masquer les icônes d'objets et l'icône pause, déplacer les icônes action et épée vers la gauche)
 - Voir les boss de Pyro
+- Rajouter les nouveaux pickable items dans l'éditeur, et changer transition_type en transition_style (si présent ?)
 
 - Prochaines grandes étapes :
   - finir collectables : fées, fragment de coeur, réceptacle de coeur

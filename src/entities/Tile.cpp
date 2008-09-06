@@ -8,7 +8,7 @@
  * @param width width of the tile in pixels (must be a multiple of 8)
  * @param height height of the tile in pixels (must be a multiple of 8)
  */
-Tile::Tile(Obstacle obstacle, int width, int height):
+Tile::Tile(MapEntity::Obstacle obstacle, int width, int height):
   obstacle(obstacle), width(width), height(height) {
 
   // check the width and the height
@@ -19,7 +19,7 @@ Tile::Tile(Obstacle obstacle, int width, int height):
   }
 
   // diagonal obstacle: check that the tile is square
-  if (obstacle != OBSTACLE_NONE && obstacle != OBSTACLE
+  if (obstacle != MapEntity::OBSTACLE_NONE && obstacle != MapEntity::OBSTACLE
       && width != height) {
     cout << "Invalid tile: the size of a tile with a diagonal obstacle must be square\n";
     exit(1);

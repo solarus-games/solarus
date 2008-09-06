@@ -2,15 +2,15 @@
 #define ZSDX_TRANSITION_IMMEDIATE_H
 
 #include "Common.h"
-#include "TransitionEffect.h"
+#include "Transition.h"
 
 /**
  * Immediate transition effect.
  */
-class TransitionImmediate: public TransitionEffect {
+class TransitionImmediate: public Transition {
 
  public:
-  TransitionImmediate(TransitionDirection direction);
+  TransitionImmediate(Direction direction);
   ~TransitionImmediate(void);
 
   void start(void);

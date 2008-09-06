@@ -19,7 +19,7 @@ static const SDL_Rect falling_moves[24] = {
  * @param y y coordinate of the heart to create
  */
 PickableItemHeart::PickableItemHeart(Map *map, Layer layer, int x, int y):
-  PickableItem(map, layer, x, y, PICKABLE_ITEM_HEART, 0) {
+  PickableItem(map, layer, x, y, PickableItem::HEART, 0) {
 
 }
 

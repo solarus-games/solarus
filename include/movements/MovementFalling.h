@@ -3,7 +3,6 @@
 
 #include "Common.h"
 #include "MovementPath.h"
-#include "MovementFallingHeight.h"
 
 /**
  * Movement of an item that falls on the floor and
@@ -15,7 +14,18 @@ class MovementFalling: public MovementPath {
 
  public:
 
-  MovementFalling(MovementFallingHeight height);
+  /**
+   * Indicates from which height an entity falls.
+   */
+  enum FallingHeight {
+    NONE = -1,
+    SMALL = 0,
+    MEDIUM,
+    BIG
+  };
+
+  // construction and destruction
+  MovementFalling(FallingHeight height);
   ~MovementFalling(void);
 
 };

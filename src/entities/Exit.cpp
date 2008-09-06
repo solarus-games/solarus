@@ -10,14 +10,14 @@
  * @param y y position of the exit's rectangle
  * @param width width of the exit's rectangle
  * @param height height of the exit's rectangle
- * @param transition_type type of transition between the two maps
+ * @param transition_style style of transition between the two maps
  * @param destination_map_id id of the destination map
  * @param entrance_name initial state on the destination map
  */
-Exit::Exit(string name, Layer layer, int x, int y, int width, int height,
-		 TransitionType transition_type, MapId destination_map_id, string entrance_name):
+Exit::Exit(string name, MapEntity::Layer layer, int x, int y, int width, int height,
+	   Transition::Style transition_style, MapId destination_map_id, string entrance_name):
   EntityDetector(COLLISION_ORIGIN_POINT, name, layer, x, y, width, height),
-  transition_type(transition_type), destination_map_id(destination_map_id), entrance_name(entrance_name) {
+  transition_style(transition_style), destination_map_id(destination_map_id), entrance_name(entrance_name) {
   
 }
 
@@ -36,6 +36,6 @@ Exit::~Exit(void) {
 void Exit::entity_collision(MapEntity *entity_overlapping) {
   
   if (entity_overlapping->is_hero()) {
-    zsdx->game->set_current_map(destination_map_id, entrance_name, transition_type);
+    zsdx->game->set_current_map(destination_map_id, entrance_name, transition_style);
   }
 }

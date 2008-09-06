@@ -3,8 +3,8 @@
 /**
  * Constructor.
  */
-TransitionImmediate::TransitionImmediate(TransitionDirection direction):
-TransitionEffect(direction) {
+TransitionImmediate::TransitionImmediate(Transition::Direction direction):
+  Transition(direction) {
 
 }
 

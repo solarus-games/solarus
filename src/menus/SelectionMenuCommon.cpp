@@ -42,15 +42,15 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   background_color = Color::create(104, 144, 240);
 
   // texts
-  text_option1 = new TextSurface(90, 172, ALIGN_LEFT, ALIGN_MIDDLE);
-  text_option2 = new TextSurface(198, 172, ALIGN_LEFT, ALIGN_MIDDLE);
-  text_title = new TextSurface(160, 54, ALIGN_CENTER, ALIGN_MIDDLE);
-  text_title->set_font(FONT_STANDARD);
+  text_option1 = new TextSurface(90, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
+  text_option2 = new TextSurface(198, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
+  text_title = new TextSurface(160, 54, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  text_title->set_font(TextSurface::FONT_STANDARD);
 
   // icons
   keys_effect = new KeysEffect();
-  keys_effect->set_action_key_effect(ACTION_KEY_VALIDATE);
-  keys_effect->set_sword_key_effect(SWORD_KEY_CHOOSE);
+  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_VALIDATE);
+  keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_CHOOSE);
   keys_effect->set_sword_key_enabled(false);
   action_icon = new ActionIcon(keys_effect, 13, 31);
   sword_icon = new SwordIcon(keys_effect, NULL, 0, 9);
@@ -211,7 +211,7 @@ void SelectionMenuCommon::read_savegames(void) {
     }
 
     text_player_names[i] = new TextSurface(87, 88 + i * 27,
-					   ALIGN_LEFT, ALIGN_MIDDLE);
+					   TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
     text_player_names[i]->set_text(player_name);
 
     // hearts

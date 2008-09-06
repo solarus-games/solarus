@@ -1,5 +1,5 @@
 #include "menus/SelectionMenuChooseMode.h"
-#include "TransitionEffect.h"
+#include "Transition.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "Game.h"
@@ -62,7 +62,7 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
     }
 
     if (finished) {
-      transition = TransitionEffect::create(TRANSITION_FADE, TRANSITION_OUT);
+      transition = Transition::create(Transition::FADE, Transition::OUT);
       transition->start();
     }
   }

@@ -180,13 +180,13 @@ void DialogBox::show_message(MessageId message_id) {
   
   // hide the action icon
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->set_action_key_effect(ACTION_KEY_NONE);
+  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   if (get_cancel_mode() != CANCEL_NONE) {
-    keys_effect->set_sword_key_effect(SWORD_KEY_SKIP);
+    keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SKIP);
   }
   else {
-    keys_effect->set_sword_key_effect(SWORD_KEY_HIDDEN);
+    keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
   }
 }
 
@@ -278,19 +278,19 @@ void DialogBox::update(void) {
 
     // show the appropriate action icon
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-    ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
-    if (action_key_effect != ACTION_KEY_NEXT
-	&& action_key_effect != ACTION_KEY_RETURN) {
+    KeysEffect::ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
+    if (action_key_effect != KeysEffect::ACTION_KEY_NEXT
+	&& action_key_effect != KeysEffect::ACTION_KEY_RETURN) {
 
       MessageId next_message_id = current_message->get_next_message_id();
       if (next_message_id != "") {
-	keys_effect->set_action_key_effect(ACTION_KEY_NEXT);
+	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
       }
       else {
-	keys_effect->set_action_key_effect(ACTION_KEY_RETURN);
+	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_RETURN);
       }
 
-      keys_effect->set_sword_key_effect(SWORD_KEY_HIDDEN);
+      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
       end_message_sound->play();
     }
   }

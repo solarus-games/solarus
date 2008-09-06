@@ -21,7 +21,7 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
 
   player_name[0] = '\0';
 
-  text_new_player_name = new TextSurface(67, 85, ALIGN_LEFT, ALIGN_MIDDLE);
+  text_new_player_name = new TextSurface(67, 85, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
   text_new_player_name->set_text(player_name);
 
   x_letter_cursor = 0;

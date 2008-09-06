@@ -32,7 +32,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y) {
   int text_y = y + 1;
   for (int i = 0; i < 3; i++) {
     text_y += 13;
-    text_surfaces[i] = new TextSurface(text_x, text_y, ALIGN_LEFT, ALIGN_TOP);
+    text_surfaces[i] = new TextSurface(text_x, text_y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
   }
 
   if (question) {

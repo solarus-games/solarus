@@ -50,10 +50,18 @@ Tileset * Map::get_tileset(void) {
 
 /**
  * Returns the number of the dungeon of this map.
- * @return the dungeon (1 to 14), or zero is this map is not in a dungeon
+ * @return the dungeon (0 to 13), or -1 is this map is not in a dungeon
  */
 int Map::get_dungeon_number(void) {
   return dungeon;
+}
+
+/**
+ * Returns whether this map belongs to a dungeon.
+ * @return true if this map is in a dungeon
+ */
+bool Map::is_in_dungeon(void) {
+  return get_dungeon_number() != -1;
 }
 
 /**
@@ -297,16 +305,16 @@ bool Map::is_started(void) {
  * @param y y of the point in pixels
  * @return the obstacle property of this tile
  */
-Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
+MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y) {
 
-  Obstacle obstacle_type;
+  MapEntity::Obstacle obstacle_type;
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
   // if the point is outside the map, there is no obstacle (useful when Link goes on a map exit)
   if (x < 0 || x >= width
       || y < 0 || y >= height) {
-    return OBSTACLE_NONE;
+    return MapEntity::OBSTACLE_NONE;
   }
 
   // get the obstacle property of the tile under that point
@@ -315,17 +323,17 @@ Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
   // test the obstacle property of this square
   switch (obstacle_type) {
 
-  case OBSTACLE_NONE:
+  case MapEntity::OBSTACLE_NONE:
     // the square is not an obstacle
     on_obstacle = false;
     break;
 
-  case OBSTACLE:
+  case MapEntity::OBSTACLE:
     // the square is entirely an obstacle
     on_obstacle = true;
     break;
 
-  case OBSTACLE_TOP_RIGHT:
+  case MapEntity::OBSTACLE_TOP_RIGHT:
     // the upper right half of the square is an obstacle
     // so we have to test the position of the point
     x_in_tile = x % 8;
@@ -333,27 +341,27 @@ Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
     on_obstacle = y_in_tile < x_in_tile;
     break;
 
-  case OBSTACLE_TOP_LEFT:
+  case MapEntity::OBSTACLE_TOP_LEFT:
     // same thing
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile < 8 - x_in_tile;
     break;
     
-  case OBSTACLE_BOTTOM_LEFT:
+  case MapEntity::OBSTACLE_BOTTOM_LEFT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile > x_in_tile;
     break;
     
-  case OBSTACLE_BOTTOM_RIGHT:
+  case MapEntity::OBSTACLE_BOTTOM_RIGHT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile > 8 - x_in_tile;
     break;
   }
 
-  return on_obstacle ? obstacle_type : OBSTACLE_NONE;
+  return on_obstacle ? obstacle_type : MapEntity::OBSTACLE_NONE;
 }
 
 /**
@@ -363,7 +371,7 @@ Obstacle Map::pixel_collision_with_tiles(Layer layer, int x, int y) {
  * @return OBSTACLE if there is an obstacle entity at this point,
  * OBSTACLE_NONE otherwise.
  */
-bool Map::collision_with_entities(Layer layer, SDL_Rect &collision_box) {
+bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box) {
 
   list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
 
@@ -388,7 +396,7 @@ bool Map::collision_with_entities(Layer layer, SDL_Rect &collision_box) {
  * (its dimensions should be multiples of 8)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::collision_with_obstacles(Layer layer, SDL_Rect &collision_box) {
+bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box) {
   int x1, x2, y1, y2;
   bool collision = false;
 

@@ -85,14 +85,14 @@ void Tileset::load(void) {
 
       iss >> x >> y >> width >> height;
 
-      create_tile(tile_id, new SimpleTile((Obstacle) obstacle, x, y, width, height));
+      create_tile(tile_id, new SimpleTile((MapEntity::Obstacle) obstacle, x, y, width, height));
     }
     else {
       int sequence, x1, y1, x2, y2, x3, y3;
 
       iss >> sequence >> width >> height >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
 
-      create_tile(tile_id, new AnimatedTile((Obstacle) obstacle, (TileAnimationSequence) sequence,
+      create_tile(tile_id, new AnimatedTile((MapEntity::Obstacle) obstacle, (AnimatedTile::AnimationSequence) sequence,
 					    width, height, x1, y1, x2, y2, x3, y3));
     }
   }

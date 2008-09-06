@@ -140,9 +140,9 @@ class Savegame {
      */
     FIRST_DUNGEON_MAP                = 200, /**< 1 if the player has the map of dungeon #1 */
     FIRST_DUNGEON_COMPASS            = 201, /**< 1 if the player has the map of dungeon #1 */
-    FIRST_DUNGEON_BIG_KEY            = 203, /**< 1 if the player has the big key of dungeon #1 */
-    FIRST_DUNGEON_BOSS_KEY           = 204, /**< 1 if the player has the boss key of dungeon #1 */
-    FIRST_DUNGEON_SMALL_KEYS         = 202, /**< number of small keys found in dungeon #1 */
+    FIRST_DUNGEON_BIG_KEY            = 202, /**< 1 if the player has the big key of dungeon #1 */
+    FIRST_DUNGEON_BOSS_KEY           = 203, /**< 1 if the player has the boss key of dungeon #1 */
+    FIRST_DUNGEON_SMALL_KEYS         = 204, /**< number of small keys found in dungeon #1 */
     FIRST_DUNGEON_UNUSED_1           = 205, /**< empty place for future new item in dungeon #1 */
     FIRST_DUNGEON_UNUSED_2           = 206, /**< empty place for future new item in dungeon #1 */
     // then, same thing for other dungeons

@@ -9,13 +9,13 @@
  * @param width width of the hud element surface
  * @param height height of the hud element surface
  */
-HudElement::HudElement(int x, int y, int width, int height) {
+HudElement::HudElement(int x, int y, int width, int height):
+  visible(true) {
 
   surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
   SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
 
-  destination_position.x = x;
-  destination_position.y = y;
+  set_position(x, y);
 }
 
 /**
@@ -23,6 +23,15 @@ HudElement::HudElement(int x, int y, int width, int height) {
  */
 HudElement::~HudElement(void) {
   SDL_FreeSurface(surface_drawn);
+}
+
+/**
+ * Changes the position of this hud element.
+ */
+void HudElement::set_position(int x, int y) {
+  
+  destination_position.x = x;
+  destination_position.y = y;
 }
 
 /**
@@ -35,13 +44,21 @@ void HudElement::rebuild(void) {
 }
 
 /**
+ * Shows or hides this element.
+ * @param visible true to make it visible, false to hide it
+ */
+void HudElement::set_visible(bool visible) {
+  this->visible = visible;
+}
+
+/**
  * Returns whether this hud element is visible.
  * The display() function does nothing if this function
  * returns false.
  * @return true if this hud element is visible, false otherwise
  */
 bool HudElement::is_visible(void) {
-  return true;
+  return visible;
 }
 
 /**

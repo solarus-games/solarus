@@ -11,10 +11,13 @@ class HUD {
 
  private:
 
+  Game *game;
   Equipment *equipment;
 
   int nb_elements;
   HudElement *elements[16];
+
+  bool showing_message;
 
  public:
 

@@ -3,16 +3,25 @@
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
-- Message : afficher la boîte de dialogue plus haut pour éviter de cacher Link
-- Propriétés d'une map : numéro du donjon (entre 1 et 14, ou 0 pour pas de donjon)
+- Message : afficher la boîte de dialogue plus haut pour éviter de cacher Link (masquer les icônes d'objets et l'icône pause, déplacer les icônes action et épée vers la gauche)
+- Voir les boss de Pyro
+
+- Prochaines grandes étapes :
+  - finir collectables : fées, fragment de coeur, réceptacle de coeur
+  - collision au pixel près
+  - couper des buissons et des herbes
+  - écran de pause
+  - combats
+  - scripts
+  - portes
 
 ----------------
 Couper des buissons avec l'épée :
 ----------------
 - utiliser le mode collision_pixel directement (voir comment faire 2 modes à la fois car on a déjà facing point pour soulever)
 - puis, en cas de collision au pixel près avec le sprite de l'épée :
-    - si c'est un coup d'épée normal : on coupe le buisson si le facing point de link est dans l'alignement du buisson (pas forcément dessus)
-    - si l'épée charge ou est chargée : on coupe le buisson et on stoppe le chargement
+    - si c'est un coup d'épée normal : on coupe le buisson si le facing point de link est dans l'alignement du buisson (pas forcément dessus) et à moins d'une certaine distance
+    - si l'épée charge ou est chargée : pareil mais en plus on stoppe le chargement
     - si attaque tournoyante : on coupe le buisson et on laisse l'attaque tournoyante continuer (donc c'est le seul cas où on peut couper plusieurs buissons d'un coup)
 
 Même chose pour l'herbe sauf que rien ne se passe quand l'épée charge

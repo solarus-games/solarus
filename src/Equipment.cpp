@@ -253,6 +253,7 @@ void Equipment::set_max_hearts(int max_hearts) {
  */
 void Equipment::add_heart_container(void) {
   set_max_hearts(get_max_hearts() + 1);
+  restore_all_hearts();
 }
 
 /**

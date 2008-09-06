@@ -25,6 +25,8 @@ class HudElement {
    * Position of this hud element on the destination surface.
    */
   SDL_Rect destination_position;
+
+  bool visible;
   
   HudElement(int x, int y, int width, int height);
 
@@ -32,9 +34,12 @@ class HudElement {
 
   virtual ~HudElement(void);
 
+  void set_position(int x, int y);
+  void set_visible(bool visible);
+  virtual bool is_visible(void);
+
   virtual void update(void) = 0;
   virtual void rebuild(void);
-  virtual bool is_visible(void);
   void display(SDL_Surface *destination);
 };
 

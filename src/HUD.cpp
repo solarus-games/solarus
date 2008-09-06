@@ -12,13 +12,12 @@
 /**
  * Constructor.
  */
-HUD::HUD(Game *game) {
+HUD::HUD(Game *game):
+  game(game), nb_elements(0), showing_message(false) {
 
   Savegame *savegame = game->get_savegame();
   Equipment *equipment = savegame->get_equipment();
   KeysEffect *keys_effect = game->get_keys_effect();
-
-  nb_elements = 0;
 
   elements[nb_elements++] = new HeartsView(equipment, 216, 14);
   elements[nb_elements++] = new RupeesView(equipment, 8, 216);
@@ -45,6 +44,29 @@ HUD::~HUD(void) {
  */
 void HUD::update(void) {
 
+  // detect when the game is showing a message
+  if (game->is_showing_message() && !showing_message) {
+    showing_message = true;
+
+    // a message is shown: hide or move the top-left icons
+    elements[3]->set_visible(false); // item 0
+    elements[4]->set_visible(false); // item 1
+    elements[6]->set_visible(false); // pause icon
+    elements[5]->set_position(-14, 29); // sword icon
+    elements[7]->set_position(-1, 51); // action icon
+  }
+  else if (showing_message && !game->is_showing_message()) {
+    showing_message = false;
+
+    // a message is shown: hide or move the top-left icons
+    elements[3]->set_visible(true); // item 0
+    elements[4]->set_visible(true); // item 1
+    elements[6]->set_visible(true); // pause icon
+    elements[5]->set_position(10, 29); // sword icon
+    elements[7]->set_position(23, 51); // action icon
+  }
+
+  // update each element
   for (int i = 0; i < nb_elements; i++) {
     elements[i]->update();
   }

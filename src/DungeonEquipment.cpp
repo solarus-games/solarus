@@ -8,7 +8,8 @@
  * Constructor.
  * @param savegame the savegame
  */
-DungeonEquipment::DungeonEquipment(Savegame *savegame) {
+DungeonEquipment::DungeonEquipment(Savegame *savegame):
+  savegame(savegame) {
 
 }
 
@@ -21,15 +22,15 @@ DungeonEquipment::~DungeonEquipment(void) {
 
 /**
  * Returns the current dungeon number.
- * The dungeon number is between 1 and 14.
- * @return the number of the current dungeon
+ * The dungeon number is between 0 and 13. -1 means that the player is not in a dungeon.
+ * @return the number of the current dungeon, or -1 if we are not in a dungeon
  */
 int DungeonEquipment::get_current_dungeon(void) {
 
   Map *current_map = zsdx->game->get_current_map();
   int dungeon = current_map->get_dungeon_number();
 
-  if (dungeon == 0) {
+  if (dungeon == -1) {
     DIE("The player is not in a dungeon");
   }
 

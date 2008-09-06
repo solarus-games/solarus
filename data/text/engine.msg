@@ -1201,7 +1201,7 @@ line3 = "l'ancienne !"
 icon = 68
 line1 = "Tu as trouvé"
 line2 = "le Sabre du Héros !"
-line3 = "Cette nouvelle lame"
+line3 = "Cette nouvelle lame$0"
 next = _treasure_67.1
 
 [_treasure_69]
@@ -1209,7 +1209,7 @@ next = _treasure_67.1
 #       |--------------------|
 icon = 69
 line1 = "Tu as trouvé la Lame"
-line2 = "Purificatrice !"
+line2 = "Purificatrice !$0"
 line3 = "La puissance de"
 next = _treasure_69.1
 
@@ -1364,12 +1364,12 @@ line1 = "Tu obtiens un Coeur"
 line2 = "supplémentaire !"
 
 [_treasure_80]
-# Réceptable de Coeur
+# Réceptacle de Coeur
 #       |--------------------|
 icon = 80
 line1 = "Tu as trouvé un"
 line2 = "Réceptacle de Coeur !"
-next = _treasure_79_4.1
+next = _treasure_79_4.2
 
 [_treasure_82_1]
 # 1 Bombe

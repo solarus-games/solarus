@@ -18,24 +18,27 @@ static const Uint32 char_delays[3] = {
  * @param dialog_box the dialog box
  * @param message_id id of the message
  */
-Message::Message(DialogBox *dialog_box, MessageId message_id) {
+Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y) {
 
   this->dialog_box = dialog_box;
+  this->x = x;
+  this->y = y;
 
   // parse the message
   parse(message_id);
 
   // create the text surfaces
-  int x = (dialog_box->get_icon_number() == -1) ? 67 : 99;
+  int text_x = x + ((dialog_box->get_icon_number() == -1) ? 16 : 48);
+  int text_y = y + 1;
   for (int i = 0; i < 3; i++) {
-    text_surfaces[i] = new TextSurface(x, 158 + i * 13,
-				       ALIGN_LEFT, ALIGN_TOP);
+    text_y += 13;
+    text_surfaces[i] = new TextSurface(text_x, text_y, ALIGN_LEFT, ALIGN_TOP);
   }
 
   if (question) {
-    x += 24;
-    text_surfaces[1]->set_x(x);
-    text_surfaces[2]->set_x(x);
+    text_x += 24;
+    text_surfaces[1]->set_x(text_x);
+    text_surfaces[2]->set_x(text_x);
   }
 
   // initialize the state
@@ -108,15 +111,15 @@ void Message::parse(MessageId message_id) {
   string cancel_mode_text = CFG_ReadText("cancel", "");
 
   if (cancel_mode_text != "") { // a cancel mode is specified
-    DialogCancelMode cancel_mode;
+    DialogBox::CancelMode cancel_mode;
     if (cancel_mode_text == "current") {
-      cancel_mode = DIALOG_CANCEL_CURRENT;
+      cancel_mode = DialogBox::CANCEL_CURRENT;
     }
     else if (cancel_mode_text == "all") {
-      cancel_mode = DIALOG_CANCEL_ALL;
+      cancel_mode = DialogBox::CANCEL_ALL;
     }
     else {
-      cancel_mode = DIALOG_CANCEL_NONE;
+      cancel_mode = DialogBox::CANCEL_NONE;
     }
     dialog_box->set_cancel_mode(cancel_mode);
   }
@@ -141,7 +144,7 @@ bool Message::is_question(void) {
  */
 MessageId Message::get_next_message_id(void) {
 
-  if (question && !dialog_box->was_answer_1_selected()) {
+  if (question && !dialog_box->get_last_answer_selected() == 1) {
     return next_message_id_2;
   }
 
@@ -212,19 +215,19 @@ void Message::add_character(void) {
 
     case '1':
       // slow
-      dialog_box->set_speed(DIALOG_SPEED_SLOW);
+      dialog_box->set_speed(DialogBox::SPEED_SLOW);
       update_char_delay();
       break;
 
     case '2':
       // medium
-      dialog_box->set_speed(DIALOG_SPEED_MEDIUM);
+      dialog_box->set_speed(DialogBox::SPEED_MEDIUM);
       update_char_delay();
       break;
 
     case '3':
       // fast
-      dialog_box->set_speed(DIALOG_SPEED_FAST);
+      dialog_box->set_speed(DialogBox::SPEED_FAST);
       update_char_delay();
       break;
 

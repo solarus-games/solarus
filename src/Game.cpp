@@ -417,7 +417,17 @@ DialogBox * Game::get_dialog_box(void) {
  * be displayed too.
  */
 void Game::show_message(MessageId message_id) {
-  dialog_box = new DialogBox(message_id);
+
+  SDL_Rect *screen_position = current_map->get_screen_position();
+  int y;
+  if (link->get_y() < screen_position->y + 130) {
+    y = 144;
+  }
+  else {
+    y = 20;
+  }
+
+  dialog_box = new DialogBox(message_id, 51, y);
 }
 
 /**

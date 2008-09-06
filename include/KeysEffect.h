@@ -7,7 +7,7 @@
  * What happens when the user presses the Action key.
  */
 enum ActionKeyEffect {
-  ACTION_KEY_NONE,     /**< nothing happens when the user presses the Action key */
+  ACTION_KEY_NONE,     /**< nothing happens when the user presses the Action key and the action icon is not shown */
 
   ACTION_KEY_VALIDATE, /**< validate a choice */
   ACTION_KEY_NEXT,     /**< display the next message in a dialog */
@@ -28,6 +28,7 @@ enum ActionKeyEffect {
  * What happens when the user presses the Sword key.
  */
 enum SwordKeyEffect {
+  SWORD_KEY_HIDDEN = -1,   /**< nothing happens when the user presses the Sword key and the sword icon is not shown */
   SWORD_KEY_NONE   = 0,    /**< nothing happens when the user presses the Sword key */
   SWORD_KEY_SAVE   = 1,    /**< save the game */
   SWORD_KEY_RETURN = 2,    /**< exit a submenu */

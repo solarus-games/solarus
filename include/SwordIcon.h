@@ -30,7 +30,8 @@ class SwordIcon: public HudElement {
 
   SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y);
   ~SwordIcon(void);
-  
+
+  bool is_visible(void);
   void update(void);
   void rebuild(void);
 

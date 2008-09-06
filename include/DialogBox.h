@@ -7,30 +7,32 @@
 #include <vector>
 
 /**
- * The possible speeds of a dialog's text.
- */
-enum DialogSpeed {
-  DIALOG_SPEED_SLOW,
-  DIALOG_SPEED_MEDIUM,
-  DIALOG_SPEED_FAST
-};
-
-/**
- * Indicates what happens when the user tries to cancel
- * the current message.
- */
-enum DialogCancelMode {
-  DIALOG_CANCEL_NONE,
-  DIALOG_CANCEL_CURRENT,
-  DIALOG_CANCEL_ALL
-};
-
-/**
  * A dialog box where a succession of messages can be displayed.
  * This class displays the dialog box and handles its properties:
  * the text speed and the state of the action and sword keys.
  */
 class DialogBox {
+
+ public:
+
+  /**
+   * The possible speeds of a dialog's text.
+   */
+  enum Speed {
+    SPEED_SLOW,
+    SPEED_MEDIUM,
+    SPEED_FAST
+  };
+
+  /**
+   * Indicates what happens when the user tries to cancel
+   * the current message.
+   */
+  enum CancelMode {
+    CANCEL_NONE,
+    CANCEL_CURRENT,
+    CANCEL_ALL
+  };
 
  private:
   
@@ -38,12 +40,12 @@ class DialogBox {
   Message *current_message;
   MessageId current_message_id;
   std::map<MessageId, string> variables;
-  static bool answer_1_selected;           // the answer selected
+  static int answer_selected;
 
   // dialog properties
-  DialogSpeed speed;
-  DialogCancelMode cancel_mode;
-  bool cancel_dialog;
+  Speed speed;
+  CancelMode cancel_mode;
+  bool cancel_dialog;          // true if the user has cancelled the dialog
   int icon_number;             // index of the 16*16 icon displayed, or -1 if there is no icon
 
   // graphics
@@ -55,19 +57,26 @@ class DialogBox {
   Sound *end_message_sound;
   Sound *switch_answer_sound;
 
+  // position of the images
+  int x;
+  int y;
+  SDL_Rect box_dst_position;
+  SDL_Rect question_dst_position;
+  SDL_Rect icon_dst_position;
+
   void show_message(MessageId messageId);
 
  public:
 
   // creation and destruction
-  DialogBox(MessageId first_message_id);
+  DialogBox(MessageId first_message_id, int x, int y);
   ~DialogBox(void);
 
   // dialog properties
-  DialogSpeed get_speed(void);
-  void set_speed(DialogSpeed speed);
-  DialogCancelMode get_cancel_mode(void);
-  void set_cancel_mode(DialogCancelMode cancel_mode);
+  Speed get_speed(void);
+  void set_speed(Speed speed);
+  CancelMode get_cancel_mode(void);
+  void set_cancel_mode(CancelMode cancel_mode);
   int get_icon_number(void);
   void set_icon_number(int icon_number);
 
@@ -80,7 +89,7 @@ class DialogBox {
   void sword_key_pressed(void);
   void up_or_down_key_pressed(void);
   bool is_over(void);
-  static bool was_answer_1_selected(void);
+  static int get_last_answer_selected(void);
 
   // update and display
   void update(void);

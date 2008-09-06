@@ -8,27 +8,34 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 
-bool DialogBox::answer_1_selected = true;
+int DialogBox::answer_selected = 0;
 
 static SDL_Rect box_src_position = {0, 0, 220, 60};
-static SDL_Rect box_dst_position = {51, 144, 0, 0};
-
 static SDL_Rect question_src_position = {48, 60, 8, 8};
-static SDL_Rect question_dst_position = {69, 171, 0, 0};
-
-static SDL_Rect icon_dst_position = {69, 166, 0, 0};
 
 /**
  * Creates a new dialog box.
  * @param first_message_id id of the message to show
  * (it can be followed by other messages)
+ * @param x x coordinate of the top-left corner of the box
+ * @param y y coordinate of the top-left corner of the box
  */
-DialogBox::DialogBox(MessageId first_message_id) {
+DialogBox::DialogBox(MessageId first_message_id, int x, int y) {
 
-  // load the images and the sounds
+  // load the images
   img_box = ResourceManager::load_image("hud/dialog_box.png");
   img_icons = ResourceManager::load_image("hud/message_and_treasure_icons.png");
 
+  this->x = x;
+  this->y = y;
+  box_dst_position.x = x;
+  box_dst_position.y = y;
+  question_dst_position.x = x + 18;
+  question_dst_position.y = y + 27;
+  icon_dst_position.x = x + 18;
+  icon_dst_position.y = y + 22;
+
+  // load the sounds
   end_message_sound = ResourceManager::get_sound("message_end");
   switch_answer_sound = ResourceManager::get_sound("cursor");
 
@@ -41,8 +48,8 @@ DialogBox::DialogBox(MessageId first_message_id) {
   keys_effect->save_sword_key_effect();
 
   // initialize the current message
-  speed = DIALOG_SPEED_FAST;
-  cancel_mode = DIALOG_CANCEL_NONE;
+  speed = SPEED_FAST;
+  cancel_mode = CANCEL_NONE;
   icon_number = -1;
   show_message(first_message_id);
   cancel_dialog = false;
@@ -69,7 +76,7 @@ DialogBox::~DialogBox(void) {
  * Returns the speed of the text.
  * @return the speed
  */
-DialogSpeed DialogBox::get_speed(void) {
+DialogBox::Speed DialogBox::get_speed(void) {
   return speed;
 }
 
@@ -77,24 +84,24 @@ DialogSpeed DialogBox::get_speed(void) {
  * Sets the speed of the text.
  * @param speed the new speed
  */
-void DialogBox::set_speed(DialogSpeed speed) {
+void DialogBox::set_speed(Speed speed) {
   this->speed = speed;
-}
-
-/**
- * Sets the cancel mode of the dialog box.
- * @param cancel_mode the new cancel mode
- */
-void DialogBox::set_cancel_mode(DialogCancelMode cancel_mode) {
-  this->cancel_mode = cancel_mode;
 }
 
 /**
  * Returns the cancel mode of the dialog box.
  * @return cancel_mode the cancel mode
  */
-DialogCancelMode DialogBox::get_cancel_mode(void) {
+DialogBox::CancelMode DialogBox::get_cancel_mode(void) {
   return cancel_mode;
+}
+
+/**
+ * Sets the cancel mode of the dialog box.
+ * @param cancel_mode the new cancel mode
+ */
+void DialogBox::set_cancel_mode(CancelMode cancel_mode) {
+  this->cancel_mode = cancel_mode;
 }
 
 /**
@@ -123,7 +130,6 @@ void DialogBox::set_icon_number(int icon_number) {
  * @param value the value to add
  */
 void DialogBox::set_variable(MessageId message_id, string value) {
-
   variables[message_id] = value;
 }
 
@@ -164,23 +170,23 @@ string DialogBox::get_variable(void) {
 void DialogBox::show_message(MessageId message_id) {
 
   // create the message
-  current_message = new Message(this, message_id);
+  current_message = new Message(this, message_id, x, y);
   current_message_id = message_id;
 
   if (current_message->is_question()) {
-    answer_1_selected = true;
+    answer_selected = 0;
   }
-  question_dst_position.y = 171;
+  question_dst_position.y = y + 27;
   
   // hide the action icon
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   keys_effect->set_action_key_effect(ACTION_KEY_NONE);
 
-  if (get_cancel_mode() != DIALOG_CANCEL_NONE) {
+  if (get_cancel_mode() != CANCEL_NONE) {
     keys_effect->set_sword_key_effect(SWORD_KEY_SKIP);
   }
   else {
-    keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
+    keys_effect->set_sword_key_effect(SWORD_KEY_HIDDEN);
   }
 }
 
@@ -209,7 +215,7 @@ void DialogBox::action_key_pressed(void) {
  */
 void DialogBox::sword_key_pressed(void) {
 
-  if (cancel_mode == DIALOG_CANCEL_ALL) {
+  if (cancel_mode == CANCEL_ALL) {
     cancel_dialog = true;
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
     keys_effect->restore_action_key_effect();
@@ -218,7 +224,7 @@ void DialogBox::sword_key_pressed(void) {
   else if (current_message->is_over()) {
     action_key_pressed();
   }
-  else if (cancel_mode == DIALOG_CANCEL_CURRENT) {
+  else if (cancel_mode == CANCEL_CURRENT) {
     current_message->show_all_now();
   }
 }
@@ -230,21 +236,19 @@ void DialogBox::up_or_down_key_pressed(void) {
 
   if (current_message->is_question() && current_message->is_over()) {
     
-    // switch the anser
-    answer_1_selected = !answer_1_selected;
-    question_dst_position.y = answer_1_selected ? 171 : 184;
+    // switch the answer
+    answer_selected = 1 - answer_selected;
+    question_dst_position.y = y + ((answer_selected == 0) ? 27 : 40);
     switch_answer_sound->play();
   }
 }
 
 /**
- * For a message with a question, returns true if the player
- * has selected the first answer or false if he has selected
- * the second one.
- * @return the answer selected
+ * Returns the answer selected by the player in the last message with a question.
+ * @return the answer selected: 0 for the first one, 1 for the second one
  */
-bool DialogBox::was_answer_1_selected(void) {
-  return answer_1_selected;
+int DialogBox::get_last_answer_selected(void) {
+  return answer_selected;
 }
 
 /**
@@ -286,7 +290,7 @@ void DialogBox::update(void) {
 	keys_effect->set_action_key_effect(ACTION_KEY_RETURN);
       }
 
-      keys_effect->set_sword_key_effect(SWORD_KEY_NONE);
+      keys_effect->set_sword_key_effect(SWORD_KEY_HIDDEN);
       end_message_sound->play();
     }
   }
@@ -311,10 +315,10 @@ void DialogBox::display(SDL_Surface *destination_surface) {
     src_position.y = 16 * (icon_number / 10);
     SDL_BlitSurface(img_icons, &src_position, destination_surface, &icon_dst_position);
 
-    question_dst_position.x = 101;
+    question_dst_position.x = x + 50;
   }
   else {
-    question_dst_position.x = 69;
+    question_dst_position.x = x + 18;
   }
 
   // display the question arrow
@@ -324,6 +328,6 @@ void DialogBox::display(SDL_Surface *destination_surface) {
 
   // display the end message arrow
   if (current_message->is_over()) {
-    sprite_message_end_arrow->display(destination_surface, 154, 200);
+    sprite_message_end_arrow->display(destination_surface, x + 103, y + 56);
   }
 }

@@ -46,14 +46,14 @@ void HUD::update(void) {
 
   // detect when the game is showing a message
   if (game->is_showing_message() && !showing_message) {
-    showing_message = true;
+      showing_message = true;
 
-    // a message is shown: hide or move the top-left icons
-    elements[3]->set_visible(false); // item 0
-    elements[4]->set_visible(false); // item 1
-    elements[6]->set_visible(false); // pause icon
-    elements[5]->set_position(-14, 29); // sword icon
-    elements[7]->set_position(-1, 51); // action icon
+      // a message is shown: hide or move the top-left icons
+      elements[3]->set_visible(false); // item 0
+      elements[4]->set_visible(false); // item 1
+      elements[6]->set_visible(false); // pause icon
+      elements[5]->set_position(-18, 29); // sword icon
+      elements[7]->set_position(-5, 51); // action icon
   }
   else if (showing_message && !game->is_showing_message()) {
     showing_message = false;

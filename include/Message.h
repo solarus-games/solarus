@@ -24,6 +24,9 @@ class Message {
   MessageId next_message_id;   // id of the next message (or an empty string if this is the last message)
   MessageId next_message_id_2;
 
+  int x;
+  int y;
+
   void parse(MessageId message_id);
   void set_variable(string value);
 
@@ -41,7 +44,7 @@ class Message {
  public:
 
   // creation and destruction
-  Message(DialogBox *dialog_box, MessageId message_id);
+  Message(DialogBox *dialog_box, MessageId message_id, int x, int y);
   ~Message(void);
 
   // message properties

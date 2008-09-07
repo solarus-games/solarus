@@ -135,7 +135,7 @@ void Chest::action_key_pressed(void) {
       ResourceManager::get_sound("chest_open")->play();
       get_last_sprite()->set_current_animation(big_chest ? "big_open" : "small_open");
       open = true;
-      treasure_date = SDL_GetTicks() + 500;
+      treasure_date = SDL_GetTicks() + 300;
   
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
       link->freeze();

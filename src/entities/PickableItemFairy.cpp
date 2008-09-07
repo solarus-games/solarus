@@ -1,5 +1,11 @@
 #include "entities/PickableItemFairy.h"
 #include "movements/FairyMovement.h"
+#include "ZSDX.h"
+#include "Game.h"
+#include "Savegame.h"
+#include "Equipment.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 
 /**
  * Creates a pickable fairy.
@@ -11,7 +17,7 @@
 PickableItemFairy::PickableItemFairy(Map *map, int x, int y):
   PickableItem(map, LAYER_HIGH, x, y, PickableItem::FAIRY, 0) {
 
-  set_layer_ignored(true);
+  set_layer_ignored(true); // detect collisions even if the fairy is on LAYER_HIGH
 }
 
 /**
@@ -45,4 +51,20 @@ void PickableItemFairy::update(void) {
 
   shadow_x = get_x();
   shadow_y = get_y();
+}
+
+/**
+ * Gives the item to the player.
+ */
+void PickableItemFairy::give_item_to_player(void) {
+
+  // play the sound
+  if (properties[type].sound != "") {
+    Sound *sound = ResourceManager::get_sound(properties[type].sound);
+    sound->play();
+  }
+
+  // give the fairy
+  Equipment *equipment = zsdx->game->get_savegame()->get_equipment();
+  equipment->give_fairy();
 }

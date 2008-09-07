@@ -20,6 +20,9 @@ class Equipment {
   Uint32 magic_decrease_delay;
   Uint32 next_magic_decrease_date;
 
+  // giving a fairy to the player
+  bool giving_fairy;
+
  public:
 
   Equipment(Savegame *savegame);
@@ -64,6 +67,8 @@ class Equipment {
 
   int get_nb_pieces_of_heart(void);
   void add_piece_of_heart(void);
+
+  void give_fairy(void);
 
   // magic
   int get_max_magic(void);
@@ -121,9 +126,6 @@ class Equipment {
   // quest status
   bool has_world_map(void);
   void add_world_map(void);
-
-  // TODO: dungeon items
-
 };
 
 #endif

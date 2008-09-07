@@ -89,7 +89,7 @@ class DialogBox {
   void sword_key_pressed(void);
   void up_or_down_key_pressed(void);
   bool is_over(void);
-  static int get_last_answer_selected(void);
+  static int get_last_answer(void);
 
   // update and display
   void update(void);

@@ -92,11 +92,6 @@
 # Exception : pour le Flacon 2, le numéro de l'item (13) est remplacé
 # par celui du Flacon 1 (6) pour éviter de répéter les mêmes messages.
 
-[_warning_magic]
-#       |--------------------|
-line1 = "Mais surveille ton"
-line2 = "compteur magique !"
-
 [_item_description_0_1]
 # Plume / Feather
 #       |--------------------|
@@ -1506,6 +1501,11 @@ line2 = "vaut 20 Rubis !"
 # 
 # Autres messages affichés par le moteur de jeu
 
+[_warning_magic]
+#       |--------------------|
+line1 = "Mais surveille ton"
+line2 = "compteur magique !"
+
 [_empty_chest]
 #       |-----------------------|
 line1 = "Ce coffre est vide !"
@@ -1516,3 +1516,24 @@ icon = 73
 line1 = "Il te faut la Grande"
 line2 = "Clé pour ouvrir"
 line3 = "cette serrure !"
+
+[_found_fairy]
+#       |--------------------|
+icon = 81
+line1 = "Tu as trouvé une"
+line2 = "Fée, elle est"
+line3 = "merveilleuse !"
+next = _found_fairy.1
+
+[_found_fairy.1]
+#       |--------------------___|
+icon = -1
+line1 = "Que vas-tu en faire ?"
+line2 = "Récupérer des Coeurs"
+line3 = "La conserver"
+question = true
+
+[_found_fairy.no_empty_bottle]
+#       |-----------------------|
+line1 = "Tu n'as pas de Flacon"
+line2 = "vide !"

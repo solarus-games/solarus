@@ -2,12 +2,15 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
+#include "DialogBox.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 
 /**
  * Constructor.
  */
 Equipment::Equipment(Savegame *savegame):
-  savegame(savegame), magic_decrease_delay(0) {
+  savegame(savegame), magic_decrease_delay(0), giving_fairy(false) {
 }
 
 /**
@@ -25,6 +28,7 @@ Equipment::~Equipment(void) {
  */
 void Equipment::update(void) {
 
+  // magic bar
   if (magic_decrease_delay != 0) {
     // the magic bar is decreasing
 
@@ -46,6 +50,32 @@ void Equipment::update(void) {
     else {
       // delay the next decrease while the game is suspended
       next_magic_decrease_date = SDL_GetTicks();
+    }
+  }
+
+  // fairy
+  if (giving_fairy) {
+
+    if (!zsdx->game->is_showing_message()) {
+
+      giving_fairy = false;
+      int answer = zsdx->game->get_dialog_box()->get_last_answer();
+
+      if (answer == 0) {
+	// restore the hearts
+	restore_all_hearts();
+      }
+      else {
+	// keep the fairy in a bottle
+	if (!has_empty_bottle()) {
+	  zsdx->game->show_message("_found_fairy.no_empty_bottle");
+	  ResourceManager::get_sound("wrong")->play();
+	}
+	else {
+	  give_inventory_item(get_first_empty_bottle(), 6);
+	  ResourceManager::get_sound("danger")->play();
+	}
+      }
     }
   }
 }
@@ -355,6 +385,17 @@ void Equipment::add_piece_of_heart(void) {
   }
 
   restore_all_hearts();
+}
+
+/**
+ * Gives a fairy to the player: shows the dialog box and does the action
+ * chosen by the player: restore his hearts or keep the fairy in a bottle.
+ */
+void Equipment::give_fairy(void) {
+  zsdx->game->show_message("_found_fairy");
+  giving_fairy = true;
+
+  // the next messages will be handled by the update() function
 }
 
 // magic

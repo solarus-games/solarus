@@ -25,6 +25,7 @@ class PickableItemFairy: public PickableItem {
   ~PickableItemFairy(void);
 
   // update
+  virtual void give_item_to_player(void);
   void update(void);
 };
 

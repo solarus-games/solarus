@@ -247,7 +247,7 @@ void DialogBox::up_or_down_key_pressed(void) {
  * Returns the answer selected by the player in the last message with a question.
  * @return the answer selected: 0 for the first one, 1 for the second one
  */
-int DialogBox::get_last_answer_selected(void) {
+int DialogBox::get_last_answer(void) {
   return answer_selected;
 }
 

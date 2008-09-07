@@ -78,7 +78,7 @@ void Counter::rebuild_with_value(unsigned int value) {
     Uint8 digit = value % 10;
     value /= 10;
 
-    if (digit != 0 || fill_with_zeros || right_digit) {
+    if (value != 0 || digit != 0 || fill_with_zeros || right_digit) {
 
       // draw the surface
       digit_position_in_src.x = digit * 8;

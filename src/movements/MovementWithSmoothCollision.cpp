@@ -25,8 +25,8 @@ void MovementWithSmoothCollision::update(void) {
   if (!suspended) {
 
     Uint32 now = SDL_GetTicks();
-    bool x_move_now = now >= next_move_date_x && x_move != 0;
-    bool y_move_now = now >= next_move_date_y && y_move != 0;
+    bool x_move_now = x_move != 0 && now >= next_move_date_x;
+    bool y_move_now = y_move != 0 && now >= next_move_date_y;
 
     while (x_move_now || y_move_now) {
 
@@ -56,8 +56,8 @@ void MovementWithSmoothCollision::update(void) {
       }
 
       now = SDL_GetTicks();
-      x_move_now = x_move_now && now >= next_move_date_x;
-      y_move_now = y_move_now && now >= next_move_date_y;
+      x_move_now = x_move != 0 && now >= next_move_date_x;
+      y_move_now = y_move != 0 && now >= next_move_date_y;
     }
   }
 }

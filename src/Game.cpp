@@ -471,7 +471,7 @@ void Game::show_message(MessageId message_id) {
     y = 144;
   }
   else {
-    y = 20;
+    y = 32;
   }
 
   dialog_box = new DialogBox(message_id, 51, y);

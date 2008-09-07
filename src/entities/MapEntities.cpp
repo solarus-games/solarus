@@ -329,8 +329,8 @@ void MapEntities::remove_pickable_item(PickableItem *item) {
  */
 void MapEntities::add_transportable_item(MapEntity::Layer layer, int x, int y,
 					 TransportableItem::ItemType transportable_item_type,
-					 PickableItem::ItemType pickable_item_type,
-					 int savegame_index) {
+					 PickableItem::ItemType pickable_item_type, int savegame_index) {
+
   TransportableItem *item = new TransportableItem(map, layer, x, y, transportable_item_type,
 						  pickable_item_type, savegame_index);
   

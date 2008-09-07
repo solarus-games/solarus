@@ -4,6 +4,8 @@ small_stopped entities/pickable_heart.png 1 0 -1
 small_falling entities/pickable_heart.png 1 100 24
 0	0	8	8	4	8	25	25
 
-piece_of_heart
+piece_of_heart entities/pickable_heart.png 1 0 -1
+0	8	16	16	8	13	1	1
 
-heart_container
+heart_container entities/pickable_heart.png 1 0 -1
+16	8	16	16	8	13	1	1

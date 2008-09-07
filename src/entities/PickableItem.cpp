@@ -73,10 +73,13 @@ PickableItem::~PickableItem(void) {
 
 /**
  * Creates a pickable item with the specified type.
- * This method acts like a constructor, except that it can return NULL in two cases:
+ * This method acts like a constructor, except that it can return NULL in three cases:
  * - if the specified type is NONE
  * or:
  * - if the specified type is RANDOM and the random type chosen is NONE
+ * or:
+ * - if the specified type corresponds to a saved item (that the player can obtain only once)
+ *   and the player already has found the item
  * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
  * or one of its subclasses (for more complex items).
  * @param map the map
@@ -108,6 +111,11 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
     DIE("Illegal pickable item type " << type << " in a dungeon");
   }
 
+  // don't create anything if this is an item already found
+  if (type > ARROW_10 && zsdx->game->get_savegame()->get_boolean(savegame_index)) {
+    return NULL;
+  }
+
   PickableItem *item;
 
   switch (type) {
@@ -116,12 +124,12 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
   case HEART:
     item = new PickableItemHeart(map, layer, x, y);
     break;
-    
+
     // special class for the fairy
   case FAIRY:
     item = new PickableItemFairy(map, x, y);
     break;
-    
+
     // other items: no special class, but directly PickableItem
   default:
     item = new PickableItem(map, layer, x, y, type, savegame_index);
@@ -160,7 +168,7 @@ PickableItem::ItemType PickableItem::choose_random_type(void) {
   int r = Random::get_number(1000);
 
   Equipment *equipment = zsdx->game->get_savegame()->get_equipment();
-    
+
   if (r < 625) {
     // give the player nothing with probability 62.5%
     type = NONE;
@@ -248,10 +256,13 @@ void PickableItem::initialize_sprites(void) {
   // initialize the sprite removal
   if (will_disappear) {
     Uint32 now = SDL_GetTicks();
-    allow_pick_date = now + 700;  // the player can take the item after 0.7s
     can_be_picked = false;
+    allow_pick_date = now + 700;  // the player can take the item after 0.7s
     blink_date = now + 8000;      // the item blinks at 8s
     disappear_date = now + 10000; // the item disappears at 10s
+  }
+  else {
+    can_be_picked = true;
   }
 }
 
@@ -284,10 +295,9 @@ bool PickableItem::is_falling(void) {
 void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping->is_hero() && can_be_picked) {
-    // wait 0.7 second before allowing Link to take the item
 
-    give_item_to_player();
     map->get_entities()->remove_pickable_item(this);
+    give_item_to_player();
   }
 }
 
@@ -297,8 +307,10 @@ void PickableItem::entity_collision(MapEntity *entity_overlapping) {
 void PickableItem::give_item_to_player(void) {
 
   // play the sound
-  Sound *sound = ResourceManager::get_sound(properties[type].sound);
-  sound->play();
+  if (properties[type].sound != "") {
+    Sound *sound = ResourceManager::get_sound(properties[type].sound);
+    sound->play();
+  }
 
   // give the item
   Game *game = zsdx->game;
@@ -451,7 +463,6 @@ void PickableItem::update(void) {
 
   // check the timer
   Uint32 now = SDL_GetTicks();
-
 
   // wait 0.7 second before allowing Link to take the item
   if (!can_be_picked && now >= allow_pick_date) {

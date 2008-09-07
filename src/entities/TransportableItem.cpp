@@ -108,8 +108,9 @@ void TransportableItem::action_key_pressed(void) {
 
     // create the pickable item
     if (pickable_item != PickableItem::NONE) {
+      bool will_disappear = (pickable_item <= PickableItem::ARROW_10);
       map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
-					     0, MovementFalling::MEDIUM, true);
+					     0, MovementFalling::MEDIUM, will_disappear);
     }
 
     // remove the item from the map

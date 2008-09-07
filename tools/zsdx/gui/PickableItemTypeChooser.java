@@ -11,7 +11,8 @@ public class PickableItemTypeChooser extends JComboBox {
     private static final String[] names = {
 	"1 Rupee", "5 Rupees", "20 Rupees",
 	"Heart", "Magic flask", "Magic bottle", "Fairy",
-	"1 Bomb", "5 Bombs", "10 Bombs", "1 Arrow", "5 Arrows", "10 Arrows"
+	"1 Bomb", "5 Bombs", "10 Bombs", "1 Arrow", "5 Arrows", "10 Arrows",
+	"Small Key", "Big Key", "Boss Key", "Piece of Heart", "Heart Container"
     };
 
     /**

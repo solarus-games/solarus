@@ -26,6 +26,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     private MapSizeView mapSizeView;
     private MapTilesetView mapTilesetView;
     private MapMusicView mapMusicView;
+    private MapDungeonView mapDungeonView;
 
     /**
      * Constructor.
@@ -47,6 +48,10 @@ public class MapPropertiesView extends JPanel implements Observer {
 	// map name
 	constraints.gridy++;
 	add(new JLabel("Map name"), constraints);
+	
+	// dungeon
+	constraints.gridy++;
+	add(new JLabel("Dungeon"), constraints);
 
 	// number of tiles
 	constraints.gridy++;
@@ -77,6 +82,10 @@ public class MapPropertiesView extends JPanel implements Observer {
        	constraints.gridy++;
 	mapNameView = new MapNameView();
 	add(mapNameView, constraints);
+
+       	constraints.gridy++;
+	mapDungeonView = new MapDungeonView();
+	add(mapDungeonView, constraints);
 
        	constraints.gridy++;
 	mapNbTilesView = new JLabel(); 
@@ -139,6 +148,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	// tell the complex components to update themselves
 	mapNameView.update(map);
+	mapDungeonView.update(map);
 	mapSizeView.update(map);
 	mapTilesetView.update(map);
 	mapMusicView.update(map);
@@ -208,6 +218,103 @@ public class MapPropertiesView extends JPanel implements Observer {
 		textFieldName.setEnabled(false);
 		buttonSet.setEnabled(false);
 		textFieldName.setText("");
+	    }
+	}
+    }
+
+    /**
+     * Component to change the dungeon associated to the map.
+     */
+    private class MapDungeonView extends JComboBox implements ActionListener {
+
+	/**
+	 * Constructor.
+	 */
+	public MapDungeonView() {
+	    super();
+	    
+	    addItem(new KeyValue(-1, "None"));
+	    for (int i = 0; i < 14; i++) {
+		addItem(new KeyValue(i, "Dungeon " + i));
+	    }
+	    
+	    addActionListener(this);
+	    
+	    update((Map) null);
+	}
+
+	/**
+	 * This function is called when the map is changed.
+	 * The selection is updated.
+	 */
+	public void update(Observable o) {
+	    
+	    if (map != null) {
+
+		int currentDungeon = map.getDungeon();
+		int selectedDungeon = getSelectedDungeon();
+
+		if (selectedDungeon != currentDungeon) {
+		    setSelectedDungeon(currentDungeon);
+		}
+		setEnabled(true);
+	    }
+	    else {
+		setEnabled(false);
+	    }
+	}
+	
+	/**
+	 * Returns the dungeon currently selected.
+	 * @return the dungeon currently selected (may be -1)
+	 */
+	public int getSelectedDungeon() {
+	    KeyValue item = (KeyValue) getSelectedItem();
+	    return Integer.parseInt(item.getKey());
+	}
+
+	/**
+	 * Selects a dungeon in the combo box.
+	 * @param dungeon the dungeon to make selected (may be -1)
+	 */
+	public void setSelectedDungeon(int dungeon) {
+	    KeyValue item = new KeyValue(dungeon, null);
+	    setSelectedItem(item);
+	}
+
+	/**
+	 * This method is called when the user changes the selected item.
+	 * The tileset of the map is changed.
+	 */
+	public void actionPerformed(ActionEvent ev) {
+	    
+	    if (map == null) {
+		return;
+	    }
+
+	    final int selectedDungeon = getSelectedDungeon();
+	    final int currentDungeon = map.getDungeon();
+
+	    if (currentDungeon != selectedDungeon) {
+		
+		try {
+
+		    map.getHistory().doAction(new MapEditorAction() {
+
+			private final Map map = MapPropertiesView.this.map;
+
+			public void execute() {
+			    map.setDungeon(selectedDungeon);
+			}
+
+			public void undo() {
+			    map.setDungeon(currentDungeon);
+			}
+		    });
+		}
+		catch (ZSDXException ex) {
+		    GuiTools.errorDialog(ex.getMessage());
+		}
 	    }
 	}
     }

@@ -13,7 +13,14 @@ public abstract class MapEditorAction {
     protected final Map map;
 
     /**
-     * Constructor.
+     * Creates an action without specifying the map.
+     */
+    protected MapEditorAction() {
+	this(null);
+    }
+
+    /**
+     * Creates an action.
      * @param map the map
      */
     public MapEditorAction(Map map) {

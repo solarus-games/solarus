@@ -9,7 +9,6 @@ import javax.swing.*;
 public class RadioField extends JPanel {
     
     private JRadioButton[] buttons;
-    int selectedIndex;
 
     /**
      * Creates a radio field with the specified radio options.
@@ -20,13 +19,13 @@ public class RadioField extends JPanel {
 	super(new GridLayout(1, options.length));
 
 	this.buttons = new JRadioButton[options.length];
-	this.selectedIndex = 0;
 	
 	ButtonGroup buttonGroup = new ButtonGroup();
 	int i = 0;
 	
 	for (String option: options) {
 	    JRadioButton button = new JRadioButton(option);
+	    
 	    add(button);
 	    buttonGroup.add(button);
 
@@ -44,7 +43,17 @@ public class RadioField extends JPanel {
      * @return the index of the radio button currently selected
      */
     public int getSelectedIndex() {
-	return selectedIndex;
+	
+	int i;
+	boolean found = false;
+	
+	for (i = 0; i < buttons.length && !found; i++) {
+	    if (buttons[i].isSelected()) {
+		found = true;
+	    }
+	}
+	
+	return i - 1;
     }
     
     /**
@@ -53,6 +62,5 @@ public class RadioField extends JPanel {
      */
     public void setSelectedIndex(int index) {
 	this.buttons[index].setSelected(true);
-	this.selectedIndex = index;
     }
 }

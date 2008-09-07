@@ -16,18 +16,18 @@ public class ActionEditTransportableItem extends MapEditorAction {
     private int pickableItemTypeBefore;
     private int pickableItemTypeAfter;
 
-    private int pickableItemUniqueIdBefore;
-    private int pickableItemUniqueIdAfter;
+    private int pickableItemSavegameIndexBefore;
+    private int pickableItemSavegameIndexAfter;
 
     /**
      * Constructor.
      * @param map the map
      * @param transportableItem the transportable item to edit
      * @param pickableItemType the type of pickable item under this transportable item
-     * @param pickableItemUniqueId the unique id of the pickable item
+     * @param pickableItemSavegameIndex the savegame index where the pickable item is saved
      */
     public ActionEditTransportableItem(Map map, TransportableItem transportableItem,
-	    int type, int pickableItemType, int pickableItemUniqueId) {
+	    int type, int pickableItemType, int pickableItemSavegameIndex) {
 	super(map);
 	
 	this.transportableItem = transportableItem;
@@ -38,8 +38,8 @@ public class ActionEditTransportableItem extends MapEditorAction {
 	pickableItemTypeBefore = transportableItem.getPickableItemType();
 	pickableItemTypeAfter = pickableItemType;
 	
-	pickableItemUniqueIdBefore = transportableItem.getPickableItemUniqueId();
-	pickableItemUniqueIdAfter = pickableItemUniqueId;
+	pickableItemSavegameIndexBefore = transportableItem.getPickableItemSavegameIndex();
+	pickableItemSavegameIndexAfter = pickableItemSavegameIndex;
     }
 
     /**
@@ -47,7 +47,7 @@ public class ActionEditTransportableItem extends MapEditorAction {
      */
     public void execute() throws ZSDXException {
 	transportableItem.setTransportableItemType(typeAfter);
-	transportableItem.setPickableItem(pickableItemTypeAfter, pickableItemUniqueIdAfter);
+	transportableItem.setPickableItem(pickableItemTypeAfter, pickableItemSavegameIndexAfter);
     }
 
     /**
@@ -55,6 +55,6 @@ public class ActionEditTransportableItem extends MapEditorAction {
      */
     public void undo() throws ZSDXException {
 	transportableItem.setTransportableItemType(typeBefore);
-	transportableItem.setPickableItem(pickableItemTypeBefore, pickableItemUniqueIdBefore);
+	transportableItem.setPickableItem(pickableItemTypeBefore, pickableItemSavegameIndexBefore);
     }
 }

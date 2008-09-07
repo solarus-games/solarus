@@ -27,22 +27,27 @@ public class PickableItem extends InteractiveEntity {
     
     // types of pickable items
 
-    public static final int PICKABLE_ITEM_RANDOM      = -1;   /**< special value to indicate to choose another value
+    public static final int PICKABLE_ITEM_RANDOM            = -1;   /**< special value to indicate to choose another value
 							       * randomly (including PICKABLE_ITEM_NONE) */
-    public static final int PICKABLE_ITEM_NONE        = 0;    /**< special value to incicate that there is no pickable item */
-    public static final int PICKABLE_ITEM_RUPEE_1     = 1;
-    public static final int PICKABLE_ITEM_RUPEE_5     = 2;
-    public static final int PICKABLE_ITEM_RUPEE_20    = 3;
-    public static final int PICKABLE_ITEM_HEART       = 4;
-    public static final int PICKABLE_ITEM_SMALL_MAGIC = 5;
-    public static final int PICKABLE_ITEM_BIG_MAGIC   = 6;
-    public static final int PICKABLE_ITEM_FAIRY       = 7;
-    public static final int PICKABLE_ITEM_BOMB_1      = 8;
-    public static final int PICKABLE_ITEM_BOMB_5      = 9;
-    public static final int PICKABLE_ITEM_BOMB_10     = 10;
-    public static final int PICKABLE_ITEM_ARROW_1     = 11;
-    public static final int PICKABLE_ITEM_ARROW_5     = 12;
-    public static final int PICKABLE_ITEM_ARROW_10    = 13;
+    public static final int PICKABLE_ITEM_NONE              = 0;    /**< special value to incicate that there is no pickable item */
+    public static final int PICKABLE_ITEM_RUPEE_1           = 1;
+    public static final int PICKABLE_ITEM_RUPEE_5           = 2;
+    public static final int PICKABLE_ITEM_RUPEE_20          = 3;
+    public static final int PICKABLE_ITEM_HEART             = 4;
+    public static final int PICKABLE_ITEM_SMALL_MAGIC       = 5;
+    public static final int PICKABLE_ITEM_BIG_MAGIC         = 6;
+    public static final int PICKABLE_ITEM_FAIRY             = 7;
+    public static final int PICKABLE_ITEM_BOMB_1            = 8;
+    public static final int PICKABLE_ITEM_BOMB_5            = 9;
+    public static final int PICKABLE_ITEM_BOMB_10           = 10;
+    public static final int PICKABLE_ITEM_ARROW_1           = 11;
+    public static final int PICKABLE_ITEM_ARROW_5           = 12;
+    public static final int PICKABLE_ITEM_ARROW_10          = 13;
+    public static final int PICKABLE_ITEM_SMALL_KEY         = 14;
+    public static final int PICKABLE_ITEM_BIG_KEY           = 15;
+    public static final int PICKABLE_ITEM_BOSS_KEY          = 16;
+    public static final int PICKABLE_ITEM_PIECE_OF_HEART    = 17;
+    public static final int PICKABLE_ITEM_HEART_CONTAINER   = 18;
 
     // specific fields of a pickable item
 
@@ -54,10 +59,12 @@ public class PickableItem extends InteractiveEntity {
     private int type;
     
     /**
-     * A number identifying the pickable item, used only for the pickable
-     * items that Link can obtain only once (keys, pieces of hearts, etc.).
+     * A number indicating the savegame variable where this pickable item possession
+     * state is saved.
+     * It is used only for the pickable that Link can obtain only once and
+     * thus that are saved (keys, pieces of hearts, etc.) and ignored for the normal items.
      */
-    private int uniqueId;
+    private int savegameIndex;
 
     /**
      * Creates a new pickable item at the specified location.
@@ -71,7 +78,6 @@ public class PickableItem extends InteractiveEntity {
 
 	// default field values
 	type = PICKABLE_ITEM_RUPEE_1;
-	uniqueId = 0;
     }
 
     /**
@@ -88,7 +94,7 @@ public class PickableItem extends InteractiveEntity {
 	// parse the fields
 	try {
 	    this.type = Integer.parseInt(tokenizer.nextToken());
-	    this.uniqueId = Integer.parseInt(tokenizer.nextToken());
+	    this.savegameIndex = Integer.parseInt(tokenizer.nextToken());
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -113,7 +119,7 @@ public class PickableItem extends InteractiveEntity {
 	buff.append('\t');
 	buff.append(getPickableItemType());
 	buff.append('\t');
-	buff.append(getUniqueId());
+	buff.append(getSavegameIndex());
 
 	return buff.toString();
     }
@@ -153,55 +159,35 @@ public class PickableItem extends InteractiveEntity {
     /**
      * Sets the properties of this pickable item.
      * @param type the type of pickable item
-     * @param uniqueId the unique id of this pickable item, or zero if
-     * this pickable item is not unique.
+     * @param savegameIndex the savegame index of this pickable item, or zero if
+     * this pickable item is not saved.
      * @throws ZSDXException if the type is incorrect or if the value of
-     * uniqueId doesn't correspond to the specified type
+     * savegameIndex doesn't correspond to the specified type
      */
-    public void setPickableItem(int type, int uniqueId) throws ZSDXException {
+    public void setPickableItem(int type, int savegameIndex) throws ZSDXException {
 	
 	if (type <= PICKABLE_ITEM_NONE) {
 	    throw new ZSDXException("The type of pickable item cannot be 'None' or 'Random'");
 	}
 	
-	checkValidity(type, uniqueId);
-	
 	this.type = type;
-	this.uniqueId = uniqueId;
+	this.savegameIndex = savegameIndex;
     }
     
     /**
-     * Checks whether a value of uniqueId is valid depending on
-     * the specified type of pickable item.
-     * @param type a type of pickable item
-     * @param uniqueId a unique id for this type of pickable item
-     * @throws ZSDXException if the type is incorrect of the value
-     * of uniqueId doesn't correspond to the specified type
+     * Returns the savegame index identifying this pickable item (if any).
+     * @return the savegame index where this pickable item is saved,
+     * or any value if this pickable item cannot be saved
      */
-    public static void checkValidity(int type, int uniqueId) throws ZSDXException {
-	
-	if ((type > PICKABLE_ITEM_ARROW_10 && uniqueId == 0)
-		|| (type <= PICKABLE_ITEM_ARROW_10 && uniqueId != 0)) {
-	    
-	    throw new ZSDXException("This type of pickable item cannot have a unique id");
-	}
+    public int getSavegameIndex() {
+	return savegameIndex;
     }
     
     /**
-     * Returns the id identifying this pickable item (if any).
-     * @return the unique id of this pickable item, or zero if
-     * this pickable item is not unique.
+     * Sets the id identifying this pickable item (if any).
+     * @param savegameIndex the savegame index where this pickable item is saved
      */
-    public int getUniqueId() {
-	return uniqueId;
-    }
-    
-    /**
-     * Sets the id identifying this pickable item.
-     * @param uniqueId the unique id of this pickable item, or zero if
-     * this pickable item is not unique.
-     */
-    public void setUniqueId(int uniqueId) {
-	this.uniqueId = uniqueId;
+    public void setSavegameIndex(int savegameIndex) {
+	this.savegameIndex = savegameIndex;
     }
 }

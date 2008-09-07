@@ -14,7 +14,7 @@ public class EditTransportableItemComponent extends EditEntityComponent {
     // specific fields of a transportable item
     private TransportableItemTypeChooser typeField;
     private PickableItemTypeChooser pickableItemTypeField;
-    private NumberChooser pickableItemUniqueIdField;
+    private NumberChooser pickableItemSavegameIndexField;
 
     /**
      * Constructor.
@@ -38,12 +38,12 @@ public class EditTransportableItemComponent extends EditEntityComponent {
 	pickableItemTypeField = new PickableItemTypeChooser(true);
 	addField("Pickable item", pickableItemTypeField);
 
-	// unique id
-	pickableItemUniqueIdField = new NumberChooser();
-	addField("Pickable item unique id", pickableItemUniqueIdField);
+	// savegame index
+	pickableItemSavegameIndexField = new NumberChooser(0, 0, 32767);
+	addField("Pickable item savegame variable", pickableItemSavegameIndexField);
 
-	// enable or disable the 'unique id' field depending on the pickable item type
-	typeField.addActionListener(new ActionListenerEnableUniqueId());
+	// enable or disable the 'savegame index' field depending on the pickable item type
+	pickableItemTypeField.addActionListener(new ActionListenerEnableSavegameIndex());
     }
 
     /**
@@ -56,8 +56,8 @@ public class EditTransportableItemComponent extends EditEntityComponent {
 	
 	typeField.setTransportableItemType(transportableItem.getTransportableItemType());
 	pickableItemTypeField.setPickableItemType(transportableItem.getPickableItemType());
-	pickableItemUniqueIdField.setNumber(transportableItem.getPickableItemUniqueId());
-	new ActionListenerEnableUniqueId().actionPerformed(null);
+	pickableItemSavegameIndexField.setNumber(transportableItem.getPickableItemSavegameIndex());
+	new ActionListenerEnableSavegameIndex().actionPerformed(null);
     }
 
     /**
@@ -76,28 +76,29 @@ public class EditTransportableItemComponent extends EditEntityComponent {
 
 	int type = typeField.getTransportableItemType();
 	int pickableItemType = pickableItemTypeField.getPickableItemType();
-	int pickableItemUniqueId = pickableItemUniqueIdField.getNumber();
+	int pickableItemSavegameIndex = pickableItemSavegameIndexField.getNumber();
 
 	action.setSpecificAction(new ActionEditTransportableItem(map, transportableItem,
-		type, pickableItemType, pickableItemUniqueId));
+		type, pickableItemType, pickableItemSavegameIndex));
 
 	return action;
     }
 
     /**
      * A listener associated to the 'pickable item type' field,
-     * to enable or disable the 'unique id' field depending on the type.
+     * to enable or disable the 'savegame index' field depending on the type.
      */
-    private class ActionListenerEnableUniqueId implements ActionListener {
+    private class ActionListenerEnableSavegameIndex implements ActionListener {
 
 	public void actionPerformed(ActionEvent ev) {
+
 	    int type = pickableItemTypeField.getPickableItemType();
+
 	    if (type <= PickableItem.PICKABLE_ITEM_ARROW_10) {
-		pickableItemUniqueIdField.setEnabled(false);
-		pickableItemUniqueIdField.setNumber(0);
+		pickableItemSavegameIndexField.setEnabled(false);
 	    }
 	    else {
-		pickableItemUniqueIdField.setEnabled(true);
+		pickableItemSavegameIndexField.setEnabled(true);
 	    }
 	}
     }

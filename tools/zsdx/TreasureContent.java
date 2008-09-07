@@ -29,9 +29,9 @@ public enum TreasureContent {
     GOLDEN_GLOVE      (18, false),
     FIRE_STONE        (19, false),
 
-    APPLES            (20, false),
-    PAINS_AU_CHOCOLAT (21, false),
-    CROISSANTS        (22, false),
+    APPLES            (20, true),
+    PAINS_AU_CHOCOLAT (21, true),
+    CROISSANTS        (22, true),
     APPLE_PIE         (23, false),
     GOLDEN_BARS       (24, false),
     EDELWEISS         (25, false),

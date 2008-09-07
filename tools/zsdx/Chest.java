@@ -106,8 +106,14 @@ public class Chest extends InteractiveEntity {
     /**
      * Sets whether this a big chest or a normal chest.
      * @param bigChest true to make a big chest
+     * @throws MapException if you try to make a big chest outside a dungeon
      */
-    public void setBigChest(boolean bigChest) {
+    public void setBigChest(boolean bigChest) throws MapException {
+
+	if (bigChest && !map.isInDungeon()) {
+	    throw new MapException("Cannot have a big chest outside a dungeon");
+	}
+
         this.bigChest = bigChest;
 
         if (bigChest) {
@@ -191,6 +197,14 @@ public class Chest extends InteractiveEntity {
 	&& savegameIndex >= -1 && savegameIndex < 32768
 	&& amount >= 0
 	&& (!content.hasAmount() || amount > 0);
+    }
+
+    /**
+     * Returns whether the entity has an identifier.
+     * @return true
+     */
+    public boolean hasName() {
+	return true;
     }
 
     /**

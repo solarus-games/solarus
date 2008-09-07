@@ -49,10 +49,10 @@ public class TransportableItem extends InteractiveEntity {
     private int pickableItemType;
     
     /**
-     * A number identifying the pickable item, used only for the pickable
-     * items that Link can obtain only once (keys, pieces of hearts, etc.).
+     * The index where the pickable item is saved, used only for the pickable
+     * items that are saved (keys, pieces of hearts, etc.).
      */
-    private int pickableItemUniqueId;
+    private int pickableItemSavegameIndex;
 
     /**
      * Creates a new transportable item at the specified location.
@@ -66,7 +66,7 @@ public class TransportableItem extends InteractiveEntity {
 
 	type = TRANSPORTABLE_ITEM_POT;
 	pickableItemType = PickableItem.PICKABLE_ITEM_RANDOM;
-	pickableItemUniqueId = 0;
+	pickableItemSavegameIndex = -1;
     }
 
     /**
@@ -84,7 +84,7 @@ public class TransportableItem extends InteractiveEntity {
 	try {
 	    this.type = Integer.parseInt(tokenizer.nextToken());
 	    this.pickableItemType = Integer.parseInt(tokenizer.nextToken());
-	    this.pickableItemUniqueId = Integer.parseInt(tokenizer.nextToken());
+	    this.pickableItemSavegameIndex = Integer.parseInt(tokenizer.nextToken());
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -111,7 +111,7 @@ public class TransportableItem extends InteractiveEntity {
 	buff.append('\t');
 	buff.append(getPickableItemType());
 	buff.append('\t');
-	buff.append(getPickableItemUniqueId());
+	buff.append(getPickableItemSavegameIndex());
 
 	return buff.toString();
     }
@@ -174,28 +174,25 @@ public class TransportableItem extends InteractiveEntity {
     }
 
     /**
-     * Returns the id identifying the pickable item attached to
-     * this transportable item (if any).
-     * @return the unique id of this pickable item, or zero if
-     * this pickable item is not unique.
+     * Returns the index where the pickable item attached to
+     * this transportable item is saved (if any).
+     * @return the savegame index of the pickable item
      */
-    public int getPickableItemUniqueId() {
-	return pickableItemUniqueId;
+    public int getPickableItemSavegameIndex() {
+	return pickableItemSavegameIndex;
     }
     
     /**
      * Sets the pickable item that appears when Link
      * lifts the transportable item.
      * @param type the type of pickable item
-     * @param uniqueId unique id of the pickable item
-     * @throws ZSDXException if the value of uniqueId doesn't correspond
+     * @param savegameIndex savegame index where the pickable item is saved,
+     * @throws ZSDXException if the value of savegameIndex doesn't correspond
      * to the specified pickable item type
      */
-    public void setPickableItem(int type, int uniqueId) throws ZSDXException {
-	
-	PickableItem.checkValidity(type, uniqueId);
+    public void setPickableItem(int type, int savegameIndex) throws ZSDXException {
 
 	this.pickableItemType = type;
-	this.pickableItemUniqueId = uniqueId;
+	this.pickableItemSavegameIndex = savegameIndex;
     }
 }

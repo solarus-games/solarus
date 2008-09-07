@@ -44,6 +44,12 @@ public class Map extends Observable {
     private Tileset tileset;
 
     /**
+     * Index of the dungeon where this map is (between 0 and 13), or -1 if the map
+     * is not inside a dungeon.
+     */
+    private int dungeon;
+
+    /**
      * Entities of the map.
      * This is an array of three entity lists, one for each layer.
      */
@@ -86,6 +92,7 @@ public class Map extends Observable {
 	this.tileset = null;
 	this.tilesetId = "";
 	this.musicId = Music.noneId;
+	this.dungeon = -1;
 
 	initialize();
 	
@@ -284,6 +291,31 @@ public class Map extends Observable {
 	return !badTiles;
     }
 
+    /**
+     * Returns the index of the dungeon where this map is.
+     * @return the dungeon index, between 0 and 13, or -1 if the map is not inside a dungeon
+     */
+    public int getDungeon() {
+	return dungeon;
+    }
+    
+    /**
+     * Returns whether this map belongs to a dungeon.
+     * @return true if this map is in a dungeon
+     */
+    public boolean isInDungeon() {
+	return dungeon != -1;
+    }
+    
+    /**
+     * Sets the dungeon where this map is.
+     * @param dungeon the dungeon index, between 0 and 13,
+     * or -1 if the map is not inside a dungeon
+     */
+    public void setDungeon(int dungeon) {
+	this.dungeon = dungeon;
+    }
+    
     /**
      * Returns the total number of entities of the map.
      * @return the total number of entities of the map.
@@ -781,6 +813,7 @@ public class Map extends Observable {
 	    setSize(new Dimension(width, height));
 	    setTileset(tokenizer.nextToken());
 	    setMusic(tokenizer.nextToken());
+	    setDungeon(Integer.parseInt(tokenizer.nextToken()));
 
 	    // read the map entities
 	    line = in.readLine();
@@ -843,6 +876,8 @@ public class Map extends Observable {
 	    out.print(tilesetId);
 	    out.print('\t');
 	    out.print(musicId);
+	    out.print('\t');
+	    out.print(dungeon);
 	    out.println();
 	    
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {

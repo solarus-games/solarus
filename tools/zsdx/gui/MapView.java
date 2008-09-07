@@ -1218,9 +1218,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    if (state == State.NORMAL) {
 
 		switch (keyEvent.getKeyCode()) {
-		    
+
 		case KeyEvent.VK_DELETE:
 		    destroySelectedEntities();
+		    break;
+		    
+		case KeyEvent.VK_ENTER:
+		    if (map.getEntitySelection().getNbEntitiesSelected() == 1) {
+			MapEntity entitySelected = map.getEntitySelection().getEntity(0);
+			EditEntityDialog dialog = new EditEntityDialog(map, entitySelected);
+			dialog.display();
+		    }
 		    break;
 		}
 	    }

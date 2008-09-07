@@ -13,7 +13,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
     
     // specific fields of a pickable item
     private PickableItemTypeChooser typeField;
-    private NumberChooser uniqueIdField; // enabled only for certain types of pickable items
+    private NumberChooser savegameIndexField; // enabled only for certain types of pickable items
 
     /**
      * Constructor.
@@ -33,12 +33,12 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	typeField = new PickableItemTypeChooser(false);
 	addField("Pickable item type", typeField);
 
-	// unique id
-	uniqueIdField = new NumberChooser();
-	addField("Unique id", uniqueIdField);
+	// savegame index
+	savegameIndexField = new NumberChooser(0, 0, 32767);
+	addField("Savegame variable", savegameIndexField);
 
-	// enable or disable the 'unique id' field depending on the pickable item type
-	typeField.addActionListener(new ActionListenerEnableUniqueId());
+	// enable or disable the 'savegame index' field depending on the pickable item type
+	typeField.addActionListener(new ActionListenerEnableSavegameIndex());
     }
 
     /**
@@ -48,10 +48,10 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	PickableItem pickableItem = (PickableItem) entity;
-	
+
 	typeField.setPickableItemType(pickableItem.getPickableItemType());
-	uniqueIdField.setNumber(pickableItem.getUniqueId());
-	new ActionListenerEnableUniqueId().actionPerformed(null);
+	savegameIndexField.setNumber(pickableItem.getSavegameIndex());
+	new ActionListenerEnableSavegameIndex().actionPerformed(null);
     }
 
     /**
@@ -69,27 +69,26 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	PickableItem pickableItem = (PickableItem) entity;
 
 	int type = typeField.getPickableItemType();
-	int uniqueId = uniqueIdField.getNumber();
+	int savegameIndex = savegameIndexField.getNumber();
 
-	action.setSpecificAction(new ActionEditPickableItem(map, pickableItem, type, uniqueId));
+	action.setSpecificAction(new ActionEditPickableItem(map, pickableItem, type, savegameIndex));
 
 	return action;
     }
 
     /**
      * A listener associated to the 'pickable item type' field,
-     * to enable or disable the 'unique id' field depending on the type.
+     * to enable or disable the 'savegame index' field depending on the type.
      */
-    private class ActionListenerEnableUniqueId implements ActionListener {
+    private class ActionListenerEnableSavegameIndex implements ActionListener {
 
 	public void actionPerformed(ActionEvent ev) {
 	    int type = typeField.getPickableItemType();
 	    if (type <= PickableItem.PICKABLE_ITEM_ARROW_10) {
-		uniqueIdField.setEnabled(false);
-		uniqueIdField.setNumber(0);
+		savegameIndexField.setEnabled(false);
 	    }
 	    else {
-		uniqueIdField.setEnabled(true);
+		savegameIndexField.setEnabled(true);
 	    }
 	}
     }

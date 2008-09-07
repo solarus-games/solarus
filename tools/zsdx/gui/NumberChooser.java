@@ -28,11 +28,11 @@ public class NumberChooser extends JSpinner {
 	setMinimumSize(new Dimension(80, 25));
 	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
 	editor.getTextField().setColumns(3);
-	
-	setMinimum(0);
-	setMaximum(Integer.MAX_VALUE);
+
 	setStepSize(1);
-	setNumber(0);
+	setMinimum(minimum);
+	setMaximum(maximum);
+	setNumber(initialValue);
     }
 
     /**
@@ -62,10 +62,6 @@ public class NumberChooser extends JSpinner {
 
 	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) getModel();
 	spinnerModel.setMinimum(minimum);
-		
-	if (getNumber() < minimum) {
-	    setNumber(minimum);
-	}
     }
 
     /**
@@ -86,10 +82,6 @@ public class NumberChooser extends JSpinner {
 
 	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) getModel();
 	spinnerModel.setMaximum(maximum);
-		
-	if (getNumber() > maximum) {
-	    setNumber(maximum);
-	}
     }
 
     /**

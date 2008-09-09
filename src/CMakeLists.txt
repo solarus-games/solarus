@@ -19,6 +19,12 @@ add_executable (zsdx
   menus/SelectionMenuConfirmErase.cpp
   menus/SelectionMenuChooseName.cpp
   menus/SelectionMenuChooseMode.cpp
+  menus/PauseMenu.cpp
+  menus/PauseSubmenu.cpp
+  menus/PauseSubmenuInventory.cpp
+  menus/PauseSubmenuMap.cpp
+  menus/PauseSubmenuQuestStatus.cpp
+  menus/PauseSubmenuOptions.cpp
 
   # game
   Game.cpp

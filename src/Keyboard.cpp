@@ -3,6 +3,7 @@
 #include "DialogBox.h"
 #include "entities/Link.h"
 #include "movements/Movement8ByPlayer.h"
+#include "menus/PauseMenu.h"
 
 // TODO remove (test code only)
 #include "Savegame.h"
@@ -35,9 +36,14 @@ Keyboard::~Keyboard(void) {
 void Keyboard::key_pressed(const SDL_keysym &keysym) {
 
   if (!game->is_suspended()) {    
-    // if the game is not suspended, the keys apply to Link
+    // if the game is not suspended, most of the keys apply to Link
 
     switch (keysym.sym) {
+
+      // pause key
+    case SDLK_d:
+      game->set_paused(true);
+      break;
 
       // action key
     case SDLK_SPACE:
@@ -93,11 +99,13 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
       break;
     }
   }
+  else if (game->is_paused()) {
+    game->get_pause_menu()->key_pressed(keysym);
+  }
 
   // TODO temporary (test code)
 
   Savegame *savegame = game->get_savegame();
-  KeysEffect *keys_effect = game->get_keys_effect();
   Equipment *equipment = savegame->get_equipment();
   Treasure *treasure;
 
@@ -139,24 +147,6 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
 	  
   case SDLK_s:
     savegame->save();
-    break;
-	  
-  case SDLK_d:
-	  
-    // temoporary code to make like the game is paused
-    if (!game->is_paused()) {
-	    
-      ResourceManager::get_sound("pause_open")->play();
-      keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
-      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SAVE);
-      game->set_paused(true);
-    }
-    else {
-      ResourceManager::get_sound("pause_closed")->play();
-      keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
-      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
-      game->set_paused(false);
-    }
     break;
 
   case SDLK_a:

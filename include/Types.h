@@ -41,6 +41,12 @@ class SelectionMenuEraseFile;
 class SelectionMenuConfirmErase;
 class SelectionMenuChooseName;
 class SelectionMenuChooseMode;
+class PauseMenu;
+class PauseSubmenu;
+class PauseSubmenuInventory;
+class PauseSubmenuMap;
+class PauseSubmenuQuestStatus;
+class PauseSubmenuOptions;
 
 // game
 class Game;

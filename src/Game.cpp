@@ -12,6 +12,7 @@
 #include "DialogBox.h"
 #include "Treasure.h"
 #include "Keyboard.h"
+#include "menus/PauseMenu.h"
 #include "entities/Link.h"
 #include "entities/AnimatedTile.h"
 #include "entities/Tileset.h"
@@ -24,7 +25,7 @@
  */
 Game::Game(Savegame *savegame):
   savegame(savegame),
-  paused(false), dialog_box(NULL), treasure(NULL), keys_effect(NULL),
+  pause_menu(NULL), dialog_box(NULL), treasure(NULL), keys_effect(NULL),
   current_map(NULL), next_map(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL), hud(NULL),
   current_music_id(Music::none), current_music(NULL) {
@@ -94,6 +95,14 @@ Link * Game::get_link(void) {
 }
 
 /**
+ * Returns the current effect of the main keys (action, sword, pause, etc.).
+ * @return the current effect of the main keys
+ */
+KeysEffect * Game::get_keys_effect(void) {
+  return keys_effect;
+}
+
+/**
  * This function is called by the SDL main loop
  * when an SDL event occurs during the game.
  */
@@ -113,10 +122,41 @@ void Game::handle_event(const SDL_Event &event) {
 }
 
 /**
+ * Updates the game elements : the map, the equipment, the HUD, the sound system, etc.
+ */
+void Game::update(void) {
+
+  // update the transitions between maps
+  update_transitions();
+
+  // update the entity's positions and animations
+  AnimatedTile::update();
+  current_map->update();
+
+  // update the equipment and HUD
+  savegame->get_equipment()->update();
+  update_keys_effect();
+  hud->update();
+
+  // update the treasure (if any)
+  if (treasure != NULL) {
+    update_treasure();
+  }
+
+  // update the dialog box (if any)
+  if (is_showing_message()) {
+    update_dialog_box();
+  }
+
+  // update the sound system
+  Sound::update();
+}
+
+/**
  * Handles the transitions.
  * This functions changes the map when needed and plays the
  * transitions between the two maps. This function is called
- * by the SDL main loop.
+ * by the update() function.
  */
 void Game::update_transitions(void) {
 
@@ -163,37 +203,6 @@ void Game::update_transitions(void) {
     transition = Transition::create(transition_style, Transition::IN);
     transition->start();
   }
-}
-
-/**
- * Updates the game elements : the map, the equipment, the HUD, the sound system, etc.
- */
-void Game::update(void) {
-
-  // update the transitions between maps
-  update_transitions();
-
-  // update the entity's positions and animations
-  AnimatedTile::update();
-  current_map->update();
-
-  // update the equipment and HUD
-  savegame->get_equipment()->update();
-  update_keys_effect();
-  hud->update();
-
-  // update the treasure (if any)
-  if (treasure != NULL) {
-    update_treasure();
-  }
-
-  // update the dialog box (if any)
-  if (is_showing_message()) {
-    update_dialog_box();
-  }
-
-  // update the sound system
-  Sound::update();
 }
 
 /**
@@ -249,30 +258,6 @@ void Game::update_treasure(void) {
     delete treasure;
     treasure = NULL;
   }
-}
-
-/**
- * Gives a treasure to Link.
- * Makes him brandish the treasure and shows a message.
- * @param treasure the treasure to give him (will be deleted it after Link brandishes it) 
- */
-void Game::give_treasure(Treasure *treasure) {
-
-  this->treasure = treasure;
-
-  // brandish the treasure
-  link->give_treasure(treasure);
-
-  // give the treasure and show the message
-  treasure->give_to_player();
-}
-
-/**
- * Returns whether a treasure is being given to the player.
- * @return true if a treasure is being given to the player.
- */
-bool Game::is_giving_treasure(void) {
-  return treasure != NULL && is_showing_message();
 }
 
 /**
@@ -410,7 +395,7 @@ void Game::stop_music(void) {
  * @return true if the game is paused
  */
 bool Game::is_paused(void) {
-  return paused;
+  return pause_menu != NULL;
 }
 
 /**
@@ -443,14 +428,6 @@ bool Game::is_suspended(void) {
 }
 
 /**
- * Returns the current effect of the main keys (action, sword, pause, etc.).
- * @return the current effect of the main keys
- */
-KeysEffect * Game::get_keys_effect(void) {
-  return keys_effect;
-}
-
-/**
  * Returns the dialog box currently displayed.
  * @return the dialog box, or NULL if no message is currently displayed
  */
@@ -478,9 +455,51 @@ void Game::show_message(MessageId message_id) {
 }
 
 /**
+ * Gives a treasure to Link.
+ * Makes him brandish the treasure and shows a message.
+ * @param treasure the treasure to give him (will be deleted it after Link brandishes it) 
+ */
+void Game::give_treasure(Treasure *treasure) {
+
+  this->treasure = treasure;
+
+  // brandish the treasure
+  link->give_treasure(treasure);
+
+  // give the treasure and show the message
+  treasure->give_to_player();
+}
+
+/**
+ * Returns whether a treasure is being given to the player.
+ * @return true if a treasure is being given to the player.
+ */
+bool Game::is_giving_treasure(void) {
+  return treasure != NULL && is_showing_message();
+}
+
+/**
  * Pauses or resumes the game.
  * @param pause true to pause the game, false to resume it.
  */
 void Game::set_paused(bool paused) {
-  this->paused = paused;
+
+  if (paused != is_paused()) {
+
+    if (paused) {
+      pause_menu = new PauseMenu(this);
+    }
+    else {
+      delete pause_menu;
+      pause_menu = NULL;
+    }
+  }
+}
+
+/**
+ * Returns the pause menu.
+ * @return the pause menu, or NULL if the game is not paused
+ */
+PauseMenu * Game::get_pause_menu(void) {
+  return pause_menu;
 }

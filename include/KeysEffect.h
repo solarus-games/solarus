@@ -70,7 +70,7 @@ class KeysEffect {
   SwordKeyEffect sword_key_effect_saved;   // a previous effect of the sword key
   bool sword_key_enabled;
 
-  PauseKeyEffect pause_key_effect; // effect of the pause key
+  PauseKeyEffect pause_key_effect;         // effect of the pause key
   bool pause_key_enabled;
 
   bool item_keys_enabled;

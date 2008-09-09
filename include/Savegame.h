@@ -51,7 +51,7 @@ class Savegame {
      */
     STARTING_MAP                     = 0, /**< when starting the game, this map is loaded */
     STARTING_ENTRANCE                = 1, /**< the player appears on this entrance on the starting map */
-    PAUSE_LAST_SCREEN                = 2, /**< last screen shown in the pause menu */
+    PAUSE_LAST_SUBMENU               = 2, /**< last submenu shown in the pause menu */
     INVENTORY_LAST_ROW               = 3, /**< row of the last item selected in the inventory */
     INVENTORY_LAST_COLUMN            = 4, /**< column of the last item selected in the inventory */
     ITEM_SLOT_0                      = 5, /**< current object associated to the first item slot

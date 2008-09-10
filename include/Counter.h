@@ -23,8 +23,7 @@ class Counter {
  
  public:
   
-  Counter(unsigned int nb_digits, bool fill_with_zeros,
-	      int x, int y);
+  Counter(unsigned int nb_digits, bool fill_with_zeros, int x, int y);
   ~Counter(void);
 
   unsigned int get_value(void);

@@ -127,7 +127,7 @@ void Chest::action_key_pressed(void) {
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   Link *link = zsdx->game->get_link();
-  DungeonEquipment *dungeon_equipment = zsdx->game->get_savegame()->get_dungeon_equipment();
+  DungeonEquipment *dungeon_equipment = zsdx->game->get_dungeon_equipment();
 
   if (link->get_state() == Link::FREE) { // don't open a chest while pushing
 

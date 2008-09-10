@@ -74,6 +74,14 @@ bool InventoryItem::is_attributable(void) {
 }
 
 /**
+ * Returns whether a counter is associated to this item.
+ * This is equivalent to get_counter_index() != 0.
+ */
+bool InventoryItem::has_counter(void) {
+  return counter_index != 0;
+}
+
+/**
  * If this item has a counter, returns the index of the savegame
  * variable indicating the counter's value. Otherwise, returns 0.
  * @return the index of the savegame variable indicating the counter's value

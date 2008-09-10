@@ -11,9 +11,6 @@ class PauseMenu {
  private:
 
   Game *game;
-  Savegame *savegame;
-  Equipment *equipment;
-  DungeonEquipment *dungeon_equipment;
   KeysEffect *keys_effect;
 
   int current_submenu_index;

@@ -106,42 +106,42 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
   // TODO temporary (test code)
 
   Savegame *savegame = game->get_savegame();
-  Equipment *equipment = savegame->get_equipment();
+  Equipment *equipment = game->get_equipment();
   Treasure *treasure;
 
   switch (keysym.unicode) {
 
     // TODO remove
   case SDLK_p:
-    savegame->get_equipment()->add_hearts(2);
+    game->get_equipment()->add_hearts(2);
     break;
 	  
   case SDLK_m:
-    savegame->get_equipment()->remove_hearts(1);
+    game->get_equipment()->remove_hearts(1);
     break;
 	  
   case SDLK_o:
-    savegame->get_equipment()->add_rupees(23);
+    game->get_equipment()->add_rupees(23);
     break;
 	  
   case SDLK_l:
-    savegame->get_equipment()->remove_rupees(14);
+    game->get_equipment()->remove_rupees(14);
     break;
 	  
   case SDLK_i:
-    savegame->get_equipment()->add_magic(10);
+    game->get_equipment()->add_magic(10);
     break;
 	  
   case SDLK_k:
-    savegame->get_equipment()->remove_magic(4);
+    game->get_equipment()->remove_magic(4);
     break;
 	  
   case SDLK_j:
-    if (!savegame->get_equipment()->is_magic_decreasing()) {
-      savegame->get_equipment()->start_removing_magic(200);
+    if (!game->get_equipment()->is_magic_decreasing()) {
+      game->get_equipment()->start_removing_magic(200);
     }
     else {
-      savegame->get_equipment()->stop_removing_magic();
+      game->get_equipment()->stop_removing_magic();
     }
     break;
 	  

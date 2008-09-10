@@ -59,9 +59,11 @@ class Game: public Screen {
   ~Game(void);
 
   // global objects
-  Savegame *get_savegame(void);
   Link *get_link(void);
   KeysEffect *get_keys_effect(void);
+  Savegame *get_savegame(void);
+  Equipment *get_equipment(void);
+  DungeonEquipment *get_dungeon_equipment(void);
 
   // functions called by the SDL loop
   void handle_event(const SDL_Event &event);

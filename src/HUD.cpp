@@ -1,6 +1,5 @@
 #include "HUD.h"
 #include "Game.h"
-#include "Savegame.h"
 #include "HeartsView.h"
 #include "RupeesView.h"
 #include "MagicBar.h"
@@ -16,7 +15,7 @@ HUD::HUD(Game *game):
   game(game), nb_elements(0), showing_message(false) {
 
   Savegame *savegame = game->get_savegame();
-  Equipment *equipment = savegame->get_equipment();
+  Equipment *equipment = game->get_equipment();
   KeysEffect *keys_effect = game->get_keys_effect();
 
   elements[nb_elements++] = new HeartsView(equipment, 216, 14);

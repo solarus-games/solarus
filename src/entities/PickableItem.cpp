@@ -167,7 +167,7 @@ PickableItem::ItemType PickableItem::choose_random_type(void) {
 
   int r = Random::get_number(1000);
 
-  Equipment *equipment = zsdx->game->get_savegame()->get_equipment();
+  Equipment *equipment = zsdx->game->get_equipment();
 
   if (r < 625) {
     // give the player nothing with probability 62.5%
@@ -314,7 +314,7 @@ void PickableItem::give_item_to_player(void) {
 
   // give the item
   Game *game = zsdx->game;
-  Equipment *equipment = game->get_savegame()->get_equipment();
+  Equipment *equipment = game->get_equipment();
   Treasure *treasure;
 
   switch (type) {

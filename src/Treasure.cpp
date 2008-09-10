@@ -136,8 +136,7 @@ void Treasure::play_treasure_sound(void) {
 void Treasure::show_message(void) {
 
   Game *game = zsdx->game;
-  Savegame *savegame = game->get_savegame();
-  Equipment *equipment = savegame->get_equipment();
+  Equipment *equipment = game->get_equipment();
 
   // the message id is _treasure_x where x is the treasure content
   ostringstream oss(ostringstream::out);
@@ -181,8 +180,8 @@ void Treasure::add_item_to_equipment(void) {
 
   Game *game = zsdx->game;
   Savegame *savegame = game->get_savegame();
-  Equipment *equipment = savegame->get_equipment();
-  DungeonEquipment *dungeon_equipment = savegame->get_dungeon_equipment();
+  Equipment *equipment = game->get_equipment();
+  DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();
 
   // mark the treasure as found in the savegame
   if (savegame_index != -1) {

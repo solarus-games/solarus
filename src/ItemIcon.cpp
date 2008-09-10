@@ -19,7 +19,7 @@ const string ItemIcon::background_file_names[2] = {
  * @param y y position of the icon on the screen
  */
 ItemIcon::ItemIcon(int slot, Savegame *savegame, int x, int y):
-  HudElement(x, y, 24, 24) {
+  HudElement(x, y, 32, 28) {
 
   this->slot = slot;
   this->savegame = savegame;

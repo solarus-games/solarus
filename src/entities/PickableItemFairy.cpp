@@ -2,7 +2,6 @@
 #include "movements/FairyMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "Savegame.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
 #include "Sound.h"
@@ -65,6 +64,6 @@ void PickableItemFairy::give_item_to_player(void) {
   }
 
   // give the fairy
-  Equipment *equipment = zsdx->game->get_savegame()->get_equipment();
+  Equipment *equipment = zsdx->game->get_equipment();
   equipment->give_fairy();
 }

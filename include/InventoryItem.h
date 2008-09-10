@@ -72,6 +72,7 @@ class InventoryItem {
   static InventoryItem *get_item(ItemId id);
 
   bool is_attributable(void);
+  bool has_counter(void);
   int get_counter_index(void);
 };
 

@@ -5,8 +5,6 @@
 #include "menus/PauseSubmenuOptions.h"
 #include "Game.h"
 #include "Savegame.h"
-#include "Equipment.h"
-#include "DungeonEquipment.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sound.h"
@@ -16,15 +14,14 @@
  * @param game the game
  */
 PauseMenu::PauseMenu(Game *game):
-  game(game), savegame(game->get_savegame()), equipment(savegame->get_equipment()),
-  dungeon_equipment(savegame->get_dungeon_equipment()), keys_effect(game->get_keys_effect()) {
+  game(game), keys_effect(game->get_keys_effect()) {
 
   submenus[0] = new PauseSubmenuInventory(this, game);
   submenus[1] = new PauseSubmenuMap(this, game);
   submenus[2] = new PauseSubmenuQuestStatus(this, game);
   submenus[3] = new PauseSubmenuOptions(this, game);
 
-  current_submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  current_submenu_index = game->get_savegame()->get_integer(Savegame::PAUSE_LAST_SUBMENU);
 
   backgrounds_surface = ResourceManager::load_image("menus/pause_submenus.png");
 

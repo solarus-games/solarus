@@ -33,7 +33,7 @@ Game::Game(Savegame *savegame):
   zsdx->set_game(this);
 
   // initialize Link
-  link = new Link(savegame->get_equipment());
+  link = new Link(get_equipment());
   link_movement = link->get_movement();
 
   // initialize the keys effect and the HUD
@@ -83,14 +83,6 @@ Game::~Game(void) {
 }
 
 /**
- * Returns the saved data associated to this game.
- * @return the saved data
- */
-Savegame * Game::get_savegame(void) {
-  return savegame;
-}
-
-/**
  * Returns Link.
  * @return Link
  */
@@ -104,6 +96,32 @@ Link * Game::get_link(void) {
  */
 KeysEffect * Game::get_keys_effect(void) {
   return keys_effect;
+}
+
+/**
+ * Returns the saved data associated to this game.
+ * @return the saved data
+ */
+Savegame * Game::get_savegame(void) {
+  return savegame;
+}
+
+/**
+ * Returns the equipment of the player.
+ * It just calls get_savegame()->get_equipment().
+ * @return the equipment
+ */
+Equipment * Game::get_equipment(void) {
+  return savegame->get_equipment();
+}
+
+/**
+ * Returns the dungeon equipment of the player.
+ * It just calls get_savegame()->get_dungeon_equipment().
+ * @return the dungeon equipment
+ */
+DungeonEquipment * Game::get_dungeon_equipment(void) {
+  return savegame->get_dungeon_equipment();
 }
 
 /**
@@ -138,13 +156,18 @@ void Game::update(void) {
   current_map->update();
 
   // update the equipment and HUD
-  savegame->get_equipment()->update();
+  get_equipment()->update();
   update_keys_effect();
   hud->update();
 
   // update the treasure (if any)
   if (treasure != NULL) {
     update_treasure();
+  }
+
+  // update the pause menu (if the game is paused)
+  if (is_paused()) {
+    pause_menu->update();
   }
 
   // update the dialog box (if any)
@@ -221,12 +244,12 @@ void Game::update_keys_effect(void) {
   case Link::SWORD_LOADING:
 
     // the sword key swings the sword <=> Link has a sword
-    if (savegame->get_equipment()->has_sword()
+    if (get_equipment()->has_sword()
 	&& keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
       keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
     }
-    else if (!savegame->get_equipment()->has_sword()
+    else if (!get_equipment()->has_sword()
 	     && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
       
       keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);

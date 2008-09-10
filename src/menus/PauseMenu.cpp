@@ -14,43 +14,24 @@
  * @param game the game
  */
 PauseMenu::PauseMenu(Game *game):
-  game(game), keys_effect(game->get_keys_effect()) {
+  game(game), savegame(game->get_savegame()), keys_effect(game->get_keys_effect()) {
 
-  submenus[0] = new PauseSubmenuInventory(this, game);
-  submenus[1] = new PauseSubmenuMap(this, game);
-  submenus[2] = new PauseSubmenuQuestStatus(this, game);
-  submenus[3] = new PauseSubmenuOptions(this, game);
-
-  current_submenu_index = game->get_savegame()->get_integer(Savegame::PAUSE_LAST_SUBMENU);
-
-  backgrounds_surface = ResourceManager::load_image("menus/pause_submenus.png");
+  this->current_submenu = NULL;
+  this->backgrounds_surface = ResourceManager::load_image("menus/pause_submenus.png");
 
   ResourceManager::get_sound("pause_open")->play();
-
   keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
   keys_effect->save_action_key_effect();
-  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   keys_effect->save_sword_key_effect();
-  keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SAVE);
+
+  set_current_submenu(savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU));
 }
 
 /**
  * Destructor.
  */
 PauseMenu::~PauseMenu(void) {
-  for (int i = 0; i < 4; i++) {
-    delete submenus[i];
-  }
-
-  SDL_FreeSurface(backgrounds_surface);
-}
-
-/**
- * Returns the submenu currently displayed.
- * @return the current submenu
- */
-PauseSubmenu * PauseMenu::get_current_submenu(void) {
-  return submenus[current_submenu_index];
+  delete current_submenu;
 }
 
 /**
@@ -75,7 +56,7 @@ void PauseMenu::key_pressed(const SDL_keysym &keysym) {
     game->set_paused(false);
   }
   else {
-    get_current_submenu()->key_pressed(keysym);
+    current_submenu->key_pressed(keysym);
   }
 }
 
@@ -83,7 +64,7 @@ void PauseMenu::key_pressed(const SDL_keysym &keysym) {
  * Updates the pause menu.
  */
 void PauseMenu::update(void) {
-  get_current_submenu()->update();
+  current_submenu->update();
 }
 
 /**
@@ -92,25 +73,67 @@ void PauseMenu::update(void) {
 void PauseMenu::display(SDL_Surface *destination) {
 
   // display the background for the current submenu
-  SDL_Rect src_position = {320 * current_submenu_index, 0, 320, 240};
+  int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  SDL_Rect src_position = {320 * submenu_index, 0, 320, 240};
   SDL_BlitSurface(backgrounds_surface, &src_position, destination, NULL);
 
   // display the current submenu content
-  get_current_submenu()->display(destination);
+  current_submenu->display(destination);
+}
+
+/**
+ * Moves to the specified submenu.
+ * @param submenu_index the submenu to show
+ */
+void PauseMenu::set_current_submenu(int submenu_index) {
+
+  // show the default action and sword keys
+  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SAVE);
+
+  // go to the specified submenu
+  savegame->set_integer(Savegame::PAUSE_LAST_SUBMENU, submenu_index);
+
+  if (current_submenu != NULL) {
+    delete current_submenu;
+  }
+
+  switch (submenu_index) {
+
+  case 0:
+    current_submenu = new PauseSubmenuInventory(this, game);
+    break;
+
+  case 1:
+    current_submenu = new PauseSubmenuMap(this, game);
+    break;
+
+  case 2:
+    current_submenu = new PauseSubmenuQuestStatus(this, game);
+    break;
+
+  case 3:
+    current_submenu = new PauseSubmenuOptions(this, game);
+    break;
+  }
 }
 
 /**
  * Shows the submenu located at the left side from the current one.
  */
 void PauseMenu::show_left_submenu(void) {
+
   ResourceManager::get_sound("pause_closed")->play();
-  current_submenu_index = (current_submenu_index + 3) % 4;
+  int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  set_current_submenu((submenu_index + 3) % 4);
 }
 
 /**
  * Shows the submenu located at the right side from the current one.
  */
 void PauseMenu::show_right_submenu(void) {
+
   ResourceManager::get_sound("pause_closed")->play();
-  current_submenu_index = (current_submenu_index + 1) % 4;
+  int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  set_current_submenu((submenu_index + 1) % 4);
 }

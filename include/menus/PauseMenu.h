@@ -11,13 +11,13 @@ class PauseMenu {
  private:
 
   Game *game;
+  Savegame *savegame;
   KeysEffect *keys_effect;
 
-  int current_submenu_index;
-  PauseSubmenu *submenus[4];
+  PauseSubmenu *current_submenu;
   SDL_Surface *backgrounds_surface;
 
-  PauseSubmenu *get_current_submenu(void);
+  void set_current_submenu(int submenu_index);
 
  public:
 

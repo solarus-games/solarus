@@ -12,6 +12,9 @@ class PauseSubmenu {
 
   PauseMenu *pause_menu;
   Game *game;
+  Savegame *savegame;
+  Equipment *equipment;
+  DungeonEquipment *dungeon_equipment;
 
   TextSurface *caption_text_1;
   TextSurface *caption_text_2;

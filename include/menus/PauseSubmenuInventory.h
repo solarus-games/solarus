@@ -11,8 +11,6 @@ class PauseSubmenuInventory: public PauseSubmenu {
 
  private:
 
-  Equipment *equipment;   /**< the player's equipment */
-
   int cursor_row;         /**< row of the inventory cursor, between 0 and 3 */
   int cursor_column;      /**< column of the inventory cursor, between 0 and 6 */
   Sprite *cursor_sprite;  /**< sprite of the cursor to select an item */
@@ -20,6 +18,9 @@ class PauseSubmenuInventory: public PauseSubmenu {
 
   SDL_Surface *items_img; /**< images of the existing items */
   Counter *counters[28];  /**< counters (for some items only) */
+
+  void set_cursor_position(int row, int column);
+  void show_info_message(void);
 
  public:
 

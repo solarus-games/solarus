@@ -48,6 +48,9 @@ class DialogBox {
   bool cancel_dialog;          // true if the user has cancelled the dialog
   int icon_number;             // index of the 16*16 icon displayed, or -1 if there is no icon
 
+  KeysEffect::ActionKeyEffect action_key_effect_saved;
+  KeysEffect::SwordKeyEffect sword_key_effect_saved;
+
   // graphics
   SDL_Surface *img_box;
   SDL_Surface *img_icons;

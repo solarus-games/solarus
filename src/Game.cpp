@@ -237,6 +237,10 @@ void Game::update_transitions(void) {
  */
 void Game::update_keys_effect(void) {
 
+  if (is_suspended()) {
+    return;
+  }
+
   switch (link->get_state()) {
     
   case Link::FREE:

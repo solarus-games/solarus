@@ -7,6 +7,7 @@
 #include "Equipment.h"
 #include "Savegame.h"
 #include "Counter.h"
+#include "KeysEffect.h"
 
 /**
  * Caption text displayed when an item is selected in the inventory.
@@ -20,7 +21,8 @@ static const string item_names[28][6] = {
   {"Boomerang"},
   {"Lanterne"},
   {"Grappin"},
-  {"Flacon Magique"},
+  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
+   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
 
   {"Bottes de Pégase"},
   {"Miroir Mystique"},
@@ -28,7 +30,8 @@ static const string item_names[28][6] = {
   {"Cape Magique"},
   {"Poigne de Fer", "Poigne d'Or"},
   {"Pierres de Feu"},
-  {"Flacon Magique"},
+  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
+   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
 
   {"Pommes"},
   {"Pains au Chocolat"},
@@ -53,10 +56,7 @@ static const string item_names[28][6] = {
  * @param game the game
  */
 PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
-  PauseSubmenu(pause_menu, game), cursor_row(0), cursor_column(0) {
-
-  Savegame *savegame = game->get_savegame();
-  equipment = game->get_equipment();
+  PauseSubmenu(pause_menu, game) {
 
   cursor_sprite = new Sprite("menus/pause_cursor");
   cursor_sound = ResourceManager::get_sound("cursor");
@@ -86,6 +86,10 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
       counters[k] = NULL;
     }
   }
+
+  // initialize the cursor
+  set_cursor_position(savegame->get_integer(Savegame::INVENTORY_LAST_ROW),
+		      savegame->get_integer(Savegame::INVENTORY_LAST_COLUMN));
 }
 
 /**
@@ -103,12 +107,50 @@ PauseSubmenuInventory::~PauseSubmenuInventory(void) {
 }
 
 /**
+ * Sets the position of the cursor.
+ * In other words, selects an item in the inventory.
+ * @param row row of the cursor, between 0 and 3
+ * @param column columng of the cursor, between 0 and 6
+ */
+void PauseSubmenuInventory::set_cursor_position(int row, int column) {
+
+  // update the cursor position
+  cursor_row = row;
+  cursor_column = column;
+
+  savegame->set_integer(Savegame::INVENTORY_LAST_ROW, row);
+  savegame->set_integer(Savegame::INVENTORY_LAST_COLUMN, column);
+
+  // update the caption text, show or hide the action icon
+  KeysEffect *keys_effect = game->get_keys_effect();
+  int k = row * 7 + column;
+  int variant = equipment->has_inventory_item((InventoryItem::ItemId) k);
+
+  if (variant != 0) {
+    set_caption_text(item_names[k][variant - 1]);
+    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
+  }
+  else {
+    set_caption_text("");
+    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  }
+}
+
+/**
  * This function is called when a key is pressed on this submenu.
  * @param keysym the key pressed
  */
 void PauseSubmenuInventory::key_pressed(const SDL_keysym &keysym) {
 
+  KeysEffect *keys_effect = game->get_keys_effect();
+
   switch (keysym.sym) {
+
+  case SDLK_SPACE:
+    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_INFO) {
+      show_info_message();
+    }
+    break;
 
   case SDLK_LEFT:
     if (cursor_column == 0) {
@@ -116,8 +158,7 @@ void PauseSubmenuInventory::key_pressed(const SDL_keysym &keysym) {
     }
     else {
       cursor_sound->play();
-      cursor_column--;
-      // TODO set_caption_name
+      set_cursor_position(cursor_row, cursor_column - 1);
     }
     break;
 
@@ -127,18 +168,18 @@ void PauseSubmenuInventory::key_pressed(const SDL_keysym &keysym) {
     }
     else {
       cursor_sound->play();
-      cursor_column++;
+      set_cursor_position(cursor_row, cursor_column + 1);
     }
     break;
 
   case SDLK_UP:
     cursor_sound->play();
-    cursor_row = (cursor_row + 3) % 4;
+    set_cursor_position((cursor_row + 3) % 4, cursor_column);
     break;
 
   case SDLK_DOWN:
     cursor_sound->play();
-    cursor_row = (cursor_row + 1) % 4;
+    set_cursor_position((cursor_row + 1) % 4, cursor_column);
     break;
 
   default:
@@ -201,4 +242,23 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
   int y = 77 + 32 * cursor_row;
 
   cursor_sprite->display(destination, x, y);
+}
+
+/**
+ * Shows a message describing the item currently selected.
+ * The player must have this item.
+ */
+void PauseSubmenuInventory::show_info_message(void) {
+
+  int item_id = cursor_row * 7 + cursor_column;
+  int variant = equipment->has_inventory_item((InventoryItem::ItemId) item_id);
+
+  // exception: for a bottle, replace its real id by the id of the first bottle
+  if (item_id == InventoryItem::BOTTLE_2) {
+    item_id = InventoryItem::BOTTLE_1; // TODO: add future bottles if any
+  }
+
+  ostringstream oss;
+  oss << "_item_description_" << item_id << '_' << variant;
+  game->show_message(oss.str());
 }

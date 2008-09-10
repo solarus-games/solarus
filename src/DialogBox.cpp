@@ -44,8 +44,8 @@ DialogBox::DialogBox(MessageId first_message_id, int x, int y) {
 
   // save the action and sword keys
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->save_action_key_effect();
-  keys_effect->save_sword_key_effect();
+  action_key_effect_saved = keys_effect->get_action_key_effect();
+  sword_key_effect_saved = keys_effect->get_sword_key_effect();
 
   // initialize the current message
   speed = SPEED_FAST;
@@ -62,8 +62,8 @@ DialogBox::~DialogBox(void) {
 
   // the dialog box is being closed: restore the action and sword keys
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->restore_action_key_effect();
-  keys_effect->restore_sword_key_effect();
+  keys_effect->set_action_key_effect(action_key_effect_saved);
+  keys_effect->set_sword_key_effect(sword_key_effect_saved);
 
   // free the memory
   SDL_FreeSurface(img_box);

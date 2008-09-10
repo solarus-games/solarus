@@ -1,11 +1,13 @@
 #include "menus/PauseSubmenuOptions.h"
+#include "menus/PauseMenu.h"
 
 /**
  * Constructor.
+ * @param pause_menu the pause menu object
  * @param game the game
  */
-PauseSubmenuOptions::PauseSubmenuOptions(Game *game):
-  PauseSubmenu(game) {
+PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
+  PauseSubmenu(pause_menu, game) {
 
 }
 
@@ -22,6 +24,19 @@ PauseSubmenuOptions::~PauseSubmenuOptions(void) {
  */
 void PauseSubmenuOptions::key_pressed(const SDL_keysym &keysym) {
 
+  switch (keysym.sym) {
+
+  case SDLK_LEFT:
+    pause_menu->show_left_submenu();
+    break;
+
+  case SDLK_RIGHT:
+    pause_menu->show_right_submenu();
+    break;
+
+  default:
+    break;
+  }
 }
 
 /**
@@ -35,5 +50,5 @@ void PauseSubmenuOptions::update(void) {
  * Displays this submenu.
  */
 void PauseSubmenuOptions::display(SDL_Surface *destination) {
-
+  PauseSubmenu::display(destination);
 }

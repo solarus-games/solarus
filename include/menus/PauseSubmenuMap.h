@@ -11,7 +11,7 @@ class PauseSubmenuMap: public PauseSubmenu {
 
  public:
 
-  PauseSubmenuMap(Game *game);
+  PauseSubmenuMap(PauseMenu *pause_menu, Game *game);
   ~PauseSubmenuMap(void);
 
   void key_pressed(const SDL_keysym &keysym);

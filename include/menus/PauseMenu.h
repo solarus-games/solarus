@@ -31,6 +31,9 @@ class PauseMenu {
   void key_pressed(const SDL_keysym &keysym);
   void update(void);
   void display(SDL_Surface *destination);
+
+  void show_left_submenu(void);
+  void show_right_submenu(void);
 };
 
 #endif

@@ -65,6 +65,10 @@ Game::~Game(void) {
     delete dialog_box;
   }
 
+  if (pause_menu != NULL) {
+    delete pause_menu;
+  }
+
   if (treasure != NULL) {
     delete treasure;
   }
@@ -274,7 +278,9 @@ void Game::display(SDL_Surface *screen_surface) {
   SDL_BlitSurface(current_map->get_visible_surface(), NULL, screen_surface, NULL);
 
   // display the pause screen if any
-  // TODO
+  if (is_paused()) {
+    pause_menu->display(screen_surface);
+  }
 
   // display the hud
   hud->display(screen_surface);

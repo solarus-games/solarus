@@ -1,4 +1,8 @@
 #include "menus/PauseMenu.h"
+#include "menus/PauseSubmenuInventory.h"
+#include "menus/PauseSubmenuMap.h"
+#include "menus/PauseSubmenuQuestStatus.h"
+#include "menus/PauseSubmenuOptions.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -6,10 +10,6 @@
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sound.h"
-#include "menus/PauseSubmenuInventory.h"
-#include "menus/PauseSubmenuMap.h"
-#include "menus/PauseSubmenuQuestStatus.h"
-#include "menus/PauseSubmenuOptions.h"
 
 /**
  * Opens a pause menu.
@@ -19,10 +19,10 @@ PauseMenu::PauseMenu(Game *game):
   game(game), savegame(game->get_savegame()), equipment(savegame->get_equipment()),
   dungeon_equipment(savegame->get_dungeon_equipment()), keys_effect(game->get_keys_effect()) {
 
-  submenus[0] = new PauseSubmenuInventory(game);
-  submenus[1] = new PauseSubmenuMap(game);
-  submenus[2] = new PauseSubmenuQuestStatus(game);
-  submenus[3] = new PauseSubmenuOptions(game);
+  submenus[0] = new PauseSubmenuInventory(this, game);
+  submenus[1] = new PauseSubmenuMap(this, game);
+  submenus[2] = new PauseSubmenuQuestStatus(this, game);
+  submenus[3] = new PauseSubmenuOptions(this, game);
 
   current_submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
 
@@ -44,6 +44,8 @@ PauseMenu::~PauseMenu(void) {
   for (int i = 0; i < 4; i++) {
     delete submenus[i];
   }
+
+  SDL_FreeSurface(backgrounds_surface);
 }
 
 /**
@@ -98,4 +100,20 @@ void PauseMenu::display(SDL_Surface *destination) {
 
   // display the current submenu content
   get_current_submenu()->display(destination);
+}
+
+/**
+ * Shows the submenu located at the left side from the current one.
+ */
+void PauseMenu::show_left_submenu(void) {
+  ResourceManager::get_sound("pause_closed")->play();
+  current_submenu_index = (current_submenu_index + 3) % 4;
+}
+
+/**
+ * Shows the submenu located at the right side from the current one.
+ */
+void PauseMenu::show_right_submenu(void) {
+  ResourceManager::get_sound("pause_closed")->play();
+  current_submenu_index = (current_submenu_index + 1) % 4;
 }

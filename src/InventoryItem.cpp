@@ -20,7 +20,7 @@ InventoryItem InventoryItem::items[28] = {
   InventoryItem(true, 0), // magic cape
   InventoryItem(false, 0), // iron glove + golden glove
   InventoryItem(false, Savegame::NB_FIRE_STONES), // fire stones
-  InventoryItem(true, 0), // bottle 1
+  InventoryItem(true, 0), // bottle 2
 
   InventoryItem(true, Savegame::CURRENT_APPLES),  // apples
   InventoryItem(true, Savegame::CURRENT_PAINS_AU_CHOCOLAT), // pains au chocolats

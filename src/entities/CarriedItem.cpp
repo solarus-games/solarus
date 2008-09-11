@@ -1,7 +1,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/TransportableItem.h"
 #include "entities/Link.h"
-#include "movements/MovementPath.h"
+#include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
 #include "movements/ThrowItemMovement.h"
 #include "Sprite.h"
@@ -49,7 +49,7 @@ CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
   set_size(transportable_item->get_width(), transportable_item->get_height());
 
   // create the movement and the sprite
-  MovementPath *movement = new MovementPath(lifting_translations[direction], 6, 100, false);
+  PathMovement *movement = new PathMovement(lifting_translations[direction], 6, 100, false);
   create_sprite(transportable_item->get_sprite_animations_id());
   set_movement(movement);
 
@@ -152,7 +152,7 @@ void CarriedItem::update(void) {
 
   // when Link finishes lifting the item, start carrying it
   if (is_lifting) {
-    MovementPath *movement = (MovementPath*) get_movement();
+    PathMovement *movement = (PathMovement*) get_movement();
     if (movement->is_finished()) {
       is_lifting = false;
 

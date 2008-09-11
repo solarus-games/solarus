@@ -2,7 +2,7 @@
 #define ZSDX_MOVEMENT_FALLING_H
 
 #include "Common.h"
-#include "MovementPath.h"
+#include "PathMovement.h"
 
 /**
  * Movement of an item that falls on the floor and
@@ -10,7 +10,7 @@
  * This movement is typically used by the pickable items
  * (rupees, hearts...) that appear when the player kill an enemy.
  */
-class MovementFalling: public MovementPath {
+class MovementFalling: public PathMovement {
 
  public:
 

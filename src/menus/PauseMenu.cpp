@@ -32,6 +32,7 @@ PauseMenu::PauseMenu(Game *game):
  */
 PauseMenu::~PauseMenu(void) {
   delete current_submenu;
+  SDL_FreeSurface(backgrounds_surface);
 }
 
 /**

@@ -1,5 +1,5 @@
-#ifndef ZSDX_MOVEMENT_PATH_H
-#define ZSDX_MOVEMENT_PATH_H
+#ifndef ZSDX_PATH_MOVEMENT_H
+#define ZSDX_PATH_MOVEMENT_H
 
 #include "Common.h"
 #include "Movement.h"
@@ -8,7 +8,7 @@
  * Movement for an entity that follows a predetermined path.
  * A path is a succession of translation vectors.
  */
-class MovementPath: public Movement {
+class PathMovement: public Movement {
 
  private:
 
@@ -57,9 +57,9 @@ class MovementPath: public Movement {
 
  public:
 
-  MovementPath(const SDL_Rect *translation_vectors, int nb_vectors, 
+  PathMovement(const SDL_Rect *translation_vectors, int nb_vectors, 
 	       Uint32 delay, bool loop);
-  ~MovementPath(void);
+  ~PathMovement(void);
 
   bool is_finished(void);
 

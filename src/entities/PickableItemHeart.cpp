@@ -1,5 +1,5 @@
 #include "entities/PickableItemHeart.h"
-#include "movements/MovementPath.h"
+#include "movements/PathMovement.h"
 #include "Sprite.h"
 
 /**
@@ -55,7 +55,7 @@ void PickableItemHeart::initialize_sprites(void) {
 void PickableItemHeart::initialize_movement(void) {
   
   if (is_falling()) {
-    set_movement(new MovementPath(falling_moves, 24, 100, false));
+    set_movement(new PathMovement(falling_moves, 24, 100, false));
   }
 }
 

@@ -120,9 +120,10 @@ class MovementWithCollision;
 class MovementWithSmoothCollision;
 class Movement8ByPlayer;
 class MovementFalling;
-class MovementPath;
+class PathMovement;
 class FairyMovement;
 class FollowMovement;
 class ThrowItemMovement;
+class TargetMovement;
 
 #endif

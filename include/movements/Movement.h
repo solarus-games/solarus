@@ -18,8 +18,12 @@ class Movement {
 
   /**
    * The entity controlled by this movement.
+   * If it is NULL, the movement is applied to the internal x and y fields of the Movement class.
    */
   MapEntity *entity;
+
+  int x; /**< x coordinate of the object controlled by this movement */
+  int y; /**< y coordinate of the object controlled by this movement */
 
   // speed vector
 
@@ -87,7 +91,7 @@ class Movement {
   bool suspended;
 
   /**
-   * Indicates when the movement was suspended
+   * Indicates when the movement was suspended.
    */
   Uint32 when_suspended;
 
@@ -133,6 +137,7 @@ class Movement {
   virtual void set_suspended(bool suspended);
 
   void set_direction(int direction);
+  void set_direction(double angle);
 };
 
 #endif

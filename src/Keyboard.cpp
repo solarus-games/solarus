@@ -196,21 +196,10 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
       }
 
       treasure = new Treasure((Treasure::Content) content, 13, 0);
-
-      link->give_treasure(treasure);
+      game->give_treasure(treasure);
     }
     break;
 
-  case SDLK_f:
-    treasure = new Treasure(Treasure::ARROWS, 1, 43);
-    link->give_treasure(treasure);
-    break;
-
-  case SDLK_v:
-    treasure = new Treasure(Treasure::ARROWS, 10, 43);
-    link->give_treasure(treasure);
-    break;
-	  
   default:
     break;
   }

@@ -472,16 +472,36 @@ DialogBox * Game::get_dialog_box(void) {
  * Shows the specified message.
  * If this message is followed by other messages, they will
  * be displayed too.
+ * The dialog box position depends on Link's position on the screen.
+ * @param message_id id of the message to show
  */
 void Game::show_message(MessageId message_id) {
 
   SDL_Rect *screen_position = current_map->get_screen_position();
-  int y;
+
   if (link->get_y() < screen_position->y + 130) {
-    y = 144;
+    show_message(message_id, 1);
   }
   else {
+    show_message(message_id, 0);
+  }
+}
+
+/**
+ * Shows the specified message.
+ * If this message is followed by other messages, they will
+ * be displayed too.
+ * @param message_id id of the message to show
+ * @param position the dialog box position: 0 means on the top, 1 means on the bottom
+ */
+void Game::show_message(MessageId message_id, int position) {
+
+  int y;
+  if (position == 0) {
     y = 32;
+  }
+  else {
+    y = 144;
   }
 
   dialog_box = new DialogBox(message_id, 51, y);

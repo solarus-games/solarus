@@ -885,6 +885,7 @@ void Equipment::remove_inventory_item_amount(InventoryItem::ItemId item_id, int 
 /**
  * Returns the item currently assigned to a slot.
  * @param slot slot of the item to get (0 for X or 1 for V)
+ * @return the item currently assigned to this slot (may be NONE)
  */
 InventoryItem::ItemId Equipment::get_item_assigned(int slot) {
   int index = Savegame::ITEM_SLOT_0 + slot;

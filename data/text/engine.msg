@@ -235,6 +235,7 @@ icon = 12
 line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
+next = _item_description_6_6.1
 cancel = all
 
 [_item_description_6_6.1]

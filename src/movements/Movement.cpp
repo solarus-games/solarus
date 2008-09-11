@@ -23,6 +23,7 @@ Movement::Movement(void):
   x_move(0), y_move(0),
   suspended(false), when_suspended(0) {
 
+  set_entity(NULL);
 }
 
 /**
@@ -34,43 +35,79 @@ Movement::~Movement(void) {
 
 /**
  * Sets the entity to be controlled by this movement object.
+ * This entity can be NULL if your movement applies to something else than a map entity.
+ * However, some subclasses of Movement may require a non NULL entity because they
+ * implement movements that depend on the map content (e.g. to handle the collisions).
  * @param entity the entity to control
  */
 void Movement::set_entity(MapEntity *entity) {
   this->entity = entity;
+
+  if (entity == NULL) {
+    this->x = 0;
+    this->y = 0;
+  }
+  else {
+    this->x = entity->get_x();
+    this->y = entity->get_y();
+  }
 }
 
 /**
- * Returns the x position of the entity.
- * @return the x position of the entity
+ * Returns the x position of the object controlled by this movement.
+ * @return the x position of the object controlled by this movement
  */
 int Movement::get_x(void) {
+
+  if (entity == NULL) {
+    return x;
+  }
+
   return entity->get_x();
 }
 
 /**
- * Returns the y position of the entity.
- * @return the y position of the entity
+ * Returns the y position of the object controlled by this movement.
+ * @return the y position of the object controlled by this movement
  */
 int Movement::get_y(void) {
+
+  if (entity == NULL) {
+    return y;
+  }
+
   return entity->get_y();
 }
 
 /**
- * Sets the x position of the entity.
+ * Sets the x position of the object controlled by this movement.
  * @param x the new x position
  */
 void Movement::set_x(int x) {
-  entity->set_x(x);
+
+  if (entity != NULL) {
+    entity->set_x(x);
+  }
+  else {
+    this->x = x;
+  }
+
   last_move_date = SDL_GetTicks();
 }
 
 /**
- * Sets the y position of the entity.
+ * Sets the y position of the object controlled by this movement.
  * @param y the new y position
  */
 void Movement::set_y(int y) {
-  entity->set_y(y);
+
+  if (entity != NULL) {
+    entity->set_y(y);
+  }
+  else {
+    this->y = y;
+  }
+
   last_move_date = SDL_GetTicks();
 }
 
@@ -232,6 +269,19 @@ void Movement::stop(void) {
 void Movement::set_direction(int direction) {
   double speed = get_speed();
   double angle = direction * TWO_PI / 360.0; // angle in radians
+
+  set_x_speed(speed * cos(angle));
+  set_y_speed(-speed * sin(angle));
+}
+
+/**
+ * Changes the direction of the movement vector, keeping the same speed.
+ * x_speed and y_speed are recomputed so that the total speed is unchanged.
+ * Warning: if x_speed and y_speed are both equal to zero, this function has no effect!
+ * @param angle the new movement direction in radians
+ */
+void Movement::set_direction(double angle) {
+  double speed = get_speed();
 
   set_x_speed(speed * cos(angle));
   set_y_speed(-speed * sin(angle));

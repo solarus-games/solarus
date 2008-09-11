@@ -8,6 +8,7 @@
 #include "Savegame.h"
 #include "Counter.h"
 #include "KeysEffect.h"
+#include "movements/TargetMovement.h"
 
 /**
  * Caption text displayed when an item is selected in the inventory.
@@ -90,12 +91,21 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
   // initialize the cursor
   set_cursor_position(savegame->get_integer(Savegame::INVENTORY_LAST_ROW),
 		      savegame->get_integer(Savegame::INVENTORY_LAST_COLUMN));
+
+  item_assigned_movement = NULL;
 }
 
 /**
  * Destructor.
  */
 PauseSubmenuInventory::~PauseSubmenuInventory(void) {
+
+  // if an item was being assigned, finish the assignement immediately
+  if (is_assigning_item()) {
+    finish_assigning_item();
+  }
+
+  // free the memory
   delete cursor_sprite;
   SDL_FreeSurface(items_img);
 
@@ -137,6 +147,29 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
 }
 
 /**
+ * Returns the index of the cell currently selected in the inventory.
+ * The value returned identifies an item and corresponds directly to a
+ * value from the InventoryItem::ItemId enum.
+ * @return the index of the selected cell, between 0 and 27
+ */
+int PauseSubmenuInventory::get_selected_index(void) {
+  return cursor_row * 7 + cursor_column;
+}
+
+/**
+ * Returns whether an item is selected, i.e. whether the cursor is on an
+ * item that the player has.
+ * @return true if an item is currently selected
+ */
+bool PauseSubmenuInventory::is_item_selected(void) {
+  
+  int item_id = get_selected_index();
+  int variant = equipment->has_inventory_item((InventoryItem::ItemId) item_id);
+
+  return variant != 0;
+}
+
+/**
  * This function is called when a key is pressed on this submenu.
  * @param keysym the key pressed
  */
@@ -149,6 +182,18 @@ void PauseSubmenuInventory::key_pressed(const SDL_keysym &keysym) {
   case SDLK_SPACE:
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_INFO) {
       show_info_message();
+    }
+    break;
+
+  case SDLK_x:
+    if (is_item_selected()) {
+      assign_item(0);
+    }
+    break;
+
+  case SDLK_v:
+    if (is_item_selected()) {
+      assign_item(1);
     }
     break;
 
@@ -194,6 +239,14 @@ void PauseSubmenuInventory::key_pressed(const SDL_keysym &keysym) {
  */
 void PauseSubmenuInventory::update(void) {
   cursor_sprite->update_current_frame();
+
+  if (item_assigned_movement != NULL) {
+    item_assigned_movement->update();
+
+    if (item_assigned_movement->is_finished()) {
+      finish_assigning_item();
+    }
+  }
 }
 
 /**
@@ -242,6 +295,18 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
   int y = 77 + 32 * cursor_row;
 
   cursor_sprite->display(destination, x, y);
+
+  // display the item being assigned
+  if (item_assigned_movement != NULL) {
+    
+    src_position.x = 16 * item_assigned_id;
+    src_position.y = 16 * (item_assigned_variant - 1);
+
+    dst_position.x = item_assigned_movement->get_x();
+    dst_position.y = item_assigned_movement->get_y();
+
+    SDL_BlitSurface(items_img, &src_position, destination, &dst_position);
+  }
 }
 
 /**
@@ -250,7 +315,7 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
  */
 void PauseSubmenuInventory::show_info_message(void) {
 
-  int item_id = cursor_row * 7 + cursor_column;
+  int item_id = get_selected_index();
   int variant = equipment->has_inventory_item((InventoryItem::ItemId) item_id);
 
   // exception: for a bottle, replace its real id by the id of the first bottle
@@ -260,5 +325,69 @@ void PauseSubmenuInventory::show_info_message(void) {
 
   ostringstream oss;
   oss << "_item_description_" << item_id << '_' << variant;
-  game->show_message(oss.str());
+
+  int position = (cursor_row >= 2) ? 0 : 1;
+
+  game->show_message(oss.str(), position);
+}
+
+/**
+ * Assigns the selected item to a slot.
+ * The operation does not take effect immediately: the item picture is thrown to
+ * its destination icon, then the assignment is done.
+ * @param slot slot to set (0 for X or 1 for V)
+ */
+void PauseSubmenuInventory::assign_item(int slot) {
+
+  // if another item is being assigned, finish it immediately
+  if (is_assigning_item()) {
+    finish_assigning_item();
+  }
+
+  // memorize this item
+  item_assigned_id = (InventoryItem::ItemId) get_selected_index();
+  item_assigned_variant = equipment->has_inventory_item(item_assigned_id);
+  item_assigned_destination = slot;
+
+  // play the sound
+  ResourceManager::get_sound("throw")->play();
+
+  // compute the movement
+  int x1 = 60 + 32 * cursor_column;
+  int y1 = 73 + 32 * cursor_row;
+  int x2 = (slot == 0) ? 8 : 60;
+  int y2 = 29;
+
+  item_assigned_movement = new TargetMovement(50, x2, y2);
+  item_assigned_movement->set_position(x1, y1);
+}
+
+/**
+ * Returns whether an item is currently being thrown to an icon.
+ * @return true if an item is being assigned
+ */
+bool PauseSubmenuInventory::is_assigning_item(void) {
+  return item_assigned_movement != NULL;
+}
+
+/**
+ * Stops assigning the item right now.
+ * This function is called when we want to assign the item without
+ * waiting for its throwing movement to end, for example when the inventory submenu
+ * is being closed.
+ */
+void PauseSubmenuInventory::finish_assigning_item(void) {
+
+  // if the item to assign is already assigned to the other icon, switch the two items
+  int slot = item_assigned_destination;
+  InventoryItem::ItemId current_item_id = equipment->get_item_assigned(slot);
+  InventoryItem::ItemId other_item_id = equipment->get_item_assigned(1 - slot);
+
+  if (other_item_id == item_assigned_id) {
+    equipment->set_item_assigned(1 - slot, current_item_id);
+  }
+  equipment->set_item_assigned(slot, item_assigned_id);
+
+  delete item_assigned_movement;
+  item_assigned_movement = NULL;
 }

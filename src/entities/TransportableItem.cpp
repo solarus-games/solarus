@@ -1,7 +1,7 @@
 #include "entities/TransportableItem.h"
 #include "entities/Link.h"
 #include "entities/MapEntities.h"
-#include "movements/MovementPath.h"
+#include "movements/PathMovement.h"
 #include "ResourceManager.h"
 #include "Game.h"
 #include "KeysEffect.h"

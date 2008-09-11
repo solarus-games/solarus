@@ -1,4 +1,4 @@
-#include "movements/MovementPath.h"
+#include "movements/PathMovement.h"
 
 /**
  * Creates a movement path object.
@@ -11,7 +11,7 @@
  * @param loop true to make the movement return to the beginning
  * once finished, false to stop it
  */
-MovementPath::MovementPath(const SDL_Rect *translation_vectors,
+PathMovement::PathMovement(const SDL_Rect *translation_vectors,
 			   int nb_vectors, Uint32 delay, bool loop):
 translation_vectors(translation_vectors), nb_vectors(nb_vectors),
 delay(delay), loop(loop), vector_index(0), path_ended(false) {
@@ -21,14 +21,14 @@ delay(delay), loop(loop), vector_index(0), path_ended(false) {
 /**
  * Destructor.
  */
-MovementPath::~MovementPath(void) {
+PathMovement::~PathMovement(void) {
 
 }
 
 /**
  * Updates the position.
  */
-void MovementPath::update_x(void) {
+void PathMovement::update_x(void) {
 
   Uint32 now = SDL_GetTicks();
 
@@ -52,6 +52,6 @@ void MovementPath::update_x(void) {
  * Returns whether the movement is finished, i.e.
  * whether the end of the path was reached.
  */
-bool MovementPath::is_finished(void) {
+bool PathMovement::is_finished(void) {
   return path_ended;
 }

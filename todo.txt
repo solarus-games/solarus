@@ -5,6 +5,7 @@
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
 - Sauvegarde des éléments de donjon : ajouter le fait que le donjon soit fini
+- Afficher les petites clés dans le hud
 
 - Prochaines grandes étapes :
   - collision au pixel près
@@ -25,6 +26,28 @@ Couper des buissons avec l'épée :
 
 Même chose pour l'herbe sauf que rien ne se passe quand l'épée charge
 
+----------------
+Carte, donjons, phases d'exploration et étages
+----------------
+
+Etages : existent dans les donjons et hors des donjons
+Petites clés aussi (on peut même avoir une clé de donjon à l'extérieur de ce dernier, cf démo de zmc)
+
+-> Numérotation des phases d'exploration (?), qu'elles soient des donjons ou pas. Phases définies dans un fichier spécial, un peu comme dans donjons.zmc.
+Est-ce nécessaire ? Il faut gérer les étages, la position du boss, la position des coffres, leur taille et leur état.
+Question : stocker les informations spécifiques à une map (son étage, ses coordonnées) dans la map elle-même ou dans le fichier des phases d'exploration ? Faire un éditeur de propriétés de donjon (étages, maps concernées...).
+
+Une map qui fait partie d'une phase d'exploration doit spécifier son étage : un vrai étage, aucun étage (peut servir pour une petite grotte avec un seul étage), étage "?"
+
+Une map hors donjon peut spécifier un compteur de petites clés : cela permet de faire des petites clés dans une map hors donjon et même hors phase d'exploration. Remarque : le compteur peut très bien être celui d'un donjon existant. TODO ? en profiter pour spécifier ici les compteurs de clés des donjons au lieu de les faire automatiquement ?
+
+Toute map, donjon ou non, doit spécifier ses propres coordonnées par rapport à la map virtuelle complète.
+- Si c'est une map de donjon, cela permet d'afficher la position de Link sur la carte du donjon (s'il a la boussole).
+- Si c'est une map de la carte du monde, cela permet d'afficher la position de Link sur la carte extérieure.
+- Si c'est une map intérieure et hors donjon, cela indique la position de cet endroit sur la carte du monde et donc d'afficher la position de Link sur la carte extérieure.
+
+Chaque donjon doit spécifier la taille de chacun de ses étages.
+La carte du monde doit aussi spécifier sa taille.
 
 ----------------------
 - Compléter l'éditeur de maps et de tilesets :

@@ -10,6 +10,7 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "DungeonEquipment.h"
 #include "Map.h"
 #include "ResourceManager.h"
 #include "Sound.h"
@@ -372,8 +373,12 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case SMALL_KEY:
+    /*
     treasure = new Treasure(Treasure::SMALL_KEY, savegame_index);
     game->give_treasure(treasure);
+    */
+    game->get_dungeon_equipment()->add_small_key();
+    game->get_savegame()->set_boolean(savegame_index, true);
     break;
 
   case BIG_KEY:

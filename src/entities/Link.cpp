@@ -684,6 +684,16 @@ void Link::start_carrying(void) {
 }
 
 /**
+ * Removes the item carried by Link, without throwing it.
+ */
+void Link::stop_carrying(void) {
+  set_state(FREE);
+  delete lifted_item;
+  lifted_item = NULL;
+  zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+}
+
+/**
  * Makes Link throw the item he was carrying.
  */
 void Link::start_throwing(void) {
@@ -788,6 +798,7 @@ void Link::give_treasure(Treasure *treasure) {
   this->treasure = treasure;
 
   // goto the right state
+  stop_carrying();
   set_state(BRANDISHING_TREASURE);
 
   // show the animation

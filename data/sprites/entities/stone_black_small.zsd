@@ -1,8 +1,8 @@
 stopped entities/transportable_items.png 1 0 -1
-0	32	16	16	8	13	1	1
+96	32	16	24	8	13	1	1
 
 walking entities/transportable_items.png 1 100 0
-0	32	16	16	8	13	3	3
+96	32	16	24	8	13	3	3
 
 destroy entities/transportable_items.png 1 100 -1
-0	0	32	32	16	29	8	8
+0 	0	32	32	16	29	8	8

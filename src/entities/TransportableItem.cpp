@@ -31,14 +31,13 @@ const TransportableItem::ItemProperties TransportableItem::properties[] = {
  * @param type type of transportable item to create
  * @param pickable_item the type of pickable item that appears when the transportable
  * item is lifted
- * @param savegame_index savegame index of the possession state of the pickable item,
+ * @param pickable_item_savegame_index savegame index of the possession state of the pickable item,
  * for certain kinds of pickable items only (a key, a piece of heart...)
  */
-TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y,
-				     TransportableItem::ItemType type,
-				     PickableItem::ItemType pickable_item, int savegame_index):
+TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y, TransportableItem::ItemType type,
+				     PickableItem::ItemType pickable_item, int pickable_item_savegame_index):
   EntityDetector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
-  map(map), type(type), pickable_item(pickable_item) {
+  map(map), type(type), pickable_item(pickable_item), pickable_item_savegame_index(pickable_item_savegame_index) {
 
   set_origin(8, 13);
   create_sprite(get_sprite_animations_id());
@@ -110,7 +109,7 @@ void TransportableItem::action_key_pressed(void) {
     if (pickable_item != PickableItem::NONE) {
       bool will_disappear = (pickable_item <= PickableItem::ARROW_10);
       map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
-					     0, MovementFalling::MEDIUM, will_disappear);
+					     pickable_item_savegame_index, MovementFalling::MEDIUM, will_disappear);
     }
 
     // remove the item from the map

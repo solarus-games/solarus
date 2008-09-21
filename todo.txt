@@ -7,6 +7,9 @@
 - Sauvegarde des éléments de donjon : ajouter le fait que le donjon soit fini
 - Afficher les petites clés dans le hud
 
+Bugs :
+- Editeur de maps : l'entrée d'une map ne prend plus la bonne direction
+
 - Prochaines grandes étapes :
   - collision au pixel près
   - couper des buissons et des herbes

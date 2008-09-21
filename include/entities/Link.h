@@ -104,6 +104,7 @@ class Link: public MapEntity, AnimationListener {
   void start_spin_attack(void);
   bool can_start_sword(void);
 
+  void stop_carrying(void);
   void start_throwing(void);
   void set_suspended_carried_items(bool suspended);
   void update_carried_items(void);

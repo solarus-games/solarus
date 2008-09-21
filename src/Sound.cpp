@@ -3,7 +3,7 @@
 #include "FileTools.h"
 #include <fmodex/fmod_errors.h>
 
-FMOD::System *Sound::system = NULL;
+FMOD_SYSTEM *Sound::system = NULL;
 
 /**
  * Constructor used by the Music subclass.
@@ -27,7 +27,7 @@ Sound::Sound(SoundId sound_id):
  */
 Sound::~Sound(void) {
   if (sound != NULL) {
-    sound->release();
+    FMOD_Sound_Release(sound);
   }
 }
 
@@ -39,29 +39,29 @@ void Sound::initialize(void) {
 
   FMOD_RESULT result;
 
-  FMOD::System_Create(&system);
+  FMOD_System_Create(&system);
 
   // first we try to initialize FMOD with WinMM instead of DirectSound
   // because we have problems with DirectSound
-  system->setOutput(FMOD_OUTPUTTYPE_WINMM);
-  result = system->init(16, FMOD_INIT_NORMAL, NULL);
+  FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_WINMM);
+  result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
 
   if (result != FMOD_OK) {
 
     // if it doesn't work, we try to auto-detect the output type
-    system->setOutput(FMOD_OUTPUTTYPE_AUTODETECT);
-    result = system->init(16, FMOD_INIT_NORMAL, NULL);
+    FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_AUTODETECT);
+    result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
 
     if (result != FMOD_OK) {
 
       // it didn't work either: try Linux sound
-      system->setOutput(FMOD_OUTPUTTYPE_ALSA);
-      result = system->init(16, FMOD_INIT_NORMAL, NULL);
+      FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
+      result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
 
       if (result != FMOD_OK) {
 	cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
 	     << "No music or sound will be played." << endl;
-	system->release();
+	FMOD_System_Release(system);
 	system = NULL;
       }
     }
@@ -74,7 +74,7 @@ void Sound::initialize(void) {
  */
 void Sound::quit(void) {
   if (is_initialized()) {
-    system->release();
+    FMOD_System_Release(system);
     system = NULL;
   }
 }
@@ -93,7 +93,7 @@ bool Sound::is_initialized(void) {
  */
 void Sound::update(void) {
   if (is_initialized()) {
-    system->update();
+    FMOD_System_Update(system);
   }
 }
 
@@ -109,7 +109,7 @@ bool Sound::play(void) {
   if (is_initialized()) {
 
     if (sound == NULL) {
-      result = system->createSound(file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
+      result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
 
       if (result != FMOD_OK) {
 	cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
@@ -117,7 +117,7 @@ bool Sound::play(void) {
     }
 
     if (sound != NULL) {
-      result = system->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
+      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);
 
       if (result != FMOD_OK) {
 	cerr << "Unable to play sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
@@ -141,7 +141,7 @@ bool Sound::is_playing(void) {
     return false;
   }
 
-  bool is_playing;
-  channel->isPlaying(&is_playing);
-  return is_playing;
+  FMOD_BOOL is_playing;
+  FMOD_Channel_IsPlaying(channel, &is_playing);
+  return is_playing != 0;
 }

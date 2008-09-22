@@ -91,10 +91,15 @@ public class AddEntitiesToolbar extends JComponent {
 	/**
 	 * Returns the type of entity clicked corresponding to a mouse event.
 	 * @param ev the mouse event
-	 * @return the type of entity clicked
+	 * @return the type of entity clicked, or -1 if no entity was clicked
 	 */
 	public int getEntityTypeClicked(MouseEvent ev) {
-	    return ev.getX() / 32 + 1;
+	    int type = ev.getX() / 32 + 1;
+	    if (type >= MapEntity.ENTITY_NB_TYPES) {
+		type = -1;
+	    }
+	    
+	    return type;
 	}
 	
 	/**

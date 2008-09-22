@@ -7,6 +7,7 @@
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "Color.h"
 
 int DialogBox::answer_selected = 0;
 
@@ -21,6 +22,11 @@ static SDL_Rect question_src_position = {48, 60, 8, 8};
  * @param y y coordinate of the top-left corner of the box
  */
 DialogBox::DialogBox(MessageId first_message_id, int x, int y) {
+
+  // initialize the surface
+  dialog_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  SDL_SetColorKey(dialog_surface, SDL_SRCCOLORKEY, Color::black);
+  SDL_SetAlpha(dialog_surface, SDL_SRCALPHA, 216);
 
   // load the images
   img_box = ResourceManager::load_image("hud/dialog_box.png");
@@ -66,6 +72,7 @@ DialogBox::~DialogBox(void) {
   keys_effect->set_sword_key_effect(sword_key_effect_saved);
 
   // free the memory
+  SDL_FreeSurface(dialog_surface);
   SDL_FreeSurface(img_box);
   SDL_FreeSurface(img_icons);
   delete sprite_message_end_arrow;
@@ -302,18 +309,20 @@ void DialogBox::update(void) {
  */
 void DialogBox::display(SDL_Surface *destination_surface) {
 
+  SDL_FillRect(dialog_surface, NULL, Color::black);
+
   // display the dialog box
-  SDL_BlitSurface(img_box, &box_src_position, destination_surface, &box_dst_position);
+  SDL_BlitSurface(img_box, &box_src_position, dialog_surface, &box_dst_position);
 
   // display the message
-  current_message->display(destination_surface);
+  current_message->display(dialog_surface);
 
   // display the icon
   if (icon_number != -1) {
     SDL_Rect src_position = {0, 0, 16, 16};
     src_position.x = 16 * (icon_number % 10);
     src_position.y = 16 * (icon_number / 10);
-    SDL_BlitSurface(img_icons, &src_position, destination_surface, &icon_dst_position);
+    SDL_BlitSurface(img_icons, &src_position, dialog_surface, &icon_dst_position);
 
     question_dst_position.x = x + 50;
   }
@@ -323,11 +332,14 @@ void DialogBox::display(SDL_Surface *destination_surface) {
 
   // display the question arrow
   if (current_message->is_question() && current_message->is_over()) {
-    SDL_BlitSurface(img_box, &question_src_position, destination_surface, &question_dst_position);
+    SDL_BlitSurface(img_box, &question_src_position, dialog_surface, &question_dst_position);
   }
 
   // display the end message arrow
   if (current_message->is_over()) {
-    sprite_message_end_arrow->display(destination_surface, x + 103, y + 56);
+    sprite_message_end_arrow->display(dialog_surface, x + 103, y + 56);
   }
+
+  // final blit
+  SDL_BlitSurface(dialog_surface, NULL, destination_surface, NULL);
 }

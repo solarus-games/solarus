@@ -8,6 +8,7 @@
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "Color.h"
 
 /**
  * Opens a pause menu.
@@ -15,6 +16,11 @@
  */
 PauseMenu::PauseMenu(Game *game):
   game(game), savegame(game->get_savegame()), keys_effect(game->get_keys_effect()) {
+
+  // initialize the surface
+  surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
+  SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, 216);
 
   this->current_submenu = NULL;
   this->backgrounds_surface = ResourceManager::load_image("menus/pause_submenus.png");
@@ -33,6 +39,7 @@ PauseMenu::PauseMenu(Game *game):
 PauseMenu::~PauseMenu(void) {
   delete current_submenu;
   SDL_FreeSurface(backgrounds_surface);
+  SDL_FreeSurface(surface_drawn);
 }
 
 /**
@@ -73,13 +80,18 @@ void PauseMenu::update(void) {
  */
 void PauseMenu::display(SDL_Surface *destination) {
 
+  SDL_FillRect(surface_drawn, NULL, Color::black);
+
   // display the background for the current submenu
   int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
   SDL_Rect src_position = {320 * submenu_index, 0, 320, 240};
-  SDL_BlitSurface(backgrounds_surface, &src_position, destination, NULL);
+  SDL_BlitSurface(backgrounds_surface, &src_position, surface_drawn, NULL);
 
   // display the current submenu content
-  current_submenu->display(destination);
+  current_submenu->display(surface_drawn);
+
+  // final blit
+  SDL_BlitSurface(surface_drawn, NULL, destination, NULL);
 }
 
 /**

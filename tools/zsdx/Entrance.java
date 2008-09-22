@@ -17,7 +17,7 @@ public class Entrance extends InteractiveEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("entrance.png", 0, 0, 32, 32);
+	new EntityImageDescription("entrance.png", 32, 0, 32, 32);
 
     /**
      * Origin point of an entrance.

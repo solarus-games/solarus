@@ -165,6 +165,21 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
     equipment->set_item_assigned(0, InventoryItem::BOW);
     equipment->give_inventory_item(InventoryItem::BOTTLE_2, 6);
     equipment->set_item_assigned(1, InventoryItem::BOTTLE_2);
+    equipment->give_inventory_item(InventoryItem::BOMBS);
+    equipment->set_max_bombs(30);
+    equipment->set_bombs(10);
+    equipment->give_inventory_item(InventoryItem::BOOMERANG);
+    equipment->give_inventory_item(InventoryItem::LAMP);
+    equipment->give_inventory_item(InventoryItem::HOOK_SHOT);
+    equipment->give_inventory_item(InventoryItem::PEGASUS_SHOES);
+    equipment->give_inventory_item(InventoryItem::BOTTLE_1);
+    equipment->give_inventory_item(InventoryItem::GLOVE);
+    equipment->give_inventory_item(InventoryItem::PAINS_AU_CHOCOLAT);
+    equipment->set_inventory_item_amount(InventoryItem::PAINS_AU_CHOCOLAT, 3);
+    equipment->give_inventory_item(InventoryItem::CROISSANTS);
+    equipment->give_inventory_item(InventoryItem::FLIPPERS);
+    equipment->give_inventory_item(InventoryItem::RED_KEY);
+    equipment->give_inventory_item(InventoryItem::CLAY_KEY);
     break;
  
   case SDLK_g:

@@ -19,6 +19,7 @@ class CarriedItem: public MapEntity {
   bool is_breaking;
   Sound *breaking_sound;
   Sprite *shadow_sprite;
+  int throwing_direction;
 
  public:
 

@@ -6,6 +6,7 @@
 - Voir les boss de Pyro
 - Sauvegarde des éléments de donjon : ajouter le fait que le donjon soit fini et qu'on ait tué le mini-boss (mais peut-on avoir plusieurs mini-boss ?)
 - Afficher les petites clés dans le hud
+- Echanger les couleurs de l'inventaire et de l'écran carte
 
 - Prochaines grandes étapes :
   - collision au pixel près
@@ -40,11 +41,21 @@ Propriétés d'un donjon, définies dans un fichier spécial (ini ou xml) :
 - Son numéro, de 1 à 14
 - Ses étages : étage le plus bas (de -16 à 15) et nombre d'étages (de 1 à 32)
 - Ses dimensions : largeur et hauteurs en pixels à l'échelle 1
-- La liste des id de ses maps (champ multivalué si c'est un fichier ini), qui permet de déduire pendant le jeu les informations suivantes en chargeant les maps concernées (lors de l'entrée dans un donjon par exemple) :
+- Les coffres, le boss de le mini-boss : 2 solutions possibles :
+
+Solution 1 (pas géniale car nécessite de charger toutes les maps d'un donjon quand on y entre) :
+- Mettre dans le fichier spécial la liste des id de ses maps (champ multivalué si c'est un fichier ini), qui permet de déduire pendant le jeu les informations suivantes en chargeant les maps concernées (lors de l'entrée dans un donjon par exemple) :
   - Etage et position du boss et du mini-boss
   - Etage, position et variable de chaque coffre
+Cette liste doit être mise à jour à chaque fois qu'une map est enregistrée (il faut vérifier qu'elle est dans le bon donjon et pas dans les autres).
 
-Autre possibilité pour connaître les infos du boss, du mini-boss et des coffres : les enregistrer directement dans le fichier des donjons, en les mettant à jour depuis l'éditeur de maps.
+Solution 2 (meilleure, comme dans ZMC mais automatisée) :
+- Mettre dans le fichier spécial chaque coffre, mini-boss et boss de chaque donjon, avec son id de map (utile uniquement pour l'éditeur en fait), son étage, sa position et sa variable de sauvegarde. Mettre à jour ces informations depuis l'éditeur de maps au moment où on enregistre une map, sachant qu'une map peut par exemple avoir changé d'étage ou de donjon :
+  - Si la map n'est pas dans un donjon, supprimer dans donjons.zsd tout coffre faisant référence à cette map.
+  - Si la map est dans un donjon :
+    - supprimer dans donjons.zsd tout coffre faisant référence à cette map, que ce soit dans le bon donjon ou pas
+    - ajouter dans donjons.zsd les coffres de cette map
+
 
 ----------------
 réflexions initiales :

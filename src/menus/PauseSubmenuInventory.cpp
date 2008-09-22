@@ -335,9 +335,18 @@ void PauseSubmenuInventory::show_info_message(void) {
  * Assigns the selected item to a slot.
  * The operation does not take effect immediately: the item picture is thrown to
  * its destination icon, then the assignment is done.
+ * Nothing is done if the item is not assignable.
  * @param slot slot to set (0 for X or 1 for V)
  */
 void PauseSubmenuInventory::assign_item(int slot) {
+
+  InventoryItem::ItemId selected_item_id = (InventoryItem::ItemId) get_selected_index();
+  InventoryItem *item = InventoryItem::get_item(selected_item_id);
+
+  // if this item is not assignable, do nothing
+  if (!item->is_attributable()) {
+    return;
+  }
 
   // if another item is being assigned, finish it immediately
   if (is_assigning_item()) {
@@ -345,9 +354,9 @@ void PauseSubmenuInventory::assign_item(int slot) {
   }
 
   // memorize this item
-  item_assigned_id = (InventoryItem::ItemId) get_selected_index();
-  item_assigned_variant = equipment->has_inventory_item(item_assigned_id);
-  item_assigned_destination = slot;
+  this->item_assigned_id = selected_item_id;
+  this->item_assigned_variant = equipment->has_inventory_item(item_assigned_id);
+  this->item_assigned_destination = slot;
 
   // play the sound
   ResourceManager::get_sound("throw")->play();

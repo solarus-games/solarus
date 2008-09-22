@@ -99,6 +99,7 @@ void CarriedItem::set_animation_walking(void) {
 void CarriedItem::throw_item(Map *map, int direction) {
 
   this->map = map;
+  this->throwing_direction = direction;
   is_throwing = true;
 
   // play the sound
@@ -185,6 +186,12 @@ void CarriedItem::update(void) {
       is_breaking = true;
       breaking_sound->play();
       get_last_sprite()->set_current_animation("destroy");
+
+      if (throwing_direction == 3) {
+	// destroy the item where its shadow is
+	set_y(get_y() + movement->get_item_height());
+      }
+
       clear_movement();
     }
     else {

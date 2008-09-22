@@ -4,7 +4,7 @@
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
-- Sauvegarde des éléments de donjon : ajouter le fait que le donjon soit fini
+- Sauvegarde des éléments de donjon : ajouter le fait que le donjon soit fini et qu'on ait tué le mini-boss (mais peut-on avoir plusieurs mini-boss ?)
 - Afficher les petites clés dans le hud
 
 - Prochaines grandes étapes :
@@ -29,6 +29,25 @@ Même chose pour l'herbe sauf que rien ne se passe quand l'épée charge
 ----------------
 Carte, donjons, phases d'exploration et étages
 ----------------
+
+Propriétés d'une map :
+- Son numéro de donjon (TODO de 1 à 14), 0 si c'est une map extérieure, ou -1 si c'est une map intérieure hors donjon.
+- Ses coordonnées en pixels, à l'échelle 1, par rapport au plan général (carte du monde ou de l'étage d'un donjon).
+- Son compteur de petites clés, qu'elle soit dans un donjon ou non (-1 si aucun); si elle est dans un donjon, on propose automatiquement le choix approprié.
+- Son numéro d'étage, de -16 à 15, ou -99 pour l'étage spécial "?", ou -100 s'il n'y a pas d'étage. S'il y a un étage et qu'on est hors donjon, cet étage s'affiche lorsqu'on y entre. Si on est dans un donjon, il y a forcément un étage et il s'affiche ainsi que les autres étages.
+
+Propriétés d'un donjon, définies dans un fichier spécial (ini ou xml) :
+- Son numéro, de 1 à 14
+- Ses étages : étage le plus bas (de -16 à 15) et nombre d'étages (de 1 à 32)
+- Ses dimensions : largeur et hauteurs en pixels à l'échelle 1
+- La liste des id de ses maps (champ multivalué si c'est un fichier ini), qui permet de déduire pendant le jeu les informations suivantes en chargeant les maps concernées (lors de l'entrée dans un donjon par exemple) :
+  - Etage et position du boss et du mini-boss
+  - Etage, position et variable de chaque coffre
+
+Autre possibilité pour connaître les infos du boss, du mini-boss et des coffres : les enregistrer directement dans le fichier des donjons, en les mettant à jour depuis l'éditeur de maps.
+
+----------------
+réflexions initiales :
 
 Etages : existent dans les donjons et hors des donjons
 Petites clés aussi (on peut même avoir une clé de donjon à l'extérieur de ce dernier, cf démo de zmc)

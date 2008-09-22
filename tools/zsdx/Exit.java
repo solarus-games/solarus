@@ -18,7 +18,7 @@ public class Exit extends InteractiveEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("map_exit_32.png", 0, 0, 32, 32);
+	new EntityImageDescription("exit_32.png", 0, 0, 32, 32);
 
     /**
      * Unitary size of an exit.
@@ -32,7 +32,7 @@ public class Exit extends InteractiveEntity {
     /**
      * Icon of an exit point.
      */
-    private static ImageIcon icon = new ImageIcon("zsdx/images/map_exit.png");
+    private static ImageIcon icon = new ImageIcon("zsdx/images/exit.png");
 
     /**
      * Creates a new exit at the specified location.

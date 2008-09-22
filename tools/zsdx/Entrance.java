@@ -1,7 +1,6 @@
 package zsdx;
 
 import java.awt.*;
-import javax.swing.*;
 import java.util.*;
 
 /**
@@ -18,28 +17,13 @@ public class Entrance extends InteractiveEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("map_entrance_1.png", 0, 0, 32, 32);
+	new EntityImageDescription("entrance.png", 0, 0, 32, 32);
 
     /**
      * Origin point of an entrance.
      */
     private static final Point origin = new Point(8, 13);
-    
-    /**
-     * Icons of an entrance for each direction. 
-     */
-    private static ImageIcon[] icons;
 
-    // load the icons
-    static {
-	String path = "zsdx/images/";
-
-	icons = new ImageIcon[4];
-	for (int i = 0; i < 4; i++) {
-	    icons[i] = new ImageIcon(path + "map_entrance_" + i + ".png");
-	}
-    }
-    
     /**
      * Creates a new map entrance at the specified location.
      * @param map the map
@@ -95,4 +79,12 @@ public class Entrance extends InteractiveEntity {
     public boolean hasName() {
 	return true;
     }
+    
+    /**
+     * Updates the description of the image currently representing the entity.
+     */
+    public void updateImageDescription() {
+	currentImageDescription.setRectangle(getDirection() * 32, 0, 32, 32);
+    }
+
 }

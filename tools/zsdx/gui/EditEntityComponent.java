@@ -212,7 +212,7 @@ public class EditEntityComponent extends JPanel {
 	}
 	catch (ZSDXException ex) {
 	    action.undo(); // undo the action because it may be partially done
-	    throw ex; // throw the exception again
+	    throw ex;      // throw the exception again
 	}
     }
 }

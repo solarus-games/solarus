@@ -40,7 +40,7 @@ Propriétés d'une map :
 Propriétés d'un donjon, définies dans un fichier spécial (ini ou xml) :
 - Son numéro, de 1 à 14
 - Ses étages : étage le plus bas (de -16 à 15) et nombre d'étages (de 1 à 32)
-- Ses dimensions : largeur et hauteurs en pixels à l'échelle 1
+- Les dimensions de chaque étage : largeur et hauteurs en pixels à l'échelle 1
 - Les coffres, le boss de le mini-boss : 2 solutions possibles :
 
 Solution 1 (pas géniale car nécessite de charger toutes les maps d'un donjon quand on y entre) :
@@ -55,6 +55,29 @@ Solution 2 (meilleure, comme dans ZMC mais automatisée) :
   - Si la map est dans un donjon :
     - supprimer dans donjons.zsd tout coffre faisant référence à cette map, que ce soit dans le bon donjon ou pas
     - ajouter dans donjons.zsd les coffres de cette map
+
+[dungeon_1]
+lowest_floor = -1
+nb_floors = 2
+
+[dungeon_1.floor_0]
+width = 1024
+height = 1024
+
+[dungeon_1.floor_1]
+width = 1024
+height = 1024
+
+[dungeon_1.floor_2]
+width = 1024
+height = 1024
+
+[dungeon_1.map_18.chest_0]
+floor = -1
+x = 128
+y = 216
+save = 14
+
 
 
 ----------------

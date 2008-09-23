@@ -2,6 +2,9 @@
 #include "Counter.h"
 #include "ResourceManager.h"
 #include "Equipment.h"
+#include "ZSDX.h"
+#include "Game.h"
+#include "KeysEffect.h"
 
 /**
  * Name of the image file for each item slot.
@@ -30,6 +33,7 @@ ItemIcon::ItemIcon(int slot, Savegame *savegame, int x, int y):
   this->item_variant_displayed = 0;
   this->counter = new Counter(2, false, 8, 16);
   this->counter_value_displayed = -1;
+  this->is_enabled = true;
 
   rebuild();
 }
@@ -51,6 +55,7 @@ void ItemIcon::update(void) {
   bool need_rebuild = false;
 
   Equipment *equipment = savegame->get_equipment();
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
   // item assigned
   InventoryItem::ItemId current_item = equipment->get_item_assigned(slot);
@@ -85,6 +90,18 @@ void ItemIcon::update(void) {
   else if (counter_value_displayed != -1) {
     need_rebuild = true;
     counter_value_displayed = -1;
+  }
+
+  // icon opacity
+  if (keys_effect->are_item_keys_enabled() && !is_enabled) {
+    SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, 255);
+    is_enabled = true;
+    need_rebuild = true;
+  }
+  else if (!keys_effect->are_item_keys_enabled() && is_enabled) {
+    SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, 128);
+    is_enabled = false;
+    need_rebuild = true;
   }
 
   // redraw the icon if needed

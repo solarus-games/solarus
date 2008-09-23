@@ -14,7 +14,6 @@ class PauseMenu {
   Savegame *savegame;
   KeysEffect *keys_effect;
 
-  SDL_Surface *surface_drawn;
   SDL_Surface *backgrounds_surface;
   PauseSubmenu *current_submenu;
 

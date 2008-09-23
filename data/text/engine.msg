@@ -120,7 +120,7 @@ line2 = "obstacles."
 # Arc / Bow
 #       |--------------------|
 icon = 2
-line1 = "Tu n'as plus de
+line1 = "Tu n'as plus de"
 line2 = "Flèches !"
 cancel = all
 

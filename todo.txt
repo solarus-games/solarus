@@ -5,8 +5,8 @@
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
 - Sauvegarde des éléments de donjon : ajouter le fait que le donjon soit fini et qu'on ait tué le mini-boss (mais peut-on avoir plusieurs mini-boss ?)
-- Afficher les petites clés dans le hud
-- Echanger les couleurs de l'inventaire et de l'écran carte
+- Afficher les petites clés dans le hud (seulement dans les donjons ?)
+- Numéros de donjons : 1 à 14 (appelés numéros de monde) au lieu de 0 à 13, avec -1 et 0 comme valeurs spéciales. Mettre à jour l'éditeur.
 
 - Prochaines grandes étapes :
   - collision au pixel près
@@ -32,7 +32,7 @@ Carte, donjons, phases d'exploration et étages
 ----------------
 
 Propriétés d'une map :
-- Son numéro de donjon (TODO de 1 à 14), 0 si c'est une map extérieure, ou -1 si c'est une map intérieure hors donjon.
+- Son numéro de région : 0 si c'est une map extérieure, -1 si c'est une map intérieure hors donjon, ou un numéro de donjon (entre 1 et 14) si c'est une map de donjon.
 - Ses coordonnées en pixels, à l'échelle 1, par rapport au plan général (carte du monde ou de l'étage d'un donjon).
 - Son compteur de petites clés, qu'elle soit dans un donjon ou non (-1 si aucun); si elle est dans un donjon, on propose automatiquement le choix approprié.
 - Son numéro d'étage, de -16 à 15, ou -99 pour l'étage spécial "?", ou -100 s'il n'y a pas d'étage. S'il y a un étage et qu'on est hors donjon, cet étage s'affiche lorsqu'on y entre. Si on est dans un donjon, il y a forcément un étage et il s'affiche ainsi que les autres étages.

@@ -237,7 +237,7 @@ void Game::update_transitions(void) {
  */
 void Game::update_keys_effect(void) {
 
-  if (is_suspended()) {
+  if (is_paused() || is_showing_message()) {
     return;
   }
 

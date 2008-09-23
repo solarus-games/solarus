@@ -105,6 +105,8 @@ PauseSubmenuInventory::~PauseSubmenuInventory(void) {
     finish_assigning_item();
   }
 
+  game->get_keys_effect()->set_item_keys_enabled(true);
+
   // free the memory
   delete cursor_sprite;
   SDL_FreeSurface(items_img);
@@ -133,16 +135,19 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
 
   // update the caption text, show or hide the action icon
   KeysEffect *keys_effect = game->get_keys_effect();
-  int k = row * 7 + column;
-  int variant = equipment->has_inventory_item((InventoryItem::ItemId) k);
+  InventoryItem::ItemId item_id = (InventoryItem::ItemId) (row * 7 + column);
+  InventoryItem *item = InventoryItem::get_item(item_id);
+  int variant = equipment->has_inventory_item(item_id);
 
   if (variant != 0) {
-    set_caption_text(item_names[k][variant - 1]);
+    set_caption_text(item_names[item_id][variant - 1]);
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
+    keys_effect->set_item_keys_enabled(item->is_attributable());
   }
   else {
     set_caption_text("");
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    keys_effect->set_item_keys_enabled(false);
   }
 }
 
@@ -238,8 +243,11 @@ void PauseSubmenuInventory::key_pressed(const SDL_keysym &keysym) {
  * equipment does not change while the game is paused.
  */
 void PauseSubmenuInventory::update(void) {
+
+  // animation of the cursor
   cursor_sprite->update_current_frame();
 
+  // item being thrown
   if (item_assigned_movement != NULL) {
     item_assigned_movement->update();
 

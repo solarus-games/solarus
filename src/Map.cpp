@@ -49,11 +49,11 @@ Tileset * Map::get_tileset(void) {
 }
 
 /**
- * Returns the number of the dungeon of this map.
- * @return the dungeon (0 to 13), or -1 is this map is not in a dungeon
+ * Returns the world where this map is.
+ * @return 0 if this map is outside, -1 if it is inside, 1 to 20 if it is in a dungeon
  */
-int Map::get_dungeon_number(void) {
-  return dungeon;
+int Map::get_world_number(void) {
+  return world;
 }
 
 /**
@@ -61,7 +61,7 @@ int Map::get_dungeon_number(void) {
  * @return true if this map is in a dungeon
  */
 bool Map::is_in_dungeon(void) {
-  return get_dungeon_number() != -1;
+  return get_world_number() > 0;
 }
 
 /**

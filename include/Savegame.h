@@ -128,25 +128,28 @@ class Savegame {
 
     /**
      * @name Dungeon items
-     * For each dungeon, 7 variables are reserved:
+     * For each dungeon, 10 variables are reserved:
      * - the map,
      * - the compass,
      * - the small keys,
      * - the big key,
      * - the boss key,
-     * - unused,
-     * - unused.
-     * Up to 14 dungeons can be saved. Thus, 98 variables are used for the dungeon items (14*7).
+     * - whether the dungeon is finished
+     * and 4 unused variables for future extension.
+     * Up to 20 dungeons can be saved. Thus, 200 variables are used for the dungeon items (20*10).
      */
     FIRST_DUNGEON_MAP                = 200, /**< 1 if the player has the map of dungeon #1 */
     FIRST_DUNGEON_COMPASS            = 201, /**< 1 if the player has the map of dungeon #1 */
     FIRST_DUNGEON_BIG_KEY            = 202, /**< 1 if the player has the big key of dungeon #1 */
     FIRST_DUNGEON_BOSS_KEY           = 203, /**< 1 if the player has the boss key of dungeon #1 */
     FIRST_DUNGEON_SMALL_KEYS         = 204, /**< number of small keys found in dungeon #1 */
-    FIRST_DUNGEON_UNUSED_1           = 205, /**< empty place for future new item in dungeon #1 */
-    FIRST_DUNGEON_UNUSED_2           = 206, /**< empty place for future new item in dungeon #1 */
+    FIRST_DUNGEON_FINISHED           = 205, /**< 1 if the player has finished dungeon #1 */
+    FIRST_DUNGEON_UNUSED_1           = 206, /**< empty place for future new data in dungeon #1 */
+    FIRST_DUNGEON_UNUSED_2           = 207, /**< empty place for future new data in dungeon #1 */
+    FIRST_DUNGEON_UNUSED_3           = 208, /**< empty place for future new data in dungeon #1 */
+    FIRST_DUNGEON_UNUSED_4           = 209, /**< empty place for future new data in dungeon #1 */
     // then, same thing for other dungeons
-    LAST_DUNGEON_UNUSED_2            = 297, /**< empty place for future new item in dungeon #14 */
+    LAST_DUNGEON_UNUSED_4            = 399, /**< empty place for future new data in dungeon #20 */
 
     // values above 1024 are available for the maps
   };

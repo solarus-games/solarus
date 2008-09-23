@@ -6,6 +6,8 @@
 #include "TextSurface.h"
 #include "HeartsView.h"
 
+// TODO: load the title strings from some external file (for future translation)
+
 /**
  * Creates a selection menu phase.
  * @param previous the previous phase (if we were already in

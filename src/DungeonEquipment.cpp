@@ -22,8 +22,9 @@ DungeonEquipment::~DungeonEquipment(void) {
 
 /**
  * Returns the current dungeon number.
- * The dungeon number is between 0 and 13. -1 means that the player is not in a dungeon.
- * @return the number of the current dungeon, or -1 if we are not in a dungeon
+ * The dungeon number returned is between 1 and 20.
+ * The programs stops with an error message if the player is not in a dungeon.
+ * @return the number of the current dungeon between 1 and 20
  */
 int DungeonEquipment::get_current_dungeon(void) {
 
@@ -33,7 +34,7 @@ int DungeonEquipment::get_current_dungeon(void) {
     DIE("The player is not in a dungeon");
   }
 
-  return current_map->get_dungeon_number();
+  return current_map->get_world_number();
 }
 
 /**
@@ -43,7 +44,8 @@ int DungeonEquipment::get_current_dungeon(void) {
 bool DungeonEquipment::has_map(void) {
 
   int dungeon = get_current_dungeon();
-  return savegame->get_integer(Savegame::FIRST_DUNGEON_MAP + 7 * dungeon != 0);
+  int index = Savegame::FIRST_DUNGEON_MAP + 10 * (dungeon - 1);
+  return savegame->get_integer(index) != 0;
 }
 
 /**
@@ -56,7 +58,8 @@ void DungeonEquipment::add_map(void) {
   }
 
   int dungeon = get_current_dungeon();
-  savegame->set_integer(Savegame::FIRST_DUNGEON_MAP + 7 * dungeon, 1);
+  int index = Savegame::FIRST_DUNGEON_MAP + 10 * (dungeon - 1);
+  savegame->set_integer(index, 1);
 }
 
 /**
@@ -66,7 +69,8 @@ void DungeonEquipment::add_map(void) {
 bool DungeonEquipment::has_compass(void) {
 
   int dungeon = get_current_dungeon();
-  return savegame->get_integer(Savegame::FIRST_DUNGEON_COMPASS + 7 * dungeon) != 0;
+  int index = Savegame::FIRST_DUNGEON_COMPASS + 10 * (dungeon - 1);
+  return savegame->get_integer(index) != 0;
 }
 
 /**
@@ -79,7 +83,8 @@ void DungeonEquipment::add_compass(void) {
   }
 
   int dungeon = get_current_dungeon();
-  savegame->set_integer(Savegame::FIRST_DUNGEON_COMPASS + 7 * dungeon, 1);
+  int index = Savegame::FIRST_DUNGEON_COMPASS + 10 * (dungeon - 1);
+  savegame->set_integer(index, 1);
 }
 
 /**
@@ -89,7 +94,8 @@ void DungeonEquipment::add_compass(void) {
 bool DungeonEquipment::has_big_key(void) {
 
   int dungeon = get_current_dungeon();
-  return savegame->get_integer(Savegame::FIRST_DUNGEON_BIG_KEY + 7 * dungeon) != 0;
+  int index = Savegame::FIRST_DUNGEON_BIG_KEY + 10 * (dungeon - 1);
+  return savegame->get_integer(index) != 0;
 }
 
 /**
@@ -102,7 +108,8 @@ void DungeonEquipment::add_big_key(void) {
   }
 
   int dungeon = get_current_dungeon();
-  savegame->set_integer(Savegame::FIRST_DUNGEON_BIG_KEY + 7 * dungeon, 1);
+  int index = Savegame::FIRST_DUNGEON_BIG_KEY + 10 * (dungeon - 1);
+  savegame->set_integer(index, 1);
 }
 
 /**
@@ -112,7 +119,8 @@ void DungeonEquipment::add_big_key(void) {
 bool DungeonEquipment::has_boss_key(void) {
 
   int dungeon = get_current_dungeon();
-  return savegame->get_integer(Savegame::FIRST_DUNGEON_BOSS_KEY + 7 * dungeon) != 0;
+  int index = Savegame::FIRST_DUNGEON_BOSS_KEY + 10 * (dungeon - 1);
+  return savegame->get_integer(index) != 0;
 }
 
 /**
@@ -125,7 +133,8 @@ void DungeonEquipment::add_boss_key(void) {
   }
 
   int dungeon = get_current_dungeon();
-  savegame->set_integer(Savegame::FIRST_DUNGEON_BOSS_KEY + 7 * dungeon, 1);
+  int index = Savegame::FIRST_DUNGEON_BOSS_KEY + 10 * (dungeon - 1);
+  savegame->set_integer(index, 1);
 }
 
 /**
@@ -144,7 +153,8 @@ bool DungeonEquipment::has_small_key(void) {
 int DungeonEquipment::get_small_keys(void) {
 
   int dungeon = get_current_dungeon();
-  return savegame->get_integer(Savegame::FIRST_DUNGEON_SMALL_KEYS + 7 * dungeon);
+  int index = Savegame::FIRST_DUNGEON_SMALL_KEYS + 10 * (dungeon - 1);
+  return savegame->get_integer(index);
 }
 
 /**
@@ -153,7 +163,8 @@ int DungeonEquipment::get_small_keys(void) {
 void DungeonEquipment::add_small_key(void) {
 
   int dungeon = get_current_dungeon();
-  savegame->set_integer(Savegame::FIRST_DUNGEON_SMALL_KEYS + 7 * dungeon, get_small_keys() + 1);
+  int index = Savegame::FIRST_DUNGEON_SMALL_KEYS + 10 * (dungeon - 1);
+  savegame->set_integer(index, get_small_keys() + 1);
 }
 
 /**
@@ -166,5 +177,6 @@ void DungeonEquipment::remove_small_key(void) {
   }
 
   int dungeon = get_current_dungeon();
-  savegame->set_integer(Savegame::FIRST_DUNGEON_SMALL_KEYS + 7 * dungeon, get_small_keys() - 1);
+  int index = Savegame::FIRST_DUNGEON_SMALL_KEYS + 10 * (dungeon - 1);
+  savegame->set_integer(index, get_small_keys() - 1);
 }

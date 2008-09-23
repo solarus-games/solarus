@@ -44,10 +44,12 @@ public class Map extends Observable {
     private Tileset tileset;
 
     /**
-     * Index of the dungeon where this map is (between 0 and 13), or -1 if the map
-     * is not inside a dungeon.
+     * Index of the world where this map is:
+     * - 0 if the map is outside
+     * - -1 if the map is inside
+     * - 1 to 20 if the map is in a dungeon
      */
-    private int dungeon;
+    private int world;
 
     /**
      * Entities of the map.
@@ -92,7 +94,7 @@ public class Map extends Observable {
 	this.tileset = null;
 	this.tilesetId = "";
 	this.musicId = Music.noneId;
-	this.dungeon = -1;
+	this.world = -1;
 
 	initialize();
 	
@@ -292,11 +294,12 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the index of the dungeon where this map is.
-     * @return the dungeon index, between 0 and 13, or -1 if the map is not inside a dungeon
+     * Returns the index of the world where this map is.
+     * @return the world index: 0 if the map is outside, -1 if it is inside,
+     * 1 to 20 if it is in a dungeon
      */
-    public int getDungeon() {
-	return dungeon;
+    public int getWorld() {
+	return world;
     }
     
     /**
@@ -304,16 +307,16 @@ public class Map extends Observable {
      * @return true if this map is in a dungeon
      */
     public boolean isInDungeon() {
-	return dungeon != -1;
+	return world > 0;
     }
     
     /**
-     * Sets the dungeon where this map is.
-     * @param dungeon the dungeon index, between 0 and 13,
-     * or -1 if the map is not inside a dungeon
+     * Sets the world where this map is.
+     * @param world the world index: 0 if the map is outside, -1 if it is inside,
+     * 1 to 20 if it is in a dungeon
      */
-    public void setDungeon(int dungeon) {
-	this.dungeon = dungeon;
+    public void setWorld(int world) {
+	this.world = world;
     }
     
     /**
@@ -813,7 +816,7 @@ public class Map extends Observable {
 	    setSize(new Dimension(width, height));
 	    setTileset(tokenizer.nextToken());
 	    setMusic(tokenizer.nextToken());
-	    setDungeon(Integer.parseInt(tokenizer.nextToken()));
+	    setWorld(Integer.parseInt(tokenizer.nextToken()));
 
 	    // read the map entities
 	    line = in.readLine();
@@ -877,7 +880,7 @@ public class Map extends Observable {
 	    out.print('\t');
 	    out.print(musicId);
 	    out.print('\t');
-	    out.print(dungeon);
+	    out.print(world);
 	    out.println();
 	    
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {

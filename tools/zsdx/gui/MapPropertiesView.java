@@ -26,7 +26,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     private MapSizeView mapSizeView;
     private MapTilesetView mapTilesetView;
     private MapMusicView mapMusicView;
-    private MapDungeonView mapDungeonView;
+    private WorldChooser worldChooser;
 
     /**
      * Constructor.
@@ -49,9 +49,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 	constraints.gridy++;
 	add(new JLabel("Map name"), constraints);
 	
-	// dungeon
+	// world
 	constraints.gridy++;
-	add(new JLabel("Dungeon"), constraints);
+	add(new JLabel("World"), constraints);
 
 	// number of tiles
 	constraints.gridy++;
@@ -84,8 +84,8 @@ public class MapPropertiesView extends JPanel implements Observer {
 	add(mapNameView, constraints);
 
        	constraints.gridy++;
-	mapDungeonView = new MapDungeonView();
-	add(mapDungeonView, constraints);
+	worldChooser = new WorldChooser();
+	add(worldChooser, constraints);
 
        	constraints.gridy++;
 	mapNbTilesView = new JLabel(); 
@@ -148,7 +148,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	// tell the complex components to update themselves
 	mapNameView.update(map);
-	mapDungeonView.update(map);
+	worldChooser.update(map);
 	mapSizeView.update(map);
 	mapTilesetView.update(map);
 	mapMusicView.update(map);
@@ -223,18 +223,19 @@ public class MapPropertiesView extends JPanel implements Observer {
     }
 
     /**
-     * Component to change the dungeon associated to the map.
+     * Component to choose the world where this map is.
      */
-    private class MapDungeonView extends JComboBox implements ActionListener {
+    private class WorldChooser extends JComboBox implements ActionListener {
 
 	/**
 	 * Constructor.
 	 */
-	public MapDungeonView() {
+	public WorldChooser() {
 	    super();
 	    
-	    addItem(new KeyValue(-1, "None"));
-	    for (int i = 0; i < 14; i++) {
+	    addItem(new KeyValue(-1, "Inside world"));
+	    addItem(new KeyValue(-1, "Outside world"));
+	    for (int i = 1; i <= 20; i++) {
 		addItem(new KeyValue(i, "Dungeon " + i));
 	    }
 	    
@@ -251,11 +252,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    
 	    if (map != null) {
 
-		int currentDungeon = map.getDungeon();
-		int selectedDungeon = getSelectedDungeon();
+		int currentWorld = map.getWorld();
+		int selectedWorld = getSelectedWorld();
 
-		if (selectedDungeon != currentDungeon) {
-		    setSelectedDungeon(currentDungeon);
+		if (selectedWorld != currentWorld) {
+		    setSelectedWorld(currentWorld);
 		}
 		setEnabled(true);
 	    }
@@ -268,7 +269,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * Returns the dungeon currently selected.
 	 * @return the dungeon currently selected (may be -1)
 	 */
-	public int getSelectedDungeon() {
+	public int getSelectedWorld() {
 	    KeyValue item = (KeyValue) getSelectedItem();
 	    return Integer.parseInt(item.getKey());
 	}
@@ -277,7 +278,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * Selects a dungeon in the combo box.
 	 * @param dungeon the dungeon to make selected (may be -1)
 	 */
-	public void setSelectedDungeon(int dungeon) {
+	public void setSelectedWorld(int dungeon) {
 	    KeyValue item = new KeyValue(dungeon, null);
 	    setSelectedItem(item);
 	}
@@ -292,10 +293,10 @@ public class MapPropertiesView extends JPanel implements Observer {
 		return;
 	    }
 
-	    final int selectedDungeon = getSelectedDungeon();
-	    final int currentDungeon = map.getDungeon();
+	    final int selectedWorld = getSelectedWorld();
+	    final int currentWorld = map.getWorld();
 
-	    if (currentDungeon != selectedDungeon) {
+	    if (currentWorld != selectedWorld) {
 		
 		try {
 
@@ -304,11 +305,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 			private final Map map = MapPropertiesView.this.map;
 
 			public void execute() {
-			    map.setDungeon(selectedDungeon);
+			    map.setWorld(selectedWorld);
 			}
 
 			public void undo() {
-			    map.setDungeon(currentDungeon);
+			    map.setWorld(currentWorld);
 			}
 		    });
 		}

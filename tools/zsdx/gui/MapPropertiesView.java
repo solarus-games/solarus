@@ -18,7 +18,7 @@ public class MapPropertiesView extends JPanel implements Observer {
      */
     private Map map;
 
-    // components
+    // subcomponents
     private JLabel mapIdView;
     private MapNameView mapNameView;
     private JLabel mapNbTilesView;
@@ -26,7 +26,11 @@ public class MapPropertiesView extends JPanel implements Observer {
     private MapSizeView mapSizeView;
     private MapTilesetView mapTilesetView;
     private MapMusicView mapMusicView;
+    
     private WorldChooser worldChooser;
+    private FloorChooser floorChooser;
+    private MapPositionView mapPositionView;
+    private NumberChooser savegameKeysVariable;
 
     /**
      * Constructor.
@@ -152,6 +156,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	mapSizeView.update(map);
 	mapTilesetView.update(map);
 	mapMusicView.update(map);
+	worldChooser.update(map);
     }
 
     // components for the editable properties
@@ -266,8 +271,8 @@ public class MapPropertiesView extends JPanel implements Observer {
 	}
 	
 	/**
-	 * Returns the dungeon currently selected.
-	 * @return the dungeon currently selected (may be -1)
+	 * Returns the world currently selected.
+	 * @return the world currently selected
 	 */
 	public int getSelectedWorld() {
 	    KeyValue item = (KeyValue) getSelectedItem();
@@ -275,11 +280,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 	}
 
 	/**
-	 * Selects a dungeon in the combo box.
-	 * @param dungeon the dungeon to make selected (may be -1)
+	 * Selects a world in the combo box.
+	 * @param world the world to make selected
 	 */
-	public void setSelectedWorld(int dungeon) {
-	    KeyValue item = new KeyValue(dungeon, null);
+	public void setSelectedWorld(int world) {
+	    KeyValue item = new KeyValue(world, null);
 	    setSelectedItem(item);
 	}
 
@@ -310,6 +315,104 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 			public void undo() {
 			    map.setWorld(currentWorld);
+			}
+		    });
+		}
+		catch (ZSDXException ex) {
+		    GuiTools.errorDialog(ex.getMessage());
+		}
+	    }
+	}
+    }
+
+    /**
+     * Component to choose the floor where this map is.
+     */
+    private class FloorChooser extends JComboBox implements ActionListener {
+
+	/**
+	 * Constructor.
+	 */
+	public FloorChooser() {
+	    super();
+	    
+	    addItem(new KeyValue(-1, "Inside floor"));
+	    addItem(new KeyValue(-1, "Outside world"));
+	    for (int i = 1; i <= 20; i++) {
+		addItem(new KeyValue(i, "Dungeon " + i));
+	    }
+	    
+	    addActionListener(this);
+	    
+	    update((Map) null);
+	}
+
+	/**
+	 * This function is called when the map is changed.
+	 * The selection is updated.
+	 */
+	public void update(Observable o) {
+	    
+	    if (map != null) {
+
+		int currentFloor = map.getFloor();
+		int selectedFloor = getSelectedFloor();
+
+		if (selectedFloor != currentFloor) {
+		    setSelectedFloor(currentFloor);
+		}
+		setEnabled(true);
+	    }
+	    else {
+		setEnabled(false);
+	    }
+	}
+	
+	/**
+	 * Returns the dungeon currently selected.
+	 * @return the dungeon currently selected (may be -1)
+	 */
+	public int getSelectedFloor() {
+	    KeyValue item = (KeyValue) getSelectedItem();
+	    return Integer.parseInt(item.getKey());
+	}
+
+	/**
+	 * Selects a dungeon in the combo box.
+	 * @param dungeon the dungeon to make selected (may be -1)
+	 */
+	public void setSelectedFloor(int dungeon) {
+	    KeyValue item = new KeyValue(dungeon, null);
+	    setSelectedItem(item);
+	}
+
+	/**
+	 * This method is called when the user changes the selected item.
+	 * The tileset of the map is changed.
+	 */
+	public void actionPerformed(ActionEvent ev) {
+	    
+	    if (map == null) {
+		return;
+	    }
+
+	    final int selectedFloor = getSelectedFloor();
+	    final int currentFloor = map.getFloor();
+
+	    if (currentFloor != selectedFloor) {
+		
+		try {
+
+		    map.getHistory().doAction(new MapEditorAction() {
+
+			private final Map map = MapPropertiesView.this.map;
+
+			public void execute() {
+			    map.setFloor(selectedFloor);
+			}
+
+			public void undo() {
+			    map.setFloor(currentFloor);
 			}
 		    });
 		}

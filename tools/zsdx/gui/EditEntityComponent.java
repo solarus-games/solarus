@@ -190,8 +190,12 @@ public class EditEntityComponent extends JPanel {
 
 	String name = entity.hasName() ? fieldName.getText() : null;
 	int layer = fieldLayer.getLayer();
-	Dimension position = fieldPosition.getCoordinates();
-	Dimension size = entity.isResizable() ? fieldSize.getCoordinates() : null;
+	Point position = fieldPosition.getCoordinates();
+	Dimension size = null;
+	if (entity.isResizable()) {
+	    Point coords = fieldSize.getCoordinates();
+	    size = new Dimension(coords.x, coords.y);
+	}
 	int direction = entity.hasDirection() ? fieldDirection.getDirection() : -1;
 	
 	return new ActionEditEntity(map, entity, name,

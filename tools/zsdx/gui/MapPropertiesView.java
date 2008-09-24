@@ -3,6 +3,7 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import java.util.*;
 import zsdx.*;
 import zsdx.Map;
@@ -19,18 +20,20 @@ public class MapPropertiesView extends JPanel implements Observer {
     private Map map;
 
     // subcomponents
-    private JLabel mapIdView;
-    private MapNameView mapNameView;
-    private JLabel mapNbTilesView;
-    private JLabel mapNbActiveEntitiesView;
-    private MapSizeView mapSizeView;
-    private MapTilesetView mapTilesetView;
-    private MapMusicView mapMusicView;
-    
-    private WorldChooser worldChooser;
-    private FloorChooser floorChooser;
-    private MapPositionView mapPositionView;
-    private NumberChooser savegameKeysVariable;
+    private JLabel idField;
+    private NameField nameField;
+    private JLabel nbTilesField;
+    private JLabel nbActiveEntitiesField;
+    private SizeField sizeField;
+    private WorldField worldField;
+    private JLabel floorLabel;
+    private FloorField floorField;
+    private JLabel locationLabel;
+    private LocationField locationField;
+    private EnableSmallKeysField enableSmallKeysField;
+    private SmallKeysVariableField smallKeysVariableField;
+    private TilesetField tilesetField;
+    private MusicField musicField;
 
     /**
      * Constructor.
@@ -40,76 +43,119 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	setBorder(BorderFactory.createTitledBorder("Map properties"));
 
-	GridBagConstraints constraints = new GridBagConstraints();
-	constraints.insets = new Insets(5, 5, 5, 5); // margins
-	constraints.anchor = GridBagConstraints.LINE_START;
+	GridBagConstraints leftConstraints = new GridBagConstraints();
+	leftConstraints.insets = new Insets(5, 5, 5, 5); // margins
+	leftConstraints.anchor = GridBagConstraints.LINE_START;
+	leftConstraints.gridx = 0;
+	leftConstraints.gridwidth = 1;
+	leftConstraints.weightx = 0;
+
+	GridBagConstraints rightConstraints = new GridBagConstraints();
+	rightConstraints.insets = new Insets(5, 5, 5, 5); // margins
+	rightConstraints.anchor = GridBagConstraints.LINE_START;
+	rightConstraints.gridx = 1;
+	rightConstraints.gridwidth = 2;
+	rightConstraints.weightx = 1;
 
 	// map id
-	constraints.gridx = 0;
-	constraints.gridy = 0;
-	add(new JLabel("Map id"), constraints);
+	leftConstraints.gridy = 0;
+	add(new JLabel("Map id"), leftConstraints);
+	idField = new JLabel();
+	rightConstraints.gridy = 0;
+	add(idField, rightConstraints);
 
 	// map name
-	constraints.gridy++;
-	add(new JLabel("Map name"), constraints);
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	add(new JLabel("Map name"), leftConstraints);
+	rightConstraints.gridy++;
+	nameField = new NameField();
+	add(nameField, rightConstraints);
+
+	// number of tiles
+	nbTilesField = new JLabel();
+	/*
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	add(new JLabel("Tiles"), leftConstraints);
+	rightConstraints.gridy++;
+	add(nbTilesField, rightConstraints);
+        */
 	
-	// world
-	constraints.gridy++;
-	add(new JLabel("World"), constraints);
-
-	// number of tiles
-	constraints.gridy++;
-	add(new JLabel("Tiles"), constraints);
-
-	// number of tiles
-	constraints.gridy++;
-	add(new JLabel("Active entities"), constraints);
+	// number of active entities
+	nbActiveEntitiesField = new JLabel();
+	/*
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	add(new JLabel("Active entities"), leftConstraints);
+	rightConstraints.gridy++;
+	add(nbActiveEntitiesField, rightConstraints);
+	*/
 
 	// size
-	constraints.gridy++;
-	add(new JLabel("Size"), constraints);
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	add(new JLabel("Size"), leftConstraints);
+	rightConstraints.gridy++;
+	sizeField = new SizeField(); 
+	add(sizeField, rightConstraints);
+
+	// world
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	add(new JLabel("World"), leftConstraints);
+	rightConstraints.gridy++;
+	worldField = new WorldField();
+	add(worldField, rightConstraints);
+
+	// floor
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	floorLabel = new JLabel("Floor");
+	add(floorLabel, leftConstraints);
+	rightConstraints.gridy++;
+	floorField = new FloorField();
+	add(floorField, rightConstraints);
+
+	// location
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	locationLabel = new JLabel("Location in its world");
+	add(locationLabel, leftConstraints);
+	rightConstraints.gridy++;
+	locationField = new LocationField();
+	add(locationField, rightConstraints);
+
+	// small keys variable
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	leftConstraints.gridwidth = 2;
+	enableSmallKeysField = new EnableSmallKeysField();
+	add(enableSmallKeysField, leftConstraints);
+	rightConstraints.gridy++;
+	rightConstraints.gridx = 2;
+	rightConstraints.gridwidth = 1;
+	smallKeysVariableField = new SmallKeysVariableField();
+	add(smallKeysVariableField, rightConstraints);
+	leftConstraints.gridwidth = 1;
+	rightConstraints.gridx = 1;
+	rightConstraints.gridwidth = 2;
 
 	// tileset
-	constraints.gridy++;
-	add(new JLabel("Tileset"), constraints);
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	add(new JLabel("Tileset"), leftConstraints);
+	rightConstraints.gridy++;
+	tilesetField = new TilesetField();
+       	add(tilesetField, rightConstraints);
 	
 	// music
-	constraints.gridy++;
-	add(new JLabel("Music"), constraints);
-
-	constraints.weightx = 1;
-	constraints.gridx = 1;
-	constraints.gridy = 0;
-	mapIdView = new JLabel();
-	add(mapIdView, constraints);
-
-       	constraints.gridy++;
-	mapNameView = new MapNameView();
-	add(mapNameView, constraints);
-
-       	constraints.gridy++;
-	worldChooser = new WorldChooser();
-	add(worldChooser, constraints);
-
-       	constraints.gridy++;
-	mapNbTilesView = new JLabel(); 
-	add(mapNbTilesView, constraints);
-
-       	constraints.gridy++;
-	mapNbActiveEntitiesView = new JLabel(); 
-	add(mapNbActiveEntitiesView, constraints);
-
-       	constraints.gridy++;
-	mapSizeView = new MapSizeView(); 
-	add(mapSizeView, constraints);
-
-	constraints.gridy++;
-	mapTilesetView = new MapTilesetView();
-       	add(mapTilesetView, constraints);
-
-	constraints.gridy++;
-	mapMusicView = new MapMusicView();
-	add(mapMusicView, constraints);
+	leftConstraints.gridx = 0;
+	leftConstraints.gridy++;
+	add(new JLabel("Music"), leftConstraints);
+	rightConstraints.gridy++;
+	musicField = new MusicField();
+	add(musicField, rightConstraints);
     }
 
     /**
@@ -139,24 +185,28 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	// update the elementary components here
 	if (map != null) {
-	    mapIdView.setText(map.getId());
-	    mapNbTilesView.setText(Integer.toString(map.getNbTiles()));
-	    mapNbActiveEntitiesView.setText(Integer.toString(
+	    idField.setText(map.getId());
+	    nbTilesField.setText(Integer.toString(map.getNbTiles()));
+	    nbActiveEntitiesField.setText(Integer.toString(
 		    map.getNbInteractiveEntities() + map.getNbMovingEntities()));
 	}
 	else {
-	    mapIdView.setText("");
-	    mapNbTilesView.setText("");
-	    mapNbActiveEntitiesView.setText("");
+	    idField.setText("");
+	    nbTilesField.setText("");
+	    nbActiveEntitiesField.setText("");
 	}
 
 	// tell the complex components to update themselves
-	mapNameView.update(map);
-	worldChooser.update(map);
-	mapSizeView.update(map);
-	mapTilesetView.update(map);
-	mapMusicView.update(map);
-	worldChooser.update(map);
+	nameField.update(map);
+	worldField.update(map);
+	sizeField.update(map);
+	worldField.update(map);
+	floorField.update(map);
+	locationField.update(map);
+	enableSmallKeysField.update(map);
+	smallKeysVariableField.update(map);
+	tilesetField.update(map);
+	musicField.update(map);
     }
 
     // components for the editable properties
@@ -164,7 +214,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the name of the map.
      */
-    private class MapNameView extends JPanel {
+    private class NameField extends JPanel {
 
 	// subcomponents
 	private JTextField textFieldName;
@@ -173,7 +223,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	/**
 	 * Constructor.
 	 */
-	public MapNameView() {
+	public NameField() {
 	    super();
 	    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
@@ -228,24 +278,74 @@ public class MapPropertiesView extends JPanel implements Observer {
     }
 
     /**
-     * Component to choose the world where this map is.
+     * Component to change the map size.
      */
-    private class WorldChooser extends JComboBox implements ActionListener {
+    private class SizeField extends CoordinatesField {
 
 	/**
 	 * Constructor.
 	 */
-	public WorldChooser() {
+	public SizeField() {
+	    super();
+	    setMinimum(Map.MINIMUM_WIDTH, Map.MINIMUM_HEIGHT);
+	    setStepSize(8, 8);
+	    
+	    addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent ev) {
+
+			try {
+			    Point coords = getCoordinates();
+			    Dimension size = new Dimension(coords.x, coords.y);
+			    if (!size.equals(map.getSize())) {
+				map.getHistory().doAction(new ActionChangeMapSize(map, size));
+			    }
+			}
+			catch (NumberFormatException ex) {
+
+			}
+			catch (ZSDXException ex) {
+			    GuiTools.errorDialog("Cannot change the map size: " + ex.getMessage());
+			}
+			update(map);
+		    }
+		});
+	}
+
+	/**
+	 * This function is called when the map is changed.
+	 * The component is updated.
+	 */
+	public void update(Observable o) {
+
+	    if (map != null) {
+		setEnabled(true);
+		Dimension size = map.getSize();
+		setCoordinates(size.width, size.height);
+	    }
+	    else {
+		setEnabled(false);
+	    }
+	}
+    }
+
+    /**
+     * Component to choose the world where this map is.
+     */
+    private class WorldField extends JComboBox implements ActionListener {
+
+	/**
+	 * Constructor.
+	 */
+	public WorldField() {
 	    super();
 	    
 	    addItem(new KeyValue(-1, "Inside world"));
-	    addItem(new KeyValue(-1, "Outside world"));
+	    addItem(new KeyValue(0, "Outside world"));
 	    for (int i = 1; i <= 20; i++) {
 		addItem(new KeyValue(i, "Dungeon " + i));
 	    }
-	    
-	    addActionListener(this);
-	    
+
+	    addActionListener(this);   
 	    update((Map) null);
 	}
 
@@ -254,7 +354,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The selection is updated.
 	 */
 	public void update(Observable o) {
-	    
+
 	    if (map != null) {
 
 		int currentWorld = map.getWorld();
@@ -293,7 +393,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The tileset of the map is changed.
 	 */
 	public void actionPerformed(ActionEvent ev) {
-	    
+
 	    if (map == null) {
 		return;
 	    }
@@ -302,18 +402,17 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    final int currentWorld = map.getWorld();
 
 	    if (currentWorld != selectedWorld) {
-		
-		try {
 
+		try {
 		    map.getHistory().doAction(new MapEditorAction() {
 
 			private final Map map = MapPropertiesView.this.map;
 
-			public void execute() {
+			public void execute() throws MapException {
 			    map.setWorld(selectedWorld);
 			}
 
-			public void undo() {
+			public void undo() throws MapException {
 			    map.setWorld(currentWorld);
 			}
 		    });
@@ -328,23 +427,21 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to choose the floor where this map is.
      */
-    private class FloorChooser extends JComboBox implements ActionListener {
+    private class FloorField extends JComboBox implements ActionListener {
 
 	/**
 	 * Constructor.
 	 */
-	public FloorChooser() {
+	public FloorField() {
 	    super();
-	    
-	    addItem(new KeyValue(-1, "Inside floor"));
-	    addItem(new KeyValue(-1, "Outside world"));
-	    for (int i = 1; i <= 20; i++) {
-		addItem(new KeyValue(i, "Dungeon " + i));
+
+	    addItem(new KeyValue(-100, "No floor"));
+	    for (int i = -16; i <= 15; i++) {
+		addItem(new KeyValue(i, "Floor " + i));
 	    }
-	    
+	    addItem(new KeyValue(-99, "Unknown floor '?'"));
+
 	    addActionListener(this);
-	    
-	    update((Map) null);
 	}
 
 	/**
@@ -352,7 +449,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The selection is updated.
 	 */
 	public void update(Observable o) {
-	    
+
 	    if (map != null) {
 
 		int currentFloor = map.getFloor();
@@ -361,10 +458,12 @@ public class MapPropertiesView extends JPanel implements Observer {
 		if (selectedFloor != currentFloor) {
 		    setSelectedFloor(currentFloor);
 		}
-		setEnabled(true);
+		setEnabled(!map.isInOutsideWorld());
+		floorLabel.setEnabled(!map.isInOutsideWorld());
 	    }
 	    else {
 		setEnabled(false);
+		floorLabel.setEnabled(true);
 	    }
 	}
 	
@@ -391,7 +490,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The tileset of the map is changed.
 	 */
 	public void actionPerformed(ActionEvent ev) {
-	    
+
 	    if (map == null) {
 		return;
 	    }
@@ -402,16 +501,15 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    if (currentFloor != selectedFloor) {
 		
 		try {
-
 		    map.getHistory().doAction(new MapEditorAction() {
 
 			private final Map map = MapPropertiesView.this.map;
 
-			public void execute() {
+			public void execute() throws MapException {
 			    map.setFloor(selectedFloor);
 			}
 
-			public void undo() {
+			public void undo() throws MapException {
 			    map.setFloor(currentFloor);
 			}
 		    });
@@ -422,40 +520,54 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    }
 	}
     }
-    
+
     /**
-     * Component to change the map size.
+     * Component to change the map location.
      */
-    private class MapSizeView extends CoordinatesField {
+    private class LocationField extends CoordinatesField implements ActionListener {
 
 	/**
 	 * Constructor.
 	 */
-	public MapSizeView() {
+	public LocationField() {
 	    super();
-	    setMinimum(Map.MINIMUM_WIDTH, Map.MINIMUM_HEIGHT);
+	    setMinimum(0, 0);
 	    setStepSize(8, 8);
 	    
-	    ActionListener listener = new ActionListener() {
-		    public void actionPerformed(ActionEvent ev) {
+	    addActionListener(this);
+	}
 
-			try {
-			    Dimension size = getCoordinates();
-			    if (!size.equals(map.getSize())) {
-				map.getHistory().doAction(new ActionChangeMapSize(map, size));
-			    }
-			}
-			catch (NumberFormatException ex) {
+	/**
+	 * This method is called when the user changes the value of this field.
+	 */
+	public void actionPerformed(ActionEvent ev) {
 
-			}
-			catch (ZSDXException ex) {
-			    GuiTools.errorDialog("Cannot change the map size: " + ex.getMessage());
-			}
-			update(map);
-		    }
-		};
+	    final Point selectedLocation = getCoordinates();
+	    final Point currentLocation = map.getLocation();
 
-	    addActionListener(listener);
+	    try {
+		if (!selectedLocation.equals(currentLocation)) {
+		    map.getHistory().doAction(new MapEditorAction() {
+
+			private final Map map = MapPropertiesView.this.map;
+
+			public void execute() {
+			    map.setLocation(selectedLocation);
+			}
+
+			public void undo() {
+			    map.setLocation(currentLocation);
+			}
+		    });
+		}
+	    }
+	    catch (NumberFormatException ex) {
+
+	    }
+	    catch (ZSDXException ex) {
+		GuiTools.errorDialog("Cannot change the map location: " + ex.getMessage());
+	    }
+	    update(map);
 	}
 
 	/**
@@ -466,7 +578,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	    if (map != null) {
 		setEnabled(true);
-		setCoordinates(map.getSize());
+		setCoordinates(map.getLocation());
 	    }
 	    else {
 		setEnabled(false);
@@ -475,17 +587,143 @@ public class MapPropertiesView extends JPanel implements Observer {
     }
 
     /**
-     * Component to change the tileset associated to the map.
+     * Component to enable or disable the small keys in this map.
      */
-    private class MapTilesetView extends ResourceChooser implements ActionListener {
+    private class EnableSmallKeysField extends JCheckBox implements ActionListener {
 
 	/**
 	 * Constructor.
 	 */
-	public MapTilesetView() {
+	public EnableSmallKeysField() {
+	    super("Enable small keys: saved in variable");
+	    addActionListener(this);
+	    update((Map) null);
+	}
+
+	/**
+	 * This method is called when the user changes the value of this field.
+	 */
+	public void actionPerformed(ActionEvent ev) {
+
+	    final int currentSmallKeyVariable = map.getSmallKeysVariable();
+	    final boolean currentlyEnabled = (currentSmallKeyVariable != -1);
+
+	    try {
+		map.getHistory().doAction(new MapEditorAction() {
+
+		    private final Map map = MapPropertiesView.this.map;
+
+		    public void execute() throws MapException {
+			if (currentlyEnabled) { // uncheck the box
+			    map.setSmallKeysVariable(-1);
+			}
+			else { // check the box
+			    map.setSmallKeysVariable(smallKeysVariableField.getNumber());
+			}
+		    }
+
+		    public void undo() throws MapException {
+			if (currentlyEnabled) { // undo unchecking
+			    map.setSmallKeysVariable(currentSmallKeyVariable);
+			}
+			else { // undo checking the box
+			    map.setSmallKeysVariable(-1);
+			}
+		    }
+		});
+	    }
+	    catch (ZSDXException ex) {
+		GuiTools.errorDialog("Cannot change the keys variable: " + ex.getMessage());
+	    }
+	    update(map);
+	}
+
+	/**
+	 * This function is called when the map is changed.
+	 * The component is updated.
+	 */
+	public void update(Observable o) {
+
+	    if (map != null) {
+		setSelected(map.getSmallKeysVariable() != -1);
+		setEnabled(!map.isInDungeon());
+	    }
+	    else {
+		setSelected(false);
+		setEnabled(false);
+	    }
+	}
+    }
+
+    /**
+     * Component to choose the variable where the small keys are saved for this map.
+     */
+    private class SmallKeysVariableField extends NumberChooser implements ChangeListener {
+
+	/**
+	 * Constructor.
+	 */
+	public SmallKeysVariableField() {
+	    super();
+	    addChangeListener(this);
+	    update((Map) null);
+	}
+	
+	/**
+	 * This function is called when the map is changed.
+	 * The component is updated.
+	 */
+	public void update(Observable o) {
+
+	    if (map != null) {
+		setNumber(map.getSmallKeysVariable());
+		setEnabled(!map.isInDungeon());
+	    }
+	    else {
+		setEnabled(false);
+	    }
+	}
+	
+	/**
+	 * This method is called when the user changes the value of this field.
+	 */
+	public void stateChanged(ChangeEvent ev) {
+
+	    final int currentSmallKeyVariable = map.getSmallKeysVariable();
+	    final int selectedSmallKeyVariable = getNumber();
+
+	    try {
+		map.getHistory().doAction(new MapEditorAction() {
+
+		    private final Map map = MapPropertiesView.this.map;
+
+		    public void execute() throws MapException {
+			map.setSmallKeysVariable(selectedSmallKeyVariable);
+		    }
+
+		    public void undo() throws MapException {
+			map.setSmallKeysVariable(currentSmallKeyVariable);
+		    }
+		});
+	    }
+	    catch (ZSDXException ex) {
+		GuiTools.errorDialog("Cannot change the keys variable: " + ex.getMessage());
+	    }
+	    update(map);
+	}
+    }
+
+    /**
+     * Component to change the tileset associated to the map.
+     */
+    private class TilesetField extends ResourceChooser implements ActionListener {
+
+	/**
+	 * Constructor.
+	 */
+	public TilesetField() {
 	    super(ResourceDatabase.RESOURCE_TILESET, true);
 	    addActionListener(this);
-	    
 	    update((Map) null);
 	}
 
@@ -542,12 +780,12 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the tileset associated to the map.
      */
-    private class MapMusicView extends MusicChooser implements ActionListener {
+    private class MusicField extends MusicChooser implements ActionListener {
 
 	/**
 	 * Constructor.
 	 */
-	public MapMusicView() {
+	public MusicField() {
 	    super();
 	    addActionListener(this);
 	    

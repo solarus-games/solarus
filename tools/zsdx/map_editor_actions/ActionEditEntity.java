@@ -43,7 +43,7 @@ public class ActionEditEntity extends MapEditorAction {
      * (or -1 if the entity has no direction property)
      */
     public ActionEditEntity(Map map, MapEntity entity, String name,
-	    int layer, Dimension position, Dimension size, int direction) {
+	    int layer, Point position, Dimension size, int direction) {
 	super(map);
 	
 	this.entity = entity;
@@ -61,7 +61,7 @@ public class ActionEditEntity extends MapEditorAction {
 	
 	// position and size
 	this.positionBefore = new Rectangle(entity.getX(), entity.getY(), 0, 0);
-	this.positionAfter = new Rectangle(position.width, position.height, 0, 0);
+	this.positionAfter = new Rectangle(position.x, position.y, 0, 0);
 	
 	// size
 	if (entity.isResizable()) {

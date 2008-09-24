@@ -3,6 +3,7 @@ package zsdx;
 import java.util.*;
 import java.io.*;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
@@ -11,6 +12,8 @@ import java.awt.Rectangle;
  */
 public class Map extends Observable {
 
+    // map properties
+    
     /**
      * Id of the map.
      */
@@ -46,11 +49,39 @@ public class Map extends Observable {
     /**
      * Index of the world where this map is:
      * - 0 if the map is outside
-     * - -1 if the map is inside
+     * - -1 if the map is inside (by default)
      * - 1 to 20 if the map is in a dungeon
      */
     private int world;
+    
+    /**
+     * Floor of this map:
+     * - a floor number between -16 and 15
+     * - -99: special value to indicate an unknown floor, displayed with '?'
+     * - -100: no floor (by default)
+     */
+    private int floor;
+    
+    /**
+     * Location of this map in its floor or in its world. It is used to show
+     * Link's position on the map menu.
+     * - For a map in the outside world: coordinates of the top-left corner
+     *   of the map in the whole world.
+     * - For a map in the inside world: location of the map on the outside world.
+     * - For a map in a dungeon: coordinates of the top-left corner of the map
+     * in its floor.
+     */
+    private Point location;
+    
+    /**
+     * Index of the variable of the savegame which stores the number of small keys
+     * of this map.
+     * A value of -1 indicates that this map has small key counter.
+     */
+    private int smallKeysVariable;
 
+    // content of the map
+    
     /**
      * Entities of the map.
      * This is an array of three entity lists, one for each layer.
@@ -309,16 +340,133 @@ public class Map extends Observable {
     public boolean isInDungeon() {
 	return world > 0;
     }
+
+    /**
+     * Returns whether this map belongs to the outside world.
+     * @return true if this map is in the outside world
+     */
+    public boolean isInOutsideWorld() {
+	return world == 0;
+    }
     
     /**
      * Sets the world where this map is.
      * @param world the world index: 0 if the map is outside, -1 if it is inside,
      * 1 to 20 if it is in a dungeon
+     * @throws MapException if the specified world is incorrect
      */
-    public void setWorld(int world) {
-	this.world = world;
+    public void setWorld(int world) throws MapException {
+	
+	if (world != this.world) {
+	    
+	    if (world > 20 || world < -1) {
+		throw new MapException("Invalid world: " + world);
+	    }
+	    
+	    this.world = world;
+
+	    if (!isInDungeon()) { // no dungeon : no floor by default
+		setFloor(-100);
+	    }
+	    else { // dungeon: first floor by default
+/* TODO		setFloor(getDungeon().getDefaultFloor());*/
+		setSmallKeysVariable(204 + 10 * (world - 1));
+	    }
+
+	    setChanged();
+	    notifyObservers();
+	}
     }
     
+    /**
+     * Returns the floor of this map.
+     * @return the floor
+     */
+    public int getFloor() {
+        return floor;
+    }
+
+    /**
+     * Sets the floor of this map.
+     * @param floor the floor: -100 for no floor, -99 for the unknown floor,
+     * -16 to 15 for a normal floor
+     * @throws MapException if you specify a floor on the oustide world
+     * or if you specify an invalid floor
+     */
+    public void setFloor(int floor) throws MapException {
+	
+	if (floor != this.floor) {
+	    
+	    if (floor != -100 && floor != -99 && (floor < -16 || floor > 15)) {
+		throw new MapException("Invalid floor: " + floor);
+	    }
+	    
+	    if (isInOutsideWorld() && floor != -100) {
+		throw new MapException("Cannot specify a floor in the outside world");
+	    }
+
+	    else if (isInDungeon() && floor != -99/* TODO && !getDungeon().hasFloor(floor)*/) {
+		throw new MapException("This floor does not exists in this dungeon");
+	    }
+	    
+	    this.floor = floor;
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Returns the index of the savegame variable that stores
+     * the counter of small keys for this map.
+     * @return the variable of the small key counter
+     */
+    public int getSmallKeysVariable() {
+        return smallKeysVariable;
+    }
+
+    /**
+     * Sets the index of the savegame variable that stores
+     * the counter of small keys for this map.
+     * -1 means that the small keys are not enabled on this map.
+     * @param keysSavegameVariable the variable of the small key counter
+     * @throws MapException if the specified value is not valid
+     */
+    public void setSmallKeysVariable(int smallKeysVariable) throws MapException {
+	
+	if (smallKeysVariable != this.smallKeysVariable) {
+	    
+	    if (smallKeysVariable < -1 || smallKeysVariable > 2048) {
+		throw new MapException("Incorrect variable to save the small keys: " + smallKeysVariable);
+	    }
+	    
+	    if (isInDungeon() && smallKeysVariable != 204 + 10 * (getWorld() - 1)) {
+		throw new MapException("Cannot change the variable to save the small keys because this map is in a dungeon");
+	    }
+	    
+	    this.smallKeysVariable = smallKeysVariable;
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Returns the location of this map in its floor or its world.
+     * @return the location of this map
+     */
+    public Point getLocation() {
+        return location;
+    }
+
+    /**
+     * Sets the location of this map in its floor or its world.
+     * @param location the location of this map
+     */
+    public void setLocation(Point location) {
+        this.location = location;
+	setChanged();
+	notifyObservers();
+    }
+
     /**
      * Returns the total number of entities of the map.
      * @return the total number of entities of the map.

@@ -52,9 +52,10 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
 	mapPropertiesView = new MapPropertiesView();
 	mapPropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
-	mapPropertiesView.setMinimumSize(new Dimension(300, 280));
-	mapPropertiesView.setPreferredSize(new Dimension(300, 280));
-	mapPropertiesView.setMaximumSize(new Dimension(300, 280));
+	Dimension size = new Dimension(300, 350);
+//	mapPropertiesView.setMinimumSize(size);
+	mapPropertiesView.setPreferredSize(size);
+//	mapPropertiesView.setMaximumSize(size);
 
 	tilePicker = new TilePicker();
 	tilePicker.setAlignmentX(Component.LEFT_ALIGNMENT);

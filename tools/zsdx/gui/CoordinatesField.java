@@ -61,7 +61,7 @@ public class CoordinatesField extends JPanel {
 	// add the action listener to the two text fields
 	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) fieldX.getEditor();
 	editor.getTextField().addActionListener(actionListener);
-	
+
 	editor = (JSpinner.DefaultEditor) fieldY.getEditor();
 	editor.getTextField().addActionListener(actionListener);
 
@@ -127,13 +127,13 @@ public class CoordinatesField extends JPanel {
 	Number n = (Number) fieldY.getValue();
 	return n.intValue();
     }
-    
+
     /**
      * Returns the two coordinates values in the fields.
      * @return the coordinates entered
      */
-    public Dimension getCoordinates() {
-	return new Dimension(getXValue(), getYValue());
+    public Point getCoordinates() {
+	return new Point(getXValue(), getYValue());
     }
 
     /**
@@ -161,12 +161,12 @@ public class CoordinatesField extends JPanel {
 	setXValue(x);
 	setYValue(y);
     }
-    
+
     /**
      * Changes the two coordinates values.
      * @param d the new coordinates
      */
-    public void setCoordinates(Dimension d) {
-	setCoordinates(d.width, d.height);
+    public void setCoordinates(Point p) {
+	setCoordinates(p.x, p.y);
     }
 }

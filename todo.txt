@@ -4,9 +4,9 @@
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
-- Sauvegarde des éléments de donjon : ajouter le fait que le donjon soit fini et qu'on ait tué le mini-boss (mais peut-on avoir plusieurs mini-boss ?)
 - Afficher les petites clés dans le hud (seulement dans les donjons ?)
-- Numéros de donjons : 1 à 14 (appelés numéros de monde) au lieu de 0 à 13, avec -1 et 0 comme valeurs spéciales. Mettre à jour l'éditeur.
+- Classe donjon dans l'éditeur (voir TODO dans Map.java)
+- Coffre vide : ne se sauvegarde pas (il faut ajouter un Treasure::Content spécial, et le treasure d'un Chest ne pourra plus être NULL)
 
 - Prochaines grandes étapes :
   - collision au pixel près
@@ -55,6 +55,8 @@ Solution 2 (meilleure, comme dans ZMC mais automatisée) :
   - Si la map est dans un donjon :
     - supprimer dans donjons.zsd tout coffre faisant référence à cette map, que ce soit dans le bon donjon ou pas
     - ajouter dans donjons.zsd les coffres de cette map
+
+ini4j
 
 [dungeon_1]
 lowest_floor = -1

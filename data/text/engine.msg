@@ -1510,6 +1510,7 @@ line2 = "compteur magique !"
 [_empty_chest]
 #       |-----------------------|
 line1 = "Ce coffre est vide !"
+line2 = "Tant pis pour vous !"
 
 [_big_key_required]
 #       |--------------------|

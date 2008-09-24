@@ -949,6 +949,7 @@ public class Map extends Observable {
 	    BufferedReader in = new BufferedReader(new FileReader(mapFile));
 
 	    // read the map general info
+	    // syntax: width height world floor x y small_keys_variable tileset_id music_id
 	    String line = in.readLine();
 
 	    if (line == null) {
@@ -960,11 +961,18 @@ public class Map extends Observable {
 
 	    int width = Integer.parseInt(tokenizer.nextToken());
 	    int height = Integer.parseInt(tokenizer.nextToken());
-
 	    setSize(new Dimension(width, height));
+
+	    setWorld(Integer.parseInt(tokenizer.nextToken()));	    
+	    setFloor(Integer.parseInt(tokenizer.nextToken()));
+	    
+	    int x = Integer.parseInt(tokenizer.nextToken());
+	    int y = Integer.parseInt(tokenizer.nextToken());
+	    setLocation(new Point(x, y));
+
+	    setSmallKeysVariable(Integer.parseInt(tokenizer.nextToken()));
 	    setTileset(tokenizer.nextToken());
 	    setMusic(tokenizer.nextToken());
-	    setWorld(Integer.parseInt(tokenizer.nextToken()));
 
 	    // read the map entities
 	    line = in.readLine();
@@ -1014,23 +1022,32 @@ public class Map extends Observable {
 	}
 
 	try {
-	    
+
 	    // open the map file
 	    File mapFile = Project.getMapFile(mapId);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
-	    
+
 	    // print the map general info
+	    // syntax: width height world floor x y small_keys_variable tileset_id music_id
 	    out.print(size.width);
 	    out.print('\t');
 	    out.print(size.height);
 	    out.print('\t');
+	    out.print(world);
+	    out.print('\t');
+	    out.print(floor);
+	    out.print('\t');
+	    out.print(location.x);
+	    out.print('\t');
+	    out.print(location.y);
+	    out.print('\t');
+	    out.print(smallKeysVariable);
+	    out.print('\t');
 	    out.print(tilesetId);
 	    out.print('\t');
 	    out.print(musicId);
-	    out.print('\t');
-	    out.print(world);
 	    out.println();
-	    
+
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
 		MapEntities entities = allEntities[layer];

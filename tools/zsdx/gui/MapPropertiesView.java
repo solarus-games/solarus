@@ -605,6 +605,11 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 */
 	public void actionPerformed(ActionEvent ev) {
 
+	    if (map.isInDungeon()) {
+		update(map);
+		return;
+	    }
+
 	    final int currentSmallKeyVariable = map.getSmallKeysVariable();
 	    final boolean currentlyEnabled = (currentSmallKeyVariable != -1);
 
@@ -646,7 +651,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	    if (map != null) {
 		setSelected(map.getSmallKeysVariable() != -1);
-		setEnabled(!map.isInDungeon());
+		setEnabled(true);
 	    }
 	    else {
 		setSelected(false);
@@ -668,7 +673,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    addChangeListener(this);
 	    update((Map) null);
 	}
-	
+
 	/**
 	 * This function is called when the map is changed.
 	 * The component is updated.
@@ -677,20 +682,25 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	    if (map != null) {
 		setNumber(map.getSmallKeysVariable());
-		setEnabled(!map.isInDungeon());
+		setEnabled(map.getSmallKeysVariable() != -1);
 	    }
 	    else {
 		setEnabled(false);
 	    }
 	}
-	
+
 	/**
 	 * This method is called when the user changes the value of this field.
 	 */
 	public void stateChanged(ChangeEvent ev) {
+	    
+	    if (map.isInDungeon()) {
+		update(map);
+		return;
+	    }
 
 	    final int currentSmallKeyVariable = map.getSmallKeysVariable();
-	    final int selectedSmallKeyVariable = getNumber();
+	    final int selectedSmallKeyVariable = enableSmallKeysField.isSelected() ? getNumber() : -1;
 
 	    try {
 		map.getHistory().doAction(new MapEditorAction() {

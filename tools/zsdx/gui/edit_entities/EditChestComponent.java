@@ -87,6 +87,7 @@ public class EditChestComponent extends EditEntityComponent {
 	amountField.setNumber(chest.getAmount());
 	saveField.setSelected(chest.getSavegameIndex() != -1);
 	savegameIndexField.setNumber(chest.getSavegameIndex());
+	savegameIndexField.setEnabled(chest.getSavegameIndex() != -1);
     }
     
     /**

@@ -418,10 +418,20 @@ public class Map extends Observable {
     /**
      * Returns the index of the savegame variable that stores
      * the counter of small keys for this map.
-     * @return the variable of the small key counter
+     * @return the variable of the small key counter, or -1 if the small
+     * keys are not enabled for this map
      */
     public int getSmallKeysVariable() {
         return smallKeysVariable;
+    }
+    
+    /**
+     * Returns whether the small keys are enabled in this map, i.e. whether
+     * getSmallKeysVariable() does not return -1. 
+     * @return true if the small keys are enabled in this map
+     */
+    public boolean hasSmallKeys() {
+	return getSmallKeysVariable() != -1;
     }
 
     /**
@@ -933,6 +943,28 @@ public class Map extends Observable {
     }
 
     /**
+     * Checks that the map is valid, i.e. that it can be played without risk.
+     * @throws MapException if the map is not valid (e.g. no tileset is selected,
+     * or some entities are not in a valid state). 
+     */
+    public void checkValidity() throws MapException {
+	
+	// check that a tileset is selected
+	if (tilesetId.length() == 0) {
+	    throw new MapException("No tileset is selected");
+	}
+	
+	// check that all entities are valid
+	for (MapEntities entities: allEntities) {
+	    for (MapEntity entity: entities) {
+		if (!entity.isValid()) {
+		    throw new InvalidEntityException("The map contains an invalid entity.", entity);
+		}
+	    }
+	}
+    }
+    
+    /**
      * Loads the map from its file.
      * @throws ZSDXException if the file could not be read
      */
@@ -1012,14 +1044,12 @@ public class Map extends Observable {
 
     /**
      * Saves the map into its file.
-     * @throws ZSDXException if the file could not be written
+     * @throws ZSDXException if the file could not be written for various reasons
      */
     public void save() throws ZSDXException {
 
-	// check that a tileset is selected
-	if (tilesetId.length() == 0) {
-	    throw new ZSDXException("No tileset is selected");
-	}
+	// check that the map is valid
+	checkValidity();
 
 	try {
 
@@ -1069,7 +1099,7 @@ public class Map extends Observable {
 	    Project.getResourceDatabase().save();
 	}
 	catch (IOException ex) {
-	    throw new ZSDXException(ex.getMessage());
+	    throw new MapException(ex.getMessage());
 	}
     }
 }

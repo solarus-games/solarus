@@ -431,7 +431,14 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	try {
 	    map.save();
 	}
+	catch (InvalidEntityException ex) {
+	    // the map contains an invalid entity
+	    GuiTools.warningDialog("Could not save the map: " + ex.getMessage() + " Click OK to edit the invalid entity now.");
+	    EditEntityDialog dialog = new EditEntityDialog(map, ex.getEntity());
+	    dialog.display();
+	}
 	catch (ZSDXException ex) {
+	    // another problem occured
 	    GuiTools.errorDialog("Could not save the map: " + ex.getMessage());
 	}
     }

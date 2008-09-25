@@ -76,6 +76,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private AddEntitiesToolbar addEntitiesToolbar;
     
+    /**
+     * The key listener of the map view.
+     */
+    private KeyListener keyListener;
+    
     // other map view stuff
 
     /**
@@ -119,7 +124,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	MouseInputListener mouseListener = new MapMouseInputListener();
 	addMouseListener(mouseListener);
 	addMouseMotionListener(mouseListener);
-	addKeyListener(new MapKeyListener());
+	
+	keyListener = new MapKeyListener();
+	addKeyListener(keyListener);
     }
 
     /**
@@ -1203,7 +1210,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    }
 	}
     }
-    
+
     /**
      * The key listener associated to the map image.
      */
@@ -1215,22 +1222,50 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	 */
 	public void keyPressed(KeyEvent keyEvent) {
 
-	    if (state == State.NORMAL) {
+	    if (state != State.NORMAL) {
+		return;
+	    }
 
-		switch (keyEvent.getKeyCode()) {
+	    MapEntitySelection selectedEntities = map.getEntitySelection();
 
-		case KeyEvent.VK_DELETE:
-		    destroySelectedEntities();
-		    break;
-		    
-		case KeyEvent.VK_ENTER:
-		    if (map.getEntitySelection().getNbEntitiesSelected() == 1) {
-			MapEntity entitySelected = map.getEntitySelection().getEntity(0);
-			EditEntityDialog dialog = new EditEntityDialog(map, entitySelected);
-			dialog.display();
-		    }
-		    break;
+	    int key = keyEvent.getKeyCode();
+	    switch (key) {
+
+	    case KeyEvent.VK_DELETE:
+		destroySelectedEntities();
+		break;
+
+	    case KeyEvent.VK_ENTER:
+		if (selectedEntities.getNbEntitiesSelected() == 1) {
+		    MapEntity entitySelected = selectedEntities.getEntity(0);
+		    EditEntityDialog dialog = new EditEntityDialog(map, entitySelected);
+		    dialog.display();
 		}
+		break;
+
+		/* TODO not working yet because of the JScrollPane...
+	    case KeyEvent.VK_RIGHT:
+	    case KeyEvent.VK_UP:
+	    case KeyEvent.VK_LEFT:
+	    case KeyEvent.VK_DOWN:
+		if (!selectedEntities.isEmpty()) {
+		    try {
+			int dx = 0;
+			int dy = 0;
+
+			if (key == KeyEvent.VK_RIGHT) { dx = 8; }
+			else if (key == KeyEvent.VK_UP) { dy = -8; }
+			else if (key == KeyEvent.VK_LEFT) { dx = -8; }
+			else if (key == KeyEvent.VK_DOWN) { dy = 8; }
+
+			map.getHistory().doAction(new ActionMoveEntities(map, selectedEntities.getEntities(), dx, dy));
+		    }
+		    catch (ZSDXException e) {
+			GuiTools.errorDialog("Cannot move the entities: " + e.getMessage());
+		    }
+		}
+		break;
+		*/
 	    }
 	}
     }

@@ -135,11 +135,21 @@ public class Chest extends InteractiveEntity {
     /**
      * Sets the content of this chest.
      * @param content the new content
+     * @throws MapException if the specified kind of treasure is not valid for the current map 
      */
-    public void setContent(TreasureContent content) {
+    public void setContent(TreasureContent content) throws MapException {
+	
+	if (content.mustBeInDungeon() && !map.isInDungeon()) {
+	    throw new MapException("This kind of treasure can only exist in a dungeon");
+	}
+	
+	if (content == TreasureContent.SMALL_KEY && !map.hasSmallKeys()) {
+	    throw new MapException("The small keys are not enabled for this map. Please enable them first by choosing a variable to save them in this map.");
+	}
+
         this.content = content;
     }
-    
+
     /**
      * Returns the amount of the treasure (only for some kinds of contents).
      * @return amount the amount
@@ -196,7 +206,9 @@ public class Chest extends InteractiveEntity {
 	return super.isValid()
 	&& savegameIndex >= -1 && savegameIndex < 32768
 	&& amount >= 0
-	&& (!content.hasAmount() || amount > 0);
+	&& (!content.hasAmount() || amount > 0)
+	&& (!bigChest || map.isInDungeon())
+	&& (!content.mustBeInDungeon() || map.isInDungeon());
     }
 
     /**

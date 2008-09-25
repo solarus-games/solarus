@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  */
 public enum TreasureContent {
     NOTHING           (-1, false),
-    
+
     FEATHER           (0, false),
     BOW               (2, false),
     BOW_AND_ARROWS    (3, false),
@@ -84,7 +84,7 @@ public enum TreasureContent {
 
     private final int index;
     private final boolean hasAmount;
-    
+
     /**
      * Constructor.
      * @param index index of this content
@@ -125,5 +125,14 @@ public enum TreasureContent {
      */
     public boolean hasAmount() {
 	return hasAmount;
+    }
+    
+    /**
+     * Returns whether this content can only exist inside a dungeon.
+     * Note that a small key can exist outside a dungeon.
+     * @return true if the content is the map, the compass, the big key or the boss key
+     */
+    public boolean mustBeInDungeon() {
+	return this == MAP || this == COMPASS || this == BIG_KEY || this == BOSS_KEY;
     }
 }

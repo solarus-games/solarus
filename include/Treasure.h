@@ -23,6 +23,8 @@ class Treasure {
    * and the maps refer to these numbers for each chest or shop item.
    */
   enum Content {
+    NONE              = -1,
+
     FEATHER           = 0,
     // 1: no bombs here because the first time we give the small bomb bag,
     // and other times we give collectable bombs (below)
@@ -132,6 +134,7 @@ class Treasure {
   ~Treasure(void);
 
   Content get_content(void);
+  int get_savegame_index(void);
 
   void give_to_player(void);
   bool is_found(void);

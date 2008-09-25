@@ -45,22 +45,24 @@ void MapLoader::load_map(Map *map) {
   TilesetId tileset_id;
 
   // first line: map general info
+  // syntax: width height world floor x y small_keys_variable tileset_id music_id
   if (!std::getline(map_file, line)) {
     DIE("Cannot load map '" << id << "': the file '" << file_name << "' is empty");
   }
 
   istringstream iss0(line);
-  iss0 >> map->width >> map->height >> tileset_id >> map->music_id >> map->world;
+  iss0 >> map->location.w >> map->location.h >> map->world >> map->floor >> map->location.x
+       >> map->location.y >> map->small_keys_variable >> tileset_id >> map->music_id;
 
-  map->width8 = map->width / 8;
-  map->height8 = map->height / 8;
+  map->width8 = map->location.w / 8;
+  map->height8 = map->location.h / 8;
 
   map->tileset = ResourceManager::get_tileset(tileset_id);
   if (!map->tileset->is_loaded()) {
     map->tileset->load();
   }
 
-  // create the lists of entities and initialize obstacle tile
+  // create the lists of entities and initialize obstacle_tiles
   MapEntities *entities = map->get_entities();
   entities->obstacle_tiles_size = map->width8 * map->height8;
   for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {

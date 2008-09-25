@@ -362,15 +362,7 @@ void MapEntities::add_chest(string chest_name, MapEntity::Layer layer, int x, in
 			    bool big_chest, int treasure_content,
 			    int treasure_amount, int treasure_savegame_index) {
   
-  Treasure *treasure;
-
-  if (treasure_content != -1) {
-    treasure = new Treasure((Treasure::Content) treasure_content, treasure_amount, treasure_savegame_index);
-  }
-  else {
-    treasure = NULL;
-  }
-
+  Treasure *treasure = new Treasure((Treasure::Content) treasure_content, treasure_amount, treasure_savegame_index);
   Chest *chest = new Chest(chest_name, layer, x, y, big_chest, treasure);
 
   sprite_entities[layer].push_back(chest);

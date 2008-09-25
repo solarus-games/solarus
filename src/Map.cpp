@@ -18,7 +18,7 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-id(id), started(false), width(0), entities(NULL), suspended(false) {
+id(id), started(false), entities(NULL), suspended(false) {
 
 }
 
@@ -65,11 +65,54 @@ bool Map::is_in_dungeon(void) {
 }
 
 /**
+ * Returns the floor where this map is.
+ * The value returned can be:
+ * - a floor number between -16 and 15,
+ * - -100 to indicate that there is no floor,
+ * - -99 to indicate an unknown floor (the '?' image will be displayed)
+ * @returns the floor
+ */
+int Map::get_floor(void) {
+  return floor;
+}
+
+/**
+ * Returns the location of this map in its context.
+ * - in the outside world: location of the map's top-left corner
+ *   relative to the whole world map
+ * - in the inside world: location of the map relative to the whole world map
+ * - in a dungeon: location of the map's top-left corner relative to the whole floor
+ * The width and height fields correspond to the map size.
+ */
+SDL_Rect * Map::get_location(void) {
+  return &location;
+}
+
+/**
+ * Returns the index of the variable where the number of small keys for this
+ * map is saved.
+ * -1 indicates that the small keys are not enabled on this map.
+ * @return the small keys savegame variable
+ */
+int Map::get_small_keys_variable(void) {
+  return small_keys_variable;
+}
+
+/**
+ * Returns whether the small keys are enabled in this map, i.e. whether
+ * get_small_keys_variable() does not return -1. 
+ * @return true if the small keys are enabled in this map
+ */
+bool Map::has_small_keys(void) {
+  return get_small_keys_variable() != -1;
+}
+
+/**
  * Returns the map width in pixels.
  * @return the map width
  */
 int Map::get_width(void) {
-  return width;
+  return location.w;
 }
 
 /**
@@ -77,7 +120,7 @@ int Map::get_width(void) {
  * @return the map height
  */
 int Map::get_height(void) {
-  return height;
+  return location.h;
 }
 
 /**
@@ -103,7 +146,7 @@ int Map::get_height8(void) {
  * @return true if the map is loaded, false otherwise
  */
 bool Map::is_loaded(void) {
-  return this->width != 0;
+  return this->entities != NULL;
 }
 
 /**
@@ -116,7 +159,7 @@ void Map::unload(void) {
 
   SDL_FreeSurface(visible_surface);
   delete entities;
-  width = 0;
+  entities = NULL;
 }
 
 /**
@@ -228,8 +271,8 @@ void Map::display() {
 
   // screen
   Link *link = zsdx->game->get_link();
-  screen_position.x = MIN(MAX(link->get_x() - 160, 0), width - 320);
-  screen_position.y = MIN(MAX(link->get_y() - 120, 0), height - 240);  
+  screen_position.x = MIN(MAX(link->get_x() - 160, 0), location.w - 320);
+  screen_position.y = MIN(MAX(link->get_y() - 120, 0), location.h - 240);  
 
   // background color
   SDL_FillRect(visible_surface, NULL, tileset->get_background_color());
@@ -312,8 +355,8 @@ MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int 
   int x_in_tile, y_in_tile;
 
   // if the point is outside the map, there is no obstacle (useful when Link goes on a map exit)
-  if (x < 0 || x >= width
-      || y < 0 || y >= height) {
+  if (x < 0 || x >= get_width()
+      || y < 0 || y >= get_height()) {
     return MapEntity::OBSTACLE_NONE;
   }
 

@@ -4,9 +4,8 @@
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
-- Afficher les petites clés dans le hud (seulement dans les donjons ?)
-- Classe donjon dans l'éditeur (voir TODO dans Map.java)
-- Coffre vide : ne se sauvegarde pas (il faut ajouter un Treasure::Content spécial, et le treasure d'un Chest ne pourra plus être NULL)
+- Afficher les petites clés dans le hud (seulement dans les donjons ?) et l'étage
+- Classe donjon dans l'éditeur (voir TODO dans Map.java) et dans le moteur
 
 - Prochaines grandes étapes :
   - collision au pixel près
@@ -32,13 +31,14 @@ Carte, donjons, phases d'exploration et étages
 ----------------
 
 Propriétés d'une map :
-- Son numéro de région : 0 si c'est une map extérieure, -1 si c'est une map intérieure hors donjon, ou un numéro de donjon (entre 1 et 14) si c'est une map de donjon.
+- Son numéro de monde : 0 si c'est une map extérieure, -1 si c'est une map intérieure hors donjon, ou un numéro de donjon (entre 1 et 14) si c'est une map de donjon.
 - Ses coordonnées en pixels, à l'échelle 1, par rapport au plan général (carte du monde ou de l'étage d'un donjon).
 - Son compteur de petites clés, qu'elle soit dans un donjon ou non (-1 si aucun); si elle est dans un donjon, on propose automatiquement le choix approprié.
 - Son numéro d'étage, de -16 à 15, ou -99 pour l'étage spécial "?", ou -100 s'il n'y a pas d'étage. S'il y a un étage et qu'on est hors donjon, cet étage s'affiche lorsqu'on y entre. Si on est dans un donjon, il y a forcément un étage et il s'affiche ainsi que les autres étages.
 
 Propriétés d'un donjon, définies dans un fichier spécial (ini ou xml) :
 - Son numéro, de 1 à 14
+- Son nom, donné dans le fichier de langue
 - Ses étages : étage le plus bas (de -16 à 15) et nombre d'étages (de 1 à 32)
 - Les dimensions de chaque étage : largeur et hauteurs en pixels à l'échelle 1
 - Les coffres, le boss de le mini-boss : 2 solutions possibles :

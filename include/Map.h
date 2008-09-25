@@ -17,96 +17,60 @@
  */
 class Map {
 
+  friend class MapLoader; // the map loader modifies the private fields of Map
+
  private:
 
-  /**
-   * The map file parser.
-   */
-  static MapLoader map_loader;
-  friend class MapLoader; // the map loader modifies the private fields of Map
+  static MapLoader map_loader;  /**< the map file parser */
 
   // map properties
 
-  /**
-   * Id of the map.
-   */
-  MapId id;
-
-  /**
-   * True if this is the current map.
-   */
-  bool started;
-
-  /**
-   * Map width in pixels.
-   */
-  int width;
-
-  /**
-   * Map height in pixels.
-   */
-  int height;
+  MapId id;                     /**< id of the map */
   
-  /**
-   * Map width in 8*8 squares.
-   * width8 = width / 8
-   */
-  int width8;
-  
-  /**
-   * Map height in 8*8 squares.
-   * height8 = height / 8
-   */
-  int height8;
+  int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
+  int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
 
-  /**
-   * Tileset of the map.
-   * Every tile of this map is extracted from this tileset.
-   */
-  Tileset *tileset;
+  Tileset *tileset;             /**< tileset of the map: every tile of this map
+				 * is extracted from this tileset.
+				 */
+  MusicId music_id;             /**< id of the background music of the map: 
+				 * can be a valid music, Music::none or Music::unchanged
+				 */
+  int world;                    /**< the world where this map is:
+				 * - 0 if the map is in the outside world
+				 * - -1 if the map is in the inside world
+				 * - 1 to 20 if the map is in a dungeon
+				 */
+  int floor;                    /**< The floor where this map is:
+				 * - -16 to 15 for a normal floor
+				 * - -100 to indicate that there is no floor
+				 * - -99 for the unknown floor '?'
+				 */
+  SDL_Rect location;            /**< location of the map in its context: the width and height fields
+				 * indicate the map size in pixel, and the x and y field indicate the position:
+				 * - in the outside world: location of the map's top-left corner
+				 *   relative to the whole world map
+				 * - in the inside world: location of the map relative to the whole world map
+				 * - in a dungeon: location of the map's top-left corner relative to the whole floor
+				 */
 
-  /**
-   * Id of the background music of the map (can be a valid music, Music::none or Music::unchanged).
-   */
-  MusicId music_id;
-
-  /**
-   * The world where this map is:
-   * - 0 if the map is outside
-   * - -1 if the map is inside
-   * - 1 to 20 if the map is in a dungeon 
-   */
-  int world;
+  int small_keys_variable;      /**< index of the variable of the savegame where the number of small keys
+				 * of this map is saved (-1 means that the small keys are not enabled on this map)
+			         */
 
   // screen
 
-  /**
-   * Position of the screen in the map.
-   */
-  SDL_Rect screen_position;
+  SDL_Rect screen_position;     /**< position of the screen in the map */
+  SDL_Surface *visible_surface; /**< surface where the map is displayed - this surface is only the visible part
+				 * of the map, so the coordinates on this surface are relative to the screen,
+				 * not to the map
+				 */
 
-  /**
-   * Surface where the map is displayed.
-   * This surface is only the visible part of the map, so the
-   * coordinates on this surface are relative to the screen,
-   * not to the map.
-   */
-  SDL_Surface *visible_surface;
-
-  /**
-   * The entities of the map.
-   */
-  MapEntities *entities;
-
-  /**
-   * Current entrance of the map.
-   */
-  unsigned int entrance_index;
-
-  /**
-   * Indicates whether the game is suspended.
-   */
-  bool suspended;
+  // map state
+  bool started;                 /**< true if this is the current map */
+  unsigned int entrance_index;  /**< current entrance of the map */
+  MapEntities *entities;        /**< the entities on the map */
+  bool suspended;               /**< indicates whether the game is suspended */
 
   void set_suspended(bool suspended);
 
@@ -121,6 +85,10 @@ class Map {
   Tileset *get_tileset(void);
   int get_world_number(void);
   bool is_in_dungeon(void);
+  int get_floor(void);
+  SDL_Rect *get_location(void);
+  int get_small_keys_variable(void);
+  bool has_small_keys(void);
 
   int get_width(void);
   int get_height(void);

@@ -18,8 +18,7 @@
  * @param x x coordinate of the chest to create
  * @param y y coordinate of the chest to create
  * @param big_chest true to make a big chest, false to make a normal chest
- * @param treasure the treasure in the chest (will be deleted by the chest destructor),
- * or NULL to make an empty chest
+ * @param treasure the treasure in the chest (will be deleted automatically)
  */
 Chest::Chest(string name, MapEntity::Layer layer, int x, int y, bool big_chest, Treasure *treasure):
   EntityDetector(EntityDetector::COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
@@ -104,13 +103,25 @@ void Chest::update(void) {
 
       Link *link = zsdx->game->get_link();
 
-      if (treasure != NULL) {
+      if (treasure->get_content() != Treasure::NONE) {
 	zsdx->game->give_treasure(treasure); // from now the game handles the treasure
       }
-      else {
+      else { // give nothing to the player
+
+	// mark the chest as found in the savegame
+	int savegame_index = treasure->get_savegame_index();
+	if (savegame_index != -1) {
+	  zsdx->game->get_savegame()->set_boolean(savegame_index, true);
+	}
+
+	// tell the player the chest is empty
 	ResourceManager::get_sound("wrong")->play();
 	zsdx->game->show_message("_empty_chest");
+
+	// restore the control
 	link->start_free();
+	delete treasure;
+	treasure = NULL;
       }
 
       treasure_given = true;

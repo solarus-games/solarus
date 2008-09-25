@@ -64,6 +64,14 @@ Treasure::Content Treasure::get_content(void) {
 }
 
 /**
+ * Returns the index of the variable where this treasure is saved.
+ * @return the savegame variable of this treasure
+ */
+int Treasure::get_savegame_index(void) {
+  return savegame_index;
+}
+
+/**
  * Returns whether this treasure content has an amount value.
  * This only depends on the kind of content.
  * @return true if there is an amount with this kind of content
@@ -105,11 +113,15 @@ bool Treasure::is_found(void) {
 /**
  * Give the treasure to the player: plays the treasure sound, makes Link
  * brandish the item and adds the item to Link's equipment.
+ * The treasure content should not be NONE.
  */
 void Treasure::give_to_player(void) {
-  play_treasure_sound();
-  show_message();
-  add_item_to_equipment();
+
+  if (content != NONE) {
+    play_treasure_sound();
+    show_message();
+    add_item_to_equipment();
+  }
 }
 
 /**
@@ -190,6 +202,10 @@ void Treasure::add_item_to_equipment(void) {
 
   // give the item
   switch (content) {
+
+  case NONE:
+    DIE("Cannot give an empty treasure");
+    break;
     
   case FEATHER:
     equipment->give_inventory_item(InventoryItem::FEATHER);

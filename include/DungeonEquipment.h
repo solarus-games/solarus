@@ -5,10 +5,12 @@
 
 /**
  * This class represents Link's equipment in a dungeon
- * (the map, the compass, the keys...).
+ * (the map, the compass, the boss keys...).
  * Like class Equipment, it makes the interface between
  * the savegame storage and other engine classes.
- * This class should be used only when the player is in a dungeon.
+ * This class can be used only when the player is in a dungeon.
+ * Note that the small keys are not handled here because small keys
+ * can exist outside a dungeon. They are handled in class Equipment.
  */
 class DungeonEquipment {
 
@@ -33,11 +35,6 @@ class DungeonEquipment {
 
   bool has_boss_key(void);
   void add_boss_key(void);
-
-  bool has_small_key(void);
-  int get_small_keys(void);
-  void add_small_key(void);
-  void remove_small_key(void);
 };
 
 #endif

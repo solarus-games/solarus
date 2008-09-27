@@ -373,11 +373,7 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case SMALL_KEY:
-    /*
-    treasure = new Treasure(Treasure::SMALL_KEY, savegame_index);
-    game->give_treasure(treasure);
-    */
-    game->get_dungeon_equipment()->add_small_key();
+    equipment->add_small_key();
     game->get_savegame()->set_boolean(savegame_index, true);
     break;
 

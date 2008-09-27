@@ -5,6 +5,7 @@
 #include "DialogBox.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "Map.h"
 
 /**
  * Constructor.
@@ -927,4 +928,70 @@ bool Equipment::has_world_map(void) {
  */
 void Equipment::add_world_map(void) {
   savegame->set_integer(Savegame::WORLD_MAP, 1);
+}
+
+// small keys
+
+/**
+ * Returns whether the small keys are enabled in the current map.
+ * @return true if the small keys are enabled in the current map
+ */
+bool Equipment::are_small_keys_enabled(void) {
+  return zsdx->game->get_current_map()->has_small_keys();
+}
+
+/**
+ * Returns the savegame variable where the number of small keys
+ * is stored for the current map.
+ * Stops with an error message if the small keys are not enabled in the current map.
+ */
+int Equipment::get_small_keys_variable(void) {
+
+  if (!are_small_keys_enabled()) {
+    DIE("The small keys are not enabled on this map");
+  }
+
+  return zsdx->game->get_current_map()->get_small_keys_variable();
+}
+
+/**
+ * Returns whether the player has got at least one small key in the current map.
+ * Stops with an error message if the small keys are not enabled in the current map.
+ * @return true if the player has got at least one small key
+ */
+bool Equipment::has_small_key(void) {
+  return get_small_keys() > 0;
+}
+
+/**
+ * Returns the current number of small keys of the player in the current map.
+ * Stops with an error message if the small keys are not enabled in the current map.
+ * @return the current number of small keys
+ */
+int Equipment::get_small_keys(void) {
+  int index = get_small_keys_variable();
+  return savegame->get_integer(index);
+}
+
+/**
+ * Adds a small key to the player in the current map.
+ */
+void Equipment::add_small_key(void) {
+
+  int index = get_small_keys_variable();
+  savegame->set_integer(index, get_small_keys() + 1);
+}
+
+/**
+ * Removes a small key from the player in the current dungeon.
+ * Stops with an error message if the player has no more small keys.
+ */
+void Equipment::remove_small_key(void) {
+
+  if (!has_small_key()) {
+    DIE("The player has no small keys");
+  }
+
+  int index = get_small_keys_variable();
+  savegame->set_integer(index, get_small_keys() - 1);
 }

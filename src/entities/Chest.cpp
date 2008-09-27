@@ -104,7 +104,9 @@ void Chest::update(void) {
       Link *link = zsdx->game->get_link();
 
       if (treasure->get_content() != Treasure::NONE) {
-	zsdx->game->give_treasure(treasure); // from now the game handles the treasure
+	Treasure *t = treasure;
+	treasure = NULL;
+	zsdx->game->give_treasure(t); // from now the game handles the treasure
       }
       else { // give nothing to the player
 

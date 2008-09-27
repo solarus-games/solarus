@@ -434,7 +434,7 @@ void Treasure::add_item_to_equipment(void) {
     break;
 
   case SMALL_KEY:
-    dungeon_equipment->add_small_key();
+    equipment->add_small_key();
     break;
 
   case BIG_KEY:

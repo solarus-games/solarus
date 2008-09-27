@@ -7,6 +7,7 @@
 #include "SwordIcon.h"
 #include "PauseIcon.h"
 #include "ItemIcon.h"
+#include "SmallKeysCounter.h"
 
 /**
  * Constructor.
@@ -26,6 +27,7 @@ HUD::HUD(Game *game):
   elements[nb_elements++] = new SwordIcon(keys_effect, equipment, 10, 29);
   elements[nb_elements++] = new PauseIcon(keys_effect, -3, 7);
   elements[nb_elements++] = new ActionIcon(keys_effect, 23, 51);
+  elements[nb_elements++] = new SmallKeysCounter(equipment, 8, 200);
 }
 
 /**

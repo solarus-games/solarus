@@ -126,6 +126,15 @@ class Equipment {
   // quest status
   bool has_world_map(void);
   void add_world_map(void);
+
+  // small keys
+  bool are_small_keys_enabled(void);
+  int get_small_keys_variable(void);
+
+  bool has_small_key(void);
+  int get_small_keys(void);
+  void add_small_key(void);
+  void remove_small_key(void);
 };
 
 #endif

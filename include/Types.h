@@ -81,6 +81,7 @@ class Counter;
 class HeartsView;
 class RupeesView;
 class MagicBar;
+class SmallKeysCounter;
 
 // sprites
 class Sprite;

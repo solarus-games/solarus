@@ -10,10 +10,10 @@
  * @param y y coordinate of the top-left corner of the key icon on the destination surface
  */
 SmallKeysCounter::SmallKeysCounter(Equipment *equipment, int x, int y):
-  HudElement(x, y, 40, 8), equipment(equipment),
+  HudElement(x, y, 40, 16), equipment(equipment),
   counter(new Counter(2, false, 16, 0)) {
 
-  img_icon = ResourceManager::load_image("entities/message_and_treasure_icons.png");
+  img_icon = ResourceManager::load_image("hud/message_and_treasure_icons.png");
   counter = NULL;
 
   rebuild();
@@ -39,7 +39,7 @@ void SmallKeysCounter::update(void) {
 
   // enable or disable the counter
   if (counter == NULL && equipment->are_small_keys_enabled()) {
-    counter = new Counter(2, false, 16, 0);
+    counter = new Counter(2, false, 10, 4);
     need_rebuild = true;
   }
   else if (counter != NULL && !equipment->are_small_keys_enabled()) {

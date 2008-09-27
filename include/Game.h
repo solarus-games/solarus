@@ -39,6 +39,8 @@ class Game: public Screen {
   Transition::Style transition_style; /**< the transition style between the current map and the next one */
   Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */
 
+  Dungeon *dungeon;         /**< the dungeon of the current map, of NULL if we are not in a dungeon */
+
   // graphics
   HUD *hud;                 /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
 

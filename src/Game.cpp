@@ -12,6 +12,7 @@
 #include "DialogBox.h"
 #include "Treasure.h"
 #include "Keyboard.h"
+#include "Dungeon.h"
 #include "menus/PauseMenu.h"
 #include "entities/Link.h"
 #include "entities/AnimatedTile.h"
@@ -27,8 +28,8 @@ Game::Game(Savegame *savegame):
   savegame(savegame),
   pause_menu(NULL), dialog_box(NULL), treasure(NULL), keys_effect(NULL),
   current_map(NULL), next_map(NULL),
-  transition_style(Transition::IMMEDIATE), transition(NULL), hud(NULL),
-  current_music_id(Music::none), current_music(NULL) {
+  transition_style(Transition::IMMEDIATE), transition(NULL), dungeon(NULL),
+  hud(NULL), current_music_id(Music::none), current_music(NULL) {
 
   zsdx->set_game(this);
 
@@ -213,6 +214,19 @@ void Game::update_transitions(void) {
       Tileset *new_tileset = next_map->get_tileset();
       if (new_tileset != old_tileset) {
 	old_tileset->unload();
+      }
+
+      // update the dungeon field
+      if (next_map->get_world_number() != current_map->get_world_number()) {
+
+	if (current_map->is_in_dungeon()) {
+	  delete dungeon;
+	  dungeon = NULL;
+	}
+
+	if (next_map->is_in_dungeon()) {
+	  dungeon = new Dungeon(next_map->get_world_number());
+	}
       }
 
       current_map->unload();

@@ -32,6 +32,7 @@ add_executable (zsdx
   Equipment.cpp
   DungeonEquipment.cpp
   Keyboard.cpp
+  Dungeon.cpp
   Treasure.cpp
   InventoryItem.cpp
   Map.cpp

@@ -192,6 +192,7 @@ void Game::update_transitions(void) {
   if (next_map != NULL && transition == NULL) { // the map has changed (e.g. set_current_map has been called)
 
     if (current_map == NULL) { // special case: no map was playing, so we don't have any out transition to do
+      load_dungeon();
       current_map = next_map;
       next_map = NULL;
     }
@@ -216,19 +217,7 @@ void Game::update_transitions(void) {
 	old_tileset->unload();
       }
 
-      // update the dungeon field
-      if (next_map->get_world_number() != current_map->get_world_number()) {
-
-	if (current_map->is_in_dungeon()) {
-	  delete dungeon;
-	  dungeon = NULL;
-	}
-
-	if (next_map->is_in_dungeon()) {
-	  dungeon = new Dungeon(next_map->get_world_number());
-	}
-      }
-
+      load_dungeon();
       current_map->unload();
       current_map = next_map;
       next_map = NULL;
@@ -569,4 +558,23 @@ void Game::set_paused(bool paused) {
  */
 PauseMenu * Game::get_pause_menu(void) {
   return pause_menu;
+}
+
+/**
+ * Sets the dungeon field depending on the current map.
+ * This function is called when the map changes.
+ */
+void Game::load_dungeon(void) {
+
+  if (current_map == NULL || next_map->get_world_number() != current_map->get_world_number()) {
+
+    if (current_map != NULL && current_map->is_in_dungeon()) {
+      delete dungeon;
+      dungeon = NULL;
+    }
+
+    if (next_map->is_in_dungeon()) {
+      dungeon = new Dungeon(next_map->get_world_number());
+    }
+  }
 }

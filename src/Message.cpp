@@ -29,7 +29,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y) {
 
   // create the text surfaces
   int text_x = x + ((dialog_box->get_icon_number() == -1) ? 16 : 48);
-  int text_y = y + 1;
+  int text_y = y - 1;
   for (int i = 0; i < 3; i++) {
     text_y += 13;
     text_surfaces[i] = new TextSurface(text_x, text_y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);

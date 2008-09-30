@@ -18,7 +18,6 @@ class Dungeon {
 
   // floors
   int lowest_floor;               /**< lowest floor number, between -16 and 15 */
-  int nb_floors;                  /**< number of floors in this dungeon */
   vector<SDL_Rect> floor_sizes;   /**< size of each floor */
 
   // elements of each floor: chests, minibosses, boss
@@ -41,6 +40,7 @@ class Dungeon {
   Dungeon(int dungeon_number);
   ~Dungeon(void);
 
+  int get_nb_floors(void);
 };
 
 #endif

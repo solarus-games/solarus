@@ -188,7 +188,7 @@ void Equipment::set_shield(int shield) {
 
 /**
  * Returns the maximum number of rupees of Link.
- * @return Link's maximum number of rupees (99, 199 or 999)
+ * @return Link's maximum number of rupees (100, 300 or 999)
  */
 int Equipment::get_max_rupees(void) {
   return savegame->get_integer(Savegame::MAX_RUPEES);
@@ -196,11 +196,11 @@ int Equipment::get_max_rupees(void) {
 
 /**
  * Sets the maximum number of rupees of Link.
- * @param max_rupees Link's maximum number of rupees (99, 199 or 999)
+ * @param max_rupees Link's maximum number of rupees (100, 300 or 999)
  */
 void Equipment::set_max_rupees(int max_rupees) {
   
-  if (max_rupees != 99 && max_rupees != 199 && max_rupees != 999) {
+  if (max_rupees != 100 && max_rupees != 300 && max_rupees != 999) {
     DIE("Illegal maximum number of rupees: " << max_rupees);
   }
 

@@ -4,8 +4,9 @@
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
-- Afficher les petites clés dans le hud (seulement dans les donjons), l'étage et le nom du donjon
-- Classe donjon dans l'éditeur (voir TODO dans Map.java) et dans le moteur
+- Afficher l'étage et le nom du donjon dans le hud
+- Classe donjon dans l'éditeur (voir TODO dans Map.java)
+- Animation tire + pierres trop lourdes
 
 - Prochaines grandes étapes :
   - collision au pixel près

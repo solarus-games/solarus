@@ -22,7 +22,7 @@ SDL_Rect RupeesView::rupee_icon_positions[3] = {
 RupeesView::RupeesView(Equipment *equipment, int x, int y):
   HudElement(x, y, 48, 12),
   equipment(equipment),
-  rupee_counter(new Counter(3, false, 16, 2)),
+  rupee_counter(new Counter(3, true, 16, 2)),
   next_rupee_update_date(SDL_GetTicks()) {
 
   img_rupee_icon = ResourceManager::load_image("hud/rupee_icon.png");

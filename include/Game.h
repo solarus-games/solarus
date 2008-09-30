@@ -54,6 +54,8 @@ class Game: public Screen {
   void update_transitions(void);
   void update_treasure(void);
 
+  void load_dungeon(void);
+
  public:
 
   // creation and destruction

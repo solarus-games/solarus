@@ -1004,7 +1004,7 @@ next = _treasure_52.1
 [_treasure_52.1]
 #       |--------------------|
 line1 = "Il peut contenir"
-line2 = "jusqu'à 199 rubis !"
+line2 = "jusqu'à 300 rubis !"
 
 [_treasure_53]
 # Sac de rubis géant
@@ -1262,7 +1262,7 @@ next = _treasure_72.1
 #       |--------------------|
 line1 = "Tu peux ouvrir une"
 line2 = "porte verrouillée"
-line3 = "de ce donjon."
+line3 = "dans les environs."
 
 [_treasure_73]
 # Grande Clé

@@ -84,7 +84,7 @@ class Savegame {
      * @{
      */
     MAX_HEARTS                       = 20, /**< maximum number of hearts (counted in entire hearts) */
-    MAX_RUPEES                       = 21, /**< maximum number of rupees (99, 199 or 999) */
+    MAX_RUPEES                       = 21, /**< maximum number of rupees (100, 300 or 999) */
     MAX_MAGIC                        = 22, /**< maximum level of magic (0, 42 or 84 points) */
     MAX_BOMBS                        = 23, /**< maximum number of bombs (0, 10, 30 or 99) */
     MAX_ARROWS                       = 24, /**< maximum number of arrows (0, 10, 30 or 99) */

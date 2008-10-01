@@ -82,6 +82,7 @@ class HeartsView;
 class RupeesView;
 class MagicBar;
 class SmallKeysCounter;
+class FloorView;
 
 // sprites
 class Sprite;

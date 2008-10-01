@@ -60,6 +60,7 @@ add_executable (zsdx
   RupeesView.cpp
   MagicBar.cpp
   SmallKeysCounter.cpp
+  FloorView.cpp
 
   # sprites
   Sprite.cpp

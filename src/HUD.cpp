@@ -8,6 +8,7 @@
 #include "PauseIcon.h"
 #include "ItemIcon.h"
 #include "SmallKeysCounter.h"
+#include "FloorView.h"
 
 /**
  * Constructor.
@@ -28,6 +29,7 @@ HUD::HUD(Game *game):
   elements[nb_elements++] = new PauseIcon(keys_effect, -3, 7);
   elements[nb_elements++] = new ActionIcon(keys_effect, 23, 51);
   elements[nb_elements++] = new SmallKeysCounter(equipment, 284, 214);
+  elements[nb_elements++] = new FloorView(game, 5, 70);
 }
 
 /**

@@ -7,6 +7,7 @@
 - Afficher l'étage et le nom du donjon dans le hud
 - Classe donjon dans l'éditeur (voir TODO dans Map.java)
 - Animation tire + pierres trop lourdes
+- Mettre les classes du hud dans un répertoire à part
 
 - Prochaines grandes étapes :
   - collision au pixel près

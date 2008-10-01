@@ -12,7 +12,6 @@ class SmallKeysCounter: public HudElement {
 
  private:
 
-  Game *game;
   Equipment *equipment;
   
   SDL_Surface *img_icon;

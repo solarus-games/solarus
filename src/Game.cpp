@@ -368,6 +368,22 @@ void Game::set_current_map(MapId map_id, string entrance_name, Transition::Style
 }
 
 /**
+ * Returns whether the current map belongs to a dungeon.
+ * @return true if the current map is in a dungeon
+ */
+bool Game::is_in_dungeon(void) {
+  return current_map->is_in_dungeon();
+}
+/**
+ * Returns the dungeon where the current map is, or NULL
+ * if we are not in a dungeon.
+ * @return the current dungeon
+ */
+Dungeon *Game::get_current_dungeon(void) {
+  return dungeon;
+}
+
+/**
  * Plays a music. If the music is different from the current one,
  * the current one is stopped.
  * The music specified can also be Music::none_id (then the current music is just stopped)

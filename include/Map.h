@@ -86,6 +86,7 @@ class Map {
   int get_world_number(void);
   bool is_in_dungeon(void);
   int get_floor(void);
+  bool has_floor(void);
   SDL_Rect *get_location(void);
   int get_small_keys_variable(void);
   bool has_small_keys(void);

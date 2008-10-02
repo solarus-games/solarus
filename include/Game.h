@@ -78,6 +78,8 @@ class Game: public Screen {
   Map *get_current_map(void);
   void set_current_map(MapId map_id, unsigned int entrance_index, Transition::Style transition_style);
   void set_current_map(MapId map_id, string entrance_name, Transition::Style transition_style);
+  bool is_in_dungeon(void);
+  Dungeon *get_current_dungeon(void);
 
   // music
   void play_music(MusicId new_music_id);

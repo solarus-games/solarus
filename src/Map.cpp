@@ -70,10 +70,19 @@ bool Map::is_in_dungeon(void) {
  * - a floor number between -16 and 15,
  * - -100 to indicate that there is no floor,
  * - -99 to indicate an unknown floor (the '?' image will be displayed)
- * @returns the floor
+ * @return the floor
  */
 int Map::get_floor(void) {
   return floor;
+}
+
+/**
+ * Returns whether this map has a floor, i.e.
+ * whether get_floor() does not return -100.
+ * @return true if there is a floor
+ */
+bool Map::has_floor(void) {
+  return get_floor() != -100;
 }
 
 /**

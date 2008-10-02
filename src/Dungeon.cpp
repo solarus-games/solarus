@@ -128,3 +128,19 @@ void Dungeon::load(void) {
 int Dungeon::get_nb_floors(void) {
   return floor_sizes.size();
 }
+
+/**
+ * Returns the lowest floor in this dungeon.
+ * @return the lowest floor
+ */
+int Dungeon::get_lowest_floor(void) {
+  return lowest_floor;
+}
+
+/**
+ * Returns the highest floor in this dungeon.
+ * @return the highest floor
+ */
+int Dungeon::get_highest_floor(void) {
+  return get_lowest_floor() + get_nb_floors() - 1;
+}

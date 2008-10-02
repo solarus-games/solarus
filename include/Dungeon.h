@@ -41,6 +41,8 @@ class Dungeon {
   ~Dungeon(void);
 
   int get_nb_floors(void);
+  int get_lowest_floor(void);
+  int get_highest_floor(void);
 };
 
 #endif

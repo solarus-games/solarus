@@ -4,7 +4,7 @@
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
-- Afficher l'étage et le nom du donjon dans le hud
+- Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur (voir TODO dans Map.java)
 - Animation tire + pierres trop lourdes
 - Mettre les classes du hud dans un répertoire à part
@@ -22,7 +22,7 @@
 Planning prévisionnel
 ----------------
 
-Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes, étage dans le hud
+Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes, donjons dans l'éditeur
 Dimanche 12 octobre 2008 : menu de pause fini, touches configurables
 Dimanche 19 octobre 2008 : collisions au pixel près, couper les buissons avec l'épée
 Dimanche 26 octobre 2008 : monde extérieur

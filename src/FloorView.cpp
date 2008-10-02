@@ -1,6 +1,8 @@
 #include "FloorView.h"
 #include "Game.h"
 #include "ResourceManager.h"
+#include "Map.h"
+#include "Dungeon.h"
 
 /**
  * Constructor.
@@ -9,7 +11,7 @@
  * @param y y coordinate of the top-left corner of the element on the destination surface
  */
 FloorView::FloorView(Game *game, int x, int y):
-  HudElement(x, y, 32, 84), game(game) {
+  HudElement(x, y, 32, 85), game(game), current_map(NULL), is_floor_displayed(false) {
 
   img_floors = ResourceManager::load_image("hud/floors.png");
 
@@ -27,7 +29,31 @@ FloorView::~FloorView(void) {
  * Updates the floors displayed.
  */
 void FloorView::update(void) {
-  // TODO
+
+  bool need_rebuild = false;
+
+  // detect when the players enters a new map
+  if (game->get_current_map() != current_map) {
+
+    current_map = game->get_current_map();
+
+    if (current_map->has_floor()) {
+      is_floor_displayed = true;
+      hide_floor_date = SDL_GetTicks() + 3000;
+    }
+    else {
+      is_floor_displayed = true;
+    }
+    need_rebuild = true;
+  }
+  else if (is_floor_displayed && SDL_GetTicks() >= hide_floor_date) {
+    is_floor_displayed = false;
+    need_rebuild = true;
+  }
+
+  if (need_rebuild) {
+    rebuild();
+  }
 }
 
 
@@ -37,26 +63,80 @@ void FloorView::update(void) {
 void FloorView::rebuild(void) {
 
   HudElement::rebuild();
-  /* TODO
+
   if (is_floor_displayed) { // a floor is being displayed
 
-    int floor = highest_floor;
-    for (int i = 0; i <= nb_floors_displayed; i++) {
+    int current_floor = current_map->get_floor();
+    int highest_floor;
 
-      int src_y = (15 - floor) * 12;
-      int src_x = 32;
-      if (floor == current_floor) {
-	src_x = 0;
+    // if we are in a dungeon, show several floors (but no more than 7)
+    if (current_map->is_in_dungeon() && current_floor != -99) {
+
+      Dungeon *dungeon = game->get_current_dungeon();
+      highest_floor = dungeon->get_highest_floor();
+      int lowest_floor = dungeon->get_lowest_floor();
+      int nb_floors = dungeon->get_nb_floors();
+
+      int nb_floors_displayed;
+      int highest_floor_displayed;
+
+      // if the number of floor is less than or equal to 7, we display all floors
+      if (nb_floors <= 7) {
+	nb_floors_displayed = nb_floors;
+	highest_floor_displayed = highest_floor;
       }
 
-      SDL_Rect src_position = {src_x, src_y, 32, 12};
+      // otherwise we only display 7 floors including the current one
+      else {	
+	nb_floors_displayed = 7;
 
-      int dst_y = floor * 12;
-      SDL_Rect dst_position = {0, dst_y, 0, 0};
+	if (current_floor >= highest_floor - 2) {
+	  highest_floor_displayed = highest_floor;	  
+	}
+	else if (current_floor <= lowest_floor + 2) {
+	  highest_floor_displayed = lowest_floor + 6;
+	}
+	else {
+	  highest_floor_displayed = current_floor + 2;
+	}
+      }
+
+      /*
+      cout << "lowest_floor: " << lowest_floor
+	   << ", highest_floor: " << highest_floor
+	   << ", nb_floors: " << nb_floors
+	   << ", current_floor: " << current_floor
+	   << ", highest_floor_displayed: " << highest_floor_displayed
+	   << ", nb_floors_displayed: " << nb_floors_displayed
+	   << endl;
+      */
+
+      int src_y = (15 - highest_floor_displayed) * 12;
+      int src_height = nb_floors_displayed * 12 + 1;
+
+      SDL_Rect src_position = {32, src_y, 32, src_height};
 
       SDL_BlitSurface(img_floors, &src_position, surface_drawn, NULL);
-
-      floor--;
     }
-    }*/
+    else {
+      highest_floor = current_floor;
+    }
+
+    // show the current floor
+    int dst_y = (highest_floor - current_floor) * 12;
+    int src_y;
+
+    // special case of the unknown floor
+    if (current_floor == -99) {
+      src_y = 32 * 12;
+    }
+    else {
+      src_y = (15 - current_floor) * 12;
+    }
+
+    SDL_Rect src_position = {0, src_y, 32, 13};
+    SDL_Rect dst_position = {0, dst_y, 0, 0};
+
+    SDL_BlitSurface(img_floors, &src_position, surface_drawn, &dst_position);
+  }
 }

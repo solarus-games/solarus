@@ -12,8 +12,11 @@ class FloorView: public HudElement {
  private:
 
   Game *game;
-
+  Map *current_map;
   SDL_Surface *img_floors;
+
+  bool is_floor_displayed;
+  Uint32 hide_floor_date;
 
  public:
 

@@ -1,4 +1,4 @@
-#include "SwordIcon.h"
+#include "hud/SwordIcon.h"
 #include "Equipment.h"
 #include "KeysEffect.h"
 #include "Sprite.h"

@@ -2,7 +2,7 @@
 #define ZSDX_PAUSE_ICON_H
 
 #include "Common.h"
-#include "HudElement.h"
+#include "hud/HudElement.h"
 #include "KeysEffect.h"
 
 /**

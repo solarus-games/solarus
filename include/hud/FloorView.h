@@ -2,7 +2,7 @@
 #define ZSDX_FLOOR_VIEW_H
 
 #include "Common.h"
-#include "HudElement.h"
+#include "hud/HudElement.h"
 
 /**
  * Displays the floor of the current map.

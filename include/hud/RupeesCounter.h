@@ -2,12 +2,12 @@
 #define ZSDX_RUPEES_VIEW_H
 
 #include "Common.h"
-#include "HudElement.h"
+#include "hud/HudElement.h"
 
 /**
  * This class displays the rupee counter and its icon.
  */
-class RupeesView: public HudElement {
+class RupeesCounter: public HudElement {
 
  private:
 
@@ -20,14 +20,14 @@ class RupeesView: public HudElement {
 
   int nb_max_rupees_displayed;
   int icon_displayed;
-  Counter *rupee_counter;
+  Counter *counter;
  
   Uint32 next_rupee_update_date;
   
  public:
 
-  RupeesView(Equipment *equipment, int x, int y);
-  ~RupeesView(void);
+  RupeesCounter(Equipment *equipment, int x, int y);
+  ~RupeesCounter(void);
   
   void update(void);
   void rebuild(void);

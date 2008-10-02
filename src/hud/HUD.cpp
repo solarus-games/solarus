@@ -1,14 +1,14 @@
-#include "HUD.h"
+#include "hud/HUD.h"
 #include "Game.h"
-#include "HeartsView.h"
-#include "RupeesView.h"
-#include "MagicBar.h"
-#include "ActionIcon.h"
-#include "SwordIcon.h"
-#include "PauseIcon.h"
-#include "ItemIcon.h"
-#include "SmallKeysCounter.h"
-#include "FloorView.h"
+#include "hud/HeartsView.h"
+#include "hud/RupeesCounter.h"
+#include "hud/MagicBar.h"
+#include "hud/ActionIcon.h"
+#include "hud/SwordIcon.h"
+#include "hud/PauseIcon.h"
+#include "hud/ItemIcon.h"
+#include "hud/SmallKeysCounter.h"
+#include "hud/FloorView.h"
 
 /**
  * Constructor.
@@ -21,7 +21,7 @@ HUD::HUD(Game *game):
   KeysEffect *keys_effect = game->get_keys_effect();
 
   elements[nb_elements++] = new HeartsView(equipment, 216, 14);
-  elements[nb_elements++] = new RupeesView(equipment, 8, 216);
+  elements[nb_elements++] = new RupeesCounter(equipment, 8, 216);
   elements[nb_elements++] = new MagicBar(equipment, 216, 35);
   elements[nb_elements++] = new ItemIcon(0, savegame, 8, 29);
   elements[nb_elements++] = new ItemIcon(1, savegame, 60, 29);

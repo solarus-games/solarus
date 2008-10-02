@@ -2,7 +2,7 @@
 #define ZSDX_HEARTS_VIEW_H
 
 #include "Common.h"
-#include "HudElement.h"
+#include "hud/HudElement.h"
 
 /**
  * This class handles the player's hearts displaying.

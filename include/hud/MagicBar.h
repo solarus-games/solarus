@@ -2,7 +2,7 @@
 #define ZSDX_MAGIC_BAR_H
 
 #include "Common.h"
-#include "HudElement.h"
+#include "hud/HudElement.h"
 
 /**
  * This class displays the magic bar on the screen.

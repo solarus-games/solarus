@@ -1,4 +1,4 @@
-#include "HeartsView.h"
+#include "hud/HeartsView.h"
 #include "FileTools.h"
 #include "Equipment.h"
 #include "ResourceManager.h"

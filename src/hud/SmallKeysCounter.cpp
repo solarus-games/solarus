@@ -1,4 +1,4 @@
-#include "SmallKeysCounter.h"
+#include "hud/SmallKeysCounter.h"
 #include "Counter.h"
 #include "Equipment.h"
 #include "ResourceManager.h"

@@ -79,7 +79,7 @@ class PauseIcon;
 class ItemIcon;
 class Counter;
 class HeartsView;
-class RupeesView;
+class RupeesCounter;
 class MagicBar;
 class SmallKeysCounter;
 class FloorView;

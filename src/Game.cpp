@@ -5,7 +5,7 @@
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "Color.h"
-#include "HUD.h"
+#include "hud/HUD.h"
 #include "Sound.h"
 #include "KeysEffect.h"
 #include "Equipment.h"

@@ -1,4 +1,4 @@
-#include "PauseIcon.h"
+#include "hud/PauseIcon.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sprite.h"

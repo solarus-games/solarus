@@ -1,4 +1,4 @@
-#include "ItemIcon.h"
+#include "hud/ItemIcon.h"
 #include "Counter.h"
 #include "ResourceManager.h"
 #include "Equipment.h"

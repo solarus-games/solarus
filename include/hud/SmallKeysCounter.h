@@ -2,7 +2,7 @@
 #define ZSDX_SMALL_KEYS_COUNTER_H
 
 #include "Common.h"
-#include "HudElement.h"
+#include "hud/HudElement.h"
 
 /**
  * This class displays the small key counter and its icon

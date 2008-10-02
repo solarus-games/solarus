@@ -1,4 +1,4 @@
-#include "RupeesView.h"
+#include "hud/RupeesCounter.h"
 #include "Counter.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
@@ -7,7 +7,7 @@
 /**
  * Position of the 3 rupee icons in the image.
  */
-SDL_Rect RupeesView::rupee_icon_positions[3] = {
+SDL_Rect RupeesCounter::rupee_icon_positions[3] = {
   {0, 0, 12, 12},
   {12, 0, 12, 12},
   {24, 0, 12, 12}
@@ -19,10 +19,10 @@ SDL_Rect RupeesView::rupee_icon_positions[3] = {
  * @param x x coordinate of the top-left corner of the rupees on the destination surface
  * @param y y coordinate of the top-left corner of the rupees on the destination surface
  */
-RupeesView::RupeesView(Equipment *equipment, int x, int y):
+RupeesCounter::RupeesCounter(Equipment *equipment, int x, int y):
   HudElement(x, y, 48, 12),
   equipment(equipment),
-  rupee_counter(new Counter(3, true, 16, 2)),
+  counter(new Counter(3, true, 16, 2)),
   next_rupee_update_date(SDL_GetTicks()) {
 
   img_rupee_icon = ResourceManager::load_image("hud/rupee_icon.png");
@@ -39,7 +39,7 @@ RupeesView::RupeesView(Equipment *equipment, int x, int y):
     icon_displayed = 2;
   }
 
-  rupee_counter->set_value(equipment->get_rupees());
+  counter->set_value(equipment->get_rupees());
 
   rebuild();
 }
@@ -47,15 +47,15 @@ RupeesView::RupeesView(Equipment *equipment, int x, int y):
 /**
  * Destructor.
  */
-RupeesView::~RupeesView(void) {
+RupeesCounter::~RupeesCounter(void) {
   SDL_FreeSurface(img_rupee_icon);
-  delete rupee_counter;
+  delete counter;
 }
 
 /**
  * Updates the number of rupees displayed and the color of the icon.
  */
-void RupeesView::update(void) {
+void RupeesCounter::update(void) {
 
   bool need_rebuild = false;
 
@@ -79,7 +79,7 @@ void RupeesView::update(void) {
 
   // current rupees
   Uint32 nb_current_rupees = equipment->get_rupees();
-  unsigned int nb_current_rupees_displayed = rupee_counter->get_value();
+  unsigned int nb_current_rupees_displayed = counter->get_value();
 
   if (nb_current_rupees_displayed != nb_current_rupees && SDL_GetTicks() > next_rupee_update_date) {
 
@@ -87,14 +87,14 @@ void RupeesView::update(void) {
     
     // increment or decrement the counter until the right value is reached
     if (nb_current_rupees < nb_current_rupees_displayed) {
-      rupee_counter->decrease();
+      counter->decrease();
     }
     else {
-      rupee_counter->increase();
+      counter->increase();
     }
 
     // if we have just reached the right value, we play a specific sound
-    if (rupee_counter->get_value() == nb_current_rupees) {
+    if (counter->get_value() == nb_current_rupees) {
       ResourceManager::get_sound("rupee_counter_end")->play();
     }
 
@@ -115,7 +115,7 @@ void RupeesView::update(void) {
 /**
  * Redraws the icon and the counter on the surface.
  */
-void RupeesView::rebuild(void) {
+void RupeesCounter::rebuild(void) {
 
   HudElement::rebuild();
   
@@ -123,5 +123,5 @@ void RupeesView::rebuild(void) {
   SDL_BlitSurface(img_rupee_icon, &rupee_icon_positions[icon_displayed], surface_drawn, NULL);
 
   // current rupees (counter)
-  rupee_counter->display(surface_drawn);
+  counter->display(surface_drawn);
 }

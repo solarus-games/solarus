@@ -4,7 +4,7 @@
 #include "Sound.h"
 #include "Sprite.h"
 #include "TextSurface.h"
-#include "HeartsView.h"
+#include "hud/HeartsView.h"
 
 // TODO: load the title strings from some external file (for future translation)
 

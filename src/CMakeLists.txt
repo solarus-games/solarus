@@ -47,20 +47,20 @@ add_executable (zsdx
   # graphics
   TextSurface.cpp
   Color.cpp
+  Counter.cpp
 
   # HUD
-  HUD.cpp
-  HudElement.cpp
-  ActionIcon.cpp
-  SwordIcon.cpp
-  PauseIcon.cpp
-  ItemIcon.cpp
-  Counter.cpp
-  HeartsView.cpp
-  RupeesView.cpp
-  MagicBar.cpp
-  SmallKeysCounter.cpp
-  FloorView.cpp
+  hud/HUD.cpp
+  hud/HudElement.cpp
+  hud/ActionIcon.cpp
+  hud/SwordIcon.cpp
+  hud/PauseIcon.cpp
+  hud/ItemIcon.cpp
+  hud/HeartsView.cpp
+  hud/RupeesCounter.cpp
+  hud/MagicBar.cpp
+  hud/SmallKeysCounter.cpp
+  hud/FloorView.cpp
 
   # sprites
   Sprite.cpp

@@ -1,4 +1,4 @@
-#include "MagicBar.h"
+#include "hud/MagicBar.h"
 #include "FileTools.h"
 #include "Equipment.h"
 #include "Game.h"

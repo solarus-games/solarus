@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Represents a chest placed on the map.
  */
-public class Chest extends InteractiveEntity {
+public class Chest extends ActiveEntity {
 
     /**
      * Name of this kind of entity.

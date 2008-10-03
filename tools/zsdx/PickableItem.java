@@ -7,7 +7,7 @@ import java.util.*;
  * Represents an item that Link can pick on the map,
  * such as a rupee, a heart, a key, etc.
  */
-public class PickableItem extends InteractiveEntity {
+public class PickableItem extends ActiveEntity {
 
     /**
      * Name of this kind of entity.

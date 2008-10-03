@@ -187,8 +187,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	if (map != null) {
 	    idField.setText(map.getId());
 	    nbTilesField.setText(Integer.toString(map.getNbTiles()));
-	    nbActiveEntitiesField.setText(Integer.toString(
-		    map.getNbInteractiveEntities() + map.getNbMovingEntities()));
+	    nbActiveEntitiesField.setText(Integer.toString(map.getNbActiveEntities()));
 	}
 	else {
 	    idField.setText("");

@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 /**
  * This class represents an interactive map entity, such as a chest, a door, a switch...
  */
-public abstract class InteractiveEntity extends MapEntity {
+public abstract class ActiveEntity extends MapEntity {
 
     /**
      * Creates a new interactive entity.
@@ -16,7 +16,7 @@ public abstract class InteractiveEntity extends MapEntity {
      * @param width width of the entity
      * @param height height of the entity
      */
-    protected InteractiveEntity(Map map, int layer, int x, int y,
+    protected ActiveEntity(Map map, int layer, int x, int y,
 				int width, int height) {
 	super(map, layer, x, y, width, height, true);
     }
@@ -28,7 +28,7 @@ public abstract class InteractiveEntity extends MapEntity {
      * but not yet the common properties
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public InteractiveEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
+    public ActiveEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	super(map, tokenizer);
     }
 

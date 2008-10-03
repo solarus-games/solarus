@@ -9,16 +9,14 @@ public class MapEntities implements Iterable<MapEntity> {
 
     // the entities
     private List<TileOnMap> tiles;
-    private List<InteractiveEntity> interactiveEntities;
-    private List<MovingEntity> movingEntities;
+    private List<ActiveEntity> activeEntities;
 
     /**
      * Constructor.
      */
     public MapEntities() {
 	tiles = new LinkedList<TileOnMap>();
-	interactiveEntities = new LinkedList<InteractiveEntity>();
-	movingEntities = new LinkedList<MovingEntity>();
+	activeEntities = new LinkedList<ActiveEntity>();
     }
 
     /**
@@ -26,8 +24,7 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public MapEntities(MapEntities other) {
 	tiles = new LinkedList<TileOnMap>(other.tiles);
-	interactiveEntities = new LinkedList<InteractiveEntity>(other.interactiveEntities);
-	movingEntities = new LinkedList<MovingEntity>(other.movingEntities);
+	activeEntities = new LinkedList<ActiveEntity>(other.activeEntities);
     }
 
     /**
@@ -47,35 +44,19 @@ public class MapEntities implements Iterable<MapEntity> {
     }
 
     /**
-     * Returns the interactive entities.
-     * @return the interactive entities
+     * Returns the active entities.
+     * @return the active entities
      */
-    public List<InteractiveEntity> getInteractiveEntities() {
-	return interactiveEntities;
+    public List<ActiveEntity> getActiveEntities() {
+	return activeEntities;
     }
 
     /**
-     * Returns the number of interactiveEntitys.
-     * @return the number of interactiveEntitys
+     * Returns the number of active entities.
+     * @return the number of active entities
      */
-    public int getNbInteractiveEntities() {
-	return interactiveEntities.size();
-    }
-
-    /**
-     * Returns the moving entities.
-     * @return the moving entities
-     */
-    public List<MovingEntity> getMovingEntities() {
-	return movingEntities;
-    }
-
-    /**
-     * Returns the number of moving entities.
-     * @return the number of moving entities
-     */
-    public int getNbMovingEntities() {
-	return movingEntities.size();
+    public int getNbActiveEntities() {
+	return activeEntities.size();
     }
 
     /**
@@ -85,13 +66,12 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return the list of the entities of this kind
      */
     public List<MapEntity> getEntitiesOfType(int entityType) {
-	
+
 	Class<?> cl = MapEntity.entityClasses[entityType];
 	List<MapEntity> list = new LinkedList<MapEntity>();
 
-	// interactive entity
-	if (InteractiveEntity.class.isAssignableFrom(cl)) {
-	    for (MapEntity e: interactiveEntities) {
+	if (ActiveEntity.class.isAssignableFrom(cl)) {
+	    for (MapEntity e: activeEntities) {
 		
 		if (cl.isInstance(e)) {
 		    list.add(e);
@@ -99,17 +79,6 @@ public class MapEntities implements Iterable<MapEntity> {
 	    }
 	}
 
-	// moving entity
-	else {
-	
-	    for (MapEntity e: movingEntities) {
-		
-		if (cl.isInstance(e)) {
-		    list.add(e);
-		}
-	    }
-	}
-	
 	return list;
     }
 
@@ -123,9 +92,8 @@ public class MapEntities implements Iterable<MapEntity> {
 
 	Class<?> cl = MapEntity.entityClasses[type];
 
-	// interactive entity
-	if (InteractiveEntity.class.isAssignableFrom(cl)) {
-	    for (MapEntity e: interactiveEntities) {
+	if (ActiveEntity.class.isAssignableFrom(cl)) {
+	    for (MapEntity e: activeEntities) {
 		
 		if (e.getType() == type && e.hasName() && e.getName().equals(name)) {
 		    return e;
@@ -133,16 +101,6 @@ public class MapEntities implements Iterable<MapEntity> {
 	    }
 	}
 
-	// moving entity
-	else {
-	    for (MapEntity e: movingEntities) {
-
-		if (e.getType() == type && e.hasName() && e.getName().equals(name)) {
-		    return e;
-		}
-	    }
-	}
-	
 	return null;
     }
     
@@ -151,7 +109,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return the number of entities
      */
     public int size() {
-	return tiles.size() + interactiveEntities.size() + movingEntities.size();
+	return tiles.size() + activeEntities.size();
     }
 
     /**
@@ -175,7 +133,6 @@ public class MapEntities implements Iterable<MapEntity> {
      * @param entity the entity to add
      */
     public void add(MapEntity entity) {
-
 	addLast(entity);
     }
 
@@ -188,11 +145,8 @@ public class MapEntities implements Iterable<MapEntity> {
 	if (entity instanceof TileOnMap) {
 	    tiles.add(0, (TileOnMap) entity);
 	}
-	else if (entity instanceof InteractiveEntity) {
-	    interactiveEntities.add(0, (InteractiveEntity) entity);
-	}
-	else if (entity instanceof MovingEntity) {
-	    movingEntities.add(0, (MovingEntity) entity);
+	else if (entity instanceof ActiveEntity) {
+	    activeEntities.add(0, (ActiveEntity) entity);
 	}
 	else {
 	    throw new IllegalArgumentException("Unknown entity type: " + entity);
@@ -208,11 +162,8 @@ public class MapEntities implements Iterable<MapEntity> {
 	if (entity instanceof TileOnMap) {
 	    tiles.add((TileOnMap) entity);
 	}
-	else if (entity instanceof InteractiveEntity) {
-	    interactiveEntities.add((InteractiveEntity) entity);
-	}
-	else if (entity instanceof MovingEntity) {
-	    movingEntities.add((MovingEntity) entity);
+	else if (entity instanceof ActiveEntity) {
+	    activeEntities.add((ActiveEntity) entity);
 	}
 	else {
 	    throw new IllegalArgumentException("Unknown entity type: " + entity);
@@ -228,11 +179,8 @@ public class MapEntities implements Iterable<MapEntity> {
 	if (entity instanceof TileOnMap) {
 	    tiles.remove(entity);
 	}
-	else if (entity instanceof InteractiveEntity) {
-	    interactiveEntities.remove(entity);
-	}
-	else if (entity instanceof MovingEntity) {
-	    movingEntities.remove(entity);
+	else if (entity instanceof ActiveEntity) {
+	    activeEntities.remove(entity);
 	}
 	else {
 	    throw new IllegalArgumentException("Unknown entity type: " + entity);
@@ -247,12 +195,10 @@ public class MapEntities implements Iterable<MapEntity> {
 	private int index; // index of the next element to return
 
 	private int nbTiles;
-	private int nbInteractive;
-	private int nbMoving;
+	private int nbActive;
 
 	private ListIterator<TileOnMap> tileIterator;
-	private ListIterator<InteractiveEntity> interactiveIterator;
-	private ListIterator<MovingEntity> movingIterator;
+	private ListIterator<ActiveEntity> activeIterator;
 
 	/**
 	 * Constructor.
@@ -262,18 +208,15 @@ public class MapEntities implements Iterable<MapEntity> {
 	    this.index = index;
 
 	    this.nbTiles = tiles.size();
-	    this.nbInteractive = interactiveEntities.size();
-	    this.nbMoving = movingEntities.size();
+	    this.nbActive = activeEntities.size();
 
 	    if (index == 0) {
 		this.tileIterator = tiles.listIterator(0);
-		this.interactiveIterator = interactiveEntities.listIterator(0);
-		this.movingIterator = movingEntities.listIterator(0);
+		this.activeIterator = activeEntities.listIterator(0);
 	    }
 	    else if (index == size()) {
 		this.tileIterator = tiles.listIterator(nbTiles);
-		this.interactiveIterator = interactiveEntities.listIterator(nbInteractive);
-		this.movingIterator = movingEntities.listIterator(nbMoving);
+		this.activeIterator = activeEntities.listIterator(nbActive);
 	    }
 	    else {
 		throw new IllegalArgumentException();
@@ -301,26 +244,20 @@ public class MapEntities implements Iterable<MapEntity> {
 	}
 
 	public MapEntity next() throws NoSuchElementException {
-	    
+
 	    int i = this.index;
 	    this.index++;
-	    
+
 	    if (i < nbTiles) {
 		return tileIterator.next();
 	    }
 	    else {
 		i = i - nbTiles;
-		if (i < nbInteractive) {
-		    return interactiveIterator.next();
+		if (i < nbActive) {
+		    return activeIterator.next();
 		}
 		else {
-		    i = i - nbInteractive;
-		    if (i < nbMoving) {
-			return movingIterator.next();
-		    }
-		    else {
-			throw new NoSuchElementException();
-		    }
+		    throw new NoSuchElementException();
 		}
 	    }
 	}
@@ -334,7 +271,7 @@ public class MapEntities implements Iterable<MapEntity> {
 	}
 
 	public MapEntity previous() throws NoSuchElementException {
-	    
+
 	    this.index--;
 	    int i = this.index;
 
@@ -343,17 +280,11 @@ public class MapEntities implements Iterable<MapEntity> {
 	    }
 	    else {
 		i = i - nbTiles;
-		if (i < nbInteractive) {
-		    return interactiveIterator.previous();
+		if (i < nbActive) {
+		    return activeIterator.previous();
 		}
 		else {
-		    i = i - nbInteractive;
-		    if (i < nbMoving) {
-			return movingIterator.previous();
-		    }
-		    else {
-			throw new NoSuchElementException();
-		    }
+		    throw new NoSuchElementException();
 		}
 	    }
 	}

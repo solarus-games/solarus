@@ -7,7 +7,7 @@ import java.util.*;
  * Represents an entity that Link can lift, carry and throw:
  * a pot, a bush, etc.
  */
-public class TransportableItem extends InteractiveEntity {
+public class TransportableItem extends ActiveEntity {
 
     /**
      * Name of this kind of entity.

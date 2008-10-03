@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * Represents an entry point in a map.
  */
-public class Entrance extends InteractiveEntity {
+public class Entrance extends ActiveEntity {
 
     /**
      * Name of this kind of entity.

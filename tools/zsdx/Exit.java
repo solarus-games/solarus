@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Represents an exit point in a map.
  */
-public class Exit extends InteractiveEntity {
+public class Exit extends ActiveEntity {
 
     /**
      * Name of this kind of entity.

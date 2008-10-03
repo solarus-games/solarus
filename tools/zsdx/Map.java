@@ -133,7 +133,7 @@ public class Map extends Observable {
 	this.world = -1;
 
 	initialize();
-	
+
 	// compute an id and a name for this map
 	this.name = "New map";
 	Resource mapResource = Project.getResource(ResourceDatabase.RESOURCE_MAP);
@@ -153,7 +153,7 @@ public class Map extends Observable {
 	initialize();
 	load();
     }
-	
+
     /**
      * Initializes the object.
      */
@@ -241,13 +241,12 @@ public class Map extends Observable {
 	    throw new RuntimeException("The minimum size of a map is " +
 		    MINIMUM_WIDTH + '*' + MINIMUM_HEIGHT + '.');
 	}
-	
-	
+
 	if (size.width < MINIMUM_WIDTH || size.height < MINIMUM_HEIGHT) {
 	    throw new MapException("The minimum size of a map is " +
 		    MINIMUM_WIDTH + '*' + MINIMUM_HEIGHT + '.');
 	}
-	
+
 	if (size.width % 8 != 0 || size.height % 8 != 0) {
 	    throw new MapException("The width and the height of the map must be multiples of 8.");
 	}
@@ -298,7 +297,7 @@ public class Map extends Observable {
 
 	// if the tileset is changed
 	else if (!tilesetId.equals(this.tilesetId)) {
-	
+
 	    this.tileset = new Tileset(tilesetId);
 
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
@@ -361,13 +360,13 @@ public class Map extends Observable {
      * @throws MapException if the specified world is incorrect
      */
     public void setWorld(int world) throws MapException {
-	
+
 	if (world != this.world) {
-	    
+
 	    if (world > 20 || world < -1) {
 		throw new MapException("Invalid world: " + world);
 	    }
-	    
+
 	    this.world = world;
 
 	    if (!isInDungeon()) { // no dungeon : no floor by default
@@ -408,13 +407,13 @@ public class Map extends Observable {
      * or if you specify an invalid floor
      */
     public void setFloor(int floor) throws MapException {
-	
+
 	if (floor != this.floor) {
-	    
+
 	    if (floor != -100 && floor != -99 && (floor < -16 || floor > 15)) {
 		throw new MapException("Invalid floor: " + floor);
 	    }
-	    
+
 	    if (isInOutsideWorld() && floor != -100) {
 		throw new MapException("Cannot specify a floor in the outside world");
 	    }
@@ -422,7 +421,7 @@ public class Map extends Observable {
 	    else if (isInDungeon() && floor != -99 && !getDungeon().hasFloor(floor)) {
 		throw new MapException("This floor does not exists in this dungeon");
 	    }
-	    
+
 	    this.floor = floor;
 	    setChanged();
 	    notifyObservers();
@@ -456,17 +455,17 @@ public class Map extends Observable {
      * @throws MapException if the specified value is not valid
      */
     public void setSmallKeysVariable(int smallKeysVariable) throws MapException {
-	
+
 	if (smallKeysVariable != this.smallKeysVariable) {
-	    
+
 	    if (smallKeysVariable < -1 || smallKeysVariable > 2048) {
 		throw new MapException("Incorrect variable to save the small keys: " + smallKeysVariable);
 	    }
-	    
+
 	    if (isInDungeon() && smallKeysVariable != 204 + 10 * (getWorld() - 1)) {
 		throw new MapException("Cannot change the variable to save the small keys because this map is in a dungeon");
 	    }
-	    
+
 	    this.smallKeysVariable = smallKeysVariable;
 	    setChanged();
 	    notifyObservers();
@@ -496,7 +495,7 @@ public class Map extends Observable {
      * @return the total number of entities of the map.
      */
     public int getNbEntities() {
-	
+
 	int nbEntities = 0;
 
 	// count the entities of each layer
@@ -512,7 +511,7 @@ public class Map extends Observable {
      * @return the total number of tiles of the map.
      */
     public int getNbTiles() {
-	
+
 	int nbTiles = 0;
 
 	// count the tiles of each layer
@@ -524,35 +523,19 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the total number of interactive entities of the map.
-     * @return the total number of interactive entities of the map.
+     * Returns the total number of active entities of the map.
+     * @return the total number of active entities of the map.
      */
-    public int getNbInteractiveEntities() {
-	
-	int nbInteractiveEntities = 0;
+    public int getNbActiveEntities() {
 
-	// count the interactive entities of each layer
+	int nbActiveEntities = 0;
+
+	// count the active entities of each layer
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    nbInteractiveEntities += allEntities[layer].getNbInteractiveEntities();
+	    nbActiveEntities += allEntities[layer].getNbActiveEntities();
 	}
 
-	return nbInteractiveEntities;
-    }
-
-    /**
-     * Returns the total number of moving entities of the map.
-     * @return the total number of moving entities of the map.
-     */
-    public int getNbMovingEntities() {
-	
-	int nbMovingEntities = 0;
-
-	// count the moving entities of each layer
-	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    nbMovingEntities += allEntities[layer].getNbMovingEntities();
-	}
-
-	return nbMovingEntities;
+	return nbActiveEntities;
     }
 
     /**
@@ -1111,6 +1094,11 @@ public class Map extends Observable {
 	    Resource mapResource = Project.getResource(ResourceDatabase.RESOURCE_MAP);
 	    mapResource.setElementName(mapId, name);
 	    Project.getResourceDatabase().save();
+	    
+	    // upate the dungeon elements of this map
+	    if (isInDungeon()) {
+		Dungeon.saveMapInfo(this);
+	    }
 	}
 	catch (IOException ex) {
 	    throw new MapException(ex.getMessage());

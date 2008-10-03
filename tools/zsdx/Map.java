@@ -13,7 +13,7 @@ import java.awt.Rectangle;
 public class Map extends Observable {
 
     // map properties
-    
+
     /**
      * Id of the map.
      */
@@ -53,6 +53,11 @@ public class Map extends Observable {
      * - 1 to 20 if the map is in a dungeon
      */
     private int world;
+    
+    /**
+     * The dungeon where this map is, if any.
+     */
+    private Dungeon dungeon;
     
     /**
      * Floor of this map:
@@ -369,13 +374,22 @@ public class Map extends Observable {
 		setFloor(-100);
 	    }
 	    else { // dungeon: first floor by default
-/* TODO		setFloor(getDungeon().getDefaultFloor());*/
+		dungeon = new Dungeon(world);
+		setFloor(dungeon.getDefaultFloor());
 		setSmallKeysVariable(204 + 10 * (world - 1));
 	    }
 
 	    setChanged();
 	    notifyObservers();
 	}
+    }
+    
+    /**
+     * Returns the dungeon where this map is.
+     * @return the dungeon of this map, or null if the map is not in a dungeon
+     */
+    public Dungeon getDungeon() {
+	return dungeon;
     }
     
     /**
@@ -405,7 +419,7 @@ public class Map extends Observable {
 		throw new MapException("Cannot specify a floor in the outside world");
 	    }
 
-	    else if (isInDungeon() && floor != -99/* TODO && !getDungeon().hasFloor(floor)*/) {
+	    else if (isInDungeon() && floor != -99 && !getDungeon().hasFloor(floor)) {
 		throw new MapException("This floor does not exists in this dungeon");
 	    }
 	    
@@ -948,12 +962,12 @@ public class Map extends Observable {
      * or some entities are not in a valid state). 
      */
     public void checkValidity() throws MapException {
-	
+
 	// check that a tileset is selected
 	if (tilesetId.length() == 0) {
 	    throw new MapException("No tileset is selected");
 	}
-	
+
 	// check that all entities are valid
 	for (MapEntities entities: allEntities) {
 	    for (MapEntity entity: entities) {

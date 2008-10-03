@@ -1,6 +1,3 @@
-[test]
-zs = rox
-
 [dungeon_1.floor_-1]
 width = 960
 height = 640

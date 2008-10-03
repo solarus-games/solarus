@@ -67,7 +67,7 @@ void FloorView::rebuild(void) {
   if (is_floor_displayed) { // a floor is being displayed
 
     int current_floor = current_map->get_floor();
-    int highest_floor;
+    int highest_floor, highest_floor_displayed;
 
     // if we are in a dungeon, show several floors (but no more than 7)
     if (current_map->is_in_dungeon() && current_floor != -99) {
@@ -78,7 +78,6 @@ void FloorView::rebuild(void) {
       int nb_floors = dungeon->get_nb_floors();
 
       int nb_floors_displayed;
-      int highest_floor_displayed;
 
       // if the number of floor is less than or equal to 7, we display all floors
       if (nb_floors <= 7) {
@@ -97,7 +96,7 @@ void FloorView::rebuild(void) {
 	  highest_floor_displayed = lowest_floor + 6;
 	}
 	else {
-	  highest_floor_displayed = current_floor + 2;
+	  highest_floor_displayed = current_floor + 3;
 	}
       }
 
@@ -120,10 +119,11 @@ void FloorView::rebuild(void) {
     }
     else {
       highest_floor = current_floor;
+      highest_floor_displayed = highest_floor;
     }
 
     // show the current floor
-    int dst_y = (highest_floor - current_floor) * 12;
+    int dst_y = (highest_floor_displayed - current_floor) * 12;
     int src_y;
 
     // special case of the unknown floor

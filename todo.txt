@@ -5,9 +5,8 @@
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
 - Afficher le nom du donjon dans le hud
-- Classe donjon dans l'éditeur (voir TODO dans Map.java)
+- Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
 - Animation tire + pierres trop lourdes
-- Mettre les classes du hud dans un répertoire à part
 
 - Prochaines grandes étapes :
   - collision au pixel près
@@ -22,7 +21,7 @@
 Planning prévisionnel
 ----------------
 
-Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes, donjons dans l'éditeur
+Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes
 Dimanche 12 octobre 2008 : menu de pause fini, touches configurables
 Dimanche 19 octobre 2008 : collisions au pixel près, couper les buissons avec l'épée
 Dimanche 26 octobre 2008 : monde extérieur
@@ -46,84 +45,6 @@ Couper des buissons avec l'épée :
     - si attaque tournoyante : on coupe le buisson et on laisse l'attaque tournoyante continuer (donc c'est le seul cas où on peut couper plusieurs buissons d'un coup)
 
 Même chose pour l'herbe sauf que rien ne se passe quand l'épée charge
-
-----------------
-Carte, donjons, phases d'exploration et étages
-----------------
-
-Propriétés d'une map :
-- Son numéro de monde : 0 si c'est une map extérieure, -1 si c'est une map intérieure hors donjon, ou un numéro de donjon (entre 1 et 14) si c'est une map de donjon.
-- Ses coordonnées en pixels, à l'échelle 1, par rapport au plan général (carte du monde ou de l'étage d'un donjon).
-- Son compteur de petites clés, qu'elle soit dans un donjon ou non (-1 si aucun); si elle est dans un donjon, on propose automatiquement le choix approprié.
-- Son numéro d'étage, de -16 à 15, ou -99 pour l'étage spécial "?", ou -100 s'il n'y a pas d'étage. S'il y a un étage et qu'on est hors donjon, cet étage s'affiche lorsqu'on y entre. Si on est dans un donjon, il y a forcément un étage et il s'affiche ainsi que les autres étages.
-
-Propriétés d'un donjon, définies dans un fichier spécial (ini ou xml) :
-- Son numéro, de 1 à 14
-- Son nom, donné dans le fichier de langue
-- Ses étages : étage le plus bas (de -16 à 15) et nombre d'étages (de 1 à 32)
-- Les dimensions de chaque étage : largeur et hauteurs en pixels à l'échelle 1
-- Les coffres, le boss de le mini-boss : 2 solutions possibles :
-
-Solution 1 (pas géniale car nécessite de charger toutes les maps d'un donjon quand on y entre) :
-- Mettre dans le fichier spécial la liste des id de ses maps (champ multivalué si c'est un fichier ini), qui permet de déduire pendant le jeu les informations suivantes en chargeant les maps concernées (lors de l'entrée dans un donjon par exemple) :
-  - Etage et position du boss et du mini-boss
-  - Etage, position et variable de chaque coffre
-Cette liste doit être mise à jour à chaque fois qu'une map est enregistrée (il faut vérifier qu'elle est dans le bon donjon et pas dans les autres).
-
-Solution 2 (meilleure, comme dans ZMC mais automatisée) :
-- Mettre dans le fichier spécial chaque coffre, mini-boss et boss de chaque donjon, avec son id de map (utile uniquement pour l'éditeur en fait), son étage, sa position et sa variable de sauvegarde. Mettre à jour ces informations depuis l'éditeur de maps au moment où on enregistre une map, sachant qu'une map peut par exemple avoir changé d'étage ou de donjon :
-  - Si la map n'est pas dans un donjon, supprimer dans donjons.zsd tout coffre faisant référence à cette map.
-  - Si la map est dans un donjon :
-    - supprimer dans donjons.zsd tout coffre faisant référence à cette map, que ce soit dans le bon donjon ou pas
-    - ajouter dans donjons.zsd les coffres de cette map
-
-ini4j
-
-[dungeon_1]
-lowest_floor = -1
-highest_floor = 2
-
-[dungeon_1.floor_-1]
-width = 960
-height = 640
-
-[dungeon_1.floor_0]
-width = 960
-height = 640
-
-[dungeon_1.floor_1]
-width = 960
-height = 640
-
-[dungeon_1.map_18.chest_0]
-floor = -1
-x = 128
-y = 216
-save = 14
-
-
-
-----------------
-réflexions initiales :
-
-Etages : existent dans les donjons et hors des donjons
-Petites clés aussi (on peut même avoir une clé de donjon à l'extérieur de ce dernier, cf démo de zmc)
-
--> Numérotation des phases d'exploration (?), qu'elles soient des donjons ou pas. Phases définies dans un fichier spécial, un peu comme dans donjons.zmc.
-Est-ce nécessaire ? Il faut gérer les étages, la position du boss, la position des coffres, leur taille et leur état.
-Question : stocker les informations spécifiques à une map (son étage, ses coordonnées) dans la map elle-même ou dans le fichier des phases d'exploration ? Faire un éditeur de propriétés de donjon (étages, maps concernées...).
-
-Une map qui fait partie d'une phase d'exploration doit spécifier son étage : un vrai étage, aucun étage (peut servir pour une petite grotte avec un seul étage), étage "?"
-
-Une map hors donjon peut spécifier un compteur de petites clés : cela permet de faire des petites clés dans une map hors donjon et même hors phase d'exploration. Remarque : le compteur peut très bien être celui d'un donjon existant. TODO ? en profiter pour spécifier ici les compteurs de clés des donjons au lieu de les faire automatiquement ?
-
-Toute map, donjon ou non, doit spécifier ses propres coordonnées par rapport à la map virtuelle complète.
-- Si c'est une map de donjon, cela permet d'afficher la position de Link sur la carte du donjon (s'il a la boussole).
-- Si c'est une map de la carte du monde, cela permet d'afficher la position de Link sur la carte extérieure.
-- Si c'est une map intérieure et hors donjon, cela indique la position de cet endroit sur la carte du monde et donc d'afficher la position de Link sur la carte extérieure.
-
-Chaque donjon doit spécifier la taille de chacun de ses étages.
-La carte du monde doit aussi spécifier sa taille.
 
 ----------------------
 - Compléter l'éditeur de maps et de tilesets :

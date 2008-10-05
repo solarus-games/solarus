@@ -55,7 +55,7 @@ public class Dungeon {
 	    chests = new Vector<DungeonElement>();
 	    minibosses = new Vector<DungeonElement>();
 	    */
-	    
+
 	    Ini ini = new Ini(new FileReader(fileName));
 
 	    // parse the floors (the floors must be before the chests, minibosses and boss)

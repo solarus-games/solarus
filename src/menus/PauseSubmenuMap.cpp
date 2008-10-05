@@ -8,7 +8,7 @@
 #include "Equipment.h"
 #include "entities/Link.h"
 
-const SDL_Rect PauseSubmenuMap::outside_world_minimap_size = {0, 0, 225, 500};
+const SDL_Rect PauseSubmenuMap::outside_world_minimap_size = {0, 0, 225, 388};
 
 /**
  * Constructor.

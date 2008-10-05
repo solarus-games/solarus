@@ -1011,3 +1011,17 @@ void Equipment::remove_small_key(void) {
   int index = get_small_keys_variable();
   savegame->set_integer(index, get_small_keys() - 1);
 }
+
+// ability to lift items
+
+/**
+ * Returns whether the player can lift the specified weight.
+ * - If the weight is 0, true is always returned.
+ * - If the weight is 1, the function returns true if the player has got the iron glove.
+ * - If the weight is 2, the function returns true if the player has got the golden glove.
+ * @param weight the weight of an item (0 to 2)
+ * @return true if the player can lift this weight.
+ */
+bool Equipment::can_lift(int weight) {
+  return has_inventory_item(InventoryItem::GLOVE) >= weight;
+}

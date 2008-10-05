@@ -22,9 +22,15 @@
  */
 Chest::Chest(string name, MapEntity::Layer layer, int x, int y, bool big_chest, Treasure *treasure):
   EntityDetector(EntityDetector::COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  big_chest(big_chest), treasure(treasure) {
+  big_chest(big_chest) {
 
   open = treasure_given = (treasure != NULL && treasure->is_found());
+  if (open) {
+    delete treasure;
+    treasure = NULL;
+  }
+  this->treasure = treasure;
+
   initialize_sprite();
 }
 

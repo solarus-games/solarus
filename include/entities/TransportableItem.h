@@ -36,21 +36,11 @@ class TransportableItem: public EntityDetector {
 
  private:
 
-  /**
-   * The map.
-   */
-  Map *map;
-  
-  /**
-   * The type of transportable item.
-   */
-  ItemType type;
+  Map *map;      /**< the map */
 
-  /**
-   * The pickable item that appears when the item is lifted.
-   */
-  PickableItem::ItemType pickable_item;
-  int pickable_item_savegame_index;
+  ItemType type;                        /**< the type of transportable item */
+  PickableItem::ItemType pickable_item; /**< the pickable item that appears when the item is lifted */
+  int pickable_item_savegame_index;     /**< savegame index of the pickable item (if any) */
 
   /**
    * This structure defines the properties of a transportable item type.
@@ -58,7 +48,7 @@ class TransportableItem: public EntityDetector {
   struct ItemProperties {
     SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of transportable item */
     SoundId breaking_sound_id;               /**< sound played when the item is broken */
-    // TODO weight
+    int weight;                              /**< weight of the item (0: light, 1: iron glove required, 2: golden glove required */
   };
 
   static const ItemProperties properties[];

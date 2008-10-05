@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "Game.h"
 #include "KeysEffect.h"
+#include "Equipment.h"
 #include "Map.h"
 #include "Sound.h"
 #include "ZSDX.h"
@@ -13,13 +14,16 @@
  * Properties of each type of transportable item.
  */
 const TransportableItem::ItemProperties TransportableItem::properties[] = {
-  {"entities/pot", "stone"},
-  {"entities/skull", "stone"},
-  {"entities/bush", "bush"},
-  {"entities/stone_white_small", "stone"},
-  {"entities/stone_white_big", "stone"},
-  {"entities/stone_black_small", "stone"},
-  {"entities/stone_black_big", "stone"},
+  {"entities/pot", "stone", 0},
+  {"entities/skull", "stone", 0},
+  {"entities/bush", "bush", 0},
+  {"entities/stone_small_white", "stone", 1},
+  {"entities/stone_small_white", "stone", 2},
+
+  /* not implemented
+  {"entities/stone_big_white", "stone", 1},
+  {"entities/stone_big_white", "stone", 2},
+  */
 };
 
 /**
@@ -78,9 +82,14 @@ void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
 
     Link *link = zsdx->game->get_link();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    Equipment *equipment = zsdx->game->get_equipment();
+
+    int weight = properties[type].weight;
     
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& link->get_state() == Link::FREE) {
+	&& link->get_state() == Link::FREE
+	&& equipment->can_lift(weight)) {
+
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
   }
@@ -97,8 +106,6 @@ void TransportableItem::action_key_pressed(void) {
   Link *link = zsdx->game->get_link();
 
   if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT) {
-
-    // TODO check that Link can lift the item
 
     link->start_lifting(this);
 

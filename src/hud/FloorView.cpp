@@ -11,7 +11,8 @@
  * @param y y coordinate of the top-left corner of the element on the destination surface
  */
 FloorView::FloorView(Game *game, int x, int y):
-  HudElement(x, y, 32, 85), game(game), current_map(NULL), is_floor_displayed(false) {
+  HudElement(x, y, 32, 85), game(game), current_map(NULL),
+  is_floor_displayed(false) {
 
   img_floors = ResourceManager::load_image("hud/floors.png");
 
@@ -42,7 +43,7 @@ void FloorView::update(void) {
       hide_floor_date = SDL_GetTicks() + 3000;
     }
     else {
-      is_floor_displayed = true;
+      is_floor_displayed = false;
     }
     need_rebuild = true;
   }

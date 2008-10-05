@@ -135,6 +135,9 @@ class Equipment {
   int get_small_keys(void);
   void add_small_key(void);
   void remove_small_key(void);
+
+  // ability to lift items
+  bool can_lift(int weight);
 };
 
 #endif

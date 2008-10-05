@@ -10,8 +10,7 @@
  * @param y y coordinate of the top-left corner of the key icon on the destination surface
  */
 SmallKeysCounter::SmallKeysCounter(Equipment *equipment, int x, int y):
-  HudElement(x, y, 40, 16), equipment(equipment),
-  counter(new Counter(2, false, 16, 0)) {
+  HudElement(x, y, 40, 16), equipment(equipment), counter(NULL) {
 
   img_icon = ResourceManager::load_image("hud/message_and_treasure_icons.png");
   counter = NULL;

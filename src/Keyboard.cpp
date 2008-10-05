@@ -148,7 +148,7 @@ void Keyboard::key_pressed(const SDL_keysym &keysym) {
       if (game->is_showing_message()) {
 	break;
       }
-      static int content = Treasure::SWORD_4 -1;
+      static int content = Treasure::IRON_GLOVE -1;
       content++;
 
       while (content == 1 ||

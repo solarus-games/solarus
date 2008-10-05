@@ -261,6 +261,7 @@ void PauseSubmenuInventory::update(void) {
 
 /**
  * Displays this submenu.
+ * @param destination the destination surface
  */
 void PauseSubmenuInventory::display(SDL_Surface *destination) {
 

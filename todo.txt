@@ -6,10 +6,6 @@
 - Voir les boss de Pyro
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
-- Animation tire + pierres trop lourdes
-
-- Bugs :
-  - quand on met pause et qu'on revient, les touches relâchées entre temps ne sont pas détectées (sauf concernant le mouvement de link)
 
 - Prochaines grandes étapes :
   - collision au pixel près

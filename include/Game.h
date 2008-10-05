@@ -40,6 +40,7 @@ class Game: public Screen {
   Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */
 
   Dungeon *dungeon;         /**< the dungeon of the current map, of NULL if we are not in a dungeon */
+  static const SDL_Rect outside_world_size; /**< size of the outside world in pixels */
 
   // graphics
   HUD *hud;                 /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
@@ -80,6 +81,7 @@ class Game: public Screen {
   void set_current_map(MapId map_id, string entrance_name, Transition::Style transition_style);
   bool is_in_dungeon(void);
   Dungeon *get_current_dungeon(void);
+  const SDL_Rect *get_outside_world_size(void);
 
   // music
   void play_music(MusicId new_music_id);

@@ -20,6 +20,8 @@
 #include "entities/EntityDetector.h"
 #include "movements/Movement8ByPlayer.h"
 
+const SDL_Rect Game::outside_world_size = {0, 0, 1024, 2048}; // TODO
+
 /**
  * Creates a game.
  * @param savegame the saved data of this game
@@ -374,13 +376,22 @@ void Game::set_current_map(MapId map_id, string entrance_name, Transition::Style
 bool Game::is_in_dungeon(void) {
   return current_map->is_in_dungeon();
 }
+
 /**
  * Returns the dungeon where the current map is, or NULL
  * if we are not in a dungeon.
  * @return the current dungeon
  */
-Dungeon *Game::get_current_dungeon(void) {
+Dungeon * Game::get_current_dungeon(void) {
   return dungeon;
+}
+
+/**
+ * Returns the size of the oustide world in pixels.
+ * @return the size of the oustide world
+ */
+const SDL_Rect * Game::get_outside_world_size(void) {
+  return &outside_world_size;
 }
 
 /**

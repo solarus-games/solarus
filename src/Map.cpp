@@ -65,6 +65,14 @@ bool Map::is_in_dungeon(void) {
 }
 
 /**
+ * Returns whether this map belongs to the outside world.
+ * @return true if this map is in the oustide world
+ */
+bool Map::is_in_outside_world(void) {
+  return get_world_number() == 0;
+}
+
+/**
  * Returns the floor where this map is.
  * The value returned can be:
  * - a floor number between -16 and 15,
@@ -93,7 +101,7 @@ bool Map::has_floor(void) {
  * - in a dungeon: location of the map's top-left corner relative to the whole floor
  * The width and height fields correspond to the map size.
  */
-SDL_Rect * Map::get_location(void) {
+const SDL_Rect * Map::get_location(void) {
   return &location;
 }
 

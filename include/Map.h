@@ -85,9 +85,10 @@ class Map {
   Tileset *get_tileset(void);
   int get_world_number(void);
   bool is_in_dungeon(void);
+  bool is_in_outside_world(void);
   int get_floor(void);
   bool has_floor(void);
-  SDL_Rect *get_location(void);
+  const SDL_Rect *get_location(void);
   int get_small_keys_variable(void);
   bool has_small_keys(void);
 

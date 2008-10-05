@@ -48,6 +48,7 @@ void PauseSubmenuQuestStatus::update(void) {
 
 /**
  * Displays this submenu.
+ * @param destination the destination surface
  */
 void PauseSubmenuQuestStatus::display(SDL_Surface *destination) {
   PauseSubmenu::display(destination);

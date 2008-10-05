@@ -36,69 +36,22 @@ Keyboard::~Keyboard(void) {
 void Keyboard::key_pressed(const SDL_keysym &keysym) {
 
   if (!game->is_suspended()) {    
+
     // if the game is not suspended, most of the keys apply to Link
-
-    switch (keysym.sym) {
-
-      // pause key
-    case SDLK_d:
+    if (keysym.sym == SDLK_d) {
       game->set_paused(true);
-      break;
-
-      // action key
-    case SDLK_SPACE:
-      link->action_key_pressed();
-      break;
-
-      // sword key
-    case SDLK_c:
-      link->sword_key_pressed();
-      break;
-
-      // move Link
-    case SDLK_RIGHT:
-      link->get_movement()->start_right();
-      break;
-
-    case SDLK_UP:
-      link->get_movement()->start_up();
-      break;
-
-    case SDLK_LEFT:
-      link->get_movement()->start_left();
-      break;
-
-    case SDLK_DOWN:
-      link->get_movement()->start_down();
-      break;
-
-    default:
-      break;
+    }
+    else {
+      link->key_pressed(keysym);
     }
   }
-  else if (game->is_showing_message()) { // is a message being shown?
 
-    switch (keysym.sym) {
-
-      // action key
-    case SDLK_SPACE:
-      game->get_dialog_box()->action_key_pressed();
-      break;
-
-      // sword key
-    case SDLK_c:
-      game->get_dialog_box()->sword_key_pressed();
-      break;
-
-    case SDLK_UP:
-    case SDLK_DOWN:
-      game->get_dialog_box()->up_or_down_key_pressed();
-      break;
-
-    default:
-      break;
-    }
+  // is a message being shown?
+  else if (game->is_showing_message()) {
+    game->get_dialog_box()->key_pressed(keysym);
   }
+
+  // is the game paused?
   else if (game->is_paused()) {
     game->get_pause_menu()->key_pressed(keysym);
   }
@@ -276,28 +229,6 @@ void Keyboard::key_released(const SDL_keysym &keysym) {
 
   if (!game->is_suspended()) {
     // if the game is not suspended, the keys apply to Link
-
-    switch (keysym.sym) {
-	
-      // move Link
-    case SDLK_RIGHT:
-      link->get_movement()->stop_right();
-      break;
-
-    case SDLK_UP:
-      link->get_movement()->stop_up();
-      break;
-
-    case SDLK_LEFT:
-      link->get_movement()->stop_left();
-      break;
-
-    case SDLK_DOWN:
-      link->get_movement()->stop_down();
-      break;
-
-    default:
-      break;
-    }
+    link->key_released(keysym);
   }
 }

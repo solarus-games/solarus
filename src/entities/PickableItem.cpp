@@ -439,7 +439,6 @@ void PickableItem::set_suspended(bool suspended) {
 	blink_date = now + (blink_date - when_suspended);
 	disappear_date = now + (disappear_date - when_suspended);
       }
-      set_blinking(true);
     }
     else {
       // the game is being suspended

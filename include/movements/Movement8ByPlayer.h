@@ -39,10 +39,7 @@ class Movement8ByPlayer: public MovementWithSmoothCollision {
    */
   Uint16 direction_mask;
 
-  static const Uint16 right_mask;
-  static const Uint16 up_mask;
-  static const Uint16 left_mask;
-  static const Uint16 down_mask;
+  static const Uint16 direction_masks[4];
 
   void add_direction_mask(Uint16 direction_mask);
   void remove_direction_mask(Uint16 direction_mask);
@@ -58,23 +55,15 @@ class Movement8ByPlayer: public MovementWithSmoothCollision {
   int get_direction(void);
   Uint16 get_direction_mask(void);
 
+  void add_direction(int direction);
+  void remove_direction(int direction);
+
   // movement
   void set_moving_enabled(bool can_move);
   bool is_started(void);
   bool is_moving_enabled(void);
 
   void compute_movement(void);
-
-  // keyboard state
-  void start_right(void);
-  void start_up(void);
-  void start_left(void);
-  void start_down(void);
-  void stop_right(void);
-  void stop_up(void);
-  void stop_left(void);
-  void stop_down(void);
-
 };
 
 #endif

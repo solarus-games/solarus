@@ -474,6 +474,30 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_b
 }
 
 /**
+ * Tests whether a point collides with the map obstacles
+ * (tiles and active entities).
+ * @param layer layer of the rectangle in the map
+ * @param x x coordinate of the point to check
+ * @param y y coordinate of the point to check
+ * @return true if the point is overlapping an obstacle, false otherwise
+ */
+bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y) {
+
+  bool collision;
+
+  // test the tiles
+  collision = pixel_collision_with_tiles(layer, x, y);
+
+  // test the entities
+  if (!collision) {
+    SDL_Rect collision_box = {x, y, 1, 1};
+    collision = collision_with_entities(layer, collision_box);
+  }
+  
+  return collision;   
+}
+
+/**
  * This function is called by an entity sensible to the entity detectors
  * when this entity has just moved on the map, or when a detector
  * wants to check this entity.

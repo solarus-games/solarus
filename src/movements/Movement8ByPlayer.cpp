@@ -6,10 +6,12 @@
  * Bit masks associated to each arrow on the keyboard.
  * A combination of arrows is stored in a simple integer.
  */
-const Uint16 Movement8ByPlayer::right_mask = 0x0001;
-const Uint16 Movement8ByPlayer::up_mask = 0x0002;
-const Uint16 Movement8ByPlayer::left_mask = 0x0004;
-const Uint16 Movement8ByPlayer::down_mask = 0x0008;
+const Uint16 Movement8ByPlayer::direction_masks[4] = {
+  0x0001,
+  0x0002,
+  0x0004,
+  0x0008
+};
 
 /**
  * Associates to each possible combination of keyboard arrows
@@ -100,16 +102,16 @@ void Movement8ByPlayer::set_moving_enabled(bool can_move) {
       Uint8 *key_state = SDL_GetKeyState(NULL);
 
       if (key_state[SDLK_RIGHT]) {
-	add_direction_mask(right_mask);
+	add_direction_mask(direction_masks[0]);
       }
       if (key_state[SDLK_UP]) {
-	add_direction_mask(up_mask);
+	add_direction_mask(direction_masks[1]);
       }
       if (key_state[SDLK_LEFT]) {
-	add_direction_mask(left_mask);
+	add_direction_mask(direction_masks[2]);
       }
       if (key_state[SDLK_DOWN]) {
-	add_direction_mask(down_mask);
+	add_direction_mask(direction_masks[3]);
       }
     }
     else { // the control is being ignored
@@ -126,63 +128,25 @@ void Movement8ByPlayer::set_moving_enabled(bool can_move) {
 }
 
 /**
- * Function called when the user presses the right arrow.
+ * This function is called when an arrow key is pressed.
+ * @param direction of the arrow pressed (0 to 3)
  */
-void Movement8ByPlayer::start_right(void) {
-  if (can_move) {
-    add_direction_mask(right_mask);
-    compute_movement();
-  }
-}
+void Movement8ByPlayer::add_direction(int direction) {
 
-void Movement8ByPlayer::start_up(void) {
   if (can_move) {
-    add_direction_mask(up_mask);
-    compute_movement();
-  }
-}
-
-void Movement8ByPlayer::start_left(void) {
-  if (can_move) {
-    add_direction_mask(left_mask);
-    compute_movement();
-  }
-}
-
-void Movement8ByPlayer::start_down(void) {
-  if (can_move) {
-    add_direction_mask(down_mask);
+    add_direction_mask(direction_masks[direction]);
     compute_movement();
   }
 }
 
 /**
- * Function called when the user releases the right arrow.
+ * This function is called when an arrow key is released.
+ * @param direction of the arrow released (0 to 3)
  */
-void Movement8ByPlayer::stop_right(void) {
-  if (can_move) {
-    remove_direction_mask(right_mask);
-    compute_movement();
-  }
-}
+void Movement8ByPlayer::remove_direction(int direction) {
 
-void Movement8ByPlayer::stop_up(void) {
   if (can_move) {
-    remove_direction_mask(up_mask);
-    compute_movement();
-  }
-}
-
-void Movement8ByPlayer::stop_left(void) {
-  if (can_move) {
-    remove_direction_mask(left_mask);
-    compute_movement();
-  }
-}
-
-void Movement8ByPlayer::stop_down(void) {
-  if (can_move) {
-    remove_direction_mask(down_mask);
+    remove_direction_mask(direction_masks[direction]);
     compute_movement();
   }
 }

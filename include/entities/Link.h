@@ -26,7 +26,8 @@ class Link: public MapEntity, AnimationListener {
     CARRYING,                /**< Link can walk but he is carrying a pot or a bush */
     SWORD_LOADING,           /**< Link can walk but his sword is loading for a spin attack */
     SWIMMING,                /**< Link is swimming */
-    GRABBING,                /**< Link is grabbing an object and can push or pull it */
+    GRABBING,                /**< Link is grabbing an object and can pull it */
+    PULLING,                 /**< Link is pulling an object */
     SWORD_SWINGING,          /**< Link is swinging his sword */
     SPIN_ATTACK,             /**< Link is releasing a spin attack */
     LIFTING,                 /**< Link is lifting an transportable item (a pot, a bush, etc.) */
@@ -94,11 +95,16 @@ class Link: public MapEntity, AnimationListener {
   // update functions
   void update_position(void);
   void update_sprites(void);
-
   void movement_just_changed(void);
+
+  void action_key_pressed(void);
+  void sword_key_pressed(void);
+  void arrow_pressed(int direction);
+  void arrow_released(int direction);
 
   // Link's state
   void set_state(State state);
+
   void start_sword_loading(void);
   void update_sword_loading(void);
   void start_spin_attack(void);
@@ -111,6 +117,10 @@ class Link: public MapEntity, AnimationListener {
   void display_carried_items(void);
   void destroy_carried_items(void);
 
+  void start_grabbing(void);
+  void start_pulling(void);
+  void update_grabbing_pulling(void);
+
   void update_treasure(void);
   void display_treasure(void);
 
@@ -121,6 +131,8 @@ class Link: public MapEntity, AnimationListener {
 
   void set_animation_sword(void);
   void set_animation_walking(void);
+  void set_animation_grabbing(void);
+  void set_animation_pulling(void);
   void set_animation_pushing(void);
   void set_animation_lifting(void);
 
@@ -141,6 +153,7 @@ class Link: public MapEntity, AnimationListener {
   SDL_Rect get_facing_point(void);
   void just_moved(void);
   void set_facing_entity(EntityDetector *detector);
+  bool is_facing_obstacle(void);
 
   // map
   void set_map(Map *map, int initial_direction);
@@ -170,8 +183,10 @@ class Link: public MapEntity, AnimationListener {
   void start_carrying(void);
   void freeze(void);
   void give_treasure(Treasure *treasure);
-  void action_key_pressed(void);
-  void sword_key_pressed(void);
+
+  // keys
+  void key_pressed(const SDL_keysym &keysym);
+  void key_released(const SDL_keysym &keysym);
 };
 
 #endif

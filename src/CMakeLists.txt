@@ -77,6 +77,9 @@ add_executable (zsdx
   entities/MapEntities.cpp
   entities/MapEntity.cpp
   entities/Link.cpp
+  entities/LinkKeys.cpp
+  entities/LinkAnimations.cpp
+  entities/LinkState.cpp
   entities/TileOnMap.cpp
   entities/EntityDetector.cpp
   entities/Entrance.cpp

@@ -70,6 +70,10 @@ class DialogBox {
 
   void show_message(MessageId messageId);
 
+  void action_key_pressed(void);
+  void sword_key_pressed(void);
+  void up_or_down_key_pressed(void);
+
  public:
 
   // creation and destruction
@@ -89,9 +93,7 @@ class DialogBox {
   string get_variable(void);
   
   // current message
-  void action_key_pressed(void);
-  void sword_key_pressed(void);
-  void up_or_down_key_pressed(void);
+  void key_pressed(const SDL_keysym &keysym);
   bool is_over(void);
   static int get_last_answer(void);
 

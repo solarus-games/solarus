@@ -28,27 +28,29 @@ static const string item_names[28][6] = {
   {"Bottes de Pégase"},
   {"Miroir Mystique"},
   {"Canne de Somaria"},
-  {"Cape Magique"},
-  {"Poigne de Fer", "Poigne d'Or"},
-  {"Pierres de Feu"},
-  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
-   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
-
   {"Pommes"},
   {"Pains au Chocolat"},
   {"Croissants"},
+  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
+   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
+
+  {"Clé de Roc"},
+  {"Clé Rouge"},
+  {"Clé de Terre"},
   {"Tarte aux Pommes", "Lingots d'or", "Edelweiss", "Clé d'Os"},
   {"Palmes"},
-  {"Clé Rouge"},
-  {"???"},
+  {"Cape Magique"},
+  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
+   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
 
-  {"Clé de Terre"},
-  {"Clé de Roc"},
   {"Clé de Fer"},
   {"Clé de Pierre"},
   {"Clé de Bois"},
   {"Clé de Glace"},
-  {"???"},
+  {"Poigne de Fer", "Poigne d'Or"},
+  {"Pierres de Feu"},
+  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
+   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
 };
 
 /**
@@ -327,8 +329,10 @@ void PauseSubmenuInventory::show_info_message(void) {
   int variant = equipment->has_inventory_item((InventoryItem::ItemId) item_id);
 
   // exception: for a bottle, replace its real id by the id of the first bottle
-  if (item_id == InventoryItem::BOTTLE_2) {
-    item_id = InventoryItem::BOTTLE_1; // TODO: add future bottles if any
+  if (item_id == InventoryItem::BOTTLE_2
+      || item_id == InventoryItem::BOTTLE_3
+      || item_id == InventoryItem::BOTTLE_4) {
+    item_id = InventoryItem::BOTTLE_1;
   }
 
   ostringstream oss;

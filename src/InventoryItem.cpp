@@ -6,37 +6,38 @@
  */
 InventoryItem InventoryItem::items[28] = {
 
-  InventoryItem(true, 0), // feather
+  InventoryItem(true, 0),  // feather
   InventoryItem(true, Savegame::CURRENT_BOMBS), // bombs
   InventoryItem(true, Savegame::CURRENT_ARROWS), // bow and arrows
-  InventoryItem(true, 0), // boomerang
-  InventoryItem(true, 0), // lamp
-  InventoryItem(true, 0), // hook shot
-  InventoryItem(true, 0), // bottle 1
+  InventoryItem(true, 0),  // boomerang
+  InventoryItem(true, 0),  // lamp
+  InventoryItem(true, 0),  // hook shot
+  InventoryItem(true, 0),  // bottle 1
 
-  InventoryItem(true, 0), // pegasus shoes
-  InventoryItem(true, 0), // mystic mirror
-  InventoryItem(true, 0), // cane of somaria
-  InventoryItem(true, 0), // magic cape
-  InventoryItem(false, 0), // iron glove + golden glove
-  InventoryItem(false, Savegame::NB_FIRE_STONES), // fire stones
-  InventoryItem(true, 0), // bottle 2
-
+  InventoryItem(true, 0),  // pegasus shoes
+  InventoryItem(true, 0),  // mystic mirror
+  InventoryItem(true, 0),  // cane of somaria
   InventoryItem(true, Savegame::CURRENT_APPLES),  // apples
   InventoryItem(true, Savegame::CURRENT_PAINS_AU_CHOCOLAT), // pains au chocolats
   InventoryItem(true, Savegame::CURRENT_CROISSANTS), // croissants
+  InventoryItem(true, 0),  // bottle 2
+
+  InventoryItem(false, 0), // rock key
+  InventoryItem(false, 0), // red key
+  InventoryItem(false, 0), // clay key
   InventoryItem(false, 0), // apple pie + golden bars + edelweiss + bone key 
   InventoryItem(false, 0), // flippers
-  InventoryItem(false, 0), // red key
-  InventoryItem(false, 0), // TODO item 20
+  InventoryItem(false, 0), // magic cape
+  InventoryItem(true, 0),  // bottle 3
 
-  InventoryItem(false, 0), // clay key
-  InventoryItem(false, 0), // rock key
+
   InventoryItem(false, 0), // iron key
   InventoryItem(false, 0), // stone key
   InventoryItem(false, 0), // wooden key
   InventoryItem(false, 0), // ice key
-  InventoryItem(false, 0), // TODO item 27
+  InventoryItem(false, 0), // iron glove + golden glove
+  InventoryItem(false, Savegame::NB_FIRE_STONES), // fire stones
+  InventoryItem(true, 0),  // bottle 4
 };
 
 /**

@@ -89,7 +89,7 @@
 # L'identificateur d'un message est de la forme _item_description_i_x
 # où i est le numéro de l'item (de 0 à 27) et x est la variante de cet
 # item possédée par le joueur.
-# Exception : pour le Flacon 2, le numéro de l'item (13) est remplacé
+# Exception : pour les Flacons 2, 3 et 4, le numéro de l'item est remplacé
 # par celui du Flacon 1 (6) pour éviter de répéter les mêmes messages.
 
 [_item_description_0_1]
@@ -284,82 +284,62 @@ cancel = all
 next = _warning_magic
 
 [_item_description_10_1]
-# Cape magique / Magic Cape
-#       |--------------------|
-icon = 16
-line1 = "La Cape Magique"
-line2 = "t'avertit si tu"
-line3 = "t'approches d'un"
-cancel = all
-next = _item_description_10_1.1
-
-[_item_description_10_1.1]
-#       |--------------------|
-line1 = "mur fragile..."
-
-[_item_description_11_1]
-# Poigne de Fer / Iron Glove
-#       |--------------------|
-icon = 17
-line1 = "La Poigne de Fer te"
-line2 = "permet de soulever"
-line3 = "les pierres."
-cancel = all
-
-[_item_description_11_2]
-# Poigne d'Or / Golden Glove
-#       |--------------------|
-icon = 18
-line1 = "Soulève les pierres"
-line2 = "noires grâce à la"
-line3 = "Poigne d'Or."
-cancel = all
-
-[_item_description_12_1]
-# Pierres de Feu / Fire Stones
-#       |--------------------|
-icon = 19
-line1 = "Trouve les trois"
-line2 = "Pierres de Feu et"
-line3 = "apporte-les"
-cancel = all
-next = _item_description_12_1.1
-
-[_item_description_12_1.1]
-#       |--------------------|
-line1 = "à Inferno."
-
-[_item_description_14_1]
 # Pommes / Apples
 #       |--------------------|
-icon = 20
+icon = 16
 line1 = "Mange des Pommes"
 line2 = "pour récupérer des"
 line3 = "Coeurs."
 cancel = all
 
-[_item_description_15_1]
+[_item_description_11_1]
 # Pains au Chocolat / Pains au Chocolat
 #       |--------------------|
-icon = 21
+icon = 17
 line1 = "Mange un Pain au"
 line2 = "Chocolat pour"
 line3 = "récupéer 3 Coeurs."
 cancel = all
 
-[_item_description_16_1]
+[_item_description_12_1]
 # Croissant / Croissant
 #       |--------------------|
-icon = 22
+icon = 18
 line1 = "Mange un Croissant"
 line2 = "pour récupérer"
 line3 = "7 Coeurs."
 cancel = all
 
+[_item_description_14_1]
+# Clé de Roc / Rock Key
+#       |--------------------|
+icon = 19
+line1 = "La Clé de Roc. Mais"
+line2 = "où est donc la bonne"
+line3 = "serrure ?"
+cancel = all
+
+[_item_description_15_1]
+# Clé Rouge / Red Key
+#       |--------------------|
+icon = 20
+line1 = "Cette étrange Clé"
+line2 = "est toute rouge."
+cancel = all
+
+[_item_description_16_1]
+# Clé de Terre / Clay Key
+#       |--------------------|
+icon = 21
+line1 = "La Clé de Terre, qui"
+line2 = "permet d'ouvrir la"
+line3 = "grotte du village."
+cancel = all
+
 [_item_description_17_1]
 # Tarte aux Pommes / Apple Pie
 #       |--------------------|
-icon = 23
+icon = 22
 line1 = "Cette Tarte aux"
 line2 = "Pommes a un drôle"
 line3 = "d'aspect..."
@@ -368,7 +348,7 @@ cancel = all
 [_item_description_17_2]
 # Lingots d'or / Golden bars
 #       |--------------------|
-icon = 24
+icon = 23
 line1 = "Ce sont trois"
 line2 = "authentiques"
 line3 = "lingots d'or !"
@@ -377,7 +357,7 @@ cancel = all
 [_item_description_17_3]
 # Edelweiss / Edelweiss
 #       |--------------------|
-icon = 25
+icon = 24
 line1 = "L'Edelweiss est une"
 line2 = "fleur très rare dans"
 line3 = "le royaume d'Hyrule."
@@ -386,7 +366,7 @@ cancel = all
 [_item_description_17_4]
 # Clé d'Os / Bone Key
 #       |--------------------|
-icon = 26
+icon = 25
 line1 = "A quoi peut servir"
 line2 = "la Clé d'Os ?"
 cancel = all
@@ -394,94 +374,99 @@ cancel = all
 [_item_description_18_1]
 # Palmes / Flippers
 #       |--------------------|
-icon = 27
+icon = 26
 line1 = "Les Palmes te"
 line2 = "permettent de nager"
 line3 = "dans l'eau profonde."
 cancel = all
 
 [_item_description_19_1]
-# Clé Rouge / Red Key
+# Cape magique / Magic Cape
 #       |--------------------|
-icon = 28
-line1 = "Cette étrange Clé"
-line2 = "est toute rouge."
+icon = 27
+line1 = "La Cape Magique"
+line2 = "t'avertit si tu"
+line3 = "t'approches d'un"
 cancel = all
+next = _item_description_19_1.1
 
-[_item_description_20_1]
-# TODO
+[_item_description_19_1.1]
 #       |--------------------|
-icon = 29
-line1 = "???"
-cancel = all
+line1 = "mur fragile..."
 
 [_item_description_21_1]
-# Clé de Terre / Clay Key
-#       |--------------------|
-icon = 30
-line1 = "La Clé de Terre, qui"
-line2 = "permet d'ouvrir la"
-line3 = "grotte du village."
-cancel = all
-
-[_item_description_22_1]
-# Clé de Roc / Rock Key
-#       |--------------------|
-icon = 31
-line1 = "La Clé de Roc. Mais"
-line2 = "où est donc la bonne"
-line3 = "serrure ?"
-cancel = all
-
-[_item_description_23_1]
 # Clé de Fer / Iron Key
 #       |--------------------|
-icon = 32
+icon = 28
 line1 = "La Clé de Fer."
 line2 = "Mais ne te trompe"
 line3 = "pas de serrure !"
 cancel = all
 
-[_item_description_24_1]
+[_item_description_22_1]
 # Clé de Pierre / Stone Key
 #       |--------------------|
-icon = 33
+icon = 29
 line1 = "La Clé de Pierre."
 line2 = "Reste à trouver la"
 line3 = "bonne serrure !"
 cancel = all
 
-[_item_description_25_1]
+[_item_description_23_1]
 # Clé de Bois / Wooden Key
 #       |--------------------|
-icon = 34
+icon = 30
 line1 = "La Clé de Bois. Mais"
 line2 = "une seule serrure"
 line3 = "est la bonne..."
 cancel = all
 
-[_item_description_26_1]
+[_item_description_24_1]
 # Clé de Glace / Ice Key
 #       |--------------------|
-icon = 35
+icon = 31
 line1 = "La Clé de Glace."
 line2 = "A toi de trouver un"
 line3 = "lieu gelé pour la"
+cancel = all
+next = _item_description_24_1.1
+
+[_item_description_24_1.1]
+#       |--------------------|
+line1 = "faire fonctionner !"
+cancel = all
+
+[_item_description_25_1]
+# Poigne de Fer / Iron Glove
+#       |--------------------|
+icon = 32
+line1 = "La Poigne de Fer te"
+line2 = "permet de soulever"
+line3 = "les pierres."
+cancel = all
+
+[_item_description_25_2]
+# Poigne d'Or / Golden Glove
+#       |--------------------|
+icon = 33
+line1 = "Soulève les pierres"
+line2 = "noires grâce à la"
+line3 = "Poigne d'Or."
+cancel = all
+
+[_item_description_26_1]
+# Pierres de Feu / Fire Stones
+#       |--------------------|
+icon = 34
+line1 = "Trouve les trois"
+line2 = "Pierres de Feu et"
+line3 = "apporte-les"
 cancel = all
 next = _item_description_26_1.1
 
 [_item_description_26_1.1]
 #       |--------------------|
-line1 = "faire fonctionner !"
-icon = 35
-cancel = all
-
-[_item_description_27_1]
-# TODO
-#       |--------------------|
-icon = 36
-line1 = "???"
-cancel = all
+line1 = "à Inferno."
 
 # ---------------------
 # Obtention d'un trésor
@@ -704,280 +689,280 @@ line2 = "blocs et t'accrocher"
 line3 = "à l'aide du Grappin."
 next = _warning_magic
 
-[_treasure_16]
-# Cape Magique
-#       |--------------------|
-icon = 16
-line1 = "Tu as trouvé la Cape"
-line2 = "Magique !$0"
-next = _treasure_16.1
-
-[_treasure_16.1]
-#       |--------------------|
-line1 = "Elle t'avertira si"
-line2 = "tu t'approchees d'un"
-line3 = "mur fragile."
-
-[_treasure_17]
-# Poigne de Fer
-#       |--------------------|
-icon = 17
-line1 = "Tu as trouvé la"
-line2 = "Poigne de Fer !$0"
-next = _treasure_17.1
-
-[_treasure_17.1]
-#       |--------------------|
-line1 = "Elle te permet de"
-line2 = "soulever les"
-line3 = "pierres."
-
-[_treasure_18]
-# Poigne d'Or
-#       |--------------------|
-icon = 18
-line1 = "Tu as trouvé la"
-line2 = "Poigne d'Or !$0"
-next = _treasure_18.1
-
-[_treasure_18.1]
-#       |--------------------|
-line1 = "Tu peux maintenant"
-line2 = "soulever les pierres"
-line3 = "noires !"
-
-[_treasure_19]
-# Pierre de Feu
-#       |--------------------|
-icon = 19
-line1 = "Tu as trouvé une"
-line2 = "Pierre de Feu !"
-
-[_treasure_20_1]
+[_treasure_16_1]
 # 1 Pomme
 #       |--------------------|
-icon = 20
+icon = 16
 line1 = "Tu as trouvé une"
 line2 = "Pomme !$0"
-next = _treasure_20_1.1
+next = _treasure_16_1.1
 
-[_treasure_20_1.1]
+[_treasure_16_1.1]
 #       |--------------------|
 line1 = "Consomme-la plus"
 line2 = "tard pour récupérer"
 line3 = "un Coeur !"
 
-[_treasure_20_2]
+[_treasure_16_2]
 # Plusieurs Pommes
 #       |--------------------|
-icon = 20
+icon = 16
 line1 = "Tu as trouvé $v"
 line2 = "Pommes !$0"
-next = _treasure_20_2.1
+next = _treasure_16_2.1
 
-[_treasure_20_2.1]
+[_treasure_16_2.1]
 #       |--------------------|
 line1 = "Consomme-les plus"
 line2 = "tard pour récupérer"
 line3 = "des Coeurs !"
 
-[_treasure_21_1]
+[_treasure_17_1]
 # 1 Pain au Chocolat
 #       |--------------------|
-icon = 21
+icon = 17
 line1 = "Tu as trouvé un Pain"
 line2 = "au Chocolat !$0"
-next = _treasure_21_1.1
+next = _treasure_17_1.1
 
-[_treasure_21_1.1]
+[_treasure_17_1.1]
 #       |--------------------|
 line1 = "Mange un Pain au"
 line2 = "Chocolat pour"
 line3 = "récupérer 3 Coeurs."
 
-[_treasure_21_2]
+[_treasure_17_2]
 # Plusieurs Pains au Chocolat
 #       |--------------------|
-icon = 21
+icon = 17
 line1 = "Tu as trouvé $v"
 line2 = "Pains au Chocolat !$0"
-next = _treasure_21_1.1
+next = _treasure_17_1.1
 
-[_treasure_22_1]
+[_treasure_18_1]
 # 1 Croissant
 #       |--------------------|
-icon = 22
+icon = 18
 line1 = "Tu as trouvé un"
 line2 = "Croissant !$0 Il est"
 line3 = "croustillant !"
-next = _treasure_22_1.1
+next = _treasure_18_1.1
 
-[_treasure_22_1.1]
+[_treasure_18_1.1]
 #       |--------------------|
 line1 = "Mange un Croissant"
 line2 = "pour récupérer"
 line3 = "récupérer 7 Coeurs."
 
-[_treasure_22_2]
+[_treasure_18_2]
 # Plusieurs Croissants
 #       |--------------------|
-icon = 22
+icon = 18
 line1 = "Tu as trouvé $v"
 line2 = "Croissants !$0"
-next = _treasure_22_1.1
+next = _treasure_18_1.1
 
-[_treasure_23]
-# Tarte aux Pommes
+[_treasure_19]
+# Clé de Roc
 #       |--------------------|
-icon = 23
-line1 = "Tu as trouvé une"
-line2 = "Tarte aux Pommes !$0"
-line3 = "$1...$3 Hmmm, à ta"
-next = _treasure_23.1
-
-[_treasure_23.1]
-#       |--------------------|
-line1 = "place, je n'y goûte-"
-line2 = "rais pas, elle a un"
-line3 = "drôle d'aspect..."
-
-[_treasure_24]
-# Lingots d'or
-#       |--------------------|
-icon = 24
-line1 = "Tu as trouvé des"
-line2 = "Lingots d'or !!!$0"
-next = _treasure_24.1
-
-[_treasure_24.1]
-#       |--------------------|
-line1 = "Ils brillent et ont"
-line2 = "une valeur"
-line3 = "inestimable !"
-
-[_treasure_25]
-# Edelweiss
-#       |--------------------|
-icon = 25
-line1 = "Tu as trouvé un"
-line2 = "Edelweiss !$0"
-next = _treasure_25.1
-
-[_treasure_25.1]
-#       |--------------------|
-line1 = "Cette jolie fleur"
-line2 = "des montagnes est"
-line3 = "rarissime !"
-
-[_treasure_26]
-# Clé d'os
-#       |--------------------|
-icon = 26
+icon = 19
 line1 = "Tu as trouvé la"
-line2 = "Clé d'Os !$0"
-next = _treasure_26.1
+line2 = "Clé de Roc !$0"
 
-[_treasure_26.1]
-#       |--------------------|
-line1 = "Mais à quoi peut-"
-line2 = "elle bien servir ?"
-
-[_treasure_27]
-# Palmes
-#       |--------------------|
-icon = 27
-line1 = "Tu as trouvé les"
-line2 = "Palmes !$0"
-next = _treasure_27.1
-
-[_treasure_27.1]
-#       |--------------------|
-line1 = "Tu peux maintenant"
-line2 = "nager en eau"
-line3 = "profonde !"
-
-[_treasure_28]
+[_treasure_20]
 # Clé Rouge
 #       |--------------------|
-icon = 28
+icon = 20
 line1 = "Tu as trouvé la"
 line2 = "Clé Rouge !$0"
 
-[_treasure_30]
+[_treasure_21]
 # Clé de Terre
 #       |--------------------|
-icon = 30
+icon = 21
 line1 = "Tu as trouvé la"
 line2 = "Clé de Terre !$0"
-next = _treasure_30.1
+next = _treasure_21.1
 
-[_treasure_30.1]
+[_treasure_21.1]
 #       |--------------------|
 line1 = "Tu peux maintenant"
 line2 = "ouvrir la grotte du"
 line3 = "village !"
 
-[_treasure_31]
-# Clé de Roc
+[_treasure_22]
+# Tarte aux Pommes
 #       |--------------------|
-icon = 31
-line1 = "Tu as trouvé la"
-line2 = "Clé de Roc !$0"
+icon = 22
+line1 = "Tu as trouvé une"
+line2 = "Tarte aux Pommes !$0"
+line3 = "$1...$3 Hmmm, à ta"
+next = _treasure_22.1
 
-[_treasure_32]
+[_treasure_22.1]
+#       |--------------------|
+line1 = "place, je n'y goûte-"
+line2 = "rais pas, elle a un"
+line3 = "drôle d'aspect..."
+
+[_treasure_23]
+# Lingots d'or
+#       |--------------------|
+icon = 23
+line1 = "Tu as trouvé des"
+line2 = "Lingots d'or !!!$0"
+next = _treasure_23.1
+
+[_treasure_23.1]
+#       |--------------------|
+line1 = "Ils brillent et ont"
+line2 = "une valeur"
+line3 = "inestimable !"
+
+[_treasure_24]
+# Edelweiss
+#       |--------------------|
+icon = 24
+line1 = "Tu as trouvé un"
+line2 = "Edelweiss !$0"
+next = _treasure_24.1
+
+[_treasure_24.1]
+#       |--------------------|
+line1 = "Cette jolie fleur"
+line2 = "des montagnes est"
+line3 = "rarissime !"
+
+[_treasure_25]
+# Clé d'os
+#       |--------------------|
+icon = 25
+line1 = "Tu as trouvé la"
+line2 = "Clé d'Os !$0"
+next = _treasure_25.1
+
+[_treasure_25.1]
+#       |--------------------|
+line1 = "Mais à quoi peut-"
+line2 = "elle bien servir ?"
+
+[_treasure_26]
+# Palmes
+#       |--------------------|
+icon = 26
+line1 = "Tu as trouvé les"
+line2 = "Palmes !$0"
+next = _treasure_26.1
+
+[_treasure_26.1]
+#       |--------------------|
+line1 = "Tu peux maintenant"
+line2 = "nager en eau"
+line3 = "profonde !"
+
+[_treasure_27]
+# Cape Magique
+#       |--------------------|
+icon = 27
+line1 = "Tu as trouvé la Cape"
+line2 = "Magique !$0"
+next = _treasure_27.1
+
+[_treasure_27.1]
+#       |--------------------|
+line1 = "Elle t'avertira si"
+line2 = "tu t'approchees d'un"
+line3 = "mur fragile."
+
+[_treasure_28]
 # Clé de Fer
 #       |--------------------|
-icon = 32
+icon = 28
 line1 = "Tu as trouvé la"
 line2 = "Clé de Fer !$0"
-next = _treasure_32.1
+next = _treasure_28.1
 
-[_treasure_32.1]
+[_treasure_28.1]
 #       |--------------------|
 line1 = "Il doit bien y"
 line2 = "avoir une porte qui"
 line3 = "va avec !"
 
-[_treasure_33]
+[_treasure_29]
 # Clé de Pierre
 #       |--------------------|
-icon = 33
+icon = 29
 line1 = "Tu as trouvé la"
 line2 = "Clé de Pierre !$0"
-next = _treasure_33.1
+next = _treasure_29.1
 
-[_treasure_33.1]
+[_treasure_29.1]
 #       |--------------------|
 line1 = "Mais où est la"
 line2 = "serrure qui"
 line3 = "correspond ?"
 
-[_treasure_34]
+[_treasure_30]
 # Clé de Bois
 #       |--------------------|
-icon = 34
+icon = 30
 line1 = "Tu as trouvé la"
 line2 = "Clé de Bois !$0"
-next = _treasure_34.1
+next = _treasure_30.1
 
-[_treasure_34.1]
+[_treasure_30.1]
 #       |--------------------|
 line1 = "A toi de voir où"
 line2 = "tu peux l'utiliser !"
 
-[_treasure_35]
+[_treasure_31]
 # Clé de Glace
 #       |--------------------|
-icon = 35
+icon = 31
 line1 = "Tu as trouvé la"
 line2 = "Clé de Glace !$0"
-next = _treasure_35.1
+next = _treasure_31.1
 
-[_treasure_35.1]
+[_treasure_31.1]
 #       |--------------------|
 line1 = "Elle protège sans"
 line2 = "doute l'entrée d'un"
 line3 = "lieu glacial..."
+
+[_treasure_32]
+# Poigne de Fer
+#       |--------------------|
+icon = 32
+line1 = "Tu as trouvé la"
+line2 = "Poigne de Fer !$0"
+next = _treasure_32.1
+
+[_treasure_32.1]
+#       |--------------------|
+line1 = "Elle te permet de"
+line2 = "soulever les"
+line3 = "pierres."
+
+[_treasure_33]
+# Poigne d'Or
+#       |--------------------|
+icon = 33
+line1 = "Tu as trouvé la"
+line2 = "Poigne d'Or !$0"
+next = _treasure_33.1
+
+[_treasure_33.1]
+#       |--------------------|
+line1 = "Tu peux maintenant"
+line2 = "soulever les pierres"
+line3 = "noires !"
+
+[_treasure_34]
+# Pierre de Feu
+#       |--------------------|
+icon = 34
+line1 = "Tu as trouvé une"
+line2 = "Pierre de Feu !"
 
 [_treasure_50]
 # Carte du Monde

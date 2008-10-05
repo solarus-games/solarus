@@ -43,29 +43,29 @@ class Treasure {
     PEGASUS_SHOES     = 13,
     MYSTIC_MIRROR     = 14,
     CANE_OF_SOMARIA   = 15,
-    MAGIC_CAPE        = 16,
-    IRON_GLOVE        = 17,
-    GOLDEN_GLOVE      = 18,
-    FIRE_STONE        = 19,
+    APPLES            = 16,
+    PAINS_AU_CHOCOLAT = 17,
+    CROISSANTS        = 18,
+    ROCK_KEY          = 19,
 
-    APPLES            = 20,
-    PAINS_AU_CHOCOLAT = 21,
-    CROISSANTS        = 22,
-    APPLE_PIE         = 23,
-    GOLDEN_BARS       = 24,
-    EDELWEISS         = 25,
-    BONE_KEY          = 26,
-    FLIPPERS          = 27,
-    RED_KEY           = 28,
-    // 29: unused
+    RED_KEY           = 20,
+    CLAY_KEY          = 21,
+    APPLE_PIE         = 22,
+    GOLDEN_BARS       = 23,
+    EDELWEISS         = 24,
+    BONE_KEY          = 25,
+    FLIPPERS          = 26,
+    MAGIC_CAPE        = 27,
+    IRON_KEY          = 28,
+    STONE_KEY         = 29,
 
-    CLAY_KEY          = 30,
-    ROCK_KEY          = 31,
-    IRON_KEY          = 32,
-    STONE_KEY         = 33,
-    WOODEN_KEY        = 34,
-    ICE_KEY           = 35,
-    // 36 to 39: unused
+    WOODEN_KEY        = 30,
+    ICE_KEY           = 31,
+    IRON_GLOVE        = 32,
+    GOLDEN_GLOVE      = 33,
+    FIRE_STONE        = 34,
+
+    // 35 to 39: unused
 
     // 40 to 49: unused, reserved for the icons of the dungeons finished in quest status
 

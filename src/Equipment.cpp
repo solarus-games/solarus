@@ -757,6 +757,12 @@ void Equipment::add_bottle(void) {
   else if (!has_inventory_item(InventoryItem::BOTTLE_2)) {
     give_inventory_item(InventoryItem::BOTTLE_2);
   }
+  else if (!has_inventory_item(InventoryItem::BOTTLE_3)) {
+    give_inventory_item(InventoryItem::BOTTLE_3);
+  }
+  else if (!has_inventory_item(InventoryItem::BOTTLE_4)) {
+    give_inventory_item(InventoryItem::BOTTLE_4);
+  }
   else {
     DIE("The player already has all bottles");
   }
@@ -768,7 +774,9 @@ void Equipment::add_bottle(void) {
  */
 bool Equipment::has_empty_bottle(void) {
   return has_inventory_item(InventoryItem::BOTTLE_1) == 1
-    || has_inventory_item(InventoryItem::BOTTLE_2) == 1;
+    || has_inventory_item(InventoryItem::BOTTLE_2) == 1
+    || has_inventory_item(InventoryItem::BOTTLE_3) == 1
+    || has_inventory_item(InventoryItem::BOTTLE_4) == 1;
 }
 
 /**
@@ -783,6 +791,14 @@ InventoryItem::ItemId Equipment::get_first_empty_bottle(void) {
 
   if (has_inventory_item(InventoryItem::BOTTLE_2) == 1) {
     return InventoryItem::BOTTLE_2;
+  }
+
+  if (has_inventory_item(InventoryItem::BOTTLE_3) == 1) {
+    return InventoryItem::BOTTLE_3;
+  }
+
+  if (has_inventory_item(InventoryItem::BOTTLE_4) == 1) {
+    return InventoryItem::BOTTLE_4;
   }
 
   DIE("The player does not have an empty bottle");

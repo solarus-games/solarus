@@ -33,26 +33,26 @@ class InventoryItem {
     PEGASUS_SHOES               = 7,
     MYSTIC_MIRROR               = 8,
     CANE_OF_SOMARIA             = 9,
-    MAGIC_CAPE                  = 10,
-    GLOVE                       = 11, /**< 1: iron glove, 2: golden glove */
-    FIRE_STONES                 = 12,
+    APPLES                      = 10,
+    PAINS_AU_CHOCOLAT           = 11,
+    CROISSANTS                  = 12,
     BOTTLE_2                    = 13,
 
-    APPLES                      = 14,
-    PAINS_AU_CHOCOLAT           = 15,
-    CROISSANTS                  = 16,
+    ROCK_KEY                    = 14,
+    RED_KEY                     = 15,
+    CLAY_KEY                    = 16,
     L4_WAY_BONE_KEY             = 17, /**< 1: apple pie, 2: gold bars, 3: edelweiss, 4: bone key */
     FLIPPERS                    = 18,
-    RED_KEY                     = 19,
-    TODO_20                     = 20, /**< free slot for a new item (or bottle 3 if no need) */
+    MAGIC_CAPE                  = 19,
+    BOTTLE_3                    = 20,
 
-    CLAY_KEY                    = 21,
-    ROCK_KEY                    = 22,
-    IRON_KEY                    = 23,
-    STONE_KEY                   = 24,
-    WOODEN_KEY                  = 25,
-    ICE_KEY                     = 26,
-    TODO_27                     = 27,
+    IRON_KEY                    = 21,
+    STONE_KEY                   = 22,
+    WOODEN_KEY                  = 23,
+    ICE_KEY                     = 24,
+    GLOVE                       = 25, /**< 1: iron glove, 2: golden glove */
+    FIRE_STONES                 = 26,
+    BOTTLE_4                    = 27,
   };
 
  private:

@@ -118,7 +118,7 @@ void Link::start_sword_loading(void) {
  * The state must be SWORD_LOADING.
  */
 void Link::update_sword_loading(void) {
-  
+
   Uint8 *key_state = SDL_GetKeyState(NULL);
   
   Uint32 now = SDL_GetTicks();

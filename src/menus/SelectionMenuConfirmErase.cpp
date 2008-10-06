@@ -39,6 +39,7 @@ void SelectionMenuConfirmErase::handle_event(const SDL_Event &event) {
     switch (event.key.keysym.sym) {
 
     case SDLK_SPACE:
+    case SDLK_RETURN:
       if (cursor_position == 5) {
 	// the user chose "Yes"
 	ResourceManager::get_sound("boss_dead")->play();

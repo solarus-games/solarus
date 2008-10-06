@@ -14,12 +14,18 @@ class PauseSubmenuMap: public PauseSubmenu {
   static const SDL_Rect outside_world_minimap_size;
 
   // data
-  Dungeon *dungeon;           /**< the dungeon whose map is displayed, or NULL if we are not in a dungeon */
-  SDL_Rect link_position;     /**< position of Link on the minimap */
+  Dungeon *dungeon;            /**< the dungeon whose map is displayed, or NULL if we are not in a dungeon */
+  SDL_Rect link_position;      /**< position of Link on the minimap */
+
+  int world_minimap_visible_y; /**< when the world map is displayed: y position of the minimap visible rectangle */
+  int moving_visible_y;        /**< 0, -1 or 1 depending on the arrow pressed */
+  Uint32 next_moving_visible_y_date;
 
   // graphics
   SDL_Surface *world_map_img;
   Sprite *link_head_sprite;
+  Sprite *up_arrow_sprite;
+  Sprite *down_arrow_sprite;
 
  public:
 

@@ -975,8 +975,7 @@ next = _treasure_50.1
 [_treasure_50.1]
 #       |--------------------|
 line1 = "Tu peux l'afficher"
-line2 = "depuis l'écran"
-line3 = "Statut Quête."
+line2 = "dans l'écran Carte."
 
 [_treasure_52]
 # Grand sac de rubis

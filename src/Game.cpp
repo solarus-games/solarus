@@ -20,7 +20,7 @@
 #include "entities/EntityDetector.h"
 #include "movements/Movement8ByPlayer.h"
 
-const SDL_Rect Game::outside_world_size = {0, 0, 1024, 2048}; // TODO
+const SDL_Rect Game::outside_world_size = {0, 0, 4160, 7168}; // TODO
 
 /**
  * Creates a game.

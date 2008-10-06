@@ -46,8 +46,9 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
     int cursor_position = get_cursor_position();
     
     switch (event.key.keysym.sym) {
-      
+
     case SDLK_SPACE:
+    case SDLK_RETURN:
       if (cursor_position == 5) {
 	// the user chose "Quit"
 	zsdx->set_exiting();

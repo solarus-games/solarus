@@ -22,7 +22,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
   link_position = *map->get_location();
 
   if (dungeon == NULL) {
-    world_map_img = ResourceManager::load_image("menus/outside_world_map.png");
+
     set_caption_text("Carte du monde");
 
     const SDL_Rect *real_size = game->get_outside_world_size();
@@ -34,18 +34,34 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
 
     link_position.x = link_position.x * outside_world_minimap_size.w / real_size->w;
     link_position.y = link_position.y * outside_world_minimap_size.h / real_size->h;
+
+    if (game->get_equipment()->has_world_map()) {
+      world_map_img = ResourceManager::load_image("menus/outside_world_map.png");
+      world_minimap_visible_y = MIN(388 - 133, MAX(0, link_position.y - 66));
+    }
+    else {
+      world_map_img = ResourceManager::load_image("menus/outside_world_clouds.png");
+      world_minimap_visible_y = 0;
+    }
+    moving_visible_y = 0;
   }
   else {
     // TODO
   }
 
   link_position.x += 48 - 8;
-  link_position.y += 59 - 7;
+  link_position.y += 59 - 6;
 
   link_head_sprite = new Sprite("menus/link_head");
   ostringstream oss;
   oss << "tunic" << equipment->get_tunic();
   link_head_sprite->set_current_animation(oss.str());
+
+  up_arrow_sprite = new Sprite("menus/arrow");
+  up_arrow_sprite->set_current_direction(0);
+
+  down_arrow_sprite = new Sprite("menus/arrow");
+  down_arrow_sprite->set_current_direction(1);
 }
 
 /**
@@ -58,6 +74,8 @@ PauseSubmenuMap::~PauseSubmenuMap(void) {
   }
 
   delete link_head_sprite;
+  delete up_arrow_sprite;
+  delete down_arrow_sprite;
 }
 
 /**
@@ -76,6 +94,16 @@ void PauseSubmenuMap::key_pressed(const SDL_keysym &keysym) {
     pause_menu->show_right_submenu();
     break;
 
+  case SDLK_UP:
+    moving_visible_y = -1;
+    next_moving_visible_y_date = SDL_GetTicks();
+    break;
+
+  case SDLK_DOWN:
+    moving_visible_y = 1;
+    next_moving_visible_y_date = SDL_GetTicks();
+    break;
+
   default:
     break;
   }
@@ -85,7 +113,26 @@ void PauseSubmenuMap::key_pressed(const SDL_keysym &keysym) {
  * Updates this submenu.
  */
 void PauseSubmenuMap::update(void) {
+
   link_head_sprite->update_current_frame();
+  up_arrow_sprite->update_current_frame();
+  down_arrow_sprite->update_current_frame();
+
+  Uint8 *key_state = SDL_GetKeyState(NULL);
+  if (moving_visible_y == -1
+      && (!key_state[SDLK_UP] || world_minimap_visible_y == 0)) {
+    moving_visible_y = key_state[SDLK_DOWN] ? 1 : 0;
+  }
+  else if (moving_visible_y == 1
+	   && (!key_state[SDLK_DOWN] || world_minimap_visible_y == 388 - 133)) {
+    moving_visible_y = key_state[SDLK_UP] ? -1 : 0;
+  }
+
+  Uint32 now = SDL_GetTicks();
+  if (moving_visible_y != 0 && now >= next_moving_visible_y_date) {
+    world_minimap_visible_y += moving_visible_y;
+    next_moving_visible_y_date += 10;
+  }
 }
 
 /**
@@ -110,14 +157,32 @@ void PauseSubmenuMap::display(SDL_Surface *destination) {
  */
 void PauseSubmenuMap::display_world_map(SDL_Surface *destination) {
 
-  // display the map
-  SDL_Rect src_position = {0, 0, 225, 133};
+  // display the surface
+  SDL_Rect src_position = {0, world_minimap_visible_y, 225, 133};
   static SDL_Rect dst_position = {48, 59, 0, 0};
 
   SDL_BlitSurface(world_map_img, &src_position, destination, &dst_position);
 
-  // display Link's position
-  link_head_sprite->display(destination, link_position.x, link_position.y);
+  // if the player has the map
+  if (game->get_equipment()->has_world_map()) {
+
+    // display Link's position
+    int link_visible_y = link_position.y - world_minimap_visible_y;
+    if (link_visible_y >= 51 && link_visible_y <= 184) {
+      link_head_sprite->display(destination, link_position.x, link_position.y - world_minimap_visible_y);
+    }
+
+    // display the arrows
+    if (world_minimap_visible_y > 0) {
+      up_arrow_sprite->display(destination, 96, 55);
+      up_arrow_sprite->display(destination, 211, 55);
+    }
+
+    if (world_minimap_visible_y < 388 - 133) {
+      down_arrow_sprite->display(destination, 96, 188);
+      down_arrow_sprite->display(destination, 211, 188);
+    }
+  }
 }
 
 /**

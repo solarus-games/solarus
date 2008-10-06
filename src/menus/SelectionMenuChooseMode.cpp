@@ -39,6 +39,7 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
     switch (event.key.keysym.sym) {
 
     case SDLK_SPACE:
+    case SDLK_RETURN:
       if (adventure_mode) {
 	// the user chose "Adventure"
 	play_ok_sound();

@@ -46,7 +46,8 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     moving_visible_y = 0;
   }
   else {
-    // TODO
+    dungeon_map_background = ResourceManager::load_image("menus/dungeon_map_background.png");
+    dungeon_map_icons = ResourceManager::load_image("menus/dungeon_map_icons.png");    
   }
 
   link_position.x += 48 - 8;
@@ -72,6 +73,10 @@ PauseSubmenuMap::~PauseSubmenuMap(void) {
   if (dungeon == NULL) {
     SDL_FreeSurface(world_map_img);
   }
+  else {
+    SDL_FreeSurface(dungeon_map_background);
+    SDL_FreeSurface(dungeon_map_icons);
+  }
 
   delete link_head_sprite;
   delete up_arrow_sprite;
@@ -95,13 +100,23 @@ void PauseSubmenuMap::key_pressed(const SDL_keysym &keysym) {
     break;
 
   case SDLK_UP:
-    moving_visible_y = -1;
-    next_moving_visible_y_date = SDL_GetTicks();
+    if (dungeon == NULL) {
+
+      if (game->get_equipment()->has_world_map()) {
+	moving_visible_y = -1;
+	next_moving_visible_y_date = SDL_GetTicks();
+      }
+    }
     break;
 
   case SDLK_DOWN:
-    moving_visible_y = 1;
-    next_moving_visible_y_date = SDL_GetTicks();
+    if (dungeon == NULL) {
+
+      if (game->get_equipment()->has_world_map()) {
+	moving_visible_y = 1;
+	next_moving_visible_y_date = SDL_GetTicks();
+      }
+    }
     break;
 
   default:
@@ -118,20 +133,23 @@ void PauseSubmenuMap::update(void) {
   up_arrow_sprite->update_current_frame();
   down_arrow_sprite->update_current_frame();
 
-  Uint8 *key_state = SDL_GetKeyState(NULL);
-  if (moving_visible_y == -1
-      && (!key_state[SDLK_UP] || world_minimap_visible_y == 0)) {
-    moving_visible_y = key_state[SDLK_DOWN] ? 1 : 0;
-  }
-  else if (moving_visible_y == 1
-	   && (!key_state[SDLK_DOWN] || world_minimap_visible_y == 388 - 133)) {
-    moving_visible_y = key_state[SDLK_UP] ? -1 : 0;
-  }
+  if (dungeon == NULL) {
 
-  Uint32 now = SDL_GetTicks();
-  if (moving_visible_y != 0 && now >= next_moving_visible_y_date) {
-    world_minimap_visible_y += moving_visible_y;
-    next_moving_visible_y_date += 10;
+    Uint8 *key_state = SDL_GetKeyState(NULL);
+    if (moving_visible_y == -1
+	&& (!key_state[SDLK_UP] || world_minimap_visible_y == 0)) {
+      moving_visible_y = key_state[SDLK_DOWN] ? 1 : 0;
+    }
+    else if (moving_visible_y == 1
+	     && (!key_state[SDLK_DOWN] || world_minimap_visible_y == 388 - 133)) {
+      moving_visible_y = key_state[SDLK_UP] ? -1 : 0;
+    }
+
+    Uint32 now = SDL_GetTicks();
+    if (moving_visible_y != 0 && now >= next_moving_visible_y_date) {
+      world_minimap_visible_y += moving_visible_y;
+      next_moving_visible_y_date += 10;
+    }
   }
 }
 
@@ -191,4 +209,7 @@ void PauseSubmenuMap::display_world_map(SDL_Surface *destination) {
  */
 void PauseSubmenuMap::display_dungeon_map(SDL_Surface *destination) {
 
+  SDL_Rect dst_position = {48, 59};
+
+  SDL_BlitSurface(dungeon_map_background, NULL, destination, &dst_position);
 }

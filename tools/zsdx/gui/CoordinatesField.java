@@ -1,7 +1,6 @@
 package zsdx.gui;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -11,8 +10,8 @@ import javax.swing.event.*;
 public class CoordinatesField extends JPanel {
 
     // subcomponents
-    private JSpinner fieldX;
-    private JSpinner fieldY;
+    protected JSpinner fieldX;
+    protected JSpinner fieldY;
     
     /**
      * Constructor.
@@ -50,29 +49,6 @@ public class CoordinatesField extends JPanel {
     public void setEnabled(boolean enable) {
 	fieldX.setEnabled(enable);
 	fieldY.setEnabled(enable);
-    }
-    
-    /**
-     * Adds an action listener to the two number fields.
-     * @param actionListener the action listener to add
-     */
-    public void addActionListener(final ActionListener actionListener) {
-
-	// add the action listener to the two text fields
-	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) fieldX.getEditor();
-	editor.getTextField().addActionListener(actionListener);
-
-	editor = (JSpinner.DefaultEditor) fieldY.getEditor();
-	editor.getTextField().addActionListener(actionListener);
-
-	// create a corresponding change listener to the arrows
-	ChangeListener changeListener = new ChangeListener() {
-	    public void stateChanged(ChangeEvent arg0) {
-		actionListener.actionPerformed(null);		
-	    }
-	};
-	fieldX.addChangeListener(changeListener);
-	fieldY.addChangeListener(changeListener);
     }
 
     /**
@@ -141,7 +117,9 @@ public class CoordinatesField extends JPanel {
      * @param x the new x value
      */
     public void setXValue(int x) {
-	fieldX.setValue(new Integer(x));
+	if (x != getXValue()) {
+	    fieldX.setValue(new Integer(x));
+	}
     }
 
     /**
@@ -149,7 +127,9 @@ public class CoordinatesField extends JPanel {
      * @param y the new y value
      */
     public void setYValue(int y) {
-	fieldY.setValue(new Integer(y));
+	if (y != getYValue()) {
+	    fieldY.setValue(new Integer(y));
+	}
     }
 
     /**
@@ -168,5 +148,36 @@ public class CoordinatesField extends JPanel {
      */
     public void setCoordinates(Point p) {
 	setCoordinates(p.x, p.y);
+    }
+
+    /**
+     * Adds a change listener to the two number fields.
+     * @param changeListener the change listener to add
+     */
+    public void addChangeListener(final ChangeListener changeListener) {
+
+	// add the change listener to the arrows
+	fieldX.addChangeListener(changeListener);
+	fieldY.addChangeListener(changeListener);
+    }
+
+    /**
+     * Compares the x or y value stored with a specified x or y value, depending on
+     * the source of a change event.
+     * @param changeEvent a change event received
+     * @param x x value to compare if the source of changeEvent is the x field
+     * @param y y value to compare if the source of changeEvent is the y field
+     * @return true if the x or y value if different to x or y
+     */
+    public boolean hasChanged(ChangeEvent changeEvent, int x, int y) {
+
+	boolean result;
+	if (changeEvent.getSource() == fieldX) {
+	    result = (getXValue() != x);
+	}
+	else {
+	    result = (getYValue() != y);
+	}
+	return result;
     }
 }

@@ -15,3 +15,16 @@ floor = -1
 x = 128
 y = 216
 save = 14
+
+[dungeon_1.map_0.chest_0]
+floor = 0
+x = 200
+y = 136
+savegameIndex = 10
+
+[dungeon_1.map_0.chest_1]
+floor = 0
+x = 320
+y = 160
+savegameIndex = 11
+

@@ -199,7 +199,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 	nameField.update(map);
 	worldField.update(map);
 	sizeField.update(map);
-	worldField.update(map);
 	floorField.update(map);
 	locationField.update(map);
 	enableSmallKeysField.update(map);
@@ -288,26 +287,27 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    super();
 	    setMinimum(Map.MINIMUM_WIDTH, Map.MINIMUM_HEIGHT);
 	    setStepSize(8, 8);
-	    
-	    addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent ev) {
 
-			try {
-			    Point coords = getCoordinates();
-			    Dimension size = new Dimension(coords.x, coords.y);
-			    if (!size.equals(map.getSize())) {
-				map.getHistory().doAction(new ActionChangeMapSize(map, size));
-			    }
-			}
-			catch (NumberFormatException ex) {
+	    addChangeListener(new ChangeListener() {
+		public void stateChanged(ChangeEvent ev) {
 
+		    try {
+			Point coords = getCoordinates();
+			Dimension size = new Dimension(coords.x, coords.y);
+
+			if (hasChanged(ev, map.getWidth(), map.getHeight())) {
+			    map.getHistory().doAction(new ActionChangeMapSize(map, size));
 			}
-			catch (ZSDXException ex) {
-			    GuiTools.errorDialog("Cannot change the map size: " + ex.getMessage());
-			}
-			update(map);
 		    }
-		});
+		    catch (NumberFormatException ex) {
+
+		    }
+		    catch (ZSDXException ex) {
+			GuiTools.errorDialog("Cannot change the map size: " + ex.getMessage());
+		    }
+		    update(map);
+		}
+	    });
 	}
 
 	/**
@@ -523,7 +523,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the map location.
      */
-    private class LocationField extends CoordinatesField implements ActionListener {
+    private class LocationField extends CoordinatesField implements ChangeListener {
 
 	/**
 	 * Constructor.
@@ -533,19 +533,20 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    setMinimum(0, 0);
 	    setStepSize(8, 8);
 	    
-	    addActionListener(this);
+	    addChangeListener(this);
 	}
 
 	/**
 	 * This method is called when the user changes the value of this field.
 	 */
-	public void actionPerformed(ActionEvent ev) {
+	public void stateChanged(ChangeEvent ev) {
 
 	    final Point selectedLocation = getCoordinates();
 	    final Point currentLocation = map.getLocation();
 
 	    try {
-		if (!selectedLocation.equals(currentLocation)) {
+		if (hasChanged(ev, currentLocation.x, currentLocation.y)) {
+
 		    map.getHistory().doAction(new MapEditorAction() {
 
 			private final Map map = MapPropertiesView.this.map;

@@ -14,6 +14,8 @@ class PauseSubmenuMap: public PauseSubmenu {
   static const SDL_Rect outside_world_minimap_size;
 
   // data
+  Equipment *equipment;        /**< general equipment */
+  DungeonEquipment *dungeon_equipment;        /**< dungeon equipment */
   Dungeon *dungeon;            /**< the dungeon whose map is displayed, or NULL if we are not in a dungeon */
   SDL_Rect link_position;      /**< position of Link on the minimap */
 
@@ -31,6 +33,11 @@ class PauseSubmenuMap: public PauseSubmenu {
   // dungeon map
   SDL_Surface *dungeon_map_background;
   SDL_Surface *dungeon_map_icons;
+  Counter *small_keys_counter;
+
+  SDL_Surface *dungeon_floors_img;
+  int link_floor, highest_floor, lowest_floor, nb_floors;
+  int nb_floors_displayed, highest_floor_displayed, selected_floor;
 
  public:
 
@@ -42,6 +49,8 @@ class PauseSubmenuMap: public PauseSubmenu {
   void display(SDL_Surface *destination);
   void display_world_map(SDL_Surface *destination);
   void display_dungeon_map(SDL_Surface *destination);
+  void display_dungeon_items(SDL_Surface *destination);
+  void display_dungeon_floors(SDL_Surface *destination);
 };
 
 #endif

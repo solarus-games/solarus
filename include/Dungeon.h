@@ -37,12 +37,20 @@ class Dungeon {
 
  public:
 
+  // creation and destruction
   Dungeon(int dungeon_number);
   ~Dungeon(void);
 
+  string get_name(void);
+
+  // floors
   int get_nb_floors(void);
   int get_lowest_floor(void);
   int get_highest_floor(void);
+
+  // displaying (for the hud and the dungeon map submenu)
+  int get_nb_floors_displayed(void);
+  int get_highest_floor_displayed(int current_floor);
 };
 
 #endif

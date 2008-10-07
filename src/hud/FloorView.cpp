@@ -75,31 +75,9 @@ void FloorView::rebuild(void) {
 
       Dungeon *dungeon = game->get_current_dungeon();
       highest_floor = dungeon->get_highest_floor();
-      int lowest_floor = dungeon->get_lowest_floor();
-      int nb_floors = dungeon->get_nb_floors();
 
-      int nb_floors_displayed;
-
-      // if the number of floor is less than or equal to 7, we display all floors
-      if (nb_floors <= 7) {
-	nb_floors_displayed = nb_floors;
-	highest_floor_displayed = highest_floor;
-      }
-
-      // otherwise we only display 7 floors including the current one
-      else {	
-	nb_floors_displayed = 7;
-
-	if (current_floor >= highest_floor - 2) {
-	  highest_floor_displayed = highest_floor;	  
-	}
-	else if (current_floor <= lowest_floor + 2) {
-	  highest_floor_displayed = lowest_floor + 6;
-	}
-	else {
-	  highest_floor_displayed = current_floor + 3;
-	}
-      }
+      int nb_floors_displayed = dungeon->get_nb_floors_displayed();
+      highest_floor_displayed = dungeon->get_highest_floor_displayed(current_floor);
 
       /*
       cout << "lowest_floor: " << lowest_floor

@@ -36,7 +36,7 @@ class PauseSubmenuMap: public PauseSubmenu {
   Counter *small_keys_counter;
 
   SDL_Surface *dungeon_floors_img;
-  int link_floor, highest_floor, lowest_floor, nb_floors;
+  int link_floor, boss_floor, highest_floor, lowest_floor, nb_floors;
   int nb_floors_displayed, highest_floor_displayed, selected_floor;
 
  public:

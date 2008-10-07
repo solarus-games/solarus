@@ -12,14 +12,8 @@
  */
 class Dungeon {
 
- private:
-
-  int dungeon_number;             /**< dungeon number, between 1 and 20 */
-
-  // floors
-  int lowest_floor;               /**< lowest floor number, between -16 and 15 */
-  vector<SDL_Rect> floor_sizes;   /**< size of each floor */
-
+ public:
+  
   // elements of each floor: chests, minibosses, boss
   struct DungeonElement {
     int savegame_variable;
@@ -28,8 +22,16 @@ class Dungeon {
     int y;
   };
 
-  vector<DungeonElement> *chests;      /**< properties of each chest for each floor */
 
+ private:
+
+  int dungeon_number;             /**< dungeon number, between 1 and 20 */
+
+  // floors
+  int lowest_floor;               /**< lowest floor number, between -16 and 15 */
+  vector<SDL_Rect> floor_sizes;   /**< size of each floor */
+
+  vector<DungeonElement> *chests;      /**< properties of each chest for each floor */
   vector<DungeonElement> *minibosses;  /**< properties of each miniboss for each floor */
   DungeonElement boss;                 /**< properties of the boss */
 
@@ -48,9 +50,12 @@ class Dungeon {
   int get_lowest_floor(void);
   int get_highest_floor(void);
 
-  // displaying (for the hud and the dungeon map submenu)
+  // displaying floors (for the hud and the dungeon map submenu)
   int get_nb_floors_displayed(void);
   int get_highest_floor_displayed(int current_floor);
+
+  // dungeon elements
+  DungeonElement *get_boss(void);
 };
 
 #endif

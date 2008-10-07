@@ -207,3 +207,11 @@ int Dungeon::get_highest_floor_displayed(int current_floor) {
 
   return highest_floor_displayed;
 }
+
+/**
+ * Returns the information about the boss of this dungeon.
+ * @return the information about the boss
+ */
+Dungeon::DungeonElement * Dungeon::get_boss(void) {
+  return &boss;
+}

@@ -16,13 +16,9 @@ public class Dungeon {
 
     private int lowestFloor;
     private Vector<Dimension> floorSizes;
-/*
-    private Vector<DungeonElement> chests;
-    private Vector<DungeonElement> minibosses;
-    private DungeonElement boss;
-*/
+
     private int nbChestsSaved;
-    private int nbMinibossesSaved;
+    private int nbBossesSaved;
 
     /**
      * Creates a dungeon and loads it from file dungeons.zsd.
@@ -51,14 +47,9 @@ public class Dungeon {
 	    lowestFloor = 100;
 	    floorSizes = new Vector<Dimension>();
 
-	    /*
-	    chests = new Vector<DungeonElement>();
-	    minibosses = new Vector<DungeonElement>();
-	    */
-
 	    Ini ini = new Ini(new FileReader(fileName));
 
-	    // parse the floors (the floors must be before the chests, minibosses and boss)
+	    // parse the floors (the floors must be before the chests and the bosses)
 	    String floorPrefix = "dungeon_" + dungeonNumber + ".floor_";
 	    for (Ini.Section section: ini.values()) {
 		String sectionName = section.getName();
@@ -75,36 +66,6 @@ public class Dungeon {
 		    }
 		}
 	    }
-
-	    // parse the dungeon elements: chests, minibosses, boss
-	    /* useless in the editor, actually!
-	    String elementsPrefix = "dungeon_" + dungeonNumber + ".map_";
-	    for (Ini.Section section: ini.values()) {
-		String sectionName = section.getName();
-		if (sectionName.startsWith(elementsPrefix)) {
-
-		    String suffix = sectionName.substring(floorPrefix.length());
-		    DungeonElement element = new DungeonElement();
-		    element.floor = Integer.parseInt(section.get("floor"));
-		    element.x = Integer.parseInt(section.get("x"));
-		    element.y = Integer.parseInt(section.get("y"));
-		    element.savegameIndex = Integer.parseInt(section.get("save"));
-
-		    if (suffix.contains("chest")) {
-			chests.add(element);
-		    }
-		    else if (suffix.contains("miniboss")) {
-			minibosses.add(element);
-		    }
-		    else if (suffix.contains("boss")) {
-			boss = element;
-		    }
-		    else {
-			throw new IllegalArgumentException("Unknown element " + sectionName);
-		    }
-		}
-	    }
-	    */
 	}
 	catch (IOException ex) {
 	    System.err.println("Cannot load the dungeon file " + fileName + ": " + ex.getMessage());
@@ -149,7 +110,7 @@ public class Dungeon {
     }
 
     /**
-     * Removes from file dungeons.zmc any element (chests, minibosses or boss)
+     * Removes from file dungeons.zmc any element (chests, or bosses)
      * referencing the specified map.
      * @param ini the ini file
      * @param map a map
@@ -166,7 +127,7 @@ public class Dungeon {
     }
 
     /**
-     * Saves in file dungeons.zmc the dungeon elements (chests, minibosses or boss)
+     * Saves in file dungeons.zmc the dungeon elements (chests and bosses)
      * of the specified map.
      * @param ini the ini file
      * @param map a map
@@ -174,7 +135,7 @@ public class Dungeon {
     private void saveDungeonElements(Ini ini, Map map) throws IOException {
 
 	nbChestsSaved = 0;
-	nbMinibossesSaved = 0;
+	nbBossesSaved = 0;
 
 	MapEntities[] allEntities = map.getAllEntities();
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
@@ -183,7 +144,7 @@ public class Dungeon {
 		if (entity instanceof Chest) {
 		    Chest chest = (Chest) entity;
 		    saveDungeonElement(ini, map, "chest_" + nbChestsSaved,
-			    chest.getX(), chest.getY(), chest.getSavegameIndex());
+			    chest.getX(), chest.getY(), chest.getSavegameIndex(), chest.isBigChest());
 		    nbChestsSaved++;
 		}
 		// TODO: miniboss, boss
@@ -198,9 +159,10 @@ public class Dungeon {
      * @param name name of this element (ex: "chest_4", "miniboss_1" or "boss")
      * @param x x position of the element
      * @param y y position of the element
+     * @param big is this a big chest/boss
      * @param savegameIndex index of the boolean that stores this element's state
      */
-    private void saveDungeonElement(Ini ini, Map map, String name, int x, int y, int savegameIndex) {
+    private void saveDungeonElement(Ini ini, Map map, String name, int x, int y, int savegameIndex, boolean big) {
 
 	StringBuffer sectionName = new StringBuffer();
 	sectionName.append("dungeon_");
@@ -216,6 +178,7 @@ public class Dungeon {
 	section.put("x", Integer.toString(x));
 	section.put("y", Integer.toString(y));
 	section.put("savegameIndex", Integer.toString(savegameIndex));
+	section.put("big", big ? "1" : "0");
 
 	ini.put(sectionName.toString(), section);
     }
@@ -277,20 +240,4 @@ public class Dungeon {
     public boolean hasFloor(int floor) {
 	return floor >= getLowestFloor() && floor <= getHighestFloor();
     }
-
-    /**
-     * Describes an element of the dungeon (chest, miniboss or boss)
-     * as specified in the dungeons.zsd file.
-     */
-    /*
-    private class DungeonElement {
-        public int floor;
-        public int x;
-        public int y;
-        public int savegameIndex;
-
-        public DungeonElement() {
-            
-        }
-    }*/
 }

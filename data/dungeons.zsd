@@ -1,9 +1,10 @@
-[dungeon_1.floor_-7]
-[dungeon_1.floor_-6]
-[dungeon_1.floor_-5]
-[dungeon_1.floor_-4]
-[dungeon_1.floor_-3]
-[dungeon_1.floor_-2]
+# tests:
+#[dungeon_1.floor_-7]
+#[dungeon_1.floor_-6]
+#[dungeon_1.floor_-5]
+#[dungeon_1.floor_-4]
+#[dungeon_1.floor_-3]
+#[dungeon_1.floor_-2]
 
 [dungeon_1.floor_-1]
 width = 960
@@ -23,6 +24,12 @@ x = 128
 y = 216
 save = 14
 
+[dungeon_1.map_18.boss]
+floor = -1
+x = 200
+y = 200
+savegameIndex = 205
+
 [dungeon_1.map_0.chest_0]
 floor = 0
 x = 200
@@ -34,4 +41,3 @@ floor = 0
 x = 320
 y = 160
 savegameIndex = 11
-

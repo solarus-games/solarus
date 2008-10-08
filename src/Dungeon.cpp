@@ -42,6 +42,14 @@ Dungeon::~Dungeon(void) {
 }
 
 /**
+ * Returns this dungeon number.
+ * @return the dungeon number, between 1 and 20
+ */
+int Dungeon::get_number(void) {
+  return dungeon_number;
+}
+
+/**
  * Returns the name of the dungeon, in the current langage.
  * @return the dungeon name
  */
@@ -168,6 +176,15 @@ int Dungeon::get_lowest_floor(void) {
  */
 int Dungeon::get_highest_floor(void) {
   return get_lowest_floor() + get_nb_floors() - 1;
+}
+
+/**
+ * Returns the size of the specified floor.
+ * @param floor a floor of this dungeon
+ * @return the size of this floor
+ */
+const SDL_Rect * Dungeon::get_floor_size(int floor) {
+  return &floor_sizes[floor - get_lowest_floor()];
 }
 
 /**

@@ -41,6 +41,9 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     link_position.x = link_position.x * outside_world_minimap_size.w / real_size->w;
     link_position.y = link_position.y * outside_world_minimap_size.h / real_size->h;
 
+    link_position.x += 48 - 8;
+    link_position.y += 59 - 6;
+
     if (equipment->has_world_map()) {
       world_map_img = ResourceManager::load_image("menus/outside_world_map.png");
       world_minimap_visible_y = MIN(388 - 133, MAX(0, link_position.y - 66));
@@ -61,7 +64,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     dungeon_map_background = ResourceManager::load_image("menus/dungeon_map_background.png");
     dungeon_map_icons = ResourceManager::load_image("menus/dungeon_map_icons.png");
 
-    small_keys_counter = new Counter(2, false, 126, 182);
+    small_keys_counter = new Counter(2, false, 124, 182);
     small_keys_counter->set_value(equipment->get_small_keys());
 
     // floors
@@ -77,10 +80,33 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     nb_floors_displayed = dungeon->get_nb_floors_displayed();
     highest_floor_displayed = dungeon->get_highest_floor_displayed(link_floor);
     selected_floor = link_floor;
-  }
 
-  link_position.x += 48 - 8;
-  link_position.y += 59 - 6;
+    // map
+    dungeon_map_img = NULL;
+    if (dungeon_equipment->has_map()) {
+      load_dungeon_map_image();
+    }
+
+    // Link's position
+    if (dungeon_equipment->has_compass()) {
+
+      link_point_sprite = new Sprite("menus/link_point");
+
+      const SDL_Rect *floor_size = dungeon->get_floor_size(selected_floor);
+
+      link_position.x += game->get_link()->get_x();
+      link_position.y += game->get_link()->get_y();
+
+      link_position.x = link_position.x * 123 / floor_size->w;
+      link_position.y = link_position.y * 199 / floor_size->h;
+
+      link_position.x += 48 - 1;
+      link_position.y += 59 - 1;
+    }
+    else {
+      link_point_sprite = NULL;
+    }
+  }
 
   link_head_sprite = new Sprite("menus/link_head");
   ostringstream oss;
@@ -107,11 +133,34 @@ PauseSubmenuMap::~PauseSubmenuMap(void) {
     SDL_FreeSurface(dungeon_map_icons);
     SDL_FreeSurface(dungeon_floors_img);
     delete small_keys_counter;
+
+    if (dungeon_map_img != NULL) {
+      SDL_FreeSurface(dungeon_map_img);
+    }
+
+    if (link_point_sprite != NULL) {
+      delete link_point_sprite;
+    }
   }
 
   delete link_head_sprite;
   delete up_arrow_sprite;
   delete down_arrow_sprite;
+}
+
+/**
+ * Deletes any previous dungeon map image and loads the image
+ * corresponding to the selected floor.
+ */
+void PauseSubmenuMap::load_dungeon_map_image(void) {
+
+  if (dungeon_map_img != NULL) {
+    SDL_FreeSurface(dungeon_map_img);
+  }
+
+  ostringstream oss;
+  oss << "dungeons/map" << dungeon->get_number() << "_" << selected_floor << ".png";
+  dungeon_map_img = ResourceManager::load_image(oss.str());
 }
 
 /**
@@ -150,6 +199,7 @@ void PauseSubmenuMap::key_pressed(const SDL_keysym &keysym) {
 	ResourceManager::get_sound("cursor")->play();
 	link_head_sprite->restart_animation();
 	selected_floor = new_selected_floor;
+	load_dungeon_map_image();
 
 	if (selected_floor <= highest_floor_displayed - 7) {
 	  highest_floor_displayed--;
@@ -262,7 +312,18 @@ void PauseSubmenuMap::display_dungeon_map(SDL_Surface *destination) {
   display_dungeon_floors(destination);
 
   // show the map itself
-  // TODO
+  if (dungeon_map_img != NULL) {
+    SDL_Rect dst_position = {143, 66};
+    SDL_BlitSurface(dungeon_map_img, NULL, destination, &dst_position);
+  }
+
+  if (dungeon_equipment->has_compass()) {
+
+    // display Link's position
+    if (link_floor == selected_floor) {
+      link_point_sprite->display(destination, link_position.x, link_position.y);
+    }
+  }
 }
 
 /**
@@ -288,20 +349,20 @@ void PauseSubmenuMap::display_dungeon_items(SDL_Surface *destination) {
   // big key
   if (dungeon_equipment->has_big_key()) {
     SDL_Rect src_position = {34, 0, 17, 17};
-    SDL_Rect dst_position = {91, 168};
+    SDL_Rect dst_position = {90, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 
   // boss key
   if (dungeon_equipment->has_boss_key()) {
     SDL_Rect src_position = {51, 0, 17, 17};
-    SDL_Rect dst_position = {110, 168};
+    SDL_Rect dst_position = {109, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 
   // small keys
   SDL_Rect src_position = {68, 0, 9, 17};
-  SDL_Rect dst_position = {128, 168};
+  SDL_Rect dst_position = {126, 168};
   SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   small_keys_counter->display(destination);
 }
@@ -341,12 +402,21 @@ void PauseSubmenuMap::display_dungeon_floors(SDL_Surface *destination) {
   // display the boss icon
   if (boss_floor >= lowest_floor_displayed && boss_floor <= highest_floor_displayed) {
 
-    int dst_y = dst_y + (highest_floor_displayed - boss_floor) * 12 + 2;
+    int boss_y = dst_y + (highest_floor_displayed - boss_floor) * 12 + 3;
 
     SDL_Rect src_position = {78, 0, 8, 8};
-    SDL_Rect dst_position = {113, dst_y};
+    SDL_Rect dst_position = {113, boss_y};
 
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
+  }
+
+  // display the arrows
+  if (lowest_floor_displayed > lowest_floor) {
+    down_arrow_sprite->display(destination, 89, 151);
+  }
+
+  if (highest_floor_displayed < highest_floor) {
+    up_arrow_sprite->display(destination, 89, 66);
   }
 }
 

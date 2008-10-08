@@ -61,7 +61,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     dungeon_map_background = ResourceManager::load_image("menus/dungeon_map_background.png");
     dungeon_map_icons = ResourceManager::load_image("menus/dungeon_map_icons.png");
 
-    small_keys_counter = new Counter(2, false, 127, 182);
+    small_keys_counter = new Counter(2, false, 126, 182);
     small_keys_counter->set_value(equipment->get_small_keys());
 
     // floors
@@ -274,34 +274,34 @@ void PauseSubmenuMap::display_dungeon_items(SDL_Surface *destination) {
   // map
   if (dungeon_equipment->has_map()) {
     SDL_Rect src_position = {0, 0, 17, 17};
-    SDL_Rect dst_position = {51, 168};
+    SDL_Rect dst_position = {50, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 
   // compass
   if (dungeon_equipment->has_compass()) {
     SDL_Rect src_position = {17, 0, 17, 17};
-    SDL_Rect dst_position = {71, 168};
+    SDL_Rect dst_position = {70, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 
   // big key
   if (dungeon_equipment->has_big_key()) {
     SDL_Rect src_position = {34, 0, 17, 17};
-    SDL_Rect dst_position = {92, 168};
+    SDL_Rect dst_position = {91, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 
   // boss key
   if (dungeon_equipment->has_boss_key()) {
     SDL_Rect src_position = {51, 0, 17, 17};
-    SDL_Rect dst_position = {111, 168};
+    SDL_Rect dst_position = {110, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 
   // small keys
   SDL_Rect src_position = {68, 0, 9, 17};
-  SDL_Rect dst_position = {129, 168};
+  SDL_Rect dst_position = {128, 168};
   SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   small_keys_counter->display(destination);
 }

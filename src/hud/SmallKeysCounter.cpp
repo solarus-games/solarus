@@ -38,7 +38,7 @@ void SmallKeysCounter::update(void) {
 
   // enable or disable the counter
   if (counter == NULL && equipment->are_small_keys_enabled()) {
-    counter = new Counter(2, false, 10, 4);
+    counter = new Counter(2, false, 8, 8);
     need_rebuild = true;
   }
   else if (counter != NULL && !equipment->are_small_keys_enabled()) {

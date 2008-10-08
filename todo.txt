@@ -7,12 +7,9 @@
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
 
-- Bugs : TargetMovement ne s'arrête pas à la cible quand il va trop vite - mémoriser le signe du movement en x et en y, et s'arrêter quand la cible est dépassée (et non quand on est dessus)
-
 - Prochaines grandes étapes :
   - collision au pixel près
   - couper des buissons et des herbes
-  - écran de pause
   - combats
   - scripts
   - portes

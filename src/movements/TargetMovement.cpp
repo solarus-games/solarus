@@ -7,7 +7,7 @@
  * @param target_y y coordinate of the target point
  */
 TargetMovement::TargetMovement(int speed, int target_x, int target_y):
-  speed(speed), target_x(target_x), target_y(target_y) {
+  speed(speed), target_x(target_x), target_y(target_y), sign_x(0), sign_y(0) {
   
 }
 
@@ -26,12 +26,7 @@ void TargetMovement::update(void) {
   int dx = target_x - get_x();
   int dy = target_y - get_y();
 
-  // see if we are on the target
-  if (abs(dx) <= 8 && abs(dy) <= 8) {
-    stop();
-  }
-  else if (is_stopped()) {
-
+  if (sign_x == 0) {
     // not started yet: compute the direction
 
     double angle;
@@ -46,8 +41,17 @@ void TargetMovement::update(void) {
       // special case (cannot divide by zero and compute atan)
       angle = (dx > 0) ? 0 : PI_OVER_2;
     }
+
+    sign_x = dx >= 0 ? 1 : -1;
+    sign_y = dy >= 0 ? 1 : -1;
+
     set_speed(speed);
     set_direction(angle);
+  }
+
+  // see if the target is reached
+  else if (dx * sign_x <= 0 && dy * sign_y <= 0) {
+    stop();
   }
 
   Movement::update();

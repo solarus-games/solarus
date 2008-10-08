@@ -116,7 +116,7 @@ void ItemIcon::update(void) {
 void ItemIcon::rebuild(void) {
 
   HudElement::rebuild();
-  
+
   // background image
   SDL_BlitSurface(background_img, NULL, surface_drawn, NULL);
 

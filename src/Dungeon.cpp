@@ -25,7 +25,7 @@ static const string dungeon_names[] = {
  * @param dungeon_number a dungeon number between 1 and 20
  */
 Dungeon::Dungeon(int dungeon_number):
-  dungeon_number(dungeon_number), chests(NULL), minibosses(NULL) {
+  dungeon_number(dungeon_number), chests(NULL), bosses(NULL) {
 
   this->dungeon_number = dungeon_number;
   load();
@@ -37,7 +37,7 @@ Dungeon::Dungeon(int dungeon_number):
 Dungeon::~Dungeon(void) {
   if (chests != NULL) {
     delete[] chests;
-    delete[] minibosses;
+    delete[] bosses;
   }
 }
 
@@ -70,7 +70,7 @@ void Dungeon::load(void) {
     DIE("Cannot load the dungeon file '" << file_name << "': " << CFG_GetError());
   }
 
-  // parse the floors (the floors must be before the chests, minibosses and boss)
+  // parse the floors (the floors must be before the chests and the bosses)
   ostringstream floor_oss;
   floor_oss << "dungeon_" << dungeon_number << ".floor_";
   string floor_prefix = floor_oss.str();
@@ -103,9 +103,9 @@ void Dungeon::load(void) {
   // now we now how many floors there are
   int nb_floors = get_nb_floors();
   chests = new vector<DungeonElement>[nb_floors];
-  minibosses = new vector<DungeonElement>[nb_floors];
+  bosses = new vector<DungeonElement>[nb_floors];
 
-  // parse the rest: chests, minibosses, boss
+  // parse the rest: chests and bosses
   string elements_prefix;
   ostringstream elements_oss;
   elements_oss << "dungeon_" << dungeon_number << ".map_";
@@ -125,27 +125,25 @@ void Dungeon::load(void) {
 	chest.x = CFG_ReadInt("x", 0);
 	chest.y = CFG_ReadInt("y", 0);
 	chest.savegame_variable = CFG_ReadInt("save", 0);
+	chest.big = CFG_ReadBool("big", 0);
 
 	chests[chest.floor - lowest_floor].push_back(chest);
       }
 
-      // is it a miniboss?
-      else if (suffix.find("miniboss") != string::npos) {
-	DungeonElement miniboss;
-	miniboss.floor = CFG_ReadInt("floor", 0);
-	miniboss.x = CFG_ReadInt("x", 0);
-	miniboss.y = CFG_ReadInt("y", 0);
-	miniboss.savegame_variable = CFG_ReadInt("save", 0);
-
-	minibosses[miniboss.floor - lowest_floor].push_back(miniboss);
-      }
-
-      // is it the boss?
+      // is it a boss or a miniboss?
       else if (suffix.find("boss") != string::npos) {
+	DungeonElement boss;
 	boss.floor = CFG_ReadInt("floor", 0);
 	boss.x = CFG_ReadInt("x", 0);
 	boss.y = CFG_ReadInt("y", 0);
 	boss.savegame_variable = CFG_ReadInt("save", 0);
+	boss.big = CFG_ReadBool("big", false);
+
+	if (boss.big) {
+	  boss_floor = boss.floor;
+	}
+
+	chests[boss.floor - lowest_floor].push_back(boss);
       }
     }
   }
@@ -226,9 +224,29 @@ int Dungeon::get_highest_floor_displayed(int current_floor) {
 }
 
 /**
- * Returns the information about the boss of this dungeon.
- * @return the information about the boss
+ * Returns the floor where the boss of this dungeon is.
+ * @return the floor of the boss
  */
-Dungeon::DungeonElement * Dungeon::get_boss(void) {
-  return &boss;
+int Dungeon::get_boss_floor(void) {
+  return boss_floor;
+}
+
+/**
+ * Returns the information about the bosses and the minibosses
+ * of this dungeon that are on the specified floor.
+ * @param floor a floor of this dungeon
+ * @return the information about the bosses and minibosses of this floor
+ */
+const vector<Dungeon::DungeonElement> Dungeon::get_bosses(int floor) {
+  return bosses[floor - get_lowest_floor()];
+}
+
+/**
+ * Returns the information about the chests
+ * of this dungeon that are on the specified floor.
+ * @param floor a floor of this dungeon
+ * @return the information about the chests of this floor
+ */
+const vector<Dungeon::DungeonElement> Dungeon::get_chests(int floor) {
+  return chests[floor - get_lowest_floor()];
 }

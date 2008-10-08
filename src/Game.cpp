@@ -76,6 +76,10 @@ Game::~Game(void) {
     delete treasure;
   }
 
+  if (dungeon != NULL) {
+    delete dungeon;
+  }
+
   delete keys_effect;
   delete keyboard;
   delete hud;

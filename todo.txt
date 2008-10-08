@@ -6,6 +6,7 @@
 - Voir les boss de Pyro
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
+- Renommer les savegame_index en savegame_variable et les update_current_frame en update
 
 - Prochaines grandes étapes :
   - collision au pixel près

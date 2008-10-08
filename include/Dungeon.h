@@ -14,14 +14,14 @@ class Dungeon {
 
  public:
   
-  // elements of each floor: chests, minibosses, boss
+  // elements of each floor: chests and bosses
   struct DungeonElement {
     int savegame_variable;
     int floor;
     int x;
     int y;
+    bool big; // to distinguish big chests from normal chests and big bosses from minibosses
   };
-
 
  private:
 
@@ -31,9 +31,9 @@ class Dungeon {
   int lowest_floor;               /**< lowest floor number, between -16 and 15 */
   vector<SDL_Rect> floor_sizes;   /**< size of each floor */
 
-  vector<DungeonElement> *chests;      /**< properties of each chest for each floor */
-  vector<DungeonElement> *minibosses;  /**< properties of each miniboss for each floor */
-  DungeonElement boss;                 /**< properties of the boss */
+  vector<DungeonElement> *chests; /**< properties of each chest for each floor */
+  vector<DungeonElement> *bosses; /**< properties of each miniboss and boss for each floor */
+  int boss_floor;                 /**< floor of the boss */
 
   void load(void);
 
@@ -57,7 +57,9 @@ class Dungeon {
   int get_highest_floor_displayed(int current_floor);
 
   // dungeon elements
-  DungeonElement *get_boss(void);
+  int get_boss_floor(void);
+  const vector<DungeonElement> get_bosses(int floor);
+  const vector<DungeonElement> get_chests(int floor);
 };
 
 #endif

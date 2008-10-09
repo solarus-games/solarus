@@ -42,9 +42,6 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     link_position.x = link_position.x * outside_world_minimap_size.w / real_size->w;
     link_position.y = link_position.y * outside_world_minimap_size.h / real_size->h;
 
-    link_position.x += 48 - 8;
-    link_position.y += 59 - 6;
-
     if (equipment->has_world_map()) {
       world_map_img = ResourceManager::load_image("menus/outside_world_map.png");
       world_minimap_visible_y = MIN(388 - 133, MAX(0, link_position.y - 66));
@@ -54,6 +51,11 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
       world_minimap_visible_y = 0;
     }
     moving_visible_y = 0;
+
+    link_position.x += 48 - 8;
+    link_position.y += 59 - 6;
+
+    link_point_sprite = NULL;
   }
 
   // dungeon
@@ -144,8 +146,11 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     SDL_FreeSurface(floor_map_img);
   }
 
-  if (dungeon_equipment->has_compass()) {
+  if (!dungeon_equipment->has_compass()) {
+    link_point_sprite = NULL;
+  }
 
+  else {
     // Link's position
     link_point_sprite = new Sprite("menus/link_point");
 
@@ -194,9 +199,6 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 	SDL_BlitSurface(dungeon_map_icons, &src_position, dungeon_map_img, &dst_position);
       }
     }
-  }
-  else {
-    link_point_sprite = NULL;
   }
 }
 

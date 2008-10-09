@@ -74,7 +74,7 @@ void SwordIcon::update(void) {
     }
   }
   else {
-    sprite_sword_icon->update_current_frame();
+    sprite_sword_icon->update();
     need_rebuild = true;
 
     if (sprite_sword_icon->is_over()) {

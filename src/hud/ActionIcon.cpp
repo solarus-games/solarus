@@ -83,7 +83,7 @@ void ActionIcon::update(void) {
     }
   }
   else {
-    sprite_action_icon->update_current_frame();
+    sprite_action_icon->update();
     need_rebuild = true;
 
     if (sprite_action_icon->is_over()) {

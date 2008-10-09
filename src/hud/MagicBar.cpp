@@ -79,7 +79,7 @@ void MagicBar::update(void) {
       sprite_magic_bar_container->set_suspended(false);
     }
 
-    sprite_magic_bar_container->update_current_frame();
+    sprite_magic_bar_container->update();
     need_rebuild = true;
   }
   else if (!equipment->is_magic_decreasing() && is_magic_decreasing) {

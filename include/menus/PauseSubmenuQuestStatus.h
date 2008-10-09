@@ -9,6 +9,10 @@
  */
 class PauseSubmenuQuestStatus: public PauseSubmenu {
 
+ private:
+
+  SDL_Surface *quest_items_surface;
+
  public:
 
   PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game);

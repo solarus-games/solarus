@@ -52,12 +52,13 @@ const PickableItem::Properties PickableItem::properties[] = {
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (must be a normal item)
- * @param savegame_index savegame index of the possession state of this item,
+ * @param savegame_variable index of the savegame boolean variable storing
+ * the possession state of this item,
  * only for pickable items that are saved (a key, a piece of heart...)
  */
-PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItem::ItemType type, int savegame_index):
+PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItem::ItemType type, int savegame_variable):
   EntityDetector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
-  map(map), type(type), savegame_index(savegame_index),
+  map(map), type(type), savegame_variable(savegame_variable),
   shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
 
 }
@@ -89,14 +90,15 @@ PickableItem::~PickableItem(void) {
  * @param y y coordinate of the pickable item to create
  * @param type type of pickable item to create (can be a normal item, NONE
  * or RANDOM)
- * @param savegame_index savegame index of the possession state of this item,
+ * @param savegame_variable index of the savegame boolean variable storing
+ * the possession state of this item,
  * only for pickable items that are saved (a key, a piece of heart...)
  * @param falling_height to make the item fall when it appears (ignored for a fairy)
  * @param will_disappear true to make the item disappear after an amout of time
  * @return the pickable item created, or NULL depending on the type
  */
 PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, PickableItem::ItemType type,
-				    int savegame_index, MovementFalling::FallingHeight falling_height, bool will_disappear) {
+				    int savegame_variable, MovementFalling::FallingHeight falling_height, bool will_disappear) {
 
   if (type == RANDOM) {
     // pick a type at random
@@ -113,7 +115,7 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
   }
 
   // don't create anything if this is an item already found
-  if (type > ARROW_10 && zsdx->game->get_savegame()->get_boolean(savegame_index)) {
+  if (type > ARROW_10 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
     return NULL;
   }
 
@@ -133,12 +135,12 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
 
     // other items: no special class, but directly PickableItem
   default:
-    item = new PickableItem(map, layer, x, y, type, savegame_index);
+    item = new PickableItem(map, layer, x, y, type, savegame_variable);
     break;
   }
 
   // set the item properties
-  item->savegame_index = savegame_index; 
+  item->savegame_variable = savegame_variable; 
   item->falling_height = falling_height;
   item->will_disappear = will_disappear;
 
@@ -374,26 +376,26 @@ void PickableItem::give_item_to_player(void) {
 
   case SMALL_KEY:
     equipment->add_small_key();
-    game->get_savegame()->set_boolean(savegame_index, true);
+    game->get_savegame()->set_boolean(savegame_variable, true);
     break;
 
   case BIG_KEY:
-    treasure = new Treasure(Treasure::BIG_KEY, savegame_index);
+    treasure = new Treasure(Treasure::BIG_KEY, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case BOSS_KEY:
-    treasure = new Treasure(Treasure::BOSS_KEY, savegame_index);
+    treasure = new Treasure(Treasure::BOSS_KEY, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case PIECE_OF_HEART:
-    treasure = new Treasure(Treasure::PIECE_OF_HEART, savegame_index);
+    treasure = new Treasure(Treasure::PIECE_OF_HEART, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case HEART_CONTAINER:
-    treasure = new Treasure(Treasure::HEART_CONTAINER, savegame_index);
+    treasure = new Treasure(Treasure::HEART_CONTAINER, savegame_variable);
     game->give_treasure(treasure);
     break;
 
@@ -459,7 +461,7 @@ void PickableItem::update(void) {
   MapEntity::update();
 
   // update the shadow
-  shadow_sprite->update_current_frame();
+  shadow_sprite->update();
 
   // check the timer
   Uint32 now = SDL_GetTicks();

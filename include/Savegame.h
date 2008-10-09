@@ -19,7 +19,7 @@ class Savegame {
      * The engine uses strings and integers. The booleans are only used the maps.
      */
 
-    char strings[64][64];   /**< 64 strings of 64 characters each (4 Ko) */
+    char strings[64][64];   /**< 64 NULL-terminated strings of 64 characters each (4 Ko) */
     Uint32 integers[2048];  /**< 2048 integers (8 Ko) */
     Uint32 booleans[1024];  /**< 32768 boolean values (4 Ko) */
     
@@ -31,11 +31,31 @@ class Savegame {
    * Index of each reserved string saved in the file.
    * Do not change these numbers, otherwise you might break
    * the existing savegames.
-   * The 1024 first values are used by the engine.
-   * The 1024 last values are available for the maps.
    */
   enum StringIndex {
-    PLAYER_NAME                 = 0,
+    PLAYER_NAME                     = 0,
+
+    /**
+     * @name Joypad customizable keys.
+     * Variables 1 to 9 indicate the SDL joypad action
+     * associated to each game key: action, sword, item 1, item 2, pause,
+     * right, up, left and down.
+     * Examples: "button 1", "axis 1 up", "hat 1 left"
+     * @{
+     */
+    JOYPAD_ACTION_KEY              = 10,
+    JOYPAD_SWORD_KEY               = 11,
+    JOYPAD_ITEM_1_KEY              = 12,
+    JOYPAD_ITEM_2_KEY              = 13,
+    JOYPAD_PAUSE_KEY               = 14,
+    JOYPAD_RIGHT_KEY               = 15,
+    JOYPAD_UP_KEY                  = 16,
+    JOYPAD_LEFT_KEY                = 17,
+    JOYPAD_DOWN_KEY                = 18,
+    /**
+     * @}
+     */
+
   };
 
   /**
@@ -101,6 +121,26 @@ class Savegame {
     LINK_SHIELD                      = 32, /**< Link's shield (0: no shield, 1 to 3: shields 1 to 3) */
     LINK_SWORD                       = 33, /**< Link's sword (0: no sword, 1 to 4: swords 1 to 4) */
     WORLD_MAP                        = 34, /**< has Link got the world map (0: no, 1: yes) */
+    /**
+     * @}
+     */
+
+    /**
+     * @name Keyboard customizable keys.
+     * Variables 35 to 43 indicate the SDL keyboard keys symbol
+     * associated to each game key: action, sword, item 1, item 2, pause,
+     * right, up, left and down.
+     * @{
+     */
+    KEYBOARD_ACTION_KEY              = 35,
+    KEYBOARD_SWORD_KEY               = 36,
+    KEYBOARD_ITEM_1_KEY              = 37,
+    KEYBOARD_ITEM_2_KEY              = 38,
+    KEYBOARD_PAUSE_KEY               = 39,
+    KEYBOARD_RIGHT_KEY               = 40,
+    KEYBOARD_UP_KEY                  = 41,
+    KEYBOARD_LEFT_KEY                = 42,
+    KEYBOARD_DOWN_KEY                = 43,
     /**
      * @}
      */

@@ -1,4 +1,3 @@
-- Diviser la classe Link en plusieurs parties (plus de 1000 lignes...) - LinkActions, LinkSprites ? ou alors LinkStateFree, LinkStateSword...
 - Son d'un vase cassé : pas assez fort
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
@@ -6,7 +5,6 @@
 - Voir les boss de Pyro
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
-- Renommer les savegame_index en savegame_variable et les update_current_frame en update
 
 - Prochaines grandes étapes :
   - collision au pixel près
@@ -20,8 +18,14 @@
 Planning prévisionnel
 ----------------
 
+Non mentionné :
+- Saut depuis les falaises
+- Casino
+- Intro
+- Boss
+
 Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes
-Dimanche 12 octobre 2008 : menu de pause fini, touches configurables
+Dimanche 12 octobre 2008 : menu de pause fini, touches configurables, sauvegarde depuis le menu
 Dimanche 19 octobre 2008 : collisions au pixel près, couper les buissons avec l'épée
 Dimanche 26 octobre 2008 : monde extérieur
 Dimanche 2 novembre 2008 : combats (un type d'ennemi)

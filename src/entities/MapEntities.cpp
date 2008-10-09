@@ -285,15 +285,18 @@ void MapEntities::add_exit(string exit_name, MapEntity::Layer layer, int x, int 
  * @param y y position of the pickable item
  * @param pickable_item_type type of pickable item to create
  * (can be a normal item, NONE or RANDOM)
- * @param savegame_index savegame index of the possession state of the pickable item,
+ * @param savegame_variable index of the savegame boolean variable storing
+ * the possession state of the pickable item,
  * for certain kinds of pickable items only (a key, a piece of heart...)
  * @param falling_height to make the item falling when it appears (ignored for a fairy)
  * @param will_disappear true to make the item disappear after an amout of time
  */
-void MapEntities::add_pickable_item(MapEntity::Layer layer, int x, int y, PickableItem::ItemType pickable_item_type,
-				    int savegame_index, MovementFalling::FallingHeight falling_height, bool will_disappear) {
+void MapEntities::add_pickable_item(MapEntity::Layer layer, int x, int y,
+				    PickableItem::ItemType pickable_item_type, int savegame_variable,
+				    MovementFalling::FallingHeight falling_height, bool will_disappear) {
 
-  PickableItem *item = PickableItem::create(map, layer, x, y, pickable_item_type, savegame_index, falling_height, will_disappear);
+  PickableItem *item = PickableItem::create(map, layer, x, y, pickable_item_type,
+					    savegame_variable, falling_height, will_disappear);
 
   // item can be NULL if the type was NONE or RANDOM
   if (item != NULL) {
@@ -324,15 +327,16 @@ void MapEntities::remove_pickable_item(PickableItem *item) {
  * @param transportable_item_type type of transportable item to create
  * @param pickable_item_type type of pickable item that appears when the
  * transportable item is lifted
- * @param savegame_index savegame index of the possession state of the pickable item,
+ * @param savegame_variable index of the savegame boolean variable indicating
+ * the possession state of the pickable item,
  * for certain kinds of pickable items only (a key, a piece of heart...)
  */
 void MapEntities::add_transportable_item(MapEntity::Layer layer, int x, int y,
 					 TransportableItem::ItemType transportable_item_type,
-					 PickableItem::ItemType pickable_item_type, int savegame_index) {
+					 PickableItem::ItemType pickable_item_type, int savegame_variable) {
 
   TransportableItem *item = new TransportableItem(map, layer, x, y, transportable_item_type,
-						  pickable_item_type, savegame_index);
+						  pickable_item_type, savegame_variable);
   
   sprite_entities[layer].push_back(item);
   entity_detectors.push_back(item);
@@ -357,12 +361,15 @@ void MapEntities::remove_transportable_item(TransportableItem *item) {
  * @param y y coordinate of the chest to create
  * @param big_chest true to make a big chest, false to make a normal chest
  * @param treasure_content content of the treasure in this chest, or -1 to make an empty chest
+ * @param treasure_amount amout of the treasure (for some kinds of treasure only)
+ * @param treasure_savegame_variable index of the savegame boolean variable where this treasure's
+ * possession state is saved
  */
 void MapEntities::add_chest(string chest_name, MapEntity::Layer layer, int x, int y,
 			    bool big_chest, int treasure_content,
-			    int treasure_amount, int treasure_savegame_index) {
+			    int treasure_amount, int treasure_savegame_variable) {
   
-  Treasure *treasure = new Treasure((Treasure::Content) treasure_content, treasure_amount, treasure_savegame_index);
+  Treasure *treasure = new Treasure((Treasure::Content) treasure_content, treasure_amount, treasure_savegame_variable);
   Chest *chest = new Chest(chest_name, layer, x, y, big_chest, treasure);
 
   sprite_entities[layer].push_back(chest);

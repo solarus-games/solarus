@@ -381,7 +381,7 @@ void Link::rebuild_equipment(void) {
 void Link::update_sprites(void) {
 
   // update the frames
-  tunic_sprite->update_current_frame();
+  tunic_sprite->update();
 
   if (is_sword_visible()) {
     sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
@@ -389,7 +389,7 @@ void Link::update_sprites(void) {
 
   if (is_sword_stars_visible()) {
     // the stars are not synchronized with the other sprites
-    sword_stars_sprite->update_current_frame();
+    sword_stars_sprite->update();
   }
 
   if (is_shield_visible()) {

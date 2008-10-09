@@ -472,7 +472,7 @@ void MapEntity::update(void) {
       sprite->set_current_direction(direction);
     }
 
-    sprite->update_current_frame();
+    sprite->update();
   }
 
   // update the movement

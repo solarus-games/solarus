@@ -195,7 +195,7 @@ void CarriedItem::update(void) {
       clear_movement();
     }
     else {
-      shadow_sprite->update_current_frame();
+      shadow_sprite->update();
     }
   }
 }

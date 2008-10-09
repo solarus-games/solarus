@@ -40,7 +40,7 @@ class TransportableItem: public EntityDetector {
 
   ItemType type;                        /**< the type of transportable item */
   PickableItem::ItemType pickable_item; /**< the pickable item that appears when the item is lifted */
-  int pickable_item_savegame_index;     /**< savegame index of the pickable item (if any) */
+  int pickable_item_savegame_variable;     /**< savegame index of the pickable item (if any) */
 
   /**
    * This structure defines the properties of a transportable item type.
@@ -57,7 +57,7 @@ class TransportableItem: public EntityDetector {
   
   // creation and destruction
   TransportableItem(Map *map, Layer layer, int x, int y, ItemType type,
-		    PickableItem::ItemType pickable_item, int pickable_item_savegame_index);
+		    PickableItem::ItemType pickable_item, int pickable_item_savegame_variable);
   ~TransportableItem(void);
 
   string get_sprite_animations_id(void);

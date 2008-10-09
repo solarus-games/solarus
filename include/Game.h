@@ -27,9 +27,10 @@ class Game: public Screen {
   Treasure *treasure;       /**< the treasure currently being given to the player or NULL if it is not the case */
 
   // keyboard
+  Controls *controls;       /**< this object receives the SDL keyboard and joypad events */
+  Keyboard *keyboard;       /**< this object receives the keyboard and joystick events and treats them */
   KeysEffect *keys_effect;  /**< current effect associated to the main game keys
-			     * represented on the HUD by the action icon, the objects icons, etc.) */
-  Keyboard *keyboard;       /**< this object receives the SDL keyboard events and treats them */
+			     * (represented on the HUD by the action icon, the objects icons, etc.) */
 
   // map
   Map *current_map;         /**< the map currently displayed */

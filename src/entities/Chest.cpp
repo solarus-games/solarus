@@ -117,9 +117,9 @@ void Chest::update(void) {
       else { // give nothing to the player
 
 	// mark the chest as found in the savegame
-	int savegame_index = treasure->get_savegame_index();
-	if (savegame_index != -1) {
-	  zsdx->game->get_savegame()->set_boolean(savegame_index, true);
+	int savegame_variable = treasure->get_savegame_variable();
+	if (savegame_variable != -1) {
+	  zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
 	}
 
 	// tell the player the chest is empty

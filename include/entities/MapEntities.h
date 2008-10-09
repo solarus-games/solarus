@@ -96,16 +96,16 @@ class MapEntities {
 		Transition::Style transition_style, MapId map_id, string entrance_name);
 
   void add_pickable_item(MapEntity::Layer layer, int x, int y, PickableItem::ItemType pickable_item_type,
-			 int savegame_index, MovementFalling::FallingHeight falling, bool will_disappear);
+			 int savegame_variable, MovementFalling::FallingHeight falling, bool will_disappear);
   void remove_pickable_item(PickableItem *item);
 
   void add_transportable_item(MapEntity::Layer layer, int x, int y, TransportableItem::ItemType transportable_item_type,
-			      PickableItem::ItemType pickable_item_type, int savegame_index);
+			      PickableItem::ItemType pickable_item_type, int savegame_variable);
   void remove_transportable_item(TransportableItem *item);
 
   void add_chest(string chest_name, MapEntity::Layer layer, int x, int y,
 		 bool big_chest, int treasure_content,
-		 int treasure_amount, int treasure_savegame_index);
+		 int treasure_amount, int treasure_savegame_variable);
 
   void remove_marked_entities(void);
 

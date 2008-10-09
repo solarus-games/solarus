@@ -260,9 +260,9 @@ void PauseSubmenuMap::key_pressed(const SDL_keysym &keysym) {
  */
 void PauseSubmenuMap::update(void) {
 
-  link_head_sprite->update_current_frame();
-  up_arrow_sprite->update_current_frame();
-  down_arrow_sprite->update_current_frame();
+  link_head_sprite->update();
+  up_arrow_sprite->update();
+  down_arrow_sprite->update();
 
   if (dungeon == NULL) {
 
@@ -284,7 +284,7 @@ void PauseSubmenuMap::update(void) {
   }
 
   if (link_point_sprite != NULL) {
-    link_point_sprite->update_current_frame();
+    link_point_sprite->update();
   }
 }
 

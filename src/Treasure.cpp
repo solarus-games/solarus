@@ -14,11 +14,11 @@
 /**
  * Creates a new treasure without amount.
  * @param content content of the treasure
- * @param savegame_index index of the savegame boolean indicating that Link has found this treasure
+ * @param savegame_variable index of the savegame boolean indicating that Link has found this treasure
  * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Content content, int savegame_index):
-  content(content), amount(1), savegame_index(savegame_index), counter(NULL) {
+Treasure::Treasure(Content content, int savegame_variable):
+  content(content), amount(1), savegame_variable(savegame_variable), counter(NULL) {
 
   treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
 }
@@ -29,11 +29,11 @@ Treasure::Treasure(Content content, int savegame_index):
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
  * green rupees, blue rupees and red rupees: indicates the amount;
  * if the amount is greater than 1, a counter will be shown.
- * @param savegame_index index of the savegame boolean indicating that Link has found this treasure
+ * @param savegame_variable index of the savegame boolean indicating that Link has found this treasure
  * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Content content, int amount, int savegame_index):
-  content(content), amount(amount), savegame_index(savegame_index), counter(NULL) {
+Treasure::Treasure(Content content, int amount, int savegame_variable):
+  content(content), amount(amount), savegame_variable(savegame_variable), counter(NULL) {
 
   treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
 
@@ -67,8 +67,8 @@ Treasure::Content Treasure::get_content(void) {
  * Returns the index of the variable where this treasure is saved.
  * @return the savegame variable of this treasure
  */
-int Treasure::get_savegame_index(void) {
-  return savegame_index;
+int Treasure::get_savegame_variable(void) {
+  return savegame_variable;
 }
 
 /**
@@ -107,7 +107,7 @@ bool Treasure::has_amount(void) {
  * @return true if the player has found this treasure
  */
 bool Treasure::is_found(void) {
-  return savegame_index != -1 && zsdx->game->get_savegame()->get_boolean(savegame_index);
+  return savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable);
 }
 
 /**
@@ -196,8 +196,8 @@ void Treasure::add_item_to_equipment(void) {
   DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();
 
   // mark the treasure as found in the savegame
-  if (savegame_index != -1) {
-    savegame->set_boolean(savegame_index, true);
+  if (savegame_variable != -1) {
+    savegame->set_boolean(savegame_variable, true);
   }
 
   // give the item

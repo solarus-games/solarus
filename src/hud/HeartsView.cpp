@@ -93,7 +93,7 @@ void HeartsView::update(void) {
       if (empty_heart_sprite->get_current_animation() != "danger") {
 	empty_heart_sprite->set_current_animation("danger");
       }
-      empty_heart_sprite->update_current_frame();
+      empty_heart_sprite->update();
 
       if (SDL_GetTicks() > next_danger_sound_date) {
 	next_danger_sound_date = SDL_GetTicks() + 750;

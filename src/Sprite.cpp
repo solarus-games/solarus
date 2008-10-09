@@ -251,7 +251,7 @@ void Sprite::set_animation_listener(AnimationListener *listener) {
  * Checks whether the frame has to be changed.
  * If the frame changes, next_frame_date is updated.
  */
-void Sprite::update_current_frame(void) {
+void Sprite::update(void) {
 
   Uint32 now = SDL_GetTicks();
 
@@ -265,9 +265,9 @@ void Sprite::update_current_frame(void) {
 
     // test whether the animation is over
     if (next_frame == -1) {
-  
+
       over = true;
-      
+
       // tell the listener the animation is over
       if (listener != NULL) {
 	listener->animation_over(this);

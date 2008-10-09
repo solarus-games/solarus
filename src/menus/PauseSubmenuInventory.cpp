@@ -247,7 +247,7 @@ void PauseSubmenuInventory::key_pressed(const SDL_keysym &keysym) {
 void PauseSubmenuInventory::update(void) {
 
   // animation of the cursor
-  cursor_sprite->update_current_frame();
+  cursor_sprite->update();
 
   // item being thrown
   if (item_assigned_movement != NULL) {

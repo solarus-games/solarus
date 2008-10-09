@@ -113,30 +113,30 @@ void MapLoader::load_map(Map *map) {
 
     case MapEntity::PICKABLE_ITEM:
       {
-	int pickable_item_type, savegame_index;
-	iss >> pickable_item_type >> savegame_index;
+	int pickable_item_type, savegame_variable;
+	iss >> pickable_item_type >> savegame_variable;
 	entities->add_pickable_item((MapEntity::Layer) layer, x, y, (PickableItem::ItemType) pickable_item_type,
-				    savegame_index, MovementFalling::NONE, false);
+				    savegame_variable, MovementFalling::NONE, false);
 	break;
       }
 
     case MapEntity::TRANSPORTABLE_ITEM:
       {
-	int transportable_item_type, pickable_item_type, savegame_index;
-	iss >> transportable_item_type >> pickable_item_type >> savegame_index;
+	int transportable_item_type, pickable_item_type, savegame_variable;
+	iss >> transportable_item_type >> pickable_item_type >> savegame_variable;
 	entities->add_transportable_item((MapEntity::Layer) layer, x, y,
 					 (TransportableItem::ItemType) transportable_item_type,
-					 (PickableItem::ItemType) pickable_item_type, savegame_index);
+					 (PickableItem::ItemType) pickable_item_type, savegame_variable);
 	break;
       }
 
     case MapEntity::CHEST:
       {
-	int big_chest, treasure_content, treasure_amount, treasure_savegame_index;
-	iss >> entity_name >> big_chest >> treasure_content >> treasure_amount >> treasure_savegame_index;
+	int big_chest, treasure_content, treasure_amount, treasure_savegame_variable;
+	iss >> entity_name >> big_chest >> treasure_content >> treasure_amount >> treasure_savegame_variable;
 	entities->add_chest(entity_name, (MapEntity::Layer) layer, x, y,
 			    (big_chest != 0), treasure_content,
-			    treasure_amount, treasure_savegame_index);
+			    treasure_amount, treasure_savegame_variable);
 	break;
       }
 

@@ -255,7 +255,7 @@ void SelectionMenuCommon::update(void) {
   sword_icon->update();
 
   // update the animation of the cursor
-  cursor->update_current_frame();
+  cursor->update();
 }
 
 /**

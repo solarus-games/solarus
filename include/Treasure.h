@@ -11,7 +11,7 @@
  *   the map, a red potion, the bow, some bombs, etc;
  * - the amount: an optional integer indicating the number of items of this treasure
  *   (for bombs, rupees, croissants, etc.);
- * - a savegame index: index of the boolean value indicating whether Link has found this item.
+ * - a savegame variable: index of the boolean variable saved indicating whether Link has found this item.
  */
 class Treasure {
 
@@ -116,7 +116,7 @@ class Treasure {
 
   Content content;         /**< content of the treasure */
   int amount;              /**< amount of item (for some kinds of treasures only) */
-  int savegame_index;      /**< index of the savegame variable corresponding to this treasure,
+  int savegame_variable;   /**< index of the savegame boolean variable corresponding to this treasure,
 			    * or -1 if the treasure state is not saved */
 
   Counter *counter;
@@ -129,12 +129,12 @@ class Treasure {
 
  public:
 
-  Treasure(Content content, int savegame_index);
-  Treasure(Content content, int amount, int savegame_index);
+  Treasure(Content content, int savegame_variable);
+  Treasure(Content content, int amount, int savegame_variable);
   ~Treasure(void);
 
   Content get_content(void);
-  int get_savegame_index(void);
+  int get_savegame_variable(void);
 
   void give_to_player(void);
   bool is_found(void);

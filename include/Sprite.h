@@ -129,7 +129,7 @@ class Sprite {
   void set_animation_listener(AnimationListener *listener);
 
   // udpate and display
-  void update_current_frame(void);
+  void update(void);
   void display(SDL_Surface *destination, int x, int y);
 };
 

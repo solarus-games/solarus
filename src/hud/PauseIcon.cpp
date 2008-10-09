@@ -57,7 +57,7 @@ void PauseIcon::update(void) {
     }
   }
   else {
-    sprite_pause_icon->update_current_frame();
+    sprite_pause_icon->update();
     need_rebuild = true;
 
     if (sprite_pause_icon->is_over()) {

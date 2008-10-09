@@ -12,6 +12,7 @@
 #include "DialogBox.h"
 #include "Treasure.h"
 #include "Keyboard.h"
+#include "Controls.h"
 #include "Dungeon.h"
 #include "menus/PauseMenu.h"
 #include "entities/Link.h"
@@ -43,6 +44,7 @@ Game::Game(Savegame *savegame):
   keys_effect = new KeysEffect();
   update_keys_effect();
   keyboard = new Keyboard(this);
+  controls = new Controls(this);
   hud = new HUD(this);
 
   // launch the starting map
@@ -137,17 +139,8 @@ DungeonEquipment * Game::get_dungeon_equipment(void) {
  */
 void Game::handle_event(const SDL_Event &event) {
 
-  switch (event.type) {
-
-    // a key is pressed
-  case SDL_KEYDOWN:
-    keyboard->key_pressed(event.key.keysym);
-    break;
-
-  case SDL_KEYUP:
-    keyboard->key_released(event.key.keysym);
-    break;
-  }
+  // the only events we are interested in are the keyboard and joypad events
+  controls->handle_event(event);
 }
 
 /**

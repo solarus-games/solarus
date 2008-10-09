@@ -62,7 +62,7 @@ class PickableItem: public EntityDetector {
   Map *map;
 
   ItemType type;          // type of pickable item
-  int savegame_index;     // savegame index of the possession state of this item,
+  int savegame_variable;     // savegame index of the possession state of this item,
 		          // for certain kinds of items only: a key, a piece of heart...
 
   Sprite *shadow_sprite;                // sprite of the shadow (except for a fairy).
@@ -81,7 +81,7 @@ class PickableItem: public EntityDetector {
   Uint32 disappear_date;  // date when the item disappears
 
   // creation and initialization
-  PickableItem(Map *map, Layer layer, int x, int y, ItemType type, int savegame_index);
+  PickableItem(Map *map, Layer layer, int x, int y, ItemType type, int savegame_variable);
 
   static ItemType choose_random_type(void);
   virtual void initialize_sprites(void);
@@ -97,7 +97,7 @@ class PickableItem: public EntityDetector {
  public:
 
   // creation and destruction
-  static PickableItem * create(Map *map, Layer layer, int x, int y, ItemType type, int savegame_index,
+  static PickableItem * create(Map *map, Layer layer, int x, int y, ItemType type, int savegame_variable,
 			       MovementFalling::FallingHeight falling_height, bool will_disappear);
 
   virtual ~PickableItem(void);

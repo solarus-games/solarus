@@ -309,7 +309,7 @@ void DialogBox::update(void) {
   if (current_message->is_over()) {
 
     // update the message end arrow
-    sprite_message_end_arrow->update_current_frame();
+    sprite_message_end_arrow->update();
 
     // show the appropriate action icon
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();

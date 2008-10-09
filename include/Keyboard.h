@@ -3,6 +3,8 @@
 
 #include "Common.h"
 
+// TODO remove this class?
+
 /**
  * This class receives the SDL keyboard events
  * that occur during the game and notifies the

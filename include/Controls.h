@@ -27,7 +27,7 @@ class Controls {
     RIGHT,
     UP,
     LEFT,
-    DOWN,
+    DOWN
   };
   
  private:
@@ -54,15 +54,19 @@ class Controls {
       struct {
 	int index;     // index of the hat or the axis
 	int direction; // 0 to 3
-      };
+      } movement;
     } control;
   };
 
   Game *game;
+  Savegame *savegame;
   Link *link;
 
-  map<GameKey, SDL_keysym> keyboard_mapping;
-  map<GameKey, JoypadControl> joypad_mapping;
+  map<SDLKey, GameKey> keyboard_mapping;
+  map<string, GameKey> joypad_mapping;
+
+  bool customizing;
+  GameKey key_customized;
 
   void key_pressed(const SDL_keysym &keysym);
   void key_released(const SDL_keysym &keysym);

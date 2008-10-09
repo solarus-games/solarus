@@ -40,7 +40,7 @@ class Savegame {
      * Variables 1 to 9 indicate the SDL joypad action
      * associated to each game key: action, sword, item 1, item 2, pause,
      * right, up, left and down.
-     * Examples: "button 1", "axis 1 up", "hat 1 left"
+     * Examples: "button 1", "axis 1 +", "hat 1 left"
      * @{
      */
     JOYPAD_ACTION_KEY              = 10,

@@ -1,21 +1,37 @@
 #include "Controls.h"
 #include "Game.h"
+#include "Savegame.h"
 
 /**
  * Constructor.
  * @param game the game
  */
 Controls::Controls(Game *game):
-  game(game), link(game->get_link()) {
+  game(game), savegame(game->get_savegame()),
+  link(game->get_link()), customizing(false) {
 
   // load the controls from the savegame
+  for (int i = 0; i < 9; i++) {
+
+    GameKey game_key = (GameKey) i;
+
+    // keyboard
+    int index = Savegame::KEYBOARD_ACTION_KEY + i;
+    SDLKey keyboard_symbol = (SDLKey) savegame->get_integer(index);
+    keyboard_mapping[keyboard_symbol] = game_key;
+
+    // joypad
+    index = Savegame::JOYPAD_ACTION_KEY + i;
+    string joypad_string = savegame->get_string(index);
+    joypad_mapping[joypad_string] = game_key;
+  }
 }
 
 /**
  * Destructor.
  */
 Controls::~Controls(void) {
-
+  
 }
 
 /**
@@ -66,13 +82,48 @@ void Controls::handle_event(const SDL_Event &event) {
   }
 }
 
+/**
+ * This function is called when a keyboard key is pressed.
+ * @param keysym the key pressed
+ */
 void Controls::key_pressed(const SDL_keysym &keysym) {
 
+  if (keyboard_mapping[keysym.sym] != 0) {
+    // the key is mapped
+  }
 }
 
+/**
+ * This function is called when a keyboard key is released.
+ * @param keysym the key released
+ */
 void Controls::key_released(const SDL_keysym &keysym) {
 
 }
+
+/*
+  this code converts a string to a JoypadControl
+
+    JoypadControl *joypad_control = new JoypadControl();
+
+    if (control_string.find("button")) {
+      joypad_control->type = BUTTON;
+      joypad_control->control.button = control_string[7];
+    }
+    else if (control_string.find("axis")) {
+      joypad_control->type = AXIS;
+      joypad_control->control.movement.index = control_string[5];
+      joypad_control->control.movement.direction = control_string[7];
+    }
+    else if (control_string.find("hat")) {
+      joypad_control->type = HAT;
+      joypad_control->control.movement.index = control_string[4];
+      joypad_control->control.movement.direction = control_string[6];
+    }
+    else {
+      DIE("Unknown joypad control '" << control_string << "'");
+    }
+*/
 
 // customization
 
@@ -85,7 +136,8 @@ void Controls::key_released(const SDL_keysym &keysym) {
  * @param key the game key to customize
  */
 void Controls::customize(GameKey key) {
-
+  this->customizing = true;
+  this->key_customized = key;
 }
 
 /**
@@ -95,5 +147,5 @@ void Controls::customize(GameKey key) {
  * @return true if no game key is being customized
  */
 bool Controls::is_customization_done(void) {
-  return true;
+  return !customizing;
 }

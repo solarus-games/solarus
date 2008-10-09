@@ -63,6 +63,27 @@ void Savegame::set_initial_values(void) {
 
   set_integer(ITEM_SLOT_0, (Uint32) -1);
   set_integer(ITEM_SLOT_1, (Uint32) -1);
+
+  // default game controls
+  set_integer(KEYBOARD_ACTION_KEY, SDLK_SPACE);
+  set_integer(KEYBOARD_SWORD_KEY, SDLK_c);
+  set_integer(KEYBOARD_ITEM_1_KEY, SDLK_x);
+  set_integer(KEYBOARD_ITEM_2_KEY, SDLK_v);
+  set_integer(KEYBOARD_PAUSE_KEY, SDLK_d);
+  set_integer(KEYBOARD_RIGHT_KEY, SDLK_RIGHT);
+  set_integer(KEYBOARD_UP_KEY, SDLK_UP);
+  set_integer(KEYBOARD_LEFT_KEY, SDLK_LEFT);
+  set_integer(KEYBOARD_DOWN_KEY, SDLK_DOWN);
+
+  set_string(JOYPAD_ACTION_KEY, "button 1");
+  set_string(JOYPAD_SWORD_KEY, "button 2");
+  set_string(JOYPAD_ITEM_1_KEY, "button 3");
+  set_string(JOYPAD_ITEM_2_KEY, "button 4");
+  set_string(JOYPAD_PAUSE_KEY, "button 5");
+  set_string(JOYPAD_RIGHT_KEY, "axis 0 +");
+  set_string(JOYPAD_UP_KEY, "axis 1 -");
+  set_string(JOYPAD_LEFT_KEY, "axis 0 -");
+  set_string(JOYPAD_DOWN_KEY, "axis 1 +");
 }
 
 /**

@@ -53,7 +53,6 @@ class Game;
 class Savegame;
 class Equipment;
 class DungeonEquipment;
-class Keyboard;
 class Controls;
 class Dungeon;
 class Treasure;

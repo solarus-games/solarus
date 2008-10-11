@@ -200,11 +200,11 @@ void ZSDX::handle_event(const SDL_Event &event) {
   case SDL_KEYDOWN:
     switch (event.key.keysym.sym) {
 
-      // escape: quit
+      // TODO temporary (escape: quit)
     case SDLK_ESCAPE:
       exiting = true;
       break;
-      
+
       // F5: full screen / windowed mode
     case SDLK_F5:
       switch_fullscreen();

@@ -11,7 +11,6 @@
 #include "Equipment.h"
 #include "DialogBox.h"
 #include "Treasure.h"
-#include "Keyboard.h"
 #include "Controls.h"
 #include "Dungeon.h"
 #include "menus/PauseMenu.h"
@@ -35,6 +34,7 @@ Game::Game(Savegame *savegame):
   hud(NULL), current_music_id(Music::none), current_music(NULL) {
 
   zsdx->set_game(this);
+  controls = new Controls(this);
 
   // initialize Link
   link = new Link(get_equipment());
@@ -43,8 +43,6 @@ Game::Game(Savegame *savegame):
   // initialize the keys effect and the HUD
   keys_effect = new KeysEffect();
   update_keys_effect();
-  keyboard = new Keyboard(this);
-  controls = new Controls(this);
   hud = new HUD(this);
 
   // launch the starting map
@@ -83,7 +81,6 @@ Game::~Game(void) {
   }
 
   delete keys_effect;
-  delete keyboard;
   delete hud;
   delete link;
   delete savegame;
@@ -97,6 +94,14 @@ Game::~Game(void) {
  */
 Link * Game::get_link(void) {
   return link;
+}
+
+/**
+ * Returns the game controls for the keyboard and the joypad.
+ * @return the game controls
+ */
+Controls * Game::get_controls(void) {
+  return controls;
 }
 
 /**

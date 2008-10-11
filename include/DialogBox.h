@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "KeysEffect.h"
+#include "Controls.h"
 #include <map>
 #include <vector>
 
@@ -93,7 +94,7 @@ class DialogBox {
   string get_variable(void);
   
   // current message
-  void key_pressed(const SDL_keysym &keysym);
+  void key_pressed(Controls::GameKey key);
   bool is_over(void);
   static int get_last_answer(void);
 

@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
 #include "InventoryItem.h"
+#include "Controls.h"
 
 /**
  * The Inventory submenu of the pause menu.
@@ -46,7 +47,7 @@ class PauseSubmenuInventory: public PauseSubmenu {
   ~PauseSubmenuInventory(void);
 
   // main loop
-  void key_pressed(const SDL_keysym &keysym);
+  void key_pressed(Controls::GameKey key);
   void update(void);
   void display(SDL_Surface *destination);
 };

@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "MapEntity.h"
 #include "AnimationListener.h"
+#include "Controls.h"
 
 /**
  * Link's entity.
@@ -185,8 +186,8 @@ class Link: public MapEntity, AnimationListener {
   void give_treasure(Treasure *treasure);
 
   // keys
-  void key_pressed(const SDL_keysym &keysym);
-  void key_released(const SDL_keysym &keysym);
+  void key_pressed(Controls::GameKey key);
+  void key_released(Controls::GameKey key);
 };
 
 #endif

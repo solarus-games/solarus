@@ -200,24 +200,24 @@ void DialogBox::show_message(MessageId message_id) {
 /**
  * This function is called by the game when a key is pressed
  * while displaying a message.
- * @param keysym the key pressed
+ * @param key the key pressed
  */
-void DialogBox::key_pressed(const SDL_keysym &keysym) {
+void DialogBox::key_pressed(Controls::GameKey key) {
 
-  switch (keysym.sym) {
+  switch (key) {
 
     // action key
-  case SDLK_SPACE:
+  case Controls::ACTION:
     action_key_pressed();
     break;
 
     // sword key
-  case SDLK_c:
+  case Controls::SWORD:
     sword_key_pressed();
     break;
 
-  case SDLK_UP:
-  case SDLK_DOWN:
+  case Controls::UP:
+  case Controls::DOWN:
     up_or_down_key_pressed();
 
   default:

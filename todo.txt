@@ -6,6 +6,9 @@
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
 
+- Bugs: 
+  - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+
 - Prochaines grandes étapes :
   - collision au pixel près
   - couper des buissons et des herbes
@@ -23,6 +26,7 @@ Non mentionné :
 - Casino
 - Intro
 - Boss
+- Résolution 640*480
 
 Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes
 Dimanche 12 octobre 2008 : menu de pause fini, touches configurables, sauvegarde depuis le menu

@@ -36,6 +36,7 @@ class KeysEffect {
     ACTION_KEY_GRAB,     /**< grab an object */
     ACTION_KEY_STOP,     /**< stop an action (for example: using an object which consumes magic) */
     ACTION_KEY_SPEAK,    /**< speak with an NPC */
+    ACTION_KEY_CHANGE,   /**< modify an option */
   };
 
   /**

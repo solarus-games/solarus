@@ -126,7 +126,7 @@ void TitleScreen::handle_event(const SDL_Event &event) {
 
   if (current_phase == PHASE_TITLE
       && event.type == SDL_KEYDOWN
-      && event.key.keysym.sym == SDLK_SPACE
+      && (event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_RETURN)
       && !transition_out->is_started()) {
 
     transition_out->start();

@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
+#include "Controls.h"
 
 /**
  * The Map submenu of the pause menu.
@@ -49,7 +50,7 @@ class PauseSubmenuMap: public PauseSubmenu {
   PauseSubmenuMap(PauseMenu *pause_menu, Game *game);
   ~PauseSubmenuMap(void);
 
-  void key_pressed(const SDL_keysym &keysym);
+  void key_pressed(Controls::GameKey key);
   void update(void);
   void display(SDL_Surface *destination);
   void display_world_map(SDL_Surface *destination);

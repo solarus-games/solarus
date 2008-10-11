@@ -101,17 +101,17 @@ PauseSubmenuQuestStatus::~PauseSubmenuQuestStatus(void) {
 
 /**
  * This function is called when a key is pressed on this submenu.
- * @param keysym the key pressed
+ * @param key the key pressed
  */
-void PauseSubmenuQuestStatus::key_pressed(const SDL_keysym &keysym) {
+void PauseSubmenuQuestStatus::key_pressed(Controls::GameKey key) {
 
-  switch (keysym.sym) {
+  switch (key) {
 
-  case SDLK_LEFT:
+  case Controls::LEFT:
     pause_menu->show_left_submenu();
     break;
 
-  case SDLK_RIGHT:
+  case Controls::RIGHT:
     pause_menu->show_right_submenu();
     break;
 

@@ -50,16 +50,16 @@ void PauseMenu::quit(void) {
 
 /**
  * This function is called when a key is pressed.
- * @param keysym the key pressed
+ * @param key the key pressed
  */
-void PauseMenu::key_pressed(const SDL_keysym &keysym) {
+void PauseMenu::key_pressed(Controls::GameKey key) {
 
-  if (keysym.sym == SDLK_d) {
+  if (key == Controls::PAUSE) {
     quit();
     game->set_paused(false);
   }
   else {
-    current_submenu->key_pressed(keysym);
+    current_submenu->key_pressed(key);
   }
 }
 

@@ -2,6 +2,7 @@
 #define ZSDX_PAUSE_MENU_H
 
 #include "Common.h"
+#include "Controls.h"
 
 /**
  * The menus displayed when the game is paused.
@@ -25,7 +26,7 @@ class PauseMenu {
   ~PauseMenu(void);
   void quit(void);
 
-  void key_pressed(const SDL_keysym &keysym);
+  void key_pressed(Controls::GameKey key);
   void update(void);
   void display(SDL_Surface *destination);
 

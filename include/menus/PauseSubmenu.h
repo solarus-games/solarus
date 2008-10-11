@@ -2,6 +2,7 @@
 #define ZSDX_PAUSE_SUBMENU_H
 
 #include "Common.h"
+#include "Controls.h"
 
 /**
  * Abstract class for a submenu of the pause menu.
@@ -27,7 +28,7 @@ class PauseSubmenu {
 
   virtual ~PauseSubmenu(void);
 
-  virtual void key_pressed(const SDL_keysym &keysym) = 0;
+  virtual void key_pressed(Controls::GameKey key) = 0;
   virtual void update(void) = 0;
   virtual void display(SDL_Surface *destination);
 };

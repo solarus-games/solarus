@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
+#include "Controls.h"
 
 /**
  * The Quest Status submenu of the pause menu.
@@ -18,7 +19,7 @@ class PauseSubmenuQuestStatus: public PauseSubmenu {
   PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game);
   ~PauseSubmenuQuestStatus(void);
 
-  void key_pressed(const SDL_keysym &keysym);
+  void key_pressed(Controls::GameKey key);
   void update(void);
   void display(SDL_Surface *destination);
 };

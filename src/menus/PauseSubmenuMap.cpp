@@ -11,6 +11,7 @@
 #include "entities/Link.h"
 #include "Counter.h"
 #include "Color.h"
+#include "Controls.h"
 
 const SDL_Rect PauseSubmenuMap::outside_world_minimap_size = {0, 0, 225, 388};
 
@@ -204,35 +205,35 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
 /**
  * This function is called when a key is pressed on this submenu.
- * @param keysym the key pressed
+ * @param key the key pressed
  */
-void PauseSubmenuMap::key_pressed(const SDL_keysym &keysym) {
+void PauseSubmenuMap::key_pressed(Controls::GameKey key) {
 
-  switch (keysym.sym) {
+  switch (key) {
 
-  case SDLK_LEFT:
+  case Controls::LEFT:
     pause_menu->show_left_submenu();
     break;
 
-  case SDLK_RIGHT:
+  case Controls::RIGHT:
     pause_menu->show_right_submenu();
     break;
 
-  case SDLK_UP:
-  case SDLK_DOWN:
+  case Controls::UP:
+  case Controls::DOWN:
 
     if (dungeon == NULL) {
 
       // move the world map
       if (equipment->has_world_map()) {
-	moving_visible_y = (keysym.sym == SDLK_UP) ? -1 : 1;
+	moving_visible_y = (key == Controls::UP) ? -1 : 1;
 	next_moving_visible_y_date = SDL_GetTicks();
       }
     }
 
     else {
       // select another floor
-      int new_selected_floor = selected_floor + ((keysym.sym == SDLK_UP) ? 1 : -1);
+      int new_selected_floor = selected_floor + ((key == Controls::UP) ? 1 : -1);
       if (new_selected_floor >= lowest_floor && new_selected_floor <= highest_floor) {
 
 	ResourceManager::get_sound("cursor")->play();
@@ -266,14 +267,28 @@ void PauseSubmenuMap::update(void) {
 
   if (dungeon == NULL) {
 
-    Uint8 *key_state = SDL_GetKeyState(NULL);
-    if (moving_visible_y == -1
-	&& (!key_state[SDLK_UP] || world_minimap_visible_y == 0)) {
-      moving_visible_y = key_state[SDLK_DOWN] ? 1 : 0;
+    Controls *controls = game->get_controls();
+
+    bool up = controls->is_key_pressed(Controls::UP);
+    bool down = controls->is_key_pressed(Controls::DOWN);
+
+    if (moving_visible_y == -1) {
+
+      if (!up) {
+	moving_visible_y = down ? 1 : 0;
+      }
+      else if (world_minimap_visible_y <= 0) {
+	moving_visible_y = 0;
+      }
     }
-    else if (moving_visible_y == 1
-	     && (!key_state[SDLK_DOWN] || world_minimap_visible_y == 388 - 133)) {
-      moving_visible_y = key_state[SDLK_UP] ? -1 : 0;
+    else if (moving_visible_y == 1) {
+
+      if (!down) {
+	moving_visible_y = up ? -1 : 0;
+      }
+      else if (world_minimap_visible_y >= 388 - 133) {
+	moving_visible_y = 0;
+      }
     }
 
     Uint32 now = SDL_GetTicks();

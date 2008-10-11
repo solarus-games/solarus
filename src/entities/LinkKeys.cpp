@@ -6,38 +6,38 @@
 #include "KeysEffect.h"
 
 /**
- * This function is called by the game when a key is pressed
+ * This function is called by the controls when a game key is pressed
  * if the game is not suspended.
- * @param keysym the key pressed
+ * @param key the key pressed
  */
-void Link::key_pressed(const SDL_keysym &keysym) {
+void Link::key_pressed(Controls::GameKey key) {
 
-  switch (keysym.sym) {
+  switch (key) {
 
     // action key
-  case SDLK_SPACE:
+  case Controls::ACTION:
     action_key_pressed();
     break;
 
     // sword key
-  case SDLK_c:
+  case Controls::SWORD:
     sword_key_pressed();
     break;
 
     // move Link
-  case SDLK_RIGHT:
+  case Controls::RIGHT:
     arrow_pressed(0);
     break;
 
-  case SDLK_UP:
+  case Controls::UP:
     arrow_pressed(1);
     break;
 
-  case SDLK_LEFT:
+  case Controls::LEFT:
     arrow_pressed(2);
     break;
 
-  case SDLK_DOWN:
+  case Controls::DOWN:
     arrow_pressed(3);
     break;
 
@@ -49,31 +49,32 @@ void Link::key_pressed(const SDL_keysym &keysym) {
 /**
  * This function is called when a key is released
  * if the game is not suspended.
- * @param keysym the key released
+ * @param key the key released
  */
-void Link::key_released(const SDL_keysym &keysym) {
+void Link::key_released(Controls::GameKey key) {
 
-  /* When the action key or the sword key are released,
+  /*
+   * When the action key or the sword key are released,
    * we do nothing here: the update() functions will detect that
    * the key is not pressed anymore. Thus, the key will be
    * detected even if it is released while the game is suspended.
    */
 
-  switch (keysym.sym) {
+  switch (key) {
 
-  case SDLK_RIGHT:
+  case Controls::RIGHT:
     arrow_released(0);
     break;
 
-  case SDLK_UP:
+  case Controls::UP:
     arrow_released(1);
     break;
 
-  case SDLK_LEFT:
+  case Controls::LEFT:
     arrow_released(2);
     break;
 
-  case SDLK_DOWN:
+  case Controls::DOWN:
     arrow_released(3);
     break;
 

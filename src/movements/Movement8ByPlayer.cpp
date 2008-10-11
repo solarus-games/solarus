@@ -1,9 +1,12 @@
 #include <cmath>
 #include "movements/Movement8ByPlayer.h"
 #include "entities/MapEntity.h"
+#include "ZSDX.h"
+#include "Game.h"
+#include "Controls.h"
 
 /*
- * Bit masks associated to each arrow on the keyboard.
+ * Bit masks associated to each arrow on the keyboard or the joypad.
  * A combination of arrows is stored in a simple integer.
  */
 const Uint16 Movement8ByPlayer::direction_masks[4] = {
@@ -14,7 +17,7 @@ const Uint16 Movement8ByPlayer::direction_masks[4] = {
 };
 
 /**
- * Associates to each possible combination of keyboard arrows
+ * Associates to each possible combination of arrows
  * a movement direction in degrees: 0 to 359, or -1 to indicate
  * that the movement is stopped.
  *
@@ -88,7 +91,7 @@ bool Movement8ByPlayer::is_moving_enabled(void) {
 
 /**
  * Sets whether the player can move the entity.
- * This function permits to ignore or restore the keyboard control of the entity.
+ * This function permits to ignore or restore the control of the entity.
  * @param can_move true to enable the movements, false to disable them.
  */
 void Movement8ByPlayer::set_moving_enabled(bool can_move) {
@@ -99,18 +102,18 @@ void Movement8ByPlayer::set_moving_enabled(bool can_move) {
       // if the control is being restored, let's take
       // into account the possible arrows pressed
 
-      Uint8 *key_state = SDL_GetKeyState(NULL);
+      Controls *controls = zsdx->game->get_controls();
 
-      if (key_state[SDLK_RIGHT]) {
+      if (controls->is_key_pressed(Controls::RIGHT)) {
 	add_direction_mask(direction_masks[0]);
       }
-      if (key_state[SDLK_UP]) {
+      if (controls->is_key_pressed(Controls::UP)) {
 	add_direction_mask(direction_masks[1]);
       }
-      if (key_state[SDLK_LEFT]) {
+      if (controls->is_key_pressed(Controls::LEFT)) {
 	add_direction_mask(direction_masks[2]);
       }
-      if (key_state[SDLK_DOWN]) {
+      if (controls->is_key_pressed(Controls::DOWN)) {
 	add_direction_mask(direction_masks[3]);
       }
     }
@@ -196,8 +199,8 @@ void Movement8ByPlayer::set_direction_mask(Uint16 direction_mask) {
 /**
  * Changes the movement of the entity depending on the arrows pressed
  * (i.e. depending on the value of direction_mask).
- * This function is called when an arrow is pressed or released
- * on the keyboard, or when the movement has just been enabled or
+ * This function is called when an arrow is pressed or released,
+ * or when the movement has just been enabled or
  * disabled (i.e. when set_moving_enabled() is called).
  */
 void Movement8ByPlayer::compute_movement(void) {

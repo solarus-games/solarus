@@ -19,6 +19,7 @@ class Controls {
    * The game keys that can be customized.
    */
   enum GameKey {
+    NONE = 0,
     ACTION,
     SWORD,
     ITEM_1,
@@ -60,16 +61,21 @@ class Controls {
 
   Game *game;
   Savegame *savegame;
-  Link *link;
 
   map<SDLKey, GameKey> keyboard_mapping;
   map<string, GameKey> joypad_mapping;
 
   bool customizing;
-  GameKey key_customized;
+  GameKey key_to_customize;
 
+  void game_key_pressed(GameKey key);
+  void game_key_released(GameKey key);
+
+  // keyboard mapping
   void key_pressed(const SDL_keysym &keysym);
   void key_released(const SDL_keysym &keysym);
+  SDLKey get_keyboard_key(GameKey game_key);
+  string get_joypad_action(GameKey game_key);
 
  public:
 
@@ -78,8 +84,11 @@ class Controls {
   ~Controls(void);
 
   // controls
+  string get_key_name(GameKey game_key);
+  string get_keyboard_string(GameKey game_key);
+  string get_joypad_string(GameKey key);
   void handle_event(const SDL_Event &event);
-  bool is_key_pressed(GameKey key);
+  bool is_key_pressed(GameKey game_key);
 
   // customization
   void customize(GameKey key);

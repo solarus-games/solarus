@@ -10,6 +10,7 @@
 #include "Equipment.h"
 #include "Sprite.h"
 #include "Treasure.h"
+#include "Controls.h"
 
 /**
  * Returns Link's state.
@@ -118,8 +119,6 @@ void Link::start_sword_loading(void) {
  * The state must be SWORD_LOADING.
  */
 void Link::update_sword_loading(void) {
-
-  Uint8 *key_state = SDL_GetKeyState(NULL);
   
   Uint32 now = SDL_GetTicks();
   while (!sword_loaded && now >= next_counter_date) {
@@ -133,8 +132,9 @@ void Link::update_sword_loading(void) {
       sword_loaded = true;
       counter = 0;
   }
-  
-  if (!key_state[SDLK_c]) {
+
+  Controls *controls = zsdx->game->get_controls();
+  if (!controls->is_key_pressed(Controls::SWORD)) {
     // the player just released the sword key
 
     // stop loading the sword, go to normal state or spin attack
@@ -298,8 +298,8 @@ void Link::start_pulling(void) {
  */
 void Link::update_grabbing_pulling(void) {
 
-  Uint8 *key_state = SDL_GetKeyState(NULL);
-  if (!key_state[SDLK_SPACE]) {
+  Controls *controls = zsdx->game->get_controls();
+  if (!controls->is_key_pressed(Controls::ACTION)) {
     start_free();
   }
 }
@@ -437,7 +437,7 @@ void Link::stop_displaying_sword(void) {
  */
 void Link::animation_over(Sprite *sprite) {
 
-  Uint8 *key_state;
+  Controls *controls = zsdx->game->get_controls();
 
   int state = get_state();
   switch (state) {
@@ -446,9 +446,7 @@ void Link::animation_over(Sprite *sprite) {
     
     // if the player is still pressing the sword key, set the "sword loading" animation
 
-    key_state = SDL_GetKeyState(NULL);
-
-    if (key_state[SDLK_c]) {
+    if (controls->is_key_pressed(Controls::SWORD)) {
       start_sword_loading();
     }
     else {

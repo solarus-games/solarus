@@ -7,15 +7,19 @@
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "KeysEffect.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 
 // TODO: load this from some external file (for future translation)
 static const string texts[] = {
-  "Plein écran",
-  "Oui",
-  "Non",
-  "Commandes",
-  "Clavier",
-  "Joypad",
+  "Plein écran : Oui", // 0
+  "Plein écran : Non", // 1
+  "Commandes",         // 2
+  "Clavier",           // 3
+  "Joypad",            // 4
+  "Appuyez sur Action\npour changer de mode",      // 5
+  "Appuyez sur Action pour\nconfigurer cette touche", // 6
+  "Appuyez sur une touche\ndu clavier ou du joypad",   // 7
 };
 
 /**
@@ -27,29 +31,24 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   PauseSubmenu(pause_menu, game), controls(game->get_controls()) {
 
   // create the text surfaces
-  fullscreen_label_text = new TextSurface(56, 64, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
-  fullscreen_label_text->set_font(TextSurface::FONT_STANDARD);
-  fullscreen_label_text->set_text(texts[0]);
+  fullscreen_text = new TextSurface(264, 64, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
+  fullscreen_text->set_font(TextSurface::FONT_STANDARD);
 
-  fullscreen_answer_text = new TextSurface(240, 64, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
-  fullscreen_answer_text->set_font(TextSurface::FONT_STANDARD);
-
-  controls_text = new TextSurface(84, 82, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
+  controls_text = new TextSurface(84, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   controls_text->set_font(TextSurface::FONT_STANDARD);
-  controls_text->set_text(texts[3]);
+  controls_text->set_text(texts[2]);
 
-  keyboard_text = new TextSurface(153, 82, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
+  keyboard_text = new TextSurface(153, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   keyboard_text->set_font(TextSurface::FONT_STANDARD);
-  keyboard_text->set_text(texts[4]);
+  keyboard_text->set_text(texts[3]);
 
-  joypad_text = new TextSurface(229, 82, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
+  joypad_text = new TextSurface(229, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   joypad_text->set_font(TextSurface::FONT_STANDARD);
-  joypad_text->set_text(texts[5]);
+  joypad_text->set_text(texts[4]);
 
   controls_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 215, 160, 32, 0, 0, 0, 0);
   SDL_SetColorKey(controls_surface, SDL_SRCCOLORKEY, Color::black);
   controls_visible_y = 0;
-  moving_visible_y = 0;
 
   for (int i = 0; i < 9; i++) {
 
@@ -73,6 +72,14 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   down_arrow_sprite = new Sprite("menus/arrow");
   down_arrow_sprite->set_current_direction(1);
 
+  // cursor
+  cursor_position = -1;
+  set_cursor_position(0);
+  customizing = false;
+
+  cursor_sound = ResourceManager::get_sound("cursor");
+  ok_sound = ResourceManager::get_sound("danger");
+
   // action icon
   KeysEffect *keys_effect = game->get_keys_effect();
   keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_CHANGE);
@@ -83,8 +90,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
  */
 PauseSubmenuOptions::~PauseSubmenuOptions(void) {
 
-  delete fullscreen_label_text;
-  delete fullscreen_answer_text;
+  delete fullscreen_text;
 
   delete controls_text;
   delete keyboard_text;
@@ -108,6 +114,8 @@ PauseSubmenuOptions::~PauseSubmenuOptions(void) {
  */
 void PauseSubmenuOptions::load_control_texts(void) {
 
+  SDL_FillRect(controls_surface, NULL, Color::black);
+
   Controls *controls = game->get_controls();
   for (int i = 0; i < 9; i++) {
 
@@ -122,6 +130,24 @@ void PauseSubmenuOptions::load_control_texts(void) {
     game_key_texts[i]->display(controls_surface);
     keyboard_control_texts[i]->display(controls_surface);
     joypad_control_texts[i]->display(controls_surface);
+  }
+}
+
+/**
+ * Changes the position of the cursor.
+ * @param position new cursor position, from 0 to 9
+ */
+void PauseSubmenuOptions::set_cursor_position(int position) {
+
+  if (position != this->cursor_position) {
+    this->cursor_position = position;
+
+    if (position == 0) { // fullscreen
+      set_caption_text(texts[5]);
+    }
+    else { // key customization
+      set_caption_text(texts[6]);
+    }
   }
 }
 
@@ -142,19 +168,15 @@ void PauseSubmenuOptions::key_pressed(Controls::GameKey key) {
     break;
 
   case Controls::UP:
-    // move the controls view
-    if (controls_visible_y > 0) {
-      moving_visible_y = -1;
-      next_moving_visible_y_date = SDL_GetTicks();
-    }
+    set_cursor_position((cursor_position + 9) % 10);
     break;
 
   case Controls::DOWN:
-    // move the controls view
-    if (controls_visible_y < 60) {
-      moving_visible_y = 1;
-      next_moving_visible_y_date = SDL_GetTicks();
-    }
+    set_cursor_position((cursor_position + 1) % 10);
+    break;
+
+  case Controls::ACTION:
+    action_key_pressed();
     break;
 
   default:
@@ -163,38 +185,34 @@ void PauseSubmenuOptions::key_pressed(Controls::GameKey key) {
 }
 
 /**
+ * This function is called when the action key is pressed.
+ */
+void PauseSubmenuOptions::action_key_pressed(void) {
+
+  ok_sound->play();
+  if (cursor_position == 0) {
+    zsdx->switch_fullscreen();
+  }
+  else {
+    set_caption_text(texts[7]);
+    Controls::GameKey key_to_customize = (Controls::GameKey) cursor_position;
+    controls->customize(key_to_customize);
+    customizing = true;
+  }
+}
+
+/**
  * Updates this submenu.
  */
 void PauseSubmenuOptions::update(void) {
 
-  fullscreen_answer_text->set_text(zsdx->is_fullscreen() ? texts[1] : texts[2]);
+  fullscreen_text->set_text(zsdx->is_fullscreen() ? texts[0] : texts[1]);
 
-  bool up = controls->is_key_pressed(Controls::UP);
-  bool down = controls->is_key_pressed(Controls::DOWN);
-
-  if (moving_visible_y == -1) {
-
-    if (!up) {
-      moving_visible_y = down ? 1 : 0;
-    }
-    else if (controls_visible_y <= 0) {
-      moving_visible_y = 0;
-    }
-  }
-  else if (moving_visible_y == 1) {
-
-    if (!down) {
-      moving_visible_y = up ? -1 : 0;
-    }
-    else if (controls_visible_y >= 60) {
-      moving_visible_y = 0;
-    }
-  }
-
-  Uint32 now = SDL_GetTicks();
-  if (moving_visible_y != 0 && now >= next_moving_visible_y_date) {
-    controls_visible_y += moving_visible_y;
-    next_moving_visible_y_date += 10;
+  if (customizing && controls->is_customization_done()) {
+    ok_sound->play();
+    customizing = false;
+    set_caption_text(texts[6]);
+    load_control_texts();
   }
 }
 
@@ -205,15 +223,14 @@ void PauseSubmenuOptions::update(void) {
 void PauseSubmenuOptions::display(SDL_Surface *destination) {
   PauseSubmenu::display(destination);
 
-  fullscreen_label_text->display(destination);
-  fullscreen_answer_text->display(destination);
+  fullscreen_text->display(destination);
 
   controls_text->display(destination);
   keyboard_text->display(destination);
   joypad_text->display(destination);
 
-  SDL_Rect src_position = {0, controls_visible_y, 215, 86};
-  static SDL_Rect dst_position = {53, 100};
+  SDL_Rect src_position = {0, controls_visible_y, 215, 84};
+  static SDL_Rect dst_position = {53, 102};
   SDL_BlitSurface(controls_surface, &src_position, destination, &dst_position);
 
   // display the arrows

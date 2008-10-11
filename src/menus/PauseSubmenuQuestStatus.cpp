@@ -14,7 +14,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   PauseSubmenu(pause_menu, game) {
 
   // draw the items on a surface
-  quest_items_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 225, 133, 32, 0, 0, 0, 0);
+  quest_items_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_SetColorKey(quest_items_surface, SDL_SRCCOLORKEY, Color::black);
   SDL_FillRect(quest_items_surface, NULL, Color::black);
 
@@ -25,7 +25,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   {
     int tunic = equipment->get_tunic();
     SDL_Rect src_position = {tunic * 16, 96, 16, 16};
-    SDL_Rect dst_position = {0, 0}; // TODO
+    SDL_Rect dst_position = {177, 164};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
   }
 
@@ -33,7 +33,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   if (equipment->has_sword()) {
     int sword = equipment->get_sword();
     SDL_Rect src_position = {80 + sword * 16, 96, 16, 16};
-    SDL_Rect dst_position = {0, 0}; // TODO
+    SDL_Rect dst_position = {211, 164};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
   }
 
@@ -41,7 +41,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   if (equipment->has_shield()) {
     int shield = equipment->get_shield();
     SDL_Rect src_position = {32 + shield * 16, 96, 16, 16};
-    SDL_Rect dst_position = {0, 0}; // TODO
+    SDL_Rect dst_position = {245, 164};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
   }
 
@@ -51,7 +51,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     int rupee_bag = (max_rupees == 100) ? 1 : ((max_rupees == 300) ? 2 : 3);
     
     SDL_Rect src_position = {rupee_bag * 16, 80, 16, 16};
-    SDL_Rect dst_position = {0, 0}; // TODO
+    SDL_Rect dst_position = {60, 71};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
   }
 
@@ -59,9 +59,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   int max_bombs = equipment->get_max_bombs();
   if (max_bombs != 0) {
     int bomb_bag = (max_bombs == 10) ? 1 : ((max_bombs == 30) ? 2 : 3);
-    
     SDL_Rect src_position = {48 + bomb_bag * 16, 80, 16, 16};
-    SDL_Rect dst_position = {0, 0}; // TODO
+    SDL_Rect dst_position = {60, 100};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
   }
 
@@ -71,14 +70,14 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     int quiver = (max_arrows == 10) ? 1 : ((max_arrows == 30) ? 2 : 3);
     
     SDL_Rect src_position = {96 + quiver * 16, 80, 16, 16};
-    SDL_Rect dst_position = {0, 0}; // TODO
+    SDL_Rect dst_position = {60, 130};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
   }
 
   // world map
   if (equipment->has_world_map()) {
     SDL_Rect src_position = {0, 80, 16, 16};
-    SDL_Rect dst_position = {0, 0}; // TODO
+    SDL_Rect dst_position = {60, 164};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
   }
 

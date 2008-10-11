@@ -27,6 +27,7 @@ Non mentionné :
 - Intro
 - Boss
 - Résolution 640*480
+- Boîte de dialogue de sauvegarde
 
 Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes
 Dimanche 12 octobre 2008 : menu de pause fini, touches configurables, sauvegarde depuis le menu

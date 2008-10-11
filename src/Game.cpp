@@ -84,6 +84,7 @@ Game::~Game(void) {
   delete hud;
   delete link;
   delete savegame;
+  delete controls;
 
   zsdx->set_game(NULL);
 }

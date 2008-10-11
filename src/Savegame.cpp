@@ -59,7 +59,7 @@ void Savegame::set_initial_values(void) {
   set_integer(MAX_HEARTS, 3);
   set_integer(CURRENT_HEARTS, 12);
 
-  set_integer(MAX_RUPEES, 99);
+  set_integer(MAX_RUPEES, 100);
 
   set_integer(ITEM_SLOT_0, (Uint32) -1);
   set_integer(ITEM_SLOT_1, (Uint32) -1);

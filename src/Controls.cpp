@@ -197,12 +197,12 @@ void Controls::handle_event(const SDL_Event &event) {
 
     case SDLK_t:
       equipment->give_inventory_item(InventoryItem::BOW);
-      equipment->set_max_arrows(30);
+      equipment->set_max_arrows(10);
       equipment->set_item_assigned(0, InventoryItem::BOW);
       equipment->give_inventory_item(InventoryItem::BOTTLE_2, 6);
       equipment->set_item_assigned(1, InventoryItem::BOTTLE_2);
       equipment->give_inventory_item(InventoryItem::BOMBS);
-      equipment->set_max_bombs(30);
+      equipment->set_max_bombs(10);
       equipment->set_bombs(10);
       equipment->give_inventory_item(InventoryItem::BOOMERANG);
       equipment->give_inventory_item(InventoryItem::LAMP);
@@ -322,16 +322,26 @@ void Controls::key_pressed(const SDL_keysym &keysym) {
       game_key_pressed(game_key);
     }
   }
-  else if (game_key != key_to_customize) {
-    // consider this key as the new mapping for the game key being customized
+  else {
 
-    if (game_key != 0) {
-      // this keyboard key was already assigned to a game key
+    customizing = false;
+
+    if (game_key != key_to_customize) {
+      // consider this key as the new mapping for the game key being customized
+
       SDLKey previous_keyboard_key = get_keyboard_key(key_to_customize);
-      keyboard_mapping[previous_keyboard_key] = game_key;
+      if (game_key != 0) {
+	// this keyboard key was already assigned to a game key
+	keyboard_mapping[previous_keyboard_key] = game_key;
+      }
+      else {
+	keyboard_mapping.erase(previous_keyboard_key);
+      }
+      keyboard_mapping[keysym.sym] = key_to_customize;
     }
-    keyboard_mapping[keysym.sym] = key_to_customize;
   }
+
+  // TODO save!
 }
 
 /**

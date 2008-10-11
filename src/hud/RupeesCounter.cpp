@@ -29,10 +29,10 @@ RupeesCounter::RupeesCounter(Equipment *equipment, int x, int y):
 
   nb_max_rupees_displayed = equipment->get_max_rupees();
 
-  if (nb_max_rupees_displayed == 99) {
+  if (nb_max_rupees_displayed == 100) {
     icon_displayed = 0;
   }
-  else if (nb_max_rupees_displayed == 199) {
+  else if (nb_max_rupees_displayed == 300) {
     icon_displayed = 1;
   }
   else {
@@ -64,10 +64,10 @@ void RupeesCounter::update(void) {
   if (nb_max_rupees_displayed != nb_max_rupees) {
     nb_max_rupees_displayed = nb_max_rupees;
 
-    if (nb_max_rupees_displayed == 99) {
+    if (nb_max_rupees_displayed == 100) {
       icon_displayed = 0;
     }
-    else if (nb_max_rupees_displayed == 199) {
+    else if (nb_max_rupees_displayed == 300) {
       icon_displayed = 1;
     }
     else {

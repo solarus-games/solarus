@@ -14,8 +14,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
   Controls *controls;
 
-  TextSurface *fullscreen_label_text;
-  TextSurface *fullscreen_answer_text;
+  TextSurface *fullscreen_text;
 
   TextSurface *controls_text;
   TextSurface *keyboard_text;
@@ -27,13 +26,18 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
   SDL_Surface *controls_surface;
   int controls_visible_y;
-  int moving_visible_y;        /**< 0, -1 or 1 depending on the arrow pressed */
-  Uint32 next_moving_visible_y_date;
 
   Sprite *up_arrow_sprite;
   Sprite *down_arrow_sprite;
 
+  Sound *cursor_sound;
+  Sound *ok_sound;
+  int cursor_position; /**< 0: fullscreen, 1 to 9: key 1 to 9*/
+  bool customizing;
+
   void load_control_texts(void);
+  void set_cursor_position(int position);
+  void action_key_pressed(void);
 
  public:
 

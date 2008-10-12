@@ -75,11 +75,11 @@ void Savegame::set_initial_values(void) {
   set_integer(KEYBOARD_LEFT_KEY, SDLK_LEFT);
   set_integer(KEYBOARD_DOWN_KEY, SDLK_DOWN);
 
-  set_string(JOYPAD_ACTION_KEY, "button 1");
-  set_string(JOYPAD_SWORD_KEY, "button 2");
-  set_string(JOYPAD_ITEM_1_KEY, "button 3");
-  set_string(JOYPAD_ITEM_2_KEY, "button 4");
-  set_string(JOYPAD_PAUSE_KEY, "button 5");
+  set_string(JOYPAD_ACTION_KEY, "button 0");
+  set_string(JOYPAD_SWORD_KEY, "button 1");
+  set_string(JOYPAD_ITEM_1_KEY, "button 2");
+  set_string(JOYPAD_ITEM_2_KEY, "button 3");
+  set_string(JOYPAD_PAUSE_KEY, "button 4");
   set_string(JOYPAD_RIGHT_KEY, "axis 0 +");
   set_string(JOYPAD_UP_KEY, "axis 1 -");
   set_string(JOYPAD_LEFT_KEY, "axis 0 -");
@@ -145,6 +145,16 @@ const char * Savegame::get_string(int index) {
  */
 void Savegame::set_string(int index, const char *value) {
   strncpy(saved_data.strings[index], value, 63);
+}
+
+/**
+ * Sets a string value saved.
+ * @param index index of the value to set, between 0 and 63
+ * (see enum StringIndex for their definition)
+ * @param value the string value to store at this index
+ */
+void Savegame::set_string(int index, string value) {
+  set_string(index, value.c_str());
 }
 
 /**

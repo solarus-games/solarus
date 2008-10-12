@@ -134,6 +134,7 @@ void Link::update_sword_loading(void) {
   }
 
   Controls *controls = zsdx->game->get_controls();
+
   if (!controls->is_key_pressed(Controls::SWORD)) {
     // the player just released the sword key
 

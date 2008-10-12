@@ -33,7 +33,7 @@ ZSDX *zsdx = NULL;
 ZSDX::ZSDX(void) {
 
   // initialize SDL
-  SDL_Init(SDL_INIT_VIDEO);
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
   SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
 
   SDL_ShowCursor(SDL_ENABLE);

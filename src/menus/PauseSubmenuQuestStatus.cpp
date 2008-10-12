@@ -20,6 +20,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   Equipment *equipment = game->get_equipment();
   SDL_Surface *treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+  SDL_Surface *pieces_of_heart_img = ResourceManager::load_image("menus/quest_status_pieces_of_heart.png");
 
   // tunic
   {
@@ -82,12 +83,18 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // pieces of heart
-  // TODO
+  {
+    int x = 51 * equipment->get_nb_pieces_of_heart();
+    SDL_Rect src_position = {x, 0, 51, 50};
+    SDL_Rect dst_position = {101, 82};
+    SDL_BlitSurface(pieces_of_heart_img, &src_position, quest_items_surface, &dst_position);
+  }
 
   // dungeons finished
   // TODO
 
   SDL_FreeSurface(treasures_img);
+  SDL_FreeSurface(pieces_of_heart_img);
 }
 
 /**

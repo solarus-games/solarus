@@ -25,19 +25,25 @@ class PauseSubmenuOptions: public PauseSubmenu {
   TextSurface *joypad_control_texts[9];
 
   SDL_Surface *controls_surface;
+  int highest_visible_key; // 1 to 9
   int controls_visible_y;
 
   Sprite *up_arrow_sprite;
   Sprite *down_arrow_sprite;
 
+  Sprite *cursor_sprite;
+  SDL_Rect cursor_sprite_position;
+
   Sound *cursor_sound;
   Sound *ok_sound;
-  int cursor_position; /**< 0: fullscreen, 1 to 9: key 1 to 9*/
+  int cursor_position; /**< 0: fullscreen, 1 to 9: key 1 to 9 */
   bool customizing;
 
   void load_control_texts(void);
   void set_cursor_position(int position);
   void action_key_pressed(void);
+
+  void display_cursor(SDL_Surface *destination);
 
  public:
 

@@ -18,9 +18,11 @@ static const string key_names[] = {
   "Pause",
   "Droite",
   "Haut",
-  "Bas",
   "Gauche",
+  "Bas",
 };
+
+static const string direction_strings[] = {"right", "up", "left", "down"};
 
 /**
  * Constructor.
@@ -28,6 +30,13 @@ static const string key_names[] = {
  */
 Controls::Controls(Game *game):
   game(game), savegame(game->get_savegame()), customizing(false) {
+
+  if (SDL_NumJoysticks() > 0) {
+    joystick = SDL_JoystickOpen(0);
+  }
+  else {
+    joystick = NULL;
+  }
 
   // load the controls from the savegame
   for (int i = 0; i < 9; i++) {
@@ -43,6 +52,9 @@ Controls::Controls(Game *game):
     index = Savegame::JOYPAD_ACTION_KEY + i;
     string joypad_string = savegame->get_string(index);
     joypad_mapping[joypad_string] = game_key;
+
+    // game key
+    keys_pressed[i] = false;
   }
 }
 
@@ -50,7 +62,10 @@ Controls::Controls(Game *game):
  * Destructor.
  */
 Controls::~Controls(void) {
-  
+
+  if (SDL_JoystickOpened(0)) {
+    SDL_JoystickClose(joystick);
+  }
 }
 
 /**
@@ -73,13 +88,11 @@ string Controls::get_keyboard_string(GameKey game_key) {
 }
 
 /**
- * Returns a string representing the joypad action associated to
- * the specified game key.
- * @param game_key a game key
- * @return a string representing the corresponding joypad action
+ * Returns true if a joypad is plugged and can be used.
+ * @return true if there is a joypad
  */
-string Controls::get_joypad_string(GameKey game_key) {
-  return get_joypad_action(game_key);
+bool Controls::is_joypad_enabled(void) {
+  return joystick != NULL;
 }
 
 /**
@@ -88,14 +101,58 @@ string Controls::get_joypad_string(GameKey game_key) {
  */
 bool Controls::is_key_pressed(GameKey game_key) {
 
+  if (true) {
+    return keys_pressed[game_key - 1];
+  }
+
+  /* useless since key_pressed[] exists
+
   // check the keyboard
   Uint8 *key_state = SDL_GetKeyState(NULL);
   if (key_state[get_keyboard_key(game_key)]) {
     return true;
   }
 
-  // TODO check the joypad
-  return false;
+  // see if there is a joypad
+  if (!is_joypad_enabled()) {
+    return false;
+  }
+
+  // check the joypad
+
+  string joypad_string = get_joypad_string(game_key);
+  JoypadAction action = get_joypad_action(joypad_string);
+
+  bool result;
+  switch (action.type) {
+
+  case BUTTON:
+    result = (SDL_JoystickGetButton(joystick, action.control.button) == 1);
+    break;
+
+  case AXIS:
+    {
+      int direction = action.control.movement.direction;
+      Sint16 axis_state = SDL_JoystickGetAxis(joystick, action.control.movement.index);
+      result = (direction == 1 && axis_state > 5000)
+	|| (direction == -1 && axis_state < -5000);
+    }
+    break;
+
+  case HAT:
+    {
+      int direction = action.control.movement.direction;
+      Uint8 hat_state = SDL_JoystickGetHat(joystick, action.control.movement.index);
+      result = (direction == 0 && (hat_state & SDL_HAT_RIGHT))
+	|| (direction == 1 && (hat_state & SDL_HAT_UP))
+	|| (direction == 2 && (hat_state & SDL_HAT_LEFT))
+	|| (direction == 3 && (hat_state & SDL_HAT_DOWN));
+    }
+    break;
+  }
+
+  return result;
+  */
 }
 
 /**
@@ -125,15 +182,19 @@ void Controls::handle_event(const SDL_Event &event) {
 
     // joypad
   case SDL_JOYAXISMOTION:
+    joypad_axis_moved(event.jaxis.axis, event.jaxis.value);
     break;
 
   case SDL_JOYHATMOTION:
+    joypad_hat_moved(event.jhat.hat, event.jhat.value);
     break;
 
   case SDL_JOYBUTTONDOWN:
+    joypad_button_pressed(event.jbutton.button);
     break;
 
   case SDL_JOYBUTTONUP:
+    joypad_button_released(event.jbutton.button);
     break;
   }
 
@@ -323,7 +384,6 @@ void Controls::key_pressed(const SDL_keysym &keysym) {
     }
   }
   else {
-
     customizing = false;
 
     if (game_key != key_to_customize) {
@@ -338,10 +398,13 @@ void Controls::key_pressed(const SDL_keysym &keysym) {
 	keyboard_mapping.erase(previous_keyboard_key);
       }
       keyboard_mapping[keysym.sym] = key_to_customize;
+      keys_pressed[key_to_customize - 1] = true;
+
+      // save this new mapping
+      int index = Savegame::KEYBOARD_ACTION_KEY + key_to_customize - 1;
+      savegame->set_integer(index, keysym.sym);
     }
   }
-
-  // TODO save!
 }
 
 /**
@@ -362,11 +425,270 @@ void Controls::key_released(const SDL_keysym &keysym) {
 }
 
 /**
+ * This function is called when a joypad button is pressed.
+ * @param button the button pressed
+ */
+void Controls::joypad_button_pressed(int button) {
+
+  // retrieve the game key corresponding to this joypad button
+  ostringstream oss;
+  oss << "button " << button;
+  string joypad_string = oss.str();
+  GameKey game_key = joypad_mapping[joypad_string];
+
+  if (!customizing) {
+
+    // if the key is mapped (otherwise we just ignore it)
+    if (game_key != 0) {
+
+      // notify the game
+      game_key_pressed(game_key);
+    }
+  }
+  else {
+    customizing = false;
+
+    if (game_key != key_to_customize) {
+      // consider this button as the new mapping for the game key being customized
+
+      string previous_joypad_string = get_joypad_string(key_to_customize);
+      if (game_key != 0) {
+	// this button was already assigned to a game key
+	joypad_mapping[previous_joypad_string] = game_key;
+      }
+      else {
+	joypad_mapping.erase(previous_joypad_string);
+      }
+      joypad_mapping[joypad_string] = key_to_customize;
+      keys_pressed[key_to_customize - 1] = true;
+
+      // save this new mapping
+      int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
+      savegame->set_string(index, joypad_string);
+    }
+  }
+}
+
+/**
+ * This function is called when a joypad button is released.
+ * @param button the button released
+ */
+void Controls::joypad_button_released(int button) {
+
+  // retrieve the game key corresponding to this joypad button
+  ostringstream oss;
+  oss << "button " << button;
+  GameKey game_key = joypad_mapping[oss.str()];
+
+  // if the key is mapped (otherwise we just ignore it)
+  if (game_key != 0) {
+
+    // notify the game
+    game_key_released(game_key);
+  }
+}
+
+/**
+ * This function is called when a joypad axis is moved.
+ * @param axis the axis moved
+ * @param state the new axis state
+ */
+void Controls::joypad_axis_moved(int axis, int state) {
+
+  // axis in centered position
+  if (state == 0) {
+
+    ostringstream oss_1;
+    oss_1 << "axis " << axis << " +";
+    string joypad_string_1 = oss_1.str();
+    GameKey game_key_1 = joypad_mapping[oss_1.str()];
+
+    if (game_key_1 != 0) {
+      game_key_released(game_key_1);
+    }
+
+    ostringstream oss_2;
+    oss_2 << "axis " << axis << " -";
+    string joypad_string_2 = oss_2.str();
+    GameKey game_key_2 = joypad_mapping[oss_2.str()];
+
+    if (game_key_2 != 0) {
+      game_key_released(game_key_2);
+    }
+  }
+  else if (state > 15000 || state < -15000) {
+
+    ostringstream oss;
+    oss << "axis " << axis << ((state > 0) ? " +" : " -");
+    string joypad_string = oss.str();
+
+    GameKey game_key = joypad_mapping[joypad_string];
+
+    if (!customizing) {
+
+      // if the key is mapped (otherwise we just ignore it)
+      if (game_key != 0) {
+
+	// notify the game
+	game_key_pressed(game_key);
+      }
+    }
+    else {
+      customizing = false;
+
+      if (game_key != key_to_customize) {
+	// consider this axis movement as the new mapping for the game key being customized
+
+	string previous_joypad_string = get_joypad_string(key_to_customize);
+	if (game_key != 0) {
+	  // this axis movement was already assigned to a game key
+	  joypad_mapping[previous_joypad_string] = game_key;
+	}
+	else {
+	  joypad_mapping.erase(previous_joypad_string);
+	}
+	joypad_mapping[joypad_string] = key_to_customize;
+	keys_pressed[key_to_customize - 1] = true;
+
+	// save this new mapping
+	int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
+	savegame->set_string(index, joypad_string);
+      }
+    }
+  }
+}
+
+/**
+ * This function is called when a joypad has is moved.
+ * @param hat the hat moved
+ * @param value the new hat position
+ */
+void Controls::joypad_hat_moved(int hat, int value) {
+
+  // hat in centered position
+  if (value == SDL_HAT_CENTERED) {
+
+    for (int i = 0; i < 4; i++) {
+
+      ostringstream oss;
+      oss << "hat " << hat << ' ' << direction_strings[i];
+      string joypad_string = oss.str();
+      GameKey game_key = joypad_mapping[oss.str()];
+
+      if (game_key != 0) {
+	game_key_released(game_key);
+      }
+    }
+  }
+  else {
+
+    int direction_1 = -1;
+    int direction_2 = -1;
+
+    switch (value) {
+
+    case SDL_HAT_RIGHT:
+      direction_1 = 0;
+      break;
+
+    case SDL_HAT_RIGHTUP:
+      direction_1 = 1;
+      direction_2 = 0;
+      break;
+
+    case SDL_HAT_UP:
+      direction_1 = 1;
+      break;
+
+    case SDL_HAT_LEFTUP:
+      direction_1 = 1;
+      direction_2 = 2;
+      break;
+
+    case SDL_HAT_LEFT:
+      direction_1 = 2;
+      break;
+
+    case SDL_HAT_LEFTDOWN:
+      direction_1 = 3;
+      direction_2 = 2;
+      break;
+
+    case SDL_HAT_DOWN:
+      direction_1 = 3;
+      break;
+
+    case SDL_HAT_RIGHTDOWN:
+      direction_1 = 3;
+      direction_2 = 0;
+    }
+
+    ostringstream oss;
+    oss << "hat " << hat << ' ' << direction_strings[direction_1];
+    string joypad_string = oss.str();
+    GameKey game_key = joypad_mapping[joypad_string];
+
+    string joypad_string_2 = "";
+    GameKey game_key_2 = NONE;
+
+    if (direction_2 != -1) {
+      ostringstream oss;
+      oss << "hat " << hat << ' ' << direction_strings[direction_2];
+      joypad_string_2 = oss.str();
+      game_key_2 = joypad_mapping[joypad_string_2];
+    }
+
+    if (!customizing) {
+
+      // if the key is mapped (otherwise we just ignore it)
+      if (game_key != 0) {
+
+	// notify the game
+	game_key_pressed(game_key);
+      }
+
+      if (game_key_2 != 0) {
+	game_key_pressed(game_key);
+      }
+    }
+    else {
+      customizing = false;
+
+      if (game_key != key_to_customize) {
+	// consider this hat movement as the new mapping for the game key being customized
+
+	string previous_joypad_string = get_joypad_string(key_to_customize);
+	if (game_key != 0) {
+	  // this hat movement was already assigned to a game key
+	  joypad_mapping[previous_joypad_string] = game_key;
+	}
+	else {
+	  joypad_mapping.erase(previous_joypad_string);
+	}
+	joypad_mapping[joypad_string] = key_to_customize;
+	keys_pressed[key_to_customize - 1] = true;
+
+	// save this new mapping
+	int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
+	savegame->set_string(index, joypad_string);
+      }
+    }
+  }
+}
+
+/**
  * This function is called when a game key is pressed.
  * This event may come from the keyboard or the joypad.
  * @param key the game key pressed
  */
 void Controls::game_key_pressed(GameKey key) {
+
+  int index = key - 1;
+  if (keys_pressed[index]) {
+    return;
+  }
+
+  keys_pressed[index] = true;
 
   if (!game->is_suspended()) {    
 
@@ -398,39 +720,19 @@ void Controls::game_key_pressed(GameKey key) {
  */
 void Controls::game_key_released(GameKey key) {
 
+  keys_pressed[key - 1] = false;
+
   if (!game->is_suspended()) {
     // if the game is not suspended, the keys apply to Link
     game->get_link()->key_released(key);
   }  
 }
 
-/*
-  this code converts a string to a JoypadControl
-
-    JoypadControl *joypad_control = new JoypadControl();
-
-    if (control_string.find("button")) {
-      joypad_control->type = BUTTON;
-      joypad_control->control.button = control_string[7];
-    }
-    else if (control_string.find("axis")) {
-      joypad_control->type = AXIS;
-      joypad_control->control.movement.index = control_string[5];
-      joypad_control->control.movement.direction = control_string[7];
-    }
-    else if (control_string.find("hat")) {
-      joypad_control->type = HAT;
-      joypad_control->control.movement.index = control_string[4];
-      joypad_control->control.movement.direction = control_string[6];
-    }
-    else {
-      DIE("Unknown joypad control '" << control_string << "'");
-    }
-*/
 
 /**
  * Returns the keyboard key where the specified game key
  * is currently mapped.
+ * @param game_key a game key
  * @return the keyboard key corresponding this game key
  */
 SDLKey Controls::get_keyboard_key(GameKey game_key) {
@@ -454,25 +756,76 @@ SDLKey Controls::get_keyboard_key(GameKey game_key) {
 }
 
 /**
- * Returns the joypad action where the specified game key
- * is currently mapped.
+ * Returns a string representing the joypad action where the
+ * specified game key is currently mapped.
  * @return the joypad action corresponding this game key
  */
-string Controls::get_joypad_action(GameKey game_key) {
+string Controls::get_joypad_string(GameKey game_key) {
 
   bool found = false;
-  string joypad_action = "";
+  string joypad_string = "";
   map<string, GameKey>::const_iterator it;
   for (it = joypad_mapping.begin(); it != joypad_mapping.end(); it++) {
 
     if (it->second == game_key) {
-      joypad_action = it->first;
+      joypad_string = it->first;
       found = true;
     }
   }
 
   if (!found) {
     DIE("No joypad action is defined for game key '" << get_key_name(game_key) << "'");
+  }
+
+  return joypad_string;
+}
+
+/**
+ * Converts a string to a JoypadControl.
+ * @param string a string describing a joypad action, as stored
+ * in the savegame (and returned by get_joypad_string())
+ * @return the corresponding JoypadControl structure
+ */
+Controls::JoypadAction Controls::get_joypad_action(string description) {
+  
+  JoypadAction joypad_action;
+
+  if (description.find("button") != string::npos) {
+    joypad_action.type = BUTTON;
+    joypad_action.control.button = description[7] - '0';
+  }
+  else if (description.find("axis") != string::npos) {
+    joypad_action.type = AXIS;
+    joypad_action.control.movement.index = description[5] - '0';
+    joypad_action.control.movement.direction = (description[7] == '+') ? 1 : -1;
+  }
+  else if (description.find("hat") != string::npos) {
+    joypad_action.type = HAT;
+    joypad_action.control.movement.index = description[4] - '0';
+
+    int direction;
+    switch (description[6]) {
+
+    case 'r':
+      direction = 0;
+      break;
+
+    case 'u':
+      direction = 1;
+      break;
+
+    case 'l':
+      direction = 2;
+      break;
+
+    case 'd':
+      direction = 3;
+      break;
+    }
+    joypad_action.control.movement.direction = direction;
+  }
+  else {
+    DIE("Unknown joypad control '" << description << "'");
   }
 
   return joypad_action;

@@ -8,6 +8,9 @@
 
 - Bugs: 
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+  - désactiver la gestion du hat tant que c'est pas testé
+  - classe Controls : code inutile depuis qu'il y a key_pressed (voir is_key_pressed)
+  - écran de pause : boîte de dialogue de sauvegarde
 
 - Prochaines grandes étapes :
   - collision au pixel près
@@ -28,6 +31,7 @@ Non mentionné :
 - Boss
 - Résolution 640*480
 - Boîte de dialogue de sauvegarde
+- Ecran titre
 
 Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes
 Dimanche 12 octobre 2008 : menu de pause fini, touches configurables, sauvegarde depuis le menu

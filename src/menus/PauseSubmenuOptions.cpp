@@ -31,7 +31,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   PauseSubmenu(pause_menu, game), controls(game->get_controls()) {
 
   // create the text surfaces
-  fullscreen_text = new TextSurface(264, 64, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
+  fullscreen_text = new TextSurface(264, 62, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
   fullscreen_text->set_font(TextSurface::FONT_STANDARD);
 
   controls_text = new TextSurface(84, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
@@ -48,6 +48,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
 
   controls_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 215, 160, 32, 0, 0, 0, 0);
   SDL_SetColorKey(controls_surface, SDL_SRCCOLORKEY, Color::black);
+  highest_visible_key = 1;
   controls_visible_y = 0;
 
   for (int i = 0; i < 9; i++) {
@@ -73,6 +74,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   down_arrow_sprite->set_current_direction(1);
 
   // cursor
+  cursor_sprite = new Sprite("menus/options_cursor");
   cursor_position = -1;
   set_cursor_position(0);
   customizing = false;
@@ -106,6 +108,7 @@ PauseSubmenuOptions::~PauseSubmenuOptions(void) {
 
   delete up_arrow_sprite;
   delete down_arrow_sprite;
+  delete cursor_sprite;
 }
 
 /**
@@ -144,9 +147,27 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
 
     if (position == 0) { // fullscreen
       set_caption_text(texts[5]);
+      cursor_sprite_position.x = 148;
+      cursor_sprite_position.y = 62;
+      cursor_sprite->set_current_animation("big");
     }
     else { // key customization
       set_caption_text(texts[6]);
+
+      // make sure the selected key is visible
+      while (position < highest_visible_key) {
+	highest_visible_key--;
+	controls_visible_y -= 16;
+      }
+
+      while (position > highest_visible_key + 4) {
+	highest_visible_key++;
+	controls_visible_y += 16;
+      }
+
+      cursor_sprite_position.x = 55;
+      cursor_sprite_position.y = 104 + (position - highest_visible_key) * 16;
+      cursor_sprite->set_current_animation("small");
     }
   }
 }
@@ -168,10 +189,12 @@ void PauseSubmenuOptions::key_pressed(Controls::GameKey key) {
     break;
 
   case Controls::UP:
+    cursor_sound->play();
     set_cursor_position((cursor_position + 9) % 10);
     break;
 
   case Controls::DOWN:
+    cursor_sound->play();
     set_cursor_position((cursor_position + 1) % 10);
     break;
 
@@ -195,6 +218,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
   }
   else {
     set_caption_text(texts[7]);
+    cursor_sprite->set_current_animation("small_blink");
     Controls::GameKey key_to_customize = (Controls::GameKey) cursor_position;
     controls->customize(key_to_customize);
     customizing = true;
@@ -207,11 +231,13 @@ void PauseSubmenuOptions::action_key_pressed(void) {
 void PauseSubmenuOptions::update(void) {
 
   fullscreen_text->set_text(zsdx->is_fullscreen() ? texts[0] : texts[1]);
+  cursor_sprite->update();
 
   if (customizing && controls->is_customization_done()) {
     ok_sound->play();
     customizing = false;
     set_caption_text(texts[6]);
+    cursor_sprite->set_current_animation("small");
     load_control_texts();
   }
 }
@@ -223,6 +249,10 @@ void PauseSubmenuOptions::update(void) {
 void PauseSubmenuOptions::display(SDL_Surface *destination) {
   PauseSubmenu::display(destination);
 
+  // display the cursor
+  display_cursor(destination);
+
+  // display the text
   fullscreen_text->display(destination);
 
   controls_text->display(destination);
@@ -243,4 +273,13 @@ void PauseSubmenuOptions::display(SDL_Surface *destination) {
     down_arrow_sprite->display(destination, 96, 182);
     down_arrow_sprite->display(destination, 211, 182);
   }
+}
+
+/**
+ * Displays the cursor.
+ * @param destination the destination surface
+ */
+void PauseSubmenuOptions::display_cursor(SDL_Surface *destination) {
+
+  cursor_sprite->display(destination, cursor_sprite_position.x, cursor_sprite_position.y);
 }

@@ -123,7 +123,7 @@ void ZSDX::set_video_mode(VideoMode mode) {
     break;
   }
 
-  this->video_mode = video_mode;
+  this->video_mode = mode;
 }
 
 /**

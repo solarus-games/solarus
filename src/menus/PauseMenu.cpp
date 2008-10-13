@@ -10,7 +10,6 @@
 #include "Sound.h"
 #include "Color.h"
 #include "TextSurface.h"
-#include "ZSDX.h"
 
 // TODO: load this from some external file (for future translation)
 static const string texts[] = {
@@ -46,10 +45,10 @@ PauseMenu::PauseMenu(Game *game):
   question_text[1] = new TextSurface(160, 128, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   question_text[1]->set_text_color(8, 8, 8);
 
-  answer_text[0] = new TextSurface(100, 146, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  answer_text[0] = new TextSurface(100, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   answer_text[0]->set_text_color(8, 8, 8);
   answer_text[0]->set_text(texts[0]);
-  answer_text[1] = new TextSurface(219, 146, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  answer_text[1] = new TextSurface(219, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   answer_text[1]->set_text_color(8, 8, 8);
   answer_text[1]->set_text(texts[1]);
 
@@ -63,6 +62,11 @@ PauseMenu::~PauseMenu(void) {
   delete current_submenu;
   SDL_FreeSurface(backgrounds_surface);
   delete save_dialog_sprite;
+
+  delete question_text[0];
+  delete question_text[1];
+  delete answer_text[0];
+  delete answer_text[1];
 }
 
 /**
@@ -134,16 +138,21 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
 
       question_text[0]->set_text(texts[4]);
       question_text[1]->set_text(texts[5]);
+
+      save_dialog_choice = 0;
+      save_dialog_sprite->set_current_animation("left");
     }
     else {
       ResourceManager::get_sound("danger")->play();
+
+      save_dialog_state = 0;
+      keys_effect->set_action_key_effect(action_key_effect_saved);
+      keys_effect->set_sword_key_effect(sword_key_effect_saved);
+
       if (save_dialog_choice == 1) {
-	game->();
-      }
-      else {
-	save_dialog_state = 0;
-	keys_effect->set_action_key_effect(action_key_effect_saved);
-	keys_effect->set_sword_key_effect(sword_key_effect_saved);
+	game->reset();
+	quit();
+	game->set_paused(false);
       }
     }
   }

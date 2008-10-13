@@ -25,14 +25,26 @@ extern ZSDX *zsdx;
  */
 class ZSDX {
 
+ public:
+
+  /**
+   * The different possible screen modes.
+   */
+  enum VideoMode {
+    WINDOWED_640_480,
+    WINDOWED_320_240,
+    FULLSCREEN,
+  };
+
  private:
  
   /**
    * The current screen displayed: the title screen, the selection menu, the game, etc.
    */
   Screen *current_screen;
-  SDL_Surface *root_surface; 
-  bool fullscreen;
+  SDL_Surface *root_surface; /**< the surface where everything is drawn (always 320*240) */
+  SDL_Surface *real_surface; /**< the surface actually displayed on the screen */
+  VideoMode video_mode;
   bool exiting;
 
   void launch_adventure_mode(Savegame *savegame);
@@ -53,9 +65,11 @@ class ZSDX {
 
   void main(void);
 
-  void set_fullscreen(bool fullscreen);
   bool is_fullscreen(void);
-  void switch_fullscreen(void);
+
+  void switch_video_mode(void);
+  void set_video_mode(VideoMode mode);
+  VideoMode get_video_mode(void);
 
   void set_game(Game *game);
   void set_exiting(void);

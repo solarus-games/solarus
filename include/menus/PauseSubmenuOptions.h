@@ -14,7 +14,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
   Controls *controls;
 
-  TextSurface *fullscreen_text;
+  TextSurface *video_mode_text;
 
   TextSurface *controls_text;
   TextSurface *keyboard_text;

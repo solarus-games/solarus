@@ -25,6 +25,7 @@ class Game: public Screen {
   PauseMenu *pause_menu;    /**< the current pause menu, or NULL if the game is not paused */
   DialogBox *dialog_box;    /**< the dialog box currently shown, or NULL if no message is being shown */
   Treasure *treasure;       /**< the treasure currently being given to the player or NULL if it is not the case */
+  bool reseting;            /**< true if the game will be reset */
 
   // controls
   Controls *controls;       /**< this object receives the SDL keyboard and joypad events */
@@ -46,7 +47,8 @@ class Game: public Screen {
   HUD *hud;                 /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
 
   // music
-  MusicId current_music_id; /**< id of the music currently played (a valid music, or MUSIC_NONE if no music is being played) */
+  MusicId current_music_id; /**< id of the music currently played (a valid music,
+			     * or MUSIC_NONE if no music is being played) */
   Music *current_music;     /**< the music currently played, or NULL if no music is being played */
 
   // update functions
@@ -94,6 +96,7 @@ class Game: public Screen {
   bool is_showing_message(void);
   bool is_playing_transition(void);
   bool is_suspended(void); // true if at least one of the three functions above returns true
+  void reset(void);
 
   // pause
   void set_paused(bool paused);

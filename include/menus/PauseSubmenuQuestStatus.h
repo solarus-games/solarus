@@ -14,6 +14,14 @@ class PauseSubmenuQuestStatus: public PauseSubmenu {
 
   SDL_Surface *quest_items_surface;
 
+  Sprite *cursor_sprite;
+  int cursor_position; /**< 0 to 7 */
+  SDL_Rect cursor_sprite_position;
+
+  string caption_texts[8];
+
+  void set_cursor_position(int position);
+
  public:
 
   PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game);

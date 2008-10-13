@@ -36,8 +36,9 @@ ZSDX::ZSDX(void) {
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
   SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
 
+  root_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_ShowCursor(SDL_ENABLE);
-  set_fullscreen(false);
+  set_video_mode(WINDOWED_640_480);
   SDL_EnableUNICODE(SDL_ENABLE);
   SDL_EnableKeyRepeat(0, 0);
 
@@ -66,6 +67,7 @@ ZSDX::ZSDX(void) {
  * Cleans everything.
  */
 ZSDX::~ZSDX(void) {
+  SDL_FreeSurface(root_surface);
   delete current_screen;
   ResourceManager::quit();
   TextSurface::quit();
@@ -82,34 +84,54 @@ void ZSDX::set_game(Game *game) {
 }
 
 /**
- * Sets the full screen mode or the windowed mode.
- * @param fullscreen true for full screen mode, false for the windowed mode
- */
-void ZSDX::set_fullscreen(bool fullscreen) {
-  if (fullscreen) {
-    root_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
-    SDL_ShowCursor(SDL_DISABLE);
-  }
-  else {
-    root_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-    SDL_ShowCursor(SDL_ENABLE);
-  }
-  this->fullscreen = fullscreen;
-}
-
-/**
  * Returns whether the game is in full screen.
  * @return true if the game is in full screen mode, false otherwise
  */
 bool ZSDX::is_fullscreen(void) {
-  return fullscreen;
+  return video_mode == FULLSCREEN;
 }
 
 /**
- * Switches between full screen mode and windowed mode.
+ * Sets the next video mode.
  */
-void ZSDX::switch_fullscreen(void) {
-  set_fullscreen(!fullscreen);
+void ZSDX::switch_video_mode(void) {
+  int mode = (video_mode + 1) % 3;
+  set_video_mode((VideoMode) mode);
+}
+
+/**
+ * Sets the current video mode.
+ * @param mode the video mode
+ */
+void ZSDX::set_video_mode(VideoMode mode) {
+
+  switch (mode) {
+
+  case FULLSCREEN:
+    real_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+    SDL_ShowCursor(SDL_DISABLE);
+    break;
+
+  case WINDOWED_320_240:
+    real_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    SDL_ShowCursor(SDL_ENABLE);
+    break;
+
+  case WINDOWED_640_480:
+    real_surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    SDL_ShowCursor(SDL_ENABLE);
+    break;
+  }
+
+  this->video_mode = video_mode;
+}
+
+/**
+ * Returns the current video mode.
+ * @return the video mode
+ */
+ZSDX::VideoMode ZSDX::get_video_mode(void) {
+  return video_mode;
 }
 
 /**
@@ -190,12 +212,12 @@ void ZSDX::handle_event(const SDL_Event &event) {
 
   // handle the common events
   switch (event.type) {
-    
+
     // quit if the user closes the window
   case SDL_QUIT:
     exiting = true;
     break;
-	
+
     // a key is pressed
   case SDL_KEYDOWN:
     switch (event.key.keysym.sym) {
@@ -205,9 +227,9 @@ void ZSDX::handle_event(const SDL_Event &event) {
       exiting = true;
       break;
 
-      // F5: full screen / windowed mode
+      // F5: change the video mode
     case SDLK_F5:
-      switch_fullscreen();
+      switch_video_mode();
       break;
 
     default:
@@ -227,7 +249,28 @@ void ZSDX::display_current_screen(void) {
 
   SDL_FillRect(root_surface, NULL, Color::black);
   current_screen->display(root_surface);
-  SDL_Flip(root_surface);
+
+  if (video_mode != WINDOWED_640_480) {
+    SDL_BlitSurface(root_surface, NULL, real_surface, NULL);
+  }
+  else {
+    Uint32 *root_pixels = (Uint32*) root_surface->pixels;
+    Uint32 *real_pixels = (Uint32*) real_surface->pixels;
+
+    int k = 0;
+    for (int i = 0; i < 240; i++) {
+      for (int j = 0; j < 320; j++) {
+	int p = 640 * 2 * i + 2 * j;
+	real_pixels[p] = root_pixels[k];
+	real_pixels[p + 1] = root_pixels[k];
+	real_pixels[p + 640] = root_pixels[k];
+	real_pixels[p + 641] = root_pixels[k];
+
+	k++;
+      }
+    }     
+  }
+  SDL_Flip(real_surface);
 }
 
 /**

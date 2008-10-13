@@ -13,6 +13,7 @@
 #include "Treasure.h"
 #include "Controls.h"
 #include "Dungeon.h"
+#include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
 #include "entities/Link.h"
 #include "entities/AnimatedTile.h"
@@ -28,7 +29,7 @@ const SDL_Rect Game::outside_world_size = {0, 0, 4160, 7168}; // TODO
  */
 Game::Game(Savegame *savegame):
   savegame(savegame),
-  pause_menu(NULL), dialog_box(NULL), treasure(NULL), keys_effect(NULL),
+  pause_menu(NULL), dialog_box(NULL), treasure(NULL), reseting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL), dungeon(NULL),
   hud(NULL), current_music_id(Music::none), current_music(NULL) {
@@ -211,7 +212,10 @@ void Game::update_transitions(void) {
   // if a transition was playing and has just been finished
   if (transition != NULL && transition->is_over()) {
 
-    if (transition->get_direction() == Transition::OUT) {
+    if (reseting) {
+      set_next_screen(new TitleScreen());
+    }
+    else if (transition->get_direction() == Transition::OUT) {
       // change the map
       current_map->leave();
 
@@ -607,4 +611,14 @@ void Game::load_dungeon(void) {
       dungeon = new Dungeon(next_map->get_world_number());
     }
   }
+}
+
+/**
+ * Resets the game.
+ */
+void Game::reset(void) {
+
+  transition = Transition::create(Transition::FADE, Transition::OUT);
+  transition->start();
+  reseting = true;
 }

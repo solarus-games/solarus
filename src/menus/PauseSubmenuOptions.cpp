@@ -12,14 +12,21 @@
 
 // TODO: load this from some external file (for future translation)
 static const string texts[] = {
-  "Plein écran : Oui", // 0
-  "Plein écran : Non", // 1
+  "",
+  "",
   "Commandes",         // 2
   "Clavier",           // 3
   "Joypad",            // 4
   "Appuyez sur Action\npour changer de mode",      // 5
   "Appuyez sur Action pour\nconfigurer cette touche", // 6
   "Appuyez sur une touche\ndu clavier ou du joypad",   // 7
+};
+
+// TODO: load this from some external file (for future translation)
+static const string video_mode_texts[] = {
+  "Mode vidéo : 640 x 480",
+  "Mode vidéo : 320 x 240",
+  "Mode vidéo : plein écran",
 };
 
 /**
@@ -31,8 +38,8 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   PauseSubmenu(pause_menu, game), controls(game->get_controls()) {
 
   // create the text surfaces
-  fullscreen_text = new TextSurface(264, 62, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
-  fullscreen_text->set_font(TextSurface::FONT_STANDARD);
+  video_mode_text = new TextSurface(264, 62, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
+  video_mode_text->set_font(TextSurface::FONT_STANDARD);
 
   controls_text = new TextSurface(84, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   controls_text->set_font(TextSurface::FONT_STANDARD);
@@ -92,7 +99,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
  */
 PauseSubmenuOptions::~PauseSubmenuOptions(void) {
 
-  delete fullscreen_text;
+  delete video_mode_text;
 
   delete controls_text;
   delete keyboard_text;
@@ -145,7 +152,7 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
   if (position != this->cursor_position) {
     this->cursor_position = position;
 
-    if (position == 0) { // fullscreen
+    if (position == 0) { // screen mode
       set_caption_text(texts[5]);
       cursor_sprite_position.x = 148;
       cursor_sprite_position.y = 62;
@@ -214,7 +221,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
 
   ok_sound->play();
   if (cursor_position == 0) {
-    zsdx->switch_fullscreen();
+    zsdx->switch_video_mode();
   }
   else {
     set_caption_text(texts[7]);
@@ -222,6 +229,12 @@ void PauseSubmenuOptions::action_key_pressed(void) {
     Controls::GameKey key_to_customize = (Controls::GameKey) cursor_position;
     controls->customize(key_to_customize);
     customizing = true;
+
+    KeysEffect *keys_effect = game->get_keys_effect();
+    keys_effect->set_item_keys_enabled(false);
+    keys_effect->set_action_key_enabled(false);
+    keys_effect->set_sword_key_enabled(false);
+    keys_effect->set_pause_key_enabled(false);
   }
 }
 
@@ -230,7 +243,9 @@ void PauseSubmenuOptions::action_key_pressed(void) {
  */
 void PauseSubmenuOptions::update(void) {
 
-  fullscreen_text->set_text(zsdx->is_fullscreen() ? texts[0] : texts[1]);
+  ZSDX::VideoMode video_mode = zsdx->get_video_mode();
+  video_mode_text->set_text(video_mode_texts[video_mode]);
+
   cursor_sprite->update();
 
   if (customizing && controls->is_customization_done()) {
@@ -239,6 +254,12 @@ void PauseSubmenuOptions::update(void) {
     set_caption_text(texts[6]);
     cursor_sprite->set_current_animation("small");
     load_control_texts();
+
+    KeysEffect *keys_effect = game->get_keys_effect();
+    keys_effect->set_item_keys_enabled(true);
+    keys_effect->set_action_key_enabled(true);
+    keys_effect->set_sword_key_enabled(true);
+    keys_effect->set_pause_key_enabled(true);
   }
 }
 
@@ -253,7 +274,7 @@ void PauseSubmenuOptions::display(SDL_Surface *destination) {
   display_cursor(destination);
 
   // display the text
-  fullscreen_text->display(destination);
+  video_mode_text->display(destination);
 
   controls_text->display(destination);
   keyboard_text->display(destination);

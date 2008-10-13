@@ -38,7 +38,7 @@ ZSDX::ZSDX(void) {
 
   root_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_ShowCursor(SDL_ENABLE);
-  set_video_mode(WINDOWED_640_480);
+  real_surface = video_manager.set_video_mode(VideoManager::WINDOWED_640_480);
   SDL_EnableUNICODE(SDL_ENABLE);
   SDL_EnableKeyRepeat(0, 0);
 
@@ -81,57 +81,6 @@ ZSDX::~ZSDX(void) {
  */
 void ZSDX::set_game(Game *game) {
   this->game = game;
-}
-
-/**
- * Returns whether the game is in full screen.
- * @return true if the game is in full screen mode, false otherwise
- */
-bool ZSDX::is_fullscreen(void) {
-  return video_mode == FULLSCREEN;
-}
-
-/**
- * Sets the next video mode.
- */
-void ZSDX::switch_video_mode(void) {
-  int mode = (video_mode + 1) % 3;
-  set_video_mode((VideoMode) mode);
-}
-
-/**
- * Sets the current video mode.
- * @param mode the video mode
- */
-void ZSDX::set_video_mode(VideoMode mode) {
-
-  switch (mode) {
-
-  case FULLSCREEN:
-    real_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
-    SDL_ShowCursor(SDL_DISABLE);
-    break;
-
-  case WINDOWED_320_240:
-    real_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-    SDL_ShowCursor(SDL_ENABLE);
-    break;
-
-  case WINDOWED_640_480:
-    real_surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-    SDL_ShowCursor(SDL_ENABLE);
-    break;
-  }
-
-  this->video_mode = mode;
-}
-
-/**
- * Returns the current video mode.
- * @return the video mode
- */
-ZSDX::VideoMode ZSDX::get_video_mode(void) {
-  return video_mode;
 }
 
 /**
@@ -192,7 +141,7 @@ void ZSDX::main(void) {
       delay = (last_frame_date + FRAME_INTERVAL) - now;
       if (delay <= 0) { // delay is the time before the next display
 	last_frame_date = now;
-	display_current_screen();
+	display();
       }
       else if (delay >= 10) { // if we have time, let's sleep
 	SDL_Delay(10);
@@ -229,7 +178,7 @@ void ZSDX::handle_event(const SDL_Event &event) {
 
       // F5: change the video mode
     case SDLK_F5:
-      switch_video_mode();
+      video_manager.switch_video_mode();
       break;
 
     default:
@@ -245,32 +194,19 @@ void ZSDX::handle_event(const SDL_Event &event) {
 /**
  * Redraws the current screen.
  */
-void ZSDX::display_current_screen(void) {
+void ZSDX::display(void) {
 
-  SDL_FillRect(root_surface, NULL, Color::black);
   current_screen->display(root_surface);
-
-  if (video_mode != WINDOWED_640_480) {
-    SDL_BlitSurface(root_surface, NULL, real_surface, NULL);
-  }
-  else {
-    Uint32 *root_pixels = (Uint32*) root_surface->pixels;
-    Uint32 *real_pixels = (Uint32*) real_surface->pixels;
-
-    int k = 0;
-    for (int i = 0; i < 240; i++) {
-      for (int j = 0; j < 320; j++) {
-	int p = 640 * 2 * i + 2 * j;
-	real_pixels[p] = root_pixels[k];
-	real_pixels[p + 1] = root_pixels[k];
-	real_pixels[p + 640] = root_pixels[k];
-	real_pixels[p + 641] = root_pixels[k];
-
-	k++;
-      }
-    }     
-  }
+  video_manager.display(root_surface, real_surface);
   SDL_Flip(real_surface);
+}
+
+/**
+ * Returns the video system.
+ * @return the video system
+ */
+VideoManager * ZSDX::get_video_manager(void) {
+  return &video_manager;
 }
 
 /**

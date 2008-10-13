@@ -27,6 +27,7 @@ typedef std::string MessageId;
 
 // main classes
 class ZSDX;
+class VideoManager;
 class Screen;
 class ResourceManager;
 class KeysEffect;

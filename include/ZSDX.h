@@ -2,6 +2,7 @@
 #define ZSDX_ZSDX_H
 
 #include "Common.h"
+#include "VideoManager.h"
 
 /**
  * Number of times the screen in redrawn is a second.
@@ -25,33 +26,22 @@ extern ZSDX *zsdx;
  */
 class ZSDX {
 
- public:
-
-  /**
-   * The different possible screen modes.
-   */
-  enum VideoMode {
-    WINDOWED_640_480,
-    WINDOWED_320_240,
-    FULLSCREEN,
-  };
-
  private:
  
   /**
    * The current screen displayed: the title screen, the selection menu, the game, etc.
    */
   Screen *current_screen;
-  SDL_Surface *root_surface; /**< the surface where everything is drawn (always 320*240) */
-  SDL_Surface *real_surface; /**< the surface actually displayed on the screen */
-  VideoMode video_mode;
+  SDL_Surface *root_surface;  /**< the surface where everything is drawn (always 320*240) */
+  SDL_Surface *real_surface;  /**< the surface actually displayed on the screen */
+  VideoManager video_manager;
   bool exiting;
 
   void launch_adventure_mode(Savegame *savegame);
   void launch_solarus_dreams_mode(Savegame *savegame);
 
   void handle_event(const SDL_Event &event);
-  void display_current_screen(void);
+  void display(void);
 
   bool is_exiting(void);
 
@@ -65,11 +55,7 @@ class ZSDX {
 
   void main(void);
 
-  bool is_fullscreen(void);
-
-  void switch_video_mode(void);
-  void set_video_mode(VideoMode mode);
-  VideoMode get_video_mode(void);
+  VideoManager *get_video_manager(void);
 
   void set_game(Game *game);
   void set_exiting(void);

@@ -9,6 +9,7 @@
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "VideoManager.h"
 
 // TODO: load this from some external file (for future translation)
 static const string texts[] = {
@@ -24,8 +25,9 @@ static const string texts[] = {
 
 // TODO: load this from some external file (for future translation)
 static const string video_mode_texts[] = {
-  "Mode vidéo : 640 x 480",
-  "Mode vidéo : 320 x 240",
+  "Mode vidéo : 640x480",
+  "Mode vidéo : 640x480 lisse",
+  "Mode vidéo : 320x240",
   "Mode vidéo : plein écran",
 };
 
@@ -221,7 +223,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
 
   ok_sound->play();
   if (cursor_position == 0) {
-    zsdx->switch_video_mode();
+    zsdx->get_video_manager()->switch_video_mode();
   }
   else {
     set_caption_text(texts[7]);
@@ -243,7 +245,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
  */
 void PauseSubmenuOptions::update(void) {
 
-  ZSDX::VideoMode video_mode = zsdx->get_video_mode();
+  VideoManager::VideoMode video_mode = zsdx->get_video_manager()->get_video_mode();
   video_mode_text->set_text(video_mode_texts[video_mode]);
 
   cursor_sprite->update();

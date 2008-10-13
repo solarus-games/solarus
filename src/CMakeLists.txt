@@ -4,6 +4,7 @@ add_executable (zsdx
 
   # main classes
   ZSDX.cpp
+  VideoManager.cpp
   Screen.cpp
   ResourceManager.cpp
   KeysEffect.cpp

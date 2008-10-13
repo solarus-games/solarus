@@ -16,17 +16,8 @@ class SpriteAnimations {
 
  private:
 
-  /**
-   * The animations.
-   * This structure is allocated in the constructor and
-   * freed in the destructor.
-   */
-  std::map<string, SpriteAnimation*> animations;
-
-  /**
-   * The name of the default animation.
-   */
-  string default_animation_name;
+  std::map<string, SpriteAnimation*> animations; /**< the animations */
+  string default_animation_name;                 /**< name of the default animation */
   
  public:
 
@@ -35,6 +26,8 @@ class SpriteAnimations {
 
   SpriteAnimation *get_animation(string animation_name);
   string get_default_animation(void);
+
+  void enable_pixel_collisions(void);
 
 };
 

@@ -1,4 +1,5 @@
 #include "SpriteAnimationDirection.h"
+#include "PixelBits.h"
 
 /**
  * Constructor.
@@ -10,7 +11,7 @@
  */
 SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, SDL_Rect *frames,
 						   int x_origin, int y_origin):
-  nb_frames(nb_frames), frames(frames) {
+  nb_frames(nb_frames), frames(frames), pixel_bits(NULL) {
 
   origin.x = x_origin;
   origin.y = y_origin;
@@ -21,6 +22,13 @@ SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, SDL_Rect *fram
  */
 SpriteAnimationDirection::~SpriteAnimationDirection(void) {
   delete[] frames;
+
+  if (pixel_bits != NULL) {
+    for (int i = 0; i < nb_frames; i++) {
+      delete pixel_bits[i];
+    }
+    delete[] pixel_bits;
+  }
 }
 
 /**
@@ -39,6 +47,14 @@ SDL_Rect& SpriteAnimationDirection::get_size(void) {
 SDL_Rect& SpriteAnimationDirection::get_origin(void) {
 
   return origin;
+}
+
+/**
+ * Returns the number of frames in this direction.
+ * @return the number of frames
+ */
+int SpriteAnimationDirection::get_nb_frames(void) {
+  return nb_frames;
 }
 
 /**
@@ -64,4 +80,18 @@ void SpriteAnimationDirection::display(SDL_Surface *destination, int x, int y,
   position_up_left.h = current_frame_rect->h;
 
   SDL_BlitSurface(src_image, current_frame_rect, destination, &position_up_left);
+}
+
+/**
+ * Calculates the bit fields representing the non-transparent pixels
+ * of the images in this direction.
+ * This method has to be called if you want a sprite with this animations
+ * to be able to detect pixel-perfect collisions.
+ */
+void SpriteAnimationDirection::enable_pixel_collisions(SDL_Surface *src_image) {
+
+  pixel_bits = new PixelBits*[nb_frames];
+  for (int i = 0; i < nb_frames; i++) {
+    pixel_bits[i] = new PixelBits(src_image, frames[i]);
+  }
 }

@@ -12,21 +12,13 @@ class SpriteAnimationDirection {
 
  private:
 
-  /**
-   * Number of frames in this sequence.
-   */
-  const int nb_frames;
+  const int nb_frames;    /**< number of frames in this sequence */
+  SDL_Rect *frames;       /**< position of each frame of the sequence on the image */
+  SDL_Rect origin;        /**< coordinate of the sprite's origin from the
+			   * upper-left corner of its image. */
 
-  /**
-   * Position of each frame of the sequence on the image.
-   */
-  SDL_Rect *frames;
-
-  /**
-   * Coordinate of the sprite's origin from the
-   * upper-left corner of its image.
-   */
-  SDL_Rect origin;
+  PixelBits **pixel_bits; /**< bit masks representing the non-transparent pixels of each frame,
+			   * computed only if enable_pixel_collisions() is called */
 
  public:
 
@@ -40,9 +32,11 @@ class SpriteAnimationDirection {
   SDL_Rect& get_origin(void);
 
   // frames
-  inline int get_nb_frames() { return nb_frames; }
+  int get_nb_frames(void);
   void display(SDL_Surface *destination, int x, int y,
 	       int current_frame, SDL_Surface *src_image);
+
+  void enable_pixel_collisions(SDL_Surface *src_image);
 };
 
 #endif

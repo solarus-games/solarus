@@ -11,35 +11,22 @@
 class SpriteAnimation {
 
  private:
-  /**
-   * Image from which the frames are extracted
-   * This image is the same for
-   * all directions of the sprite's animation.
-   */
-  SDL_Surface *src_image;
 
-  /**
-   * Number of directions of the animation.
-   */
-  const int nb_directions;
+  SDL_Surface *src_image;      /**< image from which the frames are extracted;
+				* this image is the same for
+				* all directions of the sprite's animation */
 
-  /**
-   * Array of directions.
-   * Each direction is a sequence of images.
-   */
-  SpriteAnimationDirection **directions;
+  const int nb_directions;     /**< number of directions of this animation */
 
-  /**
-   * Interval in milliseconds between two frames.
-   * This interval is the same for all directions.
-   * If there is only one frame in every direction, this field is set to zero.
-   */
-  const Uint32 frame_interval;
+  SpriteAnimationDirection **directions; /**< array of directions:
+					  * each direction is a sequence of images */
+
+  const Uint32 frame_interval; /**< Interval in milliseconds between two frames.
+				* This interval is the same for all directions.
+				* If there is only one frame in every direction,
+				* this field is set to zero. */
   
-  /**
-   * Number of the frame to loop on, or -1 to make no loop.
-   */
-  const int loop_on_frame;
+  const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
 
  public:
 
@@ -47,21 +34,13 @@ class SpriteAnimation {
 		  Uint32 frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 
-  /**
-   * Returns a direction.
-   * @param direction the direction
-   * @return the sequence of images corresponding to this direction
-   */
-  inline SpriteAnimationDirection *get_direction(int direction) { return directions[direction]; }
-
-  /**
-   * Returns the interval between two frames for this sprite animation.
-   * @return the frame interval in millisecond
-   */
-  inline Uint32 get_frame_interval(void) { return frame_interval; }
-
   int get_next_frame(int current_direction, int current_frame);
   void display(SDL_Surface *destination, int x, int y, int current_direction, int current_frame);
+
+  SpriteAnimationDirection *get_direction(int direction);
+  Uint32 get_frame_interval(void);
+
+  void enable_pixel_collisions(void);
 };
 
 #endif

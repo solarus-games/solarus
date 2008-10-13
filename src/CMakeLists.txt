@@ -68,6 +68,7 @@ add_executable (zsdx
   SpriteAnimations.cpp
   SpriteAnimation.cpp
   SpriteAnimationDirection.cpp
+  PixelBits.cpp
 
   # transition effects
   Transition.cpp

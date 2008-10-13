@@ -34,6 +34,23 @@ SpriteAnimation::~SpriteAnimation(void) {
 }
 
 /**
+ * Returns a direction.
+ * @param direction the direction
+ * @return the sequence of images corresponding to this direction
+ */
+SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) {
+  return directions[direction];
+}
+
+/**
+ * Returns the interval between two frames for this sprite animation.
+ * @return the frame interval in millisecond
+ */
+Uint32 SpriteAnimation::get_frame_interval(void) {
+  return frame_interval;
+}
+
+/**
  * Returns the next frame of the current frame.
  * @param current_direction the current direction
  * @param current_frame the current frame
@@ -68,4 +85,14 @@ void SpriteAnimation::display(SDL_Surface *destination, int x, int y,
 			      int current_direction, int current_frame) {
 
   directions[current_direction]->display(destination, x, y, current_frame, src_image);
+}
+
+/**
+ * Enables the pixel-perfect collision detection for this animation.
+ */
+void SpriteAnimation::enable_pixel_collisions(void) {
+  
+  for (int i = 0; i < nb_directions; i++) {
+    directions[i]->enable_pixel_collisions(src_image);
+  }
 }

@@ -5,12 +5,15 @@
 - Voir les boss de Pyro
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
+- Joystick : tester le hat
+- Ecran statut quête : curseur et description des objets
 
 - Bugs: 
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - désactiver la gestion du hat tant que c'est pas testé
-  - classe Controls : code inutile depuis qu'il y a key_pressed (voir is_key_pressed)
   - écran de pause : boîte de dialogue de sauvegarde
+  - options : griser les icônes pendant qu'on configure les touches
+  - contrôles : factoriser du code
+  - sauvegarde : reset le jeu quand on veut quitter
 
 - Prochaines grandes étapes :
   - collision au pixel près

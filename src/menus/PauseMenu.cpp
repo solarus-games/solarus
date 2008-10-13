@@ -5,10 +5,22 @@
 #include "menus/PauseSubmenuOptions.h"
 #include "Game.h"
 #include "Savegame.h"
-#include "KeysEffect.h"
 #include "ResourceManager.h"
+#include "Sprite.h"
 #include "Sound.h"
 #include "Color.h"
+#include "TextSurface.h"
+#include "ZSDX.h"
+
+// TODO: load this from some external file (for future translation)
+static const string texts[] = {
+  "Oui", // 0
+  "Non", // 1
+  "Voulez-vous sauvegarder", // 2
+  "votre progression ?",     // 3
+  "Voulez-vous continuer",   // 4
+  "la partie ?",             // 5
+};
 
 /**
  * Opens a pause menu.
@@ -21,10 +33,25 @@ PauseMenu::PauseMenu(Game *game):
   this->backgrounds_surface = ResourceManager::load_image("menus/pause_submenus.png");
   SDL_SetAlpha(backgrounds_surface, SDL_SRCALPHA, 216);
 
+  this->save_dialog_sprite = new Sprite("menus/pause_save_dialog");
+  this->save_dialog_state = 0;
+
   ResourceManager::get_sound("pause_open")->play();
   keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
   keys_effect->save_action_key_effect();
   keys_effect->save_sword_key_effect();
+
+  question_text[0] = new TextSurface(160, 112, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  question_text[0]->set_text_color(8, 8, 8);
+  question_text[1] = new TextSurface(160, 128, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  question_text[1]->set_text_color(8, 8, 8);
+
+  answer_text[0] = new TextSurface(100, 146, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  answer_text[0]->set_text_color(8, 8, 8);
+  answer_text[0]->set_text(texts[0]);
+  answer_text[1] = new TextSurface(219, 146, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  answer_text[1]->set_text_color(8, 8, 8);
+  answer_text[1]->set_text(texts[1]);
 
   set_current_submenu(savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU));
 }
@@ -35,6 +62,7 @@ PauseMenu::PauseMenu(Game *game):
 PauseMenu::~PauseMenu(void) {
   delete current_submenu;
   SDL_FreeSurface(backgrounds_surface);
+  delete save_dialog_sprite;
 }
 
 /**
@@ -54,12 +82,70 @@ void PauseMenu::quit(void) {
  */
 void PauseMenu::key_pressed(Controls::GameKey key) {
 
-  if (key == Controls::PAUSE) {
-    quit();
-    game->set_paused(false);
+  // the user is in one of the submenus
+  if (save_dialog_state == 0) {
+
+    if (key == Controls::PAUSE) {
+      quit();
+      game->set_paused(false);
+    }
+    else if (key == Controls::SWORD && save_dialog_state == 0) {
+
+      ResourceManager::get_sound("pause_open")->play();
+
+      save_dialog_state = 1;
+      save_dialog_choice = 0;
+      save_dialog_sprite->set_current_animation("left");
+
+      question_text[0]->set_text(texts[2]);
+      question_text[1]->set_text(texts[3]);
+
+      action_key_effect_saved = keys_effect->get_action_key_effect();
+      sword_key_effect_saved = keys_effect->get_sword_key_effect();
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_VALIDATE);
+      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
+    }
+    else {
+      current_submenu->key_pressed(key);
+    }
   }
-  else {
-    current_submenu->key_pressed(key);
+
+  // the dialog box to save is visible
+  else if (key == Controls::LEFT || key == Controls::RIGHT) {
+    // move the cursor
+
+    ResourceManager::get_sound("cursor")->play();
+    save_dialog_choice = 1 - save_dialog_choice;
+    save_dialog_sprite->set_current_animation(save_dialog_choice == 0 ? "left" : "right");
+  }
+  else if (key == Controls::ACTION) {
+    // validate a choice
+
+    if (save_dialog_state == 1) {
+      save_dialog_state = 2;
+ 
+      if (save_dialog_choice == 0) {
+	savegame->save();
+	ResourceManager::get_sound("piece_of_heart")->play();
+      }
+      else {
+	ResourceManager::get_sound("danger")->play();
+      }
+
+      question_text[0]->set_text(texts[4]);
+      question_text[1]->set_text(texts[5]);
+    }
+    else {
+      ResourceManager::get_sound("danger")->play();
+      if (save_dialog_choice == 1) {
+	game->();
+      }
+      else {
+	save_dialog_state = 0;
+	keys_effect->set_action_key_effect(action_key_effect_saved);
+	keys_effect->set_sword_key_effect(sword_key_effect_saved);
+      }
+    }
   }
 }
 
@@ -82,6 +168,15 @@ void PauseMenu::display(SDL_Surface *destination) {
 
   // display the current submenu content
   current_submenu->display(destination);
+
+  // display the save dialog
+  if (save_dialog_state > 0) {
+    save_dialog_sprite->display(destination, 50, 87);
+    question_text[0]->display(destination);
+    question_text[1]->display(destination);
+    answer_text[0]->display(destination);
+    answer_text[1]->display(destination);
+  }
 }
 
 /**

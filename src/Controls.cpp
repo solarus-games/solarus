@@ -88,71 +88,11 @@ string Controls::get_keyboard_string(GameKey game_key) {
 }
 
 /**
- * Returns true if a joypad is plugged and can be used.
- * @return true if there is a joypad
- */
-bool Controls::is_joypad_enabled(void) {
-  return joystick != NULL;
-}
-
-/**
  * Returns whether the specified game key is pressed.
  * The key can be pressed from the keyboard or the joypad.
  */
 bool Controls::is_key_pressed(GameKey game_key) {
-
-  if (true) {
-    return keys_pressed[game_key - 1];
-  }
-
-  /* useless since key_pressed[] exists
-
-  // check the keyboard
-  Uint8 *key_state = SDL_GetKeyState(NULL);
-  if (key_state[get_keyboard_key(game_key)]) {
-    return true;
-  }
-
-  // see if there is a joypad
-  if (!is_joypad_enabled()) {
-    return false;
-  }
-
-  // check the joypad
-
-  string joypad_string = get_joypad_string(game_key);
-  JoypadAction action = get_joypad_action(joypad_string);
-
-  bool result;
-  switch (action.type) {
-
-  case BUTTON:
-    result = (SDL_JoystickGetButton(joystick, action.control.button) == 1);
-    break;
-
-  case AXIS:
-    {
-      int direction = action.control.movement.direction;
-      Sint16 axis_state = SDL_JoystickGetAxis(joystick, action.control.movement.index);
-      result = (direction == 1 && axis_state > 5000)
-	|| (direction == -1 && axis_state < -5000);
-    }
-    break;
-
-  case HAT:
-    {
-      int direction = action.control.movement.direction;
-      Uint8 hat_state = SDL_JoystickGetHat(joystick, action.control.movement.index);
-      result = (direction == 0 && (hat_state & SDL_HAT_RIGHT))
-	|| (direction == 1 && (hat_state & SDL_HAT_UP))
-	|| (direction == 2 && (hat_state & SDL_HAT_LEFT))
-	|| (direction == 3 && (hat_state & SDL_HAT_DOWN));
-    }
-    break;
-  }
-
-  return result;
-  */
+  return keys_pressed[game_key - 1];
 }
 
 /**
@@ -186,7 +126,8 @@ void Controls::handle_event(const SDL_Event &event) {
     break;
 
   case SDL_JOYHATMOTION:
-    joypad_hat_moved(event.jhat.hat, event.jhat.value);
+    // TODO test the hat handling
+    // joypad_hat_moved(event.jhat.hat, event.jhat.value);
     break;
 
   case SDL_JOYBUTTONDOWN:
@@ -195,6 +136,9 @@ void Controls::handle_event(const SDL_Event &event) {
 
   case SDL_JOYBUTTONUP:
     joypad_button_released(event.jbutton.button);
+    break;
+
+  default:
     break;
   }
 
@@ -240,10 +184,6 @@ void Controls::handle_event(const SDL_Event &event) {
       else {
 	game->get_equipment()->stop_removing_magic();
       }
-      break;
-	  
-    case SDLK_s:
-      savegame->save();
       break;
 
     case SDLK_a:
@@ -778,57 +718,6 @@ string Controls::get_joypad_string(GameKey game_key) {
   }
 
   return joypad_string;
-}
-
-/**
- * Converts a string to a JoypadControl.
- * @param string a string describing a joypad action, as stored
- * in the savegame (and returned by get_joypad_string())
- * @return the corresponding JoypadControl structure
- */
-Controls::JoypadAction Controls::get_joypad_action(string description) {
-  
-  JoypadAction joypad_action;
-
-  if (description.find("button") != string::npos) {
-    joypad_action.type = BUTTON;
-    joypad_action.control.button = description[7] - '0';
-  }
-  else if (description.find("axis") != string::npos) {
-    joypad_action.type = AXIS;
-    joypad_action.control.movement.index = description[5] - '0';
-    joypad_action.control.movement.direction = (description[7] == '+') ? 1 : -1;
-  }
-  else if (description.find("hat") != string::npos) {
-    joypad_action.type = HAT;
-    joypad_action.control.movement.index = description[4] - '0';
-
-    int direction;
-    switch (description[6]) {
-
-    case 'r':
-      direction = 0;
-      break;
-
-    case 'u':
-      direction = 1;
-      break;
-
-    case 'l':
-      direction = 2;
-      break;
-
-    case 'd':
-      direction = 3;
-      break;
-    }
-    joypad_action.control.movement.direction = direction;
-  }
-  else {
-    DIE("Unknown joypad control '" << description << "'");
-  }
-
-  return joypad_action;
 }
 
 // customization

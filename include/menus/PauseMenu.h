@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "Controls.h"
+#include "KeysEffect.h"
 
 /**
  * The menus displayed when the game is paused.
@@ -17,6 +18,15 @@ class PauseMenu {
 
   SDL_Surface *backgrounds_surface;
   PauseSubmenu *current_submenu;
+
+  Sprite *save_dialog_sprite;
+  int save_dialog_state; // 0: not visible, 1: save dialog, 2: quit dialog
+  int save_dialog_choice; // 0 or 1
+  KeysEffect::ActionKeyEffect action_key_effect_saved;
+  KeysEffect::SwordKeyEffect sword_key_effect_saved;
+
+  TextSurface *question_text[2];
+  TextSurface *answer_text[2];
 
   void set_current_submenu(int submenu_index);
 

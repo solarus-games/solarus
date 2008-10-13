@@ -33,32 +33,6 @@ class Controls {
   
  private:
 
-  /**
-   * The different kinds of joypad actions.
-   */
-  enum JoypadActionType {
-    BUTTON,
-    AXIS,
-    HAT,
-  };
-
-  /**
-   * Represents a joypad event that can be associated
-   * to a customizable game key.
-   */
-  struct JoypadAction {
-
-    JoypadActionType type;
-
-    union {
-      int button;      // button pressed
-      struct {
-	int index;     // index of the hat or the axis
-	int direction; // for an axis: -1 or 1, for a hat: 0 to 3
-      } movement;
-    } control;
-  };
-
   Game *game;
   Savegame *savegame;
   SDL_Joystick *joystick;
@@ -83,7 +57,6 @@ class Controls {
   void joypad_button_released(int button);
   void joypad_axis_moved(int axis, int state);
   void joypad_hat_moved(int hat, int value);
-  JoypadAction get_joypad_action(string description);
 
  public:
 
@@ -92,7 +65,6 @@ class Controls {
   ~Controls(void);
 
   // controls
-  bool is_joypad_enabled();
   string get_key_name(GameKey game_key);
   string get_keyboard_string(GameKey game_key);
   string get_joypad_string(GameKey key);

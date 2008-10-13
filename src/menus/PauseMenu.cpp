@@ -95,7 +95,7 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
     }
     else if (key == Controls::SWORD && save_dialog_state == 0) {
 
-      ResourceManager::get_sound("pause_open")->play();
+      ResourceManager::get_sound("message_end")->play();
 
       save_dialog_state = 1;
       save_dialog_choice = 0;

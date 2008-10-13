@@ -6,7 +6,7 @@
 TransitionFade::TransitionFade(Transition::Direction direction):
   Transition(direction), alpha(-1) {
 
-  if (direction == Transition::OUT) {
+  if (direction == OUT) {
     alpha_start = 256;
     alpha_limit = 0;
     alpha_increment = -16;

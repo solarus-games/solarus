@@ -156,7 +156,7 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
 
     if (position == 0) { // screen mode
       set_caption_text(texts[5]);
-      cursor_sprite_position.x = 148;
+      cursor_sprite_position.x = 104;
       cursor_sprite_position.y = 62;
       cursor_sprite->set_current_animation("big");
     }

@@ -32,6 +32,14 @@ void VideoManager::switch_video_mode(void) {
 }
 
 /**
+ * Sets the default video mode.
+ * @param the screen surface created, as returned by SDL_SetVideoMode; you don't have to free it
+ */
+SDL_Surface * VideoManager::set_default_video_mode(void) {
+  return set_video_mode(WINDOWED_640_480_SCALE2X);
+}
+
+/**
  * Sets the current video mode.
  * @param mode the video mode
  * @param the screen surface created, as returned by SDL_SetVideoMode; you don't have to free it

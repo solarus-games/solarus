@@ -15,8 +15,8 @@ class VideoManager {
    * The different possible video modes.
    */
   enum VideoMode {
-    WINDOWED_640_480,
     WINDOWED_640_480_SCALE2X,
+    WINDOWED_640_480,
     WINDOWED_320_240,
     FULLSCREEN,
   };
@@ -35,6 +35,7 @@ class VideoManager {
   ~VideoManager(void);
 
   void switch_video_mode(void);
+  SDL_Surface * set_default_video_mode(void);
   SDL_Surface * set_video_mode(VideoMode mode);
   VideoMode get_video_mode(void);
   bool is_fullscreen(void);

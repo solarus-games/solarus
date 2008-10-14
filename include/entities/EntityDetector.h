@@ -31,7 +31,8 @@ class EntityDetector: public MapEntity {
     COLLISION_RECTANGLE,    /**< collision if the entity's rectangle overlaps the detector's rectangle */
     COLLISION_ORIGIN_POINT, /**< collision if the entity's origin point is inside the detector's rectangle */
     COLLISION_FACING_POINT, /**< collision if the entity's facing point overlaps the detector's rectangle */
-    COLLISION_PIXEL,        /**< collision if the entity's sprite has at least one pixel inside the detector's rectangle */
+    COLLISION_PIXEL,        /**< collision if the entity's sprite has at least one pixel overlapping
+			     * a pixel of the detector's sprite */
   };
 
  private:

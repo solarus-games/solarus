@@ -38,8 +38,8 @@ class TransportableItem: public EntityDetector {
 
   Map *map;      /**< the map */
 
-  ItemType type;                        /**< the type of transportable item */
-  PickableItem::ItemType pickable_item; /**< the pickable item that appears when the item is lifted */
+  ItemType type;                           /**< the type of transportable item */
+  PickableItem::ItemType pickable_item;    /**< the pickable item that appears when the item is lifted */
   int pickable_item_savegame_variable;     /**< savegame index of the pickable item (if any) */
 
   /**

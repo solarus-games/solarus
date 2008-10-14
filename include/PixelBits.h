@@ -13,10 +13,13 @@ class PixelBits {
 
  private:
 
-  int width;
-  int height;
+  int width;               /**< width of the image in pixels */
+  int height;              /**< height of the image in pixels */
+  int nb_integers_per_row; /**< number of Uint32 necessary to store
+			    * the bits of a row of the image */
 
-  Uint32 **bits; /**< two-dimensional array representing the transparency bit of each pixel in the image */
+  Uint32 **bits;           /**< two-dimensional array representing the
+			    * transparency bit of each pixel in the image */
 
  public:
 

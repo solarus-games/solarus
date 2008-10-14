@@ -96,3 +96,11 @@ void SpriteAnimation::enable_pixel_collisions(void) {
     directions[i]->enable_pixel_collisions(src_image);
   }
 }
+
+/**
+ * Returns whether the pixel-perfect collisions are enabled for this animations.
+ * @return true if the pixel-perfect collisions are enabled
+ */
+bool SpriteAnimation::are_pixel_collisions_enabled(void) {
+  return directions[0]->are_pixel_collisions_enabled();
+}

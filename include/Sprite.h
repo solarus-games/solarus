@@ -21,73 +21,30 @@ class Sprite {
 
   // animation set
 
-  /**
-   * Animation set of this sprite.
-   */
-  SpriteAnimations *animations;
+  SpriteAnimations *animations;       /**< animation set of this sprite */
 
   // current state of the sprite
 
-  /**
-   * Name of the current animation.
-   */
-  string current_animation_name;
+  string current_animation_name;      /**< name of the current animation */
+  SpriteAnimation *current_animation; /**< the current animation */
+  int current_direction;              /**< current direction of the animation (the first one is number 0);
+				       * it can be different from the movement direction
+				       * of the entity, because sometimes a sprite can
+				       * go backwards. */
+  int current_frame;                  /**< current frame of the animation (the first one is number 0) */
 
-  /**
-   * The current animation.
-   */
-  SpriteAnimation *current_animation;
+  Uint32 next_frame_date;             /**< date of the next frame */
 
-  /**
-   * Current direction of the animation (the first one is number 0).
-   * It can be different from the movement direction
-   * of the entity, because sometimes a sprite can
-   * go backwards.
-   */
-  int current_direction;
+  bool suspended;                     /**< true if the animation is suspended */
+  bool over;                          /**< true if the animation has been stopped because the last frame was reached */
 
-  /**
-   * Current frame of the animation (the first one is number 0).
-   */
-  int current_frame;
-
-  /**
-   * Date of the next frame. This date is in milliseconds
-   * since the program initialization, like SDL_GetTicks().
-   */
-  Uint32 next_frame_date;
-
-  /**
-   * True if the animation is suspended.
-   */
-  bool suspended;
-
-  /**
-   * True if the animation has been stopped because the last frame was reached.
-   */
-  bool over;
-
-  /**
-   * The possible animation listener associated to this sprite.
-   */
-  AnimationListener *listener;
+  AnimationListener *listener;        /**< the possible animation listener associated to this sprite */
 
   // blink
 
-  /**
-   * Blink delay of the sprite, or zero if the sprite is not blinking.
-   */
-  Uint32 blink_delay;
-
-  /**
-   * When blinking, true if the sprite is visible or false if it is invisible.
-   */
-  bool blink_is_sprite_visible;
-
-  /**
-   * Date of the next change when blinking: visible or not.
-   */
-  Uint32 blink_next_change_date;
+  Uint32 blink_delay;                 /**< blink delay of the sprite, or zero if the sprite is not blinking */
+  bool blink_is_sprite_visible;       /**< when blinking, true if the sprite is visible or false if it is invisible */
+  Uint32 blink_next_change_date;      /**< date of the next change when blinking: visible or not */
 
   Uint32 get_frame_interval(void);
   int get_next_frame(void);
@@ -98,6 +55,8 @@ class Sprite {
   Sprite(SpriteAnimationsId id);
   Sprite(SpriteAnimations *animations);
   ~Sprite(void);
+
+  SpriteAnimations *get_animations(void);
 
   // size and origin point
   SDL_Rect& get_size(void);

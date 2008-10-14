@@ -21,7 +21,7 @@ EntityDetector::EntityDetector(EntityDetector::CollisionMode collision_mode,
 			       int x, int y, int width, int height):
   MapEntity(name, 0, layer, x, y, width, height),
   mode(collision_mode), layer_ignored(false) {
-  
+
 }
 
 /**

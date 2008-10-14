@@ -36,6 +36,16 @@ Sprite::~Sprite(void) {
 }
 
 /**
+ * Returns the animation set of this sprite.
+ * If several sprites have the same animation set, they share the same instance of animation set
+ * and the same pointer is returned here.
+ * @return the animation set of this sprite
+ */
+SpriteAnimations * Sprite::get_animations(void) {
+  return animations;
+}
+
+/**
  * Returns the size of a frame for the current animation and the current direction.
  * @return the size of a frame
  */
@@ -276,6 +286,11 @@ void Sprite::update(void) {
     else {
       current_frame = next_frame;
       next_frame_date += get_frame_interval();
+
+      // check the pixel-perfect collisions if they are enabled
+      if (animations->are_pixel_collisions_enabled()) {
+
+      }
     }
   }
 

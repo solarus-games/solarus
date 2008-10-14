@@ -120,3 +120,26 @@ SpriteAnimation * SpriteAnimations::get_animation(string animation_name) {
 string SpriteAnimations::get_default_animation(void) {
   return default_animation_name;
 }
+
+/**
+ * Enables the pixel-perfect collision detection for these animations.
+ */
+void SpriteAnimations::enable_pixel_collisions(void) {
+
+  if (!are_pixel_collisions_enabled()) {
+
+    map<SpriteAnimationsId, SpriteAnimation*>::const_iterator it;
+
+    for (it = animations.begin(); it != animations.end(); it++) {
+      it->second->enable_pixel_collisions();
+    }
+  }
+}
+
+/**
+ * Returns whether the pixel-perfect collisions are enabled for these animations.
+ * @return true if the pixel-perfect collisions are enabled
+ */
+bool SpriteAnimations::are_pixel_collisions_enabled(void) {
+  return animations.begin()->second->are_pixel_collisions_enabled();
+}

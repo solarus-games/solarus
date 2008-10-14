@@ -8,7 +8,6 @@
  * A set of animations.
  * Each animation correspond to a specific situation
  * of a sprite.
- *
  * For example, you can have an animation "Stopped"
  * and an animation "Walking".
  */
@@ -28,6 +27,7 @@ class SpriteAnimations {
   string get_default_animation(void);
 
   void enable_pixel_collisions(void);
+  bool are_pixel_collisions_enabled(void);
 
 };
 

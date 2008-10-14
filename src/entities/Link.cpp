@@ -3,6 +3,7 @@
 #include "movements/Movement8ByPlayer.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
+#include "SpriteAnimations.h"
 #include "ZSDX.h"
 #include "ResourceManager.h"
 #include "Game.h"
@@ -340,6 +341,7 @@ void Link::rebuild_equipment(void) {
     // Link has a sword: get the sprite and the sound
     sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
     sword_sprite->stop_animation();
+    sword_sprite->get_animations()->enable_pixel_collisions();
 
     sword_sound = ResourceManager::get_sound(sword_sound_ids[sword_number - 1]);
 

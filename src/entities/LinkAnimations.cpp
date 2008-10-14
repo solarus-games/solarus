@@ -79,7 +79,7 @@ void Link::set_animation_stopped(void) {
   int direction = tunic_sprite->get_current_direction();
   
   switch (get_state()) {
-    
+
   case FREE:
 
     stop_displaying_sword();

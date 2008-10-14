@@ -37,6 +37,7 @@ class SpriteAnimationDirection {
 	       int current_frame, SDL_Surface *src_image);
 
   void enable_pixel_collisions(SDL_Surface *src_image);
+  bool are_pixel_collisions_enabled(void);
 };
 
 #endif

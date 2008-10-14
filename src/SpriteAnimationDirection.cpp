@@ -87,11 +87,22 @@ void SpriteAnimationDirection::display(SDL_Surface *destination, int x, int y,
  * of the images in this direction.
  * This method has to be called if you want a sprite with this animations
  * to be able to detect pixel-perfect collisions.
+ * Nothing happens if the pixel-perfect collisions were already enabled.
  */
 void SpriteAnimationDirection::enable_pixel_collisions(SDL_Surface *src_image) {
 
-  pixel_bits = new PixelBits*[nb_frames];
-  for (int i = 0; i < nb_frames; i++) {
-    pixel_bits[i] = new PixelBits(src_image, frames[i]);
+  if (pixel_bits == NULL) {
+    pixel_bits = new PixelBits*[nb_frames];
+    for (int i = 0; i < nb_frames; i++) {
+      pixel_bits[i] = new PixelBits(src_image, frames[i]);
+    }
   }
+}
+
+/**
+ * Returns whether the pixel-perfect collisions are enabled for this direction.
+ * @return true if the pixel-perfect collisions are enabled
+ */
+bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) {
+  return pixel_bits != NULL;
 }

@@ -2,14 +2,14 @@
 #define ZSDX_PICKABLE_ITEM_H
 
 #include "Common.h"
-#include "entities/EntityDetector.h"
+#include "entities/Detector.h"
 #include "movements/MovementFalling.h"
 
 /**
  * A pickable item on the map (rupee, heart, bomb, fairy...).
  * This is a concrete class, used for any kind of pickable item.
  */
-class PickableItem: public EntityDetector {
+class PickableItem: public Detector {
 
  public:
 
@@ -104,7 +104,7 @@ class PickableItem: public EntityDetector {
 
   // item state
   virtual void set_suspended(bool suspended);
-  void entity_collision(MapEntity *entity_overlapping);
+  void collision(MapEntity *entity_overlapping);
   virtual void update(void);
   virtual void display_on_map(Map *map);
 };

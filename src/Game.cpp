@@ -18,7 +18,7 @@
 #include "entities/Link.h"
 #include "entities/AnimatedTile.h"
 #include "entities/Tileset.h"
-#include "entities/EntityDetector.h"
+#include "entities/Detector.h"
 #include "movements/Movement8ByPlayer.h"
 
 const SDL_Rect Game::outside_world_size = {0, 0, 4160, 7168}; // TODO

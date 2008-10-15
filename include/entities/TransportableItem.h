@@ -2,7 +2,7 @@
 #define ZSDX_TRANSPORTABLE_ITEM_H
 
 #include "Common.h"
-#include "EntityDetector.h"
+#include "Detector.h"
 #include "PickableItem.h"
 
 /**
@@ -12,7 +12,7 @@
  * and replaced by an instance of CarriedItem that is
  * attached to Link.
  */
-class TransportableItem: public EntityDetector {
+class TransportableItem: public Detector {
 
  public:
 
@@ -48,7 +48,8 @@ class TransportableItem: public EntityDetector {
   struct ItemProperties {
     SpriteAnimationSetId animation_set_id; /**< animation set used for this type of transportable item */
     SoundId breaking_sound_id;             /**< sound played when the item is broken */
-    int weight;                            /**< weight of the item (0: light, 1: iron glove required, 2: golden glove required */
+    int weight;                            /**< weight of the item (0: light, 1: iron glove required,
+					    * 2: golden glove required */
   };
 
   static const ItemProperties properties[];
@@ -63,7 +64,7 @@ class TransportableItem: public EntityDetector {
   string get_animation_set_id(void);
   Sound *get_breaking_sound(void);
 
-  void entity_collision(MapEntity *entity_overlapping);
+  void collision(MapEntity *entity_overlapping);
   void action_key_pressed(void);
   void lift(void);
 };

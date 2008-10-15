@@ -32,6 +32,7 @@ class Sprite {
 				       * of the entity, because sometimes a sprite can
 				       * go backwards. */
   int current_frame;                  /**< current frame of the animation (the first one is number 0) */
+  bool frame_changed;                 /**< indicates that the frame has just changed */
 
   Uint32 next_frame_date;             /**< date of the next frame */
 
@@ -79,6 +80,7 @@ class Sprite {
   bool is_suspended(void);
   void set_suspended(bool suspended);
   bool is_over(void);
+  bool has_frame_changed(void);
 
   // blink
   bool is_blinking(void);
@@ -86,6 +88,9 @@ class Sprite {
 
   // animation listener
   void set_animation_listener(AnimationListener *listener);
+
+  // collisions
+  bool check_collision(Sprite *other, int x1, int y1, int x2, int y2);
 
   // udpate and display
   void update(void);

@@ -175,7 +175,7 @@ class MapEntity {
   Movement * get_movement(void);
   virtual void movement_just_changed(void);
   virtual void just_moved(void);
-  virtual void set_facing_entity(EntityDetector *detector);
+  virtual void set_facing_entity(Detector *detector);
 
   // collisions
   bool overlaps(const SDL_Rect *rectangle);

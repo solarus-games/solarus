@@ -126,6 +126,7 @@ class Map {
 
   // collisions with detectors (checked after a move)
   void check_collision_with_detectors(MapEntity *entity);
+  void check_collision_with_detectors(MapEntity *entity, Sprite *sprite);
 
   // update and display
   void update(void);
@@ -133,7 +134,7 @@ class Map {
   void display_sprite(Sprite *sprite, int x, int y);
 
   // events
-  void event_entity_on_detector(EntityDetector *detector, MapEntity *entity);
+  void event_entity_on_detector(Detector *detector, MapEntity *entity);
 
 };
 

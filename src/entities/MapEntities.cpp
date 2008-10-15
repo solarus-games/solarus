@@ -57,7 +57,7 @@ void MapEntities::destroy_all_entities(void) {
   all_entities.clear();
 
   entrances.clear();
-  entity_detectors.clear();
+  detectors.clear();
   entities_to_remove.clear();
 }
 
@@ -103,11 +103,11 @@ list<MapEntity*> * MapEntities::get_obstacle_entities(MapEntity::Layer layer) {
 }
 
 /**
- * Returns all entity detectors of the map.
- * @return the entity detectors
+ * Returns all detectors of the map.
+ * @return the detectors
  */
-list<EntityDetector*> * MapEntities::get_entity_detectors(void) {
-  return &entity_detectors;
+list<Detector*> * MapEntities::get_detectors(void) {
+  return &detectors;
 }
 
 /**
@@ -271,7 +271,7 @@ void MapEntities::add_exit(string exit_name, MapEntity::Layer layer, int x, int 
 			   Transition::Style transition_style, MapId map_id, string entrance_name) {
   
   Exit *exit = new Exit(exit_name, layer, x, y, w, h, transition_style, map_id, entrance_name);
-  entity_detectors.push_back(exit);
+  detectors.push_back(exit);
   all_entities.push_back(exit);
 }
 
@@ -304,7 +304,7 @@ void MapEntities::add_pickable_item(MapEntity::Layer layer, int x, int y,
     layer = item->get_layer(); // well, some items set their own layer
 
     sprite_entities[layer].push_back(item);
-    entity_detectors.push_back(item);
+    detectors.push_back(item);
     all_entities.push_back(item);
   }
 }
@@ -339,7 +339,7 @@ void MapEntities::add_transportable_item(MapEntity::Layer layer, int x, int y,
 						  pickable_item_type, savegame_variable);
   
   sprite_entities[layer].push_back(item);
-  entity_detectors.push_back(item);
+  detectors.push_back(item);
   obstacle_entities[layer].push_back(item);
   all_entities.push_back(item);
 }
@@ -373,7 +373,7 @@ void MapEntities::add_chest(string chest_name, MapEntity::Layer layer, int x, in
   Chest *chest = new Chest(chest_name, layer, x, y, big_chest, treasure);
 
   sprite_entities[layer].push_back(chest);
-  entity_detectors.push_back(chest);
+  detectors.push_back(chest);
   obstacle_entities[layer].push_back(chest);
   all_entities.push_back(chest);
 }
@@ -392,9 +392,9 @@ void MapEntities::remove_marked_entities(void) {
 
     MapEntity::Layer layer = (*it)->get_layer();
 
-    // remove it from the entity detectors list if present
+    // remove it from the detectors list if present
     // (the cast may be invalid but this is just a pointer comparison)
-    entity_detectors.remove((EntityDetector*) (*it));
+    detectors.remove((Detector*) (*it));
 
     // remove it from the obstacle entities list if present
     obstacle_entities[layer].remove(*it);

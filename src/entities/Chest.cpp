@@ -21,7 +21,7 @@
  * @param treasure the treasure in the chest (will be deleted automatically)
  */
 Chest::Chest(string name, MapEntity::Layer layer, int x, int y, bool big_chest, Treasure *treasure):
-  EntityDetector(EntityDetector::COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   big_chest(big_chest) {
 
   open = treasure_given = (treasure != NULL && treasure->is_found());
@@ -72,12 +72,12 @@ bool Chest::is_open(void) {
 
 /**
  * This function is called by the engine when an entity overlaps the chest.
- * This is a redefinition of EntityDetector::entity_collision().
+ * This is a redefinition of Detector::collision().
  * If the entity is the hero, and if he is facing north, we allow him to
  * open (or try to open) the chest.
  * @param entity_overlapping the entity overlapping the detector
  */
-void Chest::entity_collision(MapEntity *entity_overlapping) {
+void Chest::collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping->is_hero()) {
 

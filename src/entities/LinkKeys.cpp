@@ -1,5 +1,5 @@
 #include "entities/Link.h"
-#include "entities/EntityDetector.h"
+#include "entities/Detector.h"
 #include "movements/Movement8ByPlayer.h"
 #include "ZSDX.h"
 #include "Game.h"

@@ -67,9 +67,9 @@ class MapEntities {
   vector<Entrance*> entrances;
 
   /**
-   * All entity detectors of the map.
+   * All detectors of the map.
    */
-  list<EntityDetector*> entity_detectors;
+  list<Detector*> detectors;
   
   /**
    * All obstacle entities of the map.
@@ -87,7 +87,7 @@ class MapEntities {
   Entrance * get_entrance(int index);
   MapEntity::Obstacle get_obstacle_tile(MapEntity::Layer layer, int x, int y);
   list<MapEntity*> * get_obstacle_entities(MapEntity::Layer layer);
-  list<EntityDetector*> * get_entity_detectors(void);
+  list<Detector*> * get_detectors(void);
  
   // add and remove entities
   void add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height);

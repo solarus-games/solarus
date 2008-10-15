@@ -50,7 +50,7 @@ CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
 
   // create the movement and the sprite
   PathMovement *movement = new PathMovement(lifting_translations[direction], 6, 100, false);
-  create_sprite(transportable_item->get_sprite_animations_id());
+  create_sprite(transportable_item->get_animation_set_id());
   set_movement(movement);
 
   // create the breaking sound

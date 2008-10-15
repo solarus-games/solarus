@@ -420,7 +420,7 @@ void Link::just_moved(void) {
  * facing another entity.
  * @param detector the detector Link is facing
  */
-void Link::set_facing_entity(EntityDetector *detector) {
+void Link::set_facing_entity(Detector *detector) {
 
   this->facing_entity = detector;
 

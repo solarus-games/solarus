@@ -2,13 +2,13 @@
 #define ZSDX_CHEST_H
 
 #include "Common.h"
-#include "EntityDetector.h"
+#include "Detector.h"
 
 /**
  * Represents a chest on a map.
  * It can be a normal chest or a big chest.
  */
-class Chest: public EntityDetector {
+class Chest: public Detector {
 
  private:
 
@@ -28,7 +28,7 @@ class Chest: public EntityDetector {
 
   bool is_open(void);
 
-  void entity_collision(MapEntity *entity_overlapping);
+  void collision(MapEntity *entity_overlapping);
   void update(void);
   void action_key_pressed(void);
   void set_suspended(bool suspended);

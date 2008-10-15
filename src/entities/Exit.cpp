@@ -16,7 +16,7 @@
  */
 Exit::Exit(string name, MapEntity::Layer layer, int x, int y, int width, int height,
 	   Transition::Style transition_style, MapId destination_map_id, string entrance_name):
-  EntityDetector(COLLISION_ORIGIN_POINT, name, layer, x, y, width, height),
+  Detector(COLLISION_ORIGIN_POINT, name, layer, x, y, width, height),
   transition_style(transition_style), destination_map_id(destination_map_id), entrance_name(entrance_name) {
   
 }
@@ -29,11 +29,11 @@ Exit::~Exit(void) {
 
 /**
  * This function is called by the engine when an entity overlaps the exits.
- * This is a redefinition of EntityDetector::entity_collision().
+ * This is a redefinition of Detector::collision().
  * The map is not notified anymore: here we just make Link leave the map.
  * @param entity_overlapping the entity overlapping the detector
  */
-void Exit::entity_collision(MapEntity *entity_overlapping) {
+void Exit::collision(MapEntity *entity_overlapping) {
   
   if (entity_overlapping->is_hero()) {
     zsdx->game->set_current_map(destination_map_id, entrance_name, transition_style);

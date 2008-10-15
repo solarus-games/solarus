@@ -1,6 +1,7 @@
 #include "entities/MapEntity.h"
 #include "movements/Movement.h"
 #include "Sprite.h"
+#include "SpriteAnimationSet.h"
 #include "Map.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -360,7 +361,7 @@ void MapEntity::just_moved(void) {
  * facing another entity.
  * By default, nothing is done.
  */
-void MapEntity::set_facing_entity(EntityDetector *detector) {
+void MapEntity::set_facing_entity(Detector *detector) {
   
 }
 
@@ -473,6 +474,9 @@ void MapEntity::update(void) {
     }
 
     sprite->update();
+    if (sprite->has_frame_changed() && sprite->get_animation_set()->are_pixel_collisions_enabled()) {
+      zsdx->game->get_current_map()->check_collision_with_detectors(this, sprite);
+    }
   }
 
   // update the movement

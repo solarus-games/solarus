@@ -4,6 +4,9 @@
 #include "SpriteAnimationDirection.h"
 #include "AnimationListener.h"
 #include "ResourceManager.h"
+#include "ZSDX.h"
+#include "Game.h"
+#include "Map.h"
 
 /**
  * Creates a sprite with the specified animation set.
@@ -151,10 +154,23 @@ int Sprite::get_current_frame(void) {
  * @param current_frame the current frame
  */
 void Sprite::set_current_frame(int current_frame) {
-  
-  this->current_frame = current_frame;
+
   over = false;
   next_frame_date = SDL_GetTicks() + get_frame_interval();
+
+  if (current_frame != this->current_frame) {
+    frame_changed = true;
+  }
+
+  this->current_frame = current_frame;
+}
+
+/**
+ * Returns whether the frame of this sprite has just changed.
+ * @return true if the frame of this sprite has just changed.
+ */
+bool Sprite::has_frame_changed(void) {
+  return frame_changed;
 }
 
 /**
@@ -258,11 +274,27 @@ void Sprite::set_animation_listener(AnimationListener *listener) {
 }
 
 /**
+ * Checks whether this sprite's pixels are overlapping another sprite.
+ * @param other another sprite
+ * @param x1 x coordinate of this sprite's origin point
+ * @param y1 y coordinate of this sprite's origin point
+ * @param x2 x coordinate of the other sprite's origin point
+ * @param y2 y coordinate of the other sprite's origin point
+ * @return true if the sprites are overlapping
+ */
+bool Sprite::check_collision(Sprite *other, int x1, int y1, int x2, int y2) {
+
+  // check the bouding boxes
+  return false; // TODO
+}
+
+/**
  * Checks whether the frame has to be changed.
  * If the frame changes, next_frame_date is updated.
  */
 void Sprite::update(void) {
 
+  frame_changed = false;
   Uint32 now = SDL_GetTicks();
 
   // update the current frame
@@ -286,11 +318,7 @@ void Sprite::update(void) {
     else {
       current_frame = next_frame;
       next_frame_date += get_frame_interval();
-
-      // check the pixel-perfect collisions if they are enabled
-      if (animation_set->are_pixel_collisions_enabled()) {
-
-      }
+      frame_changed = true;
     }
   }
 

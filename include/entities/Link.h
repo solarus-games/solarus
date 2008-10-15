@@ -62,7 +62,7 @@ class Link: public MapEntity, AnimationListener {
    * The state is considered only when the game is not suspended.
    */
   State state;
-  EntityDetector *facing_entity;
+  Detector *facing_entity;
   int animation_direction_saved; /* direction of Link's sprites, saved just before
 				  * showing a sprite animation having only one direction */
 
@@ -153,7 +153,7 @@ class Link: public MapEntity, AnimationListener {
   Movement8ByPlayer *get_movement(void);
   SDL_Rect get_facing_point(void);
   void just_moved(void);
-  void set_facing_entity(EntityDetector *detector);
+  void set_facing_entity(Detector *detector);
   bool is_facing_obstacle(void);
 
   // map

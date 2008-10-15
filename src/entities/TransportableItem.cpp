@@ -41,12 +41,17 @@ const TransportableItem::ItemProperties TransportableItem::properties[] = {
  */
 TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y, TransportableItem::ItemType type,
 				     PickableItem::ItemType pickable_item, int pickable_item_savegame_variable):
-  EntityDetector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
+  Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
   map(map), type(type), pickable_item(pickable_item),
   pickable_item_savegame_variable(pickable_item_savegame_variable) {
 
   set_origin(8, 13);
-  create_sprite(get_sprite_animations_id());
+  create_sprite(get_animation_set_id());
+
+  // additionnal behavior of a bush
+  if (type == BUSH) {
+    set_collision_mode(COLLISION_FACING_POINT | COLLISION_SPRITE);
+  }
 }
 
 /**
@@ -60,8 +65,8 @@ TransportableItem::~TransportableItem(void) {
  * Returns the animation set of this transportable item.
  * @return the animations of the sprite
  */
-string TransportableItem::get_sprite_animations_id(void) {
-  return properties[type].sprite_animations_id;
+string TransportableItem::get_animation_set_id(void) {
+  return properties[type].animation_set_id;
 }
 
 /**
@@ -74,11 +79,11 @@ Sound * TransportableItem::get_breaking_sound(void) {
 
 /**
  * This function is called by the engine when an entity overlaps the transportable item.
- * This is a redefinition of EntityDetector::entity_collision().
+ * This is a redefinition of Detector::collision().
  * If the entity is the hero, we allow him to lift the item.
  * @param entity_overlapping the entity overlapping the detector
  */
-void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
+void TransportableItem::collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping->is_hero()) {
 
@@ -87,7 +92,7 @@ void TransportableItem::entity_collision(MapEntity *entity_overlapping) {
     Equipment *equipment = zsdx->game->get_equipment();
 
     int weight = properties[type].weight;
-    
+
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& link->get_state() == Link::FREE
 	&& equipment->can_lift(weight)) {

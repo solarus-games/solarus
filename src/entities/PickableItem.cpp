@@ -57,7 +57,7 @@ const PickableItem::Properties PickableItem::properties[] = {
  * only for pickable items that are saved (a key, a piece of heart...)
  */
 PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItem::ItemType type, int savegame_variable):
-  EntityDetector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
+  Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
   map(map), type(type), savegame_variable(savegame_variable),
   shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
 
@@ -249,7 +249,7 @@ void PickableItem::initialize_sprites(void) {
   }
 
   // create the sprite and set its animation
-  create_sprite(properties[type].sprite_animations_id);
+  create_sprite(properties[type].animation_set_id);
   Sprite *item_sprite = get_last_sprite();
   item_sprite->set_current_animation(properties[type].animation_name);
 
@@ -290,12 +290,12 @@ bool PickableItem::is_falling(void) {
 
 /**
  * This function is called by the engine when an entity overlaps the pickable item.
- * This is a redefinition of EntityDetector::entity_collision().
+ * This is a redefinition of Detector::collision().
  * If the entity is the player, we give him the item, and the map is notified
  * to destroy it.
  * @param entity_overlapping the entity overlapping the detector
  */
-void PickableItem::entity_collision(MapEntity *entity_overlapping) {
+void PickableItem::collision(MapEntity *entity_overlapping) {
 
   if (entity_overlapping->is_hero() && can_be_picked) {
 

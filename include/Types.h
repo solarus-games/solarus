@@ -103,7 +103,7 @@ class MapEntities;
 class MapEntity;
 class Link;
 class TileOnMap;
-class EntityDetector;
+class Detector;
 class Entrance;
 class Exit;
 class PickableItem;

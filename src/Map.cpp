@@ -8,7 +8,7 @@
 #include "entities/Link.h"
 #include "entities/MapEntities.h"
 #include "entities/Entrance.h"
-#include "entities/EntityDetector.h"
+#include "entities/Detector.h"
 
 MapLoader Map::map_loader;
 
@@ -506,7 +506,7 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y) {
 }
 
 /**
- * This function is called by an entity sensible to the entity detectors
+ * This function is called by an entity sensitive to the entity detectors
  * when this entity has just moved on the map, or when a detector
  * wants to check this entity.
  * We check whether or not the entity overlaps an entity detector.
@@ -515,19 +515,41 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y) {
  */
 void Map::check_collision_with_detectors(MapEntity *entity) {
 
-  list<EntityDetector*> *entity_detectors = entities->get_entity_detectors();
+  list<Detector*> *detectors = entities->get_detectors();
 
   // check each detector
-  list<EntityDetector*>::iterator i;
-  for (i = entity_detectors->begin();
-       i != entity_detectors->end();
+  list<Detector*>::iterator i;
+  for (i = detectors->begin();
+       i != detectors->end();
        i++) {
 
     if (!(*i)->is_being_removed()) {
-      (*i)->check_entity_collision(entity);
+      (*i)->check_collision(entity);
     }
   }
+}
 
+/**
+ * This function is called by an entity
+ * when the frame of one of its sprites has just changed.
+ * We check whether or not the sprite overlaps the detector.
+ * @param entity the sprite that has just changed
+ * @param sprite the sprite that has just changed
+ */
+void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
+
+  list<Detector*> *detectors = entities->get_detectors();
+
+  // check each detector
+  list<Detector*>::iterator i;
+  for (i = detectors->begin();
+       i != detectors->end();
+       i++) {
+
+    if (!(*i)->is_being_removed()) {
+      (*i)->check_collision(entity, sprite);
+    }
+  }
 }
 
 /**
@@ -538,6 +560,6 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
  * @param detector the detector
  * @param entity the entity
  */
-void Map::event_entity_on_detector(EntityDetector *detector, MapEntity *entity) {
+void Map::event_entity_on_detector(Detector *detector, MapEntity *entity) {
 
 }

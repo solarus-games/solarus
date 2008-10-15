@@ -303,7 +303,7 @@ Sprite * MapEntity::get_last_sprite(void) {
  * Adds a sprite to this entity.
  * @param id id of the sprite's animations to add
  */
-void MapEntity::create_sprite(SpriteAnimationsId id) {
+void MapEntity::create_sprite(SpriteAnimationSetId id) {
   sprites.push_back(new Sprite(id));
 }
 

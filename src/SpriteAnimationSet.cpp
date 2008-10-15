@@ -1,4 +1,4 @@
-#include "SpriteAnimations.h"
+#include "SpriteAnimationSet.h"
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "FileTools.h"
@@ -9,7 +9,7 @@
  * Loads the animations of a sprite from a file.
  * @param id id of the sprite (used to determine the sprite file)
  */
-SpriteAnimations::SpriteAnimations(SpriteAnimationsId id) {
+SpriteAnimationSet::SpriteAnimationSet(SpriteAnimationSetId id) {
 
   // compute the file name
   string file_name = "sprites/" + id + ".zsd";
@@ -94,10 +94,10 @@ SpriteAnimations::SpriteAnimations(SpriteAnimationsId id) {
 /**
  * Destructor.
  */
-SpriteAnimations::~SpriteAnimations(void) {
+SpriteAnimationSet::~SpriteAnimationSet(void) {
 
   // delete the animations
-  map<SpriteAnimationsId, SpriteAnimation*>::const_iterator it;
+  map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
 
   for (it = animations.begin(); it != animations.end(); it++) {
     delete it->second;
@@ -109,7 +109,7 @@ SpriteAnimations::~SpriteAnimations(void) {
  * @param animation_name name of the animation to get
  * @return the specified animation
  */
-SpriteAnimation * SpriteAnimations::get_animation(string animation_name) {
+SpriteAnimation * SpriteAnimationSet::get_animation(string animation_name) {
   return animations[animation_name];
 }
 
@@ -117,18 +117,18 @@ SpriteAnimation * SpriteAnimations::get_animation(string animation_name) {
  * Returns the name of the default animation, i.e. the first one.
  * @return the name of the default animation
  */
-string SpriteAnimations::get_default_animation(void) {
+string SpriteAnimationSet::get_default_animation(void) {
   return default_animation_name;
 }
 
 /**
  * Enables the pixel-perfect collision detection for these animations.
  */
-void SpriteAnimations::enable_pixel_collisions(void) {
+void SpriteAnimationSet::enable_pixel_collisions(void) {
 
   if (!are_pixel_collisions_enabled()) {
 
-    map<SpriteAnimationsId, SpriteAnimation*>::const_iterator it;
+    map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
 
     for (it = animations.begin(); it != animations.end(); it++) {
       it->second->enable_pixel_collisions();
@@ -140,6 +140,6 @@ void SpriteAnimations::enable_pixel_collisions(void) {
  * Returns whether the pixel-perfect collisions are enabled for these animations.
  * @return true if the pixel-perfect collisions are enabled
  */
-bool SpriteAnimations::are_pixel_collisions_enabled(void) {
+bool SpriteAnimationSet::are_pixel_collisions_enabled(void) {
   return animations.begin()->second->are_pixel_collisions_enabled();
 }

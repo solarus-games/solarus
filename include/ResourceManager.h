@@ -26,7 +26,7 @@ class ResourceManager {
   std::map<MapId, Map*> maps;
   std::map<MusicId, Music*> musics;
   std::map<SoundId, Sound*> sounds;
-  std::map<SpriteAnimationsId, SpriteAnimations*> sprite_animations;
+  std::map<SpriteAnimationSetId, SpriteAnimationSet*> sprite_animations;
 
   // items
   // ...
@@ -45,7 +45,7 @@ class ResourceManager {
   static Map* get_map(MapId id);
   static Music* get_music(MusicId id);
   static Sound* get_sound(SoundId id);
-  static SpriteAnimations* get_sprite_animations(SpriteAnimationsId id);
+  static SpriteAnimationSet* get_sprite_animation_set(SpriteAnimationSetId id);
 };
 
 #endif

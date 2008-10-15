@@ -51,10 +51,10 @@ class PickableItem: public EntityDetector {
    * This structure defines the properties of a pickable item type.
    */
   struct Properties {
-    SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of pickable item */
-    string animation_name;                   /**< name of the animation */
-    bool big_shadow;                         /**< true if the pickable item has a big shadow, false for a small shadow */
-    SoundId sound;                           /**< the sound played when the player gets the item */
+    SpriteAnimationSetId animation_set_id; /**< animation set used for this type of pickable item */
+    string animation_name;                 /**< name of the animation */
+    bool big_shadow;                       /**< true if the pickable item has a big shadow, false for a small shadow */
+    SoundId sound;                         /**< the sound played when the player gets the item */
   };
   
   static const Properties properties[];

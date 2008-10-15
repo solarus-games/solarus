@@ -1,5 +1,5 @@
-#ifndef ZSDX_SPRITE_ANIMATIONS_H
-#define ZSDX_SPRITE_ANIMATIONS_H
+#ifndef ZSDX_SPRITE_ANIMATION_SET_H
+#define ZSDX_SPRITE_ANIMATION_SET_H
 
 #include "Common.h"
 #include <map>
@@ -11,7 +11,7 @@
  * For example, you can have an animation "Stopped"
  * and an animation "Walking".
  */
-class SpriteAnimations {
+class SpriteAnimationSet {
 
  private:
 
@@ -20,8 +20,8 @@ class SpriteAnimations {
   
  public:
 
-  SpriteAnimations(SpriteAnimationsId id);
-  virtual ~SpriteAnimations(void);
+  SpriteAnimationSet(SpriteAnimationSetId id);
+  virtual ~SpriteAnimationSet(void);
 
   SpriteAnimation *get_animation(string animation_name);
   string get_default_animation(void);

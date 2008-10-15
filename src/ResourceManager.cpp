@@ -3,7 +3,7 @@
 #include "entities/Tileset.h"
 #include "Music.h"
 #include "Sound.h"
-#include "SpriteAnimations.h"
+#include "SpriteAnimationSet.h"
 #include "FileTools.h"
 
 /**
@@ -66,7 +66,7 @@ ResourceManager::~ResourceManager(void) {
 
   // sprite animations
   {
-    map<SpriteAnimationsId, SpriteAnimations*>::const_iterator it;
+    map<SpriteAnimationSetId, SpriteAnimationSet*>::const_iterator it;
     
     for (it = sprite_animations.begin(); it != sprite_animations.end(); it++) {
       delete it->second;
@@ -161,14 +161,14 @@ Sound * ResourceManager::get_sound(SoundId id) {
 }
 
 /**
- * Returns the animations of a sprite.
- * @param id id of the sprite animations to get
- * @return the sprite animations required
+ * Returns the animation set of a sprite.
+ * @param id id of the sprite animation set to get
+ * @return the sprite animation set required
  */
-SpriteAnimations * ResourceManager::get_sprite_animations(SpriteAnimationsId id) {
+SpriteAnimationSet * ResourceManager::get_sprite_animation_set(SpriteAnimationSetId id) {
   
   if (instance->sprite_animations[id] == NULL) {
-    instance->sprite_animations[id] = new SpriteAnimations(id);
+    instance->sprite_animations[id] = new SpriteAnimationSet(id);
   }
   
   return instance->sprite_animations[id];

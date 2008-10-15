@@ -1,5 +1,5 @@
 #include "Sprite.h"
-#include "SpriteAnimations.h"
+#include "SpriteAnimationSet.h"
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "AnimationListener.h"
@@ -9,11 +9,11 @@
  * Creates a sprite with the specified animation set.
  * @param animations the sprite's animations
  */
-Sprite::Sprite(SpriteAnimations *animations):
-animations(animations), current_direction(0),
+Sprite::Sprite(SpriteAnimationSet *animation_set):
+animation_set(animation_set), current_direction(0),
 suspended(false), over(false), listener(NULL), blink_delay(0) {
   
-  set_current_animation(animations->get_default_animation());
+  set_current_animation(animation_set->get_default_animation());
 }
 
 /**
@@ -21,11 +21,11 @@ suspended(false), over(false), listener(NULL), blink_delay(0) {
  * This is equivalent to Sprite(ResourceManager::get_sprite_animations(id)).
  * @param id id of the sprite's animations
  */
-Sprite::Sprite(SpriteAnimationsId id):
+Sprite::Sprite(SpriteAnimationSetId id):
 current_direction(0), suspended(false), over(false), listener(NULL), blink_delay(0) {
   
-  animations = ResourceManager::get_sprite_animations(id);
-  set_current_animation(animations->get_default_animation());
+  animation_set = ResourceManager::get_sprite_animation_set(id);
+  set_current_animation(animation_set->get_default_animation());
 }
 
 /**
@@ -41,8 +41,8 @@ Sprite::~Sprite(void) {
  * and the same pointer is returned here.
  * @return the animation set of this sprite
  */
-SpriteAnimations * Sprite::get_animations(void) {
-  return animations;
+SpriteAnimationSet * Sprite::get_animation_set(void) {
+  return animation_set;
 }
 
 /**
@@ -51,7 +51,7 @@ SpriteAnimations * Sprite::get_animations(void) {
  */
 SDL_Rect& Sprite::get_size(void) {
 
-  SpriteAnimation *animation = animations->get_animation(current_animation_name);
+  SpriteAnimation *animation = animation_set->get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_size();
 }
 
@@ -61,7 +61,7 @@ SDL_Rect& Sprite::get_size(void) {
  */
 SDL_Rect& Sprite::get_origin(void) {
 
-  SpriteAnimation *animation = animations->get_animation(current_animation_name);
+  SpriteAnimation *animation = animation_set->get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_origin();
 }
 
@@ -102,7 +102,7 @@ void Sprite::set_current_animation(string animation_name) {
 
   if (animation_name != this->current_animation_name || !is_animation_started()) {
   
-    SpriteAnimation *animation = animations->get_animation(animation_name);
+    SpriteAnimation *animation = animation_set->get_animation(animation_name);
     
     if (animation == NULL) {
       DIE("Unknown animation '" << animation_name << "'");
@@ -288,7 +288,7 @@ void Sprite::update(void) {
       next_frame_date += get_frame_interval();
 
       // check the pixel-perfect collisions if they are enabled
-      if (animations->are_pixel_collisions_enabled()) {
+      if (animation_set->are_pixel_collisions_enabled()) {
 
       }
     }

@@ -6,7 +6,6 @@
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
 - Joystick : tester le hat
-- Renommer SpriteAnimations en SpriteAnimationSet
 
 - Bugs: 
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)

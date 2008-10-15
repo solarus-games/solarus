@@ -3,7 +3,7 @@
 #include "movements/Movement8ByPlayer.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
-#include "SpriteAnimations.h"
+#include "SpriteAnimationSet.h"
 #include "ZSDX.h"
 #include "ResourceManager.h"
 #include "Game.h"
@@ -31,54 +31,6 @@ static const int animation_directions[] = {
   -1,  // down + left + right: no change
   -1,  // down + left + up: no change
   -1,  // down + left + right + up: no change
-};
-
-/**
- * String constants corresponding to the sprites of Link's tunics.
- */
-const SpriteAnimationsId Link::tunic_sprite_ids[3] = {
-  "link/tunic0", // green tunic
-  "link/tunic1", // blue tunic
-  "link/tunic2", // red tunic
-};
-
-/**
- * String constants corresponding to the sprites of Link's swords.
- */
-const SpriteAnimationsId Link::sword_sprite_ids[4] = {
-  "link/sword1",
-  "link/sword2",
-  "link/sword3",
-  "link/sword4",
-};
-
-/**
- * String constants corresponding to the sprites of the stars of Link's swords.
- */
-const SpriteAnimationsId Link::sword_stars_sprite_ids[4] = {
-  "link/sword_stars1",
-  "link/sword_stars1",
-  "link/sword_stars2",
-  "link/sword_stars2",
-};
-
-/**
- * String constants corresponding to the sprites of the shields.
- */
-const SpriteAnimationsId Link::shield_sprite_ids[3] = {
-  "link/shield1",
-  "link/shield2",
-  "link/shield3",
-};
-
-/**
- * String constants corresponding to the sounds of the swords.
- */
-const SoundId Link::sword_sound_ids[4] = {
-  "sword1",
-  "sword2",
-  "sword3",
-  "sword4",
 };
 
 /**
@@ -341,7 +293,7 @@ void Link::rebuild_equipment(void) {
     // Link has a sword: get the sprite and the sound
     sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
     sword_sprite->stop_animation();
-    sword_sprite->get_animations()->enable_pixel_collisions();
+    sword_sprite->get_animation_set()->enable_pixel_collisions();
 
     sword_sound = ResourceManager::get_sound(sword_sound_ids[sword_number - 1]);
 

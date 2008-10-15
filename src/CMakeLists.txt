@@ -65,7 +65,7 @@ add_executable (zsdx
 
   # sprites
   Sprite.cpp
-  SpriteAnimations.cpp
+  SpriteAnimationSet.cpp
   SpriteAnimation.cpp
   SpriteAnimationDirection.cpp
   PixelBits.cpp

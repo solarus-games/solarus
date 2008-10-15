@@ -14,7 +14,7 @@ typedef Uint32 MapId;
 typedef Uint32 TilesetId;
 typedef std::string MusicId;
 typedef std::string SoundId;
-typedef std::string SpriteAnimationsId;
+typedef std::string SpriteAnimationSetId;
 
 /**
  * Messages.
@@ -87,7 +87,7 @@ class FloorView;
 
 // sprites
 class Sprite;
-class SpriteAnimations;
+class SpriteAnimationSet;
 class SpriteAnimation;
 class SpriteAnimationDirection;
 class AnimationListener;

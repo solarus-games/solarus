@@ -4,6 +4,54 @@
 #include "Equipment.h"
 
 /**
+ * String constants corresponding to the sprites of Link's tunics.
+ */
+const SpriteAnimationSetId Link::tunic_sprite_ids[3] = {
+  "link/tunic0", // green tunic
+  "link/tunic1", // blue tunic
+  "link/tunic2", // red tunic
+};
+
+/**
+ * String constants corresponding to the sprites of Link's swords.
+ */
+const SpriteAnimationSetId Link::sword_sprite_ids[4] = {
+  "link/sword1",
+  "link/sword2",
+  "link/sword3",
+  "link/sword4",
+};
+
+/**
+ * String constants corresponding to the sprites of the stars of Link's swords.
+ */
+const SpriteAnimationSetId Link::sword_stars_sprite_ids[4] = {
+  "link/sword_stars1",
+  "link/sword_stars1",
+  "link/sword_stars2",
+  "link/sword_stars2",
+};
+
+/**
+ * String constants corresponding to the sprites of the shields.
+ */
+const SpriteAnimationSetId Link::shield_sprite_ids[3] = {
+  "link/shield1",
+  "link/shield2",
+  "link/shield3",
+};
+
+/**
+ * String constants corresponding to the sounds of the swords.
+ */
+const SoundId Link::sword_sound_ids[4] = {
+  "sword1",
+  "sword2",
+  "sword3",
+  "sword4",
+};
+
+/**
  * Returns the direction of Link's sprites.
  * It is different from the movement direction.
  * @return the direction of Link's sprites (0 to 3)

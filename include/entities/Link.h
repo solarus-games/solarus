@@ -51,10 +51,10 @@ class Link: public MapEntity, AnimationListener {
   Sprite *shield_sprite;
   Sound *sword_sound;
 
-  static const SpriteAnimationsId tunic_sprite_ids[];
-  static const SpriteAnimationsId sword_sprite_ids[];
-  static const SpriteAnimationsId sword_stars_sprite_ids[];
-  static const SpriteAnimationsId shield_sprite_ids[];
+  static const SpriteAnimationSetId tunic_sprite_ids[];
+  static const SpriteAnimationSetId sword_sprite_ids[];
+  static const SpriteAnimationSetId sword_stars_sprite_ids[];
+  static const SpriteAnimationSetId shield_sprite_ids[];
   static const SoundId sword_sound_ids[];
 
   /**

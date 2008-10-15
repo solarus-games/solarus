@@ -46,9 +46,9 @@ class TransportableItem: public EntityDetector {
    * This structure defines the properties of a transportable item type.
    */
   struct ItemProperties {
-    SpriteAnimationsId sprite_animations_id; /**< animation set used for this type of transportable item */
-    SoundId breaking_sound_id;               /**< sound played when the item is broken */
-    int weight;                              /**< weight of the item (0: light, 1: iron glove required, 2: golden glove required */
+    SpriteAnimationSetId animation_set_id; /**< animation set used for this type of transportable item */
+    SoundId breaking_sound_id;             /**< sound played when the item is broken */
+    int weight;                            /**< weight of the item (0: light, 1: iron glove required, 2: golden glove required */
   };
 
   static const ItemProperties properties[];
@@ -60,7 +60,7 @@ class TransportableItem: public EntityDetector {
 		    PickableItem::ItemType pickable_item, int pickable_item_savegame_variable);
   ~TransportableItem(void);
 
-  string get_sprite_animations_id(void);
+  string get_animation_set_id(void);
   Sound *get_breaking_sound(void);
 
   void entity_collision(MapEntity *entity_overlapping);

@@ -6,10 +6,10 @@
 /**
  * Represents an animated sprite.
  * An animated sprite is represented as a set of animations (an
- * instance of SpriteAnimations), a current animation,
+ * instance of SpriteAnimationSet), a current animation,
  * a current direction and a current frame.
  * Several sprites can have the same animation set (i.e. they share
- * the same SpriteAnimations object).
+ * the same SpriteAnimationSet object).
  *
  * A sprite can be displayed directly on a surface, or it can
  * be attached to a map entity, allowing it to have a position on
@@ -21,7 +21,7 @@ class Sprite {
 
   // animation set
 
-  SpriteAnimations *animations;       /**< animation set of this sprite */
+  SpriteAnimationSet *animation_set;  /**< animation set of this sprite */
 
   // current state of the sprite
 
@@ -52,11 +52,11 @@ class Sprite {
  public:
 
   // creation and destruction
-  Sprite(SpriteAnimationsId id);
-  Sprite(SpriteAnimations *animations);
+  Sprite(SpriteAnimationSetId id);
+  Sprite(SpriteAnimationSet *animation_set);
   ~Sprite(void);
 
-  SpriteAnimations *get_animations(void);
+  SpriteAnimationSet *get_animation_set(void);
 
   // size and origin point
   SDL_Rect& get_size(void);

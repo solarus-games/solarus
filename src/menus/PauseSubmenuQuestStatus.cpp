@@ -25,17 +25,13 @@ static const string shield_texts[] = {"Bouclier", "Bouclier de Feu", "Bouclier M
 PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game):
   PauseSubmenu(pause_menu, game) {
 
-  // cursor
-  cursor_sprite = new Sprite("menus/pause_cursor");
-  cursor_position = -1;
-  set_cursor_position(0);
+  Equipment *equipment = game->get_equipment();
 
   // draw the items on a surface
   quest_items_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_SetColorKey(quest_items_surface, SDL_SRCCOLORKEY, Color::black);
   SDL_FillRect(quest_items_surface, NULL, Color::black);
 
-  Equipment *equipment = game->get_equipment();
   SDL_Surface *treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
   SDL_Surface *pieces_of_heart_img = ResourceManager::load_image("menus/quest_status_pieces_of_heart.png");
 
@@ -125,6 +121,11 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // dungeons finished
   // TODO
+
+  // cursor
+  cursor_sprite = new Sprite("menus/pause_cursor");
+  cursor_position = -1;
+  set_cursor_position(0);
 
   SDL_FreeSurface(treasures_img);
   SDL_FreeSurface(pieces_of_heart_img);

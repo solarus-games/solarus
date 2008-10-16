@@ -15,19 +15,28 @@ class VideoManager {
    * The different possible video modes.
    */
   enum VideoMode {
-    WINDOWED_640_480_SCALE2X,
     WINDOWED_640_480,
+    WINDOWED_640_480_SCALE2X,
     WINDOWED_320_240,
-    FULLSCREEN,
+    FULLSCREEN_320_240,
+    FULLSCREEN_640_480_SCALE2X,
+    FULLSCREEN_640_480_BORDER,
+    //  FULLSCREEN_768_480_SCALE2X,
+    //  FULLSCREEN_384_240,
+    //  FULLSCREEN_768_480_BORDER,
+    NB_MODES
   };
 
  private:
 
+  bool large_screen;
   VideoMode video_mode;
+  SDL_Surface *screen_surface;  /**< the screen surface */
 
   void display_320(SDL_Surface *src_surface, SDL_Surface *dst_surface);
   void display_640(SDL_Surface *src_surface, SDL_Surface *dst_surface);
   void display_640_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surface);
+  void display_640_border(SDL_Surface *src_surface, SDL_Surface *dst_surface);
 
  public:
 
@@ -35,12 +44,12 @@ class VideoManager {
   ~VideoManager(void);
 
   void switch_video_mode(void);
-  SDL_Surface * set_default_video_mode(void);
-  SDL_Surface * set_video_mode(VideoMode mode);
+  void set_default_video_mode(void);
+  void set_video_mode(VideoMode mode);
   VideoMode get_video_mode(void);
   bool is_fullscreen(void);
 
-  void display(SDL_Surface *src_surface, SDL_Surface *dst_surface);
+  void display(SDL_Surface *src_surface);
 
 };
 

@@ -18,17 +18,19 @@ static const string texts[] = {
   "Commandes",         // 2
   "Clavier",           // 3
   "Joypad",            // 4
-  "Appuyez sur Action\npour changer de mode",      // 5
-  "Appuyez sur Action pour\nconfigurer cette touche", // 6
+  "Appuyez sur Action\npour changer de mode",          // 5
+  "Appuyez sur Action pour\nconfigurer cette touche",  // 6
   "Appuyez sur une touche\ndu clavier ou du joypad",   // 7
 };
 
 // TODO: load this from some external file (for future translation)
 static const string video_mode_texts[] = {
-  "Mode vidéo : 640x480",
-  "Mode vidéo : 640x480 lisse",
-  "Mode vidéo : 320x240",
-  "Mode vidéo : plein écran",
+  "Mode : 640x480",
+  "Mode : 640x480 lisse",
+  "Mode : 320x240",
+  "Mode : plein écran",
+  "Mode : plein écran lisse",
+  "Mode : plein écran petit",
 };
 
 /**

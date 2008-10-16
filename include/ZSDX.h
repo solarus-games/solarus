@@ -33,8 +33,7 @@ class ZSDX {
    */
   Screen *current_screen;
   SDL_Surface *root_surface;  /**< the surface where everything is drawn (always 320*240) */
-  SDL_Surface *real_surface;  /**< the surface actually displayed on the screen */
-  VideoManager video_manager;
+  VideoManager *video_manager;
   bool exiting;
 
   void launch_adventure_mode(Savegame *savegame);

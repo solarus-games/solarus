@@ -38,7 +38,8 @@ ZSDX::ZSDX(void) {
 
   root_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_ShowCursor(SDL_ENABLE);
-  real_surface = video_manager.set_default_video_mode();
+  video_manager = new VideoManager();
+  video_manager->set_default_video_mode();
   SDL_EnableUNICODE(SDL_ENABLE);
   SDL_EnableKeyRepeat(0, 0);
 
@@ -69,6 +70,7 @@ ZSDX::ZSDX(void) {
 ZSDX::~ZSDX(void) {
   SDL_FreeSurface(root_surface);
   delete current_screen;
+  delete video_manager;
   ResourceManager::quit();
   TextSurface::quit();
   SDL_Quit();
@@ -178,7 +180,7 @@ void ZSDX::handle_event(const SDL_Event &event) {
 
       // F5: change the video mode
     case SDLK_F5:
-      video_manager.switch_video_mode();
+      video_manager->switch_video_mode();
       break;
 
     default:
@@ -198,8 +200,7 @@ void ZSDX::display(void) {
 
   SDL_FillRect(root_surface, NULL, Color::black);
   current_screen->display(root_surface);
-  video_manager.display(root_surface, real_surface);
-  SDL_Flip(real_surface);
+  video_manager->display(root_surface);
 }
 
 /**
@@ -207,7 +208,7 @@ void ZSDX::display(void) {
  * @return the video system
  */
 VideoManager * ZSDX::get_video_manager(void) {
-  return &video_manager;
+  return video_manager;
 }
 
 /**

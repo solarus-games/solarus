@@ -6,6 +6,9 @@
  */
 VideoManager::VideoManager(void) {
 
+  const SDL_VideoInfo *video_info = SDL_GetVideoInfo();
+  double ratio = (double) video_info->current_h / (double) video_info->current_w;
+  large_screen = (ratio != 0.75);
 }
 
 /**
@@ -20,14 +23,14 @@ VideoManager::~VideoManager(void) {
  * @return true if the game is in full screen mode, false otherwise
  */
 bool VideoManager::is_fullscreen(void) {
-  return video_mode == FULLSCREEN;
+  return video_mode >= FULLSCREEN_320_240;
 }
 
 /**
  * Sets the next video mode.
  */
 void VideoManager::switch_video_mode(void) {
-  int mode = (video_mode + 1) % 4;
+  int mode = (video_mode + 1) % NB_MODES;
   set_video_mode((VideoMode) mode);
 }
 
@@ -35,41 +38,45 @@ void VideoManager::switch_video_mode(void) {
  * Sets the default video mode.
  * @param the screen surface created, as returned by SDL_SetVideoMode; you don't have to free it
  */
-SDL_Surface * VideoManager::set_default_video_mode(void) {
-  return set_video_mode(WINDOWED_640_480_SCALE2X);
+void VideoManager::set_default_video_mode(void) {
+  set_video_mode(WINDOWED_640_480);
 }
 
 /**
  * Sets the current video mode.
  * @param mode the video mode
- * @param the screen surface created, as returned by SDL_SetVideoMode; you don't have to free it
  */
-SDL_Surface * VideoManager::set_video_mode(VideoMode mode) {
-
-  SDL_Surface *screen;
+void VideoManager::set_video_mode(VideoMode mode) {
 
   switch (mode) {
 
-  case FULLSCREEN:
-    screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+  case FULLSCREEN_320_240:
+    screen_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+    SDL_ShowCursor(SDL_DISABLE);
+    break;
+
+  case FULLSCREEN_640_480_SCALE2X:
+  case FULLSCREEN_640_480_BORDER:
+    screen_surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
     SDL_ShowCursor(SDL_DISABLE);
     break;
 
   case WINDOWED_320_240:
-    screen = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    screen_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_ShowCursor(SDL_ENABLE);
     break;
 
   case WINDOWED_640_480:
   case WINDOWED_640_480_SCALE2X:
-    screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    screen_surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_ShowCursor(SDL_ENABLE);
+    break;
+
+  default:
     break;
   }
 
   this->video_mode = mode;
-
-  return screen;
 }
 
 /**
@@ -81,29 +88,38 @@ VideoManager::VideoMode VideoManager::get_video_mode(void) {
 }
 
 /**
- * Blits a surface on another surface with the current video mode.
+ * Blits a surface on the screen with the current video mode.
  * @param src_surface the source surface
- * @param dst_surface the destination surface
  */
-void VideoManager::display(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
+void VideoManager::display(SDL_Surface *src_surface) {
 
-  SDL_FillRect(dst_surface, NULL, Color::black);
+  SDL_FillRect(screen_surface, NULL, Color::black);
 
   switch (video_mode) {
 
-  case FULLSCREEN:
   case WINDOWED_320_240:
-    display_320(src_surface, dst_surface);
+  case FULLSCREEN_320_240:
+    display_320(src_surface, screen_surface);
     break;
 
   case WINDOWED_640_480:
-    display_640(src_surface, dst_surface);
+    display_640(src_surface, screen_surface);
     break;
 
   case WINDOWED_640_480_SCALE2X:
-    display_640_scale2x(src_surface, dst_surface);
+  case FULLSCREEN_640_480_SCALE2X:
+    display_640_scale2x(src_surface, screen_surface);
+    break;
+
+  case FULLSCREEN_640_480_BORDER:
+    display_640_border(src_surface, screen_surface);
+    break;
+
+  default:
     break;
   }
+
+  SDL_Flip(screen_surface);
 }
 
 /**
@@ -111,6 +127,14 @@ void VideoManager::display(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
  */
 void VideoManager::display_320(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
   SDL_BlitSurface(src_surface, NULL, dst_surface, NULL);
+}
+
+/**
+ * Redraws the current screen with a 640*480 resolution and a border.
+ */
+void VideoManager::display_640_border(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
+  static SDL_Rect dst_position = {160, 120};
+  SDL_BlitSurface(src_surface, NULL, dst_surface, &dst_position);
 }
 
 /**

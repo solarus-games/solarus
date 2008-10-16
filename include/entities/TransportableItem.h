@@ -42,6 +42,8 @@ class TransportableItem: public Detector {
   PickableItem::ItemType pickable_item;    /**< the pickable item that appears when the item is lifted */
   int pickable_item_savegame_variable;     /**< savegame index of the pickable item (if any) */
 
+  bool is_breaking;                        /**< indicates that the item is breaking (only for a bush) */
+
   /**
    * This structure defines the properties of a transportable item type.
    */
@@ -68,6 +70,8 @@ class TransportableItem: public Detector {
   void collision(MapEntity *entity, Sprite *sprite_overlapping);
   void action_key_pressed(void);
   void lift(void);
+
+  void update(void);
 };
 
 

@@ -111,6 +111,21 @@ list<Detector*> * MapEntities::get_detectors(void) {
 }
 
 /**
+ * Sets the obstacle property of an entity.
+ * @param entity an entity
+ * @param obstacle the obstacle property to set
+ */
+void MapEntities::set_obstacle(MapEntity *entity, MapEntity::Obstacle obstacle) {
+
+  MapEntity::Layer layer = entity->get_layer();
+
+  obstacle_entities[layer].remove(entity);
+  if (obstacle != MapEntity::OBSTACLE_NONE) {
+    obstacle_entities[layer].push_back(entity);
+  }
+}
+
+/**
  * Creates a tile on the map.
  * This function is called for each tile when loading the map.
  * The tiles on a map are not supposed to change during the game.

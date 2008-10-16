@@ -330,32 +330,6 @@ void Link::rebuild_equipment(void) {
 }
 
 /**
- * Updates the animation of Link's sprites if necessary.
- */
-void Link::update_sprites(void) {
-
-  // update the frames
-  tunic_sprite->update();
-
-  if (is_sword_visible()) {
-    sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
-  }
-
-  if (is_sword_stars_visible()) {
-    // the stars are not synchronized with the other sprites
-    sword_stars_sprite->update();
-  }
-
-  if (is_shield_visible()) {
-    shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
-  }
-
-  if (state == CARRYING && walking) {
-    lifted_item->get_last_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
-  }
-}
-
-/**
  * Updates Link depending on the arrows pressed.
  * This function is called when Link's direction changes (typically, because the player
  * pressed or released an arrow). It updates Link's animations and collisions according to the new movement.

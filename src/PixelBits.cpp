@@ -190,7 +190,7 @@ bool PixelBits::check_collision(PixelBits *other, SDL_Rect &location1, SDL_Rect 
     bits_a++;
     bits_b++;
   }
-
+ 
   return collision;
 }
 

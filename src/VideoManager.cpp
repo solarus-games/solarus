@@ -38,8 +38,8 @@ void VideoManager::switch_video_mode(void) {
  * Sets the default video mode.
  */
 void VideoManager::set_default_video_mode(void) {
-  // TODO  set_video_mode(WINDOWED_640_480);
-  set_video_mode(WINDOWED_320_240);
+  set_video_mode(WINDOWED_640_480);
+  //  set_video_mode(WINDOWED_320_240);
 }
 
 /**

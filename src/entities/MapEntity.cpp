@@ -1,4 +1,5 @@
 #include "entities/MapEntity.h"
+#include "entities/MapEntities.h"
 #include "movements/Movement.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -117,6 +118,16 @@ MapEntity::Layer MapEntity::get_layer(void) {
  */
 void MapEntity::set_layer(Layer layer) {
   this->layer = layer;
+}
+
+/**
+ * Sets the obstacle property of this entity.
+ * @param obstacle the obstacle property
+ */
+void MapEntity::set_obstacle(Obstacle obstacle) {
+
+  Map *map = zsdx->game->get_current_map();
+  map->get_entities()->set_obstacle(this, obstacle);
 }
 
 /**

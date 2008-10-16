@@ -156,9 +156,7 @@ void Sprite::set_current_frame(int current_frame) {
   over = false;
   next_frame_date = SDL_GetTicks() + get_frame_interval();
 
-  if (current_frame != this->current_frame) {
-    frame_changed = true;
-  }
+  frame_changed = (current_frame != this->current_frame);
 
   this->current_frame = current_frame;
 }

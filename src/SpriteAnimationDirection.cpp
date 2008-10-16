@@ -123,5 +123,10 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) {
  * @return the pixel bits object of a frame
  */
 PixelBits * SpriteAnimationDirection::get_pixel_bits(int frame) {
+
+  if (pixel_bits == NULL) {
+    DIE("The pixel collisions are not enabled for this sprite");
+  }
+
   return pixel_bits[frame];
 }

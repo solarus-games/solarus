@@ -39,6 +39,11 @@ Detector::~Detector(void) {
  * @param collision_mode the detector's collision mode
  */
 void Detector::set_collision_mode(int collision_mode) {
+
+  if (collision_mode & COLLISION_SPRITE) {
+    get_sprite(0)->get_animation_set()->enable_pixel_collisions();
+  }
+
   this->collision_mode = collision_mode;
 }
 
@@ -101,12 +106,23 @@ void Detector::check_collision(MapEntity *entity) {
  */
 void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
 
-  if (collision_mode & COLLISION_SPRITE) {
+  if (layer_ignored ||
+      get_layer() == entity->get_layer()) { // the entity is in the same layer as the detector
 
-    if (sprite->get_animation_set()->are_pixel_collisions_enabled()) {
-      check_collision_sprite(entity, sprite);
+    bool overlapping = false;
+
+    if (collision_mode & COLLISION_SPRITE) {
+
+      if (sprite->get_animation_set()->are_pixel_collisions_enabled()) {
+	overlapping = check_collision_sprite(entity, sprite);
+      }
     }
-  }
+
+    // if there is a collision, notify the detector
+    if (overlapping) {
+      collision(entity, sprite);
+    }
+  }  
 }
 
 /**

@@ -2,6 +2,7 @@
 #include "entities/CarriedItem.h"
 #include "Sprite.h"
 #include "Equipment.h"
+#include "Map.h"
 
 /**
  * String constants corresponding to the sprites of Link's tunics.
@@ -96,6 +97,36 @@ void Link::save_animation_direction(void) {
  */
 void Link::restore_animation_direction(void) {
   set_animation_direction(animation_direction_saved);
+}
+
+/**
+ * Updates the animation of Link's sprites if necessary.
+ */
+void Link::update_sprites(void) {
+
+  // update the frames
+  tunic_sprite->update();
+
+  if (is_sword_visible()) {
+    sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
+
+    if (sword_sprite->has_frame_changed()) {
+      map->check_collision_with_detectors(this, sword_sprite);
+    }
+  }
+
+  if (is_sword_stars_visible()) {
+    // the stars are not synchronized with the other sprites
+    sword_stars_sprite->update();
+  }
+
+  if (is_shield_visible()) {
+    shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
+  }
+
+  if (state == CARRYING && walking) {
+    lifted_item->get_last_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
+  }
 }
 
 /**

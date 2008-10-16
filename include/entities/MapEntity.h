@@ -132,6 +132,7 @@ class MapEntity {
   MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
 
   // method called by the subclasses to set their properties
+  void set_obstacle(Obstacle obstacle);
   void set_layer(Layer layer);
   void set_size(int width, int height);
   void set_size(SDL_Rect &size);

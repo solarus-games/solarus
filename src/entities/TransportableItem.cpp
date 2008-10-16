@@ -44,7 +44,7 @@ TransportableItem::TransportableItem(Map *map, Layer layer, int x, int y, Transp
 				     PickableItem::ItemType pickable_item, int pickable_item_savegame_variable):
   Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
   map(map), type(type), pickable_item(pickable_item),
-  pickable_item_savegame_variable(pickable_item_savegame_variable) {
+  pickable_item_savegame_variable(pickable_item_savegame_variable), is_breaking(false) {
 
   set_origin(8, 13);
   create_sprite(get_animation_set_id());
@@ -96,7 +96,8 @@ void TransportableItem::collision(MapEntity *entity_overlapping) {
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& link->get_state() == Link::FREE
-	&& equipment->can_lift(weight)) {
+	&& equipment->can_lift(weight)
+	&& !is_breaking) {
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
@@ -112,8 +113,14 @@ void TransportableItem::collision(MapEntity *entity_overlapping) {
  */
 void TransportableItem::collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
-  if (entity->is_hero() && sprite_overlapping->get_animation_set_id() == "link/sword") {
-    cout << "bush!!!\n";
+  if (!is_breaking
+      && entity->is_hero()
+      && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
+
+    get_breaking_sound()->play();
+    get_last_sprite()->set_current_animation("destroy");
+    set_obstacle(OBSTACLE_NONE);
+    is_breaking = true;
   }
 }
 
@@ -127,7 +134,7 @@ void TransportableItem::action_key_pressed(void) {
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   Link *link = zsdx->game->get_link();
 
-  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT) {
+  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT && !is_breaking) {
 
     link->start_lifting(this);
 
@@ -143,5 +150,19 @@ void TransportableItem::action_key_pressed(void) {
 
     // remove the item from the map
     map->get_entities()->remove_transportable_item(this);
+  }
+}
+
+/**
+ * Updates the item.
+ */
+void TransportableItem::update(void) {
+
+  MapEntity::update();
+
+  if (is_breaking && get_last_sprite()->is_over()) {
+
+    // remove the item from the map
+    map->get_entities()->remove_transportable_item(this);    
   }
 }

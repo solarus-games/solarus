@@ -441,7 +441,7 @@ bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_bo
   for (i = obstacle_entities->begin();
        i != obstacle_entities->end() && !collision;
        i++) {
-    
+
     collision = (*i)->overlaps(&collision_box);
   }
 

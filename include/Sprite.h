@@ -20,32 +20,32 @@ class Sprite {
  private:
 
   // animation set
-
-  SpriteAnimationSet *animation_set;  /**< animation set of this sprite */
+  SpriteAnimationSetId animation_set_id; /**< id of this sprite's animation set */
+  SpriteAnimationSet *animation_set;     /**< animation set of this sprite */
 
   // current state of the sprite
 
-  string current_animation_name;      /**< name of the current animation */
-  SpriteAnimation *current_animation; /**< the current animation */
-  int current_direction;              /**< current direction of the animation (the first one is number 0);
-				       * it can be different from the movement direction
-				       * of the entity, because sometimes a sprite can
-				       * go backwards. */
-  int current_frame;                  /**< current frame of the animation (the first one is number 0) */
-  bool frame_changed;                 /**< indicates that the frame has just changed */
+  string current_animation_name;         /**< name of the current animation */
+  SpriteAnimation *current_animation;    /**< the current animation */
+  int current_direction;                 /**< current direction of the animation (the first one is number 0);
+				          * it can be different from the movement direction
+				          * of the entity, because sometimes a sprite can
+				          * go backwards. */
+  int current_frame;                     /**< current frame of the animation (the first one is number 0) */
+  bool frame_changed;                    /**< indicates that the frame has just changed */
 
-  Uint32 next_frame_date;             /**< date of the next frame */
+  Uint32 next_frame_date;                /**< date of the next frame */
 
-  bool suspended;                     /**< true if the animation is suspended */
-  bool over;                          /**< true if the animation has been stopped because the last frame was reached */
+  bool suspended;                        /**< true if the animation is suspended */
+  bool over;                             /**< true if the animation has been stopped because the last frame was reached */
 
-  AnimationListener *listener;        /**< the possible animation listener associated to this sprite */
+  AnimationListener *listener;           /**< the possible animation listener associated to this sprite */
 
   // blink
 
-  Uint32 blink_delay;                 /**< blink delay of the sprite, or zero if the sprite is not blinking */
-  bool blink_is_sprite_visible;       /**< when blinking, true if the sprite is visible or false if it is invisible */
-  Uint32 blink_next_change_date;      /**< date of the next change when blinking: visible or not */
+  Uint32 blink_delay;                    /**< blink delay of the sprite, or zero if the sprite is not blinking */
+  bool blink_is_sprite_visible;          /**< when blinking, true if the sprite is visible or false if it is invisible */
+  Uint32 blink_next_change_date;         /**< date of the next change when blinking: visible or not */
 
   Uint32 get_frame_interval(void);
   int get_next_frame(void);
@@ -54,9 +54,9 @@ class Sprite {
 
   // creation and destruction
   Sprite(SpriteAnimationSetId id);
-  Sprite(SpriteAnimationSet *animation_set);
   ~Sprite(void);
 
+  SpriteAnimationSetId get_animation_set_id(void);
   SpriteAnimationSet *get_animation_set(void);
 
   // size and origin point

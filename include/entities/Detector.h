@@ -49,7 +49,7 @@ class Detector: public MapEntity {
   void set_layer_ignored(bool layer_ignored);
 
   virtual void collision(MapEntity *entity_overlapping);
-  virtual void collision(MapEntity *entity_overlapping, Sprite *sprite_overlapping);
+  virtual void collision(MapEntity *entity, Sprite *sprite_overlapping);
 
  public:
 

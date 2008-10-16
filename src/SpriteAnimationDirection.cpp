@@ -58,6 +58,15 @@ int SpriteAnimationDirection::get_nb_frames(void) {
 }
 
 /**
+ * Returns the rectangle representing the specified frame on the source image.
+ * @param frame a frame number
+ * @return the rectangle of this frame
+ */
+SDL_Rect& SpriteAnimationDirection::get_frame(int frame) {
+  return frames[frame];
+}
+
+/**
  * Displays a specific frame on the map.
  * @param destination the surface on which the frame will be displayed
  * @param x x coordinate of the sprite on this surface
@@ -105,4 +114,14 @@ void SpriteAnimationDirection::enable_pixel_collisions(SDL_Surface *src_image) {
  */
 bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) {
   return pixel_bits != NULL;
+}
+
+/**
+ * Returns the pixel bits object of a frame.
+ * It represents the transparent bits of the frame and permits to detect pixel collisions.
+ * The pixel collisions must be enabled.
+ * @return the pixel bits object of a frame
+ */
+PixelBits * SpriteAnimationDirection::get_pixel_bits(int frame) {
+  return pixel_bits[frame];
 }

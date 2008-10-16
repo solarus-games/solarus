@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Sound.h"
 #include "ZSDX.h"
+#include "Sprite.h"
 
 /**
  * Properties of each type of transportable item.
@@ -79,7 +80,7 @@ Sound * TransportableItem::get_breaking_sound(void) {
 
 /**
  * This function is called by the engine when an entity overlaps the transportable item.
- * This is a redefinition of Detector::collision().
+ * This is a redefinition of Detector::collision(MapEntity*).
  * If the entity is the hero, we allow him to lift the item.
  * @param entity_overlapping the entity overlapping the detector
  */
@@ -99,6 +100,20 @@ void TransportableItem::collision(MapEntity *entity_overlapping) {
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
+  }
+}
+
+/**
+ * This function is called by the engine when a sprite overlaps the transportable item.
+ * This is a redefinition of Detector::collision(Sprite*).
+ * If the sprite is the sword and this item is a bush, then the bush may be cut.
+ * @param entity an entity
+ * @param sprite_overlapping the sprite of this entity that is overlapping the detector
+ */
+void TransportableItem::collision(MapEntity *entity, Sprite *sprite_overlapping) {
+
+  if (entity->is_hero() && sprite_overlapping->get_animation_set_id() == "link/sword") {
+    cout << "bush!!!\n";
   }
 }
 

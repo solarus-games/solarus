@@ -34,6 +34,14 @@ SpriteAnimation::~SpriteAnimation(void) {
 }
 
 /**
+ * Returns the image from which the frames are extracted.
+ * @return the source image of this animation
+ */
+SDL_Surface * SpriteAnimation::get_src_image(void) {
+  return src_image;
+}
+
+/**
  * Returns a direction.
  * @param direction the direction
  * @return the sequence of images corresponding to this direction

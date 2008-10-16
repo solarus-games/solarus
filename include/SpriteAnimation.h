@@ -34,6 +34,8 @@ class SpriteAnimation {
 		  Uint32 frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 
+  SDL_Surface *get_src_image(void);
+
   int get_next_frame(int current_direction, int current_frame);
   void display(SDL_Surface *destination, int x, int y, int current_direction, int current_frame);
 

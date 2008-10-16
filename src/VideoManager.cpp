@@ -36,14 +36,14 @@ void VideoManager::switch_video_mode(void) {
 
 /**
  * Sets the default video mode.
- * @param the screen surface created, as returned by SDL_SetVideoMode; you don't have to free it
  */
 void VideoManager::set_default_video_mode(void) {
-  set_video_mode(WINDOWED_640_480);
+  // TODO  set_video_mode(WINDOWED_640_480);
+  set_video_mode(WINDOWED_320_240);
 }
 
 /**
- * Sets the current video mode.
+ * Sets the video mode.
  * @param mode the video mode
  */
 void VideoManager::set_video_mode(VideoMode mode) {
@@ -123,14 +123,18 @@ void VideoManager::display(SDL_Surface *src_surface) {
 }
 
 /**
- * Redraws the current screen with a 320*240 resolution.
+ * Blits a 320*240 surface on a 320*240 surface.
+ * @param src_surface the source surface
+ * @param dst_surface the destination surface
  */
 void VideoManager::display_320(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
   SDL_BlitSurface(src_surface, NULL, dst_surface, NULL);
 }
 
 /**
- * Redraws the current screen with a 640*480 resolution and a border.
+ * Blits a 320*240 surface on a 640*480 surface, and the image is centered.
+ * @param src_surface the source surface
+ * @param dst_surface the destination surface
  */
 void VideoManager::display_640_border(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
   static SDL_Rect dst_position = {160, 120};
@@ -138,7 +142,9 @@ void VideoManager::display_640_border(SDL_Surface *src_surface, SDL_Surface *dst
 }
 
 /**
- * Redraws the current screen with a 640*480 resolution and without smoothing.
+ * Blits a 320*240 surface on a 640*480 surface, stretching the image.
+ * @param src_surface the source surface
+ * @param dst_surface the destination surface
  */
 void VideoManager::display_640(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
 
@@ -160,8 +166,10 @@ void VideoManager::display_640(SDL_Surface *src_surface, SDL_Surface *dst_surfac
 }
 
 /**
- * Redraws the current screen with a 640*480 resolution and with
+ * Blits a 320*240 surface on a 640*480 surface, scaling the image with
  * an implementation of the Scale2x algorithm.
+ * @param src_surface the source surface
+ * @param dst_surface the destination surface
  */
 void VideoManager::display_640_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
 
@@ -187,7 +195,7 @@ void VideoManager::display_640_scale2x(SDL_Surface *src_surface, SDL_Surface *ds
       i = e + 321;
 
       if (row == 0)   { a = d; b = e; c = f; }
-      if (row == 239) { a = g; b = h; c = i; }
+      if (row == 239) { g = d; h = e; i = f; }
       if (col == 0)   { a = b; d = e; g = h; }
       if (col == 319) { c = b; f = e; i = h; }
 

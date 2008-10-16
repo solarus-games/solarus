@@ -7,25 +7,15 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
+#include "PixelBits.h"
 
 /**
  * Creates a sprite with the specified animation set.
- * @param animations the sprite's animations
- */
-Sprite::Sprite(SpriteAnimationSet *animation_set):
-animation_set(animation_set), current_direction(0),
-suspended(false), over(false), listener(NULL), blink_delay(0) {
-  
-  set_current_animation(animation_set->get_default_animation());
-}
-
-/**
- * Creates a sprite with the specified name of animation set.
- * This is equivalent to Sprite(ResourceManager::get_sprite_animations(id)).
- * @param id id of the sprite's animations
+ * @param id name of an animation set
  */
 Sprite::Sprite(SpriteAnimationSetId id):
-current_direction(0), suspended(false), over(false), listener(NULL), blink_delay(0) {
+  animation_set_id(id), current_direction(0), current_frame(-1),
+  suspended(false), over(false), listener(NULL), blink_delay(0) {
   
   animation_set = ResourceManager::get_sprite_animation_set(id);
   set_current_animation(animation_set->get_default_animation());
@@ -36,6 +26,14 @@ current_direction(0), suspended(false), over(false), listener(NULL), blink_delay
  */
 Sprite::~Sprite(void) {
 
+}
+
+/**
+ * Returns the id of the animation set of this sprite.
+ * @return the animation set id of this sprite
+ */
+SpriteAnimationSetId Sprite::get_animation_set_id(void) {
+  return animation_set_id;
 }
 
 /**
@@ -284,8 +282,17 @@ void Sprite::set_animation_listener(AnimationListener *listener) {
  */
 bool Sprite::check_collision(Sprite *other, int x1, int y1, int x2, int y2) {
 
-  // check the bouding boxes
-  return false; // TODO
+  SpriteAnimationDirection *direction1 = current_animation->get_direction(current_direction);
+  SDL_Rect &origin1 = direction1->get_origin();
+  SDL_Rect location1 = {x1 - origin1.x, y1 - origin1.y};
+  PixelBits *pixel_bits1 = direction1->get_pixel_bits(current_frame);
+
+  SpriteAnimationDirection *direction2 = other->current_animation->get_direction(other->current_direction);
+  SDL_Rect &origin2 = direction2->get_origin();
+  SDL_Rect location2 = {x2 - origin2.x, y2 - origin2.y};
+  PixelBits *pixel_bits2 = direction2->get_pixel_bits(other->current_frame);
+
+  return pixel_bits1->check_collision(pixel_bits2, location1, location2);
 }
 
 /**

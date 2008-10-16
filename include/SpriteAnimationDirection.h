@@ -33,11 +33,14 @@ class SpriteAnimationDirection {
 
   // frames
   int get_nb_frames(void);
+  SDL_Rect& get_frame(int frame);
   void display(SDL_Surface *destination, int x, int y,
 	       int current_frame, SDL_Surface *src_image);
 
+  // pixel collisions
   void enable_pixel_collisions(SDL_Surface *src_image);
   bool are_pixel_collisions_enabled(void);
+  PixelBits *get_pixel_bits(int frame);
 };
 
 #endif

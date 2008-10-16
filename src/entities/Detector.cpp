@@ -176,10 +176,10 @@ void Detector::collision(MapEntity *entity_overlapping) {
  * when a sprite overlaps the detector.
  * By default, nothing happens.
  * Redefine this method in the subclasses to do the appropriate action.
- * @param entity_overlapping the entity
+ * @param entity the entity
  * @param sprite_overlapping the sprite of this entity overlapping the detector
  */
-void Detector::collision(MapEntity *entity_overlapping, Sprite *sprite_overlapping) {
+void Detector::collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
 }
 

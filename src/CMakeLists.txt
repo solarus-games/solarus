@@ -90,7 +90,7 @@ add_executable (zsdx
   entities/PickableItemHeart.cpp
   entities/PickableItemFairy.cpp
   entities/CarriedItem.cpp
-  entities/TransportableItem.cpp
+  entities/DestructibleItem.cpp
   entities/Chest.cpp
 
   # tiles

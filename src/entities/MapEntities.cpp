@@ -4,7 +4,7 @@
 #include "entities/TileOnMap.h"
 #include "entities/Exit.h"
 #include "entities/PickableItem.h"
-#include "entities/TransportableItem.h"
+#include "entities/DestructibleItem.h"
 #include "entities/Entrance.h"
 #include "entities/Link.h"
 #include "entities/Chest.h"
@@ -333,35 +333,37 @@ void MapEntities::remove_pickable_item(PickableItem *item) {
 }
 
 /**
- * Creates a transportable item on the map.
- * @param layer layer of the transportable item
- * @param x x position of the transportable item
- * @param y y position of the transportable item
- * @param transportable_item_type type of transportable item to create
+ * Creates a destructible item on the map.
+ * @param layer layer of the destructible item
+ * @param x x position of the destructible item
+ * @param y y position of the destructible item
+ * @param destructible_item_type type of destructible item to create
  * @param pickable_item_type type of pickable item that appears when the
- * transportable item is lifted
+ * destructible item is removed
  * @param savegame_variable index of the savegame boolean variable indicating
  * the possession state of the pickable item,
  * for certain kinds of pickable items only (a key, a piece of heart...)
  */
-void MapEntities::add_transportable_item(MapEntity::Layer layer, int x, int y,
-					 TransportableItem::ItemType transportable_item_type,
+void MapEntities::add_destructible_item(MapEntity::Layer layer, int x, int y,
+					 DestructibleItem::ItemType destructible_item_type,
 					 PickableItem::ItemType pickable_item_type, int savegame_variable) {
 
-  TransportableItem *item = new TransportableItem(map, layer, x, y, transportable_item_type,
-						  pickable_item_type, savegame_variable);
+  DestructibleItem *item = new DestructibleItem(map, layer, x, y, destructible_item_type,
+						pickable_item_type, savegame_variable);
   
   sprite_entities[layer].push_back(item);
   detectors.push_back(item);
-  obstacle_entities[layer].push_back(item);
+  if (item->is_obstacle()) {
+    obstacle_entities[layer].push_back(item);
+  }
   all_entities.push_back(item);
 }
 
 /**
- * Removes a transportable item from the map and destroys it.
- * @param item the transportable item to remove
+ * Removes a destructible item from the map and destroys it.
+ * @param item the destructible item to remove
  */
-void MapEntities::remove_transportable_item(TransportableItem *item) {
+void MapEntities::remove_destructible_item(DestructibleItem *item) {
   entities_to_remove.push_back(item);
   item->set_being_removed();
 }

@@ -24,7 +24,7 @@ class MapEntity {
     ENTRANCE                  = 1, /**< an entrance of the map */
     EXIT                      = 2, /**< an exit: Link is transported to another map when walking on an exit */
     PICKABLE_ITEM             = 3, /**< an item that Link can pick: a rupee, a heart, a fairy... */
-    TRANSPORTABLE_ITEM        = 4, /**< an item that Link can lift, carry and throw: a pot, a bush, a stone... */
+    DESTRUCTIBLE_ITEM         = 4, /**< an item that Link can cut or lift: a pot, a bush, a stone... */
     CHEST                     = 5, /**< a chest (small or big) with a treasure */
   };
 

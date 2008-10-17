@@ -1,5 +1,5 @@
 #include "entities/CarriedItem.h"
-#include "entities/TransportableItem.h"
+#include "entities/DestructibleItem.h"
 #include "entities/Link.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
@@ -24,12 +24,12 @@ static const SDL_Rect lifting_translations[4][6] = {
 
 /**
  * Creates a carried item (i.e. an item carried by Link)
- * based on a transportable item (i.e. the item placed on the map
+ * based on a destructible item (i.e. the item placed on the map
  * before Link lifts it).
  * @param link Link
- * @param transportable_item a transportable item
+ * @param destructible_item a destructible item
  */
-CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
+CarriedItem::CarriedItem(Link *link, DestructibleItem *destructible_item):
   MapEntity(), link(link), is_lifting(true), is_throwing(false), is_breaking(false) {
 
   // put the item on Link's layer
@@ -38,23 +38,23 @@ CarriedItem::CarriedItem(Link *link, TransportableItem *transportable_item):
   // align correctly the item with Link
   int direction = link->get_animation_direction();
   if (direction % 2 == 0) {
-    set_x(transportable_item->get_x());
+    set_x(destructible_item->get_x());
     set_y(link->get_y());
   }
   else {
     set_x(link->get_x());
-    set_y(transportable_item->get_y());
+    set_y(destructible_item->get_y());
   }
-  set_origin(transportable_item->get_origin());
-  set_size(transportable_item->get_width(), transportable_item->get_height());
+  set_origin(destructible_item->get_origin());
+  set_size(destructible_item->get_width(), destructible_item->get_height());
 
   // create the movement and the sprite
   PathMovement *movement = new PathMovement(lifting_translations[direction], 6, 100, false);
-  create_sprite(transportable_item->get_animation_set_id());
+  create_sprite(destructible_item->get_animation_set_id());
   set_movement(movement);
 
   // create the breaking sound
-  breaking_sound = transportable_item->get_breaking_sound();
+  destruction_sound = destructible_item->get_destruction_sound();
 
   // create the shadow
   shadow_sprite = new Sprite("entities/shadow");
@@ -184,7 +184,7 @@ void CarriedItem::update(void) {
 
       is_throwing = false;
       is_breaking = true;
-      breaking_sound->play();
+      destruction_sound->play();
       get_last_sprite()->set_current_animation("destroy");
 
       if (throwing_direction == 3) {

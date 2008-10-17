@@ -120,13 +120,13 @@ void MapLoader::load_map(Map *map) {
 	break;
       }
 
-    case MapEntity::TRANSPORTABLE_ITEM:
+    case MapEntity::DESTRUCTIBLE_ITEM:
       {
-	int transportable_item_type, pickable_item_type, savegame_variable;
-	iss >> transportable_item_type >> pickable_item_type >> savegame_variable;
-	entities->add_transportable_item((MapEntity::Layer) layer, x, y,
-					 (TransportableItem::ItemType) transportable_item_type,
-					 (PickableItem::ItemType) pickable_item_type, savegame_variable);
+	int destructible_item_type, pickable_item_type, savegame_variable;
+	iss >> destructible_item_type >> pickable_item_type >> savegame_variable;
+	entities->add_destructible_item((MapEntity::Layer) layer, x, y,
+					(DestructibleItem::ItemType) destructible_item_type,
+					(PickableItem::ItemType) pickable_item_type, savegame_variable);
 	break;
       }
 

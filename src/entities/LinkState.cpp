@@ -153,10 +153,10 @@ void Link::update_sword_loading(void) {
 }
 
 /**
- * Makes Link lift a transportable item.
- * @param item_to_lift the transportable item to lift
+ * Makes Link lift a destructible item.
+ * @param item_to_lift the destructible item to lift
  */
-void Link::start_lifting(TransportableItem *item_to_lift) {
+void Link::start_lifting(DestructibleItem *item_to_lift) {
 
   // create the corresponding carried item
   this->lifted_item = new CarriedItem(this, item_to_lift);

@@ -110,7 +110,7 @@ class PickableItem;
 class PickableItemHeart;
 class PickableItemFairy;
 class CarriedItem;
-class TransportableItem;
+class DestructibleItem;
 class Chest;
 
 // tiles

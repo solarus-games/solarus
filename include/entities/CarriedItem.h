@@ -17,13 +17,13 @@ class CarriedItem: public MapEntity {
   bool is_lifting;
   bool is_throwing;
   bool is_breaking;
-  Sound *breaking_sound;
+  Sound *destruction_sound;
   Sprite *shadow_sprite;
   int throwing_direction;
 
  public:
 
-  CarriedItem(Link *link, TransportableItem *transportable_item);
+  CarriedItem(Link *link, DestructibleItem *destructible_item);
   ~CarriedItem(void);
 
   void set_animation_stopped(void);

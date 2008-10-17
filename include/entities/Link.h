@@ -31,7 +31,7 @@ class Link: public MapEntity, AnimationListener {
     PULLING,                 /**< Link is pulling an object */
     SWORD_SWINGING,          /**< Link is swinging his sword */
     SPIN_ATTACK,             /**< Link is releasing a spin attack */
-    LIFTING,                 /**< Link is lifting an transportable item (a pot, a bush, etc.) */
+    LIFTING,                 /**< Link is lifting an destroyable item (a pot, a bush, etc.) */
     BRANDISHING_TREASURE,    /**< Link is brandishing a treasure */
     FREEZED,                 /**< Link cannot move for various possible reasons*/
   };
@@ -181,7 +181,7 @@ class Link: public MapEntity, AnimationListener {
   void start_free(void);
   void start_sword(void);
   void start_pushing(void);
-  void start_lifting(TransportableItem *item_to_lift);
+  void start_lifting(DestructibleItem *item_to_lift);
   void start_carrying(void);
   void freeze(void);
   void give_treasure(Treasure *treasure);

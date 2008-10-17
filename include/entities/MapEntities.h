@@ -5,7 +5,7 @@
 #include "MapEntity.h"
 #include "Transition.h"
 #include "entities/PickableItem.h"
-#include "entities/TransportableItem.h"
+#include "entities/DestructibleItem.h"
 #include "movements/MovementFalling.h"
 #include <vector>
 #include <list>
@@ -101,9 +101,9 @@ class MapEntities {
 			 int savegame_variable, MovementFalling::FallingHeight falling, bool will_disappear);
   void remove_pickable_item(PickableItem *item);
 
-  void add_transportable_item(MapEntity::Layer layer, int x, int y, TransportableItem::ItemType transportable_item_type,
+  void add_destructible_item(MapEntity::Layer layer, int x, int y, DestructibleItem::ItemType destructible_item_type,
 			      PickableItem::ItemType pickable_item_type, int savegame_variable);
-  void remove_transportable_item(TransportableItem *item);
+  void remove_destructible_item(DestructibleItem *item);
 
   void add_chest(string chest_name, MapEntity::Layer layer, int x, int y,
 		 bool big_chest, int treasure_content,

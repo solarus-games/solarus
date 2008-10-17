@@ -65,9 +65,7 @@ public class KeyValue {
      * @return true if the two objects have the same key (the value is ignored)
      */
     public boolean equals(Object o) {
-
 	KeyValue keyValue = (KeyValue) o;
-
 	return keyValue != null && key.equals(keyValue.getKey());
     }
 }

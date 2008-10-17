@@ -12,7 +12,7 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditPickableItemComponent extends EditEntityComponent {
     
     // specific fields of a pickable item
-    private PickableItemTypeChooser typeField;
+    private PickableItemSubtypeChooser typeField;
     private NumberChooser savegameIndexField; // enabled only for certain types of pickable items
 
     /**
@@ -30,7 +30,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// pickable item type
-	typeField = new PickableItemTypeChooser(false);
+	typeField = new PickableItemSubtypeChooser(false);
 	addField("Pickable item type", typeField);
 
 	// savegame index
@@ -49,7 +49,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
 
 	PickableItem pickableItem = (PickableItem) entity;
 
-	typeField.setPickableItemType(pickableItem.getPickableItemType());
+	typeField.setPickableItemSubtype(pickableItem.getPickableItemType());
 	savegameIndexField.setNumber(pickableItem.getSavegameIndex());
 	new ActionListenerEnableSavegameIndex().actionPerformed(null);
     }

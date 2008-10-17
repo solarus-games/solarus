@@ -28,7 +28,7 @@ public class PickableItem extends ActiveEntity {
     // types of pickable items
 
     public static final int PICKABLE_ITEM_RANDOM            = -1;   /**< special value to indicate to choose another value
-							       * randomly (including PICKABLE_ITEM_NONE) */
+								     * randomly (including PICKABLE_ITEM_NONE) */
     public static final int PICKABLE_ITEM_NONE              = 0;    /**< special value to incicate that there is no pickable item */
     public static final int PICKABLE_ITEM_RUPEE_1           = 1;
     public static final int PICKABLE_ITEM_RUPEE_5           = 2;

@@ -214,10 +214,10 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_PICKABLE_ITEM));
 	menuEntity.add(item);
 
-	item = new JMenuItem("Add transportable item");
+	item = new JMenuItem("Add destructible item");
 	item.setMnemonic(KeyEvent.VK_T);
-	item.getAccessibleContext().setAccessibleDescription("Add a transportable item (pot, bush...)");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_TRANSPORTABLE_ITEM));
+	item.getAccessibleContext().setAccessibleDescription("Add a destructible item (pot, bush...)");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM));
 	menuEntity.add(item);
 	
 	menuBar.add(menuEntity);

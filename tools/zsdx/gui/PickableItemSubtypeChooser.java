@@ -6,7 +6,7 @@ import javax.swing.*;
 /**
  * A combo box to select a type of pickable item.
  */
-public class PickableItemTypeChooser extends JComboBox {
+public class PickableItemSubtypeChooser extends JComboBox {
     
     private static final String[] names = {
 	"1 Rupee", "5 Rupees", "20 Rupees",
@@ -19,14 +19,14 @@ public class PickableItemTypeChooser extends JComboBox {
      * Creates a new pickable item type chooser.
      * @param allowRandomAndNone true to include "Random" and "None" in the combo box
      */
-    public PickableItemTypeChooser(boolean allowRandomAndNone) {
+    public PickableItemSubtypeChooser(boolean allowRandomAndNone) {
 	super();
 
 	// special values: random and none
 	if (allowRandomAndNone) {
 	    addItem(new KeyValue(PickableItem.PICKABLE_ITEM_RANDOM, "Random"));
 	    addItem(new KeyValue(PickableItem.PICKABLE_ITEM_NONE, "None"));
-	    setPickableItemType(PickableItem.PICKABLE_ITEM_NONE);
+	    setPickableItemSubtype(PickableItem.PICKABLE_ITEM_NONE);
 	}
 
 	// normal value
@@ -49,7 +49,7 @@ public class PickableItemTypeChooser extends JComboBox {
      * Sets the type of pickable item selected.
      * @param type the type of pickable item to make select
      */
-    public void setPickableItemType(int type) {
+    public void setPickableItemSubtype(int type) {
 
 	KeyValue item = new KeyValue(type, null);
 	setSelectedItem(item);

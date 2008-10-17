@@ -123,7 +123,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     public static final int ENTITY_ENTRANCE = 1;
     public static final int ENTITY_EXIT = 2;
     public static final int ENTITY_PICKABLE_ITEM = 3;
-    public static final int ENTITY_TRANSPORTABLE_ITEM = 4;
+    public static final int ENTITY_DESTRUCTIBLE_ITEM = 4;
     public static final int ENTITY_CHEST = 5;
     public static final int ENTITY_NB_TYPES = 6;
 
@@ -133,7 +133,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	Entrance.class,
 	Exit.class,
 	PickableItem.class,
-	TransportableItem.class,
+	DestructibleItem.class,
 	Chest.class
     };
 

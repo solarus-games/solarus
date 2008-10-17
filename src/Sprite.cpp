@@ -108,7 +108,7 @@ void Sprite::set_current_animation(string animation_name) {
     if (animation == NULL) {
       DIE("Unknown animation '" << animation_name << "'");
     }
-    
+
     this->current_animation_name = animation_name;
     this->current_animation = animation;
     set_current_frame(0);

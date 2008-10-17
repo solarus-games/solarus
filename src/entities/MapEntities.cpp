@@ -126,6 +126,18 @@ void MapEntities::set_obstacle(MapEntity *entity, MapEntity::Obstacle obstacle) 
 }
 
 /**
+ * Sets the obstacle tile property of an 8*8 square of the map.
+ * @param layer layer of the square
+ * @param x8 x coordinate of the square (divided by 8)
+ * @param y8 y coordinate of the square (divided by 8)
+ * @param obstacle the obstacle property to set
+ */
+void MapEntities::set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle obstacle) {
+  int index = y8 * map->get_width8() + x8;
+  obstacle_tiles[layer][index] = obstacle;
+}
+
+/**
  * Creates a tile on the map.
  * This function is called for each tile when loading the map.
  * The tiles on a map are not supposed to change during the game.
@@ -157,11 +169,8 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
   int tile_width8 = (tile->get_width() / 8) * repeat_x;
   int tile_height8 = (tile->get_height() / 8) * repeat_y;
 
-  int width8 = map->get_width8();
-
-  int index, i, j;
-  
-
+  int i, j;
+ 
   switch (obstacle) {
 
     /* If the tile is entirely an obstacle or entirely no obstacle,
@@ -170,9 +179,8 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
   case MapEntity::OBSTACLE_NONE:
   case MapEntity::OBSTACLE:
     for (i = 0; i < tile_height8; i++) {
-      index = (tile_y8 + i) * width8 + tile_x8;
       for (j = 0; j < tile_width8; j++) {
-	obstacle_tiles[layer][index++] = obstacle;
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, obstacle);
       }
     }
     break;
@@ -186,15 +194,12 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
-      index = (tile_y8 + i) * width8 + tile_x8;
-
       // 8*8 square on the diagonal
-      index += i;
-      obstacle_tiles[layer][index++] = MapEntity::OBSTACLE_TOP_RIGHT;
+      set_obstacle(layer, tile_x8 + i, tile_y8 + i, MapEntity::OBSTACLE_TOP_RIGHT);
 
       // right part of the row: we are in the top-right corner
       for (j = i + 1; j < tile_width8; j++) {
-	obstacle_tiles[layer][index++] = MapEntity::OBSTACLE;
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE);
       }
     }
     break;
@@ -203,15 +208,13 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
-      index = (tile_y8 + i) * width8 + tile_x8;
-
       // left part of the row: we are in the top-left corner
       for (j = 0; j < tile_width8 - i - 1; j++) {
-	obstacle_tiles[layer][index++] = MapEntity::OBSTACLE;
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE);
       }
 
       // 8*8 square on the diagonal
-      obstacle_tiles[layer][index] = MapEntity::OBSTACLE_TOP_LEFT;
+      set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE_TOP_LEFT);
     }
     break;
     
@@ -219,15 +222,13 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
-      index = (tile_y8 + i) * width8 + tile_x8;
-
       // left part of the row: we are in the bottom-left corner
       for (j = 0; j < i; j++) {
-	obstacle_tiles[layer][index++] = MapEntity::OBSTACLE;
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE);
       }
 
       // 8*8 square on the diagonal
-      obstacle_tiles[layer][index] = MapEntity::OBSTACLE_BOTTOM_LEFT;
+      set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE_BOTTOM_LEFT);
     }
     break;
     
@@ -235,15 +236,12 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
-      index = (tile_y8 + i) * width8 + tile_x8;
-
       // 8*8 square on the diagonal
-      index += tile_height8 - i - 1;
-      obstacle_tiles[layer][index++] = MapEntity::OBSTACLE_BOTTOM_RIGHT;
+      set_obstacle(layer, tile_x8 + tile_width8 - i - 1, tile_y8 + i, MapEntity::OBSTACLE_BOTTOM_RIGHT);
 
       // right part of the row: we are in the bottom-right corner
       for (j = tile_width8 - i - 1; j < tile_width8; j++) {
-	obstacle_tiles[layer][index++] = MapEntity::OBSTACLE;
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE);
       }
     }
     break;

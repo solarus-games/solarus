@@ -67,8 +67,8 @@ void Detector::set_layer_ignored(bool layer_ignored) {
  */
 void Detector::check_collision(MapEntity *entity) {
   
-  if (layer_ignored ||
-      get_layer() == entity->get_layer()) { // the entity is in the same layer as the detector
+  if (entity != this
+      && (layer_ignored || get_layer() == entity->get_layer())) { // the entity is in the same layer as the detector
   
     bool overlapping = false;
   
@@ -106,8 +106,8 @@ void Detector::check_collision(MapEntity *entity) {
  */
 void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
 
-  if (layer_ignored ||
-      get_layer() == entity->get_layer()) { // the entity is in the same layer as the detector
+  if (entity != this
+      && (layer_ignored || get_layer() == entity->get_layer())) { // the entity is in the same layer as the detector
 
     bool overlapping = false;
 

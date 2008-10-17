@@ -83,7 +83,7 @@ PixelBits::PixelBits(SDL_Surface *surface, SDL_Rect &image_position) {
 PixelBits::~PixelBits(void) {
 
   for (int i = 0; i < height; i++) {
-    delete bits[i];
+    delete[] bits[i];
   }
   delete[] bits;
 }
@@ -130,10 +130,14 @@ bool PixelBits::check_collision(PixelBits *other, SDL_Rect &location1, SDL_Rect 
    * and row 'b' the one coming from the left bounding box.
    */
 
-  Uint32 *bits_a;            // array of masks of the right bounding box
-  Uint32 *bits_b;            // array of masks of the left bounding box
+  Uint32 **rows_a;           // for each row: array of masks of the right bounding box
+  Uint32 **rows_b;           // for each row: array of masks of the left bounding box
+
+  Uint32 *bits_a;            // array of masks of the right bounding box for the current row
+  Uint32 *bits_b;            // array of masks of the left bounding box for the current row
 
   int nb_masks_per_row_a;    // number of masks on row a that are in the intersection (row b may have one more mask)
+  bool has_row_b_additional_mask;
   int nb_unused_masks_row_b; // number of unused masks on row b (i.e. before the intersection)
   int nb_unused_bits_row_b;  // number of unused bits on the first used mask of row b
   int nb_used_bits_row_b;    // number of bits used on the first user mask of row b
@@ -146,22 +150,30 @@ bool PixelBits::check_collision(PixelBits *other, SDL_Rect &location1, SDL_Rect 
 
   // make sure row a starts after row b
   if (bounding_box1.x > bounding_box2.x) {
-    bits_a = bits[offset_y1];
-    bits_b = other->bits[offset_y2];
+    rows_a = &bits[offset_y1];
+    rows_b = &other->bits[offset_y2];
     nb_unused_masks_row_b = offset_x2 / 32;
     nb_unused_bits_row_b = offset_x2 % 32;
+    has_row_b_additional_mask = (nb_unused_bits_row_b != 0
+				 && bounding_box2.x + bounding_box2.w > bounding_box1.x + bounding_box1.w);
   }
   else {
-    bits_a = other->bits[offset_y2];
-    bits_b = bits[offset_y1]; 
+    rows_a = &other->bits[offset_y2];
+    rows_b = &bits[offset_y1]; 
     nb_unused_masks_row_b = offset_x1 / 32;
-    nb_unused_bits_row_b = offset_x1 % 32;   
+    nb_unused_bits_row_b = offset_x1 % 32;
+    has_row_b_additional_mask = (nb_unused_bits_row_b != 0
+				 && bounding_box1.x + bounding_box1.w > bounding_box2.x + bounding_box2.w);
   }
   nb_used_bits_row_b = 32 - nb_unused_bits_row_b;
 
   // check the collisions each row of the intersection rectangle
   bool collision = false;
   for (int i = 0; i < intersection.h && !collision; i++) {
+
+    // current row
+    bits_a = rows_a[i];
+    bits_b = rows_b[i];
 
     // check each mask
     for (int j = 0; j < nb_masks_per_row_a && !collision; j++) {
@@ -175,7 +187,7 @@ bool PixelBits::check_collision(PixelBits *other, SDL_Rect &location1, SDL_Rect 
       Uint32 mask_b = bits_b[j + nb_unused_masks_row_b];
       Uint32 next_mask_b_left;
 
-      if (nb_unused_bits_row_b != 0) {
+      if (has_row_b_additional_mask) {
 	next_mask_b_left = bits_b[j + nb_unused_masks_row_b + 1] >> nb_used_bits_row_b;
       }
       else { // special case where the next mask b does not exist because a and b are aligned
@@ -185,10 +197,6 @@ bool PixelBits::check_collision(PixelBits *other, SDL_Rect &location1, SDL_Rect 
       Uint32 mask_a_left = mask_a >> nb_unused_bits_row_b;
       collision = ((mask_a_left & mask_b) | (mask_a & next_mask_b_left)) != 0x00000000;
     }
-
-    // next row
-    bits_a++;
-    bits_b++;
   }
  
   return collision;

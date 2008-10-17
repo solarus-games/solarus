@@ -163,6 +163,6 @@ void TransportableItem::update(void) {
   if (is_breaking && get_last_sprite()->is_over()) {
 
     // remove the item from the map
-    map->get_entities()->remove_transportable_item(this);    
+    map->get_entities()->remove_transportable_item(this);
   }
 }

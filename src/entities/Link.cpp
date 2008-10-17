@@ -168,6 +168,8 @@ void Link::set_map(Map *map, int initial_direction) {
  */
 void Link::set_suspended(bool suspended) {
 
+  MapEntity::set_suspended(suspended);
+
   // sprites
   tunic_sprite->set_suspended(suspended);
 

@@ -32,8 +32,9 @@ Exit::~Exit(void) {
  * This is a redefinition of Detector::collision().
  * The map is not notified anymore: here we just make Link leave the map.
  * @param entity_overlapping the entity overlapping the detector
+ * @param collision_mode the collision mode that detected the collision
  */
-void Exit::collision(MapEntity *entity_overlapping) {
+void Exit::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
   
   if (entity_overlapping->is_hero()) {
     zsdx->game->set_current_map(destination_map_id, entrance_name, transition_style);

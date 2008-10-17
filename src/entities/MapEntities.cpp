@@ -138,6 +138,15 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle ob
 }
 
 /**
+ * Brings to front an entity displayed as a sprite.
+ * @param sprite_entity the entity to bring to front
+ */
+void MapEntities::bring_to_front(MapEntity *sprite_entity) {
+  sprite_entities->remove(sprite_entity);
+  sprite_entities->push_back(sprite_entity);
+}
+
+/**
  * Creates a tile on the map.
  * This function is called for each tile when loading the map.
  * The tiles on a map are not supposed to change during the game.

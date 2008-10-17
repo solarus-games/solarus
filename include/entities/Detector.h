@@ -35,20 +35,20 @@ class Detector: public MapEntity {
 
   bool layer_ignored;
 
-  bool check_collision_rectangle(MapEntity *entity);
-  bool check_collision_origin_point(MapEntity *entity);
-  bool check_collision_facing_point(MapEntity *entity);
-  bool check_collision_sprite(MapEntity *entity, Sprite *sprite);
-  
+  void check_collision_rectangle(MapEntity *entity);
+  void check_collision_origin_point(MapEntity *entity);
+  void check_collision_facing_point(MapEntity *entity);
+
  protected:
 
   Detector(int collision_mode, string name, Layer layer,
 	   int x, int y, int width, int height);
 
   void set_collision_mode(int collision_mode);
+  void add_collision_mode(CollisionMode collision_mode);
   void set_layer_ignored(bool layer_ignored);
 
-  virtual void collision(MapEntity *entity_overlapping);
+  virtual void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   virtual void collision(MapEntity *entity, Sprite *sprite_overlapping);
 
  public:

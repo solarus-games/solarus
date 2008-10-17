@@ -90,7 +90,9 @@ class MapEntities {
   list<Detector*> * get_detectors(void);
   void set_obstacle(MapEntity *entity, MapEntity::Obstacle obstacle);
   void set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle obstacle);
- 
+
+  void bring_to_front(MapEntity *sprite_entity);
+
   // add and remove entities
   void add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height);
   void add_entrance(string entrance_name, MapEntity::Layer layer, int link_x, int link_y, int link_direction);

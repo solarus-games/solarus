@@ -45,10 +45,11 @@ Dimanche 21 décembre 2008 : cryptage des fichiers
 Mercredi 24 décembre 2008 : sortie de la démo jusqu'à la fin du donjon 1
 
 ----------------
-Couper des buissons avec l'épée :
+Herbe sous Link
 ----------------
 
-Même chose que pour les buissons sauf que rien ne se passe quand l'épée charge
+Dans la classe Link, mettre une info qui dit ce qui est affiché sous Link (cela pourra aussi être de l'eau).
+Dans le update() de Link, tester en permanence si l'origine de Link est sur de l'herbe, tout comme on teste en permanence si le facing point est sur un objet qui y réagit.
 
 ----------------------
 - Compléter l'éditeur de maps et de tilesets :

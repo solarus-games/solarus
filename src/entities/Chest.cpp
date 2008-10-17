@@ -76,8 +76,9 @@ bool Chest::is_open(void) {
  * If the entity is the hero, and if he is facing north, we allow him to
  * open (or try to open) the chest.
  * @param entity_overlapping the entity overlapping the detector
+ * @param collision_mode the collision mode that detected the collision
  */
-void Chest::collision(MapEntity *entity_overlapping) {
+void Chest::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero()) {
 

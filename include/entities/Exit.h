@@ -34,7 +34,7 @@ class Exit: public Detector {
        Transition::Style transition_style, MapId destination_map_id, string entrance_name);
   ~Exit(void);
 
-  void collision(MapEntity *entity_overlapping);
+  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
 };
 

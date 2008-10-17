@@ -43,16 +43,24 @@ const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
  */
 DestructibleItem::DestructibleItem(Map *map, Layer layer, int x, int y, DestructibleItem::ItemType type,
 				   PickableItem::ItemType pickable_item, int pickable_item_savegame_variable):
-  Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
+  Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
   map(map), type(type), pickable_item(pickable_item),
   pickable_item_savegame_variable(pickable_item_savegame_variable), is_being_cut(false) {
 
   set_origin(8, 13);
   create_sprite(get_animation_set_id());
 
-  // change the collision mode for items that can be cut
+  // set the collision mode
+  if (properties[type].can_be_lifted) {
+    add_collision_mode(COLLISION_FACING_POINT);
+  }
+
   if (properties[type].can_be_cut) {
-    set_collision_mode(COLLISION_FACING_POINT | COLLISION_SPRITE);
+    add_collision_mode(COLLISION_SPRITE);
+  }
+
+  if (type == GRASS) { // display the grass animation under Link
+    add_collision_mode(COLLISION_ORIGIN_POINT);
   }
 }
 
@@ -92,8 +100,9 @@ bool DestructibleItem::is_obstacle(void) {
  * This is a redefinition of Detector::collision(MapEntity*).
  * If the entity is the hero, we allow him to lift the item.
  * @param entity_overlapping the entity overlapping the detector
+ * @param collision_mode the collision mode that detected the collision
  */
-void DestructibleItem::collision(MapEntity *entity_overlapping) {
+void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode collision) {
 
   if (entity_overlapping->is_hero()) {
 
@@ -103,10 +112,11 @@ void DestructibleItem::collision(MapEntity *entity_overlapping) {
 
     int weight = properties[type].weight;
 
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& link->get_state() == Link::FREE
+    if (properties[type].can_be_lifted
 	&& equipment->can_lift(weight)
-	&& !is_being_cut) {
+	&& !is_being_cut
+	&& keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+	&& link->get_state() == Link::FREE) {
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
@@ -141,30 +151,36 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
 
       SDL_Rect facing_point = link->get_facing_point();
 
+      int distance = is_obstacle() ? 14 : 4;
+
       switch (animation_direction) {
 
       case 0:
 	cut = facing_point.y >= position_in_map.y
 	  && facing_point.y < position_in_map.y + position_in_map.h
-	  && facing_point.x >= position_in_map.x - 14;
+	  && facing_point.x >= position_in_map.x - distance
+	  && facing_point.x < position_in_map.x + position_in_map.w - distance;
 	break;
 
       case 1:
 	cut = facing_point.x >= position_in_map.x
 	  && facing_point.x < position_in_map.x + position_in_map.w
-	  && facing_point.y < position_in_map.y + position_in_map.h + 14;
+	  && facing_point.y >= position_in_map.y + distance
+	  && facing_point.y < position_in_map.y + position_in_map.h + distance;
 	break;
 
       case 2:
 	cut = facing_point.y >= position_in_map.y
 	  && facing_point.y < position_in_map.y + position_in_map.h
-	  && facing_point.x < position_in_map.x + position_in_map.w + 14;
+	  && facing_point.x >= position_in_map.x + distance
+	  && facing_point.x < position_in_map.x + position_in_map.w + distance;
 	break;
 
       case 3:
 	cut = facing_point.x >= position_in_map.x
 	  && facing_point.x < position_in_map.x + position_in_map.w
-	  && facing_point.y >= position_in_map.y - 14 ;
+	  && facing_point.y >= position_in_map.y - distance
+	  && facing_point.y < position_in_map.y + position_in_map.h - distance;
 	break;
 
       default:
@@ -178,6 +194,8 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       get_last_sprite()->set_current_animation("destroy");
       set_obstacle(OBSTACLE_NONE);
       is_being_cut = true;
+
+      map->get_entities()->bring_to_front(this); // show animation destroy to front
 
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = (pickable_item <= PickableItem::ARROW_10);
@@ -199,6 +217,7 @@ void DestructibleItem::action_key_pressed(void) {
   Link *link = zsdx->game->get_link();
 
   if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT
+      && properties[type].can_be_lifted
       && !is_being_cut) {
 
     link->start_lifting(this);

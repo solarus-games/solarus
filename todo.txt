@@ -10,7 +10,6 @@
 
 - Bugs: 
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - quitter une map avec l'épée qui charge : MapEntity::set_suspended(suspended) était oublié dans Link.cpp ligne 71 ; quand on le rajoute, ça ne marche pas encore tout à fait mais ça a un rapport avec when_suspended du la classe Movement
 
 
 - Prochaines grandes étapes :

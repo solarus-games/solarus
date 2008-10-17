@@ -131,6 +131,16 @@ void Movement8ByPlayer::set_moving_enabled(bool can_move) {
 }
 
 /**
+ * Suspends or resumes the movement.
+ * @param suspended true to suspend the movement, false to resume it
+ */
+void Movement8ByPlayer::set_suspended(bool suspended) {
+  Movement::set_suspended(suspended);
+  set_moving_enabled(!suspended);
+  compute_movement(); // always recompute the movement when the game is suspended / resumed
+}
+
+/**
  * This function is called when an arrow key is pressed.
  * @param direction of the arrow pressed (0 to 3)
  */

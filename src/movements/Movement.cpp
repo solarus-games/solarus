@@ -327,8 +327,8 @@ void Movement::set_suspended(bool suspended) {
   else {
     // recalculate the next move date
     if (when_suspended != 0) {
-      next_move_date_x = now + (next_move_date_x - when_suspended);
-      next_move_date_y = now + (next_move_date_y - when_suspended);
+      next_move_date_x += now - when_suspended;
+      next_move_date_y += now - when_suspended;
     }
   }
 }

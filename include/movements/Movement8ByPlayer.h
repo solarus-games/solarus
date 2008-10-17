@@ -62,6 +62,7 @@ class Movement8ByPlayer: public MovementWithSmoothCollision {
   void set_moving_enabled(bool can_move);
   bool is_started(void);
   bool is_moving_enabled(void);
+  void set_suspended(bool suspended);
 
   void compute_movement(void);
 };

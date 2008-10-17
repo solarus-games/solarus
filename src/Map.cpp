@@ -270,15 +270,15 @@ void Map::set_suspended(bool suspended) {
  * Updates the animation and the position of each entity, including Link.
  */
 void Map::update(void) {
-  
-  // update the entities
-  entities->update();
 
   // detect whether the game has just been suspended or resumed
   bool game_suspended = zsdx->game->is_suspended();
   if (suspended != game_suspended) {
     set_suspended(game_suspended);
   }
+
+  // update the entities
+  entities->update();
 }
 
 /**

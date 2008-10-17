@@ -185,10 +185,9 @@ void Link::set_suspended(bool suspended) {
   // carried items
   set_suspended_carried_items(suspended);
 
-  // movement
-  if (suspended) {
-    get_movement()->set_moving_enabled(false);
-    next_counter_date = SDL_GetTicks();
+  // counter
+  if (!suspended) {
+    next_counter_date += SDL_GetTicks() - when_suspended;
   }
 }
 

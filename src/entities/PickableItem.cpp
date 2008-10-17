@@ -26,7 +26,7 @@ const PickableItem::Properties PickableItem::properties[] = {
   {"entities/rupee", "green", false, "picked_rupee"},  // 1 rupee
   {"entities/rupee", "blue", false, "picked_rupee"},   // 5 rupees
   {"entities/rupee", "red", false, "picked_rupee"},    // 20 rupees
-  {"entities/heart", "stopped", false, "picked_item"}, // heart
+  {"entities/heart", "small_stopped", false, "picked_item"}, // heart
   {"entities/magic", "small", false, "picked_item"},   // small magic
   {"entities/magic", "big", false, "picked_item"},     // big magic
   {"entities/fairy", "normal", true, "picked_item"},   // fairy

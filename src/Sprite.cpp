@@ -106,7 +106,7 @@ void Sprite::set_current_animation(string animation_name) {
     SpriteAnimation *animation = animation_set->get_animation(animation_name);
     
     if (animation == NULL) {
-      DIE("Unknown animation '" << animation_name << "'");
+      DIE("Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
     }
 
     this->current_animation_name = animation_name;

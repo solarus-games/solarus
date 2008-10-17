@@ -117,10 +117,64 @@ void TransportableItem::collision(MapEntity *entity, Sprite *sprite_overlapping)
       && entity->is_hero()
       && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
 
-    get_breaking_sound()->play();
-    get_last_sprite()->set_current_animation("destroy");
-    set_obstacle(OBSTACLE_NONE);
-    is_breaking = true;
+    bool break_bush = false;
+    Link *link = (Link*) entity;
+    Link::State state = link->get_state();
+    int animation_direction = link->get_animation_direction();
+    int movement_direction = link->get_movement_direction();
+
+    if (state == Link::SPIN_ATTACK) {
+      break_bush = true;
+    }
+    else if (state == Link::SWORD_SWINGING
+	     || movement_direction == animation_direction * 90) {
+
+      SDL_Rect facing_point = link->get_facing_point();
+
+      switch (animation_direction) {
+
+      case 0:
+	break_bush = facing_point.y >= position_in_map.y
+	  && facing_point.y < position_in_map.y + position_in_map.h
+	  && facing_point.x >= position_in_map.x - 14;
+	break;
+
+      case 1:
+	break_bush = facing_point.x >= position_in_map.x
+	  && facing_point.x < position_in_map.x + position_in_map.w
+	  && facing_point.y < position_in_map.y + position_in_map.h + 14;
+	break;
+
+      case 2:
+	break_bush = facing_point.y >= position_in_map.y
+	  && facing_point.y < position_in_map.y + position_in_map.h
+	  && facing_point.x < position_in_map.x + position_in_map.w + 14;
+	break;
+
+      case 3:
+	break_bush = facing_point.x >= position_in_map.x
+	  && facing_point.x < position_in_map.x + position_in_map.w
+	  && facing_point.y >= position_in_map.y - 14 ;
+	break;
+
+      default:
+	DIE("Invalid animation direction of Link: " << link->get_animation_direction());
+	break;
+      }
+    }
+
+    if (break_bush) {
+      get_breaking_sound()->play();
+      get_last_sprite()->set_current_animation("destroy");
+      set_obstacle(OBSTACLE_NONE);
+      is_breaking = true;
+
+      if (pickable_item != PickableItem::NONE) {
+	bool will_disappear = (pickable_item <= PickableItem::ARROW_10);
+	map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
+					       pickable_item_savegame_variable, MovementFalling::MEDIUM, will_disappear);
+      }
+    }
   }
 }
 

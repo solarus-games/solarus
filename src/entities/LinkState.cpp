@@ -35,6 +35,8 @@ void Link::set_state(State state) {
  */
 void Link::start_free(void) {
   set_state(FREE);
+
+  get_movement()->compute_movement();
   
   if (get_movement()->is_started()) {
     set_animation_walking();
@@ -119,13 +121,13 @@ void Link::start_sword_loading(void) {
  * The state must be SWORD_LOADING.
  */
 void Link::update_sword_loading(void) {
-  
+
   Uint32 now = SDL_GetTicks();
   while (!sword_loaded && now >= next_counter_date) {
     counter++;
     next_counter_date += 100;
   }
-  
+
   // detect when the sword is loaded (i.e. ready for a spin attack)
   if (!sword_loaded && counter >= 10) {
       ResourceManager::get_sound("sword_spin_attack_load")->play();
@@ -142,7 +144,6 @@ void Link::update_sword_loading(void) {
     if (!sword_loaded) {
       // the sword was not loaded yet: go to the normal state
       start_free();
-      get_movement()->compute_movement(); // because the direction was locked
     }
     else {
       // the sword is loaded: release a spin attack

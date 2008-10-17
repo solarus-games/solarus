@@ -109,10 +109,7 @@ void Link::update_sprites(void) {
 
   if (is_sword_visible()) {
     sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
-
-    if (sword_sprite->has_frame_changed()) {
-      map->check_collision_with_detectors(this, sword_sprite);
-    }
+    map->check_collision_with_detectors(this, sword_sprite);
   }
 
   if (is_sword_stars_visible()) {

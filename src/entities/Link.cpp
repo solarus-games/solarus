@@ -85,6 +85,16 @@ Movement8ByPlayer * Link::get_movement(void) {
 }
 
 /**
+ * Returns the direction of Link's movement.
+ * If he is not moving, -1 is returned.
+ * @return Link's movement direction between 0 and 360, or -1 if he is stopped
+ */
+int Link::get_movement_direction(void) {
+
+  return get_movement()->get_direction();
+}
+
+/**
  * Returns the point Link is looking at.
  * @return the point Link is looking at
  */

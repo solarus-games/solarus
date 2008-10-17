@@ -150,20 +150,18 @@ bool PixelBits::check_collision(PixelBits *other, SDL_Rect &location1, SDL_Rect 
 
   // make sure row a starts after row b
   if (bounding_box1.x > bounding_box2.x) {
-    rows_a = &bits[offset_y1];
+    rows_a = &this->bits[offset_y1];
     rows_b = &other->bits[offset_y2];
     nb_unused_masks_row_b = offset_x2 / 32;
     nb_unused_bits_row_b = offset_x2 % 32;
-    has_row_b_additional_mask = (nb_unused_bits_row_b != 0
-				 && bounding_box2.x + bounding_box2.w > bounding_box1.x + bounding_box1.w);
+    has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b + 1 < other->nb_integers_per_row);
   }
   else {
     rows_a = &other->bits[offset_y2];
-    rows_b = &bits[offset_y1]; 
+    rows_b = &this->bits[offset_y1]; 
     nb_unused_masks_row_b = offset_x1 / 32;
     nb_unused_bits_row_b = offset_x1 % 32;
-    has_row_b_additional_mask = (nb_unused_bits_row_b != 0
-				 && bounding_box1.x + bounding_box1.w > bounding_box2.x + bounding_box2.w);
+    has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b + 1 < this->nb_integers_per_row);
   }
   nb_used_bits_row_b = 32 - nb_unused_bits_row_b;
 

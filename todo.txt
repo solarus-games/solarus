@@ -13,7 +13,6 @@
 
 
 - Prochaines grandes étapes :
-  - collision au pixel près
   - couper des buissons et des herbes
   - combats
   - scripts
@@ -46,23 +45,10 @@ Dimanche 21 décembre 2008 : cryptage des fichiers
 Mercredi 24 décembre 2008 : sortie de la démo jusqu'à la fin du donjon 1
 
 ----------------
-Collisions au pixel près :
-----------------
-
-- entre l'épée et les ennemis ou les buissons : utiliser autre chose que la classe EntityDetector actuelle.
-Car lorsqu'une entité bouge, tous les détecteurs sont vérifiés. Ici il s'agit de l'épée de Link et elle ne bouge pas, c'est juste une animation. Dès que la frame de l'épée change, il faut vérifier les collisions entre le sprite de l'épée (et non une entité) et les détecteurs de la map. Les ennemis et les buissons sont des détecteurs. => faire une fonction check qui prend en paramètre un Sprite* au lieu d'une MapEntity* ? Et qui n'utilise pas la structure CollisionMode qui elle est réservée aux tests d'entité à entité.
-- entre Link et les ennemis, entre Link et les trous : peut-être pas besoin de faire au pixel près ? Pour les ennemis, calculer l'angle de recul à partir des deux points d'origine.
-
-----------------
 Couper des buissons avec l'épée :
 ----------------
-- utiliser le mode collision_pixel directement (voir comment faire 2 modes à la fois car on a déjà facing point pour soulever)
-- puis, en cas de collision au pixel près avec le sprite de l'épée :
-    - si c'est un coup d'épée normal : on coupe le buisson si le facing point de link est dans l'alignement du buisson (pas forcément dessus) et à moins d'une certaine distance
-    - si l'épée charge ou est chargée : pareil mais en plus on stoppe le chargement
-    - si attaque tournoyante : on coupe le buisson et on laisse l'attaque tournoyante continuer (donc c'est le seul cas où on peut couper plusieurs buissons d'un coup)
 
-Même chose pour l'herbe sauf que rien ne se passe quand l'épée charge
+Même chose que pour les buissons sauf que rien ne se passe quand l'épée charge
 
 ----------------------
 - Compléter l'éditeur de maps et de tilesets :

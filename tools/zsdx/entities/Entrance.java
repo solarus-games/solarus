@@ -1,7 +1,9 @@
-package zsdx;
+package zsdx.entities;
 
 import java.awt.*;
 import java.util.*;
+import zsdx.*;
+import zsdx.Map;
 
 /**
  * Represents an entry point in a map.
@@ -16,8 +18,8 @@ public class Entrance extends ActiveEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("entrance.png", 32, 0, 32, 32);
+    public static final EntityImageDescription[] generalImageDescriptions =
+	{new EntityImageDescription("entrance.png", 32, 0, 32, 32)};
 
     /**
      * Origin point of an entrance.

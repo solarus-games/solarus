@@ -1,4 +1,6 @@
-package zsdx;
+package zsdx.entities;
+
+import zsdx.*;
 
 /**
  * Exception thrown if the user tries to make something wrong in a tileset.

@@ -1,6 +1,7 @@
 package zsdx.map_editor_actions;
 
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Changing the tileset of the map.

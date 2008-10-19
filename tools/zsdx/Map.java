@@ -5,6 +5,7 @@ import java.io.*;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import zsdx.entities.*;
 
 /**
  * This class describes a map.

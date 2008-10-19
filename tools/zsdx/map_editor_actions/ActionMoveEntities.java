@@ -2,8 +2,8 @@ package zsdx.map_editor_actions;
 
 import java.util.List;
 import java.util.LinkedList;
-
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Moving some tiles on the map.

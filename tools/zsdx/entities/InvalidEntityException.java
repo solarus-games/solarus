@@ -1,4 +1,6 @@
-package zsdx;
+package zsdx.entities;
+
+import zsdx.*;
 
 /**
  * This exception is thrown when an invalid entity is detected on the map.

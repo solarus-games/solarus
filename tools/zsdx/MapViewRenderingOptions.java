@@ -1,6 +1,7 @@
 package zsdx;
 
-import zsdx.gui.MapView;
+import zsdx.entities.*;
+import zsdx.gui.*;
 
 /**
  * Options indicating how to display the map in the map view of the map editor.

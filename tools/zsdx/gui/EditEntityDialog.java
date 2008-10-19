@@ -1,6 +1,7 @@
 package zsdx.gui;
 
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * A dialog box with some options to edit a map entity.

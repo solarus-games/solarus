@@ -1,6 +1,7 @@
 package zsdx.map_editor_actions.edit_entities;
 
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Editing the properties specific to a destructible item:
@@ -33,7 +34,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
 	
 	this.destructibleItem = destructibleItem;
 
-	subtypeBefore = destructibleItem.getDestructibleItemSubtype();
+	subtypeBefore = destructibleItem.getSubtype();
 	subtypeAfter = subtype;
 
 	pickableItemSubtypeBefore = destructibleItem.getPickableItemSubtype();
@@ -47,7 +48,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	destructibleItem.setDestructibleItemSubtype(subtypeAfter);
+	destructibleItem.setSubtype(subtypeAfter);
 	destructibleItem.setPickableItem(pickableItemSubtypeAfter, pickableItemSavegameVariableAfter);
     }
 
@@ -55,7 +56,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	destructibleItem.setDestructibleItemSubtype(subtypeBefore);
+	destructibleItem.setSubtype(subtypeBefore);
 	destructibleItem.setPickableItem(pickableItemSubtypeBefore, pickableItemSavegameVariableBefore);
     }
 }

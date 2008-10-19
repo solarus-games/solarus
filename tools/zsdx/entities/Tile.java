@@ -1,7 +1,8 @@
-package zsdx;
+package zsdx.entities;
 
 import java.awt.*;
 import java.util.*;
+import zsdx.*;
 
 /**
  * Represents a tile for the tileset editor.

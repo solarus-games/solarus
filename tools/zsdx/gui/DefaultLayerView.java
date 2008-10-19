@@ -2,10 +2,9 @@ package zsdx.gui;
 
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.Tile;
-
 import java.util.*;
+import zsdx.entities.*;
+
 
 /**
  * Graphical component to select the default layer of a tile in the tileset editor:

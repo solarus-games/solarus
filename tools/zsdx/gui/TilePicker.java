@@ -1,10 +1,8 @@
 package zsdx.gui;
 
 import javax.swing.*;
-
-import zsdx.Map;
-
 import java.util.*;
+import zsdx.Map;
 
 /**
  * This component shows the tileset and allows the user to pick a tile

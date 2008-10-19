@@ -1,7 +1,9 @@
-package zsdx;
+package zsdx.entities;
 
 import java.awt.*;
 import java.util.*;
+import zsdx.*;
+import zsdx.Map;
 
 /**
  * Represents an item that Link can pick on the map,
@@ -17,8 +19,8 @@ public class PickableItem extends ActiveEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("pickable_items.png", 0, 0, 16, 16);
+    public static final EntityImageDescription[] generalImageDescriptions =
+	{new EntityImageDescription("pickable_items.png", 0, 0, 16, 16)};
     
     /**
      * Origin point of a pickable item.

@@ -1,6 +1,7 @@
-package zsdx;
+package zsdx.gui;
 
 import javax.swing.*;
+import zsdx.entities.*;
 
 /**
  * This class provides icons representing the different kinds of obstacles.

@@ -1,6 +1,7 @@
-package zsdx;
+package zsdx.entities;
 
 import java.util.*;
+
 
 /**
  * Represents all entities placed on the same layer of the map.

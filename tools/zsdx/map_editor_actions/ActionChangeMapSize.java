@@ -1,7 +1,6 @@
 package zsdx.map_editor_actions;
 
 import java.awt.Dimension;
-
 import zsdx.*;
 
 /**

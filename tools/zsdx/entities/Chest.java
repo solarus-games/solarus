@@ -1,6 +1,8 @@
-package zsdx;
+package zsdx.entities;
 
 import java.util.*;
+import zsdx.*;
+import zsdx.Map;
 
 /**
  * Represents a chest placed on the map.
@@ -13,10 +15,10 @@ public class Chest extends ActiveEntity {
     public static final String entityTypeName = "Chest";
 
     /**
-     * Description of the default image representing this kind of entity.
+     * Description of the default images representing this kind of entity.
      */
-    public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("chest.png", 0, 0, 16, 16);
+    public static final EntityImageDescription[] generalImageDescriptions =
+	{new EntityImageDescription("chest.png", 0, 0, 16, 16)};
 
     // data fields
     private boolean bigChest;

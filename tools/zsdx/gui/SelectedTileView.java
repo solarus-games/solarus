@@ -3,9 +3,7 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.Tile;
-import zsdx.Tileset;
+import zsdx.entities.*;
 
 /**
  * This component shows information about the current tile and lets the user edit it.

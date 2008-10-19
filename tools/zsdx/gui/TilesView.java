@@ -4,11 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-
-import zsdx.Tile;
-import zsdx.Tileset;
-
 import java.util.*;
+import zsdx.entities.*;
 
 /**
  * This component shows a list of tiles and allows the user to select them.

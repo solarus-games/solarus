@@ -1,6 +1,7 @@
 package zsdx.map_editor_actions;
 
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Adding an entity on the map.

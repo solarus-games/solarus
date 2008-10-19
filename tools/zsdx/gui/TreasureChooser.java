@@ -1,7 +1,7 @@
 package zsdx.gui;
 
 import javax.swing.*;
-import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * A combo box to selected the content of a treasure.

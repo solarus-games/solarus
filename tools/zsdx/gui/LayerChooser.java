@@ -1,7 +1,7 @@
 package zsdx.gui;
 
 import javax.swing.*;
-import zsdx.*;
+import zsdx.entities.MapEntity;
 
 /**
  * A combo box to selected a layer.

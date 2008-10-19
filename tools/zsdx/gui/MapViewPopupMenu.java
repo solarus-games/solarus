@@ -3,8 +3,8 @@ package zsdx.gui;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.LinkedList;
-
 import zsdx.*;
+import zsdx.entities.*;
 import zsdx.map_editor_actions.*;
 
 /**

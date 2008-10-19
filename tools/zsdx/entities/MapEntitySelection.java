@@ -1,7 +1,8 @@
-package zsdx;
+package zsdx.entities;
 
 import java.util.*;
-
+import zsdx.*;
+import zsdx.Map;
 import zsdx.map_editor_actions.*;
 
 /**

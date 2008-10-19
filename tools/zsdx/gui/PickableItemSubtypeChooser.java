@@ -1,7 +1,7 @@
 package zsdx.gui;
 
-import zsdx.*;
 import javax.swing.*;
+import zsdx.entities.*;
 
 /**
  * A combo box to select a type of pickable item.

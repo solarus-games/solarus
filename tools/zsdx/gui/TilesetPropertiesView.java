@@ -3,10 +3,8 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.Tileset;
-
 import java.util.*;
+import zsdx.entities.*;
 
 /**
  * This components shows information about a tileset : the name

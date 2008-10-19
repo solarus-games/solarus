@@ -4,6 +4,7 @@ import org.ini4j.Ini;
 import java.awt.*;
 import java.util.*;
 import java.io.*;
+import zsdx.entities.*;
 
 /**
  * Represents the properties of a dungeon, like the floors

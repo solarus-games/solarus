@@ -1,8 +1,10 @@
-package zsdx;
+package zsdx.entities;
 
 import java.awt.*;
 import javax.swing.*;
 import java.util.*;
+import zsdx.*;
+import zsdx.Map;
 
 /**
  * Represents an exit point in a map.
@@ -17,8 +19,8 @@ public class Exit extends ActiveEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("exit_32.png", 0, 0, 32, 32);
+    public static final EntityImageDescription[] generalImageDescriptions =
+	{new EntityImageDescription("exit_32.png", 0, 0, 32, 32)};
 
     /**
      * Unitary size of an exit.

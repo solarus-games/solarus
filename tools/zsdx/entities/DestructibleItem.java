@@ -1,7 +1,9 @@
-package zsdx;
+package zsdx.entities;
 
 import java.awt.*;
 import java.util.*;
+import zsdx.*;
+import zsdx.Map;
 
 /**
  * Represents an entity that Link can destroy (lift and throw or cut)
@@ -17,14 +19,20 @@ public class DestructibleItem extends ActiveEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription generalImageDescription =
-	new EntityImageDescription("destructible_items.png", 0, 0, 16, 16);
+    public static final EntityImageDescription[] generalImageDescriptions = {
+	new EntityImageDescription("destructible_items.png", 0, 0, 16, 16),
+	new EntityImageDescription("destructible_items.png", 16, 0, 16, 16),
+	new EntityImageDescription("destructible_items.png", 32, 0, 16, 16),
+	new EntityImageDescription("destructible_items.png", 48, 0, 16, 16),
+	new EntityImageDescription("destructible_items.png", 64, 0, 16, 16),
+	new EntityImageDescription("destructible_items.png", 80, 0, 16, 16)
+    };
 
     /**
      * Origin point of a destructible item.
      */
     private static final Point origin = new Point(8, 13);
-    
+
     // types of destructible items
     public static final int POT               = 0;
     public static final int SKULL             = 1;
@@ -105,7 +113,7 @@ public class DestructibleItem extends ActiveEntity {
 
 	// add the specific properties of a destructible item
 	buff.append('\t');
-	buff.append(getDestructibleItemSubtype());
+	buff.append(getSubtype());
 	buff.append('\t');
 	buff.append(getPickableItemSubtype());
 	buff.append('\t');
@@ -142,7 +150,7 @@ public class DestructibleItem extends ActiveEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	int x = getDestructibleItemSubtype() * 16;
+	int x = getSubtype() * 16;
 	currentImageDescription.setX(x);
     }
 
@@ -150,7 +158,7 @@ public class DestructibleItem extends ActiveEntity {
      * Returns the subtype of this destructible item.
      * @return the subtype of destructible item
      */
-    public int getDestructibleItemSubtype() {
+    public int getSubtype() {
 	return subtype;
     }
 
@@ -158,7 +166,7 @@ public class DestructibleItem extends ActiveEntity {
      * Sets the subtype of this destructible item.
      * @param subtype the subtype of destructible item
      */
-    public void setDestructibleItemSubtype(int subtype) {
+    public void setSubtype(int subtype) {
 	this.subtype = subtype;
     }
 

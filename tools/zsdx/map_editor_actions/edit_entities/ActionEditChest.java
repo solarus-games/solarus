@@ -1,6 +1,7 @@
 package zsdx.map_editor_actions.edit_entities;
 
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Editing the properties specific to a chest.

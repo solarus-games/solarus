@@ -1,7 +1,9 @@
-package zsdx;
+package zsdx.entities;
 
 import java.awt.*;
 import java.util.*;
+import zsdx.*;
+import zsdx.Map;
 
 /**
  * Represents a tile for the map editor, i.e. a tile placed on the map.
@@ -19,7 +21,7 @@ public class TileOnMap extends MapEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription generalImageDescription = null;
+    public static final EntityImageDescription[] generalImageDescriptions = null;
 
     /**
      * The tileset from which this tile is extracted.

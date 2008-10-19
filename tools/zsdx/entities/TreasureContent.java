@@ -1,6 +1,6 @@
-package zsdx;
+package zsdx.entities;
 
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * All possible contents of a treasure.

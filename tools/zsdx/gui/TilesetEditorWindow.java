@@ -3,8 +3,8 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Main window of the tileset editor.

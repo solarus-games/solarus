@@ -2,11 +2,8 @@ package zsdx.gui;
 
 import java.awt.*;
 import javax.swing.*;
-
-import zsdx.Tile;
-import zsdx.Tileset;
-
 import java.util.*;
+import zsdx.entities.*;
 
 /**
  * This component shows a tile's icon.

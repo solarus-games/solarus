@@ -3,9 +3,9 @@ package zsdx.gui;
 import java.awt.*;
 import javax.swing.*;
 import java.lang.reflect.*;
-
 import zsdx.*;
 import zsdx.map_editor_actions.*;
+import zsdx.entities.*;
 import zsdx.gui.edit_entities.*;
 
 /**

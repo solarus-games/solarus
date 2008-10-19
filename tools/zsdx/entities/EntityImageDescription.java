@@ -1,7 +1,8 @@
-package zsdx;
+package zsdx.entities;
 
 import java.awt.*;
 import java.awt.image.*;
+import zsdx.*;
 
 /**
  * This class describes the image to draw to represent an entity.

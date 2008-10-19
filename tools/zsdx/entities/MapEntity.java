@@ -1,9 +1,11 @@
-package zsdx;
+package zsdx.entities;
 
 import java.awt.*;
 import java.awt.image.*;
 import java.lang.reflect.*;
 import java.util.*;
+import zsdx.*;
+import zsdx.Map;
 
 /**
  * Represents an entity placed on the map with the map editor,
@@ -41,14 +43,17 @@ import java.util.*;
  * - Redefine the isValid() method: public boolean isValid()
  *     to check the validity of the fields (don't forget to call super.isValid()).    
  * - Define the static generalImageDescription field:
- *     public static final EntityImageDescription generalImageDescription
- *     to define a default 16*16 image representing this kind of entity
+ *     public static final EntityImageDescription[] generalImageDescriptions
+ *     to define one or more default 16*16 images representing this kind of entity.
+ *     These 16*16 images will be used to build the toolbar to add entities on the map.
  * - Redefine the non-static updateImageDescription() method:
  *     public void updateImageDescription()
  *     which updates the current image description (used to draw the entity in its current state)
  * - If your entity is not drawn from an image file but in a more complex way,
  *     you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *     public abstract void paint(Graphics g, double zoom, boolean showTransparency).
+ * - Redefine if necessary the getSubtype() method: public int getSubtype()
+ *     which returns the entity current subtype (for entities that have a notion of subtype).
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
  * - Create a subclass of ActionEditEntity.
@@ -212,9 +217,10 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * Creates a new map entity with the specified type.
      * @param map the map
      * @param entityType the type of entity to create (except TileOnMap)
+     * @param entitySubtype the subtype of entity to create
      */
-    public static MapEntity create(Map map, int entityType) throws MapException {
-	
+    public static MapEntity create(Map map, int entityType, int entitySubtype) throws MapException {
+
 	MapEntity entity = null;
 	Class<?> entityClass = null;
 	try {
@@ -223,6 +229,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	    Object[] paramValues = {map, 0, 0};
 	    Constructor<?> constructor = entityClass.getConstructor(paramTypes);
 	    entity = (MapEntity) constructor.newInstance(paramValues);
+	    entity.setSubtype(entitySubtype);
 	    entity.initializeImageDescription();
 	}
 	catch (NoSuchMethodException ex) {
@@ -793,13 +800,13 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     
     /**
      * Initializes the description of the image currently representing the entity.
-     * By default, the image description is initialize to a copy of the general
+     * By default, the image description is initialized to a copy of the first general
      * image description of this kind of entity.
      */
     protected void initializeImageDescription() {
-	
-	EntityImageDescription generalImageDescription = getImageDescription(getType());
-	
+
+	EntityImageDescription generalImageDescription = getImageDescription(getType(), 0);
+
 	if (generalImageDescription != null) {
 	    currentImageDescription = new EntityImageDescription(generalImageDescription);
 	    updateImageDescription();
@@ -817,30 +824,55 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     }
 
     /**
-     * Returns the description of the image representing a specified kind entity.
+     * Returns the images representing a specified kind entity.
      * @param type a type of entity
-     * @return the image description of this kind of entity
+     * @return the image descriptions of this kind of entity
      */
-    public static EntityImageDescription getImageDescription(int type) {
+    public static EntityImageDescription[] getImageDescriptions(int type) {
 
-	EntityImageDescription imageDescription = null;
+	EntityImageDescription imageDescriptions[] = null;
 	
 	Class<?> entityClass = entityClasses[type];
 	try {
-	    Field imageDescriptionField = entityClass.getField("generalImageDescription");
-	    imageDescription = (EntityImageDescription) imageDescriptionField.get(null);
+	    Field imageDescriptionField = entityClass.getField("generalImageDescriptions");
+	    imageDescriptions = (EntityImageDescription[]) imageDescriptionField.get(null);
 	}
 	catch (NoSuchFieldException ex) {
-	    System.err.println("The field 'generalImageDescription' is missing in class " + entityClass.getName());
+	    System.err.println("The field 'generalImageDescriptions' is missing in class " + entityClass.getName());
 	    ex.printStackTrace();
 	    System.exit(1);
 	}
 	catch (IllegalAccessException ex) {
-	    System.err.println("Cannot access the field 'generalImageDescription' in class " + entityClass.getName());
+	    System.err.println("Cannot access the field 'generalImageDescriptions' in class " + entityClass.getName());
 	    ex.printStackTrace();
 	    System.exit(1);
 	}
-	return imageDescription;
+	return imageDescriptions;
+    }
+    
+    /**
+     * Returns the number of images representing a specified kind entity.
+     * @param type a type of entity
+     * @return the number of image descriptions of this kind of entity
+     */
+    public static int getNbImageDescriptions(int type) {
+	return getImageDescriptions(type).length;
+    }
+
+    /**
+     * Returns the description of an image representing a specified kind entity.
+     * @param type a type of entity
+     * @param image_index index of the image to get
+     * @return an image description of this kind of entity
+     */
+    public static EntityImageDescription getImageDescription(int type, int image_index) {
+
+	EntityImageDescription[] imageDescriptions = getImageDescriptions(type);
+	if (imageDescriptions == null) {
+	    return null;
+	}
+
+	return getImageDescriptions(type)[image_index];
     }
 
     /**
@@ -895,5 +927,25 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	    System.exit(1);
 	}
 	return typeName;
+    }
+
+    /**
+     * Returns the subtype of this entity.
+     * By default, 0 is always returned. Redefine this method in subclasses that have a subtype field.
+     * This notion of subtype is used by the toolbar that adds entities with an initial subtype.
+     * @return the subtype
+     */
+    public int getSubtype() {
+	return 0;
+    }
+
+    /**
+     * Sets the subtype of this entity.
+     * By default, nothing is done. Redefine this method in subclasses that have a subtype field.
+     * This notion of subtype is used by the toolbar that adds entities with an initial subtype.
+     * @param subtype the subtype
+     */
+    public void setSubtype(int subtype) {
+	
     }
 }

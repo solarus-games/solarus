@@ -1,8 +1,8 @@
 package zsdx.map_editor_actions;
 
 import java.awt.Rectangle;
-
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Resizing a map entity.

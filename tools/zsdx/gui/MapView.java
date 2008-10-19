@@ -6,9 +6,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
 import java.util.List;
-
 import zsdx.*;
 import zsdx.Map;
+import zsdx.entities.*;
 import zsdx.map_editor_actions.*;
 
 /**
@@ -62,10 +62,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private List<MapEntity> initialSelection; // the entities selected, saved here before drawing a selection rectangle
     private boolean entityJustSelected;       // true if the last entity on which the mouse was pressed was not already selected
     private int entityTypeBeingAdded;         // in state ADDING_ENTITY: type of the entity that is about to be added
+    private int entitySubtypeBeingAdded;      // in state ADDING_ENTITY: subtype of the entity that is about to be added
     private MapEntity entityBeingAdded;       // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
 
     // headers of the map view
-    
+
     /**
      * The display options (what layers are displayed, etc.).
      */
@@ -305,13 +306,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @param g the graphic context
      */
     public void paint(Graphics g) {
-	
+
 	if (map == null) {
 	    return;
 	}
-	
+
 	Tileset tileset = map.getTileset();
-	
+
 	// outside the map	
 	g.setColor(Color.lightGray);
 	g.fillRect(0, 0, (int) (map.getWidth() * zoom) + 2 * scaledAreaAroundMap,
@@ -348,17 +349,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 				// draw the entity
 				entity.paint(g, zoom, renderingOptions.getShowTransparency());
-				
+
 				// draw the selection rectangle if the entity is selected
 				if (map.getEntitySelection().isSelected(entity)) {
-				    
+
 				    Rectangle positionInMap = entity.getPositionInMap();
-				    
+
 				    x = (int) (positionInMap.x * zoom);
 				    y = (int) (positionInMap.y * zoom);
 				    width = (int) (positionInMap.width * zoom - 1);
 				    height = (int) (positionInMap.height * zoom - 1);
-				    
+
 				    g.setColor(Color.GREEN);
 				    g.drawRect(x, y, width, height);
 				    g.drawRect(x + 1, y + 1, width - 2, height - 2);
@@ -390,7 +391,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    g.setColor(Color.YELLOW);
 		    g.drawRect(x, y, width, height);
 		    g.drawRect(x + 1, y + 1, width - 2, height - 2);
-		    
+
 		    break;
 		}
 	    }
@@ -408,7 +409,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    GuiTools.errorDialog("Cannot remove the entities: " + e.getMessage());
 	}
     }
-    
+
     /**
      * Changes the current state of the map view.
      */
@@ -434,16 +435,20 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * If the user was already adding an entity of the same kind,
      * we get back to the normal state.
      * @param entityType type of entity to add
+     * @param entitySubtype subtype of entity to add
      */
-    public void startAddingEntity(int entityType) {
-	
-	if (state == State.ADDING_ENTITY && entityType == entityTypeBeingAdded) {
+    public void startAddingEntity(int entityType, int entitySubtype) {
+
+	if (state == State.ADDING_ENTITY
+		&& entityType == entityTypeBeingAdded
+		&& entitySubtype == entitySubtypeBeingAdded) {
 	    returnToNormalState();
 	}
 	else {
 
 	    setState(State.ADDING_ENTITY);
 	    this.entityTypeBeingAdded = entityType;
+	    this.entitySubtypeBeingAdded = entitySubtype;
 
 	    try {
 		if (entityType == MapEntity.ENTITY_TILE) {
@@ -451,7 +456,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    entityBeingAdded = new TileOnMap(map, tileId, 0, 0);
 		}
 		else {
-		    entityBeingAdded = MapEntity.create(map, entityType);		    
+		    entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);		    
 		}
 	    }
 	    catch (MapException ex) {
@@ -547,7 +552,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	
 	return entityAdded;
     }
-    
+
     /**
      * Returns the type of the entity that is being added.
      * If the state is not State.ADDING_ENTITY, -1 is returned.
@@ -561,6 +566,21 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	}
 	
 	return entityBeingAdded.getType();
+    }
+
+    /**
+     * Returns the subtype of the entity that is being added.
+     * If the state is not State.ADDING_ENTITY, -1 is returned.
+     * @return the subtype of the entity being added, or -1 if the user is
+     * not adding an entity
+     */
+    public int getEntitySubtypeBeingAdded() {
+
+	if (state != State.ADDING_ENTITY) {
+	    return -1;
+	}
+	
+	return entitySubtypeBeingAdded;
     }
 
     /**
@@ -928,7 +948,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		int x = getMouseInMapX(mouseEvent);
 		int y = getMouseInMapY(mouseEvent);
 
-		startAddingEntity(MapEntity.ENTITY_TILE);
+		startAddingEntity(MapEntity.ENTITY_TILE, 0);
 		updateAddingEntity(x, y);
 	    }
 	}
@@ -1074,7 +1094,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 			map.getTileset().setSelectedTileId(tileId);
 		    }
 		    
- 		    startAddingEntity(entityTypeBeingAdded);
+ 		    startAddingEntity(entityTypeBeingAdded, entitySubtypeBeingAdded);
 		    updateAddingEntity(x, y);
 		}
 		
@@ -1110,7 +1130,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 			int tileId = ((TileOnMap) entity).getTileId();
 			map.getTileset().setSelectedTileId(tileId);
 		    }
-		    startAddingEntity(entityTypeBeingAdded);
+		    startAddingEntity(entityTypeBeingAdded, entitySubtypeBeingAdded);
 		    updateAddingEntity(x, y);
 		}
 		break;
@@ -1146,7 +1166,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    // if a tile is selected in the tileset,
 		    // display it on the map under the cursor
 		    if (map.getTileset().getSelectedTile() != null) {
-			startAddingEntity(MapEntity.ENTITY_TILE);
+			startAddingEntity(MapEntity.ENTITY_TILE, 0);
 			updateAddingEntity(x, y);
 		    }
 		    break;

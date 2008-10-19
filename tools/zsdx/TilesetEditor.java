@@ -1,6 +1,6 @@
 package zsdx;
 
-import zsdx.gui.TilesetEditorWindow;
+import zsdx.gui.*;
 
 /**
  * Main class of the tileset editor.

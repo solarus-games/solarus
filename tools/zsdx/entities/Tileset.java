@@ -1,10 +1,11 @@
-package zsdx;
+package zsdx.entities;
 
 import java.util.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.*;
+import zsdx.*;
 
 /**
  * This class describes a tileset.

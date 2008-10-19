@@ -1,8 +1,8 @@
 package zsdx.gui.edit_entities;
 
 import java.awt.event.*;
-
 import zsdx.*;
+import zsdx.entities.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;

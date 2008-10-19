@@ -2,6 +2,7 @@ package zsdx.map_editor_actions;
 
 import java.awt.*;
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Editing all common properties of an entity : the name, the layer, the position,

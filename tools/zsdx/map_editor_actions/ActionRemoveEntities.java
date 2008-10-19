@@ -1,8 +1,8 @@
 package zsdx.map_editor_actions;
 
 import java.util.LinkedList;
-
 import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * Removing some entities from the map.

@@ -1,4 +1,6 @@
-package zsdx;
+package zsdx.entities;
+
+import zsdx.*;
 
 /**
  * This class represents an moving map entity, i.e. an NPC or an enemy.

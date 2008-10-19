@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import zsdx.*;
+import zsdx.entities.*;
 
 /**
  * This component shows the tileset image and allow the user to select the tiles.

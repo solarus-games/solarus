@@ -3,7 +3,7 @@ package zsdx.gui;
 import javax.swing.*;
 import java.util.List;
 import zsdx.*;
-import zsdx.Map;
+import zsdx.entities.*;
 
 /**
  * A combo box to select an entity of a certain type.

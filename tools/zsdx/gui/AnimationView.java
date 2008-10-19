@@ -3,11 +3,8 @@ package zsdx.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import zsdx.Tile;
-import zsdx.TilesetException;
-
 import java.util.*;
+import zsdx.entities.*;
 
 /**
  * Graphical component to select the animation properties of a tile:

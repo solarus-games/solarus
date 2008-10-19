@@ -2,6 +2,7 @@ package zsdx.gui.edit_entities;
 
 import java.awt.event.*;
 import zsdx.*;
+import zsdx.entities.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;
@@ -54,7 +55,7 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 
 	DestructibleItem destructibleItem = (DestructibleItem) entity;
 
-	subtypeField.setDestructibleItemSubtype(destructibleItem.getDestructibleItemSubtype());
+	subtypeField.setDestructibleItemSubtype(destructibleItem.getSubtype());
 	pickableItemSubtypeField.setPickableItemSubtype(destructibleItem.getPickableItemSubtype());
 	pickableItemSavegameVariableField.setNumber(destructibleItem.getPickableItemSavegameVariable());
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);

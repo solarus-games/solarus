@@ -1,6 +1,7 @@
-package zsdx;
+package zsdx.entities;
 
 import java.util.StringTokenizer;
+import zsdx.*;
 
 /**
  * This class represents an interactive map entity, such as a chest, a door, a switch...

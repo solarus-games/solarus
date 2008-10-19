@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-
 import zsdx.*;
 import zsdx.Map;
+import zsdx.entities.*;
 
 /**
  * Main window of the tileset editor.
@@ -547,13 +547,19 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
 	// type of entity to add
 	private int entityType;
-	
+	private int entitySubtype;
+
 	public ActionListenerAddEntity(int entityType) {
+	    this(entityType, 0);
+	}
+
+	public ActionListenerAddEntity(int entityType, int entitySubtype) {
 	    this.entityType = entityType;
+	    this.entitySubtype = entitySubtype;
 	}
 	
 	public void actionPerformed(ActionEvent ev) {
-	    mapView.startAddingEntity(entityType);
+	    mapView.startAddingEntity(entityType, entitySubtype);
 	}
     }
 }

@@ -1,6 +1,6 @@
 package zsdx.gui;
 
-import zsdx.ZSDXException;
+import zsdx.*;
 
 /**
  * A dialog box with a combo box to choose a resource element.

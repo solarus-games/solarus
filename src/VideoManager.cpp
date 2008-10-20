@@ -33,14 +33,16 @@ VideoManager::VideoManager(void) {
   width_640 = width_320 * 2;
   height_480 = height_240 * 2;
 
-  // if the ideal video mode does not exist, try default values
+  // if the ideal video mode is not supported, try more common values
   if (!SDL_VideoModeOK(width_320, height_240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN)) {
 
     if (ratio < 0.75 && SDL_VideoModeOK(384, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN)) {
       width_320 = 384;
+      side_border_width = 32;
     }
     else {
       width_320 = 320;
+      side_border_width = 0;
     }
     height_240 = 240;
   }
@@ -48,9 +50,11 @@ VideoManager::VideoManager(void) {
   if (!SDL_VideoModeOK(width_640, height_480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN)) {
     if (ratio < 0.75 && SDL_VideoModeOK(768, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN)) {
       width_640 = 768;
+      side_border_width = 64;
     }
     else {
       width_640 = 640;
+      side_border_width = 0;
     }
     height_480 = 480;
   }

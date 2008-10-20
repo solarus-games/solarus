@@ -6,9 +6,64 @@
  */
 VideoManager::VideoManager(void) {
 
+  // make the window centered 
+  SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
+  SDL_putenv((char*) "SDL_VIDEO_CENTERED=center");
+
+  /* compute the ideal fullscreen resolution depending on the ratio:
+   * on large screens, some side borders will be added
+   */
   const SDL_VideoInfo *video_info = SDL_GetVideoInfo();
   double ratio = (double) video_info->current_h / (double) video_info->current_w;
-  large_screen = (ratio != 0.75);
+
+  int side_border_width = 0;
+  int side_border_height = 0;
+  if (ratio < 0.75) {
+    side_border_width = (int) (240.0 / ratio) - 320;
+  }
+  /*
+  else if (ratio > 0.75) {
+    side_border_height = (int) (320.0 * ratio) - 240;
+  }
+  */
+
+  width_320 = 320 + side_border_width;
+  height_240 = 240 + side_border_height;
+
+  width_640 = width_320 * 2;
+  height_480 = height_240 * 2;
+
+  // if the ideal video mode does not exist, try default values
+  if (!SDL_VideoModeOK(width_320, height_240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN)) {
+
+    if (ratio < 0.75 && SDL_VideoModeOK(384, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN)) {
+      width_320 = 384;
+    }
+    else {
+      width_320 = 320;
+    }
+    height_240 = 240;
+  }
+
+  if (!SDL_VideoModeOK(width_640, height_480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN)) {
+    if (ratio < 0.75 && SDL_VideoModeOK(768, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN)) {
+      width_640 = 768;
+    }
+    else {
+      width_640 = 640;
+    }
+    height_480 = 480;
+  }
+
+  windowed_dst_position.x = 0;
+  windowed_dst_position.y = 0;
+
+  fullscreen_stretched_dst_position.x = side_border_width / 2;
+  fullscreen_stretched_dst_position.y = side_border_height / 2;
+
+  fullscreen_centered_dst_position.x = side_border_width / 2 + 160;
+  fullscreen_centered_dst_position.y = side_border_height / 2 + 120;
+
 }
 
 /**
@@ -51,23 +106,32 @@ void VideoManager::set_video_mode(VideoMode mode) {
   switch (mode) {
 
   case FULLSCREEN_320_240:
-    screen_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+    dst_position = &fullscreen_stretched_dst_position;
+    screen_surface = SDL_SetVideoMode(width_320, height_240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
     SDL_ShowCursor(SDL_DISABLE);
     break;
 
   case FULLSCREEN_640_480_SCALE2X:
+    dst_position = &fullscreen_stretched_dst_position;
+    screen_surface = SDL_SetVideoMode(width_640, height_480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+    SDL_ShowCursor(SDL_DISABLE);
+    break;
+
   case FULLSCREEN_640_480_BORDER:
-    screen_surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+    dst_position = &fullscreen_centered_dst_position;
+    screen_surface = SDL_SetVideoMode(width_640, height_480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
     SDL_ShowCursor(SDL_DISABLE);
     break;
 
   case WINDOWED_320_240:
+    dst_position = &windowed_dst_position;
     screen_surface = SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_ShowCursor(SDL_ENABLE);
     break;
 
   case WINDOWED_640_480:
   case WINDOWED_640_480_SCALE2X:
+    dst_position = &windowed_dst_position;
     screen_surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_ShowCursor(SDL_ENABLE);
     break;
@@ -92,6 +156,8 @@ VideoManager::VideoMode VideoManager::get_video_mode(void) {
  * @param src_surface the source surface
  */
 void VideoManager::display(SDL_Surface *src_surface) {
+
+  SDL_FillRect(src_surface, NULL, Color::white);
 
   SDL_FillRect(screen_surface, NULL, Color::black);
 
@@ -128,7 +194,7 @@ void VideoManager::display(SDL_Surface *src_surface) {
  * @param dst_surface the destination surface
  */
 void VideoManager::display_320(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
-  SDL_BlitSurface(src_surface, NULL, dst_surface, NULL);
+  SDL_BlitSurface(src_surface, NULL, dst_surface, dst_position);
 }
 
 /**
@@ -137,8 +203,7 @@ void VideoManager::display_320(SDL_Surface *src_surface, SDL_Surface *dst_surfac
  * @param dst_surface the destination surface
  */
 void VideoManager::display_640_border(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
-  static SDL_Rect dst_position = {160, 120};
-  SDL_BlitSurface(src_surface, NULL, dst_surface, &dst_position);
+  SDL_BlitSurface(src_surface, NULL, dst_surface, dst_position);
 }
 
 /**
@@ -154,7 +219,7 @@ void VideoManager::display_640(SDL_Surface *src_surface, SDL_Surface *dst_surfac
   int k = 0;
   for (int i = 0; i < 240; i++) {
     for (int j = 0; j < 320; j++) {
-      int p = 640 * 2 * i + 2 * j;
+      int p = 640 * 2 * i + 2 * j + dst_position->x;
       dst[p] = src[k];
       dst[p + 1] = src[k];
       dst[p + 640] = src[k];
@@ -200,7 +265,7 @@ void VideoManager::display_640_scale2x(SDL_Surface *src_surface, SDL_Surface *ds
       if (col == 319) { c = b; f = e; i = h; }
 
       // compute e1 to e4
-      e1 = 640 * 2 * row + 2 * col;
+      e1 = 640 * 2 * row + 2 * col + dst_position->x;
       e2 = e1 + 1;
       e3 = e1 + 640;
       e4 = e1 + 641;

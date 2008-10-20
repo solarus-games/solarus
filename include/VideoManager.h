@@ -21,17 +21,24 @@ class VideoManager {
     FULLSCREEN_320_240,
     FULLSCREEN_640_480_SCALE2X,
     FULLSCREEN_640_480_BORDER,
-    //  FULLSCREEN_768_480_SCALE2X,
-    //  FULLSCREEN_384_240,
-    //  FULLSCREEN_768_480_BORDER,
     NB_MODES
   };
 
  private:
 
-  bool large_screen;
   VideoMode video_mode;
-  SDL_Surface *screen_surface;  /**< the screen surface */
+  SDL_Surface *screen_surface;                /**< the screen surface */
+
+  int width_320;
+  int height_240;
+
+  int width_640;
+  int height_480;
+
+  SDL_Rect windowed_dst_position;             /**< position of the 320*240 game screen in windowed mode */
+  SDL_Rect fullscreen_stretched_dst_position; /**< position of the 320*240 game screen in mode fullscreen stretched */
+  SDL_Rect fullscreen_centered_dst_position;  /**< position of the 320*240 game screen in mode fullscreen centered */
+  SDL_Rect *dst_position;                     /**< position of the 320*240 game screen in the current mode */
 
   void display_320(SDL_Surface *src_surface, SDL_Surface *dst_surface);
   void display_640(SDL_Surface *src_surface, SDL_Surface *dst_surface);
@@ -50,7 +57,6 @@ class VideoManager {
   bool is_fullscreen(void);
 
   void display(SDL_Surface *src_surface);
-
 };
 
 #endif

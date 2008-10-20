@@ -34,7 +34,6 @@ ZSDX::ZSDX(void) {
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
-  SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
 
   root_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_ShowCursor(SDL_ENABLE);

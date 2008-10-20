@@ -15,12 +15,15 @@ class VideoManager {
    * The different possible video modes.
    */
   enum VideoMode {
-    WINDOWED_640_480,
+    WINDOWED_640_480_STRETCHED,
     WINDOWED_640_480_SCALE2X,
     WINDOWED_320_240,
     FULLSCREEN_320_240,
+    FULLSCREEN_720_480_STRETCHED,
     FULLSCREEN_640_480_SCALE2X,
-    FULLSCREEN_640_480_BORDER,
+    FULLSCREEN_720_480_SCALE2X,
+    FULLSCREEN_640_480_CENTERED,
+    FULLSCREEN_720_480_CENTERED,
     NB_MODES
   };
 
@@ -29,21 +32,18 @@ class VideoManager {
   VideoMode video_mode;
   SDL_Surface *screen_surface;                /**< the screen surface */
 
-  int width_320;
-  int height_240;
+  static SDL_Rect dst_position_wide;
+  SDL_Rect dst_position_centered;
+  static const SDL_Rect video_mode_sizes[NB_MODES];
 
-  int width_640;
-  int height_480;
+  bool is_mode_supported(VideoMode mode);
+  bool is_fullscreen(VideoMode mode);
+  bool is_wide(VideoMode mode);
 
-  SDL_Rect windowed_dst_position;             /**< position of the 320*240 game screen in windowed mode */
-  SDL_Rect fullscreen_stretched_dst_position; /**< position of the 320*240 game screen in mode fullscreen stretched */
-  SDL_Rect fullscreen_centered_dst_position;  /**< position of the 320*240 game screen in mode fullscreen centered */
-  SDL_Rect *dst_position;                     /**< position of the 320*240 game screen in the current mode */
-
-  void display_320(SDL_Surface *src_surface, SDL_Surface *dst_surface);
-  void display_640(SDL_Surface *src_surface, SDL_Surface *dst_surface);
-  void display_640_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surface);
-  void display_640_border(SDL_Surface *src_surface, SDL_Surface *dst_surface);
+  void blit(SDL_Surface *src_surface, SDL_Surface *dst_surface);
+  void blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_surface);
+  void blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surface);
+  void blit_centered(SDL_Surface *src_surface, SDL_Surface *dst_surface);
 
  public:
 
@@ -54,7 +54,6 @@ class VideoManager {
   void set_default_video_mode(void);
   void set_video_mode(VideoMode mode);
   VideoMode get_video_mode(void);
-  bool is_fullscreen(void);
 
   void display(SDL_Surface *src_surface);
 };

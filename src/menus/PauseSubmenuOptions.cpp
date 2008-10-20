@@ -25,12 +25,15 @@ static const string texts[] = {
 
 // TODO: load this from some external file (for future translation)
 static const string video_mode_texts[] = {
-  "Mode : 640x480",
-  "Mode : 640x480 lisse",
-  "Mode : 320x240",
-  "Mode : plein écran",
-  "Mode : plein écran lisse",
-  "Mode : plein écran petit",
+  "Fenêtre 640x480",
+  "Fenêtre 640x480 lisse",
+  "Fenêtre 320x240",
+  "Plein écran étiré",
+  "Plein écran étiré (large)",
+  "Plein écran lisse",
+  "Plein écran lisse (large)",
+  "Plein écran centré",
+  "Plein écran centré (large)",
 };
 
 /**

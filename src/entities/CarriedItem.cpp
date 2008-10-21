@@ -3,7 +3,7 @@
 #include "entities/Link.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
-#include "movements/ThrowItemMovement.h"
+#include "movements/ThrownItemMovement.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "KeysEffect.h"
@@ -115,7 +115,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
 
   // set the movement
   clear_movement();
-  set_movement(new ThrowItemMovement(direction));
+  set_movement(new ThrownItemMovement(direction));
 }
 
 /**
@@ -124,36 +124,6 @@ void CarriedItem::throw_item(Map *map, int direction) {
  */
 bool CarriedItem::is_broken(void) {
   return is_breaking && get_last_sprite()->is_over() ;
-}
-
-/**
- * Checks whether the item collides with the map when it is thrown.
- */
-void CarriedItem::check_collisions(void) {
-
-  ThrowItemMovement *movement = (ThrowItemMovement*) get_movement();
-
-  SDL_Rect collision_box;
-  collision_box.x = position_in_map.x;
-  collision_box.y = position_in_map.y + movement->get_item_height();
-  collision_box.w = 16;
-  collision_box.h = 16;
-
-  if (movement->is_stopped() || map->collision_with_obstacles(get_layer(), collision_box)) {
-    // destroy the item
-
-    is_throwing = false;
-    is_breaking = true;
-    destruction_sound->play();
-    get_last_sprite()->set_current_animation("destroy");
-
-    if (throwing_direction == 3) {
-      // destroy the item where its shadow is
-      set_y(get_y() + movement->get_item_height());
-    }
-
-    clear_movement();
-  }
 }
 
 /**
@@ -200,7 +170,24 @@ void CarriedItem::update(void) {
     }
   }
   else if (is_throwing) {
-    check_collisions();
+
+    ThrownItemMovement *movement = (ThrownItemMovement*) get_movement();
+
+    if (movement->is_stopped()) {
+      // destroy the item
+
+      is_throwing = false;
+      is_breaking = true;
+      destruction_sound->play();
+      get_last_sprite()->set_current_animation("destroy");
+
+      if (throwing_direction == 3) {
+	// destroy the item where its shadow is
+	set_y(get_y() + movement->get_item_height());
+      }
+
+      clear_movement();
+    }
     shadow_sprite->update();
   }
 }
@@ -214,7 +201,7 @@ void CarriedItem::display_on_map(Map *map) {
 
   if (is_throwing) {
     // display the shadow
-    ThrowItemMovement *movement = (ThrowItemMovement*) get_movement();
+    ThrownItemMovement *movement = (ThrownItemMovement*) get_movement();
     map->display_sprite(shadow_sprite, get_x(), get_y() + movement->get_item_height());
   }
 

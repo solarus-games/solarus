@@ -1,5 +1,5 @@
-#ifndef ZSDX_THROW_ITEM_MOVEMENT_H
-#define ZSDX_THROW_ITEM_MOVEMENT_H
+#ifndef ZSDX_THROWN_ITEM_MOVEMENT_H
+#define ZSDX_THROWN_ITEM_MOVEMENT_H
 
 #include "Common.h"
 #include "MovementWithCollision.h"
@@ -8,7 +8,7 @@
  * Movement used for an item thrown by Link
  * (a pot, a bush, etc.).
  */
-class ThrowItemMovement: public Movement {
+class ThrownItemMovement: public MovementWithCollision {
 
  private:
 
@@ -21,10 +21,12 @@ class ThrowItemMovement: public Movement {
   void update_x(void);
   void update_y(void);
 
+  bool collision_with_map(int dx, int dy);
+
  public:
 
-  ThrowItemMovement(int direction);
-  ~ThrowItemMovement(void);
+  ThrownItemMovement(int direction);
+  ~ThrownItemMovement(void);
 
   int get_item_height(void);
 

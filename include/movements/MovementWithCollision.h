@@ -5,29 +5,26 @@
 #include "Movement.h"
 
 /**
- * Abstract class for all moving objects on a map, visible or not,
+ * Abstract class for all moving entities on a map, visible or not,
  * sensible to the obstacles.
  */
 class MovementWithCollision: public Movement {
-  
+
  protected:
 
-  /**
-   * The map containing the object.
-   */
-  Map *map;
+  Map *map; /**< the map containing the object */
 
-  bool collision_with_map(int dx, int dy);
+  virtual bool collision_with_map(int dx, int dy);
 
  public:
 
   MovementWithCollision(void);
   virtual ~MovementWithCollision(void);
-  
+
   void set_map(Map *map);
   void set_x(int x);
   void set_y(int y);
-  
+
   virtual void update_x(void);
   virtual void update_y(void);
 

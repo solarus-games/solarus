@@ -128,7 +128,7 @@ class MovementFalling;
 class PathMovement;
 class FairyMovement;
 class FollowMovement;
-class ThrowItemMovement;
+class ThrownItemMovement;
 class TargetMovement;
 
 #endif

@@ -30,7 +30,6 @@ class CarriedItem: public MapEntity {
   void set_animation_walking(void);
   void throw_item(Map *map, int direction);
   bool is_broken(void);
-  void check_collisions(void);
   
   void set_suspended(bool suspended);
   void update(void);

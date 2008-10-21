@@ -1,5 +1,6 @@
 #include "movements/MovementWithCollision.h"
 #include "ZSDX.h"
+#include "Game.h"
 #include "Map.h"
 #include "entities/MapEntity.h"
 
@@ -7,7 +8,7 @@
  * Constructor.
  */
 MovementWithCollision::MovementWithCollision(void):
-  map(NULL) {
+  map(zsdx->game->get_current_map()) {
 
 }
 

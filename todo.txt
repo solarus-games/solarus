@@ -6,11 +6,9 @@
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
 - Joystick : tester le hat
-- Mode vidéo 16:9 ? 384*240 ou 768*480 avec bandes noires verticales
 
 - Bugs: 
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - un pot lancé passe à travers les murs quand ça rame avec valgrind (à cause du while de Movement::update_x et Movement::update_y, les collisions n'étant testées qu'après le while entier, peut-être faut-il que ThrowItemMovement hérite de MovementWithCollision)
 
 - Prochaines grandes étapes :
   - couper des buissons et des herbes

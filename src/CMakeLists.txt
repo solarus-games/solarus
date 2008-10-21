@@ -108,7 +108,7 @@ add_executable (zsdx
   movements/PathMovement.cpp
   movements/FairyMovement.cpp
   movements/FollowMovement.cpp
-  movements/ThrowItemMovement.cpp
+  movements/ThrownItemMovement.cpp
   movements/TargetMovement.cpp
 
 )

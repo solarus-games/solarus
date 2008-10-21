@@ -14,7 +14,7 @@
 /**
  * Number of times the screen is redrawn is a second.
  */
-const int FRAMES_PER_SECOND = 50;
+const int FRAMES_PER_SECOND = 40;
 
 /**
  * Delay between two frames in millisecond.

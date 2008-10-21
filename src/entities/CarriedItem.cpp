@@ -127,6 +127,36 @@ bool CarriedItem::is_broken(void) {
 }
 
 /**
+ * Checks whether the item collides with the map when it is thrown.
+ */
+void CarriedItem::check_collisions(void) {
+
+  ThrowItemMovement *movement = (ThrowItemMovement*) get_movement();
+
+  SDL_Rect collision_box;
+  collision_box.x = position_in_map.x;
+  collision_box.y = position_in_map.y + movement->get_item_height();
+  collision_box.w = 16;
+  collision_box.h = 16;
+
+  if (movement->is_stopped() || map->collision_with_obstacles(get_layer(), collision_box)) {
+    // destroy the item
+
+    is_throwing = false;
+    is_breaking = true;
+    destruction_sound->play();
+    get_last_sprite()->set_current_animation("destroy");
+
+    if (throwing_direction == 3) {
+      // destroy the item where its shadow is
+      set_y(get_y() + movement->get_item_height());
+    }
+
+    clear_movement();
+  }
+}
+
+/**
  * This function is called by the map when the game is suspended or resumed.
  * This is a redefinition of MapEntity::set_suspended() to suspend the movement
  * of the shadow when the item is being thrown.
@@ -170,33 +200,8 @@ void CarriedItem::update(void) {
     }
   }
   else if (is_throwing) {
-
-    ThrowItemMovement *movement = (ThrowItemMovement*) get_movement();
-
-    SDL_Rect collision_box;
-    collision_box.x = position_in_map.x;
-    collision_box.y = position_in_map.y + movement->get_item_height();
-    collision_box.w = 16;
-    collision_box.h = 16;
-
-    if (movement->is_stopped() || map->collision_with_obstacles(get_layer(), collision_box)) {
-      // destroy the item
-
-      is_throwing = false;
-      is_breaking = true;
-      destruction_sound->play();
-      get_last_sprite()->set_current_animation("destroy");
-
-      if (throwing_direction == 3) {
-	// destroy the item where its shadow is
-	set_y(get_y() + movement->get_item_height());
-      }
-
-      clear_movement();
-    }
-    else {
-      shadow_sprite->update();
-    }
+    check_collisions();
+    shadow_sprite->update();
   }
 }
 

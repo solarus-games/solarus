@@ -126,10 +126,15 @@ void VideoManager::set_video_mode(VideoMode mode) {
 
   if (is_wide(mode)) {
     dst_position_centered.x = dst_position_wide.x + 160;
+    width = 720;
+    offset = dst_position_wide.x;
   }
   else {
     dst_position_centered.x = 160;
+    width = 640;
+    offset = 0;
   }
+  end_row_increment = 2 * offset + width;
 
   screen_surface = SDL_SetVideoMode(size->w, size->h, 32, flags);
   SDL_ShowCursor(show_cursor);
@@ -209,31 +214,26 @@ void VideoManager::blit_centered(SDL_Surface *src_surface, SDL_Surface *dst_surf
  */
 void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
 
-  int width, offset;
-  if (is_wide(video_mode)) {
-    width = 720;
-    offset = dst_position_wide.x;
-  }
-  else {
-    width = 640;
-    offset = 0;
-  }
+  SDL_LockSurface(src_surface);
+  SDL_LockSurface(dst_surface);
 
   Uint32 *src = (Uint32*) src_surface->pixels;
   Uint32 *dst = (Uint32*) dst_surface->pixels;
 
-  int k = 0;
-  for (int i = 0; i < 240; i++) {
-    for (int j = 0; j < 320; j++) {
-      int p = width * 2 * i + 2 * j + offset;
-      dst[p] = src[k];
-      dst[p + 1] = src[k];
-      dst[p + width] = src[k];
-      dst[p + width + 1] = src[k];
+  int p = offset;
+  for (int i = 0; i < 480; i += 2) {
 
-      k++;
+    for (int j = 0; j < 640; j += 2) {
+      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src;
+      p += 2;
+      src++;
     }
+
+    p += end_row_increment;
   }
+
+  SDL_UnlockSurface(src_surface);
+  SDL_UnlockSurface(dst_surface);
 }
 
 /**
@@ -244,21 +244,14 @@ void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_sur
  */
 void VideoManager::blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
 
-  int width, offset;
-  if (is_wide(video_mode)) {
-    width = 720;
-    offset = dst_position_wide.x;
-  }
-  else {
-    width = 640;
-    offset = 0;
-  }
+  SDL_LockSurface(src_surface);
+  SDL_LockSurface(dst_surface);
 
   Uint32 *src = (Uint32*) src_surface->pixels;
   Uint32 *dst = (Uint32*) dst_surface->pixels;
 
   int a, b, c, d, e = 0, f, g, h, i;
-  int e1, e2, e3, e4;
+  int e1 = offset, e2, e3, e4;
   for (int row = 0; row < 240; row++) {
     for (int col = 0; col < 320; col++) {
 
@@ -281,10 +274,9 @@ void VideoManager::blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surfa
       if (col == 319) { c = b; f = e; i = h; }
 
       // compute e1 to e4
-      e1 = width * 2 * row + 2 * col + offset;
       e2 = e1 + 1;
       e3 = e1 + width;
-      e4 = e1 + width + 1;
+      e4 = e3 + 1;
 
       // compute the color
 
@@ -297,7 +289,12 @@ void VideoManager::blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surfa
       else {
 	dst[e1] = dst[e2] = dst[e3] = dst[e4] = src[e];
       }
+      e1 += 2;
       e++;
     }
+    e1 += end_row_increment;
   }
+
+  SDL_UnlockSurface(src_surface);
+  SDL_UnlockSurface(dst_surface);
 }

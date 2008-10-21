@@ -10,7 +10,7 @@
 
 - Bugs: 
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-
+  - un pot lancé passe à travers les murs quand ça rame avec valgrind (à cause du while de Movement::update_x et Movement::update_y, les collisions n'étant testées qu'après le while entier, peut-être faut-il que ThrowItemMovement hérite de MovementWithCollision)
 
 - Prochaines grandes étapes :
   - couper des buissons et des herbes

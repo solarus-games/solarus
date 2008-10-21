@@ -29,12 +29,16 @@ class VideoManager {
 
  private:
 
-  VideoMode video_mode;
-  SDL_Surface *screen_surface;                /**< the screen surface */
-
-  static SDL_Rect dst_position_wide;
-  SDL_Rect dst_position_centered;
   static const SDL_Rect video_mode_sizes[NB_MODES];
+  static SDL_Rect dst_position_wide;
+
+  VideoMode video_mode;
+  SDL_Surface *screen_surface;
+
+  SDL_Rect dst_position_centered;
+  int width;
+  int offset;
+  int end_row_increment;
 
   bool is_mode_supported(VideoMode mode);
   bool is_fullscreen(VideoMode mode);

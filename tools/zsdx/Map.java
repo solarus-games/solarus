@@ -128,6 +128,7 @@ public class Map extends Observable {
 	super();
 
 	this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
+	this.location = new Point(0, 0);
 	this.tileset = null;
 	this.tilesetId = "";
 	this.musicId = Music.noneId;

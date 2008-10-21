@@ -255,7 +255,7 @@ public class Tile extends Observable {
 	int width = positionInTileset.width;
 	
 	if (isAnimated() && animationSeparation == ANIMATION_SEPARATION_HORIZONTAL) {
-	    width = positionInTileset.width / 3;
+	    width = width / 3;
 	}
 
 	return width;
@@ -272,7 +272,7 @@ public class Tile extends Observable {
 	int height = positionInTileset.height;
 	
 	if (isAnimated() && animationSeparation == ANIMATION_SEPARATION_VERTICAL) {
-	    height = positionInTileset.height / 3;
+	    height = height / 3;
 	}
 
 	return height;
@@ -305,7 +305,8 @@ public class Tile extends Observable {
 
 	// diagonal obstacle: check that the tile is square
 	if (obstacle != MapEntity.OBSTACLE_NONE && obstacle != MapEntity.OBSTACLE
-	    && positionInTileset.width != positionInTileset.height) {
+	    && getWidth() != getHeight()) {
+	    System.out.println("width = " + getWidth() + ", height = " + getHeight());
 	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile");
 	}
 

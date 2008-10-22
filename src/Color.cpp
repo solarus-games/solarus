@@ -4,8 +4,8 @@
  */
 #include "Color.h"
 
-Uint16 Color::black;
-Uint16 Color::white;
+Uint32 Color::black;
+Uint32 Color::white;
 
 SDL_PixelFormat * Color::format;
 
@@ -25,6 +25,6 @@ void Color::initialize(void) {
  * @param g the green component (from 0 to 255)
  * @param b the blue component (from 0 to 255)
  */
-Uint16 Color::create(int r, int g, int b) {
+Uint32 Color::create(int r, int g, int b) {
   return SDL_MapRGB(format, r, g, b);
 }

@@ -71,11 +71,11 @@ void Tileset::load(void) {
   background_color = Color::create(r, g, b);
 
   // read the tiles
-  int tile_id, is_animated, obstacle, defaultLayer;
+  int tile_id, is_animated, obstacle, default_layer;
   while (std::getline(tileset_file, line)) {
 
     istringstream iss(line);
-    iss >> tile_id >> is_animated >> obstacle >> defaultLayer;
+    iss >> tile_id >> is_animated >> obstacle >> default_layer;
 
     int width, height;
 
@@ -115,9 +115,12 @@ void Tileset::unload(void) {
   int i;
 
   for (i = 0; i < max_tile_id; i++) {
-    delete tiles[i];
+    if (tiles[i] != NULL) {
+      delete tiles[i];
+    }
   }
   nb_tiles = 0;
 
   SDL_FreeSurface(tileset_image);
+  tileset_image = NULL;
 }

@@ -28,7 +28,7 @@ class SelectionMenuCommon {
   Sprite *cursor;
   int cursor_position; // 1 to 5
 
-  Uint16 background_color;
+  Uint32 background_color;
 
   // sounds
   Sound *cursor_sound;

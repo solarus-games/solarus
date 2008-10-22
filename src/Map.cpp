@@ -407,13 +407,13 @@ MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int 
     y_in_tile = y % 8;
     on_obstacle = y_in_tile < 8 - x_in_tile;
     break;
-    
+
   case MapEntity::OBSTACLE_BOTTOM_LEFT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile > x_in_tile;
     break;
-    
+
   case MapEntity::OBSTACLE_BOTTOM_RIGHT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;

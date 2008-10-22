@@ -15,8 +15,8 @@ class Color {
 
  public:
 
-  static Uint16 black;
-  static Uint16 white;
+  static Uint32 black;
+  static Uint32 white;
 
   /**
    * Initializes the global variables of colors.
@@ -29,7 +29,7 @@ class Color {
    * @param g the green component (from 0 to 255)
    * @param b the blue component (from 0 to 255)
    */
-  static Uint16 create(int r, int g, int b);
+  static Uint32 create(int r, int g, int b);
 };
 
 #endif

@@ -81,6 +81,7 @@ void MovementWithSmoothCollision::update_x(void) {
     if (now >= next_move_date_x) { // it's time to try a move
 
       if (!collision_with_map(x_move, 0)) {
+
 	translate_x(x_move); // make the move
 	
 	if (y_move != 0 && collision_with_map(0, y_move)) {
@@ -100,11 +101,12 @@ void MovementWithSmoothCollision::update_x(void) {
 	}
 	else if (!collision_with_map(x_move, -1)) {
 	  translate(x_move, -1);
-	  next_move_date_x_increment += (int) (x_delay * SQRT_2);
+	  next_move_date_x_increment = (int) (x_delay * SQRT_2);
 	}
 	else {
+
 	  /* The diagonal moves didn't work either.
-	   * So we look for a place (up to 8 pixels on the left and on the right)
+	   * So we look for a place (up to 8 pixels up and right)
 	   * where the required move would be allowed.
 	   * If we find a such place, then we move towards this place.
 	   */

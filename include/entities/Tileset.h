@@ -36,7 +36,7 @@ class Tileset {
   /**
    * Background color of the tileset.
    */
-  Uint16 background_color;
+  Uint32 background_color;
 
   /**
    * Image from which the tiles are extracted.
@@ -60,7 +60,7 @@ class Tileset {
    * Returns the background color of the tileset.
    * @return the background color
    */
-  inline Uint16 get_background_color(void) { return background_color; }
+  inline Uint32 get_background_color(void) { return background_color; }
 
   void load(void);
   void unload(void);

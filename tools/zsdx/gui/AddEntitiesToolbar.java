@@ -133,11 +133,11 @@ public class AddEntitiesToolbar extends JComponent {
 	 */
 	public void mousePressed(MouseEvent ev) {
 
-	    if (mapView.getMap() == null) {
+	    int cell = ev.getX() / 32;
+
+	    if (mapView.getMap() == null || cell >= cells.length) {
 		return;
 	    }
-
-	    int cell = ev.getX() / 32;
 
 	    int typeClicked = cells[cell][0];
 	    int subtypeClicked = cells[cell][1];

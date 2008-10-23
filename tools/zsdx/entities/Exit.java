@@ -210,17 +210,11 @@ public class Exit extends ActiveEntity {
      * false to replace them by a background color
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
-	
-	int scale = (int) zoom;
 
-	if (scale != 2) {
-	    throw new UnsupportedOperationException("Zoom mode not yet supported: " + zoom);
-	}
-	
-	int dx1 = positionInMap.x * scale;
-	int dy1 = positionInMap.y * scale;
-	int dx2 = dx1 + positionInMap.width * scale;
-	int dy2 = dy1 + positionInMap.height * scale;
+	int dx1 = (int) (positionInMap.x * zoom);
+	int dy1 = (int) (positionInMap.y * zoom);
+	int dx2 = (int) (dx1 + positionInMap.width * zoom);
+	int dy2 = (int) (dy1 + positionInMap.height * zoom);
 	
 	g.drawImage(icon.getImage(), dx1, dy1, dx2, dy2, 0, 0, 32, 32, null);
 	

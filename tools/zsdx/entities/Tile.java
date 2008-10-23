@@ -457,22 +457,20 @@ public class Tile extends Observable {
      * @param zoom scale of the image (1: unchanged, 2: zoom of 200%)
      */
     public void paint(Graphics g, Tileset tileset, int x, int y, double zoom) {
-	
-	int scale = (int) zoom;
-	
-	Image tilesetImage = (scale == 2) ? tileset.getDoubleImage() : tileset.getImage();
 
-	int width = getWidth() * scale;
-	int height = getHeight() * scale;
+	Image tilesetImage = tileset.getScaledImage(zoom);
+
+	int width = (int) (getWidth() * zoom);
+	int height = (int) (getHeight() * zoom);
 	
-	int sx1 = positionInTileset.x * scale;
+	int sx1 = (int) (positionInTileset.x * zoom);
 	int sx2 = sx1 + width;
-	int sy1 = positionInTileset.y * scale;
+	int sy1 = (int) (positionInTileset.y * zoom);
 	int sy2 = sy1 + height;
 	
-	int dx1 = x * scale;
+	int dx1 = (int) (x * zoom);
 	int dx2 = dx1 + width;
-	int dy1 = y * scale;
+	int dy1 = (int) (y * zoom);
 	int dy2 = dy1 + height;
 	
 	g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);

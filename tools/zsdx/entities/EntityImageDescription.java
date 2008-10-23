@@ -108,19 +108,13 @@ public class EntityImageDescription implements ImageObserver {
 	if (image == null) {
 	    image = Project.getEditorImage(imageFileName);
 	}
-	
-	// check the zoom
-	int scale = (int) zoom;
-	if (scale != 2) {
-	    throw new UnsupportedOperationException("Zoom mode not yet supported: " + zoom);
-	}
-	
-	// calculate the coordinates
-	int dx1 = positionInDestinationImage.x * scale;
-	int dy1 = positionInDestinationImage.y * scale;
 
-	int dx2 = dx1 + positionInDestinationImage.width * scale;
-	int dy2 = dy1 + positionInDestinationImage.height * scale;
+	// calculate the coordinates
+	int dx1 = (int) (positionInDestinationImage.x * zoom);
+	int dy1 = (int) (positionInDestinationImage.y * zoom);
+
+	int dx2 = (int) (dx1 + positionInDestinationImage.width * zoom);
+	int dy2 = (int) (dy1 + positionInDestinationImage.height * zoom);
 	
 	int sx1 = rectangle.x;
 	int sx2 = sx1 + rectangle.width;

@@ -88,22 +88,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * The popup menu shown when the user right clicks on the selected entities.
      */
     private MapViewPopupMenu popupMenu;
-    
-    /**
-     * Zoom of the map view.
-     */
-    private double zoom;
-    
+
     /**
      * Width (or height) of the area displayed around the map.
      */
     private static final int AREA_AROUND_MAP = 48;
-
-    /**
-     * Width (or height) displayed of the area outside the map,
-     * scaled after applying the zoom.
-     */
-    private int scaledAreaAroundMap;
 
     /**
      * Constructor.
@@ -115,8 +104,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	this.fixedLocation = new Rectangle();
 	this.initialSelection = new LinkedList<MapEntity>();
 	this.renderingOptions = new MapViewRenderingOptions(this);
-	this.zoom = 2;
-	scaledAreaAroundMap = (int) (AREA_AROUND_MAP * zoom);
 
 	// create the popup menu for the selected entities
 	// items: resize, layer, destroy
@@ -172,13 +159,21 @@ public class MapView extends JComponent implements Observer, Scrollable {
     public void setAddEntitiesToolbar(AddEntitiesToolbar toolbar) {
 	this.addEntitiesToolbar = toolbar;
     }
-    
+
     /**
      * Returns the zoom of the map view.
      * @return the zoom
      */
     public double getZoom() {
-	return zoom;
+	return renderingOptions.getZoom();
+    }
+
+    /**
+     * Returns the number of pixels displayed around the map.
+     * @return the number of pixels displayed around the map
+     */
+    public int getScaledSpaceAroundMap() {
+	return (int) (AREA_AROUND_MAP * getZoom());
     }
 
     /**
@@ -206,9 +201,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    height = map.getHeight();
 	}
 
-	width = (int) ((width + 2 * AREA_AROUND_MAP) * zoom);
-	height = (int) ((height + 2 * AREA_AROUND_MAP) * zoom);
-	
+	width = (int) ((width + 2 * AREA_AROUND_MAP) * getZoom());
+	height = (int) ((height + 2 * AREA_AROUND_MAP) * getZoom());
+
 	return new Dimension(width, height);
     }
 
@@ -247,7 +242,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @param obj parameters
      */
     public void update(Observable o, Object obj) {
-	
+
 	if (map == null) { // the map has just been closed
 	    repaint();
 	    return;
@@ -263,7 +258,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		update(tileset, null);
 	    }
 
-	    // redraw the image	    
+	    // redraw the image
 	    repaint();
 	    setSize(getPreferredSize());
 	}
@@ -277,7 +272,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	else if (o instanceof Tileset) {
 	    // the selected tile in the tileset has changed
-	    
+
 	    Tileset tileset = map.getTileset();
 	    if (tileset.getSelectedTile() == null) {
 		// no tile is selected anymore in the tileset
@@ -298,7 +293,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @return true if the map image exists
      */
     public boolean isImageLoaded() {
-	return map != null && map.getTileset() != null && map.getTileset().getDoubleImage() != null;
+	return map != null && map.getTileset() != null && map.getTileset().getImage() != null;
     }
 
     /**
@@ -313,11 +308,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	Tileset tileset = map.getTileset();
 
-	// outside the map	
+	// outside the map
+	double zoom = getZoom();
+	int scaledSpaceAroundMap = getScaledSpaceAroundMap();
+
 	g.setColor(Color.lightGray);
-	g.fillRect(0, 0, (int) (map.getWidth() * zoom) + 2 * scaledAreaAroundMap,
-		(int) (map.getHeight() * zoom) + 2 * scaledAreaAroundMap);
-	g.translate(scaledAreaAroundMap, scaledAreaAroundMap);
+	g.fillRect(0, 0, (int) (map.getWidth() * zoom) + 2 * scaledSpaceAroundMap,
+		(int) (map.getHeight() * zoom) + 2 * scaledSpaceAroundMap);
+	g.translate(scaledSpaceAroundMap, scaledSpaceAroundMap);
 
 	// background color
 	if (renderingOptions.getShowLayer(MapEntity.LAYER_LOW) && tileset != null) {
@@ -330,7 +328,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	if (tileset != null) {
 
-	    Image tilesetImage = tileset.getDoubleImage();
+	    Image tilesetImage = tileset.getScaledImage(zoom);
 	    if (tilesetImage != null) {
 
 		int x, y, width, height;
@@ -875,7 +873,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @return the x coordinate of the mouse event in the map coordinate system
      */
     public int getMouseInMapX(MouseEvent mouseEvent) {
-	return (int) ((mouseEvent.getX() - scaledAreaAroundMap) / zoom);
+	return (int) ((mouseEvent.getX() - getScaledSpaceAroundMap()) / getZoom());
     }
 
     /**
@@ -886,7 +884,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @return the y coordinate of the mouse event in the map coordinate system
      */
     public int getMouseInMapY(MouseEvent mouseEvent) {
-	return (int) ((mouseEvent.getY() - scaledAreaAroundMap) / zoom);
+	return (int) ((mouseEvent.getY() - getScaledSpaceAroundMap()) / getZoom());
     }
     
     /**

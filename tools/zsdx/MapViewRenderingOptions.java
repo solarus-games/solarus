@@ -19,6 +19,12 @@ public class MapViewRenderingOptions {
     private MapView mapView;
 
     /**
+     * Zoom of the map view.
+     * The possible values are 0.25, 0.5, 1, 2 (default).
+     */
+    private double zoom;
+
+    /**
      * Tells whether or not each layer is shown.
      */
     private boolean[] showLayers;
@@ -41,6 +47,7 @@ public class MapViewRenderingOptions {
      */
     public MapViewRenderingOptions(MapView mapView) {
 	this.mapView = mapView;
+	this.zoom = 2.0;
 	this.showLayers = new boolean[] {true, true, true};
 	this.showObstacles = new boolean[] {true, true};
 	this.showTransparency = true;
@@ -52,6 +59,23 @@ public class MapViewRenderingOptions {
      */
     public Map getMap() {
 	return mapView.getMap();
+    }
+
+    /**
+     * Returns the zoom of the map view.
+     * @return the zoom
+     */
+    public double getZoom() {
+	return zoom;
+    }
+
+    /**
+     * Sets the zoom of the map view.
+     * @param zoom the zoom
+     */
+    public void setZoom(double zoom) {
+	this.zoom = zoom;
+	mapView.update(getMap(), null);
     }
 
     /**
@@ -122,7 +146,7 @@ public class MapViewRenderingOptions {
 	showObstacles[MapEntity.OBSTACLE] = showObstacleEntities;
 	mapView.repaint();
     }
-    
+
     /**
      * Sets whether or not the entities with or without obstacles are shown.
      * @param obstacle the entities to show or not: MapEntity.OBSTACLE_NONE or MapEntity.OBSTACLE

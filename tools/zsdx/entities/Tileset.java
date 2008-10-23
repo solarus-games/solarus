@@ -17,7 +17,7 @@ import zsdx.*;
  */
 public class Tileset extends Observable implements ImageObserver {
 
-    // tileset data 
+    // tileset data
 
     /**
      * Id of the tileset.
@@ -49,11 +49,11 @@ public class Tileset extends Observable implements ImageObserver {
      * The tileset image.
      */
     private Image image;
-    
+
     /**
-     * The tileset image scaled by 2.
+     * The scaled tileset images.
      */
-    private Image doubleImage;
+    private Image[] scaledImages;
     
     // information about the user actions on the tileset
 
@@ -177,14 +177,23 @@ public class Tileset extends Observable implements ImageObserver {
      */
     public void reloadImage() {
 	try {
+	    scaledImages = new Image[4];
+
 	    image = ImageIO.read(getImageFile());
-	    doubleImage = image.getScaledInstance(image.getWidth(this) * 2,
-						  image.getHeight(this) * 2,
-						  Image.SCALE_FAST);
+	    int width = image.getWidth(this);
+	    int height = image.getHeight(this);
+
+	    scaledImages[0] = image.getScaledInstance(width / 4, height / 4, Image.SCALE_FAST);
+
+	    scaledImages[1] = image.getScaledInstance(width / 2, height / 2, Image.SCALE_FAST);
+
+	    scaledImages[2] = image;
+
+	    scaledImages[3] = image.getScaledInstance(width * 2, height * 2, Image.SCALE_FAST);
 	}
 	catch (IOException e) {
 	    image = null;
-	    doubleImage = null;
+	    scaledImages = null;
 	}
 
 	setChanged();
@@ -211,14 +220,47 @@ public class Tileset extends Observable implements ImageObserver {
     }
 
     /**
+     * Returns a scaled version of the tileset image, previously loaded by reloadImage().
+     * @param zoom an integer representing the scale (0: 25%, 1: 50%, 2: 100%, 3: 200%) 
+     * @return the scaled tileset image
+     */
+    public Image getScaledImage(int zoom) {
+// 	if (doubleImage == null) {
+// 	    reloadImage();
+// 	}
+	return scaledImages[zoom];
+    }
+
+    /**
+     * Returns a scaled version of the tileset image, previously loaded by reloadImage().
+     * @param zoom the scale (0.25, 0.5, 1 or 2) 
+     * @return the scaled tileset image
+     */
+    public Image getScaledImage(double zoom) {
+
+	int index;
+	if (zoom == 0.25) {
+	    index = 0;
+	}
+	else if (zoom == 0.5) {
+	    index = 1;
+	}
+	else if (zoom == 1.0) {
+	    index = 2;
+	}
+	else {
+	    index = 3;
+	}
+
+	return scaledImages[index];
+    }
+
+    /**
      * Returns the 200% scaled version of the tileset's image, previously loaded by reloadImage().
      * @return the tileset's image in 200%
      */
     public Image getDoubleImage() {
-// 	if (doubleImage == null) {
-// 	    reloadImage();
-// 	}
-	return doubleImage;
+	return getScaledImage(3);
     }
 
     /**
@@ -580,11 +622,11 @@ public class Tileset extends Observable implements ImageObserver {
     public void save() throws ZSDXException {
 
 	try {
-	    
+
 	    // open the tileset file
 	    File tilesetFile = Project.getTilesetFile(tilesetId);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
-	    
+
 	    // print the tileset general info: "r g b"
 	    out.print(backgroundColor.getRed());
 	    out.print('\t');
@@ -592,7 +634,7 @@ public class Tileset extends Observable implements ImageObserver {
 	    out.print('\t');
 	    out.print(backgroundColor.getBlue());
 	    out.println();
-	    
+
 	    // print the tiles
 	    for (int id: getTileIds()) {
 		out.print(id);

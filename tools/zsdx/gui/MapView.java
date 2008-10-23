@@ -64,6 +64,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private int entityTypeBeingAdded;         // in state ADDING_ENTITY: type of the entity that is about to be added
     private int entitySubtypeBeingAdded;      // in state ADDING_ENTITY: subtype of the entity that is about to be added
     private MapEntity entityBeingAdded;       // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
+    private List<MapEntity> entitiesCopied;   // entities cut or copied, ready to be pasted
 
     // headers of the map view
 
@@ -103,16 +104,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	this.cursorLocation = new Point();
 	this.fixedLocation = new Rectangle();
 	this.initialSelection = new LinkedList<MapEntity>();
+	this.entitiesCopied = new LinkedList<MapEntity>();
 	this.renderingOptions = new MapViewRenderingOptions(this);
-
-	// create the popup menu for the selected entities
-	// items: resize, layer, destroy
-	popupMenu = new MapViewPopupMenu(this);
 
 	MouseInputListener mouseListener = new MapMouseInputListener();
 	addMouseListener(mouseListener);
 	addMouseMotionListener(mouseListener);
-	
+
 	keyListener = new MapKeyListener();
 	addKeyListener(keyListener);
     }
@@ -146,8 +144,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		map.getTileset().addObserver(this);
 	    }
 	}
-
-	popupMenu.setMap(map);
 
 	update(map, null);
     }
@@ -406,6 +402,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	catch (ZSDXException e) {
 	    GuiTools.errorDialog("Cannot remove the entities: " + e.getMessage());
 	}
+    }
+
+    /**
+     * Shows the context menu at the coordinates specified by a mouse event.
+     * @param mouseEvent a mouse event 
+     */
+    private void showPopupMenu(MouseEvent mouseEvent) {
+	MapViewPopupMenu popupMenu = new MapViewPopupMenu(this);
+	popupMenu.display(mouseEvent.getX(), mouseEvent.getY());
     }
 
     /**
@@ -1065,9 +1070,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    }
 		    
 		    // show a popup menu for the entities selected
-		    if (!entitySelection.isEmpty()) {
-			popupMenu.show(mouseEvent.getX(), mouseEvent.getY());
-		    }
+		    showPopupMenu(mouseEvent);
 		}
 		
 		break;
@@ -1137,7 +1140,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		returnToNormalState();
 
 		if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
-		    popupMenu.show(mouseEvent.getX(), mouseEvent.getY());
+		    showPopupMenu(mouseEvent);
 		}
 		break;
 

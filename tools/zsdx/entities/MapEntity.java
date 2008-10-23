@@ -298,6 +298,24 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     }
 
     /**
+     * Creates a copy of the specified entity.
+     * If the entity has a name, a different name is automatically assigned to the copy.
+     * @param map the map
+     * @param other an entity
+     * @return the copy created
+     */
+    public static MapEntity createCopy(Map map, MapEntity other) {
+
+	try {
+	    return createFromString(map, other.toString());
+	}
+	catch (ZSDXException ex) {
+	    System.err.println("Unexpected error: cannot create a copy of entity '" + other + "'");
+	    return null;
+	}
+    }
+
+    /**
      * Returns a string describing this entity: the entity type, the layer, the coordinates,
      * the id (if any) and the direction (if any).
      * Subclasses should redefine this method to add their own information (if any).
@@ -633,10 +651,10 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * Changes the name of the entity.
      * The entity must be identifiable (i.e. hasName() returns true).
      * By default, an entity is not identifiable and this method throws an exception.
+     * If the name specified is already used, another name is automatically set.
      * @param name the new entity's name
      * @throws UnsupportedOperationException if the entity is not identifiable
-     * @throws MapException if this name is already used by another entity of the same type
-     * or not valid
+     * @throws MapException if this name is not valid
      */
     public void setName(String name) throws UnsupportedOperationException, MapException {
 
@@ -650,8 +668,32 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	
 	MapEntity other = map.getEntityWithName(getType(), name);
 	if (other != null && other != this) {
-	    throw new MapException("The name '" + name
-		    + "'is already used by another entity of this map");
+	    
+	    int counter = 2;
+	    String[] words = name.split("_");
+ 
+	    if (words.length > 1) {
+
+		StringBuffer buff = new StringBuffer();
+		for (int i = 0; i < words.length - 1; i++) {
+		    buff.append(words[i]);
+		    buff.append('_');
+		}
+		String prefix = buff.toString();
+
+		try {
+		    counter = Integer.parseInt(words[words.length - 1]) + 1;
+
+		    while (map.getEntityWithName(getType(), prefix + counter) != null) {
+			counter++;
+		    }
+		    
+		    buff.append(counter);
+		}
+		catch (NumberFormatException ex) {
+		    buff.append('2');
+		}
+	    }
 	}
 
 	this.name = name;
@@ -665,20 +707,14 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      */
     private void computeDefaultName() {
 	
-	int entityType = getType();	
-	String prefix = getTypeName(entityType);
-	int i = 1;
-	
-	// compute an unused name
-	while (map.getEntityWithName(entityType, prefix + i) != null) {
-	    i++;
-	}
-	
+	int entityType = getType();
+	String prefix = getTypeName(entityType).replace(' ', '_');
+
 	try {
-	    setName(getTypeName(entityType) + i);
+	    setName(prefix);
 	}
 	catch (MapException ex) {
-	    // should not happen if the while above works
+	    // should not happen
 	    System.err.println("Unexcepted error: " + ex.getMessage());
 	    System.exit(1);
 	}

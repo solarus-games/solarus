@@ -18,40 +18,14 @@ public class MapViewPopupMenu extends JPopupMenu {
     private Map map;
 
     /**
+     * The entities selected.
+     */
+    private MapEntitySelection selection;
+
+    /**
      * The map view where the popup menu is shown.
      */
     private MapView mapView;
-
-    /**
-     * Item in the popup menu to edit the selected entity.
-     */
-    private JMenuItem itemEdit;
-
-    /**
-     * Item in the popup menu to resize the selected entity.
-     */
-    private JMenuItem itemResize;
-
-    /**
-     * Items for the layers in the popup menu.
-     */
-    private JRadioButtonMenuItem[] itemsLayers;
-
-    /**
-     * Submenu to select the direction of the selected entities.
-     */
-    private JMenu menuDirection4;
-    private JMenu menuDirection8;
-
-    /**
-     * Items for the 4 directions in the submenu.
-     */
-    private JRadioButtonMenuItem[] itemsDirections4;
-
-    /**
-     * Items for the 8 directions in the submenu.
-     */
-    private JRadioButtonMenuItem[] itemsDirections8;
 
     /**
      * Name of the layers, for the items in the popup menu.
@@ -59,87 +33,83 @@ public class MapViewPopupMenu extends JPopupMenu {
     private static final String[] layerNames = {"Low layer", "Intermediate layer", "High layer"};
 
     /**
-     * Constructor
+     * Creates a shows a popup menu.
+     * @param map view the map view
      */
     public MapViewPopupMenu(MapView theMapView) {
 	super();
 
+	this.mapView = theMapView;
+	this.map = theMapView.getMap();
+
+	selection = map.getEntitySelection();
+	if (selection.isEmpty()) {
+	    buildMenuWithoutEntities();
+	}
+	else {
+	    buildMenuWithEntities();
+	}
+    }
+
+    /**
+     * Creates the menu shown when some entities are selected.
+     * The options are:
+     * Edit Resize | Cut Copy Paste | Direction Layer Bring to front Bring to back | Destroy
+     */
+    private void buildMenuWithEntities() {
 	JMenuItem item;
 
-	this.mapView = theMapView;
+	// edit
+	item = new JMenuItem("Edit");
+	item.addActionListener(new ActionListenerEditEntity());
+	item.setEnabled(true);
+	add(item);
 
-	// items: edit, resize, layer, direction, bring to front, bring to back, destroy
-
-	itemEdit = new JMenuItem("Edit");
-	itemEdit.addActionListener(new ActionListenerEditEntity());
-	itemEdit.setEnabled(true);
-	add(itemEdit);
-
-	itemResize = new JMenuItem("Resize");
-	itemResize.addActionListener(new ActionListener() {
+	// resize
+	item = new JMenuItem("Resize");
+	item.setEnabled(selection.isResizable());
+	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    mapView.startResizingEntity();
 		}
 	    });
-	add(itemResize);
+	add(item);
 
 	addSeparator();
 
-	itemsLayers = new JRadioButtonMenuItem[MapEntity.LAYER_NB + 1];
-	ButtonGroup itemsLayersGroup = new ButtonGroup();
-	
-	for (int i = 0; i < MapEntity.LAYER_NB; i++) {
-	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
-	    itemsLayers[i].addActionListener(new ActionListenerChangeLayer(i));
-	    add(itemsLayers[i]);
-	    itemsLayersGroup.add(itemsLayers[i]);
-	}
-	itemsLayers[MapEntity.LAYER_NB] = new JRadioButtonMenuItem();
-	itemsLayers[MapEntity.LAYER_NB].addActionListener(new ActionListenerChangeLayer(MapEntity.LAYER_NB));
-	itemsLayersGroup.add(itemsLayers[MapEntity.LAYER_NB]);
+	// cut
+	item = new JMenuItem("Cut");
+	item.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent ev) {
+		mapView.cutSelectedEntities();
+	    }
+	});
+
+	// copy
+	item = new JMenuItem("Copy");
+	item.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent ev) {
+		mapView.copySelectedEntities();
+	    }
+	});
+
+	// paste
+	item = new JMenuItem("Paste");
+	item.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent ev) {
+		mapView.paste();
+	    }
+	});
 
 	addSeparator();
 
-	// build the "Direction" menus
-	
-	// 4 directions
-	menuDirection4 = new JMenu("Direction");
-	
-	itemsDirections4 = new JRadioButtonMenuItem[5];
-	ButtonGroup itemsDirectionsGroup = new ButtonGroup();
+	// direction
+	buildDirectionSubmenu();
 
-	for (int i = 0; i < 4; i++) {
-	    itemsDirections4[i] = new JRadioButtonMenuItem(DirectionChooser.directionNames4[i]);
-	    itemsDirections4[i].addActionListener(new ActionListenerChangeDirection(i));
-	    menuDirection4.add(itemsDirections4[i]);
-	    itemsDirectionsGroup.add(itemsDirections4[i]);
-	}
-	itemsDirections4[4] = new JRadioButtonMenuItem();
-	itemsDirections4[4].addActionListener(new ActionListenerChangeDirection(4));
-	itemsDirectionsGroup.add(itemsDirections4[MapEntity.LAYER_NB]);
-	
-	add(menuDirection4);
+	// layer
+	buildLayerSubmenu();
 
-	// 8 directions
-	menuDirection8 = new JMenu("Direction");
-	
-	itemsDirections8 = new JRadioButtonMenuItem[9];
-	itemsDirectionsGroup = new ButtonGroup();
-
-	for (int i = 0; i < 8; i++) {
-	    itemsDirections8[i] = new JRadioButtonMenuItem(DirectionChooser.directionNames8[i]);
-	    itemsDirections8[i].addActionListener(new ActionListenerChangeDirection(i));
-	    menuDirection8.add(itemsDirections8[i]);
-	    itemsDirectionsGroup.add(itemsDirections8[i]);
-	}
-	itemsDirections8[4] = new JRadioButtonMenuItem();
-	itemsDirections8[4].addActionListener(new ActionListenerChangeDirection(8));
-	itemsDirectionsGroup.add(itemsDirections8[MapEntity.LAYER_NB]);
-
-	add(menuDirection8);
-
-	addSeparator();
-	
+	// bring to front / to back
 	item = new JMenuItem("Bring to front");
 	item.addActionListener(new ActionListenerBringToFront());
 	add(item);
@@ -160,24 +130,62 @@ public class MapViewPopupMenu extends JPopupMenu {
     }
 
     /**
-     * Sets the observed map.
-     * @param map the current map, or null if no map is loaded
+     * Builds the "Direction" menu item if necessary.
      */
-    public void setMap(Map map) {
-	this.map = map;
+    private void buildDirectionSubmenu() {	
+
+	int nbDirections = selection.getNbDirections();
+	if (nbDirections == 0) {
+	    return;
+	}
+
+	JMenu menuDirection = new JMenu("Direction");
+	
+	JRadioButtonMenuItem[] itemsDirections = new JRadioButtonMenuItem[nbDirections + 1];
+	ButtonGroup itemsDirectionsGroup = new ButtonGroup();
+
+	for (int i = 0; i < nbDirections; i++) {
+	    String name = (nbDirections == 4) ? DirectionChooser.directionNames4[i] : DirectionChooser.directionNames8[i];
+	    itemsDirections[i] = new JRadioButtonMenuItem(name);
+	    itemsDirections[i].addActionListener(new ActionListenerChangeDirection(i));
+	    menuDirection.add(itemsDirections[i]);
+	    itemsDirectionsGroup.add(itemsDirections[i]);
+	}
+	itemsDirections[nbDirections] = new JRadioButtonMenuItem();
+	itemsDirections[nbDirections].addActionListener(new ActionListenerChangeDirection(nbDirections));
+	itemsDirectionsGroup.add(itemsDirections[MapEntity.LAYER_NB]);
+
+	add(menuDirection);
+
+	int direction = selection.getDirection();
+
+	// select the appropriate direction item
+	if (direction != -1) {
+	    // if all the selected entities have the same direction, we check its item
+	    itemsDirections[direction].setSelected(true);
+	}
+	else {
+	    // otherwise we select no item
+	    itemsDirections[nbDirections].setSelected(true);
+	}
     }
 
     /**
-     * Shows the popup menu.
-     * @param x x coordinate of where the popup menu has to be shown
-     * @param y y coordinate of where the popup menu has to be shown
+     * Builds the "Layer" menu item
      */
-    public void show(int x, int y) {
+    public void buildLayerSubmenu() {
+	JRadioButtonMenuItem[] itemsLayers = new JRadioButtonMenuItem[MapEntity.LAYER_NB + 1];
+	ButtonGroup itemsLayersGroup = new ButtonGroup();
 
-	MapEntitySelection selection = map.getEntitySelection();
-	
-	// enable or not the item "Resize"
-	itemResize.setEnabled(selection.isResizable());
+	for (int i = 0; i < MapEntity.LAYER_NB; i++) {
+	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
+	    itemsLayers[i].addActionListener(new ActionListenerChangeLayer(i));
+	    add(itemsLayers[i]);
+	    itemsLayersGroup.add(itemsLayers[i]);
+	}
+	itemsLayers[MapEntity.LAYER_NB] = new JRadioButtonMenuItem();
+	itemsLayers[MapEntity.LAYER_NB].addActionListener(new ActionListenerChangeLayer(MapEntity.LAYER_NB));
+	itemsLayersGroup.add(itemsLayers[MapEntity.LAYER_NB]);
 
 	// select the appropriate layer item
 	int layer = selection.getLayer();
@@ -190,50 +198,14 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    // otherwise we select no item
 	    itemsLayers[MapEntity.LAYER_NB].setSelected(true);
 	}
+    }
 
-	// enable or not the item "Direction"
-	int nbDirections = selection.getNbDirections();
-	if (nbDirections == 0) {
-	    menuDirection4.setVisible(true);
-	    menuDirection4.setEnabled(false);
-	    menuDirection8.setVisible(false);
-	}
-	else {
-	    int direction = selection.getDirection();
-
-	    if (nbDirections == 4) {
-		menuDirection4.setVisible(true);
-		menuDirection4.setEnabled(true);
-		menuDirection8.setVisible(false);
-		
-		// select the appropriate direction item
-		if (direction != -1) {
-		    // if all the selected entities have the same direction, we check its item
-		    itemsDirections4[direction].setSelected(true);
-		}
-		else {
-		    // otherwise we select no item
-		    itemsDirections4[4].setSelected(true);
-		}
-	    }
-	    else { // 8 directions
-		menuDirection8.setVisible(true);
-		menuDirection8.setEnabled(true);
-		menuDirection4.setVisible(false);
-		
-		// select the appropriate direction item
-		if (direction != -1) {
-		    // if all the selected entities have the same direction, we check its item
-		    itemsDirections8[direction].setSelected(true);
-		}
-		else {
-		    // otherwise we select no item
-		    itemsDirections8[4].setSelected(true);
-		}
-	    }
-	}
-
-	// show the popup menu
+    /**
+     * Shows the popup menu.
+     * @param x x coordinate of where the popup menu has to be shown
+     * @param y y coordinate of where the popup menu has to be shown
+     */
+    public void display(int x, int y) {
 	show(mapView, x, y);
     }
 

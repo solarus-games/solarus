@@ -362,7 +362,7 @@ public class Tileset extends Observable implements ImageObserver {
      * Unselects the current tile.
      * This is equivalent to call setSelectedTileId(0).
      */
-    public void unSelectTile() {
+    public void unselectTile() {
 	setSelectedTileId(0);
     }
 

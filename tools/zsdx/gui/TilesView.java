@@ -159,7 +159,7 @@ public class TilesView extends JPanel {
 		tileset.setSelectedTileId(tileset.tileRankToTileId(selectedTileRank));
 	    }
 	    else {
-		tileset.unSelectTile();
+		tileset.unselectTile();
 	    }
 	}
     }

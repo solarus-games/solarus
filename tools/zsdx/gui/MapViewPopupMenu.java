@@ -98,16 +98,15 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    add(item);
 	}
 
-	if (mapView.canPaste()) {
-	    // paste
-	    item = new JMenuItem("Paste");
-	    item.addActionListener(new ActionListener() {
+	// paste
+	item = new JMenuItem("Paste");
+	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
 		    mapView.paste();
 		}
 	    });
-	    add(item);
-	}
+	item.setEnabled(mapView.canPaste());
+	add(item);
 
 	if (!selection.isEmpty()) {
 

@@ -95,7 +95,7 @@ public class MapViewRenderingOptionsView extends JPanel {
 	    
 	    if (map != null) {
 		// unselect everything
-		map.getEntitySelection().unSelectAll();
+		map.getEntitySelection().unselectAll();
 	    }
 
 	    // get the new checkbox state
@@ -133,7 +133,7 @@ public class MapViewRenderingOptionsView extends JPanel {
 	    
 	    if (map != null) {
 		// unselect everything
-		map.getEntitySelection().unSelectAll();
+		map.getEntitySelection().unselectAll();
 	    }
 
 	    // get the new checkbox state

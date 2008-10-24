@@ -86,7 +86,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 	    itemCancelCreate.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-			tileset.unSelectTile();
+			tileset.unselectTile();
 		    }
 		});
 	    popupMenuCreate.addSeparator();
@@ -398,12 +398,12 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 		if (selectedTile != null && !selectedTile.getPositionInTileset().contains(x,y)) {
 		    // an existing tile was selected and the user pressed the mouse button outside: unselect it
-		    tileset.unSelectTile();
+		    tileset.unselectTile();
 		}
 
 		else if (tileset.isSelectingNewTile()) {
 		    // a new tile was selected: unselect it
-		    tileset.unSelectTile();
+		    tileset.unselectTile();
 		}
 
 		// begin a selection
@@ -443,7 +443,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 		    // the area doesn't exist or is not valid: we cancel the selection
 		    selectionStartPoint = null;
 		    selectionCurrentPoint = null;
-		    tileset.unSelectTile();
+		    tileset.unselectTile();
 		    newTileArea = null;
 		}
 	    }

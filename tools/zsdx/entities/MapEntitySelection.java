@@ -92,10 +92,24 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     }
 
     /**
+     * Make some entities selected.
+     * If other entities were selected, they are not unselected.
+     * @param entities the entities to select
+     */
+    public void select(List<MapEntity> entities) {
+
+	for (MapEntity entity: entities) {
+	    this.entities.add(entity);
+	}
+	setChanged();
+	notifyObservers();
+    }
+
+    /**
      * Unselects an entity.
      * @param entity the entity to unselect
      */
-    public void unSelect(MapEntity entity) {
+    public void unselect(MapEntity entity) {
 	if (entities.contains(entity)) {
 	    entities.remove(entity);
 	    setChanged();
@@ -106,7 +120,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     /**
      * Unselects all entities.
      */
-    public void unSelectAll() {
+    public void unselectAll() {
 	entities.clear();
 	setChanged();
 	notifyObservers();
@@ -118,7 +132,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public void switchSelection(MapEntity entity) {
 	if (isSelected(entity)) {
-	    unSelect(entity);
+	    unselect(entity);
 	}
 	else {
 	    select(entity);

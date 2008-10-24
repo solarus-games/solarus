@@ -663,39 +663,51 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	if (!hasName()) {
 	    throw new UnsupportedOperationException("This entity is not identifiable");
 	}
-	
+
 	if (name.indexOf(' ') != -1 || name.indexOf('\t') != -1) {
 	    throw new MapException("The entity name cannot have whitespaces");
 	}
-	
+
 	MapEntity other = map.getEntityWithName(getType(), name);
 	if (other != null && other != this) {
-	    
+
 	    int counter = 2;
 	    String[] words = name.split("_");
- 
+	    StringBuffer prefix;
+
 	    if (words.length > 1) {
 
-		StringBuffer buff = new StringBuffer();
+		prefix = new StringBuffer();
 		for (int i = 0; i < words.length - 1; i++) {
-		    buff.append(words[i]);
-		    buff.append('_');
+		    prefix.append(words[i]);
+		    prefix.append('_');
 		}
-		String prefix = buff.toString();
+		String suffix = words[words.length - 1];
 
 		try {
-		    counter = Integer.parseInt(words[words.length - 1]) + 1;
-
-		    while (map.getEntityWithName(getType(), prefix + counter) != null) {
-			counter++;
-		    }
-		    
-		    buff.append(counter);
+		    counter = Integer.parseInt(suffix);
 		}
 		catch (NumberFormatException ex) {
-		    buff.append('2');
+		    prefix.append(suffix);
+		    prefix.append('_');
 		}
 	    }
+	    else {
+		prefix = new StringBuffer(name);
+		prefix.append('_');
+	    }
+
+	    counter = 2;
+	    while (map.getEntityWithName(getType(), prefix.toString() + counter) != null) {
+		counter++;
+	    }
+	    name = prefix.toString() + counter;
+	}
+
+	// debug
+	other = map.getEntityWithName(getType(), name);
+	if (other != null && other != this) {
+	    throw new MapException("An entity with this name already exists and I was unable to compute a new one");
 	}
 
 	this.name = name;
@@ -719,6 +731,28 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	    // should not happen
 	    System.err.println("Unexcepted error: " + ex.getMessage());
 	    System.exit(1);
+	}
+    }
+
+    /**
+     * Makes sure the name of this entity is unique on the map, renaming it if necessary.
+     * setName() garantees that no other entity has the same name on the map, but two
+     * entities may be created with the same name without detecting it because they are
+     * not added on the map yet. This can happen bith copy/paste operations.
+     * If the entity is not identifiable, this method does nothing.
+     * @param map the map
+     */
+    public void ensureNameIsUnique() {
+	
+	if (hasName()) {
+	    try {
+		setName(name);
+	    }
+	    catch (MapException ex) {
+		// should not happen
+		System.err.println("Unexcepted error: " + ex.getMessage());
+		System.exit(1);
+	    }
 	}
     }
 

@@ -101,5 +101,4 @@ public class AddEntitiesMenu extends JMenu {
 	    mapView.startAddingEntity(entityType, entitySubtype);
 	}
     }
-
 }

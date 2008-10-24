@@ -16,6 +16,8 @@ import zsdx.map_editor_actions.*;
  */
 public class MapView extends JComponent implements Observer, Scrollable {
 
+    private MapEditorWindow mapEditorWindow;
+
     /**
      * The current map.
      */
@@ -93,8 +95,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * Constructor.
      */
-    public MapView() {
+    public MapView(MapEditorWindow mapEditorWindow) {
 	super();
+
+	this.mapEditorWindow = mapEditorWindow;
 
 	this.cursorLocation = new Point();
 	this.fixedLocation = new Rectangle();
@@ -273,7 +277,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// if a tile was just selected in the tileset whereas there is already
 		// entities selected in the map, unselected the entities in the map
 		setState(State.NORMAL);
-		map.getEntitySelection().unSelectAll();
+		map.getEntitySelection().unselectAll();
 	    }
 	}
     }
@@ -392,9 +396,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
     public void destroySelectedEntities() {
 	try {
 	    map.getEntitySelection().removeFromMap();
+	    map.getEntitySelection().unselectAll();
 	}
-	catch (ZSDXException e) {
-	    GuiTools.errorDialog("Cannot remove the entities: " + e.getMessage());
+	catch (ZSDXException ex) {
+	    GuiTools.errorDialog("Cannot remove the entities: " + ex.getMessage());
 	}
     }
 
@@ -402,21 +407,44 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Copies the selected entities to the clipboard and removes them from the map.
      */
     public void cutSelectedEntities() {
-	
+	copySelectedEntities();
+	destroySelectedEntities();
     }
 
     /**
      * Copies the selected entities to the clipboard.
      */
     public void copySelectedEntities() {
-	
+	copiedEntities = new LinkedList<MapEntity>();
+	MapEntitySelection selectedEntities = map.getEntitySelection();
+
+	try {
+	    for (MapEntity entity: selectedEntities) {
+		MapEntity copy = MapEntity.createCopy(map, entity);
+		copy.move(8, 8);
+		copiedEntities.add(copy);
+	    }
+	}
+	catch (ZSDXException ex) {
+
+	}
+
+	mapEditorWindow.update(null, null);
     }
 
     /**
      * Paste the copied entities.
      */
     public void paste() {
-	
+	try {
+	    map.getHistory().doAction(new ActionAddEntities(map, copiedEntities));
+	    map.getEntitySelection().unselectAll();
+	    map.getEntitySelection().select(copiedEntities);
+	    copySelectedEntities();
+	}
+	catch (ZSDXException ex) {
+	    GuiTools.errorDialog("Cannot paste the entities: " + ex.getMessage());
+	}
     }
 
     /**
@@ -570,12 +598,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		map.getHistory().doAction(new ActionAddEntity(map, entityBeingAdded));
 
 		// make it selected
-		map.getEntitySelection().unSelectAll();
+		map.getEntitySelection().unselectAll();
 		map.getEntitySelection().select(entityBeingAdded);
 	    
 		// unselect the tile in the tileset (if any)
 		if (map.getTileset().getSelectedTile() != null) {
-		    map.getTileset().unSelectTile();
+		    map.getTileset().unselectTile();
 		}
 
 		// let the user resize the entity until the mouse is released
@@ -679,7 +707,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    
 	    // update the selection
 	    MapEntitySelection entitySelection = map.getEntitySelection();
-	    entitySelection.unSelectAll();
+	    entitySelection.unselectAll();
 	    
 	    // get the rectangle's content
 	    List<MapEntity> entitiesInRectangle =
@@ -1029,7 +1057,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 			// CTRL + left click or SHIFT + left click:
 			// unselect the tile clicked
-			entitySelection.unSelect(entityClicked);
+			entitySelection.unselect(entityClicked);
 		    }
 		}
 		else if (mouseEvent.getClickCount() == 2) {
@@ -1082,7 +1110,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    if (!mouseEvent.isControlDown() && !mouseEvent.isShiftDown() &&
 			(entityClicked == null || !alreadySelected)) {
 
-			entitySelection.unSelectAll();
+			entitySelection.unselectAll();
 		    }
 
 		    // the user may want to select entities
@@ -1108,7 +1136,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    if (entitySelection.getNbEntitiesSelected() == 1 && entityClicked != null
 			&& !entitySelection.isSelected(entityClicked)) {
 
-			map.getEntitySelection().unSelectAll();
+			map.getEntitySelection().unselectAll();
 		    }
 		    
 		    // select the tile clicked if no previous selection was kept

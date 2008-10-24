@@ -1,5 +1,6 @@
 package zsdx.map_editor_actions;
 
+import java.util.List;
 import java.util.LinkedList;
 import zsdx.*;
 import zsdx.entities.*;
@@ -14,7 +15,7 @@ public class ActionRemoveEntities extends MapEditorAction {
     /**
      * Creates an action to remove one entity.
      * @param map the map
-     * @param entityToRemove the entity to remove
+     * @param entityToRemove the entity to remove (this object will be copied)
      */
     public ActionRemoveEntities(Map map, MapEntity entityToRemove) {
 	super(map);
@@ -27,7 +28,7 @@ public class ActionRemoveEntities extends MapEditorAction {
      * @param map the map
      * @param entitiesToRemove the entities to remove
      */
-    public ActionRemoveEntities(Map map, LinkedList<MapEntity> entitiesToRemove) {
+    public ActionRemoveEntities(Map map, List<MapEntity> entitiesToRemove) {
 	super(map);
 	this.entitiesToRemove = new LinkedList<MapEntity>(entitiesToRemove);
     }
@@ -51,5 +52,4 @@ public class ActionRemoveEntities extends MapEditorAction {
 	    map.addEntity(entity);
 	}
     }
-
 }

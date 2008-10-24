@@ -64,7 +64,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	leftPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 	leftPanel.add(tilePicker);
 
-	mapView = new MapView();
+	mapView = new MapView(this);
 	JScrollPane mapViewScroller = new JScrollPane(mapView);
 
 	MapViewMouseCoordinates mapViewMouseCoordinates =
@@ -250,6 +250,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	// if there was already a map, remove its observers
 	if (this.map != null) {
 	    this.map.deleteObservers();
+	    this.map.getEntitySelection().deleteObservers();
 	}
 	
 	this.map = map;
@@ -266,8 +267,9 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	mapView.setMap(map);
 
 	if (map != null) {
-	    // observe the history to enable or disable the items Save, Undo and Redo
+	    // observe the history and the selection to enable or disable the items
 	    map.getHistory().addObserver(this);
+	    map.getEntitySelection().addObserver(this);
 	    update(null, null);
 	}
     }

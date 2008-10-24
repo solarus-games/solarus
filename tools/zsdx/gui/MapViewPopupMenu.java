@@ -43,96 +43,107 @@ public class MapViewPopupMenu extends JPopupMenu {
 	this.map = theMapView.getMap();
 
 	selection = map.getEntitySelection();
-	if (selection.isEmpty()) {
-	    buildMenuWithoutEntities();
-	}
-	else {
-	    buildMenuWithEntities();
-	}
+	buildMenu();
     }
 
     /**
-     * Creates the menu shown when some entities are selected.
+     * Creates the menu.
      * The options are:
-     * Edit Resize | Cut Copy Paste | Direction Layer Bring to front Bring to back | Destroy
+     * Edit Resize | Create | Cut Copy Paste | Direction Layer Bring to front Bring to back | Destroy
      */
-    private void buildMenuWithEntities() {
+    private void buildMenu() {
 	JMenuItem item;
 
-	// edit
-	item = new JMenuItem("Edit");
-	item.addActionListener(new ActionListenerEditEntity());
-	item.setEnabled(true);
-	add(item);
+	if (!selection.isEmpty()) {
+	    // edit
+	    item = new JMenuItem("Edit");
+	    item.addActionListener(new ActionListenerEditEntity());
+	    item.setEnabled(true);
+	    add(item);
 
-	// resize
-	item = new JMenuItem("Resize");
-	item.setEnabled(selection.isResizable());
-	item.addActionListener(new ActionListener() {
+	    // resize
+	    item = new JMenuItem("Resize");
+	    item.setEnabled(selection.isResizable());
+	    item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    mapView.startResizingEntity();
 		}
 	    });
-	add(item);
+	    add(item);
 
+	    addSeparator();
+	}
+
+	// create
+	add(new AddEntitiesMenu(mapView, "Create"));
 	addSeparator();
 
-	// cut
-	item = new JMenuItem("Cut");
-	item.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		mapView.cutSelectedEntities();
-	    }
-	});
+	if (!selection.isEmpty()) {
+	    // cut
+	    item = new JMenuItem("Cut");
+	    item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+		    mapView.cutSelectedEntities();
+		}
+	    });
+	    add(item);
 
-	// copy
-	item = new JMenuItem("Copy");
-	item.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		mapView.copySelectedEntities();
-	    }
-	});
+	    // copy
+	    item = new JMenuItem("Copy");
+	    item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+		    mapView.copySelectedEntities();
+		}
+	    });
+	    add(item);
+	}
 
-	// paste
-	item = new JMenuItem("Paste");
-	item.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		mapView.paste();
-	    }
-	});
+	if (mapView.canPaste()) {
+	    // paste
+	    item = new JMenuItem("Paste");
+	    item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+		    mapView.paste();
+		}
+	    });
+	    add(item);
+	}
 
-	addSeparator();
+	if (!selection.isEmpty()) {
 
-	// direction
-	buildDirectionSubmenu();
+	    addSeparator();
 
-	// layer
-	buildLayerSubmenu();
+	    // direction
+	    buildDirectionSubmenu();
 
-	// bring to front / to back
-	item = new JMenuItem("Bring to front");
-	item.addActionListener(new ActionListenerBringToFront());
-	add(item);
+	    // layer
+	    buildLayerSubmenu();
 
-	item = new JMenuItem("Bring to back");
-	item.addActionListener(new ActionListenerBringToBack());
-	add(item);
+	    // bring to front / to back
+	    item = new JMenuItem("Bring to front");
+	    item.addActionListener(new ActionListenerBringToFront());
+	    add(item);
 
-	addSeparator();
+	    item = new JMenuItem("Bring to back");
+	    item.addActionListener(new ActionListenerBringToBack());
+	    add(item);
 
-	item = new JMenuItem("Destroy");
-	item.addActionListener(new ActionListener() {
+	    addSeparator();
+
+	    item = new JMenuItem("Destroy");
+	    item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    mapView.destroySelectedEntities();
 		}
 	    });
-	add(item);
+	    add(item);
+	}
     }
 
     /**
      * Builds the "Direction" menu item if necessary.
      */
-    private void buildDirectionSubmenu() {	
+    private void buildDirectionSubmenu() {
 
 	int nbDirections = selection.getNbDirections();
 	if (nbDirections == 0) {

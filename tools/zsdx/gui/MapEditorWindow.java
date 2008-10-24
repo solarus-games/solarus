@@ -26,11 +26,14 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
     // menu items memorized to enable them later
     private JMenu menuMap;
     private JMenu menuEdit;
-    private JMenu menuEntity;
+    private JMenu menuCreate;
     private JMenuItem menuItemClose;
     private JMenuItem menuItemSave;
     private JMenuItem menuItemUndo;
     private JMenuItem menuItemRedo;
+    private JMenuItem menuItemCut;
+    private JMenuItem menuItemCopy;
+    private JMenuItem menuItemPaste;
 
     /**
      * Creates a new window.
@@ -41,9 +44,6 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
 	// set a nice look and feel
 	GuiTools.setLookAndFeel();
-
-	// create the menu bar
-	createMenuBar();
 
 	// left panel : the map properties and the tile picker
 	JPanel leftPanel = new JPanel();
@@ -91,7 +91,10 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 		    }
 		}
 	    });
-	
+
+	// create the menu bar
+	createMenuBar();
+
 	setMap(null);
 	new ActionListenerLoadProject().actionPerformed(null);
     }
@@ -192,35 +195,37 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
 	menuBar.add(menuEdit);
 
-	// menu Entity
-	menuEntity = new JMenu("Entity");
-	menuEntity.setMnemonic(KeyEvent.VK_E);
-	
-	item = new JMenuItem("Add entrance");
-	item.setMnemonic(KeyEvent.VK_E);
-	item.getAccessibleContext().setAccessibleDescription("Add an entrance on the map");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_ENTRANCE));
-	menuEntity.add(item);
+	menu.addSeparator();
 
-	item = new JMenuItem("Add exit");
-	item.setMnemonic(KeyEvent.VK_X);
-	item.getAccessibleContext().setAccessibleDescription("Add an exit on the map");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_EXIT));
-	menuEntity.add(item);
+	menuItemCut = new JMenuItem("Cut");
+	menuItemCut.setMnemonic(KeyEvent.VK_U);
+	menuItemCut.getAccessibleContext().setAccessibleDescription("Cut the selected entities");
+	menuItemCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+	menuItemCut.addActionListener(new ActionListenerCut());
+	menuItemCut.setEnabled(false);
+	menuEdit.add(menuItemCut);
 
-	item = new JMenuItem("Add pickable item");
-	item.setMnemonic(KeyEvent.VK_P);
-	item.getAccessibleContext().setAccessibleDescription("Add a pickable item (rupee, heart, fairy, key...)");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_PICKABLE_ITEM));
-	menuEntity.add(item);
+	menuItemCopy = new JMenuItem("Copy");
+	menuItemCopy.setMnemonic(KeyEvent.VK_C);
+	menuItemCopy.getAccessibleContext().setAccessibleDescription("Copy the selected entities");
+	menuItemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+	menuItemCopy.addActionListener(new ActionListenerCopy());
+	menuItemCopy.setEnabled(false);
+	menuEdit.add(menuItemCopy);
 
-	item = new JMenuItem("Add destructible item");
-	item.setMnemonic(KeyEvent.VK_T);
-	item.getAccessibleContext().setAccessibleDescription("Add a destructible item (pot, bush...)");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM));
-	menuEntity.add(item);
-	
-	menuBar.add(menuEntity);
+	menuItemPaste = new JMenuItem("Paste");
+	menuItemPaste.setMnemonic(KeyEvent.VK_P);
+	menuItemPaste.getAccessibleContext().setAccessibleDescription("Paste the copied entities");
+	menuItemPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+	menuItemPaste.addActionListener(new ActionListenerPaste());
+	menuItemPaste.setEnabled(false);
+	menuEdit.add(menuItemPaste);
+
+	// menu Create
+	menuCreate = new AddEntitiesMenu(mapView, "Create");
+	menuCreate.setMnemonic(KeyEvent.VK_C);
+
+	menuBar.add(menuCreate);
 
 	setJMenuBar(menuBar);
     }
@@ -253,7 +258,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	menuItemClose.setEnabled(map != null);
 	menuItemSave.setEnabled(map != null);
 	menuEdit.setEnabled(map != null);
-	menuEntity.setEnabled(map != null);
+	menuCreate.setEnabled(map != null);
 
 	// notify the views
 	mapPropertiesView.setMap(map);
@@ -279,6 +284,11 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	menuItemSave.setEnabled(!history.isSaved());
 	menuItemUndo.setEnabled(history.canUndo());
 	menuItemRedo.setEnabled(history.canRedo());
+
+	boolean emptySelection = map.getEntitySelection().isEmpty();
+	menuItemCut.setEnabled(!emptySelection);
+	menuItemCopy.setEnabled(!emptySelection);
+	menuItemPaste.setEnabled(mapView.canPaste());
     }
     
     /**
@@ -517,7 +527,40 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	    }
 	}
     }
-    
+
+    /**
+     * Action performed when user the user clicks on Edit > Cut or presses Ctrl + X.
+     * The selected entities are cut.
+     */
+    private class ActionListenerCut implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+	    mapView.cutSelectedEntities();
+	}
+    }
+
+    /**
+     * Action performed when user the user clicks on Edit > Copy or presses Ctrl + C.
+     * The selected entities are copied.
+     */
+    private class ActionListenerCopy implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+	    mapView.copySelectedEntities();
+	}
+    }
+
+    /**
+     * Action performed when user the user clicks on Edit > Paste or presses Ctrl + V.
+     * The copied entities are added to the map.
+     */
+    private class ActionListenerPaste implements ActionListener {
+	
+	public void actionPerformed(ActionEvent ev) {
+	    mapView.paste();
+	}
+    }
+
     /**
      * Action performed when the user clicks on Project > New project.
      * Creates a new project, asking to the user the project path.
@@ -537,29 +580,6 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	
 	public void actionPerformed(ActionEvent ev) {
 	    loadProject();
-	}
-    }
-
-    /**
-     * Action performed when the user wants to add an entity.
-     */
-    private class ActionListenerAddEntity implements ActionListener {
-
-	// type of entity to add
-	private int entityType;
-	private int entitySubtype;
-
-	public ActionListenerAddEntity(int entityType) {
-	    this(entityType, 0);
-	}
-
-	public ActionListenerAddEntity(int entityType, int entitySubtype) {
-	    this.entityType = entityType;
-	    this.entitySubtype = entitySubtype;
-	}
-	
-	public void actionPerformed(ActionEvent ev) {
-	    mapView.startAddingEntity(entityType, entitySubtype);
 	}
     }
 }

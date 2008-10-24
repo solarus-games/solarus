@@ -64,7 +64,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private int entityTypeBeingAdded;         // in state ADDING_ENTITY: type of the entity that is about to be added
     private int entitySubtypeBeingAdded;      // in state ADDING_ENTITY: subtype of the entity that is about to be added
     private MapEntity entityBeingAdded;       // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
-    private List<MapEntity> entitiesCopied;   // entities cut or copied, ready to be pasted
+    private List<MapEntity> copiedEntities;   // entities cut or copied, ready to be pasted (or null)
 
     // headers of the map view
 
@@ -86,11 +86,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
     // other map view stuff
 
     /**
-     * The popup menu shown when the user right clicks on the selected entities.
-     */
-    private MapViewPopupMenu popupMenu;
-
-    /**
      * Width (or height) of the area displayed around the map.
      */
     private static final int AREA_AROUND_MAP = 48;
@@ -104,7 +99,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	this.cursorLocation = new Point();
 	this.fixedLocation = new Rectangle();
 	this.initialSelection = new LinkedList<MapEntity>();
-	this.entitiesCopied = new LinkedList<MapEntity>();
 	this.renderingOptions = new MapViewRenderingOptions(this);
 
 	MouseInputListener mouseListener = new MapMouseInputListener();
@@ -405,6 +399,34 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
+     * Copies the selected entities to the clipboard and removes them from the map.
+     */
+    public void cutSelectedEntities() {
+	
+    }
+
+    /**
+     * Copies the selected entities to the clipboard.
+     */
+    public void copySelectedEntities() {
+	
+    }
+
+    /**
+     * Paste the copied entities.
+     */
+    public void paste() {
+	
+    }
+
+    /**
+     * Returns whether there is something in the clipboard.
+     */
+    public boolean canPaste() {
+	return copiedEntities != null;
+    }
+
+    /**
      * Shows the context menu at the coordinates specified by a mouse event.
      * @param mouseEvent a mouse event 
      */
@@ -415,8 +437,20 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * Changes the current state of the map view.
+     * If the state was State.RESIZING_ENTITY or State.MOVING_ENTITIES,
+     * the endResizingEntity() or endMovingEntities() function is called.
+     * If you don't want these functions to be called, just change the state variable by hand.
+     * @param state the new state
      */
     private void setState(State state) {
+
+	if (this.state == State.RESIZING_ENTITY) {
+	    endResizingEntity();
+	}
+	else if (this.state == State.MOVING_ENTITIES) {
+	    endMovingEntities();
+	}
+
 	this.state = state;
 	addEntitiesToolbar.repaint();
     }
@@ -459,8 +493,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    entityBeingAdded = new TileOnMap(map, tileId, 0, 0);
 		}
 		else {
-		    entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);		    
+		    entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);
 		}
+		// TODO not working
+		Point mousePosition = MouseInfo.getPointerInfo().getLocation();
+		updateAddingEntity(mousePosition.x - getX(), mousePosition.y - getY());
 	    }
 	    catch (MapException ex) {
 		GuiTools.errorDialog("Cannot create the entity: " + ex.getMessage());
@@ -502,7 +539,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @returns the entity added (or null if there was a problem) 
      */
     private MapEntity endAddingEntity() {
-	
 	MapEntity entityAdded = null;
 	EditEntityDialog dialog = null;
 
@@ -518,7 +554,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    valid = true;
 		}
 		else { // the user cancelled the dialog box
-		    returnToNormalState();
+		    state = State.NORMAL;
 		}
 	    }
 	    
@@ -541,17 +577,19 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    startResizingEntity();
 		}
 		else {
-		    returnToNormalState();
+		    state = State.NORMAL;
 		}
 		
 		entityAdded = entityBeingAdded;
 		entityBeingAdded = null;
-		repaint();
 	    }
 	}
 	catch (ZSDXException ex) {
 	    GuiTools.errorDialog("Cannot add the entity: " + ex.getMessage());
 	}
+
+	repaint();
+	addEntitiesToolbar.repaint();
 	
 	return entityAdded;
     }
@@ -668,7 +706,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	if (entitySelection.isResizable()) {
 	    MapEntity entity = entitySelection.getEntity(0);
 	    Rectangle positionInMap = entity.getPositionInMap();
-	    
+
 	    fixedLocation.x = positionInMap.x;
 	    fixedLocation.y = positionInMap.y;
 	    fixedLocation.width = positionInMap.width;
@@ -677,7 +715,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    cursorLocation.x = positionInMap.x + positionInMap.width;
 	    cursorLocation.y = positionInMap.y + positionInMap.height;
 
-	    setState(State.RESIZING_ENTITY);
+	    state = State.RESIZING_ENTITY;
 	    repaint();
 	}
     }
@@ -759,7 +797,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	     * resized with small steps. Now we want to consider the whole resizing process
 	     * as one step only, so that it can be undone or redone directly later.
 	     */
-	    
+
 	    try {
 		// we restore the entity at its initial size
 		map.setEntityPosition(entity, fixedLocation);
@@ -771,7 +809,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		GuiTools.errorDialog("Cannot resize the entity: " + e.getMessage());
 	    }
 	}
-	returnToNormalState();
+	state = State.NORMAL;
+	repaint();
     }
 
     /**
@@ -867,7 +906,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		GuiTools.errorDialog("Cannot move the entities: " + e.getMessage());
 	    }
 	}
-	returnToNormalState();
+	state = State.NORMAL;
+	repaint();
     }
     
     /**

@@ -57,6 +57,8 @@ import zsdx.Map;
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
  * - Create a subclass of ActionEditEntity.
+ * - Add the entity in the AddEntitiesToolbar.subtypes array.
+ * - Add the entity in the AddEntitiesMenu class.
  */
 public abstract class MapEntity extends Observable implements ImageObserver {
 

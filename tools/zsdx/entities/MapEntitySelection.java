@@ -142,9 +142,9 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return the common layer, or -1 if all selected entities have not the same layer
      */
     public int getLayer() {
-	
+
 	int layer = entities.get(0).getLayer();
-	
+
 	for (int i = 1; i < entities.size(); i++) {
 	    if (entities.get(i).getLayer() != layer) {
 		return -1;
@@ -272,7 +272,6 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     public boolean hasName() {
 	
 	for (MapEntity entity: entities) {
-	    
 	    if (!entity.hasName()) {
 		return false;
 	    }

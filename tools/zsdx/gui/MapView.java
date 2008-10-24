@@ -495,9 +495,16 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		else {
 		    entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);
 		}
-		// TODO not working
+
 		Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-		updateAddingEntity(mousePosition.x - getX(), mousePosition.y - getY());
+		MouseEvent mouseEvent = new MouseEvent(this, 0, 0, 0,
+						       mousePosition.x - getLocationOnScreen().x,
+						       mousePosition.y - getLocationOnScreen().y,
+						       1, false, 0);
+		int x = getMouseInMapX(mouseEvent);
+		int y = getMouseInMapY(mouseEvent);
+		isMouseInMapView = true;
+		updateAddingEntity(x, y);
 	    }
 	    catch (MapException ex) {
 		GuiTools.errorDialog("Cannot create the entity: " + ex.getMessage());
@@ -944,7 +951,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	int x = getMouseInMapX(mouseEvent);
 	int y = getMouseInMapY(mouseEvent);
-	
+
 	for (int layer = MapEntity.LAYER_HIGH;
 	layer >= MapEntity.LAYER_LOW && entityClicked == null;
 	layer--) {
@@ -1214,14 +1221,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    
 		case ADDING_ENTITY:
 		    // update the entity position
-		    
 		    updateAddingEntity(x, y);
 		    break;
 
 		case RESIZING_ENTITY:
 		    // if we are resizing an entity, calculate the coordinates of
 		    // the second point of the rectangle formed by the pointer
-
 		    updateResizingEntity(x, y);
 		    break;
 		}

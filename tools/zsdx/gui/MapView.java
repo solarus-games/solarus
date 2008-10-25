@@ -415,8 +415,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Copies the selected entities to the clipboard.
      */
     public void copySelectedEntities() {
+	List<MapEntity> selectedEntities = map.getEntitySelection().getEntities();
 	copiedEntities = new LinkedList<MapEntity>();
-	MapEntitySelection selectedEntities = map.getEntitySelection();
+	selectedEntities = map.getSortedEntities(selectedEntities);
 
 	try {
 	    for (MapEntity entity: selectedEntities) {
@@ -438,8 +439,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
     public void paste() {
 	try {
 	    map.getHistory().doAction(new ActionAddEntities(map, copiedEntities));
-	    map.getEntitySelection().unselectAll();
-	    map.getEntitySelection().select(copiedEntities);
 	    copySelectedEntities();
 	}
 	catch (ZSDXException ex) {
@@ -583,7 +582,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    if (!valid) {
 		// if the entity is not valid yet, this is because some information is missing:
 		// we show a dialog box to let the user edit the entity
-		
+
 		dialog = new EditEntityDialog(map, entityBeingAdded);
 		if (dialog.display()) { // if the user filled the dialog box
 		    valid = true;
@@ -592,15 +591,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    state = State.NORMAL;
 		}
 	    }
-	    
+
 	    if (valid) {
 		// add the entity to the map
-		map.getHistory().doAction(new ActionAddEntity(map, entityBeingAdded));
+		map.getHistory().doAction(new ActionAddEntities(map, entityBeingAdded));
 
 		// make it selected
 		map.getEntitySelection().unselectAll();
 		map.getEntitySelection().select(entityBeingAdded);
-	    
+
 		// unselect the tile in the tileset (if any)
 		if (map.getTileset().getSelectedTile() != null) {
 		    map.getTileset().unselectTile();

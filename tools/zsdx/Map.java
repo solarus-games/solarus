@@ -833,10 +833,10 @@ public class Map extends Observable {
      * @param entities the entities to sort
      * @return the same entities, sorted as they are in the map
      */
-    private List<MapEntity> getSortedEntities(List<MapEntity> entities) {
-	
+    public List<MapEntity> getSortedEntities(List<MapEntity> entities) {
+
 	List<MapEntity> sortedEntities = new LinkedList<MapEntity>();
-	
+
 	// sort the entities so that they have the same order as in the map
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
@@ -899,6 +899,18 @@ public class Map extends Observable {
     }
 
     /**
+     * Returns whether an entity is behind a second one on the map.
+     * @param first
+     * @param second
+     * @return
+     */
+    /*
+    public boolean isBehind(MapEntity first, MapEntity second) {
+	
+    }
+    */
+
+    /**
      * Returns the id of the background music of the map.
      * @return the name of the music, i.e. a music file name with the extension,
      * or Music.noneId or Music.unchangedId
@@ -930,7 +942,7 @@ public class Map extends Observable {
     public MapEntitySelection getEntitySelection() {
 	return entitySelection;
     }
-    
+
     /**
      * Returns whether or not when the tileset was loaded, some tiles of the map refered
      * to non existent tiles in the tileset. These bad tiles were removed.

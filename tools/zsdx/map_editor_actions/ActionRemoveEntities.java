@@ -10,7 +10,7 @@ import zsdx.entities.*;
  */
 public class ActionRemoveEntities extends MapEditorAction {
 
-    private LinkedList<MapEntity> entitiesToRemove;
+    private List<MapEntity> entitiesToRemove;
 
     /**
      * Creates an action to remove one entity.
@@ -30,7 +30,7 @@ public class ActionRemoveEntities extends MapEditorAction {
      */
     public ActionRemoveEntities(Map map, List<MapEntity> entitiesToRemove) {
 	super(map);
-	this.entitiesToRemove = new LinkedList<MapEntity>(entitiesToRemove);
+	this.entitiesToRemove = map.getSortedEntities(entitiesToRemove);
     }
 
     /**
@@ -51,5 +51,7 @@ public class ActionRemoveEntities extends MapEditorAction {
 	for (MapEntity entity: entitiesToRemove) {
 	    map.addEntity(entity);
 	}
+	map.getEntitySelection().unselectAll();
+	map.getEntitySelection().select(entitiesToRemove);
     }
 }

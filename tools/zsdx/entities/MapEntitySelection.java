@@ -11,7 +11,7 @@ import zsdx.map_editor_actions.*;
 public class MapEntitySelection extends Observable implements Iterable<MapEntity> {
 
     /**
-     * The selected entities.
+     * The selected entities, in the same order than the map.
      */
     private LinkedList<MapEntity> entities;
 
@@ -85,11 +85,37 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public void select(MapEntity entity) {
 	if (!isSelected(entity)) {
+//	    entities.add(computeIndex(entity), entity);
 	    entities.add(entity);
 	    setChanged();
 	    notifyObservers();
 	}
     }
+
+    /**
+     * For an entity about to be selected, finds an index in the selected entities list
+     * such that the selected entities list remain in the same order the map entities. 
+     * @param entityToAdd an entity
+     * @return the index where this entity can be added to the selection
+     */
+    /*
+    private int computeIndex(MapEntity entityToAdd) {
+
+	int index = 0;
+	boolean stop = false;
+	Iterator<MapEntity> it = entities.iterator();
+	while (it.hasNext() && !stop) {
+	    MapEntity e = it.next();
+	    if (map.isBehind(entityToAdd, e)) {
+		stop = true;
+	    }
+	    else {
+		index++;
+	    }
+	}
+	return index;
+    }
+    */
 
     /**
      * Make some entities selected.
@@ -99,7 +125,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     public void select(List<MapEntity> entities) {
 
 	for (MapEntity entity: entities) {
-	    this.entities.add(entity);
+	    select(entity);
 	}
 	setChanged();
 	notifyObservers();

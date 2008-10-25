@@ -42,6 +42,8 @@ public class ActionAddEntities extends MapEditorAction {
 	    entity.ensureNameIsUnique();
 	    map.addEntity(entity);
 	}
+	map.getEntitySelection().unselectAll();
+	map.getEntitySelection().select(entitiesToAdd);
     }
 
     /**

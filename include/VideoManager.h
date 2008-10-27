@@ -5,7 +5,6 @@
 
 /**
  * Displays the window and handles the resolution mode.
- *
  */
 class VideoManager {
 

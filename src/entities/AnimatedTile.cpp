@@ -97,10 +97,9 @@ void AnimatedTile::update(void) {
  */
 void AnimatedTile::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
 
-  SDL_Rect dst = position_in_surface;
+  SDL_Rect dst_position = position_in_surface; // make a copy because the rectangle might be modified
   SDL_BlitSurface(tileset_image,
 		  &position_in_tileset[current_frames[sequence]],
 		  surface,
-		  &dst);
-
+		  &dst_position);
 }

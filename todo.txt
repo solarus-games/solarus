@@ -59,4 +59,7 @@ Dans le update() de Link, tester en permanence si l'origine de Link est sur de l
 	- empêcher de mettre des entités au-delà de la partie extérieure d'une map
 	- ResourceDatabase: créer les objets de chaque ressource depuis là, pour les fournir aux autres, ça évitera que chacun les recrée quand il a besoin (réfléchir au fait que les maps par exemple ne seront pas rechargées)
 	- Editeur de tileset : ajouter le choix des animations dans le popup menu
-	- Editeur de maps : copier-coller
+	- Editeur de maps : sélectionner uniquement les objets visibles (non obstacles / obstacles cochés ou pas)
+	- Changer les icônes d'entrée et sortie de la map
+	- Le message "Some tiles have been removed..." s'affiche quand on ouvre la map mais pas quand on change le tileset une fois ouvert (il y a une exception à la place)
+	- Dézoomer avec Ctrl + molette

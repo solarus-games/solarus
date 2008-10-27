@@ -457,19 +457,14 @@ bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_bo
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
 bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box) {
-  int x1, x2, y1, y2;
+  int x1, y1;
   bool collision = false;
 
   // collisions with tiles
   // we check the 4 corners of each 8*8 square in the collision box
-  for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1 += 8) {
-    y2 = y1 + 7;
-    for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1 += 8) {
-      x2 = x1 + 7;
-      collision = pixel_collision_with_tiles(layer, x1, y1)
-	|| pixel_collision_with_tiles(layer, x2, y1)
-	|| pixel_collision_with_tiles(layer, x1, y2)
-	|| pixel_collision_with_tiles(layer, x2, y2);
+  for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
+    for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
+      collision = pixel_collision_with_tiles(layer, x1, y1);
     }
   }
 
@@ -501,7 +496,7 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y) {
     SDL_Rect collision_box = {x, y, 1, 1};
     collision = collision_with_entities(layer, collision_box);
   }
-  
+
   return collision;   
 }
 

@@ -133,8 +133,13 @@ void MapEntities::set_obstacle(MapEntity *entity, MapEntity::Obstacle obstacle) 
  * @param obstacle the obstacle property to set
  */
 void MapEntities::set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle obstacle) {
-  int index = y8 * map->get_width8() + x8;
-  obstacle_tiles[layer][index] = obstacle;
+
+  int width8 = map->get_width8();
+  int height8 = map->get_height8();
+  if (x8 >= 0 && x8 < width8 && y8 >= 0 && y8 < height8) {
+    int index = y8 * width8 + x8;
+    obstacle_tiles[layer][index] = obstacle;
+  }
 }
 
 /**

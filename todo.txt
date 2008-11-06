@@ -54,7 +54,7 @@ Dans le update() de Link, tester en permanence si l'origine de Link est sur de l
 Réforme des entrées / sorties
 -----------------------------
 
-Termes et icônes amibgüs et trop spécialisés.
+Termes et icônes ambigüs et trop spécialisés.
 - Remplacer l'entité "Entrance" par une entité "Destination", visible ou non, changeant la direction de Link ou non.
 - Remplacer l'entité "Exit" par une entité "Teletransporter", qui puisse transporter vers la même map ou une autre map.
 La destination peut être une entité "Destination" ou bien simplement la mention "Side of the map" qui désigne automatiquement le côté approprié de la map, déterminé à partir de la direction du mouvement de Link au moment où il touche le téléporteur.

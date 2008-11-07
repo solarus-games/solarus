@@ -48,7 +48,7 @@ Game::Game(Savegame *savegame):
 
   // launch the starting map
   set_current_map(savegame->get_integer(Savegame::STARTING_MAP),
-		  savegame->get_integer(Savegame::STARTING_ENTRANCE),
+		  savegame->get_integer(Savegame::STARTING_POINT),
 		  Transition::FADE);
 }
 
@@ -342,10 +342,10 @@ Map * Game::get_current_map(void) {
  * Changes the current map.
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
- * @param entrance_index index of the entrance of the map you want to use
+ * @param destination_point_index index of the destination point of the map you want to use
  * @param transition_style type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition::Style transition_style) {
+void Game::set_current_map(MapId map_id, unsigned int destination_point_index, Transition::Style transition_style) {
 
   next_map = ResourceManager::get_map(map_id);
 
@@ -353,7 +353,7 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
     next_map->load();
   }
 
-  next_map->set_entrance(entrance_index);
+  next_map->set_destination_point(destination_point_index);
   this->transition_style = transition_style;
 }
 
@@ -361,10 +361,10 @@ void Game::set_current_map(MapId map_id, unsigned int entrance_index, Transition
  * Changes the current map.
  * Call this function when you want Link to go to another map.
  * @param map_id id of the map to launch
- * @param entrance_name name of the entrance of the map you want to use
+ * @param destination_point_name name of the destination point of the map you want to use
  * @param transition_style type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, string entrance_name, Transition::Style transition_style) {
+void Game::set_current_map(MapId map_id, string destination_point_name, Transition::Style transition_style) {
 
   next_map = ResourceManager::get_map(map_id);
 
@@ -372,7 +372,7 @@ void Game::set_current_map(MapId map_id, string entrance_name, Transition::Style
     next_map->load();
   }
 
-  next_map->set_entrance(entrance_name);
+  next_map->set_destination_point(destination_point_name);
   this->transition_style = transition_style;
 }
 

@@ -2,10 +2,10 @@
 #include "entities/Tileset.h"
 #include "entities/Tile.h"
 #include "entities/TileOnMap.h"
-#include "entities/Exit.h"
+#include "entities/Teletransporter.h"
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
-#include "entities/Entrance.h"
+#include "entities/DestinationPoint.h"
 #include "entities/Link.h"
 #include "entities/Chest.h"
 #include "Treasure.h"
@@ -56,25 +56,25 @@ void MapEntities::destroy_all_entities(void) {
   }
   all_entities.clear();
 
-  entrances.clear();
+  destination_points.clear();
   detectors.clear();
   entities_to_remove.clear();
 }
 
 /**
- * Returns the number of entrances of the map.
- * @return the number of entrances
+ * Returns the number of destination points of the map.
+ * @return the number of destination points
  */
-unsigned int MapEntities::get_nb_entrances(void) {
-  return entrances.size();
+unsigned int MapEntities::get_nb_destination_points(void) {
+  return destination_points.size();
 }
 
 /**
- * Returns an entrance.
- * @param index index of the entrance to get
+ * Returns a destination point.
+ * @param index index of the destination point to get
  */
-Entrance * MapEntities::get_entrance(int index) {
-  return entrances[index];
+DestinationPoint * MapEntities::get_destination_point(int index) {
+  return destination_points[index];
 }
 
 /**
@@ -263,43 +263,47 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
 }
 
 /**
- * Creates an entrance on the map.
- * This function is called for each entrance when loading the map.
- * @param entrance_name a string identifying this new entrance
+ * Creates a destination point on the map.
+ * This function is called for each destination point when loading the map.
+ * @param destination_point_name a string identifying this new destination point
  * @param layer the layer of Link's position
- * @param link_x x initial position of link in this state
- * (set -1 to indicate that the x coordinate is kept the same from the previous map)
- * @param link_y y initial position of link in this state
- * (set -1 to indicate that the y coordinate is kept the same from the previous map)
- * @param link_direction initial direction of link in this state (0 to 3)
+ * @param x x position of the destination point to create
+ * @param y y position of the destination point to create
+ * @param link_direction initial direction of link in this state (0 to 3, or -1
+ * to indicate that Link's direction is not changed)
+ * @param is_visible true to make the destination point visible
  */
-void MapEntities::add_entrance(string entrance_name, MapEntity::Layer layer, int link_x, int link_y, int link_direction) {
+void MapEntities::add_destination_point(string destination_point_name, MapEntity::Layer layer,
+					int x, int y, int link_direction, bool is_visible) {
   
-  Entrance *entrance = new Entrance(entrance_name, layer, link_x, link_y, link_direction);
-  entrances.push_back(entrance);
-  all_entities.push_back(entrance);
+  DestinationPoint *destination_point = new DestinationPoint(destination_point_name, layer,
+							     x, y, link_direction, is_visible);
+  destination_points.push_back(destination_point);
+  all_entities.push_back(destination_point);
 }
 
 /**
- * Creates an exit on the map.
- * This function is called for each exit when loading the map.
- * When Link walks on the exit, he leaves the map and enters another one.
- * @param exit_name a string identifying this new exit
- * @param layer layer of the exit to create
- * @param x x position of the exit rectangle
- * @param y y position of the exit rectangle
- * @param w width of the exit rectangle
- * @param h height of the exit rectangle
+ * Creates a teletransporter on the map.
+ * This function is called for each teletransporter when loading the map.
+ * When Link walks on the teletransporter, he he transported to a destination point
+ * on the current map or another one.
+ * @param teletransporter_name a string identifying this new teletransporter
+ * @param layer layer of the teletransporter to create
+ * @param x x position of the teletransporter rectangle
+ * @param y y position of the teletransporter rectangle
+ * @param w width of the teletransporter rectangle
+ * @param h height of the teletransporter rectangle
  * @param transition_style type of transition between the two maps
- * @param map_id id of the next map
- * @param entrance_name name of the entrance of the next map
+ * @param map_id id of the destination map (can be the current map)
+ * @param destination_point_name name of the destination point on the destination map
  */
-void MapEntities::add_exit(string exit_name, MapEntity::Layer layer, int x, int y, int w, int h,
-			   Transition::Style transition_style, MapId map_id, string entrance_name) {
+void MapEntities::add_teletransporter(string teletransporter_name, MapEntity::Layer layer, int x, int y, int w, int h,
+			   Transition::Style transition_style, MapId destination_map_id, string destination_point_name) {
   
-  Exit *exit = new Exit(exit_name, layer, x, y, w, h, transition_style, map_id, entrance_name);
-  detectors.push_back(exit);
-  all_entities.push_back(exit);
+  Teletransporter *teletransporter = new Teletransporter(teletransporter_name, layer, x, y, w, h,
+							 transition_style, destination_map_id, destination_point_name);
+  detectors.push_back(teletransporter);
+  all_entities.push_back(teletransporter);
 }
 
 /**

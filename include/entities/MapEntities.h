@@ -62,9 +62,9 @@ class MapEntities {
   list<MapEntity*> sprite_entities[MapEntity::LAYER_NB];
 
   /**
-   * Vector of all possible entrances of the map.
+   * Vector of all possible destination points of the map.
    */
-  vector<Entrance*> entrances;
+  vector<DestinationPoint*> destination_points;
 
   /**
    * All detectors of the map.
@@ -83,8 +83,8 @@ class MapEntities {
   ~MapEntities(void);
 
   // information about the entities
-  unsigned int get_nb_entrances(void);
-  Entrance * get_entrance(int index);
+  unsigned int get_nb_destination_points(void);
+  DestinationPoint * get_destination_point(int index);
   MapEntity::Obstacle get_obstacle_tile(MapEntity::Layer layer, int x, int y);
   list<MapEntity*> * get_obstacle_entities(MapEntity::Layer layer);
   list<Detector*> * get_detectors(void);
@@ -95,9 +95,10 @@ class MapEntities {
 
   // add and remove entities
   void add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height);
-  void add_entrance(string entrance_name, MapEntity::Layer layer, int link_x, int link_y, int link_direction);
-  void add_exit(string exit_name, MapEntity::Layer layer, int x, int y, int w, int h,
-		Transition::Style transition_style, MapId map_id, string entrance_name);
+  void add_destination_point(string destination_point_name, MapEntity::Layer layer,
+			     int link_x, int link_y, int link_direction, bool is_visible);
+  void add_teletransporter(string teletransporter_name, MapEntity::Layer layer, int x, int y, int w, int h,
+			   Transition::Style transition_style, MapId map_id, string destination_point_name);
 
   void add_pickable_item(MapEntity::Layer layer, int x, int y, PickableItem::ItemType pickable_item_type,
 			 int savegame_variable, MovementFalling::FallingHeight falling, bool will_disappear);

@@ -62,7 +62,7 @@ class DestructibleItem: public Detector {
   static const ItemProperties properties[];
 
  public:
-  
+
   // creation and destruction
   DestructibleItem(Map *map, Layer layer, int x, int y, ItemType type,
 		   PickableItem::ItemType pickable_item, int pickable_item_savegame_variable);
@@ -79,6 +79,5 @@ class DestructibleItem: public Detector {
 
   void update(void);
 };
-
 
 #endif

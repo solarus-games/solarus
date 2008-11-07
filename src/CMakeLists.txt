@@ -84,8 +84,8 @@ add_executable (zsdx
   entities/LinkState.cpp
   entities/TileOnMap.cpp
   entities/Detector.cpp
-  entities/Entrance.cpp
-  entities/Exit.cpp
+  entities/Teletransporter.cpp
+  entities/DestinationPoint.cpp
   entities/PickableItem.cpp
   entities/PickableItemHeart.cpp
   entities/PickableItemFairy.cpp

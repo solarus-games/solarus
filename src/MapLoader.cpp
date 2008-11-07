@@ -87,27 +87,27 @@ void MapLoader::load_map(Map *map) {
     case MapEntity::TILE:
       {
 	int tile_id;
-
 	iss >> width >> height >> tile_id;
 	entities->add_tile(tile_id, (MapEntity::Layer) layer, x, y, width, height);
 	break;
       }
       
-    case MapEntity::ENTRANCE:
+    case MapEntity::DESTINATION_POINT:
       {
-	iss >> entity_name >> direction;
-	entities->add_entrance(entity_name, (MapEntity::Layer) layer, x, y, direction);
+	int is_visible;
+	iss >> entity_name >> direction >> is_visible;
+	entities->add_destination_point(entity_name, (MapEntity::Layer) layer, x, y, direction, (is_visible != 0));
 	break;
       }
       
-    case MapEntity::EXIT:
+    case MapEntity::TELETRANSPORTER:
       {
 	int transition_style;
 	MapId destination_map_id;
-	string entrance_name;
-	iss >> width >> height >> entity_name >> transition_style >> destination_map_id >> entrance_name;
-	entities->add_exit(entity_name, (MapEntity::Layer) layer, x, y, width, height,
-			   (Transition::Style) transition_style, destination_map_id, entrance_name);
+	string destination_point_name;
+	iss >> width >> height >> entity_name >> transition_style >> destination_map_id >> destination_point_name;
+	entities->add_teletransporter(entity_name, (MapEntity::Layer) layer, x, y, width, height,
+				      (Transition::Style) transition_style, destination_map_id, destination_point_name);
 	break;
       }
 

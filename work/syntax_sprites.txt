@@ -1,0 +1,31 @@
+Les animations d'un sprite sont spécifiées dans le fichier data/sprites/XXX.zsd, où XXX est une chaîne de caractère qui identifie le sprite.
+
+Les sprites sont représentés comme dans TGF/MMF :
+
+    * Un sprite est composé d'une ou plusieurs animations, numérotées à partir de 0. Par exemple, le sprite de Link vert a les animations stopped, walking, etc...
+    * Chaque animation est composée d'une ou plusieurs directions, numérotées à partir de 0. Par exemple, l'animation stopped de Link a 4 directions.
+    * Chaque direction est une succession de frames c'est-à-dire d'images, numérotées à partir de 0. Une fois l'animation terminée, elle peut boucler en répétant à partir d'une frame donnée (pas forcément la première).
+
+
+Le fichier data/sprites/XXX.zsd contient toutes ces informations. C'est un fichier au format texte, qui donne la définition de chacune des animations.
+Pour une animation donnée, on a d'abord une ligne qui donne les informations sur cette animation :
+
+animation_name image_file nb_directions frame_delay loop_on_frame
+
+
+animaiton_name est un nom qui identifie cette animation.
+image_file est le fichier image qui contient toutes les frames de l'animation (et dans toutes les directions).
+nb_directions est le nombre de directions de cette animation.
+frame_delay est en milisecondes le délai entre deux frames (ou 0 s'il n'y a qu'une seule frame statique).
+loop_on_frame est le numéro d'une frame sur laquelle l'animation va boucler (habituellement 0, car on boucle généralement sur la première frame), ou -1 pour ne pas répéter l'animation (auquel cas le sprite cessera d'être affiché une fois la dernière frame terminée, si frame_delay est différent de 0).
+
+Cette ligne est suivie de nb_directions lignes qui définissent les images de chaque direction. Une direction est composée de plusieurs frames. On suppose que dans le fichier image, toutes les frames d'une direction sont des rectangles de même taille, placés dans des cases bout à bout, sur une ou plusieurs lignes. Plutôt que de définir chaque frame une par une, on spécifie donc simplement la taille d'une case et le nombre de lignes et de colonnes. Une description de direction a ainsi la syntaxe suivante :
+
+x y frame_width frame_height origin_x origin_y nb_frames columns
+
+
+x et y sont les coordonnées du coin haut-gauche de la zone contenant les images de la direction.
+frame_width et frame_height définissent la taille de chaque frame. La première frame est donc dans le rectangle de coordonnées (x, y) et de taille (frame_width, frame_height).
+origin_x et origin_y représentent les coordonnées du point d'origine du sprite par rapport au rectangle d'une frame.
+nb_frames est le nombre de frames de cette direction. La plupart du temps, ce nombre est le même pour toutes les directions.
+columns définit le nombre de colonnes du quadrillage contenant les frames de cette direction. Le nombre de lignes est calculé automatiquement à partir de nb_frames et columns. Il est possible que la dernière ligne du quadrillage ne soit pas complète.

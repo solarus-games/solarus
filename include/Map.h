@@ -67,10 +67,11 @@ class Map {
 				 */
 
   // map state
-  bool started;                 /**< true if this is the current map */
-  unsigned int entrance_index;  /**< current entrance of the map */
-  MapEntities *entities;        /**< the entities on the map */
-  bool suspended;               /**< indicates whether the game is suspended */
+  bool started;                          /**< true if this is the current map */
+  unsigned int destination_point_index;  /**< current destination point on the map
+					  * (or -1 for "_same", or -2 for "_side") */
+  MapEntities *entities;                 /**< the entities on the map */
+  bool suspended;                        /**< indicates whether the game is suspended */
 
   void set_suspended(bool suspended);
 
@@ -114,9 +115,9 @@ class Map {
   void start(void);
   void leave(void);
 
-  // current entrance
-  void set_entrance(unsigned int entrance_index);
-  void set_entrance(string entrance_name);
+  // current destination point
+  void set_destination_point(unsigned int destination_point_index);
+  void set_destination_point(string destination_point_name);
 
   // collisions with obstacles (checked before a move)
   MapEntity::Obstacle pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y);

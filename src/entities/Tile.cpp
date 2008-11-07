@@ -14,15 +14,13 @@ Tile::Tile(MapEntity::Obstacle obstacle, int width, int height):
   // check the width and the height
   if (width <= 0 || height <= 0 ||
       width % 8 != 0 || height % 8 != 0) {
-    cout << "Invalid tile: the size must be positive and multiple of 8 pixels\n";
-    exit(1);
+    DIE("Invalid tile: the size is (" << width << "x" << height << ") but should be positive and multiple of 8 pixels");
   }
 
   // diagonal obstacle: check that the tile is square
   if (obstacle != MapEntity::OBSTACLE_NONE && obstacle != MapEntity::OBSTACLE
       && width != height) {
-    cout << "Invalid tile: the size of a tile with a diagonal obstacle must be square\n";
-    exit(1);
+    DIE("Invalid tile: a tile with a diagonal obstacle must be square");
   }
 }
 

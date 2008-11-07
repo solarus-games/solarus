@@ -1,0 +1,175 @@
+Une map est composée des informations suivantes :
+- sa taille en pixels,
+- son tileset (l'ensemble de graphismes utilisés pour la dessiner),
+- sa musique de fond,
+- le monde auquel elle appartient (monde extérieur, monde intérieur ou donjon),
+- l'étage éventuel dans lequel elle se situe,
+- sa position sur la carte du monde extérieur (ou dans son étage pour un donjon),
+- le numéro de la variable éventuelle qui sauvegarde les petites clés de cette map (car les petites clés ne sont pas compatibles entre différents donjons),
+- les entités présentes sur la map (les tiles, les ennemis, les coffres, les vases, les interrupteurs...)
+
+Tout ceci est stocké dans un fichier mapXXXX.zsd, où XXXX est le numéro de la map. Un autre fichier mapXXXX.lua contient le script de la map.
+
+La première ligne du fichier de la map contient la plupart des informations citées plus haut :
+
+width	height	world	floor	x	y	small_keys_variable	tileset_id	music_id
+
+width et height donnent la taille de la map en pixels.
+world indique le monde dans lequel la map se situe : 0 si elle est dans le monde extérieur, -1 si c'est une map d'intérieur (hors donjons), ou un chiffre de 1 à 20 correspondant au numéro du donjon si c'est une map de donjon.
+floor indique l'étage éventuel de cette map, entre -16 et 15. L'étage sera affiché à l'écran au moment où le joueur y entre. Si la map n'a pas d'étage associé (c'est le cas des maps du monde extérieur et de la plupart des maps hors donjons), la valeur est -100. On peut aussi mettre la valeur spéciale -99, ce qui correspond à un étage inconnu : le symbole '?' sera alors affiché à l'écran en arrivant sur cet étage.
+x et y indiquent la position de la map dans son contexte. Cela permet d'afficher la position du héros sur l'écran carte. Si c'est une map de donjon, il s'agit des coordonnées du coin haut-gauche de la map par rapport à l'ensemble de l'étage. Si c'est une map du monde extérieur, ce sont les coordonnées du coin haut-gauche de la map par rapport à l'ensemble du monde extérieur. Si c'est une map d'intérieur hors donjons, ce sont les coordonnées de l'endroit sur le monde extérieur.
+small_keys_variable est le numéro de la variable qui stocke dans la sauvegarde le nombre de petites clés sur cette map. Cette valeur est donc la même pour toutes les maps d'un même donjon. Une valeur de -1 signifie qu'il n'y a pas de compteur de petites clés associé à cette map (c'est normalement le cas des maps extérieures et de la plupart des maps intérieures hors donjons).
+tileset_id est le numéro du tileset utilisé pour dessiner cette map.
+music_id est le nom du fichier de la musique de fond, ou alors "none" pour ne pas mettre de musique, ou encore "same" pour conserver la même musique qu'à la map précédente.
+
+Ensuite, chaque ligne du fichier décrit une entité de la map.
+
+0	2	272	88	164	1	1
+0	2	232	88	165	1	1
+0	2	360	72	143	1	1
+0	2	368	72	144	1	1
+1	0	128	216	MainEntrance	1
+
+
+Syntaxe de la ligne d''une entité (les éléments entre crochets n'existent que pour certains types d'entité) :
+
+entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	specific_info
+
+
+Le premier nombre indique de quel type d'entité il s'agit : un tile, une entrée de la map, un ennemi, un coffre...
+
+Les trois nombres suivants sont communs à tous les types d'entités :
+
+layer est la couche sur laquelle l'entité est placée : LAYER_LOW (en bas, c'est le cas de la plupart des tiles), LAYER_INTERMEDIATE (pour que Link puisse aller au-dessus ou en-dessous, c'est le cas des plate-formes) ou LAYER_HIGH (toujours au-dessus, comme les feuillages d'arbre ou les hauts de portes).
+
+x et y sont les coordonnées où on place l'entité.
+
+Ensuite, on a éventuellement identity_name, un identificateur si c'est une entité qui est identifiable. Certains types d'entités ont en effet un identificateur, ce dernier permet d'identifier de manière unique une instance (un ennemi, un interrupteur...) au cours de l'exécution du jeu, notamment depuis le script de la map. L'identificateur est un nom (choisi par le mappeur) attribué à une instance. Par exemple, si on veut qu'un interrupteur ouvre une porte, ça se fait depuis le script de la map, et donc le script a besoin de faire référence à un interrupteur bien précis et à une porte bien précise. Le nom d'une entité ne peut pas commencer par le caractère '_' car ces noms sont réservés pour des utilisations particulières.
+
+Puis on a éventuellement direction, la direction de l'entité, qui est représentée par un nombre entier. Là aussi c'est optionnel car seuls certains types d'entités ont une direction (ennemis, entrées de la map, PNJ, tapis roulants...) alors que les autres non (tiles, vases, téléporteurs...).
+
+Pour finir, on a la taille de l'entité (seulement pour une entité de taille variable) : la largeur et la hauteur en pixels.
+
+Le reste de la ligne contient des informations spécifiques selon le type d'entité.
+Pour le moment, les types d'entités suivants sont gérés : les tiles, les entrées et les sorties de la map, les objets ramassables, les objets destructibles et les coffres.
+
+Tiles (0)
+
+Un tile n'a pas de direction. Il n'a pas non plus d'identificateur (ce qui signifie qu'il est impossible de modifier/supprimer/ajouter un tile au cours de l'exécution).
+Mais un tile est de taille réglable : on peut en effet répéter son motif plusieurs fois, ce qui évite de placer 20 fois de suite le même tile de mur quand on veut faire le mur d'une pièce.
+
+Syntaxe de la partie spécifique pour un tile :
+
+tile_id
+
+
+tile_id est le numéro du tile dans son tileset, tel que défini dans le fichier du tileset.
+
+Notez que les tiles d'une même couche peuvent se chevaucher, comme dans TGF / MMF, et contrairement à RPG Maker. Les tiles sont placés sur la map dans l'ordre où ils apparaissent dans le fichier, c'est-à-dire que si deux tiles d'une même couche se chevauchent, c'est celui qui apparaît en dernier dans le fichier qui sera placé au-dessus.
+
+Point de destination (1)
+
+Un point de destination est un point de la map qui sert de destination à un téléporteur. Une destination peut avoir une direction (de 0 à 3 ou -1), c'est alors la direction que prendra Link lorsqu'il arrivera sur cette destination. -1 indique que la direction de Link ne change pas.
+Elle a aussi un identificateur, qui servira à pouvoir associer cette destination à un téléporteur d'une autre map ou de la même map.
+Sa taille est fixe (16*16, c'est-à-dire la taille de Link).
+
+Syntaxe de la partie spécifique d'une destination :
+
+is_visible
+
+is_visible est un booléen (0 ou 1) indiquant si la destination est visible ou non. Si elle est visible, elle s'affiche sous la forme d'une arrivée de téléporteur classique.
+
+Téléporteur (2)
+
+Un téléporteur est un capteur qui envoie Link vers une destination sur la même map ou sur une autre map.
+Un téléporteur n'a pas de direction.
+Un téléporteur a un identificateur (on peut donc ajouter, modifier, supprimer un téléporteur en cours d'exécution).
+Sa taille est variable.
+
+Syntaxe de la partie spécifique pour un téléporteur :
+
+subtype transition	destination_map	destination_point
+
+subtype indique le type de téléporteur :
+
+0 : téléporteur invisible (par exemple pour un changement de map classique ou un trou)
+1 : téléporteur jaune (avec transition)
+2 : téléporteur bleu (immédiat)
+
+transition est un numéro indiquant le type de transition entre les deux maps.
+destination_map est le numéro de la map sur laquelle le joueur est envoyé (éventuellement la même map).
+destination_point est le nom du point des destination sur lequel le joueur est placé sur la map de destination, ou la valeur spéciale "_side", ou la valeur spéciale "_same". "_side" indique que Link est envoyé sur un côté de la map, déterminé automatiquement à partir de la direction du mouvement de Link au moment où il touche le téléporteur (l'une de ses deux coordonnées n'est pas modifiée. "_same" indique que la position de Link sur la map de destination est inchangée par rapport à la map précédente (c'est utile pour certains trous).
+
+Objets ramassables (3)
+
+Les objets ramassables sont ceux que l'on obtient habituellement en tuant des ennemis ou en soulevent des buissons : coeurs, rubis, bombes, fées, etc. Ici, on parle d'un objet ramassable placé directement sur la map (par exemple une clé qui ne serait pas dans un coffre, ou une salle contenant des fées ou plein de rubis)
+Un objet ramassable n'a pas de direction, pas d'identificateur et sa taille est fixe.
+
+Syntaxe de la partie spécifique pour un objet ramassable :
+
+pickable_item_type	savegame_variable
+
+
+On a donc deux champs supplémentaire. pickable_item_type, qui est un numéro indiquant le type d'objet ramassable :
+
+-1 : aléatoire
+0 : rien
+1 : rubis vert
+2 : rubis bleu
+3 : rubis rouge
+4 : coeur
+5 : petite fiole d'énergie magique
+6 : grande fiole d'énergie magique
+7 : fée
+8 : 1 bombe
+9 : 5 bombes
+10 : 10 bombes
+11 : 1 flèche
+12 : 5 flèches
+13 : 10 flèches
+14 : petite clé
+15 : grande clé
+16 : clé du boss
+17 : fragment de coeur
+18 : réceptacle de coeur
+
+On peut ainsi spécifier -1 pour rendre le choix aléatoire (c'est le cas la plupart du temps quand on tue un ennemi ou qu'on détruit un buisson). Dans le cas aléatoire, un élément de la liste précédente est choisi au hasard (y compris l'absence d'objet), sauf les 3 clés. Si le joueur manque de coeurs, d'énergie magique, de bombes ou de flèches, la probabilité d'obtenir ce qui lui manque est augmentée.
+
+savegame_variable est un numéro utilisé pour les items qu'on ne peut obtenir qu'une fois dans le jeu et qui sont sauvegardés, comme les clés, les quarts de coeur, etc. Il permet d'identifier la variable dans la sauvegarde indiquant si le joueur a déjà obtenu cet item ou non. Si c'est un item classique (non sauvegardé), ce numéro est -1.
+
+Objets destructibles (4)
+
+Les objets destructibles sont ceux qui peuvent cacher des objets ramassables et que l'on peut soit soulever, porter et lancer, soit couper avec l'épée, soit les deux.
+Un objet destructible n'a pas de direction, pas d'identificateur et sa taille est fixe.
+
+Syntaxe de la partie spécifique pour un objet destructible :
+
+destructible_item_type	pickable_item	savegame_variable
+
+
+destructible_item_type est un numéro indiquant le type d'objet destructible :
+
+0 : pot
+1 : crâne (équivalent des pots dans le monde des ténèbres)
+2 : buisson
+3 : petite pierre blanche
+4 : grosse pierre blanche
+5 : herbe
+Certains de ces objets peuvent être soulevés uniquement à l'aide d'un objet particulier.
+
+pickable_item est un numéro indiquant un éventuel item (coeur, rubis...) qui apparaît lorsque l'on soulève cet objet. La liste des numéros est donnée dans le paragraphe précédent. Comme précédemment, savegame_variable est un numéro optionnel qui permet de sauvegarder le fait que le joueur possède un item que l'on ne peut obtenir qu'une seule fois.
+
+Coffres (5)
+
+Un coffre n'a pas de direction.
+Un coffre a un identificateur (on peut donc ajouter, modifier, supprimer un coffre en cours d'exécution).
+
+Syntaxe de la partie spécifique pour un coffre :
+
+is_big_chest	treasure_content	treasure_amount	treasure_savegame_index
+
+
+is_big_chest est un booléen (0 ou 1) indiquant s'il s'agit d'un grand coffe (1) ou d'un coffre normal (0).
+treasure_content est un numéro qui indique le trésor contenu du coffre. Il existe plus de 70 trésors possibles (rubis, objets de l'inventaire, équipement, objets de donjons...). Leurs numéros sont donnés dans le fichier include/Treasure.h. On peut mettre -1 pour faire un coffre vide.
+treasure_amount donne la quantité de ce trésor dans le coffre. Cette valeur est utile seulement pour certains types de trésors : rubis, flèches, bombes, croissants... Elle est ignorée pour les autres trésors.
+treasure_savegame_index identifie le booléen qui sauvegarde l'état du coffre. On peut mettre -1 pour que le coffre ne soit pas sauvegardé.

@@ -106,7 +106,7 @@ bool MapEntity::is_being_removed(void) {
 
 /**
  * Returns the layer of the entity on the map.
- * @return the layer of the entity on the map.
+ * @return the layer of the entity on the map
  */
 MapEntity::Layer MapEntity::get_layer(void) {
   return layer;
@@ -114,10 +114,18 @@ MapEntity::Layer MapEntity::get_layer(void) {
 
 /**
  * Sets the layer of the entity on the map.
- * @param layer the layer of the entity on the map.
+ * @param layer the layer of the entity on the map
  */
 void MapEntity::set_layer(Layer layer) {
   this->layer = layer;
+}
+
+/**
+ * Sets the direction property of this entity.
+ * @param direction the direction
+ */
+void MapEntity::set_direction(int direction) {
+  this->direction = direction;
 }
 
 /**

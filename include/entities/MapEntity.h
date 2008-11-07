@@ -21,8 +21,9 @@ class MapEntity {
    */
   enum EntityType {
     TILE                      = 0, /**< a tile on the map, obstacle or not */
-    ENTRANCE                  = 1, /**< an entrance of the map */
-    EXIT                      = 2, /**< an exit: Link is transported to another map when walking on an exit */
+    DESTINATION_POINT         = 1, /**< a destination point on the map */
+    TELETRANSPORTER           = 2, /**< a teletransporter: Link is transported
+				    * to a destination point when walking on it */
     PICKABLE_ITEM             = 3, /**< an item that Link can pick: a rupee, a heart, a fairy... */
     DESTRUCTIBLE_ITEM         = 4, /**< an item that Link can cut or lift: a pot, a bush, a stone... */
     CHEST                     = 5, /**< a chest (small or big) with a treasure */
@@ -85,46 +86,21 @@ class MapEntity {
 
   // other data, used for some kinds of entities
 
-  /**
-   * Name of the entity (not used for all kinds of entities).
-   * The name identifies the entity in the game.
-   * An empty string indicates that the entity has no name.
-   */
-  string name;
+  string name;             /**< name of the entity, not used for all kinds of entities;
+		            * the name identifies the entity in the game (an empty string
+		            * indicates that the entity has no name) */
 
-  /**
-   * Direction of the entity (not used for all kinds of entities).
-   * If the entity has a sprite, this direction is considered to be
-   * the direction of animation of the sprite.
-   */
-  int direction;
+  int direction;           /**< direction of the entity, not used for all kinds of entities;
+			    * if the entity has a sprite, this direction is considered to be
+			    * the direction of animation of the sprite */
 
-  /**
-   * Sprite(s) representing the entity, not used for all kinds of entities because
-   * some of them are invisible, and some of them handle their sprites themselves.
-   */
-  vector<Sprite*> sprites;
-
-  /**
-   * Movement of the entity (not used for all kinds of entities).
-   * NULL indicates that the entity has no movement.
-   */
-  Movement *movement;
-
-  /**
-   * Indicates whether the animation and movement of this entity are suspended.
-   */
-  bool suspended;
-
-  /**
-   * Indicates when this entity was suspended.
-   */
-  Uint32 when_suspended;
-
-  /**
-   * Indicates that the entity is not valid anymore because it is about to be removed.
-   */
-  bool being_removed;
+  vector<Sprite*> sprites; /**< Sprite(s) representing the entity, not used for all kinds of entities because
+			    * some of them are invisible, and some of them handle their sprites themselves */
+  Movement *movement;      /**< movement of the entity, not used for all kinds of entities;
+			    * NULL indicates that the entity has no movement */
+  bool suspended;          /**< indicates that the animation and movement of this entity are suspended */
+  Uint32 when_suspended;   /**< indicates when this entity was suspended */
+  bool being_removed;      /**< indicates that the entity is not valid anymore because it is about to be removed */
 
   // creation
   MapEntity(void);
@@ -132,6 +108,7 @@ class MapEntity {
   MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
 
   // method called by the subclasses to set their properties
+  void set_direction(int direction);
   void set_obstacle(Obstacle obstacle);
   void set_layer(Layer layer);
   void set_size(int width, int height);

@@ -7,7 +7,7 @@
 #include "entities/Tileset.h"
 #include "entities/Link.h"
 #include "entities/MapEntities.h"
-#include "entities/Entrance.h"
+#include "entities/DestinationPoint.h"
 #include "entities/Detector.h"
 
 MapLoader Map::map_loader;
@@ -200,36 +200,46 @@ MapEntities * Map::get_entities(void) {
 }
 
 /**
- * Sets the current entrance of the map.
- * @param entrance_index index of the entrance you want to use
+ * Sets the current destination point of the map.
+ * @param destination_point_index index of the destination point you want to use
  */
-void Map::set_entrance(unsigned int entrance_index) {
+void Map::set_destination_point(unsigned int destination_point_index) {
 
-  if (entrance_index < 0 || entrance_index >= entities->get_nb_entrances()) {
-    DIE("Unknown entrance '" << entrance_index << "' on map '" << id << '\'');
+  if (destination_point_index < 0 || destination_point_index >= entities->get_nb_destination_points()) {
+    DIE("Unknown destination point '" << destination_point_index << "' on map '" << id << '\'');
   }
 
-  this->entrance_index = entrance_index;
+  this->destination_point_index = destination_point_index;
 }
 
 /**
- * Sets the current entrance of the map.
- * @param entrance_name name of the entrance you want to use
+ * Sets the current destination point of the map.
+ * @param destination_point_name name of the destination point you want to use,
+ * or "_same" to keep Link's coordinates, or "_side" to place Link on the appropriate side of the map
  */
-void Map::set_entrance(string entrance_name) {
+void Map::set_destination_point(string destination_point_name) {
 
-  bool found = false;
-
-  unsigned int i;
-  for (i = 0; i < entities->get_nb_entrances() && !found; i++) { 
-    found = (entities->get_entrance(i)->get_name() == entrance_name);
+  if (destination_point_name == "_same") {
+    this->destination_point_index = -1;
   }
-
-  if (found) {
-    this->entrance_index = i - 1;
+  else if (destination_point_name == "_side") {
+    this->destination_point_index = -2;
   }
   else {
-    DIE("Unknown entrance '" << entrance_name << "' on map '" << id << '\'');
+
+    bool found = false;
+
+    unsigned int i;
+    for (i = 0; i < entities->get_nb_destination_points() && !found; i++) { 
+      found = (entities->get_destination_point(i)->get_name() == destination_point_name);
+    }
+
+    if (found) {
+      this->destination_point_index = i - 1;
+    }
+    else {
+      DIE("Unknown destination point '" << destination_point_name << "' on map '" << id << '\'');
+    }
   }
 }
 
@@ -240,7 +250,7 @@ void Map::set_entrance(string entrance_name) {
  * not to the map.
  * @return the surface where the map is displayed
  */
-SDL_Surface *Map::get_visible_surface(void) {
+SDL_Surface * Map::get_visible_surface(void) {
   return visible_surface;
 }
 
@@ -317,16 +327,18 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  */
 void Map::start(void) {
 
-  Entrance *entrance = entities->get_entrance(entrance_index);
+  // TODO take into account the special values of destination_point_index
+
+  DestinationPoint *destination_point = entities->get_destination_point(destination_point_index);
 
   zsdx->game->play_music(music_id);
 
   // put Link
   Link *link = zsdx->game->get_link();
-  link->set_map(this, entrance->get_direction());
+  link->set_map(this, destination_point->get_direction());
 
-  int x = entrance->get_x();
-  int y = entrance->get_y();
+  int x = destination_point->get_x();
+  int y = destination_point->get_y();
 
   if (x != -1) {
     link->set_x(x);
@@ -371,7 +383,7 @@ MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int 
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
-  // if the point is outside the map, there is no obstacle (useful when Link goes on a map exit)
+  // if the point is outside the map, there is no obstacle (useful when Link walks on a teletransporter)
   if (x < 0 || x >= get_width()
       || y < 0 || y >= get_height()) {
     return MapEntity::OBSTACLE_NONE;

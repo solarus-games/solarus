@@ -80,8 +80,8 @@ class Game: public Screen {
   
   // map
   Map *get_current_map(void);
-  void set_current_map(MapId map_id, unsigned int entrance_index, Transition::Style transition_style);
-  void set_current_map(MapId map_id, string entrance_name, Transition::Style transition_style);
+  void set_current_map(MapId map_id, unsigned int destination_point_index, Transition::Style transition_style);
+  void set_current_map(MapId map_id, string destination_point_name, Transition::Style transition_style);
   bool is_in_dungeon(void);
   Dungeon *get_current_dungeon(void);
   const SDL_Rect *get_outside_world_size(void);

@@ -1,6 +1,7 @@
 #include "entities/Teletransporter.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "Sprite.h"
 
 /**
  * Constructor.
@@ -16,16 +17,25 @@
  * or "_side" to place Link on the appropriate side of the map
  */
 Teletransporter::Teletransporter(string name, MapEntity::Layer layer, int x, int y, int width, int height,
-	   Transition::Style transition_style, MapId destination_map_id, string destination_point_name):
+	   Subtype subtype, Transition::Style transition_style, MapId destination_map_id, string destination_point_name):
   Detector(COLLISION_ORIGIN_POINT, name, layer, x, y, width, height),
-  transition_style(transition_style), destination_map_id(destination_map_id), destination_point_name(destination_point_name) {
+  subtype(subtype), transition_style(transition_style),
+  destination_map_id(destination_map_id), destination_point_name(destination_point_name) {
   
+  if (subtype == YELLOW) {
+    create_sprite("entities/teletransporter");
+    get_last_sprite()->set_current_animation("yellow");
+  }
+  else {
+    // TODO
+  }
 }
 
 /**
  * Destructor.
  */
 Teletransporter::~Teletransporter(void) {
+
 }
 
 /**

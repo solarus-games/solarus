@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
+#include "entities/Teletransporter.h"
 #include <iomanip>
 
 /**
@@ -102,12 +103,14 @@ void MapLoader::load_map(Map *map) {
       
     case MapEntity::TELETRANSPORTER:
       {
-	int transition_style;
+	int subtype, transition_style;
 	MapId destination_map_id;
 	string destination_point_name;
-	iss >> width >> height >> entity_name >> transition_style >> destination_map_id >> destination_point_name;
+	iss >> width >> height >> entity_name >> subtype >> transition_style
+	    >> destination_map_id >> destination_point_name;
 	entities->add_teletransporter(entity_name, (MapEntity::Layer) layer, x, y, width, height,
-				      (Transition::Style) transition_style, destination_map_id, destination_point_name);
+				      (Teletransporter::Subtype) subtype, (Transition::Style) transition_style,
+				      destination_map_id, destination_point_name);
 	break;
       }
 

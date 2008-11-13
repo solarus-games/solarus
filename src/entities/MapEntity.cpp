@@ -4,14 +4,12 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
-#include "ZSDX.h"
-#include "Game.h"
 
 /**
  * Creates a map entity without specifying its properties yet.
  */
 MapEntity::MapEntity(void):
-  layer(LAYER_LOW), name(""), direction(0), movement(NULL),
+  map(NULL), layer(LAYER_LOW), name(""), direction(0), movement(NULL),
   suspended(false), when_suspended(0) {
 
   position_in_map.x = 0;
@@ -84,6 +82,14 @@ MapEntity::~MapEntity(void) {
 }
 
 /**
+ * Sets the map where this entity is.
+ * @param map the map
+ */
+void MapEntity::set_map(Map *map) {
+  this->map = map;
+}
+
+/**
  * Sets a flag indicating that this entity has been added
  * to the list of entities that will be removed from the map
  * and deleted from the memory as soon as possible.
@@ -133,8 +139,6 @@ void MapEntity::set_direction(int direction) {
  * @param obstacle the obstacle property
  */
 void MapEntity::set_obstacle(Obstacle obstacle) {
-
-  Map *map = zsdx->game->get_current_map();
   map->get_entities()->set_obstacle(this, obstacle);
 }
 
@@ -371,7 +375,7 @@ void MapEntity::movement_just_changed(void) {
  * It just calls map->check_collision_with_detectors(this).
  */
 void MapEntity::just_moved(void) {
-  zsdx->game->get_current_map()->check_collision_with_detectors(this);
+  map->check_collision_with_detectors(this);
 }
 
 /**
@@ -494,7 +498,7 @@ void MapEntity::update(void) {
 
     sprite->update();
     if (sprite->has_frame_changed() && sprite->get_animation_set()->are_pixel_collisions_enabled()) {
-      zsdx->game->get_current_map()->check_collision_with_detectors(this, sprite);
+      map->check_collision_with_detectors(this, sprite);
     }
   }
 
@@ -508,7 +512,7 @@ void MapEntity::update(void) {
  * Displays the entity on the map.
  * By default, this function displays the entity's sprites (if any).
  */
-void MapEntity::display_on_map(Map *map) {
+void MapEntity::display_on_map(void) {
 
   // display the sprites
   for (unsigned int i = 0; i < sprites.size(); i++) {

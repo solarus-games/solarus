@@ -172,10 +172,11 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
   int repeat_y = height / tile->get_height();
 
   // create the tile object
-  TileOnMap *tileOnMap = new TileOnMap(tile, layer, x, y, repeat_x, repeat_y);
+  TileOnMap *tile_on_map = new TileOnMap(tile, layer, x, y, repeat_x, repeat_y);
 
   // add it to the map
-  tiles[layer].push_back(tileOnMap);
+  tiles[layer].push_back(tile_on_map);
+  tile_on_map->set_map(map);
 
   // update the collision list
   int tile_x8 = x / 8;
@@ -263,6 +264,15 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
 }
 
 /**
+ * Adds any kind of entity except a tile.
+ * @param entity the entity to add
+ */
+void MapEntities::add_entity(MapEntity *entity) {
+  all_entities.push_back(entity);
+  entity->set_map(map);
+}
+
+/**
  * Creates a destination point on the map.
  * This function is called for each destination point when loading the map.
  * @param destination_point_name a string identifying this new destination point
@@ -279,7 +289,7 @@ void MapEntities::add_destination_point(string destination_point_name, MapEntity
   DestinationPoint *destination_point = new DestinationPoint(destination_point_name, layer,
 							     x, y, link_direction, is_visible);
   destination_points.push_back(destination_point);
-  all_entities.push_back(destination_point);
+  add_entity(destination_point);
 }
 
 /**
@@ -293,17 +303,20 @@ void MapEntities::add_destination_point(string destination_point_name, MapEntity
  * @param y y position of the teletransporter rectangle
  * @param w width of the teletransporter rectangle
  * @param h height of the teletransporter rectangle
+ * @param subtype subtype of teletransporter
  * @param transition_style type of transition between the two maps
  * @param map_id id of the destination map (can be the current map)
  * @param destination_point_name name of the destination point on the destination map
  */
 void MapEntities::add_teletransporter(string teletransporter_name, MapEntity::Layer layer, int x, int y, int w, int h,
-			   Transition::Style transition_style, MapId destination_map_id, string destination_point_name) {
+				      Teletransporter::Subtype subtype, Transition::Style transition_style,
+				      MapId destination_map_id, string destination_point_name) {
   
   Teletransporter *teletransporter = new Teletransporter(teletransporter_name, layer, x, y, w, h,
-							 transition_style, destination_map_id, destination_point_name);
+							 subtype, transition_style, destination_map_id,
+							 destination_point_name);
   detectors.push_back(teletransporter);
-  all_entities.push_back(teletransporter);
+  add_entity(teletransporter);
 }
 
 /**
@@ -336,7 +349,7 @@ void MapEntities::add_pickable_item(MapEntity::Layer layer, int x, int y,
 
     sprite_entities[layer].push_back(item);
     detectors.push_back(item);
-    all_entities.push_back(item);
+    add_entity(item);
   }
 }
 
@@ -374,7 +387,7 @@ void MapEntities::add_destructible_item(MapEntity::Layer layer, int x, int y,
   if (item->is_obstacle()) {
     obstacle_entities[layer].push_back(item);
   }
-  all_entities.push_back(item);
+  add_entity(item);
 }
 
 /**
@@ -408,7 +421,7 @@ void MapEntities::add_chest(string chest_name, MapEntity::Layer layer, int x, in
   sprite_entities[layer].push_back(chest);
   detectors.push_back(chest);
   obstacle_entities[layer].push_back(chest);
-  all_entities.push_back(chest);
+  add_entity(chest);
 }
 
 /**
@@ -515,7 +528,7 @@ void MapEntities::display() {
 
     // put the tiles
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      tiles[layer][i]->display_on_map(map);
+      tiles[layer][i]->display_on_map();
     }
 
     // put the animated sprites
@@ -523,12 +536,12 @@ void MapEntities::display() {
     for (i = sprite_entities[layer].begin();
 	 i != sprite_entities[layer].end();
 	 i++) {
-      (*i)->display_on_map(map);
+      (*i)->display_on_map();
     }
 
     // put Link if he is in this layer
     if (link->get_layer() == layer) {
-      link->display_on_map(map);
+      link->display_on_map();
     }
   }
 }

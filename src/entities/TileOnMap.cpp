@@ -26,9 +26,8 @@ TileOnMap::~TileOnMap(void) {
 
 /**
  * Displays the tile on the map.
- * @param map the map
  */
-void TileOnMap::display_on_map(Map *map) {
+void TileOnMap::display_on_map(void) {
   SDL_Surface *map_surface = map->get_visible_surface();
   SDL_Surface *tileset_image = map->get_tileset()->get_image();
 

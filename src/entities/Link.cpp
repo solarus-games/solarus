@@ -37,7 +37,7 @@ static const int animation_directions[] = {
  * Constructor.
  */
 Link::Link(Equipment *equipment):
-  map(NULL), equipment(equipment),
+  equipment(equipment),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
   state(FREE), facing_entity(NULL), counter(0), next_counter_date(0),
   walking(false), pushing_direction_mask(0xFFFF),
@@ -137,11 +137,10 @@ SDL_Rect Link::get_facing_point(void) {
  * Sets Link's current map.
  * This function is called when the map is changed.
  * @param map the map
- * @param initial_direction the direction of Link (0 to 3)
  */
-void Link::set_map(Map *map, int initial_direction) {
+void Link::set_map(Map *map) {
 
-  this->map = map;
+  MapEntity::set_map(map);
 
   get_movement()->set_map(map);
   
@@ -166,6 +165,17 @@ void Link::set_map(Map *map, int initial_direction) {
 
   // destroy any carried item from the previous map
   destroy_carried_items();
+}
+
+/**
+ * Sets Link's current map.
+ * This function is called when the map is changed.
+ * @param map the map
+ * @param initial_direction the direction of Link (0 to 3)
+ */
+void Link::set_map(Map *map, int initial_direction) {
+
+  set_map(map);
 
   // take the specified direction
   set_animation_direction(initial_direction);
@@ -241,9 +251,8 @@ void Link::update(void) {
 /**
  * Displays Link on the map with its current animation and
  * at its current position.
- * @param map the map
  */
-void Link::display_on_map(Map *map) {
+void Link::display_on_map(void) {
 
   int x = get_x();
   int y = get_y();

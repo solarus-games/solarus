@@ -33,7 +33,7 @@ class CarriedItem: public MapEntity {
   
   void set_suspended(bool suspended);
   void update(void);
-  void display_on_map(Map *map);
+  void display_on_map(void);
 };
 
 #endif

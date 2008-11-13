@@ -1,4 +1,8 @@
 #include "entities/DestinationPoint.h"
+#include "entities/Link.h"
+#include "Sprite.h"
+#include "ZSDX.h"
+#include "Game.h"
 
 /**
  * Constructor.
@@ -6,8 +10,8 @@
  * @param layer the layer
  * @param x x position of the destination point to create
  * @param y y position of the destination point to create
- * @param link_direction initial direction of link in this state (0 to 3, or -1
- * to indicate that Link's direction is not changed)
+ * @param link_direction initial direction of link in this state
+ * (0 to 3, or -1 to indicate that Link's direction is not changed)
  * @param is_visible true to make the destination point visible
  */
 DestinationPoint::DestinationPoint(string name, Layer layer, int x, int y,
@@ -15,9 +19,15 @@ DestinationPoint::DestinationPoint(string name, Layer layer, int x, int y,
   MapEntity(name, 0, layer, x, y, 16, 16) {
 
   set_origin(8, 13);
+
   this->change_direction = (direction != -1);
   if (change_direction) {
     set_direction(link_direction);
+  }
+
+  if (is_visible) {
+    create_sprite("entities/teletransporter");
+    get_last_sprite()->set_current_animation("destination");
   }
 }
 
@@ -29,12 +39,12 @@ DestinationPoint::~DestinationPoint(void) {
 }
 
 /**
- * Displays the destination point on the map if it is visible.
- * @param map the map
+ * Places Link on this destination point.
  */
-void DestinationPoint::display_on_map(Map *map) {
+void DestinationPoint::place_hero(void) {
 
-  if (is_visible) {
-    // TODO
-  }
+  Link *link = zsdx->game->get_link();
+  link->set_map(map, get_direction());
+  link->set_x(get_x());
+  link->set_y(get_y());
 }

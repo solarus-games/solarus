@@ -55,6 +55,9 @@ class MapEntity {
 
  protected:
 
+  // the map
+  Map *map;
+
   // position (mandatory for all kinds of entities)
 
   /**
@@ -141,6 +144,7 @@ class MapEntity {
   virtual SDL_Rect get_facing_point(void);
 
   // properties
+  virtual void set_map(Map *map);
   string get_name(void);
   int get_direction(void);
   virtual bool is_hero(void);
@@ -166,7 +170,7 @@ class MapEntity {
 
   // update and display
   virtual void update(void);
-  virtual void display_on_map(Map *map);
+  virtual void display_on_map(void);
 };
 
 #endif

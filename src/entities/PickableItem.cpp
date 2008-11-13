@@ -494,11 +494,11 @@ void PickableItem::update(void) {
  * This is a redefinition of MapEntity::display_on_map
  * to display the shadow independently of the item movement.
  */
-void PickableItem::display_on_map(Map *map) {
+void PickableItem::display_on_map(void) {
 
   // display the shadow
   map->display_sprite(shadow_sprite, shadow_x, shadow_y);
 
   // display the sprite
-  MapEntity::display_on_map(map);
+  MapEntity::display_on_map();
 }

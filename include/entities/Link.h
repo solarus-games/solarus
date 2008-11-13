@@ -38,9 +38,6 @@ class Link: public MapEntity, AnimationListener {
 
  private:
 
-  // the map
-  Map *map;
-
   // equipment of the player
   Equipment *equipment;
 
@@ -158,9 +155,10 @@ class Link: public MapEntity, AnimationListener {
   bool is_facing_obstacle(void);
 
   // map
+  void set_map(Map *map);
   void set_map(Map *map, int initial_direction);
   void update(void);
-  void display_on_map(Map *map);
+  void display_on_map(void);
 
   // sprites
   int get_animation_direction(void);

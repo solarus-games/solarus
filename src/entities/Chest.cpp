@@ -50,7 +50,7 @@ Chest::~Chest(void) {
 void Chest::initialize_sprite(void) {
 
   // create the sprite
-  create_sprite("entities/chest");  
+  create_sprite("entities/chest");
   Sprite *sprite = get_last_sprite();
 
   // set its animation

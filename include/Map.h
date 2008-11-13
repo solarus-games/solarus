@@ -67,11 +67,13 @@ class Map {
 				 */
 
   // map state
-  bool started;                          /**< true if this is the current map */
-  unsigned int destination_point_index;  /**< current destination point on the map
-					  * (or -1 for "_same", or -2 for "_side") */
-  MapEntities *entities;                 /**< the entities on the map */
-  bool suspended;                        /**< indicates whether the game is suspended */
+  bool started;                 /**< true if this map is the current map */
+  int destination_point_index;  /**< current destination point on the map
+				 * (or -1 for "_same", or -2 for "_side") */
+  int destination_side;         /**< destination side (when the destination is a side of the map) */
+
+  MapEntities *entities;        /**< the entities on the map */
+  bool suspended;               /**< indicates whether the game is suspended */
 
   void set_suspended(bool suspended);
 

@@ -106,7 +106,7 @@ class PickableItem: public Detector {
   virtual void set_suspended(bool suspended);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   virtual void update(void);
-  virtual void display_on_map(Map *map);
+  virtual void display_on_map(void);
 };
 
 #endif

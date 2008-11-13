@@ -1,4 +1,4 @@
-teletransporter entities/teletransporter.png 1 0 100
+yellow entities/teletransporter.png 1 0 100
 16	0	16	16	8	13	3	3
 
 destination entities/teletransporter.png 1 0 -1

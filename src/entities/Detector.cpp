@@ -1,6 +1,4 @@
 #include "entities/Detector.h"
-#include "ZSDX.h"
-#include "Game.h"
 #include "ResourceManager.h"
 #include "Map.h"
 #include "KeysEffect.h"
@@ -172,7 +170,6 @@ void Detector::check_collision_facing_point(MapEntity *entity) {
  */
 void Detector::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  Map *map = zsdx->game->get_current_map();
   map->event_entity_on_detector(this, entity_overlapping);
 }
 

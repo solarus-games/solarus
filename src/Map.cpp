@@ -223,7 +223,11 @@ void Map::set_destination_point(string destination_point_name) {
     this->destination_point_index = -1;
   }
   else if (destination_point_name == "_side") {
+
+    Link *link = zsdx->game->get_link();
+
     this->destination_point_index = -2;
+    this->destination_side = (link->get_movement_direction() / 90 + 2) % 4;
   }
   else {
 
@@ -327,28 +331,48 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  */
 void Map::start(void) {
 
-  // TODO take into account the special values of destination_point_index
-
-  DestinationPoint *destination_point = entities->get_destination_point(destination_point_index);
-
   zsdx->game->play_music(music_id);
+  SDL_SetAlpha(visible_surface, SDL_SRCALPHA, 255);
 
   // put Link
-  Link *link = zsdx->game->get_link();
-  link->set_map(this, destination_point->get_direction());
-
-  int x = destination_point->get_x();
-  int y = destination_point->get_y();
-
-  if (x != -1) {
-    link->set_x(x);
+  if (destination_point_index >= 0) {
+    DestinationPoint *destination_point = entities->get_destination_point(destination_point_index);
+    destination_point->place_hero();
   }
+  else if (destination_point_index == -1) {
 
-  if (y != -1) {
-    link->set_y(y);
+    // Link's coordinates are the same as on previous map
+    Link *link = zsdx->game->get_link();
+    link->set_map(this);
   }
+  else {
 
-  SDL_SetAlpha(visible_surface, SDL_SRCALPHA, 255);
+    // only one coordinate is changed
+    Link *link = zsdx->game->get_link();
+    link->set_map(this);
+
+    switch (destination_side) {
+
+    case 0: // left side
+      link->set_x(get_width() - 8);
+      break;
+
+    case 1: // bottom side
+      link->set_y(21);
+      break;
+
+    case 2: // right side
+      link->set_x(8);
+      break;
+
+    case 3: // top side
+      link->set_y(get_height() - 3);
+      break;
+
+    default:
+      DIE("Invalid destination side: " << destination_side);
+    }
+  }
 
   started = true;
 }

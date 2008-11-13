@@ -34,7 +34,8 @@ class Teletransporter: public Detector {
  public:
 
   Teletransporter(string name, Layer layer, int x, int y, int width, int height,
-		  Transition::Style transition_style, MapId destination_map_id, string destination_point_name);
+		  Subtype subtype, Transition::Style transition_style,
+		  MapId destination_map_id, string destination_point_name);
   ~Teletransporter(void);
 
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

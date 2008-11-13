@@ -197,7 +197,7 @@ void CarriedItem::update(void) {
  * This is a redefinition of MapEntity::display_on_map
  * to display the shadow independently of the item movement.
  */
-void CarriedItem::display_on_map(Map *map) {
+void CarriedItem::display_on_map(void) {
 
   if (is_throwing) {
     // display the shadow
@@ -206,5 +206,5 @@ void CarriedItem::display_on_map(Map *map) {
   }
 
   // display the sprite
-  MapEntity::display_on_map(map);
+  MapEntity::display_on_map();
 }

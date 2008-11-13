@@ -35,7 +35,7 @@ class TileOnMap: public MapEntity {
   TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int repeat_y);
   ~TileOnMap(void);
 
-  void display_on_map(Map *map);
+  void display_on_map(void);
 
 };
 

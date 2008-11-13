@@ -160,6 +160,7 @@ void Link::start_lifting(DestructibleItem *item_to_lift) {
 
   // create the corresponding carried item
   this->lifted_item = new CarriedItem(this, item_to_lift);
+  lifted_item->set_map(map);
 
   zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   set_state(LIFTING);
@@ -253,11 +254,11 @@ void Link::update_carried_items(void) {
 void Link::display_carried_items(void) {
 
   if (lifted_item != NULL) {
-    lifted_item->display_on_map(map);
+    lifted_item->display_on_map();
   }
   
   if (thrown_item != NULL) {
-    thrown_item->display_on_map(map);
+    thrown_item->display_on_map();
   }
 }
 

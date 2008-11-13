@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "MapEntity.h"
 #include "Transition.h"
+#include "entities/Teletransporter.h"
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
 #include "movements/MovementFalling.h"
@@ -76,6 +77,8 @@ class MapEntities {
    */
   list<MapEntity*> obstacle_entities[MapEntity::LAYER_NB];
 
+  void add_entity(MapEntity *entity);
+
  public:
 
   // creation and destruction
@@ -98,7 +101,8 @@ class MapEntities {
   void add_destination_point(string destination_point_name, MapEntity::Layer layer,
 			     int link_x, int link_y, int link_direction, bool is_visible);
   void add_teletransporter(string teletransporter_name, MapEntity::Layer layer, int x, int y, int w, int h,
-			   Transition::Style transition_style, MapId map_id, string destination_point_name);
+			   Teletransporter::Subtype subtype, Transition::Style transition_style,
+			   MapId map_id, string destination_point_name);
 
   void add_pickable_item(MapEntity::Layer layer, int x, int y, PickableItem::ItemType pickable_item_type,
 			 int savegame_variable, MovementFalling::FallingHeight falling, bool will_disappear);

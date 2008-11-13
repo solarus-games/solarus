@@ -13,8 +13,8 @@ public class AddEntitiesToolbar extends JComponent {
 
     private static int[][] subtypes = {
 	{0}, // tile
-	{0}, // entrance
-	{0}, // exit
+	{0}, // destination point
+	{Teletransporter.INVISIBLE, Teletransporter.YELLOW}, // teletransporter
 	{0}, // pickable item
 	{DestructibleItem.GRASS, DestructibleItem.BUSH, DestructibleItem.POT}, // destructible item
 	{0}, // chest

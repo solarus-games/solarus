@@ -63,7 +63,7 @@ public class MapEntities implements Iterable<MapEntity> {
     /**
      * Returns all entities of a kind, except the tiles.
      * @param entityType a type of entity:
-     * MapEntity.ENTITY_ENTRANCE, MapEntity.ENTITY_ENEMY...
+     * MapEntity.ENTITY_DESTINATION_POINT, MapEntity.ENTITY_ENEMY...
      * @return the list of the entities of this kind
      */
     public List<MapEntity> getEntitiesOfType(int entityType) {

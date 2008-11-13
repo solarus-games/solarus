@@ -102,7 +102,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     /**
      * Default minimum size of a resizable entity.
      */
-    private static final Dimension defaultUnitSize = new Dimension(8, 8);
+    private static final Dimension defaultUnitarySize = new Dimension(8, 8);
 
     /**
      * Description of the image representing currently this particular entity.
@@ -127,8 +127,8 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 
     // types of entities
     public static final int ENTITY_TILE = 0;
-    public static final int ENTITY_ENTRANCE = 1;
-    public static final int ENTITY_EXIT = 2;
+    public static final int ENTITY_DESTINATION_POINT = 1;
+    public static final int ENTITY_TELETRANSPORTER = 2;
     public static final int ENTITY_PICKABLE_ITEM = 3;
     public static final int ENTITY_DESTRUCTIBLE_ITEM = 4;
     public static final int ENTITY_CHEST = 5;
@@ -137,8 +137,8 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {
 	TileOnMap.class,
-	Entrance.class,
-	Exit.class,
+	DestinationPoint.class,
+	Teletransporter.class,
 	PickableItem.class,
 	DestructibleItem.class,
 	Chest.class
@@ -762,7 +762,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * @return the minimum size of the entity
      */
     public Dimension getUnitarySize() {
-	return defaultUnitSize;
+	return defaultUnitarySize;
     }
 
     /**
@@ -970,7 +970,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     }
 
     /**
-     * Returns an integer identifying the kind of entity: ENTITY_TILE, ENTITY_ENTRANCE...
+     * Returns an integer identifying the kind of entity: ENTITY_TILE, ENTITY_DESTINATION_POINT...
      * @return the type of entity
      */
     public abstract int getType();
@@ -1016,8 +1016,9 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * By default, nothing is done. Redefine this method in subclasses that have a subtype field.
      * This notion of subtype is used by the toolbar that adds entities with an initial subtype.
      * @param subtype the subtype
+     * @throws MapException if the subtype is not valid
      */
-    public void setSubtype(int subtype) {
-	
+    public void setSubtype(int subtype) throws MapException {
+	throw new MapException("This kind of entity does not support subtypes");
     }
 }

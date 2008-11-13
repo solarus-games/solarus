@@ -10,7 +10,7 @@ import zsdx.map_editor_actions.edit_entities.*;
 /**
  * A component to edit an exit.
  */
-public class EditExitComponent extends EditEntityComponent {
+public class EditTeletransporterComponent extends EditEntityComponent {
 
     // specific fields of an exit
     private TransitionChooser transitionField;
@@ -22,7 +22,7 @@ public class EditExitComponent extends EditEntityComponent {
      * @param map the map
      * @param entity the entity to edit
      */
-    public EditExitComponent(Map map, MapEntity entity) {
+    public EditTeletransporterComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
 
@@ -40,8 +40,8 @@ public class EditExitComponent extends EditEntityComponent {
 	addField("Destination map", mapField);
 	
 	// entrance
-	entranceField = new EntityChooser(null, MapEntity.ENTITY_ENTRANCE, true);
-	addField("Entrance", entranceField);
+	entranceField = new EntityChooser(null, MapEntity.ENTITY_DESTINATION_POINT, true);
+	addField("DestinationPoint", entranceField);
 	
 	// load the entrance list for the selected map
 	mapField.addActionListener(new ActionListenerChangeDestinationMap());
@@ -53,11 +53,11 @@ public class EditExitComponent extends EditEntityComponent {
     public void update() {
 	super.update(); // update the common fields
 
-	Exit exit = (Exit) entity;
+	Teletransporter teletransporter = (Teletransporter) entity;
 	
-	transitionField.setTransition(exit.getTransition());
-	mapField.setSelectedId(exit.getDestinationMapId());
-	entranceField.setSelectedName(exit.getEntranceName());
+	transitionField.setTransition(teletransporter.getTransition());
+	mapField.setSelectedId(teletransporter.getDestinationMapId());
+	entranceField.setSelectedName(teletransporter.getDestinationPointName());
     }
 
     /**
@@ -72,7 +72,7 @@ public class EditExitComponent extends EditEntityComponent {
 	ActionEditEntity action = super.getAction();
 
 	// add the properties specific to an exit
-	Exit exit = (Exit) entity;
+	Teletransporter teletransporter = (Teletransporter) entity;
 	
 	int transition = transitionField.getTransition();
 	String destinationMapId = mapField.getSelectedId();
@@ -86,7 +86,7 @@ public class EditExitComponent extends EditEntityComponent {
 	    throw new ZSDXException("Please select an entrance on the destination map");
 	}
 	
-	action.setSpecificAction(new ActionEditExit(map, exit, transition, destinationMapId, entranceName));
+	action.setSpecificAction(new ActionEditExit(map, teletransporter, transition, destinationMapId, entranceName));
 	
 	return action;
     }

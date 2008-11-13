@@ -31,15 +31,31 @@ public class EntityChooser extends JComboBox {
      * Creates a new entity chooser.
      * @param map the map (can be null and specified later)
      * @param entityType the type of entity to show in the combo box
+     * @param showEmptyOption true to add an empty option to the combo box
      */
     public EntityChooser(Map map, int entityType, boolean showEmptyOption) {
+	this(map, entityType, new String[] {""}, new String[] {""});
+	/*
 	super();
-	
+
 	this.map = map;
 	this.entityType = entityType;
 	this.showEmptyOption = showEmptyOption;
-	
+
 	buildList();
+	*/
+    }
+
+    /**
+     * Creates a new entity chooser.
+     * @param map the map (can be null and specified later)
+     * @param entityType the type of entity to show in the combo box
+     * @param specialOptionsNames a list of special options to add to the combo box
+     * @param specialOptionsLabels the labels of the special options
+     */
+    public EntityChooser(Map map, int entityType,
+	    String[] specialOptionsNames, String[] specialOptionsLabels) {
+	// TODO
     }
     
     /**

@@ -108,7 +108,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 
 	item = new JMenuItem("Quit");
 	item.setMnemonic(KeyEvent.VK_Q);
-	item.getAccessibleContext().setAccessibleDescription("Exit the tileset editor");
+	item.getAccessibleContext().setAccessibleDescription("Teletransporter the tileset editor");
 	item.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
 		    if (checkCurrentFileSaved()) {

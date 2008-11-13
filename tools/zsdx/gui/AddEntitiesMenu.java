@@ -22,18 +22,18 @@ public class AddEntitiesMenu extends JMenu {
 
 	JMenuItem item;
 
-	// entrance
-	item = new JMenuItem("Entrance");
-	item.setMnemonic(KeyEvent.VK_E);
-	item.getAccessibleContext().setAccessibleDescription("Add an entrance on the map");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_ENTRANCE));
+	// destination point
+	item = new JMenuItem("Destination point");
+	item.setMnemonic(KeyEvent.VK_D);
+	item.getAccessibleContext().setAccessibleDescription("Add a destination point on the map");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTINATION_POINT));
 	add(item);
 
-	// exit
-	item = new JMenuItem("Exit");
-	item.setMnemonic(KeyEvent.VK_X);
-	item.getAccessibleContext().setAccessibleDescription("Add an exit on the map");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_EXIT));
+	// teletransporter
+	item = new JMenuItem("Teletransporter");
+	item.setMnemonic(KeyEvent.VK_T);
+	item.getAccessibleContext().setAccessibleDescription("Add a teletransporter on the map");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_TELETRANSPORTER));
 	add(item);
 
 	// pickable item
@@ -45,7 +45,7 @@ public class AddEntitiesMenu extends JMenu {
 
 	// destructible item
 	item = new JMenu("Destructible item");
-	item.setMnemonic(KeyEvent.VK_D);
+	item.setMnemonic(KeyEvent.VK_E);
 	item.getAccessibleContext().setAccessibleDescription("Add a destructible item (pot, bush...)");
 	buildDestructibleItemsSubmenu((JMenu) item);
 	add(item);

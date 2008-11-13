@@ -17,7 +17,7 @@ public class EditEntityComponent extends JPanel {
 	// make a subpackage
 	EditEntityComponent.class,
 	EditEntityComponent.class,
-	EditExitComponent.class,
+	EditTeletransporterComponent.class,
 	EditPickableItemComponent.class,
 	EditDestructibleItemComponent.class,
 	EditChestComponent.class

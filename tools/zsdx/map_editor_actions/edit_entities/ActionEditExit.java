@@ -4,12 +4,12 @@ import zsdx.*;
 import zsdx.entities.*;
 
 /**
- * Editing the properties specific to an exit:
+ * Editing the properties specific to an teletransporter:
  * the destination map, the name of the entrance on that map and the transition.
  */
 public class ActionEditExit extends MapEditorAction {
     
-    private Exit exit;
+    private Teletransporter teletransporter;
     
     private int transitionBefore;
     private int transitionAfter;
@@ -23,23 +23,23 @@ public class ActionEditExit extends MapEditorAction {
     /**
      * Constructor.
      * @param map the map
-     * @param exit the exit edited
+     * @param teletransporter the teletransporter edited
      * @param transition type of transition between the two maps
      * @param destinationMapId the id of the destination map
      * @param entranceName the entrance on the destination map
      */
-    public ActionEditExit(Map map, Exit exit, int transition, String destinationMapId, String entranceName) {
+    public ActionEditExit(Map map, Teletransporter teletransporter, int transition, String destinationMapId, String entranceName) {
 	super(map);
 	
-	this.exit = exit;
+	this.teletransporter = teletransporter;
 	
-	this.transitionBefore = exit.getTransition();
+	this.transitionBefore = teletransporter.getTransition();
 	this.transitionAfter = transition;
 	
-	this.destinationMapIdBefore = exit.getDestinationMapId();
+	this.destinationMapIdBefore = teletransporter.getDestinationMapId();
 	this.destinationMapIdAfter = destinationMapId;
 	
-	this.entranceNameBefore = exit.getEntranceName();
+	this.entranceNameBefore = teletransporter.getDestinationPointName();
 	this.entranceNameAfter = entranceName;
     }
 
@@ -47,17 +47,17 @@ public class ActionEditExit extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	exit.setTransition(transitionAfter);
-	exit.setDestinationMapId(destinationMapIdAfter);
-	exit.setEntranceName(entranceNameAfter);
+	teletransporter.setTransition(transitionAfter);
+	teletransporter.setDestinationMapId(destinationMapIdAfter);
+	teletransporter.setDestinationPointName(entranceNameAfter);
     }
     
     /**
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	exit.setTransition(transitionBefore);
-	exit.setDestinationMapId(destinationMapIdBefore);
-	exit.setEntranceName(entranceNameBefore);
+	teletransporter.setTransition(transitionBefore);
+	teletransporter.setDestinationMapId(destinationMapIdBefore);
+	teletransporter.setDestinationPointName(entranceNameBefore);
     }
 }

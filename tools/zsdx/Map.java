@@ -574,7 +574,7 @@ public class Map extends Observable {
     /**
      * Returns all entities of a kind, except the tiles.
      * @param entityType a type of entity:
-     * MapEntity.ENTITY_ENTRANCE, MapEntity.ENTITY_ENEMY...
+     * MapEntity.ENTITY_DESTINATION_POINT, MapEntity.ENTITY_ENEMY...
      * @return the list of the entities of this kind on the map
      */
     public List<MapEntity> getEntitiesOfType(int entityType) {
@@ -650,14 +650,14 @@ public class Map extends Observable {
 	Rectangle rectangle = new Rectangle(x, y, width, height);
 
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    
+
 	    for (MapEntity entity: allEntities[layer]) {
 		if (rectangle.contains(entity.getPositionInMap())) {
 		    entitiesInRectangle.add(entity);
 		}
 	    }
 	}
-	
+
 	return entitiesInRectangle;
     }
     

@@ -33,7 +33,7 @@ public class DestructibleItem extends ActiveEntity {
      */
     private static final Point origin = new Point(8, 13);
 
-    // types of destructible items
+    // subtypes of destructible items
     public static final int POT               = 0;
     public static final int SKULL             = 1;
     public static final int BUSH              = 2;
@@ -168,6 +168,8 @@ public class DestructibleItem extends ActiveEntity {
      */
     public void setSubtype(int subtype) {
 	this.subtype = subtype;
+	setChanged();
+	notifyObservers();
     }
 
     /**

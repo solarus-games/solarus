@@ -845,7 +845,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
     public int getYTopLeft() {
 	return positionInMap.y;
     }
-    
+
     /**
      * Returns the width of the entity
      * @return the entity's width

@@ -31,6 +31,11 @@ public class DestinationPoint extends ActiveEntity {
     private boolean changeDirection;
 
     /**
+     * Indicates whether the destination point is visible.
+     */
+    private boolean isVisible;
+
+    /**
      * Origin point of a destination point.
      */
     private static final Point origin = new Point(8, 13);
@@ -43,6 +48,7 @@ public class DestinationPoint extends ActiveEntity {
      */
     public DestinationPoint(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
+	isVisible = false;
 	setDirection(1);
     }
 
@@ -59,7 +65,7 @@ public class DestinationPoint extends ActiveEntity {
 	setSizeImpl(16, 16);
 
 	try {
-	    this.changeDirection = (Integer.parseInt(tokenizer.nextToken()) != 0);
+	    this.isVisible = (Integer.parseInt(tokenizer.nextToken()) != 0);
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -82,7 +88,7 @@ public class DestinationPoint extends ActiveEntity {
 
 	// add the specific properties of a destination point
 	buff.append('\t');
-	buff.append(changeDirection ? 1 : 0);
+	buff.append(isVisible ? 1 : 0);
 
 	return buff.toString();
     }
@@ -110,7 +116,25 @@ public class DestinationPoint extends ActiveEntity {
     public int getNbDirections() {
 	return changeDirection ? 4 : 0;
     }
-    
+
+    /**
+     * Changes the direction of the entity.
+     * This is a redefinition of MapEntity.setDirection to handle the special value of -1
+     * indicating that the direction is not changed
+     * @param direction the entity's direction, or -1
+     * @throws UnsupportedOperationException if the entity has no direction
+     * @throws IllegalArgumentException if the direction is invalid
+     */
+    public void setDirection(int direction) throws UnsupportedOperationException, IllegalArgumentException {
+	if (direction == -1) {
+	    changeDirection = false;
+	}
+	else {
+	    changeDirection = true;
+	    super.setDirection(direction);
+	}
+    }
+
     /**
      * Returns whether the entity has an identifier.
      * @return true
@@ -118,7 +142,23 @@ public class DestinationPoint extends ActiveEntity {
     public boolean hasName() {
 	return true;
     }
-    
+
+    /**
+     * Returns whether this destination point is visible.
+     * @return true if the destination point is visible
+     */
+    public boolean isVisible() {
+	return isVisible;
+    }
+
+    /**
+     * Sets whether this destination point is visible.
+     * @param visible true to make the destination point visible
+     */
+    public void setVisible(boolean visible) {
+	this.isVisible = visible;
+    }
+
     /**
      * Updates the description of the image currently representing the entity.
      */

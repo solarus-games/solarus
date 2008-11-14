@@ -22,11 +22,10 @@ public class EntityChooser extends JComboBox {
     private int entityType;
 
     /**
-     * Indicates whether the first element of the combo box should be
-     * an empty option (showing that no element is selected).
+     * A list of special options to add to the combo box.
      */
-    private boolean showEmptyOption;
-
+    private String[] additionalOptions;
+    
     /**
      * Creates a new entity chooser.
      * @param map the map (can be null and specified later)
@@ -34,28 +33,35 @@ public class EntityChooser extends JComboBox {
      * @param showEmptyOption true to add an empty option to the combo box
      */
     public EntityChooser(Map map, int entityType, boolean showEmptyOption) {
-	this(map, entityType, new String[] {""}, new String[] {""});
-	/*
 	super();
 
 	this.map = map;
 	this.entityType = entityType;
-	this.showEmptyOption = showEmptyOption;
+	
+	if (showEmptyOption) {
+	    this.additionalOptions = new String[] {""};
+	}
+	else {
+	    this.additionalOptions = new String[] {};    
+	}
 
 	buildList();
-	*/
     }
 
     /**
      * Creates a new entity chooser.
      * @param map the map (can be null and specified later)
      * @param entityType the type of entity to show in the combo box
-     * @param specialOptionsNames a list of special options to add to the combo box
-     * @param specialOptionsLabels the labels of the special options
+     * @param additionalOptions a list of special options to add to the combo box
      */
-    public EntityChooser(Map map, int entityType,
-	    String[] specialOptionsNames, String[] specialOptionsLabels) {
-	// TODO
+    public EntityChooser(Map map, int entityType, String[] additionalOptions) {
+	super();
+	
+	this.map = map;
+	this.entityType = entityType;
+	this.additionalOptions = additionalOptions; 
+
+	buildList();
     }
     
     /**
@@ -65,8 +71,8 @@ public class EntityChooser extends JComboBox {
 	
 	super.removeAllItems();
 	
-	if (showEmptyOption) {
-	    addItem("");
+	for (int i = 0; i < additionalOptions.length; i++) {
+	    addItem(additionalOptions[i]);
 	}
 	
 	if (map != null) {
@@ -77,7 +83,7 @@ public class EntityChooser extends JComboBox {
 	    
 	    // if there is only one entity, we make it selected
 	    if (entities.size() == 1) {
-		setSelectedIndex(showEmptyOption ? 1 : 0);
+		setSelectedIndex(additionalOptions.length);
 	    }
 	    setEnabled(true);
 	}

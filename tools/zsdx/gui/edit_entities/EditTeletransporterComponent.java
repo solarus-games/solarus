@@ -71,7 +71,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	// retrieve the action corresponding to the common entity properties
 	ActionEditEntity action = super.getAction();
 
-	// add the properties specific to an exit
+	// add the properties specific to a teletransporter
 	Teletransporter teletransporter = (Teletransporter) entity;
 	
 	int transition = transitionField.getTransition();

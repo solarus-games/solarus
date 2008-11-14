@@ -8,14 +8,14 @@ import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;
 
 /**
- * A component to edit an exit.
+ * A component to edit a teletransporter.
  */
 public class EditTeletransporterComponent extends EditEntityComponent {
 
-    // specific fields of an exit
+    // specific fields of a teletransporter
     private TransitionChooser transitionField;
     private ResourceChooser mapField;
-    private EntityChooser entranceField;
+    private EntityChooser destinationPointField;
 
     /**
      * Constructor.
@@ -40,8 +40,8 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	addField("Destination map", mapField);
 	
 	// entrance
-	entranceField = new EntityChooser(null, MapEntity.ENTITY_DESTINATION_POINT, true);
-	addField("DestinationPoint", entranceField);
+	destinationPointField = new EntityChooser(null, MapEntity.ENTITY_DESTINATION_POINT, true);
+	addField("Destination point", destinationPointField);
 	
 	// load the entrance list for the selected map
 	mapField.addActionListener(new ActionListenerChangeDestinationMap());
@@ -57,7 +57,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	
 	transitionField.setTransition(teletransporter.getTransition());
 	mapField.setSelectedId(teletransporter.getDestinationMapId());
-	entranceField.setSelectedName(teletransporter.getDestinationPointName());
+	destinationPointField.setSelectedName(teletransporter.getDestinationPointName());
     }
 
     /**
@@ -76,17 +76,17 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	
 	int transition = transitionField.getTransition();
 	String destinationMapId = mapField.getSelectedId();
-	String entranceName = entranceField.getSelectedName();
+	String destinationPointName = destinationPointField.getSelectedName();
 	
 	if (destinationMapId.length() == 0) {
 	    throw new ZSDXException("Please select a destination map");
 	}
 
-	if (entranceName.length() == 0) {
-	    throw new ZSDXException("Please select an entrance on the destination map");
+	if (destinationPointName.length() == 0) {
+	    throw new ZSDXException("Please select a destination point on the destination map");
 	}
 	
-	action.setSpecificAction(new ActionEditExit(map, teletransporter, transition, destinationMapId, entranceName));
+	action.setSpecificAction(new ActionEditTeletransporter(map, teletransporter, transition, destinationMapId, destinationPointName));
 	
 	return action;
     }
@@ -103,10 +103,10 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 		String mapId = mapField.getSelectedId();
 		
 		if (mapId.length() != 0) { // a map has just been selected
-		    entranceField.setMap(new Map(mapId));
+		    destinationPointField.setMap(new Map(mapId));
 		}
 		else {
-		    entranceField.setMap(null);
+		    destinationPointField.setMap(null);
 		}
 	    }
 	    catch (ZSDXException ex) {

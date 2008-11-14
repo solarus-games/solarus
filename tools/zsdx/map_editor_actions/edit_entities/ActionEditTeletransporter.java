@@ -4,10 +4,10 @@ import zsdx.*;
 import zsdx.entities.*;
 
 /**
- * Editing the properties specific to an teletransporter:
- * the destination map, the name of the entrance on that map and the transition.
+ * Editing the properties specific to a teletransporter:
+ * its subtype, the destination map, the destination point on that map and the transition.
  */
-public class ActionEditExit extends MapEditorAction {
+public class ActionEditTeletransporter extends MapEditorAction {
     
     private Teletransporter teletransporter;
     
@@ -17,8 +17,8 @@ public class ActionEditExit extends MapEditorAction {
     private String destinationMapIdBefore;
     private String destinationMapIdAfter;
     
-    private String entranceNameBefore;
-    private String entranceNameAfter;
+    private String destinationPointNameBefore;
+    private String destinationPointNameAfter;
 
     /**
      * Constructor.
@@ -28,7 +28,7 @@ public class ActionEditExit extends MapEditorAction {
      * @param destinationMapId the id of the destination map
      * @param entranceName the entrance on the destination map
      */
-    public ActionEditExit(Map map, Teletransporter teletransporter, int transition, String destinationMapId, String entranceName) {
+    public ActionEditTeletransporter(Map map, Teletransporter teletransporter, int transition, String destinationMapId, String entranceName) {
 	super(map);
 	
 	this.teletransporter = teletransporter;
@@ -39,8 +39,8 @@ public class ActionEditExit extends MapEditorAction {
 	this.destinationMapIdBefore = teletransporter.getDestinationMapId();
 	this.destinationMapIdAfter = destinationMapId;
 	
-	this.entranceNameBefore = teletransporter.getDestinationPointName();
-	this.entranceNameAfter = entranceName;
+	this.destinationPointNameBefore = teletransporter.getDestinationPointName();
+	this.destinationPointNameAfter = entranceName;
     }
 
     /**
@@ -49,7 +49,7 @@ public class ActionEditExit extends MapEditorAction {
     public void execute() throws ZSDXException {
 	teletransporter.setTransition(transitionAfter);
 	teletransporter.setDestinationMapId(destinationMapIdAfter);
-	teletransporter.setDestinationPointName(entranceNameAfter);
+	teletransporter.setDestinationPointName(destinationPointNameAfter);
     }
     
     /**
@@ -58,6 +58,6 @@ public class ActionEditExit extends MapEditorAction {
     public void undo() throws ZSDXException {
 	teletransporter.setTransition(transitionBefore);
 	teletransporter.setDestinationMapId(destinationMapIdBefore);
-	teletransporter.setDestinationPointName(entranceNameBefore);
+	teletransporter.setDestinationPointName(destinationPointNameBefore);
     }
 }

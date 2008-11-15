@@ -34,11 +34,11 @@ public class EditEntityComponent extends JPanel {
     protected MapEntity entity;
 
     // common subcomponents
-    private JTextField fieldName;
-    private LayerChooser fieldLayer;
-    private CoordinatesField fieldPosition;
-    private CoordinatesField fieldSize;
-    private DirectionChooser fieldDirection;
+    protected JTextField nameField;
+    protected LayerChooser layerField;
+    protected CoordinatesField positionField;
+    protected CoordinatesField sizeField;
+    protected DirectionChooser directionField;
     
     private GridBagConstraints gridBagConstraints;
 
@@ -65,31 +65,31 @@ public class EditEntityComponent extends JPanel {
 	
 	// name
 	if (entity.hasName()) {
-	    fieldName = new JTextField(15);
-	    addField("Name", fieldName);
+	    nameField = new JTextField(15);
+	    addField("Name", nameField);
 	}
 	
 	// layer
-	fieldLayer = new LayerChooser();
-	addField("Layer", fieldLayer);
+	layerField = new LayerChooser();
+	addField("Layer", layerField);
 	
 	// position
-	this.fieldPosition = new CoordinatesField();
-	fieldPosition.setStepSize(8, 8);
-	fieldPosition.setEnabled(true);
-	addField("Position", fieldPosition);
+	this.positionField = new CoordinatesField();
+	positionField.setStepSize(8, 8);
+	positionField.setEnabled(true);
+	addField("Position", positionField);
 
 	// size
 	if (entity.isResizable()) {
-	    this.fieldSize = new CoordinatesField();
-	    fieldSize.setEnabled(true);
-	    addField("Size", fieldSize);
+	    this.sizeField = new CoordinatesField();
+	    sizeField.setEnabled(true);
+	    addField("Size", sizeField);
 	}
 
 	// direction
 	if (entity.hasDirection()) {
-	    this.fieldDirection = new DirectionChooser(entity.getNbDirections());
-	    addField("Direction", fieldDirection);
+	    this.directionField = new DirectionChooser(entity.getNbDirections());
+	    addField("Direction", directionField);
 	}
 	
 	// specific fields
@@ -161,20 +161,20 @@ public class EditEntityComponent extends JPanel {
     public void update() {
 	
 	if (entity.hasName()) {
-	    fieldName.setText(entity.getName());
+	    nameField.setText(entity.getName());
 	}
 	
-	fieldLayer.setLayer(entity.getLayer());
+	layerField.setLayer(entity.getLayer());
 	
-	fieldPosition.setCoordinates(entity.getX(), entity.getY());
+	positionField.setCoordinates(entity.getX(), entity.getY());
 	
 	if (entity.isResizable()) {
-	    fieldSize.setStepSize(entity.getUnitarySize().width, entity.getUnitarySize().height);
-	    fieldSize.setCoordinates(entity.getWidth(), entity.getHeight());
+	    sizeField.setStepSize(entity.getUnitarySize().width, entity.getUnitarySize().height);
+	    sizeField.setCoordinates(entity.getWidth(), entity.getHeight());
 	}
 	
 	if (entity.hasDirection()) {
-	    fieldDirection.setDirection(entity.getDirection());
+	    directionField.setDirection(entity.getDirection());
 	}	
     }
     
@@ -188,15 +188,15 @@ public class EditEntityComponent extends JPanel {
      */
     protected ActionEditEntity getAction() throws ZSDXException {
 
-	String name = entity.hasName() ? fieldName.getText() : null;
-	int layer = fieldLayer.getLayer();
-	Point position = fieldPosition.getCoordinates();
+	String name = entity.hasName() ? nameField.getText() : null;
+	int layer = layerField.getLayer();
+	Point position = positionField.getCoordinates();
 	Dimension size = null;
 	if (entity.isResizable()) {
-	    Point coords = fieldSize.getCoordinates();
+	    Point coords = sizeField.getCoordinates();
 	    size = new Dimension(coords.x, coords.y);
 	}
-	int direction = entity.hasDirection() ? fieldDirection.getDirection() : -1;
+	int direction = entity.hasDirection() ? directionField.getDirection() : -1;
 	
 	return new ActionEditEntity(map, entity, name,
 		layer, position, size, direction);

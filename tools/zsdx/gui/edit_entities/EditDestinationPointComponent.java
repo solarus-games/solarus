@@ -1,6 +1,7 @@
 package zsdx.gui.edit_entities;
 
 import javax.swing.*;
+import java.awt.event.*;
 import zsdx.*;
 import zsdx.entities.*;
 import zsdx.gui.*;
@@ -13,7 +14,8 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditDestinationPointComponent extends EditEntityComponent {
 
     // specific fields of a destination point
-    private JCheckBox isVisibleField;
+    private JCheckBox changeDirectionField;
+    private RadioField subtypeField;
 
     /**
      * Constructor.
@@ -28,10 +30,26 @@ public class EditDestinationPointComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-	
-	// visibility
-	isVisibleField = new JCheckBox();
-	addField("Visible", isVisibleField);
+
+	// change the direction
+	changeDirectionField = new JCheckBox("Change hero's direction");
+	addField("", changeDirectionField);
+	changeDirectionField.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent ev) {
+		directionField.setEnabled(changeDirectionField.isSelected());
+	    }
+	});
+
+	// subtype
+	subtypeField = new RadioField("Invisible", "Teletransporter destination");
+	addField("Subtype", subtypeField);
+	subtypeField.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent ev) {
+		boolean changeDirection = (subtypeField.getSelectedIndex() == DestinationPoint.INVISIBLE);
+		changeDirectionField.setSelected(changeDirection);
+		directionField.setEnabled(changeDirection);
+	    }
+	});
     }
 
     /**
@@ -41,8 +59,11 @@ public class EditDestinationPointComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	DestinationPoint destinationPoint = (DestinationPoint) entity;
-	
-	isVisibleField.setSelected(destinationPoint.isVisible());
+
+	boolean changeDirection = destinationPoint.getDirection() != -1;
+	directionField.setEnabled(changeDirection);
+	changeDirectionField.setSelected(changeDirection);
+	subtypeField.setSelectedIndex(destinationPoint.getSubtype());
     }
 
     /**
@@ -58,9 +79,9 @@ public class EditDestinationPointComponent extends EditEntityComponent {
 	// add the properties specific to a destination point
 	DestinationPoint destinationPoint = (DestinationPoint) entity;
 
-	boolean isVisible = isVisibleField.isSelected();
+	int subtype = subtypeField.getSelectedIndex();
 
-	action.setSpecificAction(new ActionEditDestinationPoint(map, destinationPoint, isVisible));
+	action.setSpecificAction(new ActionEditDestinationPoint(map, destinationPoint, subtype));
 
 	return action;
     }

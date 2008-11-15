@@ -10,35 +10,35 @@ public class ActionEditDestinationPoint extends MapEditorAction {
 
     private DestinationPoint destinationPoint;
 
-    private boolean isVisibleBefore;
-    private boolean isVisibleAfter;
+    private int subtypeBefore;
+    private int subtypeAfter;
 
     /**
      * Constructor.
      * @param map the map
      * @param DestinationPoint the destination point edited
-     * @param isVisible true if the destination point becomes visible
+     * @param subtype the subtype of destination point
      */
-    public ActionEditDestinationPoint(Map map, DestinationPoint destinationPoint, boolean isVisible) {
+    public ActionEditDestinationPoint(Map map, DestinationPoint destinationPoint, int subtype) {
 	super(map);
-	
+
 	this.destinationPoint = destinationPoint;
-	
-	this.isVisibleBefore = destinationPoint.isVisible();
-	this.isVisibleAfter = isVisible;
+
+	this.subtypeBefore = destinationPoint.getSubtype();
+	this.subtypeAfter = subtype;
     }
 
     /**
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	destinationPoint.setVisible(isVisibleAfter);
+	destinationPoint.setSubtype(subtypeAfter);
     }
-    
+
     /**
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	destinationPoint.setVisible(isVisibleBefore);
+	destinationPoint.setSubtype(subtypeBefore);
     }
 }

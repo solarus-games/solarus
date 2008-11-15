@@ -19,6 +19,9 @@ public class EditTeletransporterComponent extends EditEntityComponent {
     private ResourceChooser mapField;
     private EntityChooser destinationPointField;
 
+    private static final String samePointText = "<Same point>";
+    private static final String sidePointText = "<Side of the map>";
+
     /**
      * Constructor.
      * @param map the map
@@ -46,7 +49,8 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	addField("Destination map", mapField);
 
 	// destination point
-	destinationPointField = new EntityChooser(null, MapEntity.ENTITY_DESTINATION_POINT, true);
+	destinationPointField = new EntityChooser(null, MapEntity.ENTITY_DESTINATION_POINT,
+		new String[] {"", samePointText, sidePointText});
 	addField("Destination point", destinationPointField);
 
 	// load the entrance list for the selected map
@@ -64,7 +68,15 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	subtypeField.setSubtype(teletransporter.getSubtype());
 	transitionField.setTransition(teletransporter.getTransition());
 	mapField.setSelectedId(teletransporter.getDestinationMapId());
-	destinationPointField.setSelectedName(teletransporter.getDestinationPointName());
+	
+	String destinationPointName = teletransporter.getDestinationPointName();
+	if (destinationPointName.equals("_same")) {
+	    destinationPointName = samePointText;
+	}
+	else if (destinationPointName.equals("_side")) {
+	    destinationPointName = sidePointText;
+	}
+	destinationPointField.setSelectedName(destinationPointName);
     }
 
     /**
@@ -85,7 +97,14 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	int transition = transitionField.getTransition();
 	String destinationMapId = mapField.getSelectedId();
 	String destinationPointName = destinationPointField.getSelectedName();
-	
+
+	if (destinationPointName.equals(samePointText)) {
+	    destinationPointName = "_same";
+	}
+	else if (destinationPointName.equals(sidePointText)) {
+	    destinationPointName = "_side";
+	}
+
 	if (destinationMapId.length() == 0) {
 	    throw new ZSDXException("Please select a destination map");
 	}
@@ -93,10 +112,10 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	if (destinationPointName.length() == 0) {
 	    throw new ZSDXException("Please select a destination point on the destination map");
 	}
-	
+
 	action.setSpecificAction(new ActionEditTeletransporter(map, teletransporter, subtype,
 		transition, destinationMapId, destinationPointName));
-	
+
 	return action;
     }
 

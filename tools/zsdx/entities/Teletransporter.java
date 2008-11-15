@@ -56,7 +56,7 @@ public class Teletransporter extends ActiveEntity {
 	// default field values
 	subtype = INVISIBLE;
 	transition = Transition.FADE;
-	destinationMapId = "";
+	destinationMapId = map.getId();
 	destinationPointName = "";
     }
 

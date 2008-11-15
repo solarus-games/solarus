@@ -19,8 +19,13 @@ public class DestinationPoint extends ActiveEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("destination_point.png", 96, 0, 32, 32)    // invisible
+	new EntityImageDescription("destination_point.png", 32, 0, 32, 32),    // invisible (up)
+	new EntityImageDescription("destination_point.png", 128, 0, 16, 16)    // gray
     };
+
+    // subtypes of destination points
+    public static final int INVISIBLE         = 0;
+    public static final int GRAY              = 1;
 
     /**
      * Indicates whether the direction of Link is changed when he arrives
@@ -32,7 +37,7 @@ public class DestinationPoint extends ActiveEntity {
     /**
      * Indicates whether the destination point is visible.
      */
-    private boolean isVisible;
+    private int subtype;
 
     /**
      * Origin point of a destination point.
@@ -47,7 +52,7 @@ public class DestinationPoint extends ActiveEntity {
      */
     public DestinationPoint(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
-	isVisible = false;
+	this.subtype = -1;
 	setDirection(1);
     }
 
@@ -64,7 +69,7 @@ public class DestinationPoint extends ActiveEntity {
 	setSizeImpl(16, 16);
 
 	try {
-	    this.isVisible = (Integer.parseInt(tokenizer.nextToken()) != 0);
+	    this.subtype = Integer.parseInt(tokenizer.nextToken());
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -87,7 +92,7 @@ public class DestinationPoint extends ActiveEntity {
 
 	// add the specific properties of a destination point
 	buff.append('\t');
-	buff.append(isVisible ? 1 : 0);
+	buff.append(subtype);
 
 	return buff.toString();
     }
@@ -158,28 +163,51 @@ public class DestinationPoint extends ActiveEntity {
     }
 
     /**
-     * Returns whether this destination point is visible.
-     * @return true if the destination point is visible
+     * Returns the subtype of this entity.
+     * @return the subtype of this entity
      */
-    public boolean isVisible() {
-	return isVisible;
+    public int getSubtype() {
+	return subtype;
     }
 
     /**
-     * Sets whether this destination point is visible.
-     * @param visible true to make the destination point visible
+     * Sets the subtype of this entity.
+     * @param subtype the subtype of entity
+     * @throws MapException if the subtype is not valid
      */
-    public void setVisible(boolean visible) {
-	this.isVisible = visible;
-	setChanged();
-	notifyObservers();
+    public void setSubtype(int subtype) throws MapException {
+
+	if (subtype != this.subtype) {
+
+	    if (this.subtype == -1) {
+		setDefaultValues(subtype);
+	    }
+
+	    this.subtype = subtype;
+	    setChanged();
+	    notifyObservers();
+	}
+    }
+
+    /**
+     * Sets the default options of this destination point for the specified subtype.
+     * @param subtype a subtype
+     */
+    public void setDefaultValues(int subtype) {
+
+	if (subtype == INVISIBLE) {
+	    setDirection(1);
+	}
+	else {
+	    setDirection(-1);
+	}
     }
 
     /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	if (!isVisible) {
+	if (subtype == INVISIBLE) {
 	    currentImageDescription.setRectangle(getDirection() * 32, 0, 32, 32);
 	}
 	else {

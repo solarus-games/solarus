@@ -66,12 +66,14 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * The map.
      */
     protected Map map;
-    
+
+    protected boolean initialized;
+
     /**
      * Position of the entity in the map.
      */
     protected Rectangle positionInMap;
-    
+
     /**
      * Layer of the entity on the map.
      */
@@ -93,7 +95,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * Color to display instead of the transparent pixels of the image.
      */
     public static final Color bgColor = new Color(255, 0, 255);
-    
+
     /**
      * Coordinates of the origin point of an entity by default.
      */
@@ -108,7 +110,7 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * Description of the image representing currently this particular entity.
      */
     protected EntityImageDescription currentImageDescription;
-    
+
     // Constants to identify the layer
 
     public static final int LAYER_LOW = 0;
@@ -243,7 +245,8 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 	    ex.printStackTrace();
 	    System.exit(1);
 	}
-	
+
+	entity.initialized = true;
 	return entity;
     }
     
@@ -295,7 +298,8 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 		throw (ZSDXException) cause;
 	    }
 	}
-	
+
+	entity.initialized = true;
 	return entity;
     }
 
@@ -1019,6 +1023,6 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      * @throws MapException if the subtype is not valid
      */
     public void setSubtype(int subtype) throws MapException {
-	throw new MapException("This kind of entity does not support subtypes");
+
     }
 }

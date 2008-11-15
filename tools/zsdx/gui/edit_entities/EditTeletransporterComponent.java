@@ -1,6 +1,7 @@
 package zsdx.gui.edit_entities;
 
 import java.awt.event.*;
+import javax.swing.*;
 import zsdx.*;
 import zsdx.entities.*;
 import zsdx.gui.*;
@@ -13,6 +14,7 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditTeletransporterComponent extends EditEntityComponent {
 
     // specific fields of a teletransporter
+    private TeletransporterSubtypeChooser subtypeField;
     private TransitionChooser transitionField;
     private ResourceChooser mapField;
     private EntityChooser destinationPointField;
@@ -30,19 +32,23 @@ public class EditTeletransporterComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-	
+
+	// subtype
+	subtypeField = new TeletransporterSubtypeChooser();
+	addField("Subtype", subtypeField);
+
 	// transition
 	transitionField = new TransitionChooser();
 	addField("Transition", transitionField);
-	
+
 	// destination map
 	mapField = new ResourceChooser(ResourceDatabase.RESOURCE_MAP, true);
 	addField("Destination map", mapField);
-	
-	// entrance
+
+	// destination point
 	destinationPointField = new EntityChooser(null, MapEntity.ENTITY_DESTINATION_POINT, true);
 	addField("Destination point", destinationPointField);
-	
+
 	// load the entrance list for the selected map
 	mapField.addActionListener(new ActionListenerChangeDestinationMap());
     }
@@ -54,7 +60,8 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	Teletransporter teletransporter = (Teletransporter) entity;
-	
+
+	subtypeField.setSubtype(teletransporter.getSubtype());
 	transitionField.setTransition(teletransporter.getTransition());
 	mapField.setSelectedId(teletransporter.getDestinationMapId());
 	destinationPointField.setSelectedName(teletransporter.getDestinationPointName());
@@ -73,7 +80,8 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 
 	// add the properties specific to a teletransporter
 	Teletransporter teletransporter = (Teletransporter) entity;
-	
+
+	int subtype = subtypeField.getSubtype();
 	int transition = transitionField.getTransition();
 	String destinationMapId = mapField.getSelectedId();
 	String destinationPointName = destinationPointField.getSelectedName();
@@ -86,7 +94,8 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	    throw new ZSDXException("Please select a destination point on the destination map");
 	}
 	
-	action.setSpecificAction(new ActionEditTeletransporter(map, teletransporter, transition, destinationMapId, destinationPointName));
+	action.setSpecificAction(new ActionEditTeletransporter(map, teletransporter, subtype,
+		transition, destinationMapId, destinationPointName));
 	
 	return action;
     }
@@ -112,6 +121,47 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	    catch (ZSDXException ex) {
 		GuiTools.warningDialog("The destination map is invalid: " + ex.getMessage());
 	    }
+	}
+    }
+
+    /**
+     * A combo box to select a subtype of teletransporter.
+     */
+    public class TeletransporterSubtypeChooser extends JComboBox {
+
+	private final String[] names = {
+	    "Invisible", "Yellow", "Blue"
+	};
+
+	/**
+	 * Creates a new destructible item type chooser.
+	 */
+	public TeletransporterSubtypeChooser() {
+	    super();
+
+	    for (int i = 0; i < names.length; i++) {
+		addItem(new KeyValue(i, names[i]));
+	    }
+	}
+
+	/**
+	 * Returns the type of teletransporter currently selected.
+	 * @return the type of teletransporter currently selected
+	 */
+	public int getSubtype() {
+
+	    KeyValue item = (KeyValue) getSelectedItem();
+	    return Integer.parseInt(item.getKey());
+	}
+
+	/**
+	 * Sets the subtype of teletransporter selected.
+	 * @param type the subtype of teletransporter to make selected
+	 */
+	public void setSubtype(int subtype) {
+
+	    KeyValue item = new KeyValue(subtype, null);
+	    setSelectedItem(item);
 	}
     }
 }

@@ -1,6 +1,5 @@
 package zsdx.gui.edit_entities;
 
-import java.awt.event.*;
 import javax.swing.*;
 import zsdx.*;
 import zsdx.entities.*;
@@ -52,18 +51,17 @@ public class EditDestinationPointComponent extends EditEntityComponent {
      * @return the action object corresponding to the modifications made
      */
     protected ActionEditEntity getAction() throws ZSDXException {
-	
+
 	// retrieve the action corresponding to the common entity properties
 	ActionEditEntity action = super.getAction();
 
 	// add the properties specific to a destination point
 	DestinationPoint destinationPoint = (DestinationPoint) entity;
-	
-	boolean isVisible = destinationPoint.isVisible();
+
+	boolean isVisible = isVisibleField.isSelected();
 
 	action.setSpecificAction(new ActionEditDestinationPoint(map, destinationPoint, isVisible));
-	
+
 	return action;
     }
-
 }

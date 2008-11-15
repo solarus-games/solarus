@@ -24,8 +24,10 @@ public class Teletransporter extends ActiveEntity {
     /**
      * Description of the default image representing this kind of entity.
      */
-    public static final EntityImageDescription[] generalImageDescriptions =
-	{new EntityImageDescription("teletransporter.png", 0, 0, 32, 32)};
+    public static final EntityImageDescription[] generalImageDescriptions = {
+	new EntityImageDescription("teletransporter.png", 0, 0, 32, 32), // invisible
+	new EntityImageDescription("teletransporter.png", 32, 0, 16, 16), // yellow
+    };
 
     /**
      * Unitary size of a teletransporter.
@@ -133,11 +135,10 @@ public class Teletransporter extends ActiveEntity {
 
     /**
      * Returns whether or not the entity is resizable.
-     * A teletransporter is resizable if its subtype is INVISIBLE.
-     * @return true if the subtype is INVISIBLE
+     * @return true if the entity is resizable
      */
     public boolean isResizable() {
-	return subtype == INVISIBLE;
+	return !initialized || subtype == INVISIBLE;
     }
 
     /**
@@ -174,30 +175,11 @@ public class Teletransporter extends ActiveEntity {
 
 	if (subtype != this.subtype) {
 
-	    // set the default values of the other fields for this subtype
-	    switch (subtype) {
-
-	    case INVISIBLE:
-		setTransition(Transition.FADE);
-		break;
-
-	    case YELLOW:
-		setTransition(Transition.FADE);
-		break;
-
-	    case BLUE:
-		setTransition(Transition.IMMEDIATE);
-		setDestinationMapId(map.getId());
-		break;
-
-	    default:
-		throw new MapException("Unknown teletransporter subtype: " + subtype);
-	    }
-
-	    this.subtype = subtype;
 	    if (isResizable()) {
 		setSize(16, 16);
 	    }
+
+	    this.subtype = subtype;
 	    setChanged();
 	    notifyObservers();
 	}
@@ -255,6 +237,18 @@ public class Teletransporter extends ActiveEntity {
     }
 
     /**
+     * Updates the description of the image currently representing the entity.
+     */
+    public void updateImageDescription() {
+	if (subtype == YELLOW) {
+	    currentImageDescription.setRectangle(32, 0, 16, 16);
+	}
+	else if (subtype == BLUE) {
+	    currentImageDescription.setRectangle(32, 16, 16, 16);
+	}
+    }
+
+    /**
      * Draws the teletransporter on the map editor.
      * @param g graphic context
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
@@ -268,12 +262,25 @@ public class Teletransporter extends ActiveEntity {
 		resizableTeletransporterImage = Project.getEditorImage("resizable_teletransporter.png");
 	    }
 
-	    int dx1 = (int) (positionInMap.x * zoom);
-	    int dy1 = (int) (positionInMap.y * zoom);
-	    int dx2 = (int) (dx1 + positionInMap.width * zoom);
-	    int dy2 = (int) (dy1 + positionInMap.height * zoom);
+	    int x = (int) (positionInMap.x * zoom);
+	    int y = (int) (positionInMap.y * zoom);
+	    int w = (int) (positionInMap.width * zoom);
+	    int h = (int) (positionInMap.height * zoom);
+
+	    g.setColor(new Color(240, 200, 80));
+	    g.fillRect(x, y, w, h);
+
+	    int dx1 = (int) ((positionInMap.x + positionInMap.width / 2 - 8) * zoom);
+	    int dy1 = (int) ((positionInMap.y + positionInMap.height / 2 - 8) * zoom);
+	    int dx2 = (int) (dx1 + 16 * zoom);
+	    int dy2 = (int) (dy1 + 16 * zoom);
 
 	    g.drawImage(resizableTeletransporterImage, dx1, dy1, dx2, dy2, 0, 0, 32, 32, null);
+
+	    dx1 = (int) (positionInMap.x * zoom);
+	    dy1 = (int) (positionInMap.y * zoom);
+	    dx2 = (int) (dx1 + positionInMap.width * zoom);
+	    dy2 = (int) (dy1 + positionInMap.height * zoom);
 
 	    g.setColor(Color.black);
 	    g.drawLine(dx1, dy1, dx2 - 1, dy1);
@@ -285,7 +292,7 @@ public class Teletransporter extends ActiveEntity {
 	    g.drawLine(dx2 - 1, dy1, dx2 - 1, dy2 - 1);
 	    g.drawLine(dx2 - 4, dy1 + 3, dx2 - 4, dy2 - 4);
 
-	    g.setColor(new Color(192, 255, 192));
+	    g.setColor(new Color(240, 215, 142));
 	    g.drawLine(dx1 + 1, dy1 + 1, dx2 - 2, dy1 + 1);
 	    g.drawLine(dx1 + 2, dy1 + 2, dx2 - 3, dy1 + 2);
 	    g.drawLine(dx1 + 2, dy2 - 3, dx2 - 3, dy2 - 3);

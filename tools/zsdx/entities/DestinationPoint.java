@@ -19,8 +19,7 @@ public class DestinationPoint extends ActiveEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("destination_point.png", 128, 0, 16, 16),
-	new EntityImageDescription("destination_point.png", 0, 0, 32, 32)
+	new EntityImageDescription("destination_point.png", 96, 0, 32, 32)    // invisible
     };
 
     /**
@@ -114,13 +113,28 @@ public class DestinationPoint extends ActiveEntity {
      * @return 4 if the destination point changes Link's direction, false otherwise
      */
     public int getNbDirections() {
-	return changeDirection ? 4 : 0;
+	return 4;
+    }
+
+    /**
+     * Returns the direction of the entity.
+     * This is a redefinition of MapEntity.setDirection to handle the special value of -1
+     * indicating that the direction is not changed.
+     * @return the entity's direction
+     */
+    public int getDirection() {
+
+	if (!changeDirection) {
+	    return -1;
+	}
+
+	return super.getDirection();
     }
 
     /**
      * Changes the direction of the entity.
      * This is a redefinition of MapEntity.setDirection to handle the special value of -1
-     * indicating that the direction is not changed
+     * indicating that the direction is not changed.
      * @param direction the entity's direction, or -1
      * @throws UnsupportedOperationException if the entity has no direction
      * @throws IllegalArgumentException if the direction is invalid
@@ -157,13 +171,20 @@ public class DestinationPoint extends ActiveEntity {
      */
     public void setVisible(boolean visible) {
 	this.isVisible = visible;
+	setChanged();
+	notifyObservers();
     }
 
     /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	currentImageDescription.setRectangle(getDirection() * 32, 0, 32, 32);
+	if (!isVisible) {
+	    currentImageDescription.setRectangle(getDirection() * 32, 0, 32, 32);
+	}
+	else {
+	    currentImageDescription.setRectangle(128, 0, 16, 16);	    
+	}
     }
 
 }

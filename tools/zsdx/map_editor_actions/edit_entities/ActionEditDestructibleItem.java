@@ -13,7 +13,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
 
     private int subtypeBefore;
     private int subtypeAfter;
-    
+
     private int pickableItemSubtypeBefore;
     private int pickableItemSubtypeAfter;
 

@@ -24,8 +24,8 @@ public class DestructibleItemChooser extends JComboBox {
     }
 
     /**
-     * Returns the type of destructible item currently selected.
-     * @return the type of destructible item currently selected
+     * Returns the subtype of destructible item currently selected.
+     * @return the subtype of destructible item currently selected
      */
     public int getDestructibleItemSubtype() {
 
@@ -34,8 +34,8 @@ public class DestructibleItemChooser extends JComboBox {
     }
 
     /**
-     * Sets the type of destructible item selected.
-     * @param type the type of destructible item to make select
+     * Sets the subtype of destructible item selected.
+     * @param type the subtype of destructible item to make selected
      */
     public void setDestructibleItemSubtype(int subtype) {
 

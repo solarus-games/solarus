@@ -215,19 +215,16 @@ void Map::set_destination_point(unsigned int destination_point_index) {
 /**
  * Sets the current destination point of the map.
  * @param destination_point_name name of the destination point you want to use,
- * or "_same" to keep Link's coordinates, or "_side" to place Link on the appropriate side of the map
+ * or "_same" to keep Link's coordinates, or "_side0", "_side1", "_side2" or "_side3 to place Link on a side of the map
  */
 void Map::set_destination_point(string destination_point_name) {
 
   if (destination_point_name == "_same") {
     this->destination_point_index = -1;
   }
-  else if (destination_point_name == "_side") {
-
-    Link *link = zsdx->game->get_link();
-
+  else if (destination_point_name.substr(0,5) == "_side") {
     this->destination_point_index = -2;
-    this->destination_side = (link->get_movement_direction() / 90 + 2) % 4;
+    this->destination_side = destination_point_name[5] - '0';
   }
   else {
 

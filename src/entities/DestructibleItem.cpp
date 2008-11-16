@@ -17,7 +17,7 @@
 const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
   {"entities/pot", "stone", true, false, 0},
   {"entities/skull", "stone", true, false, 0},
-  {"entities/bush", "bush", true, true, 0},
+  {"entities/bush", "bush", true, true, 1},
   {"entities/stone_small_white", "stone", true, false, 1},
   {"entities/stone_small_white", "stone", true, false, 2},
   {"entities/grass", "bush", false, true, 0},

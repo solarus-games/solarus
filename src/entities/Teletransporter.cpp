@@ -2,6 +2,8 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Sprite.h"
+#include "Map.h"
+#include "entities/Link.h"
 
 /**
  * Constructor.
@@ -17,7 +19,8 @@
  * or "_side" to place Link on the appropriate side of the map
  */
 Teletransporter::Teletransporter(string name, MapEntity::Layer layer, int x, int y, int width, int height,
-	   Subtype subtype, Transition::Style transition_style, MapId destination_map_id, string destination_point_name):
+				 Subtype subtype, Transition::Style transition_style,
+				 MapId destination_map_id, string destination_point_name):
   Detector(COLLISION_ORIGIN_POINT, name, layer, x, y, width, height),
   subtype(subtype), transition_style(transition_style),
   destination_map_id(destination_map_id), destination_point_name(destination_point_name) {
@@ -46,8 +49,36 @@ Teletransporter::~Teletransporter(void) {
  * @param collision_mode the collision mode that detected the collision
  */
 void Teletransporter::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  
+
+  string name = destination_point_name;
+
   if (entity_overlapping->is_hero()) {
-    zsdx->game->set_current_map(destination_map_id, destination_point_name, transition_style);
+
+    if (destination_point_name == "_side") {
+
+      // special desination point: side of the map
+      // we determinate the appropriate side based on the teletransporter location 
+
+      int x = get_x();
+      int y = get_y();
+
+      if (x < 0) {
+	name += '0';
+      }
+      else if (x >= map->get_width()) {
+	name += '2';
+      }
+      else if (y < 0) {
+	name += '1';
+      }
+      else if (y >= map->get_height()) {
+	name += '3';
+      }
+      else { // dangerous because of diagonal movements
+	int direction = (((Link*) entity_overlapping)->get_movement_direction() / 90 + 2) % 4; 
+	name += ('0' + direction);
+      }
+    }
+    zsdx->game->set_current_map(destination_map_id, name, transition_style);
   }
 }

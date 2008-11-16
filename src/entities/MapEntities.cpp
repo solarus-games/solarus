@@ -186,6 +186,12 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
 
   int i, j;
  
+  for (i = 0; i < tile_height8; i++) {
+    for (j = 0; j < tile_width8; j++) {
+      set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE_NONE);
+    }
+  }
+
   switch (obstacle) {
 
     /* If the tile is entirely an obstacle or entirely no obstacle,

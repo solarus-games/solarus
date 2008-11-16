@@ -7,3 +7,4 @@ booleans:
 0 to 9  reserved for tests
 10	link house: chest with shield 1
 11	link house: chest with 50 rupees
+12	link house secret room: chest with a piece of heart

@@ -13,7 +13,8 @@
  * @param repeat_y number of times the pattern is repeated on y
  */
 TileOnMap::TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int repeat_y):
-  MapEntity(layer, x, y, tile->get_width(), tile->get_height()), tile(tile), repeat_x(repeat_x), repeat_y(repeat_y) {
+  MapEntity(layer, x, y, tile->get_width() * repeat_x, tile->get_height() * repeat_y),
+  tile(tile), repeat_x(repeat_x), repeat_y(repeat_y) {
 
 }
 
@@ -34,19 +35,19 @@ void TileOnMap::display_on_map(void) {
   SDL_Rect dst;
   SDL_Rect *screen_position = map->get_screen_position();
 
-  dst.w = position_in_map.w;
-  dst.h = position_in_map.h;
+  dst.w = tile->get_width();
+  dst.h = tile->get_height();
 
-  int limit_x = position_in_map.x - screen_position->x + position_in_map.w * repeat_x;
-  int limit_y = position_in_map.y - screen_position->y + position_in_map.h * repeat_y;
+  int limit_x = position_in_map.x - screen_position->x + position_in_map.w;
+  int limit_y = position_in_map.y - screen_position->y + position_in_map.h;
 
-  for (dst.y = position_in_map.y - screen_position->y; dst.y < limit_y; dst.y += position_in_map.h) {
+  for (dst.y = position_in_map.y - screen_position->y; dst.y < limit_y; dst.y += dst.h) {
 
-    if (dst.y <= 240 && dst.y + position_in_map.h > 0) {
+    if (dst.y <= 240 && dst.y + dst.h > 0) {
 
-      for (dst.x = position_in_map.x - screen_position->x; dst.x < limit_x; dst.x += position_in_map.w) {
+      for (dst.x = position_in_map.x - screen_position->x; dst.x < limit_x; dst.x += dst.w) {
 
-	if (dst.x <= 320 && dst.x + position_in_map.w > 0) {
+	if (dst.x <= 320 && dst.x + dst.w > 0) {
 	  tile->display(map_surface, dst, tileset_image);
 	}
       }

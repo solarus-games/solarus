@@ -181,8 +181,8 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
   // update the collision list
   int tile_x8 = x / 8;
   int tile_y8 = y / 8;
-  int tile_width8 = (tile->get_width() / 8) * repeat_x;
-  int tile_height8 = (tile->get_height() / 8) * repeat_y;
+  int tile_width8 = width / 8;
+  int tile_height8 = height / 8;
 
   int i, j;
  

@@ -23,7 +23,7 @@ int AnimatedTile::frame_counter = 0;
 /**
  * Current frame (0 to 2) for both sequences.
  */
-int AnimatedTile::current_frames[2] = {0, 0};
+int AnimatedTile::current_frames[3] = {0, 0, 0};
 
 /**
  * Date of the next frame change.
@@ -82,10 +82,10 @@ void AnimatedTile::update(void) {
   while (now >= next_frame_date) {
 
     frame_counter = (frame_counter + 1) % 12;
-    current_frames[0] = frames[0][frame_counter];
-    current_frames[1] = frames[1][frame_counter];
+    current_frames[1] = frames[0][frame_counter];
+    current_frames[2] = frames[0][frame_counter];
 
-    next_frame_date += 250; // the frame changes every 250 ms
+    next_frame_date += TILE_FRAME_INTERVAL; // the frame changes every 250 ms
   }
 }
 

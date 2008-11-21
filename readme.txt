@@ -122,7 +122,7 @@ $ zsdx
 
 You can instead install the binary in another directory, so that no root access is necessary. You can specify this directory as a parameter of cmake like this:
 
-$ cmake -D CMAKE_INSTALL_PREFIX=/home/your_directory
+$ cmake -D CMAKE_INSTALL_PREFIX=/home/your_directory .
 $ make
 $ make install
 

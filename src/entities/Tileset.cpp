@@ -91,8 +91,8 @@ void Tileset::load(void) {
       int sequence, x1, y1, x2, y2, x3, y3;
 
       iss >> sequence >> width >> height >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
-
-      create_tile(tile_id, new AnimatedTile((MapEntity::Obstacle) obstacle, (AnimatedTile::AnimationSequence) sequence,
+      create_tile(tile_id, new AnimatedTile((MapEntity::Obstacle) obstacle,
+					    (AnimatedTile::AnimationSequence) sequence,
 					    width, height, x1, y1, x2, y2, x3, y3));
     }
   }

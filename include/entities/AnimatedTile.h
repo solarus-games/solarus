@@ -16,15 +16,15 @@ class AnimatedTile: public Tile {
    * Tile animation sequence mode: 0-1-2 or 0-1-2-1.
    */
   enum AnimationSequence {
-    ANIMATION_SEQUENCE_012,
-    ANIMATION_SEQUENCE_0121,
+    ANIMATION_SEQUENCE_012  = 1,
+    ANIMATION_SEQUENCE_0121 = 2,
   };
 
  private:
 
   // static variables to handle the animations of all tiles
   static int frame_counter;
-  static int current_frames[2];
+  static int current_frames[3];
   static Uint32 next_frame_date;
 
   /**

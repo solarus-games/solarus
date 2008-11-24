@@ -126,8 +126,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	int width, height;
 
 	if (!isImageLoaded()) {
-	    width = 500;
-	    height = 500;
+	    width = 0;
+	    height = 0;
 	}
 	else {
 	    Image scaledImage = tileset.getDoubleImage();

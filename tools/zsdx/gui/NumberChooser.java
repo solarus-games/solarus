@@ -25,7 +25,7 @@ public class NumberChooser extends JSpinner {
 	super();
 	
 	// set the size and the number of columns
-	setMinimumSize(new Dimension(80, 25));
+	setPreferredSize(new Dimension(80, 25));
 	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
 	editor.getTextField().setColumns(3);
 

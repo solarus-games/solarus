@@ -56,6 +56,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	rightConstraints.gridx = 1;
 	rightConstraints.gridwidth = 2;
 	rightConstraints.weightx = 1;
+//	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
 
 	// map id
 	leftConstraints.gridy = 0;
@@ -226,10 +227,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 	    textFieldName = new JTextField(10);
-
-	    Dimension size = new Dimension(120, 25);
-	    textFieldName.setMinimumSize(size);
-
 	    buttonSet = new JButton("Set");
 
 	    ActionListener listener = new ActionListener() {
@@ -252,7 +249,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    add(textFieldName);
 	    add(Box.createRigidArea(new Dimension(5, 0)));
 	    add(buttonSet);
-	    
+
 	    update((Map) null);
 	}
 
@@ -693,7 +690,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * This method is called when the user changes the value of this field.
 	 */
 	public void stateChanged(ChangeEvent ev) {
-	    
+
 	    if (map.isInDungeon()) {
 		update(map);
 		return;
@@ -742,7 +739,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The selection is updated.
 	 */
 	public void update(Observable o) {
-	    
+
 	    if (map != null) {
 
 		String currentTilesetId = map.getTilesetId();
@@ -763,7 +760,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * The tileset of the map is changed.
 	 */
 	public void actionPerformed(ActionEvent ev) {
-	    
+
 	    if (map == null) {
 		return;
 	    }
@@ -772,7 +769,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    String currentTilesetId = map.getTilesetId();
 
 	    if (!currentTilesetId.equals(selectedTilesetId)) {
-		
+
 		try {
 		    map.getHistory().doAction(new ActionChangeTileset(map, selectedTilesetId));
 			
@@ -814,7 +811,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 		// select the music
 		String selectedMusic = getSelectedId();
 		String currentMusic = map.getMusic();
-		
+
 		if (!selectedMusic.equals(currentMusic)) {
 		    setSelectedId(currentMusic);
 		}

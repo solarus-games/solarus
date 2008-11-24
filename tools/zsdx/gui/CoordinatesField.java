@@ -23,8 +23,8 @@ public class CoordinatesField extends JPanel {
 	fieldY = new JSpinner();
 
 	Dimension size = new Dimension(80, 25);
-	fieldX.setMinimumSize(size);
-	fieldY.setMinimumSize(size);
+	fieldX.setPreferredSize(size);
+	fieldY.setPreferredSize(size);
 
 	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) fieldX.getEditor();
 	editor.getTextField().setColumns(3);

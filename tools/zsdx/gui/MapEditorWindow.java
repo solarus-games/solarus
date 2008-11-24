@@ -46,23 +46,16 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	GuiTools.setLookAndFeel();
 
 	// left panel : the map properties and the tile picker
-	JPanel leftPanel = new JPanel();
-	leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-	leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 	mapPropertiesView = new MapPropertiesView();
-	mapPropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
-	Dimension size = new Dimension(300, 350);
-//	mapPropertiesView.setMinimumSize(size);
-	mapPropertiesView.setPreferredSize(size);
-//	mapPropertiesView.setMaximumSize(size);
+	mapPropertiesView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 	tilePicker = new TilePicker();
-	tilePicker.setAlignmentX(Component.LEFT_ALIGNMENT);
-	
-	leftPanel.add(mapPropertiesView);
-	leftPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-	leftPanel.add(tilePicker);
+
+	mapPropertiesView.setMinimumSize(new Dimension(0, 0));
+	JSplitPane leftPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mapPropertiesView, tilePicker);
+	leftPanel.setContinuousLayout(true);
+	leftPanel.setDividerLocation(300);
 
 	mapView = new MapView(this);
 	JScrollPane mapViewScroller = new JScrollPane(mapView);
@@ -77,9 +70,11 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	rightPanel.add(mapViewScroller, BorderLayout.CENTER);
 	rightPanel.add(mapViewMouseCoordinates, BorderLayout.SOUTH);
 
+	leftPanel.setMinimumSize(new Dimension(0, 0));
+	rightPanel.setMinimumSize(new Dimension(0, 0));
 	JSplitPane rootPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
-	rootPanel.setContinuousLayout(true); 
-
+	rootPanel.setContinuousLayout(true);
+	rootPanel.setDividerLocation(350);
 	setContentPane(rootPanel);
 
 	// add a window listener to confirm when the user closes the window
@@ -252,7 +247,6 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	    this.map.deleteObservers();
 	    this.map.getEntitySelection().deleteObservers();
 	}
-	
 	this.map = map;
 
 	// enable or disable the menu items

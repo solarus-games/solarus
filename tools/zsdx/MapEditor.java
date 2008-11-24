@@ -15,6 +15,7 @@ public class MapEditor {
 	// create the main window
 	MapEditorWindow window = new MapEditorWindow();
 	window.pack();
+	window.setExtendedState(MapEditorWindow.MAXIMIZED_BOTH);
 	window.setVisible(true);
     }
 

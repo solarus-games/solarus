@@ -187,8 +187,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	int width, height;
 
 	if (map == null) {
-	    width = Map.MINIMUM_WIDTH;
-	    height = Map.MINIMUM_HEIGHT;
+	    width = 0;
+	    height = 0;
 	}
 	else {
 	    width = map.getWidth();
@@ -203,7 +203,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     // interface Scrollable
     public Dimension getPreferredScrollableViewportSize() {
-	return new Dimension(600, 600);
+	return new Dimension(400,300);
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {

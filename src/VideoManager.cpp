@@ -20,23 +20,23 @@ SDL_Rect VideoManager::dst_position_wide = {(720 - 640) / 2, 0};
  */
 VideoManager::VideoManager(void) {
 
-  // make the window centered 
+  // make the window centered
   SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
   SDL_putenv((char*) "SDL_VIDEO_CENTERED=center");
 
   dst_position_centered.x = 160;
   dst_position_centered.y = 120;
 
-  /*
-  // get the video modes supported
-  SDL_Rect **video_modes = SDL_ListModes(NULL, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+/*
+  // get the fullscreen video modes supported
+  sdl_fullscreen_modes_supported = SDL_ListModes(NULL, SDL_DOUBLEBUF | SDL_FULLSCREEN);
 
-  if (video_modes == (SDL_Rect**) -1) {
+  if (sdl_fullscreen_modes_supported == (SDL_Rect**) -1) {
     cout << "All fullscreen video modes are supported" << endl;
   }
   else {
-    for (int i = 0; video_modes[i] != NULL; i++) {
-      cout << video_modes[i]->w << " x " << video_modes[i]->h << endl;
+    for (int i = 0; sdl_fullscreen_modes_supported[i] != NULL; i++) {
+      cout << sdl_fullscreen_modes_supported[i]->w << " x " << sdl_fullscreen_modes_supported[i]->h << endl;
     }
   }
   */
@@ -46,7 +46,7 @@ VideoManager::VideoManager(void) {
  * Destructor.
  */
 VideoManager::~VideoManager(void) {
-
+  free(sdl_fullscreen_modes_supported);
 }
 
 /**
@@ -90,9 +90,9 @@ bool VideoManager::is_wide(VideoMode mode) {
  */
 void VideoManager::switch_video_mode(void) {
 
-  VideoMode mode;
+  VideoMode mode = video_mode;
   do {
-    mode = (VideoMode) ((video_mode + 1) % NB_MODES);
+    mode = (VideoMode) ((mode + 1) % NB_MODES);
   } while (!is_mode_supported(mode));
 
   set_video_mode(mode);
@@ -136,7 +136,16 @@ void VideoManager::set_video_mode(VideoMode mode) {
   }
   end_row_increment = 2 * offset + width;
 
+  cout << "set_video_mode(" << mode << ")" << endl;
+
   screen_surface = SDL_SetVideoMode(size->w, size->h, 32, flags);
+
+  cout << "video mode ok, screen_surface = " << screen_surface << endl;
+
+  if (screen_surface == NULL) {
+      DIE("Cannot create screen surface with mode " << mode);
+  }
+
   SDL_ShowCursor(show_cursor);
 
   this->video_mode = mode;
@@ -214,8 +223,16 @@ void VideoManager::blit_centered(SDL_Surface *src_surface, SDL_Surface *dst_surf
  */
 void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
 
+  if (video_mode == FULLSCREEN_720_480_STRETCHED) {
+      cout << "Locking surfaces...\n";
+  }
+
   SDL_LockSurface(src_surface);
   SDL_LockSurface(dst_surface);
+
+  if (video_mode == FULLSCREEN_720_480_STRETCHED) {
+      cout << "Surfaces locked.";
+  }
 
   Uint32 *src = (Uint32*) src_surface->pixels;
   Uint32 *dst = (Uint32*) dst_surface->pixels;
@@ -232,8 +249,16 @@ void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_sur
     p += end_row_increment;
   }
 
-  SDL_UnlockSurface(src_surface);
+  if (video_mode == FULLSCREEN_720_480_STRETCHED) {
+      cout << "Unlocking surfaces...\n";
+  }
+
   SDL_UnlockSurface(dst_surface);
+  SDL_UnlockSurface(src_surface);
+
+  if (video_mode == FULLSCREEN_720_480_STRETCHED) {
+      cout << "Surfaces unlocked.";
+  }
 }
 
 /**
@@ -295,6 +320,6 @@ void VideoManager::blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surfa
     e1 += end_row_increment;
   }
 
-  SDL_UnlockSurface(src_surface);
   SDL_UnlockSurface(dst_surface);
+  SDL_UnlockSurface(src_surface);
 }

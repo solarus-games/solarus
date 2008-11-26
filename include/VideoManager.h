@@ -14,15 +14,18 @@ class VideoManager {
    * The different possible video modes.
    */
   enum VideoMode {
-    WINDOWED_640_480_STRETCHED,
-    WINDOWED_640_480_SCALE2X,
-    WINDOWED_320_240,
-    FULLSCREEN_320_240,
-    FULLSCREEN_720_480_STRETCHED,
-    FULLSCREEN_640_480_SCALE2X,
-    FULLSCREEN_720_480_SCALE2X,
-    FULLSCREEN_640_480_CENTERED,
-    FULLSCREEN_720_480_CENTERED,
+    WINDOWED_STRETCHED,         /**< the 320*240 game surface is stretched into a 640*480 window (default) */
+    WINDOWED_SCALE2X,           /**< the 320*240 game surface is scaled into a 640*480 window with the Scale2x algorithm */
+    WINDOWED_NORMAL,            /**< the 320*240 game surface is directly displayed on a 320*240 window */
+    FULLSCREEN_NORMAL,          /**< the 320*240 game surface is directly displayed on a 320*240 screen */
+    FULLSCREEN_WIDE,            /**< the 320*240 game surface is stretched into a 640*480 surface
+				 * which is displayed on a widescreen resolution if possible (768*480 or 720*480) with two black side bars */
+    FULLSCREEN_SCALE2X,         /**< the 320*240 game surface is scaled into a 640*480 screen with the Scale2x algorithm */
+    FULLSCREEN_SCALE2X_WIDE,    /**< the 320*240 game surface is scaled into a 640*480 surface with the Scale2x algorithm
+				 * and this surface is displayed on a widescreen resolution if possible
+				 * (768*480 or 720*480) with two black side bars) */
+    FULLSCREEN_CENTERED,        /**< the 320*240 game surface is displayed as a box inside a 640*480 screen */
+    FULLSCREEN_CENTERED_WIDE,   /**< the 320*240 game surface is displayed as a box inside a 640*400 screen */
     NB_MODES
   };
 

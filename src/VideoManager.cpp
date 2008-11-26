@@ -6,14 +6,14 @@ const SDL_Rect VideoManager::video_mode_sizes[] = {
   {0, 0, 640, 480},         // WINDOWED_640_480_SCALE2X,
   {0, 0, 320, 240},         // WINDOWED_320_240,
   {0, 0, 320, 240},         // FULLSCREEN_320_240,
-  {0, 0, 720, 480},         // FULLSCREEN_720_480_STRETCHED,
+  {0, 0, 768, 480},         // FULLSCREEN_768_480_STRETCHED,
   {0, 0, 640, 480},         // FULLSCREEN_640_480_SCALE2X,
-  {0, 0, 720, 480},         // FULLSCREEN_720_480_SCALE2X,
+  {0, 0, 768, 480},         // FULLSCREEN_768_480_SCALE2X,
   {0, 0, 640, 480},         // FULLSCREEN_640_480_CENTERED,
-  {0, 0, 720, 480},         // FULLSCREEN_720_480_CENTERED,
+  {0, 0, 768, 480},         // FULLSCREEN_768_480_CENTERED,
 };
 
-SDL_Rect VideoManager::dst_position_wide = {(720 - 640) / 2, 0};
+SDL_Rect VideoManager::dst_position_wide = {(768 - 640) / 2, 0};
 
 /**
  * Constructor.
@@ -46,7 +46,7 @@ VideoManager::VideoManager(void) {
  * Destructor.
  */
 VideoManager::~VideoManager(void) {
-  free(sdl_fullscreen_modes_supported);
+
 }
 
 /**
@@ -80,9 +80,9 @@ bool VideoManager::is_fullscreen(VideoMode mode) {
  * @return true if this video mode is a wide screen mode
  */
 bool VideoManager::is_wide(VideoMode mode) {
-  return mode == FULLSCREEN_720_480_STRETCHED
-    || mode == FULLSCREEN_720_480_SCALE2X
-    || mode == FULLSCREEN_720_480_CENTERED;
+  return mode == FULLSCREEN_768_480_STRETCHED
+    || mode == FULLSCREEN_768_480_SCALE2X
+    || mode == FULLSCREEN_768_480_CENTERED;
 }
 
 /**
@@ -126,7 +126,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
 
   if (is_wide(mode)) {
     dst_position_centered.x = dst_position_wide.x + 160;
-    width = 720;
+    width = 768;
     offset = dst_position_wide.x;
   }
   else {
@@ -136,11 +136,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
   }
   end_row_increment = 2 * offset + width;
 
-  cout << "set_video_mode(" << mode << ")" << endl;
-
   screen_surface = SDL_SetVideoMode(size->w, size->h, 32, flags);
-
-  cout << "video mode ok, screen_surface = " << screen_surface << endl;
 
   if (screen_surface == NULL) {
       DIE("Cannot create screen surface with mode " << mode);
@@ -175,18 +171,18 @@ void VideoManager::display(SDL_Surface *src_surface) {
     break;
 
   case WINDOWED_640_480_STRETCHED:
-  case FULLSCREEN_720_480_STRETCHED:
+  case FULLSCREEN_768_480_STRETCHED:
     blit_stretched(src_surface, screen_surface);
     break;
 
   case WINDOWED_640_480_SCALE2X:
   case FULLSCREEN_640_480_SCALE2X:
-  case FULLSCREEN_720_480_SCALE2X:
+  case FULLSCREEN_768_480_SCALE2X:
     blit_scale2x(src_surface, screen_surface);
     break;
 
   case FULLSCREEN_640_480_CENTERED:
-  case FULLSCREEN_720_480_CENTERED:
+  case FULLSCREEN_768_480_CENTERED:
     blit_centered(src_surface, screen_surface);
     break;
 
@@ -223,16 +219,8 @@ void VideoManager::blit_centered(SDL_Surface *src_surface, SDL_Surface *dst_surf
  */
 void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
 
-  if (video_mode == FULLSCREEN_720_480_STRETCHED) {
-      cout << "Locking surfaces...\n";
-  }
-
   SDL_LockSurface(src_surface);
   SDL_LockSurface(dst_surface);
-
-  if (video_mode == FULLSCREEN_720_480_STRETCHED) {
-      cout << "Surfaces locked.";
-  }
 
   Uint32 *src = (Uint32*) src_surface->pixels;
   Uint32 *dst = (Uint32*) dst_surface->pixels;
@@ -249,16 +237,8 @@ void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_sur
     p += end_row_increment;
   }
 
-  if (video_mode == FULLSCREEN_720_480_STRETCHED) {
-      cout << "Unlocking surfaces...\n";
-  }
-
   SDL_UnlockSurface(dst_surface);
   SDL_UnlockSurface(src_surface);
-
-  if (video_mode == FULLSCREEN_720_480_STRETCHED) {
-      cout << "Surfaces unlocked.";
-  }
 }
 
 /**

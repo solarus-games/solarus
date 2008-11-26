@@ -31,7 +31,6 @@ class VideoManager {
   static const SDL_Rect video_mode_sizes[NB_MODES];
   static SDL_Rect dst_position_wide; /**< position of the game surface on the 720*480 video surface */
 
-//  SDL_Rect **sdl_fullscreen_modes_supported; // not necessary since we have a function is_video_mode_supported()
   VideoMode video_mode;
   SDL_Surface *screen_surface;
 

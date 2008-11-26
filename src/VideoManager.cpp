@@ -27,19 +27,19 @@ VideoManager::VideoManager(void) {
   dst_position_centered.x = 160;
   dst_position_centered.y = 120;
 
-/*
+
   // get the fullscreen video modes supported
-  sdl_fullscreen_modes_supported = SDL_ListModes(NULL, SDL_DOUBLEBUF | SDL_FULLSCREEN);
+  SDL_Rect **sdl_fullscreen_modes_supported = SDL_ListModes(NULL, SDL_DOUBLEBUF | SDL_FULLSCREEN);
 
   if (sdl_fullscreen_modes_supported == (SDL_Rect**) -1) {
     cout << "All fullscreen video modes are supported" << endl;
   }
   else {
     for (int i = 0; sdl_fullscreen_modes_supported[i] != NULL; i++) {
-      cout << sdl_fullscreen_modes_supported[i]->w << " x " << sdl_fullscreen_modes_supported[i]->h << endl;
+      cout << sdl_fullscreen_modes_supported[i]->w << " x " << sdl_fullscreen_modes_supported[i]->h
+       << "\t" << ((double) sdl_fullscreen_modes_supported[i]->w / sdl_fullscreen_modes_supported[i]->h) << endl;
     }
   }
-  */
 }
 
 /**

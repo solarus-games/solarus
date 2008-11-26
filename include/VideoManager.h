@@ -18,18 +18,18 @@ class VideoManager {
     WINDOWED_640_480_SCALE2X,
     WINDOWED_320_240,
     FULLSCREEN_320_240,
-    FULLSCREEN_768_480_STRETCHED,
+    FULLSCREEN_720_480_STRETCHED,
     FULLSCREEN_640_480_SCALE2X,
-    FULLSCREEN_768_480_SCALE2X,
+    FULLSCREEN_720_480_SCALE2X,
     FULLSCREEN_640_480_CENTERED,
-    FULLSCREEN_768_480_CENTERED,
+    FULLSCREEN_720_480_CENTERED,
     NB_MODES
   };
 
  private:
 
   static const SDL_Rect video_mode_sizes[NB_MODES];
-  static SDL_Rect dst_position_wide;
+  static SDL_Rect dst_position_wide; /**< position of the game surface on the 720*480 video surface */
 
 //  SDL_Rect **sdl_fullscreen_modes_supported; // not necessary since we have a function is_video_mode_supported()
   VideoMode video_mode;
@@ -40,7 +40,7 @@ class VideoManager {
   int offset;
   int end_row_increment;
 
-  bool is_mode_supported(VideoMode mode);
+//  bool is_mode_supported(VideoMode mode);
   bool is_fullscreen(VideoMode mode);
   bool is_wide(VideoMode mode);
 
@@ -56,7 +56,7 @@ class VideoManager {
 
   void switch_video_mode(void);
   void set_default_video_mode(void);
-  void set_video_mode(VideoMode mode);
+  bool set_video_mode(VideoMode mode);
   VideoMode get_video_mode(void);
 
   void display(SDL_Surface *src_surface);

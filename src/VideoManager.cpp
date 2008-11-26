@@ -6,14 +6,14 @@ const SDL_Rect VideoManager::video_mode_sizes[] = {
   {0, 0, 640, 480},         // WINDOWED_640_480_SCALE2X,
   {0, 0, 320, 240},         // WINDOWED_320_240,
   {0, 0, 320, 240},         // FULLSCREEN_320_240,
-  {0, 0, 768, 480},         // FULLSCREEN_768_480_STRETCHED,
+  {0, 0, 720, 480},         // FULLSCREEN_720_480_STRETCHED,
   {0, 0, 640, 480},         // FULLSCREEN_640_480_SCALE2X,
-  {0, 0, 768, 480},         // FULLSCREEN_768_480_SCALE2X,
+  {0, 0, 720, 480},         // FULLSCREEN_720_480_SCALE2X,
   {0, 0, 640, 480},         // FULLSCREEN_640_480_CENTERED,
-  {0, 0, 768, 480},         // FULLSCREEN_768_480_CENTERED,
+  {0, 0, 720, 480},         // FULLSCREEN_720_480_CENTERED,
 };
 
-SDL_Rect VideoManager::dst_position_wide = {(768 - 640) / 2, 0};
+SDL_Rect VideoManager::dst_position_wide = {(720 - 640) / 2, 0};
 
 /**
  * Constructor.
@@ -54,6 +54,7 @@ VideoManager::~VideoManager(void) {
  * @param mode a video mode
  * @return true if this mode is supported
  */
+ /*
 bool VideoManager::is_mode_supported(VideoMode mode) {
 
   const SDL_Rect *size = &video_mode_sizes[mode];
@@ -64,6 +65,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
 
   return SDL_VideoModeOK(size->w, size->h, 32, flags) != 0;
 }
+*/
 
 /**
  * Returns whether a video mode is in fullscreen.
@@ -80,9 +82,9 @@ bool VideoManager::is_fullscreen(VideoMode mode) {
  * @return true if this video mode is a wide screen mode
  */
 bool VideoManager::is_wide(VideoMode mode) {
-  return mode == FULLSCREEN_768_480_STRETCHED
-    || mode == FULLSCREEN_768_480_SCALE2X
-    || mode == FULLSCREEN_768_480_CENTERED;
+  return mode == FULLSCREEN_720_480_STRETCHED
+    || mode == FULLSCREEN_720_480_SCALE2X
+    || mode == FULLSCREEN_720_480_CENTERED;
 }
 
 /**
@@ -93,9 +95,7 @@ void VideoManager::switch_video_mode(void) {
   VideoMode mode = video_mode;
   do {
     mode = (VideoMode) ((mode + 1) % NB_MODES);
-  } while (!is_mode_supported(mode));
-
-  set_video_mode(mode);
+  } while (!set_video_mode(mode));
 }
 
 /**
@@ -107,10 +107,10 @@ void VideoManager::set_default_video_mode(void) {
 
 /**
  * Sets the video mode.
- * The specified video mode must be supported.
  * @param mode the video mode
+ * @return true on success, false otherwise
  */
-void VideoManager::set_video_mode(VideoMode mode) {
+bool VideoManager::set_video_mode(VideoMode mode) {
 
   const SDL_Rect *size = &video_mode_sizes[mode];
 
@@ -126,7 +126,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
 
   if (is_wide(mode)) {
     dst_position_centered.x = dst_position_wide.x + 160;
-    width = 768;
+    width = 720;
     offset = dst_position_wide.x;
   }
   else {
@@ -136,15 +136,15 @@ void VideoManager::set_video_mode(VideoMode mode) {
   }
   end_row_increment = 2 * offset + width;
 
-  screen_surface = SDL_SetVideoMode(size->w, size->h, 32, flags);
+  SDL_Surface *screen_surface = SDL_SetVideoMode(size->w, size->h, 32, flags);
 
-  if (screen_surface == NULL) {
-      DIE("Cannot create screen surface with mode " << mode);
+  if (screen_surface != NULL) {
+    SDL_ShowCursor(show_cursor);
+    this->video_mode = mode;
+    this->screen_surface = screen_surface;
   }
 
-  SDL_ShowCursor(show_cursor);
-
-  this->video_mode = mode;
+  return screen_surface != NULL;
 }
 
 /**
@@ -161,8 +161,6 @@ VideoManager::VideoMode VideoManager::get_video_mode(void) {
  */
 void VideoManager::display(SDL_Surface *src_surface) {
 
-  SDL_FillRect(screen_surface, NULL, Color::black);
-
   switch (video_mode) {
 
   case WINDOWED_320_240:
@@ -171,18 +169,18 @@ void VideoManager::display(SDL_Surface *src_surface) {
     break;
 
   case WINDOWED_640_480_STRETCHED:
-  case FULLSCREEN_768_480_STRETCHED:
+  case FULLSCREEN_720_480_STRETCHED:
     blit_stretched(src_surface, screen_surface);
     break;
 
   case WINDOWED_640_480_SCALE2X:
   case FULLSCREEN_640_480_SCALE2X:
-  case FULLSCREEN_768_480_SCALE2X:
+  case FULLSCREEN_720_480_SCALE2X:
     blit_scale2x(src_surface, screen_surface);
     break;
 
   case FULLSCREEN_640_480_CENTERED:
-  case FULLSCREEN_768_480_CENTERED:
+  case FULLSCREEN_720_480_CENTERED:
     blit_centered(src_surface, screen_surface);
     break;
 
@@ -226,9 +224,9 @@ void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_sur
   Uint32 *dst = (Uint32*) dst_surface->pixels;
 
   int p = offset;
-  for (int i = 0; i < 480; i += 2) {
+  for (int i = 0; i < 240; i++) {
 
-    for (int j = 0; j < 640; j += 2) {
+    for (int j = 0; j < 320; j++) {
       dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src;
       p += 2;
       src++;

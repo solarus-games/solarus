@@ -27,10 +27,14 @@ VideoManager::VideoManager(void) {
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     video_mode_sizes[FULLSCREEN_WIDE].w = 768;
     video_mode_sizes[FULLSCREEN_WIDE].h = 480;
+    video_mode_sizes[FULLSCREEN_SCALE2X_WIDE].w = 768;
+    video_mode_sizes[FULLSCREEN_SCALE2X_WIDE].h = 480;
     dst_position_wide.x = 64;
     dst_position_wide.y = 0;
   }
   else if (SDL_VideoModeOK(720, 480, 32, flags)) {
+    video_mode_sizes[FULLSCREEN_WIDE].w = 720;
+    video_mode_sizes[FULLSCREEN_WIDE].h = 480;
     video_mode_sizes[FULLSCREEN_SCALE2X_WIDE].w = 720;
     video_mode_sizes[FULLSCREEN_SCALE2X_WIDE].h = 480;
     dst_position_wide.x = 40;

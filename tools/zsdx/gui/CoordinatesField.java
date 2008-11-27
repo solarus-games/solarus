@@ -22,16 +22,12 @@ public class CoordinatesField extends JPanel {
 	fieldX = new JSpinner();
 	fieldY = new JSpinner();
 
-	Dimension size = new Dimension(80, 25);
-	fieldX.setPreferredSize(size);
-	fieldY.setPreferredSize(size);
-
 	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) fieldX.getEditor();
-	editor.getTextField().setColumns(3);
+	editor.getTextField().setColumns(4);
 	editor = (JSpinner.DefaultEditor) fieldY.getEditor();
-	editor.getTextField().setColumns(3);
+	editor.getTextField().setColumns(4);
 
-	size = new Dimension(5, 0);
+	Dimension size = new Dimension(5, 0);
 	add(fieldX);
 	add(Box.createRigidArea(size));
 	add(new JLabel("x"));

@@ -48,14 +48,14 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	// left panel : the map properties and the tile picker
 
 	mapPropertiesView = new MapPropertiesView();
-	mapPropertiesView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+//	mapPropertiesView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 	tilePicker = new TilePicker();
 
 	mapPropertiesView.setMinimumSize(new Dimension(0, 0));
 	JSplitPane leftPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mapPropertiesView, tilePicker);
 	leftPanel.setContinuousLayout(true);
-	leftPanel.setDividerLocation(300);
+	leftPanel.resetToPreferredSizes();
 
 	mapView = new MapView(this);
 	JScrollPane mapViewScroller = new JScrollPane(mapView);
@@ -74,7 +74,8 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	rightPanel.setMinimumSize(new Dimension(0, 0));
 	JSplitPane rootPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
 	rootPanel.setContinuousLayout(true);
-	rootPanel.setDividerLocation(350);
+	//rootPanel.setDividerLocation(350);
+	rootPanel.resetToPreferredSizes();
 	setContentPane(rootPanel);
 
 	// add a window listener to confirm when the user closes the window

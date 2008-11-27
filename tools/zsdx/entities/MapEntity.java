@@ -740,9 +740,9 @@ public abstract class MapEntity extends Observable implements ImageObserver {
 
     /**
      * Makes sure the name of this entity is unique on the map, renaming it if necessary.
-     * setName() garantees that no other entity has the same name on the map, but two
-     * entities may be created with the same name without detecting it because they are
-     * not added on the map yet. This can happen bith copy/paste operations.
+     * setName() guarantees that no other entity has the same name on the map, but two
+     * entities may have been created with the same name without detecting it because they are
+     * not added to the map yet. This can happen with copy/paste operations.
      * If the entity is not identifiable, this method does nothing.
      * @param map the map
      */

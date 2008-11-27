@@ -1,6 +1,5 @@
 package zsdx.gui;
 
-import java.awt.*;
 import javax.swing.*;
 
 /**
@@ -25,9 +24,9 @@ public class NumberChooser extends JSpinner {
 	super();
 	
 	// set the size and the number of columns
-	setPreferredSize(new Dimension(80, 25));
+//	setPreferredSize(new Dimension(80, 25));
 	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
-	editor.getTextField().setColumns(3);
+	editor.getTextField().setColumns(4);
 
 	setStepSize(1);
 	setMinimum(minimum);

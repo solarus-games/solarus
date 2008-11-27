@@ -22,8 +22,6 @@ public class MapPropertiesView extends JPanel implements Observer {
     // subcomponents
     private JLabel idField;
     private NameField nameField;
-    private JLabel nbTilesField;
-    private JLabel nbActiveEntitiesField;
     private SizeField sizeField;
     private WorldField worldField;
     private JLabel floorLabel;
@@ -45,118 +43,102 @@ public class MapPropertiesView extends JPanel implements Observer {
 
 	GridBagConstraints leftConstraints = new GridBagConstraints();
 	leftConstraints.insets = new Insets(5, 5, 5, 5); // margins
-	leftConstraints.anchor = GridBagConstraints.LINE_START;
+	leftConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 	leftConstraints.gridx = 0;
-	leftConstraints.gridwidth = 1;
-	leftConstraints.weightx = 0;
+	leftConstraints.weightx = 0.5;
+	leftConstraints.weighty = 0;
+	leftConstraints.fill = GridBagConstraints.HORIZONTAL;
 
 	GridBagConstraints rightConstraints = new GridBagConstraints();
 	rightConstraints.insets = new Insets(5, 5, 5, 5); // margins
-	rightConstraints.anchor = GridBagConstraints.LINE_START;
+	rightConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 	rightConstraints.gridx = 1;
-	rightConstraints.gridwidth = 2;
 	rightConstraints.weightx = 1;
-//	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
 
 	// map id
 	leftConstraints.gridy = 0;
 	add(new JLabel("Map id"), leftConstraints);
 	idField = new JLabel();
 	rightConstraints.gridy = 0;
+	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
 	add(idField, rightConstraints);
 
 	// map name
-	leftConstraints.gridx = 0;
 	leftConstraints.gridy++;
 	add(new JLabel("Map name"), leftConstraints);
 	rightConstraints.gridy++;
+	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
 	nameField = new NameField();
 	add(nameField, rightConstraints);
 
-	// number of tiles
-	nbTilesField = new JLabel();
-	/*
-	leftConstraints.gridx = 0;
-	leftConstraints.gridy++;
-	add(new JLabel("Tiles"), leftConstraints);
-	rightConstraints.gridy++;
-	add(nbTilesField, rightConstraints);
-        */
-	
-	// number of active entities
-	nbActiveEntitiesField = new JLabel();
-	/*
-	leftConstraints.gridx = 0;
-	leftConstraints.gridy++;
-	add(new JLabel("Active entities"), leftConstraints);
-	rightConstraints.gridy++;
-	add(nbActiveEntitiesField, rightConstraints);
-	*/
-
 	// size
-	leftConstraints.gridx = 0;
 	leftConstraints.gridy++;
 	add(new JLabel("Size"), leftConstraints);
 	rightConstraints.gridy++;
-	sizeField = new SizeField(); 
+	rightConstraints.fill = GridBagConstraints.NONE;
+	sizeField = new SizeField();
 	add(sizeField, rightConstraints);
 
 	// world
-	leftConstraints.gridx = 0;
 	leftConstraints.gridy++;
 	add(new JLabel("World"), leftConstraints);
 	rightConstraints.gridy++;
+	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
 	worldField = new WorldField();
 	add(worldField, rightConstraints);
 
 	// floor
-	leftConstraints.gridx = 0;
 	leftConstraints.gridy++;
 	floorLabel = new JLabel("Floor");
 	add(floorLabel, leftConstraints);
 	rightConstraints.gridy++;
+	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
 	floorField = new FloorField();
 	add(floorField, rightConstraints);
 
 	// location
-	leftConstraints.gridx = 0;
 	leftConstraints.gridy++;
 	locationLabel = new JLabel("Location in its world");
 	add(locationLabel, leftConstraints);
 	rightConstraints.gridy++;
+	rightConstraints.fill = GridBagConstraints.NONE;
 	locationField = new LocationField();
 	add(locationField, rightConstraints);
 
 	// small keys variable
-	leftConstraints.gridx = 0;
-	leftConstraints.gridy++;
-	leftConstraints.gridwidth = 2;
+	smallKeysVariableField = new SmallKeysVariableField();
 	enableSmallKeysField = new EnableSmallKeysField();
+	leftConstraints.gridy++;
 	add(enableSmallKeysField, leftConstraints);
 	rightConstraints.gridy++;
-	rightConstraints.gridx = 2;
-	rightConstraints.gridwidth = 1;
-	smallKeysVariableField = new SmallKeysVariableField();
+	rightConstraints.fill = GridBagConstraints.NONE;
 	add(smallKeysVariableField, rightConstraints);
-	leftConstraints.gridwidth = 1;
-	rightConstraints.gridx = 1;
-	rightConstraints.gridwidth = 2;
 
 	// tileset
-	leftConstraints.gridx = 0;
 	leftConstraints.gridy++;
 	add(new JLabel("Tileset"), leftConstraints);
 	rightConstraints.gridy++;
+	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
 	tilesetField = new TilesetField();
        	add(tilesetField, rightConstraints);
 	
 	// music
-	leftConstraints.gridx = 0;
 	leftConstraints.gridy++;
 	add(new JLabel("Music"), leftConstraints);
 	rightConstraints.gridy++;
+	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
+	rightConstraints.weighty = 1;
 	musicField = new MusicField();
 	add(musicField, rightConstraints);
+
+	// invisible component to fill the remaining space
+	leftConstraints.gridy++;
+	leftConstraints.gridwidth = 3;
+	leftConstraints.weighty = 1;
+	leftConstraints.fill = GridBagConstraints.BOTH;
+	JLabel emptySpace = new JLabel();
+	emptySpace.setPreferredSize(new Dimension(0, 0));
+	add(emptySpace, leftConstraints);
     }
 
     /**
@@ -187,13 +169,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 	// update the elementary components here
 	if (map != null) {
 	    idField.setText(map.getId());
-	    nbTilesField.setText(Integer.toString(map.getNbTiles()));
-	    nbActiveEntitiesField.setText(Integer.toString(map.getNbActiveEntities()));
 	}
 	else {
 	    idField.setText("");
-	    nbTilesField.setText("");
-	    nbActiveEntitiesField.setText("");
 	}
 
 	// tell the complex components to update themselves
@@ -592,7 +570,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * Constructor.
 	 */
 	public EnableSmallKeysField() {
-	    super("Enable small keys: saved in variable");
+	    super("Enable small keys:");
 	    addActionListener(this);
 	    update((Map) null);
 	}
@@ -660,15 +638,33 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to choose the variable where the small keys are saved for this map.
      */
-    private class SmallKeysVariableField extends NumberChooser implements ChangeListener {
+    private class SmallKeysVariableField extends JPanel implements ChangeListener {
+
+	private JLabel label;
+	private NumberChooser numberChooser;
 
 	/**
 	 * Constructor.
 	 */
 	public SmallKeysVariableField() {
-	    super();
-	    addChangeListener(this);
+	    super(new BorderLayout());
+	    
+	    numberChooser = new NumberChooser();
+	    numberChooser.addChangeListener(this);
+	    add(numberChooser, BorderLayout.EAST);
+	    label = new JLabel(" saved in variable ");
+	    add(label, BorderLayout.CENTER);
 	    update((Map) null);
+	}
+
+	public int getNumber() {
+	    return numberChooser.getNumber();
+	}
+
+	public void setEnabled(boolean enable) {
+	    super.setEnabled(enable);
+	    label.setEnabled(enable);
+	    numberChooser.setEnabled(enable);
 	}
 
 	/**
@@ -678,8 +674,8 @@ public class MapPropertiesView extends JPanel implements Observer {
 	public void update(Observable o) {
 
 	    if (map != null) {
-		setNumber(map.getSmallKeysVariable());
-		setEnabled(map.getSmallKeysVariable() != -1);
+		numberChooser.setNumber(map.getSmallKeysVariable());
+		setEnabled(map.getSmallKeysVariable() != -1 && !map.isInDungeon());
 	    }
 	    else {
 		setEnabled(false);
@@ -697,7 +693,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    }
 
 	    final int currentSmallKeyVariable = map.getSmallKeysVariable();
-	    final int selectedSmallKeyVariable = enableSmallKeysField.isSelected() ? getNumber() : -1;
+	    final int selectedSmallKeyVariable = enableSmallKeysField.isSelected() ? numberChooser.getNumber() : -1;
 
 	    try {
 		map.getHistory().doAction(new MapEditorAction() {

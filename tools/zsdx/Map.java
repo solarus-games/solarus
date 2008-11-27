@@ -54,12 +54,12 @@ public class Map extends Observable {
      * - 1 to 20 if the map is in a dungeon
      */
     private int world;
-    
+
     /**
      * The dungeon where this map is, if any.
      */
     private Dungeon dungeon;
-    
+
     /**
      * Floor of this map:
      * - a floor number between -16 and 15
@@ -67,7 +67,7 @@ public class Map extends Observable {
      * - -100: no floor (by default)
      */
     private int floor;
-    
+
     /**
      * Location of this map in its floor or in its world. It is used to show
      * Link's position on the map menu.
@@ -78,16 +78,16 @@ public class Map extends Observable {
      * in its floor.
      */
     private Point location;
-    
+
     /**
      * Index of the variable of the savegame which stores the number of small keys
      * of this map.
-     * A value of -1 indicates that this map has small key counter.
+     * A value of -1 indicates that this map has no small key counter.
      */
     private int smallKeysVariable;
 
     // content of the map
-    
+
     /**
      * Entities of the map.
      * This is an array of three entity lists, one for each layer.
@@ -98,7 +98,7 @@ public class Map extends Observable {
      * The entities selected.
      */
     private MapEntitySelection entitySelection;
-    
+
     /**
      * True if some tiles could not be found in the tileset
      * when the tileset was loaded.
@@ -133,6 +133,7 @@ public class Map extends Observable {
 	this.tilesetId = "";
 	this.musicId = Music.noneId;
 	this.world = -1;
+	this.smallKeysVariable = -1;
 
 	initialize();
 

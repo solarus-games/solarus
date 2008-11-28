@@ -64,7 +64,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	    new MapViewMouseCoordinates(mapView);
 
 	MapViewHeader mapViewHeader = new MapViewHeader(mapView);
-	
+
 	JPanel rightPanel = new JPanel(new BorderLayout());
 	rightPanel.add(mapViewHeader, BorderLayout.NORTH);
 	rightPanel.add(mapViewScroller, BorderLayout.CENTER);

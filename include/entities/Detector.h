@@ -7,7 +7,7 @@
 /**
  * A detector is an object placed somewhere on the map
  * to detect the presence of Link or other moving entities.
- * Examples of detectors are teletransporteres, switches, bushes and enemies.
+ * Examples of detectors are teletransporters, switches, bushes and enemies.
  */
 class Detector: public MapEntity {
 

@@ -150,7 +150,7 @@ void MovementWithSmoothCollision::update_y(void) {
 
       if (!collision_with_map(0, y_move)) {
 	translate_y(y_move); // make the move
-	
+
 	if (x_move != 0 && collision_with_map(x_move, 0)) {
 	  // if there is also an x move, and if this x move is illegal,
 	  // we still allow the y move and we give it all the speed

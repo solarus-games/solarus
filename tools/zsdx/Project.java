@@ -3,6 +3,7 @@ package zsdx;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import java.net.*;
 import java.awt.Image;
 import javax.imageio.*;
 
@@ -172,37 +173,33 @@ public class Project {
     }
 
     /**
-     * Returns the path of the image files needed for the map/tileset editor,
-     * determined with the current project root path.
-     * @return the path of the image files
-     */
-    public static String getEditorImagePath() {
-	return getRootPath() + "/tools/zsdx/images";
-    }
-    
-    /**
-     * Loads an image from a specified file name.
+     * Loads an image of the editor from a specified file name.
+     * The image loaded is not project dependent.
      * If the image have been already loaded, it is not loaded again.
-     * @param imageFileName the name of the image file to read, relative to the editors image path
+     * @param imageFileName the name of the image file to read, relative to the
+     * images directory of the editor
      * @return the image
      */
     public static Image getEditorImage(String imageFileName) {
-	
+
 	// see if the image has been already loaded
-	imageFileName = getEditorImagePath() + "/" + imageFileName;
 	Image image = currentProject.imagesLoaded.get(imageFileName);
-	
+
 	if (image == null) {
 	    try {
-		image = ImageIO.read(new File(imageFileName));
+                URL url = Project.class.getResource("/zsdx/images/" + imageFileName);
+                if (url == null) {
+                    throw new IOException("File not found");
+                }
+		image = ImageIO.read(url);
 		currentProject.imagesLoaded.put(imageFileName, image);
 	    }
 	    catch (IOException ex) {
-		System.err.println("Cannot load image '" + imageFileName + "'");
+		System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
 		System.exit(1);
 	    }
 	}
-		
+
 	return image;
     }
 
@@ -220,7 +217,7 @@ public class Project {
      * @return the corresponding tileset file
      */
     public static File getTilesetFile(String tilesetId) {
-	
+
 	NumberFormat nf = NumberFormat.getInstance();
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);

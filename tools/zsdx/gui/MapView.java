@@ -320,75 +320,71 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	}
 	g.fillRect(0, 0, (int) (map.getWidth() * zoom), (int) (map.getHeight() * zoom));
 
-	if (tileset != null) {
+	if (tileset != null && tileset.getImage() != null) {
 
-	    Image tilesetImage = tileset.getScaledImage(zoom);
-	    if (tilesetImage != null) {
+            int x, y, width, height;
 
-		int x, y, width, height;
+            // the entities
+            for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
-		// the entities
-		for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+                // nothing to do if this layer is not shown
+                if (renderingOptions.getShowLayer(layer)) {
 
-		    // nothing to do if this layer is not shown
-		    if (renderingOptions.getShowLayer(layer)) {
+                    MapEntities entities = map.getEntities(layer);
 
-			MapEntities entities = map.getEntities(layer);
+                    for (MapEntity entity: entities) {
 
-			for (MapEntity entity: entities) {
+                        // should we draw this entity?
+                        if (renderingOptions.isEntityShown(entity)) {
 
-			    // should we draw this entity?
-			    if (renderingOptions.isEntityShown(entity)) {
+                            // draw the entity
+                            entity.paint(g, zoom, renderingOptions.getShowTransparency());
 
-				// draw the entity
-				entity.paint(g, zoom, renderingOptions.getShowTransparency());
+                            // draw the selection rectangle if the entity is selected
+                            if (map.getEntitySelection().isSelected(entity)) {
 
-				// draw the selection rectangle if the entity is selected
-				if (map.getEntitySelection().isSelected(entity)) {
+                                Rectangle positionInMap = entity.getPositionInMap();
 
-				    Rectangle positionInMap = entity.getPositionInMap();
+                                x = (int) (positionInMap.x * zoom);
+                                y = (int) (positionInMap.y * zoom);
+                                width = (int) (positionInMap.width * zoom - 1);
+                                height = (int) (positionInMap.height * zoom - 1);
 
-				    x = (int) (positionInMap.x * zoom);
-				    y = (int) (positionInMap.y * zoom);
-				    width = (int) (positionInMap.width * zoom - 1);
-				    height = (int) (positionInMap.height * zoom - 1);
+                                g.setColor(Color.GREEN);
+                                g.drawRect(x, y, width, height);
+                                g.drawRect(x + 1, y + 1, width - 2, height - 2);
+                            }
+                        }
+                    }
+                } // for
+            } // for
 
-				    g.setColor(Color.GREEN);
-				    g.drawRect(x, y, width, height);
-				    g.drawRect(x + 1, y + 1, width - 2, height - 2);
-				}
-			    }
-			}
-		    } // for
-		} // for
+            // special display for some states
+            switch (state) {
 
-		// special display for some states
-		switch (state) {
+            case ADDING_ENTITY:
 
-		case ADDING_ENTITY:
+                if (isMouseInMapView) {
+                    // display the entity on the map, under the cursor
+                    entityBeingAdded.paint(g, zoom, renderingOptions.getShowTransparency());
+                }
+                break;
 
-		    if (isMouseInMapView) {
-			// display the entity on the map, under the cursor
-			entityBeingAdded.paint(g, zoom, renderingOptions.getShowTransparency());
-		    }
-		    break;
+            case SELECTING_AREA:
+                // draw the selection rectangle
 
-		case SELECTING_AREA:
-		    // draw the selection rectangle
+                x = (int) (Math.min(fixedLocation.x, cursorLocation.x) * zoom);
+                y = (int) (Math.min(fixedLocation.y, cursorLocation.y) * zoom);
+                width = (int) (Math.abs(cursorLocation.x - fixedLocation.x) * zoom - 1);
+                height = (int) (Math.abs(cursorLocation.y - fixedLocation.y) * zoom - 1);
 
-		    x = (int) (Math.min(fixedLocation.x, cursorLocation.x) * zoom);
-		    y = (int) (Math.min(fixedLocation.y, cursorLocation.y) * zoom);
-		    width = (int) (Math.abs(cursorLocation.x - fixedLocation.x) * zoom - 1);
-		    height = (int) (Math.abs(cursorLocation.y - fixedLocation.y) * zoom - 1);
+                g.setColor(Color.YELLOW);
+                g.drawRect(x, y, width, height);
+                g.drawRect(x + 1, y + 1, width - 2, height - 2);
 
-		    g.setColor(Color.YELLOW);
-		    g.drawRect(x, y, width, height);
-		    g.drawRect(x + 1, y + 1, width - 2, height - 2);
-
-		    break;
-		}
-	    }
-	}
+                break;
+            }
+        }
     }
 
     /**

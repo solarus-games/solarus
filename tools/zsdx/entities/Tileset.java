@@ -15,7 +15,7 @@ import zsdx.*;
  *   - an Integer: indicates that the tile with this id was removed
  *   - null: other cases
  */
-public class Tileset extends Observable implements ImageObserver {
+public class Tileset extends Observable {
 
     // tileset data
 
@@ -180,8 +180,8 @@ public class Tileset extends Observable implements ImageObserver {
 	    scaledImages = new Image[4];
 
 	    image = ImageIO.read(getImageFile());
-	    int width = image.getWidth(this);
-	    int height = image.getHeight(this);
+	    int width = image.getWidth(null);
+	    int height = image.getHeight(null);
 
 	    scaledImages[0] = image.getScaledInstance(width / 4, height / 4, Image.SCALE_FAST);
 
@@ -224,18 +224,20 @@ public class Tileset extends Observable implements ImageObserver {
      * @param zoom an integer representing the scale (0: 25%, 1: 50%, 2: 100%, 3: 200%) 
      * @return the scaled tileset image
      */
+    /*
     public Image getScaledImage(int zoom) {
 // 	if (doubleImage == null) {
 // 	    reloadImage();
 // 	}
 	return scaledImages[zoom];
     }
-
+*/
     /**
      * Returns a scaled version of the tileset image, previously loaded by reloadImage().
      * @param zoom the scale (0.25, 0.5, 1 or 2) 
      * @return the scaled tileset image
      */
+    /*
     public Image getScaledImage(double zoom) {
 
 	int index;
@@ -254,21 +256,14 @@ public class Tileset extends Observable implements ImageObserver {
 
 	return scaledImages[index];
     }
+     */
 
     /**
      * Returns the 200% scaled version of the tileset's image, previously loaded by reloadImage().
      * @return the tileset's image in 200%
      */
     public Image getDoubleImage() {
-	return getScaledImage(3);
-    }
-
-    /**
-     * This function is called when some requested information about the image comes.
-     * @return true
-     */
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-	return true;
+	return scaledImages[3];
     }
 
     /**

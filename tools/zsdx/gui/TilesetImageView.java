@@ -131,8 +131,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	}
 	else {
 	    Image scaledImage = tileset.getDoubleImage();
-	    width = scaledImage.getWidth(tileset);
-	    height = scaledImage.getHeight(tileset);
+	    width = scaledImage.getWidth(null);
+	    height = scaledImage.getHeight(null);
 	}
 
 	return new Dimension(width, height);
@@ -249,7 +249,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 	    // draw the image
 // 	    g.drawImage(scaledImage, 0, 0, scaledImage.getWidth(this) * 2, scaledImage.getHeight(this) * 2, this);
-	    g.drawImage(scaledImage, 0, 0, tileset);
+	    g.drawImage(scaledImage, 0, 0, null);
 
 	    // determine the selected area
 	    Rectangle selectedRectangle = null;

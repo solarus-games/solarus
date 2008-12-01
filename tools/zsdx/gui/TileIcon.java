@@ -65,7 +65,7 @@ public class TileIcon extends JComponent implements Observer {
 	    Color bgColor = (tileset.getSelectedTile() == tile) ? bgColorSelected : bgColorUnselected;
 	    g.setColor(bgColor);
 	    g.fillRect(0, 0, 47, 47);
-	    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+	    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
 	}
     }
 

@@ -8,7 +8,7 @@ import zsdx.*;
  * This class describes the image to draw to represent an entity.
  * The image is described by its file name and a rectangle in this image.
  */
-public class EntityImageDescription implements ImageObserver {
+public class EntityImageDescription {
 
     // the description
     private String imageFileName;
@@ -83,7 +83,7 @@ public class EntityImageDescription implements ImageObserver {
     public void setX(int x) {
 	rectangle.x = x;
     }
-    
+
     /**
      * Sets the y coordinate of the rectangle representing the entity in the image.
      * @param y y coordinate of the top-left corner of the rectangle
@@ -91,8 +91,7 @@ public class EntityImageDescription implements ImageObserver {
     public void setY(int y) {
 	rectangle.y = y;
     }
-    
-    
+
     /**
      * Draws the image.
      * @param g the graphic context
@@ -124,13 +123,13 @@ public class EntityImageDescription implements ImageObserver {
 
 	// display the entity
 	if (showTransparency) {
-	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, this);
+	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
 	}
 	else {
-	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, MapEntity.bgColor, this);
+	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, MapEntity.bgColor, null);
 	}
     }
-    
+
     /**
      * This function is called when some requested information about the image comes.
      * @return true

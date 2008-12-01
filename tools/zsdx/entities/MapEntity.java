@@ -60,7 +60,7 @@ import zsdx.Map;
  * - Add the entity in the AddEntitiesToolbar.subtypes array.
  * - Add the entity in the AddEntitiesMenu class.
  */
-public abstract class MapEntity extends Observable implements ImageObserver {
+public abstract class MapEntity extends Observable {
 
     /**
      * The map.
@@ -963,14 +963,6 @@ public abstract class MapEntity extends Observable implements ImageObserver {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 	currentImageDescription.paint(g, zoom, showTransparency, positionInMap);
-    }
-    
-    /**
-     * This function is called when some requested information about the image comes.
-     * @return true
-     */
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-	return true;
     }
 
     /**

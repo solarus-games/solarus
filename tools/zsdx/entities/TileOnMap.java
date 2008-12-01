@@ -214,18 +214,18 @@ public class TileOnMap extends MapEntity {
 	// source image
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 
-	int sx1 = (int) (tile.getX() * zoom);
-	int sx2 = (int) (sx1 + tile.getWidth() * zoom);
-	int sy1 = (int) (tile.getY() * zoom);
-	int sy2 = (int) (sy1 + tile.getHeight() * zoom);
+	int sx1 = tile.getX();
+	int sx2 = sx1 + tile.getWidth();
+	int sy1 = tile.getY();
+	int sy2 = sy1 + tile.getHeight();
 
-	Image tilesetImage = tileset.getScaledImage(zoom);
-	
+	Image tilesetImage = tileset.getImage();
+
 	// destination image: we have to repeat the pattern
-	
+
 	int width = (int) (tile.getWidth() * zoom);
 	int height = (int) (tile.getHeight() * zoom);
-	
+
 	int repeatX = getRepeatX();
 	int repeatY = getRepeatY();
 
@@ -233,7 +233,7 @@ public class TileOnMap extends MapEntity {
 	int dx2;
 	int dy1;
 	int dy2;
-	
+
 	dx2 = (int) (positionInMap.x * zoom);
 	for (int j = 0; j < repeatX; j++) {
 	    dx1 = dx2;
@@ -243,10 +243,10 @@ public class TileOnMap extends MapEntity {
 		dy1 = dy2;
 		dy2 += height;
 		if (showTransparency) {
-		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, tileset);
+		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
 		}
 		else {
-		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgColor, tileset);
+		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgColor, null);
 		}
 	    }
 	}

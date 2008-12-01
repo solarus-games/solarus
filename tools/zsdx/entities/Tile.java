@@ -456,6 +456,7 @@ public class Tile extends Observable {
      * @param y y coordinate of where the tile has to be painted
      * @param zoom scale of the image (1: unchanged, 2: zoom of 200%)
      */
+    /*
     public void paint(Graphics g, Tileset tileset, int x, int y, double zoom) {
 
 	Image tilesetImage = tileset.getScaledImage(zoom);
@@ -475,6 +476,7 @@ public class Tile extends Observable {
 	
 	g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
     }
+     */
 
     /**
      * Compares this tile to another one.

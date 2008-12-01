@@ -1,1 +1,1 @@
-java zsdx.MapEditor
+java -classpath .;.\ini4j.jar zsdx.MapEditor

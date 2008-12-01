@@ -127,7 +127,6 @@ public class MapPropertiesView extends JPanel implements Observer {
 	add(new JLabel("Music"), leftConstraints);
 	rightConstraints.gridy++;
 	rightConstraints.fill = GridBagConstraints.HORIZONTAL;
-	rightConstraints.weighty = 1;
 	musicField = new MusicField();
 	add(musicField, rightConstraints);
 

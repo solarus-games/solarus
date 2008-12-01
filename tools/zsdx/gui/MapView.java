@@ -295,7 +295,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @param g the graphic context
      */
     public void paint(Graphics g) {
-
+    
 	if (map == null) {
 	    return;
 	}
@@ -334,6 +334,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    if (renderingOptions.getShowLayer(layer)) {
 
 			MapEntities entities = map.getEntities(layer);
+
 			for (MapEntity entity: entities) {
 
 			    // should we draw this entity?
@@ -1006,7 +1007,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    }
 
 	    isMouseInMapView = false;
-	    repaint(); // useful when adding an entity
+	    if (state == State.ADDING_ENTITY) {
+		repaint(); // useful when adding an entity
+	    }
 	}
 
 	/**

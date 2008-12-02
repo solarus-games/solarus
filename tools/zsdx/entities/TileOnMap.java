@@ -211,44 +211,22 @@ public class TileOnMap extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-	// source image
-	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
+	Tile tile = tileset.getTile(tileId);
 
-	int sx1 = tile.getX();
-	int sx2 = sx1 + tile.getWidth();
-	int sy1 = tile.getY();
-	int sy2 = sy1 + tile.getHeight();
-
-	Image tilesetImage = tileset.getImage();
-
-	// destination image: we have to repeat the pattern
-
-	int width = (int) (tile.getWidth() * zoom);
-	int height = (int) (tile.getHeight() * zoom);
-
+	int x = getX();
+	int y = getY();
 	int repeatX = getRepeatX();
 	int repeatY = getRepeatY();
+	int width = tile.getWidth();
+	int height = tile.getHeight();
 
-	int dx1;
-	int dx2;
-	int dy1;
-	int dy2;
-
-	dx2 = (int) (positionInMap.x * zoom);
-	for (int j = 0; j < repeatX; j++) {
-	    dx1 = dx2;
-	    dx2 += width;
-	    dy2 = (int) (positionInMap.y * zoom);
-	    for (int k = 0; k < repeatY; k++) {
-		dy1 = dy2;
-		dy2 += height;
-		if (showTransparency) {
-		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
-		}
-		else {
-		    g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgColor, null);
-		}
+	for (int i = 0; i < repeatY; i++) {
+	    for (int j = 0; j < repeatX; j++) {
+		tile.paint(g, tileset, x, y, zoom, showTransparency);
+		x += width;
 	    }
+	    y += height;
+	    x = getX();
 	}
     }
 }

@@ -1,6 +1,7 @@
 package zsdx.entities;
 
 import java.awt.*;
+import java.awt.image.*;
 import java.util.*;
 import zsdx.*;
 
@@ -23,6 +24,11 @@ public class Tile extends Observable {
      * Coordinates and dimensions of the tile.
      */
     private Rectangle positionInTileset;
+
+    /**
+     * Subimage representing this tile in the tileset for each zoom mode.
+     */
+    private BufferedImage[] images;
 
     /**
      * Type of obstacle.
@@ -71,18 +77,20 @@ public class Tile extends Observable {
     public Tile(Rectangle positionInTileset, int defaultLayer, int obstacle,
 		int animationSequence, int animationSeparation) throws TilesetException {
 	super();
-	
+
 	// check the width and the height
 	if (positionInTileset.width <= 0 || positionInTileset.height <= 0 ||
 	    positionInTileset.width % 8 != 0 || positionInTileset.height % 8 != 0) {
 	    throw new TilesetException("The size of a tile must be positive and multiple of 8 pixels");
 	}
-	
+
 	this.positionInTileset = positionInTileset;
 	this.defaultLayer = defaultLayer;
 	setObstacle(obstacle);
 	setAnimationSequence(animationSequence);
 	setAnimationSeparation(animationSeparation);
+
+	this.images = new BufferedImage[4];
     }
 
     /**
@@ -94,19 +102,20 @@ public class Tile extends Observable {
 	
 	try {
 	    StringTokenizer tokenizer = new StringTokenizer(description);
-	    
+
 	    int tileType = Integer.parseInt(tokenizer.nextToken());
 	    this.obstacle = Integer.parseInt(tokenizer.nextToken());
 	    this.defaultLayer = Integer.parseInt(tokenizer.nextToken());
+	    this.images = new BufferedImage[4];
 
 	    if (tileType == 0) {
-		
+
 		// simple tile: "0 obstacle defaultLayer x y width height"
 		int x = Integer.parseInt(tokenizer.nextToken());
 		int y = Integer.parseInt(tokenizer.nextToken());
 		int width = Integer.parseInt(tokenizer.nextToken());
 		int height = Integer.parseInt(tokenizer.nextToken());
-		
+
 		this.positionInTileset = new Rectangle(x, y, width, height);
 		this.animationSequence = ANIMATION_NONE;
 	    }
@@ -449,36 +458,6 @@ public class Tile extends Observable {
     }
 
     /**
-     * Draws the tile on a component.
-     * @param g graphic context
-     * @param tileset the tileset
-     * @param x x coordinate of where the tile has to be painted
-     * @param y y coordinate of where the tile has to be painted
-     * @param zoom scale of the image (1: unchanged, 2: zoom of 200%)
-     */
-    /*
-    public void paint(Graphics g, Tileset tileset, int x, int y, double zoom) {
-
-	Image tilesetImage = tileset.getScaledImage(zoom);
-
-	int width = (int) (getWidth() * zoom);
-	int height = (int) (getHeight() * zoom);
-	
-	int sx1 = (int) (positionInTileset.x * zoom);
-	int sx2 = sx1 + width;
-	int sy1 = (int) (positionInTileset.y * zoom);
-	int sy2 = sy1 + height;
-	
-	int dx1 = (int) (x * zoom);
-	int dx2 = dx1 + width;
-	int dy1 = (int) (y * zoom);
-	int dy2 = dy1 + height;
-	
-	g.drawImage(tilesetImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
-    }
-     */
-
-    /**
      * Compares this tile to another one.
      * @return true if it the tiles have exactly the same properties
      */
@@ -490,5 +469,59 @@ public class Tile extends Observable {
 	    && animationSequence == tile.animationSequence
 	    && animationSeparation == tile.animationSeparation
 	    && positionInTileset.equals(tile.positionInTileset);
+    }
+
+    /**
+     * Returns the image representing this tile in its tileset with a zoom mode.
+     * @param zoom the zoom
+     * @param tileset the tileset (taken into account only at the first call)
+     */
+    public BufferedImage getTileImage(Tileset tileset, double zoom) {
+
+	int index;
+	if (zoom == 0.25) {
+	    index = 0;
+	}
+	else if (zoom == 0.5) {
+	    index = 1;
+	}
+	else if (zoom == 1.0) {
+	    index = 2;
+	}
+	else {
+	    index = 3;
+	}
+
+	if (images[index] == null) {
+	    int x = (int) Math.round(positionInTileset.x * zoom);
+	    int y = (int) Math.round(positionInTileset.y * zoom);
+	    int width = (int) Math.round(positionInTileset.width * zoom);
+	    int height = (int) Math.round(positionInTileset.height * zoom);
+	    images[index] = tileset.getScaledImage(index).getSubimage(x, y, width, height);
+	}
+
+	return images[index];
+    }
+
+    /**
+     * Draws the tile on a component.
+     * @param g graphic context
+     * @param tileset the tileset
+     * @param x x coordinate of where the tile has to be painted
+     * @param y y coordinate of where the tile has to be painted
+     * @param zoom scale of the image (1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
+     */
+    public void paint(Graphics g, Tileset tileset, int x, int y, double zoom, boolean showTransparency) {
+
+	int dx = (int) Math.round(x * zoom);
+	int dy = (int) Math.round(y * zoom);
+	if (showTransparency) {
+	    g.drawImage(getTileImage(tileset, zoom), dx, dy, null);
+	}
+	else {
+	    g.drawImage(getTileImage(tileset, zoom), dx, dy, MapEntity.bgColor, null);
+	}
     }
 }

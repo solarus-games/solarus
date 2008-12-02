@@ -119,7 +119,7 @@ public class AddEntitiesToolbar extends JComponent {
     /**
      * The mouse listener associated to this component.
      */
-    class AddEntitiesToolbarMouseListener extends MouseAdapter {
+    private class AddEntitiesToolbarMouseListener extends MouseAdapter {
 
 	/**
 	 * Constructor.

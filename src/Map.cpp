@@ -350,19 +350,19 @@ void Map::start(void) {
 
     switch (destination_side) {
 
-    case 0: // left side
+    case 0: // right side
       link->set_x(get_width() - 8);
       break;
 
-    case 1: // bottom side
+    case 1: // top side
       link->set_y(21);
       break;
 
-    case 2: // right side
+    case 2: // left side
       link->set_x(8);
       break;
 
-    case 3: // top side
+    case 3: // bottom side
       link->set_y(get_height() - 3);
       break;
 

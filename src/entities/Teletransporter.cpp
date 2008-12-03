@@ -69,10 +69,10 @@ void Teletransporter::collision(MapEntity *entity_overlapping, CollisionMode col
 	name += '2';
       }
       else if (y < 0) {
-	name += '1';
+	name += '3';
       }
       else if (y >= map->get_height()) {
-	name += '3';
+	name += '1';
       }
       else { // dangerous because of diagonal movements
 	int direction = (((Link*) entity_overlapping)->get_movement_direction() / 90 + 2) % 4; 

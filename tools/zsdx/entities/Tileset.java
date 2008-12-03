@@ -200,7 +200,7 @@ public class Tileset extends Observable {
 	notifyObservers(image);
     }
 
-    private BufferedImage createScaledImage(BufferedImage image, int width, int height) {   
+    private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
         BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = scaledImage.createGraphics();
         g.drawImage(image, 0, 0, width, height, null);

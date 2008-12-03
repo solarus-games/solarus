@@ -515,13 +515,14 @@ public class Tile extends Observable {
      */
     public void paint(Graphics g, Tileset tileset, int x, int y, double zoom, boolean showTransparency) {
 
+	BufferedImage tileImage = getTileImage(tileset, zoom);
 	int dx = (int) Math.round(x * zoom);
 	int dy = (int) Math.round(y * zoom);
-	if (showTransparency) {
-	    g.drawImage(getTileImage(tileset, zoom), dx, dy, null);
+
+        if (!showTransparency) {
+	    g.setColor(MapEntity.bgColor);
+	    g.fillRect(dx, dy, tileImage.getWidth(), tileImage.getHeight());
 	}
-	else {
-	    g.drawImage(getTileImage(tileset, zoom), dx, dy, MapEntity.bgColor, null);
-	}
+	g.drawImage(tileImage, dx, dy, null);
     }
 }

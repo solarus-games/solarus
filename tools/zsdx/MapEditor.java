@@ -7,6 +7,15 @@ import zsdx.gui.*;
  */
 public class MapEditor {
 
+	// initialization
+	/* Java 1.6 Update 10 introduces by default a Direct3D handling for the Java2D operations,
+	 * but under Windows drawing an image without transparency becomes extremely slow
+	 * so we disable Direct3D until the bug is fixed.
+	 */
+	static {
+		System.setProperty("sun.java2d.d3d", "false"); 
+	}
+
     /**
      * Entry point.
      */

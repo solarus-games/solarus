@@ -493,10 +493,10 @@ public class Tile extends Observable {
 	}
 
 	if (images[index] == null) {
-	    int x = (int) Math.round(positionInTileset.x * zoom);
-	    int y = (int) Math.round(positionInTileset.y * zoom);
-	    int width = (int) Math.round(positionInTileset.width * zoom);
-	    int height = (int) Math.round(positionInTileset.height * zoom);
+	    int x = (int) Math.round(getX() * zoom);
+	    int y = (int) Math.round(getY() * zoom);
+	    int width = (int) Math.round(getWidth() * zoom);
+	    int height = (int) Math.round(getHeight() * zoom);
 	    images[index] = tileset.getScaledImage(index).getSubimage(x, y, width, height);
 	}
 
@@ -518,6 +518,11 @@ public class Tile extends Observable {
 	BufferedImage tileImage = getTileImage(tileset, zoom);
 	int dx = (int) Math.round(x * zoom);
 	int dy = (int) Math.round(y * zoom);
+
+/*
+	Color bgColor = showTransparency ? null : MapEntity.bgColor;
+	g.drawImage(getTileImage(tileset, zoom), dx, dy, bgColor, this);
+*/
 
         if (!showTransparency) {
 	    g.setColor(MapEntity.bgColor);

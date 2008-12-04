@@ -33,7 +33,7 @@ class MapEntities {
   /**
    * All tiles of the map (a vector for each layer).
    */
-  vector<TileOnMap*> tiles[MapEntity::LAYER_NB];
+  std::vector<TileOnMap*> tiles[MapEntity::LAYER_NB];
   
   /**
    * Number of elements in the array obstacle_tiles.
@@ -50,32 +50,32 @@ class MapEntities {
    * All map entities execept the tiles.
    * This vector is used to delete the entities when the map is unloaded.
    */
-  list<MapEntity*> all_entities;
+  std::list<MapEntity*> all_entities;
 
   /**
    * List of entities to remove now.
    */
-  list<MapEntity*> entities_to_remove;
+  std::list<MapEntity*> entities_to_remove;
 
   /**
    * All map entities that are displayed as a sprite (a vector for each layer).
    */
-  list<MapEntity*> sprite_entities[MapEntity::LAYER_NB];
+  std::list<MapEntity*> sprite_entities[MapEntity::LAYER_NB];
 
   /**
    * Vector of all possible destination points of the map.
    */
-  vector<DestinationPoint*> destination_points;
+  std::vector<DestinationPoint*> destination_points;
 
   /**
    * All detectors of the map.
    */
-  list<Detector*> detectors;
+  std::list<Detector*> detectors;
   
   /**
    * All obstacle entities of the map.
    */
-  list<MapEntity*> obstacle_entities[MapEntity::LAYER_NB];
+  std::list<MapEntity*> obstacle_entities[MapEntity::LAYER_NB];
 
   void add_entity(MapEntity *entity);
 
@@ -89,8 +89,8 @@ class MapEntities {
   unsigned int get_nb_destination_points(void);
   DestinationPoint * get_destination_point(int index);
   MapEntity::Obstacle get_obstacle_tile(MapEntity::Layer layer, int x, int y);
-  list<MapEntity*> * get_obstacle_entities(MapEntity::Layer layer);
-  list<Detector*> * get_detectors(void);
+  std::list<MapEntity*> * get_obstacle_entities(MapEntity::Layer layer);
+  std::list<Detector*> * get_detectors(void);
   void set_obstacle(MapEntity *entity, MapEntity::Obstacle obstacle);
   void set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle obstacle);
 

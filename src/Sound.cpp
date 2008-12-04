@@ -59,8 +59,8 @@ void Sound::initialize(void) {
       result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
 
       if (result != FMOD_OK) {
-	cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
-	     << "No music or sound will be played." << endl;
+	std::cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
+		  << "No music or sound will be played." << std::endl;
 	FMOD_System_Release(system);
 	system = NULL;
       }
@@ -112,7 +112,7 @@ bool Sound::play(void) {
       result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
 
       if (result != FMOD_OK) {
-	cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
+	std::cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
       }
     }
 
@@ -120,7 +120,7 @@ bool Sound::play(void) {
       result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);
 
       if (result != FMOD_OK) {
-	cerr << "Unable to play sound '" << file_name << "': " << FMOD_ErrorString(result) << endl;
+	std::cerr << "Unable to play sound '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
       }
       else {
 	success = true;

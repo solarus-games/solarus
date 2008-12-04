@@ -12,6 +12,7 @@
 #include "Map.h"
 #include "ZSDX.h"
 #include "Game.h"
+using std::list;
 
 /**
  * Constructor.

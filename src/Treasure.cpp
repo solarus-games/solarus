@@ -151,7 +151,7 @@ void Treasure::show_message(void) {
   Equipment *equipment = game->get_equipment();
 
   // the message id is _treasure_x where x is the treasure content
-  ostringstream oss(ostringstream::out);
+  std::ostringstream oss;
   oss << "_treasure_" << content;
 
   // but for some kinds of content, the message id is more complex and has a suffix

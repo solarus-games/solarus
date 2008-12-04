@@ -148,7 +148,7 @@ void DialogBox::set_variable(MessageId message_id, string value) {
  * @param value the value to add
  */
 void DialogBox::set_variable(MessageId message_id, int value) {
-  ostringstream oss;
+  std::ostringstream oss;
   oss << value;
   set_variable(message_id, oss.str());
 }

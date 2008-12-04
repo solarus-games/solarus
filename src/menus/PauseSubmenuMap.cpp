@@ -92,7 +92,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
   }
 
   link_head_sprite = new Sprite("menus/link_head");
-  ostringstream oss;
+  std::ostringstream oss;
   oss << "tunic" << equipment->get_tunic();
   link_head_sprite->set_current_animation(oss.str());
 
@@ -140,7 +140,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
   if (dungeon_equipment->has_map()) {
 
     // load the image of this floor
-    ostringstream oss;
+    std::ostringstream oss;
     oss << "dungeons/map" << dungeon->get_number() << "_" << selected_floor << ".png";
     SDL_Surface *floor_map_img = ResourceManager::load_image(oss.str());
     SDL_BlitSurface(floor_map_img, NULL, dungeon_map_img, NULL);
@@ -169,7 +169,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     SDL_Rect small_chest_src_position = {78, 8, 4, 4};
     SDL_Rect big_chest_src_position = {78, 12, 6, 4};
     SDL_Rect dst_position;
-    const vector<Dungeon::DungeonElement> &chests = dungeon->get_chests(selected_floor);
+    const std::vector<Dungeon::DungeonElement> &chests = dungeon->get_chests(selected_floor);
     for (unsigned int i = 0; i < chests.size(); i++) {
 
       if (!savegame->get_boolean(chests[i].savegame_variable)) {
@@ -188,7 +188,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
     // boss and minibosses
     SDL_Rect src_position = {78, 0, 8, 8};
-    const vector<Dungeon::DungeonElement> &bosses = dungeon->get_bosses(selected_floor);
+    const std::vector<Dungeon::DungeonElement> &bosses = dungeon->get_bosses(selected_floor);
     for (unsigned int i = 0; i < bosses.size(); i++) {
 
       // for now the minibosses are not displayed

@@ -31,12 +31,12 @@ void MapLoader::load_map(Map *map) {
   int id = (int) map->get_id();
 
   // compute the file name, depending on the id
-  ostringstream oss(ostringstream::out);
-  oss << "maps/map" << setfill('0') << setw(4) << id << ".zsd";
+  std::ostringstream oss;
+  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".zsd";
   string file_name = FileTools::data_file_add_prefix(oss.str());
 
   // open the map file
-  ifstream map_file(file_name.c_str());
+  std::ifstream map_file(file_name.c_str());
   if (!map_file) {
     DIE("Cannot load map '" << id << "': unable to open map file '" << file_name << "'");
   }
@@ -51,7 +51,7 @@ void MapLoader::load_map(Map *map) {
     DIE("Cannot load map '" << id << "': the file '" << file_name << "' is empty");
   }
 
-  istringstream iss0(line);
+  std::istringstream iss0(line);
   iss0 >> map->location.w >> map->location.h >> map->world >> map->floor >> map->location.x
        >> map->location.y >> map->small_keys_variable >> tileset_id >> map->music_id;
 
@@ -80,7 +80,7 @@ void MapLoader::load_map(Map *map) {
   
   while (std::getline(map_file, line)) {
 
-    istringstream iss(line);
+    std::istringstream iss(line);
     iss >> entity_type >> layer >> x >> y;
 
     switch (entity_type) {

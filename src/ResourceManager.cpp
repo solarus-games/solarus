@@ -6,6 +6,8 @@
 #include "SpriteAnimationSet.h"
 #include "FileTools.h"
 
+using std::map;
+
 /**
  * Only instance.
  */

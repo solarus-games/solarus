@@ -466,11 +466,11 @@ MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int 
  */
 bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box) {
 
-  list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
+  std::list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
 
   bool collision = false;
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = obstacle_entities->begin();
        i != obstacle_entities->end() && !collision;
        i++) {
@@ -543,10 +543,10 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y) {
  */
 void Map::check_collision_with_detectors(MapEntity *entity) {
 
-  list<Detector*> *detectors = entities->get_detectors();
+  std::list<Detector*> *detectors = entities->get_detectors();
 
   // check each detector
-  list<Detector*>::iterator i;
+  std::list<Detector*>::iterator i;
   for (i = detectors->begin();
        i != detectors->end();
        i++) {
@@ -566,10 +566,10 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
  */
 void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
 
-  list<Detector*> *detectors = entities->get_detectors();
+  std::list<Detector*> *detectors = entities->get_detectors();
 
   // check each detector
-  list<Detector*>::iterator i;
+  std::list<Detector*>::iterator i;
   for (i = detectors->begin();
        i != detectors->end();
        i++) {

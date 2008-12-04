@@ -11,7 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-using namespace std;
+using std::string;
 #include <cstdlib>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
@@ -26,7 +26,7 @@ using namespace std;
  * This macro should be used to exit the program properly on an error message.
  * The message parameter can contain several elements separated by the '<<' operator.
  */
-#define DIE(message) do { ostringstream oss; oss << message; throw oss.str(); } while (0)
+#define DIE(message) do { std::ostringstream oss; oss << message; throw oss.str(); } while (0)
 
 /**
  * Mathematic constants.

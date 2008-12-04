@@ -37,8 +37,8 @@ class Controls {
   Savegame *savegame;
   SDL_Joystick *joystick;
 
-  map<SDLKey, GameKey> keyboard_mapping;
-  map<string, GameKey> joypad_mapping;
+  std::map<SDLKey, GameKey> keyboard_mapping;
+  std::map<string, GameKey> joypad_mapping;
   bool keys_pressed[9];
 
   bool customizing;

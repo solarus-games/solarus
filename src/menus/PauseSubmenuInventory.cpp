@@ -336,7 +336,7 @@ void PauseSubmenuInventory::show_info_message(void) {
     item_id = InventoryItem::BOTTLE_1;
   }
 
-  ostringstream oss;
+  std::ostringstream oss;
   oss << "_item_description_" << item_id << '_' << variant;
 
   int position = (cursor_row >= 2) ? 0 : 1;

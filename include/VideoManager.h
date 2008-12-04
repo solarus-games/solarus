@@ -2,7 +2,7 @@
 #define ZSDX_VIDEO_MANAGER_H
 
 #include "Common.h"
-
+ 
 /**
  * Displays the window and handles the resolution mode.
  */

@@ -371,7 +371,7 @@ void Controls::key_released(const SDL_keysym &keysym) {
 void Controls::joypad_button_pressed(int button) {
 
   // retrieve the game key corresponding to this joypad button
-  ostringstream oss;
+  std::ostringstream oss;
   oss << "button " << button;
   string joypad_string = oss.str();
   GameKey game_key = joypad_mapping[joypad_string];
@@ -416,7 +416,7 @@ void Controls::joypad_button_pressed(int button) {
 void Controls::joypad_button_released(int button) {
 
   // retrieve the game key corresponding to this joypad button
-  ostringstream oss;
+  std::ostringstream oss;
   oss << "button " << button;
   GameKey game_key = joypad_mapping[oss.str()];
 
@@ -438,7 +438,7 @@ void Controls::joypad_axis_moved(int axis, int state) {
   // axis in centered position
   if (state == 0) {
 
-    ostringstream oss_1;
+    std::ostringstream oss_1;
     oss_1 << "axis " << axis << " +";
     string joypad_string_1 = oss_1.str();
     GameKey game_key_1 = joypad_mapping[oss_1.str()];
@@ -447,7 +447,7 @@ void Controls::joypad_axis_moved(int axis, int state) {
       game_key_released(game_key_1);
     }
 
-    ostringstream oss_2;
+    std::ostringstream oss_2;
     oss_2 << "axis " << axis << " -";
     string joypad_string_2 = oss_2.str();
     GameKey game_key_2 = joypad_mapping[oss_2.str()];
@@ -458,7 +458,7 @@ void Controls::joypad_axis_moved(int axis, int state) {
   }
   else if (state > 15000 || state < -15000) {
 
-    ostringstream oss;
+    std::ostringstream oss;
     oss << "axis " << axis << ((state > 0) ? " +" : " -");
     string joypad_string = oss.str();
 
@@ -510,7 +510,7 @@ void Controls::joypad_hat_moved(int hat, int value) {
 
     for (int i = 0; i < 4; i++) {
 
-      ostringstream oss;
+      std::ostringstream oss;
       oss << "hat " << hat << ' ' << direction_strings[i];
       string joypad_string = oss.str();
       GameKey game_key = joypad_mapping[oss.str()];
@@ -563,7 +563,7 @@ void Controls::joypad_hat_moved(int hat, int value) {
       direction_2 = 0;
     }
 
-    ostringstream oss;
+    std::ostringstream oss;
     oss << "hat " << hat << ' ' << direction_strings[direction_1];
     string joypad_string = oss.str();
     GameKey game_key = joypad_mapping[joypad_string];
@@ -572,7 +572,7 @@ void Controls::joypad_hat_moved(int hat, int value) {
     GameKey game_key_2 = NONE;
 
     if (direction_2 != -1) {
-      ostringstream oss;
+      std::ostringstream oss;
       oss << "hat " << hat << ' ' << direction_strings[direction_2];
       joypad_string_2 = oss.str();
       game_key_2 = joypad_mapping[joypad_string_2];
@@ -679,7 +679,7 @@ SDLKey Controls::get_keyboard_key(GameKey game_key) {
 
   bool found = false;
   SDLKey keyboard_key = (SDLKey) 0;
-  map<SDLKey, GameKey>::const_iterator it;
+  std::map<SDLKey, GameKey>::const_iterator it;
   for (it = keyboard_mapping.begin(); it != keyboard_mapping.end(); it++) {
 
     if (it->second == game_key) {
@@ -704,7 +704,7 @@ string Controls::get_joypad_string(GameKey game_key) {
 
   bool found = false;
   string joypad_string = "";
-  map<string, GameKey>::const_iterator it;
+  std::map<string, GameKey>::const_iterator it;
   for (it = joypad_mapping.begin(); it != joypad_mapping.end(); it++) {
 
     if (it->second == game_key) {

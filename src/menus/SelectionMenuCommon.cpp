@@ -33,7 +33,7 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   img_option_container = ResourceManager::load_image("menus/selection_menu_option_container.png");
 
   for (int i = 0; i < 3; i++) {
-    ostringstream oss;
+    std::ostringstream oss;
     oss << "menus/selection_menu_save" << (i + 1) << ".png";
     img_numbers[i] = ResourceManager::load_image(oss.str());
   }

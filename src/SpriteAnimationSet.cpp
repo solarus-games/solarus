@@ -15,7 +15,7 @@ SpriteAnimationSet::SpriteAnimationSet(SpriteAnimationSetId id) {
   string file_name = "sprites/" + id + ".zsd";
 
   // open the file
-  ifstream sprite_file(FileTools::data_file_add_prefix(file_name).c_str());
+  std::ifstream sprite_file(FileTools::data_file_add_prefix(file_name).c_str());
   if (!sprite_file) {
     DIE("Cannot open file '" << FileTools::data_file_add_prefix(file_name) << "'");
   }
@@ -39,7 +39,7 @@ SpriteAnimationSet::SpriteAnimationSet(SpriteAnimationSetId id) {
 
     // first line: animation info
     
-    istringstream iss0(line);
+    std::istringstream iss0(line);
     iss0 >> name >> image_file_name >> nb_directions
 	 >> frame_delay >> loop_on_frame;
 
@@ -52,7 +52,7 @@ SpriteAnimationSet::SpriteAnimationSet(SpriteAnimationSetId id) {
       }
       while (line.size() == 0);
 
-      istringstream iss(line);
+      std::istringstream iss(line);
       iss >> x >> y >> width >> height >> x_origin >> y_origin
 	  >> nb_frames >> columns;
 
@@ -97,7 +97,7 @@ SpriteAnimationSet::SpriteAnimationSet(SpriteAnimationSetId id) {
 SpriteAnimationSet::~SpriteAnimationSet(void) {
 
   // delete the animations
-  map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
+  std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
 
   for (it = animations.begin(); it != animations.end(); it++) {
     delete it->second;
@@ -128,7 +128,7 @@ void SpriteAnimationSet::enable_pixel_collisions(void) {
 
   if (!are_pixel_collisions_enabled()) {
 
-    map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
+    std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
 
     for (it = animations.begin(); it != animations.end(); it++) {
       it->second->enable_pixel_collisions();

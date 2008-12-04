@@ -71,7 +71,7 @@ void Dungeon::load(void) {
   }
 
   // parse the floors (the floors must be before the chests and the bosses)
-  ostringstream floor_oss;
+  std::ostringstream floor_oss;
   floor_oss << "dungeon_" << dungeon_number << ".floor_";
   string floor_prefix = floor_oss.str();
   lowest_floor = 100;
@@ -86,7 +86,7 @@ void Dungeon::load(void) {
       string suffix = group_name.substr(floor_prefix.length());
 
       int floor;
-      istringstream iss(suffix);
+      std::istringstream iss(suffix);
       iss >> floor;
 
       SDL_Rect size;
@@ -102,12 +102,12 @@ void Dungeon::load(void) {
 
   // now we now how many floors there are
   int nb_floors = get_nb_floors();
-  chests = new vector<DungeonElement>[nb_floors];
-  bosses = new vector<DungeonElement>[nb_floors];
+  chests = new std::vector<DungeonElement>[nb_floors];
+  bosses = new std::vector<DungeonElement>[nb_floors];
 
   // parse the rest: chests and bosses
   string elements_prefix;
-  ostringstream elements_oss;
+  std::ostringstream elements_oss;
   elements_oss << "dungeon_" << dungeon_number << ".map_";
   for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
@@ -237,7 +237,7 @@ int Dungeon::get_boss_floor(void) {
  * @param floor a floor of this dungeon
  * @return the information about the bosses and minibosses of this floor
  */
-const vector<Dungeon::DungeonElement> Dungeon::get_bosses(int floor) {
+const std::vector<Dungeon::DungeonElement> Dungeon::get_bosses(int floor) {
   return bosses[floor - get_lowest_floor()];
 }
 
@@ -247,6 +247,6 @@ const vector<Dungeon::DungeonElement> Dungeon::get_bosses(int floor) {
  * @param floor a floor of this dungeon
  * @return the information about the chests of this floor
  */
-const vector<Dungeon::DungeonElement> Dungeon::get_chests(int floor) {
+const std::vector<Dungeon::DungeonElement> Dungeon::get_chests(int floor) {
   return chests[floor - get_lowest_floor()];
 }

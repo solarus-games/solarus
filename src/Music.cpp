@@ -84,14 +84,14 @@ bool Music::play(void) {
     result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_NORMAL, 0, &sound);
 
     if (result != FMOD_OK) {
-      cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
+      std::cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
     }
     else {
 
       result = FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, false, &channel);
 
       if (result != FMOD_OK) {
-	cerr << "Unable to play music '" << file_name << "': " << FMOD_ErrorString(result) << endl;
+	std::cerr << "Unable to play music '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
       }
       else {
 	success = true;
@@ -110,14 +110,14 @@ void Music::stop(void) {
   if (is_initialized()) {
 
     if (!is_playing()) {
-      cerr << "The music '" << file_name << "' is already stopped.\n";
+      std::cerr << "The music '" << file_name << "' is already stopped." << std::endl;
     }
     else {
 
       FMOD_RESULT result = FMOD_Channel_Stop(channel);
 
       if (result != FMOD_OK) {
-	cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << endl;
+	std::cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << std::endl;
       }
     }
 

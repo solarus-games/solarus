@@ -45,12 +45,12 @@ void Tileset::create_tile(int id, Tile *tile) {
 void Tileset::load(void) {
 
   // compute the file name, depending on the id
-  ostringstream oss(ostringstream::out);
-  oss << "tilesets/tileset" << setfill('0') << setw(4) << id << ".zsd";
+  std::ostringstream oss;
+  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << ".zsd";
   string file_name = FileTools::data_file_add_prefix(oss.str());
 
   // open the tileset file
-  ifstream tileset_file(file_name.c_str());
+  std::ifstream tileset_file(file_name.c_str());
 
   if (!tileset_file) {
     DIE("Cannot open file '" << file_name << "'");
@@ -66,7 +66,7 @@ void Tileset::load(void) {
 
   int r, g, b;
 
-  istringstream iss0(line);
+  std::istringstream iss0(line);
   iss0 >> r >> g >> b;
   background_color = Color::create(r, g, b);
 
@@ -74,7 +74,7 @@ void Tileset::load(void) {
   int tile_id, is_animated, obstacle, default_layer;
   while (std::getline(tileset_file, line)) {
 
-    istringstream iss(line);
+    std::istringstream iss(line);
     iss >> tile_id >> is_animated >> obstacle >> default_layer;
 
     int width, height;
@@ -98,8 +98,8 @@ void Tileset::load(void) {
   }
 
   // load the tileset image
-  ostringstream oss2(ostringstream::out);
-  oss2 << "tilesets/tileset" << setfill('0') << setw(4) << id << ".png";
+  std::ostringstream oss2;
+  oss2 << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << ".png";
   tileset_image = ResourceManager::load_image(oss2.str());
   
   if (tileset_image == NULL) {

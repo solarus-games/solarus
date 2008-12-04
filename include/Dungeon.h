@@ -25,15 +25,15 @@ class Dungeon {
 
  private:
 
-  int dungeon_number;             /**< dungeon number, between 1 and 20 */
+  int dungeon_number;                  /**< dungeon number, between 1 and 20 */
 
   // floors
-  int lowest_floor;               /**< lowest floor number, between -16 and 15 */
-  vector<SDL_Rect> floor_sizes;   /**< size of each floor */
+  int lowest_floor;                    /**< lowest floor number, between -16 and 15 */
+  std::vector<SDL_Rect> floor_sizes;   /**< size of each floor */
 
-  vector<DungeonElement> *chests; /**< properties of each chest for each floor */
-  vector<DungeonElement> *bosses; /**< properties of each miniboss and boss for each floor */
-  int boss_floor;                 /**< floor of the boss */
+  std::vector<DungeonElement> *chests; /**< properties of each chest for each floor */
+  std::vector<DungeonElement> *bosses; /**< properties of each miniboss and boss for each floor */
+  int boss_floor;                      /**< floor of the boss */
 
   void load(void);
 
@@ -58,8 +58,8 @@ class Dungeon {
 
   // dungeon elements
   int get_boss_floor(void);
-  const vector<DungeonElement> get_bosses(int floor);
-  const vector<DungeonElement> get_chests(int floor);
+  const std::vector<DungeonElement> get_bosses(int floor);
+  const std::vector<DungeonElement> get_chests(int floor);
 };
 
 #endif

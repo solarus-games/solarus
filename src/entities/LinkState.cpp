@@ -1,6 +1,7 @@
 #include "entities/Link.h"
 #include "entities/CarriedItem.h"
 #include "movements/Movement8ByPlayer.h"
+#include "movements/JumpMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -26,7 +27,7 @@ Link::State Link::get_state(void) {
  */
 void Link::set_state(State state) {
   this->state = state;
-  get_movement()->set_moving_enabled(state <= SWIMMING);
+  get_player_movement()->set_moving_enabled(state <= SWIMMING);
 }
 
 /**
@@ -36,9 +37,9 @@ void Link::set_state(State state) {
 void Link::start_free(void) {
   set_state(FREE);
 
-  get_movement()->compute_movement();
+  get_player_movement()->compute_movement();
   
-  if (get_movement()->is_started()) {
+  if (get_player_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -107,7 +108,7 @@ void Link::start_sword_loading(void) {
   counter = 0;
   next_counter_date = SDL_GetTicks();
 
-  if (get_movement()->is_started()) {
+  if (get_player_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -174,7 +175,7 @@ void Link::start_lifting(DestructibleItem *item_to_lift) {
 void Link::start_carrying(void) {
   set_state(CARRYING);
 
-  if (get_movement()->is_started()) {
+  if (get_player_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -312,7 +313,7 @@ void Link::update_grabbing_pulling(void) {
  * The current animation of Link's sprites is stopped and the "stopped" animation is played.
  */
 void Link::freeze(void) {
-  get_movement()->set_moving_enabled(false);
+  get_player_movement()->set_moving_enabled(false);
   set_animation_stopped();
   set_state(FREEZED);
 }
@@ -397,6 +398,16 @@ void Link::start_spin_attack(void) {
   if (equipment->has_shield()) {
     shield_sprite->stop_animation(); // the shield is not visible during a spin attack
   }
+}
+
+/**
+ * Makes Link jump in a direction.
+ * While he is jumping, the player does not control him anymore.
+ * @param direction direction of the jump
+ * @param length length of the jump
+ */
+void Link::start_jumping(int direction, int length) {
+  set_movement(new JumpMovement(direction, length));
 }
 
 /**

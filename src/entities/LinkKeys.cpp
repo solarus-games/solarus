@@ -131,7 +131,7 @@ void Link::sword_key_pressed(void) {
 void Link::arrow_pressed(int direction) {
 
   // notify the movement
-  get_movement()->add_direction(direction);
+  get_player_movement()->add_direction(direction);
 
   // grabbing or pulling
   if (state == GRABBING) {
@@ -150,7 +150,7 @@ void Link::arrow_pressed(int direction) {
 void Link::arrow_released(int direction) {
 
   // notify the movement
-  get_movement()->remove_direction(direction);
+  get_player_movement()->remove_direction(direction);
 
   // grabbing or pulling
   if (state == PULLING) {

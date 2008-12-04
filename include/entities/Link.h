@@ -54,6 +54,9 @@ class Link: public MapEntity, AnimationListener {
   static const SpriteAnimationSetId shield_sprite_ids[];
   static const SoundId sword_sound_ids[];
 
+  // movement
+  Movement8ByPlayer *player_movement;
+
   /**
    * Current state of Link.
    * The state is considered only when the game is not suspended.
@@ -147,7 +150,7 @@ class Link: public MapEntity, AnimationListener {
   bool is_hero(void);
 
   // movement
-  Movement8ByPlayer *get_movement(void);
+  Movement8ByPlayer * get_player_movement(void);
   int get_movement_direction(void);
   SDL_Rect get_facing_point(void);
   void just_moved(void);
@@ -183,6 +186,7 @@ class Link: public MapEntity, AnimationListener {
   void start_carrying(void);
   void freeze(void);
   void give_treasure(Treasure *treasure);
+  void start_jumping(int direction, int length);
 
   // keys
   void key_pressed(Controls::GameKey key);

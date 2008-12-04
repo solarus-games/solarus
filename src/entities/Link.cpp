@@ -39,13 +39,14 @@ static const int animation_directions[] = {
 Link::Link(Equipment *equipment):
   equipment(equipment),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
+  player_movement(new Movement8ByPlayer(12)),
   state(FREE), facing_entity(NULL), counter(0), next_counter_date(0),
   walking(false), pushing_direction_mask(0xFFFF),
   lifted_item(NULL), thrown_item(NULL), treasure(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
-  set_movement(new Movement8ByPlayer(12));
+  set_movement(player_movement);
   rebuild_equipment();
 }
 
@@ -77,11 +78,12 @@ bool Link::is_hero(void) {
 }
 
 /**
- * Returns Link's movement.
- * @return Link's movement
+ * Returns the 8-directions movement controlled by the player,
+ * even if it is not the current movement of Link.
+ * @return the player's movement
  */
-Movement8ByPlayer * Link::get_movement(void) {
-  return (Movement8ByPlayer*) movement;
+Movement8ByPlayer * Link::get_player_movement(void) {
+  return player_movement;
 }
 
 /**
@@ -91,7 +93,7 @@ Movement8ByPlayer * Link::get_movement(void) {
  */
 int Link::get_movement_direction(void) {
 
-  return get_movement()->get_direction();
+  return get_player_movement()->get_direction();
 }
 
 /**
@@ -142,7 +144,7 @@ void Link::set_map(Map *map) {
 
   MapEntity::set_map(map);
 
-  get_movement()->set_map(map);
+  get_player_movement()->set_map(map);
   
   stop_displaying_sword();
 
@@ -219,7 +221,7 @@ void Link::update(void) {
 
   // update the movement
   if (!zsdx->game->is_suspended()) {
-    get_movement()->set_moving_enabled(get_state() <= SWIMMING);
+    get_player_movement()->set_moving_enabled(get_state() <= SWIMMING);
     
     // specific updates in some states
     switch (state) {
@@ -341,7 +343,7 @@ void Link::rebuild_equipment(void) {
 
   // animation walking or stopped
   set_state(FREE);
-  if (get_movement()->is_started()) {
+  if (get_player_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -360,7 +362,7 @@ void Link::movement_just_changed(void) {
   int direction = get_direction();
   if (direction != -1) {
 
-    Uint16 direction_mask = get_movement()->get_direction_mask();
+    Uint16 direction_mask = get_player_movement()->get_direction_mask();
     int old_animation_direction = tunic_sprite->get_current_direction();
     int animation_direction = animation_directions[direction_mask];
       
@@ -375,11 +377,11 @@ void Link::movement_just_changed(void) {
   }
 
   // show the animation corresponding to the movement tried by the player
-  if (get_movement()->is_moving_enabled()) {
+  if (get_player_movement()->is_moving_enabled()) {
     // the player can move
     string animation = tunic_sprite->get_current_animation();
 
-    bool started = get_movement()->is_started();
+    bool started = get_player_movement()->is_started();
 
     // stopped to walking
     if (started && !walking) {
@@ -459,12 +461,12 @@ void Link::update_position(void) {
     old_y = get_y();
 
     // try to move Link
-    movement->update();
+    get_movement()->update();
   }
   
   // the rest of the function handles the "pushing" animation
 
-  Uint16 direction_mask = get_movement()->get_direction_mask();
+  Uint16 direction_mask = get_player_movement()->get_direction_mask();
 
   if (state == FREE && move_tried) {
     // Link is trying to move with animation "walking"

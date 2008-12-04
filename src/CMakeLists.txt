@@ -110,6 +110,7 @@ add_executable (zsdx
   movements/FollowMovement.cpp
   movements/ThrownItemMovement.cpp
   movements/TargetMovement.cpp
+  movements/JumpMovement.cpp
 
 )
 

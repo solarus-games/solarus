@@ -130,5 +130,6 @@ class FairyMovement;
 class FollowMovement;
 class ThrownItemMovement;
 class TargetMovement;
+class JumpMovement;
 
 #endif

@@ -52,14 +52,15 @@ class PathMovement: public Movement {
 
  protected:
 
+  void set_translation_vectors(const SDL_Rect *translation_vectors);
   void update_x(void);
-
 
  public:
 
+  PathMovement(int nb_vectors, Uint32 delay, bool loop);
   PathMovement(const SDL_Rect *translation_vectors, int nb_vectors, 
 	       Uint32 delay, bool loop);
-  ~PathMovement(void);
+  virtual ~PathMovement(void);
 
   bool is_finished(void);
 

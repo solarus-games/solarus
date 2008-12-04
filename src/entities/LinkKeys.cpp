@@ -109,6 +109,8 @@ void Link::action_key_pressed(void) {
     if (is_facing_obstacle()) {
       start_grabbing();
     }
+    // TODO temporary
+    else start_jumping(6, 48);
     break;
   }
 }

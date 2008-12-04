@@ -33,7 +33,8 @@ class Link: public MapEntity, AnimationListener {
     SPIN_ATTACK,             /**< Link is releasing a spin attack */
     LIFTING,                 /**< Link is lifting an destroyable item (a pot, a bush, etc.) */
     BRANDISHING_TREASURE,    /**< Link is brandishing a treasure */
-    FREEZED,                 /**< Link cannot move for various possible reasons*/
+    JUMPING,                 /**< Link is jumping */
+    FREEZED,                 /**< Link cannot move for various possible reasons */
   };
 
  private:
@@ -124,6 +125,8 @@ class Link: public MapEntity, AnimationListener {
 
   void update_treasure(void);
   void display_treasure(void);
+
+  void update_jumping(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);

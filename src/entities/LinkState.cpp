@@ -408,6 +408,21 @@ void Link::start_spin_attack(void) {
  */
 void Link::start_jumping(int direction, int length) {
   set_movement(new JumpMovement(direction, length));
+  set_state(JUMPING);
+}
+
+/**
+ * Updates the jump action.
+ */
+void Link::update_jumping(void) {
+
+  JumpMovement *movement = (JumpMovement*) get_movement();
+  movement->update();
+  if (movement->is_finished()) {
+    delete movement;
+    set_movement(player_movement);
+    start_free();
+  }
 }
 
 /**

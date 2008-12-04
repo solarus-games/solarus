@@ -235,6 +235,10 @@ void Link::update(void) {
       update_grabbing_pulling();
       break;
 
+    case JUMPING:
+      update_jumping();
+      break;
+
     default:
       break;
     }

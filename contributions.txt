@@ -20,6 +20,7 @@ Newlink + Yoshi04 (boss brute initialement prévu pour Spherdon's Crystals)
 SaniOkh (testera et donnerait des idées, cf MP)
 Mooglwy (version Mac)
 Mymy (edelweiss, maps)
+Neovyze (artworks, notice)
 
 Algo Scale2X
 

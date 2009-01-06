@@ -7,7 +7,7 @@
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
 - Joystick : tester le hat
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
-- 
+- Artwork de Link par Neovyze
 - sword_tunic0.png et sword_tunic1.png : décalage de 1 pixel
 
 - Bugs: 

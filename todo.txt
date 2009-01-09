@@ -54,6 +54,27 @@ Dans la classe Link, mettre une info qui dit ce qui est affiché sous Link (cela
 Dans le update() de Link, tester en permanence si l'origine de Link est sur de l'herbe, tout comme on teste en permanence si le facing point est sur un objet qui y réagit.
 
 
+----------------
+Archivage des fichiers de données
+----------------
+
+But : mettre tous les fichiers de données dans un fichier zip, et lire ces fichiers en les décompressant en mémoire et non sur le disque
+
+Utiliser la bibliothèque ZZipLib (http://zziplib.sourceforge.net/zzip-sdl-rwops.html) pour ouvrir les fichiers de manière transparente avec le même chemin d'accès, qu'ils soient placés dans un répertoire ou dans une archive zip. Seule différence : il faut utiliser zzip_open à la place de open et zzip_fopen à la place de fopen.
+Faire un objet SDL_RWops (en utilisant ou en s'inspirant de celui de lib) qui ouvre un fichier avec zzip, ce sera utilisable pour ouvrir les images SDL et les fichiers ini pour SDL_Config. Pour FMOD, décompresser le fichier dans une zone mémoire et utiliser les fonctions de FMOD permettant de lire un flux en mémoire au lieu de depuis un fichier. Pour les tilesets, maps et autres, utiliser std::ifstream au lieu de std::istringstream après avoir chargé le texte en mémoire. Ceci peut être abstrait en demandant au ResourceManager de renvoyer un std::istream !
+
+Pas de cryptage mais
+- nommer le fichier zip avec une autre extension (spécifiée à la bibliothèque avec les fonctions _ext_io)
+- éventuellement utiliser l'obfuscation style xor de la bibliothèque (très simple mais le but est juste d'empêcher de voir directement les fichiers)
+- éventuellement à l'ouverture du jeu, vérifier le checksum du fichier zip pour s'assurer qu'il n'a pas été modifié
+
+--------------
+Mode release :
+--------------
+
+- Ne plus afficher les messages d'erreur
+- Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence
+
 ----------------------
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)

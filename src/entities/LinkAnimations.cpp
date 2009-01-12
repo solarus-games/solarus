@@ -53,6 +53,49 @@ const SoundId Link::sword_sound_ids[4] = {
 };
 
 /**
+ * Returns whether Link's sword is currently displayed on the screen.
+ * @return true if Link's sword is currently displayed on the screen
+ */
+bool Link::is_sword_visible(void) {
+  return equipment->has_sword() && sword_sprite != NULL && sword_sprite->is_animation_started();
+}
+
+/**
+ * Returns whether the stars of Link's sword are currently displayed on the screen.
+ * @return true if the stars of Link's sword are currently displayed on the screen
+ */
+bool Link::is_sword_stars_visible(void) {
+  return equipment->has_sword() && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
+}
+
+/**
+ * Returns whether Link's shield is currently displayed on the screen.
+ * @return true if Link's shield is currently displayed on the screen
+ */
+bool Link::is_shield_visible(void) {
+  return equipment->has_shield() && shield_sprite != NULL && shield_sprite->is_animation_started();
+}
+
+/**
+ * Returns whether Link's shadow is currently displayed, separated from the tunic sprite.
+ * @return true if Link's shield is currently displayed, separated from the tunic sprite
+ */
+bool Link::is_shadow_visible(void) {
+  return get_state() == JUMPING;
+}
+
+/**
+ * Stops displaying Link's sword (if any).
+ */
+void Link::stop_displaying_sword(void) {
+
+  if (is_sword_visible()) {
+    sword_sprite->stop_animation();
+    sword_stars_sprite->stop_animation();
+  }
+}
+
+/**
  * Returns the direction of Link's sprites.
  * It is different from the movement direction.
  * @return the direction of Link's sprites (0 to 3)
@@ -345,6 +388,19 @@ void Link::set_animation_lifting(void) {
   tunic_sprite->set_current_animation("lifting");
 
   // the shield is not visible when Link is lifting
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+}
+
+/**
+ * Starts the "jumping" animation of Link's sprites.
+ * Link's state should be JUMPING.
+ */
+void Link::set_animation_jumping(void) {
+  tunic_sprite->set_current_animation("jumping");
+
+  // the shield is not visible when Link is jumping
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }

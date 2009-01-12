@@ -39,7 +39,7 @@ Game::Game(Savegame *savegame):
 
   // initialize Link
   link = new Link(get_equipment());
-  link_movement = link->get_player_movement();
+  link_movement = link->get_normal_movement();
 
   // initialize the keys effect and the HUD
   keys_effect = new KeysEffect();

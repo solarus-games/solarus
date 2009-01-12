@@ -109,8 +109,6 @@ void Link::action_key_pressed(void) {
     if (is_facing_obstacle()) {
       start_grabbing();
     }
-    // TODO temporary
-    else start_jumping(6, 48);
     break;
   }
 }
@@ -133,7 +131,7 @@ void Link::sword_key_pressed(void) {
 void Link::arrow_pressed(int direction) {
 
   // notify the movement
-  get_player_movement()->add_direction(direction);
+  get_normal_movement()->add_direction(direction);
 
   // grabbing or pulling
   if (state == GRABBING) {
@@ -152,7 +150,7 @@ void Link::arrow_pressed(int direction) {
 void Link::arrow_released(int direction) {
 
   // notify the movement
-  get_player_movement()->remove_direction(direction);
+  get_normal_movement()->remove_direction(direction);
 
   // grabbing or pulling
   if (state == PULLING) {

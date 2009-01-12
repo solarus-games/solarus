@@ -13,12 +13,17 @@ class JumpMovement: public PathMovement {
 
   static const SDL_Rect basic_translations[8];
   SDL_Rect *translation_vectors;
+  int jump_height;
+
+ protected:
+  void make_next_move(void);
 
  public:
 
   JumpMovement(int direction, int length);
   ~JumpMovement(void);
 
+  int get_jump_height(void);
 };
 
 #endif

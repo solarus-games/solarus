@@ -27,7 +27,7 @@ Link::State Link::get_state(void) {
  */
 void Link::set_state(State state) {
   this->state = state;
-  get_player_movement()->set_moving_enabled(state <= SWIMMING);
+  get_normal_movement()->set_moving_enabled(state <= SWIMMING);
 }
 
 /**
@@ -37,9 +37,9 @@ void Link::set_state(State state) {
 void Link::start_free(void) {
   set_state(FREE);
 
-  get_player_movement()->compute_movement();
+  get_normal_movement()->compute_movement();
   
-  if (get_player_movement()->is_started()) {
+  if (get_normal_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -108,7 +108,7 @@ void Link::start_sword_loading(void) {
   counter = 0;
   next_counter_date = SDL_GetTicks();
 
-  if (get_player_movement()->is_started()) {
+  if (get_normal_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -175,7 +175,7 @@ void Link::start_lifting(DestructibleItem *item_to_lift) {
 void Link::start_carrying(void) {
   set_state(CARRYING);
 
-  if (get_player_movement()->is_started()) {
+  if (get_normal_movement()->is_started()) {
     set_animation_walking();
   }
   else {
@@ -313,7 +313,7 @@ void Link::update_grabbing_pulling(void) {
  * The current animation of Link's sprites is stopped and the "stopped" animation is played.
  */
 void Link::freeze(void) {
-  get_player_movement()->set_moving_enabled(false);
+  get_normal_movement()->set_moving_enabled(false);
   set_animation_stopped();
   set_state(FREEZED);
 }
@@ -403,12 +403,14 @@ void Link::start_spin_attack(void) {
 /**
  * Makes Link jump in a direction.
  * While he is jumping, the player does not control him anymore.
- * @param direction direction of the jump
- * @param length length of the jump
+ * @param direction direction of the jump (0 to 7)
+ * @param length length of the jump in pixels
  */
 void Link::start_jumping(int direction, int length) {
   set_movement(new JumpMovement(direction, length));
   set_state(JUMPING);
+  set_animation_jumping();
+  ResourceManager::get_sound("jump")->play();
 }
 
 /**
@@ -418,45 +420,11 @@ void Link::update_jumping(void) {
 
   JumpMovement *movement = (JumpMovement*) get_movement();
   movement->update();
+  jump_y = get_y() - movement->get_jump_height();
   if (movement->is_finished()) {
     delete movement;
-    set_movement(player_movement);
+    set_movement(normal_movement);
     start_free();
-  }
-}
-
-/**
- * Returns whether Link's sword is currently displayed on the screen.
- * @return true if Link's sword is currently displayed on the screen
- */
-bool Link::is_sword_visible(void) {
-  return equipment->has_sword() && sword_sprite != NULL && sword_sprite->is_animation_started();
-}
-
-/**
- * Returns whether the stars of Link's sword are currently displayed on the screen.
- * @return true if the stars of Link's sword are currently displayed on the screen
- */
-bool Link::is_sword_stars_visible(void) {
-  return equipment->has_sword() && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
-}
-
-/**
- * Returns whether Link's shield is currently displayed on the screen.
- * @return true if Link's shield is currently displayed on the screen
- */
-bool Link::is_shield_visible(void) {
-  return equipment->has_shield() && shield_sprite != NULL && shield_sprite->is_animation_started();
-}
-
-/**
- * Stops displaying Link's sword (if any).
- */
-void Link::stop_displaying_sword(void) {
-
-  if (is_sword_visible()) {
-    sword_sprite->stop_animation();
-    sword_stars_sprite->stop_animation();
   }
 }
 

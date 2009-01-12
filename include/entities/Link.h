@@ -42,11 +42,12 @@ class Link: public MapEntity, AnimationListener {
   // equipment of the player
   Equipment *equipment;
 
-  // Link's sprites
+  // Link's sprites and sounds
   Sprite *tunic_sprite;
   Sprite *sword_sprite;
   Sprite *sword_stars_sprite;
   Sprite *shield_sprite;
+  Sprite *shadow_sprite; /**< only in state JUMPING (in other states, the shadow is with the tunic sprite) */
   Sound *sword_sound;
 
   static const SpriteAnimationSetId tunic_sprite_ids[];
@@ -56,7 +57,7 @@ class Link: public MapEntity, AnimationListener {
   static const SoundId sword_sound_ids[];
 
   // movement
-  Movement8ByPlayer *player_movement;
+  Movement8ByPlayer *normal_movement;
 
   /**
    * Current state of Link.
@@ -82,10 +83,10 @@ class Link: public MapEntity, AnimationListener {
 
   // pushing
   Uint16 pushing_direction_mask; // direction of Link's movement when pushing
-                                 // 0xFFFF indicates that he is not trying to push
+                                 // 0xFFFF indicates that he is currently not trying to push
 
   // spin attack
-  bool sword_loaded; // in state SWORD_LOADING, becomes true when the spin attack is possible
+  bool sword_loaded; // in state SWORD_LOADING, becomes true when the spin attack gets possible
 
   // lift and carry an object
   CarriedItem *lifted_item; // item being lifted or carried
@@ -93,6 +94,9 @@ class Link: public MapEntity, AnimationListener {
 
   // brandish a treasure
   Treasure *treasure; // the treasure being brandished
+
+  // jump
+  int jump_y;
 
   // update functions
   void update_position(void);
@@ -139,9 +143,15 @@ class Link: public MapEntity, AnimationListener {
   void set_animation_pulling(void);
   void set_animation_pushing(void);
   void set_animation_lifting(void);
+  void set_animation_jumping(void);
 
   void save_animation_direction(void);
   void restore_animation_direction(void);
+
+  bool is_sword_visible(void);
+  bool is_sword_stars_visible(void);
+  bool is_shield_visible(void);
+  bool is_shadow_visible(void);
 
  public:
 
@@ -153,7 +163,7 @@ class Link: public MapEntity, AnimationListener {
   bool is_hero(void);
 
   // movement
-  Movement8ByPlayer * get_player_movement(void);
+  Movement8ByPlayer * get_normal_movement(void);
   int get_movement_direction(void);
   SDL_Rect get_facing_point(void);
   void just_moved(void);
@@ -171,9 +181,6 @@ class Link: public MapEntity, AnimationListener {
   void set_suspended(bool suspended);
 
   void rebuild_equipment(void);
-  bool is_sword_visible(void);
-  bool is_sword_stars_visible(void);
-  bool is_shield_visible(void);
 
   void restart_animation(void);
   void animation_over(Sprite *sprite);

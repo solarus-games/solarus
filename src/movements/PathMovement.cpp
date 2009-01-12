@@ -54,19 +54,42 @@ void PathMovement::update_x(void) {
   Uint32 now = SDL_GetTicks();
 
   while (now >= next_move_date_x && !path_ended) {
-    translate(translation_vectors[vector_index].x, translation_vectors[vector_index].y);
-    next_move_date_x += delay;
+    make_next_move();
+  }
+}
 
-    vector_index++;
-    if (vector_index >= nb_vectors) {
-      if (loop) {
-	vector_index = 0;
-      }
-      else {
-	path_ended = true;
-      }
+/**
+ * Makes a move in the path.
+ */
+void PathMovement::make_next_move(void) {
+  translate(translation_vectors[vector_index].x, translation_vectors[vector_index].y);
+  next_move_date_x += delay;
+
+  vector_index++;
+  if (vector_index >= nb_vectors) {
+    if (loop) {
+      vector_index = 0;
+    }
+    else {
+      path_ended = true;
     }
   }
+}
+
+/**
+ * Returns the total number of moves in this path.
+ * @return the total number of moves in this path
+ */
+int PathMovement::get_length(void) {
+  return nb_vectors;
+}
+
+/**
+ * Returns the current iteration number.
+ * @return the current iteration number of the movement
+ */
+int PathMovement::get_vector_index(void) {
+  return vector_index;
 }
 
 /**

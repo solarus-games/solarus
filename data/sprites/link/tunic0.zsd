@@ -84,3 +84,9 @@ carrying_walking link/carrying.png 4 100 0
 
 brandish link/various_animations.png 1 0 -1
 0	0	16	24	8	21	1	1
+
+jumping link/jumping.png 4 0 -1
+0	0	24	24	12	21	1	1
+24	0	24	24	12	21	1	1
+48	0	24	24	12	21	1	1
+72	0	24	24	12	21	1	1

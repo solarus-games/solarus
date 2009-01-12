@@ -54,6 +54,9 @@ class PathMovement: public Movement {
 
   void set_translation_vectors(const SDL_Rect *translation_vectors);
   void update_x(void);
+  virtual void make_next_move(void);
+  int get_vector_index(void);
+  int get_length(void);
 
  public:
 

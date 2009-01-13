@@ -56,6 +56,13 @@ public class AddEntitiesMenu extends JMenu {
 	item.getAccessibleContext().setAccessibleDescription("Add a chest");
 	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_CHEST));
 	add(item);
+
+	// jump sensor
+	item = new JMenuItem("Jump sensor");
+	item.setMnemonic(KeyEvent.VK_J);
+	item.getAccessibleContext().setAccessibleDescription("Add a jump sensor");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_JUMP_SENSOR));
+	add(item);
     }
 
     /**

@@ -25,7 +25,7 @@ public class Chest extends ActiveEntity {
     private TreasureContent content;
     private int amount;
     private int savegameIndex;
-    
+
     /**
      * Creates a new chest at the specified location with some default properties.
      * @param map the map
@@ -51,13 +51,13 @@ public class Chest extends ActiveEntity {
      */
     public Chest(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	super(map, tokenizer);
-	
+
 	try {
 	    this.bigChest = (Integer.parseInt(tokenizer.nextToken()) != 0);
 	    this.content = TreasureContent.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.amount = Integer.parseInt(tokenizer.nextToken());
 	    this.savegameIndex = Integer.parseInt(tokenizer.nextToken());
-	    
+
 	    if (bigChest) {
 		setSizeImpl(32, 24);
 	    }

@@ -18,6 +18,7 @@ public class AddEntitiesToolbar extends JComponent {
 	{0}, // pickable item
 	{DestructibleItem.GRASS, DestructibleItem.BUSH, DestructibleItem.POT}, // destructible item
 	{0}, // chest
+	{0}, // jump sensor
     };
 
     /**

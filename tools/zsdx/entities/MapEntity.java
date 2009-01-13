@@ -1,7 +1,6 @@
 package zsdx.entities;
 
 import java.awt.*;
-import java.awt.image.*;
 import java.lang.reflect.*;
 import java.util.*;
 import zsdx.*;
@@ -11,7 +10,7 @@ import zsdx.Map;
  * Represents an entity placed on the map with the map editor,
  * and how the entity is placed on the map: its position and its layer.
  * 
- * To create a new kind of entity, you should make the following steps:
+ * To create a new kind of entity, you should do the following steps:
  * - Add a public static integer field in MapEntity to identify your new type of entity.
  * - Add your class in the MapEntity.entityClasses array.
  * - Create a field in your class to declare the entity name:
@@ -36,13 +35,13 @@ import zsdx.Map;
  *     - public boolean hasName(): indicates whether the entity has a 
  *         name field, i.e. if it is identifiable (default is false)
  *     - public boolean isResizable(): indicates whether the entity can
- *         be resized (default is false). If the entity is resizable, you should
- *         also redefine the getUnitSize() method.
+ *         be resized (default is false). If the entity is resizable, you can
+ *         also redefine the getUnitarySize() method (default is 8*8).
  * - Redefine the getOrigin() method: public Point getOrigin()
  *     if the origin is not the top-left corner of the entity.
  * - Redefine the isValid() method: public boolean isValid()
  *     to check the validity of the fields (don't forget to call super.isValid()).    
- * - Define the static generalImageDescription field:
+ * - Define the static generalImageDescriptions field:
  *     public static final EntityImageDescription[] generalImageDescriptions
  *     to define one or more default 16*16 images representing this kind of entity.
  *     These 16*16 images will be used to build the toolbar to add entities on the map.
@@ -134,7 +133,8 @@ public abstract class MapEntity extends Observable {
     public static final int ENTITY_PICKABLE_ITEM = 3;
     public static final int ENTITY_DESTRUCTIBLE_ITEM = 4;
     public static final int ENTITY_CHEST = 5;
-    public static final int ENTITY_NB_TYPES = 6;
+    public static final int ENTITY_JUMP_SENSOR = 6;
+    public static final int ENTITY_NB_TYPES = 7;
 
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {
@@ -143,7 +143,8 @@ public abstract class MapEntity extends Observable {
 	Teletransporter.class,
 	PickableItem.class,
 	DestructibleItem.class,
-	Chest.class
+	Chest.class,
+	JumpSensor.class
     };
 
     /**

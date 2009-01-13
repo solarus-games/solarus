@@ -147,6 +147,7 @@ public class Project {
     public static Resource getResource(int resourceType) {
 	return getResourceDatabase().getResource(resourceType);
     }
+
     /**
      * Returns the root path of the current project.
      * @return the root path

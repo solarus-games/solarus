@@ -98,8 +98,10 @@ class MapEntities {
 
   // add and remove entities
   void add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height);
+
   void add_destination_point(string destination_point_name, MapEntity::Layer layer,
 			     int link_x, int link_y, int link_direction, bool is_visible);
+
   void add_teletransporter(string teletransporter_name, MapEntity::Layer layer, int x, int y, int w, int h,
 			   Teletransporter::Subtype subtype, Transition::Style transition_style,
 			   MapId map_id, string destination_point_name);
@@ -115,6 +117,9 @@ class MapEntities {
   void add_chest(string chest_name, MapEntity::Layer layer, int x, int y,
 		 bool big_chest, int treasure_content,
 		 int treasure_amount, int treasure_savegame_variable);
+
+  void add_jump_sensor(string name, MapEntity::Layer layer,
+		       int x, int y, int width, int height, int direction, int jump_length);
 
   void remove_marked_entities(void);
 

@@ -30,11 +30,9 @@ Ensuite, chaque ligne du fichier décrit une entité de la map.
 0	2	368	72	144	1	1
 1	0	128	216	MainEntrance	1
 
-
 Syntaxe de la ligne d''une entité (les éléments entre crochets n'existent que pour certains types d'entité) :
 
 entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	specific_info
-
 
 Le premier nombre indique de quel type d'entité il s'agit : un tile, une entrée de la map, un ennemi, un coffre...
 
@@ -53,6 +51,7 @@ Pour finir, on a la taille de l'entité (seulement pour une entité de taille va
 Le reste de la ligne contient des informations spécifiques selon le type d'entité.
 Pour le moment, les types d'entités suivants sont gérés : les tiles, les entrées et les sorties de la map, les objets ramassables, les objets destructibles et les coffres.
 
+
 Tiles (0)
 
 Un tile n'a pas de direction. Il n'a pas non plus d'identificateur (ce qui signifie qu'il est impossible de modifier/supprimer/ajouter un tile au cours de l'exécution).
@@ -62,10 +61,10 @@ Syntaxe de la partie spécifique pour un tile :
 
 tile_id
 
-
 tile_id est le numéro du tile dans son tileset, tel que défini dans le fichier du tileset.
 
 Notez que les tiles d'une même couche peuvent se chevaucher, comme dans TGF / MMF, et contrairement à RPG Maker. Les tiles sont placés sur la map dans l'ordre où ils apparaissent dans le fichier, c'est-à-dire que si deux tiles d'une même couche se chevauchent, c'est celui qui apparaît en dernier dans le fichier qui sera placé au-dessus.
+
 
 Point de destination (1)
 
@@ -78,6 +77,7 @@ Syntaxe de la partie spécifique d'une destination :
 is_visible
 
 is_visible est un booléen (0 ou 1) indiquant si la destination est visible ou non. Si elle est visible, elle s'affiche sous la forme d'une arrivée de téléporteur classique.
+
 
 Téléporteur (2)
 
@@ -100,6 +100,7 @@ transition est un numéro indiquant le type de transition entre les deux maps.
 destination_map est le numéro de la map sur laquelle le joueur est envoyé (éventuellement la même map).
 destination_point est le nom du point des destination sur lequel le joueur est placé sur la map de destination, ou la valeur spéciale "_side", ou la valeur spéciale "_same". "_side" indique que Link est envoyé sur un côté de la map, déterminé automatiquement à partir de la direction du mouvement de Link au moment où il touche le téléporteur (l'une de ses deux coordonnées n'est pas modifiée. "_same" indique que la position de Link sur la map de destination est inchangée par rapport à la map précédente (c'est utile pour certains trous).
 
+
 Objets ramassables (3)
 
 Les objets ramassables sont ceux que l'on obtient habituellement en tuant des ennemis ou en soulevent des buissons : coeurs, rubis, bombes, fées, etc. Ici, on parle d'un objet ramassable placé directement sur la map (par exemple une clé qui ne serait pas dans un coffre, ou une salle contenant des fées ou plein de rubis)
@@ -108,7 +109,6 @@ Un objet ramassable n'a pas de direction, pas d'identificateur et sa taille est 
 Syntaxe de la partie spécifique pour un objet ramassable :
 
 pickable_item_type	savegame_variable
-
 
 On a donc deux champs supplémentaire. pickable_item_type, qui est un numéro indiquant le type d'objet ramassable :
 
@@ -137,6 +137,7 @@ On peut ainsi spécifier -1 pour rendre le choix aléatoire (c'est le cas la plu
 
 savegame_variable est un numéro utilisé pour les items qu'on ne peut obtenir qu'une fois dans le jeu et qui sont sauvegardés, comme les clés, les quarts de coeur, etc. Il permet d'identifier la variable dans la sauvegarde indiquant si le joueur a déjà obtenu cet item ou non. Si c'est un item classique (non sauvegardé), ce numéro est -1.
 
+
 Objets destructibles (4)
 
 Les objets destructibles sont ceux qui peuvent cacher des objets ramassables et que l'on peut soit soulever, porter et lancer, soit couper avec l'épée, soit les deux.
@@ -159,6 +160,7 @@ Certains de ces objets peuvent être soulevés uniquement à l'aide d'un objet p
 
 pickable_item est un numéro indiquant un éventuel item (coeur, rubis...) qui apparaît lorsque l'on soulève cet objet. La liste des numéros est donnée dans le paragraphe précédent. Comme précédemment, savegame_variable est un numéro optionnel qui permet de sauvegarder le fait que le joueur possède un item que l'on ne peut obtenir qu'une seule fois.
 
+
 Coffres (5)
 
 Un coffre n'a pas de direction.
@@ -168,8 +170,21 @@ Syntaxe de la partie spécifique pour un coffre :
 
 is_big_chest	treasure_content	treasure_amount	treasure_savegame_index
 
-
 is_big_chest est un booléen (0 ou 1) indiquant s'il s'agit d'un grand coffe (1) ou d'un coffre normal (0).
 treasure_content est un numéro qui indique le trésor contenu du coffre. Il existe plus de 70 trésors possibles (rubis, objets de l'inventaire, équipement, objets de donjons...). Leurs numéros sont donnés dans le fichier include/Treasure.h. On peut mettre -1 pour faire un coffre vide.
 treasure_amount donne la quantité de ce trésor dans le coffre. Cette valeur est utile seulement pour certains types de trésors : rubis, flèches, bombes, croissants... Elle est ignorée pour les autres trésors.
 treasure_savegame_index identifie le booléen qui sauvegarde l'état du coffre. On peut mettre -1 pour que le coffre ne soit pas sauvegardé.
+
+
+Capteur de saut (6)
+
+Un capteur de saut (jump sensor) est un capteur invisible qui fait sauter Link d'une certaine longueur, dans une direction qui dépend de la forme du capteur. Lors du saut, Link ne peut plus être contrôlé et il est insensible aux obstacles.
+
+Un capteur a une propriété de direction, de 0 à 7, qui indique à la fois la forme du capteur et la direction du saut.
+Un capteur a un identificateur.
+
+Syntaxe de la partie spécifique pour un capteur de saut :
+
+jump_length
+
+jump_length est la longueur du saut en pixels. Il faut s'assurer que cette longueur de saut ne fasse pas atterrir le joueur dans un mur.

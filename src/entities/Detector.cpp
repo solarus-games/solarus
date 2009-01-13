@@ -7,7 +7,7 @@
 
 /**
  * Constructor.
- * @param collision_mode the detector's collision mode(s)
+ * @param collision_modes the detector's collision mode(s)
  * @param name a name identifying the detector (or an empty string if you
  * don't need to identify the detector)
  * @param layer layer of the detector
@@ -16,11 +16,11 @@
  * @param width width of the detector's rectangle
  * @param height height of the detector's rectangle
  */
-Detector::Detector(int collision_mode,
+Detector::Detector(int collision_modes,
 		   string name, MapEntity::Layer layer,
 		   int x, int y, int width, int height):
   MapEntity(name, 0, layer, x, y, width, height),
-  collision_mode(collision_mode), layer_ignored(false) {
+  collision_modes(collision_modes), layer_ignored(false) {
 
 }
 
@@ -32,17 +32,17 @@ Detector::~Detector(void) {
 }
 
 /**
- * Sets the collision mode of this detector.
- * The collision mode can be an OR combination of collision modes.
- * @param collision_mode the detector's collision mode
+ * Sets the collision modes of this detector.
+ * @param collision_modes the detector's collision modes
+ * (can be an OR combination of collision modes)
  */
-void Detector::set_collision_mode(int collision_mode) {
+void Detector::set_collision_modes(int collision_modes) {
 
-  if (collision_mode & COLLISION_SPRITE) {
+  if (collision_modes & COLLISION_SPRITE) {
     get_sprite(0)->get_animation_set()->enable_pixel_collisions();
   }
 
-  this->collision_mode = collision_mode;
+  this->collision_modes = collision_modes;
 }
 
 /**
@@ -51,7 +51,16 @@ void Detector::set_collision_mode(int collision_mode) {
  */
 void Detector::add_collision_mode(CollisionMode collision_mode) {
 
-  set_collision_mode(this->collision_mode | collision_mode);
+  set_collision_modes(this->collision_modes | collision_mode);
+}
+
+/**
+ * Returns whether the detector's collision modes includes
+ * the specified collision mode.
+ * @param collision_mode a collision mode
+ */
+bool Detector::has_collision_mode(CollisionMode collision_mode) {
+  return (this->collision_modes & collision_mode) != 0;
 }
 
 /**
@@ -79,16 +88,20 @@ void Detector::check_collision(MapEntity *entity) {
   
     // detect the collision depending on the collision mode
     
-    if (collision_mode & COLLISION_RECTANGLE) {
-      check_collision_rectangle(entity);
+    if (has_collision_mode(COLLISION_RECTANGLE) && check_collision_rectangle(entity)) {
+      collision(entity, COLLISION_RECTANGLE);
     }
 
-    if (collision_mode & COLLISION_ORIGIN_POINT) {
-      check_collision_origin_point(entity);
+    if (has_collision_mode(COLLISION_ORIGIN_POINT) && check_collision_origin_point(entity)) {
+      collision(entity, COLLISION_ORIGIN_POINT);
     }
 
-    if (collision_mode & COLLISION_FACING_POINT) {
-      check_collision_facing_point(entity);
+    if (has_collision_mode(COLLISION_FACING_POINT) && check_collision_facing_point(entity)) {
+      collision(entity, COLLISION_FACING_POINT);
+    }
+
+    if (has_collision_mode(COLLISION_CUSTOM) && check_collision_custom(entity)) {
+      collision(entity, COLLISION_CUSTOM);
     }
   }
 }
@@ -98,11 +111,12 @@ void Detector::check_collision(MapEntity *entity) {
  * Depending on the detector collision mode(s), the appropriate check_collision_*
  * functions are called.
  * If there is a collision, the collision(MapEntity*, Sprite*) method is called.
- * @param sprite the sprite to check
+ * @param entity the entity to check
+ * @param sprite the sprite of that entity
  */
 void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
 
-  if ((collision_mode & COLLISION_SPRITE)
+  if (has_collision_mode(COLLISION_SPRITE)
       && entity != this
       && (layer_ignored || get_layer() == entity->get_layer())
       && sprite->get_animation_set()->are_pixel_collisions_enabled()
@@ -119,13 +133,9 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
  * @param entity the entity
  * @return true if the entity's rectangle is overlapping the detector's rectangle
  */
-void Detector::check_collision_rectangle(MapEntity *entity) {
+bool Detector::check_collision_rectangle(MapEntity *entity) {
 
-  if (entity->overlaps(get_position_in_map())) {
-
-    // notify the detector
-    collision(entity, COLLISION_RECTANGLE);
-  }
+  return entity->overlaps(get_position_in_map());
 }
 
 /**
@@ -135,13 +145,9 @@ void Detector::check_collision_rectangle(MapEntity *entity) {
  * @param entity the entity
  * @return true if the entity's origin point is overlapping the detector's rectangle
  */
-void Detector::check_collision_origin_point(MapEntity *entity) {
+bool Detector::check_collision_origin_point(MapEntity *entity) {
 
-  if (entity->is_origin_point_in(get_position_in_map())) {
-
-    // notify the detector
-    collision(entity, COLLISION_ORIGIN_POINT);
-  }
+  return entity->is_origin_point_in(get_position_in_map());
 }
 
 /**
@@ -151,13 +157,22 @@ void Detector::check_collision_origin_point(MapEntity *entity) {
  * @param entity the entity
  * @return true if the entity's facing point is overlapping the detector's rectangle
  */
-void Detector::check_collision_facing_point(MapEntity *entity) {
+bool Detector::check_collision_facing_point(MapEntity *entity) {
 
-  if (entity->is_facing_point_in(get_position_in_map())) {
+  return entity->is_facing_point_in(get_position_in_map());
+}
 
-    entity->set_facing_entity(this);
-    collision(entity, COLLISION_FACING_POINT);
-  }
+/**
+ * Checks whether an entity's collides with this detector with respect to a custom rule.
+ * This method is called by check_collision(MapEntity*) when the detector's collision
+ * mode is COLLISION_CUSTOM.
+ * Redefine it if you want to use this collision mode.
+ * @param entity the entity
+ * @return true if the entity's collides with this detector with respect to the custom rule
+ */
+bool Detector::check_collision_custom(MapEntity *entity) {
+
+  DIE("Custom collision mode invoked but not defined");
 }
 
 /**

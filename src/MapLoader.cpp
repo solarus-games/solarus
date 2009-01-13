@@ -143,6 +143,15 @@ void MapLoader::load_map(Map *map) {
 	break;
       }
 
+    case MapEntity::JUMP_SENSOR:
+      {
+	int jump_length;
+	iss >> width >> height >> entity_name >> direction >> jump_length;
+	entities->add_jump_sensor(entity_name, (MapEntity::Layer) layer, x, y,
+				  width, height, direction, jump_length);
+	break;
+      }
+
     default:
       DIE("Error while loading map '" << id << "': unknown entity type '" << entity_type << "'");
 

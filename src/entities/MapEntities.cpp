@@ -8,6 +8,7 @@
 #include "entities/DestinationPoint.h"
 #include "entities/Link.h"
 #include "entities/Chest.h"
+#include "entities/JumpSensor.h"
 #include "Treasure.h"
 #include "Map.h"
 #include "ZSDX.h"
@@ -429,6 +430,27 @@ void MapEntities::add_chest(string chest_name, MapEntity::Layer layer, int x, in
   detectors.push_back(chest);
   obstacle_entities[layer].push_back(chest);
   add_entity(chest);
+}
+
+/**
+ * Creates a jump sensor on the map.
+ * This function is called for each jump sensor when loading the map.
+ * @param name a string identifying this new jump sensor
+ * @param layer the layer of this sensor
+ * @param x x position of the jump sensor to create
+ * @param y y position of the jump sensor to create
+ * @param width width of the jump sensor to create
+ * @param height height of the jump sensor to create
+ * @param direction direction of the jump (0 to 7)
+ * @param jump length length of the jump in pixels
+ */
+void MapEntities::add_jump_sensor(string name, MapEntity::Layer layer,
+				  int x, int y, int width, int height, int direction, int jump_length) {
+
+  JumpSensor *jump_sensor = new JumpSensor(name, layer, x, y, width, height, direction, jump_length);
+
+  detectors.push_back(jump_sensor);
+  add_entity(jump_sensor);
 }
 
 /**

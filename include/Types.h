@@ -112,6 +112,7 @@ class PickableItemFairy;
 class CarriedItem;
 class DestructibleItem;
 class Chest;
+class JumpSensor;
 
 // tiles
 class Tileset;

@@ -92,6 +92,7 @@ add_executable (zsdx
   entities/CarriedItem.cpp
   entities/DestructibleItem.cpp
   entities/Chest.cpp
+  entities/JumpSensor.cpp
 
   # tiles
   entities/Tileset.cpp

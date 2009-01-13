@@ -1,0 +1,2 @@
+#!/bin/sh
+javac -cp .:ini4j.jar zsdx/*.java zsdx/*/*.java zsdx/*/*/*.java

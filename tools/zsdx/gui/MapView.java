@@ -778,7 +778,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    // trust me: this awful formula calculates the coordinates such
 	    // that the entity is resized at the mouse point
 	    int diffX = xB - xA;
-	    int diffY = yB - yA;	    
+	    int diffY = yB - yA;
+
+	    if ((diffX < 0 || diffY < 0) && !selectedEntity.allowInverseResizing()) {
+		// some entities don't want to be resized in the inverse way
+		return;
+	    }
+
 	    int signX = (diffX >= 0) ? 1 : -1;
 	    int signY = (diffY >= 0) ? 1 : -1;
 	    xB = xB + signX * (width - ((Math.abs(diffX) + width) % width));

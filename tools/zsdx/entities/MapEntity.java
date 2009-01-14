@@ -196,10 +196,11 @@ public abstract class MapEntity extends Observable {
 	    setLayer(layer);
 	    setPositionInMap(x, y);
 
+	    int width = 0;
+	    int height = 0;
 	    if (isResizable()) {
-		int width = Integer.parseInt(tokenizer.nextToken());
-		int height = Integer.parseInt(tokenizer.nextToken());
-		setSize(width, height);
+		width = Integer.parseInt(tokenizer.nextToken());
+		height = Integer.parseInt(tokenizer.nextToken());
 	    }
 
 	    if (hasName()) {
@@ -208,6 +209,10 @@ public abstract class MapEntity extends Observable {
 
 	    if (hasDirection()) {
 		setDirection(Integer.parseInt(tokenizer.nextToken()));
+	    }
+
+	    if (isResizable()) {
+		setSize(width, height); // some entities need to know their direction before being resized
 	    }
 	}
 	catch (NoSuchElementException ex) {
@@ -239,6 +244,11 @@ public abstract class MapEntity extends Observable {
 	}
 	catch (NoSuchMethodException ex) {
 	    System.err.println("Cannot find the constructor of class " + entityClass);
+	    System.exit(1);
+	}
+	catch (InvocationTargetException ex) {
+	    System.err.println("Cannot create the entity: " + ex.getMessage());
+	    ex.getCause().printStackTrace();
 	    System.exit(1);
 	}
 	catch (Exception ex) {
@@ -425,10 +435,10 @@ public abstract class MapEntity extends Observable {
 	checkPositionTopLeft(position.x, position.y);
 	checkSize(position.width, position.height);
 	
-	setPositionTopLeftImpl(position.x, position.y);
-	setSizeImpl(position.width, position.height);
+	setPositionTopLeft(position.x, position.y);
+	setSize(position.width, position.height);
     }
-    
+
     /**
      * Changes the position of the entity on the map, by specifying two points
      * (the top-left corner and the bottom-right corner).
@@ -449,9 +459,9 @@ public abstract class MapEntity extends Observable {
 
 	checkPositionTopLeft(x, y);
 	checkSize(width, height);
-	
-	setPositionTopLeftImpl(x, y);
-	setSizeImpl(width, height);
+
+	setPositionTopLeft(x, y);
+	setSize(width, height);
     }
     
     /**
@@ -525,6 +535,16 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns whether the entity can be resized even if the resizing point is upper than or at the left
+     * of the fixed point.
+     * If so, the entity will be moved such that it can still be resized.
+     * @return true if the inverse resizing is allowed
+     */
+    public boolean allowInverseResizing() {
+	return true;
+    }
+
+    /**
      * Checks whether the specified size of the entity is correct (i.e. whether it is
      * a multiple of getUnitWidth() and getUnitHeight()).
      * @param width the width to check
@@ -538,7 +558,8 @@ public abstract class MapEntity extends Observable {
 	}
 
 	if (width <= 0 || height <= 0) {
-	    throw new MapException("The entity's size must be positive"); 
+	    throw new MapException("The entity's size must be positive (the size specified is ("
+		    + width + "x" + height + "))"); 
 	}
 	
 	Dimension unitSize = getUnitarySize();
@@ -874,7 +895,7 @@ public abstract class MapEntity extends Observable {
     public Dimension getSize() {
 	return new Dimension(getWidth(), getHeight());
     }
-    
+
     /**
      * Initializes the description of the image currently representing the entity.
      * By default, the image description is initialized to a copy of the first general

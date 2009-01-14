@@ -28,13 +28,18 @@ public class JumpSensor extends ActiveEntity {
     private int jumpLength;
 
     /**
+     * Minimum jump length allowed.
+     */
+    public static final int MINIMUM_JUMP_LENGTH = 16;
+
+    /**
      * Creates a new jump sensor at the specified location.
      * @param map the map
      * @param x x coordinate of the entity to create
      * @param y y coordinate of the entity to create
      */
     public JumpSensor(Map map, int x, int y) {
-	super(map, LAYER_LOW, x, y, 16, 8);
+	super(map, LAYER_LOW, x, y, 32, 8);
 	this.jumpLength = 56;
 	setDirection(6);
     }
@@ -83,51 +88,34 @@ public class JumpSensor extends ActiveEntity {
      * @return true if the entity is valid
      */
     public boolean isValid() {
-	return super.isValid() && jumpLength > 0;	
-    }
-
-    /**
-     * Checks whether the specified size of the entity is correct.
-     * This is a redefinition of MapEntity.checkSize because the size of a jump sensor
-     * is constrained depending on its direction.
-     * @param width the width to check
-     * @param height the height to check
-     * @throws MapException if the size is not correct
-     */
-    protected void checkSize(int width, int height) throws MapException {
-
-	if (direction % 2 != 0) {
-	    if (width != height) {
-		throw new MapException("The bounding rectangle of a diagonal jump sensor must be square");
-	    }
-	}
-	else if (direction % 4 == 0) {
-	    if (width != 8) {
-		throw new MapException("The width of a vertical jump sensor must be 8 pixels");
-	    }
-	}
-	else {
-	    if (height != 8) {
-		throw new MapException("The height of a horizontal jump sensor must be 8 pixels");
-	    }
-	}
+	return super.isValid() && jumpLength >= 16;	
     }
 
     /**
      * Changes the size of the entity on the map.
-     * This is a redefinition of MapEntity.setSize to adjust automatically
+     * This is a redefinition of MapEntity.setSize() to adjust automatically
      * the specified size to the constraints of the jump sensor.
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
-     * @throws MapException if the entity is not resizable,
-     * or the size specified is lower than or equal to zero,
-     * or the size specified is not divisible by 8
+     * @throws MapException if the size is not correct
      */
     public void setSize(int width, int height) throws MapException {
 
+	Dimension adjustedSize = getSizeAdjustedToDirection(width, height);
+	super.setSize(adjustedSize.width, adjustedSize.height);
+    }
+
+    /**
+     * Adjusts the specified size with respect to the current direction's constraints.
+     * @param width a width
+     * @param height a height
+     * @return a new adjusted size
+     */
+    private Dimension getSizeAdjustedToDirection(int width, int height) {
+
 	if (direction % 2 != 0) {
 	    if (width != height) {
-		width = height = Math.min(width, height);
+		width = height = Math.max(16, Math.min(width, height));
 	    }
 	}
 	else if (direction % 4 == 0) {
@@ -136,8 +124,58 @@ public class JumpSensor extends ActiveEntity {
 	else {
 	    height = 8;
 	}
+	
+	return new Dimension(width, height);
+    }
 
-	super.setSize(width, height);
+    /**
+     * Computes a default size for a specified direction.
+     * @param a direction
+     * @return a default size for that direction
+     */
+    private Dimension getDefaultSizeForDirection(int direction) {
+
+	int width, height;
+	if (direction % 2 != 0) {
+	    width = height = 32;
+	}
+	else if (direction % 4 == 0) {
+	    width = 8;
+	    height = 32;
+	}
+	else {
+	    width = 32;
+	    height = 8;
+	}
+	
+	return new Dimension(width, height);
+    }
+
+    /**
+     * Changes the direction of the entity.
+     * This is a redefinition of MapEntity.setDirection() to adjust the size to the new direction.
+     * @param direction the entity's direction
+     * @throws UnsupportedOperationException if the entity has no direction
+     * @throws IllegalArgumentException if the direction is invalid
+     */
+    public void setDirection(int direction) throws UnsupportedOperationException, IllegalArgumentException {
+	
+	if (direction != getDirection()) {
+	    super.setDirection(direction);
+
+	    // if the size is initialized, adjust it to this new direction
+	    try {
+		if (getWidth() != 0) {
+		    Dimension size = getDefaultSizeForDirection(direction);
+		    setSize(size.width, size.height);
+		}
+	    }
+	    catch (MapException ex) {
+		// should not happen
+		System.err.println("Unexpected error: " + ex.getMessage());
+		System.exit(1);
+	    }
+	}
     }
 
     /**
@@ -173,6 +211,16 @@ public class JumpSensor extends ActiveEntity {
     }
 
     /**
+     * Returns whether the entity can be resized even if the resizing point is upper than or at the left
+     * of the fixed point.
+     * If so, the entity will be moved such that it can still be resized.
+     * @return true if the inverse resizing is allowed
+     */
+    public boolean allowInverseResizing() {
+	return false;
+    }
+
+    /**
      * Returns the length of the jump in pixels.
      * @return the jump length in pixels
      */
@@ -183,8 +231,12 @@ public class JumpSensor extends ActiveEntity {
     /**
      * Sets the length of the jump.
      * @param jumpLength the jump length in pixels
+     * @throws MapException if the jump length is not correct
      */
-    public void setJumpLength(int jumpLength) {
+    public void setJumpLength(int jumpLength) throws MapException {
+	if (jumpLength < MINIMUM_JUMP_LENGTH) {
+	    throw new MapException("The minimum jump length is " + MINIMUM_JUMP_LENGTH + " pixels");
+	}
         this.jumpLength = jumpLength;
 	setChanged();
 	notifyObservers();
@@ -198,6 +250,69 @@ public class JumpSensor extends ActiveEntity {
      * false to replace them by a background color
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
-	// TODO
+
+	int x = (int) (positionInMap.x * zoom);
+	int y = (int) (positionInMap.y * zoom);
+	int w = (int) (positionInMap.width * zoom);
+	int h = (int) (positionInMap.height * zoom);
+
+	int dx1 = (int) ((positionInMap.x + positionInMap.width / 2 - 8) * zoom);
+	int dy1 = (int) ((positionInMap.y + positionInMap.height / 2 - 8) * zoom);
+	int dx2 = (int) (dx1 + 16 * zoom);
+	int dy2 = (int) (dy1 + 16 * zoom);
+
+	dx1 = (int) (positionInMap.x * zoom);
+	dy1 = (int) (positionInMap.y * zoom);
+	dx2 = (int) (dx1 + positionInMap.width * zoom);
+	dy2 = (int) (dy1 + positionInMap.height * zoom);
+
+	Color fillColor = new Color(48, 184, 208);
+	Color borderColor = new Color(144, 224, 240);
+	if (direction % 2 == 0) {
+
+	    g.setColor(fillColor);
+	    g.fillRect(x, y, w, h);
+
+	    g.setColor(Color.black);
+	    g.drawLine(dx1, dy1, dx2 - 1, dy1);
+	    g.drawLine(dx1 + 3, dy1 + 3, dx2 - 4, dy1 + 3);
+	    g.drawLine(dx1, dy2 - 1, dx2 - 1, dy2 - 1);
+	    g.drawLine(dx1 + 3, dy2 - 4, dx2 - 4, dy2 - 4);
+	    g.drawLine(dx1, dy1, dx1, dy2 - 1);
+	    g.drawLine(dx1 + 3, dy1 + 3, dx1 + 3, dy2 - 4);
+	    g.drawLine(dx2 - 1, dy1, dx2 - 1, dy2 - 1);
+	    g.drawLine(dx2 - 4, dy1 + 3, dx2 - 4, dy2 - 4);
+
+	    g.setColor(borderColor);
+	    g.drawLine(dx1 + 1, dy1 + 1, dx2 - 2, dy1 + 1);
+	    g.drawLine(dx1 + 2, dy1 + 2, dx2 - 3, dy1 + 2);
+	    g.drawLine(dx1 + 2, dy2 - 3, dx2 - 3, dy2 - 3);
+	    g.drawLine(dx1 + 1, dy2 - 2, dx2 - 2, dy2 - 2);
+	    g.drawLine(dx1 + 1, dy1 + 1, dx1 + 1, dy2 - 2);
+	    g.drawLine(dx1 + 2, dy1 + 2, dx1 + 2, dy2 - 3);
+	    g.drawLine(dx2 - 3, dy1 + 2, dx2 - 3, dy2 - 3);
+	    g.drawLine(dx2 - 2, dy1 + 1, dx2 - 2, dy2 - 2);
+	}
+	else {
+
+	    int[] xPoints = null;
+	    int[] yPoints = null;
+	    int nPoints = 4;
+
+	    int thickness = (int) (8 * zoom);
+	    g.setColor(fillColor);
+
+	    switch (getDirection()) {
+	    
+	    case 1:
+		xPoints = new int[] {dx1, dx2 - 1, dx2 - thickness, dx1};
+		yPoints = new int[] {dy1, dy2 - 1, dy2 - 1, dy1 + thickness - 1};
+		break;
+		
+	    default:
+		break;
+	    }
+	    g.fillPolygon(xPoints, yPoints, nPoints);
+	}
     }
 }

@@ -94,7 +94,7 @@ public class EditChestComponent extends EditEntityComponent {
      * Creates the map editor action object which corresponds
      * to the modifications indicated in the fields.
      * @return the action object corresponding to the modifications made
-     * @throws ZSDXException if the destination map or the entrance name are left blank
+     * @throws ZSDXException
      */
     protected ActionEditEntity getAction() throws ZSDXException {
 	

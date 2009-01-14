@@ -175,8 +175,7 @@ treasure_content est un numéro qui indique le trésor contenu du coffre. Il exi
 treasure_amount donne la quantité de ce trésor dans le coffre. Cette valeur est utile seulement pour certains types de trésors : rubis, flèches, bombes, croissants... Elle est ignorée pour les autres trésors.
 treasure_savegame_index identifie le booléen qui sauvegarde l'état du coffre. On peut mettre -1 pour que le coffre ne soit pas sauvegardé.
 
-
-Capteur de saut (6)
+Capteurs de saut (6)
 
 Un capteur de saut (jump sensor) est un capteur invisible qui fait sauter Link d'une certaine longueur, dans une direction qui dépend de la forme du capteur. Lors du saut, Link ne peut plus être contrôlé et il est insensible aux obstacles.
 
@@ -188,3 +187,4 @@ Syntaxe de la partie spécifique pour un capteur de saut :
 jump_length
 
 jump_length est la longueur du saut en pixels. Il faut s'assurer que cette longueur de saut ne fasse pas atterrir le joueur dans un mur.
+

@@ -758,56 +758,75 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @param y y coordinate of the pointer
      */
     private void updateResizingEntity(int x, int y) {
-    
+
 	int xA, yA; // A is the original point of the rectangle we are drawing
 	int xB, yB; // B is the second point, defined by the cursor location
-	
+
 	xB = x;
 	yB = y;
-	
+
+	// resize only if the cursor is inside the drawn area
 	if (xB < map.getWidth() + AREA_AROUND_MAP && yB < map.getHeight() + 2 * AREA_AROUND_MAP) {
-	    
+
 	    MapEntity selectedEntity = map.getEntitySelection().getEntity(0);
-	    
+
 	    int width = selectedEntity.getUnitarySize().width;
 	    int height = selectedEntity.getUnitarySize().height;
-	    
+
 	    xA = fixedLocation.x;
 	    yA = fixedLocation.y;
+	    // we have to extend the entity's rectangle with units of size (width,height) from point A to point B
 
-	    // trust me: this awful formula calculates the coordinates such
-	    // that the entity is resized at the mouse point
+	    // trust me: this awful formula calculates the coordinates of point B such
+	    // that the size of the rectangle from A to B is a multiple of (width,height)
 	    int diffX = xB - xA;
 	    int diffY = yB - yA;
-
-	    if ((diffX < 0 || diffY < 0) && !selectedEntity.allowInverseResizing()) {
-		// some entities don't want to be resized in the inverse way
-		return;
-	    }
-
 	    int signX = (diffX >= 0) ? 1 : -1;
 	    int signY = (diffY >= 0) ? 1 : -1;
 	    xB = xB + signX * (width - ((Math.abs(diffX) + width) % width));
 	    yB = yB + signY * (height - ((Math.abs(diffY) + height) % height));
-	    
+
 	    if (xB != cursorLocation.x || yB != cursorLocation.y) {
-		
 		// the rectangle has changed
+
+		// store the coordinates of point B for the next time
 		cursorLocation.x = xB;
 		cursorLocation.y = yB;
-		
-		// (xA,yA) depends on the rectangle direction:
-		// they may have to be updated so that the rectangle size is not zero
-		if (xB <= xA) {
-		    xA += width;
+
+		// if the entity is constrained to be square, set the position of point B accordingly
+		if (selectedEntity.mustBeSquare()) {
+		    diffX = Math.abs(xB - xA);
+		    diffY = Math.abs(yB - yA);
+		    int length = Math.max(diffX, diffY); // length of the square
+		    xB = xA + signX * length;
+		    yB = yA + signY * length;
 		}
-		
-		if (yB <= yA) {
-		    yA += height;
+
+		// point A or B may have to be updated so that the rectangle is extended
+		// only in allowed directions, making sure its size is never zero
+		else {
+		    if (selectedEntity.isExtensible(0)) {
+			if (xB <= xA) {
+			    xA += width;
+			}
+		    }
+		    else {
+			xB = xA + width;
+		    }
+
+		    if (selectedEntity.isExtensible(1)) {
+			if (yB <= yA) {
+			    yA += height;
+			}
+		    }
+		    else {
+			yB = yA + height;
+		    }
 		}
-		
+
 		// now let's update the entity
 		try {
+		    // note that A is not necessarily the top-left corner of the rectangle
 		    map.setEntityPosition(selectedEntity, xA, yA, xB, yB);
 		}
 		catch (ZSDXException ex) {

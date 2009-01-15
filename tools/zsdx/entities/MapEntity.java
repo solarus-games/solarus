@@ -535,13 +535,27 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns whether the entity can be resized even if the resizing point is upper than or at the left
-     * of the fixed point.
-     * If so, the entity will be moved such that it can still be resized.
-     * @return true if the inverse resizing is allowed
+     * Returns whether or not the entity can be resized by extending it
+     * horizontally or vertically.
+     * This function only makes sense for resizable entities, otherwise
+     * the behavior is unspecified.
+     * By default, this function returns true. The subclasses which represent
+     * resizable entities should can redefine this method if they want
+     * to put some constraints on the resizing direction.
+     * @param direction one of the two main directions (0: horizontal, 1: vertical)
+     * @return whether or not the entity can be expanded in that direction
      */
-    public boolean allowInverseResizing() {
+    public boolean isExtensible(int direction) {
 	return true;
+    }
+
+    /**
+     * Returns whether the entity has to remain square when it is being resized.
+     * By default, false is returned.
+     * @return true if the entity must be square
+     */
+    public boolean mustBeSquare() {
+	return false;
     }
 
     /**

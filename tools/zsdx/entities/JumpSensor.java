@@ -112,10 +112,11 @@ public class JumpSensor extends ActiveEntity {
      * @return a new adjusted size
      */
     private Dimension getSizeAdjustedToDirection(int width, int height) {
-
+	// TODO move into a redefinition of checkSize
+/*
 	if (direction % 2 != 0) {
 	    if (width != height) {
-		width = height = Math.max(16, Math.min(width, height));
+		width = height = Math.max(16, Math.max(width, height));
 	    }
 	}
 	else if (direction % 4 == 0) {
@@ -123,7 +124,7 @@ public class JumpSensor extends ActiveEntity {
 	}
 	else {
 	    height = 8;
-	}
+	}*/
 	
 	return new Dimension(width, height);
     }
@@ -211,13 +212,30 @@ public class JumpSensor extends ActiveEntity {
     }
 
     /**
-     * Returns whether the entity can be resized even if the resizing point is upper than or at the left
-     * of the fixed point.
-     * If so, the entity will be moved such that it can still be resized.
-     * @return true if the inverse resizing is allowed
+     * Returns whether or not the entity can be resized by extending it
+     * horizontally or vertically
+     * @param direction one of the two main directions (0: horizontal, 1: vertical)
+     * @return whether or not the entity can be expanded in that direction
      */
-    public boolean allowInverseResizing() {
-	return false;
+    public boolean isExtensible(int extensionDirection) {
+
+	if (getDirection() % 2 != 0) {
+	    return true;
+	}
+
+	if (getDirection() % 4 == 0) {
+	    return (extensionDirection == 1);
+	}
+
+	return (extensionDirection == 0);
+    }
+
+    /**
+     * Returns whether the entity has to remain square when it is being resized.
+     * @return true if the entity must be square
+     */
+    public boolean mustBeSquare() {
+	return direction % 2 != 0;
     }
 
     /**
@@ -295,24 +313,51 @@ public class JumpSensor extends ActiveEntity {
 	}
 	else {
 
-	    int[] xPoints = null;
-	    int[] yPoints = null;
-	    int nPoints = 4;
-
+	    int[] xPoints, yPoints, xPoints2, yPoints2;
+	    int nPoints = 5;
 	    int thickness = (int) (8 * zoom);
-	    g.setColor(fillColor);
 
 	    switch (getDirection()) {
-	    
-	    case 1:
-		xPoints = new int[] {dx1, dx2 - 1, dx2 - thickness, dx1};
-		yPoints = new int[] {dy1, dy2 - 1, dy2 - 1, dy1 + thickness - 1};
+
+	    case 1: // right-up
+		xPoints = new int[] {dx1, dx2 - 1, dx2 - thickness, dx1, dx1};
+		yPoints = new int[] {dy1, dy2 - 1, dy2 - 1, dy1 + thickness - 1, dy1};
+		xPoints2 = new int[] {dx1 + 3, dx2 - 8, dx2 - thickness + 1, dx1 + 3, dx1 + 3};
+		yPoints2 = new int[] {dy1 + 7, dy2 - 4, dy2 - 4, dy1 + thickness - 2, dy1 + 7};
 		break;
-		
+
+	    case 3: // left-up
+		xPoints = new int[] {dx2 - 1, dx1, dx1, dx2 - thickness, dx2 - 1};
+		yPoints = new int[] {dy1, dy2 - 1, dy2 - thickness, dy1, dy1};
+		xPoints2 = new int[] {dx2 - 8, dx1 + 3, dx1 + 3, dx2 - thickness + 1, dx2 - 8};
+		yPoints2 = new int[] {dy1 + 3, dy2 - 8, dy2 - thickness + 1, dy1 + 3, dy1 + 3};
+		break;
+
+	    case 5: // left-down
+		xPoints = new int[] {dx1, dx1 + thickness - 1, dx2 - 1, dx2 - 1, dx1};
+		yPoints = new int[] {dy1, dy1, dy2 - thickness, dy2 - 1, dy1};
+		xPoints2 = new int[] {dx1 + 7, dx1 + thickness - 2, dx2 - 4, dx2 - 4, dx1 + 7};
+		yPoints2 = new int[] {dy1 + 3, dy1 + 3, dy2 - thickness + 1, dy2 - 8, dy1 + 3};
+		break;
+
+	    case 7: // right-down
+		xPoints = new int[] {dx2 - 1, dx1, dx1 + thickness - 1, dx2 - 1, dx2 - 1};
+		yPoints = new int[] {dy1, dy2 - 1, dy2 - 1, dy1 + thickness - 1, dy1};
+		xPoints2 = new int[] {dx2 - 4, dx2 - 4, dx1 + thickness - 2, dx1 + 7, dx2 - 4};
+		yPoints2 = new int[] {dy1 + 7, dy1 + thickness - 2, dy2 - 4, dy2 - 4, dy1 + 7};
+		break;
+
 	    default:
-		break;
+		throw new IllegalArgumentException("Unexpected error: unknown jump direction " + getDirection());
 	    }
+	    g.setColor(borderColor);
 	    g.fillPolygon(xPoints, yPoints, nPoints);
+	    g.setColor(Color.black);
+	    g.drawPolyline(xPoints, yPoints, nPoints);
+	    g.setColor(fillColor);
+	    g.fillPolygon(xPoints2, yPoints2, nPoints);
+	    g.setColor(Color.black);
+	    g.drawPolyline(xPoints2, yPoints2, nPoints);
 	}
     }
 }

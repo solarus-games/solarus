@@ -141,11 +141,11 @@ void DialogBox::set_variable(MessageId message_id, string value) {
 }
 
 /**
- * Same thing as add_variable(MessageId, string) but with an integer parameter.
+ * Same thing as set_variable(MessageId, string) but with an integer parameter.
  * This function just converts the integer value to a string
  * add calls the other function.
  * @param message_id id of the message where this value will appear
- * @param value the value to add
+ * @param value the value to set
  */
 void DialogBox::set_variable(MessageId message_id, int value) {
   std::ostringstream oss;

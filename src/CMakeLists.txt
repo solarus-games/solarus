@@ -38,6 +38,7 @@ add_executable (zsdx
   InventoryItem.cpp
   Map.cpp
   MapLoader.cpp
+  MapScript.cpp
   DialogBox.cpp
   Message.cpp
 
@@ -112,7 +113,6 @@ add_executable (zsdx
   movements/ThrownItemMovement.cpp
   movements/TargetMovement.cpp
   movements/JumpMovement.cpp
-
 )
 
 if (NOT WIN32)
@@ -127,6 +127,7 @@ target_link_libraries (zsdx
 		      SDL_ttf
 		      SDL_Config
 		      fmodex
+		      lua5.1
 )
 
 INSTALL(TARGETS	zsdx

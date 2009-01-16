@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Sprite.h"
 #include "FileTools.h"
+#include "MapScript.h"
 #include "entities/Tileset.h"
 #include "entities/Link.h"
 #include "entities/MapEntities.h"
@@ -18,7 +19,7 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-id(id), started(false), entities(NULL), suspended(false) {
+id(id), started(false), entities(NULL), suspended(false), script(NULL) {
 
 }
 
@@ -177,6 +178,10 @@ void Map::unload(void) {
   SDL_FreeSurface(visible_surface);
   delete entities;
   entities = NULL;
+
+  if (script != NULL) {
+    delete script;
+  }
 }
 
 /**
@@ -372,6 +377,8 @@ void Map::start(void) {
   }
 
   started = true;
+
+  script->event_map_started();
 }
 
 /**

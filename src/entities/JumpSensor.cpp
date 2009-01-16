@@ -37,7 +37,6 @@ JumpSensor::JumpSensor(string name, Layer layer, int x, int y, int width, int he
       }
     }
   }
-
 }
 
 /**

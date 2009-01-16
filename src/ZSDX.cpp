@@ -220,7 +220,7 @@ int main(int argc, char **argv) {
     zsdx->main();
   }
   catch (const string &s) {
-    std::cerr << "A fatal error occured: " << s << std::endl;
+    std::cerr << "Fatal error: " << s << std::endl;
   }
 
   delete zsdx;

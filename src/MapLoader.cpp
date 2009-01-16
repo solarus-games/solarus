@@ -1,5 +1,6 @@
 #include "MapLoader.h"
 #include "Map.h"
+#include "MapScript.h"
 #include "FileTools.h"
 #include "ResourceManager.h"
 #include "entities/MapEntities.h"
@@ -77,7 +78,7 @@ void MapLoader::load_map(Map *map) {
   // read the entities
   int entity_type, layer, x, y, width, height, direction;
   string entity_name;
-  
+
   while (std::getline(map_file, line)) {
 
     std::istringstream iss(line);
@@ -92,7 +93,7 @@ void MapLoader::load_map(Map *map) {
 	entities->add_tile(tile_id, (MapEntity::Layer) layer, x, y, width, height);
 	break;
       }
-      
+
     case MapEntity::DESTINATION_POINT:
       {
 	int is_visible;
@@ -100,7 +101,7 @@ void MapLoader::load_map(Map *map) {
 	entities->add_destination_point(entity_name, (MapEntity::Layer) layer, x, y, direction, (is_visible != 0));
 	break;
       }
-      
+
     case MapEntity::TELETRANSPORTER:
       {
 	int subtype, transition_style;
@@ -157,4 +158,7 @@ void MapLoader::load_map(Map *map) {
 
     }
   }
+
+  // load the script
+  map->script = new MapScript(map);
 }

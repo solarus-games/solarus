@@ -60,6 +60,7 @@ class Treasure;
 class InventoryItem;
 class Map;
 class MapLoader;
+class MapScript;
 class DialogBox;
 class Message;
 

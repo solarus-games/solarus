@@ -1,0 +1,9 @@
+Appel de fonctions LUA depuis le moteur C++ :
+
+start() : appelé une fois la map chargée
+
+
+Appel de fonctions C++ depuis un script LUA :
+
+show_message(string message_id) : affiche un message
+play_sound(string sound_id) : joue un son

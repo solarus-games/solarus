@@ -8,6 +8,7 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Color.h"
+#include "MapScript.h"
 
 int DialogBox::answer_selected = 0;
 
@@ -195,6 +196,9 @@ void DialogBox::show_message(MessageId message_id) {
   else {
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
   }
+
+  // notify the script
+  zsdx->get_current_script()->event_message_started(message_id);
 }
 
 /**

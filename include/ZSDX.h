@@ -55,6 +55,7 @@ class ZSDX {
   void main(void);
 
   VideoManager *get_video_manager(void);
+  MapScript *get_current_script(void);
 
   void set_game(Game *game);
   void set_exiting(void);

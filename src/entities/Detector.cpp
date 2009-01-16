@@ -1,6 +1,7 @@
 #include "entities/Detector.h"
 #include "ResourceManager.h"
 #include "Map.h"
+#include "MapScript.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -185,7 +186,7 @@ bool Detector::check_collision_custom(MapEntity *entity) {
  */
 void Detector::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  map->event_entity_on_detector(this, entity_overlapping);
+  map->get_script()->event_entity_on_detector(this, entity_overlapping);
 }
 
 /**

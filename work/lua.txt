@@ -1,9 +1,11 @@
-Appel de fonctions LUA depuis le moteur C++ :
+Appel de fonctions LUA depuis le moteur C++ (événements) :
 
-start() : appelé une fois la map chargée
-
+map_started()						 appelé une fois la map chargée
+message_started(message_id)				 appelé au début de l'affichage d'un message
+entity_on_detector(detector_name, entity_name)		 appelé pour certains types de détecteurs lorsqu'une entité est dessus
 
 Appel de fonctions C++ depuis un script LUA :
 
-show_message(string message_id) : affiche un message
-play_sound(string sound_id) : joue un son
+start_message(message_id)		     affiche un message
+set_message_variable(message_id, value)	     spécifie la valeur de la variable dans un message
+play_sound(sound_id)			     joue un son

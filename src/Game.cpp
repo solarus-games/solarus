@@ -141,6 +141,19 @@ DungeonEquipment * Game::get_dungeon_equipment(void) {
 }
 
 /**
+ * Returns the script of the current map.
+ * @return the script of the current map, or NULL if no map is loaded
+ */
+MapScript * Game::get_current_script(void) {
+
+  if (get_current_map() != NULL) {
+    return get_current_map()->get_script();
+  }
+
+  return NULL;
+}
+
+/**
  * This function is called by the SDL main loop
  * when an SDL event occurs during the game.
  */

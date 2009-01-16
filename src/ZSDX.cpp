@@ -211,6 +211,19 @@ VideoManager * ZSDX::get_video_manager(void) {
 }
 
 /**
+ * Returns the script of the current map.
+ * @return the script of the current map, or NULL if no map is loaded
+ */
+MapScript * ZSDX::get_current_script(void) {
+
+  if (game != NULL) {
+    return game->get_current_script();
+  }
+
+  return NULL;
+}
+
+/**
  * Entry point of the program.
  */
 int main(int argc, char **argv) {

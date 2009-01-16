@@ -6,6 +6,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "DialogBox.h"
+#include "entities/Detector.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 #include <stdarg.h>
@@ -180,4 +181,15 @@ void MapScript::event_map_started(void) {
 
 void MapScript::event_message_started(MessageId messageId) {
   call_lua_function("message_started", 1, messageId.c_str());
+}
+
+/**
+ * This function is called by a detector when an entity is overlapping it.
+ * Note that all detectors don't notify the map script (i.e. they don't call this function)
+ * because they may have their own behavior.
+ * @param detector the detector
+ * @param entity the entity
+ */
+void MapScript::event_entity_on_detector(Detector *detector, MapEntity *entity) {
+  call_lua_function("entity_on_detector", 2, detector->get_name().c_str(), entity->get_name().c_str());
 }

@@ -72,6 +72,7 @@ class Game: public Screen {
   Savegame *get_savegame(void);
   Equipment *get_equipment(void);
   DungeonEquipment *get_dungeon_equipment(void);
+  MapScript *get_current_script(void);
 
   // functions called by the SDL loop
   void handle_event(const SDL_Event &event);

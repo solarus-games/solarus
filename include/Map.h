@@ -85,6 +85,7 @@ class Map {
   // map properties
   MapId get_id(void);
   Tileset *get_tileset(void);
+  MapScript *get_script(void);
   int get_world_number(void);
   bool is_in_dungeon(void);
   bool is_in_outside_world(void);
@@ -134,10 +135,6 @@ class Map {
   void update(void);
   void display();
   void display_sprite(Sprite *sprite, int x, int y);
-
-  // events
-  void event_entity_on_detector(Detector *detector, MapEntity *entity);
-
 };
 
 #endif

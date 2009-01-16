@@ -28,6 +28,7 @@ class MapScript {
 
   void event_map_started(void);
   void event_message_started(string MessageId);
+  void event_entity_on_detector(Detector *detector, MapEntity *entity);
 };
 
 #endif

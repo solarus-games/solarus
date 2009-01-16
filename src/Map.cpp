@@ -50,6 +50,14 @@ Tileset * Map::get_tileset(void) {
 }
 
 /**
+ * Returns this map's script.
+ * @return the script
+ */
+MapScript * Map::get_script(void) {
+  return script;
+}
+
+/**
  * Returns the world where this map is.
  * @return 0 if this map is outside, -1 if it is inside, 1 to 20 if it is in a dungeon
  */
@@ -585,16 +593,4 @@ void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
       (*i)->check_collision(entity, sprite);
     }
   }
-}
-
-/**
- * This function is called by a detector when an entity is overlapping it.
- * I think think function (as all "events") should call the LUA script of the map.
- * Note that all detectors don't notify the map (i.e. they don't call this function)
- * because they may have their own behavior.
- * @param detector the detector
- * @param entity the entity
- */
-void Map::event_entity_on_detector(Detector *detector, MapEntity *entity) {
-
 }

@@ -1114,6 +1114,12 @@ public class Map extends Observable {
 	    if (isInDungeon()) {
 		Dungeon.saveMapInfo(this);
 	    }
+
+	    // create a script for the map if necessary
+	    File scriptFile = Project.getMapScriptFile(mapId);
+	    if (!scriptFile.exists()) {
+		scriptFile.createNewFile();
+	    }
 	}
 	catch (IOException ex) {
 	    throw new MapException(ex.getMessage());

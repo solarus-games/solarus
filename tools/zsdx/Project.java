@@ -251,6 +251,20 @@ public class Project {
     }
 
     /**
+     * Returns a map script file knowing its id for the current project.
+     * @param mapId id of a map
+     * @return the script file corresponding to this id
+     */
+    public static File getMapScriptFile(String mapId) {
+
+	NumberFormat nf = NumberFormat.getInstance();
+	nf.setMinimumIntegerDigits(4);
+	nf.setGroupingUsed(false);
+
+	return new File(getMapPath() + "/map" + nf.format(Integer.parseInt(mapId)) + ".lua");
+    }
+
+    /**
      * Returns a map file knowing its id for the current project.
      * @param mapId id of a map
      * @return the file corresponding to this id

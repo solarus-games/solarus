@@ -21,6 +21,7 @@ class JumpSensor: public Detector {
   ~JumpSensor(void);
 
   bool check_collision_custom(MapEntity *entity);
+  bool is_point_in_diagonal(const SDL_Rect &point);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
 };

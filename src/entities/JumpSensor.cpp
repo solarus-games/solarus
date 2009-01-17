@@ -59,21 +59,34 @@ JumpSensor::~JumpSensor(void) {
  */
 bool JumpSensor::check_collision_custom(MapEntity *entity) {
 
-  // first, the facing point has to be inside the sensor's rectangle
-  if (!check_collision_facing_point(entity)) {
-    return false;
-  }
-
   // if the sensor's has one of the four main directions, then
-  // its shape is exactly its rectangle so we have nothing else to do
+  // its shape is exactly its rectangle
   if (direction % 2 == 0) {
-    return true;
+    SDL_Rect facing_point = entity->get_facing_point(direction / 2);
+    return is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
   }
 
   // otherwise, the sensor's shape is a diagonal bar
+
+  return is_point_in_diagonal(entity->get_facing_point((direction - 1) / 2))
+    || is_point_in_diagonal(entity->get_facing_point((direction + 1) % 8 / 2));
+}
+
+/**
+ * Returns whether the specified point is in the jump sensor's shape
+ * (only for a jump sensor with diagonal direction).
+ * @param point the point to check
+ * @return true if this point is overlapping the jump sensor
+ */
+bool JumpSensor::is_point_in_diagonal(const SDL_Rect &point) {
+
+  if (!is_point_in(get_position_in_map(), point.x, point.y)) {
+    return false;
+  }
+
   bool collision = false;
-  int x = entity->get_facing_point().x - this->get_x();
-  int y = entity->get_facing_point().y - this->get_y();
+  int x = point.x - this->get_x();
+  int y = point.y - this->get_y();
   int width = get_width();
   switch (direction) {
 

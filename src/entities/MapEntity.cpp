@@ -234,6 +234,18 @@ SDL_Rect MapEntity::get_facing_point(void) {
 }
 
 /**
+ * Returns the coordinates of the point the entity would be facing
+ * if it was looking towards the specified direction.
+ * You should redefine this method to define a facing point.
+ * @param direction a direction (0 to 3)
+ * @return the coordinates of the point the entity is looking at
+ */
+SDL_Rect MapEntity::get_facing_point(int direction) {
+  SDL_Rect point = {-1, -1};
+  return point;
+}
+
+/**
  * Returns the name of the entity (if any).
  * @return the name of the entity, or an empty string if the entity is not identifiable
  */
@@ -414,6 +426,18 @@ bool MapEntity::overlaps(const SDL_Rect *rectangle) {
 }
 
 /**
+ * Returns whether the specified point is inside a rectangle.
+ * @param rectangle the rectangle
+ * @param x x coordinate of the point
+ * @param y y coordinate of the point
+ */
+bool MapEntity::is_point_in(const SDL_Rect *rectangle, int x, int y) {
+
+  return x >= rectangle->x && x < rectangle->x + rectangle->w
+    && y >= rectangle->y && y < rectangle->y + rectangle->h;
+}
+
+/**
  * Returns whether or not this entity's origin point is in
  * a specified rectangle.
  * @param rectangle the rectangle to check
@@ -421,11 +445,7 @@ bool MapEntity::overlaps(const SDL_Rect *rectangle) {
  */
 bool MapEntity::is_origin_point_in(const SDL_Rect *rectangle) {
 
-  int x = get_x();
-  int y = get_y();
-
-  return x >= rectangle->x && x < rectangle->x + rectangle->w
-    && y >= rectangle->y && y < rectangle->y + rectangle->h;
+  return is_point_in(rectangle, get_x(), get_y());
 }
 
 /**
@@ -437,9 +457,7 @@ bool MapEntity::is_origin_point_in(const SDL_Rect *rectangle) {
 bool MapEntity::is_facing_point_in(const SDL_Rect *rectangle) {
 
   SDL_Rect facing_point = get_facing_point();
-
-  return facing_point.x >= rectangle->x && facing_point.x < rectangle->x + rectangle->w
-    && facing_point.y >= rectangle->y && facing_point.y < rectangle->y + rectangle->h;
+  return is_point_in(rectangle, facing_point.x, facing_point.y);
 }
 
 /**

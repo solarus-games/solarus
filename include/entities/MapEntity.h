@@ -143,6 +143,7 @@ class MapEntity {
   const SDL_Rect * get_origin(void);
 
   virtual SDL_Rect get_facing_point(void);
+  virtual SDL_Rect get_facing_point(int direction);
 
   // properties
   virtual void set_map(Map *map);
@@ -162,6 +163,7 @@ class MapEntity {
 
   // collisions
   bool overlaps(const SDL_Rect *rectangle);
+  bool is_point_in(const SDL_Rect *rectangle, int x, int y);
   bool is_origin_point_in(const SDL_Rect *rectangle);
   bool is_facing_point_in(const SDL_Rect *rectangle);
 

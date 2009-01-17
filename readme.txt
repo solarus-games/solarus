@@ -14,6 +14,7 @@ SDL_image
 SDL_ttf
 SDL_Config
 fmodex
+lua5.1
 
 ----------------
 SDL installation

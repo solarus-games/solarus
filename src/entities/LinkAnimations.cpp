@@ -78,7 +78,7 @@ bool Link::is_shield_visible(void) {
 
 /**
  * Returns whether Link's shadow is currently displayed, separated from the tunic sprite.
- * @return true if Link's shield is currently displayed, separated from the tunic sprite
+ * @return true if Link's shadow is currently displayed, separated from the tunic sprite
  */
 bool Link::is_shadow_visible(void) {
   return get_state() == JUMPING;
@@ -161,7 +161,12 @@ void Link::update_sprites(void) {
   }
 
   if (is_shield_visible()) {
-    shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
+    if (walking) {
+      shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
+    }
+    else {
+      shield_sprite->update();
+    }
   }
 
   if (state == CARRYING && walking) {
@@ -204,9 +209,9 @@ void Link::set_animation_stopped(void) {
     stop_displaying_sword();
 
     if (equipment->has_shield()) {
-      
+
       tunic_sprite->set_current_animation("stopped_with_shield");
-      
+
       shield_sprite->set_current_animation("stopped");
       shield_sprite->set_current_direction(direction);
     }
@@ -402,6 +407,7 @@ void Link::set_animation_jumping(void) {
 
   // the shield is not visible when Link is jumping
   if (equipment->has_shield()) {
-    shield_sprite->stop_animation();
+    shield_sprite->set_current_animation("stopped");
+    shield_sprite->set_current_direction(get_animation_direction());
   }
 }

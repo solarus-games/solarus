@@ -407,6 +407,15 @@ void Link::start_spin_attack(void) {
  * @param length length of the jump in pixels
  */
 void Link::start_jumping(int direction, int length) {
+
+  // remove the carried item
+  if (state == CARRYING) {
+    start_throwing();
+  }
+
+  stop_displaying_sword();
+
+  // jump
   set_state(JUMPING);
   set_movement(new JumpMovement(direction, length));
   set_animation_jumping();

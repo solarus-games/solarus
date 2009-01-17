@@ -166,9 +166,11 @@ class Link: public MapEntity, AnimationListener {
   Movement8ByPlayer * get_normal_movement(void);
   int get_movement_direction(void);
   SDL_Rect get_facing_point(void);
+  SDL_Rect get_facing_point(int direction);
   void just_moved(void);
   void set_facing_entity(Detector *detector);
   bool is_facing_obstacle(void);
+  bool is_facing_point_in(const SDL_Rect *rectangle);
 
   // map
   void set_map(Map *map);

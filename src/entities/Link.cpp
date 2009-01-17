@@ -93,17 +93,30 @@ Movement8ByPlayer * Link::get_normal_movement(void) {
  * @return Link's movement direction between 0 and 360, or -1 if he is stopped
  */
 int Link::get_movement_direction(void) {
-
   return get_normal_movement()->get_direction();
 }
 
 /**
- * Returns the point Link is looking at.
- * @return the point Link is looking at
+ * Returns the coordinates of a point in the direction Link's sprite is looking at.
+ * This point is 1 pixel outside Link's collision box. It is used
+ * to determine the actions he can do depending on the entity he is facing
+ * (a bush, a pot, a PNJ...)
+ * If he is not moving, the point returned is where he is looking.
+ * @return the point Link is facing
  */
 SDL_Rect Link::get_facing_point(void) {
 
-  int direction = tunic_sprite->get_current_direction();
+  int direction = get_animation_direction();
+  return get_facing_point(direction);
+}
+
+/**
+ * Returns the point located just outside Link's collision box,
+ * in the specified direction.
+ * @param direction a direction (0 to 3)
+ */
+SDL_Rect Link::get_facing_point(int direction) {
+
   SDL_Rect facing_point;
 
   switch (direction) {
@@ -131,6 +144,9 @@ SDL_Rect Link::get_facing_point(void) {
     facing_point.x = position_in_map.x + 8;
     facing_point.y = position_in_map.y + 16;
     break;
+
+  default:
+    DIE("Invalid direction for get_facing_point(): " << direction);
   }
 
   return facing_point;
@@ -267,6 +283,7 @@ void Link::display_on_map(void) {
   if (is_shadow_visible()) {
     map->display_sprite(shadow_sprite, x, y);
     map->display_sprite(tunic_sprite, x, jump_y);
+    map->display_sprite(shield_sprite, x, jump_y);
   }
   else {
     map->display_sprite(tunic_sprite, x, y);

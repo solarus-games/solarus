@@ -198,7 +198,7 @@ void DialogBox::show_message(MessageId message_id) {
   }
 
   // notify the script
-  zsdx->get_current_script()->event_message_started(message_id);
+  zsdx->game->get_current_script()->event_message_started(message_id);
 }
 
 /**

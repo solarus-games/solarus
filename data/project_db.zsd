@@ -98,6 +98,8 @@
 4	sword_spin_attack_load	sword_spin_attack_load
 4	sword_spin_attack_release	sword_spin_attack_release
 4	throw	throw
+4	timer	timer
+4	timer_hurry	timer_hurry
 4	treasure	treasure
 4	victory	victory
 4	walk_on_grass	walk_on_grass

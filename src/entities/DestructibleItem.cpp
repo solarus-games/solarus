@@ -141,13 +141,12 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
     Link *link = (Link*) entity;
     Link::State state = link->get_state();
     int animation_direction = link->get_animation_direction();
-    int movement_direction = link->get_movement_direction();
 
     if (state == Link::SPIN_ATTACK) {
       cut = true;
     }
     else if (state == Link::SWORD_SWINGING
-	     || (is_obstacle() && movement_direction == animation_direction * 90)) {
+	     || (is_obstacle() && link->is_moving_towards(animation_direction))) {
 
       SDL_Rect facing_point = link->get_facing_point();
 

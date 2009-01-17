@@ -63,6 +63,7 @@ class MapLoader;
 class MapScript;
 class DialogBox;
 class Message;
+class Timer;
 
 // music and sound
 class Music;

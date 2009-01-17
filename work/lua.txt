@@ -1,12 +1,22 @@
 Appel de fonctions LUA depuis le moteur C++ (événements) :
 
-map_started()						 appelé une fois la map chargée
-update()						 appelé en continu
-message_started(message_id)				 appelé au début de l'affichage d'un message
-entity_on_detector(detector_name, entity_name)		 appelé pour certains types de détecteurs lorsqu'une entité est dessus
+event_map_started()						appelé une fois la map chargée
+event_update()							appelé à chaque cycle
+event_set_suspended(suspended)					appelé lorsque le jeu est suspendu ou repris
+event_message_started(message_id)				appelé au début de l'affichage d'un message
+event_entity_on_detector(detector_name, entity_name)		appelé pour certains types de détecteurs lorsqu'une entité est dessus
 
 Appel de fonctions C++ depuis un script LUA :
 
-start_message(message_id)		     affiche un message
-set_message_variable(message_id, value)	     spécifie la valeur de la variable dans un message
-play_sound(sound_id)			     joue un son
+start_message(message_id)					affiche un message
+set_message_variable(message_id, value)				spécifie la valeur de la variable dans un message
+play_sound(sound_id)						joue un son
+give_treasure(treasure_id, savegame_variable)			donne un trésor au joueur (sans coffre)
+give_treasure_with_amount(treasure_id, amount, savegame_variable)		donne un trésor au joueur (sans coffre)
+get_savegame_string(index)
+get_savegame_integer(index)
+get_savegame_boolean(index)
+set_savegame_string(index)
+set_savegame_integer(index)
+set_savegame_boolean(index)
+start_timer(duration, callback, with_sound)			démarre un timer qui appellera une fonction du script une fois terminé

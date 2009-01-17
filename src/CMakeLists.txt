@@ -41,6 +41,7 @@ add_executable (zsdx
   MapScript.cpp
   DialogBox.cpp
   Message.cpp
+  Timer.cpp
 
   # music and sound
   Sound.cpp

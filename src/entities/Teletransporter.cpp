@@ -57,28 +57,33 @@ void Teletransporter::collision(MapEntity *entity_overlapping, CollisionMode col
     if (destination_point_name == "_side") {
 
       // special desination point: side of the map
-      // we determinate the appropriate side based on the teletransporter location 
+      // we determine the appropriate side based on the teletransporter location 
 
       int x = get_x();
       int y = get_y();
 
-      if (x < 0) {
+      if (get_width() == 16 && x == 0) {
 	name += '0';
       }
-      else if (x >= map->get_width()) {
+      else if (get_width() == 16 && x == map->get_width() - 16) {
 	name += '2';
       }
-      else if (y < 0) {
+      else if (get_height() == 16 && y == 0) {
 	name += '3';
       }
-      else if (y >= map->get_height()) {
+      else if (get_height() == 16 && y == map->get_height() - 16) {
 	name += '1';
       }
-      else { // dangerous because of diagonal movements
+      else {
+	DIE("Bad position of teletransporter '" << get_name() << "'"); 
+	/*
+	// dangerous because of diagonal movements
 	int direction = (((Link*) entity_overlapping)->get_movement_direction() / 90 + 2) % 4; 
 	name += ('0' + direction);
+	*/
       }
     }
+
     zsdx->game->set_current_map(destination_map_id, name, transition_style);
   }
 }

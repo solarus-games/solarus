@@ -97,6 +97,26 @@ int Link::get_movement_direction(void) {
 }
 
 /**
+ * Returns whether Link is moving towards the specified direction.
+ * If Link is not moving, false is returned.
+ * @param direction one of the four main directions (0 to 3)
+ * @return true if Link is moving in that direction,
+ * even if he is actually doing a diagonal move
+ */
+bool Link::is_moving_towards(int direction) {
+
+  if (get_movement()->is_stopped()) {
+    return false;
+  }
+
+  int direction8 = direction * 2;
+  int movement_direction8 = get_movement_direction() / 45;
+  return movement_direction8 == direction8
+    || (movement_direction8 + 1) % 8 == direction8
+    || movement_direction8 - 1 == direction8;
+}
+
+/**
  * Returns the coordinates of a point in the direction Link's sprite is looking at.
  * This point is 1 pixel outside Link's collision box. It is used
  * to determine the actions he can do depending on the entity he is facing
@@ -280,10 +300,12 @@ void Link::display_on_map(void) {
   int x = get_x();
   int y = get_y();
 
-  if (is_shadow_visible()) {
+  if (state == JUMPING) {
     map->display_sprite(shadow_sprite, x, y);
     map->display_sprite(tunic_sprite, x, jump_y);
-    map->display_sprite(shield_sprite, x, jump_y);
+    if (equipment->has_shield()) {
+      map->display_sprite(shield_sprite, x, jump_y);
+    }
   }
   else {
     map->display_sprite(tunic_sprite, x, y);

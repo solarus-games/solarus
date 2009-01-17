@@ -288,6 +288,7 @@ void Map::set_suspended(bool suspended) {
 
   this->suspended = suspended;
   entities->set_suspended(suspended);
+  script->set_suspended(suspended);
 }
 
 /**
@@ -367,19 +368,19 @@ void Map::start(void) {
     switch (destination_side) {
 
     case 0: // right side
-      link->set_x(get_width() - 8);
+      link->set_x(get_width() - 24);
       break;
 
     case 1: // top side
-      link->set_y(21);
+      link->set_y(37);
       break;
 
     case 2: // left side
-      link->set_x(8);
+      link->set_x(24);
       break;
 
     case 3: // bottom side
-      link->set_y(get_height() - 3);
+      link->set_y(get_height() - 19);
       break;
 
     default:

@@ -8,3 +8,5 @@ booleans:
 10	link house: chest with shield 1
 11	link house: chest with 50 rupees
 12	link house secret room: chest with a piece of heart
+13	outside world C1: chest with 50 rupees (diagonal jump)
+14	piece of heart near dungeon 1

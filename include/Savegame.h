@@ -22,21 +22,23 @@ class Savegame {
     char strings[64][64];   /**< 64 NULL-terminated strings of 64 characters each (4 Ko) */
     Uint32 integers[2048];  /**< 2048 integers (8 Ko) */
     Uint32 booleans[1024];  /**< 32768 boolean values (4 Ko) */
-    
+
   } SavedData;
 
  public:
 
   /**
-   * Index of each reserved string saved in the file.
+   * Index of each string saved in the file.
    * Do not change these numbers, otherwise you might break
    * the existing savegames.
+   * Values before 63 are used by the engine. The map only have a read-only access to them.
+   * Values above 64 are available for the maps in reading and writing.
    */
   enum StringIndex {
     PLAYER_NAME                     = 0,
 
     /**
-     * @name Joypad customizable keys.
+     * @name Joypad customizable controls.
      * Variables 1 to 9 indicate the SDL joypad action
      * associated to each game key: action, sword, item 1, item 2, pause,
      * right, up, left and down.
@@ -56,12 +58,15 @@ class Savegame {
      * @}
      */
 
+    // values above 32 are available to the maps
   };
 
   /**
-   * Index of each reserved integer saved in the file.
+   * Index of each integer saved in the file.
    * Do not change these numbers, otherwise you might break
    * the existing savegames.
+   * Values before 1023 are used by the engine. The map only have a read-only access to them.
+   * Values above 1024 are available for the maps in reading and writing.
    */
   enum IntegerIndex {
 
@@ -191,7 +196,7 @@ class Savegame {
     // then, same thing for other dungeons
     LAST_DUNGEON_UNUSED_4            = 399, /**< empty place for future new data in dungeon #20 */
 
-    // values above 1024 are available for the maps
+    // values above 1024 are available to the maps
   };
 
  private:

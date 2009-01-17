@@ -2,6 +2,7 @@
 #define ZSDX_MAP_SCRIPT_H
 
 #include "Common.h"
+#include <list>
 
 struct lua_State;
 
@@ -13,13 +14,13 @@ class MapScript {
 
  private:
 
-  lua_State* context;  /** the execution context of the Lua script */
-  string lua_function; /** the */
+  lua_State* context;         /**< the execution context of the Lua script */
+  std::list<Timer*> timers;   /**< the timers currently running for this script */
 
   void register_c_functions(void);
 
-  void call_lua_function(const char *value_function_name);
-  void call_lua_function(const char *value_function_name, int nb_arguments, ...);
+  void call_lua_function(const char *function_name);
+  void call_lua_function(const char *function_name, int nb_arguments, ...);
 
  public:
 
@@ -27,6 +28,8 @@ class MapScript {
   ~MapScript(void);
 
   void update(void);
+  void set_suspended(bool suspended);
+  void add_timer(Timer *timer);
 
   void event_map_started(void);
   void event_message_started(string MessageId);

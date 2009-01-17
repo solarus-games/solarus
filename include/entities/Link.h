@@ -165,6 +165,7 @@ class Link: public MapEntity, AnimationListener {
   // movement
   Movement8ByPlayer * get_normal_movement(void);
   int get_movement_direction(void);
+  bool is_moving_towards(int direction);
   SDL_Rect get_facing_point(void);
   SDL_Rect get_facing_point(int direction);
   void just_moved(void);

@@ -1,6 +1,7 @@
 Appel de fonctions LUA depuis le moteur C++ (événements) :
 
 map_started()						 appelé une fois la map chargée
+update()						 appelé en continu
 message_started(message_id)				 appelé au début de l'affichage d'un message
 entity_on_detector(detector_name, entity_name)		 appelé pour certains types de détecteurs lorsqu'une entité est dessus
 

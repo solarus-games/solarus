@@ -303,6 +303,9 @@ void Map::update(void) {
 
   // update the entities
   entities->update();
+
+  // update the script
+  script->update();
 }
 
 /**

@@ -407,10 +407,15 @@ void Link::start_spin_attack(void) {
  * @param length length of the jump in pixels
  */
 void Link::start_jumping(int direction, int length) {
-  set_movement(new JumpMovement(direction, length));
   set_state(JUMPING);
+  set_movement(new JumpMovement(direction, length));
   set_animation_jumping();
   ResourceManager::get_sound("jump")->play();
+  jump_y = get_y();
+
+  if (get_layer() == LAYER_INTERMEDIATE) {
+    set_layer(LAYER_LOW);
+  }
 }
 
 /**
@@ -422,7 +427,7 @@ void Link::update_jumping(void) {
   movement->update();
   jump_y = get_y() - movement->get_jump_height();
   if (movement->is_finished()) {
-    delete movement;
+    clear_movement();
     set_movement(normal_movement);
     start_free();
   }

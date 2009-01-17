@@ -98,6 +98,7 @@ void Detector::check_collision(MapEntity *entity) {
     }
 
     if (has_collision_mode(COLLISION_FACING_POINT) && check_collision_facing_point(entity)) {
+      entity->set_facing_entity(this);
       collision(entity, COLLISION_FACING_POINT);
     }
 

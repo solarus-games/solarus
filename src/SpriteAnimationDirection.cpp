@@ -79,16 +79,16 @@ SDL_Rect& SpriteAnimationDirection::get_frame(int frame) {
 void SpriteAnimationDirection::display(SDL_Surface *destination, int x, int y,
 				       int current_frame, SDL_Surface *src_image) {
 
-  SDL_Rect position_up_left; // position of the sprite's upper left corner
+  SDL_Rect position_top_left; // position of the sprite's upper left corner
 
   SDL_Rect *current_frame_rect = &frames[current_frame];
 
-  position_up_left.x = x - origin.x;
-  position_up_left.y = y - origin.y;
-  position_up_left.w = current_frame_rect->w;
-  position_up_left.h = current_frame_rect->h;
+  position_top_left.x = x - origin.x;
+  position_top_left.y = y - origin.y;
+  position_top_left.w = current_frame_rect->w;
+  position_top_left.h = current_frame_rect->h;
 
-  SDL_BlitSurface(src_image, current_frame_rect, destination, &position_up_left);
+  SDL_BlitSurface(src_image, current_frame_rect, destination, &position_top_left);
 }
 
 /**

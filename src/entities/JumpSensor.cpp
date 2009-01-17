@@ -1,5 +1,6 @@
 #include "entities/JumpSensor.h"
 #include "entities/Link.h"
+#include "movements/Movement8ByPlayer.h"
 
 /**
  * Creates a jump sensor.
@@ -14,7 +15,7 @@
  */
 JumpSensor::JumpSensor(string name, Layer layer, int x, int y, int width, int height,
 		       int direction, int jump_length):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, width, height),
+  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   jump_length(jump_length) {
 
   set_direction(direction);
@@ -36,6 +37,10 @@ JumpSensor::JumpSensor(string name, Layer layer, int x, int y, int width, int he
 	DIE("This jump sensor is vertical but its width is not 8");
       }
     }
+  }
+  // check the jump length
+  if (jump_length < 16) {
+    DIE("The jump length of this jump sensor is lower than 16");
   }
 }
 
@@ -107,6 +112,8 @@ void JumpSensor::collision(MapEntity *entity_overlapping, CollisionMode collisio
 
   if (entity_overlapping->is_hero()) {
     Link* link = (Link*) entity_overlapping;
-    link->start_jumping(direction, jump_length);
+    if (link->get_normal_movement()->is_moving_enabled()) {
+      link->start_jumping(direction, jump_length);
+    }
   }
 }

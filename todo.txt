@@ -26,17 +26,16 @@ Planning prévisionnel
 ----------------
 
 Non mentionné :
-- Saut depuis les falaises
 - Casino
 - Intro
 - Boss
 - Ecran titre
 - Portes
 
-Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes
-Dimanche 12 octobre 2008 : menu de pause fini, touches configurables, sauvegarde depuis le menu
-Dimanche 19 octobre 2008 : collisions au pixel près, couper les buissons avec l'épée
-Dimanche 26 octobre 2008 : monde extérieur
+[ok] Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes
+[ok] Dimanche 12 octobre 2008 : menu de pause fini, touches configurables, sauvegarde depuis le menu
+[ok] Dimanche 19 octobre 2008 : collisions au pixel près, couper les buissons avec l'épée
+[en cours] Dimanche 26 octobre 2008 : monde extérieur
 Dimanche 2 novembre 2008 : combats (un type d'ennemi)
 Dimanche 9 novembre 2008 : scripts et PNJ
 Dimanche 16 novembre 2008 : maison des rubis

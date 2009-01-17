@@ -173,19 +173,34 @@ void MapScript::call_lua_function(const char *function_name, int nb_arguments, .
   }
 }
 
-// event functions, i.e. functions called by the C++ engine to notify the map script of something
+// event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
+/**
+ * Calls the update() function of the script coutinuously.
+ */
+void MapScript::update(void) {
+  call_lua_function("update");
+}
+
+/**
+ * Notifies the script that the map has just been started.
+ */
 void MapScript::event_map_started(void) {
   call_lua_function("map_started");
 }
 
+/**
+ * Notifies the script that a message has just started to be displayed
+ * in the dialog box.
+ * @param messageId id of the message
+ */
 void MapScript::event_message_started(MessageId messageId) {
   call_lua_function("message_started", 1, messageId.c_str());
 }
 
 /**
- * This function is called by a detector when an entity is overlapping it.
- * Note that all detectors don't notify the map script (i.e. they don't call this function)
+ * Notifies the script that an entity is overlapping a detector.
+ * Note that all detectors don't notify the script (i.e. they don't call this function)
  * because they may have their own behavior.
  * @param detector the detector
  * @param entity the entity

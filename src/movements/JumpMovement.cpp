@@ -20,7 +20,7 @@ const SDL_Rect JumpMovement::basic_translations[8] = {
  * @param length length of the jump
  */
 JumpMovement::JumpMovement(int direction, int length):
-  PathMovement(length, 6, false) {
+  PathMovement(length, 400 / length, false) {
 
   // compute the path
   translation_vectors = new SDL_Rect[length];

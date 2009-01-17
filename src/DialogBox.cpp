@@ -167,7 +167,7 @@ string DialogBox::get_variable(void) {
   if (value == "") {
     DIE("Missing variable in message '" << current_message_id << "'");
   }
-  
+
   return value;
 }
 

@@ -115,6 +115,7 @@ class CarriedItem;
 class DestructibleItem;
 class Chest;
 class JumpSensor;
+class Enemy;
 
 // tiles
 class Tileset;

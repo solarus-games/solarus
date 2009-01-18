@@ -62,7 +62,7 @@ class PickableItem: public Detector {
   Map *map;
 
   ItemType type;          // type of pickable item
-  int savegame_variable;     // savegame index of the possession state of this item,
+  int savegame_variable;  // savegame index of the possession state of this item,
 		          // for certain kinds of items only: a key, a piece of heart...
 
   Sprite *shadow_sprite;                // sprite of the shadow (except for a fairy).

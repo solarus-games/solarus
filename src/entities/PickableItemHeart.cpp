@@ -3,7 +3,7 @@
 #include "Sprite.h"
 
 /**
- * Translation vectors composing the movement of the falling heart.
+ * Translation vectors constituing the movement of the falling heart.
  */
 static const SDL_Rect falling_moves[24] = {
   { 0, 0}, { 0,-2}, { 0,-2}, { 0,-2}, { 0,-2}, { 0,-2}, { 0, 0}, { 0, 0},
@@ -13,13 +13,12 @@ static const SDL_Rect falling_moves[24] = {
 
 /**
  * Creates a pickable heart.
- * @param map the map
  * @param layer layer of the heart to create on the map
  * @param x x coordinate of the heart to create
  * @param y y coordinate of the heart to create
  */
-PickableItemHeart::PickableItemHeart(Map *map, Layer layer, int x, int y):
-  PickableItem(map, layer, x, y, PickableItem::HEART, 0) {
+PickableItemHeart::PickableItemHeart(Layer layer, int x, int y):
+  PickableItem(layer, x, y, PickableItem::HEART, 0) {
 
 }
 

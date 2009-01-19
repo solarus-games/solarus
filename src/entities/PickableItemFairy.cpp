@@ -9,12 +9,11 @@
 /**
  * Creates a pickable fairy.
  * The layer is automatically set to LAYER_HIGH.
- * @param map the map
  * @param x x coordinate of the fairy to create
  * @param y y coordinate of the fairy to create
  */
-PickableItemFairy::PickableItemFairy(Map *map, int x, int y):
-  PickableItem(map, LAYER_HIGH, x, y, PickableItem::FAIRY, 0) {
+PickableItemFairy::PickableItemFairy(int x, int y):
+  PickableItem(LAYER_HIGH, x, y, PickableItem::FAIRY, 0) {
 
   set_layer_ignored(true); // detect collisions even if the fairy is on LAYER_HIGH
 }

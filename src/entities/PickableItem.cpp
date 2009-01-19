@@ -47,7 +47,6 @@ const PickableItem::Properties PickableItem::properties[] = {
 /**
  * Creates a pickable item with the specified type.
  * The type must a normal one (not NONE or RANDOM).
- * @param map the map
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
@@ -56,9 +55,9 @@ const PickableItem::Properties PickableItem::properties[] = {
  * the possession state of this item,
  * only for pickable items that are saved (a key, a piece of heart...)
  */
-PickableItem::PickableItem(Map *map, Layer layer, int x, int y, PickableItem::ItemType type, int savegame_variable):
+PickableItem::PickableItem(Layer layer, int x, int y, PickableItem::ItemType type, int savegame_variable):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
-  map(map), type(type), savegame_variable(savegame_variable),
+  type(type), savegame_variable(savegame_variable),
   shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
 
 }
@@ -84,7 +83,6 @@ PickableItem::~PickableItem(void) {
  *   and the player already has found the item
  * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
  * or one of its subclasses (for more complex items).
- * @param map the map
  * @param layer layer of the pickable item to create on the map (ignored for a fairy)
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
@@ -97,7 +95,7 @@ PickableItem::~PickableItem(void) {
  * @param will_disappear true to make the item disappear after an amout of time
  * @return the pickable item created, or NULL depending on the type
  */
-PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, PickableItem::ItemType type,
+PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::ItemType type,
 				    int savegame_variable, MovementFalling::FallingHeight falling_height, bool will_disappear) {
 
   if (type == RANDOM) {
@@ -110,7 +108,7 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
     return NULL;
   }
 
-  if (type >= SMALL_KEY && type <= BOSS_KEY && !map->is_in_dungeon()) {
+  if (type >= SMALL_KEY && type <= BOSS_KEY && !zsdx->game->get_current_map()->is_in_dungeon()) {
     DIE("Illegal pickable item type " << type << " in a dungeon");
   }
 
@@ -125,17 +123,17 @@ PickableItem * PickableItem::create(Map *map, Layer layer, int x, int y, Pickabl
 
     // special class for the heart
   case HEART:
-    item = new PickableItemHeart(map, layer, x, y);
+    item = new PickableItemHeart(layer, x, y);
     break;
 
     // special class for the fairy
   case FAIRY:
-    item = new PickableItemFairy(map, x, y);
+    item = new PickableItemFairy(x, y);
     break;
 
     // other items: no special class, but directly PickableItem
   default:
-    item = new PickableItem(map, layer, x, y, type, savegame_variable);
+    item = new PickableItem(layer, x, y, type, savegame_variable);
     break;
   }
 

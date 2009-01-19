@@ -56,8 +56,7 @@ class MapEntity {
 
  protected:
 
-  // the map
-  Map *map;
+  Map *map;                /**< the map: this field is automatically set by class MapEntities after creating the entity */
 
   // position (mandatory for all kinds of entities)
 

@@ -110,8 +110,6 @@ void Detector::check_collision(MapEntity *entity) {
 
 /**
  * This function whether a sprite collides with this detector.
- * Depending on the detector collision mode(s), the appropriate check_collision_*
- * functions are called.
  * If there is a collision, the collision(MapEntity*, Sprite*) method is called.
  * @param entity the entity to check
  * @param sprite the sprite of that entity
@@ -123,6 +121,8 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
       && (layer_ignored || get_layer() == entity->get_layer())
       && sprite->get_animation_set()->are_pixel_collisions_enabled()
       && get_sprite(0)->check_collision(sprite, get_x(), get_y(), entity->get_x(), entity->get_y())) {
+
+    // TODO allow a detector to have several pixel collision capable sprites (e.g. green soldier)
 
     collision(entity, sprite);
   }

@@ -59,8 +59,6 @@ class PickableItem: public Detector {
   
   static const Properties properties[];
 
-  Map *map;
-
   ItemType type;          // type of pickable item
   int savegame_variable;  // savegame index of the possession state of this item,
 		          // for certain kinds of items only: a key, a piece of heart...
@@ -81,7 +79,7 @@ class PickableItem: public Detector {
   Uint32 disappear_date;  // date when the item disappears
 
   // creation and initialization
-  PickableItem(Map *map, Layer layer, int x, int y, ItemType type, int savegame_variable);
+  PickableItem(Layer layer, int x, int y, ItemType type, int savegame_variable);
 
   static ItemType choose_random_type(void);
   virtual void initialize_sprites(void);
@@ -97,7 +95,7 @@ class PickableItem: public Detector {
  public:
 
   // creation and destruction
-  static PickableItem * create(Map *map, Layer layer, int x, int y, ItemType type, int savegame_variable,
+  static PickableItem * create(Layer layer, int x, int y, ItemType type, int savegame_variable,
 			       MovementFalling::FallingHeight falling_height, bool will_disappear);
 
   virtual ~PickableItem(void);

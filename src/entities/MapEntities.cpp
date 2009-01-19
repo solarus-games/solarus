@@ -347,7 +347,7 @@ void MapEntities::add_pickable_item(MapEntity::Layer layer, int x, int y,
 				    PickableItem::ItemType pickable_item_type, int savegame_variable,
 				    MovementFalling::FallingHeight falling_height, bool will_disappear) {
 
-  PickableItem *item = PickableItem::create(map, layer, x, y, pickable_item_type,
+  PickableItem *item = PickableItem::create(layer, x, y, pickable_item_type,
 					    savegame_variable, falling_height, will_disappear);
 
   // item can be NULL if the type was NONE or RANDOM
@@ -387,7 +387,7 @@ void MapEntities::add_destructible_item(MapEntity::Layer layer, int x, int y,
 					 DestructibleItem::ItemType destructible_item_type,
 					 PickableItem::ItemType pickable_item_type, int savegame_variable) {
 
-  DestructibleItem *item = new DestructibleItem(map, layer, x, y, destructible_item_type,
+  DestructibleItem *item = new DestructibleItem(layer, x, y, destructible_item_type,
 						pickable_item_type, savegame_variable);
   
   sprite_entities[layer].push_back(item);

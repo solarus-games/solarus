@@ -21,7 +21,7 @@ class PickableItemFairy: public PickableItem {
  public:
 
   // creation and destruction
-  PickableItemFairy(Map *map, int x, int y);
+  PickableItemFairy(int x, int y);
   ~PickableItemFairy(void);
 
   // update

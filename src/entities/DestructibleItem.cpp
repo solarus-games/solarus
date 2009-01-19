@@ -30,7 +30,6 @@ const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
 
 /**
  * Creates a new destructible item with the specified type.
- * @param map the map
  * @param layer layer of the destructible item to create on the map
  * @param x x coordinate of the destructible item to create
  * @param y y coordinate of the destructible item to create
@@ -41,10 +40,10 @@ const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
  * storing the possession state of the pickable item,
  * for certain kinds of pickable items only (a key, a piece of heart...)
  */
-DestructibleItem::DestructibleItem(Map *map, Layer layer, int x, int y, DestructibleItem::ItemType type,
+DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::ItemType type,
 				   PickableItem::ItemType pickable_item, int pickable_item_savegame_variable):
   Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
-  map(map), type(type), pickable_item(pickable_item),
+  type(type), pickable_item(pickable_item),
   pickable_item_savegame_variable(pickable_item_savegame_variable), is_being_cut(false) {
 
   set_origin(8, 13);

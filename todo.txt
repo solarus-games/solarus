@@ -16,6 +16,11 @@
   - portes
   - pnj
 
+- Tileset extérieur :
+  - porte ouverte d'une maison
+  - échelles
+  - haies
+
 ----------------
 Planning prévisionnel
 ----------------

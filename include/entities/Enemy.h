@@ -12,7 +12,7 @@
  * Every enemy sprite must have at least the following 3 animations:
  * "stopped", "walking" and "immobilized".
  * By default, the movement of an enemy is a random walk. The animation of its sprites
- * automically switches between "stopped", "walking", "immobilized" depending
+ * automically switches between "stopped", "walking" and "immobilized" depending
  * its current movement and the attacks it is subject to.
  */
 class Enemy: public Detector {
@@ -27,6 +27,15 @@ class Enemy: public Detector {
     GREEN_SOLDIER,
     BLUE_SOLDIER,
     RED_SOLDIER
+  };
+
+  /**
+   * Enemy ranks.
+   */
+  enum EnemyRank {
+    RANK_NORMAL,
+    RANK_MINIBOSS,
+    RANK_BOSS
   };
 
  protected:
@@ -54,7 +63,16 @@ class Enemy: public Detector {
     ATTACK_NUMBER,
   };
 
-  // attack/defense properties of this enemy
+  /**
+   * This structure contains the parameters needed by the subclasses constructors.
+   */
+  struct ConstructionParameters {
+    string name;
+    Layer layer;
+    int x, y;
+  };
+
+  // attack/defense properties of this type of enemy
   int damage_on_hero;                 /**< number of heart quarters the player loses when he get hurt by this enemy;
 				       * this number is divided depending on the hero's tunic number (default: 1) */
   int life;                           /**< number of health points of the enemy (default: 1) */
@@ -78,14 +96,20 @@ class Enemy: public Detector {
 				       * sound is played),
 				       * - a value of -2 means that this attack immobilizes the enemy */
 
+  // enemy state
+  EnemyRank rank;                      /**< is this enemy a normal enemy, a miniboss or a boss? */
+  int savegame_variable;               /**< index of the boolean variable indicating whether this enemy is killed,
+					* or -1 if it is not saved */
+
   // pickable item
   PickableItem::ItemType pickable_item_type;    /**< type of pickable item that appears when this enemy gets killed */
   int pickable_item_savegame_variable;          /**< savegame variable of the pickable item (if any) */
 
   // creation
-  Enemy(Layer layer, int x, int y, PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
+  Enemy(const ConstructionParameters &params);
+  virtual void initialize(void) = 0; // to initialize the sprites and the movement
 
-  // functions available to the subclasses to define the enemy properties (they can also change directly the fields)
+  // functions available to the subclasses to define the enemy type properties (they can also change directly the fields)
   void set_properties(int damage_on_hero, int life);
   void set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
   void set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
@@ -97,13 +121,12 @@ class Enemy: public Detector {
   // creation and destruction
   virtual ~Enemy(void);
 
-  static Enemy *create(Layer layer, int x, int y, EnemyType type,
+  static Enemy *create(EnemyType type, EnemyRank rank, int savegame_variable,
+		       string name, Layer layer, int x, int y, int direction,
 		       PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
 
   // enemy state
-  virtual void set_suspended(bool suspended);
   virtual void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  virtual void update(void);
 };
 
 #endif

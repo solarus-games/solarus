@@ -136,4 +136,7 @@ class ThrownItemMovement;
 class TargetMovement;
 class JumpMovement;
 
+// enemies
+class SimpleGreenSoldier;
+
 #endif

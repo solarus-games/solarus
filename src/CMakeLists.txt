@@ -115,6 +115,9 @@ add_executable (zsdx
   movements/ThrownItemMovement.cpp
   movements/TargetMovement.cpp
   movements/JumpMovement.cpp
+
+  # enemies
+  enemies/SimpleGreenSoldier.cpp
 )
 
 if (NOT WIN32)

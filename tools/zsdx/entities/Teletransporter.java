@@ -134,11 +134,20 @@ public class Teletransporter extends ActiveEntity {
     }
 
     /**
-     * Returns whether or not the entity is resizable.
+     * Returns whether or not the entity is currently resizable.
      * @return true if the entity is resizable
      */
     public boolean isResizable() {
 	return !initialized || subtype == INVISIBLE;
+    }
+
+    /**
+     * Returns whether two entities of this type can have different
+     * sizes, even if they are not resizable.
+     * @return true
+     */
+    public boolean isSizeVariable() {
+	return true;
     }
 
     /**

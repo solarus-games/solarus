@@ -22,22 +22,22 @@ public class Project {
      * The game resources associated to this project.
      */
     private ResourceDatabase resourceDatabase;
-    
+
     /**
      * Table of the images that have been read.
      */
     private TreeMap<String, Image> imagesLoaded;
-    
+
     /**
      * Objects to notify when a project is loaded.
      */
     private static List<ProjectObserver> observers = new ArrayList<ProjectObserver>();
-    
+
     /**
      * The project currently open.
      */
     private static Project currentProject;
-    
+
     /**
      * Constructs a ZSDX project with the specified path.
      * @param path root path of the project
@@ -47,7 +47,7 @@ public class Project {
 	resourceDatabase = new ResourceDatabase(this);
 	imagesLoaded = new TreeMap<String, Image>();
     }
-    
+
     /**
      * Creates a new ZSDX project in the specified path and sets it
      * as the current project.
@@ -55,9 +55,9 @@ public class Project {
      * @return the project created, or null if there was already an existing project
      */
     public static Project createNew(String path) {
-	
+
 	Project project = new Project(path);
-	
+
 	try {
 	    project.resourceDatabase.load();
 	    
@@ -72,7 +72,7 @@ public class Project {
 	    // a project exists (and the project file is not valid)
 	    project = null;
 	}
-	
+
 	return project;
     }
 
@@ -84,9 +84,9 @@ public class Project {
      * @throws ZSDXException if the project exists but the project file is not valid
      */
     public static Project createExisting(String path) throws ZSDXException {
-	
+
 	Project project = new Project(path);
-	
+
 	try {
 	    project.resourceDatabase.load();
 	    
@@ -97,7 +97,7 @@ public class Project {
 	    // the project doesn't exist
 	    project = null;
 	}
-	
+
 	return project;
     }
     

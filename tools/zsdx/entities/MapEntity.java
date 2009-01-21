@@ -198,7 +198,7 @@ public abstract class MapEntity extends Observable {
 
 	    int width = 0;
 	    int height = 0;
-	    if (isResizable()) {
+	    if (isSizeVariable()) {
 		width = Integer.parseInt(tokenizer.nextToken());
 		height = Integer.parseInt(tokenizer.nextToken());
 	    }
@@ -211,8 +211,8 @@ public abstract class MapEntity extends Observable {
 		setDirection(Integer.parseInt(tokenizer.nextToken()));
 	    }
 
-	    if (isResizable()) {
-		setSize(width, height); // some entities need to know their direction before being resized
+	    if (isSizeVariable()) {
+		setSize(width, height); // some entities need to know their direction before they can be resized
 	    }
 	}
 	catch (NoSuchElementException ex) {
@@ -349,7 +349,7 @@ public abstract class MapEntity extends Observable {
 	buff.append('\t');
 	buff.append(getY());
 
-	if (isResizable()) {
+	if (isSizeVariable()) {
 	    buff.append('\t');
 	    buff.append(getWidth());
 	    buff.append('\t');
@@ -532,6 +532,17 @@ public abstract class MapEntity extends Observable {
      */
     public boolean isResizable() {
 	return false;
+    }
+
+    /**
+     * Returns whether two entities of this type can have different sizes.
+     * This might happen for some kind of entities even if they are not resizable.
+     * If this function returns true, the editor will parse the width an the height 
+     * for this kind of entity.
+     * @return true if two entities of this type can have different sizes
+     */
+    public boolean isSizeVariable() {
+	return isResizable();
     }
 
     /**

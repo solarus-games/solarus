@@ -10,10 +10,9 @@
  * This class stores the attack and defense properties of the enemy.
  * The subclasses have to set these properties and create the enemy's sprites.
  * Every enemy sprite must have at least the following 3 animations:
- * "stopped", "walking" and "immobilized".
- * By default, the movement of an enemy is a random walk. The animation of its sprites
- * automically switches between "stopped", "walking" and "immobilized" depending
- * its current movement and the attacks it is subject to.
+ * "walking", "hurt" and "immobilized" with the four main directions.
+ * The animation of its sprites
+ * automically switches depending on its current movement and the attacks it is subject to.
  */
 class Enemy: public Detector {
 
@@ -32,7 +31,7 @@ class Enemy: public Detector {
   /**
    * Enemy ranks.
    */
-  enum EnemyRank {
+  enum Rank {
     RANK_NORMAL,
     RANK_MINIBOSS,
     RANK_BOSS
@@ -73,10 +72,10 @@ class Enemy: public Detector {
   };
 
   // attack/defense properties of this type of enemy
-  int damage_on_hero;                 /**< number of heart quarters the player loses when he get hurt by this enemy;
+  int damage_on_hero;                 /**< number of heart quarters the player loses when he gets hurt by this enemy;
 				       * this number is divided depending on the hero's tunic number (default: 1) */
   int life;                           /**< number of health points of the enemy (default: 1) */
-  HurtSoundStyle hurt_sound_style;    /**< the sound played when this kind gets hurt by the hero
+  HurtSoundStyle hurt_sound_style;    /**< the sound played when this kind of enemy gets hurt by the hero
 				       * (default: HURT_SOUND_NORMAL) */
   bool pushed_back_when_hurt;         /**< indicates whether the enemy is pushed back when it gets hurt by the hero
 				       * (default: true) */
@@ -97,7 +96,7 @@ class Enemy: public Detector {
 				       * - a value of -2 means that this attack immobilizes the enemy */
 
   // enemy state
-  EnemyRank rank;                      /**< is this enemy a normal enemy, a miniboss or a boss? */
+  Rank rank;                      /**< is this enemy a normal enemy, a miniboss or a boss? */
   int savegame_variable;               /**< index of the boolean variable indicating whether this enemy is killed,
 					* or -1 if it is not saved */
 
@@ -107,9 +106,11 @@ class Enemy: public Detector {
 
   // creation
   Enemy(const ConstructionParameters &params);
-  virtual void initialize(void) = 0; // to initialize the sprites and the movement
+  virtual void initialize(void) = 0; // to initialize the properties, the sprites and the movement
 
   // functions available to the subclasses to define the enemy type properties (they can also change directly the fields)
+  void set_damage(int damage_on_hero);
+  void set_life(int life);
   void set_properties(int damage_on_hero, int life);
   void set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
   void set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
@@ -121,7 +122,7 @@ class Enemy: public Detector {
   // creation and destruction
   virtual ~Enemy(void);
 
-  static Enemy *create(EnemyType type, EnemyRank rank, int savegame_variable,
+  static Enemy *create(EnemyType type, Rank rank, int savegame_variable,
 		       string name, Layer layer, int x, int y, int direction,
 		       PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
 

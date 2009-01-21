@@ -153,6 +153,16 @@ void MapLoader::load_map(Map *map) {
 	break;
       }
 
+    case MapEntity::ENEMY:
+      {
+	int enemy_type, rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
+	iss >> entity_name >> direction >> enemy_type >> rank >> savegame_variable >> pickable_item_type >> savegame_variable;
+	entities->add_enemy(entity_name, (MapEntity::Layer) layer, x, y, direction,
+			    (Enemy::EnemyType) enemy_type, (Enemy::Rank) rank, savegame_variable,
+			    (PickableItem::ItemType) pickable_item_type, pickable_item_savegame_variable);
+	break;
+      }
+
     default:
       DIE("Error while loading map '" << id << "': unknown entity type '" << entity_type << "'");
 

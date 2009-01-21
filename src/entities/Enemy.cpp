@@ -37,7 +37,7 @@ Enemy::~Enemy(void) {
  * @param pickable_item_type type of pickable item the enemy drops
  * @param pickable_item_savegame_variable index of the boolean variable
  */
-Enemy * Enemy::create(EnemyType type, EnemyRank rank, int savegame_variable,
+Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
 		      string name, Layer layer, int x, int y, int direction,
 		      PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable) {
 
@@ -66,6 +66,22 @@ Enemy * Enemy::create(EnemyType type, EnemyRank rank, int savegame_variable,
   enemy->savegame_variable = savegame_variable;
   enemy->pickable_item_type = pickable_item_type;
   enemy->pickable_item_savegame_variable = pickable_item_savegame_variable;
+
+  // set the default properties
+  enemy->damage_on_hero = 1;
+  enemy->life = 1;
+  enemy->hurt_sound_style = HURT_SOUND_NORMAL;
+  enemy->pushed_back_when_hurt = true;
+  enemy->push_back_hero_on_sword = false;
+  enemy->minimum_shield_needed = 0;
+
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    enemy->vulnerabilities[i] = 1;
+  }
+  enemy->vulnerabilities[ATTACK_HOOKSHOT] = -2;
+  enemy->vulnerabilities[ATTACK_BOOMERANG] = -2;
+
+  // let the subclass initialize the enemy
   enemy->initialize();
   enemy->set_rectangle_from_sprite();
 
@@ -79,4 +95,69 @@ Enemy * Enemy::create(EnemyType type, EnemyRank rank, int savegame_variable,
  */
 void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
   // TODO
+}
+
+
+/**
+ * Sets the amount of damage this kind of enemy can make to the hero
+ * @param damage_on_hero number of heart quarters the player loses
+ */
+void Enemy::set_damage(int damage_on_hero) {
+  this->damage_on_hero = damage_on_hero;
+}
+
+/**
+ * Sets the number of health points of the enemy.
+ * @param life number of health points of the enemy
+ */
+void Enemy::set_life(int life) {
+  this->life = life;
+}
+
+/**
+ * Sets some properties of this type of enemy.
+ * @param damage_on_hero number of heart quarters the player loses
+ * @param life number of health points of the enemy
+ */
+void Enemy::set_properties(int damage_on_hero, int life) {
+  set_damage(damage_on_hero);
+  set_life(life);
+}
+
+/**
+ * Sets some properties of this type of enemy.
+ * @param damage_on_hero number of heart quarters the player loses
+ * @param life number of health points of the enemy
+ * @param hurt_sound_style the sound played when this kind of enemy gets hurt by the hero
+ */
+void Enemy::set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style) {
+  set_properties(damage_on_hero, life);
+  this->hurt_sound_style = hurt_sound_style;
+}
+
+/**
+ * Sets all properties of this type of enemy.
+ * @param damage_on_hero number of heart quarters the player loses
+ * @param life number of health points of the enemy
+ * @param hurt_sound_style the sound played when this kind of enemy gets hurt by the hero
+ * @param pushed_back_when_hurt indicates whether the enemy is pushed back when it gets hurt by the hero
+ * @param push_back_hero_on_sword indicates whether the hero is pushed back when he hurts the enemy with his sword
+ * @param minimum_shield_needed shield number needed by the hero to avoid the attack of this enemy,
+ * or 0 to make the attack unavoidable
+ */
+void Enemy::set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
+			   bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed) {
+  set_properties(damage_on_hero, life, hurt_sound_style);
+  this->pushed_back_when_hurt = pushed_back_when_hurt;
+  this->push_back_hero_on_sword = push_back_hero_on_sword;
+  this->minimum_shield_needed = minimum_shield_needed;
+}
+
+/**
+ * Sets whether the enemy is vulnerable to a specified attack.
+ * @param attack an attack
+ * @param reaction how the enemy will react
+ */
+void Enemy::set_vulnerability(Attack attack, int reaction) {
+  vulnerabilities[attack] = reaction;
 }

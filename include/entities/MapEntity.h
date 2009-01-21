@@ -28,6 +28,7 @@ class MapEntity {
     DESTRUCTIBLE_ITEM         = 4, /**< an item that Link can cut or lift: a pot, a bush, a stone... */
     CHEST                     = 5, /**< a chest (small or big) with a treasure */
     JUMP_SENSOR               = 6, /**< a sensor that makes Link jump in a direction */
+    ENEMY                     = 7, /**< an enemy */
   };
 
   /**
@@ -97,7 +98,7 @@ class MapEntity {
 			    * if the entity has a sprite, this direction is considered to be
 			    * the direction of animation of the sprite */
 
-  std::vector<Sprite*> sprites; /**< Sprite(s) representing the entity, not used for all kinds of entities because
+  std::vector<Sprite*> sprites; /**< sprite(s) representing the entity, not used for all kinds of entities because
 			    * some of them are invisible, and some of them handle their sprites themselves */
   Movement *movement;      /**< movement of the entity, not used for all kinds of entities;
 			    * NULL indicates that the entity has no movement */

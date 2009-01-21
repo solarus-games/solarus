@@ -7,6 +7,7 @@
 #include "entities/Teletransporter.h"
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
+#include "entities/Enemy.h"
 #include "movements/MovementFalling.h"
 #include <vector>
 #include <list>
@@ -120,6 +121,12 @@ class MapEntities {
 
   void add_jump_sensor(string name, MapEntity::Layer layer,
 		       int x, int y, int width, int height, int direction, int jump_length);
+
+  void add_enemy(string name, MapEntity::Layer layer, int x, int y, int direction,
+		 Enemy::EnemyType enemy_type, Enemy::Rank rank, int savegame_variable,
+		 PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
+
+  void remove_enemy(Enemy *enemy);
 
   void remove_marked_entities(void);
 

@@ -454,6 +454,34 @@ void MapEntities::add_jump_sensor(string name, MapEntity::Layer layer,
 }
 
 /**
+ * Creates an enemy on the map.
+ * See the documentation of class Enemy for the meaning of each parameter.
+ */
+void MapEntities::add_enemy(string name, MapEntity::Layer layer, int x, int y, int direction,
+			    Enemy::EnemyType enemy_type, Enemy::Rank rank, int savegame_variable,
+			    PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable) {
+
+  Enemy *enemy = Enemy::create(enemy_type, rank, savegame_variable, name, layer, x, y, direction,
+			       pickable_item_type, pickable_item_savegame_variable);
+
+  if (enemy != NULL) {
+
+    sprite_entities[layer].push_back(enemy);
+    detectors.push_back(enemy);
+  }
+  add_entity(enemy);
+}
+
+/**
+ * Removes an enemy from the map.
+ * @param enemy the enemy to remove
+ */
+void MapEntities::remove_enemy(Enemy *enemy) {
+  entities_to_remove.push_back(enemy);
+  enemy->set_being_removed();
+}
+
+/**
  * Removes and destroys the entities placed in the entities_to_remove list. 
  */
 void MapEntities::remove_marked_entities(void) {

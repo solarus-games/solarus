@@ -204,6 +204,7 @@ void Game::update(void) {
  * This functions changes the map when needed and plays the
  * transitions between the two maps. This function is called
  * by the update() function.
+ * Note that the two maps can actually be the same.
  */
 void Game::update_transitions(void) {
 
@@ -225,28 +226,39 @@ void Game::update_transitions(void) {
   // if a transition was playing and has just been finished
   if (transition != NULL && transition->is_over()) {
 
+    Transition::Direction transition_direction = transition->get_direction();
+    delete transition;
+    transition = NULL;
+
     if (reseting) {
       set_next_screen(new TitleScreen());
     }
-    else if (transition->get_direction() == Transition::OUT) {
-      // change the map
-      current_map->leave();
+    else if (transition_direction == Transition::OUT) {
 
-      // unload the previous tileset if the new map uses another one
-      Tileset *old_tileset = current_map->get_tileset();
-      Tileset *new_tileset = next_map->get_tileset();
-      if (new_tileset != old_tileset) {
-	old_tileset->unload();
+      if (next_map == current_map) {
+	current_map->place_hero_on_destination_point();
+	transition = Transition::create(transition_style, Transition::IN);
+	transition->start();
+	next_map = NULL;
       }
+      else {
 
-      load_dungeon();
-      current_map->unload();
-      current_map = next_map;
-      next_map = NULL;
+	// change the map
+	current_map->leave();
+
+	// unload the previous tileset if the new map uses another one
+	Tileset *old_tileset = current_map->get_tileset();
+	Tileset *new_tileset = next_map->get_tileset();
+	if (new_tileset != old_tileset) {
+	  old_tileset->unload();
+	}
+
+	load_dungeon();
+	current_map->unload();
+	current_map = next_map;
+	next_map = NULL;
+      }
     }
-
-    delete transition;
-    transition = NULL;
   }
 
   // if a map has just been set as the current map, start it and play the in transition

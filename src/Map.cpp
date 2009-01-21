@@ -348,6 +348,16 @@ void Map::start(void) {
   zsdx->game->play_music(music_id);
   SDL_SetAlpha(visible_surface, SDL_SRCALPHA, 255);
 
+  place_hero_on_destination_point();
+  started = true;
+  script->event_map_started();
+}
+
+/**
+ * Places the hero at the position specified by the last set_destination_point() call.
+ */
+void Map::place_hero_on_destination_point(void) {
+
   // put Link
   if (destination_point_index >= 0) {
     DestinationPoint *destination_point = entities->get_destination_point(destination_point_index);
@@ -387,10 +397,6 @@ void Map::start(void) {
       DIE("Invalid destination side: " << destination_side);
     }
   }
-
-  started = true;
-
-  script->event_map_started();
 }
 
 /**

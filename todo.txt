@@ -10,7 +10,6 @@
 
 - Bugs: 
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - téléportation sur la même map
 
 - Prochaines grandes étapes :
   - combats

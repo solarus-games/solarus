@@ -171,6 +171,10 @@ void Game::update(void) {
   // update the transitions between maps
   update_transitions();
 
+  if (reseting) {
+    return; // the game may have just been reset
+  }
+
   // update the entity's positions and animations
   AnimatedTile::update();
   current_map->update();
@@ -232,6 +236,7 @@ void Game::update_transitions(void) {
 
     if (reseting) {
       set_next_screen(new TitleScreen());
+      current_map->unload();
     }
     else if (transition_direction == Transition::OUT) {
 

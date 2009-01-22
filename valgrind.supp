@@ -5,7 +5,7 @@
    FMOD_2
    Memcheck:Leak
    fun:calloc
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    fun:_dl_allocate_tls
    fun:pthread_create@@GLIBC_2.1
    fun:_Z21FMOD_OS_Thread_CreatePKcPFjPvES1_20FMOD_THREAD_PRIORITYS1_iPS1_
@@ -28,7 +28,7 @@
    _X11TransWrite_1
    Memcheck:Param
    write(buf)
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    fun:_X11TransWrite
 }
 
@@ -188,12 +188,12 @@
    SDL_Init_3
    Memcheck:Leak
    fun:*alloc
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
    fun:dlopen
    fun:SDL_LoadObject
@@ -208,14 +208,14 @@
    SDL_Init_4
    Memcheck:Leak
    fun:*alloc
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
    fun:dlopen
    fun:SDL_LoadObject
@@ -229,14 +229,14 @@
 {
    SDL_Init_5
    Memcheck:Addr4
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
    fun:dlopen
    fun:SDL_LoadObject
@@ -250,17 +250,17 @@
 {
    SDL_Init_6
    Memcheck:Addr4
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
    fun:dlopen
    fun:SDL_LoadObject
@@ -274,13 +274,13 @@
 {
    SDL_Init_7
    Memcheck:Addr4
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libc-2.7.so
    fun:_dl_sym
    obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
    fun:dlsym
    fun:SDL_LoadFunction
@@ -295,11 +295,11 @@
 {
    SDL_Init_8
    Memcheck:Cond
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libc-2.7.so
    fun:_dl_sym
    obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
    fun:dlsym
    fun:SDL_LoadFunction
@@ -315,10 +315,10 @@
    SDL_Quit_1
    Memcheck:Leak
    fun:malloc
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
    fun:dlclose
    fun:SDL_UnloadObject
@@ -333,11 +333,11 @@
    SDL_Quit_2
    Memcheck:Leak
    fun:malloc
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/lib/tls/i686/cmov/libdl-2.7.so
    fun:dlclose
    fun:SDL_UnloadObject
@@ -361,7 +361,7 @@
    SDL_SetVideoMode_1
    Memcheck:Param
    writev(vector[...])
-   obj:/lib/ld-2.7.so
+   obj:/lib/ld-2.8.90.so
    obj:/usr/lib/libxcb.so.1.0.0
    obj:/usr/lib/libxcb.so.1.0.0
    obj:/usr/lib/libxcb.so.1.0.0

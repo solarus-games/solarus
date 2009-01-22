@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include "entities/PickableItem.h"
+#include "entities/Link.h"
 
 /**
  * Abstract class representing an enemy.

@@ -34,6 +34,7 @@ class Link: public MapEntity, AnimationListener {
     LIFTING,                 /**< Link is lifting an destroyable item (a pot, a bush, etc.) */
     BRANDISHING_TREASURE,    /**< Link is brandishing a treasure */
     JUMPING,                 /**< Link is jumping */
+    HURT,                    /**< Link is hurt */
     FREEZED,                 /**< Link cannot move for various possible reasons */
   };
 
@@ -144,6 +145,7 @@ class Link: public MapEntity, AnimationListener {
   void set_animation_pushing(void);
   void set_animation_lifting(void);
   void set_animation_jumping(void);
+  void set_animation_hurt(void);
 
   void save_animation_direction(void);
   void restore_animation_direction(void);
@@ -200,6 +202,7 @@ class Link: public MapEntity, AnimationListener {
   void freeze(void);
   void give_treasure(Treasure *treasure);
   void start_jumping(int direction, int length);
+  void hurt(int life);
 
   // keys
   void key_pressed(Controls::GameKey key);

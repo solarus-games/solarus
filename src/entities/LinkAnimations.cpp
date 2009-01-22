@@ -405,9 +405,21 @@ void Link::set_animation_lifting(void) {
 void Link::set_animation_jumping(void) {
   tunic_sprite->set_current_animation("jumping");
 
-  // the shield is not visible when Link is jumping
   if (equipment->has_shield()) {
     shield_sprite->set_current_animation("stopped");
     shield_sprite->set_current_direction(get_animation_direction());
+  }
+}
+
+/**
+ * Starts the "hurt" animation of Link's sprites.
+ * Link's state should be HURT.
+ */
+void Link::set_animation_hurt(void) {
+  tunic_sprite->set_current_animation("hurt");
+
+  // the shield is not visible when Link is hurt
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
   }
 }

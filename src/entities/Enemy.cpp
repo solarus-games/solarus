@@ -188,7 +188,8 @@ void Enemy::set_suspended(bool suspended) {
 void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero()) {
-    //    std::cout << "Link is hurt!\n";
+    Link *link = (Link*) entity_overlapping;
+    link->hurt(damage_on_hero);
   }
 }
 

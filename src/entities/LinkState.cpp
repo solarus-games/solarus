@@ -443,6 +443,26 @@ void Link::update_jumping(void) {
 }
 
 /**
+ * Hurts Link.
+ * @param life number of heart quarters to remove (this number may be reduced by the tunic)
+ */
+void Link::hurt(int life) {
+
+  // remove the carried item
+  if (state == CARRYING) {
+    start_throwing();
+  }
+  stop_displaying_sword();
+
+  equipment->remove_hearts(life); // TODO take the tunic into account
+  set_state(HURT);
+  // TODO  set_movement(new JumpMovement(direction, length)); // make a movement class to move an entity for an amount of time?
+  // TODO compute a direction
+  set_animation_hurt();
+  ResourceManager::get_sound("link_hurt")->play();
+}
+
+/**
  * This function is called when an animation of Link's sprite is over.
  * @param sprite the sprite
  */
@@ -467,6 +487,10 @@ void Link::animation_over(Sprite *sprite) {
     break;
     
   case SPIN_ATTACK:
+    start_free();
+    break;
+
+  case HURT:
     start_free();
     break;
 

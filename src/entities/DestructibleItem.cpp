@@ -189,7 +189,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
 
     if (cut) {
       get_destruction_sound()->play();
-      get_last_sprite()->set_current_animation("destroy");
+      get_sprite()->set_current_animation("destroy");
       set_obstacle(OBSTACLE_NONE);
       is_being_cut = true;
 
@@ -242,7 +242,7 @@ void DestructibleItem::update(void) {
 
   MapEntity::update();
 
-  if (is_being_cut && get_last_sprite()->is_over()) {
+  if (is_being_cut && get_sprite()->is_over()) {
 
     // remove the item from the map
     map->get_entities()->remove_destructible_item(this);

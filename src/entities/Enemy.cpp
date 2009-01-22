@@ -161,3 +161,17 @@ void Enemy::set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sou
 void Enemy::set_vulnerability(Attack attack, int reaction) {
   vulnerabilities[attack] = reaction;
 }
+
+/**
+ * Updates the enemy.
+ */
+void Enemy::update(void) {
+  MapEntity::update();
+}
+
+/**
+ * Suspends or resumes the enemy.
+ */
+void Enemy::set_suspended(bool suspended) {
+  MapEntity::set_suspended(suspended);
+}

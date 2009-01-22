@@ -27,7 +27,7 @@ Teletransporter::Teletransporter(string name, MapEntity::Layer layer, int x, int
   
   if (subtype == YELLOW) {
     create_sprite("entities/teletransporter");
-    get_last_sprite()->set_current_animation("yellow");
+    get_sprite()->set_current_animation("yellow");
   }
   else {
     // TODO

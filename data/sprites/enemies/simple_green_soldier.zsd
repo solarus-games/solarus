@@ -10,13 +10,13 @@ immobilized enemies/simple_green_soldier.png 4 0 -1
 48	64	24	32	12	29	1	1
 48	96	24	32	12	29	1	1
 
-stopped0 enemies/simple_green_soldier.png 4 500 -1
+stopped_watching_left enemies/simple_green_soldier.png 4 500 -1
 0	0	24	32	12	29	1	1
 0	32	24	32	12	29	1	1
 0	64	24	32	12	29	1	1
 0	96	24	32	12	29	1	1
 
-stopped1 enemies/simple_green_soldier.png 4 500 -1
+stopped_watching_right enemies/simple_green_soldier.png 4 500 -1
 24	0	24	32	12	29	1	1
 24	32	24	32	12	29	1	1
 24	64	24	32	12	29	1	1

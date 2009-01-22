@@ -248,7 +248,7 @@ void PickableItem::initialize_sprites(void) {
 
   // create the sprite and set its animation
   create_sprite(properties[type].animation_set_id);
-  Sprite *item_sprite = get_last_sprite();
+  Sprite *item_sprite = get_sprite();
   item_sprite->set_current_animation(properties[type].animation_name);
 
   // set the origin point and the size of the entity

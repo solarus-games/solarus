@@ -75,7 +75,7 @@ CarriedItem::~CarriedItem(void) {
 void CarriedItem::set_animation_stopped(void) {
 
   if (!is_lifting && !is_throwing) {
-    Sprite *sprite = get_last_sprite();
+    Sprite *sprite = get_sprite();
     sprite->set_current_animation("stopped");
   }
 }
@@ -86,7 +86,7 @@ void CarriedItem::set_animation_stopped(void) {
  */
 void CarriedItem::set_animation_walking(void) {
   if (!is_lifting && !is_throwing) {
-    Sprite *sprite = get_last_sprite();
+    Sprite *sprite = get_sprite();
     sprite->set_current_animation("walking");
   }
 }
@@ -106,7 +106,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
   ResourceManager::get_sound("throw")->play();
 
   // stop the sprite animation
-  Sprite *sprite = get_last_sprite();
+  Sprite *sprite = get_sprite();
   sprite->set_current_animation("stopped");
 
   // remove the "throw" icon
@@ -123,7 +123,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
  * @return true if the item is broken
  */
 bool CarriedItem::is_broken(void) {
-  return is_breaking && get_last_sprite()->is_over() ;
+  return is_breaking && get_sprite()->is_over() ;
 }
 
 /**
@@ -179,7 +179,7 @@ void CarriedItem::update(void) {
       is_throwing = false;
       is_breaking = true;
       destruction_sound->play();
-      get_last_sprite()->set_current_animation("destroy");
+      get_sprite()->set_current_animation("destroy");
 
       if (throwing_direction == 3) {
 	// destroy the item where its shadow is

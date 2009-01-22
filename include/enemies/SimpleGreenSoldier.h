@@ -12,6 +12,9 @@ class SimpleGreenSoldier: public Enemy {
   ~SimpleGreenSoldier(void);
 
   void initialize(void);
+  void update(void);
+
+  void walk(int direction);
 };
 
 #endif

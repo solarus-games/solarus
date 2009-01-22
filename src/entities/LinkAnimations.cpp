@@ -170,7 +170,7 @@ void Link::update_sprites(void) {
   }
 
   if (state == CARRYING && walking) {
-    lifted_item->get_last_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
+    lifted_item->get_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
   }
 }
 

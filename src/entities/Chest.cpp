@@ -51,7 +51,7 @@ void Chest::initialize_sprite(void) {
 
   // create the sprite
   create_sprite("entities/chest");
-  Sprite *sprite = get_last_sprite();
+  Sprite *sprite = get_sprite();
 
   // set its animation
   string animation = big_chest ? "big_" : "small_";
@@ -153,7 +153,7 @@ void Chest::action_key_pressed(void) {
 
     if (!big_chest || dungeon_equipment->has_big_key()) {
       ResourceManager::get_sound("chest_open")->play();
-      get_last_sprite()->set_current_animation(big_chest ? "big_open" : "small_open");
+      get_sprite()->set_current_animation(big_chest ? "big_open" : "small_open");
       open = true;
       treasure_date = SDL_GetTicks() + 300;
   

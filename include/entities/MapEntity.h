@@ -153,7 +153,7 @@ class MapEntity {
 
   // sprites
   Sprite * get_sprite(int index);
-  Sprite * get_last_sprite(void);
+  Sprite * get_sprite(void);
 
   // movement
   Movement * get_movement(void);

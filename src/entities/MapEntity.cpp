@@ -331,7 +331,7 @@ Sprite * MapEntity::get_sprite(int index) {
  * for this entity.
  * @return the last sprite created
  */
-Sprite * MapEntity::get_last_sprite(void) {
+Sprite * MapEntity::get_sprite(void) {
   return sprites.back();
 }
 

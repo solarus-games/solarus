@@ -128,6 +128,8 @@ class Enemy: public Detector {
 
   // enemy state
   virtual void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  virtual void update(void);
+  virtual void set_suspended(bool suspended);
 };
 
 #endif

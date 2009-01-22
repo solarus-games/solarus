@@ -6,9 +6,10 @@
 
 /**
  * Constructor.
+ * @param map the map
  */
-MovementWithCollision::MovementWithCollision(void):
-  map(zsdx->game->get_current_map()) {
+MovementWithCollision::MovementWithCollision(Map *map):
+  map(map) {
 
 }
 

@@ -81,11 +81,19 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
   enemy->vulnerabilities[ATTACK_HOOKSHOT] = -2;
   enemy->vulnerabilities[ATTACK_BOOMERANG] = -2;
 
-  // let the subclass initialize the enemy
-  enemy->initialize();
-  enemy->set_rectangle_from_sprite();
-
   return enemy;
+}
+
+/**
+ * Sets the map.
+ * @param map the map
+ */
+void Enemy::set_map(Map *map) {
+
+  MapEntity::set_map(map);
+
+  // let the subclass initialize the enemy
+  initialize();
 }
 
 /**

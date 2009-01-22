@@ -3,8 +3,10 @@
 
 /**
  * Constructor.
+ * @param map the map
  */
-MovementWithSmoothCollision::MovementWithSmoothCollision(void) {
+MovementWithSmoothCollision::MovementWithSmoothCollision(Map *map):
+  MovementWithCollision(map) {
 
 }
 

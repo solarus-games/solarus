@@ -125,6 +125,7 @@ class Enemy: public Detector {
   static Enemy *create(EnemyType type, Rank rank, int savegame_variable,
 		       string name, Layer layer, int x, int y, int direction,
 		       PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
+  void set_map(Map *map);
 
   // enemy state
   virtual void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

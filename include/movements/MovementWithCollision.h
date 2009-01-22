@@ -18,7 +18,7 @@ class MovementWithCollision: public Movement {
 
  public:
 
-  MovementWithCollision(void);
+  MovementWithCollision(Map *map);
   virtual ~MovementWithCollision(void);
 
   void set_map(Map *map);

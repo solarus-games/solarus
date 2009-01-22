@@ -7,8 +7,8 @@
  * @param map the map where the item is thrown
  * @param direction direction where the item is thrown (0 to 3)
  */
-ThrownItemMovement::ThrownItemMovement(int direction):
-  MovementWithCollision() {
+ThrownItemMovement::ThrownItemMovement(Map *map, int direction):
+  MovementWithCollision(map) {
 
   set_speed(20);
   set_direction(direction * 90);

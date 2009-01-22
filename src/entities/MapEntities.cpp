@@ -91,7 +91,6 @@ MapEntity::Obstacle MapEntities::get_obstacle_tile(MapEntity::Layer layer, int x
 
   int width8 = map->get_width8();
   return obstacle_tiles[layer][(y / 8) * width8 + (x / 8)];
-
 }
 
 /**

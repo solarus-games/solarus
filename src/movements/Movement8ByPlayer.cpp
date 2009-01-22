@@ -50,6 +50,7 @@ static const int directions[] = {
  * @param speed movement speed
  */
 Movement8ByPlayer::Movement8ByPlayer(int speed):
+  MovementWithSmoothCollision(NULL),
   started(false), speed(speed), can_move(false), direction_mask(0) {
 
 }

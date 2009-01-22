@@ -25,7 +25,7 @@ class ThrownItemMovement: public MovementWithCollision {
 
  public:
 
-  ThrownItemMovement(int direction);
+  ThrownItemMovement(Map *map, int direction);
   ~ThrownItemMovement(void);
 
   int get_item_height(void);

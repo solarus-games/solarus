@@ -115,7 +115,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
 
   // set the movement
   clear_movement();
-  set_movement(new ThrownItemMovement(direction));
+  set_movement(new ThrownItemMovement(map, direction));
 }
 
 /**

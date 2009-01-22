@@ -40,9 +40,11 @@ Detector::~Detector(void) {
 void Detector::set_collision_modes(int collision_modes) {
 
   if (collision_modes & COLLISION_SPRITE) {
-    get_sprite(0)->get_animation_set()->enable_pixel_collisions();
-  }
 
+    for (unsigned int i = 0; i < sprites.size(); i++) {
+      get_sprite(i)->get_animation_set()->enable_pixel_collisions();
+    }
+  }
   this->collision_modes = collision_modes;
 }
 

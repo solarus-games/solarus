@@ -350,6 +350,7 @@ void Link::rebuild_equipment(void) {
   int tunic_number = equipment->get_tunic();
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
+  tunic_sprite->get_animation_set()->enable_pixel_collisions();
   tunic_sprite->set_animation_listener(this); // to be notified when an animation of Link is over
 
   shadow_sprite = new Sprite("entities/shadow");

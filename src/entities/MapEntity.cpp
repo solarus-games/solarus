@@ -510,10 +510,6 @@ void MapEntity::update(void) {
 
     Sprite *sprite = sprites[i];
 
-    if (sprite->get_current_direction() != direction) {
-      sprite->set_current_direction(direction);
-    }
-
     sprite->update();
     if (sprite->has_frame_changed() && sprite->get_animation_set()->are_pixel_collisions_enabled()) {
       map->check_collision_with_detectors(this, sprite);

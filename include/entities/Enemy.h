@@ -128,9 +128,10 @@ class Enemy: public Detector {
   void set_map(Map *map);
 
   // enemy state
-  virtual void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   virtual void update(void);
   virtual void set_suspended(bool suspended);
+  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void collision(MapEntity *entity, Sprite *sprite_overlapping);
 };
 
 #endif

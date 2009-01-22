@@ -28,15 +28,14 @@ void SimpleGreenSoldier::initialize(void) {
   set_damage(1);
   set_life(2);
 
-  // movement
-  set_movement(new MovementWithCollision(map));
-
   // sprite
   create_sprite("enemies/simple_green_soldier");
   set_size(16, 24);
   set_origin(8, 21);
 
-  walk(direction);
+  // movement
+  set_movement(new MovementWithCollision(map));
+  walk(Random::get_number(4));
 }
 
 /**
@@ -63,7 +62,6 @@ void SimpleGreenSoldier::update(void) {
   if (sprite->is_over()) {
 
     int direction = sprite->get_current_direction();
-    std::cout << "sprite dir " << sprite->get_current_direction() << std::endl;
     if (animation == "stopped_watching_left") {
       walk((direction + 1) % 4);
     }
@@ -82,6 +80,6 @@ void SimpleGreenSoldier::walk(int direction) {
   Sprite *sprite = get_sprite();
   sprite->set_current_animation("walking");
   sprite->set_current_direction(direction);
-  get_movement()->set_speed(6);
+  get_movement()->set_speed(4);
   get_movement()->set_direction(direction * 90);
 }

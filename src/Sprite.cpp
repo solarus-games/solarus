@@ -131,6 +131,7 @@ int Sprite::get_current_direction(void) {
 void Sprite::set_current_direction(int current_direction) {
 
   if (current_direction != this->current_direction) {
+
     this->current_direction = current_direction;
     set_current_frame(0);
   }

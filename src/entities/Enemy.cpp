@@ -2,6 +2,8 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
+#include "Sprite.h"
+#include "SpriteAnimationSet.h"
 #include "enemies/SimpleGreenSoldier.h"
 
 /**
@@ -10,7 +12,7 @@
  * @param params the name and position of the enemy
  */
 Enemy::Enemy(const ConstructionParameters &params):
-  Detector(COLLISION_RECTANGLE, params.name, params.layer, params.x, params.y, 0, 0) {
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0) {
 
 }
 
@@ -94,17 +96,11 @@ void Enemy::set_map(Map *map) {
 
   // let the subclass initialize the enemy
   initialize();
-}
 
-/**
- * This function is called when the enemy collides with another entity.
- * @param entity_overlapping the other entity
- * @param collision_mode the collision mode that detected the collision
- */
-void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  // TODO
+  for (unsigned int i = 0; i < sprites.size(); i++) {
+    get_sprite(i)->get_animation_set()->enable_pixel_collisions();
+  }
 }
-
 
 /**
  * Sets the amount of damage this kind of enemy can make to the hero
@@ -182,4 +178,29 @@ void Enemy::update(void) {
  */
 void Enemy::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended);
+}
+
+/**
+ * This function is called when the enemy collides with another entity.
+ * @param entity_overlapping the other entity
+ * @param collision_mode the collision mode that detected the collision
+ */
+void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+
+  if (entity_overlapping->is_hero()) {
+    //    std::cout << "Link is hurt!\n";
+  }
+}
+
+/**
+ * This function is called when the enemy's sprite collides with another
+ * entity's sprite.
+ * @param entity_overlapping the other entity
+ * @param sprite_overlapping the sprite of this entity that is overlapping the enemy
+ */
+void Enemy::collision(MapEntity *entity, Sprite *sprite_overlapping) {
+  
+  if (entity->is_hero() && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
+    //    std::cout << "The enemy is hurt!\n";
+  }
 }

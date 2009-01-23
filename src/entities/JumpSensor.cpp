@@ -52,6 +52,14 @@ JumpSensor::~JumpSensor(void) {
 }
 
 /**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType JumpSensor::get_type() {
+  return JUMP_SENSOR;
+}
+
+/**
  * Checks whether an entity's collides with this jump sensor.
  * The test depends on the sensor's shape.
  * @param entity the entity

@@ -39,7 +39,7 @@ void TargetMovement::update(void) {
     }
     else {
       // special case (cannot divide by zero and compute atan)
-      angle = (dx > 0) ? 0 : PI_OVER_2;
+      angle = (dy > 0) ? -PI_OVER_2 : PI_OVER_2;
     }
 
     sign_x = dx >= 0 ? 1 : -1;

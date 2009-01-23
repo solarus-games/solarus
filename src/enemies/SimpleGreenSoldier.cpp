@@ -1,5 +1,5 @@
 #include "enemies/SimpleGreenSoldier.h"
-#include "movements/MovementWithCollision.h"
+#include "movements/StraightMovement.h"
 #include "Random.h"
 #include "Sprite.h"
 
@@ -25,8 +25,9 @@ SimpleGreenSoldier::~SimpleGreenSoldier(void) {
 void SimpleGreenSoldier::initialize(void) {
 
   // attack/defense properties
-  set_damage(1);
+  set_damage(2);
   set_life(2);
+  minimum_shield_needed = 2;
 
   // sprite
   create_sprite("enemies/simple_green_soldier");
@@ -34,7 +35,16 @@ void SimpleGreenSoldier::initialize(void) {
   set_origin(8, 21);
 
   // movement
-  set_movement(new MovementWithCollision(map));
+  set_movement(new StraightMovement(map, 0, 0, 0));
+}
+
+/**
+ * This function is called when the enemy need to restart its movement
+ * because something happened (for example the enemy has just been created,
+ * or it was just hurt).
+ */
+void SimpleGreenSoldier::restart(void) {
+  Enemy::restart();
   walk(Random::get_number(4));
 }
 
@@ -45,28 +55,30 @@ void SimpleGreenSoldier::update(void) {
 
   Enemy::update();
 
-  Sprite *sprite = get_sprite();
-  string animation = sprite->get_current_animation();
-  if (get_movement()->is_stopped() && animation == "walking") {
+  if (!is_killed()) {
+    Sprite *sprite = get_sprite();
+    string animation = sprite->get_current_animation();
+    if (get_movement()->is_stopped() && animation == "walking") {
 
-    int rand = Random::get_number(2);
+      int rand = Random::get_number(2);
 
-    if (rand == 0) {
-      sprite->set_current_animation("stopped_watching_left");
+      if (rand == 0) {
+	sprite->set_current_animation("stopped_watching_left");
+      }
+      else {
+	sprite->set_current_animation("stopped_watching_right");
+      }
     }
-    else {
-      sprite->set_current_animation("stopped_watching_right");
-    }
-  }
 
-  if (sprite->is_over()) {
+    if (sprite->is_over()) {
 
-    int direction = sprite->get_current_direction();
-    if (animation == "stopped_watching_left") {
-      walk((direction + 1) % 4);
-    }
-    else if (animation == "stopped_watching_right") {
-      walk((direction + 3) % 4);
+      int direction = sprite->get_current_direction();
+      if (animation == "stopped_watching_left") {
+	walk((direction + 1) % 4);
+      }
+      else if (animation == "stopped_watching_right") {
+	walk((direction + 3) % 4);
+      }
     }
   }
 }
@@ -80,6 +92,8 @@ void SimpleGreenSoldier::walk(int direction) {
   Sprite *sprite = get_sprite();
   sprite->set_current_animation("walking");
   sprite->set_current_direction(direction);
-  get_movement()->set_speed(4);
-  get_movement()->set_direction(direction * 90);
+
+  StraightMovement *movement = (StraightMovement*) get_movement();
+  int seconds = 2 + Random::get_number(3);
+  movement->start(4, direction * 90, seconds * 1000);
 }

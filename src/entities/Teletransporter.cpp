@@ -42,6 +42,14 @@ Teletransporter::~Teletransporter(void) {
 }
 
 /**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType Teletransporter::get_type() {
+  return TELETRANSPORTER;
+}
+
+/**
  * This function is called by the engine when an entity overlaps the teletransporter.
  * This is a redefinition of Detector::collision().
  * The map is not notified anymore: here we just make Link leave the map.

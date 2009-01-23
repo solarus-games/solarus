@@ -38,6 +38,8 @@ class Teletransporter: public Detector {
 		  MapId destination_map_id, string destination_point_name);
   ~Teletransporter(void);
 
+  EntityType get_type(void);
+
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
 };

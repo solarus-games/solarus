@@ -25,5 +25,5 @@ stopped_watching_right enemies/simple_green_soldier.png 4 500 -1
 hurt enemies/simple_green_soldier.png 4 50 0
 96	0	24	32	12	29	2	2
 96	32	24	32	12	29	2	2
-96	64	24	32	32	29	2	2
+96	64	24	32	12	29	2	2
 96	96	24	32	12	29	2	2

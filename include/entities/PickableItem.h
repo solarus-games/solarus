@@ -100,6 +100,11 @@ class PickableItem: public Detector {
 
   virtual ~PickableItem(void);
 
+  EntityType get_type(void);  
+
+  // properties
+  static bool can_disappear(ItemType type);
+
   // item state
   virtual void set_suspended(bool suspended);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

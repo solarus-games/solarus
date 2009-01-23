@@ -1,10 +1,20 @@
 #include "entities/Enemy.h"
+#include "entities/Link.h"
+#include "entities/MapEntities.h"
+#include "entities/PickableItem.h"
+#include "entities/CarriedItem.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
+#include "Equipment.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
+#include "ResourceManager.h"
+#include "Sound.h"
+#include "Map.h"
 #include "enemies/SimpleGreenSoldier.h"
+#include "movements/StraightMovement.h"
+#include "movements/MovementFalling.h"
 
 /**
  * Creates an enemy.
@@ -12,7 +22,8 @@
  * @param params the name and position of the enemy
  */
 Enemy::Enemy(const ConstructionParameters &params):
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0) {
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
+  being_hurt(false), invulnerable(false), can_attack(true) {
 
 }
 
@@ -21,6 +32,14 @@ Enemy::Enemy(const ConstructionParameters &params):
  */
 Enemy::~Enemy(void) {
 
+}
+
+/**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType Enemy::get_type() {
+  return ENEMY;
 }
 
 /**
@@ -100,6 +119,8 @@ void Enemy::set_map(Map *map) {
   for (unsigned int i = 0; i < sprites.size(); i++) {
     get_sprite(i)->get_animation_set()->enable_pixel_collisions();
   }
+
+  restart();
 }
 
 /**
@@ -171,6 +192,51 @@ void Enemy::set_vulnerability(Attack attack, int reaction) {
  */
 void Enemy::update(void) {
   MapEntity::update();
+
+  if (suspended) {
+    return;
+  }
+
+  if (being_hurt) {
+    StraightMovement *hurt_movement = (StraightMovement*) get_movement();
+    if (hurt_movement->is_finished()) {
+
+      being_hurt = false;
+
+      if (life <= 0) {
+	kill();
+      }
+      else {
+
+	if (pushed_back_when_hurt) {
+	  set_movement(normal_movement); // restore the previous movement
+	  delete hurt_movement;
+	}
+	restart();
+      }
+    }
+  }
+
+  if (life > 0 && invulnerable && SDL_GetTicks() >= vulnerable_again_date) {
+    invulnerable = false;
+  }
+
+  if (life > 0 && !can_attack && SDL_GetTicks() >= can_attack_again_date) {
+    can_attack = true;
+  }
+
+  if (is_killed() && get_sprite()->is_over()) {
+
+    // create the pickable item
+    if (pickable_item_type != PickableItem::NONE) {
+      bool will_disappear = PickableItem::can_disappear(pickable_item_type);
+      map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item_type,
+					     pickable_item_savegame_variable, MovementFalling::HIGH, will_disappear);
+    }
+
+    // remove the enemy
+    map->get_entities()->remove_enemy(this);
+  }
 }
 
 /**
@@ -178,6 +244,26 @@ void Enemy::update(void) {
  */
 void Enemy::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended);
+
+  if (!suspended) {
+
+    if (invulnerable) {
+      vulnerable_again_date += SDL_GetTicks() - when_suspended;
+    }
+
+    if (!can_attack) {
+      can_attack_again_date += SDL_GetTicks() - when_suspended;
+    }
+  }
+}
+
+/**
+ * This function is called when the enemy need to restart its movement
+ * because something happened (for example the enemy has just been created,
+ * or it was just hurt).
+ */
+void Enemy::restart(void) {
+
 }
 
 /**
@@ -186,11 +272,7 @@ void Enemy::set_suspended(bool suspended) {
  * @param collision_mode the collision mode that detected the collision
  */
 void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-
-  if (entity_overlapping->is_hero()) {
-    Link *link = (Link*) entity_overlapping;
-    link->hurt(damage_on_hero);
-  }
+  entity_overlapping->collision_with_enemy(this);
 }
 
 /**
@@ -200,8 +282,150 @@ void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
  * @param sprite_overlapping the sprite of this entity that is overlapping the enemy
  */
 void Enemy::collision(MapEntity *entity, Sprite *sprite_overlapping) {
-  
-  if (entity->is_hero() && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
-    //    std::cout << "The enemy is hurt!\n";
+  entity->collision_with_enemy(this, sprite_overlapping);
+}
+
+/**
+ * Attacks the hero if possible.
+ * This function is called when there is a collision between the enemy and the hero.
+ * @param hero the hero
+ */
+void Enemy::attack_hero(Link *hero) {
+
+  if (can_attack) {
+
+    bool hero_protected = false;
+    if (minimum_shield_needed != 0 &&
+	zsdx->game->get_equipment()->get_shield() >= minimum_shield_needed) {
+
+      double angle = hero->get_vector_angle(this);
+      int protected_direction = (int) ((angle + PI_OVER_2 / 2.0) * 4 / TWO_PI);
+      protected_direction = (protected_direction + 4) % 4;
+
+      hero_protected = (hero->get_animation_direction() == protected_direction);
+    }
+
+    if (hero_protected) {
+      attack_stopped_by_hero_shield();
+    }
+    else {
+      hero->hurt(this, damage_on_hero);
+    }
   }
+}
+
+/**
+ * This function is called when the hero stops an attack with his shield.
+ * By default, the shield sound is played and the enemy cannot attack again for a while.
+ */
+void Enemy::attack_stopped_by_hero_shield(void) {
+  ResourceManager::get_sound("shield")->play();
+  can_attack = false;
+  can_attack_again_date = SDL_GetTicks() + 1000;
+}
+
+/**
+ * Returns the sound to play when the enemy is hurt.
+ * @return the sound to play when the enemy is hurt
+ */
+Sound * Enemy::get_hurt_sound(void) {
+
+  static const SoundId sound_ids[] = {"enemy_hurt", "monster_hurt", "boss_hurt"};
+  return ResourceManager::get_sound(sound_ids[hurt_sound_style]);
+}
+
+/**
+ * Makes the enemy subject to an attack.
+ * @param attack type of attack
+ * @param source the entity attacking the enemy (often the hero)
+ */
+void Enemy::hurt(Attack attack, MapEntity *source) {
+
+  if (invulnerable || vulnerabilities[attack] == 0) {
+    // ignore the attack
+    return;
+  }
+
+  // notify the hero
+  if (source->is_hero()) {
+    ((Link*) source)->just_attacked_enemy(attack, this);
+  }
+
+  if (vulnerabilities[attack] == -1) {
+    // shield sound
+    ResourceManager::get_sound("shield")->play();
+  }
+  else if (vulnerabilities[attack] == -2) {
+    // TODO immobilize the enemy
+  }
+  else {
+    // hurt the enemy
+
+    // compute the number of health points lost by the enemy
+    int life_lost = vulnerabilities[attack];
+
+    if (attack == ATTACK_SWORD) {
+
+      // for a sword attack, the damage depends on the sword
+
+      static const int sword_factors[] = {0, 1, 2, 4, 8};
+      int sword = zsdx->game->get_equipment()->get_sword();
+      life_lost *= sword_factors[sword];
+      if (((Link*) source)->get_state() == Link::SPIN_ATTACK) {
+	life_lost *= 2; // muliply by 2 if this is a spin attack
+      }
+    }
+    else if (attack == ATTACK_THROWN_ITEM) {
+      life_lost *= ((CarriedItem*) source)->get_damage_on_enemies();
+    }
+    life -= life_lost;
+
+    // update the enemy state
+    being_hurt = true;
+    invulnerable = true;
+    vulnerable_again_date = SDL_GetTicks() + 700;
+
+    // graphics and sounds
+    get_sprite()->set_current_animation("hurt");
+    get_hurt_sound()->play();
+
+    // push the enemy back
+    if (pushed_back_when_hurt) {
+      normal_movement = get_movement();
+      double angle = source->get_vector_angle(this);
+      set_movement(new StraightMovement(map, 12, angle, 200));
+    }
+  }
+}
+
+/**
+ * Kills the enemy.
+ * This function is called when the enemy has no more health points.
+ */
+void Enemy::kill(void) {
+
+  // stop any movement and disable attacks
+  set_collision_modes(COLLISION_NONE);
+  if (pushed_back_when_hurt) {
+    delete normal_movement;
+  }
+  clear_movement();
+  invulnerable = true;
+  can_attack = false;
+
+  // replace the enemy sprite
+  for (unsigned int i = 0; i < sprites.size(); i++) {
+    delete sprites[i];
+  }
+  sprites.clear();
+  create_sprite("enemies/enemy_killed");
+  ResourceManager::get_sound("enemy_killed")->play();
+}
+
+/**
+ * Returns whether the enemy is killed.
+ * @return true if the enemy is killed
+ */
+bool Enemy::is_killed(void) {
+  return life <= 0 && get_sprite()->get_animation_set_id() == "enemies/enemy_killed";
 }

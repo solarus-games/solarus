@@ -2,7 +2,7 @@
 #define ZSDX_STRAIGHT_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/MovementWithCollision.h"
+#include "movements/MovementWithSmoothCollision.h"
 
 /**
  * Movement for an entity that follows a straight trajectory
@@ -18,11 +18,14 @@ class StraightMovement: public MovementWithCollision {
  public:
 
   StraightMovement(Map *map, int speed, int direction, Uint32 time);
+  StraightMovement(Map *map, int speed, double direction, Uint32 time);
   ~StraightMovement(void);
 
   void update(void);
   void set_suspended(bool suspended);
   bool is_finished(void);
+  void start(int speed, int direction, Uint32 time);
+  void start(int speed, double direction, Uint32 time);
 };
 
 #endif

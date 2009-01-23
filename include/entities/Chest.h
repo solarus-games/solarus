@@ -26,6 +26,8 @@ class Chest: public Detector {
   Chest(string name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
   ~Chest(void);
 
+  EntityType get_type(void);
+
   bool is_open(void);
 
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

@@ -45,6 +45,14 @@ Chest::~Chest(void) {
 }
 
 /**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType Chest::get_type() {
+  return CHEST;
+}
+
+/**
  * Creates the chest sprite depending on its size and the savegame.
  */
 void Chest::initialize_sprite(void) {

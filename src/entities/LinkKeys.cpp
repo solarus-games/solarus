@@ -106,7 +106,7 @@ void Link::action_key_pressed(void) {
 
   default:
     // grab an object
-    if (is_facing_obstacle()) {
+    if (is_facing_obstacle() && get_state() == FREE) {
       start_grabbing();
     }
     break;

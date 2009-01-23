@@ -14,6 +14,7 @@ class SimpleGreenSoldier: public Enemy {
   void initialize(void);
   void update(void);
 
+  void restart(void);
   void walk(int direction);
 };
 

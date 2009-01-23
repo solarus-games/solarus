@@ -5,6 +5,7 @@
 #include "MapEntity.h"
 #include "AnimationListener.h"
 #include "Controls.h"
+#include "Enemy.h"
 
 /**
  * Link's entity.
@@ -167,6 +168,7 @@ class Link: public MapEntity, AnimationListener {
   ~Link(void);
 
   // properties
+  EntityType get_type(void);
   bool is_hero(void);
 
   // movement
@@ -207,11 +209,16 @@ class Link: public MapEntity, AnimationListener {
   void freeze(void);
   void give_treasure(Treasure *treasure);
   void start_jumping(int direction, int length);
-  void hurt(int life);
+  void hurt(MapEntity *source, int life);
 
   // keys
   void key_pressed(Controls::GameKey key);
   void key_released(Controls::GameKey key);
+
+  // enemies
+  virtual void collision_with_enemy(Enemy *enemy);
+  virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
+  void just_attacked_enemy(Enemy::Attack attack, Enemy *victim);
 };
 
 #endif

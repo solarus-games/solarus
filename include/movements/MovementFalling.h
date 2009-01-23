@@ -19,9 +19,9 @@ class MovementFalling: public PathMovement {
    */
   enum FallingHeight {
     NONE = -1,
-    SMALL = 0,
+    LOW = 0,
     MEDIUM,
-    BIG
+    HIGH
   };
 
   // construction and destruction

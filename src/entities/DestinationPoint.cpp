@@ -39,6 +39,14 @@ DestinationPoint::~DestinationPoint(void) {
 }
 
 /**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType DestinationPoint::get_type() {
+  return DESTINATION_POINT;
+}
+
+/**
  * Places Link on this destination point.
  */
 void DestinationPoint::place_hero(void) {

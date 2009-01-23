@@ -284,6 +284,7 @@ void Link::destroy_carried_items(void) {
  * Makes Link grab the object he is facing.
  */
 void Link::start_grabbing(void) {
+  stop_displaying_sword();
   set_state(GRABBING);
   set_animation_grabbing();
 }
@@ -453,9 +454,10 @@ bool Link::can_be_hurt(void) {
 
 /**
  * Hurts Link if possible.
+ * @param source the entity that hurts Link (usually an enemy)
  * @param life number of heart quarters to remove (this number may be reduced by the tunic)
  */
-void Link::hurt(int life) {
+void Link::hurt(MapEntity *source, int life) {
 
   if (can_be_hurt()) {
 
@@ -465,11 +467,16 @@ void Link::hurt(int life) {
     }
     stop_displaying_sword();
 
-    equipment->remove_hearts(life); // TODO take the tunic into account
+    int life_removed = MAX(1, life / (equipment->get_tunic() + 1));
+
+    equipment->remove_hearts(life_removed);
     set_state(HURT);
-    set_movement(new StraightMovement(map, 12, 0, 200)); // TODO compute a direction
+    blink();
     set_animation_hurt();
     ResourceManager::get_sound("link_hurt")->play();
+
+    double angle = source->get_vector_angle(this);
+    set_movement(new StraightMovement(map, 12, angle, 200));
   }
 }
 
@@ -485,8 +492,6 @@ void Link::update_hurt(void) {
     clear_movement();
     set_movement(normal_movement);
     start_free();
-
-    blink();
   }
 }
 
@@ -531,4 +536,46 @@ void Link::animation_over(Sprite *sprite) {
  */
 bool Link::is_direction_locked(void) {
   return state == SWORD_LOADING;
+}
+
+/**
+ * This function is called when an enemy collides with the hero.
+ * @param enemy the enemy
+ */
+void Link::collision_with_enemy(Enemy *enemy) {
+  enemy->attack_hero(this);
+}
+
+/**
+ * This function is called when an enemy's sprite collides with a sprite of the hero.
+ * @param enemy the enemy
+ * @param sprite the hero sprite that collides with the enemy
+ */
+void Link::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
+  
+  if (sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
+    enemy->hurt(Enemy::ATTACK_SWORD, this);
+  }
+}
+
+/**
+ * Notifies the hero that he has just attacked an enemy
+ * (even if this attack was not successful).
+ * @param attack the attack
+ * @param victim the enemy just hurt
+ */
+void Link::just_attacked_enemy(Enemy::Attack attack, Enemy *victim) {
+
+  switch (attack) {
+
+  case Enemy::ATTACK_SWORD:
+    if (get_state() == SWORD_LOADING) {
+      stop_displaying_sword();
+      start_free();
+    }
+    break;
+
+  default:
+    DIE("Unknown attack '" << attack << "'");
+  }
 }

@@ -26,6 +26,14 @@ TileOnMap::~TileOnMap(void) {
 }
 
 /**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType TileOnMap::get_type() {
+  return TILE;
+}
+
+/**
  * Displays the tile on the map.
  */
 void TileOnMap::display_on_map(void) {

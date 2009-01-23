@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
+#include <cmath>
 
 /**
  * Creates a map entity without specifying its properties yet.
@@ -458,6 +459,50 @@ bool MapEntity::is_facing_point_in(const SDL_Rect *rectangle) {
 
   SDL_Rect facing_point = get_facing_point();
   return is_point_in(rectangle, facing_point.x, facing_point.y);
+}
+
+/**
+ * Returns the angle of the vector between the origin of this entity
+ * and the origin of another entity.
+ * @param other the other entity
+ * @return the angle of the vector in radians
+ */
+double MapEntity::get_vector_angle(MapEntity *other) {
+
+  int dx = other->get_x() - get_x();
+  int dy = other->get_y() - get_y();
+
+  double angle;
+  if (dx != 0) {
+    angle = atan((double) -dy / (double) dx);
+
+    if (dx < 0) {
+      angle += PI;
+    }
+  }
+  else {
+    // special case (cannot divide by zero and compute atan)
+    angle = (dy > 0) ? -PI_OVER_2 : PI_OVER_2;
+  }
+
+  return angle;
+}
+
+/**
+ * This function is called when an enemy collides with this entity.
+ * @param enemy the enemy
+ */
+void MapEntity::collision_with_enemy(Enemy *enemy) {
+  // nothing done by default
+}
+
+/**
+ * This function is called when an enemy's sprite collides with this entity.
+ * @param enemy the enemy
+ * @param sprite_overlapping the sprite of this entity that collides with the enemy
+ */
+void MapEntity::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
+  // nothing done by default
 }
 
 /**

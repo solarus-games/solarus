@@ -20,11 +20,16 @@ class CarriedItem: public MapEntity {
   Sound *destruction_sound;
   Sprite *shadow_sprite;
   int throwing_direction;
+  int damage_on_enemies;
 
  public:
 
   CarriedItem(Link *link, DestructibleItem *destructible_item);
   ~CarriedItem(void);
+
+  EntityType get_type(void);
+
+  int get_damage_on_enemies(void);
 
   void set_animation_stopped(void);
   void set_animation_walking(void);
@@ -34,6 +39,8 @@ class CarriedItem: public MapEntity {
   void set_suspended(bool suspended);
   void update(void);
   void display_on_map(void);
+
+  virtual void collision_with_enemy(Enemy *enemy);
 };
 
 #endif

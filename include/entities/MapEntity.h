@@ -20,15 +20,18 @@ class MapEntity {
    * Constants to identify each kind of map entity.
    */
   enum EntityType {
-    TILE                      = 0, /**< a tile on the map, obstacle or not */
-    DESTINATION_POINT         = 1, /**< a destination point on the map */
-    TELETRANSPORTER           = 2, /**< a teletransporter: Link is transported
-				    * to a destination point when walking on it */
-    PICKABLE_ITEM             = 3, /**< an item that Link can pick: a rupee, a heart, a fairy... */
-    DESTRUCTIBLE_ITEM         = 4, /**< an item that Link can cut or lift: a pot, a bush, a stone... */
-    CHEST                     = 5, /**< a chest (small or big) with a treasure */
-    JUMP_SENSOR               = 6, /**< a sensor that makes Link jump in a direction */
-    ENEMY                     = 7, /**< an enemy */
+    TILE                      = 0,    /**< a tile on the map, obstacle or not */
+    DESTINATION_POINT         = 1,    /**< a destination point on the map */
+    TELETRANSPORTER           = 2,    /**< a teletransporter: Link is transported
+				       * to a destination point when walking on it */
+    PICKABLE_ITEM             = 3,    /**< an item that Link can pick: a rupee, a heart, a fairy... */
+    DESTRUCTIBLE_ITEM         = 4,    /**< an item that Link can cut or lift: a pot, a bush, a stone... */
+    CHEST                     = 5,    /**< a chest (small or big) with a treasure */
+    JUMP_SENSOR               = 6,    /**< a sensor that makes Link jump in a direction */
+    ENEMY                     = 7,    /**< an enemy */
+
+    HERO                      = 1000, /**< the hero */
+    CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
   };
 
   /**
@@ -150,6 +153,7 @@ class MapEntity {
   string get_name(void);
   int get_direction(void);
   virtual bool is_hero(void);
+  virtual EntityType get_type(void) = 0;
 
   // sprites
   Sprite * get_sprite(int index);
@@ -166,6 +170,9 @@ class MapEntity {
   bool is_point_in(const SDL_Rect *rectangle, int x, int y);
   bool is_origin_point_in(const SDL_Rect *rectangle);
   bool is_facing_point_in(const SDL_Rect *rectangle);
+  double get_vector_angle(MapEntity *other);
+  virtual void collision_with_enemy(Enemy *enemy);
+  virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
 
   // suspended
   bool is_suspended(void);

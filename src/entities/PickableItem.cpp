@@ -73,6 +73,14 @@ PickableItem::~PickableItem(void) {
 }
 
 /**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType PickableItem::get_type() {
+  return PICKABLE_ITEM;
+}
+
+/**
  * Creates a pickable item with the specified type.
  * This method acts like a constructor, except that it can return NULL in three cases:
  * - if the specified type is NONE
@@ -228,6 +236,16 @@ PickableItem::ItemType PickableItem::choose_random_type(void) {
   }
 
   return type;
+}
+
+/**
+ * Returns whether the specified type of item can disappear.
+ * Special items like keys or pieces of hearts cannot.
+ * @param type a type of pickable item
+ * @return true if this type of pickable item can disappear
+ */
+bool PickableItem::can_disappear(ItemType type) {
+  return type <= ARROW_10;
 }
 
 /**

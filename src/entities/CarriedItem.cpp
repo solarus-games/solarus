@@ -59,6 +59,9 @@ CarriedItem::CarriedItem(Link *link, DestructibleItem *destructible_item):
   // create the shadow
   shadow_sprite = new Sprite("entities/shadow");
   shadow_sprite->set_current_animation("big");
+
+  // damage on enemies
+  damage_on_enemies = destructible_item->get_damage_on_enemies();
 }
 
 /**
@@ -66,6 +69,22 @@ CarriedItem::CarriedItem(Link *link, DestructibleItem *destructible_item):
  */
 CarriedItem::~CarriedItem(void) {
   delete shadow_sprite;
+}
+
+/**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType CarriedItem::get_type() {
+  return CARRIED_ITEM;
+}
+
+/**
+ * Returns the damage this item can cause to ennemies.
+ * @return the damage on enemies
+ */
+int CarriedItem::get_damage_on_enemies(void) {
+  return damage_on_enemies;
 }
 
 /**
@@ -188,6 +207,9 @@ void CarriedItem::update(void) {
 
       clear_movement();
     }
+    else {
+      map->check_collision_with_detectors(this);
+    }
     shadow_sprite->update();
   }
 }
@@ -207,4 +229,16 @@ void CarriedItem::display_on_map(void) {
 
   // display the sprite
   MapEntity::display_on_map();
+}
+
+/**
+ * This function is called when an enemy collides with the carried item.
+ * @param enemy the enemy
+ */
+void CarriedItem::collision_with_enemy(Enemy *enemy) {
+
+  if (is_throwing) {
+    enemy->hurt(Enemy::ATTACK_THROWN_ITEM, this);
+    get_movement()->stop();    
+  }
 }

@@ -7,6 +7,7 @@
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
 - Joystick : tester le hat
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
+- Remplacer Link par Hero
 
 - Bugs: 
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)

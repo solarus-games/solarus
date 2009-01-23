@@ -4,7 +4,6 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include "entities/PickableItem.h"
-#include "entities/Link.h"
 
 /**
  * Abstract class representing an enemy.
@@ -38,17 +37,6 @@ class Enemy: public Detector {
     RANK_BOSS
   };
 
- protected:
-
-  /**
-   * Defines the sounds that can be played when an enemy is hurt.
-   */
-  enum HurtSoundStyle {
-    HURT_SOUND_NORMAL,  /**< "enemy_hurt" is played */
-    HURT_SOUND_MONSTER, /**< "monster_hurt" is played */
-    HURT_SOUND_BOSS,    /**< "boss_hurt" is played */
-  };
-
   /**
    * Defines the attacks an enemy can be victim of.
    */
@@ -61,6 +49,17 @@ class Enemy: public Detector {
     ATTACK_BOOMERANG,   /**< hit by the boomerang */
     ATTACK_LAMP,        /**< burned by the lamp */
     ATTACK_NUMBER,
+  };
+
+ protected:
+
+  /**
+   * Defines the sounds that can be played when an enemy is hurt.
+   */
+  enum HurtSoundStyle {
+    HURT_SOUND_NORMAL,  /**< "enemy_hurt" is played */
+    HURT_SOUND_MONSTER, /**< "monster_hurt" is played */
+    HURT_SOUND_BOSS,    /**< "boss_hurt" is played */
   };
 
   /**
@@ -85,8 +84,7 @@ class Enemy: public Detector {
   int minimum_shield_needed;          /**< shield number needed by the hero to avoid the attack of this enemy,
 				       * or 0 to make the attack unavoidable (default: 0) */
 
-  int vulnerabilities[ATTACK_NUMBER]; /**< indicates how the enemy reacts to each attack (default: -2 for the hookshot
-				       * and the boomerang, 1 for the other attacks):
+  int vulnerabilities[ATTACK_NUMBER]; /**< indicates how the enemy reacts to each attack (default: depends on the attacks):
 				       * - a number greater than 0 represents the number of health points lost when
 				       * he is subject to this attack (for a sword attack, this number will be multiplied
 				       * depending on the sword and the presence of a spin attack),
@@ -96,10 +94,19 @@ class Enemy: public Detector {
 				       * sound is played),
 				       * - a value of -2 means that this attack immobilizes the enemy */
 
+  // enemy characteristics
+  Rank rank;                          /**< is this enemy a normal enemy, a miniboss or a boss? */
+  int savegame_variable;              /**< index of the boolean variable indicating whether this enemy is killed,
+				       * or -1 if it is not saved */
+
   // enemy state
-  Rank rank;                      /**< is this enemy a normal enemy, a miniboss or a boss? */
-  int savegame_variable;               /**< index of the boolean variable indicating whether this enemy is killed,
-					* or -1 if it is not saved */
+  bool being_hurt;                    /**< indicates that the enemy is being hurt */
+  Movement *normal_movement;          /**< backup of the enemy's movement, which is replaced by a straight movement while it is hurt */
+  bool invulnerable;                  /**< indicates that the enemy cannot be hurt for now */
+  Uint32 vulnerable_again_date;       /**< date when the enemy can be hurt again */
+  bool can_attack;                    /**< indicates that the enemy can currently attack the hero */
+  Uint32 can_attack_again_date;       /**< date when the enemy can attack again */
+  
 
   // pickable item
   PickableItem::ItemType pickable_item_type;    /**< type of pickable item that appears when this enemy gets killed */
@@ -118,6 +125,9 @@ class Enemy: public Detector {
 		      bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
   void set_vulnerability(Attack attack, int reaction);
 
+  // hurt the enemy
+  Sound *get_hurt_sound(void);
+
  public:
 
   // creation and destruction
@@ -126,6 +136,8 @@ class Enemy: public Detector {
   static Enemy *create(EnemyType type, Rank rank, int savegame_variable,
 		       string name, Layer layer, int x, int y, int direction,
 		       PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
+
+  EntityType get_type(void);
   void set_map(Map *map);
 
   // enemy state
@@ -133,6 +145,13 @@ class Enemy: public Detector {
   virtual void set_suspended(bool suspended);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void collision(MapEntity *entity, Sprite *sprite_overlapping);
+
+  void attack_hero(Link *hero);
+  bool is_killed(void);
+  void attack_stopped_by_hero_shield(void);
+  void hurt(Attack attack, MapEntity *source);
+  void kill(void);
+  virtual void restart(void);
 };
 
 #endif

@@ -20,6 +20,8 @@ class DestinationPoint: public MapEntity {
   DestinationPoint(string name, Layer layer, int link_x, int link_y, int link_direction, bool is_visible);
   ~DestinationPoint(void);
 
+  EntityType get_type(void);
+
   void place_hero(void);
 };
 

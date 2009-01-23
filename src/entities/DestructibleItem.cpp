@@ -15,12 +15,12 @@
  * Properties of each type of destructible item.
  */
 const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
-  {"entities/pot", "stone", true, false, 0},
-  {"entities/skull", "stone", true, false, 0},
-  {"entities/bush", "bush", true, true, 1},
-  {"entities/stone_small_white", "stone", true, false, 1},
-  {"entities/stone_small_white", "stone", true, false, 2},
-  {"entities/grass", "bush", false, true, 0},
+  {"entities/pot", "stone", true, false, 0, 2},
+  {"entities/skull", "stone", true, false, 0, 2},
+  {"entities/bush", "bush", true, true, 1, 1},
+  {"entities/stone_small_white", "stone", true, false, 1, 1},
+  {"entities/stone_small_white", "stone", true, false, 2, 3},
+  {"entities/grass", "bush", false, true, 0, 0},
 
   /* not implemented
   {"entities/stone_big_white", "stone", 1},
@@ -68,6 +68,22 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
  */
 DestructibleItem::~DestructibleItem(void) {
 
+}
+
+/**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType DestructibleItem::get_type() {
+  return DESTRUCTIBLE_ITEM;
+}
+
+/**
+ * Returns the damage this destructible item can cause to enemies
+ * @return the damage on enemies
+ */
+int DestructibleItem::get_damage_on_enemies(void) {
+  return properties[type].damage_on_enemies;
 }
 
 /**
@@ -225,7 +241,7 @@ void DestructibleItem::action_key_pressed(void) {
 
     // create the pickable item
     if (pickable_item != PickableItem::NONE) {
-      bool will_disappear = (pickable_item <= PickableItem::ARROW_10);
+      bool will_disappear = PickableItem::can_disappear(pickable_item);
       map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
 					     pickable_item_savegame_variable, MovementFalling::MEDIUM, will_disappear);
     }

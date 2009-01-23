@@ -58,7 +58,7 @@
 4	door_open	door_open
 4	drowning	drowning
 4	enemy_awake	enemy_awake
-4	enemy_dead	enemy_dead
+4	enemy_killed	enemy_killed
 4	enemy_hurt	enemy_hurt
 4	explosion	explosion
 4	heart	heart

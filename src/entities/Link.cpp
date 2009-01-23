@@ -70,6 +70,14 @@ Link::~Link(void) {
 }
 
 /**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+MapEntity::EntityType Link::get_type() {
+  return HERO;
+}
+
+/**
  * Returns whether this entity is the hero
  * controlled by the player.
  * @return true
@@ -285,18 +293,22 @@ void Link::update(void) {
     default:
       break;
     }
+
+    update_position();
+    update_sprites();
+
+    update_carried_items();
+
+    if (treasure != NULL) {
+      update_treasure();
+    }
+
+    map->check_collision_with_detectors(this);
+
+    if (thrown_item != NULL) {
+      map->check_collision_with_detectors(thrown_item);
+    }
   }
-
-  update_position();
-  update_sprites();
-
-  update_carried_items();
-
-  if (treasure != NULL) {
-    update_treasure();
-  }
-
-  map->check_collision_with_detectors(this);
 }
 
 /**
@@ -421,7 +433,7 @@ void Link::rebuild_equipment(void) {
 void Link::movement_just_changed(void) {
 
   // update the animation direction according to the movement direction
-  int direction = get_direction();
+  int direction = get_movement_direction();
   if (direction != -1) {
 
     Uint16 direction_mask = get_normal_movement()->get_direction_mask();

@@ -20,6 +20,8 @@ class JumpSensor: public Detector {
 	     int direction, int jump_length);
   ~JumpSensor(void);
 
+  EntityType get_type(void);
+
   bool check_collision_custom(MapEntity *entity);
   bool is_point_in_diagonal(const SDL_Rect &point);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

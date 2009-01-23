@@ -55,6 +55,7 @@ class DestructibleItem: public Detector {
     bool can_be_cut;                       /**< indicates that this item can be cut with the sword */
     int weight;                            /**< for liftable items: weight of the item (0: light,
 					    * 1: iron glove required, 2: golden glove required */
+    int damage_on_enemies;                 /**< damage the item can cause to enemies (1: few, 2: normal, 3: a lot) */
   };
 
   static const ItemProperties properties[];
@@ -66,8 +67,11 @@ class DestructibleItem: public Detector {
 		   PickableItem::ItemType pickable_item, int pickable_item_savegame_variable);
   ~DestructibleItem(void);
 
+  EntityType get_type(void);
+
   string get_animation_set_id(void);
   Sound *get_destruction_sound(void);
+  int get_damage_on_enemies(void);
 
   bool is_obstacle(void);
   void collision(MapEntity *entity_overlapping, CollisionMode collision);

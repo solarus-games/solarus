@@ -85,12 +85,12 @@ void Detector::set_layer_ignored(bool layer_ignored) {
  * @param entity the entity to check
  */
 void Detector::check_collision(MapEntity *entity) {
-  
+
   if (entity != this
       && (layer_ignored || get_layer() == entity->get_layer())) { // the entity is in the same layer as the detector
-  
+
     // detect the collision depending on the collision mode
-    
+
     if (has_collision_mode(COLLISION_RECTANGLE) && check_collision_rectangle(entity)) {
       collision(entity, COLLISION_RECTANGLE);
     }

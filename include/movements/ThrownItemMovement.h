@@ -5,7 +5,7 @@
 #include "MovementWithCollision.h"
 
 /**
- * Movement used for an item thrown by Link
+ * Movement used for an item thrown by the hero
  * (a pot, a bush, etc.).
  */
 class ThrownItemMovement: public MovementWithCollision {

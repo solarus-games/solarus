@@ -135,6 +135,7 @@ class FollowMovement;
 class ThrownItemMovement;
 class TargetMovement;
 class JumpMovement;
+class StraightMovement;
 
 // enemies
 class SimpleGreenSoldier;

@@ -1,6 +1,7 @@
 #include "entities/Link.h"
 #include "entities/CarriedItem.h"
 #include "movements/Movement8ByPlayer.h"
+#include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -443,23 +444,50 @@ void Link::update_jumping(void) {
 }
 
 /**
- * Hurts Link.
+ * Returns whether Link can be hurt.
+ * @return true if Link can be hurt in its current state
+ */
+bool Link::can_be_hurt(void) {
+  return state <= SPIN_ATTACK && !tunic_sprite->is_blinking();
+}
+
+/**
+ * Hurts Link if possible.
  * @param life number of heart quarters to remove (this number may be reduced by the tunic)
  */
 void Link::hurt(int life) {
 
-  // remove the carried item
-  if (state == CARRYING) {
-    start_throwing();
-  }
-  stop_displaying_sword();
+  if (can_be_hurt()) {
 
-  equipment->remove_hearts(life); // TODO take the tunic into account
-  set_state(HURT);
-  // TODO  set_movement(new JumpMovement(direction, length)); // make a movement class to move an entity for an amount of time?
-  // TODO compute a direction
-  set_animation_hurt();
-  ResourceManager::get_sound("link_hurt")->play();
+    // remove the carried item
+    if (state == CARRYING) {
+      start_throwing();
+    }
+    stop_displaying_sword();
+
+    equipment->remove_hearts(life); // TODO take the tunic into account
+    set_state(HURT);
+    set_movement(new StraightMovement(map, 12, 0, 200)); // TODO compute a direction
+    set_animation_hurt();
+    ResourceManager::get_sound("link_hurt")->play();
+  }
+}
+
+/**
+ * Updates the HURT state.
+ */
+void Link::update_hurt(void) {
+
+  StraightMovement *movement = (StraightMovement*) get_movement();
+  movement->update();
+
+  if (movement->is_finished()) {
+    clear_movement();
+    set_movement(normal_movement);
+    start_free();
+
+    blink();
+  }
 }
 
 /**
@@ -489,11 +517,6 @@ void Link::animation_over(Sprite *sprite) {
   case SPIN_ATTACK:
     start_free();
     break;
-
-  case HURT:
-    start_free();
-    break;
-
   }
 }
 

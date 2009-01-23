@@ -115,6 +115,7 @@ add_executable (zsdx
   movements/ThrownItemMovement.cpp
   movements/TargetMovement.cpp
   movements/JumpMovement.cpp
+  movements/StraightMovement.cpp
 
   # enemies
   enemies/SimpleGreenSoldier.cpp

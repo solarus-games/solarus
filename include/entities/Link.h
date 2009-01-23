@@ -20,6 +20,7 @@ class Link: public MapEntity, AnimationListener {
    * The state is considered only when the game is not suspended.
    * Link can move in states FREE, PUSHING, CARRYING, SWORD_LOADING and SWIMMING.
    * Link can swing his sword in states FREE, PUSHING, CARRYING and SWORD_SWINGING.
+   * Link can be hurt in states <= SPIN_ATTACK.
    */
   enum State {
     FREE,                    /**< normal state (stopped or walking) */
@@ -66,8 +67,9 @@ class Link: public MapEntity, AnimationListener {
    */
   State state;
   Detector *facing_entity;
-  int animation_direction_saved; /* direction of Link's sprites, saved just before
+  int animation_direction_saved; /**< direction of Link's sprites, saved just before
 				  * showing a sprite animation having only one direction */
+  Uint32 end_blink_date;         /**< date when Link's sprites stop blinking */
 
   /**
    * Counter incremented every 100 ms in certain conditions.
@@ -132,11 +134,14 @@ class Link: public MapEntity, AnimationListener {
   void display_treasure(void);
 
   void update_jumping(void);
+  bool can_be_hurt(void);
+  void update_hurt(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);
   bool is_direction_locked(void);
   void stop_displaying_sword(void);
+  void blink(void);
 
   void set_animation_sword(void);
   void set_animation_walking(void);

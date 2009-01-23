@@ -96,6 +96,22 @@ void Link::stop_displaying_sword(void) {
 }
 
 /**
+ * Makes Link blink for a while.
+ */
+void Link::blink(void) {
+  tunic_sprite->set_blinking(50);
+
+  if (equipment->has_shield()) {
+    shield_sprite->set_blinking(50);
+  }
+  if (equipment->has_sword()) {
+    sword_sprite->set_blinking(50);
+  }
+
+  end_blink_date = SDL_GetTicks() + 2000;
+}
+
+/**
  * Returns the direction of Link's sprites.
  * It is different from the movement direction.
  * @return the direction of Link's sprites (0 to 3)
@@ -151,6 +167,7 @@ void Link::update_sprites(void) {
   tunic_sprite->update();
 
   if (is_sword_visible()) {
+    sword_sprite->update();
     sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
     map->check_collision_with_detectors(this, sword_sprite);
   }
@@ -161,16 +178,27 @@ void Link::update_sprites(void) {
   }
 
   if (is_shield_visible()) {
+    shield_sprite->update();
     if (walking) {
       shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
-    }
-    else {
-      shield_sprite->update();
     }
   }
 
   if (state == CARRYING && walking) {
     lifted_item->get_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
+  }
+
+  // blinking
+  if (tunic_sprite->is_blinking() && SDL_GetTicks() >= end_blink_date) {
+    
+    tunic_sprite->set_blinking(0);
+
+    if (equipment->has_shield()) {
+      shield_sprite->set_blinking(0);
+    }
+    if (equipment->has_sword()) {
+      sword_sprite->set_blinking(0);
+    }
   }
 }
 

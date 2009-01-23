@@ -244,9 +244,11 @@ void Link::set_suspended(bool suspended) {
   // carried items
   set_suspended_carried_items(suspended);
 
-  // counter
+  // timers
   if (!suspended) {
-    next_counter_date += SDL_GetTicks() - when_suspended;
+    Uint32 now = SDL_GetTicks();
+    next_counter_date += now - when_suspended;
+    end_blink_date += now - when_suspended;
   }
 }
 
@@ -276,6 +278,10 @@ void Link::update(void) {
       update_jumping();
       break;
 
+    case HURT:
+      update_hurt();
+      break;
+
     default:
       break;
     }
@@ -289,6 +295,8 @@ void Link::update(void) {
   if (treasure != NULL) {
     update_treasure();
   }
+
+  map->check_collision_with_detectors(this);
 }
 
 /**

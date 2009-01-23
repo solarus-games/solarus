@@ -428,6 +428,7 @@ void PickableItem::set_blinking(bool blinking) {
 void PickableItem::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended); // suspend the animation and the movement
+  shadow_sprite->set_suspended(suspended);
 
   if (will_disappear) {
     // suspend the timer
@@ -440,10 +441,6 @@ void PickableItem::set_suspended(bool suspended) {
 	blink_date = now + (blink_date - when_suspended);
 	disappear_date = now + (disappear_date - when_suspended);
       }
-    }
-    else {
-      // the game is being suspended
-      set_blinking(false);
     }
   }
 }

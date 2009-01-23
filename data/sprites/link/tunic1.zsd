@@ -91,7 +91,7 @@ jumping link/jumping.png 4 0 -1
 48	24	24	24	12	21	1	1
 72	24	24	24	12	21	1	1
 
-hurt link/miscellaneous.png 4 500 -1
+hurt link/miscellaneous.png 4 0 -1
 0	48	24	24	12	21	1	1
 24	48	24	24	12	21	1	1
 48	48	24	24	12	21	1	1

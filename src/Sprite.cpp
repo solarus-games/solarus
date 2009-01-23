@@ -224,6 +224,9 @@ void Sprite::set_suspended(bool suspended) {
       next_frame_date = SDL_GetTicks() + get_frame_interval();
       blink_next_change_date = SDL_GetTicks();
     }
+    else {
+      blink_is_sprite_visible = true;
+    }
   }
 }
 
@@ -299,6 +302,10 @@ bool Sprite::check_collision(Sprite *other, int x1, int y1, int x2, int y2) {
  * If the frame changes, next_frame_date is updated.
  */
 void Sprite::update(void) {
+
+  if (suspended) {
+    return;
+  }
 
   frame_changed = false;
   Uint32 now = SDL_GetTicks();

@@ -129,7 +129,6 @@ bool Link::is_moving_towards(int direction) {
  * This point is 1 pixel outside Link's collision box. It is used
  * to determine the actions he can do depending on the entity he is facing
  * (a bush, a pot, a PNJ...)
- * If he is not moving, the point returned is where he is looking.
  * @return the point Link is facing
  */
 SDL_Rect Link::get_facing_point(void) {
@@ -513,7 +512,7 @@ void Link::set_facing_entity(Detector *detector) {
 bool Link::is_facing_obstacle(void) {
 
   SDL_Rect facing_point = get_facing_point();
-  return map->collision_with_obstacles(layer, facing_point.x, facing_point.y);   
+  return map->collision_with_obstacles(layer, facing_point.x, facing_point.y, this);   
 }
 
 /**

@@ -402,6 +402,16 @@ void MapEntity::set_facing_entity(Detector *detector) {
 }
 
 /**
+ * Returns whether this entity is an obstacle for another one.
+ * By default, this function returns false.
+ * @param other another entity
+ * @return true if this entity is an obstacle for the other one
+ */
+bool MapEntity::is_obstacle_for(MapEntity *other) {
+  return false;
+}
+
+/**
  * Returns whether or not this entity's rectangle overlaps
  * a specified rectangle.
  * @param rectangle the rectangle to check
@@ -489,7 +499,7 @@ double MapEntity::get_vector_angle(MapEntity *other) {
 }
 
 /**
- * This function is called when an enemy collides with this entity.
+ * This function is called when an enemy detects a collision with this entity.
  * @param enemy the enemy
  */
 void MapEntity::collision_with_enemy(Enemy *enemy) {
@@ -497,11 +507,20 @@ void MapEntity::collision_with_enemy(Enemy *enemy) {
 }
 
 /**
- * This function is called when an enemy's sprite collides with this entity.
+ * This function is called when an enemy's sprite detects a collision with this entity.
  * @param enemy the enemy
  * @param sprite_overlapping the sprite of this entity that collides with the enemy
  */
 void MapEntity::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
+  // nothing done by default
+}
+
+/**
+ * This function is called when a teletransporter detects a collision with this entity.
+ * @param teletransporter the teletransporter
+ * @param collision_mode the collision mode that detected the event
+ */
+void MapEntity::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
   // nothing done by default
 }
 

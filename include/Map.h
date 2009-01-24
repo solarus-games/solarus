@@ -124,9 +124,9 @@ class Map {
 
   // collisions with obstacles (checked before a move)
   MapEntity::Obstacle pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y);
-  bool collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box);
-  bool collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box);
-  bool collision_with_obstacles(MapEntity::Layer layer, int x, int y);
+  bool collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check);
+  bool collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check);
+  bool collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check);
 
   // collisions with detectors (checked after a move)
   void check_collision_with_detectors(MapEntity *entity);

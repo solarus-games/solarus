@@ -73,7 +73,7 @@ class DestructibleItem: public Detector {
   Sound *get_destruction_sound(void);
   int get_damage_on_enemies(void);
 
-  bool is_obstacle(void);
+  bool is_obstacle_for(MapEntity *other);
   void collision(MapEntity *entity_overlapping, CollisionMode collision);
   void collision(MapEntity *entity, Sprite *sprite_overlapping);
   void action_key_pressed(void);

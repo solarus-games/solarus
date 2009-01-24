@@ -29,6 +29,7 @@ class MapEntity {
     CHEST                     = 5,    /**< a chest (small or big) with a treasure */
     JUMP_SENSOR               = 6,    /**< a sensor that makes Link jump in a direction */
     ENEMY                     = 7,    /**< an enemy */
+    NPC                       = 8,    /**< a non-playing character */
 
     HERO                      = 1000, /**< the hero */
     CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
@@ -166,6 +167,7 @@ class MapEntity {
   virtual void set_facing_entity(Detector *detector);
 
   // collisions
+  virtual bool is_obstacle_for(MapEntity *other);
   bool overlaps(const SDL_Rect *rectangle);
   bool is_point_in(const SDL_Rect *rectangle, int x, int y);
   bool is_origin_point_in(const SDL_Rect *rectangle);
@@ -173,6 +175,7 @@ class MapEntity {
   double get_vector_angle(MapEntity *other);
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
+  virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
 
   // suspended
   bool is_suspended(void);

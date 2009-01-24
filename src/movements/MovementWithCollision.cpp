@@ -64,7 +64,7 @@ bool MovementWithCollision::collision_with_map(int dx, int dy) {
   collision_box.x += dx;
   collision_box.y += dy;
 
-  bool collision = map->collision_with_obstacles(entity->get_layer(), collision_box);
+  bool collision = map->collision_with_obstacles(entity->get_layer(), collision_box, entity);
 
   return collision;
 }

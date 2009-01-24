@@ -103,10 +103,13 @@ Sound * DestructibleItem::get_destruction_sound(void) {
 }
 
 /**
- * Returns whether this kind of destructible item is an obstacle.
- * @param true if this is an obstacle
+ * Returns whether this entity is an obstacle for another one.
+ * For a destructible item, this does not depend on the other
+ * entity but only on the type of destructible item.
+ * @param other another entity
+ * @return true if this entity is an obstacle for others
  */
-bool DestructibleItem::is_obstacle(void) {
+bool DestructibleItem::is_obstacle_for(MapEntity *other) {
   return properties[type].can_be_lifted;
 }
 
@@ -161,11 +164,11 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       cut = true;
     }
     else if (state == Link::SWORD_SWINGING
-	     || (is_obstacle() && link->is_moving_towards(animation_direction))) {
+	     || (is_obstacle_for(entity) && link->is_moving_towards(animation_direction))) {
 
       SDL_Rect facing_point = link->get_facing_point();
 
-      int distance = is_obstacle() ? 14 : 4;
+      int distance = is_obstacle_for(entity) ? 14 : 4;
 
       switch (animation_direction) {
 

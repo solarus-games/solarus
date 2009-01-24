@@ -43,7 +43,7 @@ bool ThrownItemMovement::collision_with_map(int dx, int dy) {
   collision_box.w = 16;
   collision_box.h = 16;
 
-  bool collision = map->collision_with_obstacles(entity->get_layer(), collision_box);
+  bool collision = map->collision_with_obstacles(entity->get_layer(), collision_box, entity);
 
   return collision;
 }

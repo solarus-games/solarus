@@ -75,6 +75,9 @@ class MapEntities {
   
   /**
    * All obstacle entities of the map.
+   * Note that the obstacle notion is relative, that is, there exists entities that
+   * are obstacle for some targets and non obstacle for others. This list contains
+   * all entities that might be obstacle for at least one entity.
    */
   std::list<MapEntity*> obstacle_entities[MapEntity::LAYER_NB];
 

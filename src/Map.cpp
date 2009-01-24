@@ -486,10 +486,10 @@ MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int 
  * Tests whether a rectangle overlaps an obstacle entity.
  * @param layer the layer
  * @param collision_box the rectangle to check
- * @return OBSTACLE if there is an obstacle entity at this point,
- * OBSTACLE_NONE otherwise.
+ * @param entity_to_check the eneity to check (only used to decide what is considered as an obstacle)
+ * @return true if there is an obstacle entity at this point
  */
-bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box) {
+bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check) {
 
   std::list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
 
@@ -500,7 +500,7 @@ bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_bo
        i != obstacle_entities->end() && !collision;
        i++) {
 
-    collision = (*i)->overlaps(&collision_box);
+    collision = (*i)->is_obstacle_for(entity_to_check) && (*i)->overlaps(&collision_box);
   }
 
   return collision;
@@ -512,9 +512,10 @@ bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_bo
  * @param layer layer of the rectangle in the map
  * @param collision_box the rectangle to check
  * (its dimensions should be multiples of 8)
+ * @param entity_to_check the eneity to check (only used to decide what is considered as an obstacle)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box) {
+bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check) {
   int x1, y1;
   bool collision = false;
 
@@ -528,7 +529,7 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_b
 
   // collisions with entities
   if (!collision) {
-    collision = collision_with_entities(layer, collision_box);
+    collision = collision_with_entities(layer, collision_box, entity_to_check);
   }
   
   return collision;   
@@ -540,9 +541,10 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_b
  * @param layer layer of the rectangle in the map
  * @param x x coordinate of the point to check
  * @param y y coordinate of the point to check
+ * @param entity_to_check the eneity to check (only used to decide what is considered as an obstacle)
  * @return true if the point is overlapping an obstacle, false otherwise
  */
-bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y) {
+bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check) {
 
   bool collision;
 
@@ -552,7 +554,7 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y) {
   // test the entities
   if (!collision) {
     SDL_Rect collision_box = {x, y, 1, 1};
-    collision = collision_with_entities(layer, collision_box);
+    collision = collision_with_entities(layer, collision_box, entity_to_check);
   }
 
   return collision;   

@@ -1,5 +1,6 @@
 #include "entities/Link.h"
 #include "entities/CarriedItem.h"
+#include "entities/Teletransporter.h"
 #include "movements/Movement8ByPlayer.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
@@ -577,5 +578,17 @@ void Link::just_attacked_enemy(Enemy::Attack attack, Enemy *victim) {
 
   default:
     DIE("Unknown attack '" << attack << "'");
+  }
+}
+
+/**
+ * This function is called when a teletransporter detects a collision with the hero.
+ * @param teletransporter the teletransporter
+ * @param collision_mode the collision mode that detected the event
+ */
+void Link::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
+
+  if (collision_mode == Detector::COLLISION_ORIGIN_POINT) {
+    teletransporter->transport_hero(this);
   }
 }

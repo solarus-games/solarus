@@ -219,6 +219,7 @@ class Link: public MapEntity, AnimationListener {
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   void just_attacked_enemy(Enemy::Attack attack, Enemy *victim);
+  virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
 };
 
 #endif

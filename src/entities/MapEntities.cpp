@@ -323,6 +323,7 @@ void MapEntities::add_teletransporter(string teletransporter_name, MapEntity::La
 							 subtype, transition_style, destination_map_id,
 							 destination_point_name);
   detectors.push_back(teletransporter);
+  obstacle_entities[layer].push_back(teletransporter); // not obstacle for the hero but for enemies and NPCs 
   add_entity(teletransporter);
 }
 
@@ -391,9 +392,8 @@ void MapEntities::add_destructible_item(MapEntity::Layer layer, int x, int y,
   
   sprite_entities[layer].push_back(item);
   detectors.push_back(item);
-  if (item->is_obstacle()) {
-    obstacle_entities[layer].push_back(item);
-  }
+  obstacle_entities[layer].push_back(item);
+
   add_entity(item);
 }
 

@@ -19,6 +19,7 @@ public class AddEntitiesToolbar extends JComponent {
 	{DestructibleItem.GRASS, DestructibleItem.BUSH, DestructibleItem.POT}, // destructible item
 	{0}, // chest
 	{0}, // jump sensor
+	{Enemy.Subtype.SIMPLE_GREEN_SOLDIER.ordinal()}, // enemy
     };
 
     /**

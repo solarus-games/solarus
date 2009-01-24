@@ -134,7 +134,8 @@ public abstract class MapEntity extends Observable {
     public static final int ENTITY_DESTRUCTIBLE_ITEM = 4;
     public static final int ENTITY_CHEST = 5;
     public static final int ENTITY_JUMP_SENSOR = 6;
-    public static final int ENTITY_NB_TYPES = 7;
+    public static final int ENTITY_ENEMY = 7;
+    public static final int ENTITY_NB_TYPES = 8;
 
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {
@@ -144,7 +145,8 @@ public abstract class MapEntity extends Observable {
 	PickableItem.class,
 	DestructibleItem.class,
 	Chest.class,
-	JumpSensor.class
+	JumpSensor.class,
+	Enemy.class
     };
 
     /**

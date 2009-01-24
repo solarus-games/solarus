@@ -194,13 +194,13 @@ public class DestructibleItem extends ActiveEntity {
      * Sets the pickable item that appears when Link
      * lifts the destructible item.
      * @param subtype the subtype of pickable item
-     * @param savegameVariable savegame index where the pickable item is saved,
-     * @throws ZSDXException if the value of savegameIndex doesn't correspond
-     * to the specified pickable item subtype
+     * @param savegameVariable savegame index where the pickable item is saved
      */
-    public void setPickableItem(int type, int savegameVariable) throws ZSDXException {
+    public void setPickableItem(int type, int savegameVariable) {
 
 	this.pickableItemSubtype = type;
 	this.pickableItemSavegameVariable = savegameVariable;
+	setChanged();
+	notifyObservers();
     }
 }

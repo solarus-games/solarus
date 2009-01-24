@@ -21,7 +21,8 @@ public class EditEntityComponent extends JPanel {
 	EditPickableItemComponent.class,
 	EditDestructibleItemComponent.class,
 	EditChestComponent.class,
-	EditJumpSensorComponent.class
+	EditJumpSensorComponent.class,
+	EditEnemyComponent.class
     };
 
     /**

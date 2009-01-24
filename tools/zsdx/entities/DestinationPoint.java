@@ -115,7 +115,7 @@ public class DestinationPoint extends ActiveEntity {
 
     /**
      * Returns the number of possible directions of the entity.
-     * @return 4 if the destination point changes Link's direction, false otherwise
+     * @return 4
      */
     public int getNbDirections() {
 	return 4;

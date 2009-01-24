@@ -467,8 +467,8 @@ void MapEntities::add_enemy(string name, MapEntity::Layer layer, int x, int y, i
 
     sprite_entities[layer].push_back(enemy);
     detectors.push_back(enemy);
+    add_entity(enemy);
   }
-  add_entity(enemy);
 }
 
 /**

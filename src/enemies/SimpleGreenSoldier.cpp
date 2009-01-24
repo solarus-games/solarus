@@ -31,8 +31,8 @@ void SimpleGreenSoldier::initialize(void) {
 
   // sprite
   create_sprite("enemies/simple_green_soldier");
-  set_size(16, 24);
-  set_origin(8, 21);
+  set_size(16, 16);
+  set_origin(8, 13);
 
   // movement
   set_movement(new StraightMovement(map, 0, 0, 0));

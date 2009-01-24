@@ -20,9 +20,10 @@
   - pnj
 
 - Tileset extérieur :
-  - porte ouverte d'une maison
+  - cascades
   - échelles
   - haies
+  - herbes
 
 ----------------
 Planning prévisionnel

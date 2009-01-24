@@ -11,8 +11,8 @@ static const Uint32 TILE_FRAME_INTERVAL = 250;
  * the sequence type and the frame counter (0 to 11).
  */
 static const short frames[2][12] = {
-  {0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1}, // sequence 0-1-2-1
   {0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2}, // sequence 0-1-2
+  {0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1}, // sequence 0-1-2-1
 };
 
 /**
@@ -83,7 +83,7 @@ void AnimatedTile::update(void) {
 
     frame_counter = (frame_counter + 1) % 12;
     current_frames[1] = frames[0][frame_counter];
-    current_frames[2] = frames[0][frame_counter];
+    current_frames[2] = frames[1][frame_counter];
 
     next_frame_date += TILE_FRAME_INTERVAL; // the frame changes every 250 ms
   }

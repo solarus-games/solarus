@@ -22,7 +22,7 @@ class Chest: public Detector {
   void initialize_sprite(void);
 
  public:
-  
+
   Chest(string name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
   ~Chest(void);
 
@@ -30,6 +30,7 @@ class Chest: public Detector {
 
   bool is_open(void);
 
+  bool is_obstacle_for(MapEntity *other);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void update(void);
   void action_key_pressed(void);

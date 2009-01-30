@@ -53,6 +53,15 @@ MapEntity::EntityType Chest::get_type() {
 }
 
 /**
+ * Returns whether this entity is an obstacle for another one.
+ * @param other another entity
+ * @return true
+ */
+bool Chest::is_obstacle_for(MapEntity *other) {
+  return true;
+}
+
+/**
  * Creates the chest sprite depending on its size and the savegame.
  */
 void Chest::initialize_sprite(void) {
@@ -92,7 +101,7 @@ void Chest::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
 
     Link *link = zsdx->game->get_link();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-    
+
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& link->get_state() == Link::FREE
 	&& link->get_animation_direction() == 1
@@ -111,7 +120,7 @@ void Chest::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
  * the handle the chest opening.
  */
 void Chest::update(void) {
-  
+
   if (is_open()) {
 
     if (!treasure_given && SDL_GetTicks() >= treasure_date) {
@@ -164,7 +173,7 @@ void Chest::action_key_pressed(void) {
       get_sprite()->set_current_animation(big_chest ? "big_open" : "small_open");
       open = true;
       treasure_date = SDL_GetTicks() + 300;
-  
+
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
       link->freeze();
     }
@@ -186,7 +195,7 @@ void Chest::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended);
 
   if (!suspended) {
-    // restore the timer    
+    // restore the timer
     treasure_date = SDL_GetTicks() + (treasure_date - when_suspended);
   }
 }

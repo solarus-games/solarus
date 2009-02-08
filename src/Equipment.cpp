@@ -348,12 +348,13 @@ void Equipment::restore_all_hearts(void) {
 
 /**
  * Returns whether the player is running out of hearts.
- * The function returns true if the number of hearts is lower
+ * The function returns true if the number of hearts is
+ * greater than zero and lower
  * than or equal to 25% of the maximum.
  * @return true if the player is running out of hearts
  */
 bool Equipment::needs_hearts(void) {
-  return get_hearts() <= get_max_hearts();
+  return get_hearts() > 0 && get_hearts() <= get_max_hearts();
 }
 
 /**

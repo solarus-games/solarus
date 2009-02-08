@@ -112,6 +112,21 @@ void Link::blink(void) {
 }
 
 /**
+ * Stops making the sprites blink.
+ */
+void Link::stop_blinking() {
+
+  tunic_sprite->set_blinking(0);
+
+  if (equipment->has_shield()) {
+    shield_sprite->set_blinking(0);
+  }
+  if (equipment->has_sword()) {
+    sword_sprite->set_blinking(0);
+  }
+}
+
+/**
  * Returns the direction of Link's sprites.
  * It is different from the movement direction.
  * @return the direction of Link's sprites (0 to 3)
@@ -190,15 +205,7 @@ void Link::update_sprites(void) {
 
   // blinking
   if (tunic_sprite->is_blinking() && SDL_GetTicks() >= end_blink_date) {
-    
-    tunic_sprite->set_blinking(0);
-
-    if (equipment->has_shield()) {
-      shield_sprite->set_blinking(0);
-    }
-    if (equipment->has_sword()) {
-      sword_sprite->set_blinking(0);
-    }
+    stop_blinking();
   }
 }
 
@@ -447,6 +454,21 @@ void Link::set_animation_hurt(void) {
   tunic_sprite->set_current_animation("hurt");
 
   // the shield is not visible when Link is hurt
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+}
+
+/**
+ * Starts the "gameover" animation of Link's sprites.
+ * Link's state should be GAMEOVER.
+ */
+void Link::set_animation_gameover(void) {
+  stop_blinking();
+  tunic_sprite->set_current_animation("gameover");
+  tunic_sprite->set_current_direction(0);
+
+  // the shield is not visible
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }

@@ -468,13 +468,14 @@ void Link::hurt(MapEntity *source, int life) {
     }
     stop_displaying_sword();
 
+    ResourceManager::get_sound("link_hurt")->play();
+
     int life_removed = MAX(1, life / (equipment->get_tunic() + 1));
 
     equipment->remove_hearts(life_removed);
     set_state(HURT);
     blink();
     set_animation_hurt();
-    ResourceManager::get_sound("link_hurt")->play();
 
     double angle = source->get_vector_angle(this);
     set_movement(new StraightMovement(map, 12, angle, 200));
@@ -490,10 +491,28 @@ void Link::update_hurt(void) {
   movement->update();
 
   if (movement->is_finished()) {
+
     clear_movement();
     set_movement(normal_movement);
-    start_free();
+
+    if (equipment->get_hearts() > 0) {
+      start_free();
+    }
+    else {
+      start_gameover();
+    }
   }
+}
+
+/**
+ * Starts the game over sequence.
+ */
+void Link::start_gameover(void) {
+
+  set_state(GAMEOVER);
+  stop_displaying_sword();
+  ResourceManager::get_sound("gameover")->play();
+  set_animation_gameover();
 }
 
 /**

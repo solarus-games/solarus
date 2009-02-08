@@ -37,6 +37,7 @@ class Link: public MapEntity, AnimationListener {
     BRANDISHING_TREASURE,    /**< Link is brandishing a treasure */
     JUMPING,                 /**< Link is jumping */
     HURT,                    /**< Link is hurt */
+    GAMEOVER,                /**< Link is dead */
     FREEZED,                 /**< Link cannot move for various possible reasons */
   };
 
@@ -50,7 +51,8 @@ class Link: public MapEntity, AnimationListener {
   Sprite *sword_sprite;
   Sprite *sword_stars_sprite;
   Sprite *shield_sprite;
-  Sprite *shadow_sprite; /**< only in state JUMPING (in other states, the shadow is with the tunic sprite) */
+  Sprite *shadow_sprite; /**< only in state JUMPING (in other states,
+			  * the shadow is with the tunic sprite) */
   Sound *sword_sound;
 
   static const SpriteAnimationSetId tunic_sprite_ids[];
@@ -137,12 +139,14 @@ class Link: public MapEntity, AnimationListener {
   void update_jumping(void);
   bool can_be_hurt(void);
   void update_hurt(void);
+  void start_gameover(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);
   bool is_direction_locked(void);
   void stop_displaying_sword(void);
   void blink(void);
+  void stop_blinking(void);
 
   void set_animation_sword(void);
   void set_animation_walking(void);
@@ -152,6 +156,7 @@ class Link: public MapEntity, AnimationListener {
   void set_animation_lifting(void);
   void set_animation_jumping(void);
   void set_animation_hurt(void);
+  void set_animation_gameover(void);
 
   void save_animation_direction(void);
   void restore_animation_direction(void);

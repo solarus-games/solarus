@@ -421,6 +421,11 @@ void Enemy::kill(void) {
   sprites.clear();
   create_sprite("enemies/enemy_killed");
   ResourceManager::get_sound("enemy_killed")->play();
+
+  // save the enemy state if required
+  if (savegame_variable != -1) {
+    zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
+  }
 }
 
 /**

@@ -28,7 +28,7 @@ class KeysEffect {
     ACTION_KEY_INFO,     /**< display some information about the selected item in the menu */
     ACTION_KEY_RETURN,   /**< exit a dialog or a submenu */
 
-    ACTION_KEY_CHECK,    /**< look at something */
+    ACTION_KEY_LOOK,     /**< look at something */
     ACTION_KEY_OPEN,     /**< open a door or a chest */
     ACTION_KEY_ACTION,   /**< perform an action */
     ACTION_KEY_LIFT,     /**< lift an objet */
@@ -89,6 +89,7 @@ class KeysEffect {
   void set_action_key_enabled(bool enable);
   void save_action_key_effect(void);
   void restore_action_key_effect(void);
+  bool is_action_key_acting_on_facing_entity(void);
 
   // sword key
 

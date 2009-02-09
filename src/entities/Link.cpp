@@ -494,12 +494,10 @@ void Link::set_facing_entity(Detector *detector) {
   this->facing_entity = detector;
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  KeysEffect::ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
 
   // if Link stops facing an entity that showed an action icon
   if (facing_entity == NULL &&
-      (action_key_effect == KeysEffect::ACTION_KEY_LIFT
-       || action_key_effect == KeysEffect::ACTION_KEY_OPEN)) {
+      keys_effect->is_action_key_acting_on_facing_entity()) {
 
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }

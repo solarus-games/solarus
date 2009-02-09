@@ -90,26 +90,26 @@ void Link::key_released(Controls::GameKey key) {
 void Link::action_key_pressed(void) {
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  
-  switch (keys_effect->get_action_key_effect()) {
 
-  case KeysEffect::ACTION_KEY_LIFT:
-  case KeysEffect::ACTION_KEY_OPEN:
+  if (keys_effect->is_action_key_acting_on_facing_entity()) {
     // action on the facing entity
     facing_entity->action_key_pressed();
-    break;
+  }
+  else {
+    switch (keys_effect->get_action_key_effect()) {
 
-  case KeysEffect::ACTION_KEY_THROW:
-    // throw the object carried
-    start_throwing();
-    break;
+    case KeysEffect::ACTION_KEY_THROW:
+      // throw the object carried
+      start_throwing();
+      break;
 
-  default:
-    // grab an object
-    if (is_facing_obstacle() && get_state() == FREE) {
-      start_grabbing();
+    default:
+      // grab an object
+      if (is_facing_obstacle() && get_state() == FREE) {
+	start_grabbing();
+      }
+      break;
     }
-    break;
   }
 }
 

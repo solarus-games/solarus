@@ -8,23 +8,16 @@
 - Joystick : tester le hat
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
 - Remplacer Link par Hero
+- Herbe ou eau sous Link
 
-- Bugs: 
+- Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - objets soulevables : afficher l'icône d'action et un message comme quoi c'est trop lourd
-  - ennemis : savegame_variable pas géré
-  - scripts : remplacer les fonctions C statiques appelées par le code Lua par des méthodes membres statiques
+  - ennemis saccadés au début de la map
 
 - Prochaines grandes étapes :
   - game over
   - portes
   - pnj
-
-- Tileset extérieur :
-  - cascades
-  - échelles
-  - haies
-  - herbes
 
 ----------------
 Planning prévisionnel

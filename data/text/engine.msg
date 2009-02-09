@@ -1523,3 +1523,16 @@ question = true
 #       |-----------------------|
 line1 = "Tu n'as pas de Flacon"
 line2 = "vide !"
+
+[_too_heavy]
+#       |-----------------------|
+line1 = "Oh là là, c'est"
+line2 = "bien trop lourd !"
+cancel = all
+next = _too_heavy.1
+
+[_too_heavy.1]
+#       |-----------------------|
+line1 = "Tu n'y arriveras jamais"
+line2 = "rien que par la force"
+line3 = "de tes bras !"

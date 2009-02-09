@@ -14,20 +14,6 @@
 #include <lua5.1/lua.hpp>
 #include <stdarg.h>
 
-static void check_nb_arguments(lua_State *context, int nb_arguments);
-
-/**
- * Declaration of all functions that can be called by the LUA code.
- */
-
-typedef int (FunctionAvailableToScript) (lua_State *l);
-
-static FunctionAvailableToScript l_play_sound,
-  l_start_message, l_set_message_variable, l_give_treasure, l_give_treasure_with_amount, 
-  l_get_savegame_string, l_get_savegame_integer, l_get_savegame_boolean, 
-  l_set_savegame_string, l_set_savegame_integer, l_set_savegame_boolean, 
-  l_start_timer;
-
 /**
  * Creates the script of a map.
  * @param map the map
@@ -96,7 +82,7 @@ void MapScript::register_c_functions(void) {
  * @param context the Lua context
  * @param nb_arguments the right number of arguments
  */
-static void check_nb_arguments(lua_State *context, int nb_arguments) {
+void MapScript::check_nb_arguments(lua_State *context, int nb_arguments) {
 
   if (lua_gettop(context) != nb_arguments) {
     DIE("Invalid number of arguments");
@@ -201,7 +187,7 @@ void MapScript::add_timer(Timer *timer) {
  * then call set_message_variable() to specify its value.
  * Argument 1 (string): id of the message to display
  */
-int l_start_message(lua_State *l) {
+int MapScript::l_start_message(lua_State *l) {
 
   check_nb_arguments(l, 1);
   MessageId message_id = lua_tostring(l, 1);
@@ -218,7 +204,7 @@ int l_start_message(lua_State *l) {
  * Argument 1 (string): id of the message containing the variable
  * Argument 2 (string): value of the variable
  */
-int l_set_message_variable(lua_State *l) {
+int MapScript::l_set_message_variable(lua_State *l) {
 
   check_nb_arguments(l, 2);
   MessageId message_id = lua_tostring(l, 1);
@@ -233,7 +219,7 @@ int l_set_message_variable(lua_State *l) {
  * Plays a sound.
  * Argument 1 (string): name of the sound
  */
-int l_play_sound(lua_State *l) {
+int MapScript::l_play_sound(lua_State *l) {
 
   check_nb_arguments(l, 1);
   SoundId sound_id = lua_tostring(l, 1);
@@ -253,7 +239,7 @@ int l_play_sound(lua_State *l) {
  * Argument 2 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
  */
-int l_give_treasure(lua_State *l) {
+int MapScript::l_give_treasure(lua_State *l) {
 
   check_nb_arguments(l, 2);
   Treasure::Content content = (Treasure::Content) lua_tointeger(l, 1);
@@ -275,7 +261,7 @@ int l_give_treasure(lua_State *l) {
  * Argument 3 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
  */
-int l_give_treasure_with_amount(lua_State *l) {
+int MapScript::l_give_treasure_with_amount(lua_State *l) {
 
   check_nb_arguments(l, 3);
   Treasure::Content content = (Treasure::Content) lua_tointeger(l, 1);
@@ -292,7 +278,7 @@ int l_give_treasure_with_amount(lua_State *l) {
  * Argument 1 (integer): index of the string value to get (0 to 63)
  * Return value (string): the string saved at this index
  */
-int l_get_savegame_string(lua_State *l) {
+int MapScript::l_get_savegame_string(lua_State *l) {
 
   check_nb_arguments(l, 1);
   int index = lua_tointeger(l, 1);
@@ -308,7 +294,7 @@ int l_get_savegame_string(lua_State *l) {
  * Argument 1 (integer): index of the integer value to get (0 to 2047)
  * Return value (integer): the integer saved at this index
  */
-int l_get_savegame_integer(lua_State *l) {
+int MapScript::l_get_savegame_integer(lua_State *l) {
 
   check_nb_arguments(l, 1);
   int index = lua_tointeger(l, 1);
@@ -324,7 +310,7 @@ int l_get_savegame_integer(lua_State *l) {
  * Argument 1 (integer): index of the boolean value to get
  * Return value (boolean): the boolean saved at this index
  */
-int l_get_savegame_boolean(lua_State *l) {
+int MapScript::l_get_savegame_boolean(lua_State *l) {
 
   check_nb_arguments(l, 1);
   int index = lua_tointeger(l, 1);
@@ -341,7 +327,7 @@ int l_get_savegame_boolean(lua_State *l) {
  * (lower indices are writable only by the game engine)
  * Argument 2 (string): the string value to store at this index
  */
-int l_set_savegame_string(lua_State *l) {
+int MapScript::l_set_savegame_string(lua_State *l) {
 
   check_nb_arguments(l, 2);
   int index = lua_tointeger(l, 1);
@@ -362,7 +348,7 @@ int l_set_savegame_string(lua_State *l) {
  * (lower indices are writable only by the game engine)
  * Argument 2 (integer): the integer value to store at this index
  */
-int l_set_savegame_integer(lua_State *l) {
+int MapScript::l_set_savegame_integer(lua_State *l) {
 
   check_nb_arguments(l, 2);
   int index = lua_tointeger(l, 1);
@@ -382,7 +368,7 @@ int l_set_savegame_integer(lua_State *l) {
  * Argument 1 (integer): index of the boolean value to set, between 0 and 32767
  * Argument 2 (boolean): the boolean value to store at this index
  */
-int l_set_savegame_boolean(lua_State *l) {
+int MapScript::l_set_savegame_boolean(lua_State *l) {
 
   check_nb_arguments(l, 2);
   int index = lua_tointeger(l, 1);
@@ -400,7 +386,7 @@ int l_set_savegame_boolean(lua_State *l) {
  * (no argument, no return value)
  * Argument 3 (boolean): plays a sound until the timer expires
  */
-int l_start_timer(lua_State *l) {
+int MapScript::l_start_timer(lua_State *l) {
 
   check_nb_arguments(l, 3);
   Uint32 duration = lua_tointeger(l, 1);

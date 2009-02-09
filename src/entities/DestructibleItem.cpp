@@ -126,17 +126,20 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
 
     Link *link = zsdx->game->get_link();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-    Equipment *equipment = zsdx->game->get_equipment();
-
-    int weight = properties[type].weight;
 
     if (properties[type].can_be_lifted
-	&& equipment->can_lift(weight)
 	&& !is_being_cut
 	&& keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& link->get_state() == Link::FREE) {
 
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+      Equipment *equipment = zsdx->game->get_equipment();
+      int weight = properties[type].weight;
+      if (equipment->can_lift(weight)) {
+	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+      }
+      else {
+	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      }
     }
   }
 }
@@ -225,32 +228,41 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
 
 /**
  * This function is called when the player presses the action key
- * when Link is facing this detector, and the action icon lets him do this.
- * Link lifts the item if possible.
+ * when the hero is facing this detector, and the action icon lets him do this.
+ * The hero lifts the item if possible.
  */
 void DestructibleItem::action_key_pressed(void) {
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   Link *link = zsdx->game->get_link();
+  KeysEffect::ActionKeyEffect effect = keys_effect->get_action_key_effect();
 
-  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT
+  if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
       && properties[type].can_be_lifted
       && !is_being_cut) {
 
-    link->start_lifting(this);
+    int weight = properties[type].weight;
+    Equipment *equipment = zsdx->game->get_equipment();
 
-    // play the sound
-    ResourceManager::get_sound("lift")->play();
+    if (equipment->can_lift(weight)) {
+      link->start_lifting(this);
 
-    // create the pickable item
-    if (pickable_item != PickableItem::NONE) {
-      bool will_disappear = PickableItem::can_disappear(pickable_item);
-      map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
-					     pickable_item_savegame_variable, MovementFalling::MEDIUM, will_disappear);
+      // play the sound
+      ResourceManager::get_sound("lift")->play();
+
+      // create the pickable item
+      if (pickable_item != PickableItem::NONE) {
+	bool will_disappear = PickableItem::can_disappear(pickable_item);
+	map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
+					       pickable_item_savegame_variable, MovementFalling::MEDIUM, will_disappear);
+      }
+
+      // remove the item from the map
+      map->get_entities()->remove_destructible_item(this);
     }
-
-    // remove the item from the map
-    map->get_entities()->remove_destructible_item(this);
+    else {
+      zsdx->game->show_message("_too_heavy");
+    }
   }
 }
 

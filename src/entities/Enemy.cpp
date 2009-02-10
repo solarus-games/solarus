@@ -1,5 +1,5 @@
 #include "entities/Enemy.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/PickableItem.h"
 #include "entities/CarriedItem.h"
@@ -291,7 +291,7 @@ void Enemy::collision(MapEntity *entity, Sprite *sprite_overlapping) {
  * This function is called when there is a collision between the enemy and the hero.
  * @param hero the hero
  */
-void Enemy::attack_hero(Link *hero) {
+void Enemy::attack_hero(Hero *hero) {
 
   if (can_attack) {
 
@@ -349,7 +349,7 @@ void Enemy::hurt(Attack attack, MapEntity *source) {
 
   // notify the hero
   if (source->is_hero()) {
-    ((Link*) source)->just_attacked_enemy(attack, this);
+    ((Hero*) source)->just_attacked_enemy(attack, this);
   }
 
   if (vulnerabilities[attack] == -1) {
@@ -372,7 +372,7 @@ void Enemy::hurt(Attack attack, MapEntity *source) {
       static const int sword_factors[] = {0, 1, 2, 4, 8};
       int sword = zsdx->game->get_equipment()->get_sword();
       life_lost *= sword_factors[sword];
-      if (((Link*) source)->get_state() == Link::SPIN_ATTACK) {
+      if (((Hero*) source)->get_state() == Hero::SPIN_ATTACK) {
 	life_lost *= 2; // muliply by 2 if this is a spin attack
       }
     }

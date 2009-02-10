@@ -5,7 +5,7 @@
 #include "PickableItem.h"
 
 /**
- * Represents a heart placed on the map, that Link can take.
+ * Represents a heart placed on the map, that the hero can take.
  */
 class PickableItemHeart: public PickableItem {
 

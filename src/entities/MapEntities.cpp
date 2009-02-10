@@ -6,7 +6,7 @@
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
 #include "entities/DestinationPoint.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/Chest.h"
 #include "entities/JumpSensor.h"
 #include "Treasure.h"
@@ -94,7 +94,7 @@ MapEntity::Obstacle MapEntities::get_obstacle_tile(MapEntity::Layer layer, int x
 }
 
 /**
- * Returns the entities on a layer, such that Link cannot walk on them
+ * Returns the entities on a layer, such that the hero cannot walk on them
  * (except the tiles).
  * @param layer the layer
  * @return the obstacle entities
@@ -283,18 +283,18 @@ void MapEntities::add_entity(MapEntity *entity) {
  * Creates a destination point on the map.
  * This function is called for each destination point when loading the map.
  * @param destination_point_name a string identifying this new destination point
- * @param layer the layer of Link's position
+ * @param layer the layer of the hero's position
  * @param x x position of the destination point to create
  * @param y y position of the destination point to create
- * @param link_direction initial direction of link in this state (0 to 3, or -1
- * to indicate that Link's direction is not changed)
+ * @param hero_direction initial direction of the hero in this state (0 to 3, or -1
+ * to indicate that the hero's direction is not changed)
  * @param is_visible true to make the destination point visible
  */
 void MapEntities::add_destination_point(string destination_point_name, MapEntity::Layer layer,
-					int x, int y, int link_direction, bool is_visible) {
+					int x, int y, int hero_direction, bool is_visible) {
   
   DestinationPoint *destination_point = new DestinationPoint(destination_point_name, layer,
-							     x, y, link_direction, is_visible);
+							     x, y, hero_direction, is_visible);
   destination_points.push_back(destination_point);
   add_entity(destination_point);
 }
@@ -302,7 +302,7 @@ void MapEntities::add_destination_point(string destination_point_name, MapEntity
 /**
  * Creates a teletransporter on the map.
  * This function is called for each teletransporter when loading the map.
- * When Link walks on the teletransporter, he he transported to a destination point
+ * When the hero walks on the teletransporter, he he transported to a destination point
  * on the current map or another one.
  * @param teletransporter_name a string identifying this new teletransporter
  * @param layer layer of the teletransporter to create
@@ -330,8 +330,8 @@ void MapEntities::add_teletransporter(string teletransporter_name, MapEntity::La
 /**
  * Creates a pickable item on the map.
  * This function is called when loading the map if it already contains pickable items (e.g. fairies
- * or rupees). It is also called when playing on the map, e.g. when Link lifts a pot or kill an enemy.
- * When Link walks on the item, he picks it.
+ * or rupees). It is also called when playing on the map, e.g. when the hero lifts a pot or kill an enemy.
+ * When the hero walks on the item, he picks it.
  * @param layer layer of the pickable item
  * @param x x position of the pickable item
  * @param y y position of the pickable item
@@ -523,9 +523,9 @@ void MapEntities::remove_marked_entities(void) {
  */
 void MapEntities::set_suspended(bool suspended) {
 
-  // Link
-  Link *link = zsdx->game->get_link();
-  link->set_suspended(suspended);
+  // the hero
+  Hero *hero = zsdx->game->get_hero();
+  hero->set_suspended(suspended);
 
   // other entities
   list<MapEntity*>::iterator i;
@@ -546,9 +546,9 @@ void MapEntities::set_suspended(bool suspended) {
  */
 void MapEntities::update(void) {
   
-  // update Link's position, movement and animation
-  Link *link = zsdx->game->get_link();
-  link->update();
+  // update the hero's position, movement and animation
+  Hero *hero = zsdx->game->get_hero();
+  hero->update();
 
   // update the animated tiles and sprites
   list<MapEntity*>::iterator it;
@@ -577,7 +577,7 @@ void MapEntities::update(void) {
  */
 void MapEntities::display() {
 
-  Link* link = zsdx->game->get_link();
+  Hero *hero = zsdx->game->get_hero();
 
   // map entities
   for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
@@ -595,9 +595,9 @@ void MapEntities::display() {
       (*i)->display_on_map();
     }
 
-    // put Link if he is in this layer
-    if (link->get_layer() == layer) {
-      link->display_on_map();
+    // put the hero if he is in this layer
+    if (hero->get_layer() == layer) {
+      hero->display_on_map();
     }
   }
 }

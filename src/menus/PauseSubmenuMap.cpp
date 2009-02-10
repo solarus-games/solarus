@@ -8,7 +8,7 @@
 #include "Map.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "Counter.h"
 #include "Color.h"
 #include "Controls.h"
@@ -33,19 +33,19 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     const SDL_Rect *real_size = game->get_outside_world_size();
 
     Map *map = game->get_current_map();
-    link_position = *map->get_location();
+    hero_position = *map->get_location();
 
     if (map->is_in_outside_world()) {
-      link_position.x += game->get_link()->get_x();
-      link_position.y += game->get_link()->get_y();
+      hero_position.x += game->get_hero()->get_x();
+      hero_position.y += game->get_hero()->get_y();
     }
 
-    link_position.x = link_position.x * outside_world_minimap_size.w / real_size->w;
-    link_position.y = link_position.y * outside_world_minimap_size.h / real_size->h;
+    hero_position.x = hero_position.x * outside_world_minimap_size.w / real_size->w;
+    hero_position.y = hero_position.y * outside_world_minimap_size.h / real_size->h;
 
     if (equipment->has_world_map()) {
       world_map_img = ResourceManager::load_image("menus/outside_world_map.png");
-      world_minimap_visible_y = MIN(388 - 133, MAX(0, link_position.y - 66));
+      world_minimap_visible_y = MIN(388 - 133, MAX(0, hero_position.y - 66));
     }
     else {
       world_map_img = ResourceManager::load_image("menus/outside_world_clouds.png");
@@ -53,10 +53,10 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     }
     moving_visible_y = 0;
 
-    link_position.x += 48 - 8;
-    link_position.y += 59 - 6;
+    hero_position.x += 48 - 8;
+    hero_position.y += 59 - 6;
 
-    link_point_sprite = NULL;
+    hero_point_sprite = NULL;
   }
 
   // dungeon
@@ -74,7 +74,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     // floors
     dungeon_floors_img = ResourceManager::load_image("hud/floors.png");
 
-    link_floor = game->get_current_map()->get_floor();
+    hero_floor = game->get_current_map()->get_floor();
     boss_floor = dungeon->get_boss_floor();
 
     highest_floor = dungeon->get_highest_floor();
@@ -82,8 +82,8 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     nb_floors = dungeon->get_nb_floors();
 
     nb_floors_displayed = dungeon->get_nb_floors_displayed();
-    highest_floor_displayed = dungeon->get_highest_floor_displayed(link_floor);
-    selected_floor = link_floor;
+    highest_floor_displayed = dungeon->get_highest_floor_displayed(hero_floor);
+    selected_floor = hero_floor;
 
     // map
     dungeon_map_img = SDL_CreateRGBSurface(SDL_HWSURFACE, 123, 119, 32, 0, 0, 0, 0);
@@ -91,10 +91,10 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     load_dungeon_map_image();
   }
 
-  link_head_sprite = new Sprite("menus/link_head");
+  hero_head_sprite = new Sprite("menus/hero_head");
   std::ostringstream oss;
   oss << "tunic" << equipment->get_tunic();
-  link_head_sprite->set_current_animation(oss.str());
+  hero_head_sprite->set_current_animation(oss.str());
 
   up_arrow_sprite = new Sprite("menus/arrow");
   up_arrow_sprite->set_current_direction(0);
@@ -119,12 +119,12 @@ PauseSubmenuMap::~PauseSubmenuMap(void) {
 
     SDL_FreeSurface(dungeon_map_img);
 
-    if (link_point_sprite != NULL) {
-      delete link_point_sprite;
+    if (hero_point_sprite != NULL) {
+      delete hero_point_sprite;
     }
   }
 
-  delete link_head_sprite;
+  delete hero_head_sprite;
   delete up_arrow_sprite;
   delete down_arrow_sprite;
 }
@@ -148,22 +148,22 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
   }
 
   if (!dungeon_equipment->has_compass()) {
-    link_point_sprite = NULL;
+    hero_point_sprite = NULL;
   }
 
   else {
-    // Link's position
-    link_point_sprite = new Sprite("menus/link_point");
+    // the hero's position
+    hero_point_sprite = new Sprite("menus/hero_point");
 
     const SDL_Rect *floor_size = dungeon->get_floor_size(selected_floor);
 
-    link_position = *game->get_current_map()->get_location();
+    hero_position = *game->get_current_map()->get_location();
 
-    link_position.x += game->get_link()->get_x();
-    link_position.y += game->get_link()->get_y();
+    hero_position.x += game->get_hero()->get_x();
+    hero_position.y += game->get_hero()->get_y();
 
-    link_position.x = link_position.x * 123 / floor_size->w;
-    link_position.y = link_position.y * 119 / floor_size->h;
+    hero_position.x = hero_position.x * 123 / floor_size->w;
+    hero_position.y = hero_position.y * 119 / floor_size->h;
 
     // chests
     SDL_Rect small_chest_src_position = {78, 8, 4, 4};
@@ -237,7 +237,7 @@ void PauseSubmenuMap::key_pressed(Controls::GameKey key) {
       if (new_selected_floor >= lowest_floor && new_selected_floor <= highest_floor) {
 
 	ResourceManager::get_sound("cursor")->play();
-	link_head_sprite->restart_animation();
+	hero_head_sprite->restart_animation();
 	selected_floor = new_selected_floor;
 	load_dungeon_map_image();
 
@@ -261,7 +261,7 @@ void PauseSubmenuMap::key_pressed(Controls::GameKey key) {
  */
 void PauseSubmenuMap::update(void) {
 
-  link_head_sprite->update();
+  hero_head_sprite->update();
   up_arrow_sprite->update();
   down_arrow_sprite->update();
 
@@ -298,8 +298,8 @@ void PauseSubmenuMap::update(void) {
     }
   }
 
-  if (link_point_sprite != NULL) {
-    link_point_sprite->update();
+  if (hero_point_sprite != NULL) {
+    hero_point_sprite->update();
   }
 }
 
@@ -334,10 +334,10 @@ void PauseSubmenuMap::display_world_map(SDL_Surface *destination) {
   // if the player has the map
   if (equipment->has_world_map()) {
 
-    // display Link's position
-    int link_visible_y = link_position.y - world_minimap_visible_y;
-    if (link_visible_y >= 51 && link_visible_y <= 184) {
-      link_head_sprite->display(destination, link_position.x, link_position.y - world_minimap_visible_y);
+    // display the hero's position
+    int hero_visible_y = hero_position.y - world_minimap_visible_y;
+    if (hero_visible_y >= 51 && hero_visible_y <= 184) {
+      hero_head_sprite->display(destination, hero_position.x, hero_position.y - world_minimap_visible_y);
     }
 
     // display the arrows
@@ -374,8 +374,8 @@ void PauseSubmenuMap::display_dungeon_map(SDL_Surface *destination) {
   dst_position.y = 66;
   SDL_BlitSurface(dungeon_map_img, NULL, destination, &dst_position);
 
-  if (link_point_sprite != NULL && selected_floor == link_floor) {
-    link_point_sprite->display(dungeon_map_img, link_position.x, link_position.y);
+  if (hero_point_sprite != NULL && selected_floor == hero_floor) {
+    hero_point_sprite->display(dungeon_map_img, hero_position.x, hero_position.y);
   }
 }
 
@@ -444,12 +444,12 @@ void PauseSubmenuMap::display_dungeon_floors(SDL_Surface *destination) {
   dst_position.y = dst_y + (highest_floor_displayed - selected_floor) * 12;
   SDL_BlitSurface(dungeon_floors_img, &src_position, destination, &dst_position);
 
-  // display Link's icon
+  // display the hero's icon
   int lowest_floor_displayed = highest_floor_displayed - nb_floors_displayed + 1;
-  if (link_floor >= lowest_floor_displayed && link_floor <= highest_floor_displayed) {
+  if (hero_floor >= lowest_floor_displayed && hero_floor <= highest_floor_displayed) {
 
-    int y = dst_y + (highest_floor_displayed - link_floor) * 12;
-    link_head_sprite->display(destination, 61, y);
+    int y = dst_y + (highest_floor_displayed - hero_floor) * 12;
+    hero_head_sprite->display(destination, 61, y);
   }
 
   // display the boss icon

@@ -5,7 +5,7 @@
 #include "PickableItem.h"
 
 /**
- * Represents a fairy placed on the map, that Link can take.
+ * Represents a fairy placed on the map, that the hero can take.
  */
 class PickableItemFairy: public PickableItem {
 

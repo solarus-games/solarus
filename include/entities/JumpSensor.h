@@ -6,7 +6,7 @@
 
 /**
  * A jump sensor is a detector placed on a map.
- * When Link touches this detetor, he makes a jump with a specified length.
+ * When the hero touches this detetor, he makes a jump with a specified length.
  */
 class JumpSensor: public Detector {
 

@@ -206,9 +206,9 @@ void Detector::collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
 /**
  * This function is called when the player presses the action key
- * when Link is facing this detector, and the action icon lets him do this.
+ * when the hero is facing this detector, and the action icon lets him do this.
  * By default, nothing happens.
- * Redefine your function in the subclasses to allow Link to interact with this entity.
+ * Redefine your function in the subclasses to allow the hero to interact with this entity.
  */
 void Detector::action_key_pressed(void) {
 

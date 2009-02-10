@@ -1,7 +1,7 @@
 #include "entities/PickableItem.h"
 #include "entities/PickableItemHeart.h"
 #include "entities/PickableItemFairy.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "movements/MovementFalling.h"
 #include "Sprite.h"
@@ -480,10 +480,10 @@ void PickableItem::update(void) {
   // check the timer
   Uint32 now = SDL_GetTicks();
 
-  // wait 0.7 second before allowing Link to take the item
+  // wait 0.7 second before allowing the hero to take the item
   if (!can_be_picked && now >= allow_pick_date) {
     can_be_picked = true;
-    map->check_collision_with_detectors(zsdx->game->get_link());
+    map->check_collision_with_detectors(zsdx->game->get_hero());
   }
   else {
     // make the item blink and then disappear

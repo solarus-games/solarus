@@ -4,14 +4,14 @@
 #include "Common.h"
 
 /**
- * A treasure is any item that Link can receive.
+ * A treasure is any item that the hero can receive.
  * It can be for example in a chest (class Chest) or in a shop (class ShopItem).
  * A treasure is represented as the following three values:
  * - the treasure content: indicates the nature of the treasure: 20 rupees, a heart container,
  *   the map, a red potion, the bow, some bombs, etc;
  * - the amount: an optional integer indicating the number of items of this treasure
  *   (for bombs, rupees, croissants, etc.);
- * - a savegame variable: index of the boolean variable saved indicating whether Link has found this item.
+ * - a savegame variable: index of the boolean variable saved indicating whether the player has found this item.
  */
 class Treasure {
 

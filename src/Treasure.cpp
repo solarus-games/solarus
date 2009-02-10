@@ -9,12 +9,12 @@
 #include "DialogBox.h"
 #include "InventoryItem.h"
 #include "Counter.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 
 /**
  * Creates a new treasure without amount.
  * @param content content of the treasure
- * @param savegame_variable index of the savegame boolean indicating that Link has found this treasure
+ * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
 Treasure::Treasure(Content content, int savegame_variable):
@@ -29,7 +29,7 @@ Treasure::Treasure(Content content, int savegame_variable):
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
  * green rupees, blue rupees and red rupees: indicates the amount;
  * if the amount is greater than 1, a counter will be shown.
- * @param savegame_variable index of the savegame boolean indicating that Link has found this treasure
+ * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
 Treasure::Treasure(Content content, int amount, int savegame_variable):
@@ -111,8 +111,8 @@ bool Treasure::is_found(void) {
 }
 
 /**
- * Give the treasure to the player: plays the treasure sound, makes Link
- * brandish the item and adds the item to Link's equipment.
+ * Give the treasure to the player: plays the treasure sound, makes the hero
+ * brandish the item and adds the item to the hero's equipment.
  * The treasure content should not be NONE.
  */
 void Treasure::give_to_player(void) {
@@ -186,7 +186,7 @@ void Treasure::show_message(void) {
 }
 
 /**
- * Adds the item to Link's eqipment.
+ * Adds the item to the hero's eqipment.
  */
 void Treasure::add_item_to_equipment(void) {
 

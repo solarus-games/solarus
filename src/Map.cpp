@@ -6,7 +6,7 @@
 #include "FileTools.h"
 #include "MapScript.h"
 #include "entities/Tileset.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/DestinationPoint.h"
 #include "entities/Detector.h"
@@ -230,7 +230,8 @@ void Map::set_destination_point(unsigned int destination_point_index) {
 /**
  * Sets the current destination point of the map.
  * @param destination_point_name name of the destination point you want to use,
- * or "_same" to keep Link's coordinates, or "_side0", "_side1", "_side2" or "_side3 to place Link on a side of the map
+ * or "_same" to keep the hero's coordinates, or "_side0", "_side1", "_side2"
+ * or "_side3 to place the hero on a side of the map
  */
 void Map::set_destination_point(string destination_point_name) {
 
@@ -294,7 +295,7 @@ void Map::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the animation and the position of each entity, including Link.
+ * Updates the animation and the position of each entity, including the hero.
  */
 void Map::update(void) {
 
@@ -317,14 +318,14 @@ void Map::update(void) {
 void Map::display() {
 
   // screen
-  Link *link = zsdx->game->get_link();
-  screen_position.x = MIN(MAX(link->get_x() - 160, 0), location.w - 320);
-  screen_position.y = MIN(MAX(link->get_y() - 120, 0), location.h - 240);  
+  Hero *hero = zsdx->game->get_hero();
+  screen_position.x = MIN(MAX(hero->get_x() - 160, 0), location.w - 320);
+  screen_position.y = MIN(MAX(hero->get_y() - 120, 0), location.h - 240);  
 
   // background color
   SDL_FillRect(visible_surface, NULL, tileset->get_background_color());
 
-  // display all entities (including Link)
+  // display all entities (including the hero)
   entities->display();
 }
 
@@ -343,7 +344,7 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
 
 /**
  * Starts the map. The map must be loaded.
- * Link is placed on the map and the background music starts.
+ * The hero is placed on the map and the background music starts.
  */
 void Map::start(void) {
 
@@ -361,39 +362,39 @@ void Map::start(void) {
  */
 void Map::place_hero_on_destination_point(void) {
 
-  // put Link
+  // put the hero
   if (destination_point_index >= 0) {
     DestinationPoint *destination_point = entities->get_destination_point(destination_point_index);
     destination_point->place_hero();
   }
   else if (destination_point_index == -1) {
 
-    // Link's coordinates are the same as on previous map
-    Link *link = zsdx->game->get_link();
-    link->set_map(this);
+    // the hero's coordinates are the same as on previous map
+    Hero *hero = zsdx->game->get_hero();
+    hero->set_map(this);
   }
   else {
 
     // only one coordinate is changed
-    Link *link = zsdx->game->get_link();
-    link->set_map(this);
+    Hero *hero = zsdx->game->get_hero();
+    hero->set_map(this);
 
     switch (destination_side) {
 
     case 0: // right side
-      link->set_x(get_width() - 24);
+      hero->set_x(get_width() - 24);
       break;
 
     case 1: // top side
-      link->set_y(37);
+      hero->set_y(37);
       break;
 
     case 2: // left side
-      link->set_x(24);
+      hero->set_x(24);
       break;
 
     case 3: // bottom side
-      link->set_y(get_height() - 19);
+      hero->set_y(get_height() - 19);
       break;
 
     default:
@@ -404,7 +405,7 @@ void Map::place_hero_on_destination_point(void) {
 
 /**
  * Exits the map.
- * This function is called when Link leaves the map.
+ * This function is called when the hero leaves the map.
  */
 void Map::leave(void) {
   started = false;
@@ -412,7 +413,7 @@ void Map::leave(void) {
 
 /**
  * Returns whether the map is started, i.e. whether it is the current
- * map and Link is on it.
+ * map and the hero is on it.
  * @return true if the map is started
  */
 bool Map::is_started(void) {
@@ -432,7 +433,7 @@ MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int 
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
-  // if the point is outside the map, there is no obstacle (useful when Link walks on a teletransporter)
+  // if the point is outside the map, there is no obstacle (useful when the hero walks on a teletransporter)
   if (x < 0 || x >= get_width()
       || y < 0 || y >= get_height()) {
     return MapEntity::OBSTACLE_NONE;

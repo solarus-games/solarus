@@ -1,5 +1,5 @@
 #include "entities/Chest.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "Treasure.h"
 #include "KeysEffect.h"
 #include "ZSDX.h"
@@ -99,12 +99,12 @@ void Chest::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
 
   if (entity_overlapping->is_hero()) {
 
-    Link *link = zsdx->game->get_link();
+    Hero *hero = zsdx->game->get_hero();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& link->get_state() == Link::FREE
-	&& link->get_animation_direction() == 1
+	&& hero->get_state() == Hero::FREE
+	&& hero->get_animation_direction() == 1
 	&& !is_open()) {
 
       // we show the 'open' icon, even if this is a big chest and the player does not have the big key
@@ -125,7 +125,7 @@ void Chest::update(void) {
 
     if (!treasure_given && SDL_GetTicks() >= treasure_date) {
 
-      Link *link = zsdx->game->get_link();
+      Hero *hero = zsdx->game->get_hero();
 
       if (treasure->get_content() != Treasure::NONE) {
 	Treasure *t = treasure;
@@ -145,7 +145,7 @@ void Chest::update(void) {
 	zsdx->game->show_message("_empty_chest");
 
 	// restore the control
-	link->start_free();
+	hero->start_free();
 	delete treasure;
 	treasure = NULL;
       }
@@ -157,16 +157,16 @@ void Chest::update(void) {
 
 /**
  * This function is called when the player presses the action key
- * when Link is facing this detector, and the action icon lets him do this.
- * Link opens the chest if possible.
+ * when the hero is facing this detector, and the action icon lets him do this.
+ * The hero opens the chest if possible.
  */
 void Chest::action_key_pressed(void) {
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  Link *link = zsdx->game->get_link();
+  Hero *hero = zsdx->game->get_hero();
   DungeonEquipment *dungeon_equipment = zsdx->game->get_dungeon_equipment();
 
-  if (link->get_state() == Link::FREE) { // don't open a chest while pushing
+  if (hero->get_state() == Hero::FREE) { // don't open a chest while pushing
 
     if (!big_chest || dungeon_equipment->has_big_key()) {
       ResourceManager::get_sound("chest_open")->play();
@@ -175,7 +175,7 @@ void Chest::action_key_pressed(void) {
       treasure_date = SDL_GetTicks() + 300;
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-      link->freeze();
+      hero->freeze();
     }
     else {
       ResourceManager::get_sound("wrong")->play();

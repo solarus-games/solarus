@@ -104,7 +104,7 @@ class TransitionImmediate;
 // map entities
 class MapEntities;
 class MapEntity;
-class Link;
+class Hero;
 class TileOnMap;
 class Detector;
 class Teletransporter;

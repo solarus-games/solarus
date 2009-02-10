@@ -1,5 +1,5 @@
 #include "entities/JumpSensor.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "movements/Movement8ByPlayer.h"
 
 /**
@@ -132,9 +132,9 @@ bool JumpSensor::is_point_in_diagonal(const SDL_Rect &point) {
 void JumpSensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero()) {
-    Link* link = (Link*) entity_overlapping;
-    if (link->get_normal_movement()->is_moving_enabled()) {
-      link->start_jumping(direction, jump_length);
+    Hero* hero = (Hero*) entity_overlapping;
+    if (hero->get_normal_movement()->is_moving_enabled()) {
+      hero->start_jumping(direction, jump_length);
     }
   }
 }

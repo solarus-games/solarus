@@ -6,12 +6,12 @@
 #include "PickableItem.h"
 
 /**
- * Represents an entity that Link can destroy and that contains a pickable item.
+ * Represents an entity that the hero can destroy and that contains a pickable item.
  * Some destructible items can be lifted and thrown (a pot, a stone, etc.),
  * some of them can be cut with the sword (for example some grass)
  * and others have both behaviors (for example a bush).
- * When Link lifts an item, it is destroyed and replaced by an instance of CarriedItem
- * that is attached to Link.
+ * When the hero lifts an item, it is destroyed and replaced by an instance of CarriedItem
+ * that is attached to the hero.
  */
 class DestructibleItem: public Detector {
 

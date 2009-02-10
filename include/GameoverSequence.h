@@ -16,7 +16,7 @@ class GameoverSequence {
 
   // graphics
   SDL_Surface *gameover_menu_img; /**< image of the game over menu */
-  Sprite *hero_dead_sprite;       /**< sprite of the hero dying or dead (different from the real Link which is
+  Sprite *hero_dead_sprite;       /**< sprite of the hero dying or dead (different from the real hero which is
 				   * suspended as all map entities) */
   int hero_dead_x;                /**< x position of the hero dead sprite on the screen */
   int hero_dead_y;                /**< y position of the hero dead sprite on the screen */

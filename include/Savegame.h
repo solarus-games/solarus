@@ -122,10 +122,10 @@ class Savegame {
      * @{
      */
     PIECES_OF_HEART                  = 30, /**< current pieces of heart number (0 to 3) */
-    LINK_TUNIC                       = 31, /**< Link's tunic (0: green, 1: blue, 2: red) */
-    LINK_SHIELD                      = 32, /**< Link's shield (0: no shield, 1 to 3: shields 1 to 3) */
-    LINK_SWORD                       = 33, /**< Link's sword (0: no sword, 1 to 4: swords 1 to 4) */
-    WORLD_MAP                        = 34, /**< has Link got the world map (0: no, 1: yes) */
+    HERO_TUNIC                       = 31, /**< the tunic (0: green, 1: blue, 2: red) */
+    HERO_SHIELD                      = 32, /**< the shield (0: no shield, 1 to 3: shields 1 to 3) */
+    HERO_SWORD                       = 33, /**< the sword (0: no sword, 1 to 4: swords 1 to 4) */
+    WORLD_MAP                        = 34, /**< has the player got the world map? (0: no, 1: yes) */
     /**
      * @}
      */

@@ -5,15 +5,15 @@
 #include "MapEntity.h"
 
 /**
- * Represents an item (pot, bush...) carried by Link. He can throw it.
- * The item is attached to Link, not to the map.
+ * Represents an item (pot, bush...) carried by the hero. He can throw it.
+ * The item is attached to the hero, not to the map.
  */
 class CarriedItem: public MapEntity {
 
  private:
   
   Map *map;
-  Link *link;
+  Hero *hero;
   bool is_lifting;
   bool is_throwing;
   bool is_breaking;
@@ -24,7 +24,7 @@ class CarriedItem: public MapEntity {
 
  public:
 
-  CarriedItem(Link *link, DestructibleItem *destructible_item);
+  CarriedItem(Hero *hero, DestructibleItem *destructible_item);
   ~CarriedItem(void);
 
   EntityType get_type(void);

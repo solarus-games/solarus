@@ -81,10 +81,10 @@ add_executable (zsdx
   # map entities
   entities/MapEntities.cpp
   entities/MapEntity.cpp
-  entities/Link.cpp
-  entities/LinkKeys.cpp
-  entities/LinkAnimations.cpp
-  entities/LinkState.cpp
+  entities/Hero.cpp
+  entities/HeroKeys.cpp
+  entities/HeroAnimations.cpp
+  entities/HeroState.cpp
   entities/TileOnMap.cpp
   entities/Detector.cpp
   entities/Teletransporter.cpp

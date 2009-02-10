@@ -4,10 +4,7 @@
 #include "Equipment.h"
 #include "DialogBox.h"
 #include "menus/PauseMenu.h"
-#include "entities/Link.h"
-
-// TODO only used for tests
-#include "Treasure.h"
+#include "entities/Hero.h"
 
 // TODO: load this from some external file (for future translation)
 static const string key_names[] = {
@@ -234,32 +231,32 @@ void Controls::handle_event(const SDL_Event &event) {
 	  
     case SDLK_KP1:
       equipment->set_tunic(MAX(equipment->get_tunic() - 1, 0));
-      game->get_link()->rebuild_equipment();
+      game->get_hero()->rebuild_equipment();
       break;
 
     case SDLK_KP4:
       equipment->set_tunic(MIN(equipment->get_tunic() + 1, 2));
-      game->get_link()->rebuild_equipment();
+      game->get_hero()->rebuild_equipment();
       break;
 	  
     case SDLK_KP2:
       equipment->set_sword(MAX(equipment->get_sword() - 1, 0));
-      game->get_link()->rebuild_equipment();
+      game->get_hero()->rebuild_equipment();
       break;
 	  
     case SDLK_KP5:
       equipment->set_sword(MIN(equipment->get_sword() + 1, 4));
-      game->get_link()->rebuild_equipment();
+      game->get_hero()->rebuild_equipment();
       break;
 	  
     case SDLK_KP3:
       equipment->set_shield(MAX(equipment->get_shield() - 1, 0));
-      game->get_link()->rebuild_equipment();
+      game->get_hero()->rebuild_equipment();
       break;
 	  
     case SDLK_KP6:
       equipment->set_shield(MIN(equipment->get_shield() + 1, 3));
-      game->get_link()->rebuild_equipment();
+      game->get_hero()->rebuild_equipment();
       break;
 	  
     default:
@@ -595,12 +592,12 @@ void Controls::game_key_pressed(GameKey key) {
 
   if (!game->is_suspended()) {    
 
-    // if the game is not suspended, most of the keys apply to Link
+    // if the game is not suspended, most of the keys apply to the hero
     if (key == PAUSE) {
       game->set_paused(true);
     }
     else {
-      game->get_link()->key_pressed(key);
+      game->get_hero()->key_pressed(key);
     }
   }
 
@@ -626,8 +623,8 @@ void Controls::game_key_released(GameKey key) {
   keys_pressed[key - 1] = false;
 
   if (!game->is_suspended()) {
-    // if the game is not suspended, the keys apply to Link
-    game->get_link()->key_released(key);
+    // if the game is not suspended, the keys apply to the hero
+    game->get_hero()->key_released(key);
   }  
 }
 

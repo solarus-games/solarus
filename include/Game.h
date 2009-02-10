@@ -17,9 +17,9 @@ class Game: public Screen {
   // savegame
   Savegame *savegame;       /**< the game data saved */
 
-  // Link
-  Link *link;
-  Movement8ByPlayer *link_movement;
+  // the hero
+  Hero *hero;
+  Movement8ByPlayer *hero_movement;
 
   // current game state (elements currently shown)
   PauseMenu *pause_menu;    /**< the current pause menu, or NULL if the game is not paused */
@@ -35,8 +35,8 @@ class Game: public Screen {
 
   // map
   Map *current_map;         /**< the map currently displayed */
-  Map *next_map;            /**< the map where Link is going to; if not NULL, it means that Link is changing from
-		             * current_map to next_map */
+  Map *next_map;            /**< the map where the hero is going to; if not NULL, it means that the hero 
+			     * is changing from current_map to next_map */
 
   Transition::Style transition_style; /**< the transition style between the current map and the next one */
   Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */
@@ -68,7 +68,7 @@ class Game: public Screen {
   ~Game(void);
 
   // global objects
-  Link *get_link(void);
+  Hero *get_hero(void);
   Controls *get_controls(void);
   KeysEffect *get_keys_effect(void);
   Savegame *get_savegame(void);

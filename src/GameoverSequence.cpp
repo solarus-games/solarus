@@ -7,7 +7,7 @@
 #include "Equipment.h"
 #include "Treasure.h"
 #include "Sound.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "movements/TargetMovement.h"
 #include <sstream>
 
@@ -24,18 +24,18 @@ GameoverSequence::GameoverSequence(Game *game):
   red_screen_color = Color::create(224, 32, 32);
 
   std::ostringstream oss;
-  oss << "link/tunic" << game->get_equipment()->get_tunic();
+  oss << "hero/tunic" << game->get_equipment()->get_tunic();
   hero_dead_sprite = new Sprite(oss.str());
   hero_dead_sprite->set_current_animation("dying");
 
   SDL_Rect *screen_position = game->get_current_map()->get_screen_position();
-  Link *hero = game->get_link();
+  Hero *hero = game->get_hero();
   hero_dead_x = hero->get_x() - screen_position->x;
   hero_dead_y = hero->get_y() - screen_position->y;
 
   fairy_sprite = new Sprite("entities/fairy");
 
-  ResourceManager::get_sound("link_dying")->play();
+  ResourceManager::get_sound("hero_dying")->play();
 }
 
 /**
@@ -100,7 +100,7 @@ void GameoverSequence::update(void) {
       if (fairy_movement->is_finished()) {
 	state = RESUME_GAME;
 	game->get_equipment()->add_hearts(7 * 4);
-	game->get_link()->get_back_from_death();
+	game->get_hero()->get_back_from_death();
 	game->play_music(music_id);
       }
     }

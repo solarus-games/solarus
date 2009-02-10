@@ -1,5 +1,5 @@
 #include "entities/DestructibleItem.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "movements/PathMovement.h"
 #include "ResourceManager.h"
@@ -58,7 +58,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
     add_collision_mode(COLLISION_SPRITE);
   }
 
-  if (type == GRASS) { // display the grass animation under Link
+  if (type == GRASS) { // display the grass animation under the hero
     add_collision_mode(COLLISION_ORIGIN_POINT);
   }
 }
@@ -124,13 +124,13 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
 
   if (entity_overlapping->is_hero()) {
 
-    Link *link = zsdx->game->get_link();
+    Hero *hero = zsdx->game->get_hero();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
     if (properties[type].can_be_lifted
 	&& !is_being_cut
 	&& keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& link->get_state() == Link::FREE) {
+	&& hero->get_state() == Hero::FREE) {
 
       Equipment *equipment = zsdx->game->get_equipment();
       int weight = properties[type].weight;
@@ -159,17 +159,17 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
 
     bool cut = false;
-    Link *link = (Link*) entity;
-    Link::State state = link->get_state();
-    int animation_direction = link->get_animation_direction();
+    Hero *hero = (Hero*) entity;
+    Hero::State state = hero->get_state();
+    int animation_direction = hero->get_animation_direction();
 
-    if (state == Link::SPIN_ATTACK) {
+    if (state == Hero::SPIN_ATTACK) {
       cut = true;
     }
-    else if (state == Link::SWORD_SWINGING
-	     || (is_obstacle_for(entity) && link->is_moving_towards(animation_direction))) {
+    else if (state == Hero::SWORD_SWINGING
+	     || (is_obstacle_for(entity) && hero->is_moving_towards(animation_direction))) {
 
-      SDL_Rect facing_point = link->get_facing_point();
+      SDL_Rect facing_point = hero->get_facing_point();
 
       int distance = is_obstacle_for(entity) ? 14 : 4;
 
@@ -204,7 +204,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
 	break;
 
       default:
-	DIE("Invalid animation direction of Link: " << link->get_animation_direction());
+	DIE("Invalid animation direction of the hero: " << hero->get_animation_direction());
 	break;
       }
     }
@@ -234,7 +234,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
 void DestructibleItem::action_key_pressed(void) {
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  Link *link = zsdx->game->get_link();
+  Hero *hero = zsdx->game->get_hero();
   KeysEffect::ActionKeyEffect effect = keys_effect->get_action_key_effect();
 
   if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
@@ -245,7 +245,7 @@ void DestructibleItem::action_key_pressed(void) {
     Equipment *equipment = zsdx->game->get_equipment();
 
     if (equipment->can_lift(weight)) {
-      link->start_lifting(this);
+      hero->start_lifting(this);
 
       // play the sound
       ResourceManager::get_sound("lift")->play();

@@ -1,51 +1,51 @@
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "Sprite.h"
 #include "Equipment.h"
 #include "Map.h"
 
 /**
- * String constants corresponding to the sprites of Link's tunics.
+ * String constants corresponding to the sprites of the tunics.
  */
-const SpriteAnimationSetId Link::tunic_sprite_ids[3] = {
-  "link/tunic0", // green tunic
-  "link/tunic1", // blue tunic
-  "link/tunic2", // red tunic
+const SpriteAnimationSetId Hero::tunic_sprite_ids[3] = {
+  "hero/tunic0", // green tunic
+  "hero/tunic1", // blue tunic
+  "hero/tunic2", // red tunic
 };
 
 /**
- * String constants corresponding to the sprites of Link's swords.
+ * String constants corresponding to the sprites of the swords.
  */
-const SpriteAnimationSetId Link::sword_sprite_ids[4] = {
-  "link/sword1",
-  "link/sword2",
-  "link/sword3",
-  "link/sword4",
+const SpriteAnimationSetId Hero::sword_sprite_ids[4] = {
+  "hero/sword1",
+  "hero/sword2",
+  "hero/sword3",
+  "hero/sword4",
 };
 
 /**
- * String constants corresponding to the sprites of the stars of Link's swords.
+ * String constants corresponding to the sprites of the stars of the swords.
  */
-const SpriteAnimationSetId Link::sword_stars_sprite_ids[4] = {
-  "link/sword_stars1",
-  "link/sword_stars1",
-  "link/sword_stars2",
-  "link/sword_stars2",
+const SpriteAnimationSetId Hero::sword_stars_sprite_ids[4] = {
+  "hero/sword_stars1",
+  "hero/sword_stars1",
+  "hero/sword_stars2",
+  "hero/sword_stars2",
 };
 
 /**
  * String constants corresponding to the sprites of the shields.
  */
-const SpriteAnimationSetId Link::shield_sprite_ids[3] = {
-  "link/shield1",
-  "link/shield2",
-  "link/shield3",
+const SpriteAnimationSetId Hero::shield_sprite_ids[3] = {
+  "hero/shield1",
+  "hero/shield2",
+  "hero/shield3",
 };
 
 /**
  * String constants corresponding to the sounds of the swords.
  */
-const SoundId Link::sword_sound_ids[4] = {
+const SoundId Hero::sword_sound_ids[4] = {
   "sword1",
   "sword2",
   "sword3",
@@ -53,41 +53,41 @@ const SoundId Link::sword_sound_ids[4] = {
 };
 
 /**
- * Returns whether Link's sword is currently displayed on the screen.
- * @return true if Link's sword is currently displayed on the screen
+ * Returns whether the sword is currently displayed on the screen.
+ * @return true if the sword is currently displayed on the screen
  */
-bool Link::is_sword_visible(void) {
+bool Hero::is_sword_visible(void) {
   return equipment->has_sword() && sword_sprite != NULL && sword_sprite->is_animation_started();
 }
 
 /**
- * Returns whether the stars of Link's sword are currently displayed on the screen.
- * @return true if the stars of Link's sword are currently displayed on the screen
+ * Returns whether the stars of the sword are currently displayed on the screen.
+ * @return true if the stars of the sword are currently displayed on the screen
  */
-bool Link::is_sword_stars_visible(void) {
+bool Hero::is_sword_stars_visible(void) {
   return equipment->has_sword() && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
 }
 
 /**
- * Returns whether Link's shield is currently displayed on the screen.
- * @return true if Link's shield is currently displayed on the screen
+ * Returns whether the shield is currently displayed on the screen.
+ * @return true if the shield is currently displayed on the screen
  */
-bool Link::is_shield_visible(void) {
+bool Hero::is_shield_visible(void) {
   return equipment->has_shield() && shield_sprite != NULL && shield_sprite->is_animation_started();
 }
 
 /**
- * Returns whether Link's shadow is currently displayed, separated from the tunic sprite.
- * @return true if Link's shadow is currently displayed, separated from the tunic sprite
+ * Returns whether the shadow is currently displayed, separated from the tunic sprite.
+ * @return true if the shadow is currently displayed, separated from the tunic sprite
  */
-bool Link::is_shadow_visible(void) {
+bool Hero::is_shadow_visible(void) {
   return get_state() == JUMPING;
 }
 
 /**
- * Stops displaying Link's sword (if any).
+ * Stops displaying the sword (if any).
  */
-void Link::stop_displaying_sword(void) {
+void Hero::stop_displaying_sword(void) {
 
   if (is_sword_visible()) {
     sword_sprite->stop_animation();
@@ -96,9 +96,9 @@ void Link::stop_displaying_sword(void) {
 }
 
 /**
- * Makes Link blink for a while.
+ * Makes the hero blink for a while.
  */
-void Link::blink(void) {
+void Hero::blink(void) {
   tunic_sprite->set_blinking(50);
 
   if (equipment->has_shield()) {
@@ -112,9 +112,9 @@ void Link::blink(void) {
 }
 
 /**
- * Stops making the sprites blink.
+ * Stops making the hero's sprites blink.
  */
-void Link::stop_blinking() {
+void Hero::stop_blinking() {
 
   tunic_sprite->set_blinking(0);
 
@@ -129,20 +129,20 @@ void Link::stop_blinking() {
 }
 
 /**
- * Returns the direction of Link's sprites.
+ * Returns the direction of the hero's sprites.
  * It is different from the movement direction.
- * @return the direction of Link's sprites (0 to 3)
+ * @return the direction of the sprites (0 to 3)
  */
-int Link::get_animation_direction(void) {
+int Hero::get_animation_direction(void) {
   return tunic_sprite->get_current_direction();
 }
 
 /**
- * Changes the direction of Link's sprites.
+ * Changes the direction of the hero's sprites.
  * It is different from the movement direction.
  * @param direction the direction to set (0 to 3)
  */
-void Link::set_animation_direction(int direction) {
+void Hero::set_animation_direction(int direction) {
 
   tunic_sprite->set_current_direction(direction);
 
@@ -160,25 +160,25 @@ void Link::set_animation_direction(int direction) {
 }
 
 /**
- * Saves the current direction of the Link's sprite.
+ * Saves the current direction of the the sprite.
  * Call restore_animation_direction() to restore the direction saved here.
  */
-void Link::save_animation_direction(void) {
+void Hero::save_animation_direction(void) {
   this->animation_direction_saved = get_animation_direction();
 }
 
 /**
- * Restores the direction of Link's sprite saved by the last
+ * Restores the direction of the hero's sprite saved by the last
  * save_animation_direction() call.
  */
-void Link::restore_animation_direction(void) {
+void Hero::restore_animation_direction(void) {
   set_animation_direction(animation_direction_saved);
 }
 
 /**
- * Updates the animation of Link's sprites if necessary.
+ * Updates the animation of the hero's sprites if necessary.
  */
-void Link::update_sprites(void) {
+void Hero::update_sprites(void) {
 
   // update the frames
   tunic_sprite->update();
@@ -212,11 +212,11 @@ void Link::update_sprites(void) {
 }
 
 /**
- * Restarts the animation of Link's sprites.
+ * Restarts the animation of the hero's sprites.
  * This function is called when the sprites have to
  * get back to their first frame.
  */
-void Link::restart_animation(void) {
+void Hero::restart_animation(void) {
   tunic_sprite->restart_animation();
 
   if (is_sword_visible()) {
@@ -233,9 +233,9 @@ void Link::restart_animation(void) {
 }
 
 /**
- * Starts the "stopped" animation of Link's sprites.
+ * Starts the "stopped" animation of the hero's sprites.
  */
-void Link::set_animation_stopped(void) {
+void Hero::set_animation_stopped(void) {
 
   int direction = tunic_sprite->get_current_direction();
   
@@ -294,9 +294,9 @@ void Link::set_animation_stopped(void) {
 }
 
 /**
- * Starts the "walking" animation of Link's sprites.
+ * Starts the "walking" animation of the hero's sprites.
  */
-void Link::set_animation_walking(void) {
+void Hero::set_animation_walking(void) {
 
   int direction = tunic_sprite->get_current_direction();
   
@@ -355,10 +355,10 @@ void Link::set_animation_walking(void) {
 }
 
 /**
- * Starts (or restarts) the "sword" animation of Link's sprites.
- * Link's state should be SWORD.
+ * Starts (or restarts) the "sword" animation of the hero's sprites.
+ * The state of the hero should be SWORD.
  */
-void Link::set_animation_sword(void) {
+void Hero::set_animation_sword(void) {
 
   int direction = tunic_sprite->get_current_direction();
   
@@ -384,62 +384,62 @@ void Link::set_animation_sword(void) {
 }
 
 /**
- * Starts the "grabbing" animation of Link's sprites.
- * Link's state should be GRABBING.
+ * Starts the "grabbing" animation of the hero's sprites.
+ * The hero's state should be GRABBING.
  */
-void Link::set_animation_grabbing(void) {
+void Hero::set_animation_grabbing(void) {
   tunic_sprite->set_current_animation("grabbing");
 
-  // the shield is not visible when Link is grabbing an object
+  // the shield is not visible when the hero is grabbing an object
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }
 }
 
 /**
- * Starts the "pulling" animation of Link's sprites.
- * Link's state should be PULLING.
+ * Starts the "pulling" animation of the hero's sprites.
+ * The hero's state should be PULLING.
  */
-void Link::set_animation_pulling(void) {
+void Hero::set_animation_pulling(void) {
   tunic_sprite->set_current_animation("pulling");
 
-  // the shield is not visible when Link is pulling an object
+  // the shield is not visible when the hero is pulling an object
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }
 }
 
 /**
- * Starts the "pushing" animation of Link's sprites.
- * Link's state should be PUSHING.
+ * Starts the "pushing" animation of the hero's sprites.
+ * The hero's state should be PUSHING.
  */
-void Link::set_animation_pushing(void) {
+void Hero::set_animation_pushing(void) {
   tunic_sprite->set_current_animation("pushing");
 
-  // the shield is not visible when Link is pushing
+  // the shield is not visible when the hero is pushing
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }
 }
 
 /**
- * Starts the "lifting" animation of Link's sprites.
- * Link's state should be LIFTING.
+ * Starts the "lifting" animation of the hero's sprites.
+ * The hero's state should be LIFTING.
  */
-void Link::set_animation_lifting(void) {
+void Hero::set_animation_lifting(void) {
   tunic_sprite->set_current_animation("lifting");
 
-  // the shield is not visible when Link is lifting
+  // the shield is not visible when the hero is lifting
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }
 }
 
 /**
- * Starts the "jumping" animation of Link's sprites.
- * Link's state should be JUMPING.
+ * Starts the "jumping" animation of the hero's sprites.
+ * The hero's state should be JUMPING.
  */
-void Link::set_animation_jumping(void) {
+void Hero::set_animation_jumping(void) {
   tunic_sprite->set_current_animation("jumping");
 
   if (equipment->has_shield()) {
@@ -449,13 +449,13 @@ void Link::set_animation_jumping(void) {
 }
 
 /**
- * Starts the "hurt" animation of Link's sprites.
- * Link's state should be HURT.
+ * Starts the "hurt" animation of the hero's sprites.
+ * The hero's state should be HURT.
  */
-void Link::set_animation_hurt(void) {
+void Hero::set_animation_hurt(void) {
   tunic_sprite->set_current_animation("hurt");
 
-  // the shield is not visible when Link is hurt
+  // the shield is not visible when the hero is hurt
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }

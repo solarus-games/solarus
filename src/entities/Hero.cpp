@@ -1,4 +1,4 @@
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "movements/Movement8ByPlayer.h"
 #include "KeysEffect.h"
@@ -11,7 +11,7 @@
 #include "Map.h"
 
 /**
- * Indicates the direction of link's animation (from 0 to 4, or -1 for no change)
+ * Indicates the direction of the hero's animation (from 0 to 4, or -1 for no change)
  * depending on the arrows pressed on the keyboard.
  */
 static const int animation_directions[] = {
@@ -36,7 +36,7 @@ static const int animation_directions[] = {
 /**
  * Constructor.
  */
-Link::Link(Equipment *equipment):
+Hero::Hero(Equipment *equipment):
   equipment(equipment),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
   normal_movement(new Movement8ByPlayer(12)),
@@ -53,7 +53,7 @@ Link::Link(Equipment *equipment):
 /**
  * Destructor.
  */
-Link::~Link(void) {
+Hero::~Hero(void) {
   delete tunic_sprite;
   delete shadow_sprite;
 
@@ -73,7 +73,7 @@ Link::~Link(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType Link::get_type() {
+MapEntity::EntityType Hero::get_type() {
   return HERO;
 }
 
@@ -82,36 +82,36 @@ MapEntity::EntityType Link::get_type() {
  * controlled by the player.
  * @return true
  */
-bool Link::is_hero(void) {
+bool Hero::is_hero(void) {
   return true;
 }
 
 /**
  * Returns the 8-directions movement controlled by the player,
- * even if it is not the current movement of Link.
+ * even if it is not the current movement of the hero.
  * @return the player's movement
  */
-Movement8ByPlayer * Link::get_normal_movement(void) {
+Movement8ByPlayer * Hero::get_normal_movement(void) {
   return normal_movement;
 }
 
 /**
- * Returns the direction of Link's movement.
+ * Returns the direction of the hero's movement.
  * If he is not moving, -1 is returned.
- * @return Link's movement direction between 0 and 360, or -1 if he is stopped
+ * @return the hero's movement direction between 0 and 360, or -1 if he is stopped
  */
-int Link::get_movement_direction(void) {
+int Hero::get_movement_direction(void) {
   return get_normal_movement()->get_direction();
 }
 
 /**
- * Returns whether Link is moving towards the specified direction.
- * If Link is not moving, false is returned.
+ * Returns whether the hero is moving towards the specified direction.
+ * If the hero is not moving, false is returned.
  * @param direction one of the four main directions (0 to 3)
- * @return true if Link is moving in that direction,
+ * @return true if the hero is moving in that direction,
  * even if he is actually doing a diagonal move
  */
-bool Link::is_moving_towards(int direction) {
+bool Hero::is_moving_towards(int direction) {
 
   if (get_movement()->is_stopped()) {
     return false;
@@ -125,24 +125,24 @@ bool Link::is_moving_towards(int direction) {
 }
 
 /**
- * Returns the coordinates of a point in the direction Link's sprite is looking at.
- * This point is 1 pixel outside Link's collision box. It is used
+ * Returns the coordinates of a point in the direction the hero's sprite is looking at.
+ * This point is 1 pixel outside the hero's collision box. It is used
  * to determine the actions he can do depending on the entity he is facing
  * (a bush, a pot, a PNJ...)
- * @return the point Link is facing
+ * @return the point the hero is facing
  */
-SDL_Rect Link::get_facing_point(void) {
+SDL_Rect Hero::get_facing_point(void) {
 
   int direction = get_animation_direction();
   return get_facing_point(direction);
 }
 
 /**
- * Returns the point located just outside Link's collision box,
+ * Returns the point located just outside the hero's collision box,
  * in the specified direction.
  * @param direction a direction (0 to 3)
  */
-SDL_Rect Link::get_facing_point(int direction) {
+SDL_Rect Hero::get_facing_point(int direction) {
 
   SDL_Rect facing_point;
 
@@ -180,11 +180,11 @@ SDL_Rect Link::get_facing_point(int direction) {
 }
 
 /**
- * Sets Link's current map.
+ * Sets the hero's current map.
  * This function is called when the map is changed.
  * @param map the map
  */
-void Link::set_map(Map *map) {
+void Hero::set_map(Map *map) {
 
   MapEntity::set_map(map);
 
@@ -214,12 +214,12 @@ void Link::set_map(Map *map) {
 }
 
 /**
- * Sets Link's current map.
+ * Sets the hero's current map.
  * This function is called when the map is changed.
  * @param map the map
- * @param initial_direction the direction of Link (0 to 3)
+ * @param initial_direction the direction of the hero (0 to 3)
  */
-void Link::set_map(Map *map, int initial_direction) {
+void Hero::set_map(Map *map, int initial_direction) {
 
   set_map(map);
 
@@ -232,7 +232,7 @@ void Link::set_map(Map *map, int initial_direction) {
  * This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the hero, false to resume it
  */
-void Link::set_suspended(bool suspended) {
+void Hero::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended);
 
@@ -263,10 +263,10 @@ void Link::set_suspended(bool suspended) {
 }
 
 /**
- * Updates Link's position, movement and animation.
+ * Updates the hero's position, movement and animation.
  * This function is called repeteadly by the game.
  */
-void Link::update(void) {
+void Hero::update(void) {
 
   // update the movement
   if (!suspended) {
@@ -314,10 +314,10 @@ void Link::update(void) {
 }
 
 /**
- * Displays Link on the map with its current animation and
+ * Displays the hero on the map with its current animation and
  * at its current position.
  */
-void Link::display_on_map(void) {
+void Hero::display_on_map(void) {
 
   if (zsdx->game->is_showing_gameover()) {
     return; // the hero is directly displayed by the game over sequence
@@ -357,16 +357,16 @@ void Link::display_on_map(void) {
 }
 
 /**
- * Loads (or reloads) the sprites and sounds of Link and his equipment,
+ * Loads (or reloads) the sprites and sounds of the hero and his equipment,
  * depending on its tunic, sword and shield as specified in the savegame.
  * This function must be called at the game beginning
- * and as soon as Link's equipment is changed.
+ * and as soon as the hero's equipment is changed.
  */
-void Link::rebuild_equipment(void) {
+void Hero::rebuild_equipment(void) {
 
   int animation_direction = -1;
 
-  // Link
+  // the hero
   if (tunic_sprite != NULL) {
     // save the animation direction
     animation_direction = tunic_sprite->get_current_direction();
@@ -377,12 +377,12 @@ void Link::rebuild_equipment(void) {
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
   tunic_sprite->get_animation_set()->enable_pixel_collisions();
-  tunic_sprite->set_animation_listener(this); // to be notified when an animation of Link is over
+  tunic_sprite->set_animation_listener(this); // to be notified when an animation of the hero is over
 
   shadow_sprite = new Sprite("entities/shadow");
   shadow_sprite->set_current_animation("big");
 
-  // Link's sword
+  // the hero's sword
   if (sword_sprite != NULL) {
     delete sword_sprite;
     delete sword_stars_sprite;
@@ -392,7 +392,7 @@ void Link::rebuild_equipment(void) {
   int sword_number = equipment->get_sword();
 
   if (sword_number > 0) {
-    // Link has a sword: get the sprite and the sound
+    // the hero has a sword: get the sprite and the sound
     sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
     sword_sprite->stop_animation();
     sword_sprite->get_animation_set()->enable_pixel_collisions();
@@ -403,7 +403,7 @@ void Link::rebuild_equipment(void) {
     sword_stars_sprite->stop_animation();
   }
 
-  // Link's shield
+  // the hero's shield
   if (shield_sprite != NULL) {
     delete shield_sprite;
     shield_sprite = NULL;
@@ -412,7 +412,7 @@ void Link::rebuild_equipment(void) {
   int shield_number = equipment->get_shield();
 
   if (shield_number > 0) {
-    // Link has a shield
+    // the hero has a shield
     shield_sprite = new Sprite(shield_sprite_ids[shield_number - 1]);
   }
 
@@ -432,11 +432,11 @@ void Link::rebuild_equipment(void) {
 }
 
 /**
- * Updates Link depending on the arrows pressed.
- * This function is called when Link's direction changes (typically, because the player
- * pressed or released an arrow). It updates Link's animations and collisions according to the new movement.
+ * Updates the hero depending on the arrows pressed.
+ * This function is called when the hero's direction changes (typically, because the player
+ * pressed or released an arrow). It updates the hero's animations and collisions according to the new movement.
  */
-void Link::movement_just_changed(void) {
+void Hero::movement_just_changed(void) {
 
   // update the animation direction according to the movement direction
   int direction = get_movement_direction();
@@ -451,7 +451,7 @@ void Link::movement_just_changed(void) {
 	&& !is_direction_locked()) {
       // if the direction defined by the arrows has changed,
       // update the sprite's direction of animation
-      // (unless Link is loading his sword)
+      // (unless the hero is loading his sword)
       set_animation_direction(animation_direction);
     }
   }
@@ -481,28 +481,28 @@ void Link::movement_just_changed(void) {
 }
 
 /**
- * This function is called when Link's position is changed,
+ * This function is called when the hero's position is changed,
  * or when his direction changes. 
  */
-void Link::just_moved(void) {
+void Hero::just_moved(void) {
 
   set_facing_entity(NULL);
   MapEntity::just_moved();
 }
 
 /**
- * Sets the entity Link is currently facing.
- * This function is called when Link is just being
+ * Sets the entity the hero is currently facing.
+ * This function is called when the hero is just being
  * facing another entity.
- * @param detector the detector Link is facing
+ * @param detector the detector the hero is facing
  */
-void Link::set_facing_entity(Detector *detector) {
+void Hero::set_facing_entity(Detector *detector) {
 
   this->facing_entity = detector;
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
-  // if Link stops facing an entity that showed an action icon
+  // if the hero stops facing an entity that showed an action icon
   if (facing_entity == NULL &&
       keys_effect->is_action_key_acting_on_facing_entity()) {
 
@@ -511,20 +511,20 @@ void Link::set_facing_entity(Detector *detector) {
 }
 
 /**
- * Returns whether Link is facing an obstacle, i.e. whether
+ * Returns whether the hero is facing an obstacle, i.e. whether
  * its facing point is overlapping an obstacle of the map.
  */
-bool Link::is_facing_obstacle(void) {
+bool Hero::is_facing_obstacle(void) {
 
   SDL_Rect facing_point = get_facing_point();
   return map->collision_with_obstacles(layer, facing_point.x, facing_point.y, this);   
 }
 
 /**
- * Updates Link's position.
+ * Updates the hero's position.
  * This function is called repeatedly by update().
  */
-void Link::update_position(void) {
+void Hero::update_position(void) {
 
   // no position change when the game is suspended
   if (zsdx->game->is_suspended()) {
@@ -538,7 +538,7 @@ void Link::update_position(void) {
     old_x = get_x();
     old_y = get_y();
 
-    // try to move Link
+    // try to move the hero
     get_movement()->update();
   }
   
@@ -547,12 +547,12 @@ void Link::update_position(void) {
   Uint16 direction_mask = get_normal_movement()->get_direction_mask();
 
   if (state == FREE && move_tried) {
-    // Link is trying to move with animation "walking"
+    // the hero is trying to move with animation "walking"
 
-    // see if the move has failed (i.e. if Link's coordinates have not changed)
+    // see if the move has failed (i.e. if the hero's coordinates have not changed)
     if (get_x() == old_x && get_y() == old_y) {
 
-      // Link is facing an obstacle
+      // the hero is facing an obstacle
 
       Uint32 now = SDL_GetTicks();
       if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
@@ -571,16 +571,16 @@ void Link::update_position(void) {
       }
     }
     else {
-      // Link has just moved successfuly
+      // the hero has just moved successfuly
       counter = 0;
       pushing_direction_mask = 0xFFFF;
     }
   }
   else {
 
-    // stop pushing or trying to push if the state changes (for example when Link swing his sword)
+    // stop pushing or trying to push if the state changes (for example when the hero swing his sword)
     // of if the player changes his direction
-    if (pushing_direction_mask != 0xFFFF && // Link is pushing or about to push
+    if (pushing_direction_mask != 0xFFFF && // the hero is pushing or about to push
 	direction_mask != pushing_direction_mask) {
 
       counter = 0;

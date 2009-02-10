@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "Sprite.h"
 #include "Map.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 
 /**
  * Constructor.
@@ -15,8 +15,8 @@
  * @param height height of the teletransporter's rectangle
  * @param transition_style style of transition between the two maps
  * @param destination_map_id id of the destination map
- * @param destination_point_name location on the destination map, or "_same" to keep Link's coordinates,
- * or "_side" to place Link on the appropriate side of the map
+ * @param destination_point_name location on the destination map, or "_same" to keep the hero's coordinates,
+ * or "_side" to place the heroon the appropriate side of the map
  */
 Teletransporter::Teletransporter(string name, MapEntity::Layer layer, int x, int y, int width, int height,
 				 Subtype subtype, Transition::Style transition_style,
@@ -63,7 +63,7 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
   }
 
   if (type == HERO) {
-    return ((Link*) other)->is_teletransporter_obstacle(this);
+    return ((Hero*) other)->is_teletransporter_obstacle(this);
   }
 
   return false;
@@ -72,7 +72,7 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
 /**
  * This function is called by the engine when an entity overlaps the teletransporter.
  * This is a redefinition of Detector::collision().
- * The map is not notified anymore: here we just make Link leave the map.
+ * The map is not notified anymore: here we just make the hero leave the map.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
@@ -84,7 +84,7 @@ void Teletransporter::collision(MapEntity *entity_overlapping, CollisionMode col
  * Makes the teletransporter move the hero to the destination.
  * @param hero the hero
  */
-void Teletransporter::transport_hero(Link *hero) {
+void Teletransporter::transport_hero(Hero *hero) {
 
   string name = destination_point_name;
 

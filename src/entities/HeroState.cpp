@@ -1,4 +1,4 @@
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "entities/Teletransporter.h"
 #include "movements/Movement8ByPlayer.h"
@@ -16,18 +16,18 @@
 #include "Controls.h"
 
 /**
- * Returns Link's state.
- * @return the state of Link
+ * Returns the hero's state.
+ * @return the state of the hero
  */
-Link::State Link::get_state(void) {
+Hero::State Hero::get_state(void) {
   return state;
 }
 
 /**
- * Sets Link's state.
- * @param state the state of Link
+ * Sets the hero's state.
+ * @param state the state of the hero
  */
-void Link::set_state(State state) {
+void Hero::set_state(State state) {
   this->state = state;
 
   if (!zsdx->game->is_suspended()) {
@@ -36,10 +36,10 @@ void Link::set_state(State state) {
 }
 
 /**
- * Lets Link can walk.
+ * Lets the hero can walk.
  * Moves to the state FREE and updates the animations accordingly.
  */
-void Link::start_free(void) {
+void Hero::start_free(void) {
   set_state(FREE);
 
   get_normal_movement()->compute_movement();
@@ -56,12 +56,12 @@ void Link::start_free(void) {
 }
 
 /**
- * Lets Link swinging his sword if this action is possible.
+ * Makes the hero swing his sword if this action is possible.
  * The game should not be suspended.
  * Moves to the state SWORD_SWINGING, plays the sword sound
  * and updates the animations accordingly.
  */
-void Link::start_sword(void) {
+void Hero::start_sword(void) {
   if (can_start_sword()) {
 
     // remove the carried item
@@ -76,13 +76,13 @@ void Link::start_sword(void) {
 }
 
 /**
- * Returns whether Link can swing his sword right now.
- * The function returns true if the game is not suspended and Link
+ * Returns whether the hero can swing his sword right now.
+ * The function returns true if the game is not suspended and the hero
  * is in state FREE, PUSHING,
  * CARRYING or SWORD_SWINGING.
- * @return true if Link can swing his sword, false otherwise
+ * @return true if the hero can swing his sword, false otherwise
  */
-bool Link::can_start_sword(void) {
+bool Hero::can_start_sword(void) {
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
@@ -92,20 +92,20 @@ bool Link::can_start_sword(void) {
 }
 
 /**
- * Makes Link push something.
+ * Makes the hero push something.
  * Moves to the state FREE and updates the animations accordingly.
  */
-void Link::start_pushing(void) {
+void Hero::start_pushing(void) {
   set_state(PUSHING);
   set_animation_pushing();
 }
 
 /**
- * Lets Link loading his sword.
+ * Lets the hero loading his sword.
  * Moves to the state SWORD_LOADING
  * and updates the animations accordingly.
  */
-void Link::start_sword_loading(void) {
+void Hero::start_sword_loading(void) {
   set_state(SWORD_LOADING);
   sword_loaded = false;
 
@@ -122,11 +122,11 @@ void Link::start_sword_loading(void) {
 }
 
 /**
- * This function is called repeatedly while Link is loading his sword.
+ * This function is called repeatedly while the hero is loading his sword.
  * It stops the loading if the sword key is released.
  * The state must be SWORD_LOADING.
  */
-void Link::update_sword_loading(void) {
+void Hero::update_sword_loading(void) {
 
   Uint32 now = SDL_GetTicks();
   while (!sword_loaded && now >= next_counter_date) {
@@ -159,10 +159,10 @@ void Link::update_sword_loading(void) {
 }
 
 /**
- * Makes Link lift a destructible item.
+ * Makes the hero lift a destructible item.
  * @param item_to_lift the destructible item to lift
  */
-void Link::start_lifting(DestructibleItem *item_to_lift) {
+void Hero::start_lifting(DestructibleItem *item_to_lift) {
 
   // create the corresponding carried item
   this->lifted_item = new CarriedItem(this, item_to_lift);
@@ -175,9 +175,9 @@ void Link::start_lifting(DestructibleItem *item_to_lift) {
 }
 
 /**
- * Makes Link carry the item he was lifting.
+ * Makes the hero carry the item he was lifting.
  */
-void Link::start_carrying(void) {
+void Hero::start_carrying(void) {
   set_state(CARRYING);
 
   if (get_normal_movement()->is_started()) {
@@ -189,9 +189,9 @@ void Link::start_carrying(void) {
 }
 
 /**
- * Removes the item carried by Link, without throwing it.
+ * Removes the item carried by the hero, without throwing it.
  */
-void Link::stop_carrying(void) {
+void Hero::stop_carrying(void) {
   set_state(FREE);
   delete lifted_item;
   lifted_item = NULL;
@@ -199,12 +199,12 @@ void Link::stop_carrying(void) {
 }
 
 /**
- * Makes Link throw the item he was carrying.
+ * Makes the hero throw the item he was carrying.
  */
-void Link::start_throwing(void) {
+void Hero::start_throwing(void) {
 
   // we check the state because the "throw" icon is actually shown as soon as
-  // Link starts lifting the item
+  // the hero starts lifting the item
   if (state == CARRYING) {
 
     lifted_item->throw_item(map, get_animation_direction());
@@ -220,11 +220,11 @@ void Link::start_throwing(void) {
 }
 
 /**
- * Suspends or resumes the animation of Link's carried items.
+ * Suspends or resumes the animation of the hero's carried items.
  * This function is called when the game is suspended or resumed.
  * @param suspended true to suspend the game, false to resume it
  */
-void Link::set_suspended_carried_items(bool suspended) {
+void Hero::set_suspended_carried_items(bool suspended) {
   
   if (lifted_item != NULL) {
     lifted_item->set_suspended(suspended);
@@ -238,7 +238,7 @@ void Link::set_suspended_carried_items(bool suspended) {
 /**
  * Updates the carried items.
  */
-void Link::update_carried_items(void) {
+void Hero::update_carried_items(void) {
 
   if (lifted_item != NULL) {
     lifted_item->update();
@@ -257,7 +257,7 @@ void Link::update_carried_items(void) {
 /**
  * Displays the carried items.
  */
-void Link::display_carried_items(void) {
+void Hero::display_carried_items(void) {
 
   if (lifted_item != NULL) {
     lifted_item->display_on_map();
@@ -271,7 +271,7 @@ void Link::display_carried_items(void) {
 /**
  * Deletes the carried items.
  */
-void Link::destroy_carried_items(void) {
+void Hero::destroy_carried_items(void) {
 
   if (lifted_item != NULL) {
     delete lifted_item;
@@ -285,28 +285,28 @@ void Link::destroy_carried_items(void) {
 }
 
 /**
- * Makes Link grab the object he is facing.
+ * Makes the hero grab the object he is facing.
  */
-void Link::start_grabbing(void) {
+void Hero::start_grabbing(void) {
   stop_displaying_sword();
   set_state(GRABBING);
   set_animation_grabbing();
 }
 
 /**
- * Makes Link pull the object he is grabbing.
+ * Makes the hero pull the object he is grabbing.
  */
-void Link::start_pulling(void) {
+void Hero::start_pulling(void) {
   set_state(PULLING);
   set_animation_pulling();
 }
 
 /**
- * This function is called repeatedly while Link is grabbing or pulling something.
+ * This function is called repeatedly while the hero is grabbing or pulling something.
  * It stops the action if the action key is released.
  * The state must be GRABBING or PULLING.
  */
-void Link::update_grabbing_pulling(void) {
+void Hero::update_grabbing_pulling(void) {
 
   Controls *controls = zsdx->game->get_controls();
   if (!controls->is_key_pressed(Controls::ACTION)) {
@@ -315,20 +315,20 @@ void Link::update_grabbing_pulling(void) {
 }
 
 /**
- * Forbids Link to move until start_free() is called.
- * The current animation of Link's sprites is stopped and the "stopped" animation is played.
+ * Forbids the hero to move until start_free() is called.
+ * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
  */
-void Link::freeze(void) {
+void Hero::freeze(void) {
   get_normal_movement()->set_moving_enabled(false);
   set_animation_stopped();
   set_state(FREEZED);
 }
 
 /**
- * Makes Link brandish a treasure.
- * @param treasure the treasure to give him (you have to delete it after Link brandishes it) 
+ * Makes the hero brandish a treasure.
+ * @param treasure the treasure to give him (you have to delete it after the hero brandishes it) 
  */
-void Link::give_treasure(Treasure *treasure) {
+void Hero::give_treasure(Treasure *treasure) {
 
   this->treasure = treasure;
 
@@ -341,7 +341,7 @@ void Link::give_treasure(Treasure *treasure) {
   tunic_sprite->set_current_animation("brandish");
   tunic_sprite->set_current_direction(0);
 
-  // the shield and the sword are not visible when Link is brandishing a treasure
+  // the shield and the sword are not visible when the hero is brandishing a treasure
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }
@@ -349,21 +349,21 @@ void Link::give_treasure(Treasure *treasure) {
 }
 
 /**
- * Updates Link when he is brandishing a treasure.
+ * Updates the hero when he is brandishing a treasure.
  */
-void Link::update_treasure(void) {
+void Hero::update_treasure(void) {
 
   if (!zsdx->game->is_giving_treasure()) {
 
     /* The treasure message is over: if the treasure was a tunic,
-     * a sword or a shield, then we must reload Link's sprites now
+     * a sword or a shield, then we must reload the hero's sprites now
      */
     Treasure::Content content = treasure->get_content();
     if (content >= Treasure::BLUE_TUNIC && content <= Treasure::SWORD_4) {
       rebuild_equipment();
     }
 
-    // restore Link's state
+    // restore the hero's state
     treasure = NULL;
     start_free();
     restore_animation_direction();
@@ -371,9 +371,9 @@ void Link::update_treasure(void) {
 }
 
 /**
- * Displays the treasure Link is brandishing.
+ * Displays the treasure the hero is brandishing.
  */
-void Link::display_treasure(void) {
+void Hero::display_treasure(void) {
 
   int x = position_in_map.x;
   int y = position_in_map.y;
@@ -385,11 +385,11 @@ void Link::display_treasure(void) {
 }
 
 /**
- * Lets Link loading his sword.
+ * Makes the hero load his sword.
  * Moves to the state SWORD_LOADING
  * and updates the animations accordingly.
  */
-void Link::start_spin_attack(void) {
+void Hero::start_spin_attack(void) {
   set_state(SPIN_ATTACK);
   sword_loaded = false;
   
@@ -407,12 +407,12 @@ void Link::start_spin_attack(void) {
 }
 
 /**
- * Makes Link jump in a direction.
+ * Makes the hero jump in a direction.
  * While he is jumping, the player does not control him anymore.
  * @param direction direction of the jump (0 to 7)
  * @param length length of the jump in pixels
  */
-void Link::start_jumping(int direction, int length) {
+void Hero::start_jumping(int direction, int length) {
 
   // remove the carried item
   if (state == CARRYING) {
@@ -436,7 +436,7 @@ void Link::start_jumping(int direction, int length) {
 /**
  * Updates the jump action.
  */
-void Link::update_jumping(void) {
+void Hero::update_jumping(void) {
 
   JumpMovement *movement = (JumpMovement*) get_movement();
   movement->update();
@@ -449,19 +449,19 @@ void Link::update_jumping(void) {
 }
 
 /**
- * Returns whether Link can be hurt.
- * @return true if Link can be hurt in its current state
+ * Returns whether the hero can be hurt.
+ * @return true if the hero can be hurt in its current state
  */
-bool Link::can_be_hurt(void) {
+bool Hero::can_be_hurt(void) {
   return state <= SPIN_ATTACK && !tunic_sprite->is_blinking();
 }
 
 /**
- * Hurts Link if possible.
- * @param source the entity that hurts Link (usually an enemy)
+ * Hurts the hero if possible.
+ * @param source the entity that hurts the hero (usually an enemy)
  * @param life number of heart quarters to remove (this number may be reduced by the tunic)
  */
-void Link::hurt(MapEntity *source, int life) {
+void Hero::hurt(MapEntity *source, int life) {
 
   if (can_be_hurt()) {
 
@@ -471,7 +471,7 @@ void Link::hurt(MapEntity *source, int life) {
     }
     stop_displaying_sword();
 
-    ResourceManager::get_sound("link_hurt")->play();
+    ResourceManager::get_sound("hero_hurt")->play();
 
     int life_removed = MAX(1, life / (equipment->get_tunic() + 1));
 
@@ -488,7 +488,7 @@ void Link::hurt(MapEntity *source, int life) {
 /**
  * Updates the HURT state.
  */
-void Link::update_hurt(void) {
+void Hero::update_hurt(void) {
 
   StraightMovement *movement = (StraightMovement*) get_movement();
   movement->update();
@@ -510,17 +510,17 @@ void Link::update_hurt(void) {
 /**
  * This function is called when the hero was dead but saved by a fairy.
  */
-void Link::get_back_from_death(void) {
+void Hero::get_back_from_death(void) {
   start_free();
   blink();
   when_suspended = SDL_GetTicks();
 }
 
 /**
- * This function is called when an animation of Link's sprite is over.
+ * This function is called when an animation of the hero's sprite is over.
  * @param sprite the sprite
  */
-void Link::animation_finished(Sprite *sprite) {
+void Hero::animation_finished(Sprite *sprite) {
 
   Controls *controls = zsdx->game->get_controls();
 
@@ -552,10 +552,10 @@ void Link::animation_finished(Sprite *sprite) {
  * it means that the animation direction is set to the movement direction.
  * When it returns false, it means that the animation direction is fixed
  * and do not depends on the movement direction anymore (this is the case
- * when Link is loading his sword).
+ * when the hero is loading his sword).
  * @return true if the animation direction is locked
  */
-bool Link::is_direction_locked(void) {
+bool Hero::is_direction_locked(void) {
   return state == SWORD_LOADING;
 }
 
@@ -563,7 +563,7 @@ bool Link::is_direction_locked(void) {
  * This function is called when an enemy collides with the hero.
  * @param enemy the enemy
  */
-void Link::collision_with_enemy(Enemy *enemy) {
+void Hero::collision_with_enemy(Enemy *enemy) {
   enemy->attack_hero(this);
 }
 
@@ -572,7 +572,7 @@ void Link::collision_with_enemy(Enemy *enemy) {
  * @param enemy the enemy
  * @param sprite the hero sprite that collides with the enemy
  */
-void Link::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
+void Hero::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
   
   if (sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
     enemy->hurt(Enemy::ATTACK_SWORD, this);
@@ -585,7 +585,7 @@ void Link::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
  * @param attack the attack
  * @param victim the enemy just hurt
  */
-void Link::just_attacked_enemy(Enemy::Attack attack, Enemy *victim) {
+void Hero::just_attacked_enemy(Enemy::Attack attack, Enemy *victim) {
 
   switch (attack) {
 
@@ -606,7 +606,7 @@ void Link::just_attacked_enemy(Enemy::Attack attack, Enemy *victim) {
  * @param teletransporter the teletransporter
  * @param collision_mode the collision mode that detected the event
  */
-void Link::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
+void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
 
   if (collision_mode == Detector::COLLISION_ORIGIN_POINT) {
     teletransporter->transport_hero(this);
@@ -619,6 +619,6 @@ void Link::collision_with_teletransporter(Teletransporter *teletransporter, int 
  * @param teletransporter
  * @return true if the teletransporter is currently an obstacle for the hero
  */
-bool Link::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
   return get_state() > SWIMMING;
 }

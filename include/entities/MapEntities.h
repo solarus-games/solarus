@@ -13,7 +13,7 @@
 #include <list>
 
 /**
- * Stores all entities of a map: the tiles, Link and all other entities.
+ * Stores all entities of a map: the tiles, the hero and all other entities.
  */
 class MapEntities {
 
@@ -104,7 +104,7 @@ class MapEntities {
   void add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height);
 
   void add_destination_point(string destination_point_name, MapEntity::Layer layer,
-			     int link_x, int link_y, int link_direction, bool is_visible);
+			     int x, int y, int hero_direction, bool is_visible);
 
   void add_teletransporter(string teletransporter_name, MapEntity::Layer layer, int x, int y, int w, int h,
 			   Teletransporter::Subtype subtype, Transition::Style transition_style,

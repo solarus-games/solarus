@@ -7,7 +7,7 @@
 
 /**
  * A teletransporter is a detector placed on a map.
- * When Link walks on this detector, he is placed on a destination point
+ * When the hero walks on this detector, he is placed on a destination point
  * on the same map or another one.
  */
 class Teletransporter: public Detector {
@@ -18,7 +18,7 @@ class Teletransporter: public Detector {
    * Subtypes of teletransporters.
    */
   enum Subtype {
-    INVISIBLE = 0, /**< an invisible detector, usually to move Link to another map */
+    INVISIBLE = 0, /**< an invisible detector, usually to move the hero to another map */
     YELLOW    = 1, /**< a classical teletransporter */
     BLUE      = 2, /**< a teletransporter with a different color and an immediate transition */
   };
@@ -28,8 +28,8 @@ class Teletransporter: public Detector {
   Subtype subtype;                      /**< subtype of teletransporter */
   Transition::Style transition_style;   /**< style of transition between the two maps */
   MapId destination_map_id;             /**< id of the destination map */
-  string destination_point_name;        /**< destination point on that map, or "_same" to keep Link's coordinates,
-					 * or "_side" to place Link on the appropriate side of the map */
+  string destination_point_name;        /**< destination point on that map, or "_same" to keep the hero's coordinates,
+					 * or "_side" to place the hero on the appropriate side of the map */
 
  public:
 
@@ -42,7 +42,7 @@ class Teletransporter: public Detector {
 
   bool is_obstacle_for(MapEntity *other);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void transport_hero(Link *hero);
+  void transport_hero(Hero *hero);
 };
 
 #endif

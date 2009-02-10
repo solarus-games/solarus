@@ -18,10 +18,10 @@ class PauseSubmenuMap: public PauseSubmenu {
   Equipment *equipment;        /**< general equipment */
   DungeonEquipment *dungeon_equipment;        /**< dungeon equipment */
   Dungeon *dungeon;            /**< the dungeon whose map is displayed, or NULL if we are not in a dungeon */
-  SDL_Rect link_position;      /**< position of Link on the minimap */
+  SDL_Rect hero_position;      /**< position of the hero on the minimap */
 
   // graphics
-  Sprite *link_head_sprite;
+  Sprite *hero_head_sprite;
   Sprite *up_arrow_sprite;
   Sprite *down_arrow_sprite;
 
@@ -37,11 +37,11 @@ class PauseSubmenuMap: public PauseSubmenu {
   Counter *small_keys_counter;
 
   SDL_Surface *dungeon_floors_img;
-  int link_floor, boss_floor, highest_floor, lowest_floor, nb_floors;
+  int hero_floor, boss_floor, highest_floor, lowest_floor, nb_floors;
   int nb_floors_displayed, highest_floor_displayed, selected_floor;
 
   SDL_Surface *dungeon_map_img;
-  Sprite *link_point_sprite;
+  Sprite *hero_point_sprite;
 
   void load_dungeon_map_image(void);
 

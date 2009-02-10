@@ -1,4 +1,4 @@
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/Detector.h"
 #include "movements/Movement8ByPlayer.h"
 #include "ZSDX.h"
@@ -10,7 +10,7 @@
  * if the game is not suspended.
  * @param key the key pressed
  */
-void Link::key_pressed(Controls::GameKey key) {
+void Hero::key_pressed(Controls::GameKey key) {
 
   switch (key) {
 
@@ -24,7 +24,7 @@ void Link::key_pressed(Controls::GameKey key) {
     sword_key_pressed();
     break;
 
-    // move Link
+    // move the hero
   case Controls::RIGHT:
     arrow_pressed(0);
     break;
@@ -51,7 +51,7 @@ void Link::key_pressed(Controls::GameKey key) {
  * if the game is not suspended.
  * @param key the key released
  */
-void Link::key_released(Controls::GameKey key) {
+void Hero::key_released(Controls::GameKey key) {
 
   /*
    * When the action key or the sword key are released,
@@ -87,7 +87,7 @@ void Link::key_released(Controls::GameKey key) {
  * This function is called when the action key is pressed.
  * Depending on its effect, an action may be performed.
  */
-void Link::action_key_pressed(void) {
+void Hero::action_key_pressed(void) {
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
@@ -117,7 +117,7 @@ void Link::action_key_pressed(void) {
  * This function is called when the sword key is pressed.
  * Depending on its effect, an action may be performed.
  */
-void Link::sword_key_pressed(void) {
+void Hero::sword_key_pressed(void) {
 
   if (can_start_sword()) {
     start_sword();
@@ -128,7 +128,7 @@ void Link::sword_key_pressed(void) {
  * This function is called when an arrow key is pressed.
  * @param direction of the arrow pressed (0 to 3)
  */
-void Link::arrow_pressed(int direction) {
+void Hero::arrow_pressed(int direction) {
 
   // notify the movement
   get_normal_movement()->add_direction(direction);
@@ -147,7 +147,7 @@ void Link::arrow_pressed(int direction) {
  * This function is called when an arrow key is released.
  * @param direction of the arrow released (0 to 3)
  */
-void Link::arrow_released(int direction) {
+void Hero::arrow_released(int direction) {
 
   // notify the movement
   get_normal_movement()->remove_direction(direction);

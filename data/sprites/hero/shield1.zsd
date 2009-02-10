@@ -1,23 +1,23 @@
-stopped link/stopped_shield.png 4 0 -1
+stopped hero/stopped_shield.png 4 0 -1
 0	0	24	24	12	21	1	1
 24	0	24	24	12	21	1	1
 48	0	24	24	12	21	1	1
 72	0	24	24	12	21	1	1
 
-walking link/walking_shield.png 4 100 0
+walking hero/walking_shield.png 4 100 0
 0	0	24	24	12	21	8	8
 0	72	24	24	12	21	8	8
 0	144	24	24	12	21	8	8
 0	216	24	24	12	21	8	8
 
-sword link/sword_shield1.png 2 30 -1
+sword hero/sword_shield1.png 2 30 -1
 0	0	24	32	12	23	12	12
 0	32	24	32	12	23	12	12
 
-sword_loading_stopped link/loading_shield1.png 2 0 -1
+sword_loading_stopped hero/loading_shield1.png 2 0 -1
 0	0	32	32	16	23	1	1
 0	32	32	32	16	23	1	1
 
-sword_loading_walking link/loading_shield1.png 2 100 0
+sword_loading_walking hero/loading_shield1.png 2 100 0
 0	0	32	32	16	23	6	6
 0	32	32	32	16	23	6	6

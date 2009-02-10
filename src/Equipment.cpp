@@ -84,17 +84,17 @@ void Equipment::update(void) {
 // tunic
 
 /**
- * Returns the number of Link's tunic.
- * @return Link's tunic number (0: green tunic,
+ * Returns the number of the player's tunic.
+ * @return the player's tunic number (0: green tunic,
  * 1: blue tunic, 2: red tunic)
  */
 int Equipment::get_tunic(void) {
-  return savegame->get_integer(Savegame::LINK_TUNIC);
+  return savegame->get_integer(Savegame::HERO_TUNIC);
 }
 
 /**
- * Sets Link's tunic.
- * @param tunic Link's tunic number (0: green tunic,
+ * Sets the player's tunic.
+ * @param tunic the player's tunic number (0: green tunic,
  * 1: blue tunic, 2: red tunic)
  */
 void Equipment::set_tunic(int tunic) {
@@ -106,32 +106,32 @@ void Equipment::set_tunic(int tunic) {
       DIE("Illegal tunic number: " << tunic);
     }
 
-    savegame->set_integer(Savegame::LINK_TUNIC, tunic);
+    savegame->set_integer(Savegame::HERO_TUNIC, tunic);
   }
 }
 
 // sword
 
 /**
- * Returns whether Link has a sword.
- * @return true if Link has a sword, i.e. if get_sword_number() > 0
+ * Returns whether the player has a sword.
+ * @return true if the player has a sword, i.e. if get_sword_number() > 0
  */
 bool Equipment::has_sword(void) {
   return get_sword() > 0;
 }
 
 /**
- * Returns the number of Link's sword.
- * @return Link's sword number (0: no sword,
+ * Returns the number of the player's sword.
+ * @return the player's sword number (0: no sword,
  * 1 to 4: sword 1 to 4)
  */
 int Equipment::get_sword(void) {
-  return savegame->get_integer(Savegame::LINK_SWORD);
+  return savegame->get_integer(Savegame::HERO_SWORD);
 }
 
 /**
- * Sets Link's sword.
- * @param sword Link's sword number (0: no sword,
+ * Sets the player's sword.
+ * @param sword the player's sword number (0: no sword,
  * 1 to 4: sword 1 to 4)
  */
 void Equipment::set_sword(int sword) {
@@ -143,32 +143,32 @@ void Equipment::set_sword(int sword) {
       DIE("Illegal sword number: " << sword);
     }
 
-    savegame->set_integer(Savegame::LINK_SWORD, sword);
+    savegame->set_integer(Savegame::HERO_SWORD, sword);
   }
 }
 
 // shield
 
 /**
- * Returns whether Link has a shield.
- * @return true if Link has a shield, i.e. if get_shield_number() > 0
+ * Returns whether the player has a shield.
+ * @return true if the player has a shield, i.e. if get_shield_number() > 0
  */
 bool Equipment::has_shield(void) {
   return get_shield() > 0;
 }
 
 /**
- * Returns the number of Link's shield.
- * @return Link's shield number (0: no shield,
+ * Returns the number of the player's shield.
+ * @return the player's shield number (0: no shield,
  * 1 to 3: shield 1 to 3)
  */
 int Equipment::get_shield(void) {
-  return savegame->get_integer(Savegame::LINK_SHIELD);
+  return savegame->get_integer(Savegame::HERO_SHIELD);
 }
 
 /**
- * Sets Link's shield.
- * @param shield Link's shield number (0: no shield,
+ * Sets the player's shield.
+ * @param shield the player's shield number (0: no shield,
  * 1 to 3: shield 1 to 3)
  */
 void Equipment::set_shield(int shield) {
@@ -180,23 +180,23 @@ void Equipment::set_shield(int shield) {
       DIE("Illegal shield number: " << shield);
     }
 
-    savegame->set_integer(Savegame::LINK_SHIELD, shield);
+    savegame->set_integer(Savegame::HERO_SHIELD, shield);
   }
 }
 
 // rupees
 
 /**
- * Returns the maximum number of rupees of Link.
- * @return Link's maximum number of rupees (100, 300 or 999)
+ * Returns the maximum number of rupees of the player.
+ * @return the player's maximum number of rupees (100, 300 or 999)
  */
 int Equipment::get_max_rupees(void) {
   return savegame->get_integer(Savegame::MAX_RUPEES);
 }
 
 /**
- * Sets the maximum number of rupees of Link.
- * @param max_rupees Link's maximum number of rupees (100, 300 or 999)
+ * Sets the maximum number of rupees of the player.
+ * @param max_rupees the player's maximum number of rupees (100, 300 or 999)
  */
 void Equipment::set_max_rupees(int max_rupees) {
   
@@ -208,17 +208,17 @@ void Equipment::set_max_rupees(int max_rupees) {
 }
 
 /**
- * Returns Link's current number of rupees.
- * @return Link's current number of rupees
+ * Returns the player's current number of rupees.
+ * @return the player's current number of rupees
  */
 int Equipment::get_rupees(void) {
   return savegame->get_integer(Savegame::CURRENT_RUPEES);
 }
 
 /**
- * Sets Link's current number of rupees.
+ * Sets the player's current number of rupees.
  * Exits with an error message if the given number of rupees is not valid.
- * @param rupees Link's new number of rupees
+ * @param rupees the player's new number of rupees
  */
 void Equipment::set_rupees(int rupees) {
 
@@ -230,7 +230,7 @@ void Equipment::set_rupees(int rupees) {
 }
 
 /**
- * Adds some rupees to Link.
+ * Adds some rupees to the player.
  * If the maximum number of rupees is achieved, no more rupees are added.
  * @param rupees_to_add number of rupees to add
  */
@@ -243,7 +243,7 @@ void Equipment::add_rupees(int rupees_to_add) {
 }
 
 /**
- * Removes some rupees from Link.
+ * Removes some rupees from the player.
  * If the number of rupees achieves zero, no more rupees are removed.
  * @param rupees_to_remove number of rupees to remove
  */
@@ -257,18 +257,18 @@ void Equipment::remove_rupees(int rupees_to_remove) {
 // hearts
 
 /**
- * Returns the maximum number of hearts of Link.
- * @return Link's maximum number of rupees
+ * Returns the maximum number of hearts of the player.
+ * @return the player's maximum number of rupees
  */
 int Equipment::get_max_hearts(void) {
   return savegame->get_integer(Savegame::MAX_HEARTS);
 }
 
 /**
- * Sets the maximum number of hearts of Link.
+ * Sets the maximum number of hearts of the player.
  * The program exits with an error message if the given maximum
  * number of hearts is not valid.
- * @param max_hearts Link's maximum number of hearts
+ * @param max_hearts the player's maximum number of hearts
  */
 void Equipment::set_max_hearts(int max_hearts) {
 
@@ -280,7 +280,7 @@ void Equipment::set_max_hearts(int max_hearts) {
 }
 
 /**
- * Adds a heart container to Link.
+ * Adds a heart container to the player.
  */
 void Equipment::add_heart_container(void) {
   set_max_hearts(get_max_hearts() + 1);
@@ -288,22 +288,22 @@ void Equipment::add_heart_container(void) {
 }
 
 /**
- * Returns the current number of hearts of Link.
+ * Returns the current number of hearts of the player.
  * The value returned is actually the number of heart quarters,
- * so a value of 4 means that Link has 1 heart left.
- * @return Link's current number of hearts (in heart quarters)
+ * so a value of 4 means that the player has 1 heart left.
+ * @return the player's current number of hearts (in heart quarters)
  */
 int Equipment::get_hearts(void) {
   return savegame->get_integer(Savegame::CURRENT_HEARTS);
 }
 
 /**
- * Sets the current number of hearts of Link.
+ * Sets the current number of hearts of the player.
  * The given value is actually the number of heart quarters,
- * so a value of 4 means that Link has 1 heart left.
+ * so a value of 4 means that the player has 1 heart left.
  * The program exits with an error message if the given number
  * of hearts is not valid.
- * @param hearts Link's new number of hearts (in heart quarters)
+ * @param hearts the player's new number of hearts (in heart quarters)
  */
 void Equipment::set_hearts(int hearts) {
 
@@ -315,7 +315,7 @@ void Equipment::set_hearts(int hearts) {
 }
 
 /**
- * Gives some hearts to Link.
+ * Gives some hearts to the player.
  * If the maximum number of hearts is achieved, no more hearts are added.
  * @param hearts_to_add number of hearts to add (in heart quarters)
  */
@@ -328,7 +328,7 @@ void Equipment::add_hearts(int hearts_to_add) {
 }
 
 /**
- * Removes some hearts from Link.
+ * Removes some hearts from the player.
  * If the number of hearts achieves zero, the game over sequence is started.
  * @param hearts_to_remove number of hearts to remove
  */
@@ -358,22 +358,22 @@ bool Equipment::needs_hearts(void) {
 }
 
 /**
- * Returns the current number of pieces of heart of Link.
- * @returns Link's current number of pieces of heart, between 0 and 3
+ * Returns the current number of pieces of heart of the player.
+ * @returns the player's current number of pieces of heart, between 0 and 3
  */
 int Equipment::get_nb_pieces_of_heart(void) {
   return savegame->get_integer(Savegame::PIECES_OF_HEART);
 }
 
 /**
- * Adds a piece of heart to Link.
+ * Adds a piece of heart to the player.
  */
 void Equipment::add_piece_of_heart(void) {
 
   // note: the piece_of_heart sound and the message are handled
   // by the Treasure class
 
-  // check whether Link has a new heart
+  // check whether the player has a new heart
 
   int nb_pieces_of_heart = get_nb_pieces_of_heart() + 1;
   if (nb_pieces_of_heart < 4) {
@@ -403,7 +403,7 @@ void Equipment::give_fairy(void) {
 // magic
 
 /**
- * Returns the maximum level of Link's magic bar.
+ * Returns the maximum level of the player's magic bar.
  * @return the maximum level of magic (0, 42 or 84 points)
  */
 int Equipment::get_max_magic(void) {
@@ -411,7 +411,7 @@ int Equipment::get_max_magic(void) {
 }
 
 /**
- * Sets the maximum level of Link's magic bar.
+ * Sets the maximum level of the player's magic bar.
  * Exits with an error message if the value specified
  * if not valid.
  * @param max_magic the maximum level of magic (0, 42 or 84 points)
@@ -428,18 +428,18 @@ void Equipment::set_max_magic(int max_magic) {
 }
 
 /**
- * Returns the current number of magic points of Link.
- * @return Link's current number of magic points (0 to 28)
+ * Returns the current number of magic points of the player.
+ * @return the player's current number of magic points (0 to 28)
  */
 int Equipment::get_magic(void) {
   return savegame->get_integer(Savegame::CURRENT_MAGIC);
 }
 
 /**
- * Sets the current number of magic points of Link.
+ * Sets the current number of magic points of the player.
  * The program exits with an error message if the given value
  * is not valid.
- * @param magic Link's new number of magic points (0 to 84)
+ * @param magic the player's new number of magic points (0 to 84)
  */
 void Equipment::set_magic(int magic) {
 
@@ -451,7 +451,7 @@ void Equipment::set_magic(int magic) {
 }
 
 /**
- * Adds some magic points to Link.
+ * Adds some magic points to the player.
  * If the maximum value is achieved, no more magic points are added.
  * @param magic_to_add number of magic points to add
  */
@@ -464,7 +464,7 @@ void Equipment::add_magic(int magic_to_add) {
 }
 
 /**
- * Removes some magic points from Link.
+ * Removes some magic points from the player.
  * If the number of magic points achieves zero, no more magic points
  * are removed.
  * @param magic_to_remove number of magic poits to remove
@@ -529,16 +529,16 @@ void Equipment::stop_removing_magic(void) {
 // bombs
 
 /**
- * Returns the maximum number of bombs of Link.
- * @return Link's maximum number of bombs (0, 10, 30 or 99)
+ * Returns the maximum number of bombs of the player.
+ * @return the player's maximum number of bombs (0, 10, 30 or 99)
  */
 int Equipment::get_max_bombs(void) {
   return savegame->get_integer(Savegame::MAX_BOMBS);
 }
 
 /**
- * Sets the maximum number of bombs of Link.
- * @param max_bombs Link's maximum number of bombs (0, 10, 30 or 99)
+ * Sets the maximum number of bombs of the player.
+ * @param max_bombs the player's maximum number of bombs (0, 10, 30 or 99)
  */
 void Equipment::set_max_bombs(int max_bombs) {
   
@@ -551,17 +551,17 @@ void Equipment::set_max_bombs(int max_bombs) {
 
 /**
  * Returns the current number of bombs.
- * @return Link's current number of bombs
+ * @return the player's current number of bombs
  */
 int Equipment::get_bombs(void) {
   return savegame->get_integer(Savegame::CURRENT_BOMBS);
 }
 
 /**
- * Sets the current number of bombs of Link.
+ * Sets the current number of bombs of the player.
  * The program exits with an error message if the given number
  * of bombs is not valid.
- * @param bombs Link's new number of bombs
+ * @param bombs the player's new number of bombs
  */
 void Equipment::set_bombs(int bombs) {
 
@@ -573,7 +573,7 @@ void Equipment::set_bombs(int bombs) {
 }
 
 /**
- * Adds some bombs to Link.
+ * Adds some bombs to the player.
  * If the maximum number of bombs is achieved, no more bombs are added.
  * @param bombs_to_add number of bombs to add
  */
@@ -586,7 +586,7 @@ void Equipment::add_bombs(int bombs_to_add) {
 }
 
 /**
- * Removes a bomb from Link.
+ * Removes a bomb from the player.
  * If the number of bombs is already zero, nothing happens.
  */
 void Equipment::remove_bomb(void) {
@@ -608,16 +608,16 @@ bool Equipment::needs_bombs(void) {
 }
 
 /**
- * Returns the maximum number of arrows of Link.
- * @return Link's maximum number of arrows (0, 10, 30 or 99)
+ * Returns the maximum number of arrows of the player.
+ * @return the player's maximum number of arrows (0, 10, 30 or 99)
  */
 int Equipment::get_max_arrows(void) {
   return savegame->get_integer(Savegame::MAX_ARROWS);
 }
 
 /**
- * Sets the maximum number of arrows of Link.
- * @param max_arrows Link's maximum number of arrows (0, 10, 30 or 99)
+ * Sets the maximum number of arrows of the player.
+ * @param max_arrows the player's maximum number of arrows (0, 10, 30 or 99)
  */
 void Equipment::set_max_arrows(int max_arrows) {
   
@@ -630,17 +630,17 @@ void Equipment::set_max_arrows(int max_arrows) {
 
 /**
  * Returns the current number of arrows.
- * @return Link's current number of arrows
+ * @return the player's current number of arrows
  */
 int Equipment::get_arrows(void) {
   return savegame->get_integer(Savegame::CURRENT_ARROWS);
 }
 
 /**
- * Sets the current number of arrows of Link.
+ * Sets the current number of arrows of the player.
  * The program exits with an error message if the given number
  * of arrows is not valid.
- * @param arrows Link's new number of arrows
+ * @param arrows the player's new number of arrows
  */
 void Equipment::set_arrows(int arrows) {
 
@@ -663,7 +663,7 @@ void Equipment::set_arrows(int arrows) {
 }
 
 /**
- * Adds some arrows to Link.
+ * Adds some arrows to the player.
  * If the maximum number of arrows is achieved, no more arrows are added.
  * @param arrows_to_add number of arrows to add
  */
@@ -676,7 +676,7 @@ void Equipment::add_arrows(int arrows_to_add) {
 }
 
 /**
- * Removes an arrow from Link.
+ * Removes an arrow from the player.
  * If the number of arrows is already zero, nothing happens.
  */
 void Equipment::remove_arrow(void) {
@@ -745,7 +745,7 @@ void Equipment::remove_inventory_item(InventoryItem::ItemId item_id) {
 }
 
 /**
- * Gives an empty bottle to Link.
+ * Gives an empty bottle to the player.
  * This function calls give_inventory_item() with the item id
  * corresponding to the first bottle slot that the player
  * doesn't have yet.
@@ -859,7 +859,7 @@ InventoryItem::ItemId Equipment::get_first_bottle_with(Treasure::Content content
 /**
  * Returns the current amount of a specified inventory item.
  * @param item_id id of the item to get
- * @return Link's current amount of this item
+ * @return the player's current amount of this item
  */
 int Equipment::get_inventory_item_amount(InventoryItem::ItemId item_id) {
 
@@ -910,7 +910,7 @@ void Equipment::set_inventory_item_amount(InventoryItem::ItemId item_id, int amo
 }
 
 /**
- * Adds an amount of a specified inventory item to Link.
+ * Adds an amount of a specified inventory item to the player.
  * If the maximum amount is achieved, no more items are added.
  * @param item_id id of the item to set
  * @param amount_to_add the amount to add
@@ -935,7 +935,7 @@ void Equipment::add_inventory_item_amount(InventoryItem::ItemId item_id, int amo
 }
 
 /**
- * Removes an amount of a specified inventory item to Link.
+ * Removes an amount of a specified inventory item to the player.
  * If the amount reaches zero, no more items are removed.
  * @param item_id id of the item to set
  * @param amount_to_remove the amount to remove

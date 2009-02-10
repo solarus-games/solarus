@@ -1,5 +1,5 @@
-#ifndef ZSDX_LINK_H
-#define ZSDX_LINK_H
+#ifndef ZSDX_HERO_H
+#define ZSDX_HERO_H
 
 #include "Common.h"
 #include "MapEntity.h"
@@ -8,36 +8,36 @@
 #include "Enemy.h"
 
 /**
- * Link's entity.
+ * The hero's entity.
  * It is animated and can be controlled with an 8 directions system.
- * This class handles Link's actions: the movements and the animation of his sprites.
+ * This class handles the hero's actions: the movements and the animation of his sprites.
  */
-class Link: public MapEntity, AnimationListener {
+class Hero: public MapEntity, AnimationListener {
 
  public:
 
   /**
-   * Possible states of Link.
+   * Possible states of the hero.
    * The state is considered only when the game is not suspended.
-   * Link can move (and walk on teletransporters) in states FREE, PUSHING, CARRYING, SWORD_LOADING and SWIMMING.
-   * Link can swing his sword in states FREE, PUSHING, CARRYING and SWORD_SWINGING.
-   * Link can be hurt in states <= SPIN_ATTACK.
+   * The hero can move (and walk on teletransporters) in states FREE, PUSHING, CARRYING, SWORD_LOADING and SWIMMING.
+   * He can swing his sword in states FREE, PUSHING, CARRYING and SWORD_SWINGING.
+   * He hero can be hurt in states <= SPIN_ATTACK.
    */
   enum State {
     FREE,                    /**< normal state (stopped or walking) */
-    PUSHING,                 /**< Link is trying to push an obstacle */
-    CARRYING,                /**< Link can walk but he is carrying a pot or a bush */
-    SWORD_LOADING,           /**< Link can walk but his sword is loading for a spin attack */
-    SWIMMING,                /**< Link is swimming */
-    GRABBING,                /**< Link is grabbing an object and can pull it */
-    PULLING,                 /**< Link is pulling an object */
-    SWORD_SWINGING,          /**< Link is swinging his sword */
-    SPIN_ATTACK,             /**< Link is releasing a spin attack */
-    LIFTING,                 /**< Link is lifting an destroyable item (a pot, a bush, etc.) */
-    BRANDISHING_TREASURE,    /**< Link is brandishing a treasure */
-    JUMPING,                 /**< Link is jumping */
-    HURT,                    /**< Link is hurt */
-    FREEZED,                 /**< Link cannot move for various possible reasons */
+    PUSHING,                 /**< the hero is trying to push an obstacle */
+    CARRYING,                /**< the hero can walk but he is carrying a pot or a bush */
+    SWORD_LOADING,           /**< the hero can walk but his sword is loading for a spin attack */
+    SWIMMING,                /**< the hero is swimming */
+    GRABBING,                /**< the hero is grabbing an object and can pull it */
+    PULLING,                 /**< the hero is pulling an object */
+    SWORD_SWINGING,          /**< the hero is swinging his sword */
+    SPIN_ATTACK,             /**< the hero is releasing a spin attack */
+    LIFTING,                 /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
+    BRANDISHING_TREASURE,    /**< the hero is brandishing a treasure */
+    JUMPING,                 /**< the hero is jumping */
+    HURT,                    /**< the hero is hurt */
+    FREEZED,                 /**< the hero cannot move for various possible reasons */
   };
 
  private:
@@ -45,7 +45,7 @@ class Link: public MapEntity, AnimationListener {
   // equipment of the player
   Equipment *equipment;
 
-  // Link's sprites and sounds
+  // the hero's sprites and sounds
   Sprite *tunic_sprite;
   Sprite *sword_sprite;
   Sprite *sword_stars_sprite;
@@ -64,20 +64,20 @@ class Link: public MapEntity, AnimationListener {
   Movement8ByPlayer *normal_movement;
 
   /**
-   * Current state of Link.
+   * Current state of the hero.
    * The state is considered only when the game is not suspended.
    */
   State state;
   Detector *facing_entity;
-  int animation_direction_saved; /**< direction of Link's sprites, saved just before
+  int animation_direction_saved; /**< direction of the hero's sprites, saved just before
 				  * showing a sprite animation having only one direction */
-  Uint32 end_blink_date;         /**< date when Link's sprites stop blinking */
+  Uint32 end_blink_date;         /**< date when the hero's sprites stop blinking */
 
   /**
    * Counter incremented every 100 ms in certain conditions.
-   * - In state FREE: counts for how long Link is trying to walk
+   * - In state FREE: counts for how long the hero is trying to walk
    * to a wall (animation pushing is triggered at 800 ms)
-   * - In state SWORD_LOADING: counts for how long Link is loading
+   * - In state SWORD_LOADING: counts for how long the hero is loading
    * his sword (the spin attack is possible after 1000 ms)
    */
   int counter;
@@ -87,7 +87,7 @@ class Link: public MapEntity, AnimationListener {
   bool walking; // stopped or walking? (used in states FREE, PUSHING and CARRYING)
 
   // pushing
-  Uint16 pushing_direction_mask; // direction of Link's movement when pushing
+  Uint16 pushing_direction_mask; // direction of the hero's movement when pushing
                                  // 0xFFFF indicates that he is currently not trying to push
 
   // spin attack
@@ -113,7 +113,7 @@ class Link: public MapEntity, AnimationListener {
   void arrow_pressed(int direction);
   void arrow_released(int direction);
 
-  // Link's state
+  // the hero's state
   void set_state(State state);
 
   void start_sword_loading(void);
@@ -166,8 +166,8 @@ class Link: public MapEntity, AnimationListener {
  public:
 
   // creation and destruction
-  Link(Equipment *equipment);
-  ~Link(void);
+  Hero(Equipment *equipment);
+  ~Hero(void);
 
   // properties
   EntityType get_type(void);
@@ -201,7 +201,7 @@ class Link: public MapEntity, AnimationListener {
 
   void set_animation_stopped(void);
 
-  // state of Link
+  // state of the hero
   State get_state(void);
   void start_free(void);
   void start_sword(void);

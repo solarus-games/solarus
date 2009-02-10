@@ -146,7 +146,7 @@ class Enemy: public Detector {
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void collision(MapEntity *entity, Sprite *sprite_overlapping);
 
-  void attack_hero(Link *hero);
+  void attack_hero(Hero *hero);
   bool is_killed(void);
   void attack_stopped_by_hero_shield(void);
   void hurt(Attack attack, MapEntity *source);

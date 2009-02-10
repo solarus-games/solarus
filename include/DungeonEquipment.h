@@ -4,9 +4,9 @@
 #include "Common.h"
 
 /**
- * This class represents Link's equipment in a dungeon
+ * This class represents the hero's equipment in a dungeon
  * (the map, the compass, the boss keys...).
- * Like class Equipment, it makes the interface between
+ * Like the class Equipment, it makes the interface between
  * the savegame storage and other engine classes.
  * This class can be used only when the player is in a dungeon.
  * Note that the small keys are not handled here because small keys

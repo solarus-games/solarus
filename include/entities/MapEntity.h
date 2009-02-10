@@ -5,8 +5,8 @@
 #include <vector>
 
 /**
- * Abstract class for all objects attached to a map: tiles,
- * enemies, Link, interactive objects, etc.
+ * Abstract class for all objects placed on a map: tiles,
+ * enemies, the hero, interactive objects, etc.
  * Each entity has:
  * - a layer on the map
  * - a position on the map (a rectangle),
@@ -22,12 +22,12 @@ class MapEntity {
   enum EntityType {
     TILE                      = 0,    /**< a tile on the map, obstacle or not */
     DESTINATION_POINT         = 1,    /**< a destination point on the map */
-    TELETRANSPORTER           = 2,    /**< a teletransporter: Link is transported
+    TELETRANSPORTER           = 2,    /**< a teletransporter: the hero is transported
 				       * to a destination point when walking on it */
-    PICKABLE_ITEM             = 3,    /**< an item that Link can pick: a rupee, a heart, a fairy... */
-    DESTRUCTIBLE_ITEM         = 4,    /**< an item that Link can cut or lift: a pot, a bush, a stone... */
+    PICKABLE_ITEM             = 3,    /**< an item that the hero can pick: a rupee, a heart, a fairy... */
+    DESTRUCTIBLE_ITEM         = 4,    /**< an item that the hero can cut or lift: a pot, a bush, a stone... */
     CHEST                     = 5,    /**< a chest (small or big) with a treasure */
-    JUMP_SENSOR               = 6,    /**< a sensor that makes Link jump in a direction */
+    JUMP_SENSOR               = 6,    /**< a sensor that makes the hero jump in a direction */
     ENEMY                     = 7,    /**< an enemy */
     NPC                       = 8,    /**< a non-playing character */
 
@@ -51,10 +51,10 @@ class MapEntity {
    * Layer of a tile or an active object.
    */
   enum Layer {
-    LAYER_LOW,             /**< the entity is always below Link (floor, walls, chests,
+    LAYER_LOW,             /**< the entity is always below the hero (floor, walls, chests,
 			      enemies and 99% of the tiles and active objects) */
-    LAYER_INTERMEDIATE,    /**< Link can be below or above the entity (platforms or objects on a plaform) */
-    LAYER_HIGH,            /**< the entity is always above Link (trees, top of doors...) */
+    LAYER_INTERMEDIATE,    /**< the hero can be below or above the entity (platforms or objects on a plaform) */
+    LAYER_HIGH,            /**< the entity is always above the hero (trees, top of doors...) */
     LAYER_NB               /**< number of layers */
   };
 
@@ -67,7 +67,7 @@ class MapEntity {
 
   /**
    * Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
-   * The layer is constant for the tiles and can change for Link and the enemies.
+   * The layer is constant for the tiles and can change for the hero and the enemies.
    */
   Layer layer;
 
@@ -76,7 +76,7 @@ class MapEntity {
    * This rectangle represents the position of the entity of the map, it is
    * used for the collision tests. It can be different from the sprite's
    * rectangle of the entity.
-   * For example, Link's position is a 16*16 rectangle, but its sprite may be
+   * For example, the hero's position is a 16*16 rectangle, but its sprite may be
    * a 16*24 rectangle.
    */
   SDL_Rect position_in_map;

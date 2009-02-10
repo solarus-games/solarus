@@ -16,7 +16,7 @@
 #include "GameoverSequence.h"
 #include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "entities/AnimatedTile.h"
 #include "entities/Tileset.h"
 #include "entities/Detector.h"
@@ -39,9 +39,9 @@ Game::Game(Savegame *savegame):
   zsdx->set_game(this);
   controls = new Controls(this);
 
-  // initialize Link
-  link = new Link(get_equipment());
-  link_movement = link->get_normal_movement();
+  // initialize the hero
+  hero = new Hero(get_equipment());
+  hero_movement = hero->get_normal_movement();
 
   // initialize the keys effect and the HUD
   keys_effect = new KeysEffect();
@@ -60,7 +60,7 @@ Game::Game(Savegame *savegame):
 Game::~Game(void) {
 
   // quit the game
-  current_map->leave(); // tell the map that Link is not there anymore
+  current_map->leave(); // tell the map that the hero is not there anymore
   stop_music();
 
   delete transition;
@@ -72,7 +72,7 @@ Game::~Game(void) {
 
   delete keys_effect;
   delete hud;
-  delete link;
+  delete hero;
   delete savegame;
   delete controls;
 
@@ -80,11 +80,11 @@ Game::~Game(void) {
 }
 
 /**
- * Returns Link.
- * @return Link
+ * Returns the hero.
+ * @return the hero
  */
-Link * Game::get_link(void) {
-  return link;
+Hero * Game::get_hero(void) {
+  return hero;
 }
 
 /**
@@ -215,7 +215,7 @@ void Game::update_transitions(void) {
       next_map = NULL;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
-      link->set_animation_stopped();
+      hero->set_animation_stopped();
       transition = Transition::create(transition_style, Transition::OUT);
       transition->start();
     }
@@ -269,7 +269,7 @@ void Game::update_transitions(void) {
 }
 
 /**
- * Makes sure the keys effects are coherent with Link's equipment and abilities.
+ * Makes sure the keys effects are coherent with the hero's equipment and abilities.
  */
 void Game::update_keys_effect(void) {
 
@@ -277,13 +277,13 @@ void Game::update_keys_effect(void) {
     return;
   }
 
-  switch (link->get_state()) {
+  switch (hero->get_state()) {
     
-  case Link::FREE:
-  case Link::SWORD_SWINGING:
-  case Link::SWORD_LOADING:
+  case Hero::FREE:
+  case Hero::SWORD_SWINGING:
+  case Hero::SWORD_LOADING:
 
-    // the sword key swings the sword <=> Link has a sword
+    // the sword key swings the sword <=> the hero has a sword
     if (get_equipment()->has_sword()
 	&& keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
@@ -384,7 +384,7 @@ Map * Game::get_current_map(void) {
 
 /**
  * Changes the current map.
- * Call this function when you want Link to go to another map.
+ * Call this function when you want the hero to go to another map.
  * @param map_id id of the map to launch
  * @param destination_point_index index of the destination point of the map you want to use
  * @param transition_style type of transition between the two maps
@@ -404,7 +404,7 @@ void Game::set_current_map(MapId map_id, unsigned int destination_point_index, T
 
 /**
  * Changes the current map.
- * Call this function when you want Link to go to another map.
+ * Call this function when you want the hero to go to another map.
  * @param map_id id of the map to launch
  * @param destination_point_name name of the destination point of the map you want to use
  * @param transition_style type of transition between the two maps
@@ -560,14 +560,14 @@ DialogBox * Game::get_dialog_box(void) {
  * Shows the specified message.
  * If this message is followed by other messages, they will
  * be displayed too.
- * The dialog box position depends on Link's position on the screen.
+ * The dialog box position depends on the hero's position on the screen.
  * @param message_id id of the message to show
  */
 void Game::show_message(MessageId message_id) {
 
   SDL_Rect *screen_position = current_map->get_screen_position();
 
-  if (link->get_y() < screen_position->y + 130) {
+  if (hero->get_y() < screen_position->y + 130) {
     show_message(message_id, 1);
   }
   else {
@@ -596,16 +596,16 @@ void Game::show_message(MessageId message_id, int position) {
 }
 
 /**
- * Gives a treasure to Link.
- * Makes him brandish the treasure and shows a message.
- * @param treasure the treasure to give him (will be deleted it after Link brandishes it) 
+ * Gives a treasure to the player.
+ * Makes the hero brandish the treasure and shows a message.
+ * @param treasure the treasure to give (will be deleted after the hero brandishes it) 
  */
 void Game::give_treasure(Treasure *treasure) {
 
   this->treasure = treasure;
 
   // brandish the treasure
-  link->give_treasure(treasure);
+  hero->give_treasure(treasure);
 
   // give the treasure and show the message
   treasure->give_to_player();

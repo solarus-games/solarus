@@ -6,7 +6,7 @@
 #include "Treasure.h"
 
 /**
- * This class represents Link's equipment. It makes the interface
+ * This class represents the hero's equipment. It makes the interface
  * between the savegame and other engine classes.
  * You should call this class to know his current equipment
  * (sword, rupees, objects...) and to modify it.

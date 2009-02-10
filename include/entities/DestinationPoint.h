@@ -6,7 +6,7 @@
 
 /**
  * A destination point on the map.
- * A destination point is a location where Link can arrive when using a teletransporter.
+ * A destination point is a location where the hero can arrive when using a teletransporter.
  */
 class DestinationPoint: public MapEntity {
 
@@ -17,7 +17,7 @@ class DestinationPoint: public MapEntity {
 
  public:
 
-  DestinationPoint(string name, Layer layer, int link_x, int link_y, int link_direction, bool is_visible);
+  DestinationPoint(string name, Layer layer, int x, int y, int hero_direction, bool is_visible);
   ~DestinationPoint(void);
 
   EntityType get_type(void);

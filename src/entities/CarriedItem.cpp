@@ -1,6 +1,6 @@
 #include "entities/CarriedItem.h"
 #include "entities/DestructibleItem.h"
-#include "entities/Link.h"
+#include "entities/Hero.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
 #include "movements/ThrownItemMovement.h"
@@ -13,7 +13,7 @@
 #include "ZSDX.h"
 
 /**
- * Movement of the item when Link is lifting it.
+ * Movement of the item when the hero is lifting it.
  */
 static const SDL_Rect lifting_translations[4][6] = {
   {{0,0}, {0,0}, {-3,-3}, {-5,-3}, {-5,-2}},
@@ -23,26 +23,26 @@ static const SDL_Rect lifting_translations[4][6] = {
 };
 
 /**
- * Creates a carried item (i.e. an item carried by Link)
+ * Creates a carried item (i.e. an item carried by the hero)
  * based on a destructible item (i.e. the item placed on the map
- * before Link lifts it).
- * @param link Link
+ * before the hero lifts it).
+ * @param hero the hero
  * @param destructible_item a destructible item
  */
-CarriedItem::CarriedItem(Link *link, DestructibleItem *destructible_item):
-  MapEntity(), link(link), is_lifting(true), is_throwing(false), is_breaking(false) {
+CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
+  MapEntity(), hero(hero), is_lifting(true), is_throwing(false), is_breaking(false) {
 
-  // put the item on Link's layer
-  set_layer(link->get_layer());
+  // put the item on the hero's layer
+  set_layer(hero->get_layer());
 
-  // align correctly the item with Link
-  int direction = link->get_animation_direction();
+  // align correctly the item with the hero
+  int direction = hero->get_animation_direction();
   if (direction % 2 == 0) {
     set_x(destructible_item->get_x());
-    set_y(link->get_y());
+    set_y(hero->get_y());
   }
   else {
-    set_x(link->get_x());
+    set_x(hero->get_x());
     set_y(destructible_item->get_y());
   }
   set_origin(destructible_item->get_origin());
@@ -88,7 +88,7 @@ int CarriedItem::get_damage_on_enemies(void) {
 }
 
 /**
- * This function is called when Links stops walking while
+ * This function is called when the hero stops walking while
  * carrying the item. The item also stops moving.
  */
 void CarriedItem::set_animation_stopped(void) {
@@ -100,7 +100,7 @@ void CarriedItem::set_animation_stopped(void) {
 }
 
 /**
- * This function is called when Links starts walking while
+ * This function is called when the hero starts walking while
  * carrying the item. The item moves like him.
  */
 void CarriedItem::set_animation_walking(void) {
@@ -113,7 +113,7 @@ void CarriedItem::set_animation_walking(void) {
 /**
  * Throws the item.
  * @param map the current map
- * @param direction direction where Link throws the item (0 to 3)
+ * @param direction direction where the hero throws the item (0 to 3)
  */
 void CarriedItem::throw_item(Map *map, int direction) {
 
@@ -162,30 +162,30 @@ void CarriedItem::set_suspended(bool suspended) {
 }
 
 /**
- * This function is called repeatedly by Link.
- * When the lift movement finishes, Link starts carrying the item.
+ * This function is called repeatedly by the hero.
+ * When the lift movement finishes, the hero starts carrying the item.
  */
 void CarriedItem::update(void) {
 
   // update the sprite and the position
   MapEntity::update();
 
-  // when Link finishes lifting the item, start carrying it
+  // when the hero finishes lifting the item, start carrying it
   if (is_lifting) {
     PathMovement *movement = (PathMovement*) get_movement();
     if (movement->is_finished()) {
       is_lifting = false;
 
-      // make Link carry the item
-      link->start_carrying();
+      // make the hero carry the item
+      hero->start_carrying();
 
       // action icon "throw"
       KeysEffect *keys_effect = zsdx->game->get_keys_effect();
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
 
-      // make the item follow Link
+      // make the item follow the hero
       clear_movement();
-      set_movement(new FollowMovement(link, 0, -18));
+      set_movement(new FollowMovement(hero, 0, -18));
     }
   }
   else if (is_throwing) {

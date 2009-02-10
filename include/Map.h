@@ -111,7 +111,7 @@ class Map {
   // entities
   MapEntities *get_entities(void);
 
-  // Link's presence
+  // presence of the hero
   bool is_started(void);
   void start(void);
   void leave(void);

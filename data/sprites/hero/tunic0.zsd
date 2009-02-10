@@ -1,101 +1,101 @@
-stopped link/stopped_tunic.png 4 0 -1
+stopped hero/stopped_tunic.png 4 0 -1
 0	0	24	24	12	21	1	1
 24	0	24	24	12	21	1	1
 72	0	24	24	12	21	1	1
 96	0	24	24	12	21	1	1
 
-stopped_with_shield link/stopped_tunic.png 4 0 -1
+stopped_with_shield hero/stopped_tunic.png 4 0 -1
 0	0	24	24	12	21	1	1
 48	0	24	24	12	21	1	1
 72	0	24	24	12	21	1	1
 96	0	24	24	12	21	1	1
 
-walking link/walking_tunic.png 4 100 0
+walking hero/walking_tunic.png 4 100 0
 0	0	24	32	12	29	8	8
 0	96	24	32	12	29	8	8
 0	288	24	32	12	29	8	8
 0	384	24	32	12	29	8	8
 
-walking_with_shield link/walking_tunic.png 4 100 0
+walking_with_shield hero/walking_tunic.png 4 100 0
 0	0	24	32	12	29	8	8
 0	192	24	32	12	29	8	8
 0	288	24	32	12	29	8	8
 0	384	24	32	12	29	8	8
 
-sword link/sword_tunic0.png 4 30 -1
+sword hero/sword_tunic0.png 4 30 -1
 0	0	32	32	16	29	12	12
 0	32	32	32	16	29	12	12
 0	64	32	32	16	29	12	12
 0	96	32	32	16	29	12	12
 
-sword_loading_stopped link/loading_tunic0.png 4 0 -1
+sword_loading_stopped hero/loading_tunic0.png 4 0 -1
 0	0	24	24	12	21	1	1
 0	24	24	24	12	21	1	1
 0	48	24	24	12	21	1	1
 0	72	24	24	12	21	1	1
 
-sword_loading_walking link/loading_tunic0.png 4 100 0
+sword_loading_walking hero/loading_tunic0.png 4 100 0
 0	0	24	24	12	21	6	6
 0	24	24	24	12	21	6	6
 0	48	24	24	12	21	6	6
 0	72	24	24	12	21	6	6
 
-spin_attack link/spin_attack_tunic0.png 4 30 -1
+spin_attack hero/spin_attack_tunic0.png 4 30 -1
 0	0	24	24	12	21	22	22
 0	24	24	24	12	21	22	22
 0	48	24	24	12	21	22	22
 0	72	24	24	12	21	22	22
 
-grabbing link/grabbing.png 4 0 -1
+grabbing hero/grabbing.png 4 0 -1
 0	0	24	24	12	21	1	1
 24	0	24	24	12	21	1	1
 48	0	24	24	12	21	1	1
 72	0	24	24	12	21	1	1
 
-pulling link/pulling.png 4 150 0
+pulling hero/pulling.png 4 150 0
 0	0	32	24	16	21	3	3
 0	24	32	24	16	21	3	3
 0	48	32	24	16	21	3	3
 0	72	32	24	16	21	3	3
 
-pushing link/pushing.png 4 100 0
+pushing hero/pushing.png 4 100 0
 0	0	24	32	12	29	5	5
 0	32	24	32	12	29	5	5
 0	64	24	32	12	29	5	5
 0	96	24	32	12	29	5	5
 
-lifting link/lifting.png 4 100 -1
+lifting hero/lifting.png 4 100 -1
 0	0	48	24	24	21	5	5
 0	24	48	24	24	21	5	5
 0	48	48	24	24	21	5	5
 0	72	48	24	24	21	5	5
 
-carrying_stopped link/carrying.png 4 0 -1
+carrying_stopped hero/carrying.png 4 0 -1
 0	0	24	24	12	21	1	1
 0	24	24	24	12	21	1	1
 72	0	24	24	12	21	1	1
 0	48	24	24	12	21	1	1
 
-carrying_walking link/carrying.png 4 100 0
+carrying_walking hero/carrying.png 4 100 0
 0	0	24	24	12	21	3	3
 0	24	24	24	12	21	6	6
 72	0	24	24	12	21	3	3
 0	48	24	24	12	21	6	6
 
-brandish link/miscellaneous.png 1 0 -1
+brandish hero/miscellaneous.png 1 0 -1
 0	0	16	24	8	21	1	1
 
-jumping link/jumping.png 4 0 -1
+jumping hero/jumping.png 4 0 -1
 0	0	24	24	12	21	1	1
 24	0	24	24	12	21	1	1
 48	0	24	24	12	21	1	1
 72	0	24	24	12	21	1	1
 
-hurt link/miscellaneous.png 4 0 -1
+hurt hero/miscellaneous.png 4 0 -1
 0	24	24	24	12	21	1	1
 24	24	24	24	12	21	1	1
 48	24	24	24	12	21	1	1
 72	24	24	24	12	21	1	1
 
-dying link/dying.png 1 125 9
+dying hero/dying.png 1 125 9
 0	0	24	24	12	21	10	10

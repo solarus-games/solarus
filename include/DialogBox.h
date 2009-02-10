@@ -95,7 +95,7 @@ class DialogBox {
   
   // current message
   void key_pressed(Controls::GameKey key);
-  bool is_over(void);
+  bool is_finished(void);
   static int get_last_answer(void);
 
   // update and display

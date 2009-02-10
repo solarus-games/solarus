@@ -37,7 +37,7 @@ class Sprite {
   Uint32 next_frame_date;                /**< date of the next frame */
 
   bool suspended;                        /**< true if the animation is suspended */
-  bool over;                             /**< true if the animation has been stopped because the last frame was reached */
+  bool finished;                         /**< true if the animation has been stopped because the last frame is finished */
 
   AnimationListener *listener;           /**< the possible animation listener associated to this sprite */
 
@@ -79,7 +79,7 @@ class Sprite {
 
   bool is_suspended(void);
   void set_suspended(bool suspended);
-  bool is_over(void);
+  bool is_animation_finished(void);
   bool is_last_frame_reached(void);
   bool has_frame_changed(void);
 

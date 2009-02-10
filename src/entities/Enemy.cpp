@@ -225,7 +225,7 @@ void Enemy::update(void) {
     can_attack = true;
   }
 
-  if (is_killed() && get_sprite()->is_over()) {
+  if (is_killed() && get_sprite()->is_animation_finished()) {
 
     // create the pickable item
     if (pickable_item_type != PickableItem::NONE) {

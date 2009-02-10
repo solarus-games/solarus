@@ -147,9 +147,7 @@ void Controls::handle_event(const SDL_Event &event) {
    */
   if (event.type == SDL_KEYDOWN) {
 
-    Savegame *savegame = game->get_savegame();
     Equipment *equipment = game->get_equipment();
-    Treasure *treasure;
 
     switch (event.key.keysym.unicode) {
 
@@ -186,16 +184,6 @@ void Controls::handle_event(const SDL_Event &event) {
       }
       break;
 
-    case SDLK_a:
-      // temporary code to test the dialog box
-      if (!game->is_showing_message()) {
-	game->show_message("msg");
-	game->get_dialog_box()->set_variable("test_var", 42);
-	game->get_dialog_box()->set_variable("test_name", savegame->get_string(Savegame::PLAYER_NAME));
-
-      }
-      break;
-
     case SDLK_t:
       equipment->give_inventory_item(InventoryItem::BOW);
       equipment->set_max_arrows(10);
@@ -225,31 +213,6 @@ void Controls::handle_event(const SDL_Event &event) {
 
     case SDLK_b:
       equipment->remove_arrow();
-      break;
-
-    case SDLK_r:
-      {
-	if (game->is_showing_message()) {
-	  break;
-	}
-	static int content = Treasure::MAP -1;
-	content++;
-
-	while (content == 1 ||
-	       (content >= 8 && content <= 11) ||
-	       content == 29 ||
-	       (content >= 36 && content <= 49) ||
-	       content == 51 ||
-	       content == 57 ||
-	       content == 60 ||
-	       (content >= 75 && content <= 78) ||
-	       content == 81) {
-	  content++;
-	}
-
-	treasure = new Treasure((Treasure::Content) content, 13, 0);
-	game->give_treasure(treasure);
-      }
       break;
 
     default:

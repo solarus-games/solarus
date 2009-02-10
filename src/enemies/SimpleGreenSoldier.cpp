@@ -70,7 +70,7 @@ void SimpleGreenSoldier::update(void) {
       }
     }
 
-    if (sprite->is_over()) {
+    if (sprite->is_animation_finished()) {
 
       int direction = sprite->get_current_direction();
       if (animation == "stopped_watching_left") {

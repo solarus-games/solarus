@@ -155,7 +155,7 @@ MessageId Message::get_next_message_id(void) {
  * Returns whether the message is now completely displayed.
  * @return true if the message is over
  */
-bool Message::is_over(void) {
+bool Message::is_finished(void) {
   return line_index == 3;
 }
 
@@ -274,15 +274,15 @@ void Message::set_variable(string value) {
 void Message::update(void) {
 
   Uint32 now = SDL_GetTicks();
-  while (!is_over() && now >= next_char_date) {
+  while (!is_finished() && now >= next_char_date) {
     
     // check the end of the current line
-    while (!is_over() && char_index >= lines[line_index].length()) {
+    while (!is_finished() && char_index >= lines[line_index].length()) {
       char_index = 0;
       line_index++;
     }
 
-    if (!is_over()) {
+    if (!is_finished()) {
       // add a character
       add_character();
     }

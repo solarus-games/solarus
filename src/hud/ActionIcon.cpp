@@ -86,7 +86,7 @@ void ActionIcon::update(void) {
     sprite_action_icon->update();
     need_rebuild = true;
 
-    if (sprite_action_icon->is_over()) {
+    if (sprite_action_icon->is_animation_finished()) {
       is_flipping = false;
     }
   }

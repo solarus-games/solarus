@@ -273,7 +273,7 @@ void DestructibleItem::update(void) {
 
   MapEntity::update();
 
-  if (is_being_cut && get_sprite()->is_over()) {
+  if (is_being_cut && get_sprite()->is_animation_finished()) {
 
     // remove the item from the map
     map->get_entities()->remove_destructible_item(this);

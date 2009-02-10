@@ -8,6 +8,7 @@
 #include "Treasure.h"
 #include "Sound.h"
 #include "entities/Link.h"
+#include "movements/TargetMovement.h"
 #include <sstream>
 
 /**
@@ -15,11 +16,12 @@
  * @param game the game
  */
 GameoverSequence::GameoverSequence(Game *game):
-  game(game), state(DYING), finished(false) {
+  game(game), music_id(game->get_current_music_id()), state(DYING) {
 
   gameover_menu_img = ResourceManager::load_image("hud/gameover_menu.png");
   fade_sprite = new Sprite("hud/gameover_fade");
   fade_sprite->stop_animation();
+  red_screen_color = Color::create(224, 32, 32);
 
   std::ostringstream oss;
   oss << "link/tunic" << game->get_equipment()->get_tunic();
@@ -31,7 +33,9 @@ GameoverSequence::GameoverSequence(Game *game):
   hero_dead_x = hero->get_x() - screen_position->x;
   hero_dead_y = hero->get_y() - screen_position->y;
 
-  ResourceManager::get_sound("gameover")->play();
+  fairy_sprite = new Sprite("entities/fairy");
+
+  ResourceManager::get_sound("link_dying")->play();
 }
 
 /**
@@ -42,6 +46,7 @@ GameoverSequence::~GameoverSequence(void) {
   SDL_FreeSurface(gameover_menu_img);
   delete fade_sprite;
   delete hero_dead_sprite;
+  delete fairy_sprite;
 }
 
 /**
@@ -51,26 +56,52 @@ void GameoverSequence::update(void) {
 
   hero_dead_sprite->update();
 
-  if (state == DYING) {
-    if (hero_dead_sprite->is_last_frame_reached()) {
-      state = CLOSING_GAME;
-      fade_sprite->restart_animation();
-    }
+  if (state == DYING && hero_dead_sprite->is_last_frame_reached()) {
+    state = CLOSING_GAME;
+    fade_sprite->restart_animation();
+    game->stop_music();
   }
   else if (state < MENU) {
+
     fade_sprite->update();
+    Uint32 now = SDL_GetTicks();
 
-    if (fade_sprite->is_over()) {
+    if (state == CLOSING_GAME && fade_sprite->is_last_frame_reached()) {
+      state = RED_SCREEN;
+      open_menu_date = now + 500;
+    }
+    else if (state == RED_SCREEN) {
 
-      if (state == CLOSING_GAME) {
+      if (now >= open_menu_date) {
 	state = OPENING_MENU;
 	fade_sprite->set_current_animation("open");
+	game->play_music("game_over.it");
       }
-      else if (game->get_equipment()->has_bottle_with(Treasure::FAIRY_IN_BOTTLE)) {
+    }
+    else if (state == OPENING_MENU && fade_sprite->is_animation_finished()) {
+
+      if (game->get_equipment()->has_bottle_with(Treasure::FAIRY_IN_BOTTLE)) {
 	state = SAVED_BY_FAIRY;
+	fairy_x = hero_dead_x + 12;
+	fairy_y = hero_dead_y + 21;
+	fairy_movement = new TargetMovement(10, 240, 22);
+	fairy_movement->set_position(fairy_x, fairy_y);
       }
       else {
 	state = MENU;
+      }
+    }
+    else if (state == SAVED_BY_FAIRY) {
+      fairy_sprite->update();
+      fairy_movement->update();
+      fairy_x = fairy_movement->get_x();
+      fairy_y = fairy_movement->get_y();
+
+      if (fairy_movement->is_finished()) {
+	state = RESUME_GAME;
+	game->get_equipment()->add_hearts(7 * 4);
+	game->get_link()->get_back_from_death();
+	game->play_music(music_id);
       }
     }
   }
@@ -86,14 +117,31 @@ void GameoverSequence::display(SDL_Surface *destination_surface) {
   }
 
   if (state <= OPENING_MENU) {
-    fade_sprite->display(destination_surface, 0, 0);
+
+    if (state == RED_SCREEN) {
+      SDL_FillRect(destination_surface, NULL, red_screen_color);
+    }
+    else {
+      fade_sprite->display(destination_surface, 0, 0);
+    }
   }
 
   if (state <= SAVED_BY_FAIRY) {
     hero_dead_sprite->display(destination_surface, hero_dead_x, hero_dead_y);
-  }
 
-  if (state == MENU) {
+    if (state == SAVED_BY_FAIRY) {
+      fairy_sprite->display(destination_surface, fairy_x, fairy_y);
+    }
+  }
+  else if (state == MENU) {
     SDL_BlitSurface(gameover_menu_img, NULL, destination_surface, NULL);
   }
+}
+
+/**
+ * Returns whether the game over sequence is finished.
+ * @return true if the game over sequence is finished
+ */
+bool GameoverSequence::is_finished(void) {
+  return state == RESUME_GAME;
 }

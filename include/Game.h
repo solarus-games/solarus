@@ -57,6 +57,7 @@ class Game: public Screen {
   void update_dialog_box(void);
   void update_transitions(void);
   void update_treasure(void);
+  void update_gameover_sequence(void);
 
   void load_dungeon(void);
 
@@ -92,6 +93,7 @@ class Game: public Screen {
   void play_music(MusicId new_music_id);
   void pause_or_resume_music(void);
   void stop_music(void);
+  MusicId get_current_music_id(void);
 
   // current game state
   bool is_paused(void);

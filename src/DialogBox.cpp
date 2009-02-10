@@ -234,7 +234,7 @@ void DialogBox::key_pressed(Controls::GameKey key) {
  */
 void DialogBox::action_key_pressed(void) {
 
-  if (current_message->is_over()) { // the current message is over
+  if (current_message->is_finished()) { // the current message is over
 
     // show the next message (if any)
     MessageId next_message_id = current_message->get_next_message_id();
@@ -260,7 +260,7 @@ void DialogBox::sword_key_pressed(void) {
     keys_effect->restore_action_key_effect();
     keys_effect->restore_sword_key_effect();
   }
-  else if (current_message->is_over()) {
+  else if (current_message->is_finished()) {
     action_key_pressed();
   }
   else if (cancel_mode == CANCEL_CURRENT) {
@@ -273,7 +273,7 @@ void DialogBox::sword_key_pressed(void) {
  */
 void DialogBox::up_or_down_key_pressed(void) {
 
-  if (current_message->is_question() && current_message->is_over()) {
+  if (current_message->is_question() && current_message->is_finished()) {
     
     // switch the answer
     answer_selected = 1 - answer_selected;
@@ -295,7 +295,7 @@ int DialogBox::get_last_answer(void) {
  * whether the last message was shown and the
  * user has pressed the key, or the dialog was cancelled.
  */
-bool DialogBox::is_over(void) {
+bool DialogBox::is_finished(void) {
   return current_message == NULL || cancel_dialog;
 }
 
@@ -310,7 +310,7 @@ void DialogBox::update(void) {
   current_message->update();
 
   // handle the end of the message
-  if (current_message->is_over()) {
+  if (current_message->is_finished()) {
 
     // update the message end arrow
     sprite_message_end_arrow->update();
@@ -363,12 +363,12 @@ void DialogBox::display(SDL_Surface *destination_surface) {
   }
 
   // display the question arrow
-  if (current_message->is_question() && current_message->is_over()) {
+  if (current_message->is_question() && current_message->is_finished()) {
     SDL_BlitSurface(img_box, &question_src_position, dialog_surface, &question_dst_position);
   }
 
   // display the end message arrow
-  if (current_message->is_over()) {
+  if (current_message->is_finished()) {
     sprite_message_end_arrow->display(dialog_surface, x + 103, y + 56);
   }
 

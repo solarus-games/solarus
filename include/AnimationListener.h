@@ -18,7 +18,7 @@ class AnimationListener {
   /**
    * This function is called when the sprite's animation finishes.
    */
-  virtual void animation_over(Sprite *sprite) = 0;
+  virtual void animation_finished(Sprite *sprite) = 0;
 
 };
 

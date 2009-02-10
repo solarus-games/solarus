@@ -40,7 +40,7 @@ Link::Link(Equipment *equipment):
   equipment(equipment),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
   normal_movement(new Movement8ByPlayer(12)),
-  state(FREE), facing_entity(NULL), counter(0), next_counter_date(0),
+  state(FREE), facing_entity(NULL), end_blink_date(0), counter(0), next_counter_date(0),
   walking(false), pushing_direction_mask(0xFFFF),
   lifted_item(NULL), thrown_item(NULL), treasure(NULL) {
 
@@ -255,7 +255,10 @@ void Link::set_suspended(bool suspended) {
   if (!suspended) {
     Uint32 now = SDL_GetTicks();
     next_counter_date += now - when_suspended;
-    end_blink_date += now - when_suspended;
+
+    if (end_blink_date != 0) {
+      end_blink_date += now - when_suspended;
+    }
   }
 }
 
@@ -266,7 +269,7 @@ void Link::set_suspended(bool suspended) {
 void Link::update(void) {
 
   // update the movement
-  if (!zsdx->game->is_suspended()) {
+  if (!suspended) {
     get_normal_movement()->set_moving_enabled(get_state() <= SWIMMING);
 
     // specific updates in some states

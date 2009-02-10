@@ -142,7 +142,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
  * @return true if the item is broken
  */
 bool CarriedItem::is_broken(void) {
-  return is_breaking && get_sprite()->is_over() ;
+  return is_breaking && get_sprite()->is_animation_finished() ;
 }
 
 /**

@@ -190,7 +190,7 @@ void Game::update(void) {
 
   // update the game over sequence (if any)
   if (is_showing_gameover()) {
-    gameover_sequence->update();
+    update_gameover_sequence();
   }
 
   // update the sound system
@@ -262,9 +262,9 @@ void Game::update_transitions(void) {
 
   // if a map has just been set as the current map, start it and play the in transition
   if (!current_map->is_started()) {
-    current_map->start();
     transition = Transition::create(transition_style, Transition::IN);
     transition->start();
+    current_map->start();
   }
 }
 
@@ -307,7 +307,7 @@ void Game::update_keys_effect(void) {
  */
 void Game::update_dialog_box(void) {
 
-  if (!dialog_box->is_over()) {
+  if (!dialog_box->is_finished()) {
     dialog_box->update();
   }
   else {
@@ -324,6 +324,21 @@ void Game::update_treasure(void) {
   if (treasure != NULL && !is_showing_message()) {
     delete treasure;
     treasure = NULL;
+  }
+}
+
+/**
+ * Updates the game over sequence.
+ * This function is called repeatedly while the game over sequence is shown.
+ */
+void Game::update_gameover_sequence(void) {
+
+  if (!gameover_sequence->is_finished()) {
+    gameover_sequence->update();
+  }
+  else {
+    delete gameover_sequence;
+    gameover_sequence = NULL;
   }
 }
 
@@ -485,9 +500,15 @@ void Game::pause_or_resume_music(void) {
  * If no music is being played, nothing is done.
  */
 void Game::stop_music(void) {
-  if (current_music != NULL) {
-    current_music->stop();
-  }
+  play_music(Music::none);
+}
+
+/**
+ * Returns the id of the music currently played.
+ * @return the current music
+ */
+MusicId Game::get_current_music_id(void) {
+  return current_music_id;
 }
 
 /**

@@ -124,6 +124,8 @@ void Link::stop_blinking() {
   if (equipment->has_sword()) {
     sword_sprite->set_blinking(0);
   }
+
+  end_blink_date = 0;
 }
 
 /**

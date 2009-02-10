@@ -19,7 +19,7 @@ const char *Music::unchanged = "same";
 Music::Music(MusicId music_id) {
 
   sound = NULL;
-  file_name = FileTools::data_file_add_prefix((string) "/music/" + music_id);
+  file_name = FileTools::data_file_add_prefix((string) "music/" + music_id);
 
   /*
    * The musics are played with the highest priority.

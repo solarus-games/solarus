@@ -77,7 +77,7 @@ void SwordIcon::update(void) {
     sprite_sword_icon->update();
     need_rebuild = true;
 
-    if (sprite_sword_icon->is_over()) {
+    if (sprite_sword_icon->is_animation_finished()) {
       is_flipping = false;
     }
   }

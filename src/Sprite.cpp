@@ -15,7 +15,7 @@
  */
 Sprite::Sprite(SpriteAnimationSetId id):
   animation_set_id(id), current_direction(0), current_frame(-1),
-  suspended(false), over(false), listener(NULL), blink_delay(0) {
+  suspended(false), finished(false), listener(NULL), blink_delay(0) {
   
   animation_set = ResourceManager::get_sprite_animation_set(id);
   set_current_animation(animation_set->get_default_animation());
@@ -70,7 +70,7 @@ SDL_Rect& Sprite::get_origin(void) {
  * Returns the frame interval of the current animation.
  * A value of 0 (only for 1-frame animations) means that the
  * animation must continue to be displayed: in this case,
- * is_over() returns always false.
+ * is_animation_finished() returns always false.
  * @return the delay between two frames for the current animation (in miliseconds)
  */
 Uint32 Sprite::get_frame_interval(void) {
@@ -79,7 +79,7 @@ Uint32 Sprite::get_frame_interval(void) {
 
 /**
  * Returns the next frame of the current frame.
- * @return the next frame of the current frame (or -1 if the animation is over)
+ * @return the next frame of the current frame (or -1 if the animation is finished)
  */
 int Sprite::get_next_frame(void) {
   return current_animation->get_next_frame(current_direction, current_frame);    
@@ -147,14 +147,14 @@ int Sprite::get_current_frame(void) {
 
 /**
  * Sets the current frame of the sprite's animation.
- * If the animation was over, it is restarted.
+ * If the animation was finished, it is restarted.
  * If the animation is suspended, it remains suspended
  * but the specified frame is displayed. 
  * @param current_frame the current frame
  */
 void Sprite::set_current_frame(int current_frame) {
 
-  over = false;
+  finished = false;
   next_frame_date = SDL_GetTicks() + get_frame_interval();
 
   frame_changed = (current_frame != this->current_frame);
@@ -176,7 +176,7 @@ bool Sprite::has_frame_changed(void) {
  * @return true if the animation is started, false otherwise
  */
 bool Sprite::is_animation_started(void) {
-  return !is_over();
+  return !is_animation_finished();
 }
 
 /**
@@ -198,7 +198,7 @@ void Sprite::restart_animation(void) {
  * Stops the animation.
  */
 void Sprite::stop_animation(void) {
-  over = true;
+  finished = true;
 }
 
 /**
@@ -232,13 +232,13 @@ void Sprite::set_suspended(bool suspended) {
 
 /**
  * Returns true if the animation is finished.
- * The animation is over after the last frame is reached
+ * The animation is finished after the last frame is reached
  * and if the frame interval is not zero (a frame interval
  * of zero should be used only for 1-frame animations).
  * @return true if the animation is finished
  */
-bool Sprite::is_over(void) {
-  return over;
+bool Sprite::is_animation_finished(void) {
+  return finished;
 }
 
 /**
@@ -275,7 +275,7 @@ void Sprite::set_blinking(Uint32 blink_delay) {
 
 /**
  * Associates an animation listener to this sprite.
- * The animation listener will be notified when the animation is over.
+ * The animation listener will be notified when the animation is finished.
  * @param listener the listener to associate,
  * or NULL to just remove the previous listener
  */
@@ -322,20 +322,20 @@ void Sprite::update(void) {
 
   // update the current frame
   int next_frame;
-  while (!over && !suspended && get_frame_interval() > 0
+  while (!finished && !suspended && get_frame_interval() > 0
 	 && now >= next_frame_date) {
 
     // we get the next frame
     next_frame = get_next_frame();
 
-    // test whether the animation is over
+    // test whether the animation is finished
     if (next_frame == -1) {
 
-      over = true;
+      finished = true;
 
-      // tell the listener the animation is over
+      // tell the listener the animation is finished
       if (listener != NULL) {
-	listener->animation_over(this);
+	listener->animation_finished(this);
       }
     }
     else {
@@ -365,7 +365,7 @@ void Sprite::update(void) {
  */
 void Sprite::display(SDL_Surface *destination, int x, int y) {
 
-  if (!is_over() && (blink_delay == 0 || blink_is_sprite_visible)) {
+  if (!is_animation_finished() && (blink_delay == 0 || blink_is_sprite_visible)) {
     current_animation->display(destination, x, y, current_direction, current_frame);
   }
 }

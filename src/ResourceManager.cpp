@@ -102,7 +102,6 @@ void ResourceManager::quit(void) {
  * @return the image loaded
  */
 SDL_Surface * ResourceManager::load_image(ImageId id) {
-  
   return FileTools::open_image(id);
 }
 
@@ -112,11 +111,11 @@ SDL_Surface * ResourceManager::load_image(ImageId id) {
  * @return the tileset
  */
 Tileset * ResourceManager::get_tileset(TilesetId id) {
-  
+
   if (instance->tilesets[id] == NULL) {
     instance->tilesets[id] = new Tileset(id);
   }
-  
+
   return instance->tilesets[id];
 }
 
@@ -126,11 +125,11 @@ Tileset * ResourceManager::get_tileset(TilesetId id) {
  * @return the map
  */
 Map * ResourceManager::get_map(MapId id) {
-  
+
   if (instance->maps[id] == NULL) {
     instance->maps[id] = new Map(id);
   }
-  
+
   return instance->maps[id];
 }
 
@@ -140,11 +139,11 @@ Map * ResourceManager::get_map(MapId id) {
  * @return the music
  */
 Music * ResourceManager::get_music(MusicId id) {
-  
+
   if (instance->musics[id] == NULL) {
     instance->musics[id] = new Music(id);
   }
-  
+
   return instance->musics[id];
 }
 
@@ -154,11 +153,11 @@ Music * ResourceManager::get_music(MusicId id) {
  * @return the sound
  */
 Sound * ResourceManager::get_sound(SoundId id) {
-  
+
   if (instance->sounds[id] == NULL) {
     instance->sounds[id] = new Sound(id);
   }
-  
+
   return instance->sounds[id];
 }
 
@@ -168,10 +167,10 @@ Sound * ResourceManager::get_sound(SoundId id) {
  * @return the sprite animation set required
  */
 SpriteAnimationSet * ResourceManager::get_sprite_animation_set(SpriteAnimationSetId id) {
-  
+
   if (instance->sprite_animations[id] == NULL) {
     instance->sprite_animations[id] = new SpriteAnimationSet(id);
   }
-  
+
   return instance->sprite_animations[id];
 }

@@ -197,7 +197,7 @@ class Link: public MapEntity, AnimationListener {
   void rebuild_equipment(void);
 
   void restart_animation(void);
-  void animation_over(Sprite *sprite);
+  void animation_finished(Sprite *sprite);
 
   void set_animation_stopped(void);
 
@@ -212,7 +212,7 @@ class Link: public MapEntity, AnimationListener {
   void give_treasure(Treasure *treasure);
   void start_jumping(int direction, int length);
   void hurt(MapEntity *source, int life);
-  bool is_dying(void);
+  void get_back_from_death(void);
 
   // keys
   void key_pressed(Controls::GameKey key);

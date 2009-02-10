@@ -60,7 +60,7 @@ void PauseIcon::update(void) {
     sprite_pause_icon->update();
     need_rebuild = true;
 
-    if (sprite_pause_icon->is_over()) {
+    if (sprite_pause_icon->is_animation_finished()) {
       is_flipping = false;
     }
   }

@@ -29,7 +29,10 @@ Link::State Link::get_state(void) {
  */
 void Link::set_state(State state) {
   this->state = state;
-  get_normal_movement()->set_moving_enabled(state <= SWIMMING);
+
+  if (!zsdx->game->is_suspended()) {
+    get_normal_movement()->set_moving_enabled(state <= SWIMMING);
+  }
 }
 
 /**
@@ -40,7 +43,7 @@ void Link::start_free(void) {
   set_state(FREE);
 
   get_normal_movement()->compute_movement();
-  
+
   if (get_normal_movement()->is_started()) {
     set_animation_walking();
   }
@@ -499,16 +502,25 @@ void Link::update_hurt(void) {
       start_free();
     }
     else {
+      stop_blinking();
       zsdx->game->start_gameover_sequence();
     }
   }
+}
+/**
+ * This function is called when the hero was dead but saved by a fairy.
+ */
+void Link::get_back_from_death(void) {
+  start_free();
+  blink();
+  when_suspended = SDL_GetTicks();
 }
 
 /**
  * This function is called when an animation of Link's sprite is over.
  * @param sprite the sprite
  */
-void Link::animation_over(Sprite *sprite) {
+void Link::animation_finished(Sprite *sprite) {
 
   Controls *controls = zsdx->game->get_controls();
 

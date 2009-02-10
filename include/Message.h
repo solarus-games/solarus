@@ -52,7 +52,7 @@ class Message {
   MessageId get_next_message_id(void);
 
   // message current state
-  bool is_over(void);
+  bool is_finished(void);
   void show_all_now(void);
 
   // update and display

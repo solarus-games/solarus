@@ -30,9 +30,9 @@ Ensuite, chaque ligne du fichier décrit une entité de la map.
 0	2	368	72	144	1	1
 1	0	128	216	MainEntrance	1
 
-Syntaxe de la ligne d''une entité (les éléments entre crochets n'existent que pour certains types d'entité) :
+Syntaxe de la ligne d'une entité (les éléments entre crochets n'existent que pour certains types d'entité) :
 
-entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	specific_info
+entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	[specific_info]
 
 Le premier nombre indique de quel type d'entité il s'agit : un tile, une entrée de la map, un ennemi, un coffre...
 
@@ -42,14 +42,15 @@ layer est la couche sur laquelle l'entité est placée : LAYER_LOW (en bas, c'es
 
 x et y sont les coordonnées où on place l'entité.
 
-Ensuite, on a éventuellement identity_name, un identificateur si c'est une entité qui est identifiable. Certains types d'entités ont en effet un identificateur, ce dernier permet d'identifier de manière unique une instance (un ennemi, un interrupteur...) au cours de l'exécution du jeu, notamment depuis le script de la map. L'identificateur est un nom (choisi par le mappeur) attribué à une instance. Par exemple, si on veut qu'un interrupteur ouvre une porte, ça se fait depuis le script de la map, et donc le script a besoin de faire référence à un interrupteur bien précis et à une porte bien précise. Le nom d'une entité ne peut pas commencer par le caractère '_' car ces noms sont réservés pour des utilisations particulières.
+Ensuite, on a la taille de l'entité (seulement pour une entité de taille variable) : la largeur et la hauteur en pixels.
 
-Puis on a éventuellement direction, la direction de l'entité, qui est représentée par un nombre entier. Là aussi c'est optionnel car seuls certains types d'entités ont une direction (ennemis, entrées de la map, PNJ, tapis roulants...) alors que les autres non (tiles, vases, téléporteurs...).
+Puis, on a éventuellement entity_name, un identificateur si c'est une entité qui est identifiable. Certains types d'entités ont en effet un identificateur, ce dernier permet d'identifier de manière unique une instance (un ennemi, un interrupteur...) au cours de l'exécution du jeu, notamment depuis le script de la map. L'identificateur est un nom (choisi par le mappeur) attribué à une instance. Par exemple, si on veut qu'un interrupteur ouvre une porte, ça se fait depuis le script de la map, et donc le script a besoin de faire référence à un interrupteur bien précis et à une porte bien précise. Le nom d'une entité ne peut pas commencer par le caractère '_' car ces noms sont réservés pour des utilisations particulières.
 
-Pour finir, on a la taille de l'entité (seulement pour une entité de taille variable) : la largeur et la hauteur en pixels.
+Pour finir, on a éventuellement direction, la direction de l'entité, qui est représentée par un nombre entier. Là aussi c'est optionnel car seuls certains types d'entités ont une direction (ennemis, entrées de la map, PNJ, tapis roulants...) alors que les autres non (tiles, vases, téléporteurs...).
+
 
 Le reste de la ligne contient des informations spécifiques selon le type d'entité.
-Pour le moment, les types d'entités suivants sont gérés : les tiles, les entrées et les sorties de la map, les objets ramassables, les objets destructibles et les coffres.
+Pour le moment, les types d'entités suivants sont gérés :
 
 
 Tiles (0)

@@ -142,6 +142,9 @@ void MapScript::set_suspended(bool suspended) {
   for (it = timers.begin(); it != timers.end(); it++) {
     (*it)->set_suspended(suspended);
   }
+
+  // notify the script
+  call_lua_function("event_set_suspended", 1, suspended ? "1" : "0");  
 }
 
 /**

@@ -13,6 +13,7 @@
 #include "Treasure.h"
 #include "Controls.h"
 #include "Dungeon.h"
+#include "GameoverSequence.h"
 #include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
 #include "entities/Link.h"
@@ -29,7 +30,8 @@ const SDL_Rect Game::outside_world_size = {0, 0, 4160, 7168}; // TODO
  */
 Game::Game(Savegame *savegame):
   savegame(savegame),
-  pause_menu(NULL), dialog_box(NULL), treasure(NULL), reseting(false), keys_effect(NULL),
+  pause_menu(NULL), dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
+  reseting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL), dungeon(NULL),
   hud(NULL), current_music_id(Music::none), current_music(NULL) {
@@ -61,25 +63,12 @@ Game::~Game(void) {
   current_map->leave(); // tell the map that Link is not there anymore
   stop_music();
 
-  if (transition != NULL) {
-    delete transition;
-  }
-
-  if (dialog_box != NULL) {
-    delete dialog_box;
-  }
-
-  if (pause_menu != NULL) {
-    delete pause_menu;
-  }
-
-  if (treasure != NULL) {
-    delete treasure;
-  }
-
-  if (dungeon != NULL) {
-    delete dungeon;
-  }
+  delete transition;
+  delete dialog_box;
+  delete pause_menu;
+  delete treasure;
+  delete dungeon;
+  delete gameover_sequence;
 
   delete keys_effect;
   delete hud;
@@ -197,6 +186,11 @@ void Game::update(void) {
   // update the dialog box (if any)
   if (is_showing_message()) {
     update_dialog_box();
+  }
+
+  // update the game over sequence (if any)
+  if (is_showing_gameover()) {
+    gameover_sequence->update();
   }
 
   // update the sound system
@@ -349,6 +343,11 @@ void Game::display(SDL_Surface *screen_surface) {
   // display the pause screen if any
   if (is_paused()) {
     pause_menu->display(screen_surface);
+  }
+
+  // display the game over sequence if any
+  else if (is_showing_gameover()) {
+    gameover_sequence->display(screen_surface);
   }
 
   // display the hud
@@ -524,7 +523,8 @@ bool Game::is_playing_transition(void) {
  * @return true if the game is suspended
  */
 bool Game::is_suspended(void) {
-  return current_map == NULL || is_paused() || is_showing_message() || is_playing_transition();
+  return current_map == NULL || is_paused() || is_showing_message() ||
+    is_playing_transition() || is_showing_gameover();
 }
 
 /**
@@ -651,4 +651,19 @@ void Game::reset(void) {
   transition = Transition::create(Transition::FADE, Transition::OUT);
   transition->start();
   reseting = true;
+}
+
+/**
+ * Launches the gameover sequence.
+ */
+void Game::start_gameover_sequence(void) {
+  gameover_sequence = new GameoverSequence(this);
+}
+
+/**
+ * Returns whether the gameover sequence is being shown.
+ * @return true if the gameover sequence is being shown
+ */
+bool Game::is_showing_gameover(void) {
+  return gameover_sequence != NULL;
 }

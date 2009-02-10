@@ -242,6 +242,16 @@ bool Sprite::is_over(void) {
 }
 
 /**
+ * Returns true if the last frame is reached.
+ * @return true if the last frame is reached
+ */
+bool Sprite::is_last_frame_reached(void) {
+
+  SpriteAnimationDirection *direction = current_animation->get_direction(current_direction);
+  return get_current_frame() == direction->get_nb_frames() - 1;
+}
+
+/**
  * Returns whether the sprite is blinking.
  * @return true if the sprite is blinking
  */

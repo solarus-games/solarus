@@ -64,6 +64,7 @@ class MapScript;
 class DialogBox;
 class Message;
 class Timer;
+class GameoverSequence;
 
 // music and sound
 class Music;

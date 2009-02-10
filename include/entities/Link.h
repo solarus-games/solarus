@@ -37,7 +37,6 @@ class Link: public MapEntity, AnimationListener {
     BRANDISHING_TREASURE,    /**< Link is brandishing a treasure */
     JUMPING,                 /**< Link is jumping */
     HURT,                    /**< Link is hurt */
-    GAMEOVER,                /**< Link is dead */
     FREEZED,                 /**< Link cannot move for various possible reasons */
   };
 
@@ -139,7 +138,6 @@ class Link: public MapEntity, AnimationListener {
   void update_jumping(void);
   bool can_be_hurt(void);
   void update_hurt(void);
-  void start_gameover(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);
@@ -156,7 +154,6 @@ class Link: public MapEntity, AnimationListener {
   void set_animation_lifting(void);
   void set_animation_jumping(void);
   void set_animation_hurt(void);
-  void set_animation_gameover(void);
 
   void save_animation_direction(void);
   void restore_animation_direction(void);
@@ -215,6 +212,7 @@ class Link: public MapEntity, AnimationListener {
   void give_treasure(Treasure *treasure);
   void start_jumping(int direction, int length);
   void hurt(MapEntity *source, int life);
+  bool is_dying(void);
 
   // keys
   void key_pressed(Controls::GameKey key);

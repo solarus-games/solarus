@@ -6,6 +6,7 @@
 
 Uint32 Color::black;
 Uint32 Color::white;
+Uint32 Color::red;
 
 SDL_PixelFormat * Color::format;
 
@@ -17,6 +18,7 @@ void Color::initialize(void) {
 
   black = SDL_MapRGB(format, 0, 0, 0);
   white = SDL_MapRGB(format, 255, 255, 255);
+  red = SDL_MapRGB(format, 255, 0, 0);
 }
 
 /**

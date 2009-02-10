@@ -806,6 +806,57 @@ InventoryItem::ItemId Equipment::get_first_empty_bottle(void) {
 }
 
 /**
+ * Returns whether the player has at least one bottle having the specified content.
+ * @param content the content seeked (must be a valid bottle content)
+ * @return true if the player has at least one bottle with this content
+ */
+bool Equipment::has_bottle_with(Treasure::Content content) {
+
+  if (content < Treasure::WATER || content > Treasure::FAIRY_IN_BOTTLE) {
+    DIE("This content cannot be in a bottle: '" << content << "'");
+  }
+
+  int variant = content - Treasure::WATER + 2;
+
+  return has_inventory_item(InventoryItem::BOTTLE_1) == variant
+    || has_inventory_item(InventoryItem::BOTTLE_2) == variant
+    || has_inventory_item(InventoryItem::BOTTLE_3) == variant
+    || has_inventory_item(InventoryItem::BOTTLE_4) == variant;
+}
+
+/**
+ * Returns the id of the first bottle having the specified content.
+ * @param content the content seeked (must be a valid bottle content)
+ * @return the id of the first bottle with this content
+ */
+InventoryItem::ItemId Equipment::get_first_bottle_with(Treasure::Content content) {
+
+  if (content < Treasure::WATER || content > Treasure::FAIRY_IN_BOTTLE) {
+    DIE("This content cannot be in a bottle: '" << content << "'");
+  }
+
+  int variant = content - Treasure::WATER + 2;
+
+  if (has_inventory_item(InventoryItem::BOTTLE_1) == variant) {
+    return InventoryItem::BOTTLE_1;
+  }
+
+  if (has_inventory_item(InventoryItem::BOTTLE_2) == variant) {
+    return InventoryItem::BOTTLE_2;
+  }
+
+  if (has_inventory_item(InventoryItem::BOTTLE_3) == variant) {
+    return InventoryItem::BOTTLE_3;
+  }
+
+  if (has_inventory_item(InventoryItem::BOTTLE_4) == variant) {
+    return InventoryItem::BOTTLE_4;
+  }
+
+  DIE("The player does not have a bottle with content '" << variant << "'");
+}
+
+/**
  * Returns the current amount of a specified inventory item.
  * @param item_id id of the item to get
  * @return Link's current amount of this item

@@ -499,20 +499,9 @@ void Link::update_hurt(void) {
       start_free();
     }
     else {
-      start_gameover();
+      zsdx->game->start_gameover_sequence();
     }
   }
-}
-
-/**
- * Starts the game over sequence.
- */
-void Link::start_gameover(void) {
-
-  set_state(GAMEOVER);
-  stop_displaying_sword();
-  ResourceManager::get_sound("gameover")->play();
-  set_animation_gameover();
 }
 
 /**
@@ -527,8 +516,8 @@ void Link::animation_over(Sprite *sprite) {
   switch (state) {
 
   case SWORD_SWINGING:
-    
-    // if the player is still pressing the sword key, set the "sword loading" animation
+
+    // if the player is still pressing the sword key, start loading the sword
 
     if (controls->is_key_pressed(Controls::SWORD)) {
       start_sword_loading();
@@ -536,9 +525,9 @@ void Link::animation_over(Sprite *sprite) {
     else {
       start_free();
     }
-    
+
     break;
-    
+
   case SPIN_ATTACK:
     start_free();
     break;

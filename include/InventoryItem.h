@@ -28,7 +28,7 @@ class InventoryItem {
     BOOMERANG                   = 3,
     LAMP                        = 4,
     HOOK_SHOT                   = 5,
-    BOTTLE_1                    = 6, /**< 1: empty, 2: red potion, 3: green potion, 4: blue potion, 5: fairy */
+    BOTTLE_1                    = 6, /**< 1: empty, 2: water, 3: red potion, 4: green potion, 5: blue potion, 6: fairy */
 
     PEGASUS_SHOES               = 7,
     MYSTIC_MIRROR               = 8,

@@ -25,6 +25,7 @@ class Game: public Screen {
   PauseMenu *pause_menu;    /**< the current pause menu, or NULL if the game is not paused */
   DialogBox *dialog_box;    /**< the dialog box currently shown, or NULL if no message is being shown */
   Treasure *treasure;       /**< the treasure currently being given to the player or NULL if it is not the case */
+  GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
   bool reseting;            /**< true if the game will be reset */
 
   // controls
@@ -96,6 +97,7 @@ class Game: public Screen {
   bool is_paused(void);
   bool is_showing_message(void);
   bool is_playing_transition(void);
+  bool is_showing_gameover(void);
   bool is_suspended(void); // true if at least one of the three functions above returns true
   void reset(void);
 
@@ -111,6 +113,9 @@ class Game: public Screen {
   // treasure
   void give_treasure(Treasure *treasure);
   bool is_giving_treasure(void);
+
+  // game over
+  void start_gameover_sequence(void);
 };
 
 #endif

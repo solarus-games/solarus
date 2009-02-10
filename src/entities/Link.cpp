@@ -228,9 +228,9 @@ void Link::set_map(Map *map, int initial_direction) {
 }
 
 /**
- * Suspends or resumes the animation of Link's sprites.
+ * Suspends or resumes the animation and the movements of the hero.
  * This function is called by the map when the game is suspended or resumed.
- * @param suspended true to suspend the animation, false to resume it
+ * @param suspended true to suspend the hero, false to resume it
  */
 void Link::set_suspended(bool suspended) {
 
@@ -268,7 +268,7 @@ void Link::update(void) {
   // update the movement
   if (!zsdx->game->is_suspended()) {
     get_normal_movement()->set_moving_enabled(get_state() <= SWIMMING);
-    
+
     // specific updates in some states
     switch (state) {
 
@@ -315,6 +315,10 @@ void Link::update(void) {
  * at its current position.
  */
 void Link::display_on_map(void) {
+
+  if (zsdx->game->is_showing_gameover()) {
+    return; // the hero is directly displayed by the game over sequence
+  }
 
   int x = get_x();
   int y = get_y();

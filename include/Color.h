@@ -17,6 +17,7 @@ class Color {
 
   static Uint32 black;
   static Uint32 white;
+  static Uint32 red;
 
   /**
    * Initializes the global variables of colors.

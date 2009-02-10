@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "InventoryItem.h"
+#include "Treasure.h"
 
 /**
  * This class represents Link's equipment. It makes the interface
@@ -114,6 +115,8 @@ class Equipment {
   void add_bottle(void);
   bool has_empty_bottle(void);
   InventoryItem::ItemId get_first_empty_bottle(void);
+  bool has_bottle_with(Treasure::Content content);
+  InventoryItem::ItemId get_first_bottle_with(Treasure::Content content);
 
   int get_inventory_item_amount(InventoryItem::ItemId item_id);
   void set_inventory_item_amount(InventoryItem::ItemId item_id, int amount);

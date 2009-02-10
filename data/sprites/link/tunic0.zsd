@@ -97,5 +97,5 @@ hurt link/miscellaneous.png 4 0 -1
 48	24	24	24	12	21	1	1
 72	24	24	24	12	21	1	1
 
-gameover link/gameover.png 1 125 9
+dying link/dying.png 1 125 9
 0	0	24	24	12	21	10	10

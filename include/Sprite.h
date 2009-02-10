@@ -80,6 +80,7 @@ class Sprite {
   bool is_suspended(void);
   void set_suspended(bool suspended);
   bool is_over(void);
+  bool is_last_frame_reached(void);
   bool has_frame_changed(void);
 
   // blink

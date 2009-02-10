@@ -458,18 +458,3 @@ void Link::set_animation_hurt(void) {
     shield_sprite->stop_animation();
   }
 }
-
-/**
- * Starts the "gameover" animation of Link's sprites.
- * Link's state should be GAMEOVER.
- */
-void Link::set_animation_gameover(void) {
-  stop_blinking();
-  tunic_sprite->set_current_animation("gameover");
-  tunic_sprite->set_current_direction(0);
-
-  // the shield is not visible
-  if (equipment->has_shield()) {
-    shield_sprite->stop_animation();
-  }
-}

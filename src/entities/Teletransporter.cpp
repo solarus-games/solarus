@@ -57,7 +57,16 @@ MapEntity::EntityType Teletransporter::get_type() {
 bool Teletransporter::is_obstacle_for(MapEntity *other) {
 
   EntityType type = other->get_type();
-  return type == ENEMY || type == NPC;
+
+  if (type == ENEMY || type == NPC) {
+    return true;
+  }
+
+  if (type == HERO) {
+    return ((Link*) other)->is_teletransporter_obstacle(this);
+  }
+
+  return false;
 }
 
 /**

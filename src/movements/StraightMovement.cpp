@@ -75,6 +75,7 @@ void StraightMovement::update(void) {
  * Suspends or resumes the movement
  */
 void StraightMovement::set_suspended(bool suspended) {
+
   Movement::set_suspended(suspended);
 
   if (!suspended) {

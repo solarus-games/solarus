@@ -9,12 +9,12 @@ TransitionFade::TransitionFade(Transition::Direction direction):
   if (direction == OUT) {
     alpha_start = 256;
     alpha_limit = 0;
-    alpha_increment = -16;
+    alpha_increment = -8;
   }
   else {
     alpha_start = 0;
     alpha_limit = 256;
-    alpha_increment = 16;
+    alpha_increment = 8;
   }  
 }
 

@@ -380,7 +380,8 @@ void Game::set_current_map(MapId map_id, unsigned int destination_point_index, T
   next_map = ResourceManager::get_map(map_id);
 
   if (!next_map->is_loaded()) {
-    next_map->load();
+    next_map->load(); // note that the next map is loaded right now (but will be suspended),
+                      // even if the current map is still running
   }
 
   next_map->set_destination_point(destination_point_index);
@@ -511,7 +512,6 @@ bool Game::is_showing_message(void) {
  * @return true if there is a transition
  */
 bool Game::is_playing_transition(void) {
-
   return transition != NULL || next_map != NULL;
 }
 

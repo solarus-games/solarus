@@ -611,3 +611,13 @@ void Link::collision_with_teletransporter(Teletransporter *teletransporter, int 
     teletransporter->transport_hero(this);
   }
 }
+
+/**
+ * Returns whether a teletransporter is currently considered as an obstacle.
+ * This depends on the hero's state.
+ * @param teletransporter
+ * @return true if the teletransporter is currently an obstacle for the hero
+ */
+bool Link::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return get_state() > SWIMMING;
+}

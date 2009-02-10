@@ -203,6 +203,8 @@ void Map::load() {
 
   // read the map file
   map_loader.load_map(this);
+
+  set_suspended(true);
 }
 
 /**
@@ -333,7 +335,7 @@ void Map::display() {
  * @param y y coordinate of the sprite's origin point in the map
  */
 void Map::display_sprite(Sprite *sprite, int x, int y) {
-  
+
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
   sprite->display(visible_surface, x - screen_position.x, y - screen_position.y);
@@ -350,7 +352,8 @@ void Map::start(void) {
 
   place_hero_on_destination_point();
   started = true;
-  script->event_map_started();
+
+  script->event_map_started(); // TODO: move after the first update() call?
 }
 
 /**
@@ -531,7 +534,7 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_b
   if (!collision) {
     collision = collision_with_entities(layer, collision_box, entity_to_check);
   }
-  
+
   return collision;   
 }
 

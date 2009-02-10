@@ -64,7 +64,6 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
 
   // see if the enemy is alive
   if (savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
-    std::cout << "not creating enemy '" << name << "' because dead (savegame variable was " << savegame_variable << ")\n";
     return NULL;
   }
 
@@ -244,6 +243,7 @@ void Enemy::update(void) {
  * Suspends or resumes the enemy.
  */
 void Enemy::set_suspended(bool suspended) {
+
   MapEntity::set_suspended(suspended);
 
   if (!suspended) {

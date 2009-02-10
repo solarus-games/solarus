@@ -74,8 +74,6 @@ class Map {
 
   MapScript *script;            /**< LUA script of the map */
 
-  void set_suspended(bool suspended);
-
  public:
 
   // creation and destruction
@@ -108,6 +106,7 @@ class Map {
   bool is_loaded(void);
   void load(void);
   void unload(void);
+  void set_suspended(bool suspended);
 
   // entities
   MapEntities *get_entities(void);

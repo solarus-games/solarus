@@ -19,7 +19,7 @@ class Link: public MapEntity, AnimationListener {
   /**
    * Possible states of Link.
    * The state is considered only when the game is not suspended.
-   * Link can move in states FREE, PUSHING, CARRYING, SWORD_LOADING and SWIMMING.
+   * Link can move (and walk on teletransporters) in states FREE, PUSHING, CARRYING, SWORD_LOADING and SWIMMING.
    * Link can swing his sword in states FREE, PUSHING, CARRYING and SWORD_SWINGING.
    * Link can be hurt in states <= SPIN_ATTACK.
    */
@@ -220,11 +220,13 @@ class Link: public MapEntity, AnimationListener {
   void key_pressed(Controls::GameKey key);
   void key_released(Controls::GameKey key);
 
-  // enemies
+  // enemies and collisions
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   void just_attacked_enemy(Enemy::Attack attack, Enemy *victim);
+
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
+  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
 };
 
 #endif

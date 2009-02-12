@@ -2,6 +2,7 @@
 #define ZSDX_GAMEOVER_SEQUENCE_H
 
 #include "Common.h"
+#include "Controls.h"
 
 /**
  * The game over sequence displayed when the hero dies.
@@ -29,19 +30,22 @@ class GameoverSequence {
   int fairy_y;                    /**< y position of the fairy on the screen */
   TargetMovement *fairy_movement; /**< movement of the fairy */
 
+  int cursor_position;            /**< position of the cursor in the gameover menu (0 to 3) */
+
   // state
   enum State {
-    DYING,          /**< the hero is dying */
+    WAITING_START,  /**< the game over sequence will start soon */
     CLOSING_GAME,   /**< fade out on the game screen */
     RED_SCREEN,     /**< red screen during a small delay */
     OPENING_MENU,   /**< fade in on the game over menu */
     SAVED_BY_FAIRY, /**< the player is being saved by a fairy */
-    MENU,           /**< the player can choose an option in the game over menu */
+    WAITING_END,    /**< the game will be resumed soon */
     RESUME_GAME,    /**< the game can be resumed */
+    MENU,           /**< the player can choose an option in the game over menu */
    };
 
-  State state;           /**< current state of the gameover sequence */
-  Uint32 open_menu_date; /**< date when moving from state RED_SCREEN to state OPENING_MENU */
+  State state;            /**< current state of the gameover sequence */
+  Uint32 next_state_date; /**< date when moving from a state to another one */
 
  public:
 
@@ -55,6 +59,7 @@ class GameoverSequence {
   // update and display
   void update(void);
   void display(SDL_Surface *destination_surface);
+  void key_pressed(Controls::GameKey key);
 };
 
 #endif

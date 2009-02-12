@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "Screen.h"
 #include "Transition.h"
+#include "Controls.h"
 
 /**
  * This class handles the game.
@@ -27,6 +28,7 @@ class Game: public Screen {
   Treasure *treasure;       /**< the treasure currently being given to the player or NULL if it is not the case */
   GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
   bool reseting;            /**< true if the game will be reset */
+  bool restarting;          /**< true if the game will be restarted */
 
   // controls
   Controls *controls;       /**< this object receives the SDL keyboard and joypad events */
@@ -81,9 +83,12 @@ class Game: public Screen {
   void update(void);
   void display(SDL_Surface *screen_surface);
   
+  void key_pressed(Controls::GameKey key);
+  void key_released(Controls::GameKey key);
+
   // map
   Map *get_current_map(void);
-  void set_current_map(MapId map_id, unsigned int destination_point_index, Transition::Style transition_style);
+  //  void set_current_map(MapId map_id, unsigned int destination_point_index, Transition::Style transition_style);
   void set_current_map(MapId map_id, string destination_point_name, Transition::Style transition_style);
   bool is_in_dungeon(void);
   Dungeon *get_current_dungeon(void);
@@ -102,6 +107,7 @@ class Game: public Screen {
   bool is_showing_gameover(void);
   bool is_suspended(void); // true if at least one of the three functions above returns true
   void reset(void);
+  void restart(void);
 
   // pause
   void set_paused(bool paused);

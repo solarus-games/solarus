@@ -16,7 +16,7 @@
  * @param game the game
  */
 GameoverSequence::GameoverSequence(Game *game):
-  game(game), music_id(game->get_current_music_id()), state(DYING) {
+  game(game), music_id(game->get_current_music_id()), state(WAITING_START) {
 
   gameover_menu_img = ResourceManager::load_image("hud/gameover_menu.png");
   fade_sprite = new Sprite("hud/gameover_fade");
@@ -26,7 +26,9 @@ GameoverSequence::GameoverSequence(Game *game):
   std::ostringstream oss;
   oss << "hero/tunic" << game->get_equipment()->get_tunic();
   hero_dead_sprite = new Sprite(oss.str());
-  hero_dead_sprite->set_current_animation("dying");
+  hero_dead_sprite->set_current_animation("hurt");
+  hero_dead_sprite->set_current_direction(game->get_hero()->get_animation_direction());
+  hero_dead_sprite->set_suspended(true);
 
   SDL_Rect *screen_position = game->get_current_map()->get_screen_position();
   Hero *hero = game->get_hero();
@@ -34,8 +36,9 @@ GameoverSequence::GameoverSequence(Game *game):
   hero_dead_y = hero->get_y() - screen_position->y;
 
   fairy_sprite = new Sprite("entities/fairy");
+  fairy_movement = NULL;
 
-  ResourceManager::get_sound("hero_dying")->play();
+  next_state_date = SDL_GetTicks() + 500;
 }
 
 /**
@@ -47,6 +50,7 @@ GameoverSequence::~GameoverSequence(void) {
   delete fade_sprite;
   delete hero_dead_sprite;
   delete fairy_sprite;
+  delete fairy_movement;
 }
 
 /**
@@ -54,56 +58,93 @@ GameoverSequence::~GameoverSequence(void) {
  */
 void GameoverSequence::update(void) {
 
+  Uint32 now = SDL_GetTicks();
   hero_dead_sprite->update();
 
-  if (state == DYING && hero_dead_sprite->is_last_frame_reached()) {
-    state = CLOSING_GAME;
-    fade_sprite->restart_animation();
-    game->stop_music();
-  }
-  else if (state < MENU) {
+  switch (state) {
+    
+  case WAITING_START:
+    if (now >= next_state_date) {
+      state = CLOSING_GAME;
+      fade_sprite->restart_animation();
+      game->stop_music();
+    }
+    break;
 
+  case CLOSING_GAME:
     fade_sprite->update();
-    Uint32 now = SDL_GetTicks();
 
-    if (state == CLOSING_GAME && fade_sprite->is_last_frame_reached()) {
+    if (fade_sprite->is_animation_finished()) {
       state = RED_SCREEN;
-      open_menu_date = now + 500;
+      ResourceManager::get_sound("hero_dying")->play();
+      hero_dead_sprite->set_suspended(false);
+      hero_dead_sprite->set_current_animation("dying");
+      hero_dead_sprite->set_current_direction(0);
+      next_state_date = now + 2000;
     }
-    else if (state == RED_SCREEN) {
+    break;
 
-      if (now >= open_menu_date) {
-	state = OPENING_MENU;
-	fade_sprite->set_current_animation("open");
-	game->play_music("game_over.it");
-      }
+  case RED_SCREEN:
+    hero_dead_sprite->update();
+
+    if (hero_dead_sprite->is_last_frame_reached() && now >= next_state_date) {
+      state = OPENING_MENU;
+      fade_sprite->set_current_animation("open");
     }
-    else if (state == OPENING_MENU && fade_sprite->is_animation_finished()) {
+    break;
 
-      if (game->get_equipment()->has_bottle_with(Treasure::FAIRY_IN_BOTTLE)) {
+  case OPENING_MENU:
+    fade_sprite->update();
+    if (fade_sprite->is_animation_finished()) {
+
+      Equipment *equipment = game->get_equipment();
+      if (equipment->has_bottle_with(Treasure::FAIRY_IN_BOTTLE)) {
 	state = SAVED_BY_FAIRY;
 	fairy_x = hero_dead_x + 12;
 	fairy_y = hero_dead_y + 21;
 	fairy_movement = new TargetMovement(10, 240, 22);
 	fairy_movement->set_position(fairy_x, fairy_y);
+	equipment->set_bottle_empty(equipment->get_first_bottle_with(Treasure::FAIRY_IN_BOTTLE));
       }
       else {
 	state = MENU;
+	game->play_music("game_over.it");
+	fairy_x = 76;
+	fairy_y = 124;
+	cursor_position = 0;
       }
     }
-    else if (state == SAVED_BY_FAIRY) {
-      fairy_sprite->update();
-      fairy_movement->update();
-      fairy_x = fairy_movement->get_x();
-      fairy_y = fairy_movement->get_y();
+    break;
 
-      if (fairy_movement->is_finished()) {
-	state = RESUME_GAME;
-	game->get_equipment()->add_hearts(7 * 4);
-	game->get_hero()->get_back_from_death();
-	game->play_music(music_id);
-      }
+  case SAVED_BY_FAIRY:
+    fairy_sprite->update();
+    fairy_movement->update();
+    fairy_x = fairy_movement->get_x();
+    fairy_y = fairy_movement->get_y();
+    
+    if (fairy_movement->is_finished()) {
+      state = WAITING_END;
+      next_state_date = now + 1000;
+      game->get_equipment()->add_hearts(7 * 4);
     }
+    break;
+
+  case WAITING_END:
+    if (now >= next_state_date) {
+      state = RESUME_GAME;
+      game->get_hero()->get_back_from_death();
+      game->play_music(music_id);
+    }
+    break;
+
+  case RESUME_GAME:
+
+    break;
+
+  case MENU:
+    fairy_sprite->update();
+    break;
+
   }
 }
 
@@ -126,7 +167,7 @@ void GameoverSequence::display(SDL_Surface *destination_surface) {
     }
   }
 
-  if (state <= SAVED_BY_FAIRY) {
+  if (state <= WAITING_END) {
     hero_dead_sprite->display(destination_surface, hero_dead_x, hero_dead_y);
 
     if (state == SAVED_BY_FAIRY) {
@@ -135,6 +176,54 @@ void GameoverSequence::display(SDL_Surface *destination_surface) {
   }
   else if (state == MENU) {
     SDL_BlitSurface(gameover_menu_img, NULL, destination_surface, NULL);
+    fairy_sprite->display(destination_surface, fairy_x, fairy_y);
+  }
+}
+
+/**
+ * This function is called when a game key is pressed.
+ * @param key the key pressed
+ */
+void GameoverSequence::key_pressed(Controls::GameKey key) {
+
+  if (state == MENU) {
+
+    if (key == Controls::DOWN) {
+      ResourceManager::get_sound("cursor")->play();
+      cursor_position = (cursor_position + 1) % 4;
+      fairy_y = 124 + cursor_position * 16;
+    }
+    else if (key == Controls::UP) {
+      ResourceManager::get_sound("cursor")->play();
+      cursor_position = (cursor_position + 3) % 4;
+      fairy_y = 124 + cursor_position * 16;
+    }
+    else if (key == Controls::ACTION || key == Controls::SWORD) {
+      ResourceManager::get_sound("danger")->play();
+      game->get_equipment()->add_hearts(7 * 4);
+
+      switch (cursor_position) {
+
+      case 0: // save and continue
+	game->get_savegame()->save();
+	game->restart();
+	break;
+
+      case 1: // save and quit
+	game->get_savegame()->save();
+	game->reset();
+	break;
+
+      case 2: // continue without saving
+	game->restart();
+	break;
+
+      case 3: // quit without saving
+	game->reset();
+	break;
+
+      }
+    }
   }
 }
 

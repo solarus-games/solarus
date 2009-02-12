@@ -11,7 +11,6 @@
 #include "Equipment.h"
 #include "DialogBox.h"
 #include "Treasure.h"
-#include "Controls.h"
 #include "Dungeon.h"
 #include "GameoverSequence.h"
 #include "menus/TitleScreen.h"
@@ -31,7 +30,7 @@ const SDL_Rect Game::outside_world_size = {0, 0, 4160, 7168}; // TODO
 Game::Game(Savegame *savegame):
   savegame(savegame),
   pause_menu(NULL), dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
-  reseting(false), keys_effect(NULL),
+  reseting(false), restarting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL), dungeon(NULL),
   hud(NULL), current_music_id(Music::none), current_music(NULL) {
@@ -50,8 +49,7 @@ Game::Game(Savegame *savegame):
 
   // launch the starting map
   set_current_map(savegame->get_integer(Savegame::STARTING_MAP),
-		  savegame->get_integer(Savegame::STARTING_POINT),
-		  Transition::FADE);
+		  "", Transition::FADE);
 }
 
 /**
@@ -76,7 +74,9 @@ Game::~Game(void) {
   delete savegame;
   delete controls;
 
-  zsdx->set_game(NULL);
+  if (zsdx->game == this) {
+    zsdx->set_game(NULL);
+  }
 }
 
 /**
@@ -153,6 +153,51 @@ void Game::handle_event(const SDL_Event &event) {
 }
 
 /**
+ * This function is called when a game key is pressed.
+ * @param key a key
+ */
+void Game::key_pressed(Controls::GameKey key) {
+
+  if (!is_suspended()) {    
+
+    // if the game is not suspended, most of the keys apply to the hero
+    if (key == Controls::PAUSE) {
+      set_paused(true);
+    }
+    else {
+      hero->key_pressed(key);
+    }
+  }
+
+  // is a message being shown?
+  else if (is_showing_message()) {
+    dialog_box->key_pressed(key);
+  }
+
+  // is the game paused?
+  else if (is_paused()) {
+    pause_menu->key_pressed(key);
+  }
+
+  // is the game over sequence shown?
+  else if (is_showing_gameover()) {
+    gameover_sequence->key_pressed(key);
+  }
+}
+
+/**
+ * This function is called when a game key is released.
+ * @param key a key
+ */
+void Game::key_released(Controls::GameKey key) {
+
+  if (!is_suspended()) {
+    // if the game is not suspended, the keys apply to the hero
+    hero->key_released(key);
+  }
+}
+
+/**
  * Updates the game elements : the map, the equipment, the HUD, the sound system, etc.
  */
 void Game::update(void) {
@@ -160,7 +205,7 @@ void Game::update(void) {
   // update the transitions between maps
   update_transitions();
 
-  if (reseting) {
+  if (reseting || restarting) {
     return; // the game may have just been reset
   }
 
@@ -229,8 +274,12 @@ void Game::update_transitions(void) {
     transition = NULL;
 
     if (reseting) {
-      set_next_screen(new TitleScreen());
       current_map->unload();
+      set_next_screen(new TitleScreen());
+    }
+    else if (restarting) {
+      current_map->unload();
+      set_next_screen(new Game(new Savegame(savegame)));
     }
     else if (transition_direction == Transition::OUT) {
 
@@ -389,6 +438,7 @@ Map * Game::get_current_map(void) {
  * @param destination_point_index index of the destination point of the map you want to use
  * @param transition_style type of transition between the two maps
  */
+/*
 void Game::set_current_map(MapId map_id, unsigned int destination_point_index, Transition::Style transition_style) {
 
   next_map = ResourceManager::get_map(map_id);
@@ -400,25 +450,43 @@ void Game::set_current_map(MapId map_id, unsigned int destination_point_index, T
 
   next_map->set_destination_point(destination_point_index);
   this->transition_style = transition_style;
+
 }
+*/
 
 /**
  * Changes the current map.
  * Call this function when you want the hero to go to another map.
  * @param map_id id of the map to launch
- * @param destination_point_name name of the destination point of the map you want to use
+ * @param destination_point_name name of the destination point of the map you want to use,
+ * or en ampty string to pick the destination point saved
  * @param transition_style type of transition between the two maps
  */
 void Game::set_current_map(MapId map_id, string destination_point_name, Transition::Style transition_style) {
 
+  // load the next map
   next_map = ResourceManager::get_map(map_id);
-
   if (!next_map->is_loaded()) {
     next_map->load();
   }
 
-  next_map->set_destination_point(destination_point_name);
+  // initialize the destination point, from the specified name or from the savegame
+  if (destination_point_name == "") {
+    next_map->set_destination_point(savegame->get_integer(Savegame::STARTING_POINT));
+  }
+  else {
+    next_map->set_destination_point(destination_point_name);
+  }
   this->transition_style = transition_style;
+
+  // for an outside/inside or inside/outside change, save the location
+  if (current_map != NULL) {
+    if ((current_map->is_in_outside_world() && !next_map->is_in_outside_world())
+	|| (!current_map->is_in_outside_world() && next_map->is_in_outside_world())) {
+      savegame->set_integer(Savegame::STARTING_MAP, map_id);
+      savegame->set_integer(Savegame::STARTING_POINT, next_map->get_destination_point_index());
+    }
+  }
 }
 
 /**
@@ -665,13 +733,23 @@ void Game::load_dungeon(void) {
 }
 
 /**
- * Resets the game.
+ * Go back to the title screen.
  */
 void Game::reset(void) {
 
   transition = Transition::create(Transition::FADE, Transition::OUT);
   transition->start();
   reseting = true;
+}
+
+/**
+ * Restarts the game with the current savegame state.
+ */
+void Game::restart(void) {
+
+  transition = Transition::create(Transition::FADE, Transition::OUT);
+  transition->start();
+  restarting = true;
 }
 
 /**

@@ -117,6 +117,8 @@ class Equipment {
   InventoryItem::ItemId get_first_empty_bottle(void);
   bool has_bottle_with(Treasure::Content content);
   InventoryItem::ItemId get_first_bottle_with(Treasure::Content content);
+  void set_bottle_content(InventoryItem::ItemId bottle_id, Treasure::Content content);
+  void set_bottle_empty(InventoryItem::ItemId bottle_id);
 
   int get_inventory_item_amount(InventoryItem::ItemId item_id);
   void set_inventory_item_amount(InventoryItem::ItemId item_id, int amount);

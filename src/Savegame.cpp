@@ -32,6 +32,21 @@ Savegame::Savegame(const char *file_name) {
 }
 
 /**
+ * Creates a savegame by copying an existing one, even if
+ * it is not saved in its current state.
+ * @param other the savegame to copy
+ */
+Savegame::Savegame(Savegame *other) {
+
+  this->empty = other->empty;
+  strncpy(this->file_name, other->file_name, 32);
+  this->saved_data = other->saved_data;
+
+  this->equipment = new Equipment(this);
+  this->dungeon_equipment = new DungeonEquipment(this);
+}
+
+/**
  * Destructor.
  */
 Savegame::~Savegame(void) {

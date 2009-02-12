@@ -590,27 +590,7 @@ void Controls::game_key_pressed(GameKey key) {
 
   keys_pressed[index] = true;
 
-  if (!game->is_suspended()) {    
-
-    // if the game is not suspended, most of the keys apply to the hero
-    if (key == PAUSE) {
-      game->set_paused(true);
-    }
-    else {
-      game->get_hero()->key_pressed(key);
-    }
-  }
-
-  // is a message being shown?
-  else if (game->is_showing_message()) {
-    game->get_dialog_box()->key_pressed(key);
-  }
-
-  // is the game paused?
-  else if (game->is_paused()) {
-    game->get_pause_menu()->key_pressed(key);
-  }
-
+  game->key_pressed(key);
 }
 
 /**
@@ -621,11 +601,7 @@ void Controls::game_key_pressed(GameKey key) {
 void Controls::game_key_released(GameKey key) {
 
   keys_pressed[key - 1] = false;
-
-  if (!game->is_suspended()) {
-    // if the game is not suspended, the keys apply to the hero
-    game->get_hero()->key_released(key);
-  }  
+  game->key_released(key);
 }
 
 

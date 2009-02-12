@@ -774,10 +774,7 @@ void Equipment::add_bottle(void) {
  * @return true if the player has at least one empty bottle
  */
 bool Equipment::has_empty_bottle(void) {
-  return has_inventory_item(InventoryItem::BOTTLE_1) == 1
-    || has_inventory_item(InventoryItem::BOTTLE_2) == 1
-    || has_inventory_item(InventoryItem::BOTTLE_3) == 1
-    || has_inventory_item(InventoryItem::BOTTLE_4) == 1;
+  return has_bottle_with(Treasure::NONE);
 }
 
 /**
@@ -785,38 +782,26 @@ bool Equipment::has_empty_bottle(void) {
  * @return the id of the first empty bottle
  */
 InventoryItem::ItemId Equipment::get_first_empty_bottle(void) {
-
-  if (has_inventory_item(InventoryItem::BOTTLE_1) == 1) {
-    return InventoryItem::BOTTLE_1;
-  }
-
-  if (has_inventory_item(InventoryItem::BOTTLE_2) == 1) {
-    return InventoryItem::BOTTLE_2;
-  }
-
-  if (has_inventory_item(InventoryItem::BOTTLE_3) == 1) {
-    return InventoryItem::BOTTLE_3;
-  }
-
-  if (has_inventory_item(InventoryItem::BOTTLE_4) == 1) {
-    return InventoryItem::BOTTLE_4;
-  }
-
-  DIE("The player does not have an empty bottle");
+  return get_first_bottle_with(Treasure::NONE);
 }
 
 /**
  * Returns whether the player has at least one bottle having the specified content.
- * @param content the content seeked (must be a valid bottle content)
+ * @param content the content seeked (must be a valid bottle content or Treasure::NONE)
  * @return true if the player has at least one bottle with this content
  */
 bool Equipment::has_bottle_with(Treasure::Content content) {
 
-  if (content < Treasure::WATER || content > Treasure::FAIRY_IN_BOTTLE) {
-    DIE("This content cannot be in a bottle: '" << content << "'");
+  int variant;
+  if (content == Treasure::NONE) {
+    variant = 1;
   }
-
-  int variant = content - Treasure::WATER + 2;
+  else {
+    if (content < Treasure::WATER || content > Treasure::FAIRY_IN_BOTTLE) {
+      DIE("This content cannot be in a bottle: '" << content << "'");
+    }
+    variant = content - Treasure::WATER + 2;
+  }
 
   return has_inventory_item(InventoryItem::BOTTLE_1) == variant
     || has_inventory_item(InventoryItem::BOTTLE_2) == variant
@@ -826,16 +811,21 @@ bool Equipment::has_bottle_with(Treasure::Content content) {
 
 /**
  * Returns the id of the first bottle having the specified content.
- * @param content the content seeked (must be a valid bottle content)
+ * @param content the content seeked (must be a valid bottle content or Treasure::NONE)
  * @return the id of the first bottle with this content
  */
 InventoryItem::ItemId Equipment::get_first_bottle_with(Treasure::Content content) {
 
-  if (content < Treasure::WATER || content > Treasure::FAIRY_IN_BOTTLE) {
-    DIE("This content cannot be in a bottle: '" << content << "'");
+  int variant;
+  if (content == Treasure::NONE) {
+    variant = 1;
   }
-
-  int variant = content - Treasure::WATER + 2;
+  else {
+    if (content < Treasure::WATER || content > Treasure::FAIRY_IN_BOTTLE) {
+      DIE("This content cannot be in a bottle: '" << content << "'");
+    }
+    variant = content - Treasure::WATER + 2;
+  }
 
   if (has_inventory_item(InventoryItem::BOTTLE_1) == variant) {
     return InventoryItem::BOTTLE_1;
@@ -854,6 +844,41 @@ InventoryItem::ItemId Equipment::get_first_bottle_with(Treasure::Content content
   }
 
   DIE("The player does not have a bottle with content '" << variant << "'");
+}
+
+/**
+ * Sets the content of a bottle.
+ * @param bottle_id item id of the bottle (must be the id of a bottle)
+ * @param content content to set (must be a valid bottle content or Treasure::NONE)
+ */
+void Equipment::set_bottle_content(InventoryItem::ItemId bottle_id, Treasure::Content content) {
+
+  if (bottle_id != InventoryItem::BOTTLE_1 &&
+      bottle_id != InventoryItem::BOTTLE_2 &&
+      bottle_id != InventoryItem::BOTTLE_3 &&
+      bottle_id != InventoryItem::BOTTLE_4) {
+    DIE("Invalid bottle id: '" << bottle_id << "'"); 
+  } 
+
+  int variant;
+  if (content == Treasure::NONE) {
+    variant = 1;
+  }
+  else {
+    if (content < Treasure::WATER || content > Treasure::FAIRY_IN_BOTTLE) {
+      DIE("This content cannot be in a bottle: '" << content << "'");
+    }
+    variant = content - Treasure::WATER + 2;
+  }
+  give_inventory_item(bottle_id, variant);
+}
+
+/**
+ * Sets a bottle empty.
+ * @param bottle_id item id of the bottle to make empty (must be the id of a bottle)
+ */
+void Equipment::set_bottle_empty(InventoryItem::ItemId bottle_id) {
+  set_bottle_content(bottle_id, Treasure::NONE);
 }
 
 /**

@@ -211,9 +211,10 @@ class Savegame {
   void set_initial_values(void);
 
  public:
-  
+
   // creation and destruction
   Savegame(const char *file_name);
+  Savegame(Savegame *other);
   ~Savegame(void);
 
   // file state

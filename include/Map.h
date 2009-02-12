@@ -119,6 +119,7 @@ class Map {
   // current destination point
   void set_destination_point(unsigned int destination_point_index);
   void set_destination_point(string destination_point_name);
+  unsigned int get_destination_point_index(void);
   void place_hero_on_destination_point(void);
 
   // collisions with obstacles (checked before a move)

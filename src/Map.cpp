@@ -261,6 +261,13 @@ void Map::set_destination_point(string destination_point_name) {
 }
 
 /**
+ * Returns the destination point index specified by the last set_destination_point() call.
+ */
+unsigned int Map::get_destination_point_index(void) {
+  return destination_point_index;
+}
+
+/**
  * Returns the SDL surface where the map is displayed.
  * This surface is only the visible part of the map, so the
  * coordinates on this surface are relative to the screen,

@@ -3,7 +3,6 @@
 
 #include "Common.h"
 #include "MapEntity.h"
-#include "AnimationListener.h"
 #include "Controls.h"
 #include "Enemy.h"
 
@@ -12,7 +11,7 @@
  * It is animated and can be controlled with an 8 directions system.
  * This class handles the hero's actions: the movements and the animation of his sprites.
  */
-class Hero: public MapEntity, AnimationListener {
+class Hero: public MapEntity {
 
  public:
 
@@ -116,9 +115,12 @@ class Hero: public MapEntity, AnimationListener {
   // the hero's state
   void set_state(State state);
 
+  void update_sword_swinging(void);
+
   void start_sword_loading(void);
   void update_sword_loading(void);
   void start_spin_attack(void);
+  void update_spin_attack(void);
   bool can_start_sword(void);
 
   void stop_carrying(void);
@@ -193,12 +195,8 @@ class Hero: public MapEntity, AnimationListener {
   // sprites
   int get_animation_direction(void);
   void set_suspended(bool suspended);
-
   void rebuild_equipment(void);
-
   void restart_animation(void);
-  void animation_finished(Sprite *sprite);
-
   void set_animation_stopped(void);
 
   // state of the hero

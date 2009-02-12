@@ -275,8 +275,16 @@ void Hero::update(void) {
     // specific updates in some states
     switch (state) {
 
+    case SWORD_SWINGING:
+      update_sword_swinging();
+      break;
+
     case SWORD_LOADING:
       update_sword_loading();
+      break;
+
+    case SPIN_ATTACK:
+      update_spin_attack();
       break;
 
     case GRABBING:
@@ -377,7 +385,6 @@ void Hero::rebuild_equipment(void) {
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
   tunic_sprite->get_animation_set()->enable_pixel_collisions();
-  tunic_sprite->set_animation_listener(this); // to be notified when an animation of the hero is over
 
   shadow_sprite = new Sprite("entities/shadow");
   shadow_sprite->set_current_animation("big");

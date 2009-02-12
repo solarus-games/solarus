@@ -122,6 +122,24 @@ void Hero::start_sword_loading(void) {
 }
 
 /**
+ * This function is called repeatedly while the hero is swinging his sword.
+ * The state must be SWORD_SWINGING.
+ */
+void Hero::update_sword_swinging(void) {
+  
+  if (tunic_sprite->is_animation_finished()) {
+
+    // if the player is still pressing the sword key, start loading the sword
+    if (zsdx->game->get_controls()->is_key_pressed(Controls::SWORD)) {
+      start_sword_loading();
+    }
+    else {
+      start_free();
+    }
+  }
+}
+
+/**
  * This function is called repeatedly while the hero is loading his sword.
  * It stops the loading if the sword key is released.
  * The state must be SWORD_LOADING.
@@ -407,6 +425,16 @@ void Hero::start_spin_attack(void) {
 }
 
 /**
+ * This function is called repeatedly during the spin attack.
+ * The state must be SPIN_ATTACK.
+ */
+void Hero::update_spin_attack(void) {
+  
+  if (tunic_sprite->is_animation_finished()) {
+    start_free();
+  }
+}
+/**
  * Makes the hero jump in a direction.
  * While he is jumping, the player does not control him anymore.
  * @param direction direction of the jump (0 to 7)
@@ -514,36 +542,6 @@ void Hero::get_back_from_death(void) {
   start_free();
   blink();
   when_suspended = SDL_GetTicks();
-}
-
-/**
- * This function is called when an animation of the hero's sprite is over.
- * @param sprite the sprite
- */
-void Hero::animation_finished(Sprite *sprite) {
-
-  Controls *controls = zsdx->game->get_controls();
-
-  int state = get_state();
-  switch (state) {
-
-  case SWORD_SWINGING:
-
-    // if the player is still pressing the sword key, start loading the sword
-
-    if (controls->is_key_pressed(Controls::SWORD)) {
-      start_sword_loading();
-    }
-    else {
-      start_free();
-    }
-
-    break;
-
-  case SPIN_ATTACK:
-    start_free();
-    break;
-  }
 }
 
 /**

@@ -93,7 +93,6 @@ class Sprite;
 class SpriteAnimationSet;
 class SpriteAnimation;
 class SpriteAnimationDirection;
-class AnimationListener;
 class PixelBits;
 
 // transition effects

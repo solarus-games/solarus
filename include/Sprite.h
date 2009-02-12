@@ -39,8 +39,6 @@ class Sprite {
   bool suspended;                        /**< true if the animation is suspended */
   bool finished;                         /**< true if the animation has been stopped because the last frame is finished */
 
-  AnimationListener *listener;           /**< the possible animation listener associated to this sprite */
-
   // blink
 
   Uint32 blink_delay;                    /**< blink delay of the sprite, or zero if the sprite is not blinking */
@@ -86,9 +84,6 @@ class Sprite {
   // blink
   bool is_blinking(void);
   void set_blinking(Uint32 blink_delay);
-
-  // animation listener
-  void set_animation_listener(AnimationListener *listener);
 
   // collisions
   bool check_collision(Sprite *other, int x1, int y1, int x2, int y2);

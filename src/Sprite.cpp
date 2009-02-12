@@ -2,7 +2,6 @@
 #include "SpriteAnimationSet.h"
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
-#include "AnimationListener.h"
 #include "ResourceManager.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -15,7 +14,7 @@
  */
 Sprite::Sprite(SpriteAnimationSetId id):
   animation_set_id(id), current_direction(0), current_frame(-1),
-  suspended(false), finished(false), listener(NULL), blink_delay(0) {
+  suspended(false), finished(false), blink_delay(0) {
   
   animation_set = ResourceManager::get_sprite_animation_set(id);
   set_current_animation(animation_set->get_default_animation());
@@ -274,16 +273,6 @@ void Sprite::set_blinking(Uint32 blink_delay) {
 }
 
 /**
- * Associates an animation listener to this sprite.
- * The animation listener will be notified when the animation is finished.
- * @param listener the listener to associate,
- * or NULL to just remove the previous listener
- */
-void Sprite::set_animation_listener(AnimationListener *listener) {
-  this->listener = listener;
-}
-
-/**
  * Checks whether this sprite's pixels are overlapping another sprite.
  * @param other another sprite
  * @param x1 x coordinate of this sprite's origin point
@@ -330,13 +319,7 @@ void Sprite::update(void) {
 
     // test whether the animation is finished
     if (next_frame == -1) {
-
       finished = true;
-
-      // tell the listener the animation is finished
-      if (listener != NULL) {
-	listener->animation_finished(this);
-      }
     }
     else {
       current_frame = next_frame;

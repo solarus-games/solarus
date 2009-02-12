@@ -24,6 +24,10 @@ Neovyze (artworks, notice)
 
 Algo Scale2X
 
+Testeurs :
+
+Thyb
+
 Pas encore sûrs :
 
 Julien Clément (éditeur de maps)
@@ -44,7 +48,7 @@ Djipi (idées de boss)
 
 Demandes pour être testeur :
 
-Thyb
+
 
 Ancien ZS :
 

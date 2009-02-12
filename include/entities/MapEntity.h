@@ -37,14 +37,18 @@ class MapEntity {
 
   /**
    * Obstacle property for the tiles or the active objects.
+   * Values lower than or equal to OBSTACLE_NONE correspond to entities the hero can walk on.
+   * Values higher than OBSTACLE_NONE correspond to obstacles.
    */
   enum Obstacle {
-    OBSTACLE_NONE,         /**< the entity is not an obstacle */
-    OBSTACLE,              /**< the entity is entirely an obstacle */
-    OBSTACLE_TOP_RIGHT,    /**< the upper-right half of the entity is an obstacle */
-    OBSTACLE_TOP_LEFT,     /**< the upper-left half of the entity is an obstacle */
-    OBSTACLE_BOTTOM_LEFT,  /**< the lower-left half of the entity is an obstacle */
-    OBSTACLE_BOTTOM_RIGHT, /**< the lower-right half of the entity is an obstacle */
+    OBSTACLE_WATER = -2,      /**< the entity is water */
+    OBSTACLE_DEEP_WATER = -1, /**< the entity is deep water */
+    OBSTACLE_NONE = 0,        /**< the entity is not an obstacle */
+    OBSTACLE,                 /**< the entity is entirely an obstacle */
+    OBSTACLE_TOP_RIGHT,       /**< the upper-right half of the entity is an obstacle */
+    OBSTACLE_TOP_LEFT,        /**< the upper-left half of the entity is an obstacle */
+    OBSTACLE_BOTTOM_LEFT,     /**< the lower-left half of the entity is an obstacle */
+    OBSTACLE_BOTTOM_RIGHT,    /**< the lower-right half of the entity is an obstacle */
   };
 
   /**

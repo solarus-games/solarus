@@ -432,18 +432,18 @@ bool Map::is_started(void) {
  * @param layer layer of the point
  * @param x x of the point in pixels
  * @param y y of the point in pixels
- * @return the obstacle property of this tile
+ * @return true if this pixel is on an obstacle
  */
-MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y) {
+bool Map::pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y) {
 
   MapEntity::Obstacle obstacle_type;
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
-  // if the point is outside the map, there is no obstacle (useful when the hero walks on a teletransporter)
+  // if the point is outside the map, there is only obstacles (should not happen though)
   if (x < 0 || x >= get_width()
       || y < 0 || y >= get_height()) {
-    return MapEntity::OBSTACLE_NONE;
+    return MapEntity::OBSTACLE;
   }
 
   // get the obstacle property of the tile under that point
@@ -453,6 +453,8 @@ MapEntity::Obstacle Map::pixel_collision_with_tiles(MapEntity::Layer layer, int 
   switch (obstacle_type) {
 
   case MapEntity::OBSTACLE_NONE:
+  case MapEntity::OBSTACLE_WATER:
+  case MapEntity::OBSTACLE_DEEP_WATER:
     // the square is not an obstacle
     on_obstacle = false;
     break;

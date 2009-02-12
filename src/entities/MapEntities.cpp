@@ -199,6 +199,8 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
      * then all 8*8 squares of the tile have the same property.
      */
   case MapEntity::OBSTACLE_NONE:
+  case MapEntity::OBSTACLE_WATER:
+  case MapEntity::OBSTACLE_DEEP_WATER:
   case MapEntity::OBSTACLE:
     for (i = 0; i < tile_height8; i++) {
       for (j = 0; j < tile_width8; j++) {

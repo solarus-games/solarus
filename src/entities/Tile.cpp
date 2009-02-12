@@ -3,8 +3,7 @@
 /**
  * Constructor.
  * It is called by the subclasses. 
- * @param obstacle type of obstacle: OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
- * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
+ * @param obstacle type of obstacle
  * @param width width of the tile in pixels (must be a multiple of 8)
  * @param height height of the tile in pixels (must be a multiple of 8)
  */
@@ -29,4 +28,28 @@ Tile::Tile(MapEntity::Obstacle obstacle, int width, int height):
  */
 Tile::~Tile(void) {
 
+}
+
+/**
+ * Returns the width of the tile.
+ * @return the width of the tile 
+ */
+int Tile::get_width(void) const {
+  return width;
+}
+
+/**
+ * Returns the height of the tile.
+ * @return the height of the tile 
+ */
+int Tile::get_height(void) const {
+  return height;
+}
+
+/**
+ * Returns the obstacle property of the tile.
+ * @return the obstacle property of the tile
+ */
+MapEntity::Obstacle Tile::get_obstacle(void) const {
+  return obstacle;
 }

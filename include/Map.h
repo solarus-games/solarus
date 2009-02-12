@@ -122,7 +122,7 @@ class Map {
   void place_hero_on_destination_point(void);
 
   // collisions with obstacles (checked before a move)
-  MapEntity::Obstacle pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y);
+  bool pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y);
   bool collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check);
   bool collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check);
   bool collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check);

@@ -13,21 +13,10 @@ class Tile {
   
  protected:
 
-  /**
-   * Is the tile an obstacle: OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
-   * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT.
-   */
-  const MapEntity::Obstacle obstacle;
+  const MapEntity::Obstacle obstacle; /**< is the tile an obstacle? */
 
-  /**
-   * Tile width (multiple of 8).
-   */
-  const int width;
-
-  /**
-   * Tile height (multiple of 8).
-   */
-  const int height;
+  const int width;                    /**< tile width (multiple of 8) */
+  const int height;                   /**< tile height (multiple of 8) */
 
   Tile(MapEntity::Obstacle obstacle, int width, int height);
 
@@ -35,24 +24,9 @@ class Tile {
 
   virtual ~Tile(void);
 
-  /**
-   * Returns the width of the tile.
-   * @return the width of the tile 
-   */
-  inline int get_width(void) const { return width; }
-
-  /**
-   * Returns the height of the tile.
-   * @return the height of the tile 
-   */
-  inline int get_height(void) const { return height; }
-  
-  /**
-   * Returns the obstacle property of the tile.
-   * @return the obstacle property of the tile: OBSTACLE_NONE, OBSTACLE,
-   * OBSTACLE_TOP_RIGHT, OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
-   */
-  inline MapEntity::Obstacle get_obstacle(void) const { return obstacle; }
+  int get_width(void) const;
+  int get_height(void) const;
+  MapEntity::Obstacle get_obstacle(void) const;
 
   /**
    * Displays the tile on a surface.

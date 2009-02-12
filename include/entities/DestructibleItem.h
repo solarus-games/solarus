@@ -74,7 +74,7 @@ class DestructibleItem: public Detector {
   int get_damage_on_enemies(void);
 
   bool is_obstacle_for(MapEntity *other);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision);
+  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void collision(MapEntity *entity, Sprite *sprite_overlapping);
   void action_key_pressed(void);
   void lift(void);

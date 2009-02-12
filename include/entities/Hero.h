@@ -27,7 +27,7 @@ class Hero: public MapEntity {
     PUSHING,                 /**< the hero is trying to push an obstacle */
     CARRYING,                /**< the hero can walk but he is carrying a pot or a bush */
     SWORD_LOADING,           /**< the hero can walk but his sword is loading for a spin attack */
-    SWIMMING,                /**< the hero is swimming */
+    SWIMMING,                /**< the hero is swimming in deep water */
     GRABBING,                /**< the hero is grabbing an object and can pull it */
     PULLING,                 /**< the hero is pulling an object */
     SWORD_SWINGING,          /**< the hero is swinging his sword */
@@ -57,7 +57,11 @@ class Hero: public MapEntity {
   static const SpriteAnimationSetId sword_sprite_ids[];
   static const SpriteAnimationSetId sword_stars_sprite_ids[];
   static const SpriteAnimationSetId shield_sprite_ids[];
+  static const SpriteAnimationSetId ground_sprite_ids[];
   static const SoundId sword_sound_ids[];
+  static const SoundId ground_sound_ids[];
+
+  static const int animation_directions[];
 
   // movement
   PlayerMovement *normal_movement;
@@ -102,6 +106,12 @@ class Hero: public MapEntity {
   // jump
   int jump_y;
 
+  // kind of ground under the hero: grass, shallow water, etc.
+  int ground;
+  Sprite *ground_sprite;
+  Sound *ground_sound;
+  Uint32 next_ground_sound_date;
+
   // update functions
   void update_position(void);
   void update_sprites(void);
@@ -114,6 +124,10 @@ class Hero: public MapEntity {
 
   // the hero's state
   void set_state(State state);
+
+  void start_ground(void);
+  void update_ground(void);
+  bool is_ground_visible(void);
 
   void update_sword_swinging(void);
 
@@ -140,6 +154,12 @@ class Hero: public MapEntity {
   void update_jumping(void);
   bool can_be_hurt(void);
   void update_hurt(void);
+
+  void start_shallow_water(void);
+  void start_deep_water(void);
+
+  void start_swimming(void);
+  void stop_swimming(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);
@@ -201,6 +221,7 @@ class Hero: public MapEntity {
 
   // state of the hero
   State get_state(void);
+  void set_ground(int ground);
   void start_free(void);
   void start_sword(void);
   void start_pushing(void);

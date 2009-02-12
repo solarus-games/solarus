@@ -17,7 +17,7 @@ Tile::Tile(MapEntity::Obstacle obstacle, int width, int height):
   }
 
   // diagonal obstacle: check that the tile is square
-  if (obstacle != MapEntity::OBSTACLE_NONE && obstacle != MapEntity::OBSTACLE
+  if (obstacle >= MapEntity::OBSTACLE_TOP_RIGHT && obstacle <= MapEntity::OBSTACLE_BOTTOM_RIGHT
       && width != height) {
     DIE("Invalid tile: a tile with a diagonal obstacle must be square");
   }

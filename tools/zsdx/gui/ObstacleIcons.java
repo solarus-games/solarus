@@ -23,7 +23,7 @@ public class ObstacleIcons {
 	"Top Left",
 	"Bottom Left",
 	"Bottom Right",
-	"Normal Water",
+	"Shallow water",
 	"Deep water"
     };
 
@@ -43,7 +43,7 @@ public class ObstacleIcons {
 	obstacleIcons[MapEntity.OBSTACLE_TOP_LEFT] = new ImageIcon(path + "obstacle_top_left.png");
 	obstacleIcons[MapEntity.OBSTACLE_BOTTOM_LEFT] = new ImageIcon(path + "obstacle_bottom_left.png");
 	obstacleIcons[MapEntity.OBSTACLE_BOTTOM_RIGHT] = new ImageIcon(path + "obstacle_bottom_right.png");
-	obstacleIcons[MapEntity.OBSTACLE_WATER] = new ImageIcon(path + "obstacle_water.png");
+	obstacleIcons[MapEntity.OBSTACLE_SHALLOW_WATER] = new ImageIcon(path + "obstacle_shallow_water.png");
 	obstacleIcons[MapEntity.OBSTACLE_DEEP_WATER] = new ImageIcon(path + "obstacle_deep_water.png");
     }
 

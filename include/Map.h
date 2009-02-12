@@ -18,6 +18,18 @@ class Map {
 
   friend class MapLoader; // the map loader modifies the private fields of Map
 
+ public:
+
+  /**
+   * The possible kinds of ground on the map.
+   */
+  enum Ground {
+    NORMAL_GROUND,
+    GRASS,
+    SHALLOW_WATER,
+    DEEP_WATER,
+  };
+
  private:
 
   static MapLoader map_loader;  /**< the map file parser */
@@ -122,10 +134,11 @@ class Map {
   void place_hero_on_destination_point(void);
 
   // collisions with obstacles (checked before a move)
-  bool pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y);
+  bool collision_with_tiles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check);
   bool collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check);
   bool collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check);
   bool collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check);
+  Ground get_tile_ground(MapEntity::Layer layer, int x, int y);
 
   // collisions with detectors (checked after a move)
   void check_collision_with_detectors(MapEntity *entity);

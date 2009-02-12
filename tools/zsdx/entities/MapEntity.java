@@ -125,7 +125,7 @@ public abstract class MapEntity extends Observable {
     public static final int OBSTACLE_TOP_LEFT = 3;
     public static final int OBSTACLE_BOTTOM_LEFT = 4;
     public static final int OBSTACLE_BOTTOM_RIGHT = 5;
-    public static final int OBSTACLE_WATER = 6;
+    public static final int OBSTACLE_SHALLOW_WATER = 6;
     public static final int OBSTACLE_DEEP_WATER = 7;
 
     // types of entities

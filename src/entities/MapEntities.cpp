@@ -195,11 +195,11 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
 
   switch (obstacle) {
 
-    /* If the tile is entirely an obstacle or entirely no obstacle,
-     * then all 8*8 squares of the tile have the same property.
+    /* If the obstacle property is the same for all points inside the base tile,
+     * then all 8*8 squares of the extended tile have the same property.
      */
   case MapEntity::OBSTACLE_NONE:
-  case MapEntity::OBSTACLE_WATER:
+  case MapEntity::OBSTACLE_SHALLOW_WATER:
   case MapEntity::OBSTACLE_DEEP_WATER:
   case MapEntity::OBSTACLE:
     for (i = 0; i < tile_height8; i++) {
@@ -575,7 +575,7 @@ void MapEntities::update(void) {
 }
 
 /**
- * Displays the map with all its entities on the screen.
+ * Displays the entities of the map on the screen.
  */
 void MapEntities::display() {
 

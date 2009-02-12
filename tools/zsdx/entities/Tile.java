@@ -166,7 +166,7 @@ public class Tile extends Observable {
 	
 	StringBuffer description = new StringBuffer();
 
-	int obstacleSaved = (obstacle < MapEntity.OBSTACLE_WATER) ? obstacle : (obstacle - 8);
+	int obstacleSaved = (obstacle < MapEntity.OBSTACLE_SHALLOW_WATER) ? obstacle : (obstacle - 8);
 
 	if (animationSequence == ANIMATION_NONE) {
 	    // simple tile: "0 obstacle defaultLayer x y width height"
@@ -190,7 +190,7 @@ public class Tile extends Observable {
 
 	    description.append('1');
 	    description.append('\t');
-	    description.append(obstacle);
+	    description.append(obstacleSaved);
 	    description.append('\t');
 	    description.append(defaultLayer);
 	    description.append('\t');

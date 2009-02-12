@@ -36,6 +36,96 @@ void Hero::set_state(State state) {
 }
 
 /**
+ * Returns whether the animation direction is locked.
+ * When this function returns false, which is the case most of the time,
+ * it means that the animation direction is set to the movement direction.
+ * When it returns false, it means that the animation direction is fixed
+ * and do not depends on the movement direction anymore (this is the case
+ * when the hero is loading his sword).
+ * @return true if the animation direction is locked
+ */
+bool Hero::is_direction_locked(void) {
+  return state == SWORD_LOADING;
+}
+
+/**
+ * Sets the ground displayed under the hero.
+ * @param ground the ground to display, in enum Map::Ground (including Map::NORMAL_GROUND)
+ */
+void Hero::set_ground(int ground) {
+
+  if (ground != this->ground) {
+    this->ground = ground;
+  }
+}
+/**
+ * Starts displaying the ground specified by the last set_ground() call.
+ */
+void Hero::start_ground(void) {
+
+  if (ground == Map::NORMAL_GROUND) {
+    delete ground_sprite;
+    ground_sprite = NULL;
+  }
+  else {
+    ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
+    ground_sprite->set_current_animation(walking ? "walking" : "stopped");
+
+    ground_sound = ResourceManager::get_sound(ground_sound_ids[ground - 1]);
+    next_ground_sound_date = SDL_GetTicks();
+  }
+}
+
+/**
+ * Updates the ground displayed under the hero.
+ */
+void Hero::update_ground(void) {
+
+  Uint32 now = SDL_GetTicks();
+  if (now >= next_ground_sound_date) {
+
+    if (walking) {
+      ground_sound->play();
+    }
+
+    next_ground_sound_date = now + 300;
+  }
+}
+
+/**
+ * Returns whether the hero is in a state such that
+ * a ground can be displayed under him.
+ */
+bool Hero::is_ground_visible(void) {
+  return ground != Map::NORMAL_GROUND
+    && state != SWIMMING
+    && state != JUMPING
+    && state != HURT;
+}
+
+/**
+ * This function is called when a teletransporter detects a collision with the hero.
+ * @param teletransporter the teletransporter
+ * @param collision_mode the collision mode that detected the event
+ */
+void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
+
+  if (collision_mode == Detector::COLLISION_ORIGIN_POINT) {
+    teletransporter->transport_hero(this);
+  }
+}
+
+/**
+ * Returns whether a teletransporter is currently considered as an obstacle.
+ * This depends on the hero's state.
+ * @param teletransporter
+ * @return true if the teletransporter is currently an obstacle for the hero
+ */
+bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return get_state() > SWIMMING;
+}
+
+/**
  * Lets the hero can walk.
  * Moves to the state FREE and updates the animations accordingly.
  */
@@ -535,6 +625,7 @@ void Hero::update_hurt(void) {
     }
   }
 }
+
 /**
  * This function is called when the hero was dead but saved by a fairy.
  */
@@ -542,19 +633,6 @@ void Hero::get_back_from_death(void) {
   start_free();
   blink();
   when_suspended = SDL_GetTicks();
-}
-
-/**
- * Returns whether the animation direction is locked.
- * When this function returns false, which is the case most of the time,
- * it means that the animation direction is set to the movement direction.
- * When it returns false, it means that the animation direction is fixed
- * and do not depends on the movement direction anymore (this is the case
- * when the hero is loading his sword).
- * @return true if the animation direction is locked
- */
-bool Hero::is_direction_locked(void) {
-  return state == SWORD_LOADING;
 }
 
 /**
@@ -600,23 +678,39 @@ void Hero::just_attacked_enemy(Enemy::Attack attack, Enemy *victim) {
 }
 
 /**
- * This function is called when a teletransporter detects a collision with the hero.
- * @param teletransporter the teletransporter
- * @param collision_mode the collision mode that detected the event
+ * Starts displaying some water under the hero.
  */
-void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
-
-  if (collision_mode == Detector::COLLISION_ORIGIN_POINT) {
-    teletransporter->transport_hero(this);
-  }
+void Hero::start_shallow_water(void) {
+  
 }
 
 /**
- * Returns whether a teletransporter is currently considered as an obstacle.
- * This depends on the hero's state.
- * @param teletransporter
- * @return true if the teletransporter is currently an obstacle for the hero
+ * Makes the hero drown or swim.
  */
-bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return get_state() > SWIMMING;
+void Hero::start_deep_water(void) {
+
+  // stop the sword
+  stop_displaying_sword();
+
+  // throw any carried item
+  if (state == CARRYING) {
+    start_throwing();
+  }
+  
+  // move to state swimming or drowning
+  // TODO
+}
+
+/**
+ * Makes the hero swim.
+ */
+void Hero::start_swimming(void) {
+  set_state(SWIMMING);
+}
+
+/**
+ * Makes the hero stop swimming.
+ */
+void Hero::stop_swimming(void) {
+  start_free();
 }

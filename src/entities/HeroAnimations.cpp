@@ -7,7 +7,7 @@
 /**
  * String constants corresponding to the sprites of the tunics.
  */
-const SpriteAnimationSetId Hero::tunic_sprite_ids[3] = {
+const SpriteAnimationSetId Hero::tunic_sprite_ids[] = {
   "hero/tunic0", // green tunic
   "hero/tunic1", // blue tunic
   "hero/tunic2", // red tunic
@@ -16,7 +16,7 @@ const SpriteAnimationSetId Hero::tunic_sprite_ids[3] = {
 /**
  * String constants corresponding to the sprites of the swords.
  */
-const SpriteAnimationSetId Hero::sword_sprite_ids[4] = {
+const SpriteAnimationSetId Hero::sword_sprite_ids[] = {
   "hero/sword1",
   "hero/sword2",
   "hero/sword3",
@@ -26,7 +26,7 @@ const SpriteAnimationSetId Hero::sword_sprite_ids[4] = {
 /**
  * String constants corresponding to the sprites of the stars of the swords.
  */
-const SpriteAnimationSetId Hero::sword_stars_sprite_ids[4] = {
+const SpriteAnimationSetId Hero::sword_stars_sprite_ids[] = {
   "hero/sword_stars1",
   "hero/sword_stars1",
   "hero/sword_stars2",
@@ -36,20 +36,36 @@ const SpriteAnimationSetId Hero::sword_stars_sprite_ids[4] = {
 /**
  * String constants corresponding to the sprites of the shields.
  */
-const SpriteAnimationSetId Hero::shield_sprite_ids[3] = {
+const SpriteAnimationSetId Hero::shield_sprite_ids[] = {
   "hero/shield1",
   "hero/shield2",
   "hero/shield3",
 };
 
 /**
+ * String constants corresponding to the sprites of the ground displayed under the hero.
+ */
+const SpriteAnimationSetId Hero::ground_sprite_ids[] = {
+  "hero/ground1",
+  "hero/ground2",
+};
+
+/**
  * String constants corresponding to the sounds of the swords.
  */
-const SoundId Hero::sword_sound_ids[4] = {
+const SoundId Hero::sword_sound_ids[] = {
   "sword1",
   "sword2",
   "sword3",
   "sword4",
+};
+
+/**
+ * String constants corresponding to the sounds of the ground under the hero.
+ */
+const SoundId Hero::ground_sound_ids[] = {
+  "walk_on_grass",
+  "walk_on_water",
 };
 
 /**
@@ -205,6 +221,10 @@ void Hero::update_sprites(void) {
     lifted_item->get_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
   }
 
+  if (is_ground_visible()) {
+    ground_sprite->update();
+  }
+
   // blinking
   if (tunic_sprite->is_blinking() && SDL_GetTicks() >= end_blink_date) {
     stop_blinking();
@@ -229,6 +249,10 @@ void Hero::restart_animation(void) {
 
   if (is_shield_visible()) {
     shield_sprite->restart_animation();
+  }
+
+  if (is_ground_visible()) {
+    ground_sprite->restart_animation();
   }
 }
 
@@ -290,6 +314,10 @@ void Hero::set_animation_stopped(void) {
     break;
   }
 
+  if (is_ground_visible()) {
+    ground_sprite->set_current_animation("stopped");
+  }
+
   walking = false;
 }
 
@@ -349,6 +377,10 @@ void Hero::set_animation_walking(void) {
 
   default:
     break;
+  }
+
+  if (is_ground_visible()) {
+    ground_sprite->set_current_animation("walking");
   }
 
   walking = true;

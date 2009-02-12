@@ -432,9 +432,10 @@ bool Map::is_started(void) {
  * @param layer layer of the point
  * @param x x of the point in pixels
  * @param y y of the point in pixels
- * @return true if this pixel is on an obstacle
+ * @param entity_to_check the entity to check (used to decide what tiles are considered as an obstacle)
+ * @return true if this point is on an obstacle
  */
-bool Map::pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y) {
+bool Map::collision_with_tiles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check) {
 
   MapEntity::Obstacle obstacle_type;
   bool on_obstacle = false;
@@ -453,8 +454,6 @@ bool Map::pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y) {
   switch (obstacle_type) {
 
   case MapEntity::OBSTACLE_NONE:
-  case MapEntity::OBSTACLE_WATER:
-  case MapEntity::OBSTACLE_DEEP_WATER:
     // the square is not an obstacle
     on_obstacle = false;
     break;
@@ -490,16 +489,22 @@ bool Map::pixel_collision_with_tiles(MapEntity::Layer layer, int x, int y) {
     y_in_tile = y % 8;
     on_obstacle = y_in_tile > 8 - x_in_tile;
     break;
+
+  case MapEntity::OBSTACLE_SHALLOW_WATER:
+  case MapEntity::OBSTACLE_DEEP_WATER:
+    // only the hero can move on water tiles
+    on_obstacle = !entity_to_check->is_hero();
+    break;
   }
 
-  return on_obstacle ? obstacle_type : MapEntity::OBSTACLE_NONE;
+  return on_obstacle;
 }
 
 /**
  * Tests whether a rectangle overlaps an obstacle entity.
  * @param layer the layer
  * @param collision_box the rectangle to check
- * @param entity_to_check the eneity to check (only used to decide what is considered as an obstacle)
+ * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if there is an obstacle entity at this point
  */
 bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check) {
@@ -525,7 +530,7 @@ bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_bo
  * @param layer layer of the rectangle in the map
  * @param collision_box the rectangle to check
  * (its dimensions should be multiples of 8)
- * @param entity_to_check the eneity to check (only used to decide what is considered as an obstacle)
+ * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
 bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check) {
@@ -536,7 +541,7 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_b
   // we check the 4 corners of each 8*8 square in the collision box
   for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
-      collision = pixel_collision_with_tiles(layer, x1, y1);
+      collision = collision_with_tiles(layer, x1, y1, entity_to_check);
     }
   }
 
@@ -545,16 +550,16 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_b
     collision = collision_with_entities(layer, collision_box, entity_to_check);
   }
 
-  return collision;   
+  return collision;
 }
 
 /**
  * Tests whether a point collides with the map obstacles
  * (tiles and active entities).
- * @param layer layer of the rectangle in the map
+ * @param layer layer of point to check
  * @param x x coordinate of the point to check
  * @param y y coordinate of the point to check
- * @param entity_to_check the eneity to check (only used to decide what is considered as an obstacle)
+ * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the point is overlapping an obstacle, false otherwise
  */
 bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check) {
@@ -562,7 +567,7 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEnti
   bool collision;
 
   // test the tiles
-  collision = pixel_collision_with_tiles(layer, x, y);
+  collision = collision_with_tiles(layer, x, y, entity_to_check);
 
   // test the entities
   if (!collision) {
@@ -571,6 +576,29 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEnti
   }
 
   return collision;   
+}
+
+/**
+ * Returns the kind of ground that is under the specified point.
+ * Only the tiles are considered here (not the active entities).
+ * @param layer layer of point to check
+ * @param x x coordinate of the point to check
+ * @param y y coordinate of the point to check
+ * @return the ground at this place
+ */
+Map::Ground Map::get_tile_ground(MapEntity::Layer layer, int x, int y) {
+
+  Ground ground = NORMAL_GROUND;
+
+  MapEntity::Obstacle obstacle = entities->get_obstacle_tile(layer, x, y);
+  if (obstacle == MapEntity::OBSTACLE_SHALLOW_WATER) {
+    ground = SHALLOW_WATER;
+  }
+  else if (obstacle == MapEntity::OBSTACLE_DEEP_WATER) {
+    ground = DEEP_WATER;
+  }
+
+  return ground;
 }
 
 /**

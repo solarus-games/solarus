@@ -14,7 +14,7 @@
  * Indicates the direction of the hero's animation (from 0 to 4, or -1 for no change)
  * depending on the arrows pressed on the keyboard.
  */
-static const int animation_directions[] = {
+const int Hero::animation_directions[] = {
   -1,  // none: no change
   0,   // right
   1,   // up
@@ -42,7 +42,8 @@ Hero::Hero(Equipment *equipment):
   normal_movement(new PlayerMovement(12)),
   state(FREE), facing_entity(NULL), end_blink_date(0), counter(0), next_counter_date(0),
   walking(false), pushing_direction_mask(0xFFFF),
-  lifted_item(NULL), thrown_item(NULL), treasure(NULL) {
+  lifted_item(NULL), thrown_item(NULL), treasure(NULL),
+  ground(Map::NORMAL_GROUND), ground_sprite(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -56,15 +57,10 @@ Hero::Hero(Equipment *equipment):
 Hero::~Hero(void) {
   delete tunic_sprite;
   delete shadow_sprite;
-
-  if (sword_sprite != NULL) {
-    delete sword_sprite;
-    delete sword_stars_sprite;
-  }
-
-  if (shield_sprite != NULL) {
-    delete shield_sprite;
-  }
+  delete sword_sprite;
+  delete sword_stars_sprite;
+  delete shield_sprite;
+  delete ground_sprite;
 
   destroy_carried_items();
 }
@@ -313,6 +309,10 @@ void Hero::update(void) {
       update_treasure();
     }
 
+    if (is_ground_visible()) {
+      update_ground();
+    }
+
     map->check_collision_with_detectors(this);
 
     if (thrown_item != NULL) {
@@ -354,6 +354,10 @@ void Hero::display_on_map(void) {
 
     if (is_shield_visible()) {
       map->display_sprite(shield_sprite, x, y);
+    }
+
+    if (is_ground_visible()) {
+      map->display_sprite(ground_sprite, x, y);
     }
   }
 
@@ -493,8 +497,28 @@ void Hero::movement_just_changed(void) {
  */
 void Hero::just_moved(void) {
 
+  Map::Ground previous_ground = (Map::Ground) ground;
+  set_ground(Map::NORMAL_GROUND);
+
+  Map::Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y());
+
+  if (state == SWIMMING && tiles_ground != Map::DEEP_WATER) {
+    stop_swimming();
+  }
+
+  if (tiles_ground == Map::DEEP_WATER) {
+    start_deep_water();
+  }
+  else if (ground != Map::GRASS && tiles_ground != ground) {
+    set_ground(tiles_ground);
+  }
+
   set_facing_entity(NULL);
   MapEntity::just_moved();
+
+  if (ground != previous_ground) {
+    start_ground();
+  }
 }
 
 /**

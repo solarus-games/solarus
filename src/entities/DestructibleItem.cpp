@@ -59,7 +59,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
     add_collision_mode(COLLISION_SPRITE);
   }
 
-  if (type == GRASS) { // display the grass animation under the hero
+  if (type == GRASS) { // display the grass ground under the hero
     add_collision_mode(COLLISION_ORIGIN_POINT);
   }
 }
@@ -121,7 +121,7 @@ bool DestructibleItem::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode collision) {
+void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero()) {
 
@@ -141,6 +141,10 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
       else {
 	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
       }
+    }
+
+    else if (collision_mode == COLLISION_ORIGIN_POINT && type == GRASS) {
+      hero->set_ground(Map::GRASS);
     }
   }
 }

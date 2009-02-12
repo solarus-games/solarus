@@ -14,7 +14,7 @@ public class SelectedTileView extends JPanel {
     private Tileset tileset;
 
     // the components
-    private ObstacleView obstacleView;
+    private ObstacleChooser obstacleView;
     private AnimationView animationView;
     private DefaultLayerView defaultLayerView;
     private JButton buttonDelete;
@@ -33,7 +33,7 @@ public class SelectedTileView extends JPanel {
 	constraints.gridx = 0;
 	constraints.gridy = 0;
 	add(new JLabel("Obstacle"), constraints);
-	obstacleView = new ObstacleView();
+	obstacleView = new ObstacleChooser();
 
 	// animation
 	constraints.gridy = 1;

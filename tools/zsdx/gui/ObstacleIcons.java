@@ -22,20 +22,29 @@ public class ObstacleIcons {
 	"Top Right",
 	"Top Left",
 	"Bottom Left",
-	"Bottom Right"
+	"Bottom Right",
+	"Normal Water",
+	"Deep water"
     };
+
+    /**
+     * Number of obstacle kinds.
+     */
+    public static final int NB_ICONS = obstacleNames.length;
 
     // load the icons
     static {
 	String path = "zsdx/images/";
 
-	obstacleIcons = new ImageIcon[6];
+	obstacleIcons = new ImageIcon[NB_ICONS];
 	obstacleIcons[MapEntity.OBSTACLE_NONE] = new ImageIcon(path + "obstacle_none.png");
 	obstacleIcons[MapEntity.OBSTACLE] = new ImageIcon(path + "obstacle.png");
 	obstacleIcons[MapEntity.OBSTACLE_TOP_RIGHT] = new ImageIcon(path + "obstacle_top_right.png");
 	obstacleIcons[MapEntity.OBSTACLE_TOP_LEFT] = new ImageIcon(path + "obstacle_top_left.png");
 	obstacleIcons[MapEntity.OBSTACLE_BOTTOM_LEFT] = new ImageIcon(path + "obstacle_bottom_left.png");
 	obstacleIcons[MapEntity.OBSTACLE_BOTTOM_RIGHT] = new ImageIcon(path + "obstacle_bottom_right.png");
+	obstacleIcons[MapEntity.OBSTACLE_WATER] = new ImageIcon(path + "obstacle_water.png");
+	obstacleIcons[MapEntity.OBSTACLE_DEEP_WATER] = new ImageIcon(path + "obstacle_deep_water.png");
     }
 
     /**
@@ -47,8 +56,7 @@ public class ObstacleIcons {
     
     /**
      * Returns the icon representing a type of obstacle.
-     * @param obstacle type of obstacle: MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
-     * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT, MapEntity.OBSTACLE_BOTTOM_RIGHT
+     * @param obstacle type of obstacle
      */
     public static ImageIcon getIcon(int obstacle) {
 	return obstacleIcons[obstacle];
@@ -64,8 +72,7 @@ public class ObstacleIcons {
 
     /**
      * Returns the name of a type of obstacle.
-     * @param obstacle type of obstacle: MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
-     * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT, MapEntity.OBSTACLE_BOTTOM_RIGHT
+     * @param obstacle type of obstacle
      */
     public static String getName(int obstacle) {
 	return obstacleNames[obstacle];

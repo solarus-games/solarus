@@ -68,7 +68,7 @@ public class Tile extends Observable {
      * @param positionInTileset position of the tile in the tileset
      * @param defaultLayer default layer of the the tile
      * @param obstacle type of obstacle
-     * @param animationSequence type of animation: ANIMATION_NONE ANIMATION_SEQUENCE_012
+     * @param animationSequence type of animation: ANIMATION_NONE, ANIMATION_SEQUENCE_012
      * or ANIMATION_SEQUENCE_0121
      * @param animationSeparation separation of the 3 animation frames in the tileset image:
      * ANIMATION_SEPARATION_HORIZONTAL or ANIMATION_SEPARATION_VERTICAL
@@ -105,6 +105,11 @@ public class Tile extends Observable {
 
 	    int tileType = Integer.parseInt(tokenizer.nextToken());
 	    this.obstacle = Integer.parseInt(tokenizer.nextToken());
+
+	    if (obstacle < 0) {
+		obstacle += 8;
+	    }
+
 	    this.defaultLayer = Integer.parseInt(tokenizer.nextToken());
 	    this.images = new BufferedImage[4];
 
@@ -161,12 +166,14 @@ public class Tile extends Observable {
 	
 	StringBuffer description = new StringBuffer();
 
+	int obstacleSaved = (obstacle < MapEntity.OBSTACLE_WATER) ? obstacle : (obstacle - 8);
+
 	if (animationSequence == ANIMATION_NONE) {
 	    // simple tile: "0 obstacle defaultLayer x y width height"
 
 	    description.append('0');
 	    description.append('\t');
-	    description.append(obstacle);
+	    description.append(obstacleSaved);
 	    description.append('\t');
 	    description.append(defaultLayer);
 	    description.append('\t');
@@ -297,8 +304,7 @@ public class Tile extends Observable {
     
     /**
      * Returns the tile's obstacle property.
-     * @return MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
-     * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT or MapEntity.OBSTACLE_BOTTOM_RIGHT
+     * @return the obstacle property
      */
     public int getObstacle() {
 	return obstacle;
@@ -306,14 +312,13 @@ public class Tile extends Observable {
 
     /**
      * Changes the tile's obstacle property.
-     * @param obstacle MapEntity.OBSTACLE_NONE, MapEntity.OBSTACLE, MapEntity.OBSTACLE_TOP_RIGHT,
-     * MapEntity.OBSTACLE_TOP_LEFT, MapEntity.OBSTACLE_BOTTOM_LEFT or MapEntity.OBSTACLE_BOTTOM_RIGHT
+     * @param obstacle the obstacle propery
      * @throws TilesetException if the obstacle specified is diagonal and the tile is not square
      */
     public void setObstacle(int obstacle) throws TilesetException {
 
 	// diagonal obstacle: check that the tile is square
-	if (obstacle != MapEntity.OBSTACLE_NONE && obstacle != MapEntity.OBSTACLE
+	if (obstacle >= MapEntity.OBSTACLE_TOP_RIGHT && obstacle <= MapEntity.OBSTACLE_BOTTOM_RIGHT
 	    && getWidth() != getHeight()) {
 	    System.out.println("width = " + getWidth() + ", height = " + getHeight());
 	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile");

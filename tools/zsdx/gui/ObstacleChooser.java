@@ -13,8 +13,10 @@ import zsdx.entities.*;
  * - obstacle top left
  * - obstacle bottom left
  * - obstacle bottom right
+ * - water
+ * - deep water
  */
-public class ObstacleView extends JComboBox implements Observer, ActionListener {
+public class ObstacleChooser extends JComboBox implements Observer, ActionListener {
 
     /**
      * The tile observed.
@@ -24,7 +26,7 @@ public class ObstacleView extends JComboBox implements Observer, ActionListener 
     /**
      * Constructor.
      */
-    public ObstacleView() {
+    public ObstacleChooser() {
 	super(ObstacleIcons.getIcons());
 	addActionListener(this);
     }

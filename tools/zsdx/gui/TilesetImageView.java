@@ -72,7 +72,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	if (editable) {
 	    JMenuItem item;
 	    JMenuItem itemCancelCreate = new JMenuItem("Cancel");
-	    
+
 	    // popup menu to create a tile
 	    popupMenuCreate = new JPopupMenu();
 
@@ -91,22 +91,22 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 		});
 	    popupMenuCreate.addSeparator();
 	    popupMenuCreate.add(itemCancelCreate);
-	    
+
 	    // popup menu for a selectedTile
 	    popupMenuSelectedTile = new JPopupMenu();
-	    itemsObstacle = new JRadioButtonMenuItem[6];
+	    itemsObstacle = new JRadioButtonMenuItem[ObstacleIcons.NB_ICONS];
 	    ButtonGroup itemsObstacleGroup = new ButtonGroup();
-	    
-	    for (int i = 0; i < 6; i++) {
+
+	    for (int i = 0; i < ObstacleIcons.NB_ICONS; i++) {
 		itemsObstacle[i] = new JRadioButtonMenuItem(ObstacleIcons.getName(i),
 							    ObstacleIcons.getIcon(i));
 		itemsObstacle[i].addActionListener(new ActionChangeObstacle(i));
 		popupMenuSelectedTile.add(itemsObstacle[i]);
 		itemsObstacleGroup.add(itemsObstacle[i]);
 	    }
-	    
+
 	    popupMenuSelectedTile.addSeparator();
-	    
+
 	    item = new JMenuItem("Delete");
 	    item.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {

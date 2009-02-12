@@ -1,15 +1,13 @@
-#ifndef ZSDX_MOVEMENT_8_BY_PLAYER
-#define ZSDX_MOVEMENT_8_BY_PLAYER
+#ifndef ZSDX_PLAYER_MOVEMENT
+#define ZSDX_PLAYER_MOVEMENT
 
 #include "Common.h"
 #include "MovementWithSmoothCollision.h"
 
 /**
- * Abstract class for a moving entity with the 8 basic directions
- * and controlled by the player.
- * This class is designed for an entity controlled by the keyboard.
+ * Abstract class for an 8-direction movement controlled by the player.
  */
-class Movement8ByPlayer: public MovementWithSmoothCollision {
+class PlayerMovement: public MovementWithSmoothCollision {
 
  protected:
 
@@ -34,7 +32,7 @@ class Movement8ByPlayer: public MovementWithSmoothCollision {
   // keyboard
 
   /**
-   * Indicates which ones of the 4 keyboard arrows are currently pressed by the player.
+   * Indicates which ones of the 4 arrows are currently pressed by the player.
    * This bit field is an OR combination of right_mask, up_mask, left_mask and down_mask.
    */
   Uint16 direction_mask;
@@ -48,8 +46,8 @@ class Movement8ByPlayer: public MovementWithSmoothCollision {
  public:
 
   // creation and destruction
-  Movement8ByPlayer(int speed);
-  ~Movement8ByPlayer(void);
+  PlayerMovement(int speed);
+  ~PlayerMovement(void);
 
   // direction
   int get_direction(void);

@@ -91,6 +91,14 @@ public class AddEntitiesMenu extends JMenu {
 	item = new JMenuItem("Pot");
 	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.POT));
 	submenu.add(item);
+
+	item = new JMenuItem("White stone");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_WHITE));
+	submenu.add(item);
+
+	item = new JMenuItem("Black stone");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_BLACK));
+	submenu.add(item);
     }
 
     /**

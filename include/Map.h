@@ -4,7 +4,6 @@
 #include "Common.h"
 #include "Transition.h"
 #include "entities/PickableItem.h"
-#include "movements/MovementFalling.h"
 
 /**
  * Represents a map.

@@ -3,6 +3,7 @@
 #include "MapScript.h"
 #include "FileTools.h"
 #include "ResourceManager.h"
+#include "movements/FallingOnFloorMovement.h"
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
 #include "entities/Teletransporter.h"
@@ -120,7 +121,7 @@ void MapLoader::load_map(Map *map) {
 	int pickable_item_type, savegame_variable;
 	iss >> pickable_item_type >> savegame_variable;
 	entities->add_pickable_item((MapEntity::Layer) layer, x, y, (PickableItem::ItemType) pickable_item_type,
-				    savegame_variable, MovementFalling::NONE, false);
+				    savegame_variable, FallingOnFloorMovement::NONE, false);
 	break;
       }
 

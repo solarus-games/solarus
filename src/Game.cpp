@@ -19,7 +19,6 @@
 #include "entities/AnimatedTile.h"
 #include "entities/Tileset.h"
 #include "entities/Detector.h"
-#include "movements/Movement8ByPlayer.h"
 
 const SDL_Rect Game::outside_world_size = {0, 0, 4160, 7168}; // TODO
 
@@ -40,7 +39,6 @@ Game::Game(Savegame *savegame):
 
   // initialize the hero
   hero = new Hero(get_equipment());
-  hero_movement = hero->get_normal_movement();
 
   // initialize the keys effect and the HUD
   keys_effect = new KeysEffect();

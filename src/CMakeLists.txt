@@ -108,8 +108,8 @@ add_executable (zsdx
   movements/Movement.cpp
   movements/MovementWithCollision.cpp
   movements/MovementWithSmoothCollision.cpp
-  movements/Movement8ByPlayer.cpp
-  movements/MovementFalling.cpp
+  movements/PlayerMovement.cpp
+  movements/FallingOnFloorMovement.cpp
   movements/PathMovement.cpp
   movements/FairyMovement.cpp
   movements/FollowMovement.cpp

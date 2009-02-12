@@ -14,7 +14,7 @@
 #include "Map.h"
 #include "enemies/SimpleGreenSoldier.h"
 #include "movements/StraightMovement.h"
-#include "movements/MovementFalling.h"
+#include "movements/FallingOnFloorMovement.h"
 
 /**
  * Creates an enemy.
@@ -231,7 +231,7 @@ void Enemy::update(void) {
     if (pickable_item_type != PickableItem::NONE) {
       bool will_disappear = PickableItem::can_disappear(pickable_item_type);
       map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item_type,
-					     pickable_item_savegame_variable, MovementFalling::HIGH, will_disappear);
+					     pickable_item_savegame_variable, FallingOnFloorMovement::HIGH, will_disappear);
     }
 
     // remove the enemy

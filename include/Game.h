@@ -20,7 +20,6 @@ class Game: public Screen {
 
   // the hero
   Hero *hero;
-  Movement8ByPlayer *hero_movement;
 
   // current game state (elements currently shown)
   PauseMenu *pause_menu;    /**< the current pause menu, or NULL if the game is not paused */
@@ -88,7 +87,6 @@ class Game: public Screen {
 
   // map
   Map *get_current_map(void);
-  //  void set_current_map(MapId map_id, unsigned int destination_point_index, Transition::Style transition_style);
   void set_current_map(MapId map_id, string destination_point_name, Transition::Style transition_style);
   bool is_in_dungeon(void);
   Dungeon *get_current_dungeon(void);

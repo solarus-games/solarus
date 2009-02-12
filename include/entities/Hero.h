@@ -60,7 +60,7 @@ class Hero: public MapEntity {
   static const SoundId sword_sound_ids[];
 
   // movement
-  Movement8ByPlayer *normal_movement;
+  PlayerMovement *normal_movement;
 
   /**
    * Current state of the hero.
@@ -176,7 +176,7 @@ class Hero: public MapEntity {
   bool is_hero(void);
 
   // movement
-  Movement8ByPlayer * get_normal_movement(void);
+  PlayerMovement * get_normal_movement(void);
   int get_movement_direction(void);
   bool is_moving_towards(int direction);
   SDL_Rect get_facing_point(void);

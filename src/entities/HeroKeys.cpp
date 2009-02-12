@@ -1,6 +1,6 @@
 #include "entities/Hero.h"
 #include "entities/Detector.h"
-#include "movements/Movement8ByPlayer.h"
+#include "movements/PlayerMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"

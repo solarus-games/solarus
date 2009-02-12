@@ -2,6 +2,7 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "movements/PathMovement.h"
+#include "movements/FallingOnFloorMovement.h"
 #include "ResourceManager.h"
 #include "Game.h"
 #include "KeysEffect.h"
@@ -18,8 +19,8 @@ const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
   {"entities/pot", "stone", true, false, 0, 2},
   {"entities/skull", "stone", true, false, 0, 2},
   {"entities/bush", "bush", true, true, 1, 1},
-  {"entities/stone_small_white", "stone", true, false, 1, 1},
-  {"entities/stone_small_white", "stone", true, false, 2, 3},
+  {"entities/stone_small_white", "stone", true, false, 1, 2},
+  {"entities/stone_small_black", "stone", true, false, 2, 4},
   {"entities/grass", "bush", false, true, 0, 0},
 
   /* not implemented
@@ -220,7 +221,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = (pickable_item <= PickableItem::ARROW_10);
 	map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
-					       pickable_item_savegame_variable, MovementFalling::MEDIUM, will_disappear);
+					       pickable_item_savegame_variable, FallingOnFloorMovement::MEDIUM, will_disappear);
       }
     }
   }
@@ -254,7 +255,7 @@ void DestructibleItem::action_key_pressed(void) {
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = PickableItem::can_disappear(pickable_item);
 	map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
-					       pickable_item_savegame_variable, MovementFalling::MEDIUM, will_disappear);
+					       pickable_item_savegame_variable, FallingOnFloorMovement::MEDIUM, will_disappear);
       }
 
       // remove the item from the map

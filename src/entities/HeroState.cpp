@@ -1,7 +1,7 @@
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "entities/Teletransporter.h"
-#include "movements/Movement8ByPlayer.h"
+#include "movements/PlayerMovement.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
 #include "ZSDX.h"

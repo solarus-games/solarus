@@ -1,6 +1,6 @@
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
-#include "movements/Movement8ByPlayer.h"
+#include "movements/PlayerMovement.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -39,7 +39,7 @@ static const int animation_directions[] = {
 Hero::Hero(Equipment *equipment):
   equipment(equipment),
   tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
-  normal_movement(new Movement8ByPlayer(12)),
+  normal_movement(new PlayerMovement(12)),
   state(FREE), facing_entity(NULL), end_blink_date(0), counter(0), next_counter_date(0),
   walking(false), pushing_direction_mask(0xFFFF),
   lifted_item(NULL), thrown_item(NULL), treasure(NULL) {
@@ -87,11 +87,11 @@ bool Hero::is_hero(void) {
 }
 
 /**
- * Returns the 8-directions movement controlled by the player,
+ * Returns the 8-direction movement controlled by the player,
  * even if it is not the current movement of the hero.
  * @return the player's movement
  */
-Movement8ByPlayer * Hero::get_normal_movement(void) {
+PlayerMovement * Hero::get_normal_movement(void) {
   return normal_movement;
 }
 

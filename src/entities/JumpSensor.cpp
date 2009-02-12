@@ -1,6 +1,6 @@
 #include "entities/JumpSensor.h"
 #include "entities/Hero.h"
-#include "movements/Movement8ByPlayer.h"
+#include "movements/PlayerMovement.h"
 
 /**
  * Creates a jump sensor.

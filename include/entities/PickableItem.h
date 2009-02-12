@@ -3,7 +3,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include "movements/MovementFalling.h"
+#include "movements/FallingOnFloorMovement.h"
 
 /**
  * A pickable item on the map (rupee, heart, bomb, fairy...).
@@ -64,7 +64,7 @@ class PickableItem: public Detector {
 		          // for certain kinds of items only: a key, a piece of heart...
 
   Sprite *shadow_sprite;                // sprite of the shadow (except for a fairy).
-  MovementFalling::FallingHeight falling_height; // indicates whether the item is falling when it appears (except for a fairy)
+  FallingOnFloorMovement::Height falling_height; // indicates whether the item is falling when it appears (except for a fairy)
   bool will_disappear;                  // indicates whether the item will disappear after an amount of time
                                         // (only possible for items not saved)
 
@@ -96,7 +96,7 @@ class PickableItem: public Detector {
 
   // creation and destruction
   static PickableItem * create(Layer layer, int x, int y, ItemType type, int savegame_variable,
-			       MovementFalling::FallingHeight falling_height, bool will_disappear);
+			       FallingOnFloorMovement::Height falling_height, bool will_disappear);
 
   virtual ~PickableItem(void);
 

@@ -345,7 +345,7 @@ void MapEntities::add_teletransporter(string teletransporter_name, MapEntity::La
  */
 void MapEntities::add_pickable_item(MapEntity::Layer layer, int x, int y,
 				    PickableItem::ItemType pickable_item_type, int savegame_variable,
-				    MovementFalling::FallingHeight falling_height, bool will_disappear) {
+				    FallingOnFloorMovement::Height falling_height, bool will_disappear) {
 
   PickableItem *item = PickableItem::create(layer, x, y, pickable_item_type,
 					    savegame_variable, falling_height, will_disappear);

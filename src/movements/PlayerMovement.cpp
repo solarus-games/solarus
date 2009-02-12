@@ -1,5 +1,5 @@
 #include <cmath>
-#include "movements/Movement8ByPlayer.h"
+#include "movements/PlayerMovement.h"
 #include "entities/MapEntity.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -9,7 +9,7 @@
  * Bit masks associated to each arrow on the keyboard or the joypad.
  * A combination of arrows is stored in a simple integer.
  */
-const Uint16 Movement8ByPlayer::direction_masks[4] = {
+const Uint16 PlayerMovement::direction_masks[4] = {
   0x0001,
   0x0002,
   0x0004,
@@ -49,7 +49,7 @@ static const int directions[] = {
  * Constructor.
  * @param speed movement speed
  */
-Movement8ByPlayer::Movement8ByPlayer(int speed):
+PlayerMovement::PlayerMovement(int speed):
   MovementWithSmoothCollision(NULL),
   started(false), speed(speed), can_move(false), direction_mask(0) {
 
@@ -58,7 +58,7 @@ Movement8ByPlayer::Movement8ByPlayer(int speed):
 /**
  * Destructor.
  */
-Movement8ByPlayer::~Movement8ByPlayer(void) {
+PlayerMovement::~PlayerMovement(void) {
 
 }
 
@@ -68,7 +68,7 @@ Movement8ByPlayer::~Movement8ByPlayer(void) {
  * movement is stopped.
  * @returns the current movement direction
  */
-int Movement8ByPlayer::get_direction(void) {
+int PlayerMovement::get_direction(void) {
   return directions[direction_mask];
 }
 
@@ -76,7 +76,7 @@ int Movement8ByPlayer::get_direction(void) {
  * Returns whether the entity is moving.
  * @return true if the entity is moving
  */
-bool Movement8ByPlayer::is_started(void) {
+bool PlayerMovement::is_started(void) {
   return started;
 }
 
@@ -86,7 +86,7 @@ bool Movement8ByPlayer::is_started(void) {
  * currently have control of the entity.
  * @return true if the movements are enabled
  */
-bool Movement8ByPlayer::is_moving_enabled(void) {
+bool PlayerMovement::is_moving_enabled(void) {
   return can_move;
 }
 
@@ -95,7 +95,7 @@ bool Movement8ByPlayer::is_moving_enabled(void) {
  * This function permits to ignore or restore the control of the entity.
  * @param can_move true to enable the movements, false to disable them.
  */
-void Movement8ByPlayer::set_moving_enabled(bool can_move) {
+void PlayerMovement::set_moving_enabled(bool can_move) {
 
   if (can_move != this->can_move) {
 
@@ -135,7 +135,7 @@ void Movement8ByPlayer::set_moving_enabled(bool can_move) {
  * Suspends or resumes the movement.
  * @param suspended true to suspend the movement, false to resume it
  */
-void Movement8ByPlayer::set_suspended(bool suspended) {
+void PlayerMovement::set_suspended(bool suspended) {
   Movement::set_suspended(suspended);
   set_moving_enabled(!suspended);
   compute_movement(); // always recompute the movement when the game is suspended / resumed
@@ -145,7 +145,7 @@ void Movement8ByPlayer::set_suspended(bool suspended) {
  * This function is called when an arrow key is pressed.
  * @param direction of the arrow pressed (0 to 3)
  */
-void Movement8ByPlayer::add_direction(int direction) {
+void PlayerMovement::add_direction(int direction) {
 
   if (can_move) {
     add_direction_mask(direction_masks[direction]);
@@ -157,7 +157,7 @@ void Movement8ByPlayer::add_direction(int direction) {
  * This function is called when an arrow key is released.
  * @param direction of the arrow released (0 to 3)
  */
-void Movement8ByPlayer::remove_direction(int direction) {
+void PlayerMovement::remove_direction(int direction) {
 
   if (can_move) {
     remove_direction_mask(direction_masks[direction]);
@@ -171,7 +171,7 @@ void Movement8ByPlayer::remove_direction(int direction) {
  * pressed by the player.
  * @return the direction mask
  */
-Uint16 Movement8ByPlayer::get_direction_mask(void) {
+Uint16 PlayerMovement::get_direction_mask(void) {
   return direction_mask;
 }
 
@@ -181,7 +181,7 @@ Uint16 Movement8ByPlayer::get_direction_mask(void) {
  * pressed by the player.
  * @param direction_mask the direction mask to add
  */
-void Movement8ByPlayer::add_direction_mask(Uint16 direction_mask) {
+void PlayerMovement::add_direction_mask(Uint16 direction_mask) {
   set_direction_mask(this->direction_mask | direction_mask);
 }
 
@@ -191,7 +191,7 @@ void Movement8ByPlayer::add_direction_mask(Uint16 direction_mask) {
  * pressed by the player.
  * @param direction_mask the direction mask to remove
  */
-void Movement8ByPlayer::remove_direction_mask(Uint16 direction_mask) {
+void PlayerMovement::remove_direction_mask(Uint16 direction_mask) {
   set_direction_mask(this->direction_mask & ~direction_mask);
 }
 
@@ -201,7 +201,7 @@ void Movement8ByPlayer::remove_direction_mask(Uint16 direction_mask) {
  * pressed by the player.
  * @param direction_mask the direction mask
  */
-void Movement8ByPlayer::set_direction_mask(Uint16 direction_mask) {
+void PlayerMovement::set_direction_mask(Uint16 direction_mask) {
   if (direction_mask != this->direction_mask) {
     this->direction_mask = direction_mask;
   }
@@ -214,7 +214,7 @@ void Movement8ByPlayer::set_direction_mask(Uint16 direction_mask) {
  * or when the movement has just been enabled or
  * disabled (i.e. when set_moving_enabled() is called).
  */
-void Movement8ByPlayer::compute_movement(void) {
+void PlayerMovement::compute_movement(void) {
   int x_speed = 0;
   int y_speed = 0;
 

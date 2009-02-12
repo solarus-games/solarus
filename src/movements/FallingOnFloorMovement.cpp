@@ -1,4 +1,4 @@
-#include "movements/MovementFalling.h"
+#include "movements/FallingOnFloorMovement.h"
 
 /**
  * Y move at each time frame.
@@ -28,7 +28,7 @@ static const int nb_moves[3] = {2, 12, 26};
  * Creates a movement falling object.
  * @param height height the entity will fall from
  */
-MovementFalling::MovementFalling(MovementFalling::FallingHeight height):
+FallingOnFloorMovement::FallingOnFloorMovement(Height height):
   PathMovement(moves[height], nb_moves[height], 30, false) {
 
 }
@@ -36,6 +36,6 @@ MovementFalling::MovementFalling(MovementFalling::FallingHeight height):
 /**
  * Destructor.
  */
-MovementFalling::~MovementFalling(void) {
+FallingOnFloorMovement::~FallingOnFloorMovement(void) {
 
 }

@@ -3,7 +3,6 @@
 #include "entities/PickableItemFairy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "movements/MovementFalling.h"
 #include "Sprite.h"
 #include "Random.h"
 #include "ZSDX.h"
@@ -104,7 +103,7 @@ MapEntity::EntityType PickableItem::get_type() {
  * @return the pickable item created, or NULL depending on the type
  */
 PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::ItemType type,
-				    int savegame_variable, MovementFalling::FallingHeight falling_height, bool will_disappear) {
+				    int savegame_variable, FallingOnFloorMovement::Height falling_height, bool will_disappear) {
 
   if (type == RANDOM) {
     // pick a type at random
@@ -292,7 +291,7 @@ void PickableItem::initialize_sprites(void) {
 void PickableItem::initialize_movement(void) {
 
   if (is_falling()) {
-    set_movement(new MovementFalling(falling_height));
+    set_movement(new FallingOnFloorMovement(falling_height));
   }
 }
 
@@ -301,7 +300,7 @@ void PickableItem::initialize_movement(void) {
  * @return true if the entity is falling when it appears
  */
 bool PickableItem::is_falling(void) {
-  return falling_height != MovementFalling::NONE;
+  return falling_height != FallingOnFloorMovement::NONE;
 }
 
 /**

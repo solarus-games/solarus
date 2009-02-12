@@ -8,7 +8,7 @@
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
 #include "entities/Enemy.h"
-#include "movements/MovementFalling.h"
+#include "movements/FallingOnFloorMovement.h"
 #include <vector>
 #include <list>
 
@@ -111,7 +111,7 @@ class MapEntities {
 			   MapId map_id, string destination_point_name);
 
   void add_pickable_item(MapEntity::Layer layer, int x, int y, PickableItem::ItemType pickable_item_type,
-			 int savegame_variable, MovementFalling::FallingHeight falling, bool will_disappear);
+			 int savegame_variable, FallingOnFloorMovement::Height falling_height, bool will_disappear);
   void remove_pickable_item(PickableItem *item);
 
   void add_destructible_item(MapEntity::Layer layer, int x, int y, DestructibleItem::ItemType destructible_item_type,

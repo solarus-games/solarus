@@ -32,7 +32,7 @@ PickableItemFairy::~PickableItemFairy(void) {
  */
 void PickableItemFairy::initialize_movement(void) {
 
-  falling_height = MovementFalling::NONE; // a fairy does not fall
+  falling_height = FallingOnFloorMovement::NONE; // a fairy does not fall
 
   set_movement(new FairyMovement());
 }

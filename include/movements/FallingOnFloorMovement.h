@@ -1,5 +1,5 @@
-#ifndef ZSDX_MOVEMENT_FALLING_H
-#define ZSDX_MOVEMENT_FALLING_H
+#ifndef ZSDX_FALLING_ON_FLOOR_MOVEMENT_H
+#define ZSDX_FALLING_ON_FLOOR_MOVEMENT_H
 
 #include "Common.h"
 #include "PathMovement.h"
@@ -10,14 +10,14 @@
  * This movement is typically used by the pickable items
  * (rupees, hearts...) that appear when the player kill an enemy.
  */
-class MovementFalling: public PathMovement {
+class FallingOnFloorMovement: public PathMovement {
 
  public:
 
   /**
    * Indicates from which height an entity falls.
    */
-  enum FallingHeight {
+  enum Height {
     NONE = -1,
     LOW = 0,
     MEDIUM,
@@ -25,8 +25,8 @@ class MovementFalling: public PathMovement {
   };
 
   // construction and destruction
-  MovementFalling(FallingHeight height);
-  ~MovementFalling(void);
+  FallingOnFloorMovement(Height height);
+  ~FallingOnFloorMovement(void);
 
 };
 

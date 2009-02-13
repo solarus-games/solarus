@@ -2,19 +2,23 @@
 
 /**
  * Creates a movement path object, not specifying the path for now.
+ * @param map the map
  * @param nb_vectors number of translation vectors in the array
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
  * once finished, false to stop it
+ * @param with_collisions true to make the movement sensitive to obstacles
  */
-PathMovement::PathMovement(int nb_vectors, Uint32 delay, bool loop):
-  nb_vectors(nb_vectors), delay(delay), loop(loop),
-  vector_index(0), path_ended(false) {
+PathMovement::PathMovement(Map *map, int nb_vectors, Uint32 delay, bool loop, bool with_collisions):
+  MovementWithCollision(map),
+  map(map), nb_vectors(nb_vectors), delay(delay), loop(loop),
+  with_collisions(with_collisions), vector_index(0), path_ended(false) {
 
 }
 
 /**
  * Creates a movement path object.
+ * @param map the map (can be NULL if with_collisions is false)
  * @param translation_vectors the succession of translations
  * composing this movement (each element of the array represents
  * a translation vector in pixels; only the fields x and y of the
@@ -23,11 +27,13 @@ PathMovement::PathMovement(int nb_vectors, Uint32 delay, bool loop):
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
  * once finished, false to stop it
+ * @param with_collisions true to make the movement sensitive to obstacles
  */
-PathMovement::PathMovement(const SDL_Rect *translation_vectors,
-			   int nb_vectors, Uint32 delay, bool loop):
-  translation_vectors(translation_vectors), nb_vectors(nb_vectors),
-  delay(delay), loop(loop), vector_index(0), path_ended(false) {
+PathMovement::PathMovement(Map *map, const SDL_Rect *translation_vectors,
+			   int nb_vectors, Uint32 delay, bool loop, bool with_collisions):
+  MovementWithCollision(map),
+  map(map), translation_vectors(translation_vectors), nb_vectors(nb_vectors),
+  delay(delay), loop(loop), with_collisions(with_collisions), vector_index(0), path_ended(false) {
 
 }
 
@@ -49,7 +55,7 @@ void PathMovement::set_translation_vectors(const SDL_Rect *translation_vectors) 
 /**
  * Updates the position.
  */
-void PathMovement::update_x(void) {
+void PathMovement::update(void) {
 
   Uint32 now = SDL_GetTicks();
 
@@ -62,7 +68,14 @@ void PathMovement::update_x(void) {
  * Makes a move in the path.
  */
 void PathMovement::make_next_move(void) {
-  translate(translation_vectors[vector_index].x, translation_vectors[vector_index].y);
+
+  int dx = translation_vectors[vector_index].x;
+  int dy = translation_vectors[vector_index].y;
+
+  if (!with_collisions || !collision_with_map(dx, dy)) {
+    translate(dx, dy);
+  }
+
   next_move_date_x += delay;
 
   vector_index++;

@@ -20,7 +20,7 @@ class JumpMovement: public PathMovement {
 
  public:
 
-  JumpMovement(int direction, int length);
+  JumpMovement(Map *map, int direction, int length, bool with_collisions);
   ~JumpMovement(void);
 
   int get_jump_height(void);

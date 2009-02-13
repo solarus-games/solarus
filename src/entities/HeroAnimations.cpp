@@ -492,3 +492,16 @@ void Hero::set_animation_hurt(void) {
     shield_sprite->stop_animation();
   }
 }
+
+/**
+ * Starts the "plunging" animation of the hero's sprites.
+ * The hero's state should be PLUNGING.
+ */
+void Hero::set_animation_plunging(void) {
+  tunic_sprite->set_current_animation("plunging");
+
+  // the shield is not visible
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+}

@@ -56,7 +56,7 @@
 4	danger	danger
 4	door_closed	door_closed
 4	door_open	door_open
-4	drowning	drowning
+4	splash	splash
 4	enemy_awake	enemy_awake
 4	enemy_hurt	enemy_hurt
 4	enemy_killed	enemy_killed

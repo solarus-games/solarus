@@ -54,7 +54,7 @@ void PickableItemHeart::initialize_sprites(void) {
 void PickableItemHeart::initialize_movement(void) {
   
   if (is_falling()) {
-    set_movement(new PathMovement(falling_moves, 24, 100, false));
+    set_movement(new PathMovement(map, falling_moves, 24, 100, false, false));
   }
 }
 

@@ -23,94 +23,91 @@ class Hero: public MapEntity {
    * He hero can be hurt in states <= SPIN_ATTACK.
    */
   enum State {
-    FREE,                    /**< normal state (stopped or walking) */
-    PUSHING,                 /**< the hero is trying to push an obstacle */
-    CARRYING,                /**< the hero can walk but he is carrying a pot or a bush */
-    SWORD_LOADING,           /**< the hero can walk but his sword is loading for a spin attack */
-    SWIMMING,                /**< the hero is swimming in deep water */
-    GRABBING,                /**< the hero is grabbing an object and can pull it */
-    PULLING,                 /**< the hero is pulling an object */
-    SWORD_SWINGING,          /**< the hero is swinging his sword */
-    SPIN_ATTACK,             /**< the hero is releasing a spin attack */
-    LIFTING,                 /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
-    BRANDISHING_TREASURE,    /**< the hero is brandishing a treasure */
-    JUMPING,                 /**< the hero is jumping */
-    HURT,                    /**< the hero is hurt */
-    FREEZED,                 /**< the hero cannot move for various possible reasons */
+    FREE,                        /**< normal state (stopped or walking) */
+    PUSHING,                     /**< the hero is trying to push an obstacle */
+    CARRYING,                    /**< the hero can walk but he is carrying a pot or a bush */
+    SWORD_LOADING,               /**< the hero can walk but his sword is loading for a spin attack */
+    SWIMMING,                    /**< the hero is swimming in deep water */
+    GRABBING,                    /**< the hero is grabbing an object and can pull it */
+    PULLING,                     /**< the hero is pulling an object */
+    SWORD_SWINGING,              /**< the hero is swinging his sword */
+    SPIN_ATTACK,                 /**< the hero is releasing a spin attack */
+    LIFTING,                     /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
+    BRANDISHING_TREASURE,        /**< the hero is brandishing a treasure */
+    JUMPING,                     /**< the hero is jumping */
+    HURT,                        /**< the hero is hurt */
+    PLUNGING,                    /**< the hero is plunging into water */
+    FREEZED,                     /**< the hero cannot move for various possible reasons */
   };
 
  private:
 
-  // equipment of the player
-  Equipment *equipment;
+  // equipment
+  Equipment *equipment;          /**< equipment of the player */
 
-  // the hero's sprites and sounds
-  Sprite *tunic_sprite;
-  Sprite *sword_sprite;
-  Sprite *sword_stars_sprite;
-  Sprite *shield_sprite;
-  Sprite *shadow_sprite; /**< only in state JUMPING (in other states,
-			  * the shadow is with the tunic sprite) */
-  Sound *sword_sound;
+  Sprite *tunic_sprite;          /**< sprite of the current tunic */
+  Sprite *sword_sprite;          /**< current sword sprite */
+  Sprite *sword_stars_sprite;    /**< stars running along the sword when the sword is loading */
+  Sprite *shield_sprite;         /**< current shield sprite */
+  Sprite *shadow_sprite;         /**< shadow of the hero, only in state JUMPING (in other states,
+			          * the shadow is with the tunic sprite) */
+  Sprite *ground_sprite;         /**< ground displayed under the hero (e.g. grass or shallow water) */
 
-  static const SpriteAnimationSetId tunic_sprite_ids[];
-  static const SpriteAnimationSetId sword_sprite_ids[];
-  static const SpriteAnimationSetId sword_stars_sprite_ids[];
-  static const SpriteAnimationSetId shield_sprite_ids[];
-  static const SpriteAnimationSetId ground_sprite_ids[];
-  static const SoundId sword_sound_ids[];
-  static const SoundId ground_sound_ids[];
+  Sound *sword_sound;            /**< sound of the current sword */
+  Sound *ground_sound;           /**< sound of the current ground displayed under the hero */
 
-  static const int animation_directions[];
+  static const SpriteAnimationSetId tunic_sprite_ids[];       /**< name of each tunic sprite */
+  static const SpriteAnimationSetId sword_sprite_ids[];       /**< name of each sword sprite */
+  static const SpriteAnimationSetId sword_stars_sprite_ids[]; /**< name of each sword stars sprite */
+  static const SpriteAnimationSetId shield_sprite_ids[];      /**< name of each shield sprite */
+  static const SpriteAnimationSetId ground_sprite_ids[];      /**< name of each shield sprite  */
+  static const SoundId sword_sound_ids[];                     /**< name of each sword sound */
+  static const SoundId ground_sound_ids[];                    /**< name of each ground sound */
 
   // movement
   PlayerMovement *normal_movement;
+  static const int animation_directions[];                    /**< direction of the movement for each arrow key combination */
 
-  /**
-   * Current state of the hero.
-   * The state is considered only when the game is not suspended.
-   */
-  State state;
-  Detector *facing_entity;
-  int animation_direction_saved; /**< direction of the hero's sprites, saved just before
+  // state
+  State state;                   /**< current state of the hero (considered only when the game is not suspended) */
+  Detector *facing_entity;       /**< the entity just in front of the hero */
+  int animation_direction_saved; /**< direction of the hero's sprites, saved before
 				  * showing a sprite animation having only one direction */
-  Uint32 end_blink_date;         /**< date when the hero's sprites stop blinking */
+  Uint32 end_blink_date;         /**< when the hero's sprites stop blinking */
 
-  /**
-   * Counter incremented every 100 ms in certain conditions.
-   * - In state FREE: counts for how long the hero is trying to walk
-   * to a wall (animation pushing is triggered at 800 ms)
-   * - In state SWORD_LOADING: counts for how long the hero is loading
-   * his sword (the spin attack is possible after 1000 ms)
-   */
-  int counter;
-  Uint32 next_counter_date;
+  int counter;                   /**< counter incremented every 100 ms in certain conditions:
+				  * - in state FREE: counts for how long the hero is trying to walk
+				  * to a wall (animation pushing is triggered at 800 ms)
+				  * - in state SWORD_LOADING: counts for how long the hero is loading
+				  * his sword (the spin attack is possible after 1000 ms) */
+
+  Uint32 next_counter_date;      /**< when the counter will be incremented */
 
   // walking
-  bool walking; // stopped or walking? (used in states FREE, PUSHING and CARRYING)
+  bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
 
   // pushing
-  Uint16 pushing_direction_mask; // direction of the hero's movement when pushing
-                                 // 0xFFFF indicates that he is currently not trying to push
+  Uint16 pushing_direction_mask; /**< direction of the hero's movement when pushing
+				  * (0xFFFF indicates that he is currently not trying to push) */
 
   // spin attack
-  bool sword_loaded; // in state SWORD_LOADING, becomes true when the spin attack gets possible
+  bool sword_loaded;             /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
 
   // lift and carry an object
-  CarriedItem *lifted_item; // item being lifted or carried
-  CarriedItem *thrown_item; // item thrown and not broken yet
+  CarriedItem *lifted_item;      /**< item being lifted or carried */
+  CarriedItem *thrown_item;      /**< item thrown and not broken yet */
 
   // brandish a treasure
-  Treasure *treasure; // the treasure being brandished
+  Treasure *treasure;            /**< the treasure being brandished (if any) */
 
   // jump
-  int jump_y;
+  int jump_y;                    /**< height of the hero's sprite when jumping, relative to its shadow on the ground */
+  int last_ground_x;             /**< x coordinate of the last hero position on the ground (e.g. before jumping) */
+  int last_ground_y;             /**< y coordinate of the last hero position on the ground (e.g. before jumping) */
 
-  // kind of ground under the hero: grass, shallow water, etc.
-  int ground;
-  Sprite *ground_sprite;
-  Sound *ground_sound;
-  Uint32 next_ground_sound_date;
+  // special ground under the hero
+  int ground;                    /**< kind of ground under the hero: grass, shallow water, etc. (from enum Map::Ground) */
+  Uint32 next_ground_sound_date; /**< when the ground sound has to be played next time */
 
   // update functions
   void update_position(void);
@@ -155,9 +152,9 @@ class Hero: public MapEntity {
   bool can_be_hurt(void);
   void update_hurt(void);
 
-  void start_shallow_water(void);
   void start_deep_water(void);
-
+  void start_plunging(void);
+  void update_plunging(void);
   void start_swimming(void);
   void stop_swimming(void);
 
@@ -176,6 +173,7 @@ class Hero: public MapEntity {
   void set_animation_lifting(void);
   void set_animation_jumping(void);
   void set_animation_hurt(void);
+  void set_animation_plunging(void);
 
   void save_animation_direction(void);
   void restore_animation_direction(void);
@@ -229,7 +227,7 @@ class Hero: public MapEntity {
   void start_carrying(void);
   void freeze(void);
   void give_treasure(Treasure *treasure);
-  void start_jumping(int direction, int length);
+  void start_jumping(int direction, int length, bool with_collisions);
   void hurt(MapEntity *source, int life);
   void get_back_from_death(void);
 

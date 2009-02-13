@@ -67,6 +67,9 @@ void Hero::start_ground(void) {
     delete ground_sprite;
     ground_sprite = NULL;
   }
+  else if (ground == Map::DEEP_WATER) {
+    start_deep_water();
+  }
   else {
     ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
@@ -98,6 +101,7 @@ void Hero::update_ground(void) {
  */
 bool Hero::is_ground_visible(void) {
   return ground != Map::NORMAL_GROUND
+    && state != PLUNGING
     && state != SWIMMING
     && state != JUMPING
     && state != HURT;
@@ -141,7 +145,7 @@ void Hero::start_free(void) {
     set_animation_stopped();
   }
 
-  // to check the facing entity
+  // to check the facing entity and the ground
   just_moved();
 }
 
@@ -529,8 +533,9 @@ void Hero::update_spin_attack(void) {
  * While he is jumping, the player does not control him anymore.
  * @param direction direction of the jump (0 to 7)
  * @param length length of the jump in pixels
+ * @param with_collisions true to stop the movement if there is a collision
  */
-void Hero::start_jumping(int direction, int length) {
+void Hero::start_jumping(int direction, int length, bool with_collisions) {
 
   // remove the carried item
   if (state == CARRYING) {
@@ -541,7 +546,7 @@ void Hero::start_jumping(int direction, int length) {
 
   // jump
   set_state(JUMPING);
-  set_movement(new JumpMovement(direction, length));
+  set_movement(new JumpMovement(map, direction, length, with_collisions));
   set_animation_jumping();
   ResourceManager::get_sound("jump")->play();
   jump_y = get_y();
@@ -562,7 +567,13 @@ void Hero::update_jumping(void) {
   if (movement->is_finished()) {
     clear_movement();
     set_movement(normal_movement);
-    start_free();
+
+    if (ground == Map::DEEP_WATER) {
+      start_deep_water();
+    }
+    else {
+      start_free();
+    }
   }
 }
 
@@ -678,13 +689,6 @@ void Hero::just_attacked_enemy(Enemy::Attack attack, Enemy *victim) {
 }
 
 /**
- * Starts displaying some water under the hero.
- */
-void Hero::start_shallow_water(void) {
-  
-}
-
-/**
  * Makes the hero drown or swim.
  */
 void Hero::start_deep_water(void) {
@@ -696,9 +700,50 @@ void Hero::start_deep_water(void) {
   if (state == CARRYING) {
     start_throwing();
   }
-  
-  // move to state swimming or drowning
-  // TODO
+
+  if (state == JUMPING || state == HURT) {
+    // plunge into the water
+    start_plunging();
+  }
+  else {
+    // move to state swimming or jumping
+    if (equipment->has_inventory_item(InventoryItem::FLIPPERS)) {
+      start_swimming();
+    }
+    else {
+      start_jumping(get_movement_direction() / 45, 32, true);
+    }
+  }
+}
+
+/**
+ * Makes the hero plunge into the water.
+ */
+void Hero::start_plunging(void) {
+  set_state(PLUNGING);
+  set_animation_plunging();
+  ResourceManager::get_sound("splash")->play();
+}
+
+/**
+ * Updates the PLUNGING state.
+ */
+void Hero::update_plunging(void) {
+
+  if (tunic_sprite->is_animation_finished()) {
+
+    if (ground != Map::DEEP_WATER) {
+      start_free();
+    }
+    else if (equipment->has_inventory_item(InventoryItem::FLIPPERS)) {
+      start_swimming();
+    }
+    else {
+      get_normal_movement()->set_position(last_ground_x, last_ground_y);
+      start_free();
+      blink();
+    }
+  }
 }
 
 /**
@@ -706,6 +751,7 @@ void Hero::start_deep_water(void) {
  */
 void Hero::start_swimming(void) {
   set_state(SWIMMING);
+  // TODO
 }
 
 /**

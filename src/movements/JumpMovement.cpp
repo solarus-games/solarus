@@ -16,11 +16,13 @@ const SDL_Rect JumpMovement::basic_translations[8] = {
 
 /**
  * Creates a jump movement.
+ * @param map the map (can be NULL if with_collisions is false)
  * @param direction of the movement (0 to 7)
  * @param length length of the jump
+ * @param with_collisions true to make the movement sensitive to obstacles
  */
-JumpMovement::JumpMovement(int direction, int length):
-  PathMovement(length, 400 / length, false) {
+JumpMovement::JumpMovement(Map *map, int direction, int length, bool with_collisions):
+  PathMovement(map, length, 400 / length, false, with_collisions) {
 
   // compute the path
   translation_vectors = new SDL_Rect[length];

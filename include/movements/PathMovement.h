@@ -2,15 +2,17 @@
 #define ZSDX_PATH_MOVEMENT_H
 
 #include "Common.h"
-#include "Movement.h"
+#include "movements/MovementWithCollision.h"
 
 /**
  * Movement for an entity that follows a predetermined path.
  * A path is a succession of translation vectors.
  */
-class PathMovement: public Movement {
+class PathMovement: public MovementWithCollision {
 
  private:
+
+  Map *map; /**< the map */
 
   // movement properties
 
@@ -37,6 +39,11 @@ class PathMovement: public Movement {
    */
   const bool loop;
 
+  /**
+   * Indicates whether this movement is sensitive to the obstacles.
+   */
+  bool with_collisions;
+
   // current state
 
   /**
@@ -52,19 +59,19 @@ class PathMovement: public Movement {
 
  protected:
 
+  PathMovement(Map *map, int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
   void set_translation_vectors(const SDL_Rect *translation_vectors);
-  void update_x(void);
   virtual void make_next_move(void);
   int get_vector_index(void);
   int get_length(void);
 
  public:
 
-  PathMovement(int nb_vectors, Uint32 delay, bool loop);
-  PathMovement(const SDL_Rect *translation_vectors, int nb_vectors, 
-	       Uint32 delay, bool loop);
+  PathMovement(Map *map, const SDL_Rect *translation_vectors,
+	       int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
   virtual ~PathMovement(void);
 
+  virtual void update(void);
   bool is_finished(void);
 
 };

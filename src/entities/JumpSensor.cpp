@@ -134,7 +134,7 @@ void JumpSensor::collision(MapEntity *entity_overlapping, CollisionMode collisio
   if (entity_overlapping->is_hero()) {
     Hero* hero = (Hero*) entity_overlapping;
     if (hero->get_normal_movement()->is_moving_enabled()) {
-      hero->start_jumping(direction, jump_length);
+      hero->start_jumping(direction, jump_length, false);
     }
   }
 }

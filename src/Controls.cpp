@@ -151,27 +151,27 @@ void Controls::handle_event(const SDL_Event &event) {
     case SDLK_p:
       game->get_equipment()->add_hearts(2);
       break;
-	  
+
     case SDLK_m:
       game->get_equipment()->remove_hearts(1);
       break;
-	  
+
     case SDLK_o:
       game->get_equipment()->add_rupees(23);
       break;
-	  
+
     case SDLK_l:
       game->get_equipment()->remove_rupees(14);
       break;
-	  
+
     case SDLK_i:
       game->get_equipment()->add_magic(10);
       break;
-	  
+
     case SDLK_k:
       game->get_equipment()->remove_magic(4);
       break;
-	  
+
     case SDLK_j:
       if (!game->get_equipment()->is_magic_decreasing()) {
 	game->get_equipment()->start_removing_magic(200);
@@ -212,6 +212,16 @@ void Controls::handle_event(const SDL_Event &event) {
       equipment->remove_arrow();
       break;
 
+      /*
+    case SDLK_SPACE:
+      // almost the feather, actually
+      if (game->get_keys_effect()->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE) {
+	Hero *hero = game->get_hero();
+	hero->start_jumping(hero->get_animation_direction() * 2, 40, true);
+      }
+      break;
+      */
+
     default:
       break;
     }
@@ -220,15 +230,15 @@ void Controls::handle_event(const SDL_Event &event) {
     case SDLK_KP7:
       equipment->set_max_magic(0);
       break;
-	  
+
     case SDLK_KP8:
       equipment->set_max_magic(42);
       break;
-	  
+
     case SDLK_KP9:
       equipment->set_max_magic(84);
       break;
-	  
+
     case SDLK_KP1:
       equipment->set_tunic(MAX(equipment->get_tunic() - 1, 0));
       game->get_hero()->rebuild_equipment();
@@ -238,27 +248,27 @@ void Controls::handle_event(const SDL_Event &event) {
       equipment->set_tunic(MIN(equipment->get_tunic() + 1, 2));
       game->get_hero()->rebuild_equipment();
       break;
-	  
+
     case SDLK_KP2:
       equipment->set_sword(MAX(equipment->get_sword() - 1, 0));
       game->get_hero()->rebuild_equipment();
       break;
-	  
+
     case SDLK_KP5:
       equipment->set_sword(MIN(equipment->get_sword() + 1, 4));
       game->get_hero()->rebuild_equipment();
       break;
-	  
+
     case SDLK_KP3:
       equipment->set_shield(MAX(equipment->get_shield() - 1, 0));
       game->get_hero()->rebuild_equipment();
       break;
-	  
+
     case SDLK_KP6:
       equipment->set_shield(MIN(equipment->get_shield() + 1, 3));
       game->get_hero()->rebuild_equipment();
       break;
-	  
+
     default:
       break;
     }

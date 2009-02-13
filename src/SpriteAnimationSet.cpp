@@ -38,7 +38,7 @@ SpriteAnimationSet::SpriteAnimationSet(SpriteAnimationSetId id) {
     }
 
     // first line: animation info
-    
+
     std::istringstream iss0(line);
     iss0 >> name >> image_file_name >> nb_directions
 	 >> frame_delay >> loop_on_frame;

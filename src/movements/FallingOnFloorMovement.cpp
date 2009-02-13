@@ -29,7 +29,7 @@ static const int nb_moves[3] = {2, 12, 26};
  * @param height height the entity will fall from
  */
 FallingOnFloorMovement::FallingOnFloorMovement(Height height):
-  PathMovement(moves[height], nb_moves[height], 30, false) {
+  PathMovement(NULL, moves[height], nb_moves[height], 30, false, false) {
 
 }
 

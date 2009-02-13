@@ -49,7 +49,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
   set_size(destructible_item->get_width(), destructible_item->get_height());
 
   // create the movement and the sprite
-  PathMovement *movement = new PathMovement(lifting_translations[direction], 6, 100, false);
+  PathMovement *movement = new PathMovement(map, lifting_translations[direction], 6, 100, false, false);
   create_sprite(destructible_item->get_animation_set_id());
   set_movement(movement);
 

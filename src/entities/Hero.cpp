@@ -37,13 +37,13 @@ const int Hero::animation_directions[] = {
  * Constructor.
  */
 Hero::Hero(Equipment *equipment):
-  equipment(equipment),
-  tunic_sprite(NULL), sword_sprite(NULL), sword_stars_sprite(NULL), shield_sprite(NULL),
-  normal_movement(new PlayerMovement(12)),
-  state(FREE), facing_entity(NULL), end_blink_date(0), counter(0), next_counter_date(0),
+  equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
+  sword_stars_sprite(NULL), shield_sprite(NULL), ground_sprite(NULL),
+  normal_movement(new PlayerMovement(12)), state(FREE), facing_entity(NULL),
+  end_blink_date(0), counter(0), next_counter_date(0),
   walking(false), pushing_direction_mask(0xFFFF),
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
-  ground(Map::NORMAL_GROUND), ground_sprite(NULL) {
+  last_ground_x(0), last_ground_y(0), ground(Map::NORMAL_GROUND) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -296,6 +296,10 @@ void Hero::update(void) {
       update_hurt();
       break;
 
+    case PLUNGING:
+      update_plunging();
+      break;
+
     default:
       break;
     }
@@ -506,10 +510,7 @@ void Hero::just_moved(void) {
     stop_swimming();
   }
 
-  if (tiles_ground == Map::DEEP_WATER) {
-    start_deep_water();
-  }
-  else if (ground != Map::GRASS && tiles_ground != ground) {
+  if (ground != Map::GRASS && tiles_ground != ground) {
     set_ground(tiles_ground);
   }
 
@@ -518,6 +519,12 @@ void Hero::just_moved(void) {
 
   if (ground != previous_ground) {
     start_ground();
+  }
+
+  if (ground != Map::DEEP_WATER) {
+    // save the position
+    last_ground_x = get_x();
+    last_ground_y = get_y();
   }
 }
 

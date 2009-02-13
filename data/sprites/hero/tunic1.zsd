@@ -99,3 +99,9 @@ hurt hero/miscellaneous.png 4 0 -1
 
 dying hero/dying.png 1 125 9
 0	24	24	24	12	21	10	10
+
+plunging hero/plunging.png 4 50 -1
+0	96	56	24	28	21	6	6
+0	120	56	24	28	21	6	6
+0	144	56	24	28	21	6	6
+0	168	56	24	28	21	6	6

@@ -18,7 +18,8 @@
  * Creates the script of a map.
  * @param map the map
  */
-MapScript::MapScript(Map *map) {
+MapScript::MapScript(Map *map):
+  first_time(true) {
 
   // get the id of the map
   int id = (int) map->get_id();
@@ -74,6 +75,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "set_savegame_integer", l_set_savegame_integer);
   lua_register(context, "set_savegame_boolean", l_set_savegame_boolean);
   lua_register(context, "start_timer", l_start_timer);
+  lua_register(context, "move_camera", l_move_camera);
+  lua_register(context, "restore_camera", l_restore_camera);
 }
 
 /**
@@ -169,6 +172,10 @@ void MapScript::update(void) {
   }
 
   // update the script
+  if (first_time) {
+    call_lua_function("event_map_started");
+    first_time = false;
+  }
   call_lua_function("event_update");
 }
 

@@ -381,8 +381,6 @@ void Map::start(void) {
 
   place_hero_on_destination_point();
   started = true;
-
-  script->event_map_started(); // TODO: move after the first update() call?
 }
 
 /**

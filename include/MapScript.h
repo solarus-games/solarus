@@ -18,6 +18,7 @@ class MapScript {
 
   lua_State* context;         /**< the execution context of the Lua script */
   std::list<Timer*> timers;   /**< the timers currently running for this script */
+  bool first_time;            /**< true until the first update() call */
 
   void call_lua_function(const char *function_name);
   void call_lua_function(const char *function_name, int nb_arguments, ...);

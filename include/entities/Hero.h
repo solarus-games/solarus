@@ -151,6 +151,7 @@ class Hero: public MapEntity {
   void update_jumping(void);
   bool can_be_hurt(void);
   void update_hurt(void);
+  bool can_start_gameover_sequence(void);
 
   void start_deep_water(void);
   void start_plunging(void);

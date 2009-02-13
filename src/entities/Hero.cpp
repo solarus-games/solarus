@@ -264,8 +264,9 @@ void Hero::set_suspended(bool suspended) {
  */
 void Hero::update(void) {
 
-  // update the movement
   if (!suspended) {
+
+    // update the movement
     get_normal_movement()->set_moving_enabled(get_state() <= SWIMMING);
 
     // specific updates in some states
@@ -321,6 +322,11 @@ void Hero::update(void) {
 
     if (thrown_item != NULL) {
       map->check_collision_with_detectors(thrown_item);
+    }
+
+    if (equipment->get_hearts() <= 0 && can_start_gameover_sequence()) {
+      stop_blinking();
+      zsdx->game->start_gameover_sequence();
     }
   }
 }

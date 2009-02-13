@@ -68,7 +68,9 @@ void Hero::start_ground(void) {
     ground_sprite = NULL;
   }
   else if (ground == Map::DEEP_WATER) {
-    start_deep_water();
+    if (state != JUMPING && state != HURT) {
+      start_deep_water();
+    }
   }
   else {
     ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
@@ -130,10 +132,11 @@ bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
 }
 
 /**
- * Lets the hero can walk.
+ * Lets the hero walk.
  * Moves to the state FREE and updates the animations accordingly.
  */
 void Hero::start_free(void) {
+
   set_state(FREE);
 
   get_normal_movement()->compute_movement();
@@ -564,7 +567,9 @@ void Hero::update_jumping(void) {
   JumpMovement *movement = (JumpMovement*) get_movement();
   movement->update();
   jump_y = get_y() - movement->get_jump_height();
+
   if (movement->is_finished()) {
+
     clear_movement();
     set_movement(normal_movement);
 
@@ -627,14 +632,22 @@ void Hero::update_hurt(void) {
     clear_movement();
     set_movement(normal_movement);
 
-    if (equipment->get_hearts() > 0) {
-      start_free();
+    if (ground == Map::DEEP_WATER) {
+      start_deep_water();
     }
     else {
-      stop_blinking();
-      zsdx->game->start_gameover_sequence();
+      start_free();
     }
   }
+}
+
+/**
+ * Returns whether the hero is in a state such that the game over
+ * sequence can start.
+ * @return true if the game over sequence can start
+ */
+bool Hero::can_start_gameover_sequence(void) {
+  return state != HURT && state != PLUNGING;
 }
 
 /**
@@ -742,6 +755,7 @@ void Hero::update_plunging(void) {
       get_normal_movement()->set_position(last_ground_x, last_ground_y);
       start_free();
       blink();
+      ResourceManager::get_sound("message_end")->play();
     }
   }
 }

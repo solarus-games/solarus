@@ -30,10 +30,10 @@ GameoverSequence::GameoverSequence(Game *game):
   hero_dead_sprite->set_current_direction(game->get_hero()->get_animation_direction());
   hero_dead_sprite->set_suspended(true);
 
-  SDL_Rect *screen_position = game->get_current_map()->get_screen_position();
+  SDL_Rect *camera_position = game->get_current_map()->get_camera_position();
   Hero *hero = game->get_hero();
-  hero_dead_x = hero->get_x() - screen_position->x;
-  hero_dead_y = hero->get_y() - screen_position->y;
+  hero_dead_x = hero->get_x() - camera_position->x;
+  hero_dead_y = hero->get_y() - camera_position->y;
 
   fairy_sprite = new Sprite("entities/fairy");
   fairy_movement = NULL;
@@ -102,7 +102,7 @@ void GameoverSequence::update(void) {
 	state = SAVED_BY_FAIRY;
 	fairy_x = hero_dead_x + 12;
 	fairy_y = hero_dead_y + 21;
-	fairy_movement = new TargetMovement(10, 240, 22);
+	fairy_movement = new TargetMovement(240, 22, 10);
 	fairy_movement->set_position(fairy_x, fairy_y);
 	equipment->set_bottle_empty(equipment->get_first_bottle_with(Treasure::FAIRY_IN_BOTTLE));
       }

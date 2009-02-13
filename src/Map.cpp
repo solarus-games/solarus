@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "FileTools.h"
 #include "MapScript.h"
+#include "Camera.h"
 #include "entities/Tileset.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
@@ -187,9 +188,8 @@ void Map::unload(void) {
   delete entities;
   entities = NULL;
 
-  if (script != NULL) {
-    delete script;
-  }
+  delete script;
+  delete camera;
 }
 
 /**
@@ -279,12 +279,30 @@ SDL_Surface * Map::get_visible_surface(void) {
 }
 
 /**
- * Returns the position of the screen, relative to the map
+ * Returns the position of the visible area, relative to the map
  * top-left corner.
- * @return the screen position
+ * @return the position of the visible area
  */
-SDL_Rect * Map::get_screen_position(void) {
-  return &screen_position;
+SDL_Rect * Map::get_camera_position(void) {
+  return camera->get_position();
+}
+
+/**
+ * Makes the camera move towards a point.
+ * @param x x coordinate of the target point
+ * @param y y coordinate of the target point
+ * @param speed speed of the movement
+ */
+void Map::move_camera(int x, int y, int speed) {
+  camera->set_movement(x, y, speed);
+}
+
+/**
+ * Returns whether the camera is moving.
+ * @return true if the camera is moving
+ */
+bool Map::is_camera_moving(void) {
+  return camera->is_moving();
 }
 
 /**
@@ -312,10 +330,9 @@ void Map::update(void) {
     set_suspended(game_suspended);
   }
 
-  // update the entities
+  // update the elements
+  camera->update();
   entities->update();
-
-  // update the script
   script->update();
 }
 
@@ -323,11 +340,6 @@ void Map::update(void) {
  * Displays the map with all its entities on the screen.
  */
 void Map::display() {
-
-  // screen
-  Hero *hero = zsdx->game->get_hero();
-  screen_position.x = MIN(MAX(hero->get_x() - 160, 0), location.w - 320);
-  screen_position.y = MIN(MAX(hero->get_y() - 120, 0), location.h - 240);  
 
   // background color
   SDL_FillRect(visible_surface, NULL, tileset->get_background_color());
@@ -346,7 +358,8 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  sprite->display(visible_surface, x - screen_position.x, y - screen_position.y);
+  SDL_Rect *camera_position = camera->get_position();
+  sprite->display(visible_surface, x - camera_position->x, y - camera_position->y);
 }
 
 /**

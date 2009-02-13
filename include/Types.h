@@ -65,6 +65,7 @@ class DialogBox;
 class Message;
 class Timer;
 class GameoverSequence;
+class Camera;
 
 // music and sound
 class Music;

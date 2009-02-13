@@ -3,6 +3,8 @@
 #include "Sprite.h"
 #include "Equipment.h"
 #include "Map.h"
+#include "ZSDX.h"
+#include "Game.h"
 
 /**
  * String constants corresponding to the sprites of the tunics.
@@ -69,11 +71,19 @@ const SoundId Hero::ground_sound_ids[] = {
 };
 
 /**
+ * Returns whether the hero is currently visible.
+ * @return true if the hero is currently visible
+ */
+bool Hero::is_visible(void) {
+  return !zsdx->game->is_showing_gameover() && state != DROWNING;
+}
+
+/**
  * Returns whether the sword is currently displayed on the screen.
  * @return true if the sword is currently displayed on the screen
  */
 bool Hero::is_sword_visible(void) {
-  return equipment->has_sword() && sword_sprite != NULL && sword_sprite->is_animation_started();
+  return is_visible() && equipment->has_sword() && sword_sprite != NULL && sword_sprite->is_animation_started();
 }
 
 /**

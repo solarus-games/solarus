@@ -3,6 +3,7 @@
 #include "MapScript.h"
 #include "FileTools.h"
 #include "ResourceManager.h"
+#include "Camera.h"
 #include "movements/FallingOnFloorMovement.h"
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
@@ -172,4 +173,5 @@ void MapLoader::load_map(Map *map) {
 
   // load the script
   map->script = new MapScript(map);
+  map->camera = new Camera(map);
 }

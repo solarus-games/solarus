@@ -37,6 +37,7 @@ class Hero: public MapEntity {
     JUMPING,                     /**< the hero is jumping */
     HURT,                        /**< the hero is hurt */
     PLUNGING,                    /**< the hero is plunging into water */
+    DROWNING,                    /**< the hero is drowning */
     FREEZED,                     /**< the hero cannot move for various possible reasons */
   };
 
@@ -156,6 +157,7 @@ class Hero: public MapEntity {
   void start_deep_water(void);
   void start_plunging(void);
   void update_plunging(void);
+  void update_drowning(void);
   void start_swimming(void);
   void stop_swimming(void);
 
@@ -179,6 +181,7 @@ class Hero: public MapEntity {
   void save_animation_direction(void);
   void restore_animation_direction(void);
 
+  bool is_visible(void);
   bool is_sword_visible(void);
   bool is_sword_stars_visible(void);
   bool is_shield_visible(void);

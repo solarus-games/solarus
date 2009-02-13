@@ -43,6 +43,7 @@ add_executable (zsdx
   Message.cpp
   Timer.cpp
   GameoverSequence.cpp
+  Camera.cpp
 
   # music and sound
   Sound.cpp

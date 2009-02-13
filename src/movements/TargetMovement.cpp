@@ -5,9 +5,10 @@
  * Creates a new target movement.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point
+ * @param speed speed of the movement
  */
-TargetMovement::TargetMovement(int speed, int target_x, int target_y):
-  speed(speed), target_x(target_x), target_y(target_y), sign_x(0), sign_y(0) {
+TargetMovement::TargetMovement(int target_x, int target_y, int speed):
+  target_x(target_x), target_y(target_y), sign_x(0), sign_y(0), speed(speed) {
   
 }
 

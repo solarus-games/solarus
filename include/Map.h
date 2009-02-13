@@ -69,7 +69,7 @@ class Map {
 
   // screen
 
-  SDL_Rect screen_position;     /**< position of the screen in the map */
+  Camera *camera;               /**< determines the visible area of the map */
   SDL_Surface *visible_surface; /**< surface where the map is displayed - this surface is only the visible part
 				 * of the map, so the coordinates on this surface are relative to the screen,
 				 * not to the map */
@@ -84,6 +84,8 @@ class Map {
   bool suspended;               /**< indicates whether the game is suspended */
 
   MapScript *script;            /**< LUA script of the map */
+
+  void set_suspended(bool suspended);
 
  public:
 
@@ -111,13 +113,14 @@ class Map {
 
   // screen
   SDL_Surface *get_visible_surface(void);
-  SDL_Rect *get_screen_position(void);
+  SDL_Rect *get_camera_position(void);
+  void move_camera(int x, int y, int speed);
+  bool is_camera_moving(void);
 
   // loading
   bool is_loaded(void);
   void load(void);
   void unload(void);
-  void set_suspended(bool suspended);
 
   // entities
   MapEntities *get_entities(void);

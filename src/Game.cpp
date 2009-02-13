@@ -433,29 +433,6 @@ Map * Game::get_current_map(void) {
  * Changes the current map.
  * Call this function when you want the hero to go to another map.
  * @param map_id id of the map to launch
- * @param destination_point_index index of the destination point of the map you want to use
- * @param transition_style type of transition between the two maps
- */
-/*
-void Game::set_current_map(MapId map_id, unsigned int destination_point_index, Transition::Style transition_style) {
-
-  next_map = ResourceManager::get_map(map_id);
-
-  if (!next_map->is_loaded()) {
-    next_map->load(); // note that the next map is loaded right now (but will be suspended),
-                      // even if the current map is still running
-  }
-
-  next_map->set_destination_point(destination_point_index);
-  this->transition_style = transition_style;
-
-}
-*/
-
-/**
- * Changes the current map.
- * Call this function when you want the hero to go to another map.
- * @param map_id id of the map to launch
  * @param destination_point_name name of the destination point of the map you want to use,
  * or en ampty string to pick the destination point saved
  * @param transition_style type of transition between the two maps
@@ -611,7 +588,7 @@ bool Game::is_playing_transition(void) {
  */
 bool Game::is_suspended(void) {
   return current_map == NULL || is_paused() || is_showing_message() ||
-    is_playing_transition() || is_showing_gameover();
+    is_playing_transition() || is_showing_gameover() || current_map->is_camera_moving();
 }
 
 /**
@@ -626,14 +603,14 @@ DialogBox * Game::get_dialog_box(void) {
  * Shows the specified message.
  * If this message is followed by other messages, they will
  * be displayed too.
- * The dialog box position depends on the hero's position on the screen.
+ * The dialog box y position depends on the hero's position on the screen.
  * @param message_id id of the message to show
  */
 void Game::show_message(MessageId message_id) {
 
-  SDL_Rect *screen_position = current_map->get_screen_position();
+  SDL_Rect *camera_position = current_map->get_camera_position();
 
-  if (hero->get_y() < screen_position->y + 130) {
+  if (hero->get_y() < camera_position->y + 130) {
     show_message(message_id, 1);
   }
   else {

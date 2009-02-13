@@ -4,6 +4,7 @@
 #include "movements/PlayerMovement.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
+#include "movements/TargetMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -77,7 +78,7 @@ void Hero::start_ground(void) {
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
 
     ground_sound = ResourceManager::get_sound(ground_sound_ids[ground - 1]);
-    next_ground_sound_date = SDL_GetTicks();
+    next_ground_sound_date = MAX(next_ground_sound_date, SDL_GetTicks());
   }
 }
 
@@ -103,10 +104,12 @@ void Hero::update_ground(void) {
  */
 bool Hero::is_ground_visible(void) {
   return ground != Map::NORMAL_GROUND
+    && ground != Map::DEEP_WATER
     && state != PLUNGING
     && state != SWIMMING
     && state != JUMPING
-    && state != HURT;
+    && state != HURT
+    && state != DROWNING;
 }
 
 /**
@@ -493,10 +496,10 @@ void Hero::display_treasure(void) {
   int x = position_in_map.x;
   int y = position_in_map.y;
 
-  SDL_Rect *screen_position = map->get_screen_position();
+  SDL_Rect *camera_position = map->get_camera_position();
   treasure->display(map->get_visible_surface(),
-		    x - screen_position->x,
-		    y - 24 - screen_position->y);
+		    x - camera_position->x,
+		    y - 24 - camera_position->y);
 }
 
 /**
@@ -752,11 +755,26 @@ void Hero::update_plunging(void) {
       start_swimming();
     }
     else {
-      get_normal_movement()->set_position(last_ground_x, last_ground_y);
-      start_free();
-      blink();
       ResourceManager::get_sound("message_end")->play();
+      set_movement(new TargetMovement(last_ground_x, last_ground_y, 12));
+      set_state(DROWNING);
     }
+  }
+}
+
+/**
+ * Updates the DROWNING state.
+ */
+void Hero::update_drowning(void) {
+
+  TargetMovement *movement = (TargetMovement*) get_movement();
+  movement->update();
+
+  if (movement->is_finished()) {
+    clear_movement();
+    set_movement(normal_movement);
+    start_free();
+    blink();
   }
 }
 

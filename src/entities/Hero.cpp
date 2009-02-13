@@ -301,13 +301,16 @@ void Hero::update(void) {
       update_plunging();
       break;
 
+    case DROWNING:
+      update_drowning();
+      break;
+
     default:
       break;
     }
 
     update_position();
     update_sprites();
-
     update_carried_items();
 
     if (treasure != NULL) {
@@ -337,7 +340,7 @@ void Hero::update(void) {
  */
 void Hero::display_on_map(void) {
 
-  if (zsdx->game->is_showing_gameover()) {
+  if (!is_visible()) {
     return; // the hero is directly displayed by the game over sequence
   }
 

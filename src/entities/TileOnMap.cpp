@@ -41,19 +41,19 @@ void TileOnMap::display_on_map(void) {
   SDL_Surface *tileset_image = map->get_tileset()->get_image();
 
   SDL_Rect dst;
-  SDL_Rect *screen_position = map->get_screen_position();
+  SDL_Rect *camera_position = map->get_camera_position();
 
   dst.w = tile->get_width();
   dst.h = tile->get_height();
 
-  int limit_x = position_in_map.x - screen_position->x + position_in_map.w;
-  int limit_y = position_in_map.y - screen_position->y + position_in_map.h;
+  int limit_x = position_in_map.x - camera_position->x + position_in_map.w;
+  int limit_y = position_in_map.y - camera_position->y + position_in_map.h;
 
-  for (dst.y = position_in_map.y - screen_position->y; dst.y < limit_y; dst.y += dst.h) {
+  for (dst.y = position_in_map.y - camera_position->y; dst.y < limit_y; dst.y += dst.h) {
 
     if (dst.y <= 240 && dst.y + dst.h > 0) {
 
-      for (dst.x = position_in_map.x - screen_position->x; dst.x < limit_x; dst.x += dst.w) {
+      for (dst.x = position_in_map.x - camera_position->x; dst.x < limit_x; dst.x += dst.w) {
 
 	if (dst.x <= 320 && dst.x + dst.w > 0) {
 	  tile->display(map_surface, dst, tileset_image);

@@ -5,6 +5,7 @@ event_update()							appelé à chaque cycle
 event_set_suspended(suspended)					appelé lorsque le jeu est suspendu ou repris
 event_message_started(message_id)				appelé au début de l'affichage d'un message
 event_entity_on_detector(detector_name, entity_name)		appelé pour certains types de détecteurs lorsqu'une entité est dessus
+event_camera_reached_target()					appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
 
 Appel de fonctions C++ depuis un script LUA :
 
@@ -20,3 +21,5 @@ set_savegame_string(index)
 set_savegame_integer(index)
 set_savegame_boolean(index)
 start_timer(duration, callback, with_sound)			démarre un timer qui appellera une fonction du script une fois terminé
+move_camera(x, y, speed)					suspend le jeu et déplace la caméra vers un point cible
+restore_camera()						renvoie la caméra vers le héros

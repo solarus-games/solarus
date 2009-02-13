@@ -403,6 +403,38 @@ int MapScript::l_start_timer(lua_State *l) {
   return 0;
 }
 
+/**
+ * Moves the camera towards a target point.
+ * Argument 1 (integer): x coordinate of the target point
+ * Argument 2 (integer): y coordinate of the target point
+ * Argument 3 (integer): speed of the camera movement (10 is normal)
+ */
+int MapScript::l_move_camera(lua_State *l) {
+
+  check_nb_arguments(l, 3);
+  int x = lua_tointeger(l, 1);
+  int y = lua_tointeger(l, 2);
+  int speed = lua_tointeger(l, 3);
+
+  Map *map = zsdx->game->get_current_map();
+  map->move_camera(x, y, speed);
+
+  return 0;
+}
+
+/**
+ * Moves the camera back to the hero.
+ */
+int MapScript::l_restore_camera(lua_State *l) {
+  
+  check_nb_arguments(l, 0);
+
+  Map *map = zsdx->game->get_current_map();
+  map->restore_camera();
+
+  return 0;
+}
+
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
@@ -430,4 +462,11 @@ void MapScript::event_message_started(MessageId messageId) {
  */
 void MapScript::event_entity_on_detector(Detector *detector, MapEntity *entity) {
   call_lua_function("event_entity_on_detector", 2, detector->get_name().c_str(), entity->get_name().c_str());
+}
+
+/**
+ * Notifies the script that the camera moved by a call to move_camera() has reached its target.
+ */
+void MapScript::event_camera_reached_target(void) {
+  call_lua_function("event_camera_reached_target");
 }

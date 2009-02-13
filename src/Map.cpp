@@ -294,15 +294,23 @@ SDL_Rect * Map::get_camera_position(void) {
  * @param speed speed of the movement
  */
 void Map::move_camera(int x, int y, int speed) {
-  camera->set_movement(x, y, speed);
+  camera->set_speed(speed);
+  camera->move(x, y);
 }
 
 /**
- * Returns whether the camera is moving.
- * @return true if the camera is moving
+ * Makes the camera move back to the hero.
  */
-bool Map::is_camera_moving(void) {
-  return camera->is_moving();
+void Map::restore_camera(void) {
+  camera->move(zsdx->game->get_hero());
+}
+
+/**
+ * Returns whether the camera is fixed on the hero.
+ * @return true if the camera is following the hero
+ */
+bool Map::is_camera_fixed_on_hero(void) {
+  return camera->is_fixed_on_hero();
 }
 
 /**

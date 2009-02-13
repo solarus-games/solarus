@@ -588,7 +588,7 @@ bool Game::is_playing_transition(void) {
  */
 bool Game::is_suspended(void) {
   return current_map == NULL || is_paused() || is_showing_message() ||
-    is_playing_transition() || is_showing_gameover() || current_map->is_camera_moving();
+    is_playing_transition() || is_showing_gameover() || !current_map->is_camera_fixed_on_hero();
 }
 
 /**

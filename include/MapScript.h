@@ -35,6 +35,8 @@ class MapScript {
   static FunctionAvailableToScript l_set_savegame_integer;
   static FunctionAvailableToScript l_set_savegame_boolean;
   static FunctionAvailableToScript l_start_timer;
+  static FunctionAvailableToScript l_move_camera;
+  static FunctionAvailableToScript l_restore_camera;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);
@@ -54,6 +56,7 @@ class MapScript {
   void event_map_started(void);
   void event_message_started(string MessageId);
   void event_entity_on_detector(Detector *detector, MapEntity *entity);
+  void event_camera_reached_target(void);
 };
 
 #endif

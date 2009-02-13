@@ -2,6 +2,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
+#include "MapScript.h"
 #include "entities/Hero.h"
 #include "movements/TargetMovement.h"
 
@@ -10,7 +11,7 @@
  * @param map the map
  */
 Camera::Camera(Map *map):
-  map(map), movement(NULL) {
+  map(map), fixed_on_hero(true), restoring(false), speed(12), movement(NULL) {
 
   position.x = 0;
   position.y = 0;
@@ -28,17 +29,17 @@ Camera::~Camera(void) {
  */
 void Camera::update(void) {
 
-  int x;
-  int y;
+  int x = position.x;
+  int y = position.y;
   const SDL_Rect *map_location = map->get_location();
 
   // if the camera is not moving, center it on the hero
-  if (!is_moving()) {
+  if (is_fixed_on_hero()) {
     Hero *hero = zsdx->game->get_hero();
     x = hero->get_x();
     y = hero->get_y();
   }
-  else {
+  else if (movement != NULL) {
     movement->update();
     x = movement->get_x();
     y = movement->get_y();
@@ -46,6 +47,14 @@ void Camera::update(void) {
     if (movement->is_finished()) {
       delete movement;
       movement = NULL;
+
+      if (restoring) {
+	restoring = false;
+	fixed_on_hero = true;
+      }
+      else {
+	map->get_script()->event_camera_reached_target();
+      }
     }
   }
 
@@ -64,11 +73,20 @@ SDL_Rect *Camera::get_position(void) {
 }
 
 /**
- * Returns whether the camera is moving.
- * @return true if the camera is moving
+ * Returns whether the camera is fixed on the hero,
+ * i.e. if it it not being moved elsewhere.
+ * @return true if the camera is fixed on the hero
  */
-bool Camera::is_moving(void) {
-  return movement != NULL;
+bool Camera::is_fixed_on_hero(void) {
+  return fixed_on_hero;
+}
+
+/**
+ * Sets the speed of the camera movement.
+ * @param speed speed of the movement
+ */
+void Camera::set_speed(int speed) {
+  this->speed = speed;
 }
 
 /**
@@ -77,9 +95,8 @@ bool Camera::is_moving(void) {
  * If there was already a movement, the new one replaces it.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point
- * @param speed speed of the movement
  */
-void Camera::set_movement(int target_x, int target_y, int speed) {
+void Camera::move(int target_x, int target_y) {
 
   if (movement != NULL) {
     delete movement;
@@ -91,4 +108,25 @@ void Camera::set_movement(int target_x, int target_y, int speed) {
 
   movement = new TargetMovement(target_x, target_y, speed);
   movement->set_position(position.x + 160, position.y + 120);
+
+  fixed_on_hero = false;
+}
+
+/**
+ * Makes the camera move towards an entity.
+ * The camera will be centered on the entity's origin.
+ * If there was already a movement, the new one replaces it.
+ * @param entity the target entity
+ */
+void Camera::move(MapEntity *entity) {
+  move(entity->get_x(), entity->get_y());
+}
+
+/**
+ * Moves the camera back to the hero.
+ * When the movement finishes, the camera follows the hero again.
+ */
+void Camera::restore(void) {
+  move(zsdx->game->get_hero());
+  restoring = true;
 }

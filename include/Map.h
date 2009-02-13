@@ -111,11 +111,12 @@ class Map {
   int get_width8(void);
   int get_height8(void);
 
-  // screen
+  // camera
   SDL_Surface *get_visible_surface(void);
   SDL_Rect *get_camera_position(void);
   void move_camera(int x, int y, int speed);
-  bool is_camera_moving(void);
+  void restore_camera(void);
+  bool is_camera_fixed_on_hero(void);
 
   // loading
   bool is_loaded(void);

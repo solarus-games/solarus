@@ -38,7 +38,7 @@ public class ActionEditTeletransporter extends MapEditorAction {
 
 	this.teletransporter = teletransporter;
 
-	this.subtypeBefore = teletransporter.getSubtype();
+	this.subtypeBefore = teletransporter.getSubtypeIndex();
 	this.subtypeAfter = subtype;
 
 	this.transitionBefore = teletransporter.getTransition();
@@ -55,7 +55,7 @@ public class ActionEditTeletransporter extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	teletransporter.setSubtype(subtypeAfter);
+	teletransporter.setSubtypeIndex(subtypeAfter);
 	teletransporter.setTransition(transitionAfter);
 	teletransporter.setDestinationMapId(destinationMapIdAfter);
 	teletransporter.setDestinationPointName(destinationPointNameAfter);
@@ -65,7 +65,7 @@ public class ActionEditTeletransporter extends MapEditorAction {
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	teletransporter.setSubtype(subtypeBefore);
+	teletransporter.setSubtypeIndex(subtypeBefore);
 	teletransporter.setTransition(transitionBefore);
 	teletransporter.setDestinationMapId(destinationMapIdBefore);
 	teletransporter.setDestinationPointName(destinationPointNameBefore);

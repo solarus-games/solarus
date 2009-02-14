@@ -34,7 +34,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
 	
 	this.destructibleItem = destructibleItem;
 
-	subtypeBefore = destructibleItem.getSubtype();
+	subtypeBefore = destructibleItem.getSubtypeIndex();
 	subtypeAfter = subtype;
 
 	pickableItemSubtypeBefore = destructibleItem.getPickableItemSubtype();
@@ -48,7 +48,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	destructibleItem.setSubtype(subtypeAfter);
+	destructibleItem.setSubtypeIndex(subtypeAfter);
 	destructibleItem.setPickableItem(pickableItemSubtypeAfter, pickableItemSavegameVariableAfter);
     }
 
@@ -56,7 +56,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	destructibleItem.setSubtype(subtypeBefore);
+	destructibleItem.setSubtypeIndex(subtypeBefore);
 	destructibleItem.setPickableItem(pickableItemSubtypeBefore, pickableItemSavegameVariableBefore);
     }
 }

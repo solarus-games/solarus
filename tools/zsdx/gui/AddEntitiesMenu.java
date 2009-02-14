@@ -47,7 +47,7 @@ public class AddEntitiesMenu extends JMenu {
 	item = new JMenu("Destructible item");
 	item.setMnemonic(KeyEvent.VK_E);
 	item.getAccessibleContext().setAccessibleDescription("Add a destructible item (pot, bush...)");
-	buildDestructibleItemsSubmenu((JMenu) item);
+	buildDestructibleItemSubmenu((JMenu) item);
 	add(item);
 
 	// chest
@@ -70,13 +70,20 @@ public class AddEntitiesMenu extends JMenu {
 	item.getAccessibleContext().setAccessibleDescription("Add an enemy");
 	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_ENEMY));
 	add(item);
+
+	// interactive entity
+	item = new JMenu("Interactive entity");
+	item.setMnemonic(KeyEvent.VK_I);
+	item.getAccessibleContext().setAccessibleDescription("Add an interactive entity");
+	buildInteractiveEntitySubmenu((JMenu) item);
+	add(item);
     }
 
     /**
-     * Buils a submenu allowing to add some types of pickable item
+     * Buils a submenu allowing to add some types of destructible items
      * @param submenu the submenu to fill
      */
-    private void buildDestructibleItemsSubmenu(JMenu submenu) {
+    private void buildDestructibleItemSubmenu(JMenu submenu) {
 
 	JMenuItem item;
 
@@ -98,6 +105,31 @@ public class AddEntitiesMenu extends JMenu {
 
 	item = new JMenuItem("Black stone");
 	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_BLACK));
+	submenu.add(item);
+    }
+
+    /**
+     * Buils a submenu allowing to add some types of interactive entities
+     * @param submenu the submenu to fill
+     */
+    private void buildInteractiveEntitySubmenu(JMenu submenu) {
+
+	JMenuItem item;
+
+	item = new JMenuItem("Custom");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.CUSTOM.ordinal()));
+	submenu.add(item);
+
+	item = new JMenuItem("Non playing character");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal()));
+	submenu.add(item);
+
+	item = new JMenuItem("Sign");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.SIGN.ordinal()));
+	submenu.add(item);
+
+	item = new JMenuItem("Water for bottle");
+	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.WATER_FOR_BOTTLE.ordinal()));
 	submenu.add(item);
     }
 

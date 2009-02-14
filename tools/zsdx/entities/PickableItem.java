@@ -9,7 +9,7 @@ import zsdx.Map;
  * Represents an item that Link can pick on the map,
  * such as a rupee, a heart, a key, etc.
  */
-public class PickableItem extends ActiveEntity {
+public class PickableItem extends DynamicEntity {
 
     /**
      * Name of this kind of entity.

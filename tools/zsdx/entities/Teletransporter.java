@@ -9,7 +9,7 @@ import zsdx.Map;
  * A teletransporter is an entity that moves Link to a destination point
  * on another map or the same map.
  */
-public class Teletransporter extends ActiveEntity {
+public class Teletransporter extends DynamicEntity {
 
     /**
      * Name of this kind of entity.
@@ -97,7 +97,7 @@ public class Teletransporter extends ActiveEntity {
 
 	// add the specific properties of a teletransporter
 	buff.append('\t');
-	buff.append(getSubtype());
+	buff.append(getSubtypeIndex());
 	buff.append('\t');
 	buff.append(getTransition());
 	buff.append('\t');
@@ -171,7 +171,7 @@ public class Teletransporter extends ActiveEntity {
      * Returns the subtype of this entity.
      * @return the subtype of this entity
      */
-    public int getSubtype() {
+    public int getSubtypeIndex() {
 	return subtype;
     }
 
@@ -180,7 +180,7 @@ public class Teletransporter extends ActiveEntity {
      * @param subtype the subtype of entity
      * @throws MapException if the subtype is not valid
      */
-    public void setSubtype(int subtype) throws MapException {
+    public void setSubtypeIndex(int subtype) throws MapException {
 
 	if (subtype != this.subtype) {
 

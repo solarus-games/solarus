@@ -24,7 +24,7 @@ public class ActionEditDestinationPoint extends MapEditorAction {
 
 	this.destinationPoint = destinationPoint;
 
-	this.subtypeBefore = destinationPoint.getSubtype();
+	this.subtypeBefore = destinationPoint.getSubtypeIndex();
 	this.subtypeAfter = subtype;
     }
 
@@ -32,13 +32,13 @@ public class ActionEditDestinationPoint extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	destinationPoint.setSubtype(subtypeAfter);
+	destinationPoint.setSubtypeIndex(subtypeAfter);
     }
 
     /**
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	destinationPoint.setSubtype(subtypeBefore);
+	destinationPoint.setSubtypeIndex(subtypeBefore);
     }
 }

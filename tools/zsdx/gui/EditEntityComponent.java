@@ -22,7 +22,8 @@ public class EditEntityComponent extends JPanel {
 	EditDestructibleItemComponent.class,
 	EditChestComponent.class,
 	EditJumpSensorComponent.class,
-	EditEnemyComponent.class
+	EditEnemyComponent.class,
+	EditInteractiveEntityComponent.class
     };
 
     /**
@@ -217,7 +218,13 @@ public class EditEntityComponent extends JPanel {
 	    map.getHistory().doAction(action);
 	}
 	catch (ZSDXException ex) {
-	    action.undo(); // undo the action because it may be partially done
+	    
+	    try {
+		action.undo(); // undo the action because it may be partially done
+	    }
+	    catch (ZSDXException ex2) {
+		
+	    }
 	    throw ex;      // throw the exception again
 	}
     }

@@ -65,7 +65,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 
 	Teletransporter teletransporter = (Teletransporter) entity;
 
-	subtypeField.setSubtype(teletransporter.getSubtype());
+	subtypeField.setSubtype(teletransporter.getSubtypeIndex());
 	transitionField.setTransition(teletransporter.getTransition());
 	mapField.setSelectedId(teletransporter.getDestinationMapId());
 	

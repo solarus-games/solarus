@@ -8,7 +8,7 @@ import zsdx.Map;
 /**
  * Represents an enemy placed on a map.
  */
-public class Enemy extends ActiveEntity {
+public class Enemy extends DynamicEntity {
 
     /**
      * Name of this kind of entity.
@@ -68,7 +68,7 @@ public class Enemy extends ActiveEntity {
     }
 
     /**
-     * Type of enemy
+     * Type of enemy.
      */
     private Subtype subtype;
 
@@ -98,8 +98,8 @@ public class Enemy extends ActiveEntity {
      * Creates a new enemy at the specified location.
      * By default, the subtype is a simple green soldier and the pickable item is random. 
      * @param map the map
-     * @param x x coordinate of the item
-     * @param y y coordinate of the item
+     * @param x x coordinate of the entity
+     * @param y y coordinate of the entity
      */
     public Enemy(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
@@ -111,7 +111,7 @@ public class Enemy extends ActiveEntity {
 	pickableItemSavegameVariable = -1;
 
 	setDirection(3);
-	Dimension size = sizes[subtype.ordinal()];
+	Dimension size = sizes[getSubtypeIndex()];
 	setSizeImpl(size.width, size.height);
     }
 
@@ -127,14 +127,13 @@ public class Enemy extends ActiveEntity {
 
 	// parse the fields
 	try {
-	    this.subtype = Subtype.values()[Integer.parseInt(tokenizer.nextToken())];
+	    Subtype subtype = Subtype.values()[Integer.parseInt(tokenizer.nextToken())];
 	    this.rank = Rank.values()[Integer.parseInt(tokenizer.nextToken())];
 	    this.savegameVariable = Integer.parseInt(tokenizer.nextToken());
 	    this.pickableItemSubtype = Integer.parseInt(tokenizer.nextToken());
 	    this.pickableItemSavegameVariable = Integer.parseInt(tokenizer.nextToken());
 
-	    Dimension size = sizes[subtype.ordinal()];
-	    setSizeImpl(size.width, size.height);
+	    setSubtype(subtype);
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -157,7 +156,7 @@ public class Enemy extends ActiveEntity {
 
 	// add the specific properties of an enemy
 	buff.append('\t');
-	buff.append(getSubtype());
+	buff.append(getSubtypeIndex());
 	buff.append('\t');
 	buff.append(getRank().ordinal());
 	buff.append('\t');
@@ -175,7 +174,7 @@ public class Enemy extends ActiveEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-	return origins[getSubtype()];
+	return origins[getSubtypeIndex()];
     }
 
     /**
@@ -198,7 +197,7 @@ public class Enemy extends ActiveEntity {
      * Returns the subtype of enemy.
      * @return the subtype of enemy
      */
-    public int getSubtype() {
+    public int getSubtypeIndex() {
 	if (subtype == null) {
 	    return 0;
 	}
@@ -206,10 +205,18 @@ public class Enemy extends ActiveEntity {
     }
 
     /**
+     * Returns the subtype of enemy.
+     * @return the subtype of enemy
+     */
+    public Subtype getSubtype() {
+	return subtype;
+    }
+
+    /**
      * Sets the subtype of this enemy.
      * @param subtype the subtype of enemy
      */
-    public void setSubtype(int subtype) {
+    public void setSubtypeIndex(int subtype) {
 	setSubtype(Subtype.values()[subtype]);
     }
 
@@ -219,6 +226,10 @@ public class Enemy extends ActiveEntity {
      */
     public void setSubtype(Subtype subtype) {
 	this.subtype = subtype;
+
+	Dimension size = sizes[getSubtypeIndex()];
+	setSizeImpl(size.width, size.height);
+
 	setChanged();
 	notifyObservers();
     }
@@ -294,7 +305,7 @@ public class Enemy extends ActiveEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	currentImageDescription = currentImageDescriptions[getSubtype()];
+	currentImageDescription = currentImageDescriptions[getSubtypeIndex()];
     }
 
     /**

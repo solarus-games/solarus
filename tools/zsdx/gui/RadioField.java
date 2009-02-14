@@ -39,7 +39,8 @@ public class RadioField extends JPanel {
     }
 
     /**
-     * Returns the index of the radio button currently selected.
+     * Returns the index of the radio button currently selected,
+     * or -1 if no button is selected
      * @return the index of the radio button currently selected
      */
     public int getSelectedIndex() {
@@ -53,7 +54,10 @@ public class RadioField extends JPanel {
 	    }
 	}
 
-	return i - 1;
+	if (found) {
+	    return i - 1;
+	}
+	return -1;
     }
 
     /**
@@ -62,6 +66,26 @@ public class RadioField extends JPanel {
      */
     public void setSelectedIndex(int index) {
 	this.buttons[index].setSelected(true);
+    }
+
+    /*
+     * Unselects all the radio buttons.
+     * (does not seem to work)
+    public void unselectAll() {
+	for (JRadioButton button: buttons) {
+	    button.setSelected(false);
+	}
+    }
+    */
+
+    /**
+     * Enables or disables the component.
+     * @param enable true to enable, false to disable
+     */
+    public void setEnabled(boolean enable) {
+	for (JRadioButton button: buttons) {
+	    button.setEnabled(enable);
+	}
     }
 
     /**

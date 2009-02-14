@@ -79,13 +79,6 @@ public class Dungeon {
     }
 
     /**
-     * Saves the floor elements in the dungeons.zsd file.
-     */
-    public void saveFloorElements() {
-	// TODO
-    }
-
-    /**
      * Saves the data of a map of this dungeon in file dungeons.zsd.
      * This function is called when a map has just been saved. It updates the dungeons.zsd file
      * with the new information of that map.
@@ -140,7 +133,7 @@ public class Dungeon {
 
 	MapEntities[] allEntities = map.getAllEntities();
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    for (ActiveEntity entity: allEntities[layer].getActiveEntities()) {
+	    for (DynamicEntity entity: allEntities[layer].getActiveEntities()) {
 
 		if (entity instanceof Chest) {
 		    Chest chest = (Chest) entity;
@@ -148,7 +141,17 @@ public class Dungeon {
 			    chest.getX(), chest.getY(), chest.getSavegameIndex(), chest.isBigChest());
 		    nbChestsSaved++;
 		}
-		// TODO: miniboss, boss
+		else if (entity instanceof Enemy) {
+		    Enemy enemy = (Enemy) entity;
+		    Enemy.Rank rank = enemy.getRank();
+		    
+		    if (rank != Enemy.Rank.NORMAL) {
+			saveDungeonElement(ini, map, "boss_" + nbBossesSaved,
+				enemy.getX(), enemy.getY(), enemy.getSavegameVariable(),
+				rank == Enemy.Rank.BOSS); 
+			nbBossesSaved++;
+		    }
+		}
 	    }
 	}
     }

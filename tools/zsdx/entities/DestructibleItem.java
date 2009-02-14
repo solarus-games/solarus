@@ -9,7 +9,7 @@ import zsdx.Map;
  * Represents an entity that Link can destroy (lift and throw or cut)
  * and that can hide a pickable item.
  */
-public class DestructibleItem extends ActiveEntity {
+public class DestructibleItem extends DynamicEntity {
 
     /**
      * Name of this kind of entity.
@@ -113,7 +113,7 @@ public class DestructibleItem extends ActiveEntity {
 
 	// add the specific properties of a destructible item
 	buff.append('\t');
-	buff.append(getSubtype());
+	buff.append(getSubtypeIndex());
 	buff.append('\t');
 	buff.append(getPickableItemSubtype());
 	buff.append('\t');
@@ -150,7 +150,7 @@ public class DestructibleItem extends ActiveEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	int x = getSubtype() * 16;
+	int x = getSubtypeIndex() * 16;
 	currentImageDescription.setX(x);
     }
 
@@ -158,7 +158,7 @@ public class DestructibleItem extends ActiveEntity {
      * Returns the subtype of this destructible item.
      * @return the subtype of destructible item
      */
-    public int getSubtype() {
+    public int getSubtypeIndex() {
 	return subtype;
     }
 
@@ -166,7 +166,7 @@ public class DestructibleItem extends ActiveEntity {
      * Sets the subtype of this destructible item.
      * @param subtype the subtype of destructible item
      */
-    public void setSubtype(int subtype) {
+    public void setSubtypeIndex(int subtype) {
 	this.subtype = subtype;
 	setChanged();
 	notifyObservers();

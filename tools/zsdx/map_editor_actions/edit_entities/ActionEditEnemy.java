@@ -41,7 +41,7 @@ public class ActionEditEnemy extends MapEditorAction {
 	
 	this.enemy = enemy;
 
-	subtypeBefore = Enemy.Subtype.values()[enemy.getSubtype()];
+	subtypeBefore = Enemy.Subtype.values()[enemy.getSubtypeIndex()];
 	subtypeAfter = subtype;
 
 	rankBefore = enemy.getRank();

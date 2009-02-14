@@ -16,10 +16,20 @@ public class AddEntitiesToolbar extends JComponent {
 	{DestinationPoint.INVISIBLE, DestinationPoint.GRAY}, // destination point
 	{Teletransporter.INVISIBLE, Teletransporter.YELLOW}, // teletransporter
 	{0}, // pickable item
-	{DestructibleItem.GRASS, DestructibleItem.BUSH, DestructibleItem.POT}, // destructible item
+	{
+	    DestructibleItem.GRASS,
+	    DestructibleItem.BUSH,
+	    DestructibleItem.POT,
+	    DestructibleItem.STONE_SMALL_WHITE
+	}, // destructible item
 	{0}, // chest
 	{0}, // jump sensor
 	{Enemy.Subtype.SIMPLE_GREEN_SOLDIER.ordinal()}, // enemy
+	{
+	    InteractiveEntity.Subtype.CUSTOM.ordinal(), 
+	    InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal(),
+	    InteractiveEntity.Subtype.SIGN.ordinal()
+	}, // interactive entity
     };
 
     /**

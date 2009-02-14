@@ -7,7 +7,7 @@ import zsdx.Map;
 /**
  * Represents a chest placed on the map.
  */
-public class Chest extends ActiveEntity {
+public class Chest extends DynamicEntity {
 
     /**
      * Name of this kind of entity.
@@ -191,7 +191,7 @@ public class Chest extends ActiveEntity {
     public int getType() {
 	return ENTITY_CHEST;
     }
-    
+
     /**
      * Returns whether this entity is an obstacle.
      * @return true

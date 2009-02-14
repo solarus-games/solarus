@@ -23,7 +23,7 @@ import zsdx.Map;
  *     public YourEntity(Map map, StringTokenizer tokenizer) throws ZSDXException:
  *         creates an existing entity from a string
  * - Create the toString() method: public String toString()
- *     to export the entity to a string
+ *     to export the entity into a string
  * - Define the getType() method: public int getType()
  *     which returns the entity type number.
  * - Redefine the getObstacle() method: public int getObstacle()
@@ -51,7 +51,7 @@ import zsdx.Map;
  * - If your entity is not drawn from an image file but in a more complex way,
  *     you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *     public abstract void paint(Graphics g, double zoom, boolean showTransparency).
- * - Redefine if necessary the getSubtype() method: public int getSubtype()
+ * - Redefine if necessary the getSubtypeIndex() method: public int getSubtypeIndex()
  *     which returns the entity current subtype (for entities that have a notion of subtype).
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
@@ -137,7 +137,8 @@ public abstract class MapEntity extends Observable {
     public static final int ENTITY_CHEST = 5;
     public static final int ENTITY_JUMP_SENSOR = 6;
     public static final int ENTITY_ENEMY = 7;
-    public static final int ENTITY_NB_TYPES = 8;
+    public static final int ENTITY_INTERACTIVE = 8;
+    public static final int ENTITY_NB_TYPES = 9;
 
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {
@@ -148,7 +149,8 @@ public abstract class MapEntity extends Observable {
 	DestructibleItem.class,
 	Chest.class,
 	JumpSensor.class,
-	Enemy.class
+	Enemy.class,
+	InteractiveEntity.class
     };
 
     /**
@@ -198,7 +200,8 @@ public abstract class MapEntity extends Observable {
 	    int y = Integer.parseInt(tokenizer.nextToken());
 
 	    setLayer(layer);
-	    setPositionInMap(x, y);
+	    positionInMap.x = x; // for now the origin is (0,0)
+	    positionInMap.y = y;
 
 	    int width = 0;
 	    int height = 0;
@@ -243,7 +246,7 @@ public abstract class MapEntity extends Observable {
 	    Object[] paramValues = {map, 0, 0};
 	    Constructor<?> constructor = entityClass.getConstructor(paramTypes);
 	    entity = (MapEntity) constructor.newInstance(paramValues);
-	    entity.setSubtype(entitySubtype);
+	    entity.setSubtypeIndex(entitySubtype);
 	    entity.initializeImageDescription();
 	}
 	catch (NoSuchMethodException ex) {
@@ -255,7 +258,12 @@ public abstract class MapEntity extends Observable {
 	    ex.getCause().printStackTrace();
 	    System.exit(1);
 	}
-	catch (Exception ex) {
+	catch (InstantiationException ex) {
+	    System.err.println("Cannot create the entity: " + ex.getMessage());
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+	catch (IllegalAccessException ex) {
 	    System.err.println("Cannot create the entity: " + ex.getMessage());
 	    ex.printStackTrace();
 	    System.exit(1);
@@ -289,6 +297,9 @@ public abstract class MapEntity extends Observable {
 	    constructor = entityClass.getConstructor(Map.class, StringTokenizer.class);
 	    entity = (MapEntity) constructor.newInstance(map, tokenizer);
 	    entity.updateImageDescription();
+
+	    // now the origin is valid
+	    entity.setPositionInMap(entity.positionInMap.x, entity.positionInMap.y);
 	}
 	catch (NoSuchMethodException ex) {
 	    System.err.println("Unexpected error: " + ex.getMessage());
@@ -305,8 +316,11 @@ public abstract class MapEntity extends Observable {
 	catch (InvocationTargetException ex) {
 	    
 	    Throwable cause = ex.getCause();
-	    
-	    if (cause instanceof RuntimeException) {
+
+	    if (cause instanceof Error) {
+		throw (Error) cause;
+	    }
+	    else if (cause instanceof RuntimeException) {
 		throw (RuntimeException) cause;
 	    }
 	    else {
@@ -476,7 +490,7 @@ public abstract class MapEntity extends Observable {
      * @throws MapException if the coordinates of the top-left corner are not divisible by 8
      */
     public void setPositionInMap(int x, int y) throws MapException {
-	
+
 	// calculate the new coordinates of the top-left corner
 	Point origin = getOrigin();
 	setPositionTopLeft(x - origin.x, y - origin.y);
@@ -1054,7 +1068,7 @@ public abstract class MapEntity extends Observable {
      * This notion of subtype is used by the toolbar that adds entities with an initial subtype.
      * @return the subtype
      */
-    public int getSubtype() {
+    public int getSubtypeIndex() {
 	return 0;
     }
 
@@ -1065,7 +1079,7 @@ public abstract class MapEntity extends Observable {
      * @param subtype the subtype
      * @throws MapException if the subtype is not valid
      */
-    public void setSubtype(int subtype) throws MapException {
+    public void setSubtypeIndex(int subtype) throws MapException {
 
     }
 }

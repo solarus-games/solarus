@@ -8,7 +8,7 @@ import zsdx.Map;
 /**
  * Represents a sensor that makes the hero jump towards a direction.
  */
-public class JumpSensor extends ActiveEntity {
+public class JumpSensor extends DynamicEntity {
 
     /**
      * Name of this kind of entity.

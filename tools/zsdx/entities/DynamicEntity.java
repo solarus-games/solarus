@@ -4,9 +4,9 @@ import java.util.StringTokenizer;
 import zsdx.*;
 
 /**
- * This class represents an interactive map entity, such as a chest, a door, a switch...
+ * This class represents a non-static map entity, such as a chest, a door, a switch...
  */
-public abstract class ActiveEntity extends MapEntity {
+public abstract class DynamicEntity extends MapEntity {
 
     /**
      * Creates a new interactive entity.
@@ -17,11 +17,11 @@ public abstract class ActiveEntity extends MapEntity {
      * @param width width of the entity
      * @param height height of the entity
      */
-    protected ActiveEntity(Map map, int layer, int x, int y,
-				int width, int height) {
+    protected DynamicEntity(Map map, int layer, int x, int y,
+	    int width, int height) {
 	super(map, layer, x, y, width, height, true);
     }
-    
+
     /**
      * Creates an existing interactive entity from a string.
      * @param map the map
@@ -29,9 +29,7 @@ public abstract class ActiveEntity extends MapEntity {
      * but not yet the common properties
      * @throws ZSDXException if there is a syntax error in the string
      */
-    public ActiveEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
+    public DynamicEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	super(map, tokenizer);
     }
-
-
 }

@@ -63,7 +63,7 @@ public class EditDestinationPointComponent extends EditEntityComponent {
 	boolean changeDirection = destinationPoint.getDirection() != -1;
 	directionField.setEnabled(changeDirection);
 	changeDirectionField.setSelected(changeDirection);
-	subtypeField.setSelectedIndex(destinationPoint.getSubtype());
+	subtypeField.setSelectedIndex(destinationPoint.getSubtypeIndex());
     }
 
     /**

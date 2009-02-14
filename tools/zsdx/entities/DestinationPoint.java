@@ -8,7 +8,7 @@ import zsdx.Map;
 /**
  * Represents the destination point of a teletransporter in a map.
  */
-public class DestinationPoint extends ActiveEntity {
+public class DestinationPoint extends DynamicEntity {
 
     /**
      * Name of this kind of entity.
@@ -166,7 +166,7 @@ public class DestinationPoint extends ActiveEntity {
      * Returns the subtype of this entity.
      * @return the subtype of this entity
      */
-    public int getSubtype() {
+    public int getSubtypeIndex() {
 	return subtype;
     }
 
@@ -175,7 +175,7 @@ public class DestinationPoint extends ActiveEntity {
      * @param subtype the subtype of entity
      * @throws MapException if the subtype is not valid
      */
-    public void setSubtype(int subtype) throws MapException {
+    public void setSubtypeIndex(int subtype) throws MapException {
 
 	if (subtype != this.subtype) {
 

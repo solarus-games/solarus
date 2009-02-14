@@ -1,10 +1,10 @@
 package zsdx.gui;
 
 import javax.swing.*;
-import zsdx.entities.*;
+import zsdx.entities.Enemy.Subtype;
 
 /**
- * A combo box to select a type of destructible item.
+ * A combo box to select a subtype of enemy.
  */
 public class EnemyChooser extends JComboBox {
 
@@ -14,7 +14,7 @@ public class EnemyChooser extends JComboBox {
     public EnemyChooser() {
 	super();
 
-	for (Enemy.Subtype subtype: Enemy.Subtype.values()) {
+	for (Subtype subtype: Subtype.values()) {
 	    addItem(subtype.name());
 	}
     }
@@ -23,23 +23,15 @@ public class EnemyChooser extends JComboBox {
      * Returns the subtype of enemy currently selected.
      * @return the subtype of enemy currently selected
      */
-    public Enemy.Subtype getEnemySubtype() {
-	return Enemy.Subtype.valueOf((String) getSelectedItem());
+    public Subtype getEnemySubtype() {
+	return Subtype.valueOf((String) getSelectedItem());
     }
 
     /**
      * Sets the subtype of enemy selected.
      * @param type the subtype of enemy to make selected
      */
-    public void setEnemySubtype(Enemy.Subtype subtype) {
+    public void setEnemySubtype(Subtype subtype) {
 	setSelectedItem(subtype.name());
-    }
-
-    /**
-     * Sets the subtype of enemy selected.
-     * @param type the subtype of enemy to make selected
-     */
-    public void setEnemySubtype(int subtype) {
-	setSelectedItem(Enemy.Subtype.values()[subtype]);
     }
 }

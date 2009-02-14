@@ -23,7 +23,7 @@ class InteractiveEntity: public Detector {
    */
   enum SpecialInteraction {
 
-    NORMAL,                /**< nothing special: just displays the message specified or calls the script */
+    CUSTOM,                /**< no predetermined behavior: just displays the message specified or calls the script */
     NON_PLAYING_CHARACTER, /**< same thing except that the script can make the engine move an NPC */
     SIGN,                  /**< a sign with a message (TODO to make it destructible,
 			    * an instance of Sign is actually created) */

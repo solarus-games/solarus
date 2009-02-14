@@ -21,6 +21,7 @@ SaniOkh (testera et donnerait des idées, cf MP)
 Mooglwy (version Mac)
 Mymy (edelweiss, maps)
 Neovyze (artworks, notice)
+Newlink (plein de graphismes faits pour ZMC)
 
 Algo Scale2X
 
@@ -34,8 +35,8 @@ Julien Clément (éditeur de maps)
 Binbin (maps, donjon ou phase inédite, trailer)
 Bruno de C (affiche, dessins)
 Morwenn (une musique)
-daru13 : idées de boss
-Joker : graphismes (boss)
+daru13 : idées de boss (voir MP), graphismes non pixel-art sauf décors
+Joker : graphismes (tileset de forêt pour niveau 3)
 
 Candidatures a priori refusées :
 

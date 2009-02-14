@@ -38,14 +38,15 @@ InteractiveEntity::InteractiveEntity(string name, Layer layer, int x, int y,
 
   switch (special_interaction) {
 
-  case NORMAL:
+  case CUSTOM:
     initialize_sprite(sprite_name, initial_direction);
     set_size(16, 16);
     break;
 
   case NON_PLAYING_CHARACTER:
     initialize_sprite(sprite_name, initial_direction);
-    set_rectangle_from_sprite();
+    set_size(16, 24);
+    set_origin(8, 21);
     break;
 
   case SIGN:

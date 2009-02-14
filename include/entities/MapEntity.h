@@ -29,7 +29,8 @@ class MapEntity {
     CHEST                     = 5,    /**< a chest (small or big) with a treasure */
     JUMP_SENSOR               = 6,    /**< a sensor that makes the hero jump in a direction */
     ENEMY                     = 7,    /**< an enemy */
-    NPC                       = 8,    /**< a non-playing character */
+    INTERACTIVE_ENTITY        = 8,    /**< an entity the hero can interact with by pressing the action key
+				       * in front of it (typically an NPC) */
 
     HERO                      = 1000, /**< the hero */
     CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
@@ -165,6 +166,7 @@ class MapEntity {
   // sprites
   Sprite * get_sprite(int index);
   Sprite * get_sprite(void);
+  bool has_sprite(void);
 
   // movement
   Movement * get_movement(void);

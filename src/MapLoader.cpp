@@ -165,6 +165,19 @@ void MapLoader::load_map(Map *map) {
 	break;
       }
 
+    case MapEntity::INTERACTIVE_ENTITY:
+      {
+	int special_interaction;
+	SpriteAnimationSetId sprite_name;
+	MessageId message_to_show;
+
+	iss >> entity_name >> direction >> special_interaction >> sprite_name >> message_to_show;
+	entities->add_interactive_entity(entity_name, (MapEntity::Layer) layer, x, y,
+					 (InteractiveEntity::SpecialInteraction) special_interaction,
+					 sprite_name, direction, message_to_show);
+	break;
+      }
+
     default:
       DIE("Error while loading map '" << id << "': unknown entity type '" << entity_type << "'");
 

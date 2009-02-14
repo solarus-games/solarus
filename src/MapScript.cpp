@@ -477,3 +477,22 @@ void MapScript::event_entity_on_detector(Detector *detector, MapEntity *entity) 
 void MapScript::event_camera_reached_target(void) {
   call_lua_function("event_camera_reached_target");
 }
+
+
+/**
+ * Notifies the script that the player has just pressed the action
+ * key in front an interactive entity.
+ * @param entity_name name of the interactive entity
+ */
+void MapScript::event_interaction(string entity_name) {
+  call_lua_function("event_interaction", 1, entity_name.c_str());
+}
+
+/**
+ * Notifies the script that the player has just pressed the action
+ * key in front an NPC.
+ * @param entity_name name of the NPC
+ */
+void MapScript::event_npc_dialog(string npc_name) {
+  call_lua_function("event_npc_dialog", 1, npc_name.c_str());
+}

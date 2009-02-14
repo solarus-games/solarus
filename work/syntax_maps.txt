@@ -207,3 +207,27 @@ rank indique si l'ennemi est un ennemi normal (0), un mini-boss (1) ou un boss (
 savegame_variable est réservé aux ennemis qu'on ne peut tuer qu'une fois dans le jeu. Il indique le numéro de la variable booléenne qui sauvegarde l'état du monstre. Pour les ennemis habituels, on laisse -1.
 
 pickable_item est un numéro indiquant un éventuel item (coeur, rubis...) qui apparaît lorsque l'ennemi est tué. Comme précédemment, pickable_item_savegame_variable est un numéro optionnel qui permet de sauvegarder le fait que le joueur possède un item que l'on ne peut obtenir qu'une seule fois.
+
+
+InteractiveEntity (8)
+
+Une entité interactive est une entité avec laquelle le héros peut interagir en appuyant sur la touche action lorsqu'il se trouve juste devant.
+Il peut lui parler, lire ce qu'elle indique ou encore agir en la touchant.
+Elle peut avoir un sprite ou non. En général, l'action déclenche l'affichage d'un message spécifié. Mais on peut choisir de remplacer ce message par un appel au script.
+
+Une interaction a une direction (celle du sprite) et un identificateur. Sa taille est imposée par son type d'interaction.
+
+Syntaxe de la partie spécifique pour une entité interactive :
+
+special_interaction     sprite_name     message_id
+
+sprite_name est le nom du sprite de cette entité (ou "_none" pour que l'entité soit invisible)
+
+message_id est l'identifiant d'un message qui s'affiche lorsque le joueur interagit avec cette entité. La valeur "_none" signifie qu'au lieu d'afficher un message, le script est appelé.
+
+special_interaction est un numéro indiquant s'il s'agit d'une interaction spéciale :
+
+0 : interaction classique (se contente d'afficher le message spécifié ou d'appeler le script)
+1 : personnage non joueur (même chose sauf qu'il y a un sprite obligatoire, avec 4 directions et les animations "stopped" et éventuellement "walking")
+2 : pancarte (direction et sprite_name sont alors ignorés car imposés par le moteur)
+3 : de l'eau que le joueur peut mettre dans un flacon (message_id alors ignoré car le comportement est géré par le moteur)

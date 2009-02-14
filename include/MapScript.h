@@ -55,9 +55,11 @@ class MapScript {
 
   // C++ functions that call script functions
   void event_map_started(void);
-  void event_message_started(string MessageId);
+  void event_message_started(MessageId MessageId);
   void event_entity_on_detector(Detector *detector, MapEntity *entity);
   void event_camera_reached_target(void);
+  void event_interaction(string entity_name);
+  void event_npc_dialog(string npc_name);
 };
 
 #endif

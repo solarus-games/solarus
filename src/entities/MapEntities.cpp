@@ -483,6 +483,26 @@ void MapEntities::remove_enemy(Enemy *enemy) {
 }
 
 /**
+ * Creates an interactive entity on the map.
+ * See the documentation of class InteractiveEntity for the meaning of each parameter.
+ */
+void MapEntities::add_interactive_entity(string name, MapEntity::Layer layer, int x, int y,
+			    InteractiveEntity::SpecialInteraction special_interaction,
+			    SpriteAnimationSetId sprite_name, int initial_direction,
+			    MessageId message_to_show) {
+
+  InteractiveEntity *entity = new InteractiveEntity(name, layer, x, y, special_interaction,
+						    sprite_name, initial_direction, message_to_show);
+
+  if (entity->has_sprite()) {
+    sprite_entities[layer].push_back(entity);
+  }
+  detectors.push_back(entity);
+  obstacle_entities[layer].push_back(entity);
+  add_entity(entity);
+}
+
+/**
  * Removes and destroys the entities placed in the entities_to_remove list. 
  */
 void MapEntities::remove_marked_entities(void) {

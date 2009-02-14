@@ -1,4 +1,3 @@
-- Son d'un vase cassé : pas assez fort
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
@@ -14,7 +13,6 @@
 - Prochaines grandes étapes :
   - portes
   - pnj
-  - caméra
 
 ----------------
 Planning prévisionnel
@@ -31,7 +29,7 @@ Non mentionné :
 [ok] Dimanche 12 octobre 2008 : menu de pause fini, touches configurables, sauvegarde depuis le menu
 [ok] Dimanche 19 octobre 2008 : collisions au pixel près, couper les buissons avec l'épée
 [ok] Dimanche 26 octobre 2008 : monde extérieur
-[en cours] Dimanche 2 novembre 2008 : combats (un type d'ennemi)
+[ok] Dimanche 2 novembre 2008 : combats (un type d'ennemi)
 [ok / en cours] Dimanche 9 novembre 2008 : scripts et PNJ
 Dimanche 16 novembre 2008 : maison des rubis
 Dimanche 23 novembre 2008 : autres maisons et grottes
@@ -40,14 +38,6 @@ Dimanche 7 décembre 2008 : combats (autres types d'ennemis), objets à finir (b
 Dimanche 14 décembre 2008 : donjon 1 fini, démo finie, début des tests
 Dimanche 21 décembre 2008 : cryptage des fichiers
 Mercredi 24 décembre 2008 : sortie de la démo jusqu'à la fin du donjon 1
-
-----------------
-Herbe sous Link
-----------------
-
-Dans la classe Link, mettre une info qui dit ce qui est affiché sous Link (cela pourra aussi être de l'eau).
-Dans le update() de Link, tester en permanence si l'origine de Link est sur de l'herbe, tout comme on teste en permanence si le facing point est sur un objet qui y réagit.
-
 
 ----------------
 Archivage des fichiers de données
@@ -71,6 +61,24 @@ Mode release :
 - Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence
 - Cacher le mode Rêves de Solarus s'il n'est pas encore fait
 - Compiler en mode release (pas -g)
+
+---
+PNJ
+---
+
+Il y a les PNJ, les pancartes et de manière générale tout ce qui affiche une icône d'action et qui 
+appelle le script lorsque le joueur appuie sur la touche action devant.
+
+- pancarte = destructible item dans le moteur mais pas dans l'éditeur ?
+  déclenche l'affichage d'un message donné (comment spécifier lequel ?)
+
+- classe PNJ générale avec un subtype (hérite de Detector): InteractiveEntity ? Interactive ?
+  - obstacle sans comportement prédéfini, a éventuellement un sprite, déclenche event_look_entity
+    (peut servir pour les portes d'entrées de grottes fermées à clé, parler à un PNJ de loin, indices muraux, etc)
+  - PNJ : affiche l'icône Parler, a un sprite, déclenche event_talk_with_pnj
+  - pancarte : affiche l'icône Voir, a l'image d'une pancarte, déclenche event_look_entity ? crée un destructible item dans le jeu ?
+  - eau à mettre dans flacon : affiche l'icône Voir, est invisible, déclenche le trésor de l'eau dans un flacon
+
 
 ----------------------
 - Compléter l'éditeur de maps et de tilesets :

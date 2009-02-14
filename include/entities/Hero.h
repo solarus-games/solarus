@@ -195,7 +195,6 @@ class Hero: public MapEntity {
 
   // properties
   EntityType get_type(void);
-  bool is_hero(void);
 
   // movement
   PlayerMovement * get_normal_movement(void);

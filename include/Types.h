@@ -117,6 +117,7 @@ class DestructibleItem;
 class Chest;
 class JumpSensor;
 class Enemy;
+class InteractiveEntity;
 
 // tiles
 class Tileset;

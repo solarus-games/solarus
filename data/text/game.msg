@@ -1,3 +1,8 @@
+[sign_village]
+#       |-----------------------|
+line1 = "       Bienvenue"
+line2 = "     au Hameau Kogo"
+
 [msg]
 #       |-----------------------|
 icon = -1

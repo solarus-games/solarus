@@ -74,15 +74,6 @@ MapEntity::EntityType Hero::get_type() {
 }
 
 /**
- * Returns whether this entity is the hero
- * controlled by the player.
- * @return true
- */
-bool Hero::is_hero(void) {
-  return true;
-}
-
-/**
  * Returns the 8-direction movement controlled by the player,
  * even if it is not the current movement of the hero.
  * @return the player's movement

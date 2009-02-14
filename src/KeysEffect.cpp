@@ -77,13 +77,15 @@ void KeysEffect::restore_action_key_effect(void) {
 /**
  * Returns whether the action key is currently taking effect
  * on the entity the hero is facing.
- * Such action key effects are ACTION_KEY_LOOK, ACTION_KEY_OPEN and ACTION_KEY_LIFT.
+ * Such action key effects are ACTION_KEY_LOOK, ACTION_KEY_OPEN,
+ * ACTION_KEY_LIFT and ACTION_KEY_SPEAK.
  * @return true if the action key is acting on the facing entity
  */
 bool KeysEffect::is_action_key_acting_on_facing_entity(void) {
   return action_key_effect == ACTION_KEY_LOOK
     || action_key_effect == ACTION_KEY_OPEN
-    || action_key_effect == ACTION_KEY_LIFT;
+    || action_key_effect == ACTION_KEY_LIFT
+    || action_key_effect == ACTION_KEY_SPEAK;
 }
 
 // sword key

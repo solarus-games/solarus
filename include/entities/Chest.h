@@ -2,7 +2,7 @@
 #define ZSDX_CHEST_H
 
 #include "Common.h"
-#include "Detector.h"
+#include "entities/Detector.h"
 
 /**
  * Represents a chest on a map.

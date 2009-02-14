@@ -265,10 +265,10 @@ int MapEntity::get_direction(void) {
 /**
  * Returns whether this entity is the hero
  * controlled by the player.
- * @return false by default
+ * @return true if this entity is the hero
  */
 bool MapEntity::is_hero(void) {
-  return false;
+  return get_type() == HERO;
 }
 
 /**
@@ -325,6 +325,14 @@ void MapEntity::set_rectangle_from_sprite(void) {
  */
 Sprite * MapEntity::get_sprite(int index) {
   return sprites[index];
+}
+
+/**
+ * Returns whether the entity has at least one sprite.
+ * @return true if the entity has at least one sprite.
+ */
+bool MapEntity::has_sprite(void) {
+  return sprites.size() != 0;
 }
 
 /**

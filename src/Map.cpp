@@ -302,7 +302,7 @@ void Map::move_camera(int x, int y, int speed) {
  * Makes the camera move back to the hero.
  */
 void Map::restore_camera(void) {
-  camera->move(zsdx->game->get_hero());
+  camera->restore();
 }
 
 /**

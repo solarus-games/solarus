@@ -14,6 +14,7 @@ class Timer {
   const char *callback_name;     /**< name of the script function to call after the delay */
 
   Uint32 expiration_date;        /**< date when the timer is finished */
+  bool finished;                 /**< indicates that the timer is finished */
 
   bool suspended;                /**< indicates whether the timer is suspended */
   Uint32 when_suspended;         /**< indicates when the timer was suspended */

@@ -38,11 +38,13 @@ void Camera::update(void) {
     Hero *hero = zsdx->game->get_hero();
     x = hero->get_x();
     y = hero->get_y();
+    x = MIN(MAX(x - 160, 0), map_location->w - 320);
+    y = MIN(MAX(y - 120, 0), map_location->h - 240);
   }
   else if (movement != NULL) {
     movement->update();
-    x = movement->get_x();
-    y = movement->get_y();
+    x = movement->get_x() - 160;
+    y = movement->get_y() - 120;
 
     if (movement->is_finished()) {
       delete movement;
@@ -58,8 +60,8 @@ void Camera::update(void) {
     }
   }
 
-  position.x = MIN(MAX(x - 160, 0), map_location->w - 320);
-  position.y = MIN(MAX(y - 120, 0), map_location->h - 240);
+  position.x = x;
+  position.y = y;
 }
 
 /**

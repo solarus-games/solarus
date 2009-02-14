@@ -15,8 +15,11 @@ class TargetMovement: public Movement {
   int target_y;
   int sign_x;   /**< sign of the x movement (1: right, -1: left) */
   int sign_y;   /**< sign of the y movement (1: up, -1: down) */
-
   int speed;
+
+  Uint32 next_recomputation_date;
+
+  void recompute_movement(void);
 
  public:
 

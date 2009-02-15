@@ -103,6 +103,7 @@ void Hero::update_ground(void) {
  * a ground can be displayed under him.
  */
 bool Hero::is_ground_visible(void) {
+
   return ground != Map::NORMAL_GROUND
     && ground != Map::DEEP_WATER
     && state != PLUNGING
@@ -226,7 +227,7 @@ void Hero::start_sword_loading(void) {
  * The state must be SWORD_SWINGING.
  */
 void Hero::update_sword_swinging(void) {
-  
+
   if (tunic_sprite->is_animation_finished()) {
 
     // if the player is still pressing the sword key, start loading the sword
@@ -343,7 +344,7 @@ void Hero::start_throwing(void) {
  * @param suspended true to suspend the game, false to resume it
  */
 void Hero::set_suspended_carried_items(bool suspended) {
-  
+
   if (lifted_item != NULL) {
     lifted_item->set_suspended(suspended);
   }
@@ -380,7 +381,7 @@ void Hero::display_carried_items(void) {
   if (lifted_item != NULL) {
     lifted_item->display_on_map();
   }
-  
+
   if (thrown_item != NULL) {
     thrown_item->display_on_map();
   }
@@ -444,7 +445,7 @@ void Hero::freeze(void) {
 
 /**
  * Makes the hero brandish a treasure.
- * @param treasure the treasure to give him (you have to delete it after the hero brandishes it) 
+ * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
  */
 void Hero::give_treasure(Treasure *treasure) {
 
@@ -510,7 +511,7 @@ void Hero::display_treasure(void) {
 void Hero::start_spin_attack(void) {
   set_state(SPIN_ATTACK);
   sword_loaded = false;
-  
+
   // play the sound
   ResourceManager::get_sound("sword_spin_attack_release")->play();
 
@@ -529,7 +530,7 @@ void Hero::start_spin_attack(void) {
  * The state must be SPIN_ATTACK.
  */
 void Hero::update_spin_attack(void) {
-  
+
   if (tunic_sprite->is_animation_finished()) {
     start_free();
   }
@@ -676,7 +677,7 @@ void Hero::collision_with_enemy(Enemy *enemy) {
  * @param sprite the hero sprite that collides with the enemy
  */
 void Hero::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
-  
+
   if (sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
     enemy->hurt(Enemy::ATTACK_SWORD, this);
   }

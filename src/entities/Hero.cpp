@@ -43,7 +43,7 @@ Hero::Hero(Equipment *equipment):
   end_blink_date(0), counter(0), next_counter_date(0),
   walking(false), pushing_direction_mask(0xFFFF),
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
-  last_ground_x(0), last_ground_y(0), ground(Map::NORMAL_GROUND) {
+  last_ground_x(0), last_ground_y(0), ground(Map::NORMAL_GROUND), next_ground_sound_date(0) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -176,7 +176,7 @@ void Hero::set_map(Map *map) {
   MapEntity::set_map(map);
 
   get_normal_movement()->set_map(map);
-  
+
   stop_displaying_sword();
 
   // remove the "throw" (or other) icon
@@ -460,7 +460,7 @@ void Hero::movement_just_changed(void) {
     Uint16 direction_mask = get_normal_movement()->get_direction_mask();
     int old_animation_direction = tunic_sprite->get_current_direction();
     int animation_direction = animation_directions[direction_mask];
-      
+
     if (animation_direction != old_animation_direction
 	&& animation_direction != -1
 	&& !is_direction_locked()) {
@@ -482,7 +482,7 @@ void Hero::movement_just_changed(void) {
     if (started && !walking) {
       set_animation_walking();
     }
-      
+
     // walking to stopped
     else if (!started && walking) {
       set_animation_stopped();
@@ -497,7 +497,7 @@ void Hero::movement_just_changed(void) {
 
 /**
  * This function is called when the hero's position is changed,
- * or when his direction changes. 
+ * or when his direction changes.
  */
 void Hero::just_moved(void) {
 
@@ -555,7 +555,7 @@ void Hero::set_facing_entity(Detector *detector) {
 bool Hero::is_facing_obstacle(void) {
 
   SDL_Rect facing_point = get_facing_point();
-  return map->collision_with_obstacles(layer, facing_point.x, facing_point.y, this);   
+  return map->collision_with_obstacles(layer, facing_point.x, facing_point.y, this);
 }
 
 /**
@@ -579,7 +579,7 @@ void Hero::update_position(void) {
     // try to move the hero
     get_movement()->update();
   }
-  
+
   // the rest of the function handles the "pushing" animation
 
   Uint16 direction_mask = get_normal_movement()->get_direction_mask();
@@ -603,7 +603,7 @@ void Hero::update_position(void) {
 	counter++;
 	next_counter_date += 100;
       }
-      
+
       if (counter >= 8) {
 	start_pushing(); // start animation "pushing" when the counter gets to 8
       }

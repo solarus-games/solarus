@@ -223,7 +223,7 @@ void Hero::update_sprites(void) {
   if (is_shield_visible()) {
     shield_sprite->update();
     if (walking) {
-      shield_sprite->set_current_frame(tunic_sprite->get_current_frame());    
+      shield_sprite->set_current_frame(tunic_sprite->get_current_frame());
     }
   }
 
@@ -272,7 +272,7 @@ void Hero::restart_animation(void) {
 void Hero::set_animation_stopped(void) {
 
   int direction = tunic_sprite->get_current_direction();
-  
+
   switch (get_state()) {
 
   case FREE:
@@ -291,14 +291,14 @@ void Hero::set_animation_stopped(void) {
     }
 
     break;
-    
+
   case SWORD_LOADING:
 
     tunic_sprite->set_current_animation("sword_loading_stopped");
 
     sword_sprite->set_current_animation("sword_loading_stopped");
     sword_sprite->set_current_direction(direction);
-    
+
     sword_stars_sprite->set_current_animation("loading");
     sword_stars_sprite->set_current_direction(direction);
 
@@ -337,17 +337,17 @@ void Hero::set_animation_stopped(void) {
 void Hero::set_animation_walking(void) {
 
   int direction = tunic_sprite->get_current_direction();
-  
+
   switch (get_state()) {
-    
+
   case FREE:
-    
+
     stop_displaying_sword();
 
     if (equipment->has_shield()) {
 
       tunic_sprite->set_current_animation("walking_with_shield");
-      
+
       shield_sprite->set_current_animation("walking");
       shield_sprite->set_current_direction(direction);
     }
@@ -358,7 +358,7 @@ void Hero::set_animation_walking(void) {
     break;
 
   case SWORD_LOADING:
-    
+
     tunic_sprite->set_current_animation("sword_loading_walking");
 
     sword_sprite->set_current_animation("sword_loading_walking");
@@ -403,7 +403,7 @@ void Hero::set_animation_walking(void) {
 void Hero::set_animation_sword(void) {
 
   int direction = tunic_sprite->get_current_direction();
-  
+
   tunic_sprite->set_current_animation("sword");
   tunic_sprite->restart_animation();
 

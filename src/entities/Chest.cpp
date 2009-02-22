@@ -10,6 +10,8 @@
 #include "Sound.h"
 #include "DungeonEquipment.h"
 #include "Savegame.h"
+#include "Map.h"
+#include "MapScript.h"
 
 /**
  * Creates a new chest with the specified treasure.
@@ -140,9 +142,13 @@ void Chest::update(void) {
 	  zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
 	}
 
-	// tell the player the chest is empty
-	ResourceManager::get_sound("wrong")->play();
-	zsdx->game->show_message("_empty_chest");
+	if (!map->get_script()->event_open_chest(get_name())) {
+
+	  // the script does not define any behavior:
+	  // by default, we tell the player the chest is empty
+	  ResourceManager::get_sound("wrong")->play();
+	  zsdx->game->show_message("_empty_chest");
+	}
 
 	// restore the control
 	hero->start_free();

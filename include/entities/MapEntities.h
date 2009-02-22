@@ -98,6 +98,7 @@ class MapEntities {
   std::list<Detector*> * get_detectors(void);
   void set_obstacle(MapEntity *entity, MapEntity::Obstacle obstacle);
   void set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle obstacle);
+  MapEntity *get_entity(MapEntity::EntityType type, string name);
 
   void bring_to_front(MapEntity *sprite_entity);
 

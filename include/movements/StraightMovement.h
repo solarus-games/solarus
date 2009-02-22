@@ -2,7 +2,7 @@
 #define ZSDX_STRAIGHT_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/MovementWithSmoothCollision.h"
+#include "movements/MovementWithCollision.h"
 
 /**
  * Movement for an entity that follows a straight trajectory

@@ -10,6 +10,9 @@
 #include "Savegame.h"
 #include "Timer.h"
 #include "entities/Detector.h"
+#include "entities/MapEntities.h"
+#include "entities/InteractiveEntity.h"
+#include "entities/Hero.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 #include <stdarg.h>
@@ -19,7 +22,7 @@
  * @param map the map
  */
 MapScript::MapScript(Map *map):
-  first_time(true) {
+  map(map), first_time(true) {
 
   // get the id of the map
   int id = (int) map->get_id();
@@ -63,6 +66,8 @@ MapScript::~MapScript(void) {
  */
 void MapScript::register_c_functions(void) {
 
+  lua_register(context, "freeze", l_freeze);
+  lua_register(context, "unfreeze", l_unfreeze);
   lua_register(context, "play_sound", l_play_sound);
   lua_register(context, "start_message", l_start_message);
   lua_register(context, "set_message_variable", l_set_message_variable);
@@ -77,6 +82,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "start_timer", l_start_timer);
   lua_register(context, "move_camera", l_move_camera);
   lua_register(context, "restore_camera", l_restore_camera);
+  lua_register(context, "npc_walk", l_npc_walk);
+  lua_register(context, "npc_set_direction", l_npc_set_direction);
 }
 
 /**
@@ -98,9 +105,10 @@ void MapScript::check_nb_arguments(lua_State *context, int nb_arguments) {
  * it just means that the function corresponds to an event that
  * the script does not need to handle.
  * @param function_name name of the function to call
+ * @return true if the function was called, false if it does not exist
  */
-void MapScript::call_lua_function(const char *function_name) {
-  call_lua_function(function_name, 0);
+bool MapScript::call_lua_function(const char *function_name) {
+  return call_lua_function(function_name, 0);
 }
 
 /**
@@ -110,11 +118,15 @@ void MapScript::call_lua_function(const char *function_name) {
  * it just means that the function corresponds to an event that
  * the script does not want to handle.
  * @param function_name name of the function to call
+ * @return true if the function was called, false if it does not exist
  */
-void MapScript::call_lua_function(const char *function_name, int nb_arguments, ...) {
+bool MapScript::call_lua_function(const char *function_name, int nb_arguments, ...) {
 
   lua_getglobal(context, function_name);
-  if (lua_isfunction(context, -1)) {
+
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
 
     // the function exists: push the arguments
     va_list arg;
@@ -131,6 +143,8 @@ void MapScript::call_lua_function(const char *function_name, int nb_arguments, .
   else {
     lua_pop(context, -1);
   }
+
+  return exists;
 }
 
 /**
@@ -188,6 +202,30 @@ void MapScript::add_timer(Timer *timer) {
 }
 
 // functions that can be called by the Lua script
+
+/**
+ * Prevents the player from moving until unfreeze() is called.
+ */
+int MapScript::l_freeze(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+
+  zsdx->game->get_hero()->freeze();
+
+  return 0;
+}
+
+/**
+ * Allows the player to move again after a freeze() call.
+ */
+int MapScript::l_unfreeze(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+
+  zsdx->game->get_hero()->start_free();
+
+  return 0;
+}
 
 /**
  * Creates a dialog box and starts displaying a message.
@@ -442,6 +480,46 @@ int MapScript::l_restore_camera(lua_State *l) {
   return 0;
 }
 
+/**
+ * Makes an NPC walk.
+ * Argument 1 (string): name of the NPC to make move
+ * Argument 2 (string): the path (each character is a direction between '0' and '7'
+ * Argument 3 (boolean): true to make the movement loop
+ */
+int MapScript::l_npc_walk(lua_State *l) {
+
+  check_nb_arguments(l, 3);
+
+  string name = lua_tostring(l, 1);
+  string path = lua_tostring(l, 2);
+  bool loop = lua_toboolean(l, 3) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  npc->start_walking(path, loop);
+
+  return 0;
+}
+
+/**
+ * Sets the direction of an NPC's sprite.
+ * Argument 1 (string): name of the NPC
+ * Argument 2 (integer): the sprite's direction between 0 and 3
+ */
+int MapScript::l_npc_set_direction(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  string name = lua_tostring(l, 1);
+  int direction = lua_tointeger(l, 2);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  npc->set_sprite_direction(direction);
+
+  return 0;
+}
+
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
@@ -491,8 +569,26 @@ void MapScript::event_interaction(string entity_name) {
 /**
  * Notifies the script that the player has just pressed the action
  * key in front an NPC.
- * @param entity_name name of the NPC
+ * @param npc_name name of the NPC
  */
 void MapScript::event_npc_dialog(string npc_name) {
   call_lua_function("event_npc_dialog", 1, npc_name.c_str());
+}
+
+/**
+ * Notifies the script that an NPC has just finished its path.
+ * @param npc_name name of the NPC
+ */
+void MapScript::event_npc_path_finished(string npc_name) {
+  call_lua_function("event_npc_path_finished", 1, npc_name.c_str());
+}
+
+/**
+ * Notifies the script that the player has just open an empty chest.
+ * The content is defined by the script.
+ * @param chest_name name of the chest
+ * @return true if the script has handled the event
+ */
+bool MapScript::event_open_chest(string chest_name) {
+  return call_lua_function("event_open_chest", 1, chest_name.c_str());
 }

@@ -36,6 +36,7 @@ class InteractiveEntity: public Detector {
   MessageId message_to_show;
 
   static const KeysEffect::ActionKeyEffect action_key_effects[];
+  static const int animation_directions[];
 
   void initialize_sprite(string sprite_name, int initial_direction);
   void call_script(void);
@@ -51,6 +52,13 @@ class InteractiveEntity: public Detector {
   bool is_obstacle_for(MapEntity *other);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void action_key_pressed(void);
+
+  void update(void);
+  void start_walking(string path, bool loop);
+  void just_moved(void);
+  void set_sprite_direction(int direction);
+
+  void display_on_map_above_hero(void);
 };
 
 #endif

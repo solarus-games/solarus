@@ -1,23 +1,24 @@
-#include "movements/PathMovement.h"
+#include "movements/PixelMovement.h"
 
 /**
- * Creates a movement path object, not specifying the path for now.
+ * Creates a pixel movement object, not specifying the trajectory for now.
  * @param map the map
  * @param nb_vectors number of translation vectors in the array
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
- * once finished, false to stop it
+ * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-PathMovement::PathMovement(Map *map, int nb_vectors, Uint32 delay, bool loop, bool with_collisions):
+PixelMovement::PixelMovement(Map *map, int nb_vectors, Uint32 delay,
+			     bool loop, bool with_collisions):
   MovementWithCollision(map),
-  map(map), nb_vectors(nb_vectors), delay(delay), loop(loop),
-  with_collisions(with_collisions), vector_index(0), path_ended(false) {
+  nb_vectors(nb_vectors), delay(delay), loop(loop),
+  with_collisions(with_collisions), vector_index(0), finished(false) {
 
 }
 
 /**
- * Creates a movement path object.
+ * Creates a pixel movement object.
  * @param map the map (can be NULL if with_collisions is false)
  * @param translation_vectors the succession of translations
  * composing this movement (each element of the array represents
@@ -26,40 +27,40 @@ PathMovement::PathMovement(Map *map, int nb_vectors, Uint32 delay, bool loop, bo
  * @param nb_vectors number of translation vectors in the array
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
- * once finished, false to stop it
+ * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-PathMovement::PathMovement(Map *map, const SDL_Rect *translation_vectors,
-			   int nb_vectors, Uint32 delay, bool loop, bool with_collisions):
+PixelMovement::PixelMovement(Map *map, const SDL_Rect *translation_vectors,
+			     int nb_vectors, Uint32 delay, bool loop, bool with_collisions):
   MovementWithCollision(map),
-  map(map), translation_vectors(translation_vectors), nb_vectors(nb_vectors),
-  delay(delay), loop(loop), with_collisions(with_collisions), vector_index(0), path_ended(false) {
+  translation_vectors(translation_vectors), nb_vectors(nb_vectors),
+  delay(delay), loop(loop), with_collisions(with_collisions), vector_index(0), finished(false) {
 
 }
 
 /**
  * Destructor.
  */
-PathMovement::~PathMovement(void) {
+PixelMovement::~PixelMovement(void) {
 
 }
 
 /**
- * Sets the translation vectors of the path.
- * @param translation vectors the path
+ * Sets the translation vectors of the trajectory.
+ * @param translation vectors the trajectory
  */
-void PathMovement::set_translation_vectors(const SDL_Rect *translation_vectors) {
+void PixelMovement::set_translation_vectors(const SDL_Rect *translation_vectors) {
   this->translation_vectors = translation_vectors;
 }
 
 /**
  * Updates the position.
  */
-void PathMovement::update(void) {
+void PixelMovement::update(void) {
 
   Uint32 now = SDL_GetTicks();
 
-  while (now >= next_move_date_x && !path_ended) {
+  while (now >= next_move_date_x && !finished) {
     make_next_move();
   }
 }
@@ -67,7 +68,7 @@ void PathMovement::update(void) {
 /**
  * Makes a move in the path.
  */
-void PathMovement::make_next_move(void) {
+void PixelMovement::make_next_move(void) {
 
   int dx = translation_vectors[vector_index].x;
   int dy = translation_vectors[vector_index].y;
@@ -84,16 +85,16 @@ void PathMovement::make_next_move(void) {
       vector_index = 0;
     }
     else {
-      path_ended = true;
+      finished = true;
     }
   }
 }
 
 /**
- * Returns the total number of moves in this path.
- * @return the total number of moves in this path
+ * Returns the total number of moves in this trajectory.
+ * @return the total number of moves in this trajectory
  */
-int PathMovement::get_length(void) {
+int PixelMovement::get_length(void) {
   return nb_vectors;
 }
 
@@ -101,14 +102,14 @@ int PathMovement::get_length(void) {
  * Returns the current iteration number.
  * @return the current iteration number of the movement
  */
-int PathMovement::get_vector_index(void) {
+int PixelMovement::get_vector_index(void) {
   return vector_index;
 }
 
 /**
  * Returns whether the movement is finished, i.e.
- * whether the end of the path was reached.
+ * whether the end of the trajectory was reached.
  */
-bool PathMovement::is_finished(void) {
-  return path_ended;
+bool PixelMovement::is_finished(void) {
+  return finished;
 }

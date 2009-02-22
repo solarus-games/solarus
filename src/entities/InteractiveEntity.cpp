@@ -1,5 +1,6 @@
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"
+#include "movements/PathMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -15,6 +16,21 @@ const KeysEffect::ActionKeyEffect InteractiveEntity::action_key_effects[] = {
   KeysEffect::ACTION_KEY_SPEAK, // NPC
   KeysEffect::ACTION_KEY_LOOK,
   KeysEffect::ACTION_KEY_LOOK,
+};
+
+/**
+ * Indicates the direction of an NPC's animation (from 0 to 3)
+ * depending on the movement direction
+ */
+const int InteractiveEntity::animation_directions[] = {
+  0,
+  0,
+  1,
+  2,
+  2,
+  2,
+  3,
+  0
 };
 
 /**
@@ -45,8 +61,8 @@ InteractiveEntity::InteractiveEntity(string name, Layer layer, int x, int y,
 
   case NON_PLAYING_CHARACTER:
     initialize_sprite(sprite_name, initial_direction);
-    set_size(16, 24);
-    set_origin(8, 21);
+    set_size(16, 16);
+    set_origin(8, 13);
     break;
 
   case SIGN:
@@ -95,7 +111,7 @@ void InteractiveEntity::initialize_sprite(SpriteAnimationSetId sprite_name, int 
  * @return true
  */
 bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
-  return true;
+  return special_interaction != CUSTOM && special_interaction != WATER_FOR_BOTTLE;
 }
 
 /**
@@ -169,5 +185,72 @@ void InteractiveEntity::call_script(void) {
   }
   else {
     map->get_script()->event_interaction(get_name());
+  }
+}
+
+/**
+ * Updates the entity.
+ */
+void InteractiveEntity::update(void) {
+
+  Detector::update();
+
+  if (special_interaction == NON_PLAYING_CHARACTER &&
+      get_movement() != NULL && ((PathMovement*) get_movement())->is_finished()) {
+
+    get_sprite()->set_current_animation("stopped");
+    clear_movement();
+    map->get_script()->event_npc_path_finished(get_name());
+  }
+}
+
+/**
+ * Make the entity walk (only for an NPC).
+ * @param path the path to follow (see class PathMovement)
+ * @param loop true to make the movement loop
+ */
+void InteractiveEntity::start_walking(string path, bool loop) {
+
+  if (special_interaction != NON_PLAYING_CHARACTER) {
+    DIE("This entity is not a non-playing character");
+  }
+
+  set_movement(new PathMovement(map, path, 6, loop, true));
+  get_sprite()->set_current_animation("walking");
+}
+
+/**
+ * This function is called when the entity has just moved.
+ * If it is an NPC, its sprite's direction is updated.
+ */
+void InteractiveEntity::just_moved(void) {
+
+  if (special_interaction == NON_PLAYING_CHARACTER) {
+
+    PathMovement *movement = (PathMovement*) get_movement();
+
+    if (!movement->is_finished()) {
+      int movement_direction = movement->get_current_direction();
+      get_sprite()->set_current_direction(animation_directions[movement_direction]);
+    }
+  }
+}
+
+/**
+ * Sets the direction of the entity's sprite.
+ * @param direction a direction between 0 and 3
+ */
+void InteractiveEntity::set_sprite_direction(int direction) {
+  get_sprite()->set_current_direction(direction);
+}
+
+/**
+ * Displays the entity if its y position is greater than the hero's y position.
+ */
+void InteractiveEntity::display_on_map_above_hero(void) {
+
+  Hero *hero = zsdx->game->get_hero();
+  if (special_interaction == NON_PLAYING_CHARACTER && get_y() > hero->get_y() + 8) {
+    MapEntity::display_on_map();
   }
 }

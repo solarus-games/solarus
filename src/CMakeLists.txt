@@ -112,13 +112,14 @@ add_executable (zsdx
   movements/MovementWithSmoothCollision.cpp
   movements/PlayerMovement.cpp
   movements/FallingOnFloorMovement.cpp
-  movements/PathMovement.cpp
+  movements/PixelMovement.cpp
   movements/FairyMovement.cpp
   movements/FollowMovement.cpp
   movements/ThrownItemMovement.cpp
   movements/TargetMovement.cpp
   movements/JumpMovement.cpp
   movements/StraightMovement.cpp
+  movements/PathMovement.cpp
 
   # enemies
   enemies/SimpleGreenSoldier.cpp

@@ -61,6 +61,7 @@ bool MovementWithCollision::collision_with_map(int dx, int dy) {
 
   // place the collision box where we want to check the collisions
   SDL_Rect collision_box = *entity->get_position_in_map();
+
   collision_box.x += dx;
   collision_box.y += dy;
 
@@ -77,20 +78,17 @@ bool MovementWithCollision::collision_with_map(int dx, int dy) {
  */
 void MovementWithCollision::update_x(void) {
 
-  if (x_move != 0) { // the entity wants to move on x
+  Uint32 now = SDL_GetTicks();
+  while (x_move != 0 && now >= next_move_date_x) { // while it's time to try a move
 
-    Uint32 now = SDL_GetTicks();
-    while (now >= next_move_date_x) { // while it's time to try a move
-
-      // make the move only if there is no collision
-      if (!collision_with_map(x_move, 0)) {
-	translate_x(x_move);
-      }
-      else {
-	stop(); // also stop on y
-      }
-      next_move_date_x += x_delay;
+    // make the move only if there is no collision
+    if (!collision_with_map(x_move, 0)) {
+      translate_x(x_move);
     }
+    else {
+      stop(); // also stop on y
+    }
+    next_move_date_x += x_delay;
   }
 }
 
@@ -102,19 +100,16 @@ void MovementWithCollision::update_x(void) {
  */
 void MovementWithCollision::update_y(void) {
 
-  if (y_move != 0) { // the entity wants to move on y
+  Uint32 now = SDL_GetTicks();
+  while (y_move != 0 && now >= next_move_date_y) { // while it's time to try a move
 
-    Uint32 now = SDL_GetTicks();
-    while (now >= next_move_date_y) { // while it's time to try a move
-
-      // make the move only if there is no collision
-      if (!collision_with_map(0, y_move)) {
-	translate_y(y_move);
-      }
-      else {
-	stop(); // also stop on x
-      }
-      next_move_date_y += y_delay;
+    // make the move only if there is no collision
+    if (!collision_with_map(0, y_move)) {
+      translate_y(y_move);
     }
+    else {
+      stop(); // also stop on x
+    }
+    next_move_date_y += y_delay;
   }
 }

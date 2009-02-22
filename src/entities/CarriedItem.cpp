@@ -1,7 +1,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/DestructibleItem.h"
 #include "entities/Hero.h"
-#include "movements/PathMovement.h"
+#include "movements/PixelMovement.h"
 #include "movements/FollowMovement.h"
 #include "movements/ThrownItemMovement.h"
 #include "Sprite.h"
@@ -49,7 +49,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
   set_size(destructible_item->get_width(), destructible_item->get_height());
 
   // create the movement and the sprite
-  PathMovement *movement = new PathMovement(map, lifting_translations[direction], 6, 100, false, false);
+  PixelMovement *movement = new PixelMovement(map, lifting_translations[direction], 6, 100, false, false);
   create_sprite(destructible_item->get_animation_set_id());
   set_movement(movement);
 
@@ -172,7 +172,7 @@ void CarriedItem::update(void) {
 
   // when the hero finishes lifting the item, start carrying it
   if (is_lifting) {
-    PathMovement *movement = (PathMovement*) get_movement();
+    PixelMovement *movement = (PixelMovement*) get_movement();
     if (movement->is_finished()) {
       is_lifting = false;
 

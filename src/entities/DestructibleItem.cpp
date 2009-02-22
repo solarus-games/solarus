@@ -1,7 +1,6 @@
 #include "entities/DestructibleItem.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "movements/PathMovement.h"
 #include "movements/FallingOnFloorMovement.h"
 #include "ResourceManager.h"
 #include "Game.h"

@@ -144,6 +144,27 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle ob
 }
 
 /**
+ * Returns the entity with the specified type and name.
+ * The program stops if there is no such entity.
+ * @param type type of entity
+ * @param name name of the entity to get
+ * @return the entity requested
+ */
+MapEntity * MapEntities::get_entity(MapEntity::EntityType type, string name) {
+  
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+
+    MapEntity *entity = *i;
+    if (entity->get_type() == type && entity->get_name() == name) {
+      return entity;
+    }
+  }
+
+  DIE("Cannot find entity with type '" << type << "' and name '" << name << "'");
+}
+
+/**
  * Brings to front an entity displayed as a sprite.
  * @param sprite_entity the entity to bring to front
  */
@@ -620,6 +641,14 @@ void MapEntities::display() {
     // put the hero if he is in this layer
     if (hero->get_layer() == layer) {
       hero->display_on_map();
+    }
+
+    // put some parts of sprites above the hero
+    for (i = sprite_entities[layer].begin();
+	 i != sprite_entities[layer].end();
+	 i++) {
+
+      (*i)->display_on_map_above_hero();
     }
   }
 }

@@ -605,3 +605,13 @@ void MapEntity::display_on_map(void) {
     map->display_sprite(sprites[i], get_x(), get_y());
   }
 }
+
+/**
+ * Displays the high part of the entity on the map.
+ * By default, this function does nothing.
+ * You can redefine it if your entity has sprites to display
+ * above the hero.
+ */
+void MapEntity::display_on_map_above_hero(void) {
+  
+}

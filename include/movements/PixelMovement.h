@@ -1,18 +1,16 @@
-#ifndef ZSDX_PATH_MOVEMENT_H
-#define ZSDX_PATH_MOVEMENT_H
+#ifndef ZSDX_PIXEL_MOVEMENT_H
+#define ZSDX_PIXEL_MOVEMENT_H
 
 #include "Common.h"
 #include "movements/MovementWithCollision.h"
 
 /**
- * Movement for an entity that follows a predetermined path.
- * A path is a succession of translation vectors.
+ * Movement for an entity that follows a predetermined succession
+ * of per-pixel translation vectors.
  */
-class PathMovement: public MovementWithCollision {
+class PixelMovement: public MovementWithCollision {
 
  private:
-
-  Map *map; /**< the map */
 
   // movement properties
 
@@ -42,7 +40,7 @@ class PathMovement: public MovementWithCollision {
   /**
    * Indicates whether this movement is sensitive to the obstacles.
    */
-  bool with_collisions;
+  const bool with_collisions;
 
   // current state
 
@@ -52,14 +50,14 @@ class PathMovement: public MovementWithCollision {
   int vector_index;
 
   /**
-   * Indicates whether the entity has reached the end of the path
-   * (only when loop is false, i.e. the path does have an end).
+   * Indicates whether the entity has reached the end of the trajectory
+   * (only possible when loop is false).
    */
-  bool path_ended;
+  bool finished;
 
  protected:
 
-  PathMovement(Map *map, int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
+  PixelMovement(Map *map, int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
   void set_translation_vectors(const SDL_Rect *translation_vectors);
   virtual void make_next_move(void);
   int get_vector_index(void);
@@ -67,9 +65,9 @@ class PathMovement: public MovementWithCollision {
 
  public:
 
-  PathMovement(Map *map, const SDL_Rect *translation_vectors,
-	       int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
-  virtual ~PathMovement(void);
+  PixelMovement(Map *map, const SDL_Rect *translation_vectors,
+		int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
+  virtual ~PixelMovement(void);
 
   virtual void update(void);
   bool is_finished(void);

@@ -440,6 +440,7 @@ void Hero::update_grabbing_pulling(void) {
 void Hero::freeze(void) {
   get_normal_movement()->set_moving_enabled(false);
   set_animation_stopped();
+  zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   set_state(FREEZED);
 }
 

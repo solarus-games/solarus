@@ -1,28 +1,34 @@
 Appel de fonctions LUA depuis le moteur C++ (événements) :
 
-event_map_started()						appelé une fois la map chargée
-event_update()							appelé à chaque cycle
-event_set_suspended(suspended)					appelé lorsque le jeu est suspendu ou repris
-event_message_started(message_id)				appelé au début de l'affichage d'un message
-event_entity_on_detector(detector_name, entity_name)		appelé pour certains types de détecteurs lorsqu'une entité est dessus
-event_camera_reached_target()					appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
-event_interaction(entity_name)					appelé lorsque le joueur interagit une entité interactive sans message
+- event_map_started()						appelé une fois la map chargée
+- event_update()							appelé à chaque cycle
+- event_set_suspended(suspended)					appelé lorsque le jeu est suspendu ou repris
+- event_message_started(message_id)				appelé au début de l'affichage d'un message
+- event_entity_on_detector(detector_name, entity_name)		appelé pour certains types de détecteurs lorsqu'une entité est dessus
+- event_camera_reached_target()					appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
+- event_interaction(entity_name)				appelé lorsque le joueur interagit une entité interactive sans message
 								prédéfini (autre qu'un PNJ)
-event_npc_dialog(npc_name)					appelé lorsque le joueur parle à un PNJ sans message prédéfini
+- event_npc_dialog(npc_name)					appelé lorsque le joueur parle à un PNJ sans message prédéfini
+- event_npc_path_finished(npc_name)				appelé lorsqu'un PNJ a terminé son mouvement de marche
+- event_open_chest(chest_name)					appelé lorsque le joueur ouvre un coffre vide (i.e. dont le comportement sera défini par le script)
 
 Appel de fonctions C++ depuis un script LUA :
 
-start_message(message_id)					affiche un message
-set_message_variable(message_id, value)				spécifie la valeur de la variable dans un message
-play_sound(sound_id)						joue un son
-give_treasure(treasure_id, savegame_variable)			donne un trésor au joueur (sans coffre)
-give_treasure_with_amount(treasure_id, amount, savegame_variable)		donne un trésor au joueur (sans coffre)
-get_savegame_string(index)
-get_savegame_integer(index)
-get_savegame_boolean(index)
-set_savegame_string(index)
-set_savegame_integer(index)
-set_savegame_boolean(index)
-start_timer(duration, callback, with_sound)			démarre un timer qui appellera une fonction du script une fois terminé
-move_camera(x, y, speed)					suspend le jeu et déplace la caméra vers un point cible
-restore_camera()						renvoie la caméra vers le héros
+- freeze()							empêche le joueur de bouger jusqu'à un appel à unfreeze()
+- unfreeze()							restaure le contrôle au joueur
+- start_message(message_id)					affiche un message
+- set_message_variable(message_id, value)			spécifie la valeur de la variable dans un message
+- play_sound(sound_id)						joue un son
+- give_treasure(treasure_id, savegame_variable)			donne un trésor au joueur (sans coffre)
+- give_treasure_with_amount(treasure_id, amount, savegame_variable)		donne un trésor au joueur (sans coffre)
+- get_savegame_string(index)
+- get_savegame_integer(index)
+- get_savegame_boolean(index)
+- set_savegame_string(index)
+- set_savegame_integer(index)
+- set_savegame_boolean(index)
+- start_timer(duration, callback, with_sound)			démarre un timer qui appellera une fonction du script une fois terminé
+- move_camera(x, y, speed)					suspend le jeu et déplace la caméra vers un point cible
+- restore_camera()						renvoie la caméra vers le héros
+- npc_walk(npc, path)						fait se déplacer un PNJ
+- npc_set_direction(npc, direction)				change la direction du sprite d'un PNJ (0 à 3)

@@ -67,7 +67,7 @@ class Hero: public MapEntity {
 
   // movement
   PlayerMovement *normal_movement;
-  static const int animation_directions[];                    /**< direction of the movement for each arrow key combination */
+  static const int animation_directions[];                    /**< direction of the animation for each arrow key combination */
 
   // state
   State state;                   /**< current state of the hero (considered only when the game is not suspended) */

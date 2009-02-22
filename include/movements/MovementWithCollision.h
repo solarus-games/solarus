@@ -22,8 +22,8 @@ class MovementWithCollision: public Movement {
   virtual ~MovementWithCollision(void);
 
   void set_map(Map *map);
-  void set_x(int x);
-  void set_y(int y);
+  virtual void set_x(int x);
+  virtual void set_y(int y);
 
   virtual void update_x(void);
   virtual void update_y(void);

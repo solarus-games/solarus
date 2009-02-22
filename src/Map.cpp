@@ -537,7 +537,8 @@ bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_bo
        i != obstacle_entities->end() && !collision;
        i++) {
 
-    collision = (*i)->is_obstacle_for(entity_to_check) && (*i)->overlaps(&collision_box);
+    collision = (*i) != entity_to_check &&
+      (*i)->is_obstacle_for(entity_to_check) && (*i)->overlaps(&collision_box);
   }
 
   return collision;

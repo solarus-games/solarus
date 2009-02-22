@@ -172,8 +172,8 @@
 5	0	40	56	Chest	0	-1	1	-1
 5	0	88	56	Chest_2	0	-1	1	-1
 5	0	136	56	Chest_3	0	-1	1	-1
-8	0	72	77	blue_haired_boy	3	1	npc/blue_haired_boy	test
-8	0	40	80	chest_1_trigger	3	0	_none	test
+8	0	72	85	game_1_npc	3	1	npc/blue_haired_boy	_none
+8	0	40	80	chest_1_trigger	3	0	_none	_none
 8	0	88	80	chest_2_trigger	3	0	_none	test
 8	0	136	80	chest_3_trigger	3	0	_none	test
 0	2	72	296	96	8	148

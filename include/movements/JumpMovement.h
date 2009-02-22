@@ -2,12 +2,12 @@
 #define ZSDX_JUMP_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/PathMovement.h"
+#include "movements/PixelMovement.h"
 
 /**
  * Movement for an entity that jumps in a direction.
  */
-class JumpMovement: public PathMovement {
+class JumpMovement: public PixelMovement {
 
  private:
 

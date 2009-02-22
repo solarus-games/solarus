@@ -11,7 +11,7 @@
 #include "Map.h"
 
 /**
- * Indicates the direction of the hero's animation (from 0 to 4, or -1 for no change)
+ * Indicates the direction of the hero's animation (from 0 to 3, or -1 for no change)
  * depending on the arrows pressed on the keyboard.
  */
 const int Hero::animation_directions[] = {

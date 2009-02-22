@@ -131,13 +131,14 @@ class MovementWithCollision;
 class MovementWithSmoothCollision;
 class PlayerMovement;
 class FallingOnFloorMovement;
-class PathMovement;
+class PixelMovement;
 class FairyMovement;
 class FollowMovement;
 class ThrownItemMovement;
 class TargetMovement;
 class JumpMovement;
 class StraightMovement;
+class PathMovement;
 
 // enemies
 class SimpleGreenSoldier;

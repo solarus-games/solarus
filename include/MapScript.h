@@ -16,14 +16,17 @@ class MapScript {
 
   typedef int (FunctionAvailableToScript) (lua_State *l); /**< functions that can be called by the Lua script */
 
+  Map *map;                   /**< the map associated to this script */
   lua_State* context;         /**< the execution context of the Lua script */
   std::list<Timer*> timers;   /**< the timers currently running for this script */
   bool first_time;            /**< true until the first update() call */
 
-  void call_lua_function(const char *function_name);
-  void call_lua_function(const char *function_name, int nb_arguments, ...);
+  bool call_lua_function(const char *function_name);
+  bool call_lua_function(const char *function_name, int nb_arguments, ...);
 
   // C++ functions that can be called by the script
+  static FunctionAvailableToScript l_freeze;
+  static FunctionAvailableToScript l_unfreeze;
   static FunctionAvailableToScript l_play_sound;
   static FunctionAvailableToScript l_start_message;
   static FunctionAvailableToScript l_set_message_variable;
@@ -38,6 +41,8 @@ class MapScript {
   static FunctionAvailableToScript l_start_timer;
   static FunctionAvailableToScript l_move_camera;
   static FunctionAvailableToScript l_restore_camera;
+  static FunctionAvailableToScript l_npc_walk;
+  static FunctionAvailableToScript l_npc_set_direction;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);
@@ -60,6 +65,8 @@ class MapScript {
   void event_camera_reached_target(void);
   void event_interaction(string entity_name);
   void event_npc_dialog(string npc_name);
+  void event_npc_path_finished(string npc_name);
+  bool event_open_chest(string chest_name);
 };
 
 #endif

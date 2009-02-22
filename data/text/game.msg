@@ -3,6 +3,11 @@
 line1 = "       Bienvenue"
 line2 = "     au Hameau Kogo"
 
+[test]
+#       |-----------------------|
+line1 = "Bienvenue à la Maison"
+line2 = "des Rubis."
+
 [msg]
 #       |-----------------------|
 icon = -1

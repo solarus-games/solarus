@@ -18,7 +18,7 @@ class PathMovement: public MovementWithCollision {
 
   /**
    * The succession of translations.
-   * Each element of the array represents a translation vector
+   * Each element of the array represents a move
    * in pixels (only the fields x and y of the SDL_Rect are used).
    */
   const SDL_Rect *translation_vectors;

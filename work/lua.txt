@@ -32,3 +32,4 @@ Appel de fonctions C++ depuis un script LUA :
 - restore_camera()						renvoie la caméra vers le héros
 - npc_walk(npc, path)						fait se déplacer un PNJ
 - npc_set_direction(npc, direction)				change la direction du sprite d'un PNJ (0 à 3)
+- set_chest_open(chest_name, bool open)				modifie l'état d'un coffre (sans donner ni reprendre son contenu)

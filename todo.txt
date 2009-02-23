@@ -10,6 +10,7 @@
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+  - ouverture de coffre qui déclenche un script : link est FREE pendant un instant
 
 - Prochaines grandes étapes :
   - portes

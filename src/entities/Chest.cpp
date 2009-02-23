@@ -90,6 +90,35 @@ bool Chest::is_open(void) {
 }
 
 /**
+ * Sets whether the chest is open.
+ * If you open the chest, its sprite is updated but the treasure is not given 
+ * to the plaer here in this function.
+ * If you close the chest, its sprite is updated but the treasure is not restored
+ * (the chest will then be empty)
+ * @param open true to open the chest, false to close it
+ */
+void Chest::set_open(bool open) {
+
+  if (open != this->open) {
+
+    this->open = open;
+
+    if (open) {
+      // open the chest
+      get_sprite()->set_current_animation(big_chest ? "big_open" : "small_open");
+    }
+    else {
+      get_sprite()->set_current_animation(big_chest ? "big_closed" : "small_closed");
+      treasure_given = false;
+
+      if (treasure == NULL) {
+	treasure = new Treasure(Treasure::NONE, -1);
+      }
+    }
+  }
+}
+
+/**
  * This function is called by the engine when an entity overlaps the chest.
  * This is a redefinition of Detector::collision().
  * If the entity is the hero, and if he is facing north, we allow him to
@@ -133,6 +162,7 @@ void Chest::update(void) {
 	Treasure *t = treasure;
 	treasure = NULL;
 	zsdx->game->give_treasure(t); // from now the game handles the treasure
+	treasure_given = true;
       }
       else { // give nothing to the player
 
@@ -142,6 +172,12 @@ void Chest::update(void) {
 	  zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
 	}
 
+	treasure_given = true;
+
+	// restore the control
+	delete treasure;
+	treasure = NULL;
+
 	if (!map->get_script()->event_open_chest(get_name())) {
 
 	  // the script does not define any behavior:
@@ -149,14 +185,10 @@ void Chest::update(void) {
 	  ResourceManager::get_sound("wrong")->play();
 	  zsdx->game->show_message("_empty_chest");
 	}
-
-	// restore the control
-	hero->start_free();
-	delete treasure;
-	treasure = NULL;
+	else {
+	  hero->start_free();
+	}
       }
-
-      treasure_given = true;
     }
   }
 }
@@ -176,8 +208,7 @@ void Chest::action_key_pressed(void) {
 
     if (!big_chest || dungeon_equipment->has_big_key()) {
       ResourceManager::get_sound("chest_open")->play();
-      get_sprite()->set_current_animation(big_chest ? "big_open" : "small_open");
-      open = true;
+      set_open(true);
       treasure_date = SDL_GetTicks() + 300;
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);

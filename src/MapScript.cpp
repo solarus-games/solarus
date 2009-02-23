@@ -13,6 +13,7 @@
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"
+#include "entities/Chest.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 #include <stdarg.h>
@@ -84,6 +85,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "restore_camera", l_restore_camera);
   lua_register(context, "npc_walk", l_npc_walk);
   lua_register(context, "npc_set_direction", l_npc_set_direction);
+  lua_register(context, "set_chest_open", l_set_chest_open);
 }
 
 /**
@@ -520,6 +522,26 @@ int MapScript::l_npc_set_direction(lua_State *l) {
   return 0;
 }
 
+/**
+ * Opens or closes a chest.
+ * Only the chest sprite is affected (use give_treasure to give a treasure to the player).
+ * Argument 1 (string): name of the NPC
+ * Argument 2 (integer): the sprite's direction between 0 and 3
+ */
+int MapScript::l_set_chest_open(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  string chest_name = lua_tostring(l, 1);
+  bool open = lua_toboolean(l, 2) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  Chest *chest = (Chest*) map->get_entities()->get_entity(MapEntity::CHEST, chest_name);
+  chest->set_open(open);
+
+  return 0;
+}
+
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
@@ -585,7 +607,8 @@ void MapScript::event_npc_path_finished(string npc_name) {
 
 /**
  * Notifies the script that the player has just open an empty chest.
- * The content is defined by the script.
+ * The content is defined by the script. The hero is in state FREEZE
+ * so don't forget to call unfreeze() when you have finished.
  * @param chest_name name of the chest
  * @return true if the script has handled the event
  */

@@ -1,27 +1,26 @@
-finished = false
+math.randomseed(os.time())
+playing_game_1 = false
+rewards = {0, 10, 20, 20, 50, 100}
 
 function event_npc_dialog(npc_name)
 
    if (npc_name == "game_1_npc") then
-      npc_walk(npc_name, "444", false)
-      freeze();
-   end
-end
-
-function event_npc_path_finished(npc_name)
-
-   if (npc_name == "game_1_npc") then
-
-      if (not finished) then
-	 npc_walk(npc_name, "000", false)
-	 finished = true
+      if (not playing_game_1) then
+	 start_message("rupee_house.game_1.intro")
       else
-	 npc_set_direction(npc_name, 3)
-	 unfreeze();
+	 start_message("rupee_house.game_1.choose_chest")
       end
    end
 end
 
 function event_open_chest(chest_name)
-   start_message("msg");
+
+   if (not playing_game_1) then
+      start_message("rupee_house.game_1.pay_first")
+      set_chest_open(chest_name, false)
+      play_sound("wrong")
+   else
+      index = math.random(#rewards)
+      give_treasure_with_amount(87, rewards[index], -1)
+   end
 end

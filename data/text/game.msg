@@ -3,6 +3,43 @@
 line1 = "       Bienvenue"
 line2 = "     au Hameau Kogo"
 
+[rupee_house.game_1.intro]
+#       |-----------------------|
+line1 = "Bienvenue au jeu du"
+line2 = "coffre-mystère. Paie 20"
+line3 = "rubis pour ouvrir l'un"
+next = rupee_house.game_1.intro.2
+
+[rupee_house.game_1.intro.2]
+#       |-----------------------|
+line1 = "des trois coffres et"
+line2 = "tenter de remporter"
+line3 = "plus de rubis !"
+next = rupee_house.game_1.intro.3
+
+[rupee_house.game_1.intro.3]
+#       |-----------------------|
+line1 = "Alors, tu paies ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+
+[rupee_house.game_1.choose_chest]
+#       |-----------------------|
+line1 = "Va choisir l'un des"
+line2 = "trois coffres !"
+next = rupee_house.game_1.choose_chest.2
+
+[rupee_house.game_1.choose_chest.2]
+#       |-----------------------|
+line1 = "Mais ne compte pas sur"
+line2 = "moi pour t'aider !"
+
+[rupee_house.game_1.pay_first]
+#       |-----------------------|
+line1 = "Hé ! Ici il faut payer"
+line2 = "avant de jouer !"
+
 [test]
 #       |-----------------------|
 line1 = "Bienvenue à la Maison"

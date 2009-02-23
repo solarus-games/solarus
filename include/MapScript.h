@@ -43,6 +43,7 @@ class MapScript {
   static FunctionAvailableToScript l_restore_camera;
   static FunctionAvailableToScript l_npc_walk;
   static FunctionAvailableToScript l_npc_set_direction;
+  static FunctionAvailableToScript l_set_chest_open;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);

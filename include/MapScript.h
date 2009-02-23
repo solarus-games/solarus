@@ -44,6 +44,8 @@ class MapScript {
   static FunctionAvailableToScript l_npc_walk;
   static FunctionAvailableToScript l_npc_set_direction;
   static FunctionAvailableToScript l_set_chest_open;
+  static FunctionAvailableToScript l_get_rupees;
+  static FunctionAvailableToScript l_remove_rupees;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);

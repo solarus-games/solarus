@@ -5,6 +5,7 @@
 #include "Sound.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "Equipment.h"
 #include "DialogBox.h"
 #include "Treasure.h"
 #include "Savegame.h"
@@ -86,6 +87,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "npc_walk", l_npc_walk);
   lua_register(context, "npc_set_direction", l_npc_set_direction);
   lua_register(context, "set_chest_open", l_set_chest_open);
+  lua_register(context, "get_rupees", l_get_rupees);
+  lua_register(context, "remove_rupees", l_remove_rupees);
 }
 
 /**
@@ -539,6 +542,30 @@ int MapScript::l_set_chest_open(lua_State *l) {
   Chest *chest = (Chest*) map->get_entities()->get_entity(MapEntity::CHEST, chest_name);
   chest->set_open(open);
 
+  return 0;
+}
+
+/**
+ * Returns the current number of rupees of the player.
+ * Return value (integer): the number of rupees
+ */
+int MapScript::l_get_rupees(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+  int rupees = zsdx->game->get_equipment()->get_rupees();
+  lua_pushinteger(l, rupees);
+  return 1;
+}
+
+/**
+ * Removes some rupees to the player.
+ * Argument 1 (integer): number or rupees to remove
+ */
+int MapScript::l_remove_rupees(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  int rupees = lua_tointeger(l, 1);
+  zsdx->game->get_equipment()->remove_rupees(rupees);
   return 0;
 }
 

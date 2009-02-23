@@ -29,6 +29,18 @@ function event_message_sequence_finished(first_message_id, answer)
 
    if (first_message_id == "rupee_house.game_1.intro") then
 
+      if (answer == 1) then
+
+	 if (get_rupees() >= 20) then
+	    remove_rupees(20)
+	    start_message("rupee_house.game_1.good_luck")
+	    playing_game_1 = true
+	 else
+	    start_message("rupee_house.not_enough_money")
+	 end
+      else
+	 start_message("rupee_house.not_playing")
+      end
    end
 
 end

@@ -1,9 +1,10 @@
 Appel de fonctions LUA depuis le moteur C++ (événements) :
 
 - event_map_started()						appelé une fois la map chargée
-- event_update()							appelé à chaque cycle
-- event_set_suspended(suspended)					appelé lorsque le jeu est suspendu ou repris
-- event_message_started(message_id)				appelé au début de l'affichage d'un message
+- event_update()						appelé à chaque cycle
+- event_set_suspended(suspended)				appelé lorsque le jeu est suspendu ou repris
+- event_message_started(message_id)				appelé au début de l'affichage de chaque message d'un dialogue
+- event_dialog_finished(message_id, answer)			appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
 - event_entity_on_detector(detector_name, entity_name)		appelé pour certains types de détecteurs lorsqu'une entité est dessus
 - event_camera_reached_target()					appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
 - event_interaction(entity_name)				appelé lorsque le joueur interagit une entité interactive sans message

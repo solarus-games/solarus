@@ -41,6 +41,8 @@ class DialogBox {
   Message *current_message;
   MessageId current_message_id;
   std::map<MessageId, string> variables;
+
+  MessageId first_message_id;
   static int answer_selected;
 
   // dialog properties
@@ -95,6 +97,7 @@ class DialogBox {
   
   // current message
   void key_pressed(Controls::GameKey key);
+  MessageId get_first_message_id(void);
   bool is_finished(void);
   static int get_last_answer(void);
 

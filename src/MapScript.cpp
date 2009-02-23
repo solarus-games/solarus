@@ -556,8 +556,23 @@ void MapScript::event_map_started(void) {
  * in the dialog box.
  * @param messageId id of the message
  */
-void MapScript::event_message_started(MessageId messageId) {
-  call_lua_function("event_message_started", 1, messageId.c_str());
+void MapScript::event_message_started(MessageId message_id) {
+  call_lua_function("event_message_started", 1, message_id.c_str());
+}
+
+/**
+ * Notifies the script that the dialog box has just finished.
+ * This function is called when the last message of a dialog is finished.
+ * @param last_sequence_message_id id of the first message in the message sequence
+ * that has just finished
+ * @param answer the answer selected by the player: 0 for the first one, 
+ * 1 for the second one, -1 if there was no question
+ */
+void MapScript::event_message_sequence_finished(MessageId first_message_id, int answer) {
+
+  char s[16];
+  sprintf(s, "%d", answer);
+  call_lua_function("event_message_sequence_finished", 2, first_message_id.c_str(), s);
 }
 
 /**

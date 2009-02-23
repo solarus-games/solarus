@@ -128,7 +128,7 @@ void Chest::set_open(bool open) {
  */
 void Chest::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero()) {
+  if (entity_overlapping->is_hero() && !zsdx->game->is_suspended()) {
 
     Hero *hero = zsdx->game->get_hero();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
@@ -180,14 +180,14 @@ void Chest::update(void) {
 
 	if (!map->get_script()->event_open_chest(get_name())) {
 
+	  std::cout << "no script defined: just show a default empty chest message\n";
+
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty
 	  ResourceManager::get_sound("wrong")->play();
 	  zsdx->game->show_message("_empty_chest");
 	}
-	else {
-	  hero->start_free();
-	}
+	hero->start_free();
       }
     }
   }

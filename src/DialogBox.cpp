@@ -10,7 +10,7 @@
 #include "Color.h"
 #include "MapScript.h"
 
-int DialogBox::answer_selected = 0;
+int DialogBox::answer_selected = -1;
 
 static SDL_Rect box_src_position = {0, 0, 220, 60};
 static SDL_Rect question_src_position = {48, 60, 8, 8};
@@ -58,6 +58,7 @@ DialogBox::DialogBox(MessageId first_message_id, int x, int y) {
   speed = SPEED_FAST;
   cancel_mode = CANCEL_NONE;
   icon_number = -1;
+  this->first_message_id = first_message_id;
   show_message(first_message_id);
   cancel_dialog = false;
 }
@@ -184,6 +185,9 @@ void DialogBox::show_message(MessageId message_id) {
   if (current_message->is_question()) {
     answer_selected = 0;
   }
+  else {
+    answer_selected = -1;
+  }
   question_dst_position.y = y + 27;
   
   // hide the action icon
@@ -284,16 +288,26 @@ void DialogBox::up_or_down_key_pressed(void) {
 
 /**
  * Returns the answer selected by the player in the last message with a question.
- * @return the answer selected: 0 for the first one, 1 for the second one
+ * @return the answer selected: 0 for the first one, 1 for the second one,
+ * -1 if the last message was not a question
  */
 int DialogBox::get_last_answer(void) {
   return answer_selected;
 }
 
 /**
+ * Returns the id of the first message shown in the current dialog box sequence.
+ * @return the id of the first message shown
+ */
+MessageId DialogBox::get_first_message_id(void) {
+  return first_message_id;
+}
+
+/**
  * Returns whether the dialog box has to be closed, i.e.
  * whether the last message was shown and the
  * user has pressed the key, or the dialog was cancelled.
+ * @return true if the dialog is finished
  */
 bool DialogBox::is_finished(void) {
   return current_message == NULL || cancel_dialog;

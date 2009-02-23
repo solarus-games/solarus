@@ -2,6 +2,7 @@
 #include "ZSDX.h"
 #include "Music.h"
 #include "Map.h"
+#include "MapScript.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "Color.h"
@@ -358,8 +359,15 @@ void Game::update_dialog_box(void) {
     dialog_box->update();
   }
   else {
+    string first_message_id = dialog_box->get_first_message_id();
     delete dialog_box;
     dialog_box = NULL;
+
+    if (first_message_id[0] != '_') {
+      // a dialog of the quest was just finished: notify the script
+      int answer = DialogBox::get_last_answer();
+      get_current_script()->event_message_sequence_finished(first_message_id, answer);
+    }
   }
 }
 

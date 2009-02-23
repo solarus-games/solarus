@@ -24,3 +24,11 @@ function event_open_chest(chest_name)
       give_treasure_with_amount(87, rewards[index], -1)
    end
 end
+
+function event_message_sequence_finished(first_message_id, answer)
+
+   if (first_message_id == "rupee_house.game_1.intro") then
+
+   end
+
+end

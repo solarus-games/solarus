@@ -41,6 +41,9 @@ MapScript::MapScript(Map *map):
   // register the C functions accessible to the script
   register_c_functions();
 
+  // initialize the script
+  luaL_dostring(context, "math.randomseed(os.time())");
+
   // load the script
   if (luaL_dofile(context, file_name.c_str()) != 0) {
     DIE("Cannot load the script of map " << id << ": " << lua_tostring(context, -1));

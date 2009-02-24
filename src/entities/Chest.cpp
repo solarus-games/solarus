@@ -159,12 +159,14 @@ void Chest::update(void) {
       Hero *hero = zsdx->game->get_hero();
 
       if (treasure->get_content() != Treasure::NONE) {
+	// give a treasure to the player
+
 	Treasure *t = treasure;
 	treasure = NULL;
 	zsdx->game->give_treasure(t); // from now the game handles the treasure
 	treasure_given = true;
       }
-      else { // give nothing to the player
+      else { // the chest is empty
 
 	// mark the chest as found in the savegame
 	int savegame_variable = treasure->get_savegame_variable();
@@ -178,9 +180,7 @@ void Chest::update(void) {
 	delete treasure;
 	treasure = NULL;
 
-	if (!map->get_script()->event_open_chest(get_name())) {
-
-	  std::cout << "no script defined: just show a default empty chest message\n";
+	if (!map->get_script()->event_open_empty_chest(get_name())) {
 
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty

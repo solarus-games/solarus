@@ -7,14 +7,18 @@
 - Joystick : tester le hat
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
+- Rendre les pancartes soulevables
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - ouverture de coffre qui déclenche un script : link est FREE pendant un instant
 
-- Prochaines grandes étapes :
+- Prochains types d'entités:
+  - tiles dynamiques
+  - interrupteurs
+  - blocs ou statues à pousser
   - portes
-  - pnj
+  - planchers-interrupteurs
+  - tapis roulants
 
 - Poisson d'avril : démo avec PLEIN de pub
 
@@ -34,8 +38,8 @@ Non mentionné :
 [ok] Dimanche 19 octobre 2008 : collisions au pixel près, couper les buissons avec l'épée
 [ok] Dimanche 26 octobre 2008 : monde extérieur
 [ok] Dimanche 2 novembre 2008 : combats (un type d'ennemi)
-[ok / en cours] Dimanche 9 novembre 2008 : scripts et PNJ
-Dimanche 16 novembre 2008 : maison des rubis
+[ok] Dimanche 9 novembre 2008 : scripts et PNJ
+[en cours] Dimanche 16 novembre 2008 : maison des rubis
 Dimanche 23 novembre 2008 : autres maisons et grottes
 Dimanche 30 novembre 2008 : donjon 1 commencé ; annonce de la démo si on est dans les temps
 Dimanche 7 décembre 2008 : combats (autres types d'ennemis), objets à finir (bombes, croissants, flacon...)

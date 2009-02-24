@@ -11,3 +11,4 @@ booleans:
 13	outside world C1: chest with 50 rupees (diagonal jump)
 14	piece of heart near dungeon 1
 15	piece of heart near the south-west lake (reachable from dungeon #9)
+16	rupee house: game 1: found 50 rupees (best reward)

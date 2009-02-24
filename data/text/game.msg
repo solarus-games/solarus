@@ -40,6 +40,41 @@ line2 = "moi pour t'aider !"
 line1 = "Hé ! Ici il faut payer"
 line2 = "avant de jouer !"
 
+[rupee_house.game_1.good_luck]
+#       |-----------------------|
+line1 = "Va choisir un coffre"
+line2 = "et bonne chance !"
+
+[rupee_house.game_1.not_allowed_to_play]
+#       |-----------------------|
+line1 = "Tu as déjà assez gagné"
+line2 = "non ? Nous sommes"
+line3 = "ruinés à cause de toi !"
+
+[rupee_house.game_1.play_again_question]
+#       |-----------------------|
+line1 = "Tu veux retenter ta"
+line2 = "chance ?"
+next = rupee_house.game_1.play_again_question.2
+
+[rupee_house.game_1.play_again_question.2]
+#       |-----------------------|
+line1 = "C'est 20 rubis !"
+line2 = "Oui"
+line3 = "Non"
+question = true
+
+[rupee_house.not_playing]
+#       |-----------------------|
+line1 = "Tant pis pour toi !"
+
+[rupee_house.not_enough_money]
+#       |-----------------------|
+line1 = "Tu n'as pas assez"
+line2 = "d'argent !"
+
+
+
 [test]
 #       |-----------------------|
 line1 = "Bienvenue à la Maison"

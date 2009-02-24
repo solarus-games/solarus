@@ -205,7 +205,7 @@ bool Savegame::get_boolean(int index) {
 
   Uint32 word = saved_data.booleans[index / 32];
 
-  //  cout << "getting value at index " << index << ": " << ((word >> (index % 32)) & 0x0001 != 0x0000) << endl;
+  //  std::cout << "getting value at index " << index << ": " << (((word >> (index % 32)) & 0x0001) != 0x0000) << std::endl;
 
   return ((word >> (index % 32)) & 0x0001) != 0x0000;
 }
@@ -220,5 +220,5 @@ void Savegame::set_boolean(int index, bool value) {
   Uint32 mask = (value ? 0x0001 : 0x0000) << (index % 32);
   saved_data.booleans[index / 32] |= mask;
 
-  //  cout << "setting value " << value << " at index " << index << endl;
+  //  std::cout << "setting value " << value << " at index " << index << std::endl;
 }

@@ -309,9 +309,9 @@ void Hero::start_carrying(void) {
 
 /**
  * Removes the item carried by the hero, without throwing it.
+ * Change the hero state after calling this function.
  */
 void Hero::stop_carrying(void) {
-  set_state(FREE);
   delete lifted_item;
   lifted_item = NULL;
   zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);

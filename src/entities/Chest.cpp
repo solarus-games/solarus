@@ -186,8 +186,8 @@ void Chest::update(void) {
 	  // by default, we tell the player the chest is empty
 	  ResourceManager::get_sound("wrong")->play();
 	  zsdx->game->show_message("_empty_chest");
+	  hero->start_free();
 	}
-	hero->start_free();
       }
     }
   }

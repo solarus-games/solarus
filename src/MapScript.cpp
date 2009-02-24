@@ -368,7 +368,7 @@ int MapScript::l_get_savegame_boolean(lua_State *l) {
   check_nb_arguments(l, 1);
   int index = lua_tointeger(l, 1);
 
-  bool value = zsdx->game->get_savegame()->get_string(index);
+  bool value = zsdx->game->get_savegame()->get_boolean(index);
   lua_pushboolean(l, value ? 1 : 0);
 
   return 1;
@@ -649,11 +649,12 @@ void MapScript::event_npc_path_finished(string npc_name) {
 
 /**
  * Notifies the script that the player has just open an empty chest.
- * The content is defined by the script. The hero is in state FREEZE
- * so don't forget to call unfreeze() when you have finished.
+ * What happend next is defined by your script. The hero is in state FREEZE
+ * so if you do something else than giving the player a treasure,
+ * don't forget to call unfreeze() when you have finished.
  * @param chest_name name of the chest
  * @return true if the script has handled the event
  */
-bool MapScript::event_open_chest(string chest_name) {
-  return call_lua_function("event_open_chest", 1, chest_name.c_str());
+bool MapScript::event_open_empty_chest(string chest_name) {
+  return call_lua_function("event_open_empty_chest", 1, chest_name.c_str());
 }

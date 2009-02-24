@@ -11,7 +11,7 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 								prédéfini (autre qu'un PNJ)
 - event_npc_dialog(npc_name)					appelé lorsque le joueur parle à un PNJ sans message prédéfini
 - event_npc_path_finished(npc_name)				appelé lorsqu'un PNJ a terminé son mouvement de marche
-- event_open_chest(chest_name)					appelé lorsque le joueur ouvre un coffre vide (i.e. dont le comportement sera défini par le script)
+- event_open_empty_chest(chest_name)				appelé lorsque le joueur ouvre un coffre vide (son comportement sera alors défini par le script, le héros étant bloqué jusqu'à ce que le script appelle unfreeze()) 
 
 Appel de fonctions C++ depuis un script LUA :
 

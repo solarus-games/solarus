@@ -70,7 +70,7 @@ class MapScript {
   void event_interaction(string entity_name);
   void event_npc_dialog(string npc_name);
   void event_npc_path_finished(string npc_name);
-  bool event_open_chest(string chest_name);
+  bool event_open_empty_chest(string chest_name);
 };
 
 #endif

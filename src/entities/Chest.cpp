@@ -152,7 +152,7 @@ void Chest::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
  */
 void Chest::update(void) {
 
-  if (is_open()) {
+  if (is_open() && !suspended) {
 
     if (!treasure_given && SDL_GetTicks() >= treasure_date) {
 
@@ -191,6 +191,8 @@ void Chest::update(void) {
       }
     }
   }
+
+  MapEntity::update();
 }
 
 /**

@@ -1,6 +1,5 @@
 package zsdx.entities;
 
-import zsdx.*;
 import java.util.*;
 
 /**
@@ -8,30 +7,37 @@ import java.util.*;
  */
 public enum EntityType {
 
-    TILE              (0, TileOnMap.class, "Tile"),
-    DESTINATION_POINT (1, DestinationPoint.class, "Destination point"),
-    TELETRANSPORTER   (2, Teletransporter.class, "Teletransporter"),
-    PICKABLE_ITEM     (3, PickableItem.class, "Pickable item"),
-    DESTRUCTIBLE_ITEM (4, DestructibleItem.class, "Destructible item"),
-    CHEST             (5, Chest.class, "Chest"),
-    JUMP_SENSOR       (6, JumpSensor.class, "Jump Sensor"),
-    ENEMY             (7, Enemy.class, "Enemy"),
-    INTERACTIVE       (8, InteractiveEntity.class, "Interactive entity");
+    TILE              (0, "Tile", TileOnMap.class, null),
+    DESTINATION_POINT (1, "Destination point", DestinationPoint.class, null),
+    /*
+    TELETRANSPORTER   (2, "Teletransporter", Teletransporter.class, Teletransporter.Subtype.class),
+    PICKABLE_ITEM     (3, "Pickable item", PickableItem.class, PickableItem.Subtype.class),
+    DESTRUCTIBLE_ITEM (4, "Destructible item", DestructibleItem.class, DestructibleItem.Subtype.class),
+    */
+    CHEST             (5, "Chest", Chest.class, null),
+    JUMP_SENSOR       (6, "Jump Sensor", JumpSensor.class, null),
+    ENEMY             (7, "Enemy", Enemy.class, Enemy.Subtype.class),
+    INTERACTIVE       (8, "Interactive entity", InteractiveEntity.class, InteractiveEntity.Subtype.class);
 
     private final int index;
     private Class<? extends MapEntity> entityClass;
+    private Class<? extends Enum> subtypeEnum;
     private String name;
 
     /**
      * Creates an entity type.
      * @param index index of the entity type to create
+     * @param name a human readable name describing this entity type
      * @param entityClass subclass of MapEntity representing the entities of this type
-     * @param name name of this entity type
+     * @param subtypeEnum enumeration describing the subtypes of this type (or null
+     * if there is no notion of subtype)
      */
-    private EntityType(int index, Class<? extends MapEntity> entityClass, String name) {
+    private EntityType(int index, String name, Class<? extends MapEntity> entityClass,
+	    Class<? extends Enum> subtypeEnum) {
 	this.index = index;
-	this.entityClass = entityClass;
 	this.name = name;
+	this.entityClass = entityClass;
+	this.subtypeEnum = subtypeEnum;
     }
 
     /**
@@ -77,6 +83,14 @@ public enum EntityType {
     }
 
     /**
+     * Returns the name of this kind of entity.
+     * @return the name of this kind of entity
+     */
+    public String getName() {
+	return name;
+    }
+
+    /**
      * Returns the subclass of MapEntity representing this type of entity.
      * @return the entity class
      */
@@ -85,10 +99,10 @@ public enum EntityType {
     }
 
     /**
-     * Returns the name of this kind of entity.
-     * @return the name of this kind of entity
+     * Returns the enumeration describing the subtype of this kind of entity.
+     * @return the enumeration describing the subtype of this kind of entity
      */
-    public String getName() {
-	return name;
+    public Class<? extends Enum> getSubtypeEnum() {
+	return subtypeEnum;
     }
 };

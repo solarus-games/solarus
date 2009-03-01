@@ -49,6 +49,7 @@ import zsdx.Map;
  * - If your entity is not drawn from an image file but in a more complex way,
  *     you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *     public abstract void paint(Graphics g, double zoom, boolean showTransparency).
+ * - TODO Subtype enum + getNames()
  * - Redefine if necessary the getSubtypeIndex() method: public int getSubtypeIndex()
  *     which returns the entity current subtype (for entities that have a notion of subtype).
  * - Create a subclass of EditEntityComponent and declare it in
@@ -941,7 +942,7 @@ public abstract class MapEntity extends Observable {
     public static EntityImageDescription[] getImageDescriptions(EntityType type) {
 
 	EntityImageDescription imageDescriptions[] = null;
-	
+
 	Class<? extends MapEntity> entityClass = type.getEntityClass();
 	try {
 	    Field imageDescriptionField = entityClass.getField("generalImageDescriptions");

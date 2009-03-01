@@ -18,7 +18,14 @@ public class InteractiveEntity extends DynamicEntity {
 	CUSTOM,
 	NON_PLAYING_CHARACTER,
 	SIGN,
-	WATER_FOR_BOTTLE,
+	WATER_FOR_BOTTLE;
+
+	public static final String[] humanNames = {
+	    "Custom",
+	    "Non-playing character",
+	    "Sign",
+	    "Water for bottle"
+	};
     }
 
     /**

@@ -85,7 +85,7 @@ class Equipment {
   bool is_magic_decreasing(void);
   void start_removing_magic(Uint32 delay);
   void stop_removing_magic(void);
-  
+
   // bombs
   int get_max_bombs(void);
   void set_max_bombs(int max_bombs);
@@ -113,6 +113,7 @@ class Equipment {
   void remove_inventory_item(InventoryItem::ItemId item_id);
 
   void add_bottle(void);
+  bool has_bottle(void);
   bool has_empty_bottle(void);
   InventoryItem::ItemId get_first_empty_bottle(void);
   bool has_bottle_with(Treasure::Content content);

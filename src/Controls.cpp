@@ -123,8 +123,7 @@ void Controls::handle_event(const SDL_Event &event) {
     break;
 
   case SDL_JOYHATMOTION:
-    // TODO test the hat handling
-    // joypad_hat_moved(event.jhat.hat, event.jhat.value);
+    joypad_hat_moved(event.jhat.hat, event.jhat.value);
     break;
 
   case SDL_JOYBUTTONDOWN:
@@ -202,7 +201,7 @@ void Controls::handle_event(const SDL_Event &event) {
       equipment->give_inventory_item(InventoryItem::RED_KEY);
       equipment->give_inventory_item(InventoryItem::CLAY_KEY);
       break;
- 
+
     case SDLK_g:
       equipment->add_arrows(7);
       break;
@@ -405,7 +404,7 @@ void Controls::joypad_button_released(int button) {
 void Controls::joypad_axis_moved(int axis, int state) {
 
   // axis in centered position
-  if (state == 0) {
+  if (state <= 1000 && state >= -1000) {
 
     std::ostringstream oss_1;
     oss_1 << "axis " << axis << " +";
@@ -431,7 +430,12 @@ void Controls::joypad_axis_moved(int axis, int state) {
     oss << "axis " << axis << ((state > 0) ? " +" : " -");
     string joypad_string = oss.str();
 
+    std::ostringstream oss2;
+    oss2 << "axis " << axis << ((state > 0) ? " -" : " +");
+    string inverse_joypad_string = oss2.str();
+
     GameKey game_key = joypad_mapping[joypad_string];
+    GameKey inverse_game_key = joypad_mapping[inverse_joypad_string];
 
     if (!customizing) {
 
@@ -439,6 +443,9 @@ void Controls::joypad_axis_moved(int axis, int state) {
       if (game_key != 0) {
 
 	// notify the game
+	if (is_key_pressed(inverse_game_key)) {
+		game_key_released(inverse_game_key);
+	}
 	game_key_pressed(game_key);
       }
     }
@@ -537,14 +544,35 @@ void Controls::joypad_hat_moved(int hat, int value) {
     string joypad_string = oss.str();
     GameKey game_key = joypad_mapping[joypad_string];
 
-    string joypad_string_2 = "";
+    std::ostringstream oss_inv;
+    oss_inv << "hat " << hat << ' ' << direction_strings[(direction_1 + 2) % 4];
+    string inverse_joypad_string = oss_inv.str();
+    GameKey inverse_game_key = joypad_mapping[inverse_joypad_string];
+
     GameKey game_key_2 = NONE;
+    GameKey inverse_game_key_2 = NONE;
 
     if (direction_2 != -1) {
       std::ostringstream oss;
       oss << "hat " << hat << ' ' << direction_strings[direction_2];
-      joypad_string_2 = oss.str();
+      string joypad_string_2 = oss.str();
       game_key_2 = joypad_mapping[joypad_string_2];
+
+      std::ostringstream oss_inv;
+      oss_inv << "hat " << hat << ' ' << direction_strings[(direction_2 + 2) % 4];
+      string inverse_joypad_string_2 = oss_inv.str();
+      inverse_game_key_2 = joypad_mapping[inverse_joypad_string_2];
+    }
+    else {
+      std::ostringstream oss;
+      oss << "hat " << hat << ' ' << direction_strings[(direction_1 + 1) % 4];
+      string joypad_string_2 = oss.str();
+      game_key_2 = joypad_mapping[joypad_string_2];
+
+      std::ostringstream oss_inv;
+      oss_inv << "hat " << hat << ' ' << direction_strings[(direction_1 + 3) % 4];
+      string inverse_joypad_string_2 = oss_inv.str();
+      inverse_game_key_2 = joypad_mapping[inverse_joypad_string_2];
     }
 
     if (!customizing) {
@@ -553,11 +581,25 @@ void Controls::joypad_hat_moved(int hat, int value) {
       if (game_key != 0) {
 
 	// notify the game
+	if (is_key_pressed(inverse_game_key)) {
+		game_key_released(inverse_game_key);
+	}
 	game_key_pressed(game_key);
       }
 
-      if (game_key_2 != 0) {
-	game_key_pressed(game_key);
+      if (direction_2 != -1) {
+	if (is_key_pressed(inverse_game_key_2)) {
+		game_key_released(inverse_game_key_2);
+	}
+	game_key_pressed(game_key_2);
+      }
+      else {
+	if (is_key_pressed(game_key_2)) {
+		game_key_released(game_key_2);
+	}
+	if (is_key_pressed(inverse_game_key_2)) {
+		game_key_released(inverse_game_key_2);
+	}
       }
     }
     else {

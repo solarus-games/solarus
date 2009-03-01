@@ -37,9 +37,9 @@ void Equipment::update(void) {
     if (!zsdx->game->is_suspended()) {
 
       if (ticks > next_magic_decrease_date) {
-	
+
 	remove_magic(1);
-	
+
 	if (get_magic() > 0) {
 	  next_magic_decrease_date += magic_decrease_delay;
 	}
@@ -64,7 +64,7 @@ void Equipment::update(void) {
 
       if (answer == 0) {
 	// restore the hearts
-	restore_all_hearts();
+	add_hearts(7);
       }
       else {
 	// keep the fairy in a bottle
@@ -199,7 +199,7 @@ int Equipment::get_max_rupees(void) {
  * @param max_rupees the player's maximum number of rupees (100, 300 or 999)
  */
 void Equipment::set_max_rupees(int max_rupees) {
-  
+
   if (max_rupees != 100 && max_rupees != 300 && max_rupees != 999) {
     DIE("Illegal maximum number of rupees: " << max_rupees);
   }
@@ -225,7 +225,7 @@ void Equipment::set_rupees(int rupees) {
   if (rupees < 0 || rupees > get_max_rupees()) {
     DIE("Illegal number of rupees: " << rupees);
   }
-  
+
   savegame->set_integer(Savegame::CURRENT_RUPEES, rupees);
 }
 
@@ -250,7 +250,7 @@ void Equipment::add_rupees(int rupees_to_add) {
 void Equipment::remove_rupees(int rupees_to_remove) {
 
   int total = get_rupees() - rupees_to_remove;
-  
+
   set_rupees(MAX(total, 0));
 }
 
@@ -335,7 +335,7 @@ void Equipment::add_hearts(int hearts_to_add) {
 void Equipment::remove_hearts(int hearts_to_remove) {
 
   int total = get_hearts() - hearts_to_remove;
-  
+
   set_hearts(MAX(total, 0));
 }
 
@@ -394,10 +394,15 @@ void Equipment::add_piece_of_heart(void) {
  * chosen by the player: restore his hearts or keep the fairy in a bottle.
  */
 void Equipment::give_fairy(void) {
-  zsdx->game->show_message("_found_fairy");
-  giving_fairy = true;
 
-  // the next messages will be handled by the update() function
+  if (has_bottle()) {
+    zsdx->game->show_message("_found_fairy");
+    giving_fairy = true;
+    // the next messages will be handled by the update() function
+  }
+  else {
+    add_hearts(7);
+  }
 }
 
 // magic
@@ -417,7 +422,7 @@ int Equipment::get_max_magic(void) {
  * @param max_magic the maximum level of magic (0, 42 or 84 points)
  */
 void Equipment::set_max_magic(int max_magic) {
-  
+
   if (max_magic != 0 && max_magic != 42 && max_magic != 84) {
     DIE("Illegal maximum number of magic points: " << max_magic);
   }
@@ -472,7 +477,7 @@ void Equipment::add_magic(int magic_to_add) {
 void Equipment::remove_magic(int magic_to_remove) {
 
   int total = get_magic() - magic_to_remove;
-  
+
   set_magic(MAX(total, 0));
 }
 
@@ -514,7 +519,7 @@ void Equipment::start_removing_magic(Uint32 delay) {
   if (get_magic() > 0) {
     this->magic_decrease_delay = delay;
     this->next_magic_decrease_date = SDL_GetTicks();
-    
+
     // the magic points will be removed by the update() function
   }
 }
@@ -541,7 +546,7 @@ int Equipment::get_max_bombs(void) {
  * @param max_bombs the player's maximum number of bombs (0, 10, 30 or 99)
  */
 void Equipment::set_max_bombs(int max_bombs) {
-  
+
   if (max_bombs != 0 && max_bombs != 10 && max_bombs != 30 && max_bombs != 99) {
     DIE("Illegal maximum number of bombs: " << max_bombs);
   }
@@ -592,7 +597,7 @@ void Equipment::add_bombs(int bombs_to_add) {
 void Equipment::remove_bomb(void) {
 
   int total = get_bombs() - 1;
-  
+
   set_bombs(MAX(total, 0));
 }
 
@@ -620,7 +625,7 @@ int Equipment::get_max_arrows(void) {
  * @param max_arrows the player's maximum number of arrows (0, 10, 30 or 99)
  */
 void Equipment::set_max_arrows(int max_arrows) {
-  
+
   if (max_arrows != 0 && max_arrows != 10 && max_arrows != 30 && max_arrows != 99) {
     DIE("Illegal maximum number of arrows: " << max_arrows);
   }
@@ -682,7 +687,7 @@ void Equipment::add_arrows(int arrows_to_add) {
 void Equipment::remove_arrow(void) {
 
   int total = get_arrows() - 1;
-  
+
   set_arrows(MAX(total, 0));
 }
 
@@ -767,6 +772,18 @@ void Equipment::add_bottle(void) {
   else {
     DIE("The player already has all bottles");
   }
+}
+
+/**
+ * Returns whether the player has at least one bottle.
+ * @return true if the player has at least one bottle
+ */
+bool Equipment::has_bottle(void) {
+
+  return has_inventory_item(InventoryItem::BOTTLE_1)
+    || has_inventory_item(InventoryItem::BOTTLE_2)
+    || has_inventory_item(InventoryItem::BOTTLE_3)
+    || has_inventory_item(InventoryItem::BOTTLE_4);
 }
 
 /**
@@ -857,8 +874,8 @@ void Equipment::set_bottle_content(InventoryItem::ItemId bottle_id, Treasure::Co
       bottle_id != InventoryItem::BOTTLE_2 &&
       bottle_id != InventoryItem::BOTTLE_3 &&
       bottle_id != InventoryItem::BOTTLE_4) {
-    DIE("Invalid bottle id: '" << bottle_id << "'"); 
-  } 
+    DIE("Invalid bottle id: '" << bottle_id << "'");
+  }
 
   int variant;
   if (content == Treasure::NONE) {

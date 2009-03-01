@@ -209,7 +209,7 @@ savegame_variable est réservé aux ennemis qu'on ne peut tuer qu'une fois dans 
 pickable_item est un numéro indiquant un éventuel item (coeur, rubis...) qui apparaît lorsque l'ennemi est tué. Comme précédemment, pickable_item_savegame_variable est un numéro optionnel qui permet de sauvegarder le fait que le joueur possède un item que l'on ne peut obtenir qu'une seule fois.
 
 
-InteractiveEntity (8)
+Entités interactives (8)
 
 Une entité interactive est une entité avec laquelle le héros peut interagir en appuyant sur la touche action lorsqu'il se trouve juste devant.
 Il peut lui parler, lire ce qu'elle indique ou encore agir en la touchant.
@@ -231,3 +231,43 @@ special_interaction est un numéro indiquant s'il s'agit d'une interaction spéc
 1 : personnage non joueur (même chose sauf qu'il y a un sprite obligatoire, avec 4 directions et les animations "stopped" et éventuellement "walking")
 2 : pancarte (direction et sprite_name sont alors ignorés car imposés par le moteur)
 3 : de l'eau que le joueur peut mettre dans un flacon (message_id alors ignoré car le comportement est géré par le moteur)
+
+Blocs (9)
+
+Syntaxe de la partie spécifique :
+
+subtype maximum_push
+
+subtype indique s'il s'agit d'un bloc classique (0) ou une statue (1). D'autres sous-types pourront être créés à l'avenir
+(exemples : blocs qui glissent jusqu'au prochain mur, blocs comme dans l'énigme de Zelda MC...)
+maximum_push indique ce qui se passe lorsque le héros pousse le bloc :
+0 : ne peut pas (ou plus) être poussé
+1 : peut être poussé une fois
+2 : peut être poussé autant de fois qu'on veut
+
+Interrupteurs
+
+Un interrupteur a pour effet d'appeler le script lorsque le héros est dessus. Un interrupteur peut également être activé par un bloc (ou une statue) qui est poussé dessus. Certains interrupteurs se désactivent lorsque le héros les quitte, d'autres ne peuvent pas être activés par le héros qui est trop léger (il faut alors un bloc ou une statue).
+Un interrupteur n'a pas de direction et a un identification. Sa taille est toujours 16*16 et son sprite est imposé.
+
+Syntaxe de la partie spécifique pour un interrupteur :
+
+needs_block disable_on_leaving
+
+
+Tiles dynamiques
+
+
+Portes
+
+
+Tapis roulants
+
+Peuvent être bloquants ou non bloquants.
+
+
+Capteurs
+
+Un capteur est une dalle invisible qui déclenche quelque chose de visible ou non au passage du joueur.
+Ces capteurs ne peuvent pas être franchis par un saut (plume, saut quand repoussé par un ennemi, ...)
+Types de capteurs : changement de layer, appel à un script

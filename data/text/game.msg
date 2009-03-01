@@ -1,7 +1,7 @@
 [sign_village]
 #       |-----------------------|
 line1 = "       Bienvenue"
-line2 = "     au Hameau Kogo"
+line2 = "       à Lyriann"
 
 [rupee_house.game_1.intro]
 #       |-----------------------|

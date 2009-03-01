@@ -3,6 +3,7 @@ package zsdx.entities;
 import java.awt.*;
 import java.lang.reflect.*;
 import java.util.*;
+
 import zsdx.*;
 import zsdx.Map;
 
@@ -11,8 +12,7 @@ import zsdx.Map;
  * and how the entity is placed on the map: its position and its layer.
  * 
  * To create a new kind of entity, you should do the following steps:
- * - Add a public static integer field in MapEntity to identify your new type of entity.
- * - Add your class in the MapEntity.entityClasses array.
+ * - Add your new type of entity into the EntityType enumeration.
  * - Create a field in your class to declare the entity name:
  *     public static final String entityTypeName.
  * - Add the specific fields of your type of entity and the corresponding
@@ -24,8 +24,6 @@ import zsdx.Map;
  *         creates an existing entity from a string
  * - Create the toString() method: public String toString()
  *     to export the entity into a string
- * - Define the getType() method: public int getType()
- *     which returns the entity type number.
  * - Redefine the getObstacle() method: public int getObstacle()
  *     if your entity is an obstacle.
  * - Redefine if necessary the methods getNbDirections(), hasName(), isResizable()
@@ -128,32 +126,6 @@ public abstract class MapEntity extends Observable {
     public static final int OBSTACLE_SHALLOW_WATER = 6;
     public static final int OBSTACLE_DEEP_WATER = 7;
 
-    // types of entities
-    public static final int ENTITY_TILE = 0;
-    public static final int ENTITY_DESTINATION_POINT = 1;
-    public static final int ENTITY_TELETRANSPORTER = 2;
-    public static final int ENTITY_PICKABLE_ITEM = 3;
-    public static final int ENTITY_DESTRUCTIBLE_ITEM = 4;
-    public static final int ENTITY_CHEST = 5;
-    public static final int ENTITY_JUMP_SENSOR = 6;
-    public static final int ENTITY_ENEMY = 7;
-    public static final int ENTITY_INTERACTIVE = 8;
-    public static final int ENTITY_BLOCK = 9;
-    public static final int ENTITY_NB_TYPES = 10;
-
-    // concrete subclasses of MapEntity
-    public static final Class<?>[] entityClasses = {
-	TileOnMap.class,
-	DestinationPoint.class,
-	Teletransporter.class,
-	PickableItem.class,
-	DestructibleItem.class,
-	Chest.class,
-	JumpSensor.class,
-	Enemy.class,
-	InteractiveEntity.class
-    };
-
     /**
      * Creates an entity.
      * If the entity is identifiable, a default name
@@ -234,15 +206,15 @@ public abstract class MapEntity extends Observable {
     /**
      * Creates a new map entity with the specified type.
      * @param map the map
-     * @param entityType the type of entity to create (except TileOnMap)
+     * @param entityType the type of entity to create (except TILE)
      * @param entitySubtype the subtype of entity to create
      */
-    public static MapEntity create(Map map, int entityType, int entitySubtype) throws MapException {
+    public static MapEntity create(Map map, EntityType entityType, int entitySubtype) throws MapException {
 
 	MapEntity entity = null;
 	Class<?> entityClass = null;
 	try {
-	    entityClass = MapEntity.entityClasses[entityType];
+	    entityClass = entityType.getEntityClass();
 	    Class<?>[] paramTypes = {Map.class, int.class, int.class};
 	    Object[] paramValues = {map, 0, 0};
 	    Constructor<?> constructor = entityClass.getConstructor(paramTypes);
@@ -283,20 +255,16 @@ public abstract class MapEntity extends Observable {
     public static MapEntity createFromString(Map map, String description) throws ZSDXException {
 
 	StringTokenizer tokenizer = new StringTokenizer(description, "\t");
-	int entityType = Integer.parseInt(tokenizer.nextToken());
-	
-	if (entityType < 0 || entityType >= ENTITY_NB_TYPES) {
-	    throw new MapException("Unknown entity type: " + entityType);
-	}
-	
+	EntityType entityType = EntityType.get(Integer.parseInt(tokenizer.nextToken()));
+
 	MapEntity entity = null;
 	
-	Class<?> entityClass = entityClasses[entityType];
-	Constructor<?> constructor;
+	Class<? extends MapEntity> entityClass = entityType.getEntityClass();
+	Constructor<? extends MapEntity> constructor;
 	
 	try {
 	    constructor = entityClass.getConstructor(Map.class, StringTokenizer.class);
-	    entity = (MapEntity) constructor.newInstance(map, tokenizer);
+	    entity = constructor.newInstance(map, tokenizer);
 	    entity.updateImageDescription();
 
 	    // now the origin is valid
@@ -791,14 +759,14 @@ public abstract class MapEntity extends Observable {
      */
     private void computeDefaultName() {
 	
-	int entityType = getType();
-	String prefix = getTypeName(entityType).replace(' ', '_');
+	EntityType entityType = getType();
+	String prefix = entityType.getName().toLowerCase().replace(' ', '_');
 
 	try {
 	    setName(prefix);
 	}
 	catch (MapException ex) {
-	    // should not happen
+	    // should not happen since setName() makes sure the name is unique
 	    System.err.println("Unexcepted error: " + ex.getMessage());
 	    System.exit(1);
 	}
@@ -970,11 +938,11 @@ public abstract class MapEntity extends Observable {
      * @param type a type of entity
      * @return the image descriptions of this kind of entity
      */
-    public static EntityImageDescription[] getImageDescriptions(int type) {
+    public static EntityImageDescription[] getImageDescriptions(EntityType type) {
 
 	EntityImageDescription imageDescriptions[] = null;
 	
-	Class<?> entityClass = entityClasses[type];
+	Class<? extends MapEntity> entityClass = type.getEntityClass();
 	try {
 	    Field imageDescriptionField = entityClass.getField("generalImageDescriptions");
 	    imageDescriptions = (EntityImageDescription[]) imageDescriptionField.get(null);
@@ -997,7 +965,7 @@ public abstract class MapEntity extends Observable {
      * @param type a type of entity
      * @return the number of image descriptions of this kind of entity
      */
-    public static int getNbImageDescriptions(int type) {
+    public static int getNbImageDescriptions(EntityType type) {
 	return getImageDescriptions(type).length;
     }
 
@@ -1007,7 +975,7 @@ public abstract class MapEntity extends Observable {
      * @param image_index index of the image to get
      * @return an image description of this kind of entity
      */
-    public static EntityImageDescription getImageDescription(int type, int image_index) {
+    public static EntityImageDescription getImageDescription(EntityType type, int image_index) {
 
 	EntityImageDescription[] imageDescriptions = getImageDescriptions(type);
 	if (imageDescriptions == null) {
@@ -1032,35 +1000,22 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns an integer identifying the kind of entity: ENTITY_TILE, ENTITY_DESTINATION_POINT...
+     * Returns a value identifying the kind of entity: TILE, DESTINATION_POINT...
      * @return the type of entity
      */
-    public abstract int getType();
-    
-    /**
-     * Returns the name of an entity type.
-     * This method uses the 'entityTypeName' static field
-     * that every concrete subclass of MapEntity must implement.
-     * @param type a type of entity
-     * @return the corresponding name
-     */
-    public static String getTypeName(int type) {
+    public final EntityType getType() throws IllegalStateException {
 
-	String typeName = null;
-	Class<?> entityClass = entityClasses[type];
+	EntityType type = null;
 	try {
-	    Field typeNameField = entityClass.getField("entityTypeName");
-	    typeName = (String) typeNameField.get(null);
+	    type = EntityType.get(getClass());
 	}
-	catch (NoSuchFieldException ex) {
-	    System.err.println("The field 'entityTypeName' is missing in class " + entityClass.getName());
+	catch (MapException ex) {
+	    // should never happen
+	    System.err.println("Unexpected error: " + ex.getMessage());
 	    System.exit(1);
 	}
-	catch (IllegalAccessException ex) {
-	    System.err.println("The field 'entityTypeName' of class " + entityClass.getName() + " is not accessible");
-	    System.exit(1);
-	}
-	return typeName;
+
+	return type;
     }
 
     /**

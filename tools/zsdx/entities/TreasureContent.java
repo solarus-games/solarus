@@ -90,11 +90,11 @@ public enum TreasureContent {
      * @param index index of this content
      * @param hasAmount true if this content has an amount value
      */
-    TreasureContent(int index, boolean hasAmount) {
+    private TreasureContent(int index, boolean hasAmount) {
 	this.index = index;
 	this.hasAmount = hasAmount;
     }
-    
+
     /**
      * Returns the treasure content with the specified index.
      * @param index index of the content to get
@@ -110,7 +110,7 @@ public enum TreasureContent {
 	
 	throw new NoSuchElementException("Unknown treasure index: " + index);
     }
-    
+
     /**
      * Returns the index of this content.
      * @return the index
@@ -118,7 +118,7 @@ public enum TreasureContent {
     public int getIndex() {
 	return index;
     }
-    
+
     /**
      * Returns true if this content has an amount value.
      * @return true if this content has an amount value
@@ -126,7 +126,7 @@ public enum TreasureContent {
     public boolean hasAmount() {
 	return hasAmount;
     }
-    
+
     /**
      * Returns whether this content can only exist inside a dungeon.
      * Note that a small key can exist outside a dungeon.

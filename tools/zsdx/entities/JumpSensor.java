@@ -11,11 +11,6 @@ import zsdx.Map;
 public class JumpSensor extends DynamicEntity {
 
     /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Jump sensor";
-
-    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
@@ -92,44 +87,6 @@ public class JumpSensor extends DynamicEntity {
     }
 
     /**
-     * Changes the size of the entity on the map.
-     * This is a redefinition of MapEntity.setSize() to adjust automatically
-     * the specified size to the constraints of the jump sensor.
-     * @param width width of the entity in pixels
-     * @param height height of the entity in pixels
-     * @throws MapException if the size is not correct
-     */
-    public void setSize(int width, int height) throws MapException {
-
-	Dimension adjustedSize = getSizeAdjustedToDirection(width, height);
-	super.setSize(adjustedSize.width, adjustedSize.height);
-    }
-
-    /**
-     * Adjusts the specified size with respect to the current direction's constraints.
-     * @param width a width
-     * @param height a height
-     * @return a new adjusted size
-     */
-    private Dimension getSizeAdjustedToDirection(int width, int height) {
-	// TODO move into a redefinition of checkSize
-/*
-	if (direction % 2 != 0) {
-	    if (width != height) {
-		width = height = Math.max(16, Math.max(width, height));
-	    }
-	}
-	else if (direction % 4 == 0) {
-	    width = 8;
-	}
-	else {
-	    height = 8;
-	}*/
-	
-	return new Dimension(width, height);
-    }
-
-    /**
      * Computes a default size for a specified direction.
      * @param a direction
      * @return a default size for that direction
@@ -177,14 +134,6 @@ public class JumpSensor extends DynamicEntity {
 		System.exit(1);
 	    }
 	}
-    }
-
-    /**
-     * Returns an integer identifying the kind of entity.
-     * @return MapEntity.ENTITY_JUMP_SENSOR
-     */
-    public int getType() {
-	return ENTITY_JUMP_SENSOR;
     }
 
     /**

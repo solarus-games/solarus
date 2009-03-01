@@ -12,11 +12,6 @@ import zsdx.*;
 public class InteractiveEntity extends DynamicEntity {
 
     /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Interactive entity";
-
-    /**
      * Subtypes of interactive entities.
      */
     public enum Subtype {
@@ -163,14 +158,6 @@ public class InteractiveEntity extends DynamicEntity {
 	buff.append(messageId);
 
 	return buff.toString();
-    }
-
-    /**
-     * Returns an integer identifying the kind of entity.
-     * @return the type of entity
-     */
-    public int getType() {
-	return ENTITY_INTERACTIVE;
     }
 
     /**

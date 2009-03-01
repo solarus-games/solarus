@@ -11,11 +11,6 @@ import zsdx.Map;
 public class DestinationPoint extends DynamicEntity {
 
     /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Destination point";
-
-    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
@@ -95,14 +90,6 @@ public class DestinationPoint extends DynamicEntity {
 	buff.append(subtype);
 
 	return buff.toString();
-    }
-
-    /**
-     * Returns an integer identifying the kind of entity.
-     * @return MapEntity.ENTITY_DESTINATION_POINT
-     */
-    public int getType() {
-	return ENTITY_DESTINATION_POINT;
     }
 
     /**

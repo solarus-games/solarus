@@ -12,11 +12,6 @@ import zsdx.Map;
  * how the pattern is repeated or not.
  */
 public class TileOnMap extends MapEntity {
-    
-    /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Tile";
 
     /**
      * Description of the default image representing this kind of entity.
@@ -95,14 +90,6 @@ public class TileOnMap extends MapEntity {
 	buff.append('\t');
 	buff.append(tileId);
 	return buff.toString();
-    }
-
-    /**
-     * Returns an integer identifying the kind of entity.
-     * @return MapEntity.ENTITY_TILE
-     */
-    public int getType() {
-	return ENTITY_TILE;
     }
 
     /**

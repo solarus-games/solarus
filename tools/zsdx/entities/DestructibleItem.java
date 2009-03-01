@@ -12,11 +12,6 @@ import zsdx.Map;
 public class DestructibleItem extends DynamicEntity {
 
     /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Destructible item";
-
-    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
@@ -120,14 +115,6 @@ public class DestructibleItem extends DynamicEntity {
 	buff.append(getPickableItemSavegameVariable());
 
 	return buff.toString();
-    }
-
-    /**
-     * Returns an integer identifying the kind of entity.
-     * @return MapEntity.ENTITY_DESTRUCTIBLE_ITEM
-     */
-    public int getType() {
-	return ENTITY_DESTRUCTIBLE_ITEM;
     }
 
     /**

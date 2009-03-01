@@ -10,14 +10,14 @@ public class MapEntities implements Iterable<MapEntity> {
 
     // the entities
     private List<TileOnMap> tiles;
-    private List<DynamicEntity> activeEntities;
+    private List<DynamicEntity> dynamicEntities;
 
     /**
      * Constructor.
      */
     public MapEntities() {
 	tiles = new LinkedList<TileOnMap>();
-	activeEntities = new LinkedList<DynamicEntity>();
+	dynamicEntities = new LinkedList<DynamicEntity>();
     }
 
     /**
@@ -25,7 +25,7 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public MapEntities(MapEntities other) {
 	tiles = new LinkedList<TileOnMap>(other.tiles);
-	activeEntities = new LinkedList<DynamicEntity>(other.activeEntities);
+	dynamicEntities = new LinkedList<DynamicEntity>(other.dynamicEntities);
     }
 
     /**
@@ -45,19 +45,19 @@ public class MapEntities implements Iterable<MapEntity> {
     }
 
     /**
-     * Returns the active entities.
-     * @return the active entities
+     * Returns the dynamic entities.
+     * @return the dynamic entities
      */
-    public List<DynamicEntity> getActiveEntities() {
-	return activeEntities;
+    public List<DynamicEntity> getDynamicEntities() {
+	return dynamicEntities;
     }
 
     /**
-     * Returns the number of active entities.
-     * @return the number of active entities
+     * Returns the number of dynamic entities.
+     * @return the number of dynamic entities
      */
-    public int getNbActiveEntities() {
-	return activeEntities.size();
+    public int getNbDynamicEntities() {
+	return dynamicEntities.size();
     }
 
     /**
@@ -66,13 +66,13 @@ public class MapEntities implements Iterable<MapEntity> {
      * MapEntity.ENTITY_DESTINATION_POINT, MapEntity.ENTITY_ENEMY...
      * @return the list of the entities of this kind
      */
-    public List<MapEntity> getEntitiesOfType(int entityType) {
+    public List<MapEntity> getEntitiesOfType(EntityType entityType) {
 
-	Class<?> cl = MapEntity.entityClasses[entityType];
+	Class<? extends MapEntity> cl = entityType.getEntityClass();
 	List<MapEntity> list = new LinkedList<MapEntity>();
 
 	if (DynamicEntity.class.isAssignableFrom(cl)) {
-	    for (MapEntity e: activeEntities) {
+	    for (MapEntity e: dynamicEntities) {
 		
 		if (cl.isInstance(e)) {
 		    list.add(e);
@@ -89,14 +89,14 @@ public class MapEntities implements Iterable<MapEntity> {
      * @param name the name of the entity
      * @return the entity, or null if there is no entity with this name
      */
-    public MapEntity getEntityWithName(int type, String name) {
+    public MapEntity getEntityWithName(EntityType type, String name) {
 
-	Class<?> cl = MapEntity.entityClasses[type];
+	Class<? extends MapEntity> cl = type.getEntityClass();
 
 	if (DynamicEntity.class.isAssignableFrom(cl)) {
-	    for (MapEntity e: activeEntities) {
+	    for (MapEntity e: dynamicEntities) {
 		
-		if (e.getType() == type && e.hasName() && e.getName().equals(name)) {
+		if (cl.isInstance(e) && e.hasName() && e.getName().equals(name)) {
 		    return e;
 		}
 	    }
@@ -110,7 +110,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return the number of entities
      */
     public int size() {
-	return tiles.size() + activeEntities.size();
+	return tiles.size() + dynamicEntities.size();
     }
 
     /**
@@ -147,7 +147,7 @@ public class MapEntities implements Iterable<MapEntity> {
 	    tiles.add(0, (TileOnMap) entity);
 	}
 	else if (entity instanceof DynamicEntity) {
-	    activeEntities.add(0, (DynamicEntity) entity);
+	    dynamicEntities.add(0, (DynamicEntity) entity);
 	}
 	else {
 	    throw new IllegalArgumentException("Unknown entity type: " + entity);
@@ -164,7 +164,7 @@ public class MapEntities implements Iterable<MapEntity> {
 	    tiles.add((TileOnMap) entity);
 	}
 	else if (entity instanceof DynamicEntity) {
-	    activeEntities.add((DynamicEntity) entity);
+	    dynamicEntities.add((DynamicEntity) entity);
 	}
 	else {
 	    throw new IllegalArgumentException("Unknown entity type: " + entity);
@@ -181,7 +181,7 @@ public class MapEntities implements Iterable<MapEntity> {
 	    tiles.remove(entity);
 	}
 	else if (entity instanceof DynamicEntity) {
-	    activeEntities.remove(entity);
+	    dynamicEntities.remove(entity);
 	}
 	else {
 	    throw new IllegalArgumentException("Unknown entity type: " + entity);
@@ -209,15 +209,15 @@ public class MapEntities implements Iterable<MapEntity> {
 	    this.index = index;
 
 	    this.nbTiles = tiles.size();
-	    this.nbActive = activeEntities.size();
+	    this.nbActive = dynamicEntities.size();
 
 	    if (index == 0) {
 		this.tileIterator = tiles.listIterator(0);
-		this.activeIterator = activeEntities.listIterator(0);
+		this.activeIterator = dynamicEntities.listIterator(0);
 	    }
 	    else if (index == size()) {
 		this.tileIterator = tiles.listIterator(nbTiles);
-		this.activeIterator = activeEntities.listIterator(nbActive);
+		this.activeIterator = dynamicEntities.listIterator(nbActive);
 	    }
 	    else {
 		throw new IllegalArgumentException();

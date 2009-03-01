@@ -529,16 +529,16 @@ public class Map extends Observable {
      * Returns the total number of active entities of the map.
      * @return the total number of active entities of the map.
      */
-    public int getNbActiveEntities() {
+    public int getNbDynamicEntities() {
 
-	int nbActiveEntities = 0;
+	int nbDynamicEntities = 0;
 
 	// count the active entities of each layer
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    nbActiveEntities += allEntities[layer].getNbActiveEntities();
+	    nbDynamicEntities += allEntities[layer].getNbDynamicEntities();
 	}
 
-	return nbActiveEntities;
+	return nbDynamicEntities;
     }
 
     /**
@@ -578,7 +578,7 @@ public class Map extends Observable {
      * MapEntity.ENTITY_DESTINATION_POINT, MapEntity.ENTITY_ENEMY...
      * @return the list of the entities of this kind on the map
      */
-    public List<MapEntity> getEntitiesOfType(int entityType) {
+    public List<MapEntity> getEntitiesOfType(EntityType entityType) {
 
 	List<MapEntity> list = new LinkedList<MapEntity>();
 	for (int layer = MapEntity.LAYER_LOW; layer < MapEntity.LAYER_NB; layer++) {
@@ -668,7 +668,7 @@ public class Map extends Observable {
      * @param name the name of the entity
      * @return the entity, or null if there is no entity with this name
      */
-    public MapEntity getEntityWithName(int type, String name) {
+    public MapEntity getEntityWithName(EntityType type, String name) {
 
 	MapEntity entity = null;
 	for (int layer = MapEntity.LAYER_LOW;

@@ -10,11 +10,6 @@ import zsdx.Map;
 public class Chest extends DynamicEntity {
 
     /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Chest";
-
-    /**
      * Description of the default images representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions =
@@ -182,14 +177,6 @@ public class Chest extends DynamicEntity {
      */
     public void setSavegameIndex(int savegameIndex) {
         this.savegameIndex = savegameIndex;
-    }
-
-    /**
-     * Returns an integer identifying the kind of entity.
-     * @return MapEntity.ENTITY_CHEST
-     */
-    public int getType() {
-	return ENTITY_CHEST;
     }
 
     /**

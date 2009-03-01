@@ -11,11 +11,6 @@ import zsdx.Map;
 public class Enemy extends DynamicEntity {
 
     /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Enemy";
-
-    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
@@ -42,14 +37,6 @@ public class Enemy extends DynamicEntity {
     private static final Dimension[] sizes = {
 	new Dimension(16, 32)
     };
-
-    /**
-     * Returns an integer identifying the kind of entity.
-     * @return MapEntity.ENTITY_ENEMY
-     */
-    public int getType() {
-	return ENTITY_ENEMY;
-    }
 
     /**
      * Subtypes of enemies.

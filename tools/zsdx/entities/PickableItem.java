@@ -127,14 +127,6 @@ public class PickableItem extends DynamicEntity {
     }
 
     /**
-     * Returns an integer identifying the kind of entity.
-     * @return MapEntity.ENTITY_PICKABLE_ITEM
-     */
-    public int getType() {
-	return ENTITY_PICKABLE_ITEM;
-    }
-
-    /**
      * Returns the coordinates of the origin point of the entity.
      * @return (8,13)
      */

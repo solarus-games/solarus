@@ -11,11 +11,6 @@ import zsdx.Map;
  */
 public class Teletransporter extends DynamicEntity {
 
-    /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Teletransporter";
-
     // subtypes of teletransporters
     public static final int INVISIBLE         = 0;
     public static final int YELLOW            = 1;
@@ -117,14 +112,6 @@ public class Teletransporter extends DynamicEntity {
 	    && destinationMapId.length() != 0 && destinationPointName.length() != 0;	
     }
 
-    /**
-     * Returns an integer identifying the kind of entity.
-     * @return MapEntity.ENTITY_TELETRANSPORTER
-     */
-    public int getType() {
-	return ENTITY_TELETRANSPORTER;
-    }
-    
     /**
      * Returns whether the entity has an identifier.
      * @return true

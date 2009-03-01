@@ -11,36 +11,32 @@ import zsdx.entities.*;
  */
 public class AddEntitiesToolbar extends JComponent {
 
-    private static int[][] subtypes = {
-	{0}, // tile
-	{DestinationPoint.INVISIBLE, DestinationPoint.GRAY}, // destination point
-	{Teletransporter.INVISIBLE, Teletransporter.YELLOW}, // teletransporter
-	{0}, // pickable item
-	{
-	    DestructibleItem.GRASS,
-	    DestructibleItem.BUSH,
-	    DestructibleItem.POT,
-	    DestructibleItem.STONE_SMALL_WHITE
-	}, // destructible item
-	{0}, // chest
-	{0}, // jump sensor
-	{Enemy.Subtype.SIMPLE_GREEN_SOLDIER.ordinal()}, // enemy
-	{
-	    InteractiveEntity.Subtype.CUSTOM.ordinal(), 
-	    InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal(),
-	    InteractiveEntity.Subtype.SIGN.ordinal()
-	}, // interactive entity
+    /**
+     * Defines the entities available in the toolbar.
+     * Each element is a type of entity and a possible subtype.
+     */
+    private static int[][] cells = {
+	{MapEntity.ENTITY_DESTINATION_POINT, DestinationPoint.INVISIBLE},
+	{MapEntity.ENTITY_DESTINATION_POINT, DestinationPoint.GRAY},
+	{MapEntity.ENTITY_TELETRANSPORTER, Teletransporter.INVISIBLE},
+	{MapEntity.ENTITY_TELETRANSPORTER, Teletransporter.YELLOW},
+	{MapEntity.ENTITY_PICKABLE_ITEM, 0},
+	{MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.GRASS},
+	{MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.BUSH},
+	{MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.POT},
+	{MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_WHITE},
+	{MapEntity.ENTITY_CHEST, 0},
+	{MapEntity.ENTITY_JUMP_SENSOR, 0},
+	{MapEntity.ENTITY_ENEMY, Enemy.Subtype.SIMPLE_GREEN_SOLDIER.ordinal()},
+	{MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.CUSTOM.ordinal()},
+	{MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal()},
+	{MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.SIGN.ordinal()}
     };
 
     /**
      * The map view associated to the toolbar.
      */
     private MapView mapView;
-
-    /**
-     * Array indicating for each cell the corresponding type of entity and its subtype.
-     */
-    private int[][] cells;
 
     private EntityImageDescription[] imageDescriptions;
 
@@ -55,31 +51,15 @@ public class AddEntitiesToolbar extends JComponent {
 	addMouseListener(new AddEntitiesToolbarMouseListener());
 
 	// count the number of cells to build
-	int nbCells = 0;
-	for (int i = 1; i < MapEntity.ENTITY_NB_TYPES; i++) {
-
-	    nbCells += subtypes[i].length;
-	}
-
-	this.cells = new int[nbCells][2];
+	int nbCells = cells.length;
 	this.imageDescriptions = new EntityImageDescription[nbCells];
 
-	int k = 0;
-	for (int i = 1; i < MapEntity.ENTITY_NB_TYPES; i++) {
-	    for (int j = 0; j < subtypes[i].length; j++) {
-
-		EntityImageDescription imageDescription = MapEntity.getImageDescription(i, subtypes[i][j]);
-
-		this.cells[k][0] = i;
-		this.cells[k][1] = subtypes[i][j];
-		this.imageDescriptions[k] = imageDescription;
-		
-		k++;
-	    }
+	for (int i = 0; i < nbCells; i++) {
+	    EntityImageDescription imageDescription = MapEntity.getImageDescription(cells[i][0], cells[i][1]);
+	    this.imageDescriptions[i] = imageDescription;
 	}
-
     }
-    
+
     /**
      * Returns the preferred size of the component.
      * @return the preferred size of the component
@@ -87,7 +67,7 @@ public class AddEntitiesToolbar extends JComponent {
     public Dimension getPreferredSize() {
 	return new Dimension(700, 33);
     }
-    
+
     /**
      * Draws the component.
      * @param g the graphic context

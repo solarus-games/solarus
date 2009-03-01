@@ -56,7 +56,7 @@ import zsdx.Map;
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
  * - Create a subclass of ActionEditEntity.
- * - Add the entity in the AddEntitiesToolbar.subtypes array.
+ * - Add the entity in the AddEntitiesToolbar.cells array.
  * - Add the entity in the AddEntitiesMenu class.
  */
 public abstract class MapEntity extends Observable {
@@ -138,7 +138,8 @@ public abstract class MapEntity extends Observable {
     public static final int ENTITY_JUMP_SENSOR = 6;
     public static final int ENTITY_ENEMY = 7;
     public static final int ENTITY_INTERACTIVE = 8;
-    public static final int ENTITY_NB_TYPES = 9;
+    public static final int ENTITY_BLOCK = 9;
+    public static final int ENTITY_NB_TYPES = 10;
 
     // concrete subclasses of MapEntity
     public static final Class<?>[] entityClasses = {

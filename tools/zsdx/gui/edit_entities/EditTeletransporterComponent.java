@@ -49,7 +49,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	addField("Destination map", mapField);
 
 	// destination point
-	destinationPointField = new EntityChooser(null, MapEntity.ENTITY_DESTINATION_POINT,
+	destinationPointField = new EntityChooser(null, EntityType.DESTINATION_POINT,
 		new String[] {"", samePointText, sidePointText});
 	addField("Destination point", destinationPointField);
 

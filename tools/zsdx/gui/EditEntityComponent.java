@@ -14,7 +14,6 @@ import zsdx.gui.edit_entities.*;
 public class EditEntityComponent extends JPanel {
 
     private static final Class<?>[] editEntityComponentClasses = {
-	// make a subpackage
 	EditEntityComponent.class,
 	EditDestinationPointComponent.class,
 	EditTeletransporterComponent.class,
@@ -59,7 +58,7 @@ public class EditEntityComponent extends JPanel {
 	this.entity = entity;
 	
 	setBorder(BorderFactory.createTitledBorder(
-		MapEntity.getTypeName(entity.getType()) + " properties"));
+		entity.getType().getName() + " properties"));
 
 	gridBagConstraints = new GridBagConstraints();
 	gridBagConstraints.insets = new Insets(5, 5, 5, 5); // margins
@@ -114,7 +113,7 @@ public class EditEntityComponent extends JPanel {
 	
 	EditEntityComponent component = null;
 	
-	Class<?> componentClass = editEntityComponentClasses[entity.getType()];
+	Class<?> componentClass = editEntityComponentClasses[entity.getType().getIndex()];
 	Constructor<?> constructor;
 	try {
 	    constructor = componentClass.getConstructor(Map.class, MapEntity.class);

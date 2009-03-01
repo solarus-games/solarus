@@ -1,6 +1,7 @@
 package zsdx.entities;
 
 import zsdx.*;
+import java.util.*;
 
 /**
  * Represents the different types of map entities available in the editor.
@@ -37,9 +38,9 @@ public enum EntityType {
      * Returns the entity type with the specified index.
      * @param index index of the entity type to get
      * @return the entity type with this index
-     * @throws MapException if the index is incorrect
+     * @throws NoSuchElementException if the index is incorrect
      */
-    public static EntityType get(int index) throws MapException {
+    public static EntityType get(int index) throws NoSuchElementException {
 
 	for (EntityType t: values()) {
 	    if (t.getIndex() == index) {
@@ -47,24 +48,24 @@ public enum EntityType {
 	    }
 	}
 
-	throw new MapException("Unknown entity type: " + index);
+	throw new NoSuchElementException("Unknown entity type: " + index);
     }
 
     /**
      * Returns the entity type with the specified class.
      * @param entityClass class of the entity type to get
      * @return the entity type represented by this class
-     * @throws MapException if the class is incorrect
+     * @throws NoSuchElementException if the class is incorrect
      */
-    public static EntityType get(Class<? extends MapEntity> entityClass) throws MapException {
+    public static EntityType get(Class<? extends MapEntity> entityClass) throws NoSuchElementException {
 
 	for (EntityType t: values()) {
-	    if (t.getClass() == entityClass) {
+	    if (t.getEntityClass() == entityClass) {
 		return t;
 	    }
 	}
 
-	throw new MapException("Unknown entity class: " + entityClass.getName());
+	throw new NoSuchElementException("Unknown entity class: " + entityClass.getName());
     }
 
     /**

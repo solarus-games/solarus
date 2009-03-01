@@ -63,7 +63,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private boolean isMouseInMapView;         // true if the mouse is in the map view (useful in state ADDING_ENTITY)
     private List<MapEntity> initialSelection; // the entities selected, saved here before drawing a selection rectangle
     private boolean entityJustSelected;       // true if the last entity on which the mouse was pressed was not already selected
-    private int entityTypeBeingAdded;         // in state ADDING_ENTITY: type of the entity that is about to be added
+    private EntityType entityTypeBeingAdded;  // in state ADDING_ENTITY: type of the entity that is about to be added
     private int entitySubtypeBeingAdded;      // in state ADDING_ENTITY: subtype of the entity that is about to be added
     private MapEntity entityBeingAdded;       // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
     private List<MapEntity> copiedEntities;   // entities cut or copied, ready to be pasted (or null)
@@ -498,7 +498,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @param entityType type of entity to add
      * @param entitySubtype subtype of entity to add
      */
-    public void startAddingEntity(int entityType, int entitySubtype) {
+    public void startAddingEntity(EntityType entityType, int entitySubtype) {
 
 	if (state == State.ADDING_ENTITY
 		&& entityType == entityTypeBeingAdded
@@ -512,7 +512,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    this.entitySubtypeBeingAdded = entitySubtype;
 
 	    try {
-		if (entityType == MapEntity.ENTITY_TILE) {
+		if (entityType == EntityType.TILE) {
 		    int tileId = map.getTileset().getSelectedTileId();
 		    entityBeingAdded = new TileOnMap(map, tileId, 0, 0);
 		}
@@ -627,14 +627,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * Returns the type of the entity that is being added.
-     * If the state is not State.ADDING_ENTITY, -1 is returned.
-     * @return the type of the entity being added, or -1 if the user is
+     * If the state is not State.ADDING_ENTITY, null is returned.
+     * @return the type of the entity being added, or null if the user is
      * not adding an entity
      */
-    public int getEntityTypeBeingAdded() {
+    public EntityType getEntityTypeBeingAdded() {
 
 	if (state != State.ADDING_ENTITY) {
-	    return -1;
+	    return null;
 	}
 	
 	return entityBeingAdded.getType();
@@ -1049,7 +1049,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		int x = getMouseInMapX(mouseEvent);
 		int y = getMouseInMapY(mouseEvent);
 
-		startAddingEntity(MapEntity.ENTITY_TILE, 0);
+		startAddingEntity(EntityType.TILE, 0);
 		updateAddingEntity(x, y);
 	    }
 	}
@@ -1188,7 +1188,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// resized, we propose to add another entity of the same type
 		if (button == MouseEvent.BUTTON3 && state == State.NORMAL) {
 		    
-		    if (entityTypeBeingAdded == MapEntity.ENTITY_TILE) {
+		    if (entityTypeBeingAdded == EntityType.TILE) {
 			int tileId = ((TileOnMap) entityAdded).getTileId();
 			map.getTileset().setSelectedTileId(tileId);
 		    }
@@ -1225,7 +1225,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    // move to the state State.ADDING_ENTITY
 
 		    // if it is a tile
-		    if (entityTypeBeingAdded == MapEntity.ENTITY_TILE) {
+		    if (entityTypeBeingAdded == EntityType.TILE) {
 			int tileId = ((TileOnMap) entity).getTileId();
 			map.getTileset().setSelectedTileId(tileId);
 		    }
@@ -1265,7 +1265,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    // if a tile is selected in the tileset,
 		    // display it on the map under the cursor
 		    if (map.getTileset().getSelectedTile() != null) {
-			startAddingEntity(MapEntity.ENTITY_TILE, 0);
+			startAddingEntity(EntityType.TILE, 0);
 			updateAddingEntity(x, y);
 		    }
 		    break;

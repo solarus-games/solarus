@@ -26,21 +26,21 @@ public class AddEntitiesMenu extends JMenu {
 	item = new JMenuItem("Destination point");
 	item.setMnemonic(KeyEvent.VK_D);
 	item.getAccessibleContext().setAccessibleDescription("Add a destination point on the map");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTINATION_POINT));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTINATION_POINT));
 	add(item);
 
 	// teletransporter
 	item = new JMenuItem("Teletransporter");
 	item.setMnemonic(KeyEvent.VK_T);
 	item.getAccessibleContext().setAccessibleDescription("Add a teletransporter on the map");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_TELETRANSPORTER));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.TELETRANSPORTER));
 	add(item);
 
 	// pickable item
 	item = new JMenuItem("Pickable item");
 	item.setMnemonic(KeyEvent.VK_P);
 	item.getAccessibleContext().setAccessibleDescription("Add a pickable item (rupee, heart, fairy, key...)");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_PICKABLE_ITEM));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.PICKABLE_ITEM));
 	add(item);
 
 	// destructible item
@@ -54,21 +54,21 @@ public class AddEntitiesMenu extends JMenu {
 	item = new JMenuItem("Chest");
 	item.setMnemonic(KeyEvent.VK_C);
 	item.getAccessibleContext().setAccessibleDescription("Add a chest");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_CHEST));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.CHEST));
 	add(item);
 
 	// jump sensor
 	item = new JMenuItem("Jump sensor");
 	item.setMnemonic(KeyEvent.VK_J);
 	item.getAccessibleContext().setAccessibleDescription("Add a jump sensor");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_JUMP_SENSOR));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.JUMP_SENSOR));
 	add(item);
 	
 	// enemy
 	item = new JMenuItem("Enemy");
 	item.setMnemonic(KeyEvent.VK_Y);
 	item.getAccessibleContext().setAccessibleDescription("Add an enemy");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_ENEMY));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.ENEMY));
 	add(item);
 
 	// interactive entity
@@ -88,23 +88,23 @@ public class AddEntitiesMenu extends JMenu {
 	JMenuItem item;
 
 	item = new JMenuItem("Grass");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.GRASS));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.GRASS));
 	submenu.add(item);
 
 	item = new JMenuItem("Bush");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.BUSH));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.BUSH));
 	submenu.add(item);
 
 	item = new JMenuItem("Pot");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.POT));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.POT));
 	submenu.add(item);
 
 	item = new JMenuItem("White stone");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_WHITE));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_WHITE));
 	submenu.add(item);
 
 	item = new JMenuItem("Black stone");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_BLACK));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_BLACK));
 	submenu.add(item);
     }
 
@@ -117,19 +117,19 @@ public class AddEntitiesMenu extends JMenu {
 	JMenuItem item;
 
 	item = new JMenuItem("Custom");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.CUSTOM.ordinal()));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE, InteractiveEntity.Subtype.CUSTOM.ordinal()));
 	submenu.add(item);
 
 	item = new JMenuItem("Non playing character");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal()));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal()));
 	submenu.add(item);
 
 	item = new JMenuItem("Sign");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.SIGN.ordinal()));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE, InteractiveEntity.Subtype.SIGN.ordinal()));
 	submenu.add(item);
 
 	item = new JMenuItem("Water for bottle");
-	item.addActionListener(new ActionListenerAddEntity(MapEntity.ENTITY_INTERACTIVE, InteractiveEntity.Subtype.WATER_FOR_BOTTLE.ordinal()));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE, InteractiveEntity.Subtype.WATER_FOR_BOTTLE.ordinal()));
 	submenu.add(item);
     }
 
@@ -139,14 +139,14 @@ public class AddEntitiesMenu extends JMenu {
     class ActionListenerAddEntity implements ActionListener {
 
 	// type of entity to add
-	private int entityType;
+	private EntityType entityType;
 	private int entitySubtype;
 
-	public ActionListenerAddEntity(int entityType) {
+	public ActionListenerAddEntity(EntityType entityType) {
 	    this(entityType, 0);
 	}
 
-	public ActionListenerAddEntity(int entityType, int entitySubtype) {
+	public ActionListenerAddEntity(EntityType entityType, int entitySubtype) {
 	    this.entityType = entityType;
 	    this.entitySubtype = entitySubtype;
 	}

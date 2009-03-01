@@ -19,7 +19,7 @@ public class EntityChooser extends JComboBox {
     /**
      * The kind of entity displayed in the combo box (doors, ennemies...).
      */
-    private int entityType;
+    private EntityType entityType;
 
     /**
      * A list of special options to add to the combo box.
@@ -32,7 +32,7 @@ public class EntityChooser extends JComboBox {
      * @param entityType the type of entity to show in the combo box
      * @param showEmptyOption true to add an empty option to the combo box
      */
-    public EntityChooser(Map map, int entityType, boolean showEmptyOption) {
+    public EntityChooser(Map map, EntityType entityType, boolean showEmptyOption) {
 	super();
 
 	this.map = map;
@@ -54,7 +54,7 @@ public class EntityChooser extends JComboBox {
      * @param entityType the type of entity to show in the combo box
      * @param additionalOptions a list of special options to add to the combo box
      */
-    public EntityChooser(Map map, int entityType, String[] additionalOptions) {
+    public EntityChooser(Map map, EntityType entityType, String[] additionalOptions) {
 	super();
 	
 	this.map = map;

@@ -1004,18 +1004,7 @@ public abstract class MapEntity extends Observable {
      * @return the type of entity
      */
     public final EntityType getType() throws IllegalStateException {
-
-	EntityType type = null;
-	try {
-	    type = EntityType.get(getClass());
-	}
-	catch (MapException ex) {
-	    // should never happen
-	    System.err.println("Unexpected error: " + ex.getMessage());
-	    System.exit(1);
-	}
-
-	return type;
+	return EntityType.get(getClass());
     }
 
     /**

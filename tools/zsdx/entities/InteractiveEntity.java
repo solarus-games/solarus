@@ -211,7 +211,7 @@ public class InteractiveEntity extends DynamicEntity {
      * Sets the subtype of this entity.
      * @param subtype the subtype of entity
      */
-    public void setSubtype(Subtype subtype) throws MapException {
+    public void setSubtype(EntitySubtype subtype) throws MapException {
 	super.setSubtype(subtype);
 
 	Dimension size = sizes[getSubtypeId()];

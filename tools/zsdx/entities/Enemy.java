@@ -196,7 +196,7 @@ public class Enemy extends DynamicEntity {
      * Sets the subtype of this enemy.
      * @param subtype the subtype of enemy
      */
-    public void setSubtype(Subtype subtype) {
+    public void setSubtype(EntitySubtype subtype) throws MapException {
 	super.setSubtype(subtype);
 
 	Dimension size = sizes[getSubtypeId()];

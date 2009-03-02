@@ -122,6 +122,7 @@ public enum TreasureContent {
 	"Wooden key",
 	"Ice key",
 	"Iron glove",
+	"Golden glove",
 	"Fire stone",
 
 	"World map",

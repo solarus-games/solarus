@@ -115,7 +115,7 @@ public enum EntityType {
 	EntitySubtype subtype = null;
 	try {
 	    // call the get(int id) public static method from the enumeration 
-	    subtype = (EntitySubtype) subtypeEnum.getMethod("get").invoke(null, id);
+	    subtype = (EntitySubtype) subtypeEnum.getMethod("get", int.class).invoke(null, id);
 	}
 	catch (NoSuchMethodException ex) {
 	    System.err.println("The method 'get' is missing in enumeration " + subtypeEnum.getName());

@@ -52,7 +52,7 @@ import zsdx.Map;
  *   - If your entity is not drawn from an image file but in a more complex way,
  *       you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *       public abstract void paint(Graphics g, double zoom, boolean showTransparency).
- *   - If your entity has a subtype, redefin the getSubtype() method:
+ *   - If your entity has a subtype, redefine the getSubtype() method:
  *       public EntitySubtype getSubtype() and change its return type.
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
@@ -1008,7 +1008,8 @@ public abstract class MapEntity extends Observable {
 	    return null;
 	}
 
-	return getImageDescriptions(type)[((Enum) subtype).ordinal()];
+	int index = (subtype != null) ? ((Enum) subtype).ordinal() : 0;
+	return getImageDescriptions(type)[index];
     }
 
     /**
@@ -1048,7 +1049,12 @@ public abstract class MapEntity extends Observable {
      * @return the subtype id
      */
     public final int getSubtypeId() {
-	return getSubtype().getId();
+
+	if (subtype == null) {
+	    return 0;
+	}
+	
+	return subtype.getId();
     }
 
     /**
@@ -1082,8 +1088,9 @@ public abstract class MapEntity extends Observable {
     /**
      * Sets the subtype of this entity.
      * @param subtype the subtype to set
+     * @throws MapException if the subtype is not valid
      */
-    public void setSubtype(EntitySubtype subtype) {
+    public void setSubtype(EntitySubtype subtype) throws MapException {
 	this.subtype = subtype;
 	setChanged();
 	notifyObservers();

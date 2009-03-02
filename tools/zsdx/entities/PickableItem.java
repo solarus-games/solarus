@@ -15,13 +15,13 @@ public class PickableItem extends DynamicEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions =
-	{new EntityImageDescription("pickable_items.png", 0, 0, 16, 16)};
-    
+	{null, null, new EntityImageDescription("pickable_items.png", 0, 0, 16, 16)};
+
     /**
      * Origin point of a pickable item.
      */
     private static final Point origin = new Point(8, 13);
-    
+
     /**
      * Subtypes of pickable items.
      */
@@ -48,7 +48,7 @@ public class PickableItem extends DynamicEntity {
 	PIECE_OF_HEART  (17),
 	HEART_CONTAINER (18);
 
-	public static final String[] names = {
+	public static final String[] humanNames = {
 	    "Random",
 	    "None",
 	    "Green rupee",

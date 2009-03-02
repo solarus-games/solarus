@@ -51,7 +51,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
 
 	PickableItem pickableItem = (PickableItem) entity;
 
-	subtypeField.setValue(pickableItem.getSubtype());
+	subtypeField.setValue((Subtype) pickableItem.getSubtype());
 	savegameVariableField.setNumber(pickableItem.getSavegameVariable());
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);
     }

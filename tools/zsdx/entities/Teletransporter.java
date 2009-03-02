@@ -11,10 +11,26 @@ import zsdx.Map;
  */
 public class Teletransporter extends DynamicEntity {
 
-    // subtypes of teletransporters
-    public static final int INVISIBLE         = 0;
-    public static final int YELLOW            = 1;
-    public static final int BLUE              = 2;
+    /**
+     * Subtypes of teletransporters.
+     */
+    public enum Subtype implements EntitySubtype {
+	INVISIBLE,
+	YELLOW,
+	BLUE;
+
+	public static final String[] humanNames = {
+	  "Invisible", "Yellow", "Blue"  
+	};
+
+	public int getId() {
+	    return ordinal();
+	}
+
+	public static Subtype get(int id) {
+	    return values()[id];
+	}
+    }
 
     /**
      * Description of the default image representing this kind of entity.
@@ -29,8 +45,7 @@ public class Teletransporter extends DynamicEntity {
      */
     private static final Dimension unitarySize = new Dimension(16, 16);
 
-    private int subtype;
-    private int transition;
+    private Transition transition;
     private String destinationMapId;
     private String destinationPointName;
 
@@ -49,7 +64,7 @@ public class Teletransporter extends DynamicEntity {
 	super(map, LAYER_LOW, x, y, 16, 16);
 	
 	// default field values
-	subtype = INVISIBLE;
+	subtype = Subtype.INVISIBLE;
 	transition = Transition.FADE;
 	destinationMapId = map.getId();
 	destinationPointName = "";
@@ -66,8 +81,7 @@ public class Teletransporter extends DynamicEntity {
 	super(map, tokenizer);
 
 	try {
-	    this.subtype = Integer.parseInt(tokenizer.nextToken());
-	    this.transition = Integer.parseInt(tokenizer.nextToken());
+	    this.transition = Transition.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.destinationMapId = tokenizer.nextToken();
 	    this.destinationPointName = tokenizer.nextToken();	    
 	}
@@ -91,8 +105,6 @@ public class Teletransporter extends DynamicEntity {
 	buff.append(super.toString());
 
 	// add the specific properties of a teletransporter
-	buff.append('\t');
-	buff.append(getSubtypeIndex());
 	buff.append('\t');
 	buff.append(getTransition());
 	buff.append('\t');
@@ -125,7 +137,7 @@ public class Teletransporter extends DynamicEntity {
      * @return true if the entity is resizable
      */
     public boolean isResizable() {
-	return !initialized || subtype == INVISIBLE;
+	return !initialized || subtype == Subtype.INVISIBLE;
     }
 
     /**
@@ -150,42 +162,40 @@ public class Teletransporter extends DynamicEntity {
      * Returns the type of transition played when taking this teletransporter.
      * @return the transition type
      */
-    public int getTransition() {
+    public Transition getTransition() {
 	return transition;
     }
 
     /**
      * Returns the subtype of this entity.
-     * @return the subtype of this entity
+     * @return the subtype
      */
-    public int getSubtypeIndex() {
-	return subtype;
+    /*
+    public Subtype getSubtype() {
+	return (Subtype) super.getSubtype();
     }
+    */
 
     /**
      * Sets the subtype of this entity.
      * @param subtype the subtype of entity
      * @throws MapException if the subtype is not valid
      */
-    public void setSubtypeIndex(int subtype) throws MapException {
+    public void setSubtype(Subtype subtype) throws MapException {
 
 	if (subtype != this.subtype) {
-
 	    if (isResizable()) {
 		setSize(16, 16);
 	    }
-
-	    this.subtype = subtype;
-	    setChanged();
-	    notifyObservers();
+	    super.setSubtype(subtype);
 	}
     }
 
     /**
      * Sets the type of transition between the two maps.
-     * @param transition the transition type
+     * @param transition the transition
      */
-    public void setTransition(int transition) {
+    public void setTransition(Transition transition) {
 	this.transition = transition;
 
 	setChanged();
@@ -236,10 +246,10 @@ public class Teletransporter extends DynamicEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	if (subtype == YELLOW) {
+	if (subtype == Subtype.YELLOW) {
 	    currentImageDescription.setRectangle(32, 0, 16, 16);
 	}
-	else if (subtype == BLUE) {
+	else if (subtype == Subtype.BLUE) {
 	    currentImageDescription.setRectangle(32, 16, 16, 16);
 	}
     }
@@ -253,7 +263,7 @@ public class Teletransporter extends DynamicEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-	if (subtype == INVISIBLE) {
+	if (subtype == Subtype.INVISIBLE) {
 	    if (resizableTeletransporterImage == null) {
 		resizableTeletransporterImage = Project.getEditorImage("resizable_teletransporter.png");
 	    }

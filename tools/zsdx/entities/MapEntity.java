@@ -65,6 +65,9 @@ public abstract class MapEntity extends Observable {
      */
     protected Map map;
 
+    /**
+     * Indicates that the entity has been initialized.
+     */
     protected boolean initialized;
 
     /**
@@ -88,6 +91,11 @@ public abstract class MapEntity extends Observable {
      * Not used by all kinds of entities.
      */
     protected String name;
+
+    /**
+     * The subtype of entity, or null if the entity has no subtype.
+     */
+    protected EntitySubtype subtype;
 
     /**
      * Color to display instead of the transparent pixels of the image.
@@ -192,6 +200,10 @@ public abstract class MapEntity extends Observable {
 		setDirection(Integer.parseInt(tokenizer.nextToken()));
 	    }
 
+	    if (hasSubtype()) {
+		setSubtype(getSubtype(Integer.parseInt(tokenizer.nextToken())));
+	    }
+
 	    if (isSizeVariable()) {
 		setSize(width, height); // some entities need to know their direction before they can be resized
 	    }
@@ -210,7 +222,7 @@ public abstract class MapEntity extends Observable {
      * @param entityType the type of entity to create (except TILE)
      * @param entitySubtype the subtype of entity to create
      */
-    public static MapEntity create(Map map, EntityType entityType, int entitySubtype) throws MapException {
+    public static MapEntity create(Map map, EntityType entityType, EntitySubtype entitySubtype) throws MapException {
 
 	MapEntity entity = null;
 	Class<?> entityClass = null;
@@ -220,7 +232,7 @@ public abstract class MapEntity extends Observable {
 	    Object[] paramValues = {map, 0, 0};
 	    Constructor<?> constructor = entityClass.getConstructor(paramTypes);
 	    entity = (MapEntity) constructor.newInstance(paramValues);
-	    entity.setSubtypeIndex(entitySubtype);
+	    entity.setSubtype(entitySubtype);
 	    entity.initializeImageDescription();
 	}
 	catch (NoSuchMethodException ex) {
@@ -352,6 +364,11 @@ public abstract class MapEntity extends Observable {
 	if (hasDirection()) {
 	    buff.append('\t');
 	    buff.append(getDirection());
+	}
+
+	if (hasSubtype()) {
+	    buff.append('\t');
+	    buff.append(getSubtypeId());
 	}
 
 	return buff.toString();
@@ -916,7 +933,7 @@ public abstract class MapEntity extends Observable {
      */
     protected void initializeImageDescription() {
 
-	EntityImageDescription generalImageDescription = getImageDescription(getType(), 0);
+	EntityImageDescription generalImageDescription = getImageDescription(getType(), subtype);
 
 	if (generalImageDescription != null) {
 	    currentImageDescription = new EntityImageDescription(generalImageDescription);
@@ -973,17 +990,17 @@ public abstract class MapEntity extends Observable {
     /**
      * Returns the description of an image representing a specified kind entity.
      * @param type a type of entity
-     * @param image_index index of the image to get
-     * @return an image description of this kind of entity
+     * @param subtype the subtype of entity
+     * @return an image description of this subtype of entity
      */
-    public static EntityImageDescription getImageDescription(EntityType type, int image_index) {
+    public static EntityImageDescription getImageDescription(EntityType type, EntitySubtype subtype) {
 
 	EntityImageDescription[] imageDescriptions = getImageDescriptions(type);
 	if (imageDescriptions == null) {
 	    return null;
 	}
 
-	return getImageDescriptions(type)[image_index];
+	return getImageDescriptions(type)[((Enum) subtype).ordinal()];
     }
 
     /**
@@ -1009,23 +1026,57 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns whether this entity has a subtype.
+     * You don't need to redefine this method. Whether the entity has
+     * a subtype depends on the subtype class specified in the EntityType enumeration.
+     * @return true if this entity has a subtype
+     */
+    public final boolean hasSubtype() {
+	return getType().getSubtypeEnum() != null;
+    }
+
+    /**
+     * Returns the subtype id of this entity.
+     * @return the subtype id
+     */
+    public final int getSubtypeId() {
+	return getSubtype().getId();
+    }
+
+    /**
      * Returns the subtype of this entity.
-     * By default, 0 is always returned. Redefine this method in subclasses that have a subtype field.
-     * This notion of subtype is used by the toolbar that adds entities with an initial subtype.
      * @return the subtype
      */
-    public int getSubtypeIndex() {
-	return 0;
+    public EntitySubtype getSubtype() {
+	return subtype;
+    }
+
+    /**
+     * Returns the subtype corresponding to the specified subtype id
+     * for this type of entity.
+     * @param id the subtype id
+     * @return the subtype
+     */
+    public EntitySubtype getSubtype(int id) {
+	return getType().getSubtype(id);
     }
 
     /**
      * Sets the subtype of this entity.
-     * By default, nothing is done. Redefine this method in subclasses that have a subtype field.
-     * This notion of subtype is used by the toolbar that adds entities with an initial subtype.
      * @param subtype the subtype
      * @throws MapException if the subtype is not valid
      */
-    public void setSubtypeIndex(int subtype) throws MapException {
+    public void setSubtypeId(int subtype) throws MapException {
+	setSubtype(getSubtype(subtype));
+    }
 
+    /**
+     * Sets the subtype of this entity.
+     * @param subtype the subtype to set
+     */
+    public void setSubtype(EntitySubtype subtype) {
+	this.subtype = subtype;
+	setChanged();
+	notifyObservers();
     }
 }

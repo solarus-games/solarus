@@ -11,8 +11,8 @@ public class ActionEditInteractiveEntity extends MapEditorAction {
 
     private InteractiveEntity entity;
 
-    private Subtype subtypeBefore;
-    private Subtype subtypeAfter;
+    private EntitySubtype subtypeBefore;
+    private EntitySubtype subtypeAfter;
 
     private String spriteBefore;
     private String spriteAfter;

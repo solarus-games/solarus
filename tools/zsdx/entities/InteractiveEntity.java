@@ -14,7 +14,7 @@ public class InteractiveEntity extends DynamicEntity {
     /**
      * Subtypes of interactive entities.
      */
-    public enum Subtype {
+    public enum Subtype implements EntitySubtype {
 	CUSTOM,
 	NON_PLAYING_CHARACTER,
 	SIGN,
@@ -26,6 +26,14 @@ public class InteractiveEntity extends DynamicEntity {
 	    "Sign",
 	    "Water for bottle"
 	};
+
+	public static Subtype get(int id) {
+	    return values()[id];
+	}
+
+	public int getId() {
+	    return ordinal();
+	}
     }
 
     /**
@@ -68,11 +76,6 @@ public class InteractiveEntity extends DynamicEntity {
 	new Dimension(16, 16)
     };
 
-    /**
-     * Subtype of interactive entity.
-     */
-    private Subtype subtype;
-
     // specific fields
     
     /**
@@ -114,7 +117,6 @@ public class InteractiveEntity extends DynamicEntity {
 
 	// parse the fields
 	try {
-	    Subtype subtype = Subtype.values()[Integer.parseInt(tokenizer.nextToken())];
 	    this.sprite = tokenizer.nextToken();
 	    this.messageId = tokenizer.nextToken();
 
@@ -158,8 +160,6 @@ public class InteractiveEntity extends DynamicEntity {
 	}
 
 	buff.append('\t');
-	buff.append(getSubtypeIndex());
-	buff.append('\t');
 	buff.append(sprite);
 	buff.append('\t');
 	buff.append(messageId);
@@ -172,7 +172,7 @@ public class InteractiveEntity extends DynamicEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-	return origins[getSubtypeIndex()];
+	return origins[getSubtypeId()];
     }
 
     /**
@@ -200,40 +200,13 @@ public class InteractiveEntity extends DynamicEntity {
     }
 
     /**
-     * Returns the subtype of this entity.
-     * @return the subtype of this entity
-     */
-    public int getSubtypeIndex() {
-	if (subtype == null) {
-	    return 0;
-	}
-	return subtype.ordinal();
-    }
-
-    /**
-     * Returns the subtype of this entity.
-     * @return the subtype of entity
-     */
-    public Subtype getSubtype() {
-	return subtype;
-    }
-
-    /**
-     * Sets the subtype of this entity.
-     * @param subtype the subtype of entity
-     */
-    public void setSubtypeIndex(int subtype) throws MapException {
-	setSubtype(Subtype.values()[subtype]);
-    }
-
-    /**
      * Sets the subtype of this entity.
      * @param subtype the subtype of entity
      */
     public void setSubtype(Subtype subtype) throws MapException {
 	this.subtype = subtype;
 
-	Dimension size = sizes[getSubtypeIndex()];
+	Dimension size = sizes[getSubtypeId()];
 	setSizeImpl(size.width, size.height);
 
 	setChanged();
@@ -312,7 +285,7 @@ public class InteractiveEntity extends DynamicEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	currentImageDescription = currentImageDescriptions[getSubtypeIndex()];
+	currentImageDescription = currentImageDescriptions[getSubtypeId()];
     }
 
     /**

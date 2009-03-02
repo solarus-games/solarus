@@ -12,11 +12,6 @@ import zsdx.Map;
 public class PickableItem extends DynamicEntity {
 
     /**
-     * Name of this kind of entity.
-     */
-    public static final String entityTypeName = "Pickable item";
-
-    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions =
@@ -30,7 +25,7 @@ public class PickableItem extends DynamicEntity {
     /**
      * Subtypes of pickable items.
      */
-    public enum Subtype {
+    public enum Subtype implements EntitySubtype {
 	RANDOM          (-1), /**< special value to indicate to choose another value
 	                       * randomly (including PICKABLE_ITEM_NONE) */
 	NONE            (0),  /**< special value to incicate that there is no pickable item */
@@ -115,13 +110,6 @@ public class PickableItem extends DynamicEntity {
     // specific fields of a pickable item
 
     /**
-     * Type of pickable item.
-     * It cannot be PICKABLE_ITEM_RANDOM or PICKABLE_ITEM_NONE: these
-     * values are reserved for items obtained by destroying pots, bush, enemies, etc.
-     */
-    private Subtype subtype;
-    
-    /**
      * A number indicating the savegame variable where this pickable item possession
      * state is saved.
      * It is used only for the pickable that Link can obtain only once and
@@ -156,7 +144,6 @@ public class PickableItem extends DynamicEntity {
 
 	// parse the fields
 	try {
-	    this.subtype = Subtype.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.savegameVariable = Integer.parseInt(tokenizer.nextToken());
 	}
 	catch (NumberFormatException ex) {
@@ -180,8 +167,6 @@ public class PickableItem extends DynamicEntity {
 
 	// add the specific properties of a pickable item
 	buff.append('\t');
-	buff.append(getSubtypeIndex());
-	buff.append('\t');
 	buff.append(getSavegameVariable());
 
 	return buff.toString();
@@ -199,24 +184,8 @@ public class PickableItem extends DynamicEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	int x = (getSubtypeIndex() - 1) * 16;
+	int x = (getSubtypeId() - 1) * 16;
 	currentImageDescription.setX(x);
-    }
-
-    /**
-     * Returns the type of this pickable item.
-     * @return the type of pickable item
-     */
-    public Subtype getSubtype() {
-	return subtype;
-    }
-
-    /**
-     * Returns the type index of this pickable item.
-     * @return the type index of pickable item
-     */
-    public int getSubtypeIndex() {
-	return subtype.getId();
     }
 
     /**

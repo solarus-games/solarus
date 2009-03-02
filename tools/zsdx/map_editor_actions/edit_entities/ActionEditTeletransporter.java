@@ -2,6 +2,7 @@ package zsdx.map_editor_actions.edit_entities;
 
 import zsdx.*;
 import zsdx.entities.*;
+import zsdx.entities.Teletransporter.Subtype;
 
 /**
  * Editing the properties specific to a teletransporter:
@@ -11,11 +12,11 @@ public class ActionEditTeletransporter extends MapEditorAction {
 
     private Teletransporter teletransporter;
 
-    private int subtypeBefore;
-    private int subtypeAfter;
+    private EntitySubtype subtypeBefore;
+    private EntitySubtype subtypeAfter;
 
-    private int transitionBefore;
-    private int transitionAfter;
+    private Transition transitionBefore;
+    private Transition transitionAfter;
 
     private String destinationMapIdBefore;
     private String destinationMapIdAfter;
@@ -33,12 +34,12 @@ public class ActionEditTeletransporter extends MapEditorAction {
      * @param entranceName the entrance on the destination map
      */
     public ActionEditTeletransporter(Map map, Teletransporter teletransporter,
-	    int subtype, int transition, String destinationMapId, String entranceName) {
+	    Subtype subtype, Transition transition, String destinationMapId, String entranceName) {
 	super(map);
 
 	this.teletransporter = teletransporter;
 
-	this.subtypeBefore = teletransporter.getSubtypeIndex();
+	this.subtypeBefore = teletransporter.getSubtype();
 	this.subtypeAfter = subtype;
 
 	this.transitionBefore = teletransporter.getTransition();
@@ -55,7 +56,7 @@ public class ActionEditTeletransporter extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	teletransporter.setSubtypeIndex(subtypeAfter);
+	teletransporter.setSubtype(subtypeAfter);
 	teletransporter.setTransition(transitionAfter);
 	teletransporter.setDestinationMapId(destinationMapIdAfter);
 	teletransporter.setDestinationPointName(destinationPointNameAfter);
@@ -65,7 +66,7 @@ public class ActionEditTeletransporter extends MapEditorAction {
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	teletransporter.setSubtypeIndex(subtypeBefore);
+	teletransporter.setSubtype(subtypeBefore);
 	teletransporter.setTransition(transitionBefore);
 	teletransporter.setDestinationMapId(destinationMapIdBefore);
 	teletransporter.setDestinationPointName(destinationPointNameBefore);

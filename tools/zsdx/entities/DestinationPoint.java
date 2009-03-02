@@ -11,6 +11,26 @@ import zsdx.Map;
 public class DestinationPoint extends DynamicEntity {
 
     /**
+     * Subtypes of destination points.
+     */
+    public enum Subtype implements EntitySubtype {
+	INVISIBLE,
+	GRAY;
+
+	public static final String[] humanNames = {
+	  "Invisible", "Gray"  
+	};
+
+	public int getId() {
+	    return ordinal();
+	}
+
+	public static Subtype get(int id) {
+	    return values()[id];
+	}
+    }
+
+    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
@@ -18,21 +38,12 @@ public class DestinationPoint extends DynamicEntity {
 	new EntityImageDescription("destination_point.png", 128, 0, 16, 16)    // gray
     };
 
-    // subtypes of destination points
-    public static final int INVISIBLE         = 0;
-    public static final int GRAY              = 1;
-
     /**
      * Indicates whether the direction of Link is changed when he arrives
      * on this destination. If this boolean is true, then Link' direction is
      * indicated by this entity's direction.
      */
     private boolean changeDirection;
-
-    /**
-     * Indicates whether the destination point is visible.
-     */
-    private int subtype;
 
     /**
      * Origin point of a destination point.
@@ -47,7 +58,7 @@ public class DestinationPoint extends DynamicEntity {
      */
     public DestinationPoint(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
-	this.subtype = -1;
+	subtype = Subtype.INVISIBLE;
 	setDirection(1);
     }
 
@@ -62,34 +73,6 @@ public class DestinationPoint extends DynamicEntity {
 	super(map, tokenizer);
 
 	setSizeImpl(16, 16);
-
-	try {
-	    this.subtype = Integer.parseInt(tokenizer.nextToken());
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
-    }
-
-    /**
-     * Returns a string describing this destination point.
-     * @return a string representation of the destination point
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string
-	buff.append(super.toString());
-
-	// add the specific properties of a destination point
-	buff.append('\t');
-	buff.append(subtype);
-
-	return buff.toString();
     }
 
     /**
@@ -150,29 +133,15 @@ public class DestinationPoint extends DynamicEntity {
     }
 
     /**
-     * Returns the subtype of this entity.
-     * @return the subtype of this entity
-     */
-    public int getSubtypeIndex() {
-	return subtype;
-    }
-
-    /**
      * Sets the subtype of this entity.
      * @param subtype the subtype of entity
      * @throws MapException if the subtype is not valid
      */
-    public void setSubtypeIndex(int subtype) throws MapException {
+    public void setSubtype(Subtype subtype) throws MapException {
 
 	if (subtype != this.subtype) {
-
-	    if (this.subtype == -1) {
-		setDefaultValues(subtype);
-	    }
-
-	    this.subtype = subtype;
-	    setChanged();
-	    notifyObservers();
+	    setDefaultValues(subtype);
+	    super.setSubtype(subtype);
 	}
     }
 
@@ -180,9 +149,9 @@ public class DestinationPoint extends DynamicEntity {
      * Sets the default options of this destination point for the specified subtype.
      * @param subtype a subtype
      */
-    public void setDefaultValues(int subtype) {
+    public void setDefaultValues(Subtype subtype) {
 
-	if (subtype == INVISIBLE) {
+	if (subtype == Subtype.INVISIBLE) {
 	    setDirection(1);
 	}
 	else {
@@ -194,7 +163,7 @@ public class DestinationPoint extends DynamicEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	if (subtype == INVISIBLE) {
+	if (subtype == Subtype.INVISIBLE) {
 	    currentImageDescription.setRectangle(getDirection() * 32, 0, 32, 32);
 	}
 	else {

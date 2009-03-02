@@ -9,6 +9,9 @@ import zsdx.entities.*;
  */
 public class AddEntitiesMenu extends JMenu {
 
+    /**
+     * The map view.
+     */
     private MapView mapView;
 
     /**
@@ -88,23 +91,28 @@ public class AddEntitiesMenu extends JMenu {
 	JMenuItem item;
 
 	item = new JMenuItem("Grass");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.GRASS));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
+		DestructibleItem.Subtype.GRASS.getId()));
 	submenu.add(item);
 
 	item = new JMenuItem("Bush");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.BUSH));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
+		DestructibleItem.Subtype.BUSH.getId()));
 	submenu.add(item);
 
 	item = new JMenuItem("Pot");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.POT));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
+		DestructibleItem.Subtype.POT.getId()));
 	submenu.add(item);
 
 	item = new JMenuItem("White stone");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_WHITE));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
+		DestructibleItem.Subtype.STONE_SMALL_WHITE.getId()));
 	submenu.add(item);
 
 	item = new JMenuItem("Black stone");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.STONE_SMALL_BLACK));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
+		DestructibleItem.Subtype.STONE_SMALL_BLACK.getId()));
 	submenu.add(item);
     }
 
@@ -117,19 +125,23 @@ public class AddEntitiesMenu extends JMenu {
 	JMenuItem item;
 
 	item = new JMenuItem("Custom");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE, InteractiveEntity.Subtype.CUSTOM.ordinal()));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE,
+		InteractiveEntity.Subtype.CUSTOM.ordinal()));
 	submenu.add(item);
 
 	item = new JMenuItem("Non playing character");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal()));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE,
+		InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal()));
 	submenu.add(item);
 
 	item = new JMenuItem("Sign");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE, InteractiveEntity.Subtype.SIGN.ordinal()));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE,
+		InteractiveEntity.Subtype.SIGN.ordinal()));
 	submenu.add(item);
 
 	item = new JMenuItem("Water for bottle");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE, InteractiveEntity.Subtype.WATER_FOR_BOTTLE.ordinal()));
+	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE,
+		InteractiveEntity.Subtype.WATER_FOR_BOTTLE.ordinal()));
 	submenu.add(item);
     }
 

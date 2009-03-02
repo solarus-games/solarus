@@ -31,7 +31,7 @@ public class DestructibleItem extends DynamicEntity {
     /**
      * Subtypes of destructible items.
      */
-    public enum Subtype {
+    public enum Subtype implements EntitySubtype {
 	POT,
 	SKULL,
 	BUSH,
@@ -47,14 +47,17 @@ public class DestructibleItem extends DynamicEntity {
 	    "Small black stone",
 	    "Grass"
 	};
+
+	public int getId() {
+	    return ordinal();
+	}
+
+	public static Subtype get(int id) {
+	    return values()[id];
+	}
     };
 
     // specific fields of a destructible item
-
-    /**
-     * Type of destructible item.
-     */
-    private Subtype subtype;
 
     /**
      * Type of pickable item that appears when Link lifts
@@ -96,7 +99,6 @@ public class DestructibleItem extends DynamicEntity {
 
 	// parse the fields
 	try {
-	    this.subtype = Subtype.values()[Integer.parseInt(tokenizer.nextToken())];
 	    this.pickableItemSubtype = PickableItem.Subtype.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.pickableItemSavegameVariable = Integer.parseInt(tokenizer.nextToken());
 	}
@@ -120,8 +122,6 @@ public class DestructibleItem extends DynamicEntity {
 	buff.append(super.toString());
 
 	// add the specific properties of a destructible item
-	buff.append('\t');
-	buff.append(getSubtypeIndex());
 	buff.append('\t');
 	buff.append(getPickableItemSubtype().getId());
 	buff.append('\t');
@@ -150,42 +150,8 @@ public class DestructibleItem extends DynamicEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	int x = getSubtypeIndex() * 16;
+	int x = getSubtypeId() * 16;
 	currentImageDescription.setX(x);
-    }
-
-    /**
-     * Returns the subtype of this destructible item.
-     * @return the subtype of destructible item
-     */
-    public Subtype getSubtype() {
-	return subtype;
-    }
-
-    /**
-     * Returns the subtype index of this destructible item.
-     * @return the subtype index of destructible item
-     */
-    public int getSubtypeIndex() {
-	return subtype.ordinal();
-    }
-
-    /**
-     * Sets the subtype of this destructible item.
-     * @param subtype the subtype of destructible item
-     */
-    public void setSubtype(Subtype subtype) {
-	this.subtype = subtype;
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
-     * Sets the subtype of this destructible item.
-     * @param subtype the subtype index of destructible item
-     */
-    public void setSubtypeIndex(int index) {
-	setSubtype(Subtype.values()[index]);
     }
 
     /**

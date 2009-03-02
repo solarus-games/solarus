@@ -58,15 +58,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private Rectangle fixedLocation;
 
-    private int total_dx;                     // in state MOVING_ENTITIES: total x and y translation
+    private int total_dx;                          // in state MOVING_ENTITIES: total x and y translation
     private int total_dy;
-    private boolean isMouseInMapView;         // true if the mouse is in the map view (useful in state ADDING_ENTITY)
-    private List<MapEntity> initialSelection; // the entities selected, saved here before drawing a selection rectangle
-    private boolean entityJustSelected;       // true if the last entity on which the mouse was pressed was not already selected
-    private EntityType entityTypeBeingAdded;  // in state ADDING_ENTITY: type of the entity that is about to be added
-    private int entitySubtypeBeingAdded;      // in state ADDING_ENTITY: subtype of the entity that is about to be added
-    private MapEntity entityBeingAdded;       // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
-    private List<MapEntity> copiedEntities;   // entities cut or copied, ready to be pasted (or null)
+    private boolean isMouseInMapView;              // true if the mouse is in the map view (useful in state ADDING_ENTITY)
+    private List<MapEntity> initialSelection;      // the entities selected, saved here before drawing a selection rectangle
+    private boolean entityJustSelected;            // true if the last entity on which the mouse was pressed was not already selected
+    private EntityType entityTypeBeingAdded;       // in state ADDING_ENTITY: type of the entity that is about to be added
+    private EntitySubtype entitySubtypeBeingAdded; // in state ADDING_ENTITY: subtype of the entity that is about to be added
+    private MapEntity entityBeingAdded;            // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
+    private List<MapEntity> copiedEntities;        // entities cut or copied, ready to be pasted (or null)
 
     // headers of the map view
 
@@ -498,7 +498,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @param entityType type of entity to add
      * @param entitySubtype subtype of entity to add
      */
-    public void startAddingEntity(EntityType entityType, int entitySubtype) {
+    public void startAddingEntity(EntityType entityType, EntitySubtype entitySubtype) {
 
 	if (state == State.ADDING_ENTITY
 		&& entityType == entityTypeBeingAdded
@@ -642,14 +642,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * Returns the subtype of the entity that is being added.
-     * If the state is not State.ADDING_ENTITY, -1 is returned.
-     * @return the subtype of the entity being added, or -1 if the user is
+     * If the state is not State.ADDING_ENTITY, null is returned.
+     * @return the subtype of the entity being added, or null if the user is
      * not adding an entity
      */
-    public int getEntitySubtypeBeingAdded() {
+    public EntitySubtype getEntitySubtypeBeingAdded() {
 
 	if (state != State.ADDING_ENTITY) {
-	    return -1;
+	    return null;
 	}
 	
 	return entitySubtypeBeingAdded;
@@ -1049,7 +1049,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		int x = getMouseInMapX(mouseEvent);
 		int y = getMouseInMapY(mouseEvent);
 
-		startAddingEntity(EntityType.TILE, 0);
+		startAddingEntity(EntityType.TILE, null);
 		updateAddingEntity(x, y);
 	    }
 	}
@@ -1265,7 +1265,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		    // if a tile is selected in the tileset,
 		    // display it on the map under the cursor
 		    if (map.getTileset().getSelectedTile() != null) {
-			startAddingEntity(EntityType.TILE, 0);
+			startAddingEntity(EntityType.TILE, null);
 			updateAddingEntity(x, y);
 		    }
 		    break;

@@ -45,7 +45,7 @@ public class EditDestinationPointComponent extends EditEntityComponent {
 	addField("Subtype", subtypeField);
 	subtypeField.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
-		boolean changeDirection = (subtypeField.getSelectedIndex() == DestinationPoint.INVISIBLE);
+		boolean changeDirection = (subtypeField.getSelectedIndex() == 0);
 		changeDirectionField.setSelected(changeDirection);
 		directionField.setEnabled(changeDirection);
 	    }
@@ -63,7 +63,7 @@ public class EditDestinationPointComponent extends EditEntityComponent {
 	boolean changeDirection = destinationPoint.getDirection() != -1;
 	directionField.setEnabled(changeDirection);
 	changeDirectionField.setSelected(changeDirection);
-	subtypeField.setSelectedIndex(destinationPoint.getSubtypeIndex());
+	subtypeField.setSelectedIndex(destinationPoint.getSubtypeId());
     }
 
     /**

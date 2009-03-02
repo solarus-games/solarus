@@ -11,26 +11,49 @@ import zsdx.entities.*;
  */
 public class AddEntitiesToolbar extends JComponent {
 
+    private static class Cell {
+
+	private final EntityType type;
+	private final EntitySubtype subtype;
+
+	public Cell(EntityType type) {
+	    this(type, null);
+	}
+
+	public Cell(EntityType type, EntitySubtype subtype) {
+	    this.type = type;
+	    this.subtype = subtype;
+	}
+
+	public EntityType getType() {
+	    return type;
+	}
+
+	public EntitySubtype getSubtype() {
+	    return subtype;
+	}
+    }
+
     /**
      * Defines the entities available in the toolbar.
      * Each element is a type of entity and a possible subtype.
      */
-    private static int[][] cells = {
-	{EntityType.DESTINATION_POINT.getIndex(), DestinationPoint.INVISIBLE},
-	{EntityType.DESTINATION_POINT.getIndex(), DestinationPoint.GRAY},
-	{EntityType.TELETRANSPORTER.getIndex(), Teletransporter.INVISIBLE},
-	{EntityType.TELETRANSPORTER.getIndex(), Teletransporter.YELLOW},
-	{EntityType.PICKABLE_ITEM.getIndex(), 0},
-	{EntityType.DESTRUCTIBLE_ITEM.getIndex(), DestructibleItem.Subtype.GRASS.ordinal()},
-	{EntityType.DESTRUCTIBLE_ITEM.getIndex(), DestructibleItem.Subtype.BUSH.ordinal()},
-	{EntityType.DESTRUCTIBLE_ITEM.getIndex(), DestructibleItem.Subtype.POT.ordinal()},
-	{EntityType.DESTRUCTIBLE_ITEM.getIndex(), DestructibleItem.Subtype.STONE_SMALL_WHITE.ordinal()},
-	{EntityType.CHEST.getIndex(), 0},
-	{EntityType.JUMP_SENSOR.getIndex(), 0},
-	{EntityType.ENEMY.getIndex(), Enemy.Subtype.SIMPLE_GREEN_SOLDIER.ordinal()},
-	{EntityType.INTERACTIVE.getIndex(), InteractiveEntity.Subtype.CUSTOM.ordinal()},
-	{EntityType.INTERACTIVE.getIndex(), InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal()},
-	{EntityType.INTERACTIVE.getIndex(), InteractiveEntity.Subtype.SIGN.ordinal()}
+    private static Cell[] cells = {
+	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.INVISIBLE),
+	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.GRAY),
+	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.INVISIBLE),
+	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.YELLOW),
+	new Cell(EntityType.PICKABLE_ITEM),
+	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.GRASS),
+	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.BUSH),
+	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.POT),
+	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.STONE_SMALL_WHITE),
+	new Cell(EntityType.CHEST),
+	new Cell(EntityType.JUMP_SENSOR),
+	new Cell(EntityType.ENEMY, Enemy.Subtype.SIMPLE_GREEN_SOLDIER),
+	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.CUSTOM),
+	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER),
+	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.SIGN)
     };
 
     /**
@@ -38,6 +61,9 @@ public class AddEntitiesToolbar extends JComponent {
      */
     private MapView mapView;
 
+    /**
+     * Description of each image in the toolbar.
+     */
     private EntityImageDescription[] imageDescriptions;
 
     /**
@@ -55,7 +81,7 @@ public class AddEntitiesToolbar extends JComponent {
 	this.imageDescriptions = new EntityImageDescription[nbCells];
 
 	for (int i = 0; i < nbCells; i++) {
-	    EntityImageDescription imageDescription = MapEntity.getImageDescription(EntityType.get(cells[i][0]), cells[i][1]);
+	    EntityImageDescription imageDescription = MapEntity.getImageDescription(cells[i].getType(), cells[i].getSubtype());
 	    this.imageDescriptions[i] = imageDescription;
 	}
     }
@@ -86,7 +112,7 @@ public class AddEntitiesToolbar extends JComponent {
 
 	// get the entity type being added (if any)
 	EntityType entityTypeBeingAdded = mapView.getEntityTypeBeingAdded();
-	int entitySubtypeBeingAdded = mapView.getEntitySubtypeBeingAdded();
+	EntitySubtype entitySubtypeBeingAdded = mapView.getEntitySubtypeBeingAdded();
 
 	// draw the icons for all types of entities (except TileOnMap which has its own dedicated view)
 	for (int i = 0; i < cells.length; i++) {
@@ -99,8 +125,8 @@ public class AddEntitiesToolbar extends JComponent {
 
 	    // draw the selection rectangle if we are currently adding this kind of entity
 	    if (entityTypeBeingAdded != null &&
-		    entityTypeBeingAdded.getIndex() == cells[i][0] &&
-		    entitySubtypeBeingAdded == cells[i][1]) {
+		    entityTypeBeingAdded == cells[i].getType() &&
+		    entitySubtypeBeingAdded == cells[i].getSubtype()) {
 		int scaledX = x * 2;
 		int scaledY = y * 2;
 		g.setColor(Color.RED);
@@ -133,8 +159,8 @@ public class AddEntitiesToolbar extends JComponent {
 		return;
 	    }
 
-	    EntityType typeClicked = EntityType.get(cells[cell][0]);
-	    int subtypeClicked = cells[cell][1];
+	    EntityType typeClicked = cells[cell].getType();
+	    EntitySubtype subtypeClicked = cells[cell].getSubtype();
 	    mapView.startAddingEntity(typeClicked, subtypeClicked);
 	}
     }

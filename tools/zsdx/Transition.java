@@ -3,15 +3,18 @@ package zsdx;
 /**
  * Indicates a type of transition between two maps.
  */
-public class Transition {
+public enum Transition {
 
-    public static final int IMMEDIATE = 0;
-    public static final int FADE = 1;
-    
-    /**
-     * You don't need to instanciate this class.
-     */
-    private Transition() {
-	
+    IMMEDIATE,
+    FADE;
+
+    public static final String[] humanNames = {"Immediate", "Fade in/out"};
+
+    public int getId() {
+	return ordinal();
+    }
+
+    public static Transition get(int id) {
+	return values()[id];
     }
 }

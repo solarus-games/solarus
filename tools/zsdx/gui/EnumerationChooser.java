@@ -5,11 +5,12 @@ import java.lang.reflect.*;
 
 /**
  * A combo box to select a value among the specified enumeration.
+ * @param e the enumeration type returned and set by getValue() and setValue() respectively
  */
 public class EnumerationChooser<E extends Enum<E>> extends JComboBox {
 
     /**
-     * The enumeration to display in this combo box.
+     * The enumeration displayed in this combo box.
      */
     private Class<E> enumeration;
 

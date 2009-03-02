@@ -24,15 +24,9 @@ music_id est le nom du fichier de la musique de fond, ou alors "none" pour ne pa
 
 Ensuite, chaque ligne du fichier décrit une entité de la map.
 
-0	2	272	88	164	1	1
-0	2	232	88	165	1	1
-0	2	360	72	143	1	1
-0	2	368	72	144	1	1
-1	0	128	216	MainEntrance	1
-
 Syntaxe de la ligne d'une entité (les éléments entre crochets n'existent que pour certains types d'entité) :
 
-entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	[specific_info]
+entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	[subtype]	[specific_info]
 
 Le premier nombre indique de quel type d'entité il s'agit : un tile, une entrée de la map, un ennemi, un coffre...
 
@@ -46,8 +40,9 @@ Ensuite, on a la taille de l'entité (seulement pour une entité de taille varia
 
 Puis, on a éventuellement entity_name, un identificateur si c'est une entité qui est identifiable. Certains types d'entités ont en effet un identificateur, ce dernier permet d'identifier de manière unique une instance (un ennemi, un interrupteur...) au cours de l'exécution du jeu, notamment depuis le script de la map. L'identificateur est un nom (choisi par le mappeur) attribué à une instance. Par exemple, si on veut qu'un interrupteur ouvre une porte, ça se fait depuis le script de la map, et donc le script a besoin de faire référence à un interrupteur bien précis et à une porte bien précise. Le nom d'une entité ne peut pas commencer par le caractère '_' car ces noms sont réservés pour des utilisations particulières.
 
-Pour finir, on a éventuellement direction, la direction de l'entité, qui est représentée par un nombre entier. Là aussi c'est optionnel car seuls certains types d'entités ont une direction (ennemis, entrées de la map, PNJ, tapis roulants...) alors que les autres non (tiles, vases, téléporteurs...).
+Puis, on a éventuellement direction, la direction de l'entité, qui est représentée par un nombre entier. Là aussi c'est optionnel car seuls certains types d'entités ont une direction (ennemis, entrées de la map, PNJ, tapis roulants...) alors que les autres non (tiles, vases, téléporteurs...).
 
+Enfin, subtype indique le sous-type d'entité (seulement pour certains types d'entités).
 
 Le reste de la ligne contient des informations spécifiques selon le type d'entité.
 Pour le moment, les types d'entités suivants sont gérés :
@@ -73,11 +68,7 @@ Un point de destination est un point de la map qui sert de destination à un té
 Elle a aussi un identificateur, qui servira à pouvoir associer cette destination à un téléporteur d'une autre map ou de la même map.
 Sa taille est fixe (16*16, c'est-à-dire la taille de Link).
 
-Syntaxe de la partie spécifique d'une destination :
-
-is_visible
-
-is_visible est un booléen (0 ou 1) indiquant si la destination est visible ou non. Si elle est visible, elle s'affiche sous la forme d'une arrivée de téléporteur classique.
+Le sous-type indique si la destination est visible ou non. Si elle est visible, elle s'affiche sous la forme d'une arrivée de téléporteur classique.
 
 
 Téléporteur (2)
@@ -89,9 +80,9 @@ Sa taille est variable.
 
 Syntaxe de la partie spécifique pour un téléporteur :
 
-subtype transition	destination_map	destination_point
+transition	destination_map	destination_point
 
-subtype indique le type de téléporteur :
+Le sous-type indique le type de téléporteur :
 
 0 : téléporteur invisible (par exemple pour un changement de map classique ou un trou)
 1 : téléporteur jaune (avec transition)
@@ -109,9 +100,9 @@ Un objet ramassable n'a pas de direction, pas d'identificateur et sa taille est 
 
 Syntaxe de la partie spécifique pour un objet ramassable :
 
-pickable_item_type	savegame_variable
+savegame_variable
 
-On a donc deux champs supplémentaire. pickable_item_type, qui est un numéro indiquant le type d'objet ramassable :
+Le sous-type qui est un numéro indiquant le type d'objet ramassable :
 
 -1 : aléatoire
 0 : rien
@@ -146,10 +137,10 @@ Un objet destructible n'a pas de direction, pas d'identificateur et sa taille es
 
 Syntaxe de la partie spécifique pour un objet destructible :
 
-destructible_item_type	pickable_item	savegame_variable
+pickable_item	savegame_variable
 
 
-destructible_item_type est un numéro indiquant le type d'objet destructible :
+Le sous-type est un numéro indiquant le type d'objet destructible :
 
 0 : pot
 1 : crâne (équivalent des pots dans le monde des ténèbres)
@@ -193,14 +184,12 @@ jump_length est la longueur du saut en pixels. Il faut s'assurer que cette longu
 
 Ennemis (7)
 
-Un ennemi a une direction initiale et un identificateur. Sa taille est fixe.
+Un ennemi a un sous-type, une direction initiale et un identificateur. Sa taille est fixe.
 
 Syntaxe de la partie spécifique pour un ennemi :
 
-enemy_type    rank    savegame_variable     pickable_item     pickable_item_savegame_variable
+rank    savegame_variable     pickable_item     pickable_item_savegame_variable
 
-
-enemy_type est un numéro indiquant le type d'ennemi.
 
 rank indique si l'ennemi est un ennemi normal (0), un mini-boss (1) ou un boss (2).
 
@@ -215,17 +204,17 @@ Une entité interactive est une entité avec laquelle le héros peut interagir e
 Il peut lui parler, lire ce qu'elle indique ou encore agir en la touchant.
 Elle peut avoir un sprite ou non. En général, l'action déclenche l'affichage d'un message spécifié. Mais on peut choisir de remplacer ce message par un appel au script.
 
-Une interaction a une direction (celle du sprite) et un identificateur. Sa taille est imposée par son type d'interaction.
+Une interaction a une direction (celle du sprite) et un identificateur. Sa taille est imposée par son sous-type.
 
 Syntaxe de la partie spécifique pour une entité interactive :
 
-special_interaction     sprite_name     message_id
+sprite_name     message_id
 
 sprite_name est le nom du sprite de cette entité (ou "_none" pour que l'entité soit invisible)
 
 message_id est l'identifiant d'un message qui s'affiche lorsque le joueur interagit avec cette entité. La valeur "_none" signifie qu'au lieu d'afficher un message, le script est appelé.
 
-special_interaction est un numéro indiquant s'il s'agit d'une interaction spéciale :
+Le sous-type est un numéro indiquant s'il s'agit d'une interaction spéciale :
 
 0 : interaction classique (se contente d'afficher le message spécifié ou d'appeler le script)
 1 : personnage non joueur (même chose sauf qu'il y a un sprite obligatoire, avec 4 directions et les animations "stopped" et éventuellement "walking")
@@ -236,9 +225,9 @@ Blocs (9)
 
 Syntaxe de la partie spécifique :
 
-subtype maximum_push
+maximum_push
 
-subtype indique s'il s'agit d'un bloc classique (0) ou une statue (1). D'autres sous-types pourront être créés à l'avenir
+Le sous-type indique s'il s'agit d'un bloc classique (0) ou une statue (1). D'autres sous-types pourront être créés à l'avenir
 (exemples : blocs qui glissent jusqu'au prochain mur, blocs comme dans l'énigme de Zelda MC...)
 maximum_push indique ce qui se passe lorsque le héros pousse le bloc :
 0 : ne peut pas (ou plus) être poussé

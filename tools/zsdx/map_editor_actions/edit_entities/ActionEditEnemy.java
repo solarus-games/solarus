@@ -11,8 +11,8 @@ public class ActionEditEnemy extends MapEditorAction {
 
     private Enemy enemy;
 
-    private Subtype subtypeBefore;
-    private Subtype subtypeAfter;
+    private EntitySubtype subtypeBefore;
+    private EntitySubtype subtypeAfter;
 
     private Rank rankBefore;
     private Rank rankAfter;

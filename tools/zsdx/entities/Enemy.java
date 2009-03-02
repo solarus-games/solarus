@@ -41,12 +41,20 @@ public class Enemy extends DynamicEntity {
     /**
      * Subtypes of enemies.
      */
-    public enum Subtype {
+    public enum Subtype implements EntitySubtype {
 	SIMPLE_GREEN_SOLDIER;
 
 	public static final String[] humanNames = {
 	    "Simple green soldier"
 	};
+
+	public int getId() {
+	    return ordinal();
+	}
+
+	public static Subtype get(int id) {
+	    return values()[id];
+	}
     }
 
     /**
@@ -59,11 +67,6 @@ public class Enemy extends DynamicEntity {
 
 	public static final String[] humanNames = {"Normal", "Miniboss", "Boss"};
     }
-
-    /**
-     * Type of enemy.
-     */
-    private Subtype subtype;
 
     /**
      * Rank of the enemy: normal, miniboss or boss
@@ -104,7 +107,7 @@ public class Enemy extends DynamicEntity {
 	pickableItemSavegameVariable = -1;
 
 	setDirection(3);
-	Dimension size = sizes[getSubtypeIndex()];
+	Dimension size = sizes[getSubtypeId()];
 	setSizeImpl(size.width, size.height);
     }
 
@@ -120,13 +123,10 @@ public class Enemy extends DynamicEntity {
 
 	// parse the fields
 	try {
-	    Subtype subtype = Subtype.values()[Integer.parseInt(tokenizer.nextToken())];
 	    this.rank = Rank.values()[Integer.parseInt(tokenizer.nextToken())];
 	    this.savegameVariable = Integer.parseInt(tokenizer.nextToken());
 	    this.pickableItemSubtype = PickableItem.Subtype.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.pickableItemSavegameVariable = Integer.parseInt(tokenizer.nextToken());
-
-	    setSubtype(subtype);
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -149,8 +149,6 @@ public class Enemy extends DynamicEntity {
 
 	// add the specific properties of an enemy
 	buff.append('\t');
-	buff.append(getSubtypeIndex());
-	buff.append('\t');
 	buff.append(getRank().ordinal());
 	buff.append('\t');
 	buff.append(getSavegameVariable());
@@ -167,7 +165,7 @@ public class Enemy extends DynamicEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-	return origins[getSubtypeIndex()];
+	return origins[getSubtypeId()];
     }
 
     /**
@@ -187,40 +185,13 @@ public class Enemy extends DynamicEntity {
     }
 
     /**
-     * Returns the subtype of enemy.
-     * @return the subtype of enemy
-     */
-    public int getSubtypeIndex() {
-	if (subtype == null) {
-	    return 0;
-	}
-	return subtype.ordinal();
-    }
-
-    /**
-     * Returns the subtype of enemy.
-     * @return the subtype of enemy
-     */
-    public Subtype getSubtype() {
-	return subtype;
-    }
-
-    /**
-     * Sets the subtype of this enemy.
-     * @param subtype the subtype of enemy
-     */
-    public void setSubtypeIndex(int subtype) {
-	setSubtype(Subtype.values()[subtype]);
-    }
-
-    /**
      * Sets the subtype of this enemy.
      * @param subtype the subtype of enemy
      */
     public void setSubtype(Subtype subtype) {
 	this.subtype = subtype;
 
-	Dimension size = sizes[getSubtypeIndex()];
+	Dimension size = sizes[getSubtypeId()];
 	setSizeImpl(size.width, size.height);
 
 	setChanged();
@@ -298,7 +269,7 @@ public class Enemy extends DynamicEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	currentImageDescription = currentImageDescriptions[getSubtypeIndex()];
+	currentImageDescription = currentImageDescriptions[getSubtypeId()];
     }
 
     /**

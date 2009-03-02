@@ -67,7 +67,7 @@ public class EditEnemyComponent extends EditEntityComponent {
 
 	Enemy enemy = (Enemy) entity;
 
-	subtypeField.setValue(enemy.getSubtype());
+	subtypeField.setValue((Subtype) enemy.getSubtype());
 	rankField.setValue(enemy.getRank());
 	savegameVariableField.setNumber(enemy.getSavegameVariable());
 	pickableItemSubtypeField.setValue(enemy.getPickableItemSubtype());

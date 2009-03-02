@@ -30,7 +30,7 @@ public class ActionEditPickableItem extends MapEditorAction {
 
 	this.pickableItem = pickableItem;
 
-	subtypeBefore = pickableItem.getSubtype();
+	subtypeBefore = (Subtype) pickableItem.getSubtype();
 	subtypeAfter = subtype;
 
 	savegameVariableBefore = pickableItem.getSavegameVariable();

@@ -12,8 +12,8 @@ public class ActionEditDestructibleItem extends MapEditorAction {
 
     private DestructibleItem destructibleItem;
 
-    private Subtype subtypeBefore;
-    private Subtype subtypeAfter;
+    private EntitySubtype subtypeBefore;
+    private EntitySubtype subtypeAfter;
 
     private PickableItem.Subtype pickableItemSubtypeBefore;
     private PickableItem.Subtype pickableItemSubtypeAfter;

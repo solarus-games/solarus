@@ -1,5 +1,6 @@
 package zsdx.entities;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -8,7 +9,7 @@ import java.util.*;
 public enum EntityType {
 
     TILE              (0, "Tile", TileOnMap.class, null),
-    DESTINATION_POINT (1, "Destination point", DestinationPoint.class, null),
+    DESTINATION_POINT (1, "Destination point", DestinationPoint.class, DestinationPoint.Subtype.class),
     TELETRANSPORTER   (2, "Teletransporter", Teletransporter.class, Teletransporter.Subtype.class),
     PICKABLE_ITEM     (3, "Pickable item", PickableItem.class, PickableItem.Subtype.class),
     DESTRUCTIBLE_ITEM (4, "Destructible item", DestructibleItem.class, DestructibleItem.Subtype.class),
@@ -19,7 +20,7 @@ public enum EntityType {
 
     private final int index;
     private Class<? extends MapEntity> entityClass;
-    private Class<? extends Enum> subtypeEnum;
+    private Class<? extends EntitySubtype> subtypeEnum;
     private String name;
 
     /**
@@ -31,7 +32,7 @@ public enum EntityType {
      * if there is no notion of subtype)
      */
     private EntityType(int index, String name, Class<? extends MapEntity> entityClass,
-	    Class<? extends Enum> subtypeEnum) {
+	    Class<? extends EntitySubtype> subtypeEnum) {
 	this.index = index;
 	this.name = name;
 	this.entityClass = entityClass;
@@ -100,7 +101,37 @@ public enum EntityType {
      * Returns the enumeration describing the subtype of this kind of entity.
      * @return the enumeration describing the subtype of this kind of entity
      */
-    public Class<? extends Enum> getSubtypeEnum() {
+    public Class<? extends EntitySubtype> getSubtypeEnum() {
 	return subtypeEnum;
+    }
+
+    /**
+     * Returns a subtype value corresponding to the specified id.  
+     * @param id id of the subtype to get
+     * @return the subtype with this id for the current entity type
+     */
+    public EntitySubtype getSubtype(int id) {
+
+	EntitySubtype subtype = null;
+	try {
+	    // call the get(int id) public static method from the enumeration 
+	    subtype = (EntitySubtype) subtypeEnum.getMethod("get").invoke(null, id);
+	}
+	catch (NoSuchMethodException ex) {
+	    System.err.println("The method 'get' is missing in enumeration " + subtypeEnum.getName());
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+	catch (IllegalAccessException ex) {
+	    System.err.println("Cannot access method 'get' in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+	catch (InvocationTargetException ex) {
+	    ex.getCause().printStackTrace();
+	    System.exit(1);
+	}
+
+	return subtype;
     }
 };

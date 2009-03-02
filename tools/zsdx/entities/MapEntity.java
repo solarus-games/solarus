@@ -1059,7 +1059,7 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Returns the subtype of this entity.
-     * @return the subtype
+     * @return the subtype, or null if this type of entity has no subtype
      */
     public EntitySubtype getSubtype() {
 	return subtype;

@@ -14,7 +14,6 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditTeletransporterComponent extends EditEntityComponent {
 
     // specific fields of a teletransporter
-    private EnumerationChooser<Subtype> subtypeField;
     private EnumerationChooser<Transition> transitionField;
     private ResourceChooser mapField;
     private EntityChooser destinationPointField;
@@ -35,10 +34,6 @@ public class EditTeletransporterComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-
-	// subtype
-	subtypeField = new EnumerationChooser<Subtype>(Subtype.class);
-	addField("Subtype", subtypeField);
 
 	// transition
 	transitionField = new EnumerationChooser<Transition>(Transition.class);
@@ -65,7 +60,6 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 
 	Teletransporter teletransporter = (Teletransporter) entity;
 
-	subtypeField.setValue(teletransporter.getSubtype());
 	transitionField.setValue(teletransporter.getTransition());
 	mapField.setSelectedId(teletransporter.getDestinationMapId());
 	
@@ -93,7 +87,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	// add the properties specific to a teletransporter
 	Teletransporter teletransporter = (Teletransporter) entity;
 
-	Subtype subtype = subtypeField.getValue();
+	EntitySubtype subtype = subtypeField.getValue();
 	Transition transition = transitionField.getValue();
 	String destinationMapId = mapField.getSelectedId();
 	String destinationPointName = destinationPointField.getSelectedName();
@@ -113,7 +107,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	    throw new ZSDXException("Please select a destination point on the destination map");
 	}
 
-	action.setSpecificAction(new ActionEditTeletransporter(map, teletransporter, subtype,
+	action.setSpecificAction(new ActionEditTeletransporter(map, teletransporter,
 		transition, destinationMapId, destinationPointName));
 
 	return action;

@@ -10,6 +10,69 @@ import zsdx.entities.*;
 public class AddEntitiesMenu extends JMenu {
 
     /**
+     * All menu items.
+     */
+    private static final ItemDefinition[] itemDefinitions = {
+	new ItemDefinition(EntityType.DESTINATION_POINT, KeyEvent.VK_D),
+	new ItemDefinition(EntityType.TELETRANSPORTER, KeyEvent.VK_T),
+	new ItemDefinition(EntityType.PICKABLE_ITEM, KeyEvent.VK_P),
+	new ItemDefinition(EntityType.DESTRUCTIBLE_ITEM, KeyEvent.VK_S,
+		DestructibleItem.Subtype.GRASS,
+		DestructibleItem.Subtype.BUSH,
+		DestructibleItem.Subtype.POT,
+		DestructibleItem.Subtype.STONE_SMALL_WHITE,
+		DestructibleItem.Subtype.STONE_SMALL_BLACK
+	),
+	new ItemDefinition(EntityType.CHEST, KeyEvent.VK_C),
+	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E, new EntitySubtype[] {
+		Enemy.Subtype.SIMPLE_GREEN_SOLDIER
+	}),
+	new ItemDefinition(EntityType.INTERACTIVE, KeyEvent.VK_I, new EntitySubtype[] {
+		InteractiveEntity.Subtype.CUSTOM,
+		InteractiveEntity.Subtype.NON_PLAYING_CHARACTER,
+		InteractiveEntity.Subtype.SIGN,
+		InteractiveEntity.Subtype.WATER_FOR_BOTTLE
+	}),	
+    };
+
+    /**
+     * Defines an item of the menu.
+     */
+    private static class ItemDefinition {
+	private EntityType type;
+	private EntitySubtype[] subtypes;
+	private int key;
+
+	/**
+	 * Creates an item.
+	 * @param type type of the entity to create
+	 * @param key a mnemonic key (like KeyEvent.VK_A)
+	 * @param subtypes subtypes to propose (none if there is no subtype)
+	 */
+	public ItemDefinition(EntityType type, int key, EntitySubtype ... subtypes) {
+	    this.type = type;
+	    this.subtypes = subtypes;
+	    this.key = key;
+	}
+
+	public EntityType getEntityType() {
+	    return type;
+	}
+
+	public boolean hasSubtypes() {
+	    return subtypes.length != 0;
+	}
+
+	public EntitySubtype[] getEntitySubtypes() {
+	    return subtypes;
+	}
+
+	public int getKey() {
+	    return key;
+	}
+    }
+
+    /**
      * The map view.
      */
     private MapView mapView;
@@ -24,125 +87,24 @@ public class AddEntitiesMenu extends JMenu {
 	this.mapView = mapView;
 
 	JMenuItem item;
+	for (ItemDefinition def: itemDefinitions) {
+	    EntityType type = def.getEntityType();
+	    if (!def.hasSubtypes()) {
+		item = new JMenuItem(type.getName());
+		item.setMnemonic(def.getKey());
+		item.addActionListener(new ActionListenerAddEntity(type));
+	    }
+	    else {
+		item = new JMenu(type.getName());
+		item.setMnemonic(def.getKey());
 
-	// destination point
-	item = new JMenuItem("Destination point");
-	item.setMnemonic(KeyEvent.VK_D);
-	item.getAccessibleContext().setAccessibleDescription("Add a destination point on the map");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTINATION_POINT));
-	add(item);
-
-	// teletransporter
-	item = new JMenuItem("Teletransporter");
-	item.setMnemonic(KeyEvent.VK_T);
-	item.getAccessibleContext().setAccessibleDescription("Add a teletransporter on the map");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.TELETRANSPORTER));
-	add(item);
-
-	// pickable item
-	item = new JMenuItem("Pickable item");
-	item.setMnemonic(KeyEvent.VK_P);
-	item.getAccessibleContext().setAccessibleDescription("Add a pickable item (rupee, heart, fairy, key...)");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.PICKABLE_ITEM));
-	add(item);
-
-	// destructible item
-	item = new JMenu("Destructible item");
-	item.setMnemonic(KeyEvent.VK_E);
-	item.getAccessibleContext().setAccessibleDescription("Add a destructible item (pot, bush...)");
-	buildDestructibleItemSubmenu((JMenu) item);
-	add(item);
-
-	// chest
-	item = new JMenuItem("Chest");
-	item.setMnemonic(KeyEvent.VK_C);
-	item.getAccessibleContext().setAccessibleDescription("Add a chest");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.CHEST));
-	add(item);
-
-	// jump sensor
-	item = new JMenuItem("Jump sensor");
-	item.setMnemonic(KeyEvent.VK_J);
-	item.getAccessibleContext().setAccessibleDescription("Add a jump sensor");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.JUMP_SENSOR));
-	add(item);
-	
-	// enemy
-	item = new JMenuItem("Enemy");
-	item.setMnemonic(KeyEvent.VK_Y);
-	item.getAccessibleContext().setAccessibleDescription("Add an enemy");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.ENEMY));
-	add(item);
-
-	// interactive entity
-	item = new JMenu("Interactive entity");
-	item.setMnemonic(KeyEvent.VK_I);
-	item.getAccessibleContext().setAccessibleDescription("Add an interactive entity");
-	buildInteractiveEntitySubmenu((JMenu) item);
-	add(item);
-    }
-
-    /**
-     * Buils a submenu allowing to add some types of destructible items
-     * @param submenu the submenu to fill
-     */
-    private void buildDestructibleItemSubmenu(JMenu submenu) {
-
-	JMenuItem item;
-
-	item = new JMenuItem("Grass");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
-		DestructibleItem.Subtype.GRASS.getId()));
-	submenu.add(item);
-
-	item = new JMenuItem("Bush");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
-		DestructibleItem.Subtype.BUSH.getId()));
-	submenu.add(item);
-
-	item = new JMenuItem("Pot");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
-		DestructibleItem.Subtype.POT.getId()));
-	submenu.add(item);
-
-	item = new JMenuItem("White stone");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
-		DestructibleItem.Subtype.STONE_SMALL_WHITE.getId()));
-	submenu.add(item);
-
-	item = new JMenuItem("Black stone");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.DESTRUCTIBLE_ITEM,
-		DestructibleItem.Subtype.STONE_SMALL_BLACK.getId()));
-	submenu.add(item);
-    }
-
-    /**
-     * Buils a submenu allowing to add some types of interactive entities
-     * @param submenu the submenu to fill
-     */
-    private void buildInteractiveEntitySubmenu(JMenu submenu) {
-
-	JMenuItem item;
-
-	item = new JMenuItem("Custom");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE,
-		InteractiveEntity.Subtype.CUSTOM.ordinal()));
-	submenu.add(item);
-
-	item = new JMenuItem("Non playing character");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE,
-		InteractiveEntity.Subtype.NON_PLAYING_CHARACTER.ordinal()));
-	submenu.add(item);
-
-	item = new JMenuItem("Sign");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE,
-		InteractiveEntity.Subtype.SIGN.ordinal()));
-	submenu.add(item);
-
-	item = new JMenuItem("Water for bottle");
-	item.addActionListener(new ActionListenerAddEntity(EntityType.INTERACTIVE,
-		InteractiveEntity.Subtype.WATER_FOR_BOTTLE.ordinal()));
-	submenu.add(item);
+		for (EntitySubtype subtype: def.getEntitySubtypes()) {
+		    JMenuItem subitem = new JMenuItem(type.getSubtypeName(subtype));
+		    subitem.addActionListener(new ActionListenerAddEntity(type, subtype));
+		}
+	    }
+	    add(item);
+	}
     }
 
     /**
@@ -152,13 +114,13 @@ public class AddEntitiesMenu extends JMenu {
 
 	// type of entity to add
 	private EntityType entityType;
-	private int entitySubtype;
+	private EntitySubtype entitySubtype;
 
 	public ActionListenerAddEntity(EntityType entityType) {
-	    this(entityType, 0);
+	    this(entityType, null);
 	}
 
-	public ActionListenerAddEntity(EntityType entityType, int entitySubtype) {
+	public ActionListenerAddEntity(EntityType entityType, EntitySubtype entitySubtype) {
 	    this.entityType = entityType;
 	    this.entitySubtype = entitySubtype;
 	}

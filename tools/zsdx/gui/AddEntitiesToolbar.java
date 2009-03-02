@@ -11,6 +11,31 @@ import zsdx.entities.*;
  */
 public class AddEntitiesToolbar extends JComponent {
 
+    /**
+     * Defines the entities available in the toolbar.
+     * Each element is a type of entity and a possible subtype.
+     */
+    private static Cell[] cells = {
+	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.INVISIBLE),
+	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.GRAY),
+	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.INVISIBLE),
+	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.YELLOW),
+	new Cell(EntityType.PICKABLE_ITEM),
+	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.GRASS),
+	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.BUSH),
+	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.POT),
+	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.STONE_SMALL_WHITE),
+	new Cell(EntityType.CHEST),
+	new Cell(EntityType.JUMP_SENSOR),
+	new Cell(EntityType.ENEMY, Enemy.Subtype.SIMPLE_GREEN_SOLDIER),
+	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.CUSTOM),
+	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER),
+	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.SIGN),
+    };
+
+    /**
+     * Represents an entity avaiable in the toolbar.
+     */
     private static class Cell {
 
 	private final EntityType type;
@@ -33,28 +58,6 @@ public class AddEntitiesToolbar extends JComponent {
 	    return subtype;
 	}
     }
-
-    /**
-     * Defines the entities available in the toolbar.
-     * Each element is a type of entity and a possible subtype.
-     */
-    private static Cell[] cells = {
-	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.INVISIBLE),
-	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.GRAY),
-	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.INVISIBLE),
-	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.YELLOW),
-	new Cell(EntityType.PICKABLE_ITEM),
-	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.GRASS),
-	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.BUSH),
-	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.POT),
-	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.STONE_SMALL_WHITE),
-	new Cell(EntityType.CHEST),
-	new Cell(EntityType.JUMP_SENSOR),
-	new Cell(EntityType.ENEMY, Enemy.Subtype.SIMPLE_GREEN_SOLDIER),
-	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.CUSTOM),
-	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER),
-	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.SIGN)
-    };
 
     /**
      * The map view associated to the toolbar.

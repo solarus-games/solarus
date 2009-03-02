@@ -117,7 +117,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	String sprite = interactiveEntity.getSprite();
 	String message = interactiveEntity.getMessageId();
 
-	subtypeField.setValue((Subtype) interactiveEntity.getSubtype());
+	subtypeField.setValue(interactiveEntity.getSubtype());
 	withSpriteField.setSelected(sprite != null);
 	spriteField.setText((sprite != null) ? sprite : "");
 	spriteField.setEnabled(sprite != null);

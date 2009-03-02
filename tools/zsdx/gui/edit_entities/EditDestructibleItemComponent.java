@@ -56,7 +56,7 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 
 	DestructibleItem destructibleItem = (DestructibleItem) entity;
 
-	subtypeField.setValue((Subtype) destructibleItem.getSubtype());
+	subtypeField.setValue(destructibleItem.getSubtype());
 	pickableItemSubtypeField.setValue(destructibleItem.getPickableItemSubtype());
 	pickableItemSavegameVariableField.setNumber(destructibleItem.getPickableItemSavegameVariable());
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);

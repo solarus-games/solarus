@@ -13,50 +13,50 @@ import zsdx.Map;
  * 
  * To create a new kind of entity, you should do the following steps:
  * - Add your new type of entity into the EntityType enumeration.
- * - Create a field in your class to declare the entity name:
- *     public static final String entityTypeName.
- * - Add the specific fields of your type of entity and the corresponding
- *     get and set methods.
- * - Create two constructors with the following signatures:
- *     public YourEntity(Map map, int x, int y):
- *         creates a new entity with some default properties
- *     public YourEntity(Map map, StringTokenizer tokenizer) throws ZSDXException:
- *         creates an existing entity from a string
- * - Create the toString() method: public String toString()
- *     to export the entity into a string
- * - Redefine the getObstacle() method: public int getObstacle()
- *     if your entity is an obstacle.
- * - Redefine if necessary the methods getNbDirections(), hasName(), isResizable()
- *     to indicate how the graphical components will be organized.
- *     - public int getNbDirections(): returns the number of possible
- *         directions of this kind of entity (default is zero)
- *     - public boolean hasName(): indicates whether the entity has a 
- *         name field, i.e. if it is identifiable (default is false)
- *     - public boolean isResizable(): indicates whether the entity can
- *         be resized (default is false). If the entity is resizable, you can
- *         also redefine the getUnitarySize() method (default is 8*8).
- * - Redefine the getOrigin() method: public Point getOrigin()
- *     if the origin is not the top-left corner of the entity.
- * - Redefine the isValid() method: public boolean isValid()
- *     to check the validity of the fields (don't forget to call super.isValid()).    
- * - Define the static generalImageDescriptions field:
- *     public static final EntityImageDescription[] generalImageDescriptions
- *     to define one or more default 16*16 images representing this kind of entity.
- *     These 16*16 images will be used to build the toolbar to add entities on the map.
- * - Redefine the non-static updateImageDescription() method:
- *     public void updateImageDescription()
- *     which updates the current image description (used to draw the entity in its current state)
- * - If your entity is not drawn from an image file but in a more complex way,
- *     you cannot use updateImageDescription() and you have to redefine directly the paint() method:
- *     public abstract void paint(Graphics g, double zoom, boolean showTransparency).
- * - TODO Subtype enum + getNames()
- * - Redefine if necessary the getSubtypeIndex() method: public int getSubtypeIndex()
- *     which returns the entity current subtype (for entities that have a notion of subtype).
+ * - Add the entity in the AddEntitiesToolbar.cells array.
+ * - Add the entity in the AddEntitiesMenu class.
+ * - Create a class for your entity and:
+ *   - If your entity has a notion of subtype, create a Subtype enumeration
+ *       that implements the EntitySubtype interface
+ *   - Add the specific fields of your type of entity and the corresponding
+ *       get and set methods. TODO: only one method to set everything?
+ *   - Create two constructors with the following signatures:
+ *       public YourEntity(Map map, int x, int y):
+ *           creates a new entity with some default properties
+ *       public YourEntity(Map map, StringTokenizer tokenizer) throws ZSDXException:
+ *           creates an existing entity from a string
+ *   - Create the toString() method: public String toString()
+ *       to export the entity into a string
+ *   - Redefine if necessary the getObstacle() method: public int getObstacle()
+ *       if your entity is an obstacle.
+ *   - Redefine if necessary the methods getNbDirections(), hasName(), isResizable()
+ *       to indicate how the graphical components will be organized.
+ *       - public int getNbDirections(): returns the number of possible
+ *           directions of this kind of entity (default is zero)
+ *       - public boolean hasName(): indicates whether the entity has a 
+ *           name field, i.e. if it is identifiable (default is false)
+ *       - public boolean isResizable(): indicates whether the entity can
+ *           be resized (default is false). If the entity is resizable, you can
+ *           also redefine the getUnitarySize() method (default is 8*8).
+ *   - Redefine the getOrigin() method: public Point getOrigin()
+ *       if the origin is not the top-left corner of the entity.
+ *   - Redefine the isValid() method: public boolean isValid()
+ *       to check the validity of the fields (don't forget to call super.isValid()).
+ *   - Define the static generalImageDescriptions field:
+ *       public static final EntityImageDescription[] generalImageDescriptions
+ *       to define a default 16*16 image representing this kind of entity for each subtype.
+ *       These 16*16 images will be used to build the toolbar to add entities on the map.
+ *   - Redefine the non-static updateImageDescription() method:
+ *       public void updateImageDescription()
+ *       which updates the image representing the entity on the map in its current state.
+ *   - If your entity is not drawn from an image file but in a more complex way,
+ *       you cannot use updateImageDescription() and you have to redefine directly the paint() method:
+ *       public abstract void paint(Graphics g, double zoom, boolean showTransparency).
+ *   - If your entity has a subtype, redefin the getSubtype() method:
+ *       public EntitySubtype getSubtype() and change its return type.
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
  * - Create a subclass of ActionEditEntity.
- * - Add the entity in the AddEntitiesToolbar.cells array.
- * - Add the entity in the AddEntitiesMenu class.
  */
 public abstract class MapEntity extends Observable {
 
@@ -310,7 +310,7 @@ public abstract class MapEntity extends Observable {
 	    }
 	}
 
-	entity.initialized = true;
+	entity.setInitialized(true);
 	return entity;
     }
 
@@ -372,6 +372,14 @@ public abstract class MapEntity extends Observable {
 	}
 
 	return buff.toString();
+    }
+
+    /**
+     * Sets whether the entity is initialized.
+     * @param initialized true if the entity is initialized
+     */
+    private void setInitialized(boolean initialized) {
+	this.initialized = initialized;
     }
 
     /**
@@ -1054,6 +1062,7 @@ public abstract class MapEntity extends Observable {
     /**
      * Returns the subtype corresponding to the specified subtype id
      * for this type of entity.
+     * You might redefine this method to declare a more specific return type.
      * @param id the subtype id
      * @return the subtype
      */

@@ -185,11 +185,19 @@ public class Enemy extends DynamicEntity {
     }
 
     /**
+     * Returns the subtype of this entity.
+     * @return the subtype
+     */
+    public Subtype getSubtype() {
+	return (Subtype) super.getSubtype();
+    }
+
+    /**
      * Sets the subtype of this enemy.
      * @param subtype the subtype of enemy
      */
     public void setSubtype(Subtype subtype) {
-	this.subtype = subtype;
+	super.setSubtype(subtype);
 
 	Dimension size = sizes[getSubtypeId()];
 	setSizeImpl(size.width, size.height);

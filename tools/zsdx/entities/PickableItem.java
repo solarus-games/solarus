@@ -179,7 +179,15 @@ public class PickableItem extends DynamicEntity {
     protected Point getOrigin() {
 	return origin;
     }
-    
+
+    /**
+     * Returns the subtype of this entity.
+     * @return the subtype
+     */
+    public Subtype getSubtype() {
+	return (Subtype) super.getSubtype();
+    }
+
     /**
      * Updates the description of the image currently representing the entity.
      */

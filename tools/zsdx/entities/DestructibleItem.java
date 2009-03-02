@@ -39,7 +39,7 @@ public class DestructibleItem extends DynamicEntity {
 	STONE_SMALL_BLACK,
 	GRASS;
 
-	public static String[] names = {
+	public static final String[] humanNames = {
 	    "Pot",
 	    "Skull",
 	    "Bush",
@@ -128,6 +128,14 @@ public class DestructibleItem extends DynamicEntity {
 	buff.append(getPickableItemSavegameVariable());
 
 	return buff.toString();
+    }
+
+    /**
+     * Returns the subtype of this entity.
+     * @return the subtype
+     */
+    public Subtype getSubtype() {
+	return (Subtype) super.getSubtype();
     }
 
     /**

@@ -1,7 +1,7 @@
 package zsdx.entities;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.lang.reflect.*;
 
 /**
  * Represents the different types of map entities available in the editor.
@@ -133,5 +133,32 @@ public enum EntityType {
 	}
 
 	return subtype;
+    }
+
+    /**
+     * Returns the human readable name of the specified subtype for the current type. 
+     * @param subtype a subtype of the current type
+     * @return the human readable name of this subtype
+     */
+    public String getSubtypeName(EntitySubtype subtype) {
+
+	String name = null;
+	try {
+	    Class<? extends EntitySubtype> subtypeEnum = getSubtypeEnum();
+	    String[] names = (String[]) subtypeEnum.getField("humanNames").get(null);
+	    name = names[((Enum) subtype).ordinal()];
+	}
+	catch (NoSuchFieldException ex) {
+	    System.err.println("The field 'humanNames' is missing in enumeration " + subtypeEnum.getName());
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+	catch (IllegalAccessException ex) {
+	    System.err.println("Cannot access field 'humanNames' in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+
+	return name;
     }
 };

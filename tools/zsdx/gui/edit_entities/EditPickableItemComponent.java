@@ -3,6 +3,7 @@ package zsdx.gui.edit_entities;
 import java.awt.event.*;
 import zsdx.*;
 import zsdx.entities.*;
+import zsdx.entities.PickableItem.Subtype;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;
@@ -13,8 +14,8 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditPickableItemComponent extends EditEntityComponent {
     
     // specific fields of a pickable item
-    private PickableItemSubtypeChooser typeField;
-    private NumberChooser savegameIndexField; // enabled only for certain types of pickable items
+    private PickableItemSubtypeChooser subtypeField;
+    private NumberChooser savegameVariableField; // enabled only for certain types of pickable items
 
     /**
      * Constructor.
@@ -31,15 +32,15 @@ public class EditPickableItemComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// pickable item type
-	typeField = new PickableItemSubtypeChooser(false);
-	addField("Pickable item type", typeField);
+	subtypeField = new PickableItemSubtypeChooser(false);
+	addField("Pickable item type", subtypeField);
 
 	// savegame index
-	savegameIndexField = new NumberChooser(0, 0, 32767);
-	addField("Savegame variable", savegameIndexField);
+	savegameVariableField = new NumberChooser(0, 0, 32767);
+	addField("Savegame variable", savegameVariableField);
 
 	// enable or disable the 'savegame index' field depending on the pickable item type
-	typeField.addActionListener(new ActionListenerEnableSavegameIndex());
+	subtypeField.addActionListener(new ActionListenerEnableSavegameVariable());
     }
 
     /**
@@ -50,9 +51,9 @@ public class EditPickableItemComponent extends EditEntityComponent {
 
 	PickableItem pickableItem = (PickableItem) entity;
 
-	typeField.setPickableItemSubtype(pickableItem.getPickableItemType());
-	savegameIndexField.setNumber(pickableItem.getSavegameIndex());
-	new ActionListenerEnableSavegameIndex().actionPerformed(null);
+	subtypeField.setValue(pickableItem.getSubtype());
+	savegameVariableField.setNumber(pickableItem.getSavegameVariable());
+	new ActionListenerEnableSavegameVariable().actionPerformed(null);
     }
 
     /**
@@ -69,10 +70,10 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	// add the properties specific to a pickable item
 	PickableItem pickableItem = (PickableItem) entity;
 
-	int type = typeField.getPickableItemType();
-	int savegameIndex = savegameIndexField.getNumber();
+	Subtype subtype = subtypeField.getValue();
+	int savegameVariable = savegameVariableField.getNumber();
 
-	action.setSpecificAction(new ActionEditPickableItem(map, pickableItem, type, savegameIndex));
+	action.setSpecificAction(new ActionEditPickableItem(map, pickableItem, subtype, savegameVariable));
 
 	return action;
     }
@@ -81,16 +82,11 @@ public class EditPickableItemComponent extends EditEntityComponent {
      * A listener associated to the 'pickable item type' field,
      * to enable or disable the 'savegame index' field depending on the type.
      */
-    private class ActionListenerEnableSavegameIndex implements ActionListener {
+    private class ActionListenerEnableSavegameVariable implements ActionListener {
 
 	public void actionPerformed(ActionEvent ev) {
-	    int type = typeField.getPickableItemType();
-	    if (type <= PickableItem.PICKABLE_ITEM_ARROW_10) {
-		savegameIndexField.setEnabled(false);
-	    }
-	    else {
-		savegameIndexField.setEnabled(true);
-	    }
+	    Subtype subtype = subtypeField.getValue();
+	    savegameVariableField.setEnabled(subtype.isSaved());
 	}
     }
 }

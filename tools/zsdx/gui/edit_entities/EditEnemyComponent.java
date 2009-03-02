@@ -2,10 +2,9 @@ package zsdx.gui.edit_entities;
 
 import java.awt.event.*;
 
-import javax.swing.JComboBox;
-
 import zsdx.*;
 import zsdx.entities.*;
+import zsdx.entities.Enemy.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;
@@ -16,8 +15,8 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditEnemyComponent extends EditEntityComponent {
 
     // specific fields
-    private EnemyChooser subtypeField;
-    private EnemyRankChooser rankField;
+    private EnumerationChooser<Subtype> subtypeField;
+    private EnumerationChooser<Enemy.Rank> rankField;
     private NumberChooser savegameVariableField;
     private PickableItemSubtypeChooser pickableItemSubtypeField;
     private NumberChooser pickableItemSavegameVariableField;
@@ -37,11 +36,11 @@ public class EditEnemyComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// enemy subtype
-	subtypeField = new EnemyChooser();
+	subtypeField = new EnumerationChooser<Subtype>(Subtype.class);
 	addField("Enemy type", subtypeField);
 
 	// rank
-	rankField = new EnemyRankChooser();
+	rankField = new EnumerationChooser<Rank>(Rank.class);
 	addField("Rank", rankField);
 
 	// savegame variable
@@ -68,10 +67,10 @@ public class EditEnemyComponent extends EditEntityComponent {
 
 	Enemy enemy = (Enemy) entity;
 
-	subtypeField.setEnemySubtype(enemy.getSubtype());
-	rankField.setRank(enemy.getRank());
+	subtypeField.setValue(enemy.getSubtype());
+	rankField.setValue(enemy.getRank());
 	savegameVariableField.setNumber(enemy.getSavegameVariable());
-	pickableItemSubtypeField.setPickableItemSubtype(enemy.getPickableItemSubtype());
+	pickableItemSubtypeField.setValue(enemy.getPickableItemSubtype());
 	pickableItemSavegameVariableField.setNumber(enemy.getPickableItemSavegameVariable());
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);
     }
@@ -90,10 +89,10 @@ public class EditEnemyComponent extends EditEntityComponent {
 	// add the specific properties
 	Enemy enemy = (Enemy) entity;
 
-	Enemy.Subtype subtype = subtypeField.getEnemySubtype();
-	Enemy.Rank rank = rankField.getRank();
+	Subtype subtype = subtypeField.getValue();
+	Rank rank = rankField.getValue();
 	int savegameVariable = savegameVariableField.getNumber();
-	int pickableItemSubtype = pickableItemSubtypeField.getPickableItemType();
+	PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
 	int pickableItemSavegameVariable = pickableItemSavegameVariableField.getNumber();
 
 	action.setSpecificAction(new ActionEditEnemy(map, enemy,
@@ -109,57 +108,8 @@ public class EditEnemyComponent extends EditEntityComponent {
     private class ActionListenerEnableSavegameVariable implements ActionListener {
 
 	public void actionPerformed(ActionEvent ev) {
-
-	    int subtype = pickableItemSubtypeField.getPickableItemType();
-
-	    if (subtype <= PickableItem.PICKABLE_ITEM_ARROW_10) {
-		pickableItemSavegameVariableField.setEnabled(false);
-	    }
-	    else {
-		pickableItemSavegameVariableField.setEnabled(true);
-	    }
-	}
-    }
-
-    /**
-     * A combo box to select the rank of an enemy.
-     */
-    public class EnemyRankChooser extends JComboBox {
-
-	private final String[] names = {
-	    "Normal", "Miniboss", "Boss"
-	};
-
-	/**
-	 * Creates a new enemy rank chooser.
-	 */
-	public EnemyRankChooser() {
-	    super();
-
-	    for (int i = 0; i < names.length; i++) {
-		addItem(new KeyValue(i, names[i]));
-	    }
-	}
-
-	/**
-	 * Returns the enemy rank currently selected.
-	 * @return the enemy rank currently selected
-	 */
-	public Enemy.Rank getRank() {
-
-	    KeyValue item = (KeyValue) getSelectedItem();
-	    int index = Integer.parseInt(item.getKey());
-	    return Enemy.Rank.values()[index];
-	}
-
-	/**
-	 * Sets the enemy rank selected.
-	 * @param rank the rank to make selected
-	 */
-	public void setRank(Enemy.Rank rank) {
-
-	    KeyValue item = new KeyValue(rank.ordinal(), null);
-	    setSelectedItem(item);
+	    PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
+	    pickableItemSavegameVariableField.setEnabled(pickableItemSubtype.isSaved());
 	}
     }
 }

@@ -2,6 +2,7 @@ package zsdx.map_editor_actions.edit_entities;
 
 import zsdx.*;
 import zsdx.entities.*;
+import zsdx.entities.DestructibleItem.Subtype;
 
 /**
  * Editing the properties specific to a destructible item:
@@ -11,11 +12,11 @@ public class ActionEditDestructibleItem extends MapEditorAction {
 
     private DestructibleItem destructibleItem;
 
-    private int subtypeBefore;
-    private int subtypeAfter;
+    private Subtype subtypeBefore;
+    private Subtype subtypeAfter;
 
-    private int pickableItemSubtypeBefore;
-    private int pickableItemSubtypeAfter;
+    private PickableItem.Subtype pickableItemSubtypeBefore;
+    private PickableItem.Subtype pickableItemSubtypeAfter;
 
     private int pickableItemSavegameVariableBefore;
     private int pickableItemSavegameVariableAfter;
@@ -29,17 +30,17 @@ public class ActionEditDestructibleItem extends MapEditorAction {
      * @param pickableItemSavegameVariable the savegame index where the pickable item is saved
      */
     public ActionEditDestructibleItem(Map map, DestructibleItem destructibleItem,
-	    int subtype, int pickableItemSubtype, int pickableItemSavegameVariable) {
+	    Subtype subtype, PickableItem.Subtype pickableItemSubtype, int pickableItemSavegameVariable) {
 	super(map);
-	
+
 	this.destructibleItem = destructibleItem;
 
-	subtypeBefore = destructibleItem.getSubtypeIndex();
+	subtypeBefore = destructibleItem.getSubtype();
 	subtypeAfter = subtype;
 
 	pickableItemSubtypeBefore = destructibleItem.getPickableItemSubtype();
 	pickableItemSubtypeAfter = pickableItemSubtype;
-	
+
 	pickableItemSavegameVariableBefore = destructibleItem.getPickableItemSavegameVariable();
 	pickableItemSavegameVariableAfter = pickableItemSavegameVariable;
     }
@@ -48,7 +49,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	destructibleItem.setSubtypeIndex(subtypeAfter);
+	destructibleItem.setSubtype(subtypeAfter);
 	destructibleItem.setPickableItem(pickableItemSubtypeAfter, pickableItemSavegameVariableAfter);
     }
 
@@ -56,7 +57,7 @@ public class ActionEditDestructibleItem extends MapEditorAction {
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	destructibleItem.setSubtypeIndex(subtypeBefore);
+	destructibleItem.setSubtype(subtypeBefore);
 	destructibleItem.setPickableItem(pickableItemSubtypeBefore, pickableItemSavegameVariableBefore);
     }
 }

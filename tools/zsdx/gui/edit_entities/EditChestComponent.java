@@ -16,7 +16,7 @@ public class EditChestComponent extends EditEntityComponent {
 
     // specific fields of a chest
     private RadioField sizeField;
-    private TreasureChooser contentField;
+    private EnumerationChooser<TreasureContent> contentField;
     private NumberChooser amountField;
     private JCheckBox saveField;
     private NumberChooser savegameIndexField;
@@ -40,7 +40,7 @@ public class EditChestComponent extends EditEntityComponent {
 	addField("Chest type", sizeField);
 
 	// treasure content
-	contentField = new TreasureChooser();
+	contentField = new EnumerationChooser<TreasureContent>(TreasureContent.class);
 	addField("Treasure", contentField);
 
 	// treasure amount
@@ -60,8 +60,8 @@ public class EditChestComponent extends EditEntityComponent {
 	contentField.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
 		
-		boolean treasurePresent = (contentField.getContent() != TreasureContent.NOTHING);
-		amountField.setEnabled(treasurePresent && contentField.getContent().hasAmount());
+		boolean treasurePresent = (contentField.getValue() != TreasureContent.NOTHING);
+		amountField.setEnabled(treasurePresent && contentField.getValue().hasAmount());
 		savegameIndexField.setEnabled(treasurePresent);
 	    }
 	});
@@ -83,7 +83,7 @@ public class EditChestComponent extends EditEntityComponent {
 	Chest chest = (Chest) entity;
 
 	sizeField.setSelectedIndex(chest.isBigChest() ? 1 : 0);
-	contentField.setContent(chest.getContent());
+	contentField.setValue(chest.getContent());
 	amountField.setNumber(chest.getAmount());
 	saveField.setSelected(chest.getSavegameIndex() != -1);
 	savegameIndexField.setNumber(chest.getSavegameIndex());
@@ -104,7 +104,7 @@ public class EditChestComponent extends EditEntityComponent {
 	// add the properties specific to a chest
 	Chest chest = (Chest) entity;
 
-	TreasureContent content = contentField.getContent();
+	TreasureContent content = contentField.getValue();
 	boolean bigChest = (sizeField.getSelectedIndex() != 0);
 	int amount = amountField.getNumber();
 	int savegameIndex = saveField.isSelected() ? savegameIndexField.getNumber() : -1;

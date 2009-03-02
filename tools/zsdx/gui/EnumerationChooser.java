@@ -15,12 +15,12 @@ public class EnumerationChooser<E extends Enum<E>> extends JComboBox {
 
     /**
      * Creates a new entity enumeration chooser.
+     * @param enumeration the enumeration to display in this combo box
      */
-    public EnumerationChooser() {
+    public EnumerationChooser(Class<E> enumeration) {
 	super();
 
-	TypeVariable[] types = getClass().getTypeParameters();
-	this.enumeration = ;
+	this.enumeration = enumeration;
 
 	try {
 	    String[] humanNames = (String[]) enumeration.getField("humanNames").get(null);
@@ -54,8 +54,7 @@ public class EnumerationChooser<E extends Enum<E>> extends JComboBox {
      * Returns the value currently selected.
      * @return the value currently selected
      */
-    public E getSelectedValue() {
-
+    public E getValue() {
 	KeyValue item = (KeyValue) getSelectedItem();
 	return E.valueOf(enumeration, item.getKey());
     }
@@ -64,7 +63,7 @@ public class EnumerationChooser<E extends Enum<E>> extends JComboBox {
      * Sets the value selected.
      * @param value the value to make selected
      */
-    public void setInteractiveEntitySubtype(E value) {
+    public void setValue(E value) {
 	KeyValue item = new KeyValue(value.name(), null);
 	setSelectedItem(item);
     }

@@ -136,7 +136,7 @@ public class AddEntitiesMenu extends JMenu {
     /**
      * Action performed when the user wants to add an entity.
      */
-    class ActionListenerAddEntity implements ActionListener {
+    private class ActionListenerAddEntity implements ActionListener {
 
 	// type of entity to add
 	private EntityType entityType;

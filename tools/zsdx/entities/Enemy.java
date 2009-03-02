@@ -42,7 +42,11 @@ public class Enemy extends DynamicEntity {
      * Subtypes of enemies.
      */
     public enum Subtype {
-	SIMPLE_GREEN_SOLDIER
+	SIMPLE_GREEN_SOLDIER;
+
+	public static final String[] humanNames = {
+	    "Simple green soldier"
+	};
     }
 
     /**
@@ -51,7 +55,9 @@ public class Enemy extends DynamicEntity {
     public enum Rank {
 	NORMAL,
 	MINIBOSS,
-	BOSS
+	BOSS;
+
+	public static final String[] humanNames = {"Normal", "Miniboss", "Boss"};
     }
 
     /**
@@ -73,7 +79,7 @@ public class Enemy extends DynamicEntity {
     /**
      * Type of pickable item that appears when the enemy is killed.
      */
-    private int pickableItemSubtype;
+    private PickableItem.Subtype pickableItemSubtype;
 
     /**
      * The variable where the pickable item is saved, used only for the pickable
@@ -94,7 +100,7 @@ public class Enemy extends DynamicEntity {
 	subtype = Subtype.SIMPLE_GREEN_SOLDIER;
 	rank = Rank.NORMAL;
 	savegameVariable = -1;
-	pickableItemSubtype = PickableItem.PICKABLE_ITEM_RANDOM;
+	pickableItemSubtype = PickableItem.Subtype.RANDOM;
 	pickableItemSavegameVariable = -1;
 
 	setDirection(3);
@@ -117,7 +123,7 @@ public class Enemy extends DynamicEntity {
 	    Subtype subtype = Subtype.values()[Integer.parseInt(tokenizer.nextToken())];
 	    this.rank = Rank.values()[Integer.parseInt(tokenizer.nextToken())];
 	    this.savegameVariable = Integer.parseInt(tokenizer.nextToken());
-	    this.pickableItemSubtype = Integer.parseInt(tokenizer.nextToken());
+	    this.pickableItemSubtype = PickableItem.Subtype.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.pickableItemSavegameVariable = Integer.parseInt(tokenizer.nextToken());
 
 	    setSubtype(subtype);
@@ -149,7 +155,7 @@ public class Enemy extends DynamicEntity {
 	buff.append('\t');
 	buff.append(getSavegameVariable());
 	buff.append('\t');
-	buff.append(getPickableItemSubtype());
+	buff.append(getPickableItemSubtype().getId());
 	buff.append('\t');
 	buff.append(getPickableItemSavegameVariable());
 
@@ -262,7 +268,7 @@ public class Enemy extends DynamicEntity {
      * the enemy is killed
      * @return the subtype of pickable item
      */
-    public int getPickableItemSubtype() {
+    public PickableItem.Subtype getPickableItemSubtype() {
 	return pickableItemSubtype;
     }
 
@@ -280,7 +286,7 @@ public class Enemy extends DynamicEntity {
      * @param subtype the subtype of pickable item
      * @param savegameVariable savegame variable where the pickable item is saved
      */
-    public void setPickableItem(int type, int savegameVariable) {
+    public void setPickableItem(PickableItem.Subtype type, int savegameVariable) {
 
 	this.pickableItemSubtype = type;
 	this.pickableItemSavegameVariable = savegameVariable;

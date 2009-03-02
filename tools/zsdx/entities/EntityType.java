@@ -9,11 +9,9 @@ public enum EntityType {
 
     TILE              (0, "Tile", TileOnMap.class, null),
     DESTINATION_POINT (1, "Destination point", DestinationPoint.class, null),
-    /*
     TELETRANSPORTER   (2, "Teletransporter", Teletransporter.class, Teletransporter.Subtype.class),
     PICKABLE_ITEM     (3, "Pickable item", PickableItem.class, PickableItem.Subtype.class),
     DESTRUCTIBLE_ITEM (4, "Destructible item", DestructibleItem.class, DestructibleItem.Subtype.class),
-    */
     CHEST             (5, "Chest", Chest.class, null),
     JUMP_SENSOR       (6, "Jump Sensor", JumpSensor.class, null),
     ENEMY             (7, "Enemy", Enemy.class, Enemy.Subtype.class),

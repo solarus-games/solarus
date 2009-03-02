@@ -3,6 +3,7 @@ package zsdx.gui.edit_entities;
 import java.awt.event.*;
 import zsdx.*;
 import zsdx.entities.*;
+import zsdx.entities.DestructibleItem.Subtype;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;
@@ -13,7 +14,7 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditDestructibleItemComponent extends EditEntityComponent {
 
     // specific fields of a destructible item
-    private DestructibleItemChooser subtypeField;
+    private EnumerationChooser<Subtype> subtypeField;
     private PickableItemSubtypeChooser pickableItemSubtypeField;
     private NumberChooser pickableItemSavegameVariableField;
 
@@ -32,7 +33,7 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// destructible item type
-	subtypeField = new DestructibleItemChooser();
+	subtypeField = new EnumerationChooser<Subtype>(Subtype.class);
 	addField("Destructible item type", subtypeField);
 
 	// pickable item type
@@ -55,8 +56,8 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 
 	DestructibleItem destructibleItem = (DestructibleItem) entity;
 
-	subtypeField.setDestructibleItemSubtype(destructibleItem.getSubtypeIndex());
-	pickableItemSubtypeField.setPickableItemSubtype(destructibleItem.getPickableItemSubtype());
+	subtypeField.setValue(destructibleItem.getSubtype());
+	pickableItemSubtypeField.setValue(destructibleItem.getPickableItemSubtype());
 	pickableItemSavegameVariableField.setNumber(destructibleItem.getPickableItemSavegameVariable());
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);
     }
@@ -75,8 +76,8 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 	// add the properties specific to a destructible item
 	DestructibleItem destructibleItem = (DestructibleItem) entity;
 
-	int subtype = subtypeField.getDestructibleItemSubtype();
-	int pickableItemSubtype = pickableItemSubtypeField.getPickableItemType();
+	Subtype subtype = subtypeField.getValue();
+	PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
 	int pickableItemSavegameVariable = pickableItemSavegameVariableField.getNumber();
 
 	action.setSpecificAction(new ActionEditDestructibleItem(map, destructibleItem,
@@ -93,14 +94,8 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 
 	public void actionPerformed(ActionEvent ev) {
 
-	    int subtype = pickableItemSubtypeField.getPickableItemType();
-
-	    if (subtype <= PickableItem.PICKABLE_ITEM_ARROW_10) {
-		pickableItemSavegameVariableField.setEnabled(false);
-	    }
-	    else {
-		pickableItemSavegameVariableField.setEnabled(true);
-	    }
+	    PickableItem.Subtype subtype = pickableItemSubtypeField.getValue();
+	    pickableItemSavegameVariableField.setEnabled(subtype.isSaved());
 	}
     }
 }

@@ -85,6 +85,82 @@ public enum TreasureContent {
     private final int index;
     private final boolean hasAmount;
 
+    public static final String[] humanNames = {
+	"Nothing",
+	"Feather",
+	"Bow",
+	"Bow and Arrows",
+	"Boomerang",
+	"Lamp",
+	"Hook shot",
+	"Bottle",
+	"Water in bottle",
+	"Red potion",
+
+	"Green potion",
+	"Blue potion",
+	"Fairy in bottle",
+	"Pegasus Shoes",
+	"Mystic Mirror",
+	"Cane of Somaria",
+	"Apples",
+	"Pains au chocolat",
+	"Croissants",
+	"Rock key",
+
+	"Red key",
+	"Clay key",
+	"Apple pie",
+	"Golden bars",
+	"Edelweiss",
+	"Bone key",
+	"Flippers",
+	"Magic cape",
+	"Iron key",
+	"Stone key",
+
+	"Wooden key",
+	"Ice key",
+	"Iron glove",
+	"Fire stone",
+
+	"World map",
+	"Large rupee bag",
+	"Huge rupee bag",
+	"Small bomb bag",
+	"Large bomb bag",
+	"Huge bomb bag",
+	"Large quiver",
+	"Huge quiver",
+
+	"Blue tunic",
+	"Red tunic",
+	"Shield 1",
+	"Shield 2",
+	"Shield 3",
+	"Sword 1",
+	"Sword 2",
+	"Sword 3",
+	"Sword 4",
+
+	"Map",
+	"Compass",
+	"Small key",
+	"Big key",
+	"Boss key",
+	"Piece of heart",
+
+	"Heart container",
+	"Bombs",
+	"Arrows",
+	"Hearts",
+	"Small magic",
+	"Big magic",
+	"Green rupees",
+	"Blue rupees",
+	"Red rupees"
+    };
+
     /**
      * Constructor.
      * @param index index of this content

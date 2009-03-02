@@ -2,6 +2,7 @@ package zsdx.map_editor_actions.edit_entities;
 
 import zsdx.*;
 import zsdx.entities.*;
+import zsdx.entities.Enemy.*;
 
 /**
  * Editing the properties specific to an enemy.
@@ -10,17 +11,17 @@ public class ActionEditEnemy extends MapEditorAction {
 
     private Enemy enemy;
 
-    private Enemy.Subtype subtypeBefore;
-    private Enemy.Subtype subtypeAfter;
+    private Subtype subtypeBefore;
+    private Subtype subtypeAfter;
 
-    private Enemy.Rank rankBefore;
-    private Enemy.Rank rankAfter;
+    private Rank rankBefore;
+    private Rank rankAfter;
 
     private int savegameVariableBefore;
     private int savegameVariableAfter;
 
-    private int pickableItemSubtypeBefore;
-    private int pickableItemSubtypeAfter;
+    private PickableItem.Subtype pickableItemSubtypeBefore;
+    private PickableItem.Subtype pickableItemSubtypeAfter;
 
     private int pickableItemSavegameVariableBefore;
     private int pickableItemSavegameVariableAfter;
@@ -35,13 +36,13 @@ public class ActionEditEnemy extends MapEditorAction {
      * @param pickableItemSubtype the type of pickable item
      * @param pickableItemSavegameVariable the savegame variable where the pickable item is saved
      */
-    public ActionEditEnemy(Map map, Enemy enemy, Enemy.Subtype subtype, Enemy.Rank rank,
-	    int savegameVariable, int pickableItemSubtype, int pickableItemSavegameVariable) {
+    public ActionEditEnemy(Map map, Enemy enemy, Subtype subtype, Rank rank,
+	    int savegameVariable, PickableItem.Subtype pickableItemSubtype, int pickableItemSavegameVariable) {
 	super(map);
 	
 	this.enemy = enemy;
 
-	subtypeBefore = Enemy.Subtype.values()[enemy.getSubtypeIndex()];
+	subtypeBefore = enemy.getSubtype();
 	subtypeAfter = subtype;
 
 	rankBefore = enemy.getRank();

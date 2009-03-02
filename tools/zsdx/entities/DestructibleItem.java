@@ -28,26 +28,39 @@ public class DestructibleItem extends DynamicEntity {
      */
     private static final Point origin = new Point(8, 13);
 
-    // subtypes of destructible items
-    public static final int POT               = 0;
-    public static final int SKULL             = 1;
-    public static final int BUSH              = 2;
-    public static final int STONE_SMALL_WHITE = 3;
-    public static final int STONE_SMALL_BLACK = 4;
-    public static final int GRASS             = 5;
+    /**
+     * Subtypes of destructible items.
+     */
+    public enum Subtype {
+	POT,
+	SKULL,
+	BUSH,
+	STONE_SMALL_WHITE,
+	STONE_SMALL_BLACK,
+	GRASS;
+
+	public static String[] names = {
+	    "Pot",
+	    "Skull",
+	    "Bush",
+	    "Small white stone",
+	    "Small black stone",
+	    "Grass"
+	};
+    };
 
     // specific fields of a destructible item
 
     /**
      * Type of destructible item.
      */
-    private int subtype;
+    private Subtype subtype;
 
     /**
      * Type of pickable item that appears when Link lifts
      * the destructible item.
      */
-    private int pickableItemSubtype;
+    private PickableItem.Subtype pickableItemSubtype;
 
     /**
      * The index where the pickable item is saved, used only for the pickable
@@ -65,8 +78,8 @@ public class DestructibleItem extends DynamicEntity {
     public DestructibleItem(Map map, int x, int y) {
 	super(map, LAYER_LOW, x, y, 16, 16);
 
-	subtype = POT;
-	pickableItemSubtype = PickableItem.PICKABLE_ITEM_RANDOM;
+	subtype = Subtype.POT;
+	pickableItemSubtype = PickableItem.Subtype.RANDOM;
 	pickableItemSavegameVariable = -1;
     }
 
@@ -83,8 +96,8 @@ public class DestructibleItem extends DynamicEntity {
 
 	// parse the fields
 	try {
-	    this.subtype = Integer.parseInt(tokenizer.nextToken());
-	    this.pickableItemSubtype = Integer.parseInt(tokenizer.nextToken());
+	    this.subtype = Subtype.values()[Integer.parseInt(tokenizer.nextToken())];
+	    this.pickableItemSubtype = PickableItem.Subtype.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.pickableItemSavegameVariable = Integer.parseInt(tokenizer.nextToken());
 	}
 	catch (NumberFormatException ex) {
@@ -110,7 +123,7 @@ public class DestructibleItem extends DynamicEntity {
 	buff.append('\t');
 	buff.append(getSubtypeIndex());
 	buff.append('\t');
-	buff.append(getPickableItemSubtype());
+	buff.append(getPickableItemSubtype().getId());
 	buff.append('\t');
 	buff.append(getPickableItemSavegameVariable());
 
@@ -145,18 +158,34 @@ public class DestructibleItem extends DynamicEntity {
      * Returns the subtype of this destructible item.
      * @return the subtype of destructible item
      */
-    public int getSubtypeIndex() {
+    public Subtype getSubtype() {
 	return subtype;
+    }
+
+    /**
+     * Returns the subtype index of this destructible item.
+     * @return the subtype index of destructible item
+     */
+    public int getSubtypeIndex() {
+	return subtype.ordinal();
     }
 
     /**
      * Sets the subtype of this destructible item.
      * @param subtype the subtype of destructible item
      */
-    public void setSubtypeIndex(int subtype) {
+    public void setSubtype(Subtype subtype) {
 	this.subtype = subtype;
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Sets the subtype of this destructible item.
+     * @param subtype the subtype index of destructible item
+     */
+    public void setSubtypeIndex(int index) {
+	setSubtype(Subtype.values()[index]);
     }
 
     /**
@@ -164,7 +193,7 @@ public class DestructibleItem extends DynamicEntity {
      * lifts the destructible item.
      * @return the subtype of pickable item
      */
-    public int getPickableItemSubtype() {
+    public PickableItem.Subtype getPickableItemSubtype() {
 	return pickableItemSubtype;
     }
 
@@ -183,9 +212,9 @@ public class DestructibleItem extends DynamicEntity {
      * @param subtype the subtype of pickable item
      * @param savegameVariable savegame index where the pickable item is saved
      */
-    public void setPickableItem(int type, int savegameVariable) {
+    public void setPickableItem(PickableItem.Subtype pickableItemSubtype, int savegameVariable) {
 
-	this.pickableItemSubtype = type;
+	this.pickableItemSubtype = pickableItemSubtype;
 	this.pickableItemSavegameVariable = savegameVariable;
 	setChanged();
 	notifyObservers();

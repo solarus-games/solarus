@@ -41,7 +41,8 @@ public class EditEntityComponent extends JPanel {
     protected CoordinatesField positionField;
     protected CoordinatesField sizeField;
     protected DirectionChooser directionField;
-    
+    protected EntitySubtypeChooser subtypeField;
+
     private GridBagConstraints gridBagConstraints;
 
     /**
@@ -56,7 +57,7 @@ public class EditEntityComponent extends JPanel {
 	super(new GridBagLayout());
 	this.map = map;
 	this.entity = entity;
-	
+
 	setBorder(BorderFactory.createTitledBorder(
 		entity.getType().getName() + " properties"));
 
@@ -64,17 +65,17 @@ public class EditEntityComponent extends JPanel {
 	gridBagConstraints.insets = new Insets(5, 5, 5, 5); // margins
 	gridBagConstraints.anchor = GridBagConstraints.LINE_START;
 	gridBagConstraints.gridy = 0;
-	
+
 	// name
 	if (entity.hasName()) {
 	    nameField = new JTextField(15);
 	    addField("Name", nameField);
 	}
-	
+
 	// layer
 	layerField = new LayerChooser();
 	addField("Layer", layerField);
-	
+
 	// position
 	this.positionField = new CoordinatesField();
 	positionField.setStepSize(8, 8);
@@ -93,10 +94,16 @@ public class EditEntityComponent extends JPanel {
 	    this.directionField = new DirectionChooser(entity.getNbDirections());
 	    addField("Direction", directionField);
 	}
-	
+
+	// subtype
+	if (entity.hasSubtype()) {
+	    this.subtypeField = new EntitySubtypeChooser(entity.getType());
+	    addField(entity.getType().getName() + " subtype", subtypeField);
+	}
+
 	// specific fields
 	createSpecificFields();
-	
+
 	update();
     }
 
@@ -110,9 +117,9 @@ public class EditEntityComponent extends JPanel {
      * @return the component to edit this entity
      */
     public static EditEntityComponent create(Map map, MapEntity entity) {
-	
+
 	EditEntityComponent component = null;
-	
+
 	Class<?> componentClass = editEntityComponentClasses[entity.getType().getIndex()];
 	Constructor<?> constructor;
 	try {
@@ -127,10 +134,10 @@ public class EditEntityComponent extends JPanel {
 	    ex.printStackTrace();
 	    System.exit(1);
 	}
-	
+
 	return component;
     }
-    
+
     /**
      * Creates the specific fields for this kind of entity.
      * The subclasses should redefine this method to create their specific fields
@@ -140,7 +147,7 @@ public class EditEntityComponent extends JPanel {
     protected void createSpecificFields() {
 	
     }
-    
+
     /**
      * Adds a field in the component.
      * @param label name displayed of the field
@@ -161,25 +168,25 @@ public class EditEntityComponent extends JPanel {
      * specific information.
      */
     public void update() {
-	
+
 	if (entity.hasName()) {
 	    nameField.setText(entity.getName());
 	}
-	
+
 	layerField.setLayer(entity.getLayer());
-	
+
 	positionField.setCoordinates(entity.getX(), entity.getY());
-	
+
 	if (entity.isResizable()) {
 	    sizeField.setStepSize(entity.getUnitarySize().width, entity.getUnitarySize().height);
 	    sizeField.setCoordinates(entity.getWidth(), entity.getHeight());
 	}
-	
+
 	if (entity.hasDirection()) {
 	    directionField.setDirection(entity.getDirection());
 	}	
     }
-    
+
     /**
      * Creates the map editor action object which corresponds
      * to the modifications indicated in the fields.
@@ -199,10 +206,10 @@ public class EditEntityComponent extends JPanel {
 	    size = new Dimension(coords.x, coords.y);
 	}
 	int direction = entity.hasDirection() ? directionField.getDirection() : -1;
-	
+
 	return new ActionEditEntity(map, entity, name,
 		layer, position, size, direction);
-	
+
     }
 
     /**
@@ -217,12 +224,12 @@ public class EditEntityComponent extends JPanel {
 	    map.getHistory().doAction(action);
 	}
 	catch (ZSDXException ex) {
-	    
+
 	    try {
 		action.undo(); // undo the action because it may be partially done
 	    }
 	    catch (ZSDXException ex2) {
-		
+
 	    }
 	    throw ex;      // throw the exception again
 	}

@@ -6,6 +6,7 @@ import java.lang.reflect.*;
 /**
  * A combo box to select a value among the specified enumeration.
  * @param e the enumeration type returned and set by getValue() and setValue() respectively
+ * (must be a subtype of Enum)
  */
 public class EnumerationChooser<E extends Enum<E>> extends JComboBox {
 

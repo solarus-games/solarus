@@ -171,7 +171,7 @@ public class Teletransporter extends DynamicEntity {
      * @param subtype the subtype of entity
      * @throws MapException if the subtype is not valid
      */
-    public void setSubtype(Subtype subtype) throws MapException {
+    public void setSubtype(EntitySubtype subtype) throws MapException {
 
 	if (subtype != this.subtype) {
 	    if (isResizable()) {

@@ -210,11 +210,10 @@ public class EditEntityComponent extends JPanel {
 	    size = new Dimension(coords.x, coords.y);
 	}
 	int direction = entity.hasDirection() ? directionField.getDirection() : -1;
-	EntitySubtype subtype = entity.getSubtype();
+	EntitySubtype subtype = subtypeField.getValue();
 
 	return new ActionEditEntity(map, entity, name,
 		layer, position, size, direction, subtype);
-
     }
 
     /**

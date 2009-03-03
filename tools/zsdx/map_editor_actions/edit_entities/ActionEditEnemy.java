@@ -11,9 +11,6 @@ public class ActionEditEnemy extends MapEditorAction {
 
     private Enemy enemy;
 
-    private EntitySubtype subtypeBefore;
-    private EntitySubtype subtypeAfter;
-
     private Rank rankBefore;
     private Rank rankAfter;
 
@@ -36,14 +33,11 @@ public class ActionEditEnemy extends MapEditorAction {
      * @param pickableItemSubtype the type of pickable item
      * @param pickableItemSavegameVariable the savegame variable where the pickable item is saved
      */
-    public ActionEditEnemy(Map map, Enemy enemy, Subtype subtype, Rank rank,
+    public ActionEditEnemy(Map map, Enemy enemy, Rank rank,
 	    int savegameVariable, PickableItem.Subtype pickableItemSubtype, int pickableItemSavegameVariable) {
 	super(map);
 	
 	this.enemy = enemy;
-
-	subtypeBefore = enemy.getSubtype();
-	subtypeAfter = subtype;
 
 	rankBefore = enemy.getRank();
 	rankAfter = rank;
@@ -62,7 +56,6 @@ public class ActionEditEnemy extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	enemy.setSubtype(subtypeAfter);
 	enemy.setRank(rankAfter);
 	enemy.setSavegameVariable(savegameVariableAfter);
 	enemy.setPickableItem(pickableItemSubtypeAfter, pickableItemSavegameVariableAfter);
@@ -72,7 +65,6 @@ public class ActionEditEnemy extends MapEditorAction {
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	enemy.setSubtype(subtypeBefore);
 	enemy.setRank(rankBefore);
 	enemy.setSavegameVariable(savegameVariableBefore);
 	enemy.setPickableItem(pickableItemSubtypeBefore, pickableItemSavegameVariableBefore);

@@ -15,7 +15,6 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditEnemyComponent extends EditEntityComponent {
 
     // specific fields
-    private EnumerationChooser<Subtype> subtypeField;
     private EnumerationChooser<Enemy.Rank> rankField;
     private NumberChooser savegameVariableField;
     private PickableItemSubtypeChooser pickableItemSubtypeField;
@@ -34,10 +33,6 @@ public class EditEnemyComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-
-	// enemy subtype
-	subtypeField = new EnumerationChooser<Subtype>(Subtype.class);
-	addField("Enemy type", subtypeField);
 
 	// rank
 	rankField = new EnumerationChooser<Rank>(Rank.class);
@@ -67,7 +62,6 @@ public class EditEnemyComponent extends EditEntityComponent {
 
 	Enemy enemy = (Enemy) entity;
 
-	subtypeField.setValue(enemy.getSubtype());
 	rankField.setValue(enemy.getRank());
 	savegameVariableField.setNumber(enemy.getSavegameVariable());
 	pickableItemSubtypeField.setValue(enemy.getPickableItemSubtype());
@@ -89,14 +83,13 @@ public class EditEnemyComponent extends EditEntityComponent {
 	// add the specific properties
 	Enemy enemy = (Enemy) entity;
 
-	Subtype subtype = subtypeField.getValue();
 	Rank rank = rankField.getValue();
 	int savegameVariable = savegameVariableField.getNumber();
 	PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
 	int pickableItemSavegameVariable = pickableItemSavegameVariableField.getNumber();
 
 	action.setSpecificAction(new ActionEditEnemy(map, enemy,
-		subtype, rank, savegameVariable, pickableItemSubtype, pickableItemSavegameVariable));
+		rank, savegameVariable, pickableItemSubtype, pickableItemSavegameVariable));
 
 	return action;
     }

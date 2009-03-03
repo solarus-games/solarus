@@ -61,7 +61,7 @@ public class EntitySubtypeChooser extends JComboBox {
 	try {
 	    KeyValue item = (KeyValue) getSelectedItem();
 	    int id = Integer.parseInt(item.getKey());
-	    value = (EntitySubtype) enumeration.getMethod("get", int.class).invoke(id);
+	    value = (EntitySubtype) enumeration.getMethod("get", int.class).invoke(null, id);
 	}
 	catch (NoSuchMethodException ex) {
 	    System.err.println("The method 'get' is missing in enumeration " + enumeration.getName());

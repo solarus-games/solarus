@@ -16,7 +16,6 @@ import zsdx.entities.InteractiveEntity.Subtype;
 public class EditInteractiveEntityComponent extends EditEntityComponent {
 
     // specific fields of this entity
-    private EnumerationChooser<Subtype> subtypeField;
     private JCheckBox withSpriteField;
     private JTextField spriteField;
     private RadioField withMessageField;
@@ -35,10 +34,6 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-
-	// subtype of interactive entity
-	subtypeField = new EnumerationChooser<Subtype>(Subtype.class);
-	addField("Interaction type", subtypeField);
 
 	// has a sprite?
 	withSpriteField = new JCheckBox("Display a sprite");
@@ -72,7 +67,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	subtypeField.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
 
-		Subtype subtype = subtypeField.getValue();
+		Subtype subtype = (Subtype) subtypeField.getValue();
 
 		withSpriteField.setEnabled(true);
 		spriteField.setEnabled(true);
@@ -117,7 +112,6 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	String sprite = interactiveEntity.getSprite();
 	String message = interactiveEntity.getMessageId();
 
-	subtypeField.setValue(interactiveEntity.getSubtype());
 	withSpriteField.setSelected(sprite != null);
 	spriteField.setText((sprite != null) ? sprite : "");
 	spriteField.setEnabled(sprite != null);
@@ -140,7 +134,6 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	// add the properties specific to this kind of entity
 	InteractiveEntity interactiveEntity = (InteractiveEntity) entity;
 
-	Subtype subtype = subtypeField.getValue();
 	String sprite = spriteField.getText();
 	if (!withSpriteField.isSelected()) {
 	    sprite = null;
@@ -152,7 +145,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	}
 
 	action.setSpecificAction(new ActionEditInteractiveEntity(map, interactiveEntity,
-		subtype, sprite, message));
+		sprite, message));
 
 	return action;
     }

@@ -14,7 +14,6 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditPickableItemComponent extends EditEntityComponent {
     
     // specific fields of a pickable item
-    private PickableItemSubtypeChooser subtypeField;
     private NumberChooser savegameVariableField; // enabled only for certain types of pickable items
 
     /**
@@ -30,10 +29,6 @@ public class EditPickableItemComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-
-	// pickable item type
-	subtypeField = new PickableItemSubtypeChooser(false);
-	addField("Pickable item type", subtypeField);
 
 	// savegame index
 	savegameVariableField = new NumberChooser(0, 0, 32767);
@@ -51,7 +46,6 @@ public class EditPickableItemComponent extends EditEntityComponent {
 
 	PickableItem pickableItem = (PickableItem) entity;
 
-	subtypeField.setValue(pickableItem.getSubtype());
 	savegameVariableField.setNumber(pickableItem.getSavegameVariable());
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);
     }
@@ -70,10 +64,9 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	// add the properties specific to a pickable item
 	PickableItem pickableItem = (PickableItem) entity;
 
-	Subtype subtype = subtypeField.getValue();
 	int savegameVariable = savegameVariableField.getNumber();
 
-	action.setSpecificAction(new ActionEditPickableItem(map, pickableItem, subtype, savegameVariable));
+	action.setSpecificAction(new ActionEditPickableItem(map, pickableItem, savegameVariable));
 
 	return action;
     }
@@ -85,7 +78,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
     private class ActionListenerEnableSavegameVariable implements ActionListener {
 
 	public void actionPerformed(ActionEvent ev) {
-	    Subtype subtype = subtypeField.getValue();
+	    Subtype subtype = (Subtype) subtypeField.getValue();
 	    savegameVariableField.setEnabled(subtype.isSaved());
 	}
     }

@@ -189,21 +189,16 @@ public class PickableItem extends DynamicEntity {
     }
 
     /**
-     * Sets the properties of this pickable item.
-     * @param subtype the subtype of pickable item
-     * @param savegameVariable the savegame variable of this pickable item, or zero if
-     * this pickable item is not saved.
-     * @throws ZSDXException if the type is incorrect or if the value of
-     * savegameVariable doesn't correspond to the specified type
+     * Sets the subtype of this entity
+     * @param subtype the subtype
      */
-    public void setPickableItem(Subtype subtype, int savegameVariable) throws ZSDXException {
-	
+    public void setSubtype(EntitySubtype subtype) throws MapException {
+
 	if (subtype == Subtype.NONE || subtype == Subtype.RANDOM) {
-	    throw new ZSDXException("The type of pickable item cannot be 'None' or 'Random'");
+	    throw new MapException("The type of pickable item cannot be 'None' or 'Random'");
 	}
-	
-	this.subtype = subtype;
-	this.savegameVariable = savegameVariable;
+
+	super.setSubtype(subtype);
     }
 
     /**

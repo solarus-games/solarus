@@ -3,7 +3,6 @@ package zsdx.gui.edit_entities;
 import java.awt.event.*;
 import zsdx.*;
 import zsdx.entities.*;
-import zsdx.entities.DestructibleItem.Subtype;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;
@@ -14,7 +13,6 @@ import zsdx.map_editor_actions.edit_entities.*;
 public class EditDestructibleItemComponent extends EditEntityComponent {
 
     // specific fields of a destructible item
-    private EnumerationChooser<Subtype> subtypeField;
     private PickableItemSubtypeChooser pickableItemSubtypeField;
     private NumberChooser pickableItemSavegameVariableField;
 
@@ -31,10 +29,6 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-
-	// destructible item type
-	subtypeField = new EnumerationChooser<Subtype>(Subtype.class);
-	addField("Destructible item type", subtypeField);
 
 	// pickable item type
 	pickableItemSubtypeField = new PickableItemSubtypeChooser(true);

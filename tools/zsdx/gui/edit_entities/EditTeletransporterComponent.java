@@ -5,7 +5,6 @@ import zsdx.*;
 import zsdx.entities.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
-import zsdx.map_editor_actions.edit_entities.*;
 
 /**
  * A component to edit a teletransporter.
@@ -59,10 +58,10 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 
 	Teletransporter teletransporter = (Teletransporter) entity;
 
-	transitionField.setValue(teletransporter.getTransition());
-	mapField.setSelectedId(teletransporter.getDestinationMapId());
+	transitionField.setValue(Transition.get(teletransporter.getIntegerProperty("transition")));
+	mapField.setSelectedId(teletransporter.getProperty("destinationMapId"));
 	
-	String destinationPointName = teletransporter.getDestinationPointName();
+	String destinationPointName = teletransporter.getProperty("destinationPointName");
 	if (destinationPointName.equals("_same")) {
 	    destinationPointName = samePointText;
 	}
@@ -73,20 +72,11 @@ public class EditTeletransporterComponent extends EditEntityComponent {
     }
 
     /**
-     * Creates the map editor action object which corresponds
-     * to the modifications indicated in the fields.
-     * @return the action object corresponding to the modifications made
-     * @throws ZSDXException if the destination map or the entrance name are left blank
+     * Returns the specific part of the action made on the entity.
+     * @return the specific part of the action made on the entity
      */
-    protected ActionEditEntity getAction() throws ZSDXException {
-	
-	// retrieve the action corresponding to the common entity properties
-	ActionEditEntity action = super.getAction();
+    protected ActionEditEntitySpecific getSpecificAction() {
 
-	// add the properties specific to a teletransporter
-	Teletransporter teletransporter = (Teletransporter) entity;
-
-	Transition transition = transitionField.getValue();
 	String destinationMapId = mapField.getSelectedId();
 	String destinationPointName = destinationPointField.getSelectedName();
 
@@ -97,18 +87,9 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	    destinationPointName = "_side";
 	}
 
-	if (destinationMapId.length() == 0) {
-	    throw new ZSDXException("Please select a destination map");
-	}
-
-	if (destinationPointName.length() == 0) {
-	    throw new ZSDXException("Please select a destination point on the destination map");
-	}
-
-	action.setSpecificAction(new ActionEditTeletransporter(map, teletransporter,
-		transition, destinationMapId, destinationPointName));
-
-	return action;
+	return new ActionEditEntitySpecific(entity, 
+		Integer.toString(transitionField.getValue().getId()), 
+		destinationMapId, destinationPointName);
     }
 
     /**

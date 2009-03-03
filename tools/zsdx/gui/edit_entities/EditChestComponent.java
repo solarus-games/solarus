@@ -7,7 +7,6 @@ import zsdx.*;
 import zsdx.entities.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
-import zsdx.map_editor_actions.edit_entities.*;
 
 /**
  * A component to edit a chest.
@@ -19,8 +18,8 @@ public class EditChestComponent extends EditEntityComponent {
     private EnumerationChooser<TreasureContent> contentField;
     private NumberChooser amountField;
     private JCheckBox saveField;
-    private NumberChooser savegameIndexField;
-    
+    private NumberChooser savegameVariableField;
+
     /**
      * Constructor.
      * @param map the map
@@ -52,24 +51,24 @@ public class EditChestComponent extends EditEntityComponent {
 	saveField.setSelected(true);
 	addField("Savegame", saveField);
 
-	// treasure savegame index
-	savegameIndexField = new NumberChooser(0, 0, 32767);
-	addField("Savegame variable", savegameIndexField);
+	// treasure savegame variable
+	savegameVariableField = new NumberChooser(0, 0, 32767);
+	addField("Savegame variable", savegameVariableField);
 
 	// enable or disable the amount field depending on the treasure content
 	contentField.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
-		
+
 		boolean treasurePresent = (contentField.getValue() != TreasureContent.NOTHING);
 		amountField.setEnabled(treasurePresent && contentField.getValue().hasAmount());
-		savegameIndexField.setEnabled(treasurePresent);
+		savegameVariableField.setEnabled(treasurePresent);
 	    }
 	});
 
 	// enable or disable the savegame index field depending on the check box
 	saveField.addChangeListener(new ChangeListener() {
 	    public void stateChanged(ChangeEvent ev) {
-		savegameIndexField.setEnabled(saveField.isSelected());
+		savegameVariableField.setEnabled(saveField.isSelected());
 	    }
 	});
     }
@@ -82,35 +81,24 @@ public class EditChestComponent extends EditEntityComponent {
 
 	Chest chest = (Chest) entity;
 
+	int savegameVariable = chest.getIntegerProperty("savegameVariable");
 	sizeField.setSelectedIndex(chest.isBigChest() ? 1 : 0);
-	contentField.setValue(chest.getContent());
-	amountField.setNumber(chest.getAmount());
-	saveField.setSelected(chest.getSavegameIndex() != -1);
-	savegameIndexField.setNumber(chest.getSavegameIndex());
-	savegameIndexField.setEnabled(chest.getSavegameIndex() != -1);
+	contentField.setValue(TreasureContent.get(chest.getIntegerProperty("content")));
+	amountField.setNumber(chest.getIntegerProperty("amount"));
+	saveField.setSelected(savegameVariable != -1);
+	savegameVariableField.setNumber(savegameVariable);
+	savegameVariableField.setEnabled(savegameVariable != -1);
     }
-    
+
     /**
-     * Creates the map editor action object which corresponds
-     * to the modifications indicated in the fields.
-     * @return the action object corresponding to the modifications made
-     * @throws ZSDXException
+     * Returns the specific part of the action made on the entity.
+     * @return the specific part of the action made on the entity
      */
-    protected ActionEditEntity getAction() throws ZSDXException {
-	
-	// retrieve the action corresponding to the common entity properties
-	ActionEditEntity action = super.getAction();
-
-	// add the properties specific to a chest
-	Chest chest = (Chest) entity;
-
-	TreasureContent content = contentField.getValue();
-	boolean bigChest = (sizeField.getSelectedIndex() != 0);
-	int amount = amountField.getNumber();
-	int savegameIndex = saveField.isSelected() ? savegameIndexField.getNumber() : -1;
-
-	action.setSpecificAction(new ActionEditChest(map, chest, bigChest, content, amount, savegameIndex));
-
-	return action;
+    protected ActionEditEntitySpecific getSpecificAction() {
+	return new ActionEditEntitySpecific(entity,
+		sizeField.getSelectedIndex(),
+		contentField.getValue().getIndex(),
+		amountField.getNumber(),
+		saveField.isSelected() ? savegameVariableField.getNumber() : -1);
     }
 }

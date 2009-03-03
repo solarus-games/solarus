@@ -6,7 +6,6 @@ import zsdx.entities.*;
 import zsdx.entities.PickableItem.Subtype;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
-import zsdx.map_editor_actions.edit_entities.*;
 
 /**
  * A component to edit a pickable item.
@@ -34,8 +33,12 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	savegameVariableField = new NumberChooser(0, 0, 32767);
 	addField("Savegame variable", savegameVariableField);
 
-	// enable or disable the 'savegame index' field depending on the pickable item type
+	// enable or disable the 'savegame variable' field depending on the pickable item type
 	subtypeField.addActionListener(new ActionListenerEnableSavegameVariable());
+
+	// remove 'Random' and 'None'
+	subtypeField.removeItemAt(0);
+	subtypeField.removeItemAt(0);
     }
 
     /**
@@ -46,29 +49,16 @@ public class EditPickableItemComponent extends EditEntityComponent {
 
 	PickableItem pickableItem = (PickableItem) entity;
 
-	savegameVariableField.setNumber(pickableItem.getSavegameVariable());
+	savegameVariableField.setNumber(pickableItem.getIntegerProperty("savegameVariable"));
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);
     }
 
     /**
-     * Creates the map editor action object which corresponds
-     * to the modifications indicated in the fields.
-     * @return the action object corresponding to the modifications made
-     * @throws ZSDXException if the fields are incorrectly filled
+     * Returns the specific part of the action made on the entity.
+     * @return the specific part of the action made on the entity
      */
-    protected ActionEditEntity getAction() throws ZSDXException {
-
-	// retrieve the action corresponding to the common entity properties
-	ActionEditEntity action = super.getAction();
-
-	// add the properties specific to a pickable item
-	PickableItem pickableItem = (PickableItem) entity;
-
-	int savegameVariable = savegameVariableField.getNumber();
-
-	action.setSpecificAction(new ActionEditPickableItem(map, pickableItem, savegameVariable));
-
-	return action;
+    protected ActionEditEntitySpecific getSpecificAction() {
+	return new ActionEditEntitySpecific(entity, savegameVariableField.getNumber());
     }
 
     /**

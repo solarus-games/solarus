@@ -106,6 +106,14 @@ public enum EntityType {
     }
 
     /**
+     * Returns whether this entity type has a subtype.
+     * @return true if this entity type has a subtype
+     */
+    public boolean hasSubtype() {
+	return getSubtypeEnum() != null;
+    }
+
+    /**
      * Returns a subtype value corresponding to the specified id.  
      * @param id id of the subtype to get
      * @return the subtype with this id for the current entity type
@@ -133,6 +141,19 @@ public enum EntityType {
 	}
 
 	return subtype;
+    }
+
+    /**
+     * Returns the default subtype for this type of entity.
+     * If the entity type has no subtype, null is returned.
+     * @return the default subtype
+     */
+    public EntitySubtype getDefaultSubtype() {
+
+	if (!hasSubtype()) {
+	    return null;
+	}
+	return getSubtype(0);
     }
 
     /**

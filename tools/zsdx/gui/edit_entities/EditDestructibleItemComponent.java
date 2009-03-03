@@ -5,7 +5,6 @@ import zsdx.*;
 import zsdx.entities.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
-import zsdx.map_editor_actions.edit_entities.*;
 
 /**
  * A component to edit a destructible item.
@@ -34,7 +33,7 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 	pickableItemSubtypeField = new PickableItemSubtypeChooser(true);
 	addField("Pickable item", pickableItemSubtypeField);
 
-	// savegame index
+	// savegame variable
 	pickableItemSavegameVariableField = new NumberChooser(0, 0, 32767);
 	addField("Pickable item savegame variable", pickableItemSavegameVariableField);
 
@@ -50,32 +49,19 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 
 	DestructibleItem destructibleItem = (DestructibleItem) entity;
 
-	pickableItemSubtypeField.setValue(destructibleItem.getPickableItemSubtype());
-	pickableItemSavegameVariableField.setNumber(destructibleItem.getPickableItemSavegameVariable());
+	pickableItemSubtypeField.setValue(PickableItem.Subtype.get(destructibleItem.getIntegerProperty("pickableItemSubtype")));
+	pickableItemSavegameVariableField.setNumber(destructibleItem.getIntegerProperty("pickableItemSavegameVariable"));
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);
     }
 
     /**
-     * Creates the map editor action object which corresponds
-     * to the modifications indicated in the fields.
-     * @return the action object corresponding to the modifications made
-     * @throws ZSDXException if the fields are incorrectly filled
+     * Returns the specific part of the action made on the entity.
+     * @return the specific part of the action made on the entity
      */
-    protected ActionEditEntity getAction() throws ZSDXException {
-
-	// retrieve the action corresponding to the common entity properties
-	ActionEditEntity action = super.getAction();
-
-	// add the properties specific to a destructible item
-	DestructibleItem destructibleItem = (DestructibleItem) entity;
-
-	PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
-	int pickableItemSavegameVariable = pickableItemSavegameVariableField.getNumber();
-
-	action.setSpecificAction(new ActionEditDestructibleItem(map, destructibleItem,
-		pickableItemSubtype, pickableItemSavegameVariable));
-
-	return action;
+    protected ActionEditEntitySpecific getSpecificAction() {
+	return new ActionEditEntitySpecific(entity,
+		pickableItemSubtypeField.getValue().getId(),
+		pickableItemSavegameVariableField.getNumber());
     }
 
     /**

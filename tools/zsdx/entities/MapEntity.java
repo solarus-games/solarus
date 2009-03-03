@@ -10,23 +10,21 @@ import zsdx.Map;
 /**
  * Represents an entity placed on the map with the map editor,
  * and how the entity is placed on the map: its position and its layer.
- * 
+ *
  * To create a new kind of entity, you should do the following steps:
  * - Add your new type of entity into the EntityType enumeration.
  * - Add the entity in the AddEntitiesToolbar.cells array.
  * - Add the entity in the AddEntitiesMenu class.
  * - Create a class for your entity and:
  *   - If your entity has a notion of subtype, create a Subtype enumeration
- *       that implements the EntitySubtype interface
- *   - Add the specific fields of your type of entity and the corresponding
- *       get and set methods. TODO: only one method to set everything?
- *   - Create two constructors with the following signatures:
- *       public YourEntity(Map map, int x, int y):
+ *       that implements the EntitySubtype interface.
+ *   - Define the specific properties and their default values
+ *     by redefining the method setPropertiesDefaultValues().
+ *   - Redefine the checkProperties() method: public boolean checkProperties()
+ *       to check the validity of the specific properties.
+ *   - Create a constructor with the following signature:
+ *       public YourEntity(Map map) throws MapException:
  *           creates a new entity with some default properties
- *       public YourEntity(Map map, StringTokenizer tokenizer) throws ZSDXException:
- *           creates an existing entity from a string
- *   - Create the toString() method: public String toString()
- *       to export the entity into a string
  *   - Redefine if necessary the getObstacle() method: public int getObstacle()
  *       if your entity is an obstacle.
  *   - Redefine if necessary the methods getNbDirections(), hasName(), isResizable()
@@ -40,8 +38,6 @@ import zsdx.Map;
  *           also redefine the getUnitarySize() method (default is 8*8).
  *   - Redefine the getOrigin() method: public Point getOrigin()
  *       if the origin is not the top-left corner of the entity.
- *   - Redefine the isValid() method: public boolean isValid()
- *       to check the validity of the fields (don't forget to call super.isValid()).
  *   - Define the static generalImageDescriptions field:
  *       public static final EntityImageDescription[] generalImageDescriptions
  *       to define a default 16*16 image representing this kind of entity for each subtype.
@@ -56,7 +52,6 @@ import zsdx.Map;
  *       public EntitySubtype getSubtype() and change its return type.
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
- * - Create a subclass of ActionEditEntity.
  */
 public abstract class MapEntity extends Observable {
 
@@ -96,6 +91,11 @@ public abstract class MapEntity extends Observable {
      * The subtype of entity, or null if the entity has no subtype.
      */
     protected EntitySubtype subtype;
+
+    /**
+     * All other properties of the entity, specific to each entity type.
+     */
+    protected LinkedHashMap<String, String> specificProperties;
 
     /**
      * Color to display instead of the transparent pixels of the image.
@@ -141,102 +141,56 @@ public abstract class MapEntity extends Observable {
      * is given to the entity (this name is computed such that it is
      * different from the other entities of the same kind on the map).
      * @param map the map
-     * @param layer layer of the entity
-     * @param x x position of the entity on the map
-     * @param y y position of the entity on the map
      * @param width width of the entity
      * @param height height of the entity
-     * @param computeDefaultName true to give a default name to the entity
-     * (this name is computed such that it is different from the other
-     * entities of the same kind on the map) or false if the entity is
-     * not identifiable or if you want to set its name later 
      */
-    protected MapEntity(Map map, int layer, int x, int y,
-	    int width, int height, boolean computeDefaultName) {
+    protected MapEntity(Map map, int width, int height) throws MapException {
+
 	this.map = map;
-	this.layer = layer;
-	this.positionInMap = new Rectangle(x, y, width, height);
+
+	// default values
+	this.layer = LAYER_LOW;
+	this.positionInMap = new Rectangle(0, 0, width, height);
+
+	if (hasSubtype()) {
+	    setSubtype(getDefaultSubtype());
+	}
+	this.specificProperties = new LinkedHashMap<String, String>();
+
+	try {
+	    setPropertiesDefaultValues();
+	}
+	catch (MapException ex) {
+	    System.err.println("Unexpected error: could not set the default values for entity '" + getType() + "': " + ex.getMessage());
+	}
 	
 	initializeImageDescription();
 
-	if (hasName() && computeDefaultName) {
+	if (hasName()) {
 	    computeDefaultName();
 	}
     }
 
     /**
-     * Parses the common information of the entity, i.e. the layer, the position,
-     * the size (if the entity is resizable), the name (if the entity is identifiable)
-     * and the direction (if the entity have a direction property).
-     * This constructor should be called by the subclasses before parsing the specific part of the line.
-     * @param map the map
-     * @param tokenizer the string tokenizer parsing the entity line (the entity type has already been parsed)
-     * @throws ZSDXException if the line contains an error
-     */
-    protected MapEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
-	this(map, LAYER_LOW, 0, 0, 0, 0, false);
-
-	try {
-	    int layer = Integer.parseInt(tokenizer.nextToken());
-	    int x = Integer.parseInt(tokenizer.nextToken());
-	    int y = Integer.parseInt(tokenizer.nextToken());
-
-	    setLayer(layer);
-	    positionInMap.x = x; // for now the origin is (0,0)
-	    positionInMap.y = y;
-
-	    int width = 0;
-	    int height = 0;
-	    if (isSizeVariable()) {
-		width = Integer.parseInt(tokenizer.nextToken());
-		height = Integer.parseInt(tokenizer.nextToken());
-	    }
-
-	    if (hasName()) {
-		setName(tokenizer.nextToken());
-	    }
-
-	    if (hasDirection()) {
-		setDirection(Integer.parseInt(tokenizer.nextToken()));
-	    }
-
-	    if (hasSubtype()) {
-		setSubtype(getSubtype(Integer.parseInt(tokenizer.nextToken())));
-	    }
-
-	    if (isSizeVariable()) {
-		setSize(width, height); // some entities need to know their direction before they can be resized
-	    }
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("Value expected");
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected: " + ex.getMessage());
-	}
-    }
-    
-    /**
      * Creates a new map entity with the specified type.
      * @param map the map
-     * @param entityType the type of entity to create (except TILE)
+     * @param entityType the type of entity to create
      * @param entitySubtype the subtype of entity to create
+     * @return the entity created
      */
     public static MapEntity create(Map map, EntityType entityType, EntitySubtype entitySubtype) throws MapException {
 
 	MapEntity entity = null;
-	Class<?> entityClass = null;
+	Class<? extends MapEntity> entityClass = null;
 	try {
 	    entityClass = entityType.getEntityClass();
-	    Class<?>[] paramTypes = {Map.class, int.class, int.class};
-	    Object[] paramValues = {map, 0, 0};
-	    Constructor<?> constructor = entityClass.getConstructor(paramTypes);
-	    entity = (MapEntity) constructor.newInstance(paramValues);
+	    Constructor<? extends MapEntity> constructor = entityClass.getConstructor(Map.class);
+	    entity = constructor.newInstance(map);
 	    entity.setSubtype(entitySubtype);
 	    entity.initializeImageDescription();
 	}
 	catch (NoSuchMethodException ex) {
-	    System.err.println("Cannot find the constructor of class " + entityClass);
+	    System.err.println("Cannot find the constructor of " + entityClass);
 	    System.exit(1);
 	}
 	catch (InvocationTargetException ex) {
@@ -258,7 +212,7 @@ public abstract class MapEntity extends Observable {
 	entity.initialized = true;
 	return entity;
     }
-    
+
     /**
      * Creates a map entity from a string description as returned by toString().
      * @param map the map (needed for some types of entities)
@@ -267,51 +221,90 @@ public abstract class MapEntity extends Observable {
      */
     public static MapEntity createFromString(Map map, String description) throws ZSDXException {
 
-	StringTokenizer tokenizer = new StringTokenizer(description, "\t");
-	EntityType entityType = EntityType.get(Integer.parseInt(tokenizer.nextToken()));
+	int index = description.indexOf('\t');
+	EntityType entityType = EntityType.get(Integer.parseInt(description.substring(0, index)));
 
-	MapEntity entity = null;
-	
-	Class<? extends MapEntity> entityClass = entityType.getEntityClass();
-	Constructor<? extends MapEntity> constructor;
-	
-	try {
-	    constructor = entityClass.getConstructor(Map.class, StringTokenizer.class);
-	    entity = constructor.newInstance(map, tokenizer);
-	    entity.updateImageDescription();
+	MapEntity entity = MapEntity.create(map, entityType, entityType.getDefaultSubtype());
+	entity.parse(description.substring(index + 1));
+	entity.updateImageDescription();
 
-	    // now the origin is valid
-	    entity.setPositionInMap(entity.positionInMap.x, entity.positionInMap.y);
-	}
-	catch (NoSuchMethodException ex) {
-	    System.err.println("Unexpected error: " + ex.getMessage());
-	    System.exit(1);
-	}
-	catch (IllegalAccessException ex) {
-	    System.err.println("Unexpected error: " + ex.getMessage());
-	    System.exit(1);
-	}
-	catch (InstantiationException ex) {
-	    System.err.println("Unexpected error: " + ex.getMessage());
-	    System.exit(1);
-	}
-	catch (InvocationTargetException ex) {
-	    
-	    Throwable cause = ex.getCause();
-
-	    if (cause instanceof Error) {
-		throw (Error) cause;
-	    }
-	    else if (cause instanceof RuntimeException) {
-		throw (RuntimeException) cause;
-	    }
-	    else {
-		throw (ZSDXException) cause;
-	    }
-	}
-
+	// now the origin is valid
+	entity.setPositionInMap(entity.positionInMap.x, entity.positionInMap.y);
 	entity.setInitialized(true);
 	return entity;
+    }
+
+    /**
+     * Parses the entity.
+     * @param description a string describing the entity, as returned by toString(),
+     * except that the first value is missing (the entity type)
+     * @throws ZSDXException if the line contains an error
+     */
+    protected final void parse(String description) throws ZSDXException {
+
+	String token = null;
+	try {
+	    StringTokenizer tokenizer = new StringTokenizer(description, "\t");
+
+	    token = tokenizer.nextToken();
+	    int layer = Integer.parseInt(token);
+
+	    token = tokenizer.nextToken();
+	    int x = Integer.parseInt(token);
+
+	    token = tokenizer.nextToken();
+	    int y = Integer.parseInt(token);
+
+	    setLayer(layer);
+	    positionInMap.x = x; // for now the origin is (0,0)
+	    positionInMap.y = y;
+
+	    int width = 0;
+	    int height = 0;
+	    if (isSizeVariable()) {
+		token = tokenizer.nextToken();
+		width = Integer.parseInt(token);
+		token = tokenizer.nextToken();
+		height = Integer.parseInt(token);
+	    }
+
+	    if (hasName()) {
+		token = tokenizer.nextToken();
+		setName(token);
+	    }
+
+	    if (hasDirection()) {
+		token = tokenizer.nextToken();
+		setDirection(Integer.parseInt(token));
+	    }
+
+	    if (hasSubtype()) {
+		token = tokenizer.nextToken();
+		setSubtype(getSubtype(Integer.parseInt(token)));
+	    }
+
+	    // specific properties
+	    for (String name: specificProperties.keySet()) {
+		token = tokenizer.nextToken();
+		setProperty(name, token);
+	    }
+
+	    if (isSizeVariable()) {
+		setSize(width, height); // some entities need to know their properties before they can be resized
+	    }
+	}
+	catch (NoSuchElementException ex) {
+	    if (token == null) {
+		throw new ZSDXException("Value expected, empty line found");
+	    }
+	    else {
+		throw new ZSDXException("Value expected after '" + token + "'");
+	    }
+	}
+	catch (NumberFormatException ex) {
+	    ex.printStackTrace();
+	    throw new ZSDXException("Integer expected, found '" + token + "'");
+	}
     }
 
     /**
@@ -333,12 +326,10 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns a string describing this entity: the entity type, the layer, the coordinates,
-     * the id (if any) and the direction (if any).
-     * Subclasses should redefine this method to add their own information (if any).
-     * @return a string representation of the entity.
+     * Returns a string describing this entity.
+     * @return a string representation of the entity
      */
-    public String toString() {
+    public final String toString() {
 
 	StringBuffer buff = new StringBuffer();
 	buff.append(getType().getIndex());
@@ -371,6 +362,11 @@ public abstract class MapEntity extends Observable {
 	    buff.append(getSubtypeId());
 	}
 
+	for (String value: specificProperties.values()) {
+	    buff.append('\t');
+	    buff.append(value);
+	}
+
 	return buff.toString();
     }
 
@@ -386,14 +382,19 @@ public abstract class MapEntity extends Observable {
      * Checks the entity validity. An entity must be valid before it is saved.
      * @return true if the entity is valid
      */
-    public boolean isValid() {
+    public final boolean isValid() {
 	
 	try {
+	    // check the common properties
 	    checkPositionTopLeft(positionInMap.x, positionInMap.y);
-	    
+
 	    if (isResizable()) {
 		checkSize(positionInMap.width, positionInMap.height);
 	    }
+
+	    // check the specific properties
+	    checkProperties();
+
 	    return true;
 	}
 	catch (MapException ex) {
@@ -1036,12 +1037,12 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Returns whether this entity has a subtype.
-     * You don't need to redefine this method. Whether the entity has
+     * Whether the entity has
      * a subtype depends on the subtype class specified in the EntityType enumeration.
      * @return true if this entity has a subtype
      */
     public final boolean hasSubtype() {
-	return getType().getSubtypeEnum() != null;
+	return getType().hasSubtype();
     }
 
     /**
@@ -1061,7 +1062,7 @@ public abstract class MapEntity extends Observable {
      * Returns the subtype of this entity.
      * @return the subtype, or null if this type of entity has no subtype
      */
-    public EntitySubtype getSubtype() {
+    public final EntitySubtype getSubtype() {
 	return subtype;
     }
 
@@ -1072,8 +1073,17 @@ public abstract class MapEntity extends Observable {
      * @param id the subtype id
      * @return the subtype
      */
-    public EntitySubtype getSubtype(int id) {
+    public final EntitySubtype getSubtype(int id) {
 	return getType().getSubtype(id);
+    }
+
+    /**
+     * Returns the default subtype of this type of entity,
+     * i.e. the subtype with id 0.
+     * @return the default subtype
+     */
+    public final EntitySubtype getDefaultSubtype() {
+	return getType().getDefaultSubtype();
     }
 
     /**
@@ -1081,7 +1091,7 @@ public abstract class MapEntity extends Observable {
      * @param subtype the subtype
      * @throws MapException if the subtype is not valid
      */
-    public void setSubtypeId(int subtype) throws MapException {
+    public final void setSubtypeId(int subtype) throws MapException {
 	setSubtype(getSubtype(subtype));
     }
 
@@ -1094,5 +1104,98 @@ public abstract class MapEntity extends Observable {
 	this.subtype = subtype;
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Returns a string value specific to the current entity type.
+     * @param name name of the property to get
+     * @return the value of this property
+     */
+    public final String getProperty(String name) {
+
+	String value = specificProperties.get(name);
+	if (value == null) {
+	    throw new IllegalArgumentException("There is no property with name '" + name +
+		    "' for entity " + getType());
+	}
+	return value;
+    }
+
+    /**
+     * Returns a integer value specific to the current entity type.
+     * @param name name of the property to get
+     * @return the value of this property
+     */
+    public final int getIntegerProperty(String name) {
+	return Integer.parseInt(getProperty(name));
+    }
+
+    /**
+     * Returns a boolean value specific to the current entity type.
+     * @param name name of the property to get
+     * @return the value of this property
+     */
+    public final boolean getBooleanProperty(String name) {
+	return Integer.parseInt(getProperty(name)) != 0;
+    }
+
+    /**
+     * Sets a property specific to the current entity type.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public void setProperty(String name, String value) throws MapException {
+	specificProperties.put(name, value);
+    }
+
+    /**
+     * Sets a property specific to the current entity type.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public final void setProperty(String name, int value) throws MapException {
+	setProperty(name, Integer.toString(value));
+    }
+
+    /**
+     * Sets a property specific to the current entity type.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public final void setProperty(String name, boolean value) throws MapException {
+	setProperty(name, value ? "0" : "1");
+    }
+
+    /**
+     * Returns all specific properties of the current entity.
+     * @return the specific properties
+     */
+    public final LinkedHashMap<String, String> getProperties() {
+	return specificProperties;
+    }
+
+    /**
+     * Sets all specific properties of the current entity.
+     * @param properties the specific properties
+     */
+    public final void setProperties(LinkedHashMap<String, String> properties) {
+	this.specificProperties = properties;
+    }
+
+    /**
+     * Sets the default values of all properties specific to the current entity type.
+     * Redefine this method to define the default value of your properties.
+     */
+    public void setPropertiesDefaultValues() throws MapException {
+
+    }
+
+    /**
+     * Checks the specific properties.
+     * Redefine this method to check the values.
+     * @throws MapException if a property is not valid
+     */
+    public void checkProperties() throws MapException {
+
     }
 }

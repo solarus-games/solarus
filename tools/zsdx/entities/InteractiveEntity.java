@@ -1,7 +1,6 @@
 package zsdx.entities;
 
 import java.awt.*;
-import java.util.*;
 import zsdx.Map;
 import zsdx.*;
 
@@ -77,94 +76,14 @@ public class InteractiveEntity extends DynamicEntity {
     };
 
     // specific fields
-    
-    /**
-     * Name of the sprite to display for this entity, or null if to make the entity invisible.
-     */
-    private String sprite;
-    
-    /**
-     * Id of the message to display when the player interacts with this entity,
-     * or null to call the map script instead.
-     */
-    private String messageId;
 
     /**
-     * Creates a new interactive entity at the specified location.
+     * Creates a new interactive entity.
      * @param map the map
-     * @param x x coordinate of the entity
-     * @param y y coordinate of the entity
      */
-    public InteractiveEntity(Map map, int x, int y) throws MapException {
-	super(map, LAYER_LOW, x, y, 16, 16);
-
-	setSubtype(Subtype.CUSTOM);
-	sprite = "";
-	messageId = "";
-
+    public InteractiveEntity(Map map) throws MapException {
+	super(map, 16, 16);
 	setDirection(3);
-    }
-
-    /**
-     * Creates an existing interactive entity from a string.
-     * @param map the map
-     * @param tokenizer the string tokenizer, which has already parsed the subtype of entity
-     * but not yet the common properties
-     * @throws ZSDXException if there is a syntax error in the string
-     */
-    public InteractiveEntity(Map map, StringTokenizer tokenizer) throws ZSDXException {
-	super(map, tokenizer);
-
-	// parse the fields
-	try {
-	    this.sprite = tokenizer.nextToken();
-	    this.messageId = tokenizer.nextToken();
-
-	    if (sprite.equals("_none")) {
-		sprite = null;
-	    }
-
-	    if (messageId.equals("_none")) {
-		messageId = null;
-	    }
-
-	    setSubtype(subtype);
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
-    }
-
-    /**
-     * Returns a string describing this entity.
-     * @return a string representation of the entity
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string
-	buff.append(super.toString());
-
-	// add the specific properties of this entity
-	String sprite = getSprite();
-	if (sprite == null) {
-	    sprite = "_none";
-	}
-	String messageId = getMessageId();
-	if (messageId == null) {
-	    messageId = "_none";
-	}
-
-	buff.append('\t');
-	buff.append(sprite);
-	buff.append('\t');
-	buff.append(messageId);
-
-	return buff.toString();
     }
 
     /**
@@ -214,71 +133,14 @@ public class InteractiveEntity extends DynamicEntity {
     }
 
     /**
-     * Returns the name of the sprite displaying this entity.
-     * @return the name of the sprite, or null if the entity is not visible
-     */
-    public String getSprite() {
-        return sprite;
-    }
-
-    /**
-     * Sets the name of the sprite displaying this entity.
-     * @param sprite name of the sprite, or null if the entity is not visible
-     */
-    public void setSprite(String sprite) throws MapException {
-
-	if (!isSpriteValid(sprite)) {
-	    throw new MapException("Invalid sprite name");
-	}
-
-	this.sprite = sprite;
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
-     * Returns whether the specified sprite name is valid
-     * @param sprite a sprite name
+     * Returns whether the specified sprite name or message id is valid
+     * @param value a sprite name or a message id
      * @return true if it is valid
      */
-    public boolean isSpriteValid(String sprite) {
-	return (sprite == null ||
-		(sprite.length() != 0 && sprite.charAt(0) != '_'));
-    }
-
-    /**
-     * Returns the id of the message to display when the player interacts
-     * with this entity
-     * @return the id of the message to display, or null to call the map script instead
-     */
-    public String getMessageId() {
-        return messageId;
-    }
-
-    /**
-     * Sets the id of the message to display when the player interacts
-     * with this entity.
-     * @param messageId id of the message to display, or null to call the map script instead
-     */
-    public void setMessageId(String messageId) throws MapException {
-
-	if (!isMessageIdValid(messageId)) {
-	    throw new MapException("Invalid message id");
-	}
-
-        this.messageId = messageId;
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
-     * Returns whether the specified message id is valid
-     * @param messageId a message id
-     * @return true if it is valid
-     */
-    public boolean isMessageIdValid(String messageId) {
-	return (messageId == null ||
-		(messageId.length() != 0 && messageId.charAt(0) != '_'));
+    private boolean isStringValid(String value) {
+	return (value != null &&
+		value.length() != 0 && 
+		(value.charAt(0) != '_' || value.equals("_none")));
     }
 
     /**
@@ -289,10 +151,25 @@ public class InteractiveEntity extends DynamicEntity {
     }
 
     /**
-     * Checks the entity validity. An entity must be valid before it is saved.
-     * @return true if the entity is valid
+     * Sets the default values of all properties specific to the current entity type.
      */
-    public boolean isValid() {
-	return super.isValid() && isSpriteValid(sprite) && isMessageIdValid(messageId);
+    public void setPropertiesDefaultValues() throws MapException {
+	setProperty("sprite", "");
+	setProperty("messageId", "");
+    }
+
+    /**
+     * Checks the specific properties.
+     * @throws MapException if a property is not valid
+     */
+    public void checkProperties() throws MapException {
+
+	if (!isStringValid(getProperty("sprite"))) {
+	    throw new MapException("Invalid sprite name");
+	}
+
+	if (!isStringValid(getProperty("messageId"))) {
+	    throw new MapException("Invalid message id");
+	}
     }
 }

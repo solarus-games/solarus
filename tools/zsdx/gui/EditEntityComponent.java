@@ -192,14 +192,20 @@ public class EditEntityComponent extends JPanel {
     }
 
     /**
+     * Returns the specific part of the action made on the entity.
+     */
+    protected ActionEditEntitySpecific getSpecificAction() {
+	return null;
+    }
+
+    /**
      * Creates the map editor action object which corresponds
      * to the modifications indicated in the fields.
-     * The subclasses should redefine this method to add their specific handling.
      * @return the action object corresponding to the modifications made
      * @throws ZSDXException if the action could not be created (typically because
      * some fields are left blank)
      */
-    protected ActionEditEntity getAction() throws ZSDXException {
+    private final ActionEditEntity getAction() throws ZSDXException {
 
 	String name = entity.hasName() ? nameField.getText() : null;
 	int layer = layerField.getLayer();
@@ -212,8 +218,10 @@ public class EditEntityComponent extends JPanel {
 	int direction = entity.hasDirection() ? directionField.getDirection() : -1;
 	EntitySubtype subtype = subtypeField.getValue();
 
+	ActionEditEntitySpecific specificAction = getSpecificAction();
+
 	return new ActionEditEntity(map, entity, name,
-		layer, position, size, direction, subtype);
+		layer, position, size, direction, subtype, specificAction);
     }
 
     /**

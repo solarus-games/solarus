@@ -1,7 +1,6 @@
 package zsdx.entities;
 
 import java.awt.*;
-import java.util.*;
 import zsdx.*;
 import zsdx.Map;
 
@@ -51,27 +50,13 @@ public class DestinationPoint extends DynamicEntity {
     private static final Point origin = new Point(8, 13);
 
     /**
-     * Creates a new destination point at the specified location.
+     * Creates a new destination point.
      * @param map the map
-     * @param x x coordinate of the entity to create
-     * @param y y coordinate of the entity to create
      */
-    public DestinationPoint(Map map, int x, int y) {
-	super(map, LAYER_LOW, x, y, 16, 16);
+    public DestinationPoint(Map map) throws MapException {
+	super(map, 16, 16);
 	subtype = Subtype.INVISIBLE;
 	setDirection(1);
-    }
-
-    /**
-     * Creates an existing destination point from a string.
-     * @param map the map
-     * @param tokenizer the string tokenizer, which has already parsed the type of entity
-     * but not yet the common properties
-     * @throws ZSDXException if there is a syntax error in the string
-     */
-    public DestinationPoint(Map map, StringTokenizer tokenizer) throws ZSDXException {
-	super(map, tokenizer);
-	setSizeImpl(16, 16);
     }
 
     /**
@@ -110,10 +95,8 @@ public class DestinationPoint extends DynamicEntity {
      * This is a redefinition of MapEntity.setDirection to handle the special value of -1
      * indicating that the direction is not changed.
      * @param direction the entity's direction, or -1
-     * @throws UnsupportedOperationException if the entity has no direction
-     * @throws IllegalArgumentException if the direction is invalid
      */
-    public void setDirection(int direction) throws UnsupportedOperationException, IllegalArgumentException {
+    public void setDirection(int direction) {
 	if (direction == -1) {
 	    changeDirection = false;
 	}

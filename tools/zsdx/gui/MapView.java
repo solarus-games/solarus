@@ -512,12 +512,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	    this.entitySubtypeBeingAdded = entitySubtype;
 
 	    try {
+		entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);
 		if (entityType == EntityType.TILE) {
 		    int tileId = map.getTileset().getSelectedTileId();
-		    entityBeingAdded = new TileOnMap(map, tileId, 0, 0);
-		}
-		else {
-		    entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);
+		    entityBeingAdded.setProperty("tileId", tileId);
 		}
 
 		Point mousePosition = MouseInfo.getPointerInfo().getLocation();

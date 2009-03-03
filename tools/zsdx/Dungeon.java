@@ -138,16 +138,17 @@ public class Dungeon {
 		if (entity instanceof Chest) {
 		    Chest chest = (Chest) entity;
 		    saveDungeonElement(ini, map, "chest_" + nbChestsSaved,
-			    chest.getX(), chest.getY(), chest.getSavegameIndex(), chest.isBigChest());
+			    chest.getX(), chest.getY(),
+			    chest.getIntegerProperty("savegameVariable"), chest.isBigChest());
 		    nbChestsSaved++;
 		}
 		else if (entity instanceof Enemy) {
 		    Enemy enemy = (Enemy) entity;
-		    Enemy.Rank rank = enemy.getRank();
+		    Enemy.Rank rank = Enemy.Rank.get(enemy.getIntegerProperty("rank"));
 		    
 		    if (rank != Enemy.Rank.NORMAL) {
 			saveDungeonElement(ini, map, "boss_" + nbBossesSaved,
-				enemy.getX(), enemy.getY(), enemy.getSavegameVariable(),
+				enemy.getX(), enemy.getY(), enemy.getIntegerProperty("savegameVariable"),
 				rank == Enemy.Rank.BOSS); 
 			nbBossesSaved++;
 		    }

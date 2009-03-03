@@ -4,7 +4,6 @@ import zsdx.*;
 import zsdx.entities.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
-import zsdx.map_editor_actions.edit_entities.*;
 
 /**
  * A component to edit a jump sensor.
@@ -42,26 +41,15 @@ public class EditJumpSensorComponent extends EditEntityComponent {
 
 	JumpSensor jumpSensor = (JumpSensor) entity;
 
-	jumpLengthField.setNumber(jumpSensor.getJumpLength());
+	jumpLengthField.setNumber(jumpSensor.getIntegerProperty("jumpLength"));
     }
-    
+
     /**
-     * Creates the map editor action object which corresponds
-     * to the modifications indicated in the fields.
-     * @return the action object corresponding to the modifications made
-     * @throws ZSDXException
+     * Returns the specific part of the action made on the entity.
+     * @return the specific part of the action made on the entity
      */
-    protected ActionEditEntity getAction() throws ZSDXException {
-	
-	// retrieve the action corresponding to the common entity properties
-	ActionEditEntity action = super.getAction();
+    protected ActionEditEntitySpecific getSpecificAction() {
 
-	// add the properties specific to this kind of entity
-	JumpSensor jumpSensor = (JumpSensor) entity;
-	int jumpLength = jumpLengthField.getNumber();
-
-	action.setSpecificAction(new ActionEditJumpSensor(map, jumpSensor, jumpLength));
-
-	return action;
+	return new ActionEditEntitySpecific(entity, jumpLengthField.getNumber());
     }
 }

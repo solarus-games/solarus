@@ -5,13 +5,13 @@ import zsdx.*;
 import zsdx.entities.*;
 
 /**
- * Editing all common properties of an entity : the name, the layer, the position,
- * the size and the direction. The subclasses of ActionEditEntity can define
- * the specific properties of the subclasses of MapEntity. 
+ * Editing all properties of an entity : the common ones
+ * (the name, the layer, the position, the size, the direction and the subtype)
+ * and the specific ones (defined by an instance of ActionEditEntitySpecific).
  */
 public class ActionEditEntity extends MapEditorAction {
 
-    protected MapEntity entity; // the entity modified
+    private MapEntity entity; // the entity modified
 
     // common data of the entity
     private String nameBefore;
@@ -30,11 +30,10 @@ public class ActionEditEntity extends MapEditorAction {
     private EntitySubtype subtypeAfter;
 
     // additional action specific to each entity type
-    private MapEditorAction specificAction; 
+    private ActionEditEntitySpecific specificAction; 
 
     /**
      * Constructor.
-     * The subclasses should call this constructor.
      * @param map the map
      * @param entity the entity edited
      * @param name the new name of the entity (or null if
@@ -47,13 +46,16 @@ public class ActionEditEntity extends MapEditorAction {
      * (or -1 if the entity has no direction property)
      * @param subtype the subtype of the entity
      * (or null if the entity has no subtype property)
+     * @param specificAction the information about the specific properties
+     * of the entity
      */
     public ActionEditEntity(Map map, MapEntity entity, String name,
-	    int layer, Point position, Dimension size, int direction, EntitySubtype subtype) {
+	    int layer, Point position, Dimension size, int direction,
+	    EntitySubtype subtype, ActionEditEntitySpecific specificAction) {
 	super(map);
 
 	this.entity = entity;
-	this.specificAction = null;
+	this.specificAction = specificAction;
 
 	// name
 	if (entity.hasName()) {
@@ -124,6 +126,7 @@ public class ActionEditEntity extends MapEditorAction {
 	    specificAction.execute();
 	}
 
+	entity.checkProperties();
 	entity.updateImageDescription();
     }
 
@@ -163,14 +166,7 @@ public class ActionEditEntity extends MapEditorAction {
 	    specificAction.undo();
 	}
 
+	entity.checkProperties();
 	entity.updateImageDescription();
-    }
-
-    /**
-     * Sets an additional action, specific to the entity type.
-     * @param specificAction the specific action to add
-     */
-    public void setSpecificAction(MapEditorAction specificAction) {
-	this.specificAction = specificAction;
     }
 }

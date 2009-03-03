@@ -1,13 +1,18 @@
 package zsdx.entities;
 
 import java.awt.*;
-import java.util.*;
 import zsdx.*;
 import zsdx.Map;
 
 /**
  * Represents an entity that Link can destroy (lift and throw or cut)
  * and that can hide a pickable item.
+ * specific properties of a destructible item:
+ * - pickableItemSubtype: type of pickable item that appears when Link lifts
+ *   the destructible item
+ * - pickableItemSavegameVariable: the variable where the pickable item is 
+ *   saved, used only for the pickable items that are saved 
+ *   (keys, pieces of hearts, etc.)
  */
 public class DestructibleItem extends DynamicEntity {
 
@@ -57,77 +62,12 @@ public class DestructibleItem extends DynamicEntity {
 	}
     };
 
-    // specific fields of a destructible item
-
     /**
-     * Type of pickable item that appears when Link lifts
-     * the destructible item.
-     */
-    private PickableItem.Subtype pickableItemSubtype;
-
-    /**
-     * The index where the pickable item is saved, used only for the pickable
-     * items that are saved (keys, pieces of hearts, etc.).
-     */
-    private int pickableItemSavegameVariable;
-
-    /**
-     * Creates a new destructible item at the specified location.
-     * By default, the subtype is a pot and the pickable item is random. 
+     * Creates a new destructible. 
      * @param map the map
-     * @param x x coordinate of the item
-     * @param y y coordinate of the item
      */
-    public DestructibleItem(Map map, int x, int y) {
-	super(map, LAYER_LOW, x, y, 16, 16);
-
-	subtype = Subtype.POT;
-	pickableItemSubtype = PickableItem.Subtype.RANDOM;
-	pickableItemSavegameVariable = -1;
-    }
-
-    /**
-     * Creates an existing destructible item from a string.
-     * @param map the map
-     * @param tokenizer the string tokenizer, which has already parsed the subtype of entity
-     * but not yet the common properties
-     * @throws ZSDXException if there is a syntax error in the string
-     */
-    public DestructibleItem(Map map, StringTokenizer tokenizer) throws ZSDXException {
-	super(map, tokenizer);
-	setSizeImpl(16, 16);
-
-	// parse the fields
-	try {
-	    this.pickableItemSubtype = PickableItem.Subtype.get(Integer.parseInt(tokenizer.nextToken()));
-	    this.pickableItemSavegameVariable = Integer.parseInt(tokenizer.nextToken());
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
-    }
-
-    /**
-     * Returns a string describing this destructible item.
-     * @return a string representation of the destructible item
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string
-	buff.append(super.toString());
-
-	// add the specific properties of a destructible item
-	buff.append('\t');
-	buff.append(getPickableItemSubtype().getId());
-	buff.append('\t');
-	buff.append(getPickableItemSavegameVariable());
-
-	return buff.toString();
+    public DestructibleItem(Map map) throws MapException {
+	super(map, 16, 16);
     }
 
     /**
@@ -155,34 +95,33 @@ public class DestructibleItem extends DynamicEntity {
     }
 
     /**
-     * Returns the subtype of pickable item that appears when Link
-     * lifts the destructible item.
-     * @return the subtype of pickable item
+     * Sets the default values of all properties specific to the current entity type.
      */
-    public PickableItem.Subtype getPickableItemSubtype() {
-	return pickableItemSubtype;
+    public void setPropertiesDefaultValues() throws MapException {
+	setProperty("pickableItemSubtype", PickableItem.Subtype.RUPEE_1.getId());
+	setProperty("pickableItemSavegameVariable", -1);
     }
 
     /**
-     * Returns the index where the pickable item attached to
-     * this destructible item is saved (if any).
-     * @return the savegame index of the pickable item
+     * Checks the specific properties.
+     * @throws MapException if a property is not valid
      */
-    public int getPickableItemSavegameVariable() {
-	return pickableItemSavegameVariable;
-    }
-    
-    /**
-     * Sets the pickable item that appears when Link
-     * lifts the destructible item.
-     * @param subtype the subtype of pickable item
-     * @param savegameVariable savegame index where the pickable item is saved
-     */
-    public void setPickableItem(PickableItem.Subtype pickableItemSubtype, int savegameVariable) {
+    public void checkProperties() throws MapException {
+	PickableItem.Subtype pickableItemSubtype = PickableItem.Subtype.get(getIntegerProperty("pickableItemSubtype"));
+	int pickableItemSavegameVariable = getIntegerProperty("pickableItemSavegameVariable");
 
-	this.pickableItemSubtype = pickableItemSubtype;
-	this.pickableItemSavegameVariable = savegameVariable;
-	setChanged();
-	notifyObservers();
+	if (pickableItemSavegameVariable < -1 || pickableItemSavegameVariable >= 32768) {
+	    throw new MapException("Invalid pickable item savegame variable");
+	}
+	
+	boolean saved = (pickableItemSavegameVariable >= 0 && pickableItemSavegameVariable < 32768);
+
+	if (pickableItemSubtype.isSaved() && !saved) {
+	    throw new MapException("This pickable item must be saved");
+	}
+
+	if (!pickableItemSubtype.isSaved() && saved) {
+	    throw new MapException("This pickable item cannot be saved");
+	}
     }
 }

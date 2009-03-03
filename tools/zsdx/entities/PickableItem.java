@@ -1,7 +1,6 @@
 package zsdx.entities;
 
 import java.awt.*;
-import java.util.*;
 import zsdx.*;
 import zsdx.Map;
 
@@ -110,66 +109,11 @@ public class PickableItem extends DynamicEntity {
     // specific fields of a pickable item
 
     /**
-     * A number indicating the savegame variable where this pickable item possession
-     * state is saved.
-     * It is used only for the pickable that Link can obtain only once and
-     * thus that are saved (keys, pieces of hearts, etc.) and ignored for the normal items.
-     */
-    private int savegameVariable;
-
-    /**
-     * Creates a new pickable item at the specified location.
-     * By default, the type is a rupee.
+     * Creates a new pickable item.
      * @param map the map
-     * @param x x coordinate of the item
-     * @param y y coordinate of the item
      */
-    public PickableItem(Map map, int x, int y) {
-	super(map, LAYER_LOW, x, y, 16, 16);
-
-	// default field values
-	subtype = Subtype.RUPEE_1;
-    }
-
-    /**
-     * Creates an existing pickable item from a string.
-     * @param map the map
-     * @param tokenizer the string tokenizer, which has already parsed the type of entity
-     * but not yet the common properties
-     * @throws ZSDXException if there is a syntax error in the string
-     */
-    public PickableItem(Map map, StringTokenizer tokenizer) throws ZSDXException {
-	super(map, tokenizer);
-	setSizeImpl(16, 16);
-
-	// parse the fields
-	try {
-	    this.savegameVariable = Integer.parseInt(tokenizer.nextToken());
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
-    }
-
-    /**
-     * Returns a string describing this pickable item.
-     * @return a string representation of the pickable item
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string
-	buff.append(super.toString());
-
-	// add the specific properties of a pickable item
-	buff.append('\t');
-	buff.append(getSavegameVariable());
-
-	return buff.toString();
+    public PickableItem(Map map) throws MapException {
+	super(map, 16, 16);
     }
 
     /**
@@ -189,32 +133,35 @@ public class PickableItem extends DynamicEntity {
     }
 
     /**
-     * Sets the subtype of this entity
-     * @param subtype the subtype
+     * Sets the default values of all properties specific to the current entity type.
      */
-    public void setSubtype(EntitySubtype subtype) throws MapException {
+    public void setPropertiesDefaultValues() throws MapException {
+	setProperty("savegameVariable", -1);
+	setSubtype(Subtype.RANDOM);
+    }
+
+    /**
+     * Checks the specific properties.
+     * @throws MapException if a property is not valid
+     */
+    public void checkProperties() throws MapException {
 
 	if (subtype == Subtype.NONE || subtype == Subtype.RANDOM) {
-	    throw new MapException("The type of pickable item cannot be 'None' or 'Random'");
+	    throw new MapException("The subtype of a pickable item cannot be 'None' or 'Random'");
 	}
 
-	super.setSubtype(subtype);
-    }
+	int savegameVariable = getIntegerProperty("savegameVariable");
+	if (savegameVariable < -1 || savegameVariable >= 32768) {
+	    throw new MapException("Invalid savegame variable");
+	}
 
-    /**
-     * Returns the savegame variable identifying this pickable item (if any).
-     * @return the savegame variable where this pickable item is saved,
-     * or any value if this pickable item cannot be saved
-     */
-    public int getSavegameVariable() {
-	return savegameVariable;
-    }
+	boolean saved = ((Subtype) subtype).isSaved();
+	if (saved && savegameVariable == -1) {
+	    throw new MapException("This pickable item must be saved");
+	}
 
-    /**
-     * Sets the variable where this pickable item is saved (if any).
-     * @param savegameIndex the savegame variable where this pickable item is saved
-     */
-    public void setSavegameVariable(int savegameVariable) {
-	this.savegameVariable = savegameVariable;
+	if (!saved && savegameVariable != -1) {
+	    throw new MapException("This pickable item cannot be saved");
+	}
     }
 }

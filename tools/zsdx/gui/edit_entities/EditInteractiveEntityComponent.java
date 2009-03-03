@@ -7,7 +7,6 @@ import zsdx.*;
 import zsdx.entities.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
-import zsdx.map_editor_actions.edit_entities.*;
 import zsdx.entities.InteractiveEntity.Subtype;
 
 /**
@@ -109,44 +108,36 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	InteractiveEntity interactiveEntity = (InteractiveEntity) entity;
-	String sprite = interactiveEntity.getSprite();
-	String message = interactiveEntity.getMessageId();
+	String sprite = interactiveEntity.getProperty("sprite");
+	String message = interactiveEntity.getProperty("messageId");
 
-	withSpriteField.setSelected(sprite != null);
-	spriteField.setText((sprite != null) ? sprite : "");
-	spriteField.setEnabled(sprite != null);
-	withMessageField.setSelectedIndex((message != null) ? 0 : 1);
-	messageField.setText((message != null) ? message : "");
-	messageField.setEnabled(message != null);
+	boolean hasSprite = (!sprite.equals("_none"));
+	boolean hasMessage = (!message.equals("_none"));
+
+	withSpriteField.setSelected(hasSprite);
+	spriteField.setText(hasSprite ? sprite : "");
+	spriteField.setEnabled(hasSprite);
+	withMessageField.setSelectedIndex(hasMessage ? 0 : 1);
+	messageField.setText(hasMessage ? message : "");
+	messageField.setEnabled(hasMessage);
     }
-    
-    /**
-     * Creates the map editor action object which corresponds
-     * to the modifications indicated in the fields.
-     * @return the action object corresponding to the modifications made
-     * @throws ZSDXException
-     */
-    protected ActionEditEntity getAction() throws ZSDXException {
-	
-	// retrieve the action corresponding to the common entity properties
-	ActionEditEntity action = super.getAction();
 
-	// add the properties specific to this kind of entity
-	InteractiveEntity interactiveEntity = (InteractiveEntity) entity;
+    /**
+     * Returns the specific part of the action made on the entity.
+     * @return the specific part of the action made on the entity
+     */
+    protected ActionEditEntitySpecific getSpecificAction() {
 
 	String sprite = spriteField.getText();
 	if (!withSpriteField.isSelected()) {
-	    sprite = null;
+	    sprite = "_none";
 	}
 
 	String message = messageField.getText();
 	if (withMessageField.getSelectedIndex() != 0) {
-	    message = null;
+	    message = "_none";
 	}
 
-	action.setSpecificAction(new ActionEditInteractiveEntity(map, interactiveEntity,
-		sprite, message));
-
-	return action;
+	return new ActionEditEntitySpecific(entity, sprite, message);
     }
 }

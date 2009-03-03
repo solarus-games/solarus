@@ -1,7 +1,6 @@
 package zsdx.entities;
 
 import java.awt.*;
-import java.util.*;
 import zsdx.*;
 import zsdx.Map;
 
@@ -18,72 +17,17 @@ public class JumpSensor extends DynamicEntity {
     };
 
     /**
-     * Length of the jump in pixels.
-     */
-    private int jumpLength;
-
-    /**
      * Minimum jump length allowed.
      */
     public static final int MINIMUM_JUMP_LENGTH = 16;
 
     /**
-     * Creates a new jump sensor at the specified location.
+     * Creates a new jump sensor.
      * @param map the map
-     * @param x x coordinate of the entity to create
-     * @param y y coordinate of the entity to create
      */
-    public JumpSensor(Map map, int x, int y) {
-	super(map, LAYER_LOW, x, y, 32, 8);
-	this.jumpLength = 56;
+    public JumpSensor(Map map) throws MapException {
+	super(map, 32, 8);
 	setDirection(6);
-    }
-
-    /**
-     * Creates an existing jump sensor from a string.
-     * @param map the map
-     * @param tokenizer the string tokenizer, which has already parsed the type of entity
-     * but not yet the common properties
-     * @throws ZSDXException if there is a syntax error in the string
-     */
-    public JumpSensor(Map map, StringTokenizer tokenizer) throws ZSDXException {
-	super(map, tokenizer);
-
-	try {
-	    this.jumpLength = Integer.parseInt(tokenizer.nextToken());
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
-    }
-
-    /**
-     * Returns a string describing this jump sensor.
-     * @return a string representation of the entity
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string
-	buff.append(super.toString());
-
-	// add the specific properties of this kind of entity
-	buff.append('\t');
-	buff.append(jumpLength);
-
-	return buff.toString();
-    }
-
-    /**
-     * Checks the entity validity. An entity must be valid before it is saved.
-     * @return true if the entity is valid
-     */
-    public boolean isValid() {
-	return super.isValid() && jumpLength >= 16;	
     }
 
     /**
@@ -188,27 +132,27 @@ public class JumpSensor extends DynamicEntity {
     }
 
     /**
-     * Returns the length of the jump in pixels.
-     * @return the jump length in pixels
+     * Sets the default values of all properties specific to the current entity type.
      */
-    public int getJumpLength() {
-        return jumpLength;
+    public void setPropertiesDefaultValues() throws MapException {
+	setProperty("jumpLength", 56);
     }
 
     /**
-     * Sets the length of the jump.
-     * @param jumpLength the jump length in pixels
-     * @throws MapException if the jump length is not correct
+     * Checks the specific properties.
+     * @throws MapException if a property is not valid
      */
-    public void setJumpLength(int jumpLength) throws MapException {
+    public void checkProperties() throws MapException {
+
+	int jumpLength = getIntegerProperty("jumpLength");
 	if (jumpLength < MINIMUM_JUMP_LENGTH) {
 	    throw new MapException("The minimum jump length is " + MINIMUM_JUMP_LENGTH + " pixels");
 	}
-        this.jumpLength = jumpLength;
-	setChanged();
-	notifyObservers();
-    }
 
+	if (jumpLength % 8 != 0) {
+	    throw new MapException("The jump length must be a multiple of 8 pixels");
+	}
+    }
     /**
      * Draws the entity on the map editor.
      * @param g graphic context

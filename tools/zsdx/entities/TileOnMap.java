@@ -24,72 +24,32 @@ public class TileOnMap extends MapEntity {
     private Tileset tileset;
 
     /**
-     * Id of the tile in the tileset.
-     */
-    private int tileId;
-
-    /**
      * Creates a new tile on the map.
      * @param map the map
-     * @param tileId id of the tile in the tileset
-     * @param x x position of the tile on the map
-     * @param y y position of the tile on the map
      * @throws MapException if the tile is not valid
      */
-    public TileOnMap(Map map, int tileId, int x, int y) throws MapException {
-	super(map, LAYER_LOW, x, y, 0, 0, false);
-
+    public TileOnMap(Map map) throws MapException {
+	super(map, 0, 0);
 	this.tileset = map.getTileset();
-	this.tileId = tileId;
+    }
+
+    /**
+     * Sets a property specific to a tile.
+     * @param name name of the property (must be "tileId")
+     * @param value value of the property
+     */
+    public void setProperty(String name, String value) throws MapException {
+
+	super.setProperty(name, value);
+
+	if (tileset == null) {
+	    return;
+	}
+
+	int tileId = Integer.parseInt(value);
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 	setSize(tile.getWidth(), tile.getHeight());
 	setLayer(tile.getDefaultLayer());
-    }
-
-    /**
-     * Creates an existing tile on a map from a string.
-     * @param map the map
-     * @param tokenizer the string tokenizer, which has already parsed the type of entity
-     * but not yet the common properties
-     * @throws IllegalArgumentException if a tile on the map doesn't exist in the tileset
-     * @throws ZSDXException if there is a syntax error in the string 
-     */
-    public TileOnMap(Map map, StringTokenizer tokenizer) throws IllegalArgumentException, ZSDXException {
-	super(map, tokenizer);
-	
-	try {
-	    this.tileId = Integer.parseInt(tokenizer.nextToken());
-	    this.tileset = map.getTileset();
-
-	    // check the tile size on the map (only now because we didn't have the tileset before)
-	    checkSize(getWidth(), getHeight());
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
-	catch (IllegalArgumentException ex) {
-	    throw new TilesetException(ex.getMessage());
-	}
-    }
-
-    /**
-     * Returns a string describing this tile.
-     * @return a string representation of the tile
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string
-	buff.append(super.toString());
-
-	// add the specific properties of a tile
-	buff.append('\t');
-	buff.append(tileId);
-	return buff.toString();
     }
 
     /**
@@ -104,7 +64,8 @@ public class TileOnMap extends MapEntity {
     public void setTileset(Tileset tileset) throws TilesetException {
 	
 	if (tileset != this.tileset) {
-		
+
+	    int tileId = getTileId();
 	    try {
 		Tile newTile = tileset.getTile(tileId);
 		
@@ -136,16 +97,15 @@ public class TileOnMap extends MapEntity {
      * @return the id of the tile in the tileset.
      */
     public int getTileId() {
-	return tileId;
+	return getIntegerProperty("tileId");
     }
 
     /**
      * Returns the tile's obstacle property.
-     * @return OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
-     * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
+     * @return the tile's obstacle property
      */
     public int getObstacle() {
-	return tileset.getTile(tileId).getObstacle();
+	return tileset.getTile(getTileId()).getObstacle();
     }
 
     /**
@@ -169,7 +129,7 @@ public class TileOnMap extends MapEntity {
 	    return super.getUnitarySize();
 	}
 	
-	Tile tile = tileset.getTile(tileId);
+	Tile tile = tileset.getTile(getTileId());
 	return tile.getSize();
     }
 
@@ -198,7 +158,7 @@ public class TileOnMap extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-	Tile tile = tileset.getTile(tileId);
+	Tile tile = tileset.getTile(getTileId());
 
 	int x = getX();
 	int y = getY();
@@ -215,5 +175,12 @@ public class TileOnMap extends MapEntity {
 	    y += height;
 	    x = getX();
 	}
+    }
+
+    /**
+     * Sets the default values of all properties specific to the current entity type.
+     */
+    public void setPropertiesDefaultValues() throws MapException {
+	setProperty("tileId", -1);
     }
 }

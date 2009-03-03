@@ -7,7 +7,6 @@ import zsdx.entities.*;
 import zsdx.entities.Enemy.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
-import zsdx.map_editor_actions.edit_entities.*;
 
 /**
  * A component to edit an enemy.
@@ -62,36 +61,23 @@ public class EditEnemyComponent extends EditEntityComponent {
 
 	Enemy enemy = (Enemy) entity;
 
-	rankField.setValue(enemy.getRank());
-	savegameVariableField.setNumber(enemy.getSavegameVariable());
-	pickableItemSubtypeField.setValue(enemy.getPickableItemSubtype());
-	pickableItemSavegameVariableField.setNumber(enemy.getPickableItemSavegameVariable());
+	rankField.setValue(Rank.get(enemy.getIntegerProperty("rank")));
+	savegameVariableField.setNumber(enemy.getIntegerProperty("savegameVariable"));
+	pickableItemSubtypeField.setValue(PickableItem.Subtype.get(enemy.getIntegerProperty("pickableItemSubtype")));
+	pickableItemSavegameVariableField.setNumber(enemy.getIntegerProperty("pickableItemSavegameVariable"));
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);
     }
 
     /**
-     * Creates the map editor action object which corresponds
-     * to the modifications indicated in the fields.
-     * @return the action object corresponding to the modifications made
-     * @throws ZSDXException if the fields are incorrectly filled
+     * Returns the specific part of the action made on the entity.
+     * @return the specific part of the action made on the entity
      */
-    protected ActionEditEntity getAction() throws ZSDXException {
-
-	// retrieve the action corresponding to the common entity properties
-	ActionEditEntity action = super.getAction();
-
-	// add the specific properties
-	Enemy enemy = (Enemy) entity;
-
-	Rank rank = rankField.getValue();
-	int savegameVariable = savegameVariableField.getNumber();
-	PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
-	int pickableItemSavegameVariable = pickableItemSavegameVariableField.getNumber();
-
-	action.setSpecificAction(new ActionEditEnemy(map, enemy,
-		rank, savegameVariable, pickableItemSubtype, pickableItemSavegameVariable));
-
-	return action;
+    protected ActionEditEntitySpecific getSpecificAction() {
+	return new ActionEditEntitySpecific(entity,
+		rankField.getValue().getId(),
+		savegameVariableField.getNumber(),
+		pickableItemSubtypeField.getValue().getId(),
+		pickableItemSavegameVariableField.getNumber());
     }
 
     /**

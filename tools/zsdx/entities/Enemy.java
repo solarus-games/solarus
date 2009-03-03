@@ -1,7 +1,6 @@
 package zsdx.entities;
 
 import java.awt.*;
-import java.util.*;
 import zsdx.*;
 import zsdx.Map;
 
@@ -66,98 +65,27 @@ public class Enemy extends DynamicEntity {
 	BOSS;
 
 	public static final String[] humanNames = {"Normal", "Miniboss", "Boss"};
+
+	public int getId() {
+	    return ordinal();
+	}
+
+	public static Rank get(int id) {
+	    return values()[id];
+	}
     }
 
     /**
-     * Rank of the enemy: normal, miniboss or boss
-     */
-    private Rank rank;
-
-    /**
-     * The variable where the enemy is saved, used only for enemies
-     * that are saved.
-     */
-    private int savegameVariable;
-
-    /**
-     * Type of pickable item that appears when the enemy is killed.
-     */
-    private PickableItem.Subtype pickableItemSubtype;
-
-    /**
-     * The variable where the pickable item is saved, used only for the pickable
-     * items that are saved (keys, pieces of hearts, etc.).
-     */
-    private int pickableItemSavegameVariable;
-
-    /**
-     * Creates a new enemy at the specified location.
+     * Creates a new enemy.
      * By default, the subtype is a simple green soldier and the pickable item is random. 
      * @param map the map
-     * @param x x coordinate of the entity
-     * @param y y coordinate of the entity
      */
-    public Enemy(Map map, int x, int y) {
-	super(map, LAYER_LOW, x, y, 16, 16);
-
-	subtype = Subtype.SIMPLE_GREEN_SOLDIER;
-	rank = Rank.NORMAL;
-	savegameVariable = -1;
-	pickableItemSubtype = PickableItem.Subtype.RANDOM;
-	pickableItemSavegameVariable = -1;
+    public Enemy(Map map)throws MapException {
+	super(map, 16, 16);
 
 	setDirection(3);
 	Dimension size = sizes[getSubtypeId()];
 	setSizeImpl(size.width, size.height);
-    }
-
-    /**
-     * Creates an existing enemy from a string.
-     * @param map the map
-     * @param tokenizer the string tokenizer, which has already parsed the subtype of entity
-     * but not yet the common properties
-     * @throws ZSDXException if there is a syntax error in the string
-     */
-    public Enemy(Map map, StringTokenizer tokenizer) throws ZSDXException {
-	super(map, tokenizer);
-
-	// parse the fields
-	try {
-	    this.rank = Rank.values()[Integer.parseInt(tokenizer.nextToken())];
-	    this.savegameVariable = Integer.parseInt(tokenizer.nextToken());
-	    this.pickableItemSubtype = PickableItem.Subtype.get(Integer.parseInt(tokenizer.nextToken()));
-	    this.pickableItemSavegameVariable = Integer.parseInt(tokenizer.nextToken());
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
-    }
-
-    /**
-     * Returns a string describing this enemy.
-     * @return a string representation of the enemy
-     */
-    public String toString() {
-
-	StringBuffer buff = new StringBuffer();
-
-	// get the common part of the string
-	buff.append(super.toString());
-
-	// add the specific properties of an enemy
-	buff.append('\t');
-	buff.append(getRank().ordinal());
-	buff.append('\t');
-	buff.append(getSavegameVariable());
-	buff.append('\t');
-	buff.append(getPickableItemSubtype().getId());
-	buff.append('\t');
-	buff.append(getPickableItemSavegameVariable());
-
-	return buff.toString();
     }
 
     /**
@@ -199,73 +127,6 @@ public class Enemy extends DynamicEntity {
     }
 
     /**
-     * Returns the rank of this enemy.
-     * @return the rank
-     */
-    public Rank getRank() {
-	return rank;
-    }
-
-    /**
-     * Sets the rank of this enemy.
-     * @param rank the rank
-     */
-    public void setRank(Rank rank) {
-	this.rank = rank;
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
-     * Returns the variable where the enemy is saved (if any)
-     * @return the savegame variable of the enemy
-     */
-    public int getSavegameVariable() {
-	return savegameVariable;
-    }
-
-    /**
-     * Returns the variable where the enemy is saved (if any)
-     * @param savegameVariable the savegame variable of the enemy
-     */
-    public void setSavegameVariable(int savegameVariable) {
-	this.savegameVariable = savegameVariable;
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
-     * Returns the subtype of pickable item that appears when
-     * the enemy is killed
-     * @return the subtype of pickable item
-     */
-    public PickableItem.Subtype getPickableItemSubtype() {
-	return pickableItemSubtype;
-    }
-
-    /**
-     * Returns the variable where the pickable item attached to
-     * this enemy is saved (if any).
-     * @return the savegame variable of the pickable item
-     */
-    public int getPickableItemSavegameVariable() {
-	return pickableItemSavegameVariable;
-    }
-    
-    /**
-     * Sets the pickable item that appears when the enemy is killed.
-     * @param subtype the subtype of pickable item
-     * @param savegameVariable savegame variable where the pickable item is saved
-     */
-    public void setPickableItem(PickableItem.Subtype type, int savegameVariable) {
-
-	this.pickableItemSubtype = type;
-	this.pickableItemSavegameVariable = savegameVariable;
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
@@ -273,11 +134,46 @@ public class Enemy extends DynamicEntity {
     }
 
     /**
-     * Checks the entity validity. An entity must be valid before it is saved.
-     * @return true if the entity is valid
+     * Sets the default values of all properties specific to the current entity type.
      */
-    public boolean isValid() {
-	return super.isValid() && (rank == Rank.NORMAL || savegameVariable >= 0);
+    public void setPropertiesDefaultValues() throws MapException {
+	setProperty("rank", Rank.NORMAL.ordinal());
+	setProperty("savegameVariable", -1);
+	setProperty("pickableItemSubtype", PickableItem.Subtype.RANDOM.getId());
+	setProperty("pickableItemSavegameVariable", -1);
     }
 
+    /**
+     * Checks the specific properties.
+     * @throws MapException if a property is not valid
+     */
+    public void checkProperties() throws MapException {
+
+	int savegameVariable = getIntegerProperty("savegameVariable");
+	if (savegameVariable < -1 || savegameVariable >= 32768) {
+	    throw new MapException("Invalid enemy savegame variable");
+	}
+
+	Rank rank = Rank.get(getIntegerProperty("rank"));
+	if (rank != Rank.NORMAL && savegameVariable < 0) {
+	    throw new MapException("This enemy must be saved");
+	}
+
+	PickableItem.Subtype pickableItemSubtype = PickableItem.Subtype.get(getIntegerProperty("pickableItemSubtype"));
+	int pickableItemSavegameVariable = getIntegerProperty("pickableItemSavegameVariable");
+
+	if (pickableItemSavegameVariable < -1 || pickableItemSavegameVariable >= 32768) {
+	    throw new MapException("Invalid pickable item savegame variable");
+	}
+
+	boolean isSaved = (pickableItemSavegameVariable >= 0 && pickableItemSavegameVariable < 32768);
+
+	if (pickableItemSubtype.isSaved() && !isSaved) {
+	    throw new MapException("This pickable item must be saved");
+	}
+
+	if (!pickableItemSubtype.isSaved() && isSaved) {
+	    throw new MapException("This pickable item cannot be saved");
+	}
+    }
 }

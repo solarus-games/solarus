@@ -106,7 +106,7 @@ public class Teletransporter extends DynamicEntity {
 
 	// add the specific properties of a teletransporter
 	buff.append('\t');
-	buff.append(getTransition());
+	buff.append(getTransition().getId());
 	buff.append('\t');
 	buff.append(getDestinationMapId());
 	buff.append('\t');

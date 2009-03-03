@@ -341,7 +341,7 @@ public abstract class MapEntity extends Observable {
     public String toString() {
 
 	StringBuffer buff = new StringBuffer();
-	buff.append(getType());
+	buff.append(getType().getIndex());
 	buff.append('\t');
 	buff.append(layer);
 	buff.append('\t');

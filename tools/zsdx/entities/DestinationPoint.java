@@ -71,7 +71,6 @@ public class DestinationPoint extends DynamicEntity {
      */
     public DestinationPoint(Map map, StringTokenizer tokenizer) throws ZSDXException {
 	super(map, tokenizer);
-
 	setSizeImpl(16, 16);
     }
 
@@ -140,22 +139,15 @@ public class DestinationPoint extends DynamicEntity {
     public void setSubtype(EntitySubtype subtype) throws MapException {
 
 	if (subtype != this.subtype) {
-	    setDefaultValues((Subtype) subtype);
+	    if (subtype == Subtype.INVISIBLE) {
+		if (this.subtype != null) {
+		    setDirection(1);
+		}
+	    }
+	    else {
+		    setDirection(-1);
+	    }
 	    super.setSubtype(subtype);
-	}
-    }
-
-    /**
-     * Sets the default options of this destination point for the specified subtype.
-     * @param subtype a subtype
-     */
-    public void setDefaultValues(Subtype subtype) {
-
-	if (subtype == Subtype.INVISIBLE) {
-	    setDirection(1);
-	}
-	else {
-	    setDirection(-1);
 	}
     }
 

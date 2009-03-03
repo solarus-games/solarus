@@ -2,7 +2,6 @@ package zsdx.map_editor_actions.edit_entities;
 
 import zsdx.*;
 import zsdx.entities.*;
-import zsdx.entities.Teletransporter.Subtype;
 
 /**
  * Editing the properties specific to a teletransporter:
@@ -11,9 +10,6 @@ import zsdx.entities.Teletransporter.Subtype;
 public class ActionEditTeletransporter extends MapEditorAction {
 
     private Teletransporter teletransporter;
-
-    private EntitySubtype subtypeBefore;
-    private EntitySubtype subtypeAfter;
 
     private Transition transitionBefore;
     private Transition transitionAfter;
@@ -28,19 +24,15 @@ public class ActionEditTeletransporter extends MapEditorAction {
      * Constructor.
      * @param map the map
      * @param teletransporter the teletransporter edited
-     * @param subtype the subtype of teletransporter
      * @param transition type of transition when taking the teletransporter
      * @param destinationMapId the id of the destination map
      * @param entranceName the entrance on the destination map
      */
     public ActionEditTeletransporter(Map map, Teletransporter teletransporter,
-	    Subtype subtype, Transition transition, String destinationMapId, String entranceName) {
+	    Transition transition, String destinationMapId, String entranceName) {
 	super(map);
 
 	this.teletransporter = teletransporter;
-
-	this.subtypeBefore = teletransporter.getSubtype();
-	this.subtypeAfter = subtype;
 
 	this.transitionBefore = teletransporter.getTransition();
 	this.transitionAfter = transition;
@@ -56,7 +48,6 @@ public class ActionEditTeletransporter extends MapEditorAction {
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	teletransporter.setSubtype(subtypeAfter);
 	teletransporter.setTransition(transitionAfter);
 	teletransporter.setDestinationMapId(destinationMapIdAfter);
 	teletransporter.setDestinationPointName(destinationPointNameAfter);
@@ -66,7 +57,6 @@ public class ActionEditTeletransporter extends MapEditorAction {
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	teletransporter.setSubtype(subtypeBefore);
 	teletransporter.setTransition(transitionBefore);
 	teletransporter.setDestinationMapId(destinationMapIdBefore);
 	teletransporter.setDestinationPointName(destinationPointNameBefore);

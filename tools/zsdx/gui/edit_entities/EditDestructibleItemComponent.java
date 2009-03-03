@@ -56,7 +56,6 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 
 	DestructibleItem destructibleItem = (DestructibleItem) entity;
 
-	subtypeField.setValue(destructibleItem.getSubtype());
 	pickableItemSubtypeField.setValue(destructibleItem.getPickableItemSubtype());
 	pickableItemSavegameVariableField.setNumber(destructibleItem.getPickableItemSavegameVariable());
 	new ActionListenerEnableSavegameVariable().actionPerformed(null);
@@ -76,12 +75,11 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 	// add the properties specific to a destructible item
 	DestructibleItem destructibleItem = (DestructibleItem) entity;
 
-	Subtype subtype = subtypeField.getValue();
 	PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
 	int pickableItemSavegameVariable = pickableItemSavegameVariableField.getNumber();
 
 	action.setSpecificAction(new ActionEditDestructibleItem(map, destructibleItem,
-		subtype, pickableItemSubtype, pickableItemSavegameVariable));
+		pickableItemSubtype, pickableItemSavegameVariable));
 
 	return action;
     }

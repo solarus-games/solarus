@@ -131,14 +131,6 @@ public class DestructibleItem extends DynamicEntity {
     }
 
     /**
-     * Returns the subtype of this entity.
-     * @return the subtype
-     */
-    public Subtype getSubtype() {
-	return (Subtype) super.getSubtype();
-    }
-
-    /**
      * Returns the coordinates of the origin point of the entity.
      * @return (8,13)
      */

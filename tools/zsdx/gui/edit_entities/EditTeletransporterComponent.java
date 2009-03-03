@@ -3,7 +3,6 @@ package zsdx.gui.edit_entities;
 import java.awt.event.*;
 import zsdx.*;
 import zsdx.entities.*;
-import zsdx.entities.Teletransporter.Subtype;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 import zsdx.map_editor_actions.edit_entities.*;
@@ -87,7 +86,6 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	// add the properties specific to a teletransporter
 	Teletransporter teletransporter = (Teletransporter) entity;
 
-	EntitySubtype subtype = subtypeField.getValue();
 	Transition transition = transitionField.getValue();
 	String destinationMapId = mapField.getSelectedId();
 	String destinationPointName = destinationPointField.getSelectedName();

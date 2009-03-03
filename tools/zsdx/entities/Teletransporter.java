@@ -167,14 +167,6 @@ public class Teletransporter extends DynamicEntity {
     }
 
     /**
-     * Returns the subtype of this entity.
-     * @return the subtype
-     */
-    public Subtype getSubtype() {
-	return (Subtype) super.getSubtype();
-    }
-
-    /**
      * Sets the subtype of this entity.
      * @param subtype the subtype of entity
      * @throws MapException if the subtype is not valid

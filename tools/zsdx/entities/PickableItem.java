@@ -181,14 +181,6 @@ public class PickableItem extends DynamicEntity {
     }
 
     /**
-     * Returns the subtype of this entity.
-     * @return the subtype
-     */
-    public Subtype getSubtype() {
-	return (Subtype) super.getSubtype();
-    }
-
-    /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {

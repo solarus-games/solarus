@@ -170,5 +170,4 @@ public class DestinationPoint extends DynamicEntity {
 	    currentImageDescription.setRectangle(128, 0, 16, 16);	    
 	}
     }
-
 }

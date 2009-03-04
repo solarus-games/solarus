@@ -175,5 +175,15 @@ public class Enemy extends DynamicEntity {
 	if (!pickableItemSubtype.isSaved() && isSaved) {
 	    throw new MapException("This pickable item cannot be saved");
 	}
+
+	boolean inDungeon = map.isInDungeon();
+	boolean mustBeInDungeon = pickableItemSubtype.isOnlyInDungeon();
+	if (mustBeInDungeon && !inDungeon) {
+	    throw new MapException("This pickable item is available only in a dungeon");
+	}
+
+	if (pickableItemSubtype == PickableItem.Subtype.SMALL_KEY && !map.hasSmallKeys()) {
+	    throw new MapException("The small keys are not enabled in this map");
+	}
     }
 }

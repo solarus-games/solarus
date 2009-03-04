@@ -75,8 +75,6 @@ public class InteractiveEntity extends DynamicEntity {
 	new Dimension(16, 16)
     };
 
-    // specific fields
-
     /**
      * Creates a new interactive entity.
      * @param map the map

@@ -205,7 +205,7 @@ public class EditEntityComponent extends JPanel {
      * @throws ZSDXException if the action could not be created (typically because
      * some fields are left blank)
      */
-    private final ActionEditEntity getAction() throws ZSDXException {
+    private ActionEditEntity getAction() throws ZSDXException {
 
 	String name = entity.hasName() ? nameField.getText() : null;
 	int layer = layerField.getLayer();
@@ -216,7 +216,7 @@ public class EditEntityComponent extends JPanel {
 	    size = new Dimension(coords.x, coords.y);
 	}
 	int direction = entity.hasDirection() ? directionField.getDirection() : -1;
-	EntitySubtype subtype = subtypeField.getValue();
+	EntitySubtype subtype = entity.hasSubtype() ? subtypeField.getValue() : null;
 
 	ActionEditEntitySpecific specificAction = getSpecificAction();
 
@@ -241,9 +241,12 @@ public class EditEntityComponent extends JPanel {
 		action.undo(); // undo the action because it may be partially done
 	    }
 	    catch (ZSDXException ex2) {
-
+		// this is not supposed to happen
+		System.err.println("Unexpected error: could not undo the action: " + ex2.getMessage());
+		ex2.printStackTrace();
+		System.exit(1);
 	    }
-	    throw ex;      // throw the exception again
+	    throw ex; // throw the exception again
 	}
     }
 }

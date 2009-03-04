@@ -39,7 +39,9 @@ public class ActionEditEntitySpecific extends MapEditorAction {
      * Constructor.
      */
     public ActionEditEntitySpecific(MapEntity entity, int ... properties) {
-	this(entity, (String[]) null);
+	this.entity = entity;
+	propertiesBefore = new LinkedHashMap<String, String>(entity.getProperties());
+	propertiesAfter = new LinkedHashMap<String, String>();
 
 	int i = 0;
 	for (String name: propertiesBefore.keySet()) {

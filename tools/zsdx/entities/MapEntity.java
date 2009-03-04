@@ -8,18 +8,17 @@ import zsdx.*;
 import zsdx.Map;
 
 /**
- * Represents an entity placed on the map with the map editor,
- * and how the entity is placed on the map: its position and its layer.
+ * Represents an entity placed on the map with the map editor.
  *
  * To create a new kind of entity, you should do the following steps:
  * - Add your new type of entity into the EntityType enumeration.
  * - Add the entity in the AddEntitiesToolbar.cells array.
- * - Add the entity in the AddEntitiesMenu class.
- * - Create a class for your entity and:
+ * - Add the entity in the AddEntitiesMenu.itemDefinitions array.
+ * - Create a subclass of MapEntity for your entity and:
  *   - If your entity has a notion of subtype, create a Subtype enumeration
  *       that implements the EntitySubtype interface.
  *   - Define the specific properties and their default values
- *     by redefining the method setPropertiesDefaultValues().
+ *       by redefining the method setPropertiesDefaultValues().
  *   - Redefine the checkProperties() method: public boolean checkProperties()
  *       to check the validity of the specific properties.
  *   - Create a constructor with the following signature:
@@ -941,7 +940,6 @@ public abstract class MapEntity extends Observable {
      * image description of this kind of entity.
      */
     protected void initializeImageDescription() {
-
 	EntityImageDescription generalImageDescription = getImageDescription(getType(), subtype);
 
 	if (generalImageDescription != null) {
@@ -1009,7 +1007,17 @@ public abstract class MapEntity extends Observable {
 	    return null;
 	}
 
-	int index = (subtype != null) ? ((Enum) subtype).ordinal() : 0;
+	int index;
+	if (type.hasSubtype()) {
+	    if (subtype == null) {
+		subtype = type.getDefaultSubtype();
+	    }
+	    index = ((Enum) subtype).ordinal();
+	}
+	else {
+	    index = 0;
+	}
+
 	return getImageDescriptions(type)[index];
     }
 

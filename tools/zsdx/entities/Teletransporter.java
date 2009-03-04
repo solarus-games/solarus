@@ -125,7 +125,7 @@ public class Teletransporter extends DynamicEntity {
 	    throw new MapException("You must choose a destination map");
 	}
 
-	if (getProperty("DestinationPointName").length() == 0) {
+	if (getProperty("destinationPointName").length() == 0) {
 	    throw new MapException("You must choose a destination point on the destination map");
 	}
     }

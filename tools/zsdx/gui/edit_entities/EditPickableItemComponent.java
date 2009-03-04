@@ -11,7 +11,7 @@ import zsdx.map_editor_actions.*;
  * A component to edit a pickable item.
  */
 public class EditPickableItemComponent extends EditEntityComponent {
-    
+
     // specific fields of a pickable item
     private NumberChooser savegameVariableField; // enabled only for certain types of pickable items
 
@@ -58,7 +58,11 @@ public class EditPickableItemComponent extends EditEntityComponent {
      * @return the specific part of the action made on the entity
      */
     protected ActionEditEntitySpecific getSpecificAction() {
-	return new ActionEditEntitySpecific(entity, savegameVariableField.getNumber());
+
+	int savegameVariable = savegameVariableField.isEnabled() ? 
+		savegameVariableField.getNumber() : -1;
+
+	return new ActionEditEntitySpecific(entity, savegameVariable);
     }
 
     /**

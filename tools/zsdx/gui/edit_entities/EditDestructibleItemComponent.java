@@ -59,9 +59,13 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
      * @return the specific part of the action made on the entity
      */
     protected ActionEditEntitySpecific getSpecificAction() {
+
+	int pickableItemSavegameVariable = pickableItemSavegameVariableField.isEnabled() ? 
+		pickableItemSavegameVariableField.getNumber() : -1;
+
 	return new ActionEditEntitySpecific(entity,
 		pickableItemSubtypeField.getValue().getId(),
-		pickableItemSavegameVariableField.getNumber());
+		pickableItemSavegameVariable);
     }
 
     /**

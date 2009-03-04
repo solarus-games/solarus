@@ -496,7 +496,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * If the user was already adding an entity of the same kind,
      * we get back to the normal state.
      * @param entityType type of entity to add
-     * @param entitySubtype subtype of entity to add
+     * @param entitySubtype subtype of entity to add (null if this type of entity has no subtype)
      */
     public void startAddingEntity(EntityType entityType, EntitySubtype entitySubtype) {
 
@@ -513,6 +513,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
 	    try {
 		entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);
+
+		if (entityBeingAdded == null) {
+		    throw new NullPointerException();
+		}
+		
 		if (entityType == EntityType.TILE) {
 		    int tileId = map.getTileset().getSelectedTileId();
 		    entityBeingAdded.setProperty("tileId", tileId);

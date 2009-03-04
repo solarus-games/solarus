@@ -11,17 +11,6 @@ import zsdx.Map;
 public class PickableItem extends DynamicEntity {
 
     /**
-     * Description of the default image representing this kind of entity.
-     */
-    public static final EntityImageDescription[] generalImageDescriptions =
-	{null, null, new EntityImageDescription("pickable_items.png", 0, 0, 16, 16)};
-
-    /**
-     * Origin point of a pickable item.
-     */
-    private static final Point origin = new Point(8, 13);
-
-    /**
      * Subtypes of pickable items.
      */
     public enum Subtype implements EntitySubtype {
@@ -104,9 +93,32 @@ public class PickableItem extends DynamicEntity {
 	public boolean isSaved() {
 	    return id >= SMALL_KEY.getId();
 	}
+
+	/**
+	 * Returns whether this subtype of pickable item is available only in dungeons.
+	 * @return true if this subtype of pickable item is available only in dungeons
+	 */
+	public boolean isOnlyInDungeon() {
+	    return this == BIG_KEY || this == BOSS_KEY;
+	}
     }
 
-    // specific fields of a pickable item
+    /**
+     * Description of the default image representing this kind of entity.
+     */
+    public static final EntityImageDescription[] generalImageDescriptions =
+	new EntityImageDescription[Subtype.values().length];
+
+    static {
+	for (int i = 2; i < generalImageDescriptions.length; i++) {
+	    generalImageDescriptions[i] = new EntityImageDescription("pickable_items.png", 16 * (i - 2), 0, 16, 16);
+	}
+    }
+
+    /**
+     * Origin point of a pickable item.
+     */
+    private static final Point origin = new Point(8, 13);
 
     /**
      * Creates a new pickable item.
@@ -137,7 +149,7 @@ public class PickableItem extends DynamicEntity {
      */
     public void setPropertiesDefaultValues() throws MapException {
 	setProperty("savegameVariable", -1);
-	setSubtype(Subtype.RANDOM);
+	setSubtype(Subtype.RUPEE_1);
     }
 
     /**
@@ -162,6 +174,16 @@ public class PickableItem extends DynamicEntity {
 
 	if (!saved && savegameVariable != -1) {
 	    throw new MapException("This pickable item cannot be saved");
+	}
+
+	boolean inDungeon = map.isInDungeon();
+	boolean mustBeInDungeon = ((Subtype) subtype).isOnlyInDungeon();
+	if (mustBeInDungeon && !inDungeon) {
+	    throw new MapException("This pickable item is available only in a dungeon");
+	}
+
+	if ((Subtype) subtype == Subtype.SMALL_KEY && !map.hasSmallKeys()) {
+	    throw new MapException("The small keys are not enabled in this map");
 	}
     }
 }

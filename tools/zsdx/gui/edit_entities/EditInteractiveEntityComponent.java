@@ -78,6 +78,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 		case NON_PLAYING_CHARACTER:
 		    withSpriteField.setEnabled(false);
 		    withSpriteField.setSelected(true);
+		    spriteField.setText("");
 		    break;
 
 		case SIGN:

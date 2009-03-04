@@ -86,7 +86,7 @@ public enum TreasureContent {
     private final boolean hasAmount;
 
     public static final String[] humanNames = {
-	"Nothing",
+	"Nothing / Script",
 	"Feather",
 	"Bow",
 	"Bow and Arrows",

@@ -13,9 +13,20 @@ public class AddEntitiesMenu extends JMenu {
      * All menu items.
      */
     private static final ItemDefinition[] itemDefinitions = {
-	new ItemDefinition(EntityType.DESTINATION_POINT, KeyEvent.VK_D),
-	new ItemDefinition(EntityType.TELETRANSPORTER, KeyEvent.VK_T),
-	new ItemDefinition(EntityType.PICKABLE_ITEM, KeyEvent.VK_P),
+	new ItemDefinition(EntityType.DESTINATION_POINT, KeyEvent.VK_D,
+		DestinationPoint.Subtype.INVISIBLE,
+		DestinationPoint.Subtype.GRAY),
+	new ItemDefinition(EntityType.TELETRANSPORTER, KeyEvent.VK_T,
+		Teletransporter.Subtype.INVISIBLE,
+		Teletransporter.Subtype.YELLOW),
+	new ItemDefinition(EntityType.PICKABLE_ITEM, KeyEvent.VK_P,
+		PickableItem.Subtype.RUPEE_1,
+		PickableItem.Subtype.RUPEE_5,
+		PickableItem.Subtype.RUPEE_20,
+		PickableItem.Subtype.FAIRY,
+		PickableItem.Subtype.PIECE_OF_HEART,
+		PickableItem.Subtype.SMALL_KEY
+		),
 	new ItemDefinition(EntityType.DESTRUCTIBLE_ITEM, KeyEvent.VK_S,
 		DestructibleItem.Subtype.GRASS,
 		DestructibleItem.Subtype.BUSH,
@@ -53,6 +64,11 @@ public class AddEntitiesMenu extends JMenu {
 	    this.type = type;
 	    this.subtypes = subtypes;
 	    this.key = key;
+
+	    if (!hasSubtypes() && type.hasSubtype()) {
+		System.err.println("Subtypes missing in entities menu for type " + type);
+		System.exit(1);
+	    }
 	}
 
 	public EntityType getEntityType() {
@@ -101,6 +117,7 @@ public class AddEntitiesMenu extends JMenu {
 		for (EntitySubtype subtype: def.getEntitySubtypes()) {
 		    JMenuItem subitem = new JMenuItem(type.getSubtypeName(subtype));
 		    subitem.addActionListener(new ActionListenerAddEntity(type, subtype));
+		    item.add(subitem);
 		}
 	    }
 	    add(item);

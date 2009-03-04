@@ -135,25 +135,9 @@ public class ActionEditEntity extends MapEditorAction {
      */
     public void undo() throws ZSDXException {
 
-	// name
-	if (entity.hasName()) {
-	    entity.setName(nameBefore);
-	}
-
-	// layer
-	map.setEntityLayer(entity, layerBefore);
-
-	// position
-	map.setEntityPosition(entity, positionBefore.x, positionBefore.y);
-
-	// size
-	if (entity.isResizable()) {
-	    map.setEntitySize(entity, positionBefore.width, positionBefore.height);
-	}
-
-	// direction
-	if (entity.hasDirection()) {
-	    map.setEntityDirection(entity, directionBefore);
+	// specific data
+	if (specificAction != null) {
+	    specificAction.undo();
 	}
 
 	// subtype
@@ -161,12 +145,29 @@ public class ActionEditEntity extends MapEditorAction {
 	    entity.setSubtype(subtypeBefore);
 	}
 
-	// specific data
-	if (specificAction != null) {
-	    specificAction.undo();
+	// direction
+	if (entity.hasDirection()) {
+	    map.setEntityDirection(entity, directionBefore);
 	}
 
-	entity.checkProperties();
+	// size
+	if (entity.isResizable()) {
+	    map.setEntitySize(entity, positionBefore.width, positionBefore.height);
+	}
+
+	// position
+	map.setEntityPosition(entity, positionBefore.x, positionBefore.y);
+
+	// layer
+	map.setEntityLayer(entity, layerBefore);
+
+	// name
+	if (entity.hasName()) {
+	    entity.setName(nameBefore);
+	}
+
 	entity.updateImageDescription();
+	// note that we don't check the properties: if the entity was
+	// in an invalid state, let the action be undone anyway
     }
 }

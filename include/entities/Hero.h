@@ -90,7 +90,7 @@ class Hero: public MapEntity {
   // pushing
   Uint16 pushing_direction_mask; /**< direction of the hero's movement when pushing
 				  * (0xFFFF indicates that he is currently not trying to push) */
-  bool moving_facing_entity;     /**< indicates that the hero is moving the entity he is facing */
+  Detector *grabbed_entity;      /**< the entity the hero is pushing or pulling */
 
   // walking
   bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
@@ -151,7 +151,7 @@ class Hero: public MapEntity {
   void start_grabbing(void);
   void start_pulling(void);
   void update_grabbing_pulling(void);
-  void update_moving_facing_entity(void);
+  void update_moving_grabbed_entity(void);
 
   void update_treasure(void);
   void display_treasure(void);
@@ -232,7 +232,9 @@ class Hero: public MapEntity {
   void set_ground(int ground);
   void start_free(void);
   void start_sword(void);
-  void stop_pushing_entity(void);
+  bool is_moving_grabbed_entity(void);
+  void grabbed_entity_collision(void);
+  void stop_moving_grabbed_entity(void);
   void start_lifting(DestructibleItem *item_to_lift);
   void start_carrying(void);
   void freeze(void);
@@ -254,7 +256,6 @@ class Hero: public MapEntity {
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
 
-  void stop_moving_facing_entity(void);
 };
 
 #endif

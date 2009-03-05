@@ -11,8 +11,8 @@
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - statue tirée rentre dans un obstacle si Link peut passser mais la statue non : vérifier que c'est correctement corrigé
-  - pousser une statue : gérer de la même manière que tirer ? c'est-à-dire bouger Link et dire au bloc de suivre Link
+  - permettre de déplacer un bloc de plusieurs cases sans réappuyer sur les flèches
+  - ennemis : il y a une fonction set_properties
 
 - Prochains types d'entités:
   - tiles dynamiques

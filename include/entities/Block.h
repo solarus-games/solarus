@@ -29,6 +29,7 @@ class Block: public Detector {
   int maximum_moves;         /**< indicates whether the block can be pushed
 			      * (0: none, 1: once: 2: infinite) */
   bool sound_played;         /**< true if the block sound was played while pulling it */
+  Uint32 when_can_move;      /**< date when the hero can move the block again */
 
  public:
 

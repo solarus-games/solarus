@@ -160,7 +160,7 @@ void Hero::arrow_released(int direction) {
   get_normal_movement()->remove_direction(direction);
 
   // grabbing or pulling
-  if (state == PULLING && !moving_facing_entity) {
+  if (state == PULLING && !is_moving_grabbed_entity()) {
 
     int opposite_direction = (get_animation_direction() + 2) % 4;
     if (direction == opposite_direction) {

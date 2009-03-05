@@ -23,7 +23,8 @@
 Block::Block(string name, Layer layer, int x, int y,
 	     Subtype subtype, string skin, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  subtype(subtype), maximum_moves(maximum_moves), sound_played(false) {
+  subtype(subtype), maximum_moves(maximum_moves), sound_played(false),
+  when_can_move(SDL_GetTicks()) {
 
   create_sprite("entities/block");
   set_origin(8, 13);
@@ -97,7 +98,7 @@ void Block::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
  */
 bool Block::moved_by_hero(void) {
 
-  if (get_movement() != NULL || maximum_moves == 0) {
+  if (get_movement() != NULL || maximum_moves == 0 || SDL_GetTicks() < when_can_move) {
     return false;
   }
 
@@ -111,8 +112,7 @@ bool Block::moved_by_hero(void) {
   int dy = get_y() - hero->get_y();
 
   set_movement(new FollowMovement(map, hero, dx, dy, true));
-  sound_played = false; // TODO
-  ResourceManager::get_sound("hero_pushes")->play();
+  sound_played = false;
 
   return true;
 }
@@ -126,20 +126,47 @@ void Block::update(void) {
 
   Hero *hero = zsdx->game->get_hero();
 
-  if (movement != NULL && ((FollowMovement*) movement)->is_finished()) {
+  if (movement != NULL) {
+    // the block is being pushed or pulled by the hero
 
-    // the block moved was just stopped by an obstacle
-    clear_movement();
+    // determine whether the movement is finished
+    bool finished = false;
 
-    if (get_x() != last_position.x || get_y() != last_position.y) {
-      hero->stop_moving_facing_entity();
+    if (((FollowMovement*) movement)->is_finished()) {
+      // the block was just stopped by an obstacle: notify the hero
+      hero->grabbed_entity_collision();
+      finished = true;
+    }
+    else if (!hero->is_moving_grabbed_entity()) {
+      // the hero stopped the movement, either because the 16 pixels were
+      // covered or because the hero met an obstacle
+      finished = true;
+    }
 
-      // TODO...
-      last_position.x = get_x();
-      last_position.y = get_y();
+    if (!finished) {
 
-      if (maximum_moves == 1) {
-	maximum_moves = 0; // cannot move any more
+      // now we now that the block moves at least of 1 pixel:
+      // we can play the sound
+      if (!sound_played) {
+	ResourceManager::get_sound("hero_pushes")->play();
+	sound_played = true;
+      }
+    }
+    else {
+      // the movement is finished (note that the block may have not moved)
+      clear_movement();
+      when_can_move = SDL_GetTicks() + 200;
+
+      // see if the block has moved
+      if (get_x() != last_position.x || get_y() != last_position.y) {
+
+	// the block has moved
+	last_position.x = get_x(); // save the new position for next time
+	last_position.y = get_y();
+
+	if (maximum_moves == 1) { // if the block could be moved only once
+	  maximum_moves = 0;      // it cannot move any more
+	}
       }
     }
   }

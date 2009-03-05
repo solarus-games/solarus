@@ -204,6 +204,7 @@ void Hero::start_pushing(void) {
 
   // is the hero pushing an entity?
   if (facing_entity != NULL) {
+
     if (facing_entity->moved_by_hero()) {
 
       string path = "  ";
@@ -211,7 +212,7 @@ void Hero::start_pushing(void) {
       path[0] = path[1] = '0' + direction * 2;
 
       set_movement(new PathMovement(map, path, 8, false));
-      moving_facing_entity = true;
+      grabbed_entity = facing_entity;
     }
   }
 }
@@ -261,7 +262,7 @@ void Hero::update_pushing(void) {
   }
   else {
 
-    // stop pushing or trying to push if the state changes (for example when the hero swing his sword)
+    // stop pushing or trying to push if the state changes (for example when the hero swings his sword)
     // of if the player changes his direction
     if (pushing_direction_mask != 0xFFFF && // the hero is pushing or about to push
 	direction_mask != pushing_direction_mask) {
@@ -269,8 +270,16 @@ void Hero::update_pushing(void) {
       counter = 0;
       pushing_direction_mask = 0xFFFF;
 
-      if (state == PUSHING) {
-	start_free();
+      Controls *controls = zsdx->game->get_controls();
+
+      if (state == PUSHING && !is_moving_grabbed_entity()) {
+
+	if (controls->is_key_pressed(Controls::ACTION)) {
+	  start_grabbing();
+	}
+	else {
+	  start_free();
+	}
       }
     }
   }
@@ -480,6 +489,8 @@ void Hero::destroy_carried_items(void) {
 
 /**
  * Makes the hero grab the object he is facing.
+ * @param delay delay before the hero can push or pull 
+ * the entity he is facing (if any)
  */
 void Hero::start_grabbing(void) {
   stop_displaying_sword();
@@ -502,7 +513,7 @@ void Hero::start_pulling(void) {
       path[0] = path[1] = '0' + opposite_direction * 2;
 
       set_movement(new PathMovement(map, path, 8, false));
-      moving_facing_entity = true;
+      grabbed_entity = facing_entity;
     }
   }
 }
@@ -513,7 +524,7 @@ void Hero::start_pulling(void) {
  */
 void Hero::update_grabbing_pulling(void) {
 
-  if (!moving_facing_entity) {
+  if (!is_moving_grabbed_entity()) {
     Controls *controls = zsdx->game->get_controls();
     if (!controls->is_key_pressed(Controls::ACTION)) {
       start_free();
@@ -523,29 +534,74 @@ void Hero::update_grabbing_pulling(void) {
 
 /**
  * This function is called repeatedly while to update the hero when he
- * is pushing or pulling the entity he is facing.
+ * is pushing or pulling the entity he is grabbing.
  */
-void Hero::update_moving_facing_entity(void) {
+void Hero::update_moving_grabbed_entity(void) {
 
-  if (moving_facing_entity) {
+  if (is_moving_grabbed_entity()) {
+
     PathMovement *movement = (PathMovement*) get_movement();
+
     if (movement->is_finished()) {
-      stop_moving_facing_entity();
+      stop_moving_grabbed_entity();
     }
   }
 }
 
 /**
- * Makes the hero stop pushing or pulling the entity he is facing.
+ * Returns whether the hero is moving the entity he is grabbing.
+ * @return true if the hero is moving the entity he is grabbing
+ */
+bool Hero::is_moving_grabbed_entity(void) {
+  return grabbed_entity != NULL;
+}
+
+/**
+ * Notifies the hero that the entity he is pushing or pulling
+ * cannot move any more because of a collision.
+ */
+void Hero::grabbed_entity_collision(void) {
+
+  if (overlaps(grabbed_entity->get_position_in_map())) {
+    // oops, the hero is now one pixel inside the block
+    // because the block was stopped by a collision and he moved before the block
+
+    switch (get_animation_direction()) {
+
+    case 0:
+      set_x(get_x() - 1);
+      break;
+
+    case 1:
+      set_y(get_y() + 1);
+      break;
+
+    case 2:
+      set_x(get_x() + 1);
+      break;
+
+    case 3:
+      set_y(get_y() - 1);
+      break;
+
+    }
+  }
+
+  stop_moving_grabbed_entity();
+}
+
+/**
+ * Makes the hero stop pushing or pulling the entity he is grabbing.
  * This function is called while moving the entity, when the 
  * hero or the entity collides with an obstacle or when
  * the hero's movement is finished.
  */
-void Hero::stop_moving_facing_entity(void) {
+void Hero::stop_moving_grabbed_entity(void) {
   clear_movement();
   set_movement(normal_movement);
   start_grabbing();
-  moving_facing_entity = false;
+
+  grabbed_entity = NULL;
 }
 
 /**

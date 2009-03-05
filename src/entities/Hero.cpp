@@ -41,7 +41,7 @@ Hero::Hero(Equipment *equipment):
   sword_stars_sprite(NULL), shield_sprite(NULL), ground_sprite(NULL),
   normal_movement(new PlayerMovement(12)), state(FREE), facing_entity(NULL),
   end_blink_date(0), counter(0), next_counter_date(0),
-  walking(false), pushing_direction_mask(0xFFFF), pulling_facing_entity(false),
+  pushing_direction_mask(0xFFFF), moving_facing_entity(false), walking(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
   last_ground_x(0), last_ground_y(0), ground(Map::NORMAL_GROUND), next_ground_sound_date(0) {
 
@@ -79,8 +79,18 @@ MapEntity::EntityType Hero::get_type() {
  * @return true if this entity is an obstacle for the other one
  */
 bool Hero::is_obstacle_for(MapEntity *other) {
+
   EntityType type = other->get_type();
-  return type == INTERACTIVE_ENTITY || type == BLOCK;
+
+  if (type == INTERACTIVE_ENTITY) {
+    return true;
+  }
+
+  if (type == BLOCK && other->get_movement() == NULL) {
+    return true; // let the hero overlap (for 1 pixel actually) the block he is pushing
+  }
+
+  return false;
 }
 
 /**
@@ -312,6 +322,7 @@ void Hero::update(void) {
 
     update_position();
     update_pushing();
+    update_moving_facing_entity();
     update_sprites();
     update_carried_items();
 

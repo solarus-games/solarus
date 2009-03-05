@@ -204,7 +204,15 @@ void Hero::start_pushing(void) {
 
   // is the hero pushing an entity?
   if (facing_entity != NULL) {
-    facing_entity->pushed_by_hero();
+    if (facing_entity->moved_by_hero()) {
+
+      string path = "  ";
+      int direction = get_animation_direction();
+      path[0] = path[1] = '0' + direction * 2;
+
+      set_movement(new PathMovement(map, path, 8, false));
+      moving_facing_entity = true;
+    }
   }
 }
 
@@ -266,16 +274,6 @@ void Hero::update_pushing(void) {
       }
     }
   }
-}
-
-/**
- * This function is called when the hero has just finished
- * pushing the entity he was facing.
- */
-void Hero::stop_pushing_entity(void) {
-  start_free();
-  counter = 0;
-  pushing_direction_mask = 0xFFFF;
 }
 
 /**
@@ -497,31 +495,25 @@ void Hero::start_pulling(void) {
   set_animation_pulling();
 
   if (facing_entity != NULL) {
-    if (facing_entity->pulled_by_hero()) {
+    if (facing_entity->moved_by_hero()) {
 
       string path = "  ";
       int opposite_direction = (get_animation_direction() + 2) % 4;
       path[0] = path[1] = '0' + opposite_direction * 2;
 
-      set_movement(new PathMovement(map, path, 8, false, true));
-      pulling_facing_entity = true;
+      set_movement(new PathMovement(map, path, 8, false));
+      moving_facing_entity = true;
     }
   }
 }
 
 /**
- * This function is called repeatedly while the hero is grabbing or pulling something.
+ * This function is called repeatedly while the hero is grabbing something.
  * The state must be GRABBING or PULLING.
  */
 void Hero::update_grabbing_pulling(void) {
 
-  if (pulling_facing_entity) {
-    PathMovement *movement = (PathMovement*) get_movement();
-    if (movement->is_finished()) {
-      stop_pulling_entity();
-    }
-  }
-  else {
+  if (!moving_facing_entity) {
     Controls *controls = zsdx->game->get_controls();
     if (!controls->is_key_pressed(Controls::ACTION)) {
       start_free();
@@ -530,16 +522,30 @@ void Hero::update_grabbing_pulling(void) {
 }
 
 /**
- * Makes the hero stop pulling the entity the hero is facing.
+ * This function is called repeatedly while to update the hero when he
+ * is pushing or pulling the entity he is facing.
+ */
+void Hero::update_moving_facing_entity(void) {
+
+  if (moving_facing_entity) {
+    PathMovement *movement = (PathMovement*) get_movement();
+    if (movement->is_finished()) {
+      stop_moving_facing_entity();
+    }
+  }
+}
+
+/**
+ * Makes the hero stop pushing or pulling the entity he is facing.
  * This function is called while moving the entity, when the 
  * hero or the entity collides with an obstacle or when
  * the hero's movement is finished.
  */
-void Hero::stop_pulling_entity(void) {
+void Hero::stop_moving_facing_entity(void) {
   clear_movement();
   set_movement(normal_movement);
   start_grabbing();
-  pulling_facing_entity = false;
+  moving_facing_entity = false;
 }
 
 /**

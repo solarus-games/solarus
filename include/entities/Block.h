@@ -28,7 +28,6 @@ class Block: public Detector {
   Subtype subtype;           /**< normal block or statue */
   int maximum_moves;         /**< indicates whether the block can be pushed
 			      * (0: none, 1: once: 2: infinite) */
-  bool pulled;               /**< true if the block is a statue that is being pulled by the hero */
   bool sound_played;         /**< true if the block sound was played while pulling it */
 
  public:
@@ -42,8 +41,7 @@ class Block: public Detector {
   bool is_obstacle_for(MapEntity *other);
   bool collision_with_map(int dx, int dy);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void pushed_by_hero(void);
-  bool pulled_by_hero(void);
+  bool moved_by_hero(void);
 
   void update(void);
   void display_on_map_above_hero(void);

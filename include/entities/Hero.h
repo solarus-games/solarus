@@ -87,13 +87,13 @@ class Hero: public MapEntity {
 
   Uint32 next_counter_date;      /**< when the counter will be incremented */
 
-  // walking
-  bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
-
   // pushing
   Uint16 pushing_direction_mask; /**< direction of the hero's movement when pushing
 				  * (0xFFFF indicates that he is currently not trying to push) */
-  bool pulling_facing_entity;    /**< indicates that the hero is pulling the entity he is facing */
+  bool moving_facing_entity;     /**< indicates that the hero is moving the entity he is facing */
+
+  // walking
+  bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
 
   // spin attack
   bool sword_loaded;             /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
@@ -148,10 +148,10 @@ class Hero: public MapEntity {
 
   void start_pushing(void);
   void update_pushing(void);
-
   void start_grabbing(void);
   void start_pulling(void);
   void update_grabbing_pulling(void);
+  void update_moving_facing_entity(void);
 
   void update_treasure(void);
   void display_treasure(void);
@@ -254,7 +254,7 @@ class Hero: public MapEntity {
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
 
-  void stop_pulling_entity(void);
+  void stop_moving_facing_entity(void);
 };
 
 #endif

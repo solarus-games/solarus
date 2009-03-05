@@ -1,6 +1,6 @@
 #include "entities/Block.h"
 #include "entities/Hero.h"
-#include "movements/PathMovement.h"
+#include "movements/FollowMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -23,7 +23,7 @@
 Block::Block(string name, Layer layer, int x, int y,
 	     Subtype subtype, string skin, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  subtype(subtype), maximum_moves(maximum_moves), pulled(false), sound_played(false) {
+  subtype(subtype), maximum_moves(maximum_moves), sound_played(false) {
 
   create_sprite("entities/block");
   set_origin(8, 13);
@@ -59,6 +59,11 @@ MapEntity::EntityType Block::get_type(void) {
  * @return true
  */
 bool Block::is_obstacle_for(MapEntity *other) {
+
+  if (other->is_hero() && get_movement() != NULL) {
+    return false;
+  }
+
   return true;
 }
 
@@ -86,35 +91,28 @@ void Block::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
 }
 
 /**
- * This function is called when the player pushes this block.
+ * This function is called when the player tries to push or pull this block.
  * @param hero the hero
+ * @return true if the player can be move this block
  */
-void Block::pushed_by_hero(void) {
+bool Block::moved_by_hero(void) {
 
-  if (movement == NULL && maximum_moves != 0) {
-
-    Hero *hero = zsdx->game->get_hero();
-    string path = "  ";
-    path[0] = path[1] = '0' + hero->get_animation_direction() * 2;
-
-    ResourceManager::get_sound("hero_pushes")->play();
-    clear_movement();
-    set_movement(new PathMovement(map, path, 12, false, true));
-  }
-}
-
-/**
- * This function is called when the player tries to pull this detector.
- * @return true if the block was pulled successfully
- */
-bool Block::pulled_by_hero(void) {
-
-  if (movement != NULL || subtype != STATUE || pulled || maximum_moves == 0) {
+  if (get_movement() != NULL || maximum_moves == 0) {
     return false;
   }
 
-  pulled = true;
-  sound_played = false;
+  Hero *hero = zsdx->game->get_hero();
+
+  if (subtype != STATUE && hero->get_state() == Hero::PULLING) {
+    return false;
+  }
+
+  int dx = get_x() - hero->get_x();
+  int dy = get_y() - hero->get_y();
+
+  set_movement(new FollowMovement(map, hero, dx, dy, true));
+  sound_played = false; // TODO
+  ResourceManager::get_sound("hero_pushes")->play();
 
   return true;
 }
@@ -128,63 +126,21 @@ void Block::update(void) {
 
   Hero *hero = zsdx->game->get_hero();
 
-  if (movement != NULL && ((PathMovement*) movement)->is_finished()) {
+  if (movement != NULL && ((FollowMovement*) movement)->is_finished()) {
 
-    // the block pushed has just finished moving
- 
+    // the block moved was just stopped by an obstacle
     clear_movement();
 
     if (get_x() != last_position.x || get_y() != last_position.y) {
-      hero->stop_pushing_entity();
+      hero->stop_moving_facing_entity();
+
+      // TODO...
       last_position.x = get_x();
       last_position.y = get_y();
 
       if (maximum_moves == 1) {
 	maximum_moves = 0; // cannot move any more
       }
-    }
-  }
-  else if (pulled) {
-    // the block is being pulled
-
-    if (hero->get_state() == Hero::PULLING) {
-
-      SDL_Rect collision_box = { get_top_left_x(), get_top_left_y(), 16, 16 };
-
-      switch (hero->get_animation_direction()) {
-
-      case 0:
-	collision_box.x = hero->get_top_left_x() + 16;
-	break;
-
-      case 1:
-	collision_box.y = hero->get_top_left_y() - 16;
-	break;
-
-      case 2:
-	collision_box.x = hero->get_top_left_x() - 16;
-	break;
-
-      case 3:
-	collision_box.y = hero->get_top_left_y() + 16;
-	break;
-      }
-
-      if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
-	set_top_left_x(collision_box.x);
-	set_top_left_y(collision_box.y);
-
-	if (!sound_played) {
-	  ResourceManager::get_sound("hero_pushes")->play();
-	  sound_played = true;
-	}
-      }
-      else { // collision: also stop the hero
-	hero->stop_pulling_entity();
-      }
-    }
-    else {
-      pulled = false;
     }
   }
 }

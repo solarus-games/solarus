@@ -221,7 +221,7 @@ void InteractiveEntity::start_walking(string path, bool loop) {
     DIE("This entity is not a non-playing character");
   }
 
-  set_movement(new PathMovement(map, path, 6, loop, true));
+  set_movement(new PathMovement(map, path, 6, loop));
   get_sprite()->set_current_animation("walking");
 }
 

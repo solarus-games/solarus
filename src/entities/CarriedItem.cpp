@@ -185,7 +185,7 @@ void CarriedItem::update(void) {
 
       // make the item follow the hero
       clear_movement();
-      set_movement(new FollowMovement(hero, 0, -18));
+      set_movement(new FollowMovement(map, hero, 0, -18, false));
     }
   }
   else if (is_throwing) {

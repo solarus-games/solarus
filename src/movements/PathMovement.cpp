@@ -9,13 +9,11 @@
  * @param speed speed of the movement
  * @param loop true to make the movement return to the beginning
  * once finished
- * @param with_collisions true to make the movement sensitive to obstacles
  */
-PathMovement::PathMovement(Map *map, string path, int speed,
-			   bool loop, bool with_collisions):
+PathMovement::PathMovement(Map *map, string path, int speed, bool loop):
   MovementWithCollision(map),
   path(path), next_index(0), loop(loop),
-  with_collisions(with_collisions), finished(false) {
+  finished(false) {
 
   set_speed(speed);
   start_next_move();

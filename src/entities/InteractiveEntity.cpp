@@ -111,7 +111,13 @@ void InteractiveEntity::initialize_sprite(SpriteAnimationSetId sprite_name, int 
  * @return true
  */
 bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
-  return special_interaction != CUSTOM && special_interaction != WATER_FOR_BOTTLE;
+
+  if (other->get_type() != INTERACTIVE_ENTITY) {
+    return true;
+  }
+
+  return special_interaction != NON_PLAYING_CHARACTER ||
+    ((InteractiveEntity*) other)->special_interaction != NON_PLAYING_CHARACTER;
 }
 
 /**

@@ -8,6 +8,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
 #include "entities/Teletransporter.h"
+#include "entities/Block.h"
 #include <iomanip>
 
 /**
@@ -175,6 +176,17 @@ void MapLoader::load_map(Map *map) {
 	entities->add_interactive_entity(entity_name, (MapEntity::Layer) layer, x, y,
 					 (InteractiveEntity::SpecialInteraction) special_interaction,
 					 sprite_name, direction, message_to_show);
+	break;
+      }
+
+    case MapEntity::BLOCK:
+      {
+	int subtype, maximum_moves;
+	string skin;
+
+	iss >> entity_name >> subtype >> skin >> maximum_moves;
+	entities->add_block(entity_name, (MapEntity::Layer) layer, x, y,
+			    (Block::Subtype) subtype, skin, maximum_moves);
 	break;
       }
 

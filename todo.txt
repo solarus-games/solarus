@@ -11,6 +11,7 @@
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+  - statue tirée rentre dans un obstacle si Link peut passser mais la statue non
 
 - Prochains types d'entités:
   - tiles dynamiques

@@ -32,7 +32,7 @@ ThrownItemMovement::~ThrownItemMovement(void) {
  * because of the special collision box of a thrown item.
  * @param dx x distance between the current position and the position to check
  * @param dy y distance between the current position and the position to check
- * @return true if the entity would overlap the map tiles in this position
+ * @return true if the entity would overlap the map obstacles in this position
  */
 bool ThrownItemMovement::collision_with_map(int dx, int dy) {
 

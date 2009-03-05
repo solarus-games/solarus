@@ -9,6 +9,7 @@
 #include "entities/DestructibleItem.h"
 #include "entities/Enemy.h"
 #include "entities/InteractiveEntity.h"
+#include "entities/Block.h"
 #include "movements/FallingOnFloorMovement.h"
 #include <vector>
 #include <list>
@@ -135,6 +136,9 @@ class MapEntities {
 			      InteractiveEntity::SpecialInteraction special_interaction,
 			      SpriteAnimationSetId sprite_name, int initial_direction,
 			      MessageId message_to_show);
+
+  void add_block(string name, MapEntity::Layer layer, int x, int y,
+		 Block::Subtype subtype, string skin, int maximum_moves);
 
   void remove_enemy(Enemy *enemy);
 

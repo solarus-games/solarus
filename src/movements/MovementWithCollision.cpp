@@ -55,7 +55,7 @@ void MovementWithCollision::set_y(int y) {
  * if it was moved a few pixels from its position.
  * @param dx x distance between the current position and the position to check
  * @param dy y distance between the current position and the position to check
- * @return true if the entity would overlap the map tiles in this position
+ * @return true if the entity would overlap the map obstacles in this position
  */
 bool MovementWithCollision::collision_with_map(int dx, int dy) {
 

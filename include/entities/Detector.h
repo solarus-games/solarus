@@ -71,6 +71,8 @@ class Detector: public MapEntity {
   void check_collision(MapEntity *entity, Sprite *sprite);
 
   virtual void action_key_pressed(void);
+  virtual void pushed_by_hero(void);
+  virtual bool pulled_by_hero(void);
 };
 
 #endif

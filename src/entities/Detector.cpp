@@ -213,3 +213,22 @@ void Detector::collision(MapEntity *entity, Sprite *sprite_overlapping) {
 void Detector::action_key_pressed(void) {
 
 }
+
+/**
+ * This function is called when the player pushes this detector.
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make something happen with the entity.
+ */
+void Detector::pushed_by_hero(void) {
+  
+}
+
+/**
+ * This function is called when the player tries to pull this detector.
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make something happen with the entity.
+ * @return true if the detector was pulled successfully
+ */
+bool Detector::pulled_by_hero(void) {
+  return false;
+}

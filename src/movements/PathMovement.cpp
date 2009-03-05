@@ -63,12 +63,12 @@ void PathMovement::set_y(int y) {
 }
 
 /**
- * Returns whether the end of the path was reached
- * (only possible when the movement does not loop).
- * @return true if the end of the path was reached
+ * Returns whether the movement is finished.
+ * @return true if the end of the path was reached or the entity 
+ * reached an obstacle
  */
 bool PathMovement::is_finished(void) {
-  return finished;
+  return finished || is_stopped();
 }
 
 /**

@@ -5,6 +5,7 @@
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
 #include "movements/TargetMovement.h"
+#include "movements/PathMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -194,11 +195,86 @@ bool Hero::can_start_sword(void) {
 
 /**
  * Makes the hero push something.
- * Moves to the state FREE and updates the animations accordingly.
+ * Moves to the state PUSHING and updates the animations accordingly.
  */
 void Hero::start_pushing(void) {
   set_state(PUSHING);
   set_animation_pushing();
+
+  // is the hero pushing an entity?
+  if (facing_entity != NULL) {
+    facing_entity->pushed_by_hero();
+  }
+}
+
+/**
+ * Updates the hero pushing, whether
+ * his state is already PUSHING or not.
+ */
+void Hero::update_pushing(void) {
+
+  // no change when the game is suspended
+  if (zsdx->game->is_suspended()) {
+    return;
+  }
+
+  Uint16 direction_mask = get_normal_movement()->get_direction_mask();
+
+  if (state == FREE && move_tried) {
+    // the hero is trying to move with animation "walking"
+
+    // see if the move has failed (i.e. if the hero's coordinates have not changed)
+    if (get_x() == old_x && get_y() == old_y) {
+
+      // the hero is facing an obstacle
+
+      Uint32 now = SDL_GetTicks();
+      if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
+	counter = 0;
+	next_counter_date = now;
+	pushing_direction_mask = direction_mask;
+      }
+
+      while (now >= next_counter_date && counter < 8) {
+	counter++;
+	next_counter_date += 100;
+      }
+
+      if (counter >= 8) {
+	start_pushing(); // start animation "pushing" when the counter reaches 8
+      }
+    }
+    else {
+      // the hero has just moved successfuly
+      counter = 0;
+      pushing_direction_mask = 0xFFFF;
+    }
+  }
+  else {
+
+    // stop pushing or trying to push if the state changes (for example when the hero swing his sword)
+    // of if the player changes his direction
+    if (pushing_direction_mask != 0xFFFF && // the hero is pushing or about to push
+	direction_mask != pushing_direction_mask) {
+
+      counter = 0;
+      pushing_direction_mask = 0xFFFF;
+
+      if (state == PUSHING) {
+	start_free();
+      }
+    }
+  }
+}
+
+/**
+ * This function is called when the hero has just finished
+ * pushing the entity he was facing.
+ */
+void Hero::stop_pushing_entity(void) {
+  start_free();
+  counter = 0;
+  pushing_direction_mask = 0xFFFF;
 }
 
 /**
@@ -418,18 +494,40 @@ void Hero::start_grabbing(void) {
 void Hero::start_pulling(void) {
   set_state(PULLING);
   set_animation_pulling();
+
+  if (facing_entity != NULL) {
+    if (facing_entity->pulled_by_hero()) {
+
+      string path = "  ";
+      int opposite_direction = (get_animation_direction() + 2) % 4;
+      path[0] = path[1] = '0' + opposite_direction * 2;
+
+      set_movement(new PathMovement(map, path, 12, false, true));
+      pulling_facing_entity = true;
+    }
+  }
 }
 
 /**
  * This function is called repeatedly while the hero is grabbing or pulling something.
- * It stops the action if the action key is released.
  * The state must be GRABBING or PULLING.
  */
 void Hero::update_grabbing_pulling(void) {
 
-  Controls *controls = zsdx->game->get_controls();
-  if (!controls->is_key_pressed(Controls::ACTION)) {
-    start_free();
+  if (pulling_facing_entity) {
+    PathMovement *movement = (PathMovement*) get_movement();
+    if (movement->is_finished()) {
+      clear_movement();
+      set_movement(normal_movement);
+      start_grabbing();
+      pulling_facing_entity = false;
+    }
+  }
+  else {
+    Controls *controls = zsdx->game->get_controls();
+    if (!controls->is_key_pressed(Controls::ACTION)) {
+      start_free();
+    }
   }
 }
 

@@ -9,6 +9,7 @@
 #include "entities/Hero.h"
 #include "entities/Chest.h"
 #include "entities/JumpSensor.h"
+#include "entities/Block.h"
 #include "Treasure.h"
 #include "Map.h"
 #include "ZSDX.h"
@@ -20,6 +21,7 @@ using std::list;
  */
 MapEntities::MapEntities(Map *map) {
   this->map = map;
+  this->obstacle_entities->push_back(zsdx->game->get_hero());
 }
 
 /**
@@ -518,6 +520,21 @@ void MapEntities::add_interactive_entity(string name, MapEntity::Layer layer, in
   if (entity->has_sprite()) {
     sprite_entities[layer].push_back(entity);
   }
+  detectors.push_back(entity);
+  obstacle_entities[layer].push_back(entity);
+  add_entity(entity);
+}
+
+/**
+ * Creates a block on the map.
+ * See the documentation of class Block for the meaning of each parameter.
+ */
+void MapEntities::add_block(string name, MapEntity::Layer layer, int x, int y,
+			    Block::Subtype subtype, string skin, int maximum_moves) {
+
+  Block *entity = new Block(name, layer, x, y, subtype, skin, maximum_moves);
+
+  sprite_entities[layer].push_back(entity);
   detectors.push_back(entity);
   obstacle_entities[layer].push_back(entity);
   add_entity(entity);

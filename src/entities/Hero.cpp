@@ -41,7 +41,7 @@ Hero::Hero(Equipment *equipment):
   sword_stars_sprite(NULL), shield_sprite(NULL), ground_sprite(NULL),
   normal_movement(new PlayerMovement(12)), state(FREE), facing_entity(NULL),
   end_blink_date(0), counter(0), next_counter_date(0),
-  walking(false), pushing_direction_mask(0xFFFF),
+  walking(false), pushing_direction_mask(0xFFFF), pulling_facing_entity(false),
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
   last_ground_x(0), last_ground_y(0), ground(Map::NORMAL_GROUND), next_ground_sound_date(0) {
 
@@ -71,6 +71,16 @@ Hero::~Hero(void) {
  */
 MapEntity::EntityType Hero::get_type() {
   return HERO;
+}
+
+/**
+ * Returns whether this entity is an obstacle for another one.
+ * @param other another entity
+ * @return true if this entity is an obstacle for the other one
+ */
+bool Hero::is_obstacle_for(MapEntity *other) {
+  EntityType type = other->get_type();
+  return type == INTERACTIVE_ENTITY || type == BLOCK;
 }
 
 /**
@@ -301,6 +311,7 @@ void Hero::update(void) {
     }
 
     update_position();
+    update_pushing();
     update_sprites();
     update_carried_items();
 
@@ -569,8 +580,9 @@ void Hero::update_position(void) {
     return;
   }
 
-  bool move_tried = get_movement()->has_to_move_now();
-  int old_x = 0, old_y = 0;
+  move_tried = get_movement()->has_to_move_now();
+  old_x = 0;
+  old_y = 0;
   if (move_tried) {
     // save the current coordinates
     old_x = get_x();
@@ -578,55 +590,5 @@ void Hero::update_position(void) {
 
     // try to move the hero
     get_movement()->update();
-  }
-
-  // the rest of the function handles the "pushing" animation
-
-  Uint16 direction_mask = get_normal_movement()->get_direction_mask();
-
-  if (state == FREE && move_tried) {
-    // the hero is trying to move with animation "walking"
-
-    // see if the move has failed (i.e. if the hero's coordinates have not changed)
-    if (get_x() == old_x && get_y() == old_y) {
-
-      // the hero is facing an obstacle
-
-      Uint32 now = SDL_GetTicks();
-      if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
-	counter = 0;
-	next_counter_date = now;
-	pushing_direction_mask = direction_mask;
-      }
-
-      while (now >= next_counter_date) {
-	counter++;
-	next_counter_date += 100;
-      }
-
-      if (counter >= 8) {
-	start_pushing(); // start animation "pushing" when the counter gets to 8
-      }
-    }
-    else {
-      // the hero has just moved successfuly
-      counter = 0;
-      pushing_direction_mask = 0xFFFF;
-    }
-  }
-  else {
-
-    // stop pushing or trying to push if the state changes (for example when the hero swing his sword)
-    // of if the player changes his direction
-    if (pushing_direction_mask != 0xFFFF && // the hero is pushing or about to push
-	direction_mask != pushing_direction_mask) {
-
-      counter = 0;
-      pushing_direction_mask = 0xFFFF;
-
-      if (state == PUSHING) {
-	start_free();
-      }
-    }
   }
 }

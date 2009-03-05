@@ -99,6 +99,7 @@ add_executable (zsdx
   entities/JumpSensor.cpp
   entities/Enemy.cpp
   entities/InteractiveEntity.cpp
+  entities/Block.cpp
 
   # tiles
   entities/Tileset.cpp

@@ -1,0 +1,11 @@
+brown_block entities/blocks.png 1 0 -1
+0	0	16	16	8	13	1	1
+
+yellow_block entities/blocks.png 1 0 -1
+16	0	16	16	8	13	1	1
+
+blue_block entities/blocks.png 1 0 -1
+32	0	16	16	8	13	1	1
+
+statue entities/blocks.png 1 0 -1
+0	16	16	24	8	21	1	1

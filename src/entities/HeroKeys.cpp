@@ -91,25 +91,29 @@ void Hero::action_key_pressed(void) {
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
-  if (keys_effect->is_action_key_acting_on_facing_entity()) {
-    // action on the facing entity
-    facing_entity->action_key_pressed();
-  }
-  else {
-    switch (keys_effect->get_action_key_effect()) {
+  switch (keys_effect->get_action_key_effect()) {
 
-    case KeysEffect::ACTION_KEY_THROW:
-      // throw the object carried
-      start_throwing();
-      break;
+  case KeysEffect::ACTION_KEY_THROW:
+    // throw the object carried
+    start_throwing();
+    break;
 
-    default:
-      // grab an object
-      if (is_facing_obstacle() && get_state() == FREE) {
-	start_grabbing();
-      }
-      break;
+  case KeysEffect::ACTION_KEY_GRAB:
+    // grab an entity
+    start_grabbing();
+    break;
+
+  default:
+
+    if (keys_effect->is_action_key_acting_on_facing_entity()) {
+      // action on the facing entity
+      facing_entity->action_key_pressed();
     }
+    else if (is_facing_obstacle() && get_state() == FREE) {
+      // grab an obstacle
+      start_grabbing();
+    }
+    break;
   }
 }
 
@@ -153,7 +157,7 @@ void Hero::arrow_released(int direction) {
   get_normal_movement()->remove_direction(direction);
 
   // grabbing or pulling
-  if (state == PULLING) {
+  if (state == PULLING && !pulling_facing_entity) {
 
     int opposite_direction = (get_animation_direction() + 2) % 4;
     if (direction == opposite_direction) {

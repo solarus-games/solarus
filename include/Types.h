@@ -118,6 +118,7 @@ class Chest;
 class JumpSensor;
 class Enemy;
 class InteractiveEntity;
+class Block;
 
 // tiles
 class Tileset;

@@ -31,6 +31,7 @@ class MapEntity {
     ENEMY                     = 7,    /**< an enemy */
     INTERACTIVE_ENTITY        = 8,    /**< an entity the hero can interact with by pressing the action key
 				       * in front of it (typically an NPC) */
+    BLOCK                     = 9,    /**< a block or a statue that the hero can push */
 
     HERO                      = 1000, /**< the hero */
     CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */

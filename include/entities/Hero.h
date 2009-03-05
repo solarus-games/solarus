@@ -68,6 +68,9 @@ class Hero: public MapEntity {
   // movement
   PlayerMovement *normal_movement;
   static const int animation_directions[];                    /**< direction of the animation for each arrow key combination */
+  bool move_tried;                                            /**< indicates that the hero just tried to move */
+  int old_x;                                                  /**< x position of the hero before the last move try */
+  int old_y;                                                  /**< y position of the hero before the last move try */
 
   // state
   State state;                   /**< current state of the hero (considered only when the game is not suspended) */
@@ -90,6 +93,7 @@ class Hero: public MapEntity {
   // pushing
   Uint16 pushing_direction_mask; /**< direction of the hero's movement when pushing
 				  * (0xFFFF indicates that he is currently not trying to push) */
+  bool pulling_facing_entity;    /**< indicates that the hero is pulling the entity he is facing */
 
   // spin attack
   bool sword_loaded;             /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
@@ -141,6 +145,9 @@ class Hero: public MapEntity {
   void update_carried_items(void);
   void display_carried_items(void);
   void destroy_carried_items(void);
+
+  void start_pushing(void);
+  void update_pushing(void);
 
   void start_grabbing(void);
   void start_pulling(void);
@@ -225,7 +232,7 @@ class Hero: public MapEntity {
   void set_ground(int ground);
   void start_free(void);
   void start_sword(void);
-  void start_pushing(void);
+  void stop_pushing_entity(void);
   void start_lifting(DestructibleItem *item_to_lift);
   void start_carrying(void);
   void freeze(void);
@@ -239,6 +246,7 @@ class Hero: public MapEntity {
   void key_released(Controls::GameKey key);
 
   // enemies and collisions
+  bool is_obstacle_for(MapEntity *other);
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   void just_attacked_enemy(Enemy::Attack attack, Enemy *victim);

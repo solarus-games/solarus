@@ -29,6 +29,7 @@ class Block: public Detector {
   int maximum_moves;         /**< indicates whether the block can be pushed
 			      * (0: none, 1: once: 2: infinite) */
   bool pulled;               /**< true if the block is a statue that is being pulled by the hero */
+  bool sound_played;         /**< true if the block sound was played while pulling it */
 
  public:
 

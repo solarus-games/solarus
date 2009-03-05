@@ -144,8 +144,8 @@ class MapEntity {
   // position in the map
   Layer get_layer(void);
   int get_x(void);
-  void set_x(int x);
   int get_y(void);
+  void set_x(int x);
   void set_y(int y);
   int get_width(void);
   int get_height(void);
@@ -153,6 +153,8 @@ class MapEntity {
   const SDL_Rect * get_origin(void);
   int get_top_left_x(void);
   int get_top_left_y(void);
+  void set_top_left_x(int x);
+  void set_top_left_y(int y);
 
   virtual SDL_Rect get_facing_point(void);
   virtual SDL_Rect get_facing_point(int direction);

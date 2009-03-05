@@ -253,6 +253,8 @@ class Hero: public MapEntity {
 
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+
+  void stop_pulling_entity(void);
 };
 
 #endif

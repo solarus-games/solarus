@@ -200,6 +200,7 @@ bool Hero::can_start_sword(void) {
 void Hero::start_pushing(void) {
   set_state(PUSHING);
   set_animation_pushing();
+  pushing_direction_mask = get_normal_movement()->get_direction_mask();
 
   // is the hero pushing an entity?
   if (facing_entity != NULL) {
@@ -502,7 +503,7 @@ void Hero::start_pulling(void) {
       int opposite_direction = (get_animation_direction() + 2) % 4;
       path[0] = path[1] = '0' + opposite_direction * 2;
 
-      set_movement(new PathMovement(map, path, 12, false, true));
+      set_movement(new PathMovement(map, path, 8, false, true));
       pulling_facing_entity = true;
     }
   }
@@ -517,10 +518,7 @@ void Hero::update_grabbing_pulling(void) {
   if (pulling_facing_entity) {
     PathMovement *movement = (PathMovement*) get_movement();
     if (movement->is_finished()) {
-      clear_movement();
-      set_movement(normal_movement);
-      start_grabbing();
-      pulling_facing_entity = false;
+      stop_pulling_entity();
     }
   }
   else {
@@ -529,6 +527,19 @@ void Hero::update_grabbing_pulling(void) {
       start_free();
     }
   }
+}
+
+/**
+ * Makes the hero stop pulling the entity the hero is facing.
+ * This function is called while moving the entity, when the 
+ * hero or the entity collides with an obstacle or when
+ * the hero's movement is finished.
+ */
+void Hero::stop_pulling_entity(void) {
+  clear_movement();
+  set_movement(normal_movement);
+  start_grabbing();
+  pulling_facing_entity = false;
 }
 
 /**

@@ -152,6 +152,14 @@ int MapEntity::get_x(void) {
 }
 
 /**
+ * Returns the current y position of the entity.
+ * @return the y position of the entity
+ */
+int MapEntity::get_y(void) {
+  return position_in_map.y + origin.y;
+}
+
+/**
  * Sets the x position of the entity.
  * This function is called by the movement object
  * of this entity.
@@ -162,14 +170,6 @@ void MapEntity::set_x(int x) {
 }
 
 /**
- * Returns the current y position of the entity.
- * @return the y position of the entity
- */
-int MapEntity::get_y(void) {
-  return position_in_map.y + origin.y;
-}
-
-/**
  * Sets the y position of the entity.
  * This function is called by the movement object
  * of this entity.
@@ -177,6 +177,38 @@ int MapEntity::get_y(void) {
  */
 void MapEntity::set_y(int y) {
   position_in_map.y = y - origin.y;
+}
+
+/**
+ * Returns the x position of the entity's top-left corner.
+ * @return the x position of the entity's top-left corner
+ */
+int MapEntity::get_top_left_x(void) {
+  return position_in_map.x;
+}
+
+/**
+ * Returns the y position of the entity's top-left corner.
+ * @return the y position of the entity's top-left corner
+ */
+int MapEntity::get_top_left_y(void) {
+  return position_in_map.y;
+}
+
+/**
+ * Sets the x position of the entity's top-left corner.
+ * @param x the new top-left x position
+ */
+void MapEntity::set_top_left_x(int x) {
+  position_in_map.x = x;
+}
+
+/**
+ * Sets the y position of the entity's top-left corner.
+ * @param y the new top-left y position
+ */
+void MapEntity::set_top_left_y(int y) {
+  position_in_map.y = y;
 }
 
 /**

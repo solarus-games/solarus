@@ -3,6 +3,7 @@
 #include "movements/PathMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "Map.h"
 #include "ResourceManager.h"
 #include "KeysEffect.h"
 #include "Sound.h"
@@ -22,7 +23,7 @@
 Block::Block(string name, Layer layer, int x, int y,
 	     Subtype subtype, string skin, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  subtype(subtype), maximum_moves(maximum_moves), pulled(false) {
+  subtype(subtype), maximum_moves(maximum_moves), pulled(false), sound_played(false) {
 
   create_sprite("entities/block");
   set_origin(8, 13);
@@ -113,6 +114,7 @@ bool Block::pulled_by_hero(void) {
   }
 
   pulled = true;
+  sound_played = false;
 
   return true;
 }
@@ -147,28 +149,39 @@ void Block::update(void) {
 
     if (hero->get_state() == Hero::PULLING) {
 
+      SDL_Rect collision_box = { get_top_left_x(), get_top_left_y(), 16, 16 };
+
       switch (hero->get_animation_direction()) {
 
       case 0:
-	set_x(hero->get_x() + 16);
+	collision_box.x = hero->get_top_left_x() + 16;
 	break;
 
       case 1:
-	set_y(hero->get_y() - 16);
+	collision_box.y = hero->get_top_left_y() - 16;
 	break;
 
       case 2:
-	set_x(hero->get_x() - 16);
+	collision_box.x = hero->get_top_left_x() - 16;
 	break;
 
       case 3:
-	set_y(hero->get_y() + 16);
+	collision_box.y = hero->get_top_left_y() + 16;
 	break;
       }
 
-      // TODO if no collision,
-      //      ResourceManager::get_sound("hero_pushes")->play();
+      if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+	set_top_left_x(collision_box.x);
+	set_top_left_y(collision_box.y);
 
+	if (!sound_played) {
+	  ResourceManager::get_sound("hero_pushes")->play();
+	  sound_played = true;
+	}
+      }
+      else { // collision: also stop the hero
+	hero->stop_pulling_entity();
+      }
     }
     else {
       pulled = false;

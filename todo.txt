@@ -8,10 +8,10 @@
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
+- Enlever le répertoire images ?
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - ennemis : il y a une fonction set_properties
 
 - Prochains types d'entités:
   - tiles dynamiques

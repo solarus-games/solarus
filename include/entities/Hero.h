@@ -24,12 +24,12 @@ class Hero: public MapEntity {
    */
   enum State {
     FREE,                        /**< normal state (stopped or walking) */
-    PUSHING,                     /**< the hero is trying to push an obstacle */
     CARRYING,                    /**< the hero can walk but he is carrying a pot or a bush */
     SWORD_LOADING,               /**< the hero can walk but his sword is loading for a spin attack */
     SWIMMING,                    /**< the hero is swimming in deep water */
-    GRABBING,                    /**< the hero is grabbing an object and can pull it */
+    PUSHING,                     /**< the hero is trying to push an obstacle */
     PULLING,                     /**< the hero is pulling an object */
+    GRABBING,                    /**< the hero is grabbing an object and can pull it */
     SWORD_SWINGING,              /**< the hero is swinging his sword */
     SPIN_ATTACK,                 /**< the hero is releasing a spin attack */
     LIFTING,                     /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */

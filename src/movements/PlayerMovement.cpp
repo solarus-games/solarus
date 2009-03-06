@@ -147,8 +147,8 @@ void PlayerMovement::set_suspended(bool suspended) {
  */
 void PlayerMovement::add_direction(int direction) {
 
+  add_direction_mask(direction_masks[direction]);
   if (can_move) {
-    add_direction_mask(direction_masks[direction]);
     compute_movement();
   }
 }
@@ -159,8 +159,8 @@ void PlayerMovement::add_direction(int direction) {
  */
 void PlayerMovement::remove_direction(int direction) {
 
+  remove_direction_mask(direction_masks[direction]);
   if (can_move) {
-    remove_direction_mask(direction_masks[direction]);
     compute_movement();
   }
 }

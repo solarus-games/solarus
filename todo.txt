@@ -11,13 +11,11 @@
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - permettre de déplacer un bloc de plusieurs cases sans réappuyer sur les flèches
   - ennemis : il y a une fonction set_properties
 
 - Prochains types d'entités:
   - tiles dynamiques
   - interrupteurs
-  - blocs ou statues à pousser
   - portes
   - planchers-interrupteurs
   - tapis roulants

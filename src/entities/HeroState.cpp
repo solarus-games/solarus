@@ -30,6 +30,7 @@ Hero::State Hero::get_state(void) {
  * @param state the state of the hero
  */
 void Hero::set_state(State state) {
+
   this->state = state;
 
   if (!zsdx->game->is_suspended()) {
@@ -47,7 +48,7 @@ void Hero::set_state(State state) {
  * @return true if the animation direction is locked
  */
 bool Hero::is_direction_locked(void) {
-  return state == SWORD_LOADING;
+  return state == SWORD_LOADING || state == PUSHING;
 }
 
 /**
@@ -270,9 +271,9 @@ void Hero::update_pushing(void) {
       counter = 0;
       pushing_direction_mask = 0xFFFF;
 
-      Controls *controls = zsdx->game->get_controls();
-
       if (state == PUSHING && !is_moving_grabbed_entity()) {
+
+	Controls *controls = zsdx->game->get_controls();
 
 	if (controls->is_key_pressed(Controls::ACTION)) {
 	  start_grabbing();
@@ -286,7 +287,7 @@ void Hero::update_pushing(void) {
 }
 
 /**
- * Lets the hero loading his sword.
+ * Lets the hero load his sword.
  * Moves to the state SWORD_LOADING
  * and updates the animations accordingly.
  */
@@ -524,7 +525,19 @@ void Hero::start_pulling(void) {
  */
 void Hero::update_grabbing_pulling(void) {
 
-  if (!is_moving_grabbed_entity()) {
+  if (state == GRABBING) {
+    int keys_direction = get_normal_movement()->get_direction();
+    int sprite_direction = get_animation_direction() * 90;
+
+    if (keys_direction == sprite_direction) {
+      start_pushing();
+    }
+    else if (keys_direction == (sprite_direction + 180) % 90) {
+      start_pulling();
+    }
+  }
+
+  if (state == GRABBING && !is_moving_grabbed_entity()) {
     Controls *controls = zsdx->game->get_controls();
     if (!controls->is_key_pressed(Controls::ACTION)) {
       start_free();
@@ -562,29 +575,34 @@ bool Hero::is_moving_grabbed_entity(void) {
  */
 void Hero::grabbed_entity_collision(void) {
 
-  if (overlaps(grabbed_entity->get_position_in_map())) {
-    // oops, the hero is now one pixel inside the block
-    // because the block was stopped by a collision and he moved before the block
+  // the hero has moved one pixel too much
+  // because he moved before the block, not knowing that the block could not follow him
 
-    switch (get_animation_direction()) {
+  int direction_back = get_animation_direction();
 
-    case 0:
-      set_x(get_x() - 1);
-      break;
+  if (state == PUSHING) {
+    direction_back = (direction_back + 2) % 4;
+  }
 
-    case 1:
-      set_y(get_y() + 1);
-      break;
+  // go back one pixel in this direction
+  switch (direction_back) {
 
-    case 2:
-      set_x(get_x() + 1);
-      break;
+  case 0:
+    set_x(get_x() + 1);
+    break;
 
-    case 3:
-      set_y(get_y() - 1);
-      break;
+  case 1:
+    set_y(get_y() - 1);
+    break;
 
-    }
+  case 2:
+    set_x(get_x() - 1);
+    break;
+
+  case 3:
+    set_y(get_y() + 1);
+    break;
+
   }
 
   stop_moving_grabbed_entity();

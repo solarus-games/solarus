@@ -43,6 +43,7 @@ class Block: public Detector {
   bool collision_with_map(int dx, int dy);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   bool moved_by_hero(void);
+  void just_moved(void);
 
   void update(void);
   void display_on_map_above_hero(void);

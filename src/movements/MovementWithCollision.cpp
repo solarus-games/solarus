@@ -79,7 +79,7 @@ bool MovementWithCollision::collision_with_map(int dx, int dy) {
 void MovementWithCollision::update_x(void) {
 
   Uint32 now = SDL_GetTicks();
-  while (x_move != 0 && now >= next_move_date_x) { // while it's time to try a move
+  if (x_move != 0 && now >= next_move_date_x) { // while it's time to try a move
 
     // make the move only if there is no collision
     if (!collision_with_map(x_move, 0)) {
@@ -101,7 +101,7 @@ void MovementWithCollision::update_x(void) {
 void MovementWithCollision::update_y(void) {
 
   Uint32 now = SDL_GetTicks();
-  while (y_move != 0 && now >= next_move_date_y) { // while it's time to try a move
+  if (y_move != 0 && now >= next_move_date_y) { // while it's time to try a move
 
     // make the move only if there is no collision
     if (!collision_with_map(0, y_move)) {

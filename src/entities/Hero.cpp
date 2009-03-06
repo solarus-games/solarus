@@ -278,7 +278,7 @@ void Hero::update(void) {
   if (!suspended) {
 
     // update the movement
-    get_normal_movement()->set_moving_enabled(get_state() <= SWIMMING);
+    get_normal_movement()->set_moving_enabled(get_state() < PUSHING);
 
     // specific updates in some states
     switch (state) {
@@ -471,7 +471,8 @@ void Hero::rebuild_equipment(void) {
 /**
  * Updates the hero depending on the arrows pressed.
  * This function is called when the hero's direction changes (typically, because the player
- * pressed or released an arrow). It updates the hero's animations and collisions according to the new movement.
+ * pressed or released an arrow). It updates the hero's animations and 
+ * collisions according to the new movement.
  */
 void Hero::movement_just_changed(void) {
 

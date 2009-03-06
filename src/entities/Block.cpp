@@ -143,16 +143,7 @@ void Block::update(void) {
       finished = true;
     }
 
-    if (!finished) {
-
-      // now we now that the block moves at least of 1 pixel:
-      // we can play the sound
-      if (!sound_played) {
-	ResourceManager::get_sound("hero_pushes")->play();
-	sound_played = true;
-      }
-    }
-    else {
+    if (finished) {
       // the movement is finished (note that the block may have not moved)
       clear_movement();
       when_can_move = SDL_GetTicks() + 200;
@@ -169,6 +160,19 @@ void Block::update(void) {
 	}
       }
     }
+  }
+}
+
+/**
+ * Notifies the block that it has just moved.
+ */
+void Block::just_moved(void) {
+
+  // now we now that the block moves at least of 1 pixel:
+  // we can play the sound
+  if (!sound_played) {
+    ResourceManager::get_sound("hero_pushes")->play();
+    sound_played = true;
   }
 }
 

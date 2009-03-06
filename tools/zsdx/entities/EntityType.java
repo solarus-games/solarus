@@ -16,7 +16,8 @@ public enum EntityType {
     CHEST             (5, "Chest", Chest.class, null),
     JUMP_SENSOR       (6, "Jump Sensor", JumpSensor.class, null),
     ENEMY             (7, "Enemy", Enemy.class, Enemy.Subtype.class),
-    INTERACTIVE       (8, "Interactive entity", InteractiveEntity.class, InteractiveEntity.Subtype.class);
+    INTERACTIVE       (8, "Interactive entity", InteractiveEntity.class, InteractiveEntity.Subtype.class),
+    BLOCK             (9, "Block", Block.class, Block.Subtype.class);
 
     private final int index;
     private Class<? extends MapEntity> entityClass;

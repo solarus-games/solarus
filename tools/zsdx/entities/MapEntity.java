@@ -22,8 +22,7 @@ import zsdx.Map;
  *   - Redefine the checkProperties() method: public boolean checkProperties()
  *       to check the validity of the specific properties.
  *   - Create a constructor with the following signature:
- *       public YourEntity(Map map) throws MapException:
- *           creates a new entity with some default properties
+ *       public YourEntity(Map map) throws MapException.
  *   - Redefine if necessary the getObstacle() method: public int getObstacle()
  *       if your entity is an obstacle.
  *   - Redefine if necessary the methods getNbDirections(), hasName(), isResizable()
@@ -47,8 +46,6 @@ import zsdx.Map;
  *   - If your entity is not drawn from an image file but in a more complex way,
  *       you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *       public abstract void paint(Graphics g, double zoom, boolean showTransparency).
- *   - If your entity has a subtype, redefine the getSubtype() method:
- *       public EntitySubtype getSubtype() and change its return type.
  * - Create a subclass of EditEntityComponent and declare it in
  *     EditEntityComponent.editEntityComponentClasses.
  */

@@ -15,10 +15,12 @@ public class AddEntitiesMenu extends JMenu {
     private static final ItemDefinition[] itemDefinitions = {
 	new ItemDefinition(EntityType.DESTINATION_POINT, KeyEvent.VK_D,
 		DestinationPoint.Subtype.INVISIBLE,
-		DestinationPoint.Subtype.GRAY),
+		DestinationPoint.Subtype.GRAY
+		),
 	new ItemDefinition(EntityType.TELETRANSPORTER, KeyEvent.VK_T,
 		Teletransporter.Subtype.INVISIBLE,
-		Teletransporter.Subtype.YELLOW),
+		Teletransporter.Subtype.YELLOW
+		),
 	new ItemDefinition(EntityType.PICKABLE_ITEM, KeyEvent.VK_P,
 		PickableItem.Subtype.RUPEE_1,
 		PickableItem.Subtype.RUPEE_5,
@@ -44,6 +46,10 @@ public class AddEntitiesMenu extends JMenu {
 		InteractiveEntity.Subtype.SIGN,
 		InteractiveEntity.Subtype.WATER_FOR_BOTTLE
 	}),	
+	new ItemDefinition(EntityType.BLOCK, KeyEvent.VK_B,
+		Block.Subtype.NORMAL_BLOCK,
+		Block.Subtype.STATUE
+		),
     };
 
     /**

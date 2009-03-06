@@ -225,11 +225,11 @@ Blocs (9)
 
 Syntaxe de la partie spécifique :
 
-skin maximum_push
+skin maximum_moves
 
 Le sous-type indique s'il s'agit d'un bloc classique (0) ou une statue (1). D'autres sous-types pourront être créés à l'avenir
 (exemples : blocs qui glissent jusqu'au prochain mur, blocs comme dans l'énigme de Zelda MC...)
-maximum_push indique ce qui se passe lorsque le héros pousse le bloc :
+maximum_moves indique ce qui se passe lorsque le héros pousse le bloc :
 0 : ne peut pas (ou plus) être poussé
 1 : peut être poussé une fois
 2 : peut être poussé autant de fois qu'on veut

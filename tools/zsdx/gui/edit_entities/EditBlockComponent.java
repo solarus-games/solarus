@@ -54,7 +54,7 @@ public class EditBlockComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	Block block = (Block) entity;
-	Skin skin = Skin.get(block.getIntegerProperty("skin"));
+	Skin skin = Skin.get(block.getProperty("skin"));
 	MaximumMoves maximumMoves = MaximumMoves.get(block.getIntegerProperty("maximumMoves"));
 
 	skinField.setEnabled(block.getSubtype() == Subtype.NORMAL_BLOCK);
@@ -70,6 +70,6 @@ public class EditBlockComponent extends EditEntityComponent {
 
 	Skin skin = skinField.getValue();
 	MaximumMoves maximumMoves = maximumMovesField.getValue();
-	return new ActionEditEntitySpecific(entity, skin.getId(), maximumMoves.getId());
+	return new ActionEditEntitySpecific(entity, skin.getAnimationName(), Integer.toString(maximumMoves.getId()));
     }
 }

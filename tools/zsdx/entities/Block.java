@@ -1,6 +1,7 @@
 package zsdx.entities;
 
 import java.awt.*;
+import java.util.*;
 import zsdx.Map;
 import zsdx.*;
 
@@ -44,12 +45,23 @@ public class Block extends DynamicEntity {
 	    "Blue block",
 	};
 
-	public static Skin get(int id) {
-	    return values()[id];
+	private static final String[] animationNames = {
+	    "brown_block",
+	    "yellow_block",
+	    "blue_block",
+	};
+
+	public static Skin get(String animationName) {
+	    for (Skin skin: values()) {
+		if (skin.getAnimationName().equals(animationName)) {
+		    return skin;
+		}
+	    }
+	    throw new NoSuchElementException("Unknown skin '" + animationName + "'");
 	}
 
-	public int getId() {
-	    return ordinal();
+	public String getAnimationName() {
+	    return animationNames[ordinal()];
 	}
     }
 
@@ -160,8 +172,8 @@ public class Block extends DynamicEntity {
     public void updateImageDescription() {
 	currentImageDescription = currentImageDescriptions[getSubtypeId()];
 	if (subtype == Subtype.NORMAL_BLOCK) {
-	    int skinIndex = getIntegerProperty("skin");
-	    currentImageDescription.setX(56 + skinIndex * 16);
+	    Skin skin = Skin.get(getProperty("skin"));
+	    currentImageDescription.setX(56 + skin.ordinal() * 16);
 	}
     }
 
@@ -169,7 +181,7 @@ public class Block extends DynamicEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("skin", Skin.BROWN.getId());
+	setProperty("skin", Skin.BROWN.getAnimationName());
 	setProperty("maximumMoves", MaximumMoves.ONE.getId());
     }
 

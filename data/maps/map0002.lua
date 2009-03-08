@@ -68,7 +68,6 @@ function event_message_sequence_finished(first_message_id, answer)
 	 end
       end
    end
-
 end
 
 -- Function called when the player opens an empty chest (i.e. a chest

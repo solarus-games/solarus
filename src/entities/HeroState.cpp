@@ -202,20 +202,6 @@ void Hero::start_pushing(void) {
   set_state(PUSHING);
   set_animation_pushing();
   pushing_direction_mask = get_normal_movement()->get_direction_mask();
-
-  // is the hero pushing an entity?
-  if (facing_entity != NULL) {
-
-    if (facing_entity->moved_by_hero()) {
-
-      string path = "  ";
-      int direction = get_animation_direction();
-      path[0] = path[1] = '0' + direction * 2;
-
-      set_movement(new PathMovement(map, path, 8, false));
-      grabbed_entity = facing_entity;
-    }
-  }
 }
 
 /**
@@ -282,6 +268,20 @@ void Hero::update_pushing(void) {
 	  start_free();
 	}
       }
+    }
+  }
+
+  // is the hero pushing an entity?
+  if (state == PUSHING && facing_entity != NULL && grabbed_entity == NULL) {
+
+    if (facing_entity->moved_by_hero()) {
+
+      string path = "  ";
+      int direction = get_animation_direction();
+      path[0] = path[1] = '0' + direction * 2;
+
+      set_movement(new PathMovement(map, path, 8, false));
+      grabbed_entity = facing_entity;
     }
   }
 }
@@ -497,6 +497,7 @@ void Hero::start_grabbing(void) {
   stop_displaying_sword();
   set_state(GRABBING);
   set_animation_grabbing();
+  grabbed_entity = NULL;
 }
 
 /**
@@ -505,18 +506,6 @@ void Hero::start_grabbing(void) {
 void Hero::start_pulling(void) {
   set_state(PULLING);
   set_animation_pulling();
-
-  if (facing_entity != NULL) {
-    if (facing_entity->moved_by_hero()) {
-
-      string path = "  ";
-      int opposite_direction = (get_animation_direction() + 2) % 4;
-      path[0] = path[1] = '0' + opposite_direction * 2;
-
-      set_movement(new PathMovement(map, path, 8, false));
-      grabbed_entity = facing_entity;
-    }
-  }
 }
 
 /**
@@ -532,15 +521,27 @@ void Hero::update_grabbing_pulling(void) {
     if (keys_direction == sprite_direction) {
       start_pushing();
     }
-    else if (keys_direction == (sprite_direction + 180) % 90) {
+    else if (keys_direction == (sprite_direction + 180) % 360) {
       start_pulling();
     }
-  }
 
-  if (state == GRABBING && !is_moving_grabbed_entity()) {
-    Controls *controls = zsdx->game->get_controls();
-    if (!controls->is_key_pressed(Controls::ACTION)) {
-      start_free();
+    if (!is_moving_grabbed_entity()) {
+      Controls *controls = zsdx->game->get_controls();
+      if (!controls->is_key_pressed(Controls::ACTION)) {
+	start_free();
+      }
+    }
+  }
+  else if (state == PULLING && facing_entity != NULL) {
+
+    if (facing_entity->moved_by_hero()) {
+
+      string path = "  ";
+      int opposite_direction = (get_animation_direction() + 2) % 4;
+      path[0] = path[1] = '0' + opposite_direction * 2;
+
+      set_movement(new PathMovement(map, path, 8, false));
+      grabbed_entity = facing_entity;
     }
   }
 }
@@ -617,9 +618,14 @@ void Hero::grabbed_entity_collision(void) {
 void Hero::stop_moving_grabbed_entity(void) {
   clear_movement();
   set_movement(normal_movement);
-  start_grabbing();
 
-  grabbed_entity = NULL;
+  Controls *controls = zsdx->game->get_controls();
+  if (state == PUSHING && !controls->is_key_pressed(Controls::ACTION)) {
+    grabbed_entity = NULL;
+  }
+  else {
+    start_grabbing();
+  }
 }
 
 /**

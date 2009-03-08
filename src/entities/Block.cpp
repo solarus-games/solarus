@@ -99,6 +99,14 @@ void Block::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
 bool Block::moved_by_hero(void) {
 
   if (get_movement() != NULL || maximum_moves == 0 || SDL_GetTicks() < when_can_move) {
+    /*
+    if (maximum_moves == 0)
+      std::cout << "not moving because cannot move any more\n";
+    else if (get_movement() != NULL) 
+      std::cout << "not moving because already moving\n";
+    else
+      std::cout << "not moving because just moved\n";
+    */      
     return false;
   }
 
@@ -146,7 +154,7 @@ void Block::update(void) {
     if (finished) {
       // the movement is finished (note that the block may have not moved)
       clear_movement();
-      when_can_move = SDL_GetTicks() + 200;
+      when_can_move = SDL_GetTicks() + 500;
 
       // see if the block has moved
       if (get_x() != last_position.x || get_y() != last_position.y) {

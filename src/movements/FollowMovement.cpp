@@ -41,14 +41,21 @@ void FollowMovement::update(void) {
   int dx = next_x - get_x();
   int dy = next_y - get_y();
 
-  if (with_collisions && !finished && (dx != 0 || dy != 0)) {
+  if (with_collisions) {
 
-    if (!collision_with_map(dx, dy)) {
-      set_x(next_x);
-      set_y(next_y);
+    if (!finished && (dx != 0 || dy != 0)) {
+
+      if (!collision_with_map(dx, dy)) {
+	set_x(next_x);
+	set_y(next_y);
+      }
+      else {
+	finished = true;
+      }
     }
-    else {
-      finished = true;
-    }
+  }
+  else {
+    set_x(next_x);
+    set_y(next_y);
   }
 }

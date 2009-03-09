@@ -238,6 +238,7 @@ void Hero::update_pushing(void) {
       }
 
       if (counter >= 8) {
+	std::cout << "pushing because counter = 8\n";
 	start_pushing(); // start animation "pushing" when the counter reaches 8
       }
     }
@@ -519,6 +520,7 @@ void Hero::update_grabbing_pulling(void) {
     int sprite_direction = get_animation_direction() * 90;
 
     if (keys_direction == sprite_direction) {
+      std::cout << "pushing because of arrows\n";
       start_pushing();
     }
     else if (keys_direction == (sprite_direction + 180) % 360) {
@@ -622,8 +624,14 @@ void Hero::stop_moving_grabbed_entity(void) {
   Controls *controls = zsdx->game->get_controls();
   if (state == PUSHING && !controls->is_key_pressed(Controls::ACTION)) {
     grabbed_entity = NULL;
+    std::cout << "stop moving grabbed entity: ge = NULL\n";
+    int straight_direction = get_animation_direction();
+    if (get_normal_movement()->get_direction() != straight_direction * 90) {
+      start_grabbing();
+    }
   }
   else {
+    std::cout << "stop moving grabbed entity: will grab now\n";
     start_grabbing();
   }
 }

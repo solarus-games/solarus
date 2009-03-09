@@ -142,6 +142,7 @@ void Hero::arrow_pressed(int direction) {
 
     int opposite_direction = (get_animation_direction() + 2) % 4;
     if (direction == get_animation_direction()) {
+      std::cout << "pushing because just pressed\n";
       start_pushing();
     }
     else if (direction == opposite_direction) {

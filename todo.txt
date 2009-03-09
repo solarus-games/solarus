@@ -1,3 +1,18 @@
+---
+MàJ
+---
+
+Prochaine mise à jour zsdx :
+
+- maison des rubis : jeu 1 fini -> image(s)
+- amélioration du code de l'éditeur : prendra en charge facilement les objets Zelda pas encore codés
+ -> exemple des blocs et statues
+ -> liste des prochaines entités nécessaires pour pouvoir faire le donjon
+    (dire qu'après ça il ne restera plus qu'à faire les maps et leurs scripts)
+ -> une image de l'éditeur
+
+---------------
+
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
@@ -69,24 +84,6 @@ Mode release :
 - Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence
 - Cacher le mode Rêves de Solarus s'il n'est pas encore fait
 - Compiler en mode release (pas -g)
-
----
-PNJ
----
-
-Il y a les PNJ, les pancartes et de manière générale tout ce qui affiche une icône d'action et qui 
-appelle le script lorsque le joueur appuie sur la touche action devant.
-
-- pancarte = destructible item dans le moteur mais pas dans l'éditeur ?
-  déclenche l'affichage d'un message donné (comment spécifier lequel ?)
-
-- classe PNJ générale avec un subtype (hérite de Detector): InteractiveEntity ? Interactive ?
-  - obstacle sans comportement prédéfini, a éventuellement un sprite, déclenche event_look_entity
-    (peut servir pour les portes d'entrées de grottes fermées à clé, parler à un PNJ de loin, indices muraux, etc)
-  - PNJ : affiche l'icône Parler, a un sprite, déclenche event_talk_with_pnj
-  - pancarte : affiche l'icône Voir, a l'image d'une pancarte, déclenche event_look_entity ? crée un destructible item dans le jeu ?
-  - eau à mettre dans flacon : affiche l'icône Voir, est invisible, déclenche le trésor de l'eau dans un flacon
-
 
 ----------------------
 - Compléter l'éditeur de maps et de tilesets :

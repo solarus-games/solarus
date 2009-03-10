@@ -135,7 +135,7 @@ void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int 
  * @return true if the teletransporter is currently an obstacle for the hero
  */
 bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return state > SWIMMING && state != HURT; // TODO hurt???
+  return state > SWIMMING;
 }
 
 /**

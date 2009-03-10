@@ -19,7 +19,6 @@ Prochaine mise à jour zsdx :
 - Voir les boss de Pyro
 - Afficher le nom du donjon dans le hud
 - Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
-- Joystick : tester le hat
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
@@ -27,7 +26,7 @@ Prochaine mise à jour zsdx :
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - link blessé envoyé sur un téléporteur : le téléporteur est censé être un obstacle (voir Hero::is_teletransporter_obstacle)
+  - éditeur : layer de TileOnMap
 
 - Prochains types d'entités:
   - tiles dynamiques

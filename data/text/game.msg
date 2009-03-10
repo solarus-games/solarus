@@ -19,7 +19,7 @@ next = rupee_house.game_1.intro.3
 
 [rupee_house.game_1.intro.3]
 #       |-----------------------|
-line1 = "Alors, tu paies ?"
+line1 = "Alors, tu veux jouer ?"
 line2 = "Oui"
 line3 = "Non"
 question = true
@@ -66,7 +66,8 @@ question = true
 
 [rupee_house.not_playing]
 #       |-----------------------|
-line1 = "Tant pis pour toi !"
+line1 = "Vis ta vie ! Sois"
+line2 = "un peu plus motivé !"
 
 [rupee_house.not_enough_money]
 #       |-----------------------|

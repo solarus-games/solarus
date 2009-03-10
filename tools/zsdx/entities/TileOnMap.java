@@ -49,7 +49,7 @@ public class TileOnMap extends MapEntity {
 	int tileId = Integer.parseInt(value);
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 	setSize(tile.getWidth(), tile.getHeight());
-	setLayer(tile.getDefaultLayer());
+	setLayer(tile.getDefaultLayer()); // TODO not for existing tiles!
     }
 
     /**

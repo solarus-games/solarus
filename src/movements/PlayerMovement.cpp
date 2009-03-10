@@ -98,43 +98,57 @@ bool PlayerMovement::is_moving_enabled(void) {
  * This function permits to ignore or restore the control of the entity.
  * @param moving_enabled true to enable the movements, false to disable them.
  * @param direction_enabled true to keep the direction control even if the movement is disabled
+ * (must be true if moving_enabled is true)
  */
 void PlayerMovement::set_moving_enabled(bool moving_enabled, bool direction_enabled) {
 
-  if (moving_enabled != this->moving_enabled) {
+  if (moving_enabled && !direction_enabled) {
+    DIE("Illegal parameters for set_moving_enabled");
+  }
 
-    if (moving_enabled) {
+  if (moving_enabled != this->moving_enabled || direction_enabled != this->direction_enabled) {
+
+    this->direction_enabled = direction_enabled;
+
+    if (direction_enabled) {
+
       // if the control is being restored, let's take
       // into account the possible arrows pressed
-
-      if (is_direction_enabled()) {
-	// we now consider that no arrow is currently pressed
-	set_direction_mask(0x0000);
-      }
 
       Controls *controls = zsdx->game->get_controls();
 
       if (controls->is_key_pressed(Controls::RIGHT)) {
 	add_direction_mask(direction_masks[0]);
       }
+      else {
+	remove_direction_mask(direction_masks[0]);	
+      }
+
       if (controls->is_key_pressed(Controls::UP)) {
 	add_direction_mask(direction_masks[1]);
       }
+      else {
+	remove_direction_mask(direction_masks[1]);	
+      }
+
       if (controls->is_key_pressed(Controls::LEFT)) {
 	add_direction_mask(direction_masks[2]);
       }
+      else {
+	remove_direction_mask(direction_masks[2]);	
+      }
+
       if (controls->is_key_pressed(Controls::DOWN)) {
 	add_direction_mask(direction_masks[3]);
       }
-      this->direction_enabled = true;
-    }
-    else { // the control is being ignored
-
-      this->direction_enabled = direction_enabled;
-      if (!direction_enabled) {
-	// we now consider that no arrow is currently pressed
-	set_direction_mask(0x0000);
+      else {
+	remove_direction_mask(direction_masks[3]);	
       }
+    }
+    else {
+      // the control is being ignored:
+      // we now consider that no arrow is currently pressed
+      set_direction_mask(0x0000);
     }
 
     this->moving_enabled = moving_enabled;
@@ -155,20 +169,6 @@ bool PlayerMovement::is_direction_enabled(void) {
 }
 
 /**
- * Sets whether the player can control the entity's direction.
- * This function permits to ignore or restore the control of the entity's direction.
- * @param direction_enabled true to enable the direction, false to disable it.
- */
-/* TODO remove
-void PlayerMovement::set_direction_enabled(bool direction_enabled) {
-
-  if (direction_enabled != this->direction_enabled) {
-    this->direction_enabled = direction_enabled;
-  }
-}
-*/
-
-/**
  * Suspends or resumes the movement.
  * @param suspended true to suspend the movement, false to resume it
  */
@@ -176,11 +176,13 @@ void PlayerMovement::set_suspended(bool suspended) {
   Movement::set_suspended(suspended);
 
   if (suspended) {
+    // suspend the movement
     moving_enabled_before_suspended = moving_enabled;
     direction_enabled_before_suspended = direction_enabled;
     set_moving_enabled(false, false);
   }
   else {
+    // enable exactly what was enabled before
     set_moving_enabled(moving_enabled_before_suspended, direction_enabled_before_suspended);
   }
 
@@ -193,9 +195,13 @@ void PlayerMovement::set_suspended(bool suspended) {
  */
 void PlayerMovement::add_direction(int direction) {
 
-  add_direction_mask(direction_masks[direction]);
-  if (moving_enabled) {
-    compute_movement();
+  if (direction_enabled) {
+
+    add_direction_mask(direction_masks[direction]);
+
+    if (moving_enabled) {
+      compute_movement();
+    }
   }
 }
 
@@ -205,9 +211,13 @@ void PlayerMovement::add_direction(int direction) {
  */
 void PlayerMovement::remove_direction(int direction) {
 
-  remove_direction_mask(direction_masks[direction]);
-  if (moving_enabled) {
-    compute_movement();
+  if (direction_enabled) {
+
+    remove_direction_mask(direction_masks[direction]);
+
+    if (moving_enabled) {
+      compute_movement();
+    }
   }
 }
 
@@ -267,9 +277,8 @@ void PlayerMovement::compute_movement(void) {
   // get the direction in degrees specified by the user (or -1)
   int direction = directions[direction_mask];
 
-  if (direction == -1) {
-    // no movement because the arrow combination is invalid
-    // (e.g. left and right at the same time)
+  if (direction == -1 || !moving_enabled) {
+    // no movement
     stop();
     started = false;
   }

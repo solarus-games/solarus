@@ -136,18 +136,6 @@ void Hero::arrow_pressed(int direction) {
 
   // notify the movement
   get_normal_movement()->add_direction(direction);
-
-  // grabbing or pulling
-  if (state == GRABBING) {
-
-    int opposite_direction = (get_animation_direction() + 2) % 4;
-    if (direction == get_animation_direction()) {
-      start_pushing();
-    }
-    else if (direction == opposite_direction) {
-      start_pulling();
-    }
-  }
 }
 
 /**

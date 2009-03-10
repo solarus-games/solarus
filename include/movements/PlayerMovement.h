@@ -27,7 +27,14 @@ class PlayerMovement: public MovementWithSmoothCollision {
    * True if the player can move the entity, i.e. if the game is not interrupted
    * and the entity is in a state such that the player has the control.
    */
-  bool can_move;
+  bool moving_enabled;
+  bool moving_enabled_before_suspended;
+
+  /**
+   * True if the direction arrows pressed are taken into account.
+   */
+  bool direction_enabled;
+  bool direction_enabled_before_suspended;
 
   // keyboard
 
@@ -57,9 +64,13 @@ class PlayerMovement: public MovementWithSmoothCollision {
   void remove_direction(int direction);
 
   // movement
-  void set_moving_enabled(bool can_move);
-  bool is_started(void);
   bool is_moving_enabled(void);
+  void set_moving_enabled(bool moving_enabled, bool direction_enabled);
+
+  bool is_direction_enabled(void);
+  // TODO remove void set_direction_enabled(bool direction_enabled);
+
+  bool is_started(void);
   void set_suspended(bool suspended);
 
   void compute_movement(void);

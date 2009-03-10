@@ -31,10 +31,12 @@ Hero::State Hero::get_state(void) {
  */
 void Hero::set_state(State state) {
 
+  // TODO remove  std::cout << "state " << state << std::endl;
+
   this->state = state;
 
   if (!zsdx->game->is_suspended()) {
-    get_normal_movement()->set_moving_enabled(state <= SWIMMING);
+    get_normal_movement()->set_moving_enabled(state < PUSHING, state < GRABBING);
   }
 }
 
@@ -48,7 +50,7 @@ void Hero::set_state(State state) {
  * @return true if the animation direction is locked
  */
 bool Hero::is_direction_locked(void) {
-  return state == SWORD_LOADING || state == PUSHING;
+  return state == SWORD_LOADING || state == PUSHING || state == PULLING;
 }
 
 /**
@@ -238,7 +240,6 @@ void Hero::update_pushing(void) {
       }
 
       if (counter >= 8) {
-	std::cout << "pushing because counter = 8\n";
 	start_pushing(); // start animation "pushing" when the counter reaches 8
       }
     }
@@ -520,7 +521,6 @@ void Hero::update_grabbing_pulling(void) {
     int sprite_direction = get_animation_direction() * 90;
 
     if (keys_direction == sprite_direction) {
-      std::cout << "pushing because of arrows\n";
       start_pushing();
     }
     else if (keys_direction == (sprite_direction + 180) % 360) {
@@ -624,27 +624,32 @@ void Hero::stop_moving_grabbed_entity(void) {
   Controls *controls = zsdx->game->get_controls();
   if (state == PUSHING && !controls->is_key_pressed(Controls::ACTION)) {
     grabbed_entity = NULL;
-    std::cout << "stop moving grabbed entity: ge = NULL\n";
     int straight_direction = get_animation_direction();
     if (get_normal_movement()->get_direction() != straight_direction * 90) {
       start_grabbing();
     }
   }
   else {
-    std::cout << "stop moving grabbed entity: will grab now\n";
     start_grabbing();
   }
 }
 
 /**
- * Forbids the hero to move until start_free() is called.
+ * Forbids the hero to move until unfreeze() is called.
  * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
  */
 void Hero::freeze(void) {
-  get_normal_movement()->set_moving_enabled(false);
+  get_normal_movement()->set_moving_enabled(false, false);
   set_animation_stopped();
   zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   set_state(FREEZED);
+}
+
+/**
+ * Lets the hero move again after a freeze() call.
+ */
+void Hero::unfreeze(void) {
+  start_free();
 }
 
 /**

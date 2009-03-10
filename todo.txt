@@ -27,6 +27,11 @@ Prochaine mise à jour zsdx :
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+  - pousser un bloc sans touche action : repasse par l'état free et le compteur à chaque fois
+  - pousser ou tirer un bloc puis mettre pause : si on relâche la flèche pendant que le jeu est interrompu, c'est pas détecté
+   -> dans PlayerMovement, ajouter la possibilité d'ignorer les mouvements mais de quand même détecter les flèches
+      (utile dans les états pousser, tirer, tapis roulant, wagonnet...)
+  - ouverture d'un coffre dans la maison des rubis : le joueur a le contrôle entre l'ouverture et le message
 
 - Prochains types d'entités:
   - tiles dynamiques

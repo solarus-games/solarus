@@ -635,6 +635,7 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
 
   // check each detector
   std::list<Detector*>::iterator i;
+
   for (i = detectors->begin();
        i != detectors->end();
        i++) {
@@ -655,7 +656,6 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
 void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
 
   std::list<Detector*> *detectors = entities->get_detectors();
-
   // check each detector
   std::list<Detector*>::iterator i;
   for (i = detectors->begin();

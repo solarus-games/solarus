@@ -230,7 +230,7 @@ int MapScript::l_unfreeze(lua_State *l) {
 
   check_nb_arguments(l, 0);
 
-  zsdx->game->get_hero()->start_free();
+  zsdx->game->get_hero()->unfreeze();
 
   return 0;
 }

@@ -278,7 +278,7 @@ void Hero::update(void) {
   if (!suspended) {
 
     // update the movement
-    get_normal_movement()->set_moving_enabled(get_state() < PUSHING);
+    get_normal_movement()->set_moving_enabled(state < PUSHING, state < GRABBING);
 
     // specific updates in some states
     switch (state) {
@@ -511,6 +511,28 @@ void Hero::movement_just_changed(void) {
       set_animation_stopped();
     }
   }
+
+  // TODO remove  std::cout << "check here, movement direction is " << get_movement_direction() << "\n";
+
+  /*
+  // pulling
+  if (state == PULLING && !is_moving_grabbed_entity()) {
+
+    int opposite_direction = (get_animation_direction() + 2) % 4;
+    if (direction == opposite_direction) {
+      start_grabbing();
+    }
+  }
+
+  // pushing
+  if (state == PUSHING && !is_moving_grabbed_entity()) {
+
+    int straight_direction = get_animation_direction();
+    if (direction == straight_direction) {
+      start_grabbing();
+    }
+  }
+  */
 
   // check the collisions
   if (map != NULL && !zsdx->game->is_suspended()) {

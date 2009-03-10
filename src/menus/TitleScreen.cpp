@@ -6,6 +6,10 @@
 #include "Color.h"
 #include "Transition.h"
 
+// TODO remove
+#include "Game.h"
+#include "Savegame.h"
+
 /**
  * Creates a title screen.
  */
@@ -43,6 +47,8 @@ TitleScreen::~TitleScreen(void) {
  * Updates the title screen.
  */
 void TitleScreen::update(void) {
+
+  set_next_screen(new Game(new Savegame("save1.zsd")));
 
   Uint32 now = SDL_GetTicks();
 

@@ -238,6 +238,7 @@ class Hero: public MapEntity {
   void start_lifting(DestructibleItem *item_to_lift);
   void start_carrying(void);
   void freeze(void);
+  void unfreeze(void);
   void give_treasure(Treasure *treasure);
   void start_jumping(int direction, int length, bool with_collisions);
   void hurt(MapEntity *source, int life);

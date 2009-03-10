@@ -142,7 +142,6 @@ void Hero::arrow_pressed(int direction) {
 
     int opposite_direction = (get_animation_direction() + 2) % 4;
     if (direction == get_animation_direction()) {
-      std::cout << "pushing because just pressed\n";
       start_pushing();
     }
     else if (direction == opposite_direction) {
@@ -159,22 +158,4 @@ void Hero::arrow_released(int direction) {
 
   // notify the movement
   get_normal_movement()->remove_direction(direction);
-
-  // pulling
-  if (state == PULLING && !is_moving_grabbed_entity()) {
-
-    int opposite_direction = (get_animation_direction() + 2) % 4;
-    if (direction == opposite_direction) {
-      start_grabbing();
-    }
-  }
-
-  // pushing
-  if (state == PUSHING && !is_moving_grabbed_entity()) {
-
-    int straight_direction = get_animation_direction();
-    if (direction == straight_direction) {
-      start_grabbing();
-    }
-  }
 }

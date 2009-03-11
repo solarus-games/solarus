@@ -154,6 +154,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 		}
 	    });
 	    add(item);
+
 	}
     }
 
@@ -389,20 +390,19 @@ public class MapViewPopupMenu extends JPopupMenu {
 	 */
 	public void actionPerformed(ActionEvent ev) {
 
-	    MapEntity newTile;
-	    if (tile instanceof DynamicTile) {
-		newTile = ((DynamicTile) tile).createStaticTile(); 
-	    }
-	    else {
-		newTile = tile.createDynamicTile();
-	    }
-		try {
-		    // create a dynamic tile
-		    map.getHistory().doAction(new ActionReplaceEntity(map, tile, newTile));
+	    try {
+		MapEntity newTile;
+		if (tile instanceof DynamicTile) {
+		    newTile = ((DynamicTile) tile).createStaticTile(); 
 		}
-		catch (ZSDXException ex) {
-		    GuiTools.errorDialog("Cannot convert this tile: " + ex.getMessage());
+		else {
+		    newTile = tile.createDynamicTile();
 		}
+		// create a dynamic tile
+		map.getHistory().doAction(new ActionReplaceEntity(map, tile, newTile));
+	    }
+	    catch (ZSDXException ex) {
+		GuiTools.errorDialog("Cannot convert this tile: " + ex.getMessage());
 	    }
 	}
     }

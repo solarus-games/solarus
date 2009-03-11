@@ -40,6 +40,12 @@ public class ActionEditEntitySpecific extends MapEditorAction {
      */
     public ActionEditEntitySpecific(MapEntity entity, int ... properties) {
 	this.entity = entity;
+
+	if (properties.length != entity.getProperties().size()) {
+	    throw new IllegalArgumentException("Wrong number of properties specified (" +
+		    properties.length + ": this entity has " + entity.getProperties().size() + "properties");
+	}
+
 	propertiesBefore = new LinkedHashMap<String, String>(entity.getProperties());
 	propertiesAfter = new LinkedHashMap<String, String>();
 

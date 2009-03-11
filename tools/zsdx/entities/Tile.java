@@ -193,9 +193,9 @@ public class Tile extends MapEntity {
     /**
      * Creates a dynamic tile with the same properties than this static tile.
      * @return the dynamic tile corresponding to this static tile
-     * @throws MapException if the dynamic tile could not be created
+     * @throws ZSDXException if the dynamic tile could not be created
      */
-    public final DynamicTile createDynamicTile() throws MapException {
+    public final DynamicTile createDynamicTile() throws ZSDXException {
 
 	String description = toString();
 
@@ -209,6 +209,10 @@ public class Tile extends MapEntity {
 	buff.append('\t');
 	buff.append('1');
 
-	return (DynamicTile) create(map, EntityType.DYNAMIC_TILE, null); 
+	// change the entity type
+	index = description.indexOf('\t');
+	description = EntityType.DYNAMIC_TILE.getIndex() + buff.substring(index);
+
+	return (DynamicTile) createFromString(map, description); 
     }
 }

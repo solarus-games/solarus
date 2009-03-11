@@ -51,6 +51,7 @@ public class EditDynamicTileComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 	return new ActionEditEntitySpecific(entity,
+		((Tile) entity).getTilePatternId(),
 		enabledField.isSelected() ? 1 : 0);
     }
 }

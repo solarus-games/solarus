@@ -27,15 +27,15 @@ public class DynamicTile extends Tile {
      */
     public void setPropertiesDefaultValues() throws MapException {
 	super.setPropertiesDefaultValues();
-	setProperty("active", true);
+	setProperty("enabled", true);
     }
 
     /**
      * Creates a static tile with the same properties than this dynamic tile.
      * @return the static tile corresponding to this dynamic tile
-     * @throws MapException if the static tile could not be created
+     * @throws ZSDXException if the static tile could not be created
      */
-    public final Tile createStaticTile() throws MapException {
+    public final Tile createStaticTile() throws ZSDXException {
 
 	String description = toString();
 
@@ -48,6 +48,18 @@ public class DynamicTile extends Tile {
 	description = description.substring(0, index + 1);
 	description += getTilePatternId();
 
-	return (Tile) create(map, EntityType.TILE, null); 
+	// change the entity type
+	index = description.indexOf('\t');
+	description = EntityType.TILE.getIndex() + description.substring(index);
+
+	return (Tile) createFromString(map, description); 
+    }
+
+    /**
+     * Returns whether the entity has an identifier.
+     * @return true
+     */
+    public boolean hasName() {
+	return true;
     }
 }

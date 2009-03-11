@@ -298,7 +298,7 @@ public abstract class MapEntity extends Observable {
 	    }
 	}
 	catch (NumberFormatException ex) {
-	    ex.printStackTrace();
+//	    ex.printStackTrace();
 	    throw new ZSDXException("Integer expected, found '" + token + "'");
 	}
     }

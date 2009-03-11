@@ -105,7 +105,7 @@ class TransitionImmediate;
 class MapEntities;
 class MapEntity;
 class Hero;
-class TileOnMap;
+class Tile;
 class DynamicTile;
 class Detector;
 class Teletransporter;

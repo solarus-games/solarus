@@ -86,7 +86,7 @@ add_executable (zsdx
   entities/HeroKeys.cpp
   entities/HeroAnimations.cpp
   entities/HeroState.cpp
-  entities/TileOnMap.cpp
+  entities/Tile.cpp
   entities/DynamicTile.cpp
   entities/Detector.cpp
   entities/Teletransporter.cpp

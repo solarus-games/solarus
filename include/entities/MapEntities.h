@@ -36,7 +36,7 @@ class MapEntities {
   /**
    * All tiles of the map (a vector for each layer).
    */
-  std::vector<TileOnMap*> tiles[MapEntity::LAYER_NB];
+  std::vector<Tile*> tiles[MapEntity::LAYER_NB];
 
   /**
    * Number of elements in the array obstacle_tiles.

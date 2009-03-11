@@ -1,7 +1,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
-#include "entities/TileOnMap.h"
+#include "entities/Tile.h"
 #include "entities/DynamicTile.h"
 #include "entities/Teletransporter.h"
 #include "entities/PickableItem.h"
@@ -188,11 +188,11 @@ void MapEntities::add_tile(int tile_pattern_id, MapEntity::Layer layer, int x, i
   MapEntity::Obstacle obstacle = tile_pattern->get_obstacle();
 
   // create the tile object
-  TileOnMap *tile_on_map = new TileOnMap(tile_pattern, layer, x, y, width, height);
+  Tile *tile = new Tile(tile_pattern, layer, x, y, width, height);
 
   // add it to the map
-  tiles[layer].push_back(tile_on_map);
-  tile_on_map->set_map(map);
+  tiles[layer].push_back(tile);
+  tile->set_map(map);
 
   // update the collision list
   int tile_x8 = x / 8;

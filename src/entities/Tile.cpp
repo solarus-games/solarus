@@ -1,4 +1,4 @@
-#include "entities/TileOnMap.h"
+#include "entities/Tile.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
 
@@ -11,7 +11,7 @@
  * @param width width of the tile (the pattern can be repeated)
  * @param height height of the tile (the pattern can be repeated)
  */
-TileOnMap::TileOnMap(TilePattern *tile_pattern, Layer layer, int x, int y, int width, int height):
+Tile::Tile(TilePattern *tile_pattern, Layer layer, int x, int y, int width, int height):
   MapEntity(layer, x, y, width, height), tile_pattern(tile_pattern) {
 
 }
@@ -19,7 +19,7 @@ TileOnMap::TileOnMap(TilePattern *tile_pattern, Layer layer, int x, int y, int w
 /**
  * Destructor.
  */
-TileOnMap::~TileOnMap(void) {
+Tile::~Tile(void) {
 
 }
 
@@ -27,13 +27,13 @@ TileOnMap::~TileOnMap(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType TileOnMap::get_type() {
+MapEntity::EntityType Tile::get_type() {
   return TILE;
 }
 
 /**
  * Displays the tile on the map.
  */
-void TileOnMap::display_on_map(void) {
+void Tile::display_on_map(void) {
   tile_pattern->display_on_map(map, position_in_map);
 }

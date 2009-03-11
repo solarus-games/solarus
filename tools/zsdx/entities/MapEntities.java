@@ -9,14 +9,14 @@ import java.util.*;
 public class MapEntities implements Iterable<MapEntity> {
 
     // the entities
-    private List<TileOnMap> tiles;
+    private List<Tile> tiles;
     private List<DynamicEntity> dynamicEntities;
 
     /**
      * Constructor.
      */
     public MapEntities() {
-	tiles = new LinkedList<TileOnMap>();
+	tiles = new LinkedList<Tile>();
 	dynamicEntities = new LinkedList<DynamicEntity>();
     }
 
@@ -24,7 +24,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * Copy constructor.
      */
     public MapEntities(MapEntities other) {
-	tiles = new LinkedList<TileOnMap>(other.tiles);
+	tiles = new LinkedList<Tile>(other.tiles);
 	dynamicEntities = new LinkedList<DynamicEntity>(other.dynamicEntities);
     }
 
@@ -32,7 +32,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * Returns the tiles.
      * @return the tiles
      */
-    public List<TileOnMap> getTiles() {
+    public List<Tile> getTiles() {
 	return tiles;
     }
 
@@ -143,8 +143,8 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public void addFirst(MapEntity entity) {
 
-	if (entity instanceof TileOnMap) {
-	    tiles.add(0, (TileOnMap) entity);
+	if (entity instanceof Tile) {
+	    tiles.add(0, (Tile) entity);
 	}
 	else if (entity instanceof DynamicEntity) {
 	    dynamicEntities.add(0, (DynamicEntity) entity);
@@ -160,8 +160,8 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public void addLast(MapEntity entity) {
 
-	if (entity instanceof TileOnMap) {
-	    tiles.add((TileOnMap) entity);
+	if (entity instanceof Tile) {
+	    tiles.add((Tile) entity);
 	}
 	else if (entity instanceof DynamicEntity) {
 	    dynamicEntities.add((DynamicEntity) entity);
@@ -177,7 +177,7 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public void remove(MapEntity entity) {
 
-	if (entity instanceof TileOnMap) {
+	if (entity instanceof Tile) {
 	    tiles.remove(entity);
 	}
 	else if (entity instanceof DynamicEntity) {
@@ -198,7 +198,7 @@ public class MapEntities implements Iterable<MapEntity> {
 	private int nbTiles;
 	private int nbActive;
 
-	private ListIterator<TileOnMap> tileIterator;
+	private ListIterator<Tile> tileIterator;
 	private ListIterator<DynamicEntity> activeIterator;
 
 	/**

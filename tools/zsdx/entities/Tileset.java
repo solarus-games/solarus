@@ -11,8 +11,8 @@ import zsdx.*;
  * This class describes a tileset.
  * A tileset is observable. When it changes, the observers are notified with
  * a parameter indicating what has just changed:
- *   - a Tile: indicates that this tile was created
- *   - an Integer: indicates that the tile with this id was removed
+ *   - a TilePattern: indicates that this tile pattern was created
+ *   - an Integer: indicates that the tile pattern with this id was removed
  *   - null: other cases
  */
 public class Tileset extends Observable {
@@ -35,13 +35,13 @@ public class Tileset extends Observable {
     private Color backgroundColor;
 
     /**
-     * The tiles.
-     * The key of a tile is its id in the tileset. The first id is 1.
+     * The tile patterns.
+     * The key of a tile pattern is its id in the tileset. The first id is 1.
      */
-    private TreeMap<Integer,Tile> tiles;
+    private TreeMap<Integer,TilePattern> tilePatterns;
 
     /**
-     * Maximum id of a tile in the hashtable.
+     * Maximum id of a tile in the map.
      */
     private int maxId;
 
@@ -54,7 +54,7 @@ public class Tileset extends Observable {
      * The scaled tileset images.
      */
     private BufferedImage[] scaledImages;
-    
+
     // information about the user actions on the tileset
 
     /**
@@ -64,24 +64,24 @@ public class Tileset extends Observable {
     private boolean isSaved; 
 
     /**
-     * Id of the tile currently selected by the user.
-     * 0: no tile is selected
-     * 1 or more: an existing tile is selected
-     * -1: a new tile is selected, ready to be created
+     * Id of the tile pattern currently selected by the user.
+     * 0: no tile pattern is selected
+     * 1 or more: an existing tile pattern is selected
+     * -1: a new tile pattern is selected, ready to be created
      */
-    private int selectedTileId;
+    private int selectedTilePatternId;
 
     /**
-     * Position of the tile the user is creating,
-     * or null if there no new tile selected.
+     * Position of the tile pattern the user is creating,
+     * or null if there no new tile pattern selected.
      */
-    private Rectangle newTileArea;
+    private Rectangle newTilePatternArea;
 
     /**
-     * True if the new tile area is overlapping a tile.
-     * Is so, the tile cannot be created.
+     * True if the new tile pattern area is overlapping an existing tile pattern.
+     * Is so, the tile pattern cannot be created.
      */
-    private boolean isNewTileAreaOverlapping;
+    private boolean isNewTilePatternAreaOverlapping;
 
     /**
      * Creates a new tileset.
@@ -94,8 +94,8 @@ public class Tileset extends Observable {
 	this.backgroundColor = Color.BLACK;
 	this.isSaved = false;
 	this.maxId = 0;
-	this.selectedTileId = 0; // none
-	this.tiles = new TreeMap<Integer,Tile>();
+	this.selectedTilePatternId = 0; // none
+	this.tilePatterns = new TreeMap<Integer,TilePattern>();
 
 	// compute an id and a name for this tileset
 	this.name = "New tileset";
@@ -115,8 +115,8 @@ public class Tileset extends Observable {
      * @throws ZSDXException if the tileset could not be loaded
      */
     public Tileset(String tilesetId) throws ZSDXException {
-	this.selectedTileId = 0; // none
-	this.tiles = new TreeMap<Integer,Tile>();
+	this.selectedTilePatternId = 0; // none
+	this.tilePatterns = new TreeMap<Integer,TilePattern>();
 	this.tilesetId = tilesetId;
 	load();
     }
@@ -273,85 +273,86 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Returns the number of tiles in the tileset.
-     * @return the number of tiles
+     * Returns the number of tile patterns in the tileset.
+     * @return the number of tile patterns
      */
-    public int getNbTiles() {
-	return tiles.size();
+    public int getNbTilePatterns() {
+	return tilePatterns.size();
     }
 
     /**
-     * Returns the ids of the tiles
-     * @return the ids of the tiles
+     * Returns the ids of the tile patterns.
+     * @return the ids of the tile patterns
      */
-    public Set<Integer> getTileIds() {
-	return tiles.keySet();
+    public Set<Integer> getTilePatternIds() {
+	return tilePatterns.keySet();
     }
 
     /**
-     * Returns the tiles of this tileset.
-     * @return the tiles
+     * Returns the tile patterns of this tileset.
+     * @return the tile patterns
      */
-    public Collection<Tile> getTiles() {
-	return tiles.values();
+    public Collection<TilePattern> getTilePatterns() {
+	return tilePatterns.values();
     }
 
     /**
-     * Returns a tile.
-     * @param id id of the tile to get
-     * @return the tile with this id
-     * @throws IllegalArgumentException if there is no tile with this id
+     * Returns a tile pattern.
+     * @param id id of the tile pattern to get
+     * @return the tile pattern with this id
+     * @throws IllegalArgumentException if there is no tile pattern with this id
      */
-    public Tile getTile(int id) throws IllegalArgumentException {
+    public TilePattern getTilePattern(int id) throws IllegalArgumentException {
 
-	Tile tile = tiles.get(id);
+	TilePattern tilePattern = tilePatterns.get(id);
 
-	if (tile == null) {
-	    throw new IllegalArgumentException("There is no tile with id " + id + " in the tileset.");
+	if (tilePattern == null) {
+	    throw new IllegalArgumentException("There is no tile pattern with id " + id + " in the tileset.");
 	}
 
-	return tile;
+	return tilePattern;
     }
 
     /**
-     * Returns the id of the tile at a location in the tileset,
-     * or 0 if there is no tile there.
+     * Returns the id of the tile pattern at a location in the tileset,
+     * or 0 if there is no tile pattern there.
      * @param x x coordinate of the point
      * @param y y coordinate of the point
-     * @return id of the tile at this point, or 0 if there is no tile here
+     * @return id of the tile pattern at this point, or 0 if there is no tile pattern here
      */
-    public int getIdOfTileAt(int x, int y) {
+    public int getTilePatternIdAt(int x, int y) {
 
-	for (int id: getTileIds()) {
-	    Rectangle tileRectangle = getTile(id).getPositionInTileset();
-	    if (tileRectangle.contains(x, y)) {
-		return id; // a tile was found at this point
+	for (int id: getTilePatternIds()) {
+	    Rectangle patternRectangle = getTilePattern(id).getPositionInTileset();
+	    if (patternRectangle.contains(x, y)) {
+		return id; // a tile pattern was found at this point
 	    }
 	}
 
-	return 0; // no tile found
+	return 0; // no tile pattern found
     }
 
     /**
-     * Returns the id of the selected tile.
-     * @return 0 if no tile is selected, 1 or more if an existing tile is selected,
-     * or -1 if a new tile is selected
+     * Returns the id of the selected tile pattern.
+     * @return 0 if no tile pattern is selected, 1 or more if an existing tile pattern is selected,
+     * or -1 if a new tile pattern is selected
      */
-    public int getSelectedTileId() {
-	return selectedTileId;
+    public int getSelectedTilePatternId() {
+	return selectedTilePatternId;
     }
 
     /**
-     * Selects a tile and notifies the observers.
-     * @param selectedTileId 0 to select no tile, 1 or more to select the existing
-     * tile with this id or -1 if a new tile is selected
+     * Selects a tile patterns and notifies the observers.
+     * @param selectedTilePatternId 0 to select no tile pattern,
+     * 1 or more to select the existing
+     * tile pattern with this id or -1 if a new tile pattern is selected
      */
-    public void setSelectedTileId(int selectedTileId) {
-	if (selectedTileId != this.selectedTileId) {
-	    this.selectedTileId = selectedTileId;
+    public void setSelectedTilePatternId(int selectedTilePatternId) {
+	if (selectedTilePatternId != this.selectedTilePatternId) {
+	    this.selectedTilePatternId = selectedTilePatternId;
 
-	    if (selectedTileId != getNbTiles()) {
-		newTileArea = null;
+	    if (selectedTilePatternId != getNbTilePatterns()) {
+		newTilePatternArea = null;
 	    }
 
 	    setChanged();
@@ -360,28 +361,29 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Unselects the current tile.
+     * Unselects the current tile pattern.
      * This is equivalent to call setSelectedTileId(0).
      */
-    public void unselectTile() {
-	setSelectedTileId(0);
+    public void unselectTilePattern() {
+	setSelectedTilePatternId(0);
     }
 
     /**
-     * Starts the selection of a new tile.
-     * This is equivalent to call setSelectedTileId(-1).
+     * Starts the selection of a new tile pattern.
+     * This is equivalent to call setSelectedTilePatternId(-1).
      */
-    public void startSelectingNewTile() {
-	setSelectedTileId(-1);
+    public void startSelectingNewTilePattern() {
+	setSelectedTilePatternId(-1);
     }
 
     /**
-     * Returns the selected tile.
-     * @return the selected tile, or null if there is no selected tile or if doesn't exist yet
+     * Returns the selected tile pattern.
+     * @return the selected tile pattern, or null if there is no selected
+     * tile pattern or if doesn't exist yet
      */
-    public Tile getSelectedTile() {
-	if (selectedTileId > 0) {
-	    return getTile(selectedTileId);
+    public TilePattern getSelectedTilePattern() {
+	if (selectedTilePatternId > 0) {
+	    return getTilePattern(selectedTilePatternId);
 	}
 	else {
 	    return null;
@@ -389,25 +391,26 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Returns whether or not the user is selecting a new tile.
-     * @return true if the user is selecting a new tile, i.e. if getSelectedTileId() == -1
+     * Returns whether or not the user is selecting a new tile pattern.
+     * @return true if the user is selecting a new tile pattern,
+     * i.e. if getSelectedTilePatternId() == -1
      */
-    public boolean isSelectingNewTile() {
-	return selectedTileId == -1;
+    public boolean isSelectingNewTilePattern() {
+	return selectedTilePatternId == -1;
     }
 
     /**
-     * Returns the rank of a tile, knowing its id.
-     * The rank is the position of the tile if you consider all tiles sorted by their ids.
+     * Returns the rank of a tile pattern, knowing its id.
+     * The rank is the position of the tile pattern if you consider all tile patterns sorted by their ids.
      * It is different from the id because all ids don't exist necessarily.
-     * @param id id of the tile in the tileset
-     * @return rank of this tile, in [0, getNbTiles()[.
+     * @param id id of the tile pattern in the tileset
+     * @return rank of this tile pattern, in [0, getNbTilePatterns()[.
      */
-    public int tileIdToTileRank(int id) {
+    public int idToRank(int id) {
 	
 	// count the tiles until we find the right one
 	int rank = 0;
-	for (int idFound: getTileIds()) {
+	for (int idFound: getTilePatternIds()) {
 	    
 	    if (idFound == id) {
 		return rank;
@@ -415,21 +418,21 @@ public class Tileset extends Observable {
 	    rank++;
 	}
 
-	throw new NoSuchElementException("There is no tile at id " + id + " in the tileset.");
+	throw new NoSuchElementException("There is no tile pattern at id " + id + " in the tileset.");
     }
 
     /**
-     * Returns the id of a tile knowing its rank.
-     * The rank is the position of the tile if you consider all tiles sorted by their ids.
+     * Returns the id of a tile pattern knowing its rank.
+     * The rank is the position of the tile pattern if you consider all tile patterns sorted by their ids.
      * It is different from the id because all ids don't exist necessarily.
-     * @param rank rank of the tile considered, in [0, getNbTiles()[
-     * @return the id of the tile with this rank
+     * @param rank rank of the tile pattern considered, in [0, getNbTilePatterns()[
+     * @return the id of the tile pattern with this rank
      */
-    public int tileRankToTileId(int rank) {
+    public int rankToId(int rank) {
 	
 	// count rank tiles
 	int i = 0;
-	for (int currentId: getTileIds()) {
+	for (int currentId: getTilePatternIds()) {
 	    
 	    if (i == rank) {
 		return currentId;
@@ -437,33 +440,33 @@ public class Tileset extends Observable {
 	    i++;
 	}
 
-	throw new NoSuchElementException("There is no tile with rank " + rank + " in the tileset.");
+	throw new NoSuchElementException("There is no tile pattern with rank " + rank + " in the tileset.");
     }
 
     /**
-     * Returns the position of the tile the user is creating,
-     * @return position of the new tile, or null if there no new tile selected
+     * Returns the position of the tile pattern the user is creating.
+     * @return position of the new tile pattern, or null if there no new tile pattern selected
      */
-    public Rectangle getNewTileArea() {
-	return newTileArea;
+    public Rectangle getNewTilePatternArea() {
+	return newTilePatternArea;
     }
 
     /**
-     * Changes the position of the tile the user is creating.
+     * Changes the position of the tile pattern the user is creating.
      * If the specified area is the same than before, nothing is done. 
      * @param newTileArea position of the new tile, or null if there is currently no new tile selected
      */
-    public void setNewTileArea(Rectangle newTileArea) {
-	if (!newTileArea.equals(this.newTileArea)) {
+    public void setNewTilePatternArea(Rectangle newTilePatternArea) {
+	if (!newTilePatternArea.equals(this.newTilePatternArea)) {
 
-	    this.newTileArea = newTileArea;
+	    this.newTilePatternArea = newTilePatternArea;
 	    
-	    // determine whether or not the new tile area is overlapping an existing tile
-	    isNewTileAreaOverlapping = false;
-	    for (Tile tile: getTiles()) {
+	    // determine whether or not the new tile pattern area is overlapping an existing tile pattern
+	    isNewTilePatternAreaOverlapping = false;
+	    for (TilePattern pattern: getTilePatterns()) {
 
-		if (tile.getPositionInTileset().intersects(newTileArea)) {
-		    isNewTileAreaOverlapping = true;
+		if (pattern.getPositionInTileset().intersects(newTilePatternArea)) {
+		    isNewTilePatternAreaOverlapping = true;
 		    break;
 		}
 	    }
@@ -474,57 +477,57 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Returns whether or not the area selected by the user to make a new tile
-     * is overlapping an existing tile.
-     * @return true if the new tile area is overlapping an existing tile, false otherwise
+     * Returns whether or not the area selected by the user to make a new tile pattern
+     * is overlapping an existing tile pattern.
+     * @return true if the new tile pattern area is overlapping an existing tile pattern, false otherwise
      */
-    public boolean isNewTileAreaOverlapping() {
-	return isNewTileAreaOverlapping;
+    public boolean isNewTilePatternAreaOverlapping() {
+	return isNewTilePatternAreaOverlapping;
     }
 
     /**
-     * Creates the tile specified by the current selection area and adds it to the tileset.
-     * The observers are notified with the created Tile as parameter.
-     * @param obstacle type of obstacle for the created tile
+     * Creates the tile pattern specified by the current selection area
+     * and adds it to the tileset.
+     * The observers are notified with the created TilePattern as parameter.
+     * @param obstacle type of obstacle for the created tile pattern
      * @throws TilesetException if the tile size is incorrect
      */
-    public void addTile(int obstacle) throws TilesetException {
-	Tile tile = null;
+    public void addTilePattern(int obstacle) throws TilesetException {
 
-	if (isSelectingNewTile() && !isNewTileAreaOverlapping) {
-	    tile = new Tile(newTileArea, MapEntity.LAYER_LOW, obstacle);
+	if (isSelectingNewTilePattern() && !isNewTilePatternAreaOverlapping) {
+	    TilePattern tilePattern = new TilePattern(newTilePatternArea, MapEntity.LAYER_LOW, obstacle);
 	    
 	    maxId++;
-	    tiles.put(maxId, tile);
+	    tilePatterns.put(maxId, tilePattern);
 
-	    setSelectedTileId(maxId);
+	    setSelectedTilePatternId(maxId);
 	    
 	    isSaved = false;
 	    
 	    setChanged();
-	    notifyObservers(tile); // indicates that a tile has been created
+	    notifyObservers(tilePattern); // indicates that a tile pattern has been created
 	}
     }
 
     /**
-     * Adds a tile to the tileset.
-     * @param tileId id of the tile
-     * @param tile the tile to add
+     * Adds a tile pattern to the tileset.
+     * @param tilePatternId id of the tile pattern
+     * @param tilePattern the tile pattern to add
      */
-    private void addTile(int tileId, Tile tile) {
-	tiles.put(tileId, tile);
+    private void addTilePattern(int tilePatternId, TilePattern tilePattern) {
+	tilePatterns.put(tilePatternId, tilePattern);
     }
 
     /**
-     * Removes the selected tile.
-     * The oberservers are notified with the removed tile as parameter.
+     * Removes the selected tile pattern.
+     * The oberservers are notified with the removed tile pattern as parameter.
      */
-    public void removeTile() {
-	Integer id = new Integer(getSelectedTileId());
+    public void removeTilePattern() {
+	Integer id = new Integer(getSelectedTilePatternId());
 
 	if (id > 0) {
-	    tiles.remove(id);
-	    setSelectedTileId(0);
+	    tilePatterns.remove(id);
+	    setSelectedTilePatternId(0);
 
 	    isSaved = false;
 
@@ -554,14 +557,14 @@ public class Tileset extends Observable {
      * @throws ZSDXException if the file could not be read
      */
     public void load() throws ZSDXException {
-	
+
 	int lineNumber = 0;
 	try {
 
 	    // get the tileset name in the game resource database
 	    Resource tilesetResource = Project.getResource(ResourceDatabase.RESOURCE_TILESET);
 	    setName(tilesetResource.getElementName(tilesetId));
-	    
+
 	    File tilesetFile = Project.getTilesetFile(tilesetId);
 	    BufferedReader in = new BufferedReader(new FileReader(tilesetFile));
 
@@ -588,8 +591,8 @@ public class Tileset extends Observable {
 
 		int tabIndex = line.indexOf('\t');
 		int id = Integer.parseInt(line.substring(0, tabIndex));
-		Tile tile = new Tile(line.substring(tabIndex + 1));
-		addTile(id, tile);
+		TilePattern tilePattern = new TilePattern(line.substring(tabIndex + 1));
+		addTilePattern(id, tilePattern);
 
 		if (id > maxId) {
 		    maxId = id;
@@ -636,11 +639,11 @@ public class Tileset extends Observable {
 	    out.print(backgroundColor.getBlue());
 	    out.println();
 
-	    // print the tiles
-	    for (int id: getTileIds()) {
+	    // print the tile patterns
+	    for (int id: getTilePatternIds()) {
 		out.print(id);
 		out.print('\t');
-		out.print(getTile(id).toString());
+		out.print(getTilePattern(id).toString());
 		out.println();
 	    }
 

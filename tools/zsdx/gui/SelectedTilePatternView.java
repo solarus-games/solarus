@@ -6,9 +6,9 @@ import javax.swing.*;
 import zsdx.entities.*;
 
 /**
- * This component shows information about the current tile and lets the user edit it.
+ * This component shows information about the current tile pattern and lets the user edit it.
  */
-public class SelectedTileView extends JPanel {
+public class SelectedTilePatternView extends JPanel {
 
     // the tileset
     private Tileset tileset;
@@ -22,7 +22,7 @@ public class SelectedTileView extends JPanel {
     /**
      * Constructor.
      */
-    public SelectedTileView() {
+    public SelectedTilePatternView() {
 	super(new GridBagLayout());
 
 	GridBagConstraints constraints = new GridBagConstraints();
@@ -61,7 +61,7 @@ public class SelectedTileView extends JPanel {
 	buttonDelete.setEnabled(false);
 	buttonDelete.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent ev) {
-		    tileset.removeTile();
+		    tileset.removeTilePattern();
 		}
 	    });
 	constraints.gridx = 0;
@@ -78,18 +78,18 @@ public class SelectedTileView extends JPanel {
      */
     public void setTileset(Tileset tileset) {
 	this.tileset = tileset;
-	setCurrentTile(null);
+	setCurrentTilePattern(null);
     }
 
     /**
-     * Changes the tile shown.
-     * @param tile the new current tile (can be null)
+     * Changes the tile pattern shown.
+     * @param tile the new current tile pattern (can be null)
      */
-    public void setCurrentTile(Tile tile) {
-	buttonDelete.setEnabled(tile != null);
+    public void setCurrentTilePattern(TilePattern tilePattern) {
+	buttonDelete.setEnabled(tilePattern != null);
 
-	obstacleView.setCurrentTile(tile);
-	animationView.setCurrentTile(tile);
-	defaultLayerView.setCurrentTile(tile);
+	obstacleView.setCurrentTilePattern(tilePattern);
+	animationView.setCurrentTilePattern(tilePattern);
+	defaultLayerView.setCurrentTilePattern(tilePattern);
     }
 }

@@ -17,9 +17,9 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
     private Tileset tileset;
 
     /**
-     * The list of tiles.
+     * The list of tile patterns.
      */
-    private TilesView tilesView;
+    private TilePatternsView tilePatternsView;
 
     /**
      * The tileset image.
@@ -44,12 +44,12 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	// create the menu bar
 	createMenuBar();
 
-	// tile list and tileset image
+	// tile patterns list and tileset image
 
-	// tile list
-	tilesView = new TilesView();
-	tilesView.setAlignmentY(Component.TOP_ALIGNMENT);
- 	tilesView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+	// tile patterns list
+	tilePatternsView = new TilePatternsView();
+	tilePatternsView.setAlignmentY(Component.TOP_ALIGNMENT);
+ 	tilePatternsView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
 	// tileset image
 	tilesetImageView = new TilesetImageView(true);
@@ -57,7 +57,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
  	tilesetImageScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
-	JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tilesView, tilesetImageScroller);
+	JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tilePatternsView, tilesetImageScroller);
 	tilesetPanel.setContinuousLayout(true); 
 
 	// we must put our main panel in another panel
@@ -124,7 +124,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	menuTileset = new JMenu("Tileset");
 	menuTileset.setEnabled(false);
 	menuTileset.setMnemonic(KeyEvent.VK_T);
-	
+
 	item = new JMenuItem("New");
 	item.setMnemonic(KeyEvent.VK_N);
 	item.getAccessibleContext().setAccessibleDescription("Create a new tileset");
@@ -164,12 +164,12 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      */
     public void currentProjectChanged() {
 	menuTileset.setEnabled(true);
-	
+
 	if (tileset != null) {
 	    closeTileset(); // close the tileset that was open with the previous project 
 	}
     }
-    
+
     /**
      * Sets the current tileset. This method is called when the user opens a tileset,
      * closes the tileset, or creates a new one.
@@ -180,7 +180,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	if (this.tileset != null) {
 	    this.tileset.deleteObservers();
 	}
-	
+
 	this.tileset = tileset;
 
 	// enable or disable the menu items
@@ -188,7 +188,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	menuItemSave.setEnabled(tileset != null);
 
 	// notify the views
-	tilesView.setTileset(tileset);
+	tilePatternsView.setTileset(tileset);
 	tilesetImageView.setTileset(tileset);
     }
 

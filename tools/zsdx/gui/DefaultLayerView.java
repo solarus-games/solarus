@@ -7,7 +7,7 @@ import zsdx.entities.*;
 
 
 /**
- * Graphical component to select the default layer of a tile in the tileset editor:
+ * Graphical component to select the default layer of a tile pattern in the tileset editor:
  * - below
  * - intermediate
  * - above
@@ -24,9 +24,9 @@ public class DefaultLayerView extends JComboBox implements Observer, ActionListe
     };
 
     /**
-     * The tile observed.
+     * The tile pattern observed.
      */
-    private Tile tile;
+    private TilePattern tilePattern;
 
     /**
      * Constructor.
@@ -37,19 +37,19 @@ public class DefaultLayerView extends JComboBox implements Observer, ActionListe
     }
 
     /**
-     * Sets the current tile observed.
+     * Sets the current tile pattern observed.
      */
-    public void setCurrentTile(Tile tile) {
-	if (this.tile != null) {
-	    this.tile.deleteObserver(this);
+    public void setCurrentTilePattern(TilePattern tilePattern) {
+	if (this.tilePattern != null) {
+	    this.tilePattern.deleteObserver(this);
 	}
 
-	this.tile = tile;
+	this.tilePattern = tilePattern;
 	
-	if (tile != null) {
-	    tile.addObserver(this);
+	if (tilePattern != null) {
+	    tilePattern.addObserver(this);
 	    setEnabled(true);
-	    update(tile, null);
+	    update(tilePattern, null);
 	}
 	else {
 	    setEnabled(false);
@@ -57,22 +57,22 @@ public class DefaultLayerView extends JComboBox implements Observer, ActionListe
     }
 
     /**
-     * This method is called when the tile is changed.
+     * This method is called when the tile pattern is changed.
      * The selection is then updated.
      */
     public void update(Observable o, Object params) {
-	setSelectedIndex(tile.getDefaultLayer());
+	setSelectedIndex(tilePattern.getDefaultLayer());
     }
     
     /**
      * This method is called when the selection the combo box is changed.
-     * The tile is then updated.
+     * The tile pattern is then updated.
      */
     public void actionPerformed(ActionEvent e) {
 	int listIndex = getSelectedIndex();
-	if (listIndex != tile.getDefaultLayer()) {
+	if (listIndex != tilePattern.getDefaultLayer()) {
 	    // the layer has changed
-	    tile.setDefaultLayer(listIndex);
+	    tilePattern.setDefaultLayer(listIndex);
 	}
     }
 }

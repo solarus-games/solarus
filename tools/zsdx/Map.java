@@ -305,12 +305,12 @@ public class Map extends Observable {
 
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
-		List<TileOnMap> tiles = allEntities[layer].getTiles();
+		List<Tile> tiles = allEntities[layer].getTiles();
 
 		for (int i = 0; i < tiles.size(); i++) {
 
 		    try {
-			TileOnMap tile = tiles.get(i);
+			Tile tile = tiles.get(i);
 			tile.setTileset(tileset);
 		    }
 		    catch (TilesetException ex) {

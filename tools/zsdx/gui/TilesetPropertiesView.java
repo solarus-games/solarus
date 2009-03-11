@@ -20,7 +20,7 @@ public class TilesetPropertiesView extends JPanel implements Observer {
     // components
     private JLabel tilesetIdView;
     private TilesetNameView tilesetNameView;
-    private JLabel tilesetNbTilesView;
+    private JLabel tilesetNbTilePatternsView;
     private TilesetBackgroundColorView tilesetBackgroundColorView;
 
     /**
@@ -63,8 +63,8 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	add(tilesetNameView, constraints);
 
        	constraints.gridy++;
-	tilesetNbTilesView = new JLabel(); 
-	add(tilesetNbTilesView, constraints);
+	tilesetNbTilePatternsView = new JLabel(); 
+	add(tilesetNbTilePatternsView, constraints);
 
 	constraints.gridy++;
 	tilesetBackgroundColorView = new TilesetBackgroundColorView();
@@ -80,13 +80,13 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	}
 
 	this.tileset = tileset;
-	
+
 	if (tileset != null) {
 	    tileset.addObserver(this);
 	}
 	update(tileset, null);
     }
-    
+
     /**
      * This function is called when the tileset is changed.
      * @param o the tileset, or null if no tileset is set
@@ -97,13 +97,13 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	// update the elementary components here
 	if (tileset == null) {
 	    tilesetIdView.setText("");
-	    tilesetNbTilesView.setText("");
+	    tilesetNbTilePatternsView.setText("");
 	}
 	else {
 	    tilesetIdView.setText(tileset.getId());
-	    tilesetNbTilesView.setText(Integer.toString(tileset.getNbTiles()));
+	    tilesetNbTilePatternsView.setText(Integer.toString(tileset.getNbTilePatterns()));
 	}
-	
+
 	// tell the complex components to update themselves
 	tilesetNameView.update(tileset);
 	tilesetBackgroundColorView.update(tileset);
@@ -159,7 +159,7 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	 * @param o the tileset, or null if no tileset is loaded
 	 */
 	public void update(Observable o) {
-	    
+
 	    if (o == null) {
 		textFieldName.setEnabled(false);
 		buttonSet.setEnabled(false);
@@ -172,12 +172,12 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 	    }
 	}
     }
-    
+
     /**
      * Component to change the background color of the tileset.
      */
     private class TilesetBackgroundColorView extends JComponent {
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -201,7 +201,7 @@ public class TilesetPropertiesView extends JPanel implements Observer {
 		    }
 		});
 	}
-	
+
 	/**
 	 * This function is called when the tileset is changed.
 	 * @param o the tileset, or null if no tileset is loaded

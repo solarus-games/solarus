@@ -8,7 +8,7 @@ import java.lang.reflect.*;
  */
 public enum EntityType {
 
-    TILE              (0, "Tile", TileOnMap.class, null),
+    TILE              (0, "Tile", Tile.class, null),
     DESTINATION_POINT (1, "Destination point", DestinationPoint.class, DestinationPoint.Subtype.class),
     TELETRANSPORTER   (2, "Teletransporter", Teletransporter.class, Teletransporter.Subtype.class),
     PICKABLE_ITEM     (3, "Pickable item", PickableItem.class, PickableItem.Subtype.class),

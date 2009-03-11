@@ -6,7 +6,7 @@ import java.util.*;
 import zsdx.entities.*;
 
 /**
- * Graphical component to select the obstacle properties of a tile:
+ * Graphical component to select the obstacle properties of a tile pattern:
  * - no obstacle
  * - obstacle
  * - obstacle top right
@@ -19,9 +19,9 @@ import zsdx.entities.*;
 public class ObstacleChooser extends JComboBox implements Observer, ActionListener {
 
     /**
-     * The tile observed.
+     * The tile pattern observed.
      */
-    private Tile tile;
+    private TilePattern tilePattern;
 
     /**
      * Constructor.
@@ -32,19 +32,19 @@ public class ObstacleChooser extends JComboBox implements Observer, ActionListen
     }
 
     /**
-     * Sets the current tile observed.
+     * Sets the current tile pattern observed.
      */
-    public void setCurrentTile(Tile tile) {
-	if (this.tile != null) {
-	    this.tile.deleteObserver(this);
+    public void setCurrentTilePattern(TilePattern tile) {
+	if (this.tilePattern != null) {
+	    this.tilePattern.deleteObserver(this);
 	}
 
-	this.tile = tile;
+	this.tilePattern = tile;
 	
-	if (tile != null) {
-	    tile.addObserver(this);
+	if (tilePattern != null) {
+	    tilePattern.addObserver(this);
 	    setEnabled(true);
-	    update(tile, null);
+	    update(tilePattern, null);
 	}
 	else {
 	    setEnabled(false);
@@ -52,23 +52,23 @@ public class ObstacleChooser extends JComboBox implements Observer, ActionListen
     }
 
     /**
-     * This method is called when the tile is changed.
+     * This method is called when the tile pattern is changed.
      * The selection is then updated.
      */
     public void update(Observable o, Object params) {
-	setSelectedIndex(tile.getObstacle());
+	setSelectedIndex(tilePattern.getObstacle());
     }
     
     /**
      * This method is called when the selection the combo box is changed.
-     * The tile is then updated.
+     * The tile pattern is then updated.
      */
     public void actionPerformed(ActionEvent ev) {
 	int listIndex = getSelectedIndex();
-	if (listIndex != tile.getObstacle()) {
+	if (listIndex != tilePattern.getObstacle()) {
 	    // the type of obstacle has changed
 	    try {
-		tile.setObstacle(listIndex);
+		tilePattern.setObstacle(listIndex);
 	    }
 	    catch (TilesetException e) {
 		JOptionPane.showMessageDialog(null,

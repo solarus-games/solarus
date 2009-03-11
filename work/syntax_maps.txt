@@ -50,7 +50,7 @@ Pour le moment, les types d'entités suivants sont gérés :
 
 Tiles (0)
 
-Un tile n'a pas de direction. Il n'a pas non plus d'identificateur (ce qui signifie qu'il est impossible de modifier/supprimer/ajouter un tile au cours de l'exécution).
+Un tile n'a pas de direction. Il n'a pas non plus d'identificateur (ce qui signifie qu'il est impossible de modifier/supprimer/ajouter un tile au cours de l'exécution : pour cela il faut utiliser un tile dynamique).
 Mais un tile est de taille réglable : on peut en effet répéter son motif plusieurs fois, ce qui évite de placer 20 fois de suite le même tile de mur quand on veut faire le mur d'une pièce.
 
 Syntaxe de la partie spécifique pour un tile :
@@ -237,6 +237,23 @@ maximum_moves indique ce qui se passe lorsque le héros pousse le bloc :
 skin indique l'animation du sprite (le sprite étant automatiquement "entities/block"). Cela permet de choisir la couleur du bloc.
 Pour un bloc, le skin par défaut est "gray_block". Pour une statue, le skin est toujours "statue" et n'est pas modifiable.
 
+
+Tiles dynamiques (10)
+
+Un tile dynamique est un tile qui a la possibilité d'être désactivé ou réactivé dynamiquement par le script. Les 
+tiles dynamiques consomment plus de ressources que les tiles classiques pour la détection des collisions.
+
+Un tile dynamique n'a pas de direction. Il a un identificateur, ce qui signifie qu'il est possible de modifier un tile 
+dynamique au cours de l'exécution.
+
+Syntaxe de la partie spécifique pour un tile dynamique :
+
+tile_id active
+
+tile_id est le numéro du tile dans son tileset, tel que défini dans le fichier du tileset.
+active est un booléen (0 ou 1) indiquant si le tile est actif lorsque la map démarre. S'il est inactif, tout se passe 
+comme s'il était absent de la map, jusqu'à ce qu'il soit activé par le script.
+
 Interrupteurs
 
 Un interrupteur a pour effet d'appeler le script lorsque le héros est dessus. Un interrupteur peut également être activé par un bloc (ou une statue) qui est poussé dessus. Certains interrupteurs se désactivent lorsque le héros les quitte, d'autres ne peuvent pas être activés par le héros qui est trop léger (il faut alors un bloc ou une statue).
@@ -245,10 +262,6 @@ Un interrupteur n'a pas de direction et a un identification. Sa taille est toujo
 Syntaxe de la partie spécifique pour un interrupteur :
 
 needs_block disable_on_leaving
-
-
-Tiles dynamiques
-
 
 Portes
 

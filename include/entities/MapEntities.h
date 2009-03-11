@@ -61,9 +61,9 @@ class MapEntities {
   std::list<MapEntity*> entities_to_remove;
 
   /**
-   * All map entities that are displayed as a sprite (a vector for each layer).
+   * All map entities that are displayed (a vector for each layer).
    */
-  std::list<MapEntity*> sprite_entities[MapEntity::LAYER_NB];
+  std::list<MapEntity*> displayed_entities[MapEntity::LAYER_NB];
 
   /**
    * Vector of all possible destination points of the map.
@@ -97,14 +97,16 @@ class MapEntities {
   MapEntity::Obstacle get_obstacle_tile(MapEntity::Layer layer, int x, int y);
   std::list<MapEntity*> * get_obstacle_entities(MapEntity::Layer layer);
   std::list<Detector*> * get_detectors(void);
-  void set_obstacle(MapEntity *entity, MapEntity::Obstacle obstacle);
   void set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle obstacle);
   MapEntity *get_entity(MapEntity::EntityType type, string name);
 
   void bring_to_front(MapEntity *sprite_entity);
 
   // add and remove entities
-  void add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height);
+  void add_tile(int tile_pattern_id, MapEntity::Layer layer, int x, int y, int width, int height);
+
+  void add_dynamic_tile(string name, int tile_pattern_id, MapEntity::Layer layer,
+			int x, int y, int width, int height, bool enabled);
 
   void add_destination_point(string destination_point_name, MapEntity::Layer layer,
 			     int x, int y, int hero_direction, bool is_visible);

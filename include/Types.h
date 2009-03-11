@@ -106,6 +106,7 @@ class MapEntities;
 class MapEntity;
 class Hero;
 class TileOnMap;
+class DynamicTile;
 class Detector;
 class Teletransporter;
 class DestinationPoint;
@@ -120,11 +121,11 @@ class Enemy;
 class InteractiveEntity;
 class Block;
 
-// tiles
+// tile patterns
 class Tileset;
-class Tile;
-class SimpleTile;
-class AnimatedTile;
+class TilePattern;
+class SimpleTilePattern;
+class AnimatedTilePattern;
 
 // movements
 class Movement;

@@ -17,7 +17,7 @@
 #include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
-#include "entities/AnimatedTile.h"
+#include "entities/AnimatedTilePattern.h"
 #include "entities/Tileset.h"
 #include "entities/Detector.h"
 
@@ -209,7 +209,7 @@ void Game::update(void) {
   }
 
   // update the entity's positions and animations
-  AnimatedTile::update();
+  AnimatedTilePattern::update();
   current_map->update();
 
   // update the equipment and HUD

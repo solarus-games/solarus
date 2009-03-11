@@ -1,7 +1,8 @@
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
-#include "entities/Tile.h"
+#include "entities/TilePattern.h"
 #include "entities/TileOnMap.h"
+#include "entities/DynamicTile.h"
 #include "entities/Teletransporter.h"
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
@@ -48,7 +49,7 @@ void MapEntities::destroy_all_entities(void) {
     tiles[layer].clear();
     delete[] obstacle_tiles[layer];
 
-    sprite_entities[layer].clear();
+    displayed_entities[layer].clear();
     obstacle_entities[layer].clear();
   }
 
@@ -114,21 +115,6 @@ list<Detector*> * MapEntities::get_detectors(void) {
 }
 
 /**
- * Sets the obstacle property of an entity.
- * @param entity an entity
- * @param obstacle the obstacle property to set
- */
-void MapEntities::set_obstacle(MapEntity *entity, MapEntity::Obstacle obstacle) {
-
-  MapEntity::Layer layer = entity->get_layer();
-
-  obstacle_entities[layer].remove(entity);
-  if (obstacle != MapEntity::OBSTACLE_NONE) {
-    obstacle_entities[layer].push_back(entity);
-  }
-}
-
-/**
  * Sets the obstacle tile property of an 8*8 square of the map.
  * @param layer layer of the square
  * @param x8 x coordinate of the square (divided by 8)
@@ -171,32 +157,38 @@ MapEntity * MapEntities::get_entity(MapEntity::EntityType type, string name) {
  * @param sprite_entity the entity to bring to front
  */
 void MapEntities::bring_to_front(MapEntity *sprite_entity) {
-  sprite_entities->remove(sprite_entity);
-  sprite_entities->push_back(sprite_entity);
+  displayed_entities->remove(sprite_entity);
+  displayed_entities->push_back(sprite_entity);
+}
+
+/**
+ * Adds any kind of entity except a tile.
+ * @param entity the entity to add
+ */
+void MapEntities::add_entity(MapEntity *entity) {
+  all_entities.push_back(entity);
+  entity->set_map(map);
 }
 
 /**
  * Creates a tile on the map.
  * This function is called for each tile when loading the map.
- * The tiles on a map are not supposed to change during the game.
- * @param tile_id id of the tile in the tileset
+ * The tiles on a map cannot change during the game.
+ * @param tile_pattern_id id of the tile pattern in the tileset
  * @param layer layer of the tile to create
  * @param x x position of the tile on the map
  * @param y y position of the tile on the map
  * @param width width in pixels (the pattern will be repeated on x to fit this width)
  * @param height height in pixels (the pattern will be repeated on y to fit this height
  */
-void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, int width, int height) {
+void MapEntities::add_tile(int tile_pattern_id, MapEntity::Layer layer, int x, int y, int width, int height) {
 
-  // get the tile in the tileset
-  Tile *tile = map->get_tileset()->get_tile(tile_id);
-  MapEntity::Obstacle obstacle = tile->get_obstacle();
-
-  int repeat_x = width / tile->get_width();
-  int repeat_y = height / tile->get_height();
+  // get the tile pattern in the tileset
+  TilePattern *tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
+  MapEntity::Obstacle obstacle = tile_pattern->get_obstacle();
 
   // create the tile object
-  TileOnMap *tile_on_map = new TileOnMap(tile, layer, x, y, repeat_x, repeat_y);
+  TileOnMap *tile_on_map = new TileOnMap(tile_pattern, layer, x, y, width, height);
 
   // add it to the map
   tiles[layer].push_back(tile_on_map);
@@ -296,12 +288,34 @@ void MapEntities::add_tile(int tile_id, MapEntity::Layer layer, int x, int y, in
 }
 
 /**
- * Adds any kind of entity except a tile.
- * @param entity the entity to add
+ * Creates a dynamic tile on the map.
+ * The dynamic tiles can change during the game.
+ * @param name name of the tile to create
+ * @param tile_pattern_id id of the tile pattern in the tileset
+ * @param layer layer of the tile to create
+ * @param x x position of the tile
+ * @param y y position of the tile
+ * @param width width in pixels (the pattern will be repeated on x to fit this width)
+ * @param height height in pixels (the pattern will be repeated on y to fit this height
+ * @param enabled true to make the tile visible at start
  */
-void MapEntities::add_entity(MapEntity *entity) {
-  all_entities.push_back(entity);
-  entity->set_map(map);
+void MapEntities::add_dynamic_tile(string name, int tile_pattern_id, MapEntity::Layer layer,
+				   int x, int y, int width, int height, bool enabled) {
+
+  // get the tile pattern in the tileset
+  TilePattern *tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
+  MapEntity::Obstacle obstacle = tile_pattern->get_obstacle();
+
+  // create the tile object
+  DynamicTile *dynamic_tile = new DynamicTile(name, tile_pattern, layer, x, y, width, height, enabled);
+
+  // add it to the map
+  if (obstacle != MapEntity::OBSTACLE_NONE) {
+    obstacle_entities[layer].push_back(dynamic_tile);
+  }
+
+  displayed_entities[layer].push_back(dynamic_tile);
+  add_entity(dynamic_tile);
 }
 
 /**
@@ -380,7 +394,7 @@ void MapEntities::add_pickable_item(MapEntity::Layer layer, int x, int y,
 
     layer = item->get_layer(); // well, some items set their own layer
 
-    sprite_entities[layer].push_back(item);
+    displayed_entities[layer].push_back(item);
     detectors.push_back(item);
     add_entity(item);
   }
@@ -415,7 +429,7 @@ void MapEntities::add_destructible_item(MapEntity::Layer layer, int x, int y,
   DestructibleItem *item = new DestructibleItem(layer, x, y, destructible_item_type,
 						pickable_item_type, savegame_variable);
   
-  sprite_entities[layer].push_back(item);
+  displayed_entities[layer].push_back(item);
   detectors.push_back(item);
   obstacle_entities[layer].push_back(item);
 
@@ -450,7 +464,7 @@ void MapEntities::add_chest(string chest_name, MapEntity::Layer layer, int x, in
   Treasure *treasure = new Treasure((Treasure::Content) treasure_content, treasure_amount, treasure_savegame_variable);
   Chest *chest = new Chest(chest_name, layer, x, y, big_chest, treasure);
 
-  sprite_entities[layer].push_back(chest);
+  displayed_entities[layer].push_back(chest);
   detectors.push_back(chest);
   obstacle_entities[layer].push_back(chest);
   add_entity(chest);
@@ -490,7 +504,7 @@ void MapEntities::add_enemy(string name, MapEntity::Layer layer, int x, int y, i
 
   if (enemy != NULL) {
 
-    sprite_entities[layer].push_back(enemy);
+    displayed_entities[layer].push_back(enemy);
     detectors.push_back(enemy);
     add_entity(enemy);
   }
@@ -518,7 +532,7 @@ void MapEntities::add_interactive_entity(string name, MapEntity::Layer layer, in
 						    sprite_name, initial_direction, message_to_show);
 
   if (entity->has_sprite()) {
-    sprite_entities[layer].push_back(entity);
+    displayed_entities[layer].push_back(entity);
   }
   detectors.push_back(entity);
   obstacle_entities[layer].push_back(entity);
@@ -534,7 +548,7 @@ void MapEntities::add_block(string name, MapEntity::Layer layer, int x, int y,
 
   Block *entity = new Block(name, layer, x, y, subtype, skin, maximum_moves);
 
-  sprite_entities[layer].push_back(entity);
+  displayed_entities[layer].push_back(entity);
   detectors.push_back(entity);
   obstacle_entities[layer].push_back(entity);
   add_entity(entity);
@@ -562,7 +576,7 @@ void MapEntities::remove_marked_entities(void) {
     obstacle_entities[layer].remove(*it);
 
     // remove it from the sprite entities list if present
-    sprite_entities[layer].remove(*it);
+    displayed_entities[layer].remove(*it);
 
     // remove it from the whole list
     all_entities.remove(*it);
@@ -591,8 +605,8 @@ void MapEntities::set_suspended(bool suspended) {
   list<MapEntity*>::iterator i;
   for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
 
-    for (i = sprite_entities[layer].begin();
-	 i != sprite_entities[layer].end();
+    for (i = displayed_entities[layer].begin();
+	 i != displayed_entities[layer].end();
 	 i++) {
       (*i)->set_suspended(suspended);
     }
@@ -618,8 +632,8 @@ void MapEntities::update(void) {
       tiles[layer][i]->update();
     }
 
-    for (it = sprite_entities[layer].begin();
-	 it != sprite_entities[layer].end();
+    for (it = displayed_entities[layer].begin();
+	 it != displayed_entities[layer].end();
 	 it++) {
 
       if (!(*it)->is_being_removed()) {
@@ -649,8 +663,8 @@ void MapEntities::display() {
 
     // put the animated sprites
     list<MapEntity*>::iterator i;
-    for (i = sprite_entities[layer].begin();
-	 i != sprite_entities[layer].end();
+    for (i = displayed_entities[layer].begin();
+	 i != displayed_entities[layer].end();
 	 i++) {
       (*i)->display_on_map();
     }
@@ -661,8 +675,8 @@ void MapEntities::display() {
     }
 
     // put some parts of sprites above the hero
-    for (i = sprite_entities[layer].begin();
-	 i != sprite_entities[layer].end();
+    for (i = displayed_entities[layer].begin();
+	 i != displayed_entities[layer].end();
 	 i++) {
 
       (*i)->display_on_map_above_hero();

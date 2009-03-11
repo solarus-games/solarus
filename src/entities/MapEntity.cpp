@@ -136,14 +136,6 @@ void MapEntity::set_direction(int direction) {
 }
 
 /**
- * Sets the obstacle property of this entity.
- * @param obstacle the obstacle property
- */
-void MapEntity::set_obstacle(Obstacle obstacle) {
-  map->get_entities()->set_obstacle(this, obstacle);
-}
-
-/**
  * Returns the current x position of the entity.
  * @return the x position of the entity
  */

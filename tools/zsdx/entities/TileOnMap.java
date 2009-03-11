@@ -31,6 +31,7 @@ public class TileOnMap extends MapEntity {
     public TileOnMap(Map map) throws MapException {
 	super(map, 0, 0);
 	this.tileset = map.getTileset();
+	this.layer = -1;
     }
 
     /**
@@ -49,7 +50,10 @@ public class TileOnMap extends MapEntity {
 	int tileId = Integer.parseInt(value);
 	Tile tile = tileset.getTile(tileId); // get the original tile from the tileset
 	setSize(tile.getWidth(), tile.getHeight());
-	setLayer(tile.getDefaultLayer()); // TODO not for existing tiles!
+
+	if (layer == -1) {
+	    setLayer(tile.getDefaultLayer());
+	}
     }
 
     /**

@@ -1,4 +1,4 @@
-#include "entities/AnimatedTile.h"
+#include "entities/AnimatedTilePattern.h"
 #include "ZSDX.h"
 
 /**
@@ -18,21 +18,21 @@ static const short frames[2][12] = {
 /**
  * Frame counter (0 to 11), increased every 250 ms.
  */
-int AnimatedTile::frame_counter = 0;
+int AnimatedTilePattern::frame_counter = 0;
 
 /**
  * Current frame (0 to 2) for both sequences.
  */
-int AnimatedTile::current_frames[3] = {0, 0, 0};
+int AnimatedTilePattern::current_frames[3] = {0, 0, 0};
 
 /**
  * Date of the next frame change.
  */
-Uint32 AnimatedTile::next_frame_date;
+Uint32 AnimatedTilePattern::next_frame_date;
 
 /**
  * Constructor.
- * @param obstacle is the tile an obstacle?
+ * @param obstacle is the tile pattern an obstacle?
  * @param sequence animation sequence type
  * @param width width of the tile (the same for each frame of the animation)
  * @param height height of the tile (the same for each frame of the animation)
@@ -43,13 +43,13 @@ Uint32 AnimatedTile::next_frame_date;
  * @param x3 x position of the third frame in the tileset
  * @param y3 y position of the third frame in the tileset
  */
-AnimatedTile::AnimatedTile(MapEntity::Obstacle obstacle,
-			   AnimatedTile::AnimationSequence sequence,
-			   int width, int height,
-			   int x1, int y1,
-			   int x2, int y2,
-			   int x3, int y3):
-  Tile(obstacle, width, height), sequence(sequence) {
+AnimatedTilePattern::AnimatedTilePattern(MapEntity::Obstacle obstacle,
+					 AnimationSequence sequence,
+					 int width, int height,
+					 int x1, int y1,
+					 int x2, int y2,
+					 int x3, int y3):
+  TilePattern(obstacle, width, height), sequence(sequence) {
 
   this->position_in_tileset[0].x = x1;
   this->position_in_tileset[0].y = y1;
@@ -67,7 +67,7 @@ AnimatedTile::AnimatedTile(MapEntity::Obstacle obstacle,
 /**
  * Destructor.
  */
-AnimatedTile::~AnimatedTile(void) {
+AnimatedTilePattern::~AnimatedTilePattern(void) {
   
 }
 
@@ -75,7 +75,7 @@ AnimatedTile::~AnimatedTile(void) {
  * Updates the current frame of all tiles.
  * This function is called repeatedly by the map.
  */
-void AnimatedTile::update(void) {
+void AnimatedTilePattern::update(void) {
 
   Uint32 now = SDL_GetTicks();
 
@@ -91,15 +91,13 @@ void AnimatedTile::update(void) {
 
 /**
  * Displays the tile on a surface.
- * @param surface the destination surface
- * @param position_in_surface position of the tile on the surface
- * @param tileset_image the tileset image of this tile
+ * @param destination the destination surface
+ * @param dst_position position of the tile pattern on the destination surface
+ * @param tileset_image the tileset image of this tile pattern
  */
-void AnimatedTile::display(SDL_Surface *surface, SDL_Rect &position_in_surface, SDL_Surface *tileset_image) {
+void AnimatedTilePattern::display(SDL_Surface *destination, const SDL_Rect &dst_position, SDL_Surface *tileset_image) {
 
-  SDL_Rect dst_position = position_in_surface; // make a copy because the rectangle might be modified
-  SDL_BlitSurface(tileset_image,
-		  &position_in_tileset[current_frames[sequence]],
-		  surface,
-		  &dst_position);
+  SDL_Rect dst = dst_position; // make a copy because the rectangle might be modified
+  SDL_BlitSurface(tileset_image, &position_in_tileset[current_frames[sequence]],
+		  destination, &dst);
 }

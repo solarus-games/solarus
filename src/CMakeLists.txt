@@ -87,6 +87,7 @@ add_executable (zsdx
   entities/HeroAnimations.cpp
   entities/HeroState.cpp
   entities/TileOnMap.cpp
+  entities/DynamicTile.cpp
   entities/Detector.cpp
   entities/Teletransporter.cpp
   entities/DestinationPoint.cpp
@@ -101,11 +102,11 @@ add_executable (zsdx
   entities/InteractiveEntity.cpp
   entities/Block.cpp
 
-  # tiles
+  # tile patterns
   entities/Tileset.cpp
-  entities/Tile.cpp
-  entities/SimpleTile.cpp
-  entities/AnimatedTile.cpp
+  entities/TilePattern.cpp
+  entities/SimpleTilePattern.cpp
+  entities/AnimatedTilePattern.cpp
 
   # movements
   movements/Movement.cpp

@@ -32,6 +32,7 @@ class MapEntity {
     INTERACTIVE_ENTITY        = 8,    /**< an entity the hero can interact with by pressing the action key
 				       * in front of it (typically an NPC) */
     BLOCK                     = 9,    /**< a block or a statue that the hero can push */
+    DYNAMIC_TILE              = 10,   /**< a dynamic tile (that can be enabled or disabled) */
 
     HERO                      = 1000, /**< the hero */
     CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
@@ -123,7 +124,6 @@ class MapEntity {
 
   // method called by the subclasses to set their properties
   void set_direction(int direction);
-  void set_obstacle(Obstacle obstacle);
   void set_layer(Layer layer);
   void set_size(int width, int height);
   void set_size(SDL_Rect &size);

@@ -110,7 +110,7 @@ Sound * DestructibleItem::get_destruction_sound(void) {
  * @return true if this entity is an obstacle for others
  */
 bool DestructibleItem::is_obstacle_for(MapEntity *other) {
-  return properties[type].can_be_lifted;
+  return properties[type].can_be_lifted && !is_being_cut;
 }
 
 /**
@@ -216,7 +216,6 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
     if (cut) {
       get_destruction_sound()->play();
       get_sprite()->set_current_animation("destroy");
-      set_obstacle(OBSTACLE_NONE);
       is_being_cut = true;
 
       map->get_entities()->bring_to_front(this); // show animation destroy to front

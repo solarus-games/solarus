@@ -1,6 +1,6 @@
 #include "entities/Tileset.h"
-#include "entities/SimpleTile.h"
-#include "entities/AnimatedTile.h"
+#include "entities/SimpleTilePattern.h"
+#include "entities/AnimatedTilePattern.h"
 #include "FileTools.h"
 #include "ResourceManager.h"
 #include <iomanip>
@@ -10,10 +10,10 @@
  * @param id id of the tileset to create
  */
 Tileset::Tileset(TilesetId id):
-id(id), nb_tiles(0), max_tile_id(0), tileset_image(NULL) {
+id(id), nb_tile_patterns(0), max_tile_id(0), tileset_image(NULL) {
   
   for (int i = 0; i < 1024; i++) {
-    tiles[i] = NULL;
+    tile_patterns[i] = NULL;
   }
 }
 
@@ -27,20 +27,20 @@ Tileset::~Tileset(void) {
 }
 
 /**
- * Creates a new tile in the tileset.
+ * Adds a tile pattern in this tileset.
  * This function is called by load().
- * @param id id of this tile (1 to 1024)
- * @param tile the tile to add
+ * @param id id of this tile pattern (1 to 1024)
+ * @param tile_pattern the tile pattern to add
  */
-void Tileset::create_tile(int id, Tile *tile) {
-  tiles[id - 1] = tile;
-  nb_tiles++;
+void Tileset::add_tile_pattern(int id, TilePattern *tile) {
+  tile_patterns[id - 1] = tile;
+  nb_tile_patterns++;
 
   max_tile_id = MAX(id, max_tile_id);
 }
 
 /**
- * Loads the tileset by creating all tiles.
+ * Loads the tileset by creating all tile patterns.
  */
 void Tileset::load(void) {
 
@@ -70,12 +70,12 @@ void Tileset::load(void) {
   iss0 >> r >> g >> b;
   background_color = Color::create(r, g, b);
 
-  // read the tiles
-  int tile_id, is_animated, obstacle, default_layer;
+  // read the tile patterns
+  int tile_pattern_id, is_animated, obstacle, default_layer;
   while (std::getline(tileset_file, line)) {
 
     std::istringstream iss(line);
-    iss >> tile_id >> is_animated >> obstacle >> default_layer;
+    iss >> tile_pattern_id >> is_animated >> obstacle >> default_layer;
 
     int width, height;
 
@@ -85,15 +85,18 @@ void Tileset::load(void) {
 
       iss >> x >> y >> width >> height;
 
-      create_tile(tile_id, new SimpleTile((MapEntity::Obstacle) obstacle, x, y, width, height));
+      add_tile_pattern(tile_pattern_id,
+		       new SimpleTilePattern((MapEntity::Obstacle) obstacle,
+					     x, y, width, height));
     }
     else {
       int sequence, x1, y1, x2, y2, x3, y3;
 
       iss >> sequence >> width >> height >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
-      create_tile(tile_id, new AnimatedTile((MapEntity::Obstacle) obstacle,
-					    (AnimatedTile::AnimationSequence) sequence,
-					    width, height, x1, y1, x2, y2, x3, y3));
+      add_tile_pattern(tile_pattern_id,
+		       new AnimatedTilePattern((MapEntity::Obstacle) obstacle,
+					       (AnimatedTilePattern::AnimationSequence) sequence,
+					       width, height, x1, y1, x2, y2, x3, y3));
     }
   }
 
@@ -108,19 +111,52 @@ void Tileset::load(void) {
 }
 
 /**
- * Destroys the tiles and frees the memory used
+ * Destroys the tile patterns and frees the memory used
  * by the tileset image.
  */
 void Tileset::unload(void) {
   int i;
 
   for (i = 0; i < max_tile_id; i++) {
-    if (tiles[i] != NULL) {
-      delete tiles[i];
+    if (tile_patterns[i] != NULL) {
+      delete tile_patterns[i];
     }
   }
-  nb_tiles = 0;
+  nb_tile_patterns = 0;
 
   SDL_FreeSurface(tileset_image);
   tileset_image = NULL;
+}
+
+/**
+ * Returns the background color of this tileset.
+ * @return the background color
+ */
+Uint32 Tileset::get_background_color(void) {
+  return background_color;
+}
+
+/**
+ * Returns whether this tileset is loaded.
+ * @return true if this tileset is loaded
+ */
+bool Tileset::is_loaded(void) {
+  return tileset_image != NULL;
+}
+
+/**
+ * Returns the tileset image.
+ * @return the tileset image
+ */
+SDL_Surface * Tileset::get_image(void) {
+  return tileset_image;
+}
+
+/**
+ * Returns a tile pattern from this tileset.
+ * @param id id of the tile pattern to get
+ * @return the tile pattern with this id
+ */
+TilePattern * Tileset::get_tile_pattern(int id) {
+  return tile_patterns[id - 1];
 }

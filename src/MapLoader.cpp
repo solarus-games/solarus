@@ -91,9 +91,9 @@ void MapLoader::load_map(Map *map) {
 
     case MapEntity::TILE:
       {
-	int tile_id;
-	iss >> width >> height >> tile_id;
-	entities->add_tile(tile_id, (MapEntity::Layer) layer, x, y, width, height);
+	int tile_pattern_id;
+	iss >> width >> height >> tile_pattern_id;
+	entities->add_tile(tile_pattern_id, (MapEntity::Layer) layer, x, y, width, height);
 	break;
       }
 
@@ -187,6 +187,16 @@ void MapLoader::load_map(Map *map) {
 	iss >> entity_name >> subtype >> skin >> maximum_moves;
 	entities->add_block(entity_name, (MapEntity::Layer) layer, x, y,
 			    (Block::Subtype) subtype, skin, maximum_moves);
+	break;
+      }
+
+    case MapEntity::DYNAMIC_TILE:
+      {
+	int tile_pattern_id, enabled;
+
+	iss >> width >> height >> entity_name >> tile_pattern_id >> enabled;
+	entities->add_dynamic_tile(entity_name, tile_pattern_id, (MapEntity::Layer) layer,
+				   x, y, width, height, enabled != 0);
 	break;
       }
 

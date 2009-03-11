@@ -23,10 +23,11 @@ Prochaine mise à jour zsdx :
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
 - Enlever le répertoire images ?
+- Renommer Tile en TilePattern, SimpleTile en SimpleTilePattern, AnimatedTile en AnimatedTilePattern et TileOnMap en Tile
+- Récupérer l'info "skin" des blocs, portes, etc. via le tileset
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - éditeur : layer de TileOnMap
 
 - Prochains types d'entités:
   - tiles dynamiques

@@ -14,25 +14,11 @@ class TileOnMap: public MapEntity {
 
  private:
 
-  /**
-   * Pattern of the tile.
-   * It can be an instance of SimpleTile or AnimatedTile.
-   */
-  Tile *tile;
-
-  /**
-   * Number of times the pattern is repeated on x.
-   */
-  const int repeat_x;
-
-  /**
-   * Number of times the pattern is repeated on y.
-   */
-  const int repeat_y;
+  TilePattern *tile_pattern;   /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
 
  public:
 
-  TileOnMap(Tile *tile, Layer layer, int x, int y, int repeat_x, int repeat_y);
+  TileOnMap(TilePattern *tile_pattern, Layer layer, int x, int y, int width, int height);
   ~TileOnMap(void);
 
   EntityType get_type(void);

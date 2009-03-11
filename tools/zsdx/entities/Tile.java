@@ -21,7 +21,7 @@ public class Tile extends MapEntity {
     /**
      * The tileset from which this tile is extracted.
      */
-    private Tileset tileset;
+    protected Tileset tileset;
 
     /**
      * Creates a new tile on the map.
@@ -36,23 +36,25 @@ public class Tile extends MapEntity {
 
     /**
      * Sets a property specific to a tile.
-     * @param name name of the property (must be "tilePatternId")
+     * @param name name of the property
      * @param value value of the property
      */
     public void setProperty(String name, String value) throws MapException {
 
 	super.setProperty(name, value);
 
-	if (tileset == null) {
-	    return;
-	}
+	if (name.equals("tilePatternId")) {
+	    if (tileset == null) {
+		return;
+	    }
 
-	int tileId = Integer.parseInt(value);
-	TilePattern tilePattern = tileset.getTilePattern(tileId); // get the tile pattern from the tileset
-	setSize(tilePattern.getWidth(), tilePattern.getHeight());
+	    int tileId = Integer.parseInt(value);
+	    TilePattern tilePattern = tileset.getTilePattern(tileId); // get the tile pattern from the tileset
+	    setSize(tilePattern.getWidth(), tilePattern.getHeight());
 
-	if (layer == -1) {
-	    setLayer(tilePattern.getDefaultLayer());
+	    if (layer == -1) {
+		setLayer(tilePattern.getDefaultLayer());
+	    }
 	}
     }
 
@@ -66,19 +68,19 @@ public class Tile extends MapEntity {
      * because the new tile pattern doesn't exist or is different.
      */
     public void setTileset(Tileset tileset) throws TilesetException {
-	
+
 	if (tileset != this.tileset) {
 
 	    int tilePatternId = getTilePatternId();
 	    try {
 		TilePattern newTilePattern = tileset.getTilePattern(tilePatternId);
-		
+
 		// if a tileset was already defined, check that the
 		// tile has the same properties
 		if (this.tileset != null) {
-		    
+
 		    TilePattern oldTilePattern = this.tileset.getTilePattern(tilePatternId);
-		    
+
 		    if (!newTilePattern.equals(oldTilePattern)) {
 			throw new TilesetException("Unable to apply the tileset because the tile pattern #" + tilePatternId + " is different in this tileset.");
 		    }
@@ -87,7 +89,7 @@ public class Tile extends MapEntity {
 		    positionInMap.width = newTilePattern.getWidth() * getRepeatX();
 		    positionInMap.height = newTilePattern.getHeight() * getRepeatY();
 		}
-		
+
 		this.tileset = tileset;
 	    }
 	    catch (NoSuchElementException e) {
@@ -121,7 +123,7 @@ public class Tile extends MapEntity {
     public boolean isResizable() {
 	return true;
     }
-    
+
     /**
      * Returns the minimum size of the entity (for a resizable entity).
      * When the entity is resized, its new size must be a multiple of this minimum size.
@@ -186,5 +188,27 @@ public class Tile extends MapEntity {
      */
     public void setPropertiesDefaultValues() throws MapException {
 	setProperty("tilePatternId", -1);
+    }
+
+    /**
+     * Creates a dynamic tile with the same properties than this static tile.
+     * @return the dynamic tile corresponding to this static tile
+     * @throws MapException if the dynamic tile could not be created
+     */
+    public final DynamicTile createDynamicTile() throws MapException {
+
+	String description = toString();
+
+	// add the name and the 'enabled' boolean
+	int index = description.lastIndexOf('\t');
+	StringBuffer buff = new StringBuffer(description.substring(0, index));
+	buff.append('\t');
+	buff.append(getDefaultNamePrefix());
+	buff.append('\t');
+	buff.append(getTilePatternId());
+	buff.append('\t');
+	buff.append('1');
+
+	return (DynamicTile) create(map, EntityType.DYNAMIC_TILE, null); 
     }
 }

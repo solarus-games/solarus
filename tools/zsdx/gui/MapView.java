@@ -1191,7 +1191,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 		// resized, we propose to add another entity of the same type
 		if (button == MouseEvent.BUTTON3 && state == State.NORMAL) {
 
-		    if (entityTypeBeingAdded == EntityType.TILE) {
+		    if (entityBeingAdded instanceof Tile) {
 			int tilePatternId = ((Tile) entityAdded).getTilePatternId();
 			map.getTileset().setSelectedTilePatternId(tilePatternId);
 		    }

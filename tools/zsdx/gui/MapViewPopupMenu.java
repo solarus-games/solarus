@@ -49,7 +49,7 @@ public class MapViewPopupMenu extends JPopupMenu {
     /**
      * Creates the menu.
      * The options are:
-     * Edit Resize | Create | Cut Copy Paste | Direction Layer Bring to front Bring to back | Destroy
+     * Edit Resize | Create Convert | Cut Copy Paste | Direction Layer Bring to front Bring to back | Destroy
      */
     private void buildMenu() {
 	JMenuItem item;
@@ -76,6 +76,24 @@ public class MapViewPopupMenu extends JPopupMenu {
 
 	// create
 	add(new AddEntitiesMenu(mapView, "Create"));
+
+	if (selection.getNbEntitiesSelected() == 1) {
+
+	    MapEntity entity = selection.getEntity(0);
+
+	    if (entity instanceof Tile) {
+
+		boolean toDynamic = !(entity instanceof DynamicTile);
+
+		String text = toDynamic ? "Convert to dynamic tile" :
+		    "Convert to static tile";
+
+		item = new JMenuItem(text);
+		item.addActionListener(new ActionListenerConvertTile((Tile) entity));
+		add(item);
+	    }
+	}
+
 	addSeparator();
 
 	if (!selection.isEmpty()) {
@@ -101,10 +119,10 @@ public class MapViewPopupMenu extends JPopupMenu {
 	// paste
 	item = new JMenuItem("Paste");
 	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    mapView.paste();
-		}
-	    });
+	    public void actionPerformed(ActionEvent ev) {
+		mapView.paste();
+	    }
+	});
 	item.setEnabled(mapView.canPaste());
 	add(item);
 
@@ -349,6 +367,43 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    dialog.setLocationRelativeTo(null);
 	    dialog.pack();
 	    dialog.setVisible(true);
+	}
+    }
+
+    /**
+     * Action listener invoked when the user clicks on "Convert tile".
+     */
+    private class ActionListenerConvertTile implements ActionListener {
+
+	private Tile tile;
+
+	/**
+	 * Constructor.
+	 */
+	public ActionListenerConvertTile(Tile tile) {
+	    this.tile = tile;
+	}
+
+	/**
+	 * Method called when the user clicks on the item.
+	 */
+	public void actionPerformed(ActionEvent ev) {
+
+	    MapEntity newTile;
+	    if (tile instanceof DynamicTile) {
+		newTile = ((DynamicTile) tile).createStaticTile(); 
+	    }
+	    else {
+		newTile = tile.createDynamicTile();
+	    }
+		try {
+		    // create a dynamic tile
+		    map.getHistory().doAction(new ActionReplaceEntity(map, tile, newTile));
+		}
+		catch (ZSDXException ex) {
+		    GuiTools.errorDialog("Cannot convert this tile: " + ex.getMessage());
+		}
+	    }
 	}
     }
 }

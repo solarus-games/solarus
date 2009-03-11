@@ -307,7 +307,7 @@ public class Tileset extends Observable {
 	TilePattern tilePattern = tilePatterns.get(id);
 
 	if (tilePattern == null) {
-	    throw new IllegalArgumentException("There is no tile pattern with id " + id + " in the tileset.");
+	    throw new NoSuchElementException("There is no tile pattern with id " + id + " in the tileset.");
 	}
 
 	return tilePattern;

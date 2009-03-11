@@ -777,16 +777,21 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns the prefix of the default name for this kind of entity.
+     */
+    protected String getDefaultNamePrefix() {
+	EntityType entityType = getType();
+	return entityType.getName().toLowerCase().replace(' ', '_');
+    }
+
+    /**
      * Sets a default name to the entity.
      * @param map the map
      */
     private void computeDefaultName() {
 	
-	EntityType entityType = getType();
-	String prefix = entityType.getName().toLowerCase().replace(' ', '_');
-
 	try {
-	    setName(prefix);
+	    setName(getDefaultNamePrefix());
 	}
 	catch (MapException ex) {
 	    // should not happen since setName() makes sure the name is unique
@@ -1201,6 +1206,17 @@ public abstract class MapEntity extends Observable {
      * @throws MapException if a property is not valid
      */
     public void checkProperties() throws MapException {
+
+    }
+
+
+    /**
+     * Changes the tileset used to represent this entity on the map.
+     * By default, nothing is done since most of the entities do not use the tileset.
+     * @param tileset the tileset
+     * @throws TilesetException if the new tileset could not be applied to this entity
+     */
+    public void setTileset(Tileset tileset) throws TilesetException {
 
     }
 }

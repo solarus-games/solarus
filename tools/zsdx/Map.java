@@ -305,20 +305,21 @@ public class Map extends Observable {
 
 	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
 
-		List<Tile> tiles = allEntities[layer].getTiles();
-
-		for (int i = 0; i < tiles.size(); i++) {
+		LinkedList<MapEntity> entitiesToRemove = new LinkedList<MapEntity>(); 
+		for (MapEntity entity: allEntities[layer]) {
 
 		    try {
-			Tile tile = tiles.get(i);
-			tile.setTileset(tileset);
+			entity.setTileset(tileset);
 		    }
 		    catch (TilesetException ex) {
-			// the tile is not valid anymore, we should remove it from the map
-			tiles.remove(i);
-			i--;
+			// the entity is not valid anymore, we should remove it from the map
+			entitiesToRemove.add(entity);
 			badTiles = true;
 		    }
+		}
+
+		for (MapEntity entity: entitiesToRemove) {
+		    allEntities[layer].remove(entity);
 		}
 	    }
 

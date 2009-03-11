@@ -17,7 +17,9 @@ public enum EntityType {
     JUMP_SENSOR       (6, "Jump Sensor", JumpSensor.class, null),
     ENEMY             (7, "Enemy", Enemy.class, Enemy.Subtype.class),
     INTERACTIVE       (8, "Interactive entity", InteractiveEntity.class, InteractiveEntity.Subtype.class),
-    BLOCK             (9, "Block", Block.class, Block.Subtype.class);
+    BLOCK             (9, "Block", Block.class, Block.Subtype.class),
+    DYNAMIC_TILE      (10, "Dynamic tile", DynamicTile.class, null),
+    ;
 
     private final int index;
     private Class<? extends MapEntity> entityClass;

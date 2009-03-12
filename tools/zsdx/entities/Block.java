@@ -8,7 +8,7 @@ import zsdx.*;
 /**
  * Represents a block or a statue that the hero can push or pull.
  */
-public class Block extends DynamicEntity {
+public class Block extends MapEntity implements DynamicEntity {
 
     /**
      * Subtypes of blocks.

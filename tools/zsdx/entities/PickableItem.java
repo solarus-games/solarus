@@ -2,13 +2,12 @@ package zsdx.entities;
 
 import java.awt.*;
 import zsdx.*;
-import zsdx.Map;
 
 /**
  * Represents an item that Link can pick on the map,
  * such as a rupee, a heart, a key, etc.
  */
-public class PickableItem extends DynamicEntity {
+public class PickableItem extends MapEntity implements DynamicEntity {
 
     /**
      * Subtypes of pickable items.

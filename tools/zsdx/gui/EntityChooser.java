@@ -25,7 +25,7 @@ public class EntityChooser extends JComboBox {
      * A list of special options to add to the combo box.
      */
     private String[] additionalOptions;
-    
+
     /**
      * Creates a new entity chooser.
      * @param map the map (can be null and specified later)
@@ -37,7 +37,7 @@ public class EntityChooser extends JComboBox {
 
 	this.map = map;
 	this.entityType = entityType;
-	
+
 	if (showEmptyOption) {
 	    this.additionalOptions = new String[] {""};
 	}
@@ -56,31 +56,31 @@ public class EntityChooser extends JComboBox {
      */
     public EntityChooser(Map map, EntityType entityType, String[] additionalOptions) {
 	super();
-	
+
 	this.map = map;
 	this.entityType = entityType;
 	this.additionalOptions = additionalOptions; 
 
 	buildList();
     }
-    
+
     /**
      * Builds the combo box list.
      */
     private void buildList() {
-	
+
 	super.removeAllItems();
-	
+
 	for (int i = 0; i < additionalOptions.length; i++) {
 	    addItem(additionalOptions[i]);
 	}
-	
+
 	if (map != null) {
-	    List<MapEntity> entities = map.getEntitiesOfType(entityType);
-	    for (MapEntity entity: entities) {
+	    List<DynamicEntity> entities = map.getEntitiesOfType(entityType);
+	    for (DynamicEntity entity: entities) {
 		addItem(entity.getName());
 	    }
-	    
+
 	    // if there is only one entity, we make it selected
 	    if (entities.size() == 1) {
 		setSelectedIndex(additionalOptions.length);
@@ -91,7 +91,7 @@ public class EntityChooser extends JComboBox {
 	    setEnabled(false);
 	}
     }
-    
+
     /**
      * Returns the name of the selected entity.
      * @return the name of the selected entity, or an empty string if no entity is selected
@@ -99,7 +99,7 @@ public class EntityChooser extends JComboBox {
     public String getSelectedName() {
 	return (String) getSelectedItem();
     }
-    
+
     /**
      * Selects an entity in a combo box.
      * to select no entity

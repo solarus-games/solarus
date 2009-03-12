@@ -9,8 +9,8 @@ import java.util.*;
 public class MapEntities implements Iterable<MapEntity> {
 
     // the entities
-    private List<Tile> tiles;
-    private List<DynamicEntity> dynamicEntities;
+    private List<Tile> tiles;                    // the static tiles
+    private List<DynamicEntity> dynamicEntities; // the dynamic entities (including dynamic tiles)
 
     /**
      * Constructor.
@@ -66,13 +66,13 @@ public class MapEntities implements Iterable<MapEntity> {
      * MapEntity.ENTITY_DESTINATION_POINT, MapEntity.ENTITY_ENEMY...
      * @return the list of the entities of this kind
      */
-    public List<MapEntity> getEntitiesOfType(EntityType entityType) {
+    public List<DynamicEntity> getEntitiesOfType(EntityType entityType) {
 
 	Class<? extends MapEntity> cl = entityType.getEntityClass();
-	List<MapEntity> list = new LinkedList<MapEntity>();
+	List<DynamicEntity> list = new LinkedList<DynamicEntity>();
 
 	if (DynamicEntity.class.isAssignableFrom(cl)) {
-	    for (MapEntity e: dynamicEntities) {
+	    for (DynamicEntity e: dynamicEntities) {
 		
 		if (cl.isInstance(e)) {
 		    list.add(e);
@@ -89,13 +89,13 @@ public class MapEntities implements Iterable<MapEntity> {
      * @param name the name of the entity
      * @return the entity, or null if there is no entity with this name
      */
-    public MapEntity getEntityWithName(EntityType type, String name) {
+    public DynamicEntity getEntityWithName(EntityType type, String name) {
 
 	Class<? extends MapEntity> cl = type.getEntityClass();
 
 	if (DynamicEntity.class.isAssignableFrom(cl)) {
-	    for (MapEntity e: dynamicEntities) {
-		
+	    for (DynamicEntity e: dynamicEntities) {
+
 		if (cl.isInstance(e) && e.hasName() && e.getName().equals(name)) {
 		    return e;
 		}
@@ -143,14 +143,11 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public void addFirst(MapEntity entity) {
 
-	if (entity instanceof Tile) {
+	if (entity.getType() == EntityType.TILE) {
 	    tiles.add(0, (Tile) entity);
 	}
-	else if (entity instanceof DynamicEntity) {
-	    dynamicEntities.add(0, (DynamicEntity) entity);
-	}
 	else {
-	    throw new IllegalArgumentException("Unknown entity type: " + entity);
+	    dynamicEntities.add(0, (DynamicEntity) entity);
 	}
     }
 
@@ -160,14 +157,11 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public void addLast(MapEntity entity) {
 
-	if (entity instanceof Tile) {
+	if (entity.getType() == EntityType.TILE) {
 	    tiles.add((Tile) entity);
 	}
-	else if (entity instanceof DynamicEntity) {
-	    dynamicEntities.add((DynamicEntity) entity);
-	}
 	else {
-	    throw new IllegalArgumentException("Unknown entity type: " + entity);
+	    dynamicEntities.add((DynamicEntity) entity);
 	}
     }
 
@@ -177,14 +171,11 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public void remove(MapEntity entity) {
 
-	if (entity instanceof Tile) {
+	if (entity.getType() == EntityType.TILE) {
 	    tiles.remove(entity);
 	}
-	else if (entity instanceof DynamicEntity) {
-	    dynamicEntities.remove(entity);
-	}
 	else {
-	    throw new IllegalArgumentException("Unknown entity type: " + entity);
+	    dynamicEntities.remove(entity);
 	}
     }
 
@@ -196,10 +187,10 @@ public class MapEntities implements Iterable<MapEntity> {
 	private int index; // index of the next element to return
 
 	private int nbTiles;
-	private int nbActive;
+	private int nbDynamic;
 
 	private ListIterator<Tile> tileIterator;
-	private ListIterator<DynamicEntity> activeIterator;
+	private ListIterator<DynamicEntity> dynamicIterator;
 
 	/**
 	 * Constructor.
@@ -209,15 +200,15 @@ public class MapEntities implements Iterable<MapEntity> {
 	    this.index = index;
 
 	    this.nbTiles = tiles.size();
-	    this.nbActive = dynamicEntities.size();
+	    this.nbDynamic = dynamicEntities.size();
 
 	    if (index == 0) {
 		this.tileIterator = tiles.listIterator(0);
-		this.activeIterator = dynamicEntities.listIterator(0);
+		this.dynamicIterator = dynamicEntities.listIterator(0);
 	    }
 	    else if (index == size()) {
 		this.tileIterator = tiles.listIterator(nbTiles);
-		this.activeIterator = dynamicEntities.listIterator(nbActive);
+		this.dynamicIterator = dynamicEntities.listIterator(nbDynamic);
 	    }
 	    else {
 		throw new IllegalArgumentException();
@@ -254,8 +245,8 @@ public class MapEntities implements Iterable<MapEntity> {
 	    }
 	    else {
 		i = i - nbTiles;
-		if (i < nbActive) {
-		    return activeIterator.next();
+		if (i < nbDynamic) {
+		    return (MapEntity) dynamicIterator.next();
 		}
 		else {
 		    throw new NoSuchElementException();
@@ -281,8 +272,8 @@ public class MapEntities implements Iterable<MapEntity> {
 	    }
 	    else {
 		i = i - nbTiles;
-		if (i < nbActive) {
-		    return activeIterator.previous();
+		if (i < nbDynamic) {
+		    return (MapEntity) dynamicIterator.previous();
 		}
 		else {
 		    throw new NoSuchElementException();

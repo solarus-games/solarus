@@ -2,12 +2,11 @@ package zsdx.entities;
 
 import java.awt.*;
 import zsdx.*;
-import zsdx.Map;
 
 /**
  * Represents the destination point of a teletransporter in a map.
  */
-public class DestinationPoint extends DynamicEntity {
+public class DestinationPoint extends MapEntity implements DynamicEntity {
 
     /**
      * Subtypes of destination points.

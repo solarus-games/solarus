@@ -13,7 +13,7 @@ import zsdx.*;
  *   saved, used only for the pickable items that are saved 
  *   (keys, pieces of hearts, etc.)
  */
-public class DestructibleItem extends DynamicEntity {
+public class DestructibleItem extends MapEntity implements DynamicEntity {
 
     /**
      * Description of the default image representing this kind of entity.

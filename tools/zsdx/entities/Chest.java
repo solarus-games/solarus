@@ -1,7 +1,6 @@
 package zsdx.entities;
 
 import zsdx.*;
-import zsdx.Map;
 
 /**
  * Represents a chest placed on the map.
@@ -11,7 +10,7 @@ import zsdx.Map;
  * - amount
  * - savegameVariable
  */
-public class Chest extends DynamicEntity {
+public class Chest extends MapEntity implements DynamicEntity {
 
     /**
      * Description of the default images representing this kind of entity.

@@ -1,19 +1,12 @@
 package zsdx.entities;
 
-import zsdx.*;
-
 /**
- * This class represents a non-static map entity, such as a chest, a door, a switch...
+ * This interface represents a non-static map entity, such as a chest, a door, a switch, etc.
+ * Dynamic tiles are considered as dynamic entities too.
+ * Every class implementing this interface should be a subclass of MapEntity.
  */
-public abstract class DynamicEntity extends MapEntity {
+public interface DynamicEntity {
 
-    /**
-     * Creates a new interactive entity.
-     * @param map the map
-     * @param width width of the entity
-     * @param height height of the entity
-     */
-    protected DynamicEntity(Map map, int width, int height) throws MapException {
-	super(map, width, height);
-    }
+    public boolean hasName();
+    public String getName();
 }

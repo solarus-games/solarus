@@ -2,13 +2,12 @@ package zsdx.entities;
 
 import java.awt.*;
 import zsdx.*;
-import zsdx.Map;
 
 /**
  * A teletransporter is an entity that moves Link to a destination point
  * on another map or the same map.
  */
-public class Teletransporter extends DynamicEntity {
+public class Teletransporter extends MapEntity implements DynamicEntity {
 
     /**
      * Subtypes of teletransporters.

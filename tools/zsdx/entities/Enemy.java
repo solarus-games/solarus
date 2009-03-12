@@ -2,12 +2,11 @@ package zsdx.entities;
 
 import java.awt.*;
 import zsdx.*;
-import zsdx.Map;
 
 /**
  * Represents an enemy placed on a map.
  */
-public class Enemy extends DynamicEntity {
+public class Enemy extends MapEntity implements DynamicEntity {
 
     /**
      * Description of the default image representing this kind of entity.

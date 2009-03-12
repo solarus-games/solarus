@@ -2,12 +2,11 @@ package zsdx.entities;
 
 import java.awt.*;
 import zsdx.*;
-import zsdx.Map;
 
 /**
  * Represents a sensor that makes the hero jump towards a direction.
  */
-public class JumpSensor extends DynamicEntity {
+public class JumpSensor extends MapEntity implements DynamicEntity {
 
     /**
      * Description of the default image representing this kind of entity.

@@ -579,9 +579,9 @@ public class Map extends Observable {
      * MapEntity.ENTITY_DESTINATION_POINT, MapEntity.ENTITY_ENEMY...
      * @return the list of the entities of this kind on the map
      */
-    public List<MapEntity> getEntitiesOfType(EntityType entityType) {
+    public List<DynamicEntity> getEntitiesOfType(EntityType entityType) {
 
-	List<MapEntity> list = new LinkedList<MapEntity>();
+	List<DynamicEntity> list = new LinkedList<DynamicEntity>();
 	for (int layer = MapEntity.LAYER_LOW; layer < MapEntity.LAYER_NB; layer++) {
 	    list.addAll(allEntities[layer].getEntitiesOfType(entityType));
 	}
@@ -669,9 +669,9 @@ public class Map extends Observable {
      * @param name the name of the entity
      * @return the entity, or null if there is no entity with this name
      */
-    public MapEntity getEntityWithName(EntityType type, String name) {
+    public DynamicEntity getEntityWithName(EntityType type, String name) {
 
-	MapEntity entity = null;
+	DynamicEntity entity = null;
 	for (int layer = MapEntity.LAYER_LOW;
 		layer < MapEntity.LAYER_NB && entity == null;
 		layer++) {

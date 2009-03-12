@@ -6,7 +6,7 @@ import zsdx.*;
 /**
  * Represents the destination point of a teletransporter in a map.
  */
-public class DestinationPoint extends MapEntity implements DynamicEntity {
+public class DestinationPoint extends MapEntity {
 
     /**
      * Subtypes of destination points.

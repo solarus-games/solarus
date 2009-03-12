@@ -6,7 +6,7 @@ import zsdx.*;
  * A dynamic tile is a tile that can be enabled or disabled dynamically
  * on the map during the game.
  */
-public class DynamicTile extends Tile implements DynamicEntity {
+public class DynamicTile extends Tile {
 
     /**
      * Description of the default image representing this kind of entity.

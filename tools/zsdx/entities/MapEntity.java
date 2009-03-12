@@ -729,7 +729,7 @@ public abstract class MapEntity extends Observable {
 	    throw new MapException("The entity name cannot have whitespaces");
 	}
 
-	DynamicEntity other = map.getEntityWithName(getType(), name);
+	MapEntity other = map.getEntityWithName(getType(), name);
 	if (other != null && other != this) {
 
 	    int counter = 2;

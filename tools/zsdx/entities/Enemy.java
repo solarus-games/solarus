@@ -6,7 +6,7 @@ import zsdx.*;
 /**
  * Represents an enemy placed on a map.
  */
-public class Enemy extends MapEntity implements DynamicEntity {
+public class Enemy extends MapEntity {
 
     /**
      * Description of the default image representing this kind of entity.

@@ -76,8 +76,8 @@ public class EntityChooser extends JComboBox {
 	}
 
 	if (map != null) {
-	    List<DynamicEntity> entities = map.getEntitiesOfType(entityType);
-	    for (DynamicEntity entity: entities) {
+	    List<MapEntity> entities = map.getEntitiesOfType(entityType);
+	    for (MapEntity entity: entities) {
 		addItem(entity.getName());
 	    }
 

@@ -7,7 +7,7 @@ import zsdx.*;
  * Represents an entity that triggers a message or an event when the player
  * presses the action key in front of it.
  */
-public class InteractiveEntity extends MapEntity implements DynamicEntity {
+public class InteractiveEntity extends MapEntity {
 
     /**
      * Subtypes of interactive entities.

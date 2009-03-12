@@ -133,7 +133,7 @@ public class Dungeon {
 
 	MapEntities[] allEntities = map.getAllEntities();
 	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    for (DynamicEntity entity: allEntities[layer].getDynamicEntities()) {
+	    for (MapEntity entity: allEntities[layer].getDynamicEntities()) {
 
 		if (entity instanceof Chest) {
 		    Chest chest = (Chest) entity;

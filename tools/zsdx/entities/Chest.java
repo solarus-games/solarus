@@ -10,7 +10,7 @@ import zsdx.*;
  * - amount
  * - savegameVariable
  */
-public class Chest extends MapEntity implements DynamicEntity {
+public class Chest extends MapEntity {
 
     /**
      * Description of the default images representing this kind of entity.

@@ -6,7 +6,7 @@ import zsdx.*;
 /**
  * Represents a sensor that makes the hero jump towards a direction.
  */
-public class JumpSensor extends MapEntity implements DynamicEntity {
+public class JumpSensor extends MapEntity {
 
     /**
      * Description of the default image representing this kind of entity.

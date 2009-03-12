@@ -7,7 +7,7 @@ import zsdx.*;
  * Represents an item that Link can pick on the map,
  * such as a rupee, a heart, a key, etc.
  */
-public class PickableItem extends MapEntity implements DynamicEntity {
+public class PickableItem extends MapEntity {
 
     /**
      * Subtypes of pickable items.

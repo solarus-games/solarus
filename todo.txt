@@ -1,18 +1,3 @@
----
-MàJ
----
-
-Prochaine mise à jour zsdx :
-
-- maison des rubis : jeu 1 fini -> image(s)
-- amélioration du code de l'éditeur : prendra en charge facilement les objets Zelda pas encore codés
- -> exemple des blocs et statues
- -> liste des prochaines entités nécessaires pour pouvoir faire le donjon
-    (dire qu'après ça il ne restera plus qu'à faire les maps et leurs scripts)
- -> une image de l'éditeur
-
----------------
-
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
@@ -23,18 +8,18 @@ Prochaine mise à jour zsdx :
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
 - Enlever le répertoire images ?
-- Renommer Tile en TilePattern, SimpleTile en SimpleTilePattern, AnimatedTile en AnimatedTilePattern et TileOnMap en Tile
 - Récupérer l'info "skin" des blocs, portes, etc. via le tileset
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 
 - Prochains types d'entités:
-  - tiles dynamiques
   - interrupteurs
   - portes
   - planchers-interrupteurs
   - tapis roulants
+  - trous
+  - piquants
 
 - Poisson d'avril : démo avec PLEIN de pub
 

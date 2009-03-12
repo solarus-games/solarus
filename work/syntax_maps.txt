@@ -263,6 +263,9 @@ Syntaxe de la partie spécifique pour un interrupteur :
 
 needs_block disable_on_leaving
 
+TODO : un interrupteur peut aussi être invisible (exemple : pour refermer une porte après le passage du héros)
+
+
 Portes
 
 Utiliser une propriété skin comme pour les blocs.

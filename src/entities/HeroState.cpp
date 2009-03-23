@@ -476,6 +476,8 @@ void Hero::update_pushing(void) {
       // see if the obstacle is an entity that the hero can push
       else if (facing_entity != NULL && grabbed_entity == NULL) {
 
+	try_snap_to_facing_entity();
+
 	if (facing_entity->moved_by_hero()) {
 
 	  string path = "  ";
@@ -553,6 +555,8 @@ void Hero::update_grabbing_pulling(void) {
     // see if the obstacle is an entity that the hero can pull
     if (facing_entity != NULL && facing_entity->moved_by_hero()) {
 
+      try_snap_to_facing_entity();
+
       string path = "  ";
       int opposite_direction = (get_animation_direction() + 2) % 4;
       path[0] = path[1] = '0' + opposite_direction * 2;
@@ -587,6 +591,14 @@ void Hero::update_moving_grabbed_entity(void) {
  */
 bool Hero::is_moving_grabbed_entity(void) {
   return grabbed_entity != NULL;
+}
+
+/**
+ * Returns whether the hero is in state GRABBING or PULLING.
+ * @return true if the state is GRABBING or PULLING
+ */
+bool Hero::is_grabbing_or_pulling(void) {
+  return state == GRABBING || state == PULLING;
 }
 
 /**

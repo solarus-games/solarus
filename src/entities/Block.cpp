@@ -112,7 +112,7 @@ bool Block::moved_by_hero(void) {
 
   Hero *hero = zsdx->game->get_hero();
 
-  if (subtype != STATUE && hero->get_state() == Hero::PULLING) {
+  if (hero->is_grabbing_or_pulling() && subtype != STATUE) {
     return false;
   }
 

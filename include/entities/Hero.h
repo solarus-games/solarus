@@ -119,6 +119,8 @@ class Hero: public MapEntity {
   void update_sprites(void);
   void movement_just_changed(void);
 
+  void try_snap_to_facing_entity(void);
+
   void action_key_pressed(void);
   void sword_key_pressed(void);
   void arrow_pressed(int direction);
@@ -232,6 +234,7 @@ class Hero: public MapEntity {
   void set_ground(int ground);
   void start_free(void);
   void start_sword(void);
+  bool is_grabbing_or_pulling(void);
   bool is_moving_grabbed_entity(void);
   void grabbed_entity_collision(void);
   void stop_moving_grabbed_entity(void);

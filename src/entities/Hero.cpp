@@ -132,6 +132,31 @@ bool Hero::is_moving_towards(int direction) {
 }
 
 /**
+ * Snaps the hero to the entity he is facing if there is no
+ * collision and if he is not too far.
+ */
+void Hero::try_snap_to_facing_entity(void) {
+
+  SDL_Rect collision_box = *get_position_in_map();
+
+  if (get_animation_direction() % 2 == 0) {
+    if (abs(collision_box.y - facing_entity->get_top_left_y()) <= 5) {
+      collision_box.y = facing_entity->get_top_left_y();
+    }
+  }
+  else {
+    if (abs(collision_box.x - facing_entity->get_top_left_x()) <= 5) {
+      collision_box.x = facing_entity->get_top_left_x();
+    }
+  }
+
+  if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+    set_position_in_map(&collision_box);
+    just_moved();
+  }
+}
+
+/**
  * Returns the coordinates of a point in the direction the hero's sprite is looking at.
  * This point is 1 pixel outside the hero's collision box. It is used
  * to determine the actions he can do depending on the entity he is facing

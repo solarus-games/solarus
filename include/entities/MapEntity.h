@@ -150,6 +150,7 @@ class MapEntity {
   int get_width(void);
   int get_height(void);
   const SDL_Rect * get_position_in_map(void);
+  void set_position_in_map(const SDL_Rect *position_in_map);
   const SDL_Rect * get_origin(void);
   int get_top_left_x(void);
   int get_top_left_y(void);

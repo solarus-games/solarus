@@ -147,11 +147,11 @@ public abstract class MapEntity extends Observable {
 	// default values
 	this.layer = LAYER_LOW;
 	this.positionInMap = new Rectangle(0, 0, width, height);
+	this.specificProperties = new LinkedHashMap<String, String>();
 
 	if (hasSubtype()) {
 	    setSubtype(getDefaultSubtype());
 	}
-	this.specificProperties = new LinkedHashMap<String, String>();
 
 	try {
 	    setPropertiesDefaultValues();
@@ -159,7 +159,7 @@ public abstract class MapEntity extends Observable {
 	catch (MapException ex) {
 	    System.err.println("Unexpected error: could not set the default values for entity '" + getType() + "': " + ex.getMessage());
 	}
-	
+
 	initializeImageDescription();
 
 	if (hasName()) {
@@ -1173,7 +1173,7 @@ public abstract class MapEntity extends Observable {
      * @param value value of the property
      */
     public final void setProperty(String name, boolean value) throws MapException {
-	setProperty(name, value ? "0" : "1");
+	setProperty(name, value ? "1" : "0");
     }
 
     /**

@@ -19,6 +19,7 @@ public enum EntityType {
     INTERACTIVE       (8, "Interactive entity", InteractiveEntity.class, InteractiveEntity.Subtype.class),
     BLOCK             (9, "Block", Block.class, Block.Subtype.class),
     DYNAMIC_TILE      (10, "Dynamic tile", DynamicTile.class, null),
+    SWITCH            (11, "Switch", Switch.class, Switch.Subtype.class),
     ;
 
     private final int index;

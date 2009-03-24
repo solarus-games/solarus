@@ -37,19 +37,23 @@ public class AddEntitiesMenu extends JMenu {
 		DestructibleItem.Subtype.STONE_SMALL_BLACK
 	),
 	new ItemDefinition(EntityType.CHEST, KeyEvent.VK_C),
-	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E, new EntitySubtype[] {
+	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E,
 		Enemy.Subtype.SIMPLE_GREEN_SOLDIER
-	}),
-	new ItemDefinition(EntityType.INTERACTIVE, KeyEvent.VK_I, new EntitySubtype[] {
+	),
+	new ItemDefinition(EntityType.INTERACTIVE, KeyEvent.VK_I,
 		InteractiveEntity.Subtype.CUSTOM,
 		InteractiveEntity.Subtype.NON_PLAYING_CHARACTER,
 		InteractiveEntity.Subtype.SIGN,
 		InteractiveEntity.Subtype.WATER_FOR_BOTTLE
-	}),	
+	),	
 	new ItemDefinition(EntityType.BLOCK, KeyEvent.VK_B,
 		Block.Subtype.NORMAL_BLOCK,
 		Block.Subtype.STATUE
-		),
+	),
+	new ItemDefinition(EntityType.SWITCH, KeyEvent.VK_W,
+		Switch.Subtype.INVISIBLE,
+		Switch.Subtype.NORMAL
+	),
     };
 
     /**

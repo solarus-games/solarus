@@ -25,6 +25,7 @@ public class EditEntityComponent extends JPanel {
 	EditInteractiveEntityComponent.class,
 	EditBlockComponent.class,
 	EditDynamicTileComponent.class,
+	EditSwitchComponent.class,
     };
 
     /**

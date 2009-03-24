@@ -33,6 +33,7 @@ public class AddEntitiesToolbar extends JComponent {
 	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.SIGN),
 	new Cell(EntityType.BLOCK, Block.Subtype.NORMAL_BLOCK),
 	new Cell(EntityType.BLOCK, Block.Subtype.STATUE),
+	new Cell(EntityType.SWITCH, Switch.Subtype.NORMAL),
     };
 
     /**

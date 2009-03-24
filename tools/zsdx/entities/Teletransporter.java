@@ -4,7 +4,7 @@ import java.awt.*;
 import zsdx.*;
 
 /**
- * A teletransporter is an entity that moves Link to a destination point
+ * A teletransporter is an entity that moves the hero to a destination point
  * on another map or the same map.
  */
 public class Teletransporter extends MapEntity {
@@ -109,7 +109,7 @@ public class Teletransporter extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("transition", Integer.toString(Transition.FADE.getId()));
+	setProperty("transition", Transition.FADE.getId());
 	setProperty("destinationMapId", map.getId());
 	setProperty("destinationPointName", "");
     }

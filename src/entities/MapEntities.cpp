@@ -577,6 +577,20 @@ void MapEntities::add_block(string name, MapEntity::Layer layer, int x, int y,
 }
 
 /**
+ * Creates a switch on the map.
+ * See the documentation of class Switch for the meaning of each parameter.
+ */
+void MapEntities::add_switch(string name, MapEntity::Layer layer, int x, int y,
+			     Switch::Subtype subtype, bool needs_block, bool disabled_when_leaving) {
+
+  Switch *entity = new Switch(name, layer, x, y, subtype, needs_block, disabled_when_leaving);
+
+  displayed_entities[layer].push_back(entity);
+  detectors.push_back(entity);
+  add_entity(entity);
+}
+
+/**
  * Removes and destroys the entities placed in the entities_to_remove list. 
  */
 void MapEntities::remove_marked_entities(void) {

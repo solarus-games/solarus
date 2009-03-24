@@ -1,5 +1,9 @@
 #include "entities/Switch.h"
-
+#include "ResourceManager.h"
+#include "Sound.h"
+#include "Sprite.h"
+#include "Map.h"
+#include "MapScript.h"
 
 /**
  * Constructor.
@@ -12,9 +16,9 @@
  * @param disable_when_leaving true to disable the switch when the hero or 
  * the block leaves it
  */
-Switch::Switch(string name, MapEntity::Layer layer, int x, int y, int width, int height,
+Switch::Switch(string name, MapEntity::Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool disable_when_leaving):
-  Detector(COLLISION_ORIGIN_POINT, name, layer, x, y, width, height),
+  Detector(COLLISION_ORIGIN_POINT, name, layer, x, y, 16, 16),
   subtype(subtype), needs_block(needs_block), disable_when_leaving(disable_when_leaving) {
 
   if (subtype == NORMAL) {
@@ -59,7 +63,12 @@ void Switch::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
   }
 
   if (enabled) {
-    ResourceManager::get_sound("switch")->play();
-    get_sprite->set_current_animation("enabled");
+
+    if (subtype != INVISIBLE) {
+      ResourceManager::get_sound("switch")->play();
+      get_sprite()->set_current_animation("enabled");
+    }
+
+    map->get_script()->event_switch_enabled(this);
   }
 }

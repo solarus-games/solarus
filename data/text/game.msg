@@ -104,8 +104,7 @@ line2 = "Bonne chance !"
 
 [rupee_house.game_3.not_playing]
 #       |-----------------------|
-line1 = "Tant pis ! Reviens une"
-line2 = "autre fois !"
+line1 = "C'est toi qui vois !"
 
 [rupee_house.game_3.not_allowed_to_play]
 #       |-----------------------|

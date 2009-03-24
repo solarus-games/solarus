@@ -20,7 +20,7 @@ DynamicTile::DynamicTile(string name, TilePattern *tile_pattern,
 			 Layer layer, int x, int y,
 			 int width, int height, bool enabled):
   MapEntity(name, 0, layer, x, y, width, height),
-  tile_pattern(tile_pattern), enabled(enabled) {
+  tile_pattern(tile_pattern), enabled(enabled), waiting_enabled(false) {
 
 }
 

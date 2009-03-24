@@ -2,6 +2,7 @@
 #define ZSDX_MAP_SCRIPT_H
 
 #include "Common.h"
+#include "Treasure.h"
 #include <list>
 
 struct lua_State;
@@ -79,6 +80,7 @@ class MapScript {
   void event_npc_dialog(string npc_name);
   void event_npc_path_finished(string npc_name);
   bool event_open_empty_chest(string chest_name);
+  void event_got_treasure(Treasure::Content content, int savegame_variable);
 };
 
 #endif

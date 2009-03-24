@@ -10,6 +10,7 @@
 #include "entities/Enemy.h"
 #include "entities/InteractiveEntity.h"
 #include "entities/Block.h"
+#include "entities/Switch.h"
 #include "movements/FallingOnFloorMovement.h"
 #include <vector>
 #include <list>
@@ -142,6 +143,9 @@ class MapEntities {
 
   void add_block(string name, MapEntity::Layer layer, int x, int y,
 		 Block::Subtype subtype, string skin, int maximum_moves);
+
+  void add_switch(string name, MapEntity::Layer layer, int x, int y,
+		  Switch::Subtype subtype, bool needs_block, bool disabled_when_leaving);
 
   void remove_enemy(Enemy *enemy);
 

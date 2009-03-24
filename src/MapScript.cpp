@@ -16,6 +16,7 @@
 #include "entities/Hero.h"
 #include "entities/Chest.h"
 #include "entities/DynamicTile.h"
+#include "entities/Switch.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 #include <stdarg.h>
@@ -225,13 +226,18 @@ void MapScript::remove_timer(string callback_name) {
   bool found = false;
   std::list<Timer*>::iterator it;
 
+  Timer *timer = NULL;
   for (it = timers.begin(); it != timers.end() && !found; it++) {
 
-    Timer *timer = *it;
+    timer = *it;
     if (timer->get_callback_name() == callback_name) {
       delete timer;
       found = true;
     }
+  }
+
+  if (found) {
+    timers.remove(timer);
   }
 }
 
@@ -792,4 +798,22 @@ void MapScript::event_npc_path_finished(string npc_name) {
  */
 bool MapScript::event_open_empty_chest(string chest_name) {
   return call_lua_function("event_open_empty_chest", 1, chest_name.c_str());
+}
+
+/**
+ * Notifies the script that the player has just obtained a treasure.
+ * The treasure source does not matter: it can come from a chest, 
+ * a pickable item or the script.
+ * @param content the content obtained
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
+ */
+void MapScript::event_got_treasure(Treasure::Content content, int savegame_variable) {
+
+  char s_content[16];
+  sprintf(s_content, "%d", content);
+
+  char s_savegame_variable[16];
+  sprintf(s_savegame_variable, "%d", savegame_variable);
+  call_lua_function("event_got_treasure", 2, s_content, s_savegame_variable);
 }

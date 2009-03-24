@@ -104,23 +104,21 @@ function event_message_sequence_finished(first_message_id, answer)
 	    start_message("rupee_house.not_enough_money")
 
 	 else
-	    -- enough money: reset the blocks and the barriers, pay and start the game
+	    -- enough money: reset the game, pay and start the game
 
 	    reset_blocks();
 	    disable_tile("game_3_barrier_1");
 	    disable_tile("game_3_barrier_2");
 	    disable_tile("game_3_barrier_3");
 	    disable_tile("game_3_middle_barrier");
+	    stop_timer("game_3_timer")
 
 	    remove_rupees(10)
 	    start_message("rupee_house.game_3.go")
+	    start_timer(6000, "game_3_timer", true);
 	    playing_game_3 = true
 	 end
       end
-   elseif first_message_id == "rupee_house.game_3.go" then
-
-      -- start the timer
-      start_timer(6000, "game_3_timer", true);
    end
 end
 
@@ -160,9 +158,20 @@ function game_3_timer()
    enable_tile("game_3_middle_barrier")
 end
 
--- Function called at each loop
-function event_update()
-   if get_savegame_boolean(17) and is_tile_enabled("game_3_final_barrier") then
+-- Function called when the player obtains a treasure
+function event_got_treasure(content, savegame_variable)
+
+   -- stop game 3 when the player founds the piece of heart
+   if savegame_variable == "17" then
       disable_tile("game_3_final_barrier")
+      playing_game_3 = false
    end
+end
+
+-- Function called when a switch is enabled
+function event_switch_enabled(switch_name)
+
+   -- stop the timer when the player reaches the invisible switch
+   stop_timer("game_3_timer")
+--   play_sound("secret")
 end

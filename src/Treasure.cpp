@@ -9,6 +9,8 @@
 #include "DialogBox.h"
 #include "InventoryItem.h"
 #include "Counter.h"
+#include "Map.h"
+#include "MapScript.h"
 #include "entities/Hero.h"
 
 /**
@@ -121,6 +123,7 @@ void Treasure::give_to_player(void) {
     play_treasure_sound();
     show_message();
     add_item_to_equipment();
+    zsdx->game->get_current_script()->event_got_treasure(content, savegame_variable);
   }
 }
 

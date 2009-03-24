@@ -1,6 +1,8 @@
 #include "Timer.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "ZSDX.h"
+#include "Game.h"
 
 /**
  * Creates and starts a timer.
@@ -21,6 +23,10 @@ Timer::Timer(Uint32 duration, const char *callback_name, bool with_sound):
   }
   else {
     next_sound_date = 0;
+  }
+
+  if (zsdx->game->is_suspended()) {
+    set_suspended(true);
   }
 }
 

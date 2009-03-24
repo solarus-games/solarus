@@ -9,6 +9,7 @@
 #include "entities/Tileset.h"
 #include "entities/Teletransporter.h"
 #include "entities/Block.h"
+#include "entities/Switch.h"
 #include <iomanip>
 
 /**
@@ -197,6 +198,16 @@ void MapLoader::load_map(Map *map) {
 	iss >> width >> height >> entity_name >> tile_pattern_id >> enabled;
 	entities->add_dynamic_tile(entity_name, tile_pattern_id, (MapEntity::Layer) layer,
 				   x, y, width, height, enabled != 0);
+	break;
+      }
+
+    case MapEntity::SWITCH:
+      {
+	int subtype, needs_block, disabled_when_leaving;
+
+	iss >> entity_name >> subtype >> needs_block >> disabled_when_leaving;
+	entities->add_switch(entity_name, (MapEntity::Layer) layer, x, y,
+			     (Switch::Subtype) subtype, needs_block != 0, disabled_when_leaving != 0);
 	break;
       }
 

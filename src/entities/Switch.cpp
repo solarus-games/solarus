@@ -19,7 +19,12 @@
 Switch::Switch(string name, MapEntity::Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool disable_when_leaving):
   Detector(COLLISION_ORIGIN_POINT, name, layer, x, y, 16, 16),
-  subtype(subtype), needs_block(needs_block), disable_when_leaving(disable_when_leaving) {
+  subtype(subtype), needs_block(needs_block), disable_when_leaving(disable_when_leaving),
+  enabled(false) {
+
+  if (subtype == INVISIBLE && needs_block) {
+    DIE("The switch '" << name << "' is invisible but needs a block");
+  }
 
   if (subtype == NORMAL) {
     create_sprite("entities/switch");
@@ -55,11 +60,11 @@ void Switch::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
   }
 
   if (entity_overlapping->is_hero()) {
-    enabled = true;
+    enabled = !needs_block;
   }
-  else if (entity_overlapping->get_type() == BLOCK && subtype != INVISIBLE) {
+  else if (entity_overlapping->get_type() == BLOCK) {
     // don't enable an invisible switch with a block
-    enabled = true;
+    enabled = (subtype != INVISIBLE);
   }
 
   if (enabled) {
@@ -72,3 +77,5 @@ void Switch::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
     map->get_script()->event_switch_enabled(this);
   }
 }
+
+// TODO take into account disable_when_leaving

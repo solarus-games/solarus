@@ -21,10 +21,8 @@ class SpriteAnimation {
   SpriteAnimationDirection **directions; /**< array of directions:
 					  * each direction is a sequence of images */
 
-  const Uint32 frame_interval; /**< Interval in milliseconds between two frames.
-				* This interval is the same for all directions.
-				* If there is only one frame in every direction,
-				* this field is set to zero. */
+  Uint32 frame_delay;          /**< interval in milliseconds between two frames
+			        * (this delay is the same for all directions) */
   
   const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
 
@@ -40,7 +38,8 @@ class SpriteAnimation {
   void display(SDL_Surface *destination, int x, int y, int current_direction, int current_frame);
 
   SpriteAnimationDirection *get_direction(int direction);
-  Uint32 get_frame_interval(void);
+  Uint32 get_frame_delay(void);
+  void set_frame_delay(Uint32 frame_delay);
 
   void enable_pixel_collisions(void);
   bool are_pixel_collisions_enabled(void);

@@ -26,30 +26,8 @@
  * @param map the map
  */
 MapScript::MapScript(Map *map):
-  map(map), first_time(true) {
+  map(map), context(NULL) {
 
-  // get the id of the map
-  int id = (int) map->get_id();
-
-  // compute the file name, depending on the id
-  std::ostringstream oss;
-  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".lua";
-  string file_name = FileTools::data_file_add_prefix(oss.str());
-
-  // create an execution context
-  context = lua_open();
-  luaL_openlibs(context);
-
-  // register the C functions accessible to the script
-  register_c_functions();
-
-  // initialize the script
-  luaL_dostring(context, "math.randomseed(os.time())");
-
-  // load the script
-  if (luaL_dofile(context, file_name.c_str()) != 0) {
-    DIE("Cannot load the script of map " << id << ": " << lua_tostring(context, -1));
-  }
 }
 
 /**
@@ -58,11 +36,12 @@ MapScript::MapScript(Map *map):
 MapScript::~MapScript(void) {
 
   // close the Lua execution context
-  lua_close(context);
+  if (context != NULL) {
+    lua_close(context);
+  }
 
   // delete the timers
   std::list<Timer*>::iterator it;
-
   for (it = timers.begin(); it != timers.end(); it++) {
     delete *it;
   }
@@ -100,6 +79,10 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "is_tile_enabled", l_is_tile_enabled);
   lua_register(context, "reset_block", l_reset_block);
   lua_register(context, "reset_blocks", l_reset_blocks);
+  lua_register(context, "interactive_entity_set_animation", l_interactive_entity_set_animation);
+  lua_register(context, "interactive_entity_set_animation_delay", l_interactive_entity_set_animation_delay);
+  lua_register(context, "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame);
+  lua_register(context, "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused);
 }
 
 /**
@@ -113,6 +96,37 @@ void MapScript::check_nb_arguments(lua_State *context, int nb_arguments) {
   if (lua_gettop(context) != nb_arguments) {
     DIE("Invalid number of arguments");
   }
+}
+
+/**
+ * Loads the script and initializes it.
+ */
+void MapScript::initialize(void) {
+
+  // get the id of the map
+  int id = (int) map->get_id();
+
+  // compute the file name, depending on the id
+  std::ostringstream oss;
+  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".lua";
+  string file_name = FileTools::data_file_add_prefix(oss.str());
+
+  // create an execution context
+  context = lua_open();
+  luaL_openlibs(context);
+
+  // register the C functions accessible to the script
+  register_c_functions();
+
+  // initialize the script
+  luaL_dostring(context, "math.randomseed(os.time())");
+
+  // load the script
+  if (luaL_dofile(context, file_name.c_str()) != 0) {
+    DIE("Cannot load the script of map " << id << ": " << lua_tostring(context, -1));
+  }
+
+  call_lua_function("event_map_started");
 }
 
 /**
@@ -169,15 +183,18 @@ bool MapScript::call_lua_function(const char *function_name, int nb_arguments, .
  * @param suspended true if the game is suspended, false if it is resumed
  */
 void MapScript::set_suspended(bool suspended) {
-  
-  // suspend or resume the timers
-  std::list<Timer*>::iterator it;
-  for (it = timers.begin(); it != timers.end(); it++) {
-    (*it)->set_suspended(suspended);
-  }
 
-  // notify the script
-  call_lua_function("event_set_suspended", 1, suspended ? "1" : "0");  
+  if (context != NULL) {
+  
+    // suspend or resume the timers
+    std::list<Timer*>::iterator it;
+    for (it = timers.begin(); it != timers.end(); it++) {
+      (*it)->set_suspended(suspended);
+    }
+
+    // notify the script
+    call_lua_function("event_set_suspended", 1, suspended ? "1" : "0");  
+  }
 }
 
 /**
@@ -202,10 +219,6 @@ void MapScript::update(void) {
   }
 
   // update the script
-  if (first_time) {
-    call_lua_function("event_map_started");
-    first_time = false;
-  }
   call_lua_function("event_update");
 }
 
@@ -701,6 +714,82 @@ int MapScript::l_reset_blocks(lua_State *l) {
   }
 
   delete blocks;
+
+  return 0;
+}
+
+/**
+ * Sets the animation of an interactive entity's sprite.
+ * Argument 1 (string): name of the interactive entity
+ * Argument 2 (string): name of the animation to set
+ */
+int MapScript::l_interactive_entity_set_animation(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  string name = lua_tostring(l, 1);
+  string animation = lua_tostring(l, 2);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  entity->set_sprite_animation(animation);
+
+  return 0;
+}
+
+/**
+ * Sets the animation speed of an interactive entity's sprite.
+ * Argument 1 (string): name of the interactive entity
+ * Argument 2 (integer): delay between two frames in milliseconds
+ */
+int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  string name = lua_tostring(l, 1);
+  Uint32 delay = lua_tointeger(l, 2);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  entity->set_sprite_animation_delay(delay);
+
+  return 0;
+}
+
+/**
+ * Sets the current animation frame of an interactive entity's sprite.
+ * Argument 1 (string): name of the interactive entity
+ * Argument 2 (integer): frame number
+ */
+int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  string name = lua_tostring(l, 1);
+  int frame = lua_tointeger(l, 2);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  entity->set_sprite_animation_frame(frame);
+
+  return 0;
+}
+
+/**
+ * Pauses or resumes the animation of an interactive entity's sprite.
+ * Argument 1 (string): name of the interactive entity
+ * Argument 2 (boolean): true to pause, false to resume
+ */
+int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  string name = lua_tostring(l, 1);
+  bool paused = lua_toboolean(l, 2) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  entity->set_sprite_animation_paused(paused);
 
   return 0;
 }

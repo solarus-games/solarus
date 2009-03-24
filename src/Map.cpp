@@ -376,10 +376,11 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  */
 void Map::start(void) {
 
-  zsdx->game->play_music(music_id);
   SDL_SetAlpha(visible_surface, SDL_SRCALPHA, 255);
 
   place_hero_on_destination_point();
+  script->initialize();
+  zsdx->game->play_music(music_id);
   started = true;
 }
 

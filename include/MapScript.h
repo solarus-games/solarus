@@ -20,7 +20,6 @@ class MapScript {
   Map *map;                   /**< the map associated to this script */
   lua_State* context;         /**< the execution context of the Lua script */
   std::list<Timer*> timers;   /**< the timers currently running for this script */
-  bool first_time;            /**< true until the first update() call */
 
   bool call_lua_function(const char *function_name);
   bool call_lua_function(const char *function_name, int nb_arguments, ...);
@@ -53,6 +52,10 @@ class MapScript {
   static FunctionAvailableToScript l_is_tile_enabled;
   static FunctionAvailableToScript l_reset_block;
   static FunctionAvailableToScript l_reset_blocks;
+  static FunctionAvailableToScript l_interactive_entity_set_animation;
+  static FunctionAvailableToScript l_interactive_entity_set_animation_delay;
+  static FunctionAvailableToScript l_interactive_entity_set_animation_frame;
+  static FunctionAvailableToScript l_interactive_entity_set_animation_paused;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);
@@ -64,6 +67,7 @@ class MapScript {
   // loading and closing a script
   MapScript(Map *map);
   ~MapScript(void);
+  void initialize(void);
 
   // update functions
   void update(void);

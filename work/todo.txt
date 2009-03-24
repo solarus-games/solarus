@@ -12,9 +12,9 @@
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+  - interactive_entity_set_animation_delay : modifie le sprite partagé par toutes les entités qui y font référence...
 
 - Prochains types d'entités:
-  - interrupteurs
   - portes
   - planchers-interrupteurs
   - tapis roulants
@@ -84,3 +84,4 @@ Mode release :
 	- Editeur de maps : sélectionner uniquement les objets visibles (non obstacles / obstacles cochés ou pas)
 	- Le message "Some tiles have been removed..." s'affiche quand on ouvre la map mais pas quand on change le tileset une fois ouvert (il y a une exception à la place)
 	- Dézoomer avec Ctrl + molette
+	- Parser les fichiers de sprite dans l'éditeur (utile pour PNJ et entités avec skin)

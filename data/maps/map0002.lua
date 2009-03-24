@@ -6,6 +6,16 @@ playing_game_3 = false
 already_played_game_1 = false
 rewards = {5, 20, 50} -- possible rupee rewards in game 1
 
+-- game 3 behavior
+slot_machine_delays = {slot_machine_left = 100, slot_machine_middle = 50, slot_machine_right = 200};
+
+-- Function called when the map starts
+function event_map_started()
+   interactive_entity_set_animation_frame("slot_machine_left", 6)
+   interactive_entity_set_animation_frame("slot_machine_middle", 15)
+   interactive_entity_set_animation_frame("slot_machine_right", 9)
+end
+
 -- Function called when the player wants to talk to a non-playing character
 -- npc_name: name of the NPC the player is talking to
 function event_npc_dialog(npc_name)
@@ -173,5 +183,12 @@ function event_switch_enabled(switch_name)
 
    -- stop the timer when the player reaches the invisible switch
    stop_timer("game_3_timer")
---   play_sound("secret")
+   play_sound("secret")
+end
+
+function event_interaction(entity_name)
+
+   -- start the animation of this entity
+   interactive_entity_set_animation(entity_name, "started")
+   interactive_entity_set_animation_delay(entity_name, slot_machine_delays[entity_name])
 end

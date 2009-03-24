@@ -44,3 +44,8 @@ Appel de fonctions C++ depuis un script LUA :
 - bool is_tile_enabled(tile_name)			indique si un tile dynamique est activé
 - reset_block(block_name)				replace un bloc comme il était au début de la map
 - reset_blocks()					réinitialise tous les blocs de la map
+- interactive_entity_set_animation(entity, animation_name)	     change l'animation d'une entité interactive
+- interactive_entity_set_animation_delay(entity, delay)		     change la vitesse de l'animation d'une entité interactive
+- interactive_entity_set_animation_frame(entity, frame)		     change l'image de l'animation d'une entité interactive
+- interactive_entity_set_animation_paused(entity, paused)	     met en pause ou restore l'animation d'une entité interactive
+

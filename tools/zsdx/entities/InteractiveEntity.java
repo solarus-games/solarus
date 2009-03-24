@@ -58,7 +58,7 @@ public class InteractiveEntity extends MapEntity {
      * Origin point of each type of interactive entity.
      */
     private static final Point[] origins = {
-	new Point(0, 0),
+	new Point(8, 13),
 	new Point(8, 21),
 	new Point(8, 13),
 	new Point(0, 0)

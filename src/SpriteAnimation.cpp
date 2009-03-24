@@ -7,15 +7,15 @@
  * @param image_file_name the image from which the frames are extracted
  * @param nb_directions number of directions in this animation
  * @param directions the image sequence of each direction
- * @param frame_interval interval in millisecond between two frames for this sprite animation
+ * @param frame_delay delay in millisecond between two frames for this sprite animation
  * (or 0 to make no animation, for example when you have only one frame)
  * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
 SpriteAnimation::SpriteAnimation(string image_file_name, int nb_directions,
 				 SpriteAnimationDirection **directions,
-				 Uint32 frame_interval, int loop_on_frame):
+				 Uint32 frame_delay, int loop_on_frame):
   nb_directions(nb_directions), directions(directions),
-  frame_interval(frame_interval), loop_on_frame(loop_on_frame) {
+  frame_delay(frame_delay), loop_on_frame(loop_on_frame) {
 
   src_image = ResourceManager::load_image(image_file_name);
 }
@@ -51,11 +51,19 @@ SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) {
 }
 
 /**
- * Returns the interval between two frames for this sprite animation.
- * @return the frame interval in millisecond
+ * Returns the delay between two frames for this sprite animation.
+ * @return the frame delay in milliseconds
  */
-Uint32 SpriteAnimation::get_frame_interval(void) {
-  return frame_interval;
+Uint32 SpriteAnimation::get_frame_delay(void) {
+  return frame_delay;
+}
+
+/**
+ * Sets the delay between two frames for this sprite animation.
+ * @param delay the frame delay in millisecond
+ */
+void SpriteAnimation::set_frame_delay(Uint32 frame_delay) {
+  this->frame_delay = frame_delay;
 }
 
 /**

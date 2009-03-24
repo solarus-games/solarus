@@ -55,8 +55,9 @@ InteractiveEntity::InteractiveEntity(string name, Layer layer, int x, int y,
   switch (special_interaction) {
 
   case CUSTOM:
-    initialize_sprite(sprite_name, initial_direction);
+    initialize_sprite(sprite_name, 0); // the direction is ignored
     set_size(16, 16);
+    set_origin(8, 13);
     break;
 
   case NON_PLAYING_CHARACTER:
@@ -240,6 +241,38 @@ void InteractiveEntity::just_moved(void) {
       get_sprite()->set_current_direction(animation_directions[movement_direction]);
     }
   }
+}
+
+/**
+ * Sets the animation of this interactive entity's sprite.
+ * @param animation_name name of the animation to set
+ */
+void InteractiveEntity::set_sprite_animation(string animation_name) {
+  get_sprite()->set_current_animation(animation_name);
+}
+
+/**
+ * Sets the animation speed of this interactive entity's sprite.
+ * @param delay delay between two frames in milliseconds
+ */
+void InteractiveEntity::set_sprite_animation_delay(Uint32 delay) {
+  get_sprite()->set_frame_delay(delay);
+}
+
+/**
+ * Sets the current animation frame of this interactive entity's sprite.
+ * @param frame the frame number to set
+ */
+void InteractiveEntity::set_sprite_animation_frame(int frame) {
+  get_sprite()->set_current_frame(frame);
+}
+
+/**
+ * Oauses or resumes the animation of this interactive entity's sprite.
+ * @param paused true to pause the animation, false to resume it
+ */
+void InteractiveEntity::set_sprite_animation_paused(bool paused) {
+  get_sprite()->set_paused(paused);
 }
 
 /**

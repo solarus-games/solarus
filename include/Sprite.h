@@ -36,7 +36,8 @@ class Sprite {
 
   Uint32 next_frame_date;                /**< date of the next frame */
 
-  bool suspended;                        /**< true if the animation is suspended */
+  bool suspended;                        /**< true if the game is suspended */
+  bool paused;                           /**< true if the animation is paused */
   bool finished;                         /**< true if the animation has been stopped because the last frame is finished */
 
   // blink
@@ -45,7 +46,6 @@ class Sprite {
   bool blink_is_sprite_visible;          /**< when blinking, true if the sprite is visible or false if it is invisible */
   Uint32 blink_next_change_date;         /**< date of the next change when blinking: visible or not */
 
-  Uint32 get_frame_interval(void);
   int get_next_frame(void);
 
  public:
@@ -69,6 +69,9 @@ class Sprite {
   int get_current_frame(void);
   void set_current_frame(int current_frame);
 
+  Uint32 get_frame_delay(void);
+  void set_frame_delay(Uint32 frame_delay);
+
   // animation state
   bool is_animation_started(void);
   void start_animation(void);
@@ -77,6 +80,8 @@ class Sprite {
 
   bool is_suspended(void);
   void set_suspended(bool suspended);
+  bool is_paused(void);
+  void set_paused(bool suspended);
   bool is_animation_finished(void);
   bool is_last_frame_reached(void);
   bool has_frame_changed(void);

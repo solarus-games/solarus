@@ -14,7 +14,7 @@
  */
 Sprite::Sprite(SpriteAnimationSetId id):
   animation_set_id(id), current_direction(0), current_frame(-1),
-  suspended(false), finished(false), blink_delay(0) {
+  suspended(false), paused(false), finished(false), blink_delay(0) {
   
   animation_set = ResourceManager::get_sprite_animation_set(id);
   set_current_animation(animation_set->get_default_animation());
@@ -66,14 +66,24 @@ SDL_Rect& Sprite::get_origin(void) {
 }
 
 /**
- * Returns the frame interval of the current animation.
+ * Returns the frame delay of the current animation.
  * A value of 0 (only for 1-frame animations) means that the
  * animation must continue to be displayed: in this case,
  * is_animation_finished() returns always false.
  * @return the delay between two frames for the current animation (in miliseconds)
  */
-Uint32 Sprite::get_frame_interval(void) {
-  return current_animation->get_frame_interval();  
+Uint32 Sprite::get_frame_delay(void) {
+  return current_animation->get_frame_delay();  
+}
+
+/**
+ * Sets the frame delay of the current animation.
+ * A value of 0 (only for 1-frame animations) means that the
+ * animation will continue to be displayed.
+ * @param frame_delay the delay between two frames for the current animation (in miliseconds)
+ */
+void Sprite::set_frame_delay(Uint32 frame_delay) {
+  current_animation->set_frame_delay(frame_delay);  
 }
 
 /**
@@ -101,9 +111,9 @@ string Sprite::get_current_animation(void) {
 void Sprite::set_current_animation(string animation_name) {
 
   if (animation_name != this->current_animation_name || !is_animation_started()) {
-  
+
     SpriteAnimation *animation = animation_set->get_animation(animation_name);
-    
+
     if (animation == NULL) {
       DIE("Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
     }
@@ -154,7 +164,7 @@ int Sprite::get_current_frame(void) {
 void Sprite::set_current_frame(int current_frame) {
 
   finished = false;
-  next_frame_date = SDL_GetTicks() + get_frame_interval();
+  next_frame_date = SDL_GetTicks() + get_frame_delay();
 
   frame_changed = (current_frame != this->current_frame);
 
@@ -191,6 +201,7 @@ void Sprite::start_animation(void) {
 void Sprite::restart_animation(void) {
   set_current_frame(0);
   set_suspended(false);
+  set_paused(false);
 }
 
 /**
@@ -201,8 +212,8 @@ void Sprite::stop_animation(void) {
 }
 
 /**
- * Returns true if the animation is suspended.
- * @return true if the animation is suspended, false otherwise
+ * Returns true if the game is suspended.
+ * @return true if the game is suspended, false otherwise
  */
 bool Sprite::is_suspended(void) {
   return suspended;
@@ -217,11 +228,42 @@ void Sprite::set_suspended(bool suspended) {
 
   if (suspended != this->suspended) {
     this->suspended = suspended;
-    
+ 
     // compte next_frame_date if the animation is being resumed
     if (!suspended) {
-      next_frame_date = SDL_GetTicks() + get_frame_interval();
-      blink_next_change_date = SDL_GetTicks();
+      Uint32 now = SDL_GetTicks();
+      next_frame_date = now + get_frame_delay();
+      blink_next_change_date = now;
+    }
+    else {
+      blink_is_sprite_visible = true;
+    }
+  }
+}
+
+/**
+ * Returns true if the animation is paused.
+ * @return true if the animation is paused, false otherwise
+ */
+bool Sprite::is_paused(void) {
+  return paused;
+}
+
+/**
+ * Pauses or resumes the animation.
+ * Nothing is done if the parameter specified does not change.
+ * @param paused true to pause the animation, false to resume it
+ */
+void Sprite::set_paused(bool paused) {
+
+  if (paused != this->paused) {
+    this->paused = paused;
+ 
+    // compte next_frame_date if the animation is being resumed
+    if (!paused) {
+      Uint32 now = SDL_GetTicks();
+      next_frame_date = now + get_frame_delay();
+      blink_next_change_date = now;
     }
     else {
       blink_is_sprite_visible = true;
@@ -232,7 +274,7 @@ void Sprite::set_suspended(bool suspended) {
 /**
  * Returns true if the animation is finished.
  * The animation is finished after the last frame is reached
- * and if the frame interval is not zero (a frame interval
+ * and if the frame delay is not zero (a frame delay
  * of zero should be used only for 1-frame animations).
  * @return true if the animation is finished
  */
@@ -302,7 +344,7 @@ bool Sprite::check_collision(Sprite *other, int x1, int y1, int x2, int y2) {
  */
 void Sprite::update(void) {
 
-  if (suspended) {
+  if (suspended || paused) {
     return;
   }
 
@@ -311,7 +353,7 @@ void Sprite::update(void) {
 
   // update the current frame
   int next_frame;
-  while (!finished && !suspended && get_frame_interval() > 0
+  while (!finished && !suspended && !paused && get_frame_delay() > 0
 	 && now >= next_frame_date) {
 
     // we get the next frame
@@ -323,7 +365,7 @@ void Sprite::update(void) {
     }
     else {
       current_frame = next_frame;
-      next_frame_date += get_frame_interval();
+      next_frame_date += get_frame_delay();
       frame_changed = true;
     }
   }

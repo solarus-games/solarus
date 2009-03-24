@@ -12,3 +12,4 @@ booleans:
 14	piece of heart near dungeon 1
 15	piece of heart near the south-west lake (reachable from dungeon #9)
 16	rupee house: game 1: found 50 rupees (best reward)
+17	piece of heart in rupee house (game 3)

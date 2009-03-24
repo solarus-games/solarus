@@ -72,7 +72,6 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
 /**
  * This function is called by the engine when an entity overlaps the teletransporter.
  * This is a redefinition of Detector::collision().
- * The map is not notified anymore: here we just make the hero leave the map.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */

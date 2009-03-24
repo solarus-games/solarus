@@ -64,10 +64,66 @@ line2 = "Oui"
 line3 = "Non"
 question = true
 
-[rupee_house.not_playing]
+[rupee_house.game_1.not_playing]
 #       |-----------------------|
 line1 = "Vis ta vie ! Sois"
 line2 = "un peu plus motivé !"
+
+[rupee_house.game_3.intro]
+#       |-----------------------|
+line1 = "Le but du jeu est de"
+line2 = "traverser le labyrinthe"
+line3 = "dans un temps limité"
+next = rupee_house.game_3.intro.2
+
+[rupee_house.game_3.intro.2]
+#       |-----------------------|
+line1 = "puis de pousser les"
+line2 = "blocs pour te frayer un"
+line3 = "chemin. Cela ne te"
+next = rupee_house.game_3.intro.3
+
+[rupee_house.game_3.intro.3]
+#       |-----------------------|
+line1 = "coûtera que 10 rubis"
+line2 = "et il y a un Fragment"
+line3 = "de Coeur à gagner !"
+next = rupee_house.game_3.intro.4
+
+[rupee_house.game_3.intro.4]
+#       |-----------------------|
+line1 = "Alors, tu veux jouer ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+
+[rupee_house.game_3.go]
+#       |-----------------------|
+line1 = "Et c'est parti !"
+line2 = "Bonne chance !"
+
+[rupee_house.game_3.not_playing]
+#       |-----------------------|
+line1 = "Tant pis ! Reviens une"
+line2 = "autre fois !"
+
+[rupee_house.game_3.not_allowed_to_play]
+#       |-----------------------|
+line1 = "Désolé, tu as déjà"
+line2 = "gagné à ce jeu !"
+
+[rupee_house.game_3.restart_question]
+#       |-----------------------|
+line1 = "Tu veux recommencer à"
+line2 = "zéro ?"
+next = rupee_house.game_3.restart_question.2
+
+[rupee_house.game_3.restart_question.2]
+#       |-----------------------|
+line1 = "C'est 10 rubis !"
+line2 = "Oui"
+line3 = "Non"
+question = true
 
 [rupee_house.not_enough_money]
 #       |-----------------------|

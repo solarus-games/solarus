@@ -101,6 +101,7 @@ add_executable (zsdx
   entities/Enemy.cpp
   entities/InteractiveEntity.cpp
   entities/Block.cpp
+  entities/Switch.cpp
 
   # tile patterns
   entities/Tileset.cpp

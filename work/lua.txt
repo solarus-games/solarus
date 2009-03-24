@@ -5,7 +5,8 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 - event_set_suspended(suspended)				appelé lorsque le jeu est suspendu ou repris
 - event_message_started(message_id)				appelé au début de l'affichage de chaque message d'un dialogue
 - event_dialog_finished(message_id, answer)			appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
-- event_entity_on_detector(detector_name, entity_name)		appelé pour certains types de détecteurs lorsqu'une entité est dessus
+- event_switch_enabled(switch_name)				appelé lorsqu'un interrupteur vient d'être activé
+- event_switch_disabled(switch_name)				appelé lorsqu'un interrupteur vient d'être désactivé
 - event_camera_reached_target()					appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
 - event_interaction(entity_name)				appelé lorsque le joueur interagit une entité interactive sans message
 								prédéfini (autre qu'un PNJ)
@@ -29,6 +30,7 @@ Appel de fonctions C++ depuis un script LUA :
 - set_savegame_integer(index)
 - set_savegame_boolean(index)
 - start_timer(duration, callback, with_sound)			démarre un timer qui appellera une fonction du script une fois terminé
+- stop_timer(callback)						arrête un timer en cours d'exécution
 - move_camera(x, y, speed)					suspend le jeu et déplace la caméra vers un point cible
 - restore_camera()						renvoie la caméra vers le héros
 - npc_walk(npc, path)						fait se déplacer un PNJ
@@ -36,3 +38,8 @@ Appel de fonctions C++ depuis un script LUA :
 - set_chest_open(chest_name, bool open)				modifie l'état d'un coffre (sans donner ni reprendre son contenu)
 - get_rupees()							retourne le nombre de rubis
 - remove_rupees(rupees)						enlève des rubis au joueur
+- disable_tile(tile_name)					désactive un tile dynamique
+- enable_tile(tile_name)					active un tile dynamique qui était désactivé
+- bool is_tile_enabled(tile_name)				indique si un tile dynamique est activé
+- reset_block(block_name)					replace un bloc comme il était au début de la map
+- reset_blocks()						réinitialise tous les blocs de la map

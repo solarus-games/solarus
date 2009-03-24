@@ -15,6 +15,7 @@
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"
 #include "entities/Chest.h"
+#include "entities/DynamicTile.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 #include <stdarg.h>
@@ -85,6 +86,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "set_savegame_integer", l_set_savegame_integer);
   lua_register(context, "set_savegame_boolean", l_set_savegame_boolean);
   lua_register(context, "start_timer", l_start_timer);
+  lua_register(context, "stop_timer", l_stop_timer);
   lua_register(context, "move_camera", l_move_camera);
   lua_register(context, "restore_camera", l_restore_camera);
   lua_register(context, "npc_walk", l_npc_walk);
@@ -92,6 +94,11 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "set_chest_open", l_set_chest_open);
   lua_register(context, "get_rupees", l_get_rupees);
   lua_register(context, "remove_rupees", l_remove_rupees);
+  lua_register(context, "disable_tile", l_disable_tile);
+  lua_register(context, "enable_tile", l_enable_tile);
+  lua_register(context, "is_tile_enabled", l_is_tile_enabled);
+  lua_register(context, "reset_block", l_reset_block);
+  lua_register(context, "reset_blocks", l_reset_blocks);
 }
 
 /**
@@ -207,6 +214,25 @@ void MapScript::update(void) {
  */
 void MapScript::add_timer(Timer *timer) {
   timers.push_back(timer);
+}
+
+/**
+ * Removes a timer if it exists.
+ * @param callback_name name of the timer callback
+ */
+void MapScript::remove_timer(string callback_name) {
+
+  bool found = false;
+  std::list<Timer*>::iterator it;
+
+  for (it = timers.begin(); it != timers.end() && !found; it++) {
+
+    Timer *timer = *it;
+    if (timer->get_callback_name() == callback_name) {
+      delete timer;
+      found = true;
+    }
+  }
 }
 
 // functions that can be called by the Lua script
@@ -457,6 +483,22 @@ int MapScript::l_start_timer(lua_State *l) {
 }
 
 /**
+ * Stops an existing timer.
+ * Argument 1 (string): name of the Lua function that is supposed to be called
+ * when the timer is finished
+ */
+int MapScript::l_stop_timer(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  const char *callback_name = lua_tostring(l, 1);
+
+  MapScript *script = zsdx->game->get_current_script();
+  script->remove_timer(callback_name);
+
+  return 0;
+}
+
+/**
  * Moves the camera towards a target point.
  * Argument 1 (integer): x coordinate of the target point
  * Argument 2 (integer): y coordinate of the target point
@@ -572,6 +614,91 @@ int MapScript::l_remove_rupees(lua_State *l) {
   return 0;
 }
 
+/**
+ * Disables a dynamic tile.
+ * Argument 1 (string): name of the dynamic tile to disable
+ */
+int MapScript::l_disable_tile(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  string dynamic_tile_name = lua_tostring(l, 1);
+  
+  Map *map = zsdx->game->get_current_map();
+  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(MapEntity::DYNAMIC_TILE, dynamic_tile_name);
+  dynamic_tile->set_enabled(false);
+
+  return 0;
+}
+
+/**
+ * Enables a dynamic tile.
+ * Argument 1 (string): name of the dynamic tile to enable
+ */
+int MapScript::l_enable_tile(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  string dynamic_tile_name = lua_tostring(l, 1);
+  
+  Map *map = zsdx->game->get_current_map();
+  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(MapEntity::DYNAMIC_TILE, dynamic_tile_name);
+  dynamic_tile->set_enabled(true);
+
+  return 0;
+}
+
+/**
+ * Enables a dynamic tile.
+ * Argument 1 (string): name of the dynamic tile to enable
+ * Return value (boolean): true if this tile is enabled
+ */
+int MapScript::l_is_tile_enabled(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  string dynamic_tile_name = lua_tostring(l, 1);
+  
+  Map *map = zsdx->game->get_current_map();
+  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(MapEntity::DYNAMIC_TILE, dynamic_tile_name);
+  lua_pushboolean(l, dynamic_tile->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * Replaces a block at its initial position.
+ * Argument 1 (string): name of the block to reset
+ */
+int MapScript::l_reset_block(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  string block_name = lua_tostring(l, 1);
+  
+  Map *map = zsdx->game->get_current_map();
+  Block *block = (Block*) map->get_entities()->get_entity(MapEntity::BLOCK, block_name);
+  block->reset();
+
+  return 0;
+}
+
+/**
+ * Replaces all blocks of the map at their initial position.
+ */
+int MapScript::l_reset_blocks(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+  
+  Map *map = zsdx->game->get_current_map();
+  std::list<MapEntity*> *blocks = map->get_entities()->get_entities(MapEntity::BLOCK);
+
+  std::list<MapEntity*>::iterator i;
+  for (i = blocks->begin(); i != blocks->end(); i++) {
+    ((Block*) (*i))->reset();
+  }
+
+  delete blocks;
+
+  return 0;
+}
+
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
@@ -606,14 +733,19 @@ void MapScript::event_message_sequence_finished(MessageId first_message_id, int 
 }
 
 /**
- * Notifies the script that an entity is overlapping a detector.
- * Note that all detectors don't notify the script (i.e. they don't call this function)
- * because they may have their own behavior.
- * @param detector the detector
- * @param entity the entity
+ * Notifies the script that a switch has just been enabled.
+ * @param sw the switch
  */
-void MapScript::event_entity_on_detector(Detector *detector, MapEntity *entity) {
-  call_lua_function("event_entity_on_detector", 2, detector->get_name().c_str(), entity->get_name().c_str());
+void MapScript::event_switch_enabled(Switch *sw) {
+  call_lua_function("event_switch_enabled", 1, sw->get_name().c_str());
+}
+
+/**
+ * Notifies the script that a switch has just been disabled.
+ * @param sw the switch
+ */
+void MapScript::event_switch_disabled(Switch *sw) {
+  call_lua_function("event_switch_disabled", 1, sw->get_name().c_str());
 }
 
 /**

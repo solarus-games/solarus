@@ -120,6 +120,7 @@ class JumpSensor;
 class Enemy;
 class InteractiveEntity;
 class Block;
+class Switch;
 
 // tile patterns
 class Tileset;

@@ -257,13 +257,14 @@ comme s'il était absent de la map, jusqu'à ce qu'il soit activé par le script
 Interrupteurs
 
 Un interrupteur a pour effet d'appeler le script lorsque le héros est dessus. Un interrupteur peut également être activé par un bloc (ou une statue) qui est poussé dessus. Certains interrupteurs se désactivent lorsque le héros les quitte, d'autres ne peuvent pas être activés par le héros qui est trop léger (il faut alors un bloc ou une statue).
-Un interrupteur n'a pas de direction et a un identification. Sa taille est toujours 16*16 et son sprite est imposé.
+Un interrupteur n'a pas de direction et a une identification. Sa taille est toujours 16*16 et son sprite dépend de son sous-type et doit avoir deux animations : disabled et enabled.
+Sous-types :
+- invisible
+- normal
 
 Syntaxe de la partie spécifique pour un interrupteur :
 
-needs_block disable_on_leaving
-
-TODO : un interrupteur peut aussi être invisible (exemple : pour refermer une porte après le passage du héros)
+needs_block disable_when_leaving
 
 
 Portes

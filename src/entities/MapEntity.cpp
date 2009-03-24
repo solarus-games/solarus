@@ -241,7 +241,7 @@ void MapEntity::set_size(SDL_Rect &size) {
 /**
  * Returns the position of the entity.
  * This function returns the rectangle defined by
- * get_x(), get_y(), get_width() and get_height().
+ * get_top_left_x(), get_top_left_y(), get_width() and get_height().
  * @return the position of the entity
  */
 const SDL_Rect * MapEntity::get_position_in_map(void) {
@@ -251,11 +251,22 @@ const SDL_Rect * MapEntity::get_position_in_map(void) {
 /**
  * Sets the position of the entity.
  * This function sets the rectangle defined by
- * get_x(), get_y(), get_width() and get_height().
+ * get_top_left_x(), get_top_left_y(), get_width() and get_height().
  * @param position_in_map the position of the entity
  */
 void MapEntity::set_position_in_map(const SDL_Rect *position_in_map) {
   this->position_in_map = *position_in_map;
+}
+
+/**
+ * Sets the position of the entity.
+ * This function sets the position of the rectangle's top-left corner.
+ * @param x x position of the entity
+ * @param y y position of the entity
+ */
+void MapEntity::set_position_in_map(int x, int y) {
+  set_x(x);
+  set_y(y);
 }
 
 /**

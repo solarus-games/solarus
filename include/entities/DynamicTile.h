@@ -15,6 +15,7 @@ class DynamicTile: public MapEntity {
 
   TilePattern *tile_pattern;   /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
   bool enabled;                /**< indicates that the tile is enabled (visible) */
+  bool waiting_enabled;        /**< indicates that the tile is waiting to be enabled */
 
  public:
 
@@ -25,6 +26,10 @@ class DynamicTile: public MapEntity {
   EntityType get_type(void);
   bool is_obstacle_for(MapEntity *other);
   void display_on_map(void);
+  void update(void);
+
+  bool is_enabled(void);
+  void set_enabled(bool enabled);
 };
 
 #endif

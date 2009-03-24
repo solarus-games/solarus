@@ -182,14 +182,13 @@ bool Detector::check_collision_custom(MapEntity *entity) {
 /**
  * This function is called by check_collision(MapEntity*)
  * when an entity overlaps the detector.
- * By default, the map is notified.
+ * By default, nothing is done.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision (useful if
  * the detector has several collision modes)
  */
 void Detector::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  map->get_script()->event_entity_on_detector(this, entity_overlapping);
 }
 
 /**

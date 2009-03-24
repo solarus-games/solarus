@@ -2,6 +2,7 @@
 
 -- Initializations made when the map has just been loaded
 playing_game_1 = false
+playing_game_3 = false
 already_played_game_1 = false
 rewards = {5, 20, 50} -- possible rupee rewards in game 1
 
@@ -33,6 +34,25 @@ function event_npc_dialog(npc_name)
 	    end
 	 end
       end
+
+   elseif npc_name == "game_3_npc" then
+      -- game 3 dialog
+
+      if playing_game_3 then
+	 -- the player is already playing: let him restart the game
+	 start_message("rupee_house.game_3.restart_question")
+      else
+	 -- see if the player can still play
+	 unauthorized = get_savegame_boolean(17)
+
+	 if unauthorized then
+	    -- the player already won this game
+	    start_message("rupee_house.game_3.not_allowed_to_play")
+	 else
+	    -- game rules
+	    start_message("rupee_house.game_3.intro")
+	 end
+      end
    end
 end
 
@@ -47,7 +67,7 @@ function event_message_sequence_finished(first_message_id, answer)
 
       if answer == "1" then
 	 -- don't want to play the game
-	 start_message("rupee_house.not_playing")
+	 start_message("rupee_house.game_1.not_playing")
       else
 	 -- wants to play game 1
 
@@ -67,6 +87,40 @@ function event_message_sequence_finished(first_message_id, answer)
 	    playing_game_1 = true
 	 end
       end
+
+   elseif first_message_id == "rupee_house.game_3.intro" or 
+      first_message_id == "rupee_house.game_3.restart_question" then
+      -- if the dialog was the game 3 question
+
+      if answer == "1" then
+	 -- don't want to play the game
+	 start_message("rupee_house.game_3.not_playing")
+      else
+	 -- wants to play game 3
+
+	 if get_rupees() < 10 then
+	     -- not enough money
+	    play_sound("wrong")
+	    start_message("rupee_house.not_enough_money")
+
+	 else
+	    -- enough money: reset the blocks and the barriers, pay and start the game
+
+	    reset_blocks();
+	    disable_tile("game_3_barrier_1");
+	    disable_tile("game_3_barrier_2");
+	    disable_tile("game_3_barrier_3");
+	    disable_tile("game_3_middle_barrier");
+
+	    remove_rupees(10)
+	    start_message("rupee_house.game_3.go")
+	    playing_game_3 = true
+	 end
+      end
+   elseif first_message_id == "rupee_house.game_3.go" then
+
+      -- start the timer
+      start_timer(6000, "game_3_timer", true);
    end
 end
 
@@ -97,5 +151,18 @@ function event_open_empty_chest(chest_name)
 
       playing_game_1 = false
       already_played_game_1 = true
+   end
+end
+
+-- Function called when the timer of game 3 ends.
+function game_3_timer()
+   play_sound("door_closed")
+   enable_tile("game_3_middle_barrier")
+end
+
+-- Function called at each loop
+function event_update()
+   if get_savegame_boolean(17) and is_tile_enabled("game_3_final_barrier") then
+      disable_tile("game_3_final_barrier")
    end
 end

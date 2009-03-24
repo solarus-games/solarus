@@ -29,7 +29,7 @@ public class EditDynamicTileComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// treasure saving option
-	enabledField = new JCheckBox("Visible at start");
+	enabledField = new JCheckBox("Enabled at start");
 	enabledField.setSelected(true);
 	addField("Visibility", enabledField);
     }

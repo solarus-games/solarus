@@ -153,6 +153,28 @@ MapEntity * MapEntities::get_entity(MapEntity::EntityType type, string name) {
 }
 
 /**
+ * Returns all entities of the map with the specified type.
+ * Don't forget to delete the list when you don't need it anymore.
+ * @param type type of entity
+ * @return the entities of this type
+ */
+list<MapEntity*> * MapEntities::get_entities(MapEntity::EntityType type) {
+
+  list<MapEntity*> *entities = new list<MapEntity*>();
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+
+    MapEntity *entity = *i;
+    if (entity->get_type() == type) {
+      entities->push_back(entity);
+    }
+  }
+
+  return entities;
+}
+
+/**
  * Brings to front an entity displayed as a sprite.
  * @param sprite_entity the entity to bring to front
  */

@@ -35,8 +35,9 @@ Block::Block(string name, Layer layer, int x, int y,
     get_sprite()->set_current_animation(skin);
   }
 
-  initial_position.x = last_position.x;
-  initial_position.y = last_position.y;
+  initial_position.x = last_position.x = x;
+  initial_position.y = last_position.y = y;
+  initial_maximum_moves = maximum_moves;
 }
 
 /**
@@ -193,4 +194,12 @@ void Block::display_on_map_above_hero(void) {
   if (subtype == STATUE && get_y() > hero->get_y() + 8) {
     MapEntity::display_on_map();
   }
+}
+
+/**
+ * Resets the block at its initial position.
+ */
+void Block::reset(void) {
+  set_position_in_map(initial_position.x, initial_position.y);
+  this->maximum_moves = initial_maximum_moves;
 }

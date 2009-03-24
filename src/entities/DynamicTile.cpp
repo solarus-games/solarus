@@ -1,6 +1,9 @@
 #include "entities/DynamicTile.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
+#include "entities/Hero.h"
+#include "ZSDX.h"
+#include "Game.h"
 
 /**
  * Creates a new dynamic tile on the map.
@@ -51,5 +54,43 @@ bool DynamicTile::is_obstacle_for(MapEntity *other) {
 void DynamicTile::display_on_map(void) {
   if (enabled) {
     tile_pattern->display_on_map(map, position_in_map);
+  }
+}
+
+/**
+ * Updates the entity.
+ */
+void DynamicTile::update(void) {
+
+  MapEntity::update();
+
+  if (waiting_enabled) {
+    Hero *hero = zsdx->game->get_hero();
+    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(hero->get_position_in_map())) {
+      this->enabled = true;
+      this->waiting_enabled = false;
+    }
+  }
+}
+
+/**
+ * Returns whether this dynamic tile is enabled.
+ * @return true if this tile is enabled
+ */
+bool DynamicTile::is_enabled(void) {
+  return enabled;
+}
+
+/**
+ * Enables or disables this dynamic tile.
+ * @param enabled true to enable the tile, false to disable it
+ */
+void DynamicTile::set_enabled(bool enabled) {
+  if (enabled) {
+    // enable the tile as soon as possible
+    this->waiting_enabled = true;
+  }
+  else {
+    this->enabled = false;
   }
 }

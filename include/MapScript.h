@@ -39,6 +39,7 @@ class MapScript {
   static FunctionAvailableToScript l_set_savegame_integer;
   static FunctionAvailableToScript l_set_savegame_boolean;
   static FunctionAvailableToScript l_start_timer;
+  static FunctionAvailableToScript l_stop_timer;
   static FunctionAvailableToScript l_move_camera;
   static FunctionAvailableToScript l_restore_camera;
   static FunctionAvailableToScript l_npc_walk;
@@ -46,10 +47,16 @@ class MapScript {
   static FunctionAvailableToScript l_set_chest_open;
   static FunctionAvailableToScript l_get_rupees;
   static FunctionAvailableToScript l_remove_rupees;
+  static FunctionAvailableToScript l_disable_tile;
+  static FunctionAvailableToScript l_enable_tile;
+  static FunctionAvailableToScript l_is_tile_enabled;
+  static FunctionAvailableToScript l_reset_block;
+  static FunctionAvailableToScript l_reset_blocks;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);
   void add_timer(Timer *timer);
+  void remove_timer(string callback_name);
 
  public:
 
@@ -65,7 +72,8 @@ class MapScript {
   void event_map_started(void);
   void event_message_started(MessageId message_id);
   void event_message_sequence_finished(MessageId first_message_id, int answer);
-  void event_entity_on_detector(Detector *detector, MapEntity *entity);
+  void event_switch_enabled(Switch *sw);
+  void event_switch_disabled(Switch *sw);
   void event_camera_reached_target(void);
   void event_interaction(string entity_name);
   void event_npc_dialog(string npc_name);

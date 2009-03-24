@@ -33,6 +33,7 @@ class MapEntity {
 				       * in front of it (typically an NPC) */
     BLOCK                     = 9,    /**< a block or a statue that the hero can push */
     DYNAMIC_TILE              = 10,   /**< a dynamic tile (that can be enabled or disabled) */
+    SWITCH                    = 11,   /**< a switch */
 
     HERO                      = 1000, /**< the hero */
     CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
@@ -151,6 +152,7 @@ class MapEntity {
   int get_height(void);
   const SDL_Rect * get_position_in_map(void);
   void set_position_in_map(const SDL_Rect *position_in_map);
+  void set_position_in_map(int x, int y);
   const SDL_Rect * get_origin(void);
   int get_top_left_x(void);
   int get_top_left_y(void);

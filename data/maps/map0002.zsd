@@ -146,7 +146,7 @@
 0	0	232	96	64	8	11
 0	0	224	96	8	8	6
 0	0	224	64	8	32	10
-1	0	264	117	main_entrance	1	0
+1	0	120	309	main_entrance	1	0
 2	0	112	328	16	16	to_outside	0	1	4	out_rupee_house
 5	0	48	80	chest_1	0	-1	1	-1
 5	0	96	80	chest_2	0	-1	1	-1

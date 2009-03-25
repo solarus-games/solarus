@@ -244,38 +244,6 @@ void InteractiveEntity::just_moved(void) {
 }
 
 /**
- * Sets the animation of this interactive entity's sprite.
- * @param animation_name name of the animation to set
- */
-void InteractiveEntity::set_sprite_animation(string animation_name) {
-  get_sprite()->set_current_animation(animation_name);
-}
-
-/**
- * Sets the animation speed of this interactive entity's sprite.
- * @param delay delay between two frames in milliseconds
- */
-void InteractiveEntity::set_sprite_animation_delay(Uint32 delay) {
-  get_sprite()->set_frame_delay(delay);
-}
-
-/**
- * Sets the current animation frame of this interactive entity's sprite.
- * @param frame the frame number to set
- */
-void InteractiveEntity::set_sprite_animation_frame(int frame) {
-  get_sprite()->set_current_frame(frame);
-}
-
-/**
- * Oauses or resumes the animation of this interactive entity's sprite.
- * @param paused true to pause the animation, false to resume it
- */
-void InteractiveEntity::set_sprite_animation_paused(bool paused) {
-  get_sprite()->set_paused(paused);
-}
-
-/**
  * Sets the direction of the entity's sprite.
  * @param direction a direction between 0 and 3
  */

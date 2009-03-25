@@ -59,14 +59,6 @@ Uint32 SpriteAnimation::get_frame_delay(void) {
 }
 
 /**
- * Sets the delay between two frames for this sprite animation.
- * @param delay the frame delay in millisecond
- */
-void SpriteAnimation::set_frame_delay(Uint32 frame_delay) {
-  this->frame_delay = frame_delay;
-}
-
-/**
  * Returns the next frame of the current frame.
  * @param current_direction the current direction
  * @param current_frame the current frame

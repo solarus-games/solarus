@@ -56,10 +56,6 @@ class InteractiveEntity: public Detector {
   void update(void);
   void start_walking(string path, bool loop);
   void just_moved(void);
-  void set_sprite_animation(string animation_name);
-  void set_sprite_animation_delay(Uint32 delay);
-  void set_sprite_animation_frame(int frame);
-  void set_sprite_animation_paused(bool paused);
   void set_sprite_direction(int direction);
 
   void display_on_map_above_hero(void);

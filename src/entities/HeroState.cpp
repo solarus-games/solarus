@@ -476,7 +476,9 @@ void Hero::update_pushing(void) {
       // see if the obstacle is an entity that the hero can push
       else if (facing_entity != NULL && grabbed_entity == NULL) {
 
-	try_snap_to_facing_entity();
+	if (facing_entity->get_type() == MapEntity::BLOCK) {
+	  try_snap_to_facing_entity();
+	}
 
 	if (facing_entity->moved_by_hero()) {
 

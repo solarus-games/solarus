@@ -21,7 +21,7 @@ class SpriteAnimation {
   SpriteAnimationDirection **directions; /**< array of directions:
 					  * each direction is a sequence of images */
 
-  Uint32 frame_delay;          /**< interval in milliseconds between two frames
+  const Uint32 frame_delay;    /**< default interval in milliseconds between two frames
 			        * (this delay is the same for all directions) */
   
   const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
@@ -39,7 +39,6 @@ class SpriteAnimation {
 
   SpriteAnimationDirection *get_direction(int direction);
   Uint32 get_frame_delay(void);
-  void set_frame_delay(Uint32 frame_delay);
 
   void enable_pixel_collisions(void);
   bool are_pixel_collisions_enabled(void);

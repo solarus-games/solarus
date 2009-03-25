@@ -73,7 +73,7 @@ SDL_Rect& Sprite::get_origin(void) {
  * @return the delay between two frames for the current animation (in miliseconds)
  */
 Uint32 Sprite::get_frame_delay(void) {
-  return current_animation->get_frame_delay();  
+  return frame_delay;  
 }
 
 /**
@@ -83,7 +83,7 @@ Uint32 Sprite::get_frame_delay(void) {
  * @param frame_delay the delay between two frames for the current animation (in miliseconds)
  */
 void Sprite::set_frame_delay(Uint32 frame_delay) {
-  current_animation->set_frame_delay(frame_delay);  
+  this->frame_delay = frame_delay;  
 }
 
 /**
@@ -120,6 +120,7 @@ void Sprite::set_current_animation(string animation_name) {
 
     this->current_animation_name = animation_name;
     this->current_animation = animation;
+    set_frame_delay(animation->get_frame_delay());
     set_current_frame(0);
   }
 }

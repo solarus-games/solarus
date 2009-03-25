@@ -52,6 +52,10 @@ class MapScript {
   static FunctionAvailableToScript l_is_tile_enabled;
   static FunctionAvailableToScript l_reset_block;
   static FunctionAvailableToScript l_reset_blocks;
+  static FunctionAvailableToScript l_interactive_entity_get_animation;
+  static FunctionAvailableToScript l_interactive_entity_get_animation_delay;
+  static FunctionAvailableToScript l_interactive_entity_get_animation_frame;
+  static FunctionAvailableToScript l_interactive_entity_is_animation_paused;
   static FunctionAvailableToScript l_interactive_entity_set_animation;
   static FunctionAvailableToScript l_interactive_entity_set_animation_delay;
   static FunctionAvailableToScript l_interactive_entity_set_animation_frame;

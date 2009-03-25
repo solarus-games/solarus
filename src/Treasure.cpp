@@ -180,11 +180,11 @@ void Treasure::show_message(void) {
     }
   }
 
-  string messageId = oss.str();
-  game->show_message(messageId);
+  string message_id = oss.str();
+  game->show_message(message_id);
 
   if (has_amount() && amount > 1) {
-    game->get_dialog_box()->set_variable(messageId, amount);
+    game->get_dialog_box()->set_variable(message_id, amount);
   }
 }
 

@@ -34,6 +34,7 @@ class Sprite {
   int current_frame;                     /**< current frame of the animation (the first one is number 0) */
   bool frame_changed;                    /**< indicates that the frame has just changed */
 
+  Uint32 frame_delay;                    /**< delay between two frames in milliseconds */
   Uint32 next_frame_date;                /**< date of the next frame */
 
   bool suspended;                        /**< true if the game is suspended */

@@ -11,7 +11,7 @@
  * @param with_sound plays a sound until the timer expires
  */
 Timer::Timer(Uint32 duration, const char *callback_name, bool with_sound):
-  callback_name(callback_name), finished(false), when_suspended(0) {
+  callback_name(callback_name), finished(false), suspended(false), when_suspended(0) {
 
   Uint32 now = SDL_GetTicks();
   expiration_date = SDL_GetTicks() + duration;

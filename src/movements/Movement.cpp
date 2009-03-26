@@ -271,24 +271,34 @@ void Movement::stop(void) {
 /**
  * Changes the direction of the movement vector, keeping the same speed.
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
- * Warning: if x_speed and y_speed are both equal to zero, this function has no effect!
+ * Warning: if x_speed and y_speed are both equal to zero, this function
+ * stops the program.
  * @param direction the new movement direction, between 0 and 359
  */
 void Movement::set_direction(int direction) {
-  double speed = get_speed();
-  double angle = direction * TWO_PI / 360.0; // angle in radians
 
-  set_x_speed(speed * cos(angle));
-  set_y_speed(-speed * sin(angle));
+  double angle = direction * TWO_PI / 360.0; // angle in radians
+  set_direction(angle);
 }
 
 /**
  * Changes the direction of the movement vector, keeping the same speed.
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
- * Warning: if x_speed and y_speed are both equal to zero, this function has no effect!
+ * Warning: if x_speed and y_speed are both equal to zero, this function
+ * stops the program.
  * @param angle the new movement direction in radians
  */
 void Movement::set_direction(double angle) {
+
+  if (x_speed == 0 && y_speed == 0) {
+    if (entity == NULL) {
+      DIE("Cannot set the direction when the speed is zero");
+    }
+    else {
+      DIE("Cannot set the direction when the speed is zero for entity '" << entity->get_name() << "'");
+    }
+  }
+
   double speed = get_speed();
 
   set_x_speed(speed * cos(angle));

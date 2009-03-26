@@ -125,6 +125,10 @@ public class InteractiveEntity extends MapEntity {
 	Dimension size = sizes[getSubtypeId()];
 	setSizeImpl(size.width, size.height);
 
+	if (subtype == Subtype.SIGN) {
+	    setProperty("sprite", "entities/sign");
+	}
+
 	setChanged();
 	notifyObservers();
     }

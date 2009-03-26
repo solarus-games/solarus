@@ -6,12 +6,14 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Map.h"
+#include "Treasure.h"
 
 /**
  * Constructor.
  */
 Equipment::Equipment(Savegame *savegame):
-  savegame(savegame), magic_decrease_delay(0), giving_fairy(false) {
+  savegame(savegame), magic_decrease_delay(0), 
+  giving_fairy(false), giving_water(false) {
 }
 
 /**
@@ -77,6 +79,15 @@ void Equipment::update(void) {
 	  ResourceManager::get_sound("danger")->play();
 	}
       }
+    }
+  }
+  else if (giving_water && !zsdx->game->is_showing_message()) {
+
+    giving_water = false;
+    int answer = zsdx->game->get_dialog_box()->get_last_answer();
+
+    if (answer == 0) {
+      zsdx->game->give_treasure(new Treasure(Treasure::WATER, -1));
     }
   }
 }
@@ -393,7 +404,7 @@ void Equipment::add_piece_of_heart(void) {
  * Gives a fairy to the player: shows the dialog box and does the action
  * chosen by the player: restore his hearts or keep the fairy in a bottle.
  */
-void Equipment::give_fairy(void) {
+void Equipment::found_fairy(void) {
 
   if (has_bottle()) {
     zsdx->game->show_message("_found_fairy");
@@ -402,6 +413,27 @@ void Equipment::give_fairy(void) {
   }
   else {
     add_hearts(7);
+  }
+}
+
+/**
+ * Gives some water to the player: shows the dialog box and give the water
+ * to the player if he wants and if this is possible.
+ */
+void Equipment::found_water(void) {
+
+  if (has_bottle()) {
+    if (has_empty_bottle()) {
+      zsdx->game->show_message("_found_water");
+      giving_water = true;
+      // the next messages will be handled by the update() function
+    }
+    else {
+      zsdx->game->show_message("_found_water.no_empty_bottle");
+    }
+  }
+  else {
+    zsdx->game->show_message("_found_water.no_bottle");
   }
 }
 

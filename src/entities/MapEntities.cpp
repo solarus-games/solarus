@@ -562,6 +562,23 @@ void MapEntities::add_interactive_entity(string name, MapEntity::Layer layer, in
 }
 
 /**
+ * Removes an interactive entity from the map.
+ * @param entity the entity to remove
+ */
+void MapEntities::remove_interactive_entity(InteractiveEntity *entity) {
+  entities_to_remove.push_back(entity);
+  entity->set_being_removed();
+}
+
+/**
+ * Removes an interactive entity from the map.
+ * @param name name of the entity to remove
+ */
+void MapEntities::remove_interactive_entity(string name) {
+  remove_interactive_entity((InteractiveEntity*) get_entity(MapEntity::INTERACTIVE_ENTITY, name));
+}
+
+/**
  * Creates a block on the map.
  * See the documentation of class Block for the meaning of each parameter.
  */

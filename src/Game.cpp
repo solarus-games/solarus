@@ -21,7 +21,7 @@
 #include "entities/Tileset.h"
 #include "entities/Detector.h"
 
-const SDL_Rect Game::outside_world_size = {0, 0, 4160, 7168}; // TODO
+const SDL_Rect Game::outside_world_size = {0, 0, 2080, 3584}; // TODO
 
 /**
  * Creates a game.

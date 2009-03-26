@@ -81,12 +81,16 @@ MapEntity::EntityType PickableItem::get_type() {
 
 /**
  * Creates a pickable item with the specified type.
- * This method acts like a constructor, except that it can return NULL in three cases:
+ * This method acts like a constructor, except that it can return NULL in four cases:
  * - if the specified type is NONE
  * or:
  * - if the specified type is RANDOM and the random type chosen is NONE
  * or:
  * - if the specified type corresponds to a saved item (that the player can obtain only once)
+ *   and the player already has found the item
+ * or:
+ * - if the specified type corresponds to an item the player has not unlocked yet
+ * (e.g. arrows without bow)
  *   and the player already has found the item
  * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
  * or one of its subclasses (for more complex items).
@@ -121,6 +125,18 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Ite
 
   // don't create anything if this is an item already found
   if (type > ARROW_10 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
+    return NULL;
+  }
+
+  // don't create anything if this item is not unlocked yet
+  Equipment *equipment = zsdx->game->get_equipment();
+  bool has_bombs = equipment->has_inventory_item(InventoryItem::BOMBS);
+  bool has_bow = equipment->has_inventory_item(InventoryItem::BOW);
+  bool has_magic = equipment->get_max_magic() > 0;
+
+  if ((type >= BOMB_1 && type <= BOMB_10 && !has_bombs) ||
+      (type >= ARROW_1 && type <= ARROW_10 && !has_bow) ||
+      (type >= SMALL_MAGIC && type <= BIG_MAGIC && !has_magic)) {
     return NULL;
   }
 
@@ -218,21 +234,14 @@ PickableItem::ItemType PickableItem::choose_random_type(void) {
   else if (r < 890) { type = RUPEE_5; }     // 5 rupees: 1.5%
   else if (r < 895) { type = RUPEE_20; }    // 20 rupees: 0.5%
   else if (r < 897) { type = FAIRY; }       // fairy: 0.2%
-  else {
-
-    bool has_bombs = equipment->has_inventory_item(InventoryItem::BOMBS);
-    bool has_bow = equipment->has_inventory_item(InventoryItem::BOW);
-    bool has_magic = equipment->get_max_magic() > 0;
-
-    if (r < 922)      { type = has_magic ? SMALL_MAGIC : NONE; }
-    else if (r < 930) { type = has_magic ? BIG_MAGIC : NONE; }
-    else if (r < 950) { type = has_bombs ? BOMB_1 : NONE; }
-    else if (r < 960) { type = has_bombs ? BOMB_5 : NONE; }
-    else if (r < 965) { type = has_bombs ? BOMB_10 : NONE; }
-    else if (r < 985) { type = has_bow ? ARROW_1 : NONE; }
-    else if (r < 995) { type = has_bow ? ARROW_5 : NONE; }
-    else              { type = has_bow ? ARROW_10 : NONE; }
-  }
+  else if (r < 922) { type = SMALL_MAGIC; } // small magic: 2.5%
+  else if (r < 930) { type = BIG_MAGIC; }   // big magic: 0.8%
+  else if (r < 950) { type = BOMB_1; }      // 1 bomb: 2%
+  else if (r < 960) { type = BOMB_5; }      // 5 bombs: 1%
+  else if (r < 965) { type = BOMB_10; }     // 10 bombs: 0.5%
+  else if (r < 985) { type = ARROW_1; }     // 1 arrow: 2%
+  else if (r < 995) { type = ARROW_5; }     // 5 arrows: 1%
+  else              { type = ARROW_10; }    // 10 arrows: 0.5%
 
   return type;
 }

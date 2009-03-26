@@ -140,6 +140,8 @@ class MapEntities {
 			      InteractiveEntity::SpecialInteraction special_interaction,
 			      SpriteAnimationSetId sprite_name, int initial_direction,
 			      MessageId message_to_show);
+  void remove_interactive_entity(InteractiveEntity *entity);
+  void remove_interactive_entity(string name);
 
   void add_block(string name, MapEntity::Layer layer, int x, int y,
 		 Block::Subtype subtype, string skin, int maximum_moves);

@@ -133,6 +133,7 @@ public class Map extends Observable {
 	this.tilesetId = "";
 	this.musicId = Music.noneId;
 	this.world = -1;
+	this.floor = -100;
 	this.smallKeysVariable = -1;
 
 	initialize();

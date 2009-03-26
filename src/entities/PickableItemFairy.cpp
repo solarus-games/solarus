@@ -63,5 +63,5 @@ void PickableItemFairy::give_item_to_player(void) {
 
   // give the fairy
   Equipment *equipment = zsdx->game->get_equipment();
-  equipment->give_fairy();
+  equipment->found_fairy();
 }

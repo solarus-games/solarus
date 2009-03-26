@@ -1524,6 +1524,39 @@ question = true
 line1 = "Tu n'as pas de Flacon"
 line2 = "vide !"
 
+[_found_water]
+#       |--------------------|
+icon = 8
+line1 = "Veux-tu remplir un"
+line2 = "Flacon Magique"
+next = _found_water.2
+
+[_found_water.2]
+#       |--------------------|
+line1 = "avec de l'eau ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+
+[_found_water.no_bottle]
+#       |--------------------|
+line1 = "Il y a de l'eau ici,"
+line2 = "mais tu n'as pas"
+line3 = "de récipient"
+next = _found_water.no_bottle.2
+
+[_found_water.no_bottle.2]
+#       |--------------------|
+line1 = "pour la stocker..."
+
+[_found_water.no_empty_bottle]
+#       |--------------------|
+icon = 8
+line1 = "Il y a de l'eau ici,"
+line2 = "mais il te faut"
+line3 = "un Flacon vide"
+next = _found_water.no_bottle.2
+
 [_too_heavy]
 #       |-----------------------|
 line1 = "Oh là là, c'est"

@@ -1,7 +1,174 @@
-[sign_village]
+[outside_world.village.welcome_sign]
 #       |-----------------------|
 line1 = "       Bienvenue"
 line2 = "       à Lyriann"
+
+[outside_world.village.grand_son_npc]
+#       |-----------------------|
+line1 = "Si tu ne sais plus quoi"
+line2 = "faire, tu devrais aller"
+line3 = "voir Mamie, elle adore"
+next = outside_world.village.grand_son_npc.2
+cancel = all
+
+[outside_world.village.grand_son_npc.2]
+#       |-----------------------|
+line1 = "donner des conseils."
+line2 = "J'en sais pas plus, je"
+line3 = "ne suis qu'un gosse !"
+
+[outside_world.village.chignon_woman_npc]
+#       |-----------------------|
+line1 = "Quand l'icône bleue"
+line2 = "apparaît, elle indique"
+line3 = "ce que tu peux faire en"
+next = outside_world.village.chignon_woman_npc.2
+cancel = all
+
+[outside_world.village.chignon_woman_npc.2]
+#       |-----------------------|
+line1 = "appuyant sur la touche"
+line2 = "Action (espace)."
+line3 = "Pense à l'observer pour"
+next = outside_world.village.chignon_woman_npc.3
+
+[outside_world.village.chignon_woman_npc.3]
+#       |-----------------------|
+line1 = "savoir quand tu peux"
+line2 = "interagir avec ton"
+line3 = "environnement !"
+
+# TODO
+#       |-----------------------|
+#line1 = "Il paraît que chaque"
+#line2 = "donjon du monde cache"
+#line3 = "un Fragment de Coeur..."
+#next = outside_world.village.chignon_woman_npc.2
+#cancel = all
+
+[outside_world.village.chignon_woman_npc.2]
+#       |-----------------------|
+line1 = "Intriguant, non ?"
+
+[outside_world.village.cliff_man_npc]
+#       |-----------------------|
+line1 = "Sais-tu que tu peux"
+line2 = "sauter de certaines"
+line3 = "falaises ? Ca pourrait"
+next = outside_world.village.cliff_man_npc.2
+cancel = all
+
+[outside_world.village.cliff_man_npc.2]
+#       |-----------------------|
+line1 = "te permettre d'attein-"
+line2 = "dre des endroits"
+line3 = "difficiles d'accès."
+
+[outside_world.village.hat_man_npc]
+#       |-----------------------|
+line1 = "Si tu manques d'argent,"
+line2 = "je ne te conseille pas"
+line3 = "d'aller à la Maison des"
+next = outside_world.village.hat_man_npc.2
+cancel = all
+
+[outside_world.village.hat_man_npc.2]
+#       |-----------------------|
+line1 = "Rubis, car tu risques"
+line2 = "de dilapider toutes tes"
+line3 = "économies !"
+next = outside_world.village.hat_man_npc.3
+
+[outside_world.village.hat_man_npc.3]
+#       |-----------------------|
+line1 = "Quoique, tu as l'air"
+line2 = "plus doué que moi."
+next = outside_world.village.hat_man_npc.4
+
+[outside_world.village.hat_man_npc.4]
+#       |-----------------------|
+line1 = "Peut-être que tu sauras"
+line2 = "mieux t'en sortir !"
+
+[outside_world.village.rupee_house_sign]
+#       |-----------------------|
+line1 = "  - Maison des Rubis -"
+line2 = "Gagnez de l'argent"
+line3 = "tout en vous amusant !"
+
+[outside_world.village.waterfall_sign]
+#       |-----------------------|
+line1 = "Servez-vous de notre"
+line2 = "eau fraîche de la"
+line3 = "cascade !"
+next = outside_world.village.waterfall_sign.2
+
+[outside_world.village.waterfall_sign.2]
+#       |-----------------------|
+line1 = "  Office de Tourisme"
+line2 = "      de Lyriann"
+
+[outside_world.village.pastry_shop_sign]
+#       |-----------------------|
+line1 = "Pâtisserie"
+
+[outside_world.village.shop_sign]
+#       |-----------------------|
+line1 = "Boutique"
+
+[outside_world.village.letter_box]
+#       |-----------------------|
+line1 = "Ca ne se fait pas de"
+line2 = "fouiller dans la boîte"
+line3 = "aux lettres des gens !" 
+
+[outside_world.warning_hole_sign]
+#       |-----------------------|
+line1 = "Attention au trou !"
+
+[outside_world.flower_hole_sign]
+#       |-----------------------|
+line1 = "Le trou près de la"
+line2 = "fleur n'est pas aussi"
+line3 = "dangereux"
+next = outside_world.flower_hole_sign.2
+
+[outside_world.flower_hole_sign.2]
+#       |-----------------------|
+line1 = "qu'il en a l'air..."
+
+[outside_world.telepathic_booth_sign]
+#       |-----------------------|
+line1 = "Cabine télépathique"
+
+[outside_world.surprise_wall_sign]
+#       |-----------------------|
+line1 = " - Mur aux surprises -"
+line2 = "Venez tenter votre"
+line3 = "chance et remportez"
+next = outside_world.surprise_wall_sign.2
+
+[outside_world.surprise_wall_sign.2]
+#       |-----------------------|
+line1 = "le trésor caché !"
+
+[outside_world.billy_cavern_sign]
+#       |-----------------------|
+line1 = "Caverne de Billy le"
+line2 = "Téméraire."
+line3 = "Entrée interdite !"
+
+[outside_world.beaumont_hill_sign]
+#       |-----------------------|
+line1 = "Celui qui plantera un"
+line2 = "edelweiss au sommet de"
+line3 = "la colline de Beaumont"
+next = outside_world.beaumont_hill_sign.2
+
+[outside_world.beaumont_hill_sign.2]
+#       |-----------------------|
+line1 = "passera une bonne"
+line2 = "journée."
 
 [rupee_house.game_1.intro]
 #       |-----------------------|
@@ -261,63 +428,37 @@ line2 = "d'argent !"
 line1 = "Hé ! Ici il faut payer"
 line2 = "avant de jouer !"
 
-[test]
+[grandma_house.sword]
 #       |-----------------------|
-line1 = "Bienvenue à la Maison"
-line2 = "des Rubis."
-
-[msg]
-#       |-----------------------|
-icon = -1
-line1 = "Voilà un message de"
-line2 = "test,"
-line3 = "le premier du jeu !"
-next = test_icon
-
-[test_icon]
-#       |--------------------|
-icon = 1
-line1 = "Message avec icône !"
-next  = test_speed
-
-[test_speed]
-line1 = "$3Message annulable ;"
-line2 = "$1très lent ;"
-line3 = "$2un peu moins lent$3"
-next = test_var
-cancel = current
-
-[test_var]
-line1 = "La variable est"
-line3 = "égale à $v !"
-next = test_cancel
-#cancel = none
-
-[test_cancel]
-line1 = "Désormais tout peut"
-line2 = "être annulé !"
-next = test_pause
+line1 = "Les monstres envahis-"
+line2 = "sent la plaine. C'est"
+line3 = "mauvais signe : j'ai"
+next = grandma_house.sword.2
 cancel = all
 
-[test_pause]
-line1 = "Besoin d'une petite"
-line2 = "pause ?$0 Et on"
-line3 = "continue."
-next = test_name
+[grandma_house.sword.2]
+#       |-----------------------|
+line1 = "peur que quelque chose"
+line2 = "de grave soit arrivé."
+next = grandma_house.sword.3
 
-[test_name]
-line1 = "Votre nom est :"
-line2 = "$v"
-next = test_question
+[grandma_house.sword.3]
+#       |-----------------------|
+line1 = "Tu cherches une épée ?"
+line2 = "Tu devrais aller voir"
+line3 = "le forgeron dans la"
+next = grandma_house.sword.4
 
-[test_question]
-#       |--------------------|
-line1 = "Que désirez-vous ?"
-line2 = "Retour au jeu"
-line3 = "Relire"
-question = true
-next = test_exit
-next2 = msg
+[grandma_house.sword.4]
+#       |-----------------------|
+line1 = "grotte au Nord-Ouest du"
+line2 = "village. Il n'est pas"
+line3 = "très commode mais"
+next = grandma_house.sword.5
 
-[test_exit]
-line1 = "A bientôt"
+[grandma_house.sword.5]
+#       |-----------------------|
+line1 = "il pourra sûrement"
+line2 = "t'aider."
+
+

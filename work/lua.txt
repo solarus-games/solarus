@@ -24,18 +24,20 @@ Appel de fonctions C++ depuis un script LUA :
 - play_sound(sound_id)					joue un son
 - give_treasure(treasure_id, savegame_variable)		donne un trésor au joueur (sans coffre)
 - give_treasure_with_amount(treasure_id, amount, savegame_variable)		donne un trésor au joueur (sans coffre)
-- get_savegame_string(index)
-- get_savegame_integer(index)
-- get_savegame_boolean(index)
-- set_savegame_string(index)
-- set_savegame_integer(index)
-- set_savegame_boolean(index)
+- savegame_get_string(index)
+- savegame_get_integer(index)
+- savegame_get_boolean(index)
+- savegame_set_string(index)
+- savegame_set_integer(index)
+- savegame_set_boolean(index)
 - start_timer(duration, callback, with_sound)		démarre un timer qui appellera une fonction du script une fois terminé
 - stop_timer(callback)					arrête un timer en cours d'exécution
 - move_camera(x, y, speed)				suspend le jeu et déplace la caméra vers un point cible
 - restore_camera()					renvoie la caméra vers le héros
-- npc_walk(npc, path)					fait se déplacer un PNJ
+- npc_walk(npc, path, loop)				fait se déplacer un PNJ selon un chemin spécifié
+- npc_random_walk(npc)					fait se déplacer un PNJ de manière aléatoire
 - npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
+- npc_remove(npc)					supprime un PNJ de la map
 - set_chest_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
 - get_rupees()						retourne le nombre de rubis
 - remove_rupees(rupees)					enlève des rubis au joueur

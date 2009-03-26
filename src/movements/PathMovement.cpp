@@ -2,7 +2,7 @@
 
 /**
  * Creates a path movement object.
- * @param map the map (can be NULL if with_collisions is false)
+ * @param map the map
  * @param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7')
@@ -11,9 +11,8 @@
  * once finished
  */
 PathMovement::PathMovement(Map *map, string path, int speed, bool loop):
-  MovementWithCollision(map),
-  path(path), next_index(0), loop(loop),
-  finished(false) {
+  MovementWithCollision(map), initial_path(path), remaining_path(path),
+  initial_speed(speed), loop(loop), finished(false) {
 
   set_speed(speed);
   start_next_move();
@@ -74,9 +73,9 @@ bool PathMovement::is_finished(void) {
  */
 void PathMovement::start_next_move(void) {
 
-  if (next_index == path.size()) {
+  if (remaining_path.size() == 0) {
     if (loop) {
-      next_index = 0;
+      remaining_path = initial_path;
     }
     else {
       finished = true;
@@ -85,11 +84,11 @@ void PathMovement::start_next_move(void) {
   }
 
   if (!finished) {
-    current_direction = path[next_index] - '0';
+    current_direction = remaining_path[0] - '0';
     set_direction(current_direction * 45);
-    next_index++;
     distance_covered_x = 0;
     distance_covered_y = 0;
+    remaining_path = remaining_path.substr(1);
   }
 }
 

@@ -211,10 +211,10 @@ class Hero: public MapEntity {
   bool is_moving_towards(int direction);
   SDL_Rect get_facing_point(void);
   SDL_Rect get_facing_point(int direction);
+  Detector *get_facing_entity(void);
   void just_moved(void);
   void set_facing_entity(Detector *detector);
   bool is_facing_obstacle(void);
-  bool is_facing_point_in(const SDL_Rect *rectangle);
 
   // map
   void set_map(Map *map);

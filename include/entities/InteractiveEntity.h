@@ -50,11 +50,13 @@ class InteractiveEntity: public Detector {
   EntityType get_type(void);
 
   bool is_obstacle_for(MapEntity *other);
+  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void action_key_pressed(void);
 
   void update(void);
   void start_walking(string path, bool loop);
+  void start_walking_random(void);
   void just_moved(void);
   void set_sprite_direction(int direction);
 

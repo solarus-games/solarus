@@ -229,7 +229,7 @@ void Sprite::set_suspended(bool suspended) {
 
   if (suspended != this->suspended) {
     this->suspended = suspended;
- 
+
     // compte next_frame_date if the animation is being resumed
     if (!suspended) {
       Uint32 now = SDL_GetTicks();

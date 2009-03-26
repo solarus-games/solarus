@@ -123,7 +123,7 @@ bool Hero::is_ground_visible(void) {
  */
 void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
 
-  if (collision_mode == Detector::COLLISION_ORIGIN_POINT) {
+  if (collision_mode == Detector::COLLISION_ORIGIN_POINT && state != JUMPING) {
     teletransporter->transport_hero(this);
   }
 }
@@ -468,6 +468,11 @@ void Hero::update_pushing(void) {
 
       int straight_direction = get_animation_direction();
 
+      // stop pushing if there is no more obstacle
+      if (!is_facing_obstacle()) {
+	start_free();
+      }
+
       // stop pushing if the player changes his direction
       if (get_movement_direction() != straight_direction * 90) {
 	start_grabbing();
@@ -520,6 +525,8 @@ void Hero::start_pulling(void) {
  */
 void Hero::update_grabbing_pulling(void) {
 
+  Controls *controls = zsdx->game->get_controls();
+
   // the hero is grabbing an obstacle
   if (state == GRABBING) {
     int keys_direction = get_normal_movement()->get_direction();
@@ -537,7 +544,6 @@ void Hero::update_grabbing_pulling(void) {
 
     // release the obstacle
     if (!is_moving_grabbed_entity()) {
-      Controls *controls = zsdx->game->get_controls();
       if (!controls->is_key_pressed(Controls::ACTION)) {
 	start_free();
       }
@@ -554,17 +560,28 @@ void Hero::update_grabbing_pulling(void) {
       start_grabbing();
     }
 
+    // stop pulling if the action key is released or if there is no more obstacle
+    if (!controls->is_key_pressed(Controls::ACTION) ||
+	!is_facing_obstacle()) {
+      start_free();
+    }
+
     // see if the obstacle is an entity that the hero can pull
-    if (facing_entity != NULL && facing_entity->moved_by_hero()) {
+    if (facing_entity != NULL) {
 
-      try_snap_to_facing_entity();
+      if (facing_entity->get_type() == MapEntity::BLOCK) {
+	try_snap_to_facing_entity();
+      }
 
-      string path = "  ";
-      int opposite_direction = (get_animation_direction() + 2) % 4;
-      path[0] = path[1] = '0' + opposite_direction * 2;
+      if (facing_entity->moved_by_hero()) {
 
-      set_movement(new PathMovement(map, path, 8, false));
-      grabbed_entity = facing_entity;
+	string path = "  ";
+	int opposite_direction = (get_animation_direction() + 2) % 4;
+	path[0] = path[1] = '0' + opposite_direction * 2;
+
+	set_movement(new PathMovement(map, path, 8, false));
+	grabbed_entity = facing_entity;
+      }
     }
   }
 }

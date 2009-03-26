@@ -1,11 +1,13 @@
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"
 #include "movements/PathMovement.h"
+#include "movements/RandomWalkMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "Sprite.h"
+#include "Equipment.h"
 
 /**
  * Action icon depending on the type of interaction.
@@ -122,6 +124,15 @@ bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * Returns whether a teletransporter is considered as an obstacle for this entity.
+ * @param teletransporter a teletransporter
+ * @return true
+ */
+bool InteractiveEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return true;
+}
+
+/**
  * This function is called by the engine when there is a collision with another entity.
  * This is a redefinition of Detector::collision().
  * If the entity is the hero, we allow him to interact with this entity.
@@ -159,7 +170,7 @@ void InteractiveEntity::action_key_pressed(void) {
 
     // for a place with water: start the dialog
     if (special_interaction == WATER_FOR_BOTTLE) {
-      // TODO
+      zsdx->game->get_equipment()->found_water();
     }
     else {
 
@@ -212,7 +223,7 @@ void InteractiveEntity::update(void) {
 }
 
 /**
- * Make the entity walk (only for an NPC).
+ * Makes the entity walk (only for an NPC).
  * @param path the path to follow (see class PathMovement)
  * @param loop true to make the movement loop
  */
@@ -222,7 +233,22 @@ void InteractiveEntity::start_walking(string path, bool loop) {
     DIE("This entity is not a non-playing character");
   }
 
+  clear_movement();
   set_movement(new PathMovement(map, path, 6, loop));
+  get_sprite()->set_current_animation("walking");
+}
+
+/**
+ * Makes the entity walk randomly (only for NPC).
+ */
+void InteractiveEntity::start_walking_random(void) {
+
+  if (special_interaction != NON_PLAYING_CHARACTER) {
+    DIE("This entity is not a non-playing character");
+  }
+
+  clear_movement();
+  set_movement(new RandomWalkMovement(map, 3));
   get_sprite()->set_current_animation("walking");
 }
 
@@ -239,6 +265,15 @@ void InteractiveEntity::just_moved(void) {
     if (!movement->is_finished()) {
       int movement_direction = movement->get_current_direction();
       get_sprite()->set_current_direction(animation_directions[movement_direction]);
+    }
+
+    Hero *hero = zsdx->game->get_hero();
+    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    if (hero->get_facing_entity() == this &&
+	keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
+	!hero->is_facing_point_in(get_position_in_map())) {
+
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
   }
 }

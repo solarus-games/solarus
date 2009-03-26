@@ -142,6 +142,7 @@ class TargetMovement;
 class JumpMovement;
 class StraightMovement;
 class PathMovement;
+class RandomWalkMovement;
 
 // enemies
 class SimpleGreenSoldier;

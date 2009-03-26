@@ -60,18 +60,20 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "set_message_variable", l_set_message_variable);
   lua_register(context, "give_treasure", l_give_treasure);
   lua_register(context, "give_treasure_with_amount", l_give_treasure_with_amount);
-  lua_register(context, "get_savegame_string", l_get_savegame_string);
-  lua_register(context, "get_savegame_integer", l_get_savegame_integer);
-  lua_register(context, "get_savegame_boolean", l_get_savegame_boolean);
-  lua_register(context, "set_savegame_string", l_set_savegame_string);
-  lua_register(context, "set_savegame_integer", l_set_savegame_integer);
-  lua_register(context, "set_savegame_boolean", l_set_savegame_boolean);
+  lua_register(context, "savegame_get_string", l_savegame_get_string);
+  lua_register(context, "savegame_get_integer", l_savegame_get_integer);
+  lua_register(context, "savegame_get_boolean", l_savegame_get_boolean);
+  lua_register(context, "savegame_set_string", l_savegame_set_string);
+  lua_register(context, "savegame_set_integer", l_savegame_set_integer);
+  lua_register(context, "savegame_set_boolean", l_savegame_set_boolean);
   lua_register(context, "start_timer", l_start_timer);
   lua_register(context, "stop_timer", l_stop_timer);
   lua_register(context, "move_camera", l_move_camera);
   lua_register(context, "restore_camera", l_restore_camera);
   lua_register(context, "npc_walk", l_npc_walk);
+  lua_register(context, "npc_random_walk", l_npc_random_walk);
   lua_register(context, "npc_set_direction", l_npc_set_direction);
+  lua_register(context, "npc_remove", l_npc_remove);
   lua_register(context, "set_chest_open", l_set_chest_open);
   lua_register(context, "get_rupees", l_get_rupees);
   lua_register(context, "remove_rupees", l_remove_rupees);
@@ -131,7 +133,7 @@ void MapScript::initialize(void) {
     DIE("Cannot load the script of map " << id << ": " << lua_tostring(context, -1));
   }
 
-  call_lua_function("event_map_started");
+  event_map_started();
 }
 
 /**
@@ -384,7 +386,7 @@ int MapScript::l_give_treasure_with_amount(lua_State *l) {
  * Argument 1 (integer): index of the string value to get (0 to 63)
  * Return value (string): the string saved at this index
  */
-int MapScript::l_get_savegame_string(lua_State *l) {
+int MapScript::l_savegame_get_string(lua_State *l) {
 
   check_nb_arguments(l, 1);
   int index = lua_tointeger(l, 1);
@@ -400,7 +402,7 @@ int MapScript::l_get_savegame_string(lua_State *l) {
  * Argument 1 (integer): index of the integer value to get (0 to 2047)
  * Return value (integer): the integer saved at this index
  */
-int MapScript::l_get_savegame_integer(lua_State *l) {
+int MapScript::l_savegame_get_integer(lua_State *l) {
 
   check_nb_arguments(l, 1);
   int index = lua_tointeger(l, 1);
@@ -416,7 +418,7 @@ int MapScript::l_get_savegame_integer(lua_State *l) {
  * Argument 1 (integer): index of the boolean value to get
  * Return value (boolean): the boolean saved at this index
  */
-int MapScript::l_get_savegame_boolean(lua_State *l) {
+int MapScript::l_savegame_get_boolean(lua_State *l) {
 
   check_nb_arguments(l, 1);
   int index = lua_tointeger(l, 1);
@@ -433,7 +435,7 @@ int MapScript::l_get_savegame_boolean(lua_State *l) {
  * (lower indices are writable only by the game engine)
  * Argument 2 (string): the string value to store at this index
  */
-int MapScript::l_set_savegame_string(lua_State *l) {
+int MapScript::l_savegame_set_string(lua_State *l) {
 
   check_nb_arguments(l, 2);
   int index = lua_tointeger(l, 1);
@@ -454,7 +456,7 @@ int MapScript::l_set_savegame_string(lua_State *l) {
  * (lower indices are writable only by the game engine)
  * Argument 2 (integer): the integer value to store at this index
  */
-int MapScript::l_set_savegame_integer(lua_State *l) {
+int MapScript::l_savegame_set_integer(lua_State *l) {
 
   check_nb_arguments(l, 2);
   int index = lua_tointeger(l, 1);
@@ -474,7 +476,7 @@ int MapScript::l_set_savegame_integer(lua_State *l) {
  * Argument 1 (integer): index of the boolean value to set, between 0 and 32767
  * Argument 2 (boolean): the boolean value to store at this index
  */
-int MapScript::l_set_savegame_boolean(lua_State *l) {
+int MapScript::l_savegame_set_boolean(lua_State *l) {
 
   check_nb_arguments(l, 2);
   int index = lua_tointeger(l, 1);
@@ -555,7 +557,7 @@ int MapScript::l_restore_camera(lua_State *l) {
 }
 
 /**
- * Makes an NPC walk.
+ * Makes an NPC walk with respect to a path.
  * Argument 1 (string): name of the NPC to make move
  * Argument 2 (string): the path (each character is a direction between '0' and '7'
  * Argument 3 (boolean): true to make the movement loop
@@ -576,6 +578,23 @@ int MapScript::l_npc_walk(lua_State *l) {
 }
 
 /**
+ * Makes an NPC walk randomly.
+ * Argument 1 (string): name of the NPC to make move
+ */
+int MapScript::l_npc_random_walk(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  string name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  npc->start_walking_random();
+
+  return 0;
+}
+
+/**
  * Sets the direction of an NPC's sprite.
  * Argument 1 (string): name of the NPC
  * Argument 2 (integer): the sprite's direction between 0 and 3
@@ -590,6 +609,22 @@ int MapScript::l_npc_set_direction(lua_State *l) {
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
   npc->set_sprite_direction(direction);
+
+  return 0;
+}
+
+/**
+ * Removes an NPC from the map.
+ * Argument 1 (string): name of the NPC
+ */
+int MapScript::l_npc_remove(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  string name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  map->get_entities()->remove_interactive_entity(name);
 
   return 0;
 }

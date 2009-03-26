@@ -26,10 +26,9 @@ function event_map_started()
 end
 
 -- Function called when the player wants to talk to a non-playing character
--- npc_name: name of the NPC the player is talking to
 function event_npc_dialog(npc_name)
 
-   if npc_name == "game_1_npc" then
+   if npc_name == "game_1_man" then
       -- game 1 dialog
 
       if playing_game_1 then
@@ -38,7 +37,7 @@ function event_npc_dialog(npc_name)
       else
 
 	 -- see if the player can still play
-	 unauthorized = get_savegame_boolean(16)
+	 unauthorized = savegame_get_boolean(16)
 
 	 if unauthorized then
 	    -- the player already won much money
@@ -54,7 +53,7 @@ function event_npc_dialog(npc_name)
 	 end
       end
 
-   elseif npc_name == "game_2_npc" then
+   elseif npc_name == "game_2_man" then
       -- game 2 dialog
 
       if playing_game_2 then
@@ -65,7 +64,7 @@ function event_npc_dialog(npc_name)
 	 start_message("rupee_house.game_2.intro")
       end
 
-   elseif npc_name == "game_3_npc" then
+   elseif npc_name == "game_3_man" then
       -- game 3 dialog
 
       if playing_game_3 then
@@ -73,7 +72,7 @@ function event_npc_dialog(npc_name)
 	 start_message("rupee_house.game_3.restart_question")
       else
 	 -- see if the player can still play
-	 unauthorized = get_savegame_boolean(17)
+	 unauthorized = savegame_get_boolean(17)
 
 	 if unauthorized then
 	    -- the player already won this game
@@ -219,7 +218,7 @@ function event_open_empty_chest(chest_name)
 
       if amount == 50 then
 	 -- the maximum reward was found: the game will now refuse to let the hero play again
-	 set_savegame_boolean(16, true)
+	 savegame_set_boolean(16, true)
       end
 
       playing_game_1 = false

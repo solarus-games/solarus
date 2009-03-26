@@ -416,6 +416,10 @@ void MapEntity::set_movement(Movement *movement) {
 
   if (movement != NULL) {
     movement->set_entity(this);
+
+    if (movement->is_suspended() != suspended) {
+      movement->set_suspended(suspended);
+    }
   }
 }
 

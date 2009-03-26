@@ -600,8 +600,21 @@ void Hero::set_facing_entity(Detector *detector) {
 }
 
 /**
+ * Returns the entity the hero is currently facing.
+ * This function is called when the hero is just being
+ * facing another entity.
+ * @return the detector the hero is facing
+ */
+Detector * Hero::get_facing_entity(void) {
+  return facing_entity;
+}
+
+/**
  * Returns whether the hero is facing an obstacle, i.e. whether
  * its facing point is overlapping an obstacle of the map.
+ * This information is calculated and not stored, so it is
+ * always up to date.
+ * @return true if the hero is facing an obstacle.
  */
 bool Hero::is_facing_obstacle(void) {
 

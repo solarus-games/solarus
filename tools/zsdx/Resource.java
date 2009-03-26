@@ -11,7 +11,7 @@ public class Resource extends Observable {
     /**
      * Id and name of each element.
      */
-    private TreeMap<String, String> elements;
+    private LinkedHashMap<String, String> elements;
 
     /**
      * True if the id is an auto-incremented integer, false if it is a custom string.
@@ -32,7 +32,7 @@ public class Resource extends Observable {
 
 	this.autoIncrementId = autoIncrementId;
 	this.maxId = -1;
-	this.elements = new TreeMap<String, String>();
+	this.elements = new LinkedHashMap<String, String>();
     }
 
     /**

@@ -55,7 +55,9 @@ void StraightMovement::start(int speed, double direction, Uint32 time) {
   finished = false;
   end_movement_date = SDL_GetTicks() + time;
   set_speed(speed);
-  set_direction(direction);
+  if (speed != 0) {
+    set_direction(direction);
+  }
 }
 
 /**

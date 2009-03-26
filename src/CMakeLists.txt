@@ -123,6 +123,7 @@ add_executable (zsdx
   movements/JumpMovement.cpp
   movements/StraightMovement.cpp
   movements/PathMovement.cpp
+  movements/RandomWalkMovement.cpp
 
   # enemies
   enemies/SimpleGreenSoldier.cpp

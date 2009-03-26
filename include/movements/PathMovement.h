@@ -12,11 +12,15 @@
  */
 class PathMovement: public MovementWithCollision {
 
+ protected:
+
+  const string initial_path;  /**< the path: each character is a direction ('0' to '7') */
+  string remaining_path;      /**< the remaining part of the path */
+  const int initial_speed;    /**< the movement speed */
+
  private:
 
-  const string path;          /**< the path: each character is a direction ('0' to '7') */
   int current_direction;      /**< direction of the current move (0 to 7) */
-  unsigned int next_index;    /**< index of the next move in the path */
   int distance_covered_x;     /**< counts the number of x pixels covered during the current move */
   int distance_covered_y;     /**< counts the number of y pixels covered during the current move */
 
@@ -25,19 +29,20 @@ class PathMovement: public MovementWithCollision {
   bool finished;              /**< indicates that the path is finished
 			       * (only possible if loop is false) */
 
+ protected:
+
+  virtual void start_next_move(void);
+
  public:
 
   PathMovement(Map *map, string path, int speed, bool loop);
-
   ~PathMovement(void);
 
-  bool is_finished(void);
+  virtual bool is_finished(void);
 
   int get_current_direction(void);
-  void start_next_move(void);
-  virtual void set_x(int x);
-  virtual void set_y(int y);
-
+  void set_x(int x);
+  void set_y(int y);
 };
 
 #endif

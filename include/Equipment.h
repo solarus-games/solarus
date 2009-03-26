@@ -21,8 +21,9 @@ class Equipment {
   Uint32 magic_decrease_delay;
   Uint32 next_magic_decrease_date;
 
-  // giving a fairy to the player
+  // giving some bottle content to the player
   bool giving_fairy;
+  bool giving_water;
 
  public:
 
@@ -69,8 +70,6 @@ class Equipment {
   int get_nb_pieces_of_heart(void);
   void add_piece_of_heart(void);
 
-  void give_fairy(void);
-
   // magic
   int get_max_magic(void);
   void set_max_magic(int max_magic);
@@ -112,6 +111,12 @@ class Equipment {
   void give_inventory_item(InventoryItem::ItemId item_id, int variant);
   void remove_inventory_item(InventoryItem::ItemId item_id);
 
+  int get_inventory_item_amount(InventoryItem::ItemId item_id);
+  void set_inventory_item_amount(InventoryItem::ItemId item_id, int amount);
+  void add_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_add);
+  void remove_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_remove);
+
+  // bottles
   void add_bottle(void);
   bool has_bottle(void);
   bool has_empty_bottle(void);
@@ -121,11 +126,10 @@ class Equipment {
   void set_bottle_content(InventoryItem::ItemId bottle_id, Treasure::Content content);
   void set_bottle_empty(InventoryItem::ItemId bottle_id);
 
-  int get_inventory_item_amount(InventoryItem::ItemId item_id);
-  void set_inventory_item_amount(InventoryItem::ItemId item_id, int amount);
-  void add_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_add);
-  void remove_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_remove);
+  void found_fairy(void);
+  void found_water(void);
 
+  // item assignments
   InventoryItem::ItemId get_item_assigned(int slot);
   void set_item_assigned(int slot, InventoryItem::ItemId item_id);
 

@@ -1033,6 +1033,7 @@ void Hero::update_drowning(void) {
 
   if (movement->is_finished()) {
     clear_movement();
+    set_position_in_map(last_ground_x, last_ground_y); // the target movement may have not been very precise
     set_movement(normal_movement);
     start_free();
     blink();

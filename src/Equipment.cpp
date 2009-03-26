@@ -35,10 +35,9 @@ void Equipment::update(void) {
   if (magic_decrease_delay != 0) {
     // the magic bar is decreasing
 
-    Uint32 ticks = SDL_GetTicks();
     if (!zsdx->game->is_suspended()) {
 
-      if (ticks > next_magic_decrease_date) {
+      if (SDL_GetTicks() > next_magic_decrease_date) {
 
 	remove_magic(1);
 

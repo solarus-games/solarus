@@ -1111,6 +1111,7 @@
 8	0	768	405	surprise_wall_sign	3	2	entities/sign	outside_world.surprise_wall_sign
 3	0	376	61	17	21
 8	0	880	109	billy_cavern_sign	3	2	entities/sign	outside_world.billy_cavern_sign
+1	0	896	621	destination_point	1	0
 0	2	568	320	48	40	511
 0	2	568	416	48	40	511
 0	2	544	464	48	40	511

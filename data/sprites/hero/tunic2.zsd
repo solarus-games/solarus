@@ -52,7 +52,7 @@ grabbing hero/grabbing.png 4 0 -1
 48	48	24	24	12	21	1	1
 72	48	24	24	12	21	1	1
 
-pulling hero/pulling.png 4 100 0
+pulling hero/pulling.png 4 150 0
 0	192	32	24	16	21	3	3
 0	216	32	24	16	21	3	3
 0	240	32	24	16	21	3	3

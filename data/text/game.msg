@@ -122,9 +122,9 @@ line1 = "Ca ne se fait pas de"
 line2 = "fouiller dans la boîte"
 line3 = "aux lettres des gens !" 
 
-[outside_world.warning_hole_sign]
+[outside_world.warning_holes_sign]
 #       |-----------------------|
-line1 = "Attention au trou !"
+line1 = "Attention aux trous !"
 
 [outside_world.flower_hole_sign]
 #       |-----------------------|

@@ -209,8 +209,8 @@ function event_open_empty_chest(chest_name)
       unfreeze() -- restore the control
    else
       -- give a random reward
-      index = math.random(#rewards)
-      amount = rewards[index]
+      index = math.random(#game_1_rewards)
+      amount = game_1_rewards[index]
 
       -- 87 means green rupees (see include/Treasure.h), amount is the number of rupees to give
       -- and -1 means that the chest is not saved
@@ -312,7 +312,7 @@ function event_update()
    end
 end
 
--- This function give the reward to the player in the slot machine game
+-- This function gives the reward to the player in the slot machine game
 function game_2_timer()
 
    -- see if the player has won

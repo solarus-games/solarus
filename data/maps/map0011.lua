@@ -1,6 +1,6 @@
-------------------------
+--------------------------
 -- Grandma house script --
-------------------------
+--------------------------
 
 -- The player talks to grandma
 function event_npc_dialog(npc_name)

@@ -5,6 +5,7 @@
 #include "Equipment.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "Sprite.h"
 
 /**
  * Creates a pickable fairy.
@@ -48,6 +49,14 @@ void PickableItemFairy::update(void) {
 
   shadow_x = get_x();
   shadow_y = get_y();
+
+  FairyMovement *movement = (FairyMovement*) get_movement();
+  if (movement->get_x_speed() >= 0) {
+    get_sprite()->set_current_direction(0);
+  }
+  else {
+    get_sprite()->set_current_direction(1);
+  }
 }
 
 /**

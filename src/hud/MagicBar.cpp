@@ -82,7 +82,7 @@ void MagicBar::update(void) {
     sprite_magic_bar_container->update();
     need_rebuild = true;
   }
-  else if (!equipment->is_magic_decreasing() && is_magic_decreasing) {
+  else if (is_magic_decreasing) {
 
     // stop the magic bar animation
     is_magic_decreasing = false;
@@ -125,7 +125,7 @@ void MagicBar::rebuild(void) {
   if (!is_visible()) {
     return;
   }
-  
+
   // max magic
   sprite_magic_bar_container->display(surface_drawn, 0, 0);
 

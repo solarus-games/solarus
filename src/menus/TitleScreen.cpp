@@ -15,7 +15,7 @@
  */
 TitleScreen::TitleScreen(void):
   Screen() {
-  
+
   // go to phase 1
   init_phase_black_screen();
 }
@@ -26,13 +26,13 @@ TitleScreen::TitleScreen(void):
 TitleScreen::~TitleScreen(void) {
 
   if (!is_screen_finished()) {
-    
+
     switch (current_phase) {
-      
+
     case PHASE_ZS_PRESENTS:
       exit_phase_zs_presents();
       break;
-      
+
     case PHASE_TITLE:
       exit_phase_title();
       break;
@@ -172,7 +172,7 @@ void TitleScreen::init_phase_zs_presents(void) {
  * Exits phase 2 of the title screen.
  */
  void TitleScreen::exit_phase_zs_presents(void) {
- 
+
    SDL_FreeSurface(img_zs_presents);
    delete transition_out;
  }

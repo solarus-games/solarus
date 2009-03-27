@@ -1739,6 +1739,8 @@
 0	0	992	936	16	8	719
 0	0	984	944	16	8	719
 0	0	1000	944	16	8	719
+0	0	944	984	8	16	44
+0	0	936	976	8	16	44
 1	0	1016	613	out_link_house	3	0
 4	0	544	277	2	-1	-1
 4	0	544	293	2	-1	-1
@@ -1863,6 +1865,8 @@
 8	0	1008	637	monkey	1	1	npc/monkey	_none
 8	0	1024	944	interactive_entity	3	3	_none	_none
 8	0	1040	944	interactive_entity_2	3	3	_none	_none
+2	0	720	744	16	16	to_sahasrahla_house	0	1	12	main_entrance
+1	0	728	773	out_sahasrahla_house	3	0
 0	2	880	960	48	40	511
 0	2	1072	128	48	40	511
 0	2	600	336	48	40	511

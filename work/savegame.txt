@@ -21,3 +21,6 @@ booleans:
 23	chest with 20 rupees in outside world D1 (in the dungeon 1 forest)
 24	the monkey has allowed the hero to leave his house
 25	chest with 5 rupees in grandma's house
+26	chest with the bow in Sahasrahla's cave
+27	chest with piece of heart in Sahasrahla's cave
+

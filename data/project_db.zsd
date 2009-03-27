@@ -10,16 +10,21 @@
 0	4	Outside world C2
 0	6	Outside world D1
 0	5	Outside world D2
+0	12	Sahasrahla house
+0	13	Sahasrahla house B1
 1	0	House
 1	1	Light World
+1	2	Ice dungeon
 2	beginning	ALTTP Beginning
 2	boss.it	Boss
 2	castle.it	Castle
+2	cave.it	Cave
 2	credits.it	ALTTP Credits
 2	dark_world.it	Dark World
 2	excalibur.it	Excalibur
 2	fanfare.it	Fanfare
 2	game_over.it	Fairy & Game Over
+2	village.it	Kakariko Village
 2	lost_woords.it	Lost Woods
 2	mini_game.it	Mini game
 2	overworld.it	Overworld
@@ -28,7 +33,6 @@
 2	title_screen_full.it	Title screen (full)
 2	title_screen_short.it	Title screen (short, without intro)
 2	triforce.it	Triforce
-2	village.it	Kakariko Village
 3	hud/action_icon_flip	Action icon (flip)
 3	hud/empty_heart	Empty heart
 3	hud/pause_icon_flip	Pause icon (flip)

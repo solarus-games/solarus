@@ -14,6 +14,7 @@
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
   - l'eau à l'extrême sud-est est franchissable à l'envers (yoshi04) : corrigé ?
   - la barre de magie moyenne peut déborder (yoshi04)
+  - ombre verte des pierres, même dans les maisons
 
 - Prochains types d'entités:
   - portes

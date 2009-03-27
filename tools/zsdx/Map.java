@@ -131,7 +131,7 @@ public class Map extends Observable {
 	this.location = new Point(0, 0);
 	this.tileset = null;
 	this.tilesetId = "";
-	this.musicId = Music.noneId;
+	this.musicId = Music.unchangedId;
 	this.world = -1;
 	this.floor = -100;
 	this.smallKeysVariable = -1;
@@ -312,7 +312,7 @@ public class Map extends Observable {
 		    try {
 			entity.setTileset(tileset);
 		    }
-		    catch (TilesetException ex) {
+		    catch (NoSuchTilePatternException ex) {
 			// the entity is not valid anymore, we should remove it from the map
 			entitiesToRemove.add(entity);
 			badTiles = true;
@@ -1029,7 +1029,7 @@ public class Map extends Observable {
 		    MapEntity entity = MapEntity.createFromString(this, line);
 		    addEntity(entity);
 		}
-		catch (TilesetException ex) {
+		catch (NoSuchTilePatternException ex) {
 		    badTiles = true;
 		}
 		line = in.readLine();

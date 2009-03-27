@@ -23,4 +23,4 @@ booleans:
 25	chest with 5 rupees in grandma's house
 26	chest with the bow in Sahasrahla's cave
 27	chest with piece of heart in Sahasrahla's cave
-
+28	chest with the clay key in Sahasrahla's icy cave

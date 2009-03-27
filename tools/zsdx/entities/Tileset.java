@@ -300,14 +300,14 @@ public class Tileset extends Observable {
      * Returns a tile pattern.
      * @param id id of the tile pattern to get
      * @return the tile pattern with this id
-     * @throws IllegalArgumentException if there is no tile pattern with this id
+     * @throws NoSuchElementException if there is no tile pattern with this id
      */
-    public TilePattern getTilePattern(int id) throws IllegalArgumentException {
+    public TilePattern getTilePattern(int id) throws NoSuchElementException {
 
 	TilePattern tilePattern = tilePatterns.get(id);
 
 	if (tilePattern == null) {
-	    throw new NoSuchElementException("There is no tile pattern with id " + id + " in the tileset.");
+	    throw new NoSuchElementException("There is no tile pattern with id #" + id + " in the tileset.");
 	}
 
 	return tilePattern;

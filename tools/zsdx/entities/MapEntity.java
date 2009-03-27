@@ -213,9 +213,9 @@ public abstract class MapEntity extends Observable {
      * Creates a map entity from a string description as returned by toString().
      * @param map the map (needed for some types of entities)
      * @param description a string describing the entity, as returned by toString()
-     * @throws ZSDXException if the string is incorrect
+     * @throws MapException if the string is incorrect
      */
-    public static MapEntity createFromString(Map map, String description) throws ZSDXException {
+    public static MapEntity createFromString(Map map, String description) throws MapException {
 
 	int index = description.indexOf('\t');
 	EntityType entityType = EntityType.get(Integer.parseInt(description.substring(0, index)));
@@ -234,9 +234,9 @@ public abstract class MapEntity extends Observable {
      * Parses the entity.
      * @param description a string describing the entity, as returned by toString(),
      * except that the first value is missing (the entity type)
-     * @throws ZSDXException if the line contains an error
+     * @throws MapException if the line contains an error
      */
-    protected final void parse(String description) throws ZSDXException {
+    protected final void parse(String description) throws MapException {
 
 	String token = null;
 	try {
@@ -291,15 +291,15 @@ public abstract class MapEntity extends Observable {
 	}
 	catch (NoSuchElementException ex) {
 	    if (token == null) {
-		throw new ZSDXException("Value expected, empty line found");
+		throw new MapException("Value expected, empty line found");
 	    }
 	    else {
-		throw new ZSDXException("Value expected after '" + token + "'");
+		throw new MapException("Value expected after '" + token + "'");
 	    }
 	}
 	catch (NumberFormatException ex) {
 //	    ex.printStackTrace();
-	    throw new ZSDXException("Integer expected, found '" + token + "'");
+	    throw new MapException("Integer expected, found '" + token + "'");
 	}
     }
 
@@ -1214,9 +1214,9 @@ public abstract class MapEntity extends Observable {
      * Changes the tileset used to represent this entity on the map.
      * By default, nothing is done since most of the entities do not use the tileset.
      * @param tileset the tileset
-     * @throws TilesetException if the new tileset could not be applied to this entity
+     * @throws MapException if the new tileset could not be applied to this entity
      */
-    public void setTileset(Tileset tileset) throws TilesetException {
+    public void setTileset(Tileset tileset) throws MapException {
 
     }
 }

@@ -104,6 +104,10 @@ void Detector::check_collision(MapEntity *entity) {
       collision(entity, COLLISION_FACING_POINT);
     }
 
+    if (has_collision_mode(COLLISION_CENTER) && check_collision_center(entity)) {
+      collision(entity, COLLISION_CENTER);
+    }
+
     if (has_collision_mode(COLLISION_CUSTOM) && check_collision_custom(entity)) {
       collision(entity, COLLISION_CUSTOM);
     }
@@ -164,6 +168,18 @@ bool Detector::check_collision_origin_point(MapEntity *entity) {
 bool Detector::check_collision_facing_point(MapEntity *entity) {
 
   return entity->is_facing_point_in(get_position_in_map());
+}
+
+/**
+ * Checks whether an entity's center is overlapping the detector's rectangle.
+ * This method is called by check_collision(MapEntity*) when the detector's collision
+ * mode is COLLISION_CENTER.
+ * @param entity the entity
+ * @return true if the entity's center is overlapping the detector's rectangle
+ */
+bool Detector::check_collision_center(MapEntity *entity) {
+
+  return entity->is_center_in(get_position_in_map());
 }
 
 /**

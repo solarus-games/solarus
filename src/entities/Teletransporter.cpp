@@ -21,7 +21,7 @@
 Teletransporter::Teletransporter(string name, MapEntity::Layer layer, int x, int y, int width, int height,
 				 Subtype subtype, Transition::Style transition_style,
 				 MapId destination_map_id, string destination_point_name):
-  Detector(COLLISION_ORIGIN_POINT | COLLISION_FACING_POINT, name, layer, x, y, width, height),
+  Detector(COLLISION_CUSTOM | COLLISION_FACING_POINT, name, layer, x, y, width, height),
   subtype(subtype), transition_style(transition_style),
   destination_map_id(destination_map_id), destination_point_name(destination_point_name) {
   
@@ -70,12 +70,27 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * Checks whether an entity's collides with this entity.
+ * @param entity the entity
+ * @return true if the entity's collides with this entity
+ */
+bool Teletransporter::check_collision_custom(MapEntity *entity) {
+
+  // TODO temporary
+  return is_point_in(get_position_in_map(), entity->get_top_left_x() + 8, entity->get_top_left_y() + 8);
+}
+
+/**
  * This function is called by the engine when an entity overlaps the teletransporter.
  * This is a redefinition of Detector::collision().
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
 void Teletransporter::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+
+  // TODO temp
+  if (collision_mode == COLLISION_CUSTOM) collision_mode = COLLISION_ORIGIN_POINT;
+
   entity_overlapping->collision_with_teletransporter(this, collision_mode);
 }
 

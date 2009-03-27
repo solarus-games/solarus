@@ -529,6 +529,17 @@ bool MapEntity::is_facing_point_in(const SDL_Rect *rectangle) {
 }
 
 /**
+ * Returns whether or not this entity's center is in
+ * a specified rectangle.
+ * @param rectangle the rectangle to check
+ * @return true if this entity's center is in the rectangle specified, false otherwise
+ */
+bool MapEntity::is_center_in(const SDL_Rect *rectangle) {
+
+  return is_point_in(rectangle, get_top_left_x() + get_width() / 2, get_top_left_y() + get_height() / 2);
+}
+
+/**
  * Returns the angle of the vector between the origin of this entity
  * and the origin of another entity.
  * @param other the other entity

@@ -123,6 +123,8 @@ class MapEntity {
   MapEntity(Layer layer, int x, int y, int width, int height);
   MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
 
+  static bool is_point_in(const SDL_Rect *rectangle, int x, int y);
+
   // method called by the subclasses to set their properties
   void set_direction(int direction);
   void set_layer(Layer layer);
@@ -183,9 +185,9 @@ class MapEntity {
   // collisions
   virtual bool is_obstacle_for(MapEntity *other);
   bool overlaps(const SDL_Rect *rectangle);
-  bool is_point_in(const SDL_Rect *rectangle, int x, int y);
   bool is_origin_point_in(const SDL_Rect *rectangle);
   bool is_facing_point_in(const SDL_Rect *rectangle);
+  bool is_center_in(const SDL_Rect *rectangle);
   double get_vector_angle(MapEntity *other);
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);

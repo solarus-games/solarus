@@ -26,9 +26,11 @@ class Detector: public MapEntity {
 				      * is inside the detector's rectangle */
     COLLISION_FACING_POINT = 0x0004, /**< collision if an entity's facing point
 				      * is inside the detector's rectangle */
-    COLLISION_SPRITE       = 0x0008, /**< collision if an entity's sprite has pixels
+    COLLISION_CENTER       = 0x0008, /**< collision if the entity's center
+				      * is inside the detector's rectangle */
+    COLLISION_SPRITE       = 0x0010, /**< collision if an entity's sprite has pixels
 				      * overlapping pixels of the detector's sprite */
-    COLLISION_CUSTOM       = 0x0010, /**< custom collision function, defined by the subclass */
+    COLLISION_CUSTOM       = 0x0020, /**< custom collision function, defined by the subclass */
   };
 
  private:
@@ -36,7 +38,7 @@ class Detector: public MapEntity {
   int collision_modes; /**< collision modes of the detector
 		        * (can be an OR combination of CollisionMode values) */
 
-  bool layer_ignored;  /**< indicates that collisions are detected event
+  bool layer_ignored;  /**< indicates that collisions are detected even
 		        * with entities that are not on the same layer than the detector */
 
  protected:
@@ -55,6 +57,7 @@ class Detector: public MapEntity {
   bool check_collision_rectangle(MapEntity *entity);
   bool check_collision_origin_point(MapEntity *entity);
   bool check_collision_facing_point(MapEntity *entity);
+  bool check_collision_center(MapEntity *entity);
   virtual bool check_collision_custom(MapEntity *entity);
 
   // functions called when a collision is detected

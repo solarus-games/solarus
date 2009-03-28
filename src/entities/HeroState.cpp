@@ -371,7 +371,7 @@ void Hero::update_carried_items(void) {
   if (lifted_item != NULL) {
     lifted_item->update();
   }
-  else {
+  else { // no more lifted item: remove the "throw" icon if it is still here
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);

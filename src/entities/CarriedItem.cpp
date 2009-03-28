@@ -5,12 +5,9 @@
 #include "movements/FollowMovement.h"
 #include "movements/ThrownItemMovement.h"
 #include "Sprite.h"
-#include "Game.h"
-#include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Map.h"
-#include "ZSDX.h"
 
 /**
  * Movement of the item when the hero is lifting it.
@@ -119,6 +116,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
 
   this->map = map;
   this->throwing_direction = direction;
+  is_lifting = false;
   is_throwing = true;
 
   // play the sound
@@ -127,10 +125,6 @@ void CarriedItem::throw_item(Map *map, int direction) {
   // stop the sprite animation
   Sprite *sprite = get_sprite();
   sprite->set_current_animation("stopped");
-
-  // remove the "throw" icon
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   // set the movement
   clear_movement();
@@ -178,10 +172,6 @@ void CarriedItem::update(void) {
 
       // make the hero carry the item
       hero->start_carrying();
-
-      // action icon "throw"
-      KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
 
       // make the item follow the hero
       clear_movement();

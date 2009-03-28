@@ -306,6 +306,10 @@ void Hero::start_carrying(void) {
   else {
     set_animation_stopped();
   }
+
+  // action icon "throw"
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
 }
 
 /**
@@ -322,6 +326,10 @@ void Hero::stop_carrying(void) {
  * Makes the hero throw the item he was carrying.
  */
 void Hero::start_throwing(void) {
+
+  // remove the "throw" icon
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   // we check the state because the "throw" icon is actually shown as soon as
   // the hero starts lifting the item
@@ -362,6 +370,12 @@ void Hero::update_carried_items(void) {
 
   if (lifted_item != NULL) {
     lifted_item->update();
+  }
+  else {
+    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    }
   }
 
   if (thrown_item != NULL) {
@@ -871,7 +885,7 @@ void Hero::hurt(MapEntity *source, int life) {
   if (can_be_hurt()) {
 
     // remove the carried item
-    if (state == CARRYING) {
+    if (state == LIFTING || state == CARRYING) {
       start_throwing();
     }
     stop_displaying_sword();

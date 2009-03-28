@@ -13,8 +13,9 @@
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
   - la barre de magie moyenne peut déborder (yoshi04)
-  - 2 ennemis ou pnj qui se rencontrent : celui qui est devant devrait s'afficher au-dessus
-
+  - 2 ennemis / pnj / statues qui se rencontrent : celui qui est devant devrait s'afficher au-dessus
+  - une statue amovible de manière infinie qui superpose avec un ennemi fait planter le jeu
+  - vases et ennemis : http://img22.imageshack.us/img22/8256/bugzsdx1.png
 
 - Prochains types d'entités:
   - portes

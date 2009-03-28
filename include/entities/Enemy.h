@@ -139,6 +139,7 @@ class Enemy: public Detector {
 
   EntityType get_type(void);
   void set_map(Map *map);
+  void display_on_map_above_hero(void);
 
   // enemy state
   virtual void update(void);

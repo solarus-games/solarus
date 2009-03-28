@@ -751,8 +751,8 @@ void Hero::update_treasure(void) {
 
     // restore the hero's state
     treasure = NULL;
-    start_free();
     restore_animation_direction();
+    start_free();
   }
 }
 

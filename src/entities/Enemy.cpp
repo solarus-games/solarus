@@ -124,6 +124,17 @@ void Enemy::set_map(Map *map) {
 }
 
 /**
+ * Displays the entity if its y position is greater than the hero's y position.
+ */
+void Enemy::display_on_map_above_hero(void) {
+
+  Hero *hero = zsdx->game->get_hero();
+  if (get_y() > hero->get_y() + 8) {
+    MapEntity::display_on_map();
+  }
+}
+
+/**
  * Sets the amount of damage this kind of enemy can make to the hero
  * @param damage_on_hero number of heart quarters the player loses
  */

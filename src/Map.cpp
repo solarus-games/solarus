@@ -339,9 +339,10 @@ void Map::update(void) {
   }
 
   // update the elements
-  camera->update();
   entities->update();
   script->update();
+  camera->update(); /* update the camera after the entities since this might 
+		       be the last update() call for this map */
 }
 
 /**
@@ -409,25 +410,70 @@ void Map::place_hero_on_destination_point(void) {
     switch (destination_side) {
 
     case 0: // right side
-      hero->set_x(get_width() - 24);
+      hero->set_x(get_width());
       break;
 
     case 1: // top side
-      hero->set_y(37);
+      hero->set_y(5);
       break;
 
     case 2: // left side
-      hero->set_x(24);
+      hero->set_x(0);
       break;
 
     case 3: // bottom side
-      hero->set_y(get_height() - 19);
+      hero->set_y(get_height() + 5);
       break;
 
     default:
       DIE("Invalid destination side: " << destination_side);
     }
   }
+}
+
+/**
+ * This function is called when the opening transition of the map is finished.
+ * The position of the hero is updated if necessary.
+ */
+void Map::opening_transition_finished(void) {
+
+  if (destination_point_index == -2) {
+    // the hero was placed on the side of the map:
+    // there was a scrolling between the previous map and this one
+    
+    Hero *hero = zsdx->game->get_hero();
+
+    switch (destination_side) {
+
+    case 0: // right side
+      hero->set_x(get_width() - 8);
+      break;
+
+    case 1: // top side
+      hero->set_y(13);
+      break;
+
+    case 2: // left side
+      hero->set_x(8);
+      break;
+
+    case 3: // bottom side
+      hero->set_y(get_height() - 3);
+      break;
+
+    default:
+      DIE("Invalid destination side: " << destination_side);
+    }
+  }
+}
+
+/**
+ * When the destination point is a side of the map,
+ * returns this side.
+ * @return the destination side (0 to 3)
+ */
+int Map::get_destination_side(void) {
+  return destination_side;
 }
 
 /**
@@ -445,6 +491,14 @@ void Map::leave(void) {
  */
 bool Map::is_started(void) {
   return started;
+}
+
+/**
+ * Sets whether the hero is displayed on this map.
+ * @param visible true to make the hero visible
+ */
+void Map::set_hero_displayed(bool displayed) {
+  entities->set_hero_displayed(displayed);
 }
 
 /**

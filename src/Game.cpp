@@ -31,7 +31,7 @@ Game::Game(Savegame *savegame):
   savegame(savegame),
   pause_menu(NULL), dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
   reseting(false), restarting(false), keys_effect(NULL),
-  current_map(NULL), next_map(NULL),
+  current_map(NULL), next_map(NULL), previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL), dungeon(NULL),
   hud(NULL), current_music_id(Music::none), current_music(NULL) {
 
@@ -72,6 +72,10 @@ Game::~Game(void) {
   delete hero;
   delete savegame;
   delete controls;
+
+  if (previous_map_surface != NULL) {
+    SDL_FreeSurface(previous_map_surface);
+  }
 
   if (zsdx->game == this) {
     zsdx->set_game(NULL);
@@ -269,6 +273,7 @@ void Game::update_transitions(void) {
   if (transition != NULL && transition->is_over()) {
 
     Transition::Direction transition_direction = transition->get_direction();
+    bool needs_previous_surface = transition->needs_previous_surface();
     delete transition;
     transition = NULL;
 
@@ -300,10 +305,26 @@ void Game::update_transitions(void) {
 	  old_tileset->unload();
 	}
 
+	// before closing the map, draw it on a backup surface for transition effects that display two maps
+	if (needs_previous_surface) {
+	  previous_map_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+	  current_map->display();
+	  SDL_BlitSurface(current_map->get_visible_surface(), NULL, previous_map_surface, NULL);
+	}
+
+	// set the next map
 	load_dungeon();
 	current_map->unload();
 	current_map = next_map;
 	next_map = NULL;
+      }
+    }
+    else {
+      current_map->opening_transition_finished();
+
+      if (previous_map_surface != NULL) {
+	SDL_FreeSurface(previous_map_surface);
+	previous_map_surface = NULL;
       }
     }
   }
@@ -311,6 +332,12 @@ void Game::update_transitions(void) {
   // if a map has just been set as the current map, start it and play the in transition
   if (!current_map->is_started()) {
     transition = Transition::create(transition_style, Transition::IN);
+
+    if (previous_map_surface != NULL) {
+      // some transition effects need to display both maps simultaneously
+      transition->set_previous_surface(previous_map_surface);
+    }
+
     transition->start();
     current_map->start();
   }

@@ -4,7 +4,7 @@ stopped npc/newlink.png 4 0 -1
 48	96	24	32	12	29	1	1
 0	160	24	32	12	29	1	1
 
-walking npc/newlink.png 4 125 0
+walking npc/newlink.png 4 200 0
 0	96	24	32	12	29	2	2
 0	128	24	32	12	29	4	4
 48	96	24	32	12	29	2	2

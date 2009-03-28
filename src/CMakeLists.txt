@@ -78,6 +78,7 @@ add_executable (zsdx
   Transition.cpp
   TransitionFade.cpp
   TransitionImmediate.cpp
+  TransitionScrolling.cpp
 
   # map entities
   entities/MapEntities.cpp

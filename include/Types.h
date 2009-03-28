@@ -100,6 +100,7 @@ class PixelBits;
 class Transition;
 class TransitionFade;
 class TransitionImmediate;
+class TransitionScrolling;
 
 // map entities
 class MapEntities;

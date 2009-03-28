@@ -123,7 +123,14 @@ bool Hero::is_ground_visible(void) {
  */
 void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
 
-  if (collision_mode == Detector::COLLISION_ORIGIN_POINT && state != JUMPING) {
+  if (state != JUMPING) {
+
+    destroy_carried_items();
+    stop_displaying_sword();
+
+    if (state != FREE) {
+      start_free();
+    }
     teletransporter->transport_hero(this);
   }
 }

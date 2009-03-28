@@ -20,8 +20,9 @@ using std::list;
 /**
  * Constructor.
  */
-MapEntities::MapEntities(Map *map) {
-  this->map = map;
+MapEntities::MapEntities(Map *map):
+  map(map), hero_displayed(true) {
+
   this->obstacle_entities->push_back(zsdx->game->get_hero());
 }
 
@@ -30,6 +31,14 @@ MapEntities::MapEntities(Map *map) {
  */
 MapEntities::~MapEntities(void) {
   destroy_all_entities();
+}
+
+/**
+ * Sets whether the hero should be displayed.
+ * @param displayed true to make the hero displayed
+ */
+void MapEntities::set_hero_displayed(bool displayed) {
+  this->hero_displayed = displayed;
 }
 
 /**
@@ -723,7 +732,7 @@ void MapEntities::display() {
     }
 
     // put the hero if he is in this layer
-    if (hero->get_layer() == layer) {
+    if (hero_displayed && hero->get_layer() == layer) {
       hero->display_on_map();
     }
 

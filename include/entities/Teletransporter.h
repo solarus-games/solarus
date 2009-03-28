@@ -30,6 +30,12 @@ class Teletransporter: public Detector {
   MapId destination_map_id;             /**< id of the destination map */
   string destination_point_name;        /**< destination point on that map, or "_same" to keep the hero's coordinates,
 					 * or "_side" to place the hero on the appropriate side of the map */
+  int destination_side;                 /**< when the destination point is "_side", indicates which side
+					 * of the destination map this teletransporters leads to
+					 * (this depends on the teletransporter position on the map */
+  int transition_direction;             /**< when the destination point is "_side", indicates the direction 
+					 * of the transition between the two maps (this is the opposite
+					 * direction of destination_side) */
 
  public:
 
@@ -39,6 +45,7 @@ class Teletransporter: public Detector {
   ~Teletransporter(void);
 
   EntityType get_type(void);
+  void set_map(Map *map);
 
   bool is_obstacle_for(MapEntity *other);
   bool check_collision_custom(MapEntity *entity);

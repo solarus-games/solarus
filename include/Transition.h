@@ -11,11 +11,12 @@ class Transition {
  public:
 
   /**
-   * Style of transition between two maps.
+   * Style of transition between two screens.
    */
   enum Style {
-    IMMEDIATE,  // no transition between the two maps
-    FADE,       // fade in and fade out
+    IMMEDIATE = 0,  // no transition between the two screens
+    FADE      = 1,  // fade in and fade out
+    SCROLLING = 2,  // scrolling between two maps
   };
 
   /**
@@ -28,7 +29,9 @@ class Transition {
 
  protected:
 
-  Direction direction;
+  Direction direction;           /**< direction of the transition (in or out) */
+  SDL_Surface *previous_surface; /**< during an in transition, this is the surface that was displayed 
+				  * when the out transition was played */
 
   Transition(Direction direction);
 
@@ -37,12 +40,13 @@ class Transition {
   static Transition *create(Style style, Direction direction);
 
   Direction get_direction(void);
+  void set_previous_surface(SDL_Surface *previous_surface);
+  virtual bool needs_previous_surface(void);
 
   virtual void start(void) = 0;
   virtual bool is_started(void) = 0;
   virtual bool is_over(void) = 0;
   virtual void display(SDL_Surface *surface) = 0;
-
 };
 
 #endif

@@ -38,6 +38,7 @@ class Game: public Screen {
   Map *current_map;         /**< the map currently displayed */
   Map *next_map;            /**< the map where the hero is going to; if not NULL, it means that the hero 
 			     * is changing from current_map to next_map */
+  SDL_Surface *previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 
   Transition::Style transition_style; /**< the transition style between the current map and the next one */
   Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */

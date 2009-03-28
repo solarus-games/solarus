@@ -6,9 +6,10 @@ package zsdx;
 public enum Transition {
 
     IMMEDIATE,
-    FADE;
+    FADE,
+    SCROLLING;
 
-    public static final String[] humanNames = {"Immediate", "Fade in/out"};
+    public static final String[] humanNames = {"Immediate", "Fade in/out", "Scrolling"};
 
     public int getId() {
 	return ordinal();

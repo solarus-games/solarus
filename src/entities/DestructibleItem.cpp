@@ -142,7 +142,7 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
       }
     }
 
-    else if (collision_mode == COLLISION_ORIGIN_POINT && type == GRASS) {
+    else if (collision_mode == COLLISION_ORIGIN_POINT && type == GRASS && !is_being_cut) {
       hero->set_ground(Map::GRASS);
     }
   }
@@ -217,6 +217,10 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       get_destruction_sound()->play();
       get_sprite()->set_current_animation("destroy");
       is_being_cut = true;
+
+      if (type == GRASS) {
+	hero->set_ground(Map::NORMAL_GROUND);
+      }
 
       map->get_entities()->bring_to_front(this); // show animation destroy to front
 

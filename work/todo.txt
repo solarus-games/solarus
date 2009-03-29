@@ -89,4 +89,6 @@ Mode release :
 	- Dézoomer avec Ctrl + molette
 	- Parser les fichiers de sprite dans l'éditeur (utile pour PNJ et entités avec skin)
 	- Sprites dans l'éditeur : utiliser une liste déroulante (les sprites sont des ressources dans project_db.zsd)
+	- Eviter d'avoir à recharger la map pour voir les destinations mises à jour
+	- Téléporteurs : interdire "_same" si c'est la même map
 

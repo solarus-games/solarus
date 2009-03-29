@@ -6,6 +6,22 @@
 #include "Map.h"
 #include <cmath>
 
+const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
+  // can_be_obstacle, can_detect_entities, can_be_displayed, is_displayed_in_y_order
+  {false, false, false, false}, // tile (not used)
+  {false, false, false, false}, // destination point
+  { true,  true,  true, false}, // teletransporter
+  {false,  true,  true, false}, // pickable item
+  { true,  true,  true, false}, // destructible item
+  { true,  true,  true,  true}, // chest
+  {false,  true, false, false}, // jump sensor
+  { true,  true,  true,  true}, // enemy
+  { true,  true,  true,  true}, // interactive entity
+  { true,  true,  true,  true}, // block
+  { true, false,  true, false}, // dynamic tile
+  {false,  true,  true, false}, // switch
+};
+
 /**
  * Creates a map entity without specifying its properties yet.
  */
@@ -80,6 +96,50 @@ MapEntity::~MapEntity(void) {
   if (movement != NULL) {
     clear_movement();
   }
+}
+
+/**
+ * Returns whether entities of this type can be obstacles for other entities.
+ * If yes, the function is_obstacle_for() will be called
+ * to determine whether this particular entity is an obstacle or not.
+ * @return true if this type of entity can be obstacle for other entities
+ */
+bool MapEntity::can_be_obstacle(void) {
+  return entity_types_features[get_type()].can_be_obstacle;
+}
+
+/**
+ * Returns whether entities of this type can detect the presence 
+ * of the hero or other entities (this is possible only for
+ * suclasses of Detector). If yes, the function 
+ * collision() will be called when a collision is detected.
+ * @return true if this type of entity can detect other entities
+ */
+bool MapEntity::can_detect_entities(void) {
+  return entity_types_features[get_type()].can_detect_entities;
+}
+
+/**
+ * Returns whether entities of this type can be displayed.
+ * If enabled, the sprites added by the add_sprite() calls will be 
+ * displayed (if any).
+ * @return true if this type of entity can be displayed
+ */
+bool MapEntity::can_be_displayed(void) {
+  return entity_types_features[get_type()].can_be_displayed;
+}
+
+/**
+ * Returns whether an entity of this type should be displayed above
+ * the hero and other entities having this property when it is in front of them.
+ * This means that the displaying order of entities having this
+ * feature depends on their y position. The entities without this feature
+ * are displayed in the normal order (i.e. as specified by the map file), 
+ * and before the entities with the feature.
+ * @return true if this type of entity is displayed at the same level as the hero
+ */
+bool MapEntity::is_displayed_in_y_order(void) {
+  return entity_types_features[get_type()].is_displayed_in_y_order;
 }
 
 /**
@@ -295,7 +355,7 @@ SDL_Rect MapEntity::get_facing_point(int direction) {
  * Returns the name of the entity (if any).
  * @return the name of the entity, or an empty string if the entity is not identifiable
  */
-string MapEntity::get_name(void) {
+string MapEntity::get_name(void) const {
   return name;
 }
 

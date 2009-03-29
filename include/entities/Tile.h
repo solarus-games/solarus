@@ -22,7 +22,7 @@ class Tile: public MapEntity {
 
   EntityType get_type(void);
   void display_on_map(void);
-
+  TilePattern *get_tile_pattern(void);
 };
 
 #endif

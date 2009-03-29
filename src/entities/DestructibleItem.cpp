@@ -226,8 +226,9 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
 
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = (pickable_item <= PickableItem::ARROW_10);
-	map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
-					       pickable_item_savegame_variable, FallingOnFloorMovement::MEDIUM, will_disappear);
+	map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item,
+							     pickable_item_savegame_variable,
+							     FallingOnFloorMovement::MEDIUM, will_disappear));
       }
     }
   }
@@ -260,12 +261,13 @@ void DestructibleItem::action_key_pressed(void) {
       // create the pickable item
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = PickableItem::can_disappear(pickable_item);
-	map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item,
-					       pickable_item_savegame_variable, FallingOnFloorMovement::MEDIUM, will_disappear);
+	map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item,
+							     pickable_item_savegame_variable,
+							     FallingOnFloorMovement::MEDIUM, will_disappear));
       }
 
       // remove the item from the map
-      map->get_entities()->remove_destructible_item(this);
+      map->get_entities()->remove_entity(this);
     }
     else {
       zsdx->game->show_message("_too_heavy");
@@ -283,6 +285,6 @@ void DestructibleItem::update(void) {
   if (is_being_cut && get_sprite()->is_animation_finished()) {
 
     // remove the item from the map
-    map->get_entities()->remove_destructible_item(this);
+    map->get_entities()->remove_entity(this);
   }
 }

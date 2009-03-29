@@ -624,7 +624,7 @@ int MapScript::l_npc_remove(lua_State *l) {
   string name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  map->get_entities()->remove_interactive_entity(name);
+  map->get_entities()->remove_entity(MapEntity::INTERACTIVE_ENTITY, name);
 
   return 0;
 }

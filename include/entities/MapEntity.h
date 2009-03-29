@@ -66,39 +66,64 @@ class MapEntity {
     LAYER_NB               /**< number of layers */
   };
 
+ public:
+
+  /**
+   * Describes the features of each dynamic entity type:
+   * is it an obstacle, can it detect collisions, etc.
+   */
+  struct EntityTypeFeatures {
+    bool can_be_obstacle;         /**< Allows entities of this type to be obstacles for other entities.
+				   * If enabled, the function is_obstacle_for() will be called
+				   * to determine whether this is an obstacle or not. */
+    bool can_detect_entities;     /**< Allows entities of this type to detect the presence 
+				   * of the hero or other entities (this is possible only for
+				   * suclasses of Detector). If enabled, the function 
+				   * collision() will be called when a collision is detected. */
+    bool can_be_displayed;        /**< Allows entities of this type to be displayed. 
+				   * If enabled, the sprites added by the add_sprite() calls will be 
+			 	   * displayed (if any). */
+    bool is_displayed_in_y_order; /**< Allows an entity of this type to be displayed above
+				   * the hero and other entities having this property when it is in front of them.
+				   * This means that the displaying order of entities having this
+				   * feature depends on their y position. The entities without this feature
+				   * are displayed in the normal order (i.e. as specified by the map file), 
+				   * and before the entities with the feature. */
+  };
+
+ private:
+
+  /**
+   * The features of each entity type.
+   */
+  static const EntityTypeFeatures entity_types_features[];
 
  protected:
 
-  Map *map;                /**< the map: this field is automatically set by class MapEntities after creating the entity */
+  Map *map;                 /**< the map: this field is automatically set by class MapEntities after creating the entity */
 
   // position (mandatory for all kinds of entities)
 
-  /**
-   * Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
-   * The layer is constant for the tiles and can change for the hero and the enemies.
-   */
-  Layer layer;
+  Layer layer;              /**< layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH:
+			     * the layer is constant for the tiles and can change for the hero and the enemies
+			     */
 
-  /**
-   * Position of the entity on the map. The position is defined as a rectangle.
-   * This rectangle represents the position of the entity of the map, it is
-   * used for the collision tests. It can be different from the sprite's
-   * rectangle of the entity.
-   * For example, the hero's position is a 16*16 rectangle, but its sprite may be
-   * a 16*24 rectangle.
-   */
-  SDL_Rect position_in_map;
+  SDL_Rect position_in_map; /**< Position of the entity on the map. The position is defined as a rectangle.
+			     * This rectangle represents the position of the entity of the map and is
+			     * used for the collision tests. It can be different from the sprite's
+			     * rectangle of the entity.
+			     * For example, the hero's position is a 16*16 rectangle, but its sprite may be
+			     * a 24*32 rectangle.
+			     */
 
-  /**
-   * Coordinates of the origin point of the entity,
-   * relative to the top-left corner of its rectangle.
-   * Remember that when you call get_x() and get_y(), you get the coordinates
-   * of the origin point on the map, not the coordinates of the rectangle's
-   * top-left corner.
-   * This is useful because the top-left corner of the entity's rectangle does
-   * not represent the actual entity's coordinates.
-   */
-  SDL_Rect origin;
+  SDL_Rect origin;          /**< Coordinates of the origin point of the entity,
+			     * relative to the top-left corner of its rectangle.
+			     * Remember that when you call get_x() and get_y(), you get the coordinates
+			     * of the origin point on the map, not the coordinates of the rectangle's
+			     * top-left corner.
+			     * This is useful because the top-left corner of the entity's rectangle does
+			     * not represent the actual entity's coordinates.
+			     */
 
   // other data, used for some kinds of entities
 
@@ -114,6 +139,9 @@ class MapEntity {
 			    * some of them are invisible, and some of them handle their sprites themselves */
   Movement *movement;      /**< movement of the entity, not used for all kinds of entities;
 			    * NULL indicates that the entity has no movement */
+
+  // entity state
+
   bool suspended;          /**< indicates that the animation and movement of this entity are suspended */
   Uint32 when_suspended;   /**< indicates when this entity was suspended */
   bool being_removed;      /**< indicates that the entity is not valid anymore because it is about to be removed */
@@ -122,8 +150,6 @@ class MapEntity {
   MapEntity(void);
   MapEntity(Layer layer, int x, int y, int width, int height);
   MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
-
-  static bool is_point_in(const SDL_Rect *rectangle, int x, int y);
 
   // method called by the subclasses to set their properties
   void set_direction(int direction);
@@ -137,12 +163,23 @@ class MapEntity {
   void set_movement(Movement *movement);
   void clear_movement(void);
 
+  // collisions
+  static bool is_point_in(const SDL_Rect *rectangle, int x, int y);
+
  public:
 
   // destruction
   virtual ~MapEntity(void);
   void set_being_removed(void);
   bool is_being_removed(void);
+
+  // entity type features
+  virtual bool is_hero(void);
+  virtual EntityType get_type(void) = 0;
+  bool can_be_obstacle(void);
+  bool can_detect_entities(void);
+  bool can_be_displayed(void);
+  bool is_displayed_in_y_order(void);
 
   // position in the map
   Layer get_layer(void);
@@ -166,10 +203,8 @@ class MapEntity {
 
   // properties
   virtual void set_map(Map *map);
-  string get_name(void);
+  string get_name(void) const;
   int get_direction(void);
-  virtual bool is_hero(void);
-  virtual EntityType get_type(void) = 0;
 
   // sprites
   Sprite * get_sprite(int index);

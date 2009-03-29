@@ -37,3 +37,11 @@ MapEntity::EntityType Tile::get_type() {
 void Tile::display_on_map(void) {
   tile_pattern->display_on_map(map, position_in_map);
 }
+
+/**
+ * Returns the pattern of this tile.
+ * @return the tile pattern
+ */
+TilePattern * Tile::get_tile_pattern(void) {
+  return tile_pattern;
+}

@@ -324,7 +324,7 @@ void PickableItem::collision(MapEntity *entity_overlapping, CollisionMode collis
 
   if (entity_overlapping->is_hero() && can_be_picked) {
 
-    map->get_entities()->remove_pickable_item(this);
+    map->get_entities()->remove_entity(this);
     give_item_to_player();
   }
 }
@@ -504,7 +504,7 @@ void PickableItem::update(void) {
       }
     
       if (now >= disappear_date) {
-	map->get_entities()->remove_pickable_item(this);
+	map->get_entities()->remove_entity(this);
       }
     }
   }

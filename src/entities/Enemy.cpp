@@ -240,12 +240,13 @@ void Enemy::update(void) {
     // create the pickable item
     if (pickable_item_type != PickableItem::NONE) {
       bool will_disappear = PickableItem::can_disappear(pickable_item_type);
-      map->get_entities()->add_pickable_item(get_layer(), get_x(), get_y(), pickable_item_type,
-					     pickable_item_savegame_variable, FallingOnFloorMovement::HIGH, will_disappear);
+      map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item_type,
+							   pickable_item_savegame_variable, FallingOnFloorMovement::HIGH,
+							   will_disappear));
     }
 
     // remove the enemy
-    map->get_entities()->remove_enemy(this);
+    map->get_entities()->remove_entity(this);
   }
 }
 

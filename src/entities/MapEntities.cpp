@@ -21,9 +21,13 @@ using std::list;
  * Constructor.
  */
 MapEntities::MapEntities(Map *map):
-  map(map), hero_displayed(true) {
+  map(map) {
 
-  this->obstacle_entities->push_back(zsdx->game->get_hero());
+  Hero *hero = zsdx->game->get_hero();
+  MapEntity::Layer layer = hero->get_layer();
+  this->obstacle_entities[layer].push_back(hero);
+  this->displayed_entities[layer].push_back(hero);
+  // TODO update that when the layer changes
 }
 
 /**
@@ -31,14 +35,6 @@ MapEntities::MapEntities(Map *map):
  */
 MapEntities::~MapEntities(void) {
   destroy_all_entities();
-}
-
-/**
- * Sets whether the hero should be displayed.
- * @param displayed true to make the hero displayed
- */
-void MapEntities::set_hero_displayed(bool displayed) {
-  this->hero_displayed = displayed;
 }
 
 /**
@@ -537,6 +533,7 @@ void MapEntities::add_enemy(string name, MapEntity::Layer layer, int x, int y, i
 
     displayed_entities[layer].push_back(enemy);
     detectors.push_back(enemy);
+    obstacle_entities[layer].push_back(enemy);
     add_entity(enemy);
   }
 }
@@ -659,7 +656,7 @@ void MapEntities::remove_marked_entities(void) {
  */
 void MapEntities::set_suspended(bool suspended) {
 
-  // the hero
+  // the hero first
   Hero *hero = zsdx->game->get_hero();
   hero->set_suspended(suspended);
 
@@ -670,7 +667,10 @@ void MapEntities::set_suspended(bool suspended) {
     for (i = displayed_entities[layer].begin();
 	 i != displayed_entities[layer].end();
 	 i++) {
-      (*i)->set_suspended(suspended);
+
+      if (!(*i)->is_hero()) {
+	(*i)->set_suspended(suspended);
+      }
     }
 
     // note that we don't suspend the animated tiles
@@ -681,8 +681,8 @@ void MapEntities::set_suspended(bool suspended) {
  * Updates the animation and position of each entity.
  */
 void MapEntities::update(void) {
-  
-  // update the hero's position, movement and animation
+
+  // first update the hero's position, movement and animation
   Hero *hero = zsdx->game->get_hero();
   hero->update();
 
@@ -698,7 +698,7 @@ void MapEntities::update(void) {
 	 it != displayed_entities[layer].end();
 	 it++) {
 
-      if (!(*it)->is_being_removed()) {
+      if (!(*it)->is_being_removed() && !(*it)->is_hero()) {
 	(*it)->update();
       }
     }
@@ -712,8 +712,6 @@ void MapEntities::update(void) {
  * Displays the entities of the map on the screen.
  */
 void MapEntities::display() {
-
-  Hero *hero = zsdx->game->get_hero();
 
   // map entities
   for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
@@ -729,19 +727,6 @@ void MapEntities::display() {
 	 i != displayed_entities[layer].end();
 	 i++) {
       (*i)->display_on_map();
-    }
-
-    // put the hero if he is in this layer
-    if (hero_displayed && hero->get_layer() == layer) {
-      hero->display_on_map();
-    }
-
-    // put some parts of sprites above the hero
-    for (i = displayed_entities[layer].begin();
-	 i != displayed_entities[layer].end();
-	 i++) {
-
-      (*i)->display_on_map_above_hero();
     }
   }
 }

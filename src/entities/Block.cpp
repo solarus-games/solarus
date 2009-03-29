@@ -186,17 +186,6 @@ void Block::just_moved(void) {
 }
 
 /**
- * Displays the entity again if it is a statue whose y position is greater than the hero's y position.
- */
-void Block::display_on_map_above_hero(void) {
-
-  Hero *hero = zsdx->game->get_hero();
-  if (subtype == STATUE && get_y() > hero->get_y() + 8) {
-    MapEntity::display_on_map();
-  }
-}
-
-/**
  * Resets the block at its initial position.
  */
 void Block::reset(void) {

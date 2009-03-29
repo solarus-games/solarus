@@ -130,7 +130,6 @@ class Map {
   bool is_started(void);
   void start(void);
   void leave(void);
-  void set_hero_displayed(bool displayed);
 
   // current destination point
   void set_destination_point(unsigned int destination_point_index);

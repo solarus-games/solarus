@@ -285,14 +285,3 @@ void InteractiveEntity::just_moved(void) {
 void InteractiveEntity::set_sprite_direction(int direction) {
   get_sprite()->set_current_direction(direction);
 }
-
-/**
- * Displays the entity if its y position is greater than the hero's y position.
- */
-void InteractiveEntity::display_on_map_above_hero(void) {
-
-  Hero *hero = zsdx->game->get_hero();
-  if (special_interaction == NON_PLAYING_CHARACTER && get_y() > hero->get_y() + 8) {
-    MapEntity::display_on_map();
-  }
-}

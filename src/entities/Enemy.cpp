@@ -106,6 +106,16 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
 }
 
 /**
+ * Returns whether this entity is an obstacle for another one.
+ * @param other another entity
+ * @return true if this entity is an obstacle for the other one
+ */
+bool Enemy::is_obstacle_for(MapEntity *other) {
+
+  return other->get_type() == BLOCK;
+}
+
+/**
  * Sets the map.
  * @param map the map
  */
@@ -121,17 +131,6 @@ void Enemy::set_map(Map *map) {
   }
 
   restart();
-}
-
-/**
- * Displays the entity if its y position is greater than the hero's y position.
- */
-void Enemy::display_on_map_above_hero(void) {
-
-  Hero *hero = zsdx->game->get_hero();
-  if (get_y() > hero->get_y() + 8) {
-    MapEntity::display_on_map();
-  }
 }
 
 /**

@@ -138,8 +138,8 @@ class Enemy: public Detector {
 		       PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
 
   EntityType get_type(void);
+  bool is_obstacle_for(MapEntity *other);
   void set_map(Map *map);
-  void display_on_map_above_hero(void);
 
   // enemy state
   virtual void update(void);

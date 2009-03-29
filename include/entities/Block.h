@@ -48,7 +48,6 @@ class Block: public Detector {
   void just_moved(void);
 
   void update(void);
-  void display_on_map_above_hero(void);
 
   void reset(void);
 };

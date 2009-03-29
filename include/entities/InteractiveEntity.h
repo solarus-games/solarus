@@ -59,8 +59,6 @@ class InteractiveEntity: public Detector {
   void start_walking_random(void);
   void just_moved(void);
   void set_sprite_direction(int direction);
-
-  void display_on_map_above_hero(void);
 };
 
 #endif

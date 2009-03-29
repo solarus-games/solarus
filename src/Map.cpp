@@ -494,14 +494,6 @@ bool Map::is_started(void) {
 }
 
 /**
- * Sets whether the hero is displayed on this map.
- * @param visible true to make the hero visible
- */
-void Map::set_hero_displayed(bool displayed) {
-  entities->set_hero_displayed(displayed);
-}
-
-/**
  * Tests whether a point collides with a map tile.
  * @param layer layer of the point
  * @param x x of the point in pixels

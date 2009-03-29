@@ -84,8 +84,6 @@ class MapEntities {
    */
   std::list<MapEntity*> obstacle_entities[MapEntity::LAYER_NB];
 
-  bool hero_displayed;            /**< true if the hero is displayed */
-
   void add_entity(MapEntity *entity);
 
  public:
@@ -93,8 +91,6 @@ class MapEntities {
   // creation and destruction
   MapEntities(Map *map);
   ~MapEntities(void);
-
-  void set_hero_displayed(bool displayed);
 
   // information about the entities
   unsigned int get_nb_destination_points(void);

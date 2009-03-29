@@ -200,7 +200,6 @@ class MapEntity {
   // update and display
   virtual void update(void);
   virtual void display_on_map(void);
-  virtual void display_on_map_above_hero(void);
 };
 
 #endif

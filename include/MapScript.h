@@ -62,6 +62,9 @@ class MapScript {
   static FunctionAvailableToScript l_interactive_entity_set_animation_delay;
   static FunctionAvailableToScript l_interactive_entity_set_animation_frame;
   static FunctionAvailableToScript l_interactive_entity_set_animation_paused;
+  static FunctionAvailableToScript l_equipment_get_tunic;
+  static FunctionAvailableToScript l_equipment_get_sword;
+  static FunctionAvailableToScript l_equipment_get_shield;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);

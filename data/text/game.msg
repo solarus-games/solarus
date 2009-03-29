@@ -3,6 +3,43 @@
 line1 = "       Bienvenue"
 line2 = "       à Lyriann"
 
+[outside_world.village.monkey]
+#       |-----------------------|
+line1 = "Au secours ! Depuis"
+line2 = "cette nuit, tout le"
+line3 = "monde a peur !"
+next = outside_world.village.monkey.2
+
+[outside_world.village.monkey.2
+#       |-----------------------|
+line1 = "Le village a été"
+line2 = "encerclé par des"
+line3 = "monstres !"
+
+[outside_world.village.monkey.without_shield]
+#       |-----------------------|
+line1 = "Je ne sais pas ce qui"
+line2 = "se passe, mais si tu"
+line3 = "veux mon avis, tu ne"
+next = outside_world.village.monkey.without_shield.2
+
+[outside_world.village.monkey.without_shield.2]
+#       |-----------------------|
+line1 = "devrais pas t'aventurer"
+line2 = "dehors sans protection."
+
+[outside_world.village.monkey.with_shield]
+#       |-----------------------|
+line1 = "Je vois que tu as un"
+line2 = "Bouclier : si tu veux"
+line3 = "mon avis, ça ne sera"
+next = outside_world.village.monkey.with_shield.2
+
+[outside_world.village.monkey.with_shield.2]
+#       |-----------------------|
+line1 = "pas de trop. Mais sois"
+line2 = "quand même prudent !"
+
 [outside_world.village.grand_son_npc]
 #       |-----------------------|
 line1 = "Si tu ne sais plus quoi"

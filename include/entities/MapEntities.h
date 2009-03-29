@@ -82,8 +82,8 @@ class MapEntities {
   void remove_entity(MapEntity *entity);
   void remove_entity(MapEntity::EntityType type, string name);
   void bring_to_front(MapEntity *entity);
-  void set_y_order(MapEntity *entity);
   void destroy_all_entities(void);
+  static bool compare_y(MapEntity *first, MapEntity *second);
 
   // update and display
   void set_suspended(bool suspended);

@@ -90,6 +90,9 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "interactive_entity_set_animation_delay", l_interactive_entity_set_animation_delay);
   lua_register(context, "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame);
   lua_register(context, "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused);
+  lua_register(context, "equipment_get_tunic", l_equipment_get_tunic);
+  lua_register(context, "equipment_get_sword", l_equipment_get_sword);
+  lua_register(context, "equipment_get_shield", l_equipment_get_shield);
 }
 
 /**
@@ -914,6 +917,51 @@ int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
   return 0;
 }
 
+/**
+ * Returns the tunic of the hero.
+ * Return value (integer): the tunic number (0 to 2)
+ */
+int MapScript::l_equipment_get_tunic(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+
+  int tunic = zsdx->game->get_equipment()->get_tunic();
+
+  lua_pushinteger(l, tunic);
+
+  return 1;
+}
+
+/**
+ * Returns the sword of the hero.
+ * Return value (integer): the sword number (0 to 4)
+ */
+int MapScript::l_equipment_get_sword(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+
+  int sword = zsdx->game->get_equipment()->get_sword();
+
+  lua_pushinteger(l, sword);
+
+  return 1;
+}
+
+/**
+ * Returns the shield of the hero.
+ * Return value (integer): the shield number (0 to 3)
+ */
+int MapScript::l_equipment_get_shield(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+
+  int shield = zsdx->game->get_equipment()->get_shield();
+
+  lua_pushinteger(l, shield);
+
+  return 1;
+}
+
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
@@ -926,7 +974,7 @@ void MapScript::event_map_started(void) {
 /**
  * Notifies the script that a message has just started to be displayed
  * in the dialog box.
- * @param messageId id of the message
+ * @param message_id id of the message
  */
 void MapScript::event_message_started(MessageId message_id) {
   call_lua_function("event_message_started", 1, message_id.c_str());

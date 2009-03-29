@@ -1871,11 +1871,12 @@
 8	0	880	605	letter_box	3	0	_none	outside_world.village.letter_box
 8	0	936	685	grand_son	3	1	npc/newlink1	outside_world.village.grand_son_npc
 8	0	896	485	hat_man	3	1	npc/newlink4	outside_world.village.hat_man_npc
-8	0	1008	637	monkey	1	1	npc/monkey	_none
 8	0	1024	944	interactive_entity	3	3	_none	_none
 8	0	1040	944	interactive_entity_2	3	3	_none	_none
 2	0	720	744	16	16	to_sahasrahla_house	0	1	12	main_entrance
 1	0	728	773	out_sahasrahla_house	3	0
+7	0	784	853	enemy	3	0	0	-1	-1	-1
+7	0	976	829	enemy_2	3	0	0	-1	-1	-1
 0	2	880	960	48	40	511
 0	2	1072	128	48	40	511
 0	2	600	336	48	40	511

@@ -192,20 +192,6 @@ void MapEntities::bring_to_front(MapEntity *entity) {
 }
 
 /**
- * Updates the position of an entity in the y-order list
- * @param entity the entity to update
- */
-void MapEntities::set_y_order(MapEntity *entity) {
-
-  if (!entity->is_displayed_in_y_order()) {
-    DIE("Cannot set the y order of entity '" << entity->get_name()
-	<< "' since it is displayed in the y order");
-  }
-
-  // TODO
-}
-
-/**
  * Creates a tile on the map.
  * This function is called for each tile when loading the map.
  * The tiles cannot change during the game.
@@ -345,7 +331,7 @@ void MapEntities::add_entity(MapEntity *entity) {
 
   // update the sprites list
   if (entity->is_displayed_in_y_order()) {
-    set_y_order(entity);
+    entities_displayed_y_order[layer].push_back(entity);
   }
   else if (entity->can_be_displayed()) {
     entities_displayed_first[layer].push_back(entity);
@@ -465,6 +451,9 @@ void MapEntities::update(void) {
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       tiles[layer][i]->update();
     }
+
+    // sort the entities displayed in y order
+    entities_displayed_y_order[layer].sort(compare_y);
   }
 
   for (it = all_entities.begin();
@@ -508,4 +497,15 @@ void MapEntities::display() {
       (*i)->display_on_map();
     }
   }
+}
+
+/**
+ * Compares the y position of two entities.
+ * @param first an entity
+ * @param second another entity
+ * @return true if the y position of the first entity is lower
+ * than the second one
+ */
+bool MapEntities::compare_y(MapEntity *first, MapEntity *second) {
+  return first->get_y() < second->get_y();
 }

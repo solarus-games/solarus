@@ -46,12 +46,14 @@ Appel de fonctions C++ depuis un script LUA :
 - is_tile_enabled(tile_name)				indique si un tile dynamique est activé
 - reset_block(block_name)				replace un bloc comme il était au début de la map
 - reset_blocks()					réinitialise tous les blocs de la map
-- interactive_entity_get_animation(entity)			     change l'animation d'une entité interactive
-- interactive_entity_get_animation_delay(entity)		     change la vitesse de l'animation d'une entité interactive
-- interactive_entity_get_animation_frame(entity)		     change l'image de l'animation d'une entité interactive
-- interactive_entity_is_animation_paused(entity)		     met en pause ou restore l'animation d'une entité interactive
+- interactive_entity_get_animation(entity)			     retourne l'animation d'une entité interactive
+- interactive_entity_get_animation_delay(entity)		     retourne la vitesse de l'animation d'une entité interactive
+- interactive_entity_get_animation_frame(entity)		     retourne l'image de l'animation d'une entité interactive
+- interactive_entity_is_animation_paused(entity)		     indique si l'animation d'une entité interactive est en pause
 - interactive_entity_set_animation(entity, animation_name)	     change l'animation d'une entité interactive
 - interactive_entity_set_animation_delay(entity, delay)		     change la vitesse de l'animation d'une entité interactive
 - interactive_entity_set_animation_frame(entity, frame)		     change l'image de l'animation d'une entité interactive
 - interactive_entity_set_animation_paused(entity, paused)	     met en pause ou restore l'animation d'une entité interactive
-
+- equipment_get_tunic()				  	retourne la tunique du joueur (0 à 2)
+- equipment_get_sword()					retourne l'épée du joueur (0 à 4)
+- equipment_get_shield()				retourne le bouclier du joueur (0 à 3)

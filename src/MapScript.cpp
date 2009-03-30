@@ -564,18 +564,20 @@ int MapScript::l_restore_camera(lua_State *l) {
  * Argument 1 (string): name of the NPC to make move
  * Argument 2 (string): the path (each character is a direction between '0' and '7'
  * Argument 3 (boolean): true to make the movement loop
+ * Argument 4 (boolean): true to enable the collisions
  */
 int MapScript::l_npc_walk(lua_State *l) {
 
-  check_nb_arguments(l, 3);
+  check_nb_arguments(l, 4);
 
   string name = lua_tostring(l, 1);
   string path = lua_tostring(l, 2);
   bool loop = lua_toboolean(l, 3) != 0;
+  bool with_collisions = lua_toboolean(l, 4) != 0;
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
-  npc->start_walking(path, loop);
+  npc->start_walking(path, loop, with_collisions);
 
   return 0;
 }

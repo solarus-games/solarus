@@ -9,10 +9,11 @@
  * @param speed speed of the movement
  * @param loop true to make the movement return to the beginning
  * once finished
+ * @param with_collisions true to make the movement sensitive to obstacles
  */
-PathMovement::PathMovement(Map *map, string path, int speed, bool loop):
+PathMovement::PathMovement(Map *map, string path, int speed, bool loop, bool with_collisions):
   MovementWithCollision(map), initial_path(path), remaining_path(path),
-  initial_speed(speed), loop(loop), finished(false) {
+  initial_speed(speed), loop(loop), with_collisions(with_collisions), finished(false) {
 
   set_speed(speed);
   start_next_move();
@@ -66,6 +67,18 @@ void PathMovement::set_y(int y) {
  */
 bool PathMovement::is_finished(void) {
   return finished || is_stopped();
+}
+
+/**
+ * Returns whether the entity would collide with the map
+ * if it was moved a few pixels from its position.
+ * If the collisions are not enabled for this movement, false is always returned.
+ * @param dx x distance between the current position and the position to check
+ * @param dy y distance between the current position and the position to check
+ * @return true if the entity would overlap the map obstacles in this position
+ */
+bool PathMovement::collision_with_map(int dx, int dy) {
+  return with_collisions && MovementWithCollision::collision_with_map(dx, dy);
 }
 
 /**

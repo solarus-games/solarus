@@ -226,15 +226,16 @@ void InteractiveEntity::update(void) {
  * Makes the entity walk (only for an NPC).
  * @param path the path to follow (see class PathMovement)
  * @param loop true to make the movement loop
+ * @param with_collisions true to make the movement sensitive to obstacles
  */
-void InteractiveEntity::start_walking(string path, bool loop) {
+void InteractiveEntity::start_walking(string path, bool loop, bool with_collisions) {
 
   if (special_interaction != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");
   }
 
   clear_movement();
-  set_movement(new PathMovement(map, path, 6, loop));
+  set_movement(new PathMovement(map, path, 6, loop, with_collisions));
   get_sprite()->set_current_animation("walking");
 }
 

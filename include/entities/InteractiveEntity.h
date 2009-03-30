@@ -55,7 +55,7 @@ class InteractiveEntity: public Detector {
   void action_key_pressed(void);
 
   void update(void);
-  void start_walking(string path, bool loop);
+  void start_walking(string path, bool loop, bool with_collisions);
   void start_walking_random(void);
   void just_moved(void);
   void set_sprite_direction(int direction);

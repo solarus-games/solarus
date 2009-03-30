@@ -9,7 +9,7 @@ const string RandomWalkMovement::random_directions[] = {"0", "2", "4", "6"};
  * @param speed speed of the movement
  */
 RandomWalkMovement::RandomWalkMovement(Map *map, int speed):
-  PathMovement(map, get_random_direction(), speed, false) {
+  PathMovement(map, get_random_direction(), speed, false, true) {
 
 }
 

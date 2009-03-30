@@ -34,7 +34,7 @@ Appel de fonctions C++ depuis un script LUA :
 - stop_timer(callback)					arrête un timer en cours d'exécution
 - move_camera(x, y, speed)				suspend le jeu et déplace la caméra vers un point cible
 - restore_camera()					renvoie la caméra vers le héros
-- npc_walk(npc, path, loop)				fait se déplacer un PNJ selon un chemin spécifié
+- npc_walk(npc, path, loop, with_collisions)		fait se déplacer un PNJ selon un chemin spécifié
 - npc_random_walk(npc)					fait se déplacer un PNJ de manière aléatoire
 - npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
 - npc_remove(npc)					supprime un PNJ de la map

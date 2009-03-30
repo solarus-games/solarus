@@ -10,7 +10,7 @@ line2 = "cette nuit, tout le"
 line3 = "monde a peur !"
 next = outside_world.village.monkey.2
 
-[outside_world.village.monkey.2
+[outside_world.village.monkey.2]
 #       |-----------------------|
 line1 = "Le village a été"
 line2 = "encerclé par des"
@@ -30,15 +30,15 @@ line2 = "dehors sans protection."
 
 [outside_world.village.monkey.with_shield]
 #       |-----------------------|
-line1 = "Je vois que tu as un"
-line2 = "Bouclier : si tu veux"
-line3 = "mon avis, ça ne sera"
+line1 = "Je ne sais pas ce qui"
+line2 = "se passe, mais si tu"
+line3 = "veux mon avis, ton"
 next = outside_world.village.monkey.with_shield.2
 
 [outside_world.village.monkey.with_shield.2]
 #       |-----------------------|
-line1 = "pas de trop. Mais sois"
-line2 = "quand même prudent !"
+line1 = "Bouclier ne sera pas de"
+line2 = "trop... Sois prudent !"
 
 [outside_world.village.grand_son_npc]
 #       |-----------------------|

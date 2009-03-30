@@ -25,17 +25,20 @@ class PathMovement: public MovementWithCollision {
   int distance_covered_y;     /**< counts the number of y pixels covered during the current move */
 
   const bool loop;            /**< should the movement return to the beginning once finished?  */
+  const bool with_collisions; /**< indicates whether this movement is sensitive to the obstacles */
 
   bool finished;              /**< indicates that the path is finished
-			       * (only possible if loop is false) */
+			       * (possible if loop is false or when there is a collision) */
 
  protected:
 
+  bool collision_with_map(int dx, int dy);
   virtual void start_next_move(void);
+
 
  public:
 
-  PathMovement(Map *map, string path, int speed, bool loop);
+  PathMovement(Map *map, string path, int speed, bool loop, bool with_collisions);
   ~PathMovement(void);
 
   virtual bool is_finished(void);

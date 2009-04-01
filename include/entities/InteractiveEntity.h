@@ -38,7 +38,7 @@ class InteractiveEntity: public Detector {
   static const KeysEffect::ActionKeyEffect action_key_effects[];
   static const int animation_directions[];
 
-  void initialize_sprite(string sprite_name, int initial_direction);
+  void initialize_sprite(SpriteAnimationSetId sprite_name, int initial_direction);
   void call_script(void);
 
  public:

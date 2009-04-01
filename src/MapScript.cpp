@@ -985,7 +985,7 @@ void MapScript::event_message_started(MessageId message_id) {
 /**
  * Notifies the script that the dialog box has just finished.
  * This function is called when the last message of a dialog is finished.
- * @param last_sequence_message_id id of the first message in the message sequence
+ * @param first_message_id id of the first message in the message sequence
  * that has just finished
  * @param answer the answer selected by the player: 0 for the first one, 
  * 1 for the second one, -1 if there was no question

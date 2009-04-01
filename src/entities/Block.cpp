@@ -94,7 +94,6 @@ void Block::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
 
 /**
  * This function is called when the player tries to push or pull this block.
- * @param hero the hero
  * @return true if the player can be move this block
  */
 bool Block::moved_by_hero(void) {

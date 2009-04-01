@@ -699,7 +699,7 @@ bool Game::is_giving_treasure(void) {
 
 /**
  * Pauses or resumes the game.
- * @param pause true to pause the game, false to resume it.
+ * @param paused true to pause the game, false to resume it.
  */
 void Game::set_paused(bool paused) {
 

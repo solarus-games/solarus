@@ -290,7 +290,7 @@ void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
 /**
  * This function is called when the enemy's sprite collides with another
  * entity's sprite.
- * @param entity_overlapping the other entity
+ * @param entity the other entity
  * @param sprite_overlapping the sprite of this entity that is overlapping the enemy
  */
 void Enemy::collision(MapEntity *entity, Sprite *sprite_overlapping) {

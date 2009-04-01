@@ -17,6 +17,8 @@ static const Uint32 char_delays[3] = {
  * Creates a new message.
  * @param dialog_box the dialog box
  * @param message_id id of the message
+ * @param x x position of the dialog box
+ * @param y y position of the dialog box
  */
 Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y) {
 

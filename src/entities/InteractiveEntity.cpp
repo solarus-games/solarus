@@ -40,9 +40,10 @@ const int InteractiveEntity::animation_directions[] = {
  * @param name name identifying this interactive entity
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
+ * @param special_interaction the subtype of interaction
  * @param y y coordinate of the entity to create
- * @param initial_direction direction of the entity's sprite (only used if the entity has a sprite)
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
+ * @param initial_direction direction of the entity's sprite (only used if the entity has a sprite)
  * @param message_to_show id of the message to show when the player presses the action key in front
  * of this entity, or "_none" to call the script instead (with an event_interaction() call)
  */

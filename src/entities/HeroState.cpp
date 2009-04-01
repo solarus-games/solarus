@@ -955,7 +955,7 @@ void Hero::collision_with_enemy(Enemy *enemy) {
 /**
  * This function is called when an enemy's sprite collides with a sprite of the hero.
  * @param enemy the enemy
- * @param sprite the hero sprite that collides with the enemy
+ * @param sprite_overlapping the hero sprite that collides with the enemy
  */
 void Hero::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
 

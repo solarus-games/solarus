@@ -47,7 +47,7 @@ PixelMovement::~PixelMovement(void) {
 
 /**
  * Sets the translation vectors of the trajectory.
- * @param translation vectors the trajectory
+ * @param translation_vectors the trajectory
  */
 void PixelMovement::set_translation_vectors(const SDL_Rect *translation_vectors) {
   this->translation_vectors = translation_vectors;

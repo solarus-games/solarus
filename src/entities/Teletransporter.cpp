@@ -13,6 +13,7 @@
  * @param y y position of the teletransporter's rectangle
  * @param width width of the teletransporter's rectangle
  * @param height height of the teletransporter's rectangle
+ * @param subtype the subtype of teletransporter
  * @param transition_style style of transition between the two maps
  * @param destination_map_id id of the destination map
  * @param destination_point_name location on the destination map, or "_same" to keep the hero's coordinates,

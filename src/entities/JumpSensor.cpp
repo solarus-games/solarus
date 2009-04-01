@@ -11,7 +11,7 @@
  * @param width width of the sensor's rectangle
  * @param height height of the sensor's rectangle
  * @param direction direction of the jump (0 to 7 as the jump may be diagonal)
- * @param length length of the jump in pixels (usually a multiple of 8)
+ * @param jump_length length of the jump in pixels (usually a multiple of 8)
  */
 JumpSensor::JumpSensor(string name, Layer layer, int x, int y, int width, int height,
 		       int direction, int jump_length):

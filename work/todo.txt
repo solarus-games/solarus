@@ -29,7 +29,6 @@ Planning prévisionnel
 ----------------
 
 Non mentionné :
-- Casino
 - Intro
 - Boss
 - Ecran titre
@@ -83,10 +82,9 @@ Mode release :
 	- Editeur de tileset : ajouter le choix des animations dans le popup menu
 	- Quand on annule une suppression ou qu'on fait un copier-coller, les plans ne sont pas respectés
 	- Editeur de maps : sélectionner uniquement les objets visibles (non obstacles / obstacles cochés ou pas)
-	- Le message "Some tiles have been removed..." s'affiche quand on ouvre la map mais pas quand on change le tileset une fois ouvert (il y a une exception à la place)
 	- Dézoomer avec Ctrl + molette
 	- Parser les fichiers de sprite dans l'éditeur (utile pour PNJ et entités avec skin)
 	- Sprites dans l'éditeur : utiliser une liste déroulante (les sprites sont des ressources dans project_db.zsd)
 	- Eviter d'avoir à recharger la map pour voir les destinations mises à jour
 	- Téléporteurs : interdire "_same" si c'est la même map
-
+	- Affichage : dessiner les tiles une seule fois sur une surface intermédiaire au lieu de les redessiner un par un à chaque affichage (c'est possible dans l'éditeur mais pas facilement dans le jeu à cause des tiles animés)

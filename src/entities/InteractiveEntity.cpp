@@ -47,7 +47,7 @@ const int InteractiveEntity::animation_directions[] = {
  * @param message_to_show id of the message to show when the player presses the action key in front
  * of this entity, or "_none" to call the script instead (with an event_interaction() call)
  */
-InteractiveEntity::InteractiveEntity(string name, Layer layer, int x, int y,
+InteractiveEntity::InteractiveEntity(std::string name, Layer layer, int x, int y,
 				     SpecialInteraction special_interaction,
 				     SpriteAnimationSetId sprite_name,
 				     int initial_direction,
@@ -229,7 +229,7 @@ void InteractiveEntity::update(void) {
  * @param loop true to make the movement loop
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-void InteractiveEntity::start_walking(string path, bool loop, bool with_collisions) {
+void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) {
 
   if (special_interaction != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");
@@ -243,7 +243,7 @@ void InteractiveEntity::start_walking(string path, bool loop, bool with_collisio
 /**
  * Makes the entity walk randomly (only for NPC).
  */
-void InteractiveEntity::start_walking_random(void) {
+void InteractiveEntity::walk_random(void) {
 
   if (special_interaction != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");

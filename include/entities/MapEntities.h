@@ -73,14 +73,14 @@ class MapEntities {
   std::list<MapEntity*> * get_obstacle_entities(MapEntity::Layer layer);
   std::list<Detector*> * get_detectors(void);
 
-  MapEntity *get_entity(MapEntity::EntityType type, string name);
+  MapEntity *get_entity(MapEntity::EntityType type, std::string name);
   std::list<MapEntity*> * get_entities(MapEntity::EntityType type);
 
   // handle entities
   void add_tile(Tile *tile);
   void add_entity(MapEntity *entity);
   void remove_entity(MapEntity *entity);
-  void remove_entity(MapEntity::EntityType type, string name);
+  void remove_entity(MapEntity::EntityType type, std::string name);
   void bring_to_front(MapEntity *entity);
   void destroy_all_entities(void);
   static bool compare_y(MapEntity *first, MapEntity *second);

@@ -10,6 +10,7 @@
 #include "Sound.h"
 #include "ZSDX.h"
 #include "Sprite.h"
+using namespace std;
 
 /**
  * Properties of each type of destructible item.

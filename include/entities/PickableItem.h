@@ -52,7 +52,7 @@ class PickableItem: public Detector {
    */
   struct Properties {
     SpriteAnimationSetId animation_set_id; /**< animation set used for this type of pickable item */
-    string animation_name;                 /**< name of the animation */
+    std::string animation_name;                 /**< name of the animation */
     bool big_shadow;                       /**< true if the pickable item has a big shadow, false for a small shadow */
     SoundId sound;                         /**< the sound played when the player gets the item */
   };

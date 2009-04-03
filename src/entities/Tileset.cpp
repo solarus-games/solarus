@@ -4,6 +4,7 @@
 #include "FileTools.h"
 #include "ResourceManager.h"
 #include <iomanip>
+using namespace std;
 
 /**
  * Constructor.

@@ -225,7 +225,7 @@ class Savegame {
   // data
   const char *get_string(int index);
   void set_string(int index, const char *value);
-  void set_string(int index, string value);
+  void set_string(int index, std::string value);
 
   Uint32 get_integer(int index);
   void set_integer(int index, Uint32 value);

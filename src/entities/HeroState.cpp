@@ -16,6 +16,7 @@
 #include "Sprite.h"
 #include "Treasure.h"
 #include "Controls.h"
+using namespace std;
 
 /**
  * Returns the hero's state.

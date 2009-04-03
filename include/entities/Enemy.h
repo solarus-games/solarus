@@ -66,7 +66,7 @@ class Enemy: public Detector {
    * This structure contains the parameters needed by the subclasses constructors.
    */
   struct ConstructionParameters {
-    string name;
+    std::string name;
     Layer layer;
     int x, y;
   };
@@ -134,7 +134,7 @@ class Enemy: public Detector {
   virtual ~Enemy(void);
 
   static Enemy *create(EnemyType type, Rank rank, int savegame_variable,
-		       string name, Layer layer, int x, int y, int direction,
+		       std::string name, Layer layer, int x, int y, int direction,
 		       PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
 
   EntityType get_type(void);

@@ -15,7 +15,7 @@
  * @param title_string the title text to display in this phase
  */
 SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous,
-				       string title_string):
+				       std::string title_string):
   Screen() {
 
   if (previous != NULL) {

@@ -43,7 +43,7 @@ class InteractiveEntity: public Detector {
 
  public:
 
-  InteractiveEntity(string name, Layer layer, int x, int y, SpecialInteraction special_interaction,
+  InteractiveEntity(std::string name, Layer layer, int x, int y, SpecialInteraction special_interaction,
 		    SpriteAnimationSetId sprite_name, int initial_direction, MessageId message_to_show);
   ~InteractiveEntity(void);
 
@@ -55,8 +55,9 @@ class InteractiveEntity: public Detector {
   void action_key_pressed(void);
 
   void update(void);
-  void start_walking(string path, bool loop, bool with_collisions);
-  void start_walking_random(void);
+  void walk(std::string path, bool loop, bool with_collisions);
+  void walk_random(void);
+  void jump(int dx, int dy, bool loop, bool with_collisions);
   void just_moved(void);
   void set_sprite_direction(int direction);
 };

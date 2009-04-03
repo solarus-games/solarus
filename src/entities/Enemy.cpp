@@ -59,7 +59,7 @@ MapEntity::EntityType Enemy::get_type() {
  * @param pickable_item_savegame_variable index of the boolean variable
  */
 Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
-		      string name, Layer layer, int x, int y, int direction,
+		      std::string name, Layer layer, int x, int y, int direction,
 		      PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable) {
 
   // see if the enemy is alive

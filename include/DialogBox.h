@@ -40,7 +40,7 @@ class DialogBox {
   // current message
   Message *current_message;
   MessageId current_message_id;
-  std::map<MessageId, string> variables;
+  std::map<MessageId, std::string> variables;
 
   MessageId first_message_id;
   static int answer_selected;
@@ -91,9 +91,9 @@ class DialogBox {
   int get_icon_number(void);
   void set_icon_number(int icon_number);
 
-  void set_variable(MessageId messageId, string value);
+  void set_variable(MessageId messageId, std::string value);
   void set_variable(MessageId messageId, int value);
-  string get_variable(void);
+  std::string get_variable(void);
   
   // current message
   void key_pressed(Controls::GameKey key);

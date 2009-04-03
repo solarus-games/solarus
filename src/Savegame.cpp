@@ -168,7 +168,7 @@ void Savegame::set_string(int index, const char *value) {
  * (see enum StringIndex for their definition)
  * @param value the string value to store at this index
  */
-void Savegame::set_string(int index, string value) {
+void Savegame::set_string(int index, std::string value) {
   set_string(index, value.c_str());
 }
 

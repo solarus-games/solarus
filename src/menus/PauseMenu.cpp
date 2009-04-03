@@ -12,7 +12,7 @@
 #include "TextSurface.h"
 
 // TODO: load this from some external file (for future translation)
-static const string texts[] = {
+static const std::string texts[] = {
   "Oui", // 0
   "Non", // 1
   "Voulez-vous sauvegarder", // 2

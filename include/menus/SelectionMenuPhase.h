@@ -16,7 +16,7 @@ class SelectionMenuPhase: public Screen {
   /**
    * Title text of this phase.
    */
-  string title_string;
+  std::string title_string;
 
  protected:
 
@@ -37,7 +37,7 @@ class SelectionMenuPhase: public Screen {
 
   // creation and destruction
   SelectionMenuPhase(SelectionMenuPhase *previous,
-		     string title_string);
+		     std::string title_string);
   virtual ~SelectionMenuPhase(void);
   
   void selection_menu_finished(void);

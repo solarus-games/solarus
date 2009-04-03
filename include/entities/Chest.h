@@ -23,7 +23,7 @@ class Chest: public Detector {
 
  public:
 
-  Chest(string name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
+  Chest(std::string name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
   ~Chest(void);
 
   EntityType get_type(void);

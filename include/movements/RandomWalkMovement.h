@@ -11,7 +11,7 @@ class RandomWalkMovement: public PathMovement {
 
  private:
 
-  static const string random_directions[];
+  static const std::string random_directions[];
 
  public:
 
@@ -24,7 +24,7 @@ class RandomWalkMovement: public PathMovement {
 
  protected:
 
-  static string get_random_direction(void);
+  static std::string get_random_direction(void);
 
 };
 

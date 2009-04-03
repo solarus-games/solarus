@@ -69,7 +69,7 @@ class MapScript {
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);
   void add_timer(Timer *timer);
-  void remove_timer(string callback_name);
+  void remove_timer(std::string callback_name);
 
  public:
 
@@ -89,10 +89,10 @@ class MapScript {
   void event_switch_enabled(Switch *sw);
   void event_switch_disabled(Switch *sw);
   void event_camera_reached_target(void);
-  void event_interaction(string entity_name);
-  void event_npc_dialog(string npc_name);
-  void event_npc_path_finished(string npc_name);
-  bool event_open_empty_chest(string chest_name);
+  void event_interaction(std::string entity_name);
+  void event_npc_dialog(std::string npc_name);
+  void event_npc_path_finished(std::string npc_name);
+  bool event_open_empty_chest(std::string chest_name);
   void event_got_treasure(Treasure::Content content, int savegame_variable);
 };
 

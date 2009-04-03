@@ -16,7 +16,7 @@ class JumpSensor: public Detector {
 
  public:
 
-  JumpSensor(string name, Layer layer, int x, int y, int width, int height,
+  JumpSensor(std::string name, Layer layer, int x, int y, int width, int height,
 	     int direction, int jump_length);
   ~JumpSensor(void);
 

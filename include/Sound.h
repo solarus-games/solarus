@@ -23,7 +23,7 @@ class Sound {
   /**
    * Name of the sound file.
    */
-  string file_name;
+  std::string file_name;
 
   Sound(void);
 

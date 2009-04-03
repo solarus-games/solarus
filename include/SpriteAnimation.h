@@ -28,7 +28,7 @@ class SpriteAnimation {
 
  public:
 
-  SpriteAnimation(string image_file_name, int nb_directions, SpriteAnimationDirection **directions,
+  SpriteAnimation(std::string image_file_name, int nb_directions, SpriteAnimationDirection **directions,
 		  Uint32 frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 

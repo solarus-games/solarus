@@ -386,7 +386,7 @@ void Game::update_dialog_box(void) {
     dialog_box->update();
   }
   else {
-    string first_message_id = dialog_box->get_first_message_id();
+    std::string first_message_id = dialog_box->get_first_message_id();
     delete dialog_box;
     dialog_box = NULL;
 
@@ -472,7 +472,7 @@ Map * Game::get_current_map(void) {
  * or en ampty string to pick the destination point saved
  * @param transition_style type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, string destination_point_name, Transition::Style transition_style) {
+void Game::set_current_map(MapId map_id, std::string destination_point_name, Transition::Style transition_style) {
 
   // load the next map
   next_map = ResourceManager::get_map(map_id);

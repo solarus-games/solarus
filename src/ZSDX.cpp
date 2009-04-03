@@ -219,7 +219,7 @@ int main(int argc, char **argv) {
     zsdx = new ZSDX();
     zsdx->main();
   }
-  catch (const string &s) {
+  catch (const std::string &s) {
     std::cerr << "Fatal error: " << s << std::endl;
   }
 

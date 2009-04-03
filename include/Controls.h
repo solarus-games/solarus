@@ -38,7 +38,7 @@ class Controls {
   SDL_Joystick *joystick;
 
   std::map<SDLKey, GameKey> keyboard_mapping;
-  std::map<string, GameKey> joypad_mapping;
+  std::map<std::string, GameKey> joypad_mapping;
   bool keys_pressed[9];
 
   bool customizing;
@@ -65,9 +65,9 @@ class Controls {
   ~Controls(void);
 
   // controls
-  string get_key_name(GameKey game_key);
-  string get_keyboard_string(GameKey game_key);
-  string get_joypad_string(GameKey key);
+  std::string get_key_name(GameKey game_key);
+  std::string get_keyboard_string(GameKey game_key);
+  std::string get_joypad_string(GameKey key);
   void handle_event(const SDL_Event &event);
   bool is_key_pressed(GameKey game_key);
 

@@ -20,8 +20,8 @@
  * @param maximum_moves indicates how many times the block can
  * be moved (0: none, 1: once: 2: infinite)
  */
-Block::Block(string name, Layer layer, int x, int y,
-	     Subtype subtype, string skin, int maximum_moves):
+Block::Block(std::string name, Layer layer, int x, int y,
+	     Subtype subtype, std::string skin, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   subtype(subtype), maximum_moves(maximum_moves), sound_played(false),
   when_can_move(SDL_GetTicks()) {

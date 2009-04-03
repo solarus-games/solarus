@@ -14,7 +14,7 @@
  * (0 to 3, or -1 to indicate that the hero's direction is not changed)
  * @param is_visible true to make the destination point visible
  */
-DestinationPoint::DestinationPoint(string name, Layer layer, int x, int y,
+DestinationPoint::DestinationPoint(std::string name, Layer layer, int x, int y,
 				   int hero_direction, bool is_visible):
   MapEntity(name, 0, layer, x, y, 16, 16) {
 

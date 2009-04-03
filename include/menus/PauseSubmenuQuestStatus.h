@@ -18,7 +18,7 @@ class PauseSubmenuQuestStatus: public PauseSubmenu {
   int cursor_position; /**< 0 to 7 */
   SDL_Rect cursor_sprite_position;
 
-  string caption_texts[8];
+  std::string caption_texts[8];
 
   void set_cursor_position(int position);
 

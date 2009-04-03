@@ -44,7 +44,7 @@ class Dungeon {
   ~Dungeon(void);
 
   int get_number(void);
-  string get_name(void);
+  std::string get_name(void);
 
   // floors
   int get_nb_floors(void);

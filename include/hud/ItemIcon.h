@@ -28,7 +28,7 @@ class ItemIcon: public HudElement {
 
   bool is_enabled;                       /**< true if the icon is enabled */
 
-  static const string background_file_names[]; /**< file name of the background image for each slot */
+  static const std::string background_file_names[]; /**< file name of the background image for each slot */
 
  public:
 

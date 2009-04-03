@@ -5,6 +5,7 @@
 #include "DialogBox.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
+using namespace std;
 
 // TODO: load this from some external file (for future translation)
 static const string key_names[] = {

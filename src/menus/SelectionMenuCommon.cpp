@@ -197,7 +197,7 @@ void SelectionMenuCommon::read_savegames(void) {
     // get the data
 
     // player name
-    string player_name;
+    std::string player_name;
     if (!savegames[i]->is_empty()) {
       player_name = savegames[i]->get_string(Savegame::PLAYER_NAME);
     }

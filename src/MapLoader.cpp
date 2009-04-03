@@ -16,6 +16,7 @@
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
 #include <iomanip>
+using namespace std;
 
 /**
  * Creates a map loader.

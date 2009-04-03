@@ -25,7 +25,7 @@ class Sprite {
 
   // current state of the sprite
 
-  string current_animation_name;         /**< name of the current animation */
+  std::string current_animation_name;         /**< name of the current animation */
   SpriteAnimation *current_animation;    /**< the current animation */
   int current_direction;                 /**< current direction of the animation (the first one is number 0);
 				          * it can be different from the movement direction
@@ -63,8 +63,8 @@ class Sprite {
   SDL_Rect& get_origin(void);
 
   // current animation, direction and frame
-  string get_current_animation(void);
-  void set_current_animation(string animation_name);
+  std::string get_current_animation(void);
+  void set_current_animation(std::string animation_name);
   int get_current_direction(void);
   void set_current_direction(int current_direction);
   int get_current_frame(void);

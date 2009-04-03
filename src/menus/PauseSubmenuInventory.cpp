@@ -13,7 +13,7 @@
 /**
  * Caption text displayed when an item is selected in the inventory.
  */
-static const string item_names[28][6] = {
+static const std::string item_names[28][6] = {
   // TODO: load this from some external file (for future translation)
 
   {"Plume"},

@@ -57,7 +57,7 @@ void SimpleGreenSoldier::update(void) {
 
   if (!is_killed()) {
     Sprite *sprite = get_sprite();
-    string animation = sprite->get_current_animation();
+    std::string animation = sprite->get_current_animation();
     if (get_movement()->is_stopped() && animation == "walking") {
 
       int rand = Random::get_number(2);

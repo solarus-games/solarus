@@ -133,7 +133,7 @@ void Treasure::give_to_player(void) {
 void Treasure::play_treasure_sound(void) {
   
   // the treasure sound is the same for all items except the piece of heart and the heart container
-  string sound_name;
+  std::string sound_name;
 
   if (content != PIECE_OF_HEART && content != HEART_CONTAINER) {
     sound_name = "treasure";
@@ -180,7 +180,7 @@ void Treasure::show_message(void) {
     }
   }
 
-  string message_id = oss.str();
+  std::string message_id = oss.str();
   game->show_message(message_id);
 
   if (has_amount() && amount > 1) {

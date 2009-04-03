@@ -14,21 +14,21 @@ class PathMovement: public MovementWithCollision {
 
  protected:
 
-  const string initial_path;  /**< the path: each character is a direction ('0' to '7') */
-  string remaining_path;      /**< the remaining part of the path */
-  const int initial_speed;    /**< the movement speed */
+  const std::string initial_path;  /**< the path: each character is a direction ('0' to '7') */
+  std::string remaining_path;      /**< the remaining part of the path */
+  const int initial_speed;         /**< the movement speed */
 
  private:
 
-  int current_direction;      /**< direction of the current move (0 to 7) */
-  int distance_covered_x;     /**< counts the number of x pixels covered during the current move */
-  int distance_covered_y;     /**< counts the number of y pixels covered during the current move */
+  int current_direction;           /**< direction of the current move (0 to 7) */
+  int distance_covered_x;          /**< counts the number of x pixels covered during the current move */
+  int distance_covered_y;          /**< counts the number of y pixels covered during the current move */
 
-  const bool loop;            /**< should the movement return to the beginning once finished?  */
-  const bool with_collisions; /**< indicates whether this movement is sensitive to the obstacles */
+  const bool loop;                 /**< should the movement return to the beginning once finished?  */
+  const bool with_collisions;      /**< indicates whether this movement is sensitive to the obstacles */
 
-  bool finished;              /**< indicates that the path is finished
-			       * (possible if loop is false or when there is a collision) */
+  bool finished;                   /**< indicates that the path is finished
+			            * (possible if loop is false or when there is a collision) */
 
  protected:
 
@@ -38,7 +38,7 @@ class PathMovement: public MovementWithCollision {
 
  public:
 
-  PathMovement(Map *map, string path, int speed, bool loop, bool with_collisions);
+  PathMovement(Map *map, std::string path, int speed, bool loop, bool with_collisions);
   ~PathMovement(void);
 
   virtual bool is_finished(void);

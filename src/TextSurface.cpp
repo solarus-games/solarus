@@ -13,7 +13,7 @@ void TextSurface::initialize(void) {
 
   TTF_Init();
 
-  string file_name = FileTools::data_file_add_prefix("text/zsdx.ttf");
+  std::string file_name = FileTools::data_file_add_prefix("text/zsdx.ttf");
 
   fonts[FONT_LA] = TTF_OpenFont(file_name.c_str(), 11);
   if (fonts[FONT_LA] == NULL) {
@@ -191,7 +191,7 @@ void TextSurface::set_y(int y) {
  * If the specified string is the same than the current text, nothing is done.
  * @param text the text to display (cannot be NULL)
  */
-void TextSurface::set_text(string text) {
+void TextSurface::set_text(std::string text) {
 
   if (text != this->text) {
 
@@ -213,7 +213,7 @@ void TextSurface::add_char(char c) {
  * Returns the text currently displayed.
  * @return the text currently displayed, or NULL if there is no text
  */
-string TextSurface::get_text(void) {
+std::string TextSurface::get_text(void) {
   return text;
 }
 

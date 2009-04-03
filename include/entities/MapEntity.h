@@ -127,7 +127,7 @@ class MapEntity {
 
   // other data, used for some kinds of entities
 
-  string name;             /**< name of the entity, not used for all kinds of entities;
+  std::string name;             /**< name of the entity, not used for all kinds of entities;
 		            * the name identifies the entity in the game (an empty string
 		            * indicates that the entity has no name) */
 
@@ -149,7 +149,7 @@ class MapEntity {
   // creation
   MapEntity(void);
   MapEntity(Layer layer, int x, int y, int width, int height);
-  MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height);
+  MapEntity(std::string name, int direction, Layer layer, int x, int y, int width, int height);
 
   // method called by the subclasses to set their properties
   void set_direction(int direction);
@@ -203,7 +203,7 @@ class MapEntity {
 
   // properties
   virtual void set_map(Map *map);
-  string get_name(void) const;
+  std::string get_name(void) const;
   int get_direction(void);
 
   // sprites

@@ -98,7 +98,7 @@ int Sprite::get_next_frame(void) {
  * Returns the current animation of the sprite.
  * @return the name of the current animation of the sprite
  */
-string Sprite::get_current_animation(void) {
+std::string Sprite::get_current_animation(void) {
   return current_animation_name;
 }
 
@@ -108,7 +108,7 @@ string Sprite::get_current_animation(void) {
  * If the sprite is already playing the same animation, nothing is done.
  * @param animation_name name of the new animation of the sprite
  */
-void Sprite::set_current_animation(string animation_name) {
+void Sprite::set_current_animation(std::string animation_name) {
 
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 

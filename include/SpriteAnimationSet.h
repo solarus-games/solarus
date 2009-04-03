@@ -15,16 +15,16 @@ class SpriteAnimationSet {
 
  private:
 
-  std::map<string, SpriteAnimation*> animations; /**< the animations */
-  string default_animation_name;                 /**< name of the default animation */
+  std::map<std::string, SpriteAnimation*> animations; /**< the animations */
+  std::string default_animation_name;                 /**< name of the default animation */
   
  public:
 
   SpriteAnimationSet(SpriteAnimationSetId id);
   virtual ~SpriteAnimationSet(void);
 
-  SpriteAnimation *get_animation(string animation_name);
-  string get_default_animation(void);
+  SpriteAnimation *get_animation(std::string animation_name);
+  std::string get_default_animation(void);
 
   void enable_pixel_collisions(void);
   bool are_pixel_collisions_enabled(void);

@@ -9,7 +9,7 @@
 /**
  * Name of the image file for each item slot.
  */
-const string ItemIcon::background_file_names[2] = {
+const std::string ItemIcon::background_file_names[2] = {
   "hud/item_x_icon.png",
   "hud/item_v_icon.png",
 };

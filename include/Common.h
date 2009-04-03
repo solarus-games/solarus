@@ -11,7 +11,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-using std::string;
 #include <cstdlib>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>

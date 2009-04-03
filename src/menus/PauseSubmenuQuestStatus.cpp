@@ -6,6 +6,7 @@
 #include "Color.h"
 #include "Sound.h"
 #include "Sprite.h"
+using namespace std;
 
 // TODO: load this from some external file (for future translation)
 static const string rupee_bag_texts[] = {"Sac de Rubis", "Grand\nSac de Rubis", "Sac de Rubis\nGéant"};

@@ -18,7 +18,7 @@
  * @param height height of the detector's rectangle
  */
 Detector::Detector(int collision_modes,
-		   string name, MapEntity::Layer layer,
+		   std::string name, MapEntity::Layer layer,
 		   int x, int y, int width, int height):
   MapEntity(name, 0, layer, x, y, width, height),
   collision_modes(collision_modes), layer_ignored(false) {

@@ -1,5 +1,6 @@
 #include "movements/RandomWalkMovement.h"
 #include "Random.h"
+using namespace std;
 
 const string RandomWalkMovement::random_directions[] = {"0", "2", "4", "6"};
 

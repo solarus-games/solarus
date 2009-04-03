@@ -28,7 +28,7 @@ class Teletransporter: public Detector {
   Subtype subtype;                      /**< subtype of teletransporter */
   Transition::Style transition_style;   /**< style of transition between the two maps */
   MapId destination_map_id;             /**< id of the destination map */
-  string destination_point_name;        /**< destination point on that map, or "_same" to keep the hero's coordinates,
+  std::string destination_point_name;        /**< destination point on that map, or "_same" to keep the hero's coordinates,
 					 * or "_side" to place the hero on the appropriate side of the map */
   int destination_side;                 /**< when the destination point is "_side", indicates which side
 					 * of the destination map this teletransporters leads to
@@ -39,9 +39,9 @@ class Teletransporter: public Detector {
 
  public:
 
-  Teletransporter(string name, Layer layer, int x, int y, int width, int height,
+  Teletransporter(std::string name, Layer layer, int x, int y, int width, int height,
 		  Subtype subtype, Transition::Style transition_style,
-		  MapId destination_map_id, string destination_point_name);
+		  MapId destination_map_id, std::string destination_point_name);
   ~Teletransporter(void);
 
   EntityType get_type(void);

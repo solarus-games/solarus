@@ -16,7 +16,7 @@
  * @param height height of the tile (the pattern can be repeated)
  * @param enabled true to make the tile active on the map
  */
-DynamicTile::DynamicTile(string name, TilePattern *tile_pattern,
+DynamicTile::DynamicTile(std::string name, TilePattern *tile_pattern,
 			 Layer layer, int x, int y,
 			 int width, int height, bool enabled):
   MapEntity(name, 0, layer, x, y, width, height),

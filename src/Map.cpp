@@ -233,7 +233,7 @@ void Map::set_destination_point(unsigned int destination_point_index) {
  * or "_same" to keep the hero's coordinates, or "_side0", "_side1", "_side2"
  * or "_side3 to place the hero on a side of the map
  */
-void Map::set_destination_point(string destination_point_name) {
+void Map::set_destination_point(std::string destination_point_name) {
 
   if (destination_point_name == "_same") {
     this->destination_point_index = -1;

@@ -1,4 +1,5 @@
 #include "FileTools.h"
+using namespace std;
 
 /**
  * @brief Converts the parameter as a <code>char*</code> constant string.

@@ -61,7 +61,7 @@ void ActionIcon::update(void) {
     if (action_key_effect_displayed != action_key_effect) {
 
       // determine the appropriate animation
-      string animation;
+      std::string animation;
       if (action_key_effect_displayed != KeysEffect::ACTION_KEY_NONE) {
 
 	if (action_key_effect != KeysEffect::ACTION_KEY_NONE) {

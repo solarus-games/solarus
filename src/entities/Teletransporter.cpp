@@ -19,9 +19,9 @@
  * @param destination_point_name location on the destination map, or "_same" to keep the hero's coordinates,
  * or "_side" to place the heroon the appropriate side of the map
  */
-Teletransporter::Teletransporter(string name, MapEntity::Layer layer, int x, int y, int width, int height,
+Teletransporter::Teletransporter(std::string name, MapEntity::Layer layer, int x, int y, int width, int height,
 				 Subtype subtype, Transition::Style transition_style,
-				 MapId destination_map_id, string destination_point_name):
+				 MapId destination_map_id, std::string destination_point_name):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   subtype(subtype), transition_style(transition_style),
   destination_map_id(destination_map_id), destination_point_name(destination_point_name) {
@@ -151,7 +151,7 @@ void Teletransporter::collision(MapEntity *entity_overlapping, CollisionMode col
  */
 void Teletransporter::transport_hero(Hero *hero) {
 
-  string name = destination_point_name;
+  std::string name = destination_point_name;
 
   if (destination_point_name == "_side") {
 

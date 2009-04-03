@@ -12,7 +12,7 @@
 #include "VideoManager.h"
 
 // TODO: load this from some external file (for future translation)
-static const string texts[] = {
+static const std::string texts[] = {
   "",
   "",
   "Commandes",         // 2
@@ -24,7 +24,7 @@ static const string texts[] = {
 };
 
 // TODO: load this from some external file (for future translation)
-static const string video_mode_texts[] = {
+static const std::string video_mode_texts[] = {
   "Fenêtre 640x480",
   "Fenêtre 640x480 lisse",
   "Fenêtre 320x240",
@@ -138,7 +138,7 @@ void PauseSubmenuOptions::load_control_texts(void) {
 
     Controls::GameKey key = (Controls::GameKey) (i + 1);
 
-    string text = controls->get_keyboard_string(key);
+    std::string text = controls->get_keyboard_string(key);
     keyboard_control_texts[i]->set_text(text);
 
     text = controls->get_joypad_string(key);

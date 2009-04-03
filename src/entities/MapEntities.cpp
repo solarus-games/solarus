@@ -134,7 +134,7 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle ob
  * @param name name of the entity to get
  * @return the entity requested
  */
-MapEntity * MapEntities::get_entity(MapEntity::EntityType type, string name) {
+MapEntity * MapEntities::get_entity(MapEntity::EntityType type, std::string name) {
   
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
@@ -363,7 +363,7 @@ void MapEntities::remove_entity(MapEntity *entity) {
  * @param type type of the entity to remove
  * @param name name of the entity
  */
-void MapEntities::remove_entity(MapEntity::EntityType type, string name) {
+void MapEntities::remove_entity(MapEntity::EntityType type, std::string name) {
   remove_entity(get_entity(type, name));
 }
 

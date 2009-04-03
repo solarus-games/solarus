@@ -138,7 +138,7 @@ void DialogBox::set_icon_number(int icon_number) {
  * @param message_id id of the message where this value will appear
  * @param value the value to add
  */
-void DialogBox::set_variable(MessageId message_id, string value) {
+void DialogBox::set_variable(MessageId message_id, std::string value) {
   variables[message_id] = value;
 }
 
@@ -161,9 +161,9 @@ void DialogBox::set_variable(MessageId message_id, int value) {
  * This function is called by
  * the message when it reads the '$v' sequence.
  */
-string DialogBox::get_variable(void) {
+std::string DialogBox::get_variable(void) {
 
-  string value = variables[current_message_id];
+  std::string value = variables[current_message_id];
 
   if (value == "") {
     DIE("Missing variable in message '" << current_message_id << "'");

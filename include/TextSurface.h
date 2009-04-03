@@ -63,7 +63,7 @@ class TextSurface {
   SDL_Surface *surface;
   SDL_Rect text_position;
 
-  string text;
+  std::string text;
 
   void rebuild(void);
 
@@ -87,8 +87,8 @@ class TextSurface {
   void set_position(int x, int y);
   void set_x(int x);
   void set_y(int y);
-  void set_text(string text);
-  string get_text(void);
+  void set_text(std::string text);
+  std::string get_text(void);
   void add_char(char c);
 
   void display(SDL_Surface *destination);

@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 #include <stdarg.h>
+using namespace std;
 
 /**
  * Creates the script of a map.
@@ -577,7 +578,7 @@ int MapScript::l_npc_walk(lua_State *l) {
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
-  npc->start_walking(path, loop, with_collisions);
+  npc->walk(path, loop, with_collisions);
 
   return 0;
 }
@@ -594,7 +595,7 @@ int MapScript::l_npc_random_walk(lua_State *l) {
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
-  npc->start_walking_random();
+  npc->walk_random();
 
   return 0;
 }

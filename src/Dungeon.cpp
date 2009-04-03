@@ -1,6 +1,7 @@
 #include <SDL/SDL_config_lib.h>
 #include "Dungeon.h"
 #include "FileTools.h"
+using namespace std;
 
 /**
  * Name of each dungeon, displayed in the map submenu.

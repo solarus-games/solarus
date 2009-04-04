@@ -122,6 +122,7 @@ class Enemy;
 class InteractiveEntity;
 class Block;
 class Switch;
+class CustomObstacle;
 
 // tile patterns
 class Tileset;

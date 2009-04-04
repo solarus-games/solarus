@@ -11,7 +11,7 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 - event_interaction(entity_name)			appelé lorsque le joueur interagit une entité interactive sans message
 							prédéfini (autre qu'un PNJ)
 - event_npc_dialog(npc_name)				appelé lorsque le joueur parle à un PNJ sans message prédéfini
-- event_npc_path_finished(npc_name)			appelé lorsqu'un PNJ a terminé son mouvement de marche
+- event_npc_movement_finished(npc_name)			appelé lorsqu'un PNJ a terminé son mouvement de marche ou de saut
 - event_open_empty_chest(chest_name)			appelé lorsque le joueur ouvre un coffre vide (son comportement sera alors défini par le script, le héros étant bloqué jusqu'à ce que le script appelle unfreeze()) 
 - event_got_treasure(content, savegame_variable)	appelé lorsque le joueur obtient un trésor, qu'il vienne d'un coffre ou non
 
@@ -36,6 +36,7 @@ Appel de fonctions C++ depuis un script LUA :
 - restore_camera()					renvoie la caméra vers le héros
 - npc_walk(npc, path, loop, with_collisions)		fait se déplacer un PNJ selon un chemin spécifié
 - npc_random_walk(npc)					fait se déplacer un PNJ de manière aléatoire
+- npc_jump(npc, direction, length, with_collisions)	fait se déplacer un PNJ selon un chemin spécifié
 - npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
 - npc_remove(npc)					supprime un PNJ de la map
 - set_chest_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)

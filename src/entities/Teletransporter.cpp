@@ -17,7 +17,7 @@
  * @param transition_style style of transition between the two maps
  * @param destination_map_id id of the destination map
  * @param destination_point_name location on the destination map, or "_same" to keep the hero's coordinates,
- * or "_side" to place the heroon the appropriate side of the map
+ * or "_side" to place the hero on the appropriate side of the map
  */
 Teletransporter::Teletransporter(std::string name, MapEntity::Layer layer, int x, int y, int width, int height,
 				 Subtype subtype, Transition::Style transition_style,

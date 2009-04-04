@@ -14,6 +14,7 @@
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
   - la barre de magie moyenne peut déborder (yoshi04)
+  - Link peut tomber dans un PNJ en sautant depuis une falaise (mettre un capteur anti PNJ ?)
 
 - Prochains types d'entités:
   - portes

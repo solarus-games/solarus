@@ -158,6 +158,7 @@ line1 = "Boutique"
 line1 = "Ca ne se fait pas de"
 line2 = "fouiller dans la boîte"
 line3 = "aux lettres des gens !" 
+cancel = all
 
 [outside_world.warning_holes_sign]
 #       |-----------------------|

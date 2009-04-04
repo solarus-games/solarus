@@ -30,7 +30,7 @@ class PixelMovement: public MovementWithCollision {
   /**
    * Delay in milliseconds between two translations.
    */
-  const Uint32 delay;
+  Uint32 delay;
 
   /**
    * Should the movement return to the beginning once finished?
@@ -69,6 +69,7 @@ class PixelMovement: public MovementWithCollision {
 		int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
   virtual ~PixelMovement(void);
 
+  void set_delay(Uint32 delay);
   virtual void update(void);
   bool is_finished(void);
 

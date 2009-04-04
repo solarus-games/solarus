@@ -44,6 +44,7 @@ class MapScript {
   static FunctionAvailableToScript l_restore_camera;
   static FunctionAvailableToScript l_npc_walk;
   static FunctionAvailableToScript l_npc_random_walk;
+  static FunctionAvailableToScript l_npc_jump;
   static FunctionAvailableToScript l_npc_set_direction;
   static FunctionAvailableToScript l_npc_remove;
   static FunctionAvailableToScript l_set_chest_open;
@@ -91,7 +92,7 @@ class MapScript {
   void event_camera_reached_target(void);
   void event_interaction(std::string entity_name);
   void event_npc_dialog(std::string npc_name);
-  void event_npc_path_finished(std::string npc_name);
+  void event_npc_movement_finished(std::string npc_name);
   bool event_open_empty_chest(std::string chest_name);
   void event_got_treasure(Treasure::Content content, int savegame_variable);
 };

@@ -54,9 +54,21 @@ void PixelMovement::set_translation_vectors(const SDL_Rect *translation_vectors)
 }
 
 /**
+ * Changes the delay between two moves.
+ * @param delay the new delay
+ */
+void PixelMovement::set_delay(Uint32 delay) {
+  this->delay = delay;
+}
+
+/**
  * Updates the position.
  */
 void PixelMovement::update(void) {
+
+  if (suspended) {
+    return;
+  }
 
   Uint32 now = SDL_GetTicks();
 

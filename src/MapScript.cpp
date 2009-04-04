@@ -73,6 +73,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "restore_camera", l_restore_camera);
   lua_register(context, "npc_walk", l_npc_walk);
   lua_register(context, "npc_random_walk", l_npc_random_walk);
+  lua_register(context, "npc_jump", l_npc_jump);
   lua_register(context, "npc_set_direction", l_npc_set_direction);
   lua_register(context, "npc_remove", l_npc_remove);
   lua_register(context, "set_chest_open", l_set_chest_open);
@@ -601,6 +602,29 @@ int MapScript::l_npc_random_walk(lua_State *l) {
 }
 
 /**
+ * Makes an NPC jump into a direction.
+ * Argument 1 (string): name of the NPC to make move
+ * Argument 2 (integer): the jump direction, between 0 and 7
+ * Argument 3 (integer): the jump length in pixels
+ * Argument 4 (boolean): true to enable the collisions
+ */
+int MapScript::l_npc_jump(lua_State *l) {
+
+  check_nb_arguments(l, 4);
+
+  string name = lua_tostring(l, 1);
+  int direction = lua_tointeger(l, 2);
+  int length = lua_tointeger(l, 3);
+  bool with_collisions = lua_toboolean(l, 4) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  npc->jump(direction, length, with_collisions);
+
+  return 0;
+}
+
+/**
  * Sets the direction of an NPC's sprite.
  * Argument 1 (string): name of the NPC
  * Argument 2 (integer): the sprite's direction between 0 and 3
@@ -1041,11 +1065,11 @@ void MapScript::event_npc_dialog(string npc_name) {
 }
 
 /**
- * Notifies the script that an NPC has just finished its path.
+ * Notifies the script that an NPC has just finished its movement.
  * @param npc_name name of the NPC
  */
-void MapScript::event_npc_path_finished(string npc_name) {
-  call_lua_function("event_npc_path_finished", 1, npc_name.c_str());
+void MapScript::event_npc_movement_finished(string npc_name) {
+  call_lua_function("event_npc_movement_finished", 1, npc_name.c_str());
 }
 
 /**

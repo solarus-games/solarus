@@ -2,6 +2,7 @@
 #include "entities/Hero.h"
 #include "movements/PathMovement.h"
 #include "movements/RandomWalkMovement.h"
+#include "movements/JumpMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -214,17 +215,28 @@ void InteractiveEntity::update(void) {
 
   Detector::update();
 
-  if (special_interaction == NON_PLAYING_CHARACTER &&
-      get_movement() != NULL && ((PathMovement*) get_movement())->is_finished()) {
+  if (special_interaction == NON_PLAYING_CHARACTER && get_movement() != NULL) {
 
-    get_sprite()->set_current_animation("stopped");
-    clear_movement();
-    map->get_script()->event_npc_path_finished(get_name());
+    bool finished = false;
+    std::string animation = get_sprite()->get_current_animation();
+    if (animation == "walking") {
+      finished = ((PathMovement*) get_movement())->is_finished();
+    }
+    else if (animation == "jumping") {
+      finished = ((JumpMovement*) get_movement())->is_finished();
+    }
+
+    if (finished) {
+      get_sprite()->set_current_animation("stopped");
+      clear_movement();
+      map->get_script()->event_npc_movement_finished(get_name());
+    }
   }
 }
 
 /**
  * Makes the entity walk (only for an NPC).
+ * The NPC's sprite must have an animation "walking".
  * @param path the path to follow (see class PathMovement)
  * @param loop true to make the movement loop
  * @param with_collisions true to make the movement sensitive to obstacles
@@ -242,6 +254,7 @@ void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) 
 
 /**
  * Makes the entity walk randomly (only for NPC).
+ * The NPC's sprite must have an animation "walking".
  */
 void InteractiveEntity::walk_random(void) {
 
@@ -255,6 +268,26 @@ void InteractiveEntity::walk_random(void) {
 }
 
 /**
+ * Makes the entity jump into a direction (only for NPC).
+ * The NPC's sprite must have an animation "jumping".
+ * @param direction direction of the movement (0 to 7)
+ * @param length length of the jump in pixels
+ * @param with_collisions true to make the movement sensitive to the collisions
+ */
+void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
+
+  if (special_interaction != NON_PLAYING_CHARACTER) {
+    DIE("This entity is not a non-playing character");
+  }
+
+  clear_movement();
+  JumpMovement *movement = new JumpMovement(map, direction, length, with_collisions);
+  movement->set_delay(20);
+  set_movement(movement);
+  get_sprite()->set_current_animation("jumping");
+}
+
+/**
  * This function is called when the entity has just moved.
  * If it is an NPC, its sprite's direction is updated.
  */
@@ -262,9 +295,8 @@ void InteractiveEntity::just_moved(void) {
 
   if (special_interaction == NON_PLAYING_CHARACTER) {
 
-    PathMovement *movement = (PathMovement*) get_movement();
-
-    if (!movement->is_finished()) {
+    if (get_sprite()->get_current_animation() == "walking") {
+      PathMovement *movement = (PathMovement*) get_movement();
       int movement_direction = movement->get_current_direction();
       get_sprite()->set_current_direction(animation_directions[movement_direction]);
     }
@@ -286,4 +318,22 @@ void InteractiveEntity::just_moved(void) {
  */
 void InteractiveEntity::set_sprite_direction(int direction) {
   get_sprite()->set_current_direction(direction);
+}
+
+/**
+ * Displays the entity on the map.
+ * This is a redefinition of MapEntity::display_on_map to handle the special
+ * display when the entity is jumping.
+ */
+void InteractiveEntity::display_on_map(void) {
+
+  if (special_interaction == NON_PLAYING_CHARACTER &&
+      get_sprite()->get_current_animation() == "jumping") {
+
+    int jump_height = ((JumpMovement*) get_movement())->get_jump_height();
+    map->display_sprite(get_sprite(), get_x(), get_y() - jump_height);
+  }
+  else {
+    MapEntity::display_on_map();
+  }
 }

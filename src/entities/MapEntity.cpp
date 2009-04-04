@@ -21,6 +21,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true,  true}, // block
   { true, false,  true, false}, // dynamic tile
   {false,  true,  true, false}, // switch
+  { true, false, false, false}, // custom obstacle
 };
 
 /**

@@ -254,7 +254,8 @@ tile_id est le numéro du tile dans son tileset, tel que défini dans le fichier
 active est un booléen (0 ou 1) indiquant si le tile est actif lorsque la map démarre. S'il est inactif, tout se passe 
 comme s'il était absent de la map, jusqu'à ce qu'il soit activé par le script.
 
-Interrupteurs
+
+Interrupteurs (11)
 
 Un interrupteur a pour effet d'appeler le script lorsque le héros est dessus. Un interrupteur peut également être activé par un bloc (ou une statue) qui est poussé dessus. Certains interrupteurs se désactivent lorsque le héros les quitte, d'autres ne peuvent pas être activés par le héros qui est trop léger (il faut alors un bloc ou une statue).
 Un interrupteur n'a pas de direction et a une identification. Sa taille est toujours 16*16 et son sprite dépend de son sous-type et doit avoir deux animations : disabled et enabled.
@@ -265,6 +266,19 @@ Sous-types :
 Syntaxe de la partie spécifique pour un interrupteur :
 
 needs_block disable_when_leaving
+
+
+Obstacle personnalisable (12)
+
+Un obstacle personnalisable est une entité invisible qui bloque certains types d'entités au choix parmi
+les ennemis, les entités interactives, les blocs et statues et le héros.
+Un obstacle personnalisable est redimensionnable, a un nom et n'a pas de direction.
+
+Syntaxe de la partie spécifique pour un obstale personnalisable :
+
+stops_hero    stops_enemies	stops_npcs	stops_blocks
+
+Ces quatre valeurs booléennes indiquent si l'entité est un obstacle pour ces quatre types d'entités.
 
 
 Portes
@@ -283,3 +297,4 @@ Un capteur est une dalle invisible qui déclenche quelque chose de visible ou no
 Contrairement aux interrupteurs, ces capteurs ne peuvent pas être franchis 
 par un saut (plume, saut quand repoussé par un ennemi, ...)
 Types de capteurs : changement de layer, custom (appel à un script), sauvegarde pour trou ?
+

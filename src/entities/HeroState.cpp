@@ -1011,6 +1011,7 @@ void Hero::start_deep_water(void) {
     }
     else {
       start_jumping(get_movement_direction() / 45, 32, true);
+      ((JumpMovement*) get_movement())->set_delay(13);
     }
   }
 }

@@ -15,6 +15,7 @@
 #include "entities/Block.h"
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
+#include "entities/CustomObstacle.h"
 #include <iomanip>
 using namespace std;
 
@@ -166,7 +167,8 @@ void MapLoader::load_map(Map *map) {
     case MapEntity::ENEMY:
       {
 	int enemy_type, rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
-	iss >> entity_name >> direction >> enemy_type >> rank >> savegame_variable >> pickable_item_type >> pickable_item_savegame_variable;
+	iss >> entity_name >> direction >> enemy_type >> rank >> savegame_variable >>
+	  pickable_item_type >> pickable_item_savegame_variable;
 	entities->add_entity(Enemy::create((Enemy::EnemyType) enemy_type, (Enemy::Rank) rank, savegame_variable,
 					   entity_name, (MapEntity::Layer) layer, x, y, direction, 
 					   (PickableItem::ItemType) pickable_item_type, pickable_item_savegame_variable));
@@ -215,6 +217,16 @@ void MapLoader::load_map(Map *map) {
 	iss >> entity_name >> subtype >> needs_block >> disabled_when_leaving;
 	entities->add_entity(new Switch(entity_name, (MapEntity::Layer) layer, x, y,
 					(Switch::Subtype) subtype, needs_block != 0, disabled_when_leaving != 0));
+	break;
+      }
+
+    case MapEntity::CUSTOM_OBSTACLE:
+      {
+	int stops_hero, stops_enemies, stops_npcs, stops_blocks;
+
+	iss >> width >> height >> entity_name >> stops_hero >> stops_enemies >> stops_npcs >> stops_blocks;
+	entities->add_entity(new CustomObstacle(entity_name, (MapEntity::Layer) layer, x, y, width, height,
+						stops_hero != 0, stops_enemies != 0, stops_npcs != 0, stops_blocks != 0));
 	break;
       }
 

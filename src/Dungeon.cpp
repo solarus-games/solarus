@@ -80,7 +80,7 @@ string Dungeon::get_name(void) {
 void Dungeon::load(void) {
 
   // open the file
-  string file_name = FileTools::data_file_add_prefix("dungeons.zsd");
+  string file_name = FileTools::data_file_add_prefix("maps/dungeons/dungeons.zsd");
 
   CFG_File ini;
   if (CFG_OpenFile(file_name.c_str(), &ini) != CFG_OK) {

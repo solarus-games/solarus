@@ -88,10 +88,10 @@ void Message::parse(MessageId message_id) {
   std::string file_name;
   if (message_id[0] == '_') {
     // message from the engine
-    file_name = "text/engine.msg";
+    file_name = "text/engine_dialogs.zsd";
   }
   else {
-    file_name = "text/game.msg";
+    file_name = "text/game_dialogs.zsd";
   }
   file_name = FileTools::data_file_add_prefix(file_name);
 

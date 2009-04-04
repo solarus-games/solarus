@@ -71,6 +71,7 @@ Mode release :
 - Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence
 - Cacher le mode Rêves de Solarus s'il n'est pas encore fait
 - Compiler en mode release (pas -g)
+- Inclure le fichier de licence GPL
 
 ----------------------
 - Compléter l'éditeur de maps et de tilesets :

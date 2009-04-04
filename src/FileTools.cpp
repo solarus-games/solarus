@@ -85,8 +85,8 @@ FILE *FileTools::open_data_file(string file_name) {
 /**
  * @brief Loads an image file.
  * 
- * The file name is relative to the ZSDX images directory (which could be
- * for example /usr/local/share/zsdx/data/images or C:\\Program Files\\zsdx\\data\\images).
+ * The file name is relative to the ZSDX sprites directory (which may be
+ * for example /usr/local/share/zsdx/data/sprites or C:\\Program Files\\zsdx\\data\\sprites).
  * The program is stopped with an error message if the image cannot be loaded.
  *
  * @param file_name name of the image file to open
@@ -94,7 +94,7 @@ FILE *FileTools::open_data_file(string file_name) {
  */
 SDL_Surface *FileTools::open_image(string file_name) {
 
-  string full_file_name = DATADIR + "/images/" + file_name;
+  string full_file_name = DATADIR + "/sprites/" + file_name;
 
   SDL_Surface *image = IMG_Load(full_file_name.c_str());
 

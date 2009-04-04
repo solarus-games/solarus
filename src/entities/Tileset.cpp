@@ -119,9 +119,9 @@ void Tileset::load(void) {
 
   // load the tileset image
   std::ostringstream oss2;
-  oss2 << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << ".png";
+  oss2 << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
   tileset_image = ResourceManager::load_image(oss2.str());
-  
+
   if (tileset_image == NULL) {
     DIE("Cannot load the image '" << file_name << "'");
   }

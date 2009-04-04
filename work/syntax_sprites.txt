@@ -14,7 +14,7 @@ animation_name image_file nb_directions frame_delay loop_on_frame
 
 
 animaiton_name est un nom qui identifie cette animation.
-image_file est le fichier image qui contient toutes les frames de l'animation (et dans toutes les directions).
+image_file est le fichier image qui contient toutes les frames de l'animation (et dans toutes les directions). Son chemin est relatif au répertoire data/sprites.
 nb_directions est le nombre de directions de cette animation.
 frame_delay est en milisecondes le délai entre deux frames (ou 0 s'il n'y a qu'une seule frame statique).
 loop_on_frame est le numéro d'une frame sur laquelle l'animation va boucler (habituellement 0, car on boucle généralement sur la première frame), ou -1 pour ne pas répéter l'animation (auquel cas le sprite cessera d'être affiché une fois la dernière frame terminée, si frame_delay est différent de 0).

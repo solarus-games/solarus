@@ -20,6 +20,7 @@ public enum EntityType {
     BLOCK             (9, "Block", Block.class, Block.Subtype.class),
     DYNAMIC_TILE      (10, "Dynamic tile", DynamicTile.class, null),
     SWITCH            (11, "Switch", Switch.class, Switch.Subtype.class),
+    CUSTOM_OBSTACLE   (12, "Custom obstacle", CustomObstacle.class, null),
     ;
 
     private final int index;

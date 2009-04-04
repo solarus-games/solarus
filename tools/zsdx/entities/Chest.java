@@ -82,7 +82,7 @@ public class Chest extends MapEntity {
     public boolean isBigChest() {
 	return getBooleanProperty("bigChest");
     }
-    
+
     /**
      * Returns whether this entity is an obstacle.
      * @return true

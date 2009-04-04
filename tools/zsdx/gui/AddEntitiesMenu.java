@@ -54,6 +54,7 @@ public class AddEntitiesMenu extends JMenu {
 		Switch.Subtype.INVISIBLE,
 		Switch.Subtype.NORMAL
 	),
+	new ItemDefinition(EntityType.CUSTOM_OBSTACLE, KeyEvent.VK_O),
     };
 
     /**

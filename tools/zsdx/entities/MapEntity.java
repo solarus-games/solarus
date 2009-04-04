@@ -40,7 +40,7 @@ import zsdx.Map;
  *       public static final EntityImageDescription[] generalImageDescriptions
  *       to define a default 16*16 image representing this kind of entity for each subtype.
  *       These 16*16 images will be used to build the toolbar to add entities on the map.
- *   - Redefine the non-static updateImageDescription() method:
+ *   - Redefine if necessary the non-static updateImageDescription() method:
  *       public void updateImageDescription()
  *       which updates the image representing the entity on the map in its current state.
  *   - If your entity is not drawn from an image file but in a more complex way,
@@ -1035,6 +1035,42 @@ public abstract class MapEntity extends Observable {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 	currentImageDescription.paint(g, zoom, showTransparency, positionInMap);
+    }
+
+    /**
+     * Draws a rectangle border on the entity.
+     * This function can be called by the paint() method of suclasses that need
+     * to draw the entity in a complex way (i.e. not just by blitting an image file).
+     * @param g the graphic context
+     * @param zoom zoom of the image
+     * @param outlineColor a color to fill the area between the two lines of the border
+     */
+    protected void drawEntityOutline(Graphics g, double zoom, Color outlineColor) {
+
+	int dx1 = (int) (positionInMap.x * zoom);
+	int dy1 = (int) (positionInMap.y * zoom);
+	int dx2 = (int) (dx1 + positionInMap.width * zoom);
+	int dy2 = (int) (dy1 + positionInMap.height * zoom);
+
+	g.setColor(Color.black);
+	g.drawLine(dx1, dy1, dx2 - 1, dy1);
+	g.drawLine(dx1 + 3, dy1 + 3, dx2 - 4, dy1 + 3);
+	g.drawLine(dx1, dy2 - 1, dx2 - 1, dy2 - 1);
+	g.drawLine(dx1 + 3, dy2 - 4, dx2 - 4, dy2 - 4);
+	g.drawLine(dx1, dy1, dx1, dy2 - 1);
+	g.drawLine(dx1 + 3, dy1 + 3, dx1 + 3, dy2 - 4);
+	g.drawLine(dx2 - 1, dy1, dx2 - 1, dy2 - 1);
+	g.drawLine(dx2 - 4, dy1 + 3, dx2 - 4, dy2 - 4);
+
+	g.setColor(outlineColor);
+	g.drawLine(dx1 + 1, dy1 + 1, dx2 - 2, dy1 + 1);
+	g.drawLine(dx1 + 2, dy1 + 2, dx2 - 3, dy1 + 2);
+	g.drawLine(dx1 + 2, dy2 - 3, dx2 - 3, dy2 - 3);
+	g.drawLine(dx1 + 1, dy2 - 2, dx2 - 2, dy2 - 2);
+	g.drawLine(dx1 + 1, dy1 + 1, dx1 + 1, dy2 - 2);
+	g.drawLine(dx1 + 2, dy1 + 2, dx1 + 2, dy2 - 3);
+	g.drawLine(dx2 - 3, dy1 + 2, dx2 - 3, dy2 - 3);
+	g.drawLine(dx2 - 2, dy1 + 1, dx2 - 2, dy2 - 2);
     }
 
     /**

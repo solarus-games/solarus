@@ -31,17 +31,17 @@ public class Teletransporter extends MapEntity {
     }
 
     /**
+     * Unitary size of a teletransporter.
+     */
+    private static final Dimension unitarySize = new Dimension(16, 16);
+
+    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
 	new EntityImageDescription("teletransporter.png", 0, 0, 32, 32), // invisible
 	new EntityImageDescription("teletransporter.png", 32, 0, 16, 16), // yellow
     };
-
-    /**
-     * Unitary size of a teletransporter.
-     */
-    private static final Dimension unitarySize = new Dimension(16, 16);
 
     /**
      * Resizable image of a teletransporter.
@@ -170,30 +170,7 @@ public class Teletransporter extends MapEntity {
 
 	    g.drawImage(resizableTeletransporterImage, dx1, dy1, dx2, dy2, 0, 0, 32, 32, null);
 
-	    dx1 = (int) (positionInMap.x * zoom);
-	    dy1 = (int) (positionInMap.y * zoom);
-	    dx2 = (int) (dx1 + positionInMap.width * zoom);
-	    dy2 = (int) (dy1 + positionInMap.height * zoom);
-
-	    g.setColor(Color.black);
-	    g.drawLine(dx1, dy1, dx2 - 1, dy1);
-	    g.drawLine(dx1 + 3, dy1 + 3, dx2 - 4, dy1 + 3);
-	    g.drawLine(dx1, dy2 - 1, dx2 - 1, dy2 - 1);
-	    g.drawLine(dx1 + 3, dy2 - 4, dx2 - 4, dy2 - 4);
-	    g.drawLine(dx1, dy1, dx1, dy2 - 1);
-	    g.drawLine(dx1 + 3, dy1 + 3, dx1 + 3, dy2 - 4);
-	    g.drawLine(dx2 - 1, dy1, dx2 - 1, dy2 - 1);
-	    g.drawLine(dx2 - 4, dy1 + 3, dx2 - 4, dy2 - 4);
-
-	    g.setColor(new Color(240, 215, 142));
-	    g.drawLine(dx1 + 1, dy1 + 1, dx2 - 2, dy1 + 1);
-	    g.drawLine(dx1 + 2, dy1 + 2, dx2 - 3, dy1 + 2);
-	    g.drawLine(dx1 + 2, dy2 - 3, dx2 - 3, dy2 - 3);
-	    g.drawLine(dx1 + 1, dy2 - 2, dx2 - 2, dy2 - 2);
-	    g.drawLine(dx1 + 1, dy1 + 1, dx1 + 1, dy2 - 2);
-	    g.drawLine(dx1 + 2, dy1 + 2, dx1 + 2, dy2 - 3);
-	    g.drawLine(dx2 - 3, dy1 + 2, dx2 - 3, dy2 - 3);
-	    g.drawLine(dx2 - 2, dy1 + 1, dx2 - 2, dy2 - 2);
+	    drawEntityOutline(g, zoom, new Color(240, 215, 142));
 	}
 	else {
 	    super.paint(g, zoom, showTransparency);

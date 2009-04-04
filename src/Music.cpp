@@ -35,11 +35,11 @@ const char *Music::unchanged = "same";
 Music::Music(MusicId music_id) {
 
   sound = NULL;
-  file_name = FileTools::data_file_add_prefix("music/" + music_id);
+  file_name = FileTools::data_file_add_prefix("musics/" + music_id);
 
   /*
    * The musics are played with the highest priority.
-   * Otherwise, they would be interrupted by the sound effects sometimes.
+   * Otherwise, they would be sometimes interrupted by the sound effects.
    */
   if (is_initialized()) {
     FMOD_System_GetChannel(system, 15, &channel);

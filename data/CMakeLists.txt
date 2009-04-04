@@ -13,9 +13,8 @@ endif (NOT WIN32)
 #)
 
 INSTALL(DIRECTORY
-	images
 	maps
-	music
+	musics
 	sounds
 	sprites
 	tilesets

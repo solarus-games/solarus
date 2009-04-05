@@ -42,13 +42,12 @@ Block::Block(std::string name, Layer layer, int x, int y,
   subtype(subtype), maximum_moves(maximum_moves), sound_played(false),
   when_can_move(SDL_GetTicks()) {
 
-  create_sprite("entities/block");
   set_origin(8, 13);
   if (subtype == STATUE) {
-    get_sprite()->set_current_animation("statue");
+    create_sprite("entities/statue");
   }
   else {
-    get_sprite()->set_current_animation(skin);
+    create_sprite("entities/block");
   }
 
   initial_position.x = last_position.x = x;
@@ -69,6 +68,20 @@ Block::~Block() {
  */
 MapEntity::EntityType Block::get_type(void) {
   return BLOCK;
+}
+
+/**
+ * Sets the map.
+ * @param map the map
+ */
+void Block::set_map(Map *map) {
+
+  MapEntity::set_map(map);
+
+  if (subtype == NORMAL) {
+    // the image of a normal block depends on the tileset
+    set_sprite_image_from_tileset();
+  }
 }
 
 /**

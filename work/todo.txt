@@ -7,14 +7,13 @@
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
-- Enlever le répertoire images ?
-- Récupérer l'info "skin" des blocs, portes, etc. via le tileset
+- Supprimer l'info "skin" des blocs, portes, etc... et récupérer les images de ces
+  entités directement dans au fichier tilesets/tilesetXXXX_entities.png
 - Remplacer "properties" par "features"
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
   - la barre de magie moyenne peut déborder (yoshi04)
-  - Link peut tomber dans un PNJ en sautant depuis une falaise (mettre un capteur anti PNJ ?)
 
 - Prochains types d'entités:
   - portes

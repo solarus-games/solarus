@@ -227,6 +227,7 @@ class MapEntity {
   Sprite * get_sprite(int index);
   Sprite * get_sprite(void);
   bool has_sprite(void);
+  void set_sprite_image_from_tileset(void);
 
   // movement
   Movement * get_movement(void);

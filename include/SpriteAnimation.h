@@ -31,6 +31,7 @@ class SpriteAnimation {
   SDL_Surface *src_image;      /**< image from which the frames are extracted;
 				* this image is the same for
 				* all directions of the sprite's animation */
+  bool src_image_loaded;       /**< indicates that src_image was loaded from this class */
 
   const int nb_directions;     /**< number of directions of this animation */
 
@@ -49,6 +50,7 @@ class SpriteAnimation {
   virtual ~SpriteAnimation(void);
 
   SDL_Surface *get_src_image(void);
+  void set_src_image(SDL_Surface *src_image);
 
   int get_next_frame(int current_direction, int current_frame);
   void display(SDL_Surface *destination, int x, int y, int current_direction, int current_frame);

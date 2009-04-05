@@ -122,6 +122,19 @@ SpriteAnimationSet::~SpriteAnimationSet(void) {
 }
 
 /**
+ * Changes the source image for all animations of this animation set.
+ * @param source_image the new source surface
+ */
+void SpriteAnimationSet::set_src_image(SDL_Surface *src_image) {
+
+  std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
+
+  for (it = animations.begin(); it != animations.end(); it++) {
+    it->second->set_src_image(src_image);
+  }
+}
+
+/**
  * Returns an animation.
  * @param animation_name name of the animation to get
  * @return the specified animation

@@ -27,7 +27,8 @@ using namespace std;
  * @param id id of the tileset to create
  */
 Tileset::Tileset(TilesetId id):
-id(id), nb_tile_patterns(0), max_tile_id(0), tileset_image(NULL) {
+  id(id), nb_tile_patterns(0), max_tile_id(0),
+  tiles_image(NULL), entities_image(NULL) {
   
   for (int i = 0; i < 1024; i++) {
     tile_patterns[i] = NULL;
@@ -117,12 +118,20 @@ void Tileset::load(void) {
     }
   }
 
-  // load the tileset image
+  // load the tileset images
   std::ostringstream oss2;
   oss2 << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
-  tileset_image = ResourceManager::load_image(oss2.str());
+  tiles_image = ResourceManager::load_image(oss2.str());
 
-  if (tileset_image == NULL) {
+  if (tiles_image == NULL) {
+    DIE("Cannot load the image '" << file_name << "'");
+  }
+
+  std::ostringstream oss3;
+  oss3 << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_entities.png";
+  entities_image = ResourceManager::load_image(oss3.str());
+
+  if (entities_image == NULL) {
     DIE("Cannot load the image '" << file_name << "'");
   }
 }
@@ -141,8 +150,11 @@ void Tileset::unload(void) {
   }
   nb_tile_patterns = 0;
 
-  SDL_FreeSurface(tileset_image);
-  tileset_image = NULL;
+  SDL_FreeSurface(tiles_image);
+  tiles_image = NULL;
+
+  SDL_FreeSurface(entities_image);
+  entities_image = NULL;
 }
 
 /**
@@ -158,15 +170,23 @@ Uint32 Tileset::get_background_color(void) {
  * @return true if this tileset is loaded
  */
 bool Tileset::is_loaded(void) {
-  return tileset_image != NULL;
+  return tiles_image != NULL;
 }
 
 /**
- * Returns the tileset image.
- * @return the tileset image
+ * Returns the image containing the tiles of this tileset.
+ * @return the tiles image
  */
-SDL_Surface * Tileset::get_image(void) {
-  return tileset_image;
+SDL_Surface * Tileset::get_tiles_image(void) {
+  return tiles_image;
+}
+
+/**
+ * Returns the image containing the skin-dependent dynamic entities for this tileset.
+ * @return the image containing the skin-dependent dynamic entities for this tileset
+ */
+SDL_Surface * Tileset::get_entities_image(void) {
+  return entities_image;
 }
 
 /**

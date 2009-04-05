@@ -30,10 +30,11 @@
 SpriteAnimation::SpriteAnimation(std::string image_file_name, int nb_directions,
 				 SpriteAnimationDirection **directions,
 				 Uint32 frame_delay, int loop_on_frame):
-  nb_directions(nb_directions), directions(directions),
+  src_image_loaded(true), nb_directions(nb_directions), directions(directions),
   frame_delay(frame_delay), loop_on_frame(loop_on_frame) {
 
   src_image = ResourceManager::load_image(image_file_name);
+
 }
 
 /**
@@ -46,7 +47,9 @@ SpriteAnimation::~SpriteAnimation(void) {
 
   delete[] directions;
 
-  SDL_FreeSurface(src_image);
+  if (src_image_loaded) {
+    SDL_FreeSurface(src_image);
+  }
 }
 
 /**
@@ -55,6 +58,19 @@ SpriteAnimation::~SpriteAnimation(void) {
  */
 SDL_Surface * SpriteAnimation::get_src_image(void) {
   return src_image;
+}
+
+/**
+ * Changes the source image for all animations of this animation set.
+ * @param source_image the new source surface
+ */
+void SpriteAnimation::set_src_image(SDL_Surface *src_image) {
+
+  if (src_image_loaded) {
+    SDL_FreeSurface(src_image);     
+    src_image_loaded = false;
+  }
+  this->src_image = src_image;
 }
 
 /**

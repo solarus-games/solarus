@@ -56,6 +56,7 @@ class Block: public Detector {
   ~Block();
 
   EntityType get_type(void);
+  void set_map(Map *map);
 
   bool is_obstacle_for(MapEntity *other);
   bool collision_with_map(int dx, int dy);

@@ -22,7 +22,8 @@
 
 /**
  * A tileset is an image with a set of elements (tile patterns)
- * one can use to compose a map. See the directory images/tilesets.
+ * one can use to compose a map. * 
+ * See the directory images/tilesets.
  */
 class Tileset {
 
@@ -33,7 +34,8 @@ class Tileset {
   int nb_tile_patterns;             /**< number of tile patterns in the tileset */
   int max_tile_id;                  /**< current maximum id of a tile pattern in this tileset */
   Uint32 background_color;          /**< background color of the tileset */
-  SDL_Surface *tileset_image;       /**< image from which the tile patterns are extracted */
+  SDL_Surface *tiles_image;         /**< image from which the tile patterns are extracted */
+  SDL_Surface *entities_image;      /**< image from which the skin-dependent entities are extracted */
 
   void add_tile_pattern(int id, TilePattern *tile_pattern);
 
@@ -47,7 +49,8 @@ class Tileset {
 
   Uint32 get_background_color(void);
   bool is_loaded(void);
-  SDL_Surface *get_image(void);
+  SDL_Surface *get_tiles_image(void);
+  SDL_Surface *get_entities_image(void);
   TilePattern *get_tile_pattern(int id);
 };
 

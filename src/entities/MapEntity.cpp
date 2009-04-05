@@ -16,6 +16,7 @@
  */
 #include "entities/MapEntity.h"
 #include "entities/MapEntities.h"
+#include "entities/Tileset.h"
 #include "movements/Movement.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -473,6 +474,21 @@ Sprite * MapEntity::get_sprite(void) {
  */
 void MapEntity::create_sprite(SpriteAnimationSetId id) {
   sprites.push_back(new Sprite(id));
+}
+
+/**
+ * Indicates that this entity's sprite image depends on the tileset.
+ * This is the case for the skin-dependent entities such as
+ * blocks and doors.
+ * This function is typically called by set_map().
+ */
+void MapEntity::set_sprite_image_from_tileset(void) {
+
+  if (map == NULL) {
+    DIE("Cannot retrieve the entity image from the tileset: set_map() has to be called first");
+  }
+
+  get_sprite()->get_animation_set()->set_src_image(map->get_tileset()->get_entities_image());
 }
 
 /**

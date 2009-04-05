@@ -81,7 +81,7 @@ MapEntity::Obstacle TilePattern::get_obstacle(void) const {
 void TilePattern::display_on_map(Map *map, SDL_Rect &position_in_map) {
 
   SDL_Surface *map_surface = map->get_visible_surface();
-  SDL_Surface *tileset_image = map->get_tileset()->get_image();
+  SDL_Surface *tileset_image = map->get_tileset()->get_tiles_image();
 
   SDL_Rect dst;
   SDL_Rect *camera_position = map->get_camera_position();

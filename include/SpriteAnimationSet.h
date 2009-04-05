@@ -39,6 +39,8 @@ class SpriteAnimationSet {
   SpriteAnimationSet(SpriteAnimationSetId id);
   virtual ~SpriteAnimationSet(void);
 
+  void set_src_image(SDL_Surface *src_image);
+
   SpriteAnimation *get_animation(std::string animation_name);
   std::string get_default_animation(void);
 

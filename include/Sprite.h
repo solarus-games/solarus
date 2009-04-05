@@ -71,6 +71,7 @@ class Sprite {
   Sprite(SpriteAnimationSetId id);
   ~Sprite(void);
 
+  // animation set
   SpriteAnimationSetId get_animation_set_id(void);
   SpriteAnimationSet *get_animation_set(void);
 

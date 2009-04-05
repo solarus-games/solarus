@@ -136,12 +136,20 @@ public class Teletransporter extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	if (getProperty("destinationMapId").length() == 0) {
+	String destinationMapId = getProperty("destinationMapId");
+	String destinationPointName = getProperty("destinationPointName");
+
+	if (destinationMapId.length() == 0) {
 	    throw new MapException("You must choose a destination map");
 	}
 
-	if (getProperty("destinationPointName").length() == 0) {
+	if (destinationPointName.length() == 0) {
 	    throw new MapException("You must choose a destination point on the destination map");
+	}
+
+	if (destinationMapId.equals(map.getId()) &&
+	    destinationPointName.equals("_same")) {
+	    throw new MapException("Cannot teleport to the same point on the same map");
 	}
     }
 

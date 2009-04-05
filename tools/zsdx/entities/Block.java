@@ -48,40 +48,6 @@ public class Block extends MapEntity {
     }
 
     /**
-     * Block skins.
-     */
-    public enum Skin {
-	BROWN,
-	YELLOW,
-	BLUE;
-
-	public static final String[] humanNames = {
-	    "Brown block",
-	    "Yellow block",
-	    "Blue block",
-	};
-
-	private static final String[] animationNames = {
-	    "brown_block",
-	    "yellow_block",
-	    "blue_block",
-	};
-
-	public static Skin get(String animationName) {
-	    for (Skin skin: values()) {
-		if (skin.getAnimationName().equals(animationName)) {
-		    return skin;
-		}
-	    }
-	    throw new NoSuchElementException("Unknown skin '" + animationName + "'");
-	}
-
-	public String getAnimationName() {
-	    return animationNames[ordinal()];
-	}
-    }
-
-    /**
      * Limitations of moves for blocks.
      */
     public enum MaximumMoves {
@@ -187,29 +153,12 @@ public class Block extends MapEntity {
      */
     public void updateImageDescription() {
 	currentImageDescription = currentImageDescriptions[getSubtypeId()];
-	if (subtype == Subtype.NORMAL_BLOCK) {
-	    Skin skin = Skin.get(getProperty("skin"));
-	    currentImageDescription.setX(56 + skin.ordinal() * 16);
-	}
     }
 
     /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("skin", Skin.BROWN.getAnimationName());
 	setProperty("maximumMoves", MaximumMoves.ONE.getId());
-    }
-
-    /**
-     * Checks the specific properties.
-     * @throws MapException if a property is not valid
-     */
-    public void checkProperties() throws MapException {
-
-	String skin = getProperty("skin");
-	if (skin.length() == 0 || skin.contains(" ") || skin.contains("\t")) {
-	    throw new MapException("Invalid skin name: please choose an animation name for the sprite block");
-	}
     }
 }

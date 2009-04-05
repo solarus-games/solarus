@@ -7,8 +7,6 @@
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
-- Supprimer l'info "skin" des blocs, portes, etc... et récupérer les images de ces
-  entités directement dans au fichier tilesets/tilesetXXXX_entities.png
 - Remplacer "properties" par "features"
 
 - Bugs:
@@ -21,8 +19,6 @@
   - tapis roulants
   - trous
   - piquants
-
-- Poisson d'avril : démo avec PLEIN de pub
 
 ----------------
 Planning prévisionnel

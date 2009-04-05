@@ -67,7 +67,7 @@ SDL_Surface * SpriteAnimation::get_src_image(void) {
 void SpriteAnimation::set_src_image(SDL_Surface *src_image) {
 
   if (src_image_loaded) {
-    SDL_FreeSurface(src_image);     
+    SDL_FreeSurface(this->src_image);
     src_image_loaded = false;
   }
   this->src_image = src_image;

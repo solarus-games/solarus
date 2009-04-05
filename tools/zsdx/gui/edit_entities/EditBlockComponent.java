@@ -29,7 +29,6 @@ import zsdx.entities.Block.*;
 public class EditBlockComponent extends EditEntityComponent {
 
     // specific fields of this entity
-    private EnumerationChooser<Skin> skinField;
     private EnumerationChooser<MaximumMoves> maximumMovesField;
 
     /**
@@ -46,21 +45,9 @@ public class EditBlockComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// skin name
-	skinField = new EnumerationChooser<Skin>(Skin.class);
-	addField("Skin", skinField);
-
 	// maximum moves
 	maximumMovesField = new EnumerationChooser<MaximumMoves>(MaximumMoves.class);
 	addField("Maximum moves", maximumMovesField);
-
-	// listeners
-	subtypeField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		EntitySubtype subtype = subtypeField.getValue();
-		skinField.setEnabled(subtype == Subtype.NORMAL_BLOCK);
-	    }
-	});
     }
 
     /**
@@ -70,11 +57,7 @@ public class EditBlockComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	Block block = (Block) entity;
-	Skin skin = Skin.get(block.getProperty("skin"));
 	MaximumMoves maximumMoves = MaximumMoves.get(block.getIntegerProperty("maximumMoves"));
-
-	skinField.setEnabled(block.getSubtype() == Subtype.NORMAL_BLOCK);
-	skinField.setValue(skin);
 	maximumMovesField.setValue(maximumMoves);
     }
 
@@ -84,8 +67,7 @@ public class EditBlockComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	Skin skin = skinField.getValue();
 	MaximumMoves maximumMoves = maximumMovesField.getValue();
-	return new ActionEditEntitySpecific(entity, skin.getAnimationName(), Integer.toString(maximumMoves.getId()));
+	return new ActionEditEntitySpecific(entity, Integer.toString(maximumMoves.getId()));
     }
 }

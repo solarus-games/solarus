@@ -225,7 +225,7 @@ Blocs (9)
 
 Syntaxe de la partie spécifique :
 
-skin maximum_moves
+maximum_moves
 
 Le sous-type indique s'il s'agit d'un bloc classique (0) ou une statue (1). D'autres sous-types pourront être créés à l'avenir
 (exemples : blocs qui glissent jusqu'au prochain mur, blocs comme dans l'énigme de Zelda MC...)
@@ -234,8 +234,7 @@ maximum_moves indique ce qui se passe lorsque le héros pousse le bloc :
 1 : peut être poussé une fois
 2 : peut être poussé autant de fois qu'on veut
 
-skin indique l'animation du sprite (le sprite étant automatiquement "entities/block"). Cela permet de choisir la couleur du bloc.
-Pour un bloc, le skin par défaut est "gray_block". Pour une statue, le skin est toujours "statue" et n'est pas modifiable.
+Le sprite d'un bloc normal dépend du tileset.
 
 
 Tiles dynamiques (10)

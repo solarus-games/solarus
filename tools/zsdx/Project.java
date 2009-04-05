@@ -181,15 +181,6 @@ public class Project {
     }
 
     /**
-     * Returns the path of the image files of the game,
-     * determined with the current project root path.
-     * @return the path of the image files of the game
-     */
-    public static String getGameImagePath() {
-	return getDataPath() + "/images";
-    }
-
-    /**
      * Loads an image of the editor from a specified file name.
      * The image loaded is not project dependent.
      * If the image have been already loaded, it is not loaded again.
@@ -254,8 +245,8 @@ public class Project {
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
-	return new File(getGameImagePath() + "/tilesets/tileset"
-		+ nf.format(Integer.parseInt(tilesetId)) + ".png");
+	return new File(getTilesetPath() + "/tileset"
+		+ nf.format(Integer.parseInt(tilesetId)) + "_tiles.png");
     }
 
     /**

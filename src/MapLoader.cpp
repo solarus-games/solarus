@@ -207,11 +207,10 @@ void MapLoader::load_map(Map *map) {
     case MapEntity::BLOCK:
       {
 	int subtype, maximum_moves;
-	string skin;
 
-	iss >> entity_name >> subtype >> skin >> maximum_moves;
+	iss >> entity_name >> subtype >> maximum_moves;
 	entities->add_entity(new Block(entity_name, (MapEntity::Layer) layer, x, y,
-				       (Block::Subtype) subtype, skin, maximum_moves));
+				       (Block::Subtype) subtype, maximum_moves));
 	break;
       }
 

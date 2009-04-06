@@ -32,12 +32,11 @@
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  * @param subtype the subtype of block
- * @param skin the skin (an animation name for the block sprite)
  * @param maximum_moves indicates how many times the block can
  * be moved (0: none, 1: once: 2: infinite)
  */
 Block::Block(std::string name, Layer layer, int x, int y,
-	     Subtype subtype, std::string skin, int maximum_moves):
+	     Subtype subtype, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   subtype(subtype), maximum_moves(maximum_moves), sound_played(false),
   when_can_move(SDL_GetTicks()) {
@@ -128,14 +127,14 @@ void Block::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
 bool Block::moved_by_hero(void) {
 
   if (get_movement() != NULL || maximum_moves == 0 || SDL_GetTicks() < when_can_move) {
-    /*
+    /* TODO remove
     if (maximum_moves == 0)
       std::cout << "not moving because cannot move any more\n";
     else if (get_movement() != NULL) 
       std::cout << "not moving because already moving\n";
     else
       std::cout << "not moving because just moved\n";
-    */      
+    */
     return false;
   }
 

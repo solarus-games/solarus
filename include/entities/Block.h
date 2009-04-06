@@ -52,7 +52,7 @@ class Block: public Detector {
  public:
 
   Block(std::string name, Layer layer, int x, int y,
-	Subtype subtype, std::string skin, int maximum_push);
+	Subtype subtype, int maximum_push);
   ~Block();
 
   EntityType get_type(void);

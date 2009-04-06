@@ -81,8 +81,8 @@ void PickableItemFairy::update(void) {
 void PickableItemFairy::give_item_to_player(void) {
 
   // play the sound
-  if (properties[type].sound != "") {
-    Sound *sound = ResourceManager::get_sound(properties[type].sound);
+  if (features[subtype].sound != "") {
+    Sound *sound = ResourceManager::get_sound(features[subtype].sound);
     sound->play();
   }
 

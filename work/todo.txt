@@ -7,7 +7,7 @@
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
-- Remplacer "properties" par "features"
+- Dans DestructibleItem, remplacer "properties" par "features" et "type" par "subtype"
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)

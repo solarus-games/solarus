@@ -40,7 +40,7 @@ SimpleGreenSoldier::~SimpleGreenSoldier(void) {
  */
 void SimpleGreenSoldier::initialize(void) {
 
-  // attack/defense properties
+  // attack/defense features
   set_damage(2);
   set_life(2);
   minimum_shield_needed = 2;

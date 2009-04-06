@@ -56,7 +56,7 @@ class DestructibleItem: public Detector {
  private:
 
   ItemType type;                           /**< the type of destructible item */
-  PickableItem::ItemType pickable_item;    /**< the pickable item that appears when the item is lifted or cut */
+  PickableItem::Subtype pickable_item;     /**< the pickable item that appears when the item is lifted or cut */
   int pickable_item_savegame_variable;     /**< savegame variable of the pickable item (if any) */
 
   bool is_being_cut;                       /**< indicates that the item is being cut */
@@ -80,7 +80,7 @@ class DestructibleItem: public Detector {
 
   // creation and destruction
   DestructibleItem(Layer layer, int x, int y, ItemType type,
-		   PickableItem::ItemType pickable_item, int pickable_item_savegame_variable);
+		   PickableItem::Subtype pickable_item, int pickable_item_savegame_variable);
   ~DestructibleItem(void);
 
   EntityType get_type(void);

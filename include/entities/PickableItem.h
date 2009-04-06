@@ -30,9 +30,9 @@ class PickableItem: public Detector {
  public:
 
   /**
-   * Types of pickable items.
+   * Subtypes of pickable items.
    */
-  enum ItemType {
+  enum Subtype {
 
     // special values
     RANDOM          = -1,   /**< special value to indicate to choose another value randomly (including NONE) */
@@ -64,19 +64,20 @@ class PickableItem: public Detector {
  protected:
 
   /**
-   * This structure defines the properties of a pickable item type.
+   * This structure defines the features of a pickable item subtype.
    */
-  struct Properties {
-    SpriteAnimationSetId animation_set_id; /**< animation set used for this type of pickable item */
-    std::string animation_name;                 /**< name of the animation */
+  struct Features {
+    SpriteAnimationSetId animation_set_id; /**< animation set used for this subtype of pickable item */
+    std::string animation_name;            /**< name of the animation */
     bool big_shadow;                       /**< true if the pickable item has a big shadow, false for a small shadow */
     SoundId sound;                         /**< the sound played when the player gets the item */
+    bool can_disappear;                    /**< indicates that the item can disappear after a delay */
   };
-  
-  static const Properties properties[];
 
-  ItemType type;          // type of pickable item
-  int savegame_variable;  // savegame index of the possession state of this item,
+  static const Features features[];
+
+  Subtype subtype;        // subtype of pickable item
+  int savegame_variable;  // savegame variable of the possession state of this item,
 		          // for certain kinds of items only: a key, a piece of heart...
 
   Sprite *shadow_sprite;                // sprite of the shadow (except for a fairy).
@@ -95,9 +96,9 @@ class PickableItem: public Detector {
   Uint32 disappear_date;  // date when the item disappears
 
   // creation and initialization
-  PickableItem(Layer layer, int x, int y, ItemType type, int savegame_variable);
+  PickableItem(Layer layer, int x, int y, Subtype subtype, int savegame_variable);
 
-  static ItemType choose_random_type(void);
+  static Subtype choose_random_subtype(void);
   virtual void initialize_sprites(void);
   virtual void initialize_movement(void);
 
@@ -111,17 +112,15 @@ class PickableItem: public Detector {
  public:
 
   // creation and destruction
-  static PickableItem * create(Layer layer, int x, int y, ItemType type, int savegame_variable,
+  static PickableItem * create(Layer layer, int x, int y, Subtype subtype, int savegame_variable,
 			       FallingOnFloorMovement::Height falling_height, bool will_disappear);
 
   virtual ~PickableItem(void);
 
-  EntityType get_type(void);  
-
-  // properties
-  static bool can_disappear(ItemType type);
+  EntityType get_type(void);
 
   // item state
+  static bool can_disappear(Subtype subtype);
   virtual void set_suspended(bool suspended);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   virtual void update(void);

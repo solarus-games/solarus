@@ -87,7 +87,7 @@ class Enemy: public Detector {
     int x, y;
   };
 
-  // attack/defense properties of this type of enemy
+  // attack/defense features of this type of enemy
   int damage_on_hero;                 /**< number of heart quarters the player loses when he gets hurt by this enemy;
 				       * this number is divided depending on the hero's tunic number (default: 1) */
   int life;                           /**< number of health points of the enemy (default: 1) */
@@ -125,20 +125,20 @@ class Enemy: public Detector {
   
 
   // pickable item
-  PickableItem::ItemType pickable_item_type;    /**< type of pickable item that appears when this enemy gets killed */
+  PickableItem::Subtype pickable_item_subtype;  /**< subtype of pickable item that appears when this enemy gets killed */
   int pickable_item_savegame_variable;          /**< savegame variable of the pickable item (if any) */
 
   // creation
   Enemy(const ConstructionParameters &params);
-  virtual void initialize(void) = 0; // to initialize the properties, the sprites and the movement
+  virtual void initialize(void) = 0; // to initialize the features, the sprites and the movement
 
   // functions available to the subclasses to define the enemy type properties (they can also change directly the fields)
   void set_damage(int damage_on_hero);
   void set_life(int life);
-  void set_properties(int damage_on_hero, int life);
-  void set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
-  void set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
-		      bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
+  void set_features(int damage_on_hero, int life);
+  void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
+  void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
+		    bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
   void set_vulnerability(Attack attack, int reaction);
 
   // hurt the enemy
@@ -151,7 +151,7 @@ class Enemy: public Detector {
 
   static Enemy *create(EnemyType type, Rank rank, int savegame_variable,
 		       std::string name, Layer layer, int x, int y, int direction,
-		       PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable);
+		       PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable);
 
   EntityType get_type(void);
   bool is_obstacle_for(MapEntity *other);

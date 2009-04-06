@@ -147,7 +147,7 @@ void MapLoader::load_map(Map *map) {
       {
 	int pickable_item_type, savegame_variable;
 	iss >> pickable_item_type >> savegame_variable;
-	entities->add_entity(PickableItem::create((MapEntity::Layer) layer, x, y, (PickableItem::ItemType) pickable_item_type,
+	entities->add_entity(PickableItem::create((MapEntity::Layer) layer, x, y, (PickableItem::Subtype) pickable_item_type,
 						  savegame_variable, FallingOnFloorMovement::NONE, false));
 	break;
       }
@@ -158,7 +158,7 @@ void MapLoader::load_map(Map *map) {
 	iss >> destructible_item_type >> pickable_item_type >> savegame_variable;
 	entities->add_entity(new DestructibleItem((MapEntity::Layer) layer, x, y,
 						  (DestructibleItem::ItemType) destructible_item_type,
-						  (PickableItem::ItemType) pickable_item_type, savegame_variable));
+						  (PickableItem::Subtype) pickable_item_type, savegame_variable));
 	break;
       }
 
@@ -187,7 +187,7 @@ void MapLoader::load_map(Map *map) {
 	  pickable_item_type >> pickable_item_savegame_variable;
 	entities->add_entity(Enemy::create((Enemy::EnemyType) enemy_type, (Enemy::Rank) rank, savegame_variable,
 					   entity_name, (MapEntity::Layer) layer, x, y, direction, 
-					   (PickableItem::ItemType) pickable_item_type, pickable_item_savegame_variable));
+					   (PickableItem::Subtype) pickable_item_type, pickable_item_savegame_variable));
 	break;
       }
 

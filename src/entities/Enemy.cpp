@@ -71,12 +71,12 @@ MapEntity::EntityType Enemy::get_type() {
  * @param y y position of the enemy on the map
  * @param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
- * @param pickable_item_type type of pickable item the enemy drops
+ * @param pickable_item_subtype subtype of pickable item the enemy drops
  * @param pickable_item_savegame_variable index of the boolean variable
  */
 Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
 		      std::string name, Layer layer, int x, int y, int direction,
-		      PickableItem::ItemType pickable_item_type, int pickable_item_savegame_variable) {
+		      PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable) {
 
   // see if the enemy is alive
   if (savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
@@ -101,10 +101,10 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
   enemy->set_direction(direction);
   enemy->rank = rank;
   enemy->savegame_variable = savegame_variable;
-  enemy->pickable_item_type = pickable_item_type;
+  enemy->pickable_item_subtype = pickable_item_subtype;
   enemy->pickable_item_savegame_variable = pickable_item_savegame_variable;
 
-  // set the default properties
+  // set the default enemy features
   enemy->damage_on_hero = 1;
   enemy->life = 1;
   enemy->hurt_sound_style = HURT_SOUND_NORMAL;
@@ -166,28 +166,28 @@ void Enemy::set_life(int life) {
 }
 
 /**
- * Sets some properties of this type of enemy.
+ * Sets some features of this type of enemy.
  * @param damage_on_hero number of heart quarters the player loses
  * @param life number of health points of the enemy
  */
-void Enemy::set_properties(int damage_on_hero, int life) {
+void Enemy::set_features(int damage_on_hero, int life) {
   set_damage(damage_on_hero);
   set_life(life);
 }
 
 /**
- * Sets some properties of this type of enemy.
+ * Sets some features of this type of enemy.
  * @param damage_on_hero number of heart quarters the player loses
  * @param life number of health points of the enemy
  * @param hurt_sound_style the sound played when this kind of enemy gets hurt by the hero
  */
-void Enemy::set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style) {
-  set_properties(damage_on_hero, life);
+void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style) {
+  set_features(damage_on_hero, life);
   this->hurt_sound_style = hurt_sound_style;
 }
 
 /**
- * Sets all properties of this type of enemy.
+ * Sets all features of this type of enemy.
  * @param damage_on_hero number of heart quarters the player loses
  * @param life number of health points of the enemy
  * @param hurt_sound_style the sound played when this kind of enemy gets hurt by the hero
@@ -196,9 +196,9 @@ void Enemy::set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sou
  * @param minimum_shield_needed shield number needed by the hero to avoid the attack of this enemy,
  * or 0 to make the attack unavoidable
  */
-void Enemy::set_properties(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
-			   bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed) {
-  set_properties(damage_on_hero, life, hurt_sound_style);
+void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
+			 bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed) {
+  set_features(damage_on_hero, life, hurt_sound_style);
   this->pushed_back_when_hurt = pushed_back_when_hurt;
   this->push_back_hero_on_sword = push_back_hero_on_sword;
   this->minimum_shield_needed = minimum_shield_needed;
@@ -254,9 +254,9 @@ void Enemy::update(void) {
   if (is_killed() && get_sprite()->is_animation_finished()) {
 
     // create the pickable item
-    if (pickable_item_type != PickableItem::NONE) {
-      bool will_disappear = PickableItem::can_disappear(pickable_item_type);
-      map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item_type,
+    if (pickable_item_subtype != PickableItem::NONE) {
+      bool will_disappear = PickableItem::can_disappear(pickable_item_subtype);
+      map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item_subtype,
 							   pickable_item_savegame_variable, FallingOnFloorMovement::HIGH,
 							   will_disappear));
     }

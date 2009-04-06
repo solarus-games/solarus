@@ -32,47 +32,47 @@
 #include "Treasure.h"
 
 /**
- * Properties of each type of pickable item.
+ * Features of each subtype of pickable item.
  */
-const PickableItem::Properties PickableItem::properties[] = {
+const PickableItem::Features PickableItem::features[] = {
 
-  {"", "", false, ""}, // none
+  {"", "", false, "", false}, // none
 
-  {"entities/rupee", "green", false, "picked_rupee"},  // 1 rupee
-  {"entities/rupee", "blue", false, "picked_rupee"},   // 5 rupees
-  {"entities/rupee", "red", false, "picked_rupee"},    // 20 rupees
-  {"entities/heart", "small_stopped", false, "picked_item"}, // heart
-  {"entities/magic", "small", false, "picked_item"},   // small magic
-  {"entities/magic", "big", false, "picked_item"},     // big magic
-  {"entities/fairy", "normal", true, "picked_item"},   // fairy
-  {"entities/bomb", "1", true, "picked_item"},         // 1 bomb
-  {"entities/bomb", "5", true, "picked_item"},         // 5 bombs
-  {"entities/bomb", "10", true, "picked_item"},        // 10 bombs
-  {"entities/arrow", "1", false, "picked_item"},       // 1 arrow
-  {"entities/arrow", "5", false, "picked_item"},       // 5 arrows
-  {"entities/arrow", "10", false, "picked_item"},      // 10 arrows
+  {"entities/rupee", "green", false, "picked_rupee", true},        // 1 rupee
+  {"entities/rupee", "blue", false, "picked_rupee", true},         // 5 rupees
+  {"entities/rupee", "red", false, "picked_rupee", true},          // 20 rupees
+  {"entities/heart", "small_stopped", false, "picked_item", true}, // heart
+  {"entities/magic", "small", false, "picked_item", true},         // small magic
+  {"entities/magic", "big", false, "picked_item", true},           // big magic
+  {"entities/fairy", "normal", true, "picked_item", true},         // fairy
+  {"entities/bomb", "1", true, "picked_item", true},               // 1 bomb
+  {"entities/bomb", "5", true, "picked_item", true},               // 5 bombs
+  {"entities/bomb", "10", true, "picked_item", true},              // 10 bombs
+  {"entities/arrow", "1", false, "picked_item", true},             // 1 arrow
+  {"entities/arrow", "5", false, "picked_item", true},             // 5 arrows
+  {"entities/arrow", "10", false, "picked_item", true},            // 10 arrows
 
-  {"entities/key", "small_key", false, "picked_small_key"}, // small key
-  {"entities/key", "big_key", true, ""},                    // big key
-  {"entities/key", "boss_key", true, ""},                   // boss key
-  {"entities/heart", "piece_of_heart", true, ""},           // piece of heart
-  {"entities/heart", "heart_container", true, ""},          // heart container
+  {"entities/key", "small_key", false, "picked_small_key", false}, // small key
+  {"entities/key", "big_key", true, "", false},                    // big key
+  {"entities/key", "boss_key", true, "", false},                   // boss key
+  {"entities/heart", "piece_of_heart", true, "", false},           // piece of heart
+  {"entities/heart", "heart_container", true, "", false},          // heart container
 };
 
 /**
- * Creates a pickable item with the specified type.
- * The type must a normal one (not NONE or RANDOM).
+ * Creates a pickable item with the specified subtype.
+ * The subtype must a normal one (not NONE or RANDOM).
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
- * @param type type of pickable item to create (must be a normal item)
+ * @param subtype subtype of pickable item to create (must be a normal item)
  * @param savegame_variable index of the savegame boolean variable storing
  * the possession state of this item,
  * only for pickable items that are saved (a key, a piece of heart...)
  */
-PickableItem::PickableItem(Layer layer, int x, int y, PickableItem::ItemType type, int savegame_variable):
+PickableItem::PickableItem(Layer layer, int x, int y, PickableItem::Subtype subtype, int savegame_variable):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
-  type(type), savegame_variable(savegame_variable),
+  subtype(subtype), savegame_variable(savegame_variable),
   shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
 
 }
@@ -96,16 +96,16 @@ MapEntity::EntityType PickableItem::get_type() {
 }
 
 /**
- * Creates a pickable item with the specified type.
+ * Creates a pickable item with the specified subtype.
  * This method acts like a constructor, except that it can return NULL in four cases:
- * - if the specified type is NONE
+ * - if the specified subtype is NONE
  * or:
- * - if the specified type is RANDOM and the random type chosen is NONE
+ * - if the specified subtype is RANDOM and the random subtype chosen is NONE
  * or:
- * - if the specified type corresponds to a saved item (that the player can obtain only once)
+ * - if the specified subtype corresponds to a saved item (that the player can obtain only once)
  *   and the player already has found the item
  * or:
- * - if the specified type corresponds to an item the player has not unlocked yet
+ * - if the specified subtype corresponds to an item the player has not unlocked yet
  * (e.g. arrows without bow)
  *   and the player already has found the item
  * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
@@ -113,34 +113,34 @@ MapEntity::EntityType PickableItem::get_type() {
  * @param layer layer of the pickable item to create on the map (ignored for a fairy)
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
- * @param type type of pickable item to create (can be a normal item, NONE
+ * @param subtype subtype of pickable item to create (can be a normal item, NONE
  * or RANDOM)
  * @param savegame_variable index of the savegame boolean variable storing
  * the possession state of this item,
  * only for pickable items that are saved (a key, a piece of heart...)
  * @param falling_height to make the item fall when it appears (ignored for a fairy)
  * @param will_disappear true to make the item disappear after an amout of time
- * @return the pickable item created, or NULL depending on the type
+ * @return the pickable item created, or NULL depending on the subtype
  */
-PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::ItemType type,
+PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Subtype subtype,
 				    int savegame_variable, FallingOnFloorMovement::Height falling_height, bool will_disappear) {
 
-  if (type == RANDOM) {
-    // pick a type at random
-    type = choose_random_type();
+  if (subtype == RANDOM) {
+    // pick a subtype at random
+    subtype = choose_random_subtype();
   }
 
-  // don't create anything if the type is NONE
-  if (type == NONE) {
+  // don't create anything if the subtype is NONE
+  if (subtype == NONE) {
     return NULL;
   }
 
-  if (type >= SMALL_KEY && type <= BOSS_KEY && !zsdx->game->get_current_map()->is_in_dungeon()) {
-    DIE("Illegal pickable item type " << type << " in a dungeon");
+  if (subtype >= SMALL_KEY && subtype <= BOSS_KEY && !zsdx->game->get_current_map()->is_in_dungeon()) {
+    DIE("Illegal pickable item subtype " << subtype << " in a dungeon");
   }
 
   // don't create anything if this is an item already found
-  if (type > ARROW_10 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
+  if (subtype > ARROW_10 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
     return NULL;
   }
 
@@ -150,15 +150,15 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Ite
   bool has_bow = equipment->has_inventory_item(InventoryItem::BOW);
   bool has_magic = equipment->get_max_magic() > 0;
 
-  if ((type >= BOMB_1 && type <= BOMB_10 && !has_bombs) ||
-      (type >= ARROW_1 && type <= ARROW_10 && !has_bow) ||
-      (type >= SMALL_MAGIC && type <= BIG_MAGIC && !has_magic)) {
+  if ((subtype >= BOMB_1 && subtype <= BOMB_10 && !has_bombs) ||
+      (subtype >= ARROW_1 && subtype <= ARROW_10 && !has_bow) ||
+      (subtype >= SMALL_MAGIC && subtype <= BIG_MAGIC && !has_magic)) {
     return NULL;
   }
 
   PickableItem *item;
 
-  switch (type) {
+  switch (subtype) {
 
     // special class for the heart
   case HEART:
@@ -172,7 +172,7 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Ite
 
     // other items: no special class, but directly PickableItem
   default:
-    item = new PickableItem(layer, x, y, type, savegame_variable);
+    item = new PickableItem(layer, x, y, subtype, savegame_variable);
     break;
   }
 
@@ -189,8 +189,8 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Ite
 }
 
 /**
- * Chooses a type of item randomly.
- * This function is called when the type of item is RANDOM.
+ * Chooses a subtype of item randomly.
+ * This function is called when the subtype of item is RANDOM.
  *
  * Some items have a low probability (fairies, big bottles of magic...)
  * while other have a high probability (hearts, rupees...).
@@ -199,11 +199,11 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Ite
  * If the player is running out of hearts, magic, bombs or arrows,
  * the probability of getting what he needs is increased.
  *
- * @return a type of item (can be NONE or a normal item)
+ * @return a subtype of item (can be NONE or a normal item)
  */
-PickableItem::ItemType PickableItem::choose_random_type(void) {
+PickableItem::Subtype PickableItem::choose_random_subtype(void) {
 
-  PickableItem::ItemType type;
+  PickableItem::Subtype subtype;
 
   int r = Random::get_number(1000);
 
@@ -211,7 +211,7 @@ PickableItem::ItemType PickableItem::choose_random_type(void) {
 
   if (r < 625) {
     // give the player nothing with probability 62.5%
-    type = NONE;
+    subtype = NONE;
   }
 
   else if (r < 725) { // with probability 10%
@@ -219,62 +219,61 @@ PickableItem::ItemType PickableItem::choose_random_type(void) {
     
     // does he need hearts?
     if (equipment->needs_hearts()) {
-      type = HEART;
+      subtype = HEART;
     }
 
     // does he need magic?
     else if (equipment->needs_magic()) {
-      type = SMALL_MAGIC;
+      subtype = SMALL_MAGIC;
     }
 
     // does he need bombs?
     else if (equipment->needs_bombs()) {
-      type = BOMB_5;
+      subtype = BOMB_5;
     }
 
     // does he need arrows?
     else if (equipment->needs_arrows()) {
-      type = ARROW_5;
+      subtype = ARROW_5;
     }
 
     // well, he does not need anything
     else {
-      type = NONE;
+      subtype = NONE;
     }
   }
 
   // the remaining 27.5% are distributed as follows:
 
-  else if (r < 825) { type = HEART; }       // heart: 10%
-  else if (r < 875) { type = RUPEE_1; }     // 1 rupee: 5%
-  else if (r < 890) { type = RUPEE_5; }     // 5 rupees: 1.5%
-  else if (r < 895) { type = RUPEE_20; }    // 20 rupees: 0.5%
-  else if (r < 897) { type = FAIRY; }       // fairy: 0.2%
-  else if (r < 922) { type = SMALL_MAGIC; } // small magic: 2.5%
-  else if (r < 930) { type = BIG_MAGIC; }   // big magic: 0.8%
-  else if (r < 950) { type = BOMB_1; }      // 1 bomb: 2%
-  else if (r < 960) { type = BOMB_5; }      // 5 bombs: 1%
-  else if (r < 965) { type = BOMB_10; }     // 10 bombs: 0.5%
-  else if (r < 985) { type = ARROW_1; }     // 1 arrow: 2%
-  else if (r < 995) { type = ARROW_5; }     // 5 arrows: 1%
-  else              { type = ARROW_10; }    // 10 arrows: 0.5%
+  else if (r < 825) { subtype = HEART; }       // heart: 10%
+  else if (r < 875) { subtype = RUPEE_1; }     // 1 rupee: 5%
+  else if (r < 890) { subtype = RUPEE_5; }     // 5 rupees: 1.5%
+  else if (r < 895) { subtype = RUPEE_20; }    // 20 rupees: 0.5%
+  else if (r < 897) { subtype = FAIRY; }       // fairy: 0.2%
+  else if (r < 922) { subtype = SMALL_MAGIC; } // small magic: 2.5%
+  else if (r < 930) { subtype = BIG_MAGIC; }   // big magic: 0.8%
+  else if (r < 950) { subtype = BOMB_1; }      // 1 bomb: 2%
+  else if (r < 960) { subtype = BOMB_5; }      // 5 bombs: 1%
+  else if (r < 965) { subtype = BOMB_10; }     // 10 bombs: 0.5%
+  else if (r < 985) { subtype = ARROW_1; }     // 1 arrow: 2%
+  else if (r < 995) { subtype = ARROW_5; }     // 5 arrows: 1%
+  else              { subtype = ARROW_10; }    // 10 arrows: 0.5%
 
-  return type;
+  return subtype;
 }
 
 /**
- * Returns whether the specified type of item can disappear.
- * Special items like keys or pieces of hearts cannot.
- * @param type a type of pickable item
- * @return true if this type of pickable item can disappear
+ * Returns whether this subtype of pickable item can disappear after a delay.
+ * Items saved like keys and pieces of hearts cannot disappear.
+ * @return true if this subtype of pickable item can disappear
  */
-bool PickableItem::can_disappear(ItemType type) {
-  return type <= ARROW_10;
+bool PickableItem::can_disappear(Subtype subtype) {
+  return features[subtype].can_disappear;
 }
 
 /**
  * Creates the sprite of this pickable item,
- * depending on its type.
+ * depending on its subtype.
  * The pickable items are represented with two sprites:
  * the item itself and its shadow, except the fairy whose
  * shadow is part of its sprite.
@@ -284,14 +283,14 @@ void PickableItem::initialize_sprites(void) {
   // create the shadow
   shadow_sprite = new Sprite("entities/shadow");
 
-  if (properties[type].big_shadow) {
+  if (features[subtype].big_shadow) {
     shadow_sprite->set_current_animation("big");
   }
 
   // create the sprite and set its animation
-  create_sprite(properties[type].animation_set_id);
+  create_sprite(features[subtype].animation_set_id);
   Sprite *item_sprite = get_sprite();
-  item_sprite->set_current_animation(properties[type].animation_name);
+  item_sprite->set_current_animation(features[subtype].animation_name);
 
   // set the origin point and the size of the entity
   set_rectangle_from_sprite();
@@ -311,7 +310,7 @@ void PickableItem::initialize_sprites(void) {
 
 /**
  * Initializes the movement of the item (if it is falling),
- * depending on its type.
+ * depending on its subtype.
  */
 void PickableItem::initialize_movement(void) {
 
@@ -351,8 +350,8 @@ void PickableItem::collision(MapEntity *entity_overlapping, CollisionMode collis
 void PickableItem::give_item_to_player(void) {
 
   // play the sound
-  if (properties[type].sound != "") {
-    Sound *sound = ResourceManager::get_sound(properties[type].sound);
+  if (features[subtype].sound != "") {
+    Sound *sound = ResourceManager::get_sound(features[subtype].sound);
     sound->play();
   }
 
@@ -361,7 +360,7 @@ void PickableItem::give_item_to_player(void) {
   Equipment *equipment = game->get_equipment();
   Treasure *treasure;
 
-  switch (type) {
+  switch (subtype) {
 
   case RUPEE_1:
     equipment->add_rupees(1);
@@ -441,7 +440,7 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   default:
-    DIE("Unknown pickable item type '" << type << "'");
+    DIE("Unknown pickable item subtype '" << subtype << "'");
     break;
 
   }

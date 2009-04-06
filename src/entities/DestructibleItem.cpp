@@ -51,14 +51,14 @@ const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
  * @param x x coordinate of the destructible item to create
  * @param y y coordinate of the destructible item to create
  * @param type type of destructible item to create
- * @param pickable_item the type of pickable item that appears when the destructible
+ * @param pickable_item the subtype of pickable item that appears when the destructible
  * item is lifted or cut
  * @param pickable_item_savegame_variable index of the savegame boolean variable
  * storing the possession state of the pickable item,
  * for certain kinds of pickable items only (a key, a piece of heart...)
  */
 DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::ItemType type,
-				   PickableItem::ItemType pickable_item, int pickable_item_savegame_variable):
+				   PickableItem::Subtype pickable_item, int pickable_item_savegame_variable):
   Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
   type(type), pickable_item(pickable_item),
   pickable_item_savegame_variable(pickable_item_savegame_variable), is_being_cut(false) {
@@ -242,7 +242,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       map->get_entities()->bring_to_front(this); // show animation destroy to front
 
       if (pickable_item != PickableItem::NONE) {
-	bool will_disappear = (pickable_item <= PickableItem::ARROW_10);
+	bool will_disappear = PickableItem::can_disappear(pickable_item);
 	map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item,
 							     pickable_item_savegame_variable,
 							     FallingOnFloorMovement::MEDIUM, will_disappear));

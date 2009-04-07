@@ -55,7 +55,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	addField("Visibility", withSpriteField);
 
 	// sprite name
-	spriteField = new ResourceChooser(ResourceDatabase.RESOURCE_SPRITE, true);
+	spriteField = new ResourceChooser(ResourceType.SPRITE, true);
 	addField("Sprite name", spriteField);
 
 	// show a message?

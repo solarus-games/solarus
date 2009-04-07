@@ -328,7 +328,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	g.translate(scaledSpaceAroundMap, scaledSpaceAroundMap);
 
 	// background color
-	if (renderingOptions.getShowLayer(MapEntity.LAYER_LOW) && tileset != null) {
+	if (renderingOptions.getShowLayer(Layer.LOW) && tileset != null) {
 	    g.setColor(tileset.getBackgroundColor());
 	}
 	else {
@@ -341,7 +341,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             int x, y, width, height;
 
             // the entities
-            for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+            for (Layer layer: Layer.values()) {
 
                 // nothing to do if this layer is not shown
                 if (renderingOptions.getShowLayer(layer)) {
@@ -1020,10 +1020,11 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	int x = getMouseInMapX(mouseEvent);
 	int y = getMouseInMapY(mouseEvent);
 
-	for (int layer = MapEntity.LAYER_HIGH;
-	layer >= MapEntity.LAYER_LOW && entityClicked == null;
-	layer--) {
+	for (int id = Layer.values().length - 1;
+	id >= 0 && entityClicked == null;
+	id--) {
 
+	    Layer layer = Layer.get(id);
 	    if (renderingOptions.getShowLayer(layer)) {
 		entityClicked = map.getEntityAt(layer, x, y);
 	    }

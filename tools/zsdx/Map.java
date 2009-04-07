@@ -156,7 +156,7 @@ public class Map extends Observable {
 
 	// compute an id and a name for this map
 	this.name = "New map";
-	Resource mapResource = Project.getResource(ResourceDatabase.RESOURCE_MAP);
+	Resource mapResource = Project.getResource(ResourceType.MAP);
 	this.mapId = mapResource.computeNewId();
 
 	setChanged();
@@ -179,8 +179,8 @@ public class Map extends Observable {
      */
     private void initialize() {
 	this.allEntities = new MapEntities[3];
-	for (int i = 0; i < MapEntity.LAYER_NB; i++) {
-	    this.allEntities[i] = new MapEntities();
+	for (Layer layer: Layer.values()) {
+	    this.allEntities[layer.getId()] = new MapEntities();
 	}
 
 	this.entitySelection = new MapEntitySelection(this);
@@ -320,10 +320,10 @@ public class Map extends Observable {
 
 	    this.tileset = new Tileset(tilesetId);
 
-	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	    for (Layer layer: Layer.values()) {
 
 		LinkedList<MapEntity> entitiesToRemove = new LinkedList<MapEntity>(); 
-		for (MapEntity entity: allEntities[layer]) {
+		for (MapEntity entity: allEntities[layer.getId()]) {
 
 		    try {
 			entity.setTileset(tileset);
@@ -336,7 +336,7 @@ public class Map extends Observable {
 		}
 
 		for (MapEntity entity: entitiesToRemove) {
-		    allEntities[layer].remove(entity);
+		    allEntities[layer.getId()].remove(entity);
 		}
 	    }
 
@@ -520,8 +520,8 @@ public class Map extends Observable {
 	int nbEntities = 0;
 
 	// count the entities of each layer
-	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    nbEntities += allEntities[layer].size();
+	for (Layer layer: Layer.values()) {
+	    nbEntities += allEntities[layer.getId()].size();
 	}
 
 	return nbEntities;
@@ -536,8 +536,8 @@ public class Map extends Observable {
 	int nbTiles = 0;
 
 	// count the tiles of each layer
-	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    nbTiles += allEntities[layer].getNbTiles();
+	for (Layer layer: Layer.values()) {
+	    nbTiles += allEntities[layer.getId()].getNbTiles();
 	}
 
 	return nbTiles;
@@ -551,9 +551,9 @@ public class Map extends Observable {
 
 	int nbDynamicEntities = 0;
 
-	// count the active entities of each layer
-	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    nbDynamicEntities += allEntities[layer].getNbDynamicEntities();
+	// count the dynamic entities of each layer
+	for (Layer layer: Layer.values()) {
+	    nbDynamicEntities += allEntities[layer.getId()].getNbDynamicEntities();
 	}
 
 	return nbDynamicEntities;
@@ -573,8 +573,8 @@ public class Map extends Observable {
      */
     public void setAllEntities(MapEntities[] allEntities) {
 
-	for (int layer = MapEntity.LAYER_LOW; layer < MapEntity.LAYER_NB; layer++) {
-	    this.allEntities[layer] = new MapEntities(allEntities[layer]);
+	for (Layer layer: Layer.values()) {
+	    this.allEntities[layer.getId()] = new MapEntities(allEntities[layer.getId()]);
 	}
 
 	setChanged();
@@ -583,11 +583,11 @@ public class Map extends Observable {
 
     /**
      * Returns the entities of the map on a given layer.
-     * @param layer the layer: MapEntity.LAYER_LOW, MapEntity.LAYER_INTERMEDIATE or MapEntity.LAYER_HIGH
-     * @return the entities placed on this layer
+     * @param layer the layer
+     * @return the entities placed on that layer
      */
-    public MapEntities getEntities(int layer) {
-	return allEntities[layer];
+    public MapEntities getEntities(Layer layer) {
+	return allEntities[layer.getId()];
     }
 
     /**
@@ -599,32 +599,10 @@ public class Map extends Observable {
     public List<MapEntity> getEntitiesOfType(EntityType entityType) {
 
 	List<MapEntity> list = new LinkedList<MapEntity>();
-	for (int layer = MapEntity.LAYER_LOW; layer < MapEntity.LAYER_NB; layer++) {
-	    list.addAll(allEntities[layer].getEntitiesOfType(entityType));
+	for (Layer layer: Layer.values()) {
+	    list.addAll(allEntities[layer.getId()].getEntitiesOfType(entityType));
 	}
 	return list;
-    }
-	
-    /**
-     * Returns the first entity under a point of the map, in the three layers,
-     * starting with the high layer.
-     * @param x x of the point
-     * @param y y of the point
-     * @return the entity found, or null if there is no entity here
-     */
-    public MapEntity getEntityAt(int x, int y) {
-
-	MapEntity entity = getEntityAt(MapEntity.LAYER_HIGH, x, y);
-
-	if (entity == null) {
-	    entity = getEntityAt(MapEntity.LAYER_INTERMEDIATE, x, y);
-
-	    if (entity == null) {
-		entity = getEntityAt(MapEntity.LAYER_LOW, x, y);
-	    }
-	}
-
-	return entity;
     }
 
     /**
@@ -634,9 +612,9 @@ public class Map extends Observable {
      * @param y y of the point
      * @return the entity found, or null if there is no entity here
      */
-    public MapEntity getEntityAt(int layer, int x, int y) {
+    public MapEntity getEntityAt(Layer layer, int x, int y) {
 		
-	MapEntities entities = allEntities[layer];
+	MapEntities entities = allEntities[layer.getId()];
 	ListIterator<MapEntity> iterator = entities.listIterator(entities.size());
 	while (iterator.hasPrevious()) {
 
@@ -668,9 +646,9 @@ public class Map extends Observable {
 
 	Rectangle rectangle = new Rectangle(x, y, width, height);
 
-	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	for (Layer layer: Layer.values()) {
 
-	    for (MapEntity entity: allEntities[layer]) {
+	    for (MapEntity entity: allEntities[layer.getId()]) {
 		if (rectangle.contains(entity.getPositionInMap())) {
 		    entitiesInRectangle.add(entity);
 		}
@@ -688,24 +666,23 @@ public class Map extends Observable {
      */
     public MapEntity getEntityWithName(EntityType type, String name) {
 
-	MapEntity entity = null;
-	for (int layer = MapEntity.LAYER_LOW;
-		layer < MapEntity.LAYER_NB && entity == null;
-		layer++) {
-	    
-	    entity = allEntities[layer].getEntityWithName(type, name);
+	for (Layer layer: Layer.values()) {
+	    MapEntity entity = allEntities[layer.getId()].getEntityWithName(type, name);
+	    if (entity != null) {
+		return entity;
+	    }
 	}
 	
-	return entity;
+	return null;
     }
 
     /**
-     * Adds a new entity on the map.
+     * Adds an entity on the map.
      * @param entity the entity to add
      */
     public void addEntity(MapEntity entity) {
 
-	allEntities[entity.getLayer()].add(entity);
+	allEntities[entity.getLayer().getId()].add(entity);
 
 	setChanged();
 	notifyObservers();
@@ -717,7 +694,7 @@ public class Map extends Observable {
      */
     public void removeEntity(MapEntity entity) {
 
-	allEntities[entity.getLayer()].remove(entity);
+	allEntities[entity.getLayer().getId()].remove(entity);
 
 	setChanged();
 	notifyObservers();
@@ -832,14 +809,14 @@ public class Map extends Observable {
      * @param entity the entity to change the layer
      * @param layer the new layer
      */
-    public void setEntityLayer(MapEntity entity, int layer) {
+    public void setEntityLayer(MapEntity entity, Layer layer) {
 
-	int oldLayer = entity.getLayer();
+	Layer oldLayer = entity.getLayer();
 
 	if (layer != oldLayer) {
 	    entity.setLayer(layer);
-	    allEntities[oldLayer].remove(entity);
-	    allEntities[layer].add(entity);
+	    allEntities[oldLayer.getId()].remove(entity);
+	    allEntities[layer.getId()].add(entity);
 	    
 	    setChanged();
 	    notifyObservers();
@@ -857,9 +834,9 @@ public class Map extends Observable {
 	List<MapEntity> sortedEntities = new LinkedList<MapEntity>();
 
 	// sort the entities so that they have the same order as in the map
-	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	for (Layer layer: Layer.values()) {
 
-	    for (MapEntity entity: allEntities[layer]) {
+	    for (MapEntity entity: allEntities[layer.getId()]) {
 
 		if (entities.contains(entity)) {
 		    sortedEntities.add(entity);
@@ -885,9 +862,9 @@ public class Map extends Observable {
 	while (iterator.hasPrevious()) {
 
 	    MapEntity entity = iterator.previous();
-	    int layer = entity.getLayer();
-	    allEntities[layer].remove(entity);
-	    allEntities[layer].addFirst(entity);
+	    Layer layer = entity.getLayer();
+	    allEntities[layer.getId()].remove(entity);
+	    allEntities[layer.getId()].addFirst(entity);
 	}
 
 	setChanged();
@@ -908,9 +885,9 @@ public class Map extends Observable {
 	while (iterator.hasNext()) {
 
 	    MapEntity entity = iterator.next();
-	    int layer = entity.getLayer();
-	    allEntities[layer].remove(entity);
-	    allEntities[layer].addLast(entity);
+	    Layer layer = entity.getLayer();
+	    allEntities[layer.getId()].remove(entity);
+	    allEntities[layer.getId()].addLast(entity);
 	}
 
 	setChanged();
@@ -992,7 +969,7 @@ public class Map extends Observable {
 	try {
 
 	    // get the map name in the game resource database
-	    Resource mapResource = Project.getResource(ResourceDatabase.RESOURCE_MAP);
+	    Resource mapResource = Project.getResource(ResourceType.MAP);
 	    setName(mapResource.getElementName(mapId));
 	    
 	    File mapFile = Project.getMapFile(mapId);
@@ -1096,9 +1073,9 @@ public class Map extends Observable {
 	    out.print(musicId);
 	    out.println();
 
-	    for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
+	    for (Layer layer: Layer.values()) {
 
-		MapEntities entities = allEntities[layer];
+		MapEntities entities = allEntities[layer.getId()];
 
 		// print the entities
 		for (MapEntity entity: entities) {
@@ -1112,7 +1089,7 @@ public class Map extends Observable {
 	    history.setSaved();
 
 	    // also update the map name in the global resource list
-	    Resource mapResource = Project.getResource(ResourceDatabase.RESOURCE_MAP);
+	    Resource mapResource = Project.getResource(ResourceType.MAP);
 	    mapResource.setElementName(mapId, name);
 	    Project.getResourceDatabase().save();
 	    

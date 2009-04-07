@@ -740,7 +740,7 @@ public class MapPropertiesView extends JPanel implements Observer {
 	 * Constructor.
 	 */
 	public TilesetField() {
-	    super(ResourceDatabase.RESOURCE_TILESET, true);
+	    super(ResourceType.TILESET, true);
 	    addActionListener(this);
 	    update((Map) null);
 	}

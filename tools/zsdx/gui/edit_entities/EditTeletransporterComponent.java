@@ -54,7 +54,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	addField("Transition", transitionField);
 
 	// destination map
-	mapField = new ResourceChooser(ResourceDatabase.RESOURCE_MAP, true);
+	mapField = new ResourceChooser(ResourceType.MAP, true);
 	addField("Destination map", mapField);
 
 	// destination point

@@ -318,7 +318,7 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
 	    return;
 	}
 
-	ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceDatabase.RESOURCE_TILESET);
+	ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.TILESET);
 	dialog.setLocationRelativeTo(TilesetEditorWindow.this);
 	dialog.pack();
 	dialog.setVisible(true);

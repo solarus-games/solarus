@@ -98,7 +98,7 @@ public class TilePatternIcon extends JComponent implements Observer {
 
 	    // if the tile pattern is animated, let's display only the first frame
 	    if (tilePattern.isAnimated()) {
-		if (tilePattern.getAnimationSeparation() == TilePattern.ANIMATION_SEPARATION_HORIZONTAL) {
+		if (tilePattern.getAnimationSeparation() == TilePattern.AnimationSeparation.HORIZONTAL) {
 		    width = width / 3;
 		}
 		else {

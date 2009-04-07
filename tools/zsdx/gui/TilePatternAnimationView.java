@@ -16,12 +16,11 @@
  */
 package zsdx.gui;
 
-import zsdx.*;
 import zsdx.entities.*;
+import zsdx.entities.TilePattern.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.*;
 
 /**
  * Graphical component to select the animation properties of a tile pattern:
@@ -32,43 +31,22 @@ import java.util.*;
  * how the 3 animations are separated in the tileset (vertically or
  * horizontally).
  */
-public class TilePatternAnimationView extends JPanel implements Observer, ActionListener {
+public class TilePatternAnimationView extends JPanel implements ActionListener {
 
     /**
-     * The tile pattern observed.
+     * The tile pattern currently represented in this view (can be null) 
      */
     private TilePattern tilePattern;
 
     /**
-     * List to select the animation type of the tilepattern.
+     * Combo box to select the animation type of the tilepattern.
      */
-    public JComboBox sequenceList;
+    public EnumerationChooser<AnimationSequence> sequenceField;
 
     /**
-     * List to select how the 3 animations are separated in the tileset.
+     * Combo box to select how the 3 animations are separated in the tileset.
      */
-    public JComboBox separationList;
-    
-    /**
-     * Text displayed in the first list.
-     */
-    private static final String[] sequenceItems = {
-	"None",
-	"1-2-3",
-	"1-2-3-2"
-    };
-
-    /**
-     * Text displayed in the second list.
-     */
-    private static final ImageIcon[] separationItems;
-
-    // load the icons
-    static {
-	separationItems = new ImageIcon[2];
-	separationItems[TilePattern.ANIMATION_SEPARATION_HORIZONTAL] = Project.getEditorImageIcon("animation_separation_horizontal.png");
-	separationItems[TilePattern.ANIMATION_SEPARATION_VERTICAL] = Project.getEditorImageIcon("animation_separation_vertical.png");
-    }
+    public EnumerationIconChooser<AnimationSeparation> separationField;
 
     /**
      * Constructor.
@@ -79,53 +57,42 @@ public class TilePatternAnimationView extends JPanel implements Observer, Action
 	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 	// list for the animation sequence
-	sequenceList = new JComboBox(sequenceItems);
-	sequenceList.addActionListener(this);
+	sequenceField = new EnumerationChooser<AnimationSequence>(AnimationSequence.class);
+	sequenceField.addActionListener(this);
 
 	// list for the separation
-	separationList = new JComboBox(separationItems);
-	separationList.addActionListener(this);
+	separationField = new EnumerationIconChooser<AnimationSeparation>(AnimationSeparation.class);
+	separationField.addActionListener(this);
 
 	// add the two lists
-	add(sequenceList);
+	add(sequenceField);
 	add(Box.createRigidArea(new Dimension(5, 0)));
-	add(separationList);
-    }
-
-    /**
-     * Sets the current tile pattern observed.
-     */
-    public void setCurrentTilePattern(TilePattern tilePattern) {
-	if (this.tilePattern != null) {
-	    this.tilePattern.deleteObserver(this);
-	}
-
-	this.tilePattern = tilePattern;
-	
-	if (tilePattern != null) {
-	    tilePattern.addObserver(this);
-	    sequenceList.setEnabled(true);
-	    update(tilePattern, null);
-	}
-	else {
-	    sequenceList.setEnabled(false);
-	    separationList.setEnabled(false);
-	}
+	add(separationField);
     }
 
     /**
      * This method is called when the tile pattern is changed.
+     * @param tilePattern the tile pattern to represent in this view (can be null)
      */
-    public void update(Observable o, Object params) {
-	int sequence = tilePattern.getAnimationSequence();
-	sequenceList.setSelectedIndex(sequence);
+    public void update(TilePattern tilePattern) {
 
-	if (tilePattern.isAnimated()) {
-	    separationList.setSelectedIndex(tilePattern.getAnimationSeparation());
-	    separationList.setEnabled(true);
+	this.tilePattern = tilePattern;
+	if (tilePattern == null) {
+	    sequenceField.setEnabled(false);
+	    separationField.setEnabled(false);
 	}
 	else {
-	    separationList.setEnabled(false);
+	    AnimationSequence sequence = tilePattern.getAnimationSequence();
+	    sequenceField.setEnabled(true);
+	    sequenceField.setValue(sequence);
+
+	    if (tilePattern.isAnimated()) {
+		separationField.setValue(tilePattern.getAnimationSeparation());
+		separationField.setEnabled(true);
+	    }
+	    else {
+		separationField.setEnabled(false);
+	    }
 	}
     }
     
@@ -134,24 +101,24 @@ public class TilePatternAnimationView extends JPanel implements Observer, Action
      */
     public void actionPerformed(ActionEvent ev) {
 
-	sequenceList.hidePopup();
-	separationList.hidePopup();
+	sequenceField.hidePopup();
+	separationField.hidePopup();
 
 	try {
-	    if (ev.getSource() == sequenceList) {
-		int listIndex = sequenceList.getSelectedIndex();
-		int animationIndex = tilePattern.getAnimationSequence();
-		if (listIndex != animationIndex) {
+	    if (ev.getSource() == sequenceField) {
+		AnimationSequence listValue = sequenceField.getValue();
+		AnimationSequence tileValue = tilePattern.getAnimationSequence();
+		if (listValue != tileValue) {
 		    // the tile pattern's animation sequence has changed
-		    tilePattern.setAnimationSequence(listIndex);
+		    tilePattern.setAnimationSequence(listValue);
 		}
 	    }
 	    else {
-		int listIndex = separationList.getSelectedIndex();
-		int animationIndex = tilePattern.getAnimationSeparation();
-		if (listIndex != animationIndex) {
+		AnimationSeparation listValue = separationField.getValue();
+		AnimationSeparation tileValue = tilePattern.getAnimationSeparation();
+		if (listValue != tileValue) {
 		    // the direction of the animation separation has changed
-		    tilePattern.setAnimationSeparation(listIndex);
+		    tilePattern.setAnimationSeparation(listValue);
 		}
 	    }
 	}
@@ -160,7 +127,7 @@ public class TilePatternAnimationView extends JPanel implements Observer, Action
 					  ex.getMessage(),
 					  "Error",
 					  JOptionPane.ERROR_MESSAGE);
-	    update(null, null);
+	    update(tilePattern);
 	}
     }
 }

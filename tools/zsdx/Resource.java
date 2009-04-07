@@ -32,7 +32,7 @@ public class Resource extends Observable {
     /**
      * True if the id is an auto-incremented integer, false if it is a custom string.
      */
-    private boolean autoIncrementId;
+    private boolean idAutoIncremented;
 
     /**
      * Maximum id already assigned to an element (used only if autoIncrementId is true).
@@ -41,12 +41,12 @@ public class Resource extends Observable {
 
     /**
      * Creates the resource.
-     * @param autoIncrementId true if you want the id to be an auto-incremented integer,
+     * @param idAutoIncremented true if you want the id to be an auto-incremented integer,
      * false if you prefer a custom string.
      */
-    public Resource(boolean autoIncrementId) {
+    public Resource(boolean idAutoIncremented) {
 
-	this.autoIncrementId = autoIncrementId;
+	this.idAutoIncremented = idAutoIncremented;
 	this.maxId = -1;
 	this.elements = new LinkedHashMap<String, String>();
     }
@@ -114,7 +114,7 @@ public class Resource extends Observable {
 	    throw new ZSDXException("Empty id for element '" + name);
 	}
 
-	if (autoIncrementId) {
+	if (idAutoIncremented) {
 	    
 	    try {
 		int intId = Integer.parseInt(id);

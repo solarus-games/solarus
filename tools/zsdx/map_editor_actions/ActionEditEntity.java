@@ -33,8 +33,8 @@ public class ActionEditEntity extends MapEditorAction {
     private String nameBefore;
     private String nameAfter;
 
-    private int layerBefore;
-    private int layerAfter;
+    private Layer layerBefore;
+    private Layer layerAfter;
 
     private Rectangle positionBefore;
     private Rectangle positionAfter;
@@ -66,7 +66,7 @@ public class ActionEditEntity extends MapEditorAction {
      * of the entity
      */
     public ActionEditEntity(Map map, MapEntity entity, String name,
-	    int layer, Point position, Dimension size, int direction,
+	    Layer layer, Point position, Dimension size, int direction,
 	    EntitySubtype subtype, ActionEditEntitySpecific specificAction) {
 	super(map);
 

@@ -38,6 +38,8 @@ public enum Obstacle {
     private int id;
     private String iconFileName;
 
+    private static ImageIcon[] icons = null;
+
     public static final String[] humanNames = {
 	"Shallow water",
 	"Deep water",
@@ -49,8 +51,6 @@ public enum Obstacle {
 	"Bottom right",
 	"Hole",
     };
-
-    private static ImageIcon[] icons = null;
 
     /**
      * Creates an obstacle property
@@ -94,6 +94,14 @@ public enum Obstacle {
     }
 
     /**
+     * Returns whether this obstacle property corresponds to a wall.
+     * @return true if this is a wall
+     */
+    public boolean isWall() {
+	return getId() >= OBSTACLE.getId();
+    }
+
+    /**
      * Returns whether this obstacle property corresponds to a diagonal wall.
      * @return true if this is a diagonal wall
      */
@@ -118,8 +126,9 @@ public enum Obstacle {
 	if (icons == null) {
 	    icons = new ImageIcon[values().length];
 	    int i = 0;
-	    for (Obstacle obstacle: values()) {
-		icons[i] = Project.getEditorImageIcon(obstacle.iconFileName);
+	    for (Obstacle value: values()) {
+		icons[i] = Project.getEditorImageIcon(value.iconFileName);
+		icons[i].setDescription(value.name());
 		i++;
 	    }
 	}

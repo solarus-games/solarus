@@ -148,8 +148,8 @@ public class Dungeon {
 	nbBossesSaved = 0;
 
 	MapEntities[] allEntities = map.getAllEntities();
-	for (int layer = 0; layer < MapEntity.LAYER_NB; layer++) {
-	    for (MapEntity entity: allEntities[layer].getDynamicEntities()) {
+	for (Layer layer: Layer.values()) {
+	    for (MapEntity entity: allEntities[layer.getId()].getDynamicEntities()) {
 
 		if (entity instanceof Chest) {
 		    Chest chest = (Chest) entity;

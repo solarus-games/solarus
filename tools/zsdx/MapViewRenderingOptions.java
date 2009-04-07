@@ -107,8 +107,8 @@ public class MapViewRenderingOptions {
      * @param layer a layer
      * @return true if the entities of this layer are shown, false otherwise
      */
-    public boolean getShowLayer(int layer) {
-	return showLayers[layer];
+    public boolean getShowLayer(Layer layer) {
+	return showLayers[layer.getId()];
     }
 
     /**
@@ -118,9 +118,9 @@ public class MapViewRenderingOptions {
      * @param showHighLayer true to show the entities of the high layer
      */
     public void setShowLayers(boolean showLowLayer, boolean showIntermediateLayer, boolean showHighLayer) {
-	showLayers[MapEntity.LAYER_LOW] = showLowLayer;
-	showLayers[MapEntity.LAYER_INTERMEDIATE] = showIntermediateLayer;
-	showLayers[MapEntity.LAYER_HIGH] = showHighLayer;
+	showLayers[Layer.LOW.getId()] = showLowLayer;
+	showLayers[Layer.INTERMEDIATE.getId()] = showIntermediateLayer;
+	showLayers[Layer.HIGH.getId()] = showHighLayer;
 	mapView.repaint();
     }
 
@@ -129,8 +129,8 @@ public class MapViewRenderingOptions {
      * @param layer a layer
      * @param show true to make the layer visible, false otherwise
      */
-    public void setShowLayer(int layer, boolean show) {
-	showLayers[layer] = show;
+    public void setShowLayer(Layer layer, boolean show) {
+	showLayers[layer.getId()] = show;
 	mapView.repaint();
     }
 
@@ -201,9 +201,9 @@ public class MapViewRenderingOptions {
      * @return true if this entity is shown with the current options
      */
     public boolean isEntityShown(MapEntity entity) {
-	int layer = entity.getLayer();
-	Obstacle obstacle = entity.getObstacle();
+	Layer layer = entity.getLayer();
+	boolean obstacle = entity.getObstacle().isWall();
 
-	return showLayers[layer] && showObstacles[obstacle.getId()];
+	return showLayers[layer.getId()] && showObstacles[obstacle ? 1 : 0];
     }
 }

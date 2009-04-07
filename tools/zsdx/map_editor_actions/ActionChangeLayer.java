@@ -26,8 +26,8 @@ import zsdx.entities.*;
 public class ActionChangeLayer extends MapEditorAction {
 
     private LinkedList<MapEntity> entities;
-    private int[] layersBefore; // the layers before the action can be different
-    private int layerAfter;
+    private Layer[] layersBefore; // the layers before the action can be different
+    private Layer layerAfter;
 
     /**
      * Constructor.
@@ -35,12 +35,12 @@ public class ActionChangeLayer extends MapEditorAction {
      * @param entities the entities for which the layer will be changed
      * @param layer the layer to set
      */
-    public ActionChangeLayer(Map map, LinkedList<MapEntity> entities, int layer) {
+    public ActionChangeLayer(Map map, LinkedList<MapEntity> entities, Layer layer) {
 	super(map);
 	this.entities = new LinkedList<MapEntity>(entities);
 	this.layerAfter = layer;
 
-	this.layersBefore = new int[entities.size()];
+	this.layersBefore = new Layer[entities.size()];
 	int i = 0;
 	for (MapEntity entity: entities) {
 	    this.layersBefore[i] = entity.getLayer();

@@ -115,7 +115,7 @@ public class Tileset extends Observable {
 
 	// compute an id and a name for this tileset
 	this.name = "New tileset";
-	Resource tilesetResource = Project.getResource(ResourceDatabase.RESOURCE_TILESET);
+	Resource tilesetResource = Project.getResource(ResourceType.TILESET);
 	this.tilesetId = tilesetResource.computeNewId();
 	reloadImage();
 
@@ -511,7 +511,7 @@ public class Tileset extends Observable {
     public void addTilePattern(Obstacle obstacle) throws TilesetException {
 
 	if (isSelectingNewTilePattern() && !isNewTilePatternAreaOverlapping) {
-	    TilePattern tilePattern = new TilePattern(newTilePatternArea, MapEntity.LAYER_LOW, obstacle);
+	    TilePattern tilePattern = new TilePattern(newTilePatternArea, Layer.LOW, obstacle);
 
 	    maxId++;
 	    tilePatterns.put(maxId, tilePattern);
@@ -578,7 +578,7 @@ public class Tileset extends Observable {
 	try {
 
 	    // get the tileset name in the game resource database
-	    Resource tilesetResource = Project.getResource(ResourceDatabase.RESOURCE_TILESET);
+	    Resource tilesetResource = Project.getResource(ResourceType.TILESET);
 	    setName(tilesetResource.getElementName(tilesetId));
 
 	    File tilesetFile = Project.getTilesetFile(tilesetId);
@@ -668,7 +668,7 @@ public class Tileset extends Observable {
 	    setSaved(true);
 
 	    // also update the tileset name in the global resource list
-	    Resource tilesetResource = Project.getResource(ResourceDatabase.RESOURCE_TILESET);
+	    Resource tilesetResource = Project.getResource(ResourceType.TILESET);
 	    tilesetResource.setElementName(tilesetId, name);
 	    Project.getResourceDatabase().save();
 	}

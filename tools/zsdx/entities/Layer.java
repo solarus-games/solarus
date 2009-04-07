@@ -14,31 +14,37 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package zsdx.gui;
-
-import zsdx.*;
+package zsdx.entities;
 
 /**
- * A combo box component to select a music from the resource database.
+ * Enumeration of the layer property of the entities.
  */
-public class MusicChooser extends ResourceChooser {
+public enum Layer {
+
+    LOW,
+    INTERMEDIATE,
+    HIGH;
+
+    public static final String[] humanNames = {
+	"Low",
+	"Intermediate",
+	"High",
+    };
 
     /**
-     * Constructor.
+     * Returns the value with the specified id.
+     * @param id id of the value to get
+     * @return the value with this id
      */
-    public MusicChooser() {
-	super(ResourceType.MUSIC, false);
+    public static Layer get(int id) {
+	return values()[id];
     }
-    
-    /**
-     * Reloads the list. Two special elements (no music and no change)
-     * are added at the beginning of the list.
-     */
-    protected void buildList() {
-	
-	addItem(new KeyValue(Music.noneId, Music.noneName));
-	addItem(new KeyValue(Music.unchangedId, Music.unchangedName));
 
-	super.buildList();
+    /**
+     * Returns the id of this value.
+     * @return the id
+     */
+    public int getId() {
+	return ordinal();
     }
 }

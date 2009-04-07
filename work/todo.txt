@@ -82,4 +82,3 @@ Mode release :
 	- Parser les fichiers de sprite dans l'éditeur (utile pour PNJ et entités avec skin)
 	- Eviter d'avoir à recharger la map pour voir les destinations mises à jour
 	- Affichage : dessiner les tiles une seule fois sur une surface intermédiaire au lieu de les redessiner un par un à chaque affichage (c'est possible dans l'éditeur mais pas facilement dans le jeu à cause des tiles animés)
-	- Supprimer DefaultLayerView (utiliser LayerChooser) ; TilePatternObstacleView et TilePatternAnimationview : ne pas utiliser de MVC là (il suffit que TilePatternView soit observable)

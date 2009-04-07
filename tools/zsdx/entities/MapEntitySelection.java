@@ -194,16 +194,16 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
 
     /**
      * Returns the layer of the selected entities, if all selected entities have the same layer.
-     * Otherwise, returns -1.
-     * @return the common layer, or -1 if all selected entities have not the same layer
+     * Otherwise, returns null.
+     * @return the common layer, or null if all selected entities have not the same layer
      */
-    public int getLayer() {
+    public Layer getLayer() {
 
-	int layer = entities.get(0).getLayer();
+	Layer layer = entities.get(0).getLayer();
 
 	for (int i = 1; i < entities.size(); i++) {
 	    if (entities.get(i).getLayer() != layer) {
-		return -1;
+		return null;
 	    }
 	}
 
@@ -214,7 +214,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * Changes the layer of the selected entities.
      * @param layer the new layer
      */
-    public void setLayer(int layer) throws ZSDXException {
+    public void setLayer(Layer layer) throws ZSDXException {
 
 	map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
     }

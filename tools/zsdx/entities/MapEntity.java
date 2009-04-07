@@ -85,7 +85,7 @@ public abstract class MapEntity extends Observable {
     /**
      * Layer of the entity on the map.
      */
-    protected int layer;
+    protected Layer layer;
 
     /**
      * Direction of the entity (0 to 3).
@@ -129,13 +129,6 @@ public abstract class MapEntity extends Observable {
      */
     protected EntityImageDescription currentImageDescription;
 
-    // constants to identify the layer
-
-    public static final int LAYER_LOW = 0;
-    public static final int LAYER_INTERMEDIATE = 1;
-    public static final int LAYER_HIGH = 2;
-    public static final int LAYER_NB = 3;
-
     /**
      * Creates an entity.
      * If the entity is identifiable, a default name
@@ -150,7 +143,7 @@ public abstract class MapEntity extends Observable {
 	this.map = map;
 
 	// default values
-	this.layer = LAYER_LOW;
+	this.layer = Layer.LOW;
 	this.positionInMap = new Rectangle(0, 0, width, height);
 	this.specificProperties = new LinkedHashMap<String, String>();
 
@@ -248,7 +241,7 @@ public abstract class MapEntity extends Observable {
 	    StringTokenizer tokenizer = new StringTokenizer(description, "\t");
 
 	    token = tokenizer.nextToken();
-	    int layer = Integer.parseInt(token);
+	    Layer layer = Layer.get(Integer.parseInt(token));
 
 	    token = tokenizer.nextToken();
 	    int x = Integer.parseInt(token);
@@ -335,7 +328,7 @@ public abstract class MapEntity extends Observable {
 	StringBuffer buff = new StringBuffer();
 	buff.append(getType().getIndex());
 	buff.append('\t');
-	buff.append(layer);
+	buff.append(getLayer().getId());
 	buff.append('\t');
 	buff.append(getX());
 	buff.append('\t');
@@ -800,6 +793,7 @@ public abstract class MapEntity extends Observable {
 	catch (MapException ex) {
 	    // should not happen since setName() makes sure the name is unique
 	    System.err.println("Unexcepted error: " + ex.getMessage());
+	    ex.printStackTrace();
 	    System.exit(1);
 	}
     }
@@ -821,6 +815,7 @@ public abstract class MapEntity extends Observable {
 	    catch (MapException ex) {
 		// should not happen
 		System.err.println("Unexcepted error: " + ex.getMessage());
+		ex.printStackTrace();
 		System.exit(1);
 	    }
 	}
@@ -863,20 +858,18 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns the layer of the entity.
-     * @return the layer of the entity: MapEntity.LAYER_LOW (most of the tiles),
-     * MapEntity.LAYER_INTERMEDIATE or MapEntity.LAYER_HIGH.
+     * Returns the layer of this entity.
+     * @return the layer of this entity (Layer.LOW for most of the entities)
      */
-    public int getLayer() {
+    public Layer getLayer() {
 	return layer;
     }
 
     /**
-     * Changes the layer of the tile.
-     * @param layer the layer of the tile: MapEntity.LAYER_LOW (most of the tiles),
-     * MapEntity.LAYER_INTERMEDIATE or MapEntity.LAYER_HIGH.
+     * Changes the layer of this entity.
+     * @param layer the new layer of this entity
      */
-    public void setLayer(int layer) {
+    public void setLayer(Layer layer) {
 	if (layer != this.layer) {
 	    this.layer = layer;
 	    setChanged();

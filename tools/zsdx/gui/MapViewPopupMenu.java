@@ -197,8 +197,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	    itemsDirectionsGroup.add(itemsDirections[i]);
 	}
 	itemsDirections[nbDirections] = new JRadioButtonMenuItem();
-	itemsDirections[nbDirections].addActionListener(new ActionListenerChangeDirection(nbDirections));
-	itemsDirectionsGroup.add(itemsDirections[MapEntity.LAYER_NB]);
+	itemsDirectionsGroup.add(itemsDirections[nbDirections]);
 
 	add(menuDirection);
 
@@ -219,29 +218,30 @@ public class MapViewPopupMenu extends JPopupMenu {
      * Builds the "Layer" menu item
      */
     public void buildLayerSubmenu() {
-	JRadioButtonMenuItem[] itemsLayers = new JRadioButtonMenuItem[MapEntity.LAYER_NB + 1];
+
+	int nbLayers = Layer.values().length;
+	JRadioButtonMenuItem[] itemsLayers = new JRadioButtonMenuItem[nbLayers + 1];
 	ButtonGroup itemsLayersGroup = new ButtonGroup();
 
-	for (int i = 0; i < MapEntity.LAYER_NB; i++) {
+	for (int i = 0; i < nbLayers; i++) {
 	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
-	    itemsLayers[i].addActionListener(new ActionListenerChangeLayer(i));
+	    itemsLayers[i].addActionListener(new ActionListenerChangeLayer(Layer.get(i)));
 	    add(itemsLayers[i]);
 	    itemsLayersGroup.add(itemsLayers[i]);
 	}
-	itemsLayers[MapEntity.LAYER_NB] = new JRadioButtonMenuItem();
-	itemsLayers[MapEntity.LAYER_NB].addActionListener(new ActionListenerChangeLayer(MapEntity.LAYER_NB));
-	itemsLayersGroup.add(itemsLayers[MapEntity.LAYER_NB]);
+	itemsLayers[nbLayers] = new JRadioButtonMenuItem();
+	itemsLayersGroup.add(itemsLayers[nbLayers]);
 
 	// select the appropriate layer item
-	int layer = selection.getLayer();
+	Layer layer = selection.getLayer();
 
-	if (layer != -1) {
+	if (layer != null) {
 	    // if all the selected entities have the same layer, we check its item
-	    itemsLayers[layer].setSelected(true);
+	    itemsLayers[layer.getId()].setSelected(true);
 	}
 	else {
 	    // otherwise we select no item
-	    itemsLayers[MapEntity.LAYER_NB].setSelected(true);
+	    itemsLayers[nbLayers].setSelected(true);
 	}
     }
 
@@ -263,13 +263,13 @@ public class MapViewPopupMenu extends JPopupMenu {
 	/**
 	 * Layer to set when the action is invoked.
 	 */
-	private int layer;
+	private Layer layer;
 
 	/**
 	 * Constructor.
 	 * @param layer layer to set when the action is invoked.
 	 */
-	public ActionListenerChangeLayer(int layer) {
+	public ActionListenerChangeLayer(Layer layer) {
 	    this.layer = layer;
 	}
 

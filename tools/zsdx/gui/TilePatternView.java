@@ -16,23 +16,31 @@
  */
 package zsdx.gui;
 
+import zsdx.entities.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
-import zsdx.entities.*;
 
 /**
  * This component shows information about a tile pattern and lets the user edit it.
  */
-public class TilePatternView extends JPanel {
+public class TilePatternView extends JPanel implements Observer {
 
-    // the tileset
+    /**
+     * The tile pattern observed.
+     */
+    private TilePattern tilePattern;
+
+    /**
+     * The tileset.
+     */
     private Tileset tileset;
 
     // the components
-    private TilePatternObstacleView obstacleView;
+    private EnumerationIconChooser<Obstacle> obstacleView;
     private TilePatternAnimationView animationView;
-    private DefaultLayerView defaultLayerView;
+    private EnumerationChooser<Layer> defaultLayerView;
     private JButton buttonDelete;
 
     /**
@@ -49,7 +57,7 @@ public class TilePatternView extends JPanel {
 	constraints.gridx = 0;
 	constraints.gridy = 0;
 	add(new JLabel("Obstacle"), constraints);
-	obstacleView = new TilePatternObstacleView();
+	obstacleView = new EnumerationIconChooser<Obstacle>(Obstacle.class);
 
 	// animation
 	constraints.gridy = 1;
@@ -59,7 +67,7 @@ public class TilePatternView extends JPanel {
 	// default layer
 	constraints.gridy = 2;
 	add(new JLabel("Default layer"), constraints);
-	defaultLayerView = new DefaultLayerView();
+	defaultLayerView = new EnumerationChooser<Layer>(Layer.class);
 
 	constraints.weightx = 1;
 	constraints.gridx = 1;
@@ -98,14 +106,41 @@ public class TilePatternView extends JPanel {
     }
 
     /**
+     * This method is called when the tile pattern is changed.
+     */
+    public void update(Observable o, Object params) {
+
+	if (tilePattern != null) {
+	    buttonDelete.setEnabled(true);
+	    obstacleView.setValue(tilePattern.getObstacle());
+	    obstacleView.setEnabled(true);
+	    defaultLayerView.setValue(tilePattern.getDefaultLayer());
+	    defaultLayerView.setEnabled(true);
+	}
+	else {
+	    buttonDelete.setEnabled(false);
+	    obstacleView.setEnabled(false);
+	    defaultLayerView.setEnabled(false);
+	}
+	animationView.update(tilePattern);
+    }
+
+    /**
      * Changes the tile pattern shown.
      * @param tile the new current tile pattern (can be null)
      */
     public void setCurrentTilePattern(TilePattern tilePattern) {
-	buttonDelete.setEnabled(tilePattern != null);
 
-	obstacleView.setCurrentTilePattern(tilePattern);
-	animationView.setCurrentTilePattern(tilePattern);
-	defaultLayerView.setCurrentTilePattern(tilePattern);
+	if (this.tilePattern != null) {
+	    this.tilePattern.deleteObserver(this);
+	}
+
+	this.tilePattern = tilePattern;
+
+	if (tilePattern != null) {
+	    tilePattern.addObserver(this);
+	}
+
+	update(null, null);
     }
 }

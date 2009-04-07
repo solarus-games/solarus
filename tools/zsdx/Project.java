@@ -157,11 +157,10 @@ public class Project {
 
     /**
      * Returns a resource in the current project's resource database.
-     * @param resourceType type of the resource to get: ResourceDatabse.RESOURCE_MAP,
-     * ResourceDatabse.RESOURCE_MUSIC, etc.
+     * @param resourceType type of the resource to get
      * @return the resource of this type in the current project's resource database
      */
-    public static Resource getResource(int resourceType) {
+    public static Resource getResource(ResourceType resourceType) {
 	return getResourceDatabase().getResource(resourceType);
     }
 

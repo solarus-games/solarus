@@ -51,18 +51,18 @@ public class MapViewRenderingOptionsView extends JPanel {
 	JCheckBox box;
 
 	box = new JCheckBox("Show low layer");
-	box.setSelected(renderingOptions.getShowLayer(MapEntity.LAYER_LOW));
-	box.addItemListener(new ItemListenerLayer(MapEntity.LAYER_LOW));
+	box.setSelected(renderingOptions.getShowLayer(Layer.LOW));
+	box.addItemListener(new ItemListenerLayer(Layer.LOW));
 	boxesPanel.add(box);
 
 	box = new JCheckBox("Show intermediate layer");
-	box.setSelected(renderingOptions.getShowLayer(MapEntity.LAYER_INTERMEDIATE));
-	box.addItemListener(new ItemListenerLayer(MapEntity.LAYER_INTERMEDIATE));
+	box.setSelected(renderingOptions.getShowLayer(Layer.INTERMEDIATE));
+	box.addItemListener(new ItemListenerLayer(Layer.INTERMEDIATE));
 	boxesPanel.add(box);
 
 	box = new JCheckBox("Show high layer");
-	box.setSelected(renderingOptions.getShowLayer(MapEntity.LAYER_HIGH));
-	box.addItemListener(new ItemListenerLayer(MapEntity.LAYER_HIGH));
+	box.setSelected(renderingOptions.getShowLayer(Layer.HIGH));
+	box.addItemListener(new ItemListenerLayer(Layer.HIGH));
 	boxesPanel.add(box);
 
 	box = new JCheckBox("Show obstacles");
@@ -92,13 +92,13 @@ public class MapViewRenderingOptionsView extends JPanel {
 	/**
 	 * The layer controlled by this checkbox.
 	 */
-	private int layer;
+	private Layer layer;
 
 	/**
 	 * Constructor.
 	 * @param layer the layer controlled by the checkbox.
 	 */
-	public ItemListenerLayer(int layer) {
+	public ItemListenerLayer(Layer layer) {
 	    this.layer = layer;
 	}
 

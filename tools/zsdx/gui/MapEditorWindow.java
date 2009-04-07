@@ -411,7 +411,7 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	    return;
 	}
 
-	ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceDatabase.RESOURCE_MAP);
+	ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.MAP);
 	dialog.setLocationRelativeTo(MapEditorWindow.this);
 	dialog.pack();
 	dialog.setVisible(true);

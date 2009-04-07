@@ -27,7 +27,7 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
     /**
      * The kind of resource displayed in the combo box (maps, musics...).
      */
-    private int resourceType;
+    private ResourceType resourceType;
     
     /**
      * Indicates whether the first element of the combo box should be
@@ -37,10 +37,10 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
 
     /**
      * Constructor.
-     * @param resourceType the kind of resource displayed in the combo box:
-     * ResourceDatabase.RESOURCE_MAPS, ResourceDatabase.RESOURCE_MUSICS, etc.
+     * @param resourceType the kind of resource displayed in the combo box
+     * @param showEmptyOption true to include an empty option in the combo box
      */
-    public ResourceChooser(int resourceType, boolean showEmptyOption) {
+    public ResourceChooser(ResourceType resourceType, boolean showEmptyOption) {
 
 	super();
 	this.resourceType = resourceType;
@@ -75,7 +75,8 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
 	    }
 	}
 	catch (ZSDXException ex) {
-	    GuiTools.errorDialog("Unexpected error: " + ex.getMessage());
+	    System.err.println("Unexpected error: " + ex.getMessage());
+	    ex.printStackTrace();
 	    System.exit(1);
 	}
     }
@@ -85,12 +86,12 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
      * After the list is reloaded, the same item is selected again if it still exists.
      */
     protected void reloadList() {
-	
+
 	String selectedId = getSelectedId();
 
 	removeAllItems();
 	buildList();
-	
+
 	if (selectedId.length() > 0) {
 	    setSelectedId(selectedId);
 	}

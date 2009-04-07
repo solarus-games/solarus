@@ -57,7 +57,7 @@ public class EditEntityComponent extends JPanel {
 
     // common subcomponents
     protected JTextField nameField;
-    protected LayerChooser layerField;
+    protected EnumerationChooser<Layer> layerField;
     protected CoordinatesField positionField;
     protected CoordinatesField sizeField;
     protected DirectionChooser directionField;
@@ -93,7 +93,7 @@ public class EditEntityComponent extends JPanel {
 	}
 
 	// layer
-	layerField = new LayerChooser();
+	layerField = new EnumerationChooser<Layer>(Layer.class);
 	addField("Layer", layerField);
 
 	// position
@@ -193,7 +193,7 @@ public class EditEntityComponent extends JPanel {
 	    nameField.setText(entity.getName());
 	}
 
-	layerField.setLayer(entity.getLayer());
+	layerField.setValue(entity.getLayer());
 
 	positionField.setCoordinates(entity.getX(), entity.getY());
 
@@ -228,7 +228,7 @@ public class EditEntityComponent extends JPanel {
     private ActionEditEntity getAction() throws ZSDXException {
 
 	String name = entity.hasName() ? nameField.getText() : null;
-	int layer = layerField.getLayer();
+	Layer layer = layerField.getValue();
 	Point position = positionField.getCoordinates();
 	Dimension size = null;
 	if (entity.isResizable()) {

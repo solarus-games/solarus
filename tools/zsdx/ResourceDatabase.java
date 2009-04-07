@@ -26,14 +26,9 @@ import java.util.*;
  */
 public class ResourceDatabase extends Observable {
 
-    // constants to identify the different kinds of resources
-    public static final int RESOURCE_MAP = 0;
-    public static final int RESOURCE_TILESET = 1;
-    public static final int RESOURCE_MUSIC = 2;
-    public static final int RESOURCE_SPRITE = 3;
-    public static final int RESOURCE_SOUND = 4;
-    public static final int RESOURCE_NB = 5;
-    
+    /**
+     * Name of the file storing the resource database.
+     */
     public static final String fileName = "project_db.zsd";
 
     /**
@@ -52,32 +47,27 @@ public class ResourceDatabase extends Observable {
     public ResourceDatabase(Project project) {
 
 	this.project = project;
-	
-	resources = new Resource[RESOURCE_NB];
-
-	resources[RESOURCE_MAP] = new Resource(true);
-	resources[RESOURCE_TILESET] = new Resource(true);
-	resources[RESOURCE_MUSIC] = new Resource(false);
-	resources[RESOURCE_SPRITE] = new Resource(false);
-	resources[RESOURCE_SOUND] = new Resource(false);
+	this.resources = new Resource[ResourceType.values().length];
+	for (ResourceType resourceType: ResourceType.values()) {
+	    resources[resourceType.getId()] = new Resource(resourceType.isIdAutoIncremented());
+	}
     }
 
     /**
      * Returns a resource.
-     * @param resourceType type of the resource to get: RESOURCE_MAP, RESOURCE_MUSIC, etc.
+     * @param resourceType type of the resource to get
      * @return the resource of this type
      */
-    public Resource getResource(int resourceType) {
-	return resources[resourceType];
+    public Resource getResource(ResourceType resourceType) {
+	return resources[resourceType.getId()];
     }
 
     /**
      * Clears all resources.
      */
     public void clear() {
-
-	for (int i = 0; i < RESOURCE_NB; i++) {
-	    getResource(i).clear();
+	for (ResourceType resourceType: ResourceType.values()) {
+	    getResource(resourceType).clear();
 	}
     }
     
@@ -106,12 +96,8 @@ public class ResourceDatabase extends Observable {
 		    // skip the comments and the empty lines
 
 		    StringTokenizer tokenizer = new StringTokenizer(line, "\t");
-		    int resourceType = Integer.parseInt(tokenizer.nextToken());
+		    ResourceType resourceType = ResourceType.get(Integer.parseInt(tokenizer.nextToken()));
 
-		    if (resourceType < 0 || resourceType >= RESOURCE_NB) {
-			throw new ZSDXException("Unknown resource type '" + resourceType + "'");
-		    }
-		    
 		    String id = tokenizer.nextToken();
 		    String name = tokenizer.nextToken();
 		    getResource(resourceType).setElementName(id, name);
@@ -145,14 +131,14 @@ public class ResourceDatabase extends Observable {
 	    Iterator<String> it;
 	    
 	    // save each resource
-	    for (int i = 0; i < RESOURCE_NB; i++) {
-		Resource resource = getResource(i);
+	    for (ResourceType resourceType: ResourceType.values()) {
+		Resource resource = getResource(resourceType);
 		it = resource.iterator();
 
 		while (it.hasNext()) {
 		    String id = it.next();
 		    String name = resource.getElementName(id);
-		    out.print(i);
+		    out.print(resourceType.getId());
 		    out.print('\t');
 		    out.print(id);
 		    out.print('\t');

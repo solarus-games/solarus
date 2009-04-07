@@ -37,11 +37,11 @@ public class ActionBringToBack extends MapEditorAction {
 	super(map);
 	
 	this.entities = new LinkedList<MapEntity>(entities);
-	this.allEntitiesBefore = new MapEntities[MapEntity.LAYER_NB];
+	this.allEntitiesBefore = new MapEntities[Layer.values().length];
 
 	// copy allEntities
 	MapEntities[] allEntities = map.getAllEntities();
-	for (int i = 0; i < MapEntity.LAYER_NB; i++ ) {
+	for (int i = 0; i < allEntitiesBefore.length; i++) {
 	    allEntitiesBefore[i] = new MapEntities(allEntities[i]);
 	}
     }

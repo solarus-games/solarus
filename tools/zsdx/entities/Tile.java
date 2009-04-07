@@ -47,7 +47,7 @@ public class Tile extends MapEntity {
     public Tile(Map map) throws MapException {
 	super(map, 0, 0);
 	this.tileset = map.getTileset();
-	this.layer = -1;
+	this.layer = null;
     }
 
     /**
@@ -68,7 +68,7 @@ public class Tile extends MapEntity {
 		TilePattern tilePattern = getTilePattern(); // get the tile pattern from the tileset
 		setSize(tilePattern.getWidth(), tilePattern.getHeight());
 
-		if (layer == -1) {
+		if (layer == null) {
 		    setLayer(tilePattern.getDefaultLayer());
 		}
 	    }

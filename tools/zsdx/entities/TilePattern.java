@@ -18,6 +18,7 @@ package zsdx.entities;
 
 import java.awt.*;
 import java.awt.image.*;
+import javax.swing.*;
 import java.util.*;
 import zsdx.*;
 
@@ -27,14 +28,72 @@ import zsdx.*;
  */
 public class TilePattern extends Observable {
 
-    // Constants to identify the animation type
+    /**
+     * Enumeration to identify the animation sequence of a tile pattern.
+     */
+    public enum AnimationSequence {
+	NONE,
+	SEQUENCE_012,
+	SEQUENCE_0121;
 
-    public static final int ANIMATION_NONE = 0;
-    public static final int ANIMATION_SEQUENCE_012 = 1;
-    public static final int ANIMATION_SEQUENCE_0121 = 2;
+	public static final String[] humanNames = {
+	    "None",
+	    "1-2-3-1",
+	    "1-2-3-2-1",
+	};
 
-    public static final int ANIMATION_SEPARATION_HORIZONTAL = 0;
-    public static final int ANIMATION_SEPARATION_VERTICAL = 1;
+	public static AnimationSequence get(int id) {
+	    return values()[id];
+	}
+
+	public int getId() {
+	    return ordinal();
+	}
+    }
+
+    /**
+     * Enumeration to identify the animation separation of a tile pattern.
+     */
+    public enum AnimationSeparation {
+
+	HORIZONTAL("animation_separation_horizontal.png"),
+	VERTICAL("animation_separation_vertical.png");
+
+	private String iconFileName;
+	private static ImageIcon[] icons;
+
+	public static final String[] humanNames = {
+	    "Horizontal",
+	    "Vertical",
+	};
+
+	private AnimationSeparation(String iconFileName) {
+	    this.iconFileName = iconFileName;
+	}
+
+	public static AnimationSeparation get(int id) {
+	    return values()[id];
+	}
+
+	public int getId() {
+	    return ordinal();
+	}
+
+	public static ImageIcon[] getIcons() {
+
+	    if (icons == null) {
+		icons = new ImageIcon[values().length];
+		int i = 0;
+		for (AnimationSeparation value: values()) {
+		    icons[i] = Project.getEditorImageIcon(value.iconFileName);
+		    icons[i].setDescription(value.name());
+		    i++;
+		}
+	    }
+
+	    return icons;
+	}
+    }
 
     /**
      * Coordinates and dimensions of the tile pattern.
@@ -54,19 +113,19 @@ public class TilePattern extends Observable {
     /**
      * Animation sequence.
      */
-    private int animationSequence;
+    private AnimationSequence animationSequence;
 
     /**
      * Type of separation of the 3 animation frames in the tileset.
      */
-    private int animationSeparation;
+    private AnimationSeparation animationSeparation;
 
     /**
      * Default layer of the tiles having this pattern.
      * It can be changed in the map editor once the tile is placed on a map.
      * Thus, several tiles with the same pattern can be on different layers of the map.
      */
-    private int defaultLayer;
+    private Layer defaultLayer;
 
     /**
      * Simple constructor with no animation.
@@ -75,8 +134,8 @@ public class TilePattern extends Observable {
      * @param obstacle the obstacle property of this tile pattern
      * @throws TilesetException if the tile size is incorrect
      */
-    public TilePattern(Rectangle positionInTileset, int defaultLayer, Obstacle obstacle) throws TilesetException {
-	this(positionInTileset, defaultLayer, obstacle, ANIMATION_NONE, 0);
+    public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Obstacle obstacle) throws TilesetException {
+	this(positionInTileset, defaultLayer, obstacle, AnimationSequence.NONE, AnimationSeparation.HORIZONTAL);
     }
 
     /**
@@ -84,14 +143,12 @@ public class TilePattern extends Observable {
      * @param positionInTileset position of the tile pattern in the tileset
      * @param defaultLayer default layer of the tiles created with this pattern
      * @param obstacle the obstacle property of this tile pattern
-     * @param animationSequence type of animation: ANIMATION_NONE, ANIMATION_SEQUENCE_012
-     * or ANIMATION_SEQUENCE_0121
-     * @param animationSeparation separation of the 3 animation frames in the tileset image:
-     * ANIMATION_SEPARATION_HORIZONTAL or ANIMATION_SEPARATION_VERTICAL
+     * @param animationSequence type of animation
+     * @param animationSeparation separation of the 3 animation frames in the tileset image
      * @throws TilesetException if the pattern size is incorrect
      */
-    public TilePattern(Rectangle positionInTileset, int defaultLayer, Obstacle obstacle,
-		int animationSequence, int animationSeparation) throws TilesetException {
+    public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Obstacle obstacle,
+		AnimationSequence animationSequence, AnimationSeparation animationSeparation) throws TilesetException {
 	super();
 
 	// check the width and the height
@@ -121,7 +178,7 @@ public class TilePattern extends Observable {
 
 	    int tilePatternType = Integer.parseInt(tokenizer.nextToken());
 	    this.obstacle = Obstacle.get(Integer.parseInt(tokenizer.nextToken()));
-	    this.defaultLayer = Integer.parseInt(tokenizer.nextToken());
+	    this.defaultLayer = Layer.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.images = new BufferedImage[4];
 
 	    if (tilePatternType == 0) {
@@ -133,12 +190,12 @@ public class TilePattern extends Observable {
 		int height = Integer.parseInt(tokenizer.nextToken());
 
 		this.positionInTileset = new Rectangle(x, y, width, height);
-		this.animationSequence = ANIMATION_NONE;
+		this.animationSequence = AnimationSequence.NONE;
 	    }
 	    else if (tilePatternType == 1) {
 
 		// animated tile pattern: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
-		this.animationSequence = Integer.parseInt(tokenizer.nextToken());
+		this.animationSequence = AnimationSequence.get(Integer.parseInt(tokenizer.nextToken()));
 
 		int width = Integer.parseInt(tokenizer.nextToken());
 		int height = Integer.parseInt(tokenizer.nextToken());
@@ -149,11 +206,11 @@ public class TilePattern extends Observable {
 		this.positionInTileset = new Rectangle(x1, y1, width, height);
 
 		if (x1 == x2) {
-		    this.animationSeparation = ANIMATION_SEPARATION_VERTICAL;
+		    this.animationSeparation = AnimationSeparation.VERTICAL;
 		    positionInTileset.height *= 3;
 		}
 		else {
-		    this.animationSeparation = ANIMATION_SEPARATION_HORIZONTAL;
+		    this.animationSeparation = AnimationSeparation.HORIZONTAL;
 		    positionInTileset.width *= 3;
 		}
 	    }
@@ -177,14 +234,14 @@ public class TilePattern extends Observable {
 
 	StringBuffer description = new StringBuffer();
 
-	if (animationSequence == ANIMATION_NONE) {
+	if (animationSequence == AnimationSequence.NONE) {
 	    // simple tile pattern: "0 obstacle defaultLayer x y width height"
 
 	    description.append('0');
 	    description.append('\t');
 	    description.append(obstacle.getId());
 	    description.append('\t');
-	    description.append(defaultLayer);
+	    description.append(defaultLayer.getId());
 	    description.append('\t');
 	    description.append(positionInTileset.x);
 	    description.append('\t');
@@ -201,13 +258,13 @@ public class TilePattern extends Observable {
 	    description.append('\t');
 	    description.append(obstacle.getId());
 	    description.append('\t');
-	    description.append(defaultLayer);
+	    description.append(defaultLayer.getId());
 	    description.append('\t');
-	    description.append(animationSequence);
+	    description.append(animationSequence.getId());
 	    description.append('\t');
 
 	    int width, height, x, y, dx, dy;
-	    if (animationSeparation == ANIMATION_SEPARATION_HORIZONTAL) {
+	    if (animationSeparation == AnimationSeparation.HORIZONTAL) {
 		width = positionInTileset.width / 3;
 		height = positionInTileset.height;
 		dx = width;
@@ -279,7 +336,7 @@ public class TilePattern extends Observable {
 
 	int width = positionInTileset.width;
 	
-	if (isAnimated() && animationSeparation == ANIMATION_SEPARATION_HORIZONTAL) {
+	if (isAnimated() && animationSeparation == AnimationSeparation.HORIZONTAL) {
 	    width = width / 3;
 	}
 
@@ -296,7 +353,7 @@ public class TilePattern extends Observable {
 
 	int height = positionInTileset.height;
 	
-	if (isAnimated() && animationSeparation == ANIMATION_SEPARATION_VERTICAL) {
+	if (isAnimated() && animationSeparation == AnimationSeparation.VERTICAL) {
 	    height = height / 3;
 	}
 
@@ -340,20 +397,17 @@ public class TilePattern extends Observable {
 
     /**
      * Returns the default layer of the tiles having this pattern.
-     * @return the default layer of the tile pattern:
-     * TilePattern.LAYER_LOW (most of the tiles),
-     * TilePattern.LAYER_INTERMEDIATE or TilePattern.LAYER_HIGH.
+     * @return the default layer of the tile pattern
      */
-    public int getDefaultLayer() {
+    public Layer getDefaultLayer() {
 	return defaultLayer;
     }
 
     /**
      * Changes the default layer the tiles having this pattern.
-     * @param defaultLayer the default layer of the tile pattern: TilePattern.LAYER_LOW
-     * (most of the tiles), TilePattern.LAYER_INTERMEDIATE or TilePattern.LAYER_HIGH.
+     * @param defaultLayer the default layer of the tile pattern
      */
-    public void setDefaultLayer(int defaultLayer) {
+    public void setDefaultLayer(Layer defaultLayer) {
 	if (defaultLayer != this.defaultLayer) {
 	    this.defaultLayer = defaultLayer;
 	    setChanged();
@@ -363,26 +417,24 @@ public class TilePattern extends Observable {
 
     /**
      * Returns the tile pattern's animation sequence.
-     * @return the tile pattern's animation sequence: TilePattern.NO_ANIMATION,
-     * TilePattern.ANIMATION_012 or TilePattern.ANIMATION_0121
+     * @return the tile pattern's animation sequence
      */
-    public int getAnimationSequence() {
+    public AnimationSequence getAnimationSequence() {
 	return animationSequence;
     }
 
     /**
      * Sets the tile pattern's animation sequence.
      * If the specified animation makes the tile animated, a valid separation is chosen
-     * between TilePattern.ANIMATION_SEPARATION_HORIZONTAL and TilePattern.ANIMATION_SEPARATION_VERTICAL.
+     * between AnimationSeparation.HORIZONTAL and AnimationSeparation.VERTICAL.
      * You can change it with setAnimationSeparation().
      * If both directions are invalid, an TilesetException is thrown.
-     * @param animationSequence the tile's animation sequence: TilePattern.NO_ANIMATION,
-     * TilePattern.ANIMATION_012 or TilePattern.ANIMATION_0121
+     * @param animationSequence the tile's animation sequence
      * @throws TilesetException if the tile cannot be divided in 3 frames
      */
-    public void setAnimationSequence(int animationSequence) throws TilesetException {
+    public void setAnimationSequence(AnimationSequence animationSequence) throws TilesetException {
 
-	if (animationSequence != ANIMATION_NONE) {
+	if (animationSequence != AnimationSequence.NONE) {
 
 	    // try to set the animation separation
 	    int width = positionInTileset.width;
@@ -391,19 +443,19 @@ public class TilePattern extends Observable {
 	    // try to divide the tile pattern in the biggest direction
 	    if (width >= height) {
 		try {
-		    trySetAnimationSeparation(ANIMATION_SEPARATION_HORIZONTAL);
+		    trySetAnimationSeparation(AnimationSeparation.HORIZONTAL);
 		}
 		catch (TilesetException e) {
-		    trySetAnimationSeparation(ANIMATION_SEPARATION_VERTICAL);
+		    trySetAnimationSeparation(AnimationSeparation.VERTICAL);
 		    // an exception is thrown if this doesn't work either
 		}
 	    }
 	    else {
 		try {
-		    trySetAnimationSeparation(ANIMATION_SEPARATION_VERTICAL);
+		    trySetAnimationSeparation(AnimationSeparation.VERTICAL);
 		}
 		catch (TilesetException e) {
-		    trySetAnimationSeparation(ANIMATION_SEPARATION_HORIZONTAL);
+		    trySetAnimationSeparation(AnimationSeparation.HORIZONTAL);
 		}
 	    }
 	}
@@ -419,27 +471,25 @@ public class TilePattern extends Observable {
      * @return true if the tile pattern is animated, false otherwise
      */
     public boolean isAnimated() {
-	return animationSequence != ANIMATION_NONE;
+	return animationSequence != AnimationSequence.NONE;
     }
 
     /**
      * Returns the type of separation of the 3 animation frames if the tile pattern is animated.
-     * @return the type of separation of the 3 animation frames:
-     * TilePattern.ANIMATION_HORIZONTAL_SEPARATION or TilePattern.ANIMATION_VERTICAL_SEPARATION
+     * @return the type of separation of the 3 animation frames
      */
-    public int getAnimationSeparation() {
+    public AnimationSeparation getAnimationSeparation() {
 	return animationSeparation;
     }
 
     /**
      * Sets the type of separation of the 3 animation frames if the tile pattern is animated.
      * Nothing is done if the tile pattern is not animated.
-     * @param animationSeparation the type of separation of the 3 animation frames:
-     * TilePattern.ANIMATION_HORIZONTAL_SEPARATION and TilePattern.ANIMATION_VERTICAL_SEPARATION
+     * @param animationSeparation the type of separation of the 3 animation frames
      * @throws TilesetException thrown if the separation is not valid, i.e.
      * if the size of the 3 frames formed are not multiple of 8.
      */
-    public void setAnimationSeparation(int animationSeparation) throws TilesetException {
+    public void setAnimationSeparation(AnimationSeparation animationSeparation) throws TilesetException {
 	if (!isAnimated()) {
 	    return;
 	}
@@ -452,19 +502,18 @@ public class TilePattern extends Observable {
 
     /**
      * Sets the type of separation of the 3 animation frames.
-     * @param animationSeparation the type of separation of the 3 animation frames:
-     * Tile.ANIMATION_HORIZONTAL_SEPARATION or Tile.ANIMATION_VERTICAL_SEPARATION
+     * @param animationSeparation the type of separation of the 3 animation frames
      * @throws TilesetException thrown if the separation is not valid, i.e.
      * if the size of the 3 frames formed are not multiple of 8.
      */
-    private void trySetAnimationSeparation(int animationSeparation) throws TilesetException {
+    private void trySetAnimationSeparation(AnimationSeparation animationSeparation) throws TilesetException {
 	
 	// check that the tile pattern can be separated in 3 frames
-	if (animationSeparation == ANIMATION_SEPARATION_HORIZONTAL
+	if (animationSeparation == AnimationSeparation.HORIZONTAL
 	    && positionInTileset.width % 24 != 0) {
 	    throw new TilesetException("Cannot divide the tile in 3 frames : the size of each frame must be a multiple of 8 pixels");
 	}
-	else if (animationSeparation == ANIMATION_SEPARATION_VERTICAL
+	else if (animationSeparation == AnimationSeparation.VERTICAL
 		 && positionInTileset.height % 24 != 0) {
 	    throw new TilesetException("Cannot divide the tile in 3 frames : the size of each frame must be a multiple of 8 pixels");
 	}

@@ -19,7 +19,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "entities/Hero.h"
+#include "entities/MapEntity.h"
 #include "movements/TargetMovement.h"
 
 /**
@@ -47,15 +47,15 @@ void Camera::update(void) {
 
   int x = position.x;
   int y = position.y;
-  const SDL_Rect *map_location = map->get_location();
+  const SDL_Rect &map_location = map->get_location();
 
   // if the camera is not moving, center it on the hero
   if (is_fixed_on_hero()) {
-    Hero *hero = zsdx->game->get_hero();
-    x = hero->get_x();
-    y = hero->get_y();
-    x = MIN(MAX(x - 160, 0), map_location->w - 320);
-    y = MIN(MAX(y - 120, 0), map_location->h - 240);
+    const SDL_Rect &hero_coords = zsdx->game->get_hero_coordinates();
+    x = hero_coords.x;
+    y = hero_coords.y;
+    x = MIN(MAX(x - 160, 0), map_location.w - 320);
+    y = MIN(MAX(y - 120, 0), map_location.h - 240);
   }
   else if (movement != NULL) {
     movement->update();
@@ -86,8 +86,8 @@ void Camera::update(void) {
  * Only x and y are indicated.
  * @return the visible area
  */
-SDL_Rect *Camera::get_position(void) {
-  return &position;
+SDL_Rect & Camera::get_position(void) {
+  return position;
 }
 
 /**
@@ -120,9 +120,9 @@ void Camera::move(int target_x, int target_y) {
     delete movement;
   }
 
-  const SDL_Rect *map_location = map->get_location();
-  target_x = MIN(MAX(target_x, 160), map_location->w - 160);
-  target_y = MIN(MAX(target_y, 120), map_location->h - 120);
+  const SDL_Rect &map_location = map->get_location();
+  target_x = MIN(MAX(target_x, 160), map_location.w - 160);
+  target_y = MIN(MAX(target_y, 120), map_location.h - 120);
 
   movement = new TargetMovement(target_x, target_y, speed);
   movement->set_position(position.x + 160, position.y + 120);
@@ -145,6 +145,7 @@ void Camera::move(MapEntity *entity) {
  * When the movement finishes, the camera follows the hero again.
  */
 void Camera::restore(void) {
-  move(zsdx->game->get_hero());
+  const SDL_Rect &hero_coords = zsdx->game->get_hero_coordinates();
+  move(hero_coords.x, hero_coords.y);
   restoring = true;
 }

@@ -51,7 +51,7 @@ DynamicTile::~DynamicTile(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType DynamicTile::get_type(void) {
+EntityType DynamicTile::get_type(void) {
   return DYNAMIC_TILE;
 }
 

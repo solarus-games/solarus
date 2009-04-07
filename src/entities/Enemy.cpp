@@ -54,7 +54,7 @@ Enemy::~Enemy(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType Enemy::get_type() {
+EntityType Enemy::get_type() {
   return ENEMY;
 }
 

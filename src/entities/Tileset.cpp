@@ -104,7 +104,7 @@ void Tileset::load(void) {
       iss >> x >> y >> width >> height;
 
       add_tile_pattern(tile_pattern_id,
-		       new SimpleTilePattern((MapEntity::Obstacle) obstacle,
+		       new SimpleTilePattern((Obstacle) obstacle,
 					     x, y, width, height));
     }
     else {
@@ -112,7 +112,7 @@ void Tileset::load(void) {
 
       iss >> sequence >> width >> height >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
       add_tile_pattern(tile_pattern_id,
-		       new AnimatedTilePattern((MapEntity::Obstacle) obstacle,
+		       new AnimatedTilePattern((Obstacle) obstacle,
 					       (AnimatedTilePattern::AnimationSequence) sequence,
 					       width, height, x1, y1, x2, y2, x3, y3));
     }

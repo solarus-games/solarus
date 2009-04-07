@@ -35,7 +35,7 @@
  * @param destination_point_name location on the destination map, or "_same" to keep the hero's coordinates,
  * or "_side" to place the hero on the appropriate side of the map
  */
-Teletransporter::Teletransporter(std::string name, MapEntity::Layer layer, int x, int y, int width, int height,
+Teletransporter::Teletransporter(std::string name, Layer layer, int x, int y, int width, int height,
 				 Subtype subtype, Transition::Style transition_style,
 				 MapId destination_map_id, std::string destination_point_name):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
@@ -95,7 +95,7 @@ void Teletransporter::set_map(Map *map) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType Teletransporter::get_type() {
+EntityType Teletransporter::get_type() {
   return TELETRANSPORTER;
 }
 
@@ -138,11 +138,11 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
       && is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
   }
 
-  const SDL_Rect *entity_position = entity->get_position_in_map();
-  int x1 = entity_position->x + 4;
-  int x2 = x1 + entity_position->w - 5;
-  int y1 = entity_position->y + 4;
-  int y2 = y1 + entity_position->h - 5;
+  const SDL_Rect &entity_position = entity->get_position_in_map();
+  int x1 = entity_position.x + 4;
+  int x2 = x1 + entity_position.w - 5;
+  int y1 = entity_position.y + 4;
+  int y2 = y1 + entity_position.h - 5;
 
   return is_point_in(get_position_in_map(), x1, y1) &&
     is_point_in(get_position_in_map(), x2, y1) &&

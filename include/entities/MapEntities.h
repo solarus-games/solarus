@@ -18,8 +18,9 @@
 #define ZSDX_MAP_ENTITIES_H
 
 #include "Common.h"
-#include "MapEntity.h"
 #include "Transition.h"
+#include "entities/Obstacle.h"
+#include "entities/Layer.h"
 #include "entities/Teletransporter.h"
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
@@ -45,11 +46,10 @@ class MapEntities {
   Tileset *tileset;                                       /**< the tileset */
 
   // tiles
-  std::vector<Tile*> tiles[MapEntity::LAYER_NB];          /**< all tiles of the map (a vector for each layer) */
+  std::vector<Tile*> tiles[LAYER_NB];                     /**< all tiles of the map (a vector for each layer) */
   int obstacle_tiles_size;                                /**< number of elements in the array obstacle_tiles
 							   * (obstacle_tiles_size = map->width8 * map->height8) */
-  MapEntity::Obstacle
-    *obstacle_tiles[MapEntity::LAYER_NB];                 /**< array of Obstacle representing which
+  Obstacle *obstacle_tiles[LAYER_NB];                     /**< array of Obstacle representing which
 					                   * tiles are obstacles and how */
   // dynamic entities
 
@@ -59,10 +59,10 @@ class MapEntities {
   std::list<MapEntity*> entities_to_remove;               /**< list of entities that need to be removed now */
 
   std::list<MapEntity*>
-    entities_displayed_first[MapEntity::LAYER_NB];        /**< all map entities that are displayed in the normal order */
+    entities_displayed_first[LAYER_NB];                   /**< all map entities that are displayed in the normal order */
 
   std::list<MapEntity*>
-    entities_displayed_y_order[MapEntity::LAYER_NB];      /**< all map entities that are displayed in the order
+    entities_displayed_y_order[LAYER_NB];                 /**< all map entities that are displayed in the order
 							   * defined by their y position, including the hero */
 
   std::vector<DestinationPoint*> destination_points;      /**< all destination points of the map */
@@ -70,10 +70,10 @@ class MapEntities {
 							   * on this map */
   
   std::list<MapEntity*>
-    obstacle_entities[MapEntity::LAYER_NB];               /**< all entities that might be obstacle for other
+    obstacle_entities[LAYER_NB];                          /**< all entities that might be obstacle for other
 							   * entities on this map, including the hero */
 
-  void set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle obstacle);
+  void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
   void remove_marked_entities(void);
 
  public:
@@ -85,18 +85,18 @@ class MapEntities {
   // information about the entities
   unsigned int get_nb_destination_points(void);
   DestinationPoint * get_destination_point(int index);
-  MapEntity::Obstacle get_obstacle_tile(MapEntity::Layer layer, int x, int y);
-  std::list<MapEntity*> * get_obstacle_entities(MapEntity::Layer layer);
+  Obstacle get_obstacle_tile(Layer layer, int x, int y);
+  std::list<MapEntity*> * get_obstacle_entities(Layer layer);
   std::list<Detector*> * get_detectors(void);
 
-  MapEntity *get_entity(MapEntity::EntityType type, std::string name);
-  std::list<MapEntity*> * get_entities(MapEntity::EntityType type);
+  MapEntity *get_entity(EntityType type, std::string name);
+  std::list<MapEntity*> * get_entities(EntityType type);
 
   // handle entities
   void add_tile(Tile *tile);
   void add_entity(MapEntity *entity);
   void remove_entity(MapEntity *entity);
-  void remove_entity(MapEntity::EntityType type, std::string name);
+  void remove_entity(EntityType type, std::string name);
   void bring_to_front(MapEntity *entity);
   void destroy_all_entities(void);
   static bool compare_y(MapEntity *first, MapEntity *second);

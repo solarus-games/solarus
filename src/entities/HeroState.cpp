@@ -70,9 +70,9 @@ bool Hero::is_direction_locked(void) {
 
 /**
  * Sets the ground displayed under the hero.
- * @param ground the ground to display, in enum Map::Ground (including Map::NORMAL_GROUND)
+ * @param ground the ground to display
  */
-void Hero::set_ground(int ground) {
+void Hero::set_ground(Ground ground) {
 
   if (ground != this->ground) {
     this->ground = ground;
@@ -84,11 +84,11 @@ void Hero::set_ground(int ground) {
  */
 void Hero::start_ground(void) {
 
-  if (ground == Map::NORMAL_GROUND) {
+  if (ground == GROUND_NORMAL) {
     delete ground_sprite;
     ground_sprite = NULL;
   }
-  else if (ground == Map::DEEP_WATER) {
+  else if (ground == GROUND_DEEP_WATER) {
     if (state != JUMPING && state != HURT) {
       start_deep_water();
     }
@@ -124,8 +124,8 @@ void Hero::update_ground(void) {
  */
 bool Hero::is_ground_visible(void) {
 
-  return ground != Map::NORMAL_GROUND
-    && ground != Map::DEEP_WATER
+  return ground != GROUND_NORMAL
+    && ground != GROUND_DEEP_WATER
     && state != PLUNGING
     && state != SWIMMING
     && state != JUMPING
@@ -519,7 +519,7 @@ void Hero::update_pushing(void) {
       // see if the obstacle is an entity that the hero can push
       else if (facing_entity != NULL && grabbed_entity == NULL) {
 
-	if (facing_entity->get_type() == MapEntity::BLOCK) {
+	if (facing_entity->get_type() == BLOCK) {
 	  try_snap_to_facing_entity();
 	}
 
@@ -607,7 +607,7 @@ void Hero::update_grabbing_pulling(void) {
     // see if the obstacle is an entity that the hero can pull
     if (facing_entity != NULL) {
 
-      if (facing_entity->get_type() == MapEntity::BLOCK) {
+      if (facing_entity->get_type() == BLOCK) {
 	try_snap_to_facing_entity();
       }
 
@@ -795,10 +795,10 @@ void Hero::display_treasure(void) {
   int x = position_in_map.x;
   int y = position_in_map.y;
 
-  SDL_Rect *camera_position = map->get_camera_position();
+  const SDL_Rect &camera_position = map->get_camera_position();
   treasure->display(map->get_visible_surface(),
-		    x - camera_position->x,
-		    y - 24 - camera_position->y);
+		    x - camera_position.x,
+		    y - 24 - camera_position.y);
 }
 
 /**
@@ -875,7 +875,7 @@ void Hero::update_jumping(void) {
     clear_movement();
     set_movement(normal_movement);
 
-    if (ground == Map::DEEP_WATER) {
+    if (ground == GROUND_DEEP_WATER) {
       start_deep_water();
     }
     else {
@@ -934,7 +934,7 @@ void Hero::update_hurt(void) {
     clear_movement();
     set_movement(normal_movement);
 
-    if (ground == Map::DEEP_WATER) {
+    if (ground == GROUND_DEEP_WATER) {
       start_deep_water();
     }
     else {
@@ -1048,7 +1048,7 @@ void Hero::update_plunging(void) {
 
   if (tunic_sprite->is_animation_finished()) {
 
-    if (ground != Map::DEEP_WATER) {
+    if (ground != GROUND_DEEP_WATER) {
       start_free();
     }
     else if (equipment->has_inventory_item(InventoryItem::FLIPPERS)) {

@@ -25,7 +25,7 @@
  * @param width width of the tile pattern in the tileset
  * @param height height of the tile pattern in the tileset
  */
-SimpleTilePattern::SimpleTilePattern(MapEntity::Obstacle obstacle, int x, int y, int width, int height):
+SimpleTilePattern::SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height):
   TilePattern(obstacle, width, height) {
 
   position_in_tileset.x = x;

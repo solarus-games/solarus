@@ -18,6 +18,8 @@
 #define ZSDX_MAP_ENTITY_H
 
 #include "Common.h"
+#include "entities/EntityType.h"
+#include "entities/Layer.h"
 #include <vector>
 
 /**
@@ -29,59 +31,6 @@
  * - an origin point, relative to the rectangle's top-left corner
  */
 class MapEntity {
-
- public:
-
-  /**
-   * Constants to identify each kind of map entity.
-   */
-  enum EntityType {
-    TILE                      = 0,    /**< a tile on the map, obstacle or not */
-    DESTINATION_POINT         = 1,    /**< a destination point on the map */
-    TELETRANSPORTER           = 2,    /**< a teletransporter: the hero is transported
-				       * to a destination point when walking on it */
-    PICKABLE_ITEM             = 3,    /**< an item that the hero can pick: a rupee, a heart, a fairy... */
-    DESTRUCTIBLE_ITEM         = 4,    /**< an item that the hero can cut or lift: a pot, a bush, a stone... */
-    CHEST                     = 5,    /**< a chest (small or big) with a treasure */
-    JUMP_SENSOR               = 6,    /**< a sensor that makes the hero jump in a direction */
-    ENEMY                     = 7,    /**< an enemy */
-    INTERACTIVE_ENTITY        = 8,    /**< an entity the hero can interact with by pressing the action key
-				       * in front of it (typically an NPC) */
-    BLOCK                     = 9,    /**< a block or a statue that the hero can push */
-    DYNAMIC_TILE              = 10,   /**< a dynamic tile (that can be enabled or disabled) */
-    SWITCH                    = 11,   /**< a switch */
-    CUSTOM_OBSTACLE           = 12,   /**< an obstacle for some other type of entities */
-
-    HERO                      = 1000, /**< the hero */
-    CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
-  };
-
-  /**
-   * Obstacle property for the tiles or the active objects.
-   * Values lower than or equal to OBSTACLE_NONE correspond to entities the hero can walk on.
-   * Values higher than OBSTACLE_NONE correspond to obstacles.
-   */
-  enum Obstacle {
-    OBSTACLE_SHALLOW_WATER = -2, /**< the entity is some shallow water */
-    OBSTACLE_DEEP_WATER = -1,    /**< the entity is some deep water */
-    OBSTACLE_NONE = 0,           /**< the entity is normal normal ground without obstacle */
-    OBSTACLE,                    /**< the entity is entirely an obstacle */
-    OBSTACLE_TOP_RIGHT,          /**< the upper-right half of the entity is an obstacle */
-    OBSTACLE_TOP_LEFT,           /**< the upper-left half of the entity is an obstacle */
-    OBSTACLE_BOTTOM_LEFT,        /**< the lower-left half of the entity is an obstacle */
-    OBSTACLE_BOTTOM_RIGHT,       /**< the lower-right half of the entity is an obstacle */
-  };
-
-  /**
-   * Layer of a tile or an active object.
-   */
-  enum Layer {
-    LAYER_LOW,             /**< the entity is always below the hero (floor, walls, chests,
-			      enemies and 99% of the tiles and active objects) */
-    LAYER_INTERMEDIATE,    /**< the hero can be below or above the entity (platforms or objects on a plaform) */
-    LAYER_HIGH,            /**< the entity is always above the hero (trees, top of doors...) */
-    LAYER_NB               /**< number of layers */
-  };
 
  public:
 
@@ -144,7 +93,7 @@ class MapEntity {
 
   // other data, used for some kinds of entities
 
-  std::string name;             /**< name of the entity, not used for all kinds of entities;
+  std::string name;        /**< name of the entity, not used for all kinds of entities;
 		            * the name identifies the entity in the game (an empty string
 		            * indicates that the entity has no name) */
 
@@ -174,14 +123,14 @@ class MapEntity {
   void set_size(int width, int height);
   void set_size(SDL_Rect &size);
   void set_origin(int x, int y);
-  void set_origin(const SDL_Rect *origin);
+  void set_origin(const SDL_Rect &origin);
   void set_rectangle_from_sprite(void);
   void create_sprite(SpriteAnimationSetId id);
   void set_movement(Movement *movement);
   void clear_movement(void);
 
   // collisions
-  static bool is_point_in(const SDL_Rect *rectangle, int x, int y);
+  static bool is_point_in(const SDL_Rect &rectangle, int x, int y);
 
  public:
 
@@ -206,10 +155,10 @@ class MapEntity {
   void set_y(int y);
   int get_width(void);
   int get_height(void);
-  const SDL_Rect * get_position_in_map(void);
-  void set_position_in_map(const SDL_Rect *position_in_map);
+  const SDL_Rect & get_position_in_map(void);
+  void set_position_in_map(const SDL_Rect &position_in_map);
   void set_position_in_map(int x, int y);
-  const SDL_Rect * get_origin(void);
+  const SDL_Rect & get_origin(void);
   int get_top_left_x(void);
   int get_top_left_y(void);
   void set_top_left_x(int x);
@@ -237,10 +186,10 @@ class MapEntity {
 
   // collisions
   virtual bool is_obstacle_for(MapEntity *other);
-  bool overlaps(const SDL_Rect *rectangle);
-  bool is_origin_point_in(const SDL_Rect *rectangle);
-  bool is_facing_point_in(const SDL_Rect *rectangle);
-  bool is_center_in(const SDL_Rect *rectangle);
+  bool overlaps(const SDL_Rect &rectangle);
+  bool is_origin_point_in(const SDL_Rect &rectangle);
+  bool is_facing_point_in(const SDL_Rect &rectangle);
+  bool is_center_in(const SDL_Rect &rectangle);
   double get_vector_angle(MapEntity *other);
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);

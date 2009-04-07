@@ -25,7 +25,7 @@
  * @param width width of the tile in pixels (must be a multiple of 8)
  * @param height height of the tile in pixels (must be a multiple of 8)
  */
-TilePattern::TilePattern(MapEntity::Obstacle obstacle, int width, int height):
+TilePattern::TilePattern(Obstacle obstacle, int width, int height):
   obstacle(obstacle), width(width), height(height) {
 
   // check the width and the height
@@ -36,7 +36,7 @@ TilePattern::TilePattern(MapEntity::Obstacle obstacle, int width, int height):
   }
 
   // diagonal obstacle: check that the tile is square
-  if (obstacle >= MapEntity::OBSTACLE_TOP_RIGHT && obstacle <= MapEntity::OBSTACLE_BOTTOM_RIGHT
+  if (obstacle >= OBSTACLE_TOP_RIGHT && obstacle <= OBSTACLE_BOTTOM_RIGHT
       && width != height) {
     DIE("Invalid tile pattern: a tile pattern with a diagonal obstacle must be square");
   }
@@ -66,10 +66,10 @@ int TilePattern::get_height(void) const {
 }
 
 /**
- * Returns the obstacle property of the tile.
- * @return the obstacle property of the tile
+ * Returns the obstacle property of this tile pattern.
+ * @return the obstacle property of this tile pattern
  */
-MapEntity::Obstacle TilePattern::get_obstacle(void) const {
+Obstacle TilePattern::get_obstacle(void) const {
   return obstacle;
 }
 
@@ -84,19 +84,19 @@ void TilePattern::display_on_map(Map *map, SDL_Rect &position_in_map) {
   SDL_Surface *tileset_image = map->get_tileset()->get_tiles_image();
 
   SDL_Rect dst;
-  SDL_Rect *camera_position = map->get_camera_position();
+  const SDL_Rect &camera_position = map->get_camera_position();
 
   dst.w = get_width();
   dst.h = get_height();
 
-  int limit_x = position_in_map.x - camera_position->x + position_in_map.w;
-  int limit_y = position_in_map.y - camera_position->y + position_in_map.h;
+  int limit_x = position_in_map.x - camera_position.x + position_in_map.w;
+  int limit_y = position_in_map.y - camera_position.y + position_in_map.h;
 
-  for (dst.y = position_in_map.y - camera_position->y; dst.y < limit_y; dst.y += dst.h) {
+  for (dst.y = position_in_map.y - camera_position.y; dst.y < limit_y; dst.y += dst.h) {
 
     if (dst.y <= 240 && dst.y + dst.h > 0) {
 
-      for (dst.x = position_in_map.x - camera_position->x; dst.x < limit_x; dst.x += dst.w) {
+      for (dst.x = position_in_map.x - camera_position.x; dst.x < limit_x; dst.x += dst.w) {
 
 	if (dst.x <= 320 && dst.x + dst.w > 0) {
 	  display(map_surface, dst, tileset_image);

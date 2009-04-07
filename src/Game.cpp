@@ -107,6 +107,19 @@ Hero * Game::get_hero(void) {
 }
 
 /**
+ * Returns the coordinates of the hero on the current map.
+ * The coordinates returned are the coordinates of the hero's origin point
+ * on the map.
+ * The width and the height are not used.
+ * @return the position of the hero
+ */
+const SDL_Rect Game::get_hero_coordinates(void) {
+
+  SDL_Rect hero_coords = {hero->get_x(), hero->get_y()};
+  return hero_coords;
+}
+
+/**
  * Returns the game controls for the keyboard and the joypad.
  * @return the game controls
  */
@@ -304,7 +317,7 @@ void Game::update_transitions(void) {
     else if (transition_direction == Transition::OUT) {
 
       if (next_map == current_map) {
-	current_map->place_hero_on_destination_point();
+	hero->place_on_destination_point(current_map);
 	transition = Transition::create(transition_style, Transition::IN);
 	transition->start();
 	next_map = NULL;
@@ -336,7 +349,7 @@ void Game::update_transitions(void) {
       }
     }
     else {
-      current_map->opening_transition_finished();
+      hero->opening_transition_finished();
 
       if (previous_map_surface != NULL) {
 	SDL_FreeSurface(previous_map_surface);
@@ -354,6 +367,7 @@ void Game::update_transitions(void) {
       transition->set_previous_surface(previous_map_surface);
     }
 
+    hero->place_on_destination_point(current_map);
     transition->start();
     current_map->start();
   }
@@ -659,9 +673,9 @@ DialogBox * Game::get_dialog_box(void) {
  */
 void Game::show_message(MessageId message_id) {
 
-  SDL_Rect *camera_position = current_map->get_camera_position();
+  const SDL_Rect &camera_position = current_map->get_camera_position();
 
-  if (hero->get_y() < camera_position->y + 130) {
+  if (hero->get_y() < camera_position.y + 130) {
     show_message(message_id, 1);
   }
   else {
@@ -782,7 +796,7 @@ void Game::restart(void) {
  * Launches the gameover sequence.
  */
 void Game::start_gameover_sequence(void) {
-  gameover_sequence = new GameoverSequence(this);
+  gameover_sequence = new GameoverSequence(this, hero->get_animation_direction());
 }
 
 /**
@@ -791,4 +805,11 @@ void Game::start_gameover_sequence(void) {
  */
 bool Game::is_showing_gameover(void) {
   return gameover_sequence != NULL;
+}
+
+/**
+ * This function is called when the hero was dead but saved by a fairy.
+ */
+void Game::get_back_from_death(void) {
+  hero->get_back_from_death();
 }

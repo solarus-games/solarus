@@ -23,7 +23,6 @@
 #include "Equipment.h"
 #include "Treasure.h"
 #include "Sound.h"
-#include "entities/Hero.h"
 #include "movements/TargetMovement.h"
 #include <sstream>
 
@@ -31,7 +30,7 @@
  * Creates a game over sequence.
  * @param game the game
  */
-GameoverSequence::GameoverSequence(Game *game):
+GameoverSequence::GameoverSequence(Game *game, int hero_direction):
   game(game), music_id(game->get_current_music_id()), state(WAITING_START) {
 
   gameover_menu_img = ResourceManager::load_image("hud/gameover_menu.png");
@@ -43,13 +42,13 @@ GameoverSequence::GameoverSequence(Game *game):
   oss << "hero/tunic" << game->get_equipment()->get_tunic();
   hero_dead_sprite = new Sprite(oss.str());
   hero_dead_sprite->set_current_animation("hurt");
-  hero_dead_sprite->set_current_direction(game->get_hero()->get_animation_direction());
+  hero_dead_sprite->set_current_direction(hero_direction);
   hero_dead_sprite->set_suspended(true);
 
-  SDL_Rect *camera_position = game->get_current_map()->get_camera_position();
-  Hero *hero = game->get_hero();
-  hero_dead_x = hero->get_x() - camera_position->x;
-  hero_dead_y = hero->get_y() - camera_position->y;
+  const SDL_Rect &camera_position = game->get_current_map()->get_camera_position();
+  const SDL_Rect &hero_coords = game->get_hero_coordinates();
+  hero_dead_x = hero_coords.x - camera_position.x;
+  hero_dead_y = hero_coords.y - camera_position.y;
 
   fairy_sprite = new Sprite("entities/fairy");
   fairy_movement = NULL;
@@ -148,7 +147,7 @@ void GameoverSequence::update(void) {
   case WAITING_END:
     if (now >= next_state_date) {
       state = RESUME_GAME;
-      game->get_hero()->get_back_from_death();
+      game->get_back_from_death();
       game->play_music(music_id);
     }
     break;

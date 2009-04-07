@@ -88,7 +88,7 @@ CarriedItem::~CarriedItem(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType CarriedItem::get_type() {
+EntityType CarriedItem::get_type() {
   return CARRIED_ITEM;
 }
 

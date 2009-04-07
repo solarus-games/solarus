@@ -76,7 +76,7 @@ void MovementWithCollision::set_y(int y) {
 bool MovementWithCollision::collision_with_map(int dx, int dy) {
 
   // place the collision box where we want to check the collisions
-  SDL_Rect collision_box = *entity->get_position_in_map();
+  SDL_Rect collision_box = entity->get_position_in_map();
 
   collision_box.x += dx;
   collision_box.y += dy;

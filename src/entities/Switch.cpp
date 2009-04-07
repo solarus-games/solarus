@@ -32,7 +32,7 @@
  * @param disable_when_leaving true to disable the switch when the hero or 
  * the block leaves it
  */
-Switch::Switch(std::string name, MapEntity::Layer layer, int x, int y,
+Switch::Switch(std::string name, Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool disable_when_leaving):
   Detector(COLLISION_ORIGIN_POINT, name, layer, x, y, 16, 16),
   subtype(subtype), needs_block(needs_block), disable_when_leaving(disable_when_leaving),
@@ -59,7 +59,7 @@ Switch::~Switch(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType Switch::get_type() {
+EntityType Switch::get_type() {
   return SWITCH;
 }
 

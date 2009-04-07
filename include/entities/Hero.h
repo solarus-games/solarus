@@ -18,9 +18,10 @@
 #define ZSDX_HERO_H
 
 #include "Common.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
+#include "entities/Enemy.h"
+#include "entities/Ground.h"
 #include "Controls.h"
-#include "Enemy.h"
 
 /**
  * The hero's entity.
@@ -127,7 +128,7 @@ class Hero: public MapEntity {
   int last_ground_y;             /**< y coordinate of the last hero position on the ground (e.g. before jumping) */
 
   // special ground under the hero
-  int ground;                    /**< kind of ground under the hero: grass, shallow water, etc. (from enum Map::Ground) */
+  Ground ground;                 /**< kind of ground under the hero: grass, shallow water, etc. */
   Uint32 next_ground_sound_date; /**< when the ground sound has to be played next time */
 
   // update functions
@@ -221,6 +222,9 @@ class Hero: public MapEntity {
   // properties
   EntityType get_type(void);
 
+  void update(void);
+  void display_on_map(void);
+
   // movement
   PlayerMovement * get_normal_movement(void);
   int get_movement_direction(void);
@@ -235,8 +239,8 @@ class Hero: public MapEntity {
   // map
   void set_map(Map *map);
   void set_map(Map *map, int initial_direction);
-  void update(void);
-  void display_on_map(void);
+  void place_on_destination_point(Map *map);
+  void opening_transition_finished(void);
 
   // sprites
   int get_animation_direction(void);
@@ -247,7 +251,7 @@ class Hero: public MapEntity {
 
   // state of the hero
   State get_state(void);
-  void set_ground(int ground);
+  void set_ground(Ground ground);
   void start_free(void);
   void start_sword(void);
   bool is_grabbing_or_pulling(void);

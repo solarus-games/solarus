@@ -39,7 +39,7 @@ class Camera {
   ~Camera(void);
 
   void update(void);
-  SDL_Rect *get_position(void);
+  SDL_Rect & get_position(void);
 
   bool is_fixed_on_hero(void);
   void set_speed(int speed);

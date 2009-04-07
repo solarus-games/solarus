@@ -30,7 +30,10 @@
  * @param previous the previous phase
  */
 SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous, "Quel est votre nom ?") {
+  SelectionMenuPhase(previous, "Quel est votre nom ?"),
+  next_key_date(SDL_GetTicks()) {
+
+  SDL_EnableKeyRepeat(300, 50);
 
   get_keys_effect()->set_sword_key_enabled(true);
   get_cursor()->set_current_animation("letters");
@@ -52,6 +55,7 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
  */
 SelectionMenuChooseName::~SelectionMenuChooseName(void) {
 
+  SDL_EnableKeyRepeat(0, 0);
   get_keys_effect()->set_sword_key_enabled(false);
 
   delete text_new_player_name;
@@ -67,6 +71,8 @@ void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
 
   if (event.type == SDL_KEYDOWN) {
 
+    Uint32 now = SDL_GetTicks();
+
     bool finished = false;
     switch (event.key.keysym.sym) {
 
@@ -77,9 +83,12 @@ void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
   
     case SDLK_c:
     case SDLK_SPACE:
-      // choose a letter
-      finished = select_letter();
-      text_new_player_name->set_text(player_name);
+      if (now >= next_key_date) {
+	// choose a letter
+	finished = select_letter();
+	text_new_player_name->set_text(player_name);
+	next_key_date = now + 500;
+      }
       break;
 
     case SDLK_RIGHT:

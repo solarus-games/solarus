@@ -91,7 +91,7 @@ PickableItem::~PickableItem(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType PickableItem::get_type() {
+EntityType PickableItem::get_type() {
   return PICKABLE_ITEM;
 }
 

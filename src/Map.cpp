@@ -22,8 +22,8 @@
 #include "FileTools.h"
 #include "MapScript.h"
 #include "Camera.h"
+#include "entities/Ground.h"
 #include "entities/Tileset.h"
-#include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/DestinationPoint.h"
 #include "entities/Detector.h"
@@ -127,8 +127,8 @@ bool Map::has_floor(void) {
  * - in a dungeon: location of the map's top-left corner relative to the whole floor
  * The width and height fields correspond to the map size.
  */
-const SDL_Rect * Map::get_location(void) {
-  return &location;
+const SDL_Rect & Map::get_location(void) {
+  return location;
 }
 
 /**
@@ -279,7 +279,7 @@ void Map::set_destination_point(std::string destination_point_name) {
 /**
  * Returns the destination point index specified by the last set_destination_point() call.
  */
-unsigned int Map::get_destination_point_index(void) {
+int Map::get_destination_point_index(void) {
   return destination_point_index;
 }
 
@@ -299,7 +299,7 @@ SDL_Surface * Map::get_visible_surface(void) {
  * top-left corner.
  * @return the position of the visible area
  */
-SDL_Rect * Map::get_camera_position(void) {
+const SDL_Rect & Map::get_camera_position(void) {
   return camera->get_position();
 }
 
@@ -383,8 +383,8 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  SDL_Rect *camera_position = camera->get_position();
-  sprite->display(visible_surface, x - camera_position->x, y - camera_position->y);
+  const SDL_Rect &camera_position = get_camera_position();
+  sprite->display(visible_surface, x - camera_position.x, y - camera_position.y);
 }
 
 /**
@@ -395,92 +395,9 @@ void Map::start(void) {
 
   SDL_SetAlpha(visible_surface, SDL_SRCALPHA, 255);
 
-  place_hero_on_destination_point();
   zsdx->game->play_music(music_id);
   started = true;
   script->initialize();
-}
-
-/**
- * Places the hero at the position specified by the last set_destination_point() call.
- */
-void Map::place_hero_on_destination_point(void) {
-
-  // put the hero
-  if (destination_point_index >= 0) {
-    DestinationPoint *destination_point = entities->get_destination_point(destination_point_index);
-    destination_point->place_hero();
-  }
-  else if (destination_point_index == -1) {
-
-    // the hero's coordinates are the same as on previous map
-    Hero *hero = zsdx->game->get_hero();
-    hero->set_map(this);
-  }
-  else {
-
-    // only one coordinate is changed
-    Hero *hero = zsdx->game->get_hero();
-    hero->set_map(this);
-
-    switch (destination_side) {
-
-    case 0: // right side
-      hero->set_x(get_width());
-      break;
-
-    case 1: // top side
-      hero->set_y(5);
-      break;
-
-    case 2: // left side
-      hero->set_x(0);
-      break;
-
-    case 3: // bottom side
-      hero->set_y(get_height() + 5);
-      break;
-
-    default:
-      DIE("Invalid destination side: " << destination_side);
-    }
-  }
-}
-
-/**
- * This function is called when the opening transition of the map is finished.
- * The position of the hero is updated if necessary.
- */
-void Map::opening_transition_finished(void) {
-
-  if (destination_point_index == -2) {
-    // the hero was placed on the side of the map:
-    // there was a scrolling between the previous map and this one
-    
-    Hero *hero = zsdx->game->get_hero();
-
-    switch (destination_side) {
-
-    case 0: // right side
-      hero->set_x(get_width() - 8);
-      break;
-
-    case 1: // top side
-      hero->set_y(13);
-      break;
-
-    case 2: // left side
-      hero->set_x(8);
-      break;
-
-    case 3: // bottom side
-      hero->set_y(get_height() - 3);
-      break;
-
-    default:
-      DIE("Invalid destination side: " << destination_side);
-    }
-  }
 }
 
 /**
@@ -517,16 +434,16 @@ bool Map::is_started(void) {
  * @param entity_to_check the entity to check (used to decide what tiles are considered as an obstacle)
  * @return true if this point is on an obstacle
  */
-bool Map::collision_with_tiles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check) {
+bool Map::collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check) {
 
-  MapEntity::Obstacle obstacle_type;
+  Obstacle obstacle_type;
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
   // if the point is outside the map, there is only obstacles (should not happen though)
   if (x < 0 || x >= get_width()
       || y < 0 || y >= get_height()) {
-    return MapEntity::OBSTACLE;
+    return OBSTACLE;
   }
 
   // get the obstacle property of the tile under that point
@@ -535,17 +452,17 @@ bool Map::collision_with_tiles(MapEntity::Layer layer, int x, int y, MapEntity *
   // test the obstacle property of this square
   switch (obstacle_type) {
 
-  case MapEntity::OBSTACLE_NONE:
+  case OBSTACLE_NONE:
     // the square is not an obstacle
     on_obstacle = false;
     break;
 
-  case MapEntity::OBSTACLE:
+  case OBSTACLE:
     // the square is entirely an obstacle
     on_obstacle = true;
     break;
 
-  case MapEntity::OBSTACLE_TOP_RIGHT:
+  case OBSTACLE_TOP_RIGHT:
     // the upper right half of the square is an obstacle
     // so we have to test the position of the point
     x_in_tile = x % 8;
@@ -553,27 +470,27 @@ bool Map::collision_with_tiles(MapEntity::Layer layer, int x, int y, MapEntity *
     on_obstacle = y_in_tile < x_in_tile;
     break;
 
-  case MapEntity::OBSTACLE_TOP_LEFT:
+  case OBSTACLE_TOP_LEFT:
     // same thing
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile < 8 - x_in_tile;
     break;
 
-  case MapEntity::OBSTACLE_BOTTOM_LEFT:
+  case OBSTACLE_BOTTOM_LEFT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile > x_in_tile;
     break;
 
-  case MapEntity::OBSTACLE_BOTTOM_RIGHT:
+  case OBSTACLE_BOTTOM_RIGHT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
     on_obstacle = y_in_tile > 8 - x_in_tile;
     break;
 
-  case MapEntity::OBSTACLE_SHALLOW_WATER:
-  case MapEntity::OBSTACLE_DEEP_WATER:
+  case OBSTACLE_SHALLOW_WATER:
+  case OBSTACLE_DEEP_WATER:
     // only the hero can move on water tiles
     on_obstacle = !entity_to_check->is_hero();
     break;
@@ -589,7 +506,7 @@ bool Map::collision_with_tiles(MapEntity::Layer layer, int x, int y, MapEntity *
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if there is an obstacle entity at this point
  */
-bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check) {
+bool Map::collision_with_entities(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
 
   std::list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
 
@@ -601,7 +518,7 @@ bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_bo
        i++) {
 
     collision = (*i) != entity_to_check &&
-      (*i)->is_obstacle_for(entity_to_check) && (*i)->overlaps(&collision_box);
+      (*i)->is_obstacle_for(entity_to_check) && (*i)->overlaps(collision_box);
   }
 
   return collision;
@@ -616,7 +533,7 @@ bool Map::collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_bo
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check) {
+bool Map::collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
   int x1, y1;
   bool collision = false;
 
@@ -645,7 +562,7 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_b
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the point is overlapping an obstacle, false otherwise
  */
-bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check) {
+bool Map::collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check) {
 
   bool collision;
 
@@ -669,16 +586,16 @@ bool Map::collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEnti
  * @param y y coordinate of the point to check
  * @return the ground at this place
  */
-Map::Ground Map::get_tile_ground(MapEntity::Layer layer, int x, int y) {
+Ground Map::get_tile_ground(Layer layer, int x, int y) {
 
-  Ground ground = NORMAL_GROUND;
+  Ground ground = GROUND_NORMAL;
 
-  MapEntity::Obstacle obstacle = entities->get_obstacle_tile(layer, x, y);
-  if (obstacle == MapEntity::OBSTACLE_SHALLOW_WATER) {
-    ground = SHALLOW_WATER;
+  Obstacle obstacle = entities->get_obstacle_tile(layer, x, y);
+  if (obstacle == OBSTACLE_SHALLOW_WATER) {
+    ground = GROUND_SHALLOW_WATER;
   }
-  else if (obstacle == MapEntity::OBSTACLE_DEEP_WATER) {
-    ground = DEEP_WATER;
+  else if (obstacle == OBSTACLE_DEEP_WATER) {
+    ground = GROUND_DEEP_WATER;
   }
 
   return ground;

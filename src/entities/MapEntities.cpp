@@ -18,6 +18,8 @@
 #include "entities/Hero.h"
 #include "entities/Tile.h"
 #include "entities/TilePattern.h"
+#include "entities/Layer.h"
+#include "entities/Obstacle.h"
 #include "Map.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -30,7 +32,7 @@ MapEntities::MapEntities(Map *map):
   map(map) {
 
   Hero *hero = zsdx->game->get_hero();
-  MapEntity::Layer layer = hero->get_layer();
+  Layer layer = hero->get_layer();
   this->obstacle_entities[layer].push_back(hero);
   this->entities_displayed_y_order[layer].push_back(hero);
   // TODO update that when the layer changes, same thing for enemies
@@ -51,7 +53,7 @@ MapEntities::~MapEntities(void) {
 void MapEntities::destroy_all_entities(void) {
 
   // delete the entities sorted by layer
-  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       delete tiles[layer][i];
@@ -102,7 +104,7 @@ DestinationPoint * MapEntities::get_destination_point(int index) {
  * @param y y coordiate of the point
  * @return the obstacle property of this tile
  */
-MapEntity::Obstacle MapEntities::get_obstacle_tile(MapEntity::Layer layer, int x, int y) {
+Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
   int width8 = map->get_width8();
   return obstacle_tiles[layer][(y / 8) * width8 + (x / 8)];
@@ -114,7 +116,7 @@ MapEntity::Obstacle MapEntities::get_obstacle_tile(MapEntity::Layer layer, int x
  * @param layer the layer
  * @return the obstacle entities
  */
-list<MapEntity*> * MapEntities::get_obstacle_entities(MapEntity::Layer layer) {
+list<MapEntity*> * MapEntities::get_obstacle_entities(Layer layer) {
   return &obstacle_entities[layer];
 }
 
@@ -133,7 +135,7 @@ list<Detector*> * MapEntities::get_detectors(void) {
  * @param y8 y coordinate of the square (divided by 8)
  * @param obstacle the obstacle property to set
  */
-void MapEntities::set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle obstacle) {
+void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
 
   int width8 = map->get_width8();
   int height8 = map->get_height8();
@@ -150,7 +152,7 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, MapEntity::Obstacle ob
  * @param name name of the entity to get
  * @return the entity requested
  */
-MapEntity * MapEntities::get_entity(MapEntity::EntityType type, std::string name) {
+MapEntity * MapEntities::get_entity(EntityType type, std::string name) {
   
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
@@ -170,7 +172,7 @@ MapEntity * MapEntities::get_entity(MapEntity::EntityType type, std::string name
  * @param type type of entity
  * @return the entities of this type
  */
-list<MapEntity*> * MapEntities::get_entities(MapEntity::EntityType type) {
+list<MapEntity*> * MapEntities::get_entities(EntityType type) {
 
   list<MapEntity*> *entities = new list<MapEntity*>();
 
@@ -215,14 +217,14 @@ void MapEntities::bring_to_front(MapEntity *entity) {
  */
 void MapEntities::add_tile(Tile *tile) {
 
-  MapEntity::Layer layer = tile->get_layer();
+  Layer layer = tile->get_layer();
 
   // add the tile to the map
   tiles[layer].push_back(tile);
   tile->set_map(map);
 
   // update the collision list
-  MapEntity::Obstacle obstacle = tile->get_tile_pattern()->get_obstacle();
+  Obstacle obstacle = tile->get_tile_pattern()->get_obstacle();
 
   int tile_x8 = tile->get_x() / 8;
   int tile_y8 = tile->get_y() / 8;
@@ -233,7 +235,7 @@ void MapEntities::add_tile(Tile *tile) {
  
   for (i = 0; i < tile_height8; i++) {
     for (j = 0; j < tile_width8; j++) {
-      set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE_NONE);
+      set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
     }
   }
 
@@ -242,10 +244,10 @@ void MapEntities::add_tile(Tile *tile) {
     /* If the obstacle property is the same for all points inside the base tile,
      * then all 8*8 squares of the extended tile have the same property.
      */
-  case MapEntity::OBSTACLE_NONE:
-  case MapEntity::OBSTACLE_SHALLOW_WATER:
-  case MapEntity::OBSTACLE_DEEP_WATER:
-  case MapEntity::OBSTACLE:
+  case OBSTACLE_NONE:
+  case OBSTACLE_SHALLOW_WATER:
+  case OBSTACLE_DEEP_WATER:
+  case OBSTACLE:
     for (i = 0; i < tile_height8; i++) {
       for (j = 0; j < tile_width8; j++) {
 	set_obstacle(layer, tile_x8 + j, tile_y8 + i, obstacle);
@@ -258,58 +260,58 @@ void MapEntities::add_tile(Tile *tile) {
      * 8*8 squares are NO_OBSTACLE and the 8*8 squares on the diagonal
      * are OBSTACLE_TOP_RIGHT.
      */
-  case MapEntity::OBSTACLE_TOP_RIGHT:
+  case OBSTACLE_TOP_RIGHT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
       // 8*8 square on the diagonal
-      set_obstacle(layer, tile_x8 + i, tile_y8 + i, MapEntity::OBSTACLE_TOP_RIGHT);
+      set_obstacle(layer, tile_x8 + i, tile_y8 + i, OBSTACLE_TOP_RIGHT);
 
       // right part of the row: we are in the top-right corner
       for (j = i + 1; j < tile_width8; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE);
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
       }
     }
     break;
 
-  case MapEntity::OBSTACLE_TOP_LEFT:
+  case OBSTACLE_TOP_LEFT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
       // left part of the row: we are in the top-left corner
       for (j = 0; j < tile_width8 - i - 1; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE);
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
       }
 
       // 8*8 square on the diagonal
-      set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE_TOP_LEFT);
+      set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_TOP_LEFT);
     }
     break;
 
-  case MapEntity::OBSTACLE_BOTTOM_LEFT:
+  case OBSTACLE_BOTTOM_LEFT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
       // left part of the row: we are in the bottom-left corner
       for (j = 0; j < i; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE);
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
       }
 
       // 8*8 square on the diagonal
-      set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE_BOTTOM_LEFT);
+      set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_BOTTOM_LEFT);
     }
     break;
 
-  case MapEntity::OBSTACLE_BOTTOM_RIGHT:
+  case OBSTACLE_BOTTOM_RIGHT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
       // 8*8 square on the diagonal
-      set_obstacle(layer, tile_x8 + tile_width8 - i - 1, tile_y8 + i, MapEntity::OBSTACLE_BOTTOM_RIGHT);
+      set_obstacle(layer, tile_x8 + tile_width8 - i - 1, tile_y8 + i, OBSTACLE_BOTTOM_RIGHT);
 
       // right part of the row: we are in the bottom-right corner
       for (j = tile_width8 - i; j < tile_width8; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, MapEntity::OBSTACLE);
+	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
       }
     }
     break;
@@ -329,11 +331,11 @@ void MapEntities::add_entity(MapEntity *entity) {
     return;
   }
 
-  if (entity->get_type() == MapEntity::TILE) {
+  if (entity->get_type() == TILE) {
     DIE("This entity is not dynamic");
   }
 
-  MapEntity::Layer layer = entity->get_layer();
+  Layer layer = entity->get_layer();
 
   // update the obstacle list
   if (entity->can_be_obstacle()) {
@@ -354,7 +356,7 @@ void MapEntities::add_entity(MapEntity *entity) {
   }
 
   // update the destination points list
-  if (entity->get_type() == MapEntity::DESTINATION_POINT) {
+  if (entity->get_type() == DESTINATION_POINT) {
     destination_points.push_back((DestinationPoint*) entity);
   }
 
@@ -379,7 +381,7 @@ void MapEntities::remove_entity(MapEntity *entity) {
  * @param type type of the entity to remove
  * @param name name of the entity
  */
-void MapEntities::remove_entity(MapEntity::EntityType type, std::string name) {
+void MapEntities::remove_entity(EntityType type, std::string name) {
   remove_entity(get_entity(type, name));
 }
 
@@ -396,7 +398,7 @@ void MapEntities::remove_marked_entities(void) {
        it++) {
 
     MapEntity *entity = *it;
-    MapEntity::Layer layer = entity->get_layer();
+    Layer layer = entity->get_layer();
 
     // remove it from the obstacle entities list if present
     if (entity->can_be_obstacle()) {
@@ -462,7 +464,7 @@ void MapEntities::update(void) {
 
   // update the tiles and the dynamic entities
   list<MapEntity*>::iterator it;
-  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       tiles[layer][i]->update();
@@ -490,7 +492,7 @@ void MapEntities::update(void) {
  */
 void MapEntities::display() {
 
-  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // put the tiles
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {

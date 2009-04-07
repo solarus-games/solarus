@@ -87,6 +87,7 @@ class Game: public Screen {
 
   // global objects
   Hero *get_hero(void);
+  const SDL_Rect get_hero_coordinates(void);
   Controls *get_controls(void);
   KeysEffect *get_keys_effect(void);
   Savegame *get_savegame(void);
@@ -139,6 +140,7 @@ class Game: public Screen {
 
   // game over
   void start_gameover_sequence(void);
+  void get_back_from_death(void);
 };
 
 #endif

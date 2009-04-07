@@ -43,7 +43,7 @@ Tile::~Tile(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType Tile::get_type() {
+EntityType Tile::get_type() {
   return TILE;
 }
 

@@ -21,6 +21,9 @@
 #include "ResourceManager.h"
 #include "Camera.h"
 #include "movements/FallingOnFloorMovement.h"
+#include "entities/EntityType.h"
+#include "entities/Obstacle.h"
+#include "entities/Layer.h"
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
 #include "entities/Tile.h"
@@ -94,11 +97,11 @@ void MapLoader::load_map(Map *map) {
   // create the lists of entities and initialize obstacle_tiles
   MapEntities *entities = map->get_entities();
   entities->obstacle_tiles_size = map->width8 * map->height8;
-  for (int layer = 0; layer < MapEntity::LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    entities->obstacle_tiles[layer] = new MapEntity::Obstacle[entities->obstacle_tiles_size];
+    entities->obstacle_tiles[layer] = new Obstacle[entities->obstacle_tiles_size];
     for (int i = 0; i < entities->obstacle_tiles_size; i++) {
-      entities->obstacle_tiles[layer][i] = MapEntity::OBSTACLE_NONE;
+      entities->obstacle_tiles[layer][i] = OBSTACLE_NONE;
     }
   }
 
@@ -113,134 +116,134 @@ void MapLoader::load_map(Map *map) {
 
     switch (entity_type) {
 
-    case MapEntity::TILE:
+    case TILE:
       {
 	int tile_pattern_id;
 	iss >> width >> height >> tile_pattern_id;
 	TilePattern *tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
-	entities->add_tile(new Tile(tile_pattern, (MapEntity::Layer) layer, x, y, width, height));
+	entities->add_tile(new Tile(tile_pattern, (Layer) layer, x, y, width, height));
 	break;
       }
 
-    case MapEntity::DESTINATION_POINT:
+    case DESTINATION_POINT:
       {
 	int is_visible;
 	iss >> entity_name >> direction >> is_visible;
-	entities->add_entity(new DestinationPoint(entity_name, (MapEntity::Layer) layer, x, y, direction, (is_visible != 0)));
+	entities->add_entity(new DestinationPoint(entity_name, (Layer) layer, x, y, direction, (is_visible != 0)));
 	break;
       }
 
-    case MapEntity::TELETRANSPORTER:
+    case TELETRANSPORTER:
       {
 	int subtype, transition_style;
 	MapId destination_map_id;
 	string destination_point_name;
 	iss >> width >> height >> entity_name >> subtype >> transition_style
 	    >> destination_map_id >> destination_point_name;
-	entities->add_entity(new Teletransporter(entity_name, (MapEntity::Layer) layer, x, y, width, height,
+	entities->add_entity(new Teletransporter(entity_name, (Layer) layer, x, y, width, height,
 						 (Teletransporter::Subtype) subtype, (Transition::Style) transition_style,
 						 destination_map_id, destination_point_name));
 	break;
       }
 
-    case MapEntity::PICKABLE_ITEM:
+    case PICKABLE_ITEM:
       {
 	int pickable_item_type, savegame_variable;
 	iss >> pickable_item_type >> savegame_variable;
-	entities->add_entity(PickableItem::create((MapEntity::Layer) layer, x, y, (PickableItem::Subtype) pickable_item_type,
+	entities->add_entity(PickableItem::create((Layer) layer, x, y, (PickableItem::Subtype) pickable_item_type,
 						  savegame_variable, FallingOnFloorMovement::NONE, false));
 	break;
       }
 
-    case MapEntity::DESTRUCTIBLE_ITEM:
+    case DESTRUCTIBLE_ITEM:
       {
 	int destructible_item_subtype, pickable_item_subtype, savegame_variable;
 	iss >> destructible_item_subtype >> pickable_item_subtype >> savegame_variable;
-	entities->add_entity(new DestructibleItem((MapEntity::Layer) layer, x, y,
+	entities->add_entity(new DestructibleItem((Layer) layer, x, y,
 						  (DestructibleItem::Subtype) destructible_item_subtype,
 						  (PickableItem::Subtype) pickable_item_subtype, savegame_variable));
 	break;
       }
 
-    case MapEntity::CHEST:
+    case CHEST:
       {
 	int big_chest, treasure_content, treasure_amount, treasure_savegame_variable;
 	iss >> entity_name >> big_chest >> treasure_content >> treasure_amount >> treasure_savegame_variable;
-	entities->add_entity(new Chest(entity_name, (MapEntity::Layer) layer, x, y, (big_chest != 0),
+	entities->add_entity(new Chest(entity_name, (Layer) layer, x, y, (big_chest != 0),
 				       new Treasure((Treasure::Content) treasure_content, treasure_amount, treasure_savegame_variable)));
 	break;
       }
 
-    case MapEntity::JUMP_SENSOR:
+    case JUMP_SENSOR:
       {
 	int jump_length;
 	iss >> width >> height >> entity_name >> direction >> jump_length;
-	entities->add_entity(new JumpSensor(entity_name, (MapEntity::Layer) layer, x, y,
+	entities->add_entity(new JumpSensor(entity_name, (Layer) layer, x, y,
 					     width, height, direction, jump_length));
 	break;
       }
 
-    case MapEntity::ENEMY:
+    case ENEMY:
       {
 	int enemy_type, rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
 	iss >> entity_name >> direction >> enemy_type >> rank >> savegame_variable >>
 	  pickable_item_type >> pickable_item_savegame_variable;
 	entities->add_entity(Enemy::create((Enemy::EnemyType) enemy_type, (Enemy::Rank) rank, savegame_variable,
-					   entity_name, (MapEntity::Layer) layer, x, y, direction, 
+					   entity_name, (Layer) layer, x, y, direction, 
 					   (PickableItem::Subtype) pickable_item_type, pickable_item_savegame_variable));
 	break;
       }
 
-    case MapEntity::INTERACTIVE_ENTITY:
+    case INTERACTIVE_ENTITY:
       {
 	int special_interaction;
 	SpriteAnimationSetId sprite_name;
 	MessageId message_to_show;
 
 	iss >> entity_name >> direction >> special_interaction >> sprite_name >> message_to_show;
-	entities->add_entity(new InteractiveEntity(entity_name, (MapEntity::Layer) layer, x, y,
+	entities->add_entity(new InteractiveEntity(entity_name, (Layer) layer, x, y,
 						   (InteractiveEntity::SpecialInteraction) special_interaction,
 						   sprite_name, direction, message_to_show));
 	break;
       }
 
-    case MapEntity::BLOCK:
+    case BLOCK:
       {
 	int subtype, maximum_moves;
 
 	iss >> entity_name >> subtype >> maximum_moves;
-	entities->add_entity(new Block(entity_name, (MapEntity::Layer) layer, x, y,
+	entities->add_entity(new Block(entity_name, (Layer) layer, x, y,
 				       (Block::Subtype) subtype, maximum_moves));
 	break;
       }
 
-    case MapEntity::DYNAMIC_TILE:
+    case DYNAMIC_TILE:
       {
 	int tile_pattern_id, enabled;
 
 	iss >> width >> height >> entity_name >> tile_pattern_id >> enabled;
 	TilePattern *tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
-	entities->add_entity(new DynamicTile(entity_name, tile_pattern, (MapEntity::Layer) layer,
+	entities->add_entity(new DynamicTile(entity_name, tile_pattern, (Layer) layer,
 					     x, y, width, height, enabled != 0));
 	break;
       }
 
-    case MapEntity::SWITCH:
+    case SWITCH:
       {
 	int subtype, needs_block, disabled_when_leaving;
 
 	iss >> entity_name >> subtype >> needs_block >> disabled_when_leaving;
-	entities->add_entity(new Switch(entity_name, (MapEntity::Layer) layer, x, y,
+	entities->add_entity(new Switch(entity_name, (Layer) layer, x, y,
 					(Switch::Subtype) subtype, needs_block != 0, disabled_when_leaving != 0));
 	break;
       }
 
-    case MapEntity::CUSTOM_OBSTACLE:
+    case CUSTOM_OBSTACLE:
       {
 	int stops_hero, stops_enemies, stops_npcs, stops_blocks;
 
 	iss >> width >> height >> entity_name >> stops_hero >> stops_enemies >> stops_npcs >> stops_blocks;
-	entities->add_entity(new CustomObstacle(entity_name, (MapEntity::Layer) layer, x, y, width, height,
+	entities->add_entity(new CustomObstacle(entity_name, (Layer) layer, x, y, width, height,
 						stops_hero != 0, stops_enemies != 0, stops_npcs != 0, stops_blocks != 0));
 	break;
       }

@@ -91,7 +91,7 @@ DestructibleItem::~DestructibleItem(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType DestructibleItem::get_type() {
+EntityType DestructibleItem::get_type() {
   return DESTRUCTIBLE_ITEM;
 }
 
@@ -160,7 +160,7 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
     }
 
     else if (collision_mode == COLLISION_ORIGIN_POINT && subtype == GRASS && !is_being_cut) {
-      hero->set_ground(Map::GRASS);
+      hero->set_ground(GROUND_GRASS);
     }
   }
 }
@@ -236,7 +236,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       is_being_cut = true;
 
       if (subtype == GRASS) {
-	hero->set_ground(Map::NORMAL_GROUND);
+	hero->set_ground(GROUND_NORMAL);
       }
 
       map->get_entities()->bring_to_front(this); // show animation destroy to front

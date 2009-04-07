@@ -65,7 +65,7 @@ Block::~Block() {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType Block::get_type(void) {
+EntityType Block::get_type(void) {
   return BLOCK;
 }
 

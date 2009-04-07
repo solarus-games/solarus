@@ -18,7 +18,7 @@
 #define ZSDX_TILE_PATTERN_H
 
 #include "Common.h"
-#include "MapEntity.h"
+#include "entities/Obstacle.h"
 
 /**
  * Abstract class for a tile pattern.
@@ -31,12 +31,12 @@ class TilePattern {
   
  protected:
 
-  const MapEntity::Obstacle obstacle; /**< is the tile an obstacle? */
+  const Obstacle obstacle; /**< is the tile an obstacle? */
 
-  const int width;                    /**< tile width (multiple of 8) */
-  const int height;                   /**< tile height (multiple of 8) */
+  const int width;         /**< tile width (multiple of 8) */
+  const int height;        /**< tile height (multiple of 8) */
 
-  TilePattern(MapEntity::Obstacle obstacle, int width, int height);
+  TilePattern(Obstacle obstacle, int width, int height);
 
  public:
 
@@ -44,7 +44,7 @@ class TilePattern {
 
   int get_width(void) const;
   int get_height(void) const;
-  MapEntity::Obstacle get_obstacle(void) const;
+  Obstacle get_obstacle(void) const;
 
   void display_on_map(Map *map, SDL_Rect &position_in_map);
   virtual void display(SDL_Surface *surface, const SDL_Rect &position_in_surface, SDL_Surface *tileset_image) = 0;

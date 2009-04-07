@@ -24,7 +24,6 @@
 #include "Map.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
-#include "entities/Hero.h"
 #include "Counter.h"
 #include "Color.h"
 #include "Controls.h"
@@ -49,11 +48,12 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     const SDL_Rect *real_size = game->get_outside_world_size();
 
     Map *map = game->get_current_map();
-    hero_position = *map->get_location();
+    hero_position = map->get_location();
 
     if (map->is_in_outside_world()) {
-      hero_position.x += game->get_hero()->get_x();
-      hero_position.y += game->get_hero()->get_y();
+      const SDL_Rect &hero_map_coords = game->get_hero_coordinates();
+      hero_position.x += hero_map_coords.x;
+      hero_position.y += hero_map_coords.y;
     }
 
     hero_position.x = hero_position.x * outside_world_minimap_size.w / real_size->w;
@@ -173,10 +173,11 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
     const SDL_Rect *floor_size = dungeon->get_floor_size(selected_floor);
 
-    hero_position = *game->get_current_map()->get_location();
+    hero_position = game->get_current_map()->get_location();
+    const SDL_Rect &hero_map_coords = game->get_hero_coordinates();
 
-    hero_position.x += game->get_hero()->get_x();
-    hero_position.y += game->get_hero()->get_y();
+    hero_position.x += hero_map_coords.x;
+    hero_position.y += hero_map_coords.y;
 
     hero_position.x = hero_position.x * 123 / floor_size->w;
     hero_position.y = hero_position.y * 119 / floor_size->h;

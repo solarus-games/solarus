@@ -34,7 +34,7 @@ class SimpleTilePattern: public TilePattern {
 
  public:
 
-  SimpleTilePattern(MapEntity::Obstacle obstacle, int x, int y, int width, int height);
+  SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height);
   ~SimpleTilePattern(void);
 
   void display(SDL_Surface *destination, const SDL_Rect &destination_position, SDL_Surface *tileset_image);

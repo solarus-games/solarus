@@ -37,8 +37,6 @@ class DestinationPoint: public MapEntity {
   ~DestinationPoint(void);
 
   EntityType get_type(void);
-
-  void place_hero(void);
 };
 
 #endif

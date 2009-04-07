@@ -27,7 +27,6 @@
 #include "Counter.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "entities/Hero.h"
 
 /**
  * Creates a new treasure without amount.

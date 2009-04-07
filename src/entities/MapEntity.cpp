@@ -66,7 +66,7 @@ MapEntity::MapEntity(void):
  * @param width width of the entity
  * @param height height of the entity
  */
-MapEntity::MapEntity(MapEntity::Layer layer, int x, int y, int width, int height):
+MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   layer(layer), name(""), direction(0), movement(NULL),
   suspended(false), when_suspended(0) {
 
@@ -89,7 +89,7 @@ MapEntity::MapEntity(MapEntity::Layer layer, int x, int y, int width, int height
  * @param width width of the entity
  * @param height height of the entity
  */
-MapEntity::MapEntity(string name, int direction, MapEntity::Layer layer, int x, int y, int width, int height):
+MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
   layer(layer), name(name), direction(direction), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
@@ -194,7 +194,7 @@ bool MapEntity::is_being_removed(void) {
  * Returns the layer of the entity on the map.
  * @return the layer of the entity on the map
  */
-MapEntity::Layer MapEntity::get_layer(void) {
+Layer MapEntity::get_layer(void) {
   return layer;
 }
 
@@ -323,8 +323,8 @@ void MapEntity::set_size(SDL_Rect &size) {
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
  * @return the position of the entity
  */
-const SDL_Rect * MapEntity::get_position_in_map(void) {
-  return &position_in_map;
+const SDL_Rect &MapEntity::get_position_in_map(void) {
+  return position_in_map;
 }
 
 /**
@@ -333,8 +333,8 @@ const SDL_Rect * MapEntity::get_position_in_map(void) {
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
  * @param position_in_map the position of the entity
  */
-void MapEntity::set_position_in_map(const SDL_Rect *position_in_map) {
-  this->position_in_map = *position_in_map;
+void MapEntity::set_position_in_map(const SDL_Rect &position_in_map) {
+  this->position_in_map = position_in_map;
 }
 
 /**
@@ -399,8 +399,8 @@ bool MapEntity::is_hero(void) {
  * Returns the origin point of the entity.
  * @return the origin point
  */
-const SDL_Rect * MapEntity::get_origin(void) {
-  return &origin;
+const SDL_Rect & MapEntity::get_origin(void) {
+  return origin;
 }
 
 /**
@@ -423,9 +423,9 @@ void MapEntity::set_origin(int x, int y) {
  * relative to the top-left corner of its rectangle.
  * @param origin x and y coordinates of the origin
  */
-void MapEntity::set_origin(const SDL_Rect *origin) {
+void MapEntity::set_origin(const SDL_Rect &origin) {
 
-  set_origin(origin->x, origin->y);
+  set_origin(origin.x, origin.y);
 }
 
 /**
@@ -440,7 +440,7 @@ void MapEntity::set_rectangle_from_sprite(void) {
 
   Sprite *sprite = sprites[0];
   set_size(sprite->get_size());
-  set_origin(&sprite->get_origin());
+  set_origin(sprite->get_origin());
 }
 
 /**
@@ -568,19 +568,19 @@ bool MapEntity::is_obstacle_for(MapEntity *other) {
  * @param rectangle the rectangle to check
  * @return true if this entity's rectangle overlaps the rectangle specified, false otherwise
  */
-bool MapEntity::overlaps(const SDL_Rect *rectangle) {
+bool MapEntity::overlaps(const SDL_Rect &rectangle) {
 
   int x1 = position_in_map.x;
   int x2 = x1 + position_in_map.w;
-  int x3 = rectangle->x;
-  int x4 = x3 + rectangle->w;
+  int x3 = rectangle.x;
+  int x4 = x3 + rectangle.w;
 
   bool overlap_x = (x3 < x2 && x1 < x4);
 
   int y1 = position_in_map.y;
   int y2 = y1 + position_in_map.h;
-  int y3 = rectangle->y;
-  int y4 = y3 + rectangle->h;
+  int y3 = rectangle.y;
+  int y4 = y3 + rectangle.h;
 
   bool overlap_y = (y3 < y2 && y1 < y4);
 
@@ -593,10 +593,10 @@ bool MapEntity::overlaps(const SDL_Rect *rectangle) {
  * @param x x coordinate of the point
  * @param y y coordinate of the point
  */
-bool MapEntity::is_point_in(const SDL_Rect *rectangle, int x, int y) {
+bool MapEntity::is_point_in(const SDL_Rect &rectangle, int x, int y) {
 
-  return x >= rectangle->x && x < rectangle->x + rectangle->w
-    && y >= rectangle->y && y < rectangle->y + rectangle->h;
+  return x >= rectangle.x && x < rectangle.x + rectangle.w
+    && y >= rectangle.y && y < rectangle.y + rectangle.h;
 }
 
 /**
@@ -605,7 +605,7 @@ bool MapEntity::is_point_in(const SDL_Rect *rectangle, int x, int y) {
  * @param rectangle the rectangle to check
  * @return true if this entity's origin point is in the rectangle specified, false otherwise
  */
-bool MapEntity::is_origin_point_in(const SDL_Rect *rectangle) {
+bool MapEntity::is_origin_point_in(const SDL_Rect &rectangle) {
 
   return is_point_in(rectangle, get_x(), get_y());
 }
@@ -616,7 +616,7 @@ bool MapEntity::is_origin_point_in(const SDL_Rect *rectangle) {
  * @param rectangle the rectangle to check
  * @return true if this entity's facing point is in the rectangle specified, false otherwise
  */
-bool MapEntity::is_facing_point_in(const SDL_Rect *rectangle) {
+bool MapEntity::is_facing_point_in(const SDL_Rect &rectangle) {
 
   SDL_Rect facing_point = get_facing_point();
   return is_point_in(rectangle, facing_point.x, facing_point.y);
@@ -628,7 +628,7 @@ bool MapEntity::is_facing_point_in(const SDL_Rect *rectangle) {
  * @param rectangle the rectangle to check
  * @return true if this entity's center is in the rectangle specified, false otherwise
  */
-bool MapEntity::is_center_in(const SDL_Rect *rectangle) {
+bool MapEntity::is_center_in(const SDL_Rect &rectangle) {
 
   return is_point_in(rectangle, get_top_left_x() + get_width() / 2, get_top_left_y() + get_height() / 2);
 }

@@ -28,7 +28,7 @@
 class SelectionMenuChooseName: public SelectionMenuPhase {
 
  private:
-  
+
   char player_name[11];
   int x_letter_cursor;
   int y_letter_cursor;
@@ -37,6 +37,8 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
   SDL_Surface *img_letters;
 
   TextSurface *text_new_player_name;
+
+  Uint32 next_key_date; /**< date when a key other than the arrows can be pressed again */
 
   // player name
   bool select_letter(void);

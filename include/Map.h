@@ -19,7 +19,8 @@
 
 #include "Common.h"
 #include "Transition.h"
-#include "entities/PickableItem.h"
+#include "entities/Layer.h"
+#include "entities/Ground.h"
 
 /**
  * Represents a map.
@@ -33,18 +34,6 @@
 class Map {
 
   friend class MapLoader; // the map loader modifies the private fields of Map
-
- public:
-
-  /**
-   * The possible kinds of ground on the map.
-   */
-  enum Ground {
-    NORMAL_GROUND,
-    GRASS,
-    SHALLOW_WATER,
-    DEEP_WATER,
-  };
 
  private:
 
@@ -118,7 +107,7 @@ class Map {
   bool is_in_outside_world(void);
   int get_floor(void);
   bool has_floor(void);
-  const SDL_Rect *get_location(void);
+  const SDL_Rect &get_location(void);
   int get_small_keys_variable(void);
   bool has_small_keys(void);
 
@@ -129,7 +118,7 @@ class Map {
 
   // camera
   SDL_Surface *get_visible_surface(void);
-  SDL_Rect *get_camera_position(void);
+  const SDL_Rect &get_camera_position(void);
   void move_camera(int x, int y, int speed);
   void restore_camera(void);
   bool is_camera_fixed_on_hero(void);
@@ -150,17 +139,15 @@ class Map {
   // current destination point
   void set_destination_point(unsigned int destination_point_index);
   void set_destination_point(std::string destination_point_name);
-  unsigned int get_destination_point_index(void);
-  void place_hero_on_destination_point(void);
+  int get_destination_point_index(void);
   int get_destination_side(void);
-  void opening_transition_finished(void);
 
   // collisions with obstacles (checked before a move)
-  bool collision_with_tiles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check);
-  bool collision_with_entities(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check);
-  bool collision_with_obstacles(MapEntity::Layer layer, SDL_Rect &collision_box, MapEntity *entity_to_check);
-  bool collision_with_obstacles(MapEntity::Layer layer, int x, int y, MapEntity *entity_to_check);
-  Ground get_tile_ground(MapEntity::Layer layer, int x, int y);
+  bool collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check);
+  bool collision_with_entities(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
+  bool collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
+  bool collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check);
+  Ground get_tile_ground(Layer layer, int x, int y);
 
   // collisions with detectors (checked after a move)
   void check_collision_with_detectors(MapEntity *entity);

@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/DestinationPoint.h"
-#include "entities/Hero.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -58,17 +57,6 @@ DestinationPoint::~DestinationPoint(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType DestinationPoint::get_type() {
+EntityType DestinationPoint::get_type() {
   return DESTINATION_POINT;
-}
-
-/**
- * Places the hero on this destination point.
- */
-void DestinationPoint::place_hero(void) {
-
-  Hero *hero = zsdx->game->get_hero();
-  hero->set_map(map, get_direction());
-  hero->set_x(get_x());
-  hero->set_y(get_y());
 }

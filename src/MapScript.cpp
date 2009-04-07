@@ -27,6 +27,7 @@
 #include "Savegame.h"
 #include "Timer.h"
 #include "Sprite.h"
+#include "entities/EntityType.h"
 #include "entities/Detector.h"
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"
@@ -594,7 +595,7 @@ int MapScript::l_npc_walk(lua_State *l) {
   bool with_collisions = lua_toboolean(l, 4) != 0;
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   npc->walk(path, loop, with_collisions);
 
   return 0;
@@ -611,7 +612,7 @@ int MapScript::l_npc_random_walk(lua_State *l) {
   string name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   npc->walk_random();
 
   return 0;
@@ -634,7 +635,7 @@ int MapScript::l_npc_jump(lua_State *l) {
   bool with_collisions = lua_toboolean(l, 4) != 0;
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   npc->jump(direction, length, with_collisions);
 
   return 0;
@@ -653,7 +654,7 @@ int MapScript::l_npc_set_direction(lua_State *l) {
   int direction = lua_tointeger(l, 2);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   npc->set_sprite_direction(direction);
 
   return 0;
@@ -670,7 +671,7 @@ int MapScript::l_npc_remove(lua_State *l) {
   string name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  map->get_entities()->remove_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  map->get_entities()->remove_entity(INTERACTIVE_ENTITY, name);
 
   return 0;
 }
@@ -689,7 +690,7 @@ int MapScript::l_set_chest_open(lua_State *l) {
   bool open = lua_toboolean(l, 2) != 0;
 
   Map *map = zsdx->game->get_current_map();
-  Chest *chest = (Chest*) map->get_entities()->get_entity(MapEntity::CHEST, chest_name);
+  Chest *chest = (Chest*) map->get_entities()->get_entity(CHEST, chest_name);
   chest->set_open(open);
 
   return 0;
@@ -729,7 +730,7 @@ int MapScript::l_disable_tile(lua_State *l) {
   string dynamic_tile_name = lua_tostring(l, 1);
   
   Map *map = zsdx->game->get_current_map();
-  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(MapEntity::DYNAMIC_TILE, dynamic_tile_name);
+  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, dynamic_tile_name);
   dynamic_tile->set_enabled(false);
 
   return 0;
@@ -745,7 +746,7 @@ int MapScript::l_enable_tile(lua_State *l) {
   string dynamic_tile_name = lua_tostring(l, 1);
   
   Map *map = zsdx->game->get_current_map();
-  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(MapEntity::DYNAMIC_TILE, dynamic_tile_name);
+  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, dynamic_tile_name);
   dynamic_tile->set_enabled(true);
 
   return 0;
@@ -762,7 +763,7 @@ int MapScript::l_is_tile_enabled(lua_State *l) {
   string dynamic_tile_name = lua_tostring(l, 1);
   
   Map *map = zsdx->game->get_current_map();
-  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(MapEntity::DYNAMIC_TILE, dynamic_tile_name);
+  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, dynamic_tile_name);
   lua_pushboolean(l, dynamic_tile->is_enabled() ? 1 : 0);
 
   return 1;
@@ -778,7 +779,7 @@ int MapScript::l_reset_block(lua_State *l) {
   string block_name = lua_tostring(l, 1);
   
   Map *map = zsdx->game->get_current_map();
-  Block *block = (Block*) map->get_entities()->get_entity(MapEntity::BLOCK, block_name);
+  Block *block = (Block*) map->get_entities()->get_entity(BLOCK, block_name);
   block->reset();
 
   return 0;
@@ -792,7 +793,7 @@ int MapScript::l_reset_blocks(lua_State *l) {
   check_nb_arguments(l, 0);
   
   Map *map = zsdx->game->get_current_map();
-  std::list<MapEntity*> *blocks = map->get_entities()->get_entities(MapEntity::BLOCK);
+  std::list<MapEntity*> *blocks = map->get_entities()->get_entities(BLOCK);
 
   std::list<MapEntity*>::iterator i;
   for (i = blocks->begin(); i != blocks->end(); i++) {
@@ -816,7 +817,7 @@ int MapScript::l_interactive_entity_get_animation(lua_State *l) {
   string name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   string animation = entity->get_sprite()->get_current_animation();
 
   lua_pushstring(l, animation.c_str());
@@ -836,7 +837,7 @@ int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
   string name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   Uint32 delay = entity->get_sprite()->get_frame_delay();
 
   lua_pushinteger(l, delay);
@@ -856,7 +857,7 @@ int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
   string name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   int frame = entity->get_sprite()->get_current_frame();
 
   lua_pushinteger(l, frame);
@@ -876,7 +877,7 @@ int MapScript::l_interactive_entity_is_animation_paused(lua_State *l) {
   string name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   bool paused = entity->get_sprite()->is_paused();
 
   lua_pushboolean(l, paused ? 1 : 0);
@@ -897,7 +898,7 @@ int MapScript::l_interactive_entity_set_animation(lua_State *l) {
   string animation = lua_tostring(l, 2);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_current_animation(animation);
 
   return 0;
@@ -916,7 +917,7 @@ int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
   Uint32 delay = lua_tointeger(l, 2);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_frame_delay(delay);
 
   return 0;
@@ -935,7 +936,7 @@ int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
   int frame = lua_tointeger(l, 2);
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_current_frame(frame);
 
   return 0;
@@ -954,7 +955,7 @@ int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
   bool paused = lua_toboolean(l, 2) != 0;
 
   Map *map = zsdx->game->get_current_map();
-  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(MapEntity::INTERACTIVE_ENTITY, name);
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_paused(paused);
 
   return 0;

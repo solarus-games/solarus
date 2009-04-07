@@ -59,7 +59,7 @@ Uint32 AnimatedTilePattern::next_frame_date;
  * @param x3 x position of the third frame in the tileset
  * @param y3 y position of the third frame in the tileset
  */
-AnimatedTilePattern::AnimatedTilePattern(MapEntity::Obstacle obstacle,
+AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
 					 AnimationSequence sequence,
 					 int width, int height,
 					 int x1, int y1,

@@ -66,7 +66,7 @@ class GameoverSequence {
  public:
 
   // creation and destruction
-  GameoverSequence(Game *game);
+  GameoverSequence(Game *game, int hero_direction);
   ~GameoverSequence(void);
 
   // state

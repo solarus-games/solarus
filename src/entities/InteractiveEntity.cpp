@@ -109,7 +109,7 @@ InteractiveEntity::~InteractiveEntity(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType InteractiveEntity::get_type() {
+EntityType InteractiveEntity::get_type() {
   return INTERACTIVE_ENTITY;
 }
 

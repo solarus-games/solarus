@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
+#include "entities/DestinationPoint.h"
 #include "entities/CarriedItem.h"
 #include "movements/PlayerMovement.h"
 #include "KeysEffect.h"
@@ -59,7 +61,7 @@ Hero::Hero(Equipment *equipment):
   end_blink_date(0), counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF), grabbed_entity(NULL), walking(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
-  last_ground_x(0), last_ground_y(0), ground(Map::NORMAL_GROUND), next_ground_sound_date(0) {
+  last_ground_x(0), last_ground_y(0), ground(GROUND_NORMAL), next_ground_sound_date(0) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -85,7 +87,7 @@ Hero::~Hero(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-MapEntity::EntityType Hero::get_type() {
+EntityType Hero::get_type() {
   return HERO;
 }
 
@@ -153,7 +155,7 @@ bool Hero::is_moving_towards(int direction) {
  */
 void Hero::try_snap_to_facing_entity(void) {
 
-  SDL_Rect collision_box = *get_position_in_map();
+  SDL_Rect collision_box = get_position_in_map();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.y - facing_entity->get_top_left_y()) <= 5) {
@@ -167,7 +169,7 @@ void Hero::try_snap_to_facing_entity(void) {
   }
 
   if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
-    set_position_in_map(&collision_box);
+    set_position_in_map(collision_box);
     just_moved();
   }
 }
@@ -568,16 +570,16 @@ void Hero::movement_just_changed(void) {
  */
 void Hero::just_moved(void) {
 
-  Map::Ground previous_ground = (Map::Ground) ground;
-  set_ground(Map::NORMAL_GROUND);
+  Ground previous_ground = ground;
+  set_ground(GROUND_NORMAL);
 
-  Map::Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y());
+  Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y());
 
-  if (state == SWIMMING && tiles_ground != Map::DEEP_WATER) {
+  if (state == SWIMMING && tiles_ground != GROUND_DEEP_WATER) {
     stop_swimming();
   }
 
-  if (ground != Map::GRASS && tiles_ground != ground) {
+  if (ground != GROUND_GRASS && tiles_ground != ground) {
     set_ground(tiles_ground);
   }
 
@@ -588,7 +590,7 @@ void Hero::just_moved(void) {
     start_ground();
   }
 
-  if (ground != Map::DEEP_WATER) {
+  if (ground != GROUND_DEEP_WATER) {
     // save the position
     last_ground_x = get_x();
     last_ground_y = get_y();
@@ -659,5 +661,90 @@ void Hero::update_position(void) {
 
     // try to move the hero
     get_movement()->update();
+  }
+}
+
+/**
+ * Places the hero on the map specified and at its destination point selected.
+ * @param map the new map
+ */
+void Hero::place_on_destination_point(Map *map) {
+
+  int destination_point_index = map->get_destination_point_index();
+  
+  if (destination_point_index >= 0) {
+
+    // the location is specified by a destination point object
+    DestinationPoint *destination_point = map->get_entities()->get_destination_point(destination_point_index);
+
+    set_map(map, destination_point->get_direction());
+    set_x(destination_point->get_x());
+    set_y(destination_point->get_y());
+  }
+  else if (destination_point_index == -1) {
+
+    // the hero's coordinates are the same as on previous map
+    set_map(map);
+  }
+  else {
+
+    // only one coordinate is changed
+    set_map(map);
+
+    switch (map->get_destination_side()) {
+
+    case 0: // right side
+      set_x(map->get_width());
+      break;
+
+    case 1: // top side
+      set_y(5);
+      break;
+
+    case 2: // left side
+      set_x(0);
+      break;
+
+    case 3: // bottom side
+      set_y(map->get_height() + 5);
+      break;
+
+    default:
+      DIE("Invalid destination side: " << map->get_destination_side());
+    }
+  }
+}
+
+/**
+ * This function is called when the opening transition of the map is finished.
+ * The position of the hero is updated if necessary.
+ */
+void Hero::opening_transition_finished(void) {
+
+  if (map->get_destination_point_index() == -2) {
+    // the hero was placed on the side of the map:
+    // there was a scrolling between the previous map and this one
+
+    switch (map->get_destination_side()) {
+
+    case 0: // right side
+      set_x(map->get_width() - 8);
+      break;
+
+    case 1: // top side
+      set_y(13);
+      break;
+
+    case 2: // left side
+      set_x(8);
+      break;
+
+    case 3: // bottom side
+      set_y(map->get_height() - 3);
+      break;
+
+    default:
+      DIE("Invalid destination side: " << map->get_destination_side());
+    }
   }
 }

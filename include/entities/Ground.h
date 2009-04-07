@@ -9,6 +9,7 @@ enum Ground {
   GROUND_GRASS,
   GROUND_SHALLOW_WATER,
   GROUND_DEEP_WATER,
+  GROUND_HOLE,
 };
 
 #endif

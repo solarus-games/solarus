@@ -494,6 +494,11 @@ bool Map::collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_c
     // only the hero can move on water tiles
     on_obstacle = !entity_to_check->is_hero();
     break;
+
+  case OBSTACLE_HOLE:
+    // only the hero can move on a hole
+    on_obstacle = !entity_to_check->is_hero();
+    break;
   }
 
   return on_obstacle;
@@ -596,6 +601,9 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
   }
   else if (obstacle == OBSTACLE_DEEP_WATER) {
     ground = GROUND_DEEP_WATER;
+  }
+  else if (obstacle == OBSTACLE_HOLE) {
+    ground = GROUND_HOLE;
   }
 
   return ground;

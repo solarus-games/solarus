@@ -93,6 +93,11 @@ void Hero::start_ground(void) {
       start_deep_water();
     }
   }
+  else if (ground == GROUND_HOLE) {
+    if (state != JUMPING) {
+      // TODO start_hole()
+    }
+  }
   else {
     ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
@@ -124,13 +129,9 @@ void Hero::update_ground(void) {
  */
 bool Hero::is_ground_visible(void) {
 
-  return ground != GROUND_NORMAL
-    && ground != GROUND_DEEP_WATER
-    && state != PLUNGING
-    && state != SWIMMING
-    && state != JUMPING
-    && state != HURT
-    && state != DROWNING;
+  return (ground == GROUND_GRASS || ground == GROUND_SHALLOW_WATER)
+    && state != PLUNGING && state != SWIMMING && state != JUMPING
+    && state != HURT && state != DROWNING;
 }
 
 /**

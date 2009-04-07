@@ -74,12 +74,6 @@ public enum Obstacle {
 	    }
 	}
 
-	// TODO remove
-	if (id > 7) {
-	    id -= 8;
-	    System.out.println("Notice: obsolete obstacle id just fixed");
-	}
-
 	throw new NoSuchElementException("Unknown obstacle property id: " + id);
     }
 

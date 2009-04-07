@@ -113,7 +113,7 @@ public class EditChestComponent extends EditEntityComponent {
     protected ActionEditEntitySpecific getSpecificAction() {
 	return new ActionEditEntitySpecific(entity,
 		sizeField.getSelectedIndex(),
-		contentField.getValue().getIndex(),
+		contentField.getValue().getId(),
 		amountField.getNumber(),
 		saveField.isSelected() ? savegameVariableField.getNumber() : -1);
     }

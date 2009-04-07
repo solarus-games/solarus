@@ -138,7 +138,7 @@ public class Tile extends MapEntity {
      * Returns the tile's obstacle property.
      * @return the tile's obstacle property
      */
-    public int getObstacle() {
+    public Obstacle getObstacle() {
 	return getTilePattern().getObstacle();
     }
 

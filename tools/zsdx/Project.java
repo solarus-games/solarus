@@ -21,6 +21,7 @@ import java.text.*;
 import java.util.*;
 import java.net.*;
 import java.awt.Image;
+import javax.swing.*;
 import javax.imageio.*;
 
 /**
@@ -195,20 +196,49 @@ public class Project {
 
 	if (image == null) {
 	    try {
-                URL url = Project.class.getResource("/zsdx/images/" + imageFileName);
+		String path = "/zsdx/images/" + imageFileName;
+                URL url = Project.class.getResource(path);
                 if (url == null) {
-                    throw new IOException("File not found");
+                    throw new IOException("File not found: " + path);
                 }
 		image = ImageIO.read(url);
 		currentProject.imagesLoaded.put(imageFileName, image);
 	    }
 	    catch (IOException ex) {
 		System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+		ex.printStackTrace();
 		System.exit(1);
 	    }
 	}
 
 	return image;
+    }
+
+    /**
+     * Loads an image icon of the editor from a specified file name.
+     * The image loaded is not project dependent.
+     * @param imageFileName the name of the image file to read, relative to the
+     * images directory of the editor
+     * @return the image
+     */
+    public static ImageIcon getEditorImageIcon(String imageFileName) {
+
+	ImageIcon icon = null;
+	try {
+	    String path = "/zsdx/images/" + imageFileName;
+	    URL url = Project.class.getResource(path);
+	    if (url == null) {
+		throw new IOException("File not found: " + path);
+	    }
+	    icon = new ImageIcon(url);
+	}
+	catch (IOException ex) {
+	    System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+	    ex.printStackTrace();
+	    System.exit(1);
+	}
+
+	return icon;
     }
 
     /**

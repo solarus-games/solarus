@@ -39,7 +39,7 @@ import zsdx.Map;
  *       to check the validity of the specific properties.
  *   - Create a constructor with the following signature:
  *       public YourEntity(Map map) throws MapException.
- *   - Redefine if necessary the getObstacle() method: public int getObstacle()
+ *   - Redefine if necessary the getObstacle() method: public Obstacle getObstacle()
  *       if your entity is an obstacle.
  *   - Redefine if necessary the methods getNbDirections(), hasName(), isResizable()
  *       to indicate how the graphical components will be organized.
@@ -404,12 +404,11 @@ public abstract class MapEntity extends Observable {
     }
     
     /**
-     * Returns the entity's obstacle property (default is OBSTACLE_NONE).
-     * @return OBSTACLE_NONE, OBSTACLE, OBSTACLE_TOP_RIGHT,
-     * OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT or OBSTACLE_BOTTOM_RIGHT
+     * Returns the entity's obstacle property (default is Obstacle.NONE).
+     * @return the obstacle property
      */
-    public int getObstacle() {
-	return OBSTACLE_NONE;
+    public Obstacle getObstacle() {
+	return Obstacle.NONE;
     }
     
     /**

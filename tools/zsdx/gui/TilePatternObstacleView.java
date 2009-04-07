@@ -23,17 +23,17 @@ import zsdx.entities.*;
 
 /**
  * Graphical component to select the obstacle properties of a tile pattern:
+ * - shallow water
+ * - deep water
  * - no obstacle
  * - obstacle
  * - obstacle top right
  * - obstacle top left
  * - obstacle bottom left
  * - obstacle bottom right
- * - shallow water
- * - deep water
  * - hole
  */
-public class ObstacleChooser extends JComboBox implements Observer, ActionListener {
+public class TilePatternObstacleView extends JComboBox implements Observer, ActionListener {
 
     /**
      * The tile pattern observed.
@@ -43,8 +43,8 @@ public class ObstacleChooser extends JComboBox implements Observer, ActionListen
     /**
      * Constructor.
      */
-    public ObstacleChooser() {
-	super(ObstacleIcons.getIcons());
+    public TilePatternObstacleView() {
+	super(Obstacle.getIcons());
 	addActionListener(this);
     }
 
@@ -57,7 +57,7 @@ public class ObstacleChooser extends JComboBox implements Observer, ActionListen
 	}
 
 	this.tilePattern = tile;
-	
+
 	if (tilePattern != null) {
 	    tilePattern.addObserver(this);
 	    setEnabled(true);
@@ -73,19 +73,19 @@ public class ObstacleChooser extends JComboBox implements Observer, ActionListen
      * The selection is then updated.
      */
     public void update(Observable o, Object params) {
-	setSelectedIndex(tilePattern.getObstacle());
+	setSelectedIndex(tilePattern.getObstacle().ordinal());
     }
-    
+
     /**
      * This method is called when the selection the combo box is changed.
      * The tile pattern is then updated.
      */
     public void actionPerformed(ActionEvent ev) {
 	int listIndex = getSelectedIndex();
-	if (listIndex != tilePattern.getObstacle()) {
+	if (listIndex != tilePattern.getObstacle().ordinal()) {
 	    // the type of obstacle has changed
 	    try {
-		tilePattern.setObstacle(listIndex);
+		tilePattern.setObstacle(Obstacle.values()[listIndex]);
 	    }
 	    catch (TilesetException e) {
 		JOptionPane.showMessageDialog(null,

@@ -505,14 +505,14 @@ public class Tileset extends Observable {
      * Creates the tile pattern specified by the current selection area
      * and adds it to the tileset.
      * The observers are notified with the created TilePattern as parameter.
-     * @param obstacle type of obstacle for the created tile pattern
+     * @param obstacle obstacle property of the created tile pattern
      * @throws TilesetException if the tile size is incorrect
      */
-    public void addTilePattern(int obstacle) throws TilesetException {
+    public void addTilePattern(Obstacle obstacle) throws TilesetException {
 
 	if (isSelectingNewTilePattern() && !isNewTilePatternAreaOverlapping) {
 	    TilePattern tilePattern = new TilePattern(newTilePatternArea, MapEntity.LAYER_LOW, obstacle);
-	    
+
 	    maxId++;
 	    tilePatterns.put(maxId, tilePattern);
 

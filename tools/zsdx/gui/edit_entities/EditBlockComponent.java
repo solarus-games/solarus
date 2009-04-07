@@ -16,7 +16,6 @@
  */
 package zsdx.gui.edit_entities;
 
-import java.awt.event.*;
 import zsdx.*;
 import zsdx.entities.*;
 import zsdx.gui.*;

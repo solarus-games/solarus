@@ -59,7 +59,7 @@ public class TilePatternsView extends JPanel {
     /**
      * View of the selected tile.
      */
-    private SelectedTilePatternView tilePatternView;
+    private TilePatternView tilePatternView;
 
     /**
      * Constructor.
@@ -105,7 +105,7 @@ public class TilePatternsView extends JPanel {
 	listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	// tile view
-	tilePatternView = new SelectedTilePatternView();
+	tilePatternView = new TilePatternView();
  	tilePatternView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
 	tilePatternView.setAlignmentX(Component.LEFT_ALIGNMENT);
 

@@ -47,7 +47,7 @@ public class Chest extends MapEntity {
      */
     public void setPropertiesDefaultValues() throws MapException {
 	setProperty("bigChest", false);
-	setProperty("content", TreasureContent.NOTHING.getIndex());
+	setProperty("content", TreasureContent.NOTHING.getId());
 	setProperty("amount", 1);
 	setProperty("savegameVariable", 0);
     }
@@ -101,10 +101,10 @@ public class Chest extends MapEntity {
 
     /**
      * Returns whether this entity is an obstacle.
-     * @return true
+     * @return Obstacle.OBSTACLE
      */
-    public int getObstacle() {
-	return OBSTACLE;
+    public Obstacle getObstacle() {
+	return Obstacle.OBSTACLE;
     }
 
     /**

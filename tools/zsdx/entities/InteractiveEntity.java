@@ -125,10 +125,10 @@ public class InteractiveEntity extends MapEntity {
 
     /**
      * Returns whether this entity is an obstacle.
-     * @return true
+     * @return Obstacle.OBSTACLE
      */
-    public int getObstacle() {
-	return OBSTACLE;
+    public Obstacle getObstacle() {
+	return Obstacle.OBSTACLE;
     }
 
     /**

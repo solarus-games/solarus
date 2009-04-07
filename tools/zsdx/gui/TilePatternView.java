@@ -22,23 +22,23 @@ import javax.swing.*;
 import zsdx.entities.*;
 
 /**
- * This component shows information about the current tile pattern and lets the user edit it.
+ * This component shows information about a tile pattern and lets the user edit it.
  */
-public class SelectedTilePatternView extends JPanel {
+public class TilePatternView extends JPanel {
 
     // the tileset
     private Tileset tileset;
 
     // the components
-    private ObstacleChooser obstacleView;
-    private AnimationView animationView;
+    private TilePatternObstacleView obstacleView;
+    private TilePatternAnimationView animationView;
     private DefaultLayerView defaultLayerView;
     private JButton buttonDelete;
 
     /**
      * Constructor.
      */
-    public SelectedTilePatternView() {
+    public TilePatternView() {
 	super(new GridBagLayout());
 
 	GridBagConstraints constraints = new GridBagConstraints();
@@ -49,12 +49,12 @@ public class SelectedTilePatternView extends JPanel {
 	constraints.gridx = 0;
 	constraints.gridy = 0;
 	add(new JLabel("Obstacle"), constraints);
-	obstacleView = new ObstacleChooser();
+	obstacleView = new TilePatternObstacleView();
 
 	// animation
 	constraints.gridy = 1;
 	add(new JLabel("Animation"), constraints);
-	animationView = new AnimationView();
+	animationView = new TilePatternAnimationView();
 
 	// default layer
 	constraints.gridy = 2;

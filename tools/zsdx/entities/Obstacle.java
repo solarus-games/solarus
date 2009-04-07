@@ -16,48 +16,103 @@
  */
 package zsdx.entities;
 
+import zsdx.*;
+import javax.swing.*;
+import java.util.*;
+
 /**
  * Enumeration of the obstacle property of the tiles.
  */
 public enum Obstacle {
 
-    OBSTACLE_NONE,
-    OBSTACLE,
-    OBSTACLE_TOP_RIGHT,
-    OBSTACLE_TOP_LEFT,
-    OBSTACLE_BOTTOM_LEFT,
-    OBSTACLE_BOTTOM_RIGHT,
-    OBSTACLE_SHALLOW_WATER,
-    OBSTACLE_DEEP_WATER,
-    OBSTACLE_HOLE;
+    SHALLOW_WATER(-2, "obstacle_shallow_water.png"),
+    DEEP_WATER(-1, "obstacle_deep_water.png"),
+    NONE(0, "obstacle_none.png"),
+    OBSTACLE(1, "obstacle.png"),
+    TOP_RIGHT(2, "obstacle_top_right.png"),
+    TOP_LEFT(3, "obstacle_top_left.png"),
+    BOTTOM_LEFT(4, "obstacle_bottom_left.png"),
+    BOTTOM_RIGHT(5, "obstacle_bottom_right.png"),
+    HOLE(6, "obstacle_hole.png");
+
+    private int id;
+    private String iconFileName;
 
     public static final String[] humanNames = {
+	"Shallow water",
+	"Deep water",
 	"No obstacle",
 	"Full obstacle",
 	"Top right",
 	"Top left",
 	"Bottom left",
 	"Bottom right",
-	"Shallow water",
-	"Deep water",
 	"Hole",
     };
 
+    private static ImageIcon[] icons = null;
+
     /**
-     * Returns the obstacle with the specified index.
-     * @param index index of the obstacle to get
-     * @return the obstacle property with this index
+     * Creates an obstacle property
+     * @param id id of this obstacle property
+     * @param iconFileName name of the icon file representing this obstacle property
      */
-    public static Obstacle get(int index) {
-	return values()[index];
+    private Obstacle(int id, String iconFileName) {
+	this.id = id;
+	this.iconFileName = iconFileName;
     }
 
     /**
-     * Returns the index of this obstacle.
-     * @return the index
+     * Returns the obstacle property with the specified id.
+     * @param id id of the obstacle to get
+     * @return the obstacle property with this id
      */
-    public int getIndex() {
-	return ordinal();
+    public static Obstacle get(int id) throws NoSuchElementException {
+	for (Obstacle t: values()) {
+	    if (t.getId() == id) {
+		return t;
+	    }
+	}
+
+	// TODO remove
+	if (id > 7) {
+	    id -= 8;
+	    System.out.println("Notice: obsolete obstacle id just fixed");
+	}
+
+	throw new NoSuchElementException("Unknown obstacle property id: " + id);
+    }
+
+    /**
+     * Returns the id of this obstacle property.
+     * @return the id
+     */
+    public int getId() {
+	return id;
+    }
+
+    /**
+     * Returns the name of this obstacle property.
+     * @return the name
+     */
+    public String getName() {
+	return humanNames[ordinal()];
+    }
+
+    /**
+     * Returns whether this obstacle property corresponds to a diagonal wall.
+     * @return true if this is a diagonal wall
+     */
+    public boolean isDiagonal() {
+	return getId() >= TOP_RIGHT.getId() && getId() <= BOTTOM_RIGHT.getId();
+    }
+
+    /**
+     * Returns the icon representing this obstacle property.
+     * @return the icon for this obstacle property
+     */
+    public ImageIcon getIcon() {
+	return getIcons()[ordinal()];
     }
 
     /**
@@ -65,7 +120,15 @@ public enum Obstacle {
      * @return icon of each type of obstacle
      */
     public static ImageIcon[] getIcons() {
-	return obstacleIcons;
-    }
 
+	if (icons == null) {
+	    icons = new ImageIcon[values().length];
+	    int i = 0;
+	    for (Obstacle obstacle: values()) {
+		icons[i] = Project.getEditorImageIcon(obstacle.iconFileName);
+		i++;
+	    }
+	}
+	return icons;
+    }
 }

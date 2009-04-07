@@ -98,7 +98,7 @@ public enum TreasureContent {
     BLUE_RUPEES       (88, true),
     RED_RUPEES        (89, true);
 
-    private final int index;
+    private final int id;
     private final boolean hasAmount;
 
     public static final String[] humanNames = {
@@ -180,36 +180,36 @@ public enum TreasureContent {
 
     /**
      * Constructor.
-     * @param index index of this content
+     * @param id id of this content
      * @param hasAmount true if this content has an amount value
      */
-    private TreasureContent(int index, boolean hasAmount) {
-	this.index = index;
+    private TreasureContent(int id, boolean hasAmount) {
+	this.id = id;
 	this.hasAmount = hasAmount;
     }
 
     /**
-     * Returns the treasure content with the specified index.
-     * @param index index of the content to get
-     * @return the treasure content with this index
-     * @throws NoSuchElementException if the index is incorrect
+     * Returns the treasure content with the specified id.
+     * @param id id of the content to get
+     * @return the treasure content with this id
+     * @throws NoSuchElementException if the id is incorrect
      */
-    public static TreasureContent get(int index) throws NoSuchElementException {
+    public static TreasureContent get(int id) throws NoSuchElementException {
 	for (TreasureContent t: values()) {
-	    if (t.getIndex() == index) {
+	    if (t.getId() == id) {
 		return t;
 	    }
 	}
 	
-	throw new NoSuchElementException("Unknown treasure index: " + index);
+	throw new NoSuchElementException("Unknown treasure id: " + id);
     }
 
     /**
-     * Returns the index of this content.
-     * @return the index
+     * Returns the id of this content.
+     * @return the id
      */
-    public int getIndex() {
-	return index;
+    public int getId() {
+	return id;
     }
 
     /**

@@ -145,11 +145,11 @@ public class MapViewRenderingOptions {
 
     /**
      * Returns whether or not the entities with or without obstacles are shown.
-     * @param obstacle the type of obstacle to consider (MapEntity.OBSTACLE_NONE or MapEntity.OBSTACLE)
+     * @param obstacle the type of obstacle to consider (Obstacle.NONE or Obstacle.OBSTACLE)
      * @return true if the corresponding entities are show, false otherwise
      */
-    public boolean getShowObstacle(int obstacle) {
-	return showObstacles[obstacle];
+    public boolean getShowObstacle(Obstacle obstacle) {
+	return showObstacles[obstacle.getId()];
     }
 
     /**
@@ -158,18 +158,18 @@ public class MapViewRenderingOptions {
      * @param showObstacleEntities true to show the entities with obstacles
      */
     public void setShowObstacles(boolean showNonObstacleEntities, boolean showObstacleEntities) {
-	showObstacles[MapEntity.OBSTACLE_NONE] = showNonObstacleEntities;
-	showObstacles[MapEntity.OBSTACLE] = showObstacleEntities;
+	showObstacles[Obstacle.NONE.getId()] = showNonObstacleEntities;
+	showObstacles[Obstacle.OBSTACLE.getId()] = showObstacleEntities;
 	mapView.repaint();
     }
 
     /**
      * Sets whether or not the entities with or without obstacles are shown.
-     * @param obstacle the entities to show or not: MapEntity.OBSTACLE_NONE or MapEntity.OBSTACLE
+     * @param obstacle the obstacle property to consider
      * @param show true to make these entities visible, false otherwise
      */
-    public void setShowObstacle(int obstacle, boolean show) {
-	showObstacles[obstacle] = show;
+    public void setShowObstacle(Obstacle obstacle, boolean show) {
+	showObstacles[obstacle.getId()] = show;
 	mapView.repaint();
     }
 
@@ -202,12 +202,8 @@ public class MapViewRenderingOptions {
      */
     public boolean isEntityShown(MapEntity entity) {
 	int layer = entity.getLayer();
-	int obstacle = entity.getObstacle();
+	Obstacle obstacle = entity.getObstacle();
 
-	if (obstacle > MapEntity.OBSTACLE) {
-	    obstacle = MapEntity.OBSTACLE;
-	}
-
-	return showLayers[layer] && showObstacles[obstacle];
+	return showLayers[layer] && showObstacles[obstacle.getId()];
     }
 }

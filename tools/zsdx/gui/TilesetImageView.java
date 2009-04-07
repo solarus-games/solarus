@@ -92,12 +92,12 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	    // popup menu to create a tile pattern
 	    popupMenuCreate = new JPopupMenu();
 
-	    item = new JMenuItem("Create (no obstacle)", ObstacleIcons.getIcon(MapEntity.OBSTACLE_NONE));
-	    item.addActionListener(new ActionCreateTilePattern(MapEntity.OBSTACLE_NONE));
+	    item = new JMenuItem("Create (no obstacle)", Obstacle.NONE.getIcon());
+	    item.addActionListener(new ActionCreateTilePattern(Obstacle.NONE));
 	    popupMenuCreate.add(item);
 
-	    item = new JMenuItem("Create (obstacle)", ObstacleIcons.getIcon(MapEntity.OBSTACLE));
-	    item.addActionListener(new ActionCreateTilePattern(MapEntity.OBSTACLE));
+	    item = new JMenuItem("Create (obstacle)", Obstacle.OBSTACLE.getIcon());
+	    item.addActionListener(new ActionCreateTilePattern(Obstacle.OBSTACLE));
 	    popupMenuCreate.add(item);
 
 	    itemCancelCreate.addActionListener(new ActionListener() {
@@ -110,15 +110,16 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
 	    // popup menu for a selected tile pattern
 	    popupMenuSelectedTilePattern = new JPopupMenu();
-	    itemsObstacle = new JRadioButtonMenuItem[ObstacleIcons.NB_ICONS];
+	    itemsObstacle = new JRadioButtonMenuItem[Obstacle.values().length];
 	    ButtonGroup itemsObstacleGroup = new ButtonGroup();
 
-	    for (int i = 0; i < ObstacleIcons.NB_ICONS; i++) {
-		itemsObstacle[i] = new JRadioButtonMenuItem(ObstacleIcons.getName(i),
-							    ObstacleIcons.getIcon(i));
-		itemsObstacle[i].addActionListener(new ActionChangeObstacle(i));
+	    int i = 0;
+	    for (Obstacle obstacle: Obstacle.values()) {
+		itemsObstacle[i] = new JRadioButtonMenuItem(obstacle.getName(), obstacle.getIcon());
+		itemsObstacle[i].addActionListener(new ActionChangeObstacle(obstacle));
 		popupMenuSelectedTilePattern.add(itemsObstacle[i]);
 		itemsObstacleGroup.add(itemsObstacle[i]);
+		i++;
 	    }
 
 	    popupMenuSelectedTilePattern.addSeparator();
@@ -380,8 +381,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 		    
 		    // right click: if the tileset is editable, we show a popup menu
 		    if (mouseEvent.getButton() == MouseEvent.BUTTON3 && editable) {
-			int obstacle = tileset.getSelectedTilePattern().getObstacle();
-			itemsObstacle[obstacle].setSelected(true);
+			Obstacle obstacle = tileset.getSelectedTilePattern().getObstacle();
+			itemsObstacle[obstacle.ordinal()].setSelected(true);
 			popupMenuSelectedTilePattern.show(TilesetImageView.this,
 				mouseEvent.getX(),
 				mouseEvent.getY());
@@ -527,15 +528,15 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     private class ActionCreateTilePattern implements ActionListener {
 
 	/**
-	 * Type of obstacle to set when the action is invoked.
+	 * Obstacle property to set when the action is invoked.
 	 */
-	private int obstacle;
+	private Obstacle obstacle;
 
 	/**
 	 * Constructor.
-	 * @param obstacle type of obstacle of the tile pattern to create
+	 * @param obstacle obstacle property of the tile pattern to create
 	 */
-	public ActionCreateTilePattern(int obstacle) {
+	public ActionCreateTilePattern(Obstacle obstacle) {
 	    this.obstacle = obstacle;
 	}
 
@@ -562,15 +563,15 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     private class ActionChangeObstacle implements ActionListener {
 
 	/**
-	 * Type of obstacle to set when the action is invoked.
+	 * Obstacle property to set when the action is invoked.
 	 */
-	private int obstacle;
+	private Obstacle obstacle;
 
 	/**
 	 * Constructor.
-	 * @param obstacle type of obstacle to set when the action is invoked.
+	 * @param obstacle obstacle property to set when the action is invoked.
 	 */
-	public ActionChangeObstacle(int obstacle) {
+	public ActionChangeObstacle(Obstacle obstacle) {
 	    this.obstacle = obstacle;
 	}
 
@@ -579,7 +580,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 	 */
 	public void actionPerformed(ActionEvent ev) {
 	    TilePattern tilePattern = tileset.getSelectedTilePattern();
-	    int currentObstacle = tilePattern.getObstacle();
+	    Obstacle currentObstacle = tilePattern.getObstacle();
 
 	    if (currentObstacle != obstacle) {
 

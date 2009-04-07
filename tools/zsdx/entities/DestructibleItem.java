@@ -95,10 +95,10 @@ public class DestructibleItem extends MapEntity {
 
     /**
      * Returns the entity's obstacle property.
-     * @return OBSTACLE
+     * @return Obstacle.OBSTACLE
      */
-    public int getObstacle() {
-	return OBSTACLE;
+    public Obstacle getObstacle() {
+	return Obstacle.OBSTACLE;
     }
 
     /**

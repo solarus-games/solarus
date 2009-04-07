@@ -16,11 +16,12 @@
  */
 package zsdx.gui;
 
+import zsdx.*;
+import zsdx.entities.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-import zsdx.entities.*;
 
 /**
  * Graphical component to select the animation properties of a tile pattern:
@@ -31,7 +32,7 @@ import zsdx.entities.*;
  * how the 3 animations are separated in the tileset (vertically or
  * horizontally).
  */
-public class AnimationView extends JPanel implements Observer, ActionListener {
+public class TilePatternAnimationView extends JPanel implements Observer, ActionListener {
 
     /**
      * The tile pattern observed.
@@ -64,17 +65,15 @@ public class AnimationView extends JPanel implements Observer, ActionListener {
 
     // load the icons
     static {
-	String path = "zsdx/images/";
-
 	separationItems = new ImageIcon[2];
-	separationItems[TilePattern.ANIMATION_SEPARATION_HORIZONTAL] = new ImageIcon(path + "animation_separation_horizontal.png");
-	separationItems[TilePattern.ANIMATION_SEPARATION_VERTICAL] = new ImageIcon(path + "animation_separation_vertical.png");
+	separationItems[TilePattern.ANIMATION_SEPARATION_HORIZONTAL] = Project.getEditorImageIcon("animation_separation_horizontal.png");
+	separationItems[TilePattern.ANIMATION_SEPARATION_VERTICAL] = Project.getEditorImageIcon("animation_separation_vertical.png");
     }
 
     /**
      * Constructor.
      */
-    public AnimationView() {
+    public TilePatternAnimationView() {
 	super();
 
 	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));

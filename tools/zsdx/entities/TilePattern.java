@@ -47,9 +47,9 @@ public class TilePattern extends Observable {
     private BufferedImage[] images;
 
     /**
-     * Type of obstacle.
+     * Obstacle property.
      */
-    private int obstacle;
+    private Obstacle obstacle;
 
     /**
      * Animation sequence.
@@ -72,10 +72,10 @@ public class TilePattern extends Observable {
      * Simple constructor with no animation.
      * @param positionInTileset position of the tile pattern in the tileset
      * @param defaultLayer default layer of the tile pattern
-     * @param obstacle type of obstacle
+     * @param obstacle the obstacle property of this tile pattern
      * @throws TilesetException if the tile size is incorrect
      */
-    public TilePattern(Rectangle positionInTileset, int defaultLayer, int obstacle) throws TilesetException {
+    public TilePattern(Rectangle positionInTileset, int defaultLayer, Obstacle obstacle) throws TilesetException {
 	this(positionInTileset, defaultLayer, obstacle, ANIMATION_NONE, 0);
     }
 
@@ -83,14 +83,14 @@ public class TilePattern extends Observable {
      * Constructor.
      * @param positionInTileset position of the tile pattern in the tileset
      * @param defaultLayer default layer of the tiles created with this pattern
-     * @param obstacle type of obstacle
+     * @param obstacle the obstacle property of this tile pattern
      * @param animationSequence type of animation: ANIMATION_NONE, ANIMATION_SEQUENCE_012
      * or ANIMATION_SEQUENCE_0121
      * @param animationSeparation separation of the 3 animation frames in the tileset image:
      * ANIMATION_SEPARATION_HORIZONTAL or ANIMATION_SEPARATION_VERTICAL
      * @throws TilesetException if the pattern size is incorrect
      */
-    public TilePattern(Rectangle positionInTileset, int defaultLayer, int obstacle,
+    public TilePattern(Rectangle positionInTileset, int defaultLayer, Obstacle obstacle,
 		int animationSequence, int animationSeparation) throws TilesetException {
 	super();
 
@@ -120,12 +120,7 @@ public class TilePattern extends Observable {
 	    StringTokenizer tokenizer = new StringTokenizer(description);
 
 	    int tilePatternType = Integer.parseInt(tokenizer.nextToken());
-	    this.obstacle = Integer.parseInt(tokenizer.nextToken());
-
-	    if (obstacle < 0) {
-		obstacle += 8;
-	    }
-
+	    this.obstacle = Obstacle.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.defaultLayer = Integer.parseInt(tokenizer.nextToken());
 	    this.images = new BufferedImage[4];
 
@@ -182,14 +177,12 @@ public class TilePattern extends Observable {
 
 	StringBuffer description = new StringBuffer();
 
-	int obstacleSaved = (obstacle < MapEntity.OBSTACLE_SHALLOW_WATER) ? obstacle : (obstacle - 8);
-
 	if (animationSequence == ANIMATION_NONE) {
 	    // simple tile pattern: "0 obstacle defaultLayer x y width height"
 
 	    description.append('0');
 	    description.append('\t');
-	    description.append(obstacleSaved);
+	    description.append(obstacle.getId());
 	    description.append('\t');
 	    description.append(defaultLayer);
 	    description.append('\t');
@@ -206,7 +199,7 @@ public class TilePattern extends Observable {
 
 	    description.append('1');
 	    description.append('\t');
-	    description.append(obstacleSaved);
+	    description.append(obstacle.getId());
 	    description.append('\t');
 	    description.append(defaultLayer);
 	    description.append('\t');
@@ -322,7 +315,7 @@ public class TilePattern extends Observable {
      * Returns the tile pattern's obstacle property.
      * @return the obstacle property
      */
-    public int getObstacle() {
+    public Obstacle getObstacle() {
 	return obstacle;
     }
 
@@ -332,11 +325,10 @@ public class TilePattern extends Observable {
      * @throws TilesetException if the obstacle specified is diagonal
      * and the tile pattern is not square
      */
-    public void setObstacle(int obstacle) throws TilesetException {
+    public void setObstacle(Obstacle obstacle) throws TilesetException {
 
 	// diagonal obstacle: check that the tile is square
-	if (obstacle >= MapEntity.OBSTACLE_TOP_RIGHT && obstacle <= MapEntity.OBSTACLE_BOTTOM_RIGHT
-	    && getWidth() != getHeight()) {
+	if (obstacle.isDiagonal() && getWidth() != getHeight()) {
 	    System.out.println("width = " + getWidth() + ", height = " + getHeight());
 	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile pattern");
 	}

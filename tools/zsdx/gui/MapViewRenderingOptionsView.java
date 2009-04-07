@@ -66,13 +66,13 @@ public class MapViewRenderingOptionsView extends JPanel {
 	boxesPanel.add(box);
 
 	box = new JCheckBox("Show obstacles");
-	box.setSelected(renderingOptions.getShowObstacle(MapEntity.OBSTACLE));
-	box.addItemListener(new ItemListenerObstacle(MapEntity.OBSTACLE));
+	box.setSelected(renderingOptions.getShowObstacle(Obstacle.OBSTACLE));
+	box.addItemListener(new ItemListenerObstacle(Obstacle.OBSTACLE));
 	boxesPanel.add(box);
 
 	box = new JCheckBox("Show non obstacles");
-	box.setSelected(renderingOptions.getShowObstacle(MapEntity.OBSTACLE_NONE));
-	box.addItemListener(new ItemListenerObstacle(MapEntity.OBSTACLE_NONE));
+	box.setSelected(renderingOptions.getShowObstacle(Obstacle.NONE));
+	box.addItemListener(new ItemListenerObstacle(Obstacle.NONE));
 	boxesPanel.add(box);
 
 	box = new JCheckBox("Show transparency");
@@ -128,15 +128,15 @@ public class MapViewRenderingOptionsView extends JPanel {
     private class ItemListenerObstacle implements ItemListener {
 
 	/**
-	 * The type of obstacle controlled by this checkbox.
+	 * The obstacle property controlled by this checkbox.
 	 */
-	private int obstacle;
+	private Obstacle obstacle;
 
 	/**
 	 * Constructor.
-	 * @param obstacle the type of obstacle controlled by the checkbox.
+	 * @param obstacle the obstacle property controlled by the checkbox.
 	 */
-	public ItemListenerObstacle(int obstacle) {
+	public ItemListenerObstacle(Obstacle obstacle) {
 	    this.obstacle = obstacle;
 	}
 

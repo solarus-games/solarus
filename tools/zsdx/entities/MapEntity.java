@@ -136,17 +136,6 @@ public abstract class MapEntity extends Observable {
     public static final int LAYER_HIGH = 2;
     public static final int LAYER_NB = 3;
 
-    // constants to identify the obstacles
-
-    public static final int OBSTACLE_NONE = 0;
-    public static final int OBSTACLE = 1;
-    public static final int OBSTACLE_TOP_RIGHT = 2;
-    public static final int OBSTACLE_TOP_LEFT = 3;
-    public static final int OBSTACLE_BOTTOM_LEFT = 4;
-    public static final int OBSTACLE_BOTTOM_RIGHT = 5;
-    public static final int OBSTACLE_SHALLOW_WATER = 6;
-    public static final int OBSTACLE_DEEP_WATER = 7;
-
     /**
      * Creates an entity.
      * If the entity is identifiable, a default name

@@ -32,7 +32,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 
     // specific fields of this entity
     private JCheckBox withSpriteField;
-    private JTextField spriteField;
+    private ResourceChooser spriteField;
     private RadioField withMessageField;
     private JTextField messageField;
 
@@ -55,7 +55,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	addField("Visibility", withSpriteField);
 
 	// sprite name
-	spriteField = new JTextField(15);
+	spriteField = new ResourceChooser(ResourceDatabase.RESOURCE_SPRITE, true);
 	addField("Sprite name", spriteField);
 
 	// show a message?
@@ -94,20 +94,20 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 		case NON_PLAYING_CHARACTER:
 		    withSpriteField.setEnabled(false);
 		    withSpriteField.setSelected(true);
-		    spriteField.setText("");
+		    spriteField.setSelectedId("");
 		    break;
 
 		case SIGN:
 		    withSpriteField.setEnabled(false);
 		    withSpriteField.setSelected(true);
-		    spriteField.setText("entities/sign");
+		    spriteField.setSelectedId("entities/sign");
 		    spriteField.setEnabled(false);
 		    break;
 
 		case WATER_FOR_BOTTLE:
 		    withSpriteField.setSelected(false);
 		    withSpriteField.setEnabled(false);
-		    spriteField.setText("");
+		    spriteField.setSelectedId("");
 		    spriteField.setEnabled(false);
 		    withMessageField.setSelectedIndex(1);
 		    withMessageField.setEnabled(false);
@@ -133,7 +133,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	boolean hasMessage = (!message.equals("_none"));
 
 	withSpriteField.setSelected(hasSprite);
-	spriteField.setText(hasSprite ? sprite : "");
+	spriteField.setSelectedId(hasSprite ? sprite : "");
 	spriteField.setEnabled(hasSprite && subtype != Subtype.SIGN);
 	withMessageField.setSelectedIndex(hasMessage ? 0 : 1);
 	messageField.setText(hasMessage ? message : "");
@@ -146,7 +146,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	String sprite = spriteField.getText();
+	String sprite = spriteField.getSelectedId();
 	if (!withSpriteField.isSelected()) {
 	    sprite = "_none";
 	}

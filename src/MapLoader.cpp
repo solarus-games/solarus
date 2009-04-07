@@ -154,11 +154,11 @@ void MapLoader::load_map(Map *map) {
 
     case MapEntity::DESTRUCTIBLE_ITEM:
       {
-	int destructible_item_type, pickable_item_type, savegame_variable;
-	iss >> destructible_item_type >> pickable_item_type >> savegame_variable;
+	int destructible_item_subtype, pickable_item_subtype, savegame_variable;
+	iss >> destructible_item_subtype >> pickable_item_subtype >> savegame_variable;
 	entities->add_entity(new DestructibleItem((MapEntity::Layer) layer, x, y,
-						  (DestructibleItem::ItemType) destructible_item_type,
-						  (PickableItem::Subtype) pickable_item_type, savegame_variable));
+						  (DestructibleItem::Subtype) destructible_item_subtype,
+						  (PickableItem::Subtype) pickable_item_subtype, savegame_variable));
 	break;
       }
 

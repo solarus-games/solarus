@@ -29,9 +29,9 @@
 using namespace std;
 
 /**
- * Properties of each type of destructible item.
+ * Features of each type of destructible item.
  */
-const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
+const DestructibleItem::Features DestructibleItem::features[] = {
   {"entities/pot", "stone", true, false, 0, 2},
   {"entities/skull", "stone", true, false, 0, 2},
   {"entities/bush", "bush", true, true, 1, 1},
@@ -46,7 +46,7 @@ const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
 };
 
 /**
- * Creates a new destructible item with the specified type.
+ * Creates a new destructible item with the specified subtype.
  * @param layer layer of the destructible item to create on the map
  * @param x x coordinate of the destructible item to create
  * @param y y coordinate of the destructible item to create
@@ -57,25 +57,25 @@ const DestructibleItem::ItemProperties DestructibleItem::properties[] = {
  * storing the possession state of the pickable item,
  * for certain kinds of pickable items only (a key, a piece of heart...)
  */
-DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::ItemType type,
+DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::Subtype subtype,
 				   PickableItem::Subtype pickable_item, int pickable_item_savegame_variable):
   Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
-  type(type), pickable_item(pickable_item),
+  subtype(subtype), pickable_item(pickable_item),
   pickable_item_savegame_variable(pickable_item_savegame_variable), is_being_cut(false) {
 
   set_origin(8, 13);
   create_sprite(get_animation_set_id());
 
   // set the collision mode
-  if (properties[type].can_be_lifted) {
+  if (features[subtype].can_be_lifted) {
     add_collision_mode(COLLISION_FACING_POINT);
   }
 
-  if (properties[type].can_be_cut) {
+  if (features[subtype].can_be_cut) {
     add_collision_mode(COLLISION_SPRITE);
   }
 
-  if (type == GRASS) { // display the grass ground under the hero
+  if (subtype == GRASS) { // to display the grass ground under the hero
     add_collision_mode(COLLISION_ORIGIN_POINT);
   }
 }
@@ -100,7 +100,7 @@ MapEntity::EntityType DestructibleItem::get_type() {
  * @return the damage on enemies
  */
 int DestructibleItem::get_damage_on_enemies(void) {
-  return properties[type].damage_on_enemies;
+  return features[subtype].damage_on_enemies;
 }
 
 /**
@@ -108,7 +108,7 @@ int DestructibleItem::get_damage_on_enemies(void) {
  * @return the animations of the sprite
  */
 string DestructibleItem::get_animation_set_id(void) {
-  return properties[type].animation_set_id;
+  return features[subtype].animation_set_id;
 }
 
 /**
@@ -116,18 +116,18 @@ string DestructibleItem::get_animation_set_id(void) {
  * @return the sound to play when this item is destroyed
  */
 Sound * DestructibleItem::get_destruction_sound(void) {
-  return ResourceManager::get_sound(properties[type].destruction_sound_id);
+  return ResourceManager::get_sound(features[subtype].destruction_sound_id);
 }
 
 /**
  * Returns whether this entity is an obstacle for another one.
  * For a destructible item, this does not depend on the other
- * entity but only on the type of destructible item.
+ * entity but only on the subtype of destructible item.
  * @param other another entity
  * @return true if this entity is an obstacle for others
  */
 bool DestructibleItem::is_obstacle_for(MapEntity *other) {
-  return properties[type].can_be_lifted && !is_being_cut;
+  return features[subtype].can_be_lifted && !is_being_cut;
 }
 
 /**
@@ -144,13 +144,13 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
     Hero *hero = zsdx->game->get_hero();
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
-    if (properties[type].can_be_lifted
+    if (features[subtype].can_be_lifted
 	&& !is_being_cut
 	&& keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE) {
 
       Equipment *equipment = zsdx->game->get_equipment();
-      int weight = properties[type].weight;
+      int weight = features[subtype].weight;
       if (equipment->can_lift(weight)) {
 	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
       }
@@ -159,7 +159,7 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
       }
     }
 
-    else if (collision_mode == COLLISION_ORIGIN_POINT && type == GRASS && !is_being_cut) {
+    else if (collision_mode == COLLISION_ORIGIN_POINT && subtype == GRASS && !is_being_cut) {
       hero->set_ground(Map::GRASS);
     }
   }
@@ -174,7 +174,7 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
  */
 void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
-  if (properties[type].can_be_cut
+  if (features[subtype].can_be_cut
       && !is_being_cut
       && entity->is_hero()
       && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
@@ -235,7 +235,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       get_sprite()->set_current_animation("destroy");
       is_being_cut = true;
 
-      if (type == GRASS) {
+      if (subtype == GRASS) {
 	hero->set_ground(Map::NORMAL_GROUND);
       }
 
@@ -263,10 +263,10 @@ void DestructibleItem::action_key_pressed(void) {
   KeysEffect::ActionKeyEffect effect = keys_effect->get_action_key_effect();
 
   if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
-      && properties[type].can_be_lifted
+      && features[subtype].can_be_lifted
       && !is_being_cut) {
 
-    int weight = properties[type].weight;
+    int weight = features[subtype].weight;
     Equipment *equipment = zsdx->game->get_equipment();
 
     if (equipment->can_lift(weight)) {

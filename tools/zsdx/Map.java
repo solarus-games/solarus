@@ -918,18 +918,6 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns whether an entity is behind a second one on the map.
-     * @param first
-     * @param second
-     * @return
-     */
-    /*
-    public boolean isBehind(MapEntity first, MapEntity second) {
-	
-    }
-    */
-
-    /**
      * Returns the id of the background music of the map.
      * @return the name of the music, i.e. a music file name with the extension,
      * or Music.noneId or Music.unchangedId

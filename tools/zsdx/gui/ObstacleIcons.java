@@ -40,7 +40,8 @@ public class ObstacleIcons {
 	"Bottom Left",
 	"Bottom Right",
 	"Shallow water",
-	"Deep water"
+	"Deep water",
+	"Hole",
     };
 
     /**
@@ -61,6 +62,7 @@ public class ObstacleIcons {
 	obstacleIcons[MapEntity.OBSTACLE_BOTTOM_RIGHT] = new ImageIcon(path + "obstacle_bottom_right.png");
 	obstacleIcons[MapEntity.OBSTACLE_SHALLOW_WATER] = new ImageIcon(path + "obstacle_shallow_water.png");
 	obstacleIcons[MapEntity.OBSTACLE_DEEP_WATER] = new ImageIcon(path + "obstacle_deep_water.png");
+	obstacleIcons[MapEntity.OBSTACLE_HOLE] = new ImageIcon(path + "obstacle_hole.png");
     }
 
     /**

@@ -34,9 +34,9 @@ class DestructibleItem: public Detector {
  public:
 
   /**
-   * Types of destructible items.
+   * Subtypes of destructible items.
    */
-  enum ItemType {
+  enum Subtype {
 
     POT               = 0,
     SKULL             = 1,
@@ -55,7 +55,7 @@ class DestructibleItem: public Detector {
 
  private:
 
-  ItemType type;                           /**< the type of destructible item */
+  Subtype subtype;                         /**< the subtype of destructible item */
   PickableItem::Subtype pickable_item;     /**< the pickable item that appears when the item is lifted or cut */
   int pickable_item_savegame_variable;     /**< savegame variable of the pickable item (if any) */
 
@@ -64,7 +64,7 @@ class DestructibleItem: public Detector {
   /**
    * This structure defines the properties of a destructible item type.
    */
-  struct ItemProperties {
+  struct Features {
     SpriteAnimationSetId animation_set_id; /**< animation set used for this type of destructible item */
     SoundId destruction_sound_id;          /**< sound played when the item is destroyed */
     bool can_be_lifted;                    /**< indicates that this item can be lifted */
@@ -74,12 +74,12 @@ class DestructibleItem: public Detector {
     int damage_on_enemies;                 /**< damage the item can cause to enemies (1: few, 2: normal, 3: a lot) */
   };
 
-  static const ItemProperties properties[];
+  static const Features features[];
 
  public:
 
   // creation and destruction
-  DestructibleItem(Layer layer, int x, int y, ItemType type,
+  DestructibleItem(Layer layer, int x, int y, Subtype subtype,
 		   PickableItem::Subtype pickable_item, int pickable_item_savegame_variable);
   ~DestructibleItem(void);
 

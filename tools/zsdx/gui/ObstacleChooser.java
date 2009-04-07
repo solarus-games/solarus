@@ -31,6 +31,7 @@ import zsdx.entities.*;
  * - obstacle bottom right
  * - shallow water
  * - deep water
+ * - hole
  */
 public class ObstacleChooser extends JComboBox implements Observer, ActionListener {
 

@@ -7,7 +7,6 @@
 - Activer la répétition des touches dans l'écran du choix du nom du joueur
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
-- Dans DestructibleItem, remplacer "properties" par "features" et "type" par "subtype"
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
@@ -83,5 +82,4 @@ Mode release :
 	- Parser les fichiers de sprite dans l'éditeur (utile pour PNJ et entités avec skin)
 	- Sprites dans l'éditeur : utiliser une liste déroulante (les sprites sont des ressources dans project_db.zsd)
 	- Eviter d'avoir à recharger la map pour voir les destinations mises à jour
-	- Téléporteurs : interdire "_same" si c'est la même map
 	- Affichage : dessiner les tiles une seule fois sur une surface intermédiaire au lieu de les redessiner un par un à chaque affichage (c'est possible dans l'éditeur mais pas facilement dans le jeu à cause des tiles animés)

@@ -35,21 +35,39 @@
 2	title_screen_full.it	Title screen (full)
 2	title_screen_short.it	Title screen (short, without intro)
 2	triforce.it	Triforce
-3	hud/action_icon_flip	Action icon (flip)
-3	hud/empty_heart	Empty heart
-3	hud/pause_icon_flip	Pause icon (flip)
-3	hud/sword_icon_flip	Sword icon (flip)
-3	link/shield1	Shield 1
-3	link/shield2	Shield 2
-3	link/shield3	Shield 3
-3	link/sword1	Sword 1
-3	link/sword2	Sword 2
-3	link/sword3	Sword 3
-3	link/sword4	Sword 4
-3	link/tunic0	Blue Tunic
-3	link/tunic1	Green Tunic
-3	link/tunic2	Red Tunic
-3	menu/cursor	Cursor of the selection menu
+3	npc/fairy_queen	Fairy Queen
+3	npc/monkey	Monkey
+3	npc/sahasrahla	Sahasrahla
+3	npc/thief	Thief
+3	npc/wizard	Wizard
+3	npc/zelda	Zelda
+3	npc/newlink1	Newlink NPC 1
+3	npc/newlink2	Newlink NPC 2
+3	npc/newlink3	Newlink NPC 3
+3	npc/newlink4	Newlink NPC 4
+3	npc/newlink5	Newlink NPC 5
+3	npc/newlink6	Newlink NPC 6
+3	npc/newlink7	Newlink NPC 7
+3	npc/newlink8	Newlink NPC 8
+3	npc/villager1	ALTTP villager 1
+3	npc/villager2	ALTTP villager 2
+3	npc/villager3	ALTTP villager 3
+3	npc/static_villager1	ALTTP static villager 1
+3	npc/static_villager2	ALTTP static villager 2
+3	npc/static_villager3	ALTTP static villager 3
+3	npc/static_villager4	ALTTP static villager 4
+3	npc/static_villager5	ALTTP static villager 5
+3	npc/static_villager6	ALTTP static villager 6
+3	npc/static_villager7	ALTTP static villager 7
+3	npc/static_villager8	ALTTP static villager 8
+3	npc/static_villager9	ALTTP static villager 9
+3	npc/static_villager10	ALTTP static villager 10
+3	npc/static_villager11	ALTTP static villager 11
+3	npc/static_villager12	ALTTP static villager 12
+3	npc/static_villager13	ALTTP static villager 13
+3	npc/static_villager14	ALTTP static villager 14
+3	entities/slot_machine	Casino slot machine
+3	entities/frozen_door	Frozen door
 4	agahnim_blue_ball	agahnim_blue_ball
 4	agahnim_orange_ball	agahnim_orange_ball
 4	bomb	bomb

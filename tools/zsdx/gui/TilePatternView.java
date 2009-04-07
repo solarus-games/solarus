@@ -120,6 +120,7 @@ public class TilePatternView extends JPanel implements Observer {
 	else {
 	    buttonDelete.setEnabled(false);
 	    obstacleView.setEnabled(false);
+	    obstacleView.setValue(Obstacle.NONE);
 	    defaultLayerView.setEnabled(false);
 	}
 	animationView.update(tilePattern);

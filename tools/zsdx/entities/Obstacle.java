@@ -22,9 +22,12 @@ import java.util.*;
 
 /**
  * Enumeration of the obstacle property of the tiles.
+ * Values lower than or equal to NONE correspond to entities the hero can walk on.
+ * Values higher than NONE correspond to obstacles.
  */
 public enum Obstacle {
 
+    HOLE(-3, "obstacle_hole.png"),
     SHALLOW_WATER(-2, "obstacle_shallow_water.png"),
     DEEP_WATER(-1, "obstacle_deep_water.png"),
     NONE(0, "obstacle_none.png"),
@@ -33,7 +36,7 @@ public enum Obstacle {
     TOP_LEFT(3, "obstacle_top_left.png"),
     BOTTOM_LEFT(4, "obstacle_bottom_left.png"),
     BOTTOM_RIGHT(5, "obstacle_bottom_right.png"),
-    HOLE(6, "obstacle_hole.png");
+    ;
 
     private int id;
     private String iconFileName;

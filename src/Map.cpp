@@ -492,12 +492,12 @@ bool Map::collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_c
   case OBSTACLE_SHALLOW_WATER:
   case OBSTACLE_DEEP_WATER:
     // only the hero can move on water tiles
-    on_obstacle = !entity_to_check->is_hero();
+    on_obstacle = entity_to_check->is_water_obstacle();
     break;
 
   case OBSTACLE_HOLE:
     // only the hero can move on a hole
-    on_obstacle = !entity_to_check->is_hero();
+    on_obstacle = entity_to_check->is_hole_obstacle();
     break;
   }
 

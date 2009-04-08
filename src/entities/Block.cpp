@@ -70,6 +70,15 @@ EntityType Block::get_type(void) {
 }
 
 /**
+ * Returns whether an entity of this type should be displayed above
+ * the hero and other entities when it is in front of them.
+ * @return true if this entity is displayed at the same level as the hero
+ */
+bool Block::is_displayed_in_y_order(void) {
+  return subtype == STATUE;
+}
+
+/**
  * Sets the map.
  * @param map the map
  */

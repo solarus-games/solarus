@@ -91,7 +91,7 @@ const SoundId Hero::ground_sound_ids[] = {
  * @return true if the hero is currently visible
  */
 bool Hero::is_visible(void) {
-  return !zsdx->game->is_showing_gameover() && state != DROWNING;
+  return !zsdx->game->is_showing_gameover() && state != RETURNING_TO_SOLID_GROUND;
 }
 
 /**
@@ -291,23 +291,6 @@ void Hero::set_animation_stopped(void) {
 
   switch (get_state()) {
 
-  case FREE:
-
-    stop_displaying_sword();
-
-    if (equipment->has_shield()) {
-
-      tunic_sprite->set_current_animation("stopped_with_shield");
-
-      shield_sprite->set_current_animation("stopped");
-      shield_sprite->set_current_direction(direction);
-    }
-    else {
-      tunic_sprite->set_current_animation("stopped");
-    }
-
-    break;
-
   case SWORD_LOADING:
 
     tunic_sprite->set_current_animation("sword_loading_stopped");
@@ -337,6 +320,19 @@ void Hero::set_animation_stopped(void) {
     break;
 
   default:
+    stop_displaying_sword();
+
+    if (equipment->has_shield()) {
+
+      tunic_sprite->set_current_animation("stopped_with_shield");
+
+      shield_sprite->set_current_animation("stopped");
+      shield_sprite->set_current_direction(direction);
+    }
+    else {
+      tunic_sprite->set_current_animation("stopped");
+    }
+
     break;
   }
 
@@ -530,4 +526,22 @@ void Hero::set_animation_plunging(void) {
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }
+}
+
+/**
+ * Starts the "falling" animation of the hero's sprites.
+ * The hero's state should be FALLING.
+ */
+void Hero::set_animation_falling(void) {
+
+  // show the animation
+  save_animation_direction();
+  tunic_sprite->set_current_direction(0);
+  tunic_sprite->set_current_animation("falling");
+
+  // the shield and the sword are not visible
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+  stop_displaying_sword();
 }

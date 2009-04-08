@@ -55,6 +55,7 @@ class SpriteAnimation {
   int get_next_frame(int current_direction, int current_frame);
   void display(SDL_Surface *destination, int x, int y, int current_direction, int current_frame);
 
+  int get_nb_directions(void);
   SpriteAnimationDirection *get_direction(int direction);
   Uint32 get_frame_delay(void);
 

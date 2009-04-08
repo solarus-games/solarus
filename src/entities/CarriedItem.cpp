@@ -248,3 +248,28 @@ void CarriedItem::collision_with_enemy(Enemy *enemy) {
     get_movement()->stop();    
   }
 }
+
+/**
+ * Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool CarriedItem::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return false;
+}
+
+/**
+ * Returns whether a water tile is currently considered as an obstacle for this entity.
+ * @return true if the water tiles are currently an obstacle for this entity
+ */
+bool CarriedItem::is_water_obstacle(void) {
+  return false;
+}
+
+/**
+ * Returns whether a hole is currently considered as an obstacle for this entity.
+ * @return true if the holes are currently an obstacle for this entity
+ */
+bool CarriedItem::is_hole_obstacle(void) {
+  return false;
+}

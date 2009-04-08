@@ -105,18 +105,7 @@ EntityType Teletransporter::get_type() {
  * @return true if this entity is an obstacle for the other one
  */
 bool Teletransporter::is_obstacle_for(MapEntity *other) {
-
-  EntityType type = other->get_type();
-
-  if (type == ENEMY || type == INTERACTIVE_ENTITY || type == BLOCK) {
-    return true; // prevent enemies, NPCs and blocks from walking on teletransporters
-  }
-
-  if (type == HERO) {
-    return ((Hero*) other)->is_teletransporter_obstacle(this);
-  }
-
-  return false;
+  return other->is_teletransporter_obstacle(this);
 }
 
 /**

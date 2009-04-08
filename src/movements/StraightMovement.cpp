@@ -106,5 +106,5 @@ void StraightMovement::set_suspended(bool suspended) {
  * @return true if the movement is finished
  */
 bool StraightMovement::is_finished(void) {
-  return finished;
+  return finished || is_stopped();
 }

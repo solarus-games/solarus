@@ -40,7 +40,7 @@ class Hero: public MapEntity {
    * He hero can be hurt in states <= SPIN_ATTACK.
    */
   enum State {
-    FREE,                        /**< normal state (stopped or walking) */
+    FREE,                        /**< the hero is free to move (stopped or walking) */
     CARRYING,                    /**< the hero can walk but he is carrying a pot or a bush */
     SWORD_LOADING,               /**< the hero can walk but his sword is loading for a spin attack */
     SWIMMING,                    /**< the hero is swimming in deep water */
@@ -54,8 +54,11 @@ class Hero: public MapEntity {
     JUMPING,                     /**< the hero is jumping */
     HURT,                        /**< the hero is hurt */
     PLUNGING,                    /**< the hero is plunging into water */
-    DROWNING,                    /**< the hero is drowning */
-    FREEZED,                     /**< the hero cannot move for various possible reasons */
+    FALLING,                     /**< the hero is falling into a hole */
+    RETURNING_TO_SOLID_GROUND,   /**< the hero is returning towards solid ground (e.g. after he drowned
+				  * in deep water or falled into a hole) */
+    FREEZED,                     /**< the hero cannot move for various possible reasons,
+				  * including an instruction from the script */
   };
 
  private:
@@ -124,8 +127,10 @@ class Hero: public MapEntity {
 
   // jump
   int jump_y;                    /**< height of the hero's sprite when jumping, relative to its shadow on the ground */
-  int last_ground_x;             /**< x coordinate of the last hero position on the ground (e.g. before jumping) */
-  int last_ground_y;             /**< y coordinate of the last hero position on the ground (e.g. before jumping) */
+
+  // return to solid ground
+  SDL_Rect last_solid_ground_coords;   /**< coordinate of the last hero position on a ground
+				        * where he can walk (e.g. before jumping or falling into a hole) */
 
   // special ground under the hero
   Ground ground;                 /**< kind of ground under the hero: grass, shallow water, etc. */
@@ -183,9 +188,13 @@ class Hero: public MapEntity {
   void start_deep_water(void);
   void start_plunging(void);
   void update_plunging(void);
-  void update_drowning(void);
   void start_swimming(void);
   void stop_swimming(void);
+  void start_falling(void);
+  void update_falling(void);
+
+  void start_returning_to_solid_ground(const SDL_Rect &target);
+  void update_returning_to_solid_ground(void);
 
   // animation of the sprites
   void set_animation_direction(int direction);
@@ -203,6 +212,7 @@ class Hero: public MapEntity {
   void set_animation_jumping(void);
   void set_animation_hurt(void);
   void set_animation_plunging(void);
+  void set_animation_falling(void);
 
   void save_animation_direction(void);
   void restore_animation_direction(void);
@@ -229,8 +239,8 @@ class Hero: public MapEntity {
   PlayerMovement * get_normal_movement(void);
   int get_movement_direction(void);
   bool is_moving_towards(int direction);
-  SDL_Rect get_facing_point(void);
-  SDL_Rect get_facing_point(int direction);
+  const SDL_Rect get_facing_point(void);
+  const SDL_Rect get_facing_point(int direction);
   Detector *get_facing_entity(void);
   void just_moved(void);
   void set_facing_entity(Detector *detector);
@@ -279,7 +289,8 @@ class Hero: public MapEntity {
 
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
-
+  bool is_water_obstacle(void);
+  bool is_hole_obstacle(void);
 };
 
 #endif

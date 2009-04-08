@@ -56,7 +56,10 @@ class CarriedItem: public MapEntity {
   void update(void);
   void display_on_map(void);
 
-  virtual void collision_with_enemy(Enemy *enemy);
+  void collision_with_enemy(Enemy *enemy);
+  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  bool is_water_obstacle(void);
+  bool is_hole_obstacle(void);
 };
 
 #endif

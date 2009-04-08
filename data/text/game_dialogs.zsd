@@ -147,11 +147,16 @@ line2 = "      de Lyriann"
 
 [outside_world.village.pastry_shop_sign]
 #       |-----------------------|
-line1 = "Pâtisserie"
+line1 = ""
+line2 = "       Pâtisserie"
+line3 = ""
 
 [outside_world.village.shop_sign]
 #       |-----------------------|
-line1 = "Boutique"
+line1 = ""
+line2 = "        Boutique"
+line3 = ""
+
 
 [outside_world.village.letter_box]
 #       |-----------------------|

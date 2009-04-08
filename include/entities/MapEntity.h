@@ -145,7 +145,7 @@ class MapEntity {
   bool can_be_obstacle(void);
   bool can_detect_entities(void);
   bool can_be_displayed(void);
-  bool is_displayed_in_y_order(void);
+  virtual bool is_displayed_in_y_order(void);
 
   // position in the map
   Layer get_layer(void);
@@ -153,6 +153,9 @@ class MapEntity {
   int get_y(void);
   void set_x(int x);
   void set_y(int y);
+  const SDL_Rect get_coordinates(void);
+  void set_coordinates(const SDL_Rect &coordinates);
+
   int get_width(void);
   int get_height(void);
   const SDL_Rect & get_position_in_map(void);
@@ -164,8 +167,9 @@ class MapEntity {
   void set_top_left_x(int x);
   void set_top_left_y(int y);
 
-  virtual SDL_Rect get_facing_point(void);
-  virtual SDL_Rect get_facing_point(int direction);
+  virtual const SDL_Rect get_facing_point(void);
+  virtual const SDL_Rect get_facing_point(int direction);
+  const SDL_Rect get_center_point(void);
 
   // properties
   virtual void set_map(Map *map);
@@ -194,6 +198,9 @@ class MapEntity {
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
+  virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  virtual bool is_water_obstacle(void);
+  virtual bool is_hole_obstacle(void);
 
   // suspended
   bool is_suspended(void);

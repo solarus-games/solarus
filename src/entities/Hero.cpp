@@ -61,12 +61,15 @@ Hero::Hero(Equipment *equipment):
   end_blink_date(0), counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF), grabbed_entity(NULL), walking(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
-  last_ground_x(0), last_ground_y(0), ground(GROUND_NORMAL), next_ground_sound_date(0) {
+  ground(GROUND_NORMAL), next_ground_sound_date(0) {
 
   set_size(16, 16);
   set_origin(8, 13);
   set_movement(normal_movement);
   rebuild_equipment();
+
+  last_solid_ground_coords.x = 0;
+  last_solid_ground_coords.y = 0;
 }
 
 /**
@@ -181,7 +184,7 @@ void Hero::try_snap_to_facing_entity(void) {
  * (a bush, a pot, a PNJ...)
  * @return the point the hero is facing
  */
-SDL_Rect Hero::get_facing_point(void) {
+const SDL_Rect Hero::get_facing_point(void) {
 
   int direction = get_animation_direction();
   return get_facing_point(direction);
@@ -192,7 +195,7 @@ SDL_Rect Hero::get_facing_point(void) {
  * in the specified direction.
  * @param direction a direction (0 to 3)
  */
-SDL_Rect Hero::get_facing_point(int direction) {
+const SDL_Rect Hero::get_facing_point(int direction) {
 
   SDL_Rect facing_point;
 
@@ -358,8 +361,12 @@ void Hero::update(void) {
       update_plunging();
       break;
 
-    case DROWNING:
-      update_drowning();
+    case RETURNING_TO_SOLID_GROUND:
+      update_returning_to_solid_ground();
+      break;
+
+    case FALLING:
+      update_falling();
       break;
 
     default:
@@ -573,6 +580,7 @@ void Hero::just_moved(void) {
   Ground previous_ground = ground;
   set_ground(GROUND_NORMAL);
 
+  // see if the hero is on a special ground
   Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y());
 
   if (state == SWIMMING && tiles_ground != GROUND_DEEP_WATER) {
@@ -580,20 +588,20 @@ void Hero::just_moved(void) {
   }
 
   if (ground != GROUND_GRASS && tiles_ground != ground) {
+    // set the ground indicated by the tiles
     set_ground(tiles_ground);
   }
 
   set_facing_entity(NULL);
-  MapEntity::just_moved();
+  MapEntity::just_moved(); // to set the ground indicated by the entities
 
   if (ground != previous_ground) {
     start_ground();
   }
 
-  if (ground != GROUND_DEEP_WATER) {
-    // save the position
-    last_ground_x = get_x();
-    last_ground_y = get_y();
+  if (ground < GROUND_DEEP_WATER) {
+    // save the hero's last valid position
+    last_solid_ground_coords = get_coordinates();
   }
 }
 

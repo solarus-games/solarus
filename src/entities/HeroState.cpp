@@ -84,26 +84,55 @@ void Hero::set_ground(Ground ground) {
  */
 void Hero::start_ground(void) {
 
-  if (ground == GROUND_NORMAL) {
+  switch (ground) {
+
+  case GROUND_NORMAL:
+    // normal ground: remove any special sprite displayed under the hero
     delete ground_sprite;
     ground_sprite = NULL;
-  }
-  else if (ground == GROUND_DEEP_WATER) {
+    break;
+
+  case GROUND_DEEP_WATER:
+    // deep water: plunge if the hero is not jumping
     if (state != JUMPING && state != HURT) {
       start_deep_water();
     }
-  }
-  else if (ground == GROUND_HOLE) {
+    break;
+
+  case GROUND_HOLE:
+
     if (state != JUMPING) {
-      // TODO start_hole()
+
+      start_falling();
+
+//        TODO?
+//       // make the hero fall if he really is on the hole (otherwise restore the normal ground)
+//       const SDL_Rect &center = get_center_point();
+//       bool on_hole = (center.y / 8 == get_y() / 8); /* consider that the hero is on the hole
+// 						     * if its center point is on the same 8*8 square
+// 						     * than its origin point */
+
+//       if (on_hole) {
+// 	start_falling();
+//       }
+//       else {
+// 	ground = GROUND_NORMAL;
+// 	start_ground();
+//       }
+
     }
-  }
-  else {
+    break;
+
+  case GROUND_SHALLOW_WATER:
+  case GROUND_GRASS:
+    // display a special sprite below the hero
     ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
 
     ground_sound = ResourceManager::get_sound(ground_sound_ids[ground - 1]);
     next_ground_sound_date = MAX(next_ground_sound_date, SDL_GetTicks());
+    break;
+
   }
 }
 
@@ -131,7 +160,7 @@ bool Hero::is_ground_visible(void) {
 
   return (ground == GROUND_GRASS || ground == GROUND_SHALLOW_WATER)
     && state != PLUNGING && state != SWIMMING && state != JUMPING
-    && state != HURT && state != DROWNING;
+    && state != HURT && state != RETURNING_TO_SOLID_GROUND;
 }
 
 /**
@@ -161,6 +190,22 @@ void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int 
  */
 bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
   return state > SWIMMING;
+}
+
+/**
+ * Returns whether a water tile is currently considered as an obstacle for the hero.
+ * @return true if the water tiles are currently an obstacle for the hero
+ */
+bool Hero::is_water_obstacle(void) {
+  return false;
+}
+
+/**
+ * Returns whether a hole is currently considered as an obstacle for the hero.
+ * @return true if the holes are currently an obstacle for the hero
+ */
+bool Hero::is_hole_obstacle(void) {
+  return false;
 }
 
 /**
@@ -913,8 +958,8 @@ void Hero::hurt(MapEntity *source, int life) {
     int life_removed = MAX(1, life / (equipment->get_tunic() + 1));
 
     equipment->remove_hearts(life_removed);
-    set_state(HURT);
     blink();
+    set_state(HURT);
     set_animation_hurt();
 
     double angle = source->get_vector_angle(this);
@@ -950,15 +995,15 @@ void Hero::update_hurt(void) {
  * @return true if the game over sequence can start
  */
 bool Hero::can_start_gameover_sequence(void) {
-  return state != HURT && state != PLUNGING;
+  return state != HURT && state != PLUNGING && state != FALLING && state != RETURNING_TO_SOLID_GROUND;
 }
 
 /**
  * This function is called when the hero was dead but saved by a fairy.
  */
 void Hero::get_back_from_death(void) {
-  start_free();
   blink();
+  start_free();
   when_suspended = SDL_GetTicks();
 }
 
@@ -1057,26 +1102,8 @@ void Hero::update_plunging(void) {
     }
     else {
       ResourceManager::get_sound("message_end")->play();
-      set_movement(new TargetMovement(last_ground_x, last_ground_y, 12));
-      set_state(DROWNING);
+      start_returning_to_solid_ground(last_solid_ground_coords);
     }
-  }
-}
-
-/**
- * Updates the DROWNING state.
- */
-void Hero::update_drowning(void) {
-
-  TargetMovement *movement = (TargetMovement*) get_movement();
-  movement->update();
-
-  if (movement->is_finished()) {
-    clear_movement();
-    set_position_in_map(last_ground_x, last_ground_y); // the target movement may have not been very precise
-    set_movement(normal_movement);
-    start_free();
-    blink();
   }
 }
 
@@ -1093,4 +1120,69 @@ void Hero::start_swimming(void) {
  */
 void Hero::stop_swimming(void) {
   start_free();
+}
+
+/**
+ * Makes the hero fall into a hole.
+ */
+void Hero::start_falling(void) {
+
+  // if the hero is being hurt, stop the movement to make him fall
+  if (state == HURT) {
+    // TODO delete movement later
+  }
+
+  // remove the carried item
+  else if (state == CARRYING) {
+    start_throwing();
+  }
+
+  set_state(FALLING);
+  set_animation_falling();
+  ResourceManager::get_sound("hero_falls")->play();
+}
+
+/**
+ * Updates the FALLING state.
+ */
+void Hero::update_falling(void) {
+
+  if (tunic_sprite->is_animation_finished()) {
+
+    start_returning_to_solid_ground(last_solid_ground_coords);
+    equipment->remove_hearts(1);
+    set_animation_stopped();
+    restore_animation_direction();
+  }
+  else if (get_movement() != normal_movement) {
+    // delete a possible hurt movement
+    clear_movement();
+    set_movement(normal_movement);
+  }
+}
+
+
+/**
+ * Hides the hero and makes him move back to the specified solid ground location.
+ * @param target coordinates of the solid ground location
+ */
+void Hero::start_returning_to_solid_ground(const SDL_Rect &target) {
+  set_movement(new TargetMovement(target.x, target.y, 12));
+  set_state(RETURNING_TO_SOLID_GROUND);
+}
+
+/**
+ * Updates the RETURNING_TO_SOLID_GROUND state.
+ */
+void Hero::update_returning_to_solid_ground(void) {
+
+  TargetMovement *movement = (TargetMovement*) get_movement();
+  movement->update();
+
+  if (movement->is_finished()) {
+    clear_movement();
+    set_movement(normal_movement);
+    blink();
+    start_free();
+  }
 }

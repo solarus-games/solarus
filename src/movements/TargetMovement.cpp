@@ -50,6 +50,7 @@ void TargetMovement::update(void) {
 
   // see if the target is reached
   else if (dx * sign_x <= 0 && dy * sign_y <= 0) {
+    set_position(target_x, target_y); // because the target movement may have not been very precise
     stop();
   }
 

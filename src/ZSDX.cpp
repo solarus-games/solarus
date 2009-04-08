@@ -125,7 +125,7 @@ void ZSDX::set_exiting(void) {
 void ZSDX::main(void) {
 
   // SDL main loop
-  SDL_Event event;
+  SDL_Event event = {};
   Uint32 now, last_frame_date = 0;
   int delay;
 

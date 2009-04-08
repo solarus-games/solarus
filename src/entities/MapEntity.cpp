@@ -251,6 +251,26 @@ void MapEntity::set_y(int y) {
 }
 
 /**
+ * Returns the coordinates of the origin point of the entity, relative to the map.
+ * These are the coordinates of the point as returned by get_x() and get_y().
+ * @return the coordinates of the entity on the map
+ */
+const SDL_Rect MapEntity::get_coordinates(void) {
+  SDL_Rect coords = {get_x(), get_y()};
+  return coords;
+}
+
+/**
+ * Sets the coordinates of the origin point of the entity, relative to the map.
+ * This function sets the coordinates of the point as returned by get_x() and get_y().
+ * @param coordinates the new coordinates of the entity on the map
+ */
+void MapEntity::set_coordinates(const SDL_Rect &coordinates) {
+  set_x(coordinates.x);
+  set_y(coordinates.y);
+}
+
+/**
  * Returns the x position of the entity's top-left corner.
  * @return the x position of the entity's top-left corner
  */
@@ -353,7 +373,7 @@ void MapEntity::set_position_in_map(int x, int y) {
  * You should redefine this method to define a facing point.
  * @return the coordinates of the point the entity is looking at
  */
-SDL_Rect MapEntity::get_facing_point(void) {
+const SDL_Rect MapEntity::get_facing_point(void) {
   SDL_Rect point = {-1, -1};
   return point;
 }
@@ -365,9 +385,18 @@ SDL_Rect MapEntity::get_facing_point(void) {
  * @param direction a direction (0 to 3)
  * @return the coordinates of the point the entity is looking at
  */
-SDL_Rect MapEntity::get_facing_point(int direction) {
+const SDL_Rect MapEntity::get_facing_point(int direction) {
   SDL_Rect point = {-1, -1};
   return point;
+}
+
+/**
+ * Returns the coordinates of the center point of the entity's rectangle.
+ * @return the coordinates of the center point of the entity
+ */
+const SDL_Rect MapEntity::get_center_point(void) {
+  SDL_Rect center = {get_top_left_x() + get_width() / 2, get_top_left_y() + get_height() / 2};
+  return center;
 }
 
 /**
@@ -563,6 +592,34 @@ bool MapEntity::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return true;
+}
+
+/**
+ * Returns whether a water tile is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @return true if the water tiles are currently an obstacle for this entity
+ */
+bool MapEntity::is_water_obstacle(void) {
+  return false;
+}
+
+/**
+ * Returns whether a hole is currently considered as an obstacle for this entity.
+ * This function returns false by default.
+ * @return true if the holes are currently an obstacle for this entity
+ */
+bool MapEntity::is_hole_obstacle(void) {
+  return true;
+}
+
+/**
  * Returns whether or not this entity's rectangle overlaps
  * a specified rectangle.
  * @param rectangle the rectangle to check
@@ -630,7 +687,8 @@ bool MapEntity::is_facing_point_in(const SDL_Rect &rectangle) {
  */
 bool MapEntity::is_center_in(const SDL_Rect &rectangle) {
 
-  return is_point_in(rectangle, get_top_left_x() + get_width() / 2, get_top_left_y() + get_height() / 2);
+  const SDL_Rect &center = get_center_point();
+  return is_point_in(rectangle, center.x, center.y);
 }
 
 /**

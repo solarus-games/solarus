@@ -74,6 +74,14 @@ void SpriteAnimation::set_src_image(SDL_Surface *src_image) {
 }
 
 /**
+ * Returns the number of directions of this animation.
+ * @return the number of directions
+ */
+int SpriteAnimation::get_nb_directions(void) {
+  return nb_directions;
+}
+
+/**
  * Returns a direction.
  * @param direction the direction
  * @return the sequence of images corresponding to this direction
@@ -98,6 +106,11 @@ Uint32 SpriteAnimation::get_frame_delay(void) {
  * (or -1 if the animation is over)
  */
 int SpriteAnimation::get_next_frame(int current_direction, int current_frame) {
+
+  if (current_direction >= nb_directions) {
+    DIE("Invalid sprite direction '" << current_direction << "': this sprite animation has only "
+	<< nb_directions << " direction(s)");
+  }
 
   int next_frame = current_frame + 1;
 

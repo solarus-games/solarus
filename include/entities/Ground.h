@@ -3,6 +3,7 @@
 
 /**
  * The possible kinds of ground on the map.
+ * The hero cannot walk on grounds above or equal to DEEP_WATER.
  */
 enum Ground {
   GROUND_NORMAL,

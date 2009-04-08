@@ -270,14 +270,14 @@ needs_block disable_when_leaving
 Obstacle personnalisable (12)
 
 Un obstacle personnalisable est une entité invisible qui bloque certains types d'entités au choix parmi
-les ennemis, les entités interactives, les blocs et statues et le héros.
+celles qui peuvent bouger : les ennemis, les entités interactives, les blocs et statues et le héros.
 Un obstacle personnalisable est redimensionnable, a un nom et n'a pas de direction.
 
 Syntaxe de la partie spécifique pour un obstale personnalisable :
 
 stops_hero    stops_enemies	stops_npcs	stops_blocks
 
-Ces quatre valeurs booléennes indiquent si l'entité est un obstacle pour ces quatre types d'entités.
+Ces quatre valeurs booléennes indiquent si cet obstacle est un obstacle pour ces quatre types d'entités.
 
 
 Portes

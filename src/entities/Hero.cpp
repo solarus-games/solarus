@@ -599,7 +599,7 @@ void Hero::just_moved(void) {
     start_ground();
   }
 
-  if (ground < GROUND_DEEP_WATER) {
+  if (ground < GROUND_DEEP_WATER && state != JUMPING) {
     // save the hero's last valid position
     last_solid_ground_coords = get_coordinates();
   }

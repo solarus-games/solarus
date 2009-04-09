@@ -267,7 +267,7 @@ Syntaxe de la partie spécifique pour un interrupteur :
 needs_block disable_when_leaving
 
 
-Obstacle personnalisable (12)
+Obstacles personnalisables (12)
 
 Un obstacle personnalisable est une entité invisible qui bloque certains types d'entités au choix parmi
 celles qui peuvent bouger : les ennemis, les entités interactives, les blocs et statues et le héros.
@@ -280,6 +280,21 @@ stops_hero    stops_enemies	stops_npcs	stops_blocks
 Ces quatre valeurs booléennes indiquent si cet obstacle est un obstacle pour ces quatre types d'entités.
 
 
+Capteurs (13)
+
+Un capteur (sensor) est une dalle invisible de taille variable qui déclenche 
+quelque chose de visible ou non au passage du joueur.
+Contrairement aux interrupteurs, ces capteurs ne peuvent pas être évités 
+par un saut (plume, saut quand repoussé par un ennemi, ...)
+Un capteur a un nom et n'a pas de direction.
+
+Sous-types de capteurs :
+0 : custom (appel à un script)
+1 : changement de layer
+2 : sauvegarde pour trou (pas redimensionnable)
+
+Il n'y a pas de propriétés additionnelles.
+
 Portes
 
 Utiliser une propriété skin comme pour les blocs.
@@ -288,12 +303,4 @@ Utiliser une propriété skin comme pour les blocs.
 Tapis roulants
 
 Peuvent être bloquants ou non bloquants.
-
-
-Capteurs
-
-Un capteur est une dalle invisible qui déclenche quelque chose de visible ou non au passage du joueur.
-Contrairement aux interrupteurs, ces capteurs ne peuvent pas être franchis 
-par un saut (plume, saut quand repoussé par un ennemi, ...)
-Types de capteurs : changement de layer, custom (appel à un script), sauvegarde pour trou ?
 

@@ -29,6 +29,12 @@ import zsdx.gui.edit_entities.*;
  */
 public class EditEntityComponent extends JPanel {
 
+    /**
+     * The component to edit each type of map entity.
+     * Each component must be a subclass of EditEntityComponent,
+     * or EditEntityComponent itself if this map entity does not introduce
+     * specific additional properties.
+     */
     private static final Class<?>[] editEntityComponentClasses = {
 	EditEntityComponent.class,
 	EditDestinationPointComponent.class,
@@ -43,6 +49,7 @@ public class EditEntityComponent extends JPanel {
 	EditDynamicTileComponent.class,
 	EditSwitchComponent.class,
 	EditCustomObstacleComponent.class,
+	EditEntityComponent.class,
     };
 
     /**

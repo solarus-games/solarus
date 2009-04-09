@@ -31,7 +31,7 @@ public class PickableItem extends MapEntity {
     public enum Subtype implements EntitySubtype {
 	RANDOM          (-1), /**< special value to indicate to choose another value
 	                       * randomly (including PICKABLE_ITEM_NONE) */
-	NONE            (0),  /**< special value to incicate that there is no pickable item */
+	NONE            (0),  /**< special value to indicate that there is no pickable item */
 	RUPEE_1         (1),
 	RUPEE_5         (2),
 	RUPEE_20        (3),

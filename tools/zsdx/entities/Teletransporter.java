@@ -114,7 +114,7 @@ public class Teletransporter extends MapEntity {
     public void setSubtype(EntitySubtype subtype) throws MapException {
 
 	if (subtype != this.subtype) {
-	    if (isResizable()) {
+	    if (isResizable() && subtype != Subtype.INVISIBLE) {
 		setSize(16, 16);
 	    }
 	    super.setSubtype(subtype);

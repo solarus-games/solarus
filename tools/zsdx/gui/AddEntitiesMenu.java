@@ -71,6 +71,11 @@ public class AddEntitiesMenu extends JMenu {
 		Switch.Subtype.NORMAL
 	),
 	new ItemDefinition(EntityType.CUSTOM_OBSTACLE, KeyEvent.VK_O),
+	new ItemDefinition(EntityType.SENSOR, KeyEvent.VK_N,
+		Sensor.Subtype.CUSTOM,
+		Sensor.Subtype.CHANGE_LAYER,
+		Sensor.Subtype.RETURN_FROM_BAD_GROUND
+	),
     };
 
     /**

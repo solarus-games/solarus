@@ -37,6 +37,7 @@ public enum EntityType {
     DYNAMIC_TILE      (10, "Dynamic tile", DynamicTile.class, null),
     SWITCH            (11, "Switch", Switch.class, Switch.Subtype.class),
     CUSTOM_OBSTACLE   (12, "Custom obstacle", CustomObstacle.class, null),
+    SENSOR            (13, "Sensor", Sensor.class, Sensor.Subtype.class),
     ;
 
     private final int index;

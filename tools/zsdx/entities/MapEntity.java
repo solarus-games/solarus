@@ -62,8 +62,9 @@ import zsdx.Map;
  *   - If your entity is not drawn from an image file but in a more complex way,
  *       you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *       public abstract void paint(Graphics g, double zoom, boolean showTransparency).
- * - Create a subclass of EditEntityComponent and declare it in
- *     EditEntityComponent.editEntityComponentClasses.
+ * - If your entity type has specific properties, create a subclass of EditEntityComponent.
+ * - Declare this class in the EditEntityComponent.editEntityComponentClasses array
+ *     (or just EditEntityComponent.class if your don't have specific properties).
  */
 public abstract class MapEntity extends Observable {
 

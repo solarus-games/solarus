@@ -35,7 +35,7 @@ public class InteractiveEntity extends MapEntity {
 	WATER_FOR_BOTTLE;
 
 	public static final String[] humanNames = {
-	    "Custom",
+	    "Custom (call the script)",
 	    "Non-playing character",
 	    "Sign",
 	    "Water for bottle"

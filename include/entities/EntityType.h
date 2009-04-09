@@ -20,6 +20,7 @@ enum EntityType {
   DYNAMIC_TILE              = 10,   /**< a dynamic tile (that can be enabled or disabled) */
   SWITCH                    = 11,   /**< a switch */
   CUSTOM_OBSTACLE           = 12,   /**< an obstacle for some other type of entities */
+  SENSOR                    = 13,   /**< a sensor that triggers something when the hero overlaps it */
 
   HERO                      = 1000, /**< the hero */
   CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */

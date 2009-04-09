@@ -57,7 +57,7 @@ const int InteractiveEntity::animation_directions[] = {
  * @param name name identifying this interactive entity
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
- * @param special_interaction the subtype of interaction
+ * @param subtype the subtype of interaction
  * @param y y coordinate of the entity to create
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
  * @param initial_direction direction of the entity's sprite (only used if the entity has a sprite)
@@ -65,14 +65,12 @@ const int InteractiveEntity::animation_directions[] = {
  * of this entity, or "_none" to call the script instead (with an event_interaction() call)
  */
 InteractiveEntity::InteractiveEntity(std::string name, Layer layer, int x, int y,
-				     SpecialInteraction special_interaction,
-				     SpriteAnimationSetId sprite_name,
-				     int initial_direction,
-				     MessageId message_to_show):
+				     Subtype subtype, SpriteAnimationSetId sprite_name,
+				     int initial_direction, MessageId message_to_show):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 0, 0),
-  special_interaction(special_interaction), message_to_show(message_to_show) {
+  subtype(subtype), message_to_show(message_to_show) {
 
-  switch (special_interaction) {
+  switch (subtype) {
 
   case CUSTOM:
     initialize_sprite(sprite_name, 0); // the direction is ignored
@@ -137,8 +135,8 @@ bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
     return true;
   }
 
-  return special_interaction != NON_PLAYING_CHARACTER ||
-    ((InteractiveEntity*) other)->special_interaction != NON_PLAYING_CHARACTER;
+  return subtype != NON_PLAYING_CHARACTER ||
+    ((InteractiveEntity*) other)->subtype != NON_PLAYING_CHARACTER;
 }
 
 /**
@@ -166,10 +164,10 @@ void InteractiveEntity::collision(MapEntity *entity_overlapping, CollisionMode c
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE
-	&& (special_interaction != SIGN || hero->get_animation_direction() == 1) /* TODO move to future class Sign */) {
+	&& (subtype != SIGN || hero->get_animation_direction() == 1) /* TODO move to future class Sign */) {
 
       // we show the action icon
-      keys_effect->set_action_key_effect(action_key_effects[special_interaction]);
+      keys_effect->set_action_key_effect(action_key_effects[subtype]);
     }
   }
 }
@@ -187,13 +185,13 @@ void InteractiveEntity::action_key_pressed(void) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // for a place with water: start the dialog
-    if (special_interaction == WATER_FOR_BOTTLE) {
+    if (subtype == WATER_FOR_BOTTLE) {
       zsdx->game->get_equipment()->found_water();
     }
     else {
 
       // for an NPC: look in the hero's direction 
-      if (special_interaction == NON_PLAYING_CHARACTER) {
+      if (subtype == NON_PLAYING_CHARACTER) {
 	int direction = (hero->get_animation_direction() + 2) % 4;
 	get_sprite()->set_current_direction(direction);
 
@@ -216,7 +214,7 @@ void InteractiveEntity::action_key_pressed(void) {
  */
 void InteractiveEntity::call_script(void) {
 
-  if (special_interaction == NON_PLAYING_CHARACTER) {
+  if (subtype == NON_PLAYING_CHARACTER) {
     map->get_script()->event_npc_dialog(get_name());
   }
   else {
@@ -231,7 +229,7 @@ void InteractiveEntity::update(void) {
 
   Detector::update();
 
-  if (special_interaction == NON_PLAYING_CHARACTER && get_movement() != NULL) {
+  if (subtype == NON_PLAYING_CHARACTER && get_movement() != NULL) {
 
     bool finished = false;
     std::string animation = get_sprite()->get_current_animation();
@@ -259,7 +257,7 @@ void InteractiveEntity::update(void) {
  */
 void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) {
 
-  if (special_interaction != NON_PLAYING_CHARACTER) {
+  if (subtype != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");
   }
 
@@ -274,7 +272,7 @@ void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) 
  */
 void InteractiveEntity::walk_random(void) {
 
-  if (special_interaction != NON_PLAYING_CHARACTER) {
+  if (subtype != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");
   }
 
@@ -292,7 +290,7 @@ void InteractiveEntity::walk_random(void) {
  */
 void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
 
-  if (special_interaction != NON_PLAYING_CHARACTER) {
+  if (subtype != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");
   }
 
@@ -309,7 +307,7 @@ void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
  */
 void InteractiveEntity::just_moved(void) {
 
-  if (special_interaction == NON_PLAYING_CHARACTER) {
+  if (subtype == NON_PLAYING_CHARACTER) {
 
     if (get_sprite()->get_current_animation() == "walking") {
       PathMovement *movement = (PathMovement*) get_movement();
@@ -343,7 +341,7 @@ void InteractiveEntity::set_sprite_direction(int direction) {
  */
 void InteractiveEntity::display_on_map(void) {
 
-  if (special_interaction == NON_PLAYING_CHARACTER &&
+  if (subtype == NON_PLAYING_CHARACTER &&
       get_sprite()->get_current_animation() == "jumping") {
 
     int jump_height = ((JumpMovement*) get_movement())->get_jump_height();

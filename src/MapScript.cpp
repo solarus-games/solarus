@@ -33,6 +33,7 @@
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"
 #include "entities/Chest.h"
+#include "entities/Block.h"
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
 #include <iomanip>
@@ -1043,16 +1044,24 @@ void MapScript::event_message_sequence_finished(MessageId first_message_id, int 
  * Notifies the script that a switch has just been enabled.
  * @param sw the switch
  */
-void MapScript::event_switch_enabled(Switch *sw) {
-  call_lua_function("event_switch_enabled", 1, sw->get_name().c_str());
+void MapScript::event_switch_enabled(string switch_name) {
+  call_lua_function("event_switch_enabled", 1, switch_name.c_str());
 }
 
 /**
  * Notifies the script that a switch has just been disabled.
  * @param sw the switch
  */
-void MapScript::event_switch_disabled(Switch *sw) {
-  call_lua_function("event_switch_disabled", 1, sw->get_name().c_str());
+void MapScript::event_switch_disabled(string switch_name) {
+  call_lua_function("event_switch_disabled", 1, switch_name.c_str());
+}
+
+/**
+ * Notifies the script that the hero is overlapping a sensor.
+ * @param sensor_name name of the sensor
+ */
+void MapScript::event_hero_on_sensor(string sensor_name) {
+  call_lua_function("event_hero_on_sensor", 1, sensor_name.c_str());
 }
 
 /**

@@ -139,6 +139,7 @@ class InteractiveEntity;
 class Block;
 class Switch;
 class CustomObstacle;
+class Sensor;
 
 // tile patterns
 class Tileset;

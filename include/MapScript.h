@@ -103,8 +103,9 @@ class MapScript {
   void event_map_started(void);
   void event_message_started(MessageId message_id);
   void event_message_sequence_finished(MessageId first_message_id, int answer);
-  void event_switch_enabled(Switch *sw);
-  void event_switch_disabled(Switch *sw);
+  void event_switch_enabled(std::string switch_name);
+  void event_switch_disabled(std::string switch_name);
+  void event_hero_on_sensor(std::string sensor_name);
   void event_camera_reached_target(void);
   void event_interaction(std::string entity_name);
   void event_npc_dialog(std::string npc_name);

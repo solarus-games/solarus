@@ -198,9 +198,10 @@ class MapEntity {
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
-  virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   virtual bool is_water_obstacle(void);
   virtual bool is_hole_obstacle(void);
+  virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  virtual bool is_sensor_obstacle(Sensor *sensor);
 
   // suspended
   bool is_suspended(void);

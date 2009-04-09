@@ -39,6 +39,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true, false,  true, false}, // dynamic tile
   {false,  true,  true, false}, // switch
   { true, false, false, false}, // custom obstacle
+  { true,  true, false, false}, // sensor
 };
 
 /**
@@ -592,16 +593,6 @@ bool MapEntity::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Returns whether a teletransporter is currently considered as an obstacle for this entity.
- * This function returns true by default.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
- */
-bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return true;
-}
-
-/**
  * Returns whether a water tile is currently considered as an obstacle for this entity.
  * This function returns true by default.
  * @return true if the water tiles are currently an obstacle for this entity
@@ -612,11 +603,31 @@ bool MapEntity::is_water_obstacle(void) {
 
 /**
  * Returns whether a hole is currently considered as an obstacle for this entity.
- * This function returns false by default.
+ * This function returns true by default.
  * @return true if the holes are currently an obstacle for this entity
  */
 bool MapEntity::is_hole_obstacle(void) {
   return true;
+}
+
+/**
+ * Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return true;
+}
+
+/**
+ * Returns whether a sensor is currently considered as an obstacle for this entity.
+ * This function returns false by default.
+ * @param sensor a sensor
+ * @return true if the sensor are currently an obstacle for this entity
+ */
+bool MapEntity::is_sensor_obstacle(Sensor *sensor) {
+  return false;
 }
 
 /**

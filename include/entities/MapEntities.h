@@ -21,14 +21,7 @@
 #include "Transition.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
-#include "entities/Teletransporter.h"
-#include "entities/PickableItem.h"
-#include "entities/DestructibleItem.h"
-#include "entities/Enemy.h"
-#include "entities/InteractiveEntity.h"
-#include "entities/Block.h"
-#include "entities/Switch.h"
-#include "movements/FallingOnFloorMovement.h"
+#include "entities/EntityType.h"
 #include <vector>
 #include <list>
 

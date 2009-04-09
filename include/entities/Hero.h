@@ -288,9 +288,10 @@ class Hero: public MapEntity {
   void just_attacked_enemy(Enemy::Attack attack, Enemy *victim);
 
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
-  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   bool is_water_obstacle(void);
   bool is_hole_obstacle(void);
+  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  bool is_sensor_obstacle(Sensor *sensor);
 };
 
 #endif

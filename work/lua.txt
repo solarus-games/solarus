@@ -7,6 +7,7 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 - event_dialog_finished(message_id, answer)		appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
 - event_switch_enabled(switch_name)			appelé lorsqu'un interrupteur vient d'être activé
 - event_switch_disabled(switch_name)			appelé lorsqu'un interrupteur vient d'être désactivé
+- event_hero_on_sensor(sensor_name)			appelé lorsque le héros marche sur un capteur
 - event_camera_reached_target()				appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
 - event_interaction(entity_name)			appelé lorsque le joueur interagit une entité interactive sans message
 							prédéfini (autre qu'un PNJ)

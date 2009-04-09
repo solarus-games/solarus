@@ -90,7 +90,7 @@ void Switch::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
       get_sprite()->set_current_animation("enabled");
     }
 
-    map->get_script()->event_switch_enabled(this);
+    map->get_script()->event_switch_enabled(get_name());
   }
 }
 

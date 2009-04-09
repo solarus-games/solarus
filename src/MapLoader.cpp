@@ -29,12 +29,17 @@
 #include "entities/Tile.h"
 #include "entities/Teletransporter.h"
 #include "entities/DestinationPoint.h"
+#include "entities/PickableItem.h"
+#include "entities/DestructibleItem.h"
 #include "entities/Chest.h"
 #include "entities/JumpSensor.h"
+#include "entities/Enemy.h"
+#include "entities/InteractiveEntity.h"
 #include "entities/Block.h"
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
 #include "entities/CustomObstacle.h"
+#include "entities/Sensor.h"
 #include <iomanip>
 using namespace std;
 
@@ -106,7 +111,7 @@ void MapLoader::load_map(Map *map) {
   }
 
   // read the entities
-  int entity_type, layer, x, y, width, height, direction;
+  int entity_type, subtype, layer, x, y, width, height, direction;
   string entity_name;
 
   while (std::getline(map_file, line)) {
@@ -135,7 +140,7 @@ void MapLoader::load_map(Map *map) {
 
     case TELETRANSPORTER:
       {
-	int subtype, transition_style;
+	int transition_style;
 	MapId destination_map_id;
 	string destination_point_name;
 	iss >> width >> height >> entity_name >> subtype >> transition_style
@@ -148,19 +153,19 @@ void MapLoader::load_map(Map *map) {
 
     case PICKABLE_ITEM:
       {
-	int pickable_item_type, savegame_variable;
-	iss >> pickable_item_type >> savegame_variable;
-	entities->add_entity(PickableItem::create((Layer) layer, x, y, (PickableItem::Subtype) pickable_item_type,
+	int savegame_variable;
+	iss >> subtype >> savegame_variable;
+	entities->add_entity(PickableItem::create((Layer) layer, x, y, (PickableItem::Subtype) subtype,
 						  savegame_variable, FallingOnFloorMovement::NONE, false));
 	break;
       }
 
     case DESTRUCTIBLE_ITEM:
       {
-	int destructible_item_subtype, pickable_item_subtype, savegame_variable;
-	iss >> destructible_item_subtype >> pickable_item_subtype >> savegame_variable;
+	int pickable_item_subtype, savegame_variable;
+	iss >> subtype >> pickable_item_subtype >> savegame_variable;
 	entities->add_entity(new DestructibleItem((Layer) layer, x, y,
-						  (DestructibleItem::Subtype) destructible_item_subtype,
+						  (DestructibleItem::Subtype) subtype,
 						  (PickableItem::Subtype) pickable_item_subtype, savegame_variable));
 	break;
       }
@@ -185,10 +190,10 @@ void MapLoader::load_map(Map *map) {
 
     case ENEMY:
       {
-	int enemy_type, rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
-	iss >> entity_name >> direction >> enemy_type >> rank >> savegame_variable >>
+	int rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
+	iss >> entity_name >> direction >> subtype >> rank >> savegame_variable >>
 	  pickable_item_type >> pickable_item_savegame_variable;
-	entities->add_entity(Enemy::create((Enemy::EnemyType) enemy_type, (Enemy::Rank) rank, savegame_variable,
+	entities->add_entity(Enemy::create((Enemy::EnemyType) subtype, (Enemy::Rank) rank, savegame_variable,
 					   entity_name, (Layer) layer, x, y, direction, 
 					   (PickableItem::Subtype) pickable_item_type, pickable_item_savegame_variable));
 	break;
@@ -196,20 +201,19 @@ void MapLoader::load_map(Map *map) {
 
     case INTERACTIVE_ENTITY:
       {
-	int special_interaction;
 	SpriteAnimationSetId sprite_name;
 	MessageId message_to_show;
 
-	iss >> entity_name >> direction >> special_interaction >> sprite_name >> message_to_show;
+	iss >> entity_name >> direction >> subtype >> sprite_name >> message_to_show;
 	entities->add_entity(new InteractiveEntity(entity_name, (Layer) layer, x, y,
-						   (InteractiveEntity::SpecialInteraction) special_interaction,
+						   (InteractiveEntity::Subtype) subtype,
 						   sprite_name, direction, message_to_show));
 	break;
       }
 
     case BLOCK:
       {
-	int subtype, maximum_moves;
+	int maximum_moves;
 
 	iss >> entity_name >> subtype >> maximum_moves;
 	entities->add_entity(new Block(entity_name, (Layer) layer, x, y,
@@ -230,7 +234,7 @@ void MapLoader::load_map(Map *map) {
 
     case SWITCH:
       {
-	int subtype, needs_block, disabled_when_leaving;
+	int needs_block, disabled_when_leaving;
 
 	iss >> entity_name >> subtype >> needs_block >> disabled_when_leaving;
 	entities->add_entity(new Switch(entity_name, (Layer) layer, x, y,
@@ -245,6 +249,13 @@ void MapLoader::load_map(Map *map) {
 	iss >> width >> height >> entity_name >> stops_hero >> stops_enemies >> stops_npcs >> stops_blocks;
 	entities->add_entity(new CustomObstacle(entity_name, (Layer) layer, x, y, width, height,
 						stops_hero != 0, stops_enemies != 0, stops_npcs != 0, stops_blocks != 0));
+	break;
+      }
+
+    case SENSOR:
+      {
+	iss >> width >> height >> entity_name >> subtype;
+	entities->add_entity(new Sensor(entity_name, (Layer) layer, x, y, width, height, (Sensor::Subtype) subtype));
 	break;
       }
 

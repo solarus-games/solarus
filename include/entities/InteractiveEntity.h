@@ -37,7 +37,7 @@ class InteractiveEntity: public Detector {
    * The different kinds of interactions.
    * They indicate what happens when the player presses the action key in front of this entity.
    */
-  enum SpecialInteraction {
+  enum Subtype {
 
     CUSTOM,                /**< no predetermined behavior: just displays the message specified or calls the script */
     NON_PLAYING_CHARACTER, /**< same thing except that the script can make the engine move an NPC */
@@ -48,7 +48,7 @@ class InteractiveEntity: public Detector {
 
  private:
 
-  SpecialInteraction special_interaction;
+  Subtype subtype;
   MessageId message_to_show;
 
   static const KeysEffect::ActionKeyEffect action_key_effects[];
@@ -59,7 +59,7 @@ class InteractiveEntity: public Detector {
 
  public:
 
-  InteractiveEntity(std::string name, Layer layer, int x, int y, SpecialInteraction special_interaction,
+  InteractiveEntity(std::string name, Layer layer, int x, int y, Subtype subtype,
 		    SpriteAnimationSetId sprite_name, int initial_direction, MessageId message_to_show);
   ~InteractiveEntity(void);
 

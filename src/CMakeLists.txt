@@ -104,6 +104,7 @@ add_executable (zsdx
   entities/Block.cpp
   entities/Switch.cpp
   entities/CustomObstacle.cpp
+  entities/Sensor.cpp
 
   # tile patterns
   entities/Tileset.cpp

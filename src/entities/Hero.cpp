@@ -241,6 +241,9 @@ void Hero::set_map(Map *map) {
 
   MapEntity::set_map(map);
 
+  target_solid_ground_coords.x = -1;
+  target_solid_ground_coords.y = -1;
+
   get_normal_movement()->set_map(map);
 
   stop_displaying_sword();

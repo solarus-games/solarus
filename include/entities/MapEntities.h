@@ -94,6 +94,9 @@ class MapEntities {
   void destroy_all_entities(void);
   static bool compare_y(MapEntity *first, MapEntity *second);
 
+  // hero
+  void set_hero_layer(Layer layer);
+
   // update and display
   void set_suspended(bool suspended);
   void update(void);

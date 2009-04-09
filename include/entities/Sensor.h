@@ -42,7 +42,8 @@ class Sensor: public Detector {
 
  private:
 
-  Subtype subtype;           /**< subtype of teletransporter */
+  Subtype subtype;            /**< subtype of teletransporter */
+  bool hero_already_overlaps; /**< true if the hero is currently on this sensor */
 
  public:
 
@@ -54,8 +55,6 @@ class Sensor: public Detector {
   bool is_obstacle_for(MapEntity *other);
   bool check_collision_custom(MapEntity *entity);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-
-  void update(void);
 };
 
 #endif

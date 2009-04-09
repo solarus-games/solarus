@@ -119,7 +119,6 @@ class MapEntity {
 
   // method called by the subclasses to set their properties
   void set_direction(int direction);
-  void set_layer(Layer layer);
   void set_size(int width, int height);
   void set_size(SDL_Rect &size);
   void set_origin(int x, int y);
@@ -149,6 +148,7 @@ class MapEntity {
 
   // position in the map
   Layer get_layer(void);
+  void set_layer(Layer layer);
   int get_x(void);
   int get_y(void);
   void set_x(int x);

@@ -129,8 +129,11 @@ class Hero: public MapEntity {
   int jump_y;                    /**< height of the hero's sprite when jumping, relative to its shadow on the ground */
 
   // return to solid ground
-  SDL_Rect last_solid_ground_coords;   /**< coordinate of the last hero position on a ground
+  SDL_Rect last_solid_ground_coords;   /**< coordinates of the last hero position on a ground
 				        * where he can walk (e.g. before jumping or falling into a hole) */
+  SDL_Rect target_solid_ground_coords; /**< coordinates of the position where the hero will go if he falls
+					* into a hole (or some other bad ground), or (-1,-1) to indicate
+					* that the hero will just return to the last solid ground coordinates */
 
   // special ground under the hero
   Ground ground;                 /**< kind of ground under the hero: grass, shallow water, etc. */
@@ -276,6 +279,7 @@ class Hero: public MapEntity {
   void start_jumping(int direction, int length, bool with_collisions);
   void hurt(MapEntity *source, int life);
   void get_back_from_death(void);
+  void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords);
 
   // keys
   void key_pressed(Controls::GameKey key);

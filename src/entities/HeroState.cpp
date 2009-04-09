@@ -1158,7 +1158,16 @@ void Hero::update_falling(void) {
 
   if (tunic_sprite->is_animation_finished()) {
 
-    start_returning_to_solid_ground(last_solid_ground_coords);
+    // the hero has just finished falling: go back to the solid ground
+
+    if (target_solid_ground_coords.x != -1) {
+      // go back to a target point specified earlier
+      start_returning_to_solid_ground(target_solid_ground_coords);
+    }
+    else {
+      // nothing was specified: just go back to the last solid ground location
+      start_returning_to_solid_ground(last_solid_ground_coords);
+    }
     equipment->remove_hearts(1);
     set_animation_stopped();
     restore_animation_direction();
@@ -1170,6 +1179,16 @@ void Hero::update_falling(void) {
   }
 }
 
+/**
+ * Specifies a point of the map where the hero will go back if he falls
+ * into a hole or some other bad ground.
+ * This function is usually called when the hero walks on a special sensor.
+ * @param target_solid_ground_coords coordinates of the position where
+ * the hero will go if he falls into a hole or some other bad ground
+ */
+void Hero::set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords) {
+  this->target_solid_ground_coords = target_solid_ground_coords;
+}
 
 /**
  * Hides the hero and makes him move back to the specified solid ground location.

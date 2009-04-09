@@ -528,3 +528,21 @@ void MapEntities::display() {
 bool MapEntities::compare_y(MapEntity *first, MapEntity *second) {
   return first->get_y() < second->get_y();
 }
+
+/**
+ * Changes the layer of the hero.
+ * @param layer the new layer
+ */
+void MapEntities::set_hero_layer(Layer layer) {
+
+  Hero *hero = zsdx->game->get_hero();
+  Layer old_layer = hero->get_layer();
+
+  this->obstacle_entities[old_layer].remove(hero);
+  this->entities_displayed_y_order[old_layer].remove(hero);
+
+  hero->set_layer(layer);
+
+  this->obstacle_entities[layer].push_back(hero);
+  this->entities_displayed_y_order[layer].push_back(hero);
+}

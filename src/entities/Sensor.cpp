@@ -34,11 +34,14 @@
  */
 Sensor::Sensor(std::string name, Layer layer, int x, int y,
 	       int width, int height, Subtype subtype):
-  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height), subtype(subtype) {
+  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
+  subtype(subtype), hero_already_overlaps(false) {
 
   if (subtype == RETURN_FROM_BAD_GROUND && (width != 16 || height != 16)) {
     DIE("This place to return from bad grounds has an incorrect size: " << width << "x" << height);
   }
+
+  set_origin(8, 13);
 }
 
 /**
@@ -78,23 +81,18 @@ bool Sensor::check_collision_custom(MapEntity *entity) {
   int y1 = entity_position.y + 4;
   int y2 = y1 + entity_position.h - 5;
 
-  return is_point_in(get_position_in_map(), x1, y1) &&
-    is_point_in(get_position_in_map(), x2, y1) &&
-    is_point_in(get_position_in_map(), x1, y2) &&
-    is_point_in(get_position_in_map(), x2, y2);
-}
+  const SDL_Rect &sensor_position = get_position_in_map();
 
-/**
- * This function is called at every cycle. It checks whether the hero
- * is still on the sensor.
- */
-void Sensor::update(void) {
+  bool collision = is_point_in(sensor_position, x1, y1) &&
+    is_point_in(sensor_position, x2, y1) &&
+    is_point_in(sensor_position, x1, y2) &&
+    is_point_in(sensor_position, x2, y2);
 
-  /* TODO... other idea: used just_moved to avoid checking at each cycle?
-  if (hero_present && check_collision_custom(zsdx->game->get_hero())) {
-    hero_present = false;
+  if (entity->is_hero() && !collision) {
+    this->hero_already_overlaps = false;
   }
-  */
+
+  return collision;
 }
 
 /**
@@ -106,23 +104,29 @@ void Sensor::update(void) {
 void Sensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   // for now the sensors only apply to the hero
-  if (entity_overlapping->is_hero()) {
+  if (entity_overlapping->is_hero() && !hero_already_overlaps) {
+
+    Hero *hero = (Hero*) entity_overlapping;
+    hero_already_overlaps = true;
 
     switch (subtype) {
 
       case CUSTOM:
-	// this sensor calls the map script
+	// we call the map script
 	map->get_script()->event_hero_on_sensor(get_name());
-	std::cout << SDL_GetTicks() <<  " custom\n";
 	break;
 
       case CHANGE_LAYER:
+	// we change the hero's layer
+	hero->set_layer(this->get_layer());
 	break;
 
       case RETURN_FROM_BAD_GROUND:
+	// we indicate to the hero a location to return
+	// after falling into a hole or some other ground
+	hero->set_target_solid_ground_coords(get_coordinates());
 	break;
 
     }
   }
 }
-

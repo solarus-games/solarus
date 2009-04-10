@@ -59,6 +59,26 @@ public class TilePatternView extends JPanel implements Observer {
 	add(new JLabel("Obstacle"), constraints);
 	obstacleView = new EnumerationIconChooser<Obstacle>(Obstacle.class);
 
+	obstacleView.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+
+		    Obstacle obstacle = obstacleView.getValue();
+		    if (tilePattern != null && obstacle != tilePattern.getObstacle()) {
+			// the type of obstacle has changed
+			try {
+			    tilePattern.setObstacle(obstacle);
+			}
+			catch (TilesetException e) {
+			    JOptionPane.showMessageDialog(null,
+							  "Unable to set this type of obstacle: " + e.getMessage(),
+							  "Error",
+							  JOptionPane.ERROR_MESSAGE);
+			    update(null, null);
+			}
+		    }
+		}
+	    });
+
 	// animation
 	constraints.gridy = 1;
 	add(new JLabel("Animation"), constraints);
@@ -68,6 +88,17 @@ public class TilePatternView extends JPanel implements Observer {
 	constraints.gridy = 2;
 	add(new JLabel("Default layer"), constraints);
 	defaultLayerView = new EnumerationChooser<Layer>(Layer.class);
+
+	defaultLayerView.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+
+		    Layer defaultLayer = defaultLayerView.getValue();
+		    if (tilePattern != null && defaultLayer != tilePattern.getDefaultLayer()) {
+			// the default layer has changed
+			tilePattern.setDefaultLayer(defaultLayer);
+		    }
+		}
+	    });
 
 	constraints.weightx = 1;
 	constraints.gridx = 1;
@@ -110,6 +141,7 @@ public class TilePatternView extends JPanel implements Observer {
      */
     public void update(Observable o, Object params) {
 
+	this.tilePattern = tilePattern;
 	if (tilePattern != null) {
 	    buttonDelete.setEnabled(true);
 	    obstacleView.setValue(tilePattern.getObstacle());

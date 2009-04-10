@@ -44,6 +44,7 @@ public enum Obstacle {
     private static ImageIcon[] icons = null;
 
     public static final String[] humanNames = {
+	"Hole",
 	"Shallow water",
 	"Deep water",
 	"No obstacle",
@@ -52,7 +53,6 @@ public enum Obstacle {
 	"Top left",
 	"Bottom left",
 	"Bottom right",
-	"Hole",
     };
 
     /**

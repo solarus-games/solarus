@@ -16,6 +16,7 @@
  */
 #include "entities/Sensor.h"
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -42,6 +43,11 @@ Sensor::Sensor(std::string name, Layer layer, int x, int y,
   }
 
   set_origin(8, 13);
+
+  if (subtype == CHANGE_LAYER) {
+    // check the collisions with the hero even if he is not on the same layer yet
+    set_layer_ignored(true);
+  }
 }
 
 /**
@@ -118,7 +124,7 @@ void Sensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
 
       case CHANGE_LAYER:
 	// we change the hero's layer
-	hero->set_layer(this->get_layer());
+	map->get_entities()->set_hero_layer(this->get_layer());
 	break;
 
       case RETURN_FROM_BAD_GROUND:

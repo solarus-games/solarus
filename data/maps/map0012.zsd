@@ -137,6 +137,7 @@
 0	0	424	136	8	32	182
 0	0	432	136	16	32	184
 0	0	448	136	8	32	183
+0	0	184	240	16	8	70
 8	0	104	117	sahasrahla	3	1	npc/sahasrahla	_none
 8	0	80	165	library_2	3	0	_none	_none
 1	0	192	213	main_entrance	1	0

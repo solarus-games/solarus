@@ -72,10 +72,10 @@ public class CustomObstacle extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("stopsHero", false);
-	setProperty("stopsEnemies", false);
-	setProperty("stopsNPCs", false);
-	setProperty("stopsBlocks", false);
+	setProperty("stopsHero", true);
+	setProperty("stopsEnemies", true);
+	setProperty("stopsNPCs", true);
+	setProperty("stopsBlocks", true);
     }
 
     /**

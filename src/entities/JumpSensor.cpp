@@ -16,7 +16,9 @@
  */
 #include "entities/JumpSensor.h"
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
 #include "movements/PlayerMovement.h"
+#include "Map.h"
 
 /**
  * Creates a jump sensor.
@@ -83,17 +85,27 @@ EntityType JumpSensor::get_type() {
  */
 bool JumpSensor::check_collision_custom(MapEntity *entity) {
 
+  if (!entity->is_hero()) {
+    return false;
+  }
+  Hero *hero = (Hero*) entity;
+
   // if the sensor's has one of the four main directions, then
   // its shape is exactly its rectangle
   if (direction % 2 == 0) {
-    SDL_Rect facing_point = entity->get_facing_point(direction / 2);
+
+    if (!hero->is_moving_towards(direction / 2)) {
+      return false;
+    }
+
+    const SDL_Rect &facing_point = hero->get_facing_point(direction / 2);
     return is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
   }
 
   // otherwise, the sensor's shape is a diagonal bar
 
-  return is_point_in_diagonal(entity->get_facing_point((direction - 1) / 2))
-    || is_point_in_diagonal(entity->get_facing_point((direction + 1) % 8 / 2));
+  return is_point_in_diagonal(hero->get_facing_point((direction - 1) / 2))
+    || is_point_in_diagonal(hero->get_facing_point((direction + 1) % 8 / 2));
 }
 
 /**
@@ -151,6 +163,10 @@ void JumpSensor::collision(MapEntity *entity_overlapping, CollisionMode collisio
     Hero* hero = (Hero*) entity_overlapping;
     if (hero->get_normal_movement()->is_moving_enabled()) {
       hero->start_jumping(direction, jump_length, false);
+
+      if (hero->get_layer() == LAYER_INTERMEDIATE) {
+	map->get_entities()->set_hero_layer(LAYER_LOW);
+      }
     }
   }
 }

@@ -910,10 +910,6 @@ void Hero::start_jumping(int direction, int length, bool with_collisions) {
   set_animation_jumping();
   ResourceManager::get_sound("jump")->play();
   jump_y = get_y();
-
-  if (get_layer() == LAYER_INTERMEDIATE) {
-    set_layer(LAYER_LOW);
-  }
 }
 
 /**

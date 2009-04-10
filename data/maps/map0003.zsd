@@ -1879,6 +1879,8 @@
 8	0	1016	645	monkey	3	1	npc/monkey	_none
 12	0	912	456	16	16	custom_obstacle	0	0	1	1
 8	0	792	109	monkey_2	3	1	npc/monkey	_none
+2	0	680	336	16	16	to_smith_cave	0	1	16	main_entrance
+1	0	688	365	out_smith_cave	3	0
 0	1	256	400	240	40	511
 0	1	232	448	288	40	511
 0	1	208	480	336	16	512

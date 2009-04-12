@@ -8,6 +8,7 @@
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Transition game over : centrer sur le héros
+- Permettre qu'un bloc puisse être poussé dans une direction et pas une autre
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)

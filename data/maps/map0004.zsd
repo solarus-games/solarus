@@ -1004,6 +1004,8 @@
 2	0	200	696	16	16	to_grandma_house	0	1	11	entrance
 4	0	648	93	3	-1	-1
 3	0	48	109	17	18
+2	0	64	448	16	16	to_binbin_dungeon	0	1	17	main_entrance
+1	0	72	477	from_binbin_dungeon	3	0
 0	2	712	848	192	40	511
 0	2	472	368	240	40	511
 0	2	400	320	288	40	511

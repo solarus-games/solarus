@@ -268,6 +268,11 @@ PickableItem::Subtype PickableItem::choose_random_subtype(void) {
  * @return true if this subtype of pickable item can disappear
  */
 bool PickableItem::can_disappear(Subtype subtype) {
+
+  if (subtype == RANDOM) {
+    return true;
+  }
+
   return features[subtype].can_disappear;
 }
 

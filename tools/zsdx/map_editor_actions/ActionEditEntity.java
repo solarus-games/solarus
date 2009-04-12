@@ -94,7 +94,7 @@ public class ActionEditEntity extends MapEditorAction {
 	}
 
 	// direction
-	if (entity.hasDirection()) {
+	if (entity.hasDirectionProperty()) {
 	    this.directionBefore = entity.getDirection();
 	    this.directionAfter = direction;
 	}
@@ -128,7 +128,7 @@ public class ActionEditEntity extends MapEditorAction {
 	}
 
 	// direction
-	if (entity.hasDirection()) {
+	if (entity.hasDirectionProperty()) {
 	    map.setEntityDirection(entity, directionAfter);
 	}
 
@@ -162,7 +162,7 @@ public class ActionEditEntity extends MapEditorAction {
 	}
 
 	// direction
-	if (entity.hasDirection()) {
+	if (entity.hasDirectionProperty()) {
 	    map.setEntityDirection(entity, directionBefore);
 	}
 

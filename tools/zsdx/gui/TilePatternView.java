@@ -141,7 +141,6 @@ public class TilePatternView extends JPanel implements Observer {
      */
     public void update(Observable o, Object params) {
 
-	this.tilePattern = tilePattern;
 	if (tilePattern != null) {
 	    buttonDelete.setEnabled(true);
 	    obstacleView.setValue(tilePattern.getObstacle());

@@ -252,7 +252,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
 	
 	for (MapEntity entity: entities) {
 	    
-	    if (!entity.hasDirection()) {
+	    if (!entity.hasDirectionProperty()) {
 		return false;
 	    }
 	}
@@ -270,7 +270,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
 
 	MapEntity e = entities.get(0);
 	
-	if (!e.hasDirection()) {
+	if (!e.hasDirectionProperty()) {
 	    return 0;
 	}
 
@@ -296,7 +296,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
 
 	MapEntity e = entities.get(0);
 	
-	if (!e.hasDirection()) {
+	if (!e.hasDirectionProperty()) {
 	    return -1;
 	}
 
@@ -304,7 +304,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
 	
 	for (MapEntity entity: entities) {
 
-	    if (!entity.hasDirection() || entity.getDirection() != direction) {
+	    if (!entity.hasDirectionProperty() || entity.getDirection() != direction) {
 		return -1;
 	    }
 	}

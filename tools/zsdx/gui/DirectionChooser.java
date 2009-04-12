@@ -37,10 +37,16 @@ public class DirectionChooser extends JComboBox {
     /**
      * Creates a new direction chooser
      * @param nbDirections the number of directions (4 or 8)
+     * @param noDirectionText if not null, this will include an item corresponding
+     * to 'no direction' with the specified text
      */
-    public DirectionChooser(int nbDirections) {
+    public DirectionChooser(int nbDirections, String noDirectionText) {
 	super();
-	
+
+	if (noDirectionText != null) {
+	    addItem(new KeyValue(-1, noDirectionText));
+	}
+
 	if (nbDirections == 4) {
 	    for (int i = 0; i < 4; i++) {
 		addItem(new KeyValue(i, directionNames4[i]));

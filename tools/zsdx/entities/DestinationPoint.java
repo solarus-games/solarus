@@ -53,13 +53,6 @@ public class DestinationPoint extends MapEntity {
     };
 
     /**
-     * Indicates whether the direction of Link is changed when he arrives
-     * on this destination. If this boolean is true, then Link' direction is
-     * indicated by this entity's direction.
-     */
-    private boolean changeDirection;
-
-    /**
      * Origin point of a destination point.
      */
     private static final Point origin = new Point(8, 13);
@@ -91,34 +84,20 @@ public class DestinationPoint extends MapEntity {
     }
 
     /**
-     * Returns the direction of the entity.
-     * This is a redefinition of MapEntity.setDirection to handle the special value of -1
-     * indicating that the direction is not changed.
-     * @return the entity's direction
+     * Returns whether this entity can have the special direction value -1
+     * indicating that no direction is set.
+     * @return true
      */
-    public int getDirection() {
-
-	if (!changeDirection) {
-	    return -1;
-	}
-
-	return super.getDirection();
+    public boolean canHaveNoDirection() {
+	return true;
     }
 
     /**
-     * Changes the direction of the entity.
-     * This is a redefinition of MapEntity.setDirection to handle the special value of -1
-     * indicating that the direction is not changed.
-     * @param direction the entity's direction, or -1
+     * Returns the text to display in the direction chooser for the 'no direction' option.
+     * @return the text to display in the direction chooser for the 'no direction' option
      */
-    public void setDirection(int direction) {
-	if (direction == -1) {
-	    changeDirection = false;
-	}
-	else {
-	    changeDirection = true;
-	    super.setDirection(direction);
-	}
+    public String getNoDirectionText() {
+	return "Keep the same direction";
     }
 
     /**

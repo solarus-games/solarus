@@ -185,7 +185,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 	}
 
 	JMenu menuDirection = new JMenu("Direction");
-	
+
 	JRadioButtonMenuItem[] itemsDirections = new JRadioButtonMenuItem[nbDirections + 1];
 	ButtonGroup itemsDirectionsGroup = new ButtonGroup();
 

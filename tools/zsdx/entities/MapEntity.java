@@ -268,7 +268,7 @@ public abstract class MapEntity extends Observable {
 		setName(token);
 	    }
 
-	    if (hasDirection()) {
+	    if (hasDirectionProperty()) {
 		token = tokenizer.nextToken();
 		setDirection(Integer.parseInt(token));
 	    }
@@ -297,7 +297,6 @@ public abstract class MapEntity extends Observable {
 	    }
 	}
 	catch (NumberFormatException ex) {
-//	    ex.printStackTrace();
 	    throw new MapException("Integer expected, found '" + token + "'");
 	}
     }
@@ -347,7 +346,7 @@ public abstract class MapEntity extends Observable {
 	    buff.append(getName());
 	}
 
-	if (hasDirection()) {
+	if (hasDirectionProperty()) {
 	    buff.append('\t');
 	    buff.append(getDirection());
 	}
@@ -637,18 +636,20 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns whether the entity has a direction property.
+     * Returns whether this type of entity has a direction property.
      * The subclasses which represent entities with a direction
      * should return true.
      * @return true if the entity has a direction, false otherwise
      */
-    public boolean hasDirection() {
+    public boolean hasDirectionProperty() {
 	return getNbDirections() > 1;
     }
 
     /**
      * Returns the number of possible directions of the entity.
      * By default, an entity has no direction property and this function returns 0.
+     * The number returned does not include the possible special value of -1 that
+     * exists for certain types of entity. 
      * @return the number of possible directions of the entity (or 0
      * if the entity has not a direction property)
      */
@@ -659,10 +660,36 @@ public abstract class MapEntity extends Observable {
     /**
      * Returns the direction of the entity.
      * The entity should have a direction (i.e. hasDirection() returns true).
+     * The value returned is between 0 and getNbDirections() - 1.
+     * When the canHaveNoDirection() is true, this method can also return -1
+     * to indicate that no direction is set.
      * @return the entity's direction
      */
     public int getDirection() {
 	return direction;
+    }
+
+    /**
+     * Returns whether this entity can have the special direction value -1
+     * indicating that no direction is set.
+     * This methode makes sense only for entities having a direction property.
+     * By default, this method returns false.
+     * @return true if this entity can have the special direction value -1
+     */
+    public boolean canHaveNoDirection() {
+	return false;
+    }
+
+    /**
+     * For an entity that includes an option to set 'no direction'
+     * (i.e. when canHaveNoDirection() returns true),
+     * this method returns the text that will be displayed in the direction chooser.
+     * By default, "No direction" is returned but you can redefine this method
+     * to display a more precise text.
+     * @return the text that will be displayed in the direction chooser for the 'no direction' option if any
+     */
+    public String getNoDirectionText() {
+	return canHaveNoDirection() ? "No direction" : null;
     }
 
     /**
@@ -675,11 +702,15 @@ public abstract class MapEntity extends Observable {
      */
     public void setDirection(int direction) throws UnsupportedOperationException, IllegalArgumentException {
 
-	if (!hasDirection()) {
-	    throw new UnsupportedOperationException("This entity has no direction");
+	if (!hasDirectionProperty()) {
+	    throw new UnsupportedOperationException("This entity has no direction property");
 	}
 
-	if (direction < 0 || direction >= getNbDirections()) {
+	if (direction == -1 && !canHaveNoDirection()) {
+	    throw new IllegalArgumentException("The direction '-1' is not valid for this entity");
+	}
+
+	if (direction < -1 || direction >= getNbDirections()) {
 	    throw new IllegalArgumentException("The direction '" + direction
 		    	+ "' is incorrect: the number of possible directions is " + getNbDirections());
 	}

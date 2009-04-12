@@ -116,16 +116,22 @@ public class EditEntityComponent extends JPanel {
 	    addField("Size", sizeField);
 	}
 
-	// direction
-	if (entity.hasDirection()) {
-	    this.directionField = new DirectionChooser(entity.getNbDirections());
-	    addField("Direction", directionField);
-	}
-
 	// subtype
 	if (entity.hasSubtype()) {
 	    this.subtypeField = new EntitySubtypeChooser(entity.getType());
 	    addField(entity.getType().getName() + " subtype", subtypeField);
+	}
+
+	// direction
+	if (entity.hasDirectionProperty()) {
+
+	    String noDirectionText = null;
+	    if (entity.canHaveNoDirection()) {
+		noDirectionText = entity.getNoDirectionText();
+	    }
+	    this.directionField = new DirectionChooser(entity.getNbDirections(), noDirectionText);
+
+	    addField("Direction", directionField);
 	}
 
 	// specific fields
@@ -209,7 +215,7 @@ public class EditEntityComponent extends JPanel {
 	    sizeField.setCoordinates(entity.getWidth(), entity.getHeight());
 	}
 
-	if (entity.hasDirection()) {
+	if (entity.hasDirectionProperty()) {
 	    directionField.setDirection(entity.getDirection());
 	}
 
@@ -242,7 +248,7 @@ public class EditEntityComponent extends JPanel {
 	    Point coords = sizeField.getCoordinates();
 	    size = new Dimension(coords.x, coords.y);
 	}
-	int direction = entity.hasDirection() ? directionField.getDirection() : -1;
+	int direction = entity.hasDirectionProperty() ? directionField.getDirection() : -1;
 	EntitySubtype subtype = entity.hasSubtype() ? subtypeField.getValue() : null;
 
 	ActionEditEntitySpecific specificAction = getSpecificAction();

@@ -101,8 +101,8 @@
 1	0	528	245	main_entrance	1	0
 2	0	520	256	16	16	to_outside_world	0	1	4	from_binbin_dungeon
 6	0	904	112	8	88	jump_sensor	0	40
-9	0	896	61	block	0	1
-9	0	896	77	block_2	0	1
+9	0	896	61	block	2	0	1
+9	0	896	77	block_2	3	0	1
 11	0	528	112	switch_qui_poutre	1	0	0
 0	2	112	16	96	8	147
 0	2	680	88	8	96	143

@@ -17,7 +17,6 @@
 package zsdx.entities;
 
 import java.awt.*;
-import zsdx.Map;
 import zsdx.*;
 
 /**
@@ -107,6 +106,7 @@ public class Block extends MapEntity {
      */
     public Block(Map map) throws MapException {
 	super(map, 16, 16);
+	setDirection(-1);
     }
 
     /**
@@ -123,6 +123,30 @@ public class Block extends MapEntity {
      */
     public boolean hasName() {
 	return true;
+    }
+    /**
+     * Returns the number of possible directions of the entity.
+     * @return 4
+     */
+    public int getNbDirections() {
+	return 4;
+    }
+
+    /**
+     * Returns whether this entity can have the special direction value -1
+     * indicating that no direction is set.
+     * @return true
+     */
+    public boolean canHaveNoDirection() {
+	return true;
+    }
+
+    /**
+     * Returns the text to display in the direction chooser for the 'no direction' option.
+     * @return the text to display in the direction chooser for the 'no direction' option
+     */
+    public String getNoDirectionText() {
+	return "Any";
     }
 
     /**

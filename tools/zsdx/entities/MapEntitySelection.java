@@ -101,37 +101,11 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public void select(MapEntity entity) {
 	if (!isSelected(entity)) {
-//	    entities.add(computeIndex(entity), entity);
 	    entities.add(entity);
 	    setChanged();
 	    notifyObservers();
 	}
     }
-
-    /**
-     * For an entity about to be selected, finds an index in the selected entities list
-     * such that the selected entities list remain in the same order the map entities. 
-     * @param entityToAdd an entity
-     * @return the index where this entity can be added to the selection
-     */
-    /*
-    private int computeIndex(MapEntity entityToAdd) {
-
-	int index = 0;
-	boolean stop = false;
-	Iterator<MapEntity> it = entities.iterator();
-	while (it.hasNext() && !stop) {
-	    MapEntity e = it.next();
-	    if (map.isBehind(entityToAdd, e)) {
-		stop = true;
-	    }
-	    else {
-		index++;
-	    }
-	}
-	return index;
-    }
-    */
 
     /**
      * Make some entities selected.
@@ -245,10 +219,10 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     }
 
     /**
-     * Returns whether the entities selected have a direction.
-     * @return true if all selected entities have a direction, false otherwise
+     * Returns whether the entities selected have a direction property.
+     * @return true if all selected entities have a direction property, false otherwise
      */
-    public boolean hasDirection() {
+    public boolean hasDirectionProperty() {
 	
 	for (MapEntity entity: entities) {
 	    
@@ -288,24 +262,25 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
 
     /**
      * Returns the direction of the selected entities, if all selected entities have
-     * the same direction. Otherwise, -1 is returned. If at least an entity has no direction,
-     * -1 is returned as well.
-     * @return the common direction, or -1 if all selected entities have not the same direction
+     * the same direction. Otherwise, -100 is returned. If at least an entity has
+     * no direction property, -100 is returned as well.
+     * @return the common direction (possibly -1) or -100 if all selected
+     * entities have not the same direction
      */
     public int getDirection() {
 
 	MapEntity e = entities.get(0);
-	
+
 	if (!e.hasDirectionProperty()) {
-	    return -1;
+	    return -100;
 	}
 
 	int direction = e.getDirection();
-	
+
 	for (MapEntity entity: entities) {
 
 	    if (!entity.hasDirectionProperty() || entity.getDirection() != direction) {
-		return -1;
+		return -100;
 	    }
 	}
 
@@ -319,6 +294,50 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     public void setDirection(int direction) throws ZSDXException {
 
 	map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
+    }
+
+    /**
+     * For entities that includes an option to set 'no direction'
+     * (i.e. when canHaveNoDirection() returns true),
+     * this method returns the text that will be displayed in the direction chooser.
+     * If at least one of the selected entities cannot have a 'no direction' property,
+     * null is returned. If the text differs between the seleted entities, a default text
+     * is returned.
+     * @return the text that will be displayed in the direction chooser
+     * for the 'no direction' option if any
+     */
+    public String getNoDirectionText() {
+
+	if (!canHaveNoDirection()) {
+	    return null;
+	}
+
+	String text = entities.get(0).getNoDirectionText();
+	for (MapEntity entity: entities) {
+
+	    if (!entity.getNoDirectionText().equals(text)) {
+		return "No direction";
+	    }
+	}
+
+	return text;
+    }
+
+    /**
+     * Returns whether all selected entities can have the special direction value -1
+     * indicating that no direction is set.
+     * @return true if all selected entities can have the special direction value -1
+     */
+    public boolean canHaveNoDirection() {
+
+	for (MapEntity entity: entities) {
+
+	    if (!entity.hasDirectionProperty() || !entity.canHaveNoDirection()) {
+		return false;
+	    }
+	}
+
+	return true;
     }
 
     /**

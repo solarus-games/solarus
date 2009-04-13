@@ -179,39 +179,51 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     private void buildDirectionSubmenu() {
 
+	// get the direction data of the selection
 	int nbDirections = selection.getNbDirections();
 	if (nbDirections == 0) {
+	    // if some entities have no direction property, we don't display the 'Direction' submenu
 	    return;
 	}
 
-	JMenu menuDirection = new JMenu("Direction");
-
-	JRadioButtonMenuItem[] itemsDirections = new JRadioButtonMenuItem[nbDirections + 1];
 	ButtonGroup itemsDirectionsGroup = new ButtonGroup();
+	JMenu menuDirection = new JMenu("Direction");
+	JRadioButtonMenuItem item;
 
-	for (int i = 0; i < nbDirections; i++) {
-	    String name = (nbDirections == 4) ? DirectionChooser.directionNames4[i] : DirectionChooser.directionNames8[i];
-	    itemsDirections[i] = new JRadioButtonMenuItem(name);
-	    itemsDirections[i].addActionListener(new ActionListenerChangeDirection(i));
-	    menuDirection.add(itemsDirections[i]);
-	    itemsDirectionsGroup.add(itemsDirections[i]);
-	}
-	itemsDirections[nbDirections] = new JRadioButtonMenuItem();
-	itemsDirectionsGroup.add(itemsDirections[nbDirections]);
-
-	add(menuDirection);
-
+	// see whether all selected entities have the same direction
 	int direction = selection.getDirection();
 
-	// select the appropriate direction item
-	if (direction != -1) {
-	    // if all the selected entities have the same direction, we check its item
-	    itemsDirections[direction].setSelected(true);
+	// create a 'no direction' item if all entities have a 'no direction' option
+	String noDirectionText = selection.getNoDirectionText();
+	if (noDirectionText != null) {
+	    item = new JRadioButtonMenuItem(noDirectionText);
+	    item.addActionListener(new ActionListenerChangeDirection(-1));
+	    menuDirection.add(item);
+	    itemsDirectionsGroup.add(item);
+	    
+	    if (direction == -1) {
+		item.setSelected(true);
+	    }
 	}
-	else {
-	    // otherwise we select no item
-	    itemsDirections[nbDirections].setSelected(true);
+
+	// create the normal direction items	
+	for (int i = 0; i < nbDirections; i++) {
+	    String name = (nbDirections == 4) ? DirectionChooser.directionNames4[i] : DirectionChooser.directionNames8[i];
+	    item = new JRadioButtonMenuItem(name);
+	    item.addActionListener(new ActionListenerChangeDirection(i));
+	    menuDirection.add(item);
+	    itemsDirectionsGroup.add(item);
+	    
+	    if (direction == i) {
+		item.setSelected(true);
+	    }
 	}
+
+	// add a special item to make all real items unselected
+	item = new JRadioButtonMenuItem();
+	itemsDirectionsGroup.add(item);
+
+	add(menuDirection);
     }
 
     /**

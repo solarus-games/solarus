@@ -41,15 +41,21 @@ import zsdx.Map;
  *       public YourEntity(Map map) throws MapException.
  *   - Redefine if necessary the getObstacle() method: public Obstacle getObstacle()
  *       if your entity is an obstacle.
- *   - Redefine if necessary the methods getNbDirections(), hasName(), isResizable()
- *       to indicate how the graphical components will be organized.
+ *   - Redefine if necessary some methods to define the direction property of your type of entity:
  *       - public int getNbDirections(): returns the number of possible
- *           directions of this kind of entity (default is zero)
- *       - public boolean hasName(): indicates whether the entity has a 
- *           name field, i.e. if it is identifiable (default is false)
- *       - public boolean isResizable(): indicates whether the entity can
- *           be resized (default is false). If the entity is resizable, you can
- *           also redefine the getUnitarySize() method (default is 8*8).
+ *           directions of this kind of entity (should be 0, 4 or 8; default is zero)
+ *       - public boolean canHaveNoDirections() (only when getNbDirections() is not zero):
+ *           indicates that an additional direction 'none' also exists (default is false)
+ *       - public String getNoDirectionText() (only when canHaveNoDirections() is true):
+ *           returns the text to display in the GUI for the special direction 'none'
+ *           (default is "No direction")
+ *   - Redefine if necessary the methods the hasName() method:
+ *       public boolean hasName(): indicates whether the entity has a 
+ *       name property, i.e. if it is identifiable (default is false)
+ *   - Redefine if necessary the isResizable() method:
+ *       public boolean isResizable(): indicates whether the entity can
+ *       be resized (default is false). If the entity is resizable, you can
+ *       also redefine the getUnitarySize() method (default is 8*8).
  *   - Redefine the getOrigin() method: public Point getOrigin()
  *       if the origin is not the top-left corner of the entity.
  *   - Define the static generalImageDescriptions field:
@@ -672,7 +678,7 @@ public abstract class MapEntity extends Observable {
     /**
      * Returns whether this entity can have the special direction value -1
      * indicating that no direction is set.
-     * This methode makes sense only for entities having a direction property.
+     * This method makes sense only for entities having a direction property.
      * By default, this method returns false.
      * @return true if this entity can have the special direction value -1
      */

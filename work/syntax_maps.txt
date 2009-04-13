@@ -235,6 +235,8 @@ maximum_moves indique ce qui se passe lorsque le héros pousse le bloc :
 2 : peut être poussé autant de fois qu'on veut
 
 Le sprite d'un bloc normal dépend du tileset.
+Un bloc possède une direction qui indique dans quel sens on peut le pousser. Une valeur de -1
+indique qu'on peut le pousser dans n'importe quel sens.
 
 
 Tiles dynamiques (10)

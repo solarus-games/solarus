@@ -95,6 +95,10 @@ public class Chest extends MapEntity {
 	}
     }
 
+    /**
+     * Returns whether this chest is a big chest.
+     * @return true if this is a big chest
+     */
     public boolean isBigChest() {
 	return getBooleanProperty("bigChest");
     }

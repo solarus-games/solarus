@@ -38,6 +38,8 @@ public enum EntityType {
     SWITCH            (11, "Switch", Switch.class, Switch.Subtype.class),
     CUSTOM_OBSTACLE   (12, "Custom obstacle", CustomObstacle.class, null),
     SENSOR            (13, "Sensor", Sensor.class, Sensor.Subtype.class),
+    CRYSTAL_SWITCH    (14, "Crystal switch", CrystalSwitch.class, null),
+    RAISED_BLOCK      (15, "Raised block", RaisedBlock.class, RaisedBlock.Subtype.class),
     ;
 
     private final int index;

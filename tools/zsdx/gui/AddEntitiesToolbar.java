@@ -52,6 +52,9 @@ public class AddEntitiesToolbar extends JComponent {
 	new Cell(EntityType.SWITCH, Switch.Subtype.NORMAL),
 	new Cell(EntityType.CUSTOM_OBSTACLE),
 	new Cell(EntityType.SENSOR, Sensor.Subtype.CUSTOM),
+	new Cell(EntityType.CRYSTAL_SWITCH),
+	new Cell(EntityType.RAISED_BLOCK, RaisedBlock.Subtype.ORANGE),
+	new Cell(EntityType.RAISED_BLOCK, RaisedBlock.Subtype.BLUE),
     };
 
     /**

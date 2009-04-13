@@ -297,6 +297,24 @@ Sous-types de capteurs :
 
 Il n'y a pas de propriétés additionnelles.
 
+
+Interrupteurs de cristal (14)
+
+Un interrupteur de cristal (crystal switch) est un interrupteur qui permet de relever ou d'abaisser
+les blocs oranges et bleus. Il n'a pas de direction, pas de nom, pas de sous-type, ne sont pas
+redimensionnables et n'ont aucune propriété additionnelle.
+
+
+Blocs relevables (15)
+
+Les blocs relevables (raised blocks) sont des blocs oranges ou bleus qui peuvent être relevés
+(obstacles) ou enfoncés dans le sol (laissant passer le héros). Les interrupteurs de cristal
+permettent de modifier leur configuration.
+Il y a deux types de blocs relevables : les oranges (abaissés initialement) et les bleus
+(relevés initialement).
+Ils n'ont pas de direction, pas de nom et sont redimensionnables.
+
+
 Portes
 
 Utiliser une propriété skin comme pour les blocs.

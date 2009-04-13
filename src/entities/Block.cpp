@@ -31,23 +31,31 @@
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
+ * @param direction the only direction where the block can be pushed
+ * (only for a normal block) or -1 to allow it to be pushed in any direction
  * @param subtype the subtype of block
  * @param maximum_moves indicates how many times the block can
  * be moved (0: none, 1: once: 2: infinite)
  */
 Block::Block(std::string name, Layer layer, int x, int y,
-	     Subtype subtype, int maximum_moves):
+	     int direction, Subtype subtype, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   subtype(subtype), maximum_moves(maximum_moves), sound_played(false),
   when_can_move(SDL_GetTicks()) {
 
   set_origin(8, 13);
   if (subtype == STATUE) {
+
+    if (direction != -1) {
+      DIE("Cannot set only one direction for a statue");
+    }
     create_sprite("entities/statue");
   }
   else {
     create_sprite("entities/block");
   }
+
+  set_direction(direction);
 
   initial_position.x = last_position.x = x;
   initial_position.y = last_position.y = y;
@@ -135,19 +143,19 @@ void Block::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
  */
 bool Block::moved_by_hero(void) {
 
-  if (get_movement() != NULL || maximum_moves == 0 || SDL_GetTicks() < when_can_move) {
+  Hero *hero = zsdx->game->get_hero();
+
+  if (get_movement() != NULL || maximum_moves == 0 || SDL_GetTicks() < when_can_move ||
+      (direction != -1 && hero->get_animation_direction() != direction)) {
     /* TODO remove
     if (maximum_moves == 0)
       std::cout << "not moving because cannot move any more\n";
     else if (get_movement() != NULL) 
       std::cout << "not moving because already moving\n";
-    else
-      std::cout << "not moving because just moved\n";
+    else if...
     */
     return false;
   }
-
-  Hero *hero = zsdx->game->get_hero();
 
   if (hero->is_grabbing_or_pulling() && subtype != STATUE) {
     return false;

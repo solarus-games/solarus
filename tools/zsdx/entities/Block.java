@@ -167,6 +167,10 @@ public class Block extends MapEntity {
 	Dimension size = sizes[getSubtypeId()];
 	setSizeImpl(size.width, size.height);
 
+	if (subtype == Subtype.STATUE) {
+	    setDirection(-1);
+	}
+
 	setChanged();
 	notifyObservers();
     }

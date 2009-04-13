@@ -215,8 +215,8 @@ void MapLoader::load_map(Map *map) {
       {
 	int maximum_moves;
 
-	iss >> entity_name >> subtype >> maximum_moves;
-	entities->add_entity(new Block(entity_name, (Layer) layer, x, y,
+	iss >> entity_name >> direction >> subtype >> maximum_moves;
+	entities->add_entity(new Block(entity_name, (Layer) layer, x, y, direction,
 				       (Block::Subtype) subtype, maximum_moves));
 	break;
       }

@@ -21,6 +21,7 @@ import zsdx.entities.*;
 import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 import zsdx.entities.Block.*;
+import java.awt.event.*;
 
 /**
  * A component to edit a block.
@@ -47,6 +48,15 @@ public class EditBlockComponent extends EditEntityComponent {
 	// maximum moves
 	maximumMovesField = new EnumerationChooser<MaximumMoves>(MaximumMoves.class);
 	addField("Maximum moves", maximumMovesField);
+
+	subtypeField.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent ev) {
+		    if (subtypeField.getValue() == Subtype.STATUE) {
+			maximumMovesField.setValue(MaximumMoves.INFINITE);
+			directionField.setDirection(-1);
+		    }
+		}
+	    });
     }
 
     /**

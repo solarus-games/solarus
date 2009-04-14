@@ -48,7 +48,8 @@ Game::Game(Savegame *savegame):
   pause_menu(NULL), dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
   reseting(false), restarting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
-  transition_style(Transition::IMMEDIATE), transition(NULL), dungeon(NULL),
+  transition_style(Transition::IMMEDIATE), transition(NULL),
+  dungeon(NULL), crystal_switch_state(false),
   hud(NULL), current_music_id(Music::none), current_music(NULL) {
 
   zsdx->set_game(this);
@@ -528,6 +529,14 @@ void Game::set_current_map(MapId map_id, std::string destination_point_name, Tra
 }
 
 /**
+ * Returns the size of the oustide world in pixels.
+ * @return the size of the oustide world
+ */
+const SDL_Rect * Game::get_outside_world_size(void) {
+  return &outside_world_size;
+}
+
+/**
  * Returns whether the current map belongs to a dungeon.
  * @return true if the current map is in a dungeon
  */
@@ -545,11 +554,19 @@ Dungeon * Game::get_current_dungeon(void) {
 }
 
 /**
- * Returns the size of the oustide world in pixels.
- * @return the size of the oustide world
+ * Returns false if the orange blocks are lowered
+ * or true if the blue blocks are lowered.
+ * @return the state of the crystal switchs or this world
  */
-const SDL_Rect * Game::get_outside_world_size(void) {
-  return &outside_world_size;
+bool Game::get_crystal_switch_state(void) {
+  return crystal_switch_state;
+}
+
+/**
+ * Changes the state of the blue and orange blocks.
+ */
+void Game::change_crystal_switch_state(void) {
+  crystal_switch_state = !crystal_switch_state;
 }
 
 /**

@@ -26,15 +26,11 @@ class Savegame {
 
   /**
    * This structure contains the data saved (16 Ko of data are stored).
+   * The system can save some strings, integers and boolean values.
+   * See StringIndex and IntegerIndex for the meaning of each string and integer used.
+   * The engine uses strings and integers. The booleans are only used the maps.
    */
   typedef struct SavedData {
-
-    /**
-     * The system can save some strings, integers and boolean values.
-     * See StringIndex and IntegerIndex for the meaning of each string and integer used.
-     * The engine uses strings and integers. The booleans are only used the maps.
-     */
-
     char strings[64][64];   /**< 64 NULL-terminated strings of 64 characters each (4 Ko) */
     Uint32 integers[2048];  /**< 2048 integers (8 Ko) */
     Uint32 booleans[1024];  /**< 32768 boolean values (4 Ko) */

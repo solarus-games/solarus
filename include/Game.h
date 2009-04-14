@@ -32,43 +32,45 @@ class Game: public Screen {
  private:
 
   // savegame
-  Savegame *savegame;       /**< the game data saved */
+  Savegame *savegame;        /**< the game data saved */
 
   // the hero
   Hero *hero;
 
   // current game state (elements currently shown)
-  PauseMenu *pause_menu;    /**< the current pause menu, or NULL if the game is not paused */
-  DialogBox *dialog_box;    /**< the dialog box currently shown, or NULL if no message is being shown */
-  Treasure *treasure;       /**< the treasure currently being given to the player or NULL if it is not the case */
+  PauseMenu *pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
+  DialogBox *dialog_box;     /**< the dialog box currently shown, or NULL if no message is being shown */
+  Treasure *treasure;        /**< the treasure currently being given to the player or NULL if it is not the case */
   GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
-  bool reseting;            /**< true if the game will be reset */
-  bool restarting;          /**< true if the game will be restarted */
+  bool reseting;             /**< true if the game will be reset */
+  bool restarting;           /**< true if the game will be restarted */
 
   // controls
-  Controls *controls;       /**< this object receives the SDL keyboard and joypad events */
-  KeysEffect *keys_effect;  /**< current effect associated to the main game keys
-			     * (represented on the HUD by the action icon, the objects icons, etc.) */
+  Controls *controls;        /**< this object receives the SDL keyboard and joypad events */
+  KeysEffect *keys_effect;   /**< current effect associated to the main game keys
+			      * (represented on the HUD by the action icon, the objects icons, etc.) */
 
   // map
-  Map *current_map;         /**< the map currently displayed */
-  Map *next_map;            /**< the map where the hero is going to; if not NULL, it means that the hero 
-			     * is changing from current_map to next_map */
+  Map *current_map;          /**< the map currently displayed */
+  Map *next_map;             /**< the map where the hero is going to; if not NULL, it means that the hero 
+			      * is changing from current_map to next_map */
   SDL_Surface *previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 
   Transition::Style transition_style; /**< the transition style between the current map and the next one */
   Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */
 
-  Dungeon *dungeon;         /**< the dungeon of the current map, of NULL if we are not in a dungeon */
+  // world (i.e. the current set of maps)
+  Dungeon *dungeon;          /**< the dungeon of the current map, of NULL if we are not in a dungeon */
+  bool crystal_switch_state; /**< indicates that a crystal switch has been enabled (i.e. the orange blocks are raised) */
   static const SDL_Rect outside_world_size; /**< size of the outside world in pixels */
 
   // graphics
-  HUD *hud;                 /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
+  HUD *hud;                  /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
 
   // music
-  MusicId current_music_id; /**< id of the music currently played (a valid music,
-			     * or MUSIC_NONE if no music is being played) */
-  Music *current_music;     /**< the music currently played, or NULL if no music is being played */
+  MusicId current_music_id;  /**< id of the music currently played (a valid music,
+			      * or MUSIC_NONE if no music is being played) */
+  Music *current_music;      /**< the music currently played, or NULL if no music is being played */
 
   // update functions
   void update_keys_effect(void);
@@ -106,9 +108,13 @@ class Game: public Screen {
   // map
   Map *get_current_map(void);
   void set_current_map(MapId map_id, std::string destination_point_name, Transition::Style transition_style);
+
+  // world
+  const SDL_Rect *get_outside_world_size(void);
   bool is_in_dungeon(void);
   Dungeon *get_current_dungeon(void);
-  const SDL_Rect *get_outside_world_size(void);
+  bool get_crystal_switch_state(void);
+  void change_crystal_switch_state(void);
 
   // music
   void play_music(MusicId new_music_id);

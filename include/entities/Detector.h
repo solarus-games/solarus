@@ -80,6 +80,8 @@ class Detector: public MapEntity {
   virtual void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   virtual void collision(MapEntity *entity, Sprite *sprite_overlapping);
 
+  bool is_hit_by_sword(Hero *hero);
+
  public:
 
   // destruction

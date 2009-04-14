@@ -50,7 +50,7 @@ const DestructibleItem::Features DestructibleItem::features[] = {
  * @param layer layer of the destructible item to create on the map
  * @param x x coordinate of the destructible item to create
  * @param y y coordinate of the destructible item to create
- * @param type type of destructible item to create
+ * @param subtype subtype of destructible item to create
  * @param pickable_item the subtype of pickable item that appears when the destructible
  * item is lifted or cut
  * @param pickable_item_savegame_variable index of the savegame boolean variable
@@ -179,58 +179,9 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       && entity->is_hero()
       && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
 
-    bool cut = false;
     Hero *hero = (Hero*) entity;
-    Hero::State state = hero->get_state();
-    int animation_direction = hero->get_animation_direction();
+    if (is_hit_by_sword(hero)) {
 
-    if (state == Hero::SPIN_ATTACK) {
-      cut = true;
-    }
-    else if (state == Hero::SWORD_SWINGING
-	     || (is_obstacle_for(entity) && hero->is_moving_towards(animation_direction))) {
-
-      SDL_Rect facing_point = hero->get_facing_point();
-
-      int distance = is_obstacle_for(entity) ? 14 : 4;
-
-      switch (animation_direction) {
-
-      case 0:
-	cut = facing_point.y >= position_in_map.y
-	  && facing_point.y < position_in_map.y + position_in_map.h
-	  && facing_point.x >= position_in_map.x - distance
-	  && facing_point.x < position_in_map.x + position_in_map.w - distance;
-	break;
-
-      case 1:
-	cut = facing_point.x >= position_in_map.x
-	  && facing_point.x < position_in_map.x + position_in_map.w
-	  && facing_point.y >= position_in_map.y + distance
-	  && facing_point.y < position_in_map.y + position_in_map.h + distance;
-	break;
-
-      case 2:
-	cut = facing_point.y >= position_in_map.y
-	  && facing_point.y < position_in_map.y + position_in_map.h
-	  && facing_point.x >= position_in_map.x + distance
-	  && facing_point.x < position_in_map.x + position_in_map.w + distance;
-	break;
-
-      case 3:
-	cut = facing_point.x >= position_in_map.x
-	  && facing_point.x < position_in_map.x + position_in_map.w
-	  && facing_point.y >= position_in_map.y - distance
-	  && facing_point.y < position_in_map.y + position_in_map.h - distance;
-	break;
-
-      default:
-	DIE("Invalid animation direction of the hero: " << hero->get_animation_direction());
-	break;
-      }
-    }
-
-    if (cut) {
       get_destruction_sound()->play();
       get_sprite()->set_current_animation("destroy");
       is_being_cut = true;

@@ -267,7 +267,8 @@ void Enemy::update(void) {
 }
 
 /**
- * Suspends or resumes the enemy.
+ * Suspends or resumes the entity.
+ * @param suspended true to suspend the entity, false to resume it
  */
 void Enemy::set_suspended(bool suspended) {
 

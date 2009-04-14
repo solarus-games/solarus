@@ -40,6 +40,8 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   {false,  true,  true, false}, // switch
   { true, false, false, false}, // custom obstacle
   { true,  true, false, false}, // sensor
+  { true,  true,  true, false}, // crystal switch
+  { true,  true,  true, false}, // raised block
 };
 
 /**

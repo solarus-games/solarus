@@ -17,7 +17,6 @@
 
 - Prochains types d'entités:
   - portes
-  - planchers-interrupteurs
   - tapis roulants
   - piquants
 

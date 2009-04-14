@@ -40,6 +40,8 @@
 #include "entities/Switch.h"
 #include "entities/CustomObstacle.h"
 #include "entities/Sensor.h"
+#include "entities/CrystalSwitch.h"
+#include "entities/RaisedBlock.h"
 #include <iomanip>
 using namespace std;
 
@@ -256,6 +258,20 @@ void MapLoader::load_map(Map *map) {
       {
 	iss >> width >> height >> entity_name >> subtype;
 	entities->add_entity(new Sensor(entity_name, (Layer) layer, x, y, width, height, (Sensor::Subtype) subtype));
+	break;
+      }
+
+    case CRYSTAL_SWITCH:
+      {
+	entities->add_entity(new CrystalSwitch((Layer) layer, x, y));
+	break;
+      }
+
+    case RAISED_BLOCK:
+      {
+	iss >> width >> height >> subtype;
+	entities->add_entity(new RaisedBlock((Layer) layer, x, y, width, height,
+					     (RaisedBlock::Subtype) subtype));
 	break;
       }
 

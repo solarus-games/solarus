@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Detector.h"
+#include "entities/Hero.h"
 #include "ResourceManager.h"
 #include "Map.h"
 #include "MapScript.h"
@@ -253,4 +254,65 @@ void Detector::action_key_pressed(void) {
  */
 bool Detector::moved_by_hero(void) {
   return false;
+}
+
+/**
+ * When the sword sprite collides with this detector,
+ * this function can be called to determine whether the sword is really hitting the detector.
+ * This function assumes that there is already a collision between the sword sprite and the detector's sprite.
+ * @param hero the hero
+ * @return true if the sword is hitting this detector
+ */
+bool Detector::is_hit_by_sword(Hero *hero) {
+
+  bool hit = false;
+  Hero::State state = hero->get_state();
+  int animation_direction = hero->get_animation_direction();
+
+  if (state == Hero::SPIN_ATTACK) {
+    hit = true;
+  }
+  else if (state == Hero::SWORD_SWINGING
+	   || (is_obstacle_for(hero) && hero->is_moving_towards(animation_direction))) {
+
+    SDL_Rect facing_point = hero->get_facing_point();
+
+    int distance = is_obstacle_for(hero) ? 14 : 4;
+
+    switch (animation_direction) {
+
+    case 0:
+      hit = facing_point.y >= position_in_map.y
+	&& facing_point.y < position_in_map.y + position_in_map.h
+	&& facing_point.x >= position_in_map.x - distance
+	&& facing_point.x < position_in_map.x + position_in_map.w - distance;
+      break;
+
+    case 1:
+      hit = facing_point.x >= position_in_map.x
+	&& facing_point.x < position_in_map.x + position_in_map.w
+	&& facing_point.y >= position_in_map.y + distance
+	&& facing_point.y < position_in_map.y + position_in_map.h + distance;
+      break;
+
+    case 2:
+      hit = facing_point.y >= position_in_map.y
+	&& facing_point.y < position_in_map.y + position_in_map.h
+	&& facing_point.x >= position_in_map.x + distance
+	&& facing_point.x < position_in_map.x + position_in_map.w + distance;
+      break;
+
+    case 3:
+      hit = facing_point.x >= position_in_map.x
+	&& facing_point.x < position_in_map.x + position_in_map.w
+	&& facing_point.y >= position_in_map.y - distance
+	&& facing_point.y < position_in_map.y + position_in_map.h - distance;
+      break;
+
+    default:
+      DIE("Invalid animation direction of the hero: " << hero->get_animation_direction());
+      break;
+    }
+  }
+  return hit;
 }

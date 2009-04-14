@@ -8,12 +8,11 @@
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Transition game over : centrer sur le héros
-- Permettre qu'un bloc puisse être poussé dans une direction et pas une autre
+- Passer les std::string par référence
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
   - la barre de magie moyenne peut déborder (yoshi04)
-  - les pickable items des ennemis et des buissons ne disparaissent plus
 
 - Prochains types d'entités:
   - portes
@@ -83,3 +82,4 @@ Mode release :
 	- Parser les fichiers de sprite dans l'éditeur (utile pour PNJ et entités avec skin)
 	- Eviter d'avoir à recharger la map pour voir les destinations mises à jour
 	- Affichage : dessiner les tiles une seule fois sur une surface intermédiaire au lieu de les redessiner un par un à chaque affichage (c'est possible dans l'éditeur mais pas facilement dans le jeu à cause des tiles animés)
+	- Permettre de modifier les textes "Direction", "Subtype", etc... depuis les sous-classes de EditEntityComponent afin de rendre certains plus explicites (exemple : mettre "Pushing direction" pour les blocs)

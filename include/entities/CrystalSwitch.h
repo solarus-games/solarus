@@ -32,6 +32,8 @@ class CrystalSwitch: public Detector {
 	                          * true if the blue blocks are lowered */
   Uint32 next_possible_hit_date; /**< date when the crystal switch can be hit again */
 
+  void activate();
+
  public:
 
   CrystalSwitch(Layer layer, int x, int y);
@@ -40,6 +42,7 @@ class CrystalSwitch: public Detector {
   EntityType get_type(void);
 
   bool is_obstacle_for(MapEntity *other);
+  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void collision(MapEntity *entity, Sprite *sprite_overlapping);
 
   void update(void);

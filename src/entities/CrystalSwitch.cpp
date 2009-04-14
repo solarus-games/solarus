@@ -15,10 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CrystalSwitch.h"
+#include "entities/CarriedItem.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 using std::string;
 
 /**
@@ -28,7 +31,7 @@ using std::string;
  * @param y y coordinate of the entity to create
  */
 CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
-  Detector(COLLISION_SPRITE, "", layer, x, y, 16, 16),
+  Detector(COLLISION_SPRITE | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
   state(false), next_possible_hit_date(SDL_GetTicks()) {
 
   create_sprite("entities/crystal_switch");
@@ -60,6 +63,22 @@ bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * This function is called when another entity collides with this crystal switch.
+ * @param entity_overlapping the other entity
+ * @param collision_mode the collision mode that detected the collision
+ */
+void CrystalSwitch::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+
+  if (entity_overlapping->get_type() == CARRIED_ITEM) {
+
+    CarriedItem *item = (CarriedItem*) entity_overlapping;
+    if (item->is_being_thrown()) {
+      activate();
+    }
+  }
+}
+
+/**
  * This function is called by the engine when a sprite overlaps the crystal switch.
  * If the entity is the hero, we allow him to lift the item.
  * @param entity an entity
@@ -71,13 +90,25 @@ void CrystalSwitch::collision(MapEntity *entity, Sprite *sprite_overlapping) {
       sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
     // the hero's sword is overlapping the crystal switch
 
-    Uint32 now = SDL_GetTicks();
-
-    if (now >= next_possible_hit_date && is_hit_by_sword((Hero*) entity)) {
-      // TODO sound
-      zsdx->game->change_crystal_switch_state();
-      next_possible_hit_date = now + 500;
+    /*
+    if (is_hit_by_sword((Hero*) entity)) {
+      activate();
     }
+    */
+    activate();
+  }
+}
+
+/**
+ * Activates the crystal switch if the delay since the last activation allows it.
+ */
+void CrystalSwitch::activate(void) {
+
+  Uint32 now = SDL_GetTicks();
+  if (now >= next_possible_hit_date) {
+    ResourceManager::get_sound("switch")->play();
+    zsdx->game->change_crystal_switch_state();
+    next_possible_hit_date = now + 500;
   }
 }
 

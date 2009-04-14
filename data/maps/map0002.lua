@@ -95,7 +95,7 @@ function event_message_sequence_finished(first_message_id, answer)
       -- if the dialog was the game 1 question
 
       if answer == "1" then
-	 -- don't want to play the game
+	 -- the player does not want to play the game
 	 start_message("rupee_house.game_1.not_playing")
       else
 	 -- wants to play game 1

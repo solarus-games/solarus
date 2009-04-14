@@ -522,8 +522,10 @@ void Game::set_current_map(MapId map_id, std::string destination_point_name, Tra
   if (current_map != NULL) {
     if ((current_map->is_in_outside_world() && !next_map->is_in_outside_world())
 	|| (!current_map->is_in_outside_world() && next_map->is_in_outside_world())) {
+
       savegame->set_integer(Savegame::STARTING_MAP, map_id);
       savegame->set_integer(Savegame::STARTING_POINT, next_map->get_destination_point_index());
+      crystal_switch_state = false;
     }
   }
 }

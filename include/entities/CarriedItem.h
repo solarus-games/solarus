@@ -27,7 +27,7 @@
 class CarriedItem: public MapEntity {
 
  private:
-  
+
   Map *map;
   Hero *hero;
   bool is_lifting;
@@ -50,8 +50,9 @@ class CarriedItem: public MapEntity {
   void set_animation_stopped(void);
   void set_animation_walking(void);
   void throw_item(Map *map, int direction);
+  bool is_being_thrown(void);
   bool is_broken(void);
-  
+
   void set_suspended(bool suspended);
   void update(void);
   void display_on_map(void);

@@ -24,3 +24,5 @@ booleans:
 26	chest with the bow in Sahasrahla's cave
 27	chest with piece of heart in Sahasrahla's cave
 28	chest with the clay key in Sahasrahla's icy cave
+29	empty chest in the smith cave
+30	the smith gave the sword to the player

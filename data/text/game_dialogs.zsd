@@ -504,4 +504,53 @@ next = grandma_house.sword.5
 line1 = "il pourra sûrement"
 line2 = "t'aider."
 
+[smith_cave.without_sword]
+#       |-----------------------|
+line1 = "J'ai formé moi-même"
+line2 = "cette magnifique Epée"
+line3 = "en bronze."
+next = smith_cave.without_sword.2
 
+[smith_cave.without_sword.2]
+#       |-----------------------|
+line1 = "Je te la vends pour la"
+line2 = "modique somme de 80"
+line3 = "rubis seulement !"
+next = smith_cave.without_sword.3
+
+[smith_cave.without_sword.3]
+#       |-----------------------|
+line1 = "Avec ce minable"
+line2 = "bouclier, tu n'iras pas"
+line3 = "bien loin."
+next = smith_cave.without_sword.4
+
+[smith_cave.without_sword.4]
+#       |-----------------------|
+line1 = "Alors, ça t'intéresse ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+
+[smith_cave.with_sword]
+#       |-----------------------|
+line1 = "N'abîme pas mon Epée"
+line2 = "car je ne vais pas t'en"
+line3 = "fabriquer une autre !"
+
+[smith_cave.not_buying]
+#       |-----------------------|
+line1 = "Comme tu veux, mais tu"
+line2 = "risques d'avoir des"
+line3 = "problèmes sans arme."
+
+[smith_cave.not_enough_money]
+#       |-----------------------|
+line1 = "Désolé mais je crains"
+line2 = "que tu n'aies pas les"
+line3 = "moyens..."
+
+[smith_cave.thank_you]
+#       |-----------------------|
+line1 = "Merci beaucoup."
+line2 = "Prends-en soin !"

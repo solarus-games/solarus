@@ -148,6 +148,14 @@ void CarriedItem::throw_item(Map *map, int direction) {
 }
 
 /**
+ * Returns whether the item is being thrown.
+ * @return true if the item is being thrown
+ */
+bool CarriedItem::is_being_thrown(void) {
+  return is_throwing;
+}
+
+/**
  * Returns whether the item is broken.
  * @return true if the item is broken
  */

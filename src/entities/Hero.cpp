@@ -115,6 +115,41 @@ bool Hero::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * Returns whether a water tile is currently considered as an obstacle for the hero.
+ * @return true if the water tiles are currently an obstacle for the hero
+ */
+bool Hero::is_water_obstacle(void) {
+  return false;
+}
+
+/**
+ * Returns whether a hole is currently considered as an obstacle for the hero.
+ * @return true if the holes are currently an obstacle for the hero
+ */
+bool Hero::is_hole_obstacle(void) {
+  return false;
+}
+
+/**
+ * Returns whether a teletransporter is currently considered as an obstacle.
+ * This depends on the hero's state.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for the hero
+ */
+bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return state > SWIMMING;
+}
+
+/**
+ * Returns whether a hole is currently considered as an obstacle for the hero.
+ * @param sensor a sensor
+ * @return true if the sensors are currently an obstacle for the hero
+ */
+bool Hero::is_sensor_obstacle(Sensor *sensor) {
+  return state == JUMPING || state == HURT;
+}
+
+/**
  * Returns the 8-direction movement controlled by the player,
  * even if it is not the current movement of the hero.
  * @return the player's movement

@@ -154,8 +154,13 @@ class Enemy: public Detector {
 		       PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable);
 
   EntityType get_type(void);
-  bool is_obstacle_for(MapEntity *other);
   void set_map(Map *map);
+
+  // obstacles
+  bool is_obstacle_for(MapEntity *other);
+  bool is_water_obstacle(void);
+  bool is_hole_obstacle(void);
+  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
 
   // enemy state
   virtual void update(void);

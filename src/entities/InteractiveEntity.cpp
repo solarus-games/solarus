@@ -140,6 +140,22 @@ bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * Returns whether a water tile is currently considered as an obstacle for this entity.
+ * @return true if the water tiles are currently an obstacle for this entity
+ */
+bool InteractiveEntity::is_water_obstacle(void) {
+  return true;
+}
+
+/**
+ * Returns whether a hole is currently considered as an obstacle for this entity.
+ * @return true if the holes are currently an obstacle for this entity
+ */
+bool InteractiveEntity::is_hole_obstacle(void) {
+  return true;
+}
+
+/**
  * Returns whether a teletransporter is considered as an obstacle for this entity.
  * @param teletransporter a teletransporter
  * @return true

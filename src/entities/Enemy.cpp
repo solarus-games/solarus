@@ -122,16 +122,6 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
- */
-bool Enemy::is_obstacle_for(MapEntity *other) {
-
-  return other->get_type() == BLOCK;
-}
-
-/**
  * Sets the map.
  * @param map the map
  */
@@ -149,6 +139,40 @@ void Enemy::set_map(Map *map) {
   restart();
 }
 
+/**
+ * Returns whether this entity is an obstacle for another one.
+ * @param other another entity
+ * @return true if this entity is an obstacle for the other one
+ */
+bool Enemy::is_obstacle_for(MapEntity *other) {
+
+  return other->get_type() == BLOCK;
+}
+
+/**
+ * Returns whether a water tile is currently considered as an obstacle for this entity.
+ * @return true if the water tiles are currently an obstacle for this entity
+ */
+bool Enemy::is_water_obstacle(void) {
+  return true;
+}
+
+/**
+ * Returns whether a hole is currently considered as an obstacle for this entity.
+ * @return true if the holes are currently an obstacle for this entity
+ */
+bool Enemy::is_hole_obstacle(void) {
+  return true;
+}
+
+/**
+ * Returns whether a teletransporter is currently considered as an obstacle.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool Enemy::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return true;
+}
 /**
  * Sets the amount of damage this kind of enemy can make to the hero
  * @param damage_on_hero number of heart quarters the player loses

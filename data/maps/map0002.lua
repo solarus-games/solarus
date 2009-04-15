@@ -236,7 +236,7 @@ end
 function event_got_treasure(content, savegame_variable)
 
    -- stop game 3 when the player founds the piece of heart
-   if savegame_variable == "17" then
+   if savegame_variable == 17 then
       disable_tile("game_3_final_barrier")
       playing_game_3 = false
    end

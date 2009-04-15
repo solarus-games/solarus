@@ -511,6 +511,7 @@ void Hero::rebuild_equipment(void) {
     delete sword_sprite;
     delete sword_stars_sprite;
     sword_sprite = NULL;
+    sword_stars_sprite = NULL;
   }
 
   int sword_number = equipment->get_sword();

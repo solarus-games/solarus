@@ -169,6 +169,7 @@ public class Block extends MapEntity {
 
 	if (subtype == Subtype.STATUE) {
 	    setDirection(-1);
+	    setProperty("maximumMoves", MaximumMoves.INFINITE.getId());
 	}
 
 	setChanged();

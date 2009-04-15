@@ -506,7 +506,7 @@ line2 = "t'aider."
 
 [smith_cave.without_sword]
 #       |-----------------------|
-line1 = "J'ai formé moi-même"
+line1 = "J'ai forgé moi-même"
 line2 = "cette magnifique Epée"
 line3 = "en bronze."
 next = smith_cave.without_sword.2

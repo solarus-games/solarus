@@ -8,10 +8,13 @@
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Transition game over : centrer sur le héros
+- MP de Thyb
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
   - la barre de magie moyenne peut déborder (yoshi04)
+  - crystal switch blocks : quand on est dessus alors qu'ils sont levés, on peut se déplacer uniquement 
+    sur ceux du rectangle où on se trouve
 
 - Prochains types d'entités:
   - portes

@@ -17,13 +17,12 @@
 package zsdx.entities;
 
 import zsdx.*;
-
 import java.awt.*;
 
 /**
  * An orange or blue block that can be raised or lowered with the help of a crystal switch.
  */
-public class RaisedBlock extends MapEntity {
+public class CrystalSwitchBlock extends MapEntity {
 
     /**
      * Subtypes of raised blocks.
@@ -59,10 +58,10 @@ public class RaisedBlock extends MapEntity {
     private static final Dimension unitarySize = new Dimension(16, 16);
 
     /**
-     * Creates a new raised block.
+     * Creates a new crystal switch block.
      * @param map the map
      */
-    public RaisedBlock(Map map) throws MapException {
+    public CrystalSwitchBlock(Map map) throws MapException {
 	super(map, 16, 16);
 	subtype = Subtype.ORANGE;
     }

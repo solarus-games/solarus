@@ -31,7 +31,7 @@
  * @param title_string the title text to display in this phase
  */
 SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous,
-				       std::string title_string):
+				       const std::string &title_string):
   Screen() {
 
   if (previous != NULL) {
@@ -325,7 +325,7 @@ void SelectionMenuPhase::display_savegame_number(int save_number, SDL_Surface *d
  * @param left_string text of the first option (on the left)
  * @param right_string text of the second option (on the right)
  */
-void SelectionMenuPhase::display_options(const char *left_string, const char *right_string) {
+void SelectionMenuPhase::display_options(const std::string &left_string, const std::string &right_string) {
 
   SDL_Rect position;
 

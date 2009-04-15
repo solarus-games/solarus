@@ -51,7 +51,7 @@ class Block: public Detector {
 
  public:
 
-  Block(std::string name, Layer layer, int x, int y,
+  Block(const std::string &name, Layer layer, int x, int y,
 	int direction, Subtype subtype, int maximum_push);
   ~Block();
 

@@ -70,7 +70,7 @@ int Dungeon::get_number(void) {
  * Returns the name of the dungeon, in the current langage.
  * @return the dungeon name
  */
-string Dungeon::get_name(void) {
+const string& Dungeon::get_name(void) {
   return dungeon_names[dungeon_number];
 }
 
@@ -80,7 +80,7 @@ string Dungeon::get_name(void) {
 void Dungeon::load(void) {
 
   // open the file
-  string file_name = FileTools::data_file_add_prefix("maps/dungeons/dungeons.zsd");
+  const string &file_name = FileTools::data_file_add_prefix("maps/dungeons/dungeons.zsd");
 
   CFG_File ini;
   if (CFG_OpenFile(file_name.c_str(), &ini) != CFG_OK) {
@@ -90,17 +90,17 @@ void Dungeon::load(void) {
   // parse the floors (the floors must be before the chests and the bosses)
   std::ostringstream floor_oss;
   floor_oss << "dungeon_" << dungeon_number << ".floor_";
-  string floor_prefix = floor_oss.str();
+  const string &floor_prefix = floor_oss.str();
   lowest_floor = 100;
   for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
-    string group_name = CFG_GetSelectedGroupName();
+    const string &group_name = CFG_GetSelectedGroupName();
 
     // parse the floors
     if (group_name.substr(0, floor_prefix.length()) == floor_prefix) {
       // we found a group describing a floor of to this dungeon
 
-      string suffix = group_name.substr(floor_prefix.length());
+      const string &suffix = group_name.substr(floor_prefix.length());
 
       int floor;
       std::istringstream iss(suffix);
@@ -123,17 +123,17 @@ void Dungeon::load(void) {
   bosses = new std::vector<DungeonElement>[nb_floors];
 
   // parse the rest: chests and bosses
-  string elements_prefix;
   std::ostringstream elements_oss;
   elements_oss << "dungeon_" << dungeon_number << ".map_";
+  const string &elements_prefix = elements_oss.str();
   for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
-    string group_name = CFG_GetSelectedGroupName();
+    const string &group_name = CFG_GetSelectedGroupName();
 
     if (group_name.substr(0, elements_prefix.length()) == elements_prefix) {
       // we found a group describing an element in this dungeon
 
-      string suffix = group_name.substr(elements_prefix.length());
+      const string &suffix = group_name.substr(elements_prefix.length());
 
       // is it a chest?
       if (suffix.find("chest") != string::npos) {

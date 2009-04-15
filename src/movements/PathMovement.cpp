@@ -27,7 +27,7 @@
  * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-PathMovement::PathMovement(Map *map, std::string path, int speed, bool loop, bool with_collisions):
+PathMovement::PathMovement(Map *map, const std::string &path, int speed, bool loop, bool with_collisions):
   MovementWithCollision(map), initial_path(path), remaining_path(path),
   initial_speed(speed), loop(loop), with_collisions(with_collisions), finished(false) {
 

@@ -60,7 +60,7 @@ class Detector: public MapEntity {
  protected:
 
   // construction
-  Detector(int collision_mode, std::string name, Layer layer,
+  Detector(int collision_mode, const std::string &name, Layer layer,
 	   int x, int y, int width, int height);
 
   // properties of the detector

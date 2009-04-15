@@ -77,9 +77,9 @@ public class AddEntitiesMenu extends JMenu {
 		Sensor.Subtype.RETURN_FROM_BAD_GROUND
 	),
 	new ItemDefinition(EntityType.CRYSTAL_SWITCH, KeyEvent.VK_Y),
-	new ItemDefinition(EntityType.RAISED_BLOCK, KeyEvent.VK_N,
-		RaisedBlock.Subtype.ORANGE,
-		RaisedBlock.Subtype.BLUE
+	new ItemDefinition(EntityType.CRYSTAL_SWITCH_BLOCK, KeyEvent.VK_N,
+		CrystalSwitchBlock.Subtype.ORANGE,
+		CrystalSwitchBlock.Subtype.BLUE
 	),
     };
 

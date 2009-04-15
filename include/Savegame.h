@@ -214,7 +214,7 @@ class Savegame {
  private:
 
   bool empty;
-  char file_name[32];
+  std::string file_name;
   SavedData saved_data;
 
   DungeonEquipment *dungeon_equipment;
@@ -225,19 +225,18 @@ class Savegame {
  public:
 
   // creation and destruction
-  Savegame(const char *file_name);
+  Savegame(const std::string &file_name);
   Savegame(Savegame *other);
   ~Savegame(void);
 
   // file state
   bool is_empty(void);
   void save(void);
-  const char *get_file_name(void);
+  const std::string& get_file_name(void);
 
   // data
-  const char *get_string(int index);
-  void set_string(int index, const char *value);
-  void set_string(int index, std::string value);
+  const std::string get_string(int index);
+  void set_string(int index, const std::string &value);
 
   Uint32 get_integer(int index);
   void set_integer(int index, Uint32 value);

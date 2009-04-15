@@ -44,9 +44,6 @@ class ResourceManager {
   std::map<SoundId, Sound*> sounds;
   std::map<SpriteAnimationSetId, SpriteAnimationSet*> sprite_animations;
 
-  // items
-  // ...
-
   ResourceManager(void);
   ~ResourceManager(void);
 
@@ -55,13 +52,13 @@ class ResourceManager {
   static void initialize(void);
   static void quit(void);
 
-  static SDL_Surface* load_image(ImageId id);
+  static SDL_Surface* load_image(const ImageId &id);
 
   static Tileset* get_tileset(TilesetId id);
   static Map* get_map(MapId id);
-  static Music* get_music(MusicId id);
-  static Sound* get_sound(SoundId id);
-  static SpriteAnimationSet* get_sprite_animation_set(SpriteAnimationSetId id);
+  static Music* get_music(const MusicId &id);
+  static Sound* get_sound(const SoundId &id);
+  static SpriteAnimationSet* get_sprite_animation_set(const SpriteAnimationSetId &id);
 };
 
 #endif

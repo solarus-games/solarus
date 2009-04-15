@@ -36,13 +36,13 @@ class SpriteAnimationSet {
   
  public:
 
-  SpriteAnimationSet(SpriteAnimationSetId id);
+  SpriteAnimationSet(const SpriteAnimationSetId &id);
   virtual ~SpriteAnimationSet(void);
 
   void set_src_image(SDL_Surface *src_image);
 
-  SpriteAnimation *get_animation(std::string animation_name);
-  std::string get_default_animation(void);
+  SpriteAnimation *get_animation(const std::string &animation_name);
+  const std::string& get_default_animation(void);
 
   void enable_pixel_collisions(void);
   bool are_pixel_collisions_enabled(void);

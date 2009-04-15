@@ -45,7 +45,8 @@ class SpriteAnimation {
 
  public:
 
-  SpriteAnimation(std::string image_file_name, int nb_directions, SpriteAnimationDirection **directions,
+  SpriteAnimation(const std::string &image_file_name, int nb_directions,
+		  SpriteAnimationDirection **directions,
 		  Uint32 frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 
@@ -53,7 +54,8 @@ class SpriteAnimation {
   void set_src_image(SDL_Surface *src_image);
 
   int get_next_frame(int current_direction, int current_frame);
-  void display(SDL_Surface *destination, int x, int y, int current_direction, int current_frame);
+  void display(SDL_Surface *destination, int x, int y,
+	       int current_direction, int current_frame);
 
   int get_nb_directions(void);
   SpriteAnimationDirection *get_direction(int direction);

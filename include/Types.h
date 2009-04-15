@@ -141,7 +141,7 @@ class Switch;
 class CustomObstacle;
 class Sensor;
 class CrystalSwitch;
-class RaisedBlock;
+class CrystalSwitchBlock;
 
 // tile patterns
 class Tileset;

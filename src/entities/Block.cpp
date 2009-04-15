@@ -37,7 +37,7 @@
  * @param maximum_moves indicates how many times the block can
  * be moved (0: none, 1: once: 2: infinite)
  */
-Block::Block(std::string name, Layer layer, int x, int y,
+Block::Block(const std::string &name, Layer layer, int x, int y,
 	     int direction, Subtype subtype, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   subtype(subtype), maximum_moves(maximum_moves), sound_played(false),

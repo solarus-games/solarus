@@ -103,8 +103,10 @@ void StraightMovement::set_suspended(bool suspended) {
 
 /**
  * Returns whether the movement is finished.
+ * This functions returns false while the delay is not finished,
+ * even if the movement was stopped by an obstacle.
  * @return true if the movement is finished
  */
 bool StraightMovement::is_finished(void) {
-  return finished || is_stopped();
+  return finished;
 }

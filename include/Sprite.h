@@ -68,11 +68,11 @@ class Sprite {
  public:
 
   // creation and destruction
-  Sprite(SpriteAnimationSetId id);
+  Sprite(const SpriteAnimationSetId &id);
   ~Sprite(void);
 
   // animation set
-  SpriteAnimationSetId get_animation_set_id(void);
+  const SpriteAnimationSetId& get_animation_set_id(void);
   SpriteAnimationSet *get_animation_set(void);
 
   // size and origin point
@@ -80,8 +80,8 @@ class Sprite {
   SDL_Rect& get_origin(void);
 
   // current animation, direction and frame
-  std::string get_current_animation(void);
-  void set_current_animation(std::string animation_name);
+  const std::string& get_current_animation(void);
+  void set_current_animation(const std::string &animation_name);
   int get_current_direction(void);
   void set_current_direction(int current_direction);
   int get_current_frame(void);

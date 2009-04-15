@@ -94,7 +94,7 @@ function event_message_sequence_finished(first_message_id, answer)
       first_message_id == "rupee_house.game_1.play_again_question" then
       -- if the dialog was the game 1 question
 
-      if answer == "1" then
+      if answer == 1 then
 	 -- the player does not want to play the game
 	 start_message("rupee_house.game_1.not_playing")
       else
@@ -120,7 +120,7 @@ function event_message_sequence_finished(first_message_id, answer)
    elseif first_message_id == "rupee_house.game_2.intro"  or
       first_message_id == "rupee_house.game_2.reward.none" then
 
-      if answer == "1" then
+      if answer == 1 then
 	 -- don't want to play the game
 	 start_message("rupee_house.game_2.not_playing")
       else
@@ -130,7 +130,7 @@ function event_message_sequence_finished(first_message_id, answer)
 
    elseif first_message_id == "rupee_house.game_2.choose_bet" then
 
-      if answer == "0" then
+      if answer == 0 then
 	 -- bet 5 rupees
 	 game_2_bet = 5
       else
@@ -166,7 +166,7 @@ function event_message_sequence_finished(first_message_id, answer)
       first_message_id == "rupee_house.game_3.restart_question" then
       -- if the dialog was the game 3 question
 
-      if answer == "1" then
+      if answer == 1 then
 	 -- don't want to play the game
 	 start_message("rupee_house.game_3.not_playing")
       else

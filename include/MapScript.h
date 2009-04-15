@@ -37,8 +37,12 @@ class MapScript {
   lua_State* context;         /**< the execution context of the Lua script */
   std::list<Timer*> timers;   /**< the timers currently running for this script */
 
-  bool call_lua_function(const char *function_name);
-  bool call_lua_function(const char *function_name, int nb_arguments, ...);
+  bool call_lua_function(const std::string &function_name);
+  bool call_lua_function(const std::string &function_name, const std::string &arg1);
+  bool call_lua_function(const std::string &function_name, const std::string &arg1, int arg2);
+  bool call_lua_function(const std::string &function_name, int arg1);
+  bool call_lua_function(const std::string &function_name, int arg1, int arg2);
+  bool call_lua_function(const std::string &function_name, bool arg1);
 
   // C++ functions that can be called by the script
   static FunctionAvailableToScript l_freeze;
@@ -86,7 +90,7 @@ class MapScript {
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);
   void add_timer(Timer *timer);
-  void remove_timer(std::string callback_name);
+  void remove_timer(const std::string &callback_name);
 
  public:
 
@@ -101,16 +105,16 @@ class MapScript {
 
   // C++ functions that call script functions
   void event_map_started(void);
-  void event_message_started(MessageId message_id);
-  void event_message_sequence_finished(MessageId first_message_id, int answer);
-  void event_switch_enabled(std::string switch_name);
-  void event_switch_disabled(std::string switch_name);
-  void event_hero_on_sensor(std::string sensor_name);
+  void event_message_started(const MessageId &message_id);
+  void event_message_sequence_finished(const MessageId &first_message_id, int answer);
+  void event_switch_enabled(const std::string &switch_name);
+  void event_switch_disabled(const std::string &switch_name);
+  void event_hero_on_sensor(const std::string &sensor_name);
   void event_camera_reached_target(void);
-  void event_interaction(std::string entity_name);
-  void event_npc_dialog(std::string npc_name);
-  void event_npc_movement_finished(std::string npc_name);
-  bool event_open_empty_chest(std::string chest_name);
+  void event_interaction(const std::string &entity_name);
+  void event_npc_dialog(const std::string &npc_name);
+  void event_npc_movement_finished(const std::string &npc_name);
+  bool event_open_empty_chest(const std::string &chest_name);
   void event_got_treasure(Treasure::Content content, int savegame_variable);
 };
 

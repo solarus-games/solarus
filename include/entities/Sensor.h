@@ -47,7 +47,7 @@ class Sensor: public Detector {
 
  public:
 
-  Sensor(std::string name, Layer layer, int x, int y, int width, int height, Subtype subtype);
+  Sensor(const std::string &name, Layer layer, int x, int y, int width, int height, Subtype subtype);
   ~Sensor(void);
 
   EntityType get_type(void);

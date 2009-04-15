@@ -26,7 +26,7 @@
  * @param callback_name name of the script function to call when the timer is finished
  * @param with_sound plays a sound until the timer expires
  */
-Timer::Timer(Uint32 duration, const char *callback_name, bool with_sound):
+Timer::Timer(Uint32 duration, const std::string &callback_name, bool with_sound):
   callback_name(callback_name), finished(false), suspended(false), when_suspended(0) {
 
   Uint32 now = SDL_GetTicks();
@@ -57,7 +57,7 @@ Timer::~Timer(void) {
  * Returns the name of the script function to call when the timer is finished.
  * @return the name of the script function to call when the timer is finished
  */
-const char * Timer::get_callback_name(void) {
+const std::string& Timer::get_callback_name(void) {
   return callback_name;
 }
 

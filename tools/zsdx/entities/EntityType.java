@@ -24,22 +24,22 @@ import java.lang.reflect.*;
  */
 public enum EntityType {
 
-    TILE              (0, "Tile", Tile.class, null),
-    DESTINATION_POINT (1, "Destination point", DestinationPoint.class, DestinationPoint.Subtype.class),
-    TELETRANSPORTER   (2, "Teletransporter", Teletransporter.class, Teletransporter.Subtype.class),
-    PICKABLE_ITEM     (3, "Pickable item", PickableItem.class, PickableItem.Subtype.class),
-    DESTRUCTIBLE_ITEM (4, "Destructible item", DestructibleItem.class, DestructibleItem.Subtype.class),
-    CHEST             (5, "Chest", Chest.class, null),
-    JUMP_SENSOR       (6, "Jump Sensor", JumpSensor.class, null),
-    ENEMY             (7, "Enemy", Enemy.class, Enemy.Subtype.class),
-    INTERACTIVE       (8, "Interactive entity", InteractiveEntity.class, InteractiveEntity.Subtype.class),
-    BLOCK             (9, "Block", Block.class, Block.Subtype.class),
-    DYNAMIC_TILE      (10, "Dynamic tile", DynamicTile.class, null),
-    SWITCH            (11, "Switch", Switch.class, Switch.Subtype.class),
-    CUSTOM_OBSTACLE   (12, "Custom obstacle", CustomObstacle.class, null),
-    SENSOR            (13, "Sensor", Sensor.class, Sensor.Subtype.class),
-    CRYSTAL_SWITCH    (14, "Crystal switch", CrystalSwitch.class, null),
-    RAISED_BLOCK      (15, "Raised block", RaisedBlock.class, RaisedBlock.Subtype.class),
+    TILE                 (0, "Tile", Tile.class, null),
+    DESTINATION_POINT    (1, "Destination point", DestinationPoint.class, DestinationPoint.Subtype.class),
+    TELETRANSPORTER      (2, "Teletransporter", Teletransporter.class, Teletransporter.Subtype.class),
+    PICKABLE_ITEM        (3, "Pickable item", PickableItem.class, PickableItem.Subtype.class),
+    DESTRUCTIBLE_ITEM    (4, "Destructible item", DestructibleItem.class, DestructibleItem.Subtype.class),
+    CHEST                (5, "Chest", Chest.class, null),
+    JUMP_SENSOR          (6, "Jump Sensor", JumpSensor.class, null),
+    ENEMY                (7, "Enemy", Enemy.class, Enemy.Subtype.class),
+    INTERACTIVE          (8, "Interactive entity", InteractiveEntity.class, InteractiveEntity.Subtype.class),
+    BLOCK                (9, "Block", Block.class, Block.Subtype.class),
+    DYNAMIC_TILE         (10, "Dynamic tile", DynamicTile.class, null),
+    SWITCH               (11, "Switch", Switch.class, Switch.Subtype.class),
+    CUSTOM_OBSTACLE      (12, "Custom obstacle", CustomObstacle.class, null),
+    SENSOR               (13, "Sensor", Sensor.class, Sensor.Subtype.class),
+    CRYSTAL_SWITCH       (14, "Crystal switch", CrystalSwitch.class, null),
+    CRYSTAL_SWITCH_BLOCK (15, "Crystal switch block", CrystalSwitchBlock.class, CrystalSwitchBlock.Subtype.class),
     ;
 
     private final int index;

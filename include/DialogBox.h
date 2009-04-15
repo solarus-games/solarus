@@ -107,9 +107,9 @@ class DialogBox {
   int get_icon_number(void);
   void set_icon_number(int icon_number);
 
-  void set_variable(MessageId messageId, std::string value);
+  void set_variable(MessageId messageId, const std::string &value);
   void set_variable(MessageId messageId, int value);
-  std::string get_variable(void);
+  const std::string& get_variable(void);
   
   // current message
   void key_pressed(Controls::GameKey key);

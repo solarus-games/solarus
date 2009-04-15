@@ -587,9 +587,8 @@ void Hero::movement_just_changed(void) {
 
   // show the animation corresponding to the movement tried by the player
   if (get_normal_movement()->is_moving_enabled()) {
-    // the player can move
-    std::string animation = tunic_sprite->get_current_animation();
 
+    // the player can move
     bool started = get_normal_movement()->is_started();
 
     // stopped to walking

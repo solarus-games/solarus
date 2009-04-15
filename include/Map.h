@@ -138,7 +138,7 @@ class Map {
 
   // current destination point
   void set_destination_point(unsigned int destination_point_index);
-  void set_destination_point(std::string destination_point_name);
+  void set_destination_point(const std::string &destination_point_name);
   int get_destination_point_index(void);
   int get_destination_side(void);
 

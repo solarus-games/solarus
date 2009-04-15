@@ -35,7 +35,7 @@
  * @param destination_point_name location on the destination map, or "_same" to keep the hero's coordinates,
  * or "_side" to place the hero on the appropriate side of the map
  */
-Teletransporter::Teletransporter(std::string name, Layer layer, int x, int y, int width, int height,
+Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, int y, int width, int height,
 				 Subtype subtype, Transition::Style transition_style,
 				 MapId destination_map_id, std::string destination_point_name):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),

@@ -415,7 +415,7 @@ void Game::update_dialog_box(void) {
     dialog_box->update();
   }
   else {
-    std::string first_message_id = dialog_box->get_first_message_id();
+    const std::string &first_message_id = dialog_box->get_first_message_id();
     delete dialog_box;
     dialog_box = NULL;
 
@@ -501,7 +501,8 @@ Map * Game::get_current_map(void) {
  * or en ampty string to pick the destination point saved
  * @param transition_style type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, std::string destination_point_name, Transition::Style transition_style) {
+void Game::set_current_map(MapId map_id, const std::string &destination_point_name,
+			   Transition::Style transition_style) {
 
   // load the next map
   next_map = ResourceManager::get_map(map_id);
@@ -578,7 +579,7 @@ void Game::change_crystal_switch_state(void) {
  * or even Music::unchanged_id (nothing is done in this case).
  * @param new_music_id id of the music to play
  */
-void Game::play_music(MusicId new_music_id) {
+void Game::play_music(const MusicId &new_music_id) {
   
   if (!Music::isUnchangedId(new_music_id) && !Music::isEqualId(new_music_id, current_music_id)) {
     // the music is changed
@@ -632,7 +633,7 @@ void Game::stop_music(void) {
  * Returns the id of the music currently played.
  * @return the current music
  */
-MusicId Game::get_current_music_id(void) {
+const MusicId& Game::get_current_music_id(void) {
   return current_music_id;
 }
 

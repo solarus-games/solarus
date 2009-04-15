@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/RaisedBlock.h"
+#include "entities/CrystalSwitchBlock.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -29,11 +29,11 @@
  * @param height height of the block (the pattern can be repeated)
  * @param subtype subtype of raised block
  */
-RaisedBlock::RaisedBlock(Layer layer, int x, int y, int width, int height, Subtype subtype):
+CrystalSwitchBlock::CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype):
   Detector(COLLISION_NONE, "", layer, x, y, width, height),
   subtype(subtype), orange_raised(false) {
 
-  create_sprite("entities/raised_block");
+  create_sprite("entities/crystal_switch_block");
 
   if (subtype == BLUE) {
     get_sprite()->set_current_animation("blue_raised");
@@ -43,7 +43,7 @@ RaisedBlock::RaisedBlock(Layer layer, int x, int y, int width, int height, Subty
 /**
  * Destructor.
  */
-RaisedBlock::~RaisedBlock(void) {
+CrystalSwitchBlock::~CrystalSwitchBlock(void) {
 
 }
 
@@ -51,8 +51,8 @@ RaisedBlock::~RaisedBlock(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-EntityType RaisedBlock::get_type() {
-  return RAISED_BLOCK;
+EntityType CrystalSwitchBlock::get_type() {
+  return CRYSTAL_SWITCH_BLOCK;
 }
 
 /**
@@ -60,7 +60,7 @@ EntityType RaisedBlock::get_type() {
  * @param other another entity
  * @return true if this block is raised
  */
-bool RaisedBlock::is_obstacle_for(MapEntity *other) {
+bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
 
   if ((subtype == ORANGE && !orange_raised) ||
       (subtype == BLUE && orange_raised)) {
@@ -74,7 +74,7 @@ bool RaisedBlock::is_obstacle_for(MapEntity *other) {
 /**
  * Updates the entity.
  */
-void RaisedBlock::update(void) {
+void CrystalSwitchBlock::update(void) {
 
   bool orange_raised = zsdx->game->get_crystal_switch_state();
   if (orange_raised != this->orange_raised) {
@@ -95,7 +95,7 @@ void RaisedBlock::update(void) {
  * Displays the entity on the map.
  * This is a redefinition of MapEntity::display_on_map to repeat the block pattern.
  */
-void RaisedBlock::display_on_map(void) {
+void CrystalSwitchBlock::display_on_map(void) {
 
   Sprite *sprite = get_sprite();
 

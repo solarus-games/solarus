@@ -40,7 +40,7 @@ class RandomWalkMovement: public PathMovement {
 
  protected:
 
-  static std::string get_random_direction(void);
+  static const std::string get_random_direction(void);
 
 };
 

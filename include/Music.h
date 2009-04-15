@@ -31,15 +31,15 @@ class Music: public Sound {
 
  public:
 
-  static const char *none;
-  static const char *unchanged;
+  static const MusicId none;
+  static const MusicId unchanged;
 
-  Music(MusicId music_id);
+  Music(const MusicId &music_id);
   ~Music(void);
 
-  static bool isNoneId(MusicId music_id);
-  static bool isUnchangedId(MusicId music_id);
-  static bool isEqualId(MusicId music_id, MusicId other_music_id);
+  static bool isNoneId(const MusicId &music_id);
+  static bool isUnchangedId(const MusicId &music_id);
+  static bool isEqualId(const MusicId &music_id, const MusicId &other_music_id);
 
   bool play(void);
   void stop(void);

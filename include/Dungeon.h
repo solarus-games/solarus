@@ -60,7 +60,7 @@ class Dungeon {
   ~Dungeon(void);
 
   int get_number(void);
-  std::string get_name(void);
+  const std::string &get_name(void);
 
   // floors
   int get_nb_floors(void);

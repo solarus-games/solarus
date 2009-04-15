@@ -38,7 +38,8 @@
  * @param big_chest true to make a big chest, false to make a normal chest
  * @param treasure the treasure in the chest (will be deleted automatically)
  */
-Chest::Chest(std::string name, Layer layer, int x, int y, bool big_chest, Treasure *treasure):
+Chest::Chest(const std::string &name, Layer layer, int x, int y,
+	     bool big_chest, Treasure *treasure):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   big_chest(big_chest) {
 

@@ -17,16 +17,17 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
+using std::string;
 
 /**
  * Creates a savegame with a specified file name, existing or not.
  * @param file_name name of the savegame file (can be a new file)
  */
-Savegame::Savegame(const char *file_name) {
+Savegame::Savegame(const string &file_name) {
 
-  strncpy(this->file_name, file_name, 32);
+  this->file_name = file_name;
 
-  FILE *file = fopen(file_name, "r");
+  FILE *file = fopen(file_name.c_str(), "r");
 
   if (file == NULL) {
     // this save slot is free
@@ -55,7 +56,7 @@ Savegame::Savegame(const char *file_name) {
 Savegame::Savegame(Savegame *other) {
 
   this->empty = other->empty;
-  strncpy(this->file_name, other->file_name, 32);
+  this->file_name = other->file_name;
   this->saved_data = other->saved_data;
 
   this->equipment = new Equipment(this);
@@ -122,7 +123,7 @@ void Savegame::set_initial_values(void) {
  */
 void Savegame::save(void) {
 
-  FILE *file = fopen(file_name, "w");
+  FILE *file = fopen(file_name.c_str(), "w");
 
   if (file == NULL) {
     DIE("Cannot write savegame file '" << file_name << "'");
@@ -138,7 +139,7 @@ void Savegame::save(void) {
  * Returns the name of the file where the data is saved.
  * @return the file name of this savegame
  */
-const char * Savegame::get_file_name(void) {
+const string& Savegame::get_file_name(void) {
   return file_name;
 }
 
@@ -164,7 +165,7 @@ DungeonEquipment * Savegame::get_dungeon_equipment(void) {
  * (see enum StringIndex for their definition)
  * @return the string value saved at this index
  */
-const char * Savegame::get_string(int index) {
+const string Savegame::get_string(int index) {
   return saved_data.strings[index];
 }
 
@@ -174,18 +175,8 @@ const char * Savegame::get_string(int index) {
  * (see enum StringIndex for their definition)
  * @param value the string value to store at this index
  */
-void Savegame::set_string(int index, const char *value) {
-  strncpy(saved_data.strings[index], value, 63);
-}
-
-/**
- * Sets a string value saved.
- * @param index index of the value to set, between 0 and 63
- * (see enum StringIndex for their definition)
- * @param value the string value to store at this index
- */
-void Savegame::set_string(int index, std::string value) {
-  set_string(index, value.c_str());
+void Savegame::set_string(int index, const string &value) {
+  strncpy(saved_data.strings[index], value.c_str(), 63);
 }
 
 /**

@@ -26,7 +26,7 @@ using namespace std;
  * Loads the animations of a sprite from a file.
  * @param id id of the sprite (used to determine the sprite file)
  */
-SpriteAnimationSet::SpriteAnimationSet(SpriteAnimationSetId id) {
+SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 
   // compute the file name
   string file_name = "sprites/" + id + ".zsd";
@@ -139,7 +139,7 @@ void SpriteAnimationSet::set_src_image(SDL_Surface *src_image) {
  * @param animation_name name of the animation to get
  * @return the specified animation
  */
-SpriteAnimation * SpriteAnimationSet::get_animation(string animation_name) {
+SpriteAnimation * SpriteAnimationSet::get_animation(const string &animation_name) {
   return animations[animation_name];
 }
 
@@ -147,7 +147,7 @@ SpriteAnimation * SpriteAnimationSet::get_animation(string animation_name) {
  * Returns the name of the default animation, i.e. the first one.
  * @return the name of the default animation
  */
-string SpriteAnimationSet::get_default_animation(void) {
+const string& SpriteAnimationSet::get_default_animation(void) {
   return default_animation_name;
 }
 

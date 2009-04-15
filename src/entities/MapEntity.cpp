@@ -92,7 +92,8 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * @param width width of the entity
  * @param height height of the entity
  */
-MapEntity::MapEntity(string name, int direction, Layer layer, int x, int y, int width, int height):
+MapEntity::MapEntity(const string &name, int direction, Layer layer,
+		     int x, int y, int width, int height):
   layer(layer), name(name), direction(direction), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
@@ -406,7 +407,7 @@ const SDL_Rect MapEntity::get_center_point(void) {
  * Returns the name of the entity (if any).
  * @return the name of the entity, or an empty string if the entity is not identifiable
  */
-string MapEntity::get_name(void) const {
+const string& MapEntity::get_name(void) const {
   return name;
 }
 
@@ -504,7 +505,7 @@ Sprite * MapEntity::get_sprite(void) {
  * Adds a sprite to this entity.
  * @param id id of the sprite's animations to add
  */
-void MapEntity::create_sprite(SpriteAnimationSetId id) {
+void MapEntity::create_sprite(const SpriteAnimationSetId &id) {
   sprites.push_back(new Sprite(id));
 }
 

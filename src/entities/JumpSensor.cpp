@@ -31,7 +31,7 @@
  * @param direction direction of the jump (0 to 7 as the jump may be diagonal)
  * @param jump_length length of the jump in pixels (usually a multiple of 8)
  */
-JumpSensor::JumpSensor(std::string name, Layer layer, int x, int y, int width, int height,
+JumpSensor::JumpSensor(const std::string &name, Layer layer, int x, int y, int width, int height,
 		       int direction, int jump_length):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   jump_length(jump_length) {

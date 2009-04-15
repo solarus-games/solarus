@@ -85,7 +85,7 @@ class DestructibleItem: public Detector {
 
   EntityType get_type(void);
 
-  std::string get_animation_set_id(void);
+  const std::string& get_animation_set_id(void);
   Sound *get_destruction_sound(void);
   int get_damage_on_enemies(void);
 

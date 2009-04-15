@@ -44,7 +44,7 @@ class Message {
   int y;
 
   void parse(MessageId message_id);
-  void set_variable(std::string value);
+  void set_variable(const std::string &value);
 
   // current state of the display
   

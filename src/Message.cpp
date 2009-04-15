@@ -126,7 +126,7 @@ void Message::parse(MessageId message_id) {
   next_message_id_2 = CFG_ReadText("next2", "");
 
   // cancel mode
-  std::string cancel_mode_text = CFG_ReadText("cancel", "");
+  const std::string &cancel_mode_text = CFG_ReadText("cancel", "");
 
   if (cancel_mode_text != "") { // a cancel mode is specified
     DialogBox::CancelMode cancel_mode;
@@ -281,7 +281,7 @@ void Message::add_character(void) {
  * Replaces the first occurence of "$v" by the specified value.
  * @param value the value to set
  */
-void Message::set_variable(std::string value) {
+void Message::set_variable(const std::string &value) {
   char_index -= 2;
   lines[line_index] = lines[line_index].replace(char_index, 2, value);
 }

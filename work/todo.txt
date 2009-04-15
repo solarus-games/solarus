@@ -8,11 +8,7 @@
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Transition game over : centrer sur le héros
-- Passer les std::string par référence
 - Buissons et vases : placer l'entité au niveau de l'ombre et pas du sprite
-- Ennemis : imprécisions quand on leur lance un buisson
-- Ennemis : quand on les repousse avec l'épée il repartent trop tôt s'ils rencontrent un obstacle
-- Renommer RaisedBlock en CrystalSwitchBlock
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)

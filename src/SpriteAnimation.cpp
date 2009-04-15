@@ -27,14 +27,13 @@
  * (or 0 to make no animation, for example when you have only one frame)
  * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
-SpriteAnimation::SpriteAnimation(std::string image_file_name, int nb_directions,
+SpriteAnimation::SpriteAnimation(const std::string &image_file_name, int nb_directions,
 				 SpriteAnimationDirection **directions,
 				 Uint32 frame_delay, int loop_on_frame):
   src_image_loaded(true), nb_directions(nb_directions), directions(directions),
   frame_delay(frame_delay), loop_on_frame(loop_on_frame) {
 
   src_image = ResourceManager::load_image(image_file_name);
-
 }
 
 /**

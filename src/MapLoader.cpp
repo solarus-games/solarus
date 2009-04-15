@@ -41,7 +41,7 @@
 #include "entities/CustomObstacle.h"
 #include "entities/Sensor.h"
 #include "entities/CrystalSwitch.h"
-#include "entities/RaisedBlock.h"
+#include "entities/CrystalSwitchBlock.h"
 #include <iomanip>
 using namespace std;
 
@@ -71,7 +71,7 @@ void MapLoader::load_map(Map *map) {
   // compute the file name, depending on the id
   std::ostringstream oss;
   oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".zsd";
-  string file_name = FileTools::data_file_add_prefix(oss.str());
+  const string &file_name = FileTools::data_file_add_prefix(oss.str());
 
   // open the map file
   std::ifstream map_file(file_name.c_str());
@@ -267,11 +267,11 @@ void MapLoader::load_map(Map *map) {
 	break;
       }
 
-    case RAISED_BLOCK:
+    case CRYSTAL_SWITCH_BLOCK:
       {
 	iss >> width >> height >> subtype;
-	entities->add_entity(new RaisedBlock((Layer) layer, x, y, width, height,
-					     (RaisedBlock::Subtype) subtype));
+	entities->add_entity(new CrystalSwitchBlock((Layer) layer, x, y, width, height,
+						    (CrystalSwitchBlock::Subtype) subtype));
 	break;
       }
 

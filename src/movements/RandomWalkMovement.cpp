@@ -41,9 +41,9 @@ RandomWalkMovement::~RandomWalkMovement(void) {
  * Returns one of the four main directions.
  * @return a random direction
  */
-string RandomWalkMovement::get_random_direction() {
+const string RandomWalkMovement::get_random_direction() {
 
-  string c = random_directions[Random::get_number(4)];
+  const string &c = random_directions[Random::get_number(4)];
   int length = Random::get_number(5) + 3;
   string path = "";
   for (int i = 0; i < length; i++) {

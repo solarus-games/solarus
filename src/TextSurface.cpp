@@ -29,18 +29,18 @@ void TextSurface::initialize(void) {
 
   TTF_Init();
 
-  std::string file_name = FileTools::data_file_add_prefix("text/zsdx.ttf");
+  const std::string &file_name1 = FileTools::data_file_add_prefix("text/zsdx.ttf");
 
-  fonts[FONT_LA] = TTF_OpenFont(file_name.c_str(), 11);
+  fonts[FONT_LA] = TTF_OpenFont(file_name1.c_str(), 11);
   if (fonts[FONT_LA] == NULL) {
-    DIE("Cannot load font '" << file_name << "'");
+    DIE("Cannot load font '" << file_name1 << "'");
   }
   
-  file_name = FileTools::data_file_add_prefix("text/fixed8.fon");
+  const std::string &file_name2 = FileTools::data_file_add_prefix("text/fixed8.fon");
 
-  fonts[FONT_STANDARD] = TTF_OpenFont(file_name.c_str(), 11);
+  fonts[FONT_STANDARD] = TTF_OpenFont(file_name2.c_str(), 11);
   if (fonts[FONT_STANDARD] == NULL) {
-    DIE("Cannot load font '" << file_name << "'");
+    DIE("Cannot load font '" << file_name2 << "'");
   }
 }
 
@@ -207,7 +207,7 @@ void TextSurface::set_y(int y) {
  * If the specified string is the same than the current text, nothing is done.
  * @param text the text to display (cannot be NULL)
  */
-void TextSurface::set_text(std::string text) {
+void TextSurface::set_text(const std::string &text) {
 
   if (text != this->text) {
 
@@ -229,7 +229,7 @@ void TextSurface::add_char(char c) {
  * Returns the text currently displayed.
  * @return the text currently displayed, or NULL if there is no text
  */
-std::string TextSurface::get_text(void) {
+const std::string& TextSurface::get_text(void) {
   return text;
 }
 

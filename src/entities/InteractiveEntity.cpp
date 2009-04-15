@@ -64,7 +64,7 @@ const int InteractiveEntity::animation_directions[] = {
  * @param message_to_show id of the message to show when the player presses the action key in front
  * of this entity, or "_none" to call the script instead (with an event_interaction() call)
  */
-InteractiveEntity::InteractiveEntity(std::string name, Layer layer, int x, int y,
+InteractiveEntity::InteractiveEntity(const std::string &name, Layer layer, int x, int y,
 				     Subtype subtype, SpriteAnimationSetId sprite_name,
 				     int initial_direction, MessageId message_to_show):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 0, 0),
@@ -248,7 +248,7 @@ void InteractiveEntity::update(void) {
   if (subtype == NON_PLAYING_CHARACTER && get_movement() != NULL) {
 
     bool finished = false;
-    std::string animation = get_sprite()->get_current_animation();
+    const std::string &animation = get_sprite()->get_current_animation();
     if (animation == "walking") {
       finished = ((PathMovement*) get_movement())->is_finished();
     }

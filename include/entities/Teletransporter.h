@@ -55,7 +55,7 @@ class Teletransporter: public Detector {
 
  public:
 
-  Teletransporter(std::string name, Layer layer, int x, int y, int width, int height,
+  Teletransporter(const std::string &name, Layer layer, int x, int y, int width, int height,
 		  Subtype subtype, Transition::Style transition_style,
 		  MapId destination_map_id, std::string destination_point_name);
   ~Teletransporter(void);

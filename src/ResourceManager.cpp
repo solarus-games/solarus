@@ -117,7 +117,7 @@ void ResourceManager::quit(void) {
  * @param id name of the image file to get (relative to the images directory)
  * @return the image loaded
  */
-SDL_Surface * ResourceManager::load_image(ImageId id) {
+SDL_Surface * ResourceManager::load_image(const ImageId &id) {
   return FileTools::open_image(id);
 }
 
@@ -154,7 +154,7 @@ Map * ResourceManager::get_map(MapId id) {
  * @param id id of the music to get
  * @return the music
  */
-Music * ResourceManager::get_music(MusicId id) {
+Music * ResourceManager::get_music(const MusicId &id) {
 
   if (instance->musics[id] == NULL) {
     instance->musics[id] = new Music(id);
@@ -168,7 +168,7 @@ Music * ResourceManager::get_music(MusicId id) {
  * @param id id of the sound to get
  * @return the sound
  */
-Sound * ResourceManager::get_sound(SoundId id) {
+Sound * ResourceManager::get_sound(const SoundId &id) {
 
   if (instance->sounds[id] == NULL) {
     instance->sounds[id] = new Sound(id);
@@ -182,7 +182,7 @@ Sound * ResourceManager::get_sound(SoundId id) {
  * @param id id of the sprite animation set to get
  * @return the sprite animation set required
  */
-SpriteAnimationSet * ResourceManager::get_sprite_animation_set(SpriteAnimationSetId id) {
+SpriteAnimationSet * ResourceManager::get_sprite_animation_set(const SpriteAnimationSetId &id) {
 
   if (instance->sprite_animations[id] == NULL) {
     instance->sprite_animations[id] = new SpriteAnimationSet(id);

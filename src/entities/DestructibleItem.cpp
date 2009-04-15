@@ -107,7 +107,7 @@ int DestructibleItem::get_damage_on_enemies(void) {
  * Returns the animation set of this destructible item.
  * @return the animations of the sprite
  */
-string DestructibleItem::get_animation_set_id(void) {
+const string& DestructibleItem::get_animation_set_id(void) {
   return features[subtype].animation_set_id;
 }
 

@@ -108,6 +108,6 @@ void SelectionMenuConfirmErase::display(SDL_Surface *screen_surface) {
 void SelectionMenuConfirmErase::delete_save_file(int save_number) {
 
   Savegame *savegame = get_savegame(save_number);
-  remove(savegame->get_file_name());
+  remove(savegame->get_file_name().c_str());
   reload_savegames();
 }

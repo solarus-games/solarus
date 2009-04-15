@@ -103,8 +103,8 @@ class TextSurface {
   void set_position(int x, int y);
   void set_x(int x);
   void set_y(int y);
-  void set_text(std::string text);
-  std::string get_text(void);
+  void set_text(const std::string &text);
+  const std::string& get_text(void);
   void add_char(char c);
 
   void display(SDL_Surface *destination);

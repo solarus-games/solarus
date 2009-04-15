@@ -38,7 +38,7 @@ class PauseSubmenu {
 
   PauseSubmenu(PauseMenu *pause_menu, Game *game);
 
-  void set_caption_text(std::string text);
+  void set_caption_text(const std::string &text);
 
  public:
 

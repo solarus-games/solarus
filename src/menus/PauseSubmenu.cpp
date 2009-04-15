@@ -62,7 +62,7 @@ void PauseSubmenu::display(SDL_Surface *destination) {
  * If the text you want to display has two lines, use the '\n' character to separate them.
  * @param text the caption text
  */
-void PauseSubmenu::set_caption_text(std::string text) {
+void PauseSubmenu::set_caption_text(const std::string &text) {
 
   // check the presence of the '\n' character
   size_t index = text.find('\n', 0);
@@ -76,8 +76,8 @@ void PauseSubmenu::set_caption_text(std::string text) {
   else {
     // two lines
 
-    std::string line1 = text.substr(0, index);
-    std::string line2 = text.substr(index + 1);
+    const std::string line1 = text.substr(0, index);
+    const std::string line2 = text.substr(index + 1);
 
     caption_text_1->set_y(203);
     caption_text_2->set_y(215);

@@ -21,7 +21,7 @@ function event_message_sequence_finished(first_message_id, answer)
    if first_message_id == "smith_cave.without_sword" then
       -- the dialog was the question to buy the sword
 
-      if answer == "1" then
+      if answer == 1 then
 	 -- the player does not want to buy the sword
 	 start_message("smith_cave.not_buying")
       else

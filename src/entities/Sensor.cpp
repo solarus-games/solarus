@@ -33,7 +33,7 @@
  * @param disable_when_leaving true to disable the switch when the hero or 
  * the block leaves it
  */
-Sensor::Sensor(std::string name, Layer layer, int x, int y,
+Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 	       int width, int height, Subtype subtype):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   subtype(subtype), hero_already_overlaps(false) {

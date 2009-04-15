@@ -107,7 +107,8 @@ class Game: public Screen {
 
   // map
   Map *get_current_map(void);
-  void set_current_map(MapId map_id, std::string destination_point_name, Transition::Style transition_style);
+  void set_current_map(MapId map_id, const std::string &destination_point_name,
+		       Transition::Style transition_style);
 
   // world
   const SDL_Rect *get_outside_world_size(void);
@@ -117,10 +118,10 @@ class Game: public Screen {
   void change_crystal_switch_state(void);
 
   // music
-  void play_music(MusicId new_music_id);
+  void play_music(const MusicId &new_music_id);
   void pause_or_resume_music(void);
   void stop_music(void);
-  MusicId get_current_music_id(void);
+  const MusicId& get_current_music_id(void);
 
   // current game state
   bool is_paused(void);

@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "FileTools.h"
-using namespace std;
+using std::string;
 
 /**
  * @brief Converts the parameter as a <code>char*</code> constant string.
@@ -43,7 +43,7 @@ using namespace std;
  * @brief Returns the directory of the data files.
  * @return the directory of the data files
  */
-string FileTools::data_file_get_prefix(void) {
+const string FileTools::data_file_get_prefix(void) {
 
   return DATADIR;
 }
@@ -58,9 +58,9 @@ string FileTools::data_file_get_prefix(void) {
  *
  * @param file_name name of a data file
  */
-string FileTools::data_file_add_prefix(string file_name) {
+const string FileTools::data_file_add_prefix(const string &file_name) {
 
-  string prefixed_file_name = DATADIR + "/" + file_name;
+  const string &prefixed_file_name = DATADIR + "/" + file_name;
   return prefixed_file_name;
 }
 
@@ -73,9 +73,9 @@ string FileTools::data_file_add_prefix(string file_name) {
  * @param file_name name of the file to open
  * @return the file, or NULL if it couldn't be open.
  */
-FILE *FileTools::open_data_file(string file_name) {
+FILE *FileTools::open_data_file(const string &file_name) {
 
-  string full_file_name = data_file_add_prefix(file_name);
+  const string &full_file_name = data_file_add_prefix(file_name);
 
   FILE *f = fopen(full_file_name.c_str(), "r");
 
@@ -92,9 +92,9 @@ FILE *FileTools::open_data_file(string file_name) {
  * @param file_name name of the image file to open
  * @return the file
  */
-SDL_Surface *FileTools::open_image(string file_name) {
+SDL_Surface *FileTools::open_image(const string &file_name) {
 
-  string full_file_name = DATADIR + "/sprites/" + file_name;
+  const string &full_file_name = DATADIR + "/sprites/" + file_name;
 
   SDL_Surface *image = IMG_Load(full_file_name.c_str());
 

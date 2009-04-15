@@ -54,7 +54,7 @@ class PathMovement: public MovementWithCollision {
 
  public:
 
-  PathMovement(Map *map, std::string path, int speed, bool loop, bool with_collisions);
+  PathMovement(Map *map, const std::string &path, int speed, bool loop, bool with_collisions);
   ~PathMovement(void);
 
   virtual bool is_finished(void);

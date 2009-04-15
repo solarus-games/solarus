@@ -29,7 +29,7 @@
  * @param stops_npcs true to make this entity an obstacle for the NPCs
  * @param stops_blocks true to make this entity an obstacle for the blocks and statues
  */
-CustomObstacle::CustomObstacle(std::string name, Layer layer, int x, int y, int width, int height,
+CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
 			       bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks):
   MapEntity(name, 0, layer, x, y, width, height) {
 

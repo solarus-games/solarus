@@ -21,18 +21,18 @@
 /**
  * Special id indicating that there is no music.
  */
-const char *Music::none = "none";
+const MusicId Music::none = "none";
 
 /**
  * Special id indicating that the music is the same as before.
  */
-const char *Music::unchanged = "same";
+const MusicId Music::unchanged = "same";
 
 /**
  * Creates a new music.
  * @param music_id id of the music (a file name)
  */
-Music::Music(MusicId music_id) {
+Music::Music(const MusicId &music_id) {
 
   sound = NULL;
   file_name = FileTools::data_file_add_prefix("musics/" + music_id);
@@ -58,7 +58,7 @@ Music::~Music(void) {
  * @param music_id a music id
  * @return true if music_id is the special id indicating that there is no music
  */
-bool Music::isNoneId(MusicId music_id) {
+bool Music::isNoneId(const MusicId &music_id) {
   return isEqualId(music_id, none);
 }
 
@@ -67,7 +67,7 @@ bool Music::isNoneId(MusicId music_id) {
  * @param music_id a music id
  * @return true if music_id is the special id indicating that the music doesn't change
  */
-bool Music::isUnchangedId(MusicId music_id) {
+bool Music::isUnchangedId(const MusicId &music_id) {
   return isEqualId(music_id, unchanged);
 }
 
@@ -77,7 +77,7 @@ bool Music::isUnchangedId(MusicId music_id) {
  * @param other_music_id another music id
  * @return true if the ids are the same
  */
-bool Music::isEqualId(MusicId music_id, MusicId other_music_id) {
+bool Music::isEqualId(const MusicId &music_id, const MusicId &other_music_id) {
   return music_id == other_music_id;
 }
 

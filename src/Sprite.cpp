@@ -28,7 +28,7 @@
  * Creates a sprite with the specified animation set.
  * @param id name of an animation set
  */
-Sprite::Sprite(SpriteAnimationSetId id):
+Sprite::Sprite(const SpriteAnimationSetId &id):
   animation_set_id(id), current_direction(0), current_frame(-1),
   suspended(false), paused(false), finished(false), blink_delay(0) {
   
@@ -47,7 +47,7 @@ Sprite::~Sprite(void) {
  * Returns the id of the animation set of this sprite.
  * @return the animation set id of this sprite
  */
-SpriteAnimationSetId Sprite::get_animation_set_id(void) {
+const SpriteAnimationSetId& Sprite::get_animation_set_id(void) {
   return animation_set_id;
 }
 
@@ -114,7 +114,7 @@ int Sprite::get_next_frame(void) {
  * Returns the current animation of the sprite.
  * @return the name of the current animation of the sprite
  */
-std::string Sprite::get_current_animation(void) {
+const std::string& Sprite::get_current_animation(void) {
   return current_animation_name;
 }
 
@@ -124,7 +124,7 @@ std::string Sprite::get_current_animation(void) {
  * If the sprite is already playing the same animation, nothing is done.
  * @param animation_name name of the new animation of the sprite
  */
-void Sprite::set_current_animation(std::string animation_name) {
+void Sprite::set_current_animation(const std::string &animation_name) {
 
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 

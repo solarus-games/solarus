@@ -150,7 +150,7 @@ class Enemy: public Detector {
   virtual ~Enemy(void);
 
   static Enemy *create(EnemyType type, Rank rank, int savegame_variable,
-		       std::string name, Layer layer, int x, int y, int direction,
+		       const std::string &name, Layer layer, int x, int y, int direction,
 		       PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable);
 
   EntityType get_type(void);

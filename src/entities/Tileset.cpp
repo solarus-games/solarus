@@ -65,7 +65,7 @@ void Tileset::load(void) {
   // compute the file name, depending on the id
   std::ostringstream oss;
   oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << ".zsd";
-  string file_name = FileTools::data_file_add_prefix(oss.str());
+  const string &file_name = FileTools::data_file_add_prefix(oss.str());
 
   // open the tileset file
   std::ifstream tileset_file(file_name.c_str());

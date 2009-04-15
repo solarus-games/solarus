@@ -32,11 +32,11 @@
 class FileTools {
 
  public:
-  static std::string data_file_get_prefix(void);
-  static std::string data_file_add_prefix(std::string file_name);
-  static FILE *open_data_file(std::string file_name);
+  static const std::string data_file_get_prefix(void);
+  static const std::string data_file_add_prefix(const std::string &file_name);
+  static FILE *open_data_file(const std::string &file_name);
 
-  static SDL_Surface *open_image(std::string file_name);
+  static SDL_Surface *open_image(const std::string &file_name);
 
 };
 

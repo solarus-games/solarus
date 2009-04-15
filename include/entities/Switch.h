@@ -48,7 +48,7 @@ class Switch: public Detector {
 
  public:
 
-  Switch(std::string name, Layer layer, int x, int y,
+  Switch(const std::string &name, Layer layer, int x, int y,
 	 Subtype subtype, bool needs_block, bool disabled_when_leaving);
   ~Switch(void);
 

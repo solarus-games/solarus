@@ -115,7 +115,7 @@ class MapEntity {
   // creation
   MapEntity(void);
   MapEntity(Layer layer, int x, int y, int width, int height);
-  MapEntity(std::string name, int direction, Layer layer, int x, int y, int width, int height);
+  MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
 
   // method called by the subclasses to set their properties
   void set_direction(int direction);
@@ -124,7 +124,7 @@ class MapEntity {
   void set_origin(int x, int y);
   void set_origin(const SDL_Rect &origin);
   void set_rectangle_from_sprite(void);
-  void create_sprite(SpriteAnimationSetId id);
+  void create_sprite(const SpriteAnimationSetId &id);
   void set_movement(Movement *movement);
   void clear_movement(void);
 
@@ -173,7 +173,7 @@ class MapEntity {
 
   // properties
   virtual void set_map(Map *map);
-  std::string get_name(void) const;
+  const std::string& get_name(void) const;
   int get_direction(void);
 
   // sprites

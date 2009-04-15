@@ -249,7 +249,7 @@ void Map::set_destination_point(unsigned int destination_point_index) {
  * or "_same" to keep the hero's coordinates, or "_side0", "_side1", "_side2"
  * or "_side3 to place the hero on a side of the map
  */
-void Map::set_destination_point(std::string destination_point_name) {
+void Map::set_destination_point(const std::string &destination_point_name) {
 
   if (destination_point_name == "_same") {
     this->destination_point_index = -1;
@@ -491,12 +491,10 @@ bool Map::collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_c
 
   case OBSTACLE_SHALLOW_WATER:
   case OBSTACLE_DEEP_WATER:
-    // only the hero can move on water tiles
     on_obstacle = entity_to_check->is_water_obstacle();
     break;
 
   case OBSTACLE_HOLE:
-    // only the hero can move on a hole
     on_obstacle = entity_to_check->is_hole_obstacle();
     break;
   }

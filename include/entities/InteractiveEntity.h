@@ -59,7 +59,7 @@ class InteractiveEntity: public Detector {
 
  public:
 
-  InteractiveEntity(std::string name, Layer layer, int x, int y, Subtype subtype,
+  InteractiveEntity(const std::string &name, Layer layer, int x, int y, Subtype subtype,
 		    SpriteAnimationSetId sprite_name, int initial_direction, MessageId message_to_show);
   ~InteractiveEntity(void);
 

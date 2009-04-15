@@ -32,7 +32,7 @@ class CustomObstacle: public MapEntity {
 
  public:
 
-  CustomObstacle(std::string name, Layer layer, int x, int y, int width, int height,
+  CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
 		 bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
   ~CustomObstacle(void);
 

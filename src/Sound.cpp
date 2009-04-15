@@ -32,7 +32,7 @@ Sound::Sound(void) {
  * Creates a new sound.
  * @param sound_id id of the sound (a file name)
  */
-Sound::Sound(SoundId sound_id):
+Sound::Sound(const SoundId &sound_id):
   sound(NULL), channel(NULL) {
 
   file_name = FileTools::data_file_add_prefix("sounds/" + sound_id + ".wav");

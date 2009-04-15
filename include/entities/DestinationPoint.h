@@ -33,7 +33,7 @@ class DestinationPoint: public MapEntity {
 
  public:
 
-  DestinationPoint(std::string name, Layer layer, int x, int y, int hero_direction, bool is_visible);
+  DestinationPoint(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
   ~DestinationPoint(void);
 
   EntityType get_type(void);

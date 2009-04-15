@@ -38,7 +38,6 @@
 #include "entities/Switch.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
-#include <stdarg.h>
 using namespace std;
 
 /**
@@ -139,7 +138,7 @@ void MapScript::initialize(void) {
   // compute the file name, depending on the id
   std::ostringstream oss;
   oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".lua";
-  string file_name = FileTools::data_file_add_prefix(oss.str());
+  const string &file_name = FileTools::data_file_add_prefix(oss.str());
 
   // create an execution context
   context = lua_open();
@@ -167,38 +166,128 @@ void MapScript::initialize(void) {
  * @param function_name name of the function to call
  * @return true if the function was called, false if it does not exist
  */
-bool MapScript::call_lua_function(const char *function_name) {
-  return call_lua_function(function_name, 0);
-}
+bool MapScript::call_lua_function(const string &function_name) {
 
-/**
- * Calls a function with arguments in the script.
- * The arguments must be of type char*.
- * If the function does not exists in the script, nothing happens:
- * it just means that the function corresponds to an event that
- * the script does not want to handle.
- * @param function_name name of the function to call
- * @return true if the function was called, false if it does not exist
- */
-bool MapScript::call_lua_function(const char *function_name, int nb_arguments, ...) {
-
-  lua_getglobal(context, function_name);
-
+  lua_getglobal(context, function_name.c_str());
   bool exists = lua_isfunction(context, -1);
 
   if (exists) {
+    lua_call(context, 0, 0);
+  }
+  else {
+    lua_pop(context, -1);
+  }
 
-    // the function exists: push the arguments
-    va_list arg;
-    va_start(arg, nb_arguments);
-    for (int i = 0; i < nb_arguments; i++) {
-      const char* value = va_arg(arg, char*);
-      lua_pushstring(context, value);
-    }
-    va_end(arg);
+  return exists;
+}
 
-    // call the function
-    lua_call(context, nb_arguments, 0);
+/**
+ * Calls a function in the script.
+ * @param function_name name of the function to call
+ * @param arg1 argument of the function
+ * @return true if the function was called, false if it does not exist
+ */
+bool MapScript::call_lua_function(const string &function_name, const string &arg1) {
+
+  lua_getglobal(context, function_name.c_str());
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
+    lua_pushstring(context, arg1.c_str());
+    lua_call(context, 1, 0);
+  }
+  else {
+    lua_pop(context, -1);
+  }
+
+  return exists;
+}
+
+/**
+ * Calls a function in the script.
+ * @param function_name name of the function to call
+ * @param arg1 first argument of the function
+ * @param arg1 second argument of the function
+ * @return true if the function was called, false if it does not exist
+ */
+bool MapScript::call_lua_function(const string &function_name,
+				  const string &arg1, int arg2) {
+
+  lua_getglobal(context, function_name.c_str());
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
+    lua_pushstring(context, arg1.c_str());
+    lua_pushinteger(context, arg2);
+    lua_call(context, 2, 0);
+  }
+  else {
+    lua_pop(context, -1);
+  }
+
+  return exists;
+}
+
+/**
+ * Calls a function in the script.
+ * @param function_name name of the function to call
+ * @param arg1 argument of the function
+ * @return true if the function was called, false if it does not exist
+ */
+bool MapScript::call_lua_function(const string &function_name, int arg1) {
+
+  lua_getglobal(context, function_name.c_str());
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
+    lua_pushinteger(context, arg1);
+    lua_call(context, 1, 0);
+  }
+  else {
+    lua_pop(context, -1);
+  }
+
+  return exists;
+}
+
+/**
+ * Calls a function in the script.
+ * @param function_name name of the function to call
+ * @param arg1 first argument of the function
+ * @param arg1 second argument of the function
+ * @return true if the function was called, false if it does not exist
+ */
+bool MapScript::call_lua_function(const string &function_name, int arg1, int arg2) {
+
+  lua_getglobal(context, function_name.c_str());
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
+    lua_pushinteger(context, arg1);
+    lua_pushinteger(context, arg2);
+    lua_call(context, 2, 0);
+  }
+  else {
+    lua_pop(context, -1);
+  }
+
+  return exists;
+}
+
+/**
+ * Calls a function in the script.
+ * @param function_name name of the function to call
+ * @param arg1 argument of the function
+ * @return true if the function was called, false if it does not exist
+ */
+bool MapScript::call_lua_function(const string &function_name, bool arg1) {
+
+  lua_getglobal(context, function_name.c_str());
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
+    lua_pushboolean(context, arg1);
+    lua_call(context, 1, 0);
   }
   else {
     lua_pop(context, -1);
@@ -223,7 +312,7 @@ void MapScript::set_suspended(bool suspended) {
     }
 
     // notify the script
-    call_lua_function("event_set_suspended", 1, suspended ? "1" : "0");  
+    call_lua_function("event_set_suspended", suspended);  
   }
 }
 
@@ -264,7 +353,7 @@ void MapScript::add_timer(Timer *timer) {
  * Removes a timer if it exists.
  * @param callback_name name of the timer callback
  */
-void MapScript::remove_timer(string callback_name) {
+void MapScript::remove_timer(const string &callback_name) {
 
   bool found = false;
   std::list<Timer*>::iterator it;
@@ -321,7 +410,7 @@ int MapScript::l_unfreeze(lua_State *l) {
 int MapScript::l_start_message(lua_State *l) {
 
   check_nb_arguments(l, 1);
-  MessageId message_id = lua_tostring(l, 1);
+  const string &message_id = lua_tostring(l, 1);
 
   zsdx->game->show_message(message_id);
 
@@ -338,8 +427,8 @@ int MapScript::l_start_message(lua_State *l) {
 int MapScript::l_set_message_variable(lua_State *l) {
 
   check_nb_arguments(l, 2);
-  MessageId message_id = lua_tostring(l, 1);
-  MessageId value = lua_tostring(l, 2);
+  const MessageId &message_id = lua_tostring(l, 1);
+  const string &value = lua_tostring(l, 2);
 
   zsdx->game->get_dialog_box()->set_variable(message_id, value);
 
@@ -353,7 +442,7 @@ int MapScript::l_set_message_variable(lua_State *l) {
 int MapScript::l_play_sound(lua_State *l) {
 
   check_nb_arguments(l, 1);
-  SoundId sound_id = lua_tostring(l, 1);
+  const SoundId &sound_id = lua_tostring(l, 1);
 
   ResourceManager::get_sound(sound_id)->play();
 
@@ -414,7 +503,7 @@ int MapScript::l_savegame_get_string(lua_State *l) {
   check_nb_arguments(l, 1);
   int index = lua_tointeger(l, 1);
 
-  string value = zsdx->game->get_savegame()->get_string(index);
+  const string &value = zsdx->game->get_savegame()->get_string(index);
   lua_pushstring(l, value.c_str());
 
   return 1;
@@ -462,7 +551,7 @@ int MapScript::l_savegame_set_string(lua_State *l) {
 
   check_nb_arguments(l, 2);
   int index = lua_tointeger(l, 1);
-  const char *value = lua_tostring(l, 2);
+  const string &value = lua_tostring(l, 2);
 
   if (index < 32) {
     DIE("Cannot change savegame string '" << index << "': string variables below 32 are read-only");
@@ -521,7 +610,7 @@ int MapScript::l_start_timer(lua_State *l) {
 
   check_nb_arguments(l, 3);
   Uint32 duration = lua_tointeger(l, 1);
-  const char *callback_name = lua_tostring(l, 2);
+  const string &callback_name = lua_tostring(l, 2);
   bool with_sound = lua_toboolean(l, 3) != 0;
 
   Timer *timer = new Timer(duration, callback_name, with_sound);
@@ -539,7 +628,7 @@ int MapScript::l_start_timer(lua_State *l) {
 int MapScript::l_stop_timer(lua_State *l) {
 
   check_nb_arguments(l, 1);
-  const char *callback_name = lua_tostring(l, 1);
+  const string &callback_name = lua_tostring(l, 1);
 
   MapScript *script = zsdx->game->get_current_script();
   script->remove_timer(callback_name);
@@ -590,8 +679,8 @@ int MapScript::l_npc_walk(lua_State *l) {
 
   check_nb_arguments(l, 4);
 
-  string name = lua_tostring(l, 1);
-  string path = lua_tostring(l, 2);
+  const string &name = lua_tostring(l, 1);
+  const string &path = lua_tostring(l, 2);
   bool loop = lua_toboolean(l, 3) != 0;
   bool with_collisions = lua_toboolean(l, 4) != 0;
 
@@ -610,7 +699,7 @@ int MapScript::l_npc_random_walk(lua_State *l) {
 
   check_nb_arguments(l, 1);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
@@ -630,7 +719,7 @@ int MapScript::l_npc_jump(lua_State *l) {
 
   check_nb_arguments(l, 4);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
   int direction = lua_tointeger(l, 2);
   int length = lua_tointeger(l, 3);
   bool with_collisions = lua_toboolean(l, 4) != 0;
@@ -651,7 +740,7 @@ int MapScript::l_npc_set_direction(lua_State *l) {
 
   check_nb_arguments(l, 2);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
   int direction = lua_tointeger(l, 2);
 
   Map *map = zsdx->game->get_current_map();
@@ -669,7 +758,7 @@ int MapScript::l_npc_remove(lua_State *l) {
 
   check_nb_arguments(l, 1);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
   map->get_entities()->remove_entity(INTERACTIVE_ENTITY, name);
@@ -687,7 +776,7 @@ int MapScript::l_set_chest_open(lua_State *l) {
 
   check_nb_arguments(l, 2);
 
-  string chest_name = lua_tostring(l, 1);
+  const string &chest_name = lua_tostring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
 
   Map *map = zsdx->game->get_current_map();
@@ -728,7 +817,7 @@ int MapScript::l_remove_rupees(lua_State *l) {
 int MapScript::l_disable_tile(lua_State *l) {
 
   check_nb_arguments(l, 1);
-  string dynamic_tile_name = lua_tostring(l, 1);
+  const string &dynamic_tile_name = lua_tostring(l, 1);
   
   Map *map = zsdx->game->get_current_map();
   DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, dynamic_tile_name);
@@ -744,7 +833,7 @@ int MapScript::l_disable_tile(lua_State *l) {
 int MapScript::l_enable_tile(lua_State *l) {
 
   check_nb_arguments(l, 1);
-  string dynamic_tile_name = lua_tostring(l, 1);
+  const string &dynamic_tile_name = lua_tostring(l, 1);
   
   Map *map = zsdx->game->get_current_map();
   DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, dynamic_tile_name);
@@ -761,7 +850,7 @@ int MapScript::l_enable_tile(lua_State *l) {
 int MapScript::l_is_tile_enabled(lua_State *l) {
 
   check_nb_arguments(l, 1);
-  string dynamic_tile_name = lua_tostring(l, 1);
+  const string &dynamic_tile_name = lua_tostring(l, 1);
   
   Map *map = zsdx->game->get_current_map();
   DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, dynamic_tile_name);
@@ -777,7 +866,7 @@ int MapScript::l_is_tile_enabled(lua_State *l) {
 int MapScript::l_reset_block(lua_State *l) {
 
   check_nb_arguments(l, 1);
-  string block_name = lua_tostring(l, 1);
+  const string &block_name = lua_tostring(l, 1);
   
   Map *map = zsdx->game->get_current_map();
   Block *block = (Block*) map->get_entities()->get_entity(BLOCK, block_name);
@@ -815,7 +904,7 @@ int MapScript::l_interactive_entity_get_animation(lua_State *l) {
 
   check_nb_arguments(l, 1);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
@@ -835,7 +924,7 @@ int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
 
   check_nb_arguments(l, 1);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
@@ -855,7 +944,7 @@ int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
 
   check_nb_arguments(l, 1);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
@@ -875,7 +964,7 @@ int MapScript::l_interactive_entity_is_animation_paused(lua_State *l) {
 
   check_nb_arguments(l, 1);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
@@ -895,8 +984,8 @@ int MapScript::l_interactive_entity_set_animation(lua_State *l) {
 
   check_nb_arguments(l, 2);
 
-  string name = lua_tostring(l, 1);
-  string animation = lua_tostring(l, 2);
+  const string &name = lua_tostring(l, 1);
+  const string &animation = lua_tostring(l, 2);
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
@@ -914,7 +1003,7 @@ int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
 
   check_nb_arguments(l, 2);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
   Uint32 delay = lua_tointeger(l, 2);
 
   Map *map = zsdx->game->get_current_map();
@@ -933,7 +1022,7 @@ int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
 
   check_nb_arguments(l, 2);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
   int frame = lua_tointeger(l, 2);
 
   Map *map = zsdx->game->get_current_map();
@@ -952,7 +1041,7 @@ int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
 
   check_nb_arguments(l, 2);
 
-  string name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
   bool paused = lua_toboolean(l, 2) != 0;
 
   Map *map = zsdx->game->get_current_map();
@@ -1021,8 +1110,8 @@ void MapScript::event_map_started(void) {
  * in the dialog box.
  * @param message_id id of the message
  */
-void MapScript::event_message_started(MessageId message_id) {
-  call_lua_function("event_message_started", 1, message_id.c_str());
+void MapScript::event_message_started(const MessageId &message_id) {
+  call_lua_function("event_message_started", message_id);
 }
 
 /**
@@ -1033,35 +1122,32 @@ void MapScript::event_message_started(MessageId message_id) {
  * @param answer the answer selected by the player: 0 for the first one, 
  * 1 for the second one, -1 if there was no question
  */
-void MapScript::event_message_sequence_finished(MessageId first_message_id, int answer) {
-
-  char s[16];
-  sprintf(s, "%d", answer);
-  call_lua_function("event_message_sequence_finished", 2, first_message_id.c_str(), s);
+void MapScript::event_message_sequence_finished(const MessageId &first_message_id, int answer) {
+  call_lua_function("event_message_sequence_finished", first_message_id, answer);
 }
 
 /**
  * Notifies the script that a switch has just been enabled.
  * @param sw the switch
  */
-void MapScript::event_switch_enabled(string switch_name) {
-  call_lua_function("event_switch_enabled", 1, switch_name.c_str());
+void MapScript::event_switch_enabled(const string &switch_name) {
+  call_lua_function("event_switch_enabled", switch_name);
 }
 
 /**
  * Notifies the script that a switch has just been disabled.
  * @param sw the switch
  */
-void MapScript::event_switch_disabled(string switch_name) {
-  call_lua_function("event_switch_disabled", 1, switch_name.c_str());
+void MapScript::event_switch_disabled(const string &switch_name) {
+  call_lua_function("event_switch_disabled", switch_name);
 }
 
 /**
  * Notifies the script that the hero is overlapping a sensor.
  * @param sensor_name name of the sensor
  */
-void MapScript::event_hero_on_sensor(string sensor_name) {
-  call_lua_function("event_hero_on_sensor", 1, sensor_name.c_str());
+void MapScript::event_hero_on_sensor(const string &sensor_name) {
+  call_lua_function("event_hero_on_sensor", sensor_name);
 }
 
 /**
@@ -1077,8 +1163,8 @@ void MapScript::event_camera_reached_target(void) {
  * key in front an interactive entity.
  * @param entity_name name of the interactive entity
  */
-void MapScript::event_interaction(string entity_name) {
-  call_lua_function("event_interaction", 1, entity_name.c_str());
+void MapScript::event_interaction(const string &entity_name) {
+  call_lua_function("event_interaction", entity_name);
 }
 
 /**
@@ -1086,16 +1172,16 @@ void MapScript::event_interaction(string entity_name) {
  * key in front an NPC.
  * @param npc_name name of the NPC
  */
-void MapScript::event_npc_dialog(string npc_name) {
-  call_lua_function("event_npc_dialog", 1, npc_name.c_str());
+void MapScript::event_npc_dialog(const string &npc_name) {
+  call_lua_function("event_npc_dialog", npc_name);
 }
 
 /**
  * Notifies the script that an NPC has just finished its movement.
  * @param npc_name name of the NPC
  */
-void MapScript::event_npc_movement_finished(string npc_name) {
-  call_lua_function("event_npc_movement_finished", 1, npc_name.c_str());
+void MapScript::event_npc_movement_finished(const string &npc_name) {
+  call_lua_function("event_npc_movement_finished", npc_name);
 }
 
 /**
@@ -1106,8 +1192,8 @@ void MapScript::event_npc_movement_finished(string npc_name) {
  * @param chest_name name of the chest
  * @return true if the script has handled the event
  */
-bool MapScript::event_open_empty_chest(string chest_name) {
-  return call_lua_function("event_open_empty_chest", 1, chest_name.c_str());
+bool MapScript::event_open_empty_chest(const string &chest_name) {
+  return call_lua_function("event_open_empty_chest", chest_name);
 }
 
 /**
@@ -1119,11 +1205,5 @@ bool MapScript::event_open_empty_chest(string chest_name) {
  * (or -1 if the treasure is not saved)
  */
 void MapScript::event_got_treasure(Treasure::Content content, int savegame_variable) {
-
-  char s_content[16];
-  sprintf(s_content, "%d", content);
-
-  char s_savegame_variable[16];
-  sprintf(s_savegame_variable, "%d", savegame_variable);
-  call_lua_function("event_got_treasure", 2, s_content, s_savegame_variable);
+  call_lua_function("event_got_treasure", content, savegame_variable);
 }

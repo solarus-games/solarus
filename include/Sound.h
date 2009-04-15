@@ -45,7 +45,7 @@ class Sound {
 
  public:
 
-  Sound(SoundId sound_id);
+  Sound(const SoundId &sound_id);
   virtual ~Sound(void);
 
   static void initialize(void);

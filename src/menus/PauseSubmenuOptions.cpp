@@ -154,11 +154,11 @@ void PauseSubmenuOptions::load_control_texts(void) {
 
     Controls::GameKey key = (Controls::GameKey) (i + 1);
 
-    std::string text = controls->get_keyboard_string(key);
-    keyboard_control_texts[i]->set_text(text);
+    const std::string &keyboard_text = controls->get_keyboard_string(key);
+    keyboard_control_texts[i]->set_text(keyboard_text);
 
-    text = controls->get_joypad_string(key);
-    joypad_control_texts[i]->set_text(text);
+    const std::string &joypad_text = controls->get_joypad_string(key);
+    joypad_control_texts[i]->set_text(joypad_text);
 
     game_key_texts[i]->display(controls_surface);
     keyboard_control_texts[i]->display(controls_surface);

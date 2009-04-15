@@ -59,7 +59,13 @@ EntityType CrystalSwitch::get_type() {
  * @return true
  */
 bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
-  return true;
+
+  if (other->get_type() != CARRIED_ITEM) {
+    return true;
+  }
+
+  CarriedItem *item = (CarriedItem*) other;
+  return !item->is_being_thrown();
 }
 
 /**
@@ -74,6 +80,7 @@ void CrystalSwitch::collision(MapEntity *entity_overlapping, CollisionMode colli
     CarriedItem *item = (CarriedItem*) entity_overlapping;
     if (item->is_being_thrown()) {
       activate();
+      item->break_item();
     }
   }
 }

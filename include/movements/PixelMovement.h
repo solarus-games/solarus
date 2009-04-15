@@ -74,6 +74,9 @@ class PixelMovement: public MovementWithCollision {
  protected:
 
   PixelMovement(Map *map, int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
+
+  bool collision_with_map(int dx, int dy);
+
   void set_translation_vectors(const SDL_Rect *translation_vectors);
   virtual void make_next_move(void);
   int get_vector_index(void);

@@ -8,7 +8,6 @@
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Transition game over : centrer sur le héros
-- Buissons et vases : placer l'entité au niveau de l'ombre et pas du sprite
 
 - Bugs:
   - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)

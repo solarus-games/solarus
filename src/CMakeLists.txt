@@ -123,7 +123,6 @@ add_executable (zsdx
   movements/PixelMovement.cpp
   movements/FairyMovement.cpp
   movements/FollowMovement.cpp
-  movements/ThrownItemMovement.cpp
   movements/TargetMovement.cpp
   movements/JumpMovement.cpp
   movements/StraightMovement.cpp

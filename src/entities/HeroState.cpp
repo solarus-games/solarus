@@ -417,7 +417,6 @@ void Hero::update_carried_items(void) {
 
   if (thrown_item != NULL) {
     thrown_item->update();
-
     if (thrown_item->is_broken()) {
       delete thrown_item;
       thrown_item = NULL;

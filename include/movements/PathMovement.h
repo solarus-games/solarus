@@ -51,7 +51,6 @@ class PathMovement: public MovementWithCollision {
   bool collision_with_map(int dx, int dy);
   virtual void start_next_move(void);
 
-
  public:
 
   PathMovement(Map *map, const std::string &path, int speed, bool loop, bool with_collisions);

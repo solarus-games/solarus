@@ -427,10 +427,6 @@ void Hero::update(void) {
 
     map->check_collision_with_detectors(this);
 
-    if (thrown_item != NULL) {
-      map->check_collision_with_detectors(thrown_item);
-    }
-
     if (equipment->get_hearts() <= 0 && can_start_gameover_sequence()) {
       stop_blinking();
       zsdx->game->start_gameover_sequence();

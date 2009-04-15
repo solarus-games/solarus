@@ -21,7 +21,7 @@
  * @param surface the surface where the image is
  * @param image_position position of the image on this surface
  */
-PixelBits::PixelBits(SDL_Surface *surface, SDL_Rect &image_position) {
+PixelBits::PixelBits(SDL_Surface *surface, const SDL_Rect &image_position) {
 
   SDL_PixelFormat *format = surface->format;
   if (format->BitsPerPixel != 8) {
@@ -111,7 +111,7 @@ PixelBits::~PixelBits(void) {
  * @param location2 position of the top-left corner of the other image on the map (only x and y must be specified)
  * @return true if there is a collision
  */
-bool PixelBits::check_collision(PixelBits *other, SDL_Rect &location1, SDL_Rect &location2) {
+bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, const SDL_Rect &location2) {
 
   // compute the two bounding boxes
   SDL_Rect bounding_box1 = location1;
@@ -222,7 +222,7 @@ bool PixelBits::check_collision(PixelBits *other, SDL_Rect &location1, SDL_Rect 
  * @param rectangle2 second rectangle
  * @return true if there is a collision
  */
-bool PixelBits::check_rectangle_collision(SDL_Rect &rectangle1, SDL_Rect &rectangle2) {
+bool PixelBits::check_rectangle_collision(const SDL_Rect &rectangle1, const SDL_Rect &rectangle2) {
 
   int x1 = rectangle1.x;
   int x2 = x1 + rectangle1.w;

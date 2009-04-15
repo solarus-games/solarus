@@ -62,6 +62,18 @@ PixelMovement::~PixelMovement(void) {
 }
 
 /**
+ * Returns whether the entity would collide with the map
+ * if it was moved a few pixels from its position.
+ * If the collisions are not enabled for this movement, false is always returned.
+ * @param dx x distance between the current position and the position to check
+ * @param dy y distance between the current position and the position to check
+ * @return true if the entity would overlap the map obstacles in this position
+ */
+bool PixelMovement::collision_with_map(int dx, int dy) {
+  return with_collisions && MovementWithCollision::collision_with_map(dx, dy);
+}
+
+/**
  * Sets the translation vectors of the trajectory.
  * @param translation_vectors the trajectory
  */

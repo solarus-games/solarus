@@ -28,15 +28,23 @@ class CarriedItem: public MapEntity {
 
  private:
 
-  Map *map;
-  Hero *hero;
-  bool is_lifting;
-  bool is_throwing;
-  bool is_breaking;
-  Sound *destruction_sound;
-  Sprite *shadow_sprite;
-  int throwing_direction;
-  int damage_on_enemies;
+  // game data
+  Map *map;                 /**< the map */
+  Hero *hero;               /**< the hero, who is carrying or throwing this item */
+
+  // state
+  bool is_lifting;          /**< indicates that the hero is lifting this item */
+  bool is_throwing;         /**< indicates that the item is being thrown */
+  bool is_breaking;         /**< indicates that the item is breaking */
+  Sound *destruction_sound; /**< the sound played when the item breaks */
+  int damage_on_enemies;    /**< damage for an enemy that receives the item */
+
+  // throwing the item
+  Sprite *shadow_sprite;    /**< sprite of the shadow when the item is being thrown */
+  int throwing_direction;   /**< direction where the item is thrown (0 to 3) */
+  Uint32 next_down_date;    /**< when the item is thrown, date when it move one pixel downwards next time */
+  int item_height;          /**< current height where the item is displayed above its shadow */
+  int y_increment;          /**< next y change for item_height */
 
  public:
 
@@ -51,16 +59,17 @@ class CarriedItem: public MapEntity {
   void set_animation_walking(void);
   void throw_item(Map *map, int direction);
   bool is_being_thrown(void);
+  void break_item(void);
   bool is_broken(void);
 
   void set_suspended(bool suspended);
   void update(void);
   void display_on_map(void);
 
-  void collision_with_enemy(Enemy *enemy);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   bool is_water_obstacle(void);
   bool is_hole_obstacle(void);
+  void collision_with_enemy(Enemy *enemy);
 };
 
 #endif

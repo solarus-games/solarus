@@ -51,13 +51,15 @@ const int Hero::animation_directions[] = {
   -1,  // down + left + right + up: no change
 };
 
+const int Hero::walking_speed = 10;
+
 /**
  * Constructor.
  */
 Hero::Hero(Equipment *equipment):
   equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
   sword_stars_sprite(NULL), shield_sprite(NULL), ground_sprite(NULL),
-  normal_movement(new PlayerMovement(12)), state(FREE), facing_entity(NULL),
+  normal_movement(new PlayerMovement(walking_speed)), state(FREE), facing_entity(NULL),
   end_blink_date(0), counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF), grabbed_entity(NULL), walking(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),

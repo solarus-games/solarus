@@ -81,12 +81,13 @@ class Hero: public MapEntity {
   static const SpriteAnimationSetId sword_sprite_ids[];       /**< name of each sword sprite */
   static const SpriteAnimationSetId sword_stars_sprite_ids[]; /**< name of each sword stars sprite */
   static const SpriteAnimationSetId shield_sprite_ids[];      /**< name of each shield sprite */
-  static const SpriteAnimationSetId ground_sprite_ids[];      /**< name of each shield sprite  */
+  static const SpriteAnimationSetId ground_sprite_ids[];      /**< name of each ground sprite */
   static const SoundId sword_sound_ids[];                     /**< name of each sword sound */
   static const SoundId ground_sound_ids[];                    /**< name of each ground sound */
 
   // movement
   PlayerMovement *normal_movement;
+  static const int walking_speed;                             /**< speed of the player movement */
   static const int animation_directions[];                    /**< direction of the animation for each arrow key combination */
   bool move_tried;                                            /**< indicates that the hero just tried to move */
   int old_x;                                                  /**< x position of the hero before the last move try */

@@ -211,7 +211,7 @@ void Controls::handle_event(const SDL_Event &event) {
       equipment->give_inventory_item(InventoryItem::HOOK_SHOT);
       equipment->give_inventory_item(InventoryItem::PEGASUS_SHOES);
       equipment->give_inventory_item(InventoryItem::BOTTLE_1);
-      equipment->give_inventory_item(InventoryItem::GLOVE, 2);
+      equipment->give_inventory_item(InventoryItem::GLOVE);
       equipment->give_inventory_item(InventoryItem::PAINS_AU_CHOCOLAT);
       equipment->set_inventory_item_amount(InventoryItem::PAINS_AU_CHOCOLAT, 3);
       equipment->give_inventory_item(InventoryItem::CROISSANTS);

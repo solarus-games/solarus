@@ -125,14 +125,19 @@ void Hero::start_ground(void) {
 
   case GROUND_SHALLOW_WATER:
   case GROUND_GRASS:
-    // display a special sprite below the hero
-    ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
-    ground_sprite->set_current_animation(walking ? "walking" : "stopped");
+    {
+      // display a special sprite below the hero
+      ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
 
-    ground_sound = ResourceManager::get_sound(ground_sound_ids[ground - 1]);
-    next_ground_sound_date = MAX(next_ground_sound_date, SDL_GetTicks());
+      if (ground != GROUND_SHALLOW_WATER) {
+	ground_sprite->set_current_animation(walking ? "walking" : "stopped");
+      }
+
+      Uint32 now = SDL_GetTicks();
+      next_ground_sound_date = MAX(next_ground_sound_date, now);
+      ground_sound = ResourceManager::get_sound(ground_sound_ids[ground - 1]);
+    }
     break;
-
   }
 }
 
@@ -1155,7 +1160,7 @@ void Hero::set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_co
  * @param target coordinates of the solid ground location
  */
 void Hero::start_returning_to_solid_ground(const SDL_Rect &target) {
-  set_movement(new TargetMovement(target.x, target.y, 12));
+  set_movement(new TargetMovement(target.x, target.y, walking_speed));
   set_state(RETURNING_TO_SOLID_GROUND);
 }
 

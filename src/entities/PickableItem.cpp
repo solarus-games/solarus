@@ -209,12 +209,12 @@ PickableItem::Subtype PickableItem::choose_random_subtype(void) {
 
   Equipment *equipment = zsdx->game->get_equipment();
 
-  if (r < 625) {
-    // give the player nothing with probability 62.5%
+  if (r < 665) {
+    // give the player nothing with probability 66.5%
     subtype = NONE;
   }
 
-  else if (r < 725) { // with probability 10%
+  else if (r < 765) { // with probability 10%
     // give the player what he needs, or nothing if he doesn't need anything
     
     // does he need hearts?
@@ -243,21 +243,21 @@ PickableItem::Subtype PickableItem::choose_random_subtype(void) {
     }
   }
 
-  // the remaining 27.5% are distributed as follows:
+  // the remaining 23.5% are distributed as follows:
 
-  else if (r < 825) { subtype = HEART; }       // heart: 10%
-  else if (r < 875) { subtype = RUPEE_1; }     // 1 rupee: 5%
-  else if (r < 890) { subtype = RUPEE_5; }     // 5 rupees: 1.5%
-  else if (r < 895) { subtype = RUPEE_20; }    // 20 rupees: 0.5%
-  else if (r < 897) { subtype = FAIRY; }       // fairy: 0.2%
-  else if (r < 922) { subtype = SMALL_MAGIC; } // small magic: 2.5%
-  else if (r < 930) { subtype = BIG_MAGIC; }   // big magic: 0.8%
-  else if (r < 950) { subtype = BOMB_1; }      // 1 bomb: 2%
-  else if (r < 960) { subtype = BOMB_5; }      // 5 bombs: 1%
-  else if (r < 965) { subtype = BOMB_10; }     // 10 bombs: 0.5%
-  else if (r < 985) { subtype = ARROW_1; }     // 1 arrow: 2%
-  else if (r < 995) { subtype = ARROW_5; }     // 5 arrows: 1%
-  else              { subtype = ARROW_10; }    // 10 arrows: 0.5%
+  else if (r < 865) { subtype = HEART; }       // heart:       10%
+  else if (r < 915) { subtype = RUPEE_1; }     // 1 rupee:     5%
+  else if (r < 930) { subtype = RUPEE_5; }     // 5 rupees:    1.5%
+  else if (r < 935) { subtype = RUPEE_20; }    // 20 rupees:   0.5%
+  else if (r < 937) { subtype = FAIRY; }       // fairy:       0.2%
+  else if (r < 962) { subtype = SMALL_MAGIC; } // small magic: 2.5%
+  else if (r < 970) { subtype = BIG_MAGIC; }   // big magic:   0.8%
+  else if (r < 978) { subtype = BOMB_1; }      // 1 bomb:      0.8%
+  else if (r < 983) { subtype = BOMB_5; }      // 5 bombs:     0.5%
+  else if (r < 985) { subtype = BOMB_10; }     // 10 bombs:    0.2%
+  else if (r < 993) { subtype = ARROW_1; }     // 1 arrow:     0.8%
+  else if (r < 998) { subtype = ARROW_5; }     // 5 arrows:    0.5%
+  else              { subtype = ARROW_10; }    // 10 arrows:   0.2%
 
   return subtype;
 }

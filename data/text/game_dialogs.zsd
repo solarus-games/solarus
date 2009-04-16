@@ -373,7 +373,7 @@ line2 = "trois rubis de couleurs"
 line3 = "différentes, c'est pas"
 next = rupee_house.game_2.reward.different_rupees.2
 
-[rupee_house.game_2.reward.reward.different_rupees.2]
+[rupee_house.game_2.reward.different_rupees.2]
 #       |-----------------------|
 line1 = "tous les jours qu'on"
 line2 = "voit ça ! Tu remportes"

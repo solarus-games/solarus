@@ -1,3 +1,12 @@
+Prochaines mises à jour :
+
+- avancement
+- artworks Newlink
+- l'équipe
+
+
+Feature requests :
+
 - Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde dans FileTools
 - Mettre de la couleur dans les messages
@@ -8,13 +17,40 @@
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Transition game over : centrer sur le héros
-- MP de Thyb
+- Animer l'écran-titre et y mettre un message "Appuyez sur Espace"
+- Sauvegarder la résolution du jeu dans un fichier de configuration ini
+- Lorsque l'on charge l'épée pour couper des buissons "à la chaîne" il n'y a pas une
+  certaine butée qui nous les fait couper 1 par 1
+- Adapter le nombre de FPS dynamiquement suivant les capacités
+- Conserver le chargement de l'épée ou l'objet porté dans les changements de map ?
+- Mettre un PNJ qui explique les touches (et pas seulement action)
 
-- Bugs:
-  - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-  - la barre de magie moyenne peut déborder (yoshi04)
-  - crystal switch blocks : quand on est dessus alors qu'ils sont levés, on peut se déplacer uniquement 
-    sur ceux du rectangle où on se trouve
+
+Bugs :
+
+- plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+- la barre de magie moyenne peut déborder (yoshi04)
+- le menu option fonctionne au premier abord mais plante lorsque l'on quitte le jeu avec echap après avoir personnalisé les boutons de la manette : "Fatal error: No joypad action is defined for game key 'Action'"
+- crystal switch blocks : quand on est dessus alors qu'ils sont levés, on peut se déplacer uniquement 
+  sur ceux du rectangle où on se trouve
+- grotte du forgeron : activer les interrupteurs de cristal avec les vases, trop compliqué ? Changer le sens de 
+  parcours de la grotte ? Mettre plus de vases et de blocs pour que ce soit plus évident ? Mettre un PNJ dans le village 
+  qui conseille de lancer des vases ?
+- Bandit manchot : 400 rubis gagnés sans trop de peine indéfiniment ("avec de l'entrainement je ne dis pas que l'on peut y arriver a tous les coup mais très souvent oui")
+
+- Les sauts à partir des corniches sont trop rapides
+- Le HUD gêne lorsque l'on est dans le coin nord ouest de la map ou maison ou l'on se trouve (peut-être faire un HUD moins opaque pour les boutons a moins mais pas pour le texte (Voir, Soulever, ...) et les icônes des objets)
+- au bandit manchot, lorsque je me place devant la 1ere roulette link de temps en temps part sur la gauche sans raisons
+- les plongeons sans palmes, après vérification on ne perds pas de coeurs seulement dans links' awakening, on en perd dans ALTTP, OOA et OOS
+
+
+Bugs a priori corrigés, demander confirmation à Thyb avec une nouvelle démo :
+
+- Link se déplace trop vite
+- Jeux des 3 coffres : j'ai gagné 1 fois 50 rubis après il n'y a plus moyen d'y rejouer
+
+
+A venir :
 
 - Prochains types d'entités:
   - portes
@@ -70,6 +106,8 @@ Mode release :
 - Inclure le fichier de licence GPL
 
 ----------------------
+Feature requests de l'éditeur :
+
 - Compléter l'éditeur de maps et de tilesets :
 	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
 	- vue arborescente de toutes les entités par type ?

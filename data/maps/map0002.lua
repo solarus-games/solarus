@@ -13,9 +13,9 @@ game_2_reward = 0
 
 -- game 2 behavior
 game_2_slots = {
-   slot_machine_left =   {initial_frame = 6, initial_delay = 70, current_delay = 0, symbol = -1},
-   slot_machine_middle = {initial_frame = 15, initial_delay = 90, current_delay = 0, symbol = -1},
-   slot_machine_right =  {initial_frame = 9, initial_delay = 60, current_delay = 0, symbol = -1}
+   slot_machine_left =   {initial_frame = 6, initial_delay = 60, current_delay = 0, symbol = -1},
+   slot_machine_middle = {initial_frame = 15, initial_delay = 80, current_delay = 0, symbol = -1},
+   slot_machine_right =  {initial_frame = 9, initial_delay = 50, current_delay = 0, symbol = -1}
 }
 
 -- Function called when the map starts
@@ -211,6 +211,10 @@ function event_open_empty_chest(chest_name)
       -- give a random reward
       index = math.random(#game_1_rewards)
       amount = game_1_rewards[index]
+      if amount == 50 and not already_played_game_1 then
+	 -- don't give 50 rupees at the first attempt
+	 amount = 10
+      end
 
       -- 87 means green rupees (see include/Treasure.h), amount is the number of rupees to give
       -- and -1 means that the chest is not saved

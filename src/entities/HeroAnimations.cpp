@@ -336,7 +336,7 @@ void Hero::set_animation_stopped(void) {
     break;
   }
 
-  if (is_ground_visible()) {
+  if (is_ground_visible() && ground != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("stopped");
   }
 
@@ -401,7 +401,7 @@ void Hero::set_animation_walking(void) {
     break;
   }
 
-  if (is_ground_visible()) {
+  if (is_ground_visible() && ground != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("walking");
   }
 

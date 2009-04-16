@@ -28,16 +28,6 @@
 #include "menus/SelectionMenuSelectFile.h"
 
 /**
- * Number of times the screen is redrawn is a second.
- */
-const int FRAMES_PER_SECOND = 40;
-
-/**
- * Delay between two frames in millisecond.
- */
-const int FRAME_INTERVAL = 1000 / FRAMES_PER_SECOND;
-
-/**
  * Global variable to get the ZSDX instance
  * from anywhere in the code.
  */
@@ -126,10 +116,15 @@ void ZSDX::main(void) {
 
   // SDL main loop
   SDL_Event event = {};
-  Uint32 now, last_frame_date = 0;
+  Uint32 now;
+  Uint32 next_frame_date = SDL_GetTicks();
+  Uint32 frame_interval = 25; // time interval between to displays
   int delay;
+  bool just_displayed; // to detect when the FPS number needs to be decreased
 
   while (!is_exiting()) {
+
+    //    std::cout << "FPS: " << (1000 / frame_interval) << std::endl;
 
     // handle the SDL events
     if (SDL_PollEvent(&event)) {
@@ -155,13 +150,32 @@ void ZSDX::main(void) {
 
       // display everything each time frame
       now = SDL_GetTicks();
-      delay = (last_frame_date + FRAME_INTERVAL) - now;
-      if (delay <= 0) { // delay is the time before the next display
-	last_frame_date = now;
+      delay = next_frame_date - now;
+      // delay is the time remaining before the next display
+
+      if (delay <= 0) { // it's time to display
+
+	// see whether the FPS number is too high
+	if (just_displayed && frame_interval <= 30) {
+	  frame_interval += 5; // display the screen less often
+	  //	  std::cout << "decreasing the FPS number: " << (1000 / frame_interval) << std::endl;
+	}
+
+	next_frame_date = now + frame_interval;
+	just_displayed = true;
 	display();
       }
-      else if (delay >= 10) { // if we have time, let's sleep
-	SDL_Delay(10);
+      else {
+	just_displayed = false;
+
+	// if we have time, let's sleep to avoid using all the processor
+	SDL_Delay(1);
+
+	if (delay >= 15) {
+	  // if we have much time, increase the FPS number
+	  frame_interval--;
+	  //	  std::cout << "increasing the FPS number: " << (1000 / frame_interval) << std::endl;
+	}
       }
     }
   }

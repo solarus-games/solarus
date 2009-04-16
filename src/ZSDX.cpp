@@ -158,7 +158,7 @@ void ZSDX::main(void) {
 	// see whether the FPS number is too high
 	if (just_displayed && frame_interval <= 30) {
 	  frame_interval += 5; // display the screen less often
-	  //	  std::cout << "decreasing the FPS number: " << (1000 / frame_interval) << std::endl;
+	  std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
 	}
 
 	next_frame_date = now + frame_interval;
@@ -174,7 +174,7 @@ void ZSDX::main(void) {
 	if (delay >= 15) {
 	  // if we have much time, increase the FPS number
 	  frame_interval--;
-	  //	  std::cout << "increasing the FPS number: " << (1000 / frame_interval) << std::endl;
+	  std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
 	}
       }
     }

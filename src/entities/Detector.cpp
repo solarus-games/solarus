@@ -259,6 +259,7 @@ bool Detector::moved_by_hero(void) {
 /**
  * When the sword sprite collides with this detector,
  * this function can be called to determine whether the sword is really hitting the detector.
+ * This depends on the hero state and its distance to the detector.
  * This function assumes that there is already a collision between the sword sprite and the detector's sprite.
  * @param hero the hero
  * @return true if the sword is hitting this detector

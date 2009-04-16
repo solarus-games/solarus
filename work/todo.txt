@@ -21,7 +21,6 @@ Feature requests :
 - Sauvegarder la résolution du jeu dans un fichier de configuration ini
 - Lorsque l'on charge l'épée pour couper des buissons "à la chaîne" il n'y a pas une
   certaine butée qui nous les fait couper 1 par 1
-- Adapter le nombre de FPS dynamiquement suivant les capacités
 - Conserver le chargement de l'épée ou l'objet porté dans les changements de map ?
 - Mettre un PNJ qui explique les touches (et pas seulement action)
 
@@ -31,6 +30,7 @@ Bugs :
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - la barre de magie moyenne peut déborder (yoshi04)
 - le menu option fonctionne au premier abord mais plante lorsque l'on quitte le jeu avec echap après avoir personnalisé les boutons de la manette : "Fatal error: No joypad action is defined for game key 'Action'"
+- saut depuis un demi-étage ou une falaise : on peut passer à moitié à travers l'obstacle
 - crystal switch blocks : quand on est dessus alors qu'ils sont levés, on peut se déplacer uniquement 
   sur ceux du rectangle où on se trouve
 - grotte du forgeron : activer les interrupteurs de cristal avec les vases, trop compliqué ? Changer le sens de 

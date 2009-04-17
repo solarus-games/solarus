@@ -32,7 +32,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   {false,  true,  true, false}, // pickable item
   { true,  true,  true, false}, // destructible item
   { true,  true,  true,  true}, // chest
-  {false,  true, false, false}, // jump sensor
+  { true,  true, false, false}, // jump sensor
   { true,  true,  true,  true}, // enemy
   { true,  true,  true,  true}, // interactive entity
   { true,  true,  true,  true}, // block
@@ -630,6 +630,15 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
  * @return true if the sensor are currently an obstacle for this entity
  */
 bool MapEntity::is_sensor_obstacle(Sensor *sensor) {
+  return false;
+}
+
+/**
+ * Returns true if this entity does not react to the sword.
+ * If true is returned, nothing will happen when the hero hits this entity with the sword.
+ * @return true if the sword is ignored
+ */
+bool MapEntity::is_sword_ignored(void) {
   return false;
 }
 

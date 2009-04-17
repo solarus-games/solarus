@@ -757,6 +757,7 @@ void Hero::place_on_destination_point(Map *map) {
     set_map(map, destination_point->get_direction());
     set_x(destination_point->get_x());
     set_y(destination_point->get_y());
+    map->get_entities()->set_hero_layer(destination_point->get_layer());
   }
   else if (destination_point_index == -1) {
 

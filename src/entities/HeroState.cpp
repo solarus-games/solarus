@@ -17,6 +17,7 @@
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "entities/Teletransporter.h"
+#include "entities/MapEntities.h"
 #include "movements/PlayerMovement.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
@@ -549,8 +550,9 @@ void Hero::update_pushing(void) {
 	  start_pushing(); // start animation "pushing" when the counter reaches 8
 	}
       }
-      else if (state == SWORD_LOADING &&
-	       get_movement_direction() == get_animation_direction() * 90) {
+      else if (state == SWORD_LOADING
+	       && get_movement_direction() == get_animation_direction() * 90
+	       && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {
 	// in state SWORD_LOADING: hit the wall with the sword
 	pushing_direction_mask = direction_mask;
 	start_sword_hitting();
@@ -905,6 +907,7 @@ void Hero::update_spin_attack(void) {
     start_free();
   }
 }
+
 /**
  * Makes the hero jump in a direction.
  * While he is jumping, the player does not control him anymore.
@@ -913,6 +916,17 @@ void Hero::update_spin_attack(void) {
  * @param with_collisions true to stop the movement if there is a collision
  */
 void Hero::start_jumping(int direction, int length, bool with_collisions) {
+  start_jumping(direction, length, with_collisions, get_layer());
+}
+
+/**
+ * Makes the hero jump in a direction.
+ * While he is jumping, the player does not control him anymore.
+ * @param direction direction of the jump (0 to 7)
+ * @param length length of the jump in pixels
+ * @param with_collisions true to stop the movement if there is a collision
+ */
+void Hero::start_jumping(int direction, int length, bool with_collisions, Layer layer_after_jump) {
 
   // remove the carried item
   if (state == CARRYING) {
@@ -927,6 +941,7 @@ void Hero::start_jumping(int direction, int length, bool with_collisions) {
   set_animation_jumping();
   ResourceManager::get_sound("jump")->play();
   jump_y = get_y();
+  this->layer_after_jump = layer_after_jump;
 }
 
 /**
@@ -940,6 +955,7 @@ void Hero::update_jumping(void) {
 
   if (movement->is_finished()) {
 
+    map->get_entities()->set_hero_layer(layer_after_jump);
     clear_movement();
     set_movement(normal_movement);
 

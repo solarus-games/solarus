@@ -467,26 +467,26 @@ bool Map::collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_c
     // so we have to test the position of the point
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile < x_in_tile;
+    on_obstacle = y_in_tile <= x_in_tile;
     break;
 
   case OBSTACLE_TOP_LEFT:
     // same thing
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile < 8 - x_in_tile;
+    on_obstacle = y_in_tile <= 7 - x_in_tile;
     break;
 
   case OBSTACLE_BOTTOM_LEFT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile > x_in_tile;
+    on_obstacle = y_in_tile >= x_in_tile;
     break;
 
   case OBSTACLE_BOTTOM_RIGHT:
     x_in_tile = x % 8;
     y_in_tile = y % 8;
-    on_obstacle = y_in_tile > 8 - x_in_tile;
+    on_obstacle = y_in_tile >= 7 - x_in_tile;
     break;
 
   case OBSTACLE_SHALLOW_WATER:

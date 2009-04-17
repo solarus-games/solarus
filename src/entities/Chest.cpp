@@ -72,6 +72,15 @@ EntityType Chest::get_type() {
 }
 
 /**
+ * Returns whether an entity of this type should be displayed above
+ * the hero and other entities when it is in front of them.
+ * @return true if this entity is displayed at the same level as the hero
+ */
+bool Chest::is_displayed_in_y_order(void) {
+  return big_chest;
+}
+
+/**
  * Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true

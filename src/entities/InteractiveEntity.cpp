@@ -165,6 +165,15 @@ bool InteractiveEntity::is_teletransporter_obstacle(Teletransporter *teletranspo
 }
 
 /**
+ * Returns true if this entity does not react to the sword.
+ * If true is returned, nothing will happen when the hero hits this entity with the sword.
+ * @return true if the sword is ignored
+ */
+bool InteractiveEntity::is_sword_ignored(void) {
+  return subtype == NON_PLAYING_CHARACTER;
+}
+
+/**
  * This function is called by the engine when there is a collision with another entity.
  * This is a redefinition of Detector::collision().
  * If the entity is the hero, we allow him to interact with this entity.

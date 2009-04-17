@@ -38,7 +38,7 @@ const SDL_Rect JumpMovement::basic_translations[8] = {
  * @param with_collisions true to make the movement sensitive to obstacles
  */
 JumpMovement::JumpMovement(Map *map, int direction, int length, bool with_collisions):
-  PixelMovement(map, length, 5, false, with_collisions) {
+  PixelMovement(map, length, 10, false, with_collisions) {
 
   // compute the path
   translation_vectors = new SDL_Rect[length];
@@ -46,6 +46,7 @@ JumpMovement::JumpMovement(Map *map, int direction, int length, bool with_collis
     translation_vectors[i] = basic_translations[direction];
   }
   set_translation_vectors(translation_vectors);
+  set_delay(MAX(4, 14 - length / 10));
 }
 
 /**

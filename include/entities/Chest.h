@@ -43,6 +43,7 @@ class Chest: public Detector {
   ~Chest(void);
 
   EntityType get_type(void);
+  bool is_displayed_in_y_order(void);
 
   bool is_open(void);
   void set_open(bool open);

@@ -202,6 +202,7 @@ class MapEntity {
   virtual bool is_hole_obstacle(void);
   virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   virtual bool is_sensor_obstacle(Sensor *sensor);
+  virtual bool is_sword_ignored(void);
 
   // suspended
   bool is_suspended(void);

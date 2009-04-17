@@ -78,6 +78,15 @@ EntityType JumpSensor::get_type() {
 }
 
 /**
+ * Returns whether this entity is an obstacle for another one.
+ * @param other another entity
+ * @return true if this entity is an obstacle for the other one
+ */
+bool JumpSensor::is_obstacle_for(MapEntity *other) {
+  return !other->is_hero();
+}
+
+/**
  * Checks whether an entity's collides with this jump sensor.
  * The test depends on the sensor's shape.
  * @param entity the entity
@@ -98,8 +107,14 @@ bool JumpSensor::check_collision_custom(MapEntity *entity) {
       return false;
     }
 
+    bool even = (direction % 4 == 0);
     const SDL_Rect &facing_point = hero->get_facing_point(direction / 2);
-    return is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
+    return is_point_in(get_position_in_map(),
+		       facing_point.x + (even ? 0 : -8),
+		       facing_point.y + (even ? -8 : 0))
+      && is_point_in(get_position_in_map(),
+		     facing_point.x + (even ? 0 : 7),
+		     facing_point.y + (even ? 7 : 0));
   }
 
   // otherwise, the sensor's shape is a diagonal bar
@@ -162,11 +177,7 @@ void JumpSensor::collision(MapEntity *entity_overlapping, CollisionMode collisio
   if (entity_overlapping->is_hero()) {
     Hero* hero = (Hero*) entity_overlapping;
     if (hero->get_normal_movement()->is_moving_enabled()) {
-      hero->start_jumping(direction, jump_length, false);
-
-      if (hero->get_layer() == LAYER_INTERMEDIATE) {
-	map->get_entities()->set_hero_layer(LAYER_LOW);
-      }
+      hero->start_jumping(direction, jump_length, false, LAYER_LOW);
     }
   }
 }

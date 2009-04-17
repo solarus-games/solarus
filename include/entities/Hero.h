@@ -136,6 +136,7 @@ class Hero: public MapEntity {
 
   // jump
   int jump_y;                    /**< height of the hero's sprite when jumping, relative to its shadow on the ground */
+  Layer layer_after_jump;        /**< the layer to set when the jump movement is finished */
 
   // return to solid ground
   SDL_Rect last_solid_ground_coords;   /**< coordinates of the last hero position on a ground
@@ -289,6 +290,7 @@ class Hero: public MapEntity {
   void unfreeze(void);
   void give_treasure(Treasure *treasure);
   void start_jumping(int direction, int length, bool with_collisions);
+  void start_jumping(int direction, int length, bool with_collisions, Layer layer_after_jump);
   void hurt(MapEntity *source, int life);
   void get_back_from_death(void);
   void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords);

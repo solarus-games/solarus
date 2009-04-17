@@ -120,7 +120,7 @@ void ZSDX::main(void) {
   Uint32 next_frame_date = SDL_GetTicks();
   Uint32 frame_interval = 25; // time interval between to displays
   int delay;
-  bool just_displayed; // to detect when the FPS number needs to be decreased
+  bool just_displayed = false; // to detect when the FPS number needs to be decreased
 
   while (!is_exiting()) {
 

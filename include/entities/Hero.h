@@ -123,8 +123,9 @@ class Hero: public MapEntity {
   // walking
   bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
 
-  // spin attack
+  // sword loading
   bool sword_loaded;             /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
+  Uint32 next_hit_sound_date;    /**< when the sword hit sound has to be played next time */
 
   // lift and carry an object
   CarriedItem *lifted_item;      /**< item being lifted or carried */
@@ -301,6 +302,7 @@ class Hero: public MapEntity {
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   void just_attacked_enemy(Enemy::Attack attack, Enemy *victim);
+  bool is_stroke_by_sword(Detector *detector);
 
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
   bool is_water_obstacle(void);

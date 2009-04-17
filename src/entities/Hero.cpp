@@ -18,6 +18,7 @@
 #include "entities/MapEntities.h"
 #include "entities/DestinationPoint.h"
 #include "entities/CarriedItem.h"
+#include "entities/Detector.h"
 #include "movements/PlayerMovement.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
@@ -684,8 +685,36 @@ Detector * Hero::get_facing_entity(void) {
  */
 bool Hero::is_facing_obstacle(void) {
 
+  SDL_Rect collision_box = get_position_in_map();
+  switch (get_animation_direction()) {
+
+  case 0:
+    collision_box.x++;
+    break;
+
+  case 1:
+    collision_box.y--;
+    break;
+
+  case 2:
+    collision_box.x--;
+    break;
+
+  case 3:
+    collision_box.y++;
+    break;
+
+  default:
+    DIE("Invalid animation direction '" << get_animation_direction() << "'");
+    break;
+  }
+
+  return map->collision_with_obstacles(layer, collision_box, this);
+
+  /* old version with only one point: problems when the hero cannot pass but the facing point can
   SDL_Rect facing_point = get_facing_point();
   return map->collision_with_obstacles(layer, facing_point.x, facing_point.y, this);
+  */
 }
 
 /**
@@ -795,4 +824,87 @@ void Hero::opening_transition_finished(void) {
       DIE("Invalid destination side: " << map->get_destination_side());
     }
   }
+}
+
+/**
+ * When the sword sprite collides with a detector,
+ * this function can be called to determine whether the hero is really striking
+ * this particular detector only.
+ * This depends on the hero state, his direction and his distance to the detector.
+ * This function assumes that there is already a collision between the sword sprite and the detector's sprite.
+ * This function should be called to check whether the hero wants to cut a bush or
+ * some grass.
+ * Don't use this function for enemies since any sprite collision is enough to hurt an enemy.
+ * @param detector the detector to check
+ * @return true if the sword is striking this detector
+ */
+bool Hero::is_stroke_by_sword(Detector *detector) {
+
+  bool result = false;
+  int animation_direction = get_animation_direction();
+
+  switch (state) {
+
+  case SPIN_ATTACK:
+    // during a spin attack, any sprite collision is considered as a strike
+    result = true;
+    break;
+
+  case SWORD_HITTING:
+    // when the hero is hitting his sword against a wall, this wall should be detector
+    result = detector->is_obstacle_for(this)
+      && facing_entity == detector
+      && tunic_sprite->get_current_frame() >= 3;
+    break;
+
+  case SWORD_SWINGING:
+    // for a normal sword swing, check the distance to the detector
+
+    {
+      int distance = detector->is_obstacle_for(this) ? 14 : 4;
+      const SDL_Rect &facing_point = get_facing_point();
+      const SDL_Rect &detector_position = detector->get_position_in_map();
+
+      switch (animation_direction) {
+
+      case 0:
+	result = facing_point.y >= detector_position.y
+	  && facing_point.y < detector_position.y + detector_position.h
+	  && facing_point.x >= detector_position.x - distance
+	  && facing_point.x < detector_position.x + detector_position.w - distance;
+	break;
+
+      case 1:
+	result = facing_point.x >= detector_position.x
+	  && facing_point.x < detector_position.x + detector_position.w
+	  && facing_point.y >= detector_position.y + distance
+	  && facing_point.y < detector_position.y + detector_position.h + distance;
+	break;
+
+      case 2:
+	result = facing_point.y >= detector_position.y
+	  && facing_point.y < detector_position.y + detector_position.h
+	  && facing_point.x >= detector_position.x + distance
+	  && facing_point.x < detector_position.x + detector_position.w + distance;
+	break;
+
+      case 3:
+	result = facing_point.x >= detector_position.x
+	  && facing_point.x < detector_position.x + detector_position.w
+	  && facing_point.y >= detector_position.y - distance
+	  && facing_point.y < detector_position.y + detector_position.h - distance;
+	break;
+
+      default:
+	DIE("Invalid animation direction of the hero: " << animation_direction);
+	break;
+      }
+    }
+    break;
+
+  default:
+    break;
+  }
+
+  return result;
 }

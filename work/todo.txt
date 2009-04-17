@@ -16,6 +16,7 @@ Feature requests :
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
+- Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Transition game over : centrer sur le héros
 - Animer l'écran-titre et y mettre un message "Appuyez sur Espace"
 - Sauvegarder la résolution du jeu dans un fichier de configuration ini
@@ -45,6 +46,7 @@ Bugs :
 - au bandit manchot, lorsque je me place devant la 1ere roulette link de temps en temps part sur la gauche sans raisons
 - les plongeons sans palmes, après vérification on ne perds pas de coeurs seulement dans links' awakening, on en perd dans ALTTP, OOA et OOS
 - les petits coffres s'affichent au-dessus de link quand link est plus haut (donner un coup d'épée pour voir le problème)
+- épée en chargement quand on touche un PNJ : ne pas jouer le son
 
 
 Bugs a priori corrigés, demander confirmation à Thyb avec une nouvelle démo :
@@ -59,6 +61,7 @@ A venir :
   - portes
   - tapis roulants
   - piquants
+  - choux-péteurs
 
 
 Testeurs :

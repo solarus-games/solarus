@@ -269,11 +269,11 @@ void Hero::update_sword_swinging(void) {
  */
 void Hero::start_sword_loading(void) {
   set_state(SWORD_LOADING);
-  sword_loaded = false;
 
   // initialize the counter to detect when the sword is loaded
   counter = 0;
   next_counter_date = SDL_GetTicks();
+  sword_loaded = false;
 
   if (get_normal_movement()->is_started()) {
     set_animation_walking();
@@ -328,6 +328,7 @@ void Hero::update_sword_loading(void) {
 void Hero::start_sword_hitting(void) {
   set_state(SWORD_HITTING);
   set_animation_sword_hitting();
+  next_hit_sound_date = SDL_GetTicks() + 100;
 }
 
 /**
@@ -337,13 +338,24 @@ void Hero::start_sword_hitting(void) {
 void Hero::update_sword_hitting(void) {
 
   Controls *controls = zsdx->game->get_controls();
+  const SDL_Rect &facing_point = get_facing_point();
 
-  if (!controls->is_key_pressed(Controls::SWORD) ||
-      get_movement_direction() != get_animation_direction() * 90) {
-    // the player has moved or released the swod key
+  if (!controls->is_key_pressed(Controls::SWORD)
+      || get_movement_direction() != get_animation_direction() * 90
+      || !map->collision_with_obstacles(get_layer(), facing_point.x, facing_point.y, this)) {
+    // the sword key has been released, the player has moved or the obstacle is gone
 
-    // stop hitting the wall, go back to state SWORD_LOADING
-    start_sword_loading();
+    if (tunic_sprite->get_current_frame() >= 5) {
+      // stop hitting the wall, go back to state SWORD_LOADING
+      start_sword_loading();
+    }
+  }
+  else {
+    Uint32 now = SDL_GetTicks();
+    if (tunic_sprite->get_current_frame() == 3 && now >= next_hit_sound_date) {
+      ResourceManager::get_sound("sword_hit")->play();
+      next_hit_sound_date = now + 100;
+    }
   }
 }
 
@@ -544,7 +556,7 @@ void Hero::update_pushing(void) {
 	start_sword_hitting();
       }
     }
-    else {
+    else if (state == FREE) {
       // the hero has just moved successfuly: reset the counter
       counter = 0;
       pushing_direction_mask = 0xFFFF;

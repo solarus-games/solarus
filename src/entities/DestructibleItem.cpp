@@ -180,7 +180,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
 
     Hero *hero = (Hero*) entity;
-    if (is_hit_by_sword(hero)) {
+    if (hero->is_stroke_by_sword(this)) {
 
       get_destruction_sound()->play();
       get_sprite()->set_current_animation("destroy");

@@ -128,6 +128,7 @@
 4	sword2	sword2
 4	sword3	sword3
 4	sword4	sword4
+4	sword_hit	sword_hit
 4	sword_spin_attack_load	sword_spin_attack_load
 4	sword_spin_attack_release	sword_spin_attack_release
 4	throw	throw

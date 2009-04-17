@@ -40,13 +40,20 @@ class Hero: public MapEntity {
    * He hero can be hurt in states <= SPIN_ATTACK.
    */
   enum State {
+
+    // the hero can move in these states
     FREE,                        /**< the hero is free to move (stopped or walking) */
     CARRYING,                    /**< the hero can walk but he is carrying a pot or a bush */
     SWORD_LOADING,               /**< the hero can walk but his sword is loading for a spin attack */
     SWIMMING,                    /**< the hero is swimming in deep water */
+
+    // the hero can change his direction but cannot move in these states
     PUSHING,                     /**< the hero is trying to push an obstacle */
+    SWORD_HITTING,               /**< the hero is hitting his sword against a wall */
     PULLING,                     /**< the hero is pulling an object */
     GRABBING,                    /**< the hero is grabbing an object and can pull it */
+
+    // the hero cannot move in these states
     SWORD_SWINGING,              /**< the hero is swinging his sword */
     SPIN_ATTACK,                 /**< the hero is releasing a spin attack */
     LIFTING,                     /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
@@ -163,6 +170,8 @@ class Hero: public MapEntity {
 
   void start_sword_loading(void);
   void update_sword_loading(void);
+  void start_sword_hitting(void);
+  void update_sword_hitting(void);
   void start_spin_attack(void);
   void update_spin_attack(void);
   bool can_start_sword(void);
@@ -208,6 +217,7 @@ class Hero: public MapEntity {
   void stop_blinking(void);
 
   void set_animation_sword(void);
+  void set_animation_sword_hitting(void);
   void set_animation_walking(void);
   void set_animation_grabbing(void);
   void set_animation_pulling(void);

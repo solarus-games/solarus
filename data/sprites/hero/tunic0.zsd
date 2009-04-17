@@ -40,6 +40,12 @@ sword_loading_walking hero/loading_tunic0.png 4 100 0
 0	48	24	24	12	21	6	6
 0	72	24	24	12	21	6	6
 
+sword_hitting hero/hit_sword_tunic.png 4 30 1
+0	0	40	24	12	21	7	7
+0	24	24	40	12	37	7	7
+0	64	40	24	28	21	7	7
+0	88	24	40	12	21	7	7	
+
 spin_attack hero/spin_attack_tunic0.png 4 30 -1
 0	0	24	24	12	21	22	22
 0	24	24	24	12	21	22	22

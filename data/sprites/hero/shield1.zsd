@@ -21,3 +21,7 @@ sword_loading_stopped hero/loading_shield1.png 2 0 -1
 sword_loading_walking hero/loading_shield1.png 2 100 0
 0	0	32	32	16	23	6	6
 0	32	32	32	16	23	6	6
+
+sword_hitting hero/hit_sword_shield.png 2 30 1
+0	24	24	40	12	37	7	7
+0	88	24	40	12	21	7	7	

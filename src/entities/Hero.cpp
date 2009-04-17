@@ -380,6 +380,10 @@ void Hero::update(void) {
       update_sword_loading();
       break;
 
+    case SWORD_HITTING:
+      update_sword_hitting();
+      break;
+
     case SPIN_ATTACK:
       update_spin_attack();
       break;

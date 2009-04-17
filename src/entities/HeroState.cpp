@@ -65,7 +65,7 @@ void Hero::set_state(State state) {
  * @return true if the animation direction is locked
  */
 bool Hero::is_direction_locked(void) {
-  return state == SWORD_LOADING || state == PUSHING || state == PULLING;
+  return state == SWORD_LOADING || state == PUSHING || state == PULLING || state == SWORD_HITTING;
 }
 
 /**
@@ -245,6 +245,24 @@ bool Hero::can_start_sword(void) {
 }
 
 /**
+ * This function is called repeatedly while the hero is swinging his sword.
+ * The state must be SWORD_SWINGING.
+ */
+void Hero::update_sword_swinging(void) {
+
+  if (tunic_sprite->is_animation_finished()) {
+
+    // if the player is still pressing the sword key, start loading the sword
+    if (zsdx->game->get_controls()->is_key_pressed(Controls::SWORD)) {
+      start_sword_loading();
+    }
+    else {
+      start_free();
+    }
+  }
+}
+
+/**
  * Lets the hero load his sword.
  * Moves to the state SWORD_LOADING
  * and updates the animations accordingly.
@@ -262,24 +280,6 @@ void Hero::start_sword_loading(void) {
   }
   else {
     set_animation_stopped();
-  }
-}
-
-/**
- * This function is called repeatedly while the hero is swinging his sword.
- * The state must be SWORD_SWINGING.
- */
-void Hero::update_sword_swinging(void) {
-
-  if (tunic_sprite->is_animation_finished()) {
-
-    // if the player is still pressing the sword key, start loading the sword
-    if (zsdx->game->get_controls()->is_key_pressed(Controls::SWORD)) {
-      start_sword_loading();
-    }
-    else {
-      start_free();
-    }
   }
 }
 
@@ -317,6 +317,33 @@ void Hero::update_sword_loading(void) {
       // the sword is loaded: release a spin attack
       start_spin_attack();
     }
+  }
+}
+
+/**
+ * Makes the hero hit the wall he is facing with his sword.
+ * Moves to the state SWORD_HITTING
+ * and updates the animations accordingly.
+ */
+void Hero::start_sword_hitting(void) {
+  set_state(SWORD_HITTING);
+  set_animation_sword_hitting();
+}
+
+/**
+ * This function is called repeatedly while the hero is hitting a wall with his sword.
+ * The state must be SWORD_HITTING.
+ */
+void Hero::update_sword_hitting(void) {
+
+  Controls *controls = zsdx->game->get_controls();
+
+  if (!controls->is_key_pressed(Controls::SWORD) ||
+      get_movement_direction() != get_animation_direction() * 90) {
+    // the player has moved or released the swod key
+
+    // stop hitting the wall, go back to state SWORD_LOADING
+    start_sword_loading();
   }
 }
 
@@ -483,29 +510,38 @@ void Hero::update_pushing(void) {
   // get the direction of the arrows
   Uint16 direction_mask = get_normal_movement()->get_direction_mask();
 
-  if (state == FREE && move_tried) {
-    // the hero is trying to move with animation "walking"
+  if (move_tried) {
+    // the hero is trying to move
 
     // see if the move has failed (i.e. if the hero's coordinates have not changed)
     if (get_x() == old_x && get_y() == old_y) {
 
       // the hero is facing an obstacle
 
-      Uint32 now = SDL_GetTicks();
-      if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
-	counter = 0;
-	next_counter_date = now;
+      if (state == FREE) { // is state FREE: see when we can start animation "pushing"
+
+	Uint32 now = SDL_GetTicks();
+	if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
+	  counter = 0;
+	  next_counter_date = now;
+	  pushing_direction_mask = direction_mask;
+	}
+
+	// increment the counter every 100 ms
+	while (now >= next_counter_date && counter < 8) {
+	  counter++;
+	  next_counter_date += 100;
+	}
+
+	if (counter >= 8) {
+	  start_pushing(); // start animation "pushing" when the counter reaches 8
+	}
+      }
+      else if (state == SWORD_LOADING &&
+	       get_movement_direction() == get_animation_direction() * 90) {
+	// in state SWORD_LOADING: hit the wall with the sword
 	pushing_direction_mask = direction_mask;
-      }
-
-      // increment the counter every 100 ms
-      while (now >= next_counter_date && counter < 8) {
-	counter++;
-	next_counter_date += 100;
-      }
-
-      if (counter >= 8) {
-	start_pushing(); // start animation "pushing" when the counter reaches 8
+	start_sword_hitting();
       }
     }
     else {

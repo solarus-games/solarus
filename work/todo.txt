@@ -23,6 +23,8 @@ Feature requests :
   certaine butée qui nous les fait couper 1 par 1
 - Conserver le chargement de l'épée ou l'objet porté dans les changements de map ?
 - Mettre un PNJ qui explique les touches (et pas seulement action)
+- sprites du héros : notation animation.sprite.zsd au lieu de animation_sprite.zsd
+- walking_tunic.png : trier par direction avant de trier par tunique
 
 
 Bugs :
@@ -42,6 +44,7 @@ Bugs :
 - Le HUD gêne lorsque l'on est dans le coin nord ouest de la map ou maison ou l'on se trouve (peut-être faire un HUD moins opaque pour les boutons a moins mais pas pour le texte (Voir, Soulever, ...) et les icônes des objets)
 - au bandit manchot, lorsque je me place devant la 1ere roulette link de temps en temps part sur la gauche sans raisons
 - les plongeons sans palmes, après vérification on ne perds pas de coeurs seulement dans links' awakening, on en perd dans ALTTP, OOA et OOS
+- les petits coffres s'affichent au-dessus de link quand link est plus haut (donner un coup d'épée pour voir le problème)
 
 
 Bugs a priori corrigés, demander confirmation à Thyb avec une nouvelle démo :
@@ -56,6 +59,13 @@ A venir :
   - portes
   - tapis roulants
   - piquants
+
+
+Testeurs :
+
+- Essayer des combinaisons d'objets compliqués (blocs, trous, ennemis, escaliers, eau...)
+- Tester les animations avec les différentes épées, boucliers et tuniques
+
 
 ----------------
 Planning prévisionnel

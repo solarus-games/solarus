@@ -76,7 +76,7 @@ DialogBox::DialogBox(MessageId first_message_id, int x, int y) {
   icon_number = -1;
   this->first_message_id = first_message_id;
   show_message(first_message_id);
-  cancel_dialog = false;
+  cancelled = false;
 }
 
 /**
@@ -275,7 +275,7 @@ void DialogBox::action_key_pressed(void) {
 void DialogBox::sword_key_pressed(void) {
 
   if (cancel_mode == CANCEL_ALL) {
-    cancel_dialog = true;
+    cancelled = true;
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
     keys_effect->restore_action_key_effect();
     keys_effect->restore_sword_key_effect();
@@ -326,7 +326,16 @@ MessageId DialogBox::get_first_message_id(void) {
  * @return true if the dialog is finished
  */
 bool DialogBox::is_finished(void) {
-  return current_message == NULL || cancel_dialog;
+  return current_message == NULL || cancelled;
+}
+
+/**
+ * When the dialog box is finished, returns whether
+ * it was cancelled.
+ * @return true if the dialog was cancelled
+ */
+bool DialogBox::was_cancelled(void) {
+  return cancelled;
 }
 
 /**

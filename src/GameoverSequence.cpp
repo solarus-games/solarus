@@ -178,7 +178,7 @@ void GameoverSequence::display(SDL_Surface *destination_surface) {
       SDL_FillRect(destination_surface, NULL, red_screen_color);
     }
     else {
-      fade_sprite->display(destination_surface, 0, 0);
+      fade_sprite->display(destination_surface, hero_dead_x, hero_dead_y);
     }
   }
 

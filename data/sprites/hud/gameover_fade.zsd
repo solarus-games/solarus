@@ -1,5 +1,5 @@
-close hud/gameover_fade.png 1 125 -1
-0	0	320	240	0	0	6	6
+close hud/gameover_fade.png 1 100 -1
+0	0	640	480	320	245	6	6
 
-open hud/gameover_fade.png 1 125 -1
-0	240	320	240	0	0	6	6
+open hud/gameover_fade.png 1 100 -1
+0	480	640	480	320	245	6	6

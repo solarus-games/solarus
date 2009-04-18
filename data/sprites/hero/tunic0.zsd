@@ -1,52 +1,52 @@
-stopped hero/stopped_tunic.png 4 0 -1
+stopped hero/stopped.tunic.png 4 0 -1
 0	0	24	24	12	21	1	1
 24	0	24	24	12	21	1	1
 72	0	24	24	12	21	1	1
 96	0	24	24	12	21	1	1
 
-stopped_with_shield hero/stopped_tunic.png 4 0 -1
+stopped_with_shield hero/stopped.tunic.png 4 0 -1
 0	0	24	24	12	21	1	1
 48	0	24	24	12	21	1	1
 72	0	24	24	12	21	1	1
 96	0	24	24	12	21	1	1
 
-walking hero/walking_tunic.png 4 100 0
+walking hero/walking.tunic.png 4 100 0
 0	0	24	32	12	29	8	8
+0	32	24	32	12	29	8	8
 0	96	24	32	12	29	8	8
-0	288	24	32	12	29	8	8
-0	384	24	32	12	29	8	8
+0	128	24	32	12	29	8	8
 
-walking_with_shield hero/walking_tunic.png 4 100 0
+walking_with_shield hero/walking.tunic.png 4 100 0
 0	0	24	32	12	29	8	8
-0	192	24	32	12	29	8	8
-0	288	24	32	12	29	8	8
-0	384	24	32	12	29	8	8
+0	64	24	32	12	29	8	8
+0	96	24	32	12	29	8	8
+0	128	24	32	12	29	8	8
 
-sword hero/sword_tunic0.png 4 30 -1
+sword hero/sword.tunic0.png 4 30 -1
 0	0	32	32	16	29	12	12
 0	32	32	32	16	29	12	12
 0	64	32	32	16	29	12	12
 0	96	32	32	16	29	12	12
 
-sword_loading_stopped hero/loading_tunic0.png 4 0 -1
+sword_loading_stopped hero/loading.tunic0.png 4 0 -1
 0	0	24	24	12	21	1	1
 0	24	24	24	12	21	1	1
 0	48	24	24	12	21	1	1
 0	72	24	24	12	21	1	1
 
-sword_loading_walking hero/loading_tunic0.png 4 100 0
+sword_loading_walking hero/loading.tunic0.png 4 100 0
 0	0	24	24	12	21	6	6
 0	24	24	24	12	21	6	6
 0	48	24	24	12	21	6	6
 0	72	24	24	12	21	6	6
 
-sword_hitting hero/hit_sword_tunic.png 4 40 1
+sword_hitting hero/sword_hitting.tunic.png 4 40 1
 0	0	40	24	12	21	7	7
 0	24	24	40	12	37	7	7
 0	64	40	24	28	21	7	7
 0	88	24	40	12	21	7	7	
 
-spin_attack hero/spin_attack_tunic0.png 4 30 -1
+spin_attack hero/spin_attack.tunic0.png 4 30 -1
 0	0	24	24	12	21	22	22
 0	24	24	24	12	21	22	22
 0	48	24	24	12	21	22	22

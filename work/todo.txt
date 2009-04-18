@@ -12,18 +12,14 @@ Feature requests :
 - Mettre de la couleur dans les messages
 - Voir les boss de Pyro
 - Afficher le nom du donjon dans le hud
-- Classe donjon dans l'éditeur: interface pour éditer les étages des donjons
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
-- Transition game over : centrer sur le héros
-- Animer l'écran-titre et y mettre un message "Appuyez sur Espace"
 - Sauvegarder la résolution du jeu dans un fichier de configuration ini
 - Conserver le chargement de l'épée ou l'objet porté dans les changements de map ?
-- Mettre un PNJ qui explique les touches (et pas seulement action)
-- sprites du héros : notation animation.sprite.zsd au lieu de animation_sprite.zsd
-- walking_tunic.png : trier par direction avant de trier par tunique
+- Mettre un PNJ qui explique les icônes (et pas seulement action)
+- Animer l'écran-titre de Neovyze et y mettre un message "Appuyez sur Espace"
 
 
 Bugs :
@@ -128,3 +124,4 @@ Feature requests de l'éditeur :
 	- Eviter d'avoir à recharger la map pour voir les destinations mises à jour
 	- Affichage : dessiner les tiles une seule fois sur une surface intermédiaire au lieu de les redessiner un par un à chaque affichage (c'est possible dans l'éditeur mais pas facilement dans le jeu à cause des tiles animés)
 	- Permettre de modifier les textes "Direction", "Subtype", etc... depuis les sous-classes de EditEntityComponent afin de rendre certains plus explicites (exemple : mettre "Pushing direction" pour les blocs)
+	- Interface pour éditer les étages des donjons

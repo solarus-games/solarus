@@ -45,6 +45,9 @@ function event_message_sequence_finished(first_message_id, answer)
       npc_jump("monkey", 1, 24, false)
       monkey_jumps = 1
       savegame_set_boolean(24, true)
+
+   elseif first_message_id == "outside_world.village.tree_woman" then
+      give_treasure(87, -1)
    end
 end
 

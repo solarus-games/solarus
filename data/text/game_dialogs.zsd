@@ -43,16 +43,30 @@ line2 = "trop... Sois prudent !"
 [outside_world.village.grand_son_npc]
 #       |-----------------------|
 line1 = "Si tu ne sais plus quoi"
-line2 = "faire, tu devrais aller"
-line3 = "voir Mamie, elle adore"
-next = outside_world.village.grand_son_npc.2
+line2 = "faire à un moment de"
+line3 = "ton aventure, tu"
 cancel = all
+next = outside_world.village.grand_son_npc.2
 
 [outside_world.village.grand_son_npc.2]
 #       |-----------------------|
-line1 = "donner des conseils."
-line2 = "J'en sais pas plus, je"
-line3 = "ne suis qu'un gosse !"
+line1 = "devrais aller voir"
+line2 = "Mamie, elle adore"
+line3 = "donner des conseils et"
+next = outside_world.village.grand_son_npc.3
+
+[outside_world.village.grand_son_npc.3]
+#       |-----------------------|
+line1 = "guider les aventuriers."
+line2 = "Elle habite à côté de"
+line3 = "la Maison des Rubis."
+next = outside_world.village.grand_son_npc.4
+
+[outside_world.village.grand_son_npc.4]
+#       |-----------------------|
+line1 = "Mais je n'en sais pas"
+line2 = "plus, je ne suis qu'un"
+line3 = "môme !"
 
 [outside_world.village.chignon_woman_npc]
 #       |-----------------------|
@@ -66,14 +80,33 @@ cancel = all
 #       |-----------------------|
 line1 = "appuyant sur la touche"
 line2 = "Action (espace)."
-line3 = "Pense à l'observer pour"
+line3 = "Selon ce que tu es en"
 next = outside_world.village.chignon_woman_npc.3
 
 [outside_world.village.chignon_woman_npc.3]
 #       |-----------------------|
-line1 = "savoir quand tu peux"
-line2 = "interagir avec ton"
-line3 = "environnement !"
+line1 = "train d'examiner, tu"
+line2 = "peux faire différentes"
+line3 = "actions comme regarder,"
+next = outside_world.village.chignon_woman_npc.4
+
+[outside_world.village.chignon_woman_npc.4]
+#       |-----------------------|
+line1 = "parler avec quelqu'un,"
+line2 = "lire une pancarte,"
+line3 = "soulever un vase..."
+next = outside_world.village.chignon_woman_npc.5
+
+[outside_world.village.chignon_woman_npc.5]
+#       |-----------------------|
+line1 = "Observe bien l'icône"
+line2 = "bleue pour savoir quand"
+line3 = "tu peux interagir avec"
+next = outside_world.village.chignon_woman_npc.6
+
+[outside_world.village.chignon_woman_npc.6]
+#       |-----------------------|
+line1 = "ton environnement !"
 
 # TODO
 #       |-----------------------|
@@ -157,13 +190,140 @@ line1 = ""
 line2 = "        Boutique"
 line3 = ""
 
-
 [outside_world.village.letter_box]
 #       |-----------------------|
 line1 = "Ca ne se fait pas de"
 line2 = "fouiller dans la boîte"
 line3 = "aux lettres des gens !" 
 cancel = all
+
+[outside_world.village.tree_woman]
+#       |-----------------------|
+line1 = "Tu es perdu dans les"
+line2 = "commandes ? Laisse-moi"
+line3 = "t'expliquer. Les icônes"
+cancel = all
+next = outside_world.village.tree_woman.2
+
+[outside_world.village.tree_woman.2]
+#       |-----------------------|
+line1 = "en haut à gauche sont"
+line2 = "disposées comme les"
+line3 = "touches du clavier."
+next = outside_world.village.tree_woman.3
+
+[outside_world.village.tree_woman.3]
+#       |-----------------------|
+line1 = "La touche C correspond"
+line2 = "à l'icône verte, elle"
+line3 = "te permet de donner un"
+next = outside_world.village.tree_woman.4
+
+[outside_world.village.tree_woman.4]
+#       |-----------------------|
+line1 = "coup d'épée. Mais"
+line2 = "lorsque le jeu est en"
+line3 = "pause, l'icône change"
+next = outside_world.village.tree_woman.5
+
+[outside_world.village.tree_woman.5]
+#       |-----------------------|
+line1 = "et t'indique que la"
+line2 = "touche C sert à"
+line3 = "sauvegarder !"
+next = outside_world.village.tree_woman.6
+
+[outside_world.village.tree_woman.6]
+#       |-----------------------|
+line1 = "Et quand tu discutes"
+line2 = "avec quelqu'un, elle te"
+line3 = "permet d'interrompre la"
+next = outside_world.village.tree_woman.7
+
+[outside_world.village.tree_woman.7]
+#       |-----------------------|
+line1 = "conversation. Bref,"
+line2 = "observe bien l'icône"
+line3 = "verte pour savoir ce"
+next = outside_world.village.tree_woman.7bis
+
+[outside_world.village.tree_woman.7bis]
+#       |-----------------------|
+line1 = "que fait la touche C."
+line2 = "Les autres icônes sont"
+line3 = "les touches autour"
+next = outside_world.village.tree_woman.8
+
+[outside_world.village.tree_woman.8]
+#       |-----------------------|
+line1 = "de C : l'icône orange"
+line2 = "(touche D) sert à"
+line3 = "mettre le jeu en pause,"
+next = outside_world.village.tree_woman.9
+
+[outside_world.village.tree_woman.9]
+#       |-----------------------|
+line1 = "l'icône bleue (espace)"
+line2 = "est la touche Action,"
+line3 = "et les deux icônes"
+next = outside_world.village.tree_woman.10
+
+[outside_world.village.tree_woman.10]
+#       |-----------------------|
+line1 = "grises représentent les"
+line2 = "objets attribués aux"
+line3 = "touches X et V."
+next = outside_world.village.tree_woman.11
+
+[outside_world.village.tree_woman.11]
+#       |-----------------------|
+line1 = "Donc regarde toujours"
+line2 = "ce qui indiqué sur les"
+line3 = "icônes. N'oublie pas"
+next = outside_world.village.tree_woman.12
+
+[outside_world.village.tree_woman.12]
+#       |-----------------------|
+line1 = "que tu peux aussi"
+line2 = "personnaliser tes"
+line3 = "commandes dans l'écran"
+next = outside_world.village.tree_woman.13
+
+[outside_world.village.tree_woman.13]
+#       |-----------------------|
+line1 = "des options, et que tu"
+line2 = "peux même jouer avec"
+line3 = "une manette !"
+next = outside_world.village.tree_woman.14
+
+[outside_world.village.tree_woman.14]
+#       |-----------------------|
+line1 = "Tu as tout compris ?"
+line2 = "Oui"
+line3 = "Non, pas du tout !"
+question = true
+next = outside_world.village.tree_woman.thank_you
+next2 = outside_world.village.tree_woman.15
+
+[outside_world.village.tree_woman.15]
+#       |-----------------------|
+line1 = "Bon, je te réexplique,"
+line2 = "mais écoute bien cette"
+line3 = "fois-ci. Les icônes"
+next = outside_world.village.tree_woman.2
+
+[outside_world.village.tree_woman.thank_you]
+#       |-----------------------|
+line1 = "Merci de m'avoir"
+line2 = "écoutée jusqu'au bout !"
+line3 = "Je t'en suis très"
+next = outside_world.village.tree_woman.thank_you.2
+
+[outside_world.village.tree_woman.thank_you.2]
+#       |-----------------------|
+line1 = "reconnaissante ! Tiens,"
+line2 = "tu as bien mérité"
+line3 = "ce petit cadeau."
 
 [outside_world.warning_holes_sign]
 #       |-----------------------|
@@ -553,4 +713,5 @@ line3 = "moyens..."
 [smith_cave.thank_you]
 #       |-----------------------|
 line1 = "Merci beaucoup."
-line2 = "Prends-en soin !"
+line2 = "Pour utiliser ton épée,"
+line3 = "appuie sur sur C."

@@ -415,11 +415,14 @@ void Game::update_dialog_box(void) {
     dialog_box->update();
   }
   else {
-    const std::string &first_message_id = dialog_box->get_first_message_id();
+
+    std::string first_message_id = dialog_box->get_first_message_id();
+    bool cancelled = dialog_box->was_cancelled();
+
     delete dialog_box;
     dialog_box = NULL;
 
-    if (first_message_id[0] != '_') {
+    if (!cancelled && first_message_id[0] != '_') {
       // a dialog of the quest was just finished: notify the script
       int answer = DialogBox::get_last_answer();
       get_current_script()->event_message_sequence_finished(first_message_id, answer);

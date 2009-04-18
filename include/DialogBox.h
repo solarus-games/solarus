@@ -64,7 +64,7 @@ class DialogBox {
   // dialog properties
   Speed speed;
   CancelMode cancel_mode;
-  bool cancel_dialog;          // true if the user has cancelled the dialog
+  bool cancelled;              // true if the user has cancelled the dialog
   int icon_number;             // index of the 16*16 icon displayed, or -1 if there is no icon
 
   KeysEffect::ActionKeyEffect action_key_effect_saved;
@@ -115,6 +115,7 @@ class DialogBox {
   void key_pressed(Controls::GameKey key);
   MessageId get_first_message_id(void);
   bool is_finished(void);
+  bool was_cancelled(void);
   static int get_last_answer(void);
 
   // update and display

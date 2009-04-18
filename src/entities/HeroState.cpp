@@ -1141,6 +1141,7 @@ void Hero::update_plunging(void) {
     else {
       ResourceManager::get_sound("message_end")->play();
       start_returning_to_solid_ground(last_solid_ground_coords);
+      equipment->remove_hearts(1);
     }
   }
 }
@@ -1197,7 +1198,7 @@ void Hero::update_falling(void) {
       // nothing was specified: just go back to the last solid ground location
       start_returning_to_solid_ground(last_solid_ground_coords);
     }
-    equipment->remove_hearts(1);
+    equipment->remove_hearts(2);
     set_animation_stopped();
     restore_animation_direction();
   }

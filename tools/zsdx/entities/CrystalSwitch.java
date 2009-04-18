@@ -17,6 +17,7 @@
 package zsdx.entities;
 
 import zsdx.*;
+import java.awt.*;
 
 /**
  * A switch that the hero can activate to change the configuration of the
@@ -32,11 +33,24 @@ public class CrystalSwitch extends MapEntity {
     };
 
     /**
+     * Origin point of a destination point.
+     */
+    private static final Point origin = new Point(8, 13);
+
+    /**
      * Creates a new crystal switch.
      * @param map the map
      */
     public CrystalSwitch(Map map) throws MapException {
 	super(map, 16, 16);
+    }
+
+    /**
+     * Returns the coordinates of the origin point of the entity.
+     * @return (8,13)
+     */
+    protected Point getOrigin() {
+	return origin;
     }
 
     /**

@@ -742,6 +742,20 @@ double MapEntity::get_vector_angle(MapEntity *other) {
 }
 
 /**
+ * Returns the distance between the origin of this entity
+ * and the origin of another entity.
+ * @param other the other entity
+ * @return the distance between the two entities in pixels
+ */
+int MapEntity::get_distance(MapEntity *other) {
+
+  int dx = other->get_x() - get_x();
+  int dy = other->get_y() - get_y();
+
+  return (int) sqrt(dx * dx + dy * dy);
+}
+
+/**
  * This function is called when an enemy detects a collision with this entity.
  * @param enemy the enemy
  */

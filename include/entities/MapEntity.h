@@ -194,7 +194,10 @@ class MapEntity {
   bool is_origin_point_in(const SDL_Rect &rectangle);
   bool is_facing_point_in(const SDL_Rect &rectangle);
   bool is_center_in(const SDL_Rect &rectangle);
+
   double get_vector_angle(MapEntity *other);
+  int get_distance(MapEntity *other);
+
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);

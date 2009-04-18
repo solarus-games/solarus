@@ -16,6 +16,7 @@
  */
 #include "entities/CrystalSwitch.h"
 #include "entities/CarriedItem.h"
+#include "entities/Hero.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Sprite.h"
@@ -34,6 +35,7 @@ CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
   Detector(COLLISION_SPRITE | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
   state(false), next_possible_hit_date(SDL_GetTicks()) {
 
+  set_origin(8, 13);
   create_sprite("entities/crystal_switch");
   get_sprite()->get_animation_set()->enable_pixel_collisions();
 }
@@ -97,12 +99,10 @@ void CrystalSwitch::collision(MapEntity *entity, Sprite *sprite_overlapping) {
       sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
     // the hero's sword is overlapping the crystal switch
 
-    /*
-    if (is_hit_by_sword((Hero*) entity)) {
+    Hero *hero = (Hero*) entity;
+    if (hero->get_state() != Hero::SWORD_LOADING && get_distance(hero) < 32) {
       activate();
     }
-    */
-    activate();
   }
 }
 

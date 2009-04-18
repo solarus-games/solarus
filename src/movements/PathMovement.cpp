@@ -43,37 +43,21 @@ PathMovement::~PathMovement(void) {
 }
 
 /**
- * Sets the x position of the entity.
- * This is a redefinition of MovementWithCollision::set_x() because we need
- * the number of pixels covered.
+ * Sets the position of the entity.
+ * This is a redefinition of Movement::set_position() because we need
+ * to update the number of pixels covered.
  * @param x the new x position
- */
-void PathMovement::set_x(int x) {
-
-  if (x != get_x()) {
-    distance_covered_x++;
-    if (distance_covered_x == 8) {
-      start_next_move();
-    }
-  }
-  MovementWithCollision::set_x(x);
-}
-
-/**
- * Sets the y position of the entity.
- * This is a redefinition of MovementWithCollision::set_y() because we need
- * the number of pixels covered.
  * @param y the new y position
  */
-void PathMovement::set_y(int y) {
+void PathMovement::set_position(int x, int y) {
 
-  if (y != get_y()) {
-    distance_covered_y++;
-    if (distance_covered_y == 8) {
+  if (x != get_x() || y != get_y()) {
+    distance_covered++;
+    if (distance_covered == 8) {
       start_next_move();
     }
   }
-  MovementWithCollision::set_y(y);
+  Movement::set_position(x, y);
 }
 
 /**
@@ -115,8 +99,7 @@ void PathMovement::start_next_move(void) {
   if (!finished) {
     current_direction = remaining_path[0] - '0';
     set_direction(current_direction * 45);
-    distance_covered_x = 0;
-    distance_covered_y = 0;
+    distance_covered = 0;
     remaining_path = remaining_path.substr(1);
   }
 }

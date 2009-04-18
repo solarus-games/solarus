@@ -100,15 +100,7 @@ int Movement::get_y(void) {
  * @param x the new x position
  */
 void Movement::set_x(int x) {
-
-  if (entity != NULL) {
-    entity->set_x(x);
-  }
-  else {
-    this->x = x;
-  }
-
-  last_move_date = SDL_GetTicks();
+  set_position(x, get_y());
 }
 
 /**
@@ -116,15 +108,7 @@ void Movement::set_x(int x) {
  * @param y the new y position
  */
 void Movement::set_y(int y) {
-
-  if (entity != NULL) {
-    entity->set_y(y);
-  }
-  else {
-    this->y = y;
-  }
-
-  last_move_date = SDL_GetTicks();
+  set_position(get_x(), y);
 }
 
 /**
@@ -133,8 +117,18 @@ void Movement::set_y(int y) {
  * @param y the new y position
  */
 void Movement::set_position(int x, int y) {
-  set_x(x);
-  set_y(y);
+
+  if (entity != NULL) {
+    entity->set_x(x);
+    entity->set_y(y);
+    entity->just_moved();
+  }
+  else {
+    this->x = x;
+    this->y = y;
+  }
+
+  last_move_date = SDL_GetTicks();
 }
 
 /**
@@ -142,7 +136,7 @@ void Movement::set_position(int x, int y) {
  * @param dx number of pixels of the move
  */
 void Movement::translate_x(int dx) {
-  set_x(get_x() + dx);
+  translate(dx, 0);
 }
 
 /**
@@ -150,7 +144,7 @@ void Movement::translate_x(int dx) {
  * @param dy number of pixels of the move
  */
 void Movement::translate_y(int dy) {
-  set_y(get_y() + dy);
+  translate(0, dy);
 }
 
 /**
@@ -159,8 +153,7 @@ void Movement::translate_y(int dy) {
  * @param dy number of pixels of the move on y
  */
 void Movement::translate(int dx, int dy) {
-  translate_x(dx);
-  translate_y(dy);
+  set_position(get_x() + dx, get_y() + dy);
 }
 
 /**

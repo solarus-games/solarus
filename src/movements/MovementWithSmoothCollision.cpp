@@ -48,7 +48,7 @@ void MovementWithSmoothCollision::update(void) {
 
     // TODO was 'while' instead of 'if', but with valgrind the game
     // loops here when iterating over the obstacle dynamic entities
-    if (x_move_now || y_move_now) {
+    while (x_move_now || y_move_now) {
 
       if (x_move_now) {
 	// it's time to make an x move

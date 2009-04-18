@@ -52,7 +52,7 @@ const int Hero::animation_directions[] = {
   -1,  // down + left + right + up: no change
 };
 
-const int Hero::walking_speed = 10;
+const int Hero::walking_speed = 9;
 
 /**
  * Constructor.

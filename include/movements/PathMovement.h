@@ -37,8 +37,7 @@ class PathMovement: public MovementWithCollision {
  private:
 
   int current_direction;           /**< direction of the current move (0 to 7) */
-  int distance_covered_x;          /**< counts the number of x pixels covered during the current move */
-  int distance_covered_y;          /**< counts the number of y pixels covered during the current move */
+  int distance_covered;            /**< counts the number of pixels covered during the current move */
 
   const bool loop;                 /**< should the movement return to the beginning once finished?  */
   const bool with_collisions;      /**< indicates whether this movement is sensitive to the obstacles */
@@ -59,8 +58,7 @@ class PathMovement: public MovementWithCollision {
   virtual bool is_finished(void);
 
   int get_current_direction(void);
-  void set_x(int x);
-  void set_y(int y);
+  void set_position(int x, int y);
 };
 
 #endif

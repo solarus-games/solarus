@@ -150,7 +150,7 @@ void Hero::update_ground(void) {
   Uint32 now = SDL_GetTicks();
   if (now >= next_ground_sound_date) {
 
-    if (walking) {
+    if (walking && state <= SWORD_LOADING) {
       ground_sound->play();
     }
 

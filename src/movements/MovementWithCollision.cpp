@@ -45,28 +45,6 @@ void MovementWithCollision::set_map(Map *map) {
 }
 
 /**
- * Sets the x position of the entity.
- * This is a redefinition of Movement::set_x() because we also need
- * to update the position of absolute_collision_box.
- * @param x the new x position
- */
-void MovementWithCollision::set_x(int x) {
-  Movement::set_x(x);
-  entity->just_moved();
-}
-
-/**
- * Sets the y position of the entity.
- * This is a redefinition of Movement::set_y() because we also need
- * to update the position of absolute_collision_box.
- * @param y the new y position
- */
-void MovementWithCollision::set_y(int y) {
-  Movement::set_y(y);  
-  entity->just_moved();
-}
-
-/**
  * Returns whether the entity would collide with the map
  * if it was moved a few pixels from its position.
  * @param dx x distance between the current position and the position to check

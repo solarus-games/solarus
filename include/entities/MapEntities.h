@@ -61,13 +61,18 @@ class MapEntities {
   std::vector<DestinationPoint*> destination_points;      /**< all destination points of the map */
   std::list<Detector*> detectors;                         /**< all entities able to detect other entities
 							   * on this map */
+  std::list<CrystalSwitchBlock*>
+    crystal_switch_blocks[LAYER_NB];                      /**< all crystal switch blocks of the map */
   
   std::list<MapEntity*>
     obstacle_entities[LAYER_NB];                          /**< all entities that might be obstacle for other
 							   * entities on this map, including the hero */
 
+  bool hero_on_raised_blocks;                             /**< indicates that the hero is currently on raised crystal switch blocks */
+
   void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
   void remove_marked_entities(void);
+  void update_crystal_switch_blocks(void);
 
  public:
 
@@ -81,6 +86,7 @@ class MapEntities {
   Obstacle get_obstacle_tile(Layer layer, int x, int y);
   std::list<MapEntity*> * get_obstacle_entities(Layer layer);
   std::list<Detector*> * get_detectors(void);
+  std::list<CrystalSwitchBlock*> * get_crystal_switch_blocks(Layer layer);
 
   MapEntity *get_entity(EntityType type, const std::string &name);
   std::list<MapEntity*> * get_entities(EntityType type);
@@ -96,6 +102,8 @@ class MapEntities {
 
   // hero
   void set_hero_layer(Layer layer);
+  bool is_hero_on_raised_blocks(void);
+  bool overlaps_raised_blocks(Layer layer, const SDL_Rect &rectangle);
 
   // update and display
   void set_suspended(bool suspended);

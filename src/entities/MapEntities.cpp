@@ -20,6 +20,7 @@
 #include "entities/TilePattern.h"
 #include "entities/Layer.h"
 #include "entities/Obstacle.h"
+#include "entities/CrystalSwitchBlock.h"
 #include "Map.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -29,7 +30,7 @@ using std::list;
  * Constructor.
  */
 MapEntities::MapEntities(Map *map):
-  map(map) {
+  map(map), hero_on_raised_blocks(false) {
 
   Hero *hero = zsdx->game->get_hero();
   Layer layer = hero->get_layer();
@@ -126,6 +127,15 @@ list<MapEntity*> * MapEntities::get_obstacle_entities(Layer layer) {
  */
 list<Detector*> * MapEntities::get_detectors(void) {
   return &detectors;
+}
+
+/**
+ * Returns all crystal switch blocks on the specified layer.
+ * @param layer the layer
+ * @return the crystal switch blocks on this layer
+ */
+list<CrystalSwitchBlock*> * MapEntities::get_crystal_switch_blocks(Layer layer) {
+  return &crystal_switch_blocks[layer];
 }
 
 /**
@@ -356,9 +366,12 @@ void MapEntities::add_entity(MapEntity *entity) {
     entities_displayed_first[layer].push_back(entity);
   }
 
-  // update the destination points list
+  // update the specific entities lists
   if (entity->get_type() == DESTINATION_POINT) {
     destination_points.push_back((DestinationPoint*) entity);
+  }
+  else if (entity->get_type() == CRYSTAL_SWITCH_BLOCK) {
+    crystal_switch_blocks[layer].push_back((CrystalSwitchBlock*) entity);
   }
 
   // update the list of all entities
@@ -462,6 +475,7 @@ void MapEntities::update(void) {
   // first update the hero
   Hero *hero = zsdx->game->get_hero();
   hero->update();
+  update_crystal_switch_blocks();
 
   // update the tiles and the dynamic entities
   list<MapEntity*>::iterator it;
@@ -548,4 +562,40 @@ void MapEntities::set_hero_layer(Layer layer) {
     this->obstacle_entities[layer].push_back(hero);
     this->entities_displayed_y_order[layer].push_back(hero);
   }
+}
+
+/**
+ * Updates the crystal switch blocks.
+ */
+void MapEntities::update_crystal_switch_blocks(void) {
+
+  Hero *hero = zsdx->game->get_hero();
+  hero_on_raised_blocks = overlaps_raised_blocks(hero->get_layer(), hero->get_position_in_map());
+}
+
+/**
+ * Returns whether a rectangle overlaps with a raised crystal switch block.
+ * @param layer the layer to check
+ * @param rectangle a rectangle
+ * @return true if this rectangle overlaps a raised crystal switch block
+ */
+bool MapEntities::overlaps_raised_blocks(Layer layer, const SDL_Rect &rectangle) {
+
+  bool overlaps = false;
+  std::list<CrystalSwitchBlock*> *blocks = get_crystal_switch_blocks(layer);
+
+  std::list<CrystalSwitchBlock*>::iterator it;
+  for (it = blocks->begin(); it != blocks->end() && !overlaps; it++) {
+    overlaps = (*it)->overlaps(rectangle) && (*it)->is_raised();
+  }
+
+  return overlaps;
+}
+
+/**
+ * Returns whether the hero is currently on raised crystal switch blocks.
+ * @return true if the hero is currently on raised crystal switch blocks
+ */
+bool MapEntities::is_hero_on_raised_blocks(void) {
+  return hero_on_raised_blocks;
 }

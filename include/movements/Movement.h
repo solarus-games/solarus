@@ -130,9 +130,9 @@ class Movement {
 
   int get_x(void);
   int get_y(void);
-  virtual void set_x(int x);
-  virtual void set_y(int y);
-  void set_position(int x, int y);
+  void set_x(int x);
+  void set_y(int y);
+  virtual void set_position(int x, int y);
 
   virtual void update(void);
   bool has_to_move_now(void);

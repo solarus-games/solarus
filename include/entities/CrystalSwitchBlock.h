@@ -37,10 +37,12 @@ class CrystalSwitchBlock: public Detector {
 
  private:
 
-  Subtype subtype;    /**< indicates whether this is an orange or a blue block */
-  bool orange_raised; /**< true if the orange blocks are raised,
-	               * false if the blue blocks are raised */
+  Subtype subtype;                   /**< indicates whether this is an orange or a blue block */
+  bool orange_raised;                /**< true if the orange blocks are raised,
+	                              * false if the blue blocks are raised */
 
+  bool try_jump(Hero *hero, const SDL_Rect &collision_box,
+		int jump_direction, int jump_length);
  public:
 
   CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype);
@@ -49,9 +51,12 @@ class CrystalSwitchBlock: public Detector {
   EntityType get_type(void);
 
   bool is_obstacle_for(MapEntity *other);
+  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
   void update(void);
   void display_on_map(void);
+
+  bool is_raised(void);
 };
 
 #endif

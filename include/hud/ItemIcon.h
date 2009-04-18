@@ -42,8 +42,6 @@ class ItemIcon: public HudElement {
   int counter_value_displayed;           /**< the counter value currently displayed 
 					  * (-1 if there is no counter) */
 
-  bool is_enabled;                       /**< true if the icon is enabled */
-
   static const std::string background_file_names[]; /**< file name of the background image for each slot */
 
  public:

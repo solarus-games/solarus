@@ -37,8 +37,6 @@ SwordIcon::SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y
   this->sword_key_effect_displayed = keys_effect->get_sword_key_effect();
   this->img_sword_icon = ResourceManager::load_image("hud/sword_icon.png");
 
-  this->is_enabled = true;
-
   // flipping icon
   this->is_flipping = false;
   this->sprite_sword_icon = new Sprite("hud/sword_icon_flip");
@@ -99,15 +97,11 @@ void SwordIcon::update(void) {
   }
 
   // icon opacity
-  if (keys_effect->is_sword_key_enabled() && !is_enabled) {
-    SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, 255);
-    is_enabled = true;
-    need_rebuild = true;
+  if (keys_effect->is_sword_key_enabled() && get_opacity() == 128) {
+    set_opacity(255);
   }
-  else if (!keys_effect->is_sword_key_enabled() && is_enabled) {
-    SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, 128);
-    is_enabled = false;
-    need_rebuild = true;
+  else if (!keys_effect->is_sword_key_enabled() && get_opacity() == 255) {
+    set_opacity(128);
   }
 
   // redraw the surface if something has changed

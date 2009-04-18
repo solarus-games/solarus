@@ -33,7 +33,6 @@ class PauseIcon: public HudElement {
 
   // static icon
   KeysEffect::PauseKeyEffect pause_key_effect_displayed;
-  bool is_enabled;
   SDL_Surface *img_pause_icon;
 
   // icon flipping

@@ -30,20 +30,15 @@ class HudElement {
 
  protected:
 
-  /**
-   * The surface on which the hud element is drawn when rebuild() is called.
-   * When display() is called, this surface is blitted
-   * on the destination surface (usually the screen).
-   */
-  SDL_Surface *surface_drawn;
+  SDL_Surface *surface_drawn;    /**< The surface on which the hud element is drawn when rebuild() is called.
+			          * When display() is called, this surface is blitted
+			          * on the destination surface (usually the screen). */
 
-  /**
-   * Position of this hud element on the destination surface.
-   */
-  SDL_Rect destination_position;
+  SDL_Rect destination_position; /**< Position of this hud element on the destination surface. */
 
-  bool visible;
-  
+  bool visible;                  /**< Indicates that this hud element is currently visible. */
+  int opacity;                   /**< The current opacity (0 to 255) of this hud element. */
+
   HudElement(int x, int y, int width, int height);
 
  public:
@@ -53,6 +48,8 @@ class HudElement {
   void set_position(int x, int y);
   void set_visible(bool visible);
   virtual bool is_visible(void);
+  int get_opacity(void);
+  void set_opacity(int opacity);
 
   virtual void update(void) = 0;
   virtual void rebuild(void);

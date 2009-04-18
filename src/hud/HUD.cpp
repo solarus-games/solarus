@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hud/HUD.h"
-#include "Game.h"
 #include "hud/HeartsView.h"
 #include "hud/RupeesCounter.h"
 #include "hud/MagicBar.h"
@@ -25,6 +24,7 @@
 #include "hud/ItemIcon.h"
 #include "hud/SmallKeysCounter.h"
 #include "hud/FloorView.h"
+#include "Game.h"
 
 /**
  * Constructor.
@@ -74,15 +74,38 @@ void HUD::update(void) {
       elements[5]->set_position(-18, 29); // sword icon
       elements[7]->set_position(-5, 51); // action icon
   }
-  else if (showing_message && !game->is_showing_message()) {
-    showing_message = false;
+  else if (!game->is_showing_message()) {
 
-    // a message is shown: hide or move the top-left icons
-    elements[3]->set_visible(true); // item 0
-    elements[4]->set_visible(true); // item 1
-    elements[6]->set_visible(true); // pause icon
-    elements[5]->set_position(10, 29); // sword icon
-    elements[7]->set_position(23, 51); // action icon
+    if (showing_message) {
+      showing_message = false;
+
+      // a message is finished: restore the top-left icons
+      elements[3]->set_visible(true); // item 0
+      elements[4]->set_visible(true); // item 1
+      elements[6]->set_visible(true); // pause icon
+      elements[5]->set_position(10, 29); // sword icon
+      elements[7]->set_position(23, 51); // action icon
+    }
+    else {
+
+      // if the hero is below the top-left icons, make them semi-transparent
+      const SDL_Rect &hero_coords = game->get_hero_coordinates();
+      if (elements[6]->get_opacity() == 255 && hero_coords.x < 88 && hero_coords.y < 64 && !game->is_suspended()) {
+	elements[3]->set_opacity(96); // item 0
+	elements[4]->set_opacity(96); // item 1
+	elements[6]->set_opacity(96); // pause icon
+	elements[5]->set_opacity(96); // sword icon
+	elements[7]->set_opacity(96); // action icon
+      }
+      else if (elements[6]->get_opacity() == 96
+	       && (hero_coords.x >= 88 || hero_coords.y >= 64 || game->is_suspended())) {
+	elements[3]->set_opacity(255); // item 0
+	elements[4]->set_opacity(255); // item 1
+	elements[6]->set_opacity(255); // pause icon
+	elements[5]->set_opacity(255); // sword icon
+	elements[7]->set_opacity(255); // action icon
+      }
+    }
   }
 
   // update each element

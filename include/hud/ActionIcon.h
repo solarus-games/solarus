@@ -33,7 +33,6 @@ class ActionIcon: public HudElement {
 
   // static icon
   KeysEffect::ActionKeyEffect action_key_effect_displayed;
-  bool is_enabled;
   SDL_Surface *img_action_icon;
 
   // icon flipping

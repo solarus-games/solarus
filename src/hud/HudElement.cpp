@@ -26,7 +26,7 @@
  * @param height height of the hud element surface
  */
 HudElement::HudElement(int x, int y, int width, int height):
-  visible(true) {
+  visible(true), opacity(255) {
 
   surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
   SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
@@ -75,6 +75,27 @@ void HudElement::set_visible(bool visible) {
  */
 bool HudElement::is_visible(void) {
   return visible;
+}
+
+/**
+ * Returns the current opacity of this element.
+ * @return the current opacity, between 0 and 255
+ */
+int HudElement::get_opacity(void) {
+  return opacity;
+}
+
+/**
+ * Sets the opacity of this element.
+ * @param opacity the opacity, between 0 and 255
+ */
+void HudElement::set_opacity(int opacity) {
+
+  if (opacity != this->opacity) {
+    this->opacity = opacity;
+    SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, opacity);
+    rebuild();
+  }
 }
 
 /**

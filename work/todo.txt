@@ -32,21 +32,17 @@ Bugs :
 
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - la barre de magie moyenne peut déborder (yoshi04)
-- le menu option fonctionne au premier abord mais plante lorsque l'on quitte le jeu avec echap après avoir personnalisé les boutons de la manette : "Fatal error: No joypad action is defined for game key 'Action'"
-- saut depuis un demi-étage ou une falaise : on peut passer à moitié à travers l'obstacle : généraliser la nouvelle version de 
-  is_facing_obstacle() ?
 - crystal switch blocks : quand on est dessus alors qu'ils sont levés, on peut se déplacer uniquement 
   sur ceux du rectangle où on se trouve
 - crystal switch blocks : quand on est dessus alors qu'ils sont levés, les quitter en sautant lorsque le center point n'est plus dessus
 - grotte du forgeron : activer les interrupteurs de cristal avec les vases, trop compliqué ? Changer le sens de 
   parcours de la grotte ? Mettre plus de vases et de blocs pour que ce soit plus évident ? Mettre un PNJ dans le village 
   qui conseille de lancer des vases ?
-- Bandit manchot : 400 rubis gagnés sans trop de peine indéfiniment ("avec de l'entrainement je ne dis pas que l'on peut y arriver a tous les coup mais très souvent oui")
-
-- Le HUD gêne lorsque l'on est dans le coin nord ouest de la map ou maison ou l'on se trouve (peut-être faire un HUD moins opaque pour les boutons a moins mais pas pour le texte (Voir, Soulever, ...) et les icônes des objets)
-- au bandit manchot, lorsque je me place devant la 1ere roulette link de temps en temps part sur la gauche sans raisons
 - les plongeons sans palmes, après vérification on ne perds pas de coeurs seulement dans links' awakening, on en perd dans ALTTP, OOA et OOS
 - crystal switch : s'active plusieurs fois de suite quand on reste avec l'épée chargée sans bouger
+
+- au bandit manchot, lorsque je me place devant la 1ere roulette link de temps en temps part sur la gauche sans raisons
+- le menu option fonctionne au premier abord mais plante lorsque l'on quitte le jeu avec echap après avoir personnalisé les boutons de la manette : "Fatal error: No joypad action is defined for game key 'Action'"
 
 
 Bugs a priori corrigés, demander confirmation à Thyb avec une nouvelle démo :
@@ -54,7 +50,8 @@ Bugs a priori corrigés, demander confirmation à Thyb avec une nouvelle démo :
 - Link se déplace trop vite
 - Jeux des 3 coffres : j'ai gagné 1 fois 50 rubis après il n'y a plus moyen d'y rejouer
 - Les sauts à partir des corniches sont trop rapides
-
+- Bandit manchot : 400 rubis gagnés sans trop de peine indéfiniment ("avec de l'entrainement je ne dis pas que l'on peut y arriver a tous les coup mais très souvent oui")
+- Le HUD gêne lorsque l'on est dans le coin nord ouest de la map ou maison ou l'on se trouve (peut-être faire un HUD moins opaque pour les boutons a moins mais pas pour le texte (Voir, Soulever, ...) et les icônes des objets)
 
 A venir :
 

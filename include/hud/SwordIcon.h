@@ -35,7 +35,6 @@ class SwordIcon: public HudElement {
   // static icon
   KeysEffect::SwordKeyEffect sword_key_effect_displayed;
   int sword_number_displayed;
-  bool is_enabled;
   SDL_Surface *img_sword_icon;
 
   // icon flipping

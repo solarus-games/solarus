@@ -283,8 +283,9 @@ void CarriedItem::display_on_map(void) {
 void CarriedItem::collision_with_enemy(Enemy *enemy) {
 
   if (is_throwing) {
-    break_item();
     enemy->hurt(Enemy::ATTACK_THROWN_ITEM, this);
+    break_item(); /* break the item after notifying the enemy since
+		   * breaking the item actually changes its position */
   }
 }
 

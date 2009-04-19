@@ -210,6 +210,14 @@ void Hero::start_free(void) {
 }
 
 /**
+ * Returns whether the hero can use an item from
+ * the inventory now.
+ */
+bool Hero::can_start_item(void) {
+  return state == FREE;
+}
+
+/**
  * Makes the hero swing his sword if this action is possible.
  * The game should not be suspended.
  * Moves to the state SWORD_SWINGING, plays the sword sound

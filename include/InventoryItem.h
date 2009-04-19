@@ -73,6 +73,7 @@ class InventoryItem {
 
  private:
 
+  ItemId id;           /**< id of  this item */
   bool attributable;   /**< true if this item can be assigned to icon X or V */
   int counter_index;   /**< for an item with a counter (bombs, arrows, etc.),
 			* index of the savegame variable indicating the
@@ -80,7 +81,7 @@ class InventoryItem {
   
   static InventoryItem items[28];
 
-  InventoryItem(bool attributable, int counter_index);
+  InventoryItem(ItemId id, bool attributable, int counter_index);
   ~InventoryItem(void);
 
  public:
@@ -90,6 +91,7 @@ class InventoryItem {
   bool is_attributable(void);
   bool has_counter(void);
   int get_counter_index(void);
+  void use(void);
 };
 
 #endif

@@ -158,6 +158,7 @@ class Hero: public MapEntity {
 
   void action_key_pressed(void);
   void sword_key_pressed(void);
+  void item_key_pressed(int slot);
   void arrow_pressed(int direction);
   void arrow_released(int direction);
 
@@ -168,8 +169,9 @@ class Hero: public MapEntity {
   void update_ground(void);
   bool is_ground_visible(void);
 
-  void update_sword_swinging(void);
+  bool can_start_item(void);
 
+  void update_sword_swinging(void);
   void start_sword_loading(void);
   void update_sword_loading(void);
   void start_sword_hitting(void);

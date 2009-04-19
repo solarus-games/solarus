@@ -22,48 +22,49 @@
  */
 InventoryItem InventoryItem::items[28] = {
 
-  InventoryItem(true, 0),  // feather
-  InventoryItem(true, Savegame::CURRENT_BOMBS), // bombs
-  InventoryItem(true, Savegame::CURRENT_ARROWS), // bow and arrows
-  InventoryItem(true, 0),  // boomerang
-  InventoryItem(true, 0),  // lamp
-  InventoryItem(true, 0),  // hook shot
-  InventoryItem(true, 0),  // bottle 1
+  InventoryItem(FEATHER, true, 0),
+  InventoryItem(BOMBS, true, Savegame::CURRENT_BOMBS),
+  InventoryItem(BOW, true, Savegame::CURRENT_ARROWS),
+  InventoryItem(BOOMERANG, true, 0),
+  InventoryItem(LAMP, true, 0),
+  InventoryItem(HOOK_SHOT, true, 0),
+  InventoryItem(BOTTLE_1, true, 0),
 
-  InventoryItem(true, 0),  // pegasus shoes
-  InventoryItem(true, 0),  // mystic mirror
-  InventoryItem(true, 0),  // cane of somaria
-  InventoryItem(true, Savegame::CURRENT_APPLES),  // apples
-  InventoryItem(true, Savegame::CURRENT_PAINS_AU_CHOCOLAT), // pains au chocolats
-  InventoryItem(true, Savegame::CURRENT_CROISSANTS), // croissants
-  InventoryItem(true, 0),  // bottle 2
+  InventoryItem(PEGASUS_SHOES, true, 0),
+  InventoryItem(MYSTIC_MIRROR, true, 0),
+  InventoryItem(CANE_OF_SOMARIA, true, 0),
+  InventoryItem(APPLES, true, Savegame::CURRENT_APPLES),
+  InventoryItem(PAINS_AU_CHOCOLAT, true, Savegame::CURRENT_PAINS_AU_CHOCOLAT),
+  InventoryItem(CROISSANTS, true, Savegame::CURRENT_CROISSANTS),
+  InventoryItem(BOTTLE_2, true, 0),
 
-  InventoryItem(false, 0), // rock key
-  InventoryItem(false, 0), // red key
-  InventoryItem(false, 0), // clay key
-  InventoryItem(false, 0), // apple pie + golden bars + edelweiss + bone key 
-  InventoryItem(false, 0), // flippers
-  InventoryItem(false, 0), // magic cape
-  InventoryItem(true, 0),  // bottle 3
+  InventoryItem(ROCK_KEY, false, 0),
+  InventoryItem(RED_KEY, false, 0),
+  InventoryItem(CLAY_KEY, false, 0),
+  InventoryItem(L4_WAY_BONE_KEY, false, 0),
+  InventoryItem(FLIPPERS, false, 0),
+  InventoryItem(MAGIC_CAPE, false, 0),
+  InventoryItem(BOTTLE_3, true, 0),
 
 
-  InventoryItem(false, 0), // iron key
-  InventoryItem(false, 0), // stone key
-  InventoryItem(false, 0), // wooden key
-  InventoryItem(false, 0), // ice key
-  InventoryItem(false, 0), // iron glove + golden glove
-  InventoryItem(false, Savegame::NB_FIRE_STONES), // fire stones
-  InventoryItem(true, 0),  // bottle 4
+  InventoryItem(IRON_KEY, false, 0),
+  InventoryItem(STONE_KEY, false, 0),
+  InventoryItem(WOODEN_KEY, false, 0),
+  InventoryItem(ICE_KEY, false, 0),
+  InventoryItem(GLOVE, false, 0),
+  InventoryItem(FIRE_STONES, false, Savegame::NB_FIRE_STONES),
+  InventoryItem(BOTTLE_4, true, 0),
 };
 
 /**
  * Constructor.
+ * @param id id of this item
  * @param attributable true if this item can be assigned to icon X or V
  * @param counter_index index of the savegame variable indicating the
  * counter's value (0 for no counter)
  */
-InventoryItem::InventoryItem(bool attributable, int counter_index):
-  attributable(attributable), counter_index(counter_index) {
+InventoryItem::InventoryItem(ItemId id, bool attributable, int counter_index):
+  id(id), attributable(attributable), counter_index(counter_index) {
 
 }
 
@@ -105,4 +106,11 @@ bool InventoryItem::has_counter(void) {
  */
 int InventoryItem::get_counter_index(void) {
   return counter_index;
+}
+
+/**
+ * Uses this item.
+ */
+void InventoryItem::use(void) {
+  // TODO
 }

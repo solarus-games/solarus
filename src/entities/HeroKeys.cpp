@@ -20,6 +20,8 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
+#include "InventoryItem.h"
+#include "Equipment.h"
 
 /**
  * This function is called by the controls when a game key is pressed
@@ -55,6 +57,14 @@ void Hero::key_pressed(Controls::GameKey key) {
 
   case Controls::DOWN:
     arrow_pressed(3);
+    break;
+
+  case Controls::ITEM_1:
+    item_key_pressed(0);
+    break;
+
+  case Controls::ITEM_2:
+    item_key_pressed(1);
     break;
 
   default:
@@ -141,6 +151,22 @@ void Hero::sword_key_pressed(void) {
 
   if (can_start_sword()) {
     start_sword();
+  }
+}
+
+/**
+ * This function is called when an item key is pressed.
+ * Depending on the item assigned to this key, an
+ * action may be performed.
+ */
+void Hero::item_key_pressed(int slot) {
+
+  InventoryItem::ItemId item_id = equipment->get_item_assigned(slot);
+  if (can_start_item()) {
+    InventoryItem *item = InventoryItem::get_item(item_id);
+    if (item->is_attributable()) {
+      item->use();
+    }
   }
 }
 

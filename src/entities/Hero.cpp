@@ -60,11 +60,12 @@ const int Hero::walking_speed = 9;
 Hero::Hero(Equipment *equipment):
   equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
   sword_stars_sprite(NULL), shield_sprite(NULL), ground_sprite(NULL),
-  normal_movement(new PlayerMovement(walking_speed)), state(FREE), facing_entity(NULL),
+  normal_movement(new PlayerMovement(walking_speed)),
+  state(FREE), facing_entity(NULL),
   end_blink_date(0), counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF), grabbed_entity(NULL), walking(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
-  ground(GROUND_NORMAL), next_ground_sound_date(0) {
+  ground(GROUND_NORMAL), next_ground_sound_date(0), current_inventory_item(NULL) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -412,6 +413,10 @@ void Hero::update(void) {
 
     case FALLING:
       update_falling();
+      break;
+
+    case USING_INVENTORY_ITEM:
+      update_inventory_item();
       break;
 
     default:

@@ -64,6 +64,7 @@ class Hero: public MapEntity {
     FALLING,                     /**< the hero is falling into a hole */
     RETURNING_TO_SOLID_GROUND,   /**< the hero is returning towards solid ground (e.g. after he drowned
 				  * in deep water or falled into a hole) */
+    USING_INVENTORY_ITEM,        /**< the hero is currently using an item from the inventory */
     FREEZED,                     /**< the hero cannot move for various possible reasons,
 				  * including an instruction from the script */
   };
@@ -149,6 +150,9 @@ class Hero: public MapEntity {
   Ground ground;                 /**< kind of ground under the hero: grass, shallow water, etc. */
   Uint32 next_ground_sound_date; /**< when the ground sound has to be played next time */
 
+  // items
+  InventoryItem *current_inventory_item; /**< the inventory item the player is currently using, or NULL if he is not using an item */
+
   // update functions
   void update_position(void);
   void update_sprites(void);
@@ -169,7 +173,9 @@ class Hero: public MapEntity {
   void update_ground(void);
   bool is_ground_visible(void);
 
-  bool can_start_item(void);
+  bool can_start_inventory_item(InventoryItem *item);
+  void start_inventory_item(InventoryItem *item);
+  void update_inventory_item(void);
 
   void update_sword_swinging(void);
   void start_sword_loading(void);

@@ -112,5 +112,20 @@ int InventoryItem::get_counter_index(void) {
  * Uses this item.
  */
 void InventoryItem::use(void) {
-  // TODO
+  
+}
+
+/**
+ * Updates this item when it is being used.
+ */
+void InventoryItem::update(void) {
+
+}
+
+/**
+ * Returns whether this item has finished to be used.
+ * @return true if this item has finished to be used
+ */
+bool InventoryItem::is_finished(void) {
+  return true;
 }

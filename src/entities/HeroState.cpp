@@ -210,14 +210,6 @@ void Hero::start_free(void) {
 }
 
 /**
- * Returns whether the hero can use an item from
- * the inventory now.
- */
-bool Hero::can_start_item(void) {
-  return state == FREE;
-}
-
-/**
  * Makes the hero swing his sword if this action is possible.
  * The game should not be suspended.
  * Moves to the state SWORD_SWINGING, plays the sword sound
@@ -1249,6 +1241,36 @@ void Hero::update_returning_to_solid_ground(void) {
     clear_movement();
     set_movement(normal_movement);
     blink();
+    start_free();
+  }
+}
+
+/**
+ * Returns whether the hero can use an item from
+ * the inventory now.
+ */
+bool Hero::can_start_inventory_item(InventoryItem *item) {
+  return state == FREE && item->is_attributable();
+}
+
+/**
+ * Starts using an item from the inventory.
+ * @param item the item to use.
+ */
+void Hero::start_inventory_item(InventoryItem *item) {
+
+  this->current_inventory_item = item;
+  set_state(USING_INVENTORY_ITEM);
+  item->use();
+}
+
+/**
+ * Updates the USING_INVENTORY_ITEM state.
+ */
+void Hero::update_inventory_item(void) {
+  current_inventory_item->update();
+  if (current_inventory_item->is_finished()) {
+    current_inventory_item = NULL;
     start_free();
   }
 }

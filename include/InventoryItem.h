@@ -92,6 +92,9 @@ class InventoryItem {
   bool has_counter(void);
   int get_counter_index(void);
   void use(void);
+
+  void update(void);
+  bool is_finished(void);
 };
 
 #endif

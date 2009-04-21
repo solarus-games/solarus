@@ -165,7 +165,7 @@ class Savegame {
     /**
      * @name Items of the inventory
      * Variables 100 to 127 indicate whether the player has got each inventory item
-     * (see enum InventoryItem::ItemId to know the item numbers).
+     * (see enum InventoryItemId to know the item numbers).
      * Each value saved here corresponds to a slot in the inventory.
      * Zero indicates that the player does not have the item
      * of this slot.

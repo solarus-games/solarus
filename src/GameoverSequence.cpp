@@ -17,6 +17,7 @@
 #include "GameoverSequence.h"
 #include "Game.h"
 #include "ResourceManager.h"
+#include "Savegame.h"
 #include "Sprite.h"
 #include "Color.h"
 #include "Map.h"

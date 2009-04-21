@@ -16,6 +16,7 @@
  */
 #include "menus/PauseSubmenuInventory.h"
 #include "menus/PauseMenu.h"
+#include "movements/TargetMovement.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
 #include "Sound.h"
@@ -24,7 +25,7 @@
 #include "Savegame.h"
 #include "Counter.h"
 #include "KeysEffect.h"
-#include "movements/TargetMovement.h"
+#include "InventoryItem.h"
 
 /**
  * Caption text displayed when an item is selected in the inventory.
@@ -86,15 +87,14 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
   for (int k = 0; k < 28; k++) {
 
     // get the item, its counter property and the possession state    
-    InventoryItem::ItemId item_id = (InventoryItem::ItemId) k;
-    InventoryItem *item = InventoryItem::get_item(item_id);
+    InventoryItemId item_id = (InventoryItemId) k;
     int variant = equipment->has_inventory_item(item_id);
 
-    if (variant != 0 && item->has_counter()) {
+    if (variant != 0 && InventoryItem::has_counter(item_id)) {
 
       // if the player has the item and this item has a counter, we show a counter
 
-      int amount = savegame->get_integer(item->get_counter_index());
+      int amount = savegame->get_integer(InventoryItem::get_counter_index(item_id));
       int x = 60 + (k % 7) * 32;
       int y = 81 + (k / 7) * 32;
 
@@ -153,14 +153,13 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
 
   // update the caption text, show or hide the action icon
   KeysEffect *keys_effect = game->get_keys_effect();
-  InventoryItem::ItemId item_id = (InventoryItem::ItemId) (row * 7 + column);
-  InventoryItem *item = InventoryItem::get_item(item_id);
+  InventoryItemId item_id = (InventoryItemId) (row * 7 + column);
   int variant = equipment->has_inventory_item(item_id);
 
   if (variant != 0) {
     set_caption_text(item_names[item_id][variant - 1]);
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
-    keys_effect->set_item_keys_enabled(item->is_attributable());
+    keys_effect->set_item_keys_enabled(InventoryItem::is_attributable(item_id));
   }
   else {
     set_caption_text("");
@@ -172,7 +171,7 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
 /**
  * Returns the index of the cell currently selected in the inventory.
  * The value returned identifies an item and corresponds directly to a
- * value from the InventoryItem::ItemId enum.
+ * value from the InventoryItemId enum.
  * @return the index of the selected cell, between 0 and 27
  */
 int PauseSubmenuInventory::get_selected_index(void) {
@@ -187,7 +186,7 @@ int PauseSubmenuInventory::get_selected_index(void) {
 bool PauseSubmenuInventory::is_item_selected(void) {
   
   int item_id = get_selected_index();
-  int variant = equipment->has_inventory_item((InventoryItem::ItemId) item_id);
+  int variant = equipment->has_inventory_item((InventoryItemId) item_id);
 
   return variant != 0;
 }
@@ -296,7 +295,7 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
     for (int j = 0; j < 7; j++, k++) {
 
       // get the possession state of this item
-      InventoryItem::ItemId item_id = (InventoryItem::ItemId) k;
+      InventoryItemId item_id = (InventoryItemId) k;
       int variant = equipment->has_inventory_item(item_id);
 
       if (variant > 0) {
@@ -343,13 +342,11 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
 void PauseSubmenuInventory::show_info_message(void) {
 
   int item_id = get_selected_index();
-  int variant = equipment->has_inventory_item((InventoryItem::ItemId) item_id);
+  int variant = equipment->has_inventory_item((InventoryItemId) item_id);
 
   // exception: for a bottle, replace its real id by the id of the first bottle
-  if (item_id == InventoryItem::BOTTLE_2
-      || item_id == InventoryItem::BOTTLE_3
-      || item_id == InventoryItem::BOTTLE_4) {
-    item_id = InventoryItem::BOTTLE_1;
+  if (item_id == ITEM_BOTTLE_2 || item_id == ITEM_BOTTLE_3 || item_id == ITEM_BOTTLE_4) {
+    item_id = ITEM_BOTTLE_1;
   }
 
   std::ostringstream oss;
@@ -369,11 +366,10 @@ void PauseSubmenuInventory::show_info_message(void) {
  */
 void PauseSubmenuInventory::assign_item(int slot) {
 
-  InventoryItem::ItemId selected_item_id = (InventoryItem::ItemId) get_selected_index();
-  InventoryItem *item = InventoryItem::get_item(selected_item_id);
+  InventoryItemId selected_item_id = (InventoryItemId) get_selected_index();
 
   // if this item is not assignable, do nothing
-  if (!item->is_attributable()) {
+  if (!InventoryItem::is_attributable(selected_item_id)) {
     return;
   }
 
@@ -418,8 +414,8 @@ void PauseSubmenuInventory::finish_assigning_item(void) {
 
   // if the item to assign is already assigned to the other icon, switch the two items
   int slot = item_assigned_destination;
-  InventoryItem::ItemId current_item_id = equipment->get_item_assigned(slot);
-  InventoryItem::ItemId other_item_id = equipment->get_item_assigned(1 - slot);
+  InventoryItemId current_item_id = equipment->get_item_assigned(slot);
+  InventoryItemId other_item_id = equipment->get_item_assigned(1 - slot);
 
   if (other_item_id == item_assigned_id) {
     equipment->set_item_assigned(1 - slot, current_item_id);

@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "hud/HudElement.h"
-#include "InventoryItem.h"
+#include "InventoryItemId.h"
 
 /**
  * This class displays the icon representing
@@ -36,11 +36,11 @@ class ItemIcon: public HudElement {
   SDL_Surface *background_img; /**< background image of the icon (i.e. the empty icon) */
   SDL_Surface *items_img;      /**< image containing all item with all variants */
 
-  InventoryItem::ItemId item_displayed;  /**< the item currently displayed on the icon */
-  int item_variant_displayed;            /**< the item variant currently displayed */
-  Counter *counter;                      /**< the counter associated to this item (if any) */
-  int counter_value_displayed;           /**< the counter value currently displayed 
-					  * (-1 if there is no counter) */
+  InventoryItemId item_displayed;  /**< the item currently displayed on the icon */
+  int item_variant_displayed;      /**< the item variant currently displayed */
+  Counter *counter;                /**< the counter associated to this item (if any) */
+  int counter_value_displayed;     /**< the counter value currently displayed 
+				    * (-1 if there is no counter) */
 
   static const std::string background_file_names[]; /**< file name of the background image for each slot */
 

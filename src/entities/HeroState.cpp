@@ -33,6 +33,7 @@
 #include "Sprite.h"
 #include "Treasure.h"
 #include "Controls.h"
+#include "InventoryItem.h"
 using namespace std;
 
 /**
@@ -1106,7 +1107,7 @@ void Hero::start_deep_water(void) {
   }
   else {
     // move to state swimming or jumping
-    if (equipment->has_inventory_item(InventoryItem::FLIPPERS)) {
+    if (equipment->has_inventory_item(ITEM_FLIPPERS)) {
       start_swimming();
     }
     else {
@@ -1135,7 +1136,7 @@ void Hero::update_plunging(void) {
     if (ground != GROUND_DEEP_WATER) {
       start_free();
     }
-    else if (equipment->has_inventory_item(InventoryItem::FLIPPERS)) {
+    else if (equipment->has_inventory_item(ITEM_FLIPPERS)) {
       start_swimming();
     }
     else {
@@ -1248,28 +1249,31 @@ void Hero::update_returning_to_solid_ground(void) {
 /**
  * Returns whether the hero can use an item from
  * the inventory now.
+ * @param item_id id of the item to check
  */
-bool Hero::can_start_inventory_item(InventoryItem *item) {
-  return state == FREE && item->is_attributable();
+bool Hero::can_start_inventory_item(InventoryItemId item_id) {
+  return state == FREE && InventoryItem::is_attributable(item_id);
 }
 
 /**
  * Starts using an item from the inventory.
  * @param item the item to use.
  */
-void Hero::start_inventory_item(InventoryItem *item) {
+void Hero::start_inventory_item(InventoryItemId item_id) {
 
-  this->current_inventory_item = item;
+  this->current_inventory_item = new InventoryItem(item_id);
   set_state(USING_INVENTORY_ITEM);
-  item->use();
+  current_inventory_item->use();
 }
 
 /**
  * Updates the USING_INVENTORY_ITEM state.
  */
 void Hero::update_inventory_item(void) {
+
   current_inventory_item->update();
   if (current_inventory_item->is_finished()) {
+    delete current_inventory_item;
     current_inventory_item = NULL;
     start_free();
   }

@@ -18,7 +18,7 @@
 #define ZSDX_EQUIPMENT_H
 
 #include "Common.h"
-#include "InventoryItem.h"
+#include "InventoryItemId.h"
 #include "Treasure.h"
 
 /**
@@ -122,32 +122,32 @@ class Equipment {
   bool needs_arrows(void);
 
   // inventory items
-  int has_inventory_item(InventoryItem::ItemId item_id);
-  void give_inventory_item(InventoryItem::ItemId item_id);
-  void give_inventory_item(InventoryItem::ItemId item_id, int variant);
-  void remove_inventory_item(InventoryItem::ItemId item_id);
+  int has_inventory_item(InventoryItemId item_id);
+  void give_inventory_item(InventoryItemId item_id);
+  void give_inventory_item(InventoryItemId item_id, int variant);
+  void remove_inventory_item(InventoryItemId item_id);
 
-  int get_inventory_item_amount(InventoryItem::ItemId item_id);
-  void set_inventory_item_amount(InventoryItem::ItemId item_id, int amount);
-  void add_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_add);
-  void remove_inventory_item_amount(InventoryItem::ItemId item_id, int amount_to_remove);
+  int get_inventory_item_amount(InventoryItemId item_id);
+  void set_inventory_item_amount(InventoryItemId item_id, int amount);
+  void add_inventory_item_amount(InventoryItemId item_id, int amount_to_add);
+  void remove_inventory_item_amount(InventoryItemId item_id, int amount_to_remove);
 
   // bottles
   void add_bottle(void);
   bool has_bottle(void);
   bool has_empty_bottle(void);
-  InventoryItem::ItemId get_first_empty_bottle(void);
+  InventoryItemId get_first_empty_bottle(void);
   bool has_bottle_with(Treasure::Content content);
-  InventoryItem::ItemId get_first_bottle_with(Treasure::Content content);
-  void set_bottle_content(InventoryItem::ItemId bottle_id, Treasure::Content content);
-  void set_bottle_empty(InventoryItem::ItemId bottle_id);
+  InventoryItemId get_first_bottle_with(Treasure::Content content);
+  void set_bottle_content(InventoryItemId bottle_id, Treasure::Content content);
+  void set_bottle_empty(InventoryItemId bottle_id);
 
   void found_fairy(void);
   void found_water(void);
 
   // item assignments
-  InventoryItem::ItemId get_item_assigned(int slot);
-  void set_item_assigned(int slot, InventoryItem::ItemId item_id);
+  InventoryItemId get_item_assigned(int slot);
+  void set_item_assigned(int slot, InventoryItemId item_id);
 
   // quest status
   bool has_world_map(void);

@@ -27,6 +27,7 @@
 #include "Counter.h"
 #include "Color.h"
 #include "Controls.h"
+#include "Savegame.h"
 
 const SDL_Rect PauseSubmenuMap::outside_world_minimap_size = {0, 0, 225, 388};
 

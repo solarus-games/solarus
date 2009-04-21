@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
-#include "InventoryItem.h"
+#include "InventoryItemId.h"
 #include "Controls.h"
 
 /**
@@ -40,10 +40,10 @@ class PauseSubmenuInventory: public PauseSubmenu {
   Counter *counters[28];          /**< counters (for some items only) */
 
   // assigning an item to an icon
-  InventoryItem::ItemId item_assigned_id;     /**< index of the item currently being assigned */
-  int item_assigned_variant;                  /**< possession state of the item being assigned */
-  int item_assigned_destination;              /**< destination slot of the item being assigned: 0 for X, 1 for V */
-  TargetMovement *item_assigned_movement;     /**< movement of the item currently being assigned (NULL if none) */
+  InventoryItemId item_assigned_id;       /**< index of the item currently being assigned */
+  int item_assigned_variant;              /**< possession state of the item being assigned */
+  int item_assigned_destination;          /**< destination slot of the item being assigned: 0 for X, 1 for V */
+  TargetMovement *item_assigned_movement; /**< movement of the item currently being assigned (NULL if none) */
 
   // cursor position
   void set_cursor_position(int row, int column);

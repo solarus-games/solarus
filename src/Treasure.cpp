@@ -23,7 +23,6 @@
 #include "Equipment.h"
 #include "DungeonEquipment.h"
 #include "DialogBox.h"
-#include "InventoryItem.h"
 #include "Counter.h"
 #include "Map.h"
 #include "MapScript.h"
@@ -226,30 +225,30 @@ void Treasure::add_item_to_equipment(void) {
     break;
     
   case FEATHER:
-    equipment->give_inventory_item(InventoryItem::FEATHER);
+    equipment->give_inventory_item(ITEM_FEATHER);
     break;
 
   case BOW:
-    equipment->give_inventory_item(InventoryItem::BOW);
+    equipment->give_inventory_item(ITEM_BOW);
     equipment->set_max_arrows(10);
     break;
 
   case BOW_AND_ARROWS:
-    equipment->give_inventory_item(InventoryItem::BOW);
+    equipment->give_inventory_item(ITEM_BOW);
     equipment->set_max_arrows(10);
     equipment->add_arrows(10);
     break;
 
   case BOOMERANG:
-    equipment->give_inventory_item(InventoryItem::BOOMERANG);
+    equipment->give_inventory_item(ITEM_BOOMERANG);
     break;
 
   case LAMP:
-    equipment->give_inventory_item(InventoryItem::LAMP);
+    equipment->give_inventory_item(ITEM_LAMP);
     break;
 
   case HOOK_SHOT:
-    equipment->give_inventory_item(InventoryItem::HOOK_SHOT);
+    equipment->give_inventory_item(ITEM_HOOK_SHOT);
     break;
 
   case BOTTLE:
@@ -278,96 +277,96 @@ void Treasure::add_item_to_equipment(void) {
     break;
 
   case PEGASUS_SHOES:
-    equipment->give_inventory_item(InventoryItem::PEGASUS_SHOES);
+    equipment->give_inventory_item(ITEM_PEGASUS_SHOES);
     break;
 
   case MYSTIC_MIRROR:
-    equipment->give_inventory_item(InventoryItem::MYSTIC_MIRROR);
+    equipment->give_inventory_item(ITEM_MYSTIC_MIRROR);
     break;
 
   case CANE_OF_SOMARIA:
-    equipment->give_inventory_item(InventoryItem::CANE_OF_SOMARIA);
+    equipment->give_inventory_item(ITEM_CANE_OF_SOMARIA);
     break;
 
   case MAGIC_CAPE:
-    equipment->give_inventory_item(InventoryItem::MAGIC_CAPE);
+    equipment->give_inventory_item(ITEM_MAGIC_CAPE);
     break;
 
   case IRON_GLOVE:
-    equipment->give_inventory_item(InventoryItem::GLOVE, 1);
+    equipment->give_inventory_item(ITEM_GLOVE, 1);
     break;
 
   case GOLDEN_GLOVE:
-    equipment->give_inventory_item(InventoryItem::GLOVE, 2);
+    equipment->give_inventory_item(ITEM_GLOVE, 2);
     break;
 
   case FIRE_STONE:
-    equipment->add_inventory_item_amount(InventoryItem::FIRE_STONES, 1);
+    equipment->add_inventory_item_amount(ITEM_FIRE_STONES, 1);
     break;
 
 
   case APPLES:
-    equipment->give_inventory_item(InventoryItem::APPLES);
-    equipment->add_inventory_item_amount(InventoryItem::APPLES, amount);
+    equipment->give_inventory_item(ITEM_APPLES);
+    equipment->add_inventory_item_amount(ITEM_APPLES, amount);
     break;
 
   case PAINS_AU_CHOCOLAT:
-    equipment->give_inventory_item(InventoryItem::PAINS_AU_CHOCOLAT);
-    equipment->add_inventory_item_amount(InventoryItem::PAINS_AU_CHOCOLAT, amount);
+    equipment->give_inventory_item(ITEM_PAINS_AU_CHOCOLAT);
+    equipment->add_inventory_item_amount(ITEM_PAINS_AU_CHOCOLAT, amount);
     break;
 
   case CROISSANTS:
-    equipment->give_inventory_item(InventoryItem::CROISSANTS);
-    equipment->add_inventory_item_amount(InventoryItem::CROISSANTS, amount);
+    equipment->give_inventory_item(ITEM_CROISSANTS);
+    equipment->add_inventory_item_amount(ITEM_CROISSANTS, amount);
     break;
 
   case APPLE_PIE:
-    equipment->give_inventory_item(InventoryItem::L4_WAY_BONE_KEY, 1);
+    equipment->give_inventory_item(ITEM_L4_WAY_BONE_KEY, 1);
     break;
 
   case GOLDEN_BARS:
-    equipment->give_inventory_item(InventoryItem::L4_WAY_BONE_KEY, 2);
+    equipment->give_inventory_item(ITEM_L4_WAY_BONE_KEY, 2);
     break;
 
   case EDELWEISS:
-    equipment->give_inventory_item(InventoryItem::L4_WAY_BONE_KEY, 3);
+    equipment->give_inventory_item(ITEM_L4_WAY_BONE_KEY, 3);
     break;
 
   case BONE_KEY:
-    equipment->give_inventory_item(InventoryItem::L4_WAY_BONE_KEY, 4);
+    equipment->give_inventory_item(ITEM_L4_WAY_BONE_KEY, 4);
     break;
 
   case FLIPPERS:
-    equipment->give_inventory_item(InventoryItem::FLIPPERS);
+    equipment->give_inventory_item(ITEM_FLIPPERS);
     break;
 
   case RED_KEY:
-    equipment->give_inventory_item(InventoryItem::RED_KEY);
+    equipment->give_inventory_item(ITEM_RED_KEY);
     break;
 
 
   case CLAY_KEY:
-    equipment->give_inventory_item(InventoryItem::CLAY_KEY);
+    equipment->give_inventory_item(ITEM_CLAY_KEY);
     break;
 
   case ROCK_KEY:
-    equipment->give_inventory_item(InventoryItem::ROCK_KEY);
+    equipment->give_inventory_item(ITEM_ROCK_KEY);
     break;
 
   case IRON_KEY:
-    equipment->give_inventory_item(InventoryItem::IRON_KEY);
+    equipment->give_inventory_item(ITEM_IRON_KEY);
     break;
 
   case STONE_KEY:
-    equipment->give_inventory_item(InventoryItem::STONE_KEY);
+    equipment->give_inventory_item(ITEM_STONE_KEY);
     break;
 
   case WOODEN_KEY:
-    equipment->give_inventory_item(InventoryItem::WOODEN_KEY);
+    equipment->give_inventory_item(ITEM_WOODEN_KEY);
     break;
 
   case ICE_KEY:
-    equipment->give_inventory_item(InventoryItem::ICE_KEY);
+    equipment->give_inventory_item(ITEM_ICE_KEY);
     break;
 
 
@@ -385,7 +384,7 @@ void Treasure::add_item_to_equipment(void) {
 
   case SMALL_BOMB_BAG:
     equipment->set_max_bombs(10);
-    equipment->give_inventory_item(InventoryItem::BOMBS);
+    equipment->give_inventory_item(ITEM_BOMBS);
     equipment->add_bombs(10);
     break;
 
@@ -473,11 +472,11 @@ void Treasure::add_item_to_equipment(void) {
     break;
 
   case BOMBS:
-    equipment->add_inventory_item_amount(InventoryItem::BOMBS, amount);
+    equipment->add_inventory_item_amount(ITEM_BOMBS, amount);
     break;
 
   case ARROWS:
-    equipment->add_inventory_item_amount(InventoryItem::BOW, amount);
+    equipment->add_inventory_item_amount(ITEM_BOW, amount);
     break;
 
   case HEARTS:

@@ -21,6 +21,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
+#include "InventoryItem.h"
 
 /**
  * Name of the image file for each item slot.
@@ -45,7 +46,7 @@ ItemIcon::ItemIcon(int slot, Savegame *savegame, int x, int y):
   this->background_img = ResourceManager::load_image(background_file_names[slot]);
   this->items_img = ResourceManager::load_image("hud/inventory_items.png");
 
-  this->item_displayed = InventoryItem::NONE;
+  this->item_displayed = ITEM_NONE;
   this->item_variant_displayed = 0;
   this->counter = new Counter(2, false, 8, 16);
   this->counter_value_displayed = -1;
@@ -73,7 +74,7 @@ void ItemIcon::update(void) {
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
   // item assigned
-  InventoryItem::ItemId current_item = equipment->get_item_assigned(slot);
+  InventoryItemId current_item = equipment->get_item_assigned(slot);
   if (item_displayed != current_item) {
 
     need_rebuild = true;
@@ -90,8 +91,7 @@ void ItemIcon::update(void) {
   }
 
   // counter index
-  InventoryItem *item = InventoryItem::get_item(current_item);
-  int counter_index = item->get_counter_index();
+  int counter_index = InventoryItem::get_counter_index(current_item);
   if (counter_index != 0) {
 
     int current_counter_value = savegame->get_integer(counter_index);
@@ -132,7 +132,7 @@ void ItemIcon::rebuild(void) {
   SDL_BlitSurface(background_img, NULL, surface_drawn, NULL);
 
   // item
-  if (item_displayed != InventoryItem::NONE) {
+  if (item_displayed != ITEM_NONE) {
 
     SDL_Rect dst_position = {4, 4, 0, 0};
     SDL_Rect src_position = {0, 0, 16, 16};

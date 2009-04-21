@@ -18,53 +18,11 @@
 #include "Savegame.h"
 
 /**
- * Properties of each item of the inventory.
- */
-InventoryItem InventoryItem::items[28] = {
-
-  InventoryItem(FEATHER, true, 0),
-  InventoryItem(BOMBS, true, Savegame::CURRENT_BOMBS),
-  InventoryItem(BOW, true, Savegame::CURRENT_ARROWS),
-  InventoryItem(BOOMERANG, true, 0),
-  InventoryItem(LAMP, true, 0),
-  InventoryItem(HOOK_SHOT, true, 0),
-  InventoryItem(BOTTLE_1, true, 0),
-
-  InventoryItem(PEGASUS_SHOES, true, 0),
-  InventoryItem(MYSTIC_MIRROR, true, 0),
-  InventoryItem(CANE_OF_SOMARIA, true, 0),
-  InventoryItem(APPLES, true, Savegame::CURRENT_APPLES),
-  InventoryItem(PAINS_AU_CHOCOLAT, true, Savegame::CURRENT_PAINS_AU_CHOCOLAT),
-  InventoryItem(CROISSANTS, true, Savegame::CURRENT_CROISSANTS),
-  InventoryItem(BOTTLE_2, true, 0),
-
-  InventoryItem(ROCK_KEY, false, 0),
-  InventoryItem(RED_KEY, false, 0),
-  InventoryItem(CLAY_KEY, false, 0),
-  InventoryItem(L4_WAY_BONE_KEY, false, 0),
-  InventoryItem(FLIPPERS, false, 0),
-  InventoryItem(MAGIC_CAPE, false, 0),
-  InventoryItem(BOTTLE_3, true, 0),
-
-
-  InventoryItem(IRON_KEY, false, 0),
-  InventoryItem(STONE_KEY, false, 0),
-  InventoryItem(WOODEN_KEY, false, 0),
-  InventoryItem(ICE_KEY, false, 0),
-  InventoryItem(GLOVE, false, 0),
-  InventoryItem(FIRE_STONES, false, Savegame::NB_FIRE_STONES),
-  InventoryItem(BOTTLE_4, true, 0),
-};
-
-/**
  * Constructor.
- * @param id id of this item
- * @param attributable true if this item can be assigned to icon X or V
- * @param counter_index index of the savegame variable indicating the
- * counter's value (0 for no counter)
+ * @param item_id id of the item to create
  */
-InventoryItem::InventoryItem(ItemId id, bool attributable, int counter_index):
-  id(id), attributable(attributable), counter_index(counter_index) {
+InventoryItem::InventoryItem(InventoryItemId item_id):
+  item_id(item_id) {
 
 }
 
@@ -76,36 +34,65 @@ InventoryItem::~InventoryItem(void) {
 }
 
 /**
- * Returns an inventory item specified by its id.
- * @param id id of the inventory item to get
+ * Returns whether the specified item can be assigned to icon X or V.
+ * @param item_id id of a item
+ * @return true if this item item is attributable
  */
-InventoryItem * InventoryItem::get_item(ItemId id) {
-  return &items[id];
+bool InventoryItem::is_attributable(InventoryItemId item_id) {
+  return item_id < ITEM_ROCK_KEY;
 }
 
 /**
- * Returns whether the current item can be assigned to icon X or V.
- * @return true if the current item is attributable
+ * Returns whether a counter is associated to the specified item.
+ * This is equivalent to get_counter_index(item_id) != 0.
+ * @param item_id id of an item
+ * @return true if this item has a counter
  */
-bool InventoryItem::is_attributable(void) {
-  return attributable;
+bool InventoryItem::has_counter(InventoryItemId item_id) {
+  return get_counter_index(item_id) != -1;
 }
 
 /**
- * Returns whether a counter is associated to this item.
- * This is equivalent to get_counter_index() != 0.
- */
-bool InventoryItem::has_counter(void) {
-  return counter_index != 0;
-}
-
-/**
- * If this item has a counter, returns the index of the savegame
- * variable indicating the counter's value. Otherwise, returns 0.
+ * If the specified item has a counter, returns the index of the savegame
+ * variable indicating the counter's value. Otherwise, returns -1.
  * @return the index of the savegame variable indicating the counter's value
  */
-int InventoryItem::get_counter_index(void) {
-  return counter_index;
+int InventoryItem::get_counter_index(InventoryItemId item_id) {
+
+  int counter;
+
+  switch(item_id) {
+
+  case ITEM_BOMBS:
+    counter = Savegame::CURRENT_BOMBS;
+    break;
+
+  case ITEM_BOW:
+    counter = Savegame::CURRENT_ARROWS;
+    break;
+
+  case ITEM_APPLES:
+    counter = Savegame::CURRENT_APPLES;
+    break;
+
+  case ITEM_PAINS_AU_CHOCOLAT:
+    counter = Savegame::CURRENT_PAINS_AU_CHOCOLAT;
+    break;
+
+  case ITEM_CROISSANTS:
+    counter = Savegame::CURRENT_CROISSANTS;
+    break;
+
+  case ITEM_FIRE_STONES:
+    counter = Savegame::NB_FIRE_STONES;
+    break;
+
+  default:
+    counter = -1;
+    break;
+  }
+
+  return counter;
 }
 
 /**

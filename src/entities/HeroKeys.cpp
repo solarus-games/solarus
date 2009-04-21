@@ -20,7 +20,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
-#include "InventoryItem.h"
+#include "InventoryItemId.h"
 #include "Equipment.h"
 
 /**
@@ -161,10 +161,10 @@ void Hero::sword_key_pressed(void) {
  */
 void Hero::item_key_pressed(int slot) {
 
-  InventoryItem::ItemId item_id = equipment->get_item_assigned(slot);
-  InventoryItem *item = InventoryItem::get_item(item_id);
-  if (can_start_inventory_item(item)) {
-    start_inventory_item(item);
+  InventoryItemId item_id = equipment->get_item_assigned(slot);
+
+  if (can_start_inventory_item(item_id)) {
+    start_inventory_item(item_id);
   }
 }
 

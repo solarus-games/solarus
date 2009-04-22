@@ -40,7 +40,7 @@ sword_loading_walking hero/loading.tunic0.png 4 100 0
 0	48	24	24	12	21	6	6
 0	72	24	24	12	21	6	6
 
-sword_hitting hero/sword_hitting.tunic.png 4 40 1
+sword_tapping hero/sword_tapping.tunic.png 4 40 1
 0	0	40	24	12	21	7	7
 0	24	24	40	12	37	7	7
 0	64	40	24	28	21	7	7

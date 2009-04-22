@@ -382,8 +382,8 @@ void Hero::update(void) {
       update_sword_loading();
       break;
 
-    case SWORD_HITTING:
-      update_sword_hitting();
+    case SWORD_TAPPING:
+      update_sword_tapping();
       break;
 
     case SPIN_ATTACK:
@@ -716,7 +716,8 @@ bool Hero::is_facing_obstacle(void) {
 
   return map->collision_with_obstacles(layer, collision_box, this);
 
-  /* old version with only one point: problems when the hero cannot pass but the facing point can
+  /* old version with only one point: problems when the hero
+     cannot pass but the facing point can
   SDL_Rect facing_point = get_facing_point();
   return map->collision_with_obstacles(layer, facing_point.x, facing_point.y, this);
   */
@@ -757,7 +758,8 @@ void Hero::place_on_destination_point(Map *map) {
   if (destination_point_index >= 0) {
 
     // the location is specified by a destination point object
-    DestinationPoint *destination_point = map->get_entities()->get_destination_point(destination_point_index);
+    DestinationPoint *destination_point =
+      map->get_entities()->get_destination_point(destination_point_index);
 
     set_map(map, destination_point->get_direction());
     set_x(destination_point->get_x());
@@ -834,13 +836,16 @@ void Hero::opening_transition_finished(void) {
 
 /**
  * When the sword sprite collides with a detector,
- * this function can be called to determine whether the hero is really striking
- * this particular detector only.
- * This depends on the hero state, his direction and his distance to the detector.
- * This function assumes that there is already a collision between the sword sprite and the detector's sprite.
- * This function should be called to check whether the hero wants to cut a bush or
- * some grass.
- * Don't use this function for enemies since any sprite collision is enough to hurt an enemy.
+ * this function can be called to determine whether the hero is
+ * really striking this particular detector only.
+ * This depends on the hero state, his direction and his
+ * distance to the detector.
+ * This function assumes that there is already a collision
+ * between the sword sprite and the detector's sprite.
+ * This function should be called to check whether the
+ * hero wants to cut a bush or some grass.
+ * Don't use this function for enemies since any sprite
+ * collision is enough to hurt an enemy.
  * @param detector the detector to check
  * @return true if the sword is striking this detector
  */
@@ -856,8 +861,8 @@ bool Hero::is_stroke_by_sword(Detector *detector) {
     result = true;
     break;
 
-  case SWORD_HITTING:
-    // when the hero is hitting his sword against a wall, this wall should be detector
+  case SWORD_TAPPING:
+    // when the hero is tapping his sword against a wall, this wall should be detector
     result = detector->is_obstacle_for(this)
       && facing_entity == detector
       && tunic_sprite->get_current_frame() >= 3;

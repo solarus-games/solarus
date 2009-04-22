@@ -40,7 +40,7 @@ class PauseSubmenuInventory: public PauseSubmenu {
   Counter *counters[28];          /**< counters (for some items only) */
 
   // assigning an item to an icon
-  InventoryItemId item_assigned_id;       /**< index of the item currently being assigned */
+  Inventory::ItemId item_assigned_id;       /**< index of the item currently being assigned */
   int item_assigned_variant;              /**< possession state of the item being assigned */
   int item_assigned_destination;          /**< destination slot of the item being assigned: 0 for X, 1 for V */
   TargetMovement *item_assigned_movement; /**< movement of the item currently being assigned (NULL if none) */

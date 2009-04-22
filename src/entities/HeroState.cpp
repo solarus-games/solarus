@@ -67,7 +67,7 @@ void Hero::set_state(State state) {
  * @return true if the animation direction is locked
  */
 bool Hero::is_direction_locked(void) {
-  return state == SWORD_LOADING || state == PUSHING || state == PULLING || state == SWORD_HITTING;
+  return state == SWORD_LOADING || state == PUSHING || state == PULLING || state == SWORD_TAPPING;
 }
 
 /**
@@ -323,21 +323,21 @@ void Hero::update_sword_loading(void) {
 }
 
 /**
- * Makes the hero hit the wall he is facing with his sword.
- * Moves to the state SWORD_HITTING
+ * Makes the hero tap the wall he is facing with his sword.
+ * Moves to the state SWORD_TAPPING
  * and updates the animations accordingly.
  */
-void Hero::start_sword_hitting(void) {
-  set_state(SWORD_HITTING);
-  set_animation_sword_hitting();
+void Hero::start_sword_tapping(void) {
+  set_state(SWORD_TAPPING);
+  set_animation_sword_tapping();
   next_hit_sound_date = SDL_GetTicks() + 100;
 }
 
 /**
- * This function is called repeatedly while the hero is hitting a wall with his sword.
- * The state must be SWORD_HITTING.
+ * This function is called repeatedly while the hero is tapping a wall with his sword.
+ * The state must be SWORD_TAPPING.
  */
-void Hero::update_sword_hitting(void) {
+void Hero::update_sword_tapping(void) {
 
   Controls *controls = zsdx->game->get_controls();
   const SDL_Rect &facing_point = get_facing_point();
@@ -348,7 +348,7 @@ void Hero::update_sword_hitting(void) {
     // the sword key has been released, the player has moved or the obstacle is gone
 
     if (tunic_sprite->get_current_frame() >= 5) {
-      // stop hitting the wall, go back to state SWORD_LOADING
+      // stop tapping the wall, go back to state SWORD_LOADING
       start_sword_loading();
     }
   }
@@ -556,7 +556,7 @@ void Hero::update_pushing(void) {
 	       && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {
 	// in state SWORD_LOADING: hit the wall with the sword
 	pushing_direction_mask = direction_mask;
-	start_sword_hitting();
+	start_sword_tapping();
       }
     }
     else if (state == FREE) {
@@ -1107,7 +1107,7 @@ void Hero::start_deep_water(void) {
   }
   else {
     // move to state swimming or jumping
-    if (equipment->has_inventory_item(ITEM_FLIPPERS)) {
+    if (equipment->has_inventory_item(Inventory::FLIPPERS)) {
       start_swimming();
     }
     else {
@@ -1136,7 +1136,7 @@ void Hero::update_plunging(void) {
     if (ground != GROUND_DEEP_WATER) {
       start_free();
     }
-    else if (equipment->has_inventory_item(ITEM_FLIPPERS)) {
+    else if (equipment->has_inventory_item(Inventory::FLIPPERS)) {
       start_swimming();
     }
     else {
@@ -1251,17 +1251,17 @@ void Hero::update_returning_to_solid_ground(void) {
  * the inventory now.
  * @param item_id id of the item to check
  */
-bool Hero::can_start_inventory_item(InventoryItemId item_id) {
-  return state == FREE && InventoryItem::is_attributable(item_id);
+bool Hero::can_start_inventory_item(Inventory::ItemId item_id) {
+  return state == FREE && Inventory::Item::is_attributable(item_id);
 }
 
 /**
  * Starts using an item from the inventory.
  * @param item the item to use.
  */
-void Hero::start_inventory_item(InventoryItemId item_id) {
+void Hero::start_inventory_item(Inventory::ItemId item_id) {
 
-  this->current_inventory_item = new InventoryItem(item_id);
+  this->current_inventory_item = new Inventory::Item(item_id);
   set_state(USING_INVENTORY_ITEM);
   current_inventory_item->use();
 }

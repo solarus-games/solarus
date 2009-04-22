@@ -438,17 +438,17 @@ void Hero::set_animation_sword(void) {
 }
 
 /**
- * Starts (or restarts) the "sword hitting" animation of the hero's sprites.
- * The state of the hero should be SWORD_HITTING.
+ * Starts (or restarts) the "sword tapping" animation of the hero's sprites.
+ * The state of the hero should be SWORD_TAPPING.
  */
-void Hero::set_animation_sword_hitting(void) {
+void Hero::set_animation_sword_tapping(void) {
 
   int direction = tunic_sprite->get_current_direction();
 
-  tunic_sprite->set_current_animation("sword_hitting");
+  tunic_sprite->set_current_animation("sword_tapping");
   tunic_sprite->restart_animation();
 
-  sword_sprite->set_current_animation("sword_hitting");
+  sword_sprite->set_current_animation("sword_tapping");
   sword_sprite->set_current_direction(direction);
   sword_sprite->restart_animation();
   sword_stars_sprite->stop_animation();
@@ -456,7 +456,7 @@ void Hero::set_animation_sword_hitting(void) {
   if (equipment->has_shield()) {
 
     if (direction % 2 != 0) {
-      shield_sprite->set_current_animation("sword_hitting");
+      shield_sprite->set_current_animation("sword_tapping");
       shield_sprite->set_current_direction(direction / 2);
       shield_sprite->restart_animation();
     }

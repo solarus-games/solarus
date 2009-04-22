@@ -16,12 +16,13 @@
  */
 #include "InventoryItem.h"
 #include "Savegame.h"
+using namespace Inventory;
 
 /**
- * Constructor.
+ * Creates a new inventory item.
  * @param item_id id of the item to create
  */
-InventoryItem::InventoryItem(InventoryItemId item_id):
+Item::Item(ItemId item_id):
   item_id(item_id) {
 
 }
@@ -29,7 +30,7 @@ InventoryItem::InventoryItem(InventoryItemId item_id):
 /**
  * Destructor.
  */
-InventoryItem::~InventoryItem(void) {
+Item::~Item(void) {
 
 }
 
@@ -38,8 +39,8 @@ InventoryItem::~InventoryItem(void) {
  * @param item_id id of a item
  * @return true if this item item is attributable
  */
-bool InventoryItem::is_attributable(InventoryItemId item_id) {
-  return item_id < ITEM_ROCK_KEY;
+bool Item::is_attributable(ItemId item_id) {
+  return item_id < ROCK_KEY;
 }
 
 /**
@@ -48,7 +49,7 @@ bool InventoryItem::is_attributable(InventoryItemId item_id) {
  * @param item_id id of an item
  * @return true if this item has a counter
  */
-bool InventoryItem::has_counter(InventoryItemId item_id) {
+bool Item::has_counter(ItemId item_id) {
   return get_counter_index(item_id) != -1;
 }
 
@@ -57,33 +58,33 @@ bool InventoryItem::has_counter(InventoryItemId item_id) {
  * variable indicating the counter's value. Otherwise, returns -1.
  * @return the index of the savegame variable indicating the counter's value
  */
-int InventoryItem::get_counter_index(InventoryItemId item_id) {
+int Item::get_counter_index(ItemId item_id) {
 
   int counter;
 
   switch(item_id) {
 
-  case ITEM_BOMBS:
+  case BOMBS:
     counter = Savegame::CURRENT_BOMBS;
     break;
 
-  case ITEM_BOW:
+  case BOW:
     counter = Savegame::CURRENT_ARROWS;
     break;
 
-  case ITEM_APPLES:
+  case APPLES:
     counter = Savegame::CURRENT_APPLES;
     break;
 
-  case ITEM_PAINS_AU_CHOCOLAT:
+  case PAINS_AU_CHOCOLAT:
     counter = Savegame::CURRENT_PAINS_AU_CHOCOLAT;
     break;
 
-  case ITEM_CROISSANTS:
+  case CROISSANTS:
     counter = Savegame::CURRENT_CROISSANTS;
     break;
 
-  case ITEM_FIRE_STONES:
+  case FIRE_STONES:
     counter = Savegame::NB_FIRE_STONES;
     break;
 
@@ -98,14 +99,14 @@ int InventoryItem::get_counter_index(InventoryItemId item_id) {
 /**
  * Uses this item.
  */
-void InventoryItem::use(void) {
+void Item::use(void) {
   
 }
 
 /**
  * Updates this item when it is being used.
  */
-void InventoryItem::update(void) {
+void Item::update(void) {
 
 }
 
@@ -113,6 +114,6 @@ void InventoryItem::update(void) {
  * Returns whether this item has finished to be used.
  * @return true if this item has finished to be used
  */
-bool InventoryItem::is_finished(void) {
+bool Item::is_finished(void) {
   return true;
 }

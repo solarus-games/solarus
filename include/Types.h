@@ -73,7 +73,6 @@ class DungeonEquipment;
 class Controls;
 class Dungeon;
 class Treasure;
-class InventoryItem;
 class Map;
 class MapLoader;
 class MapScript;
@@ -82,6 +81,10 @@ class Message;
 class Timer;
 class GameoverSequence;
 class Camera;
+
+namespace Inventory {
+  class Item;
+}
 
 // music and sound
 class Music;

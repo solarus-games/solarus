@@ -16,7 +16,7 @@ sword_loading_walking hero/loading.sword2.png 4 100 0
 0	80	40	40	20	27	6	6
 0	120	40	40	20	27	6	6
 
-sword_hitting hero/sword_hitting.sword.png 4 40 1
+sword_tapping hero/sword_tapping.sword.png 4 40 1
 0	128	40	24	12	21	7	7
 0	152	24	40	12	37	7	7
 0	192	40	24	28	21	7	7

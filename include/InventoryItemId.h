@@ -17,46 +17,50 @@
 #ifndef ZSDX_INVENTORY_ITEM_ID_H
 #define ZSDX_INVENTORY_ITEM_ID_H
 
-/**
- * Constant identifying each item of the inventory.
- * These constants allow the class InventoryItem to determine
- * the savegame slot of each item and
- * the place for each item in the inventory screen.
- */
-enum InventoryItemId {
-  ITEM_NONE                        = -1,
+namespace Inventory {
 
-  ITEM_FEATHER                     = 0,
-  ITEM_BOMBS                       = 1,
-  ITEM_BOW                         = 2, /**< 1: bow without arrows, 2: bow with arrows */
-  ITEM_BOOMERANG                   = 3,
-  ITEM_LAMP                        = 4,
-  ITEM_HOOK_SHOT                   = 5,
-  ITEM_BOTTLE_1                    = 6, /**< 1: empty, 2: water, 3: red potion, 4: green potion, 5: blue potion, 6: fairy */
+  /**
+   * Constants identifying each item of the inventory.
+   * These constants allow the class InventoryItem to determine
+   * the savegame slot of each item and
+   * the place for each item in the inventory screen.
+   */
+  enum ItemId {
+    NONE                        = -1,
 
-  ITEM_PEGASUS_SHOES               = 7,
-  ITEM_MYSTIC_MIRROR               = 8,
-  ITEM_CANE_OF_SOMARIA             = 9,
-  ITEM_APPLES                      = 10,
-  ITEM_PAINS_AU_CHOCOLAT           = 11,
-  ITEM_CROISSANTS                  = 12,
-  ITEM_BOTTLE_2                    = 13,
+    FEATHER                     = 0,
+    BOMBS                       = 1,
+    BOW                         = 2, /**< 1: bow without arrows, 2: bow with arrows */
+    BOOMERANG                   = 3,
+    LAMP                        = 4,
+    HOOK_SHOT                   = 5,
+    BOTTLE_1                    = 6, /**< 1: empty, 2: water, 3: red potion, 4: green potion, 5: blue potion, 6: fairy */
 
-  ITEM_ROCK_KEY                    = 14,
-  ITEM_RED_KEY                     = 15,
-  ITEM_CLAY_KEY                    = 16,
-  ITEM_L4_WAY_BONE_KEY             = 17, /**< 1: apple pie, 2: gold bars, 3: edelweiss, 4: bone key */
-  ITEM_FLIPPERS                    = 18,
-  ITEM_MAGIC_CAPE                  = 19,
-  ITEM_BOTTLE_3                    = 20,
+    PEGASUS_SHOES               = 7,
+    MYSTIC_MIRROR               = 8,
+    CANE_OF_SOMARIA             = 9,
+    APPLES                      = 10,
+    PAINS_AU_CHOCOLAT           = 11,
+    CROISSANTS                  = 12,
+    BOTTLE_2                    = 13,
 
-  ITEM_IRON_KEY                    = 21,
-  ITEM_STONE_KEY                   = 22,
-  ITEM_WOODEN_KEY                  = 23,
-  ITEM_ICE_KEY                     = 24,
-  ITEM_GLOVE                       = 25, /**< 1: iron glove, 2: golden glove */
-  ITEM_FIRE_STONES                 = 26,
-  ITEM_BOTTLE_4                    = 27,
-};
+    ROCK_KEY                    = 14,
+    RED_KEY                     = 15,
+    CLAY_KEY                    = 16,
+    L4_WAY_BONE_KEY             = 17, /**< 1: apple pie, 2: gold bars, 3: edelweiss, 4: bone key */
+    FLIPPERS                    = 18,
+    MAGIC_CAPE                  = 19,
+    BOTTLE_3                    = 20,
+
+    IRON_KEY                    = 21,
+    STONE_KEY                   = 22,
+    WOODEN_KEY                  = 23,
+    ICE_KEY                     = 24,
+    GLOVE                       = 25, /**< 1: iron glove, 2: golden glove */
+    FIRE_STONES                 = 26,
+    BOTTLE_4                    = 27,
+  };
+
+}
 
 #endif

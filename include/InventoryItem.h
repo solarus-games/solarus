@@ -21,31 +21,35 @@
 #include "Savegame.h"
 #include "InventoryItemId.h"
 
-/**
- * This class provides the description of each item of the inventory
- * with some static methods,
- * and handles their behavior when it is instanciated.
- * This inventory items does not include the dungeon items (map, compass, etc.)
- * nor the items of the quest status screen.
- */
-class InventoryItem {
+namespace Inventory {
 
- private:
+  /**
+   * This class provides the description of each item of the inventory
+   * with some static methods,
+   * and handles their behavior when it is instanciated.
+   * This inventory items does not include the dungeon items (map, compass, etc.)
+   * nor the items of the quest status screen.
+   */
+  class Item {
 
-  InventoryItemId item_id; /**< id of this item */
+  private:
 
- public:
+    ItemId item_id; /**< id of this item */
 
-  InventoryItem(InventoryItemId item_id);
-  ~InventoryItem(void);
+  public:
 
-  static bool is_attributable(InventoryItemId item_id);
-  static bool has_counter(InventoryItemId item_id);
-  static int get_counter_index(InventoryItemId item_id);
+    Item(ItemId item_id);
+    ~Item(void);
 
-  void use(void);
-  void update(void);
-  bool is_finished(void);
-};
+    static bool is_attributable(ItemId item_id);
+    static bool has_counter(ItemId item_id);
+    static int get_counter_index(ItemId item_id);
+
+    void use(void);
+    void update(void);
+    bool is_finished(void);
+  };
+
+}
 
 #endif

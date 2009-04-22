@@ -656,7 +656,7 @@ void Equipment::remove_bomb(void) {
  * @return true if the player needs bombs
  */
 bool Equipment::needs_bombs(void) {
-  return has_inventory_item(ITEM_BOMBS)
+  return has_inventory_item(Inventory::BOMBS)
     && get_bombs() == 0;
 }
 
@@ -703,14 +703,14 @@ void Equipment::set_arrows(int arrows) {
 
   savegame->set_integer(Savegame::CURRENT_ARROWS, arrows);
 
-  if (has_inventory_item(ITEM_BOW)) {
+  if (has_inventory_item(Inventory::BOW)) {
 
     // the bow item changes depending on whether the player has arrows
     if (arrows == 0) {
-      give_inventory_item(ITEM_BOW, 1); // bow without arrows
+      give_inventory_item(Inventory::BOW, 1); // bow without arrows
     }
     else {
-      give_inventory_item(ITEM_BOW, 2); // bow with arrows
+      give_inventory_item(Inventory::BOW, 2); // bow with arrows
     }
   }
 }
@@ -746,7 +746,7 @@ void Equipment::remove_arrow(void) {
  * @return true if the player needs arrows
  */
 bool Equipment::needs_arrows(void) {
-  return has_inventory_item(ITEM_BOW)
+  return has_inventory_item(Inventory::BOW)
     && get_arrows() == 0;
 }
 
@@ -761,7 +761,7 @@ bool Equipment::needs_arrows(void) {
  * @param item_id id of the item
  * @return a value indicating the possession state of this item.
  */
-int Equipment::has_inventory_item(InventoryItemId item_id) {
+int Equipment::has_inventory_item(Inventory::ItemId item_id) {
 
   int index = Savegame::FIRST_INVENTORY_ITEM + item_id;
   return savegame->get_integer(index);
@@ -772,7 +772,7 @@ int Equipment::has_inventory_item(InventoryItemId item_id) {
  * This is equivalent to give_inventory_item(item_id, 1).
  * @param item_id the item to give
  */
-void Equipment::give_inventory_item(InventoryItemId item_id) {
+void Equipment::give_inventory_item(Inventory::ItemId item_id) {
   give_inventory_item(item_id, 1);
 }
 
@@ -782,7 +782,7 @@ void Equipment::give_inventory_item(InventoryItemId item_id) {
  * @param variant the variant of the item to give to the player,
  * or zero to remove the item
  */
-void Equipment::give_inventory_item(InventoryItemId item_id, int variant) {
+void Equipment::give_inventory_item(Inventory::ItemId item_id, int variant) {
 
   int index = Savegame::FIRST_INVENTORY_ITEM + item_id;
   savegame->set_integer(index, variant);
@@ -793,7 +793,7 @@ void Equipment::give_inventory_item(InventoryItemId item_id, int variant) {
  * This is equivalent to give_inventory_item(item_id, 0).
  * @param item_id the item to remove
  */
-void Equipment::remove_inventory_item(InventoryItemId item_id) {
+void Equipment::remove_inventory_item(Inventory::ItemId item_id) {
   give_inventory_item(item_id, 0);
 }
 
@@ -805,17 +805,17 @@ void Equipment::remove_inventory_item(InventoryItemId item_id) {
  */
 void Equipment::add_bottle(void) {
 
-  if (!has_inventory_item(ITEM_BOTTLE_1)) {
-    give_inventory_item(ITEM_BOTTLE_1);
+  if (!has_inventory_item(Inventory::BOTTLE_1)) {
+    give_inventory_item(Inventory::BOTTLE_1);
   }
-  else if (!has_inventory_item(ITEM_BOTTLE_2)) {
-    give_inventory_item(ITEM_BOTTLE_2);
+  else if (!has_inventory_item(Inventory::BOTTLE_2)) {
+    give_inventory_item(Inventory::BOTTLE_2);
   }
-  else if (!has_inventory_item(ITEM_BOTTLE_3)) {
-    give_inventory_item(ITEM_BOTTLE_3);
+  else if (!has_inventory_item(Inventory::BOTTLE_3)) {
+    give_inventory_item(Inventory::BOTTLE_3);
   }
-  else if (!has_inventory_item(ITEM_BOTTLE_4)) {
-    give_inventory_item(ITEM_BOTTLE_4);
+  else if (!has_inventory_item(Inventory::BOTTLE_4)) {
+    give_inventory_item(Inventory::BOTTLE_4);
   }
   else {
     DIE("The player already has all bottles");
@@ -828,10 +828,10 @@ void Equipment::add_bottle(void) {
  */
 bool Equipment::has_bottle(void) {
 
-  return has_inventory_item(ITEM_BOTTLE_1)
-    || has_inventory_item(ITEM_BOTTLE_2)
-    || has_inventory_item(ITEM_BOTTLE_3)
-    || has_inventory_item(ITEM_BOTTLE_4);
+  return has_inventory_item(Inventory::BOTTLE_1)
+    || has_inventory_item(Inventory::BOTTLE_2)
+    || has_inventory_item(Inventory::BOTTLE_3)
+    || has_inventory_item(Inventory::BOTTLE_4);
 }
 
 /**
@@ -846,7 +846,7 @@ bool Equipment::has_empty_bottle(void) {
  * Returns the id of the first empty bottle.
  * @return the id of the first empty bottle
  */
-InventoryItemId Equipment::get_first_empty_bottle(void) {
+Inventory::ItemId Equipment::get_first_empty_bottle(void) {
   return get_first_bottle_with(Treasure::NONE);
 }
 
@@ -868,10 +868,10 @@ bool Equipment::has_bottle_with(Treasure::Content content) {
     variant = content - Treasure::WATER + 2;
   }
 
-  return has_inventory_item(ITEM_BOTTLE_1) == variant
-    || has_inventory_item(ITEM_BOTTLE_2) == variant
-    || has_inventory_item(ITEM_BOTTLE_3) == variant
-    || has_inventory_item(ITEM_BOTTLE_4) == variant;
+  return has_inventory_item(Inventory::BOTTLE_1) == variant
+    || has_inventory_item(Inventory::BOTTLE_2) == variant
+    || has_inventory_item(Inventory::BOTTLE_3) == variant
+    || has_inventory_item(Inventory::BOTTLE_4) == variant;
 }
 
 /**
@@ -879,7 +879,7 @@ bool Equipment::has_bottle_with(Treasure::Content content) {
  * @param content the content seeked (must be a valid bottle content or Treasure::NONE)
  * @return the id of the first bottle with this content
  */
-InventoryItemId Equipment::get_first_bottle_with(Treasure::Content content) {
+Inventory::ItemId Equipment::get_first_bottle_with(Treasure::Content content) {
 
   int variant;
   if (content == Treasure::NONE) {
@@ -892,20 +892,20 @@ InventoryItemId Equipment::get_first_bottle_with(Treasure::Content content) {
     variant = content - Treasure::WATER + 2;
   }
 
-  if (has_inventory_item(ITEM_BOTTLE_1) == variant) {
-    return ITEM_BOTTLE_1;
+  if (has_inventory_item(Inventory::BOTTLE_1) == variant) {
+    return Inventory::BOTTLE_1;
   }
 
-  if (has_inventory_item(ITEM_BOTTLE_2) == variant) {
-    return ITEM_BOTTLE_2;
+  if (has_inventory_item(Inventory::BOTTLE_2) == variant) {
+    return Inventory::BOTTLE_2;
   }
 
-  if (has_inventory_item(ITEM_BOTTLE_3) == variant) {
-    return ITEM_BOTTLE_3;
+  if (has_inventory_item(Inventory::BOTTLE_3) == variant) {
+    return Inventory::BOTTLE_3;
   }
 
-  if (has_inventory_item(ITEM_BOTTLE_4) == variant) {
-    return ITEM_BOTTLE_4;
+  if (has_inventory_item(Inventory::BOTTLE_4) == variant) {
+    return Inventory::BOTTLE_4;
   }
 
   DIE("The player does not have a bottle with content '" << variant << "'");
@@ -916,12 +916,12 @@ InventoryItemId Equipment::get_first_bottle_with(Treasure::Content content) {
  * @param bottle_id item id of the bottle (must be the id of a bottle)
  * @param content content to set (must be a valid bottle content or Treasure::NONE)
  */
-void Equipment::set_bottle_content(InventoryItemId bottle_id, Treasure::Content content) {
+void Equipment::set_bottle_content(Inventory::ItemId bottle_id, Treasure::Content content) {
 
-  if (bottle_id != ITEM_BOTTLE_1 &&
-      bottle_id != ITEM_BOTTLE_2 &&
-      bottle_id != ITEM_BOTTLE_3 &&
-      bottle_id != ITEM_BOTTLE_4) {
+  if (bottle_id != Inventory::BOTTLE_1 &&
+      bottle_id != Inventory::BOTTLE_2 &&
+      bottle_id != Inventory::BOTTLE_3 &&
+      bottle_id != Inventory::BOTTLE_4) {
     DIE("Invalid bottle id: '" << bottle_id << "'");
   }
 
@@ -942,7 +942,7 @@ void Equipment::set_bottle_content(InventoryItemId bottle_id, Treasure::Content 
  * Sets a bottle empty.
  * @param bottle_id item id of the bottle to make empty (must be the id of a bottle)
  */
-void Equipment::set_bottle_empty(InventoryItemId bottle_id) {
+void Equipment::set_bottle_empty(Inventory::ItemId bottle_id) {
   set_bottle_content(bottle_id, Treasure::NONE);
 }
 
@@ -951,17 +951,17 @@ void Equipment::set_bottle_empty(InventoryItemId bottle_id) {
  * @param item_id id of the item to get
  * @return the player's current amount of this item
  */
-int Equipment::get_inventory_item_amount(InventoryItemId item_id) {
+int Equipment::get_inventory_item_amount(Inventory::ItemId item_id) {
 
-  if (item_id == ITEM_BOMBS) {
+  if (item_id == Inventory::BOMBS) {
     return get_bombs();
   }
 
-  if (item_id == ITEM_BOW) {
+  if (item_id == Inventory::BOW) {
     return get_arrows();
   }
 
-  int counter_index = InventoryItem::get_counter_index(item_id);
+  int counter_index = Inventory::Item::get_counter_index(item_id);
 
   return savegame->get_integer(counter_index);
 }
@@ -973,21 +973,21 @@ int Equipment::get_inventory_item_amount(InventoryItemId item_id) {
  * @param item_id id of the item to set
  * @param amount the new amount
  */
-void Equipment::set_inventory_item_amount(InventoryItemId item_id, int amount) {
+void Equipment::set_inventory_item_amount(Inventory::ItemId item_id, int amount) {
 
-  if (item_id == ITEM_BOMBS) {
+  if (item_id == Inventory::BOMBS) {
     set_bombs(amount);
   }
-  else if (item_id == ITEM_BOW) {
+  else if (item_id == Inventory::BOW) {
     set_arrows(amount);
   }
   else {
 
-    int counter_index = InventoryItem::get_counter_index(item_id);
+    int counter_index = Inventory::Item::get_counter_index(item_id);
 
     // the item can be the fire stones, the apples,
     // the pains au chocolat or the croissants
-    int max = (item_id == ITEM_FIRE_STONES) ? 3 : 10;
+    int max = (item_id == Inventory::FIRE_STONES) ? 3 : 10;
 
     if (amount < 0 || amount > max) {
       DIE("Illegal amount for item " << item_id << ": " << amount);
@@ -1003,18 +1003,18 @@ void Equipment::set_inventory_item_amount(InventoryItemId item_id, int amount) {
  * @param item_id id of the item to set
  * @param amount_to_add the amount to add
  */
-void Equipment::add_inventory_item_amount(InventoryItemId item_id, int amount_to_add) {
+void Equipment::add_inventory_item_amount(Inventory::ItemId item_id, int amount_to_add) {
 
-  if (item_id == ITEM_BOMBS) {
+  if (item_id == Inventory::BOMBS) {
     add_bombs(amount_to_add);
   }
-  else if (item_id == ITEM_BOW) {
+  else if (item_id == Inventory::BOW) {
     add_arrows(amount_to_add);
   }
   else {
     int total = get_inventory_item_amount(item_id) + amount_to_add;
 
-    if (item_id == ITEM_FIRE_STONES && amount_to_add != 1) {
+    if (item_id == Inventory::FIRE_STONES && amount_to_add != 1) {
       DIE("Only one fire stone can be added");
     }
 
@@ -1028,9 +1028,9 @@ void Equipment::add_inventory_item_amount(InventoryItemId item_id, int amount_to
  * @param item_id id of the item to set
  * @param amount_to_remove the amount to remove
  */
-void Equipment::remove_inventory_item_amount(InventoryItemId item_id, int amount_to_remove) {
+void Equipment::remove_inventory_item_amount(Inventory::ItemId item_id, int amount_to_remove) {
 
-  if (item_id == ITEM_FIRE_STONES) {
+  if (item_id == Inventory::FIRE_STONES) {
     DIE("Cannot remove a fire stone");
   }
   else {
@@ -1044,9 +1044,9 @@ void Equipment::remove_inventory_item_amount(InventoryItemId item_id, int amount
  * @param slot slot of the item to get (0 for X or 1 for V)
  * @return the item currently assigned to this slot (may be NONE)
  */
-InventoryItemId Equipment::get_item_assigned(int slot) {
+Inventory::ItemId Equipment::get_item_assigned(int slot) {
   int index = Savegame::ITEM_SLOT_0 + slot;
-  return (InventoryItemId) savegame->get_integer(index);
+  return (Inventory::ItemId) savegame->get_integer(index);
 }
 
 /**
@@ -1056,13 +1056,13 @@ InventoryItemId Equipment::get_item_assigned(int slot) {
  * @param slot slot to set (0 for X or 1 for V)
  * @param item_id the item to assign to this slot
  */
-void Equipment::set_item_assigned(int slot, InventoryItemId item_id) {
+void Equipment::set_item_assigned(int slot, Inventory::ItemId item_id) {
 
   if (!has_inventory_item(item_id)) {
     DIE("Cannot assign item " << item_id << " because the player does not have it");
   }
 
-  if (!InventoryItem::is_attributable(item_id)) {
+  if (!Inventory::Item::is_attributable(item_id)) {
     DIE("Cannot assign item " << item_id << " because it is not attributable");
   }
 
@@ -1162,5 +1162,5 @@ void Equipment::remove_small_key(void) {
  * @return true if the player can lift this weight.
  */
 bool Equipment::can_lift(int weight) {
-  return has_inventory_item(ITEM_GLOVE) >= weight;
+  return has_inventory_item(Inventory::GLOVE) >= weight;
 }

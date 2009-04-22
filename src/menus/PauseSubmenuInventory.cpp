@@ -26,6 +26,7 @@
 #include "Counter.h"
 #include "KeysEffect.h"
 #include "InventoryItem.h"
+using namespace Inventory;
 
 /**
  * Caption text displayed when an item is selected in the inventory.
@@ -87,14 +88,14 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
   for (int k = 0; k < 28; k++) {
 
     // get the item, its counter property and the possession state    
-    InventoryItemId item_id = (InventoryItemId) k;
+    ItemId item_id = (ItemId) k;
     int variant = equipment->has_inventory_item(item_id);
 
-    if (variant != 0 && InventoryItem::has_counter(item_id)) {
+    if (variant != 0 && Item::has_counter(item_id)) {
 
       // if the player has the item and this item has a counter, we show a counter
 
-      int amount = savegame->get_integer(InventoryItem::get_counter_index(item_id));
+      int amount = savegame->get_integer(Item::get_counter_index(item_id));
       int x = 60 + (k % 7) * 32;
       int y = 81 + (k / 7) * 32;
 
@@ -153,13 +154,13 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
 
   // update the caption text, show or hide the action icon
   KeysEffect *keys_effect = game->get_keys_effect();
-  InventoryItemId item_id = (InventoryItemId) (row * 7 + column);
+  ItemId item_id = (ItemId) (row * 7 + column);
   int variant = equipment->has_inventory_item(item_id);
 
   if (variant != 0) {
     set_caption_text(item_names[item_id][variant - 1]);
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
-    keys_effect->set_item_keys_enabled(InventoryItem::is_attributable(item_id));
+    keys_effect->set_item_keys_enabled(Item::is_attributable(item_id));
   }
   else {
     set_caption_text("");
@@ -186,7 +187,7 @@ int PauseSubmenuInventory::get_selected_index(void) {
 bool PauseSubmenuInventory::is_item_selected(void) {
   
   int item_id = get_selected_index();
-  int variant = equipment->has_inventory_item((InventoryItemId) item_id);
+  int variant = equipment->has_inventory_item((ItemId) item_id);
 
   return variant != 0;
 }
@@ -295,7 +296,7 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
     for (int j = 0; j < 7; j++, k++) {
 
       // get the possession state of this item
-      InventoryItemId item_id = (InventoryItemId) k;
+      ItemId item_id = (ItemId) k;
       int variant = equipment->has_inventory_item(item_id);
 
       if (variant > 0) {
@@ -342,11 +343,11 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
 void PauseSubmenuInventory::show_info_message(void) {
 
   int item_id = get_selected_index();
-  int variant = equipment->has_inventory_item((InventoryItemId) item_id);
+  int variant = equipment->has_inventory_item((ItemId) item_id);
 
   // exception: for a bottle, replace its real id by the id of the first bottle
-  if (item_id == ITEM_BOTTLE_2 || item_id == ITEM_BOTTLE_3 || item_id == ITEM_BOTTLE_4) {
-    item_id = ITEM_BOTTLE_1;
+  if (item_id == BOTTLE_2 || item_id == BOTTLE_3 || item_id == BOTTLE_4) {
+    item_id = BOTTLE_1;
   }
 
   std::ostringstream oss;
@@ -366,10 +367,10 @@ void PauseSubmenuInventory::show_info_message(void) {
  */
 void PauseSubmenuInventory::assign_item(int slot) {
 
-  InventoryItemId selected_item_id = (InventoryItemId) get_selected_index();
+  ItemId selected_item_id = (ItemId) get_selected_index();
 
   // if this item is not assignable, do nothing
-  if (!InventoryItem::is_attributable(selected_item_id)) {
+  if (!Item::is_attributable(selected_item_id)) {
     return;
   }
 
@@ -414,8 +415,8 @@ void PauseSubmenuInventory::finish_assigning_item(void) {
 
   // if the item to assign is already assigned to the other icon, switch the two items
   int slot = item_assigned_destination;
-  InventoryItemId current_item_id = equipment->get_item_assigned(slot);
-  InventoryItemId other_item_id = equipment->get_item_assigned(1 - slot);
+  ItemId current_item_id = equipment->get_item_assigned(slot);
+  ItemId other_item_id = equipment->get_item_assigned(1 - slot);
 
   if (other_item_id == item_assigned_id) {
     equipment->set_item_assigned(1 - slot, current_item_id);

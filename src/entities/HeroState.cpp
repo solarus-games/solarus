@@ -178,13 +178,6 @@ bool Hero::is_ground_visible(void) {
 void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
 
   if (state != JUMPING) {
-
-    destroy_carried_items();
-    stop_displaying_sword();
-
-    if (state != FREE) {
-      start_free();
-    }
     teletransporter->transport_hero(this);
   }
 }
@@ -198,7 +191,6 @@ void Hero::start_free(void) {
   set_state(FREE);
 
   get_normal_movement()->compute_movement();
-
   if (get_normal_movement()->is_started()) {
     set_animation_walking();
   }
@@ -461,7 +453,7 @@ void Hero::update_carried_items(void) {
     }
   }
 
-  if (thrown_item != NULL) {
+  if (!suspended && thrown_item != NULL) {
     thrown_item->update();
     if (thrown_item->is_broken()) {
       delete thrown_item;
@@ -604,7 +596,7 @@ void Hero::update_pushing(void) {
 	  int direction = get_animation_direction();
 	  path[0] = path[1] = '0' + direction * 2;
 
-	  set_movement(new PathMovement(map, path, 8, false, true));
+	  set_movement(new PathMovement(path, 8, false, true));
 	  grabbed_entity = facing_entity;
 	}
       }
@@ -692,7 +684,7 @@ void Hero::update_grabbing_pulling(void) {
 	int opposite_direction = (get_animation_direction() + 2) % 4;
 	path[0] = path[1] = '0' + opposite_direction * 2;
 
-	set_movement(new PathMovement(map, path, 8, false, true));
+	set_movement(new PathMovement(path, 8, false, true));
 	grabbed_entity = facing_entity;
       }
     }
@@ -938,7 +930,7 @@ void Hero::start_jumping(int direction, int length, bool with_collisions, Layer 
 
   // jump
   set_state(JUMPING);
-  set_movement(new JumpMovement(map, direction, length, with_collisions));
+  set_movement(new JumpMovement(direction, length, with_collisions));
   set_animation_jumping();
   ResourceManager::get_sound("jump")->play();
   jump_y = get_y();
@@ -1002,7 +994,7 @@ void Hero::hurt(MapEntity *source, int life) {
     set_animation_hurt();
 
     double angle = source->get_vector_angle(this);
-    set_movement(new StraightMovement(map, 12, angle, 200));
+    set_movement(new StraightMovement(12, angle, 200));
   }
 }
 

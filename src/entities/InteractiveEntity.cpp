@@ -112,6 +112,15 @@ EntityType InteractiveEntity::get_type() {
 }
 
 /**
+ * Returns whether an entity of this type should be displayed above
+ * the hero and other entities when it is in front of them.
+ * @return true if this entity is displayed at the same level as the hero
+ */
+bool InteractiveEntity::is_displayed_in_y_order(void) {
+  return subtype == NON_PLAYING_CHARACTER;
+}
+
+/**
  * Creates the sprite specified.
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
  * @param initial_direction direction of the entity's sprite (ignored if there is no sprite)
@@ -287,7 +296,7 @@ void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) 
   }
 
   clear_movement();
-  set_movement(new PathMovement(map, path, 6, loop, with_collisions));
+  set_movement(new PathMovement(path, 6, loop, with_collisions));
   get_sprite()->set_current_animation("walking");
 }
 
@@ -302,7 +311,7 @@ void InteractiveEntity::walk_random(void) {
   }
 
   clear_movement();
-  set_movement(new RandomWalkMovement(map, 3));
+  set_movement(new RandomWalkMovement(3));
   get_sprite()->set_current_animation("walking");
 }
 
@@ -320,7 +329,7 @@ void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
   }
 
   clear_movement();
-  JumpMovement *movement = new JumpMovement(map, direction, length, with_collisions);
+  JumpMovement *movement = new JumpMovement(direction, length, with_collisions);
   movement->set_delay(20);
   set_movement(movement);
   get_sprite()->set_current_animation("jumping");

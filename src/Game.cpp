@@ -291,7 +291,6 @@ void Game::update_transitions(void) {
       next_map = NULL;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
-      hero->set_animation_stopped();
       transition = Transition::create(transition_style, Transition::OUT);
       transition->start();
     }

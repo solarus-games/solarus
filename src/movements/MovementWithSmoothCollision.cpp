@@ -19,10 +19,9 @@
 
 /**
  * Constructor.
- * @param map the map
  */
-MovementWithSmoothCollision::MovementWithSmoothCollision(Map *map):
-  MovementWithCollision(map) {
+MovementWithSmoothCollision::MovementWithSmoothCollision(void):
+  MovementWithCollision() {
 
 }
 
@@ -46,7 +45,7 @@ void MovementWithSmoothCollision::update(void) {
     bool x_move_now = x_move != 0 && now >= next_move_date_x;
     bool y_move_now = y_move != 0 && now >= next_move_date_y;
 
-    // TODO was 'while' instead of 'if', but with valgrind the game
+    // TODO should be 'while' instead of 'if', but with valgrind the game
     // loops here when iterating over the obstacle dynamic entities
     while (x_move_now || y_move_now) {
 

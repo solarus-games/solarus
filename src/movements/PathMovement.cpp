@@ -18,7 +18,6 @@
 
 /**
  * Creates a path movement object.
- * @param map the map
  * @param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7')
@@ -27,8 +26,8 @@
  * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-PathMovement::PathMovement(Map *map, const std::string &path, int speed, bool loop, bool with_collisions):
-  MovementWithCollision(map), initial_path(path), remaining_path(path),
+PathMovement::PathMovement(const std::string &path, int speed, bool loop, bool with_collisions):
+  MovementWithCollision(), initial_path(path), remaining_path(path),
   initial_speed(speed), loop(loop), with_collisions(with_collisions), finished(false) {
 
   set_speed(speed);

@@ -28,16 +28,12 @@ class MovementWithCollision: public Movement {
 
  protected:
 
-  Map *map; /**< the map containing the object */
-
   virtual bool collision_with_map(int dx, int dy);
 
  public:
 
-  MovementWithCollision(Map *map);
+  MovementWithCollision(void);
   virtual ~MovementWithCollision(void);
-
-  void set_map(Map *map);
 
   virtual void update_x(void);
   virtual void update_y(void);

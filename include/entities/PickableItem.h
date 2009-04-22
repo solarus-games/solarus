@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include "movements/FallingOnFloorMovement.h"
+#include "movements/FallingHeight.h"
 
 /**
  * A pickable item on the map (rupee, heart, bomb, fairy...).
@@ -76,24 +76,24 @@ class PickableItem: public Detector {
 
   static const Features features[];
 
-  Subtype subtype;        // subtype of pickable item
-  int savegame_variable;  // savegame variable of the possession state of this item,
-		          // for certain kinds of items only: a key, a piece of heart...
+  Subtype subtype;        /**< subtype of pickable item */
+  int savegame_variable;  /**< savegame variable of the possession state of this item,
+			   * for certain kinds of items only: a key, a piece of heart... */
 
-  Sprite *shadow_sprite;                // sprite of the shadow (except for a fairy).
-  FallingOnFloorMovement::Height falling_height; // indicates whether the item is falling when it appears (except for a fairy)
-  bool will_disappear;                  // indicates whether the item will disappear after an amount of time
-                                        // (only possible for items not saved)
+  Sprite *shadow_sprite;        /**< sprite of the shadow (except for a fairy). */
+  FallingHeight falling_height; /**< indicates whether the item is falling when it appears (except for a fairy) */
+  bool will_disappear;          /**< indicates whether the item will disappear after an amount of time
+				 * (only possible for items not saved) */
 
   // current state
-  int shadow_x;           // coordinates of the shadow (which does not move when the item does by falling)
+  int shadow_x;           /**< coordinates of the shadow (which does not move when the item does by falling) */
   int shadow_y;
 
-  Uint32 appear_date;     // date when the item is created
-  Uint32 allow_pick_date; // date when the item can be picked
-  bool can_be_picked;     // indicates that the item can be picked now (i.e. allow_picked_date is past)
-  Uint32 blink_date;      // date when the item starts blinking
-  Uint32 disappear_date;  // date when the item disappears
+  Uint32 appear_date;     /**< date when the item is created */
+  Uint32 allow_pick_date; /**< date when the item can be picked */
+  bool can_be_picked;     /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
+  Uint32 blink_date;      /**< date when the item starts blinking */
+  Uint32 disappear_date;  /**< date when the item disappears */
 
   // creation and initialization
   PickableItem(Layer layer, int x, int y, Subtype subtype, int savegame_variable);
@@ -113,7 +113,7 @@ class PickableItem: public Detector {
 
   // creation and destruction
   static PickableItem * create(Layer layer, int x, int y, Subtype subtype, int savegame_variable,
-			       FallingOnFloorMovement::Height falling_height, bool will_disappear);
+			       FallingHeight falling_height, bool will_disappear);
 
   virtual ~PickableItem(void);
 

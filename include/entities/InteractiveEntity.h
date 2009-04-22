@@ -64,6 +64,7 @@ class InteractiveEntity: public Detector {
   ~InteractiveEntity(void);
 
   EntityType get_type(void);
+  bool is_displayed_in_y_order(void);
 
   bool is_obstacle_for(MapEntity *other);
   bool is_water_obstacle(void);

@@ -22,10 +22,8 @@
 
 /**
  * Constructor.
- * @param map the map
  */
-MovementWithCollision::MovementWithCollision(Map *map):
-  map(map) {
+MovementWithCollision::MovementWithCollision(void) {
 
 }
 
@@ -37,14 +35,6 @@ MovementWithCollision::~MovementWithCollision(void) {
 }
 
 /**
- * Sets the current map of the object.
- * @param map the map
- */
-void MovementWithCollision::set_map(Map *map) {
-  this->map = map;
-}
-
-/**
  * Returns whether the entity would collide with the map
  * if it was moved a few pixels from its position.
  * @param dx x distance between the current position and the position to check
@@ -52,6 +42,8 @@ void MovementWithCollision::set_map(Map *map) {
  * @return true if the entity would overlap the map obstacles in this position
  */
 bool MovementWithCollision::collision_with_map(int dx, int dy) {
+
+  Map *map = entity->get_map();
 
   // place the collision box where we want to check the collisions
   SDL_Rect collision_box = entity->get_position_in_map();

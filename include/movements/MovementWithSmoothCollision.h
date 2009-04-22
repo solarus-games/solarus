@@ -28,7 +28,7 @@ class MovementWithSmoothCollision: public MovementWithCollision {
   
  public:
 
-  MovementWithSmoothCollision(Map *map);
+  MovementWithSmoothCollision(void);
   virtual ~MovementWithSmoothCollision(void);
 
   virtual void update(void);

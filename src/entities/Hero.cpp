@@ -69,6 +69,7 @@ Hero::Hero(Equipment *equipment):
 
   set_size(16, 16);
   set_origin(8, 13);
+
   set_movement(normal_movement);
   rebuild_equipment();
 
@@ -283,8 +284,11 @@ void Hero::set_map(Map *map) {
   target_solid_ground_coords.x = -1;
   target_solid_ground_coords.y = -1;
 
-  get_normal_movement()->set_map(map);
+  if (lifted_item != NULL) {
+    lifted_item->set_map(map);
+  }
 
+  /*
   stop_displaying_sword();
 
   // remove the "throw" (or other) icon
@@ -306,6 +310,7 @@ void Hero::set_map(Map *map) {
 
   // destroy any carried item from the previous map
   destroy_carried_items();
+  */
 }
 
 /**
@@ -427,7 +432,6 @@ void Hero::update(void) {
     update_pushing();
     update_moving_grabbed_entity();
     update_sprites();
-    update_carried_items();
 
     if (treasure != NULL) {
       update_treasure();
@@ -444,6 +448,10 @@ void Hero::update(void) {
       zsdx->game->start_gameover_sequence();
     }
   }
+
+  // the carried items have to be updated even when the game is suspended
+  // because the hero moves when scrolling between two maps
+  update_carried_items();
 }
 
 /**
@@ -765,11 +773,17 @@ void Hero::place_on_destination_point(Map *map) {
     set_x(destination_point->get_x());
     set_y(destination_point->get_y());
     map->get_entities()->set_hero_layer(destination_point->get_layer());
+
+    destroy_carried_items();
+    start_free();
   }
   else if (destination_point_index == -1) {
 
     // the hero's coordinates are the same as on previous map
     set_map(map);
+
+    destroy_carried_items();
+    start_free();
   }
   else {
 

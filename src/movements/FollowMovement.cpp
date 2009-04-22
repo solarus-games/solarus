@@ -19,14 +19,13 @@
 
 /**
  * Creates a follow movement.
- * @param map the map (can be NULL if with_collisions is false)
  * @param entity_followed the entity to follow
  * @param x x coordinate of where this entity should be placed (relative to the entity followed)
  * @param y y coordinate of where this entity should be placed (relative to the entity followed)
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-FollowMovement::FollowMovement(Map *map, MapEntity *entity_followed, int x, int y, bool with_collisions):
-  MovementWithCollision(map),
+FollowMovement::FollowMovement(MapEntity *entity_followed, int x, int y, bool with_collisions):
+  MovementWithCollision(),
   entity_followed(entity_followed), x(x), y(y), with_collisions(with_collisions), finished(false) {
 
 }

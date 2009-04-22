@@ -36,7 +36,7 @@ class JumpMovement: public PixelMovement {
 
  public:
 
-  JumpMovement(Map *map, int direction, int length, bool with_collisions);
+  JumpMovement(int direction, int length, bool with_collisions);
   ~JumpMovement(void);
 
   int get_jump_height(void);

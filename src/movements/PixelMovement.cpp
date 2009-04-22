@@ -18,16 +18,15 @@
 
 /**
  * Creates a pixel movement object, not specifying the trajectory for now.
- * @param map the map
  * @param nb_vectors number of translation vectors in the array
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
  * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-PixelMovement::PixelMovement(Map *map, int nb_vectors, Uint32 delay,
+PixelMovement::PixelMovement(int nb_vectors, Uint32 delay,
 			     bool loop, bool with_collisions):
-  MovementWithCollision(map),
+  MovementWithCollision(),
   nb_vectors(nb_vectors), delay(delay), loop(loop),
   with_collisions(with_collisions), vector_index(0), finished(false) {
 
@@ -46,9 +45,9 @@ PixelMovement::PixelMovement(Map *map, int nb_vectors, Uint32 delay,
  * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-PixelMovement::PixelMovement(Map *map, const SDL_Rect *translation_vectors,
+PixelMovement::PixelMovement(const SDL_Rect *translation_vectors,
 			     int nb_vectors, Uint32 delay, bool loop, bool with_collisions):
-  MovementWithCollision(map),
+  MovementWithCollision(),
   translation_vectors(translation_vectors), nb_vectors(nb_vectors),
   delay(delay), loop(loop), with_collisions(with_collisions), vector_index(0), finished(false) {
 

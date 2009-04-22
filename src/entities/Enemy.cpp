@@ -30,7 +30,7 @@
 #include "Map.h"
 #include "enemies/SimpleGreenSoldier.h"
 #include "movements/StraightMovement.h"
-#include "movements/FallingOnFloorMovement.h"
+#include "movements/FallingHeight.h"
 
 /**
  * Creates an enemy.
@@ -281,7 +281,7 @@ void Enemy::update(void) {
     if (pickable_item_subtype != PickableItem::NONE) {
       bool will_disappear = PickableItem::can_disappear(pickable_item_subtype);
       map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item_subtype,
-							   pickable_item_savegame_variable, FallingOnFloorMovement::HIGH,
+							   pickable_item_savegame_variable, FALLING_HIGH,
 							   will_disappear));
     }
 
@@ -446,7 +446,7 @@ void Enemy::hurt(Attack attack, MapEntity *source) {
     if (pushed_back_when_hurt) {
       normal_movement = get_movement();
       double angle = source->get_vector_angle(this);
-      set_movement(new StraightMovement(map, 12, angle, 200));
+      set_movement(new StraightMovement(12, angle, 200));
     }
   }
 }

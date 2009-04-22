@@ -31,7 +31,7 @@ class RandomWalkMovement: public PathMovement {
 
  public:
 
-  RandomWalkMovement(Map *map, int speed);
+  RandomWalkMovement(int speed);
   ~RandomWalkMovement(void);
 
   void update(void);

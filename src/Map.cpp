@@ -389,7 +389,7 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
 
 /**
  * Starts the map. The map must be loaded.
- * The hero is placed on the map and the background music starts.
+ * The background music starts and the map script is initialized.
  */
 void Map::start(void) {
 

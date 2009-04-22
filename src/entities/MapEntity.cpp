@@ -174,6 +174,14 @@ void MapEntity::set_map(Map *map) {
 }
 
 /**
+ * Returns the map where this entity is.
+ * @return the map
+ */
+Map * MapEntity::get_map(void) {
+  return map;
+}
+
+/**
  * Sets a flag indicating that this entity has been added
  * to the list of entities that will be removed from the map
  * and deleted from the memory as soon as possible.

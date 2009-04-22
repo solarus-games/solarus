@@ -173,6 +173,7 @@ class MapEntity {
 
   // properties
   virtual void set_map(Map *map);
+  Map * get_map(void);
   const std::string& get_name(void) const;
   int get_direction(void);
 

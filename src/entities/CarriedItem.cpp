@@ -62,7 +62,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
   set_size(destructible_item->get_width(), destructible_item->get_height());
 
   // create the lift movement and the sprite
-  PixelMovement *movement = new PixelMovement(map, lifting_translations[direction], 6, 100, false, false);
+  PixelMovement *movement = new PixelMovement(lifting_translations[direction], 6, 100, false, false);
   create_sprite(destructible_item->get_animation_set_id());
   set_movement(movement);
 
@@ -144,7 +144,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
 
   // set the movement of the item sprite
   set_y(hero->get_y());
-  MovementWithCollision *movement = new MovementWithCollision(map);
+  MovementWithCollision *movement = new MovementWithCollision();
   movement->set_speed(20);
   movement->set_direction(direction * 90);
   clear_movement();
@@ -236,7 +236,7 @@ void CarriedItem::update(void) {
 
       // make the item follow the hero
       clear_movement();
-      set_movement(new FollowMovement(map, hero, 0, -18, false));
+      set_movement(new FollowMovement(hero, 0, -18, false));
     }
   }
 

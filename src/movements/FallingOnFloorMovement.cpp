@@ -19,7 +19,7 @@
 /**
  * Y move at each time frame.
  */
-static const SDL_Rect moves[3][26] = {
+const SDL_Rect FallingOnFloorMovement::moves[3][26] = {
 
   // low
   {{0, -1},  {0, 1}},
@@ -38,14 +38,14 @@ static const SDL_Rect moves[3][26] = {
 /**
  * Number of moves for each height.
  */
-static const int nb_moves[3] = {2, 12, 26};
+const int FallingOnFloorMovement::nb_moves[3] = {2, 12, 26};
 
 /**
  * Creates a movement falling object.
  * @param height height the entity will fall from
  */
-FallingOnFloorMovement::FallingOnFloorMovement(Height height):
-  PixelMovement(NULL, moves[height], nb_moves[height], 30, false, false) {
+FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
+  PixelMovement(moves[height], nb_moves[height], 30, false, false) {
 
 }
 

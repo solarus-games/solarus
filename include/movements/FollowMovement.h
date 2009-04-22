@@ -44,7 +44,7 @@ class FollowMovement: public MovementWithCollision {
 
  public:
 
-  FollowMovement(Map *map, MapEntity *entity_followed, int x, int y, bool with_collisions);
+  FollowMovement(MapEntity *entity_followed, int x, int y, bool with_collisions);
   ~FollowMovement(void);
 
   bool is_finished(void);

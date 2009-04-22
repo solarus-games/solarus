@@ -17,9 +17,8 @@ Feature requests :
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Sauvegarder la résolution du jeu dans un fichier de configuration ini
-- Conserver le chargement de l'épée ou l'objet porté dans les changements de map ?
 - Animer l'écran-titre de Neovyze et y mettre un message "Appuyez sur Espace"
-
+- enum FallingHeight, Ground, ... : il n'y a plus de préfixe... généraliser les namespace ?
 
 Bugs :
 
@@ -29,7 +28,7 @@ Bugs :
 - au bandit manchot, lorsque je me place devant la 1ere roulette link de temps en temps part sur la gauche sans raisons
 - le menu option fonctionne au premier abord mais plante lorsque l'on quitte le jeu avec echap après avoir personnalisé les boutons de la manette : "Fatal error: No joypad action is defined for game key 'Action'"
 
-- Pas une bonne idée que InventoryItem soit utilisé directement car une seule instance de chaque item (que se passe-t-il si on veut poser deux bombes ?)
+- Link toujours en-dessous des objets interactifs qui sont plus au sud que lui
 
 
 Bugs a priori corrigés, demander confirmation à Thyb avec une nouvelle démo :
@@ -55,7 +54,7 @@ A venir :
 
 Testeurs :
 
-- Essayer des combinaisons d'objets compliqués (blocs, trous, ennemis, escaliers, eau, game over avec fée...)
+- Essayer des combinaisons d'objets compliqués (blocs, trous, ennemis, escaliers, eau, game over avec fée, changements de maps...)
 - Tester les animations avec les différentes épées, boucliers et tuniques
 
 

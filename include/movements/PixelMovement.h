@@ -73,7 +73,7 @@ class PixelMovement: public MovementWithCollision {
 
  protected:
 
-  PixelMovement(Map *map, int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
+  PixelMovement(int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
 
   bool collision_with_map(int dx, int dy);
 
@@ -84,7 +84,7 @@ class PixelMovement: public MovementWithCollision {
 
  public:
 
-  PixelMovement(Map *map, const SDL_Rect *translation_vectors,
+  PixelMovement(const SDL_Rect *translation_vectors,
 		int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
   virtual ~PixelMovement(void);
 

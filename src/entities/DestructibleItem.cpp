@@ -17,7 +17,7 @@
 #include "entities/DestructibleItem.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "movements/FallingOnFloorMovement.h"
+#include "movements/FallingHeight.h"
 #include "ResourceManager.h"
 #include "Game.h"
 #include "KeysEffect.h"
@@ -196,7 +196,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
 	bool will_disappear = PickableItem::can_disappear(pickable_item);
 	map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item,
 							     pickable_item_savegame_variable,
-							     FallingOnFloorMovement::MEDIUM, will_disappear));
+							     FALLING_MEDIUM, will_disappear));
       }
     }
   }
@@ -231,7 +231,7 @@ void DestructibleItem::action_key_pressed(void) {
 	bool will_disappear = PickableItem::can_disappear(pickable_item);
 	map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item,
 							     pickable_item_savegame_variable,
-							     FallingOnFloorMovement::MEDIUM, will_disappear));
+							     FALLING_MEDIUM, will_disappear));
       }
 
       // remove the item from the map

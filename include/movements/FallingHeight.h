@@ -14,32 +14,18 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_FALLING_ON_FLOOR_MOVEMENT_H
-#define ZSDX_FALLING_ON_FLOOR_MOVEMENT_H
-
-#include "Common.h"
-#include "movements/PixelMovement.h"
-#include "movements/FallingHeight.h"
+#ifndef ZSDX_FALLING_HEIGHT_H
+#define ZSDX_FALLING_HEIGHT_H
 
 /**
- * Movement of an item that falls on the floor and
- * bounces one or several times before it stops.
- * This movement is typically used by the pickable items
- * (rupees, hearts...) that appear when the player kill an enemy.
+ * Indicates from which height an entity falls
+ * when the FallingOnFloorMovement class is used.
  */
-class FallingOnFloorMovement: public PixelMovement {
-
- private:
-
-  static const SDL_Rect moves[][26];
-  static const int nb_moves[];
-
- public:
-
-  // construction and destruction
-  FallingOnFloorMovement(FallingHeight height);
-  ~FallingOnFloorMovement(void);
-
+enum FallingHeight {
+  FALLING_NONE = -1,
+  FALLING_LOW = 0,
+  FALLING_MEDIUM,
+  FALLING_HIGH
 };
 
 #endif

@@ -51,7 +51,7 @@ void SimpleGreenSoldier::initialize(void) {
   set_origin(8, 13);
 
   // movement
-  set_movement(new StraightMovement(map, 0, 0, 0));
+  set_movement(new StraightMovement(0, 0, 0));
 }
 
 /**

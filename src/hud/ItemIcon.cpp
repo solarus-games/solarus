@@ -93,7 +93,7 @@ void ItemIcon::update(void) {
 
   // counter index
   int counter_index = Item::get_counter_index(current_item);
-  if (counter_index != 0) {
+  if (counter_index != -1) {
 
     int current_counter_value = savegame->get_integer(counter_index);
 

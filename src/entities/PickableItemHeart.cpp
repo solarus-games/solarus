@@ -70,7 +70,7 @@ void PickableItemHeart::initialize_sprites(void) {
 void PickableItemHeart::initialize_movement(void) {
   
   if (is_falling()) {
-    set_movement(new PixelMovement(map, falling_moves, 24, 100, false, false));
+    set_movement(new PixelMovement(falling_moves, 24, 100, false, false));
   }
 }
 

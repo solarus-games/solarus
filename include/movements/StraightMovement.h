@@ -33,8 +33,8 @@ class StraightMovement: public MovementWithCollision {
 
  public:
 
-  StraightMovement(Map *map, int speed, int direction, Uint32 time);
-  StraightMovement(Map *map, int speed, double direction, Uint32 time);
+  StraightMovement(int speed, int direction, Uint32 time);
+  StraightMovement(int speed, double direction, Uint32 time);
   ~StraightMovement(void);
 
   void update(void);

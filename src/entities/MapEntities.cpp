@@ -163,7 +163,7 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
  * @return the entity requested
  */
 MapEntity * MapEntities::get_entity(EntityType type, const std::string &name) {
-  
+
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 

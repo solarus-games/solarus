@@ -22,11 +22,10 @@ const string RandomWalkMovement::random_directions[] = {"0", "2", "4", "6"};
 
 /**
  * Creates a random walk movement object.
- * @param map the map
  * @param speed speed of the movement
  */
-RandomWalkMovement::RandomWalkMovement(Map *map, int speed):
-  PathMovement(map, get_random_direction(), speed, false, true) {
+RandomWalkMovement::RandomWalkMovement(int speed):
+  PathMovement(get_random_direction(), speed, false, true) {
 
 }
 

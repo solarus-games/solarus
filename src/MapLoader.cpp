@@ -20,7 +20,7 @@
 #include "FileTools.h"
 #include "ResourceManager.h"
 #include "Camera.h"
-#include "movements/FallingOnFloorMovement.h"
+#include "movements/FallingHeight.h"
 #include "entities/EntityType.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
@@ -158,7 +158,7 @@ void MapLoader::load_map(Map *map) {
 	int savegame_variable;
 	iss >> subtype >> savegame_variable;
 	entities->add_entity(PickableItem::create((Layer) layer, x, y, (PickableItem::Subtype) subtype,
-						  savegame_variable, FallingOnFloorMovement::NONE, false));
+						  savegame_variable, FALLING_NONE, false));
 	break;
       }
 

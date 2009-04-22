@@ -18,26 +18,24 @@
 
 /**
  * Creates a straight movement.
- * @param map the map
  * @param speed the speed
  * @param direction angle of the movement (0 to 359)
  * @param time duration of the movement in milliseconds
  */
-StraightMovement::StraightMovement(Map *map, int speed, int direction, Uint32 time):
-  MovementWithCollision(map) {
+StraightMovement::StraightMovement(int speed, int direction, Uint32 time):
+  MovementWithCollision() {
 
   start(speed, direction, time);
 }
 
 /**
  * Creates a straight movement.
- * @param map the map
  * @param speed the speed
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
  */
-StraightMovement::StraightMovement(Map *map, int speed, double direction, Uint32 time):
-  MovementWithCollision(map) {
+StraightMovement::StraightMovement(int speed, double direction, Uint32 time):
+  MovementWithCollision() {
 
   start(speed, direction, time);
 }

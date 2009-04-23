@@ -1099,7 +1099,7 @@ void Hero::start_deep_water(void) {
   }
   else {
     // move to state swimming or jumping
-    if (equipment->has_inventory_item(Inventory::FLIPPERS)) {
+    if (equipment->has_inventory_item(INVENTORY_FLIPPERS)) {
       start_swimming();
     }
     else {
@@ -1128,7 +1128,7 @@ void Hero::update_plunging(void) {
     if (ground != GROUND_DEEP_WATER) {
       start_free();
     }
-    else if (equipment->has_inventory_item(Inventory::FLIPPERS)) {
+    else if (equipment->has_inventory_item(INVENTORY_FLIPPERS)) {
       start_swimming();
     }
     else {
@@ -1243,19 +1243,19 @@ void Hero::update_returning_to_solid_ground(void) {
  * the inventory now.
  * @param item_id id of the item to check
  */
-bool Hero::can_start_inventory_item(Inventory::ItemId item_id) {
-  return state == FREE && Inventory::Item::is_attributable(item_id);
+bool Hero::can_start_inventory_item(InventoryItemId item_id) {
+  return state == FREE && InventoryItem::can_be_assigned(item_id);
 }
 
 /**
  * Starts using an item from the inventory.
  * @param item the item to use.
  */
-void Hero::start_inventory_item(Inventory::ItemId item_id) {
+void Hero::start_inventory_item(InventoryItemId item_id) {
 
-  this->current_inventory_item = new Inventory::Item(item_id);
+  this->current_inventory_item = new InventoryItem(item_id);
   set_state(USING_INVENTORY_ITEM);
-  current_inventory_item->use();
+  current_inventory_item->start();
 }
 
 /**

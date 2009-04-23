@@ -14,26 +14,30 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_MOVEMENT_WITH_SMOOTH_COLLISION_H
-#define ZSDX_MOVEMENT_WITH_SMOOTH_COLLISION_H
+#ifndef ZSDX_COLLISION_MOVEMENT_H
+#define ZSDX_COLLISION_MOVEMENT_H
 
 #include "Common.h"
-#include "MovementWithCollision.h"
+#include "movements/Movement.h"
 
 /**
- * Class for a moving map entity sensible to the obstacles
- * but capable of fixing its direction to continue walking.
+ * Abstract class for all moving entities on a map, visible or not,
+ * sensible to the obstacles.
  */
-class MovementWithSmoothCollision: public MovementWithCollision {
-  
+class CollisionMovement: public Movement {
+
+ protected:
+
+  virtual bool collision_with_map(int dx, int dy);
+
  public:
 
-  MovementWithSmoothCollision(void);
-  virtual ~MovementWithSmoothCollision(void);
+  CollisionMovement(void);
+  virtual ~CollisionMovement(void);
 
-  virtual void update(void);
   virtual void update_x(void);
   virtual void update_y(void);
+
 };
 
 #endif

@@ -66,7 +66,6 @@ static const int directions[] = {
  * @param speed movement speed
  */
 PlayerMovement::PlayerMovement(int speed):
-  MovementWithSmoothCollision(),
   started(false), speed(speed),
   moving_enabled(false), moving_enabled_before_suspended(false),
   direction_enabled(false), direction_enabled_before_suspended(false),

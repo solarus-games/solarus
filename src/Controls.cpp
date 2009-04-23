@@ -198,25 +198,25 @@ void Controls::handle_event(const SDL_Event &event) {
       break;
 
     case SDLK_t:
-      equipment->give_inventory_item(Inventory::BOW);
+      equipment->give_inventory_item(INVENTORY_BOW);
       equipment->set_max_arrows(10);
-      equipment->set_item_assigned(0, Inventory::BOW);
-      equipment->give_inventory_item(Inventory::BOTTLE_2, 6);
-      equipment->set_item_assigned(1, Inventory::BOTTLE_2);
-      equipment->give_inventory_item(Inventory::BOMBS);
+      equipment->set_item_assigned(0, INVENTORY_BOW);
+      equipment->give_inventory_item(INVENTORY_BOTTLE_2, 6);
+      equipment->set_item_assigned(1, INVENTORY_BOTTLE_2);
+      equipment->give_inventory_item(INVENTORY_BOMBS);
       equipment->set_max_bombs(10);
       equipment->set_bombs(10);
-      equipment->give_inventory_item(Inventory::BOOMERANG);
-      equipment->give_inventory_item(Inventory::LAMP);
-      equipment->give_inventory_item(Inventory::HOOK_SHOT);
-      equipment->give_inventory_item(Inventory::PEGASUS_SHOES);
-      equipment->give_inventory_item(Inventory::BOTTLE_1);
-      equipment->give_inventory_item(Inventory::GLOVE);
-      equipment->give_inventory_item(Inventory::PAINS_AU_CHOCOLAT);
-      equipment->set_inventory_item_amount(Inventory::PAINS_AU_CHOCOLAT, 3);
-      equipment->give_inventory_item(Inventory::CROISSANTS);
-      equipment->give_inventory_item(Inventory::RED_KEY);
-      equipment->give_inventory_item(Inventory::CLAY_KEY);
+      equipment->give_inventory_item(INVENTORY_BOOMERANG);
+      equipment->give_inventory_item(INVENTORY_LAMP);
+      equipment->give_inventory_item(INVENTORY_HOOK_SHOT);
+      equipment->give_inventory_item(INVENTORY_PEGASUS_SHOES);
+      equipment->give_inventory_item(INVENTORY_BOTTLE_1);
+      equipment->give_inventory_item(INVENTORY_GLOVE);
+      equipment->give_inventory_item(INVENTORY_PAINS_AU_CHOCOLAT);
+      equipment->set_inventory_item_amount(INVENTORY_PAINS_AU_CHOCOLAT, 3);
+      equipment->give_inventory_item(INVENTORY_CROISSANTS);
+      equipment->give_inventory_item(INVENTORY_RED_KEY);
+      equipment->give_inventory_item(INVENTORY_CLAY_KEY);
       equipment->add_world_map();
       break;
 

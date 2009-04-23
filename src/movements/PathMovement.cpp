@@ -27,7 +27,7 @@
  * @param with_collisions true to make the movement sensitive to obstacles
  */
 PathMovement::PathMovement(const std::string &path, int speed, bool loop, bool with_collisions):
-  MovementWithCollision(), initial_path(path), remaining_path(path),
+  initial_path(path), remaining_path(path),
   initial_speed(speed), loop(loop), with_collisions(with_collisions), finished(false) {
 
   set_speed(speed);
@@ -77,7 +77,7 @@ bool PathMovement::is_finished(void) {
  * @return true if the entity would overlap the map obstacles in this position
  */
 bool PathMovement::collision_with_map(int dx, int dy) {
-  return with_collisions && MovementWithCollision::collision_with_map(dx, dy);
+  return with_collisions && CollisionMovement::collision_with_map(dx, dy);
 }
 
 /**

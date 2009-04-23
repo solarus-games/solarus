@@ -25,8 +25,8 @@
  * @param with_collisions true to make the movement sensitive to obstacles
  */
 FollowMovement::FollowMovement(MapEntity *entity_followed, int x, int y, bool with_collisions):
-  MovementWithCollision(),
-  entity_followed(entity_followed), x(x), y(y), with_collisions(with_collisions), finished(false) {
+  entity_followed(entity_followed), x(x), y(y),
+  with_collisions(with_collisions), finished(false) {
 
 }
 

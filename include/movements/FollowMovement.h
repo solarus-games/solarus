@@ -18,14 +18,14 @@
 #define ZSDX_FOLLOW_MOVEMENT_H
 
 #include "Common.h"
-#include "MovementWithCollision.h"
+#include "movements/CollisionMovement.h"
 
 /**
  * Movement for an entity attached to another entity.
  * At each moment, the entity is placed at a position
  * relative to the entity followed.
  */
-class FollowMovement: public MovementWithCollision {
+class FollowMovement: public CollisionMovement {
 
  private:
 

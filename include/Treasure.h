@@ -20,14 +20,20 @@
 #include "Common.h"
 
 /**
- * A treasure is any item that the hero can receive.
- * It can be for example in a chest (class Chest) or in a shop (class ShopItem).
+ * A treasure is any item that the hero brandishes when he receives it.
+ * It includes all items he can get in chest, buy a shop or get from the script
+ * (e.g. when talking to an NPC).
+ * It also includes items picked on the ground if they are saved
+ * (heart pieces, keys, etc.).
+ * Picked items that are not saved are not treasures since they are not brandished.
+ *
  * A treasure is represented as the following three values:
  * - the treasure content: indicates the nature of the treasure: 20 rupees, a heart container,
  *   the map, a red potion, the bow, some bombs, etc;
  * - the amount: an optional integer indicating the number of items of this treasure
  *   (for bombs, rupees, croissants, etc.);
- * - a savegame variable: index of the boolean variable saved indicating whether the player has found this item.
+ * - a savegame variable: index of the boolean variable saved indicating whether
+ *   the player has found this treasure (-1 if the treasure is not saved).
  */
 class Treasure {
 
@@ -43,9 +49,9 @@ class Treasure {
 
     FEATHER           = 0,
     // 1: no bombs here because the first time we give the small bomb bag,
-    // and other times we give collectable bombs (below)
+    // and other times we give pickable bombs (below)
     BOW               = 2,
-    BOW_AND_ARROWS    = 3, // note: for arrows only, see the collectable arrows below
+    BOW_AND_ARROWS    = 3, // note: for arrows only, see the pickable arrows below
     BOOMERANG         = 4,
     LAMP              = 5,
     HOOK_SHOT         = 6,

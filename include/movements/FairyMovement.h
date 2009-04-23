@@ -18,7 +18,7 @@
 #define ZSDX_FAIRY_MOVEMENT_H
 
 #include "Common.h"
-#include "Movement.h"
+#include "movements/Movement.h"
 
 /**
  * Defines the movement of a pickable fairy.

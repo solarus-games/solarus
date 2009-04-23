@@ -102,7 +102,7 @@ class MapEntity {
 			    * the direction of animation of the sprite */
 
   std::vector<Sprite*> sprites; /**< sprite(s) representing the entity, not used for all kinds of entities because
-			    * some of them are invisible, and some of them handle their sprites themselves */
+				 * some of them are invisible, and some of them handle their sprites themselves */
   Movement *movement;      /**< movement of the entity, not used for all kinds of entities;
 			    * NULL indicates that the entity has no movement */
 

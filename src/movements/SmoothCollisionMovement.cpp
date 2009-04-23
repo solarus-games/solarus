@@ -14,21 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/MovementWithSmoothCollision.h"
+#include "movements/SmoothCollisionMovement.h"
 #include "ZSDX.h"
 
 /**
  * Constructor.
  */
-MovementWithSmoothCollision::MovementWithSmoothCollision(void):
-  MovementWithCollision() {
+SmoothCollisionMovement::SmoothCollisionMovement(void) {
 
 }
 
 /**
  * Destructor.
  */
-MovementWithSmoothCollision::~MovementWithSmoothCollision(void) {
+SmoothCollisionMovement::~SmoothCollisionMovement(void) {
 
 }
 
@@ -37,7 +36,7 @@ MovementWithSmoothCollision::~MovementWithSmoothCollision(void) {
  * This is a redefinition of Movement::update because we have
  * to call update_x() and update_y() in the right order.
  */
-void MovementWithSmoothCollision::update(void) {
+void SmoothCollisionMovement::update(void) {
 
   if (!suspended) {
 
@@ -84,10 +83,10 @@ void MovementWithSmoothCollision::update(void) {
 /**
  * Updates the x position of the entity if it wants to move
  * (i.e. if x_move != 0).
- * This is a redefinition of MovementWithCollision::update_x to
+ * This is a redefinition of CollisionMovement::update_x() to
  * handle the smooth collisions.
  */
-void MovementWithSmoothCollision::update_x(void) {
+void SmoothCollisionMovement::update_x(void) {
 
   if (x_move != 0) { // the entity wants to move on x
 
@@ -152,10 +151,10 @@ void MovementWithSmoothCollision::update_x(void) {
 /**
  * Updates the y position of the entity if it wants to move
  * (i.e. if y_move != 0).
- * This is a redefinition of MovementWithCollision::update_y to to
+ * This is a redefinition of CollisionMovement::update_y() to to
  * handle the smooth collisions.
  */
-void MovementWithSmoothCollision::update_y(void) {
+void SmoothCollisionMovement::update_y(void) {
 
   if (y_move != 0) { // the entity wants to move on y
 

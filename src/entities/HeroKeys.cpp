@@ -161,7 +161,7 @@ void Hero::sword_key_pressed(void) {
  */
 void Hero::item_key_pressed(int slot) {
 
-  Inventory::ItemId item_id = equipment->get_item_assigned(slot);
+  InventoryItemId item_id = equipment->get_item_assigned(slot);
 
   if (can_start_inventory_item(item_id)) {
     start_inventory_item(item_id);

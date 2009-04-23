@@ -147,8 +147,8 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
 
   // don't create anything if this item is not unlocked yet
   Equipment *equipment = zsdx->game->get_equipment();
-  bool has_bombs = equipment->has_inventory_item(Inventory::BOMBS);
-  bool has_bow = equipment->has_inventory_item(Inventory::BOW);
+  bool has_bombs = equipment->has_inventory_item(INVENTORY_BOMBS);
+  bool has_bow = equipment->has_inventory_item(INVENTORY_BOW);
   bool has_magic = equipment->get_max_magic() > 0;
 
   if ((subtype >= BOMB_1 && subtype <= BOMB_10 && !has_bombs) ||

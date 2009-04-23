@@ -18,12 +18,12 @@
 #define ZSDX_PLAYER_MOVEMENT
 
 #include "Common.h"
-#include "MovementWithSmoothCollision.h"
+#include "movements/SmoothCollisionMovement.h"
 
 /**
  * Abstract class for an 8-direction movement controlled by the player.
  */
-class PlayerMovement: public MovementWithSmoothCollision {
+class PlayerMovement: public SmoothCollisionMovement {
 
  protected:
 

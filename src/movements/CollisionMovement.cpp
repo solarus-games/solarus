@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/MovementWithCollision.h"
+#include "movements/CollisionMovement.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
@@ -23,14 +23,14 @@
 /**
  * Constructor.
  */
-MovementWithCollision::MovementWithCollision(void) {
+CollisionMovement::CollisionMovement(void) {
 
 }
 
 /**
  * Destructor.
  */
-MovementWithCollision::~MovementWithCollision(void) {
+CollisionMovement::~CollisionMovement(void) {
 
 }
 
@@ -41,7 +41,7 @@ MovementWithCollision::~MovementWithCollision(void) {
  * @param dy y distance between the current position and the position to check
  * @return true if the entity would overlap the map obstacles in this position
  */
-bool MovementWithCollision::collision_with_map(int dx, int dy) {
+bool CollisionMovement::collision_with_map(int dx, int dy) {
 
   Map *map = entity->get_map();
 
@@ -62,7 +62,7 @@ bool MovementWithCollision::collision_with_map(int dx, int dy) {
  * This is a redefinition of Movement::update_x to make the move
  * only if there is no collision with the map.
  */
-void MovementWithCollision::update_x(void) {
+void CollisionMovement::update_x(void) {
 
   Uint32 now = SDL_GetTicks();
   if (x_move != 0 && now >= next_move_date_x) { // while it's time to try a move
@@ -84,7 +84,7 @@ void MovementWithCollision::update_x(void) {
  * This is a redefinition of Movement::update_y to make the move
  * only if there is no collision with the map.
  */
-void MovementWithCollision::update_y(void) {
+void CollisionMovement::update_y(void) {
 
   Uint32 now = SDL_GetTicks();
   if (y_move != 0 && now >= next_move_date_y) { // while it's time to try a move

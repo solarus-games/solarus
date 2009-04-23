@@ -18,7 +18,7 @@
 #define ZSDX_PATH_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/MovementWithCollision.h"
+#include "movements/CollisionMovement.h"
 
 /**
  * Movement for an entity that follows a path.
@@ -26,7 +26,7 @@
  * each basic move is an 8-pixel movement in one
  * of the 8 main directions.
  */
-class PathMovement: public MovementWithCollision {
+class PathMovement: public CollisionMovement {
 
  protected:
 

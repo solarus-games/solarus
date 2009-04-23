@@ -22,8 +22,7 @@
  * @param direction angle of the movement (0 to 359)
  * @param time duration of the movement in milliseconds
  */
-StraightMovement::StraightMovement(int speed, int direction, Uint32 time):
-  MovementWithCollision() {
+StraightMovement::StraightMovement(int speed, int direction, Uint32 time) {
 
   start(speed, direction, time);
 }
@@ -34,8 +33,7 @@ StraightMovement::StraightMovement(int speed, int direction, Uint32 time):
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
  */
-StraightMovement::StraightMovement(int speed, double direction, Uint32 time):
-  MovementWithCollision() {
+StraightMovement::StraightMovement(int speed, double direction, Uint32 time) {
 
   start(speed, direction, time);
 }

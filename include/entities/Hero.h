@@ -141,19 +141,19 @@ class Hero: public MapEntity {
   Layer layer_after_jump;        /**< the layer to set when the jump movement is finished */
 
   // return to solid ground
-  SDL_Rect last_solid_ground_coords;       /**< coordinates of the last hero position on a ground
-				            * where he can walk (e.g. before jumping or falling into a hole) */
-  SDL_Rect target_solid_ground_coords;     /**< coordinates of the position where the hero will go if he falls
-					    * into a hole (or some other bad ground), or (-1,-1) to indicate
-					    * that the hero will just return to the last solid ground coordinates */
+  SDL_Rect last_solid_ground_coords;     /**< coordinates of the last hero position on a ground
+				          * where he can walk (e.g. before jumping or falling into a hole) */
+  SDL_Rect target_solid_ground_coords;   /**< coordinates of the position where the hero will go if he falls
+					  * into a hole (or some other bad ground), or (-1,-1) to indicate
+					  * that the hero will just return to the last solid ground coordinates */
 
   // special ground under the hero
-  Ground ground;                           /**< kind of ground under the hero: grass, shallow water, etc. */
-  Uint32 next_ground_sound_date;           /**< when the ground sound has to be played next time */
+  Ground ground;                         /**< kind of ground under the hero: grass, shallow water, etc. */
+  Uint32 next_ground_sound_date;         /**< when the ground sound has to be played next time */
 
   // items
-  Inventory::Item *current_inventory_item; /**< the inventory item the player is currently using,
-					    * or NULL if he is not using an item */
+  InventoryItem *current_inventory_item; /**< the inventory item the player is currently using,
+					  * or NULL if he is not using an item */
 
   // update functions
   void update_position(void);
@@ -175,8 +175,8 @@ class Hero: public MapEntity {
   void update_ground(void);
   bool is_ground_visible(void);
 
-  bool can_start_inventory_item(Inventory::ItemId item_id);
-  void start_inventory_item(Inventory::ItemId item_id);
+  bool can_start_inventory_item(InventoryItemId item_id);
+  void start_inventory_item(InventoryItemId item_id);
   void update_inventory_item(void);
 
   void update_sword_swinging(void);

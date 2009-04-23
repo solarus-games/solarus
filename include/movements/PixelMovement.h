@@ -18,13 +18,13 @@
 #define ZSDX_PIXEL_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/MovementWithCollision.h"
+#include "movements/CollisionMovement.h"
 
 /**
  * Movement for an entity that follows a predetermined succession
  * of per-pixel translation vectors.
  */
-class PixelMovement: public MovementWithCollision {
+class PixelMovement: public CollisionMovement {
 
  private:
 

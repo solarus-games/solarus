@@ -26,7 +26,6 @@
  */
 PixelMovement::PixelMovement(int nb_vectors, Uint32 delay,
 			     bool loop, bool with_collisions):
-  MovementWithCollision(),
   nb_vectors(nb_vectors), delay(delay), loop(loop),
   with_collisions(with_collisions), vector_index(0), finished(false) {
 
@@ -47,7 +46,6 @@ PixelMovement::PixelMovement(int nb_vectors, Uint32 delay,
  */
 PixelMovement::PixelMovement(const SDL_Rect *translation_vectors,
 			     int nb_vectors, Uint32 delay, bool loop, bool with_collisions):
-  MovementWithCollision(),
   translation_vectors(translation_vectors), nb_vectors(nb_vectors),
   delay(delay), loop(loop), with_collisions(with_collisions), vector_index(0), finished(false) {
 
@@ -69,7 +67,7 @@ PixelMovement::~PixelMovement(void) {
  * @return true if the entity would overlap the map obstacles in this position
  */
 bool PixelMovement::collision_with_map(int dx, int dy) {
-  return with_collisions && MovementWithCollision::collision_with_map(dx, dy);
+  return with_collisions && CollisionMovement::collision_with_map(dx, dy);
 }
 
 /**

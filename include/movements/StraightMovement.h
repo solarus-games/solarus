@@ -18,13 +18,13 @@
 #define ZSDX_STRAIGHT_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/MovementWithCollision.h"
+#include "movements/CollisionMovement.h"
 
 /**
  * Movement for an entity that follows a straight trajectory
  * for a given amount of time.
  */
-class StraightMovement: public MovementWithCollision {
+class StraightMovement: public CollisionMovement {
 
  private:
 

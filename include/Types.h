@@ -81,10 +81,7 @@ class Message;
 class Timer;
 class GameoverSequence;
 class Camera;
-
-namespace Inventory {
-  class Item;
-}
+class InventoryItem;
 
 // music and sound
 class Music;
@@ -154,8 +151,8 @@ class AnimatedTilePattern;
 
 // movements
 class Movement;
-class MovementWithCollision;
-class MovementWithSmoothCollision;
+class CollisionMovement;
+class SmoothCollisionMovement;
 class PlayerMovement;
 class FallingOnFloorMovement;
 class PixelMovement;

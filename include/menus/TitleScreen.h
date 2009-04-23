@@ -35,28 +35,37 @@ class TitleScreen: public Screen {
     PHASE_ZS_PRESENTS,
     PHASE_TITLE
   };
-  
+
   Phase current_phase;
   Uint32 next_phase_date;
-  Transition *transition_in;
-  Transition *transition_out;
+  TransitionFade *transition_in;
+  TransitionFade *transition_out;
 
   // phase 1
   void init_phase_black_screen(void);
 
   // phase 2
-  SDL_Surface *img_zs_presents;
+  SDL_Surface *zs_presents_img;
   SDL_Rect zs_presents_position;
 
   void init_phase_zs_presents(void);
   void exit_phase_zs_presents(void);
 
   // phase 3
-  SDL_Surface *img_title;
   Music *title_screen_music;
+  SDL_Surface *background_img;
+  SDL_Surface *logo_img;
+  SDL_Surface *dx_img;
+  SDL_Surface *website_img;
+  SDL_Surface *press_space_img;
+  SDL_Surface *title_surface;
+  int counter;
+  Uint32 next_image_date;
 
   void init_phase_title(void);
   void exit_phase_title(void);
+  void update_phase_title(void);
+  void display_phase_title(SDL_Surface *destination_surface);
 
  public:
 
@@ -67,7 +76,7 @@ class TitleScreen: public Screen {
   // update and display
   void handle_event(const SDL_Event &event);
   void update(void);
-  void display(SDL_Surface *screen_surface);
+  void display(SDL_Surface *destination_surface);
 };
 
 #endif

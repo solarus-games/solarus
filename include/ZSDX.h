@@ -45,8 +45,6 @@ class ZSDX {
   void handle_event(const SDL_Event &event);
   void display(void);
 
-  bool is_exiting(void);
-
  public:
 
   TTF_Font *font;
@@ -61,7 +59,7 @@ class ZSDX {
 
   void set_game(Game *game);
   void set_exiting(void);
-
+  bool is_exiting(void);
 };
 
 #endif

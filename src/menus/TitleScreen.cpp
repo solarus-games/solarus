@@ -20,7 +20,7 @@
 #include "ResourceManager.h"
 #include "FileTools.h"
 #include "Color.h"
-#include "Transition.h"
+#include "TransitionFade.h"
 
 // TODO remove
 #include "Game.h"
@@ -65,7 +65,7 @@ TitleScreen::~TitleScreen(void) {
 void TitleScreen::update(void) {
 
   // TODO remove
-  set_next_screen(new Game(new Savegame("save1.zsd")));
+  //  set_next_screen(new Game(new Savegame("save1.zsd")));
 
   Uint32 now = SDL_GetTicks();
 
@@ -100,20 +100,16 @@ void TitleScreen::update(void) {
     break;
 
   case PHASE_TITLE:
-
-    if (transition_out->is_over()) {
-      exit_phase_title();
-      set_next_screen(new SelectionMenuSelectFile(NULL));
-    }
-
+    update_phase_title();
     break;
   }
 }
 
 /**
  * Displays the title screen.
+ * @param destination surface the surface to draw
  */
-void TitleScreen::display(SDL_Surface *screen_surface) {
+void TitleScreen::display(SDL_Surface *destination_surface) {
 
   switch (current_phase) {
 
@@ -123,19 +119,13 @@ void TitleScreen::display(SDL_Surface *screen_surface) {
 
   case PHASE_ZS_PRESENTS:
     if (transition_out->is_started()) { // out transition
-      transition_out->display(img_zs_presents);
+      transition_out->display(zs_presents_img);
     }
-    SDL_BlitSurface(img_zs_presents, NULL, screen_surface, &zs_presents_position);
+    SDL_BlitSurface(zs_presents_img, NULL, destination_surface, &zs_presents_position);
     break;
 
   case PHASE_TITLE:
-    if (transition_in->is_started()) {
-      transition_in->display(img_title);
-    }
-    else if (transition_out->is_started()) {
-      transition_out->display(img_title);
-    }
-    SDL_BlitSurface(img_title, NULL, screen_surface, NULL);
+    display_phase_title(destination_surface);
     break;
   }
 }
@@ -150,7 +140,7 @@ void TitleScreen::handle_event(const SDL_Event &event) {
   if (current_phase == PHASE_TITLE
       && event.type == SDL_KEYDOWN
       && (event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_RETURN)
-      && !transition_out->is_started()) {
+      && counter >= 1) {
 
     transition_out->start();
   }
@@ -175,13 +165,13 @@ void TitleScreen::init_phase_zs_presents(void) {
 
   current_phase = PHASE_ZS_PRESENTS;
 
-  img_zs_presents = ResourceManager::load_image("menus/zelda_solarus_presents.png");
+  zs_presents_img = ResourceManager::load_image("menus/zelda_solarus_presents.png");
   ResourceManager::get_sound("intro")->play();
   zs_presents_position.x = 112;
   zs_presents_position.y = 96;
 
   next_phase_date = SDL_GetTicks() + 2000; // intro: 2 seconds
-  transition_out = Transition::create(Transition::FADE, Transition::OUT);
+  transition_out = new TransitionFade(Transition::OUT);
 }
 
 /**
@@ -189,7 +179,7 @@ void TitleScreen::init_phase_zs_presents(void) {
  */
  void TitleScreen::exit_phase_zs_presents(void) {
 
-   SDL_FreeSurface(img_zs_presents);
+   SDL_FreeSurface(zs_presents_img);
    delete transition_out;
  }
 
@@ -201,22 +191,100 @@ void TitleScreen::init_phase_title(void) {
 
   current_phase = PHASE_TITLE;
 
-  img_title = ResourceManager::load_image("menus/title.png");
   title_screen_music = ResourceManager::get_music("title_screen_full.it");
   title_screen_music->play();
 
-  transition_in = Transition::create(Transition::FADE, Transition::IN);
+  background_img = ResourceManager::load_image("menus/title_background.png");
+  logo_img = ResourceManager::load_image("menus/title_logo.png");
+  dx_img = ResourceManager::load_image("menus/title_dx.png");
+  website_img = ResourceManager::load_image("menus/title_website.png");
+  press_space_img = ResourceManager::load_image("menus/title_press_space.png");
+  title_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+
+  counter = 0;
+  next_image_date = SDL_GetTicks() + 5000;
+
+  transition_in = new TransitionFade(Transition::IN);
+  transition_in->set_delay(60);
   transition_in->start();
-  transition_out = Transition::create(Transition::FADE, Transition::OUT);
+  transition_out = new TransitionFade(Transition::OUT);
 }
 
 /**
  * Exits phase 3 of the title screen.
  */
- void TitleScreen::exit_phase_title(void) {
+void TitleScreen::exit_phase_title(void) {
 
-   delete transition_in;
-   delete transition_out;
-   SDL_FreeSurface(img_title);
-   title_screen_music->stop();
- }
+  delete transition_in;
+  delete transition_out;
+  SDL_FreeSurface(background_img);
+  SDL_FreeSurface(logo_img);
+  SDL_FreeSurface(dx_img);
+  SDL_FreeSurface(website_img);
+  SDL_FreeSurface(press_space_img);
+  SDL_FreeSurface(title_surface);
+  title_screen_music->stop();
+}
+
+/**
+ * Updates phase 3 of the title screen.
+ */
+void TitleScreen::update_phase_title(void) {
+
+  Uint32 now = SDL_GetTicks();
+
+  if (now >= next_image_date) {
+
+    if (counter == 0) {
+      ResourceManager::get_sound("ok")->play();
+      next_image_date = now + 1000;
+      counter++;
+    }
+    else if (counter == 1) {
+      next_image_date = now + 1000;
+      counter++;
+    }
+    else {
+      counter = 5 - counter;
+      next_image_date = now + 500;
+    }
+  }
+
+  if (transition_out->is_over()) {
+    exit_phase_title();
+    set_next_screen(new SelectionMenuSelectFile(NULL));
+  }
+}
+
+/**
+ * Displays phase 3 of the title screen.
+ * @param destination surface the surface to draw
+ */
+void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
+
+  SDL_FillRect(title_surface, NULL, Color::black);
+
+  SDL_BlitSurface(background_img, NULL, title_surface, NULL);
+  SDL_BlitSurface(website_img, NULL, title_surface, NULL);
+
+  if (counter >= 1) {
+    SDL_BlitSurface(logo_img, NULL, title_surface, NULL);
+
+    if (counter >= 2) {
+      SDL_BlitSurface(dx_img, NULL, title_surface, NULL);
+
+      if (counter >= 3) {
+	SDL_BlitSurface(press_space_img, NULL, title_surface, NULL);
+      }
+    }
+  }
+
+  if (transition_in->is_started()) {
+    transition_in->display(title_surface);
+  }
+  else if (transition_out->is_started()) {
+    transition_out->display(title_surface);
+  }
+
+  SDL_BlitSurface(title_surface, NULL, destination_surface, NULL);
+}

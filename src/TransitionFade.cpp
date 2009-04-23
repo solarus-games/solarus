@@ -32,6 +32,8 @@ TransitionFade::TransitionFade(Transition::Direction direction):
     alpha_limit = 256;
     alpha_increment = 8;
   }  
+
+  set_delay(20);
 }
 
 /**
@@ -39,6 +41,15 @@ TransitionFade::TransitionFade(Transition::Direction direction):
  */
 TransitionFade::~TransitionFade(void) {
 
+}
+
+/**
+ * Sets the delay between two frames.
+ * The default delay is 20 ms.
+ * @param delay the new delay in milliseconds
+ */
+void TransitionFade::set_delay(Uint32 delay) {
+  this->delay = delay;
 }
 
 /**
@@ -75,7 +86,7 @@ void TransitionFade::display(SDL_Surface *surface) {
   // update the transition effect if needed
   while (now >= next_frame_date && alpha != alpha_limit) {
     alpha += alpha_increment;
-    next_frame_date += 20; // 20 ms between two frame updates
+    next_frame_date += delay; // 20 ms between two frame updates
   }
 
   // display the transition effect on the surface

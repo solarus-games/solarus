@@ -39,7 +39,6 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
 SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
   SDL_FreeSurface(img_mode);
   SDL_FreeSurface(savegame_surface);
-  selection_menu_finished();
 }
 
 /**

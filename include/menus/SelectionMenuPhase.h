@@ -55,8 +55,6 @@ class SelectionMenuPhase: public Screen {
   SelectionMenuPhase(SelectionMenuPhase *previous,
 		     const std::string &title_string);
   virtual ~SelectionMenuPhase(void);
-  
-  void selection_menu_finished(void);
 
   // savegames
   Savegame ** get_savegames(void);

@@ -17,7 +17,6 @@ Feature requests :
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Sauvegarder la résolution du jeu dans un fichier de configuration ini
-- Animer l'écran-titre de Neovyze et y mettre un message "Appuyez sur Espace"
 
 
 Bugs :

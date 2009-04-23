@@ -16,6 +16,7 @@
  */
 #include "menus/SelectionMenuPhase.h"
 #include "menus/SelectionMenuCommon.h"
+#include "ZSDX.h"
 #include "Transition.h"
 #include "Sound.h"
 #include "Sprite.h"
@@ -57,14 +58,10 @@ SelectionMenuPhase::~SelectionMenuPhase(void) {
   if (transition != NULL) {
     delete transition;
   }
-}
 
-/**
- * This function is called by the last selection menu phase
- * when the selction menu is about to be closed.
- */
-void SelectionMenuPhase::selection_menu_finished(void) {
-  delete common_part;
+  if (zsdx->is_exiting() || zsdx->game != NULL) {
+    delete common_part;
+  }
 }
 
 /**

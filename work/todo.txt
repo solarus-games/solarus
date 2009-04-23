@@ -23,21 +23,7 @@ Bugs :
 
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - la barre de magie moyenne peut déborder (yoshi04)
-
-- au bandit manchot, lorsque je me place devant la 1ere roulette link de temps en temps part sur la gauche sans raisons
-- le menu option fonctionne au premier abord mais plante lorsque l'on quitte le jeu avec echap après avoir personnalisé les boutons de la manette : "Fatal error: No joypad action is defined for game key 'Action'"
-
-
-Bugs a priori corrigés, demander confirmation à Thyb avec une nouvelle démo :
-
-- Link se déplace trop vite
-- Jeux des 3 coffres : j'ai gagné 1 fois 50 rubis après il n'y a plus moyen d'y rejouer
-- Les sauts à partir des corniches sont trop rapides
-- Bandit manchot : 400 rubis gagnés sans trop de peine indéfiniment ("avec de l'entrainement je ne dis pas que l'on peut y arriver a tous les coup mais très souvent oui")
-- Le HUD gêne lorsque l'on est dans le coin nord ouest de la map ou maison ou l'on se trouve (peut-être faire un HUD moins opaque pour les boutons a moins mais pas pour le texte (Voir, Soulever, ...) et les icônes des objets)
-- les plongeons sans palmes, après vérification on ne perds pas de coeurs seulement dans link's awakening, on en perd dans ALTTP, OOA et OOS
-- Lorsque l'on charge l'épée pour couper des buissons "à la chaîne" il n'y a pas une
-  certaine butée qui nous les fait couper 1 par 1
+- écran-titres : textes du bas flous
 
 
 A venir :
@@ -47,6 +33,8 @@ A venir :
   - tapis roulants
   - piquants
   - choux-péteurs
+  - blocs violets
+  - articles de magasins
 
 
 Testeurs :

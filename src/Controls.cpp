@@ -319,16 +319,17 @@ void Controls::key_pressed(const SDL_keysym &keysym) {
       if (game_key != 0) {
 	// this keyboard key was already assigned to a game key
 	keyboard_mapping[previous_keyboard_key] = game_key;
+	int index = Savegame::KEYBOARD_ACTION_KEY + game_key - 1;
+	savegame->set_integer(index, previous_keyboard_key);
       }
       else {
 	keyboard_mapping.erase(previous_keyboard_key);
       }
       keyboard_mapping[keysym.sym] = key_to_customize;
-      keys_pressed[key_to_customize - 1] = true;
-
-      // save this new mapping
       int index = Savegame::KEYBOARD_ACTION_KEY + key_to_customize - 1;
       savegame->set_integer(index, keysym.sym);
+
+      keys_pressed[key_to_customize - 1] = true;
     }
   }
 }
@@ -381,16 +382,17 @@ void Controls::joypad_button_pressed(int button) {
       if (game_key != 0) {
 	// this button was already assigned to a game key
 	joypad_mapping[previous_joypad_string] = game_key;
+	int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
+	savegame->set_string(index, previous_joypad_string);
       }
       else {
 	joypad_mapping.erase(previous_joypad_string);
       }
       joypad_mapping[joypad_string] = key_to_customize;
-      keys_pressed[key_to_customize - 1] = true;
-
-      // save this new mapping
       int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
       savegame->set_string(index, joypad_string);
+
+      keys_pressed[key_to_customize - 1] = true;
     }
   }
 }
@@ -460,7 +462,7 @@ void Controls::joypad_axis_moved(int axis, int state) {
 
 	// notify the game
 	if (is_key_pressed(inverse_game_key)) {
-		game_key_released(inverse_game_key);
+	  game_key_released(inverse_game_key);
 	}
 	game_key_pressed(game_key);
       }
@@ -475,16 +477,17 @@ void Controls::joypad_axis_moved(int axis, int state) {
 	if (game_key != 0) {
 	  // this axis movement was already assigned to a game key
 	  joypad_mapping[previous_joypad_string] = game_key;
+	  int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
+	  savegame->set_string(index, previous_joypad_string);
 	}
 	else {
 	  joypad_mapping.erase(previous_joypad_string);
 	}
 	joypad_mapping[joypad_string] = key_to_customize;
-	keys_pressed[key_to_customize - 1] = true;
-
-	// save this new mapping
 	int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
 	savegame->set_string(index, joypad_string);
+
+	keys_pressed[key_to_customize - 1] = true;
       }
     }
   }
@@ -627,16 +630,17 @@ void Controls::joypad_hat_moved(int hat, int value) {
 	if (game_key != 0) {
 	  // this hat movement was already assigned to a game key
 	  joypad_mapping[previous_joypad_string] = game_key;
+	  int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
+	  savegame->set_string(index, previous_joypad_string);
 	}
 	else {
 	  joypad_mapping.erase(previous_joypad_string);
 	}
 	joypad_mapping[joypad_string] = key_to_customize;
-	keys_pressed[key_to_customize - 1] = true;
-
-	// save this new mapping
 	int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
 	savegame->set_string(index, joypad_string);
+
+	keys_pressed[key_to_customize - 1] = true;
       }
     }
   }

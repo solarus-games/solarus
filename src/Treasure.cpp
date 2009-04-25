@@ -118,6 +118,14 @@ bool Treasure::has_amount(void) {
 }
 
 /**
+ * Returns the amount of this treasure.
+ * @return the amount
+ */
+int Treasure::get_amount(void) {
+  return amount;
+}
+
+/**
  * Returns whether the player has got this treasure according to the savegame.
  * Returns false if the treasure possession state is not saved.
  * @return true if the player has found this treasure

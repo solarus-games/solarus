@@ -138,8 +138,8 @@ class Game: public Screen {
 
   // dialog box
   DialogBox *get_dialog_box(void);
-  void show_message(MessageId message_id);
-  void show_message(MessageId message_id, int position);
+  void show_message(const MessageId &message_id);
+  void show_message(const MessageId &message_id, int position);
 
   // treasure
   void give_treasure(Treasure *treasure);

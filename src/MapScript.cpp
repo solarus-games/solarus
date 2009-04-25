@@ -112,6 +112,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "equipment_get_tunic", l_equipment_get_tunic);
   lua_register(context, "equipment_get_sword", l_equipment_get_sword);
   lua_register(context, "equipment_get_shield", l_equipment_get_shield);
+  lua_register(context, "shop_item_remove", l_shop_item_remove);
 }
 
 /**
@@ -1096,6 +1097,22 @@ int MapScript::l_equipment_get_shield(lua_State *l) {
   return 1;
 }
 
+/**
+ * Removes a shop item from the map.
+ * Argument 1 (string): name of the shop item
+ */
+int MapScript::l_shop_item_remove(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  map->get_entities()->remove_entity(SHOP_ITEM, name);
+
+  return 0;
+}
+
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
@@ -1207,4 +1224,12 @@ bool MapScript::event_open_empty_chest(const string &chest_name) {
  */
 void MapScript::event_got_treasure(Treasure::Content content, int savegame_variable) {
   call_lua_function("event_got_treasure", content, savegame_variable);
+}
+
+/**
+ * Notifies the script that the player has just bought an item in a shop.
+ * @param shop_item_name name of the item bought
+ */
+void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
+  call_lua_function("event_shop_item_bought", shop_item_name);
 }

@@ -45,47 +45,48 @@ class MapScript {
   bool call_lua_function(const std::string &function_name, bool arg1);
 
   // C++ functions that can be called by the script
-  static FunctionAvailableToScript l_freeze;
-  static FunctionAvailableToScript l_unfreeze;
-  static FunctionAvailableToScript l_play_sound;
-  static FunctionAvailableToScript l_start_message;
-  static FunctionAvailableToScript l_set_message_variable;
-  static FunctionAvailableToScript l_give_treasure;
-  static FunctionAvailableToScript l_give_treasure_with_amount;
-  static FunctionAvailableToScript l_savegame_get_string;
-  static FunctionAvailableToScript l_savegame_get_integer;
-  static FunctionAvailableToScript l_savegame_get_boolean;
-  static FunctionAvailableToScript l_savegame_set_string;
-  static FunctionAvailableToScript l_savegame_set_integer;
-  static FunctionAvailableToScript l_savegame_set_boolean;
-  static FunctionAvailableToScript l_start_timer;
-  static FunctionAvailableToScript l_stop_timer;
-  static FunctionAvailableToScript l_move_camera;
-  static FunctionAvailableToScript l_restore_camera;
-  static FunctionAvailableToScript l_npc_walk;
-  static FunctionAvailableToScript l_npc_random_walk;
-  static FunctionAvailableToScript l_npc_jump;
-  static FunctionAvailableToScript l_npc_set_direction;
-  static FunctionAvailableToScript l_npc_remove;
-  static FunctionAvailableToScript l_set_chest_open;
-  static FunctionAvailableToScript l_get_rupees;
-  static FunctionAvailableToScript l_remove_rupees;
-  static FunctionAvailableToScript l_disable_tile;
-  static FunctionAvailableToScript l_enable_tile;
-  static FunctionAvailableToScript l_is_tile_enabled;
-  static FunctionAvailableToScript l_reset_block;
-  static FunctionAvailableToScript l_reset_blocks;
-  static FunctionAvailableToScript l_interactive_entity_get_animation;
-  static FunctionAvailableToScript l_interactive_entity_get_animation_delay;
-  static FunctionAvailableToScript l_interactive_entity_get_animation_frame;
-  static FunctionAvailableToScript l_interactive_entity_is_animation_paused;
-  static FunctionAvailableToScript l_interactive_entity_set_animation;
-  static FunctionAvailableToScript l_interactive_entity_set_animation_delay;
-  static FunctionAvailableToScript l_interactive_entity_set_animation_frame;
-  static FunctionAvailableToScript l_interactive_entity_set_animation_paused;
-  static FunctionAvailableToScript l_equipment_get_tunic;
-  static FunctionAvailableToScript l_equipment_get_sword;
-  static FunctionAvailableToScript l_equipment_get_shield;
+  static FunctionAvailableToScript l_freeze,
+    l_unfreeze,
+    l_play_sound,
+    l_start_message,
+    l_set_message_variable,
+    l_give_treasure,
+    l_give_treasure_with_amount,
+    l_savegame_get_string,
+    l_savegame_get_integer,
+    l_savegame_get_boolean,
+    l_savegame_set_string,
+    l_savegame_set_integer,
+    l_savegame_set_boolean,
+    l_start_timer,
+    l_stop_timer,
+    l_move_camera,
+    l_restore_camera,
+    l_npc_walk,
+    l_npc_random_walk,
+    l_npc_jump,
+    l_npc_set_direction,
+    l_npc_remove,
+    l_set_chest_open,
+    l_get_rupees,
+    l_remove_rupees,
+    l_disable_tile,
+    l_enable_tile,
+    l_is_tile_enabled,
+    l_reset_block,
+    l_reset_blocks,
+    l_interactive_entity_get_animation,
+    l_interactive_entity_get_animation_delay,
+    l_interactive_entity_get_animation_frame,
+    l_interactive_entity_is_animation_paused,
+    l_interactive_entity_set_animation,
+    l_interactive_entity_set_animation_delay,
+    l_interactive_entity_set_animation_frame,
+    l_interactive_entity_set_animation_paused,
+    l_equipment_get_tunic,
+    l_equipment_get_sword,
+    l_equipment_get_shield,
+    l_shop_item_remove;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);
@@ -116,6 +117,7 @@ class MapScript {
   void event_npc_movement_finished(const std::string &npc_name);
   bool event_open_empty_chest(const std::string &chest_name);
   void event_got_treasure(Treasure::Content content, int savegame_variable);
+  void event_shop_item_bought(const std::string &shop_item_name);
 };
 
 #endif

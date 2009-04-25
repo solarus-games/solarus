@@ -87,7 +87,7 @@ class DialogBox {
   SDL_Rect question_dst_position;
   SDL_Rect icon_dst_position;
 
-  void show_message(MessageId messageId);
+  void show_message(const MessageId &messageId);
 
   void action_key_pressed(void);
   void sword_key_pressed(void);
@@ -96,7 +96,7 @@ class DialogBox {
  public:
 
   // creation and destruction
-  DialogBox(MessageId first_message_id, int x, int y);
+  DialogBox(const MessageId &first_message_id, int x, int y);
   ~DialogBox(void);
 
   // dialog properties
@@ -107,8 +107,8 @@ class DialogBox {
   int get_icon_number(void);
   void set_icon_number(int icon_number);
 
-  void set_variable(MessageId messageId, const std::string &value);
-  void set_variable(MessageId messageId, int value);
+  void set_variable(const MessageId &messageId, const std::string &value);
+  void set_variable(const MessageId &messageId, int value);
   const std::string& get_variable(void);
   
   // current message

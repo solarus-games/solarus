@@ -322,12 +322,14 @@ Il n'a pas de direction, n'est pas redimensionnable et a un identificateur.
 
 Syntaxe de la partie spécifique pour un article de magasin:
 
-treasure	amount	price	message_id
+treasure	amount	savegame_variable	price	message_id
 
 treasure est un numéro qui indique le contenu l'article (voir include/Treasure.h).
 amount donne la quantité de ce trésor que l'on peut acheter. Cette valeur est utile seulement pour certains types de trésors : rubis, flèches, bombes, croissants... Elle est ignorée pour les autres trésors.
 price indique le prix à payer pour acheter ce trésor (dans la quantité proposée).
 message_id est l'identifiant du message à afficher lorsque le joueur regarde l'article. Ce message décrit l'article. Il est automatiquement suivi d'un message qui demande au joueur s'il souhaite acheter l'article, puis des messages qui s'en suivent selon sa décision.
+savegame_variable est le numéro du booléen qui sauvegarde le fait que cet article a été acheté. Au chargement de la map, si la sauvegarde indique que l'article a déjà été acheté, l'article n'est pas créé. Lorsque le joueur achète l'article, il est supprimé de la map.
+Une valeur de -1 indique que l'achat de l'article n'est pas sauvegardé et que cet article peut être acheté plusieurs fois de suite (sans être supprimé de la map lorsqu'on l'achète).
 
 
 Portes

@@ -38,7 +38,7 @@ static SDL_Rect question_src_position = {48, 60, 8, 8};
  * @param x x coordinate of the top-left corner of the box
  * @param y y coordinate of the top-left corner of the box
  */
-DialogBox::DialogBox(MessageId first_message_id, int x, int y) {
+DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
 
   // initialize the surface
   dialog_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
@@ -154,7 +154,7 @@ void DialogBox::set_icon_number(int icon_number) {
  * @param message_id id of the message where this value will appear
  * @param value the value to add
  */
-void DialogBox::set_variable(MessageId message_id, const std::string &value) {
+void DialogBox::set_variable(const MessageId &message_id, const std::string &value) {
   variables[message_id] = value;
 }
 
@@ -165,7 +165,7 @@ void DialogBox::set_variable(MessageId message_id, const std::string &value) {
  * @param message_id id of the message where this value will appear
  * @param value the value to set
  */
-void DialogBox::set_variable(MessageId message_id, int value) {
+void DialogBox::set_variable(const MessageId &message_id, int value) {
   std::ostringstream oss;
   oss << value;
   set_variable(message_id, oss.str());
@@ -192,7 +192,7 @@ const std::string& DialogBox::get_variable(void) {
  * Shows a new message in the dialog box.
  * @param message_id id of the message to create (must be a valid id)
  */
-void DialogBox::show_message(MessageId message_id) {
+void DialogBox::show_message(const MessageId &message_id) {
 
   // create the message
   current_message = new Message(this, message_id, x, y);

@@ -282,12 +282,12 @@ void MapLoader::load_map(Map *map) {
 
     case SHOP_ITEM:
       {
-	int treasure, amount, price;
+	int treasure, amount, savegame_variable, price;
 	MessageId message_id;
-	iss >> entity_name >> treasure >> amount >> price >> message_id;
-	ShopItem *shop_item = new ShopItem(entity_name, Layer(layer), x, y,
-					   new Treasure(Treasure::Content(treasure), amount, -1),
-					   price, message_id);
+	iss >> entity_name >> treasure >> amount >> savegame_variable >> price >> message_id;
+	ShopItem *shop_item = ShopItem::create(entity_name, Layer(layer), x, y,
+					       new Treasure(Treasure::Content(treasure), amount, savegame_variable),
+					       price, message_id);
 	entities->add_entity(shop_item);
 	break;
       }

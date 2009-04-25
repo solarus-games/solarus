@@ -691,7 +691,7 @@ DialogBox * Game::get_dialog_box(void) {
  * The dialog box y position depends on the hero's position on the screen.
  * @param message_id id of the message to show
  */
-void Game::show_message(MessageId message_id) {
+void Game::show_message(const MessageId &message_id) {
 
   const SDL_Rect &camera_position = current_map->get_camera_position();
 
@@ -710,7 +710,7 @@ void Game::show_message(MessageId message_id) {
  * @param message_id id of the message to show
  * @param position the dialog box position: 0 means on the top, 1 means on the bottom
  */
-void Game::show_message(MessageId message_id, int position) {
+void Game::show_message(const MessageId &message_id, int position) {
 
   int y;
   if (position == 0) {

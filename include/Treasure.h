@@ -147,8 +147,6 @@ class Treasure {
   void show_message(void);
   void add_item_to_equipment(void);
 
-  bool has_amount(void);
-
  public:
 
   Treasure(Content content, int savegame_variable);
@@ -156,6 +154,8 @@ class Treasure {
   ~Treasure(void);
 
   Content get_content(void);
+  bool has_amount(void);
+  int get_amount(void);
   int get_savegame_variable(void);
 
   void give_to_player(void);

@@ -16,13 +16,21 @@
  */
 #include "entities/ShopItem.h"
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
 #include "ZSDX.h"
-#include "ResourceManager.h"
 #include "Game.h"
 #include "Map.h"
+#include "MapScript.h"
 #include "KeysEffect.h"
 #include "Treasure.h"
-#include "Counter.h"
+#include "TextSurface.h"
+#include "Sprite.h"
+#include "DialogBox.h"
+#include "Equipment.h"
+#include "ResourceManager.h"
+#include "Sound.h"
+#include "Savegame.h"
+#include <iomanip>
 
 /**
  * Creates a new shop item with the specified treasure and price.
@@ -35,18 +43,40 @@
  * @param message_id id of the message describing the item when the player watches it
  */
 ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
-		   Treasure *treasure, int price, MessageId message_id):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  treasure(treasure), price(price), message_id(message_id) {
+		   Treasure *treasure, int price, const MessageId &message_id):
+  Detector(COLLISION_FACING_POINT, name, layer, x, y, 24, 32),
+  treasure(treasure), price(price), message_id(message_id),
+  is_looking_item(false), is_asking_question(false) {
 
-  price_counter = new Counter(3, false, 0, 0);
-  price_counter->set_value(price);
+  std::ostringstream oss;
+  oss << price;
 
-  rupee_icon = ResourceManager::load_image("entities/miscellaneous.png");
-  rupee_icon_src_position.x = 0;
-  rupee_icon_src_position.y = 16;
-  rupee_icon_src_position.w = 8;
-  rupee_icon_src_position.h = 8;
+  price_digits = new TextSurface(x + 8, y + 24, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
+  price_digits->set_text(oss.str());
+
+  rupee_icon_sprite = new Sprite("entities/rupee_icon");
+}
+
+/**
+ * Creates a new shop item with the specified treasure and price.
+ * @param name the name identifying this entity
+ * @param layer layer of the entity to create
+ * @param x x coordinate of the entity to create
+ * @param y y coordinate of the entity to create
+ * @param treasure the treasure that the hero can buy (will be deleted automatically)
+ * @param price the treasure's price in rupees
+ * @param message_id id of the message describing the item when the player watches it
+ */
+ShopItem * ShopItem::create(const std::string &name, Layer layer, int x, int y,
+			    Treasure *treasure, int price, const MessageId &message_id) {
+
+  // see if the item was not been already bought
+  int savegame_variable = treasure->get_savegame_variable();
+  if (savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
+    return NULL;
+  }
+
+  return new ShopItem(name, layer, x, y, treasure, price, message_id);
 }
 
 /**
@@ -54,12 +84,8 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
  */
 ShopItem::~ShopItem(void) {
 
-  if (treasure != NULL) {
-    // delete the treasure only if the player didn't buy it
-    delete treasure;
-  }
-
-  SDL_FreeSurface(rupee_icon);
+  delete treasure;
+  delete rupee_icon_sprite;
 }
 
 /**
@@ -68,6 +94,15 @@ ShopItem::~ShopItem(void) {
  */
 EntityType ShopItem::get_type() {
   return SHOP_ITEM;
+}
+
+/**
+ * Returns true if this entity does not react to the sword.
+ * If true is returned, nothing will happen when the hero hits this entity with the sword.
+ * @return true if the sword is ignored
+ */
+bool ShopItem::is_sword_ignored(void) {
+  return true;
 }
 
 /**
@@ -110,9 +145,63 @@ void ShopItem::collision(MapEntity *entity_overlapping, CollisionMode collision_
 void ShopItem::action_key_pressed(void) {
 
   Hero *hero = zsdx->game->get_hero();
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
-  if (hero->get_state() == Hero::FREE) { // don't buy an item while pushing
-    // TODO
+  if (hero->get_state() == Hero::FREE
+      && keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
+
+    zsdx->game->show_message(message_id);
+    is_looking_item = true;
+  }
+}
+
+/**
+ * Updates the entity.
+ */
+void ShopItem::update(void) {
+
+  Game *game = zsdx->game;
+
+  if (is_looking_item && !game->is_showing_message()) {
+
+    // the description message has just finished
+    std::string question_message_id = "_shop.question";
+    game->show_message(question_message_id);
+    game->get_dialog_box()->set_variable(question_message_id, price);
+    is_asking_question = true;
+    is_looking_item = false;
+  }
+  else if (is_asking_question && !game->is_showing_message()) {
+
+    // the question has just finished
+    is_asking_question = false;
+    int answer = game->get_dialog_box()->get_last_answer();
+
+    if (answer == 0) {
+
+      // the player wants to buy the item
+      Equipment *equipment = game->get_equipment();
+
+      if (equipment->get_rupees() < price) {
+	// not enough rupees
+	ResourceManager::get_sound("wrong")->play();
+	game->show_message("_shop.not_enough_money");
+      }
+      else {
+	// give the treasure
+	equipment->remove_rupees(price);
+
+	int savegame_variable = treasure->get_savegame_variable();
+	game->give_treasure(new Treasure(treasure->get_content(),
+					 treasure->get_amount(),
+					 savegame_variable));
+	if (savegame_variable != -1) {
+	  map->get_entities()->remove_entity(this);
+	  game->get_savegame()->set_boolean(savegame_variable, true);
+	}
+	map->get_script()->event_shop_item_bought(get_name());
+      }
+    }
   }
 }
 
@@ -127,11 +216,9 @@ void ShopItem::display_on_map(void) {
 
   // display the treasure
   const SDL_Rect &camera_position = map->get_camera_position();
-  treasure->display(map_surface, x - camera_position.x, y - camera_position.y);
+  treasure->display(map_surface, x + 4- camera_position.x, y - camera_position.y);
 
-  // TODO also display the price
-
-  price_counter->display(map_surface, x + 2, y + 28);
-  SDL_Rect dst_position = {x - 8, y + 28};
-  SDL_BlitSurface(rupee_icon, &rupee_icon_src_position, map_surface, &dst_position);
+  // also display the price
+  price_digits->display(map_surface);
+  rupee_icon_sprite->display(map_surface, x - 4, y + 24);
 }

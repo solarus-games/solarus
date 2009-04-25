@@ -33,21 +33,30 @@ class ShopItem: public Detector {
   MessageId message_id;             /**< id of the message describing the shop item */
 
   // displaying
-  Counter *price_counter;           /**< the digits that show the price */
-  SDL_Surface *rupee_icon;          /**< the rupee icon near the price */
-  SDL_Rect rupee_icon_src_position; /**< position of the green rupee in the image */
+  TextSurface *price_digits;        /**< the digits that show the price */
+  Sprite *rupee_icon_sprite;        /**< the rupee icon near the price */
+
+  // state
+  bool is_looking_item;             /**< indicates that the message describing the item is being shown */
+  bool is_asking_question;          /**< indicates that the buy question is being shown */
+
+  ShopItem(const std::string &name, Layer layer, int x, int y,
+	   Treasure *treasure, int price, const MessageId &message_id);
 
  public:
 
-  ShopItem(const std::string &name, Layer layer, int x, int y,
-	   Treasure *treasure, int price, MessageId message_id);
+  static ShopItem * create(const std::string &name, Layer layer, int x, int y,
+			   Treasure *treasure, int price, const MessageId &message_id);
   ~ShopItem(void);
 
   EntityType get_type(void);
 
+  bool is_sword_ignored(void);
   bool is_obstacle_for(MapEntity *other);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void action_key_pressed(void);
+
+  void update(void);
   void display_on_map(void);
 };
 

@@ -158,6 +158,7 @@ class Treasure {
   int get_amount(void);
   int get_savegame_variable(void);
 
+  bool is_amount_full(void);
   void give_to_player(void);
   bool is_found(void);
 

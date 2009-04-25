@@ -1582,3 +1582,7 @@ question = true
 line1 = "Désolé, mais tu n'as"
 line2 = "pas assez d'argent !"
 cancel = all
+
+[_shop.amount_full]
+#       |-----------------------|
+line1 = "Tu es déjà au maximum !"

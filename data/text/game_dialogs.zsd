@@ -724,6 +724,80 @@ line3 = "souhaites acheter."
 
 [lyriann_shop.apples]
 #       |-----------------------|
-line1 = "5 Pommes fraîches de ce"
+line1 = "3 Pommes fraîches de ce"
 line2 = "matin ! Chaque pomme"
 line3 = "rapporte un Coeur."
+
+[lyriann_shop.bomb_bag]
+#       |-----------------------|
+line1 = "Un sac de Bombes."
+line2 = "Indispensable pour"
+line3 = "les transporter !"
+
+[lyriann_shop.heart]
+#       |-----------------------|
+line1 = "Un coeur à consommer"
+line2 = "immédiatement."
+
+[cake_shop.seller]
+#       |-----------------------|
+line1 = "Bienvenue. Choisis la"
+line2 = "pâtisserie que tu"
+line3 = "souhaites acheter."
+
+[cake_shop.pain_au_chocolat]
+#       |-----------------------|
+line1 = "Un pain chocolat"
+line2 = "savoureux qui te"
+line3 = "redonnera trois Coeurs."
+
+[cake_shop.croissant]
+#       |-----------------------|
+line1 = "Mange ce croissant"
+line2 = "croustillant pour"
+line3 = "récupérer sept Coeurs."
+
+[cake_shop.dont_leave]
+#       |-----------------------|
+line1 = "Hé, attends !"
+line2 = "Je cherche des pommes"
+line3 = "pour faire une bonne"
+next = cake_shop.dont_leave.2
+
+[cake_shop.dont_leave.2]
+#       |-----------------------|
+line1 = "tarte. Je pense que"
+line2 = "6 pommes devraient"
+line3 = "suffire."
+next = cake_shop.dont_leave.3
+
+[cake_shop.dont_leave.3]
+#       |-----------------------|
+line1 = "Tu veux bien m'aider ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+
+[cake_shop.not_enough_apples]
+#       |-----------------------|
+line1 = "Oh, tu n'as pas assez"
+line2 = "de pommes... Reviens"
+line3 = "plus tard dans ce cas."
+
+[cake_shop.no_apples]
+#       |-----------------------|
+line1 = "Merci... Reviens me"
+line2 = "voir si tu en trouves !"
+
+[cake_shop.thank_you]
+#       |-----------------------|
+line1 = "Oh, merci, c'est très"
+line2 = "gentil ! Comment"
+line3 = "pourrais-je te"
+next = cake_shop.thank_you.2
+
+[cake_shop.thank_you.2]
+#       |-----------------------|
+line1 = "remercier ? Je n'ai que"
+line2 = "cette bouteille vide à"
+line3 = "te donner..."

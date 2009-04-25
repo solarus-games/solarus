@@ -126,6 +126,46 @@ int Treasure::get_amount(void) {
 }
 
 /**
+ * Returns whether the player already has the maximum amount
+ * of this item.
+ * @return true if the player already has the maximum amount
+ * of this item
+ */
+bool Treasure::is_amount_full(void) {
+
+  bool full = false;
+  Equipment *equipment = zsdx->game->get_equipment();
+
+  switch (content) {
+
+  case APPLES:
+    full = equipment->has_inventory_item_maximum_amount(INVENTORY_APPLES);
+    break;
+
+  case PAINS_AU_CHOCOLAT:
+    full = equipment->has_inventory_item_maximum_amount(INVENTORY_PAINS_AU_CHOCOLAT);
+    break;
+
+  case CROISSANTS:
+    full = equipment->has_inventory_item_maximum_amount(INVENTORY_CROISSANTS);
+    break;
+
+  case BOMBS:
+    full = equipment->has_inventory_item_maximum_amount(INVENTORY_BOMBS);
+    break;
+
+  case ARROWS:
+    full = equipment->has_inventory_item_maximum_amount(INVENTORY_BOW);
+    break;
+
+  default:
+    break;
+  }
+
+  return full;
+}
+
+/**
  * Returns whether the player has got this treasure according to the savegame.
  * Returns false if the treasure possession state is not saved.
  * @return true if the player has found this treasure
@@ -488,7 +528,7 @@ void Treasure::add_item_to_equipment(void) {
     break;
 
   case HEARTS:
-    equipment->add_hearts(amount);
+    equipment->add_hearts(amount * 4);
     break;
 
   case SMALL_MAGIC:

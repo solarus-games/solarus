@@ -45,6 +45,9 @@ Appel de fonctions C++ depuis un script LUA :
 - set_chest_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
 - get_rupees()						retourne le nombre de rubis
 - remove_rupees(rupees)					enlève des rubis au joueur
+- inventory_item_get(item_id)				retourne le numéro de variante possédée par le joueur d'un objet de l'inventaire
+- inventory_item_get_amount(item_id)			retourne la quantité d'un objet de l'inventaire
+- inventory_item_remove_amount(item_id, amount)		enlève une quantité d'un objet de l'inventaire (bombes, croissants, etc.)
 - disable_tile(tile_name)				désactive un tile dynamique
 - enable_tile(tile_name)				active un tile dynamique qui était désactivé
 - is_tile_enabled(tile_name)				indique si un tile dynamique est activé

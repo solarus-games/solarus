@@ -96,6 +96,9 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "set_chest_open", l_set_chest_open);
   lua_register(context, "get_rupees", l_get_rupees);
   lua_register(context, "remove_rupees", l_remove_rupees);
+  lua_register(context, "get_inventory_item", l_get_inventory_item);
+  lua_register(context, "get_inventory_item_amount", l_get_inventory_item_amount);
+  lua_register(context, "remove_inventory_item_amount", l_remove_inventory_item_amount);
   lua_register(context, "disable_tile", l_disable_tile);
   lua_register(context, "enable_tile", l_enable_tile);
   lua_register(context, "is_tile_enabled", l_is_tile_enabled);
@@ -808,6 +811,48 @@ int MapScript::l_remove_rupees(lua_State *l) {
   check_nb_arguments(l, 1);
   int rupees = lua_tointeger(l, 1);
   zsdx->game->get_equipment()->remove_rupees(rupees);
+  return 0;
+}
+
+/**
+ * Returns the possession state of an item from the inventory.
+ * Argument 1 (integer): an inventory item id
+ * Return value (integer): the possession state of this inventory item
+ */
+int MapScript::l_get_inventory_item(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
+  int variant = zsdx->game->get_equipment()->has_inventory_item(item_id);
+  lua_pushinteger(l, variant);
+  return 1;
+}
+
+/**
+ * Returns the amount the player has for an item from the inventory.
+ * Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
+ * Return value (integer): the amount possessed
+ */
+int MapScript::l_get_inventory_item_amount(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
+  int amount = zsdx->game->get_equipment()->get_inventory_item_amount(item_id);
+  lua_pushinteger(l, amount);
+  return 1;
+}
+
+/**
+ * Removes from the inventory an amount of the specified item.
+ * Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
+ * Argument 2 (integer): the amount possessed
+ */
+int MapScript::l_remove_inventory_item_amount(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
+  int amount = lua_tointeger(l, 2);
+  zsdx->game->get_equipment()->remove_inventory_item_amount(item_id, amount);
   return 0;
 }
 

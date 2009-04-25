@@ -44,14 +44,14 @@
  */
 ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
 		   Treasure *treasure, int price, const MessageId &message_id):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 24, 32),
+  Detector(COLLISION_FACING_POINT, name, layer, x, y, 32, 32),
   treasure(treasure), price(price), message_id(message_id),
   is_looking_item(false), is_asking_question(false) {
 
   std::ostringstream oss;
   oss << price;
 
-  price_digits = new TextSurface(x + 8, y + 24, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
+  price_digits = new TextSurface(x + 12, y + 22, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
   price_digits->set_text(oss.str());
 
   rupee_icon_sprite = new Sprite("entities/rupee_icon");
@@ -187,6 +187,11 @@ void ShopItem::update(void) {
 	ResourceManager::get_sound("wrong")->play();
 	game->show_message("_shop.not_enough_money");
       }
+      else if (treasure->is_amount_full()) {
+	// the player already has the maximum amount of this item
+	ResourceManager::get_sound("wrong")->play();
+	game->show_message("_shop.amount_full");
+      }
       else {
 	// give the treasure
 	equipment->remove_rupees(price);
@@ -216,9 +221,9 @@ void ShopItem::display_on_map(void) {
 
   // display the treasure
   const SDL_Rect &camera_position = map->get_camera_position();
-  treasure->display(map_surface, x + 4- camera_position.x, y - camera_position.y);
+  treasure->display(map_surface, x + 8 - camera_position.x, y + 2 - camera_position.y);
 
   // also display the price
   price_digits->display(map_surface);
-  rupee_icon_sprite->display(map_surface, x - 4, y + 24);
+  rupee_icon_sprite->display(map_surface, x, y + 22);
 }

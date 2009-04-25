@@ -1034,9 +1034,45 @@ void Equipment::remove_inventory_item_amount(InventoryItemId item_id, int amount
     DIE("Cannot remove a fire stone");
   }
   else {
-    int total = get_inventory_item_amount(item_id) - 1;
+    int total = get_inventory_item_amount(item_id) - amount_to_remove;
     set_inventory_item_amount(item_id, MAX(total, 0));
   }
+}
+
+/**
+ * Returns whether the player has the maximum amount of the specified item.
+ * @param item_id id of an item
+ * @return true if the player has the maximum amount of this item
+ */
+bool Equipment::has_inventory_item_maximum_amount(InventoryItemId item_id) {
+
+  int maximum;
+  switch (item_id) {
+
+    case INVENTORY_BOMBS:
+      maximum = get_max_bombs();
+      break;
+
+    case INVENTORY_BOW:
+      maximum = get_max_arrows();
+      break;
+
+    case INVENTORY_APPLES:
+    case INVENTORY_PAINS_AU_CHOCOLAT:
+    case INVENTORY_CROISSANTS:
+      maximum = 10;
+      break;
+
+    case INVENTORY_FIRE_STONES:
+      maximum = 3;
+      break;
+
+  default:
+    DIE("No maximum amount for inventory item '" << item_id << "'");
+    break;
+  }
+
+  return get_inventory_item_amount(item_id) >= maximum;
 }
 
 /**

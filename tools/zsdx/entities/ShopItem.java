@@ -17,6 +17,7 @@
 package zsdx.entities;
 
 import zsdx.*;
+import java.awt.*;
 
 /**
  * Represents a shop item that the hero can buy.
@@ -34,7 +35,7 @@ public class ShopItem extends MapEntity {
      * @param map the map
      */
     public ShopItem(Map map) throws MapException {
-	super(map, 24, 32);
+	super(map, 32, 32);
     }
 
     /**
@@ -113,6 +114,6 @@ public class ShopItem extends MapEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	currentImageDescription = new EntityImageDescription("miscellaneous_entities.png", 0, 64, 48, 64);
+	currentImageDescription = new EntityImageDescription("miscellaneous_entities.png", 0, 64, 64, 64);
     }
 }

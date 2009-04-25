@@ -25,6 +25,8 @@ Bugs :
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - la barre de magie moyenne peut déborder (yoshi04)
 - écran-titres : textes du bas flous
+- saut dans l'eau en diagonale sur le bord (sud-est du village) : link saute une deuxième fois, vers la droite, après être revenu sur la terre ferme
+- en quittant la pâtisserie, link semble saccader au moment où la pâtissière lui parle
 
 
 A venir :
@@ -35,7 +37,6 @@ A venir :
   - piquants
   - choux-péteurs
   - blocs violets
-  - articles de magasins
 
 
 Testeurs :

@@ -90,7 +90,8 @@ void HUD::update(void) {
 
       // if the hero is below the top-left icons, make them semi-transparent
       const SDL_Rect &hero_coords = game->get_hero_coordinates();
-      if (elements[6]->get_opacity() == 255 && hero_coords.x < 88 && hero_coords.y < 64 && !game->is_suspended()) {
+      if (elements[6]->get_opacity() == 255 && !game->is_suspended()
+	  && hero_coords.x < 88 && hero_coords.y < 80) {
 	elements[3]->set_opacity(96); // item 0
 	elements[4]->set_opacity(96); // item 1
 	elements[6]->set_opacity(96); // pause icon
@@ -98,7 +99,7 @@ void HUD::update(void) {
 	elements[7]->set_opacity(96); // action icon
       }
       else if (elements[6]->get_opacity() == 96
-	       && (hero_coords.x >= 88 || hero_coords.y >= 64 || game->is_suspended())) {
+	       && (hero_coords.x >= 88 || hero_coords.y >= 80 || game->is_suspended())) {
 	elements[3]->set_opacity(255); // item 0
 	elements[4]->set_opacity(255); // item 1
 	elements[6]->set_opacity(255); // pause icon

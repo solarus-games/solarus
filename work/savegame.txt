@@ -26,3 +26,5 @@ booleans:
 28	chest with the clay key in Sahasrahla's icy cave
 29	empty chest in the smith cave
 30	the smith gave the sword to the player
+31	bomb bag in the shop
+32	the player obtained the bottle from the cake shop seller

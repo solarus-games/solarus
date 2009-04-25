@@ -131,6 +131,7 @@ class Equipment {
   void set_inventory_item_amount(InventoryItemId item_id, int amount);
   void add_inventory_item_amount(InventoryItemId item_id, int amount_to_add);
   void remove_inventory_item_amount(InventoryItemId item_id, int amount_to_remove);
+  bool has_inventory_item_maximum_amount(InventoryItemId item_id);
 
   // bottles
   void add_bottle(void);

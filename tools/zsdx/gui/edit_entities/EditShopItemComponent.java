@@ -25,23 +25,24 @@ import zsdx.gui.*;
 import zsdx.map_editor_actions.*;
 
 /**
- * A component to edit a chest.
+ * A component to edit a shop item.
  */
-public class EditChestComponent extends EditEntityComponent {
+public class EditShopItemComponent extends EditEntityComponent {
 
-    // specific fields of a chest
-    private RadioField sizeField;
+    // specific fields of this type of entity
     private EnumerationChooser<TreasureContent> contentField;
     private NumberChooser amountField;
     private JCheckBox saveField;
     private NumberChooser savegameVariableField;
+    private NumberChooser priceField;
+    private JTextField messageIdField;
 
     /**
      * Constructor.
      * @param map the map
      * @param entity the entity to edit
      */
-    public EditChestComponent(Map map, MapEntity entity) {
+    public EditShopItemComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
 
@@ -49,10 +50,6 @@ public class EditChestComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
-
-	// big or small chest
-	sizeField = new RadioField("Small", "Big");
-	addField("Chest type", sizeField);
 
 	// treasure content
 	contentField = new EnumerationChooser<TreasureContent>(TreasureContent.class);
@@ -63,13 +60,21 @@ public class EditChestComponent extends EditEntityComponent {
 	addField("Amount", amountField);
 
 	// treasure saving option
-	saveField = new JCheckBox("Save the chest state");
+	saveField = new JCheckBox("Can be bought only once");
 	saveField.setSelected(true);
-	addField("Savegame", saveField);
+	addField("Unique", saveField);
 
 	// treasure savegame variable
 	savegameVariableField = new NumberChooser(0, 0, 32767);
 	addField("Savegame variable", savegameVariableField);
+
+	// price
+	priceField = new NumberChooser(10, 1, 999);
+	addField("Price", priceField);
+
+	// description message id
+	messageIdField = new JTextField(15);
+	addField("Description message id", messageIdField);
 
 	// enable or disable the amount field depending on the treasure content
 	contentField.addActionListener(new ActionListener() {
@@ -95,15 +100,16 @@ public class EditChestComponent extends EditEntityComponent {
     public void update() {
 	super.update(); // update the common fields
 
-	Chest chest = (Chest) entity;
+	ShopItem shopItem = (ShopItem) entity;
 
-	int savegameVariable = chest.getIntegerProperty("savegameVariable");
-	sizeField.setSelectedIndex(chest.isBigChest() ? 1 : 0);
-	contentField.setValue(TreasureContent.get(chest.getIntegerProperty("content")));
-	amountField.setNumber(chest.getIntegerProperty("amount"));
+	int savegameVariable = shopItem.getIntegerProperty("savegameVariable");
+	contentField.setValue(TreasureContent.get(shopItem.getIntegerProperty("content")));
+	amountField.setNumber(shopItem.getIntegerProperty("amount"));
 	saveField.setSelected(savegameVariable != -1);
 	savegameVariableField.setNumber(savegameVariable);
 	savegameVariableField.setEnabled(savegameVariable != -1);
+	priceField.setNumber(shopItem.getIntegerProperty("price"));
+	messageIdField.setText(shopItem.getProperty("messageId"));
     }
 
     /**
@@ -112,9 +118,10 @@ public class EditChestComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 	return new ActionEditEntitySpecific(entity,
-		sizeField.getSelectedIndex(),
-		contentField.getValue().getId(),
-		amountField.getNumber(),
-		saveField.isSelected() ? savegameVariableField.getNumber() : -1);
+		Integer.toString(contentField.getValue().getId()),
+		Integer.toString(amountField.getNumber()),
+		Integer.toString(saveField.isSelected() ? savegameVariableField.getNumber() : -1),
+		Integer.toString(priceField.getNumber()),
+		messageIdField.getText());
     }
 }

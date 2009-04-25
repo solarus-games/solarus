@@ -49,7 +49,7 @@ import zsdx.Map;
  *       - public String getNoDirectionText() (only when canHaveNoDirections() is true):
  *           returns the text to display in the GUI for the special direction 'none'
  *           (default is "No direction")
- *   - Redefine if necessary the methods the hasName() method:
+ *   - Redefine if necessary the hasName() method:
  *       public boolean hasName(): indicates whether the entity has a 
  *       name property, i.e. if it is identifiable (default is false)
  *   - Redefine if necessary the isResizable() method:
@@ -984,7 +984,7 @@ public abstract class MapEntity extends Observable {
 	    updateImageDescription();
 	}
     }
-    
+
     /**
      * Updates the description of the image currently representing the entity.
      * By default, the image description is a copy of the general image description of this kind of entity.

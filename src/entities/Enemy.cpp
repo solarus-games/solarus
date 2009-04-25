@@ -146,7 +146,7 @@ void Enemy::set_map(Map *map) {
  */
 bool Enemy::is_obstacle_for(MapEntity *other) {
 
-  return other->get_type() == BLOCK;
+  return other->get_type() == BLOCK || other->get_type() == INTERACTIVE_ENTITY;
 }
 
 /**
@@ -173,6 +173,7 @@ bool Enemy::is_hole_obstacle(void) {
 bool Enemy::is_teletransporter_obstacle(Teletransporter *teletransporter) {
   return true;
 }
+
 /**
  * Sets the amount of damage this kind of enemy can make to the hero
  * @param damage_on_hero number of heart quarters the player loses

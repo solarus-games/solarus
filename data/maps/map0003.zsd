@@ -1884,6 +1884,8 @@
 12	0	784	136	16	8	custom_obstacle_3	0	0	1	1
 8	0	920	597	tree_woman	3	1	npc/villager1	outside_world.village.tree_woman
 4	0	1008	765	2	-1	-1
+1	0	824	613	out_shop	3	0
+2	0	816	584	16	16	to_shop	0	1	18	main_entrance
 0	1	256	400	240	40	511
 0	1	232	448	288	40	511
 0	1	208	480	336	16	512

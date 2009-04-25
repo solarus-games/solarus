@@ -142,6 +142,7 @@ class CustomObstacle;
 class Sensor;
 class CrystalSwitch;
 class CrystalSwitchBlock;
+class ShopItem;
 
 // tile patterns
 class Tileset;

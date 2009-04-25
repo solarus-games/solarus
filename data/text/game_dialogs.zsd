@@ -715,3 +715,15 @@ line3 = "moyens..."
 line1 = "Merci beaucoup."
 line2 = "Pour utiliser ton épée,"
 line3 = "appuie sur sur C."
+
+[lyriann_shop.salesman]
+#       |-----------------------|
+line1 = "Bienvenue. Choisis"
+line2 = "l'article que tu"
+line3 = "souhaites acheter."
+
+[lyriann_shop.apples]
+#       |-----------------------|
+line1 = "5 Pommes fraîches de ce"
+line2 = "matin ! Chaque pomme"
+line3 = "rapporte un Coeur."

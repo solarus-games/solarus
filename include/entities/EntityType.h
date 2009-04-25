@@ -39,6 +39,7 @@ enum EntityType {
   SENSOR                    = 13,   /**< a sensor that triggers something when the hero overlaps it */
   CRYSTAL_SWITCH            = 14,   /**< a switch that lower or raises the blue and orange blocks */
   CRYSTAL_SWITCH_BLOCK      = 15,   /**< the blue or orange blocks that are changed by the crystal switches */
+  SHOP_ITEM                 = 16,   /**< an item the hero can buy in a shop */
 
   HERO                      = 1000, /**< the hero */
   CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */

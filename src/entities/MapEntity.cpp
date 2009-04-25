@@ -42,6 +42,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true, false, false}, // sensor
   { true,  true,  true, false}, // crystal switch
   { true,  true,  true, false}, // raised block
+  { true,  true,  true, false}, // shop item
 };
 
 /**

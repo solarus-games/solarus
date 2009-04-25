@@ -1569,3 +1569,16 @@ next = _too_heavy.1
 line1 = "Tu n'y arriveras jamais"
 line2 = "rien que par la force"
 line3 = "de tes bras !"
+
+[_shop.question]
+#       |-----------------------|
+line1 = "Prix : $v rubis."
+line2 = "Acheter"
+line3 = "Ne pas acheter"
+question = true
+
+[_shop.not_enough_money]
+#       |-----------------------|
+line1 = "Désolé, mais tu n'as"
+line2 = "pas assez d'argent !"
+cancel = all

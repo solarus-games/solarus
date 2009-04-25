@@ -14,45 +14,41 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_CHEST_H
-#define ZSDX_CHEST_H
+#ifndef ZSDX_SHOP_ITEM_H
+#define ZSDX_SHOP_ITEM_H
 
 #include "Common.h"
 #include "entities/Detector.h"
 
 /**
- * Represents a chest on a map.
- * It can be a normal chest or a big chest.
+ * Represents an item the hero can buy in a shop.
  */
-class Chest: public Detector {
+class ShopItem: public Detector {
 
  private:
 
-  bool big_chest;       /**< true for a big chest, false for normal chests */
-  Treasure *treasure;   /**< the treasure placed in this chest, or NULL if the chest contains nothing */
-  bool open;            /**< true if the chest is open (but the treasure may not have
-		         * been given yet because there is a delay of 500 ms) */
-  bool treasure_given;  /**< true if the chest is open and the treasure has been given to the player */
-  Uint32 treasure_date; /**< date when the treasure will be given to the player */
+  // data
+  Treasure *treasure;               /**< the treasure the player can buy */
+  int price;                        /**< the treasure's price in rupees */
+  MessageId message_id;             /**< id of the message describing the shop item */
 
-  void initialize_sprite(void);
+  // displaying
+  Counter *price_counter;           /**< the digits that show the price */
+  SDL_Surface *rupee_icon;          /**< the rupee icon near the price */
+  SDL_Rect rupee_icon_src_position; /**< position of the green rupee in the image */
 
  public:
 
-  Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
-  ~Chest(void);
+  ShopItem(const std::string &name, Layer layer, int x, int y,
+	   Treasure *treasure, int price, MessageId message_id);
+  ~ShopItem(void);
 
   EntityType get_type(void);
-  bool is_displayed_in_y_order(void);
-
-  bool is_open(void);
-  void set_open(bool open);
 
   bool is_obstacle_for(MapEntity *other);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void update(void);
   void action_key_pressed(void);
-  void set_suspended(bool suspended);
+  void display_on_map(void);
 };
 
 #endif

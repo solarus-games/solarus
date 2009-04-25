@@ -42,6 +42,7 @@
 #include "entities/Sensor.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/CrystalSwitchBlock.h"
+#include "entities/ShopItem.h"
 #include <iomanip>
 using namespace std;
 
@@ -276,6 +277,18 @@ void MapLoader::load_map(Map *map) {
 	iss >> width >> height >> subtype;
 	entities->add_entity(new CrystalSwitchBlock(Layer(layer), x, y, width, height,
 						    CrystalSwitchBlock::Subtype(subtype)));
+	break;
+      }
+
+    case SHOP_ITEM:
+      {
+	int treasure, amount, price;
+	MessageId message_id;
+	iss >> entity_name >> treasure >> amount >> price >> message_id;
+	ShopItem *shop_item = new ShopItem(entity_name, Layer(layer), x, y,
+					   new Treasure(Treasure::Content(treasure), amount, -1),
+					   price, message_id);
+	entities->add_entity(shop_item);
 	break;
       }
 

@@ -107,6 +107,7 @@ add_executable (zsdx
   entities/Sensor.cpp
   entities/CrystalSwitch.cpp
   entities/CrystalSwitchBlock.cpp
+  entities/ShopItem.cpp
 
   # tile patterns
   entities/Tileset.cpp

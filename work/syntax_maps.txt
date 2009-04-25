@@ -315,6 +315,21 @@ Il y a deux types de blocs relevables : les oranges (abaissés initialement) et 
 Ils n'ont pas de direction, pas de nom et sont redimensionnables.
 
 
+Articles de magasins (16)
+
+Un article de magasin est un trésor que l'on peut acheter à un magasin pour une certaine somme.
+Il n'a pas de direction, n'est pas redimensionnable et a un identificateur.
+
+Syntaxe de la partie spécifique pour un article de magasin:
+
+treasure	amount	price	message_id
+
+treasure est un numéro qui indique le contenu l'article (voir include/Treasure.h).
+amount donne la quantité de ce trésor que l'on peut acheter. Cette valeur est utile seulement pour certains types de trésors : rubis, flèches, bombes, croissants... Elle est ignorée pour les autres trésors.
+price indique le prix à payer pour acheter ce trésor (dans la quantité proposée).
+message_id est l'identifiant du message à afficher lorsque le joueur regarde l'article. Ce message décrit l'article. Il est automatiquement suivi d'un message qui demande au joueur s'il souhaite acheter l'article, puis des messages qui s'en suivent selon sa décision.
+
+
 Portes
 
 Utiliser une propriété skin comme pour les blocs.

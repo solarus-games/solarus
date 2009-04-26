@@ -747,7 +747,7 @@ line3 = "souhaites acheter."
 
 [cake_shop.pain_au_chocolat]
 #       |-----------------------|
-line1 = "Un pain chocolat"
+line1 = "Un pain au chocolat"
 line2 = "savoureux qui te"
 line3 = "redonnera trois Coeurs."
 

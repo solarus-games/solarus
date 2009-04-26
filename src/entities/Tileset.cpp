@@ -195,5 +195,10 @@ SDL_Surface * Tileset::get_entities_image(void) {
  * @return the tile pattern with this id
  */
 TilePattern * Tileset::get_tile_pattern(int id) {
-  return tile_patterns[id - 1];
+
+  TilePattern *tile_pattern =  tile_patterns[id - 1];
+  if (tile_pattern == NULL) {
+    DIE("There is not tile pattern with id '" << id << "' in this tileset'");
+  }
+  return tile_pattern;
 }

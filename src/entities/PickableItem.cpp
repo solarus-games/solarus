@@ -301,16 +301,14 @@ void PickableItem::initialize_sprites(void) {
   // set the origin point and the size of the entity
   set_rectangle_from_sprite();
 
+  Uint32 now = SDL_GetTicks();
+  allow_pick_date = now + 700;  // the player can take the item after 0.7s
+  can_be_picked = false;  
+
   // initialize the sprite removal
   if (will_disappear) {
-    Uint32 now = SDL_GetTicks();
-    can_be_picked = false;
-    allow_pick_date = now + 700;  // the player can take the item after 0.7s
     blink_date = now + 8000;      // the item blinks at 8s
     disappear_date = now + 10000; // the item disappears at 10s
-  }
-  else {
-    can_be_picked = true;
   }
 }
 
@@ -477,11 +475,17 @@ void PickableItem::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended); // suspend the animation and the movement
   shadow_sprite->set_suspended(suspended);
 
-  if (will_disappear) {
-    // suspend the timer
+  if (!suspended) {
+    // suspend the timers
+
     Uint32 now = SDL_GetTicks();
+
+    if (!can_be_picked) {
+      allow_pick_date = now + (allow_pick_date - when_suspended);
+    }
+
+    if (will_disappear) {
     
-    if (!suspended) {
       // the game is being resumed
       // recalculate the blinking date and the disappearing date
       if (when_suspended != 0) {
@@ -506,26 +510,29 @@ void PickableItem::update(void) {
   // update the shadow
   shadow_sprite->update();
 
-  // check the timer
-  Uint32 now = SDL_GetTicks();
+  if (!is_suspended()) {
 
-  // wait 0.7 second before allowing the hero to take the item
-  if (!can_be_picked && now >= allow_pick_date) {
-    can_be_picked = true;
-    map->check_collision_with_detectors(zsdx->game->get_hero());
-  }
-  else {
-    // make the item blink and then disappear
-    if (will_disappear && !is_suspended()) {
+    // check the timer
+    Uint32 now = SDL_GetTicks();
 
-      Sprite *item_sprite = get_sprite(0);
+    // wait 0.7 second before allowing the hero to take the item
+    if (!can_be_picked && now >= allow_pick_date) {
+      can_be_picked = true;
+      map->check_collision_with_detectors(zsdx->game->get_hero());
+    }
+    else {
+      // make the item blink and then disappear
+      if (will_disappear) {
+
+	Sprite *item_sprite = get_sprite(0);
     
-      if (now >= blink_date && !item_sprite->is_blinking()) {
-	set_blinking(true);
-      }
+	if (now >= blink_date && !item_sprite->is_blinking()) {
+	  set_blinking(true);
+	}
     
-      if (now >= disappear_date) {
-	map->get_entities()->remove_entity(this);
+	if (now >= disappear_date) {
+	  map->get_entities()->remove_entity(this);
+	}
       }
     }
   }

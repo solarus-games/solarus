@@ -755,7 +755,7 @@ line3 = "redonnera trois Coeurs."
 #       |-----------------------|
 line1 = "Mange ce croissant"
 line2 = "croustillant pour"
-line3 = "récupérer sept Coeurs."
+line3 = "retrouver sept Coeurs."
 
 [cake_shop.dont_leave]
 #       |-----------------------|

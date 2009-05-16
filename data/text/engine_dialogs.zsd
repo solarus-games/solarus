@@ -752,7 +752,7 @@ next = _treasure_18_1.1
 #       |--------------------|
 line1 = "Mange un Croissant"
 line2 = "pour récupérer"
-line3 = "récupérer 7 Coeurs."
+line3 = "7 Coeurs."
 
 [_treasure_18_2]
 # Plusieurs Croissants

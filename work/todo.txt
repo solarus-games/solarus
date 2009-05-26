@@ -26,7 +26,6 @@ Bugs :
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - la barre de magie moyenne peut déborder (yoshi04)
 - écran-titres : textes du bas flous
-- saut dans l'eau en diagonale sur le bord (sud-est du village) : link saute une deuxième fois, vers la droite, après être revenu sur la terre ferme
 - en quittant la pâtisserie, link semble saccader au moment où la pâtissière lui parle
 - quand ça rame (exemple Wink), les vases sont lancés moins loin
 - quand on quitte l'écran-titre, vérifier qu'on ne puisse pas à nouveau appuyer sur espace pendant la transition

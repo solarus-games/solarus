@@ -126,7 +126,10 @@ void VideoManager::switch_video_mode(void) {
  * Sets the default video mode.
  */
 void VideoManager::set_default_video_mode(void) {
-  set_video_mode(WINDOWED_STRETCHED);
+  // TODO windowed_stretched
+  //  set_video_mode(WINDOWED_STRETCHED);
+
+  set_video_mode(WINDOWED_NORMAL);
 }
 
 /**

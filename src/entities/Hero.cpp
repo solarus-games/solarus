@@ -631,6 +631,11 @@ void Hero::movement_just_changed(void) {
  */
 void Hero::just_moved(void) {
 
+  if (state == RETURNING_TO_SOLID_GROUND) {
+    // do not take care of the ground when returning to a solid ground point
+    return;
+  }
+
   Ground previous_ground = ground;
   set_ground(GROUND_NORMAL);
 
@@ -653,8 +658,13 @@ void Hero::just_moved(void) {
     start_ground();
   }
 
-  if (ground < GROUND_DEEP_WATER && state != JUMPING) {
+  if (ground < GROUND_DEEP_WATER && state != JUMPING && state != RETURNING_TO_SOLID_GROUND) {
     // save the hero's last valid position
+    /*
+    std::cout << SDL_GetTicks() << "\tsaving coords (" << get_coordinates().x << ","
+	      << get_coordinates().y << "), ground = " << ground
+	      << ", state = " << state << "\n";
+    */
     last_solid_ground_coords = get_coordinates();
   }
 }

@@ -1210,7 +1210,9 @@ void MapScript::event_switch_disabled(const string &switch_name) {
  * @param sensor_name name of the sensor
  */
 void MapScript::event_hero_on_sensor(const string &sensor_name) {
+  zsdx->game->get_hero()->freeze(); // to avoid problems when walking
   call_lua_function("event_hero_on_sensor", sensor_name);
+  zsdx->game->get_hero()->unfreeze();
 }
 
 /**

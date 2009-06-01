@@ -26,10 +26,8 @@ Bugs :
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - la barre de magie moyenne peut déborder (yoshi04)
 - écran-titres : textes du bas flous
-- en quittant la pâtisserie, link semble saccader au moment où la pâtissière lui parle
 - quand ça rame (exemple Wink), les vases sont lancés moins loin
-- quand on quitte l'écran-titre, vérifier qu'on ne puisse pas à nouveau appuyer sur espace pendant la transition
-- quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends"
+- quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
 
 
 A venir :
@@ -44,6 +42,7 @@ A venir :
   - blocs violets
 - Lanterne
 - Trous avec motifs (entité spéciale ?)
+
 
 Testeurs :
 
@@ -61,6 +60,11 @@ Remarques de Linksupersayen :
   - Link semble disparaître un peu lors des phases à l'épée.
   - Les musiques. On adore les musiques de A Link To The Past... sur la Super Nintendo et la Game Boy Advance, mais sur le PC, elle semblent un peu enregistrées, enfin, il faudrait augmenter la qualité sonore et là, ça serait bon !
   - D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
+
+
+Idées :
+
+- Passer à travers un tableau de Mario comme dans Mario 64
 
 ----------------
 Ancien planning prévisionnel

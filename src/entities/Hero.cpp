@@ -660,11 +660,6 @@ void Hero::just_moved(void) {
 
   if (ground < GROUND_DEEP_WATER && state != JUMPING && state != RETURNING_TO_SOLID_GROUND) {
     // save the hero's last valid position
-    /*
-    std::cout << SDL_GetTicks() << "\tsaving coords (" << get_coordinates().x << ","
-	      << get_coordinates().y << "), ground = " << ground
-	      << ", state = " << state << "\n";
-    */
     last_solid_ground_coords = get_coordinates();
   }
 }

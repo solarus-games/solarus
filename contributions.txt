@@ -23,12 +23,17 @@ Mymy (edelweiss, maps)
 Neovyze (artworks : Link, amulette ; fonds d'écran, notice)
 Newlink (plein de graphismes faits pour ZMC)
 
+Traduction :
+
+Stella : Allemand
+
 Algo Scale2X
 
 Testeurs :
 
 Thyb
 Yoshi04
+Stella : soldenb@web.de
 
 Pas encore sûrs :
 

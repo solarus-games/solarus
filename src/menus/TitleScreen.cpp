@@ -65,7 +65,7 @@ TitleScreen::~TitleScreen(void) {
 void TitleScreen::update(void) {
 
   // TODO remove
-  set_next_screen(new Game(new Savegame("save1.zsd")));
+  //  set_next_screen(new Game(new Savegame("save1.zsd")));
 
   Uint32 now = SDL_GetTicks();
 
@@ -140,7 +140,8 @@ void TitleScreen::handle_event(const SDL_Event &event) {
   if (current_phase == PHASE_TITLE
       && event.type == SDL_KEYDOWN
       && (event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_RETURN)
-      && counter >= 1) {
+      && counter >= 1
+      && !transition_out->is_started()) {
 
     transition_out->start();
   }

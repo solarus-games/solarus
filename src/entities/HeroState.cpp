@@ -1159,16 +1159,13 @@ void Hero::stop_swimming(void) {
  */
 void Hero::start_falling(void) {
 
-  // if the hero is being hurt, stop the movement to make him fall
-  if (state == HURT) {
-    // TODO delete movement later
-  }
-
   // remove the carried item
-  else if (state == CARRYING) {
+  if (state == CARRYING) {
     start_throwing();
   }
 
+  save_animation_direction();
+  set_animation_direction_from_movement();
   set_state(FALLING);
   set_animation_falling();
   ResourceManager::get_sound("hero_falls")->play();

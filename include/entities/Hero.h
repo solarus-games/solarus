@@ -223,6 +223,7 @@ class Hero: public MapEntity {
 
   // animation of the sprites
   void set_animation_direction(int direction);
+  void set_animation_direction_from_movement(void);
   bool is_direction_locked(void);
   void stop_displaying_sword(void);
   void blink(void);

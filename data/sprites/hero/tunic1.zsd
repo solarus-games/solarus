@@ -112,5 +112,8 @@ plunging hero/plunging.png 4 50 -1
 0	144	56	24	28	21	6	6
 0	168	56	24	28	21	6	6
 
-falling hero/falling.png 1 125 -1
+falling hero/falling.png 4 125 -1
+0	24	24	24	12	12	6	6
+0	24	24	24	12	12	6	6
+0	24	24	24	12	12	6	6
 0	24	24	24	12	12	6	6

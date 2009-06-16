@@ -115,6 +115,8 @@ void Hero::key_released(Controls::GameKey key) {
  */
 void Hero::action_key_pressed(void) {
 
+  set_animation_direction_from_movement();
+
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
   switch (keys_effect->get_action_key_effect()) {

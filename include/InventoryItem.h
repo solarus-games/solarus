@@ -34,16 +34,25 @@ class InventoryItem {
 
   InventoryItemId item_id; /**< id of this item */
 
+  int variant;             /**< the possession state of this item when it is used */
+  Game *game;              /**< the game this item is used in */
+
+  bool is_bottle(void);
+  void start_bottle(void);
+
  public:
 
+  // creation and destruction
   InventoryItem(InventoryItemId item_id);
   ~InventoryItem(void);
 
+  // static features
   static bool can_be_assigned(InventoryItemId item_id);
   static bool has_counter(InventoryItemId item_id);
   static int get_counter_index(InventoryItemId item_id);
 
-  void start(void);
+  // state
+  void start(Game *game);
   void update(void);
   bool is_finished(void);
 };

@@ -154,6 +154,7 @@ class Hero: public MapEntity {
   // items
   InventoryItem *current_inventory_item; /**< the inventory item the player is currently using,
 					  * or NULL if he is not using an item */
+  Uint32 when_can_use_inventory_item;    /**< date when the player can use an inventory item next time */
 
   // update functions
   void update_position(void);

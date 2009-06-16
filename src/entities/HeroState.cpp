@@ -1241,7 +1241,9 @@ void Hero::update_returning_to_solid_ground(void) {
  * @param item_id id of the item to check
  */
 bool Hero::can_start_inventory_item(InventoryItemId item_id) {
-  return state == FREE && InventoryItem::can_be_assigned(item_id);
+  return state == FREE && InventoryItem::can_be_assigned(item_id)
+    && equipment->has_inventory_item(item_id)
+    && SDL_GetTicks() >= when_can_use_inventory_item;
 }
 
 /**
@@ -1251,8 +1253,9 @@ bool Hero::can_start_inventory_item(InventoryItemId item_id) {
 void Hero::start_inventory_item(InventoryItemId item_id) {
 
   this->current_inventory_item = new InventoryItem(item_id);
+  this->when_can_use_inventory_item = SDL_GetTicks() + 500;
   set_state(USING_INVENTORY_ITEM);
-  current_inventory_item->start();
+  current_inventory_item->start(zsdx->game);
 }
 
 /**

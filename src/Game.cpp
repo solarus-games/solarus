@@ -434,9 +434,19 @@ void Game::update_dialog_box(void) {
  * This function is called repeatedly while a treasure is being given.
  */
 void Game::update_treasure(void) {
+
   if (treasure != NULL && !is_showing_message()) {
+
+    // the game has finished giving the treasure to the player
+    // and displaying the corresponding message
+
+    Treasure::Content content = treasure->get_content();
+    int savegame_variable = treasure->get_savegame_variable();
+
     delete treasure;
     treasure = NULL;
+
+    get_current_script()->event_obtained_treasure(content, savegame_variable);
   }
 }
 

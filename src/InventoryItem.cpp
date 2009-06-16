@@ -15,7 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "InventoryItem.h"
+#include "Game.h"
 #include "Savegame.h"
+#include "Equipment.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 
 /**
  * Creates a new inventory item.
@@ -97,9 +101,20 @@ int InventoryItem::get_counter_index(InventoryItemId item_id) {
 
 /**
  * Starts using this item.
+ * @param game the game
  */
-void InventoryItem::start(void) {
-  
+void InventoryItem::start(Game *game) {
+
+  this->game = game;
+  this->variant = game->get_equipment()->has_inventory_item(item_id);
+
+  if (variant == 0) {
+    DIE("Trying to use inventory item #" << item_id << " without having it");
+  }
+
+  if (is_bottle()) {
+    start_bottle();
+  }
 }
 
 /**
@@ -115,4 +130,56 @@ void InventoryItem::update(void) {
  */
 bool InventoryItem::is_finished(void) {
   return true;
+}
+
+/**
+ * Returns whether this item is a bottle.
+ * @return true if this item is a bottle
+ */
+bool InventoryItem::is_bottle(void) {
+
+  return item_id == INVENTORY_BOTTLE_1
+    || item_id == INVENTORY_BOTTLE_2
+    || item_id == INVENTORY_BOTTLE_3
+    || item_id == INVENTORY_BOTTLE_4;
+}
+
+/**
+ * Starts using this item when it is a bottle.
+ */
+void InventoryItem::start_bottle(void) {
+
+  switch (variant) {
+
+    // empty
+  case 1:
+    ResourceManager::get_sound("wrong")->play();
+    break;
+
+    // water
+  case 2:
+
+    break;
+
+    // red potion
+  case 3:
+    // TODO
+    break;
+
+    // green potion
+  case 4:
+    // TODO
+    break;
+
+    // red potion
+  case 5:
+    // TODO
+    break;
+
+    // fairy
+  case 6:
+    // TODO
+    break;
+
+  }
 }

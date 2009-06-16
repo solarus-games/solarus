@@ -148,38 +148,38 @@ void DialogBox::set_icon_number(int icon_number) {
 
 /**
  * Specifies the value of a variable that will occur
- * in the specified message (with the '$v' sequence).
- * You can specify several variables, but only one per message.
- * If a variable was already specified for this message, it is replaced.
- * @param message_id id of the message where this value will appear
+ * in the specified sequence of messages (with the '$v' sequence).
+ * You can specify only one variable at the same time per message sequence.
+ * If a variable was already specified for this sequence of messages, it is replaced.
+ * @param first_message_id id of the first message of the sequence where this value will appear
  * @param value the value to add
  */
-void DialogBox::set_variable(const MessageId &message_id, const std::string &value) {
-  variables[message_id] = value;
+void DialogBox::set_variable(const MessageId &first_message_id, const std::string &value) {
+  variables[first_message_id] = value;
 }
 
 /**
  * Same thing as set_variable(MessageId, string) but with an integer parameter.
  * This function just converts the integer value to a string
  * add calls the other function.
- * @param message_id id of the message where this value will appear
+ * @param first_message_id id of the first message of the sequence where this value will appear
  * @param value the value to set
  */
-void DialogBox::set_variable(const MessageId &message_id, int value) {
+void DialogBox::set_variable(const MessageId &first_message_id, int value) {
   std::ostringstream oss;
   oss << value;
-  set_variable(message_id, oss.str());
+  set_variable(first_message_id, oss.str());
 }
 
 /**
  * Returns the variable specified by a previous
- * call to add_variable(), for the current message.
+ * call to set_variable(), for the current sequence of messages.
  * This function is called by
- * the message when it reads the '$v' sequence.
+ * the current message when it reads the '$v' sequence.
  */
 const std::string& DialogBox::get_variable(void) {
 
-  const std::string &value = variables[current_message_id];
+  const std::string &value = variables[first_message_id];
 
   if (value == "") {
     DIE("Missing variable in message '" << current_message_id << "'");

@@ -84,6 +84,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "savegame_set_string", l_savegame_set_string);
   lua_register(context, "savegame_set_integer", l_savegame_set_integer);
   lua_register(context, "savegame_set_boolean", l_savegame_set_boolean);
+  lua_register(context, "get_player_name", l_get_player_name);
   lua_register(context, "start_timer", l_start_timer);
   lua_register(context, "stop_timer", l_stop_timer);
   lua_register(context, "move_camera", l_move_camera);
@@ -107,10 +108,12 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "interactive_entity_get_animation", l_interactive_entity_get_animation);
   lua_register(context, "interactive_entity_get_animation_delay", l_interactive_entity_get_animation_delay);
   lua_register(context, "interactive_entity_get_animation_frame", l_interactive_entity_get_animation_frame);
+  lua_register(context, "interactive_entity_get_direction", l_interactive_entity_get_direction);
   lua_register(context, "interactive_entity_is_animation_paused", l_interactive_entity_is_animation_paused);
   lua_register(context, "interactive_entity_set_animation", l_interactive_entity_set_animation);
   lua_register(context, "interactive_entity_set_animation_delay", l_interactive_entity_set_animation_delay);
   lua_register(context, "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame);
+  lua_register(context, "interactive_entity_set_direction", l_interactive_entity_set_direction);
   lua_register(context, "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused);
   lua_register(context, "equipment_get_tunic", l_equipment_get_tunic);
   lua_register(context, "equipment_get_sword", l_equipment_get_sword);
@@ -604,6 +607,20 @@ int MapScript::l_savegame_set_boolean(lua_State *l) {
 }
 
 /**
+ * Returns a string representing the name of the player.
+ * Return value (string): the player's name
+ */
+int MapScript::l_get_player_name(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+
+  const string &name = zsdx->game->get_savegame()->get_string(Savegame::PLAYER_NAME);
+  lua_pushstring(l, name.c_str());
+
+  return 1;
+}
+
+/**
  * Starts a timer to run a Lua function after a delay.
  * Argument 1 (integer): the timer duration in milliseconds
  * Argument 2 (string): name of the Lua function to call when the timer is finished
@@ -1002,6 +1019,26 @@ int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
 }
 
 /**
+ * Returns the current direction of an interactive entity's sprite.
+ * Argument 1 (string): name of the interactive entity
+ * Return value (integer): the direction between 0 and 3
+ */
+int MapScript::l_interactive_entity_get_direction(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
+  int frame = entity->get_sprite()->get_current_direction();
+
+  lua_pushinteger(l, frame);
+
+  return 1;
+}
+
+/**
  * Returns whether the animation of an interactive entity's sprite is paused.
  * Argument 1 (string): name of the interactive entity
  * Return value (boolean): true if the animation is paused
@@ -1076,6 +1113,16 @@ int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
   entity->get_sprite()->set_current_frame(frame);
 
   return 0;
+}
+
+/**
+ * Sets the direction of an interactive entity's sprite.
+ * Argument 1 (string): name of the interactive entity
+ * Argument 2 (integer): the sprite's direction between 0 and 3
+ */
+int MapScript::l_interactive_entity_set_direction(lua_State *l) {
+
+  return l_npc_set_direction(l);
 }
 
 /**
@@ -1262,15 +1309,27 @@ bool MapScript::event_open_empty_chest(const string &chest_name) {
 }
 
 /**
- * Notifies the script that the player has just obtained a treasure.
+ * Notifies the script that the player is obtaining a treasure.
  * The treasure source does not matter: it can come from a chest, 
  * a pickable item or the script.
  * @param content the content obtained
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)
  */
-void MapScript::event_got_treasure(Treasure::Content content, int savegame_variable) {
-  call_lua_function("event_got_treasure", content, savegame_variable);
+void MapScript::event_obtaining_treasure(Treasure::Content content, int savegame_variable) {
+  call_lua_function("event_obtaining_treasure", content, savegame_variable);
+}
+
+/**
+ * Notifies the script that the player has just finished obtaining a treasure.
+ * The treasure source does not matter: it can come from a chest, 
+ * a pickable item or the script.
+ * @param content the content obtained
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
+ */
+void MapScript::event_obtained_treasure(Treasure::Content content, int savegame_variable) {
+  call_lua_function("event_obtained_treasure", content, savegame_variable);
 }
 
 /**

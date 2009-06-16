@@ -58,6 +58,7 @@ class MapScript {
     l_savegame_set_string,
     l_savegame_set_integer,
     l_savegame_set_boolean,
+    l_get_player_name,
     l_start_timer,
     l_stop_timer,
     l_move_camera,
@@ -81,10 +82,12 @@ class MapScript {
     l_interactive_entity_get_animation,
     l_interactive_entity_get_animation_delay,
     l_interactive_entity_get_animation_frame,
+    l_interactive_entity_get_direction,
     l_interactive_entity_is_animation_paused,
     l_interactive_entity_set_animation,
     l_interactive_entity_set_animation_delay,
     l_interactive_entity_set_animation_frame,
+    l_interactive_entity_set_direction,
     l_interactive_entity_set_animation_paused,
     l_equipment_get_tunic,
     l_equipment_get_sword,
@@ -119,7 +122,8 @@ class MapScript {
   void event_npc_dialog(const std::string &npc_name);
   void event_npc_movement_finished(const std::string &npc_name);
   bool event_open_empty_chest(const std::string &chest_name);
-  void event_got_treasure(Treasure::Content content, int savegame_variable);
+  void event_obtaining_treasure(Treasure::Content content, int savegame_variable);
+  void event_obtained_treasure(Treasure::Content content, int savegame_variable);
   void event_shop_item_bought(const std::string &shop_item_name);
 };
 

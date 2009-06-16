@@ -65,7 +65,8 @@ Hero::Hero(Equipment *equipment):
   end_blink_date(0), counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF), grabbed_entity(NULL), walking(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
-  ground(GROUND_NORMAL), next_ground_sound_date(0), current_inventory_item(NULL) {
+  ground(GROUND_NORMAL), next_ground_sound_date(0),
+  current_inventory_item(NULL), when_can_use_inventory_item(0) {
 
   set_size(16, 16);
   set_origin(8, 13);

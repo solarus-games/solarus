@@ -28,3 +28,6 @@ booleans:
 30	the smith gave the sword to the player
 31	bomb bag in the shop
 32	the player obtained the bottle from the cake shop seller
+33	the player obtained the world map from Sahasrahla
+34	Sahasrahla's cave: the player has seen the frozen door
+35	Sahasrahla's cave: the player has open the frozen door

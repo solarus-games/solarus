@@ -189,7 +189,7 @@ function event_message_sequence_finished(first_message_id, answer)
 
 	    remove_rupees(10)
 	    start_message("rupee_house.game_3.go")
-	    start_timer(6000, "game_3_timer", true);
+	    start_timer(7000, "game_3_timer", true);
 	    playing_game_3 = true
 	 end
       end
@@ -236,12 +236,13 @@ function game_3_timer()
    enable_tile("game_3_middle_barrier")
 end
 
--- Function called when the player obtains a treasure
-function event_got_treasure(content, savegame_variable)
+-- Function called when the player is obtaining a treasure
+function event_obtained_treasure(content, savegame_variable)
 
    -- stop game 3 when the player founds the piece of heart
    if savegame_variable == 17 then
       disable_tile("game_3_final_barrier")
+      play_sound("secret")
       playing_game_3 = false
    end
 end

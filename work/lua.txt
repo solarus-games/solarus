@@ -13,8 +13,9 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 							prédéfini (autre qu'un PNJ)
 - event_npc_dialog(npc_name)				appelé lorsque le joueur parle à un PNJ sans message prédéfini
 - event_npc_movement_finished(npc_name)			appelé lorsqu'un PNJ a terminé son mouvement de marche ou de saut
-- event_open_empty_chest(chest_name)			appelé lorsque le joueur ouvre un coffre vide (son comportement sera alors défini par le script, le héros étant bloqué jusqu'à ce que le script appelle unfreeze()) 
-- event_got_treasure(content, savegame_variable)	appelé lorsque le joueur obtient un trésor, qu'il vienne d'un coffre ou non
+- event_open_empty_chest(chest_name)			appelé lorsque le joueur ouvre un coffre vide (son comportement sera alors défini par le script, le héros étant bloqué jusqu'à ce que le script appelle unfreeze())
+- event_obtaining_treasure(content, savegame_variable)	appelé lorsque le joueur obtient un trésor, qu'il vienne d'un coffre ou non
+- event_obtained_treasure(content, savegame_variable)	appelé lorsque le joueur a fini d'obtenir un trésor
 - event_shop_item_bought(shop_item_name)                appelé lorsque le joueur achète un article dans un magasin
 
 
@@ -23,7 +24,7 @@ Appel de fonctions C++ depuis un script LUA :
 - freeze()						empêche le joueur de bouger jusqu'à un appel à unfreeze()
 - unfreeze()						restaure le contrôle au joueur
 - start_message(message_id)				affiche un message
-- set_message_variable(message_id, value)		spécifie la valeur de la variable dans un message
+- set_message_variable(first_message_id, value)		spécifie la valeur d'une variable dans une séquence de messages
 - play_sound(sound_id)					joue un son
 - give_treasure(treasure_id, savegame_variable)		donne un trésor au joueur (sans coffre)
 - give_treasure_with_amount(treasure_id, amount, savegame_variable)		donne un trésor au joueur (sans coffre)
@@ -33,6 +34,7 @@ Appel de fonctions C++ depuis un script LUA :
 - savegame_set_string(index)
 - savegame_set_integer(index)
 - savegame_set_boolean(index)
+- get_player_name()					retourne le nom du joueur (10 caractères maximum)
 - start_timer(duration, callback, with_sound)		démarre un timer qui appellera une fonction du script une fois terminé
 - stop_timer(callback)					arrête un timer en cours d'exécution
 - move_camera(x, y, speed)				suspend le jeu et déplace la caméra vers un point cible
@@ -56,10 +58,12 @@ Appel de fonctions C++ depuis un script LUA :
 - interactive_entity_get_animation(entity)			     retourne l'animation d'une entité interactive
 - interactive_entity_get_animation_delay(entity)		     retourne la vitesse de l'animation d'une entité interactive
 - interactive_entity_get_animation_frame(entity)		     retourne l'image de l'animation d'une entité interactive
+- interactive_entity_get_direction(entity)			     retourne la direction du sprite d'une entité interactive
 - interactive_entity_is_animation_paused(entity)		     indique si l'animation d'une entité interactive est en pause
 - interactive_entity_set_animation(entity, animation_name)	     change l'animation d'une entité interactive
 - interactive_entity_set_animation_delay(entity, delay)		     change la vitesse de l'animation d'une entité interactive
 - interactive_entity_set_animation_frame(entity, frame)		     change l'image de l'animation d'une entité interactive
+- interactive_entity_set_animation_direction(entity, direction)	     change la direction du sprite d'une entité interactive
 - interactive_entity_set_animation_paused(entity, paused)	     met en pause ou restore l'animation d'une entité interactive
 - equipment_get_tunic()				  	retourne la tunique du joueur (0 à 2)
 - equipment_get_sword()					retourne l'épée du joueur (0 à 4)

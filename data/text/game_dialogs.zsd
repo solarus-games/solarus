@@ -802,3 +802,155 @@ next = cake_shop.thank_you.2
 line1 = "remercier ? Je n'ai que"
 line2 = "cette bouteille vide à"
 line3 = "te donner..."
+
+[sahasrahla_house.beginning]
+#       |-----------------------|
+line1 = "Oh, $v... Tu as"
+line2 = "entendu mon appel."
+line3 = "J'ai des choses"
+next = sahasrahla_house.beginning.2
+cancel = current
+
+[sahasrahla_house.beginning.2]
+#       |-----------------------|
+line1 = "importantes à te"
+line2 = "révéler. La situation"
+line3 = "est grave."
+next = sahasrahla_house.beginning.3
+
+[sahasrahla_house.beginning.3]
+#       |-----------------------|
+line1 = "Quatre des neuf enfants"
+line2 = "du Solarus ont été"
+line3 = "enlevés..."
+next = sahasrahla_house.beginning.4
+
+[sahasrahla_house.beginning.4]
+#       |-----------------------|
+line1 = "Je crains que la"
+line2 = "Triforce soit en grand"
+line3 = "danger."
+next = sahasrahla_house.beginning.5
+
+[sahasrahla_house.beginning.5]
+#       |-----------------------|
+line1 = "Qui a pu faire cela ?"
+line2 = "Probablement Ganondorf"
+line3 = "et ses sbires..."
+next = sahasrahla_house.beginning.6
+
+[sahasrahla_house.beginning.6]
+#       |-----------------------|
+line1 = "Le Sceau des Sept Sages"
+line2 = "a été fragilisé à la"
+line3 = "suite de la mort de"
+next = sahasrahla_house.beginning.7
+
+[sahasrahla_house.beginning.7]
+#       |-----------------------|
+line1 = "notre pauvre Roi, et il"
+line2 = "est possible que Ganon"
+line3 = "soit parvenu à fuir de"
+next = sahasrahla_house.beginning.8
+
+[sahasrahla_house.beginning.8]
+#       |-----------------------|
+line1 = "son Monde des Ténèbres."
+line2 = "Il ne faut pas le"
+line3 = "laisser s'emparer de"
+next = sahasrahla_house.beginning.9
+
+[sahasrahla_house.beginning.9]
+#       |-----------------------|
+line1 = "la Triforce !"
+line2 = "Je sens le courage en"
+line3 = "toi, $v."
+next = sahasrahla_house.beginning.10
+
+[sahasrahla_house.beginning.10]
+#       |-----------------------|
+line1 = "Te sens-tu capable de"
+line2 = "partir à la recherche"
+line3 = "des 4 enfants et de"
+next = sahasrahla_house.beginning.11
+
+[sahasrahla_house.beginning.11]
+#       |-----------------------|
+line1 = "protéger la Triforce ?"
+line2 = "C'est d'accord"
+line3 = "Pas question"
+question = true
+cancel = none
+next = sahasrahla_house.beginning.thanks
+next2 = sahasrahla_house.beginning.insisting
+
+[sahasrahla_house.beginning.insisting]
+#       |-----------------------|
+line1 = "$v, je t'en"
+line2 = "conjure, tu es le seul"
+line3 = "à pouvoir protéger"
+next = sahasrahla_house.beginning.insisting.2
+
+[sahasrahla_house.beginning.insisting.2]
+#       |-----------------------|
+line1 = "notre royaume..."
+line2 = "C'est d'accord"
+line3 = "Pas question"
+question = true
+next = sahasrahla_house.beginning.thanks
+next2 = sahasrahla_house.beginning.insisting
+
+[sahasrahla_house.beginning.thanks]
+#       |-----------------------|
+line1 = "Je savais que je"
+line2 = "pouvais compter sur ton"
+line3 = "courage."
+next = sahasrahla_house.beginning.thanks.2
+
+[sahasrahla_house.beginning.thanks.2]
+#       |-----------------------|
+line1 = "Voici un objet qui te"
+line2 = "sera fort utile lors de"
+line3 = "ton périple..."
+
+[sahasrahla_house.quest_accepted]
+#       |-----------------------|
+line1 = "Tu devrais aller jeter"
+line2 = "un coup d'oeil à la"
+line3 = "cave, j'y garde"
+cancel = all
+next = sahasrahla_house.quest_accepted.2
+
+[sahasrahla_house.quest_accepted.2]
+#       |-----------------------|
+line1 = "quelques objets qui"
+line2 = "pourraient te servir."
+line3 = "Mais je ne te promets"
+next = sahasrahla_house.quest_accepted.3
+
+[sahasrahla_house.quest_accepted.3]
+#       |-----------------------|
+line1 = "rien car cela fait"
+line2 = "longtemps que je ne"
+line3 = "l'ai pas entretenue..."
+
+[sahasrahla_house.frozen_door_advice]
+#       |-----------------------|
+line1 = "La porte est gelée ?"
+line2 = "Essaie de faire fondre"
+line3 = "la glace avec de l'eau."
+cancel = all
+
+[sahasrahla_house.door_unfreezed]
+#       |-----------------------|
+line1 = "J'ai foi en toi."
+line2 = "Le courage et la"
+line3 = "sagesse te guideront."
+cancel = all
+
+[sahasrahla_house.frozen_door]
+#       |-----------------------|
+line1 = "Cette porte est gelée."
+line2 = "Il faudrait un moyen de"
+line3 = "faire fondre la glace !"
+cancel = all

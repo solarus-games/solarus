@@ -107,8 +107,8 @@ class DialogBox {
   int get_icon_number(void);
   void set_icon_number(int icon_number);
 
-  void set_variable(const MessageId &messageId, const std::string &value);
-  void set_variable(const MessageId &messageId, int value);
+  void set_variable(const MessageId &first_message_id, const std::string &value);
+  void set_variable(const MessageId &first_message_id, int value);
   const std::string& get_variable(void);
   
   // current message

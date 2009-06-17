@@ -31,3 +31,4 @@ booleans:
 33	the player obtained the world map from Sahasrahla
 34	Sahasrahla's cave: the player has seen the frozen door
 35	Sahasrahla's cave: the player has open the frozen door
+36	outside world C2: the village cave door is open with the clay key

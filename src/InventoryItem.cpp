@@ -136,6 +136,10 @@ void InventoryItem::start(Game *game) {
   if (is_bottle()) {
     start_bottle();
   }
+  else {
+    // TODO
+    finished = true;
+  }
 }
 
 /**

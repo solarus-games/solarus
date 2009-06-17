@@ -117,6 +117,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame);
   lua_register(context, "interactive_entity_set_direction", l_interactive_entity_set_direction);
   lua_register(context, "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused);
+  lua_register(context, "interactive_entity_remove", l_interactive_entity_remove);
   lua_register(context, "equipment_get_tunic", l_equipment_get_tunic);
   lua_register(context, "equipment_get_sword", l_equipment_get_sword);
   lua_register(context, "equipment_get_shield", l_equipment_get_shield);
@@ -1185,6 +1186,14 @@ int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
   entity->get_sprite()->set_paused(paused);
 
   return 0;
+}
+
+/**
+ * Removes an interactive entity from the map.
+ * Argument 1 (string): name of the interactive entity
+ */
+int MapScript::l_interactive_entity_remove(lua_State *l) {
+  return l_npc_remove(l);
 }
 
 /**

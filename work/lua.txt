@@ -71,6 +71,7 @@ Appel de fonctions C++ depuis un script LUA :
 - interactive_entity_set_animation_frame(entity, frame)		     change l'image de l'animation d'une entité interactive
 - interactive_entity_set_animation_direction(entity, direction)	     change la direction du sprite d'une entité interactive
 - interactive_entity_set_animation_paused(entity, paused)	     met en pause ou restore l'animation d'une entité interactive
+- interactive_entity_remove(entity)				     supprime une entité interactive
 - equipment_get_tunic()				  	retourne la tunique du joueur (0 à 2)
 - equipment_get_sword()					retourne l'épée du joueur (0 à 4)
 - equipment_get_shield()				retourne le bouclier du joueur (0 à 3)

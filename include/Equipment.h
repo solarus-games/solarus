@@ -40,6 +40,7 @@ class Equipment {
   // giving some bottle content to the player
   bool giving_fairy;
   bool giving_water;
+  InventoryItemId destination_bottle_id;
 
  public:
 
@@ -140,11 +141,13 @@ class Equipment {
   InventoryItemId get_first_empty_bottle(void);
   bool has_bottle_with(Treasure::Content content);
   InventoryItemId get_first_bottle_with(Treasure::Content content);
+  InventoryItemId get_destination_bottle(void);
   void set_bottle_content(InventoryItemId bottle_id, Treasure::Content content);
   void set_bottle_empty(InventoryItemId bottle_id);
 
   void found_fairy(void);
   void found_water(void);
+  void found_water(InventoryItemId bottle_id);
 
   // item assignments
   InventoryItemId get_item_assigned(int slot);

@@ -18,6 +18,7 @@
 0	17	Binbin dungeon 1F
 0	18	Shop
 0	19	Cake shop
+0	20	Lyriann Cave 1F
 1	0	House
 1	1	Light World
 1	2	Ice dungeon
@@ -57,7 +58,7 @@
 3	npc/newlink7	Newlink NPC 7
 3	npc/newlink8	Newlink NPC 8
 3	npc/villager1	ALTTP villager 1
-3	npc/villager2	ALTTP villager 2
+3	npc/villager2	ALTTP villager 2 
 3	npc/villager3	ALTTP villager 3
 3	npc/static_villager1	ALTTP static villager 1
 3	npc/static_villager2	ALTTP static villager 2
@@ -75,6 +76,7 @@
 3	npc/static_villager14	ALTTP static villager 14
 3	entities/slot_machine	Casino slot machine
 3	entities/frozen_door	Frozen door
+3	entities/outside_door	Outside closed door
 4	agahnim_blue_ball	agahnim_blue_ball
 4	agahnim_orange_ball	agahnim_orange_ball
 4	bomb	bomb

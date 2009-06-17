@@ -325,6 +325,10 @@ line1 = "reconnaissante ! Tiens,"
 line2 = "tu as bien mérité"
 line3 = "ce petit cadeau."
 
+[outside_world.village.clay_key_required]
+#       |-----------------------|
+line1 = "C'est fermé à clé !"
+
 [outside_world.warning_holes_sign]
 #       |-----------------------|
 line1 = "Attention aux trous !"
@@ -664,6 +668,26 @@ next = grandma_house.sword.5
 line1 = "il pourra sûrement"
 line2 = "t'aider."
 
+[grandma_house.find_sahasrahla]
+#       |-----------------------|
+line1 = "Avec cette épée, tu"
+line2 = "peux franchir les"
+line3 = "buissons qui protègent"
+next = grandma_house.find_sahasrahla.2
+cancel = all
+
+[grandma_house.find_sahasrahla.2]
+#       |-----------------------|
+line1 = "le village. Tu cherches"
+line2 = "Sahasrahla, l'Ancien ?"
+line3 = "Sa maison est au"
+next = grandma_house.find_sahasrahla.3
+
+[grandma_house.find_sahasrahla.3]
+#       |-----------------------|
+line1 = "sud-ouest, près de la"
+line2 = "pâtisserie."
+
 [smith_cave.without_sword]
 #       |-----------------------|
 line1 = "J'ai forgé moi-même"
@@ -714,7 +738,7 @@ line3 = "moyens..."
 #       |-----------------------|
 line1 = "Merci beaucoup."
 line2 = "Pour utiliser ton épée,"
-line3 = "appuie sur sur C."
+line3 = "appuie sur C."
 
 [lyriann_shop.salesman]
 #       |-----------------------|

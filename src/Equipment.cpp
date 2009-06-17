@@ -435,14 +435,13 @@ void Equipment::found_fairy(void) {
 /**
  * Gives some water to the player: shows the dialog box and give the water
  * to the player if he wants and if this is possible.
+ * The water will fill the first empty bottle.
  */
 void Equipment::found_water(void) {
 
   if (has_bottle()) {
     if (has_empty_bottle()) {
-      zsdx->game->show_message("_found_water");
-      giving_water = true;
-      // the next messages will be handled by the update() function
+      found_water(get_first_empty_bottle());
     }
     else {
       zsdx->game->show_message("_found_water.no_empty_bottle");
@@ -450,7 +449,29 @@ void Equipment::found_water(void) {
   }
   else {
     zsdx->game->show_message("_found_water.no_bottle");
+  }  
+}
+
+/**
+ * Gives some water to the player: shows the dialog box and give the water
+ * to the player if he wants and if this is possible.
+ * @param bottle_id id of the bottle to fill if the player wants to,
+ * or -1 to pick the first bottle available
+ */
+void Equipment::found_water(InventoryItemId bottle_id) {
+
+  if (!InventoryItem::is_bottle(bottle_id)) {
+    DIE("The inventory item #" << bottle_id << " is not a bottle");
   }
+  else if (!has_inventory_item(bottle_id)) {
+    DIE("Cannot fill the specified bottle (#" << bottle_id << ") because the player does not have it");
+  }
+
+  this->destination_bottle_id = bottle_id;
+
+  zsdx->game->show_message("_found_water");
+  giving_water = true;
+  // the next messages will be handled by the update() function
 }
 
 // magic
@@ -848,6 +869,14 @@ bool Equipment::has_empty_bottle(void) {
  */
 InventoryItemId Equipment::get_first_empty_bottle(void) {
   return get_first_bottle_with(Treasure::NONE);
+}
+
+/**
+ * Returns the id of a bottle previously selected.
+ * @return the id of a bottle previously selected
+ */
+InventoryItemId Equipment::get_destination_bottle(void) {
+  return destination_bottle_id;
 }
 
 /**

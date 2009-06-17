@@ -304,7 +304,7 @@ void Treasure::add_item_to_equipment(void) {
     break;
 
   case WATER:
-    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 2);
+    equipment->give_inventory_item(equipment->get_destination_bottle(), 2);
     break;
 
   case RED_POTION:

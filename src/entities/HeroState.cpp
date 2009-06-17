@@ -1267,6 +1267,10 @@ void Hero::update_inventory_item(void) {
   if (current_inventory_item->is_finished()) {
     delete current_inventory_item;
     current_inventory_item = NULL;
-    start_free();
+
+    if (get_state() == USING_INVENTORY_ITEM) {
+      // if the state was not modified by the item, return to the normal state
+      start_free();
+    }
   }
 }

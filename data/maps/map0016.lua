@@ -33,12 +33,15 @@ function event_message_sequence_finished(first_message_id, answer)
 	 else
 	    -- enough money: buy the sword
 	    remove_rupees(80)
-	    start_message("smith_cave.thank_you")
+	    give_treasure(66, 30)
 	 end
       end
+   end
+end
 
-   elseif first_message_id == "smith_cave.thank_you" then
-      -- the player has just bought the sword
-      give_treasure(66, 30)
+-- Function called when the player has bought the sword.
+function event_obtained_treasure(content, savegame_variable)
+   if (content == 66) then
+      start_message("smith_cave.thank_you")
    end
 end

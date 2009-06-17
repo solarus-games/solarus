@@ -25,6 +25,7 @@
 #include "MapScript.h"
 #include "Sprite.h"
 #include "Equipment.h"
+#include "InventoryItem.h"
 
 /**
  * Action icon depending on the type of interaction.
@@ -241,6 +242,36 @@ void InteractiveEntity::action_key_pressed(void) {
       }
     }
   }
+}
+
+/**
+ * This function is called when the player uses an inventory item
+ * while the hero is facing this interactive entity.
+ * The exact conditions where this function is called depend on the type of inventory item.
+ * For some items, the function is called as soon as the player uses the item.
+ * For others, it is called after the player confirms the action in a dialog box.
+ * @param item the inventory item used
+ * @return true if an interaction occured
+ */
+bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
+
+  bool interaction = false;
+
+  // if the player uses an empty bottle on a place with water, we let him fill the bottle
+  if (subtype == WATER_FOR_BOTTLE
+      && item->is_bottle()
+      && item->get_variant() == 1) {
+
+    zsdx->game->get_equipment()->found_water();
+    interaction = true;
+  }
+  else {
+    // in other cases, nothing is predefined in the engine: we call the script
+    interaction = zsdx->game->get_current_script()->
+      event_interaction_item(get_name(), item->get_id(), item->get_variant());
+  }
+
+  return interaction;
 }
 
 /**

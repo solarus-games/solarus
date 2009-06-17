@@ -1557,6 +1557,21 @@ line2 = "mais il te faut"
 line3 = "un Flacon vide"
 next = _found_water.no_bottle.2
 
+[_use_bottle_with_water]
+#       |--------------------|
+icon = 8
+line1 = "Ton Flacon Magique"
+line2 = "est rempli d'eau."
+next = _use_bottle_with_water.2
+
+[_use_bottle_with_water.2]
+#       |--------------------|
+icon = 8
+line1 = "Que veux-tu faire ?"
+line2 = "Vider l'eau"
+line3 = "La conserver"
+question = true
+
 [_too_heavy]
 #       |-----------------------|
 line1 = "Oh là là, c'est"

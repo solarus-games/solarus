@@ -74,6 +74,7 @@ class InteractiveEntity: public Detector {
 
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void action_key_pressed(void);
+  bool interaction_with_inventory_item(InventoryItem *item);
 
   void update(void);
   void display_on_map(void);

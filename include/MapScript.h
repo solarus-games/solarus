@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Treasure.h"
+#include "InventoryItemId.h"
 #include <list>
 
 struct lua_State;
@@ -40,6 +41,7 @@ class MapScript {
   bool call_lua_function(const std::string &function_name);
   bool call_lua_function(const std::string &function_name, const std::string &arg1);
   bool call_lua_function(const std::string &function_name, const std::string &arg1, int arg2);
+  bool call_lua_function(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
   bool call_lua_function(const std::string &function_name, int arg1);
   bool call_lua_function(const std::string &function_name, int arg1, int arg2);
   bool call_lua_function(const std::string &function_name, bool arg1);
@@ -71,9 +73,10 @@ class MapScript {
     l_set_chest_open,
     l_get_rupees,
     l_remove_rupees,
-    l_get_inventory_item,
-    l_get_inventory_item_amount,
-    l_remove_inventory_item_amount,
+    l_inventory_item_get,
+    l_inventory_item_get_amount,
+    l_inventory_item_remove_amount,
+    l_inventory_item_is_bottle,
     l_disable_tile,
     l_enable_tile,
     l_is_tile_enabled,
@@ -119,6 +122,7 @@ class MapScript {
   void event_hero_on_sensor(const std::string &sensor_name);
   void event_camera_reached_target(void);
   void event_interaction(const std::string &entity_name);
+  bool event_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant);
   void event_npc_dialog(const std::string &npc_name);
   void event_npc_movement_finished(const std::string &npc_name);
   bool event_open_empty_chest(const std::string &chest_name);

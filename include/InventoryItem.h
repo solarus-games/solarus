@@ -36,9 +36,10 @@ class InventoryItem {
 
   int variant;             /**< the possession state of this item when it is used */
   Game *game;              /**< the game this item is used in */
+  bool finished;           /**< true if we have finished using this item */
 
-  bool is_bottle(void);
   void start_bottle(void);
+  void update_bottle(void);
 
  public:
 
@@ -50,6 +51,12 @@ class InventoryItem {
   static bool can_be_assigned(InventoryItemId item_id);
   static bool has_counter(InventoryItemId item_id);
   static int get_counter_index(InventoryItemId item_id);
+  static bool is_bottle(InventoryItemId item_id);
+
+  // properties
+  InventoryItemId get_id(void);
+  int get_variant(void);
+  bool is_bottle(void);
 
   // state
   void start(Game *game);

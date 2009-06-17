@@ -27,6 +27,7 @@
 #include "Savegame.h"
 #include "Timer.h"
 #include "Sprite.h"
+#include "InventoryItem.h"
 #include "entities/EntityType.h"
 #include "entities/Detector.h"
 #include "entities/MapEntities.h"
@@ -97,9 +98,10 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "set_chest_open", l_set_chest_open);
   lua_register(context, "get_rupees", l_get_rupees);
   lua_register(context, "remove_rupees", l_remove_rupees);
-  lua_register(context, "get_inventory_item", l_get_inventory_item);
-  lua_register(context, "get_inventory_item_amount", l_get_inventory_item_amount);
-  lua_register(context, "remove_inventory_item_amount", l_remove_inventory_item_amount);
+  lua_register(context, "inventory_item_get", l_inventory_item_get);
+  lua_register(context, "inventory_item_get_amount", l_inventory_item_get_amount);
+  lua_register(context, "inventory_item_remove_amount", l_inventory_item_remove_amount);
+  lua_register(context, "inventory_item_is_bottle", l_inventory_item_is_bottle);
   lua_register(context, "disable_tile", l_disable_tile);
   lua_register(context, "enable_tile", l_enable_tile);
   lua_register(context, "is_tile_enabled", l_is_tile_enabled);
@@ -214,7 +216,7 @@ bool MapScript::call_lua_function(const string &function_name, const string &arg
  * Calls a function in the script.
  * @param function_name name of the function to call
  * @param arg1 first argument of the function
- * @param arg1 second argument of the function
+ * @param arg2 second argument of the function
  * @return true if the function was called, false if it does not exist
  */
 bool MapScript::call_lua_function(const string &function_name,
@@ -227,6 +229,33 @@ bool MapScript::call_lua_function(const string &function_name,
     lua_pushstring(context, arg1.c_str());
     lua_pushinteger(context, arg2);
     lua_call(context, 2, 0);
+  }
+  else {
+    lua_pop(context, -1);
+  }
+
+  return exists;
+}
+
+/**
+ * Calls a function in the script.
+ * @param function_name name of the function to call
+ * @param arg1 first argument of the function
+ * @param arg2 second argument of the function
+ * @param arg3 third argument of the function
+ * @return true if the function was called, false if it does not exist
+ */
+bool MapScript::call_lua_function(const string &function_name,
+				  const string &arg1, int arg2, int arg3) {
+
+  lua_getglobal(context, function_name.c_str());
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
+    lua_pushstring(context, arg1.c_str());
+    lua_pushinteger(context, arg2);
+    lua_pushinteger(context, arg3);
+    lua_call(context, 3, 0);
   }
   else {
     lua_pop(context, -1);
@@ -836,7 +865,7 @@ int MapScript::l_remove_rupees(lua_State *l) {
  * Argument 1 (integer): an inventory item id
  * Return value (integer): the possession state of this inventory item
  */
-int MapScript::l_get_inventory_item(lua_State *l) {
+int MapScript::l_inventory_item_get(lua_State *l) {
 
   check_nb_arguments(l, 1);
   InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
@@ -850,7 +879,7 @@ int MapScript::l_get_inventory_item(lua_State *l) {
  * Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
  * Return value (integer): the amount possessed
  */
-int MapScript::l_get_inventory_item_amount(lua_State *l) {
+int MapScript::l_inventory_item_get_amount(lua_State *l) {
 
   check_nb_arguments(l, 1);
   InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
@@ -864,13 +893,27 @@ int MapScript::l_get_inventory_item_amount(lua_State *l) {
  * Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
  * Argument 2 (integer): the amount possessed
  */
-int MapScript::l_remove_inventory_item_amount(lua_State *l) {
+int MapScript::l_inventory_item_remove_amount(lua_State *l) {
 
   check_nb_arguments(l, 2);
   InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
   int amount = lua_tointeger(l, 2);
   zsdx->game->get_equipment()->remove_inventory_item_amount(item_id, amount);
   return 0;
+}
+
+/**
+ * Returns whether the specified inventory item is corresponds to a bottle.
+ * Argument 1 (integer): an inventory item id
+ * Return value (integer): true if it is a bottle
+ */
+int MapScript::l_inventory_item_is_bottle(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
+  bool bottle = InventoryItem::is_bottle(item_id);
+  lua_pushboolean(l, bottle ? 1 : 0);
+  return 1;
 }
 
 /**
@@ -1269,14 +1312,31 @@ void MapScript::event_camera_reached_target(void) {
   call_lua_function("event_camera_reached_target");
 }
 
-
 /**
  * Notifies the script that the player has just pressed the action
- * key in front an interactive entity.
+ * key in front of an interactive entity.
  * @param entity_name name of the interactive entity
  */
 void MapScript::event_interaction(const string &entity_name) {
   call_lua_function("event_interaction", entity_name);
+}
+
+/**
+ * Notifies the script that the player is using an inventory item
+ * in front of a interactive entity.
+ * This event is called only for inventory items that want to use it
+ * (e.g. a key that is being used in front of a door).
+ * @param entity_name name of the interactive entity the hero is facing
+ * @param item_id id of the inventory item that is being used
+ * @param variant variant of this inventory item
+ * @return true if the script has handled the event
+ */
+bool MapScript::event_interaction_item(const string &entity_name, InventoryItemId item_id, int variant) {
+
+  bool exists = call_lua_function("event_interaction_item", entity_name, item_id, variant);
+  bool interaction = lua_toboolean(context, 1);
+
+  return exists && interaction;
 }
 
 /**

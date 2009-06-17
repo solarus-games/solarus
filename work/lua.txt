@@ -9,8 +9,13 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 - event_switch_disabled(switch_name)			appelé lorsqu'un interrupteur vient d'être désactivé
 - event_hero_on_sensor(sensor_name)			appelé lorsque le héros marche sur un capteur
 - event_camera_reached_target()				appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
-- event_interaction(entity_name)			appelé lorsque le joueur interagit une entité interactive sans message
-							prédéfini (autre qu'un PNJ)
+- event_interaction(entity_name)			appelé lorsque le joueur interagit une entité interactive
+                                                        (autre qu'un PNJ) avec la touche Action lorsqu'il n'y a
+                                                        pas de message prédéfini
+- event_interaction_item(entity_name, item_id, variant)	appelé lorsque le joueur interagit une entité interactive
+                                                        (autre qu'un PNJ) en utilisant un objet de l'inventaire ;
+                                                        retourne vrai si une interaction a pu avoir lieu
+
 - event_npc_dialog(npc_name)				appelé lorsque le joueur parle à un PNJ sans message prédéfini
 - event_npc_movement_finished(npc_name)			appelé lorsqu'un PNJ a terminé son mouvement de marche ou de saut
 - event_open_empty_chest(chest_name)			appelé lorsque le joueur ouvre un coffre vide (son comportement sera alors défini par le script, le héros étant bloqué jusqu'à ce que le script appelle unfreeze())
@@ -50,6 +55,7 @@ Appel de fonctions C++ depuis un script LUA :
 - inventory_item_get(item_id)				retourne le numéro de variante possédée par le joueur d'un objet de l'inventaire
 - inventory_item_get_amount(item_id)			retourne la quantité d'un objet de l'inventaire
 - inventory_item_remove_amount(item_id, amount)		enlève une quantité d'un objet de l'inventaire (bombes, croissants, etc.)
+- inventory_item_is_bottle(item_id)			indique si un objet de l'inventaire est un flacon magique
 - disable_tile(tile_name)				désactive un tile dynamique
 - enable_tile(tile_name)				active un tile dynamique qui était désactivé
 - is_tile_enabled(tile_name)				indique si un tile dynamique est activé

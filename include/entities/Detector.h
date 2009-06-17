@@ -18,7 +18,7 @@
 #define ZSDX_DETECTOR_H
 
 #include "Common.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
 
 /**
  * A detector is an object placed somewhere on the map
@@ -90,6 +90,7 @@ class Detector: public MapEntity {
   void check_collision(MapEntity *entity, Sprite *sprite);
 
   virtual void action_key_pressed(void);
+  virtual bool interaction_with_inventory_item(InventoryItem *item);
   virtual bool moved_by_hero(void);
 };
 

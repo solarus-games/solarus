@@ -238,12 +238,28 @@ void Detector::collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
 /**
  * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * while the hero is facing this detector, and the action icon lets him do this.
  * By default, nothing happens.
  * Redefine your function in the subclasses to allow the hero to interact with this entity.
  */
 void Detector::action_key_pressed(void) {
 
+}
+
+/**
+ * This function is called when the player uses an inventory item
+ * while the hero is facing this detector.
+ * The exact conditions where this function is called depend on the type of inventory item.
+ * For some items, the function is called as soon as the player uses the item.
+ * For others, it is called after the player confirms the action in a dialog box.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make this entity react with an inventory item.
+ * @param item the inventory item used
+ * @return true if an interaction occured
+ */
+bool Detector::interaction_with_inventory_item(InventoryItem *item) {
+  return false;
 }
 
 /**

@@ -6,7 +6,7 @@
 function event_npc_dialog(npc_name)
 
    -- smith dialog
-   if equipment_get_sword() == 0 then
+   if not savegame_get_boolean(30) then
       -- the player has no sword yet
       start_message("smith_cave.without_sword")
    else

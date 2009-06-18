@@ -23,6 +23,7 @@
 #include "SpriteAnimationSet.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "KeysEffect.h"
 using std::string;
 
 /**
@@ -32,7 +33,8 @@ using std::string;
  * @param y y coordinate of the entity to create
  */
 CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
-  Detector(COLLISION_SPRITE | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
+  Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
+	   "", layer, x, y, 16, 16),
   state(false), next_possible_hit_date(SDL_GetTicks()) {
 
   set_origin(8, 13);
@@ -77,12 +79,24 @@ bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
  */
 void CrystalSwitch::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->get_type() == CARRIED_ITEM) {
+  if (entity_overlapping->get_type() == CARRIED_ITEM && collision_mode == COLLISION_RECTANGLE) {
 
     CarriedItem *item = (CarriedItem*) entity_overlapping;
     if (item->is_being_thrown()) {
       activate();
       item->break_item();
+    }
+  }
+  else if (entity_overlapping->is_hero() && collision_mode == COLLISION_FACING_POINT) {
+
+    Hero *hero = (Hero*) entity_overlapping;
+    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+
+    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+	&& hero->get_state() == Hero::FREE) {
+
+      // we show the action icon
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
   }
 }
@@ -103,6 +117,23 @@ void CrystalSwitch::collision(MapEntity *entity, Sprite *sprite_overlapping) {
     if (hero->get_state() != Hero::SWORD_LOADING && get_distance(hero) < 32) {
       activate();
     }
+  }
+}
+
+/**
+ * This function is called when the player presses the action key
+ * when the hero is facing this detector, and the action icon lets him do this.
+ */
+void CrystalSwitch::action_key_pressed(void) {
+
+  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  Hero *hero = zsdx->game->get_hero();
+
+  if (hero->get_state() == Hero::FREE) {
+    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+
+    // start a dialog
+    zsdx->game->show_message("_crystal_switch");
   }
 }
 

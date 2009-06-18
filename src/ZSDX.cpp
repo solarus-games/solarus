@@ -44,7 +44,7 @@ ZSDX::ZSDX(void) {
   root_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_ShowCursor(SDL_ENABLE);
   video_manager = new VideoManager();
-  video_manager->set_default_video_mode();
+  video_manager->set_initial_video_mode();
   SDL_EnableUNICODE(SDL_ENABLE);
   SDL_EnableKeyRepeat(0, 0);
 

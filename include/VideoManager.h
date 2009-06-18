@@ -75,6 +75,7 @@ class VideoManager {
   ~VideoManager(void);
 
   void switch_video_mode(void);
+  void set_initial_video_mode(void);
   void set_default_video_mode(void);
   void set_video_mode(VideoMode mode);
   VideoMode get_video_mode(void);

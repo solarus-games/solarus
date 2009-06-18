@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "SDL/SDL_config_lib.h"
 #include "VideoManager.h"
 #include "Color.h"
 
@@ -56,21 +57,6 @@ VideoManager::VideoManager(void) {
     dst_position_wide.x = 40;
     dst_position_wide.y = 0;
   }
-
-  /*
-  // get the fullscreen video modes supported
-  SDL_Rect **sdl_fullscreen_modes_supported = SDL_ListModes(NULL, SDL_DOUBLEBUF | SDL_FULLSCREEN);
-
-  if (sdl_fullscreen_modes_supported == (SDL_Rect**) -1) {
-    cout << "All fullscreen video modes are supported" << endl;
-  }
-  else {
-    for (int i = 0; sdl_fullscreen_modes_supported[i] != NULL; i++) {
-      cout << sdl_fullscreen_modes_supported[i]->w << " x " << sdl_fullscreen_modes_supported[i]->h
-       << "\t" << ((double) sdl_fullscreen_modes_supported[i]->w / sdl_fullscreen_modes_supported[i]->h) << endl;
-    }
-  }
-  */
 }
 
 /**
@@ -123,13 +109,40 @@ void VideoManager::switch_video_mode(void) {
 }
 
 /**
+ * Sets the initial video mode.
+ * The initial video mode is read from the configuration file if existing.
+ * Otherwise, the default video mode is chosen.
+ */
+void VideoManager::set_initial_video_mode(void) {
+
+  // parse the ini file
+  CFG_File ini;
+
+  if (CFG_OpenFile("config.ini", &ini) != CFG_OK) {
+    // configuration file not found: pick the default video mode
+    set_default_video_mode();
+  }
+  else {
+    if (CFG_SelectGroup("configuration", 0) != CFG_OK) {
+      set_default_video_mode();
+    }
+
+    int value = CFG_ReadInt("video_mode", -1);
+    if (value == -1 || value < 0 || value >= NB_MODES) {
+      set_default_video_mode();
+    }
+    else {
+      set_video_mode((VideoMode) value);
+    }
+    CFG_CloseFile(&ini);
+  }
+}
+
+/**
  * Sets the default video mode.
  */
 void VideoManager::set_default_video_mode(void) {
-  // TODO windowed_stretched
   set_video_mode(WINDOWED_STRETCHED);
-
-  //set_video_mode(WINDOWED_NORMAL);
 }
 
 /**
@@ -174,6 +187,17 @@ void VideoManager::set_video_mode(VideoMode mode) {
   SDL_ShowCursor(show_cursor);
   this->video_mode = mode;
   this->screen_surface = screen_surface;
+
+  // write the ini file
+  CFG_File ini;
+  if (CFG_OpenFile("config.ini", &ini) != CFG_OK) {
+    CFG_OpenFile(NULL, &ini);
+  }
+
+  CFG_SelectGroup("configuration", 1);
+  CFG_WriteInt("video_mode", mode);
+  CFG_SaveFile("config.ini");
+  CFG_CloseFile(&ini);
 }
 
 /**

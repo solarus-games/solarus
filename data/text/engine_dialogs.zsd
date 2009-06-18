@@ -1601,3 +1601,10 @@ cancel = all
 [_shop.amount_full]
 #       |-----------------------|
 line1 = "Tu es déjà au maximum !"
+
+[_crystal_switch]
+#       |-----------------------|
+line1 = "C'est un interrupteur"
+line2 = "de cristal. Frappe-le"
+line3 = "avec quelque chose..."
+cancel = all

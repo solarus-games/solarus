@@ -22,15 +22,45 @@ if len(sys.argv) != 2:
 modifs = []
 modifs_file = open(sys.argv[1])
 for line in modifs_file:
-	tokens = line.split()
-	modifs.append(tokens)
+	modif = line.split()
+	modifs.append(modif)
 
 # analyse each line of the tileset file and modify it if necessary
+header = sys.stdin.readline()
+sys.stdout.write(header)
+
 for line in sys.stdin.readlines()[1:]:
 	tokens = line.split()
+
+	is_animated = (tokens[1] == "1")
+
+	if is_animated:
+		index = 7
+	else:
+		index = 4
+
+	x = int(tokens[index])
+	y = int(tokens[index + 1])
+
 	for modif in modifs:
-		if tokens[4] == modif[0] and tokens[5] == modif[1]:
-			tokens[4] = modif[2]
-			tokens[5] = modif[3]
+		if len(modif) >= 1 and not modif[0].startswith('#') and int(modif[0]) == x and int(modif[1]) == y:
+
+			tokens[index] = modif[2]
+			tokens[index + 1] = modif[3]
+
+			if is_animated:
+				dx = int(modif[2]) - x
+				dy = int(modif[3]) - y
+
+				x2 = int(tokens[index + 2])
+				y2 = int(tokens[index + 3])
+				x3 = int(tokens[index + 4])
+				y3 = int(tokens[index + 5])
+
+				tokens[index + 2] = str(x2 + dx);
+				tokens[index + 3] = str(y2 + dy);
+				tokens[index + 4] = str(x3 + dx);
+				tokens[index + 5] = str(y3 + dy);
+
 			line = "\t".join(tokens) + "\n"
 	sys.stdout.write(line)

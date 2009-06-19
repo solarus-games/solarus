@@ -27,6 +27,7 @@ Bugs :
 - écran-titres : textes du bas flous
 - quand ça rame (exemple Wink), les vases sont lancés moins loin
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
+- capteurs de sauts : mettre 40 comme longueur par défaut dans l'éditeur
 
 
 A venir :

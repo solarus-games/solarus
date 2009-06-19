@@ -1868,7 +1868,6 @@
 8	0	968	949	pastry_shop_sign	3	2	entities/sign	outside_world.village.pastry_shop_sign
 8	0	792	613	shop_sign	3	2	entities/sign	outside_world.village.shop_sign
 8	0	880	605	letter_box	3	0	_none	outside_world.village.letter_box
-8	0	936	685	grand_son	3	1	npc/newlink1	outside_world.village.grand_son_npc
 8	0	816	501	hat_man	3	1	npc/newlink4	outside_world.village.hat_man_npc
 8	0	1024	944	interactive_entity	3	3	_none	_none
 8	0	1040	944	interactive_entity_2	3	3	_none	_none
@@ -1888,6 +1887,7 @@
 2	0	816	584	16	16	to_shop	0	1	18	main_entrance
 1	0	1000	949	out_pastry	3	0
 2	0	992	920	16	16	to_cake_shop	0	1	19	main_entrance
+8	0	936	685	grand_son	3	1	npc/newlink1	outside_world.village.grand_son_npc
 0	1	256	400	240	40	511
 0	1	232	448	288	40	511
 0	1	208	480	336	16	512

@@ -14,30 +14,23 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_SIMPLE_TILE_PATTERN_H
-#define ZSDX_SIMPLE_TILE_PATTERN_H
+#ifndef ZSDX_PARALLAX_TILE_PATTERN_H
+#define ZSDX_PARALLAX_TILE_PATTERN_H
 
 #include "Common.h"
-#include "entities/TilePattern.h"
+#include "entities/SimpleTilePattern.h"
 
 /**
- * Non-animated tile pattern.
+ * Tile pattern with a parallax scrolling effect.
  */
-class SimpleTilePattern: public TilePattern {
-
- protected:
-
-  /**
-   * Position of the tile pattern in the tileset image.
-   */
-  SDL_Rect position_in_tileset;
+class ParallaxTilePattern: public SimpleTilePattern {
 
  public:
 
-  SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height);
-  ~SimpleTilePattern(void);
+  ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+  ~ParallaxTilePattern(void);
 
-  virtual void display(SDL_Surface *destination, const SDL_Rect &destination_position, SDL_Surface *tileset_image);
+  void display(SDL_Surface *destination, const SDL_Rect &destination_position, SDL_Surface *tileset_image);
 };
 
 #endif

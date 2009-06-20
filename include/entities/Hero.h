@@ -149,7 +149,9 @@ class Hero: public MapEntity {
 
   // special ground under the hero
   Ground ground;                         /**< kind of ground under the hero: grass, shallow water, etc. */
-  Uint32 next_ground_sound_date;         /**< when the ground sound has to be played next time */
+  Uint32 next_ground_date;               /**< when something will happend with the ground sound next time */
+  int hole_dx;                           /**< x direction of the movement when the hero is being attracted by a hole */
+  int hole_dy;                           /**< y direction of the movement when the hero is being attracted by a hole */
 
   // items
   InventoryItem *current_inventory_item; /**< the inventory item the player is currently using,
@@ -216,6 +218,7 @@ class Hero: public MapEntity {
   void update_plunging(void);
   void start_swimming(void);
   void stop_swimming(void);
+  void start_hole(void);
   void start_falling(void);
   void update_falling(void);
 

@@ -276,11 +276,21 @@ const SDL_Rect MapEntity::get_coordinates(void) {
 /**
  * Sets the coordinates of the origin point of the entity, relative to the map.
  * This function sets the coordinates of the point as returned by get_x() and get_y().
+ * @param x the new x coordinate of the entity on the map
+ * @param y the new y coordinate of the entity on the map
+ */
+void MapEntity::set_coordinates(int x, int y) {
+  set_x(x);
+  set_y(y);
+}
+
+/**
+ * Sets the coordinates of the origin point of the entity, relative to the map.
+ * This function sets the coordinates of the point as returned by get_x() and get_y().
  * @param coordinates the new coordinates of the entity on the map
  */
 void MapEntity::set_coordinates(const SDL_Rect &coordinates) {
-  set_x(coordinates.x);
-  set_y(coordinates.y);
+  set_coordinates(coordinates.x, coordinates.y);
 }
 
 /**
@@ -752,16 +762,27 @@ double MapEntity::get_vector_angle(MapEntity *other) {
 
 /**
  * Returns the distance between the origin of this entity
+ * and a point
+ * @param x x coordinate of the point
+ * @param y y coordinate of the point
+ * @return the distance between this entity and the point in pixels
+ */
+int MapEntity::get_distance(int x, int y) {
+
+  int dx = x - get_x();
+  int dy = y - get_y();
+
+  return (int) sqrt(dx * dx + dy * dy);
+}
+
+/**
+ * Returns the distance between the origin of this entity
  * and the origin of another entity.
  * @param other the other entity
  * @return the distance between the two entities in pixels
  */
 int MapEntity::get_distance(MapEntity *other) {
-
-  int dx = other->get_x() - get_x();
-  int dy = other->get_y() - get_y();
-
-  return (int) sqrt(dx * dx + dy * dy);
+  return get_distance(other->get_x(), other->get_y());
 }
 
 /**

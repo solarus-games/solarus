@@ -37,7 +37,7 @@ class PlayerMovement: public SmoothCollisionMovement {
   /**
    * Speed of the entity when it is moving.
    */
-  const int speed;
+  int moving_speed;
 
   /**
    * True if the player can move the entity, i.e. if the game is not interrupted
@@ -82,9 +82,10 @@ class PlayerMovement: public SmoothCollisionMovement {
   // movement
   bool is_moving_enabled(void);
   void set_moving_enabled(bool moving_enabled, bool direction_enabled);
+  int get_moving_speed(void);
+  void set_moving_speed(int moving_speed);
 
   bool is_direction_enabled(void);
-  // TODO remove void set_direction_enabled(bool direction_enabled);
 
   bool is_started(void);
   void set_suspended(bool suspended);

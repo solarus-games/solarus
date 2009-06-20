@@ -63,10 +63,10 @@ static const int directions[] = {
 
 /**
  * Constructor.
- * @param speed movement speed
+ * @param moving_speed movement speed
  */
-PlayerMovement::PlayerMovement(int speed):
-  started(false), speed(speed),
+PlayerMovement::PlayerMovement(int moving_speed):
+  started(false), moving_speed(moving_speed),
   moving_enabled(false), moving_enabled_before_suspended(false),
   direction_enabled(false), direction_enabled_before_suspended(false),
   direction_mask(0) {
@@ -279,6 +279,23 @@ void PlayerMovement::set_direction_mask(Uint16 direction_mask) {
 }
 
 /**
+ * Returns the moving speed of the entity.
+ * @return the moving speed of the entity
+ */
+int PlayerMovement::get_moving_speed(void) {
+  return moving_speed;
+}
+
+/**
+ * Sets the moving speed of the entity.
+ * @param moving_speed the moving speed of the entity
+ */
+void PlayerMovement::set_moving_speed(int moving_speed) {
+  this->moving_speed = moving_speed;
+  compute_movement();
+}
+
+/**
  * Changes the movement of the entity depending on the arrows pressed
  * (i.e. depending on the value of direction_mask).
  * This function is called when an arrow is pressed or released,
@@ -311,35 +328,35 @@ void PlayerMovement::compute_movement(void) {
 
     switch (direction) {
     case 0: // right
-      x_speed = speed;
+      x_speed = moving_speed;
       y_speed = 0;
       break;
     case 90: // up
       x_speed = 0;
-      y_speed = -speed;
+      y_speed = -moving_speed;
       break;
     case 180: // left
-      x_speed = -speed;
+      x_speed = -moving_speed;
       y_speed = 0;
       break;
     case 270: // down
       x_speed = 0;
-      y_speed = speed;
+      y_speed = moving_speed;
       break;
     case 45: // right up
-      x_speed = (int) (speed / SQRT_2);
+      x_speed = (int) (moving_speed / SQRT_2);
       y_speed = -x_speed;
       break;
     case 135: // left up
-      x_speed = -(int) (speed / SQRT_2);
+      x_speed = -(int) (moving_speed / SQRT_2);
       y_speed = x_speed;
       break;
     case 225: // left down
-      y_speed = (int) (speed / SQRT_2);
+      y_speed = (int) (moving_speed / SQRT_2);
       x_speed = -y_speed;
       break;
     case 315: // right down
-      x_speed = (int) (speed / SQRT_2);
+      x_speed = (int) (moving_speed / SQRT_2);
       y_speed = x_speed;
       break;
     default:

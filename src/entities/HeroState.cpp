@@ -92,6 +92,7 @@ void Hero::start_ground(void) {
     // normal ground: remove any special sprite displayed under the hero
     delete ground_sprite;
     ground_sprite = NULL;
+    get_normal_movement()->set_moving_speed(walking_speed);
     break;
 
   case GROUND_DEEP_WATER:
@@ -102,26 +103,9 @@ void Hero::start_ground(void) {
     break;
 
   case GROUND_HOLE:
-
+    // hole: attract the hero towards the hole
     if (state != JUMPING) {
-
-      start_falling();
-
-//        TODO?
-//       // make the hero fall if he really is on the hole (otherwise restore the normal ground)
-//       const SDL_Rect &center = get_center_point();
-//       bool on_hole = (center.y / 8 == get_y() / 8); /* consider that the hero is on the hole
-// 						     * if its center point is on the same 8*8 square
-// 						     * than its origin point */
-
-//       if (on_hole) {
-// 	start_falling();
-//       }
-//       else {
-// 	ground = GROUND_NORMAL;
-// 	start_ground();
-//       }
-
+      start_hole();
     }
     break;
 
@@ -136,7 +120,7 @@ void Hero::start_ground(void) {
       }
 
       Uint32 now = SDL_GetTicks();
-      next_ground_sound_date = MAX(next_ground_sound_date, now);
+      next_ground_date = MAX(next_ground_date, now);
       ground_sound = ResourceManager::get_sound(ground_sound_ids[ground - 1]);
     }
     break;
@@ -144,18 +128,43 @@ void Hero::start_ground(void) {
 }
 
 /**
- * Updates the ground displayed under the hero.
+ * Updates the ground under the hero.
  */
 void Hero::update_ground(void) {
 
+  // see if it's time to do something (depending on the ground)
   Uint32 now = SDL_GetTicks();
-  if (now >= next_ground_sound_date) {
+  if (now >= next_ground_date) {
 
-    if (walking && state <= SWORD_LOADING) {
-      ground_sound->play();
+    if (is_ground_visible()) {
+      // time to play a sound
+      if (walking && state <= SWORD_LOADING) {
+	ground_sound->play();
+      }
+
+      next_ground_date = now + 300;
     }
 
-    next_ground_sound_date = now + 300;
+    if (ground == GROUND_HOLE &&
+	state != FALLING && state != RETURNING_TO_SOLID_GROUND && state != JUMPING) {
+
+      // time to move the hero on a hole one more pixel away from the solid ground
+      if (get_distance(last_solid_ground_coords.x, last_solid_ground_coords.y) >= 10) {
+	start_falling();
+      }
+      else {
+
+	SDL_Rect collision_box = get_position_in_map();
+	collision_box.x += hole_dx;
+	collision_box.y += hole_dy;
+
+	if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+	  set_position_in_map(collision_box);
+	  just_moved();
+	}
+	next_ground_date = now + 60;
+      }
+    }
   }
 }
 
@@ -1152,6 +1161,37 @@ void Hero::start_swimming(void) {
  */
 void Hero::stop_swimming(void) {
   start_free();
+}
+
+/**
+ * Makes the hero move towards a hole of fall into it.
+ */
+void Hero::start_hole(void) {
+
+  next_ground_date = SDL_GetTicks();
+
+  // push the hero into a direction
+  if (is_moving_towards(0)) {
+    hole_dx = 1;
+  }
+  else if (is_moving_towards(2)) {
+    hole_dx = -1;
+  }
+  else {
+    hole_dx = 0;
+  }
+
+  if (is_moving_towards(1)) {
+    hole_dy = -1;
+  }
+  else if (is_moving_towards(3)) {
+    hole_dy = 1;
+  }
+  else {
+    hole_dy = 0;
+  }
+
+  get_normal_movement()->set_moving_speed(3);
 }
 
 /**

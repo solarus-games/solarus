@@ -17,6 +17,7 @@
 #include "entities/Tileset.h"
 #include "entities/SimpleTilePattern.h"
 #include "entities/AnimatedTilePattern.h"
+#include "entities/ParallaxTilePattern.h"
 #include "FileTools.h"
 #include "ResourceManager.h"
 #include <iomanip>
@@ -89,25 +90,30 @@ void Tileset::load(void) {
   background_color = Color::create(r, g, b);
 
   // read the tile patterns
-  int tile_pattern_id, is_animated, obstacle, default_layer;
+  int tile_pattern_id, animation, obstacle, default_layer;
   while (std::getline(tileset_file, line)) {
 
     std::istringstream iss(line);
-    iss >> tile_pattern_id >> is_animated >> obstacle >> default_layer;
+    iss >> tile_pattern_id >> animation >> obstacle >> default_layer;
 
     int width, height;
 
-    if (!is_animated) {
+    if (animation == 0 || animation == 2) { // simple tile pattern or tile pattern with parallax
 
       int x, y;
 
       iss >> x >> y >> width >> height;
 
-      add_tile_pattern(tile_pattern_id,
-		       new SimpleTilePattern(Obstacle(obstacle),
-					     x, y, width, height));
+      TilePattern *pattern;
+      if (animation == 0) {
+	      pattern = new SimpleTilePattern(Obstacle(obstacle), x, y, width, height);
+      }
+      else {
+	      pattern = new ParallaxTilePattern(Obstacle(obstacle), x, y, width, height);
+      }
+      add_tile_pattern(tile_pattern_id, pattern);
     }
-    else {
+    else { // animated tile pattern
       int sequence, x1, y1, x2, y2, x3, y3;
 
       iss >> sequence >> width >> height >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;

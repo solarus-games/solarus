@@ -149,6 +149,7 @@ class Tileset;
 class TilePattern;
 class SimpleTilePattern;
 class AnimatedTilePattern;
+class ParallaxTilePattern;
 
 // movements
 class Movement;

@@ -155,6 +155,7 @@ class MapEntity {
   void set_y(int y);
   const SDL_Rect get_coordinates(void);
   void set_coordinates(const SDL_Rect &coordinates);
+  void set_coordinates(int x, int y);
 
   int get_width(void);
   int get_height(void);
@@ -198,6 +199,7 @@ class MapEntity {
 
   double get_vector_angle(MapEntity *other);
   int get_distance(MapEntity *other);
+  int get_distance(int x, int y);
 
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);

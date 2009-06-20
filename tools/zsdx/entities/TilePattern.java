@@ -29,20 +29,22 @@ import zsdx.*;
 public class TilePattern extends Observable {
 
     /**
-     * Enumeration to identify the animation sequence of a tile pattern.
+     * Enumeration to identify the animation of a tile pattern.
      */
-    public enum AnimationSequence {
+    public enum Animation {
 	NONE,
 	SEQUENCE_012,
-	SEQUENCE_0121;
+	SEQUENCE_0121,
+	PARALLAX;
 
 	public static final String[] humanNames = {
 	    "None",
 	    "1-2-3-1",
 	    "1-2-3-2-1",
+	    "Parallax scrolling"
 	};
 
-	public static AnimationSequence get(int id) {
+	public static Animation get(int id) {
 	    return values()[id];
 	}
 
@@ -111,12 +113,12 @@ public class TilePattern extends Observable {
     private Obstacle obstacle;
 
     /**
-     * Animation sequence.
+     * Type of animation.
      */
-    private AnimationSequence animationSequence;
+    private Animation animation;
 
     /**
-     * Type of separation of the 3 animation frames in the tileset.
+     * Type of separation of the 3 animation frames in the tileset for an animated tile.
      */
     private AnimationSeparation animationSeparation;
 
@@ -135,7 +137,7 @@ public class TilePattern extends Observable {
      * @throws TilesetException if the tile size is incorrect
      */
     public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Obstacle obstacle) throws TilesetException {
-	this(positionInTileset, defaultLayer, obstacle, AnimationSequence.NONE, AnimationSeparation.HORIZONTAL);
+	this(positionInTileset, defaultLayer, obstacle, Animation.NONE, AnimationSeparation.HORIZONTAL);
     }
 
     /**
@@ -143,12 +145,12 @@ public class TilePattern extends Observable {
      * @param positionInTileset position of the tile pattern in the tileset
      * @param defaultLayer default layer of the tiles created with this pattern
      * @param obstacle the obstacle property of this tile pattern
-     * @param animationSequence type of animation
+     * @param animation type of animation
      * @param animationSeparation separation of the 3 animation frames in the tileset image
      * @throws TilesetException if the pattern size is incorrect
      */
     public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Obstacle obstacle,
-		AnimationSequence animationSequence, AnimationSeparation animationSeparation) throws TilesetException {
+		Animation animation, AnimationSeparation animationSeparation) throws TilesetException {
 	super();
 
 	// check the width and the height
@@ -160,7 +162,7 @@ public class TilePattern extends Observable {
 	this.positionInTileset = positionInTileset;
 	this.defaultLayer = defaultLayer;
 	setObstacle(obstacle);
-	setAnimationSequence(animationSequence);
+	setAnimation(animation);
 	setAnimationSeparation(animationSeparation);
 
 	this.images = new BufferedImage[4];
@@ -181,21 +183,23 @@ public class TilePattern extends Observable {
 	    this.defaultLayer = Layer.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.images = new BufferedImage[4];
 
-	    if (tilePatternType == 0) {
+	    if (tilePatternType == 0 || tilePatternType == 2) {
 
 		// simple tile pattern: "0 obstacle defaultLayer x y width height"
+		// or parallax tile pattern: "2 obstacle defaultLayer x y width height"
 		int x = Integer.parseInt(tokenizer.nextToken());
 		int y = Integer.parseInt(tokenizer.nextToken());
 		int width = Integer.parseInt(tokenizer.nextToken());
 		int height = Integer.parseInt(tokenizer.nextToken());
 
 		this.positionInTileset = new Rectangle(x, y, width, height);
-		this.animationSequence = AnimationSequence.NONE;
+
+		this.animation = (tilePatternType == 2) ? Animation.PARALLAX : Animation.NONE;
 	    }
 	    else if (tilePatternType == 1) {
 
-		// animated tile pattern: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
-		this.animationSequence = AnimationSequence.get(Integer.parseInt(tokenizer.nextToken()));
+		// animated tile pattern: "1 obstacle defaultLayer animation width height x1 y1 x2 y2 x3 y3"
+		this.animation = Animation.get(Integer.parseInt(tokenizer.nextToken()));
 
 		int width = Integer.parseInt(tokenizer.nextToken());
 		int height = Integer.parseInt(tokenizer.nextToken());
@@ -234,10 +238,16 @@ public class TilePattern extends Observable {
 
 	StringBuffer description = new StringBuffer();
 
-	if (animationSequence == AnimationSequence.NONE) {
+	if (animation == Animation.NONE || animation == Animation.PARALLAX) {
 	    // simple tile pattern: "0 obstacle defaultLayer x y width height"
+	    // or parallax tile pattern: "2 obstacle defaultLayer x y width height"
 
-	    description.append('0');
+	    if (animation == Animation.PARALLAX) {
+		description.append('2');
+	    }
+	    else {
+		description.append('0');
+	    }
 	    description.append('\t');
 	    description.append(obstacle.getId());
 	    description.append('\t');
@@ -260,7 +270,7 @@ public class TilePattern extends Observable {
 	    description.append('\t');
 	    description.append(defaultLayer.getId());
 	    description.append('\t');
-	    description.append(animationSequence.getId());
+	    description.append(animation.getId());
 	    description.append('\t');
 
 	    int width, height, x, y, dx, dy;
@@ -416,25 +426,25 @@ public class TilePattern extends Observable {
     }
 
     /**
-     * Returns the tile pattern's animation sequence.
-     * @return the tile pattern's animation sequence
+     * Returns the tile pattern's animation type.
+     * @return the tile pattern's animation type
      */
-    public AnimationSequence getAnimationSequence() {
-	return animationSequence;
+    public Animation getAnimation() {
+	return animation;
     }
 
     /**
-     * Sets the tile pattern's animation sequence.
+     * Sets the tile pattern's animation type.
      * If the specified animation makes the tile animated, a valid separation is chosen
      * between AnimationSeparation.HORIZONTAL and AnimationSeparation.VERTICAL.
      * You can change it with setAnimationSeparation().
      * If both directions are invalid, an TilesetException is thrown.
-     * @param animationSequence the tile's animation sequence
-     * @throws TilesetException if the tile cannot be divided in 3 frames
+     * @param animation the tile's animation type
+     * @throws TilesetException if the tile is animated but cannot be divided in 3 frames
      */
-    public void setAnimationSequence(AnimationSequence animationSequence) throws TilesetException {
+    public void setAnimation(Animation animation) throws TilesetException {
 
-	if (animationSequence != AnimationSequence.NONE) {
+	if (isAnimated(animation)) {
 
 	    // try to set the animation separation
 	    int width = positionInTileset.width;
@@ -460,7 +470,7 @@ public class TilePattern extends Observable {
 	    }
 	}
 
-	this.animationSequence = animationSequence;
+	this.animation = animation;
 
 	setChanged();
 	notifyObservers();
@@ -471,7 +481,16 @@ public class TilePattern extends Observable {
      * @return true if the tile pattern is animated, false otherwise
      */
     public boolean isAnimated() {
-	return animationSequence != AnimationSequence.NONE;
+	return isAnimated(animation);
+    }
+
+    /**
+     * Returns whether the specified animation type corresponds to an animated tile.
+     * @param animation an animation type
+     * @return true if this corresponds to an animated tile, false otherwise
+     */
+    public boolean isAnimated(Animation animation) {
+	return animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_0121;
     }
 
     /**
@@ -534,7 +553,7 @@ public class TilePattern extends Observable {
 	TilePattern tilePattern = (TilePattern) other;
 
 	return obstacle == tilePattern.obstacle
-	    && animationSequence == tilePattern.animationSequence
+	    && animation == tilePattern.animation
 	    && animationSeparation == tilePattern.animationSeparation
 	    && positionInTileset.equals(tilePattern.positionInTileset);
     }

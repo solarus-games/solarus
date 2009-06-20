@@ -28,12 +28,15 @@ Syntaxe d'un tile non animé :
 
 id   0   obstacle   defaultLayer   x   y   width   height
 
-
 On a ainsi son numéro, puis 0 pour indiquer que le tile n'est pas animé, un chiffre indiquant la propriété obstacle, un chiffre indiquant la couche par défaut, puis ses coordonnées dans l'image du tileset, et enfin sa largeur et sa hauteur.
 
 Syntaxe d'un tile animé :
 
 id   1   obstacle   defaultLayer   animationSequence   width   height   x1   y1   x2   y2   x3   y3
 
-
 On a toujours son numéro, puis 1 pour indiquer que le tile est animé, la propriété obstacle, la couche par défaut, la séquence d'animation (0-1-2-0 ou 0-1-2-1-0), la longueur, la largeur, et la position des 3 rectangles de l'animation (la largeur et la hauteur est la même pour chacun des rectangles).
+
+Syntaxe d'un tile avec parallax scrolling :
+
+id   2   obstacle   defaultLayer   x   y   width   height
+

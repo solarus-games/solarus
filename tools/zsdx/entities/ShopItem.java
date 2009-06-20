@@ -17,7 +17,6 @@
 package zsdx.entities;
 
 import zsdx.*;
-import java.awt.*;
 
 /**
  * Represents a shop item that the hero can buy.

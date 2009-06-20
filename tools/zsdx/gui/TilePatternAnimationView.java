@@ -27,6 +27,7 @@ import javax.swing.*;
  * - no animation
  * - animation sequence 0-1-2
  * - animation sequence 0-1-2-1
+ * - parallax scrolling
  * For the animated tile patterns, a second component allows to select
  * how the 3 animations are separated in the tileset (vertically or
  * horizontally).
@@ -41,7 +42,7 @@ public class TilePatternAnimationView extends JPanel implements ActionListener {
     /**
      * Combo box to select the animation type of the tilepattern.
      */
-    public EnumerationChooser<AnimationSequence> sequenceField;
+    public EnumerationChooser<Animation> sequenceField;
 
     /**
      * Combo box to select how the 3 animations are separated in the tileset.
@@ -57,7 +58,7 @@ public class TilePatternAnimationView extends JPanel implements ActionListener {
 	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 	// list for the animation sequence
-	sequenceField = new EnumerationChooser<AnimationSequence>(AnimationSequence.class);
+	sequenceField = new EnumerationChooser<Animation>(Animation.class);
 	sequenceField.addActionListener(this);
 
 	// list for the separation
@@ -82,7 +83,7 @@ public class TilePatternAnimationView extends JPanel implements ActionListener {
 	    separationField.setEnabled(false);
 	}
 	else {
-	    AnimationSequence sequence = tilePattern.getAnimationSequence();
+	    Animation sequence = tilePattern.getAnimation();
 	    sequenceField.setEnabled(true);
 	    sequenceField.setValue(sequence);
 
@@ -106,11 +107,11 @@ public class TilePatternAnimationView extends JPanel implements ActionListener {
 
 	try {
 	    if (ev.getSource() == sequenceField) {
-		AnimationSequence listValue = sequenceField.getValue();
-		AnimationSequence tileValue = tilePattern.getAnimationSequence();
+		Animation listValue = sequenceField.getValue();
+		Animation tileValue = tilePattern.getAnimation();
 		if (listValue != tileValue) {
 		    // the tile pattern's animation sequence has changed
-		    tilePattern.setAnimationSequence(listValue);
+		    tilePattern.setAnimation(listValue);
 		}
 	    }
 	    else {

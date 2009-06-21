@@ -794,6 +794,7 @@ int MapEntity::get_distance(MapEntity *other) {
  * until an obstacle-free position is found.
  * If no free position is found, the entity is not moved.
  */
+/*
 void MapEntity::ensure_no_obstacles(void) {
 
   SDL_Rect collision_box = get_position_in_map();
@@ -823,6 +824,7 @@ void MapEntity::ensure_no_obstacles(void) {
     }
   }
 }
+*/
 
 /**
  * This function is called when an enemy detects a collision with this entity.

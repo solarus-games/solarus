@@ -793,7 +793,7 @@ void Hero::place_on_destination_point(Map *map) {
 
     // the hero's coordinates are the same as on previous map
     set_map(map);
-    ensure_no_obstacles();
+//    ensure_no_obstacles();
 
     destroy_carried_items();
     start_free();

@@ -116,6 +116,7 @@
 2	0	96	512	16	16	teletransporter_2	0	1	21	_same
 2	0	96	544	16	16	teletransporter_3	0	1	21	_same
 2	0	64	512	32	48	teletransporter_4	0	1	21	_same
+14	0	208	469
 0	1	64	592	96	32	151
 0	1	64	456	32	8	311
 0	1	96	592	32	8	312

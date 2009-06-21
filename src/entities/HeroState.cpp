@@ -1225,26 +1225,25 @@ void Hero::update_falling(void) {
 
   if (tunic_sprite->is_animation_finished()) {
 
-    // the hero has just finished falling: go back to the solid ground
-
-    if (target_solid_ground_coords.x != -1) {
-      // go back to a target point specified earlier
-      start_returning_to_solid_ground(target_solid_ground_coords);
-    }
-    else {
-      // nothing was specified: just go back to the last solid ground location
-      start_returning_to_solid_ground(last_solid_ground_coords);
-    }
-   
-    set_animation_stopped();
-    restore_animation_direction();
+    // the hero has just finished falling
     if (hole_teletransporter != NULL) {
       // special hole with a teletransporter
       hole_teletransporter->transport_hero(this);
     }
     else {
       // hole that hurts the hero
+      if (target_solid_ground_coords.x != -1) {
+	// go back to a target point specified earlier
+	start_returning_to_solid_ground(target_solid_ground_coords);
+      }
+      else {
+	// nothing was specified: just go back to the last solid ground location
+	start_returning_to_solid_ground(last_solid_ground_coords);
+      }
+   
       equipment->remove_hearts(2);
+      set_animation_stopped();
+      restore_animation_direction();
     }
   }
   else if (get_movement() != normal_movement) {

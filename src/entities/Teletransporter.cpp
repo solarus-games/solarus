@@ -134,7 +134,7 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
     }
 
     Hero *hero = (Hero*) entity;
-    return check_collision_origin_point(hero) && (!hero->is_on_hole() || hero->get_state() == Hero::RETURNING_TO_SOLID_GROUND);
+    return check_collision_origin_point(hero);
   }
 
   const SDL_Rect &entity_position = entity->get_position_in_map();

@@ -149,7 +149,7 @@ void Hero::update_ground(void) {
 	state != FALLING && state != RETURNING_TO_SOLID_GROUND && state != JUMPING) {
 
       // time to move the hero on a hole one more pixel away from the solid ground
-      if (get_distance(last_solid_ground_coords.x, last_solid_ground_coords.y) >= 10) {
+      if (get_distance(last_solid_ground_coords.x, last_solid_ground_coords.y) >= 8) {
 	start_falling();
       }
       else {
@@ -187,7 +187,13 @@ bool Hero::is_ground_visible(void) {
 void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
 
   if (state != JUMPING) {
-    teletransporter->transport_hero(this);
+
+    if (ground == GROUND_HOLE) {
+      this->hole_teletransporter = teletransporter; // fall first, transport later
+    }
+    else {
+      teletransporter->transport_hero(this);
+    }
   }
 }
 
@@ -1169,6 +1175,7 @@ void Hero::stop_swimming(void) {
 void Hero::start_hole(void) {
 
   next_ground_date = SDL_GetTicks();
+  hole_teletransporter = NULL;
 
   // push the hero into a direction
   if (is_moving_towards(0)) {
@@ -1228,12 +1235,17 @@ void Hero::update_falling(void) {
       // nothing was specified: just go back to the last solid ground location
       start_returning_to_solid_ground(last_solid_ground_coords);
     }
-    
-    map->check_collision_with_detectors(this); // maybe the hole was actually a teletransporter
-    
-    equipment->remove_hearts(2);
+   
     set_animation_stopped();
     restore_animation_direction();
+    if (hole_teletransporter != NULL) {
+      // special hole with a teletransporter
+      hole_teletransporter->transport_hero(this);
+    }
+    else {
+      // hole that hurts the hero
+      equipment->remove_hearts(2);
+    }
   }
   else if (get_movement() != normal_movement) {
     // delete a possible hurt movement

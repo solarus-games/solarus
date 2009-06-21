@@ -152,6 +152,7 @@ class Hero: public MapEntity {
   Uint32 next_ground_date;               /**< when something will happend with the ground sound next time */
   int hole_dx;                           /**< x direction of the movement when the hero is being attracted by a hole */
   int hole_dy;                           /**< y direction of the movement when the hero is being attracted by a hole */
+  Teletransporter *hole_teletransporter; /**< a teletransporter in the current hole */
 
   // items
   InventoryItem *current_inventory_item; /**< the inventory item the player is currently using,

@@ -30,7 +30,8 @@ Bugs :
 - capteurs de sauts : mettre 40 comme longueur par défaut dans l'éditeur
 
 - MapEntity::ensure_no_obstacles : ne fonctionne pas si la solution est du genre (+6, +2), ne trouve que des (i,i), (i,0) ou (0,i)
-- Tomber dans un trou depuis un étage : le héros ne peut plus marcher et perdu un demi-coeur
+  ou même si on tombe au milieu d'une barrière seule
+- Tomber dans un trou depuis un étage : le héros ne peut plus marcher et perd un demi-coeur
 
 A venir :
 

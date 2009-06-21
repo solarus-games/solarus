@@ -1228,6 +1228,9 @@ void Hero::update_falling(void) {
       // nothing was specified: just go back to the last solid ground location
       start_returning_to_solid_ground(last_solid_ground_coords);
     }
+    
+    map->check_collision_with_detectors(this); // maybe the hole was actually a teletransporter
+    
     equipment->remove_hearts(2);
     set_animation_stopped();
     restore_animation_direction();

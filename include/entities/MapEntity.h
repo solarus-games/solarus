@@ -201,6 +201,7 @@ class MapEntity {
   int get_distance(MapEntity *other);
   int get_distance(int x, int y);
 
+  void ensure_no_obstacles(void);
   virtual void collision_with_enemy(Enemy *enemy);
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);

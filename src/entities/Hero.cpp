@@ -664,6 +664,14 @@ void Hero::just_moved(void) {
 }
 
 /**
+ * Returns whether the hero is currently on a hole.
+ * @return true if the hero is currently on a hole.
+ */
+bool Hero::is_on_hole(void) {
+  return ground == GROUND_HOLE;
+}
+
+/**
  * Sets the entity the hero is currently facing.
  * This function is called when the hero is just being
  * facing another entity.
@@ -785,6 +793,7 @@ void Hero::place_on_destination_point(Map *map) {
 
     // the hero's coordinates are the same as on previous map
     set_map(map);
+    ensure_no_obstacles();
 
     destroy_carried_items();
     start_free();

@@ -786,6 +786,45 @@ int MapEntity::get_distance(MapEntity *other) {
 }
 
 /**
+ * Tries to make sure this entity is not overlapping the obstacles of the map.
+ * This function should be used only in very specific situations, when there is no way to avoid the possibility
+ * that the entity can be on an obstacle. Normally, the movement of an entity is such that
+ * the entity never overlaps an obstacle.
+ * If the entity is on an obstacle, we try to move it in the eight possible direction up to 8 pixels away,
+ * until an obstacle-free position is found.
+ * If no free position is found, the entity is not moved.
+ */
+void MapEntity::ensure_no_obstacles(void) {
+
+  SDL_Rect collision_box = get_position_in_map();
+
+  if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+    return;
+  }
+  
+  bool found = false;
+
+  static const int dx[] = { 1, 0, -1, 0, 1, -1, -1, 1 };
+  static const int dy[] = { 0, -1, 0, 1, -1, -1, 1, 1 };
+
+  for (int i = 0; i < 12 && !found; i++) {
+    for (int j = 0; j < 8 && !found; j++) {
+      collision_box.x += dx[j] * i;
+      collision_box.y += dy[j] * i;
+
+      if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+	found = true;
+	set_position_in_map(collision_box);
+	just_moved();
+      }
+
+      collision_box.x -= dx[j] * i;
+      collision_box.y -= dy[j] * i;
+    }
+  }
+}
+
+/**
  * This function is called when an enemy detects a collision with this entity.
  * @param enemy the enemy
  */

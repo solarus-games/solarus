@@ -127,6 +127,16 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
       && is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
   }
 
+  else if (destination_point_name == "_same") {
+  
+    if (!entity->is_hero()) {
+      return false;
+    }
+
+    Hero *hero = (Hero*) entity;
+    return check_collision_origin_point(hero) && (!hero->is_on_hole() || hero->get_state() == Hero::RETURNING_TO_SOLID_GROUND);
+  }
+
   const SDL_Rect &entity_position = entity->get_position_in_map();
   int x1 = entity_position.x + 4;
   int x2 = x1 + entity_position.w - 5;

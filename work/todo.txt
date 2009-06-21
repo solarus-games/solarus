@@ -29,6 +29,8 @@ Bugs :
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
 - capteurs de sauts : mettre 40 comme longueur par défaut dans l'éditeur
 
+- MapEntity::ensure_no_obstacles : ne fonctionne pas si la solution est du genre (+6, +2), ne trouve que des (i,i), (i,0) ou (0,i)
+- Tomber dans un trou depuis un étage : le héros ne peut plus marcher et perdu un demi-coeur
 
 A venir :
 

@@ -591,8 +591,8 @@ public abstract class MapEntity extends Observable {
      */
     protected void checkSize(int width, int height) throws MapException {
 
-	if (!isResizable()) {
-	    throw new MapException("This entity is not resizable");
+	if (!isSizeVariable()) {
+	    throw new MapException("This entity's size is not variable");
 	}
 
 	if (width <= 0 || height <= 0) {
@@ -622,6 +622,10 @@ public abstract class MapEntity extends Observable {
      * or the size specified is not divisible by 8
      */
     public void setSize(int width, int height) throws MapException {
+
+	if (!isSizeVariable()) {
+	    throw new MapException("This entity is not resizable");
+	}
 
 	checkSize(width, height);
 	setSizeImpl(width, height);

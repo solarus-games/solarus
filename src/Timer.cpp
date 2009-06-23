@@ -41,9 +41,11 @@ Timer::Timer(Uint32 duration, const std::string &callback_name, bool with_sound)
     next_sound_date = 0;
   }
 
+/* start the timer even if the game is suspended (e.g. a timer started during a camera movement)
   if (zsdx->game->is_suspended()) {
     set_suspended(true);
   }
+*/
 }
 
 /**

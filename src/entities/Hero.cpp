@@ -319,13 +319,16 @@ void Hero::set_map(Map *map) {
  * This function is called when the map is changed.
  * @param map the map
  * @param initial_direction the direction of the hero (0 to 3)
+ * or -1 to let the direction unchanged
  */
 void Hero::set_map(Map *map, int initial_direction) {
 
   set_map(map);
 
   // take the specified direction
-  set_animation_direction(initial_direction);
+  if (initial_direction != -1) {
+    set_animation_direction(initial_direction);
+  }
 }
 
 /**

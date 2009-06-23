@@ -27,7 +27,7 @@ using namespace std;
 const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   // can_be_obstacle, can_detect_entities, can_be_displayed, is_displayed_in_y_order
   {false, false, false, false}, // tile (not used)
-  {false, false, false, false}, // destination point
+  {false, false,  true, false}, // destination point
   { true,  true,  true, false}, // teletransporter
   {false,  true,  true, false}, // pickable item
   { true,  true,  true, false}, // destructible item

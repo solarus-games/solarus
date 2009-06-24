@@ -143,6 +143,7 @@ class Sensor;
 class CrystalSwitch;
 class CrystalSwitchBlock;
 class ShopItem;
+class Boomerang;
 
 // tile patterns
 class Tileset;

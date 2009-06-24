@@ -136,6 +136,9 @@ void InventoryItem::start(Game *game) {
   if (is_bottle()) {
     start_bottle();
   }
+  else if (item_id == INVENTORY_BOOMERANG) {
+    // TODO
+  }
   else {
     // TODO
     finished = true;

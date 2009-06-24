@@ -21,6 +21,9 @@
  * Constants to identify each kind of map entity.
  */
 enum EntityType {
+
+  // entities specified in the map file
+
   TILE                      = 0,    /**< a tile on the map, obstacle or not */
   DESTINATION_POINT         = 1,    /**< a destination point on the map */
   TELETRANSPORTER           = 2,    /**< a teletransporter: the hero is transported
@@ -41,8 +44,11 @@ enum EntityType {
   CRYSTAL_SWITCH_BLOCK      = 15,   /**< the blue or orange blocks that are changed by the crystal switches */
   SHOP_ITEM                 = 16,   /**< an item the hero can buy in a shop */
 
+  // entities created during the game (not stored in the map file)
+
   HERO                      = 1000, /**< the hero */
   CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
+  BOOMERANG                 = 1002, /**< a boomerang thrown */
 };
 
 #endif

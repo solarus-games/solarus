@@ -29,7 +29,6 @@ class CarriedItem: public MapEntity {
  private:
 
   // game data
-  Map *map;                 /**< the map */
   Hero *hero;               /**< the hero, who is carrying or throwing this item */
 
   // state

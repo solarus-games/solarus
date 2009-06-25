@@ -125,7 +125,7 @@ void CarriedItem::set_animation_walking(void) {
 
 /**
  * Throws the item.
- * @param map the current map
+ * @param map the current map (can be different from the map where the item was lifted)
  * @param direction direction where the hero throws the item (0 to 3)
  */
 void CarriedItem::throw_item(Map *map, int direction) {

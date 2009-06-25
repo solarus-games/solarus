@@ -22,8 +22,11 @@
 #include "Sound.h"
 #include "DialogBox.h"
 #include "MapScript.h"
+#include "Map.h"
+#include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "entities/Detector.h"
+#include "entities/Boomerang.h"
 
 /**
  * Creates a new inventory item.
@@ -159,6 +162,7 @@ void InventoryItem::update(void) {
   else if (item_id == INVENTORY_BOOMERANG) {
     if (hero->is_animation_finished()) {
       finished = true;
+      game->get_current_map()->get_entities()->add_entity(new Boomerang(hero));
     }
   }
 }
@@ -273,3 +277,10 @@ void InventoryItem::update_bottle(void) {
   }
 }
 
+/**
+ * Sets the current map.
+ * This function is called when the map is changed while the player is still using this item.
+ */
+void InventoryItem::set_map(Map *map) {
+  // TODO boomerang: put the boomerang in the new map  
+}

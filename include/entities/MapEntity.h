@@ -141,9 +141,9 @@ class MapEntity {
   // entity type features
   virtual bool is_hero(void);
   virtual EntityType get_type(void) = 0;
-  bool can_be_obstacle(void);
-  bool can_detect_entities(void);
-  bool can_be_displayed(void);
+  virtual bool can_be_obstacle(void);
+  virtual bool can_detect_entities(void);
+  virtual bool can_be_displayed(void);
   virtual bool is_displayed_in_y_order(void);
 
   // position in the map

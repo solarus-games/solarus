@@ -28,6 +28,7 @@
 #include "Game.h"
 #include "Equipment.h"
 #include "Map.h"
+#include "InventoryItem.h"
 
 /**
  * Indicates the direction of the hero's animation (from 0 to 3, or -1 for no change)
@@ -289,29 +290,9 @@ void Hero::set_map(Map *map) {
     lifted_item->set_map(map);
   }
 
-  /*
-  stop_displaying_sword();
-
-  // remove the "throw" (or other) icon
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-
-  // stop loading the sword or carrying an item
-  switch (get_state()) {
-
-  case CARRYING:
-  case SWORD_LOADING:
-    start_free();
-    break;
-
-  default:
-    break;
-
-  }
-
-  // destroy any carried item from the previous map
-  destroy_carried_items();
-  */
+  if (current_inventory_item != NULL) {
+    current_inventory_item->set_map(map);
+  } 
 }
 
 /**

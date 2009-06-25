@@ -61,6 +61,7 @@ class InventoryItem {
   // state
   void start(Game *game);
   void update(void);
+  void set_map(Map *map);
   bool is_finished(void);
 };
 

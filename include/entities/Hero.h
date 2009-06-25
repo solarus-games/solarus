@@ -289,7 +289,10 @@ class Hero: public MapEntity {
   void set_suspended(bool suspended);
   void rebuild_equipment(void);
   void restart_animation(void);
+  bool is_animation_finished(void);
   void set_animation_stopped(void);
+  void set_animation_boomerang(void);
+
 
   // state of the hero
   State get_state(void);

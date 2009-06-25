@@ -129,6 +129,8 @@ void InventoryItem::start(Game *game) {
   this->variant = game->get_equipment()->has_inventory_item(item_id);
   this->finished = false;
 
+  Hero *hero = game->get_hero();
+
   if (variant == 0) {
     DIE("Trying to use inventory item #" << item_id << " without having it");
   }
@@ -137,7 +139,7 @@ void InventoryItem::start(Game *game) {
     start_bottle();
   }
   else if (item_id == INVENTORY_BOOMERANG) {
-    // TODO
+    hero->set_animation_boomerang();
   }
   else {
     // TODO
@@ -150,8 +152,14 @@ void InventoryItem::start(Game *game) {
  */
 void InventoryItem::update(void) {
 
+  Hero *hero = game->get_hero();
   if (is_bottle()) {
     update_bottle();
+  }
+  else if (item_id == INVENTORY_BOOMERANG) {
+    if (hero->is_animation_finished()) {
+      finished = true;
+    }
   }
 }
 

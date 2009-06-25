@@ -247,6 +247,14 @@ void Hero::restore_animation_direction(void) {
 }
 
 /**
+ * Returns whether the sprites animations are finished.
+ * @return true if the animation is finished
+ */
+bool Hero::is_animation_finished(void) {
+  return tunic_sprite->is_animation_finished();
+}
+
+/**
  * Updates the animation of the hero's sprites if necessary.
  */
 void Hero::update_sprites(void) {
@@ -601,3 +609,18 @@ void Hero::set_animation_falling(void) {
   }
   stop_displaying_sword();
 }
+
+/**
+ * Starts the "boomerang" animation of the hero's sprites.
+ * The hero's state should be FREEZED.
+ */
+void Hero::set_animation_boomerang(void) {
+
+  tunic_sprite->set_current_animation("boomerang");
+
+  if (equipment->has_shield()) {
+    shield_sprite->set_current_animation("boomerang");
+  }
+  stop_displaying_sword();
+}
+

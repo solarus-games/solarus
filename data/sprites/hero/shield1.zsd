@@ -25,3 +25,9 @@ sword_loading_walking hero/loading.shield1.png 2 100 0
 sword_tapping hero/sword_tapping.shield.png 2 40 1
 0	24	24	40	12	37	7	7
 0	88	24	40	12	21	7	7	
+
+boomerang hero/boomerang.shield.png 4 100 -1
+0	0	32	32	16	21	2	2
+0	32	32	32	16	21	2	2
+0	64	32	32	16	21	2	2
+0	96	32	32	16	21	2	2

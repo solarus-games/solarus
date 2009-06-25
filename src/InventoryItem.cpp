@@ -131,6 +131,7 @@ void InventoryItem::start(Game *game) {
   this->game = game;
   this->variant = game->get_equipment()->has_inventory_item(item_id);
   this->finished = false;
+  this->item_sound = NULL;
 
   Hero *hero = game->get_hero();
 
@@ -156,6 +157,15 @@ void InventoryItem::start(Game *game) {
 void InventoryItem::update(void) {
 
   Hero *hero = game->get_hero();
+
+  if (item_sound != NULL) {
+    Uint32 now = SDL_GetTicks();
+    if (now >= next_sound_date) {
+      item_sound->play();
+      next_sound_date = now + sound_delay;
+    }
+  }
+
   if (is_bottle()) {
     update_bottle();
   }

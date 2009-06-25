@@ -81,9 +81,9 @@ bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
     return false;
   }
 
-  // if the block is raised, only the hero may overlap it
+  // if the block is raised, only some specific entities may overlap it
   if (!other->is_hero()) {
-    return true;
+    return other->get_type() != BOOMERANG;
   }
 
   // the hero can walk on raised blocks only if he is already on them

@@ -1,5 +1,11 @@
 #include "entities/Boomerang.h"
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
+#include "movements/CollisionMovement.h"
+#include "movements/PlayerMovement.h"
+#include "ResourceManager.h"
+#include "Sound.h"
+#include "Map.h"
 
 /**
  * Creates a boomerang.
@@ -8,11 +14,24 @@
 Boomerang::Boomerang(Hero *hero):
   MapEntity() {
 
+  // initialize the entity
   set_layer(hero->get_layer());
   create_sprite("entities/boomerang");
   set_origin(8, 8);
   set_coordinates(hero->get_coordinates());
-  set_rectangle_from_sprite(); 
+  set_rectangle_from_sprite();
+  set_map(hero->get_map());
+
+  // determine the boomerang direction
+  int boomerang_direction = hero->get_animation_direction() * 90;
+  // TODO take into account diagonal directions (but we cannot use PlayerMovement since the movement is disabled)
+  
+  CollisionMovement *movement = new CollisionMovement();
+  movement->set_speed(24);
+  movement->set_direction(boomerang_direction);
+  set_movement(movement);
+
+  next_sound_date = SDL_GetTicks();
 }
 
 /**
@@ -74,4 +93,47 @@ bool Boomerang::is_displayed_in_y_order(void) {
   return true;
 }
 
+/**
+ * Updates the boomerang.
+ */
+void Boomerang::update(void) {
+
+  MapEntity::update();
+
+  Uint32 now = SDL_GetTicks();
+  if (now >= next_sound_date) {
+    ResourceManager::get_sound("boomerang")->play();
+    next_sound_date = now + 150;
+  }
+
+  if (get_movement()->is_stopped()) {
+    // collision with an obstacle
+    get_map()->get_entities()->remove_entity(this);
+  }
+}
+
+/**
+ * Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool Boomerang::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return false;
+}
+
+/**
+ * Returns whether a water tile is currently considered as an obstacle for this entity.
+ * @return true if the water tiles are currently an obstacle for this entity
+ */
+bool Boomerang::is_water_obstacle(void) {
+  return false;
+}
+
+/**
+ * Returns whether a hole is currently considered as an obstacle for this entity.
+ * @return true if the holes are currently an obstacle for this entity
+ */
+bool Boomerang::is_hole_obstacle(void) {
+  return false;
+}
 

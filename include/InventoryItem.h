@@ -38,6 +38,10 @@ class InventoryItem {
   Game *game;              /**< the game this item is used in */
   bool finished;           /**< true if we have finished using this item */
 
+  Sound *item_sound;       /**< sound played repeatedly while using this item */
+  Uint32 sound_delay;      /**< delay before playing the sound again */
+  Uint32 next_sound_date;
+
   void start_bottle(void);
   void update_bottle(void);
 

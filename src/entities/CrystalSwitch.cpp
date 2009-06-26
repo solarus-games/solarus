@@ -65,8 +65,9 @@ EntityType CrystalSwitch::get_type() {
  */
 bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
 
-  if (other->get_type() != CARRIED_ITEM && other->get_type() != BOOMERANG) {
-    return true;
+  // TODO dynamic dispatch
+  if (other->get_type() != CARRIED_ITEM) {
+    return (other->get_type() != BOOMERANG);
   }
 
   CarriedItem *item = (CarriedItem*) other;

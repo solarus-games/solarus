@@ -20,7 +20,7 @@ print("hw")
       if inventory_item_get(10) == 1 then
 	 if inventory_item_get_amount(10) >= 6 then
 	    start_message("cake_shop.thank_you")
-	    inventory_item_get_amount(10, 6)
+	    inventory_item_remove_amount(10, 6)
 	 else
 	    start_message("cake_shop.not_enough_apples")
 	 end

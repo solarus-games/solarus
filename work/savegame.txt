@@ -36,4 +36,4 @@ booleans:
 38	lyriann cave: barrier disabled with the switch
 39      piece of heart in lyriann cave
 40	lyriann cave: chest with 20 rupees
-
+41	lyriann cave: Tom gave the boomerang to the player

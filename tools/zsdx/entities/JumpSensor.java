@@ -150,7 +150,7 @@ public class JumpSensor extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("jumpLength", 56);
+	setProperty("jumpLength", 40);
     }
 
     /**

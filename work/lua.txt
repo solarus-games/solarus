@@ -4,7 +4,7 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 - event_update()					appelé à chaque cycle (à éviter si possible)
 - event_set_suspended(suspended)			appelé lorsque le jeu est suspendu ou repris
 - event_message_started(message_id)			appelé au début de l'affichage de chaque message d'un dialogue
-- event_dialog_finished(message_id, answer)		appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
+- event_message_sequence_finished(message_id, answer)		appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
 - event_switch_enabled(switch_name)			appelé lorsqu'un interrupteur vient d'être activé
 - event_switch_disabled(switch_name)			appelé lorsqu'un interrupteur vient d'être désactivé
 - event_hero_on_sensor(sensor_name)			appelé lorsque le héros marche sur un capteur

@@ -23,3 +23,22 @@ function camera_timer()
   savegame_set_boolean(38, true)
   start_timer(1000, "restore_camera", false)
 end
+
+function event_npc_dialog(npc)
+
+  if npc == "tom" then
+    if not savegame_get_boolean(41) then
+      start_message("lyriann_cave.tom")
+    else
+      start_message("lyriann_cave.tom.not_finished")
+    end
+  end
+end
+
+function event_message_sequence_finished(message_id, answer)
+
+  if message_id == "lyriann_cave.tom" then
+    give_treasure(4, 41)
+  end
+end
+

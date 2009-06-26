@@ -30,7 +30,6 @@ Bugs :
 - capteurs de sauts : mettre 40 comme longueur par défaut dans l'éditeur
 - quand on prend un téléporteur, supprimer le boomerang
 - un seul boomerang à la fois (booléen voire pointeur dans MapEntities)
-- enlever le son "tic" quand le boomerang fait demi-tour de lui-même
 
 
 A venir :

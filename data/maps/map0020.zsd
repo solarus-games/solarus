@@ -253,7 +253,7 @@
 2	0	304	560	16	16	teletransporter_12	0	1	21	from_1F_hole_2_east
 15	0	248	192	32	16	0
 8	0	208	381	tom	3	1	npc/tom	_none
-1	0	112	589	from_outside	1	0
+1	0	208	421	from_outside	1	0
 0	1	200	592	64	8	180
 0	1	200	560	64	32	2
 0	1	40	600	400	24	52

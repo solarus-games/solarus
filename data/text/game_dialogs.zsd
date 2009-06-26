@@ -978,3 +978,45 @@ line1 = "Cette porte est gelée."
 line2 = "Il faudrait un moyen de"
 line3 = "faire fondre la glace !"
 cancel = all
+
+[lyriann_cave.tom]
+#       |-----------------------|
+line1 = "Bonjour, jeune"
+line2 = "aventurier. Je suis"
+line3 = "Tom, un ancien garde"
+next = lyriann_cave.tom.2
+
+[lyriann_cave.tom.2]
+#       |-----------------------|
+line1 = "de notre défunt Roi."
+line2 = "Que fais-tu dans cette"
+line3 = "caverne lugubre ?"
+next = lyriann_cave.tom.3
+
+[lyriann_cave.tom.3]
+#       |-----------------------|
+line1 = "Tu cherches à en percer"
+line2 = "les mystères ? Cela me"
+line3 = "semble très courageux."
+next = lyriann_cave.tom.4
+
+[lyriann_cave.tom.4]
+#       |-----------------------|
+line1 = "Cet endroit regorge"
+line2 = "d'énigmes, de trésors"
+line3 = "et de dangers."
+next = lyriann_cave.tom.5
+
+[lyriann_cave.tom.5]
+#       |-----------------------|
+line1 = "Je peux te prêter ceci,"
+line2 = "mais n'oublie pas de me"
+line3 = "le rendre ensuite !"
+
+[lyriann_cave.tom.not_finished]
+#       |-----------------------|
+line1 = "Tu t'en sors ? Aide-toi"
+line2 = "de mon boomerang pour"
+line3 = "franchir les obstacles."
+
+

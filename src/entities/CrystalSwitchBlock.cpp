@@ -22,6 +22,8 @@
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 #include <list>
 
 /**
@@ -166,7 +168,8 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const SDL_Rect &collision_box,
   if (!map->collision_with_obstacles(get_layer(), collision_box, hero)
       && !map->get_entities()->overlaps_raised_blocks(get_layer(), collision_box)) {
 
-    hero->start_jumping(jump_direction, jump_length, true);
+    hero->start_jumping(jump_direction, jump_length, true, false);
+    ResourceManager::get_sound("hero_lands")->play();
     return true;
   }
 

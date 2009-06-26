@@ -56,6 +56,7 @@ class Controls {
   std::map<SDLKey, GameKey> keyboard_mapping;
   std::map<std::string, GameKey> joypad_mapping;
   bool keys_pressed[9];
+  static const Uint16 arrows_masks[4];
 
   bool customizing;
   GameKey key_to_customize;
@@ -86,6 +87,7 @@ class Controls {
   const std::string& get_joypad_string(GameKey key);
   void handle_event(const SDL_Event &event);
   bool is_key_pressed(GameKey game_key);
+  int get_arrows_direction(void);
 
   // customization
   void customize(GameKey key);

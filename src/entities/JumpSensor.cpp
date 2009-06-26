@@ -83,7 +83,7 @@ EntityType JumpSensor::get_type() {
  * @return true if this entity is an obstacle for the other one
  */
 bool JumpSensor::is_obstacle_for(MapEntity *other) {
-  return !other->is_hero();
+  return !other->is_hero() && !other->get_type() == BOOMERANG;
 }
 
 /**
@@ -177,7 +177,7 @@ void JumpSensor::collision(MapEntity *entity_overlapping, CollisionMode collisio
   if (entity_overlapping->is_hero()) {
     Hero* hero = (Hero*) entity_overlapping;
     if (hero->get_normal_movement()->is_moving_enabled()) {
-      hero->start_jumping(direction, jump_length, false, LAYER_LOW);
+      hero->start_jumping(direction, jump_length, false, true, LAYER_LOW);
     }
   }
 }

@@ -21,6 +21,8 @@
 #include "Game.h"
 #include "Controls.h"
 
+// TODO use the code from Controls
+
 /*
  * Bit masks associated to each arrow on the keyboard or the joypad.
  * A combination of arrows is stored in a simple integer.

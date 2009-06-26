@@ -132,11 +132,11 @@ void SmoothCollisionMovement::update_x(void) {
 	  bool moved = false;
 	  for (int i = 1; i <= 8 && !moved; i++) {
 
-	    if (!collision_with_map(x_move, i)) {
+	    if (!collision_with_map(x_move, i) && !collision_with_map(0, 1)) {
 	      translate_y(1);
 	      moved = true;
 	    }
-	    else if (!collision_with_map(x_move, -i)) {
+	    else if (!collision_with_map(x_move, -i) && !collision_with_map(0, -1)) {
 	      translate_y(-1);
 	      moved = true;
 	    }
@@ -198,11 +198,11 @@ void SmoothCollisionMovement::update_y(void) {
 	  bool moved = false;
 	  for (int i = 1; i <= 8 && !moved; i++) {
 
-	    if (!collision_with_map(i, y_move)) {
+	    if (!collision_with_map(i, y_move) && !collision_with_map(1, 0)) {
 	      translate_x(1);
 	      moved = true;
 	    }
-	    else if (!collision_with_map(-i, y_move)) {
+	    else if (!collision_with_map(-i, y_move) && !collision_with_map(-1, 0)) {
 	      translate_x(-1);
 	      moved = true;
 	    }

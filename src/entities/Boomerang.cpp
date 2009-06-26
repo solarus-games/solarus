@@ -11,8 +11,9 @@
 /**
  * Creates a boomerang.
  * @param hero the hero
+ * @param boomerang_direction the boomerang direction (0 to 360)
  */
-Boomerang::Boomerang(Hero *hero):
+Boomerang::Boomerang(Hero *hero, int boomerang_direction):
   MapEntity(), hero(hero), has_to_go_back(false), going_back(false) {
 
   // initialize the entity
@@ -21,28 +22,24 @@ Boomerang::Boomerang(Hero *hero):
   set_origin(8, 8);
   set_rectangle_from_sprite();
 
-  // determine the boomerang direction
-  int boomerang_direction = hero->get_animation_direction() * 90;
-  // TODO take into account diagonal directions (but we cannot use PlayerMovement since the movement is disabled)
-
   int hero_x = hero->get_top_left_x();
   int hero_y = hero->get_top_left_y();
-  switch (boomerang_direction) {
+  switch (hero->get_animation_direction()) {
 
     case 0:
-      set_coordinates(hero_x + 12, hero_y + 8);
+      set_coordinates(hero_x + 24, hero_y + 8);
       break;
 
-    case 90:
-      set_coordinates(hero_x + 8, hero_y - 12);
+    case 1:
+      set_coordinates(hero_x + 8, hero_y - 8);
       break;
 
-    case 180:
-      set_coordinates(hero_x - 12, hero_y + 8);
+    case 2:
+      set_coordinates(hero_x - 8, hero_y + 8);
       break;
 
-    case 270:
-      set_coordinates(hero_x + 8, hero_y + 12);
+    case 3:
+      set_coordinates(hero_x + 8, hero_y + 24);
       break;
 
   }
@@ -198,9 +195,12 @@ void Boomerang::update(void) {
       clear_movement();
       set_movement(new TargetMovement(hero, 16));
     }
-    else if (get_movement()->is_stopped() || get_distance(initial_coords.x, initial_coords.y) >= 96) {
+    else if (get_movement()->is_stopped()) {
       // collision with an obstacle or time to go back
       ResourceManager::get_sound("sword_hit")->play();
+      go_back();
+    }
+    else if (get_distance(initial_coords.x, initial_coords.y) >= 144) {
       go_back();
     }
   }

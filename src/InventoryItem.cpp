@@ -23,6 +23,7 @@
 #include "DialogBox.h"
 #include "MapScript.h"
 #include "Map.h"
+#include "Controls.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "entities/Detector.h"
@@ -144,6 +145,7 @@ void InventoryItem::start(Game *game) {
   }
   else if (item_id == INVENTORY_BOOMERANG) {
     hero->set_animation_boomerang();
+    this->direction_pressed = game->get_controls()->get_arrows_direction();
   }
   else {
     // TODO
@@ -172,7 +174,11 @@ void InventoryItem::update(void) {
   else if (item_id == INVENTORY_BOOMERANG) {
     if (hero->is_animation_finished()) {
       finished = true;
-      game->get_current_map()->get_entities()->add_entity(new Boomerang(hero));
+      int boomerang_direction = direction_pressed;
+      if (boomerang_direction == -1) {
+        boomerang_direction = hero->get_animation_direction() * 90;
+      }
+      game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction));
     }
   }
 }
@@ -294,3 +300,4 @@ void InventoryItem::update_bottle(void) {
 void InventoryItem::set_map(Map *map) {
   // TODO boomerang: put the boomerang in the new map  
 }
+

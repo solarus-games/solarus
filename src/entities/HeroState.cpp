@@ -148,12 +148,12 @@ void Hero::update_ground(void) {
     if (ground == GROUND_HOLE &&
 	state != FALLING && state != RETURNING_TO_SOLID_GROUND && state != JUMPING) {
 
-      // time to move the hero on a hole one more pixel away from the solid ground
       if (get_distance(last_solid_ground_coords.x, last_solid_ground_coords.y) >= 8) {
 	start_falling();
       }
       else {
 
+	// time to move the hero on a hole one more pixel away from the solid ground
 	SDL_Rect collision_box = get_position_in_map();
 	collision_box.x += hole_dx;
 	collision_box.y += hole_dy;
@@ -922,9 +922,10 @@ void Hero::update_spin_attack(void) {
  * @param direction direction of the jump (0 to 7)
  * @param length length of the jump in pixels
  * @param with_collisions true to stop the movement if there is a collision
+ * @param with_sound true to play the "jump" sound
  */
-void Hero::start_jumping(int direction, int length, bool with_collisions) {
-  start_jumping(direction, length, with_collisions, get_layer());
+void Hero::start_jumping(int direction, int length, bool with_collisions, bool with_sound) {
+  start_jumping(direction, length, with_collisions, with_sound, get_layer());
 }
 
 /**
@@ -933,8 +934,10 @@ void Hero::start_jumping(int direction, int length, bool with_collisions) {
  * @param direction direction of the jump (0 to 7)
  * @param length length of the jump in pixels
  * @param with_collisions true to stop the movement if there is a collision
+ * @param with_sound true to play the "jump" sound
+ * @param layer_after_jump the layer to set when the jump is finished
  */
-void Hero::start_jumping(int direction, int length, bool with_collisions, Layer layer_after_jump) {
+void Hero::start_jumping(int direction, int length, bool with_collisions, bool with_sound, Layer layer_after_jump) {
 
   // remove the carried item
   if (state == CARRYING) {
@@ -947,7 +950,10 @@ void Hero::start_jumping(int direction, int length, bool with_collisions, Layer 
   set_state(JUMPING);
   set_movement(new JumpMovement(direction, length, with_collisions));
   set_animation_jumping();
-  ResourceManager::get_sound("jump")->play();
+
+  if (with_sound) {
+    ResourceManager::get_sound("jump")->play();
+  }
   jump_y = get_y();
   this->layer_after_jump = layer_after_jump;
 }
@@ -1118,7 +1124,7 @@ void Hero::start_deep_water(void) {
       start_swimming();
     }
     else {
-      start_jumping(get_movement_direction() / 45, 32, true);
+      start_jumping(get_movement_direction() / 45, 32, true, true);
       ((JumpMovement*) get_movement())->set_delay(13);
     }
   }

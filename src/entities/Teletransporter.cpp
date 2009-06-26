@@ -115,33 +115,28 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
  */
 bool Teletransporter::check_collision_custom(MapEntity *entity) {
 
-  if (destination_point_name == "_side") {
-
-    if (!entity->is_hero()) {
-      return false;
-    }
+  // specific collision tests for some situations
+  if (entity->is_hero()) {
 
     Hero *hero = (Hero*) entity;
-    SDL_Rect facing_point = hero->get_facing_point(transition_direction);
-    return hero->is_moving_towards(transition_direction)
-      && is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
-  }
+    if (destination_point_name == "_side") {
 
-  else if (destination_point_name == "_same") {
-  
-    if (!entity->is_hero()) {
-      return false;
+      SDL_Rect facing_point = hero->get_facing_point(transition_direction);
+      return hero->is_moving_towards(transition_direction)
+	&& is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
     }
 
-    Hero *hero = (Hero*) entity;
-    return check_collision_origin_point(hero);
+    else if (hero->is_on_hole()) {
+      return check_collision_origin_point(hero);
+    }
   }
 
+  // normal case
   const SDL_Rect &entity_position = entity->get_position_in_map();
   int x1 = entity_position.x + 4;
-  int x2 = x1 + entity_position.w - 5;
+  int x2 = x1 + entity_position.w - 9;
   int y1 = entity_position.y + 4;
-  int y2 = y1 + entity_position.h - 5;
+  int y2 = y1 + entity_position.h - 9;
 
   return is_point_in(get_position_in_map(), x1, y1) &&
     is_point_in(get_position_in_map(), x2, y1) &&

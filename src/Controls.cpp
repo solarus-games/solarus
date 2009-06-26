@@ -38,6 +38,46 @@ static const string key_names[] = {
 
 static const string direction_strings[] = {"right", "up", "left", "down"};
 
+/*
+ * Bit masks associated to each arrow on the keyboard or the joypad.
+ * A combination of arrows is stored in a simple integer.
+ */
+const Uint16 Controls::arrows_masks[4] = {
+  0x0001,
+  0x0002,
+  0x0004,
+  0x0008
+};
+
+/**
+ * Associates to each possible combination of arrows
+ * an angle in degrees: 0 to 359, or -1 to indicate
+ * that the movement is stopped.
+ *
+ * For example:
+ *   Uint16 arrows_pressed = right_mask | up_mask;
+ *   int angle = directions[arrows_pressed];
+ * Here the angle is 45°.
+*/
+static const int arrows_angles[] = {
+  -1,  // none: stop
+  0,   // right
+  90,  // up
+  45,  // right + up
+  180, // left
+  -1,  // left + right: stop
+  135, // left + up
+  -1,  // left + right + up: stop
+  270, // down
+  315, // down + right
+  -1,  // down + up: stop
+  -1,  // down + right + up: stop
+  225, // down + left
+  -1,  // down + left + right: stop
+  -1,  // down + left + up: stop
+  -1,  // down + left + right + up: stop
+};
+
 /**
  * Constructor.
  * @param game the game
@@ -107,6 +147,30 @@ const string Controls::get_keyboard_string(GameKey game_key) {
  */
 bool Controls::is_key_pressed(GameKey game_key) {
   return keys_pressed[game_key - 1];
+}
+
+/**
+ * Returns the direction corresponding to the arrow keys
+ * currently pressed by the player.
+ * @return the arrows direction (0 to 360), or -1
+ * if no arrow is pressed
+ */
+int Controls::get_arrows_direction(void) {
+
+  Uint16 arrows_mask = 0x0000;
+  if (is_key_pressed(RIGHT)) {
+    arrows_mask |= 0x0001;
+  }
+  if (is_key_pressed(UP)) {
+    arrows_mask |= 0x0002;
+  }
+  if (is_key_pressed(LEFT)) {
+    arrows_mask |= 0x0004;
+  }
+  if (is_key_pressed(DOWN)) {
+    arrows_mask |= 0x0008;
+  }
+  return arrows_angles[arrows_mask];
 }
 
 /**

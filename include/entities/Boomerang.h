@@ -22,7 +22,7 @@ class Boomerang: public MapEntity {
 
  public:
 
-  Boomerang(Hero *hero);
+  Boomerang(Hero *hero, int direction);
   ~Boomerang(void);
 
   EntityType get_type(void);

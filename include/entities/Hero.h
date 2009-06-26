@@ -308,8 +308,8 @@ class Hero: public MapEntity {
   void freeze(void);
   void unfreeze(void);
   void give_treasure(Treasure *treasure);
-  void start_jumping(int direction, int length, bool with_collisions);
-  void start_jumping(int direction, int length, bool with_collisions, Layer layer_after_jump);
+  void start_jumping(int direction, int length, bool with_collisions, bool with_sound);
+  void start_jumping(int direction, int length, bool with_collisions, bool with_sound, Layer layer_after_jump);
   void hurt(MapEntity *source, int life);
   void get_back_from_death(void);
   void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords);

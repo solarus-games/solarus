@@ -50,7 +50,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
  */
 MapEntity::MapEntity(void):
   map(NULL), layer(LAYER_LOW), name(""), direction(0), movement(NULL),
-  suspended(false), when_suspended(0) {
+  suspended(false), when_suspended(0), being_removed(false) {
 
   position_in_map.x = 0;
   position_in_map.y = 0;
@@ -72,7 +72,7 @@ MapEntity::MapEntity(void):
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   layer(layer), name(""), direction(0), movement(NULL),
-  suspended(false), when_suspended(0) {
+  suspended(false), when_suspended(0), being_removed(false) {
 
   position_in_map.x = x;
   position_in_map.y = y;

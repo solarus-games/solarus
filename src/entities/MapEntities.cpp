@@ -493,6 +493,9 @@ void MapEntities::update(void) {
        it != all_entities.end();
        it++) {
 
+//    if ((*it)->get_type() == BOOMERANG)
+//      std::cout << "boom being removed: " << (*it)->is_being_removed() << std::endl;
+
     if (!(*it)->is_being_removed()) {
       (*it)->update();
     }

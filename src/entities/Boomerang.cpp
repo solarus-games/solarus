@@ -18,16 +18,36 @@ Boomerang::Boomerang(Hero *hero):
   set_layer(hero->get_layer());
   create_sprite("entities/boomerang");
   set_origin(8, 8);
-  set_coordinates(hero->get_coordinates());
   set_rectangle_from_sprite();
-  set_map(hero->get_map());
 
   // determine the boomerang direction
   int boomerang_direction = hero->get_animation_direction() * 90;
   // TODO take into account diagonal directions (but we cannot use PlayerMovement since the movement is disabled)
-  
+
+  int hero_x = hero->get_top_left_x();
+  int hero_y = hero->get_top_left_y();
+  switch (boomerang_direction) {
+
+    case 0:
+      set_coordinates(hero_x + 12, hero_y + 8);
+      break;
+
+    case 90:
+      set_coordinates(hero_x + 8, hero_y - 12);
+      break;
+
+    case 180:
+      set_coordinates(hero_x - 12, hero_y + 8);
+      break;
+
+    case 270:
+      set_coordinates(hero_x + 8, hero_y + 12);
+      break;
+
+  }
+
   CollisionMovement *movement = new CollisionMovement();
-  movement->set_speed(24);
+  movement->set_speed(16);
   movement->set_direction(boomerang_direction);
   set_movement(movement);
 

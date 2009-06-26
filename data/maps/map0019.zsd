@@ -69,7 +69,7 @@
 8	0	160	109	interactive_entity	3	0	_none	cake_shop.seller
 16	0	80	128	pain_au_chocolat	17	1	-1	20	cake_shop.pain_au_chocolat
 16	0	208	128	croissant	18	1	-1	50	cake_shop.croissant
-13	0	160	229	16	16	leaving_shop_sensor	0
+13	0	160	221	16	16	leaving_shop_sensor	0
 0	2	112	216	96	8	148
 0	2	144	216	32	8	153
 0	2	0	0	320	16	170

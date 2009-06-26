@@ -18,6 +18,7 @@ Feature requests :
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Permettre de couper voire régler la musique et/ou le son
 - Mettre des constantes dans les scripts
+- Mettre une icône sur l'exécutable
 
 
 Bugs :
@@ -27,9 +28,12 @@ Bugs :
 - écran-titres : textes du bas flous
 - quand ça rame (exemple Wink), les vases sont lancés moins loin
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
-- capteurs de sauts : mettre 40 comme longueur par défaut dans l'éditeur
 - quand on prend un téléporteur, supprimer le boomerang
 - un seul boomerang à la fois (booléen voire pointeur dans MapEntities)
+- l'ombre des pots passe sur Link pendant qu'on les soulève
+- permettre de manger pommes, pains au chocolat et croissants
+- sauts de longueur 16 : ça monte pas
+- sac de bombes : est-ce normal qu'il soit déjà disponible ?
 
 
 A venir :
@@ -60,6 +64,11 @@ Remarques de Linksupersayen :
   - Les musiques. On adore les musiques de A Link To The Past... sur la Super Nintendo et la Game Boy Advance, mais sur le PC, elle semblent un peu enregistrées, enfin, il faudrait augmenter la qualité sonore et là, ça serait bon !
   - D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
 
+  
+Remarques de @PyroNet :
+
+- bandit manchot : graphismes pas exceptionnels, tapis pas centré
+- bandit manchot : débloquer plus tard dans le jeu et laisser un message "casino hors-service" ? ou garder ce clin d'oeil pour le moment où la maison est dévalisée ?
 
 Idées :
 

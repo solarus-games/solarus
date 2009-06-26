@@ -3,6 +3,7 @@
 #include "entities/MapEntities.h"
 #include "movements/CollisionMovement.h"
 #include "movements/PlayerMovement.h"
+#include "movements/TargetMovement.h"
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Map.h"
@@ -12,7 +13,7 @@
  * @param hero the hero
  */
 Boomerang::Boomerang(Hero *hero):
-  MapEntity() {
+  MapEntity(), hero(hero), has_to_go_back(false), going_back(false) {
 
   // initialize the entity
   set_layer(hero->get_layer());
@@ -45,6 +46,9 @@ Boomerang::Boomerang(Hero *hero):
       break;
 
   }
+
+  initial_coords.x = get_x();
+  initial_coords.y = get_y();
 
   CollisionMovement *movement = new CollisionMovement();
   movement->set_speed(16);
@@ -114,25 +118,6 @@ bool Boomerang::is_displayed_in_y_order(void) {
 }
 
 /**
- * Updates the boomerang.
- */
-void Boomerang::update(void) {
-
-  MapEntity::update();
-
-  Uint32 now = SDL_GetTicks();
-  if (now >= next_sound_date) {
-    ResourceManager::get_sound("boomerang")->play();
-    next_sound_date = now + 150;
-  }
-
-  if (get_movement()->is_stopped()) {
-    // collision with an obstacle
-    get_map()->get_entities()->remove_entity(this);
-  }
-}
-
-/**
  * Returns whether a teletransporter is currently considered as an obstacle for this entity.
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
@@ -143,6 +128,7 @@ bool Boomerang::is_teletransporter_obstacle(Teletransporter *teletransporter) {
 
 /**
  * Returns whether a water tile is currently considered as an obstacle for this entity.
+ * This function returns true by default.
  * @return true if the water tiles are currently an obstacle for this entity
  */
 bool Boomerang::is_water_obstacle(void) {
@@ -151,9 +137,78 @@ bool Boomerang::is_water_obstacle(void) {
 
 /**
  * Returns whether a hole is currently considered as an obstacle for this entity.
+ * This function returns true by default.
  * @return true if the holes are currently an obstacle for this entity
  */
 bool Boomerang::is_hole_obstacle(void) {
   return false;
+}
+
+/**
+ * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
+ * @param block a crystal switch block raised
+ * @return false 
+ */
+bool Boomerang::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+  // the boomerang can traverse the crystal switch blocks
+  return false;
+}
+
+/**
+ * Returns whether the boomerang is going back towards the hero, i.e. if go_back() has been called.
+ * @return true if the boomerang is going back
+ */
+bool Boomerang::is_going_back(void) {
+  return has_to_go_back || going_back;
+}
+
+/**
+ * Makes the boomerang go back towards the hero.
+ */
+void Boomerang::go_back(void) {
+
+  if (is_going_back()) {
+    DIE("The boomerang is already going back");
+  }
+
+  has_to_go_back = true;
+}
+
+/**
+ * Updates the boomerang.
+ */
+void Boomerang::update(void) {
+
+  MapEntity::update();
+
+  if (suspended) {
+    return;
+  }
+
+  Uint32 now = SDL_GetTicks();
+  if (now >= next_sound_date) {
+    ResourceManager::get_sound("boomerang")->play();
+    next_sound_date = now + 150;
+  }
+
+  if (!going_back) {
+
+    if (has_to_go_back) {
+      going_back = true;
+      clear_movement();
+      set_movement(new TargetMovement(hero, 16));
+    }
+    else if (get_movement()->is_stopped() || get_distance(initial_coords.x, initial_coords.y) >= 96) {
+      // collision with an obstacle or time to go back
+      ResourceManager::get_sound("sword_hit")->play();
+      go_back();
+    }
+  }
+  else {
+    TargetMovement *movement = (TargetMovement*) get_movement();
+    if (movement->is_finished()) {
+      get_map()->get_entities()->remove_entity(this);
+    }
+  }
 }
 

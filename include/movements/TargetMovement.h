@@ -29,6 +29,8 @@ class TargetMovement: public Movement {
 
   int target_x;
   int target_y;
+  MapEntity *target_entity; /**< can be NULL if only a point is targeted */
+
   int sign_x;   /**< sign of the x movement (1: right, -1: left) */
   int sign_y;   /**< sign of the y movement (1: up, -1: down) */
   int speed;
@@ -40,9 +42,8 @@ class TargetMovement: public Movement {
  public:
 
   TargetMovement(int target_x, int target_y, int speed);
+  TargetMovement(MapEntity *target_entity, int speed);
   ~TargetMovement(void);
-
-  // possible extension: target directly and entity
 
   bool is_finished(void);
   void update(void);

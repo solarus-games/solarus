@@ -5,6 +5,7 @@
 function event_map_started()
   if savegame_get_boolean(38) then
     disable_tile("barrier")
+    switch_set_enabled("open_barrier_switch", true)
   end
 end
 

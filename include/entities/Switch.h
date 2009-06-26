@@ -54,6 +54,7 @@ class Switch: public Detector {
 
   EntityType get_type(void);
 
+  void set_enabled(bool enabled);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 };
 

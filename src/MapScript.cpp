@@ -122,6 +122,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "equipment_get_sword", l_equipment_get_sword);
   lua_register(context, "equipment_get_shield", l_equipment_get_shield);
   lua_register(context, "shop_item_remove", l_shop_item_remove);
+  lua_register(context, "switch_set_enabled", l_switch_set_enabled);
 }
 
 /**
@@ -1253,6 +1254,25 @@ int MapScript::l_shop_item_remove(lua_State *l) {
 
   Map *map = zsdx->game->get_current_map();
   map->get_entities()->remove_entity(SHOP_ITEM, name);
+
+  return 0;
+}
+
+/**
+ * Enables or disables a switch.
+ * Argument 1 (string): name of the switch
+ * Argument 2 (boolean): true to enable the switch, false to disable it
+ */
+int MapScript::l_switch_set_enabled(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  const string &name = lua_tostring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  Switch *sw = (Switch*) map->get_entities()->get_entity(SWITCH, name);
+  sw->set_enabled(enable);
 
   return 0;
 }

@@ -64,6 +64,25 @@ EntityType Switch::get_type() {
 }
 
 /**
+ * Enables or disables the switch, not playing any sound.
+ */
+void Switch::set_enabled(bool enabled) {
+
+  if (enabled != this->enabled) {
+    this->enabled = enabled;
+
+    if (subtype != INVISIBLE) {
+      if (enabled) {
+        get_sprite()->set_current_animation("enabled");
+      }
+      else {
+        get_sprite()->set_current_animation("disabled");
+      }
+    }
+  }
+}
+
+/**
  * This function is called by the engine when an entity overlaps the switch.
  * This is a redefinition of Detector::collision().
  * @param entity_overlapping the entity overlapping the detector
@@ -76,18 +95,17 @@ void Switch::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
   }
 
   if (entity_overlapping->is_hero()) {
-    enabled = !needs_block;
+    set_enabled(!needs_block);
   }
   else if (entity_overlapping->get_type() == BLOCK) {
     // don't enable an invisible switch with a block
-    enabled = (subtype != INVISIBLE);
+    set_enabled(subtype != INVISIBLE);
   }
 
   if (enabled) {
 
     if (subtype != INVISIBLE) {
       ResourceManager::get_sound("switch")->play();
-      get_sprite()->set_current_animation("enabled");
     }
 
     map->get_script()->event_switch_enabled(get_name());

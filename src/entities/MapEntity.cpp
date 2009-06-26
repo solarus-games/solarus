@@ -620,7 +620,7 @@ bool MapEntity::is_obstacle_for(MapEntity *other) {
  * @return true if the water tiles are currently an obstacle for this entity
  */
 bool MapEntity::is_water_obstacle(void) {
-  return false;
+  return true;
 }
 
 /**
@@ -650,6 +650,16 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
  */
 bool MapEntity::is_sensor_obstacle(Sensor *sensor) {
   return false;
+}
+
+/**
+ * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param block a crystal switch block raised
+ * @return true if the raised block is currently an obstacle for this entity
+ */
+bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+  return true;
 }
 
 /**

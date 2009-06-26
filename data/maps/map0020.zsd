@@ -221,6 +221,13 @@
 0	0	112	136	8	8	71
 0	0	112	208	8	8	69
 0	0	120	208	8	8	70
+0	0	288	560	32	16	345
+0	0	288	568	8	8	329
+0	0	288	560	8	8	328
+0	0	312	560	8	8	331
+0	0	312	568	8	8	330
+0	0	296	560	16	8	332
+0	0	296	568	16	8	334
 2	0	72	376	16	16	to_B1_stairs_2	0	1	21	from_1F_stairs_2
 1	0	112	589	from_outside	1	0
 2	0	104	608	16	16	to_outside	0	1	4	out_lyriann_cave
@@ -239,12 +246,12 @@
 14	0	192	509
 1	0	80	365	from_B1_stairs_2	1	0
 10	0	136	296	8	16	barrier	71	1
-1	0	208	445	destination_point_4	-1	1
+1	0	248	421	destination_point_4	-1	1
 2	0	128	448	16	16	teletransporter_5	1	1	20	destination_point_3
 2	0	240	488	16	16	teletransporter_6	1	1	20	destination_point
 2	0	264	320	16	16	teletransporter_7	1	1	20	destination_point_4
-2	0	240	408	16	16	teletransporter_8	1	1	20	destination_point_2
-11	0	88	328	switch	1	0	0
+2	0	200	432	16	16	teletransporter_8	1	1	20	destination_point_2
+11	0	88	328	open_barrier_switch	1	0	0
 4	0	96	341	0	0	-1
 1	0	112	269	destination_point_5	-1	1
 15	0	184	512	16	16	0
@@ -271,6 +278,7 @@
 15	0	80	160	48	16	0
 15	0	64	176	64	16	1
 15	0	192	224	32	16	0
+2	0	288	560	32	16	teletransporter_11	0	1	21	_same
 0	1	40	392	48	24	52
 0	1	64	592	96	32	151
 0	1	64	456	32	8	311

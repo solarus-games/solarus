@@ -157,6 +157,17 @@ bool Hero::is_sensor_obstacle(Sensor *sensor) {
 }
 
 /**
+ * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
+ * @param block a crystal switch block raised
+ * @return true if the raised block is currently an obstacle for this entity
+ */
+bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+
+  // the raised block is an obstacle when the hero is not on it
+  return !map->get_entities()->is_hero_on_raised_blocks();
+}
+
+/**
  * Returns the 8-direction movement controlled by the player,
  * even if it is not the current movement of the hero.
  * @return the player's movement

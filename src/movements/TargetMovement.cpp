@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/TargetMovement.h"
+#include "entities/MapEntity.h"
 #include <cmath>
 
 /**
@@ -24,8 +25,20 @@
  * @param speed speed of the movement
  */
 TargetMovement::TargetMovement(int target_x, int target_y, int speed):
-  target_x(target_x), target_y(target_y), sign_x(0), sign_y(0), speed(speed),
+  target_x(target_x), target_y(target_y), target_entity(NULL), sign_x(0), sign_y(0), speed(speed),
   next_recomputation_date(SDL_GetTicks()) {
+
+}
+
+/**
+ * Creates a new target movement.
+ * @param target_entity the target entity
+ * @param speed speed of the movement
+ */
+TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
+  target_x(target_entity->get_x()), target_y(target_entity->get_y()), target_entity(target_entity),
+  sign_x(0), sign_y(0), speed(speed), next_recomputation_date(SDL_GetTicks()) {
+
 }
 
 /**
@@ -45,7 +58,7 @@ void TargetMovement::update(void) {
 
   if (SDL_GetTicks() >= next_recomputation_date) {
     recompute_movement();
-    next_recomputation_date += 500;
+    next_recomputation_date += 100;
   }
 
   // see if the target is reached
@@ -62,6 +75,11 @@ void TargetMovement::update(void) {
  * depending on the target.
  */
 void TargetMovement::recompute_movement(void) {  
+
+  if (target_entity != NULL) {
+    target_x = target_entity->get_x();
+    target_y = target_entity->get_y();
+  }
 
   int dx = target_x - get_x();
   int dy = target_y - get_y();

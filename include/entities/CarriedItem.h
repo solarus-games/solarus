@@ -68,6 +68,7 @@ class CarriedItem: public MapEntity {
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   bool is_water_obstacle(void);
   bool is_hole_obstacle(void);
+  bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
   void collision_with_enemy(Enemy *enemy);
 };
 

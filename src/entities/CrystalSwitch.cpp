@@ -16,6 +16,7 @@
  */
 #include "entities/CrystalSwitch.h"
 #include "entities/CarriedItem.h"
+#include "entities/Boomerang.h"
 #include "entities/Hero.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -64,7 +65,7 @@ EntityType CrystalSwitch::get_type() {
  */
 bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
 
-  if (other->get_type() != CARRIED_ITEM) {
+  if (other->get_type() != CARRIED_ITEM && other->get_type() != BOOMERANG) {
     return true;
   }
 
@@ -85,6 +86,14 @@ void CrystalSwitch::collision(MapEntity *entity_overlapping, CollisionMode colli
     if (item->is_being_thrown()) {
       activate();
       item->break_item();
+    }
+  }
+  else if (entity_overlapping->get_type() == BOOMERANG && collision_mode == COLLISION_RECTANGLE) {
+
+    Boomerang *boomerang = (Boomerang*) boomerang;
+    activate();
+    if (!boomerang->is_going_back()) {
+      boomerang->go_back();
     }
   }
   else if (entity_overlapping->is_hero() && collision_mode == COLLISION_FACING_POINT) {

@@ -17,10 +17,10 @@ function event_message_sequence_finished(first_message_id, answer)
 print("hw")
    if first_message_id == "cake_shop.dont_leave" and answer == 0 then
 
-      if get_inventory_item(10) == 1 then
-	 if get_inventory_item_amount(10) >= 6 then
+      if inventory_item_get(10) == 1 then
+	 if inventory_item_get_amount(10) >= 6 then
 	    start_message("cake_shop.thank_you")
-	    remove_inventory_item_amount(10, 6)
+	    inventory_item_get_amount(10, 6)
 	 else
 	    start_message("cake_shop.not_enough_apples")
 	 end

@@ -655,7 +655,7 @@ bool MapEntity::is_sensor_obstacle(Sensor *sensor) {
 /**
  * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
  * This function returns true by default.
- * @param block a crystal switch block raised
+ * @param raised_block a crystal switch block raised
  * @return true if the raised block is currently an obstacle for this entity
  */
 bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
@@ -663,8 +663,29 @@ bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
 }
 
 /**
+ * Returns whether a crystal switch is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * It should be redefined only for entities that can activate a crystal switch: a pot, the boomerang, etc.
+ * @param crystal_switch a crystal switch
+ * @return true if the crystal switch is currently an obstacle for this entity
+ */
+bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
+  return true;
+}
+
+/**
+ * Returns whether a non-playing character is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param npc a non-playing character
+ * @return true if the NPC is currently an obstacle for this entity
+ */
+bool MapEntity::is_npc_obstacle(InteractiveEntity *npc) {
+  return true;
+}
+
+/**
  * Returns true if this entity does not react to the sword.
- * If true is returned, nothing will happen when the hero hits this entity with the sword.
+ * If true is returned, nothing will happen when the hero taps this entity with the sword.
  * @return true if the sword is ignored
  */
 bool MapEntity::is_sword_ignored(void) {

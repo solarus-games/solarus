@@ -68,6 +68,8 @@ class MapEntities {
     obstacle_entities[LAYER_NB];                          /**< all entities that might be obstacle for other
 							   * entities on this map, including the hero */
 
+  Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */
+
   bool hero_on_raised_blocks;                             /**< indicates that the hero is currently on raised crystal switch blocks */
 
   void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
@@ -104,6 +106,8 @@ class MapEntities {
   void set_hero_layer(Layer layer);
   bool is_hero_on_raised_blocks(void);
   bool overlaps_raised_blocks(Layer layer, const SDL_Rect &rectangle);
+  bool is_boomerang_present(void);
+  void remove_boomerang(void);
 
   // update and display
   void set_suspended(bool suspended);

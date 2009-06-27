@@ -772,16 +772,19 @@ void Hero::place_on_destination_point(Map *map) {
   
   if (destination_point_index >= 0) {
 
+    MapEntities *entities = map->get_entities();
+
     // the location is specified by a destination point object
     DestinationPoint *destination_point =
-      map->get_entities()->get_destination_point(destination_point_index);
+      entities->get_destination_point(destination_point_index);
 
     set_map(map, destination_point->get_direction());
     set_x(destination_point->get_x());
     set_y(destination_point->get_y());
-    map->get_entities()->set_hero_layer(destination_point->get_layer());
+    entities->set_hero_layer(destination_point->get_layer());
 
     destroy_carried_items();
+    entities->remove_boomerang();
     start_free();
   }
   else if (destination_point_index == -1) {

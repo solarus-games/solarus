@@ -152,6 +152,24 @@ bool Boomerang::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
 }
 
 /**
+ * Returns whether a crystal switch is currently considered as an obstacle for this entity.
+ * @param crystal_switch a crystal switch
+ * @return true if the crystal switch is currently an obstacle for this entity
+ */
+bool Boomerang::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
+  return false;
+}
+
+/**
+ * Returns whether a non-playing character is currently considered as an obstacle for this entity.
+ * @param npc a non-playing character
+ * @return true if the NPC is currently an obstacle for this entity
+ */
+bool Boomerang::is_npc_obstacle(InteractiveEntity *npc) {
+  return false;
+}
+
+/**
  * Returns whether the boomerang is going back towards the hero, i.e. if go_back() has been called.
  * @return true if the boomerang is going back
  */

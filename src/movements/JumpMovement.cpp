@@ -70,10 +70,14 @@ void JumpMovement::make_next_move(void) {
   PixelMovement::make_next_move();
 
   int i = get_vector_index();
-  if (i == 1 || i == get_length() - 1) {
+  if (i == 1 || i == get_length()) {
     jump_height = 0;
   }
-  else if (i % 2 == 0) {
-    jump_height += (i < get_length() / 2) ? 1 : -1;
+  else {
+    int jump_sign = (i <= get_length() / 2) ? 1 : -1;
+    int jump_unit = (get_length() <= 16) ? 2 : 1;
+    
+    jump_height += jump_sign * jump_unit;
   }
 }
+

@@ -141,12 +141,13 @@ void InteractiveEntity::initialize_sprite(SpriteAnimationSetId sprite_name, int 
  */
 bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
 
-  if (other->get_type() != INTERACTIVE_ENTITY) {
-    return true;
+  if (subtype == NON_PLAYING_CHARACTER) {
+    // only NPCs have specific collisions
+    return other->is_npc_obstacle(this);
   }
 
-  return subtype != NON_PLAYING_CHARACTER ||
-    ((InteractiveEntity*) other)->subtype != NON_PLAYING_CHARACTER;
+  // other interactive entities are always obstacles
+  return true;
 }
 
 /**
@@ -172,6 +173,15 @@ bool InteractiveEntity::is_hole_obstacle(void) {
  */
 bool InteractiveEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
   return true;
+}
+
+/**
+ * Returns whether a non-playing character is considered as an obstacle for this entity.
+ * @param npc a non-playing character
+ * @return true if this NPC is considered as an obstacle for this entity.
+ */
+bool InteractiveEntity::is_npc_obstacle(InteractiveEntity *npc) {
+  return subtype != NON_PLAYING_CHARACTER;
 }
 
 /**

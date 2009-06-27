@@ -1572,6 +1572,53 @@ line2 = "Vider l'eau"
 line3 = "La conserver"
 question = true
 
+[_use_apples]
+#       |--------------------|
+icon = 16
+line1 = "Prendre une pomme te"
+line2 = "permet de récupérer"
+line3 = "un Coeur."
+next = _use_apples.2
+
+[_use_apples.2]
+#       |--------------------|
+icon = 16
+line1 = "Que veux-tu faire ?"
+line2 = "Manger une pomme"
+line3 = "Ne rien faire"
+question = true
+
+[_use_pains_au_chocolat]
+#       |--------------------|
+icon = 17
+line1 = "Un Pain au Chocolat"
+line2 = "te redonne 3 Coeurs."
+next = _use_pains_au_chocolat.2
+
+[_use_pains_au_chocolat.2]
+#       |--------------------|
+icon = 17
+line1 = "Que veux-tu faire ?"
+line2 = "En manger un"
+line3 = "Ne rien faire"
+question = true
+
+[_use_croissants]
+#       |--------------------|
+icon = 18
+line1 = "Un Croissant te"
+line2 = "permet de retrouver"
+line3 = "7 Coeurs."
+next = _use_croissants.2
+
+[_use_croissants.2]
+#       |--------------------|
+icon = 18
+line1 = "Que veux-tu faire ?"
+line2 = "En manger un"
+line3 = "Ne rien faire"
+question = true
+
 [_too_heavy]
 #       |-----------------------|
 line1 = "Oh là là, c'est"

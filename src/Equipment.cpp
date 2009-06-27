@@ -1107,7 +1107,7 @@ bool Equipment::has_inventory_item_maximum_amount(InventoryItemId item_id) {
 /**
  * Returns the item currently assigned to a slot.
  * @param slot slot of the item to get (0 for X or 1 for V)
- * @return the item currently assigned to this slot (may be NONE)
+ * @return the item currently assigned to this slot (may be INVENTORY_NONE)
  */
 InventoryItemId Equipment::get_item_assigned(int slot) {
   int index = Savegame::ITEM_SLOT_0 + slot;
@@ -1119,16 +1119,18 @@ InventoryItemId Equipment::get_item_assigned(int slot) {
  * The program exits with an error message if the specified item
  * cannot be equiped or if the player does not have it
  * @param slot slot to set (0 for X or 1 for V)
- * @param item_id the item to assign to this slot
+ * @param item_id the item to assign to this slot (may be INVENTORY_NONE)
  */
 void Equipment::set_item_assigned(int slot, InventoryItemId item_id) {
 
-  if (!has_inventory_item(item_id)) {
-    DIE("Cannot assign item " << item_id << " because the player does not have it");
-  }
+  if (item_id != INVENTORY_NONE) {
+    if (!has_inventory_item(item_id)) {
+      DIE("Cannot assign item " << item_id << " because the player does not have it");
+    }
 
-  if (!InventoryItem::can_be_assigned(item_id)) {
-    DIE("Cannot assign item " << item_id << " because it is not attributable");
+    if (!InventoryItem::can_be_assigned(item_id)) {
+      DIE("Cannot assign item " << item_id << " because it is not attributable");
+    }
   }
 
   int index = Savegame::ITEM_SLOT_0 + slot;

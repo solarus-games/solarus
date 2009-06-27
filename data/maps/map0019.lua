@@ -14,7 +14,6 @@ end
 
 function event_message_sequence_finished(first_message_id, answer)
 
-print("hw")
    if first_message_id == "cake_shop.dont_leave" and answer == 0 then
 
       if inventory_item_get(10) == 1 then

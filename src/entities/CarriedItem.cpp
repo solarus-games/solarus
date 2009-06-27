@@ -324,3 +324,21 @@ bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
   return false;
 }
 
+/**
+ * Returns whether a crystal switch is currently considered as an obstacle for this entity.
+ * @param crystal_switch a crystal switch
+ * @return true if the crystal switch is currently an obstacle for this entity
+ */
+bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
+  return !is_being_thrown();
+}
+
+/**
+ * Returns whether a non-playing character is currently considered as an obstacle for this entity.
+ * @param npc a non-playing character
+ * @return true if the NPC is currently an obstacle for this entity
+ */
+bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
+  return false;
+}
+

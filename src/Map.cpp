@@ -608,6 +608,17 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
 }
 
 /**
+ * Returns the kind of ground that is under the specified point.
+ * Only the tiles are considered here (not the active entities).
+ * @param layer layer of point to check
+ * @param coordinates coordinates of the point to check
+ * @return the ground at this place
+ */
+Ground Map::get_tile_ground(Layer layer, const SDL_Rect &coordinates) {
+  return get_tile_ground(layer, coordinates.x, coordinates.y);
+}
+
+/**
  * This function is called by an entity sensitive to the entity detectors
  * when this entity has just moved on the map, or when a detector
  * wants to check this entity.

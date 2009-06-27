@@ -61,17 +61,10 @@ EntityType CrystalSwitch::get_type() {
 /**
  * Returns whether this entity is an obstacle for another one.
  * @param other another entity
- * @return true
+ * @return true if this entity is an obstacle for the other one 
  */
 bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
-
-  // TODO dynamic dispatch
-  if (other->get_type() != CARRIED_ITEM) {
-    return (other->get_type() != BOOMERANG);
-  }
-
-  CarriedItem *item = (CarriedItem*) other;
-  return !item->is_being_thrown();
+  return other->is_crystal_switch_obstacle(this);
 }
 
 /**

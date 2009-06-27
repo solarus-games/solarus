@@ -15,11 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Teletransporter.h"
+#include "entities/Hero.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "Map.h"
-#include "entities/Hero.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 
 /**
  * Constructor.
@@ -39,12 +41,13 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
 				 Subtype subtype, Transition::Style transition_style,
 				 MapId destination_map_id, std::string destination_point_name):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
-  subtype(subtype), transition_style(transition_style),
+  subtype(subtype), transition_style(transition_style), sound(NULL),
   destination_map_id(destination_map_id), destination_point_name(destination_point_name) {
   
   if (subtype == YELLOW) {
     create_sprite("entities/teletransporter");
     get_sprite()->set_current_animation("yellow");
+    sound = ResourceManager::get_sound("warp");
   }
   else {
     // TODO
@@ -126,7 +129,7 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
 	&& is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
     }
 
-    else if (hero->is_on_hole()) {
+    else if (map->get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
       return check_collision_origin_point(hero);
     }
   }
@@ -160,6 +163,10 @@ void Teletransporter::collision(MapEntity *entity_overlapping, CollisionMode col
  * @param hero the hero
  */
 void Teletransporter::transport_hero(Hero *hero) {
+
+  if (sound != NULL) {
+    sound->play();
+  }
 
   std::string name = destination_point_name;
 

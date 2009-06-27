@@ -51,7 +51,7 @@ InventoryItem::~InventoryItem(void) {
  * @return true if this item item can be assigned to an icon
  */
 bool InventoryItem::can_be_assigned(InventoryItemId item_id) {
-  return item_id < INVENTORY_ROCK_KEY;
+  return item_id < INVENTORY_ROCK_KEY || is_bottle(item_id);
 }
 
 /**
@@ -135,6 +135,8 @@ void InventoryItem::start(Game *game) {
   this->item_sound = NULL;
 
   Hero *hero = game->get_hero();
+  Map *map = game->get_current_map();
+  Equipment *equipment = game->get_equipment();
 
   if (variant == 0) {
     DIE("Trying to use inventory item #" << item_id << " without having it");
@@ -143,13 +145,41 @@ void InventoryItem::start(Game *game) {
   if (is_bottle()) {
     start_bottle();
   }
-  else if (item_id == INVENTORY_BOOMERANG) {
-    hero->set_animation_boomerang();
-    this->direction_pressed = game->get_controls()->get_arrows_direction();
-  }
   else {
-    // TODO
-    finished = true;
+    switch (item_id) {
+
+      case INVENTORY_BOOMERANG:
+
+	if (map->get_entities()->is_boomerang_present()) {
+	  finished = true;
+	}
+	else {
+	  hero->set_animation_boomerang();
+	  this->direction_pressed = game->get_controls()->get_arrows_direction();
+	}
+	break;
+   
+      case INVENTORY_APPLES:
+      case INVENTORY_PAINS_AU_CHOCOLAT:
+      case INVENTORY_CROISSANTS:
+        if (equipment->get_inventory_item_amount(item_id) == 0) {
+          ResourceManager::get_sound("wrong")->play();
+	  finished = true;
+	}
+	else {
+	  MessageId message_id =
+	    (item_id == INVENTORY_APPLES) ? "_use_apples" :
+	    (item_id == INVENTORY_PAINS_AU_CHOCOLAT) ? "_use_pains_au_chocolat" : "_use_croissants";
+
+          game->show_message(message_id);
+	}
+	break;
+
+      default:
+	// TODO
+	finished = true;
+	break;
+    }
   }
 }
 
@@ -159,6 +189,7 @@ void InventoryItem::start(Game *game) {
 void InventoryItem::update(void) {
 
   Hero *hero = game->get_hero();
+  Equipment *equipment = game->get_equipment();
 
   if (item_sound != NULL) {
     Uint32 now = SDL_GetTicks();
@@ -171,14 +202,41 @@ void InventoryItem::update(void) {
   if (is_bottle()) {
     update_bottle();
   }
-  else if (item_id == INVENTORY_BOOMERANG) {
-    if (hero->is_animation_finished()) {
-      finished = true;
-      int boomerang_direction = direction_pressed;
-      if (boomerang_direction == -1) {
-        boomerang_direction = hero->get_animation_direction() * 90;
-      }
-      game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction));
+  else {
+    
+    switch (item_id) {
+      
+      case INVENTORY_BOOMERANG:
+	if (hero->is_animation_finished()) {
+	  finished = true;
+	  int boomerang_direction = direction_pressed;
+	  if (boomerang_direction == -1) {
+	    boomerang_direction = hero->get_animation_direction() * 90;
+	  }
+	  game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction));
+	}
+	break;
+
+      case INVENTORY_APPLES:
+      case INVENTORY_PAINS_AU_CHOCOLAT:
+      case INVENTORY_CROISSANTS:
+
+        if (!game->is_showing_message() && DialogBox::get_last_answer() == 0) {
+
+	  if (equipment->get_inventory_item_amount(item_id) >= 0) {
+
+	    equipment->remove_inventory_item_amount(item_id, 1);
+	    int nb_hearts =
+	      (item_id == INVENTORY_APPLES) ? 1 :
+	      (item_id == INVENTORY_PAINS_AU_CHOCOLAT) ? 3 : 7;
+	    equipment->add_hearts(nb_hearts * 4);
+	  }
+	  finished = true;
+	}
+	break;
+
+      default:
+	break;
     }
   }
 }

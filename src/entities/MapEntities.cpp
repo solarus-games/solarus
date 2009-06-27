@@ -21,6 +21,7 @@
 #include "entities/Layer.h"
 #include "entities/Obstacle.h"
 #include "entities/CrystalSwitchBlock.h"
+#include "entities/Boomerang.h"
 #include "Map.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -367,11 +368,22 @@ void MapEntities::add_entity(MapEntity *entity) {
   }
 
   // update the specific entities lists
-  if (entity->get_type() == DESTINATION_POINT) {
-    destination_points.push_back((DestinationPoint*) entity);
-  }
-  else if (entity->get_type() == CRYSTAL_SWITCH_BLOCK) {
-    crystal_switch_blocks[layer].push_back((CrystalSwitchBlock*) entity);
+  switch (entity->get_type()) {
+
+    case DESTINATION_POINT:
+      destination_points.push_back((DestinationPoint*) entity);
+      break;
+
+    case CRYSTAL_SWITCH_BLOCK:
+      crystal_switch_blocks[layer].push_back((CrystalSwitchBlock*) entity);
+      break;
+
+    case BOOMERANG:
+      this->boomerang = (Boomerang*) entity;
+      break;
+
+    default:
+      break;
   }
 
   // update the list of all entities
@@ -388,6 +400,10 @@ void MapEntities::remove_entity(MapEntity *entity) {
 
   entities_to_remove.push_back(entity);
   entity->set_being_removed();
+
+  if (entity == (MapEntity*) this->boomerang) {
+    this->boomerang = NULL;
+  }
 }
 
 /**
@@ -492,9 +508,6 @@ void MapEntities::update(void) {
   for (it = all_entities.begin();
        it != all_entities.end();
        it++) {
-
-//    if ((*it)->get_type() == BOOMERANG)
-//      std::cout << "boom being removed: " << (*it)->is_being_removed() << std::endl;
 
     if (!(*it)->is_being_removed()) {
       (*it)->update();
@@ -601,4 +614,23 @@ bool MapEntities::overlaps_raised_blocks(Layer layer, const SDL_Rect &rectangle)
  */
 bool MapEntities::is_hero_on_raised_blocks(void) {
   return hero_on_raised_blocks;
+}
+
+/**
+ * Returns true if the player has thrown the boomerang.
+ * @return true if the boomerang is present on the map
+ */
+bool MapEntities::is_boomerang_present(void) {
+  return boomerang != NULL;
+}
+
+/**
+ * Removes the boomerang from the map, if it is present.
+ */
+void MapEntities::remove_boomerang(void) {
+
+  if (boomerang != NULL) {
+    remove_entity(boomerang);
+    boomerang = NULL;
+  }
 }

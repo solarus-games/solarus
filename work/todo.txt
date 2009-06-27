@@ -28,15 +28,9 @@ Bugs :
 - écran-titres : textes du bas flous
 - quand ça rame (exemple Wink), les vases sont lancés moins loin
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
-- quand on prend un téléporteur, supprimer le boomerang
-- un seul boomerang à la fois (booléen voire pointeur dans MapEntities)
 - l'ombre des pots passe sur Link pendant qu'on les soulève
-- permettre de manger pommes, pains au chocolat et croissants
-- sauts de longueur 16 : ça monte pas
-- sac de bombes : est-ce normal qu'il soit déjà disponible ?
-- je viens d'avoir la bouteille, sans autres objets, je l'assigne à X, puis je la réassigne à V, et là ça plante : Fatal error: Cannot assign item -1 because the player does not have it
-- 2 dernières bouteilles : icônes X et V grisées dans l'inventaire
-
+- la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
+- DialogBox::get_last_answer : mauvaise idée de mettre ça en statique, plutôt le stocker dans Game
 
 A venir :
 

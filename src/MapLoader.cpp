@@ -112,6 +112,7 @@ void MapLoader::load_map(Map *map) {
       entities->obstacle_tiles[layer][i] = OBSTACLE_NONE;
     }
   }
+  entities->boomerang = NULL;
 
   // read the entities
   int entity_type, subtype, layer, x, y, width, height, direction;

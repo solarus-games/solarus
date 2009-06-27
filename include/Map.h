@@ -148,6 +148,7 @@ class Map {
   bool collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
   bool collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check);
   Ground get_tile_ground(Layer layer, int x, int y);
+  Ground get_tile_ground(Layer layer, const SDL_Rect &coordinates);
 
   // collisions with detectors (checked after a move)
   void check_collision_with_detectors(MapEntity *entity);

@@ -210,6 +210,8 @@ class MapEntity {
   virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   virtual bool is_sensor_obstacle(Sensor *sensor);
   virtual bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
+  virtual bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
+  virtual bool is_npc_obstacle(InteractiveEntity *npc);
   virtual bool is_sword_ignored(void);
 
   // suspended

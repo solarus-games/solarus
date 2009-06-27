@@ -989,29 +989,89 @@ next = lyriann_cave.tom.2
 [lyriann_cave.tom.2]
 #       |-----------------------|
 line1 = "de notre défunt Roi."
-line2 = "Que fais-tu dans cette"
-line3 = "caverne lugubre ?"
+line2 = "Je ne pensais pas que"
+line3 = "quelqu'un viendrait me"
 next = lyriann_cave.tom.3
 
 [lyriann_cave.tom.3]
 #       |-----------------------|
-line1 = "Tu cherches à en percer"
-line2 = "les mystères ? Cela me"
-line3 = "semble très courageux."
+line1 = "trouver ici. Que fais-"
+line2 = "tu dans cette caverne"
+line3 = "lugubre ?"
 next = lyriann_cave.tom.4
 
 [lyriann_cave.tom.4]
 #       |-----------------------|
-line1 = "Cet endroit regorge"
-line2 = "d'énigmes, de trésors"
-line3 = "et de dangers."
+line1 = "Comment ? La Triforce"
+line2 = "est en danger ? $0Tout"
+line3 = "cela ne serait pas"
 next = lyriann_cave.tom.5
 
 [lyriann_cave.tom.5]
 #       |-----------------------|
-line1 = "Je peux te prêter ceci,"
-line2 = "mais n'oublie pas de me"
-line3 = "le rendre ensuite !"
+line1 = "arrivé si notre Roi"
+line2 = "était encore là pour la"
+line3 = "protéger..."
+next = lyriann_cave.tom.6
+
+[lyriann_cave.tom.6]
+#       |-----------------------|
+line1 = "Tu cherches à percer"
+line2 = "les mystères de cette"
+line3 = "caverne ?"
+next = lyriann_cave.tom.7
+
+[lyriann_cave.tom.7]
+#       |-----------------------|
+line1 = "Cet endroit regorge"
+line2 = "d'énigmes, de trésors"
+line3 = "et de dangers."
+next = lyriann_cave.tom.8
+
+[lyriann_cave.tom.8]
+#       |-----------------------|
+line1 = "Cela me semble très"
+line2 = "courageux de ta part !"
+next = lyriann_cave.tom.9
+
+[lyriann_cave.tom.9]
+#       |-----------------------|
+line1 = "S'il te plaît, accepte"
+line2 = "mon aide... J'ai"
+line3 = "échoué, je n'ai pas su"
+next = lyriann_cave.tom.10
+
+[lyriann_cave.tom.10]
+#       |-----------------------|
+line1 = "protéger notre Roi."
+line2 = "Laisse-moi une occasion"
+line3 = "de me racheter !"
+next = lyriann_cave.tom.11
+
+[lyriann_cave.tom.11]
+#       |-----------------------|
+line1 = "Acceptes-tu mon aide ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+next2 = lyriann_cave.tom.refuse_help
+
+[lyriann_cave.tom.refuse_help]
+#       |-----------------------|
+line1 = "Bien, comme tu veux."
+
+[lyriann_cave.tom.accept_help]
+#       |-----------------------|
+line1 = "Merci. Je peux te"
+line2 = "prêter ceci, j'espère"
+line3 = "que ça te sera utile."
+next = lyriann_cave.tom.accept_help.2
+
+[lyriann_cave.tom.accept_help.2]
+#       |-----------------------|
+line1 = "Mais n'oublie pas de me"
+line2 = "le rendre quand tu"
+line3 = "auras fini !"
 
 [lyriann_cave.tom.not_finished]
 #       |-----------------------|

@@ -70,6 +70,7 @@ class InteractiveEntity: public Detector {
   bool is_water_obstacle(void);
   bool is_hole_obstacle(void);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  bool is_npc_obstacle(InteractiveEntity *npc);
   bool is_sword_ignored(void);
 
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

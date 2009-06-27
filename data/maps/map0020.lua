@@ -37,8 +37,20 @@ end
 
 function event_message_sequence_finished(message_id, answer)
 
-  if message_id == "lyriann_cave.tom" then
+  if message_id == "lyriann_cave.tom" and answer == 0 then
+    start_message("lyriann_cave.tom.accept_help")
+  elseif message_id == "lyriann_cave.tom.accept_help" then
     give_treasure(4, 41)
+  elseif message_id == "lyriann_cave.tom.leaving_with_boomerang" then
+
+
+  end
+end
+
+function event_hero_on_sensor(sensor_name)
+
+  if sensor_name == "leave_cavern_sensor" then 
+    -- TODO
   end
 end
 

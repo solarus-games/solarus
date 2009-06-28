@@ -19,6 +19,7 @@ Feature requests :
 - Permettre de couper voire régler la musique et/ou le son
 - Mettre des constantes dans les scripts
 - Mettre une icône sur l'exécutable
+- Ecran d'options : faire clignoter l'icône de la touche en cours de configuration
 
 
 Bugs :
@@ -31,6 +32,8 @@ Bugs :
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - DialogBox::get_last_answer : mauvaise idée de mettre ça en statique, plutôt le stocker dans Game
+- Rubis au sol chez le forgeron : ne pas les faire réapparaître
+
 
 A venir :
 

@@ -1005,7 +1005,7 @@
 2	0	200	696	16	16	to_grandma_house	0	1	11	entrance
 4	0	648	93	3	-1	-1
 3	0	48	109	17	18
-2	0	272	432	16	16	to_binbin_dungeon	0	1	17	main_entrance
+2	0	272	432	16	16	to_binbin_dungeon	0	1	22	destination_point
 1	0	280	461	from_binbin_dungeon	3	0
 10	0	48	448	48	16	village_cave_hiding	177	1
 10	0	48	432	48	16	village_cave_hiding_2	192	1

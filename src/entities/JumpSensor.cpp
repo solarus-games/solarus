@@ -103,7 +103,13 @@ bool JumpSensor::check_collision_custom(MapEntity *entity) {
   // its shape is exactly its rectangle
   if (direction % 2 == 0) {
 
+    /* version where the hero must be on the jump sensor (=> problem when the sensor is on an obstacle)
     if (!check_collision_rectangle(hero) || !hero->is_moving_towards(direction / 2)) {
+      return false;
+    }
+    */
+
+    if (!hero->is_moving_towards(direction / 2)) {
       return false;
     }
 

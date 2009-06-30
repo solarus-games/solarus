@@ -90,110 +90,111 @@ end
 -- answer: the answer of the question (0 or 1) or -1 if there was no question
 function event_message_sequence_finished(first_message_id, answer)
 
-   if first_message_id == "rupee_house.game_1.intro" or 
-      first_message_id == "rupee_house.game_1.play_again_question" then
-      -- if the dialog was the game 1 question
+  if first_message_id == "rupee_house.game_1.intro" or 
+    first_message_id == "rupee_house.game_1.play_again_question" then
+    -- if the dialog was the game 1 question
 
-      if answer == 1 then
-	 -- the player does not want to play the game
-	 start_message("rupee_house.game_1.not_playing")
+    if answer == 1 then
+      -- the player does not want to play the game
+      start_message("rupee_house.game_1.not_playing")
+    else
+      -- wants to play game 1
+
+      if get_rupees() < 20 then
+	-- not enough money
+	play_sound("wrong")
+	start_message("rupee_house.not_enough_money")
+
       else
-	 -- wants to play game 1
+	-- enough money: reset the 3 chests, pay and start the game
+	set_chest_open("chest_1", false)
+	set_chest_open("chest_2", false)
+	set_chest_open("chest_3", false)
 
-	 if get_rupees() < 20 then
-	     -- not enough money
-	    play_sound("wrong")
-	    start_message("rupee_house.not_enough_money")
-
-	 else
-	    -- enough money: reset the 3 chests, pay and start the game
-	    set_chest_open("chest_1", false)
-	    set_chest_open("chest_2", false)
-	    set_chest_open("chest_3", false)
-
-	    remove_rupees(20)
-	    start_message("rupee_house.game_1.good_luck")
-	    playing_game_1 = true
-	 end
+	remove_rupees(20)
+	start_message("rupee_house.game_1.good_luck")
+	playing_game_1 = true
       end
+    end
 
-   elseif first_message_id == "rupee_house.game_2.intro"  or
-      first_message_id == "rupee_house.game_2.reward.none" then
+  elseif first_message_id == "rupee_house.game_2.intro"  or
+    first_message_id == "rupee_house.game_2.reward.none" then
 
-      if answer == 1 then
-	 -- don't want to play the game
-	 start_message("rupee_house.game_2.not_playing")
-      else
-	 -- wants to play game 2
-	 start_message("rupee_house.game_2.choose_bet")
+    if answer == 1 then
+      -- don't want to play the game
+      start_message("rupee_house.game_2.not_playing")
+    else
+      -- wants to play game 2
+      start_message("rupee_house.game_2.choose_bet")
+    end
+
+  elseif first_message_id == "rupee_house.game_2.choose_bet" then
+
+    if answer == 0 then
+      -- bet 5 rupees
+      game_2_bet = 5
+    else
+      -- bet 20 rupees
+      game_2_bet = 20
+    end
+
+    if get_rupees() < game_2_bet then
+      -- not enough money
+      play_sound("wrong")
+      start_message("rupee_house.not_enough_money")
+    else
+      -- enough money: pay and start the game
+      remove_rupees(game_2_bet)
+      start_message("rupee_house.game_2.just_paid")
+      playing_game_2 = true
+
+      -- start the slot machine animations
+      for k, v in pairs(game_2_slots) do
+	v.symbol = -1
+	v.current_delay = v.initial_delay
+	interactive_entity_set_animation(k, "started")
+	interactive_entity_set_animation_delay(k, v.current_delay)
+	interactive_entity_set_animation_frame(k, v.initial_frame)
+	interactive_entity_set_animation_paused(k, false)
       end
+    end
+  elseif string.find(first_message_id, "rupee_house.game_2.reward.") then
+    -- reward in game 2
+    give_treasure_with_amount(87, game_2_reward, -1)
 
-   elseif first_message_id == "rupee_house.game_2.choose_bet" then
+  elseif first_message_id == "rupee_house.game_3.intro" or 
+    first_message_id == "rupee_house.game_3.restart_question" then
+    -- if the dialog was the game 3 question
 
-      if answer == 0 then
-	 -- bet 5 rupees
-	 game_2_bet = 5
+    if answer == 1 then
+      -- don't want to play the game
+      start_message("rupee_house.game_3.not_playing")
+    else
+      -- wants to play game 3
+
+      if get_rupees() < 10 then
+	-- not enough money
+	play_sound("wrong")
+	start_message("rupee_house.not_enough_money")
+
       else
-	 -- bet 20 rupees
-	 game_2_bet = 20
-      end
+	-- enough money: reset the game, pay and start the game
 
-      if get_rupees() < game_2_bet then
-	 -- not enough money
-	 play_sound("wrong")
-	 start_message("rupee_house.not_enough_money")
-      else
-	 -- enough money: pay and start the game
-	 remove_rupees(game_2_bet)
-	 start_message("rupee_house.game_2.just_paid")
-	 playing_game_2 = true
+	reset_blocks();
+	disable_tile("game_3_barrier_1");
+	disable_tile("game_3_barrier_2");
+	disable_tile("game_3_barrier_3");
+	disable_tile("game_3_middle_barrier");
+	stop_timer("game_3_timer")
 
-	 -- start the slot machine animations
-	 for k, v in pairs(game_2_slots) do
-	    v.symbol = -1
-	    v.current_delay = v.initial_delay
-	    interactive_entity_set_animation(k, "started")
-	    interactive_entity_set_animation_delay(k, v.current_delay)
-	    interactive_entity_set_animation_frame(k, v.initial_frame)
-	    interactive_entity_set_animation_paused(k, false)
-	 end
-      end
-   elseif string.find(first_message_id, "rupee_house.game_2.reward.") then
-      -- reward in game 2
-      give_treasure_with_amount(87, game_2_reward, -1)
-
-   elseif first_message_id == "rupee_house.game_3.intro" or 
-      first_message_id == "rupee_house.game_3.restart_question" then
-      -- if the dialog was the game 3 question
-
-      if answer == 1 then
-	 -- don't want to play the game
-	 start_message("rupee_house.game_3.not_playing")
-      else
-	 -- wants to play game 3
-
-	 if get_rupees() < 10 then
-	     -- not enough money
-	    play_sound("wrong")
-	    start_message("rupee_house.not_enough_money")
-
-	 else
-	    -- enough money: reset the game, pay and start the game
-
-	    reset_blocks();
-	    disable_tile("game_3_barrier_1");
-	    disable_tile("game_3_barrier_2");
-	    disable_tile("game_3_barrier_3");
-	    disable_tile("game_3_middle_barrier");
-	    stop_timer("game_3_timer")
-
-	    remove_rupees(10)
-	    start_message("rupee_house.game_3.go")
-	    start_timer(7000, "game_3_timer", true);
+	remove_rupees(10)
+	start_message("rupee_house.game_3.go")
 	    playing_game_3 = true
 	 end
       end
-   end
+    elseif first_message_id == "rupee_house.game_3.go" then 
+      start_timer(7000, "game_3_timer", true);
+    end
 end
 
 -- Function called when the player opens an empty chest (i.e. a chest

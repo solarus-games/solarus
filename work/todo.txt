@@ -13,6 +13,7 @@ Feature requests :
 - Ajouter des infos de statut quête dans l'écran de sélection des sauvegardes, en particulier quand une sauvegarde est choisie
 - Afficher le nom du donjon dans le hud
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
+- Ralentir la vitesse du héros sur l'eau peu profonde
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
@@ -20,6 +21,10 @@ Feature requests :
 - Mettre des constantes dans les scripts
 - Mettre une icône sur l'exécutable
 - Ecran d'options : faire clignoter l'icône de la touche en cours de configuration
+- Permettre au boomerang de ramener les pickable items
+- Permettre au boomerang d'immobiliser les ennemis
+- Permettre d'utiliser un flacon contenant une fée
+- Convertir les tilesets de la glace et du donjon de Binbin au nouveau format
 
 
 Bugs :
@@ -33,6 +38,21 @@ Bugs :
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - DialogBox::get_last_answer : mauvaise idée de mettre ça en statique, plutôt le stocker dans Game
 - Rubis au sol chez le forgeron : ne pas les faire réapparaître
+- Capteurs de saut : sur obstacles ou pas ?
+- Pancarte expliquant comment sauvegarder
+- Forgeron : expliquer attaque tournoyante
+- Forgeron : ajouter décors de la forge
+- Grotte forgeron : ajouter motifs trous sur le saut au sud-est
+- Boomerang lancé en diagonale : détecter l'appui simultané de deux flèches également après la fin de l'animation boomerang du héros
+- pousser un buisson empêche de le soulever (valable aussi pour coffres ?)
+- pâtissière : permettre de donner les pommes sans devoir tenter de sortir
+- si on reparle à Tom : indiquer que le lancer du boomerang est tout un art et qu'il faut savoir le maîtriser
+- compléter la description du boomerang quand on l'obitient
+- grotte Tom : dalle télépathique d'indice ?
+- retour du boomerang : le remettre sur le layer du héros au moment du demi-tour
+- permettre de gagner moins difficilement au bandit manchot ?
+- mémoires de Sahasrahla
+- collision avec un réceptacle de coeur : trop stricte
 
 
 A venir :

@@ -221,9 +221,10 @@ void InventoryItem::update(void) {
       case INVENTORY_PAINS_AU_CHOCOLAT:
       case INVENTORY_CROISSANTS:
 
-        if (!game->is_showing_message() && DialogBox::get_last_answer() == 0) {
-
-	  if (equipment->get_inventory_item_amount(item_id) >= 0) {
+        if (!game->is_showing_message()) {
+	  
+	  if (DialogBox::get_last_answer() == 0 &&
+	      equipment->get_inventory_item_amount(item_id) >= 0) {
 
 	    equipment->remove_inventory_item_amount(item_id, 1);
 	    int nb_hearts =

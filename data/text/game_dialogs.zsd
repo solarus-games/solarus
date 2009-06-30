@@ -1071,7 +1071,7 @@ next = lyriann_cave.tom.accept_help.2
 #       |-----------------------|
 line1 = "Mais n'oublie pas de me"
 line2 = "le rendre quand tu"
-line3 = "auras fini !"
+line3 = "auras terminé !"
 
 [lyriann_cave.tom.not_finished]
 #       |-----------------------|

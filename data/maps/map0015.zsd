@@ -80,9 +80,9 @@
 2	0	152	16	16	16	to_B2	0	1	14	from_icy_room
 8	0	160	109	frozen_door	3	0	entities/frozen_door	_none
 8	0	160	205	frozen_door_opposite	1	0	entities/frozen_door	_none
-0	2	112	16	96	32	150
-0	2	112	160	96	32	150
-0	2	112	112	96	32	151
+0	1	112	16	96	32	216
+0	1	112	112	96	32	217
+0	1	112	160	96	32	216
 0	2	144	184	32	8	154
 0	2	144	112	32	8	155
 0	2	16	16	48	128	170

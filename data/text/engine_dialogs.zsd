@@ -1527,13 +1527,13 @@ line2 = "vide !"
 [_found_water]
 #       |--------------------|
 icon = 8
-line1 = "Veux-tu remplir un"
-line2 = "Flacon Magique"
+line1 = "Veux-tu mettre de"
+line2 = "l'eau dans ton"
 next = _found_water.2
 
 [_found_water.2]
 #       |--------------------|
-line1 = "avec de l'eau ?"
+line1 = "Flacon Magique ?"
 line2 = "Oui"
 line3 = "Non"
 question = true
@@ -1561,7 +1561,7 @@ next = _found_water.no_bottle.2
 #       |--------------------|
 icon = 8
 line1 = "Ton Flacon Magique"
-line2 = "est rempli d'eau."
+line2 = "contient de l'eau."
 next = _use_bottle_with_water.2
 
 [_use_bottle_with_water.2]

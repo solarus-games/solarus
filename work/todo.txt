@@ -55,6 +55,11 @@ Bugs :
 - collision avec un réceptacle de coeur : trop stricte
 
 
+
+- Arrivé au Réceptacle de Coeur on ne peux pas prendre les escalier de là où l'on vient pour revenir en arrière.
+- Peut-on modifier l'apparence de la porte de la Grotte de Tom car une porte avec un coeur c'est pas génial selon moi.
+
+
 A venir :
 
 - Intro

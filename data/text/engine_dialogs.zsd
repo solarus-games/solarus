@@ -527,7 +527,19 @@ next = _treasure_4.1
 #       |--------------------|
 line1 = "ennemis ou attraper"
 line2 = "des objets à"
-line3 = "distance !"
+line3 = "distance."
+next = _treasure_4.2
+
+[_treasure_4.2]
+#       |--------------------|
+line1 = "Il y a plusieurs" 
+line2 = "techniques pour le"
+line3 = "manipuler, à toi"
+next = _treasure_4.3
+
+[_treasure_4.3]
+#       |--------------------|
+line1 = "de les découvrir !"
 
 [_treasure_5]
 # Lanterne

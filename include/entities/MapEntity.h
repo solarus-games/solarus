@@ -66,14 +66,18 @@ class MapEntity {
 
  protected:
 
-  Map *map;                 /**< the map: this field is automatically set by class MapEntities after creating the entity */
+  Map *map;                 /**< the map: this field is automatically set by class MapEntities after adding the entity to the map */
 
   // position (mandatory for all kinds of entities)
 
-  Layer layer;              /**< layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH:
-			     * the layer is constant for the tiles and can change for the hero and the enemies
+ private:
+
+  Layer layer;              /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
+			     * The layer is constant for the tiles and can change for the hero and the dynamic entities.
+			     * The layer is private to make sure the set_layer() function is always called.
 			     */
 
+ protected:
   SDL_Rect position_in_map; /**< Position of the entity on the map. The position is defined as a rectangle.
 			     * This rectangle represents the position of the entity of the map and is
 			     * used for the collision tests. It can be different from the sprite's

@@ -1752,6 +1752,7 @@
 0	0	776	136	8	16	44
 0	0	800	136	8	16	44
 0	0	512	928	16	16	825
+0	0	648	864	16	16	525
 12	0	760	440	32	16	custom_obstacle_2	0	0	1	1
 1	0	1016	613	out_link_house	3	0
 4	0	544	277	2	-1	-1
@@ -1877,10 +1878,9 @@
 7	0	976	829	enemy_2	3	0	0	-1	-1	-1
 8	0	1016	645	monkey	3	1	npc/monkey	_none
 12	0	912	456	16	16	custom_obstacle	0	0	1	1
-8	0	792	109	monkey_2	3	1	npc/monkey	_none
+8	0	792	157	monkey_2	3	1	npc/monkey	_none
 2	0	680	336	16	16	to_smith_cave	0	1	16	main_entrance
 1	0	688	365	out_smith_cave	3	0
-12	0	784	136	16	8	custom_obstacle_3	0	0	1	1
 8	0	920	597	tree_woman	3	1	npc/villager1	outside_world.village.tree_woman
 4	0	1008	765	2	-1	-1
 1	0	824	613	out_shop	3	0
@@ -1888,6 +1888,7 @@
 1	0	1000	949	out_pastry	3	0
 2	0	992	920	16	16	to_cake_shop	0	1	19	main_entrance
 8	0	936	685	grand_son	3	1	npc/newlink1	outside_world.village.grand_son_npc
+4	0	656	877	4	-1	-1
 0	1	256	400	240	40	511
 0	1	232	448	288	40	511
 0	1	208	480	336	16	512

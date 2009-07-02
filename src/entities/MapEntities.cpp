@@ -349,14 +349,14 @@ void MapEntities::add_entity(MapEntity *entity) {
 
   Layer layer = entity->get_layer();
 
-  // update the obstacle list
-  if (entity->can_be_obstacle()) {
-    obstacle_entities[layer].push_back(entity);
-  }
-
   // update the detectors list
   if (entity->can_detect_entities()) {
     detectors.push_back((Detector*) entity);
+  }
+
+  // update the obstacle list
+  if (entity->can_be_obstacle()) {
+    obstacle_entities[layer].push_back(entity);
   }
 
   // update the sprites list

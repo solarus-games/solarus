@@ -34,7 +34,7 @@
  */
 Switch::Switch(const std::string &name, Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool disable_when_leaving):
-  Detector(COLLISION_ORIGIN_POINT, name, layer, x, y, 16, 16),
+  Detector(COLLISION_CUSTOM, name, layer, x, y, 16, 16),
   subtype(subtype), needs_block(needs_block), disable_when_leaving(disable_when_leaving),
   enabled(false) {
 
@@ -80,6 +80,25 @@ void Switch::set_enabled(bool enabled) {
       }
     }
   }
+}
+
+/**
+ * Checks whether an entity's collides with this entity.
+ * @param entity an entity
+ * @return true if the entity's collides with this entity
+ */
+bool Switch::check_collision_custom(MapEntity *entity) {
+
+  const SDL_Rect &entity_position = entity->get_position_in_map();
+  int x1 = entity_position.x + 4;
+  int x2 = x1 + entity_position.w - 9;
+  int y1 = entity_position.y + 4;
+  int y2 = y1 + entity_position.h - 9;
+
+  return is_point_in(get_position_in_map(), x1, y1) &&
+    is_point_in(get_position_in_map(), x2, y1) &&
+    is_point_in(get_position_in_map(), x1, y2) &&
+    is_point_in(get_position_in_map(), x2, y2);
 }
 
 /**

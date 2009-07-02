@@ -209,6 +209,11 @@ void InventoryItem::update(void) {
       case INVENTORY_BOOMERANG:
 	if (hero->is_animation_finished()) {
 	  finished = true;
+
+	  if (direction_pressed == -1) {
+	    // the player can press the arrows before or after the boomerang key
+	    direction_pressed = game->get_controls()->get_arrows_direction();
+	  }
 	  int boomerang_direction = direction_pressed;
 	  if (boomerang_direction == -1) {
 	    boomerang_direction = hero->get_animation_direction() * 90;

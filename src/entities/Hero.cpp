@@ -729,7 +729,7 @@ bool Hero::is_facing_obstacle(void) {
     break;
   }
 
-  return map->collision_with_obstacles(layer, collision_box, this);
+  return map->collision_with_obstacles(get_layer(), collision_box, this);
 
   /* old version with only one point: problems when the hero
      cannot pass but the facing point can

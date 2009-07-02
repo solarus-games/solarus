@@ -217,6 +217,7 @@ Layer MapEntity::get_layer(void) {
  */
 void MapEntity::set_layer(Layer layer) {
   this->layer = layer;
+
 }
 
 /**

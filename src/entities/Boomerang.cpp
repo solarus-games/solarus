@@ -212,6 +212,7 @@ void Boomerang::update(void) {
       going_back = true;
       clear_movement();
       set_movement(new TargetMovement(hero, 16));
+// TODO      set_layer(hero->get_layer()); // because the hero's layer may have changed
     }
     else if (get_movement()->is_stopped()) {
       // collision with an obstacle or time to go back

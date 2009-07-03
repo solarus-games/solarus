@@ -28,6 +28,8 @@
 #include "entities/Hero.h"
 #include "entities/Detector.h"
 #include "entities/Boomerang.h"
+#include "entities/PickableItem.h"
+#include "movements/FallingHeight.h"
 
 /**
  * Creates a new inventory item.
@@ -281,6 +283,9 @@ bool InventoryItem::is_bottle(void) {
  */
 void InventoryItem::start_bottle(void) {
 
+  Hero *hero = game->get_hero();
+  Map *map = game->get_current_map();
+
   switch (variant) {
 
     // empty bottle
@@ -323,7 +328,9 @@ void InventoryItem::start_bottle(void) {
 
     // fairy
   case 6:
-    // TODO
+    map->get_entities()->add_entity(PickableItem::create(hero->get_layer(), hero->get_x(), hero->get_y(),
+	  PickableItem::FAIRY, -1, FALLING_LOW, true));
+    game->get_equipment()->set_bottle_empty(item_id);
     finished = true;
     break;
 

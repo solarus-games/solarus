@@ -80,10 +80,11 @@ class Map {
 				 * not to the map */
 
   // map state
-  bool started;                 /**< true if this map is the current map */
-  int destination_point_index;  /**< current destination point on the map
-				 * (or -1 for "_same", or -2 for "_side") */
-  int destination_side;         /**< destination side (when the destination is a side of the map) */
+  bool started;                         /**< true if this map is the current map */
+  std::string destination_point_name;   /**< current destination point on the map,
+					 * or "_same" to keep the hero's coordinates,
+					 * or "_side0", "_side1", "_side2" or "_side3"
+					 * to place the hero on a side of the map */
 
   MapEntities *entities;        /**< the entities on the map */
   bool suspended;               /**< indicates whether the game is suspended */
@@ -139,7 +140,7 @@ class Map {
   // current destination point
   void set_destination_point(unsigned int destination_point_index);
   void set_destination_point(const std::string &destination_point_name);
-  int get_destination_point_index(void);
+  const std::string& get_destination_point_name(void);
   int get_destination_side(void);
 
   // collisions with obstacles (checked before a move)

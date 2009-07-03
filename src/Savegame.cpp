@@ -88,6 +88,7 @@ void Savegame::set_initial_values(void) {
   memset(&saved_data, 0x0000, sizeof(SavedData));
 
   // a few variable have other initial values
+  set_string(STARTING_POINT, "_start_position");
   set_integer(MAX_HEARTS, 3);
   set_integer(CURRENT_HEARTS, 12);
 

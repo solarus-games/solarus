@@ -232,55 +232,34 @@ MapEntities * Map::get_entities(void) {
 
 /**
  * Sets the current destination point of the map.
- * @param destination_point_index index of the destination point you want to use
- */
-void Map::set_destination_point(unsigned int destination_point_index) {
-
-  if (destination_point_index < 0 || destination_point_index >= entities->get_nb_destination_points()) {
-    DIE("Unknown destination point '" << destination_point_index << "' on map '" << id << '\'');
-  }
-
-  this->destination_point_index = destination_point_index;
-}
-
-/**
- * Sets the current destination point of the map.
  * @param destination_point_name name of the destination point you want to use,
  * or "_same" to keep the hero's coordinates, or "_side0", "_side1", "_side2"
- * or "_side3 to place the hero on a side of the map
+ * or "_side3" to place the hero on a side of the map
  */
 void Map::set_destination_point(const std::string &destination_point_name) {
-
-  if (destination_point_name == "_same") {
-    this->destination_point_index = -1;
-  }
-  else if (destination_point_name.substr(0,5) == "_side") {
-    this->destination_point_index = -2;
-    this->destination_side = destination_point_name[5] - '0';
-  }
-  else {
-
-    bool found = false;
-
-    unsigned int i;
-    for (i = 0; i < entities->get_nb_destination_points() && !found; i++) { 
-      found = (entities->get_destination_point(i)->get_name() == destination_point_name);
-    }
-
-    if (found) {
-      this->destination_point_index = i - 1;
-    }
-    else {
-      DIE("Unknown destination point '" << destination_point_name << "' on map '" << id << '\'');
-    }
-  }
+  this->destination_point_name = destination_point_name;
 }
 
 /**
  * Returns the destination point index specified by the last set_destination_point() call.
+ * @return the name of the destination point previously set
  */
-int Map::get_destination_point_index(void) {
-  return destination_point_index;
+const std::string& Map::get_destination_point_name(void) {
+  return destination_point_name;
+}
+
+/**
+ * When the destination point is a side of the map,
+ * returns this side.
+ * @return the destination side (0 to 3), or -1 if the destination point is not a side
+ */
+int Map::get_destination_side(void) {
+
+  if (destination_point_name.substr(0,5) == "_side") {
+    int destination_side = destination_point_name[5] - '0';
+    return destination_side;
+  }
+  return -1;
 }
 
 /**
@@ -398,15 +377,6 @@ void Map::start(void) {
   zsdx->game->play_music(music_id);
   started = true;
   script->initialize();
-}
-
-/**
- * When the destination point is a side of the map,
- * returns this side.
- * @return the destination side (0 to 3)
- */
-int Map::get_destination_side(void) {
-  return destination_side;
 }
 
 /**

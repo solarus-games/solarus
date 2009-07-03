@@ -969,7 +969,7 @@ void Hero::update_jumping(void) {
 
   if (movement->is_finished()) {
 
-    map->get_entities()->set_hero_layer(layer_after_jump);
+    map->get_entities()->set_entity_layer(this, layer_after_jump);
     clear_movement();
     set_movement(normal_movement);
 
@@ -1275,6 +1275,7 @@ void Hero::set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_co
  * @param target coordinates of the solid ground location
  */
 void Hero::start_returning_to_solid_ground(const SDL_Rect &target) {
+  map->get_entities()->remove_boomerang();
   set_movement(new TargetMovement(target.x, target.y, walking_speed));
   set_state(RETURNING_TO_SOLID_GROUND);
 }

@@ -524,7 +524,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
 
   // initialize the destination point, from the specified name or from the savegame
   if (destination_point_name == "") {
-    next_map->set_destination_point(savegame->get_integer(Savegame::STARTING_POINT));
+    next_map->set_destination_point(savegame->get_string(Savegame::STARTING_POINT));
   }
   else {
     next_map->set_destination_point(destination_point_name);
@@ -537,7 +537,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
 	|| (!current_map->is_in_outside_world() && next_map->is_in_outside_world())) {
 
       savegame->set_integer(Savegame::STARTING_MAP, map_id);
-      savegame->set_integer(Savegame::STARTING_POINT, next_map->get_destination_point_index());
+      savegame->set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
       crystal_switch_state = false;
     }
   }

@@ -111,7 +111,7 @@ bool Boomerang::can_be_displayed(void) {
  * @return true if this type of entity is displayed at the same level as the hero
  */
 bool Boomerang::is_displayed_in_y_order(void) {
-  return true;
+  return false;
 }
 
 /**
@@ -212,7 +212,7 @@ void Boomerang::update(void) {
       going_back = true;
       clear_movement();
       set_movement(new TargetMovement(hero, 16));
-// TODO      set_layer(hero->get_layer()); // because the hero's layer may have changed
+      map->get_entities()->set_entity_layer(this, hero->get_layer()); // because the hero's layer may have changed
     }
     else if (get_movement()->is_stopped()) {
       // collision with an obstacle or time to go back

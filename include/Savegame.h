@@ -48,6 +48,7 @@ class Savegame {
    */
   enum StringIndex {
     PLAYER_NAME                     = 0,
+    STARTING_POINT                  = 1, /**< the player appears on this destination point on the starting map */
 
     /**
      * @name Joypad customizable controls.
@@ -87,7 +88,7 @@ class Savegame {
      * @{
      */
     STARTING_MAP                     = 0, /**< when starting the game, this map is loaded */
-    STARTING_POINT                   = 1, /**< the player appears on this destination point on the starting map */
+    // 1: unused
     PAUSE_LAST_SUBMENU               = 2, /**< last submenu shown in the pause menu */
     INVENTORY_LAST_ROW               = 3, /**< row of the last item selected in the inventory */
     INVENTORY_LAST_COLUMN            = 4, /**< column of the last item selected in the inventory */

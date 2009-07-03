@@ -24,7 +24,6 @@ Feature requests :
 - Ecran d'options : faire clignoter l'icône de la touche en cours de configuration
 - Permettre au boomerang de ramener les pickable items
 - Permettre au boomerang d'immobiliser les ennemis
-- Permettre d'utiliser un flacon contenant une fée
 - Convertir les tilesets de la glace et du donjon de Binbin au nouveau format
 
 
@@ -35,24 +34,20 @@ Bugs :
 - écran-titres : textes du bas flous
 - quand ça rame (exemple Wink), les vases sont lancés moins loin
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
+- Pancarte expliquant comment sauvegarder
+- Forgeron : expliquer attaque tournoyante
+- Forgeron : ajouter décors de la forge
+- pâtissière : permettre de donner les pommes sans devoir tenter de sortir
+- si on reparle à Tom : indiquer que le lancer du boomerang est tout un art et qu'il faut savoir le maîtriser / qu'il y a plusieurs manières de le manier...
+- grotte Tom : dalle télépathique d'indice ?
+- permettre de gagner moins difficilement au bandit manchot ?
+- mémoires de Sahasrahla
+- pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - DialogBox::get_last_answer : mauvaise idée de mettre ça en statique, plutôt le stocker dans Game
 - Rubis au sol chez le forgeron : ne pas les faire réapparaître
-- Capteurs de saut : sur obstacles ou pas ? généraliser l'emploi des deux layers par défaut dans les tilesets d'intérieur, ne serait-ce que pour le boomerang et le grappin
-- Pancarte expliquant comment sauvegarder
-- Forgeron : expliquer attaque tournoyante
-- Forgeron : ajouter décors de la forge
-- pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
-- pâtissière : permettre de donner les pommes sans devoir tenter de sortir
-- si on reparle à Tom : indiquer que le lancer du boomerang est tout un art et qu'il faut savoir le maîtriser / qu'il y a plusieurs manières de le manier...
-- grotte Tom : dalle télépathique d'indice ?
-- retour du boomerang : le remettre sur le layer du héros au moment du demi-tour (faire une méthode set_entity_layer dans MapEntities)
-- permettre de gagner moins difficilement au bandit manchot ?
-- mémoires de Sahasrahla
 - collision avec un réceptacle de coeur : trop stricte ?
-- destination point : seul le numéro est sauvegardé, or il peut changer si la map est éditée
-- Supprimer le boomerang quand on tombe dans un trou qui nous remet à l'entrée de la salle
 
 
 A venir :

@@ -84,7 +84,6 @@ class MapEntities {
 
   // information about the entities
   unsigned int get_nb_destination_points(void);
-  DestinationPoint * get_destination_point(int index);
   Obstacle get_obstacle_tile(Layer layer, int x, int y);
   std::list<MapEntity*> * get_obstacle_entities(Layer layer);
   std::list<Detector*> * get_detectors(void);
@@ -103,7 +102,7 @@ class MapEntities {
   static bool compare_y(MapEntity *first, MapEntity *second);
 
   // hero
-  void set_hero_layer(Layer layer);
+  void set_entity_layer(MapEntity *entity, Layer layer);
   bool is_hero_on_raised_blocks(void);
   bool overlaps_raised_blocks(Layer layer, const SDL_Rect &rectangle);
   bool is_boomerang_present(void);

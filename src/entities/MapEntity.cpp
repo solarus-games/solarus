@@ -213,11 +213,14 @@ Layer MapEntity::get_layer(void) {
 
 /**
  * Sets the layer of the entity on the map.
+ * If the entity is stored on the map in the class MapEntities,
+ * you should not call this function directly: call
+ * MapEntities::set_entity_layer() instead because the class MapEntities
+ * stores different lists of entities for each layer.
  * @param layer the layer of the entity on the map
  */
 void MapEntity::set_layer(Layer layer) {
   this->layer = layer;
-
 }
 
 /**

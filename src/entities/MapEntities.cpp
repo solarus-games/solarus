@@ -91,14 +91,6 @@ unsigned int MapEntities::get_nb_destination_points(void) {
 }
 
 /**
- * Returns a destination point.
- * @param index index of the destination point to get
- */
-DestinationPoint * MapEntities::get_destination_point(int index) {
-  return destination_points[index];
-}
-
-/**
  * Returns the obstacle property of the tile located
  * at a specified point.
  * @param layer of the tile to get
@@ -560,23 +552,33 @@ bool MapEntities::compare_y(MapEntity *first, MapEntity *second) {
 }
 
 /**
- * Changes the layer of the hero.
+ * Changes the layer of an entity.
+ * Only some specific entities should change their layer.
+ * @param entity an entity
  * @param layer the new layer
  */
-void MapEntities::set_hero_layer(Layer layer) {
+void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 
-  Hero *hero = zsdx->game->get_hero();
-  Layer old_layer = hero->get_layer();
+  Layer old_layer = entity->get_layer();
 
   if (layer != old_layer) {
+    entity->set_layer(layer);
 
-    this->obstacle_entities[old_layer].remove(hero);
-    this->entities_displayed_y_order[old_layer].remove(hero);
+    // update the obstacle list
+    if (entity->can_be_obstacle()) {
+      obstacle_entities[old_layer].remove(entity);
+      obstacle_entities[layer].push_back(entity);
+    }
 
-    hero->set_layer(layer);
-
-    this->obstacle_entities[layer].push_back(hero);
-    this->entities_displayed_y_order[layer].push_back(hero);
+    // update the sprites list
+    if (entity->is_displayed_in_y_order()) {
+      entities_displayed_y_order[old_layer].remove(entity);
+      entities_displayed_y_order[layer].push_back(entity);
+    }
+    else if (entity->can_be_displayed()) {
+      entities_displayed_first[old_layer].remove(entity);
+      entities_displayed_first[layer].push_back(entity);
+    }
   }
 }
 

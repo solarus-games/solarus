@@ -102,6 +102,50 @@ EntityType Hero::get_type() {
 }
 
 /**
+ * Returns whether entities of this type can be obstacles for other entities.
+ * If yes, the function is_obstacle_for() will be called
+ * to determine whether this particular entity is an obstacle or not.
+ * @return true if this type of entity can be obstacle for other entities
+ */
+bool Hero::can_be_obstacle(void) {
+  return true; 
+}
+
+/**
+ * Returns whether entities of this type can detect the presence 
+ * of the hero or other entities (this is possible only for
+ * suclasses of Detector). If yes, the function 
+ * collision() will be called when a collision is detected.
+ * @return true if this type of entity can detect other entities
+ */
+bool Hero::can_detect_entities(void) {
+  return false;
+}
+
+/**
+ * Returns whether entities of this type can be displayed.
+ * If enabled, the sprites added by the add_sprite() calls will be 
+ * displayed (if any).
+ * @return true if this type of entity can be displayed
+ */
+bool Hero::can_be_displayed(void) {
+  return true; 
+}
+
+/**
+ * Returns whether an entity of this type should be displayed above
+ * the hero and other entities having this property when it is in front of them.
+ * This means that the displaying order of entities having this
+ * feature depends on their y position. The entities without this feature
+ * are displayed in the normal order (i.e. as specified by the map file), 
+ * and before the entities with the feature.
+ * @return true if this type of entity is displayed at the same level as the hero
+ */
+bool Hero::is_displayed_in_y_order(void) {
+  return true;
+}
+
+/**
  * Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
@@ -768,59 +812,63 @@ void Hero::update_position(void) {
  */
 void Hero::place_on_destination_point(Map *map) {
 
-  int destination_point_index = map->get_destination_point_index();
+  std::string destination_point_name = map->get_destination_point_name();
   
-  if (destination_point_index >= 0) {
+  if (destination_point_name == "_same") {
 
-    MapEntities *entities = map->get_entities();
-
-    // the location is specified by a destination point object
-    DestinationPoint *destination_point =
-      entities->get_destination_point(destination_point_index);
-
-    set_map(map, destination_point->get_direction());
-    set_x(destination_point->get_x());
-    set_y(destination_point->get_y());
-    entities->set_hero_layer(destination_point->get_layer());
-
-    destroy_carried_items();
-    entities->remove_boomerang();
-    start_free();
-  }
-  else if (destination_point_index == -1) {
-
-    // the hero's coordinates are the same as on previous map
+    // the hero's coordinates are the same as on the previous map
     set_map(map);
-//    ensure_no_obstacles();
 
     destroy_carried_items();
     start_free();
-  }
+  }    
   else {
+    int side = map->get_destination_side();
+    
+    if (side != -1) {
 
-    // only one coordinate is changed
-    set_map(map);
+      // only one coordinate is changed
+      set_map(map);
 
-    switch (map->get_destination_side()) {
+      switch (side) {
 
-    case 0: // right side
-      set_x(map->get_width());
-      break;
+	case 0: // right side
+	  set_x(map->get_width());
+	  break;
 
-    case 1: // top side
-      set_y(5);
-      break;
+	case 1: // top side
+	  set_y(5);
+	  break;
 
-    case 2: // left side
-      set_x(0);
-      break;
+	case 2: // left side
+	  set_x(0);
+	  break;
 
-    case 3: // bottom side
-      set_y(map->get_height() + 5);
-      break;
+	case 3: // bottom side
+	  set_y(map->get_height() + 5);
+	  break;
 
-    default:
-      DIE("Invalid destination side: " << map->get_destination_side());
+	default:
+	  DIE("Invalid destination side: " << side);
+      }
+    }
+    else {
+
+      // normal case: the location is specified by a destination point object
+
+      MapEntities *entities = map->get_entities();
+
+      DestinationPoint *destination_point = (DestinationPoint*)
+	entities->get_entity(DESTINATION_POINT, destination_point_name);
+
+      set_map(map, destination_point->get_direction());
+      set_x(destination_point->get_x());
+      set_y(destination_point->get_y());
+      entities->set_entity_layer(this, destination_point->get_layer());
+
+      destroy_carried_items();
+      entities->remove_boomerang();
+      start_free();
     }
   }
 }
@@ -831,11 +879,12 @@ void Hero::place_on_destination_point(Map *map) {
  */
 void Hero::opening_transition_finished(void) {
 
-  if (map->get_destination_point_index() == -2) {
+  int side = map->get_destination_side();  
+  if (side != -1) {
     // the hero was placed on the side of the map:
     // there was a scrolling between the previous map and this one
 
-    switch (map->get_destination_side()) {
+    switch (side) {
 
     case 0: // right side
       set_x(map->get_width() - 8);
@@ -854,7 +903,7 @@ void Hero::opening_transition_finished(void) {
       break;
 
     default:
-      DIE("Invalid destination side: " << map->get_destination_side());
+      DIE("Invalid destination side: " << side);
     }
   }
 }

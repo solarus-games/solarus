@@ -124,7 +124,7 @@ void Sensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
 
       case CHANGE_LAYER:
 	// we change the hero's layer
-	map->get_entities()->set_hero_layer(this->get_layer());
+	map->get_entities()->set_entity_layer(hero, this->get_layer());
 	break;
 
       case RETURN_FROM_BAD_GROUND:

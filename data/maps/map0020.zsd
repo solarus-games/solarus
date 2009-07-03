@@ -210,9 +210,9 @@
 1	0	104	509	destination_point_3	-1	1
 1	0	80	493	from_B1_first_stairs	3	0
 2	0	72	464	16	16	to_B1_first_stairs	0	1	21	from_1F_first_stairs
-2	0	96	512	16	16	teletransporter_2	0	1	21	_same
-2	0	96	544	16	16	teletransporter_3	0	1	21	_same
-2	0	64	512	32	48	teletransporter_4	0	1	21	_same
+2	0	-16	512	16	16	teletransporter_2	0	1	21	_same
+2	0	-16	544	16	16	teletransporter_3	0	1	21	_same
+2	0	-48	512	32	48	teletransporter_4	0	1	21	_same
 14	0	192	509
 1	0	80	365	from_B1_stairs_2	1	0
 10	0	136	296	8	16	barrier	71	1
@@ -252,6 +252,7 @@
 8	0	208	381	tom	3	1	npc/tom	_none
 13	0	112	597	16	16	leave_cavern_sensor	0
 1	0	112	589	from_outside	1	0
+13	0	168	573	16	16	sensor_3	2
 0	1	200	592	64	8	180
 0	1	200	560	64	32	2
 0	1	40	600	400	24	52

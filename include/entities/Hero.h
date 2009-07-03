@@ -261,8 +261,12 @@ class Hero: public MapEntity {
   Hero(Equipment *equipment);
   ~Hero(void);
 
-  // properties
+  // features
   EntityType get_type(void);
+  bool can_be_obstacle(void);
+  bool can_detect_entities(void);
+  bool can_be_displayed(void);
+  bool is_displayed_in_y_order(void);
 
   void update(void);
   void display_on_map(void);

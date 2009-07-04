@@ -24,7 +24,6 @@ Feature requests :
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Permettre au boomerang de ramener les pickable items
 - Permettre au boomerang d'immobiliser les ennemis
-- Convertir les tilesets de la glace et du donjon de Binbin au nouveau format
 
 
 Bugs :

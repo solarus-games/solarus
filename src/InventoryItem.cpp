@@ -213,11 +213,11 @@ void InventoryItem::update(void) {
 	  finished = true;
 
 	  if (direction_pressed == -1) {
-	    // the player can press the arrows before or after the boomerang key
+	    // the player can press the diagonal arrows before or after the boomerang key
 	    direction_pressed = game->get_controls()->get_arrows_direction();
 	  }
 	  int boomerang_direction = direction_pressed;
-	  if (boomerang_direction == -1) {
+	  if (boomerang_direction == -1 || boomerang_direction % 90 == 0) {
 	    boomerang_direction = hero->get_animation_direction() * 90;
 	  }
 	  game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction));

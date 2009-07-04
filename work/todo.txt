@@ -13,15 +13,15 @@ Feature requests :
 - Mettre de la couleur dans les messages
 - Ajouter des infos de statut quête dans l'écran de sélection des sauvegardes, en particulier quand une sauvegarde est choisie
 - Afficher le nom du donjon dans le hud
-- Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
-- Ralentir la vitesse du héros sur l'eau peu profonde
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Permettre de couper voire régler la musique et/ou le son
-- Mettre des constantes dans les scripts
 - Mettre une icône sur l'exécutable
+- Mettre des constantes dans les scripts
 - Ecran d'options : faire clignoter l'icône de la touche en cours de configuration
+- Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
+- Ralentir la vitesse du héros sur l'eau peu profonde
 - Permettre au boomerang de ramener les pickable items
 - Permettre au boomerang d'immobiliser les ennemis
 - Convertir les tilesets de la glace et du donjon de Binbin au nouveau format
@@ -42,11 +42,11 @@ Bugs :
 - grotte Tom : dalle télépathique d'indice ?
 - permettre de gagner moins difficilement au bandit manchot ?
 - mémoires de Sahasrahla
+- Rubis au sol chez le forgeron : ne pas les faire réapparaître
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - DialogBox::get_last_answer : mauvaise idée de mettre ça en statique, plutôt le stocker dans Game
-- Rubis au sol chez le forgeron : ne pas les faire réapparaître
 - collision avec un réceptacle de coeur : trop stricte ?
 
 

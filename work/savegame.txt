@@ -38,4 +38,4 @@ booleans:
 40	lyriann cave: chest with 20 rupees
 41	lyriann cave: Tom gave the boomerang to the player
 42	lyriann cave: the player gave the boomerang back to Tom
-
+43-45	smith cave: 3 blue rupees taken

@@ -136,12 +136,22 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
     return NULL;
   }
 
+  // some items can exist only in a dungeon
   if (subtype >= SMALL_KEY && subtype <= BOSS_KEY && !zsdx->game->get_current_map()->is_in_dungeon()) {
     DIE("Illegal pickable item subtype " << subtype << " in a dungeon");
   }
 
+  // check the savegame variable
+  if (savegame_variable < -1) {
+    DIE("Invalid savegame variable: " << savegame_variable);
+  }
+
+  if (subtype >= SMALL_KEY && savegame_variable != -1) {
+    DIE("This subtype of pickable item must be saved: " << subtype);
+  }
+
   // don't create anything if this is an item already found
-  if (subtype > ARROW_10 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
+  if (savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
     return NULL;
   }
 
@@ -420,26 +430,25 @@ void PickableItem::give_item_to_player(void) {
 
   case SMALL_KEY:
     equipment->add_small_key();
-    game->get_savegame()->set_boolean(savegame_variable, true);
     break;
 
   case BIG_KEY:
-    treasure = new Treasure(Treasure::BIG_KEY, savegame_variable);
+    treasure = new Treasure(Treasure::BIG_KEY, -1);
     game->give_treasure(treasure);
     break;
 
   case BOSS_KEY:
-    treasure = new Treasure(Treasure::BOSS_KEY, savegame_variable);
+    treasure = new Treasure(Treasure::BOSS_KEY, -1);
     game->give_treasure(treasure);
     break;
 
   case PIECE_OF_HEART:
-    treasure = new Treasure(Treasure::PIECE_OF_HEART, savegame_variable);
+    treasure = new Treasure(Treasure::PIECE_OF_HEART, -1);
     game->give_treasure(treasure);
     break;
 
   case HEART_CONTAINER:
-    treasure = new Treasure(Treasure::HEART_CONTAINER, savegame_variable);
+    treasure = new Treasure(Treasure::HEART_CONTAINER, -1);
     game->give_treasure(treasure);
     break;
 
@@ -447,6 +456,10 @@ void PickableItem::give_item_to_player(void) {
     DIE("Unknown pickable item subtype '" << subtype << "'");
     break;
 
+  }
+
+  if (savegame_variable != -1) {
+    game->get_savegame()->set_boolean(savegame_variable, true);
   }
 }
 

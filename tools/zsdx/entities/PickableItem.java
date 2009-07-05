@@ -102,10 +102,10 @@ public class PickableItem extends MapEntity {
 	}
 
 	/**
-	 * Returns whether this subtype of pickable item is saved.
-	 * @return true if this subtype of pickable item is saved
+	 * Returns whether this subtype of pickable item must be saved.
+	 * @return true if this subtype of pickable item must be saved
 	 */
-	public boolean isSaved() {
+	public boolean mustBeSaved() {
 	    return id >= SMALL_KEY.getId();
 	}
 
@@ -182,13 +182,9 @@ public class PickableItem extends MapEntity {
 	    throw new MapException("Invalid savegame variable");
 	}
 
-	boolean saved = ((Subtype) subtype).isSaved();
-	if (saved && savegameVariable == -1) {
+	boolean mustBeSaved = ((Subtype) subtype).mustBeSaved();
+	if (mustBeSaved && savegameVariable == -1) {
 	    throw new MapException("This pickable item must be saved");
-	}
-
-	if (!saved && savegameVariable != -1) {
-	    throw new MapException("This pickable item cannot be saved");
 	}
 
 	boolean inDungeon = map.isInDungeon();

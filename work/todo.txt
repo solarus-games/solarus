@@ -39,13 +39,11 @@ Bugs :
 - pâtissière : permettre de donner les pommes sans devoir tenter de sortir
 - si on reparle à Tom : indiquer que le lancer du boomerang est tout un art et qu'il faut savoir le maîtriser / qu'il y a plusieurs manières de le manier...
 - grotte Tom : dalle télépathique d'indice ?
-- permettre de gagner moins difficilement au bandit manchot ?
 - mémoires de Sahasrahla
 - Rubis au sol chez le forgeron : ne pas les faire réapparaître
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
-- DialogBox::get_last_answer : mauvaise idée de mettre ça en statique, plutôt le stocker dans Game
 - collision avec un réceptacle de coeur : trop stricte ?
 
 

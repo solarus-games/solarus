@@ -127,7 +127,8 @@ Le sous-type qui est un numéro indiquant le type d'objet ramassable :
 
 On peut ainsi spécifier -1 pour rendre le choix aléatoire (c'est le cas la plupart du temps quand on tue un ennemi ou qu'on détruit un buisson). Dans le cas aléatoire, un élément de la liste précédente est choisi au hasard (y compris l'absence d'objet), sauf les 3 clés. Si le joueur manque de coeurs, d'énergie magique, de bombes ou de flèches, la probabilité d'obtenir ce qui lui manque est augmentée.
 
-savegame_variable est un numéro utilisé pour les items qu'on ne peut obtenir qu'une fois dans le jeu et qui sont sauvegardés, comme les clés, les quarts de coeur, etc. Il permet d'identifier la variable dans la sauvegarde indiquant si le joueur a déjà obtenu cet item ou non. Si c'est un item classique (non sauvegardé), ce numéro est -1.
+savegame_variable est un numéro utilisé pour les items qu'on ne peut obtenir qu'une fois dans le jeu et qui sont sauvegardés, comme les clés, les quarts de coeur, etc. Il permet d'identifier la variable dans la sauvegarde indiquant si le joueur a déjà obtenu cet item ou non. Si c'est un objet non sauvegardé, ce numéro est -1.
+N'importe quel sous-type d'objet ramassable peut être sauvegardé. Les objets ramassables dont l'identifiant est supérieur ou égal à celui de la petite clé sont obligatoirement sauvegardés.
 
 
 Objets destructibles (4)

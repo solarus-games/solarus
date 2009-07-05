@@ -93,7 +93,7 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 	public void actionPerformed(ActionEvent ev) {
 
 	    PickableItem.Subtype subtype = pickableItemSubtypeField.getValue();
-	    pickableItemSavegameVariableField.setEnabled(subtype.isSaved());
+	    pickableItemSavegameVariableField.setEnabled(subtype.mustBeSaved());
 	}
     }
 }

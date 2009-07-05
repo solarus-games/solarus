@@ -13,9 +13,9 @@ game_2_reward = 0
 
 -- game 2 behavior
 game_2_slots = {
-   slot_machine_left =   {initial_frame = 6, initial_delay = 60, current_delay = 0, symbol = -1},
-   slot_machine_middle = {initial_frame = 15, initial_delay = 80, current_delay = 0, symbol = -1},
-   slot_machine_right =  {initial_frame = 9, initial_delay = 50, current_delay = 0, symbol = -1}
+   slot_machine_left =   {initial_frame = 6, initial_delay = 70, current_delay = 0, symbol = -1},
+   slot_machine_middle = {initial_frame = 15, initial_delay = 90, current_delay = 0, symbol = -1},
+   slot_machine_right =  {initial_frame = 9, initial_delay = 60, current_delay = 0, symbol = -1}
 }
 
 -- Function called when the map starts

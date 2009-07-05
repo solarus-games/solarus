@@ -17,6 +17,7 @@
 package zsdx.gui.edit_entities;
 
 import java.awt.event.*;
+import javax.swing.*;
 import zsdx.*;
 import zsdx.entities.*;
 import zsdx.entities.PickableItem.Subtype;
@@ -29,6 +30,7 @@ import zsdx.map_editor_actions.*;
 public class EditPickableItemComponent extends EditEntityComponent {
 
     // specific fields of a pickable item
+    private JCheckBox saveField;
     private NumberChooser savegameVariableField; // enabled only for certain types of pickable items
 
     /**
@@ -49,8 +51,24 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	savegameVariableField = new NumberChooser(0, 0, 32767);
 	addField("Savegame variable", savegameVariableField);
 
-	// enable or disable the 'savegame variable' field depending on the pickable item type
-	subtypeField.addActionListener(new ActionListenerEnableSavegameVariable());
+	// savegame variable
+	savegameVariableField = new NumberChooser(0, 0, 32767);
+	addField("Savegame variable", savegameVariableField);
+
+	// enable or disable the 'savegame variable' field depending on the check box and the subtype 
+	saveField.addChangeListener(new ChangeListener() {
+	    public void stateChanged(ChangeEvent ev) {
+		savegameVariableField.setEnabled(saveField.isSelected());
+	    }
+	});
+
+	subtypeField.addChangeListener(new ChangeListener() {
+	    public void stateChanged(ChangeEvent ev) {
+		if (((Subtype) subtypeField.getValue()).mustBeSaved()) {
+		  savegameVariableField.setEnabled(true);
+		}
+	    }
+	});
 
 	// remove 'Random' and 'None'
 	subtypeField.removeItemAt(0);
@@ -65,8 +83,14 @@ public class EditPickableItemComponent extends EditEntityComponent {
 
 	PickableItem pickableItem = (PickableItem) entity;
 
-	savegameVariableField.setNumber(pickableItem.getIntegerProperty("savegameVariable"));
-	new ActionListenerEnableSavegameVariable().actionPerformed(null);
+	int savegameVariable = pickableItem.getIntegerProperty("savegameVariable");
+	if (savegameVariable != -1) {
+	  savegameVariableField.setNumber(savegameVariable != -1);
+	  savegameVariableField.setEnabled(true);
+	}
+	else {
+	  savegameVariableField.setEnabled(false);
+	}
     }
 
     /**
@@ -79,17 +103,5 @@ public class EditPickableItemComponent extends EditEntityComponent {
 		savegameVariableField.getNumber() : -1;
 
 	return new ActionEditEntitySpecific(entity, savegameVariable);
-    }
-
-    /**
-     * A listener associated to the 'pickable item type' field,
-     * to enable or disable the 'savegame index' field depending on the type.
-     */
-    private class ActionListenerEnableSavegameVariable implements ActionListener {
-
-	public void actionPerformed(ActionEvent ev) {
-	    Subtype subtype = (Subtype) subtypeField.getValue();
-	    savegameVariableField.setEnabled(subtype.isSaved());
-	}
     }
 }

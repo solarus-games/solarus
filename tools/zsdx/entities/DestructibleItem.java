@@ -131,11 +131,11 @@ public class DestructibleItem extends MapEntity {
 	
 	boolean saved = (pickableItemSavegameVariable >= 0 && pickableItemSavegameVariable < 32768);
 
-	if (pickableItemSubtype.isSaved() && !saved) {
+	if (pickableItemSubtype.mustBeSaved() && !saved) {
 	    throw new MapException("This pickable item must be saved");
 	}
 
-	if (!pickableItemSubtype.isSaved() && saved) {
+	if (!pickableItemSubtype.mustBeSaved() && saved) {
 	    throw new MapException("This pickable item cannot be saved");
 	}
 

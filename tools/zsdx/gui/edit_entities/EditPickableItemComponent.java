@@ -18,6 +18,7 @@ package zsdx.gui.edit_entities;
 
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import zsdx.*;
 import zsdx.entities.*;
 import zsdx.entities.PickableItem.Subtype;
@@ -62,8 +63,8 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	    }
 	});
 
-	subtypeField.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent ev) {
+	subtypeField.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent ev) {
 		if (((Subtype) subtypeField.getValue()).mustBeSaved()) {
 		  savegameVariableField.setEnabled(true);
 		}
@@ -85,7 +86,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
 
 	int savegameVariable = pickableItem.getIntegerProperty("savegameVariable");
 	if (savegameVariable != -1) {
-	  savegameVariableField.setNumber(savegameVariable != -1);
+	  savegameVariableField.setNumber(savegameVariable);
 	  savegameVariableField.setEnabled(true);
 	}
 	else {

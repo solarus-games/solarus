@@ -183,11 +183,11 @@ public class Enemy extends MapEntity {
 
 	boolean isSaved = (pickableItemSavegameVariable >= 0 && pickableItemSavegameVariable < 32768);
 
-	if (pickableItemSubtype.isSaved() && !isSaved) {
+	if (pickableItemSubtype.mustBeSaved() && !isSaved) {
 	    throw new MapException("This pickable item must be saved");
 	}
 
-	if (!pickableItemSubtype.isSaved() && isSaved) {
+	if (!pickableItemSubtype.mustBeSaved() && isSaved) {
 	    throw new MapException("This pickable item cannot be saved");
 	}
 

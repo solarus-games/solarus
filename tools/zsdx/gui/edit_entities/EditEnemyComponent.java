@@ -108,7 +108,7 @@ public class EditEnemyComponent extends EditEntityComponent {
 
 	public void actionPerformed(ActionEvent ev) {
 	    PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
-	    pickableItemSavegameVariableField.setEnabled(pickableItemSubtype.isSaved());
+	    pickableItemSavegameVariableField.setEnabled(pickableItemSubtype.mustBeSaved());
 	}
     }
 }

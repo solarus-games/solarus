@@ -175,7 +175,7 @@ void ShopItem::update(void) {
 
     // the question has just finished
     is_asking_question = false;
-    int answer = game->get_dialog_box()->get_last_answer();
+    int answer = game->get_dialog_last_answer();
 
     if (answer == 0) {
 

@@ -26,8 +26,6 @@
 #include "Color.h"
 #include "MapScript.h"
 
-int DialogBox::answer_selected = -1;
-
 static SDL_Rect box_src_position = {0, 0, 220, 60};
 static SDL_Rect question_src_position = {48, 60, 8, 8};
 
@@ -199,10 +197,10 @@ void DialogBox::show_message(const MessageId &message_id) {
   current_message_id = message_id;
 
   if (current_message->is_question()) {
-    answer_selected = 0;
+    zsdx->game->set_dialog_last_answer(0);
   }
   else {
-    answer_selected = -1;
+    zsdx->game->set_dialog_last_answer(-1);
   }
   question_dst_position.y = y + 27;
   
@@ -296,19 +294,11 @@ void DialogBox::up_or_down_key_pressed(void) {
   if (current_message->is_question() && current_message->is_finished()) {
     
     // switch the answer
-    answer_selected = 1 - answer_selected;
-    question_dst_position.y = y + ((answer_selected == 0) ? 27 : 40);
+    int answer = zsdx->game->get_dialog_last_answer();
+    zsdx->game->set_dialog_last_answer(1 - answer);
+    question_dst_position.y = y + ((answer == 1) ? 27 : 40);
     switch_answer_sound->play();
   }
-}
-
-/**
- * Returns the answer selected by the player in the last message with a question.
- * @return the answer selected: 0 for the first one, 1 for the second one,
- * -1 if the last message was not a question
- */
-int DialogBox::get_last_answer(void) {
-  return answer_selected;
 }
 
 /**

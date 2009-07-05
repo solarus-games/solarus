@@ -59,7 +59,6 @@ class DialogBox {
   std::map<MessageId, std::string> variables;
 
   MessageId first_message_id;
-  static int answer_selected;
 
   // dialog properties
   Speed speed;
@@ -116,7 +115,6 @@ class DialogBox {
   MessageId get_first_message_id(void);
   bool is_finished(void);
   bool was_cancelled(void);
-  static int get_last_answer(void);
 
   // update and display
   void update(void);

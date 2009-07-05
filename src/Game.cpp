@@ -423,8 +423,7 @@ void Game::update_dialog_box(void) {
 
     if (!cancelled && first_message_id[0] != '_') {
       // a dialog of the quest was just finished: notify the script
-      int answer = DialogBox::get_last_answer();
-      get_current_script()->event_message_sequence_finished(first_message_id, answer);
+      get_current_script()->event_message_sequence_finished(first_message_id, get_dialog_last_answer());
     }
   }
 }
@@ -731,6 +730,29 @@ void Game::show_message(const MessageId &message_id, int position) {
   }
 
   dialog_box = new DialogBox(message_id, 51, y);
+}
+
+/**
+ * Returns the answer selected by the player in the last dialog with a question.
+ * @return the answer selected: 0 for the first one, 1 for the second one,
+ * -1 if the last dialog was not a question
+ */
+int Game::get_dialog_last_answer(void) {
+  return dialog_last_answer;
+}
+
+/**
+ * Remembers the answer selected by the player in the last dialog with a question.
+ * @param answer the answer selected: 0 for the first one, 1 for the second one,
+ * -1 if the last dialog was not a question
+ */
+void Game::set_dialog_last_answer(int answer) {
+
+  if (answer < -1 || answer > 1) {
+    DIE("Invalid value of answer: " << answer);
+  }
+
+  this->dialog_last_answer = answer;
 }
 
 /**

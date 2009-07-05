@@ -40,6 +40,8 @@ class Game: public Screen {
   // current game state (elements currently shown)
   PauseMenu *pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
   DialogBox *dialog_box;     /**< the dialog box currently shown, or NULL if no message is being shown */
+  int dialog_last_answer;    /**< the answer selected in the last dialog box: 0 for the first one, 1 for the second one,
+                              * -1 if there was no question */ 
   Treasure *treasure;        /**< the treasure currently being given to the player or NULL if it is not the case */
   GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
   bool reseting;             /**< true if the game will be reset */
@@ -140,6 +142,8 @@ class Game: public Screen {
   DialogBox *get_dialog_box(void);
   void show_message(const MessageId &message_id);
   void show_message(const MessageId &message_id, int position);
+  void set_dialog_last_answer(int answer);
+  int get_dialog_last_answer(void);
 
   // treasure
   void give_treasure(Treasure *treasure);

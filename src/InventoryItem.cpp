@@ -230,7 +230,7 @@ void InventoryItem::update(void) {
 
         if (!game->is_showing_message()) {
 	  
-	  if (DialogBox::get_last_answer() == 0 &&
+	  if (game->get_dialog_last_answer() == 0 &&
 	      equipment->get_inventory_item_amount(item_id) >= 0) {
 
 	    equipment->remove_inventory_item_amount(item_id, 1);
@@ -345,7 +345,7 @@ void InventoryItem::update_bottle(void) {
   // bottle with water
   if (variant == 2 && !game->is_showing_message()) {
 
-    int answer = game->get_dialog_box()->get_last_answer();
+    int answer = game->get_dialog_last_answer();
 
     if (answer == 0) {
       // empty the water

@@ -78,7 +78,7 @@ void Equipment::update(void) {
     if (!zsdx->game->is_showing_message()) {
 
       giving_fairy = false;
-      int answer = zsdx->game->get_dialog_box()->get_last_answer();
+      int answer = zsdx->game->get_dialog_last_answer();
 
       if (answer == 0) {
 	// restore the hearts
@@ -100,7 +100,7 @@ void Equipment::update(void) {
   else if (giving_water && !zsdx->game->is_showing_message()) {
 
     giving_water = false;
-    int answer = zsdx->game->get_dialog_box()->get_last_answer();
+    int answer = zsdx->game->get_dialog_last_answer();
 
     if (answer == 0) {
       zsdx->game->give_treasure(new Treasure(Treasure::WATER, -1));

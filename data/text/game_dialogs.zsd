@@ -333,6 +333,20 @@ line1 = "C'est fermé à clé !"
 #       |-----------------------|
 line1 = "Attention aux trous !"
 
+[outside_world.how_to_save_npc]
+#       |-----------------------|
+line1 = "Pour sauvegarder ta"
+line2 = "partie, appuie sur D"
+line3 = "pour mettre le jeu en"
+next = outside_world.how_to_save_npc.2
+cancel = all
+
+[outside_world.how_to_save_npc.2]
+#       |-----------------------|
+line1 = "pause, puis sur C."
+line2 = "N'oublie pas de regar-"
+line3 = "der l'icône verte !"
+
 [outside_world.flower_hole_sign]
 #       |-----------------------|
 line1 = "Le trou près de la"
@@ -736,9 +750,16 @@ line3 = "moyens..."
 
 [smith_cave.thank_you]
 #       |-----------------------|
-line1 = "Merci beaucoup."
-line2 = "Pour utiliser ton épée,"
-line3 = "appuie sur C."
+line1 = "Merci beaucoup. Pour"
+line2 = "donner un coup d'épée,"
+line3 = "appuie sur C. Ou laisse"
+next = smith_cave.thank_you.2
+
+[smith_cave.thank_you.2]
+#       |-----------------------|
+line1 = "le bouton enfoncé pour"
+line2 = "déclencher une attaque"
+line3 = "tournoyante !"
 
 [lyriann_shop.salesman]
 #       |-----------------------|
@@ -763,7 +784,7 @@ line3 = "les transporter !"
 line1 = "Un coeur à consommer"
 line2 = "immédiatement."
 
-[cake_shop.seller]
+[cake_shop.seller.choose_item]
 #       |-----------------------|
 line1 = "Bienvenue. Choisis la"
 line2 = "pâtisserie que tu"
@@ -797,6 +818,21 @@ line3 = "suffire."
 next = cake_shop.dont_leave.3
 
 [cake_shop.dont_leave.3]
+#       |-----------------------|
+line1 = "Tu veux bien m'aider ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+
+[cake_shop.seller.ask_apples_again]
+#       |-----------------------|
+line1 = "Je cherche toujours six"
+line2 = "pommes pour faire une"
+line3 = "bonne tarte."
+next = cake_shop.seller.ask_apples_again.2
+cancel = all
+
+[cake_shop.seller.ask_apples_again.2]
 #       |-----------------------|
 line1 = "Tu veux bien m'aider ?"
 line2 = "Oui"
@@ -951,6 +987,25 @@ line1 = "quelques objets qui"
 line2 = "pourraient te servir."
 line3 = "Mais je ne te promets"
 next = sahasrahla_house.quest_accepted.3
+
+[sahasrahla_house.memories]
+#       |-----------------------|
+line1 = "Les mémoires de"
+line2 = "Sahasrahla."
+next = sahasrahla_house.memories.2
+
+[sahasrahla_house.memories.2]
+#       |-----------------------|
+line1 = "Veux-tu les lire ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+next = sahasrahla_house.memories.read
+
+[sahasrahla_house.memories.read]
+#       |-----------------------|
+line1 = "Oh, c'est beaucoup"
+line2 = "trop long !"
 
 [sahasrahla_house.quest_accepted.3]
 #       |-----------------------|

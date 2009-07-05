@@ -114,15 +114,19 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
 
     /**
      * Changes the currently selected element.
-     * If the specified element doesn't exist, no exception is raised and
-     * the selection is not changed.
+     * If the specified element doesn't exist, a IllegalArgumentException is raised.
      * @param id id of the element you want to make selected in the combo box,
      * or an empty string to select no element
+     * @throws IllegalArgumentException if the id specified does not exist in the combo box
      */
-    public void setSelectedId(String id) {
+    public void setSelectedId(String id) throws IllegalArgumentException {
 
 	KeyValue item = new KeyValue(id, null);
 	setSelectedItem(item);
+
+	if (!getSelectedId().equals(id)) {
+	  throw new IllegalArgumentException("No id '" + id + "' in the list");
+	}
     }
 
     /**

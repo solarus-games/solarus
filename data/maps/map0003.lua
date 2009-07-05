@@ -11,6 +11,7 @@ function event_map_started()
 
    -- make the NPCs walk
    npc_random_walk("hat_man")
+   npc_random_walk("how_to_save_npc")
    npc_random_walk("grand_son")
 end
 

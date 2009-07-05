@@ -1,5 +1,6 @@
 #include "entities/Boomerang.h"
 #include "entities/Hero.h"
+#include "entities/Enemy.h"
 #include "entities/MapEntities.h"
 #include "movements/CollisionMovement.h"
 #include "movements/PlayerMovement.h"
@@ -215,8 +216,13 @@ void Boomerang::update(void) {
       map->get_entities()->set_entity_layer(this, hero->get_layer()); // because the hero's layer may have changed
     }
     else if (get_movement()->is_stopped()) {
-      // collision with an obstacle or time to go back
-      ResourceManager::get_sound("sword_hit")->play();
+      // collision with an obstacle
+      
+      CollisionMovement *movement = (CollisionMovement*) get_movement();
+      if (!map->collision_with_border(movement->get_last_collision_box_on_obstacle())) {
+        // play a sound unless we are on the map border
+	ResourceManager::get_sound("sword_hit")->play();
+      }
       go_back();
     }
     else if (get_distance(initial_coords.x, initial_coords.y) >= 144) {
@@ -228,6 +234,35 @@ void Boomerang::update(void) {
     if (movement->is_finished()) {
       get_map()->get_entities()->remove_entity(this);
     }
+  }
+}
+
+/**
+ * This function is called when an enemy collides with the entity.
+ * @param enemy the enemy
+ */
+void Boomerang::collision_with_enemy(Enemy *enemy) {
+
+  if (!overlaps(hero->get_position_in_map())) {
+    enemy->try_hurt(ATTACK_BOOMERANG, this);
+  }
+}
+
+/**
+ * Notifies this entity that it has just attacked an enemy
+ * (even if this attack was not successful).
+ * @param attack the attack
+ * @param victim the enemy just hurt
+ * @param result indicates how the enemy has reacted to the attack:
+ * - a number greater than 0 represents the number of health points the enemy has just lost
+ * - a value of 0 means that the attack was just ignored 
+ * - a value of -1 means that the enemy was protected against the attack
+ * - a value of -2 means that the attack immobilized the enemy
+ */
+void Boomerang::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
+
+  if (result != 0 && !is_going_back()) {
+    go_back();
   }
 }
 

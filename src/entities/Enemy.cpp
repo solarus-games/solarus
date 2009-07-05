@@ -39,7 +39,7 @@
  */
 Enemy::Enemy(const ConstructionParameters &params):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
-  being_hurt(false), invulnerable(false), can_attack(true) {
+  being_hurt(false), invulnerable(false), can_attack(true), immobilized(false) {
 
 }
 
@@ -234,7 +234,7 @@ void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound
  * @param attack an attack
  * @param reaction how the enemy will react
  */
-void Enemy::set_vulnerability(Attack attack, int reaction) {
+void Enemy::set_vulnerability(EnemyAttack attack, int reaction) {
   vulnerabilities[attack] = reaction;
 }
 
@@ -248,7 +248,9 @@ void Enemy::update(void) {
     return;
   }
 
-  if (being_hurt) {
+  Uint32 now = SDL_GetTicks();
+
+  if (being_hurt && pushed_back_when_hurt) {
     StraightMovement *hurt_movement = (StraightMovement*) get_movement();
     if (hurt_movement->is_finished()) {
 
@@ -257,23 +259,38 @@ void Enemy::update(void) {
       if (life <= 0) {
 	kill();
       }
+      else if (is_immobilized()) {
+	clear_movement();
+	get_sprite()->set_current_animation("immobilized");
+	shaking_date = now + 5000; 
+      }
       else {
-
-	if (pushed_back_when_hurt) {
-	  set_movement(normal_movement); // restore the previous movement
-	  delete hurt_movement;
-	}
+	set_movement(normal_movement); // restore the previous movement
+	delete hurt_movement;
 	restart();
       }
     }
   }
 
-  if (life > 0 && invulnerable && SDL_GetTicks() >= vulnerable_again_date) {
+  if (life > 0 && invulnerable && now >= vulnerable_again_date) {
     invulnerable = false;
   }
 
-  if (life > 0 && !can_attack && SDL_GetTicks() >= can_attack_again_date) {
+  if (life > 0 && !can_attack && now >= can_attack_again_date) {
+
     can_attack = true;
+    if (is_immobilized()) {
+      immobilized = false;
+      set_movement(normal_movement);
+      restart();
+    }
+  }
+
+  if (is_immobilized() && !is_killed()  && now >= shaking_date &&
+      get_sprite()->get_current_animation() != "shaking") {
+    get_sprite()->set_current_animation("shaking");
+    can_attack = false;
+    can_attack_again_date = now + 2000;
   }
 
   if (is_killed() && get_sprite()->is_animation_finished()) {
@@ -309,6 +326,16 @@ void Enemy::set_suspended(bool suspended) {
       can_attack_again_date += SDL_GetTicks() - when_suspended;
     }
   }
+}
+
+/**
+ * Returns whether this enemy is in a normal state, i.e.
+ * it is not being hurt and not immobilized.
+ * When this method returns false, the subclasses of Enemy
+ * should not change the enemy properties.
+ */
+bool Enemy::is_in_normal_state(void) {
+  return !is_being_hurt() && !is_killed() && !is_immobilized();
 }
 
 /**
@@ -393,27 +420,27 @@ Sound * Enemy::get_hurt_sound(void) {
  * @param attack type of attack
  * @param source the entity attacking the enemy (often the hero)
  */
-void Enemy::hurt(Attack attack, MapEntity *source) {
+void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
 
+  int result;
   if (invulnerable || vulnerabilities[attack] == 0) {
     // ignore the attack
-    return;
+    result = 0;
   }
 
-  // notify the hero
-  if (source->is_hero()) {
-    ((Hero*) source)->just_attacked_enemy(attack, this);
-  }
-
-  if (vulnerabilities[attack] == -1) {
+  else if (vulnerabilities[attack] == -1) {
     // shield sound
     ResourceManager::get_sound("shield")->play();
+    result = -1;
   }
   else if (vulnerabilities[attack] == -2) {
-    // TODO immobilize the enemy
+    hurt(source);
+    immobilize();
+    result = -2;
   }
   else {
     // hurt the enemy
+    hurt(source);
 
     // compute the number of health points lost by the enemy
     int life_lost = vulnerabilities[attack];
@@ -434,21 +461,36 @@ void Enemy::hurt(Attack attack, MapEntity *source) {
     }
     life -= life_lost;
 
-    // update the enemy state
-    being_hurt = true;
-    invulnerable = true;
-    vulnerable_again_date = SDL_GetTicks() + 700;
+    result = life_lost;
+  }
 
-    // graphics and sounds
-    get_sprite()->set_current_animation("hurt");
-    get_hurt_sound()->play();
+  // notify the source
+  source->just_attacked_enemy(attack, this, result);
+}
 
-    // push the enemy back
-    if (pushed_back_when_hurt) {
-      normal_movement = get_movement();
-      double angle = source->get_vector_angle(this);
-      set_movement(new StraightMovement(12, angle, 200));
-    }
+/**
+ * Hurts the enemy.
+ * Updates its state, its sprite and plays the sound.
+ * @param source the entity attacking the enemy (often the hero)
+ */
+void Enemy::hurt(MapEntity *source) {
+
+  // update the enemy state
+  being_hurt = true;
+  invulnerable = true;
+  vulnerable_again_date = SDL_GetTicks() + 700;
+  can_attack = false;
+  can_attack_again_date = vulnerable_again_date;
+
+  // graphics and sounds
+  get_sprite()->set_current_animation("hurt");
+  get_hurt_sound()->play();
+
+  // push the enemy back
+  if (pushed_back_when_hurt) {
+    normal_movement = get_movement();
+    double angle = source->get_vector_angle(this);
+    set_movement(new StraightMovement(12, angle, 200));
   }
 }
 
@@ -482,9 +524,34 @@ void Enemy::kill(void) {
 }
 
 /**
+ * Returns whether the enemy is being hurt.
+ * @return true if the enemy is being hurt
+ */
+bool Enemy::is_being_hurt(void) {
+  return being_hurt;
+}
+
+/**
  * Returns whether the enemy is killed.
  * @return true if the enemy is killed
  */
 bool Enemy::is_killed(void) {
   return life <= 0 && get_sprite()->get_animation_set_id() == "enemies/enemy_killed";
 }
+
+/**
+ * Immobilizes this enemy.
+ */
+void Enemy::immobilize(void) {
+  immobilized = true;
+  can_attack_again_date = SDL_GetTicks() + 10000;
+}
+
+/**
+ * Returns whether this enemy is immobilized. 
+ * @return true if this enemy is immobilized 
+ */
+bool Enemy::is_immobilized(void) {
+  return immobilized;
+}
+

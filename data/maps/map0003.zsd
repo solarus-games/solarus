@@ -1866,7 +1866,7 @@
 4	0	688	773	2	-1	-1
 4	0	784	773	2	-1	-1
 8	0	256	925	telepathic_booth_sign	3	2	entities/sign	outside_world.telepathic_booth_sign
-8	0	968	949	pastry_shop_sign	3	2	entities/sign	outside_world.village.pastry_shop_sign
+8	0	968	949	pastry_shop_sign	3	2	entities/sign	outside_world.village.cake_shop_sign
 8	0	792	613	shop_sign	3	2	entities/sign	outside_world.village.shop_sign
 8	0	880	605	letter_box	3	0	_none	outside_world.village.letter_box
 8	0	816	501	hat_man	3	1	npc/newlink4	outside_world.village.hat_man_npc
@@ -1885,10 +1885,11 @@
 4	0	1008	765	2	-1	-1
 1	0	824	613	out_shop	3	0
 2	0	816	584	16	16	to_shop	0	1	18	main_entrance
-1	0	1000	949	out_pastry	3	0
+1	0	1000	949	out_cake_shop	3	0
 2	0	992	920	16	16	to_cake_shop	0	1	19	main_entrance
 8	0	936	685	grand_son	3	1	npc/newlink1	outside_world.village.grand_son_npc
 4	0	656	877	4	-1	-1
+8	0	1016	125	how_to_save_npc	3	1	npc/newlink6	outside_world.how_to_save_npc
 0	1	256	400	240	40	511
 0	1	232	448	288	40	511
 0	1	208	480	336	16	512

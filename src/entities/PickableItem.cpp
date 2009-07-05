@@ -146,7 +146,7 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
     DIE("Invalid savegame variable: " << savegame_variable);
   }
 
-  if (subtype >= SMALL_KEY && savegame_variable != -1) {
+  if (subtype >= SMALL_KEY && savegame_variable == -1) {
     DIE("This subtype of pickable item must be saved: " << subtype);
   }
 
@@ -372,7 +372,7 @@ void PickableItem::give_item_to_player(void) {
   // give the item
   Game *game = zsdx->game;
   Equipment *equipment = game->get_equipment();
-  Treasure *treasure;
+  Treasure *treasure = NULL;
 
   switch (subtype) {
 
@@ -433,22 +433,22 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case BIG_KEY:
-    treasure = new Treasure(Treasure::BIG_KEY, -1);
+    treasure = new Treasure(Treasure::BIG_KEY, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case BOSS_KEY:
-    treasure = new Treasure(Treasure::BOSS_KEY, -1);
+    treasure = new Treasure(Treasure::BOSS_KEY, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case PIECE_OF_HEART:
-    treasure = new Treasure(Treasure::PIECE_OF_HEART, -1);
+    treasure = new Treasure(Treasure::PIECE_OF_HEART, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case HEART_CONTAINER:
-    treasure = new Treasure(Treasure::HEART_CONTAINER, -1);
+    treasure = new Treasure(Treasure::HEART_CONTAINER, savegame_variable);
     game->give_treasure(treasure);
     break;
 
@@ -458,7 +458,8 @@ void PickableItem::give_item_to_player(void) {
 
   }
 
-  if (savegame_variable != -1) {
+  if (savegame_variable != -1 && treasure == NULL) {
+    // set the savegame variable unless the treasure class already did it
     game->get_savegame()->set_boolean(savegame_variable, true);
   }
 }

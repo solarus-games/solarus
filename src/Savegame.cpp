@@ -225,8 +225,12 @@ bool Savegame::get_boolean(int index) {
  */
 void Savegame::set_boolean(int index, bool value) {
 
-  Uint32 mask = (value ? 0x0001 : 0x0000) << (index % 32);
-  saved_data.booleans[index / 32] |= mask;
+  Uint32 mask = 0x0001 << (index % 32);
+  saved_data.booleans[index / 32] &= ~mask;
+
+  if (value) {
+    saved_data.booleans[index / 32] |= mask;
+  }
 
   //  std::cout << "setting value " << value << " at index " << index << std::endl;
 }

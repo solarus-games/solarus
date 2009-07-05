@@ -99,7 +99,7 @@ public class ActionEditEntity extends MapEditorAction {
 	    this.directionAfter = direction;
 	}
 
-	// name
+	// subtype
 	if (entity.hasSubtype()) {
 	    this.subtypeBefore = entity.getSubtype();
 	    this.subtypeAfter = subtype;

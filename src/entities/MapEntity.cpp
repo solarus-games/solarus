@@ -879,6 +879,21 @@ void MapEntity::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
 }
 
 /**
+ * Notifies this entity that it has just attacked an enemy
+ * (even if this attack was not successful).
+ * @param attack the attack
+ * @param victim the enemy just hurt
+ * @param result indicates how the enemy has reacted to the attack:
+ * - a number greater than 0 represents the number of health points the enemy has just lost
+ * - a value of 0 means that the attack was just ignored 
+ * - a value of -1 means that the enemy was protected against the attack
+ * - a value of -2 means that the attack immobilized the enemy
+ */
+void MapEntity::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
+  // nothing done by default
+}
+
+/**
  * This function is called when a teletransporter detects a collision with this entity.
  * @param teletransporter the teletransporter
  * @param collision_mode the collision mode that detected the event

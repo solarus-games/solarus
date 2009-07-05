@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
-#include "entities/Enemy.h"
+#include "entities/EnemyAttack.h"
 #include "entities/Ground.h"
 #include "Controls.h"
 #include "InventoryItemId.h"
@@ -324,9 +324,9 @@ class Hero: public MapEntity {
 
   // enemies and collisions
   bool is_obstacle_for(MapEntity *other);
-  virtual void collision_with_enemy(Enemy *enemy);
-  virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
-  void just_attacked_enemy(Enemy::Attack attack, Enemy *victim);
+  void collision_with_enemy(Enemy *enemy);
+  void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
+  void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
   bool is_stroke_by_sword(Detector *detector);
 
   void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);

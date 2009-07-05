@@ -20,13 +20,14 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include "entities/PickableItem.h"
+#include "entities/EnemyAttack.h"
 
 /**
  * Abstract class representing an enemy.
  * This class stores the attack and defense properties of the enemy.
  * The subclasses have to set these properties and create the enemy's sprites.
- * Every enemy sprite must have at least the following 3 animations:
- * "walking", "hurt" and "immobilized" with the four main directions.
+ * Every enemy sprite must have at least the following animations:
+ * "walking", "hurt", "immobilized" and "shaking" with the four main directions.
  * The animation of its sprites
  * automically switches depending on its current movement and the attacks it is subject to.
  */
@@ -51,20 +52,6 @@ class Enemy: public Detector {
     RANK_NORMAL,
     RANK_MINIBOSS,
     RANK_BOSS
-  };
-
-  /**
-   * Defines the attacks an enemy can be victim of.
-   */
-  enum Attack {
-    ATTACK_SWORD,       /**< attacked by the sword (for a spin attack, the life lost is multiplied by 2) */
-    ATTACK_THROWN_ITEM, /**< hit by an item thrown (bush, pot, stone...) */
-    ATTACK_BOMB,        /**< explosion of a bomb */
-    ATTACK_BOW,         /**< hit by an arrow */
-    ATTACK_HOOKSHOT,    /**< hit by the hookshot */
-    ATTACK_BOOMERANG,   /**< hit by the boomerang */
-    ATTACK_LAMP,        /**< burned by the lamp */
-    ATTACK_NUMBER,
   };
 
  protected:
@@ -117,12 +104,14 @@ class Enemy: public Detector {
 
   // enemy state
   bool being_hurt;                    /**< indicates that the enemy is being hurt */
-  Movement *normal_movement;          /**< backup of the enemy's movement, which is replaced by a straight movement while it is hurt */
+  Movement *normal_movement;          /**< backup of the enemy's movement, which is replaced by
+				       * a straight movement while it is hurt */
   bool invulnerable;                  /**< indicates that the enemy cannot be hurt for now */
   Uint32 vulnerable_again_date;       /**< date when the enemy can be hurt again */
   bool can_attack;                    /**< indicates that the enemy can currently attack the hero */
   Uint32 can_attack_again_date;       /**< date when the enemy can attack again */
-  
+  bool immobilized;                   /**< indicates that the enemy is currently immobilized */
+  Uint32 shaking_date;                /**< date when the enemy shakes */ 
 
   // pickable item
   PickableItem::Subtype pickable_item_subtype;  /**< subtype of pickable item that appears when this enemy gets killed */
@@ -139,10 +128,16 @@ class Enemy: public Detector {
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
 		    bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
-  void set_vulnerability(Attack attack, int reaction);
+  void set_vulnerability(EnemyAttack attack, int reaction);
 
   // hurt the enemy
   Sound *get_hurt_sound(void);
+  bool is_in_normal_state(void);
+  bool is_being_hurt(void);
+  bool is_immobilized(void);
+  bool is_killed(void);
+  void hurt(MapEntity *source);
+  void immobilize(void);
 
  public:
 
@@ -169,11 +164,12 @@ class Enemy: public Detector {
   void collision(MapEntity *entity, Sprite *sprite_overlapping);
 
   void attack_hero(Hero *hero);
-  bool is_killed(void);
   void attack_stopped_by_hero_shield(void);
-  void hurt(Attack attack, MapEntity *source);
+  void try_hurt(EnemyAttack attack, MapEntity *source);
   void kill(void);
+ 
   virtual void restart(void);
 };
 
 #endif
+

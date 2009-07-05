@@ -134,6 +134,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 
 	withSpriteField.setSelected(hasSprite);
 	spriteField.setSelectedId(hasSprite ? sprite : "");
+
 	spriteField.setEnabled(hasSprite && subtype != Subtype.SIGN);
 	withMessageField.setSelectedIndex(hasMessage ? 0 : 1);
 	messageField.setText(hasMessage ? message : "");

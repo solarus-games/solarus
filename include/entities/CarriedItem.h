@@ -72,6 +72,7 @@ class CarriedItem: public MapEntity {
   bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
   bool is_npc_obstacle(InteractiveEntity *npc);
   void collision_with_enemy(Enemy *enemy);
+  void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };
 
 #endif

@@ -17,6 +17,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/DestructibleItem.h"
 #include "entities/Hero.h"
+#include "entities/Enemy.h"
 #include "movements/PixelMovement.h"
 #include "movements/FollowMovement.h"
 #include "movements/CollisionMovement.h"
@@ -283,9 +284,24 @@ void CarriedItem::display_on_map(void) {
 void CarriedItem::collision_with_enemy(Enemy *enemy) {
 
   if (is_throwing) {
-    enemy->hurt(Enemy::ATTACK_THROWN_ITEM, this);
-    break_item(); /* break the item after notifying the enemy since
-		   * breaking the item actually changes its position */
+    enemy->try_hurt(ATTACK_THROWN_ITEM, this);
+  }
+}
+
+/**
+ * Notifies this entity that it has just attacked an enemy
+ * (even if this attack was not successful).
+ * @param attack the attack
+ * @param victim the enemy just hurt
+ * @param result indicates how the enemy has reacted to the attack:
+ * - a number greater than 0 represents the number of health points the enemy has just lost
+ * - a value of 0 means that the attack was just ignored 
+ * - a value of -1 means that the enemy was protected against the attack
+ * - a value of -2 means that the attack immobilized the enemy
+ */
+void CarriedItem::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
+  if (result != 0) {
+    break_item();
   }
 }
 

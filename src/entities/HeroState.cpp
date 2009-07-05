@@ -18,6 +18,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/Teletransporter.h"
 #include "entities/MapEntities.h"
+#include "entities/Enemy.h"
 #include "movements/PlayerMovement.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
@@ -1075,21 +1076,30 @@ void Hero::collision_with_enemy(Enemy *enemy) {
 void Hero::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
 
   if (sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
-    enemy->hurt(Enemy::ATTACK_SWORD, this);
+    enemy->try_hurt(ATTACK_SWORD, this);
   }
 }
 
 /**
- * Notifies the hero that he has just attacked an enemy
+ * Notifies this entity that it has just attacked an enemy
  * (even if this attack was not successful).
  * @param attack the attack
  * @param victim the enemy just hurt
+ * @param result indicates how the enemy has reacted to the attack:
+ * - a number greater than 0 represents the number of health points the enemy has just lost
+ * - a value of 0 means that the attack was just ignored 
+ * - a value of -1 means that the enemy was protected against the attack
+ * - a value of -2 means that the attack immobilized the enemy
  */
-void Hero::just_attacked_enemy(Enemy::Attack attack, Enemy *victim) {
+void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
+
+  if (result == 0) {
+    return;
+  }
 
   switch (attack) {
 
-  case Enemy::ATTACK_SWORD:
+  case ATTACK_SWORD:
     if (get_state() == SWORD_LOADING) {
       stop_displaying_sword();
       start_free();

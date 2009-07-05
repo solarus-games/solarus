@@ -45,6 +45,10 @@ class Boomerang: public MapEntity {
   void go_back(void);
 
   void update(void);
+
+  // collisions
+  void collision_with_enemy(Enemy *enemy);
+  void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };
 
 

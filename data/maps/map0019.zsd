@@ -56,7 +56,7 @@
 0	0	64	128	8	32	10
 0	0	72	128	176	32	173
 1	0	160	213	main_entrance	1	0
-2	0	152	224	16	16	to_outside	0	1	3	out_pastry
+2	0	152	224	16	16	to_outside	0	1	3	out_cake_shop
 4	0	48	53	0	1	-1
 4	0	64	53	0	1	-1
 4	0	64	69	0	1	-1
@@ -65,8 +65,8 @@
 4	0	256	69	0	4	-1
 4	0	272	69	0	4	-1
 4	0	272	53	0	4	-1
-8	0	160	77	seller	3	1	npc/static_villager10	cake_shop.seller
-8	0	160	109	interactive_entity	3	0	_none	cake_shop.seller
+8	0	160	77	seller	3	1	npc/static_villager10	_none
+8	0	160	109	seller_talking_place	3	0	_none	_none
 16	0	80	128	pain_au_chocolat	17	1	-1	20	cake_shop.pain_au_chocolat
 16	0	208	128	croissant	18	1	-1	50	cake_shop.croissant
 13	0	160	221	16	16	leaving_shop_sensor	0

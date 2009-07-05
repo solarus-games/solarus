@@ -24,7 +24,10 @@
  * Constructor.
  */
 CollisionMovement::CollisionMovement(void) {
-
+  last_collision_box_on_obstacle.x = 0;
+  last_collision_box_on_obstacle.y = 0;
+  last_collision_box_on_obstacle.w = 0;
+  last_collision_box_on_obstacle.h = 0;
 }
 
 /**
@@ -52,6 +55,10 @@ bool CollisionMovement::collision_with_map(int dx, int dy) {
   collision_box.y += dy;
 
   bool collision = map->collision_with_obstacles(entity->get_layer(), collision_box, entity);
+
+  if (collision) {
+    last_collision_box_on_obstacle = collision_box;
+  }
 
   return collision;
 }
@@ -98,4 +105,13 @@ void CollisionMovement::update_y(void) {
     }
     next_move_date_y += y_delay;
   }
+}
+
+/**
+ * Returns the collision box of the last call
+ * to collision_with_map() returning true.
+ * @return the collision box of the last collision detected
+ */
+const SDL_Rect& CollisionMovement::get_last_collision_box_on_obstacle(void) {
+  return last_collision_box_on_obstacle;
 }

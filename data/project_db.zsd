@@ -45,6 +45,7 @@
 2	title_screen_full.it	Title screen (full)
 2	title_screen_short.it	Title screen (short, without intro)
 2	triforce.it	Triforce
+3	entities/sign	Sign
 3	npc/fairy_queen	Fairy Queen
 3	npc/monkey	Monkey
 3	npc/sahasrahla	Sahasrahla

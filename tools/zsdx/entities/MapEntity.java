@@ -1230,7 +1230,7 @@ public abstract class MapEntity extends Observable {
      * @param value value of the property
      */
     public void setProperty(String name, String value) throws MapException {
-	specificProperties.put(name, value);
+        specificProperties.put(name, value);
     }
 
     /**

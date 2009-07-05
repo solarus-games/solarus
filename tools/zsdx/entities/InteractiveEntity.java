@@ -182,7 +182,7 @@ public class InteractiveEntity extends MapEntity {
     public void checkProperties() throws MapException {
 
 	if (!isStringValid(getProperty("sprite"))) {
-	    throw new MapException("Invalid sprite name");
+	    throw new MapException("Invalid sprite name: '" + getProperty("sprite") + "'");
 	}
 
 	if (!isStringValid(getProperty("messageId"))) {

@@ -397,7 +397,31 @@ bool Map::is_started(void) {
 }
 
 /**
+ * Tests whether a point is outside the map area.
+ * @param x x of the point to check
+ * @param y y of the point to check
+ * @return true if this point is outside the map area
+ */
+bool Map::collision_with_border(int x, int y) {
+
+  return (x < 0 || x >= get_width()
+      || y < 0 || y >= get_height());
+}
+
+/**
+ * Tests whether a rectangle has overlaps the outside part of the map area.
+ * @param collision_box the rectangle to check
+ * @return true if a point of the rectangle is outside the map area
+ */
+bool Map::collision_with_border(const SDL_Rect &collision_box) {
+
+  return collision_box.x < 0 || collision_box.x + collision_box.w >= get_width()
+    || collision_box.y < 0 || collision_box.y + collision_box.h >= get_height();
+}
+
+/**
  * Tests whether a point collides with a map tile.
+ * This method also returns true if the point is outside the map.
  * @param layer layer of the point
  * @param x x of the point in pixels
  * @param y y of the point in pixels
@@ -410,10 +434,9 @@ bool Map::collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_c
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
-  // if the point is outside the map, there is only obstacles (should not happen though)
-  if (x < 0 || x >= get_width()
-      || y < 0 || y >= get_height()) {
-    return OBSTACLE;
+  // if the point is outside the map, there is only obstacles
+  if (collision_with_border(x, y)) {
+    return true;
   }
 
   // get the obstacle property of the tile under that point

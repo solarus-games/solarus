@@ -38,7 +38,7 @@ class PickableItem: public Detector {
     RANDOM          = -1,   /**< special value to indicate to choose another value randomly (including NONE) */
     NONE            = 0,    /**< special value to indicate that there is no pickable item */
 
-    // items not saved
+    // items not necessarily saved
     RUPEE_1         = 1,
     RUPEE_5         = 2,
     RUPEE_20        = 3,

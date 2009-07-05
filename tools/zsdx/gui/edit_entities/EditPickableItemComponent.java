@@ -48,9 +48,9 @@ public class EditPickableItemComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// savegame index
-	savegameVariableField = new NumberChooser(0, 0, 32767);
-	addField("Savegame variable", savegameVariableField);
+	// saving option
+	saveField = new JCheckBox("Save the item state");
+	addField("Savegame", saveField);
 
 	// savegame variable
 	savegameVariableField = new NumberChooser(0, 0, 32767);
@@ -66,6 +66,12 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	subtypeField.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
 		if (((Subtype) subtypeField.getValue()).mustBeSaved()) {
+		  savegameVariableField.setEnabled(true);
+		  saveField.setEnabled(false);
+		  saveField.setSelected(true);
+		}
+		else {
+		  saveField.setEnabled(true);
 		  savegameVariableField.setEnabled(true);
 		}
 	    }
@@ -83,15 +89,20 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	PickableItem pickableItem = (PickableItem) entity;
+	Subtype subtype = (Subtype) pickableItem.getSubtype();
 
 	int savegameVariable = pickableItem.getIntegerProperty("savegameVariable");
 	if (savegameVariable != -1) {
 	  savegameVariableField.setNumber(savegameVariable);
 	  savegameVariableField.setEnabled(true);
+	  saveField.setSelected(true);
 	}
 	else {
 	  savegameVariableField.setEnabled(false);
+	  saveField.setSelected(false);
 	}
+
+	saveField.setEnabled(!subtype.mustBeSaved());
     }
 
     /**

@@ -39,7 +39,9 @@
  */
 Enemy::Enemy(const ConstructionParameters &params):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
-  being_hurt(false), invulnerable(false), can_attack(true), immobilized(false) {
+  being_hurt(false), normal_movement(NULL), invulnerable(false), vulnerable_again_date(0),
+  can_attack(true), can_attack_again_date(0), immobilized(false),
+  start_shaking_date(0), end_shaking_date(0) {
 
 }
 
@@ -263,17 +265,14 @@ void Enemy::update(void) {
 	}
 	else if (is_immobilized()) {
 	  clear_movement();
+	  get_sprite()->set_current_animation("immobilized");
 	}
 	else {
 	  set_movement(normal_movement); // restore the previous movement
 	  delete hurt_movement;
-	restart();
+	  restart();
 	}
       }
-    }
-    if (is_immobilized()) {
-      get_sprite()->set_current_animation("immobilized");
-      start_shaking_date = now + 5000; 
     }
   }
 
@@ -288,16 +287,14 @@ void Enemy::update(void) {
   if (is_immobilized() && !is_killed() && now >= end_shaking_date &&
       get_sprite()->get_current_animation() == "shaking") {
 
-      immobilized = false;
-      set_movement(normal_movement);
-      restart();
-    }
+    stop_immobilized();
+  }
 
-  if (is_immobilized() && !is_killed() && now >= start_shaking_date &&
+  if (is_immobilized() && !is_killed() && !is_being_hurt() && now >= start_shaking_date &&
       get_sprite()->get_current_animation() != "shaking") {
 
-    get_sprite()->set_current_animation("shaking");
     end_shaking_date = now + 2000;
+    get_sprite()->set_current_animation("shaking");
   }
 
   if (is_killed() && get_sprite()->is_animation_finished()) {
@@ -324,14 +321,11 @@ void Enemy::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended);
 
   if (!suspended) {
-
-    if (invulnerable) {
-      vulnerable_again_date += SDL_GetTicks() - when_suspended;
-    }
-
-    if (!can_attack) {
-      can_attack_again_date += SDL_GetTicks() - when_suspended;
-    }
+    Uint32 diff = SDL_GetTicks() - when_suspended;
+    vulnerable_again_date += diff;
+    can_attack_again_date += diff;
+    start_shaking_date += diff;
+    end_shaking_date += diff;
   }
 }
 
@@ -447,6 +441,11 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
   }
   else {
     // hurt the enemy
+
+    if (is_immobilized() && get_sprite()->get_current_animation() == "shaking") {
+      stop_immobilized();
+    }
+
     hurt(source);
 
     // compute the number of health points lost by the enemy
@@ -493,9 +492,12 @@ void Enemy::hurt(MapEntity *source) {
   get_sprite()->set_current_animation("hurt");
   get_hurt_sound()->play();
 
+  if (get_movement() != NULL) {
+    normal_movement = get_movement();
+  }
+
   // push the enemy back
   if (pushed_back_when_hurt) {
-    normal_movement = get_movement();
     double angle = source->get_vector_angle(this);
     set_movement(new StraightMovement(12, angle, 200));
   }
@@ -551,6 +553,17 @@ bool Enemy::is_killed(void) {
  */
 void Enemy::immobilize(void) {
   immobilized = true;
+  start_shaking_date = SDL_GetTicks() + 5000; 
+}
+
+/**
+ * Stops immobilizing the enemy.
+ */
+void Enemy::stop_immobilized(void) {
+  immobilized = false;
+  end_shaking_date = 0;
+  set_movement(normal_movement);
+  restart();
 }
 
 /**

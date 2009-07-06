@@ -139,6 +139,7 @@ class Enemy: public Detector {
   bool is_killed(void);
   void hurt(MapEntity *source);
   void immobilize(void);
+  void stop_immobilized(void);
 
  public:
 

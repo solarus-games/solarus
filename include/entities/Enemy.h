@@ -111,7 +111,8 @@ class Enemy: public Detector {
   bool can_attack;                    /**< indicates that the enemy can currently attack the hero */
   Uint32 can_attack_again_date;       /**< date when the enemy can attack again */
   bool immobilized;                   /**< indicates that the enemy is currently immobilized */
-  Uint32 shaking_date;                /**< date when the enemy shakes */ 
+  Uint32 start_shaking_date;          /**< date when the enemy shakes */ 
+  Uint32 end_shaking_date;            /**< date when the enemy stops shaking and walks again */ 
 
   // pickable item
   PickableItem::Subtype pickable_item_subtype;  /**< subtype of pickable item that appears when this enemy gets killed */

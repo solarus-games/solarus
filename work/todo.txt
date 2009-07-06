@@ -39,7 +39,6 @@ Bugs :
 - Forgeron : ajouter décors de la forge
 - si on reparle à Tom : indiquer que le lancer du boomerang est tout un art et qu'il faut savoir le maîtriser / qu'il y a plusieurs manières de le manier...
 - grotte Tom : dalle télépathique d'indice ?
-- boomerang sur ennemis : can_attack_again déjà utilisé -> conflit
 - boomerang sur ennemis : shaking_date sensible à suspended
 
 

@@ -250,25 +250,30 @@ void Enemy::update(void) {
 
   Uint32 now = SDL_GetTicks();
 
-  if (being_hurt && pushed_back_when_hurt) {
-    StraightMovement *hurt_movement = (StraightMovement*) get_movement();
-    if (hurt_movement->is_finished()) {
+  if (being_hurt) {
+    
+    if (pushed_back_when_hurt) {
+      StraightMovement *hurt_movement = (StraightMovement*) get_movement();
+      if (hurt_movement->is_finished()) {
 
-      being_hurt = false;
+	being_hurt = false;
 
-      if (life <= 0) {
-	kill();
-      }
-      else if (is_immobilized()) {
-	clear_movement();
-	get_sprite()->set_current_animation("immobilized");
-	shaking_date = now + 5000; 
-      }
-      else {
-	set_movement(normal_movement); // restore the previous movement
-	delete hurt_movement;
+	if (life <= 0) {
+	  kill();
+	}
+	else if (is_immobilized()) {
+	  clear_movement();
+	}
+	else {
+	  set_movement(normal_movement); // restore the previous movement
+	  delete hurt_movement;
 	restart();
+	}
       }
+    }
+    if (is_immobilized()) {
+      get_sprite()->set_current_animation("immobilized");
+      start_shaking_date = now + 5000; 
     }
   }
 
@@ -276,21 +281,23 @@ void Enemy::update(void) {
     invulnerable = false;
   }
 
-  if (life > 0 && !can_attack && now >= can_attack_again_date) {
-
+  if (life > 0 && !can_attack && !is_immobilized() && now >= can_attack_again_date) {
     can_attack = true;
-    if (is_immobilized()) {
+  }
+
+  if (is_immobilized() && !is_killed() && now >= end_shaking_date &&
+      get_sprite()->get_current_animation() == "shaking") {
+
       immobilized = false;
       set_movement(normal_movement);
       restart();
     }
-  }
 
-  if (is_immobilized() && !is_killed()  && now >= shaking_date &&
+  if (is_immobilized() && !is_killed() && now >= start_shaking_date &&
       get_sprite()->get_current_animation() != "shaking") {
+
     get_sprite()->set_current_animation("shaking");
-    can_attack = false;
-    can_attack_again_date = now + 2000;
+    end_shaking_date = now + 2000;
   }
 
   if (is_killed() && get_sprite()->is_animation_finished()) {
@@ -544,7 +551,6 @@ bool Enemy::is_killed(void) {
  */
 void Enemy::immobilize(void) {
   immobilized = true;
-  can_attack_again_date = SDL_GetTicks() + 10000;
 }
 
 /**

@@ -65,32 +65,6 @@ PixelBits::PixelBits(SDL_Surface *surface, const SDL_Rect &image_position) {
     pixel_index += surface->w - width;
   }
 
-  /* debug
-  cout << "pixel bits initialized: frame size is " << width << " x " << height << endl;
-  for (int i = 0; i < height; i++) {
-    int k = -1;
-    Uint32 mask = 0x00000000;
-    for (int j = 0; j < width; j++) {
-
-      if (mask == 0x00000000) {
-	k++;
-	mask = 0x80000000;
-      }
-
-      //      cout << "bit " << i << "," << j << " is " << (bits[i][k] & mask) << endl;
-      
-      if (bits[i][k] & mask) {
-	cout << "X";
-      }
-      else {
-	cout << ".";
-      }
-
-      mask >>= 1;      
-    }
-    cout << endl;
-  }
-  */
 }
 
 /**
@@ -127,6 +101,14 @@ bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, con
     return false;
   }
 
+  /* debug
+  std::cout << SDL_GetTicks() << " bounding box collision\n";
+  std::cout << "rect1 = " << location1.x << "," << location1.y << " x " << bounding_box1.w << "," << bounding_box1.h << "\n";
+  std::cout << "rect2 = " << location2.x << "," << location2.y << " x " << bounding_box2.w << "," << bounding_box2.h << "\n";
+  print();
+  other->print();
+  */
+
   // compute the intersection between the two rectangles
   SDL_Rect intersection;
   intersection.x = MAX(bounding_box1.x, bounding_box2.x);
@@ -134,12 +116,21 @@ bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, con
   intersection.w = MIN(bounding_box1.x + bounding_box1.w, bounding_box2.x + bounding_box2.w) - intersection.x;
   intersection.h = MIN(bounding_box1.y + bounding_box1.h, bounding_box2.y + bounding_box2.h) - intersection.y;
 
+  /* debug
+  std::cout << "intersection: " << intersection.x << "," << intersection.y << " x " << intersection.w << "," << intersection.h << "\n";
+  */
+
   // compute the relative position of the intersection rectangle for each bounding_box
   int offset_x1 = intersection.x - bounding_box1.x;
   int offset_y1 = intersection.y - bounding_box1.y;
 
   int offset_x2 = intersection.x - bounding_box2.x;
   int offset_y2 = intersection.y - bounding_box2.y;
+
+  /* debug
+  std::cout << "offset_x1 = " << offset_x1 << ", offset_y1 = " << offset_y1;
+  std::cout << ", offset_x2 = " << offset_x2 << ", offset_y2 = " << offset_y2 << std::endl;
+  */
 
   /*
    * For each row of the intersection, we will call row 'a' the row coming from the right bounding box
@@ -156,7 +147,7 @@ bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, con
   bool has_row_b_additional_mask;
   int nb_unused_masks_row_b; // number of unused masks on row b (i.e. before the intersection)
   int nb_unused_bits_row_b;  // number of unused bits on the first used mask of row b
-  int nb_used_bits_row_b;    // number of bits used on the first user mask of row b
+  int nb_used_bits_row_b;    // number of bits used on the first used mask of row b
 
   // compute the number of masks on row a
   nb_masks_per_row_a = intersection.w / 32;
@@ -170,14 +161,14 @@ bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, con
     rows_b = &other->bits[offset_y2];
     nb_unused_masks_row_b = offset_x2 / 32;
     nb_unused_bits_row_b = offset_x2 % 32;
-    has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b + 1 < other->nb_integers_per_row);
+    has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b < other->nb_integers_per_row);
   }
   else {
     rows_a = &other->bits[offset_y2];
     rows_b = &this->bits[offset_y1]; 
     nb_unused_masks_row_b = offset_x1 / 32;
     nb_unused_bits_row_b = offset_x1 % 32;
-    has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b + 1 < this->nb_integers_per_row);
+    has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b < this->nb_integers_per_row);
   }
   nb_used_bits_row_b = 32 - nb_unused_bits_row_b;
 
@@ -188,6 +179,10 @@ bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, con
     // current row
     bits_a = rows_a[i];
     bits_b = rows_b[i];
+
+    /* debug
+    std::cout << "*** checking row " << i << " of the intersection rectangle\n";
+    */
 
     // check each mask
     for (int j = 0; j < nb_masks_per_row_a && !collision; j++) {
@@ -200,6 +195,14 @@ bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, con
       Uint32 mask_a = bits_a[j];
       Uint32 mask_b = bits_b[j + nb_unused_masks_row_b];
       Uint32 next_mask_b_left;
+
+      /* debug
+      std::cout << "mask_a = ";
+      print_mask(mask_a);
+      std::cout << ", mask b = ";
+      print_mask(mask_b);
+      std::cout << "\n";
+      */
 
       if (has_row_b_additional_mask) {
 	next_mask_b_left = bits_b[j + nb_unused_masks_row_b + 1] >> nb_used_bits_row_b;
@@ -240,3 +243,45 @@ bool PixelBits::check_rectangle_collision(const SDL_Rect &rectangle1, const SDL_
 
   return overlap_x && overlap_y;
 }
+
+/**
+ * Prints an ascii representation of the pixels (for debugging purposes).
+ */
+void PixelBits::print(void) {
+
+  std::cout << "frame size is " << width << " x " << height << std::endl;
+  for (int i = 0; i < height; i++) {
+    int k = -1;
+    Uint32 mask = 0x00000000;
+    for (int j = 0; j < width; j++) {
+
+      if (mask == 0x00000000) {
+	k++;
+	mask = 0x80000000;
+      }
+
+      //      std::cout << "bit " << i << "," << j << " is " << (bits[i][k] & mask) << endl;
+      
+      if (bits[i][k] & mask) {
+	std::cout << "X";
+      }
+      else {
+	std::cout << ".";
+      }
+
+      mask >>= 1;      
+    }
+    std::cout << std::endl;
+  }
+}
+
+/**
+ * Prints an ascii representation of a 32-bit mask.
+ */
+void PixelBits::print_mask(Uint32 mask) {
+  for (int i = 0; i < 32; i++) {
+    std::cout << ((mask & 0x8000 != 0x0000) ? "X" : ".");
+    mask >>= 1;
+  }
+}
+

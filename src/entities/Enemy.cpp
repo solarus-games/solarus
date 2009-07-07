@@ -509,6 +509,11 @@ void Enemy::hurt(MapEntity *source) {
  */
 void Enemy::kill(void) {
 
+  // if the enemy is immobilized, give a rupee
+  if (is_immobilized() && pickable_item_savegame_variable == -1) {
+    pickable_item_subtype = PickableItem::RUPEE_1;
+  }
+
   // stop any movement and disable attacks
   set_collision_modes(COLLISION_NONE);
   if (pushed_back_when_hurt) {

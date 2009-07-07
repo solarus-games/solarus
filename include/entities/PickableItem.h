@@ -94,6 +94,7 @@ class PickableItem: public Detector {
   bool can_be_picked;     /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
   Uint32 blink_date;      /**< date when the item starts blinking */
   Uint32 disappear_date;  /**< date when the item disappears */
+  bool is_following_boomerang; /**< true if this item is attached to the boomerang */
 
   // creation and initialization
   PickableItem(Layer layer, int x, int y, Subtype subtype, int savegame_variable);

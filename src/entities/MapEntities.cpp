@@ -208,8 +208,9 @@ void MapEntities::bring_to_front(MapEntity *entity) {
 	<< "' since it is displayed in the y order");
   }
 
-  entities_displayed_first->remove(entity);
-  entities_displayed_first->push_back(entity);
+  Layer layer = entity->get_layer();
+  entities_displayed_first[layer].remove(entity);
+  entities_displayed_first[layer].push_back(entity);
 }
 
 /**
@@ -562,7 +563,8 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
   Layer old_layer = entity->get_layer();
 
   if (layer != old_layer) {
-    entity->set_layer(layer);
+
+  entity->set_layer(layer);
 
     // update the obstacle list
     if (entity->can_be_obstacle()) {

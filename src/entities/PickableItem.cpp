@@ -19,7 +19,9 @@
 #include "entities/PickableItemFairy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
+#include "entities/Boomerang.h"
 #include "movements/FallingOnFloorMovement.h"
+#include "movements/FollowMovement.h"
 #include "Sprite.h"
 #include "Random.h"
 #include "ZSDX.h"
@@ -74,7 +76,7 @@ const PickableItem::Features PickableItem::features[] = {
 PickableItem::PickableItem(Layer layer, int x, int y, PickableItem::Subtype subtype, int savegame_variable):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
   subtype(subtype), savegame_variable(savegame_variable),
-  shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()) {
+  shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()), is_following_boomerang(false) {
 
 }
 
@@ -312,8 +314,14 @@ void PickableItem::initialize_sprites(void) {
   set_rectangle_from_sprite();
 
   Uint32 now = SDL_GetTicks();
-  allow_pick_date = now + 700;  // the player can take the item after 0.7s
-  can_be_picked = false;  
+
+  if (falling_height != FALLING_NONE) {
+    allow_pick_date = now + 700;  // the player can take the item after 0.7s
+    can_be_picked = false;  
+  }
+  else {
+    can_be_picked = true;
+  }
 
   // initialize the sprite removal
   if (will_disappear) {
@@ -334,8 +342,8 @@ void PickableItem::initialize_movement(void) {
 }
 
 /**
- * Returns whether the entity is falling when it appears.
- * @return true if the entity is falling when it appears
+ * Returns whether the entity is currently falling.
+ * @return true if the entity is currently falling
  */
 bool PickableItem::is_falling(void) {
   return falling_height != FALLING_NONE;
@@ -355,6 +363,20 @@ void PickableItem::collision(MapEntity *entity_overlapping, CollisionMode collis
 
     map->get_entities()->remove_entity(this);
     give_item_to_player();
+  }
+  else if (entity_overlapping->get_type() == BOOMERANG && !is_following_boomerang) {
+
+    Boomerang *boomerang = (Boomerang*) entity_overlapping;
+    
+    clear_movement();
+    set_movement(new FollowMovement(entity_overlapping, 0, 0, false));
+    is_following_boomerang = true;
+    falling_height = FALLING_NONE;
+    set_blinking(false);
+
+    if (!boomerang->is_going_back()) {
+      boomerang->go_back();
+    }
   }
 }
 
@@ -524,6 +546,11 @@ void PickableItem::update(void) {
   // update the shadow
   shadow_sprite->update();
 
+  if (!is_falling()) {
+    shadow_x = get_x();
+    shadow_y = get_y();
+  }
+
   if (!is_suspended()) {
 
     // check the timer
@@ -540,7 +567,7 @@ void PickableItem::update(void) {
 
 	Sprite *item_sprite = get_sprite(0);
     
-	if (now >= blink_date && !item_sprite->is_blinking()) {
+	if (now >= blink_date && !item_sprite->is_blinking() && !is_following_boomerang) {
 	  set_blinking(true);
 	}
     

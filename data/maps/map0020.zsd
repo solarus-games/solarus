@@ -203,6 +203,7 @@
 0	0	312	568	8	8	330
 0	0	296	560	16	8	332
 0	0	296	568	16	8	334
+1	0	112	589	from_outside	1	0
 2	0	72	376	16	16	to_B1_stairs_2	0	1	21	from_1F_stairs_2
 2	0	104	608	16	16	to_outside	0	1	4	out_lyriann_cave
 1	0	72	509	destination_point	-1	1
@@ -251,7 +252,6 @@
 15	0	248	192	32	16	0
 8	0	208	381	tom	3	1	npc/tom	_none
 13	0	112	597	16	16	leave_cavern_sensor	0
-1	0	112	589	from_outside	1	0
 0	1	200	592	64	8	180
 0	1	200	560	64	32	2
 0	1	40	600	400	24	52

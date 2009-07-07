@@ -38,6 +38,8 @@ class PixelBits {
 			    * transparency bit of each pixel in the image */
 
   bool check_rectangle_collision(const SDL_Rect &bounding_box1, const SDL_Rect &bounding_box2);
+  void print(void);
+  void print_mask(Uint32 mask);
 
  public:
 

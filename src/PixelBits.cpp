@@ -280,7 +280,7 @@ void PixelBits::print(void) {
  */
 void PixelBits::print_mask(Uint32 mask) {
   for (int i = 0; i < 32; i++) {
-    std::cout << ((mask & 0x8000 != 0x0000) ? "X" : ".");
+    std::cout << (((mask & 0x8000) != 0x0000) ? "X" : ".");
     mask >>= 1;
   }
 }

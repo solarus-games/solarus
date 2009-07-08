@@ -19,10 +19,8 @@ Feature requests :
 - Permettre de couper voire régler la musique et/ou le son
 - Mettre une icône sur l'exécutable
 - Mettre des constantes dans les scripts
-- Ecran d'options : faire clignoter l'icône de la touche en cours de configuration
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
-- Permettre au boomerang de ramener les pickable items
 
 
 Bugs :

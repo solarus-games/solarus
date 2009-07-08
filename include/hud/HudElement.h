@@ -38,6 +38,9 @@ class HudElement {
 
   bool visible;                  /**< Indicates that this hud element is currently visible. */
   int opacity;                   /**< The current opacity (0 to 255) of this hud element. */
+  bool blinking;                 /**< Indicates that this hud element is blinking. */
+  bool blinking_is_visible;      /**< When blinking, indicates that this hud element is currently displayed. */
+  Uint32 next_blink_date;        /**< When blinkig, date when the element will appear or disappear next time */
 
   HudElement(int x, int y, int width, int height);
 
@@ -50,8 +53,10 @@ class HudElement {
   virtual bool is_visible(void);
   int get_opacity(void);
   void set_opacity(int opacity);
+  void set_blinking(int blinking);
+  bool is_blinking(void);
 
-  virtual void update(void) = 0;
+  virtual void update(void);
   virtual void rebuild(void);
   void display(SDL_Surface *destination);
 };

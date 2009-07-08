@@ -25,6 +25,7 @@
 #include "hud/SmallKeysCounter.h"
 #include "hud/FloorView.h"
 #include "Game.h"
+#include "Controls.h"
 
 /**
  * Constructor.
@@ -55,6 +56,55 @@ HUD::~HUD(void) {
 
   for (int i = 0; i < nb_elements; i++) {
     delete elements[i];
+  }
+}
+
+/**
+ * Makes an icon blink if the corresponding game key is being customized.
+ */
+void HUD::update_blinking(void) {
+
+  // detect whether a key is being customized
+  int index = -1;
+  Controls *controls = game->get_controls();
+  if (controls->is_customizing()) {
+    Controls::GameKey key = controls->get_key_to_customize();
+    switch (key) {
+
+      case Controls::ACTION:
+        index = 7;
+	break;
+
+      case Controls::SWORD:
+	index = 5;
+	break;
+
+      case Controls::PAUSE:
+	index = 6;
+	break;
+
+      case Controls::ITEM_1:
+	index = 3;
+	break;
+
+      case Controls::ITEM_2:
+	index = 4;
+	break;
+
+      default:
+	break;
+    }
+  }
+
+  if (index != -1) {
+    if (!elements[index]->is_blinking()) {
+      elements[index]->set_blinking(true);    
+    }
+  }
+  for (int i = 3; i <= 7; i++) {
+    if (i != index && elements[i]->is_blinking()) {
+      elements[i]->set_blinking(false);
+    }
   }
 }
 
@@ -108,6 +158,8 @@ void HUD::update(void) {
       }
     }
   }
+
+  update_blinking();
 
   // update each element
   for (int i = 0; i < nb_elements; i++) {

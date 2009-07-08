@@ -68,6 +68,8 @@ ItemIcon::~ItemIcon(void) {
  */
 void ItemIcon::update(void) {
 
+  HudElement::update();
+
   bool need_rebuild = false;
 
   Equipment *equipment = savegame->get_equipment();

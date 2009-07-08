@@ -91,6 +91,8 @@ class Controls {
 
   // customization
   void customize(GameKey key);
+  bool is_customizing(void);
+  GameKey get_key_to_customize(void);
   bool is_customization_done(void);
 };
 

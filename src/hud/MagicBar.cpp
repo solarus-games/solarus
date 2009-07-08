@@ -67,6 +67,8 @@ bool MagicBar::is_visible(void) {
  */
 void MagicBar::update(void) {
 
+  HudElement::update();
+
   bool need_rebuild = false;
 
   // max magic

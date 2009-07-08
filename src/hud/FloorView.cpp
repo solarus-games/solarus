@@ -47,6 +47,8 @@ FloorView::~FloorView(void) {
  */
 void FloorView::update(void) {
 
+  HudElement::update();
+
   bool need_rebuild = false;
 
   // detect when the players enters a new map

@@ -66,6 +66,8 @@ bool SwordIcon::is_visible(void) {
  */
 void SwordIcon::update(void) {
 
+  HudElement::update();
+
   bool need_rebuild = false;
 
   // text or sword shown

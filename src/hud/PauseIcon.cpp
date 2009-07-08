@@ -54,6 +54,8 @@ PauseIcon::~PauseIcon(void) {
  */
 void PauseIcon::update(void) {
 
+  HudElement::update();
+
   bool need_rebuild = false;
 
   // text shown

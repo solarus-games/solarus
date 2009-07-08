@@ -35,6 +35,8 @@ class HUD {
 
   bool showing_message;
 
+  void update_blinking(void);
+
  public:
 
   HUD(Game *game);

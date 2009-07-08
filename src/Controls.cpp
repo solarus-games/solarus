@@ -799,6 +799,25 @@ void Controls::customize(GameKey key) {
 }
 
 /**
+ * Returns whether the player is currently customizing a key.
+ * @return true if the player is currently customizing a key 
+ */
+bool Controls::is_customizing(void) {
+  return customizing;
+}
+
+/**
+ * When the player is customizing a key, returns the key that is being customized.
+ * @return the key being customize
+ */
+Controls::GameKey Controls::get_key_to_customize(void) {
+  if (!is_customizing()) {
+    DIE("The player is not customizing a key");
+  }
+  return key_to_customize;
+}
+
+/**
  * Returns whether the customization process started by calling the customize()
  * function is done, i.e. whether the key has received a new binding
  * and the controls are now treated normally again.

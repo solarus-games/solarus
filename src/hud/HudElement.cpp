@@ -26,7 +26,7 @@
  * @param height height of the hud element surface
  */
 HudElement::HudElement(int x, int y, int width, int height):
-  visible(true), opacity(255) {
+  visible(true), opacity(255), blinking(false) {
 
   surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
   SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
@@ -99,15 +99,51 @@ void HudElement::set_opacity(int opacity) {
 }
 
 /**
+ * Makes this element blink.
+ */
+void HudElement::set_blinking(int blinking) {
+
+  if (blinking != this->blinking) {
+
+    this->blinking = blinking;
+    if (blinking) {
+      next_blink_date = SDL_GetTicks();
+      blinking_is_visible = false;
+    }
+  }
+}
+
+/**
+ * Returns whether this element is blinking.
+ * @return true if this element is blinking
+ */
+bool HudElement::is_blinking(void) {
+  return blinking;
+}
+
+/**
+ * Updates this HUD element.
+ */
+void HudElement::update(void) {
+
+  Uint32 now = SDL_GetTicks();
+  if (blinking && now >= next_blink_date) {
+    blinking_is_visible = !blinking_is_visible;
+    next_blink_date = now + 250;
+  }
+}
+
+/**
  * Displays the hud element on a surface.
  * If the savegame is empty, nothing is done.
  * @param destination the destination surface
  */
 void HudElement::display(SDL_Surface *destination) {
 
-  if (is_visible()) {
+  if (is_visible() && (!blinking || blinking_is_visible)) {
     // we don't want destination_position to be modified
     SDL_Rect destination_position_unsafe = destination_position;
     SDL_BlitSurface(surface_drawn, NULL, destination, &destination_position_unsafe);
   }
 }
+

@@ -65,6 +65,8 @@ bool ActionIcon::is_visible(void) {
  */
 void ActionIcon::update(void) {
 
+  HudElement::update();
+
   bool need_rebuild = false;
 
   // text shown

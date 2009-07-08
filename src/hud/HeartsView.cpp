@@ -70,6 +70,8 @@ HeartsView::~HeartsView(void) {
  */
 void HeartsView::update(void) {
 
+  HudElement::update();
+
   bool need_rebuild = false;
 
   // max hearts

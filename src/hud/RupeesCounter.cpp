@@ -73,6 +73,8 @@ RupeesCounter::~RupeesCounter(void) {
  */
 void RupeesCounter::update(void) {
 
+  HudElement::update();
+
   bool need_rebuild = false;
 
   // max rupees

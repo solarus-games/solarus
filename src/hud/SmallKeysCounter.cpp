@@ -46,9 +46,11 @@ SmallKeysCounter::~SmallKeysCounter(void) {
 }
 
 /**
- * Updates the number of rupees displayed and the color of the icon.
+ * Updates this HUD element.
  */
 void SmallKeysCounter::update(void) {
+
+  HudElement::update();
 
   bool need_rebuild = false;
 

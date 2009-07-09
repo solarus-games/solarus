@@ -69,10 +69,15 @@ function event_message_sequence_finished(message_id, answer)
   elseif message_id == "lyriann_cave.tom.not_finished" and answer == 1 then
     give_boomerang_back()
     start_message("lyriann_cave.tom.gave_boomerang_back")
-  elseif message_id == "lyriann_cave.tom.leaving.cavern_not_finished"
-    or message_id == "lyriann_cave.tom.cavern_finished" then
+  elseif message_id == "lyriann_cave.tom.cavern_finished"
+    or message_id == "lyriann_cave.tom.leaving.cavern_not_finished"
+    or message_id == "lyriann_cave.tom.leaving.cavern_finished" then
+
     give_boomerang_back()
-    npc_walk("tom", "22222200000022222222222222", false, true)
+    x,y = npc_get_position("tom")
+    if y ~= tom_initial_y then
+      npc_walk("tom", "22222200000022222222222222", false, true)
+    end
   end
 
 end
@@ -91,7 +96,7 @@ function event_npc_movement_finished(npc)
 
   if has_boomerang_of_tom() then
     if has_finished_cavern() then
-      start_message("lyriann_cave.tom.leaving.cavern_finished")
+      start_message("lyriann_cave.tom.cavern_finished")
     else
       start_message("lyriann_cave.tom.leaving.cavern_not_finished")
     end

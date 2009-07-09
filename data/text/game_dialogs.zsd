@@ -1190,36 +1190,30 @@ line1 = "Hé ! Attends !"
 
 [lyriann_cave.tom.leaving.cavern_not_finished]
 #       |-----------------------|
-line1 = "Je voudrais récupérer"
-line2 = "mon Boomerang."
-line3 = "$0Tu as déjà fini"
+line1 = "Tu as déjà fini ton"
+line2 = "exploration ? Il me"
+line3 = "semble que tu n'as pas"
 next = lyriann_cave.tom.leaving.cavern_not_finished.2
 
 [lyriann_cave.tom.leaving.cavern_not_finished.2]
 #       |-----------------------|
-line1 = "d'explorer la caverne ?"
-line2 = "Il me semble que tu"
-line3 = "n'as pas tout trouvé..."
+line1 = "tout trouvé... Si cela"
+line2 = "ne t'embête pas, je"
+line3 = "récupère mon Boomerang."
 next = lyriann_cave.tom.leaving.cavern_not_finished.3
 
 [lyriann_cave.tom.leaving.cavern_not_finished.3]
 #       |-----------------------|
-line1 = "Il faut être adroit et"
-line2 = "malin pour maîtriser"
-line3 = "le Boomerang. Reviens"
+line1 = "Son maniement requiert"
+line2 = "une certaine maîtrise !"
+line3 = "Reviens me voir si tu"
 next = lyriann_cave.tom.leaving.cavern_not_finished.4
 
 [lyriann_cave.tom.leaving.cavern_not_finished.4]
 #       |-----------------------|
-line1 = "me voir si tu souhaites"
-line2 = "que je t'apporte mon"
-line3 = "aide à nouveau."
-
-[lyriann_cave.tom.leaving.cavern_finished]
-#       |-----------------------|
-line1 = "J'aimerais récupérer"
-line2 = "mon Boomerang."
-next = lyriann_cave.tom.cavern_finished
+line1 = "souhaites que je"
+line2 = "t'apporte à nouveau"
+line3 = "mon aide."
 
 [lyriann_cave.tom.cavern_finished]
 #       |-----------------------|

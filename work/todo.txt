@@ -34,8 +34,6 @@ Bugs :
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - Forgeron : ajouter décors de la forge
-- si on reparle à Tom : indiquer que le lancer du boomerang est tout un art et qu'il faut savoir le maîtriser / qu'il y a plusieurs manières de le manier...
-- grotte Tom : dalle télépathique d'indice ?
 
 
 A venir :

@@ -37,6 +37,8 @@ class MapScript {
   Map *map;                   /**< the map associated to this script */
   lua_State* context;         /**< the execution context of the Lua script */
   std::list<Timer*> timers;   /**< the timers currently running for this script */
+  bool suspending_game;       /**< indicates that this script is currently suspending the game */
+  bool just_freezed;          /**< indicates that this script has just freezed the hero */
 
   bool call_lua_function(const std::string &function_name);
   bool call_lua_function(const std::string &function_name, const std::string &arg1);
@@ -65,15 +67,19 @@ class MapScript {
     l_stop_timer,
     l_move_camera,
     l_restore_camera,
+    l_npc_get_position,
+    l_npc_set_position,
     l_npc_walk,
     l_npc_random_walk,
     l_npc_jump,
     l_npc_set_direction,
     l_npc_remove,
+    l_hero_set_direction,
     l_set_chest_open,
     l_get_rupees,
     l_remove_rupees,
     l_inventory_item_get,
+    l_inventory_item_set,
     l_inventory_item_get_amount,
     l_inventory_item_remove_amount,
     l_inventory_item_is_bottle,
@@ -103,6 +109,7 @@ class MapScript {
   void register_c_functions(void);
   void add_timer(Timer *timer);
   void remove_timer(const std::string &callback_name);
+  void set_suspending_game(bool suspending_game);
 
  public:
 
@@ -114,6 +121,7 @@ class MapScript {
   // update functions
   void update(void);
   void set_suspended(bool suspended);
+  bool is_suspending_game();
 
   // C++ functions that call script functions
   void event_map_started(void);

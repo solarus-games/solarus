@@ -250,8 +250,9 @@
 2	0	288	560	16	16	teletransporter_11	0	1	21	from_1F_hole_2_west
 2	0	304	560	16	16	teletransporter_12	0	1	21	from_1F_hole_2_east
 15	0	248	192	32	16	0
-8	0	208	381	tom	3	1	npc/tom	_none
+8	0	144	485	tom	3	1	npc/tom	_none
 13	0	112	597	16	16	leave_cavern_sensor	0
+3	0	168	565	18	37
 0	1	200	592	64	8	180
 0	1	200	560	64	32	2
 0	1	40	600	400	24	52
@@ -308,7 +309,6 @@
 1	1	144	53	from_B1_north_stairs	3	0
 2	1	136	24	16	16	to_B1_north_stairs	0	1	21	from_1F_north_stairs
 1	1	240	597	from_B1_final_stairs	1	0
-3	1	232	573	18	37
 6	1	192	560	8	16	jump_sensor	4	40
 2	1	232	608	16	16	teletransporter	0	1	21	from_1F_final_stairs
 0	2	192	616	96	8	148

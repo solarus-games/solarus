@@ -44,15 +44,18 @@ Appel de fonctions C++ depuis un script LUA :
 - stop_timer(callback)					arrête un timer en cours d'exécution
 - move_camera(x, y, speed)				suspend le jeu et déplace la caméra vers un point cible
 - restore_camera()					renvoie la caméra vers le héros
+- npc_set_position(npc, x, y)                           change la position d'un PNJ
 - npc_walk(npc, path, loop, with_collisions)		fait se déplacer un PNJ selon un chemin spécifié
 - npc_random_walk(npc)					fait se déplacer un PNJ de manière aléatoire
 - npc_jump(npc, direction, length, with_collisions)	fait se déplacer un PNJ selon un chemin spécifié
 - npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
 - npc_remove(npc)					supprime un PNJ de la map
+- hero_set_direction(direction)				change la direction du sprite du héros
 - set_chest_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
 - get_rupees()						retourne le nombre de rubis
 - remove_rupees(rupees)					enlève des rubis au joueur
 - inventory_item_get(item_id)				retourne le numéro de variante possédée par le joueur d'un objet de l'inventaire
+- inventory_item_set(item_id, variant)			change l'état de possession d'un objet de l'inventaire
 - inventory_item_get_amount(item_id)			retourne la quantité d'un objet de l'inventaire
 - inventory_item_remove_amount(item_id, amount)		enlève une quantité d'un objet de l'inventaire (bombes, croissants, etc.)
 - inventory_item_is_bottle(item_id)			indique si un objet de l'inventaire est un flacon magique

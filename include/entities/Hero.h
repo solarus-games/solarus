@@ -227,7 +227,6 @@ class Hero: public MapEntity {
   void update_returning_to_solid_ground(void);
 
   // animation of the sprites
-  void set_animation_direction(int direction);
   void set_animation_direction_from_movement(void);
   bool is_direction_locked(void);
   void stop_displaying_sword(void);
@@ -290,6 +289,7 @@ class Hero: public MapEntity {
 
   // sprites
   int get_animation_direction(void);
+  void set_animation_direction(int direction);
   void set_suspended(bool suspended);
   void rebuild_equipment(void);
   void restart_animation(void);

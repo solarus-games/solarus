@@ -1034,76 +1034,76 @@ line2 = "Il faudrait un moyen de"
 line3 = "faire fondre la glace !"
 cancel = all
 
-[lyriann_cave.tom]
+[lyriann_cave.tom.first_time]
 #       |-----------------------|
 line1 = "Bonjour, jeune"
 line2 = "aventurier. Je suis"
 line3 = "Tom, un ancien garde"
-next = lyriann_cave.tom.2
+next = lyriann_cave.tom.first_time.2
 
-[lyriann_cave.tom.2]
+[lyriann_cave.tom.first_time.2]
 #       |-----------------------|
 line1 = "de notre défunt Roi."
 line2 = "Je ne pensais pas que"
 line3 = "quelqu'un viendrait me"
-next = lyriann_cave.tom.3
+next = lyriann_cave.tom.first_time.3
 
-[lyriann_cave.tom.3]
+[lyriann_cave.tom.first_time.3]
 #       |-----------------------|
 line1 = "trouver ici. Que fais-"
 line2 = "tu dans cette caverne"
 line3 = "lugubre ?"
-next = lyriann_cave.tom.4
+next = lyriann_cave.tom.first_time.4
 
-[lyriann_cave.tom.4]
+[lyriann_cave.tom.first_time.4]
 #       |-----------------------|
 line1 = "Comment ? La Triforce"
 line2 = "est en danger ? $0Tout"
 line3 = "cela ne serait pas"
-next = lyriann_cave.tom.5
+next = lyriann_cave.tom.first_time.5
 
-[lyriann_cave.tom.5]
+[lyriann_cave.tom.first_time.5]
 #       |-----------------------|
 line1 = "arrivé si notre Roi"
 line2 = "était encore là pour la"
 line3 = "protéger..."
-next = lyriann_cave.tom.6
+next = lyriann_cave.tom.first_time.6
 
-[lyriann_cave.tom.6]
+[lyriann_cave.tom.first_time.6]
 #       |-----------------------|
 line1 = "Tu cherches à percer"
 line2 = "les mystères de cette"
 line3 = "caverne ?"
-next = lyriann_cave.tom.7
+next = lyriann_cave.tom.first_time.7
 
-[lyriann_cave.tom.7]
+[lyriann_cave.tom.first_time.7]
 #       |-----------------------|
 line1 = "Cet endroit regorge"
 line2 = "d'énigmes, de trésors"
 line3 = "et de dangers."
-next = lyriann_cave.tom.8
+next = lyriann_cave.tom.first_time.8
 
-[lyriann_cave.tom.8]
+[lyriann_cave.tom.first_time.8]
 #       |-----------------------|
 line1 = "Cela me semble très"
 line2 = "courageux de ta part !"
-next = lyriann_cave.tom.9
+next = lyriann_cave.tom.first_time.9
 
-[lyriann_cave.tom.9]
+[lyriann_cave.tom.first_time.9]
 #       |-----------------------|
 line1 = "S'il te plaît, accepte"
 line2 = "mon aide... J'ai"
 line3 = "échoué, je n'ai pas su"
-next = lyriann_cave.tom.10
+next = lyriann_cave.tom.first_time.10
 
-[lyriann_cave.tom.10]
+[lyriann_cave.tom.first_time.10]
 #       |-----------------------|
 line1 = "protéger notre Roi."
 line2 = "Laisse-moi une occasion"
 line3 = "de me racheter !"
-next = lyriann_cave.tom.11
+next = lyriann_cave.tom.first_time.11
 
-[lyriann_cave.tom.11]
+[lyriann_cave.tom.first_time.11]
 #       |-----------------------|
 line1 = "Acceptes-tu mon aide ?"
 line2 = "Oui"
@@ -1111,15 +1111,33 @@ line3 = "Non"
 question = true
 next2 = lyriann_cave.tom.refuse_help
 
-[lyriann_cave.tom.refuse_help]
+[lyriann_cave.tom.not_first_time]
 #       |-----------------------|
-line1 = "Bien, comme tu veux."
+line1 = "Jeune explorateur,"
+line2 = "accepte mon aide. J'ai"
+line3 = "échoué, je n'ai pas su"
+next = lyriann_cave.tom.not_first_time.2
+
+[lyriann_cave.tom.not_first_time.2]
+#       |-----------------------|
+line1 = "protéger notre Roi."
+line2 = "Laisse-moi une occasion"
+line3 = "de me racheter !"
+next = lyriann_cave.tom.not_first_time.3
+
+[lyriann_cave.tom.not_first_time.3]
+#       |-----------------------|
+line1 = "Acceptes-tu mon aide ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+next2 = lyriann_cave.tom.refuse_help
 
 [lyriann_cave.tom.accept_help]
 #       |-----------------------|
 line1 = "Merci. Je peux te"
 line2 = "prêter ceci, j'espère"
-line3 = "que ça te sera utile."
+line3 = "que cela te sera utile."
 next = lyriann_cave.tom.accept_help.2
 
 [lyriann_cave.tom.accept_help.2]
@@ -1128,10 +1146,111 @@ line1 = "Mais n'oublie pas de me"
 line2 = "le rendre quand tu"
 line3 = "auras terminé !"
 
+[lyriann_cave.tom.refuse_help]
+#       |-----------------------|
+line1 = "Bien, comme tu voudras."
+
 [lyriann_cave.tom.not_finished]
 #       |-----------------------|
 line1 = "Tu t'en sors ? Aide-toi"
 line2 = "de mon boomerang pour"
 line3 = "franchir les obstacles."
+next = lyriann_cave.tom.not_finished.2
 
+[lyriann_cave.tom.not_finished.2]
+#       |-----------------------|
+line1 = "Il te faudra sans doute"
+line2 = "acquérir une certaine"
+line3 = "maîtrise du lancer du"
+next = lyriann_cave.tom.not_finished.3
+
+[lyriann_cave.tom.not_finished.3]
+#       |-----------------------|
+line1 = "Boomerang pour percer"
+line2 = "tous les secrets de"
+line3 = "cette caverne..."
+next = lyriann_cave.tom.not_finished.4
+
+[lyriann_cave.tom.not_finished.4]
+#       |-----------------------|
+line1 = "Que veux-tu faire ?"
+line2 = "Continuer"
+line3 = "Rendre le Boomerang"
+question = true
+
+[lyriann_cave.tom.gave_boomerang_back]
+#       |-----------------------|
+line1 = "Merci. Reviens me voir"
+line2 = "si tu souhaites que je"
+line3 = "t'aide à nouveau."
+
+[lyriann_cave.tom.leaving]
+#       |-----------------------|
+line1 = "Hé ! Attends !"
+
+[lyriann_cave.tom.leaving.cavern_not_finished]
+#       |-----------------------|
+line1 = "Je voudrais récupérer"
+line2 = "mon Boomerang."
+line3 = "$0Tu as déjà fini"
+next = lyriann_cave.tom.leaving.cavern_not_finished.2
+
+[lyriann_cave.tom.leaving.cavern_not_finished.2]
+#       |-----------------------|
+line1 = "d'explorer la caverne ?"
+line2 = "Il me semble que tu"
+line3 = "n'as pas tout trouvé..."
+next = lyriann_cave.tom.leaving.cavern_not_finished.3
+
+[lyriann_cave.tom.leaving.cavern_not_finished.3]
+#       |-----------------------|
+line1 = "Il faut être adroit et"
+line2 = "malin pour maîtriser"
+line3 = "le Boomerang. Reviens"
+next = lyriann_cave.tom.leaving.cavern_not_finished.4
+
+[lyriann_cave.tom.leaving.cavern_not_finished.4]
+#       |-----------------------|
+line1 = "me voir si tu souhaites"
+line2 = "que je t'apporte mon"
+line3 = "aide à nouveau."
+
+[lyriann_cave.tom.leaving.cavern_finished]
+#       |-----------------------|
+line1 = "J'aimerais récupérer"
+line2 = "mon Boomerang."
+next = lyriann_cave.tom.cavern_finished
+
+[lyriann_cave.tom.cavern_finished]
+#       |-----------------------|
+line1 = "Tu as réussi à déjouer"
+line2 = "les énigmes de cette"
+line3 = "caverne ?"
+next = lyriann_cave.tom.cavern_finished.2
+
+[lyriann_cave.tom.cavern_finished.2]
+#       |-----------------------|
+line1 = "C'est impressionnant !"
+line2 = "Tu me sembles aussi"
+line3 = "adroit que courageux."
+next = lyriann_cave.tom.cavern_finished.3
+
+[lyriann_cave.tom.cavern_finished.3]
+#       |-----------------------|
+line1 = "Si cela ne t'embête"
+line2 = "pas, je vais récupérer"
+line3 = "mon Boomerang."
+next = lyriann_cave.tom.see_you_later
+
+[lyriann_cave.tom.see_you_later]
+#       |-----------------------|
+line1 = "Si tu le souhaites, en"
+line2 = "cas de besoin, je"
+line3 = "viendrai te donner un"
+next = lyriann_cave.tom.see_you_later.2
+
+[lyriann_cave.tom.see_you_later.2]
+#       |-----------------------|
+line1 = "un coup de main au"
+line2 = "cours de ton aventure."
 

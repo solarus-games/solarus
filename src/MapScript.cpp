@@ -46,7 +46,7 @@ using namespace std;
  * @param map the map
  */
 MapScript::MapScript(Map *map):
-  map(map), context(NULL) {
+  map(map), context(NULL), suspending_game(false), just_freezed(false) {
 
 }
 
@@ -90,15 +90,19 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "stop_timer", l_stop_timer);
   lua_register(context, "move_camera", l_move_camera);
   lua_register(context, "restore_camera", l_restore_camera);
+  lua_register(context, "npc_get_position", l_npc_get_position);
+  lua_register(context, "npc_set_position", l_npc_set_position);
   lua_register(context, "npc_walk", l_npc_walk);
   lua_register(context, "npc_random_walk", l_npc_random_walk);
   lua_register(context, "npc_jump", l_npc_jump);
   lua_register(context, "npc_set_direction", l_npc_set_direction);
   lua_register(context, "npc_remove", l_npc_remove);
+  lua_register(context, "hero_set_direction", l_hero_set_direction);
   lua_register(context, "set_chest_open", l_set_chest_open);
   lua_register(context, "get_rupees", l_get_rupees);
   lua_register(context, "remove_rupees", l_remove_rupees);
   lua_register(context, "inventory_item_get", l_inventory_item_get);
+  lua_register(context, "inventory_item_set", l_inventory_item_set);
   lua_register(context, "inventory_item_get_amount", l_inventory_item_get_amount);
   lua_register(context, "inventory_item_remove_amount", l_inventory_item_remove_amount);
   lua_register(context, "inventory_item_is_bottle", l_inventory_item_is_bottle);
@@ -355,6 +359,22 @@ void MapScript::set_suspended(bool suspended) {
 }
 
 /**
+ * Requires the game to be suspended or not.
+ * @param suspending true to make this script suspend the game
+ */
+void MapScript::set_suspending_game(bool suspending_game) {
+  this->suspending_game = suspending_game;
+}
+
+/**
+ * Returns whether this script is currently suspending the game.
+ * @return true if this script is currently suspending the game
+ */
+bool MapScript::is_suspending_game(void) {
+  return suspending_game;
+}
+
+/**
  * Updates the script.
  */
 void MapScript::update(void) {
@@ -421,6 +441,7 @@ int MapScript::l_freeze(lua_State *l) {
   check_nb_arguments(l, 0);
 
   zsdx->game->get_hero()->freeze();
+  zsdx->game->get_current_script()->just_freezed = true;
 
   return 0;
 }
@@ -721,6 +742,50 @@ int MapScript::l_restore_camera(lua_State *l) {
 }
 
 /**
+ * Returns the position of an NPC.
+ * Argument 1 (string): name of the NPC
+ * Return value 1 (integer): x position
+ * Return value 2 (integer): y position
+ */
+int MapScript::l_npc_get_position(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
+  const SDL_Rect &coordinates = npc->get_coordinates();
+
+  lua_pushinteger(l, coordinates.x);
+  lua_pushinteger(l, coordinates.y);
+
+  return 2;
+}
+
+
+/**
+ * Sets the position of an NPC.
+ * Argument 1 (string): name of the NPC
+ * Argument 2 (integer): x position to set
+ * Argument 3 (integer): y position to set
+ */
+int MapScript::l_npc_set_position(lua_State *l) {
+
+  check_nb_arguments(l, 3);
+
+  const string &name = lua_tostring(l, 1);
+  int x = lua_tointeger(l, 2);
+  int y = lua_tointeger(l, 3);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
+  npc->set_coordinates(x, y);
+
+  return 0;
+}
+
+/**
  * Makes an NPC walk with respect to a path.
  * Argument 1 (string): name of the NPC to make move
  * Argument 2 (string): the path (each character is a direction between '0' and '7'
@@ -819,6 +884,23 @@ int MapScript::l_npc_remove(lua_State *l) {
 }
 
 /**
+ * Sets the direction of the hero's sprite.
+ * Argument 1 (integer): the direction between 0 and 3
+ */
+int MapScript::l_hero_set_direction(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  int direction = lua_tointeger(l, 1);
+
+  Hero *hero = zsdx->game->get_hero();
+  hero->set_animation_direction(direction);
+
+  return 0;
+}
+
+
+/**
  * Opens or closes a chest.
  * Only the chest sprite is affected (use give_treasure to give a treasure to the player).
  * Argument 1 (string): name of the NPC
@@ -875,6 +957,26 @@ int MapScript::l_inventory_item_get(lua_State *l) {
   lua_pushinteger(l, variant);
   return 1;
 }
+
+/**
+ * Sets the possession state of an item from the inventory
+ * Argument 1 (integer): an inventory item id
+ * Argument 2 (integer): the possession state of this inventory item
+ * (a value of 0 removes the inventory item)
+ */
+int MapScript::l_inventory_item_set(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
+  int variant = lua_tointeger(l, 2);
+    
+  zsdx->game->get_equipment()->give_inventory_item(item_id, variant);
+
+  lua_pushinteger(l, variant);
+  return 1;
+}
+
 
 /**
  * Returns the amount the player has for an item from the inventory.
@@ -1329,9 +1431,12 @@ void MapScript::event_switch_disabled(const string &switch_name) {
  * @param sensor_name name of the sensor
  */
 void MapScript::event_hero_on_sensor(const string &sensor_name) {
+  just_freezed = false;
   zsdx->game->get_hero()->freeze(); // to avoid problems when walking
   call_lua_function("event_hero_on_sensor", sensor_name);
-  zsdx->game->get_hero()->unfreeze();
+  if (!just_freezed) {
+    zsdx->game->get_hero()->unfreeze();
+  }
 }
 
 /**

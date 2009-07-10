@@ -77,21 +77,32 @@ void TargetMovement::update(void) {
 void TargetMovement::recompute_movement(void) { 
 
   if (target_entity != NULL) {
-
-    double angle = entity->get_vector_angle(target_entity);
-
+    // the target is not necessarily an entity
     target_x = target_entity->get_x();
     target_y = target_entity->get_y();
-
-    int dx = target_x - get_x();
-    int dy = target_y - get_y();
-
-    sign_x = dx >= 0 ? 1 : -1;
-    sign_y = dy >= 0 ? 1 : -1;
-
-    set_speed(speed);
-    set_direction(angle);
   }
+
+  int dx = target_x - get_x();
+  int dy = target_y - get_y();
+
+  double angle;
+  if (dx != 0) {
+    angle = atan((double) -dy / (double) dx);
+
+    if (dx < 0) {
+      angle += PI;
+    }
+  }
+  else {
+    // special case (cannot divide by zero and compute atan)
+    angle = (dy > 0) ? -PI_OVER_2 : PI_OVER_2;
+  }
+
+  sign_x = dx >= 0 ? 1 : -1;
+  sign_y = dy >= 0 ? 1 : -1;
+
+  set_speed(speed);
+  set_direction(angle);
 }
 
 /**

@@ -28,9 +28,11 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Map.h"
-#include "enemies/SimpleGreenSoldier.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
+#include "enemies/SimpleGreenSoldier.h"
+#include "enemies/Bubble.h"
+#include "enemies/Tentacle.h"
 
 /**
  * Creates an enemy.
@@ -91,9 +93,9 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
 
   switch (type) {
     
-  case SIMPLE_GREEN_SOLDIER:
-    enemy = new SimpleGreenSoldier(params);
-    break;
+  case SIMPLE_GREEN_SOLDIER: enemy = new SimpleGreenSoldier(params); break;
+  case BUBBLE:               enemy = new Bubble(params);             break;
+  case TENTACLE:             enemy = new Tentacle(params);           break;
 
   default:
     DIE("Unknown enemy type '" << type << "'");
@@ -108,6 +110,7 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
 
   // set the default enemy features
   enemy->damage_on_hero = 1;
+  enemy->magic_damage_on_hero = 0;
   enemy->life = 1;
   enemy->hurt_sound_style = HURT_SOUND_NORMAL;
   enemy->pushed_back_when_hurt = true;
@@ -177,11 +180,21 @@ bool Enemy::is_teletransporter_obstacle(Teletransporter *teletransporter) {
 }
 
 /**
- * Sets the amount of damage this kind of enemy can make to the hero
+ * Sets the amount of damage this kind of enemy can make to the hero.
  * @param damage_on_hero number of heart quarters the player loses
  */
 void Enemy::set_damage(int damage_on_hero) {
   this->damage_on_hero = damage_on_hero;
+}
+
+/**
+ * Sets the amount of damage this kind of enemy can make to the hero.
+ * @param damage_on_hero number of heart quarters the player loses
+ * @param magic_damage_on_hero number of magic points the player loses
+ */
+void Enemy::set_damage(int damage_on_hero, int magic_damage_on_hero) {
+  set_damage(damage_on_hero);
+  this->magic_damage_on_hero = magic_damage_on_hero;
 }
 
 /**
@@ -345,7 +358,7 @@ bool Enemy::is_in_normal_state(void) {
  * or it was just hurt).
  */
 void Enemy::restart(void) {
-
+  get_sprite()->set_current_animation("walking");
 }
 
 /**
@@ -391,7 +404,7 @@ void Enemy::attack_hero(Hero *hero) {
       attack_stopped_by_hero_shield();
     }
     else {
-      hero->hurt(this, damage_on_hero);
+      hero->hurt(this, damage_on_hero, magic_damage_on_hero);
     }
   }
 }

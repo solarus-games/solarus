@@ -115,7 +115,8 @@ void Hero::key_released(Controls::GameKey key) {
  */
 void Hero::action_key_pressed(void) {
 
-  set_animation_direction_from_movement();
+  // this line causes a bug: the hero can interact with an entity with the wrong sprite direction
+  //  set_animation_direction_from_movement(); 
 
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 

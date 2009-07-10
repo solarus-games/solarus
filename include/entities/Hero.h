@@ -227,7 +227,6 @@ class Hero: public MapEntity {
   void update_returning_to_solid_ground(void);
 
   // animation of the sprites
-  void set_animation_direction_from_movement(void);
   bool is_direction_locked(void);
   void stop_displaying_sword(void);
   void blink(void);
@@ -314,7 +313,7 @@ class Hero: public MapEntity {
   void give_treasure(Treasure *treasure);
   void start_jumping(int direction, int length, bool with_collisions, bool with_sound);
   void start_jumping(int direction, int length, bool with_collisions, bool with_sound, Layer layer_after_jump);
-  void hurt(MapEntity *source, int life);
+  void hurt(MapEntity *source, int life_points, int magic_points);
   void get_back_from_death(void);
   void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords);
 

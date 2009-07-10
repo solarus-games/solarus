@@ -14,21 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_SIMPLE_GREEN_SOLDIER_H
-#define ZSDX_SIMPLE_GREEN_SOLDIER_H
+#ifndef ZSDX_TENTACLE_H
+#define ZSDX_TENTACLE_H
 
 #include "Common.h"
 #include "entities/Enemy.h"
 
 /**
- * A green soldier with a small sword.
- * Unlike the normal green soldier, it cannot see or follow the hero.
+ * The tentacle enemy.
  */
-class SimpleGreenSoldier: public Enemy {
-
- private:
-
-  void walk(int direction);
+class Tentacle: public Enemy {
 
  protected:
 
@@ -37,10 +32,11 @@ class SimpleGreenSoldier: public Enemy {
 
  public:
 
-  SimpleGreenSoldier(const ConstructionParameters &params);
-  ~SimpleGreenSoldier(void);
+  Tentacle(const ConstructionParameters &params);
+  ~Tentacle(void);
 
   void update(void);
 };
 
 #endif
+

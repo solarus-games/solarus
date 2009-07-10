@@ -29,20 +29,19 @@ class CollisionMovement: public Movement {
  private:
   SDL_Rect last_collision_box_on_obstacle; /**< copy of the collision box of the last call
 					    * to collision_with_map() returning true */ 
-
- protected:
-
-  virtual bool collision_with_map(int dx, int dy);
+  int last_direction;                      /**< direction of the movement before a collision */
 
  public:
 
   CollisionMovement(void);
   virtual ~CollisionMovement(void);
 
+  virtual bool collision_with_map(int dx, int dy);
   virtual void update_x(void);
   virtual void update_y(void);
 
   const SDL_Rect& get_last_collision_box_on_obstacle(void);
+  int get_last_direction(void);
 };
 
 #endif

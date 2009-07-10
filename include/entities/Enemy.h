@@ -40,9 +40,8 @@ class Enemy: public Detector {
    */
   enum EnemyType {
     SIMPLE_GREEN_SOLDIER,
-    GREEN_SOLDIER,
-    BLUE_SOLDIER,
-    RED_SOLDIER
+    BUBBLE,
+    TENTACLE,
   };
 
   /**
@@ -77,6 +76,7 @@ class Enemy: public Detector {
   // attack/defense features of this type of enemy
   int damage_on_hero;                 /**< number of heart quarters the player loses when he gets hurt by this enemy;
 				       * this number is divided depending on the hero's tunic number (default: 1) */
+  int magic_damage_on_hero;           /**< number of magic points the player loses when he gets hurt by this enemy (default: 0) */
   int life;                           /**< number of health points of the enemy (default: 1) */
   HurtSoundStyle hurt_sound_style;    /**< the sound played when this kind of enemy gets hurt by the hero
 				       * (default: HURT_SOUND_NORMAL) */
@@ -121,9 +121,11 @@ class Enemy: public Detector {
   // creation
   Enemy(const ConstructionParameters &params);
   virtual void initialize(void) = 0; // to initialize the features, the sprites and the movement
+  virtual void restart(void);
 
   // functions available to the subclasses to define the enemy type properties (they can also change directly the fields)
   void set_damage(int damage_on_hero);
+  void set_damage(int damage_on_hero, int magic_damage_on_hero);
   void set_life(int life);
   void set_features(int damage_on_hero, int life);
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
@@ -169,8 +171,6 @@ class Enemy: public Detector {
   void attack_stopped_by_hero_shield(void);
   void try_hurt(EnemyAttack attack, MapEntity *source);
   void kill(void);
- 
-  virtual void restart(void);
 };
 
 #endif

@@ -131,9 +131,12 @@ add_executable (zsdx
   movements/StraightMovement.cpp
   movements/PathMovement.cpp
   movements/RandomWalkMovement.cpp
+  movements/ChaseMovement.cpp
 
   # enemies
   enemies/SimpleGreenSoldier.cpp
+  enemies/Bubble.cpp
+  enemies/Tentacle.cpp
 )
 
 if (NOT WIN32)

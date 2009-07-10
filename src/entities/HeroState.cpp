@@ -994,9 +994,10 @@ bool Hero::can_be_hurt(void) {
 /**
  * Hurts the hero if possible.
  * @param source the entity that hurts the hero (usually an enemy)
- * @param life number of heart quarters to remove (this number may be reduced by the tunic)
+ * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
+ * @param magic_points number of magic points to remove
  */
-void Hero::hurt(MapEntity *source, int life) {
+void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
 
   if (can_be_hurt()) {
 
@@ -1008,9 +1009,13 @@ void Hero::hurt(MapEntity *source, int life) {
 
     ResourceManager::get_sound("hero_hurt")->play();
 
-    int life_removed = MAX(1, life / (equipment->get_tunic() + 1));
+    life_points = MAX(1, life_points / (equipment->get_tunic() + 1));
 
-    equipment->remove_hearts(life_removed);
+    equipment->remove_hearts(life_points);
+    if (magic_points >= 0 && equipment->get_magic() > 0) {
+      equipment->remove_magic(magic_points);
+      ResourceManager::get_sound("magic_bar")->play();
+    }
     blink();
     set_state(HURT);
     set_animation_hurt();
@@ -1228,7 +1233,6 @@ void Hero::start_falling(void) {
   }
 
   save_animation_direction();
-  set_animation_direction_from_movement();
   set_state(FALLING);
   set_animation_falling();
   ResourceManager::get_sound("hero_falls")->play();

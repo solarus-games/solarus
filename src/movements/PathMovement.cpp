@@ -43,7 +43,7 @@ PathMovement::~PathMovement(void) {
 
 /**
  * Sets the position of the entity.
- * This is a redefinition of Movement::set_position() because we need
+ * This is a redefinition of CollisionMovement::set_position() because we need
  * to update the number of pixels covered.
  * @param x the new x position
  * @param y the new y position

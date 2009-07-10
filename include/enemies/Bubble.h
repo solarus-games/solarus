@@ -14,21 +14,24 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_SIMPLE_GREEN_SOLDIER_H
-#define ZSDX_SIMPLE_GREEN_SOLDIER_H
+#ifndef ZSDX_BUBBLE_H
+#define ZSDX_BUBBLE_H
 
 #include "Common.h"
 #include "entities/Enemy.h"
 
 /**
- * A green soldier with a small sword.
- * Unlike the normal green soldier, it cannot see or follow the hero.
+ * A bouncing enemy that removes life and magic when touching the hero.
+ * It cannot be killed.
  */
-class SimpleGreenSoldier: public Enemy {
+class Bubble: public Enemy {
 
  private:
 
-  void walk(int direction);
+  int movement_direction8; /**< direction of the movement (1, 3, 5 or 7) */
+
+  void go(int movement_direction8);
+  void bounce(void);
 
  protected:
 
@@ -37,10 +40,11 @@ class SimpleGreenSoldier: public Enemy {
 
  public:
 
-  SimpleGreenSoldier(const ConstructionParameters &params);
-  ~SimpleGreenSoldier(void);
+  Bubble(const ConstructionParameters &params);
+  ~Bubble(void);
 
   void update(void);
 };
 
 #endif
+

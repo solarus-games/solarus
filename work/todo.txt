@@ -34,6 +34,7 @@ Bugs :
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - Forgeron : ajouter décors de la forge
+- trous et plates-formes dans la grotte de mymy
 
 
 A venir :
@@ -47,6 +48,24 @@ A venir :
   - choux-péteurs
   - blocs violets
 - Lanterne
+
+
+Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
+
+pour la démo :
+- GreenSoldier : garde vert normal (intelligent avec longue épée)
+- Tentacle : truc à tentacules
+- Bubble
+
+ensuite (beaucoup faits dans MC) :
+- Octorok
+- serpent
+- stalfos
+- méduse
+- crabe
+- Armos
+- fantôme
+- garde bleu avec lance (monde des ténèbres)
 
 
 Testeurs :
@@ -85,7 +104,7 @@ Ancien planning prévisionnel
 [ok] Dimanche 2 novembre 2008 : combats (un type d'ennemi)
 [ok] Dimanche 9 novembre 2008 : scripts et PNJ
 [ok] Dimanche 16 novembre 2008 : maison des rubis
-Dimanche 23 novembre 2008 : autres maisons et grottes
+[ok]Dimanche 23 novembre 2008 : autres maisons et grottes
 Dimanche 30 novembre 2008 : donjon 1 commencé ; annonce de la démo si on est dans les temps
 Dimanche 7 décembre 2008 : combats (autres types d'ennemis), objets à finir (bombes, croissants, flacon...)
 Dimanche 14 décembre 2008 : donjon 1 fini, démo finie, début des tests

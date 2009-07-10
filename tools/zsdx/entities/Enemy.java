@@ -28,38 +28,50 @@ public class Enemy extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("enemies.png", 0, 4, 16, 16)
+	new EntityImageDescription("enemies.png", 0, 4, 16, 16),
+	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
+	new EntityImageDescription("enemies.png", 32, 0, 16, 16)
     };
 
     /**
      * Description of the image representing currently the entity.
      */
     public static final EntityImageDescription[] currentImageDescriptions = {
-	new EntityImageDescription("enemies.png", 0, 0, 16, 32)
+	new EntityImageDescription("enemies.png", 0, 0, 16, 32),
+	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
+	new EntityImageDescription("enemies.png", 32, 0, 16, 16)
     };
 
     /**
      * Origin point of each type of enemy.
      */
     private static final Point[] origins = {
-	new Point(8, 29)
+	new Point(8, 29),
+	new Point(8, 8),
+	new Point(8, 13)
     };
 
     /**
      * Size of each type of enemy.
      */
     private static final Dimension[] sizes = {
-	new Dimension(16, 32)
+	new Dimension(16, 32),
+	new Dimension(16, 16),
+	new Dimension(16, 16)
     };
 
     /**
      * Subtypes of enemies.
      */
     public enum Subtype implements EntitySubtype {
-	SIMPLE_GREEN_SOLDIER;
+	SIMPLE_GREEN_SOLDIER,
+	BUBBLE,
+	TENTACLE;
 
 	public static final String[] humanNames = {
-	    "Simple green soldier"
+	    "Simple green soldier",
+	    "Bubble",
+	    "Tentacle"
 	};
 
 	public int getId() {

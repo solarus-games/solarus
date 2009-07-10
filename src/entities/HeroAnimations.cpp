@@ -202,35 +202,6 @@ void Hero::set_animation_direction(int direction) {
 }
 
 /**
- * Sets the direction of the hero's sprites
- * depending on its movement.
- * If the movement is diagonal, the direction up or down is chosen.
- */
-void Hero::set_animation_direction_from_movement(void) {
-
-  int movement_direction = get_movement_direction();
-
-  if (movement_direction == -1) {
-    return; // not moving
-  }
-
-  int movement_direction8 = movement_direction / 45;
-
-  if (movement_direction8 % 2 != 0) {
-
-    if (movement_direction8 < 4) {
-      set_animation_direction(1);
-    }
-    else {
-      set_animation_direction(3);
-    }
-  }
-  else {
-    set_animation_direction(movement_direction8 / 2);
-  }
-}
-
-/**
  * Saves the current direction of the the sprite.
  * Call restore_animation_direction() to restore the direction saved here.
  */

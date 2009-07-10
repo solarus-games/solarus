@@ -39,7 +39,10 @@ SmoothCollisionMovement::~SmoothCollisionMovement(void) {
 void SmoothCollisionMovement::update(void) {
 
   if (!suspended) {
-
+   /* 
+    if (get_y() < 192) std::cout << SDL_GetTicks() << "x_move = " << x_move << std::endl; 
+    if (get_y() < 192) std::cout << SDL_GetTicks() << " wants to x move, date = " << next_move_date_x << "\n";
+*/
     Uint32 now = SDL_GetTicks();
     bool x_move_now = x_move != 0 && now >= next_move_date_x;
     bool y_move_now = y_move != 0 && now >= next_move_date_y;
@@ -167,6 +170,7 @@ void SmoothCollisionMovement::update_y(void) {
     if (now >= next_move_date_y) { // it's time to try a move
 
       if (!collision_with_map(0, y_move)) {
+
 	translate_y(y_move); // make the move
 
 	if (x_move != 0 && collision_with_map(x_move, 0)) {
@@ -179,6 +183,7 @@ void SmoothCollisionMovement::update_y(void) {
 	/* The move on y is not possible: let's try
 	 * to add a move on x to make a diagonal move.
 	 */
+
 
 	if (!collision_with_map(1, y_move)) {
 	  translate(1, y_move);

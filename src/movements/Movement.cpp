@@ -185,21 +185,24 @@ double Movement::get_speed(void) {
  * @param x_speed the x speed of the entity, between -100 and 100
  */
 void Movement::set_x_speed(double x_speed) {
+
   this->x_speed = x_speed;
+  Uint32 now = SDL_GetTicks();
 
   // compute x_delay, x_move and next_move_date_x
-  if (x_speed > 0) {
-    x_delay = (Uint32) (100 / x_speed);
-    x_move = 1;
-    next_move_date_x = SDL_GetTicks() + x_delay;
-  }
-  else if (x_speed < 0) {
-    x_delay = (Uint32) (100 / (-x_speed));
-    x_move = -1;
-    next_move_date_x = SDL_GetTicks() + x_delay;
+  if (x_speed == 0) {
+    x_move = 0;
   }
   else {
-    x_move = 0;
+    if (x_speed > 0) {
+      x_delay = (Uint32) (100 / x_speed);
+      x_move = 1;
+    }
+    else {
+      x_delay = (Uint32) (100 / (-x_speed));
+      x_move = -1;
+    }
+    next_move_date_x = now + x_delay;
   }
 }
 
@@ -208,21 +211,24 @@ void Movement::set_x_speed(double x_speed) {
  * @param y_speed the y speed of the entity, between -100 and 100
  */
 void Movement::set_y_speed(double y_speed) {
+
   this->y_speed = y_speed;
+  Uint32 now = SDL_GetTicks();
 
   // compute y_delay, y_move and next_move_date_y
-  if (y_speed > 0) {
-    y_delay = (Uint32) (100 / y_speed);
-    y_move = 1;
-    next_move_date_y = SDL_GetTicks() + y_delay;
-  }
-  else if (y_speed < 0) {
-    y_delay = (Uint32) (100 / (-y_speed));
-    y_move = -1;
-    next_move_date_y = SDL_GetTicks() + y_delay;
+  if (y_speed == 0) {
+    y_move = 0;
   }
   else {
-    y_move = 0;
+    if (y_speed > 0) {
+      y_delay = (Uint32) (100 / y_speed);
+      y_move = 1;
+    }
+    else {
+      y_delay = (Uint32) (100 / (-y_speed));
+      y_move = -1;
+    }
+    next_move_date_y = now + y_delay;
   }
 }
 

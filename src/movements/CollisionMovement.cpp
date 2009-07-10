@@ -115,3 +115,4 @@ void CollisionMovement::update_y(void) {
 const SDL_Rect& CollisionMovement::get_last_collision_box_on_obstacle(void) {
   return last_collision_box_on_obstacle;
 }
+

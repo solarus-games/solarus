@@ -14,33 +14,34 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_SIMPLE_GREEN_SOLDIER_H
-#define ZSDX_SIMPLE_GREEN_SOLDIER_H
+#ifndef ZSDX_CHASE_MOVEMENT_H
+#define ZSDX_CHASE_MOVEMENT_H
 
 #include "Common.h"
-#include "entities/Enemy.h"
+#include "movements/SmoothCollisionMovement.h"
 
 /**
- * A green soldier with a small sword.
- * Unlike the normal green soldier, it cannot see or follow the hero.
+ * Movement for an entity that chases a target entity (usually the hero)
+ * and tries to pass the obstacles on the way.
  */
-class SimpleGreenSoldier: public Enemy {
+class ChaseMovement: public SmoothCollisionMovement {
 
  private:
 
-  void walk(int direction);
+  MapEntity *target;              /**< the entity targeted by this movement (usually the hero) */
+  int speed;
+  Uint32 next_recomputation_date;
 
  protected:
 
-  void initialize(void);
-  void restart(void);
+  void update(void);
+  void recompute_movement(void);
 
  public:
 
-  SimpleGreenSoldier(const ConstructionParameters &params);
-  ~SimpleGreenSoldier(void);
+  ChaseMovement(MapEntity *target, int speed);
+  ~ChaseMovement(void);
 
-  void update(void);
 };
 
 #endif

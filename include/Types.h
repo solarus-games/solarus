@@ -166,8 +166,11 @@ class JumpMovement;
 class StraightMovement;
 class PathMovement;
 class RandomWalkMovement;
+class ChaseMovement;
 
 // enemies
 class SimpleGreenSoldier;
+class Bubble;
+class Tentacle;
 
 #endif

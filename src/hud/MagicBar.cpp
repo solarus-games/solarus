@@ -39,7 +39,7 @@ MagicBar::MagicBar(Equipment *equipment, int x, int y):
   sound_magic_bar = ResourceManager::get_sound("magic_bar");
 
   current_magic_displayed = equipment->get_magic();
-  max_magic_displayed = equipment->get_max_magic();
+  max_magic_displayed = 0;
   is_magic_decreasing = equipment->is_magic_decreasing();
 }
 
@@ -75,8 +75,11 @@ void MagicBar::update(void) {
   int max_magic = equipment->get_max_magic();
   if (max_magic != max_magic_displayed) {
     max_magic_displayed = max_magic;
-    sprite_magic_bar_container->set_current_direction(max_magic_displayed / 42 - 1);
-    need_rebuild = true;
+
+    if (max_magic_displayed != 0) {
+      sprite_magic_bar_container->set_current_direction(max_magic_displayed / 42 - 1);
+      need_rebuild = true;
+    }
   }
 
   // are the magic points decreasing continuously?

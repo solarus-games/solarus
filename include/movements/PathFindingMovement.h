@@ -14,34 +14,37 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_CHASE_MOVEMENT_H
-#define ZSDX_CHASE_MOVEMENT_H
+#ifndef ZSDX_PATH_FINDING_MOVEMENT_H
+#define ZSDX_PATH_FINDING_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/SmoothCollisionMovement.h"
+#include "movements/PathMovement.h"
 
 /**
- * Movement for an entity that chases a target entity (usually the hero)
- * and tries to pass the obstacles on the way.
+ * Movement for an entity that finds a path to another entity,
+ * avoiding the obstacles on the way.
+ * If the target entity is too far, the movement is a random walk.
  */
-class ChaseMovement: public SmoothCollisionMovement {
+class PathFindingMovement: public PathMovement {
 
  private:
 
   MapEntity *target;              /**< the entity targeted by this movement (usually the hero) */
-  int speed;
   Uint32 next_recomputation_date;
 
  protected:
 
   void update(void);
   void recompute_movement(void);
+  void start_next_move(void);
 
  public:
 
-  ChaseMovement(MapEntity *target, int speed);
-  ~ChaseMovement(void);
+  PathFindingMovement(MapEntity *target, int speed);
+  ~PathFindingMovement(void);
 
+  bool is_finished(void);
 };
 
 #endif
+

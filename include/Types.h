@@ -166,7 +166,8 @@ class JumpMovement;
 class StraightMovement;
 class PathMovement;
 class RandomWalkMovement;
-class ChaseMovement;
+class PathFindingMovement;
+class PathFinding;
 
 // enemies
 class SimpleGreenSoldier;

@@ -1012,7 +1012,7 @@ void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
     life_points = MAX(1, life_points / (equipment->get_tunic() + 1));
 
     equipment->remove_hearts(life_points);
-    if (magic_points >= 0 && equipment->get_magic() > 0) {
+    if (magic_points > 0 && equipment->get_magic() > 0) {
       equipment->remove_magic(magic_points);
       ResourceManager::get_sound("magic_bar")->play();
     }

@@ -15,17 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/RandomWalkMovement.h"
-#include "Random.h"
-using namespace std;
-
-const string RandomWalkMovement::random_directions[] = {"0", "2", "4", "6"};
 
 /**
  * Creates a random walk movement object.
  * @param speed speed of the movement
  */
 RandomWalkMovement::RandomWalkMovement(int speed):
-  PathMovement(get_random_direction(), speed, false, true) {
+  PathMovement(get_random_path(), speed, false, true) {
 
 }
 
@@ -34,22 +30,6 @@ RandomWalkMovement::RandomWalkMovement(int speed):
  */
 RandomWalkMovement::~RandomWalkMovement(void) {
 
-}
-
-/**
- * Returns one of the four main directions.
- * @return a random direction
- */
-const string RandomWalkMovement::get_random_direction() {
-
-  const string &c = random_directions[Random::get_number(4)];
-  int length = Random::get_number(5) + 3;
-  string path = "";
-  for (int i = 0; i < length; i++) {
-    path += c;
-  }
-
-  return path;
 }
 
 /**
@@ -73,7 +53,7 @@ void RandomWalkMovement::update(void) {
 void RandomWalkMovement::start_next_move(void) {
 
   if (remaining_path.size() == 0) {
-    remaining_path = get_random_direction();
+    remaining_path = get_random_path();
   }
 
   PathMovement::start_next_move();

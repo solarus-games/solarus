@@ -16,7 +16,7 @@
  */
 #include "enemies/Tentacle.h"
 #include "entities/Hero.h"
-#include "movements/ChaseMovement.h"
+#include "movements/PathFindingMovement.h"
 #include "Random.h"
 #include "Sprite.h"
 #include "ZSDX.h"
@@ -54,7 +54,7 @@ void Tentacle::initialize(void) {
   set_origin(8, 13);
 
   // movement
-  set_movement(new ChaseMovement(zsdx->game->get_hero(), 3));
+  set_movement(new PathFindingMovement(zsdx->game->get_hero(), 3));
 }
 
 /**

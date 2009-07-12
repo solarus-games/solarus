@@ -36,6 +36,10 @@ Bugs :
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - Forgeron : ajouter décors de la forge
 - trous et plates-formes dans la grotte de mymy
+- Tom trop vieux ? changer la couleur de ses cheveux
+- Rubis trop haut de 1 pixel par rapport à son ombre ?
+- Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ?
+- PathMovement non précis en diagonale : faire hériter de TargetMovement ?
 
 
 A venir :

@@ -15,6 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/PathMovement.h"
+#include "Random.h"
+
+const std::string PathMovement::random_directions[] = {"0", "2", "4", "6"};
 
 /**
  * Creates a path movement object.
@@ -27,8 +30,8 @@
  * @param with_collisions true to make the movement sensitive to obstacles
  */
 PathMovement::PathMovement(const std::string &path, int speed, bool loop, bool with_collisions):
-  initial_path(path), remaining_path(path),
-  initial_speed(speed), loop(loop), with_collisions(with_collisions), finished(false) {
+  initial_path(path), remaining_path(path), initial_speed(speed), distance_covered(0),
+  loop(loop), with_collisions(with_collisions), finished(false) {
 
   set_speed(speed);
   start_next_move();
@@ -50,13 +53,22 @@ PathMovement::~PathMovement(void) {
  */
 void PathMovement::set_position(int x, int y) {
 
-  if (x != get_x() || y != get_y()) {
+  if (x != get_x()) {
     distance_covered++;
-    if (distance_covered == 8) {
-      start_next_move();
-    }
+  }
+  if (y != get_y()) {
+    distance_covered++;
   }
   Movement::set_position(x, y);
+
+  /*
+  std::cout << SDL_GetTicks() << " direction " << current_direction << ", distance covered: " << distance_covered << ", pos = "
+    << (x - 8) << "," << (y - 13) << std::endl;
+  */
+
+  if (is_current_move_finished()) {
+    start_next_move();
+  }
 }
 
 /**
@@ -66,6 +78,20 @@ void PathMovement::set_position(int x, int y) {
  */
 bool PathMovement::is_finished(void) {
   return finished || is_stopped();
+}
+
+/**
+ * Returns whether the current move of the path is finished.
+ * @return true if the current move is finished
+ */
+bool PathMovement::is_current_move_finished(void) {
+
+  int distance_to_cover = (current_direction % 2 == 0) ? 8 : 16;
+
+  if (distance_covered > distance_to_cover) {
+    DIE("Invalid distance covered: " << distance_covered);
+  }
+  return distance_covered == distance_to_cover;
 }
 
 /**
@@ -110,3 +136,20 @@ void PathMovement::start_next_move(void) {
 int PathMovement::get_current_direction(void) {
   return current_direction;
 }
+
+/**
+ * Returns a string describing a random length path in one of the four main directions.
+ * @return a random direction
+ */
+const std::string PathMovement::get_random_path() {
+
+  const std::string &c = random_directions[Random::get_number(4)];
+  int length = Random::get_number(5) + 3;
+  std::string path = "";
+  for (int i = 0; i < length; i++) {
+    path += c;
+  }
+
+  return path;
+}
+

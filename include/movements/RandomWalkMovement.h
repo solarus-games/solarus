@@ -25,9 +25,9 @@
  */
 class RandomWalkMovement: public PathMovement {
 
- private:
+ protected:
 
-  static const std::string random_directions[];
+  void start_next_move(void);
 
  public:
 
@@ -35,12 +35,7 @@ class RandomWalkMovement: public PathMovement {
   ~RandomWalkMovement(void);
 
   void update(void);
-  void start_next_move(void);
   bool is_finished(void);
-
- protected:
-
-  static const std::string get_random_direction(void);
 
 };
 

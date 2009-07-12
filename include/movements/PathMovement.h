@@ -36,6 +36,8 @@ class PathMovement: public CollisionMovement {
 
  private:
 
+  static const std::string random_directions[];
+
   int current_direction;           /**< direction of the current move (0 to 7) */
   int distance_covered;            /**< counts the number of pixels covered during the current move */
 
@@ -49,6 +51,8 @@ class PathMovement: public CollisionMovement {
 
   bool collision_with_map(int dx, int dy);
   virtual void start_next_move(void);
+  static const std::string get_random_path(void);
+  bool is_current_move_finished(void);
 
  public:
 

@@ -51,7 +51,7 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
   std::ostringstream oss;
   oss << price;
 
-  price_digits = new TextSurface(x + 12, y + 22, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
+  price_digits = new TextSurface(x + 12, y + 21, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
   price_digits->set_text(oss.str());
 
   rupee_icon_sprite = new Sprite("entities/rupee_icon");

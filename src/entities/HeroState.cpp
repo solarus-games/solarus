@@ -612,7 +612,7 @@ void Hero::update_pushing(void) {
 	  int direction = get_animation_direction();
 	  path[0] = path[1] = '0' + direction * 2;
 
-	  set_movement(new PathMovement(path, 8, false, true));
+	  set_movement(new PathMovement(path, 8, false, true, false));
 	  grabbed_entity = facing_entity;
 	}
       }
@@ -700,7 +700,7 @@ void Hero::update_grabbing_pulling(void) {
 	int opposite_direction = (get_animation_direction() + 2) % 4;
 	path[0] = path[1] = '0' + opposite_direction * 2;
 
-	set_movement(new PathMovement(path, 8, false, true));
+	set_movement(new PathMovement(path, 8, false, true, false));
 	grabbed_entity = facing_entity;
       }
     }

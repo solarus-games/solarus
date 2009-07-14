@@ -28,13 +28,13 @@
  * @param loop true to make the movement return to the beginning
  * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
+ * @param snap_to_grid true to snap the entity to the map grid before moving it
  */
-PathMovement::PathMovement(const std::string &path, int speed, bool loop, bool with_collisions):
+PathMovement::PathMovement(const std::string &path, int speed,
+    bool loop, bool with_collisions, bool snap_to_grid):
   initial_path(path), remaining_path(path), initial_speed(speed), current_direction(0), distance_covered(0),
-  loop(loop), with_collisions(with_collisions), finished(false), snapping(false) {
+  loop(loop), with_collisions(with_collisions), finished(false), snap_to_grid(snap_to_grid), snapping(false) {
 
-  set_speed(speed);
-  start_next_move();
 }
 
 /**
@@ -42,6 +42,16 @@ PathMovement::PathMovement(const std::string &path, int speed, bool loop, bool w
  */
 PathMovement::~PathMovement(void) {
 
+}
+
+/**
+ * Sets the entity to be controlled by this movement object.
+ * @param entity the entity to control
+ */
+void PathMovement::set_entity(MapEntity *entity) {
+  CollisionMovement::set_entity(entity);
+  set_speed(initial_speed);
+  start_next_move();
 }
 
 /**
@@ -68,7 +78,7 @@ void PathMovement::set_position(int x, int y) {
  */
 void PathMovement::update(void) {
 
-  if (!suspended && is_current_move_finished()) {
+  if (!is_suspended() && is_current_move_finished()) {
     start_next_move();
   }
 
@@ -90,7 +100,7 @@ bool PathMovement::is_finished(void) {
  */
 bool PathMovement::is_current_move_finished(void) {
 
-  if (remaining_path.size() == 0) {
+  if (is_stopped()) {
     return true;
   }
 
@@ -120,7 +130,7 @@ void PathMovement::start_next_move(void) {
     return;
   }
 
-  if (!entity->is_aligned_to_grid()) {
+  if (snap_to_grid && !entity->is_aligned_to_grid()) {
     // snap the entity to the grid before making the next move
 
     int x = entity->get_top_left_x();
@@ -131,15 +141,19 @@ void PathMovement::start_next_move(void) {
     snapped_y -= snapped_y % 8;
 
     if (Geometry::get_distance(x, y, snapped_x, snapped_y) < 2) {
+      // std::cout << "almost aligned\n";
       set_position(entity->get_x() + (snapped_x - x), entity->get_y() + (snapped_y - y));
     }
     else if (!snapping) {
+      // std::cout << "not aligned yet, going to direction " <<(Geometry::get_angle(entity->get_top_left_x(), entity->get_top_left_y(), snapped_x, snapped_y)) << std::endl;
       set_direction(Geometry::get_angle(entity->get_top_left_x(), entity->get_top_left_y(), snapped_x, snapped_y));
       snapping = true;
     }
   }
-  
-  if (entity->is_aligned_to_grid()) {
+
+  if (!snap_to_grid || entity->is_aligned_to_grid()) {
+    // std::cout << "aligned, considering next move\n";
+    
     if (remaining_path.size() == 0) {
       if (loop) {
 	remaining_path = initial_path;
@@ -151,6 +165,7 @@ void PathMovement::start_next_move(void) {
     }
 
     if (!finished) {
+      // std::cout << "path: " << remaining_path << "\n";
       current_direction = remaining_path[0] - '0';
       set_direction(current_direction * 45);
       distance_covered = 0;

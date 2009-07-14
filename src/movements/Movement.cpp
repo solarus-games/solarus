@@ -146,6 +146,21 @@ void Movement::translate(int dx, int dy) {
   set_position(get_x() + dx, get_y() + dy);
 }
 
+int Movement::get_x_move(void) { return x_move; }
+int Movement::get_y_move(void) { return y_move; }
+void Movement::set_x_move(int x_move) { this->x_move = x_move; }
+void Movement::set_y_move(int y_move) { this->y_move = y_move; }
+
+Uint32 Movement::get_next_move_date_x(void) { return next_move_date_x; }
+Uint32 Movement::get_next_move_date_y(void) { return next_move_date_y; }
+void Movement::set_next_move_date_x(Uint32 next_move_date_x) { this->next_move_date_x = next_move_date_x; }
+void Movement::set_next_move_date_y(Uint32 next_move_date_y) { this->next_move_date_y = next_move_date_y; }
+
+Uint32 Movement::get_x_delay(void) { return x_delay; }
+Uint32 Movement::get_y_delay(void) { return y_delay; }
+void Movement::set_x_delay(Uint32 x_delay) { this->x_delay = x_delay; }
+void Movement::set_y_delay(Uint32 y_delay) { this->y_delay = y_delay; }
+
 /**
  * Returns the x speed of the entity.
  * @return the x speed of the entity, between -100 and 100
@@ -181,18 +196,18 @@ void Movement::set_x_speed(double x_speed) {
 
   // compute x_delay, x_move and next_move_date_x
   if (x_speed == 0) {
-    x_move = 0;
+    set_x_move(0);
   }
   else {
     if (x_speed > 0) {
-      x_delay = (Uint32) (100 / x_speed);
-      x_move = 1;
+      set_x_delay((Uint32) (100 / x_speed));
+      set_x_move(1);
     }
     else {
-      x_delay = (Uint32) (100 / (-x_speed));
-      x_move = -1;
+      set_x_delay((Uint32) (100 / (-x_speed)));
+      set_x_move(-1);
     }
-    next_move_date_x = now + x_delay;
+    set_next_move_date_x(now + x_delay);
   }
 }
 
@@ -207,18 +222,18 @@ void Movement::set_y_speed(double y_speed) {
 
   // compute y_delay, y_move and next_move_date_y
   if (y_speed == 0) {
-    y_move = 0;
+    set_y_move(0);
   }
   else {
     if (y_speed > 0) {
-      y_delay = (Uint32) (100 / y_speed);
-      y_move = 1;
+      set_y_delay((Uint32) (100 / y_speed));
+      set_y_move(1);
     }
     else {
-      y_delay = (Uint32) (100 / (-y_speed));
-      y_move = -1;
+      set_y_delay((Uint32) (100 / (-y_speed)));
+      set_y_move(-1);
     }
-    next_move_date_y = now + y_delay;
+    set_next_move_date_y(now + y_delay);
   }
 }
 
@@ -259,8 +274,8 @@ bool Movement::is_started(void) {
 void Movement::stop(void) {
   set_x_speed(0);
   set_y_speed(0);
-  x_move = 0;
-  y_move = 0;
+  set_x_move(0);
+  set_y_move(0);
 }
 
 /**
@@ -284,7 +299,7 @@ void Movement::set_direction(int direction) {
  * @param angle the new movement direction in radians
  */
 void Movement::set_direction(double angle) {
-
+  
   if (x_speed == 0 && y_speed == 0) {
     if (entity == NULL) {
       DIE("Cannot set the direction when the speed is zero");
@@ -357,7 +372,7 @@ void Movement::update_x(void) {
     Uint32 now = SDL_GetTicks();
     while (now >= next_move_date_x) {
       translate_x(x_move);
-      next_move_date_x += x_delay;
+      set_next_move_date_x(next_move_date_x + x_delay);
     }
   }
 }
@@ -373,7 +388,7 @@ void Movement::update_y(void) {
     Uint32 now = SDL_GetTicks();
     while (now >= next_move_date_y) {
       translate_y(y_move);
-      next_move_date_y += y_delay;
+      set_next_move_date_y(next_move_date_y + y_delay);
     }
   }
 }

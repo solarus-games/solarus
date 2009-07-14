@@ -38,6 +38,8 @@ class Movement {
    */
   MapEntity *entity;
 
+ private:
+
   int x; /**< x coordinate of the object controlled by this movement */
   int y; /**< y coordinate of the object controlled by this movement */
 
@@ -90,14 +92,14 @@ class Movement {
   Uint32 y_delay;
 
   /**
-   * Number of pixels of the next x move : 0, 2 or -2.
+   * Number of pixels of the next x move : 0, 1 or -1.
    * The smallest move is two pixels because an entity
    * doesn't need to make a move of only one pixel. 
    */
   int x_move;
 
   /**
-   * Number of pixels of the next y move : 0, 2 or -2.
+   * Number of pixels of the next y move : 0, 1 or -1.
    */
   int y_move;
 
@@ -106,10 +108,27 @@ class Movement {
    */
   bool suspended;
 
+ protected:
+
   /**
    * Indicates when the movement was suspended.
    */
   Uint32 when_suspended;
+
+  int get_x_move(void);
+  int get_y_move(void);
+  void set_x_move(int x_move);
+  void set_y_move(int y_move);
+
+  Uint32 get_next_move_date_x(void);
+  Uint32 get_next_move_date_y(void);
+  void set_next_move_date_x(Uint32 next_move_date_x);
+  void set_next_move_date_y(Uint32 next_move_date_y);
+
+  Uint32 get_x_delay(void);
+  Uint32 get_y_delay(void);
+  void set_x_delay(Uint32 x_delay);
+  void set_y_delay(Uint32 y_delay);
 
   void translate_x(int dx);
   void translate_y(int dy);
@@ -124,10 +143,9 @@ class Movement {
   virtual ~Movement(void);
 
   // entity
-  void set_entity(MapEntity *entity);
+  virtual void set_entity(MapEntity *entity);
 
   // position
-
   int get_x(void);
   int get_y(void);
   void set_x(int x);

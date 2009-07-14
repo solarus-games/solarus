@@ -57,21 +57,3 @@ void Tentacle::initialize(void) {
   set_movement(new PathFindingMovement(zsdx->game->get_hero(), 3));
 }
 
-/**
- * This function is called when the enemy need to restart its movement
- * because something happened (for example the enemy has just been created,
- * or it was just hurt).
- */
-void Tentacle::restart(void) {
-  Enemy::restart();
-  get_movement()->stop();
-}
-
-/**
- * Updates the enemy.
- */
-void Tentacle::update(void) {
-
-  Enemy::update();
-}
-

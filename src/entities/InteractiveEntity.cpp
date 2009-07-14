@@ -337,7 +337,7 @@ void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) 
   }
 
   clear_movement();
-  set_movement(new PathMovement(path, 6, loop, with_collisions));
+  set_movement(new PathMovement(path, 6, loop, with_collisions, false));
   get_sprite()->set_current_animation("walking");
 }
 

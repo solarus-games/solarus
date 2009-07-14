@@ -25,7 +25,7 @@
  * @param speed speed of the movement
  */
 PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
-  PathMovement(get_random_path(), speed, false, true),
+  PathMovement(get_random_path(), speed, false, true, true),
   target(target), next_recomputation_date(SDL_GetTicks()) {
 
 }
@@ -42,10 +42,12 @@ PathFindingMovement::~PathFindingMovement(void) {
  */
 void PathFindingMovement::update(void) {
 
-  if (!suspended) {
+  if (!is_suspended()) {
     if (is_stopped()) {
       // there was a collision
       set_speed(initial_speed);
+      remaining_path = get_random_path();
+      // std::cout << "stopped, start_next_move, remaining_path = " << remaining_path << "\n";
       start_next_move();
     }
   } 

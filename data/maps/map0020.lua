@@ -24,13 +24,32 @@ function event_switch_enabled(switch_name)
 end
 
 function event_camera_reached_target()
-  start_timer(1000, "camera_timer", false)
+  if is_tile_enabled("barrier") then
+    start_timer(1000, "camera_1_timer", false)
+  elseif is_tile_enabled("battle_1_barrier") then
+    start_timer(1000, "battle_1_camera_timer", false)
+  else
+    start_timer(1000, "battle_2_camera_timer", false)
+  end
 end
 
-function camera_timer()
+function camera_1_timer()
   play_sound("secret")
   disable_tile("barrier")
   savegame_set_boolean(38, true)
+  start_timer(1000, "restore_camera", false)
+end
+
+function battle_1_camera_timer()
+  play_sound("secret")
+  disable_tile("battle_1_barrier")
+  start_timer(1000, "restore_camera", false)
+end
+
+
+function battle_2_camera_timer()
+  play_sound("secret")
+  disable_tile("battle_2_barrier")
   start_timer(1000, "restore_camera", false)
 end
 
@@ -130,5 +149,13 @@ end
 function has_finished_cavern()
   -- the cavern is considered has finished if the player has found the heart container
   return savegame_get_boolean(37)
+end
+
+function event_enemy_dead(enemy_name)
+  if are_enemies_dead("battle_1") and is_tile_enabled("battle_1_barrier") then
+    move_camera(352, 288, 10)
+  elseif are_enemies_dead("battle_2") and is_tile_enabled("battle_2_barrier") then
+    move_camera(344, 488, 10)
+  end
 end
 

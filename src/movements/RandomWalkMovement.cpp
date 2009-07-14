@@ -21,7 +21,7 @@
  * @param speed speed of the movement
  */
 RandomWalkMovement::RandomWalkMovement(int speed):
-  PathMovement(get_random_path(), speed, false, true) {
+  PathMovement(get_random_path(), speed, false, true, false) {
 
 }
 
@@ -40,7 +40,7 @@ void RandomWalkMovement::update(void) {
 
   PathMovement::update();
 
-  if (!suspended && is_stopped()) {
+  if (!is_suspended() && is_stopped()) {
     // there was a collision
     set_speed(initial_speed);
     start_next_move();

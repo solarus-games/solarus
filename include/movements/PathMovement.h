@@ -46,6 +46,7 @@ class PathMovement: public CollisionMovement {
 
   bool finished;                   /**< indicates that the path is finished
 			            * (possible if loop is false or when there is a collision) */
+  bool snap_to_grid;               /**< indicates that the entity must be snapped to the grid before moving */
   bool snapping;                   /**< indicates that the movement is currently snapping the entity on the grid */
 
  protected:
@@ -54,10 +55,12 @@ class PathMovement: public CollisionMovement {
   virtual void start_next_move(void);
   static const std::string get_random_path(void);
   bool is_current_move_finished(void);
+  void set_entity(MapEntity *entity);
 
  public:
 
-  PathMovement(const std::string &path, int speed, bool loop, bool with_collisions);
+  PathMovement(const std::string &path, int speed,
+      bool loop, bool with_collisions, bool snap_to_grid);
   ~PathMovement(void);
 
   virtual bool is_finished(void);

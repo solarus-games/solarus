@@ -141,6 +141,7 @@ class MapScript {
   void event_obtaining_treasure(Treasure::Content content, int savegame_variable);
   void event_obtained_treasure(Treasure::Content content, int savegame_variable);
   void event_shop_item_bought(const std::string &shop_item_name);
+  void event_enemy_dead(const std::string &enemy_name);
 };
 
 #endif

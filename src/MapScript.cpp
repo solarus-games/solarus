@@ -1576,3 +1576,12 @@ void MapScript::event_obtained_treasure(Treasure::Content content, int savegame_
 void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
   call_lua_function("event_shop_item_bought", shop_item_name);
 }
+
+/**
+ * Notifies the script that an enemy has just been killed.
+ * @param enemy_name name of the enemy
+ */
+void MapScript::event_enemy_dead(const std::string &enemy_name) {
+  call_lua_function("event_enemy_dead", enemy_name);
+}
+

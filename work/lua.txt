@@ -22,6 +22,7 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 - event_obtaining_treasure(content, savegame_variable)	appelé lorsque le joueur obtient un trésor, qu'il vienne d'un coffre ou non
 - event_obtained_treasure(content, savegame_variable)	appelé lorsque le joueur a fini d'obtenir un trésor
 - event_shop_item_bought(shop_item_name)                appelé lorsque le joueur achète un article dans un magasin
+- event_enemy_dead(enemy_name)				appelé à la mort d'un ennemi
 
 
 Appel de fonctions C++ depuis un script LUA :

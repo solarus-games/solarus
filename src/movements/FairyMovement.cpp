@@ -53,7 +53,7 @@ void FairyMovement::update(void) {
 
   Movement::update();
 
-  if (!suspended) {
+  if (!is_suspended()) {
 
     Uint32 now = SDL_GetTicks();
     if (now >= next_direction_change) {

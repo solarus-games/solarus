@@ -177,7 +177,7 @@ MapEntity * MapEntities::find_entity(EntityType type, const std::string &name) {
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity *entity = *i;
-    if (entity->get_type() == type && entity->get_name() == name) {
+    if (entity->get_type() == type && entity->get_name() == name && !entity->is_being_removed()) {
       return entity;
     }
   }
@@ -199,7 +199,7 @@ list<MapEntity*> * MapEntities::get_entities(EntityType type) {
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity *entity = *i;
-    if (entity->get_type() == type) {
+    if (entity->get_type() == type && !entity->is_being_removed()) {
       entities->push_back(entity);
     }
   }
@@ -222,7 +222,7 @@ list<MapEntity*> * MapEntities::get_entities_with_prefix(EntityType type, const 
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity *entity = *i;
-    if (entity->get_type() == type && entity->has_prefix(prefix)) {
+    if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
       entities->push_back(entity);
     }
   }

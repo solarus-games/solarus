@@ -29,6 +29,7 @@
 #include "Sound.h"
 #include "Map.h"
 #include "Geometry.h"
+#include "MapScript.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
 #include "enemies/SimpleGreenSoldier.h"
@@ -323,6 +324,9 @@ void Enemy::update(void) {
 
     // remove the enemy
     map->get_entities()->remove_entity(this);
+
+    // notify the script
+    map->get_script()->event_enemy_dead(get_name());
   }
 }
 

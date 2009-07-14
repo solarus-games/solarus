@@ -91,13 +91,13 @@ void PixelMovement::set_delay(Uint32 delay) {
  */
 void PixelMovement::update(void) {
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 
   Uint32 now = SDL_GetTicks();
 
-  while (now >= next_move_date_x && !finished) {
+  while (now >= get_next_move_date_x() && !finished) {
     make_next_move();
   }
 }
@@ -114,7 +114,7 @@ void PixelMovement::make_next_move(void) {
     translate(dx, dy);
   }
 
-  next_move_date_x += delay;
+  set_next_move_date_x(get_next_move_date_x() + delay);
 
   vector_index++;
   if (vector_index >= nb_vectors) {

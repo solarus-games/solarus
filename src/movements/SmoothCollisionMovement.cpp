@@ -39,14 +39,11 @@ SmoothCollisionMovement::~SmoothCollisionMovement(void) {
  */
 void SmoothCollisionMovement::update(void) {
 
-  if (!suspended) {
-   /* 
-    if (get_y() < 192) std::cout << SDL_GetTicks() << "x_move = " << x_move << std::endl; 
-    if (get_y() < 192) std::cout << SDL_GetTicks() << " wants to x move, date = " << next_move_date_x << "\n";
-*/
+  if (!is_suspended()) {
     Uint32 now = SDL_GetTicks();
-    bool x_move_now = x_move != 0 && now >= next_move_date_x;
-    bool y_move_now = y_move != 0 && now >= next_move_date_y;
+
+    bool x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
+    bool y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
 
     // TODO should be 'while' instead of 'if', but with valgrind the game
     // loops here when iterating over the obstacle dynamic entities
@@ -58,7 +55,7 @@ void SmoothCollisionMovement::update(void) {
 	if (y_move_now) {
 	  // but it's also time to make a y move
 
-	  if (next_move_date_x <= next_move_date_y) {
+	  if (get_next_move_date_x() <= get_next_move_date_y()) {
 	    // x move first
 	    update_x();
 	    update_y();
@@ -78,8 +75,8 @@ void SmoothCollisionMovement::update(void) {
       }
 
       now = SDL_GetTicks();
-      x_move_now = x_move != 0 && now >= next_move_date_x;
-      y_move_now = y_move != 0 && now >= next_move_date_y;
+      x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
+      y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
     }
   }
 }
@@ -92,6 +89,10 @@ void SmoothCollisionMovement::update(void) {
  */
 void SmoothCollisionMovement::update_x(void) {
 
+  int x_move = get_x_move();
+  int y_move = get_y_move();
+  Uint32 x_delay = get_x_delay();
+ 
   if (x_move != 0) { // the entity wants to move on x
 
     // by default, next_move_date_x will be incremented by x_delay,
@@ -100,7 +101,7 @@ void SmoothCollisionMovement::update_x(void) {
     Uint32 next_move_date_x_increment = x_delay;
 
     Uint32 now = SDL_GetTicks();
-    if (now >= next_move_date_x) { // it's time to try a move
+    if (now >= get_next_move_date_x()) { // it's time to try a move
 
       if (!collision_with_map(x_move, 0)) {
 
@@ -147,7 +148,7 @@ void SmoothCollisionMovement::update_x(void) {
 	  }
 	}
       }
-      next_move_date_x += next_move_date_x_increment;
+      set_next_move_date_x(get_next_move_date_x() + next_move_date_x_increment);
     }
   }
 }
@@ -160,6 +161,10 @@ void SmoothCollisionMovement::update_x(void) {
  */
 void SmoothCollisionMovement::update_y(void) {
 
+  int x_move = get_x_move();
+  int y_move = get_y_move();
+  Uint32 y_delay = get_y_delay();
+
   if (y_move != 0) { // the entity wants to move on y
 
     // by default, next_move_date_y will be incremented by y_delay,
@@ -168,7 +173,7 @@ void SmoothCollisionMovement::update_y(void) {
     Uint32 next_move_date_y_increment = y_delay;
 
     Uint32 now = SDL_GetTicks();
-    if (now >= next_move_date_y) { // it's time to try a move
+    if (now >= get_next_move_date_y()) { // it's time to try a move
 
       if (!collision_with_map(0, y_move)) {
 
@@ -215,7 +220,7 @@ void SmoothCollisionMovement::update_y(void) {
 	  }
 	}
       }
-      next_move_date_y += next_move_date_y_increment;
+      set_next_move_date_y(get_next_move_date_y() + next_move_date_y_increment);
     }
   }
 }

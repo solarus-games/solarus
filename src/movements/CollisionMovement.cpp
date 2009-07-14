@@ -72,7 +72,8 @@ bool CollisionMovement::collision_with_map(int dx, int dy) {
 void CollisionMovement::update_x(void) {
 
   Uint32 now = SDL_GetTicks();
-  if (x_move != 0 && now >= next_move_date_x) { // while it's time to try a move
+  int x_move = get_x_move();
+  if (x_move != 0 && now >= get_next_move_date_x()) { // while it's time to try a move
 
     // make the move only if there is no collision
     if (!collision_with_map(x_move, 0)) {
@@ -81,7 +82,7 @@ void CollisionMovement::update_x(void) {
     else {
       stop(); // also stop on y
     }
-    next_move_date_x += x_delay;
+    set_next_move_date_x(get_next_move_date_x() + get_x_delay());
   }
 }
 
@@ -94,7 +95,8 @@ void CollisionMovement::update_x(void) {
 void CollisionMovement::update_y(void) {
 
   Uint32 now = SDL_GetTicks();
-  if (y_move != 0 && now >= next_move_date_y) { // while it's time to try a move
+  int y_move = get_y_move();
+  if (y_move != 0 && now >= get_next_move_date_y()) { // while it's time to try a move
 
     // make the move only if there is no collision
     if (!collision_with_map(0, y_move)) {
@@ -103,7 +105,7 @@ void CollisionMovement::update_y(void) {
     else {
       stop(); // also stop on x
     }
-    next_move_date_y += y_delay;
+    set_next_move_date_y(get_next_move_date_y() + get_y_delay());
   }
 }
 

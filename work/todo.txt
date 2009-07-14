@@ -39,6 +39,7 @@ Bugs :
 - Tom trop vieux ? changer la couleur de ses cheveux
 - Rubis trop haut de 1 pixel par rapport à son ombre ?
 - Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ?
+- path finding : ne pas explorer les noeuds trop loin de l'ennemi
 
 
 A venir :
@@ -138,6 +139,7 @@ Mode release :
 - Cacher le mode Rêves de Solarus s'il n'est pas encore fait
 - Compiler en mode release (pas -g)
 - Inclure le fichier de licence GPL
+- Enelever les touches de test (notamment Echap)
 
 ----------------------
 Feature requests de l'éditeur :

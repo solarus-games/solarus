@@ -17,7 +17,7 @@
 package zsdx.gui.edit_entities;
 
 import java.awt.event.*;
-
+import javax.swing.*;
 import zsdx.*;
 import zsdx.entities.*;
 import zsdx.entities.Enemy.*;
@@ -31,6 +31,7 @@ public class EditEnemyComponent extends EditEntityComponent {
 
     // specific fields
     private EnumerationChooser<Enemy.Rank> rankField;
+    private JCheckBox saveField;
     private NumberChooser savegameVariableField;
     private PickableItemSubtypeChooser pickableItemSubtypeField;
     private NumberChooser pickableItemSavegameVariableField;
@@ -53,6 +54,10 @@ public class EditEnemyComponent extends EditEntityComponent {
 	rankField = new EnumerationChooser<Rank>(Rank.class);
 	addField("Rank", rankField);
 
+	// save the enemy or not
+	saveField = new JCheckBox("Save the enemy state");
+	addField("Savegame", saveField);
+
 	// savegame variable
 	savegameVariableField = new NumberChooser(0, 0, 32767);
 	addField("Enemy savegame variable", savegameVariableField);
@@ -65,8 +70,20 @@ public class EditEnemyComponent extends EditEntityComponent {
 	pickableItemSavegameVariableField = new NumberChooser(0, 0, 32767);
 	addField("Pickable item savegame variable", pickableItemSavegameVariableField);
 
-	// enable or disable the 'savegame variable' field depending on the pickable item type
-	pickableItemSubtypeField.addActionListener(new ActionListenerEnableSavegameVariable());
+	// enable or disable the 'savegame variable' field depending on the checkbox
+	saveField.addActionListener(new ActionListener() {
+	  public void actionPerformed(ActionEvent ev) {
+	    savegameVariableField.setEnabled(saveField.isSelected());
+	  }
+	});
+
+	// enable or disable the 'pickable item savegame variable' field depending on the pickable item type
+	pickableItemSubtypeField.addActionListener(new ActionListener() {
+	  public void actionPerformed(ActionEvent ev) {
+	    PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
+	    pickableItemSavegameVariableField.setEnabled(pickableItemSubtype.mustBeSaved());
+	  }
+	});
     }
 
     /**
@@ -78,10 +95,28 @@ public class EditEnemyComponent extends EditEntityComponent {
 	Enemy enemy = (Enemy) entity;
 
 	rankField.setValue(Rank.get(enemy.getIntegerProperty("rank")));
-	savegameVariableField.setNumber(enemy.getIntegerProperty("savegameVariable"));
+
+	int savegameVariable = enemy.getIntegerProperty("savegameVariable");
+	if (savegameVariable != -1) {
+	  savegameVariableField.setNumber(savegameVariable);
+	  savegameVariableField.setEnabled(true);
+	  saveField.setSelected(true);
+	}
+	else {
+          savegameVariableField.setEnabled(false);
+	  saveField.setSelected(false);
+	}
+
 	pickableItemSubtypeField.setValue(PickableItem.Subtype.get(enemy.getIntegerProperty("pickableItemSubtype")));
-	pickableItemSavegameVariableField.setNumber(enemy.getIntegerProperty("pickableItemSavegameVariable"));
-	new ActionListenerEnableSavegameVariable().actionPerformed(null);
+
+	int pickableItemSavegameVariable = enemy.getIntegerProperty("pickableItemSavegameVariable"); 
+        if (pickableItemSavegameVariable != -1) {
+	  pickableItemSavegameVariableField.setNumber(pickableItemSavegameVariable);
+	  pickableItemSavegameVariableField.setEnabled(true);
+	}
+	else {
+	  pickableItemSavegameVariableField.setEnabled(false);
+	}
     }
 
     /**
@@ -90,12 +125,14 @@ public class EditEnemyComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
+	int savegameVariable = savegameVariableField.isEnabled() ? 
+		savegameVariableField.getNumber() : -1;
 	int pickableItemSavegameVariable = pickableItemSavegameVariableField.isEnabled() ? 
 		pickableItemSavegameVariableField.getNumber() : -1;
 
 	return new ActionEditEntitySpecific(entity,
 		rankField.getValue().getId(),
-		savegameVariableField.getNumber(),
+		savegameVariable,
 		pickableItemSubtypeField.getValue().getId(),
 		pickableItemSavegameVariable);
     }

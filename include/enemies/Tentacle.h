@@ -28,14 +28,11 @@ class Tentacle: public Enemy {
  protected:
 
   void initialize(void);
-  void restart(void);
 
  public:
 
   Tentacle(const ConstructionParameters &params);
   ~Tentacle(void);
-
-  void update(void);
 };
 
 #endif

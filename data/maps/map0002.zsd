@@ -152,7 +152,12 @@
 0	0	208	88	8	8	25
 0	0	352	88	8	8	25
 0	0	352	88	8	8	71
-1	0	120	309	main_entrance	1	0
+0	0	88	184	16	16	12
+0	0	104	200	32	16	12
+0	0	104	168	48	16	12
+0	0	152	184	16	48	12
+0	0	104	232	48	16	12
+1	0	96	229	main_entrance	1	0
 2	0	112	320	16	16	to_outside	0	1	4	out_rupee_house
 5	0	48	80	chest_1	0	-1	1	-1
 5	0	96	80	chest_2	0	-1	1	-1
@@ -189,6 +194,7 @@
 8	0	240	93	slot_machine_left	3	0	entities/slot_machine	_none
 8	0	264	93	slot_machine_middle	3	0	entities/slot_machine	_none
 8	0	288	93	slot_machine_right	3	0	entities/slot_machine	_none
+7	0	112	197	enemy	3	2	0	-1	-1	-1
 0	2	72	312	96	8	148
 0	2	104	312	32	8	153
 0	2	0	32	16	304	170

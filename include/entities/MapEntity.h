@@ -180,6 +180,7 @@ class MapEntity {
   virtual void set_map(Map *map);
   Map * get_map(void);
   const std::string& get_name(void) const;
+  bool has_prefix(const std::string &prefix);
   int get_direction(void);
 
   // sprites

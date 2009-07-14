@@ -79,4 +79,6 @@ Appel de fonctions C++ depuis un script LUA :
 - equipment_get_sword()					retourne l'épée du joueur (0 à 4)
 - equipment_get_shield()				retourne le bouclier du joueur (0 à 3)
 - shop_item_remove(shop_item_name)			supprime un article de magasin sur la map
-- switch_set_enabled(switch_name, enabled)              active ou désactive un interrupteur
+- switch_set_enabled(switch_name, enabled)              active ou désactive un interrupteur*
+- is_enemy_dead(enemy_name)				vérifie si un ennemi est mort
+- are_enemies_dead(enemies_name_prefix)			vérifie si un ensemble d'ennemis sont morts

@@ -157,6 +157,22 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
  */
 MapEntity * MapEntities::get_entity(EntityType type, const std::string &name) {
 
+  MapEntity *entity = find_entity(type, name);
+
+  if (entity == NULL) {
+    DIE("Cannot find entity with type '" << type << "' and name '" << name << "'");
+  }
+  return entity;
+}
+
+/**
+ * Returns the entity with the specified type and name, or NULL if it doesn't exist.
+ * @param type type of entity
+ * @param name name of the entity to get
+ * @return the entity requested, or NULL if there is no entity with the specified type and name
+ */
+MapEntity * MapEntities::find_entity(EntityType type, const std::string &name) {
+
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
@@ -166,7 +182,7 @@ MapEntity * MapEntities::get_entity(EntityType type, const std::string &name) {
     }
   }
 
-  DIE("Cannot find entity with type '" << type << "' and name '" << name << "'");
+  return NULL;
 }
 
 /**
@@ -184,6 +200,29 @@ list<MapEntity*> * MapEntities::get_entities(EntityType type) {
 
     MapEntity *entity = *i;
     if (entity->get_type() == type) {
+      entities->push_back(entity);
+    }
+  }
+
+  return entities;
+}
+
+/**
+ * Returns the entities of the map with the specified type and having the specified name prefix.
+ * Don't forget to delete the list when you don't need it anymore.
+ * @param type type of entity
+ * @param prefix prefix of the name
+ * @return the entities of this type and having this prefix in their name
+ */
+list<MapEntity*> * MapEntities::get_entities_with_prefix(EntityType type, const std::string &prefix) {
+
+  list<MapEntity*> *entities = new list<MapEntity*>();
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+
+    MapEntity *entity = *i;
+    if (entity->get_type() == type && entity->has_prefix(prefix)) {
       entities->push_back(entity);
     }
   }

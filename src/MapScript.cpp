@@ -127,6 +127,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "equipment_get_shield", l_equipment_get_shield);
   lua_register(context, "shop_item_remove", l_shop_item_remove);
   lua_register(context, "switch_set_enabled", l_switch_set_enabled);
+  lua_register(context, "is_enemy_dead", l_is_enemy_dead);
+  lua_register(context, "are_enemies_dead", l_are_enemies_dead);
 }
 
 /**
@@ -1377,6 +1379,47 @@ int MapScript::l_switch_set_enabled(lua_State *l) {
   sw->set_enabled(enable);
 
   return 0;
+}
+
+/**
+ * Returns whether an enemy is dead.
+ * An enemy is considered as dead if it is not present on the map.
+ * Argument 1 (string): name of the enemy
+ * Return value (boolean): true if the enemy is not on the map, false if it is alive
+ */
+int MapScript::l_is_enemy_dead(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  Enemy *enemy = (Enemy*) map->get_entities()->find_entity(ENEMY, name);
+
+  lua_pushboolean(l, (enemy == NULL));
+
+  return 1;
+}
+
+/**
+ * Returns whether a set of enemies are dead.
+ * An enemy is considered as dead if it is not present on the map.
+ * Argument 1 (string): prefix of the name of the enemies to check
+ * Return value (boolean): true if there is no enemy left with this prefix on the map,
+ * false if at least one of them is alive
+ */
+int MapScript::l_are_enemies_dead(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &prefix = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  std::list<MapEntity*> *enemies = map->get_entities()->get_entities_with_prefix(ENEMY, prefix);
+
+  lua_pushboolean(l, enemies->empty());
+
+  return 1;
 }
 
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened

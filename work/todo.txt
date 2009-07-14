@@ -21,6 +21,7 @@ Feature requests :
 - Mettre des constantes dans les scripts
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
+- PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 
 
 Bugs :

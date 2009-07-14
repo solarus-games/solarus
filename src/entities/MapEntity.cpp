@@ -447,6 +447,15 @@ const string& MapEntity::get_name(void) const {
 }
 
 /**
+ * Returns whether the name of this entity starts with the specified prefix.
+ * @param prefix a prefix
+ * @return true if the name starts with this prefix
+ */
+bool MapEntity::has_prefix(const std::string &prefix) {
+  return name.substr(0, prefix.size()) == prefix;
+}
+
+/**
  * Returns the direction of the entity.
  * @return the direction of the entity
  */

@@ -133,9 +133,6 @@ class MapEntity {
   void set_movement(Movement *movement);
   void clear_movement(void);
 
-  // collisions
-  static bool is_point_in(const SDL_Rect &rectangle, int x, int y);
-
  public:
 
   // destruction
@@ -177,6 +174,8 @@ class MapEntity {
   virtual const SDL_Rect get_facing_point(int direction);
   const SDL_Rect get_center_point(void);
 
+  bool is_aligned_to_grid(void);
+
   // properties
   virtual void set_map(Map *map);
   Map * get_map(void);
@@ -198,6 +197,7 @@ class MapEntity {
   // collisions
   virtual bool is_obstacle_for(MapEntity *other);
   bool overlaps(const SDL_Rect &rectangle);
+  bool overlaps(int x, int y);
   bool is_origin_point_in(const SDL_Rect &rectangle);
   bool is_facing_point_in(const SDL_Rect &rectangle);
   bool is_center_in(const SDL_Rect &rectangle);

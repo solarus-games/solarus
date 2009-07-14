@@ -14,20 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <cmath>
 #include "movements/Movement.h"
 #include "entities/MapEntity.h"
-
-/**
- * Mathematic constants.
- * We don't use the constants from math.h
- * because they are not ANSI.
- */
-const double PI = 3.14159265358979323846;
-const double TWO_PI = 2.0 * PI;
-const double PI_OVER_2 = PI / 2.0;
-const double THREE_PI_OVER_2 = 3 * PI_OVER_2;
-const double SQRT_2 = 1.41421356237309504880;
+#include "Geometry.h"
+#include <cmath>
 
 /**
  * Constructor.
@@ -240,18 +230,8 @@ void Movement::set_y_speed(double y_speed) {
  * @param speed the new speed
  */
 void Movement::set_speed(double speed) {
-  double angle; // angle in radians
 
-  // compute the angle
-  if (x_speed == 0) {
-    angle = (y_speed > 0) ? THREE_PI_OVER_2 : PI_OVER_2;
-  }
-  else {
-    angle = atan((double) (y_speed / x_speed));
-    if (x_speed < 0) {
-      angle = angle + PI;
-    }
-  }
+  double angle = Geometry::get_angle(0, 0, x_speed, y_speed); // angle in radians
 
   set_x_speed(speed * cos(angle));
   set_y_speed(-speed * sin(angle));
@@ -292,7 +272,7 @@ void Movement::stop(void) {
  */
 void Movement::set_direction(int direction) {
 
-  double angle = direction * TWO_PI / 360.0; // angle in radians
+  double angle = direction * Geometry::TWO_PI / 360.0; // angle in radians
   set_direction(angle);
 }
 

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/StraightMovement.h"
+#include "Geometry.h"
 
 /**
  * Creates a straight movement.
@@ -23,7 +24,6 @@
  * @param time duration of the movement in milliseconds
  */
 StraightMovement::StraightMovement(int speed, int direction, Uint32 time) {
-
   start(speed, direction, time);
 }
 
@@ -53,7 +53,7 @@ StraightMovement::~StraightMovement(void) {
  */
 void StraightMovement::start(int speed, int direction, Uint32 time) {
 
-  start(speed, direction * TWO_PI / 360.0, time);
+  start(speed, direction * Geometry::TWO_PI / 360.0, time);
 }
 
 /**

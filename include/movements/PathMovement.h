@@ -46,6 +46,7 @@ class PathMovement: public CollisionMovement {
 
   bool finished;                   /**< indicates that the path is finished
 			            * (possible if loop is false or when there is a collision) */
+  bool snapping;                   /**< indicates that the movement is currently snapping the entity on the grid */
 
  protected:
 
@@ -63,6 +64,8 @@ class PathMovement: public CollisionMovement {
 
   int get_current_direction(void);
   void set_position(int x, int y);
+
+  void update(void);
 };
 
 #endif

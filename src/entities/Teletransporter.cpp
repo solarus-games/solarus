@@ -126,7 +126,7 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
 
       SDL_Rect facing_point = hero->get_facing_point(transition_direction);
       return hero->is_moving_towards(transition_direction)
-	&& is_point_in(get_position_in_map(), facing_point.x, facing_point.y);
+	&& overlaps(facing_point.x, facing_point.y);
     }
 
     else if (map->get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
@@ -141,10 +141,8 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
   int y1 = entity_position.y + 4;
   int y2 = y1 + entity_position.h - 9;
 
-  return is_point_in(get_position_in_map(), x1, y1) &&
-    is_point_in(get_position_in_map(), x2, y1) &&
-    is_point_in(get_position_in_map(), x1, y2) &&
-    is_point_in(get_position_in_map(), x2, y2);
+  return overlaps(x1, y1) && overlaps(x2, y1) &&
+    overlaps(x1, y2) && overlaps(x2, y2);
 }
 
 /**

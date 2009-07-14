@@ -15,9 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/PathMovement.h"
+#include "entities/MapEntity.h"
+#include "Geometry.h"
 #include "Random.h"
-
-const std::string PathMovement::random_directions[] = {"0", "2", "4", "6"};
 
 /**
  * Creates a path movement object.
@@ -30,8 +30,8 @@ const std::string PathMovement::random_directions[] = {"0", "2", "4", "6"};
  * @param with_collisions true to make the movement sensitive to obstacles
  */
 PathMovement::PathMovement(const std::string &path, int speed, bool loop, bool with_collisions):
-  initial_path(path), remaining_path(path), initial_speed(speed), distance_covered(0),
-  loop(loop), with_collisions(with_collisions), finished(false) {
+  initial_path(path), remaining_path(path), initial_speed(speed), current_direction(0), distance_covered(0),
+  loop(loop), with_collisions(with_collisions), finished(false), snapping(false) {
 
   set_speed(speed);
   start_next_move();
@@ -59,16 +59,20 @@ void PathMovement::set_position(int x, int y) {
   if (y != get_y()) {
     distance_covered++;
   }
-  Movement::set_position(x, y);
+  CollisionMovement::set_position(x, y);
+}
 
-  /*
-  std::cout << SDL_GetTicks() << " direction " << current_direction << ", distance covered: " << distance_covered << ", pos = "
-    << (x - 8) << "," << (y - 13) << std::endl;
-  */
+/**
+ * Updates the movements: detects the collisions
+ * in order to restart the movement.
+ */
+void PathMovement::update(void) {
 
-  if (is_current_move_finished()) {
+  if (!suspended && is_current_move_finished()) {
     start_next_move();
   }
+
+  CollisionMovement::update();
 }
 
 /**
@@ -86,12 +90,13 @@ bool PathMovement::is_finished(void) {
  */
 bool PathMovement::is_current_move_finished(void) {
 
+  if (remaining_path.size() == 0) {
+    return true;
+  }
+
   int distance_to_cover = (current_direction % 2 == 0) ? 8 : 16;
 
-  if (distance_covered > distance_to_cover) {
-    DIE("Invalid distance covered: " << distance_covered);
-  }
-  return distance_covered == distance_to_cover;
+  return distance_covered >= distance_to_cover;
 }
 
 /**
@@ -111,21 +116,47 @@ bool PathMovement::collision_with_map(int dx, int dy) {
  */
 void PathMovement::start_next_move(void) {
 
-  if (remaining_path.size() == 0) {
-    if (loop) {
-      remaining_path = initial_path;
-    }
-    else {
-      finished = true;
-      stop();
-    }
+  if (entity == NULL) {
+    return;
   }
 
-  if (!finished) {
-    current_direction = remaining_path[0] - '0';
-    set_direction(current_direction * 45);
-    distance_covered = 0;
-    remaining_path = remaining_path.substr(1);
+  if (!entity->is_aligned_to_grid()) {
+    // snap the entity to the grid before making the next move
+
+    int x = entity->get_top_left_x();
+    int y = entity->get_top_left_y();
+    int snapped_x = x + 4;
+    int snapped_y = y + 4;
+    snapped_x -= snapped_x % 8;
+    snapped_y -= snapped_y % 8;
+
+    if (Geometry::get_distance(x, y, snapped_x, snapped_y) < 2) {
+      set_position(entity->get_x() + (snapped_x - x), entity->get_y() + (snapped_y - y));
+    }
+    else if (!snapping) {
+      set_direction(Geometry::get_angle(entity->get_top_left_x(), entity->get_top_left_y(), snapped_x, snapped_y));
+      snapping = true;
+    }
+  }
+  
+  if (entity->is_aligned_to_grid()) {
+    if (remaining_path.size() == 0) {
+      if (loop) {
+	remaining_path = initial_path;
+      }
+      else {
+	finished = true;
+	stop();
+      }
+    }
+
+    if (!finished) {
+      current_direction = remaining_path[0] - '0';
+      set_direction(current_direction * 45);
+      distance_covered = 0;
+      snapping = false;
+      remaining_path = remaining_path.substr(1);
+    }
   }
 }
 
@@ -143,7 +174,7 @@ int PathMovement::get_current_direction(void) {
  */
 const std::string PathMovement::get_random_path() {
 
-  const std::string &c = random_directions[Random::get_number(4)];
+  char c = '0' + (Random::get_number(4) * 2);
   int length = Random::get_number(5) + 3;
   std::string path = "";
   for (int i = 0; i < length; i++) {

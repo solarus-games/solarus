@@ -87,12 +87,8 @@ bool Sensor::check_collision_custom(MapEntity *entity) {
   int y1 = entity_position.y + 4;
   int y2 = y1 + entity_position.h - 5;
 
-  const SDL_Rect &sensor_position = get_position_in_map();
-
-  bool collision = is_point_in(sensor_position, x1, y1) &&
-    is_point_in(sensor_position, x2, y1) &&
-    is_point_in(sensor_position, x1, y2) &&
-    is_point_in(sensor_position, x2, y2);
+  bool collision = overlaps(x1, y1) && overlaps(x2, y1) &&
+    overlaps(x1, y2) && overlaps(x2, y2);
 
   if (entity->is_hero() && !collision) {
     this->hero_already_overlaps = false;

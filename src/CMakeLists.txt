@@ -10,6 +10,7 @@ add_executable (zsdx
   KeysEffect.cpp
   FileTools.cpp
   Random.cpp
+  Geometry.cpp
 
   # menus
   menus/TitleScreen.cpp

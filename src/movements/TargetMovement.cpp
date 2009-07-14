@@ -16,7 +16,7 @@
  */
 #include "movements/TargetMovement.h"
 #include "entities/MapEntity.h"
-#include <cmath>
+#include "Geometry.h"
 
 /**
  * Creates a new target movement.
@@ -47,6 +47,29 @@ TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
 TargetMovement::~TargetMovement(void) {
 
 }
+
+/**
+ * Changes the target of this movement.
+ * @param target_x x coordinate of the target point
+ * @param target_y y coordinate of the target point
+ */
+void TargetMovement::set_target(int target_x, int target_y) {
+  this->target_x = target_x;
+  this->target_y = target_y;
+  next_recomputation_date = SDL_GetTicks();
+}
+
+/**
+ * Changes the target of this movement.
+ * @param target_entity the target entity
+ */
+void TargetMovement::set_target(MapEntity *target_entity) {
+  this->target_entity = target_entity;
+  this->target_x = target_entity->get_x();
+  this->target_y = target_entity->get_y();
+  next_recomputation_date = SDL_GetTicks();
+}
+
 
 /**
  * Updates the movement.
@@ -82,21 +105,10 @@ void TargetMovement::recompute_movement(void) {
     target_y = target_entity->get_y();
   }
 
+  double angle = Geometry::get_angle(get_x(), get_y(), target_x, target_y);
+
   int dx = target_x - get_x();
   int dy = target_y - get_y();
-
-  double angle;
-  if (dx != 0) {
-    angle = atan((double) -dy / (double) dx);
-
-    if (dx < 0) {
-      angle += PI;
-    }
-  }
-  else {
-    // special case (cannot divide by zero and compute atan)
-    angle = (dy > 0) ? -PI_OVER_2 : PI_OVER_2;
-  }
 
   sign_x = dx >= 0 ? 1 : -1;
   sign_y = dy >= 0 ? 1 : -1;

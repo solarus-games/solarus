@@ -14,33 +14,30 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This header should be included by each class header file.
- */
 
-#ifndef ZSDX_COMMON_H
-#define ZSDX_COMMON_H
-
-#define _CRT_SECURE_NO_DEPRECATE // allow sprintf in Visual C++...
-
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <cstdlib>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
-
-#include "Types.h"
-
-#define MIN(x,y) (((x) > (y)) ? (y) : (x))
-#define MAX(x,y) (((x) > (y)) ? (x) : (y))
+#include "Common.h"
 
 /**
- * This macro should be used to exit the program properly on an error message.
- * The message parameter can contain several elements separated by the '<<' operator.
+ * This class provides functions to make mathematic computations.
  */
-#define DIE(message) do { std::ostringstream oss; oss << message; throw oss.str(); } while (0)
+class Geometry {
 
-#endif
+  public:
+
+    /**
+     * Mathematic constants.
+     * We don't use the constants from math.h
+     * because they are not ANSI.
+     */
+    static const double PI;
+    static const double TWO_PI;
+    static const double PI_OVER_2;
+    static const double THREE_PI_OVER_2;
+    static const double SQRT_2;
+
+    static bool is_point_in(const SDL_Rect &rectangle, int x, int y);
+    static bool overlaps(const SDL_Rect &rect1, const SDL_Rect &rect2);
+    static double get_distance(int x1, int y1, int x2, int y2);
+    static double get_angle(int x1, int y1, int x2, int y2);
+};
+

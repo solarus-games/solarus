@@ -40,6 +40,8 @@ const SDL_Rect PathFinding::transition_collision_boxes[] = {
   {  0,  0, 24, 24 }
 };
 
+//const PathFinding::Node PathFinding::no_node = { {0,0,0,0} };
+
 /**
  * Constructor.
  * @param map the map
@@ -64,7 +66,6 @@ PathFinding::PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_e
  * Destructor.
  */
 PathFinding::~PathFinding(void) {
-
 }
 
 /**
@@ -74,9 +75,8 @@ PathFinding::~PathFinding(void) {
  */
 std::string PathFinding::compute_path(void) {
 
-  // TODO faire un array de nodes correspondant à la grille 8*8 de la map
-
-  // std::cout << "will compute a path from " << source.x << "," << source.y << " to " << target.x << "," << target.y << std::endl;
+  // std::cout << "will compute a path from " << source_entity->get_top_left_x() << "," << source_entity->get_top_left_y()
+  //  << " to " << target_entity->get_top_left_x() << "," << target_entity->get_top_left_y() << std::endl;
 
   SDL_Rect source = source_entity->get_position_in_map();
   SDL_Rect target = target_entity->get_position_in_map();
@@ -85,41 +85,49 @@ std::string PathFinding::compute_path(void) {
   target.x -= target.x % 8;
   target.y += 4;
   target.y -= target.y % 8;
+  int target_index = get_square_index(target);
 
   if (target.x % 8 != 0 || target.y % 8 != 0) {
     DIE("Could not snap the target to the map grid");
   }
 
-  int total_mdistance = get_manhattan_distance(source, target);
-  if (total_mdistance > 15) {
+  int total_mdistance = get_manhattan_distance(source, target) * 10;
+  if (total_mdistance > 250) {
     return ""; // too far to compute a path
   }
 
   std::string path = "";
-  std::list<Node> closed_list;
-  std::list<Node> open_list;
 
   Node starting_node;
+  int index = get_square_index(source);
   starting_node.location = source;
+  starting_node.index = index;
   starting_node.previous_cost = 0;
   starting_node.heuristic = total_mdistance;
   starting_node.total_cost = total_mdistance;
   starting_node.direction = ' ';
-  open_list.push_front(starting_node);
+
+  open_list[index] = starting_node;
+  open_list_indices.push_front(index);
 
   bool finished = false;
   while (!finished) {
 
     // pick the node with the lowest total cost in the open list
-    Node current_node = open_list.front();
-    open_list.pop_front();
-    closed_list.push_back(current_node);
-    // std::cout << SDL_GetTicks() << " picking the lowest cost node in the open list (" << (open_list.size() + 1) << " elements): "
-    //  << current_node.location.x << "," << current_node.location.y << ", cost = " << current_node.previous_cost << " + " << current_node.heuristic << "\n";
-    if (current_node.location.x == target.x && current_node.location.y == target.y) {
+    int index = open_list_indices.front();
+    Node *current_node = &open_list[index];
+    open_list_indices.pop_front();
+    closed_list[index] = *current_node;
+    open_list.erase(index);
+    current_node = &closed_list[index];
+
+    // std::cout << SDL_GetTicks() << " picking the lowest cost node in the open list (" << (open_list_indices.size() + 1) << " elements): "
+    //  << current_node->location.x << "," << current_node->location.y << ", cost = " << current_node->previous_cost << " + " << current_node->heuristic << "\n";
+
+    if (index == target_index) {
       // std::cout << "target node was added to the closed list\n";
       finished = true;
-      path = rebuild_path(closed_list, current_node);
+      path = rebuild_path(current_node);
       // std::cout << "rebuild done\n";
     }
     else {
@@ -129,38 +137,45 @@ std::string PathFinding::compute_path(void) {
 
 	Node new_node;
 	int immediate_cost = (i % 2 == 0) ? 10 : 14;
-	new_node.previous_cost = current_node.previous_cost + immediate_cost;
-	new_node.location = current_node.location;
+	new_node.previous_cost = current_node->previous_cost + immediate_cost;
+	new_node.location = current_node->location;
 	new_node.location.x += neighbours_locations[i].x;
 	new_node.location.y += neighbours_locations[i].y;
+	new_node.index = get_square_index(new_node.location);
+	// std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 
-	Node *existing_node = find_node(closed_list, new_node.location);
-	if (existing_node == NULL && is_node_transition_valid(current_node, i)) {
+	bool in_closed_list = (closed_list.find(new_node.index) != closed_list.end());
+	if (!in_closed_list && is_node_transition_valid(*current_node, i)) {
 	  // std::cout << "  node in direction " << i << " is not in the closed list\n";
 	  // not in the closed list: look in the open list
-	  existing_node = find_node(open_list, new_node.location);
-	  if (existing_node == NULL) {
+	  
+	  bool in_open_list = open_list.find(new_node.index) != open_list.end();
+
+	  if (!in_open_list) {
 	    // not in the open list: add it
-	    new_node.heuristic = get_manhattan_distance(new_node.location, target);
+	    new_node.heuristic = get_manhattan_distance(new_node.location, target) * 10;
 	    new_node.total_cost = new_node.previous_cost + new_node.heuristic;
-	    new_node.parent_location = current_node.location;
+	    new_node.parent_index = index;
 	    new_node.direction = '0' + i;
-	    add_sorted(open_list, new_node);
-	    // std::cout << "  node in direction " << i << " is not in the open list, adding it with cost " << new_node.previous_cost << " + " << new_node.heuristic << "\n";
+            open_list[new_node.index] = new_node; 
+	    add_index_sorted(&open_list[new_node.index]);
+	    // std::cout << "  node in direction " << i << " is not in the open list, adding it with cost " << new_node.previous_cost << " (" 
+	    //  << current_node->previous_cost << " + " << immediate_cost << ") + " << new_node.heuristic << " and parent " << new_node.parent_index << "\n";
 	  }
 	  else {
 	    // std::cout << "  node in direction " << i << " is already in the open list\n";
+	    Node *existing_node = &open_list[new_node.index];
 	    // already in the open list: see if the current path is better
 	    if (new_node.previous_cost < existing_node->previous_cost) {
 	      existing_node->previous_cost = new_node.previous_cost;
 	      existing_node->total_cost = existing_node->previous_cost + existing_node->heuristic;
-	      existing_node->parent_location = current_node.location;
-	      open_list.sort();
+	      existing_node->parent_index = index;
+	      open_list_indices.sort();
 	    }
 	  }
 	}
       }
-      if (open_list.empty()) {
+      if (open_list_indices.empty()) {
 	finished = true;
       }
     }
@@ -168,6 +183,19 @@ std::string PathFinding::compute_path(void) {
 
   // std::cout << "path found: " << path << std::endl;
   return path;
+}
+
+/**
+ * Returns the index of the 8*8 square in the map
+ * corresponding to the specified location.
+ * @param location location of a node on the map
+ * @return index of the square corresponding to the top-left part of the location
+ */
+int PathFinding::get_square_index(const SDL_Rect &location) {
+
+  int x8 = location.x / 8;
+  int y8 = location.y / 8;
+  return y8 * map->get_width8() + x8;
 }
 
 /**
@@ -183,26 +211,6 @@ int PathFinding::get_manhattan_distance(const SDL_Rect &point1, const SDL_Rect &
 }
 
 /**
- * Tries to find in a list a node with the specified location.
- * @param list the list to seek
- * @param location location of the node
- * @return the node if it was found, NULL otherwise
- */
-PathFinding::Node * PathFinding::find_node(std::list<Node> &nodes, const SDL_Rect &location) {
-
-  std::list<Node>::iterator i;
-  std::list<Node>::iterator end = nodes.end();
-  for (i = nodes.begin(); i != end; i++) {
-    Node *node = &(*i);
-    if (node->location.x == location.x && node->location.y == location.y) {
-      return node;
-    }
-  }
-
-  return NULL;
-}
-
-/**
  * Compares two nodes according to their total estimated cost.
  */
 bool PathFinding::Node::operator<(const Node &other) {
@@ -210,24 +218,24 @@ bool PathFinding::Node::operator<(const Node &other) {
 }
 
 /**
- * Adds a node to the open list, making sure the list remains sorted.
- * @param open_list the open list of the A* algorithm
- * @param node the node to add
+ * Adds the index of a node to the sorted list of indices of the open list, making sure the list remains sorted.
+ * @param node the node
  */
-void PathFinding::add_sorted(std::list<Node> &open_list, const Node &node) {
+void PathFinding::add_index_sorted(Node *node) {
 
   bool inserted = false;
-  std::list<Node>::iterator i;
-  for (i = open_list.begin(); i != open_list.end() && !inserted; i++) {
-    const Node &current_node = *i;
-    if (current_node.total_cost >= node.total_cost) {
-      open_list.insert(i, node);
+  std::list<int>::iterator i;
+  for (i = open_list_indices.begin(); i != open_list_indices.end() && !inserted; i++) {
+    int index = *i;
+    Node *current_node = &open_list[index];
+    if (current_node->total_cost >= node->total_cost) {
+      open_list_indices.insert(i, node->index);
       inserted = true;
     }
   }
 
   if (!inserted) {
-    open_list.push_back(node);
+    open_list_indices.push_back(node->index);
   }
 }
 
@@ -236,14 +244,14 @@ void PathFinding::add_sorted(std::list<Node> &open_list, const Node &node) {
  * @param closed_list the closed list of A*
  * @return final_node the final node of the path
  */
-std::string PathFinding::rebuild_path(std::list<Node> &closed_list, const Node &final_node) {
+std::string PathFinding::rebuild_path(const Node *final_node) {
 
-  const Node *current_node = &final_node;
+  const Node *current_node = final_node;
   std::string path = "";
   while (current_node->direction != ' ') {
     path = current_node->direction + path;
-    current_node = find_node(closed_list, current_node->parent_location);
-    // std::cout << "path = " << path << std::endl;
+    current_node = &closed_list[current_node->parent_index];
+    // std::cout << "current_node: " << current_node->index << ", path = " << path << std::endl;
   }
   return path;
 }

@@ -28,6 +28,7 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Map.h"
+#include "Geometry.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
 #include "enemies/SimpleGreenSoldier.h"
@@ -394,7 +395,7 @@ void Enemy::attack_hero(Hero *hero) {
 	zsdx->game->get_equipment()->get_shield() >= minimum_shield_needed) {
 
       double angle = hero->get_vector_angle(this);
-      int protected_direction = (int) ((angle + PI_OVER_2 / 2.0) * 4 / TWO_PI);
+      int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction = (protected_direction + 4) % 4;
 
       hero_protected = (hero->get_animation_direction() == protected_direction);

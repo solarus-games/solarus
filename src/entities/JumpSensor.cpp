@@ -118,12 +118,10 @@ bool JumpSensor::check_collision_custom(MapEntity *entity) {
 
     bool even = (direction % 4 == 0);
     const SDL_Rect &facing_point = hero->get_facing_point(direction / 2);
-    return is_point_in(get_position_in_map(),
-		       facing_point.x + (even ? 0 : -8),
-		       facing_point.y + (even ? -8 : 0))
-      && is_point_in(get_position_in_map(),
-		     facing_point.x + (even ? 0 : 7),
-		     facing_point.y + (even ? 7 : 0));
+    return overlaps(facing_point.x + (even ? 0 : -8),
+		    facing_point.y + (even ? -8 : 0))
+      && overlaps(facing_point.x + (even ? 0 : 7),
+		  facing_point.y + (even ? 7 : 0));
   }
 
   // otherwise, the sensor's shape is a diagonal bar
@@ -140,7 +138,7 @@ bool JumpSensor::check_collision_custom(MapEntity *entity) {
  */
 bool JumpSensor::is_point_in_diagonal(const SDL_Rect &point) {
 
-  if (!is_point_in(get_position_in_map(), point.x, point.y)) {
+  if (!overlaps(point.x, point.y)) {
     return false;
   }
 

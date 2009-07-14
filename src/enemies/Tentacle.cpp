@@ -64,6 +64,7 @@ void Tentacle::initialize(void) {
  */
 void Tentacle::restart(void) {
   Enemy::restart();
+  get_movement()->stop();
 }
 
 /**

@@ -59,8 +59,13 @@ void PathFindingMovement::update(void) {
  */
 void PathFindingMovement::recompute_movement(void) { 
 
+//  Uint32 start = SDL_GetTicks();
+
   PathFinding path_finding = PathFinding(entity->get_map(), entity, target);
   remaining_path = path_finding.compute_path();
+
+//  Uint32 end = SDL_GetTicks();
+//  std::cout << "path computed in " << (end - start) << " ms\n";
 
   if (remaining_path == "") {
     // the target is too far or there is no path
@@ -73,16 +78,18 @@ void PathFindingMovement::recompute_movement(void) {
  */
 void PathFindingMovement::start_next_move(void) {
 
+  PathMovement::start_next_move();
+
   Uint32 now = SDL_GetTicks();
 
   if (remaining_path.size() == 0 || now >= next_recomputation_date) {
-    recompute_movement();
+    if (entity->is_aligned_to_grid()) {
+      recompute_movement();
+    }
     // compute a new path every 0.5 to 1 second, randomizing in this interval to avoid
     // making all path-finding entities of the map compute a path at the same time
     next_recomputation_date += now + 500 + Random::get_number(500);
   }
-
-  PathMovement::start_next_move();
 }
 
 /**

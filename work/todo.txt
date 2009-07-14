@@ -21,7 +21,6 @@ Feature requests :
 - Mettre des constantes dans les scripts
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
-- Factoriser le code du calcul d'angle de MapEntity et TargetMovement (TargetMovement doit le faire sans aucune entité, exemple : assignation d'un item de l'inventaire)
 
 
 Bugs :
@@ -39,7 +38,6 @@ Bugs :
 - Tom trop vieux ? changer la couleur de ses cheveux
 - Rubis trop haut de 1 pixel par rapport à son ombre ?
 - Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ?
-- PathMovement non précis en diagonale : faire hériter de TargetMovement ?
 
 
 A venir :

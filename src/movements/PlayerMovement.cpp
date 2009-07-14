@@ -20,6 +20,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Controls.h"
+#include "Geometry.h"
 
 // TODO use the code from Controls
 
@@ -346,19 +347,19 @@ void PlayerMovement::compute_movement(void) {
       y_speed = moving_speed;
       break;
     case 45: // right up
-      x_speed = (int) (moving_speed / SQRT_2);
+      x_speed = (int) (moving_speed / Geometry::SQRT_2);
       y_speed = -x_speed;
       break;
     case 135: // left up
-      x_speed = -(int) (moving_speed / SQRT_2);
+      x_speed = -(int) (moving_speed / Geometry::SQRT_2);
       y_speed = x_speed;
       break;
     case 225: // left down
-      y_speed = (int) (moving_speed / SQRT_2);
+      y_speed = (int) (moving_speed / Geometry::SQRT_2);
       x_speed = -y_speed;
       break;
     case 315: // right down
-      x_speed = (int) (moving_speed / SQRT_2);
+      x_speed = (int) (moving_speed / Geometry::SQRT_2);
       y_speed = x_speed;
       break;
     default:

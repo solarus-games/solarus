@@ -45,6 +45,9 @@ class TargetMovement: public Movement {
   TargetMovement(MapEntity *target_entity, int speed);
   ~TargetMovement(void);
 
+  void set_target(int target_x, int target_y);
+  void set_target(MapEntity *target_entity);
+
   bool is_finished(void);
   void update(void);
 };

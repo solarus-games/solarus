@@ -16,6 +16,7 @@
  */
 #include "movements/SmoothCollisionMovement.h"
 #include "ZSDX.h"
+#include "Geometry.h"
 
 /**
  * Constructor.
@@ -108,7 +109,7 @@ void SmoothCollisionMovement::update_x(void) {
 	if (y_move != 0 && collision_with_map(0, y_move)) {
 	  // if there is also a y move, and if this y move is illegal,
 	  // we still allow the x move and we give it all the speed
-	  next_move_date_x_increment = (int) (x_delay / SQRT_2);
+	  next_move_date_x_increment = (int) (x_delay / Geometry::SQRT_2);
 	}
       }
       else if (y_move == 0) {
@@ -118,11 +119,11 @@ void SmoothCollisionMovement::update_x(void) {
 
 	if (!collision_with_map(x_move, 1)) {
 	  translate(x_move, 1);
-	  next_move_date_x_increment = (int) (x_delay * SQRT_2); // fix the speed
+	  next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2); // fix the speed
 	}
 	else if (!collision_with_map(x_move, -1)) {
 	  translate(x_move, -1);
-	  next_move_date_x_increment = (int) (x_delay * SQRT_2);
+	  next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
 	}
 	else {
 
@@ -176,7 +177,7 @@ void SmoothCollisionMovement::update_y(void) {
 	if (x_move != 0 && collision_with_map(x_move, 0)) {
 	  // if there is also an x move, and if this x move is illegal,
 	  // we still allow the y move and we give it all the speed
-	  next_move_date_y_increment = (int) (y_delay / SQRT_2);
+	  next_move_date_y_increment = (int) (y_delay / Geometry::SQRT_2);
 	}
       }
       else if (x_move == 0) {
@@ -187,11 +188,11 @@ void SmoothCollisionMovement::update_y(void) {
 
 	if (!collision_with_map(1, y_move)) {
 	  translate(1, y_move);
-	  next_move_date_y_increment = (int) (y_delay * SQRT_2); // fix the speed
+	  next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2); // fix the speed
 	}
 	else if (!collision_with_map(-1, y_move)) {
 	  translate(-1, y_move);
-	  next_move_date_y_increment = (int) (y_delay * SQRT_2);
+	  next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
 	}
 	else {
 	  /* The diagonal moves didn't work either.

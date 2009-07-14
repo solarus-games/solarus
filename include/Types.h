@@ -49,6 +49,7 @@ class ResourceManager;
 class KeysEffect;
 class FileTools;
 class Random;
+class Geometry;
 
 // menus
 class TitleScreen;

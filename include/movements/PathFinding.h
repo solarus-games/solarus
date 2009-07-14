@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <list>
+#include <map>
 
 /**
  * This class computes a path between two entities on the map with the A* algorithm.
@@ -35,31 +36,37 @@ class PathFinding {
 
      public:
 
-      SDL_Rect location; /**< location of the 16*16 square on the map */
+      SDL_Rect location; /**< location of this node on the map */
+      int index;         /**< index of this node's square on the map (depends on the location) */
 
       // total_cost = previous_cost + heuristic
       int previous_cost; /**< cost of the best path that leads to this node */
       int heuristic;     /**< estimation of the remaining cost to the target */
       int total_cost;    /**< total cost of this node */
 
-      SDL_Rect parent_location;      /**< location of the best node leading to this node */
-      char direction;                /**< direction from the parent node to this node (0 to 7) */
+      int parent_index;  /**< index of the square containing the best node leading to this node */
+      char direction;    /**< direction from the parent node to this node (0 to 7) */
 
       bool operator<(const Node &other);
     };
 
     static const SDL_Rect neighbours_locations[];
     static const SDL_Rect transition_collision_boxes[];
+//    static const Node no_node;
 
-    Map *map;                     /**< the map */
-    MapEntity *source_entity;     /**< the entity to move */
-    MapEntity *target_entity;     /**< the target point */
+    Map *map;                       /**< the map */
+    MapEntity *source_entity;       /**< the entity to move */
+    MapEntity *target_entity;       /**< the target point */
 
+    std::map<int,Node> closed_list;   /**< the closed list, indexed by the node locations on the map */
+    std::map<int,Node> open_list;     /**< the open list, indexed by the node locations on the map */
+    std::list<int> open_list_indices; /**< indices of the open list elements, sorted by priority */
+
+    int get_square_index(const SDL_Rect &location);
     int get_manhattan_distance(const SDL_Rect &point1, const SDL_Rect &point2);
     bool is_node_transition_valid(const Node &node, int direction);
-    Node * find_node(std::list<Node> &nodes, const SDL_Rect &location);
-    void add_sorted(std::list<Node> &open_list, const Node &node);
-    std::string rebuild_path(std::list<Node> &closed_list, const Node &final_node);
+    void add_index_sorted(Node *node);
+    std::string rebuild_path(const Node *final_node);
 
   public:
 

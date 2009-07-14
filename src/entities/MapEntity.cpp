@@ -21,7 +21,7 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
-#include <cmath>
+#include "Geometry.h"
 using namespace std;
 
 const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
@@ -396,6 +396,18 @@ void MapEntity::set_position_in_map(int x, int y) {
 }
 
 /**
+ * Returns whether the entity's rectangle is aligned with the 8*8 grid of the map.
+ * @return true if the entity's rectangle is aligned
+ */
+bool MapEntity::is_aligned_to_grid(void) {
+
+  int x = get_top_left_x();
+  int y = get_top_left_y();
+
+  return x % 8 == 0 && y % 8 == 0;
+}
+
+/**
  * Returns the coordinates of the point the entity is looking at.
  * You should redefine this method to define a facing point.
  * @return the coordinates of the point the entity is looking at
@@ -703,35 +715,19 @@ bool MapEntity::is_sword_ignored(void) {
  * @return true if this entity's rectangle overlaps the rectangle specified, false otherwise
  */
 bool MapEntity::overlaps(const SDL_Rect &rectangle) {
-
-  int x1 = position_in_map.x;
-  int x2 = x1 + position_in_map.w;
-  int x3 = rectangle.x;
-  int x4 = x3 + rectangle.w;
-
-  bool overlap_x = (x3 < x2 && x1 < x4);
-
-  int y1 = position_in_map.y;
-  int y2 = y1 + position_in_map.h;
-  int y3 = rectangle.y;
-  int y4 = y3 + rectangle.h;
-
-  bool overlap_y = (y3 < y2 && y1 < y4);
-
-  return overlap_x && overlap_y;
+  return Geometry::overlaps(get_position_in_map(), rectangle);
 }
 
 /**
- * Returns whether the specified point is inside a rectangle.
- * @param rectangle the rectangle
- * @param x x coordinate of the point
- * @param y y coordinate of the point
+ * Returns whether or not a point overlaps this entity's rectangle.
+ * @param x x coordinate of the point to check
+ * @param y y coordinate of the point to check
+ * @return true if the point is in this entity's rectangle
  */
-bool MapEntity::is_point_in(const SDL_Rect &rectangle, int x, int y) {
-
-  return x >= rectangle.x && x < rectangle.x + rectangle.w
-    && y >= rectangle.y && y < rectangle.y + rectangle.h;
+bool MapEntity::overlaps(int x, int y) {
+  return Geometry::is_point_in(get_position_in_map(), x, y);
 }
+
 
 /**
  * Returns whether or not this entity's origin point is in
@@ -740,8 +736,7 @@ bool MapEntity::is_point_in(const SDL_Rect &rectangle, int x, int y) {
  * @return true if this entity's origin point is in the rectangle specified, false otherwise
  */
 bool MapEntity::is_origin_point_in(const SDL_Rect &rectangle) {
-
-  return is_point_in(rectangle, get_x(), get_y());
+  return Geometry::is_point_in(rectangle, get_x(), get_y());
 }
 
 /**
@@ -753,7 +748,7 @@ bool MapEntity::is_origin_point_in(const SDL_Rect &rectangle) {
 bool MapEntity::is_facing_point_in(const SDL_Rect &rectangle) {
 
   SDL_Rect facing_point = get_facing_point();
-  return is_point_in(rectangle, facing_point.x, facing_point.y);
+  return Geometry::is_point_in(rectangle, facing_point.x, facing_point.y);
 }
 
 /**
@@ -765,7 +760,7 @@ bool MapEntity::is_facing_point_in(const SDL_Rect &rectangle) {
 bool MapEntity::is_center_in(const SDL_Rect &rectangle) {
 
   const SDL_Rect &center = get_center_point();
-  return is_point_in(rectangle, center.x, center.y);
+  return Geometry::is_point_in(rectangle, center.x, center.y);
 }
 
 /**
@@ -775,39 +770,17 @@ bool MapEntity::is_center_in(const SDL_Rect &rectangle) {
  * @return the angle of the vector in radians
  */
 double MapEntity::get_vector_angle(MapEntity *other) {
-
-  int dx = other->get_x() - get_x();
-  int dy = other->get_y() - get_y();
-
-  double angle;
-  if (dx != 0) {
-    angle = atan((double) -dy / (double) dx);
-
-    if (dx < 0) {
-      angle += PI;
-    }
-  }
-  else {
-    // special case (cannot divide by zero and compute atan)
-    angle = (dy > 0) ? -PI_OVER_2 : PI_OVER_2;
-  }
-
-  return angle;
+  return Geometry::get_angle(get_x(), get_y(), other->get_x(), other->get_y());
 }
 
 /**
- * Returns the distance between the origin of this entity
- * and a point
+ * Returns the distance between the origin of this entity and a point.
  * @param x x coordinate of the point
  * @param y y coordinate of the point
  * @return the distance between this entity and the point in pixels
  */
 int MapEntity::get_distance(int x, int y) {
-
-  int dx = x - get_x();
-  int dy = y - get_y();
-
-  return (int) sqrt(dx * dx + dy * dy);
+  return Geometry::get_distance(get_x(), get_y(), x, y);
 }
 
 /**
@@ -817,7 +790,7 @@ int MapEntity::get_distance(int x, int y) {
  * @return the distance between the two entities in pixels
  */
 int MapEntity::get_distance(MapEntity *other) {
-  return get_distance(other->get_x(), other->get_y());
+  return Geometry::get_distance(get_x(), get_y(), other->get_x(), other->get_y());
 }
 
 /**

@@ -21,6 +21,7 @@ Feature requests :
 - Mettre des constantes dans les scripts
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
+- Remplacer "clé" par "clef" ?
 
 
 Bugs :
@@ -37,10 +38,11 @@ Bugs :
 - trous et plates-formes dans la grotte de mymy
 - Tom trop vieux ? changer la couleur de ses cheveux
 - Rubis trop haut de 1 pixel par rapport à son ombre ?
-- Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ?
+- Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ? (se superpose avec l'affichage des étages)
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
-- grand-mère : dialogue de la suite du jeu
+- PathFinding : ne rien faire si pas dans le même plan
+- les ennemis peuvent marcher sur les capteurs de changement de plan
 
 
 A venir :

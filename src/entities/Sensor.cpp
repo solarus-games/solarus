@@ -83,9 +83,9 @@ bool Sensor::check_collision_custom(MapEntity *entity) {
 
   const SDL_Rect &entity_position = entity->get_position_in_map();
   int x1 = entity_position.x + 4;
-  int x2 = x1 + entity_position.w - 5;
+  int x2 = x1 + entity_position.w - 9;
   int y1 = entity_position.y + 4;
-  int y2 = y1 + entity_position.h - 5;
+  int y2 = y1 + entity_position.h - 9;
 
   bool collision = overlaps(x1, y1) && overlaps(x2, y1) &&
     overlaps(x1, y2) && overlaps(x2, y2);

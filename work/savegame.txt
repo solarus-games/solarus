@@ -43,3 +43,6 @@ booleans:
 47	lyriann cave: the player talked to Tom
 48-51   outside world: 5 pickable items under the trees near dungeon 1
 52	outside world: ladder of the dungeon entrance
+53	dungeon 1: big chest (iron glove)
+54	dungeon 1: chest with map
+55	dungeon 1: chest with compass

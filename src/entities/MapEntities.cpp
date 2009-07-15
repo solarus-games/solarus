@@ -586,7 +586,7 @@ void MapEntities::display() {
  * than the second one
  */
 bool MapEntities::compare_y(MapEntity *first, MapEntity *second) {
-  return first->get_y() < second->get_y();
+  return first->get_top_left_y() < second->get_top_left_y();
 }
 
 /**

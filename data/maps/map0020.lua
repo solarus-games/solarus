@@ -14,7 +14,7 @@ function event_map_started()
   end
 
   if savegame_get_boolean(38) then
-    set_tile_enabled("barrier", false)
+    tile_set_enabled("barrier", false)
     switch_set_enabled("open_barrier_switch", true)
   end
 end
@@ -35,21 +35,21 @@ end
 
 function camera_1_timer()
   play_sound("secret")
-  set_tile_enabled("barrier", false)
+  tile_set_enabled("barrier", false)
   savegame_set_boolean(38, true)
   start_timer(1000, "restore_camera", false)
 end
 
 function battle_1_camera_timer()
   play_sound("secret")
-  set_tile_enabled("battle_1_barrier", false)
+  tile_set_enabled("battle_1_barrier", false)
   start_timer(1000, "restore_camera", false)
 end
 
 
 function battle_2_camera_timer()
   play_sound("secret")
-  set_tile_enabled("battle_2_barrier", false)
+  tile_set_enabled("battle_2_barrier", false)
   start_timer(1000, "restore_camera", false)
 end
 

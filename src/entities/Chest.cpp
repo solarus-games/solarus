@@ -104,7 +104,13 @@ void Chest::initialize_sprite(void) {
   sprite->set_current_animation(animation);
 
   // set the entity size
-  set_rectangle_from_sprite();
+  if (big_chest) {
+    set_origin(0, -8);
+    set_size(32, 16);
+  }
+  else {
+    set_size(16, 16);
+  }
 }
 
 /**

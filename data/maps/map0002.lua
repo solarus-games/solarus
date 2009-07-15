@@ -181,10 +181,10 @@ function event_message_sequence_finished(first_message_id, answer)
 	-- enough money: reset the game, pay and start the game
 
 	reset_blocks();
-	set_tile_enabled("game_3_barrier_1", false);
-	set_tile_enabled("game_3_barrier_2", false);
-	set_tile_enabled("game_3_barrier_3", false);
-	set_tile_enabled("game_3_middle_barrier", false);
+	tile_set_enabled("game_3_barrier_1", false);
+	tile_set_enabled("game_3_barrier_2", false);
+	tile_set_enabled("game_3_barrier_3", false);
+	tile_set_enabled("game_3_middle_barrier", false);
 	stop_timer("game_3_timer")
 
 	remove_rupees(10)

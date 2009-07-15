@@ -158,7 +158,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
     // load the image of this floor
     std::ostringstream oss;
-    oss << "maps/dungeons/map" << dungeon->get_number() << "_" << selected_floor << ".png";
+    oss << "../maps/dungeons/map" << dungeon->get_number() << "_" << selected_floor << ".png";
     SDL_Surface *floor_map_img = ResourceManager::load_image(oss.str());
     SDL_BlitSurface(floor_map_img, NULL, dungeon_map_img, NULL);
     SDL_FreeSurface(floor_map_img);
@@ -192,8 +192,10 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
       if (!savegame->get_boolean(chests[i].savegame_variable)) {
 
-	dst_position.x = chests[i].x * 123 / floor_size->w - 2;
-	dst_position.y = chests[i].y * 119 / floor_size->h - 2;
+	int dx = chests[i].big ? 16 : 8;  // TODO change chests origin point to avoid this
+	int dy = chests[i].big ? 21 : 13;
+	dst_position.x = (chests[i].x + dx) * 123 / floor_size->w - 2;
+	dst_position.y = (chests[i].y + dy) * 119 / floor_size->h - 2;
 
 	if (!chests[i].big) {
 	  SDL_BlitSurface(dungeon_map_icons, &small_chest_src_position, dungeon_map_img, &dst_position);
@@ -206,6 +208,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
     // boss and minibosses
     SDL_Rect src_position = {78, 0, 8, 8};
+    
     const std::vector<Dungeon::DungeonElement> &bosses = dungeon->get_bosses(selected_floor);
     for (unsigned int i = 0; i < bosses.size(); i++) {
 

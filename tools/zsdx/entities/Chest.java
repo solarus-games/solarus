@@ -60,14 +60,8 @@ public class Chest extends MapEntity {
 
 	boolean bigChest = isBigChest();
 
-	if (bigChest) {
-	    if (!map.isInDungeon()) {
+	if (bigChest && !map.isInDungeon()) {
 		throw new MapException("Cannot have a big chest outside a dungeon");
-	    }
-            setSizeImpl(32, 24);
-	}
-	else {
-            setSizeImpl(16, 16);	    
 	}
 
 	TreasureContent content = TreasureContent.get(getIntegerProperty("content"));
@@ -120,15 +114,34 @@ public class Chest extends MapEntity {
     }
 
     /**
+     * Sets a property specific to this kind of entity.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public void setProperty(String name, String value) throws MapException {
+
+	super.setProperty(name, value);
+
+	if (name.equals("bigChest")) {
+            if (isBigChest()) {
+	        setSizeImpl(32, 24);
+	    }
+	    else {
+	        setSizeImpl(16, 16);
+	    }
+	}
+    }
+
+    /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	if (isBigChest()) {
+	
+        if (isBigChest()) {
 	    currentImageDescription.setRectangle(0, 16, 32, 24);
 	}
 	else {
 	    currentImageDescription.setRectangle(0, 0, 16, 16);
 	}
     }
-
 }

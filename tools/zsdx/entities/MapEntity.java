@@ -1263,8 +1263,11 @@ public abstract class MapEntity extends Observable {
      * Sets all specific properties of the current entity.
      * @param properties the specific properties
      */
-    public final void setProperties(LinkedHashMap<String, String> properties) {
-	this.specificProperties = properties;
+    public final void setProperties(LinkedHashMap<String, String> properties) throws MapException {
+
+        for (java.util.Map.Entry<String, String> entry: properties.entrySet()) {
+	    setProperty(entry.getKey(), entry.getValue());
+	}
     }
 
     /**

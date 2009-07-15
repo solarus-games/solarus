@@ -1,43 +1,33 @@
-# tests:
-#[dungeon_1.floor_-7]
-#[dungeon_1.floor_-6]
-#[dungeon_1.floor_-5]
-#[dungeon_1.floor_-4]
-#[dungeon_1.floor_-3]
-#[dungeon_1.floor_-2]
-
 [dungeon_1.floor_-1]
-width = 960
-height = 640
+width = 1024
+height = 768
 
 [dungeon_1.floor_0]
-width = 960
-height = 640
+width = 1024
+height = 768
 
 [dungeon_1.floor_1]
-width = 960
-height = 640
+width = 1024
+height = 768
 
-[dungeon_1.map_18.chest_0]
-floor = -1
-x = 128
-y = 216
-save = 14
+[dungeon_1.map_23.chest_0]
+floor = 1
+x = 264
+y = 280
+save = 54
+big = 0
 
-[dungeon_1.map_18.boss]
-floor = -1
-x = 200
-y = 200
-savegameIndex = 205
+[dungeon_1.map_23.chest_1]
+floor = 1
+x = 400
+y = 448
+save = 55
+big = 0
 
-[dungeon_1.map_0.chest_0]
-floor = 0
-x = 200
-y = 136
-savegameIndex = 10
+[dungeon_1.map_23.chest_2]
+floor = 1
+x = 144
+y = 480
+save = 5
+big = 1
 
-[dungeon_1.map_0.chest_1]
-floor = 0
-x = 320
-y = 160
-savegameIndex = 11

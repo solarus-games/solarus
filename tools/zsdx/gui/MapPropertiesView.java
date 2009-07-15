@@ -710,22 +710,25 @@ public class MapPropertiesView extends JPanel implements Observer {
 	    final int currentSmallKeyVariable = map.getSmallKeysVariable();
 	    final int selectedSmallKeyVariable = enableSmallKeysField.isSelected() ? numberChooser.getNumber() : -1;
 
-	    try {
+	    if (selectedSmallKeyVariable != currentSmallKeyVariable) {
+
+	      try {
 		map.getHistory().doAction(new MapEditorAction() {
 
-		    private final Map map = MapPropertiesView.this.map;
+		  private final Map map = MapPropertiesView.this.map;
 
-		    public void execute() throws MapException {
-			map.setSmallKeysVariable(selectedSmallKeyVariable);
-		    }
+		  public void execute() throws MapException {
+		    map.setSmallKeysVariable(selectedSmallKeyVariable);
+		  }
 
-		    public void undo() throws MapException {
-			map.setSmallKeysVariable(currentSmallKeyVariable);
-		    }
+		  public void undo() throws MapException {
+		    map.setSmallKeysVariable(currentSmallKeyVariable);
+		  }
 		});
-	    }
-	    catch (ZSDXException ex) {
+	      }
+	      catch (ZSDXException ex) {
 		GuiTools.errorDialog("Cannot change the keys variable: " + ex.getMessage());
+	      }
 	    }
 	    update(map);
 	}

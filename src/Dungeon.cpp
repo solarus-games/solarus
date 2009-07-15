@@ -42,7 +42,7 @@ static const string dungeon_names[] = {
  * @param dungeon_number a dungeon number between 1 and 20
  */
 Dungeon::Dungeon(int dungeon_number):
-  dungeon_number(dungeon_number), chests(NULL), bosses(NULL) {
+  dungeon_number(dungeon_number), chests(NULL), bosses(NULL), boss_floor(-100) {
 
   this->dungeon_number = dungeon_number;
   load();
@@ -142,7 +142,7 @@ void Dungeon::load(void) {
 	chest.x = CFG_ReadInt("x", 0);
 	chest.y = CFG_ReadInt("y", 0);
 	chest.savegame_variable = CFG_ReadInt("save", 0);
-	chest.big = CFG_ReadBool("big", 0);
+	chest.big = CFG_ReadInt("big", 0) != 0;
 
 	chests[chest.floor - lowest_floor].push_back(chest);
       }
@@ -154,7 +154,7 @@ void Dungeon::load(void) {
 	boss.x = CFG_ReadInt("x", 0);
 	boss.y = CFG_ReadInt("y", 0);
 	boss.savegame_variable = CFG_ReadInt("save", 0);
-	boss.big = CFG_ReadBool("big", false);
+	boss.big = CFG_ReadInt("big", 0) != 0;
 
 	if (boss.big) {
 	  boss_floor = boss.floor;

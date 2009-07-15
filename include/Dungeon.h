@@ -49,7 +49,7 @@ class Dungeon {
 
   std::vector<DungeonElement> *chests; /**< properties of each chest for each floor */
   std::vector<DungeonElement> *bosses; /**< properties of each miniboss and boss for each floor */
-  int boss_floor;                      /**< floor of the boss */
+  int boss_floor;                      /**< floor of the boss (-100 if there is no boss) */
 
   void load(void);
 

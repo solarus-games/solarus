@@ -51,7 +51,7 @@ public class Dungeon {
      * @return the ini file name
      */
     private static String getFileName() {
-	return Project.getDataPath() + "/dungeons.zsd";
+	return Project.getDataPath() + "/maps/dungeons/dungeons.zsd";
     }
 
     /**
@@ -95,7 +95,7 @@ public class Dungeon {
     }
 
     /**
-     * Saves the data of a map of this dungeon in file dungeons.zsd.
+     * Saves the data of a map of this dungeon in the file dungeons.zsd.
      * This function is called when a map has just been saved. It updates the dungeons.zsd file
      * with the new information of that map.
      * @param map a map of this dungeon
@@ -120,19 +120,25 @@ public class Dungeon {
     }
 
     /**
-     * Removes from file dungeons.zmc any element (chests, or bosses)
+     * Removes from file dungeons.zsd any element (chests, or bosses)
      * referencing the specified map.
      * @param ini the ini file
      * @param map a map
      */
     private static void removeDungeonElements(Ini ini, Map map) throws IOException {
 
+        Vector<String> sectionsToRemove = new Vector<String>();
+
 	String mapString = "map_" + map.getId();
 	for (Ini.Section section: ini.values()) {
 	    String sectionName = section.getName();
 	    if (sectionName.contains(mapString)) {
-		ini.remove(section);
+	        sectionsToRemove.add(sectionName);
 	    }
+	}
+
+	for (String sectionName: sectionsToRemove) {
+	    ini.remove(sectionName);
 	}
     }
 
@@ -181,9 +187,9 @@ public class Dungeon {
      * @param x x position of the element
      * @param y y position of the element
      * @param big is this a big chest/boss
-     * @param savegameIndex index of the boolean that stores this element's state
+     * @param save index of the boolean that stores this element's state
      */
-    private void saveDungeonElement(Ini ini, Map map, String name, int x, int y, int savegameIndex, boolean big) {
+    private void saveDungeonElement(Ini ini, Map map, String name, int x, int y, int save, boolean big) {
 
 	StringBuffer sectionName = new StringBuffer();
 	sectionName.append("dungeon_");
@@ -198,7 +204,7 @@ public class Dungeon {
 	section.put("floor", Integer.toString(map.getFloor()));
 	section.put("x", Integer.toString(x));
 	section.put("y", Integer.toString(y));
-	section.put("savegameIndex", Integer.toString(savegameIndex));
+	section.put("save", Integer.toString(save));
 	section.put("big", big ? "1" : "0");
 
 	ini.put(sectionName.toString(), section);

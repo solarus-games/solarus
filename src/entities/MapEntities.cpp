@@ -100,8 +100,7 @@ unsigned int MapEntities::get_nb_destination_points(void) {
  */
 Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
-  int width8 = map->get_width8();
-  return obstacle_tiles[layer][(y / 8) * width8 + (x / 8)];
+  return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
 }
 
 /**
@@ -140,10 +139,8 @@ list<CrystalSwitchBlock*> * MapEntities::get_crystal_switch_blocks(Layer layer) 
  */
 void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
 
-  int width8 = map->get_width8();
-  int height8 = map->get_height8();
-  if (x8 >= 0 && x8 < width8 && y8 >= 0 && y8 < height8) {
-    int index = y8 * width8 + x8;
+  if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
+    int index = y8 * map_width8 + x8;
     obstacle_tiles[layer][index] = obstacle;
   }
 }

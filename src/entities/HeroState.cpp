@@ -988,7 +988,7 @@ void Hero::update_jumping(void) {
  * @return true if the hero can be hurt in its current state
  */
 bool Hero::can_be_hurt(void) {
-  return state <= SPIN_ATTACK && !tunic_sprite->is_blinking();
+  return state <= SPIN_ATTACK && !tunic_sprite->is_blinking() && get_movement() == normal_movement;
 }
 
 /**

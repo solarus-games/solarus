@@ -104,6 +104,8 @@ void MapLoader::load_map(Map *map) {
 
   // create the lists of entities and initialize obstacle_tiles
   MapEntities *entities = map->get_entities();
+  entities->map_width8 = map->width8;
+  entities->map_height8 = map->height8;
   entities->obstacle_tiles_size = map->width8 * map->height8;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 

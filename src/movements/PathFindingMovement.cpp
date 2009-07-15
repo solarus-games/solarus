@@ -25,8 +25,8 @@
  * @param speed speed of the movement
  */
 PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
-  PathMovement(get_random_path(), speed, false, true, true),
-  target(target), next_recomputation_date(SDL_GetTicks()) {
+  PathMovement("", speed, false, true, true),
+  target(target), next_recomputation_date(SDL_GetTicks() + 100) {
 
 }
 
@@ -47,7 +47,7 @@ void PathFindingMovement::update(void) {
       // there was a collision
       set_speed(initial_speed);
       remaining_path = get_random_path();
-      // std::cout << "stopped, start_next_move, remaining_path = " << remaining_path << "\n";
+//      std::cout << "stopped, made random path: " << remaining_path << "\n";
       start_next_move();
     }
   } 
@@ -69,18 +69,32 @@ void PathFindingMovement::recompute_movement(void) {
 //  Uint32 end = SDL_GetTicks();
 //  std::cout << "path computed in " << (end - start) << " ms\n";
 
+  Uint32 min_delay;
   if (remaining_path == "") {
     // the target is too far or there is no path
     remaining_path = get_random_path();
+
+    // no path was found: no need to try again very soon
+    // (note that the A* algorithm is very costly when it explores all nodes without finding a solution)
+    min_delay = 3000;
+//    std::cout << "PathFindingMovement::recompute_path(): generated a random path: " << remaining_path << std::endl;
   }
+  else {
+    // a path was found: we need to update it frequently (and the A* algorithm is much faster in general when there is a solution)
+    min_delay = 300;
+    //std::cout << "PathFindingMovement::recompute_path(): calculated a path to the hero: " << remaining_path << std::endl;
+  }
+  // compute a new path every random delay to avoid
+  // making all path-finding entities of the map compute a path at the same time
+  next_recomputation_date += SDL_GetTicks() + min_delay + Random::get_number(200);
 }
 
 /**
  * Starts the next step of the movement.
+ * This is a redefinition of PathMovement::start_next_move() to recalculate the path when it is finished
+ * or when the recomputation delay is over.
  */
 void PathFindingMovement::start_next_move(void) {
-
-  PathMovement::start_next_move();
 
   Uint32 now = SDL_GetTicks();
 
@@ -88,10 +102,9 @@ void PathFindingMovement::start_next_move(void) {
     if (entity->is_aligned_to_grid()) {
       recompute_movement();
     }
-    // compute a new path every 0.5 to 1 second, randomizing in this interval to avoid
-    // making all path-finding entities of the map compute a path at the same time
-    next_recomputation_date += now + 500 + Random::get_number(500);
   }
+
+  PathMovement::start_next_move(); // must be done after the recomputation to update immediately the direction
 }
 
 /**

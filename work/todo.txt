@@ -21,7 +21,6 @@ Feature requests :
 - Mettre des constantes dans les scripts
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
-- PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 
 
 Bugs :
@@ -39,7 +38,8 @@ Bugs :
 - Tom trop vieux ? changer la couleur de ses cheveux
 - Rubis trop haut de 1 pixel par rapport à son ombre ?
 - Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ?
-- path finding : ne pas explorer les noeuds trop loin de l'ennemi
+- path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
+- PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 
 
 A venir :
@@ -137,8 +137,9 @@ Mode release :
 - Ne plus afficher les messages d'erreur
 - Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence
 - Cacher le mode Rêves de Solarus s'il n'est pas encore fait
-- Compiler en mode release (pas -g)
+- Compiler en mode release (pas -g) et optimiser
 - Inclure le fichier de licence GPL
+- Vérifier la présence du message GPL dans les fichiers source
 - Enelever les touches de test (notamment Echap)
 
 ----------------------

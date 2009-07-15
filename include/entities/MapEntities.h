@@ -36,12 +36,14 @@ class MapEntities {
 
   // map
   Map *map;                                               /**< the map */
+  int map_width8;                                         /**< number of 8*8 squares on a row of the map grid */
+  int map_height8;                                        /**< number of 8*8 squares on a column of the map grid */
   Tileset *tileset;                                       /**< the tileset */
 
   // tiles
   std::vector<Tile*> tiles[LAYER_NB];                     /**< all tiles of the map (a vector for each layer) */
   int obstacle_tiles_size;                                /**< number of elements in the array obstacle_tiles
-							   * (obstacle_tiles_size = map->width8 * map->height8) */
+							   * (obstacle_tiles_size = map_width8 * map_height8) */
   Obstacle *obstacle_tiles[LAYER_NB];                     /**< array of Obstacle representing which
 					                   * tiles are obstacles and how */
   // dynamic entities

@@ -24,12 +24,12 @@ function event_switch_enabled(switch_name)
 end
 
 function event_camera_reached_target()
-  if is_tile_enabled("barrier") then
-    start_timer(1000, "camera_1_timer", false)
-  elseif is_tile_enabled("battle_1_barrier") then
+  if are_enemies_dead("battle_1") and is_tile_enabled("battle_1_barrier") then
     start_timer(1000, "battle_1_camera_timer", false)
-  else
+  elseif are_enemies_dead("battle_2") and is_tile_enabled("battle_2_barrier") then
     start_timer(1000, "battle_2_camera_timer", false)
+  elseif is_tile_enabled("barrier") then
+    start_timer(1000, "camera_1_timer", false)
   end
 end
 
@@ -154,7 +154,8 @@ end
 function event_enemy_dead(enemy_name)
   if are_enemies_dead("battle_1") and is_tile_enabled("battle_1_barrier") then
     move_camera(352, 288, 10)
-  elseif are_enemies_dead("battle_2") and is_tile_enabled("battle_2_barrier") then
+  end
+  if are_enemies_dead("battle_2") and is_tile_enabled("battle_2_barrier") then
     move_camera(344, 488, 10)
   end
 end

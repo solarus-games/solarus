@@ -404,8 +404,7 @@ bool Map::is_started(void) {
  */
 bool Map::collision_with_border(int x, int y) {
 
-  return (x < 0 || x >= get_width()
-      || y < 0 || y >= get_height());
+  return (x < 0 || y < 0 || x >= location.w || y >= location.h);
 }
 
 /**

@@ -75,8 +75,8 @@ PathFinding::~PathFinding(void) {
  */
 std::string PathFinding::compute_path(void) {
 
-  // std::cout << "will compute a path from " << source_entity->get_top_left_x() << "," << source_entity->get_top_left_y()
-  //  << " to " << target_entity->get_top_left_x() << "," << target_entity->get_top_left_y() << std::endl;
+//  std::cout << "will compute a path from " << source_entity->get_top_left_x() << "," << source_entity->get_top_left_y()
+//    << " to " << target_entity->get_top_left_x() << "," << target_entity->get_top_left_y() << std::endl;
 
   SDL_Rect source = source_entity->get_position_in_map();
   SDL_Rect target = target_entity->get_position_in_map();
@@ -93,6 +93,7 @@ std::string PathFinding::compute_path(void) {
 
   int total_mdistance = get_manhattan_distance(source, target) * 10;
   if (total_mdistance > 250) {
+//    std::cout << "too far, not computing a path\n";
     return ""; // too far to compute a path
   }
 
@@ -145,7 +146,7 @@ std::string PathFinding::compute_path(void) {
 	// std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 
 	bool in_closed_list = (closed_list.find(new_node.index) != closed_list.end());
-	if (!in_closed_list && is_node_transition_valid(*current_node, i)) {
+	if (!in_closed_list && get_manhattan_distance(new_node.location, target) < 25 && is_node_transition_valid(*current_node, i)) {
 	  // std::cout << "  node in direction " << i << " is not in the closed list\n";
 	  // not in the closed list: look in the open list
 	  
@@ -181,7 +182,7 @@ std::string PathFinding::compute_path(void) {
     }
   }
 
-  // std::cout << "path found: " << path << std::endl;
+//  std::cout << "path found: " << path << ", open nodes: " << open_list.size() << ", closed nodes: " << closed_list.size() << std::endl;
   return path;
 }
 

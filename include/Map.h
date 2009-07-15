@@ -42,7 +42,7 @@ class Map {
   // map properties
 
   MapId id;                     /**< id of the map */
-  
+ 
   int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
   int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
 

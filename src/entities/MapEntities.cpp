@@ -100,7 +100,8 @@ unsigned int MapEntities::get_nb_destination_points(void) {
  */
 Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
-  return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
+  // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
+  return obstacle_tiles[layer][(y >> 3) * map_width8 + (x >> 3)];
 }
 
 /**

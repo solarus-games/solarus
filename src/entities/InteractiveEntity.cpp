@@ -369,11 +369,11 @@ void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
     DIE("This entity is not a non-playing character");
   }
 
+  get_sprite()->set_current_animation("jumping");
   clear_movement();
   JumpMovement *movement = new JumpMovement(direction, length, with_collisions);
   movement->set_delay(20);
   set_movement(movement);
-  get_sprite()->set_current_animation("jumping");
 }
 
 /**

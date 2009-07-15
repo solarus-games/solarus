@@ -95,6 +95,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "npc_walk", l_npc_walk);
   lua_register(context, "npc_random_walk", l_npc_random_walk);
   lua_register(context, "npc_jump", l_npc_jump);
+  lua_register(context, "npc_set_animation", l_npc_set_animation);
   lua_register(context, "npc_set_direction", l_npc_set_direction);
   lua_register(context, "npc_remove", l_npc_remove);
   lua_register(context, "hero_set_direction", l_hero_set_direction);
@@ -106,9 +107,9 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "inventory_item_get_amount", l_inventory_item_get_amount);
   lua_register(context, "inventory_item_remove_amount", l_inventory_item_remove_amount);
   lua_register(context, "inventory_item_is_bottle", l_inventory_item_is_bottle);
-  lua_register(context, "disable_tile", l_disable_tile);
-  lua_register(context, "enable_tile", l_enable_tile);
-  lua_register(context, "is_tile_enabled", l_is_tile_enabled);
+  lua_register(context, "tile_set_enabled", l_tile_set_enabled);
+  lua_register(context, "tiles_set_enabled", l_tiles_set_enabled);
+  lua_register(context, "tile_is_enabled", l_tile_is_enabled);
   lua_register(context, "reset_block", l_reset_block);
   lua_register(context, "reset_blocks", l_reset_blocks);
   lua_register(context, "interactive_entity_get_animation", l_interactive_entity_get_animation);
@@ -829,6 +830,7 @@ int MapScript::l_npc_random_walk(lua_State *l) {
 
 /**
  * Makes an NPC jump into a direction.
+ * The NPC's sprite must have an animation "jumping".
  * Argument 1 (string): name of the NPC to make move
  * Argument 2 (integer): the jump direction, between 0 and 7
  * Argument 3 (integer): the jump length in pixels
@@ -851,6 +853,15 @@ int MapScript::l_npc_jump(lua_State *l) {
 }
 
 /**
+ * Sets the animation of an NPC's sprite.
+ * Argument 1 (string): name of the NPC
+ * Argument 2 (string): name of the animation to set
+ */
+int MapScript::l_npc_set_animation(lua_State *l) {
+  return l_interactive_entity_set_animation(l);
+}
+
+/**
  * Sets the direction of an NPC's sprite.
  * Argument 1 (string): name of the NPC
  * Argument 2 (integer): the sprite's direction between 0 and 3
@@ -861,6 +872,10 @@ int MapScript::l_npc_set_direction(lua_State *l) {
 
   const string &name = lua_tostring(l, 1);
   int direction = lua_tointeger(l, 2);
+
+  if (direction < 0 || direction >= 4) {
+    DIE("Invalid NPC direction: " << direction);
+  }
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
@@ -1023,43 +1038,53 @@ int MapScript::l_inventory_item_is_bottle(lua_State *l) {
 }
 
 /**
- * Disables a dynamic tile.
- * Argument 1 (string): name of the dynamic tile to disable
+ * Enables or disables a dynamic tile.
+ * Argument 1 (string): name of the dynamic tile
+ * Argument 2 (boolean): true to enable it, false to disable it
  */
-int MapScript::l_disable_tile(lua_State *l) {
+int MapScript::l_tile_set_enabled(lua_State *l) {
 
-  check_nb_arguments(l, 1);
+  check_nb_arguments(l, 2);
   const string &dynamic_tile_name = lua_tostring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
   
   Map *map = zsdx->game->get_current_map();
   DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, dynamic_tile_name);
-  dynamic_tile->set_enabled(false);
-
+  dynamic_tile->set_enabled(enable);
   return 0;
 }
 
 /**
- * Enables a dynamic tile.
- * Argument 1 (string): name of the dynamic tile to enable
+ * Enables or disables a set of dynamic tiles.
+ * Argument 1 (string): prefix of the name of the dynamic tiles to disable
+ * Argument 2 (boolean): true to enable them, false to disable them
  */
-int MapScript::l_enable_tile(lua_State *l) {
+int MapScript::l_tiles_set_enabled(lua_State *l) {
 
-  check_nb_arguments(l, 1);
-  const string &dynamic_tile_name = lua_tostring(l, 1);
+  check_nb_arguments(l, 2);
+  const string &prefix = lua_tostring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
   
   Map *map = zsdx->game->get_current_map();
-  DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, dynamic_tile_name);
-  dynamic_tile->set_enabled(true);
+  std::list<MapEntity*> *dynamic_tiles = map->get_entities()->get_entities_with_prefix(DYNAMIC_TILE, prefix);
 
+  std::list<MapEntity*>::iterator it;
+  for (it = dynamic_tiles->begin(); it != dynamic_tiles->end(); it++) {
+    DynamicTile *dynamic_tile = (DynamicTile*) (*it);
+    dynamic_tile->set_enabled(enable);
+  }
+
+  delete dynamic_tiles;
   return 0;
 }
+
 
 /**
  * Enables a dynamic tile.
  * Argument 1 (string): name of the dynamic tile to enable
  * Return value (boolean): true if this tile is enabled
  */
-int MapScript::l_is_tile_enabled(lua_State *l) {
+int MapScript::l_tile_is_enabled(lua_State *l) {
 
   check_nb_arguments(l, 1);
   const string &dynamic_tile_name = lua_tostring(l, 1);
@@ -1419,6 +1444,7 @@ int MapScript::l_are_enemies_dead(lua_State *l) {
 
   lua_pushboolean(l, enemies->empty());
 
+  delete enemies;
   return 1;
 }
 

@@ -33,6 +33,6 @@ end
 
 function remove_village_cave_door()
    interactive_entity_remove("village_cave_door")
-   disable_tile("village_cave_hiding")
-   disable_tile("village_cave_hiding_2")
+   tile_set_enabled("village_cave_hiding", false)
+   tile_set_enabled("village_cave_hiding_2", false)
 end

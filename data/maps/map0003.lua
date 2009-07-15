@@ -1,3 +1,7 @@
+-----------------------------
+-- Outside world C1 script --
+-----------------------------
+
 monkey_jumps = 0
 
 -- Function called when the map starts.

@@ -41,3 +41,5 @@ booleans:
 43-45	smith cave: 3 blue rupees taken
 46	cake shop: the seller asked the player whether he had some apples
 47	lyriann cave: the player talked to Tom
+48-51   outside world: 5 pickable items under the trees near dungeon 1
+52	outside world: ladder of the dungeon entrance

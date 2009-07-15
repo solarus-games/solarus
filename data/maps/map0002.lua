@@ -181,10 +181,10 @@ function event_message_sequence_finished(first_message_id, answer)
 	-- enough money: reset the game, pay and start the game
 
 	reset_blocks();
-	disable_tile("game_3_barrier_1");
-	disable_tile("game_3_barrier_2");
-	disable_tile("game_3_barrier_3");
-	disable_tile("game_3_middle_barrier");
+	set_tile_enabled("game_3_barrier_1", false);
+	set_tile_enabled("game_3_barrier_2", false);
+	set_tile_enabled("game_3_barrier_3", false);
+	set_tile_enabled("game_3_middle_barrier", false);
 	stop_timer("game_3_timer")
 
 	remove_rupees(10)
@@ -234,7 +234,7 @@ end
 -- Function called when the timer of game 3 ends.
 function game_3_timer()
    play_sound("door_closed")
-   enable_tile("game_3_middle_barrier")
+   tile_set_enabled("game_3_middle_barrier", true)
 end
 
 -- Function called when the player is obtaining a treasure
@@ -242,7 +242,7 @@ function event_obtained_treasure(content, savegame_variable)
 
    -- stop game 3 when the player founds the piece of heart
    if savegame_variable == 17 then
-      disable_tile("game_3_final_barrier")
+      tile_set_enabled("game_3_final_barrier", false)
       play_sound("secret")
       playing_game_3 = false
    end

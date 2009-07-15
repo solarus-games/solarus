@@ -82,13 +82,14 @@ void Equipment::update(void) {
 
       if (answer == 0) {
 	// restore the hearts
-	add_hearts(7);
+	add_hearts(7 * 4);
       }
       else {
 	// keep the fairy in a bottle
 	if (!has_empty_bottle()) {
 	  zsdx->game->show_message("_found_fairy.no_empty_bottle");
 	  ResourceManager::get_sound("wrong")->play();
+	  add_hearts(7 * 4);
 	}
 	else {
 	  give_inventory_item(get_first_empty_bottle(), 6);
@@ -428,7 +429,7 @@ void Equipment::found_fairy(void) {
     // the next messages will be handled by the update() function
   }
   else {
-    add_hearts(7);
+    add_hearts(7 * 4);
   }
 }
 

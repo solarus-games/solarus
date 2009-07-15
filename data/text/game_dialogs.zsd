@@ -702,6 +702,26 @@ next = grandma_house.find_sahasrahla.3
 line1 = "sud-ouest, près de la"
 line2 = "pâtisserie."
 
+[grandma_house.go_lyriann_cave]
+#       |-----------------------|
+line1 = "Avec cette clé, tu peux"
+line2 = "entrer dans la grotte"
+line3 = "au nord du village."
+cancel = all
+
+[grandma_house.go_dungeon_1]
+#       |-----------------------|
+line1 = "Il paraît que l'un des"
+line2 = "quatre enfants enlevés"
+line3 = "est retenu dans un"
+cancel = all
+next = grandma_house.go_dungeon_1.2
+
+[grandma_house.go_dungeon_1.2]
+#       |-----------------------|
+line1 = "donjon dans la forêt"
+line2 = "au sud du village..."
+
 [smith_cave.without_sword]
 #       |-----------------------|
 line1 = "J'ai forgé moi-même"
@@ -1247,4 +1267,29 @@ next = lyriann_cave.tom.see_you_later.2
 #       |-----------------------|
 line1 = "un coup de main au"
 line2 = "cours de ton aventure."
+
+[outside_world.tom_dungeon_1_entrance.hey]
+#       |-----------------------|
+line1 = "Hé !"
+
+[outside_world.tom_dungeon_1_entrance.need_help]
+#       |-----------------------|
+line1 = "Tu as besoin d'aide ?"
+
+[outside_world.tom_dungeon_1_entrance.let_me_see]
+#       |-----------------------|
+line1 = "Hmmm, l'échelle semble"
+line2 = "coincée. Voyons cela..."
+
+[outside_world.tom_dungeon_1_entrance.open]
+#       |-----------------------|
+line1 = "Je crois que j'ai"
+line2 = "réussi à la débloquer."
+line3 = "$0Et voilà !"
+
+[outside_world.tom_dungeon_1_entrance.finished]
+#       |-----------------------|
+line1 = "Fais attention, ça a"
+line2 = "l'air sinistre à"
+line3 = "l'intérieur."
 

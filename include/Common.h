@@ -41,6 +41,6 @@
  * This macro should be used to exit the program properly on an error message.
  * The message parameter can contain several elements separated by the '<<' operator.
  */
-#define DIE(message) do { std::ostringstream oss; oss << message; throw oss.str(); } while (0)
+#define DIE(message) do { std::cerr << message << std::endl; std::ostringstream oss; oss << message; throw oss.str(); } while (0)
 
 #endif

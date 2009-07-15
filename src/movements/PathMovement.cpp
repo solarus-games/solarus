@@ -28,12 +28,12 @@
  * @param loop true to make the movement return to the beginning
  * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
- * @param snap_to_grid true to snap the entity to the map grid before moving it
+ * @param must_be_aligned true to snap the entity to the map grid before moving it
  */
 PathMovement::PathMovement(const std::string &path, int speed,
-    bool loop, bool with_collisions, bool snap_to_grid):
+    bool loop, bool with_collisions, bool must_be_aligned):
   initial_path(path), remaining_path(path), initial_speed(speed), current_direction(0), distance_covered(0),
-  loop(loop), with_collisions(with_collisions), finished(false), snap_to_grid(snap_to_grid), snapping(false) {
+  loop(loop), with_collisions(with_collisions), finished(false), must_be_aligned(must_be_aligned), snapping(false) {
 
 }
 
@@ -126,7 +126,7 @@ bool PathMovement::collision_with_map(int dx, int dy) {
  * Starts the next step of the movement.
  * This function is called when a step of the movement is finished,
  * or when the movement is restarted.
- * Before starting the step, if the snap_to_grid property is true,
+ * Before starting the step, if the must_be_aligned property is true,
  * the entity's top-left corner tries to get aligned with the 8*8 squares of the grid.
  */
 void PathMovement::start_next_move(void) {
@@ -140,7 +140,7 @@ void PathMovement::start_next_move(void) {
   }
 
   // before starting the move, check that the entity is aligned with the 8*8 squares grid if necessary
-  if (snap_to_grid && !entity->is_aligned_to_grid()) {
+  if (must_be_aligned && !entity->is_aligned_to_grid()) {
  
     // the entity has to be aligned but is not
 
@@ -197,7 +197,7 @@ void PathMovement::start_next_move(void) {
   }
 
   // start the next step if we are ready
-  if (!snap_to_grid || entity->is_aligned_to_grid()) {
+  if (!must_be_aligned || entity->is_aligned_to_grid()) {
 //    std::cout << "aligned, considering next move (remaining_path = '" << remaining_path << "')\n";
     
     if (remaining_path.size() == 0) {

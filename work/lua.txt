@@ -48,7 +48,8 @@ Appel de fonctions C++ depuis un script LUA :
 - npc_set_position(npc, x, y)                           change la position d'un PNJ
 - npc_walk(npc, path, loop, with_collisions)		fait se déplacer un PNJ selon un chemin spécifié
 - npc_random_walk(npc)					fait se déplacer un PNJ de manière aléatoire
-- npc_jump(npc, direction, length, with_collisions)	fait se déplacer un PNJ selon un chemin spécifié
+- npc_set_animation(npc, animation_name)	        change l'animation d'un PNJ
+- npc_jump(npc, direction, length, with_collisions)	fait sauter un PNJ dans une direction spécifiée
 - npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
 - npc_remove(npc)					supprime un PNJ de la map
 - hero_set_direction(direction)				change la direction du sprite du héros
@@ -60,9 +61,9 @@ Appel de fonctions C++ depuis un script LUA :
 - inventory_item_get_amount(item_id)			retourne la quantité d'un objet de l'inventaire
 - inventory_item_remove_amount(item_id, amount)		enlève une quantité d'un objet de l'inventaire (bombes, croissants, etc.)
 - inventory_item_is_bottle(item_id)			indique si un objet de l'inventaire est un flacon magique
-- disable_tile(tile_name)				désactive un tile dynamique
-- enable_tile(tile_name)				active un tile dynamique qui était désactivé
-- is_tile_enabled(tile_name)				indique si un tile dynamique est activé
+- tile_set_enabled(tile_name, enable)			active ou désactive un tile dynamique
+- tiles_set_enabled(tiles_prefix, enable)		active ou désactive un ensemble de tiles dynamiques
+- tile_is_enabled(tile_name)				indique si un tile dynamique est activé
 - reset_block(block_name)				replace un bloc comme il était au début de la map
 - reset_blocks()					réinitialise tous les blocs de la map
 - interactive_entity_get_animation(entity)			     retourne l'animation d'une entité interactive

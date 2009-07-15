@@ -128,8 +128,9 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "equipment_get_shield", l_equipment_get_shield);
   lua_register(context, "shop_item_remove", l_shop_item_remove);
   lua_register(context, "switch_set_enabled", l_switch_set_enabled);
-  lua_register(context, "is_enemy_dead", l_is_enemy_dead);
-  lua_register(context, "are_enemies_dead", l_are_enemies_dead);
+  lua_register(context, "enemy_is_dead", l_enemy_is_dead);
+  lua_register(context, "enemies_are_dead", l_enemies_are_dead);
+  lua_register(context, "sensor_remove", l_sensor_remove);
 }
 
 /**
@@ -1412,7 +1413,7 @@ int MapScript::l_switch_set_enabled(lua_State *l) {
  * Argument 1 (string): name of the enemy
  * Return value (boolean): true if the enemy is not on the map, false if it is alive
  */
-int MapScript::l_is_enemy_dead(lua_State *l) {
+int MapScript::l_enemy_is_dead(lua_State *l) {
 
   check_nb_arguments(l, 1);
 
@@ -1433,7 +1434,7 @@ int MapScript::l_is_enemy_dead(lua_State *l) {
  * Return value (boolean): true if there is no enemy left with this prefix on the map,
  * false if at least one of them is alive
  */
-int MapScript::l_are_enemies_dead(lua_State *l) {
+int MapScript::l_enemies_are_dead(lua_State *l) {
 
   check_nb_arguments(l, 1);
 
@@ -1446,6 +1447,22 @@ int MapScript::l_are_enemies_dead(lua_State *l) {
 
   delete enemies;
   return 1;
+}
+
+/**
+ * Removes a sensor from the map.
+ * Argument 1 (string): name of the sensor
+ */
+int MapScript::l_sensor_remove(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  map->get_entities()->remove_entity(SENSOR, name);
+
+  return 0;
 }
 
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened

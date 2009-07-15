@@ -7,6 +7,7 @@ function event_map_started()
     tiles_set_enabled("dungeon_1_entrance", true)
     tiles_set_enabled("ladder_obstacle", false)
     npc_remove("tom")
+    sensor_remove("tom_appears_sensor")
   end
 end
 
@@ -91,6 +92,7 @@ end
 
 function ladder_step_4()
   tiles_set_enabled("ladder_obstacle", false)
+  sensor_remove("tom_appears_sensor")
   play_sound("secret")
   savegame_set_boolean(52, true)
   unfreeze()

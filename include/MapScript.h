@@ -105,8 +105,9 @@ class MapScript {
     l_equipment_get_shield,
     l_shop_item_remove,
     l_switch_set_enabled,
-    l_is_enemy_dead,
-    l_are_enemies_dead;
+    l_enemy_is_dead,
+    l_enemies_are_dead,
+    l_sensor_remove;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);

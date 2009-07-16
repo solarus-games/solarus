@@ -1278,7 +1278,7 @@ line1 = "Tu as besoin d'aide ?"
 
 [outside_world.tom_dungeon_1_entrance.let_me_see]
 #       |-----------------------|
-line1 = "Hmmm, on dirait qu'une"
+line1 = "Hmmm, je parie qu'une"
 line2 = "échelle est cachée là."
 line3 = "Voyons cela..."
 

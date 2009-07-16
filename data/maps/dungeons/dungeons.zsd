@@ -1,14 +1,35 @@
 [dungeon_1.floor_-1]
-width = 1024
-height = 768
+width = 1040
+height = 696
 
 [dungeon_1.floor_0]
-width = 1024
-height = 768
+width = 1040
+height = 696
 
 [dungeon_1.floor_1]
-width = 1024
-height = 768
+width = 1040
+height = 696
+
+[dungeon_1.map_23.chest_0]
+floor = 0
+x = 392
+y = 280
+save = 54
+big = 0
+
+[dungeon_1.map_23.chest_1]
+floor = 0
+x = 528
+y = 448
+save = 55
+big = 0
+
+[dungeon_1.map_23.chest_2]
+floor = 0
+x = 272
+y = 480
+save = 5
+big = 1
 
 [dungeon_1.map_24.chest_0]
 floor = -1
@@ -17,30 +38,9 @@ y = 440
 save = 56
 big = 0
 
-[dungeon_1.map_23.chest_0]
-floor = 1
-x = 264
-y = 280
-save = 54
-big = 0
-
-[dungeon_1.map_23.chest_1]
-floor = 1
-x = 400
-y = 448
-save = 55
-big = 0
-
-[dungeon_1.map_23.chest_2]
-floor = 1
-x = 144
-y = 480
-save = 5
-big = 1
-
 [dungeon_1.map_25.chest_0]
 floor = 1
-x = 88
+x = 224
 y = 64
 save = 57
 big = 0

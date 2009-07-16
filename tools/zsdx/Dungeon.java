@@ -184,12 +184,16 @@ public class Dungeon {
      * @param ini the ini file
      * @param map the map
      * @param name name of this element (ex: "chest_4", "miniboss_1" or "boss")
-     * @param x x position of the element
-     * @param y y position of the element
+     * @param x x position of the element, relative to the map
+     * @param y y position of the element, relative to the map
      * @param big is this a big chest/boss
      * @param save index of the boolean that stores this element's state
      */
     private void saveDungeonElement(Ini ini, Map map, String name, int x, int y, int save, boolean big) {
+
+        Point mapLocation = map.getLocation();
+	x += mapLocation.x;
+	y += mapLocation.y;
 
 	StringBuffer sectionName = new StringBuffer();
 	sectionName.append("dungeon_");

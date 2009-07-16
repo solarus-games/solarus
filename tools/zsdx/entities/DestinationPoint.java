@@ -48,8 +48,8 @@ public class DestinationPoint extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("destination_point.png", 32, 0, 32, 32),    // invisible (up)
-	new EntityImageDescription("destination_point.png", 128, 0, 16, 16)    // gray
+	new EntityImageDescription("destination_point.png", 64, 0, 32, 32),    // invisible (up)
+	new EntityImageDescription("destination_point.png", 160, 0, 16, 16)    // gray
     };
 
     /**
@@ -133,10 +133,10 @@ public class DestinationPoint extends MapEntity {
      */
     public void updateImageDescription() {
 	if (subtype == Subtype.INVISIBLE) {
-	    currentImageDescription.setRectangle(getDirection() * 32, 0, 32, 32);
+	    currentImageDescription.setRectangle((getDirection() + 1) * 32, 0, 32, 32);
 	}
 	else {
-	    currentImageDescription.setRectangle(128, 0, 16, 16);	    
+	    currentImageDescription.setRectangle(160, 0, 16, 16);	    
 	}
     }
 }

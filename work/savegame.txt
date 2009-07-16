@@ -46,3 +46,5 @@ booleans:
 53	dungeon 1: big chest (iron glove)
 54	dungeon 1: chest with map
 55	dungeon 1: chest with compass
+56	dungeon 1: chest with big key
+57	dungeon 1: chest with boss key

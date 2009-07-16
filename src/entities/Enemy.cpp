@@ -173,11 +173,20 @@ bool Enemy::is_hole_obstacle(void) {
 }
 
 /**
- * Returns whether a teletransporter is currently considered as an obstacle.
+ * Returns whether a teletransporter is currently considered as an obstacle for this entity.
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
 bool Enemy::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return true;
+}
+
+/**
+ * Returns whether a sensor is currently considered as an obstacle for this entity.
+ * @param sensor a sensor
+ * @return true if the sensor is currently an obstacle this entity
+ */
+bool Enemy::is_sensor_obstacle(Sensor *sensor) {
   return true;
 }
 

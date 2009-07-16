@@ -160,6 +160,7 @@ class Enemy: public Detector {
   bool is_water_obstacle(void);
   bool is_hole_obstacle(void);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  bool is_sensor_obstacle(Sensor *sensor);
 
   // enemy state
   virtual void update(void);

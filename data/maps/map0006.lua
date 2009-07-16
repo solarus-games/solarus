@@ -4,10 +4,13 @@
 
 function event_map_started()
   if is_ladder_activated() then
-    tiles_set_enabled("dungeon_1_entrance", true)
-    tiles_set_enabled("ladder_obstacle", false)
+    tiles_set_enabled("ladder_step", true)
+    tiles_set_enabled("no_ladder", false)
     npc_remove("tom")
     sensor_remove("tom_appears_sensor")
+  else
+    tiles_set_enabled("ladder_step", false)
+    tiles_set_enabled("no_ladder", true)
   end
 end
 
@@ -69,29 +72,30 @@ end
 
 function tom_timer_3()
   npc_set_animation("tom", "stopped")
-  ladder_step_1()
+  ladder_step1()
 end
 
-function ladder_step_1()
+function ladder_step1()
   play_sound("door_open")
-  tiles_set_enabled("dungeon_1_entrance_step_1", true)
-  start_timer(1000, "ladder_step_2", false)
+  tiles_set_enabled("ladder_step1", true)
+  tiles_set_enabled("no_ladder_step1", false)
+  start_timer(1000, "ladder_step2", false)
 end
 
-function ladder_step_2()
+function ladder_step2()
   play_sound("door_open")
-  tiles_set_enabled("dungeon_1_entrance_step_2", true)
-  start_timer(1000, "ladder_step_3", false)
+  tiles_set_enabled("ladder_step2", true)
+  start_timer(1000, "ladder_step3", false)
 end
 
-function ladder_step_3()
+function ladder_step3()
   play_sound("door_open")
-  tiles_set_enabled("dungeon_1_entrance_step_3", true)
-  start_timer(1000, "ladder_step_4", false)
+  tiles_set_enabled("ladder_step3", true)
+  start_timer(1000, "ladder_step4", false)
 end
 
-function ladder_step_4()
-  tiles_set_enabled("ladder_obstacle", false)
+function ladder_step4()
+  tiles_set_enabled("no_ladder", false)
   sensor_remove("tom_appears_sensor")
   play_sound("secret")
   savegame_set_boolean(52, true)

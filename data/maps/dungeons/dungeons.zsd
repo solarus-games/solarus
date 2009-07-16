@@ -10,6 +10,13 @@ height = 768
 width = 1024
 height = 768
 
+[dungeon_1.map_24.chest_0]
+floor = -1
+x = 808
+y = 440
+save = 56
+big = 0
+
 [dungeon_1.map_23.chest_0]
 floor = 1
 x = 264
@@ -30,4 +37,11 @@ x = 144
 y = 480
 save = 5
 big = 1
+
+[dungeon_1.map_25.chest_0]
+floor = 1
+x = 88
+y = 64
+save = 57
+big = 0
 

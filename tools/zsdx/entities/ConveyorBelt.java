@@ -88,4 +88,26 @@ public class ConveyorBelt extends MapEntity {
     public void updateImageDescription() {
 	currentImageDescription.setRectangle(getDirection() * 16, 0, 16, 16);
     }
+
+    /**
+     * Draws the entity on the map editor.
+     * @param g graphic context
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
+     */
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+
+	Rectangle rectangle = new Rectangle(positionInMap.x, positionInMap.y,
+		unitarySize.width, unitarySize.height);
+
+	for (int i = 0; i < getHeight(); i += unitarySize.height) {
+	    rectangle.x = positionInMap.x;
+	    for (int j = 0; j < getWidth(); j += unitarySize.width) {
+		currentImageDescription.paint(g, zoom, showTransparency, rectangle);
+		rectangle.x += unitarySize.width;
+	    }
+	    rectangle.y += unitarySize.height;
+	}
+    }
 }

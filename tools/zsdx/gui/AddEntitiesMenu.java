@@ -84,6 +84,7 @@ public class AddEntitiesMenu extends JMenu {
 		CrystalSwitchBlock.Subtype.BLUE
 	),
 	new ItemDefinition(EntityType.SHOP_ITEM, KeyEvent.VK_M),
+	new ItemDefinition(EntityType.CONVEYOR_BELT, KeyEvent.VK_V),
     };
 
     /**

@@ -41,6 +41,7 @@ public enum EntityType {
     CRYSTAL_SWITCH       (14, "Crystal switch", CrystalSwitch.class, null),
     CRYSTAL_SWITCH_BLOCK (15, "Crystal switch block", CrystalSwitchBlock.class, CrystalSwitchBlock.Subtype.class),
     SHOP_ITEM            (16, "Shop item", ShopItem.class, null),
+    CONVEYOR_BELT        (17, "Conveyor belt", ConveyorBelt.class, null)
     ;
 
     private final int index;

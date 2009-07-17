@@ -136,16 +136,4 @@ public class EditEnemyComponent extends EditEntityComponent {
 		pickableItemSubtypeField.getValue().getId(),
 		pickableItemSavegameVariable);
     }
-
-    /**
-     * A listener associated to the 'pickable item type' field,
-     * to enable or disable the 'savegame variable' field depending on the type.
-     */
-    private class ActionListenerEnableSavegameVariable implements ActionListener {
-
-	public void actionPerformed(ActionEvent ev) {
-	    PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
-	    pickableItemSavegameVariableField.setEnabled(pickableItemSubtype.mustBeSaved());
-	}
-    }
 }

@@ -333,12 +333,15 @@ savegame_variable est le numéro du booléen qui sauvegarde le fait que cet arti
 Une valeur de -1 indique que l'achat de l'article n'est pas sauvegardé et que cet article peut être acheté plusieurs fois de suite (sans être supprimé de la map lorsqu'on l'achète).
 
 
+Tapis roulants (17)
+
+Lorsque le héros est sur un tapis roulant, il est déplacé automatiquement dans la direction de ce tapis. Tant que le déplacement n'est pas fini, il ne peut plus bouger de lui-même (mais il peut regarder dans la direction de son choix). Les tapis roulants sont donc toujours bloquants pour l'instant.
+Un tapis roulant a une direction, est redimensionnable et n'est pas identifiable.
+Pas de partie spécifique.
+
+
 Portes
 
 Utiliser une propriété skin comme pour les blocs.
 
-
-Tapis roulants
-
-Peuvent être bloquants ou non bloquants.
 

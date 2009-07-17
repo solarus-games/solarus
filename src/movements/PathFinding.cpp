@@ -92,7 +92,7 @@ std::string PathFinding::compute_path(void) {
   }
 
   int total_mdistance = get_manhattan_distance(source, target) * 10;
-  if (total_mdistance > 250) {
+  if (total_mdistance > 250 || target_entity->get_layer() != source_entity->get_layer()) {
 //    std::cout << "too far, not computing a path\n";
     return ""; // too far to compute a path
   }

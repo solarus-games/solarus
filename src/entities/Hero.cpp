@@ -19,6 +19,7 @@
 #include "entities/DestinationPoint.h"
 #include "entities/CarriedItem.h"
 #include "entities/Detector.h"
+#include "entities/ConveyorBelt.h"
 #include "movements/PlayerMovement.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
@@ -64,7 +65,8 @@ Hero::Hero(Equipment *equipment):
   normal_movement(new PlayerMovement(walking_speed)),
   state(FREE), facing_entity(NULL),
   end_blink_date(0), counter(0), next_counter_date(0),
-  pushing_direction_mask(0xFFFF), grabbed_entity(NULL), walking(false), 
+  pushing_direction_mask(0xFFFF), grabbed_entity(NULL), 
+  is_conveyor_belt_disabled(false), current_conveyor_belt(NULL), walking(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
   ground(GROUND_NORMAL), next_ground_date(0),
   current_inventory_item(NULL), when_can_use_inventory_item(0) {
@@ -188,7 +190,17 @@ bool Hero::is_hole_obstacle(void) {
  * @return true if the teletransporter is currently an obstacle for the hero
  */
 bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return state > SWIMMING;
+  return state > SWIMMING && state != JUMPING;
+}
+
+/**
+ * Returns whether a conveyor belt is currently considered as an obstacle for the hero.
+ * This depends on the hero's state.
+ * @param conveyor_belt a conveyor belt
+ * @return true if the conveyor belt is currently an obstacle for this entity
+ */
+bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+  return state >= SWIMMING && state != JUMPING && state != CONVEYOR_BELT;
 }
 
 /**
@@ -414,7 +426,7 @@ void Hero::update(void) {
   if (!suspended) {
 
     // update the movement
-    get_normal_movement()->set_moving_enabled(state < PUSHING, state <= GRABBING);
+    get_normal_movement()->set_moving_enabled(state < PUSHING, state <= CONVEYOR_BELT);
 
     // specific updates in some states
     switch (state) {
@@ -438,6 +450,10 @@ void Hero::update(void) {
     case GRABBING:
     case PULLING:
       update_grabbing_pulling();
+      break;
+
+    case CONVEYOR_BELT:
+      update_conveyor_belt();
       break;
 
     case JUMPING:
@@ -696,9 +712,19 @@ void Hero::just_moved(void) {
     start_ground();
   }
 
-  if (ground < GROUND_DEEP_WATER && state != JUMPING && state != RETURNING_TO_SOLID_GROUND) {
+  if (ground < GROUND_DEEP_WATER
+      && state != JUMPING
+      && state != RETURNING_TO_SOLID_GROUND) {
     // save the hero's last valid position
-    last_solid_ground_coords = get_coordinates();
+    
+    if (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y) {
+      last_solid_ground_coords = get_coordinates();
+      is_conveyor_belt_disabled = false;
+
+      if (current_conveyor_belt != NULL) {
+	current_conveyor_belt->set_enabled(true);
+      }
+    }
   }
 }
 

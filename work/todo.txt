@@ -41,7 +41,7 @@ Bugs :
 - Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ? (se superpose avec l'affichage des étages)
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
-
+- petite clé du hud : reprendre la même que dans le hud de alttp
 
 A venir :
 

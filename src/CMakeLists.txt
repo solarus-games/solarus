@@ -110,6 +110,7 @@ add_executable (zsdx
   entities/CrystalSwitchBlock.cpp
   entities/ShopItem.cpp
   entities/Boomerang.cpp
+  entities/ConveyorBelt.cpp
 
   # tile patterns
   entities/Tileset.cpp

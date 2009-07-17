@@ -53,6 +53,7 @@ class Hero: public MapEntity {
     SWORD_TAPPING,               /**< the hero is tapping his sword on a wall */
     PULLING,                     /**< the hero is pulling an object */
     GRABBING,                    /**< the hero is grabbing an object and can pull it */
+    CONVEYOR_BELT,               /**< the hero is being moved by a conveyor belt */
 
     // the hero cannot move in these states
     SWORD_SWINGING,              /**< the hero is swinging his sword */
@@ -121,6 +122,11 @@ class Hero: public MapEntity {
   Uint16 pushing_direction_mask; /**< direction of the hero's movement when pushing
 				  * (0xFFFF indicates that he is currently not trying to push) */
   Detector *grabbed_entity;      /**< the entity the hero is pushing or pulling */
+
+  // conveyor belt
+  SDL_Rect position_before_conveyor_belt;
+  bool is_conveyor_belt_disabled; /**< TODO remove? */
+  ConveyorBelt *current_conveyor_belt;
 
   // walking
   bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
@@ -205,6 +211,8 @@ class Hero: public MapEntity {
   void start_pulling(void);
   void update_grabbing_pulling(void);
   void update_moving_grabbed_entity(void);
+
+  void update_conveyor_belt(void);
 
   void update_treasure(void);
   void display_treasure(void);
@@ -329,10 +337,13 @@ class Hero: public MapEntity {
   bool is_stroke_by_sword(Detector *detector);
 
   void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
+  void collision_with_conveyor_belt(ConveyorBelt *conveyor_belt);
+
   bool is_on_hole(void);
   bool is_water_obstacle(void);
   bool is_hole_obstacle(void);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
   bool is_sensor_obstacle(Sensor *sensor);
   bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
 };

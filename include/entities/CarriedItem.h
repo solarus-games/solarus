@@ -66,6 +66,7 @@ class CarriedItem: public MapEntity {
   void display_on_map(void);
 
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
   bool is_water_obstacle(void);
   bool is_hole_obstacle(void);
   bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);

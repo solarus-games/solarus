@@ -163,7 +163,7 @@ class MapEntity {
   int get_height(void);
   const SDL_Rect & get_position_in_map(void);
   void set_position_in_map(const SDL_Rect &position_in_map);
-  void set_position_in_map(int x, int y);
+  void set_position_top_left(int x, int y);
   const SDL_Rect & get_origin(void);
   int get_top_left_x(void);
   int get_top_left_y(void);
@@ -211,9 +211,11 @@ class MapEntity {
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   virtual void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
+  virtual void collision_with_conveyor_belt(ConveyorBelt *conveyor_belt);
   virtual bool is_water_obstacle(void);
   virtual bool is_hole_obstacle(void);
   virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+  virtual bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
   virtual bool is_sensor_obstacle(Sensor *sensor);
   virtual bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
   virtual bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);

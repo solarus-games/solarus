@@ -67,9 +67,6 @@ class InteractiveEntity: public Detector {
   bool is_displayed_in_y_order(void);
 
   bool is_obstacle_for(MapEntity *other);
-  bool is_water_obstacle(void);
-  bool is_hole_obstacle(void);
-  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   bool is_npc_obstacle(InteractiveEntity *npc);
   bool is_sword_ignored(void);
 

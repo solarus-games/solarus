@@ -315,6 +315,15 @@ bool CarriedItem::is_teletransporter_obstacle(Teletransporter *teletransporter) 
 }
 
 /**
+ * Returns whether a conveyor belt is currently considered as an obstacle for this entity.
+ * @param conveyor_belt a conveyor belt
+ * @return true if the conveyor belt is currently an obstacle for this entity
+ */
+bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+  return false;
+}
+
+/**
  * Returns whether a water tile is currently considered as an obstacle for this entity.
  * @return true if the water tiles are currently an obstacle for this entity
  */

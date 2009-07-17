@@ -233,6 +233,6 @@ void Block::just_moved(void) {
  * Resets the block at its initial position.
  */
 void Block::reset(void) {
-  set_position_in_map(initial_position.x, initial_position.y);
+  set_coordinates(initial_position.x, initial_position.y);
   this->maximum_moves = initial_maximum_moves;
 }

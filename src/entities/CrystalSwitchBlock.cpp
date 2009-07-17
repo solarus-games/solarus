@@ -63,7 +63,7 @@ EntityType CrystalSwitchBlock::get_type() {
 
 /**
  * Returns whether this block is raised.
- * @return true ifthis block is raised
+ * @return true if this block is raised
  */
 bool CrystalSwitchBlock::is_raised(void) {
 
@@ -74,7 +74,7 @@ bool CrystalSwitchBlock::is_raised(void) {
 /**
  * Returns whether this entity is an obstacle for another one.
  * @param other another entity
- * @return true if this block is raised
+ * @return true if this entity is an obstacle for the other one
  */
 bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
 

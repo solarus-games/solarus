@@ -43,6 +43,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true, false}, // crystal switch
   { true,  true,  true, false}, // raised block
   { true,  true,  true, false}, // shop item
+  { true,  true,  true, false}, // conveyor belt
 };
 
 /**
@@ -390,9 +391,9 @@ void MapEntity::set_position_in_map(const SDL_Rect &position_in_map) {
  * @param x x position of the entity
  * @param y y position of the entity
  */
-void MapEntity::set_position_in_map(int x, int y) {
-  set_x(x);
-  set_y(y);
+void MapEntity::set_position_top_left(int x, int y) {
+  set_top_left_x(x);
+  set_top_left_y(y);
 }
 
 /**
@@ -668,6 +669,16 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
 }
 
 /**
+ * Returns whether a conveyor belt is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param conveyor_belt a conveyor belt
+ * @return true if the conveyor belt is currently an obstacle for this entity
+ */
+bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+  return true;
+}
+
+/**
  * Returns whether a sensor is currently considered as an obstacle for this entity.
  * This function returns false by default.
  * @param sensor a sensor
@@ -881,6 +892,14 @@ void MapEntity::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int resul
  * @param collision_mode the collision mode that detected the event
  */
 void MapEntity::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
+  // nothing done by default
+}
+
+/**
+ * This function is called when a conveyor belt detects a collision with this entity.
+ * @param conveyor belt a conveyor belt
+ */
+void MapEntity::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt) {
   // nothing done by default
 }
 

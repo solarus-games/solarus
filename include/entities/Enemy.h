@@ -157,9 +157,6 @@ class Enemy: public Detector {
 
   // obstacles
   bool is_obstacle_for(MapEntity *other);
-  bool is_water_obstacle(void);
-  bool is_hole_obstacle(void);
-  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   bool is_sensor_obstacle(Sensor *sensor);
 
   // enemy state

@@ -19,6 +19,7 @@
 #include "entities/Teletransporter.h"
 #include "entities/MapEntities.h"
 #include "entities/Enemy.h"
+#include "entities/ConveyorBelt.h"
 #include "movements/PlayerMovement.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
@@ -54,7 +55,7 @@ void Hero::set_state(State state) {
   this->state = state;
 
   if (!zsdx->game->is_suspended()) {
-    get_normal_movement()->set_moving_enabled(state < PUSHING, state <= GRABBING);
+    get_normal_movement()->set_moving_enabled(state < PUSHING, state <= CONVEYOR_BELT);
   }
 }
 
@@ -195,6 +196,56 @@ void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int 
     else {
       teletransporter->transport_hero(this);
     }
+  }
+}
+
+/**
+ * This function is called when a conveyor belt detects a collision with this entity.
+ * @param conveyor belt a conveyor belt
+ */
+void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt) {
+
+  if (state != JUMPING && state != CONVEYOR_BELT) {
+
+    // remove the carried item
+    if (state == CARRYING) {
+      start_throwing();
+    }
+
+    set_state(CONVEYOR_BELT);
+    set_animation_stopped();
+    zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+
+    position_before_conveyor_belt.x = get_x();
+    position_before_conveyor_belt.y = get_y();
+/*
+    int x = get_top_left_x() + 4;
+    int y = get_top_left_y() + 4;
+    x = x - x % 8;
+    y = y - y % 8;
+    set_position_top_left(x, y);
+*/
+    std::string path = "  ";
+    path[0] = path[1] = '0' + conveyor_belt->get_sprite()->get_current_direction();
+    set_movement(new PathMovement(path, walking_speed, false, true, false));
+
+    this->current_conveyor_belt = conveyor_belt;
+  }
+}
+
+/**
+ * Updates the CONVEYOR_BELT state.
+ */
+void Hero::update_conveyor_belt(void) {
+
+  PathMovement *movement = (PathMovement*) get_movement();
+  movement->update();
+
+  if (movement->is_finished()) {
+    clear_movement();
+    set_movement(normal_movement);
+    start_free();
+    current_conveyor_belt->set_enabled(false);
   }
 }
 

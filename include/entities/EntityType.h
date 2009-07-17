@@ -43,6 +43,7 @@ enum EntityType {
   CRYSTAL_SWITCH            = 14,   /**< a switch that lower or raises the blue and orange blocks */
   CRYSTAL_SWITCH_BLOCK      = 15,   /**< the blue or orange blocks that are changed by the crystal switches */
   SHOP_ITEM                 = 16,   /**< an item the hero can buy in a shop */
+  CONVEYOR_BELT             = 17,   /**< a special terrain that moves the hero */
 
   // entities created during the game (not stored in the map file)
 

@@ -43,6 +43,7 @@
 #include "entities/CrystalSwitch.h"
 #include "entities/CrystalSwitchBlock.h"
 #include "entities/ShopItem.h"
+#include "entities/ConveyorBelt.h"
 #include <iomanip>
 using namespace std;
 
@@ -292,6 +293,14 @@ void MapLoader::load_map(Map *map) {
 					       new Treasure(Treasure::Content(treasure), amount, savegame_variable),
 					       price, message_id);
 	entities->add_entity(shop_item);
+	break;
+      }
+
+    case CONVEYOR_BELT:
+      {
+        iss >> width >> height >> direction;
+	ConveyorBelt *conveyor_belt = new ConveyorBelt(Layer(layer), x, y, width, height, direction);
+	entities->add_entity(conveyor_belt);
 	break;
       }
 

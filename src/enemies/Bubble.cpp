@@ -121,14 +121,19 @@ void Bubble::bounce(void) {
 
   int try1 = (movement_direction8 + 2) % 8;
   int try2 = (movement_direction8 + 6) % 8;
+  int try3 = (movement_direction8 + 4) % 8;
 
   CollisionMovement *movement = (CollisionMovement*) get_movement();
+
 
   if (!movement->collision_with_map(dxy[try1][0], dxy[try1][1])) {
     go(try1);
   }
-  else {
+  else if (!movement->collision_with_map(dxy[try2][0], dxy[try2][1])) {
     go(try2);
+  }
+  else {
+    go(try3);
   }
 }
 

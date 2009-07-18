@@ -26,9 +26,10 @@
  * @param width width of the conveyor belt (the pattern can be repeated)
  * @param height height of the conveyor (the pattern can be repeated)
  */
-ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int width, int height, int direction):
-  Detector(COLLISION_CUSTOM, "", layer, x, y, width, height), enabled(true) {
+ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int direction):
+  Detector(COLLISION_RECTANGLE, "", layer, x, y, 16, 16) {
 
+  set_origin(8, 13);
   create_sprite("entities/conveyor_belt");
   get_sprite()->set_current_direction(direction);
 }
@@ -58,73 +59,24 @@ bool ConveyorBelt::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Returns whether this conveyor belt is enabled.
- * @return true if it is enabled
- */
-bool ConveyorBelt::is_enabled(void) {
-  return enabled;
-}
-
-/**
- * Sets whether this conveyor belt is enabled.
- * @param enable true to enable it, false to disable it
- */
-void ConveyorBelt::set_enabled(bool enabled) {
-  this->enabled = enabled;
-}
-
-/**
- * Checks whether an entity's collides with this entity.
- * @param entity an entity
- * @return true if the entity's collides with this entity
- */
-bool ConveyorBelt::check_collision_custom(MapEntity *entity) {
-
-  const SDL_Rect &entity_position = entity->get_position_in_map();
-  int x1 = entity_position.x + 4;
-  int x2 = x1 + entity_position.w - 8;
-  int y1 = entity_position.y + 4;
-  int y2 = y1 + entity_position.h - 8;
-
-  return overlaps(x1, y1) && overlaps(x2, y1) &&
-    overlaps(x1, y2) && overlaps(x2, y2);
-}
-
-/**
  * This function is called when another entity overlaps this entity.
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
 void ConveyorBelt::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (is_enabled()) {
-    entity_overlapping->collision_with_conveyor_belt(this);
-  }
+  static const SDL_Rect moves[] = {
+    { 1, 0},
+    { 1,-1},
+    { 0,-1},
+    {-1,-1},
+    {-1, 0},
+    {-1, 1},
+    { 0, 1},
+    { 1, 1}
+  };
+
+  int direction = get_sprite()->get_current_direction();
+  entity_overlapping->collision_with_conveyor_belt(this, moves[direction].x, moves[direction].y);
 }
 
-/**
- * Updates this entity.
- */
-void ConveyorBelt::update(void) {
-  
-}
-
-/**
- * Displays the entity on the map.
- * This is a redefinition of MapEntity::display_on_map to repeat the pattern.
- */
-void ConveyorBelt::display_on_map(void) {
-
-  Sprite *sprite = get_sprite();
-
-  int x1 = get_top_left_x();
-  int y1 = get_top_left_y();
-  int x2 = x1 + get_width();
-  int y2 = y1 + get_height();
-
-  for (int y = y1; y < y2; y += 16) {
-    for (int x = x1; x < x2; x += 16) {
-      map->display_sprite(sprite, x, y);
-    }
-  }
-}

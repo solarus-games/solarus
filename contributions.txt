@@ -20,7 +20,7 @@ Newlink + Yoshi04 (boss brute initialement prévu pour Spherdon's Crystals)
 SaniOkh (testera et donnerait des idées, cf MP)
 Mooglwy (version Mac)
 Mymy (edelweiss, maps)
-Neovyze (artworks : Link, amulette ; fonds d'écran, notice)
+Neovyze (artworks : Link, amulette ; fonds d'écran, notice, fresques de l'intro)
 Newlink (plein de graphismes faits pour ZMC)
 
 Traduction :

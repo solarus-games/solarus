@@ -124,9 +124,11 @@ class Hero: public MapEntity {
   Detector *grabbed_entity;      /**< the entity the hero is pushing or pulling */
 
   // conveyor belt
-  SDL_Rect position_before_conveyor_belt;
-  bool is_conveyor_belt_disabled; /**< TODO remove? */
-  ConveyorBelt *current_conveyor_belt;
+  bool on_conveyor_belt;         /**< indicates that the hero's rectangle is currently overlapping a conveyor belt,
+				  * (even if the collision is not enough to go to state CONVEYOR_BELT and move the hero) */
+  bool conveyor_belt_snapping;   /**< in state CONVEYOR_BELT, indicates that the hero is currently moving towards the
+				  * center of a conveyor belt, before following the conveyor belt's direction */
+  ConveyorBelt *current_conveyor_belt; /**< the current conveyor belt in state CONVEYOR_BELT */
 
   // walking
   bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
@@ -230,6 +232,8 @@ class Hero: public MapEntity {
   void start_hole(void);
   void start_falling(void);
   void update_falling(void);
+
+  void update_freezed(void);
 
   void start_returning_to_solid_ground(const SDL_Rect &target);
   void update_returning_to_solid_ground(void);
@@ -337,7 +341,7 @@ class Hero: public MapEntity {
   bool is_stroke_by_sword(Detector *detector);
 
   void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
-  void collision_with_conveyor_belt(ConveyorBelt *conveyor_belt);
+  void collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
 
   bool is_on_hole(void);
   bool is_water_obstacle(void);

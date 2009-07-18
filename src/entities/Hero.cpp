@@ -66,7 +66,7 @@ Hero::Hero(Equipment *equipment):
   state(FREE), facing_entity(NULL),
   end_blink_date(0), counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF), grabbed_entity(NULL), 
-  is_conveyor_belt_disabled(false), current_conveyor_belt(NULL), walking(false), 
+  on_conveyor_belt(false), walking(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
   ground(GROUND_NORMAL), next_ground_date(0),
   current_inventory_item(NULL), when_can_use_inventory_item(0) {
@@ -200,7 +200,7 @@ bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
 bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
-  return state >= SWIMMING && state != JUMPING && state != CONVEYOR_BELT;
+  return state >= SWIMMING && state != JUMPING && state != CONVEYOR_BELT && state != PUSHING;
 }
 
 /**
@@ -480,6 +480,10 @@ void Hero::update(void) {
       update_inventory_item();
       break;
 
+    case FREEZED:
+      update_freezed();
+      break;
+
     default:
       break;
     }
@@ -719,11 +723,11 @@ void Hero::just_moved(void) {
     
     if (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y) {
       last_solid_ground_coords = get_coordinates();
-      is_conveyor_belt_disabled = false;
 
+      /*
       if (current_conveyor_belt != NULL) {
 	current_conveyor_belt->set_enabled(true);
-      }
+      }*/
     }
   }
 }

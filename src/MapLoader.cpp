@@ -298,8 +298,8 @@ void MapLoader::load_map(Map *map) {
 
     case CONVEYOR_BELT:
       {
-        iss >> width >> height >> direction;
-	ConveyorBelt *conveyor_belt = new ConveyorBelt(Layer(layer), x, y, width, height, direction);
+        iss >> direction;
+	ConveyorBelt *conveyor_belt = new ConveyorBelt(Layer(layer), x, y, direction);
 	entities->add_entity(conveyor_belt);
 	break;
       }

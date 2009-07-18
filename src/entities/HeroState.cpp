@@ -202,50 +202,77 @@ void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int 
 /**
  * This function is called when a conveyor belt detects a collision with this entity.
  * @param conveyor belt a conveyor belt
+ * @param dx direction of the x move in pixels (0, 1 or -1)
+ * @param dy direction of the y move in pixels (0, 1 or -1)
  */
-void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt) {
+void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
 
-  if (state != JUMPING && state != CONVEYOR_BELT) {
+  on_conveyor_belt = true;
 
-    // remove the carried item
-    if (state == CARRYING) {
-      start_throwing();
+  if (state != JUMPING && state != CONVEYOR_BELT && state != PUSHING) {
+
+    // check that a significant part of the hero is on the conveyor belt
+    SDL_Rect center = get_center_point();
+    center.x -= 1;
+    center.y -= 1;
+    center.w = 2;
+    center.h = 2;
+
+    if (conveyor_belt->overlaps(center)) {
+
+      // check that the movement is possible for at least one pixel
+      SDL_Rect collision_box = get_position_in_map();
+      collision_box.x += dx;
+      collision_box.y += dy;
+ 
+      if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+
+	// remove the carried item
+	if (state == CARRYING) {
+	  start_throwing();
+	}
+
+	// set the state
+	this->current_conveyor_belt = conveyor_belt;
+	set_state(CONVEYOR_BELT);
+	set_animation_stopped();
+	zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+
+	// set the movement
+	conveyor_belt_snapping = true;
+	set_movement(new TargetMovement(conveyor_belt, walking_speed));
+      }
     }
-
-    set_state(CONVEYOR_BELT);
-    set_animation_stopped();
-    zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-
-    position_before_conveyor_belt.x = get_x();
-    position_before_conveyor_belt.y = get_y();
-/*
-    int x = get_top_left_x() + 4;
-    int y = get_top_left_y() + 4;
-    x = x - x % 8;
-    y = y - y % 8;
-    set_position_top_left(x, y);
-*/
-    std::string path = "  ";
-    path[0] = path[1] = '0' + conveyor_belt->get_sprite()->get_current_direction();
-    set_movement(new PathMovement(path, walking_speed, false, true, false));
-
-    this->current_conveyor_belt = conveyor_belt;
   }
 }
 
 /**
- * Updates the CONVEYOR_BELT state.
+ * Updates the hero when he is on a conveyor belt.
+ * The state should be CONVEYOR_BELT.
  */
 void Hero::update_conveyor_belt(void) {
 
-  PathMovement *movement = (PathMovement*) get_movement();
-  movement->update();
+  get_movement()->update();
+  if (conveyor_belt_snapping) {
+    TargetMovement *movement = (TargetMovement*) get_movement();
+    if (movement->is_finished()) {
+      clear_movement();
+      conveyor_belt_snapping = false;
+      std::string path = "  ";
+      path[0] = path[1] = '0' + current_conveyor_belt->get_sprite()->get_current_direction();
+      set_movement(new PathMovement(path, walking_speed * 2 / 3, false, true, false));
+    }
+  }
+  else {
+    PathMovement *movement = (PathMovement*) get_movement();
+    if (movement->is_finished() || !on_conveyor_belt) {
 
-  if (movement->is_finished()) {
-    clear_movement();
-    set_movement(normal_movement);
-    start_free();
-    current_conveyor_belt->set_enabled(false);
+      this->current_conveyor_belt = NULL;
+      clear_movement();
+      set_movement(normal_movement);
+      start_free();
+    }
+    on_conveyor_belt =  false;
   }
 }
 
@@ -1400,3 +1427,11 @@ void Hero::update_inventory_item(void) {
     }
   }
 }
+
+
+/**
+ * Updates the FREEZED state.
+ */
+void Hero::update_freezed(void) {
+}
+

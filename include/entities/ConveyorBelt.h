@@ -25,26 +25,15 @@
  */
 class ConveyorBelt: public Detector {
 
- private:
-
-   bool enabled;
-
  public:
 
-  ConveyorBelt(Layer layer, int x, int y, int width, int height, int direction);
+  ConveyorBelt(Layer layer, int x, int y, int direction);
   ~ConveyorBelt(void);
 
   EntityType get_type(void);
-
-  bool is_enabled(void);
-  void set_enabled(bool enabled);
-
+  
   bool is_obstacle_for(MapEntity *other);
-  bool check_collision_custom(MapEntity *entity);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-
-  void update(void);
-  void display_on_map(void);
 };
 
 #endif

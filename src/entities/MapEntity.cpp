@@ -898,8 +898,10 @@ void MapEntity::collision_with_teletransporter(Teletransporter *teletransporter,
 /**
  * This function is called when a conveyor belt detects a collision with this entity.
  * @param conveyor belt a conveyor belt
+ * @param dx direction of the x move in pixels (0, 1 or -1)
+ * @param dy direction of the y move in pixels (0, 1 or -1)
  */
-void MapEntity::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt) {
+void MapEntity::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
   // nothing done by default
 }
 

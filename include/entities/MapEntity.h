@@ -211,7 +211,7 @@ class MapEntity {
   virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   virtual void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
   virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
-  virtual void collision_with_conveyor_belt(ConveyorBelt *conveyor_belt);
+  virtual void collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
   virtual bool is_water_obstacle(void);
   virtual bool is_hole_obstacle(void);
   virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);

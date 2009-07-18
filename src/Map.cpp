@@ -533,7 +533,7 @@ bool Map::collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, M
   bool collision = false;
 
   // collisions with tiles
-  // we check the 4 corners of each 8*8 square in the collision box
+  // TODO avoid checking every pixel? just check the border?
   for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
       collision = collision_with_tiles(layer, x1, y1, entity_to_check);

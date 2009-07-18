@@ -191,6 +191,10 @@ double Movement::get_speed(void) {
  */
 void Movement::set_x_speed(double x_speed) {
 
+  if (fabs(x_speed) <= 1E-6) {
+    x_speed = 0;
+  }
+
   this->x_speed = x_speed;
   Uint32 now = SDL_GetTicks();
 
@@ -217,6 +221,10 @@ void Movement::set_x_speed(double x_speed) {
  */
 void Movement::set_y_speed(double y_speed) {
 
+  if (fabs(y_speed) <= 1E-6) {
+    y_speed = 0;
+  }
+
   this->y_speed = y_speed;
   Uint32 now = SDL_GetTicks();
 
@@ -240,12 +248,13 @@ void Movement::set_y_speed(double y_speed) {
 /**
  * Changes the speed, keeping the same direction of the movement.
  * x_speed and y_speed are recomputed so that the movement direction is unchanged.
- * Warning: if x_speed and y_speed are both equal to zero, there is no
- * direction so calling this function does not make sense.
  * @param speed the new speed
  */
 void Movement::set_speed(double speed) {
 
+  if (x_speed == 0 && y_speed == 0) {
+    x_speed = 1;
+  }
   double angle = Geometry::get_angle(0, 0, x_speed, y_speed); // angle in radians
 
   set_x_speed(speed * cos(angle));

@@ -95,7 +95,7 @@ function event_message_sequence_finished(message_id, answer)
     give_boomerang_back()
     x,y = npc_get_position("tom")
     if y ~= tom_initial_y then
-      npc_walk("tom", "22222200000022222222222222", false, true)
+      npc_walk("tom", "2222220000002222222222222222", false, true)
     end
   end
 

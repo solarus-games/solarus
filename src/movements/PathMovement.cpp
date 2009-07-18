@@ -220,8 +220,8 @@ void PathMovement::start_next_move(void) {
       // normal case: there is a next step to do
 
 //      std::cout << "path: " << remaining_path << "\n";
-      set_speed(initial_speed);
       current_direction = remaining_path[0] - '0';
+      set_speed(initial_speed);
       set_direction(current_direction * 45);
       distance_covered = 0;
       snapping = false;

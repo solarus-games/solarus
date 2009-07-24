@@ -146,6 +146,7 @@ class CrystalSwitchBlock;
 class ShopItem;
 class Boomerang;
 class ConveyorBelt;
+class Door;
 
 // tile patterns
 class Tileset;

@@ -84,3 +84,5 @@ Appel de fonctions C++ depuis un script LUA :
 - switch_set_enabled(switch_name, enabled)              active ou désactive un interrupteur
 - is_enemy_dead(enemy_name)				vérifie si un ennemi est mort
 - are_enemies_dead(enemies_name_prefix)			vérifie si un ensemble d'ennemis sont morts
+- door_open(door_name)					ouvre une ou plusieurs portes
+- door_close(door_name)					ferme une ou plusieurs portes

@@ -37,6 +37,7 @@
 #include "entities/Block.h"
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
+#include "entities/Door.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 using namespace std;
@@ -131,6 +132,9 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "enemy_is_dead", l_enemy_is_dead);
   lua_register(context, "enemies_are_dead", l_enemies_are_dead);
   lua_register(context, "sensor_remove", l_sensor_remove);
+  lua_register(context, "door_open", l_door_open);
+  lua_register(context, "door_close", l_door_close);
+  lua_register(context, "door_is_open", l_door_is_open);
 }
 
 /**
@@ -1081,8 +1085,8 @@ int MapScript::l_tiles_set_enabled(lua_State *l) {
 
 
 /**
- * Enables a dynamic tile.
- * Argument 1 (string): name of the dynamic tile to enable
+ * Returns whether a dynamic tile is enabled.
+ * Argument 1 (string): name of the dynamic tile
  * Return value (boolean): true if this tile is enabled
  */
 int MapScript::l_tile_is_enabled(lua_State *l) {
@@ -1465,6 +1469,71 @@ int MapScript::l_sensor_remove(lua_State *l) {
   return 0;
 }
 
+/**
+ * Opens one or several doors.
+ * The doors must be normal, closed door
+ * (not doors for keys or bombs).
+ * Argument 1 (string): prefix of the name of the doors to open
+ */
+int MapScript::l_door_open(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &prefix = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  std::list<MapEntity*> *doors = map->get_entities()->get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*>::iterator it;
+  for (it = doors->begin(); it != doors->end(); it++) {
+    Door *door = (Door*) (*it);
+    door->open();
+  }
+  ResourceManager::get_sound("door_open")->play();
+
+  return 0;
+}
+
+/**
+ * Closes one or several doors.
+ * The doors must be normal, open door
+ * (not doors for keys or bombs).
+ * Argument 1 (string): prefix of the name of the doors to close
+ */
+int MapScript::l_door_close(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &prefix = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  std::list<MapEntity*> *doors = map->get_entities()->get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*>::iterator it;
+  for (it = doors->begin(); it != doors->end(); it++) {
+    Door *door = (Door*) (*it);
+    door->close();
+  }
+  ResourceManager::get_sound("door_closed")->play();
+
+  return 0;
+}
+
+/**
+ * Returns whether a door is open
+ * Argument 1 (string): name of the door
+ * Return value (boolean): true if this door is open
+ */
+int MapScript::l_door_is_open(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  const string &name = lua_tostring(l, 1);
+  
+  Map *map = zsdx->game->get_current_map();
+  Door *door = (Door*) map->get_entities()->get_entity(DOOR, name);
+  lua_pushboolean(l, door->is_open() ? 1 : 0);
+
+  return 1;
+}
+
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
@@ -1517,12 +1586,7 @@ void MapScript::event_switch_disabled(const string &switch_name) {
  * @param sensor_name name of the sensor
  */
 void MapScript::event_hero_on_sensor(const string &sensor_name) {
-  just_freezed = false;
-  zsdx->game->get_hero()->freeze(); // to avoid problems when walking
   call_lua_function("event_hero_on_sensor", sensor_name);
-  if (!just_freezed) {
-    zsdx->game->get_hero()->unfreeze();
-  }
 }
 
 /**

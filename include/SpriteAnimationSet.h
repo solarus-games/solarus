@@ -24,8 +24,8 @@
  * A set of animations.
  * Each animation correspond to a specific situation
  * of a sprite.
- * For example, you can have an animation "Stopped"
- * and an animation "Walking".
+ * For example, you can have an animation "stopped"
+ * and an animation "walking".
  */
 class SpriteAnimationSet {
 
@@ -39,14 +39,13 @@ class SpriteAnimationSet {
   SpriteAnimationSet(const SpriteAnimationSetId &id);
   virtual ~SpriteAnimationSet(void);
 
-  void set_src_image(SDL_Surface *src_image);
+  void set_map(Map *map);
 
   SpriteAnimation *get_animation(const std::string &animation_name);
   const std::string& get_default_animation(void);
 
   void enable_pixel_collisions(void);
   bool are_pixel_collisions_enabled(void);
-
 };
 
 

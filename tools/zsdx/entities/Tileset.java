@@ -223,7 +223,6 @@ public class Tileset extends Observable {
         g.dispose();
 	return scaledImage;
     }
-
     
     /**
      * Returns the tileset's image file.

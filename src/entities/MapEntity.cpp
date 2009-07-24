@@ -44,6 +44,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true, false}, // raised block
   { true,  true,  true, false}, // shop item
   { true,  true,  true, false}, // conveyor belt
+  { true,  true,  true, false}, // door
 };
 
 /**
@@ -173,6 +174,12 @@ bool MapEntity::is_displayed_in_y_order(void) {
  */
 void MapEntity::set_map(Map *map) {
   this->map = map;
+
+  // notify the sprites
+  std::vector<Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+    (*it)->get_animation_set()->set_map(map);
+  }
 }
 
 /**
@@ -555,21 +562,6 @@ void MapEntity::create_sprite(const SpriteAnimationSetId &id) {
 }
 
 /**
- * Indicates that this entity's sprite image depends on the tileset.
- * This is the case for the skin-dependent entities such as
- * blocks and doors.
- * This function is typically called by set_map().
- */
-void MapEntity::set_sprite_image_from_tileset(void) {
-
-  if (map == NULL) {
-    DIE("Cannot retrieve the entity image from the tileset: set_map() has to be called first");
-  }
-
-  get_sprite()->get_animation_set()->set_src_image(map->get_tileset()->get_entities_image());
-}
-
-/**
  * Returns the current movement of the entity.
  * @return the entity's movement, or NULL if there is no movement
  */
@@ -943,7 +935,7 @@ void MapEntity::set_suspended(bool suspended) {
  * Updates the entity.
  * This function is called repeteadly by the map. By default, it updates the position
  * of the entity according to its movement (if any), and it updates the sprites frames
- * (if there are sprites) according to the direction.
+ * if there are sprites.
  * Redefine it in subclasses for the entities that should be updated
  * for other treatments but don't forget to call this method
  * to handle the movement and the sprites.

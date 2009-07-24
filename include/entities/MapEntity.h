@@ -102,9 +102,7 @@ class MapEntity {
 		            * the name identifies the entity in the game (an empty string
 		            * indicates that the entity has no name) */
 
-  int direction;           /**< direction of the entity, not used for all kinds of entities;
-			    * if the entity has a sprite, this direction is considered to be
-			    * the direction of animation of the sprite */
+  int direction;           /**< direction of the entity, not used for all kinds of entities */
 
   std::vector<Sprite*> sprites; /**< sprite(s) representing the entity, not used for all kinds of entities because
 				 * some of them are invisible, and some of them handle their sprites themselves */
@@ -187,7 +185,6 @@ class MapEntity {
   Sprite * get_sprite(int index);
   Sprite * get_sprite(void);
   bool has_sprite(void);
-  void set_sprite_image_from_tileset(void);
 
   // movement
   Movement * get_movement(void);

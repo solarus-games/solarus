@@ -710,6 +710,7 @@ public class Map extends Observable {
      */
     public void setEntityPosition(MapEntity entity, int x, int y) throws MapException {
 	entity.setPositionInMap(x, y);
+	entity.updateImageDescription();
 
 	setChanged();
 	notifyObservers();

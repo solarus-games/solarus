@@ -325,18 +325,18 @@ void Game::update_transitions(void) {
 	// change the map
 	current_map->leave();
 
-	// unload the previous tileset if the new map uses another one
-	Tileset *old_tileset = current_map->get_tileset();
-	Tileset *new_tileset = next_map->get_tileset();
-	if (new_tileset != old_tileset) {
-	  old_tileset->unload();
-	}
-
 	// before closing the map, draw it on a backup surface for transition effects that display two maps
 	if (needs_previous_surface) {
 	  previous_map_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 	  current_map->display();
 	  SDL_BlitSurface(current_map->get_visible_surface(), NULL, previous_map_surface, NULL);
+	}
+
+	// unload the previous tileset if the new map uses another one
+	Tileset *old_tileset = current_map->get_tileset();
+	Tileset *new_tileset = next_map->get_tileset();
+	if (new_tileset != old_tileset) {
+	  old_tileset->unload();
 	}
 
 	// set the next map

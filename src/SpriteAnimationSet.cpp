@@ -122,16 +122,17 @@ SpriteAnimationSet::~SpriteAnimationSet(void) {
 }
 
 /**
- * Changes the source image for all animations of this animation set.
- * @param source_image the new source surface
+ * When the sprite is displayed on a map, sets the map.
+ * This function must be called if this sprite image depends on the map's tileset.
  */
-void SpriteAnimationSet::set_src_image(SDL_Surface *src_image) {
+void SpriteAnimationSet::set_map(Map *map) {
 
   std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
 
   for (it = animations.begin(); it != animations.end(); it++) {
-    it->second->set_src_image(src_image);
+    it->second->set_map(map);
   }
+
 }
 
 /**

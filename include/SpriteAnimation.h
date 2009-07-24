@@ -32,15 +32,11 @@ class SpriteAnimation {
 				* this image is the same for
 				* all directions of the sprite's animation */
   bool src_image_loaded;       /**< indicates that src_image was loaded from this class */
-
   const int nb_directions;     /**< number of directions of this animation */
-
   SpriteAnimationDirection **directions; /**< array of directions:
 					  * each direction is a sequence of images */
-
   const Uint32 frame_delay;    /**< default interval in milliseconds between two frames
 			        * (this delay is the same for all directions) */
-  
   const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
 
  public:
@@ -50,8 +46,7 @@ class SpriteAnimation {
 		  Uint32 frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 
-  SDL_Surface *get_src_image(void);
-  void set_src_image(SDL_Surface *src_image);
+  void set_map(Map *map);
 
   int get_next_frame(int current_direction, int current_frame);
   void display(SDL_Surface *destination, int x, int y,

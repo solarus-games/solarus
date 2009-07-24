@@ -61,3 +61,4 @@ void Tile::display_on_map(void) {
 TilePattern * Tile::get_tile_pattern(void) {
   return tile_pattern;
 }
+

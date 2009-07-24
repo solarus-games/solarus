@@ -65,7 +65,7 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
 /**
  * Destructor.
  */
-Block::~Block() {
+Block::~Block(void) {
 
 }
 
@@ -84,20 +84,6 @@ EntityType Block::get_type(void) {
  */
 bool Block::is_displayed_in_y_order(void) {
   return subtype == STATUE;
-}
-
-/**
- * Sets the map.
- * @param map the map
- */
-void Block::set_map(Map *map) {
-
-  MapEntity::set_map(map);
-
-  if (subtype == NORMAL) {
-    // the image of a normal block depends on the tileset
-    set_sprite_image_from_tileset();
-  }
 }
 
 /**
@@ -125,7 +111,7 @@ void Block::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
 
   if (entity_overlapping->is_hero()) {
 
-    Hero *hero = zsdx->game->get_hero();
+    Hero *hero = (Hero*) entity_overlapping;
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE

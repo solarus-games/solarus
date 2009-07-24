@@ -43,7 +43,8 @@ public class Project {
     /**
      * Table of the images that have been read.
      */
-    private TreeMap<String, Image> imagesLoaded;
+    private TreeMap<String, Image> editorImagesLoaded;
+    private TreeMap<String, Image> projectImagesLoaded;
 
     /**
      * Objects to notify when a project is loaded.
@@ -62,7 +63,8 @@ public class Project {
     private Project(String path) {
 	this.projectPath = path;
 	resourceDatabase = new ResourceDatabase(this);
-	imagesLoaded = new TreeMap<String, Image>();
+	editorImagesLoaded = new TreeMap<String, Image>();
+	projectImagesLoaded = new TreeMap<String, Image>();
     }
 
     /**
@@ -182,7 +184,6 @@ public class Project {
 
     /**
      * Loads an image of the editor from a specified file name.
-     * The image loaded is not project dependent.
      * If the image have been already loaded, it is not loaded again.
      * @param imageFileName the name of the image file to read, relative to the
      * images directory of the editor
@@ -191,7 +192,7 @@ public class Project {
     public static Image getEditorImage(String imageFileName) {
 
 	// see if the image has been already loaded
-	Image image = currentProject.imagesLoaded.get(imageFileName);
+	Image image = currentProject.editorImagesLoaded.get(imageFileName);
 
 	if (image == null) {
 	    try {
@@ -201,7 +202,7 @@ public class Project {
                     throw new IOException("File not found: " + path);
                 }
 		image = ImageIO.read(url);
-		currentProject.imagesLoaded.put(imageFileName, image);
+		currentProject.editorImagesLoaded.put(imageFileName, image);
 	    }
 	    catch (IOException ex) {
 		System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
@@ -209,7 +210,6 @@ public class Project {
 		System.exit(1);
 	    }
 	}
-
 	return image;
     }
 
@@ -238,6 +238,35 @@ public class Project {
 	}
 
 	return icon;
+    }
+
+    /**
+     * Loads an image of the project from a specified file name.
+     * If the image have been already loaded, it is not loaded again.
+     * @param imageFileName the name of the image file to read, relative to the
+     * data path of the project
+     * @return the image
+     */
+    public static Image getProjectImage(String imageFileName) {
+
+	// see if the image has been already loaded
+	Image image = currentProject.projectImagesLoaded.get(imageFileName);
+
+	if (image == null) {
+	  String path = getDataPath() + "/" + imageFileName;
+
+	  try {
+	    image = ImageIO.read(new File(path));
+	    currentProject.projectImagesLoaded.put(imageFileName, image);
+	  }
+	  catch (IOException ex) {
+	    System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+	    ex.printStackTrace();
+	    System.exit(1);
+	  }
+	}
+
+	return image;
     }
 
     /**
@@ -276,6 +305,21 @@ public class Project {
 
 	return new File(getTilesetPath() + "/tileset"
 		+ nf.format(Integer.parseInt(tilesetId)) + "_tiles.png");
+    }
+
+    /**
+     * Returns the entities image file of a tileset from its id for the current project.
+     * @param tilesetId id of a tileset
+     * @return the corresponding tileset entities file
+     */
+    public static File getTilesetEntitiesImageFile(String tilesetId) {
+	
+	NumberFormat nf = NumberFormat.getInstance();
+	nf.setMinimumIntegerDigits(4);
+	nf.setGroupingUsed(false);
+
+	return new File(getTilesetPath() + "/tileset"
+		+ nf.format(Integer.parseInt(tilesetId)) + "_entities.png");
     }
 
     /**

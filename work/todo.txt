@@ -23,6 +23,7 @@ Feature requests :
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Remplacer "clé" par "clef" ?
 - Utiliser de l'héritage pour Movement::is_finished, cela évitera des cast
+- set_sprite_from_tileset : enlever ça, remplacer par le mot-clé "tileset" dans le fichier d'animation du sprite
 
 
 Bugs :
@@ -43,7 +44,8 @@ Bugs :
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - petite clé du hud : reprendre la même que dans le hud de alttp
-- tapis roulants forçables
+- sensor : épée qui charge annulée, vase porté buggue à cause du freeze
+
 
 A venir :
 

@@ -17,10 +17,13 @@
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "ResourceManager.h"
+#include "Map.h"
+#include "entities/Tileset.h"
 
 /**
  * Constructor.
  * @param image_file_name the image from which the frames are extracted
+ * (can be empty and specified later with set_src_image())
  * @param nb_directions number of directions in this animation
  * @param directions the image sequence of each direction
  * @param frame_delay delay in millisecond between two frames for this sprite animation
@@ -28,12 +31,15 @@
  * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
 SpriteAnimation::SpriteAnimation(const std::string &image_file_name, int nb_directions,
-				 SpriteAnimationDirection **directions,
-				 Uint32 frame_delay, int loop_on_frame):
-  src_image_loaded(true), nb_directions(nb_directions), directions(directions),
+    SpriteAnimationDirection **directions, Uint32 frame_delay, int loop_on_frame):
+
+  src_image(NULL), src_image_loaded(false), nb_directions(nb_directions), directions(directions),
   frame_delay(frame_delay), loop_on_frame(loop_on_frame) {
 
-  src_image = ResourceManager::load_image(image_file_name);
+  if (image_file_name != "tileset") {
+    src_image = ResourceManager::load_image(image_file_name);
+    src_image_loaded = true;
+  }
 }
 
 /**
@@ -52,24 +58,14 @@ SpriteAnimation::~SpriteAnimation(void) {
 }
 
 /**
- * Returns the image from which the frames are extracted.
- * @return the source image of this animation
+ * When the sprite is displayed on a map, sets the map.
+ * This function must be called if this sprite image depends on the map's tileset.
  */
-SDL_Surface * SpriteAnimation::get_src_image(void) {
-  return src_image;
-}
+void SpriteAnimation::set_map(Map *map) {
 
-/**
- * Changes the source image for all animations of this animation set.
- * @param source_image the new source surface
- */
-void SpriteAnimation::set_src_image(SDL_Surface *src_image) {
-
-  if (src_image_loaded) {
-    SDL_FreeSurface(this->src_image);
-    src_image_loaded = false;
+  if (!src_image_loaded) {
+    this->src_image = map->get_tileset()->get_entities_image();
   }
-  this->src_image = src_image;
 }
 
 /**
@@ -134,7 +130,7 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) {
  * @param current_frame the frame to show in this direction
  */
 void SpriteAnimation::display(SDL_Surface *destination, int x, int y,
-			      int current_direction, int current_frame) {
+    int current_direction, int current_frame) {
 
   directions[current_direction]->display(destination, x, y, current_frame, src_image);
 }
@@ -143,7 +139,7 @@ void SpriteAnimation::display(SDL_Surface *destination, int x, int y,
  * Enables the pixel-perfect collision detection for this animation.
  */
 void SpriteAnimation::enable_pixel_collisions(void) {
-  
+
   for (int i = 0; i < nb_directions; i++) {
     directions[i]->enable_pixel_collisions(src_image);
   }

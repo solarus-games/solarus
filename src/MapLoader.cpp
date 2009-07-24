@@ -44,6 +44,7 @@
 #include "entities/CrystalSwitchBlock.h"
 #include "entities/ShopItem.h"
 #include "entities/ConveyorBelt.h"
+#include "entities/Door.h"
 #include <iomanip>
 using namespace std;
 
@@ -301,6 +302,16 @@ void MapLoader::load_map(Map *map) {
         iss >> direction;
 	ConveyorBelt *conveyor_belt = new ConveyorBelt(Layer(layer), x, y, direction);
 	entities->add_entity(conveyor_belt);
+	break;
+      }
+
+    case DOOR:
+      {
+	int savegame_variable;
+
+	iss >> entity_name >> direction >> subtype >> savegame_variable;
+	entities->add_entity(new Door(entity_name, Layer(layer), x, y, direction,
+				      Door::Subtype(subtype), savegame_variable));
 	break;
       }
 

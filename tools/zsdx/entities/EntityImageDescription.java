@@ -32,6 +32,8 @@ public class EntityImageDescription {
     // the image
     private Image image;
 
+    private boolean relativeToEditor;
+
     /**
      * Constructor.
      * @param imageFileName name of the file containing the source image
@@ -41,9 +43,10 @@ public class EntityImageDescription {
      * @param height height of the rectangle
      */
     public EntityImageDescription(String imageFileName, int x, int y, int width, int height) {
-	this.imageFileName = imageFileName;
 	this.rectangle = new Rectangle(x, y, width, height);
 	this.image = null;
+	this.imageFileName = imageFileName;
+	this.relativeToEditor = true;
     }
 
     /**
@@ -51,9 +54,10 @@ public class EntityImageDescription {
      * @param other another entity image description
      */
     public EntityImageDescription(EntityImageDescription other) {
-	this.imageFileName = other.getImageFileName();
 	this.rectangle = new Rectangle(other.getRectangle());
 	this.image = null;
+	this.imageFileName = other.getImageFileName();
+	this.relativeToEditor = other.relativeToEditor;
     }
 
     /**
@@ -66,10 +70,21 @@ public class EntityImageDescription {
     
     /**
      * Sets the name of the image file.
-     * @param imageFileName name of the image file
+     * @param imageFileName name of the image file, relative to the editor images path
      */
     public void setImageFileName(String imageFileName) {
+	setImageFileName(imageFileName, true);
+    }
+    
+    /**
+     * Sets the name of the image file.
+     * @param imageFileName name of the image file
+     * @param relativeToEditor true to consider the image file name relative
+     * to the editor images directory, false to make it relative to the project data directory
+     */
+    public void setImageFileName(String imageFileName, boolean relativeToEditor) {
 	this.imageFileName = imageFileName;
+	this.relativeToEditor = relativeToEditor;
     }
 
     /**
@@ -108,6 +123,26 @@ public class EntityImageDescription {
     }
 
     /**
+     * Sets the coordinates of the rectangle representing the entity in the image.
+     * @param x x coordinate of the top-left corner of the rectangle
+     * @param y y coordinate of the top-left corner of the rectangle
+     */
+    public void setXY(int x, int y) {
+      setX(x);
+      setY(y);
+    }
+
+    /**
+     * Sets the size of the rectangle representing the entity in the image.
+     * @param width width of the rectangle
+     * @param height height of the rectangle
+     */
+    public void setSize(int width, int height) {
+      rectangle.width = width;
+      rectangle.height = height;
+    }
+
+    /**
      * Draws the image.
      * @param g the graphic context
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
@@ -120,7 +155,13 @@ public class EntityImageDescription {
 
 	// get the image
 	if (image == null) {
+
+	  if (relativeToEditor) {
 	    image = Project.getEditorImage(imageFileName);
+	  }
+	  else {
+	    image = Project.getProjectImage(imageFileName);
+	  }
 	}
 
 	// calculate the coordinates

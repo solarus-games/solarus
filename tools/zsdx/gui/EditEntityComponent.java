@@ -54,6 +54,7 @@ public class EditEntityComponent extends JPanel {
 	EditEntityComponent.class,
 	EditShopItemComponent.class,
 	EditEntityComponent.class,
+	EditDoorComponent.class,
     };
 
     /**

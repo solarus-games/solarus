@@ -340,8 +340,15 @@ Un tapis roulant a une direction, est redimensionnable et n'est pas identifiable
 Pas de partie spécifique.
 
 
-Portes
+Portes (18)
 
-Utiliser une propriété skin comme pour les blocs.
+Une porte a une direction, un nom et un sous-type parmi : CLOSED, SMALL_KEY, SMALL_KEY_BLOCK, BIG_KEY, BOSS_KEY, WEAK, VERY_WEAK ou WEAK_INVISIBLE.
+Le sprite d'une porte dépend de son tileset.
+Lorsque la porte est fermée, tous les tiles dynamiques ayant pour préfixe "doorname_closed" sont désactivés. Lorsque la porte est ouverte, tous les tiles dynamiques ayant pour préfixe "doorname_open" sont activés.
 
+Syntaxe de la partie spécifique :
+
+savegame_variable
+
+savegame_variable indique la variable qui indique l'état de cette porte. Pour le sous-type CLOSED, la valeur peut être -1 : la porte ne sera alors pas sauvegardée.
 

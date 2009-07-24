@@ -425,6 +425,8 @@ void Hero::update(void) {
 
   if (!suspended) {
 
+    //std::cout << SDL_GetTicks() << " state " << state << std::endl;
+
     // update the movement
     get_normal_movement()->set_moving_enabled(state < PUSHING, state <= CONVEYOR_BELT);
 

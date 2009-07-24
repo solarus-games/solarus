@@ -179,7 +179,7 @@ void InteractiveEntity::collision(MapEntity *entity_overlapping, CollisionMode c
 
   if (entity_overlapping->is_hero()) {
 
-    Hero *hero = zsdx->game->get_hero();
+    Hero *hero = (Hero*) entity_overlapping;
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE

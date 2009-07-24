@@ -1286,9 +1286,9 @@ next = _treasure_74.1
 
 [_treasure_74.1]
 #       |--------------------|
-line1 = "accéder au repaire"
-line2 = "du maître des"
-line3 = "lieux !"
+line1 = "entrer dans le"
+line2 = "repaire du maître"
+line3 = "des lieux !"
 
 [_treasure_79_1]
 # 1er Fragment de Coeur
@@ -1508,12 +1508,35 @@ line2 = "compteur magique !"
 line1 = "Ce coffre est vide !"
 line2 = "Tant pis pour toi !"
 
+[_small_key_required]
+#       |--------------------|
+icon = 72
+line1 = "C'est fermé à Clé !"
+cancel = all
+
 [_big_key_required]
 #       |--------------------|
 icon = 73
 line1 = "Il te faut la Grande"
 line2 = "Clé pour ouvrir"
 line3 = "cette serrure !"
+cancel = all
+
+[_boss_key_required]
+#       |--------------------|
+icon = 74
+line1 = "C'est la porte du"
+line2 = "repère du maître du"
+line3 = "donjon !"
+cancel = all
+next = _boss_key_required.2
+
+[_boss_key_required.2]
+#       |--------------------|
+icon = 74
+line1 = "Il te faut la"
+line2 = "Clé du Maître"
+line3 = "pour l'ouvrir."
 
 [_found_fairy]
 #       |--------------------|

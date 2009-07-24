@@ -891,6 +891,7 @@ void Hero::stop_moving_grabbed_entity(void) {
 void Hero::freeze(void) {
   get_normal_movement()->set_moving_enabled(false, false);
   set_animation_stopped();
+  destroy_carried_items();
   zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   set_state(FREEZED);
 }

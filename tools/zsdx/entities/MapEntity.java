@@ -977,7 +977,7 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Initializes the description of the image currently representing the entity.
-     * By default, the image description is initialized to a copy of the first general
+     * By default, the image description is initialized to a copy of the
      * image description of this kind of entity.
      */
     protected void initializeImageDescription() {

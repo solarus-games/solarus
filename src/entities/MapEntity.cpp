@@ -73,7 +73,7 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  layer(layer), name(""), direction(0), movement(NULL),
+  map(NULL), layer(layer), name(""), direction(0), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
   position_in_map.x = x;
@@ -97,7 +97,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
-  layer(layer), name(name), direction(direction), movement(NULL),
+  map(NULL), layer(layer), name(name), direction(direction), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
   position_in_map.x = x;

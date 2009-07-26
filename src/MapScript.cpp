@@ -139,6 +139,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "door_open", l_door_open);
   lua_register(context, "door_close", l_door_close);
   lua_register(context, "door_is_open", l_door_is_open);
+  lua_register(context, "door_set_open", l_door_set_open);
 }
 
 /**
@@ -1574,6 +1575,7 @@ int MapScript::l_door_open(lua_State *l) {
     door->open();
   }
   ResourceManager::get_sound("door_open")->play();
+  delete doors;
 
   return 0;
 }
@@ -1598,6 +1600,7 @@ int MapScript::l_door_close(lua_State *l) {
     door->close();
   }
   ResourceManager::get_sound("door_closed")->play();
+  delete doors;
 
   return 0;
 }
@@ -1617,6 +1620,30 @@ int MapScript::l_door_is_open(lua_State *l) {
   lua_pushboolean(l, door->is_open() ? 1 : 0);
 
   return 1;
+}
+
+/**
+ * Makes one or several doors open or closed.
+ * Argument 1 (string): prefix of the name of the doors to close
+ * Argument 2 (boolean): true to make them open, false to make them closed
+ */
+int MapScript::l_door_set_open(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  const string &prefix = lua_tostring(l, 1);
+  bool open = lua_toboolean(l, 2) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  std::list<MapEntity*> *doors = map->get_entities()->get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*>::iterator it;
+  for (it = doors->begin(); it != doors->end(); it++) {
+    Door *door = (Door*) (*it);
+    door->set_open(open);
+  }
+  delete doors;
+
+  return 0;
 }
 
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened

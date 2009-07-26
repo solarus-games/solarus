@@ -14,8 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "entities/MapEntities.h"
 #include "entities/Door.h"
 #include "entities/Hero.h"
+#include "entities/DynamicTile.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -25,6 +27,8 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Savegame.h"
+#include "Map.h"
+#include <list>
 
 const std::string Door::animations[] = {
   "closed", "small_key", "small_key_block", "big_key", "boss_key", "weak", "very_weak", ""
@@ -48,7 +52,8 @@ const MessageId key_required_message_ids[] = {
 Door::Door(const std::string &name, Layer layer, int x, int y,
 	     int direction, Subtype subtype, int savegame_variable):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  subtype(subtype), savegame_variable(savegame_variable), door_open(true), changing(false) {
+  subtype(subtype), savegame_variable(savegame_variable), door_open(true),
+  changing(false), initialized(false) {
 
   if (subtype == SMALL_KEY_BLOCK) {
     set_size(16, 16);
@@ -110,11 +115,42 @@ bool Door::is_open(void) {
  * @param door_open true to make it open, false to make it closed
  */
 void Door::set_open(bool door_open) {
+  
   this->door_open = door_open;
 
   if (!door_open) {
     get_sprite()->set_current_animation(animations[subtype]);
   }
+
+  if (map != NULL) {
+    update_dynamic_tiles();
+  }
+
+  if (savegame_variable != -1) {
+    zsdx->game->get_savegame()->set_boolean(savegame_variable, door_open);
+  }
+}
+
+/**
+ * Enables or disable the dynamic tiles having the same prefix than the door
+ * depending on the door state.
+ */
+void Door::update_dynamic_tiles(void) {
+  
+  std::list<MapEntity*> *tiles = map->get_entities()->get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_closed");
+  std::list<MapEntity*>::iterator it;
+  for (it = tiles->begin(); it != tiles->end(); it++) {
+    DynamicTile *tile = (DynamicTile*) *it;
+    tile->set_enabled(!door_open);
+  }
+  delete tiles;
+
+  tiles = map->get_entities()->get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_open");
+  for (it = tiles->begin(); it != tiles->end(); it++) {
+    DynamicTile *tile = (DynamicTile*) *it;
+    tile->set_enabled(door_open);
+  }
+  delete tiles;
 }
 
 /**
@@ -183,6 +219,11 @@ void Door::set_suspended(bool suspended) {
  */
 void Door::update(void) {
   Detector::update();
+
+  if (!initialized) {
+    update_dynamic_tiles();
+    initialized = true;
+  }
 
   if (changing && get_sprite()->is_animation_finished()) {
     changing = false;

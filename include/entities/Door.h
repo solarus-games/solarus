@@ -52,14 +52,15 @@ class Door: public Detector {
   // state
   bool door_open;            /**< indicates that this door is open */
   bool changing;             /**< indicates that the door is being open or closed */
+  bool initialized;          /**< true if update() was called at least once */
 
-  void set_open(bool open);
   void set_opening(void);
   void set_closing(void);
 
   bool requires_key(void);
   bool requires_small_key(void);
   bool can_open(void);
+  void update_dynamic_tiles(void);
 
  public:
 
@@ -79,6 +80,7 @@ class Door: public Detector {
   bool is_open(void);
   void open(void);
   void close(void);
+  void set_open(bool open);
 };
 
 #endif

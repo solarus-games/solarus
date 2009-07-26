@@ -113,7 +113,8 @@ class MapScript {
     l_sensor_remove,
     l_door_open,
     l_door_close,
-    l_door_is_open;
+    l_door_is_open,
+    l_door_set_open;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
   void register_c_functions(void);

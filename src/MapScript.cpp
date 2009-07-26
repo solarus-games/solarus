@@ -38,6 +38,7 @@
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
 #include "entities/Door.h"
+#include "entities/Sensor.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 using namespace std;
@@ -100,7 +101,10 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "npc_set_direction", l_npc_set_direction);
   lua_register(context, "npc_remove", l_npc_remove);
   lua_register(context, "hero_set_direction", l_hero_set_direction);
-  lua_register(context, "set_chest_open", l_set_chest_open);
+  lua_register(context, "hero_align_on_sensor", l_hero_align_on_sensor);
+  lua_register(context, "chest_set_open", l_chest_set_open);
+  lua_register(context, "chest_set_hidden", l_chest_set_hidden);
+  lua_register(context, "chest_is_hidden", l_chest_is_hidden);
   lua_register(context, "get_rupees", l_get_rupees);
   lua_register(context, "remove_rupees", l_remove_rupees);
   lua_register(context, "inventory_item_get", l_inventory_item_get);
@@ -191,6 +195,10 @@ void MapScript::initialize(void) {
  */
 bool MapScript::call_lua_function(const string &function_name) {
 
+  if (context == NULL) {
+    return false;
+  }
+
   lua_getglobal(context, function_name.c_str());
   bool exists = lua_isfunction(context, -1);
 
@@ -211,6 +219,10 @@ bool MapScript::call_lua_function(const string &function_name) {
  * @return true if the function was called, false if it does not exist
  */
 bool MapScript::call_lua_function(const string &function_name, const string &arg1) {
+
+  if (context == NULL) {
+    return false;
+  }
 
   lua_getglobal(context, function_name.c_str());
   bool exists = lua_isfunction(context, -1);
@@ -235,6 +247,10 @@ bool MapScript::call_lua_function(const string &function_name, const string &arg
  */
 bool MapScript::call_lua_function(const string &function_name,
 				  const string &arg1, int arg2) {
+
+  if (context == NULL) {
+    return false;
+  }
 
   lua_getglobal(context, function_name.c_str());
   bool exists = lua_isfunction(context, -1);
@@ -262,6 +278,10 @@ bool MapScript::call_lua_function(const string &function_name,
 bool MapScript::call_lua_function(const string &function_name,
 				  const string &arg1, int arg2, int arg3) {
 
+  if (context == NULL) {
+    return false;
+  }
+
   lua_getglobal(context, function_name.c_str());
   bool exists = lua_isfunction(context, -1);
 
@@ -286,6 +306,10 @@ bool MapScript::call_lua_function(const string &function_name,
  */
 bool MapScript::call_lua_function(const string &function_name, int arg1) {
 
+  if (context == NULL) {
+    return false;
+  }
+
   lua_getglobal(context, function_name.c_str());
   bool exists = lua_isfunction(context, -1);
 
@@ -309,6 +333,10 @@ bool MapScript::call_lua_function(const string &function_name, int arg1) {
  */
 bool MapScript::call_lua_function(const string &function_name, int arg1, int arg2) {
 
+  if (context == NULL) {
+    return false;
+  }
+
   lua_getglobal(context, function_name.c_str());
   bool exists = lua_isfunction(context, -1);
 
@@ -331,6 +359,10 @@ bool MapScript::call_lua_function(const string &function_name, int arg1, int arg
  * @return true if the function was called, false if it does not exist
  */
 bool MapScript::call_lua_function(const string &function_name, bool arg1) {
+
+  if (context == NULL) {
+    return false;
+  }
 
   lua_getglobal(context, function_name.c_str());
   bool exists = lua_isfunction(context, -1);
@@ -921,25 +953,79 @@ int MapScript::l_hero_set_direction(lua_State *l) {
   return 0;
 }
 
+/**
+ * Places the hero on the exact position of a sensor's name.
+ * Argument 1 (string): name of the sensor
+ */
+int MapScript::l_hero_align_on_sensor(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const string &name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  Hero *hero = zsdx->game->get_hero();
+  Sensor *sensor = (Sensor*) map->get_entities()->get_entity(SENSOR, name);
+  hero->set_coordinates(sensor->get_coordinates());
+
+  return 0;
+}
 
 /**
- * Opens or closes a chest.
+ * Sets the chest open or closed.
  * Only the chest sprite is affected (use give_treasure to give a treasure to the player).
- * Argument 1 (string): name of the NPC
- * Argument 2 (integer): the sprite's direction between 0 and 3
+ * This function is useful for chests whose content is managed by the script.
+ * Argument 1 (string): name of the chest
+ * Argument 2 (boolean): true to make the chest open, false to make it closed
  */
-int MapScript::l_set_chest_open(lua_State *l) {
+int MapScript::l_chest_set_open(lua_State *l) {
 
   check_nb_arguments(l, 2);
 
-  const string &chest_name = lua_tostring(l, 1);
+  const string &name = lua_tostring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
 
   Map *map = zsdx->game->get_current_map();
-  Chest *chest = (Chest*) map->get_entities()->get_entity(CHEST, chest_name);
+  Chest *chest = (Chest*) map->get_entities()->get_entity(CHEST, name);
   chest->set_open(open);
 
   return 0;
+}
+
+/**
+ * Hides or unhides a chest.
+ * Argument 1 (string): name of the chest
+ * Argument 2 (boolean): true to make the chest hidden, false to make it appear
+ */
+int MapScript::l_chest_set_hidden(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  const string &name = lua_tostring(l, 1);
+  bool hidden = lua_toboolean(l, 2) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  Chest *chest = (Chest*) map->get_entities()->get_entity(CHEST, name);
+  chest->set_hidden(hidden);
+
+  return 0;
+}
+
+/**
+ * Returns whether a chest is hidden.
+ * Argument 1 (string): name of the chest
+ * Return value (boolean): true if this chest is hidden
+ */
+int MapScript::l_chest_is_hidden(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  const string &name = lua_tostring(l, 1);
+  
+  Map *map = zsdx->game->get_current_map();
+  Chest *chest = (Chest*) map->get_entities()->get_entity(CHEST, name);
+  lua_pushboolean(l, chest->is_hidden() ? 1 : 0);
+
+  return 1;
 }
 
 /**
@@ -1082,7 +1168,6 @@ int MapScript::l_tiles_set_enabled(lua_State *l) {
   delete dynamic_tiles;
   return 0;
 }
-
 
 /**
  * Returns whether a dynamic tile is enabled.
@@ -1587,6 +1672,8 @@ void MapScript::event_switch_disabled(const string &switch_name) {
  */
 void MapScript::event_hero_on_sensor(const string &sensor_name) {
   call_lua_function("event_hero_on_sensor", sensor_name);
+  Hero *hero = zsdx->game->get_hero();
+  hero->reset_movement();
 }
 
 /**

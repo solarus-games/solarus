@@ -53,7 +53,10 @@ Appel de fonctions C++ depuis un script LUA :
 - npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
 - npc_remove(npc)					supprime un PNJ de la map
 - hero_set_direction(direction)				change la direction du sprite du héros
+- hero_align_on_sensor(sensor_name)                     place le héros exactement sur le rectangle d'un capteur
 - set_chest_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
+- set_chest_hidden(chest_name, bool hidden)             cache ou fait apparaître un coffre
+- is_chest_hidden(chest_name)                           indique si un coffre est caché
 - get_rupees()						retourne le nombre de rubis
 - remove_rupees(rupees)					enlève des rubis au joueur
 - inventory_item_get(item_id)				retourne le numéro de variante possédée par le joueur d'un objet de l'inventaire
@@ -86,3 +89,4 @@ Appel de fonctions C++ depuis un script LUA :
 - are_enemies_dead(enemies_name_prefix)			vérifie si un ensemble d'ennemis sont morts
 - door_open(door_name)					ouvre une ou plusieurs portes
 - door_close(door_name)					ferme une ou plusieurs portes
+

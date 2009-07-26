@@ -23,7 +23,6 @@ Feature requests :
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Remplacer "clé" par "clef" ?
 - Utiliser de l'héritage pour Movement::is_finished, cela évitera des cast
-- set_sprite_from_tileset : enlever ça, remplacer par le mot-clé "tileset" dans le fichier d'animation du sprite
 
 
 Bugs :
@@ -45,6 +44,7 @@ Bugs :
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - petite clé du hud : reprendre la même que dans le hud de alttp
 - sensor : épée qui charge annulée, vase porté buggue à cause du freeze
+- portes : la porte qui se referme n'affiche pas d'animation
 
 
 A venir :

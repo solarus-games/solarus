@@ -54,8 +54,10 @@ class Door: public Detector {
   bool changing;             /**< indicates that the door is being open or closed */
 
   void set_open(bool open);
+  void set_opening(void);
+  void set_closing(void);
 
-  bool has_action_key_effect(void);
+  bool requires_key(void);
   bool requires_small_key(void);
   bool can_open(void);
 

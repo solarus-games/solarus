@@ -94,7 +94,7 @@ EntityType Door::get_type(void) {
  * @return true
  */
 bool Door::is_obstacle_for(MapEntity *other) {
-  return !is_open();
+  return !is_open() || changing;
 }
 
 /**
@@ -125,7 +125,7 @@ void Door::set_open(bool door_open) {
  */
 void Door::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (!is_open() && entity_overlapping->is_hero() && has_action_key_effect()) {
+  if (!is_open() && entity_overlapping->is_hero() && requires_key()) {
 
     Hero *hero = (Hero*) entity_overlapping;
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
@@ -140,10 +140,10 @@ void Door::collision(MapEntity *entity_overlapping, CollisionMode collision_mode
 }
 
 /**
- * Returns whether the player can use the action key when touching this door.
- * @return true if there is an action key effect for this door
+ * Returns whether this door requires a key to be open.
+ * @return true if this door requires a key to be open
  */
-bool Door::has_action_key_effect(void) {
+bool Door::requires_key(void) {
   return requires_small_key() || subtype == BIG_KEY || subtype == BOSS_KEY;
 }
 
@@ -184,9 +184,19 @@ void Door::set_suspended(bool suspended) {
 void Door::update(void) {
   Detector::update();
 
-  if (!is_suspended() && changing && get_sprite()->is_animation_finished()) {
+  if (changing && get_sprite()->is_animation_finished()) {
     changing = false;
     set_open(!is_open());
+  }
+
+  if (savegame_variable != -1) {
+    bool open_in_savegame = zsdx->game->get_savegame()->get_boolean(savegame_variable);
+    if (open_in_savegame && !is_open() && !changing) {
+      set_opening();
+    }
+    else if (!open_in_savegame && is_open() && !changing) {
+      set_closing();
+    }
   }
 }
 
@@ -194,7 +204,7 @@ void Door::update(void) {
  * Displays the entity on the map.
  */
 void Door::display_on_map(void) {
-  if (has_sprite() && !is_open()) {
+  if (has_sprite() && (!is_open() || changing)) {
     Detector::display_on_map();
   }
 }
@@ -214,17 +224,17 @@ void Door::action_key_pressed(void) {
       ResourceManager::get_sound("door_unlocked")->play();
       ResourceManager::get_sound("door_open")->play();
 
+      zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
       if (subtype == SMALL_KEY_BLOCK) {
 	set_open(true);
       }
       else {
-        get_sprite()->set_current_animation("opening_key");
+	set_opening();
       }
 
       if (requires_small_key()) {
 	equipment->remove_small_key();
       }
-      changing = true;
     }
     else {
       ResourceManager::get_sound("wrong")->play();
@@ -247,7 +257,20 @@ void Door::open(void) {
     DIE("This door is already open");
   }
 
-  get_sprite()->set_current_animation("opening");
+  set_opening();
+
+  if (savegame_variable != -1) {
+    zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
+  }
+}
+
+/**
+ * Makes the door being open.
+ */
+void Door::set_opening(void) {
+
+  std::string animation = requires_key() ? "opening_key" : "opening";
+  get_sprite()->set_current_animation(animation);
   changing = true;
 }
 
@@ -257,14 +280,21 @@ void Door::open(void) {
  */
 void Door::close(void) {
 
-  if (subtype != CLOSED) {
-    DIE("This kind of door cannot be open or closed directly");
-  }
-
   if (!is_open()) {
     DIE("This door is already closed");
   }
 
+  set_closing();
+
+  if (savegame_variable != -1) {
+    zsdx->game->get_savegame()->set_boolean(savegame_variable, false);
+  }
+}
+
+/**
+ * Makes the door being closed.
+ */
+void Door::set_closing(void) {
   get_sprite()->set_current_animation("opening");
   changing = true;
 }

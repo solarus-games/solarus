@@ -20,6 +20,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/Detector.h"
 #include "entities/ConveyorBelt.h"
+#include "entities/Chest.h"
 #include "movements/PlayerMovement.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
@@ -1025,3 +1026,28 @@ bool Hero::is_stroke_by_sword(Detector *detector) {
 
   return result;
 }
+
+/**
+ * Stops and restarts the current movement of the hero.
+ */
+void Hero::reset_movement(void) {
+
+  PlayerMovement *movement = get_normal_movement();
+
+  if (movement->is_moving_enabled()) {
+    movement->stop();
+    movement->set_moving_enabled(false, false);
+    movement->set_moving_enabled(true, true);
+
+  }
+}
+
+/**
+ * This function is called when a chest overlaps the hero when it appears.
+ * @param chest the chest
+ */
+void Hero::avoid_chest_collision(Chest *chest) {
+  set_top_left_y(chest->get_top_left_y() + 16);
+  reset_movement();
+}
+

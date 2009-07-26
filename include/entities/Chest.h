@@ -30,6 +30,7 @@ class Chest: public Detector {
 
   bool big_chest;       /**< true for a big chest, false for normal chests */
   Treasure *treasure;   /**< the treasure placed in this chest, or NULL if the chest contains nothing */
+  bool hidden;          /**< indicates that the chest is hidden (the script has to unhide it) */
   bool open;            /**< true if the chest is open (but the treasure may not have
 		         * been given yet because there is a delay of 500 ms) */
   bool treasure_given;  /**< true if the chest is open and the treasure has been given to the player */
@@ -48,9 +49,13 @@ class Chest: public Detector {
   bool is_open(void);
   void set_open(bool open);
 
+  bool is_hidden(void);
+  void set_hidden(bool hidden);
+
   bool is_obstacle_for(MapEntity *other);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void update(void);
+  void display_on_map(void);
   void action_key_pressed(void);
   void set_suspended(bool suspended);
 };

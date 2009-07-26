@@ -138,11 +138,6 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
     return NULL;
   }
 
-  // some items can exist only in a dungeon
-  if (subtype >= SMALL_KEY && subtype <= BOSS_KEY && !zsdx->game->get_current_map()->is_in_dungeon()) {
-    DIE("Illegal pickable item subtype " << subtype << " in a dungeon");
-  }
-
   // check the savegame variable
   if (savegame_variable < -1) {
     DIE("Invalid savegame variable: " << savegame_variable);
@@ -384,6 +379,11 @@ void PickableItem::collision(MapEntity *entity_overlapping, CollisionMode collis
  * Gives the item to the player.
  */
 void PickableItem::give_item_to_player(void) {
+
+  // some items can exist only in a dungeon
+  if (subtype >= SMALL_KEY && subtype <= BOSS_KEY && !zsdx->game->get_current_map()->is_in_dungeon()) {
+    DIE("Illegal pickable item subtype " << subtype << " in a dungeon");
+  }
 
   // play the sound
   if (features[subtype].sound != "") {

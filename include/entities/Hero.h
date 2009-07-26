@@ -291,6 +291,7 @@ class Hero: public MapEntity {
   void just_moved(void);
   void set_facing_entity(Detector *detector);
   bool is_facing_obstacle(void);
+  void reset_movement(void);
 
   // map
   void set_map(Map *map);
@@ -342,6 +343,7 @@ class Hero: public MapEntity {
 
   void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
   void collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
+  void avoid_chest_collision(Chest *chest);
 
   bool is_on_hole(void);
   bool is_water_obstacle(void);

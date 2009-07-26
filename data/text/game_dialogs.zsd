@@ -178,7 +178,7 @@ next = outside_world.village.waterfall_sign.2
 line1 = "  Office de Tourisme"
 line2 = "      de Lyriann"
 
-[outside_world.village.pastry_shop_sign]
+[outside_world.village.cake_shop_sign]
 #       |-----------------------|
 line1 = ""
 line2 = "       Pâtisserie"

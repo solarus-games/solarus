@@ -76,7 +76,10 @@ class MapScript {
     l_npc_set_direction,
     l_npc_remove,
     l_hero_set_direction,
-    l_set_chest_open,
+    l_hero_align_on_sensor,
+    l_chest_set_open,
+    l_chest_set_hidden,
+    l_chest_is_hidden,
     l_get_rupees,
     l_remove_rupees,
     l_inventory_item_get,
@@ -150,3 +153,4 @@ class MapScript {
 };
 
 #endif
+

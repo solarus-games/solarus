@@ -41,7 +41,7 @@
 Chest::Chest(const std::string &name, Layer layer, int x, int y,
 	     bool big_chest, Treasure *treasure):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  big_chest(big_chest) {
+  big_chest(big_chest), hidden(false) {
 
   open = treasure_given = (treasure != NULL && treasure->is_found());
   if (open) {
@@ -86,7 +86,7 @@ bool Chest::is_displayed_in_y_order(void) {
  * @return true
  */
 bool Chest::is_obstacle_for(MapEntity *other) {
-  return true;
+  return !is_hidden();
 }
 
 /**
@@ -110,6 +110,29 @@ void Chest::initialize_sprite(void) {
   }
   else {
     set_size(16, 16);
+  }
+}
+
+/**
+ * Returns whether the chest is hidden.
+ * @return true if the chest is hidden
+ */
+bool Chest::is_hidden(void) {
+  return hidden;
+}
+
+/**
+ * Sets whether the chest is hidden.
+ * @param hidden true to hide the chest, false to unhide it
+ */
+void Chest::set_hidden(bool hidden) {
+  this->hidden = hidden;
+
+  if (!hidden) {
+    Hero *hero = zsdx->game->get_hero();
+    if (hero->overlaps(get_position_in_map())) {
+      hero->avoid_chest_collision(this);
+    }
   }
 }
 
@@ -160,9 +183,13 @@ void Chest::set_open(bool open) {
  */
 void Chest::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero() && !zsdx->game->is_suspended()) {
+  if (is_suspended()) {
+    return;
+  }
 
-    Hero *hero = zsdx->game->get_hero();
+  if (entity_overlapping->is_hero() && !is_hidden()) {
+
+    Hero *hero = (Hero*) entity_overlapping;
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
@@ -238,7 +265,7 @@ void Chest::action_key_pressed(void) {
   Hero *hero = zsdx->game->get_hero();
   DungeonEquipment *dungeon_equipment = zsdx->game->get_dungeon_equipment();
 
-  if (hero->get_state() == Hero::FREE) { // don't open a chest while pushing
+  if (!is_hidden() && hero->get_state() == Hero::FREE) { // don't open a chest while pushing
 
     if (!big_chest || dungeon_equipment->has_big_key()) {
       ResourceManager::get_sound("chest_open")->play();
@@ -252,6 +279,15 @@ void Chest::action_key_pressed(void) {
       ResourceManager::get_sound("wrong")->play();
       zsdx->game->show_message("_big_key_required");
     }
+  }
+}
+
+/**
+ * Displays the entity on the map.
+ */
+void Chest::display_on_map(void) {
+  if (!is_hidden()) {
+    Detector::display_on_map();
   }
 }
 

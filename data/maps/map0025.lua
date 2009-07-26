@@ -2,6 +2,15 @@
 -- Dungeon 1 B1 script --
 -------------------------
 
+function event_map_started()
+  if not savegame_get_boolean(57) then
+    chest_set_hidden("boss_key_chest", true)
+  end
+
+  -- temporary
+  door_set_open("stairs_door", true)
+end
+
 function event_enemy_dead(enemy_name)
   if enemies_are_dead("boss_key_battle") and chest_is_hidden("boss_key_chest") then
     move_camera(104, 72, 15)
@@ -19,9 +28,6 @@ function boss_key_timer()
 end
 
 -- temporary
-function event_map_started()
-  door_set_open("stairs_door", true)
-end
 function event_switch_enabled(switch_name)
   door_open("miniboss_door")
 end

@@ -487,8 +487,9 @@ void Enemy::hurt(MapEntity *source) {
   being_hurt = true;
   invulnerable = true;
   vulnerable_again_date = SDL_GetTicks() + 700;
-  can_attack = false;
-  can_attack_again_date = vulnerable_again_date;
+
+  //can_attack = false;
+  //can_attack_again_date = vulnerable_again_date;
 
   // graphics and sounds
   get_sprite()->set_current_animation("hurt");

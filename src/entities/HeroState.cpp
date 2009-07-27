@@ -253,19 +253,15 @@ void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int
 void Hero::update_conveyor_belt(void) {
 
   get_movement()->update();
-  if (conveyor_belt_snapping) {
-    TargetMovement *movement = (TargetMovement*) get_movement();
-    if (movement->is_finished()) {
-      clear_movement();
-      conveyor_belt_snapping = false;
-      std::string path = "  ";
-      path[0] = path[1] = '0' + current_conveyor_belt->get_sprite()->get_current_direction();
-      set_movement(new PathMovement(path, walking_speed * 2 / 3, false, true, false));
-    }
+  if (conveyor_belt_snapping && get_movement()->is_finished()) {
+    clear_movement();
+    conveyor_belt_snapping = false;
+    std::string path = "  ";
+    path[0] = path[1] = '0' + current_conveyor_belt->get_sprite()->get_current_direction();
+    set_movement(new PathMovement(path, walking_speed * 2 / 3, false, true, false));
   }
   else {
-    PathMovement *movement = (PathMovement*) get_movement();
-    if (movement->is_finished() || !on_conveyor_belt) {
+    if (get_movement()->is_finished() || !on_conveyor_belt) {
 
       this->current_conveyor_belt = NULL;
       clear_movement();
@@ -791,15 +787,10 @@ void Hero::update_grabbing_pulling(void) {
  */
 void Hero::update_moving_grabbed_entity(void) {
 
-  if (is_moving_grabbed_entity()) {
-
-    PathMovement *movement = (PathMovement*) get_movement();
-
-    // detect when the hero movement is finished
-    // because the hero has covered 16 pixels or has reached an obstacle
-    if (movement->is_finished()) {
-      stop_moving_grabbed_entity();
-    }
+  // detect when the hero movement is finished
+  // because the hero has covered 16 pixels or has reached an obstacle
+  if (is_moving_grabbed_entity() && get_movement()->is_finished()) {
+    stop_moving_grabbed_entity();
   }
 }
 
@@ -1109,10 +1100,8 @@ void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
  */
 void Hero::update_hurt(void) {
 
-  StraightMovement *movement = (StraightMovement*) get_movement();
-  movement->update();
-
-  if (movement->is_finished()) {
+  get_movement()->update();
+  if (get_movement()->is_finished()) {
 
     clear_movement();
     set_movement(normal_movement);
@@ -1378,10 +1367,10 @@ void Hero::start_returning_to_solid_ground(const SDL_Rect &target) {
  */
 void Hero::update_returning_to_solid_ground(void) {
 
-  TargetMovement *movement = (TargetMovement*) get_movement();
-  movement->update();
+  // the current movement is an instance of TargetMovement
+  get_movement()->update();
 
-  if (movement->is_finished()) {
+  if (get_movement()->is_finished()) {
     clear_movement();
     set_movement(normal_movement);
     blink();

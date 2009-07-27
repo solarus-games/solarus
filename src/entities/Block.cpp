@@ -171,7 +171,7 @@ void Block::update(void) {
     // determine whether the movement is finished
     bool finished = false;
 
-    if (((FollowMovement*) movement)->is_finished()) {
+    if (movement->is_finished()) {
       // the block was just stopped by an obstacle: notify the hero
       hero->grabbed_entity_collision();
       finished = true;

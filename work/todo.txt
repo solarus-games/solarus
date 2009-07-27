@@ -22,7 +22,6 @@ Feature requests :
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Remplacer "clé" par "clef" ?
-- Utiliser de l'héritage pour Movement::is_finished, cela évitera des cast
 
 
 Bugs :
@@ -43,8 +42,6 @@ Bugs :
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - petite clé du hud : reprendre la même que dans le hud de alttp
-- sensor : épée qui charge annulée, vase porté buggue à cause du freeze
-- portes : la porte qui se referme n'affiche pas d'animation
 
 
 A venir :
@@ -52,20 +49,17 @@ A venir :
 - Intro
 - Boss
 - Prochains types d'entités :
-  - portes
-  - tapis roulants
   - piquants
   - choux-péteurs
   - blocs violets
 - Lanterne
+- Cryptage
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 
 pour la démo :
 - GreenSoldier : garde vert normal (intelligent avec longue épée)
-- Tentacle : truc à tentacules
-- Bubble
 
 ensuite (beaucoup faits dans MC) :
 - Octorok
@@ -115,8 +109,8 @@ Ancien planning prévisionnel
 [ok] Dimanche 9 novembre 2008 : scripts et PNJ
 [ok] Dimanche 16 novembre 2008 : maison des rubis
 [ok]Dimanche 23 novembre 2008 : autres maisons et grottes
-Dimanche 30 novembre 2008 : donjon 1 commencé ; annonce de la démo si on est dans les temps
-Dimanche 7 décembre 2008 : combats (autres types d'ennemis), objets à finir (bombes, croissants, flacon...)
+[ok] Dimanche 30 novembre 2008 : donjon 1 commencé ; annonce de la démo si on est dans les temps
+[ok] Dimanche 7 décembre 2008 : combats (autres types d'ennemis), objets à finir (bombes, croissants, flacon...)
 Dimanche 14 décembre 2008 : donjon 1 fini, démo finie, début des tests
 Dimanche 21 décembre 2008 : cryptage des fichiers
 Mercredi 24 décembre 2008 : sortie de la démo jusqu'à la fin du donjon 1

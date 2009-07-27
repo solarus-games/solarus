@@ -288,6 +288,15 @@ void Movement::stop(void) {
 }
 
 /**
+ * Returns whether this movement is finished.
+ * You can redefine this function if your movement has an end.
+ * @return true if this movement is finished
+ */
+bool Movement::is_finished(void) {
+  return false;
+}
+
+/**
  * Changes the direction of the movement vector, keeping the same speed.
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
  * Warning: if x_speed and y_speed are both equal to zero, this function

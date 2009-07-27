@@ -53,4 +53,6 @@ booleans:
 60	dungeon 1 B1: door with big key lock
 61	dungeon 1 2F: boss key door
 62	dungeon 1: mini boss
+63	dungeon 1: boss
+64	dungeon 1: boss heart container
 

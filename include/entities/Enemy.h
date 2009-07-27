@@ -39,9 +39,11 @@ class Enemy: public Detector {
    * Types of enemies.
    */
   enum EnemyType {
-    SIMPLE_GREEN_SOLDIER,
+    SIMPLE_GREEN_SOLDIER = 0,
     BUBBLE,
     TENTACLE,
+
+    PAPILLAUSOR_KING = 1000,
   };
 
   /**

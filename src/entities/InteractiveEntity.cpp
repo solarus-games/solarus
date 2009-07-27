@@ -281,16 +281,7 @@ void InteractiveEntity::update(void) {
 
   if (subtype == NON_PLAYING_CHARACTER && get_movement() != NULL) {
 
-    bool finished = false;
-    const std::string &animation = get_sprite()->get_current_animation();
-    if (animation == "walking") {
-      finished = ((PathMovement*) get_movement())->is_finished();
-    }
-    else if (animation == "jumping") {
-      finished = ((JumpMovement*) get_movement())->is_finished();
-    }
-
-    if (finished) {
+    if (get_movement()->is_finished()) {
       get_sprite()->set_current_animation("stopped");
       clear_movement();
       map->get_script()->event_npc_movement_finished(get_name());

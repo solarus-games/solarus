@@ -227,18 +227,15 @@ void CarriedItem::update(void) {
   MapEntity::update();
 
   // when the hero finishes lifting the item, start carrying it
-  if (is_lifting) {
-    PixelMovement *movement = (PixelMovement*) get_movement();
-    if (movement->is_finished()) {
-      is_lifting = false;
+  if (is_lifting && get_movement()->is_finished()) {
+    is_lifting = false;
 
-      // make the hero carry the item
-      hero->start_carrying();
+    // make the hero carry the item
+    hero->start_carrying();
 
-      // make the item follow the hero
-      clear_movement();
-      set_movement(new FollowMovement(hero, 0, -18, false));
-    }
+    // make the item follow the hero
+    clear_movement();
+    set_movement(new FollowMovement(hero, 0, -18, false));
   }
 
   // when the item has finished flying, destroy it

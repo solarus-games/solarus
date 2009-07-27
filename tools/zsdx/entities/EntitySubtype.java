@@ -33,4 +33,10 @@ public interface EntitySubtype {
      * @return the id
      */
     public int getId();
+
+    /**
+     * Returns the index of this value in the enumeration.
+     * @return the index
+     */
+    public int ordinal();
 }

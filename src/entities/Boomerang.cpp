@@ -254,11 +254,8 @@ void Boomerang::update(void) {
       go_back();
     }
   }
-  else {
-    TargetMovement *movement = (TargetMovement*) get_movement();
-    if (movement->is_finished()) {
-      get_map()->get_entities()->remove_entity(this);
-    }
+  else if (get_movement()->is_finished()) {
+    get_map()->get_entities()->remove_entity(this);
   }
 }
 

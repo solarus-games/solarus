@@ -32,7 +32,7 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
 	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
 
-	null,
+	new EntityImageDescription("bosses.png", 0, 0, 176, 128),
     };
 
     /**
@@ -89,15 +89,20 @@ public class Enemy extends MapEntity {
 	public int getId() {
 	    // make the bosses have an id greater than 1000
 	    int index = ordinal();
-	    if (index < PAPILLAUSOR_KING.ordinal()) {
+	    int firstBossIndex = PAPILLAUSOR_KING.ordinal();
+	    if (index < firstBossIndex) {
 		return index;
 	    }
 	    
-	    return index + 1000 - PAPILLAUSOR_KING.ordinal();
+	    return index - firstBossIndex + 1000;
 	}
 
 	public static Subtype get(int id) {
-	    return values()[id];
+	  if (id >= PAPILLAUSOR_KING.getId()) {
+	    int firstBossIndex = PAPILLAUSOR_KING.ordinal();
+            id = id - 1000 + firstBossIndex;
+	  }
+	  return values()[id];
 	}
     }
 
@@ -129,7 +134,7 @@ public class Enemy extends MapEntity {
 	super(map, 16, 16);
 
 	setDirection(3);
-	Dimension size = sizes[getSubtypeId()];
+	Dimension size = sizes[getSubtype().ordinal()];
 	setSizeImpl(size.width, size.height);
     }
 
@@ -138,7 +143,7 @@ public class Enemy extends MapEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-	return origins[getSubtypeId()];
+	return origins[getSubtype().ordinal()];
     }
 
     /**
@@ -164,7 +169,7 @@ public class Enemy extends MapEntity {
     public void setSubtype(EntitySubtype subtype) throws MapException {
 	super.setSubtype(subtype);
 
-	Dimension size = sizes[getSubtypeId()];
+	Dimension size = sizes[getSubtype().ordinal()];
 	setSizeImpl(size.width, size.height);
 
 	setChanged();
@@ -175,7 +180,7 @@ public class Enemy extends MapEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	currentImageDescription = currentImageDescriptions[getSubtypeId()];
+	currentImageDescription = currentImageDescriptions[getSubtype().ordinal()];
     }
 
     /**

@@ -35,6 +35,7 @@
 #include "enemies/SimpleGreenSoldier.h"
 #include "enemies/Bubble.h"
 #include "enemies/Tentacle.h"
+#include "enemies/PapillausorKing.h"
 
 /**
  * Creates an enemy.
@@ -98,6 +99,7 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
   case SIMPLE_GREEN_SOLDIER: enemy = new SimpleGreenSoldier(params); break;
   case BUBBLE:               enemy = new Bubble(params);             break;
   case TENTACLE:             enemy = new Tentacle(params);           break;
+  case PAPILLAUSOR_KING:     enemy = new PapillausorKing(params);    break;
 
   default:
     DIE("Unknown enemy type '" << type << "'");
@@ -254,8 +256,7 @@ void Enemy::update(void) {
   if (being_hurt) {
     
     if (pushed_back_when_hurt) {
-      StraightMovement *hurt_movement = (StraightMovement*) get_movement();
-      if (hurt_movement->is_finished()) {
+      if (get_movement()->is_finished()) {
 
 	being_hurt = false;
 
@@ -267,8 +268,8 @@ void Enemy::update(void) {
 	  get_sprite()->set_current_animation("immobilized");
 	}
 	else {
+	  clear_movement();
 	  set_movement(normal_movement); // restore the previous movement
-	  delete hurt_movement;
 	  restart();
 	}
       }

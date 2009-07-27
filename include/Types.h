@@ -176,5 +176,6 @@ class PathFinding;
 class SimpleGreenSoldier;
 class Bubble;
 class Tentacle;
+class PapillausorKing;
 
 #endif

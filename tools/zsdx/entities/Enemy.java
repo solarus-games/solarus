@@ -30,7 +30,9 @@ public class Enemy extends MapEntity {
     public static final EntityImageDescription[] generalImageDescriptions = {
 	new EntityImageDescription("enemies.png", 0, 4, 16, 16),
 	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
-	new EntityImageDescription("enemies.png", 32, 0, 16, 16)
+	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
+
+	null,
     };
 
     /**
@@ -39,7 +41,9 @@ public class Enemy extends MapEntity {
     public static final EntityImageDescription[] currentImageDescriptions = {
 	new EntityImageDescription("enemies.png", 0, 0, 16, 32),
 	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
-	new EntityImageDescription("enemies.png", 32, 0, 16, 16)
+	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
+	
+	new EntityImageDescription("bosses.png", 0, 0, 176, 128),
     };
 
     /**
@@ -48,7 +52,9 @@ public class Enemy extends MapEntity {
     private static final Point[] origins = {
 	new Point(8, 29),
 	new Point(8, 8),
-	new Point(8, 13)
+	new Point(8, 13),
+	
+	new Point(88, 64),
     };
 
     /**
@@ -57,7 +63,9 @@ public class Enemy extends MapEntity {
     private static final Dimension[] sizes = {
 	new Dimension(16, 32),
 	new Dimension(16, 16),
-	new Dimension(16, 16)
+	new Dimension(16, 16),
+	
+	new Dimension(176, 128),
     };
 
     /**
@@ -66,16 +74,26 @@ public class Enemy extends MapEntity {
     public enum Subtype implements EntitySubtype {
 	SIMPLE_GREEN_SOLDIER,
 	BUBBLE,
-	TENTACLE;
+	TENTACLE,
+	
+	PAPILLAUSOR_KING;
 
 	public static final String[] humanNames = {
 	    "Simple green soldier",
 	    "Bubble",
-	    "Tentacle"
+	    "Tentacle",
+	    
+	    "Papillausor King",
 	};
 
 	public int getId() {
-	    return ordinal();
+	    // make the bosses have an id greater than 1000
+	    int index = ordinal();
+	    if (index < PAPILLAUSOR_KING.ordinal()) {
+		return index;
+	    }
+	    
+	    return index + 1000 - PAPILLAUSOR_KING.ordinal();
 	}
 
 	public static Subtype get(int id) {

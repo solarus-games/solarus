@@ -37,7 +37,6 @@ class MapScript {
   Map *map;                   /**< the map associated to this script */
   lua_State* context;         /**< the execution context of the Lua script */
   std::list<Timer*> timers;   /**< the timers currently running for this script */
-  bool suspending_game;       /**< indicates that this script is currently suspending the game */
   bool just_freezed;          /**< indicates that this script has just freezed the hero */
 
   bool call_lua_function(const std::string &function_name);
@@ -120,7 +119,6 @@ class MapScript {
   void register_c_functions(void);
   void add_timer(Timer *timer);
   void remove_timer(const std::string &callback_name);
-  void set_suspending_game(bool suspending_game);
 
  public:
 
@@ -132,7 +130,6 @@ class MapScript {
   // update functions
   void update(void);
   void set_suspended(bool suspended);
-  bool is_suspending_game();
 
   // C++ functions that call script functions
   void event_map_started(void);

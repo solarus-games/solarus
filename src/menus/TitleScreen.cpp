@@ -107,7 +107,7 @@ void TitleScreen::update(void) {
 
 /**
  * Displays the title screen.
- * @param destination surface the surface to draw
+ * @param destination_surface the surface to draw
  */
 void TitleScreen::display(SDL_Surface *destination_surface) {
 

@@ -35,7 +35,7 @@
 #include "enemies/SimpleGreenSoldier.h"
 #include "enemies/Bubble.h"
 #include "enemies/Tentacle.h"
-#include "enemies/PapillausorKing.h"
+#include "enemies/PapillosaurKing.h"
 
 /**
  * Creates an enemy.
@@ -99,7 +99,7 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
   case SIMPLE_GREEN_SOLDIER: enemy = new SimpleGreenSoldier(params); break;
   case BUBBLE:               enemy = new Bubble(params);             break;
   case TENTACLE:             enemy = new Tentacle(params);           break;
-  case PAPILLAUSOR_KING:     enemy = new PapillausorKing(params);    break;
+  case PAPILLOSAUR_KING:     enemy = new PapillosaurKing(params);    break;
 
   default:
     DIE("Unknown enemy type '" << type << "'");

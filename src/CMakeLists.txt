@@ -141,7 +141,7 @@ add_executable (zsdx
   enemies/SimpleGreenSoldier.cpp
   enemies/Bubble.cpp
   enemies/Tentacle.cpp
-  enemies/PapillausorKing.cpp
+  enemies/PapillosaurKing.cpp
 )
 
 if (NOT WIN32)

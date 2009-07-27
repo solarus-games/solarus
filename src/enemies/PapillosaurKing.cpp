@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "enemies/PapillausorKing.h"
+#include "enemies/PapillosaurKing.h"
 #include "movements/CollisionMovement.h"
 #include "Random.h"
 #include "Sprite.h"
@@ -23,7 +23,7 @@
  * Constructor.
  * @param params name and position of the enemy to create
  */
-PapillausorKing::PapillausorKing(const ConstructionParameters &params):
+PapillosaurKing::PapillosaurKing(const ConstructionParameters &params):
   Enemy(params) {
 
 }
@@ -31,14 +31,14 @@ PapillausorKing::PapillausorKing(const ConstructionParameters &params):
 /**
  * Destructor.
  */
-PapillausorKing::~PapillausorKing(void) {
+PapillosaurKing::~PapillosaurKing(void) {
 
 }
 
 /**
  * Initializes the enemy.
  */
-void PapillausorKing::initialize(void) {
+void PapillosaurKing::initialize(void) {
 
   // attack/defense features
   set_damage(2, 0);
@@ -46,8 +46,8 @@ void PapillausorKing::initialize(void) {
   minimum_shield_needed = 0;
 
   // sprite
-  create_sprite("enemies/boss_papillausor");
-  set_size(176, 128);
+  create_sprite("enemies/boss_papillosaurking");
+  set_size(176, 96);
   set_origin(88, 64);
 
   // vulnerabilities
@@ -62,7 +62,7 @@ void PapillausorKing::initialize(void) {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
-void PapillausorKing::restart(void) {
+void PapillosaurKing::restart(void) {
   Enemy::restart();
 
 }

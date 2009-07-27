@@ -30,6 +30,7 @@
 /**
  * Creates a game over sequence.
  * @param game the game
+ * @param hero_direction direction of the hero sprite before game over
  */
 GameoverSequence::GameoverSequence(Game *game, int hero_direction):
   game(game), music_id(game->get_current_music_id()), state(WAITING_START) {

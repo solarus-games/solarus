@@ -43,7 +43,7 @@ class Enemy: public Detector {
     BUBBLE,
     TENTACLE,
 
-    PAPILLAUSOR_KING = 1000,
+    PAPILLOSAUR_KING = 1000,
   };
 
   /**

@@ -20,7 +20,6 @@
 #include "FileTools.h"
 #include <fstream>
 #include <sstream>
-using namespace std;
 
 /**
  * Loads the animations of a sprite from a file.
@@ -29,7 +28,7 @@ using namespace std;
 SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 
   // compute the file name
-  string file_name = "sprites/" + id + ".zsd";
+  std::string file_name = "sprites/" + id + ".zsd";
 
   // open the file
   std::ifstream sprite_file(FileTools::data_file_add_prefix(file_name).c_str());
@@ -38,11 +37,11 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
   }
 
   // read the file
-  string line;
+  std::string line;
 
   SDL_Rect *positions_in_src;
   SpriteAnimationDirection **directions;
-  string name, image_file_name;
+  std::string name, image_file_name;
   int nb_directions, nb_frames, x_origin, y_origin, loop_on_frame;
   int x, y, width, height, rows, columns;
   Uint32 frame_delay;
@@ -140,7 +139,7 @@ void SpriteAnimationSet::set_map(Map *map) {
  * @param animation_name name of the animation to get
  * @return the specified animation
  */
-SpriteAnimation * SpriteAnimationSet::get_animation(const string &animation_name) {
+SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) {
   return animations[animation_name];
 }
 
@@ -148,7 +147,7 @@ SpriteAnimation * SpriteAnimationSet::get_animation(const string &animation_name
  * Returns the name of the default animation, i.e. the first one.
  * @return the name of the default animation
  */
-const string& SpriteAnimationSet::get_default_animation(void) {
+const std::string& SpriteAnimationSet::get_default_animation(void) {
   return default_animation_name;
 }
 

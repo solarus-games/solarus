@@ -33,7 +33,6 @@ PixelMovement::PixelMovement(int nb_vectors, Uint32 delay,
 
 /**
  * Creates a pixel movement object.
- * @param map the map (can be NULL if with_collisions is false)
  * @param translation_vectors the succession of translations
  * composing this movement (each element of the array represents
  * a translation vector in pixels; only the fields x and y of the

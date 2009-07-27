@@ -17,13 +17,12 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
-using std::string;
 
 /**
  * Creates a savegame with a specified file name, existing or not.
  * @param file_name name of the savegame file (can be a new file)
  */
-Savegame::Savegame(const string &file_name) {
+Savegame::Savegame(const std::string &file_name) {
 
   this->file_name = file_name;
 
@@ -140,7 +139,7 @@ void Savegame::save(void) {
  * Returns the name of the file where the data is saved.
  * @return the file name of this savegame
  */
-const string& Savegame::get_file_name(void) {
+const std::string& Savegame::get_file_name(void) {
   return file_name;
 }
 
@@ -166,7 +165,7 @@ DungeonEquipment * Savegame::get_dungeon_equipment(void) {
  * (see enum StringIndex for their definition)
  * @return the string value saved at this index
  */
-const string Savegame::get_string(int index) {
+const std::string Savegame::get_string(int index) {
   return saved_data.strings[index];
 }
 
@@ -176,7 +175,8 @@ const string Savegame::get_string(int index) {
  * (see enum StringIndex for their definition)
  * @param value the string value to store at this index
  */
-void Savegame::set_string(int index, const string &value) {
+void Savegame::set_string(int index, const std::string &value) {
+
   strncpy(saved_data.strings[index], value.c_str(), 63);
 }
 

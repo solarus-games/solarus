@@ -22,7 +22,6 @@
 #include "SpriteAnimationSet.h"
 #include "Map.h"
 #include "Geometry.h"
-using namespace std;
 
 const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   // can_be_obstacle, can_detect_entities, can_be_displayed, is_displayed_in_y_order
@@ -95,7 +94,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * @param width width of the entity
  * @param height height of the entity
  */
-MapEntity::MapEntity(const string &name, int direction, Layer layer,
+MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
   map(NULL), layer(layer), name(name), direction(direction), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
@@ -450,7 +449,7 @@ const SDL_Rect MapEntity::get_center_point(void) {
  * Returns the name of the entity (if any).
  * @return the name of the entity, or an empty string if the entity is not identifiable
  */
-const string& MapEntity::get_name(void) const {
+const std::string& MapEntity::get_name(void) const {
   return name;
 }
 
@@ -889,7 +888,7 @@ void MapEntity::collision_with_teletransporter(Teletransporter *teletransporter,
 
 /**
  * This function is called when a conveyor belt detects a collision with this entity.
- * @param conveyor belt a conveyor belt
+ * @param conveyor_belt a conveyor belt
  * @param dx direction of the x move in pixels (0, 1 or -1)
  * @param dy direction of the y move in pixels (0, 1 or -1)
  */

@@ -338,7 +338,7 @@ bool CarriedItem::is_hole_obstacle(void) {
 
 /**
  * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
- * @param block a crystal switch block raised
+ * @param raised_block a crystal switch block raised
  * @return false 
  */
 bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {

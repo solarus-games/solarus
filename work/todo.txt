@@ -22,6 +22,7 @@ Feature requests :
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Remplacer "clé" par "clef" ?
+- Faire une classe HeroAnimations ou HeroSprites
 
 
 Bugs :

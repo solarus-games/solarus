@@ -23,8 +23,7 @@
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
- * @param width width of the conveyor belt (the pattern can be repeated)
- * @param height height of the conveyor (the pattern can be repeated)
+ * @param direction direction of the conveyor belt
  */
 ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int direction):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, 16, 16) {

@@ -28,10 +28,9 @@
  * @param layer layer of the entity
  * @param x x position of the entity's rectangle
  * @param y y position of the entity's rectangle
- * @param subtype the subtype of switch
- * @param needs_block true if a block is required to enabled this switch
- * @param disable_when_leaving true to disable the switch when the hero or 
- * the block leaves it
+ * @param width width of the entity's rectangle 
+ * @param height height of the entity's rectangle 
+ * @param subtype the subtype of sensor
  */
 Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 	       int width, int height, Subtype subtype):

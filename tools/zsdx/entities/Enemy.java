@@ -32,7 +32,7 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
 	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
 
-	new EntityImageDescription("bosses.png", 0, 0, 176, 128),
+	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
     };
 
     /**
@@ -43,7 +43,7 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
 	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
 	
-	new EntityImageDescription("bosses.png", 0, 0, 176, 128),
+	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
     };
 
     /**

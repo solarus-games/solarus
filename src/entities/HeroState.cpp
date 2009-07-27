@@ -201,7 +201,7 @@ void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int 
 
 /**
  * This function is called when a conveyor belt detects a collision with this entity.
- * @param conveyor belt a conveyor belt
+ * @param conveyor_belt a conveyor belt
  * @param dx direction of the x move in pixels (0, 1 or -1)
  * @param dy direction of the y move in pixels (0, 1 or -1)
  */

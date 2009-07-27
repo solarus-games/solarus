@@ -215,7 +215,7 @@ bool Hero::is_sensor_obstacle(Sensor *sensor) {
 
 /**
  * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
- * @param block a crystal switch block raised
+ * @param raised_block a crystal switch block raised
  * @return true if the raised block is currently an obstacle for this entity
  */
 bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {

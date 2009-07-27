@@ -23,7 +23,7 @@
 /**
  * A butterfly boss from Newlink.
  */
-class PapillausorKing: public Enemy {
+class PapillosaurKing: public Enemy {
 
  protected:
 
@@ -32,8 +32,8 @@ class PapillausorKing: public Enemy {
 
  public:
 
-  PapillausorKing(const ConstructionParameters &params);
-  ~PapillausorKing(void);
+  PapillosaurKing(const ConstructionParameters &params);
+  ~PapillosaurKing(void);
 
 };
 

@@ -45,9 +45,9 @@ const SDL_Rect PathFinding::transition_collision_boxes[] = {
 /**
  * Constructor.
  * @param map the map
- * @param source the entity that will move from the starting point to the target
+ * @param source_entity the entity that will move from the starting point to the target
  * (its position must be a 16*16 rectangle aligned on the map grid)
- * @param target the target entity (its size must be 16*16)
+ * @param target_entity the target entity (its size must be 16*16)
  */
 PathFinding::PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_entity):
   map(map), source_entity(source_entity), target_entity(target_entity) {

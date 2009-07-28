@@ -156,7 +156,7 @@ void InventoryItem::start(Game *game) {
 	  finished = true;
 	}
 	else {
-	  hero->set_animation_boomerang();
+	  hero->start_boomerang();
 	  this->direction_pressed = game->get_controls()->get_arrows_direction();
 	}
 	break;

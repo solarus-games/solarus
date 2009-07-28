@@ -73,32 +73,13 @@ class Hero: public MapEntity {
 
  private:
 
-  // equipment
-  Equipment *equipment;          /**< equipment of the player */
-
-  Sprite *tunic_sprite;          /**< sprite of the current tunic */
-  Sprite *sword_sprite;          /**< current sword sprite */
-  Sprite *sword_stars_sprite;    /**< stars running along the sword when the sword is loading */
-  Sprite *shield_sprite;         /**< current shield sprite */
-  Sprite *shadow_sprite;         /**< shadow of the hero, only in state JUMPING (in other states,
-			          * the shadow is with the tunic sprite) */
-  Sprite *ground_sprite;         /**< ground displayed under the hero (e.g. grass or shallow water) */
-
-  Sound *sword_sound;            /**< sound of the current sword */
-  Sound *ground_sound;           /**< sound of the current ground displayed under the hero */
-
-  static const SpriteAnimationSetId tunic_sprite_ids[];       /**< name of each tunic sprite */
-  static const SpriteAnimationSetId sword_sprite_ids[];       /**< name of each sword sprite */
-  static const SpriteAnimationSetId sword_stars_sprite_ids[]; /**< name of each sword stars sprite */
-  static const SpriteAnimationSetId shield_sprite_ids[];      /**< name of each shield sprite */
-  static const SpriteAnimationSetId ground_sprite_ids[];      /**< name of each ground sprite */
-  static const SoundId sword_sound_ids[];                     /**< name of each sword sound */
-  static const SoundId ground_sound_ids[];                    /**< name of each ground sound */
+  // sprites
+  Equipment *equipment;                                       /**< equipment of the player */
+  HeroSprites *sprites;                                       /**< the hero's sprites */
 
   // movement
   PlayerMovement *normal_movement;
   static const int walking_speed;                             /**< speed of the player movement */
-  static const int animation_directions[];                    /**< direction of the animation for each arrow key combination */
   bool move_tried;                                            /**< indicates that the hero just tried to move */
   int old_x;                                                  /**< x position of the hero before the last move try */
   int old_y;                                                  /**< y position of the hero before the last move try */
@@ -106,9 +87,6 @@ class Hero: public MapEntity {
   // state
   State state;                   /**< current state of the hero (considered only when the game is not suspended) */
   Detector *facing_entity;       /**< the entity just in front of the hero */
-  int animation_direction_saved; /**< direction of the hero's sprites, saved before
-				  * showing a sprite animation having only one direction */
-  Uint32 end_blink_date;         /**< when the hero's sprites stop blinking */
 
   int counter;                   /**< counter incremented every 100 ms in certain conditions:
 				  * - in state FREE: counts for how long the hero is trying to walk
@@ -129,9 +107,6 @@ class Hero: public MapEntity {
   bool conveyor_belt_snapping;   /**< in state CONVEYOR_BELT, indicates that the hero is currently moving towards the
 				  * center of a conveyor belt, before following the conveyor belt's direction */
   ConveyorBelt *current_conveyor_belt; /**< the current conveyor belt in state CONVEYOR_BELT */
-
-  // walking
-  bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
 
   // sword loading
   bool sword_loaded;             /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
@@ -169,7 +144,6 @@ class Hero: public MapEntity {
 
   // update functions
   void update_position(void);
-  void update_sprites(void);
   void movement_just_changed(void);
 
   void try_snap_to_facing_entity(void);
@@ -185,7 +159,6 @@ class Hero: public MapEntity {
 
   void start_ground(void);
   void update_ground(void);
-  bool is_ground_visible(void);
 
   bool can_start_inventory_item(InventoryItemId item_id);
   void start_inventory_item(InventoryItemId item_id);
@@ -238,38 +211,16 @@ class Hero: public MapEntity {
   void start_returning_to_solid_ground(const SDL_Rect &target);
   void update_returning_to_solid_ground(void);
 
-  // animation of the sprites
-  bool is_direction_locked(void);
-  void stop_displaying_sword(void);
-  void blink(void);
-  void stop_blinking(void);
-
-  void set_animation_sword(void);
-  void set_animation_sword_tapping(void);
-  void set_animation_walking(void);
-  void set_animation_grabbing(void);
-  void set_animation_pulling(void);
-  void set_animation_pushing(void);
-  void set_animation_lifting(void);
-  void set_animation_jumping(void);
-  void set_animation_hurt(void);
-  void set_animation_plunging(void);
-  void set_animation_falling(void);
-
-  void save_animation_direction(void);
-  void restore_animation_direction(void);
-
-  bool is_visible(void);
-  bool is_sword_visible(void);
-  bool is_sword_stars_visible(void);
-  bool is_shield_visible(void);
-  bool is_shadow_visible(void);
-
  public:
 
   // creation and destruction
   Hero(Equipment *equipment);
   ~Hero(void);
+
+  // game loop
+  void update(void);
+  void display_on_map(void);
+  void set_suspended(bool suspended);
 
   // features
   EntityType get_type(void);
@@ -278,8 +229,11 @@ class Hero: public MapEntity {
   bool can_be_displayed(void);
   bool is_displayed_in_y_order(void);
 
-  void update(void);
-  void display_on_map(void);
+  // sprites
+  int get_animation_direction(void);
+  void set_animation_direction(int direction);
+  bool is_animation_finished(void);
+  void rebuild_equipment(void);
 
   // movement
   PlayerMovement * get_normal_movement(void);
@@ -292,6 +246,7 @@ class Hero: public MapEntity {
   void set_facing_entity(Detector *detector);
   bool is_facing_obstacle(void);
   void reset_movement(void);
+  bool is_direction_locked(void);
 
   // map
   void set_map(Map *map);
@@ -299,20 +254,11 @@ class Hero: public MapEntity {
   void place_on_destination_point(Map *map);
   void opening_transition_finished(void);
 
-  // sprites
-  int get_animation_direction(void);
-  void set_animation_direction(int direction);
-  void set_suspended(bool suspended);
-  void rebuild_equipment(void);
-  void restart_animation(void);
-  bool is_animation_finished(void);
-  void set_animation_stopped(void);
-  void set_animation_boomerang(void);
-
-
   // state of the hero
   State get_state(void);
+  Ground get_ground(void);
   void set_ground(Ground ground);
+  bool is_ground_visible(void);
   void start_free(void);
   void start_sword(void);
   bool is_grabbing_or_pulling(void);
@@ -321,14 +267,17 @@ class Hero: public MapEntity {
   void stop_moving_grabbed_entity(void);
   void start_lifting(DestructibleItem *item_to_lift);
   void start_carrying(void);
+  CarriedItem *get_lifted_item(void);
   void freeze(void);
   void unfreeze(void);
   void give_treasure(Treasure *treasure);
   void start_jumping(int direction, int length, bool with_collisions, bool with_sound);
   void start_jumping(int direction, int length, bool with_collisions, bool with_sound, Layer layer_after_jump);
+  int get_jump_y(void);
   void hurt(MapEntity *source, int life_points, int magic_points);
   void get_back_from_death(void);
   void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords);
+  void start_boomerang(void);
 
   // keys
   void key_pressed(Controls::GameKey key);

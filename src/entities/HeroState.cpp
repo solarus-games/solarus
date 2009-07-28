@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Hero.h"
+#include "entities/HeroSprites.h"
 #include "entities/CarriedItem.h"
 #include "entities/Teletransporter.h"
 #include "entities/MapEntities.h"
@@ -84,6 +85,14 @@ void Hero::set_ground(Ground ground) {
 }
 
 /**
+ * Returns the ground displayed under the hero.
+ * @return ground the ground under the hero
+ */
+Ground Hero::get_ground(void) {
+  return ground;
+}
+
+/**
  * Starts displaying the ground specified by the last set_ground() call.
  */
 void Hero::start_ground(void) {
@@ -92,8 +101,7 @@ void Hero::start_ground(void) {
 
   case GROUND_NORMAL:
     // normal ground: remove any special sprite displayed under the hero
-    delete ground_sprite;
-    ground_sprite = NULL;
+    sprites->destroy_ground();
     get_normal_movement()->set_moving_speed(walking_speed);
     break;
 
@@ -115,15 +123,10 @@ void Hero::start_ground(void) {
   case GROUND_GRASS:
     {
       // display a special sprite below the hero
-      ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
-
-      if (ground != GROUND_SHALLOW_WATER) {
-	ground_sprite->set_current_animation(walking ? "walking" : "stopped");
-      }
+      sprites->create_ground(ground);
 
       Uint32 now = SDL_GetTicks();
       next_ground_date = MAX(next_ground_date, now);
-      ground_sound = ResourceManager::get_sound(ground_sound_ids[ground - 1]);
     }
     break;
   }
@@ -140,8 +143,8 @@ void Hero::update_ground(void) {
 
     if (is_ground_visible()) {
       // time to play a sound
-      if (walking && state <= SWORD_LOADING) {
-	ground_sound->play();
+      if (sprites->is_walking() && state <= SWORD_LOADING) {
+	sprites->play_ground_sound();
       }
 
       next_ground_date = now + 300;
@@ -235,7 +238,7 @@ void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int
 	// set the state
 	this->current_conveyor_belt = conveyor_belt;
 	set_state(CONVEYOR_BELT);
-	set_animation_stopped();
+	sprites->set_animation_stopped();
 	zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
 	// set the movement
@@ -282,10 +285,10 @@ void Hero::start_free(void) {
 
   get_normal_movement()->compute_movement();
   if (get_normal_movement()->is_started()) {
-    set_animation_walking();
+    sprites->set_animation_walking();
   }
   else {
-    set_animation_stopped();
+    sprites->set_animation_stopped();
   }
 
   // to check the facing entity and the ground
@@ -307,8 +310,8 @@ void Hero::start_sword(void) {
     }
 
     set_state(SWORD_SWINGING);
-    sword_sound->play();
-    set_animation_sword();
+    sprites->play_sword_sound();
+    sprites->set_animation_sword();
   }
 }
 
@@ -334,7 +337,7 @@ bool Hero::can_start_sword(void) {
  */
 void Hero::update_sword_swinging(void) {
 
-  if (tunic_sprite->is_animation_finished()) {
+  if (sprites->is_animation_finished()) {
 
     // if the player is still pressing the sword key, start loading the sword
     if (zsdx->game->get_controls()->is_key_pressed(Controls::SWORD)) {
@@ -360,10 +363,10 @@ void Hero::start_sword_loading(void) {
   sword_loaded = false;
 
   if (get_normal_movement()->is_started()) {
-    set_animation_walking();
+    sprites->set_animation_walking();
   }
   else {
-    set_animation_stopped();
+    sprites->set_animation_stopped();
   }
 }
 
@@ -411,7 +414,7 @@ void Hero::update_sword_loading(void) {
  */
 void Hero::start_sword_tapping(void) {
   set_state(SWORD_TAPPING);
-  set_animation_sword_tapping();
+  sprites->set_animation_sword_tapping();
   next_hit_sound_date = SDL_GetTicks() + 100;
 }
 
@@ -429,14 +432,14 @@ void Hero::update_sword_tapping(void) {
       || !map->collision_with_obstacles(get_layer(), facing_point.x, facing_point.y, this)) {
     // the sword key has been released, the player has moved or the obstacle is gone
 
-    if (tunic_sprite->get_current_frame() >= 5) {
+    if (sprites->get_current_frame() >= 5) {
       // stop tapping the wall, go back to state SWORD_LOADING
       start_sword_loading();
     }
   }
   else {
     Uint32 now = SDL_GetTicks();
-    if (tunic_sprite->get_current_frame() == 3 && now >= next_hit_sound_date) {
+    if (sprites->get_current_frame() == 3 && now >= next_hit_sound_date) {
       ResourceManager::get_sound("sword_hit")->play();
       next_hit_sound_date = now + 100;
     }
@@ -455,8 +458,16 @@ void Hero::start_lifting(DestructibleItem *item_to_lift) {
 
   zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   set_state(LIFTING);
-  set_animation_lifting();
+  sprites->set_animation_lifting();
   set_facing_entity(NULL);
+}
+
+/**
+ * Returns the item the hero is currently lifting or carrying.
+ * @return the item the hero is currently lifting or carrying
+ */
+CarriedItem * Hero::get_lifted_item(void) {
+  return lifted_item;
 }
 
 /**
@@ -466,10 +477,10 @@ void Hero::start_carrying(void) {
   set_state(CARRYING);
 
   if (get_normal_movement()->is_started()) {
-    set_animation_walking();
+    sprites->set_animation_walking();
   }
   else {
-    set_animation_stopped();
+    sprites->set_animation_stopped();
   }
 
   // action icon "throw"
@@ -588,7 +599,7 @@ void Hero::destroy_carried_items(void) {
  */
 void Hero::start_pushing(void) {
   set_state(PUSHING);
-  set_animation_pushing();
+  sprites->set_animation_pushing();
   pushing_direction_mask = get_normal_movement()->get_direction_mask();
 }
 
@@ -661,7 +672,7 @@ void Hero::update_pushing(void) {
     // if the hero is pushing an obstacle
     if (state == PUSHING && !is_moving_grabbed_entity()) {
 
-      int straight_direction = get_animation_direction();
+      int straight_direction = sprites->get_animation_direction();
 
       // stop pushing if there is no more obstacle
       if (!is_facing_obstacle()) {
@@ -683,7 +694,7 @@ void Hero::update_pushing(void) {
 	if (facing_entity->moved_by_hero()) {
 
 	  string path = "  ";
-	  int direction = get_animation_direction();
+	  int direction = sprites->get_animation_direction();
 	  path[0] = path[1] = '0' + direction * 2;
 
 	  set_movement(new PathMovement(path, 8, false, true, false));
@@ -700,9 +711,9 @@ void Hero::update_pushing(void) {
  * the entity he is facing (if any)
  */
 void Hero::start_grabbing(void) {
-  stop_displaying_sword();
+  sprites->stop_displaying_sword();
   set_state(GRABBING);
-  set_animation_grabbing();
+  sprites->set_animation_grabbing();
   grabbed_entity = NULL;
 }
 
@@ -711,7 +722,7 @@ void Hero::start_grabbing(void) {
  */
 void Hero::start_pulling(void) {
   set_state(PULLING);
-  set_animation_pulling();
+  sprites->set_animation_pulling();
 }
 
 /**
@@ -748,7 +759,7 @@ void Hero::update_grabbing_pulling(void) {
   // the hero is pulling an obstacle
   if (state == PULLING && !is_moving_grabbed_entity()) {
 
-    int opposite_direction = (get_animation_direction() + 2) % 4;
+    int opposite_direction = (sprites->get_animation_direction() + 2) % 4;
 
     // stop pulling the obstacle if the player changes his direction
     if (get_movement_direction() != opposite_direction * 90) {
@@ -771,7 +782,7 @@ void Hero::update_grabbing_pulling(void) {
       if (facing_entity->moved_by_hero()) {
 
 	string path = "  ";
-	int opposite_direction = (get_animation_direction() + 2) % 4;
+	int opposite_direction = (sprites->get_animation_direction() + 2) % 4;
 	path[0] = path[1] = '0' + opposite_direction * 2;
 
 	set_movement(new PathMovement(path, 8, false, true, false));
@@ -819,7 +830,7 @@ void Hero::grabbed_entity_collision(void) {
   // the hero has moved one pixel too much
   // because he moved before the block, not knowing that the block would not follow him
 
-  int direction_back = get_animation_direction();
+  int direction_back = sprites->get_animation_direction();
 
   if (state == PUSHING) {
     direction_back = (direction_back + 2) % 4;
@@ -865,7 +876,7 @@ void Hero::stop_moving_grabbed_entity(void) {
     grabbed_entity = NULL;
 
     // stop the animation pushing if his direction changed
-    int straight_direction = get_animation_direction();
+    int straight_direction = sprites->get_animation_direction();
     if (get_movement_direction() != straight_direction * 90) {
       start_free();
     }
@@ -881,7 +892,7 @@ void Hero::stop_moving_grabbed_entity(void) {
  */
 void Hero::freeze(void) {
   get_normal_movement()->set_moving_enabled(false, false);
-  set_animation_stopped();
+  sprites->set_animation_stopped();
   destroy_carried_items();
   zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   set_state(FREEZED);
@@ -907,15 +918,14 @@ void Hero::give_treasure(Treasure *treasure) {
   set_state(BRANDISHING_TREASURE);
 
   // show the animation
-  save_animation_direction();
-  tunic_sprite->set_current_animation("brandish");
-  tunic_sprite->set_current_direction(0);
+  sprites->save_animation_direction();
+  sprites->set_animation_brandish();
 
   // the shield and the sword are not visible when the hero is brandishing a treasure
   if (equipment->has_shield()) {
-    shield_sprite->stop_animation();
+    sprites->stop_displaying_shield();
   }
-  stop_displaying_sword();
+  sprites->stop_displaying_sword();
 }
 
 /**
@@ -935,7 +945,7 @@ void Hero::update_treasure(void) {
 
     // restore the hero's state
     treasure = NULL;
-    restore_animation_direction();
+    sprites->restore_animation_direction();
     start_free();
   }
 }
@@ -967,13 +977,7 @@ void Hero::start_spin_attack(void) {
   ResourceManager::get_sound("sword_spin_attack_release")->play();
 
   // start the animation
-  tunic_sprite->set_current_animation("spin_attack");
-  sword_sprite->set_current_animation("spin_attack");
-  sword_stars_sprite->stop_animation();
-
-  if (equipment->has_shield()) {
-    shield_sprite->stop_animation(); // the shield is not visible during a spin attack
-  }
+  sprites->set_animation_spin_attack();
 }
 
 /**
@@ -982,7 +986,7 @@ void Hero::start_spin_attack(void) {
  */
 void Hero::update_spin_attack(void) {
 
-  if (tunic_sprite->is_animation_finished()) {
+  if (sprites->is_animation_finished()) {
     start_free();
   }
 }
@@ -1015,12 +1019,12 @@ void Hero::start_jumping(int direction, int length, bool with_collisions, bool w
     start_throwing();
   }
 
-  stop_displaying_sword();
+  sprites->stop_displaying_sword();
 
   // jump
   set_state(JUMPING);
   set_movement(new JumpMovement(direction, length, with_collisions));
-  set_animation_jumping();
+  sprites->set_animation_jumping();
 
   if (with_sound) {
     ResourceManager::get_sound("jump")->play();
@@ -1054,11 +1058,19 @@ void Hero::update_jumping(void) {
 }
 
 /**
+ * Returns the height of the current jump.
+ * @return the height of the current jump
+ */
+int Hero::get_jump_y(void) {
+  return jump_y;
+}
+
+/**
  * Returns whether the hero can be hurt.
  * @return true if the hero can be hurt in its current state
  */
 bool Hero::can_be_hurt(void) {
-  return state <= SPIN_ATTACK && !tunic_sprite->is_blinking() && get_movement() == normal_movement;
+  return state <= SPIN_ATTACK && !sprites->is_blinking() && get_movement() == normal_movement;
 }
 
 /**
@@ -1075,7 +1087,7 @@ void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
     if (state == LIFTING || state == CARRYING) {
       start_throwing();
     }
-    stop_displaying_sword();
+    sprites->stop_displaying_sword();
 
     ResourceManager::get_sound("hero_hurt")->play();
 
@@ -1086,9 +1098,9 @@ void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
       equipment->remove_magic(magic_points);
       ResourceManager::get_sound("magic_bar")->play();
     }
-    blink();
+    sprites->blink();
     set_state(HURT);
-    set_animation_hurt();
+    sprites->set_animation_hurt();
 
     double angle = source->get_vector_angle(this);
     set_movement(new StraightMovement(12, angle, 200));
@@ -1128,7 +1140,7 @@ bool Hero::can_start_gameover_sequence(void) {
  * This function is called when the hero was dead but saved by a fairy.
  */
 void Hero::get_back_from_death(void) {
-  blink();
+  sprites->blink();
   start_free();
   when_suspended = SDL_GetTicks();
 }
@@ -1174,7 +1186,7 @@ void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
 
   case ATTACK_SWORD:
     if (get_state() == SWORD_LOADING) {
-      stop_displaying_sword();
+      sprites->stop_displaying_sword();
       start_free();
     }
     break;
@@ -1190,7 +1202,7 @@ void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
 void Hero::start_deep_water(void) {
 
   // stop the sword
-  stop_displaying_sword();
+  sprites->stop_displaying_sword();
 
   // throw any carried item
   if (state == CARRYING) {
@@ -1218,7 +1230,7 @@ void Hero::start_deep_water(void) {
  */
 void Hero::start_plunging(void) {
   set_state(PLUNGING);
-  set_animation_plunging();
+  sprites->set_animation_plunging();
   ResourceManager::get_sound("splash")->play();
 }
 
@@ -1227,7 +1239,7 @@ void Hero::start_plunging(void) {
  */
 void Hero::update_plunging(void) {
 
-  if (tunic_sprite->is_animation_finished()) {
+  if (sprites->is_animation_finished()) {
 
     if (ground != GROUND_DEEP_WATER) {
       start_free();
@@ -1300,9 +1312,9 @@ void Hero::start_falling(void) {
     start_throwing();
   }
 
-  save_animation_direction();
+  sprites->save_animation_direction();
   set_state(FALLING);
-  set_animation_falling();
+  sprites->set_animation_falling();
   ResourceManager::get_sound("hero_falls")->play();
 }
 
@@ -1311,7 +1323,7 @@ void Hero::start_falling(void) {
  */
 void Hero::update_falling(void) {
 
-  if (tunic_sprite->is_animation_finished()) {
+  if (sprites->is_animation_finished()) {
 
     // the hero has just finished falling
     if (hole_teletransporter != NULL) {
@@ -1330,8 +1342,8 @@ void Hero::update_falling(void) {
       }
    
       equipment->remove_hearts(2);
-      set_animation_stopped();
-      restore_animation_direction();
+      sprites->set_animation_stopped();
+      sprites->restore_animation_direction();
     }
   }
   else if (get_movement() != normal_movement) {
@@ -1373,7 +1385,7 @@ void Hero::update_returning_to_solid_ground(void) {
   if (get_movement()->is_finished()) {
     clear_movement();
     set_movement(normal_movement);
-    blink();
+    sprites->blink();
     start_free();
   }
 }
@@ -1418,10 +1430,17 @@ void Hero::update_inventory_item(void) {
   }
 }
 
-
 /**
  * Updates the FREEZED state.
  */
 void Hero::update_freezed(void) {
+}
+
+/**
+ * Starts the boomerang animation.
+ * The state should be USING_INVENTORY_ITEM.
+ */
+void Hero::start_boomerang(void) {
+  sprites->set_animation_boomerang();
 }
 

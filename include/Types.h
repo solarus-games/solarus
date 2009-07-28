@@ -123,6 +123,7 @@ class TransitionScrolling;
 class MapEntities;
 class MapEntity;
 class Hero;
+class HeroSprites;
 class Tile;
 class DynamicTile;
 class Detector;

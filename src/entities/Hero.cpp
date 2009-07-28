@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Hero.h"
+#include "entities/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "entities/DestinationPoint.h"
 #include "entities/CarriedItem.h"
@@ -32,42 +33,16 @@
 #include "Map.h"
 #include "InventoryItem.h"
 
-/**
- * Indicates the direction of the hero's animation (from 0 to 3, or -1 for no change)
- * depending on the arrows pressed on the keyboard.
- */
-const int Hero::animation_directions[] = {
-  -1,  // none: no change
-  0,   // right
-  1,   // up
-  0,   // right + up: right
-  2,   // left
-  -1,  // left + right: no change
-  2,   // left + up: left
-  -1,  // left + right + up: no change
-  3,   // down
-  0,   // down + right: right
-  -1,  // down + up: no change
-  -1,  // down + right + up: no change
-  2,   // down + left: left
-  -1,  // down + left + right: no change
-  -1,  // down + left + up: no change
-  -1,  // down + left + right + up: no change
-};
-
 const int Hero::walking_speed = 9;
 
 /**
  * Constructor.
  */
 Hero::Hero(Equipment *equipment):
-  equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
-  sword_stars_sprite(NULL), shield_sprite(NULL), ground_sprite(NULL),
-  normal_movement(new PlayerMovement(walking_speed)),
+  equipment(equipment), normal_movement(new PlayerMovement(walking_speed)),
   state(FREE), facing_entity(NULL),
-  end_blink_date(0), counter(0), next_counter_date(0),
-  pushing_direction_mask(0xFFFF), grabbed_entity(NULL), 
-  on_conveyor_belt(false), walking(false), 
+  counter(0), next_counter_date(0), pushing_direction_mask(0xFFFF),
+  grabbed_entity(NULL), on_conveyor_belt(false), 
   lifted_item(NULL), thrown_item(NULL), treasure(NULL),
   ground(GROUND_NORMAL), next_ground_date(0),
   current_inventory_item(NULL), when_can_use_inventory_item(0) {
@@ -76,6 +51,7 @@ Hero::Hero(Equipment *equipment):
   set_origin(8, 13);
 
   set_movement(normal_movement);
+  sprites = new HeroSprites(this, equipment);
   rebuild_equipment();
 
   last_solid_ground_coords.x = 0;
@@ -86,13 +62,7 @@ Hero::Hero(Equipment *equipment):
  * Destructor.
  */
 Hero::~Hero(void) {
-  delete tunic_sprite;
-  delete shadow_sprite;
-  delete sword_sprite;
-  delete sword_stars_sprite;
-  delete shield_sprite;
-  delete ground_sprite;
-
+  delete sprites;
   destroy_carried_items();
 }
 
@@ -296,7 +266,7 @@ void Hero::try_snap_to_facing_entity(void) {
  */
 const SDL_Rect Hero::get_facing_point(void) {
 
-  int direction = get_animation_direction();
+  int direction = sprites->get_animation_direction();
   return get_facing_point(direction);
 }
 
@@ -376,7 +346,7 @@ void Hero::set_map(Map *map, int initial_direction) {
 
   // take the specified direction
   if (initial_direction != -1) {
-    set_animation_direction(initial_direction);
+    sprites->set_animation_direction(initial_direction);
   }
 }
 
@@ -393,16 +363,7 @@ void Hero::set_suspended(bool suspended) {
   get_normal_movement()->set_suspended(suspended);
 
   // sprites
-  tunic_sprite->set_suspended(suspended);
-
-  if (equipment->has_sword() && sword_sprite != NULL) {
-    sword_sprite->set_suspended(suspended);
-    sword_stars_sprite->set_suspended(suspended);
-  }
-
-  if (equipment->has_shield() && shield_sprite != NULL) {
-    shield_sprite->set_suspended(suspended);
-  }
+  sprites->set_suspended(suspended);
 
   // carried items
   set_suspended_carried_items(suspended);
@@ -411,10 +372,6 @@ void Hero::set_suspended(bool suspended) {
   if (!suspended) {
     Uint32 now = SDL_GetTicks();
     next_counter_date += now - when_suspended;
-
-    if (end_blink_date != 0) {
-      end_blink_date += now - when_suspended;
-    }
   }
 }
 
@@ -494,7 +451,7 @@ void Hero::update(void) {
     update_position();
     update_pushing();
     update_moving_grabbed_entity();
-    update_sprites();
+    sprites->update();
 
     if (treasure != NULL) {
       update_treasure();
@@ -505,7 +462,7 @@ void Hero::update(void) {
     map->check_collision_with_detectors(this);
 
     if (equipment->get_hearts() <= 0 && can_start_gameover_sequence()) {
-      stop_blinking();
+      sprites->stop_blinking();
       zsdx->game->start_gameover_sequence();
     }
   }
@@ -521,45 +478,43 @@ void Hero::update(void) {
  */
 void Hero::display_on_map(void) {
 
-  if (!is_visible()) {
+  if (!sprites->is_visible()) {
     return; // the hero is directly displayed by the game over sequence
   }
 
-  int x = get_x();
-  int y = get_y();
-
-  if (state == JUMPING) {
-    map->display_sprite(shadow_sprite, x, y);
-    map->display_sprite(tunic_sprite, x, jump_y);
-    if (equipment->has_shield()) {
-      map->display_sprite(shield_sprite, x, jump_y);
-    }
-  }
-  else {
-    map->display_sprite(tunic_sprite, x, y);
-
-    if (is_sword_visible()) {
-      map->display_sprite(sword_sprite, x, y);
-    }
-
-    if (is_sword_stars_visible()) {
-      map->display_sprite(sword_stars_sprite, x, y);
-    }
-
-    if (is_shield_visible()) {
-      map->display_sprite(shield_sprite, x, y);
-    }
-
-    if (is_ground_visible()) {
-      map->display_sprite(ground_sprite, x, y);
-    }
-  }
+  sprites->display_on_map();
 
   display_carried_items();
 
   if (treasure != NULL) {
     display_treasure();
   }
+}
+
+/**
+ * Returns the direction of the hero's sprites.
+ * It is different from the movement direction.
+ * @return the direction of the sprites (0 to 3)
+ */
+int Hero::get_animation_direction(void) {
+  return sprites->get_animation_direction();
+}
+
+/**
+ * Changes the direction of the hero's sprites.
+ * It is different from the movement direction.
+ * @param direction the direction to set (0 to 3)
+ */
+void Hero::set_animation_direction(int direction) {
+  sprites->set_animation_direction(direction);
+}
+
+/**
+ * Returns whether the sprites animations are finished.
+ * @return true if the animation is finished
+ */
+bool Hero::is_animation_finished(void) {
+  return sprites->is_animation_finished();
 }
 
 /**
@@ -570,70 +525,15 @@ void Hero::display_on_map(void) {
  */
 void Hero::rebuild_equipment(void) {
 
-  int animation_direction = -1;
-
-  // the hero
-  if (tunic_sprite != NULL) {
-    // save the animation direction
-    animation_direction = tunic_sprite->get_current_direction();
-    delete tunic_sprite;
-  }
-
-  int tunic_number = equipment->get_tunic();
-
-  tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
-  tunic_sprite->get_animation_set()->enable_pixel_collisions();
-
-  shadow_sprite = new Sprite("entities/shadow");
-  shadow_sprite->set_current_animation("big");
-
-  // the hero's sword
-  if (sword_sprite != NULL) {
-    delete sword_sprite;
-    delete sword_stars_sprite;
-    sword_sprite = NULL;
-    sword_stars_sprite = NULL;
-  }
-
-  int sword_number = equipment->get_sword();
-
-  if (sword_number > 0) {
-    // the hero has a sword: get the sprite and the sound
-    sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
-    sword_sprite->stop_animation();
-    sword_sprite->get_animation_set()->enable_pixel_collisions();
-
-    sword_sound = ResourceManager::get_sound(sword_sound_ids[sword_number - 1]);
-
-    sword_stars_sprite = new Sprite(sword_stars_sprite_ids[sword_number - 1]);
-    sword_stars_sprite->stop_animation();
-  }
-
-  // the hero's shield
-  if (shield_sprite != NULL) {
-    delete shield_sprite;
-    shield_sprite = NULL;
-  }
-
-  int shield_number = equipment->get_shield();
-
-  if (shield_number > 0) {
-    // the hero has a shield
-    shield_sprite = new Sprite(shield_sprite_ids[shield_number - 1]);
-  }
-
-  // restore the animation direction
-  if (animation_direction != -1) {
-    set_animation_direction(animation_direction);
-  }
+  sprites->rebuild_equipment();
 
   // animation walking or stopped
   set_state(FREE);
   if (get_normal_movement()->is_started()) {
-    set_animation_walking();
+    sprites->set_animation_walking();
   }
   else {
-    set_animation_stopped();
+    sprites->set_animation_stopped();
   }
 }
 
@@ -650,8 +550,8 @@ void Hero::movement_just_changed(void) {
   if (direction != -1) {
 
     Uint16 direction_mask = get_normal_movement()->get_direction_mask();
-    int old_animation_direction = tunic_sprite->get_current_direction();
-    int animation_direction = animation_directions[direction_mask];
+    int old_animation_direction = sprites->get_animation_direction();
+    int animation_direction = HeroSprites::get_animation_direction(direction_mask);
 
     if (animation_direction != old_animation_direction
 	&& animation_direction != -1
@@ -659,7 +559,7 @@ void Hero::movement_just_changed(void) {
       // if the direction defined by the arrows has changed,
       // update the sprite's direction of animation
       // (unless the hero is loading his sword)
-      set_animation_direction(animation_direction);
+      sprites->set_animation_direction(animation_direction);
     }
   }
 
@@ -670,13 +570,13 @@ void Hero::movement_just_changed(void) {
     bool started = get_normal_movement()->is_started();
 
     // stopped to walking
-    if (started && !walking) {
-      set_animation_walking();
+    if (started && !sprites->is_walking()) {
+      sprites->set_animation_walking();
     }
 
     // walking to stopped
-    else if (!started && walking) {
-      set_animation_stopped();
+    else if (!started && sprites->is_walking()) {
+      sprites->set_animation_stopped();
     }
   }
 
@@ -726,11 +626,6 @@ void Hero::just_moved(void) {
     
     if (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y) {
       last_solid_ground_coords = get_coordinates();
-
-      /*
-      if (current_conveyor_belt != NULL) {
-	current_conveyor_belt->set_enabled(true);
-      }*/
     }
   }
 }
@@ -783,7 +678,7 @@ Detector * Hero::get_facing_entity(void) {
 bool Hero::is_facing_obstacle(void) {
 
   SDL_Rect collision_box = get_position_in_map();
-  switch (get_animation_direction()) {
+  switch (sprites->get_animation_direction()) {
 
   case 0:
     collision_box.x++;
@@ -802,7 +697,7 @@ bool Hero::is_facing_obstacle(void) {
     break;
 
   default:
-    DIE("Invalid animation direction '" << get_animation_direction() << "'");
+    DIE("Invalid animation direction '" << sprites->get_animation_direction() << "'");
     break;
   }
 
@@ -945,7 +840,7 @@ void Hero::opening_transition_finished(void) {
  * When the sword sprite collides with a detector,
  * this function can be called to determine whether the hero is
  * really striking this particular detector only.
- * This depends on the hero state, his direction and his
+ * This depends on the hero's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
  * between the sword sprite and the detector's sprite.
@@ -959,7 +854,7 @@ void Hero::opening_transition_finished(void) {
 bool Hero::is_stroke_by_sword(Detector *detector) {
 
   bool result = false;
-  int animation_direction = get_animation_direction();
+  int animation_direction = sprites->get_animation_direction();
 
   switch (state) {
 
@@ -972,7 +867,7 @@ bool Hero::is_stroke_by_sword(Detector *detector) {
     // when the hero is tapping his sword against a wall, this wall should be detector
     result = detector->is_obstacle_for(this)
       && facing_entity == detector
-      && tunic_sprite->get_current_frame() >= 3;
+      && sprites->get_current_frame() >= 3;
     break;
 
   case SWORD_SWINGING:

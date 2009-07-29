@@ -85,6 +85,7 @@ void MapLoader::load_map(Map *map) {
   // parse the map file
   string line;
   TilesetId tileset_id;
+  int x, y, width, height;
 
   // first line: map general info
   // syntax: width height world floor x y small_keys_variable tileset_id music_id
@@ -93,11 +94,22 @@ void MapLoader::load_map(Map *map) {
   }
 
   std::istringstream iss0(line);
-  iss0 >> map->location.w >> map->location.h >> map->world >> map->floor >> map->location.x
-       >> map->location.y >> map->small_keys_variable >> tileset_id >> map->music_id;
+  FileTools::read(iss0, width);
+  FileTools::read(iss0, height);
+  FileTools::read(iss0, map->world);
+  FileTools::read(iss0, map->floor);
+  FileTools::read(iss0, x);
+  FileTools::read(iss0, y);
+  FileTools::read(iss0, map->small_keys_variable);
+  FileTools::read(iss0, tileset_id);
+  FileTools::read(iss0, map->music_id);
 
+  map->location.w = width;
+  map->location.h = height;
   map->width8 = map->location.w / 8;
   map->height8 = map->location.h / 8;
+  map->location.x = x;
+  map->location.y = y;
 
   map->tileset = ResourceManager::get_tileset(tileset_id);
   if (!map->tileset->is_loaded()) {
@@ -119,20 +131,30 @@ void MapLoader::load_map(Map *map) {
   entities->boomerang = NULL;
 
   // read the entities
-  int entity_type, subtype, layer, x, y, width, height, direction;
+  int entity_type, subtype, layer, direction;
   string entity_name;
+
+//  int i = 2;
 
   while (std::getline(map_file, line)) {
 
+//    std::cout << "reading line " << i << std::endl;
+//    i++;
+
     std::istringstream iss(line);
-    iss >> entity_type >> layer >> x >> y;
+    FileTools::read(iss, entity_type);
+    FileTools::read(iss, layer);
+    FileTools::read(iss, x);
+    FileTools::read(iss, y);
 
     switch (entity_type) {
 
     case TILE:
       {
 	int tile_pattern_id;
-	iss >> width >> height >> tile_pattern_id;
+	FileTools::read(iss, width);
+	FileTools::read(iss, height);
+	FileTools::read(iss, tile_pattern_id);
 	TilePattern *tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
 	entities->add_tile(new Tile(tile_pattern, Layer(layer), x, y, width, height));
 	break;
@@ -141,7 +163,9 @@ void MapLoader::load_map(Map *map) {
     case DESTINATION_POINT:
       {
 	int is_visible;
-	iss >> entity_name >> direction >> is_visible;
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, direction);
+	FileTools::read(iss, is_visible);
 	entities->add_entity(new DestinationPoint(entity_name, Layer(layer), x, y, direction, (is_visible != 0)));
 	break;
       }
@@ -151,8 +175,13 @@ void MapLoader::load_map(Map *map) {
 	int transition_style;
 	MapId destination_map_id;
 	string destination_point_name;
-	iss >> width >> height >> entity_name >> subtype >> transition_style
-	    >> destination_map_id >> destination_point_name;
+	FileTools::read(iss, width);
+	FileTools::read(iss, height);
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, subtype);
+	FileTools::read(iss, transition_style);
+	FileTools::read(iss, destination_map_id);
+	FileTools::read(iss, destination_point_name);
 	entities->add_entity(new Teletransporter(entity_name, Layer(layer), x, y, width, height,
 						 Teletransporter::Subtype(subtype),
 						 Transition::Style(transition_style),
@@ -163,7 +192,8 @@ void MapLoader::load_map(Map *map) {
     case PICKABLE_ITEM:
       {
 	int savegame_variable;
-	iss >> subtype >> savegame_variable;
+	FileTools::read(iss, subtype);
+	FileTools::read(iss, savegame_variable);
 	entities->add_entity(PickableItem::create(Layer(layer), x, y, PickableItem::Subtype(subtype),
 						  savegame_variable, FALLING_NONE, false));
 	break;
@@ -172,7 +202,9 @@ void MapLoader::load_map(Map *map) {
     case DESTRUCTIBLE_ITEM:
       {
 	int pickable_item_subtype, savegame_variable;
-	iss >> subtype >> pickable_item_subtype >> savegame_variable;
+	FileTools::read(iss, subtype);
+	FileTools::read(iss, pickable_item_subtype);
+	FileTools::read(iss, savegame_variable);
 	entities->add_entity(new DestructibleItem(Layer(layer), x, y,
 						  DestructibleItem::Subtype(subtype),
 						  PickableItem::Subtype(pickable_item_subtype), savegame_variable));
@@ -182,7 +214,11 @@ void MapLoader::load_map(Map *map) {
     case CHEST:
       {
 	int big_chest, treasure_content, treasure_amount, treasure_savegame_variable;
-	iss >> entity_name >> big_chest >> treasure_content >> treasure_amount >> treasure_savegame_variable;
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, big_chest);
+	FileTools::read(iss, treasure_content);
+	FileTools::read(iss, treasure_amount);
+	FileTools::read(iss, treasure_savegame_variable);
 	entities->add_entity(new Chest(entity_name, Layer(layer), x, y, (big_chest != 0),
 				       new Treasure(Treasure::Content(treasure_content), treasure_amount,
 						    treasure_savegame_variable)));
@@ -192,7 +228,11 @@ void MapLoader::load_map(Map *map) {
     case JUMP_SENSOR:
       {
 	int jump_length;
-	iss >> width >> height >> entity_name >> direction >> jump_length;
+	FileTools::read(iss, width);
+	FileTools::read(iss, height);
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, direction);
+	FileTools::read(iss, jump_length);
 	entities->add_entity(new JumpSensor(entity_name, Layer(layer), x, y,
 					     width, height, direction, jump_length));
 	break;
@@ -201,8 +241,13 @@ void MapLoader::load_map(Map *map) {
     case ENEMY:
       {
 	int rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
-	iss >> entity_name >> direction >> subtype >> rank >> savegame_variable >>
-	  pickable_item_type >> pickable_item_savegame_variable;
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, direction);
+	FileTools::read(iss, subtype);
+	FileTools::read(iss, rank);
+	FileTools::read(iss, savegame_variable);
+	FileTools::read(iss, pickable_item_type);
+	FileTools::read(iss, pickable_item_savegame_variable);
 	entities->add_entity(Enemy::create(Enemy::EnemyType(subtype), Enemy::Rank(rank),
 					   savegame_variable,
 					   entity_name, Layer(layer), x, y, direction, 
@@ -216,7 +261,11 @@ void MapLoader::load_map(Map *map) {
 	SpriteAnimationSetId sprite_name;
 	MessageId message_to_show;
 
-	iss >> entity_name >> direction >> subtype >> sprite_name >> message_to_show;
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, direction);
+	FileTools::read(iss, subtype);
+	FileTools::read(iss, sprite_name);
+	FileTools::read(iss, message_to_show);
 	entities->add_entity(new InteractiveEntity(entity_name, Layer(layer), x, y,
 						   InteractiveEntity::Subtype(subtype),
 						   sprite_name, direction, message_to_show));
@@ -227,7 +276,10 @@ void MapLoader::load_map(Map *map) {
       {
 	int maximum_moves;
 
-	iss >> entity_name >> direction >> subtype >> maximum_moves;
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, direction);
+	FileTools::read(iss, subtype);
+	FileTools::read(iss, maximum_moves);
 	entities->add_entity(new Block(entity_name, Layer(layer), x, y, direction,
 				       Block::Subtype(subtype), maximum_moves));
 	break;
@@ -237,7 +289,11 @@ void MapLoader::load_map(Map *map) {
       {
 	int tile_pattern_id, enabled;
 
-	iss >> width >> height >> entity_name >> tile_pattern_id >> enabled;
+	FileTools::read(iss, width);
+	FileTools::read(iss, height);
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, tile_pattern_id);
+	FileTools::read(iss, enabled);
 	TilePattern *tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
 	entities->add_entity(new DynamicTile(entity_name, tile_pattern, Layer(layer),
 					     x, y, width, height, enabled != 0));
@@ -248,7 +304,10 @@ void MapLoader::load_map(Map *map) {
       {
 	int needs_block, disabled_when_leaving;
 
-	iss >> entity_name >> subtype >> needs_block >> disabled_when_leaving;
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, subtype);
+	FileTools::read(iss, needs_block);
+	FileTools::read(iss, disabled_when_leaving);
 	entities->add_entity(new Switch(entity_name, Layer(layer), x, y,
 					Switch::Subtype(subtype), needs_block != 0, disabled_when_leaving != 0));
 	break;
@@ -258,7 +317,13 @@ void MapLoader::load_map(Map *map) {
       {
 	int stops_hero, stops_enemies, stops_npcs, stops_blocks;
 
-	iss >> width >> height >> entity_name >> stops_hero >> stops_enemies >> stops_npcs >> stops_blocks;
+	FileTools::read(iss, width);
+	FileTools::read(iss, height);
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, stops_hero);
+	FileTools::read(iss, stops_enemies);
+	FileTools::read(iss, stops_npcs);
+	FileTools::read(iss, stops_blocks);
 	entities->add_entity(new CustomObstacle(entity_name, Layer(layer), x, y, width, height,
 						stops_hero != 0, stops_enemies != 0, stops_npcs != 0, stops_blocks != 0));
 	break;
@@ -266,7 +331,10 @@ void MapLoader::load_map(Map *map) {
 
     case SENSOR:
       {
-	iss >> width >> height >> entity_name >> subtype;
+	FileTools::read(iss, width);
+	FileTools::read(iss, height);
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, subtype);
 	entities->add_entity(new Sensor(entity_name, Layer(layer), x, y, width, height, Sensor::Subtype(subtype)));
 	break;
       }
@@ -279,7 +347,9 @@ void MapLoader::load_map(Map *map) {
 
     case CRYSTAL_SWITCH_BLOCK:
       {
-	iss >> width >> height >> subtype;
+	FileTools::read(iss, width);
+	FileTools::read(iss, height);
+	FileTools::read(iss, subtype);
 	entities->add_entity(new CrystalSwitchBlock(Layer(layer), x, y, width, height,
 						    CrystalSwitchBlock::Subtype(subtype)));
 	break;
@@ -289,7 +359,12 @@ void MapLoader::load_map(Map *map) {
       {
 	int treasure, amount, savegame_variable, price;
 	MessageId message_id;
-	iss >> entity_name >> treasure >> amount >> savegame_variable >> price >> message_id;
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, treasure);
+	FileTools::read(iss, amount);
+	FileTools::read(iss, savegame_variable);
+	FileTools::read(iss, price);
+	FileTools::read(iss, message_id);
 	ShopItem *shop_item = ShopItem::create(entity_name, Layer(layer), x, y,
 					       new Treasure(Treasure::Content(treasure), amount, savegame_variable),
 					       price, message_id);
@@ -299,7 +374,7 @@ void MapLoader::load_map(Map *map) {
 
     case CONVEYOR_BELT:
       {
-        iss >> direction;
+	FileTools::read(iss, direction);
 	ConveyorBelt *conveyor_belt = new ConveyorBelt(Layer(layer), x, y, direction);
 	entities->add_entity(conveyor_belt);
 	break;
@@ -308,8 +383,10 @@ void MapLoader::load_map(Map *map) {
     case DOOR:
       {
 	int savegame_variable;
-
-	iss >> entity_name >> direction >> subtype >> savegame_variable;
+	FileTools::read(iss, entity_name);
+	FileTools::read(iss, direction);
+	FileTools::read(iss, subtype);
+	FileTools::read(iss, savegame_variable);
 	entities->add_entity(new Door(entity_name, Layer(layer), x, y, direction,
 				      Door::Subtype(subtype), savegame_variable));
 	break;

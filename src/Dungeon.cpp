@@ -88,9 +88,9 @@ void Dungeon::load(void) {
   }
 
   // parse the floors (the floors must be before the chests and the bosses)
-  std::ostringstream floor_oss;
-  floor_oss << "dungeon_" << dungeon_number << ".floor_";
-  const string &floor_prefix = floor_oss.str();
+  std::ostringstream oss;
+  oss << "dungeon_" << dungeon_number << ".floor_";
+  const string &floor_prefix = oss.str();
   lowest_floor = 100;
   for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
@@ -104,7 +104,7 @@ void Dungeon::load(void) {
 
       int floor;
       std::istringstream iss(suffix);
-      iss >> floor;
+      FileTools::read(iss, floor);
 
       SDL_Rect size;
       size.w = CFG_ReadInt("width", 0);
@@ -123,9 +123,9 @@ void Dungeon::load(void) {
   bosses = new std::vector<DungeonElement>[nb_floors];
 
   // parse the rest: chests and bosses
-  std::ostringstream elements_oss;
-  elements_oss << "dungeon_" << dungeon_number << ".map_";
-  const string &elements_prefix = elements_oss.str();
+  oss.str("");
+  oss << "dungeon_" << dungeon_number << ".map_";
+  const string &elements_prefix = oss.str();
   for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
     const string &group_name = CFG_GetSelectedGroupName();

@@ -103,3 +103,43 @@ SDL_Surface *FileTools::open_image(const std::string &file_name) {
 
   return image;
 }
+
+/**
+ * Reads an integer value from an input stream.
+ * Stops the program on an error message if the read fails.
+ * @param is an input stream
+ * @param value the value read
+ */
+void FileTools::read(std::istream &is, int &value) {
+  if (!(is >> value)) {
+    DIE("Cannot read integer from input stream");
+  }
+}
+
+/**
+ * Reads an integer value from an input stream.
+ * Stops the program on an error message if the read fails.
+ * @param is an input stream
+ * @param value the value read
+ */
+void FileTools::read(std::istream &is, Uint32 &value) {
+  int v;
+  read(is, v);
+  if (v < 0) {
+    DIE("Positive integer value expected from input stream");
+  }
+  value = (Uint32) v;
+}
+
+/**
+ * Reads a string value from an input stream.
+ * Stops the program on an error message if the read fails.
+ * @param is an input stream
+ * @param value the value read
+ */
+void FileTools::read(std::istream &is, std::string &value) {
+  if (!(is >> value)) {
+    DIE("Cannot read string from input stream");
+  }
+}
+

@@ -28,12 +28,12 @@
 SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 
   // compute the file name
-  std::string file_name = "sprites/" + id + ".zsd";
+  std::string file_name = FileTools::data_file_add_prefix("sprites/" + id + ".zsd");
 
   // open the file
-  std::ifstream sprite_file(FileTools::data_file_add_prefix(file_name).c_str());
+  std::ifstream sprite_file(file_name.c_str());
   if (!sprite_file) {
-    DIE("Cannot open file '" << FileTools::data_file_add_prefix(file_name) << "'");
+    DIE("Cannot open file '" << file_name << "'");
   }
 
   // read the file
@@ -56,21 +56,32 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
     // first line: animation info
 
     std::istringstream iss0(line);
-    iss0 >> name >> image_file_name >> nb_directions
-	 >> frame_delay >> loop_on_frame;
+    FileTools::read(iss0, name);
+    FileTools::read(iss0, image_file_name);
+    FileTools::read(iss0, nb_directions);
+    FileTools::read(iss0, frame_delay);
+    FileTools::read(iss0, loop_on_frame);
 
     directions = new SpriteAnimationDirection*[nb_directions];
 
     for (int i = 0; i < nb_directions; i++) {
 
       do {
-	std::getline(sprite_file, line);
+	if (!std::getline(sprite_file, line)) {
+	  DIE("Unexpected end of input in file '" << file_name << "'");
+	}
       }
       while (line.size() == 0);
 
       std::istringstream iss(line);
-      iss >> x >> y >> width >> height >> x_origin >> y_origin
-	  >> nb_frames >> columns;
+      FileTools::read(iss, x);
+      FileTools::read(iss, y);
+      FileTools::read(iss, width);
+      FileTools::read(iss, height);
+      FileTools::read(iss, x_origin);
+      FileTools::read(iss, y_origin);
+      FileTools::read(iss, nb_frames);
+      FileTools::read(iss, columns);
 
       if (nb_frames % columns == 0) {
 	rows = nb_frames / columns;

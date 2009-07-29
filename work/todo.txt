@@ -22,7 +22,6 @@ Feature requests :
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Remplacer "clé" par "clef" ?
-- Faire une classe HeroAnimations ou HeroSprites
 
 
 Bugs :
@@ -50,10 +49,8 @@ A venir :
 - Intro
 - Boss
 - Prochains types d'entités :
-  - piquants
   - choux-péteurs
   - blocs violets
-- Lanterne
 - Cryptage
 
 
@@ -109,7 +106,7 @@ Ancien planning prévisionnel
 [ok] Dimanche 2 novembre 2008 : combats (un type d'ennemi)
 [ok] Dimanche 9 novembre 2008 : scripts et PNJ
 [ok] Dimanche 16 novembre 2008 : maison des rubis
-[ok]Dimanche 23 novembre 2008 : autres maisons et grottes
+[ok] Dimanche 23 novembre 2008 : autres maisons et grottes
 [ok] Dimanche 30 novembre 2008 : donjon 1 commencé ; annonce de la démo si on est dans les temps
 [ok] Dimanche 7 décembre 2008 : combats (autres types d'ennemis), objets à finir (bombes, croissants, flacon...)
 Dimanche 14 décembre 2008 : donjon 1 fini, démo finie, début des tests

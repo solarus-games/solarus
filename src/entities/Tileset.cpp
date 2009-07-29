@@ -85,16 +85,22 @@ void Tileset::load(void) {
 
   int r, g, b;
 
-  std::istringstream iss0(line);
-  iss0 >> r >> g >> b;
+  std::istringstream iss(line);
+  FileTools::read(iss, r);
+  FileTools::read(iss, g);
+  FileTools::read(iss, b);
   background_color = Color::create(r, g, b);
 
   // read the tile patterns
   int tile_pattern_id, animation, obstacle, default_layer;
   while (std::getline(tileset_file, line)) {
 
-    std::istringstream iss(line);
-    iss >> tile_pattern_id >> animation >> obstacle >> default_layer;
+    iss.str(line);
+    iss.clear();
+    FileTools::read(iss, tile_pattern_id);
+    FileTools::read(iss, animation);
+    FileTools::read(iss, obstacle);
+    FileTools::read(iss, default_layer);
 
     int width, height;
 
@@ -102,40 +108,50 @@ void Tileset::load(void) {
 
       int x, y;
 
-      iss >> x >> y >> width >> height;
+      FileTools::read(iss, x);
+      FileTools::read(iss, y);
+      FileTools::read(iss, width);
+      FileTools::read(iss, height);
 
       TilePattern *pattern;
       if (animation == 0) {
-	      pattern = new SimpleTilePattern(Obstacle(obstacle), x, y, width, height);
+	pattern = new SimpleTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       else {
-	      pattern = new ParallaxTilePattern(Obstacle(obstacle), x, y, width, height);
+	pattern = new ParallaxTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       add_tile_pattern(tile_pattern_id, pattern);
     }
     else { // animated tile pattern
       int sequence, x1, y1, x2, y2, x3, y3;
 
-      iss >> sequence >> width >> height >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
-      add_tile_pattern(tile_pattern_id,
-		       new AnimatedTilePattern(Obstacle(obstacle),
-					       AnimatedTilePattern::AnimationSequence(sequence),
-					       width, height, x1, y1, x2, y2, x3, y3));
+      FileTools::read(iss, sequence);
+      FileTools::read(iss, width);
+      FileTools::read(iss, height);
+      FileTools::read(iss, x1);
+      FileTools::read(iss, y1);
+      FileTools::read(iss, x2);
+      FileTools::read(iss, y2);
+      FileTools::read(iss, x3);
+      FileTools::read(iss, y3);
+      add_tile_pattern(tile_pattern_id, new AnimatedTilePattern(Obstacle(obstacle),
+	    AnimatedTilePattern::AnimationSequence(sequence),
+	    width, height, x1, y1, x2, y2, x3, y3));
     }
   }
 
   // load the tileset images
-  std::ostringstream oss2;
-  oss2 << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
-  tiles_image = ResourceManager::load_image(oss2.str());
+  oss.str("");
+  oss << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
+  tiles_image = ResourceManager::load_image(oss.str());
 
   if (tiles_image == NULL) {
     DIE("Cannot load the image '" << file_name << "'");
   }
 
-  std::ostringstream oss3;
-  oss3 << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_entities.png";
-  entities_image = ResourceManager::load_image(oss3.str());
+  oss.str("");
+  oss << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_entities.png";
+  entities_image = ResourceManager::load_image(oss.str());
 
   if (entities_image == NULL) {
     DIE("Cannot load the image '" << file_name << "'");

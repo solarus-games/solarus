@@ -22,6 +22,7 @@
 #include "Map.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "FileTools.h"
 
 /**
  * Constructor.
@@ -59,6 +60,34 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
  */
 Teletransporter::~Teletransporter(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+Teletransporter * Teletransporter::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+	
+  int width, height, subtype, transition_style;
+  MapId destination_map_id;
+  std::string name, destination_point_name;
+
+  FileTools::read(is, width);
+  FileTools::read(is, height);
+  FileTools::read(is, name);
+  FileTools::read(is, subtype);
+  FileTools::read(is, transition_style);
+  FileTools::read(is, destination_map_id);
+  FileTools::read(is, destination_point_name);
+
+  return new Teletransporter(name, Layer(layer), x, y, width, height,
+      Subtype(subtype), Transition::Style(transition_style),
+      destination_map_id, destination_point_name);
 }
 
 /**

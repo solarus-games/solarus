@@ -24,6 +24,7 @@
 #include "Sprite.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "FileTools.h"
 #include <list>
 
 /**
@@ -51,6 +52,26 @@ CrystalSwitchBlock::CrystalSwitchBlock(Layer layer, int x, int y, int width, int
  */
 CrystalSwitchBlock::~CrystalSwitchBlock(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+CrystalSwitchBlock * CrystalSwitchBlock::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int width, height, subtype;
+
+  FileTools::read(is, width);
+  FileTools::read(is, height);
+  FileTools::read(is, subtype);
+
+  return new CrystalSwitchBlock(Layer(layer), x, y, width, height, Subtype(subtype));
 }
 
 /**

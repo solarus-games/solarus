@@ -27,18 +27,22 @@
  */
 class Tile: public MapEntity {
 
- private:
+  private:
 
-  TilePattern *tile_pattern;   /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
+    int tile_pattern_id;       /**< id of the tile pattern */
+    TilePattern *tile_pattern; /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
 
- public:
+  public:
 
-  Tile(TilePattern *tile_pattern, Layer layer, int x, int y, int width, int height);
-  ~Tile(void);
+    Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id);
+    ~Tile(void);
+    static Tile * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
-  EntityType get_type(void);
-  void display_on_map(void);
-  TilePattern *get_tile_pattern(void);
+    EntityType get_type(void);
+    void set_map(Map *map);
+    void display_on_map(void);
+    TilePattern *get_tile_pattern(void);
 };
 
 #endif
+

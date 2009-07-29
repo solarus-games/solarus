@@ -20,23 +20,25 @@
 #include "entities/Hero.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "FileTools.h"
+#include "Map.h"
 
 /**
  * Creates a new dynamic tile on the map.
  * @param name a name to identify this tile
- * @param tile_pattern the tile pattern in the tileset 
  * @param layer layer of the tile
  * @param x x position of the tile on the map
  * @param y y position of the tile on the map
  * @param width width of the tile (the pattern can be repeated)
  * @param height height of the tile (the pattern can be repeated)
+ * @param tile_pattern_id id of the tile pattern in the tileset 
  * @param enabled true to make the tile active on the map
  */
-DynamicTile::DynamicTile(const std::string &name, TilePattern *tile_pattern,
-			 Layer layer, int x, int y,
-			 int width, int height, bool enabled):
+DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
+			 int width, int height, int tile_pattern_id, bool enabled):
   MapEntity(name, 0, layer, x, y, width, height),
-  tile_pattern(tile_pattern), enabled(enabled), waiting_enabled(false) {
+  tile_pattern_id(tile_pattern_id), tile_pattern(NULL),
+  enabled(enabled), waiting_enabled(false) {
 
 }
 
@@ -48,11 +50,43 @@ DynamicTile::~DynamicTile(void) {
 }
 
 /**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+DynamicTile * DynamicTile::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int width, height, tile_pattern_id, enabled;
+  std::string name;
+
+  FileTools::read(is, width);
+  FileTools::read(is, height);
+  FileTools::read(is, name);
+  FileTools::read(is, tile_pattern_id);
+  FileTools::read(is, enabled);
+
+  return new DynamicTile(name, Layer(layer), x, y, width, height, tile_pattern_id, enabled != 0);
+}
+
+/**
  * Returns the type of entity.
  * @return the type of entity
  */
 EntityType DynamicTile::get_type(void) {
   return DYNAMIC_TILE;
+}
+
+/**
+ * Sets the map of this entity.
+ * @param map the map
+ */
+void DynamicTile::set_map(Map *map) {
+  MapEntity::set_map(map);
+  this->tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
 }
 
 /**

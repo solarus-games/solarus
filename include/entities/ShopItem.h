@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <istream>
 
 /**
  * Represents an item the hero can buy in a shop.
@@ -45,9 +46,10 @@ class ShopItem: public Detector {
 
  public:
 
+  ~ShopItem(void);
   static ShopItem * create(const std::string &name, Layer layer, int x, int y,
 			   Treasure *treasure, int price, const MessageId &message_id);
-  ~ShopItem(void);
+  static ShopItem * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

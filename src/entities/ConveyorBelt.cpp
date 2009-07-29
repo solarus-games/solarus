@@ -17,6 +17,7 @@
 #include "entities/ConveyorBelt.h"
 #include "Map.h"
 #include "Sprite.h"
+#include "FileTools.h"
 
 /**
  * Creates a new conveyor belt.
@@ -38,6 +39,22 @@ ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int direction):
  */
 ConveyorBelt::~ConveyorBelt(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+ConveyorBelt * ConveyorBelt::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int direction;
+  FileTools::read(is, direction);
+  return new ConveyorBelt(Layer(layer), x, y, direction);
 }
 
 /**

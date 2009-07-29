@@ -21,6 +21,7 @@
 #include "entities/Detector.h"
 #include "entities/PickableItem.h"
 #include "entities/EnemyAttack.h"
+#include <istream>
 
 /**
  * Abstract class representing an enemy.
@@ -36,9 +37,9 @@ class Enemy: public Detector {
  public:
 
   /**
-   * Types of enemies.
+   * Subtypes of enemies.
    */
-  enum EnemyType {
+  enum Subtype {
     SIMPLE_GREEN_SOLDIER = 0,
     BUBBLE,
     TENTACLE,
@@ -150,9 +151,10 @@ class Enemy: public Detector {
   // creation and destruction
   virtual ~Enemy(void);
 
-  static Enemy *create(EnemyType type, Rank rank, int savegame_variable,
-		       const std::string &name, Layer layer, int x, int y, int direction,
-		       PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable);
+  static Enemy * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static Enemy * create(Subtype type, Rank rank, int savegame_variable,
+      const std::string &name, Layer layer, int x, int y, int direction,
+      PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable);
 
   EntityType get_type(void);
   void set_map(Map *map);

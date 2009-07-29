@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include "movements/FallingHeight.h"
+#include <istream>
 
 /**
  * A pickable item on the map (rupee, heart, bomb, fairy...).
@@ -117,6 +118,7 @@ class PickableItem: public Detector {
 			       FallingHeight falling_height, bool will_disappear);
 
   virtual ~PickableItem(void);
+  static PickableItem * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

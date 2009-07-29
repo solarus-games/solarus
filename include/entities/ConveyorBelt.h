@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <istream>
 
 /**
  * A special terrain where the hero is moved towards a specific direction.
@@ -29,6 +30,7 @@ class ConveyorBelt: public Detector {
 
   ConveyorBelt(Layer layer, int x, int y, int direction);
   ~ConveyorBelt(void);
+  static ConveyorBelt * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
   

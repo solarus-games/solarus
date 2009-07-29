@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Detector.h"
+#include <istream>
 
 /**
  * A jump sensor is a detector placed on a map.
@@ -35,6 +36,7 @@ class JumpSensor: public Detector {
   JumpSensor(const std::string &name, Layer layer, int x, int y, int width, int height,
 	     int direction, int jump_length);
   ~JumpSensor(void);
+  static JumpSensor * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

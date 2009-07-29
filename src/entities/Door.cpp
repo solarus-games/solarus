@@ -28,6 +28,7 @@
 #include "Sound.h"
 #include "Savegame.h"
 #include "Map.h"
+#include "FileTools.h"
 #include <list>
 
 const std::string Door::animations[] = {
@@ -83,6 +84,28 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
  */
 Door::~Door(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+Door * Door::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  std::string name;
+  int direction, subtype, savegame_variable;
+
+  FileTools::read(is, name);
+  FileTools::read(is, direction);
+  FileTools::read(is, subtype);
+  FileTools::read(is, savegame_variable);
+
+  return new Door(name, Layer(layer), x, y, direction, Subtype(subtype), savegame_variable);
 }
 
 /**

@@ -18,6 +18,7 @@
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "FileTools.h"
 
 /**
  * Constructor.
@@ -51,6 +52,27 @@ DestinationPoint::DestinationPoint(const std::string &name, Layer layer, int x, 
  */
 DestinationPoint::~DestinationPoint(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+DestinationPoint * DestinationPoint::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+	
+  std::string name;
+  int direction, is_visible;
+
+  FileTools::read(is, name);
+  FileTools::read(is, direction);
+  FileTools::read(is, is_visible);
+ 
+  return new DestinationPoint(name, layer, x, y, direction, (is_visible != 0));
 }
 
 /**

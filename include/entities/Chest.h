@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <istream>
 
 /**
  * Represents a chest on a map.
@@ -42,6 +43,7 @@ class Chest: public Detector {
 
   Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
   ~Chest(void);
+  static Chest * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
   bool is_displayed_in_y_order(void);

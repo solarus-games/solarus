@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Detector.h"
+#include <istream>
 
 /**
  * A door to open with a key or an event.
@@ -67,6 +68,7 @@ class Door: public Detector {
   Door(const std::string &name, Layer layer, int x, int y,
       int direction, Subtype subtype, int savegame_variable);
   ~Door(void);
+  static Door * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

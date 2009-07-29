@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include "KeysEffect.h"
+#include <istream>
 
 /**
  * An interactive entity is an entity that triggers a message or an event
@@ -62,6 +63,7 @@ class InteractiveEntity: public Detector {
   InteractiveEntity(const std::string &name, Layer layer, int x, int y, Subtype subtype,
 		    SpriteAnimationSetId sprite_name, int initial_direction, MessageId message_to_show);
   ~InteractiveEntity(void);
+  static InteractiveEntity * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
   bool is_displayed_in_y_order(void);

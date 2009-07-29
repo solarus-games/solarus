@@ -33,6 +33,7 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Treasure.h"
+#include "FileTools.h"
 
 /**
  * Features of each subtype of pickable item.
@@ -96,6 +97,25 @@ PickableItem::~PickableItem(void) {
  */
 EntityType PickableItem::get_type() {
   return PICKABLE_ITEM;
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+PickableItem * PickableItem::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int subtype, savegame_variable;
+
+  FileTools::read(is, subtype);
+  FileTools::read(is, savegame_variable);
+
+  return create(Layer(layer), x, y, Subtype(subtype), savegame_variable, FALLING_NONE, false);
 }
 
 /**

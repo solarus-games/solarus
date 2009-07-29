@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Detector.h"
+#include <istream>
 
 /**
  * A block or a statue that the hero can push.
@@ -54,6 +55,7 @@ class Block: public Detector {
   Block(const std::string &name, Layer layer, int x, int y,
 	int direction, Subtype subtype, int maximum_push);
   ~Block(void);
+  static Block * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
   bool is_displayed_in_y_order(void);

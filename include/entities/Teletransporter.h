@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "Detector.h"
 #include "Transition.h"
+#include <istream>
 
 /**
  * A teletransporter is a detector placed on a map.
@@ -60,6 +61,7 @@ class Teletransporter: public Detector {
 		  Subtype subtype, Transition::Style transition_style,
 		  MapId destination_map_id, std::string destination_point_name);
   ~Teletransporter(void);
+  static Teletransporter * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
   void set_map(Map *map);

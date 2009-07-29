@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+#include <istream>
 
 /**
  * A dynamic tile is a tile placed on the map 
@@ -27,25 +28,29 @@
  */
 class DynamicTile: public MapEntity {
 
- private:
+  private:
 
-  TilePattern *tile_pattern;   /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
-  bool enabled;                /**< indicates that the tile is enabled (visible) */
-  bool waiting_enabled;        /**< indicates that the tile is waiting to be enabled */
+    int tile_pattern_id;       /**< id of the tile pattern */
+    TilePattern *tile_pattern; /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
+    bool enabled;              /**< indicates that the tile is enabled (visible) */
+    bool waiting_enabled;      /**< indicates that the tile is waiting to be enabled */
 
- public:
+  public:
 
-  DynamicTile(const std::string &name, TilePattern *tile_pattern, Layer layer,
-	      int x, int y, int width, int height, bool visible);
-  ~DynamicTile(void);
+    DynamicTile(const std::string &name, Layer layer, int x, int y,
+	int width, int height, int tile_pattern_id, bool visible);
+    ~DynamicTile(void);
+    static DynamicTile * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
-  EntityType get_type(void);
-  bool is_obstacle_for(MapEntity *other);
-  void display_on_map(void);
-  void update(void);
+    EntityType get_type(void);
+    void set_map(Map *map);
+    bool is_obstacle_for(MapEntity *other);
+    void display_on_map(void);
+    void update(void);
 
-  bool is_enabled(void);
-  void set_enabled(bool enabled);
+    bool is_enabled(void);
+    void set_enabled(bool enabled);
 };
 
 #endif
+

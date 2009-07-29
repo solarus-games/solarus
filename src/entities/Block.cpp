@@ -24,6 +24,7 @@
 #include "KeysEffect.h"
 #include "Sound.h"
 #include "Sprite.h"
+#include "FileTools.h"
 
 /**
  * Creates a block.
@@ -67,6 +68,28 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
  */
 Block::~Block(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+Block * Block::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int direction, subtype, maximum_moves;
+  std::string name;
+
+  FileTools::read(is, name);
+  FileTools::read(is, direction);
+  FileTools::read(is, subtype);
+  FileTools::read(is, maximum_moves);
+
+  return new Block(name, Layer(layer), x, y, direction, Subtype(subtype), maximum_moves);
 }
 
 /**

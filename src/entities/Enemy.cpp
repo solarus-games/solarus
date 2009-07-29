@@ -30,6 +30,7 @@
 #include "Map.h"
 #include "Geometry.h"
 #include "MapScript.h"
+#include "FileTools.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
 #include "enemies/SimpleGreenSoldier.h"
@@ -58,11 +59,29 @@ Enemy::~Enemy(void) {
 }
 
 /**
- * Returns the type of entity.
- * @return the type of entity
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
  */
-EntityType Enemy::get_type() {
-  return ENEMY;
+Enemy * Enemy::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int direction, subtype, rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
+  std::string name;
+
+  FileTools::read(is, name);
+  FileTools::read(is, direction);
+  FileTools::read(is, subtype);
+  FileTools::read(is, rank);
+  FileTools::read(is, savegame_variable);
+  FileTools::read(is, pickable_item_type);
+  FileTools::read(is, pickable_item_savegame_variable);
+
+  return create(Subtype(subtype), Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction, 
+      PickableItem::Subtype(pickable_item_type), pickable_item_savegame_variable);
 }
 
 /**
@@ -81,7 +100,7 @@ EntityType Enemy::get_type() {
  * @param pickable_item_subtype subtype of pickable item the enemy drops
  * @param pickable_item_savegame_variable index of the boolean variable
  */
-Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
+Enemy * Enemy::create(Subtype type, Rank rank, int savegame_variable,
 		      const std::string &name, Layer layer, int x, int y, int direction,
 		      PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable) {
 
@@ -128,6 +147,14 @@ Enemy * Enemy::create(EnemyType type, Rank rank, int savegame_variable,
   enemy->vulnerabilities[ATTACK_BOOMERANG] = -2;
 
   return enemy;
+}
+
+/**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+EntityType Enemy::get_type() {
+  return ENEMY;
 }
 
 /**

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CustomObstacle.h"
+#include "FileTools.h"
 
 /**
  * Constructor.
@@ -44,6 +45,32 @@ CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int 
  */
 CustomObstacle::~CustomObstacle(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+CustomObstacle * CustomObstacle::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  std::string name;
+  int width, height, stops_hero, stops_enemies, stops_npcs, stops_blocks;
+
+  FileTools::read(is, width);
+  FileTools::read(is, height);
+  FileTools::read(is, name);
+  FileTools::read(is, stops_hero);
+  FileTools::read(is, stops_enemies);
+  FileTools::read(is, stops_npcs);
+  FileTools::read(is, stops_blocks);
+
+  return new CustomObstacle(name, Layer(layer), x, y, width, height,
+      stops_hero != 0, stops_enemies != 0, stops_npcs != 0, stops_blocks != 0);
 }
 
 /**

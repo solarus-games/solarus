@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "MapEntity.h"
+#include <istream>
 
 /**
  * A destination point on the map.
@@ -35,6 +36,7 @@ class DestinationPoint: public MapEntity {
 
   DestinationPoint(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
   ~DestinationPoint(void);
+  static DestinationPoint * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 };

@@ -26,7 +26,7 @@
 #include "Sound.h"
 #include "ZSDX.h"
 #include "Sprite.h"
-using namespace std;
+#include "FileTools.h"
 
 /**
  * Features of each type of destructible item.
@@ -88,6 +88,27 @@ DestructibleItem::~DestructibleItem(void) {
 }
 
 /**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+DestructibleItem * DestructibleItem::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int subtype, pickable_item_subtype, savegame_variable;
+
+  FileTools::read(is, subtype);
+  FileTools::read(is, pickable_item_subtype);
+  FileTools::read(is, savegame_variable);
+
+  return new DestructibleItem(Layer(layer), x, y, Subtype(subtype),
+      PickableItem::Subtype(pickable_item_subtype), savegame_variable);
+}
+
+/**
  * Returns the type of entity.
  * @return the type of entity
  */
@@ -107,7 +128,7 @@ int DestructibleItem::get_damage_on_enemies(void) {
  * Returns the animation set of this destructible item.
  * @return the animations of the sprite
  */
-const string& DestructibleItem::get_animation_set_id(void) {
+const std::string& DestructibleItem::get_animation_set_id(void) {
   return features[subtype].animation_set_id;
 }
 
@@ -177,7 +198,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
   if (features[subtype].can_be_cut
       && !is_being_cut
       && entity->is_hero()
-      && sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
+      && sprite_overlapping->get_animation_set_id().find("sword") != std::string::npos) {
 
     Hero *hero = (Hero*) entity;
     if (hero->is_stroke_by_sword(this)) {

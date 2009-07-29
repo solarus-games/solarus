@@ -26,6 +26,7 @@
 #include "Sprite.h"
 #include "Equipment.h"
 #include "InventoryItem.h"
+#include "FileTools.h"
 
 /**
  * Action icon depending on the type of interaction.
@@ -102,6 +103,31 @@ InteractiveEntity::InteractiveEntity(const std::string &name, Layer layer, int x
  */
 InteractiveEntity::~InteractiveEntity(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+InteractiveEntity * InteractiveEntity::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int direction, subtype;
+  std::string name;
+  SpriteAnimationSetId sprite_name;
+  MessageId message_to_show;
+
+  FileTools::read(is, name);
+  FileTools::read(is, direction);
+  FileTools::read(is, subtype);
+  FileTools::read(is, sprite_name);
+  FileTools::read(is, message_to_show);
+
+  return new InteractiveEntity(name, Layer(layer), x, y, Subtype(subtype), sprite_name, direction, message_to_show);
 }
 
 /**

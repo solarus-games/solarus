@@ -20,6 +20,7 @@
 #include "Sprite.h"
 #include "Map.h"
 #include "MapScript.h"
+#include "FileTools.h"
 
 /**
  * Constructor.
@@ -53,6 +54,28 @@ Switch::Switch(const std::string &name, Layer layer, int x, int y,
  */
 Switch::~Switch(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+Switch * Switch::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  std::string name;
+  int subtype, needs_block, disabled_when_leaving;
+
+  FileTools::read(is, name);
+  FileTools::read(is, subtype);
+  FileTools::read(is, needs_block);
+  FileTools::read(is, disabled_when_leaving);
+
+  return new Switch(name, Layer(layer), x, y, Subtype(subtype), needs_block != 0, disabled_when_leaving != 0);
 }
 
 /**

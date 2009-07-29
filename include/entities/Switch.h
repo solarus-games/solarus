@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <istream>
 
 /**
  * A switch is a button that the hero can push.
@@ -51,6 +52,7 @@ class Switch: public Detector {
   Switch(const std::string &name, Layer layer, int x, int y,
 	 Subtype subtype, bool needs_block, bool disabled_when_leaving);
   ~Switch(void);
+  static Switch * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

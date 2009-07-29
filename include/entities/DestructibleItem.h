@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "Detector.h"
 #include "PickableItem.h"
+#include <istream>
 
 /**
  * Represents an entity that the hero can destroy and that contains a pickable item.
@@ -82,6 +83,7 @@ class DestructibleItem: public Detector {
   DestructibleItem(Layer layer, int x, int y, Subtype subtype,
 		   PickableItem::Subtype pickable_item, int pickable_item_savegame_variable);
   ~DestructibleItem(void);
+  static DestructibleItem * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

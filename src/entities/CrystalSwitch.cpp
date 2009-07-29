@@ -25,7 +25,7 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "KeysEffect.h"
-using std::string;
+#include "FileTools.h"
 
 /**
  * Creates a new crystal switch.
@@ -48,6 +48,19 @@ CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
  */
 CrystalSwitch::~CrystalSwitch(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+CrystalSwitch * CrystalSwitch::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+  return new CrystalSwitch(layer, x, y);
 }
 
 /**
@@ -113,7 +126,7 @@ void CrystalSwitch::collision(MapEntity *entity_overlapping, CollisionMode colli
 void CrystalSwitch::collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
   if (entity->is_hero() &&
-      sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
+      sprite_overlapping->get_animation_set_id().find("sword") != std::string::npos) {
     // the hero's sword is overlapping the crystal switch
 
     Hero *hero = (Hero*) entity;

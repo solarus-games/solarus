@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <istream>
 
 /**
  * An orange or blue block that can be raised or lowered with the help of a crystal switch.
@@ -47,6 +48,7 @@ class CrystalSwitchBlock: public Detector {
 
   CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype);
   ~CrystalSwitchBlock(void);
+  static CrystalSwitchBlock * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

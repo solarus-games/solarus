@@ -30,6 +30,7 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Savegame.h"
+#include "FileTools.h"
 #include <iomanip>
 
 /**
@@ -58,6 +59,41 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
+ * Destructor.
+ */
+ShopItem::~ShopItem(void) {
+
+  delete treasure;
+  delete rupee_icon_sprite;
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+ShopItem * ShopItem::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  std::string name;
+  int treasure, amount, savegame_variable, price;
+  MessageId message_id;
+
+  FileTools::read(is, name);
+  FileTools::read(is, treasure);
+  FileTools::read(is, amount);
+  FileTools::read(is, savegame_variable);
+  FileTools::read(is, price);
+  FileTools::read(is, message_id);
+
+  return create(name, Layer(layer), x, y, new Treasure(Treasure::Content(treasure), amount, savegame_variable),
+      price, message_id);
+}
+
+/**
  * Creates a new shop item with the specified treasure and price.
  * @param name the name identifying this entity
  * @param layer layer of the entity to create
@@ -77,15 +113,6 @@ ShopItem * ShopItem::create(const std::string &name, Layer layer, int x, int y,
   }
 
   return new ShopItem(name, layer, x, y, treasure, price, message_id);
-}
-
-/**
- * Destructor.
- */
-ShopItem::~ShopItem(void) {
-
-  delete treasure;
-  delete rupee_icon_sprite;
 }
 
 /**

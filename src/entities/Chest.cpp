@@ -28,6 +28,7 @@
 #include "Savegame.h"
 #include "Map.h"
 #include "MapScript.h"
+#include "FileTools.h"
 
 /**
  * Creates a new chest with the specified treasure.
@@ -61,6 +62,30 @@ Chest::~Chest(void) {
     // delete the treasure only if the player didn't take it
     delete treasure;
   }
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+Chest * Chest::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  std::string name;
+  int big_chest, treasure_content, treasure_amount, treasure_savegame_variable;
+
+  FileTools::read(is, name);
+  FileTools::read(is, big_chest);
+  FileTools::read(is, treasure_content);
+  FileTools::read(is, treasure_amount);
+  FileTools::read(is, treasure_savegame_variable);
+
+  return new Chest(name, Layer(layer), x, y, (big_chest != 0),
+      new Treasure(Treasure::Content(treasure_content), treasure_amount, treasure_savegame_variable));
 }
 
 /**

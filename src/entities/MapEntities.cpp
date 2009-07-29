@@ -374,50 +374,51 @@ void MapEntities::add_entity(MapEntity *entity) {
   }
 
   if (entity->get_type() == TILE) {
-    DIE("This entity is not dynamic");
+    add_tile((Tile*) entity);
   }
+  else {
+    Layer layer = entity->get_layer();
 
-  Layer layer = entity->get_layer();
+    // update the detectors list
+    if (entity->can_detect_entities()) {
+      detectors.push_back((Detector*) entity);
+    }
 
-  // update the detectors list
-  if (entity->can_detect_entities()) {
-    detectors.push_back((Detector*) entity);
-  }
-
-  // update the obstacle list
-  if (entity->can_be_obstacle()) {
+    // update the obstacle list
+    if (entity->can_be_obstacle()) {
     obstacle_entities[layer].push_back(entity);
-  }
+    }
 
-  // update the sprites list
-  if (entity->is_displayed_in_y_order()) {
-    entities_displayed_y_order[layer].push_back(entity);
-  }
-  else if (entity->can_be_displayed()) {
-    entities_displayed_first[layer].push_back(entity);
-  }
+    // update the sprites list
+    if (entity->is_displayed_in_y_order()) {
+      entities_displayed_y_order[layer].push_back(entity);
+    }
+    else if (entity->can_be_displayed()) {
+      entities_displayed_first[layer].push_back(entity);
+    }
 
-  // update the specific entities lists
-  switch (entity->get_type()) {
+    // update the specific entities lists
+    switch (entity->get_type()) {
 
-    case DESTINATION_POINT:
-      destination_points.push_back((DestinationPoint*) entity);
+      case DESTINATION_POINT:
+	destination_points.push_back((DestinationPoint*) entity);
+	break;
+
+      case CRYSTAL_SWITCH_BLOCK:
+	crystal_switch_blocks[layer].push_back((CrystalSwitchBlock*) entity);
+	break;
+
+      case BOOMERANG:
+	this->boomerang = (Boomerang*) entity;
+	break;
+
+      default:
       break;
+    }
 
-    case CRYSTAL_SWITCH_BLOCK:
-      crystal_switch_blocks[layer].push_back((CrystalSwitchBlock*) entity);
-      break;
-
-    case BOOMERANG:
-      this->boomerang = (Boomerang*) entity;
-      break;
-
-    default:
-      break;
+    // update the list of all entities
+    all_entities.push_back(entity);
   }
-
-  // update the list of all entities
-  all_entities.push_back(entity);
 
   entity->set_map(map);
 }

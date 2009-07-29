@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <istream>
 
 /**
  * A crystal switch is a switch that the hero can activate to change the configuration of the
@@ -38,6 +39,7 @@ class CrystalSwitch: public Detector {
 
   CrystalSwitch(Layer layer, int x, int y);
   ~CrystalSwitch(void);
+  static CrystalSwitch * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

@@ -19,6 +19,7 @@
 #include "entities/MapEntities.h"
 #include "movements/PlayerMovement.h"
 #include "Map.h"
+#include "FileTools.h"
 
 /**
  * Creates a jump sensor.
@@ -67,6 +68,29 @@ JumpSensor::JumpSensor(const std::string &name, Layer layer, int x, int y, int w
  */
 JumpSensor::~JumpSensor(void) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+JumpSensor * JumpSensor::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int jump_length, width, height, direction;
+  std::string name;
+
+  FileTools::read(is, width);
+  FileTools::read(is, height);
+  FileTools::read(is, name);
+  FileTools::read(is, direction);
+  FileTools::read(is, jump_length);
+ 
+  return new JumpSensor(name, Layer(layer), x, y, width, height, direction, jump_length);
 }
 
 /**

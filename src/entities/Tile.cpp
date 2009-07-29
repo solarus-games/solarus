@@ -17,19 +17,41 @@
 #include "entities/Tile.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
+#include "FileTools.h"
+#include "Map.h"
 
 /**
  * Creates a new tile on the map.
- * @param tile_pattern the tile pattern in the tileset
  * @param layer layer of the tile
  * @param x x position of the tile on the map
  * @param y y position of the tile on the map
  * @param width width of the tile (the pattern can be repeated)
  * @param height height of the tile (the pattern can be repeated)
+ * @param tile_pattern_id id of the tile pattern
  */
-Tile::Tile(TilePattern *tile_pattern, Layer layer, int x, int y, int width, int height):
-  MapEntity(layer, x, y, width, height), tile_pattern(tile_pattern) {
+Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id):
+  MapEntity(layer, x, y, width, height), tile_pattern_id(tile_pattern_id), tile_pattern(NULL) {
 
+}
+
+/**
+ * Creates an instance from an input stream.
+ * The input stream must respect the syntax of this entity type.
+ * @param is an input stream
+ * @param layer the layer
+ * @param x x coordinate of the entity
+ * @param y y coordinate of the entity
+ * @return the instance created
+ */
+Tile * Tile::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+
+  int width, height, tile_pattern_id;
+
+  FileTools::read(is, width);
+  FileTools::read(is, height);
+  FileTools::read(is, tile_pattern_id);
+
+  return new Tile(layer, x, y, width, height, tile_pattern_id);
 }
 
 /**
@@ -45,6 +67,15 @@ Tile::~Tile(void) {
  */
 EntityType Tile::get_type() {
   return TILE;
+}
+
+/**
+ * Sets the map of this entity.
+ * @param map the map
+ */
+void Tile::set_map(Map *map) {
+  MapEntity::set_map(map);
+  this->tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
 }
 
 /**

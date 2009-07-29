@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <istream>
 
 /**
  * A sensor is an invisible entity that triggers something
@@ -49,6 +50,7 @@ class Sensor: public Detector {
 
   Sensor(const std::string &name, Layer layer, int x, int y, int width, int height, Subtype subtype);
   ~Sensor(void);
+  static Sensor * create_from_stream(std::istream &is, Layer layer, int x, int y);
 
   EntityType get_type(void);
 

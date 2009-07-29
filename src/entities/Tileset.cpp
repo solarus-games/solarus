@@ -142,16 +142,16 @@ void Tileset::load(void) {
 
   // load the tileset images
   oss.str("");
-  oss << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
-  tiles_image = ResourceManager::load_image(oss.str());
+  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
+  tiles_image = ResourceManager::load_image(oss.str(), false);
 
   if (tiles_image == NULL) {
     DIE("Cannot load the image '" << file_name << "'");
   }
 
   oss.str("");
-  oss << "../tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_entities.png";
-  entities_image = ResourceManager::load_image(oss.str());
+  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_entities.png";
+  entities_image = ResourceManager::load_image(oss.str(), false);
 
   if (entities_image == NULL) {
     DIE("Cannot load the image '" << file_name << "'");

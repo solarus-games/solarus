@@ -95,12 +95,11 @@ void Message::parse(MessageId message_id) {
   else {
     file_name = "text/game_dialogs.zsd";
   }
-  file_name = FileTools::data_file_add_prefix(file_name);
 
   // parse the message
   CFG_File ini;
-
-  if (CFG_OpenFile(file_name.c_str(), &ini) != CFG_OK) {
+  SDL_RWops *rw = FileTools::get_data_rw(file_name);
+  if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
     DIE("Cannot load the message file '" << file_name << "': " << CFG_GetError());
   }
 
@@ -144,8 +143,8 @@ void Message::parse(MessageId message_id) {
     dialog_box->set_cancel_mode(cancel_mode);
   }
 
-  // close the file
-  CFG_CloseFile(&ini);
+  // close the input
+  SDL_FreeRW(rw);
 }
 
 /**

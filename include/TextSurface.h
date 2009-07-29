@@ -65,6 +65,7 @@ class TextSurface {
 
  private:
 
+  static SDL_RWops *rw[2];
   static TTF_Font *fonts[2];
 
   FontId font_id;
@@ -112,3 +113,4 @@ class TextSurface {
 };
 
 #endif
+

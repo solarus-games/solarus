@@ -31,16 +31,21 @@
  */
 class FileTools {
 
- public:
-  static const std::string data_file_get_prefix(void);
-  static const std::string data_file_add_prefix(const std::string &file_name);
-  static FILE *open_data_file(const std::string &file_name);
+  public:
 
-  static SDL_Surface *open_image(const std::string &file_name);
+    static SDL_RWops * get_data_rw(const std::string &file_name);
+    static SDL_RWops * get_data_rw(const std::string &file_name, std::string mode);
+ 
+    static const std::string data_file_get_prefix(void);
+    static const std::string data_file_add_prefix(const std::string &file_name);
+    //static FILE *open_data_file(const std::string &file_name);
 
-  static void read(std::istream &is, int &value);
-  static void read(std::istream &is, Uint32 &value);
-  static void read(std::istream &is, std::string &value);
+    static SDL_Surface *open_image(const std::string &file_name);
+
+    static void read(std::istream &is, int &value);
+    static void read(std::istream &is, Uint32 &value);
+    static void read(std::istream &is, std::string &value);
 };
 
 #endif
+

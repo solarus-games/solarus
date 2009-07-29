@@ -80,10 +80,11 @@ const string& Dungeon::get_name(void) {
 void Dungeon::load(void) {
 
   // open the file
-  const string &file_name = FileTools::data_file_add_prefix("maps/dungeons/dungeons.zsd");
+  std::string file_name = "maps/dungeons/dungeons.zsd"; 
+  SDL_RWops *rw = FileTools::get_data_rw(file_name, "r");
 
   CFG_File ini;
-  if (CFG_OpenFile(file_name.c_str(), &ini) != CFG_OK) {
+  if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
     DIE("Cannot load the dungeon file '" << file_name << "': " << CFG_GetError());
   }
 
@@ -166,7 +167,7 @@ void Dungeon::load(void) {
   }
 
   // close the file
-  CFG_CloseFile(&ini);
+  SDL_FreeRW(rw);
 }
 
 /**

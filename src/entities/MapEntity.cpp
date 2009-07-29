@@ -113,7 +113,7 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
  * The sprite and the movement of the entity are deleted (if any).
  */
 MapEntity::~MapEntity(void) {
-
+ 
   for (unsigned int i = 0; i < sprites.size(); i++) {
     delete sprites[i];
   }

@@ -108,6 +108,9 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 						   x_origin, y_origin);
     }
 
+    if (animations.find(name) != animations.end()) {
+      DIE("Animation '" << name << "' is defined twice in sprite '" << id << "'");
+    }
     animations[name] = new SpriteAnimation(image_file_name, nb_directions, directions,
 					   frame_delay, loop_on_frame);
 

@@ -53,6 +53,7 @@ class ResourceManager {
   static void quit(void);
 
   static SDL_Surface* load_image(const ImageId &id);
+  static SDL_Surface* load_image(const ImageId &id, bool relative_to_sprites_dir);
 
   static Tileset* get_tileset(TilesetId id);
   static Map* get_map(MapId id);

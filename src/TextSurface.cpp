@@ -20,6 +20,7 @@
 /**
  * The two fonts, created in the initialize() function.
  */
+SDL_RWops *TextSurface::rw[2];
 TTF_Font *TextSurface::fonts[2] = {NULL, NULL};
 
 /**
@@ -29,18 +30,16 @@ void TextSurface::initialize(void) {
 
   TTF_Init();
 
-  const std::string &file_name1 = FileTools::data_file_add_prefix("text/zsdx.ttf");
-
-  fonts[FONT_LA] = TTF_OpenFont(file_name1.c_str(), 11);
+  rw[FONT_LA] = FileTools::get_data_rw("text/zsdx.ttf");
+  fonts[FONT_LA] = TTF_OpenFontRW(rw[FONT_LA], 1, 11);
   if (fonts[FONT_LA] == NULL) {
-    DIE("Cannot load font '" << file_name1 << "'");
+    DIE("Cannot load font 'zsdx.ttf'");
   }
   
-  const std::string &file_name2 = FileTools::data_file_add_prefix("text/fixed8.fon");
-
-  fonts[FONT_STANDARD] = TTF_OpenFont(file_name2.c_str(), 11);
+  rw[FONT_STANDARD] = FileTools::get_data_rw("text/fixed8.fon");
+  fonts[FONT_STANDARD] = TTF_OpenFontRW(rw[FONT_STANDARD], 1, 11);
   if (fonts[FONT_STANDARD] == NULL) {
-    DIE("Cannot load font '" << file_name2 << "'");
+    DIE("Cannot load font 'fixed8.fon'");
   }
 }
 
@@ -49,8 +48,9 @@ void TextSurface::initialize(void) {
  */
 void TextSurface::quit(void) {
 
-  TTF_CloseFont(fonts[FONT_LA]);
-  TTF_CloseFont(fonts[FONT_STANDARD]);
+  SDL_FreeRW(rw[FONT_LA]);
+  SDL_FreeRW(rw[FONT_STANDARD]);
+
   TTF_Quit();
 }
 

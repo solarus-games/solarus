@@ -40,7 +40,7 @@ opening_key tileset 4 100 -1
 80	16	16	32	0	0	1	1
 160	64	32	16	0	0	1	1
 
-very_weak tileset 4 0 -1
+weak tileset 4 0 -1
 208	16	16	32	0	0	1	1
 192	48	32	16	0	0	1	1
 96	16	16	32	0	0	1	1

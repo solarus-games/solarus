@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "FileTools.h"
+#include "SDL_rwops_zzip.h"
 
 /**
  * @brief Converts the parameter as a <code>char*</code> constant string.
@@ -64,6 +65,23 @@ const std::string FileTools::data_file_add_prefix(const std::string &file_name) 
 }
 
 /**
+ * Returns the SDL_RWops object corresponding to the specified file name.
+ * @param file_name a file name relative to the data directory
+ */
+SDL_RWops * FileTools::get_data_rw(const std::string &file_name) {
+  return get_data_rw(file_name, "r");
+}
+
+/**
+ * Returns the SDL_RWops object corresponding to the specified file name.
+ * @param file_name a file name relative to the data directory
+ * @param mode the opening mode, like in fopen
+ */
+SDL_RWops * FileTools::get_data_rw(const std::string &file_name, std::string mode) {
+  return SDL_RWFromZZIP(data_file_add_prefix(file_name).c_str(), mode.c_str());
+}
+
+/**
  * @brief Opens in reading a file in the ZSDX data directory.
  * 
  * The file name is relative to the ZSDX data directory (which could be
@@ -71,7 +89,7 @@ const std::string FileTools::data_file_add_prefix(const std::string &file_name) 
  *
  * @param file_name name of the file to open
  * @return the file, or NULL if it couldn't be open.
- */
+ *
 FILE *FileTools::open_data_file(const std::string &file_name) {
 
   const std::string &full_file_name = data_file_add_prefix(file_name);
@@ -79,13 +97,12 @@ FILE *FileTools::open_data_file(const std::string &file_name) {
   FILE *f = fopen(full_file_name.c_str(), "r");
 
   return f;
-}
+}*/
 
 /**
  * @brief Loads an image file.
  * 
- * The file name is relative to the ZSDX sprites directory (which may be
- * for example /usr/local/share/zsdx/data/sprites or C:\\Program Files\\zsdx\\data\\sprites).
+ * The file name is relative to the ZSDX data directory.
  * The program is stopped with an error message if the image cannot be loaded.
  *
  * @param file_name name of the image file to open
@@ -93,12 +110,11 @@ FILE *FileTools::open_data_file(const std::string &file_name) {
  */
 SDL_Surface *FileTools::open_image(const std::string &file_name) {
 
-  const std::string &full_file_name = DATADIR + "/sprites/" + file_name;
-
-  SDL_Surface *image = IMG_Load(full_file_name.c_str());
+  SDL_RWops *rw = get_data_rw(file_name, "rb");
+  SDL_Surface *image = IMG_Load_RW(rw, 1);
 
   if (image == NULL) {
-    DIE("Cannot load image '" << full_file_name << "'");
+    DIE("Cannot load image '" << file_name << "'");
   }
 
   return image;

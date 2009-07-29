@@ -11,6 +11,7 @@ add_executable (zsdx
   FileTools.cpp
   Random.cpp
   Geometry.cpp
+  SDL_rwops_zzip.c
 
   # menus
   menus/TitleScreen.cpp
@@ -157,6 +158,7 @@ target_link_libraries (zsdx
 		      SDL_Config
 		      fmodex
 		      lua5.1
+		      zzip
 )
 
 INSTALL(TARGETS	zsdx

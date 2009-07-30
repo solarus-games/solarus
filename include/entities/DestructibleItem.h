@@ -45,12 +45,6 @@ class DestructibleItem: public Detector {
     STONE_SMALL_BLACK = 4,
     GRASS             = 5,
 
-    // not implemented
-    /*
-    STONE_BIG_WHITE   = ,
-    STONE_BIG_BLACK   = ,
-    SIGN              = ,
-    */
   };
 
  private:
@@ -70,8 +64,16 @@ class DestructibleItem: public Detector {
     bool can_be_lifted;                    /**< indicates that this item can be lifted */
     bool can_be_cut;                       /**< indicates that this item can be cut with the sword */
     int weight;                            /**< for liftable items: weight of the item (0: light,
-					    * 1: iron glove required, 2: golden glove required */
+					    * 1: iron glove required, 2: golden glove required) */
     int damage_on_enemies;                 /**< damage the item can cause to enemies (1: few, 2: normal, 3: a lot) */
+
+    /* TODO
+    Ground special_ground;
+     *
+     *
+     *
+     *
+     */
   };
 
   static const Features features[];

@@ -1146,7 +1146,7 @@ void Hero::get_back_from_death(void) {
 }
 
 /**
- * This function is called when an enemy collides with the hero.
+ * This function is called when a non-pixel perfect enemy collides with the hero.
  * @param enemy the enemy
  */
 void Hero::collision_with_enemy(Enemy *enemy) {
@@ -1160,8 +1160,12 @@ void Hero::collision_with_enemy(Enemy *enemy) {
  */
 void Hero::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
 
-  if (sprite_overlapping->get_animation_set_id().find("sword") != string::npos) {
+  std::string id = sprite_overlapping->get_animation_set_id();
+  if (id.find("sword") != std::string::npos) {
     enemy->try_hurt(ATTACK_SWORD, this);
+  }
+  else if (id.find("tunic") != std::string::npos) {
+    enemy->attack_hero(this);
   }
 }
 

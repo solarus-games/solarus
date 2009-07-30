@@ -1,7 +1,7 @@
 Prochaines mises à jour :
 
 - avancement
-- artworks Neovyze
+- artworks Neovyse
 - l'équipe
 - fausse boîte
 
@@ -110,17 +110,9 @@ Ancien planning prévisionnel
 [ok] Dimanche 30 novembre 2008 : donjon 1 commencé ; annonce de la démo si on est dans les temps
 [ok] Dimanche 7 décembre 2008 : combats (autres types d'ennemis), objets à finir (bombes, croissants, flacon...)
 Dimanche 14 décembre 2008 : donjon 1 fini, démo finie, début des tests
-Dimanche 21 décembre 2008 : cryptage des fichiers
+[ok] Dimanche 21 décembre 2008 : cryptage des fichiers
 Mercredi 24 décembre 2008 : sortie de la démo jusqu'à la fin du donjon 1
 
-----------------
-Archivage des fichiers de données
-----------------
-
-But : mettre tous les fichiers de données dans un fichier zip, et lire ces fichiers en les décompressant en mémoire et non sur le disque
-
-Utiliser la bibliothèque ZZipLib (http://zziplib.sourceforge.net/zzip-sdl-rwops.html) pour ouvrir les fichiers de manière transparente avec le même chemin d'accès, qu'ils soient placés dans un répertoire ou dans une archive zip. Seule différence : il faut utiliser zzip_open à la place de open et zzip_fopen à la place de fopen.
-Faire un objet SDL_RWops (en utilisant ou en s'inspirant de celui de lib) qui ouvre un fichier avec zzip, ce sera utilisable pour ouvrir les images SDL et les fichiers ini pour SDL_Config. Pour FMOD, décompresser le fichier dans une zone mémoire et utiliser les fonctions de FMOD permettant de lire un flux en mémoire au lieu de depuis un fichier. Pour les tilesets, maps et autres, utiliser std::ifstream au lieu de std::istringstream après avoir chargé le texte en mémoire. Ceci peut être abstrait en demandant au ResourceManager de renvoyer un std::istream !
 
 Pas de cryptage mais
 - nommer le fichier zip avec une autre extension (spécifiée à la bibliothèque avec les fonctions _ext_io)

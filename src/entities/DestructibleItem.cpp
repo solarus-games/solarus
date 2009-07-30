@@ -32,17 +32,13 @@
  * Features of each type of destructible item.
  */
 const DestructibleItem::Features DestructibleItem::features[] = {
+  // animation, sound, can be lifted, can be cut, weight, damage 
   {"entities/pot", "stone", true, false, 0, 2},
   {"entities/skull", "stone", true, false, 0, 2},
   {"entities/bush", "bush", true, true, 1, 1},
   {"entities/stone_small_white", "stone", true, false, 1, 2},
   {"entities/stone_small_black", "stone", true, false, 2, 4},
   {"entities/grass", "bush", false, true, 0, 0},
-
-  /* not implemented
-  {"entities/stone_big_white", "stone", 1},
-  {"entities/stone_big_white", "stone", 2},
-  */
 };
 
 /**

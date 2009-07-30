@@ -981,7 +981,7 @@ public abstract class MapEntity extends Observable {
      * image description of this kind of entity.
      */
     protected void initializeImageDescription() {
-	EntityImageDescription generalImageDescription = getImageDescription(getType(), subtype);
+	EntityImageDescription generalImageDescription = getImageDescription(getType(), getSubtype());
 
 	if (generalImageDescription != null) {
 	    currentImageDescription = new EntityImageDescription(generalImageDescription);
@@ -996,7 +996,13 @@ public abstract class MapEntity extends Observable {
      * the entity's current properties, by modifying the currentImageDescription field.
      */
     public void updateImageDescription() {
+
+      EntityImageDescription generalImageDescription = getImageDescription(getType(), getSubtype());
+
+      if (generalImageDescription != null) {
+	currentImageDescription.setRectangle(generalImageDescription.getRectangle());
 	// do nothing by default (the image description remains a copy of the description of the entity type)
+      }
     }
 
     /**

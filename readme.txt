@@ -15,6 +15,7 @@ SDL_ttf
 SDL_Config
 fmodex
 lua5.1
+zzip
 
 ----------------
 SDL installation
@@ -24,7 +25,7 @@ Download the lastest version of the SDL libraries:
 	- SDL and SDLmain: http://www.libsdl.org/download-1.2.php
 	- SDL_image: http://www.libsdl.org/projects/SDL_image
 	- SDL_ttf: http://www.libsdl.org/projects/SDL_ttf
-Be sure to pick the development version of these librairies.
+Make sure you pick the development version of these librairies.
 
 
 Linux users:

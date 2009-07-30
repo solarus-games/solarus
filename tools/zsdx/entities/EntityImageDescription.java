@@ -97,6 +97,14 @@ public class EntityImageDescription {
     
     /**
      * Sets the rectangle representing the entity in the image.
+     * @param rectangle the rectangle to set
+     */
+    public void setRectangle(Rectangle rectangle) {
+      setRectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+    
+    /**
+     * Sets the rectangle representing the entity in the image.
      * @param x x coordinate of the top-left corner of the rectangle to extract
      * @param y y coordinate of the top-left corner of the rectangle to extract 
      * @param width width of the rectangle

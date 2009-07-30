@@ -50,7 +50,8 @@ public class AddEntitiesMenu extends JMenu {
 		DestructibleItem.Subtype.BUSH,
 		DestructibleItem.Subtype.POT,
 		DestructibleItem.Subtype.STONE_SMALL_WHITE,
-		DestructibleItem.Subtype.STONE_SMALL_BLACK
+		DestructibleItem.Subtype.STONE_SMALL_BLACK,
+		DestructibleItem.Subtype.BOMB_FLOWER
 	),
 	new ItemDefinition(EntityType.CHEST, KeyEvent.VK_C),
 	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E,

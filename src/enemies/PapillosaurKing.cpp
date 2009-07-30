@@ -15,9 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/PapillosaurKing.h"
-#include "movements/CollisionMovement.h"
+#include "movements/RandomWalkMovement.h"
 #include "Random.h"
 #include "Sprite.h"
+#include "SpriteAnimationSet.h"
 
 /**
  * Constructor.
@@ -47,6 +48,7 @@ void PapillosaurKing::initialize(void) {
 
   // sprite
   create_sprite("enemies/boss_papillosaurking");
+  get_sprite()->get_animation_set()->enable_pixel_collisions();
   set_size(176, 96);
   set_origin(88, 64);
 
@@ -54,7 +56,11 @@ void PapillosaurKing::initialize(void) {
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     vulnerabilities[i] = 0;
   }
+  vulnerabilities[ATTACK_EXPLOSION] = 1;
 
+  // movement
+  set_movement(new RandomWalkMovement(5));
+  set_collision_modes(COLLISION_SPRITE);
 }
 
 /**

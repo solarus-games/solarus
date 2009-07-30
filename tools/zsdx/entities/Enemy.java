@@ -168,19 +168,12 @@ public class Enemy extends MapEntity {
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
 	super.setSubtype(subtype);
-
+	
 	Dimension size = sizes[getSubtype().ordinal()];
 	setSizeImpl(size.width, size.height);
-
+	
 	setChanged();
 	notifyObservers();
-    }
-
-    /**
-     * Updates the description of the image currently representing the entity.
-     */
-    public void updateImageDescription() {
-	currentImageDescription = currentImageDescriptions[getSubtype().ordinal()];
     }
 
     /**

@@ -40,13 +40,35 @@ public class DestructibleItem extends MapEntity {
 	new EntityImageDescription("destructible_items.png", 32, 0, 16, 16),
 	new EntityImageDescription("destructible_items.png", 48, 0, 16, 16),
 	new EntityImageDescription("destructible_items.png", 64, 0, 16, 16),
-	new EntityImageDescription("destructible_items.png", 80, 0, 16, 16)
+	new EntityImageDescription("destructible_items.png", 80, 0, 16, 16),
+	new EntityImageDescription("destructible_items.png", 96, 0, 16, 24),
+    };
+
+    /**
+     * Size of each subtype.
+     */
+    private static final Dimension[] sizes = {
+	new Dimension(16, 16),
+	new Dimension(16, 16),
+	new Dimension(16, 16),
+	new Dimension(16, 16),
+	new Dimension(16, 16),
+	new Dimension(16, 16),
+	new Dimension(16, 24),
     };
 
     /**
      * Origin point of a destructible item.
      */
-    private static final Point origin = new Point(8, 13);
+    private static final Point[] origins = {
+      new Point(8, 13),
+      new Point(8, 13),
+      new Point(8, 13),
+      new Point(8, 13),
+      new Point(8, 13),
+      new Point(8, 13),
+      new Point(8, 19),
+    };
 
     /**
      * Subtypes of destructible items.
@@ -57,7 +79,8 @@ public class DestructibleItem extends MapEntity {
 	BUSH,
 	STONE_SMALL_WHITE,
 	STONE_SMALL_BLACK,
-	GRASS;
+	GRASS,
+	BOMB_FLOWER;
 
 	public static final String[] humanNames = {
 	    "Pot",
@@ -65,7 +88,8 @@ public class DestructibleItem extends MapEntity {
 	    "Bush",
 	    "Small white stone",
 	    "Small black stone",
-	    "Grass"
+	    "Grass",
+	    "Bomb flower",
 	};
 
 	public int getId() {
@@ -87,10 +111,10 @@ public class DestructibleItem extends MapEntity {
 
     /**
      * Returns the coordinates of the origin point of the entity.
-     * @return (8,13)
+     * @return the origin point
      */
     protected Point getOrigin() {
-	return origin;
+	return origins[subtype.ordinal()];
     }
 
     /**
@@ -102,13 +126,29 @@ public class DestructibleItem extends MapEntity {
     }
 
     /**
-     * Updates the description of the image currently representing the entity.
+     * Sets the subtype of this entity.
+     * @param subtype the subtype of entity
      */
-    public void updateImageDescription() {
-	int x = getSubtypeId() * 16;
-	currentImageDescription.setX(x);
+    public void setSubtype(EntitySubtype subtype) throws MapException {
+	super.setSubtype(subtype);
+	
+	Dimension size = sizes[getSubtype().ordinal()];
+	setSizeImpl(size.width, size.height);
+	
+	setChanged();
+	notifyObservers();
     }
 
+    /**
+     * Updates the description of the image currently representing the entity.
+     */
+/*    public void updateImageDescription() {
+	int x = getSubtypeId() * 16;
+	int height = (getSubtype() != Subtype.BOMB_FLOWER) ? 16 : 24;
+	currentImageDescription.setX(x);
+	currentImageDescription.setHeight(height);
+    }
+*/
     /**
      * Sets the default values of all properties specific to the current entity type.
      */

@@ -116,6 +116,8 @@ class MapScript {
     l_door_set_open;
 
   static void check_nb_arguments(lua_State *context, int nb_arguments);
+
+  void load(void);
   void register_c_functions(void);
   void add_timer(Timer *timer);
   void remove_timer(const std::string &callback_name);

@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include <istream>
 
 /**
  * Represents a chest on a map.

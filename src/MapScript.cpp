@@ -159,14 +159,6 @@ void MapScript::check_nb_arguments(lua_State *context, int nb_arguments) {
  */
 void MapScript::initialize(void) {
 
-  // get the id of the map
-  int id = (int) map->get_id();
-
-  // compute the file name, depending on the id
-  std::ostringstream oss;
-  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".lua";
-  const std::string &file_name = FileTools::data_file_add_prefix(oss.str());
-
   // create an execution context
   context = lua_open();
   luaL_openlibs(context);
@@ -178,11 +170,29 @@ void MapScript::initialize(void) {
   luaL_dostring(context, "math.randomseed(os.time())");
 
   // load the script
-  if (luaL_dofile(context, file_name.c_str()) != 0) {
-    DIE("Cannot load the script of map " << id << ": " << lua_tostring(context, -1));
-  }
+  load();
 
   event_map_started();
+}
+
+/**
+ * Loads the script from the game data source.
+ */
+void MapScript::load(void) {
+
+  // get the id of the map
+  int id = (int) map->get_id();
+
+  // compute the file name, depending on the id
+  std::ostringstream oss;
+  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".lua";
+
+  size_t size;
+  char *buffer;
+  FileTools::data_file_open_buffer(oss.str(), &buffer, &size);
+  luaL_loadbuffer(context, buffer, size, "map script");
+  FileTools::data_file_close_buffer(buffer);
+  lua_call(context, 0, 0);
 }
 
 /**

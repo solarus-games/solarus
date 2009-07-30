@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "MapEntity.h"
-#include <istream>
 
 /**
  * A destination point on the map.

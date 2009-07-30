@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include <istream>
 
 /**
  * A switch is a button that the hero can push.

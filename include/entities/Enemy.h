@@ -21,7 +21,6 @@
 #include "entities/Detector.h"
 #include "entities/PickableItem.h"
 #include "entities/EnemyAttack.h"
-#include <istream>
 
 /**
  * Abstract class representing an enemy.

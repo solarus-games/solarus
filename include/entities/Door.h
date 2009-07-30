@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "Detector.h"
-#include <istream>
 
 /**
  * A door to open with a key or an event.

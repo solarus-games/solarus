@@ -74,13 +74,10 @@ void MapLoader::load_map(Map *map) {
   // compute the file name, depending on the id
   std::ostringstream oss;
   oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".zsd";
-  const string &file_name = FileTools::data_file_add_prefix(oss.str());
+  const string &file_name = oss.str();
 
   // open the map file
-  std::ifstream map_file(file_name.c_str());
-  if (!map_file) {
-    DIE("Cannot load map '" << id << "': unable to open map file '" << file_name << "'");
-  }
+  std::istream &map_file = FileTools::data_file_open(file_name);
 
   // parse the map file
   string line;
@@ -169,6 +166,8 @@ void MapLoader::load_map(Map *map) {
     }
     entities->add_entity(e);
   }
+
+  FileTools::data_file_close(map_file);
 
   // load the script
   map->script = new MapScript(map);

@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 #include <map>
-#include <istream>
 
 /**
  * This type of entity is an invisible obstacle for some other types of entities.

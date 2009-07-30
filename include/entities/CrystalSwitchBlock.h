@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include <istream>
 
 /**
  * An orange or blue block that can be raised or lowered with the help of a crystal switch.

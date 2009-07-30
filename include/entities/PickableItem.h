@@ -20,11 +20,9 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include "movements/FallingHeight.h"
-#include <istream>
 
 /**
  * A pickable item on the map (rupee, heart, bomb, fairy...).
- * This is a concrete class, used for any kind of pickable item.
  */
 class PickableItem: public Detector {
 

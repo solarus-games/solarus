@@ -16,6 +16,7 @@
  */
 #include "FileTools.h"
 #include "SDL_rwops_zzip.h"
+#include <zzip/lib.h>
 
 /**
  * @brief Converts the parameter as a <code>char*</code> constant string.
@@ -100,11 +101,71 @@ FILE *FileTools::open_data_file(const std::string &file_name) {
 }*/
 
 /**
- * @brief Loads an image file.
- * 
+ * Opens in reading a text file in the ZSDX data directory.
+ * The file name is relative to the ZSDX data directory.
+ * The program is stopped with an error message if the file cannot be open.
+ * Don't forget to close the stream with data_file_close().
+ * @param file_name name of the file to open
+ * @return the input stream
+ */
+std::istream & FileTools::data_file_open(const std::string &file_name) {
+
+  size_t size;
+  char *buffer;
+  data_file_open_buffer(file_name, &buffer, &size);
+
+  // create an input stream
+  std::istringstream *is = new std::istringstream(std::string(buffer, size));
+  data_file_close_buffer(buffer);
+  return *is;
+}
+
+/**
+ * Closes a text file previously open with data_file_open().
+ * @param data file the input stream to close
+ */
+void FileTools::data_file_close(const std::istream &data_file) {
+  delete &data_file;
+}
+
+/**
+ * Opens a data file an loads its content into a buffer.
+ * @param file_name name of the file to open
+ * @param buffer the buffer to load
+ * @param size number of bytes read
+ */
+void FileTools::data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size) {
+
+  // open the file
+  const std::string &data_file_name = data_file_add_prefix(file_name);
+  ZZIP_FILE *f = zzip_open(data_file_name.c_str(), 0);
+
+  if (f == NULL) {
+    DIE("Cannot open data file " << data_file_name);
+  }
+
+  // load it into memory
+  ZZIP_STAT stat;
+  zzip_fstat(f, &stat);
+  *size = stat.st_size;
+
+  *buffer = new char[*size];
+  zzip_read(f, *buffer, *size);
+  zzip_close(f);
+}
+
+/**
+ * Closes a data buffer previously open with data_file_open_buffer().
+ * @param buffer the buffer to close
+ */
+void FileTools::data_file_close_buffer(char *buffer) {
+  delete[] buffer;
+}
+
+/**
+ * Loads an image file.
  * The file name is relative to the ZSDX data directory.
  * The program is stopped with an error message if the image cannot be loaded.
- *
  * @param file_name name of the image file to open
  * @return the file
  */

@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "Detector.h"
-#include <istream>
 
 /**
  * A jump sensor is a detector placed on a map.

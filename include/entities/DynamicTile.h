@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
-#include <istream>
 
 /**
  * A dynamic tile is a tile placed on the map 

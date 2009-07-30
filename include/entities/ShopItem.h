@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include <istream>
 
 /**
  * Represents an item the hero can buy in a shop.

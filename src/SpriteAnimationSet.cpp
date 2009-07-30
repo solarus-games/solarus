@@ -18,8 +18,6 @@
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "FileTools.h"
-#include <fstream>
-#include <sstream>
 
 /**
  * Loads the animations of a sprite from a file.
@@ -28,13 +26,10 @@
 SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 
   // compute the file name
-  std::string file_name = FileTools::data_file_add_prefix("sprites/" + id + ".zsd");
+  std::string file_name = (std::string) "sprites/" + id + ".zsd";
 
   // open the file
-  std::ifstream sprite_file(file_name.c_str());
-  if (!sprite_file) {
-    DIE("Cannot open file '" << file_name << "'");
-  }
+  std::istream &sprite_file = FileTools::data_file_open(file_name);
 
   // read the file
   std::string line;
@@ -119,6 +114,8 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
       default_animation_name = name;
     }
   }
+
+  FileTools::data_file_close(sprite_file);
 }
 
 /**

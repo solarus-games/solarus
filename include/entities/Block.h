@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "Detector.h"
-#include <istream>
 
 /**
  * A block or a statue that the hero can push.

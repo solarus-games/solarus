@@ -66,14 +66,10 @@ void Tileset::load(void) {
   // compute the file name, depending on the id
   std::ostringstream oss;
   oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << ".zsd";
-  const string &file_name = FileTools::data_file_add_prefix(oss.str());
 
   // open the tileset file
-  std::ifstream tileset_file(file_name.c_str());
-
-  if (!tileset_file) {
-    DIE("Cannot open file '" << file_name << "'");
-  }
+  std::string file_name = oss.str();
+  std::istream &tileset_file = FileTools::data_file_open(file_name);
 
   // parse the tileset file
   string line;
@@ -139,6 +135,7 @@ void Tileset::load(void) {
 	    width, height, x1, y1, x2, y2, x3, y3));
     }
   }
+  FileTools::data_file_close(tileset_file);
 
   // load the tileset images
   oss.str("");

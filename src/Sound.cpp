@@ -35,7 +35,7 @@ Sound::Sound(void) {
 Sound::Sound(const SoundId &sound_id):
   sound(NULL), channel(NULL) {
 
-  file_name = FileTools::data_file_add_prefix("sounds/" + sound_id + ".wav");
+  file_name = (std::string) "sounds/" + sound_id + ".wav";
 }
 
 /**
@@ -125,7 +125,15 @@ bool Sound::play(void) {
   if (is_initialized()) {
 
     if (sound == NULL) {
-      result = FMOD_System_CreateSound(system, file_name.c_str(), FMOD_LOOP_OFF, 0, &sound);
+
+      size_t size;
+      char *buffer;
+      FileTools::data_file_open_buffer(file_name, &buffer, &size);
+      FMOD_CREATESOUNDEXINFO ex = {0};
+      ex.cbsize = sizeof(ex);
+      ex.length = size;
+      result = FMOD_System_CreateSound(system, buffer, FMOD_LOOP_OFF | FMOD_OPENMEMORY, &ex, &sound);
+      FileTools::data_file_close_buffer(buffer);
 
       if (result != FMOD_OK) {
 	std::cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;

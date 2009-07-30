@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "Detector.h"
 #include "PickableItem.h"
-#include <istream>
 
 /**
  * Represents an entity that the hero can destroy and that contains a pickable item.

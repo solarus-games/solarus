@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "Detector.h"
 #include "Transition.h"
-#include <istream>
 
 /**
  * A teletransporter is a detector placed on a map.

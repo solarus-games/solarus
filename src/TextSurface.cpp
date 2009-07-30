@@ -48,8 +48,9 @@ void TextSurface::initialize(void) {
  */
 void TextSurface::quit(void) {
 
-  SDL_FreeRW(rw[FONT_LA]);
-  SDL_FreeRW(rw[FONT_STANDARD]);
+  for (int i = 0; i < FONT_NB; i++) {
+    TTF_CloseFont(fonts[i]);
+  }
 
   TTF_Quit();
 }

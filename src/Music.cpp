@@ -35,7 +35,7 @@ const MusicId Music::unchanged = "same";
 Music::Music(const MusicId &music_id) {
 
   sound = NULL;
-  file_name = FileTools::data_file_add_prefix("musics/" + music_id);
+  file_name = (std::string) "musics/" + music_id;
 
   /*
    * The musics are played with the highest priority.
@@ -92,10 +92,18 @@ bool Music::play(void) {
 
   if (is_initialized()) {
 
+    size_t size;
+    char *buffer;
+    FileTools::data_file_open_buffer(file_name, &buffer, &size);
+    FMOD_CREATESOUNDEXINFO ex = {0};
+    ex.cbsize = sizeof(ex);
+    ex.length = size;
+
 /*  The beginning of any .it music is badly played on my windows with DirectX
     other workarounds: use FMOD_SOFTWARE or FMOD_OUTPUTTYPE_WINMM?
     */
-    result = FMOD_System_CreateStream(system, file_name.c_str(), FMOD_LOOP_NORMAL, 0, &sound);
+    result = FMOD_System_CreateStream(system, buffer, FMOD_LOOP_NORMAL | FMOD_OPENMEMORY, &ex, &sound);
+    FileTools::data_file_close_buffer(buffer);
 
     if (result != FMOD_OK) {
       std::cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;

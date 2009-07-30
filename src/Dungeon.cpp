@@ -167,7 +167,8 @@ void Dungeon::load(void) {
   }
 
   // close the file
-  SDL_FreeRW(rw);
+  SDL_RWclose(rw);
+  CFG_CloseFile(&ini);
 }
 
 /**

@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include <istream>
 
 /**
  * A sensor is an invisible entity that triggers something

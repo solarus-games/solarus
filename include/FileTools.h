@@ -30,15 +30,21 @@
  * a data file.
  */
 class FileTools {
+ 
+  public: // TODO private
+
+    static const std::string data_file_get_prefix(void);
+    static const std::string data_file_add_prefix(const std::string &file_name);
 
   public:
 
     static SDL_RWops * get_data_rw(const std::string &file_name);
     static SDL_RWops * get_data_rw(const std::string &file_name, std::string mode);
  
-    static const std::string data_file_get_prefix(void);
-    static const std::string data_file_add_prefix(const std::string &file_name);
-    //static FILE *open_data_file(const std::string &file_name);
+    static std::istream & data_file_open(const std::string &file_name);
+    static void data_file_close(const std::istream &data_file);
+    static void data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size);
+    static void data_file_close_buffer(char *buffer);
 
     static SDL_Surface *open_image(const std::string &file_name);
 

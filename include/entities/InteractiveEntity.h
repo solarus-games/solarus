@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include "KeysEffect.h"
-#include <istream>
 
 /**
  * An interactive entity is an entity that triggers a message or an event

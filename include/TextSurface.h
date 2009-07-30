@@ -61,6 +61,7 @@ class TextSurface {
   enum FontId {
     FONT_LA       = 0,   /**< Link's Awakening font (default) */
     FONT_STANDARD = 1,   /**< a more common font, with fixed width too */
+    FONT_NB
   };
 
  private:

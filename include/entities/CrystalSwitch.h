@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include <istream>
 
 /**
  * A crystal switch is a switch that the hero can activate to change the configuration of the

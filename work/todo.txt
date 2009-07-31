@@ -21,6 +21,7 @@ Feature requests :
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Remplacer "clé" par "clef" ?
+- Mettre à jour la carte du monde
 
 
 Bugs :

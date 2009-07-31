@@ -67,10 +67,6 @@
 0	0	80	256	16	16	101
 0	0	224	256	16	16	101
 0	0	224	208	16	16	101
-9	0	72	221	block	-1	1	brown_block
-9	0	72	269	block_2	-1	1	brown_block
-9	0	248	269	block_3	-1	1	brown_block
-9	0	248	221	block_4	-1	1	brown_block
 5	0	152	232	chest	0	21	1	28
 4	0	88	221	0	-1	-1
 4	0	88	269	0	-1	-1
@@ -80,6 +76,10 @@
 2	0	152	16	16	16	to_B2	0	1	14	from_icy_room
 8	0	160	109	frozen_door	3	0	entities/frozen_door	_none
 8	0	160	205	frozen_door_opposite	1	0	entities/frozen_door	_none
+9	0	248	221	block	-1	1	2
+9	0	72	221	block_2	-1	1	2
+9	0	72	269	block_3	-1	1	2
+9	0	248	269	block_4	-1	1	2
 0	1	112	160	96	32	230
 0	1	112	112	96	32	231
 0	1	112	16	96	32	230

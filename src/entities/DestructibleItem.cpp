@@ -32,13 +32,14 @@
  * Features of each type of destructible item.
  */
 const DestructibleItem::Features DestructibleItem::features[] = {
-  // animation, sound, can be lifted, can be cut, weight, damage 
-  {"entities/pot", "stone", true, false, 0, 2},
-  {"entities/skull", "stone", true, false, 0, 2},
-  {"entities/bush", "bush", true, true, 1, 1},
-  {"entities/stone_small_white", "stone", true, false, 1, 2},
-  {"entities/stone_small_black", "stone", true, false, 2, 4},
-  {"entities/grass", "bush", false, true, 0, 0},
+  // animation set, sound, can be lifted, can be cut, can_explode, weight, damage, special ground
+  {"entities/pot",               "stone", true,  false, false, 0, 2, GROUND_NORMAL},
+  {"entities/skull",             "stone", true,  false, false, 0, 2, GROUND_NORMAL},
+  {"entities/bush",              "bush",  true,  true,  false, 1, 1, GROUND_NORMAL},
+  {"entities/stone_small_white", "stone", true,  false, false, 1, 2, GROUND_NORMAL},
+  {"entities/stone_small_black", "stone", true,  false, false, 2, 4, GROUND_NORMAL},
+  {"entities/grass",             "bush",  false, true,  false, 0, 0, GROUND_GRASS},
+  {"entities/bomb_flower",       "bush",  true,  false, true,  1, 0, GROUND_NORMAL},
 };
 
 /**
@@ -71,7 +72,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
     add_collision_mode(COLLISION_SPRITE);
   }
 
-  if (subtype == GRASS) { // to display the grass ground under the hero
+  if (has_special_ground()) { // display a special ground under the hero
     add_collision_mode(COLLISION_ORIGIN_POINT);
   }
 }
@@ -137,6 +138,22 @@ Sound * DestructibleItem::get_destruction_sound(void) {
 }
 
 /**
+ * Returns the special ground to display when walking on this destructible item.
+ * @return the ground, or GROUND_NORMAL if there is no special ground to display
+ */
+Ground DestructibleItem::get_special_ground(void) {
+  return features[subtype].special_ground;
+}
+
+/**
+ * Returns whether there is a special ground to display when walking on this destructible item.
+ * @return true if there is a special ground
+ */
+bool DestructibleItem::has_special_ground(void) {
+  return get_special_ground() != GROUND_NORMAL;
+}
+
+/**
  * Returns whether this entity is an obstacle for another one.
  * For a destructible item, this does not depend on the other
  * entity but only on the subtype of destructible item.
@@ -176,8 +193,8 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
       }
     }
 
-    else if (collision_mode == COLLISION_ORIGIN_POINT && subtype == GRASS && !is_being_cut) {
-      hero->set_ground(GROUND_GRASS);
+    else if (collision_mode == COLLISION_ORIGIN_POINT && has_special_ground() && !is_being_cut) {
+      hero->set_ground(get_special_ground());
     }
   }
 }
@@ -203,7 +220,7 @@ void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) 
       get_sprite()->set_current_animation("destroy");
       is_being_cut = true;
 
-      if (subtype == GRASS) {
+      if (has_special_ground()) {
 	hero->set_ground(GROUND_NORMAL);
       }
 

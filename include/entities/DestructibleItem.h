@@ -20,13 +20,15 @@
 #include "Common.h"
 #include "Detector.h"
 #include "PickableItem.h"
+#include "Ground.h"
 
 /**
- * Represents an entity that the hero can destroy and that contains a pickable item.
+ * Represents an entity that the hero can destroy and that may contain a pickable item.
  * Some destructible items can be lifted and thrown (a pot, a stone, etc.),
  * some of them can be cut with the sword (for example some grass)
  * and others have both behaviors (for example a bush).
- * When the hero lifts an item, it is destroyed and replaced by an instance of CarriedItem
+ * Some others can explode when they are lifted (a bomb or a bomb flower).
+ * When the hero lifts an item, it is removed and replaced by an instance of CarriedItem
  * that is attached to the hero.
  */
 class DestructibleItem: public Detector {
@@ -61,19 +63,13 @@ class DestructibleItem: public Detector {
   struct Features {
     SpriteAnimationSetId animation_set_id; /**< animation set used for this type of destructible item */
     SoundId destruction_sound_id;          /**< sound played when the item is destroyed */
-    bool can_be_lifted;                    /**< indicates that this item can be lifted */
+    bool can_be_lifted;                    /**< indicates that this item is an obstacle and can be lifted */
     bool can_be_cut;                       /**< indicates that this item can be cut with the sword */
+    bool can_explode;                      /**< indicates that this item explodes after a delay */
     int weight;                            /**< for liftable items: weight of the item (0: light,
 					    * 1: iron glove required, 2: golden glove required) */
     int damage_on_enemies;                 /**< damage the item can cause to enemies (1: few, 2: normal, 3: a lot) */
-
-    /* TODO
-    Ground special_ground;
-     *
-     *
-     *
-     *
-     */
+    Ground special_ground;                 /**< for a non-obstacle item, indicates a special ground to display */
   };
 
   static const Features features[];
@@ -91,6 +87,8 @@ class DestructibleItem: public Detector {
   const std::string& get_animation_set_id(void);
   Sound *get_destruction_sound(void);
   int get_damage_on_enemies(void);
+  bool has_special_ground(void);
+  Ground get_special_ground(void);
 
   bool is_obstacle_for(MapEntity *other);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

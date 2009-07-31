@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -98,7 +98,12 @@ void Message::parse(MessageId message_id) {
 
   // parse the message
   CFG_File ini;
-  SDL_RWops *rw = FileTools::get_data_rw(file_name);
+  size_t size;
+  char *buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  SDL_RWops *rw = SDL_RWFromMem(buffer, size);
+  // other solution with SDL_RWFromZZIP seems to be very slow
+
   if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
     DIE("Cannot load the message file '" << file_name << "': " << CFG_GetError());
   }
@@ -145,6 +150,7 @@ void Message::parse(MessageId message_id) {
 
   // close the input
   SDL_FreeRW(rw);
+  FileTools::data_file_close_buffer(buffer);
 }
 
 /**
@@ -263,11 +269,11 @@ void Message::add_character(void) {
   else {
     // normal character
     text_surfaces[line_index]->add_char(current_char);
-    
+
     // if this is a multibyte character, also add the next byte
     if ((current_char & 0xE0) == 0xC0) {
       // the first byte is 110xxxxx: this means the character is stored with two bytes (utf-8)
-      
+
       current_char = lines[line_index][char_index++];
       text_surfaces[line_index]->add_char(current_char);
     }
@@ -294,7 +300,7 @@ void Message::update(void) {
 
   Uint32 now = SDL_GetTicks();
   while (!is_finished() && now >= next_char_date) {
-    
+
     // check the end of the current line
     while (!is_finished() && char_index >= lines[line_index].length()) {
       char_index = 0;
@@ -312,7 +318,7 @@ void Message::update(void) {
  * Displays the message on a surface.
  */
 void Message::display(SDL_Surface *destination_surface) {
-  
+
   for (int i = 0; i < 3; i++) {
     text_surfaces[i]->display(destination_surface);
   }

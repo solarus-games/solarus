@@ -41,6 +41,9 @@ Bugs :
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - petite clé du hud : reprendre la même que dans le hud de alttp
+- warnings sous windows dans MapEntity et Movement (conversions de double vers int)
+- sous windows, l'accès aux fichiers sans zip fonctionne mal
+- remplacer SDL_rwops_zzip.c
 
 
 A venir :

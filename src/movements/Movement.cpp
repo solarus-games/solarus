@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -255,7 +255,7 @@ void Movement::set_speed(double speed) {
   if (x_speed == 0 && y_speed == 0) {
     x_speed = 1;
   }
-  double angle = Geometry::get_angle(0, 0, x_speed, y_speed); // angle in radians
+  double angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100)); // angle in radians
 
   set_x_speed(speed * cos(angle));
   set_y_speed(-speed * sin(angle));
@@ -317,7 +317,7 @@ void Movement::set_direction(int direction) {
  * @param angle the new movement direction in radians
  */
 void Movement::set_direction(double angle) {
-  
+
   if (x_speed == 0 && y_speed == 0) {
     if (entity == NULL) {
       DIE("Cannot set the direction when the speed is zero");

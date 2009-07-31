@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@
  * be the location of the executable file). This is the normal behavior on Windows
  * platforms, because the user downloads a binary version of the game.
  */
-#ifdef DATADIR_ 
+#ifdef DATADIR_
 #define DATADIR ((std::string) STRING(DATADIR_))
 #else
 #define DATADIR ((std::string) "./data")
@@ -55,7 +55,7 @@ const std::string FileTools::data_file_get_prefix(void) {
  * The \c file_name parameter is relative to the ZSDX data directory
  * (which could be for example /usr/local/share/zsdx/data or
  * C:\\Program Files\\zsdx\\data).
- * This function returns the same file name, prefixed by the data directory. 
+ * This function returns the same file name, prefixed by the data directory.
  *
  * @param file_name name of a data file
  */
@@ -79,12 +79,18 @@ SDL_RWops * FileTools::get_data_rw(const std::string &file_name) {
  * @param mode the opening mode, like in fopen
  */
 SDL_RWops * FileTools::get_data_rw(const std::string &file_name, std::string mode) {
-  return SDL_RWFromZZIP(data_file_add_prefix(file_name).c_str(), mode.c_str());
+
+  std::string full_file_name = data_file_add_prefix(file_name);
+  SDL_RWops *rw = SDL_RWFromZZIP(full_file_name.c_str(), mode.c_str());
+  if (rw == NULL) {
+    DIE("Cannot open data file " << full_file_name);
+  }
+  return rw;
 }
 
 /**
  * @brief Opens in reading a file in the ZSDX data directory.
- * 
+ *
  * The file name is relative to the ZSDX data directory (which could be
  * for example /usr/local/share/zsdx/data or C:\\Program Files\\zsdx\\data).
  *
@@ -138,7 +144,7 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
 
   // open the file
   const std::string &data_file_name = data_file_add_prefix(file_name);
-  ZZIP_FILE *f = zzip_open(data_file_name.c_str(), 0);
+  ZZIP_FILE *f = zzip_open(data_file_name.c_str(), ZZIP_ALLOWREAL);
 
   if (f == NULL) {
     DIE("Cannot open data file " << data_file_name);

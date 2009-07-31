@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,13 +33,13 @@ void TextSurface::initialize(void) {
   rw[FONT_LA] = FileTools::get_data_rw("text/zsdx.ttf");
   fonts[FONT_LA] = TTF_OpenFontRW(rw[FONT_LA], 1, 11);
   if (fonts[FONT_LA] == NULL) {
-    DIE("Cannot load font 'zsdx.ttf'");
+    DIE("Cannot load font 'zsdx.ttf': " << SDL_GetError());
   }
-  
+
   rw[FONT_STANDARD] = FileTools::get_data_rw("text/fixed8.fon");
   fonts[FONT_STANDARD] = TTF_OpenFontRW(rw[FONT_STANDARD], 1, 11);
   if (fonts[FONT_STANDARD] == NULL) {
-    DIE("Cannot load font 'fixed8.fon'");
+    DIE("Cannot load font 'fixed8.fon': " << SDL_GetError());
   }
 }
 
@@ -168,9 +168,9 @@ void TextSurface::set_text_color(int r, int g, int b) {
 void TextSurface::set_background_color(int r, int g, int b) {
   this->background_color.r = r;
   this->background_color.g = g;
-  this->background_color.b = b; 
+  this->background_color.b = b;
 
-  rebuild(); 
+  rebuild();
 }
 
 /**
@@ -245,12 +245,12 @@ void TextSurface::rebuild(void) {
     SDL_FreeSurface(surface);
     surface = NULL;
   }
-  
+
   if (text == "") {
     // empty string: no surface to create
     return;
   }
-  
+
   // create the text surface
 
   switch (rendering_mode) {

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -113,7 +113,7 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
  * The sprite and the movement of the entity are deleted (if any).
  */
 MapEntity::~MapEntity(void) {
- 
+
   for (unsigned int i = 0; i < sprites.size(); i++) {
     delete sprites[i];
   }
@@ -134,9 +134,9 @@ bool MapEntity::can_be_obstacle(void) {
 }
 
 /**
- * Returns whether entities of this type can detect the presence 
+ * Returns whether entities of this type can detect the presence
  * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
+ * suclasses of Detector). If yes, the function
  * collision() will be called when a collision is detected.
  * @return true if this type of entity can detect other entities
  */
@@ -146,7 +146,7 @@ bool MapEntity::can_detect_entities(void) {
 
 /**
  * Returns whether entities of this type can be displayed.
- * If enabled, the sprites added by the add_sprite() calls will be 
+ * If enabled, the sprites added by the add_sprite() calls will be
  * displayed (if any).
  * @return true if this type of entity can be displayed
  */
@@ -159,7 +159,7 @@ bool MapEntity::can_be_displayed(void) {
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
+ * are displayed in the normal order (i.e. as specified by the map file),
  * and before the entities with the feature.
  * @return true if this type of entity is displayed at the same level as the hero
  */
@@ -618,7 +618,7 @@ void MapEntity::just_moved(void) {
  * By default, nothing is done.
  */
 void MapEntity::set_facing_entity(Detector *detector) {
-  
+
 }
 
 /**
@@ -791,7 +791,7 @@ double MapEntity::get_vector_angle(MapEntity *other) {
  * @return the distance between this entity and the point in pixels
  */
 int MapEntity::get_distance(int x, int y) {
-  return Geometry::get_distance(get_x(), get_y(), x, y);
+  return (int) Geometry::get_distance(get_x(), get_y(), x, y);
 }
 
 /**
@@ -801,7 +801,7 @@ int MapEntity::get_distance(int x, int y) {
  * @return the distance between the two entities in pixels
  */
 int MapEntity::get_distance(MapEntity *other) {
-  return Geometry::get_distance(get_x(), get_y(), other->get_x(), other->get_y());
+  return (int) Geometry::get_distance(get_x(), get_y(), other->get_x(), other->get_y());
 }
 
 /**
@@ -821,7 +821,7 @@ void MapEntity::ensure_no_obstacles(void) {
   if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
     return;
   }
-  
+
   bool found = false;
 
   static const int dx[] = { 1, 0, -1, 0, 1, -1, -1, 1 };
@@ -869,7 +869,7 @@ void MapEntity::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
  * @param victim the enemy just hurt
  * @param result indicates how the enemy has reacted to the attack:
  * - a number greater than 0 represents the number of health points the enemy has just lost
- * - a value of 0 means that the attack was just ignored 
+ * - a value of 0 means that the attack was just ignored
  * - a value of -1 means that the enemy was protected against the attack
  * - a value of -2 means that the attack immobilized the enemy
  */

@@ -81,7 +81,8 @@ void Dungeon::load(void) {
 
   // open the file
   std::string file_name = "maps/dungeons/dungeons.zsd"; 
-  SDL_RWops *rw = FileTools::get_data_rw(file_name, "r");
+
+  SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
 
   CFG_File ini;
   if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
@@ -167,7 +168,7 @@ void Dungeon::load(void) {
   }
 
   // close the file
-  SDL_RWclose(rw);
+  FileTools::data_file_close_rw(rw);
   CFG_CloseFile(&ini);
 }
 

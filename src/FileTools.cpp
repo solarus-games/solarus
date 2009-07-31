@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "FileTools.h"
-#include "SDL_rwops_zzip.h"
 #include <zzip/lib.h>
 
 /**
@@ -69,19 +68,16 @@ const std::string FileTools::data_file_add_prefix(const std::string &file_name) 
  * Returns the SDL_RWops object corresponding to the specified file name.
  * @param file_name a file name relative to the data directory
  */
-SDL_RWops * FileTools::get_data_rw(const std::string &file_name) {
-  return get_data_rw(file_name, "r");
-}
-
-/**
- * Returns the SDL_RWops object corresponding to the specified file name.
- * @param file_name a file name relative to the data directory
- * @param mode the opening mode, like in fopen
- */
-SDL_RWops * FileTools::get_data_rw(const std::string &file_name, std::string mode) {
+SDL_RWops * FileTools::data_file_open_rw(const std::string &file_name) {
 
   std::string full_file_name = data_file_add_prefix(file_name);
-  SDL_RWops *rw = SDL_RWFromZZIP(full_file_name.c_str(), mode.c_str());
+
+  size_t size;
+  char *buffer;
+  data_file_open_buffer(file_name, &buffer, &size);
+  SDL_RWops *rw = SDL_RWFromMem(buffer, size);
+//  SDL_RWops *rw = SDL_RWFromZZIP(full_file_name.c_str(), mode.c_str());
+
   if (rw == NULL) {
     DIE("Cannot open data file " << full_file_name);
   }
@@ -89,22 +85,12 @@ SDL_RWops * FileTools::get_data_rw(const std::string &file_name, std::string mod
 }
 
 /**
- * @brief Opens in reading a file in the ZSDX data directory.
- *
- * The file name is relative to the ZSDX data directory (which could be
- * for example /usr/local/share/zsdx/data or C:\\Program Files\\zsdx\\data).
- *
- * @param file_name name of the file to open
- * @return the file, or NULL if it couldn't be open.
- *
-FILE *FileTools::open_data_file(const std::string &file_name) {
-
-  const std::string &full_file_name = data_file_add_prefix(file_name);
-
-  FILE *f = fopen(full_file_name.c_str(), "r");
-
-  return f;
-}*/
+ * Frees an SDL_RWops object previously create with data_file_open_rw().
+ * @param rw the object to free
+ */
+void FileTools::data_file_close_rw(SDL_RWops *rw) {
+  SDL_FreeRW(rw);
+}
 
 /**
  * Opens in reading a text file in the ZSDX data directory.
@@ -177,7 +163,7 @@ void FileTools::data_file_close_buffer(char *buffer) {
  */
 SDL_Surface *FileTools::open_image(const std::string &file_name) {
 
-  SDL_RWops *rw = get_data_rw(file_name, "rb");
+  SDL_RWops *rw = data_file_open_rw(file_name);
   SDL_Surface *image = IMG_Load_RW(rw, 1);
 
   if (image == NULL) {

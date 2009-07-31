@@ -98,11 +98,8 @@ void Message::parse(MessageId message_id) {
 
   // parse the message
   CFG_File ini;
-  size_t size;
-  char *buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  SDL_RWops *rw = SDL_RWFromMem(buffer, size);
-  // other solution with SDL_RWFromZZIP seems to be very slow
+  SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
+  // SDL_RWFromZZIP seems to be very slow with CFG_OpenFile_RW
 
   if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
     DIE("Cannot load the message file '" << file_name << "': " << CFG_GetError());
@@ -149,8 +146,8 @@ void Message::parse(MessageId message_id) {
   }
 
   // close the input
-  SDL_FreeRW(rw);
-  FileTools::data_file_close_buffer(buffer);
+  FileTools::data_file_close_rw(rw);
+  CFG_CloseFile(&ini);
 }
 
 /**

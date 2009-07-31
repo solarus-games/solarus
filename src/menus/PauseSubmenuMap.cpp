@@ -158,8 +158,8 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
     // load the image of this floor
     std::ostringstream oss;
-    oss << "../maps/dungeons/map" << dungeon->get_number() << "_" << selected_floor << ".png";
-    SDL_Surface *floor_map_img = ResourceManager::load_image(oss.str());
+    oss << "maps/dungeons/map" << dungeon->get_number() << "_" << selected_floor << ".png";
+    SDL_Surface *floor_map_img = ResourceManager::load_image(oss.str(), false);
     SDL_BlitSurface(floor_map_img, NULL, dungeon_map_img, NULL);
     SDL_FreeSurface(floor_map_img);
   }

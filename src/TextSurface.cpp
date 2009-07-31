@@ -30,13 +30,13 @@ void TextSurface::initialize(void) {
 
   TTF_Init();
 
-  rw[FONT_LA] = FileTools::get_data_rw("text/zsdx.ttf");
+  rw[FONT_LA] = FileTools::data_file_open_rw("text/zsdx.ttf");
   fonts[FONT_LA] = TTF_OpenFontRW(rw[FONT_LA], 1, 11);
   if (fonts[FONT_LA] == NULL) {
     DIE("Cannot load font 'zsdx.ttf': " << SDL_GetError());
   }
 
-  rw[FONT_STANDARD] = FileTools::get_data_rw("text/fixed8.fon");
+  rw[FONT_STANDARD] = FileTools::data_file_open_rw("text/fixed8.fon");
   fonts[FONT_STANDARD] = TTF_OpenFontRW(rw[FONT_STANDARD], 1, 11);
   if (fonts[FONT_STANDARD] == NULL) {
     DIE("Cannot load font 'fixed8.fon': " << SDL_GetError());

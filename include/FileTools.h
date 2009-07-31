@@ -38,9 +38,8 @@ class FileTools {
 
   public:
 
-    static SDL_RWops * get_data_rw(const std::string &file_name);
-    static SDL_RWops * get_data_rw(const std::string &file_name, std::string mode);
- 
+    static SDL_RWops * data_file_open_rw(const std::string &file_name);
+    static void data_file_close_rw(SDL_RWops *rw);
     static std::istream & data_file_open(const std::string &file_name);
     static void data_file_close(const std::istream &data_file);
     static void data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size);

@@ -11,7 +11,6 @@ add_executable (zsdx
   FileTools.cpp
   Random.cpp
   Geometry.cpp
-  SDL_rwops_zzip.c
 
   # menus
   menus/TitleScreen.cpp

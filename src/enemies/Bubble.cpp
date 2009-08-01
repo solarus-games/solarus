@@ -47,8 +47,8 @@ void Bubble::initialize(void) {
 
   // sprite
   create_sprite("enemies/bubble");
-  set_size(16, 16);
-  set_origin(8, 8);
+  set_size(12, 12);
+  set_origin(6, 6);
 
   // vulnerabilities
   for (int i = 0; i < ATTACK_NUMBER; i++) {

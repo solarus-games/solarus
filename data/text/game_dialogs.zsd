@@ -985,9 +985,9 @@ next2 = sahasrahla_house.beginning.insisting
 line1 = "Je savais que je"
 line2 = "pouvais compter sur ton"
 line3 = "courage."
-next = sahasrahla_house.beginning.thanks.2
+next = sahasrahla_house.give_world_map
 
-[sahasrahla_house.beginning.thanks.2]
+[sahasrahla_house.give_world_map]
 #       |-----------------------|
 line1 = "Voici un objet qui te"
 line2 = "sera fort utile lors de"
@@ -1008,6 +1008,12 @@ line2 = "pourraient te servir."
 line3 = "Mais je ne te promets"
 next = sahasrahla_house.quest_accepted.3
 
+[sahasrahla_house.quest_accepted.3]
+#       |-----------------------|
+line1 = "rien car cela fait"
+line2 = "longtemps que je ne"
+line3 = "l'ai pas entretenue..."
+
 [sahasrahla_house.memories]
 #       |-----------------------|
 line1 = "Les mémoires de"
@@ -1027,12 +1033,6 @@ next = sahasrahla_house.memories.read
 line1 = "Oh, c'est beaucoup"
 line2 = "trop long !"
 
-[sahasrahla_house.quest_accepted.3]
-#       |-----------------------|
-line1 = "rien car cela fait"
-line2 = "longtemps que je ne"
-line3 = "l'ai pas entretenue..."
-
 [sahasrahla_house.frozen_door_advice]
 #       |-----------------------|
 line1 = "La porte est gelée ?"
@@ -1040,7 +1040,7 @@ line2 = "Essaie de faire fondre"
 line3 = "la glace avec de l'eau."
 cancel = all
 
-[sahasrahla_house.door_unfreezed]
+[sahasrahla_house.default]
 #       |-----------------------|
 line1 = "J'ai foi en toi."
 line2 = "Le courage et la"

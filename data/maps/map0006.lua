@@ -34,14 +34,12 @@ function event_message_sequence_finished(first_message_id, answer)
     hero_set_direction(0)
     npc_set_position("tom", 528, 245)
     npc_walk("tom", "44444444444444444444222", false, false)
-    step = 1
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.need_help" then
     npc_set_direction("tom", 1)
     start_timer(1500, "tom_timer_1", false)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     play_sound("jump")
-    npc_jump("tom", 4, 12, false)
-    step = 2
+    npc_jump("tom", 4, 16, false)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.open" then
     npc_set_animation("tom", "walking")
     start_timer(300, "tom_timer_3", false)
@@ -52,7 +50,7 @@ end
 function event_npc_movement_finished(npc_name)
 
   x,y = npc_get_position("tom")
-  if (x ~= 356) then
+  if x ~= 352 then
     npc_set_direction("tom", 2)
     start_message("outside_world.tom_dungeon_1_entrance.need_help")
   else

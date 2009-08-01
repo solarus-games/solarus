@@ -22,6 +22,7 @@ Feature requests :
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Remplacer "clé" par "clef" ?
 - Mettre à jour la carte du monde
+- Faire la carte du donjon 1
 
 
 Bugs :
@@ -42,9 +43,12 @@ Bugs :
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - petite clé du hud : reprendre la même que dans le hud de alttp
-- warnings sous windows dans MapEntity et Movement (conversions de double vers int)
-- sous windows, l'accès aux fichiers sans zip fonctionne mal
-- remplacer SDL_rwops_zzip.c
+- Sous windows, beaucoup de fichiers hors zip n'arrivent pas à être lus
+- Mettre statues de newlink
+- Donjon 1 : cacher le boss tant qu'on n'y est pas
+- tileset0000_entities.png : corriger les couleurs (mur fissuré : voir chez les jumeaux)
+- (mur fissuré et) quart de coeur dans le donjon 1
+- mur fissuré qui explose : animation ?
 
 
 A venir :

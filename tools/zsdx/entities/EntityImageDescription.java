@@ -54,10 +54,18 @@ public class EntityImageDescription {
      * @param other another entity image description
      */
     public EntityImageDescription(EntityImageDescription other) {
-	this.rectangle = new Rectangle(other.getRectangle());
+	this.rectangle = new Rectangle();
 	this.image = null;
-	this.imageFileName = other.getImageFileName();
-	this.relativeToEditor = other.relativeToEditor;
+	set(other);
+    }
+
+    /**
+     * Sets the file name and the rectangle of this image description from another one.
+     * @param other another image description
+     */
+    public void set(EntityImageDescription other) {
+	setImageFileName(other.getImageFileName(), other.isRelativeToEditor());
+	setRectangle(other.getRectangle());
     }
 
     /**
@@ -66,6 +74,16 @@ public class EntityImageDescription {
      */
     public String getImageFileName() {
 	return imageFileName;
+    }
+
+    /**
+     * Returns whether the image file name is considered as relative
+     * to the editor images directory.
+     * @return true if the file name is relative to the editor directory,
+     * false if it is relative to the game data directory.
+     */
+    public boolean isRelativeToEditor() {
+        return relativeToEditor;
     }
     
     /**

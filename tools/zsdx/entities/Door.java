@@ -80,7 +80,7 @@ public class Door extends MapEntity {
      * X coordinate of the door in the tileset entities image for each kind of entity
      * and for the direction top.
      */
-    private static final int[] imageX = { 0, 64, 16, 96, 128, 192, 200, 192 };
+    private static final int[] imageX = { 0, 64, 16, 96, 128, 192, 192, 192 };
         
 
     /**
@@ -96,7 +96,7 @@ public class Door extends MapEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-      if (subtype != Subtype.VERY_WEAK) {
+      if (subtype != Subtype.WEAK) {
 	return new Point(0, 0);
       }
       
@@ -142,9 +142,13 @@ public class Door extends MapEntity {
      * @param subtype the subtype of entity
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
+	int x = getX();
+	int y = getY();
+
 	super.setSubtype(subtype);
 
 	setDoorSize();
+	setPositionInMap(x, y);
 
 	setChanged();
 	notifyObservers();
@@ -163,30 +167,38 @@ public class Door extends MapEntity {
         currentImageDescription.setXY(16, 0);
       }
       else {
-	int x = imageX[getSubtype().getId()];
+	int x = imageX[getSubtype().ordinal()];
+	int y = 0;
 	switch (getDirection()) {
 
 	  case 0:
-	    currentImageDescription.setX(x / 2 + 112);
-	    currentImageDescription.setY(16);
+	    x = x / 2 + 112;
+	    y = 16;
 	    break;
 
 	  case 1:
-	    currentImageDescription.setX(x);
-            currentImageDescription.setY(48);
+	    y = 48;
 	    break;
 
 	  case 2:
-	    currentImageDescription.setX(x / 2);
-	    currentImageDescription.setY(16);
+	    x = x / 2;
+	    y = 16;
 	    break;
 
 	  case 3:
-	    currentImageDescription.setX(x);
-            currentImageDescription.setY(64);
+            y = 64;
 	    break;
 
 	}
+	if (getSubtype() == Subtype.WEAK) {
+	  if (getDirection() % 2 == 0) {
+	    y += 8;
+	  }
+	  else {
+	    x += 8;
+	  }
+	}
+	currentImageDescription.setXY(x, y);
       }
     }
 
@@ -219,7 +231,7 @@ public class Door extends MapEntity {
      */
     private void setDoorSize() {
 
-      if (getSubtype() == Subtype.SMALL_KEY_BLOCK || getSubtype() == Subtype.VERY_WEAK) {
+      if (getSubtype() == Subtype.SMALL_KEY_BLOCK || getSubtype() == Subtype.WEAK) {
 	setSizeImpl(16, 16);
       }
       else if (getDirection() % 2 == 0) {

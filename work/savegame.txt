@@ -55,4 +55,5 @@ booleans:
 62	dungeon 1: mini boss
 63	dungeon 1: boss
 64	dungeon 1: boss heart container
+65	link's house: weak wall
 

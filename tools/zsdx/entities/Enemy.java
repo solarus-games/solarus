@@ -65,7 +65,7 @@ public class Enemy extends MapEntity {
 	new Dimension(16, 16),
 	new Dimension(16, 16),
 	
-	new Dimension(176, 128),
+	new Dimension(176, 96),
     };
 
     /**
@@ -229,4 +229,15 @@ public class Enemy extends MapEntity {
 	    throw new MapException("The small keys are not enabled in this map");
 	}
     }
+
+    /**
+     * Updates the description of the image currently representing the entity.
+     * By default, the image description is a copy of the general image description of this kind of entity.
+     * Redefine this method to display the entity with an image containing
+     * the entity's current properties, by modifying the currentImageDescription field.
+     */
+    public void updateImageDescription() {
+      currentImageDescription = currentImageDescriptions[getSubtype().ordinal()];
+    }
 }
+

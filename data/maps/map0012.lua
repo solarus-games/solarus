@@ -52,11 +52,13 @@ end
 -- answer: the answer of the question (0 or 1) or -1 if there was no question
 function event_message_sequence_finished(first_message_id, answer)
 
-   if first_message_id == "sahasrahla_house.beginning" or
-     first_message_id == "sahasrahla_house.give_world_map" then
-      -- give the world map to the player
-      give_treasure(50, 33)
-   end
+  if first_message_id == "sahasrahla_house.beginning" or
+    first_message_id == "sahasrahla_house.give_world_map" then
+    -- give the world map to the player
+    give_treasure(50, 33)
+  elseif first_message_id == "sahasrahla_house.quest_accepted" then
+    door_open("door")
+  end
 end
 
 -- Function called when the player has just obtained a treasure

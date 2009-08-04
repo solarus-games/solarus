@@ -56,4 +56,4 @@ booleans:
 63	dungeon 1: boss
 64	dungeon 1: boss heart container
 65	link's house: weak wall
-
+66	Sahasrahla's house: first floor door 

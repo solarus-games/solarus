@@ -23,6 +23,7 @@ Feature requests :
 - Remplacer "clé" par "clef" ?
 - Mettre à jour la carte du monde
 - Faire la carte du donjon 1
+- son de l'épée sur un mur fissuré
 
 
 Bugs :
@@ -137,6 +138,7 @@ Mode release :
 - Inclure le fichier de licence GPL
 - Vérifier la présence du message GPL dans les fichiers source
 - Enelever les touches de test (notamment Echap)
+- Remettre l'écran-titre
 
 ----------------------
 Feature requests de l'éditeur :

@@ -65,7 +65,7 @@ TitleScreen::~TitleScreen(void) {
 void TitleScreen::update(void) {
 
   // TODO remove
-  set_next_screen(new Game(new Savegame("save1.zsd")));
+  //set_next_screen(new Game(new Savegame("save1.zsd")));
 
   Uint32 now = SDL_GetTicks();
 

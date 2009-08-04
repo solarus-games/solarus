@@ -21,7 +21,9 @@ SaniOkh (testera et donnerait des idées, cf MP)
 Mooglwy (version Mac)
 Mymy (edelweiss, maps)
 Neovyze (artworks : Link, amulette ; fonds d'écran, notice, fresques de l'intro)
-Newlink (plein de graphismes faits pour ZMC)
+Newlink (sprites)
+Binbin (version Mac)
+
 
 Traduction :
 
@@ -34,11 +36,13 @@ Trouvé sur internet :
 Algo Scale2X
 Quelques sons : http://noproblo.dayjo.org/ZeldaSounds/ (HelpTheWretched)
 
+
 Testeurs :
 
 Thyb
 Yoshi04
 Stella : soldenb@web.de
+
 
 Pas encore sûrs :
 

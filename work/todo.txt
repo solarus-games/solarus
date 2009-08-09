@@ -47,7 +47,6 @@ Bugs :
 - Sous windows, beaucoup de fichiers hors zip n'arrivent pas à être lus
 - Mettre statues de newlink
 - Donjon 1 : cacher le boss tant qu'on n'y est pas
-- tileset0000_entities.png : corriger les couleurs (mur fissuré : voir chez les jumeaux)
 - (mur fissuré et) quart de coeur dans le donjon 1
 - mur fissuré qui explose : animation ?
 

@@ -147,6 +147,35 @@ PauseSubmenuMap::~PauseSubmenuMap(void) {
 }
 
 /**
+ * Converts some coordinates relative to the dungeon floor into coordinates relative to the minimap displayed.
+ * @param floor_coords coordinates relative to the floor
+ * @param minimap_coords coordinates relative to the minimap (result of the function)
+ * @param floor_size size of the floor
+ */
+void PauseSubmenuMap::to_dungeon_minimap_coordinates(const SDL_Rect &floor_coords, SDL_Rect &minimap_coords, const SDL_Rect &floor_size) {
+
+  SDL_Rect minimap_rectangle = { 0, 0, 123, 119 };
+
+  if ((floor_size.w * 119.0) / (floor_size.h * 123.0) > 1.0) {
+    // the floor height does not use the entire vertical space
+    minimap_rectangle.h = floor_size.h * 123 / floor_size.w;
+    minimap_rectangle.y = (119 - minimap_rectangle.h) / 2;
+  }
+  else {
+    // the floor width does not use the entire horizontal space
+    minimap_rectangle.w = floor_size.w * 119 / floor_size.h;
+    minimap_rectangle.x = (123 - minimap_rectangle.w) / 2;
+  }
+
+  /*
+  std::cout << "minimap_rectangle.x = " << minimap_rectangle.x << ", floor_coords.x = " << floor_coords.x
+    << ", minimap_rectangle.w = " << minimap_rectangle.w << ", floor_size.w = " << floor_size.w << std::endl;
+    */
+  minimap_coords.x = minimap_rectangle.x + floor_coords.x * minimap_rectangle.w / floor_size.w;
+  minimap_coords.y = minimap_rectangle.y + floor_coords.y * minimap_rectangle.h / floor_size.h;
+}
+
+/**
  * Deletes any previous dungeon map image and loads the image
  * corresponding to the selected floor.
  */
@@ -172,7 +201,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     // the hero's position
     hero_point_sprite = new Sprite("menus/hero_point");
 
-    const SDL_Rect *floor_size = dungeon->get_floor_size(selected_floor);
+    const SDL_Rect &floor_size = dungeon->get_floor_size(selected_floor);
 
     hero_position = game->get_current_map()->get_location();
     const SDL_Rect &hero_map_coords = game->get_hero_coordinates();
@@ -180,8 +209,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     hero_position.x += hero_map_coords.x;
     hero_position.y += hero_map_coords.y;
 
-    hero_position.x = hero_position.x * 123 / floor_size->w;
-    hero_position.y = hero_position.y * 119 / floor_size->h;
+    to_dungeon_minimap_coordinates(hero_position, hero_position, floor_size);
 
     // chests
     SDL_Rect small_chest_src_position = {78, 8, 4, 4};
@@ -194,8 +222,12 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
 	int dx = chests[i].big ? 16 : 8;  // TODO change chests origin point to avoid this
 	int dy = chests[i].big ? 21 : 13;
-	dst_position.x = (chests[i].x + dx) * 123 / floor_size->w - 2;
-	dst_position.y = (chests[i].y + dy) * 119 / floor_size->h - 2;
+
+	dst_position.x = chests[i].x + dx;
+	dst_position.y = chests[i].y + dy;
+	to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
+	dst_position.x -= (chests[i].big) ? 2 : 1;
+	dst_position.y -= 1;
 
 	if (!chests[i].big) {
 	  SDL_BlitSurface(dungeon_map_icons, &small_chest_src_position, dungeon_map_img, &dst_position);
@@ -212,11 +244,14 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     const std::vector<Dungeon::DungeonElement> &bosses = dungeon->get_bosses(selected_floor);
     for (unsigned int i = 0; i < bosses.size(); i++) {
 
-      // for now the minibosses are not displayed
+      // TODO also display minibosses?
       if (bosses[i].big && !savegame->get_boolean(bosses[i].savegame_variable)) {
 
-	dst_position.x = bosses[i].x * 123 / floor_size->w - 2;
-	dst_position.y = bosses[i].y * 119 / floor_size->h - 2;
+	dst_position.x = bosses[i].x;
+	dst_position.y = bosses[i].y;
+	to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
+	dst_position.x -= 2;
+	dst_position.y -= 2;
 
 	SDL_BlitSurface(dungeon_map_icons, &src_position, dungeon_map_img, &dst_position);
       }

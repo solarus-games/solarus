@@ -158,6 +158,7 @@ target_link_libraries (zsdx
 		      fmodex
 		      lua5.1
 		      zzip
+		      stdc++
 )
 
 INSTALL(TARGETS	zsdx

@@ -125,6 +125,8 @@
 4	0	88	85	3	-1	-1
 4	0	104	109	3	-1	-1
 4	0	120	85	3	-1	-1
+12	0	144	368	8	16	custom_obstacle_13	0	1	1	1
+12	0	248	80	8	16	custom_obstacle_11	0	1	1	1
 0	1	16	40	24	384	51
 0	1	168	40	24	384	50
 0	1	40	424	128	24	52
@@ -379,11 +381,7 @@
 12	1	464	312	8	32	custom_obstacle_9	1	1	1	1
 12	1	440	312	8	32	custom_obstacle_10	1	1	1	1
 6	1	296	128	16	8	jump_sensor	2	40
-6	1	256	328	16	8	jump_sensor_4	6	40
-6	1	304	328	16	8	jump_sensor_5	6	40
 12	1	248	128	16	8	custom_obstacle	1	1	1	1
-12	1	232	328	24	8	custom_obstacle_11	1	1	1	1
-12	1	320	328	24	8	custom_obstacle_12	1	1	1	1
 18	1	264	200	boss_door	1	4	61
 18	1	264	152	boss_door_2	3	4	61
 18	1	632	72	miniboss_door_2	0	0	62

@@ -66,7 +66,7 @@ class Dungeon {
   int get_nb_floors(void);
   int get_lowest_floor(void);
   int get_highest_floor(void);
-  const SDL_Rect *get_floor_size(int floor);
+  const SDL_Rect & get_floor_size(int floor);
 
   // displaying floors (for the hud and the dungeon map submenu)
   int get_nb_floors_displayed(void);

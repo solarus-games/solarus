@@ -162,7 +162,7 @@ void Dungeon::load(void) {
 	  boss_floor = boss.floor;
 	}
 
-	chests[boss.floor - lowest_floor].push_back(boss);
+	bosses[boss.floor - lowest_floor].push_back(boss);
       }
     }
   }
@@ -201,8 +201,8 @@ int Dungeon::get_highest_floor(void) {
  * @param floor a floor of this dungeon
  * @return the size of this floor
  */
-const SDL_Rect * Dungeon::get_floor_size(int floor) {
-  return &floor_sizes[floor - get_lowest_floor()];
+const SDL_Rect & Dungeon::get_floor_size(int floor) {
+  return floor_sizes[floor - get_lowest_floor()];
 }
 
 /**

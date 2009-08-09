@@ -8,6 +8,8 @@ sw_sensor_enabled = false
 function event_map_started()
   if not savegame_get_boolean(54) then
     chest_set_hidden("map_chest", true)
+  else
+    switch_set_enabled("map_room_switch", true)
   end
   if not savegame_get_boolean(55) then
     chest_set_hidden("compass_chest", true)
@@ -17,7 +19,7 @@ end
 function event_switch_enabled(switch_name)
 
   if switch_name == "sw_switch" or switch_name == "nw_switch" then
-    move_camera(104, 392, 15)
+    move_camera(176, 392, 15)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
     move_camera(272, 288, 15)

@@ -60,6 +60,7 @@ class PauseSubmenuMap: public PauseSubmenu {
   Sprite *hero_point_sprite;
 
   void load_dungeon_map_image(void);
+  static void to_dungeon_minimap_coordinates(const SDL_Rect &floor_coords, SDL_Rect &minimap_coords, const SDL_Rect &floor_size);
 
  public:
 

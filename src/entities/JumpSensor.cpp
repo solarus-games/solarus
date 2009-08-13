@@ -107,7 +107,7 @@ EntityType JumpSensor::get_type() {
  * @return true if this entity is an obstacle for the other one
  */
 bool JumpSensor::is_obstacle_for(MapEntity *other) {
-  return !other->is_hero() && !other->get_type() == BOOMERANG;
+  return other->is_jump_sensor_obstacle(this);
 }
 
 /**

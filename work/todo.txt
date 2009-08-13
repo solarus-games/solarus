@@ -23,6 +23,7 @@ Feature requests :
 - Remplacer "clé" par "clef" ?
 - Mettre à jour la carte du monde
 - son de l'épée sur un mur fissuré
+- GPL et FMOD -> sdl_mixer ?
 
 
 Bugs :
@@ -95,6 +96,13 @@ Remarques de @PyroNet :
 
 - bandit manchot : graphismes pas exceptionnels, tapis pas centré
 - bandit manchot : débloquer plus tard dans le jeu et laisser un message "casino hors-service" ? ou garder ce clin d'oeil pour le moment où la maison est dévalisée ?
+- Quand Link soulève un pot, l'ombre du pot passe pendant un moment au-dessus de Link.
+- Le saut se passe un peu trop rapidement.
+- Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
+- La porte (avec un coeur dedans) fermée à clé dénote un peu avec la montagne.
+- Les prix des marchandises dans les magasins ne sont pas très lisibles.
+- Pourquoi ne pas faire dans Ocarina of Time, c'est à dire remplacer la flèche de la boîte de dialogue par un carré lorsqu'on est arrivé à la fin du dialogue ?
+
 
 Idées :
 

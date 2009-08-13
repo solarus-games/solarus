@@ -195,6 +195,16 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
 }
 
 /**
+ * Returns whether a jump sensor is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param jump_sensor a jump sensor
+ * @return true if the jump sensor is currently an obstacle for this entity
+ */
+bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+  return false;
+}
+
+/**
  * Returns the 8-direction movement controlled by the player,
  * even if it is not the current movement of the hero.
  * @return the player's movement

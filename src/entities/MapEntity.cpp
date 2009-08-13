@@ -711,6 +711,16 @@ bool MapEntity::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
+ * Returns whether a jump sensor is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param jump_sensor a jump sensor
+ * @return true if the jump sensor is currently an obstacle for this entity
+ */
+bool MapEntity::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+  return true;
+}
+
+/**
  * Returns true if this entity does not react to the sword.
  * If true is returned, nothing will happen when the hero taps this entity with the sword.
  * @return true if the sword is ignored

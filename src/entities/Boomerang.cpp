@@ -196,6 +196,16 @@ bool Boomerang::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
+ * Returns whether a jump sensor is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param jump_sensor a jump sensor
+ * @return true if the jump sensor is currently an obstacle for this entity
+ */
+bool Boomerang::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+  return false;
+}
+
+/**
  * Returns whether the boomerang is going back towards the hero, i.e. if go_back() has been called.
  * @return true if the boomerang is going back
  */

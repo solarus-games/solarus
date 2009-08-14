@@ -51,7 +51,7 @@ class Switch: public Detector {
   Switch(const std::string &name, Layer layer, int x, int y,
 	 Subtype subtype, bool needs_block, bool disabled_when_leaving);
   ~Switch(void);
-  static Switch * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
 
@@ -61,3 +61,4 @@ class Switch: public Detector {
 };
 
 #endif
+

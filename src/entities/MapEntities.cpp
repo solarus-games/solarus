@@ -630,7 +630,7 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 void MapEntities::update_crystal_switch_blocks(void) {
 
   Hero *hero = zsdx->game->get_hero();
-  hero_on_raised_blocks = overlaps_raised_blocks(hero->get_layer(), hero->get_position_in_map());
+  hero_on_raised_blocks = overlaps_raised_blocks(hero->get_layer(), hero->get_rectangle());
 }
 
 /**

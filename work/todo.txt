@@ -35,21 +35,20 @@ Bugs :
 - quand ça rame (exemple Wink ou valgrind), les vases sont lancés moins loin
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
-- l'ombre des pots passe sur Link pendant qu'on les soulève
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
-- Forgeron : ajouter décors de la forge
 - trous et plates-formes dans la grotte de mymy
 - Tom trop vieux ? changer la couleur de ses cheveux
-- Rubis trop haut de 1 pixel par rapport à son ombre ?
 - Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ? (se superpose avec l'affichage des étages)
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
-- petite clé du hud : reprendre la même que dans le hud de alttp
 - Sous windows, beaucoup de fichiers hors zip n'arrivent pas à être lus
-- Donjon 1 : cacher le boss tant qu'on n'y est pas
 - (mur fissuré et) quart de coeur dans le donjon 1
 - mur fissuré qui explose : animation ?
-- ennemis : faire un tableau des noms de fonctions statiques:
+- l'ombre des pots passe sur Link pendant qu'on les soulève
+- Forgeron : ajouter décors de la forge
+- Rubis trop haut de 1 pixel par rapport à son ombre ?
+- petite clé du hud : reprendre la même que dans le hud de alttp
+- Donjon 1 : cacher le boss tant qu'on n'y est pas
 
 
 A venir :

@@ -17,11 +17,53 @@
 #include "entities/MapEntity.h"
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
+#include "entities/Tile.h"
+#include "entities/Teletransporter.h"
+#include "entities/DestinationPoint.h"
+#include "entities/PickableItem.h"
+#include "entities/DestructibleItem.h"
+#include "entities/Chest.h"
+#include "entities/JumpSensor.h"
+#include "entities/Enemy.h"
+#include "entities/InteractiveEntity.h"
+#include "entities/Block.h"
+#include "entities/DynamicTile.h"
+#include "entities/Switch.h"
+#include "entities/CustomObstacle.h"
+#include "entities/Sensor.h"
+#include "entities/CrystalSwitch.h"
+#include "entities/CrystalSwitchBlock.h"
+#include "entities/ShopItem.h"
+#include "entities/ConveyorBelt.h"
+#include "entities/Door.h"
 #include "movements/Movement.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
 #include "Geometry.h"
+
+const MapEntity::CreationFunction* MapEntity::creation_functions[] = {
+  Tile::parse,
+  DestinationPoint::parse,
+  Teletransporter::parse,
+  PickableItem::parse,
+  DestructibleItem::parse,
+  Chest::parse,
+  JumpSensor::parse,
+  Enemy::parse,
+  InteractiveEntity::parse,
+  Block::parse,
+  DynamicTile::parse,
+  Switch::parse,
+  CustomObstacle::parse,
+  Sensor::parse,
+  CrystalSwitch::parse,
+  CrystalSwitchBlock::parse,
+  ShopItem::parse,
+  ConveyorBelt::parse,
+  Door::parse,
+};
+
 
 const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   // can_be_obstacle, can_detect_entities, can_be_displayed, is_displayed_in_y_order
@@ -40,7 +82,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true, false, false, false}, // custom obstacle
   { true,  true, false, false}, // sensor
   { true,  true,  true, false}, // crystal switch
-  { true,  true,  true, false}, // raised block
+  { true,  true,  true, false}, // crystal switch block
   { true,  true,  true, false}, // shop item
   { true,  true,  true, false}, // conveyor belt
   { true,  true,  true, false}, // door
@@ -53,8 +95,8 @@ MapEntity::MapEntity(void):
   map(NULL), layer(LAYER_LOW), name(""), direction(0), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
-  position_in_map.x = 0;
-  position_in_map.y = 0;
+  rectangle.x = 0;
+  rectangle.y = 0;
 
   origin.x = 0;
   origin.y = 0;
@@ -75,8 +117,8 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   map(NULL), layer(layer), name(""), direction(0), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
-  position_in_map.x = x;
-  position_in_map.y = y;
+  rectangle.x = x;
+  rectangle.y = y;
 
   origin.x = 0;
   origin.y = 0;
@@ -99,8 +141,8 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
   map(NULL), layer(layer), name(name), direction(direction), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
-  position_in_map.x = x;
-  position_in_map.y = y;
+  rectangle.x = x;
+  rectangle.y = y;
 
   origin.x = 0;
   origin.y = 0;
@@ -121,6 +163,15 @@ MapEntity::~MapEntity(void) {
   if (movement != NULL) {
     clear_movement();
   }
+}
+
+/**
+ * Returns whether this entity is the hero
+ * controlled by the player.
+ * @return true if this entity is the hero
+ */
+bool MapEntity::is_hero(void) {
+  return get_type() == HERO;
 }
 
 /**
@@ -174,7 +225,7 @@ bool MapEntity::is_displayed_in_y_order(void) {
 void MapEntity::set_map(Map *map) {
   this->map = map;
 
-  // notify the sprites
+  // notify the sprites (useful for tileset dependent sprites such as doors and blocks)
   std::vector<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
     (*it)->get_animation_set()->set_map(map);
@@ -231,6 +282,14 @@ void MapEntity::set_layer(Layer layer) {
 }
 
 /**
+ * Returns the direction of the entity.
+ * @return the direction of the entity
+ */
+int MapEntity::get_direction(void) {
+  return direction;
+}
+
+/**
  * Sets the direction property of this entity.
  * @param direction the direction
  */
@@ -243,7 +302,7 @@ void MapEntity::set_direction(int direction) {
  * @return the x position of the entity
  */
 int MapEntity::get_x(void) {
-  return position_in_map.x + origin.x;
+  return rectangle.x + origin.x;
 }
 
 /**
@@ -251,7 +310,7 @@ int MapEntity::get_x(void) {
  * @return the y position of the entity
  */
 int MapEntity::get_y(void) {
-  return position_in_map.y + origin.y;
+  return rectangle.y + origin.y;
 }
 
 /**
@@ -261,7 +320,7 @@ int MapEntity::get_y(void) {
  * @param x the new x position
  */
 void MapEntity::set_x(int x) {
-  position_in_map.x = x - origin.x;
+  rectangle.x = x - origin.x;
 }
 
 /**
@@ -271,7 +330,7 @@ void MapEntity::set_x(int x) {
  * @param y the new y position
  */
 void MapEntity::set_y(int y) {
-  position_in_map.y = y - origin.y;
+  rectangle.y = y - origin.y;
 }
 
 /**
@@ -279,7 +338,7 @@ void MapEntity::set_y(int y) {
  * These are the coordinates of the point as returned by get_x() and get_y().
  * @return the coordinates of the entity on the map
  */
-const SDL_Rect MapEntity::get_coordinates(void) {
+const SDL_Rect MapEntity::get_xy(void) {
   SDL_Rect coords = {get_x(), get_y()};
   return coords;
 }
@@ -290,7 +349,7 @@ const SDL_Rect MapEntity::get_coordinates(void) {
  * @param x the new x coordinate of the entity on the map
  * @param y the new y coordinate of the entity on the map
  */
-void MapEntity::set_coordinates(int x, int y) {
+void MapEntity::set_xy(int x, int y) {
   set_x(x);
   set_y(y);
 }
@@ -300,8 +359,8 @@ void MapEntity::set_coordinates(int x, int y) {
  * This function sets the coordinates of the point as returned by get_x() and get_y().
  * @param coordinates the new coordinates of the entity on the map
  */
-void MapEntity::set_coordinates(const SDL_Rect &coordinates) {
-  set_coordinates(coordinates.x, coordinates.y);
+void MapEntity::set_xy(const SDL_Rect &xy) {
+  set_xy(xy.x, xy.y);
 }
 
 /**
@@ -309,7 +368,7 @@ void MapEntity::set_coordinates(const SDL_Rect &coordinates) {
  * @return the x position of the entity's top-left corner
  */
 int MapEntity::get_top_left_x(void) {
-  return position_in_map.x;
+  return rectangle.x;
 }
 
 /**
@@ -317,7 +376,7 @@ int MapEntity::get_top_left_x(void) {
  * @return the y position of the entity's top-left corner
  */
 int MapEntity::get_top_left_y(void) {
-  return position_in_map.y;
+  return rectangle.y;
 }
 
 /**
@@ -325,7 +384,7 @@ int MapEntity::get_top_left_y(void) {
  * @param x the new top-left x position
  */
 void MapEntity::set_top_left_x(int x) {
-  position_in_map.x = x;
+  rectangle.x = x;
 }
 
 /**
@@ -333,7 +392,18 @@ void MapEntity::set_top_left_x(int x) {
  * @param y the new top-left y position
  */
 void MapEntity::set_top_left_y(int y) {
-  position_in_map.y = y;
+  rectangle.y = y;
+}
+
+/**
+ * Sets the position of the entity.
+ * This function sets the coordinates of the rectangle's top-left corner.
+ * @param x x position of the entity
+ * @param y y position of the entity
+ */
+void MapEntity::set_top_left_xy(int x, int y) {
+  set_top_left_x(x);
+  set_top_left_y(y);
 }
 
 /**
@@ -341,7 +411,7 @@ void MapEntity::set_top_left_y(int y) {
  * @return the width of the entity
  */
 int MapEntity::get_width(void) {
-  return position_in_map.w;
+  return rectangle.w;
 }
 
 /**
@@ -349,7 +419,7 @@ int MapEntity::get_width(void) {
  * @return the height of the entity
  */
 int MapEntity::get_height(void) {
-  return position_in_map.h;
+  return rectangle.h;
 }
 
 /**
@@ -358,8 +428,8 @@ int MapEntity::get_height(void) {
  * @param height the entity's height
  */
 void MapEntity::set_size(int width, int height) {
-  position_in_map.w = width;
-  position_in_map.h = height;
+  rectangle.w = width;
+  rectangle.h = height;
 }
 
 /**
@@ -367,8 +437,8 @@ void MapEntity::set_size(int width, int height) {
  * @param size the width and the height
  */
 void MapEntity::set_size(SDL_Rect &size) {
-  position_in_map.w = size.w;
-  position_in_map.h = size.h;
+  rectangle.w = size.w;
+  rectangle.h = size.h;
 }
 
 /**
@@ -377,29 +447,33 @@ void MapEntity::set_size(SDL_Rect &size) {
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
  * @return the position of the entity
  */
-const SDL_Rect &MapEntity::get_position_in_map(void) {
-  return position_in_map;
+const SDL_Rect &MapEntity::get_rectangle(void) {
+  return rectangle;
 }
 
 /**
- * Sets the position of the entity.
+ * Sets the position and size of the entity.
  * This function sets the rectangle defined by
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
- * @param position_in_map the position of the entity
+ * @param rectangle the position of the entity
  */
-void MapEntity::set_position_in_map(const SDL_Rect &position_in_map) {
-  this->position_in_map = position_in_map;
+void MapEntity::set_rectangle(const SDL_Rect &rectangle) {
+  this->rectangle = rectangle;
 }
 
 /**
- * Sets the position of the entity.
- * This function sets the position of the rectangle's top-left corner.
- * @param x x position of the entity
- * @param y y position of the entity
+ * Sets the origin point and the size of the entity
+ * like its sprite.
+ * You should call this function only if the entity's rectangle
+ * is the same as the sprite's rectangle.
+ * Otherwise, you have to call set_size() and set_origin()
+ * explicitely.
  */
-void MapEntity::set_position_top_left(int x, int y) {
-  set_top_left_x(x);
-  set_top_left_y(y);
+void MapEntity::set_rectangle_from_sprite(void) {
+
+  Sprite *sprite = sprites[0];
+  set_size(sprite->get_size());
+  set_origin(sprite->get_origin());
 }
 
 /**
@@ -437,6 +511,16 @@ const SDL_Rect MapEntity::get_facing_point(int direction) {
 }
 
 /**
+ * Sets the entity this entity is currently facing.
+ * This function is called when this entity is just being
+ * facing another entity.
+ * By default, nothing is done.
+ */
+void MapEntity::set_facing_entity(Detector *detector) {
+
+}
+
+/**
  * Returns the coordinates of the center point of the entity's rectangle.
  * @return the coordinates of the center point of the entity
  */
@@ -463,24 +547,8 @@ bool MapEntity::has_prefix(const std::string &prefix) {
 }
 
 /**
- * Returns the direction of the entity.
- * @return the direction of the entity
- */
-int MapEntity::get_direction(void) {
-  return direction;
-}
-
-/**
- * Returns whether this entity is the hero
- * controlled by the player.
- * @return true if this entity is the hero
- */
-bool MapEntity::is_hero(void) {
-  return get_type() == HERO;
-}
-
-/**
- * Returns the origin point of the entity.
+ * Returns the origin point of the entity,
+ * relative to the top-left corner of its rectangle.
  * @return the origin point
  */
 const SDL_Rect & MapEntity::get_origin(void) {
@@ -488,43 +556,28 @@ const SDL_Rect & MapEntity::get_origin(void) {
 }
 
 /**
- * Sets the origin point of the entity
+ * Sets the origin point of the entity,
  * relative to the top-left corner of its rectangle.
  * @param x x coordinate of the origin
  * @param y y coordinate of the origin
  */
 void MapEntity::set_origin(int x, int y) {
 
-  position_in_map.x -= (x - origin.x);
-  position_in_map.y -= (y - origin.y);
+  rectangle.x -= (x - origin.x);
+  rectangle.y -= (y - origin.y);
 
   origin.x = x;
   origin.y = y;
 }
 
 /**
- * Sets the origin point of the entity
+ * Sets the origin point of the entity,
  * relative to the top-left corner of its rectangle.
  * @param origin x and y coordinates of the origin
  */
 void MapEntity::set_origin(const SDL_Rect &origin) {
 
   set_origin(origin.x, origin.y);
-}
-
-/**
- * Sets the origin point and the size of the entity
- * like its sprite.
- * You should call this function only if the entity's rectangle
- * is the same as the sprite's rectangle.
- * Otherwise, you have to call set_size() and set_origin()
- * explicitely.
- */
-void MapEntity::set_rectangle_from_sprite(void) {
-
-  Sprite *sprite = sprites[0];
-  set_size(sprite->get_size());
-  set_origin(sprite->get_origin());
 }
 
 /**
@@ -595,9 +648,9 @@ void MapEntity::clear_movement(void) {
 }
 
 /**
- * This function is called by the movement object
+ * This function can be called by the movement object
  * to notify the entity when its movement has just changed.
- * By default, it does nothing.
+ * By default, nothing is done.
  */
 void MapEntity::movement_just_changed(void) {
 
@@ -609,16 +662,6 @@ void MapEntity::movement_just_changed(void) {
  */
 void MapEntity::just_moved(void) {
   map->check_collision_with_detectors(this);
-}
-
-/**
- * Sets the entity this entity is currently facing.
- * This function is called when this entity is just being
- * facing another entity.
- * By default, nothing is done.
- */
-void MapEntity::set_facing_entity(Detector *detector) {
-
 }
 
 /**
@@ -736,7 +779,7 @@ bool MapEntity::is_sword_ignored(void) {
  * @return true if this entity's rectangle overlaps the rectangle specified, false otherwise
  */
 bool MapEntity::overlaps(const SDL_Rect &rectangle) {
-  return Geometry::overlaps(get_position_in_map(), rectangle);
+  return Geometry::overlaps(get_rectangle(), rectangle);
 }
 
 /**
@@ -746,9 +789,18 @@ bool MapEntity::overlaps(const SDL_Rect &rectangle) {
  * @return true if the point is in this entity's rectangle
  */
 bool MapEntity::overlaps(int x, int y) {
-  return Geometry::is_point_in(get_position_in_map(), x, y);
+  return Geometry::is_point_in(get_rectangle(), x, y);
 }
 
+/**
+ * Returns whether or not this entity's rectangle overlaps
+ * another entity's rectangle.
+ * @param other another entity
+ * @return true if this entity's rectangle overlaps the other entity's rectangle
+ */
+bool MapEntity::overlaps(MapEntity *other) {
+  return overlaps(other->get_rectangle());
+}
 
 /**
  * Returns whether or not this entity's origin point is in
@@ -814,7 +866,7 @@ int MapEntity::get_distance(MapEntity *other) {
   return (int) Geometry::get_distance(get_x(), get_y(), other->get_x(), other->get_y());
 }
 
-/**
+/*
  * Tries to make sure this entity is not overlapping the obstacles of the map.
  * This function should be used only in very specific situations, when there is no way to avoid the possibility
  * that the entity can be on an obstacle. Normally, the movement of an entity is such that
@@ -826,7 +878,7 @@ int MapEntity::get_distance(MapEntity *other) {
 /*
 void MapEntity::ensure_no_obstacles(void) {
 
-  SDL_Rect collision_box = get_position_in_map();
+  SDL_Rect collision_box = get_rectangle();
 
   if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
     return;
@@ -844,7 +896,7 @@ void MapEntity::ensure_no_obstacles(void) {
 
       if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
 	found = true;
-	set_position_in_map(collision_box);
+	set_rectangle(collision_box);
 	just_moved();
       }
 
@@ -856,7 +908,7 @@ void MapEntity::ensure_no_obstacles(void) {
 */
 
 /**
- * This function is called when an enemy detects a collision with this entity.
+ * This function is called when an enemy's rectangle detects a collision with this entity's rectangle.
  * @param enemy the enemy
  */
 void MapEntity::collision_with_enemy(Enemy *enemy) {
@@ -864,7 +916,7 @@ void MapEntity::collision_with_enemy(Enemy *enemy) {
 }
 
 /**
- * This function is called when an enemy's sprite detects a collision with this entity.
+ * This function is called when an enemy's sprite detects a pixel-perfect collision with this entity.
  * @param enemy the enemy
  * @param sprite_overlapping the sprite of this entity that collides with the enemy
  */
@@ -876,10 +928,10 @@ void MapEntity::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
  * Notifies this entity that it has just attacked an enemy
  * (even if this attack was not successful).
  * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack:
+ * @param victim the enemy just attacked
+ * @param result indicates how the enemy reacted to the attack:
  * - a number greater than 0 represents the number of health points the enemy has just lost
- * - a value of 0 means that the attack was just ignored
+ * - a value of 0 means that the attack was ignored
  * - a value of -1 means that the enemy was protected against the attack
  * - a value of -2 means that the attack immobilized the enemy
  */
@@ -979,3 +1031,4 @@ void MapEntity::display_on_map(void) {
     map->display_sprite(sprites[i], get_x(), get_y());
   }
 }
+

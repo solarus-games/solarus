@@ -114,7 +114,7 @@ InteractiveEntity::~InteractiveEntity(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-InteractiveEntity * InteractiveEntity::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * InteractiveEntity::parse(std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype;
   std::string name;
@@ -386,7 +386,7 @@ void InteractiveEntity::just_moved(void) {
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
     if (hero->get_facing_entity() == this &&
 	keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
-	!hero->is_facing_point_in(get_position_in_map())) {
+	!hero->is_facing_point_in(get_rectangle())) {
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }

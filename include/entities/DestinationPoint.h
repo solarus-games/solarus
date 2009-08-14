@@ -35,7 +35,7 @@ class DestinationPoint: public MapEntity {
 
   DestinationPoint(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
   ~DestinationPoint(void);
-  static DestinationPoint * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
 };

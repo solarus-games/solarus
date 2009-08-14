@@ -789,7 +789,7 @@ int MapScript::l_npc_get_position(lua_State *l) {
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
-  const SDL_Rect &coordinates = npc->get_coordinates();
+  const SDL_Rect &coordinates = npc->get_xy();
 
   lua_pushinteger(l, coordinates.x);
   lua_pushinteger(l, coordinates.y);
@@ -814,7 +814,7 @@ int MapScript::l_npc_set_position(lua_State *l) {
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
-  npc->set_coordinates(x, y);
+  npc->set_xy(x, y);
 
   return 0;
 }
@@ -960,7 +960,7 @@ int MapScript::l_hero_align_on_sensor(lua_State *l) {
   Map *map = zsdx->game->get_current_map();
   Hero *hero = zsdx->game->get_hero();
   Sensor *sensor = (Sensor*) map->get_entities()->get_entity(SENSOR, name);
-  hero->set_coordinates(sensor->get_coordinates());
+  hero->set_xy(sensor->get_xy());
 
   return 0;
 }

@@ -79,7 +79,7 @@ Block::~Block(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-Block * Block::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Block::parse(std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype, maximum_moves;
   std::string name;
@@ -242,6 +242,6 @@ void Block::just_moved(void) {
  * Resets the block at its initial position.
  */
 void Block::reset(void) {
-  set_coordinates(initial_position.x, initial_position.y);
+  set_xy(initial_position);
   this->maximum_moves = initial_maximum_moves;
 }

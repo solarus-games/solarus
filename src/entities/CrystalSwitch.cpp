@@ -59,7 +59,7 @@ CrystalSwitch::~CrystalSwitch(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-CrystalSwitch * CrystalSwitch::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * CrystalSwitch::parse(std::istream &is, Layer layer, int x, int y) {
   return new CrystalSwitch(layer, x, y);
 }
 

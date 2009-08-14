@@ -71,7 +71,7 @@ Teletransporter::~Teletransporter(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-Teletransporter * Teletransporter::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Teletransporter::parse(std::istream &is, Layer layer, int x, int y) {
 	
   int width, height, subtype, transition_style;
   MapId destination_map_id;
@@ -164,11 +164,11 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
   }
 
   // normal case
-  const SDL_Rect &entity_position = entity->get_position_in_map();
-  int x1 = entity_position.x + 4;
-  int x2 = x1 + entity_position.w - 9;
-  int y1 = entity_position.y + 4;
-  int y2 = y1 + entity_position.h - 9;
+  const SDL_Rect &entity_rectangle = entity->get_rectangle();
+  int x1 = entity_rectangle.x + 4;
+  int x2 = x1 + entity_rectangle.w - 9;
+  int y1 = entity_rectangle.y + 4;
+  int y2 = y1 + entity_rectangle.h - 9;
 
   return overlaps(x1, y1) && overlaps(x2, y1) &&
     overlaps(x1, y2) && overlaps(x2, y2);

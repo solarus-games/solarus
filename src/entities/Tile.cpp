@@ -43,7 +43,7 @@ Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id
  * @param y y coordinate of the entity
  * @return the instance created
  */
-Tile * Tile::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Tile::parse(std::istream &is, Layer layer, int x, int y) {
 
   int width, height, tile_pattern_id;
 
@@ -82,7 +82,7 @@ void Tile::set_map(Map *map) {
  * Displays the tile on the map.
  */
 void Tile::display_on_map(void) {
-  tile_pattern->display_on_map(map, position_in_map);
+  tile_pattern->display_on_map(map, rectangle);
 }
 
 /**

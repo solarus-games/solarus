@@ -50,7 +50,7 @@ ConveyorBelt::~ConveyorBelt(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-ConveyorBelt * ConveyorBelt::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * ConveyorBelt::parse(std::istream &is, Layer layer, int x, int y) {
 
   int direction;
   FileTools::read(is, direction);

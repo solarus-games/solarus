@@ -93,7 +93,7 @@ DestructibleItem::~DestructibleItem(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-DestructibleItem * DestructibleItem::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * DestructibleItem::parse(std::istream &is, Layer layer, int x, int y) {
 
   int subtype, pickable_item_subtype, savegame_variable;
 

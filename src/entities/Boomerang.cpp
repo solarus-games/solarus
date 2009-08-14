@@ -44,19 +44,19 @@ Boomerang::Boomerang(Hero *hero, int boomerang_direction):
   switch (hero->get_animation_direction()) {
 
     case 0:
-      set_coordinates(hero_x + 24, hero_y + 8);
+      set_xy(hero_x + 24, hero_y + 8);
       break;
 
     case 1:
-      set_coordinates(hero_x + 8, hero_y - 8);
+      set_xy(hero_x + 8, hero_y - 8);
       break;
 
     case 2:
-      set_coordinates(hero_x - 8, hero_y + 8);
+      set_xy(hero_x - 8, hero_y + 8);
       break;
 
     case 3:
-      set_coordinates(hero_x + 8, hero_y + 24);
+      set_xy(hero_x + 8, hero_y + 24);
       break;
 
   }
@@ -275,7 +275,7 @@ void Boomerang::update(void) {
  */
 void Boomerang::collision_with_enemy(Enemy *enemy) {
 
-  if (!overlaps(hero->get_position_in_map())) {
+  if (!overlaps(hero)) {
     enemy->try_hurt(ATTACK_BOOMERANG, this);
   }
 }

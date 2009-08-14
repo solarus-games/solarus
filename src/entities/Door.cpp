@@ -95,7 +95,7 @@ Door::~Door(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-Door * Door::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Door::parse(std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int direction, subtype, savegame_variable;

@@ -63,7 +63,7 @@ CrystalSwitchBlock::~CrystalSwitchBlock(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-CrystalSwitchBlock * CrystalSwitchBlock::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * CrystalSwitchBlock::parse(std::istream &is, Layer layer, int x, int y) {
 
   int width, height, subtype;
 
@@ -127,7 +127,7 @@ void CrystalSwitchBlock::collision(MapEntity *entity_overlapping, CollisionMode 
     Hero *hero = zsdx->game->get_hero();
     if (hero->get_normal_movement()->is_moving_enabled()) {
 
-      SDL_Rect collision_box = hero->get_position_in_map();
+      SDL_Rect collision_box = hero->get_rectangle();
       int x1 = get_top_left_x();
       int x2 = x1 + get_width();
       int y1 = get_top_left_y();

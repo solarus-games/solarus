@@ -160,7 +160,7 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
  */
 bool Detector::check_collision_rectangle(MapEntity *entity) {
 
-  return entity->overlaps(get_position_in_map());
+  return overlaps(entity);
 }
 
 /**
@@ -172,7 +172,7 @@ bool Detector::check_collision_rectangle(MapEntity *entity) {
  */
 bool Detector::check_collision_origin_point(MapEntity *entity) {
 
-  return entity->is_origin_point_in(get_position_in_map());
+  return entity->is_origin_point_in(get_rectangle());
 }
 
 /**
@@ -184,7 +184,7 @@ bool Detector::check_collision_origin_point(MapEntity *entity) {
  */
 bool Detector::check_collision_facing_point(MapEntity *entity) {
 
-  return entity->is_facing_point_in(get_position_in_map());
+  return entity->is_facing_point_in(get_rectangle());
 }
 
 /**
@@ -196,7 +196,7 @@ bool Detector::check_collision_facing_point(MapEntity *entity) {
  */
 bool Detector::check_collision_center(MapEntity *entity) {
 
-  return entity->is_center_in(get_position_in_map());
+  return entity->is_center_in(get_rectangle());
 }
 
 /**

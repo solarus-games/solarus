@@ -52,8 +52,8 @@ const SDL_Rect PathFinding::transition_collision_boxes[] = {
 PathFinding::PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_entity):
   map(map), source_entity(source_entity), target_entity(target_entity) {
 
-  SDL_Rect source = source_entity->get_position_in_map();
-  SDL_Rect target = target_entity->get_position_in_map();
+  const SDL_Rect &source = source_entity->get_rectangle();
+  const SDL_Rect &target = target_entity->get_rectangle();
 
   if (source.x % 8 != 0 || source.y % 8 != 0 ||
       source.w % 16 != 0 || source.h % 16 != 0 ||
@@ -78,8 +78,8 @@ std::string PathFinding::compute_path(void) {
 //  std::cout << "will compute a path from " << source_entity->get_top_left_x() << "," << source_entity->get_top_left_y()
 //    << " to " << target_entity->get_top_left_x() << "," << target_entity->get_top_left_y() << std::endl;
 
-  SDL_Rect source = source_entity->get_position_in_map();
-  SDL_Rect target = target_entity->get_position_in_map();
+  SDL_Rect source = source_entity->get_rectangle();
+  SDL_Rect target = target_entity->get_rectangle();
 
   target.x += 4;
   target.x -= target.x % 8;

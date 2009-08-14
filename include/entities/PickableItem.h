@@ -116,7 +116,7 @@ class PickableItem: public Detector {
 			       FallingHeight falling_height, bool will_disappear);
 
   virtual ~PickableItem(void);
-  static PickableItem * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
 

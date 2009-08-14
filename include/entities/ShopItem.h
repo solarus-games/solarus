@@ -48,7 +48,7 @@ class ShopItem: public Detector {
   ~ShopItem(void);
   static ShopItem * create(const std::string &name, Layer layer, int x, int y,
 			   Treasure *treasure, int price, const MessageId &message_id);
-  static ShopItem * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
 

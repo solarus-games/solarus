@@ -108,7 +108,7 @@ EntityType PickableItem::get_type() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-PickableItem * PickableItem::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * PickableItem::parse(std::istream &is, Layer layer, int x, int y) {
 
   int subtype, savegame_variable;
 

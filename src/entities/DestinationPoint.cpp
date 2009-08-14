@@ -63,7 +63,7 @@ DestinationPoint::~DestinationPoint(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-DestinationPoint * DestinationPoint::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * DestinationPoint::parse(std::istream &is, Layer layer, int x, int y) {
 	
   std::string name;
   int direction, is_visible;

@@ -29,7 +29,7 @@ class ConveyorBelt: public Detector {
 
   ConveyorBelt(Layer layer, int x, int y, int direction);
   ~ConveyorBelt(void);
-  static ConveyorBelt * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
   

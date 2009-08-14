@@ -79,7 +79,7 @@ JumpSensor::~JumpSensor(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-JumpSensor * JumpSensor::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * JumpSensor::parse(std::istream &is, Layer layer, int x, int y) {
 
   int jump_length, width, height, direction;
   std::string name;

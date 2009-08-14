@@ -67,7 +67,7 @@ Enemy::~Enemy(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-Enemy * Enemy::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Enemy::parse(std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype, rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
   std::string name;

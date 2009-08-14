@@ -35,6 +35,9 @@ class MapEntity {
 
  public:
 
+   typedef MapEntity* (CreationFunction)(std::istream &is, Layer layer, int x, int y); /**< a function to parse a certain type of entity */
+   static const CreationFunction* creation_functions[];                                /**< the creation functions of all types of entities */
+
   /**
    * Describes the features of each dynamic entity type:
    * is it an obstacle, can it detect collisions, etc.
@@ -57,7 +60,7 @@ class MapEntity {
 				   * are displayed in the normal order (i.e. as specified by the map file), 
 				   * and before the entities with the feature. */
   };
-
+   
  private:
 
   /**
@@ -79,8 +82,7 @@ class MapEntity {
 			     */
 
  protected:
-  SDL_Rect position_in_map; /**< Position of the entity on the map. The position is defined as a rectangle.
-			     * This rectangle represents the position of the entity of the map and is
+  SDL_Rect rectangle;       /**< This rectangle represents the position of the entity of the map and is
 			     * used for the collision tests. It can be different from the sprite's
 			     * rectangle of the entity.
 			     * For example, the hero's position is a 16*16 rectangle, but its sprite may be
@@ -153,20 +155,20 @@ class MapEntity {
   int get_y(void);
   void set_x(int x);
   void set_y(int y);
-  const SDL_Rect get_coordinates(void);
-  void set_coordinates(const SDL_Rect &coordinates);
-  void set_coordinates(int x, int y);
+  const SDL_Rect get_xy(void);
+  void set_xy(const SDL_Rect &xy);
+  void set_xy(int x, int y);
 
   int get_width(void);
   int get_height(void);
-  const SDL_Rect & get_position_in_map(void);
-  void set_position_in_map(const SDL_Rect &position_in_map);
-  void set_position_top_left(int x, int y);
+  const SDL_Rect & get_rectangle(void);
+  void set_rectangle(const SDL_Rect &rectangle);
   const SDL_Rect & get_origin(void);
   int get_top_left_x(void);
   int get_top_left_y(void);
   void set_top_left_x(int x);
   void set_top_left_y(int y);
+  void set_top_left_xy(int x, int y);
 
   virtual const SDL_Rect get_facing_point(void);
   virtual const SDL_Rect get_facing_point(int direction);
@@ -196,6 +198,7 @@ class MapEntity {
   virtual bool is_obstacle_for(MapEntity *other);
   bool overlaps(const SDL_Rect &rectangle);
   bool overlaps(int x, int y);
+  bool overlaps(MapEntity *other);
   bool is_origin_point_in(const SDL_Rect &rectangle);
   bool is_facing_point_in(const SDL_Rect &rectangle);
   bool is_center_in(const SDL_Rect &rectangle);

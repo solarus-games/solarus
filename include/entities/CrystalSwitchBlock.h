@@ -47,7 +47,7 @@ class CrystalSwitchBlock: public Detector {
 
   CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype);
   ~CrystalSwitchBlock(void);
-  static CrystalSwitchBlock * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
 
@@ -61,3 +61,4 @@ class CrystalSwitchBlock: public Detector {
 };
 
 #endif
+

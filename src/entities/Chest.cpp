@@ -73,7 +73,7 @@ Chest::~Chest(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-Chest * Chest::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Chest::parse(std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int big_chest, treasure_content, treasure_amount, treasure_savegame_variable;
@@ -155,7 +155,7 @@ void Chest::set_hidden(bool hidden) {
 
   if (!hidden) {
     Hero *hero = zsdx->game->get_hero();
-    if (hero->overlaps(get_position_in_map())) {
+    if (overlaps(hero)) {
       hero->avoid_chest_collision(this);
     }
   }

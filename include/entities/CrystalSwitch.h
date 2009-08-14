@@ -38,7 +38,7 @@ class CrystalSwitch: public Detector {
 
   CrystalSwitch(Layer layer, int x, int y);
   ~CrystalSwitch(void);
-  static CrystalSwitch * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
 

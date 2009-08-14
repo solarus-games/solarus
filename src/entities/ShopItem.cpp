@@ -76,7 +76,7 @@ ShopItem::~ShopItem(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-ShopItem * ShopItem::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * ShopItem::parse(std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int treasure, amount, savegame_variable, price;

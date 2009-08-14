@@ -58,7 +58,7 @@ DynamicTile::~DynamicTile(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-DynamicTile * DynamicTile::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * DynamicTile::parse(std::istream &is, Layer layer, int x, int y) {
 
   int width, height, tile_pattern_id, enabled;
   std::string name;
@@ -103,7 +103,7 @@ bool DynamicTile::is_obstacle_for(MapEntity *other) {
  */
 void DynamicTile::display_on_map(void) {
   if (enabled) {
-    tile_pattern->display_on_map(map, position_in_map);
+    tile_pattern->display_on_map(map, rectangle);
   }
 }
 
@@ -116,7 +116,7 @@ void DynamicTile::update(void) {
 
   if (waiting_enabled) {
     Hero *hero = zsdx->game->get_hero();
-    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(hero->get_position_in_map())) {
+    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(hero)) {
       this->enabled = true;
       this->waiting_enabled = false;
     }

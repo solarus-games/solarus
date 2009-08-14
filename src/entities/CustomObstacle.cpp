@@ -56,7 +56,7 @@ CustomObstacle::~CustomObstacle(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-CustomObstacle * CustomObstacle::create_from_stream(std::istream &is, Layer layer, int x, int y) {
+MapEntity * CustomObstacle::parse(std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int width, height, stops_hero, stops_enemies, stops_npcs, stops_blocks;

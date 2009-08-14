@@ -54,7 +54,7 @@ class Block: public Detector {
   Block(const std::string &name, Layer layer, int x, int y,
 	int direction, Subtype subtype, int maximum_push);
   ~Block(void);
-  static Block * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
   bool is_displayed_in_y_order(void);

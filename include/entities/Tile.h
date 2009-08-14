@@ -35,7 +35,7 @@ class Tile: public MapEntity {
 
     Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id);
     ~Tile(void);
-    static Tile * create_from_stream(std::istream &is, Layer layer, int x, int y);
+    static CreationFunction parse;
 
     EntityType get_type(void);
     void set_map(Map *map);

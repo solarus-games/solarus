@@ -20,31 +20,12 @@
 #include "FileTools.h"
 #include "ResourceManager.h"
 #include "Camera.h"
-#include "movements/FallingHeight.h"
-#include "entities/EntityType.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
-#include "entities/MapEntities.h"
 #include "entities/Tileset.h"
-#include "entities/Tile.h"
-#include "entities/Teletransporter.h"
-#include "entities/DestinationPoint.h"
-#include "entities/PickableItem.h"
-#include "entities/DestructibleItem.h"
-#include "entities/Chest.h"
-#include "entities/JumpSensor.h"
-#include "entities/Enemy.h"
-#include "entities/InteractiveEntity.h"
-#include "entities/Block.h"
-#include "entities/DynamicTile.h"
-#include "entities/Switch.h"
-#include "entities/CustomObstacle.h"
-#include "entities/Sensor.h"
-#include "entities/CrystalSwitch.h"
-#include "entities/CrystalSwitchBlock.h"
-#include "entities/ShopItem.h"
-#include "entities/ConveyorBelt.h"
-#include "entities/Door.h"
+#include "entities/MapEntities.h"
+#include "entities/EntityType.h"
+#include "entities/MapEntity.h"
 #include <iomanip>
 using namespace std;
 
@@ -138,33 +119,8 @@ void MapLoader::load_map(Map *map) {
     FileTools::read(iss, x);
     FileTools::read(iss, y);
 
-    MapEntity *e;
-    switch (entity_type) {
-
-      case TILE:                   e = Tile::create_from_stream(iss, Layer(layer), x, y);                break;
-      case DESTINATION_POINT:      e = DestinationPoint::create_from_stream(iss, Layer(layer), x, y);    break;
-      case TELETRANSPORTER:        e = Teletransporter::create_from_stream(iss, Layer(layer), x, y);     break;
-      case PICKABLE_ITEM:          e = PickableItem::create_from_stream(iss, Layer(layer), x, y);        break;
-      case DESTRUCTIBLE_ITEM:      e = DestructibleItem::create_from_stream(iss, Layer(layer), x, y);    break;
-      case CHEST:                  e = Chest::create_from_stream(iss, Layer(layer), x, y);               break;
-      case JUMP_SENSOR:            e = JumpSensor::create_from_stream(iss, Layer(layer), x, y);          break;
-      case ENEMY:                  e = Enemy::create_from_stream(iss, Layer(layer), x, y);               break;
-      case INTERACTIVE_ENTITY:     e = InteractiveEntity::create_from_stream(iss, Layer(layer), x, y);   break;
-      case BLOCK:                  e = Block::create_from_stream(iss, Layer(layer), x, y);               break;
-      case DYNAMIC_TILE:           e = DynamicTile::create_from_stream(iss, Layer(layer), x, y);         break;
-      case SWITCH:                 e = Switch::create_from_stream(iss, Layer(layer), x, y);              break;
-      case CUSTOM_OBSTACLE:        e = CustomObstacle::create_from_stream(iss, Layer(layer), x, y);      break;
-      case SENSOR:                 e = Sensor::create_from_stream(iss, Layer(layer), x, y);              break;
-      case CRYSTAL_SWITCH:         e = CrystalSwitch::create_from_stream(iss, Layer(layer), x, y);       break;
-      case CRYSTAL_SWITCH_BLOCK:   e = CrystalSwitchBlock::create_from_stream(iss, Layer(layer), x, y);  break;
-      case SHOP_ITEM:              e = ShopItem::create_from_stream(iss, Layer(layer), x, y);            break;
-      case CONVEYOR_BELT:          e = ConveyorBelt::create_from_stream(iss, Layer(layer), x, y);        break;
-      case DOOR:                   e = Door::create_from_stream(iss, Layer(layer), x, y);                break;
-
-      default:
-        DIE("Error while loading map '" << id << "': unknown entity type '" << entity_type << "'");
-    }
-    entities->add_entity(e);
+    MapEntity *entity = MapEntity::creation_functions[entity_type](iss, Layer(layer), x, y);
+    entities->add_entity(entity);
   }
 
   FileTools::data_file_close(map_file);

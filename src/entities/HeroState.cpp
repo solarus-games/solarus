@@ -159,12 +159,12 @@ void Hero::update_ground(void) {
       else {
 
 	// time to move the hero on a hole one more pixel away from the solid ground
-	SDL_Rect collision_box = get_position_in_map();
+	SDL_Rect collision_box = get_rectangle();
 	collision_box.x += hole_dx;
 	collision_box.y += hole_dy;
 
 	if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
-	  set_position_in_map(collision_box);
+	  set_rectangle(collision_box);
 	  just_moved();
 	}
 	next_ground_date = now + 60;
@@ -224,7 +224,7 @@ void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int
     if (conveyor_belt->overlaps(center)) {
 
       // check that the movement is possible for at least one pixel
-      SDL_Rect collision_box = get_position_in_map();
+      SDL_Rect collision_box = get_rectangle();
       collision_box.x += dx;
       collision_box.y += dy;
  
@@ -955,8 +955,8 @@ void Hero::update_treasure(void) {
  */
 void Hero::display_treasure(void) {
 
-  int x = position_in_map.x;
-  int y = position_in_map.y;
+  int x = get_top_left_x();
+  int y = get_top_left_y();
 
   const SDL_Rect &camera_position = map->get_camera_position();
   treasure->display(map->get_visible_surface(),

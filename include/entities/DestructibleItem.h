@@ -80,7 +80,7 @@ class DestructibleItem: public Detector {
   DestructibleItem(Layer layer, int x, int y, Subtype subtype,
 		   PickableItem::Subtype pickable_item, int pickable_item_savegame_variable);
   ~DestructibleItem(void);
-  static DestructibleItem * create_from_stream(std::istream &is, Layer layer, int x, int y);
+  static CreationFunction parse;
 
   EntityType get_type(void);
 

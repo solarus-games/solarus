@@ -49,7 +49,7 @@ bool CollisionMovement::collision_with_map(int dx, int dy) {
   Map *map = entity->get_map();
 
   // place the collision box where we want to check the collisions
-  SDL_Rect collision_box = entity->get_position_in_map();
+  SDL_Rect collision_box = entity->get_rectangle();
 
   collision_box.x += dx;
   collision_box.y += dy;

@@ -248,7 +248,7 @@ bool Hero::is_moving_towards(int direction) {
  */
 void Hero::try_snap_to_facing_entity(void) {
 
-  SDL_Rect collision_box = get_position_in_map();
+  SDL_Rect collision_box = get_rectangle();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.y - facing_entity->get_top_left_y()) <= 5) {
@@ -262,7 +262,7 @@ void Hero::try_snap_to_facing_entity(void) {
   }
 
   if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
-    set_position_in_map(collision_box);
+    set_rectangle(collision_box);
     just_moved();
   }
 }
@@ -293,26 +293,26 @@ const SDL_Rect Hero::get_facing_point(int direction) {
 
     // right
   case 0:
-    facing_point.x = position_in_map.x + 16;
-    facing_point.y = position_in_map.y + 8;
+    facing_point.x = rectangle.x + 16;
+    facing_point.y = rectangle.y + 8;
     break;
 
     // up
   case 1:
-    facing_point.x = position_in_map.x + 8;
-    facing_point.y = position_in_map.y - 1;
+    facing_point.x = rectangle.x + 8;
+    facing_point.y = rectangle.y - 1;
     break;
 
     // left
   case 2:
-    facing_point.x = position_in_map.x - 1;
-    facing_point.y = position_in_map.y + 8;
+    facing_point.x = rectangle.x - 1;
+    facing_point.y = rectangle.y + 8;
     break;
 
     // down
   case 3:
-    facing_point.x = position_in_map.x + 8;
-    facing_point.y = position_in_map.y + 16;
+    facing_point.x = rectangle.x + 8;
+    facing_point.y = rectangle.y + 16;
     break;
 
   default:
@@ -635,7 +635,7 @@ void Hero::just_moved(void) {
     // save the hero's last valid position
     
     if (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y) {
-      last_solid_ground_coords = get_coordinates();
+      last_solid_ground_coords = get_xy();
     }
   }
 }
@@ -687,7 +687,7 @@ Detector * Hero::get_facing_entity(void) {
  */
 bool Hero::is_facing_obstacle(void) {
 
-  SDL_Rect collision_box = get_position_in_map();
+  SDL_Rect collision_box = get_rectangle();
   switch (sprites->get_animation_direction()) {
 
   case 0:
@@ -886,36 +886,36 @@ bool Hero::is_stroke_by_sword(Detector *detector) {
     {
       int distance = detector->is_obstacle_for(this) ? 14 : 4;
       const SDL_Rect &facing_point = get_facing_point();
-      const SDL_Rect &detector_position = detector->get_position_in_map();
+      const SDL_Rect &detector_rectangle = detector->get_rectangle();
 
       switch (animation_direction) {
 
       case 0:
-	result = facing_point.y >= detector_position.y
-	  && facing_point.y < detector_position.y + detector_position.h
-	  && facing_point.x >= detector_position.x - distance
-	  && facing_point.x < detector_position.x + detector_position.w - distance;
+	result = facing_point.y >= detector_rectangle.y
+	  && facing_point.y < detector_rectangle.y + detector_rectangle.h
+	  && facing_point.x >= detector_rectangle.x - distance
+	  && facing_point.x < detector_rectangle.x + detector_rectangle.w - distance;
 	break;
 
       case 1:
-	result = facing_point.x >= detector_position.x
-	  && facing_point.x < detector_position.x + detector_position.w
-	  && facing_point.y >= detector_position.y + distance
-	  && facing_point.y < detector_position.y + detector_position.h + distance;
+	result = facing_point.x >= detector_rectangle.x
+	  && facing_point.x < detector_rectangle.x + detector_rectangle.w
+	  && facing_point.y >= detector_rectangle.y + distance
+	  && facing_point.y < detector_rectangle.y + detector_rectangle.h + distance;
 	break;
 
       case 2:
-	result = facing_point.y >= detector_position.y
-	  && facing_point.y < detector_position.y + detector_position.h
-	  && facing_point.x >= detector_position.x + distance
-	  && facing_point.x < detector_position.x + detector_position.w + distance;
+	result = facing_point.y >= detector_rectangle.y
+	  && facing_point.y < detector_rectangle.y + detector_rectangle.h
+	  && facing_point.x >= detector_rectangle.x + distance
+	  && facing_point.x < detector_rectangle.x + detector_rectangle.w + distance;
 	break;
 
       case 3:
-	result = facing_point.x >= detector_position.x
-	  && facing_point.x < detector_position.x + detector_position.w
-	  && facing_point.y >= detector_position.y - distance
-	  && facing_point.y < detector_position.y + detector_position.h - distance;
+	result = facing_point.x >= detector_rectangle.x
+	  && facing_point.x < detector_rectangle.x + detector_rectangle.w
+	  && facing_point.y >= detector_rectangle.y - distance
+	  && facing_point.y < detector_rectangle.y + detector_rectangle.h - distance;
 	break;
 
       default:

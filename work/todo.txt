@@ -23,7 +23,8 @@ Feature requests :
 - Remplacer "clé" par "clef" ?
 - Mettre à jour la carte du monde
 - son de l'épée sur un mur fissuré
-- GPL et FMOD -> sdl_mixer ?
+- GPL et FMOD -> sdl_mixer ? Utiliser un format de musique perso regroupant deux fichiers IT : un pour l'intro, un pour la partie à laisser en boucle
+- Musiques : avec sdl_mixer, reripper les .it en s'assurant de garder le même volume
 
 
 Bugs :
@@ -31,7 +32,7 @@ Bugs :
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - la barre de magie moyenne peut déborder (yoshi04)
 - écran-titres : textes du bas flous
-- quand ça rame (exemple Wink), les vases sont lancés moins loin
+- quand ça rame (exemple Wink ou valgrind), les vases sont lancés moins loin
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
 - l'ombre des pots passe sur Link pendant qu'on les soulève
@@ -48,6 +49,7 @@ Bugs :
 - Donjon 1 : cacher le boss tant qu'on n'y est pas
 - (mur fissuré et) quart de coeur dans le donjon 1
 - mur fissuré qui explose : animation ?
+- ennemis : faire un tableau des noms de fonctions statiques:
 
 
 A venir :

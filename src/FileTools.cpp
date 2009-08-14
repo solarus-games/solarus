@@ -89,6 +89,7 @@ SDL_RWops * FileTools::data_file_open_rw(const std::string &file_name) {
  * @param rw the object to free
  */
 void FileTools::data_file_close_rw(SDL_RWops *rw) {
+  delete[] rw->hidden.mem.base;
   SDL_FreeRW(rw);
 }
 
@@ -164,7 +165,8 @@ void FileTools::data_file_close_buffer(char *buffer) {
 SDL_Surface *FileTools::open_image(const std::string &file_name) {
 
   SDL_RWops *rw = data_file_open_rw(file_name);
-  SDL_Surface *image = IMG_Load_RW(rw, 1);
+  SDL_Surface *image = IMG_Load_RW(rw, 0);
+  data_file_close_rw(rw);
 
   if (image == NULL) {
     DIE("Cannot load image '" << file_name << "'");

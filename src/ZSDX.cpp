@@ -36,7 +36,9 @@ ZSDX *zsdx = NULL;
 /**
  * Initializes the game engine.
  */
-ZSDX::ZSDX(void) {
+ZSDX::ZSDX(int argc, char **argv) {
+ 
+  FileTools::initialize(argc, argv);
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK);
@@ -80,6 +82,7 @@ ZSDX::~ZSDX(void) {
   TextSurface::quit();
   Sound::quit();
   SDL_Quit();
+  FileTools::quit();
 }
 
 /**
@@ -246,7 +249,7 @@ VideoManager * ZSDX::get_video_manager(void) {
 int main(int argc, char **argv) {
 
   try {
-    zsdx = new ZSDX();
+    zsdx = new ZSDX(argc, argv);
     zsdx->main();
   }
   catch (const std::string &s) {
@@ -257,3 +260,4 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+

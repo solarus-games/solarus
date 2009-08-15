@@ -50,7 +50,7 @@ class ZSDX {
   TTF_Font *font;
   Game *game;
 
-  ZSDX(void);
+  ZSDX(int argc, char **argv);
   ~ZSDX(void);
 
   void main(void);

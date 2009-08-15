@@ -157,7 +157,7 @@ target_link_libraries (zsdx
 		      SDL_Config
 		      fmodex
 		      lua5.1
-		      zzip
+		      physfs
 		      stdc++
 )
 

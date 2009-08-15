@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "FileTools.h"
-#include <zzip/lib.h>
+#include <physfs.h>
 
 /**
  * @brief Converts the parameter as a <code>char*</code> constant string.
@@ -33,11 +33,28 @@
  * be the location of the executable file). This is the normal behavior on Windows
  * platforms, because the user downloads a binary version of the game.
  */
+// TODO remove DATADIR
 #ifdef DATADIR_
 #define DATADIR ((std::string) STRING(DATADIR_))
 #else
 #define DATADIR ((std::string) "./data")
 #endif
+
+/**
+ * Initializes the file tools.
+ */
+void FileTools::initialize(int argc, char **argv) {
+  PHYSFS_init(argv[0]);
+  PHYSFS_addToSearchPath("./data", 1); // TODO remove this in release mode
+  PHYSFS_addToSearchPath("./data.zip", 1);
+}
+
+/**
+ * Quits the file tools.
+ */
+void FileTools::quit(void) {
+  PHYSFS_deinit();
+}
 
 /**
  * @brief Returns the directory of the data files.
@@ -130,21 +147,24 @@ void FileTools::data_file_close(const std::istream &data_file) {
 void FileTools::data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size) {
 
   // open the file
-  const std::string &data_file_name = data_file_add_prefix(file_name);
-  ZZIP_FILE *f = zzip_open(data_file_name.c_str(), ZZIP_ALLOWREAL);
-
-  if (f == NULL) {
-    DIE("Cannot open data file " << data_file_name);
+  if (!PHYSFS_exists(file_name.c_str())) {
+    DIE("Data file " << file_name << " does not exist");
+  }
+  PHYSFS_file* file = PHYSFS_openRead(file_name.c_str());
+  if (file == NULL) {
+    DIE("Cannot open data file " << file_name);
   }
 
   // load it into memory
-  ZZIP_STAT stat;
-  zzip_fstat(f, &stat);
-  *size = stat.st_size;
+  *size = PHYSFS_fileLength(file);
 
   *buffer = new char[*size];
-  zzip_read(f, *buffer, *size);
-  zzip_close(f);
+  if (buffer == NULL) {
+    DIE("Cannot allocate memory to read file " << file_name);
+  }
+
+  PHYSFS_read(file, buffer, 1, *size);
+  PHYSFS_close(file);
 }
 
 /**

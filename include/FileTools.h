@@ -31,12 +31,15 @@
  */
 class FileTools {
  
-  public: // TODO private
+  private: // TODO private
 
     static const std::string data_file_get_prefix(void);
     static const std::string data_file_add_prefix(const std::string &file_name);
 
   public:
+
+    static void initialize(int argc, char **argv);
+    static void quit(void);
 
     static SDL_RWops * data_file_open_rw(const std::string &file_name);
     static void data_file_close_rw(SDL_RWops *rw);

@@ -163,7 +163,7 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
     DIE("Cannot allocate memory to read file " << file_name);
   }
 
-  PHYSFS_read(file, buffer, 1, *size);
+  PHYSFS_read(file, *buffer, 1, *size);
   PHYSFS_close(file);
 }
 

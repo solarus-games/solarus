@@ -3,7 +3,7 @@
 ---------------------------------------
 
 -- Function call when the map starts
-function event_map_started()
+function event_map_started(destination_point_name)
 
    if savegame_get_boolean(35) then
       -- remove the frozen door

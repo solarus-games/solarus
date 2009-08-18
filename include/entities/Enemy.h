@@ -105,6 +105,7 @@ class Enemy: public Detector {
 				       * or -1 if it is not saved */
 
   // enemy state
+  bool enabled;                       /**< indicates that the enemy is enabled */
   bool being_hurt;                    /**< indicates that the enemy is being hurt */
   Movement *normal_movement;          /**< backup of the enemy's movement, which is replaced by
 				       * a straight movement while it is hurt */
@@ -165,6 +166,8 @@ class Enemy: public Detector {
   // enemy state
   virtual void update(void);
   virtual void set_suspended(bool suspended);
+  bool is_enabled(void);
+  void set_enabled(bool enabled);
   void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void collision(MapEntity *entity, Sprite *sprite_overlapping);
 

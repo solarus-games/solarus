@@ -56,6 +56,7 @@ Hero::Hero(Equipment *equipment):
 
   last_solid_ground_coords.x = 0;
   last_solid_ground_coords.y = 0;
+  last_solid_ground_layer = LAYER_LOW;
 }
 
 /**
@@ -636,6 +637,7 @@ void Hero::just_moved(void) {
     
     if (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y) {
       last_solid_ground_coords = get_xy();
+      last_solid_ground_layer = get_layer();
     }
   }
 }

@@ -2,7 +2,7 @@
 -- Dungeon 1 B1 script --
 -------------------------
 
-function event_map_started()
+function event_map_started(destination_point_name)
   if not savegame_get_boolean(57) then
     chest_set_hidden("boss_key_chest", true)
   end

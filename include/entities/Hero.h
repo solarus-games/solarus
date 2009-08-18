@@ -126,9 +126,11 @@ class Hero: public MapEntity {
   // return to solid ground
   SDL_Rect last_solid_ground_coords;     /**< coordinates of the last hero position on a ground
 				          * where he can walk (e.g. before jumping or falling into a hole) */
+  Layer last_solid_ground_layer;         /**< layer of the last hero position a solid ground */
   SDL_Rect target_solid_ground_coords;   /**< coordinates of the position where the hero will go if he falls
 					  * into a hole (or some other bad ground), or (-1,-1) to indicate
 					  * that the hero will just return to the last solid ground coordinates */
+  Layer target_solid_ground_layer;       /**< layer of the place to go back when falling in some bad ground */
 
   // special ground under the hero
   Ground ground;                         /**< kind of ground under the hero: grass, shallow water, etc. */
@@ -208,7 +210,7 @@ class Hero: public MapEntity {
 
   void update_freezed(void);
 
-  void start_returning_to_solid_ground(const SDL_Rect &target);
+  void start_returning_to_solid_ground(const SDL_Rect &target_xy, Layer target_layer);
   void update_returning_to_solid_ground(void);
 
  public:
@@ -276,7 +278,7 @@ class Hero: public MapEntity {
   int get_jump_y(void);
   void hurt(MapEntity *source, int life_points, int magic_points);
   void get_back_from_death(void);
-  void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords);
+  void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords, Layer layer);
   void start_boomerang(void);
 
   // keys

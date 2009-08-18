@@ -109,6 +109,7 @@ class MapScript {
     l_switch_set_enabled,
     l_enemy_is_dead,
     l_enemies_are_dead,
+    l_enemy_set_enabled,
     l_sensor_remove,
     l_door_open,
     l_door_close,
@@ -127,14 +128,14 @@ class MapScript {
   // loading and closing a script
   MapScript(Map *map);
   ~MapScript(void);
-  void initialize(void);
+  void initialize(const std::string &destination_point_name);
 
   // update functions
   void update(void);
   void set_suspended(bool suspended);
 
   // C++ functions that call script functions
-  void event_map_started(void);
+  void event_map_started(const std::string &destination_point_name);
   void event_message_started(const MessageId &message_id);
   void event_message_sequence_finished(const MessageId &first_message_id, int answer);
   void event_switch_enabled(const std::string &switch_name);

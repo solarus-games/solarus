@@ -5,7 +5,7 @@
 tom_initial_x = 0
 tom_initial_y = 0
 
-function event_map_started()
+function event_map_started(destination_point_name)
 
   tom_initial_x, tom_initial_y = npc_get_position("tom")
 

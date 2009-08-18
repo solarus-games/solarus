@@ -1,6 +1,6 @@
 Appel de fonctions LUA depuis le moteur C++ (événements) :
 
-- event_map_started()					appelé une fois la map chargée
+- event_map_started(destination_point_name)		appelé une fois la map chargée
 - event_update()					appelé à chaque cycle (à éviter si possible)
 - event_set_suspended(suspended)			appelé lorsque le jeu est suspendu ou repris
 - event_message_started(message_id)			appelé au début de l'affichage de chaque message d'un dialogue
@@ -54,9 +54,9 @@ Appel de fonctions C++ depuis un script LUA :
 - npc_remove(npc)					supprime un PNJ de la map
 - hero_set_direction(direction)				change la direction du sprite du héros
 - hero_align_on_sensor(sensor_name)                     place le héros exactement sur le rectangle d'un capteur
-- set_chest_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
-- set_chest_hidden(chest_name, bool hidden)             cache ou fait apparaître un coffre
-- is_chest_hidden(chest_name)                           indique si un coffre est caché
+- chest_set_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
+- chest_set_hidden(chest_name, bool hidden)             cache ou fait apparaître un coffre
+- chest_is_hidden(chest_name)                           indique si un coffre est caché
 - get_rupees()						retourne le nombre de rubis
 - remove_rupees(rupees)					enlève des rubis au joueur
 - inventory_item_get(item_id)				retourne le numéro de variante possédée par le joueur d'un objet de l'inventaire
@@ -85,8 +85,9 @@ Appel de fonctions C++ depuis un script LUA :
 - equipment_get_shield()				retourne le bouclier du joueur (0 à 3)
 - shop_item_remove(shop_item_name)			supprime un article de magasin sur la map
 - switch_set_enabled(switch_name, enabled)              active ou désactive un interrupteur
-- is_enemy_dead(enemy_name)				vérifie si un ennemi est mort
-- are_enemies_dead(enemies_name_prefix)			vérifie si un ensemble d'ennemis sont morts
+- enemy_is_dead(enemy_name)				vérifie si un ennemi est mort
+- enemies_are_dead(enemies_name_prefix)			vérifie si un ensemble d'ennemis sont morts
+- enemy_set_enabled(enemy_name)				active ou désactive un ennemi
 - door_open(door_name)					ouvre une ou plusieurs portes, avec animation et son
 - door_close(door_name)					ferme une ou plusieurs portes, avec animation et son
 - door_set_open(door_name, open)			change l'état d'une porte

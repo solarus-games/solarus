@@ -3,7 +3,7 @@
 -----------------------------
 
 -- Function called when the map starts
-function event_map_started()
+function event_map_started(destination_point_name)
 
    npc_random_walk("chignon_woman")
 

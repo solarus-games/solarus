@@ -2,7 +2,7 @@
 -- Outside world D1 script --
 -----------------------------
 
-function event_map_started()
+function event_map_started(destination_point_name)
   if is_ladder_activated() then
     tiles_set_enabled("ladder_step", true)
     tiles_set_enabled("no_ladder", false)

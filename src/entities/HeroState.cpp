@@ -1253,7 +1253,7 @@ void Hero::update_plunging(void) {
     }
     else {
       ResourceManager::get_sound("message_end")->play();
-      start_returning_to_solid_ground(last_solid_ground_coords);
+      start_returning_to_solid_ground(last_solid_ground_coords, last_solid_ground_layer);
       equipment->remove_hearts(1);
     }
   }
@@ -1338,11 +1338,11 @@ void Hero::update_falling(void) {
       // hole that hurts the hero
       if (target_solid_ground_coords.x != -1) {
 	// go back to a target point specified earlier
-	start_returning_to_solid_ground(target_solid_ground_coords);
+	start_returning_to_solid_ground(target_solid_ground_coords, target_solid_ground_layer);
       }
       else {
 	// nothing was specified: just go back to the last solid ground location
-	start_returning_to_solid_ground(last_solid_ground_coords);
+	start_returning_to_solid_ground(last_solid_ground_coords, last_solid_ground_layer);
       }
    
       equipment->remove_hearts(2);
@@ -1363,19 +1363,23 @@ void Hero::update_falling(void) {
  * This function is usually called when the hero walks on a special sensor.
  * @param target_solid_ground_coords coordinates of the position where
  * the hero will go if he falls into a hole or some other bad ground
+ * @param layer the layer
  */
-void Hero::set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords) {
+void Hero::set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords, Layer layer) {
   this->target_solid_ground_coords = target_solid_ground_coords;
+  this->target_solid_ground_layer = layer;
 }
 
 /**
  * Hides the hero and makes him move back to the specified solid ground location.
- * @param target coordinates of the solid ground location
+ * @param target_xy coordinates of the solid ground location
+ * @param target_layer the destination layer
  */
-void Hero::start_returning_to_solid_ground(const SDL_Rect &target) {
+void Hero::start_returning_to_solid_ground(const SDL_Rect &target_xy, Layer target_layer) {
   map->get_entities()->remove_boomerang();
-  set_movement(new TargetMovement(target.x, target.y, walking_speed));
   set_state(RETURNING_TO_SOLID_GROUND);
+  set_movement(new TargetMovement(target_xy.x, target_xy.y, walking_speed));
+  map->get_entities()->set_entity_layer(this, target_layer);
 }
 
 /**

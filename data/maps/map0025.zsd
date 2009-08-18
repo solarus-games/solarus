@@ -418,7 +418,7 @@
 18	1	632	72	miniboss_door_2	0	0	62
 18	1	680	72	miniboss_door	2	0	62
 18	1	840	256	stairs_door	1	0	-1
-11	1	616	112	switch	1	0	0
+11	1	696	40	switch	1	0	0
 1	1	456	437	from_outside	1	0
 12	1	168	248	8	16	custom_obstacle_12	0	1	1	1
 7	1	152	253	boss_key_battle_5	3	2	0	-1	-1	-1

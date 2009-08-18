@@ -7,7 +7,6 @@ Prochaines mises à jour :
 
 Feature requests :
 
-- Fichiers de données : utiliser SDL_RWops et une archive cryptée ?
 - Gérer les chemins des fichiers de sauvegarde et de configuration dans FileTools
 - Mettre de la couleur dans les messages
 - Ajouter des infos de statut quête dans l'écran de sélection des sauvegardes, en particulier quand une sauvegarde est choisie
@@ -16,15 +15,15 @@ Feature requests :
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Permettre de couper voire régler la musique et/ou le son
-- Mettre une icône sur l'exécutable
 - Mettre des constantes dans les scripts
-- Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - Ralentir la vitesse du héros sur l'eau peu profonde
 - Remplacer "clé" par "clef" ?
 - Mettre à jour la carte du monde
 - son de l'épée sur un mur fissuré
 - GPL et FMOD -> sdl_mixer ? Utiliser un format de musique perso regroupant deux fichiers IT : un pour l'intro, un pour la partie à laisser en boucle
 - Musiques : avec sdl_mixer, reripper les .it en s'assurant de garder le même volume
+- Mettre une icône sur l'exécutable
+- Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 
 
 Bugs :
@@ -41,14 +40,11 @@ Bugs :
 - Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ? (se superpose avec l'affichage des étages)
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
-- Sous windows, beaucoup de fichiers hors zip n'arrivent pas à être lus
-- (mur fissuré et) quart de coeur dans le donjon 1
 - mur fissuré qui explose : animation ?
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - Forgeron : ajouter décors de la forge
 - Rubis trop haut de 1 pixel par rapport à son ombre ?
 - petite clé du hud : reprendre la même que dans le hud de alttp
-- Donjon 1 : cacher le boss tant qu'on n'y est pas
 
 
 A venir :

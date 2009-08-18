@@ -127,6 +127,7 @@ Enemy * Enemy::create(Subtype type, Rank rank, int savegame_variable,
   // initialize the fields
   enemy->set_direction(direction);
   enemy->rank = rank;
+  enemy->enabled = (rank == RANK_NORMAL);
   enemy->savegame_variable = savegame_variable;
   enemy->pickable_item_subtype = pickable_item_subtype;
   enemy->pickable_item_savegame_variable = pickable_item_savegame_variable;
@@ -165,14 +166,16 @@ void Enemy::set_map(Map *map) {
 
   MapEntity::set_map(map);
 
-  // let the subclass initialize the enemy
-  initialize();
+  if (is_enabled()) {
+    // let the subclass initialize the enemy
+    initialize();
 
-  for (unsigned int i = 0; i < sprites.size(); i++) {
-    get_sprite(i)->get_animation_set()->enable_pixel_collisions();
+    for (unsigned int i = 0; i < sprites.size(); i++) {
+      get_sprite(i)->get_animation_set()->enable_pixel_collisions();
+    }
+
+    restart();
   }
-
-  restart();
 }
 
 /**
@@ -182,7 +185,7 @@ void Enemy::set_map(Map *map) {
  */
 bool Enemy::is_obstacle_for(MapEntity *other) {
 
-  return other->get_type() == BLOCK || other->get_type() == INTERACTIVE_ENTITY;
+  return is_enabled() && (other->get_type() == BLOCK || other->get_type() == INTERACTIVE_ENTITY);
 }
 
 /**
@@ -274,7 +277,7 @@ void Enemy::set_vulnerability(EnemyAttack attack, int reaction) {
 void Enemy::update(void) {
   MapEntity::update();
 
-  if (suspended) {
+  if (suspended || !is_enabled()) {
     return;
   }
 
@@ -360,13 +363,37 @@ void Enemy::set_suspended(bool suspended) {
 }
 
 /**
+ * Enables or disables the enemy.
+ * @param enabled true to enable it, false to disable it
+ */
+void Enemy::set_enabled(bool enabled) {
+
+  if (enabled != this->enabled) {
+    this->enabled = enabled;
+
+    if (enabled) {
+      initialize();
+      restart();
+    }
+  }
+}
+
+/**
+ * Returns whether the enemy is enabled.
+ * @return true if the enemy is enabled
+ */
+bool Enemy::is_enabled(void) {
+  return enabled;
+}
+
+/**
  * Returns whether this enemy is in a normal state, i.e.
  * it is not being hurt and not immobilized.
  * When this method returns false, the subclasses of Enemy
  * should not change the enemy properties.
  */
 bool Enemy::is_in_normal_state(void) {
-  return !is_being_hurt() && !is_killed() && !is_immobilized();
+  return is_enabled() && !is_being_hurt() && !is_killed() && !is_immobilized();
 }
 
 /**
@@ -384,7 +411,10 @@ void Enemy::restart(void) {
  * @param collision_mode the collision mode that detected the collision
  */
 void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping->collision_with_enemy(this);
+
+  if (is_enabled()) {
+    entity_overlapping->collision_with_enemy(this);
+  }
 }
 
 /**
@@ -394,7 +424,10 @@ void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
  * @param sprite_overlapping the sprite of this entity that is overlapping the enemy
  */
 void Enemy::collision(MapEntity *entity, Sprite *sprite_overlapping) {
-  entity->collision_with_enemy(this, sprite_overlapping);
+
+  if (is_enabled()) {
+    entity->collision_with_enemy(this, sprite_overlapping);
+  }
 }
 
 /**
@@ -404,7 +437,7 @@ void Enemy::collision(MapEntity *entity, Sprite *sprite_overlapping) {
  */
 void Enemy::attack_hero(Hero *hero) {
 
-  if (can_attack) {
+  if (is_enabled() && can_attack) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0 &&
@@ -452,6 +485,10 @@ Sound * Enemy::get_hurt_sound(void) {
  * @param source the entity attacking the enemy (often the hero)
  */
 void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
+
+  if (!is_enabled()) {
+    return;
+  }
 
   int result;
   if (invulnerable || vulnerabilities[attack] == 0) {
@@ -510,6 +547,10 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
  * @param source the entity attacking the enemy (often the hero)
  */
 void Enemy::hurt(MapEntity *source) {
+
+  if (!is_enabled()) {
+    return;
+  }
 
   // update the enemy state
   being_hurt = true;

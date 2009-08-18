@@ -376,7 +376,7 @@ void Map::start(void) {
 
   zsdx->game->play_music(music_id);
   started = true;
-  script->initialize();
+  script->initialize(destination_point_name);
 }
 
 /**

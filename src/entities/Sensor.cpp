@@ -148,7 +148,7 @@ void Sensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
       case RETURN_FROM_BAD_GROUND:
 	// we indicate to the hero a location to return
 	// after falling into a hole or some other ground
-	hero->set_target_solid_ground_coords(get_xy());
+	hero->set_target_solid_ground_coords(get_xy(), get_layer());
 	break;
 
     }

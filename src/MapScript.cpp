@@ -39,6 +39,7 @@
 #include "entities/Switch.h"
 #include "entities/Door.h"
 #include "entities/Sensor.h"
+#include "entities/Enemy.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 
@@ -134,6 +135,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "switch_set_enabled", l_switch_set_enabled);
   lua_register(context, "enemy_is_dead", l_enemy_is_dead);
   lua_register(context, "enemies_are_dead", l_enemies_are_dead);
+  lua_register(context, "enemy_set_enabled", l_enemy_set_enabled);
   lua_register(context, "sensor_remove", l_sensor_remove);
   lua_register(context, "door_open", l_door_open);
   lua_register(context, "door_close", l_door_close);
@@ -156,8 +158,9 @@ void MapScript::check_nb_arguments(lua_State *context, int nb_arguments) {
 
 /**
  * Loads the script and initializes it.
+ * @param destination_point_name name of the destination point where the hero is
  */
-void MapScript::initialize(void) {
+void MapScript::initialize(const std::string &destination_point_name) {
 
   // create an execution context
   context = lua_open();
@@ -172,7 +175,7 @@ void MapScript::initialize(void) {
   // load the script
   load();
 
-  event_map_started();
+  event_map_started(destination_point_name);
 }
 
 /**
@@ -1533,6 +1536,26 @@ int MapScript::l_enemies_are_dead(lua_State *l) {
 }
 
 /**
+ * Enables or disables an enemy.
+ * A normal enemy is enabled by default. A boss or a miniboss is disabled by default.
+ * Argument 1 (string): name of the enemy
+ * Argument 2 (boolean): true to enable the enemy, false to disable it
+ */
+int MapScript::l_enemy_set_enabled(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  const std::string &name = lua_tostring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  Enemy *enemy = (Enemy*) map->get_entities()->get_entity(ENEMY, name);
+  enemy->set_enabled(enable);
+
+  return 0;
+}
+
+/**
  * Removes a sensor from the map.
  * Argument 1 (string): name of the sensor
  */
@@ -1643,9 +1666,10 @@ int MapScript::l_door_set_open(lua_State *l) {
 
 /**
  * Notifies the script that the map has just been started.
+ * @param destination_point_name name of the destination point where the hero is
  */
-void MapScript::event_map_started(void) {
-  call_lua_function("event_map_started");
+void MapScript::event_map_started(const std::string &destination_point_name) {
+  call_lua_function("event_map_started",  destination_point_name);
 }
 
 /**

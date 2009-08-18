@@ -143,7 +143,8 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
       && entity != this
       && (layer_ignored || get_layer() == entity->get_layer())
       && sprite->get_animation_set()->are_pixel_collisions_enabled()
-      && get_sprite(0)->check_collision(sprite, get_x(), get_y(), entity->get_x(), entity->get_y())) {
+      && has_sprite()
+      && get_sprite()->check_collision(sprite, get_x(), get_y(), entity->get_x(), entity->get_y())) {
 
     // TODO allow a detector to have several pixel collision capable sprites (e.g. green soldier)
 

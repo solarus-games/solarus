@@ -5,7 +5,7 @@
 current_room = ""
 sw_sensor_enabled = false
 
-function event_map_started()
+function event_map_started(destination_point_name)
   if not savegame_get_boolean(54) then
     chest_set_hidden("map_chest", true)
   else

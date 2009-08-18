@@ -19,7 +19,7 @@ game_2_slots = {
 }
 
 -- Function called when the map starts
-function event_map_started()
+function event_map_started(destination_point_name)
    for k, v in pairs(game_2_slots) do
       interactive_entity_set_animation_frame(k, game_2_slots[k].initial_frame)
    end
@@ -107,9 +107,9 @@ function event_message_sequence_finished(first_message_id, answer)
 
       else
 	-- enough money: reset the 3 chests, pay and start the game
-	set_chest_open("chest_1", false)
-	set_chest_open("chest_2", false)
-	set_chest_open("chest_3", false)
+	chest_set_open("chest_1", false)
+	chest_set_open("chest_2", false)
+	chest_set_open("chest_3", false)
 
 	remove_rupees(20)
 	start_message("rupee_house.game_1.good_luck")
@@ -205,7 +205,7 @@ function event_open_empty_chest(chest_name)
    if not playing_game_1 then
       -- trying to open a chest but not playing yet
       start_message("rupee_house.pay_first") -- the game man is angry
-      set_chest_open(chest_name, false) -- close the chest again
+      chest_set_open(chest_name, false) -- close the chest again
       play_sound("wrong")
       unfreeze() -- restore the control
    else

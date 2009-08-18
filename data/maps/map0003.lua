@@ -6,7 +6,7 @@ monkey_jumps = 0
 
 -- Function called when the map starts.
 -- The NPCs are initialized.
-function event_map_started()
+function event_map_started(destination_point_name)
 
    if savegame_get_boolean(24) then
       -- remove the monkey from Link's house entrance

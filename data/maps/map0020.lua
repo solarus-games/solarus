@@ -9,7 +9,7 @@ function event_map_started(destination_point_name)
 
   tom_initial_x, tom_initial_y = npc_get_position("tom")
 
-  if has_finished_cavern() then
+  if has_finished_cavern() and not has_boomerang_of_tom() then
     npc_remove("tom")
   end
 

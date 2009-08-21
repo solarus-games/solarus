@@ -15,7 +15,7 @@ SDL_ttf
 SDL_Config
 fmodex
 lua5.1
-zzip
+physfs
 
 ----------------
 SDL installation

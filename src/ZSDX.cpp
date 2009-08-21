@@ -206,10 +206,11 @@ void ZSDX::handle_event(const SDL_Event &event) {
     switch (event.key.keysym.sym) {
 
       // TODO temporary (escape: quit)
-    case SDLK_ESCAPE:
+ /*
+   case SDLK_ESCAPE:
       exiting = true;
       break;
-
+*/
       // F5: change the video mode
     case SDLK_F5:
       video_manager->switch_video_mode();

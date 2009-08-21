@@ -222,6 +222,7 @@ void Controls::handle_event(const SDL_Event &event) {
   /*
    * TODO temporary (test code only)
    */
+  /*
   if (event.type == SDL_KEYDOWN) {
 
     Equipment *equipment = game->get_equipment();
@@ -291,7 +292,7 @@ void Controls::handle_event(const SDL_Event &event) {
     case SDLK_b:
       equipment->remove_arrow();
       break;
-
+*/
       /*
     case SDLK_SPACE:
       // almost the feather, actually
@@ -301,11 +302,12 @@ void Controls::handle_event(const SDL_Event &event) {
       }
       break;
       */
-
+/*
     default:
       break;
     }
-
+*/
+/*
     switch (event.key.keysym.sym) {
     case SDLK_KP7:
       equipment->set_max_magic(0);
@@ -352,7 +354,7 @@ void Controls::handle_event(const SDL_Event &event) {
     default:
       break;
     }
-  }
+  }*/
 }
 
 /**

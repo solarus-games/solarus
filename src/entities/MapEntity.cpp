@@ -959,6 +959,14 @@ void MapEntity::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx
 }
 
 /**
+ * This function is called when a sensor detects a collision with this entity.
+ * @param sensor a sensor
+ */
+void MapEntity::collision_with_sensor(Sensor *sensor) {
+  // nothing done by default
+}
+
+/**
  * Returns whether the movement and the animations of this entity are suspended.
  * @return true if the movement and the animations are suspended
  */

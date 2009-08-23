@@ -630,8 +630,7 @@ bool Enemy::is_killed(void) {
  */
 void Enemy::immobilize(void) {
   immobilized = true;
-//  start_shaking_date = SDL_GetTicks() + 5000; 
-  start_shaking_date = SDL_GetTicks() + 1000; 
+  start_shaking_date = SDL_GetTicks() + 5000; 
 }
 
 /**

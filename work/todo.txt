@@ -24,6 +24,7 @@ Feature requests :
 - Musiques : avec sdl_mixer, reripper les .it en s'assurant de garder le même volume
 - Mettre une icône sur l'exécutable
 - Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
+- valeurs maximales des compteurs : en vert
 
 
 Bugs :
@@ -45,6 +46,11 @@ Bugs :
 - Forgeron : ajouter décors de la forge
 - Rubis trop haut de 1 pixel par rapport à son ombre ?
 - petite clé du hud : reprendre la même que dans le hud de alttp
+- curseur visible sur eeepc linux en plein écran
+- réduire le délai pour prendre un pickable item
+- énigmes grotte Tom : trop dur sans indications car début du jeu (mettre plus d'indications : "N'oublie pas que le boomerang revient toujours vers toi"
+ou faire de la 2ème énigme un fragment de coeur ? mais il y aura les bombes)
+- plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 
 
 A venir :

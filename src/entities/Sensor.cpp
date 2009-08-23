@@ -126,11 +126,17 @@ bool Sensor::check_collision_custom(MapEntity *entity) {
  * @param collision_mode the collision mode that detected the collision
  */
 void Sensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+  entity_overlapping->collision_with_sensor(this);
+}
 
-  // for now the sensors only apply to the hero
-  if (entity_overlapping->is_hero() && !hero_already_overlaps) {
+/**
+ * Activates this sensor.
+ * This function is called when the hero overlaps the sensor.
+ * @param hero the hero
+ */
+void Sensor::activate(Hero *hero) {
 
-    Hero *hero = (Hero*) entity_overlapping;
+  if (!hero_already_overlaps) {
     hero_already_overlaps = true;
 
     switch (subtype) {
@@ -150,7 +156,7 @@ void Sensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mo
 	// after falling into a hole or some other ground
 	hero->set_target_solid_ground_coords(get_xy(), get_layer());
 	break;
-
     }
   }
 }
+

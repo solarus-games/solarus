@@ -21,6 +21,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Enemy.h"
 #include "entities/ConveyorBelt.h"
+#include "entities/Sensor.h"
 #include "movements/PlayerMovement.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
@@ -246,6 +247,17 @@ void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int
 	set_movement(new TargetMovement(conveyor_belt, walking_speed));
       }
     }
+  }
+}
+
+/**
+ * This function is called when a sensor detects a collision with this entity.
+ * @param sensor a sensor
+ */
+void Hero::collision_with_sensor(Sensor *sensor) {
+
+  if (get_state() != RETURNING_TO_SOLID_GROUND) {
+    sensor->activate(this);
   }
 }
 

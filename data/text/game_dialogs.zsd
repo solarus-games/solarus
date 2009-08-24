@@ -1162,9 +1162,16 @@ next = lyriann_cave.tom.accept_help.2
 
 [lyriann_cave.tom.accept_help.2]
 #       |-----------------------|
-line1 = "Mais n'oublie pas de me"
-line2 = "le rendre quand tu"
-line3 = "auras terminé !"
+line1 = "N'oublie pas de me"
+line2 = "rendre mon Boomerang"
+line3 = "quand tu auras terminé."
+next = lyriann_cave.tom.accept_help.3
+
+[lyriann_cave.tom.accept_help.3]
+#       |-----------------------|
+line1 = "Si tu obtiens le"
+line2 = "Réceptacle de Coeur,"
+line3 = "je serai impressionné !"
 
 [lyriann_cave.tom.refuse_help]
 #       |-----------------------|
@@ -1192,6 +1199,27 @@ line3 = "cette caverne..."
 next = lyriann_cave.tom.not_finished.4
 
 [lyriann_cave.tom.not_finished.4]
+#       |-----------------------|
+line1 = "N'oublie pas que le"
+line2 = "Boomerang revient"
+line3 = "toujours vers toi,"
+next = lyriann_cave.tom.not_finished.5
+
+[lyriann_cave.tom.not_finished.5]
+#       |-----------------------|
+line1 = "même si tu te déplaces."
+line2 = "Et observe bien les"
+line3 = "indices dans le décor"
+next = lyriann_cave.tom.not_finished.6
+
+[lyriann_cave.tom.not_finished.6]
+#       |-----------------------|
+line1 = "pour savoir de quelle"
+line2 = "manière il faut le"
+line3 = "lancer..."
+next = lyriann_cave.tom.not_finished.7
+
+[lyriann_cave.tom.not_finished.7]
 #       |-----------------------|
 line1 = "Que veux-tu faire ?"
 line2 = "Continuer"

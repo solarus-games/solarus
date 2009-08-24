@@ -47,9 +47,6 @@ Bugs :
 - Rubis trop haut de 1 pixel par rapport à son ombre ?
 - petite clé du hud : reprendre la même que dans le hud de alttp
 - curseur visible sur eeepc linux en plein écran
-- réduire le délai pour prendre un pickable item
-- énigmes grotte Tom : trop dur sans indications car début du jeu (mettre plus d'indications : "N'oublie pas que le boomerang revient toujours vers toi"
-ou faire de la 2ème énigme un fragment de coeur ? mais il y aura les bombes)
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 
 

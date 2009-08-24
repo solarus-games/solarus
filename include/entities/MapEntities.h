@@ -60,15 +60,17 @@ class MapEntities {
     entities_displayed_y_order[LAYER_NB];                 /**< all map entities that are displayed in the order
 							   * defined by their y position, including the hero */
 
-  std::vector<DestinationPoint*> destination_points;      /**< all destination points of the map */
   std::list<Detector*> detectors;                         /**< all entities able to detect other entities
 							   * on this map */
-  std::list<CrystalSwitchBlock*>
-    crystal_switch_blocks[LAYER_NB];                      /**< all crystal switch blocks of the map */
-  
+
   std::list<MapEntity*>
     obstacle_entities[LAYER_NB];                          /**< all entities that might be obstacle for other
 							   * entities on this map, including the hero */
+
+  std::vector<DestinationPoint*> destination_points;      /**< all destination points of the map */
+
+  std::list<CrystalSwitchBlock*>
+    crystal_switch_blocks[LAYER_NB];                      /**< all crystal switch blocks of the map */
 
   Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */
 

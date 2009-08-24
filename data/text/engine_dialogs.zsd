@@ -1162,7 +1162,7 @@ line2 = "contrer les lasers !"
 # Epée 1 (Epée du courage)
 #       |--------------------|
 icon = 66
-line1 = "Tu as trouvé l'Epée"
+line1 = "Tu as obtenu l'Epée"
 line2 = "du Courage !$0"
 next = _treasure_66.1
 

@@ -20,8 +20,9 @@
 #include "Common.h"
 
 /**
- * This class provides some special keys to make it easier to test the game.
- * Those keys are here for debugging purposes only and do not exist in official releases.
+ * This class provides some special keys that make it easier to debug the game, including
+ * by allowing the player to traverse walls.
+ * This class exists for debugging purposes only and should never be used in official releases!
  */
 class DebugKeys {
 

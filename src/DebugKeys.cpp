@@ -38,7 +38,6 @@ DebugKeys::~DebugKeys(void) {
 
 /**
  * This function is called when a keyboard key is pressed.
- * If the game is not in release mode, these key may be considered as a debugging key.
  * @param keysym the key pressed
  */
 void DebugKeys::key_pressed(const SDL_keysym &keysym) {
@@ -182,7 +181,6 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 
 /**
  * This function is called when a keyboard key is released.
- * If the game is not in release mode, these key may be considered as a debugging key.
  * @param keysym the key released
  */
 void DebugKeys::key_released(const SDL_keysym &keysym) {

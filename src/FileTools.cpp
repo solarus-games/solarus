@@ -45,7 +45,9 @@
  */
 void FileTools::initialize(int argc, char **argv) {
   PHYSFS_init(argv[0]);
-  PHYSFS_addToSearchPath("./data", 1); // TODO remove this in release mode
+#ifndef RELEASE_MODE
+  PHYSFS_addToSearchPath("./data", 1);
+#endif
   PHYSFS_addToSearchPath("./data.zip", 1);
 }
 

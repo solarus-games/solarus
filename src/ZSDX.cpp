@@ -249,13 +249,8 @@ VideoManager * ZSDX::get_video_manager(void) {
  */
 int main(int argc, char **argv) {
 
-  try {
-    zsdx = new ZSDX(argc, argv);
-    zsdx->main();
-  }
-  catch (const std::string &s) {
-    std::cerr << "Fatal error: " << s << std::endl;
-  }
+  zsdx = new ZSDX(argc, argv);
+  zsdx->main();
 
   delete zsdx;
 

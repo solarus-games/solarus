@@ -34,6 +34,7 @@ add_executable (zsdx
   Equipment.cpp
   DungeonEquipment.cpp
   Controls.cpp
+  DebugKeys.cpp
   Dungeon.cpp
   Treasure.cpp
   InventoryItem.cpp

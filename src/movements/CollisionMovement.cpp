@@ -23,7 +23,8 @@
 /**
  * Constructor.
  */
-CollisionMovement::CollisionMovement(void) {
+CollisionMovement::CollisionMovement(void):
+  can_traverse_obstacles(false) {
   last_collision_box_on_obstacle.x = 0;
   last_collision_box_on_obstacle.y = 0;
   last_collision_box_on_obstacle.w = 0;
@@ -45,6 +46,10 @@ CollisionMovement::~CollisionMovement(void) {
  * @return true if the entity would overlap the map obstacles in this position
  */
 bool CollisionMovement::collision_with_map(int dx, int dy) {
+
+  if (can_traverse_obstacles) {
+    return false;
+  }
 
   Map *map = entity->get_map();
 
@@ -116,5 +121,13 @@ void CollisionMovement::update_y(void) {
  */
 const SDL_Rect& CollisionMovement::get_last_collision_box_on_obstacle(void) {
   return last_collision_box_on_obstacle;
+}
+
+/**
+ * Sets whether this movement allows to traverse obstacles.
+ * @param can_traverse_obstacles true to make the movement ignore the collisions
+ */
+void CollisionMovement::set_can_traverse_obstacles(bool can_traverse_obstacles) {
+  this->can_traverse_obstacles = can_traverse_obstacles;
 }
 

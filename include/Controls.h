@@ -52,6 +52,7 @@ class Controls {
   Game *game;
   Savegame *savegame;
   SDL_Joystick *joystick;
+  DebugKeys *debug_keys;
 
   std::map<SDLKey, GameKey> keyboard_mapping;
   std::map<std::string, GameKey> joypad_mapping;

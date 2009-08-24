@@ -84,7 +84,6 @@ class PlayerMovement: public SmoothCollisionMovement {
   void set_moving_enabled(bool moving_enabled, bool direction_enabled);
   int get_moving_speed(void);
   void set_moving_speed(int moving_speed);
-
   bool is_direction_enabled(void);
 
   bool is_started(void);

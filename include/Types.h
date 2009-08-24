@@ -72,6 +72,7 @@ class Savegame;
 class Equipment;
 class DungeonEquipment;
 class Controls;
+class DebugKeys;
 class Dungeon;
 class Treasure;
 class Map;

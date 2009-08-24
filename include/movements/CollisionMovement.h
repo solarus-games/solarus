@@ -30,6 +30,7 @@ class CollisionMovement: public Movement {
   SDL_Rect last_collision_box_on_obstacle; /**< copy of the collision box of the last call
 					    * to collision_with_map() returning true */ 
   int last_direction;                      /**< direction of the movement before a collision */
+  bool can_traverse_obstacles;             /**< indicates that this movement currently does not take care of collisions */
 
  public:
 
@@ -42,6 +43,8 @@ class CollisionMovement: public Movement {
 
   const SDL_Rect& get_last_collision_box_on_obstacle(void);
   int get_last_direction(void);
+
+  void set_can_traverse_obstacles(bool can_traverse_obstacles);
 };
 
 #endif

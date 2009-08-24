@@ -19,6 +19,7 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DialogBox.h"
+#include "DebugKeys.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 using namespace std;
@@ -83,7 +84,7 @@ static const int arrows_angles[] = {
  * @param game the game
  */
 Controls::Controls(Game *game):
-  game(game), savegame(game->get_savegame()), customizing(false) {
+  game(game), savegame(game->get_savegame()), debug_keys(new DebugKeys(game)), customizing(false) {
 
   if (SDL_NumJoysticks() > 0) {
     joystick = SDL_JoystickOpen(0);
@@ -120,6 +121,8 @@ Controls::~Controls(void) {
   if (SDL_JoystickOpened(0)) {
     SDL_JoystickClose(joystick);
   }
+
+  delete debug_keys;
 }
 
 /**
@@ -218,142 +221,6 @@ void Controls::handle_event(const SDL_Event &event) {
   default:
     break;
   }
-
-  /*
-   * TODO temporary (test code only)
-   */
-  if (event.type == SDL_KEYDOWN) {
-
-    Equipment *equipment = game->get_equipment();
-
-    switch (event.key.keysym.unicode) {
-
-    case SDLK_p:
-      game->get_equipment()->add_hearts(2);
-      break;
-
-    case SDLK_m:
-      game->get_equipment()->remove_hearts(1);
-      break;
-
-    case SDLK_o:
-      game->get_equipment()->add_rupees(23);
-      break;
-
-    case SDLK_l:
-      game->get_equipment()->remove_rupees(14);
-      break;
-
-    case SDLK_i:
-      game->get_equipment()->add_magic(10);
-      break;
-
-    case SDLK_k:
-      game->get_equipment()->remove_magic(4);
-      break;
-
-    case SDLK_j:
-      if (!game->get_equipment()->is_magic_decreasing()) {
-	game->get_equipment()->start_removing_magic(200);
-      }
-      else {
-	game->get_equipment()->stop_removing_magic();
-      }
-      break;
-
-    case SDLK_t:
-      equipment->give_inventory_item(INVENTORY_BOW);
-      equipment->set_max_arrows(10);
-      equipment->set_item_assigned(0, INVENTORY_BOW);
-      equipment->give_inventory_item(INVENTORY_BOTTLE_2, 6);
-      equipment->set_item_assigned(1, INVENTORY_BOTTLE_2);
-      equipment->give_inventory_item(INVENTORY_BOMBS);
-      equipment->set_max_bombs(10);
-      equipment->set_bombs(10);
-      equipment->give_inventory_item(INVENTORY_BOOMERANG);
-      equipment->give_inventory_item(INVENTORY_LAMP);
-      equipment->give_inventory_item(INVENTORY_HOOK_SHOT);
-      equipment->give_inventory_item(INVENTORY_PEGASUS_SHOES);
-      equipment->give_inventory_item(INVENTORY_BOTTLE_1);
-      equipment->give_inventory_item(INVENTORY_GLOVE);
-      equipment->give_inventory_item(INVENTORY_PAINS_AU_CHOCOLAT);
-      equipment->set_inventory_item_amount(INVENTORY_PAINS_AU_CHOCOLAT, 3);
-      equipment->give_inventory_item(INVENTORY_CROISSANTS);
-      equipment->give_inventory_item(INVENTORY_RED_KEY);
-      equipment->give_inventory_item(INVENTORY_CLAY_KEY);
-      equipment->add_world_map();
-      break;
-
-    case SDLK_g:
-      equipment->add_arrows(7);
-      break;
-
-    case SDLK_b:
-      equipment->remove_arrow();
-      break;
-
-      /*
-    case SDLK_SPACE:
-      // almost the feather, actually
-      if (game->get_keys_effect()->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE) {
-	Hero *hero = game->get_hero();
-	hero->start_jumping(hero->get_animation_direction() * 2, 40, true);
-      }
-      break;
-*/
-
-    default:
-      break;
-    }
-
-
-    switch (event.key.keysym.sym) {
-    case SDLK_KP7:
-      equipment->set_max_magic(0);
-      break;
-
-    case SDLK_KP8:
-      equipment->set_max_magic(42);
-      break;
-
-    case SDLK_KP9:
-      equipment->set_max_magic(84);
-      break;
-
-    case SDLK_KP1:
-      equipment->set_tunic(MAX(equipment->get_tunic() - 1, 0));
-      game->get_hero()->rebuild_equipment();
-      break;
-
-    case SDLK_KP4:
-      equipment->set_tunic(MIN(equipment->get_tunic() + 1, 2));
-      game->get_hero()->rebuild_equipment();
-      break;
-
-    case SDLK_KP2:
-      equipment->set_sword(MAX(equipment->get_sword() - 1, 0));
-      game->get_hero()->rebuild_equipment();
-      break;
-
-    case SDLK_KP5:
-      equipment->set_sword(MIN(equipment->get_sword() + 1, 4));
-      game->get_hero()->rebuild_equipment();
-      break;
-
-    case SDLK_KP3:
-      equipment->set_shield(MAX(equipment->get_shield() - 1, 0));
-      game->get_hero()->rebuild_equipment();
-      break;
-
-    case SDLK_KP6:
-      equipment->set_shield(MIN(equipment->get_shield() + 1, 3));
-      game->get_hero()->rebuild_equipment();
-      break;
-
-    default:
-      break;
-    }
-  }
 }
 
 /**
@@ -361,6 +228,10 @@ void Controls::handle_event(const SDL_Event &event) {
  * @param keysym the key pressed
  */
 void Controls::key_pressed(const SDL_keysym &keysym) {
+
+#ifndef RELEASE_MODE
+  debug_keys->key_pressed(keysym);
+#endif
 
   // retrieve the game key corresponding to this keyboard key
   GameKey game_key = keyboard_mapping[keysym.sym];
@@ -404,6 +275,10 @@ void Controls::key_pressed(const SDL_keysym &keysym) {
  * @param keysym the key released
  */
 void Controls::key_released(const SDL_keysym &keysym) {
+
+#ifndef RELEASE_MODE
+  debug_keys->key_released(keysym);
+#endif
 
   // retrieve the game key corresponding to this keyboard key
   GameKey game_key = keyboard_mapping[keysym.sym];

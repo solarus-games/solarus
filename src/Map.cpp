@@ -27,6 +27,7 @@
 #include "entities/MapEntities.h"
 #include "entities/DestinationPoint.h"
 #include "entities/Detector.h"
+#include "entities/Hero.h"
 
 MapLoader Map::map_loader;
 
@@ -36,7 +37,7 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-id(id), started(false), entities(NULL), suspended(false), script(NULL) {
+id(id), started(false), welcome_message_id(""), entities(NULL), suspended(false), script(NULL) {
 
 }
 
@@ -263,6 +264,14 @@ int Map::get_destination_side(void) {
 }
 
 /**
+ * Sets a message to show when the map is started.
+ * @param welcome_message_id id of the message to show
+ */
+void Map::set_welcome_message(MessageId welcome_message_id) {
+  this->welcome_message_id = welcome_message_id;
+}
+
+/**
  * Returns the SDL surface where the map is displayed.
  * This surface is only the visible part of the map, so the
  * coordinates on this surface are relative to the screen,
@@ -397,6 +406,19 @@ bool Map::is_started(void) {
 }
 
 /**
+ * This function is closed when the map is started and 
+ * the opening transition is finished.
+ */
+void Map::opening_transition_finished(void) {
+
+  zsdx->game->get_hero()->opening_transition_finished();
+  if (welcome_message_id != "") {
+    zsdx->game->show_message(welcome_message_id);
+    welcome_message_id = "";
+  }
+}
+
+/**
  * Tests whether a point is outside the map area.
  * @param x x of the point to check
  * @param y y of the point to check
@@ -489,6 +511,11 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
   case OBSTACLE_HOLE:
     on_obstacle = entity_to_check->is_hole_obstacle();
     break;
+
+  case OBSTACLE_LADDER:
+    on_obstacle = entity_to_check->is_ladder_obstacle();
+    break;
+
   }
 
   return on_obstacle;
@@ -583,17 +610,29 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity *en
  */
 Ground Map::get_tile_ground(Layer layer, int x, int y) {
 
-  Ground ground = GROUND_NORMAL;
-
   Obstacle obstacle = entities->get_obstacle_tile(layer, x, y);
-  if (obstacle == OBSTACLE_SHALLOW_WATER) {
-    ground = GROUND_SHALLOW_WATER;
-  }
-  else if (obstacle == OBSTACLE_DEEP_WATER) {
-    ground = GROUND_DEEP_WATER;
-  }
-  else if (obstacle == OBSTACLE_HOLE) {
-    ground = GROUND_HOLE;
+  Ground ground;
+
+  switch (obstacle) {
+	case OBSTACLE_SHALLOW_WATER:
+	  ground = GROUND_SHALLOW_WATER;
+	  break;
+
+	case OBSTACLE_DEEP_WATER:
+	  ground = GROUND_DEEP_WATER;
+	  break;
+
+	case OBSTACLE_HOLE:
+	  ground = GROUND_HOLE;
+	  break;
+
+	case OBSTACLE_LADDER:
+	  ground = GROUND_LADDER;
+	  break;
+
+	default:
+	  ground = GROUND_NORMAL;
+	  break;
   }
 
   return ground;

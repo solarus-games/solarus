@@ -693,6 +693,15 @@ bool MapEntity::is_hole_obstacle(void) {
 }
 
 /**
+ * Returns whether a ladder is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @return true if the ladders are currently an obstacle for this entity
+ */
+bool MapEntity::is_ladder_obstacle(void) {
+  return true;
+}
+
+/**
  * Returns whether a teletransporter is currently considered as an obstacle for this entity.
  * This function returns true by default.
  * @param teletransporter a teletransporter

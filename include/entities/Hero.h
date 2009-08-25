@@ -300,6 +300,7 @@ class Hero: public MapEntity {
   bool is_on_hole(void);
   bool is_water_obstacle(void);
   bool is_hole_obstacle(void);
+  bool is_ladder_obstacle(void);
   bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
   bool is_sensor_obstacle(Sensor *sensor);

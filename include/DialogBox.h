@@ -73,7 +73,7 @@ class DialogBox {
   SDL_Surface *dialog_surface;
   SDL_Surface *img_box;
   SDL_Surface *img_icons;
-  Sprite *sprite_message_end_arrow;
+  Sprite *end_message_sprite;
 
   // sounds
   Sound *end_message_sound;

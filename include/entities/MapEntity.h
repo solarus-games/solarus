@@ -216,6 +216,7 @@ class MapEntity {
 
   virtual bool is_water_obstacle(void);
   virtual bool is_hole_obstacle(void);
+  virtual bool is_ladder_obstacle(void);
   virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
   virtual bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
   virtual bool is_sensor_obstacle(Sensor *sensor);
@@ -235,3 +236,4 @@ class MapEntity {
 };
 
 #endif
+

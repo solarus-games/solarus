@@ -168,6 +168,15 @@ bool Boomerang::is_hole_obstacle(void) {
 }
 
 /**
+ * Returns whether a ladder is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @return true if the ladders are currently an obstacle for this entity
+ */
+bool Boomerang::is_ladder_obstacle(void) {
+  return false;
+}
+
+/**
  * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal switch block raised
  * @return false 

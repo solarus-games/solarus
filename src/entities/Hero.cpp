@@ -156,6 +156,14 @@ bool Hero::is_hole_obstacle(void) {
 }
 
 /**
+ * Returns whether a ladder is currently considered as an obstacle for the hero.
+ * @return true if the ladders are currently an obstacle for the hero
+ */
+bool Hero::is_ladder_obstacle(void) {
+  return false;
+}
+
+/**
  * Returns whether a teletransporter is currently considered as an obstacle.
  * This depends on the hero's state.
  * @param teletransporter a teletransporter
@@ -604,29 +612,26 @@ void Hero::movement_just_changed(void) {
 void Hero::just_moved(void) {
 
   if (state == RETURNING_TO_SOLID_GROUND) {
-    // do not take care of the ground when returning to a solid ground point
+    // do not take care of the ground or detectors when returning to a solid ground point
     return;
   }
 
-  Ground previous_ground = ground;
-  set_ground(GROUND_NORMAL);
+  // save the current ground
+  Ground previous_ground = this->ground;
+  this->ground = GROUND_NORMAL;
 
-  // see if the hero is on a special ground
+  // see the ground indicated by the tiles
   Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y());
 
-  if (state == SWIMMING && tiles_ground != GROUND_DEEP_WATER) {
-    stop_swimming();
-  }
+  set_facing_entity(NULL);
+  MapEntity::just_moved(); // to see the special ground indicated by the dynamic entities
 
-  if (ground != GROUND_GRASS && tiles_ground != ground) {
-    // set the ground indicated by the tiles
+  if (ground == GROUND_NORMAL) {
+    // no special ground was set by the dynamic entities: use the one from the tiles
     set_ground(tiles_ground);
   }
 
-  set_facing_entity(NULL);
-  MapEntity::just_moved(); // to set the ground indicated by the entities
-
-  if (ground != previous_ground) {
+  if (this->ground != previous_ground) {
     start_ground();
   }
 
@@ -634,7 +639,7 @@ void Hero::just_moved(void) {
       && state != JUMPING
       && state != RETURNING_TO_SOLID_GROUND) {
     // save the hero's last valid position
-    
+ 
     if (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y) {
       last_solid_ground_coords = get_xy();
       last_solid_ground_layer = get_layer();

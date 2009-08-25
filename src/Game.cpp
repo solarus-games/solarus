@@ -347,7 +347,7 @@ void Game::update_transitions(void) {
       }
     }
     else {
-      hero->opening_transition_finished();
+      current_map->opening_transition_finished();
 
       if (previous_map_surface != NULL) {
 	SDL_FreeSurface(previous_map_surface);
@@ -538,6 +538,13 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
       savegame->set_integer(Savegame::STARTING_MAP, map_id);
       savegame->set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
       crystal_switch_state = false;
+
+      if (next_map->is_in_dungeon()) {
+        // show the dungeon name
+        std::ostringstream oss;
+	oss << "dungeon_" << next_map->get_world_number();
+	next_map->set_welcome_message(oss.str());
+      }
     }
   }
 }

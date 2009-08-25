@@ -54,10 +54,13 @@ Hero::State Hero::get_state(void) {
  */
 void Hero::set_state(State state) {
 
-  this->state = state;
+  if (state != this->state) {
+    this->state = state;
 
-  if (!zsdx->game->is_suspended()) {
-    get_normal_movement()->set_moving_enabled(state < PUSHING, state <= CONVEYOR_BELT);
+    if (!zsdx->game->is_suspended()) {
+      get_normal_movement()->set_moving_enabled(state < PUSHING, state <= CONVEYOR_BELT);
+      just_moved();
+    }
   }
 }
 
@@ -100,6 +103,10 @@ void Hero::start_ground(void) {
 
   switch (ground) {
 
+  case GROUND_UNKNOWN:
+    DIE("No ground specified");
+    break;
+
   case GROUND_NORMAL:
     // normal ground: remove any special sprite displayed under the hero
     sprites->destroy_ground();
@@ -128,8 +135,18 @@ void Hero::start_ground(void) {
 
       Uint32 now = SDL_GetTicks();
       next_ground_date = MAX(next_ground_date, now);
+
+      get_normal_movement()->set_moving_speed(walking_speed * 2 / 3);
     }
     break;
+
+  case GROUND_LADDER:
+    get_normal_movement()->set_moving_speed(walking_speed * 2 / 3);
+    break;
+  }
+
+  if (state == SWIMMING && ground != GROUND_DEEP_WATER) {
+    stop_swimming();
   }
 }
 

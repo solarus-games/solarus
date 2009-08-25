@@ -337,6 +337,14 @@ bool CarriedItem::is_hole_obstacle(void) {
 }
 
 /**
+ * Returns whether a ladder is currently considered as an obstacle for this entity.
+ * @return true if the ladders are currently an obstacle for this entity
+ */
+bool CarriedItem::is_ladder_obstacle(void) {
+  return false;
+}
+
+/**
  * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal switch block raised
  * @return false 

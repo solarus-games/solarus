@@ -27,6 +27,7 @@ import java.util.*;
  */
 public enum Obstacle {
 
+    LADDER(-4, "obstacle_ladder.png"),
     HOLE(-3, "obstacle_hole.png"),
     SHALLOW_WATER(-2, "obstacle_shallow_water.png"),
     DEEP_WATER(-1, "obstacle_deep_water.png"),
@@ -44,6 +45,7 @@ public enum Obstacle {
     private static ImageIcon[] icons = null;
 
     public static final String[] humanNames = {
+	"Ladder",
 	"Hole",
 	"Shallow water",
 	"Deep water",
@@ -138,3 +140,4 @@ public enum Obstacle {
 	return icons;
     }
 }
+

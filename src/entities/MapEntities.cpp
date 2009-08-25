@@ -289,6 +289,7 @@ void MapEntities::add_tile(Tile *tile) {
   case OBSTACLE_SHALLOW_WATER:
   case OBSTACLE_DEEP_WATER:
   case OBSTACLE_HOLE:
+  case OBSTACLE_LADDER:
   case OBSTACLE:
     for (i = 0; i < tile_height8; i++) {
       for (j = 0; j < tile_width8; j++) {

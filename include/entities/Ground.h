@@ -27,6 +27,8 @@ enum Ground {
   GROUND_SHALLOW_WATER,
   GROUND_DEEP_WATER,
   GROUND_HOLE,
+  GROUND_LADDER,
 };
 
 #endif
+

@@ -1,3 +1,9 @@
+[dungeon_1]
+#       |-----------------------|
+line1 = "        Niveau 1       "
+line2 = "   Donjon de la Forêt  "
+
+
 [outside_world.village.welcome_sign]
 #       |-----------------------|
 line1 = "       Bienvenue"

@@ -217,12 +217,9 @@ void DestructibleItem::notify_collision(MapEntity *entity, Sprite *sprite_overla
       get_destruction_sound()->play();
       get_sprite()->set_current_animation("destroy");
       is_being_cut = true;
-
-      if (has_special_ground()) {
-	hero->set_ground(GROUND_NORMAL);
-      }
-
       map->get_entities()->bring_to_front(this); // show animation destroy to front
+
+      hero->just_moved(); // to update the ground under the hero
 
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = PickableItem::can_disappear(pickable_item);

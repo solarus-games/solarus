@@ -20,10 +20,9 @@ Feature requests :
 - Remplacer "clé" par "clef" ?
 - Mettre à jour la carte du monde
 - son de l'épée sur un mur fissuré
-- GPL et FMOD -> sdl_mixer ? Utiliser un format de musique perso regroupant deux fichiers IT : un pour l'intro, un pour la partie à laisser en boucle
+- GPL et FMOD -> sdl_mixer ? Utiliser deux fichiers IT par musique : un pour l'intro, un pour la partie à laisser en boucle
 - Musiques : avec sdl_mixer, reripper les .it en s'assurant de garder le même volume
 - Mettre une icône sur l'exécutable
-- Ajouter un type de terrain sur lequel on marche plus lentement (bien pour les échelles)
 - valeurs maximales des compteurs : en vert
 
 
@@ -48,16 +47,11 @@ Bugs :
 - petite clé du hud : reprendre la même que dans le hud de alttp
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
-- nom des fonctions de collisions : 
-    - void vérifier collision   void check_collision
-    - bool tester collision :   bool test_collision, bool is_overlapping
-    - void notifier collision : void notify_collision
 
 
 Remarques de Linksupersayen :
 
   - Écran titre un peu figé, on aimerait bien un petit peu d'animation.
-  - Je pense qu'il faudrait accélérer l'animation de Link quand il marche. Dans A Link To The Past, Link semblait plus rapide dans son animation.
   - Nous sommes tellement habitués aux petits bruitages quand les lettres défilent lors d'un message qu'ils agissent un peu comme un drogue maintenant. On en a besoin s'il vous plaît !
   - Link semble disparaître un peu lors des phases à l'épée.
   - Les musiques. On adore les musiques de A Link To The Past... sur la Super Nintendo et la Game Boy Advance, mais sur le PC, elle semblent un peu enregistrées, enfin, il faudrait augmenter la qualité sonore et là, ça serait bon !
@@ -69,11 +63,9 @@ Remarques de @PyroNet :
 - bandit manchot : graphismes pas exceptionnels, tapis pas centré
 - bandit manchot : débloquer plus tard dans le jeu et laisser un message "casino hors-service" ? ou garder ce clin d'oeil pour le moment où la maison est dévalisée ?
 - Quand Link soulève un pot, l'ombre du pot passe pendant un moment au-dessus de Link.
-- Le saut se passe un peu trop rapidement.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - La porte (avec un coeur dedans) fermée à clé dénote un peu avec la montagne.
 - Les prix des marchandises dans les magasins ne sont pas très lisibles.
-- Pourquoi ne pas faire dans Ocarina of Time, c'est à dire remplacer la flèche de la boîte de dialogue par un carré lorsqu'on est arrivé à la fin du dialogue ?
 
 
 A venir :

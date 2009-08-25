@@ -27,7 +27,7 @@
 #include "MapScript.h"
 
 static SDL_Rect box_src_position = {0, 0, 220, 60};
-static SDL_Rect question_src_position = {48, 60, 8, 8};
+static SDL_Rect question_src_position = {96, 60, 8, 8};
 
 /**
  * Creates a new dialog box.
@@ -60,8 +60,8 @@ DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
   end_message_sound = ResourceManager::get_sound("message_end");
   switch_answer_sound = ResourceManager::get_sound("cursor");
 
-  // create the sprite
-  sprite_message_end_arrow = new Sprite("hud/dialog_box_message_end");
+  // create the sprites
+  end_message_sprite = new Sprite("hud/dialog_box_message_end");
 
   // save the action and sword keys
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
@@ -91,7 +91,7 @@ DialogBox::~DialogBox(void) {
   SDL_FreeSurface(dialog_surface);
   SDL_FreeSurface(img_box);
   SDL_FreeSurface(img_icons);
-  delete sprite_message_end_arrow;
+  delete end_message_sprite;
   delete current_message;
 }
 
@@ -342,7 +342,7 @@ void DialogBox::update(void) {
   if (current_message->is_finished()) {
 
     // update the message end arrow
-    sprite_message_end_arrow->update();
+    end_message_sprite->update();
 
     // show the appropriate action icon
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
@@ -356,6 +356,9 @@ void DialogBox::update(void) {
       }
       else {
 	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_RETURN);
+	if (end_message_sprite->get_current_animation() != "last") {
+	  end_message_sprite->set_current_animation("last");
+	}
       }
 
       keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
@@ -398,9 +401,10 @@ void DialogBox::display(SDL_Surface *destination_surface) {
 
   // display the end message arrow
   if (current_message->is_finished()) {
-    sprite_message_end_arrow->display(dialog_surface, x + 103, y + 56);
+    end_message_sprite->display(dialog_surface, x + 103, y + 56);
   }
 
   // final blit
   SDL_BlitSurface(dialog_surface, NULL, destination_surface, NULL);
 }
+

@@ -85,6 +85,7 @@ class Map {
 					 * or "_same" to keep the hero's coordinates,
 					 * or "_side0", "_side1", "_side2" or "_side3"
 					 * to place the hero on a side of the map */
+  MessageId welcome_message_id;         /**< id of the message to show when the hero arrives in this map */
 
   MapEntities *entities;        /**< the entities on the map */
   bool suspended;               /**< indicates whether the game is suspended */
@@ -128,6 +129,7 @@ class Map {
   bool is_loaded(void);
   void load(void);
   void unload(void);
+  void opening_transition_finished(void);
 
   // entities
   MapEntities *get_entities(void);
@@ -136,6 +138,7 @@ class Map {
   bool is_started(void);
   void start(void);
   void leave(void);
+  void set_welcome_message(std::string welcome_message_id);
 
   // current destination point
   void set_destination_point(unsigned int destination_point_index);

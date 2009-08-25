@@ -43,8 +43,8 @@ class CrystalSwitch: public Detector {
   EntityType get_type(void);
 
   bool is_obstacle_for(MapEntity *other);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void collision(MapEntity *entity, Sprite *sprite_overlapping);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
   void action_key_pressed(void);
 
   void update(void);
@@ -52,3 +52,4 @@ class CrystalSwitch: public Detector {
 };
 
 #endif
+

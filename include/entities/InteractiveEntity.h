@@ -71,7 +71,7 @@ class InteractiveEntity: public Detector {
   bool is_npc_obstacle(InteractiveEntity *npc);
   bool is_sword_ignored(void);
 
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void action_key_pressed(void);
   bool interaction_with_inventory_item(InventoryItem *item);
 

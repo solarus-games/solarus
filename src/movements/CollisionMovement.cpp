@@ -21,15 +21,30 @@
 #include "entities/MapEntity.h"
 
 /**
- * Constructor.
+ * Default constructor.
  */
 CollisionMovement::CollisionMovement(void):
-  can_traverse_obstacles(false) {
+  stop_on_obstacles(true) {
+
   last_collision_box_on_obstacle.x = 0;
   last_collision_box_on_obstacle.y = 0;
   last_collision_box_on_obstacle.w = 0;
   last_collision_box_on_obstacle.h = 0;
 }
+
+/**
+ * Constructor specifying whether the collisions are enabled.
+ * @param stop_on_obstacles true to make the movement sensible to the obstacles.
+ */
+CollisionMovement::CollisionMovement(bool stop_on_obstacles):
+  stop_on_obstacles(stop_on_obstacles) {
+
+  last_collision_box_on_obstacle.x = 0;
+  last_collision_box_on_obstacle.y = 0;
+  last_collision_box_on_obstacle.w = 0;
+  last_collision_box_on_obstacle.h = 0;
+}
+
 
 /**
  * Destructor.
@@ -45,9 +60,9 @@ CollisionMovement::~CollisionMovement(void) {
  * @param dy y distance between the current position and the position to check
  * @return true if the entity would overlap the map obstacles in this position
  */
-bool CollisionMovement::collision_with_map(int dx, int dy) {
+bool CollisionMovement::test_collision_with_map(int dx, int dy) {
 
-  if (can_traverse_obstacles) {
+  if (!stop_on_obstacles) {
     return false;
   }
 
@@ -59,7 +74,7 @@ bool CollisionMovement::collision_with_map(int dx, int dy) {
   collision_box.x += dx;
   collision_box.y += dy;
 
-  bool collision = map->collision_with_obstacles(entity->get_layer(), collision_box, entity);
+  bool collision = map->test_collision_with_obstacles(entity->get_layer(), collision_box, entity);
 
   if (collision) {
     last_collision_box_on_obstacle = collision_box;
@@ -81,7 +96,7 @@ void CollisionMovement::update_x(void) {
   if (x_move != 0 && now >= get_next_move_date_x()) { // while it's time to try a move
 
     // make the move only if there is no collision
-    if (!collision_with_map(x_move, get_y_move())) {
+    if (!test_collision_with_map(x_move, get_y_move())) {
       translate_x(x_move);
     }
     else {
@@ -104,7 +119,7 @@ void CollisionMovement::update_y(void) {
   if (y_move != 0 && now >= get_next_move_date_y()) { // while it's time to try a move
 
     // make the move only if there is no collision
-    if (!collision_with_map(get_x_move(), y_move)) {
+    if (!test_collision_with_map(get_x_move(), y_move)) {
       translate_y(y_move);
     }
     else {
@@ -116,7 +131,7 @@ void CollisionMovement::update_y(void) {
 
 /**
  * Returns the collision box of the last call
- * to collision_with_map() returning true.
+ * to test_collision_with_map() returning true.
  * @return the collision box of the last collision detected
  */
 const SDL_Rect& CollisionMovement::get_last_collision_box_on_obstacle(void) {
@@ -125,9 +140,9 @@ const SDL_Rect& CollisionMovement::get_last_collision_box_on_obstacle(void) {
 
 /**
  * Sets whether this movement allows to traverse obstacles.
- * @param can_traverse_obstacles true to make the movement ignore the collisions
+ * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
  */
-void CollisionMovement::set_can_traverse_obstacles(bool can_traverse_obstacles) {
-  this->can_traverse_obstacles = can_traverse_obstacles;
+void CollisionMovement::set_stop_on_obstacles(bool stop_on_obstacles) {
+  this->stop_on_obstacles = stop_on_obstacles;
 }
 

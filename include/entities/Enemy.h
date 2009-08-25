@@ -168,8 +168,8 @@ class Enemy: public Detector {
   virtual void set_suspended(bool suspended);
   bool is_enabled(void);
   void set_enabled(bool enabled);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void collision(MapEntity *entity, Sprite *sprite_overlapping);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
 
   void attack_hero(Hero *hero);
   void attack_stopped_by_hero_shield(void);

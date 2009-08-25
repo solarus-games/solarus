@@ -200,13 +200,13 @@ void Chest::set_open(bool open) {
 
 /**
  * This function is called by the engine when an entity overlaps the chest.
- * This is a redefinition of Detector::collision().
+ * This is a redefinition of Detector::notify_collision().
  * If the entity is the hero, and if he is facing north, we allow him to
  * open (or try to open) the chest.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Chest::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Chest::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (is_suspended()) {
     return;

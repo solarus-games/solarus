@@ -75,7 +75,7 @@ class Door: public Detector {
   void set_suspended(bool suspended);
   void update(void);
   void display_on_map(void);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void action_key_pressed(void);
 
   bool is_open(void);

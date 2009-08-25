@@ -54,7 +54,7 @@ class ShopItem: public Detector {
 
   bool is_sword_ignored(void);
   bool is_obstacle_for(MapEntity *other);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void action_key_pressed(void);
 
   void update(void);

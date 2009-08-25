@@ -37,7 +37,7 @@ class PixelBits {
   Uint32 **bits;           /**< two-dimensional array representing the
 			    * transparency bit of each pixel in the image */
 
-  bool check_rectangle_collision(const SDL_Rect &bounding_box1, const SDL_Rect &bounding_box2);
+  bool test_rectangle_collision(const SDL_Rect &bounding_box1, const SDL_Rect &bounding_box2);
   void print(void);
   void print_mask(Uint32 mask);
 
@@ -46,7 +46,8 @@ class PixelBits {
   PixelBits(SDL_Surface *surface, const SDL_Rect &image_position);
   ~PixelBits(void);
 
-  bool check_collision(PixelBits *other, const SDL_Rect &location1, const SDL_Rect &location2);
+  bool test_collision(PixelBits *other, const SDL_Rect &location1, const SDL_Rect &location2);
 };
 
 #endif
+

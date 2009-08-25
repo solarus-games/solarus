@@ -116,7 +116,7 @@ bool JumpSensor::is_obstacle_for(MapEntity *other) {
  * @param entity the entity
  * @return true if the entity's collides with this jump sensor
  */
-bool JumpSensor::check_collision_custom(MapEntity *entity) {
+bool JumpSensor::test_collision_custom(MapEntity *entity) {
 
   if (!entity->is_hero()) {
     return false;
@@ -130,7 +130,7 @@ bool JumpSensor::check_collision_custom(MapEntity *entity) {
     /* Version where the hero must be on the jump sensor.
      * This requires that we should never put a sensor on an obstacle.
      */
-    if (!check_collision_rectangle(hero) || !hero->is_moving_towards(direction / 2)) {
+    if (!test_collision_rectangle(hero) || !hero->is_moving_towards(direction / 2)) {
       return false;
     }
     
@@ -203,7 +203,7 @@ bool JumpSensor::is_point_in_diagonal(const SDL_Rect &point) {
  * @param collision_mode the collision mode that triggered the event
  * (not used here since a jump sensor has only one collision mode)
  */
-void JumpSensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void JumpSensor::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero()) {
     Hero* hero = (Hero*) entity_overlapping;
@@ -212,3 +212,4 @@ void JumpSensor::collision(MapEntity *entity_overlapping, CollisionMode collisio
     }
   }
 }
+

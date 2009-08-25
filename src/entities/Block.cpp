@@ -125,12 +125,12 @@ bool Block::is_obstacle_for(MapEntity *other) {
 
 /**
  * This function is called by the engine when there is a collision with another entity.
- * This is a redefinition of Detector::collision().
+ * This is a redefinition of Detector::notify_collision().
  * If the entity is the hero and this block can be pulled, we show the grab icon.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Block::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero()) {
 
@@ -245,3 +245,4 @@ void Block::reset(void) {
   set_xy(initial_position);
   this->maximum_moves = initial_maximum_moves;
 }
+

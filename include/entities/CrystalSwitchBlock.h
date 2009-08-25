@@ -52,7 +52,7 @@ class CrystalSwitchBlock: public Detector {
   EntityType get_type(void);
 
   bool is_obstacle_for(MapEntity *other);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
   void update(void);
   void display_on_map(void);

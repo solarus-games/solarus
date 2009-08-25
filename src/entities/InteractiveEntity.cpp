@@ -196,12 +196,11 @@ bool InteractiveEntity::is_sword_ignored(void) {
 
 /**
  * This function is called by the engine when there is a collision with another entity.
- * This is a redefinition of Detector::collision().
  * If the entity is the hero, we allow him to interact with this entity.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void InteractiveEntity::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero()) {
 

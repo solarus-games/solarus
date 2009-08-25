@@ -54,7 +54,7 @@ class Chest: public Detector {
   void set_hidden(bool hidden);
 
   bool is_obstacle_for(MapEntity *other);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void update(void);
   void display_on_map(void);
   void action_key_pressed(void);
@@ -62,3 +62,4 @@ class Chest: public Detector {
 };
 
 #endif
+

@@ -171,7 +171,7 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
     case SDLK_RCTRL:
     case SDLK_LSHIFT:
     case SDLK_RSHIFT:
-      game->get_hero()->get_normal_movement()->set_can_traverse_obstacles(true);
+      game->get_hero()->get_normal_movement()->set_stop_on_obstacles(false);
       break;
 
     default:
@@ -191,7 +191,7 @@ void DebugKeys::key_released(const SDL_keysym &keysym) {
     case SDLK_RCTRL:
     case SDLK_LSHIFT:
     case SDLK_RSHIFT:
-      game->get_hero()->get_normal_movement()->set_can_traverse_obstacles(false);
+      game->get_hero()->get_normal_movement()->set_stop_on_obstacles(true);
       break;
  
     default:

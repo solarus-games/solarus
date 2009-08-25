@@ -101,7 +101,7 @@ bool Sensor::is_obstacle_for(MapEntity *other) {
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool Sensor::check_collision_custom(MapEntity *entity) {
+bool Sensor::test_collision_custom(MapEntity *entity) {
 
   const SDL_Rect &entity_rectangle = entity->get_rectangle();
   int x1 = entity_rectangle.x + 4;
@@ -125,8 +125,8 @@ bool Sensor::check_collision_custom(MapEntity *entity) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Sensor::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping->collision_with_sensor(this);
+void Sensor::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+  entity_overlapping->notify_collision_with_sensor(this);
 }
 
 /**

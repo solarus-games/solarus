@@ -410,10 +410,10 @@ void Enemy::restart(void) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Enemy::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (is_enabled()) {
-    entity_overlapping->collision_with_enemy(this);
+    entity_overlapping->notify_collision_with_enemy(this);
   }
 }
 
@@ -423,10 +423,10 @@ void Enemy::collision(MapEntity *entity_overlapping, CollisionMode collision_mod
  * @param entity the other entity
  * @param sprite_overlapping the sprite of this entity that is overlapping the enemy
  */
-void Enemy::collision(MapEntity *entity, Sprite *sprite_overlapping) {
+void Enemy::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
   if (is_enabled()) {
-    entity->collision_with_enemy(this, sprite_overlapping);
+    entity->notify_collision_with_enemy(this, sprite_overlapping);
   }
 }
 

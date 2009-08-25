@@ -141,11 +141,11 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Checks whether an entity's collides with this entity.
+ * Tests whether an entity's collides with this entity.
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool Teletransporter::check_collision_custom(MapEntity *entity) {
+bool Teletransporter::test_collision_custom(MapEntity *entity) {
 
   // specific collision tests for some situations
   if (entity->is_hero()) {
@@ -159,7 +159,7 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
     }
 
     else if (map->get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
-      return check_collision_origin_point(hero);
+      return test_collision_origin_point(hero);
     }
   }
 
@@ -176,13 +176,12 @@ bool Teletransporter::check_collision_custom(MapEntity *entity) {
 
 /**
  * This function is called by the engine when an entity overlaps the teletransporter.
- * This is a redefinition of Detector::collision().
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Teletransporter::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Teletransporter::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  entity_overlapping->collision_with_teletransporter(this, collision_mode);
+  entity_overlapping->notify_collision_with_teletransporter(this, collision_mode);
 }
 
 /**
@@ -232,3 +231,4 @@ void Teletransporter::transport_hero(Hero *hero) {
 
   zsdx->game->set_current_map(destination_map_id, name, transition_style);
 }
+

@@ -32,8 +32,9 @@
  */
 PathMovement::PathMovement(const std::string &path, int speed,
     bool loop, bool with_collisions, bool must_be_aligned):
+  CollisionMovement(with_collisions),
   initial_path(path), remaining_path(path), initial_speed(speed), current_direction(0), distance_covered(0),
-  loop(loop), with_collisions(with_collisions), finished(false), must_be_aligned(must_be_aligned), snapping(false) {
+  loop(loop), finished(false), must_be_aligned(must_be_aligned), snapping(false) {
 
 }
 
@@ -111,18 +112,6 @@ bool PathMovement::is_current_move_finished(void) {
 }
 
 /**
- * Returns whether the entity would collide with the map
- * if it was moved a few pixels from its position.
- * If the collisions are not enabled for this movement, false is always returned.
- * @param dx x distance between the current position and the position to check
- * @param dy y distance between the current position and the position to check
- * @return true if the entity would overlap the map obstacles in this position
- */
-bool PathMovement::collision_with_map(int dx, int dy) {
-  return with_collisions && CollisionMovement::collision_with_map(dx, dy);
-}
-
-/**
  * Starts the next step of the movement.
  * This function is called when a step of the movement is finished,
  * or when the movement is restarted.
@@ -173,7 +162,7 @@ void PathMovement::start_next_move(void) {
 	x = entity->get_x() + (snapped_x - x);
 	y = entity->get_y() + (snapped_y - y);
 
-	if (!with_collisions || !collision_with_map(x, y)) {
+	if (!test_collision_with_map(x, y)) {
 	  // no problem, we can align the entity right now
 //	  std::cout << "aligning directly\n";
 	  set_position(x, y);

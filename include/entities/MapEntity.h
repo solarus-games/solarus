@@ -207,12 +207,13 @@ class MapEntity {
   int get_distance(MapEntity *other);
   int get_distance(int x, int y);
 
-  virtual void collision_with_enemy(Enemy *enemy);
-  virtual void collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
+  virtual void notify_collision_with_enemy(Enemy *enemy);
+  virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
+  virtual void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
+  virtual void notify_collision_with_sensor(Sensor *sensor);
+  virtual void notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
   virtual void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
-  virtual void collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
-  virtual void collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
-  virtual void collision_with_sensor(Sensor *sensor);
+
   virtual bool is_water_obstacle(void);
   virtual bool is_hole_obstacle(void);
   virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);

@@ -85,7 +85,7 @@ bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void CrystalSwitch::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->get_type() == CARRIED_ITEM && collision_mode == COLLISION_RECTANGLE) {
 
@@ -123,7 +123,7 @@ void CrystalSwitch::collision(MapEntity *entity_overlapping, CollisionMode colli
  * @param entity an entity
  * @param sprite_overlapping the sprite of this entity that is overlapping the detector
  */
-void CrystalSwitch::collision(MapEntity *entity, Sprite *sprite_overlapping) {
+void CrystalSwitch::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
   if (entity->is_hero() &&
       sprite_overlapping->get_animation_set_id().find("sword") != std::string::npos) {
@@ -192,3 +192,4 @@ void CrystalSwitch::set_suspended(bool suspended) {
     next_possible_hit_date += SDL_GetTicks() - when_suspended;
   }
 }
+

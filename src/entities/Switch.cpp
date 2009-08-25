@@ -106,11 +106,11 @@ void Switch::set_enabled(bool enabled) {
 }
 
 /**
- * Checks whether an entity's collides with this entity.
+ * Tests whether an entity's collides with this entity.
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool Switch::check_collision_custom(MapEntity *entity) {
+bool Switch::test_collision_custom(MapEntity *entity) {
 
   const SDL_Rect &entity_rectangle = entity->get_rectangle();
   int x1 = entity_rectangle.x + 4;
@@ -124,11 +124,10 @@ bool Switch::check_collision_custom(MapEntity *entity) {
 
 /**
  * This function is called by the engine when an entity overlaps the switch.
- * This is a redefinition of Detector::collision().
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Switch::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (enabled) {
     return;

@@ -91,8 +91,8 @@ class DestructibleItem: public Detector {
   Ground get_special_ground(void);
 
   bool is_obstacle_for(MapEntity *other);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void collision(MapEntity *entity, Sprite *sprite_overlapping);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
   void action_key_pressed(void);
   void lift(void);
 
@@ -100,3 +100,4 @@ class DestructibleItem: public Detector {
 };
 
 #endif
+

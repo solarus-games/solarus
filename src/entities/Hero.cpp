@@ -262,7 +262,7 @@ void Hero::try_snap_to_facing_entity(void) {
     }
   }
 
-  if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
     set_rectangle(collision_box);
     just_moved();
   }
@@ -713,12 +713,12 @@ bool Hero::is_facing_obstacle(void) {
     break;
   }
 
-  return map->collision_with_obstacles(get_layer(), collision_box, this);
+  return map->test_collision_with_obstacles(get_layer(), collision_box, this);
 
   /* old version with only one point: problems when the hero
      cannot pass but the facing point can
   SDL_Rect facing_point = get_facing_point();
-  return map->collision_with_obstacles(layer, facing_point.x, facing_point.y, this);
+  return map->test_collision_with_obstacles(layer, facing_point.x, facing_point.y, this);
   */
 }
 

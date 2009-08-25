@@ -85,7 +85,7 @@ PixelBits::~PixelBits(void) {
  * @param location2 position of the top-left corner of the other image on the map (only x and y must be specified)
  * @return true if there is a collision
  */
-bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, const SDL_Rect &location2) {
+bool PixelBits::test_collision(PixelBits *other, const SDL_Rect &location1, const SDL_Rect &location2) {
 
   // compute the two bounding boxes
   SDL_Rect bounding_box1 = location1;
@@ -97,7 +97,7 @@ bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, con
   bounding_box2.h = other->height;
 
   // check the collision between the two bounding boxes
-  if (!check_rectangle_collision(bounding_box1, bounding_box2)) {
+  if (!test_rectangle_collision(bounding_box1, bounding_box2)) {
     return false;
   }
 
@@ -220,12 +220,12 @@ bool PixelBits::check_collision(PixelBits *other, const SDL_Rect &location1, con
 }
 
 /**
- * Checks whether two rectangles are overlapping.
+ * Tests whether two rectangles are overlapping.
  * @param rectangle1 first rectangle
  * @param rectangle2 second rectangle
  * @return true if there is a collision
  */
-bool PixelBits::check_rectangle_collision(const SDL_Rect &rectangle1, const SDL_Rect &rectangle2) {
+bool PixelBits::test_rectangle_collision(const SDL_Rect &rectangle1, const SDL_Rect &rectangle2) {
 
   int x1 = rectangle1.x;
   int x2 = x1 + rectangle1.w;

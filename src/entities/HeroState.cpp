@@ -164,7 +164,7 @@ void Hero::update_ground(void) {
 	collision_box.x += hole_dx;
 	collision_box.y += hole_dy;
 
-	if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+	if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	  set_rectangle(collision_box);
 	  just_moved();
 	}
@@ -190,7 +190,7 @@ bool Hero::is_ground_visible(void) {
  * @param teletransporter the teletransporter
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
+void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
 
   if (state != JUMPING) {
 
@@ -209,7 +209,7 @@ void Hero::collision_with_teletransporter(Teletransporter *teletransporter, int 
  * @param dx direction of the x move in pixels (0, 1 or -1)
  * @param dy direction of the y move in pixels (0, 1 or -1)
  */
-void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
+void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
 
   on_conveyor_belt = true;
 
@@ -229,7 +229,7 @@ void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int
       collision_box.x += dx;
       collision_box.y += dy;
  
-      if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+      if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 
 	// remove the carried item
 	if (state == CARRYING) {
@@ -254,7 +254,7 @@ void Hero::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int
  * This function is called when a sensor detects a collision with this entity.
  * @param sensor a sensor
  */
-void Hero::collision_with_sensor(Sensor *sensor) {
+void Hero::notify_collision_with_sensor(Sensor *sensor) {
 
   if (get_state() != RETURNING_TO_SOLID_GROUND) {
     sensor->activate(this);
@@ -441,7 +441,7 @@ void Hero::update_sword_tapping(void) {
 
   if (!controls->is_key_pressed(Controls::SWORD)
       || get_movement_direction() != get_animation_direction() * 90
-      || !map->collision_with_obstacles(get_layer(), facing_point.x, facing_point.y, this)) {
+      || !map->test_collision_with_obstacles(get_layer(), facing_point.x, facing_point.y, this)) {
     // the sword key has been released, the player has moved or the obstacle is gone
 
     if (sprites->get_current_frame() >= 5) {
@@ -1161,7 +1161,7 @@ void Hero::get_back_from_death(void) {
  * This function is called when a non-pixel perfect enemy collides with the hero.
  * @param enemy the enemy
  */
-void Hero::collision_with_enemy(Enemy *enemy) {
+void Hero::notify_collision_with_enemy(Enemy *enemy) {
   enemy->attack_hero(this);
 }
 
@@ -1170,7 +1170,7 @@ void Hero::collision_with_enemy(Enemy *enemy) {
  * @param enemy the enemy
  * @param sprite_overlapping the hero sprite that collides with the enemy
  */
-void Hero::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
+void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
 
   std::string id = sprite_overlapping->get_animation_set_id();
   if (id.find("sword") != std::string::npos) {

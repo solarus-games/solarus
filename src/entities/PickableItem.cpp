@@ -366,13 +366,12 @@ bool PickableItem::is_falling(void) {
 
 /**
  * This function is called by the engine when an entity overlaps the pickable item.
- * This is a redefinition of Detector::collision().
  * If the entity is the player, we give him the item, and the map is notified
  * to destroy it.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void PickableItem::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero() && can_be_picked) {
 

@@ -109,7 +109,7 @@ class Sprite {
   void set_blinking(Uint32 blink_delay);
 
   // collisions
-  bool check_collision(Sprite *other, int x1, int y1, int x2, int y2);
+  bool test_collision(Sprite *other, int x1, int y1, int x2, int y2);
 
   // udpate and display
   void update(void);
@@ -117,3 +117,4 @@ class Sprite {
 };
 
 #endif
+

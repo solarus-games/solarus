@@ -118,7 +118,7 @@ bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void CrystalSwitchBlock::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero() && is_raised()) {
 
@@ -186,7 +186,7 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const SDL_Rect &collision_box,
 				  int jump_direction, int jump_length) {
 
   // jump if there is no collision and no other raised crystal switch blocks
-  if (!map->collision_with_obstacles(get_layer(), collision_box, hero)
+  if (!map->test_collision_with_obstacles(get_layer(), collision_box, hero)
       && !map->get_entities()->overlaps_raised_blocks(get_layer(), collision_box)) {
 
     hero->start_jumping(jump_direction, jump_length, true, false);

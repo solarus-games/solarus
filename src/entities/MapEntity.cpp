@@ -188,7 +188,7 @@ bool MapEntity::can_be_obstacle(void) {
  * Returns whether entities of this type can detect the presence
  * of the hero or other entities (this is possible only for
  * suclasses of Detector). If yes, the function
- * collision() will be called when a collision is detected.
+ * notify_collision() will be called when a collision is detected.
  * @return true if this type of entity can detect other entities
  */
 bool MapEntity::can_detect_entities(void) {
@@ -880,7 +880,7 @@ void MapEntity::ensure_no_obstacles(void) {
 
   SDL_Rect collision_box = get_rectangle();
 
-  if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
     return;
   }
 
@@ -894,7 +894,7 @@ void MapEntity::ensure_no_obstacles(void) {
       collision_box.x += dx[j] * i;
       collision_box.y += dy[j] * i;
 
-      if (!map->collision_with_obstacles(get_layer(), collision_box, this)) {
+      if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	found = true;
 	set_rectangle(collision_box);
 	just_moved();
@@ -911,7 +911,34 @@ void MapEntity::ensure_no_obstacles(void) {
  * This function is called when an enemy's rectangle detects a collision with this entity's rectangle.
  * @param enemy the enemy
  */
-void MapEntity::collision_with_enemy(Enemy *enemy) {
+void MapEntity::notify_collision_with_enemy(Enemy *enemy) {
+  // nothing done by default
+}
+
+/**
+ * This function is called when a teletransporter detects a collision with this entity.
+ * @param teletransporter the teletransporter
+ * @param collision_mode the collision mode that detected the event
+ */
+void MapEntity::notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
+  // nothing done by default
+}
+
+/**
+ * This function is called when a conveyor belt detects a collision with this entity.
+ * @param conveyor_belt a conveyor belt
+ * @param dx direction of the x move in pixels (0, 1 or -1)
+ * @param dy direction of the y move in pixels (0, 1 or -1)
+ */
+void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
+  // nothing done by default
+}
+
+/**
+ * This function is called when a sensor detects a collision with this entity.
+ * @param sensor a sensor
+ */
+void MapEntity::notify_collision_with_sensor(Sensor *sensor) {
   // nothing done by default
 }
 
@@ -920,7 +947,7 @@ void MapEntity::collision_with_enemy(Enemy *enemy) {
  * @param enemy the enemy
  * @param sprite_overlapping the sprite of this entity that collides with the enemy
  */
-void MapEntity::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
+void MapEntity::notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
   // nothing done by default
 }
 
@@ -936,33 +963,6 @@ void MapEntity::collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
  * - a value of -2 means that the attack immobilized the enemy
  */
 void MapEntity::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
-  // nothing done by default
-}
-
-/**
- * This function is called when a teletransporter detects a collision with this entity.
- * @param teletransporter the teletransporter
- * @param collision_mode the collision mode that detected the event
- */
-void MapEntity::collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
-  // nothing done by default
-}
-
-/**
- * This function is called when a conveyor belt detects a collision with this entity.
- * @param conveyor_belt a conveyor belt
- * @param dx direction of the x move in pixels (0, 1 or -1)
- * @param dy direction of the y move in pixels (0, 1 or -1)
- */
-void MapEntity::collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
-  // nothing done by default
-}
-
-/**
- * This function is called when a sensor detects a collision with this entity.
- * @param sensor a sensor
- */
-void MapEntity::collision_with_sensor(Sensor *sensor) {
   // nothing done by default
 }
 

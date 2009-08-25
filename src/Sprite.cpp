@@ -336,7 +336,7 @@ void Sprite::set_blinking(Uint32 blink_delay) {
 }
 
 /**
- * Checks whether this sprite's pixels are overlapping another sprite.
+ * Tests whether this sprite's pixels are overlapping another sprite.
  * @param other another sprite
  * @param x1 x coordinate of this sprite's origin point
  * @param y1 y coordinate of this sprite's origin point
@@ -344,7 +344,7 @@ void Sprite::set_blinking(Uint32 blink_delay) {
  * @param y2 y coordinate of the other sprite's origin point
  * @return true if the sprites are overlapping
  */
-bool Sprite::check_collision(Sprite *other, int x1, int y1, int x2, int y2) {
+bool Sprite::test_collision(Sprite *other, int x1, int y1, int x2, int y2) {
 
   SpriteAnimationDirection *direction1 = current_animation->get_direction(current_direction);
   SDL_Rect &origin1 = direction1->get_origin();
@@ -356,7 +356,7 @@ bool Sprite::check_collision(Sprite *other, int x1, int y1, int x2, int y2) {
   SDL_Rect location2 = {x2 - origin2.x, y2 - origin2.y};
   PixelBits *pixel_bits2 = direction2->get_pixel_bits(other->current_frame);
 
-  return pixel_bits1->check_collision(pixel_bits2, location1, location2);
+  return pixel_bits1->test_collision(pixel_bits2, location1, location2);
 }
 
 /**

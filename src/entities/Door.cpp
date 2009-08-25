@@ -178,11 +178,10 @@ void Door::update_dynamic_tiles(void) {
 
 /**
  * This function is called by the engine when there is a collision with another entity.
- * This is a redefinition of Detector::collision().
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Door::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Door::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (!is_open() && entity_overlapping->is_hero() && requires_key()) {
 

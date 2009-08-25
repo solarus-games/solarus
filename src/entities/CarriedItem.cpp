@@ -275,10 +275,10 @@ void CarriedItem::display_on_map(void) {
 }
 
 /**
- * This function is called when an enemy collides with the carried item.
+ * This function is called when this carried item collides an enemy.
  * @param enemy the enemy
  */
-void CarriedItem::collision_with_enemy(Enemy *enemy) {
+void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
 
   if (is_throwing) {
     enemy->try_hurt(ATTACK_THROWN_ITEM, this);

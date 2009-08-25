@@ -53,11 +53,6 @@ class PixelMovement: public CollisionMovement {
    */
   const bool loop;
 
-  /**
-   * Indicates whether this movement is sensitive to the obstacles.
-   */
-  const bool with_collisions;
-
   // current state
 
   /**
@@ -74,8 +69,6 @@ class PixelMovement: public CollisionMovement {
  protected:
 
   PixelMovement(int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
-
-  bool collision_with_map(int dx, int dy);
 
   void set_translation_vectors(const SDL_Rect *translation_vectors);
   virtual void make_next_move(void);
@@ -95,3 +88,4 @@ class PixelMovement: public CollisionMovement {
 };
 
 #endif
+

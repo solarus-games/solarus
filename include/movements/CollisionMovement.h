@@ -21,30 +21,32 @@
 #include "movements/Movement.h"
 
 /**
- * Abstract class for all moving entities on a map, visible or not,
- * sensible to the obstacles.
+ * Abstract movement class for all moving entities
+ * that may be sensible to the obstacles of their map.
  */
 class CollisionMovement: public Movement {
 
  private:
   SDL_Rect last_collision_box_on_obstacle; /**< copy of the collision box of the last call
-					    * to collision_with_map() returning true */ 
+					    * to test_collision_with_map() returning true */ 
   int last_direction;                      /**< direction of the movement before a collision */
-  bool can_traverse_obstacles;             /**< indicates that this movement currently does not take care of collisions */
+  bool stop_on_obstacles;                  /**< indicates that this movement is currently sensible to collisions with obstacles */
 
  public:
 
   CollisionMovement(void);
+  CollisionMovement(bool stop_on_obstacles);
   virtual ~CollisionMovement(void);
 
-  virtual bool collision_with_map(int dx, int dy);
+  bool test_collision_with_map(int dx, int dy);
   virtual void update_x(void);
   virtual void update_y(void);
 
   const SDL_Rect& get_last_collision_box_on_obstacle(void);
   int get_last_direction(void);
 
-  void set_can_traverse_obstacles(bool can_traverse_obstacles);
+  void set_stop_on_obstacles(bool stop_on_obstacles);
 };
 
 #endif
+

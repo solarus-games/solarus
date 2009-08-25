@@ -123,7 +123,7 @@ class PickableItem: public Detector {
   // item state
   static bool can_disappear(Subtype subtype);
   virtual void set_suspended(bool suspended);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   virtual void update(void);
   virtual void display_on_map(void);
 };

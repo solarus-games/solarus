@@ -126,10 +126,10 @@ void Bubble::bounce(void) {
   CollisionMovement *movement = (CollisionMovement*) get_movement();
 
 
-  if (!movement->collision_with_map(dxy[try1][0], dxy[try1][1])) {
+  if (!movement->test_collision_with_map(dxy[try1][0], dxy[try1][1])) {
     go(try1);
   }
-  else if (!movement->collision_with_map(dxy[try2][0], dxy[try2][1])) {
+  else if (!movement->test_collision_with_map(dxy[try2][0], dxy[try2][1])) {
     go(try2);
   }
   else {

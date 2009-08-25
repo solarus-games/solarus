@@ -48,6 +48,11 @@ Bugs :
 - petite clé du hud : reprendre la même que dans le hud de alttp
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
+- nom des fonctions de collisions : 
+    - void vérifier collision   void check_collision
+    - bool tester collision :   bool test_collision, bool is_overlapping
+    - void notifier collision : void notify_collision
+
 
 Remarques de Linksupersayen :
 

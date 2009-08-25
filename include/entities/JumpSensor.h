@@ -40,10 +40,11 @@ class JumpSensor: public Detector {
   EntityType get_type(void);
 
   bool is_obstacle_for(MapEntity *other);
-  bool check_collision_custom(MapEntity *entity);
   bool is_point_in_diagonal(const SDL_Rect &point);
-  void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  bool test_collision_custom(MapEntity *entity);
+  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
 };
 
 #endif
+

@@ -70,15 +70,15 @@ class Detector: public MapEntity {
   void set_layer_ignored(bool layer_ignored);
 
   // specialized collision checking functions
-  bool check_collision_rectangle(MapEntity *entity);
-  bool check_collision_origin_point(MapEntity *entity);
-  bool check_collision_facing_point(MapEntity *entity);
-  bool check_collision_center(MapEntity *entity);
-  virtual bool check_collision_custom(MapEntity *entity);
+  bool test_collision_rectangle(MapEntity *entity);
+  bool test_collision_origin_point(MapEntity *entity);
+  bool test_collision_facing_point(MapEntity *entity);
+  bool test_collision_center(MapEntity *entity);
+  virtual bool test_collision_custom(MapEntity *entity);
 
   // functions called when a collision is detected
-  virtual void collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  virtual void collision(MapEntity *entity, Sprite *sprite_overlapping);
+  virtual void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+  virtual void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
 
  public:
 
@@ -95,3 +95,4 @@ class Detector: public MapEntity {
 };
 
 #endif
+

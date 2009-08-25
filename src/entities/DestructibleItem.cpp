@@ -166,12 +166,11 @@ bool DestructibleItem::is_obstacle_for(MapEntity *other) {
 
 /**
  * This function is called by the engine when an entity overlaps the destructible item.
- * This is a redefinition of Detector::collision(MapEntity*).
  * If the entity is the hero, we allow him to lift the item.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void DestructibleItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero()) {
 
@@ -201,12 +200,11 @@ void DestructibleItem::collision(MapEntity *entity_overlapping, CollisionMode co
 
 /**
  * This function is called by the engine when a sprite overlaps the destructible item.
- * This is a redefinition of Detector::collision(Sprite*).
  * If the sprite is the sword and this item can be cut, then the item may be cut.
  * @param entity an entity
  * @param sprite_overlapping the sprite of this entity that is overlapping the detector
  */
-void DestructibleItem::collision(MapEntity *entity, Sprite *sprite_overlapping) {
+void DestructibleItem::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
 
   if (features[subtype].can_be_cut
       && !is_being_cut

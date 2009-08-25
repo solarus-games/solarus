@@ -144,12 +144,12 @@ class Map {
   int get_destination_side(void);
 
   // collisions with obstacles (checked before a move)
-  bool collision_with_border(int x, int y);
-  bool collision_with_border(const SDL_Rect &collision_box);
-  bool collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check);
-  bool collision_with_entities(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
-  bool collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
-  bool collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check);
+  bool test_collision_with_border(int x, int y);
+  bool test_collision_with_border(const SDL_Rect &collision_box);
+  bool test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check);
+  bool test_collision_with_entities(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
+  bool test_collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
+  bool test_collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check);
   Ground get_tile_ground(Layer layer, int x, int y);
   Ground get_tile_ground(Layer layer, const SDL_Rect &coordinates);
 

@@ -269,6 +269,6 @@ bool PathFinding::is_node_transition_valid(const Node &initial_node, int directi
   collision_box.x += initial_node.location.x;
   collision_box.y += initial_node.location.y;
 
-  return !map->collision_with_obstacles(source_entity->get_layer(), collision_box, source_entity);
+  return !map->test_collision_with_obstacles(source_entity->get_layer(), collision_box, source_entity);
 }
 

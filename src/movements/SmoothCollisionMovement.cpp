@@ -103,11 +103,11 @@ void SmoothCollisionMovement::update_x(void) {
     Uint32 now = SDL_GetTicks();
     if (now >= get_next_move_date_x()) { // it's time to try a move
 
-      if (!collision_with_map(x_move, 0)) {
+      if (!test_collision_with_map(x_move, 0)) {
 
 	translate_x(x_move); // make the move
 	
-	if (y_move != 0 && collision_with_map(0, y_move)) {
+	if (y_move != 0 && test_collision_with_map(0, y_move)) {
 	  // if there is also a y move, and if this y move is illegal,
 	  // we still allow the x move and we give it all the speed
 	  next_move_date_x_increment = (int) (x_delay / Geometry::SQRT_2);
@@ -118,11 +118,11 @@ void SmoothCollisionMovement::update_x(void) {
 	 * to add a move on y to make a diagonal move.
 	 */
 
-	if (!collision_with_map(x_move, 1)) {
+	if (!test_collision_with_map(x_move, 1)) {
 	  translate(x_move, 1);
 	  next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2); // fix the speed
 	}
-	else if (!collision_with_map(x_move, -1)) {
+	else if (!test_collision_with_map(x_move, -1)) {
 	  translate(x_move, -1);
 	  next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
 	}
@@ -137,11 +137,11 @@ void SmoothCollisionMovement::update_x(void) {
 	  bool moved = false;
 	  for (int i = 1; i <= 8 && !moved; i++) {
 
-	    if (!collision_with_map(x_move, i) && !collision_with_map(0, 1)) {
+	    if (!test_collision_with_map(x_move, i) && !test_collision_with_map(0, 1)) {
 	      translate_y(1);
 	      moved = true;
 	    }
-	    else if (!collision_with_map(x_move, -i) && !collision_with_map(0, -1)) {
+	    else if (!test_collision_with_map(x_move, -i) && !test_collision_with_map(0, -1)) {
 	      translate_y(-1);
 	      moved = true;
 	    }
@@ -175,11 +175,11 @@ void SmoothCollisionMovement::update_y(void) {
     Uint32 now = SDL_GetTicks();
     if (now >= get_next_move_date_y()) { // it's time to try a move
 
-      if (!collision_with_map(0, y_move)) {
+      if (!test_collision_with_map(0, y_move)) {
 
 	translate_y(y_move); // make the move
 
-	if (x_move != 0 && collision_with_map(x_move, 0)) {
+	if (x_move != 0 && test_collision_with_map(x_move, 0)) {
 	  // if there is also an x move, and if this x move is illegal,
 	  // we still allow the y move and we give it all the speed
 	  next_move_date_y_increment = (int) (y_delay / Geometry::SQRT_2);
@@ -191,11 +191,11 @@ void SmoothCollisionMovement::update_y(void) {
 	 */
 
 
-	if (!collision_with_map(1, y_move)) {
+	if (!test_collision_with_map(1, y_move)) {
 	  translate(1, y_move);
 	  next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2); // fix the speed
 	}
-	else if (!collision_with_map(-1, y_move)) {
+	else if (!test_collision_with_map(-1, y_move)) {
 	  translate(-1, y_move);
 	  next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
 	}
@@ -209,11 +209,11 @@ void SmoothCollisionMovement::update_y(void) {
 	  bool moved = false;
 	  for (int i = 1; i <= 8 && !moved; i++) {
 
-	    if (!collision_with_map(i, y_move) && !collision_with_map(1, 0)) {
+	    if (!test_collision_with_map(i, y_move) && !test_collision_with_map(1, 0)) {
 	      translate_x(1);
 	      moved = true;
 	    }
-	    else if (!collision_with_map(-i, y_move) && !collision_with_map(-1, 0)) {
+	    else if (!test_collision_with_map(-i, y_move) && !test_collision_with_map(-1, 0)) {
 	      translate_x(-1);
 	      moved = true;
 	    }

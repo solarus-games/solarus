@@ -42,7 +42,6 @@ class PathMovement: public CollisionMovement {
   int distance_covered;            /**< counts the number of pixels covered during the current move */
 
   const bool loop;                 /**< should the movement return to the beginning once finished?  */
-  const bool with_collisions;      /**< indicates whether this movement is sensitive to the obstacles */
 
   bool finished;                   /**< indicates that the path is finished
 			            * (possible if loop is false or when there is a collision) */
@@ -53,7 +52,6 @@ class PathMovement: public CollisionMovement {
 
  protected:
 
-  bool collision_with_map(int dx, int dy);
   virtual void start_next_move(void);
   static const std::string get_random_path(void);
   bool is_current_move_finished(void);
@@ -74,3 +72,4 @@ class PathMovement: public CollisionMovement {
 };
 
 #endif
+

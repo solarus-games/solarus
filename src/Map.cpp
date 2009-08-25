@@ -402,7 +402,7 @@ bool Map::is_started(void) {
  * @param y y of the point to check
  * @return true if this point is outside the map area
  */
-bool Map::collision_with_border(int x, int y) {
+bool Map::test_collision_with_border(int x, int y) {
 
   return (x < 0 || y < 0 || x >= location.w || y >= location.h);
 }
@@ -412,7 +412,7 @@ bool Map::collision_with_border(int x, int y) {
  * @param collision_box the rectangle to check
  * @return true if a point of the rectangle is outside the map area
  */
-bool Map::collision_with_border(const SDL_Rect &collision_box) {
+bool Map::test_collision_with_border(const SDL_Rect &collision_box) {
 
   return collision_box.x < 0 || collision_box.x + collision_box.w >= get_width()
     || collision_box.y < 0 || collision_box.y + collision_box.h >= get_height();
@@ -427,14 +427,14 @@ bool Map::collision_with_border(const SDL_Rect &collision_box) {
  * @param entity_to_check the entity to check (used to decide what tiles are considered as an obstacle)
  * @return true if this point is on an obstacle
  */
-bool Map::collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check) {
+bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check) {
 
   Obstacle obstacle_type;
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
   // if the point is outside the map, there is only obstacles
-  if (collision_with_border(x, y)) {
+  if (test_collision_with_border(x, y)) {
     return true;
   }
 
@@ -501,7 +501,7 @@ bool Map::collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_c
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if there is an obstacle entity at this point
  */
-bool Map::collision_with_entities(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
+bool Map::test_collision_with_entities(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
 
   std::list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
 
@@ -528,7 +528,7 @@ bool Map::collision_with_entities(Layer layer, const SDL_Rect &collision_box, Ma
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
+bool Map::test_collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
   int x1, y1;
   bool collision = false;
 
@@ -536,13 +536,13 @@ bool Map::collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, M
   // TODO avoid checking every pixel? just check the border?
   for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
-      collision = collision_with_tiles(layer, x1, y1, entity_to_check);
+      collision = test_collision_with_tiles(layer, x1, y1, entity_to_check);
     }
   }
 
   // collisions with entities
   if (!collision) {
-    collision = collision_with_entities(layer, collision_box, entity_to_check);
+    collision = test_collision_with_entities(layer, collision_box, entity_to_check);
   }
 
   return collision;
@@ -557,17 +557,17 @@ bool Map::collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, M
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the point is overlapping an obstacle, false otherwise
  */
-bool Map::collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check) {
+bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check) {
 
   bool collision;
 
   // test the tiles
-  collision = collision_with_tiles(layer, x, y, entity_to_check);
+  collision = test_collision_with_tiles(layer, x, y, entity_to_check);
 
   // test the entities
   if (!collision) {
     SDL_Rect collision_box = {x, y, 1, 1};
-    collision = collision_with_entities(layer, collision_box, entity_to_check);
+    collision = test_collision_with_entities(layer, collision_box, entity_to_check);
   }
 
   return collision;   

@@ -101,7 +101,7 @@ bool Boomerang::can_be_obstacle(void) {
  * Returns whether entities of this type can detect the presence 
  * of the hero or other entities (this is possible only for
  * suclasses of Detector). If yes, the function 
- * collision() will be called when a collision is detected.
+ * notify_collision() will be called when a collision is detected.
  * @return true if this type of entity can detect other entities
  */
 bool Boomerang::can_detect_entities(void) {
@@ -254,7 +254,7 @@ void Boomerang::update(void) {
       // collision with an obstacle
       
       CollisionMovement *movement = (CollisionMovement*) get_movement();
-      if (!map->collision_with_border(movement->get_last_collision_box_on_obstacle())) {
+      if (!map->test_collision_with_border(movement->get_last_collision_box_on_obstacle())) {
         // play a sound unless we are on the map border
 	ResourceManager::get_sound("sword_hit")->play();
       }
@@ -273,7 +273,7 @@ void Boomerang::update(void) {
  * This function is called when an enemy collides with the entity.
  * @param enemy the enemy
  */
-void Boomerang::collision_with_enemy(Enemy *enemy) {
+void Boomerang::notify_collision_with_enemy(Enemy *enemy) {
 
   if (!overlaps(hero)) {
     enemy->try_hurt(ATTACK_BOOMERANG, this);

@@ -79,7 +79,7 @@ bool ConveyorBelt::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void ConveyorBelt::collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void ConveyorBelt::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   static const SDL_Rect moves[] = {
     { 1, 0},
@@ -93,6 +93,6 @@ void ConveyorBelt::collision(MapEntity *entity_overlapping, CollisionMode collis
   };
 
   int direction = get_sprite()->get_current_direction();
-  entity_overlapping->collision_with_conveyor_belt(this, moves[direction].x, moves[direction].y);
+  entity_overlapping->notify_collision_with_conveyor_belt(this, moves[direction].x, moves[direction].y);
 }
 

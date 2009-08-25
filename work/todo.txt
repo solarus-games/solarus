@@ -49,6 +49,27 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 
+Remarques de Linksupersayen :
+
+  - Écran titre un peu figé, on aimerait bien un petit peu d'animation.
+  - Je pense qu'il faudrait accélérer l'animation de Link quand il marche. Dans A Link To The Past, Link semblait plus rapide dans son animation.
+  - Nous sommes tellement habitués aux petits bruitages quand les lettres défilent lors d'un message qu'ils agissent un peu comme un drogue maintenant. On en a besoin s'il vous plaît !
+  - Link semble disparaître un peu lors des phases à l'épée.
+  - Les musiques. On adore les musiques de A Link To The Past... sur la Super Nintendo et la Game Boy Advance, mais sur le PC, elle semblent un peu enregistrées, enfin, il faudrait augmenter la qualité sonore et là, ça serait bon !
+  - D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
+
+  
+Remarques de @PyroNet :
+
+- bandit manchot : graphismes pas exceptionnels, tapis pas centré
+- bandit manchot : débloquer plus tard dans le jeu et laisser un message "casino hors-service" ? ou garder ce clin d'oeil pour le moment où la maison est dévalisée ?
+- Quand Link soulève un pot, l'ombre du pot passe pendant un moment au-dessus de Link.
+- Le saut se passe un peu trop rapidement.
+- Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
+- La porte (avec un coeur dedans) fermée à clé dénote un peu avec la montagne.
+- Les prix des marchandises dans les magasins ne sont pas très lisibles.
+- Pourquoi ne pas faire dans Ocarina of Time, c'est à dire remplacer la flèche de la boîte de dialogue par un carré lorsqu'on est arrivé à la fin du dialogue ?
+
 
 A venir :
 
@@ -80,28 +101,6 @@ Testeurs :
 
 - Essayer des combinaisons d'objets compliqués (blocs, trous, ennemis, escaliers, eau, game over avec fée, changements de maps...)
 - Tester les animations avec les différentes épées, boucliers et tuniques
-
-
-Remarques de Linksupersayen :
-
-  - Écran titre un peu figé, on aimerait bien un petit peu d'animation.
-  - Je pense qu'il faudrait accélérer l'animation de Link quand il marche. Dans A Link To The Past, Link semblait plus rapide dans son animation.
-  - Nous sommes tellement habitués aux petits bruitages quand les lettres défilent lors d'un message qu'ils agissent un peu comme un drogue maintenant. On en a besoin s'il vous plaît !
-  - Link semble disparaître un peu lors des phases à l'épée.
-  - Les musiques. On adore les musiques de A Link To The Past... sur la Super Nintendo et la Game Boy Advance, mais sur le PC, elle semblent un peu enregistrées, enfin, il faudrait augmenter la qualité sonore et là, ça serait bon !
-  - D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
-
-  
-Remarques de @PyroNet :
-
-- bandit manchot : graphismes pas exceptionnels, tapis pas centré
-- bandit manchot : débloquer plus tard dans le jeu et laisser un message "casino hors-service" ? ou garder ce clin d'oeil pour le moment où la maison est dévalisée ?
-- Quand Link soulève un pot, l'ombre du pot passe pendant un moment au-dessus de Link.
-- Le saut se passe un peu trop rapidement.
-- Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
-- La porte (avec un coeur dedans) fermée à clé dénote un peu avec la montagne.
-- Les prix des marchandises dans les magasins ne sont pas très lisibles.
-- Pourquoi ne pas faire dans Ocarina of Time, c'est à dire remplacer la flèche de la boîte de dialogue par un carré lorsqu'on est arrivé à la fin du dialogue ?
 
 
 Idées :
@@ -136,13 +135,13 @@ Pas de cryptage mais
 Mode release :
 --------------
 
-- Ne plus afficher les messages d'erreur
-- Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence
+- Ne plus afficher les messages d'erreur (en modifiant le define RELEASE_MODE)
+- Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence (en modifiant le define RELEASE_MODE)
+- Enelever les touches de test (en modifiant le define RELEASE_MODE)
 - Cacher le mode Rêves de Solarus s'il n'est pas encore fait
 - Compiler en mode release (pas -g) et optimiser
 - Inclure le fichier de licence GPL
 - Vérifier la présence du message GPL dans les fichiers source
-- Enelever les touches de test (notamment Echap)
 - Remettre l'écran-titre
 
 ----------------------

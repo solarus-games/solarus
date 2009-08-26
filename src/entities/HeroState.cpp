@@ -465,7 +465,16 @@ void Hero::update_sword_tapping(void) {
   else {
     Uint32 now = SDL_GetTicks();
     if (sprites->get_current_frame() == 3 && now >= next_hit_sound_date) {
-      ResourceManager::get_sound("sword_hit")->play();
+
+      Detector *facing_entity = get_facing_entity();
+      SoundId sound_id;
+      if (facing_entity != NULL) {
+        sound_id = facing_entity->get_sword_tapping_sound();
+      }
+      else {
+        sound_id = "sword_tapping";
+      }
+      ResourceManager::get_sound(sound_id)->play();
       next_hit_sound_date = now + 100;
     }
   }

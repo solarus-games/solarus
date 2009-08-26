@@ -214,6 +214,14 @@ bool Door::requires_small_key(void) {
 }
 
 /**
+ * Returns whether this door must be open with a bomb explosion.
+ * @return true if this door must be open with a bomb explosion
+ */
+bool Door::requires_bomb(void) {
+  return subtype == WEAK || subtype == VERY_WEAK || subtype == WEAK_INVISIBLE;
+}
+
+/**
  * Returns whether the player has the right key to open this door.
  * If the door cannot be open with a key, false is returned.
  * @return true if the player has the key corresponding to this door
@@ -304,6 +312,14 @@ void Door::action_key_pressed(void) {
       zsdx->game->show_message(key_required_message_ids[subtype]);
     }
   }
+}
+
+/**
+ * This function is called when the player is tapping his sword against this detector.
+ * @return the sound to play when tapping this detector with the sword
+ */
+SoundId Door::get_sword_tapping_sound(void) {
+  return requires_bomb() ? "sword_tapping_weak_wall" : "sword_tapping";
 }
 
 /**

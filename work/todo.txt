@@ -15,7 +15,6 @@ Feature requests :
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Permettre de couper voire régler la musique et/ou le son
 - Mettre des constantes dans les scripts
-- son de l'épée sur un mur fissuré
 - GPL et FMOD -> sdl_mixer ? Utiliser deux fichiers IT par musique : un pour l'intro, un pour la partie à laisser en boucle
 - Musiques : avec sdl_mixer, reripper les .it en s'assurant de garder le même volume
 - Mettre une icône sur l'exécutable

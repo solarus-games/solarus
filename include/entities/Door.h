@@ -59,6 +59,7 @@ class Door: public Detector {
 
   bool requires_key(void);
   bool requires_small_key(void);
+  bool requires_bomb(void);
   bool can_open(void);
   void update_dynamic_tiles(void);
 
@@ -77,6 +78,7 @@ class Door: public Detector {
   void display_on_map(void);
   void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void action_key_pressed(void);
+  SoundId get_sword_tapping_sound(void);
 
   bool is_open(void);
   void open(void);

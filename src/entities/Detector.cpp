@@ -273,3 +273,11 @@ bool Detector::moved_by_hero(void) {
   return false;
 }
 
+/**
+ * This function is called when the player is tapping his sword against this detector.
+ * @return the sound to play when tapping this detector with the sword
+ */
+SoundId Detector::get_sword_tapping_sound(void) {
+  return "sword_tapping";
+}
+

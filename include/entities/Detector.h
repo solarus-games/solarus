@@ -92,6 +92,7 @@ class Detector: public MapEntity {
   virtual void action_key_pressed(void);
   virtual bool interaction_with_inventory_item(InventoryItem *item);
   virtual bool moved_by_hero(void);
+  virtual SoundId get_sword_tapping_sound(void);
 };
 
 #endif

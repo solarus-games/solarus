@@ -54,6 +54,8 @@ class Message {
   Uint32 next_char_date;
   bool show_all;
 
+  Uint32 next_sound_date;
+
   void update_char_delay(void);
   void add_character(void);
 

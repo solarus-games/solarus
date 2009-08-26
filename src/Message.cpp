@@ -21,6 +21,8 @@
 #include "TextSurface.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 
 /**
  * Delay between two chars, depending on the dialog speed.
@@ -38,11 +40,8 @@ static const Uint32 char_delays[3] = {
  * @param x x position of the dialog box
  * @param y y position of the dialog box
  */
-Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y) {
-
-  this->dialog_box = dialog_box;
-  this->x = x;
-  this->y = y;
+Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y):
+  dialog_box(dialog_box), x(x), y(y) {
 
   // parse the message
   parse(message_id);
@@ -64,7 +63,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y) {
   // initialize the state
   this->line_index = 0;
   this->char_index = 0;
-  this->next_char_date = SDL_GetTicks();
+  this->next_char_date = this->next_sound_date = SDL_GetTicks();
   this->show_all = false;
   update_char_delay();
 }
@@ -99,7 +98,6 @@ void Message::parse(MessageId message_id) {
   // parse the message
   CFG_File ini;
   SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
-  // SDL_RWFromZZIP seems to be very slow with CFG_OpenFile_RW
 
   if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
     DIE("Cannot load the message file '" << file_name << "': " << CFG_GetError());
@@ -223,9 +221,11 @@ void Message::add_character(void) {
    * - 110xxxx: multibyte character
    */
 
+  bool special = false;
   if (current_char == '$') {
     // special character
 
+    special = true;
     current_char = lines[line_index][char_index++];
 
     switch (current_char) {
@@ -260,10 +260,11 @@ void Message::add_character(void) {
     default:
       // not a special char, actually
       text_surfaces[line_index]->add_char('$');
-      text_surfaces[line_index]->add_char(current_char);
+      special = false;
     }
   }
-  else {
+
+  if (!special) {
     // normal character
     text_surfaces[line_index]->add_char(current_char);
 
@@ -277,6 +278,12 @@ void Message::add_character(void) {
 
     if (current_char != ' ') {
       next_char_date += delay;
+    }
+
+    Uint32 now = SDL_GetTicks();
+    if (now >= next_sound_date) {
+      ResourceManager::get_sound("message_letter")->play();
+      next_sound_date = now + 125;
     }
   }
 }

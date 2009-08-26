@@ -103,10 +103,6 @@ void Hero::start_ground(void) {
 
   switch (ground) {
 
-  case GROUND_UNKNOWN:
-    DIE("No ground specified");
-    break;
-
   case GROUND_NORMAL:
     // normal ground: remove any special sprite displayed under the hero
     sprites->destroy_ground();
@@ -211,7 +207,7 @@ void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporte
 
   if (state != JUMPING) {
 
-    if (ground == GROUND_HOLE) {
+    if (map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE) {
       this->hole_teletransporter = teletransporter; // fall first, transport later
     }
     else {

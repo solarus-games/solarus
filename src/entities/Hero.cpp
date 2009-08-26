@@ -618,18 +618,13 @@ void Hero::just_moved(void) {
 
   // save the current ground
   Ground previous_ground = this->ground;
-  this->ground = GROUND_NORMAL;
 
   // see the ground indicated by the tiles
   Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y());
+  set_ground(tiles_ground);
 
   set_facing_entity(NULL);
   MapEntity::just_moved(); // to see the special ground indicated by the dynamic entities
-
-  if (ground == GROUND_NORMAL) {
-    // no special ground was set by the dynamic entities: use the one from the tiles
-    set_ground(tiles_ground);
-  }
 
   if (this->ground != previous_ground) {
     start_ground();

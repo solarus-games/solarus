@@ -32,14 +32,10 @@ Bugs :
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - trous et plates-formes dans la grotte de mymy
 - Tom trop vieux ? changer la couleur de ses cheveux
-- Je trouve que le bouton "suite" est un peu bas, je ne sais plus comment c'est dans ALTTP, mais pourquoi ne pas le monter au niveau de l'HUD ? (se superpose avec l'affichage des étages)
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - mur fissuré qui explose : animation ?
 - l'ombre des pots passe sur Link pendant qu'on les soulève
-- Forgeron : ajouter décors de la forge
-- Rubis trop haut de 1 pixel par rapport à son ombre ?
-- petite clé du hud : reprendre la même que dans le hud de alttp
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 
@@ -47,7 +43,6 @@ Bugs :
 Remarques de Linksupersayen :
 
   - Écran titre un peu figé, on aimerait bien un petit peu d'animation.
-  - Nous sommes tellement habitués aux petits bruitages quand les lettres défilent lors d'un message qu'ils agissent un peu comme un drogue maintenant. On en a besoin s'il vous plaît !
   - Link semble disparaître un peu lors des phases à l'épée.
   - Les musiques. On adore les musiques de A Link To The Past... sur la Super Nintendo et la Game Boy Advance, mais sur le PC, elle semblent un peu enregistrées, enfin, il faudrait augmenter la qualité sonore et là, ça serait bon !
   - D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
@@ -122,6 +117,13 @@ Pas de cryptage mais
 - nommer le fichier zip avec une autre extension (spécifiée à la bibliothèque avec les fonctions _ext_io)
 - éventuellement utiliser l'obfuscation style xor de la bibliothèque (très simple mais le but est juste d'empêcher de voir directement les fichiers)
 - éventuellement à l'ouverture du jeu, vérifier le checksum du fichier zip pour s'assurer qu'il n'a pas été modifié
+
+--------------
+Fichiers SPC :
+--------------
+
+game_music_emu
+libopenspc
 
 --------------
 Mode release :

@@ -45,7 +45,7 @@ HUD::HUD(Game *game):
   elements[nb_elements++] = new SwordIcon(keys_effect, equipment, 10, 29);
   elements[nb_elements++] = new PauseIcon(keys_effect, -3, 7);
   elements[nb_elements++] = new ActionIcon(keys_effect, 23, 51);
-  elements[nb_elements++] = new SmallKeysCounter(equipment, 284, 214);
+  elements[nb_elements++] = new SmallKeysCounter(equipment, 284, 218);
   elements[nb_elements++] = new FloorView(game, 5, 70);
 }
 
@@ -121,8 +121,8 @@ void HUD::update(void) {
       elements[3]->set_visible(false); // item 0
       elements[4]->set_visible(false); // item 1
       elements[6]->set_visible(false); // pause icon
-      elements[5]->set_position(-18, 29); // sword icon
-      elements[7]->set_position(-5, 51); // action icon
+      elements[5]->set_position(-18, 17); // sword icon
+      elements[7]->set_position(-5, 39); // action icon
   }
   else if (!game->is_showing_message()) {
 

@@ -26,9 +26,9 @@
  * @param y y coordinate of the top-left corner of the key icon on the destination surface
  */
 SmallKeysCounter::SmallKeysCounter(Equipment *equipment, int x, int y):
-  HudElement(x, y, 40, 16), equipment(equipment), counter(NULL) {
+  HudElement(x, y, 40, 8), equipment(equipment), counter(NULL) {
 
-  img_icon = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+  img_icon = ResourceManager::load_image("hud/small_key_icon.png");
   counter = NULL;
 
   rebuild();
@@ -56,7 +56,7 @@ void SmallKeysCounter::update(void) {
 
   // enable or disable the counter
   if (counter == NULL && equipment->are_small_keys_enabled()) {
-    counter = new Counter(2, false, 6, 8);
+    counter = new Counter(2, false, 2, 0);
     need_rebuild = true;
   }
   else if (counter != NULL && !equipment->are_small_keys_enabled()) {
@@ -93,10 +93,10 @@ void SmallKeysCounter::rebuild(void) {
   if (counter != NULL) { // the small keys are enabled
 
     // small key icon
-    static SDL_Rect src_position = {36, 112, 8, 16};
-    SDL_BlitSurface(img_icon, &src_position, surface_drawn, NULL);
+    SDL_BlitSurface(img_icon, NULL, surface_drawn, NULL);
 
     // current number of small keys
     counter->display(surface_drawn);
   }
 }
+

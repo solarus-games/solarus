@@ -43,3 +43,4 @@ class SmallKeysCounter: public HudElement {
 };
 
 #endif
+

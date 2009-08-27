@@ -17,14 +17,14 @@
 #include "Sound.h"
 #include "Music.h"
 #include "FileTools.h"
-#include <fmodex/fmod_errors.h>
 
-FMOD_SYSTEM *Sound::system = NULL;
+bool Sound::initialized = false;
 
 /**
  * Constructor used by the Music subclass.
  */
-Sound::Sound(void) {
+Sound::Sound(void):
+  sound(NULL) {
 
 }
 
@@ -33,7 +33,7 @@ Sound::Sound(void) {
  * @param sound_id id of the sound (a file name)
  */
 Sound::Sound(const SoundId &sound_id):
-  sound(NULL), channel(NULL) {
+  sound(NULL), channel(0) {
 
   file_name = (std::string) "sounds/" + sound_id + ".wav";
 }
@@ -43,7 +43,7 @@ Sound::Sound(const SoundId &sound_id):
  */
 Sound::~Sound(void) {
   if (sound != NULL) {
-    FMOD_Sound_Release(sound);
+    Mix_FreeChunk(sound);
   }
 }
 
@@ -53,35 +53,17 @@ Sound::~Sound(void) {
  */
 void Sound::initialize(void) {
 
-  FMOD_RESULT result;
+  // SDL_mixer must be initialized with 32 KHz for SPC musics
+  int result = Mix_OpenAudio(32000, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
 
-  FMOD_System_Create(&system);
-
-  // first we try to initialize FMOD with WinMM instead of DirectSound
-  // because we have problems with DirectSound
-  FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_WINMM);
-  result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
-
-  if (result != FMOD_OK) {
-
-    // if it doesn't work, we try to auto-detect the output type
-    FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_AUTODETECT);
-    result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
-
-    if (result != FMOD_OK) {
-
-      // it didn't work either: try Linux sound
-      FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
-      result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
-
-      if (result != FMOD_OK) {
-	std::cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
-		  << "No music or sound will be played." << std::endl;
-	FMOD_System_Release(system);
-	system = NULL;
-      }
-    }
+  if (result == -1) {
+    std::cerr << "Unable to initialize the sound: " << Mix_GetError()
+      << "No music or sound will be played." << std::endl;
   }
+
+  Mix_AllocateChannels(16);
+
+  initialized = true;
 }
 
 /**
@@ -89,10 +71,7 @@ void Sound::initialize(void) {
  * This method should be called when exiting the application.
  */
 void Sound::quit(void) {
-  if (is_initialized()) {
-    FMOD_System_Release(system);
-    system = NULL;
-  }
+  Mix_CloseAudio();
 }
 
 /**
@@ -100,7 +79,7 @@ void Sound::quit(void) {
  * @return true if the audio system is initilialized
  */
 bool Sound::is_initialized(void) {
-  return system != NULL;
+  return initialized;
 }
 
 /**
@@ -108,9 +87,7 @@ bool Sound::is_initialized(void) {
  * This function is called repeatedly by the game.
  */
 void Sound::update(void) {
-  if (is_initialized()) {
-    FMOD_System_Update(system);
-  }
+  // nothing to do here with SDL_mixer
 }
 
 /**
@@ -120,31 +97,25 @@ void Sound::update(void) {
 bool Sound::play(void) {
 
   bool success = false;
-  FMOD_RESULT result;
 
   if (is_initialized()) {
 
     if (sound == NULL) {
 
-      size_t size;
-      char *buffer;
-      FileTools::data_file_open_buffer(file_name, &buffer, &size);
-      FMOD_CREATESOUNDEXINFO ex = {0};
-      ex.cbsize = sizeof(ex);
-      ex.length = size;
-      result = FMOD_System_CreateSound(system, buffer, FMOD_LOOP_OFF | FMOD_OPENMEMORY, &ex, &sound);
-      FileTools::data_file_close_buffer(buffer);
+      SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
+      sound = Mix_LoadWAV_RW(rw, false);
+      FileTools::data_file_close_rw(rw);
 
-      if (result != FMOD_OK) {
-	std::cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
+      if (sound == NULL) {
+	std::cerr << "Unable to create sound '" << file_name << "': " << Mix_GetError() << std::endl;
       }
     }
 
     if (sound != NULL) {
-      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);
+      channel = Mix_PlayChannel(-1, sound, 0);
 
-      if (result != FMOD_OK) {
-	std::cerr << "Unable to play sound '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
+      if (channel == -1) {
+	std::cerr << "Unable to play sound '" << file_name << "': " << Mix_GetError() << std::endl;
       }
       else {
 	success = true;
@@ -155,17 +126,3 @@ bool Sound::play(void) {
   return success;
 }
 
-/**
- * Returns whether the sound is playing.
- * @return true if the sound is currently playing
- */
-bool Sound::is_playing(void) {
-
-  if (!is_initialized()) {
-    return false;
-  }
-
-  FMOD_BOOL is_playing;
-  FMOD_Channel_IsPlaying(channel, &is_playing);
-  return is_playing != 0;
-}

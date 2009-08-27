@@ -16,6 +16,7 @@
  */
 #include "Music.h"
 #include "FileTools.h"
+#include <fmodex/fmod_errors.h>
 
 /**
  * Special id indicating that there is no music.
@@ -31,17 +32,25 @@ const MusicId Music::unchanged = "same";
  * Creates a new music.
  * @param music_id id of the music (a file name)
  */
-Music::Music(const MusicId &music_id):
-  music(NULL) {
+Music::Music(const MusicId &music_id) {
 
+  sound = NULL;
   file_name = (std::string) "musics/" + music_id;
+
+  /*
+   * The musics are played with the highest priority.
+   * Otherwise, they would be sometimes interrupted by the sound effects.
+   */
+  if (is_initialized()) {
+    FMOD_System_GetChannel(system, 15, &channel);
+    FMOD_Channel_SetPriority(channel, 15);
+  }
 }
 
 /**
  * Destroys the music.
  */
 Music::~Music(void) {
-  Mix_FreeMusic(music);
 }
 
 /**
@@ -79,21 +88,31 @@ bool Music::isEqualId(const MusicId &music_id, const MusicId &other_music_id) {
 bool Music::play(void) {
 
   bool success = false;
+  FMOD_RESULT result;
 
   if (is_initialized()) {
 
-    SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
-    music = Mix_LoadMUS_RW(rw);
-    FileTools::data_file_close_rw(rw);
+    size_t size;
+    char *buffer;
+    FileTools::data_file_open_buffer(file_name, &buffer, &size);
+    FMOD_CREATESOUNDEXINFO ex = {0};
+    ex.cbsize = sizeof(ex);
+    ex.length = size;
 
-    if (music == NULL) {
-      std::cerr << "Unable to create music '" << file_name << "': " << Mix_GetError() << std::endl;
+/*  The beginning of any .it music is badly played on my windows with DirectX
+    other workarounds: use FMOD_SOFTWARE or FMOD_OUTPUTTYPE_WINMM?
+    */
+    result = FMOD_System_CreateStream(system, buffer, FMOD_LOOP_NORMAL | FMOD_OPENMEMORY, &ex, &sound);
+    FileTools::data_file_close_buffer(buffer);
+
+    if (result != FMOD_OK) {
+      std::cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
     }
     else {
-      int result = Mix_PlayMusic(music, -1);
+      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, false, &channel);
 
-      if (result == -1) {
-	std::cerr << "Unable to play music '" << file_name << "': " << Mix_GetError() << std::endl;
+      if (result != FMOD_OK) {
+	std::cerr << "Unable to play music '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
       }
       else {
 	success = true;
@@ -110,8 +129,21 @@ bool Music::play(void) {
 void Music::stop(void) {
 
   if (is_initialized()) {
-    Mix_HaltMusic();
-    music = NULL;
+
+    if (!is_playing()) {
+      std::cerr << "The music '" << file_name << "' is already stopped." << std::endl;
+    }
+    else {
+
+      FMOD_RESULT result = FMOD_Channel_Stop(channel);
+
+      if (result != FMOD_OK) {
+	std::cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << std::endl;
+      }
+    }
+
+    FMOD_Sound_Release(sound);
+    sound = NULL;
   }
 }
 
@@ -125,7 +157,10 @@ bool Music::is_paused(void) {
     return false;
   }
 
-  return Mix_PausedMusic();
+  FMOD_BOOL pause;
+  FMOD_Channel_GetPaused(channel, &pause);
+
+  return pause != 0;
 }
 
 /**
@@ -134,12 +169,6 @@ bool Music::is_paused(void) {
  */
 void Music::set_paused(bool pause) {
   if (is_initialized()) {
-
-    if (pause) {
-      Mix_PauseMusic();
-    }
-    else {
-      Mix_ResumeMusic();
-    }
+    FMOD_Channel_SetPaused(channel, pause);
   }
 }

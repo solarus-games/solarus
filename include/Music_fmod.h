@@ -22,16 +22,13 @@
 
 /**
  * This class represents a music that can be played.
- * A music should be in format .it (Impulse Tracker Module).
+ * A music should be in format .spc (Snes) or .it (Impulse Tracker Module).
+ * Only one music can be played at a time.
  * Before using this class, the audio system should have been
  * initialized, by calling Sound::initialize().
- * Music and Sound should be the only modules that depends on an audio library.
+ * Music and Sound should be the only sound library dependent modules.
  */
 class Music: public Sound {
-
- private:
-
-   Mix_Music *music;
 
  public:
 
@@ -41,14 +38,14 @@ class Music: public Sound {
   Music(const MusicId &music_id);
   ~Music(void);
 
+  static bool isNoneId(const MusicId &music_id);
+  static bool isUnchangedId(const MusicId &music_id);
+  static bool isEqualId(const MusicId &music_id, const MusicId &other_music_id);
+
   bool play(void);
   void stop(void);
   bool is_paused(void);
   void set_paused(bool pause);
-
-  static bool isNoneId(const MusicId &music_id);
-  static bool isUnchangedId(const MusicId &music_id);
-  static bool isEqualId(const MusicId &music_id, const MusicId &other_music_id);
 };
 
 #endif

@@ -38,6 +38,10 @@ Bugs :
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
+- renommer sprite fairy_queen en great_fairy
+- SDL_mixer ne peut jouer un fichier SPC qu'en 32 KHz. Solutions :
+  - Utiliser SDL_sound (de icculus) au lieu de SDL_mixer, il semble pouvoir faire plus de conversions (si ça marche, attention au CPU)
+  - Convertir tous les fichiers son .wav en 32 KHz ou 16 KHz (contraignant pour l'avenir)
 
 
 Remarques de Linksupersayen :

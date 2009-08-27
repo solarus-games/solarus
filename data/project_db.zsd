@@ -30,26 +30,37 @@
 1	3	Cave
 1	4	Blue dungeon
 1	5	Green dungeon
-2	beginning.it	ALTTP Beginning
-2	boss.it	Boss
-2	castle.it	Castle
-2	cave.it	Cave
-2	credits.it	ALTTP Credits
-2	dark_world.it	Dark World
-2	light_world_dungeon.it	Dungeon (light world)
+2	agahnim.spc	Agahnim theme
+2	beginning.spc	Beginning
+2	boss.spc	Boss
+2	castle.spc	Castle
+2	cave.spc	Cave
+2	credits.spc	Credits
+2	dark_mountain.spc	Dark Mountain
+2	dark_world.spc	Dark World
+2	light_world_dungeon.spc	Dungeon (light world)
+2	dungeon_finished.spc	Dungeon finished
 2	eagle_tower.it	Eagle's Tower
-2	excalibur.it	Excalibur
-2	fanfare.it	Fanfare
-2	game_over.it	Fairy & Game Over
-2	village.it	Kakariko Village
-2	lost_woords.it	Lost Woods
-2	mini_game.it	Mini game
-2	overworld.it	Overworld
-2	rabbit.it	Turned into a rabbit
-2	soldiers.it	Soldiers
-2	title_screen_full.it	Title screen (full)
-2	title_screen_short.it	Title screen (short, without intro)
-2	triforce.it	Triforce
+2	excalibur.spc	Excalibur
+2	fanfare.spc	Fanfare
+2	fortune_teller.spc	Fortune Teller
+2	ganon_appears.spc	Ganon appears
+2	ganon_battle.spc	Ganon battle
+2	ganon_theme.spc	Ganon theme
+2	great_fairy.spc	Great Fairy
+2	village.spc	Kakariko Village
+2	legend.spc      Legend
+2	lost_woords.spc	Lost Woods
+2	mini_game.spc	Mini game
+2	overworld.spc	Overworld
+2	sanctuary.spc	Sanctuary
+2	game_over.spc	Selection menu & Game Over
+2	soldiers.spc	Soldiers
+2	rabbit.spc	Turned into a rabbit
+2	title_screen.spc	Title screen 
+2	triforce.spc	Triforce
+2	victory.spc	Victory
+2	zelda.spc	Zelda theme
 3	entities/sign	Sign
 3	npc/fairy_queen	Fairy Queen
 3	npc/monkey	Monkey

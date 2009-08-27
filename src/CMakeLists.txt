@@ -156,7 +156,8 @@ target_link_libraries (zsdx
 		      SDL_image
 		      SDL_ttf
 		      SDL_Config
-		      fmodex
+		      SDL_mixer
+		      openspc
 		      lua5.1
 		      physfs
 		      stdc++

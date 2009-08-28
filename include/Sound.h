@@ -18,7 +18,7 @@
 #define ZSDX_SOUND_H
 
 #include "Common.h"
-#include <SDL/SDL_mixer.h>
+#include <fmodex/fmod.h>
 
 /**
  * This class represents a sound effet that can be played in ZSDX.
@@ -28,14 +28,12 @@
  */
 class Sound {
 
- private:
-
-  static bool initialized;
-
-  Mix_Chunk *sound;
-  int channel;
-
  protected:
+
+  static FMOD_SYSTEM *system;
+
+  FMOD_SOUND *sound;     /**< the sound object */
+  FMOD_CHANNEL *channel;
  
   Sound(void); // used by subclass
   std::string file_name;

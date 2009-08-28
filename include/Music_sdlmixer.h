@@ -41,13 +41,17 @@ class Music: public Sound {
       IT,  /**< Impulse Tracker module */
     };
 
-    Format format;             /**< format of the music, detected from the file name */
+    Format format;      /**< format of the music, detected based on the file name */
 
     // SPC specific data
     static SNES_SPC *snes_spc; /**< the snes_spc object */
     static SPC_Filter *filter;
 
-    static FMOD_RESULT spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen);
+    // other data
+    Mix_Music *music;   /**< the music object (only for Impulse Tracker format) */
+
+    bool play_spc(void);
+    bool play_it(void);
 
   public:
 
@@ -64,6 +68,8 @@ class Music: public Sound {
     void stop(void);
     bool is_paused(void);
     void set_paused(bool pause);
+
+    static void spc_player(void *spc_data, Uint8 *raw_data, int length);
 
     static bool isNoneId(const MusicId &music_id);
     static bool isUnchangedId(const MusicId &music_id);

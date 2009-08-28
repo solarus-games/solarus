@@ -165,8 +165,7 @@ target_link_libraries (zsdx
 		      SDL_image
 		      SDL_ttf
 		      SDL_Config
-		      SDL_mixer
-		      SDL_sound
+		      fmodex
 		      lua5.1
 		      physfs
 		      stdc++

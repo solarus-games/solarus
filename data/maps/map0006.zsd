@@ -1483,6 +1483,10 @@
 1	0	400	85	from_dungeon_1_2F	3	0
 2	0	392	56	16	16	to_dungeon_1_2F	0	1	25	from_outside
 6	0	368	152	24	8	jump_sensor_5	6	64
+13	0	280	333	16	16	not_in_demo_sensor	0
+12	0	272	312	16	8	custom_obstacle_2	1	1	1	1
+13	0	376	333	16	16	not_in_demo_sensor_2	0
+12	0	368	312	16	8	custom_obstacle_3	1	1	1	1
 0	2	0	400	48	16	512
 0	2	0	416	48	40	511
 0	2	48	408	8	40	514

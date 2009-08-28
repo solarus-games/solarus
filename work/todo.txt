@@ -15,11 +15,10 @@ Feature requests :
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Permettre de couper voire régler la musique et/ou le son
 - Mettre des constantes dans les scripts
-- GPL et FMOD -> sdl_mixer ? Utiliser deux fichiers IT par musique : un pour l'intro, un pour la partie à laisser en boucle
-- Musiques : avec sdl_mixer, reripper les .it en s'assurant de garder le même volume
 - Mettre une icône sur l'exécutable
 - valeurs maximales des compteurs : en vert
-
+- transition intérieur / extérieur : ovale
+- Faire ou fermer les grottes accessibles
 
 Bugs :
 
@@ -39,10 +38,6 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 - renommer sprite fairy_queen en great_fairy
-- SDL_mixer ne peut jouer un fichier SPC qu'en 32 KHz. Solutions :
-  - Utiliser SDL_sound (de icculus) en plus de SDL_mixer, mais souci de libération mémoire de SDL_RWops
-  - Convertir tous les fichiers son .wav en 32 KHz ou 16 KHz (contraignant pour l'avenir)
-- Avec SDL_mixer, les sons semblent être joués avec retard (vérifier sur un test simple)
 
 
 Remarques de Linksupersayen :

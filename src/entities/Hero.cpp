@@ -184,9 +184,9 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
- * Returns whether a hole is currently considered as an obstacle for the hero.
+ * Returns whether a sensor is currently considered as an obstacle for the hero.
  * @param sensor a sensor
- * @return true if the sensors are currently an obstacle for the hero
+ * @return true if this sensor is currently an obstacle for the hero
  */
 bool Hero::is_sensor_obstacle(Sensor *sensor) {
   return state == JUMPING || state == HURT;

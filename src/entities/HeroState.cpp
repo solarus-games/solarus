@@ -269,7 +269,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
  */
 void Hero::notify_collision_with_sensor(Sensor *sensor) {
 
-  if (get_state() != RETURNING_TO_SOLID_GROUND) {
+  if (get_state() != RETURNING_TO_SOLID_GROUND && get_state() != JUMPING) {
     sensor->activate(this);
   }
 }

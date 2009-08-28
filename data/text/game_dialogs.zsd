@@ -1,8 +1,13 @@
+[outside_world.not_in_demo]
+#       |-----------------------|
+line1 = "Cet endroit n'est pas"
+line2 = "encore disponible !"
+cancel = all
+
 [dungeon_1]
 #       |-----------------------|
 line1 = "        Niveau 1       "
 line2 = "   Donjon de la Forêt  "
-
 
 [outside_world.village.welcome_sign]
 #       |-----------------------|

@@ -22,8 +22,14 @@ function event_hero_on_sensor(sensor_name)
 
   has_finished_tom_cave = savegame_get_boolean(37)
 
-  if sensor_name == "tom_appears_sensor" and has_finished_tom_cave and not is_ladder_activated() then
-    start_message("outside_world.tom_dungeon_1_entrance.hey")
+  if sensor_name == "tom_appears_sensor" then
+    
+    if has_finished_tom_cave and not is_ladder_activated() then
+      start_message("outside_world.tom_dungeon_1_entrance.hey")
+    end
+
+  elseif sensor_name == "not_in_demo_sensor" then
+    start_message("outside_world.not_in_demo")
   end
 end
 

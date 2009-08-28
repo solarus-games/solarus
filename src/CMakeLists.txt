@@ -1,4 +1,4 @@
-include_directories (${ZSDX_SOURCE_DIR}/include)
+include_directories (${ZSDX_SOURCE_DIR}/include ${ZSDX_SOURCE_DIR}/include/snes_spc)
 
 add_executable (zsdx
 
@@ -143,6 +143,15 @@ add_executable (zsdx
   enemies/Bubble.cpp
   enemies/Tentacle.cpp
   enemies/PapillosaurKing.cpp
+
+  # external source files
+  snes_spc/dsp.cpp
+  snes_spc/SNES_SPC.cpp
+  snes_spc/SNES_SPC_misc.cpp
+  snes_spc/SNES_SPC_state.cpp
+  snes_spc/spc.cpp
+  snes_spc/SPC_DSP.cpp
+  snes_spc/SPC_Filter.cpp
 )
 
 if (NOT WIN32)
@@ -157,7 +166,6 @@ target_link_libraries (zsdx
 		      SDL_ttf
 		      SDL_Config
 		      SDL_mixer
-		      openspc
 		      lua5.1
 		      physfs
 		      stdc++

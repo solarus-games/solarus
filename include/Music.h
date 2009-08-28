@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Sound.h"
+#include "snes_spc/spc.h"
 
 /**
  * This class represents a music that can be played.
@@ -40,10 +41,14 @@ class Music: public Sound {
       IT,  /**< Impulse Tracker module */
     };
 
-    Format format;    /**< format of the music, detected based on the file name */
+    Format format;      /**< format of the music, detected based on the file name */
 
-    char *spc_data;  /**< the SPC music (only for SPC format) */
-    Mix_Music *music; /**< the music object (only for Impulse Tracker format) */
+    // SPC specific data
+    static SNES_SPC *snes_spc; /**< the snes_spc object */
+    static SPC_Filter *filter;
+
+    // other data
+    Mix_Music *music;   /**< the music object (only for Impulse Tracker format) */
 
     bool play_spc(void);
     bool play_it(void);
@@ -55,6 +60,9 @@ class Music: public Sound {
 
     Music(const MusicId &music_id);
     ~Music(void);
+ 
+    static void initialize(void);
+    static void quit(void);
 
     bool play(void);
     void stop(void);

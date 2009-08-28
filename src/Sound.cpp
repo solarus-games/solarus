@@ -63,6 +63,8 @@ void Sound::initialize(void) {
 
   Mix_AllocateChannels(16);
 
+  Music::initialize();
+
   initialized = true;
 }
 
@@ -71,6 +73,7 @@ void Sound::initialize(void) {
  * This method should be called when exiting the application.
  */
 void Sound::quit(void) {
+  Music::quit();
   Mix_CloseAudio();
 }
 

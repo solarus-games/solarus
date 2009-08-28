@@ -166,6 +166,7 @@ target_link_libraries (zsdx
 		      SDL_ttf
 		      SDL_Config
 		      SDL_mixer
+		      SDL_sound
 		      lua5.1
 		      physfs
 		      stdc++

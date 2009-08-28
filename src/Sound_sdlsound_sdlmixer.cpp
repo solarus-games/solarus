@@ -24,7 +24,7 @@ bool Sound::initialized = false;
  * Constructor used by the Music subclass.
  */
 Sound::Sound(void):
-  sound(NULL) {
+  sample(NULL), chunk(NULL) {
 
 }
 
@@ -33,7 +33,7 @@ Sound::Sound(void):
  * @param sound_id id of the sound (a file name)
  */
 Sound::Sound(const SoundId &sound_id):
-  sound(NULL), channel(0) {
+  sample(NULL), chunk(NULL), channel(0) {
 
   file_name = (std::string) "sounds/" + sound_id + ".wav";
 }
@@ -42,9 +42,8 @@ Sound::Sound(const SoundId &sound_id):
  * Destroys the sound.
  */
 Sound::~Sound(void) {
-  if (sound != NULL) {
-    Mix_FreeChunk(sound);
-  }
+  Sound_FreeSample(sample);
+  Mix_FreeChunk(chunk);
 }
 
 /**
@@ -54,14 +53,16 @@ Sound::~Sound(void) {
 void Sound::initialize(void) {
 
   // SDL_mixer must be initialized with 32 KHz for SPC musics
-  int result = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
+  int result = Mix_OpenAudio(32000, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
 
   if (result == -1) {
     std::cerr << "Unable to initialize the sound: " << Mix_GetError()
       << "No music or sound will be played." << std::endl;
+    return;
   }
 
   Mix_AllocateChannels(16);
+  Sound_Init();
 
   Music::initialize();
 
@@ -74,6 +75,7 @@ void Sound::initialize(void) {
  */
 void Sound::quit(void) {
   Music::quit();
+  Sound_Quit();
   Mix_CloseAudio();
 }
 
@@ -103,19 +105,25 @@ bool Sound::play(void) {
 
   if (is_initialized()) {
 
-    if (sound == NULL) {
+    if (sample == NULL) {
+      SDL_RWops *rw;
+      Sound_AudioInfo audio_info = {AUDIO_S16SYS, 2, 32000};
+      rw = FileTools::data_file_open_rw(file_name);
+      sample = Sound_NewSample(rw, "wav", &audio_info, 1024);
 
-      SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
-      sound = Mix_LoadWAV_RW(rw, false);
-      FileTools::data_file_close_rw(rw);
-
-      if (sound == NULL) {
+      if (sample == NULL) {
 	std::cerr << "Unable to create sound '" << file_name << "': " << Mix_GetError() << std::endl;
       }
+
+      Sound_DecodeAll(sample);
+
+//      FileTools::data_file_close_rw(rw); // TODO cannot free this rw properly
+      rw = NULL;
     }
 
-    if (sound != NULL) {
-      channel = Mix_PlayChannel(-1, sound, 0);
+    if (sample != NULL) {
+      chunk = Mix_QuickLoad_RAW((Uint8*) sample->buffer, sample->buffer_size);
+      channel = Mix_PlayChannel(-1, chunk, 0);
 
       if (channel == -1) {
 	std::cerr << "Unable to play sound '" << file_name << "': " << Mix_GetError() << std::endl;

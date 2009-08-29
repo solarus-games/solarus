@@ -51,9 +51,9 @@ void Camera::update(void) {
 
   // if the camera is not moving, center it on the hero
   if (is_fixed_on_hero()) {
-    const SDL_Rect &hero_coords = zsdx->game->get_hero_coordinates();
-    x = hero_coords.x;
-    y = hero_coords.y;
+    const SDL_Rect &hero_xy = zsdx->game->get_hero_xy();
+    x = hero_xy.x;
+    y = hero_xy.y;
     x = MIN(MAX(x - 160, 0), map_location.w - 320);
     y = MIN(MAX(y - 120, 0), map_location.h - 240);
   }
@@ -145,7 +145,7 @@ void Camera::move(MapEntity *entity) {
  * When the movement finishes, the camera follows the hero again.
  */
 void Camera::restore(void) {
-  const SDL_Rect &hero_coords = zsdx->game->get_hero_coordinates();
-  move(hero_coords.x, hero_coords.y);
+  const SDL_Rect &hero_xy = zsdx->game->get_hero_xy();
+  move(hero_xy.x, hero_xy.y);
   restoring = true;
 }

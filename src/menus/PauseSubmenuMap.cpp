@@ -52,9 +52,9 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     hero_position = map->get_location();
 
     if (map->is_in_outside_world()) {
-      const SDL_Rect &hero_map_coords = game->get_hero_coordinates();
-      hero_position.x += hero_map_coords.x;
-      hero_position.y += hero_map_coords.y;
+      const SDL_Rect &hero_map_xy = game->get_hero_xy();
+      hero_position.x += hero_map_xy.x;
+      hero_position.y += hero_map_xy.y;
     }
 
     hero_position.x = hero_position.x * outside_world_minimap_size.w / real_size->w;
@@ -204,10 +204,10 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     const SDL_Rect &floor_size = dungeon->get_floor_size(selected_floor);
 
     hero_position = game->get_current_map()->get_location();
-    const SDL_Rect &hero_map_coords = game->get_hero_coordinates();
+    const SDL_Rect &hero_map_xy = game->get_hero_xy();
 
-    hero_position.x += hero_map_coords.x;
-    hero_position.y += hero_map_coords.y;
+    hero_position.x += hero_map_xy.x;
+    hero_position.y += hero_map_xy.y;
 
     to_dungeon_minimap_coordinates(hero_position, hero_position, floor_size);
 

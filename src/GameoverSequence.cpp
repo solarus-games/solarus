@@ -48,9 +48,9 @@ GameoverSequence::GameoverSequence(Game *game, int hero_direction):
   hero_dead_sprite->set_suspended(true);
 
   const SDL_Rect &camera_position = game->get_current_map()->get_camera_position();
-  const SDL_Rect &hero_coords = game->get_hero_coordinates();
-  hero_dead_x = hero_coords.x - camera_position.x;
-  hero_dead_y = hero_coords.y - camera_position.y;
+  const SDL_Rect &hero_xy = game->get_hero_xy();
+  hero_dead_x = hero_xy.x - camera_position.x;
+  hero_dead_y = hero_xy.y - camera_position.y;
 
   fairy_sprite = new Sprite("entities/fairy");
   fairy_movement = NULL;

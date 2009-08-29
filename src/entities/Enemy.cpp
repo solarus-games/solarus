@@ -306,7 +306,7 @@ void Enemy::update(void) {
     }
   }
 
-  if (life > 0 && invulnerable && now >= vulnerable_again_date) {
+  if (life > 0 && invulnerable && now >= vulnerable_again_date && !being_hurt) {
     invulnerable = false;
   }
 
@@ -465,8 +465,10 @@ void Enemy::attack_hero(Hero *hero) {
  */
 void Enemy::attack_stopped_by_hero_shield(void) {
   ResourceManager::get_sound("shield")->play();
+
+  Uint32 now = SDL_GetTicks();
   can_attack = false;
-  can_attack_again_date = SDL_GetTicks() + 1000;
+  can_attack_again_date = now + 1000;
 }
 
 /**
@@ -499,6 +501,8 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
   else if (vulnerabilities[attack] == -1) {
     // shield sound
     ResourceManager::get_sound("shield")->play();
+    invulnerable = true; // to avoid playing the sound several times
+    vulnerable_again_date = SDL_GetTicks() + 500;
     result = -1;
   }
   else if (vulnerabilities[attack] == -2) {

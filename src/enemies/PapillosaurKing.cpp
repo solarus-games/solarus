@@ -54,9 +54,10 @@ void PapillosaurKing::initialize(void) {
 
   // vulnerabilities
   for (int i = 0; i < ATTACK_NUMBER; i++) {
-    vulnerabilities[i] = 0;
+    vulnerabilities[i] = 0; // insensible to most attacks
   }
-  vulnerabilities[ATTACK_EXPLOSION] = 1;
+  vulnerabilities[ATTACK_SWORD] = -1;    // protected against sword
+  vulnerabilities[ATTACK_EXPLOSION] = 1; // sensible to explosions
 
   // movement
   set_movement(new RandomWalkMovement(5));

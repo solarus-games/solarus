@@ -113,6 +113,7 @@ add_executable (zsdx
   entities/Boomerang.cpp
   entities/ConveyorBelt.cpp
   entities/Door.cpp
+  entities/Explosion.cpp
 
   # tile patterns
   entities/Tileset.cpp

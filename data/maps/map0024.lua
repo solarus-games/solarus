@@ -5,7 +5,7 @@
 function event_map_started(destination_point_name)
 
   if destination_point_name == "from_1F_hole" then
-    enemy_set_enabled("boss", true)
+    boss_start_battle("boss")
   end
 end
 
@@ -31,5 +31,4 @@ function open_se_door()
   switch_set_enabled("se_switch", true)
   switch_set_enabled("ne_switch", true)
 end
-
 

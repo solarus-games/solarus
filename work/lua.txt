@@ -88,6 +88,8 @@ Appel de fonctions C++ depuis un script LUA :
 - enemy_is_dead(enemy_name)				vérifie si un ennemi est mort
 - enemies_are_dead(enemies_name_prefix)			vérifie si un ensemble d'ennemis sont morts
 - enemy_set_enabled(enemy_name)				active ou désactive un ennemi
+- boss_start_battle(enemy_name)				démarre le combat contre un boss ou un mini-boss
+- sensor_remove(sensor_name)				supprime un capteur
 - door_open(door_name)					ouvre une ou plusieurs portes, avec animation et son
 - door_close(door_name)					ferme une ou plusieurs portes, avec animation et son
 - door_set_open(door_name, open)			change l'état d'une porte

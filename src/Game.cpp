@@ -114,7 +114,7 @@ Hero * Game::get_hero(void) {
  * The width and the height are not used.
  * @return the position of the hero
  */
-const SDL_Rect Game::get_hero_coordinates(void) {
+const SDL_Rect Game::get_hero_xy(void) {
   return hero->get_xy();
 }
 

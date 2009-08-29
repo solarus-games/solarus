@@ -91,7 +91,7 @@ class Game: public Screen {
 
   // global objects
   Hero *get_hero(void);
-  const SDL_Rect get_hero_coordinates(void);
+  const SDL_Rect get_hero_xy(void);
   Controls *get_controls(void);
   KeysEffect *get_keys_effect(void);
   Savegame *get_savegame(void);

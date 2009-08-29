@@ -1545,6 +1545,7 @@ line1 = "Tu as trouvé une"
 line2 = "Fée, elle est"
 line3 = "merveilleuse !"
 next = _found_fairy.1
+cancel = all
 
 [_found_fairy.1]
 #       |--------------------___|
@@ -1601,10 +1602,23 @@ next = _use_bottle_with_water.2
 
 [_use_bottle_with_water.2]
 #       |--------------------|
-icon = 8
 line1 = "Que veux-tu faire ?"
 line2 = "Vider l'eau"
 line3 = "La conserver"
+question = true
+
+[_use_bottle_with_fairy]
+#       |--------------------|
+icon = 12
+line1 = "Ton Flacon Magique"
+line2 = "contient une fée."
+next = _use_bottle_with_fairy.2
+
+[_use_bottle_with_fairy.2]
+#       |--------------------|
+line1 = "Que veux-tu faire ?"
+line2 = "La conserver"
+line3 = "La relâcher"
 question = true
 
 [_use_apples]
@@ -1617,7 +1631,6 @@ next = _use_apples.2
 
 [_use_apples.2]
 #       |--------------------|
-icon = 16
 line1 = "Que veux-tu faire ?"
 line2 = "Manger une pomme"
 line3 = "Ne rien faire"
@@ -1632,7 +1645,6 @@ next = _use_pains_au_chocolat.2
 
 [_use_pains_au_chocolat.2]
 #       |--------------------|
-icon = 17
 line1 = "Que veux-tu faire ?"
 line2 = "En manger un"
 line3 = "Ne rien faire"
@@ -1648,7 +1660,6 @@ next = _use_croissants.2
 
 [_use_croissants.2]
 #       |--------------------|
-icon = 18
 line1 = "Que veux-tu faire ?"
 line2 = "En manger un"
 line3 = "Ne rien faire"

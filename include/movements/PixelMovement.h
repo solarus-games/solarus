@@ -73,7 +73,6 @@ class PixelMovement: public CollisionMovement {
   void set_translation_vectors(const SDL_Rect *translation_vectors);
   virtual void make_next_move(void);
   int get_vector_index(void);
-  int get_length(void);
 
  public:
 
@@ -84,6 +83,7 @@ class PixelMovement: public CollisionMovement {
   void set_delay(Uint32 delay);
   virtual void update(void);
   bool is_finished(void);
+  int get_length(void);
 
 };
 

@@ -43,3 +43,4 @@ class JumpMovement: public PixelMovement {
 };
 
 #endif
+

@@ -2,7 +2,14 @@
 #       |-----------------------|
 line1 = "Cet endroit n'est pas"
 line2 = "encore disponible !"
-cancel = all
+cancel = current
+
+[chest.not_in_demo]
+#       |-----------------------|
+line1 = "Désolé, cet trésor"
+line2 = "n'est pas encore"
+line3 = "disponible !"
+cancel = current
 
 [dungeon_1]
 #       |-----------------------|
@@ -900,7 +907,6 @@ line1 = "Oh, $v... Tu as"
 line2 = "entendu mon appel."
 line3 = "J'ai des choses"
 next = sahasrahla_house.beginning.2
-cancel = current
 
 [sahasrahla_house.beginning.2]
 #       |-----------------------|
@@ -1173,9 +1179,9 @@ next = lyriann_cave.tom.accept_help.2
 
 [lyriann_cave.tom.accept_help.2]
 #       |-----------------------|
-line1 = "N'oublie pas de me"
-line2 = "rendre mon Boomerang"
-line3 = "quand tu auras terminé."
+line1 = "N'oublie pas de me le"
+line2 = "rendre quand tu auras"
+line3 = "terminé."
 next = lyriann_cave.tom.accept_help.3
 
 [lyriann_cave.tom.accept_help.3]

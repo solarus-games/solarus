@@ -43,7 +43,7 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
 				 MapId destination_map_id, std::string destination_point_name):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   subtype(subtype), transition_style(transition_style), sound(NULL),
-  destination_map_id(destination_map_id), destination_point_name(destination_point_name) {
+  destination_map_id(destination_map_id), destination_point_name(destination_point_name), transporting_hero(false) {
   
   if (subtype == YELLOW) {
     create_sprite("entities/teletransporter");
@@ -147,6 +147,9 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
  */
 bool Teletransporter::test_collision_custom(MapEntity *entity) {
 
+  bool collision = false;
+  bool normal_case = true;
+
   // specific collision tests for some situations
   if (entity->is_hero()) {
 
@@ -154,24 +157,34 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
     if (destination_point_name == "_side") {
 
       SDL_Rect facing_point = hero->get_facing_point(transition_direction);
-      return hero->is_moving_towards(transition_direction)
+      collision = hero->is_moving_towards(transition_direction)
 	&& overlaps(facing_point.x, facing_point.y);
+      normal_case = false;
     }
 
     else if (map->get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
-      return test_collision_origin_point(hero);
+      collision = test_collision_origin_point(hero);
+      normal_case = false;
     }
   }
 
   // normal case
-  const SDL_Rect &entity_rectangle = entity->get_rectangle();
-  int x1 = entity_rectangle.x + 4;
-  int x2 = x1 + entity_rectangle.w - 9;
-  int y1 = entity_rectangle.y + 4;
-  int y2 = y1 + entity_rectangle.h - 9;
+  if (normal_case) {
+    const SDL_Rect &entity_rectangle = entity->get_rectangle();
+    int x1 = entity_rectangle.x + 4;
+    int x2 = x1 + entity_rectangle.w - 9;
+    int y1 = entity_rectangle.y + 4;
+    int y2 = y1 + entity_rectangle.h - 9;
 
-  return overlaps(x1, y1) && overlaps(x2, y1) &&
-    overlaps(x1, y2) && overlaps(x2, y2);
+    collision = overlaps(x1, y1) && overlaps(x2, y1) &&
+      overlaps(x1, y2) && overlaps(x2, y2);
+  }
+
+  if (!collision && destination_point_name != "_side") {
+    transporting_hero = false;
+  }
+
+  return collision;
 }
 
 /**
@@ -189,6 +202,12 @@ void Teletransporter::notify_collision(MapEntity *entity_overlapping, CollisionM
  * @param hero the hero
  */
 void Teletransporter::transport_hero(Hero *hero) {
+
+  if (transporting_hero) {
+    // already done
+    return;
+  }
+  transporting_hero = true;
 
   if (sound != NULL) {
     sound->play();
@@ -229,6 +248,7 @@ void Teletransporter::transport_hero(Hero *hero) {
     }
   }
 
+  hero->reset_movement(); // stop the hero now
   zsdx->game->set_current_map(destination_map_id, name, transition_style);
 }
 

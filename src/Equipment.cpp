@@ -80,7 +80,7 @@ void Equipment::update(void) {
       giving_fairy = false;
       int answer = zsdx->game->get_dialog_last_answer();
 
-      if (answer == 0) {
+      if (answer != 1) {
 	// restore the hearts
 	add_hearts(7 * 4);
       }

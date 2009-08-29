@@ -53,6 +53,7 @@ class Teletransporter: public Detector {
   int transition_direction;             /**< when the destination point is "_side", indicates the direction 
 					 * of the transition between the two maps (this is the opposite
 					 * direction of destination_side) */
+  bool transporting_hero;               /**< true if the hero is currently being transported by this teletransporter */
 
  public:
 

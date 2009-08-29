@@ -23,6 +23,7 @@
 #include "entities/ConveyorBelt.h"
 #include "entities/Chest.h"
 #include "movements/PlayerMovement.h"
+#include "movements/JumpMovement.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -118,6 +119,13 @@ bool Hero::can_be_displayed(void) {
 bool Hero::is_displayed_in_y_order(void) {
   return true;
 }
+/**
+ * Returns whether the hero is currently on raised crystal switch blocks.
+ * @return true if the hero is currently on raised crystal switch blocks
+ */
+bool Hero::is_on_raised_blocks(void) {
+  return map->get_entities()->is_hero_on_raised_blocks();
+}
 
 /**
  * Returns whether this entity is an obstacle for another one.
@@ -189,7 +197,17 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @return true if this sensor is currently an obstacle for the hero
  */
 bool Hero::is_sensor_obstacle(Sensor *sensor) {
-  return state == JUMPING || state == HURT;
+
+  if (state == HURT) {
+    return false;
+  }
+
+  if (state == JUMPING) {
+    JumpMovement *movement = (JumpMovement*) get_movement();
+    return movement->get_length() > 8; // this allows small jumps (e.g. falling from a raised block) but not jumping with the feather
+  }
+
+  return false;
 }
 
 /**
@@ -200,7 +218,7 @@ bool Hero::is_sensor_obstacle(Sensor *sensor) {
 bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
 
   // the raised block is an obstacle when the hero is not on it
-  return !map->get_entities()->is_hero_on_raised_blocks();
+  return !is_on_raised_blocks();
 }
 
 /**

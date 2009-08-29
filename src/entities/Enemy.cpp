@@ -555,7 +555,7 @@ void Enemy::hurt(MapEntity *source) {
   // update the enemy state
   being_hurt = true;
   invulnerable = true;
-  vulnerable_again_date = SDL_GetTicks() + 700;
+  vulnerable_again_date = SDL_GetTicks() + 500;
 
   //can_attack = false;
   //can_attack_again_date = vulnerable_again_date;

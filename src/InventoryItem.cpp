@@ -283,9 +283,6 @@ bool InventoryItem::is_bottle(void) {
  */
 void InventoryItem::start_bottle(void) {
 
-  Hero *hero = game->get_hero();
-  Map *map = game->get_current_map();
-
   switch (variant) {
 
     // empty bottle
@@ -328,10 +325,8 @@ void InventoryItem::start_bottle(void) {
 
     // fairy
   case 6:
-    map->get_entities()->add_entity(PickableItem::create(hero->get_layer(), hero->get_x(), hero->get_y(),
-	  PickableItem::FAIRY, -1, FALLING_LOW, true));
-    game->get_equipment()->set_bottle_empty(item_id);
-    finished = true;
+    // ask the hero to release the fairy
+    game->show_message("_use_bottle_with_fairy");
     break;
 
   }
@@ -342,25 +337,45 @@ void InventoryItem::start_bottle(void) {
  */
 void InventoryItem::update_bottle(void) {
 
-  // bottle with water
-  if (variant == 2 && !game->is_showing_message()) {
+  // see if a dialog is finished
+  if (!game->is_showing_message()) {
 
-    int answer = game->get_dialog_last_answer();
+    // bottle with water
+    if (variant == 2) {
 
-    if (answer == 0) {
-      // empty the water
-      game->get_equipment()->set_bottle_empty(item_id);
-      ResourceManager::get_sound("item_in_water")->play();
+      int answer = game->get_dialog_last_answer();
 
-      Detector *facing_entity = game->get_hero()->get_facing_entity();
+      if (answer == 0) {
+	// empty the water
+	game->get_equipment()->set_bottle_empty(item_id);
+	ResourceManager::get_sound("item_in_water")->play();
 
-      if (facing_entity != NULL) {
-	// the player has just poured water onto an entity
-	facing_entity->interaction_with_inventory_item(this);
+	Detector *facing_entity = game->get_hero()->get_facing_entity();
+
+	if (facing_entity != NULL) {
+	  // the player has just poured water onto an entity
+	  facing_entity->interaction_with_inventory_item(this);
+	}
       }
+      finished = true;
     }
 
-    finished = true;
+    // bottle with a fairy
+    else if (variant == 6) {
+      
+      int answer = game->get_dialog_last_answer();
+
+      if (answer == 1) {
+	// release the fairy
+	Map *map = game->get_current_map();
+	Hero *hero = game->get_hero();
+	map->get_entities()->add_entity(PickableItem::create(hero->get_layer(), hero->get_x(), hero->get_y(),
+	      PickableItem::FAIRY, -1, FALLING_LOW, true));
+	game->get_equipment()->set_bottle_empty(item_id);
+
+      }
+      finished = true;
+    }
   }
 }
 

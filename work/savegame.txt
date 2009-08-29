@@ -10,14 +10,14 @@ booleans:
 12	link house secret room: chest with a piece of heart
 13	outside world C1: chest with 50 rupees (diagonal jump)
 14	piece of heart near dungeon 1
-15	piece of heart near the south-west lake (reachable from dungeon #9)
+15	piece of heart near the south-west lake (reachable from dungeon #9) - temporarily switched with the 100 rupees chest 22
 16	rupee house: game 1: found 50 rupees (best reward)
 17	piece of heart in rupee house (game 3)
 18	chest with piece of heart after the hole above the cliff near the village
 19	chest with 20 rupees in outside world D2
 20	chest with piece of heart in outside world D2 (near the lake shop)
 21	piece of heart in oustide world D2 (near a cavern entrance)
-22	chest with 100 rupees in outside world D1 (near piece of heart from dungeon 9)
+22	chest with 100 rupees in outside world D1 (near piece of heart from dungeon 9) - temporarily switched with the piece of heart 15
 23	chest with 20 rupees in outside world D1 (in the dungeon 1 forest)
 24	the monkey has allowed the hero to leave his house
 25	chest with 5 rupees in grandma's house

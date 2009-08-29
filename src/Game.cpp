@@ -283,7 +283,7 @@ void Game::update(void) {
 void Game::update_transitions(void) {
 
   // if the map has just changed, close the current map if any and play an out transition
-  if (next_map != NULL && transition == NULL) { // the map has changed (e.g. set_current_map has been called)
+  if (next_map != NULL && transition == NULL) { // the map has changed (i.e. set_current_map has been called)
 
     if (current_map == NULL) { // special case: no map was playing, so we don't have any out transition to do
       load_dungeon();
@@ -324,6 +324,25 @@ void Game::update_transitions(void) {
 
 	// change the map
 	current_map->leave();
+
+	// special treatments for an inside/outside transition
+	if ((current_map->is_in_outside_world() && !next_map->is_in_outside_world())
+	    || (!current_map->is_in_outside_world() && next_map->is_in_outside_world())) {
+
+	  // reset the crystal switch blocks
+	  crystal_switch_state = false;
+
+	  // save the location
+	  savegame->set_integer(Savegame::STARTING_MAP, next_map->get_id());
+	  savegame->set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
+
+          if (next_map->is_in_dungeon()) {
+            // show the dungeon name
+	    std::ostringstream oss;
+	    oss << "dungeon_" << next_map->get_world_number();
+	    next_map->set_welcome_message(oss.str());
+	  }
+	}
 
 	// before closing the map, draw it on a backup surface for transition effects that display two maps
 	if (needs_previous_surface) {
@@ -529,24 +548,6 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
     next_map->set_destination_point(destination_point_name);
   }
   this->transition_style = transition_style;
-
-  // for an outside/inside or inside/outside change, save the location
-  if (current_map != NULL) {
-    if ((current_map->is_in_outside_world() && !next_map->is_in_outside_world())
-	|| (!current_map->is_in_outside_world() && next_map->is_in_outside_world())) {
-
-      savegame->set_integer(Savegame::STARTING_MAP, map_id);
-      savegame->set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
-      crystal_switch_state = false;
-
-      if (next_map->is_in_dungeon()) {
-        // show the dungeon name
-        std::ostringstream oss;
-	oss << "dungeon_" << next_map->get_world_number();
-	next_map->set_welcome_message(oss.str());
-      }
-    }
-  }
 }
 
 /**
@@ -742,7 +743,7 @@ void Game::show_message(const MessageId &message_id, int position) {
 /**
  * Returns the answer selected by the player in the last dialog with a question.
  * @return the answer selected: 0 for the first one, 1 for the second one,
- * -1 if the last dialog was not a question
+ * -1 if the last dialog was not a question or was cancelled by the user
  */
 int Game::get_dialog_last_answer(void) {
   return dialog_last_answer;

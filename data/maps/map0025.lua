@@ -8,6 +8,9 @@ function event_map_started(destination_point_name)
   end
 
   -- temporary
+  if savegame_get_boolean(62) then
+    switch_set_enabled("switch", true)
+  end
   door_set_open("stairs_door", true)
 end
 

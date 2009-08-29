@@ -17,6 +17,9 @@ Feature requests :
 - Mettre des constantes dans les scripts
 - Mettre une icône sur l'exécutable
 - transition intérieur / extérieur : ovale
+- transition des téléporteurs ?
+- son des marches d'escalier
+- essayer OpenAL ?
 
 
 Bugs :
@@ -36,13 +39,14 @@ Bugs :
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
+- dessins grande clé / clé du maître
 
 
 Remarques de Linksupersayen :
 
-  - Écran titre un peu figé, on aimerait bien un petit peu d'animation.
-  - Link semble disparaître un peu lors des phases à l'épée.
-  - D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
+- Écran titre un peu figé, on aimerait bien un petit peu d'animation.
+- Link semble disparaître un peu lors des phases à l'épée.
+- D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
 
   
 Remarques de @PyroNet :
@@ -116,13 +120,6 @@ Pas de cryptage mais
 - éventuellement à l'ouverture du jeu, vérifier le checksum du fichier zip pour s'assurer qu'il n'a pas été modifié
 
 --------------
-Fichiers SPC :
---------------
-
-game_music_emu
-libopenspc
-
---------------
 Mode release :
 --------------
 
@@ -130,7 +127,7 @@ Mode release :
 - Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence (en modifiant le define RELEASE_MODE)
 - Enelever les touches de test (en modifiant le define RELEASE_MODE)
 - Cacher le mode Rêves de Solarus s'il n'est pas encore fait
-- Compiler en mode release (pas -g) et optimiser
+- Compiler en mode release (pas -g) et optimisé
 - Inclure le fichier de licence GPL
 - Vérifier la présence du message GPL dans les fichiers source
 - Remettre l'écran-titre

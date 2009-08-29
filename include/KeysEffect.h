@@ -59,13 +59,13 @@ class KeysEffect {
    * What happens when the user presses the Sword key.
    */
   enum SwordKeyEffect {
-    SWORD_KEY_HIDDEN = -1,   /**< nothing happens when the user presses the Sword key and the sword icon is not shown */
-    SWORD_KEY_NONE   = 0,    /**< nothing happens when the user presses the Sword key */
-    SWORD_KEY_SAVE   = 1,    /**< save the game */
-    SWORD_KEY_RETURN = 2,    /**< exit a submenu */
-    SWORD_KEY_CHOOSE = 3,    /**< choose a letter when typing the player's name in the selection menu */
-    SWORD_KEY_SKIP   = 4,    /**< skip a message in a dialog */
-    SWORD_KEY_SWORD  = 5,    /**< swing the sword (this is the case most of the time) */
+    SWORD_KEY_HIDDEN   = -1,   /**< nothing happens when the user presses the Sword key and the sword icon is not shown */
+    SWORD_KEY_NONE     = 0,    /**< nothing happens when the user presses the Sword key */
+    SWORD_KEY_SAVE     = 1,    /**< save the game */
+    SWORD_KEY_RETURN   = 2,    /**< exit a submenu */
+    SWORD_KEY_VALIDATE = 3,    /**< validate a choice in the save game dialog */
+    SWORD_KEY_SKIP     = 4,    /**< skip a message in a dialog */
+    SWORD_KEY_SWORD    = 5,    /**< swing the sword (this is the case most of the time) */
   };
 
   /**

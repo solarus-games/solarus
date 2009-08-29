@@ -192,7 +192,7 @@ void TitleScreen::init_phase_title(void) {
 
   current_phase = PHASE_TITLE;
 
-  title_screen_music = ResourceManager::get_music("title_screen_full.it");
+  title_screen_music = ResourceManager::get_music("title_screen.spc");
   title_screen_music->play();
 
   background_img = ResourceManager::load_image("menus/title_background.png");

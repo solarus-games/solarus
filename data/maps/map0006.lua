@@ -28,7 +28,7 @@ function event_hero_on_sensor(sensor_name)
       start_message("outside_world.tom_dungeon_1_entrance.hey")
     end
 
-  elseif sensor_name == "not_in_demo_sensor" then
+  elseif string.find(sensor_name, "not_in_demo_sensor") then
     start_message("outside_world.not_in_demo")
   end
 end

@@ -19,14 +19,27 @@ function event_map_started(destination_point_name)
    npc_random_walk("grand_son")
 end
 
+function event_hero_on_sensor(sensor_name)
+
+  if string.find(sensor_name, "not_in_demo_sensor") then
+    start_message("outside_world.not_in_demo")
+  end
+end
+
 -- Function called when the player wants to talk to a non-playing character.
 -- If the NPC is the monkey, then the monkey sound is played and the dialog starts.
 function event_npc_dialog(npc_name)
 
-   if npc_name == "monkey" and not savegame_get_boolean(24) then
-      -- monkey dialog
-      play_sound("la_monkey")
-      start_message("outside_world.village.monkey")
+   if string.find(npc_name, "monkey") then
+     
+     if not savegame_get_boolean(24) then
+       -- monkey first dialog
+       play_sound("la_monkey")
+       start_message("outside_world.village.monkey")
+     else
+       play_sound("la_monkey")
+       start_message("outside_world.dungeon_2_entrance.monkey")
+     end
    end
 end
 

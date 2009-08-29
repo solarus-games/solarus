@@ -66,7 +66,6 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   // icons
   keys_effect = new KeysEffect();
   keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_VALIDATE);
-  keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_CHOOSE);
   keys_effect->set_sword_key_enabled(false);
   action_icon = new ActionIcon(keys_effect, 13, 31);
   sword_icon = new SwordIcon(keys_effect, NULL, 0, 9);
@@ -77,7 +76,7 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   error_sound = ResourceManager::get_sound("wrong");
 
   // music
-  music = ResourceManager::get_music("game_over.it");
+  music = ResourceManager::get_music("game_over.spc");
   music->play();
 
   // initialize the clouds

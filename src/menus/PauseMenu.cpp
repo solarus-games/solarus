@@ -101,15 +101,16 @@ void PauseMenu::quit(void) {
  * @param key the key pressed
  */
 void PauseMenu::key_pressed(Controls::GameKey key) {
+ 
+  if (key == Controls::PAUSE) {
+    quit();
+    game->set_paused(false);
+  }
 
   // the user is in one of the submenus
-  if (save_dialog_state == 0) {
+  else if (save_dialog_state == 0) {
 
-    if (key == Controls::PAUSE) {
-      quit();
-      game->set_paused(false);
-    }
-    else if (key == Controls::SWORD && save_dialog_state == 0) {
+    if (key == Controls::SWORD) {
 
       ResourceManager::get_sound("message_end")->play();
 
@@ -123,7 +124,7 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
       action_key_effect_saved = keys_effect->get_action_key_effect();
       sword_key_effect_saved = keys_effect->get_sword_key_effect();
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_VALIDATE);
-      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
+      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_VALIDATE);
     }
     else {
       current_submenu->key_pressed(key);
@@ -138,7 +139,7 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
     save_dialog_choice = 1 - save_dialog_choice;
     save_dialog_sprite->set_current_animation(save_dialog_choice == 0 ? "left" : "right");
   }
-  else if (key == Controls::ACTION) {
+  else if (key == Controls::ACTION || key == Controls::SWORD) {
     // validate a choice
 
     if (save_dialog_state == 1) {

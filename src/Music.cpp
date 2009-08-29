@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -150,7 +150,7 @@ bool Music::play(void) {
       ex.numchannels = 2;                  // stereo
       ex.defaultfrequency = 32000;         // 32 KHz (note: IT files converted with OpenSPC Lite seem to have a wrong sample rate of 32768)
       ex.format = FMOD_SOUND_FORMAT_PCM16; // PCM 16 bits
-      ex.pcmreadcallback = spc_callback;   // our custom function that decodes SPC data with the help of the SPC library
+      ex.pcmreadcallback = spc_callback;
 
       spc_load_spc(snes_spc, (short int*) sound_data, sound_size);
       spc_clear_echo(snes_spc);
@@ -184,7 +184,7 @@ bool Music::play(void) {
  * @param data buffer to write with the 32 KHz 16-bit stereo raw sound decoded by the SPC library
  * @param datalen size of the buffer to write in bytes
  */
-FMOD_RESULT Music::spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen) {
+FMOD_RESULT F_CALLBACK Music::spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen) {
 
   int words = datalen / 2; // the SPC library wants the number of 16-bit words
   spc_play(snes_spc, words, (short int*) data);

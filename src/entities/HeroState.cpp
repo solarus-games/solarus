@@ -132,7 +132,7 @@ void Hero::start_ground(void) {
       Uint32 now = SDL_GetTicks();
       next_ground_date = MAX(next_ground_date, now);
 
-      get_normal_movement()->set_moving_speed(walking_speed * 2 / 3);
+      get_normal_movement()->set_moving_speed(walking_speed * 4 / 5);
     }
     break;
 

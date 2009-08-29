@@ -16,9 +16,8 @@ Feature requests :
 - Permettre de couper voire régler la musique et/ou le son
 - Mettre des constantes dans les scripts
 - Mettre une icône sur l'exécutable
-- valeurs maximales des compteurs : en vert
 - transition intérieur / extérieur : ovale
-- Faire la grotte de la fée
+
 
 Bugs :
 

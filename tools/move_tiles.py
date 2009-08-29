@@ -29,7 +29,7 @@ for line in modifs_file:
 header = sys.stdin.readline()
 sys.stdout.write(header)
 
-for line in sys.stdin.readlines()[1:]:
+for line in sys.stdin.readlines()[0:]:
 	tokens = line.split()
 
 	is_animated = (tokens[1] == "1")

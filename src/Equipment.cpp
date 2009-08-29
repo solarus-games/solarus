@@ -1076,11 +1076,11 @@ void Equipment::remove_inventory_item_amount(InventoryItemId item_id, int amount
 }
 
 /**
- * Returns whether the player has the maximum amount of the specified item.
+ * Returns the maximum amount value of the specified item.
  * @param item_id id of an item
- * @return true if the player has the maximum amount of this item
+ * @return the maximum amount value of this item
  */
-bool Equipment::has_inventory_item_maximum_amount(InventoryItemId item_id) {
+int Equipment::get_inventory_item_maximum(InventoryItemId item_id) {
 
   int maximum;
   switch (item_id) {
@@ -1108,7 +1108,16 @@ bool Equipment::has_inventory_item_maximum_amount(InventoryItemId item_id) {
     break;
   }
 
-  return get_inventory_item_amount(item_id) >= maximum;
+  return maximum;
+}
+
+/**
+ * Returns whether the player has the maximum amount of the specified item.
+ * @param item_id id of an item
+ * @return true if the player has the maximum amount of this item
+ */
+bool Equipment::has_inventory_item_maximum(InventoryItemId item_id) {
+  return get_inventory_item_amount(item_id) >= get_inventory_item_maximum(item_id);
 }
 
 /**

@@ -50,6 +50,7 @@ ItemIcon::ItemIcon(int slot, Savegame *savegame, int x, int y):
   this->item_variant_displayed = 0;
   this->counter = new Counter(2, false, 8, 16);
   this->counter_value_displayed = -1;
+  this->counter_maximum_displayed = -1;
 
   rebuild();
 }
@@ -96,11 +97,14 @@ void ItemIcon::update(void) {
   int counter_index = InventoryItem::get_counter_index(current_item);
   if (counter_index != -1) {
 
-    int current_counter_value = savegame->get_integer(counter_index);
+    int current_counter_value = equipment->get_inventory_item_amount(current_item);
+    int current_counter_maximum = equipment->get_inventory_item_maximum(current_item);
 
-    if (counter_value_displayed != current_counter_value) {
+    if (counter_value_displayed != current_counter_value || counter_maximum_displayed != current_counter_maximum) {
       need_rebuild = true;
+      counter_maximum_displayed = current_counter_maximum;
       counter_value_displayed = current_counter_value;
+      counter->set_maximum(current_counter_maximum);
       counter->set_value(counter_value_displayed);
     }
   }

@@ -29,7 +29,7 @@
  */
 Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
 			 int x, int y):
-  nb_digits(nb_digits), fill_with_zeros(fill_with_zeros) {
+  nb_digits(nb_digits), fill_with_zeros(fill_with_zeros), maximum(-1) {
 
   surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, 8 * nb_digits, 8, 32, 0, 0, 0, 0);
   SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
@@ -47,6 +47,20 @@ Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
 Counter::~Counter(void) {
   SDL_FreeSurface(surface_drawn);
   SDL_FreeSurface(img_digits);
+}
+
+/**
+ * Changes the counter's maximum value.
+ * The surface is redrawn if necessary.
+ * Nothing is done if the maximum value is unchanged.
+ * @param maximum the new maximum value to set (-1 to set no maximum)
+ */
+void Counter::set_maximum(int maximum) {
+
+  if (maximum != this->maximum) {
+    this->maximum = maximum;
+    rebuild_with_value(get_value());
+  }
 }
 
 /**
@@ -82,7 +96,9 @@ void Counter::rebuild_with_value(unsigned int value) {
   // fill with transparent color
   SDL_FillRect(surface_drawn, NULL, Color::black);
 
-  SDL_Rect digit_position_in_src = {0, 0, 8, 8};
+  int y = ((int) value == maximum) ? 8 : 0;
+
+  SDL_Rect digit_position_in_src = {0, y, 8, 8};
   SDL_Rect digit_position_in_counter = {0, 0, 8, 8};
 
   bool right_digit = true;

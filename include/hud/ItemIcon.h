@@ -41,6 +41,8 @@ class ItemIcon: public HudElement {
   Counter *counter;               /**< the counter associated to this item (if any) */
   int counter_value_displayed;    /**< the counter value currently displayed 
 				   * (-1 if there is no counter) */
+  int counter_maximum_displayed;  /**< the counter maximum value currently considered 
+				   * (-1 if there is no counter) */
 
   static const std::string background_file_names[]; /**< file name of the background image for each slot */
 

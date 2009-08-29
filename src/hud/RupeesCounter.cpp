@@ -141,5 +141,6 @@ void RupeesCounter::rebuild(void) {
   SDL_BlitSurface(img_rupee_icon, &rupee_icon_positions[icon_displayed], surface_drawn, NULL);
 
   // current rupees (counter)
+  counter->set_maximum(nb_max_rupees_displayed);
   counter->display(surface_drawn);
 }

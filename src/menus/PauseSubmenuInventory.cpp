@@ -94,11 +94,13 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
 
       // if the player has the item and this item has a counter, we show a counter
 
-      int amount = savegame->get_integer(InventoryItem::get_counter_index(item_id));
+      int amount = equipment->get_inventory_item_amount(item_id);
+      int maximum = equipment->get_inventory_item_maximum(item_id);
       int x = 60 + (k % 7) * 32;
       int y = 81 + (k / 7) * 32;
 
       counters[k] = new Counter(2, false, x, y);
+      counters[k]->set_maximum(maximum);
       counters[k]->set_value(amount);
     }
     else {

@@ -139,23 +139,23 @@ bool Treasure::is_amount_full(void) {
   switch (content) {
 
   case APPLES:
-    full = equipment->has_inventory_item_maximum_amount(INVENTORY_APPLES);
+    full = equipment->has_inventory_item_maximum(INVENTORY_APPLES);
     break;
 
   case PAINS_AU_CHOCOLAT:
-    full = equipment->has_inventory_item_maximum_amount(INVENTORY_PAINS_AU_CHOCOLAT);
+    full = equipment->has_inventory_item_maximum(INVENTORY_PAINS_AU_CHOCOLAT);
     break;
 
   case CROISSANTS:
-    full = equipment->has_inventory_item_maximum_amount(INVENTORY_CROISSANTS);
+    full = equipment->has_inventory_item_maximum(INVENTORY_CROISSANTS);
     break;
 
   case BOMBS:
-    full = equipment->has_inventory_item_maximum_amount(INVENTORY_BOMBS);
+    full = equipment->has_inventory_item_maximum(INVENTORY_BOMBS);
     break;
 
   case ARROWS:
-    full = equipment->has_inventory_item_maximum_amount(INVENTORY_BOW);
+    full = equipment->has_inventory_item_maximum(INVENTORY_BOW);
     break;
 
   default:

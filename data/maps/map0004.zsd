@@ -924,7 +924,7 @@
 2	0	0	1008	960	16	to_D2	0	2	5	_side
 2	0	0	-16	960	16	to_B2	0	2	7	_side
 6	0	72	296	32	8	Jump_sensor	6	184
-6	0	320	120	8	56	Jump_sensor_2	0	48
+6	0	312	120	8	56	Jump_sensor_2	0	48
 6	0	264	56	16	8	Jump_sensor_4	6	88
 8	0	64	701	welcome_sign	0	2	entities/sign	outside_world.village.welcome_sign
 8	0	144	621	rupee_house_sign	3	2	entities/sign	outside_world.village.rupee_house_sign
@@ -1005,13 +1005,17 @@
 1	0	208	725	out_grandma_house	3	0
 2	0	200	696	16	16	to_grandma_house	0	1	11	entrance
 4	0	648	93	3	-1	-1
-2	0	272	432	16	16	to_binbin_dungeon	0	1	17	main_entrance
+2	0	272	400	16	16	to_binbin_dungeon	0	1	17	main_entrance
 1	0	280	461	from_binbin_dungeon	3	0
 10	0	48	448	48	16	village_cave_hiding	177	1
 10	0	48	432	48	16	village_cave_hiding_2	192	1
 8	0	72	461	village_cave_door	3	0	entities/outside_door	_none
 1	0	72	477	out_lyriann_cave	3	0
 3	0	48	109	17	18
+13	0	280	445	16	16	not_in_demo_sensor	0
+12	0	272	424	16	8	custom_obstacle	1	1	1	1
+1	0	424	109	from_fairy_cave	3	0
+2	0	416	80	16	16	to_fairy_cave	0	1	26	from_outside
 0	2	712	848	192	40	511
 0	2	472	368	240	40	511
 0	2	400	320	288	40	511

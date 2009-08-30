@@ -33,9 +33,14 @@ function open_se_door()
 end
 
 function event_obtained_treasure(content, savegame_variable)
-
   if content == 80 then
     boss_end_battle()
   end
+end
+
+function event_dungeon_ending_sequence()
+  play_music("dungeon_finished.spc")
+  npc_set_position("solarus_child", 648, 117)
+  npc_set_animation("solarus_child", "stopped")
 end
 

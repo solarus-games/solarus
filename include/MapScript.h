@@ -51,6 +51,7 @@ class MapScript {
   static FunctionAvailableToScript l_freeze,
     l_unfreeze,
     l_play_sound,
+    l_play_music,
     l_start_message,
     l_set_message_variable,
     l_give_treasure,
@@ -153,6 +154,8 @@ class MapScript {
   void event_obtained_treasure(Treasure::Content content, int savegame_variable);
   void event_shop_item_bought(const std::string &shop_item_name);
   void event_enemy_dead(const std::string &enemy_name);
+  void event_dungeon_ending_sequence(void);
+  void schedule_dungeon_ending_sequence(Uint32 delay);
 };
 
 #endif

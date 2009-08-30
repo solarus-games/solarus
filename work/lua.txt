@@ -32,6 +32,7 @@ Appel de fonctions C++ depuis un script LUA :
 - start_message(message_id)				affiche un message
 - set_message_variable(first_message_id, value)		spécifie la valeur d'une variable dans une séquence de messages
 - play_sound(sound_id)					joue un son
+- play_music(music_id)					joue une musique
 - give_treasure(treasure_id, savegame_variable)		donne un trésor au joueur (sans coffre)
 - give_treasure_with_amount(treasure_id, amount, savegame_variable)		donne un trésor au joueur (sans coffre)
 - savegame_get_string(index)

@@ -19,6 +19,7 @@
 #include "FileTools.h"
 #include "ResourceManager.h"
 #include "Sound.h"
+#include "Music.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Equipment.h"
@@ -77,6 +78,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "freeze", l_freeze);
   lua_register(context, "unfreeze", l_unfreeze);
   lua_register(context, "play_sound", l_play_sound);
+  lua_register(context, "play_music", l_play_music);
   lua_register(context, "start_message", l_start_message);
   lua_register(context, "set_message_variable", l_set_message_variable);
   lua_register(context, "give_treasure", l_give_treasure);
@@ -543,6 +545,20 @@ int MapScript::l_play_sound(lua_State *l) {
   const SoundId &sound_id = lua_tostring(l, 1);
 
   ResourceManager::get_sound(sound_id)->play();
+
+  return 0;
+}
+
+/**
+ * Plays a music.
+ * Argument 1 (string): name of the music
+ */
+int MapScript::l_play_music(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  const MusicId &music_id = lua_tostring(l, 1);
+
+  zsdx->game->play_music(music_id);
 
   return 0;
 }
@@ -1336,6 +1352,7 @@ int MapScript::l_interactive_entity_set_animation(lua_State *l) {
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_current_animation(animation);
+  entity->get_sprite()->restart_animation();
 
   return 0;
 }
@@ -1855,5 +1872,21 @@ void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
  */
 void MapScript::event_enemy_dead(const std::string &enemy_name) {
   call_lua_function("event_enemy_dead", enemy_name);
+}
+
+/**
+ * Notifies the script that the ending sequence of a dungeon has to start now.
+ */
+void MapScript::event_dungeon_ending_sequence(void) {
+  call_lua_function("event_dungeon_ending_sequence");
+}
+
+
+/**
+ * Call the dungeon ending sequence event after the specified delay.
+ * @param delay the delay in milliseconds
+ */
+void MapScript::schedule_dungeon_ending_sequence(Uint32 delay) {
+  add_timer(new Timer(delay, "event_dungeon_ending_sequence", false));
 }
 

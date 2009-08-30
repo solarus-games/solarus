@@ -23,6 +23,7 @@
 #include "entities/CrystalSwitchBlock.h"
 #include "entities/Boomerang.h"
 #include "Map.h"
+#include "MapScript.h"
 #include "ZSDX.h"
 #include "Game.h"
 using std::list;
@@ -705,7 +706,13 @@ void MapEntities::end_boss_battle(void) {
       break;
 
     case Enemy::RANK_BOSS:
-      zsdx->game->play_music("victory.spc");
+      {
+        zsdx->game->play_music("victory.spc");
+	Hero *hero = zsdx->game->get_hero();
+	hero->set_animation_direction(3);
+        hero->freeze();
+	map->get_script()->schedule_dungeon_ending_sequence(10000);
+      }
       break;
 
     default:

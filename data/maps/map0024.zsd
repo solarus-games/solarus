@@ -493,6 +493,7 @@
 12	1	256	424	16	8	custom_obstacle_6	0	1	1	0
 6	1	248	208	24	8	jump_sensor_2	2	40
 6	1	192	208	24	8	jump_sensor_3	2	40
+8	1	640	-3	solarus_child	3	1	npc/solarus_child1	_none
 0	2	904	520	8	64	352
 0	2	880	504	8	96	353
 0	2	144	232	8	96	352

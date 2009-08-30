@@ -514,34 +514,23 @@ void Enemy::attack_stopped_by_hero_shield(void) {
  */
 void Enemy::play_hurt_sound(void) {
 
-  SoundId sound1 = "";
-  SoundId sound2 = "";
-  bool alive = (life > 0);
+  SoundId sound_id = "";
   switch (hurt_sound_style) {
 
     case HURT_SOUND_NORMAL:
-      sound1 = "enemy_hurt";
-      if (alive) {
-        sound2 = "enemy_killed";
-      }
+      sound_id = "enemy_hurt";
       break;
 
     case HURT_SOUND_MONSTER:
-      sound1 = "monster_hurt";
-      if (alive) {
-        sound2 = "enemy_killed";
-      }
+      sound_id = "monster_hurt";
       break;
 
     case HURT_SOUND_BOSS:
-      sound1 = alive ? "boss_hurt" : "boss_killed";
+      sound_id = (life > 0) ? "boss_hurt" : "boss_killed";
       break;
   }
 
-  ResourceManager::get_sound(sound1)->play();
-  if (sound2 != "") {
-    ResourceManager::get_sound(sound2)->play();
-  }
+  ResourceManager::get_sound(sound_id)->play();
 }
 
 /**
@@ -669,6 +658,7 @@ void Enemy::kill(void) {
     }
     sprites.clear();
     create_sprite("enemies/enemy_killed");
+    ResourceManager::get_sound("enemy_killed")->play();
   }
   else {
     // create some explosions

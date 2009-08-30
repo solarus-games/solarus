@@ -451,21 +451,21 @@ void PauseSubmenuMap::display_dungeon_items(SDL_Surface *destination) {
   // compass
   if (dungeon_equipment->has_compass()) {
     SDL_Rect src_position = {17, 0, 17, 17};
-    SDL_Rect dst_position = {70, 168};
+    SDL_Rect dst_position = {69, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 
   // big key
   if (dungeon_equipment->has_big_key()) {
     SDL_Rect src_position = {34, 0, 17, 17};
-    SDL_Rect dst_position = {90, 168};
+    SDL_Rect dst_position = {88, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 
   // boss key
   if (dungeon_equipment->has_boss_key()) {
     SDL_Rect src_position = {51, 0, 17, 17};
-    SDL_Rect dst_position = {109, 168};
+    SDL_Rect dst_position = {107, 168};
     SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
   }
 

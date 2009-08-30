@@ -40,7 +40,6 @@ Bugs :
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
-- dessins grande clé / clé du maître
 
 
 Remarques de Linksupersayen :

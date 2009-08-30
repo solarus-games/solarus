@@ -295,6 +295,7 @@ class Hero: public MapEntity {
   void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
   void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
   void notify_collision_with_sensor(Sensor *sensor);
+  void notify_collision_with_explosion(Explosion *explosion);
   void avoid_chest_collision(Chest *chest);
   bool is_on_raised_blocks(void);
 

@@ -22,6 +22,7 @@
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
 #include "entities/EntityType.h"
+#include "entities/Enemy.h"
 #include <vector>
 #include <list>
 
@@ -75,6 +76,7 @@ class MapEntities {
   Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */
 
   bool hero_on_raised_blocks;                             /**< indicates that the hero is currently on raised crystal switch blocks */
+  Enemy::Rank battle_rank;                                  /**< rank of the big enemy the player is fighting (boss or mini-boss) */
 
   void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
   void remove_marked_entities(void);
@@ -113,6 +115,8 @@ class MapEntities {
   bool overlaps_raised_blocks(Layer layer, const SDL_Rect &rectangle);
   bool is_boomerang_present(void);
   void remove_boomerang(void);
+  void start_boss_battle(Enemy *boss);
+  void end_boss_battle(void);
 
   // update and display
   void set_suspended(bool suspended);
@@ -121,3 +125,4 @@ class MapEntities {
 };
 
 #endif
+

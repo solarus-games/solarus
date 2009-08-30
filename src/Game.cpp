@@ -50,7 +50,7 @@ Game::Game(Savegame *savegame):
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL),
   dungeon(NULL), crystal_switch_state(false),
-  hud(NULL), current_music_id(Music::none), current_music(NULL) {
+  hud(NULL), current_music_id(Music::none), current_music(NULL), previous_music_id(Music::none) {
 
   zsdx->set_game(this);
   controls = new Controls(this);
@@ -599,6 +599,8 @@ void Game::change_crystal_switch_state(void) {
  * @param new_music_id id of the music to play
  */
 void Game::play_music(const MusicId &new_music_id) {
+
+  previous_music_id = current_music_id; // save the previous music
   
   if (!Music::isUnchangedId(new_music_id) && !Music::isEqualId(new_music_id, current_music_id)) {
     // the music is changed
@@ -646,6 +648,13 @@ void Game::pause_or_resume_music(void) {
  */
 void Game::stop_music(void) {
   play_music(Music::none);
+}
+
+/**
+ * Plays the music that was playing before the last music change.
+ */
+void Game::restore_music(void) {
+  play_music(previous_music_id);
 }
 
 /**

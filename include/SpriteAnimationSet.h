@@ -48,5 +48,5 @@ class SpriteAnimationSet {
   bool are_pixel_collisions_enabled(void);
 };
 
-
 #endif
+

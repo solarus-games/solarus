@@ -149,6 +149,7 @@ class ShopItem;
 class Boomerang;
 class ConveyorBelt;
 class Door;
+class Explosion;
 
 // tile patterns
 class Tileset;

@@ -952,6 +952,14 @@ void MapEntity::notify_collision_with_sensor(Sensor *sensor) {
 }
 
 /**
+ * This function is called when an explosion's sprite detects a collision with this entity's sprite.
+ * @param explosion the explosion
+ */
+void MapEntity::notify_collision_with_explosion(Explosion *explosion) {
+  // nothing done by default
+}
+
+/**
  * This function is called when an enemy's sprite detects a pixel-perfect collision with this entity.
  * @param enemy the enemy
  * @param sprite_overlapping the sprite of this entity that collides with the enemy

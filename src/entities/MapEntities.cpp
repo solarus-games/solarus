@@ -31,7 +31,7 @@ using std::list;
  * Constructor.
  */
 MapEntities::MapEntities(Map *map):
-  map(map), hero_on_raised_blocks(false) {
+  map(map), hero_on_raised_blocks(false), battle_rank(Enemy::RANK_NORMAL) {
 
   Hero *hero = zsdx->game->get_hero();
   Layer layer = hero->get_layer();
@@ -679,3 +679,38 @@ void MapEntities::remove_boomerang(void) {
     boomerang = NULL;
   }
 }
+
+/**
+ * Starts the battle against a boss or a mini-boss.
+ * Calling this function enables the boss or mini-boss and plays the appropriate music.
+ * @param boss the boss or mini-boss
+ */
+void MapEntities::start_boss_battle(Enemy *boss) {
+
+  battle_rank = boss->get_rank();
+  boss->set_enabled(true);
+  zsdx->game->play_music("boss.spc");
+}
+
+/**
+ * Indicates that the battle corresponding to the last call to start_boss_battle() is finished
+ * because the player has killed the boss or mini-boss.
+ */
+void MapEntities::end_boss_battle(void) {
+
+  switch (battle_rank) {
+
+    case Enemy::RANK_MINIBOSS:
+      zsdx->game->restore_music();
+      break;
+
+    case Enemy::RANK_BOSS:
+      zsdx->game->play_music("victory.spc");
+      break;
+
+    default:
+      DIE("Invalid boss or miniboss rank: " << battle_rank);
+      break;
+  }
+}
+

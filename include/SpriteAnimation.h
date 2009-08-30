@@ -55,6 +55,7 @@ class SpriteAnimation {
   int get_nb_directions(void);
   SpriteAnimationDirection *get_direction(int direction);
   Uint32 get_frame_delay(void);
+  bool is_looping(void);
 
   void enable_pixel_collisions(void);
   bool are_pixel_collisions_enabled(void);

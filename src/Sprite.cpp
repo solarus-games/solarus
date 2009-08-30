@@ -293,6 +293,14 @@ void Sprite::set_paused(bool paused) {
 }
 
 /**
+ * Returns true if the animation is looping.
+ * @return true if the animation is looping
+ */
+bool Sprite::is_animation_looping(void) {
+  return current_animation->is_looping();
+}
+
+/**
  * Returns true if the animation is finished.
  * The animation is finished after the last frame is reached
  * and if the frame delay is not zero (a frame delay

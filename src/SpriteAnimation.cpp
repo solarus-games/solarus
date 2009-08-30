@@ -94,6 +94,14 @@ Uint32 SpriteAnimation::get_frame_delay(void) {
 }
 
 /**
+ * Returns whether this animation loops on a frame.
+ * @return true if this animation loops
+ */
+bool SpriteAnimation::is_looping(void) {
+  return loop_on_frame != -1;
+}
+
+/**
  * Returns the next frame of the current frame.
  * @param current_direction the current direction
  * @param current_frame the current frame

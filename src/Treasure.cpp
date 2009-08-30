@@ -197,11 +197,14 @@ void Treasure::play_treasure_sound(void) {
   // the treasure sound is the same for all items except the piece of heart and the heart container
   std::string sound_name;
 
-  if (content != PIECE_OF_HEART && content != HEART_CONTAINER) {
-    sound_name = "treasure";
+  if (content == PIECE_OF_HEART) {
+    sound_name = "piece_of_heart";
+  }
+  else if (content == HEART_CONTAINER) { 
+    sound_name = "heart_container";
   }
   else {
-    sound_name = "piece_of_heart";
+    sound_name = "treasure";
   }
   ResourceManager::get_sound(sound_name)->play();
 }

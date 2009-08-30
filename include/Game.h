@@ -73,6 +73,7 @@ class Game: public Screen {
   MusicId current_music_id;  /**< id of the music currently played (a valid music,
 			      * or MUSIC_NONE if no music is being played) */
   Music *current_music;      /**< the music currently played, or NULL if no music is being played */
+  MusicId previous_music_id; /**< id of the previous music played (useful after a mini-boss) */
 
   // update functions
   void update_keys_effect(void);
@@ -123,6 +124,7 @@ class Game: public Screen {
   void play_music(const MusicId &new_music_id);
   void pause_or_resume_music(void);
   void stop_music(void);
+  void restore_music(void);
   const MusicId& get_current_music_id(void);
 
   // current game state

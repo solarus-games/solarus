@@ -41,7 +41,7 @@ class Sprite {
 
   // current state of the sprite
 
-  std::string current_animation_name;         /**< name of the current animation */
+  std::string current_animation_name;    /**< name of the current animation */
   SpriteAnimation *current_animation;    /**< the current animation */
   int current_direction;                 /**< current direction of the animation (the first one is number 0);
 				          * it can be different from the movement direction
@@ -100,6 +100,7 @@ class Sprite {
   void set_suspended(bool suspended);
   bool is_paused(void);
   void set_paused(bool suspended);
+  bool is_animation_looping(void);
   bool is_animation_finished(void);
   bool is_last_frame_reached(void);
   bool has_frame_changed(void);

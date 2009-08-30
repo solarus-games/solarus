@@ -137,6 +137,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "enemies_are_dead", l_enemies_are_dead);
   lua_register(context, "enemy_set_enabled", l_enemy_set_enabled);
   lua_register(context, "boss_start_battle", l_boss_start_battle);
+  lua_register(context, "boss_end_battle", l_boss_end_battle);
   lua_register(context, "sensor_remove", l_sensor_remove);
   lua_register(context, "door_open", l_door_open);
   lua_register(context, "door_close", l_door_close);
@@ -1568,14 +1569,25 @@ int MapScript::l_boss_start_battle(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  Enemy *enemy = (Enemy*) map->get_entities()->get_entity(ENEMY, name);
-
-  enemy->set_enabled(true);
-  zsdx->game->play_music("boss.spc");
+  Enemy *enemy = (Enemy*) map->get_entities()->get_entity(ENEMY, name); 
+  map->get_entities()->start_boss_battle(enemy);
 
   return 0;
 }
 
+/**
+ * Ends the battle against a boss or a mini-boss.
+ * Calling this function plays the appropriate music.
+ */
+int MapScript::l_boss_end_battle(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+
+  Map *map = zsdx->game->get_current_map();
+  map->get_entities()->end_boss_battle();
+
+  return 0;
+}
 
 /**
  * Removes a sensor from the map.

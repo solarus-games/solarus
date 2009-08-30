@@ -4,9 +4,9 @@ walking enemies/boss_papillosaurking.png 4 300 0
 0	0	184	96	92	64	2	2
 0	0	184	96	92	64	2	2
 
-hurt enemies/boss_papillosaurking.png 4 500 -1
-0	96	184	96	92	64	1	1
-0	96	184	96	92	64	1	1
-0	96	184	96	92	64	1	1
-0	96	184	96	92	64	1	1
+hurt enemies/boss_papillosaurking.png 4 50 0
+0	96	184	96	92	64	2	2
+0	96	184	96	92	64	2	2
+0	96	184	96	92	64	2	2
+0	96	184	96	92	64	2	2
 

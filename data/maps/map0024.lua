@@ -32,3 +32,10 @@ function open_se_door()
   switch_set_enabled("ne_switch", true)
 end
 
+function event_obtained_treasure(content, savegame_variable)
+
+  if content == 80 then
+    boss_end_battle()
+  end
+end
+

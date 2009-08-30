@@ -111,6 +111,7 @@ class MapScript {
     l_enemies_are_dead,
     l_enemy_set_enabled,
     l_boss_start_battle,
+    l_boss_end_battle,
     l_sensor_remove,
     l_door_open,
     l_door_close,

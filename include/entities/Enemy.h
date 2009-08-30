@@ -19,8 +19,9 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
-#include "entities/PickableItem.h"
 #include "entities/EnemyAttack.h"
+#include "entities/PickableItem.h"
+#include "entities/Explosion.h"
 
 /**
  * Abstract class representing an enemy.
@@ -121,6 +122,11 @@ class Enemy: public Detector {
   PickableItem::Subtype pickable_item_subtype;  /**< subtype of pickable item that appears when this enemy gets killed */
   int pickable_item_savegame_variable;          /**< savegame variable of the pickable item (if any) */
 
+  // boss or mini-boss
+  bool exploding;                     /**< indicates that the boss is dying and some explosions are triggered on him */
+  int nb_explosions;                  /**< number of explosions already played */
+  Uint32 next_explosion_date;         /**< date of the next explosion */
+
   // creation
   Enemy(const ConstructionParameters &params);
   virtual void initialize(void) = 0; // to initialize the features, the sprites and the movement
@@ -142,7 +148,9 @@ class Enemy: public Detector {
   bool is_being_hurt(void);
   bool is_immobilized(void);
   bool is_killed(void);
+  bool is_dying_animation_finished(void);
   void hurt(MapEntity *source);
+  bool is_sprite_finished_or_looping(void);
   void immobilize(void);
   void stop_immobilized(void);
 
@@ -158,6 +166,7 @@ class Enemy: public Detector {
 
   EntityType get_type(void);
   void set_map(Map *map);
+  Rank get_rank(void);
 
   // obstacles
   bool is_obstacle_for(MapEntity *other);
@@ -170,6 +179,7 @@ class Enemy: public Detector {
   void set_enabled(bool enabled);
   void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
+  void notify_collision_with_explosion(Explosion *explosion);
 
   void attack_hero(Hero *hero);
   void attack_stopped_by_hero_shield(void);

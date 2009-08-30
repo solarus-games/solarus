@@ -22,6 +22,7 @@
 #include "entities/Enemy.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Sensor.h"
+#include "entities/Explosion.h"
 #include "movements/PlayerMovement.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
@@ -272,6 +273,14 @@ void Hero::notify_collision_with_sensor(Sensor *sensor) {
   if (get_state() != RETURNING_TO_SOLID_GROUND && get_state() != JUMPING) {
     sensor->activate(this);
   }
+}
+
+/**
+ * This function is called when an explosion's sprite detects a collision with this entity's sprite.
+ * @param explosion the explosion
+ */
+void Hero::notify_collision_with_explosion(Explosion *explosion) {
+  hurt(explosion, 2, 0);
 }
 
 /**

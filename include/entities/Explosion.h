@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <list>
 
 /**
  * Represents an explosion on the map.
@@ -27,9 +28,13 @@
  */
 class Explosion: public Detector {
 
+  private:
+
+    std::list<Enemy*> victims; /**< list of enemies successfully hurt by this explosion */
+
   public:
 
-    Explosion(Layer layer, const SDL_Rect &xy);
+    Explosion(Layer layer, const SDL_Rect &xy, bool with_damages);
     ~Explosion(void);
 
     EntityType get_type(void);
@@ -42,6 +47,12 @@ class Explosion: public Detector {
 
     // state
     void update(void);
+
+    // collisions
+    void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
+    void notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
+    void try_attack_enemy(Enemy *enemy);
+    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };
 
 #endif

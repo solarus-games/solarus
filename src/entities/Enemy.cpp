@@ -31,6 +31,7 @@
 #include "Geometry.h"
 #include "MapScript.h"
 #include "FileTools.h"
+#include "Random.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
 #include "enemies/SimpleGreenSoldier.h"
@@ -47,7 +48,7 @@ Enemy::Enemy(const ConstructionParameters &params):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
   being_hurt(false), normal_movement(NULL), invulnerable(false), vulnerable_again_date(0),
   can_attack(true), can_attack_again_date(0), immobilized(false),
-  start_shaking_date(0), end_shaking_date(0) {
+  start_shaking_date(0), end_shaking_date(0), exploding(false), nb_explosions(0), next_explosion_date(0) {
 
 }
 
@@ -136,7 +137,7 @@ Enemy * Enemy::create(Subtype type, Rank rank, int savegame_variable,
   enemy->damage_on_hero = 1;
   enemy->magic_damage_on_hero = 0;
   enemy->life = 1;
-  enemy->hurt_sound_style = HURT_SOUND_NORMAL;
+  enemy->hurt_sound_style = (rank == RANK_NORMAL) ? HURT_SOUND_NORMAL : HURT_SOUND_BOSS;
   enemy->pushed_back_when_hurt = true;
   enemy->push_back_hero_on_sword = false;
   enemy->minimum_shield_needed = 0;
@@ -176,6 +177,14 @@ void Enemy::set_map(Map *map) {
 
     restart();
   }
+}
+
+/**
+ * Returns the rank of the enemy.
+ * @return the enemy rank
+ */
+Enemy::Rank Enemy::get_rank(void) {
+  return rank;
 }
 
 /**
@@ -286,7 +295,7 @@ void Enemy::update(void) {
   if (being_hurt) {
     
     if (pushed_back_when_hurt) {
-      if (get_movement()->is_finished()) {
+      if (get_movement()->is_finished() && is_sprite_finished_or_looping()) {
 
 	being_hurt = false;
 
@@ -327,14 +336,34 @@ void Enemy::update(void) {
     get_sprite()->set_current_animation("shaking");
   }
 
-  if (is_killed() && get_sprite()->is_animation_finished()) {
+  if (exploding) {
+    Uint32 now = SDL_GetTicks();
+    if (now >= next_explosion_date) {
+
+      // create an explosion
+      SDL_Rect xy;
+      xy.x = get_top_left_x() + Random::get_number(get_width());
+      xy.y = get_top_left_y() + Random::get_number(get_height());
+      map->get_entities()->add_entity(new Explosion(LAYER_HIGH, xy, false));
+
+      next_explosion_date = now + 200;
+      nb_explosions++;
+
+      if (nb_explosions >= 10) {
+        exploding = false;
+      }
+    }
+  }
+
+  if (is_killed() && is_dying_animation_finished()) {
+
 
     // create the pickable item
     if (pickable_item_subtype != PickableItem::NONE) {
       bool will_disappear = PickableItem::can_disappear(pickable_item_subtype);
       map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item_subtype,
-							   pickable_item_savegame_variable, FALLING_HIGH,
-							   will_disappear));
+	    pickable_item_savegame_variable, FALLING_HIGH,
+	    will_disappear));
     }
 
     // remove the enemy
@@ -359,6 +388,7 @@ void Enemy::set_suspended(bool suspended) {
     can_attack_again_date += diff;
     start_shaking_date += diff;
     end_shaking_date += diff;
+    next_explosion_date += diff;
   }
 }
 
@@ -428,6 +458,14 @@ void Enemy::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
   if (is_enabled()) {
     entity->notify_collision_with_enemy(this, sprite_overlapping);
   }
+}
+
+/**
+ * This function is called when an explosion's sprite detects a collision with this entity's sprite.
+ * @param explosion the explosion
+ */
+void Enemy::notify_collision_with_explosion(Explosion *explosion) {
+  explosion->try_attack_enemy(this);
 }
 
 /**
@@ -517,8 +555,6 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
       stop_immobilized();
     }
 
-    hurt(source);
-
     // compute the number of health points lost by the enemy
     int life_lost = vulnerabilities[attack];
 
@@ -537,6 +573,8 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
       life_lost *= ((CarriedItem*) source)->get_damage_on_enemies();
     }
     life -= life_lost;
+
+    hurt(source);
 
     result = life_lost;
   }
@@ -566,7 +604,10 @@ void Enemy::hurt(MapEntity *source) {
 
   // graphics and sounds
   get_sprite()->set_current_animation("hurt");
-  get_hurt_sound()->play();
+
+  if (rank == RANK_NORMAL || life > 0) {
+    get_hurt_sound()->play();
+  }
 
   if (get_movement() != NULL) {
     normal_movement = get_movement();
@@ -586,7 +627,7 @@ void Enemy::hurt(MapEntity *source) {
 void Enemy::kill(void) {
 
   // if the enemy is immobilized, give a rupee
-  if (is_immobilized() && pickable_item_savegame_variable == -1) {
+  if (rank == RANK_NORMAL && is_immobilized() && pickable_item_savegame_variable == -1) {
     pickable_item_subtype = PickableItem::RUPEE_1;
   }
 
@@ -599,13 +640,23 @@ void Enemy::kill(void) {
   invulnerable = true;
   can_attack = false;
 
-  // replace the enemy sprite
-  for (unsigned int i = 0; i < sprites.size(); i++) {
-    delete sprites[i];
+  if (rank == RANK_NORMAL) {
+    // replace the enemy sprite
+    for (unsigned int i = 0; i < sprites.size(); i++) {
+      delete sprites[i];
+    }
+    sprites.clear();
+    create_sprite("enemies/enemy_killed");
   }
-  sprites.clear();
-  create_sprite("enemies/enemy_killed");
-  ResourceManager::get_sound("enemy_killed")->play();
+  else {
+    // create some explosions
+    exploding = true;
+    nb_explosions = 0;
+    next_explosion_date = SDL_GetTicks() + 2000;
+  }
+
+  SoundId sound_id = (rank == RANK_NORMAL) ? "enemy_killed" : "boss_killed";
+  ResourceManager::get_sound(sound_id)->play();
 
   // save the enemy state if required
   if (savegame_variable != -1) {
@@ -626,7 +677,30 @@ bool Enemy::is_being_hurt(void) {
  * @return true if the enemy is killed
  */
 bool Enemy::is_killed(void) {
-  return life <= 0 && get_sprite()->get_animation_set_id() == "enemies/enemy_killed";
+  return life <= 0 && (get_sprite()->get_animation_set_id() == "enemies/enemy_killed" || !exploding);
+}
+
+/**
+ * When the enemy is killed, returns whether the dying animation is finished.
+ * @return true if the dying animation is finished
+ */
+bool Enemy::is_dying_animation_finished(void) {
+  
+  if (rank == RANK_NORMAL) {
+    return get_sprite()->is_animation_finished();
+  }
+
+  return nb_explosions > 0 && !exploding;
+}
+
+/**
+ * Returns true if the current sprite animation is finished or is looping.
+ * @return true if the current sprite animation is finished or is looping 
+ */
+bool Enemy::is_sprite_finished_or_looping(void) {
+
+  Sprite *sprite = get_sprite();
+  return sprite->is_animation_finished() || sprite->is_animation_looping();
 }
 
 /**

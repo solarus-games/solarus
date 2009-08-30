@@ -598,15 +598,15 @@ void Game::change_crystal_switch_state(void) {
  * or even Music::unchanged_id (nothing is done in this case).
  * @param new_music_id id of the music to play
  */
-void Game::play_music(const MusicId &new_music_id) {
+void Game::play_music(MusicId new_music_id) {
 
-  previous_music_id = current_music_id; // save the previous music
-  
   if (!Music::isUnchangedId(new_music_id) && !Music::isEqualId(new_music_id, current_music_id)) {
     // the music is changed
 
+    previous_music_id = current_music_id; // save the previous music
+
     if (Music::isNoneId(new_music_id) && current_music != NULL) {
-      
+     
       current_music->stop();
       current_music_id = Music::none;
       current_music = NULL;

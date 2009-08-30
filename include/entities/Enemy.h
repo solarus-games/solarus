@@ -62,9 +62,9 @@ class Enemy: public Detector {
    * Defines the sounds that can be played when an enemy is hurt.
    */
   enum HurtSoundStyle {
-    HURT_SOUND_NORMAL,  /**< "enemy_hurt" is played */
-    HURT_SOUND_MONSTER, /**< "monster_hurt" is played */
-    HURT_SOUND_BOSS,    /**< "boss_hurt" is played */
+    HURT_SOUND_NORMAL,  /**< "enemy_hurt" and if necessary "enemy_killed" are played */
+    HURT_SOUND_MONSTER, /**< "monster_hurt" and if necessary "enemy_killed" are played */
+    HURT_SOUND_BOSS,    /**< "boss_hurt" or "boss_killed" is played */
   };
 
   /**
@@ -143,7 +143,7 @@ class Enemy: public Detector {
   void set_vulnerability(EnemyAttack attack, int reaction);
 
   // hurt the enemy
-  Sound *get_hurt_sound(void);
+  void play_hurt_sound(void);
   bool is_in_normal_state(void);
   bool is_being_hurt(void);
   bool is_immobilized(void);

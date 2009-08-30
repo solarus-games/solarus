@@ -510,13 +510,38 @@ void Enemy::attack_stopped_by_hero_shield(void) {
 }
 
 /**
- * Returns the sound to play when the enemy is hurt.
- * @return the sound to play when the enemy is hurt
+ * Plays the appropriate sounds the enemy is hurt.
  */
-Sound * Enemy::get_hurt_sound(void) {
+void Enemy::play_hurt_sound(void) {
 
-  static const SoundId sound_ids[] = {"enemy_hurt", "monster_hurt", "boss_hurt"};
-  return ResourceManager::get_sound(sound_ids[hurt_sound_style]);
+  SoundId sound1 = "";
+  SoundId sound2 = "";
+  bool alive = (life > 0);
+  switch (hurt_sound_style) {
+
+    case HURT_SOUND_NORMAL:
+      sound1 = "enemy_hurt";
+      if (alive) {
+        sound2 = "enemy_killed";
+      }
+      break;
+
+    case HURT_SOUND_MONSTER:
+      sound1 = "monster_hurt";
+      if (alive) {
+        sound2 = "enemy_killed";
+      }
+      break;
+
+    case HURT_SOUND_BOSS:
+      sound1 = alive ? "boss_hurt" : "boss_killed";
+      break;
+  }
+
+  ResourceManager::get_sound(sound1)->play();
+  if (sound2 != "") {
+    ResourceManager::get_sound(sound2)->play();
+  }
 }
 
 /**
@@ -604,10 +629,7 @@ void Enemy::hurt(MapEntity *source) {
 
   // graphics and sounds
   get_sprite()->set_current_animation("hurt");
-
-  if (rank == RANK_NORMAL || life > 0) {
-    get_hurt_sound()->play();
-  }
+  play_hurt_sound();
 
   if (get_movement() != NULL) {
     normal_movement = get_movement();
@@ -654,9 +676,6 @@ void Enemy::kill(void) {
     nb_explosions = 0;
     next_explosion_date = SDL_GetTicks() + 2000;
   }
-
-  SoundId sound_id = (rank == RANK_NORMAL) ? "enemy_killed" : "boss_killed";
-  ResourceManager::get_sound(sound_id)->play();
 
   // save the enemy state if required
   if (savegame_variable != -1) {

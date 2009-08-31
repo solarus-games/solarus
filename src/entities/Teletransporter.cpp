@@ -248,7 +248,6 @@ void Teletransporter::transport_hero(Hero *hero) {
     }
   }
 
-  hero->reset_movement(); // stop the hero now
   zsdx->game->set_current_map(destination_map_id, name, transition_style);
 }
 

@@ -1,7 +1,7 @@
 # Ce fichier comporte l'ensemble des messages affichés
 # par le moteur de jeu en version française.
 # Les messages affichés par les maps sont quant à eux
-# définis dans le fichier game.msg.
+# définis dans le fichier game_dialogs.zsd.
 #
 # La syntaxe est similaire à celle d'un fichier ini de Windows.
 # Un message est défini par les éléments suivants :
@@ -25,18 +25,22 @@
 # dont l'identificateur est le même auquel on ajoute ".1", puis
 # ".2", etc. Lors de la traduction, on peut ainsi faire tenir
 # le texte dans un nombre différent de messages sans avoir
-# de problèmes d'identificateurs.
+# de problèmes d'identificateurs. Seuls le premier message
+# de la série doit avoir exactement le même identificateur que
+# dans la version française. Si le dernier se termine par ".4" au
+# lieu de ".3" parce que la traduction ne tenait pas dans le même
+# nombre de messages, ça fonctionne sans problème.
 #
 # - La valeur cancel : définit ce qui se passe lorsque le joueur
-# tente de passer le message en appuyant sur la touche C. Il y a
+# tente d'interrompre le message en appuyant sur la touche C. Il y a
 # 3 valeurs possibles :
 #    - none (par défaut) : le message ne peut pas être passé.
 #    - current : si on appuie sur C, le message courant s'affiche
-#                immédiatement en entier (au lieu de défiler).
+#                immédiatement en entier (au lieu de défiler lettre par lettre).
 #                On peut ainsi passer plus vite au message suivant.
 #    - all : si on appuie sur C, le message courant s'arrête
 #            et les messages suivants ne seront pas affichés. La
-#            boîte de dialogue se ferme.
+#            boîte de dialogue se ferme immédiatement.
 # La valeur de cancel s'applique au message courant et à tous les
 # messages suivants, jusqu'à ce que la valeur soit changée ou que
 # la boîte de dialogue se ferme.
@@ -48,18 +52,22 @@
 # temps normal). Elle reste affichée dans les messages suivants,
 # jusqu'à ce que sa valeur soit changée ou que la boîte de dialogue
 # se ferme. Une valeur -1 signifie d'enlever l'icône.
+# Les icônes sont surtout utilisées dans les messages du moteur de
+# jeu, par exemple lorsque le joueur obtient un trésor.
 #
 # - La valeur question : permet d'afficher une question avec deux
 # réponses au choix. Les deux réponses sont affichées sur les deux
 # dernières lignes. Ces deux lignes sont alors limitées à 20
 # caractères (au lieu de 23 en temps normal) car un curseur en
 # forme de flèche permet au joueur de choisir sa réponse. Il est
-# possible d'avoir à la fois une icône et une question, auquel cas
+# possible d'avoir à la fois une icône et une question, dans ce cas
 # le nombre de caractères se limite à 17.
 # S'il y a une question, il est possible de spécifier une valeur
 # next2. Si la première réponse est choisie, le prochain message
 # affiché est indiqué par next. Si la deuxième réponse est choisie,
-# il est alors indiqué par next2.
+# il est alors indiqué par next2. Comme pour la valeur next,
+# si next2 n'est pas spécifié et que le joueur choisit la réponse 2,
+# la série de messages s'arrête et la boîte de dialogue se ferme.
 #
 # - Enfin, il existe des séquences particulières que l'on peut
 # insérer dans le texte d'un message :
@@ -68,7 +76,7 @@
 #    - $2 : met une vitesse de défilement moyenne
 #    - $3 : met une vitesse de déliement rapide (par défaut)
 #    - $v : permet d'insérer la valeur d'une variable dans le texte
-#           du message (la valeur doit alors être spécifiée dans
+#           du message (la valeur est alors spécifiée dans
 #           le programme qui a demandé l'affichage du message)
 #
 # - Les commentaires suivants permettent de vérifier le nombre
@@ -77,6 +85,7 @@
 #       |-----------------------| sans icône ni question
 #       |--------------------|    avec icône ou question
 #       |-----------------|       avec icône et question
+
 
 # -------------------------------------
 # Description des items de l'inventaire
@@ -90,7 +99,7 @@
 # où i est le numéro de l'item (de 0 à 27) et x est la variante de cet
 # item possédée par le joueur.
 # Exception : pour les Flacons 2, 3 et 4, le numéro de l'item est remplacé
-# par celui du Flacon 1 (6) pour éviter de répéter les mêmes messages.
+# par celui du Flacon 1 (6) pour éviter de définir 4 fois les mêmes messages.
 
 [_item_description_0_1]
 # Plume / Feather
@@ -1360,7 +1369,7 @@ line2 = "supplémentaire !"
 #       |--------------------|
 icon = 80
 line1 = "Tu as trouvé un"
-line2 = "Réceptacle de Coeur !"
+line2 = "Réceptacle de Coeur."
 next = _treasure_79_4.2
 
 [_treasure_82_1]
@@ -1591,7 +1600,11 @@ icon = 8
 line1 = "Il y a de l'eau ici,"
 line2 = "mais il te faut"
 line3 = "un Flacon vide"
-next = _found_water.no_bottle.2
+next = _found_water.no_empty_bottle.2
+
+[_found_water.no_empty_bottle.2]
+#       |--------------------|
+line1 = "pour la stocker..."
 
 [_use_bottle_with_water]
 #       |--------------------|

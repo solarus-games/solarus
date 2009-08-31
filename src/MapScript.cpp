@@ -104,6 +104,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "npc_remove", l_npc_remove);
   lua_register(context, "hero_set_direction", l_hero_set_direction);
   lua_register(context, "hero_align_on_sensor", l_hero_align_on_sensor);
+  lua_register(context, "hero_set_map", l_hero_set_map);
+  lua_register(context, "hero_walk", l_hero_walk);
   lua_register(context, "chest_set_open", l_chest_set_open);
   lua_register(context, "chest_set_hidden", l_chest_set_hidden);
   lua_register(context, "chest_is_hidden", l_chest_is_hidden);
@@ -985,6 +987,47 @@ int MapScript::l_hero_align_on_sensor(lua_State *l) {
 
   return 0;
 }
+
+/**
+ * Sends the hero to a map.
+ * Argument 1 (int): id of the destination map (can be the same one)
+ * Argument 2 (string): name of the destination point on that map
+ * Argument 3 (int): type of transition to play
+ */
+int MapScript::l_hero_set_map(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  MapId map_id = lua_tointeger(l, 1);
+  const std::string &destination_point_name = lua_tostring(l, 2);
+  Transition::Style transition_style = Transition::Style(lua_tointeger(l, 3));
+
+  zsdx->game->set_current_map(map_id, destination_point_name, transition_style);
+
+  return 0;
+}
+
+/**
+ * Makes the hero walk with respect to a path.
+ * Argument 1 (string): the path (each character is a direction between '0' and '7')
+ * Argument 2 (boolean): true to make the movement loop
+ * Argument 3 (boolean): true to make the movement sensible to obstacles
+ */
+int MapScript::l_hero_walk(lua_State *l) {
+
+  check_nb_arguments(l, 3);
+
+  /* TODO
+  const std::string &path = lua_tostring(l, 1);
+  bool loop = lua_toboolean(l, 2) != 0;
+  bool with_collisions = lua_toboolean(l, 3) != 0;
+
+  zsdx->game->get_hero()->walk(path, loop, with_collisions);
+  */
+
+  return 0;
+}
+
 
 /**
  * Sets the chest open or closed.

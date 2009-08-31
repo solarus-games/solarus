@@ -77,6 +77,8 @@ class MapScript {
     l_npc_remove,
     l_hero_set_direction,
     l_hero_align_on_sensor,
+    l_hero_set_map,
+    l_hero_walk,
     l_chest_set_open,
     l_chest_set_hidden,
     l_chest_is_hidden,

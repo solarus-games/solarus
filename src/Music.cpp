@@ -60,6 +60,7 @@ Music::Music(const MusicId &music_id) {
   // play musics with the highest priority to avoid being interrupted by sound effects
   FMOD_System_GetChannel(system, 15, &channel);
   FMOD_Channel_SetPriority(channel, 15);
+  //  FMOD_Channel_SetFrequency(channel, 32000);
 }
 
 /**

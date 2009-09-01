@@ -53,9 +53,11 @@ class SelectionMenuPhase: public Screen {
 
   // creation and destruction
   SelectionMenuPhase(SelectionMenuPhase *previous,
-		     const std::string &title_string);
+		     const std::string &title_string_key);
   virtual ~SelectionMenuPhase(void);
 
+  void set_bottom_options(const std::string &left_string_key, const std::string &right_string_key);
+  
   // savegames
   Savegame ** get_savegames(void);
   Savegame * get_savegame(int save_number);
@@ -83,7 +85,7 @@ class SelectionMenuPhase: public Screen {
   void display_savegame(int save_number, SDL_Surface *destination_surface);
   void display_savegame_number(int save_number);
   void display_savegame_number(int save_number, SDL_Surface *destination_surface);
-  void display_options(const std::string &left_string, const std::string &right_string);
+  void display_bottom_options(void);
   void display_normal_cursor(void);
 
   // update and display for the common part
@@ -93,3 +95,4 @@ class SelectionMenuPhase: public Screen {
 };
 
 #endif
+

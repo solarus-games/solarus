@@ -27,11 +27,11 @@
  * @param previous the previous phase
  * @param save_number_to_erase number of the savegame to delete (0 to 2)
  */
-SelectionMenuConfirmErase::SelectionMenuConfirmErase(SelectionMenuPhase *previous,
-						     int save_number_to_erase):
-  SelectionMenuPhase(previous, "Etes-vous sûr ?"),
+SelectionMenuConfirmErase::SelectionMenuConfirmErase(SelectionMenuPhase *previous, int save_number_to_erase):
+  SelectionMenuPhase(previous, "selection_menu.confirm_erase"),
   save_number_to_erase(save_number_to_erase) {
 
+  set_bottom_options("selection_menu.big_no", "selection_menu.big_yes");
   set_cursor_position(4); // select "no" by default
 }
 
@@ -93,7 +93,7 @@ void SelectionMenuConfirmErase::display(SDL_Surface *screen_surface) {
   display_savegame_number(save_number_to_erase);
 
   // options
-  display_options("NON", "OUI");
+  display_bottom_options();
 
   // cursor
   display_normal_cursor();
@@ -111,3 +111,4 @@ void SelectionMenuConfirmErase::delete_save_file(int save_number) {
   remove(savegame->get_file_name().c_str());
   reload_savegames();
 }
+

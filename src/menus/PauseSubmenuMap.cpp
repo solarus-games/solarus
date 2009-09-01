@@ -45,7 +45,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
   // outside map or inside map (no dungeon): show the world map
   if (dungeon == NULL) {
 
-    set_caption_text(TextResource::get_string("caption_text.world_map"));
+    set_caption_text(TextResource::get_string("map.caption.world_map"));
 
     const SDL_Rect *real_size = game->get_outside_world_size();
 

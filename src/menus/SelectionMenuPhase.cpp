@@ -21,18 +21,15 @@
 #include "Sound.h"
 #include "Sprite.h"
 #include "TextSurface.h"
+#include "TextResource.h"
 #include "hud/HeartsView.h"
-
-// TODO: load the title strings from some external file (for future translation)
 
 /**
  * Creates a selection menu phase.
- * @param previous the previous phase (if we were already in
- * the selection menu), or NULL
- * @param title_string the title text to display in this phase
+ * @param previous the previous phase (if we were already in the selection menu), or NULL
+ * @param title_string_key key of the title string to display in this phase
  */
-SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous,
-				       const std::string &title_string):
+SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous, const std::string &title_string_key):
   Screen() {
 
   if (previous != NULL) {
@@ -42,7 +39,7 @@ SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous,
     this->common_part = new SelectionMenuCommon();
   }
 
-  this->title_string = title_string;
+  this->title_string = TextResource::get_string(title_string_key);
   this->destination_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   this->transition = NULL;
 }
@@ -63,6 +60,18 @@ SelectionMenuPhase::~SelectionMenuPhase(void) {
     delete common_part;
   }
 }
+
+/**
+ * Sets the two options to display in the bottom of the screen.
+ * @param left_string_key key of the first option string (on the left)
+ * @param right_string_key key of the second option string (on the right)
+ */
+void SelectionMenuPhase::set_bottom_options(const std::string &left_string_key, const std::string &right_string_key) {
+
+  common_part->text_option1->set_text(TextResource::get_string(left_string_key));
+  common_part->text_option2->set_text(TextResource::get_string(right_string_key));
+}
+
 
 /**
  * Updates the selection menu in this phase.
@@ -322,7 +331,7 @@ void SelectionMenuPhase::display_savegame_number(int save_number, SDL_Surface *d
  * @param left_string text of the first option (on the left)
  * @param right_string text of the second option (on the right)
  */
-void SelectionMenuPhase::display_options(const std::string &left_string, const std::string &right_string) {
+void SelectionMenuPhase::display_bottom_options(void) {
 
   SDL_Rect position;
 
@@ -332,12 +341,8 @@ void SelectionMenuPhase::display_options(const std::string &left_string, const s
   position.x = 165;
   SDL_BlitSurface(common_part->img_option_container, NULL, destination_surface, &position);
 
-  common_part->text_option1->set_text(left_string);
   common_part->text_option1->display(destination_surface);
-
-  common_part->text_option2->set_text(right_string);
   common_part->text_option2->display(destination_surface);
-
 }
 
 /**

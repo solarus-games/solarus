@@ -30,8 +30,9 @@
  * the selection menu), or NULL
  */
 SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous,
-		     "Veuillez choisir un fichier") {
+  SelectionMenuPhase(previous, "selection_menu.select_file") {
+
+  set_bottom_options("selection_menu.erase", "selection_menu.exit");
 
   // initialize the cursor
   get_cursor()->set_current_animation("blue");
@@ -66,7 +67,7 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
     case SDLK_SPACE:
     case SDLK_RETURN:
       if (cursor_position == 5) {
-	// the user chose "Quit"
+	// the user chose "Exit"
 	zsdx->set_exiting();
       }
       else if (cursor_position == 4) {
@@ -122,7 +123,7 @@ void SelectionMenuSelectFile::display(SDL_Surface *screen_surface) {
   }
 
   // options
-  display_options("Effacer", "Quitter");
+  display_bottom_options();
 
   // cursor
   display_normal_cursor();
@@ -134,3 +135,4 @@ void SelectionMenuSelectFile::display(SDL_Surface *screen_surface) {
 
   finish_display(screen_surface);
 }
+

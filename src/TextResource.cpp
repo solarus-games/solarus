@@ -17,40 +17,60 @@
 #include "TextResource.h"
 #include "FileTools.h"
 
-/**
- * Returns a string stored in the file "text/strings.zsd".
- * @param id id of the string to retrieve
- */
-std::string TextResource::get_string(const std::string &id) {
+std::map<std::string, std::string> TextResource::strings;
 
-  std::string result = "";
+/**
+ * Initializes the text resource by loading all string of the file "text/strings.zsd"
+ * into memory for future access by get_string().
+ */
+void TextResource::initialize(void) {
+
   std::istream &file = FileTools::data_file_open("text/strings.zsd");
   std::string line;
-  bool found = false;
 
-  // read each line until we find the id
-  while (std::getline(file, line) && !found) {
+  // read each line
+  int i = 0;
+  while (std::getline(file, line)) {
 
+    i++;
+
+    // ignore empty lines or lines starting with '#'
     if (line.size() == 0 || line[0] == '#') {
       continue;
     }
+ 
+    // get the key
+    std::string key = line.substr(0, line.find_first_of("\t"));
 
-    std::string current_id;
-    std::istringstream iss(line);
-    FileTools::read(iss, current_id);
-
-    if (current_id == id) {
-      found = true;
-      result = line.substr(current_id.size() + 1);
+    // get the value
+    size_t index = line.find_last_of("\t");
+    if (index == std::string::npos || index + 1 >= line.size()) {
+      DIE("strings.zsd, line " << i << ": cannot read string value for key '" << key << "'");
     }
+    strings[key] = line.substr(index + 1);
   }
 
   FileTools::data_file_close(file);
+}
 
-  if (!found) {
-    DIE("Cannot find string with id '" << id << "'");
+/**
+ * Closes the text resource.
+ */
+void TextResource::quit(void) {
+
+}
+
+/**
+ * Returns a string stored in the file "text/strings.zsd".
+ * @param key id of the string to retrieve
+ */
+const std::string &TextResource::get_string(const std::string &key) {
+
+  const std::string &value = strings[key];
+  if (value == "") {
+    DIE("Cannot find string with key '" << key << "'");
   }
 
-  return result;
+  return value;
 }
 

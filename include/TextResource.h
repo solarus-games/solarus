@@ -18,6 +18,7 @@
 #define ZSDX_TEXT_RESOURCE_H
 
 #include "Common.h"
+#include <map>
 
 /**
  * This class provides some strings loaded from an external file containing the texts in the current language.
@@ -28,13 +29,18 @@ class TextResource {
 
   private:
 
+    static std::map<std::string, std::string> strings;
+
     // we don't need to instanciate this class
     TextResource(void);
     ~TextResource(void);
 
   public:
 
-    static std::string get_string(const std::string &id);  
+    static void initialize(void);
+    static void quit(void);
+
+    static const std::string & get_string(const std::string &key);  
 };
 
 #endif

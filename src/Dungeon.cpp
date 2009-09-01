@@ -48,8 +48,8 @@ int Dungeon::get_number(void) {
 }
 
 /**
- * Returns the name of the dungeon, in the current langage.
- * The returns name respects the syntax specified by the
+ * Returns the name of the dungeon, in the current language.
+ * The returned name respects the syntax specified by the
  * PauseSubmenuMap::set_caption_text() function.
  * @return the dungeon name
  */
@@ -64,7 +64,7 @@ void Dungeon::load(void) {
 
   // get the dungeon name
   std::ostringstream oss;
-  oss << "caption_text.dungeon_name_" << dungeon_number;
+  oss << "map.caption.dungeon_name_" << dungeon_number;
   this->name = TextResource::get_string(oss.str());
 
   // parse the dungeon file

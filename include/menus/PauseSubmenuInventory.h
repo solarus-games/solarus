@@ -38,6 +38,7 @@ class PauseSubmenuInventory: public PauseSubmenu {
   // graphics
   SDL_Surface *items_img;         /**< images of the existing items */
   Counter *counters[28];          /**< counters (for some items only) */
+  std::string caption_strings[28];
 
   // assigning an item to an icon
   InventoryItemId item_assigned_id;       /**< index of the item currently being assigned */

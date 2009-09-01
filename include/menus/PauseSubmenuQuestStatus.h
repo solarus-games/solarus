@@ -49,3 +49,4 @@ class PauseSubmenuQuestStatus: public PauseSubmenu {
 };
 
 #endif
+

@@ -58,6 +58,22 @@ void Sound::initialize(void) {
 
   FMOD_System_Create(&system);
 
+  /* not working
+  // initialize the default sample rate we want
+  int sample_rate, num_output_channels, max_input_channels, bits;
+  FMOD_SOUND_FORMAT sound_format;
+  FMOD_DSP_RESAMPLER resampler_method;
+  FMOD_System_GetSoftwareFormat(system, &sample_rate, &sound_format, &num_output_channels, &max_input_channels, &resampler_method, &bits);
+  result = FMOD_System_SetSoftwareFormat(system, 32000, sound_format, num_output_channels, max_input_channels, resampler_method);
+  if (result != FMOD_OK) {
+    std::cout << "Warning: failed to set the default sample rate to 32 KHz: " << FMOD_ErrorString(result) << std::endl;
+  }
+
+  //  FMOD_System_GetSoftwareFormat(system, &sample_rate, &sound_format, &num_output_channels, &max_input_channels, &resampler_method, &bits);
+  //  std::cout << "sample rate: " << sample_rate << ", sound format: " << sound_format << ", num output channels: " << num_output_channels
+  //  << ", max input channels: " << max_input_channels << ", resampler method: " << resampler_method << ", bits: " << bits << std::endl;
+  */
+
   // first we try to initialize FMOD with WinMM instead of DirectSound
   // because we have problems with DirectSound
   FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_WINMM);

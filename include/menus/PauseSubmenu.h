@@ -50,3 +50,4 @@ class PauseSubmenu {
 };
 
 #endif
+

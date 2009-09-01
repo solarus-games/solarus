@@ -22,17 +22,8 @@
 #include "Color.h"
 #include "Sound.h"
 #include "Sprite.h"
+#include "TextResource.h"
 using namespace std;
-
-// TODO: load this from some external file (for future translation)
-static const string rupee_bag_texts[] = {"Sac de Rubis", "Grand\nSac de Rubis", "Sac de Rubis\nGéant"};
-static const string bomb_bag_texts[] = {"Sac de Bombes", "Grand\nSac de Bombes", "Sac de Bombes\nGéant"};
-static const string quiver_texts[] = {"Carquois", "Grand Carquois", "Carquois Géant"};
-static const string world_map_text = "Carte du Monde";
-static const string pieces_of_heart_text = "Fragments de Coeur";
-static const string tunic_texts[] = {"Cotte de Mailles\nverte", "Cotte de Mailles\nbleue", "Cottes de Mailles\nrouge"};
-static const string sword_texts[] = {"Epée du Courage", "Glaive Hylien", "Sabre du Héros", "Lame Purificatrice"};
-static const string shield_texts[] = {"Bouclier", "Bouclier de Feu", "Bouclier Miroir"};
 
 /**
  * Constructor.
@@ -52,6 +43,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   SDL_Surface *treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
   SDL_Surface *pieces_of_heart_img = ResourceManager::load_image("menus/quest_status_pieces_of_heart.png");
 
+  ostringstream oss;
+
   // tunic
   {
     int tunic = equipment->get_tunic();
@@ -59,7 +52,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     SDL_Rect dst_position = {177, 164};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
 
-    caption_texts[5] = tunic_texts[tunic];
+    oss << "quest_status.caption.tunic_" << tunic;
+    caption_texts[5] = TextResource::get_string(oss.str());
+    oss.str("");
   }
 
   // sword
@@ -69,7 +64,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     SDL_Rect dst_position = {211, 164};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
 
-    caption_texts[6] = sword_texts[sword - 1];
+    oss << "quest_status.caption.sword_" << sword;
+    caption_texts[6] = TextResource::get_string(oss.str());
+    oss.str("");
   }
 
   // shield
@@ -79,7 +76,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     SDL_Rect dst_position = {245, 164};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
 
-    caption_texts[7] = shield_texts[shield - 1];
+    oss << "quest_status.caption.shield_" << shield;
+    caption_texts[7] = TextResource::get_string(oss.str());
+    oss.str("");
   }
 
   // rupee bag
@@ -91,7 +90,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     SDL_Rect dst_position = {60, 71};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
 
-    caption_texts[0] = rupee_bag_texts[rupee_bag - 1];
+    oss << "quest_status.caption.rupee_bag_" << rupee_bag;
+    caption_texts[0] = TextResource::get_string(oss.str());
+    oss.str("");
   }
 
   // bomb bag
@@ -102,7 +103,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     SDL_Rect dst_position = {60, 100};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
 
-    caption_texts[1] = bomb_bag_texts[bomb_bag - 1];
+    oss << "quest_status.caption.bomb_bag_" << bomb_bag;
+    caption_texts[1] = TextResource::get_string(oss.str());
+    oss.str("");
   }
 
   // quiver
@@ -114,7 +117,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     SDL_Rect dst_position = {60, 130};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
 
-    caption_texts[2] = quiver_texts[quiver - 1];
+    oss << "quest_status.caption.quiver_" << quiver;
+    caption_texts[2] = TextResource::get_string(oss.str());
+    oss.str("");
   }
 
   // world map
@@ -123,17 +128,17 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     SDL_Rect dst_position = {60, 164};
     SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
 
-    caption_texts[3] = world_map_text;
+    caption_texts[3] = TextResource::get_string("quest_status.caption.world_map");
   }
 
-  // pieces of heart
+  // heart pieces
   {
     int x = 51 * equipment->get_nb_pieces_of_heart();
     SDL_Rect src_position = {x, 0, 51, 50};
     SDL_Rect dst_position = {101, 82};
     SDL_BlitSurface(pieces_of_heart_img, &src_position, quest_items_surface, &dst_position);
 
-    caption_texts[4] = pieces_of_heart_text;
+    caption_texts[4] = TextResource::get_string("quest_status.caption.pieces_of_heart");
   }
 
   // dungeons finished
@@ -286,3 +291,4 @@ void PauseSubmenuQuestStatus::display(SDL_Surface *destination) {
   // cursor
   cursor_sprite->display(destination, cursor_sprite_position.x, cursor_sprite_position.y);
 }
+

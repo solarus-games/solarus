@@ -21,11 +21,11 @@
 #include <map>
 
 /**
- * Represents the game controls.
- * This class handles the customization of the keyboard and joypad keys.
+ * Represents the game controls. This class handles the customization of the keyboard and joypad buttons.
  * It receives the SDL keyboard and joypad events that occur during
- * the game and notifies the appropriate objects
- * that a key was pressed, depending on the game situation.
+ * the game and then notifies the appropriate objects that a game key was pressed or released.
+ * What we call a game key is a high-level notion such as "the action key".
+ * The corresponding low-level event can be a keyboard event or a joypad event.
  */
 class Controls {
 
@@ -33,6 +33,7 @@ class Controls {
 
   /**
    * The game keys that can be customized.
+   * 
    */
   enum GameKey {
     NONE = 0,
@@ -49,18 +50,22 @@ class Controls {
   
  private:
 
-  Game *game;
-  Savegame *savegame;
-  SDL_Joystick *joystick;
-  DebugKeys *debug_keys;
+  Game *game;             /**< the game */
+  Savegame *savegame;     /**< the savegame, which stores the keyboard and joypad mappings of the game keys */
+  SDL_Joystick *joystick; /**< the joystick object */
+  DebugKeys *debug_keys;  /**< special keys to debug the game, e.g. by traversing walls (disabled in release mode) */
 
-  std::map<SDLKey, GameKey> keyboard_mapping;
-  std::map<std::string, GameKey> joypad_mapping;
-  bool keys_pressed[9];
-  static const Uint16 arrows_masks[4];
+  std::string game_key_names[9];                 /**< human name of each game key, in the current language */
+  std::map<SDLKey, GameKey> keyboard_mapping;    /**< associates each game key to the keyboard key that triggers it */
+  std::map<std::string, GameKey> joypad_mapping; /**< associates each game key to the joypad action that triggers it*/
+  bool keys_pressed[9];                          /**< memorizes the state of each game key */
+  static const Uint16 arrows_masks[4];           /**< bit mask associated to each direction key: this allows to
+                                                  * store any combination of the 4 directions into a simple integer */
 
-  bool customizing;
-  GameKey key_to_customize;
+  bool customizing;                              /**< indicates that the next keyboard event will be considered as the new mapping for a game key */
+  GameKey key_to_customize;                      /**< the game key to customize when customizing is true */
+
+  static const std::string direction_names[4];   /**< English name of each arrow direction, used to represent a joypad action by a string */
 
   void game_key_pressed(GameKey key);
   void game_key_released(GameKey key);

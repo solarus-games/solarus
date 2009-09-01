@@ -44,6 +44,8 @@ Bugs :
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 - empêcher de mettre pause après le boss
 - renommer TextResource en Strings ou autre
+- écran-titre : afficher le texte "Appuyez sur espace" par TextResource et TextSurface pour faciliter la traduction
+- effets sonores soulever et lancer un vase : on entend un bruit de fond
 
 
 Remarques de Linksupersayen :

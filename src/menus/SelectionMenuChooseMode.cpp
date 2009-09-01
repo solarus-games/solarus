@@ -26,7 +26,7 @@
  * @param previous the previous phase
  */
 SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous, "Choisissez un mode de jeu"),
+  SelectionMenuPhase(previous, "selection_menu.choose_mode"),
   adventure_mode(true) {
 
   this->img_mode = ResourceManager::load_image("menus/selection_menu_mode.png");

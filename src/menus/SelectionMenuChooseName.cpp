@@ -30,7 +30,7 @@
  * @param previous the previous phase
  */
 SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous, "Quel est votre nom ?"),
+  SelectionMenuPhase(previous, "selection_menu.choose_name"),
   next_key_date(SDL_GetTicks()) {
 
   SDL_EnableKeyRepeat(300, 50);

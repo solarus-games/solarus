@@ -27,8 +27,9 @@
  * @param previous the previous phase
  */
 SelectionMenuEraseFile::SelectionMenuEraseFile(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous,
-		     "Quel fichier voulez-vous effacer ?") {
+  SelectionMenuPhase(previous, "selection_menu.erase_file") {
+
+  set_bottom_options("selection_menu.cancel", "selection_menu.exit");
 
   get_cursor()->set_current_animation("red");
 }
@@ -109,7 +110,7 @@ void SelectionMenuEraseFile::display(SDL_Surface *screen_surface) {
   }
 
   // options
-  display_options("Annuler", "Quitter");
+  display_bottom_options();
 
   // cursor
   display_normal_cursor();
@@ -121,3 +122,4 @@ void SelectionMenuEraseFile::display(SDL_Surface *screen_surface) {
 
   finish_display(screen_surface);
 }
+

@@ -59,13 +59,13 @@ void PauseSubmenu::display(SDL_Surface *destination) {
 /**
  * Sets the caption text.
  * The caption text can have one or two lines, with 20 characters maximum for each line.
- * If the text you want to display has two lines, use the '\n' character to separate them.
- * @param text the caption text
+ * If the text you want to display has two lines, use the '$' character to separate them.
+ * @param text the caption text to set
  */
 void PauseSubmenu::set_caption_text(const std::string &text) {
 
-  // check the presence of the '\n' character
-  size_t index = text.find('\n', 0);
+  // check the presence of the '$' character
+  size_t index = text.find("$", 0);
 
   if (index == std::string::npos) {
     // only one line
@@ -85,3 +85,4 @@ void PauseSubmenu::set_caption_text(const std::string &text) {
     caption_text_2->set_text(line2);
   }
 }
+

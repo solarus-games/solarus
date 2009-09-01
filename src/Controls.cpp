@@ -20,29 +20,12 @@
 #include "Equipment.h"
 #include "DialogBox.h"
 #include "DebugKeys.h"
+#include "TextResource.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
-using namespace std;
 
-// TODO: load this from some external file (for future translation)
-static const string key_names[] = {
-  "Action",
-  "Epée",
-  "Objet 1",
-  "Objet 2",
-  "Pause",
-  "Droite",
-  "Haut",
-  "Gauche",
-  "Bas",
-};
+const std::string Controls::direction_names[] = {"right", "up", "left", "down"};
 
-static const string direction_strings[] = {"right", "up", "left", "down"};
-
-/*
- * Bit masks associated to each arrow on the keyboard or the joypad.
- * A combination of arrows is stored in a simple integer.
- */
 const Uint16 Controls::arrows_masks[4] = {
   0x0001,
   0x0002,
@@ -105,11 +88,16 @@ Controls::Controls(Game *game):
 
     // joypad
     index = Savegame::JOYPAD_ACTION_KEY + i;
-    const string &joypad_string = savegame->get_string(index);
+    const std::string &joypad_string = savegame->get_string(index);
     joypad_mapping[joypad_string] = game_key;
 
-    // game key
+    // game key state
     keys_pressed[i] = false;
+
+    // load the game key name in the current language
+    std::ostringstream oss;
+    oss << "controls.game_key_" << game_key;
+    game_key_names[i] = TextResource::get_string(oss.str());
   }
 }
 
@@ -130,8 +118,8 @@ Controls::~Controls(void) {
  * @param key a game key
  * @return the corresponding name
  */
-const string& Controls::get_key_name(GameKey key) {
-  return key_names[key - 1];
+const std::string& Controls::get_key_name(GameKey key) {
+  return game_key_names[key - 1];
 }
 
 /**
@@ -140,7 +128,7 @@ const string& Controls::get_key_name(GameKey key) {
  * @param game_key a game key
  * @return a string representing the corresponding keyboard key
  */
-const string Controls::get_keyboard_string(GameKey game_key) {
+const std::string Controls::get_keyboard_string(GameKey game_key) {
   return SDL_GetKeyName(get_keyboard_key(game_key));
 }
 
@@ -230,6 +218,7 @@ void Controls::handle_event(const SDL_Event &event) {
 void Controls::key_pressed(const SDL_keysym &keysym) {
 
 #ifndef RELEASE_MODE
+  // don't consider the debug keys in release mode
   debug_keys->key_pressed(keysym);
 #endif
 
@@ -300,7 +289,7 @@ void Controls::joypad_button_pressed(int button) {
   // retrieve the game key corresponding to this joypad button
   std::ostringstream oss;
   oss << "button " << button;
-  const string &joypad_string = oss.str();
+  const std::string &joypad_string = oss.str();
   GameKey game_key = joypad_mapping[joypad_string];
 
   if (!customizing) {
@@ -318,7 +307,7 @@ void Controls::joypad_button_pressed(int button) {
     if (game_key != key_to_customize) {
       // consider this button as the new mapping for the game key being customized
 
-      const string &previous_joypad_string = get_joypad_string(key_to_customize);
+      const std::string &previous_joypad_string = get_joypad_string(key_to_customize);
       if (game_key != 0) {
 	// this button was already assigned to a game key
 	joypad_mapping[previous_joypad_string] = game_key;
@@ -386,11 +375,11 @@ void Controls::joypad_axis_moved(int axis, int state) {
 
     std::ostringstream oss;
     oss << "axis " << axis << ((state > 0) ? " +" : " -");
-    const string &joypad_string = oss.str();
+    const std::string &joypad_string = oss.str();
 
     std::ostringstream oss2;
     oss2 << "axis " << axis << ((state > 0) ? " -" : " +");
-    const string &inverse_joypad_string = oss2.str();
+    const std::string &inverse_joypad_string = oss2.str();
 
     GameKey game_key = joypad_mapping[joypad_string];
     GameKey inverse_game_key = joypad_mapping[inverse_joypad_string];
@@ -413,7 +402,7 @@ void Controls::joypad_axis_moved(int axis, int state) {
       if (game_key != key_to_customize) {
 	// consider this axis movement as the new mapping for the game key being customized
 
-	const string &previous_joypad_string = get_joypad_string(key_to_customize);
+	const std::string &previous_joypad_string = get_joypad_string(key_to_customize);
 	if (game_key != 0) {
 	  // this axis movement was already assigned to a game key
 	  joypad_mapping[previous_joypad_string] = game_key;
@@ -446,7 +435,7 @@ void Controls::joypad_hat_moved(int hat, int value) {
     for (int i = 0; i < 4; i++) {
 
       std::ostringstream oss;
-      oss << "hat " << hat << ' ' << direction_strings[i];
+      oss << "hat " << hat << ' ' << direction_names[i];
       GameKey game_key = joypad_mapping[oss.str()];
 
       if (game_key != 0) {
@@ -498,13 +487,13 @@ void Controls::joypad_hat_moved(int hat, int value) {
     }
 
     std::ostringstream oss;
-    oss << "hat " << hat << ' ' << direction_strings[direction_1];
-    const string &joypad_string = oss.str();
+    oss << "hat " << hat << ' ' << direction_names[direction_1];
+    const std::string &joypad_string = oss.str();
     GameKey game_key = joypad_mapping[joypad_string];
 
     std::ostringstream oss_inv;
-    oss_inv << "hat " << hat << ' ' << direction_strings[(direction_1 + 2) % 4];
-    const string &inverse_joypad_string = oss_inv.str();
+    oss_inv << "hat " << hat << ' ' << direction_names[(direction_1 + 2) % 4];
+    const std::string &inverse_joypad_string = oss_inv.str();
     GameKey inverse_game_key = joypad_mapping[inverse_joypad_string];
 
     GameKey game_key_2 = NONE;
@@ -512,24 +501,24 @@ void Controls::joypad_hat_moved(int hat, int value) {
 
     if (direction_2 != -1) {
       std::ostringstream oss;
-      oss << "hat " << hat << ' ' << direction_strings[direction_2];
-      const string &joypad_string_2 = oss.str();
+      oss << "hat " << hat << ' ' << direction_names[direction_2];
+      const std::string &joypad_string_2 = oss.str();
       game_key_2 = joypad_mapping[joypad_string_2];
 
       std::ostringstream oss_inv;
-      oss_inv << "hat " << hat << ' ' << direction_strings[(direction_2 + 2) % 4];
-      const string &inverse_joypad_string_2 = oss_inv.str();
+      oss_inv << "hat " << hat << ' ' << direction_names[(direction_2 + 2) % 4];
+      const std::string &inverse_joypad_string_2 = oss_inv.str();
       inverse_game_key_2 = joypad_mapping[inverse_joypad_string_2];
     }
     else {
       std::ostringstream oss;
-      oss << "hat " << hat << ' ' << direction_strings[(direction_1 + 1) % 4];
-      const string &joypad_string_2 = oss.str();
+      oss << "hat " << hat << ' ' << direction_names[(direction_1 + 1) % 4];
+      const std::string &joypad_string_2 = oss.str();
       game_key_2 = joypad_mapping[joypad_string_2];
 
       std::ostringstream oss_inv;
-      oss_inv << "hat " << hat << ' ' << direction_strings[(direction_1 + 3) % 4];
-      const string &inverse_joypad_string_2 = oss_inv.str();
+      oss_inv << "hat " << hat << ' ' << direction_names[(direction_1 + 3) % 4];
+      const std::string &inverse_joypad_string_2 = oss_inv.str();
       inverse_game_key_2 = joypad_mapping[inverse_joypad_string_2];
     }
 
@@ -540,23 +529,23 @@ void Controls::joypad_hat_moved(int hat, int value) {
 
 	// notify the game
 	if (is_key_pressed(inverse_game_key)) {
-		game_key_released(inverse_game_key);
+	  game_key_released(inverse_game_key);
 	}
 	game_key_pressed(game_key);
       }
 
       if (direction_2 != -1) {
 	if (is_key_pressed(inverse_game_key_2)) {
-		game_key_released(inverse_game_key_2);
+	  game_key_released(inverse_game_key_2);
 	}
 	game_key_pressed(game_key_2);
       }
       else {
 	if (is_key_pressed(game_key_2)) {
-		game_key_released(game_key_2);
+	  game_key_released(game_key_2);
 	}
 	if (is_key_pressed(inverse_game_key_2)) {
-		game_key_released(inverse_game_key_2);
+	  game_key_released(inverse_game_key_2);
 	}
       }
     }
@@ -566,7 +555,7 @@ void Controls::joypad_hat_moved(int hat, int value) {
       if (game_key != key_to_customize) {
 	// consider this hat movement as the new mapping for the game key being customized
 
-	const string &previous_joypad_string = get_joypad_string(key_to_customize);
+	const std::string &previous_joypad_string = get_joypad_string(key_to_customize);
 	if (game_key != 0) {
 	  // this hat movement was already assigned to a game key
 	  joypad_mapping[previous_joypad_string] = game_key;
@@ -646,9 +635,9 @@ SDLKey Controls::get_keyboard_key(GameKey game_key) {
  * specified game key is currently mapped.
  * @return the joypad action corresponding this game key
  */
-const string& Controls::get_joypad_string(GameKey game_key) {
+const std::string& Controls::get_joypad_string(GameKey game_key) {
 
-  std::map<string, GameKey>::const_iterator it;
+  std::map<std::string, GameKey>::const_iterator it;
   for (it = joypad_mapping.begin(); it != joypad_mapping.end(); it++) {
 
     if (it->second == game_key) {
@@ -702,3 +691,4 @@ Controls::GameKey Controls::get_key_to_customize(void) {
 bool Controls::is_customization_done(void) {
   return !customizing;
 }
+

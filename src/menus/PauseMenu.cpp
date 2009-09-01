@@ -26,16 +26,7 @@
 #include "Sound.h"
 #include "Color.h"
 #include "TextSurface.h"
-
-// TODO: load this from some external file (for future translation)
-static const std::string texts[] = {
-  "Oui", // 0
-  "Non", // 1
-  "Voulez-vous sauvegarder", // 2
-  "votre progression ?",     // 3
-  "Voulez-vous continuer",   // 4
-  "la partie ?",             // 5
-};
+#include "TextResource.h"
 
 /**
  * Opens a pause menu.
@@ -63,10 +54,10 @@ PauseMenu::PauseMenu(Game *game):
 
   answer_text[0] = new TextSurface(100, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   answer_text[0]->set_text_color(8, 8, 8);
-  answer_text[0]->set_text(texts[0]);
+  answer_text[0]->set_text(TextResource::get_string("save_dialog.yes"));
   answer_text[1] = new TextSurface(219, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   answer_text[1]->set_text_color(8, 8, 8);
-  answer_text[1]->set_text(texts[1]);
+  answer_text[1]->set_text(TextResource::get_string("save_dialog.no"));
 
   set_current_submenu(savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU));
 }
@@ -118,8 +109,8 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
       save_dialog_choice = 0;
       save_dialog_sprite->set_current_animation("left");
 
-      question_text[0]->set_text(texts[2]);
-      question_text[1]->set_text(texts[3]);
+      question_text[0]->set_text(TextResource::get_string("save_dialog.save_question_0"));
+      question_text[1]->set_text(TextResource::get_string("save_dialog.save_question_1"));
 
       action_key_effect_saved = keys_effect->get_action_key_effect();
       sword_key_effect_saved = keys_effect->get_sword_key_effect();
@@ -153,8 +144,8 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
 	ResourceManager::get_sound("danger")->play();
       }
 
-      question_text[0]->set_text(texts[4]);
-      question_text[1]->set_text(texts[5]);
+      question_text[0]->set_text(TextResource::get_string("save_dialog.continue_question_0"));
+      question_text[1]->set_text(TextResource::get_string("save_dialog.continue_question_1"));
 
       save_dialog_choice = 0;
       save_dialog_sprite->set_current_animation("left");
@@ -261,3 +252,4 @@ void PauseMenu::show_right_submenu(void) {
   int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
   set_current_submenu((submenu_index + 1) % 4);
 }
+

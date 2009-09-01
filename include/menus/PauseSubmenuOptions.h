@@ -30,6 +30,9 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
   Controls *controls;
 
+  std::string *video_mode_strings;
+  std::string caption_strings[3];
+
   TextSurface *video_mode_text;
 
   TextSurface *controls_text;
@@ -72,3 +75,4 @@ class PauseSubmenuOptions: public PauseSubmenu {
 };
 
 #endif
+

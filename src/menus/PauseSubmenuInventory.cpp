@@ -26,49 +26,7 @@
 #include "Counter.h"
 #include "KeysEffect.h"
 #include "InventoryItem.h"
-
-/**
- * Caption text displayed when an item is selected in the inventory.
- */
-static const std::string item_names[28][6] = {
-  // TODO: load this from some external file (for future translation)
-
-  {"Plume"},
-  {"Bombes"},
-  {"Arc", "Arc & Flèches"},
-  {"Boomerang"},
-  {"Lanterne"},
-  {"Grappin"},
-  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
-   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
-
-  {"Bottes de Pégase"},
-  {"Miroir Mystique"},
-  {"Canne de Somaria"},
-  {"Pommes"},
-  {"Pains au Chocolat"},
-  {"Croissants"},
-  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
-   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
-
-  {"Clé de Roc"},
-  {"Clé Rouge"},
-  {"Clé de Terre"},
-  {"Tarte aux Pommes", "Lingots d'or", "Edelweiss", "Clé d'Os"},
-  {"Palmes"},
-  {"Cape Magique"},
-  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
-   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
-
-  {"Clé de Fer"},
-  {"Clé de Pierre"},
-  {"Clé de Bois"},
-  {"Clé de Glace"},
-  {"Poigne de Fer", "Poigne d'Or"},
-  {"Pierres de Feu"},
-  {"Flacon Magique\n(Vide)", "Flacon Magique\n(Eau)", "Flacon Magique\n(Potion rouge)",
-   "Flacon Magique\n(Potion verte)", "Flacon Magique\n(Potion blue)", "Flacon Magique\n(Fée)"},
-};
+#include "TextResource.h"
 
 /**
  * Constructor.
@@ -83,7 +41,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
 
   items_img = ResourceManager::load_image("hud/inventory_items.png");
 
-  // set the counters
+  // set the counters and the caption strings
   for (int k = 0; k < 28; k++) {
 
     // get the item, its counter property and the possession state    
@@ -105,6 +63,14 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
     }
     else {
       counters[k] = NULL;
+    }
+
+    // initialize the caption strings
+    if (variant != 0) {
+      int id = InventoryItem::is_bottle(item_id) ? INVENTORY_BOTTLE_1 : item_id;
+      std::ostringstream oss;
+      oss << "inventory.caption.item_" << id << "_" << variant;
+      caption_strings[k] = TextResource::get_string(oss.str());
     }
   }
 
@@ -158,13 +124,12 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
   InventoryItemId item_id = InventoryItemId(row * 7 + column);
   int variant = equipment->has_inventory_item(item_id);
 
+  set_caption_text(caption_strings[item_id]);
   if (variant != 0) {
-    set_caption_text(item_names[item_id][variant - 1]);
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
     keys_effect->set_item_keys_enabled(InventoryItem::can_be_assigned(item_id));
   }
   else {
-    set_caption_text("");
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     keys_effect->set_item_keys_enabled(false);
   }

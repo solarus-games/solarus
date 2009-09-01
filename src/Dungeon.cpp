@@ -17,25 +17,7 @@
 #include <SDL/SDL_config_lib.h>
 #include "Dungeon.h"
 #include "FileTools.h"
-using namespace std;
-
-/**
- * Name of each dungeon, displayed in the map submenu.
- */
-static const string dungeon_names[] = {
-  // TODO: load this from some external file (for future translation)
-
-  "", // 0 is not a valid dungeon number
-  "Donjon de la Forêt",
-  "Caverne de Roc",
-  "Antre de\nMaître Arbror",
-  "Palais de Beaumont",
-  "Ancien\nChâteau d'Hyrule",
-  "Caverne d'Inferno",
-  "Temple de Glace",
-  "Donjon des\nPics Rocheux",
-  "Temple des Souvenirs",
-};
+#include "TextResource.h"
 
 /**
  * Creates the specified dungeon.
@@ -44,7 +26,6 @@ static const string dungeon_names[] = {
 Dungeon::Dungeon(int dungeon_number):
   dungeon_number(dungeon_number), chests(NULL), bosses(NULL), boss_floor(-100) {
 
-  this->dungeon_number = dungeon_number;
   load();
 }
 
@@ -68,10 +49,12 @@ int Dungeon::get_number(void) {
 
 /**
  * Returns the name of the dungeon, in the current langage.
+ * The returns name respects the syntax specified by the
+ * PauseSubmenuMap::set_caption_text() function.
  * @return the dungeon name
  */
-const string& Dungeon::get_name(void) {
-  return dungeon_names[dungeon_number];
+const std::string& Dungeon::get_name(void) {
+  return name;
 }
 
 /**
@@ -79,7 +62,12 @@ const string& Dungeon::get_name(void) {
  */
 void Dungeon::load(void) {
 
-  // open the file
+  // get the dungeon name
+  std::ostringstream oss;
+  oss << "caption_text.dungeon_name_" << dungeon_number;
+  this->name = TextResource::get_string(oss.str());
+
+  // parse the dungeon file
   std::string file_name = "maps/dungeons/dungeons.zsd"; 
 
   SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
@@ -90,19 +78,19 @@ void Dungeon::load(void) {
   }
 
   // parse the floors (the floors must be before the chests and the bosses)
-  std::ostringstream oss;
+  oss.str("");
   oss << "dungeon_" << dungeon_number << ".floor_";
-  const string &floor_prefix = oss.str();
+  const std::string &floor_prefix = oss.str();
   lowest_floor = 100;
   for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
-    const string &group_name = CFG_GetSelectedGroupName();
+    const std::string &group_name = CFG_GetSelectedGroupName();
 
     // parse the floors
     if (group_name.substr(0, floor_prefix.length()) == floor_prefix) {
       // we found a group describing a floor of to this dungeon
 
-      const string &suffix = group_name.substr(floor_prefix.length());
+      const std::string &suffix = group_name.substr(floor_prefix.length());
 
       int floor;
       std::istringstream iss(suffix);
@@ -127,18 +115,18 @@ void Dungeon::load(void) {
   // parse the rest: chests and bosses
   oss.str("");
   oss << "dungeon_" << dungeon_number << ".map_";
-  const string &elements_prefix = oss.str();
+  const std::string &elements_prefix = oss.str();
   for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
-    const string &group_name = CFG_GetSelectedGroupName();
+    const std::string &group_name = CFG_GetSelectedGroupName();
 
     if (group_name.substr(0, elements_prefix.length()) == elements_prefix) {
       // we found a group describing an element in this dungeon
 
-      const string &suffix = group_name.substr(elements_prefix.length());
+      const std::string &suffix = group_name.substr(elements_prefix.length());
 
       // is it a chest?
-      if (suffix.find("chest") != string::npos) {
+      if (suffix.find("chest") != std::string::npos) {
 	DungeonElement chest;
 	chest.floor = CFG_ReadInt("floor", 0);
 	chest.x = CFG_ReadInt("x", 0);
@@ -150,7 +138,7 @@ void Dungeon::load(void) {
       }
 
       // is it a boss or a miniboss?
-      else if (suffix.find("boss") != string::npos) {
+      else if (suffix.find("boss") != std::string::npos) {
 	DungeonElement boss;
 	boss.floor = CFG_ReadInt("floor", 0);
 	boss.x = CFG_ReadInt("x", 0);

@@ -63,3 +63,4 @@ class ResourceManager {
 };
 
 #endif
+

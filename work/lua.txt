@@ -1,6 +1,7 @@
 Appel de fonctions LUA depuis le moteur C++ (événements) :
 
-- event_map_started(destination_point_name)		appelé une fois la map chargée
+- event_map_started(destination_point_name)		appelé dès que la map démarre, avant la transition d'ouverture
+- event_opening_transition_finished()			appelé après la transition d'ouverture de la map
 - event_update()					appelé à chaque cycle (à éviter si possible)
 - event_set_suspended(suspended)			appelé lorsque le jeu est suspendu ou repris
 - event_message_started(message_id)			appelé au début de l'affichage de chaque message d'un dialogue

@@ -22,6 +22,7 @@ Feature requests :
 - essayer OpenAL ?
 - rendre les pierres et les buissons dépendants du tileset
 - exporter dans un fichier ini les textes à traduire
+- changer la licence
 
 
 Bugs :
@@ -41,7 +42,8 @@ Bugs :
 - l'ombre des pots passe sur Link pendant qu'on les soulève
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
-- grotte de tom : on peut se retrouver coincé si on a l'arc sans le boomerang
+- empêcher de mettre pause après le boss
+- renommer TextResource en Strings ou autre
 
 
 Remarques de Linksupersayen :

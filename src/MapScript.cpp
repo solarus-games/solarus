@@ -1767,6 +1767,13 @@ void MapScript::event_map_started(const std::string &destination_point_name) {
 }
 
 /**
+ * Notifies the script that the opening transition of the map has just finished.
+ */
+void MapScript::event_opening_transition_finished(void) {
+  call_lua_function("event_opening_transition_finished");
+}
+
+/**
  * Notifies the script that a message has just started to be displayed
  * in the dialog box.
  * @param message_id id of the message

@@ -211,3 +211,4 @@ SpriteAnimationSet * ResourceManager::get_sprite_animation_set(const SpriteAnima
 
   return instance->sprite_animations[id];
 }
+

@@ -141,6 +141,7 @@ class MapScript {
 
   // C++ functions that call script functions
   void event_map_started(const std::string &destination_point_name);
+  void event_opening_transition_finished(void);
   void event_message_started(const MessageId &message_id);
   void event_message_sequence_finished(const MessageId &first_message_id, int answer);
   void event_switch_enabled(const std::string &switch_name);

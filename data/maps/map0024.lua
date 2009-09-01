@@ -35,7 +35,11 @@ end
 function event_obtained_treasure(content, savegame_variable)
   if content == 80 then
     boss_end_battle()
-    hero_set_map(27, "from_boss", 1);
+    start_timer(9000, "start_final_room", false);
   end
+end
+
+function start_final_room()
+  hero_set_map(27, "from_boss", 1);
 end
 

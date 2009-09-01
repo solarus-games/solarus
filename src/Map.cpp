@@ -416,6 +416,9 @@ void Map::opening_transition_finished(void) {
     zsdx->game->show_message(welcome_message_id);
     welcome_message_id = "";
   }
+  else {
+    script->event_opening_transition_finished();
+  }
 }
 
 /**

@@ -42,6 +42,7 @@ class Dungeon {
  private:
 
   int dungeon_number;                  /**< dungeon number, between 1 and 20 */
+  std::string name;                    /**< name of the dungeon in the current language */
 
   // floors
   int lowest_floor;                    /**< lowest floor number, between -16 and 15 */

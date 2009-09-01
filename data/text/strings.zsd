@@ -1,0 +1,21 @@
+# This file contains the game strings in the current language.
+# Each line represents a string, representing by its id and then its content.
+# The id cannot contain blank characters. This file must be encoded in UTF-8.
+
+# Language: French
+
+# The strings having an id starting with "caption_text" are displayed
+# in the caption text area of the pause menu. They can have one or two lines
+# (separated by the \n sequence) and a line should never exceed 20 characters.
+
+caption_text.world_map			Carte du Monde
+caption_text.dungeon_name_1 		Donjon de la Forêt
+caption_text.dungeon_name_2		Caverne de Roc
+caption_text.dungeon_name_3		Antre de\nMaître Arbror
+caption_text.dungeon_name_4		Palais de Beaumont
+caption_text.dungeon_name_5		Ancien\nChâteau d'Hyrule
+caption_text.dungeon_name_6		Caverne d'Inferno
+caption_text.dungeon_name_7		Temple de Glace
+caption_text.dungeon_name_8		Donjon des\nPics Rocheux
+caption_text.dungeon_name_9		Temple des Souvenirs
+

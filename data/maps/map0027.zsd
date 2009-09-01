@@ -71,7 +71,7 @@
 0	0	160	440	16	16	89
 0	0	152	440	8	16	74
 0	0	176	440	8	16	75
-8	0	160	181	solarus_child	3	1	npc/solarus_child1	_none
+8	0	160	-11	solarus_child	3	1	npc/solarus_child1	_none
 1	0	168	453	from_boss	1	0
 0	1	48	256	64	32	365
 0	1	208	256	64	32	365

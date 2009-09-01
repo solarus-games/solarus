@@ -157,7 +157,6 @@ class MapScript {
   void event_shop_item_bought(const std::string &shop_item_name);
   void event_enemy_dead(const std::string &enemy_name);
   void event_dungeon_ending_sequence(void);
-  void schedule_dungeon_ending_sequence(Uint32 delay);
 };
 
 #endif

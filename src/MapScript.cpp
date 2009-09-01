@@ -996,7 +996,7 @@ int MapScript::l_hero_align_on_sensor(lua_State *l) {
  */
 int MapScript::l_hero_set_map(lua_State *l) {
 
-  check_nb_arguments(l, 2);
+  check_nb_arguments(l, 3);
 
   MapId map_id = lua_tointeger(l, 1);
   const std::string &destination_point_name = lua_tostring(l, 2);
@@ -1922,14 +1922,5 @@ void MapScript::event_enemy_dead(const std::string &enemy_name) {
  */
 void MapScript::event_dungeon_ending_sequence(void) {
   call_lua_function("event_dungeon_ending_sequence");
-}
-
-
-/**
- * Call the dungeon ending sequence event after the specified delay.
- * @param delay the delay in milliseconds
- */
-void MapScript::schedule_dungeon_ending_sequence(Uint32 delay) {
-  add_timer(new Timer(delay, "event_dungeon_ending_sequence", false));
 }
 

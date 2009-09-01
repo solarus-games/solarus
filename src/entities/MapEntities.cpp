@@ -711,7 +711,6 @@ void MapEntities::end_boss_battle(void) {
 	Hero *hero = zsdx->game->get_hero();
 	hero->set_animation_direction(3);
         hero->freeze();
-	map->get_script()->schedule_dungeon_ending_sequence(10000);
       }
       break;
 

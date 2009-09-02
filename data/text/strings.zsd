@@ -1,14 +1,15 @@
 # Language: French
 
-# This file contains the game strings in the current language.
+# This file contains the strings displayed during the game in the current language.
 # Each line represents a string, representing by its key and then its value.
 # The key and the value are separated by one or several tabulation characters.
-# The key cannot contain whitespaces. This file must be encoded in UTF-8.
+# The key cannot contain whitespaces and cannot be changed. Only the value has to be translated.
+# This file must be encoded in UTF-8.
 
-# The strings having an id with "caption" are displayed
+# The strings having a key with "caption" are displayed
 # in the caption text area of the pause menu. They can have one or two lines
 # (separated by the '$' character) and a line should never exceed 20 characters.
-# For all other strings, the maximum length is indicated in the comments.
+# For all other strings, the maximum length is indicated in the comments below.
 
 # Map submenu
 map.caption.world_map			Carte du Monde
@@ -21,25 +22,6 @@ map.caption.dungeon_name_6		Caverne d'Inferno
 map.caption.dungeon_name_7		Temple de Glace
 map.caption.dungeon_name_8		Donjon des$Pics Rocheux
 map.caption.dungeon_name_9		Temple des Souvenirs
-
-# Options submenu
-options.caption.press_action_change_mode	Appuyez sur Action$pour changer de mode
-options.caption.press_action_customize_key	Appuyez sur Action pour$configurer cette touche
-options.caption.press_key			Appuyez sur une touche$du clavier ou du joypad
-# name of the video modes (maximum 26 characters)
-options.video_mode_0				Fenêtre 640x480
-options.video_mode_1				Fenêtre 640x480 lisse
-options.video_mode_2				Fenêtre 320x240
-options.video_mode_3				Plein écran étiré
-options.video_mode_4				Plein écran étiré (large)
-options.video_mode_5				Plein écran lisse
-options.video_mode_6				Plein écran lisse (large)
-options.video_mode_7				Plein écran centré
-options.video_mode_8				Plein écran centré (large)
-# column headers of the keyboard/joypad customization table (maximum 10 characters)
-options.commands_column				Commandes
-options.keyboard_column				Clavier
-options.joypad_column				Joypad
 
 # Quest status submenu
 quest_status.caption.rupee_bag_1	Sac de Rubis
@@ -103,6 +85,25 @@ inventory.caption.item_24_1	Clé de Glace
 inventory.caption.item_25_1	Poigne de Fer
 inventory.caption.item_25_2	Poigne d'Or
 inventory.caption.item_26_1	Pierres de Feu
+
+# Options submenu
+options.caption.press_action_change_mode	Appuyez sur Action$pour changer de mode
+options.caption.press_action_customize_key	Appuyez sur Action pour$configurer cette touche
+options.caption.press_key			Appuyez sur une touche$du clavier ou du joypad
+# name of the video modes (maximum 26 characters)
+options.video_mode_0				Fenêtre 640x480
+options.video_mode_1				Fenêtre 640x480 lisse
+options.video_mode_2				Fenêtre 320x240
+options.video_mode_3				Plein écran étiré
+options.video_mode_4				Plein écran étiré (large)
+options.video_mode_5				Plein écran lisse
+options.video_mode_6				Plein écran lisse (large)
+options.video_mode_7				Plein écran centré
+options.video_mode_8				Plein écran centré (large)
+# column headers of the keyboard/joypad customization table (maximum 10 characters)
+options.commands_column				Commandes
+options.keyboard_column				Clavier
+options.joypad_column				Joypad
 
 # Game controls customization (maximum 10 characters)
 controls.game_key_1		Action

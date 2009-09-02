@@ -136,3 +136,7 @@ selection_menu.exit		Quitter
 selection_menu.big_yes		OUI
 selection_menu.big_no		NON
 
+# Title screen
+title_screen.website		www.zelda-solarus.com
+title_screen.press_space	Appuyez sur espace
+

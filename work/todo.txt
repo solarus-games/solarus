@@ -21,7 +21,6 @@ Feature requests :
 - son des marches d'escalier
 - essayer OpenAL ?
 - rendre les pierres et les buissons dépendants du tileset
-- exporter dans un fichier ini les textes à traduire
 - changer la licence
 
 
@@ -44,8 +43,8 @@ Bugs :
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 - empêcher de mettre pause après le boss
 - renommer TextResource en Strings ou autre
-- écran-titre : afficher le texte "Appuyez sur espace" par TextResource et TextSurface pour faciliter la traduction
 - effets sonores soulever et lancer un vase : on entend un bruit de fond
+- Caverne de Billy
 
 
 Remarques de Linksupersayen :
@@ -62,7 +61,7 @@ Remarques de @PyroNet :
 - Quand Link soulève un pot, l'ombre du pot passe pendant un moment au-dessus de Link.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - La porte (avec un coeur dedans) fermée à clé dénote un peu avec la montagne.
-- Les prix des marchandises dans les magasins ne sont pas très lisibles.
+- Les prix des marchandises dans les magasins ne sont pas très lisibles. -> utiliser les chiffres attachés aux pickable items comme les flèches, bombes (1, 5 et 10) ?
 
 
 A venir :
@@ -137,6 +136,7 @@ Mode release :
 - Inclure le fichier de licence GPL
 - Vérifier la présence du message GPL dans les fichiers source
 - Remettre l'écran-titre
+- Enlever les commentaires qui font références au mode 2
 
 ----------------------
 Feature requests de l'éditeur :

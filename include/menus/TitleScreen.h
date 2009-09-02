@@ -56,8 +56,8 @@ class TitleScreen: public Screen {
   SDL_Surface *background_img;
   SDL_Surface *logo_img;
   SDL_Surface *dx_img;
-  SDL_Surface *website_img;
-  SDL_Surface *press_space_img;
+  TextSurface *website_img;
+  TextSurface *press_space_img;
   SDL_Surface *title_surface;
   int counter;
   Uint32 next_image_date;
@@ -80,3 +80,4 @@ class TitleScreen: public Screen {
 };
 
 #endif
+

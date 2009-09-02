@@ -21,6 +21,8 @@
 #include "FileTools.h"
 #include "Color.h"
 #include "TransitionFade.h"
+#include "TextSurface.h"
+#include "TextResource.h"
 
 // TODO remove
 #include "Game.h"
@@ -168,8 +170,8 @@ void TitleScreen::init_phase_zs_presents(void) {
 
   zs_presents_img = ResourceManager::load_image("menus/zelda_solarus_presents.png");
   ResourceManager::get_sound("intro")->play();
-  zs_presents_position.x = 112;
-  zs_presents_position.y = 96;
+  zs_presents_position.x = 160 - (zs_presents_img->w / 2);
+  zs_presents_position.y = 120 - (zs_presents_img->h / 2);
 
   next_phase_date = SDL_GetTicks() + 2000; // intro: 2 seconds
   transition_out = new TransitionFade(Transition::OUT);
@@ -198,8 +200,13 @@ void TitleScreen::init_phase_title(void) {
   background_img = ResourceManager::load_image("menus/title_background.png");
   logo_img = ResourceManager::load_image("menus/title_logo.png");
   dx_img = ResourceManager::load_image("menus/title_dx.png");
-  website_img = ResourceManager::load_image("menus/title_website.png");
-  press_space_img = ResourceManager::load_image("menus/title_press_space.png");
+  website_img = new TextSurface(160, 220, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  website_img->set_font(TextSurface::FONT_STANDARD);
+  website_img->set_text(TextResource::get_string("title_screen.website"));
+  press_space_img = new TextSurface(160, 190, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  press_space_img->set_font(TextSurface::FONT_LA_BIG);
+  press_space_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
+  press_space_img->set_text(TextResource::get_string("title_screen.press_space"));
   title_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 
   counter = 0;
@@ -221,8 +228,8 @@ void TitleScreen::exit_phase_title(void) {
   SDL_FreeSurface(background_img);
   SDL_FreeSurface(logo_img);
   SDL_FreeSurface(dx_img);
-  SDL_FreeSurface(website_img);
-  SDL_FreeSurface(press_space_img);
+  delete website_img;
+  delete press_space_img;
   SDL_FreeSurface(title_surface);
   title_screen_music->stop();
 }
@@ -266,7 +273,7 @@ void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
   SDL_FillRect(title_surface, NULL, Color::black);
 
   SDL_BlitSurface(background_img, NULL, title_surface, NULL);
-  SDL_BlitSurface(website_img, NULL, title_surface, NULL);
+  website_img->display(title_surface);
 
   if (counter >= 1) {
     SDL_BlitSurface(logo_img, NULL, title_surface, NULL);
@@ -275,7 +282,7 @@ void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
       SDL_BlitSurface(dx_img, NULL, title_surface, NULL);
 
       if (counter >= 3) {
-	SDL_BlitSurface(press_space_img, NULL, title_surface, NULL);
+	press_space_img->display(title_surface);
       }
     }
   }
@@ -289,3 +296,4 @@ void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
 
   SDL_BlitSurface(title_surface, NULL, destination_surface, NULL);
 }
+

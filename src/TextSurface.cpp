@@ -20,26 +20,26 @@
 /**
  * The two fonts, created in the initialize() function.
  */
-SDL_RWops *TextSurface::rw[2];
-TTF_Font *TextSurface::fonts[2] = {NULL, NULL};
+SDL_RWops *TextSurface::rw[FONT_NB];
+TTF_Font *TextSurface::fonts[FONT_NB] = {NULL, NULL};
 
 /**
  * Initializes the font system.
  */
 void TextSurface::initialize(void) {
 
+  static const std::string file_names[] = {"text/zsdx.ttf", "text/fixed8.fon", "text/zsdx.ttf"};
+  static const int sizes[] = {11, 11, 18};
+
   TTF_Init();
 
-  rw[FONT_LA] = FileTools::data_file_open_rw("text/zsdx.ttf");
-  fonts[FONT_LA] = TTF_OpenFontRW(rw[FONT_LA], 0, 11);
-  if (fonts[FONT_LA] == NULL) {
-    DIE("Cannot load font 'zsdx.ttf': " << SDL_GetError());
-  }
+  for (int i = 0; i < FONT_NB; i++) {
 
-  rw[FONT_STANDARD] = FileTools::data_file_open_rw("text/fixed8.fon");
-  fonts[FONT_STANDARD] = TTF_OpenFontRW(rw[FONT_STANDARD], 0, 11);
-  if (fonts[FONT_STANDARD] == NULL) {
-    DIE("Cannot load font 'fixed8.fon': " << SDL_GetError());
+    rw[i] = FileTools::data_file_open_rw(file_names[i]);
+    fonts[i] = TTF_OpenFontRW(rw[i], 0, sizes[i]);
+    if (fonts[i] == NULL) {
+      DIE("Cannot load font '" << file_names[i] << "': " << SDL_GetError());
+    }
   }
 }
 
@@ -114,10 +114,11 @@ TextSurface::~TextSurface(void) {
 
 /**
  * Sets the font to use.
- * @param font_id a font: FONT_LA or FONT_STANDARD
+ * @param font_id a font
  */
 void TextSurface::set_font(FontId font_id) {
   this->font_id = font_id;
+  rebuild();
 }
 
 /**
@@ -322,3 +323,4 @@ void TextSurface::display(SDL_Surface *destination) {
     SDL_BlitSurface(surface, NULL, destination, &text_position);
   }
 }
+

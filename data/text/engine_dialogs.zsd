@@ -1,19 +1,27 @@
 # Ce fichier comporte l'ensemble des messages affichés
 # par le moteur de jeu en version française.
 # Les messages affichés par les maps sont quant à eux
-# définis dans le fichier game_dialogs.zsd.
+# définis dans le fichier text/game_dialogs.zsd.
+
+####################################################################################
+#             Syntaxe des fichiers text/engine_dialogs.zsd et text/game_dialogs.zsd
 #
 # La syntaxe est similaire à celle d'un fichier ini de Windows.
+# Les lignes commençant par le caractère '#' sont des commentaires
+# et sont ignorés par le jeu.
 # Un message est défini par les éléments suivants :
 #
 # - Un identificateur entre crochets.
 # Les messages du moteur de jeu (donc tous ceux dans ce fichier)
 # ont toujours un identificateur qui commence par le caractère '_'.
+# L'identificateur permet au jeu de faire référence au message qu'il
+# souhaite l'afficher. Les identificateurs ne doivent pas être traduits.
 #
-# - Les valeurs line1, line2 et line3 : définissent le texte du
+# - Les valeurs line1, line2 et line3 : définissent le contenu du
 # message, sur une à trois lignes. Le texte de chaque ligne
 # doit être mis entre guillemets. Une ligne ne doit pas
-# dépasser 23 caractères.
+# dépasser 23 caractères. Lors de la traduction, ce sont ces lignes
+# qu'il faut traduire.
 #
 # - La valeur next : donne l'identificateur du prochain message
 # à afficher. Si cette valeur n'est pas définie, cela signifie
@@ -22,14 +30,17 @@
 #
 # - Par convention, lorsqu'un texte est trop long pour tenir
 # dans un seul message, la suite est dans un ou plusieurs messages
-# dont l'identificateur est le même auquel on ajoute ".1", puis
-# ".2", etc. Lors de la traduction, on peut ainsi faire tenir
+# dont l'identificateur est le même auquel on ajoute ".2", puis
+# ".3", etc. Lors de la traduction, on peut ainsi faire tenir
 # le texte dans un nombre différent de messages sans avoir
-# de problèmes d'identificateurs. Seuls le premier message
+# de problèmes d'identificateurs. Seul le premier message
 # de la série doit avoir exactement le même identificateur que
-# dans la version française. Si le dernier se termine par ".4" au
+# dans la version française. Si le dernier message de la série
+# se termine par ".4" au
 # lieu de ".3" parce que la traduction ne tenait pas dans le même
-# nombre de messages, ça fonctionne sans problème.
+# nombre de messages, cela fonctionne sans problème.
+# C'est sur tous les messages autres que ceux finissant par
+# ".2", ".3", etc, qu'il faut bien se synchroniser.
 #
 # - La valeur cancel : définit ce qui se passe lorsque le joueur
 # tente d'interrompre le message en appuyant sur la touche C. Il y a
@@ -45,7 +56,7 @@
 # messages suivants, jusqu'à ce que la valeur soit changée ou que
 # la boîte de dialogue se ferme.
 #
-# - La valeur icon : permet d'afficher une icône dans le message.
+# - La valeur icon : permet d'afficher une icône de 16*16 pixels dans le message.
 # La valeur est un numéro qui permet d'identifier l'icône dans
 # le fichier image des icônes. L'icône s'affiche à gauche du texte
 # et le texte ne doit pas dépasser 20 caractères (au lieu de 23 en
@@ -56,12 +67,13 @@
 # jeu, par exemple lorsque le joueur obtient un trésor.
 #
 # - La valeur question : permet d'afficher une question avec deux
-# réponses au choix. Les deux réponses sont affichées sur les deux
-# dernières lignes. Ces deux lignes sont alors limitées à 20
+# réponses au choix. La première ligne est la question
+# et les deux dernières lignes sont les deux réponses possibles.
+# Ces deux lignes sont alors limitées à 20
 # caractères (au lieu de 23 en temps normal) car un curseur en
 # forme de flèche permet au joueur de choisir sa réponse. Il est
 # possible d'avoir à la fois une icône et une question, dans ce cas
-# le nombre de caractères se limite à 17.
+# le nombre de caractères des lignes de réponse se limite à 17.
 # S'il y a une question, il est possible de spécifier une valeur
 # next2. Si la première réponse est choisie, le prochain message
 # affiché est indiqué par next. Si la deuxième réponse est choisie,
@@ -79,27 +91,29 @@
 #           du message (la valeur est alors spécifiée dans
 #           le programme qui a demandé l'affichage du message)
 #
+#
 # - Les commentaires suivants permettent de vérifier le nombre
 # limite de caractères dans un message :
 #
-#       |-----------------------| sans icône ni question
-#       |--------------------|    avec icône ou question
-#       |-----------------|       avec icône et question
+#       |-----------------------| sans icône ni question (23)
+#       |--------------------|    avec icône ou question (20)
+#       |-----------------|       avec icône et question (17)
+####################################################################################
 
 
 # -------------------------------------
 # Description des items de l'inventaire
 # -------------------------------------
 # 
-# Les messages suivants sont affichés dans l'écran d'inventaire
+# Les messages ci-dessous sont affichés dans l'écran d'inventaire
 # lorsque le joueur souhaite afficher la description d'un item
 # qu'il possède. Ces messages peuvent être annulés en appuyant
 # sur C.
-# L'identificateur d'un message est de la forme _item_description_i_x
+# L'identificateur de chacun de ces messages est de la forme _item_description_i_x
 # où i est le numéro de l'item (de 0 à 27) et x est la variante de cet
 # item possédée par le joueur.
-# Exception : pour les Flacons 2, 3 et 4, le numéro de l'item est remplacé
-# par celui du Flacon 1 (6) pour éviter de définir 4 fois les mêmes messages.
+# Exception : les items 13, 20 et 27 ne sont pas définis car il s'agit des Flacons 2, 3 et 4,
+# et ces derniers se contentent de faire appel aux messages définis pour le Flacon 1 (item n°6).
 
 [_item_description_0_1]
 # Plume / Feather
@@ -481,7 +495,7 @@ line1 = "à Inferno."
 # Obtention d'un trésor
 # ---------------------
 # 
-# Les messages suivants sont affichés lorsque le joueur obtient
+# Les messages ci-dessous sont affichés lorsque le joueur obtient
 # un trésor, généralement en ouvrant un coffre ou en l'achetant
 # dans un magasin.
 
@@ -1251,6 +1265,8 @@ line3 = "coffres et du Boss."
 next = _treasure_71.2
 
 [_treasure_71.2]
+# Remarque : clin d'oeil à Link's Awakening
+# quand on obtient la Boussole
 #       |--------------------|
 line1 = "C'est ça"
 line2 = "le progrès !"
@@ -1370,7 +1386,12 @@ line2 = "supplémentaire !"
 icon = 80
 line1 = "Tu as trouvé un"
 line2 = "Réceptacle de Coeur."
-next = _treasure_79_4.2
+next = _treasure_80.2
+
+[_treasure_80.2]
+#       |--------------------|
+line1 = "Tu obtiens un Coeur"
+line2 = "supplémentaire !"
 
 [_treasure_82_1]
 # 1 Bombe
@@ -1505,25 +1526,33 @@ line2 = "vaut 20 Rubis !"
 # Autres messages
 # ---------------
 # 
-# Autres messages affichés par le moteur de jeu
+# Autres messages divers affichés par le moteur de jeu
 
 [_warning_magic]
+# Affiché à la fin des dialogues expliquant
+# que le joueur a obtenu un objet qui consomme
+# de l'énergie magique (même message que dans ALTTP)
 #       |--------------------|
 line1 = "Mais surveille ton"
 line2 = "compteur magique !"
 
 [_empty_chest]
+# Lorsqu'on ouvre un coffre vide
 #       |-----------------------|
 line1 = "Ce coffre est vide !"
 line2 = "Tant pis pour toi !"
 
 [_small_key_required]
+# Lorsqu'on regarde une porte verrouillé ou un bloc verrouillé
+# et qu'on ne possède pas de Petite Clé
 #       |--------------------|
 icon = 72
 line1 = "C'est fermé à Clé !"
 cancel = all
 
 [_big_key_required]
+# Lorsqu'on regarde le grand coffre ou une porte verrouillée nécessitant la Grande Clé
+# et qu'on ne possède pas celle-ci
 #       |--------------------|
 icon = 73
 line1 = "Il te faut la Grande"
@@ -1532,6 +1561,7 @@ line3 = "cette serrure !"
 cancel = all
 
 [_boss_key_required]
+# Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître
 #       |--------------------|
 icon = 74
 line1 = "C'est la porte du"
@@ -1548,6 +1578,7 @@ line2 = "Clé du Maître"
 line3 = "pour l'ouvrir."
 
 [_found_fairy]
+# Lorsqu'on trouve une Fée en ayant au moins un Flacon (même dialogue que dans ALTTP)
 #       |--------------------|
 icon = 81
 line1 = "Tu as trouvé une"
@@ -1565,11 +1596,13 @@ line3 = "La conserver"
 question = true
 
 [_found_fairy.no_empty_bottle]
+# Lorsqu'on veut conserver une Fée mais qu'on n'a pas de Flacon vide
 #       |-----------------------|
 line1 = "Tu n'as pas de Flacon"
 line2 = "vide !"
 
 [_found_water]
+# Lorsqu'on trouve de l'eau et qu'on a un Flacon vide
 #       |--------------------|
 icon = 8
 line1 = "Veux-tu mettre de"
@@ -1584,6 +1617,7 @@ line3 = "Non"
 question = true
 
 [_found_water.no_bottle]
+# Lorsqu'on trouve de l'eau mais qu'on n'a aucun Flacon
 #       |--------------------|
 line1 = "Il y a de l'eau ici,"
 line2 = "mais tu n'as pas"
@@ -1595,6 +1629,7 @@ next = _found_water.no_bottle.2
 line1 = "pour la stocker..."
 
 [_found_water.no_empty_bottle]
+# Lorsqu'on trouve de l'eau et qu'on a au moins un Flacon, mais pas de Flacon vide
 #       |--------------------|
 icon = 8
 line1 = "Il y a de l'eau ici,"
@@ -1607,6 +1642,7 @@ next = _found_water.no_empty_bottle.2
 line1 = "pour la stocker..."
 
 [_use_bottle_with_water]
+# Utiliser un Flacon contenant de l'eau
 #       |--------------------|
 icon = 8
 line1 = "Ton Flacon Magique"
@@ -1621,6 +1657,7 @@ line3 = "La conserver"
 question = true
 
 [_use_bottle_with_fairy]
+# Utiliser un Flacon contenant une Fée
 #       |--------------------|
 icon = 12
 line1 = "Ton Flacon Magique"
@@ -1635,6 +1672,7 @@ line3 = "La relâcher"
 question = true
 
 [_use_apples]
+# Utiliser une Pomme
 #       |--------------------|
 icon = 16
 line1 = "Prendre une pomme te"
@@ -1650,6 +1688,7 @@ line3 = "Ne rien faire"
 question = true
 
 [_use_pains_au_chocolat]
+# Utiliser un Pain au Chocolat
 #       |--------------------|
 icon = 17
 line1 = "Un Pain au Chocolat"
@@ -1664,6 +1703,7 @@ line3 = "Ne rien faire"
 question = true
 
 [_use_croissants]
+# Utiliser un Croissant
 #       |--------------------|
 icon = 18
 line1 = "Un Croissant te"
@@ -1679,6 +1719,9 @@ line3 = "Ne rien faire"
 question = true
 
 [_too_heavy]
+# Lorsqu'on tente de soulever une pierre ou un buisson
+# sans avoir l'objet nécessaire
+# (Clin d'oeil à Link's Awekening)
 #       |-----------------------|
 line1 = "Oh là là, c'est"
 line2 = "bien trop lourd !"
@@ -1692,6 +1735,8 @@ line2 = "rien que par la force"
 line3 = "de tes bras !"
 
 [_shop.question]
+# Lorsqu'on regarde un objet vendu dans un magasin
+# (message affiché après avoir lu la description de l'objet)
 #       |-----------------------|
 line1 = "Prix : $v rubis."
 line2 = "Acheter"
@@ -1699,18 +1744,25 @@ line3 = "Ne pas acheter"
 question = true
 
 [_shop.not_enough_money]
+# Lorsqu'on veut acheter un objet dans un magasin
+# mais qu'on n'a pas assez de Rubis
 #       |-----------------------|
 line1 = "Désolé, mais tu n'as"
 line2 = "pas assez d'argent !"
 cancel = all
 
 [_shop.amount_full]
+# Lorsqu'on veut acheter un objet dans un magasin
+# mais qu'on a déjà le maximum de la quantité possible
+# (pour des Bombes, des Flèches, etc.)
 #       |-----------------------|
 line1 = "Tu es déjà au maximum !"
 
 [_crystal_switch]
+# Lorsqu'on regarde un interrupteur de cristal
 #       |-----------------------|
 line1 = "C'est un interrupteur"
 line2 = "de cristal. Frappe-le"
 line3 = "avec quelque chose..."
 cancel = all
+

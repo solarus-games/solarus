@@ -61,13 +61,14 @@ class TextSurface {
   enum FontId {
     FONT_LA       = 0,   /**< Link's Awakening font (default) */
     FONT_STANDARD = 1,   /**< a more common font, with fixed width too */
+    FONT_LA_BIG   = 2,   /**< Link's Awakening font with double size */
     FONT_NB
   };
 
  private:
 
-  static SDL_RWops *rw[2];
-  static TTF_Font *fonts[2];
+  static SDL_RWops *rw[FONT_NB];
+  static TTF_Font *fonts[FONT_NB];
 
   FontId font_id;
   HorizontalAlignment horizontal_alignment;

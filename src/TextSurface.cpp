@@ -38,7 +38,7 @@ void TextSurface::initialize(void) {
     rw[i] = FileTools::data_file_open_rw(file_names[i]);
     fonts[i] = TTF_OpenFontRW(rw[i], 0, sizes[i]);
     if (fonts[i] == NULL) {
-      DIE("Cannot load font '" << file_names[i] << "': " << SDL_GetError());
+      DIE("Cannot load font " << i << " '" << file_names[i] << "': " << SDL_GetError());
     }
   }
 }

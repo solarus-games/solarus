@@ -45,6 +45,7 @@ Bugs :
 - renommer TextResource en Strings ou autre
 - effets sonores soulever et lancer un vase : on entend un bruit de fond
 - Caverne de Billy
+- séparer mode release de mode debug (on peut vouloir les messages d'erreur sans les touches de triche, par exemple pour les testeurs)
 
 
 Remarques de Linksupersayen :

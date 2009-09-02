@@ -38,17 +38,17 @@
 #define MIN(x,y) (((x) > (y)) ? (y) : (x))
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
-//#define RELEASE_MODE // uncomment this line to compile in release mode and remove the error messages, the debugging keys, etc.
+#define RELEASE_MODE // uncomment this line to compile in release mode and remove the error messages, the debugging keys, etc.
 
 /**
  * This macro should be used to exit the program properly on an error message.
  * The message parameter can contain several elements separated by the '<<' operator.
  */
-#ifdef RELEASE_MODE
-#define DIE(message) do { throw std::logic_error(""); } while (false)
-#else
+//#ifdef RELEASE_MODE
+//#define DIE(message) do { throw std::logic_error(""); } while (false)
+//#else
 #define DIE(message) do { std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)
-#endif
+//#endif
 
 #endif
 

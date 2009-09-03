@@ -152,6 +152,7 @@ bool Music::play(void) {
       ex.defaultfrequency = 32000;         // 32 KHz (note: IT files converted with OpenSPC Lite seem to have a wrong sample rate of 32768)
       ex.format = FMOD_SOUND_FORMAT_PCM16; // PCM 16 bits
       ex.pcmreadcallback = spc_callback;
+      ex.decodebuffersize = 4096;          // problems without this line
 
       spc_load_spc(snes_spc, (short int*) sound_data, sound_size);
       spc_clear_echo(snes_spc);

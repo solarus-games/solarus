@@ -199,10 +199,12 @@ void SelectionMenuCommon::initialize_clouds(void) {
 void SelectionMenuCommon::read_savegames(void) {
 
   // load the 3 saves
-  char file_name[10];
+  std::string file_name;
   for (int i = 0; i < 3; i++) {
 
-    sprintf(file_name, "save%d.zsd", i + 1);
+    std::ostringstream oss;
+    oss << "save" << (i + 11) << ".zsd";
+    file_name = oss.str();
 
     if (savegames[i] != NULL) {
       delete savegames[i];

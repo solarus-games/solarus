@@ -17,7 +17,7 @@
 #include "SDL_Config/SDL_config_lib.h"
 #include "Dungeon.h"
 #include "FileTools.h"
-#include "TextResource.h"
+#include "StringResource.h"
 
 /**
  * Creates the specified dungeon.
@@ -65,7 +65,7 @@ void Dungeon::load(void) {
   // get the dungeon name
   std::ostringstream oss;
   oss << "map.caption.dungeon_name_" << dungeon_number;
-  this->name = TextResource::get_string(oss.str());
+  this->name = StringResource::get_string(oss.str());
 
   // parse the dungeon file
   std::string file_name = "maps/dungeons/dungeons.zsd"; 

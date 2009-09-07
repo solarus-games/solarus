@@ -7,7 +7,7 @@ Prochaines mises à jour :
 
 Feature requests :
 
-- Gérer les chemins des fichiers de sauvegarde et de configuration dans FileTools
+- Gérer les chemins des fichiers de sauvegarde et de configuration dans FileTools, utiliser PhysFS
 - Mettre de la couleur dans les messages
 - Ajouter des infos de statut quête dans l'écran de sélection des sauvegardes, en particulier quand une sauvegarde est choisie
 - Rendre les pancartes soulevables
@@ -20,6 +20,7 @@ Feature requests :
 - transition des téléporteurs ?
 - son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
+- mieux protéger le zip
 - essayer OpenAL ?
 
 
@@ -37,16 +38,12 @@ Bugs :
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - mur fissuré qui explose : animation ?
-- l'ombre des pots passe sur Link pendant qu'on les soulève
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 - empêcher de mettre pause après le boss
-- renommer TextResource en Strings ou StringResource ou autre
-- effets sonores soulever et lancer un vase : on entend un bruit de fond
 - Caverne de Billy
-- séparer mode release de mode debug (on peut vouloir les messages d'erreur sans les touches de triche, par exemple pour les testeurs)
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ?
-- boomerang : rubis pas toujours verts
+- item carte du monde : essayer la version de pyro
 
 
 Remarques de Linksupersayen :
@@ -59,17 +56,14 @@ Remarques de Linksupersayen :
 Remarques de @PyroNet :
 
 - bandit manchot : graphismes pas exceptionnels, tapis pas centré
-- bandit manchot : débloquer plus tard dans le jeu et laisser un message "casino hors-service" ? ou garder ce clin d'oeil pour le moment où la maison est dévalisée ?
 - Quand Link soulève un pot, l'ombre du pot passe pendant un moment au-dessus de Link.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - La porte (avec un coeur dedans) fermée à clé dénote un peu avec la montagne.
 - Les prix des marchandises dans les magasins ne sont pas très lisibles. -> utiliser les chiffres attachés aux pickable items comme les flèches, bombes (1, 5 et 10) ?
-- Les carrés à la fin des dialogues donnent bien, mais il y en a parfois au milieu de dialogues (avec le singe par exemple).
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
 - Lorsqu'on achète un objet, l'image de l'objet que Link porte au-dessus de sa tête et de celui qui est sur le tapis se superposent. Il faudrait peut-être faire disparaître l'objet se trouvant sur le tapis pendant que Link porte celui qu'il a acheté.
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Le noir des bords de l'image de l'épée plus profond que celui du boomerang (entre autres).
-
 
 
 A venir :

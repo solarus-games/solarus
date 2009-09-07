@@ -22,7 +22,7 @@
 #include "Color.h"
 #include "TransitionFade.h"
 #include "TextSurface.h"
-#include "TextResource.h"
+#include "StringResource.h"
 
 // TODO remove
 #include "Game.h"
@@ -202,11 +202,11 @@ void TitleScreen::init_phase_title(void) {
   dx_img = ResourceManager::load_image("menus/title_dx.png");
   website_img = new TextSurface(160, 220, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   website_img->set_font(TextSurface::FONT_STANDARD);
-  website_img->set_text(TextResource::get_string("title_screen.website"));
+  website_img->set_text(StringResource::get_string("title_screen.website"));
   press_space_img = new TextSurface(160, 190, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   press_space_img->set_font(TextSurface::FONT_LA_BIG);
   press_space_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
-  press_space_img->set_text(TextResource::get_string("title_screen.press_space"));
+  press_space_img->set_text(StringResource::get_string("title_screen.press_space"));
   title_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
 
   counter = 0;

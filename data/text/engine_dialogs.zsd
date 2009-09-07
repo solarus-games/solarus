@@ -27,6 +27,18 @@
 # à afficher. Si cette valeur n'est pas définie, cela signifie
 # que ce message était le dernier de la série et la boîte de 
 # dialogue va se fermer une fois qu'il sera terminé.
+# Si la valeur next existe, alors une flèche s'affiche en bas du message courant,
+# indiquant que ce message va être suivi d'un autre.
+# Si la valeur next n'existe pas, alors la flèche est remplacée par un carré
+# indiquant que c'était le dernier message de la série.
+# Un message contenant une question est toujours affiché avec une flèche.
+# Il peut arriver que bien qu'une série se termine, on souhaite afficher une flèche.
+# C'est le cas en particulier lorsqu'on sait qu'elle sera immédiatement suivie
+# par une nouvelle série mais qu'on ne sait pas encore laquelle (cela peut dépendre
+# de la quête). Dans ce cas, on utilise la valeur spéciale "_unknown"
+# afin d'indiquer que la série va être suivie d'une autre série, pour l'instant indéterminée.
+# Cela a pour seul effet d'afficher la flèche au lieu du carré,
+# mais ensuite tout se passe comme si aucune valeur next n'était définie. 
 #
 # - Par convention, lorsqu'un texte est trop long pour tenir
 # dans un seul message, la suite est dans un ou plusieurs messages

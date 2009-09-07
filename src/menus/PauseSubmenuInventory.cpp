@@ -26,7 +26,7 @@
 #include "Counter.h"
 #include "KeysEffect.h"
 #include "InventoryItem.h"
-#include "TextResource.h"
+#include "StringResource.h"
 
 /**
  * Constructor.
@@ -70,7 +70,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
       int id = InventoryItem::is_bottle(item_id) ? INVENTORY_BOTTLE_1 : item_id;
       std::ostringstream oss;
       oss << "inventory.caption.item_" << id << "_" << variant;
-      caption_strings[k] = TextResource::get_string(oss.str());
+      caption_strings[k] = StringResource::get_string(oss.str());
     }
   }
 

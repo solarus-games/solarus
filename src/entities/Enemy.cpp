@@ -17,7 +17,6 @@
 #include "entities/Enemy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "entities/PickableItem.h"
 #include "entities/CarriedItem.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -639,7 +638,7 @@ void Enemy::kill(void) {
 
   // if the enemy is immobilized, give a rupee
   if (rank == RANK_NORMAL && is_immobilized() && pickable_item_savegame_variable == -1) {
-    pickable_item_subtype = PickableItem::RUPEE_1;
+    pickable_item_subtype = get_random_rupee();
   }
 
   // stop any movement and disable attacks
@@ -736,5 +735,26 @@ void Enemy::stop_immobilized(void) {
  */
 bool Enemy::is_immobilized(void) {
   return immobilized;
+}
+
+/**
+ * Computes randomly a type of pickable rupee.
+ * @return a type of pickable rupee
+ */
+PickableItem::Subtype Enemy::get_random_rupee(void) {
+
+  PickableItem::Subtype rupee;
+  int r = Random::get_number(10);
+
+  if (r < 6) {
+    rupee = PickableItem::RUPEE_1;
+  }
+  else if (r < 9) {
+    rupee = PickableItem::RUPEE_5;
+  }
+  else {
+    rupee = PickableItem::RUPEE_20;
+  }
+  return rupee;
 }
 

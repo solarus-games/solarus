@@ -48,6 +48,9 @@ next = outside_world.village.monkey.2
 line1 = "Le village a été"
 line2 = "encerclé par des"
 line3 = "monstres !"
+# _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
+# cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
+next = _unknown
 
 [outside_world.village.monkey.without_shield]
 # Suite du dialogue avec le singe, dans le cas où on n'a pas le bouclier
@@ -889,6 +892,9 @@ line3 = "souhaites acheter."
 line1 = "3 Pommes fraîches de ce"
 line2 = "matin ! Chaque pomme"
 line3 = "rapporte un Coeur."
+# _unknown car c'est le moteur qui se chargera de la suite pour gérer la vente
+# cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
+next = _unknown
 
 [lyriann_shop.bomb_bag]
 # Boutique : quand on regarde le sac de bombes
@@ -896,12 +902,14 @@ line3 = "rapporte un Coeur."
 line1 = "Un sac de Bombes."
 line2 = "Indispensable pour"
 line3 = "les transporter !"
+next = _unknown
 
 [lyriann_shop.heart]
 # Boutique : quand on regarde le coeur
 #       |-----------------------|
 line1 = "Un coeur à consommer"
 line2 = "immédiatement."
+next = _unknown
 
 [cake_shop.seller.choose_item]
 # Pâtisserie : quand on parle à la vendeuse
@@ -916,6 +924,7 @@ line3 = "souhaites acheter."
 line1 = "Un pain au chocolat"
 line2 = "savoureux qui te"
 line3 = "redonnera trois Coeurs."
+next = _unknown
 
 [cake_shop.croissant]
 # Pâtisserie : quand on regarde les croissants
@@ -923,6 +932,7 @@ line3 = "redonnera trois Coeurs."
 line1 = "Mange ce croissant"
 line2 = "croustillant pour"
 line3 = "retrouver sept Coeurs."
+next = _unknown
 
 [cake_shop.dont_leave]
 # Pâtisserie : quand on est sur le point de partir

@@ -184,7 +184,7 @@ bool Music::play(void) {
  * Custom music function called by the sound library to play SPC files.
  * @param sound the sound to decode
  * @param data buffer to write with the 32 KHz 16-bit stereo raw sound decoded by the SPC library
- * @param datalen size of the buffer to write in bytes
+ * @param datalen number of bytes to write into the buffer
  */
 FMOD_RESULT F_CALLBACK Music::spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen) {
 

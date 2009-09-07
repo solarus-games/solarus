@@ -52,7 +52,7 @@ add_executable (zsdx
   Music.cpp
 
   # graphics
-  TextResource.cpp
+  StringResource.cpp
   TextSurface.cpp
   Color.cpp
   Counter.cpp

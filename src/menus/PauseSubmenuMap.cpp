@@ -28,7 +28,7 @@
 #include "Color.h"
 #include "Controls.h"
 #include "Savegame.h"
-#include "TextResource.h"
+#include "StringResource.h"
 
 const SDL_Rect PauseSubmenuMap::outside_world_minimap_size = {0, 0, 225, 388};
 
@@ -45,7 +45,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
   // outside map or inside map (no dungeon): show the world map
   if (dungeon == NULL) {
 
-    set_caption_text(TextResource::get_string("map.caption.world_map"));
+    set_caption_text(StringResource::get_string("map.caption.world_map"));
 
     const SDL_Rect *real_size = game->get_outside_world_size();
 

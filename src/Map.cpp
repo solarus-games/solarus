@@ -553,22 +553,38 @@ bool Map::test_collision_with_entities(Layer layer, const SDL_Rect &collision_bo
  * Tests whether a rectangle collides with the map obstacles
  * (tiles and active entities).
  * @param layer layer of the rectangle in the map
- * @param collision_box the rectangle to check
- * (its dimensions should be multiples of 8)
+ * @param collision_box the rectangle to check (its dimensions should be multiples of 8)
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
 bool Map::test_collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
-  int x1, y1;
+  int x, y, x1, x2, y1, y2;
   bool collision = false;
 
-  // collisions with tiles
-  // TODO avoid checking every pixel? just check the border?
+  // collisions with tiles: we just check the borders of the collision box
+  y1 = collision_box.y;
+  y2 = y1 + collision_box.h - 1;
+  x1 = collision_box.x;
+  x2 = x1 + collision_box.w - 1;
+
+  for (x = x1; x <= x2 && !collision; x++) {
+    collision = test_collision_with_tiles(layer, x, y1, entity_to_check) ||
+      test_collision_with_tiles(layer, x, y2, entity_to_check);
+  }
+
+  for (y = y1; y <= y2 && !collision; y++) {
+    collision = test_collision_with_tiles(layer, x1, y, entity_to_check) ||
+      test_collision_with_tiles(layer, x2, y, entity_to_check);
+  }
+
+/*
+  // slow version: check every pixel of the collision_box rectangle
   for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
       collision = test_collision_with_tiles(layer, x1, y1, entity_to_check);
     }
   }
+*/
 
   // collisions with entities
   if (!collision) {
@@ -617,25 +633,25 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
   Ground ground;
 
   switch (obstacle) {
-	case OBSTACLE_SHALLOW_WATER:
-	  ground = GROUND_SHALLOW_WATER;
-	  break;
+    case OBSTACLE_SHALLOW_WATER:
+      ground = GROUND_SHALLOW_WATER;
+      break;
 
-	case OBSTACLE_DEEP_WATER:
-	  ground = GROUND_DEEP_WATER;
-	  break;
+    case OBSTACLE_DEEP_WATER:
+      ground = GROUND_DEEP_WATER;
+      break;
 
-	case OBSTACLE_HOLE:
-	  ground = GROUND_HOLE;
-	  break;
+    case OBSTACLE_HOLE:
+      ground = GROUND_HOLE;
+      break;
 
-	case OBSTACLE_LADDER:
-	  ground = GROUND_LADDER;
-	  break;
+    case OBSTACLE_LADDER:
+      ground = GROUND_LADDER;
+      break;
 
-	default:
-	  ground = GROUND_NORMAL;
-	  break;
+    default:
+      ground = GROUND_NORMAL;
+      break;
   }
 
   return ground;
@@ -698,3 +714,4 @@ void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
     }
   }
 }
+

@@ -14,16 +14,30 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "TextResource.h"
+#include "StringResource.h"
 #include "FileTools.h"
 
-std::map<std::string, std::string> TextResource::strings;
+std::map<std::string, std::string> StringResource::strings;
+
+/**
+ * Constructor.
+ */
+StringResource::StringResource(void) {
+
+}
+
+/**
+ * Destructor.
+ */
+StringResource::~StringResource(void) {
+
+}
 
 /**
  * Initializes the text resource by loading all string of the file "text/strings.zsd"
  * into memory for future access by get_string().
  */
-void TextResource::initialize(void) {
+void StringResource::initialize(void) {
 
   std::istream &file = FileTools::data_file_open("text/strings.zsd");
   std::string line;
@@ -56,7 +70,7 @@ void TextResource::initialize(void) {
 /**
  * Closes the text resource.
  */
-void TextResource::quit(void) {
+void StringResource::quit(void) {
 
 }
 
@@ -64,7 +78,7 @@ void TextResource::quit(void) {
  * Returns a string stored in the file "text/strings.zsd".
  * @param key id of the string to retrieve
  */
-const std::string &TextResource::get_string(const std::string &key) {
+const std::string &StringResource::get_string(const std::string &key) {
 
   const std::string &value = strings[key];
   if (value == "") {

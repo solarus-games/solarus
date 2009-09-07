@@ -30,11 +30,6 @@
  * a data file.
  */
 class FileTools {
- 
-  private: // TODO private
-
-    static const std::string data_file_get_prefix(void);
-    static const std::string data_file_add_prefix(const std::string &file_name);
 
   public:
 

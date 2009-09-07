@@ -21,8 +21,6 @@
 #ifndef ZSDX_COMMON_H
 #define ZSDX_COMMON_H
 
-#define _CRT_SECURE_NO_DEPRECATE // allow sprintf in Visual C++...
-
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -38,17 +36,23 @@
 #define MIN(x,y) (((x) > (y)) ? (y) : (x))
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
-//#define RELEASE_MODE // uncomment this line to compile in release mode and remove the error messages, the debugging keys, etc.
+/**
+ * Debug level.
+ * 0: no debug (release mode): no error messages; pick the data only from the archive file; no debug keys
+ * >= 1: enable the error messages; pick the data also from the physical data directory
+ * >= 2: enable the debug keys
+ */
+#define ZSDX_DEBUG_LEVEL 2
 
 /**
  * This macro should be used to exit the program properly on an error message.
  * The message parameter can contain several elements separated by the '<<' operator.
  */
-//#ifdef RELEASE_MODE
-//#define DIE(message) do { throw std::logic_error(""); } while (false)
-//#else
+#if ZSDX_DEBUG_LEVEL == 0
+#define DIE(message) do { throw std::logic_error(""); } while (false)
+#else
 #define DIE(message) do { std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)
-//#endif
+#endif
 
 #endif
 

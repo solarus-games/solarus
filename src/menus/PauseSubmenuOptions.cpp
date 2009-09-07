@@ -16,7 +16,7 @@
  */
 #include "menus/PauseSubmenuOptions.h"
 #include "menus/PauseMenu.h"
-#include "TextResource.h"
+#include "StringResource.h"
 #include "TextSurface.h"
 #include "Controls.h"
 #include "Game.h"
@@ -41,11 +41,11 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   for (int i = 0; i < VideoManager::NB_MODES; i++) {
     std::ostringstream oss;
     oss << "options.video_mode_" << i;
-    video_mode_strings[i] = TextResource::get_string(oss.str());
+    video_mode_strings[i] = StringResource::get_string(oss.str());
   }
-  caption_strings[0] = TextResource::get_string("options.caption.press_action_change_mode");
-  caption_strings[1] = TextResource::get_string("options.caption.press_action_customize_key");
-  caption_strings[2] = TextResource::get_string("options.caption.press_key");
+  caption_strings[0] = StringResource::get_string("options.caption.press_action_change_mode");
+  caption_strings[1] = StringResource::get_string("options.caption.press_action_customize_key");
+  caption_strings[2] = StringResource::get_string("options.caption.press_key");
 
   // create the text surfaces
   video_mode_text = new TextSurface(264, 62, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
@@ -53,15 +53,15 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
 
   controls_text = new TextSurface(84, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   controls_text->set_font(TextSurface::FONT_STANDARD);
-  controls_text->set_text(TextResource::get_string("options.commands_column"));
+  controls_text->set_text(StringResource::get_string("options.commands_column"));
 
   keyboard_text = new TextSurface(153, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   keyboard_text->set_font(TextSurface::FONT_STANDARD);
-  keyboard_text->set_text(TextResource::get_string("options.keyboard_column"));
+  keyboard_text->set_text(StringResource::get_string("options.keyboard_column"));
 
   joypad_text = new TextSurface(229, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   joypad_text->set_font(TextSurface::FONT_STANDARD);
-  joypad_text->set_text(TextResource::get_string("options.joypad_column"));
+  joypad_text->set_text(StringResource::get_string("options.joypad_column"));
 
   controls_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 215, 160, 32, 0, 0, 0, 0);
   SDL_SetColorKey(controls_surface, SDL_SRCCOLORKEY, Color::black);

@@ -24,28 +24,12 @@
 #define STRING(x) STRING2(x)
 #define STRING2(x) #x
 
-/*
- * If we are not under Windows, the data files will be picked
- * in the data directory (this is the normal behavior on Unix environments when the
- * user compiles the program). Note that the data directory is set at the
- * compilation time and hardcoded in the binary.
- * Otherwise, the data directory is relative to the current directory (which should
- * be the location of the executable file). This is the normal behavior on Windows
- * platforms, because the user downloads a binary version of the game.
- */
-// TODO remove DATADIR
-#ifdef DATADIR_
-#define DATADIR ((std::string) STRING(DATADIR_))
-#else
-#define DATADIR ((std::string) "./data")
-#endif
-
 /**
  * Initializes the file tools.
  */
 void FileTools::initialize(int argc, char **argv) {
   PHYSFS_init(argv[0]);
-#ifndef RELEASE_MODE
+#if ZSDX_DEBUG_LEVEL >= 1
   PHYSFS_addToSearchPath("./data", 1);
 #endif
   PHYSFS_addToSearchPath("./data.zip", 1);
@@ -59,37 +43,10 @@ void FileTools::quit(void) {
 }
 
 /**
- * @brief Returns the directory of the data files.
- * @return the directory of the data files
- */
-const std::string FileTools::data_file_get_prefix(void) {
-
-  return DATADIR;
-}
-
-/**
- * @brief Returns the path of a data file.
- *
- * The \c file_name parameter is relative to the ZSDX data directory
- * (which could be for example /usr/local/share/zsdx/data or
- * C:\\Program Files\\zsdx\\data).
- * This function returns the same file name, prefixed by the data directory.
- *
- * @param file_name name of a data file
- */
-const std::string FileTools::data_file_add_prefix(const std::string &file_name) {
-
-  const std::string &prefixed_file_name = DATADIR + "/" + file_name;
-  return prefixed_file_name;
-}
-
-/**
  * Returns the SDL_RWops object corresponding to the specified file name.
  * @param file_name a file name relative to the data directory
  */
 SDL_RWops * FileTools::data_file_open_rw(const std::string &file_name) {
-
-  std::string full_file_name = data_file_add_prefix(file_name);
 
   size_t size;
   char *buffer;
@@ -98,7 +55,7 @@ SDL_RWops * FileTools::data_file_open_rw(const std::string &file_name) {
 //  SDL_RWops *rw = SDL_RWFromZZIP(full_file_name.c_str(), mode.c_str());
 
   if (rw == NULL) {
-    DIE("Cannot open data file " << full_file_name);
+    DIE("Cannot open data file " << file_name);
   }
   return rw;
 }

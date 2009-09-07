@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_TEXT_RESOURCE_H
-#define ZSDX_TEXT_RESOURCE_H
+#ifndef ZSDX_STRING_RESOURCE_H
+#define ZSDX_STRING_RESOURCE_H
 
 #include "Common.h"
 #include <map>
@@ -25,15 +25,15 @@
  * This class is used only to load simple strings. The messages displayed in the dialog box come from more
  * complex data files, see classes DialogBox and Message.
  */
-class TextResource {
+class StringResource {
 
   private:
 
     static std::map<std::string, std::string> strings;
 
     // we don't need to instanciate this class
-    TextResource(void);
-    ~TextResource(void);
+    StringResource(void);
+    ~StringResource(void);
 
   public:
 

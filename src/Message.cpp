@@ -159,8 +159,7 @@ bool Message::is_question(void) {
 /**
  * Returns the id of the next message to display, or
  * an empty string if this is the last message.
- * @return the id of the message to display when this one
- * is over
+ * @return the id of the message to display when this one is over
  */
 MessageId Message::get_next_message_id(void) {
 

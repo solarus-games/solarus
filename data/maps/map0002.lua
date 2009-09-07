@@ -269,7 +269,7 @@ function event_interaction(entity_name)
 	 game_2_slots[entity_name].current_delay = game_2_slots[entity_name].current_delay + 100
 	 interactive_entity_set_animation_delay(entity_name, game_2_slots[entity_name].current_delay)
 
-	 -- TODO test code (temporary code to win every game)
+	 -- test code (temporary code to win every game)
 --	 for k, v in pairs(game_2_slots) do
 --	    v.symbol = game_2_slots[entity_name].symbol
 --	    v.current_delay = game_2_slots[entity_name].current_delay + 100

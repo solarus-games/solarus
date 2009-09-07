@@ -23,7 +23,7 @@
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "TextSurface.h"
-#include "TextResource.h"
+#include "StringResource.h"
 #include "Random.h"
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenuSelectFile.h"
@@ -62,7 +62,7 @@ ZSDX::ZSDX(int argc, char **argv) {
 
   // initialize the text displaying
   TextSurface::initialize();
-  TextResource::initialize();
+  StringResource::initialize();
 
   // initialize the audio system
   Sound::initialize();
@@ -82,7 +82,7 @@ ZSDX::~ZSDX(void) {
   delete video_manager;
   ResourceManager::quit();
   TextSurface::quit();
-  TextResource::quit();
+  StringResource::quit();
   Sound::quit();
   SDL_Quit();
   FileTools::quit();

@@ -20,7 +20,7 @@
 #include "Equipment.h"
 #include "DialogBox.h"
 #include "DebugKeys.h"
-#include "TextResource.h"
+#include "StringResource.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 
@@ -97,7 +97,7 @@ Controls::Controls(Game *game):
     // load the game key name in the current language
     std::ostringstream oss;
     oss << "controls.game_key_" << game_key;
-    game_key_names[i] = TextResource::get_string(oss.str());
+    game_key_names[i] = StringResource::get_string(oss.str());
   }
 }
 
@@ -217,7 +217,7 @@ void Controls::handle_event(const SDL_Event &event) {
  */
 void Controls::key_pressed(const SDL_keysym &keysym) {
 
-#ifndef RELEASE_MODE
+#if ZSDX_DEBUG_LEVEL >= 2
   // don't consider the debug keys in release mode
   debug_keys->key_pressed(keysym);
 #endif
@@ -265,7 +265,7 @@ void Controls::key_pressed(const SDL_keysym &keysym) {
  */
 void Controls::key_released(const SDL_keysym &keysym) {
 
-#ifndef RELEASE_MODE
+#if ZSDX_DEBUG_LEVEL >= 2
   debug_keys->key_released(keysym);
 #endif
 

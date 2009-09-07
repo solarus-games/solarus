@@ -258,7 +258,7 @@ void DialogBox::action_key_pressed(void) {
     MessageId next_message_id = current_message->get_next_message_id();
     delete current_message;
 
-    if (next_message_id != "") {
+    if (next_message_id != "" && next_message_id != "_unknown") {
       show_message(next_message_id);
     }
     else {
@@ -351,7 +351,7 @@ void DialogBox::update(void) {
 	&& action_key_effect != KeysEffect::ACTION_KEY_RETURN) {
 
       MessageId next_message_id = current_message->get_next_message_id();
-      if (next_message_id != "") {
+      if (next_message_id != "" || current_message->is_question()) {
 	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
       }
       else {

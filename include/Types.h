@@ -65,7 +65,7 @@ class PauseSubmenuInventory;
 class PauseSubmenuMap;
 class PauseSubmenuQuestStatus;
 class PauseSubmenuOptions;
-class TextResource;
+class StringResource;
 
 // game
 class Game;

@@ -21,7 +21,7 @@
 #include "Sound.h"
 #include "Sprite.h"
 #include "TextSurface.h"
-#include "TextResource.h"
+#include "StringResource.h"
 #include "hud/HeartsView.h"
 
 /**
@@ -39,7 +39,7 @@ SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous, const std::
     this->common_part = new SelectionMenuCommon();
   }
 
-  this->title_string = TextResource::get_string(title_string_key);
+  this->title_string = StringResource::get_string(title_string_key);
   this->destination_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   this->transition = NULL;
 }
@@ -68,8 +68,8 @@ SelectionMenuPhase::~SelectionMenuPhase(void) {
  */
 void SelectionMenuPhase::set_bottom_options(const std::string &left_string_key, const std::string &right_string_key) {
 
-  common_part->text_option1->set_text(TextResource::get_string(left_string_key));
-  common_part->text_option2->set_text(TextResource::get_string(right_string_key));
+  common_part->text_option1->set_text(StringResource::get_string(left_string_key));
+  common_part->text_option2->set_text(StringResource::get_string(right_string_key));
 }
 
 

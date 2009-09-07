@@ -11,7 +11,7 @@
 
  Library for reading and writing configuration files in an easy, cross-platform way.
 
- - Author: Hubert "Koshmaar" Rutkowski
+ - Author: Hubert "Koshmaar" Rutkowski - with minor adaptations for ZSDX due to compilation issues
  - Contact: koshmaar@poczta.onet.pl
  - Version: 1.2
  - Homepage: http://sdl-cfg.sourceforge.net/
@@ -192,7 +192,7 @@ Change it to double to increase the size of floats that you may use.
  */
 
 
-#define CFG_BUILD_DLL
+/* #define CFG_BUILD_DLL */
 
 /*
 

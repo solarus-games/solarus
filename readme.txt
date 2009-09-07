@@ -12,7 +12,6 @@ SDL
 SDLmain
 SDL_image
 SDL_ttf
-SDL_Config
 fmodex
 lua5.1
 physfs
@@ -48,20 +47,6 @@ Similarly, install the library files (the .lib files) in your compiler's lib dir
 This may be something like C:\Program Files\Microsoft Visual Studio 9.0\VC\lib.
 Install the dynamic library files (the .dll files) in your system32 directory
 (which may be C:\WINDOWS\system32).
-
------------------------
-SDL_Config installation
------------------------
-
-The SDL_Config library can be downloaded here: http://downloads.sourceforge.net/sdl-cfg/SDL_Config_1.2.zip. We chose to make a static link with this library.
-
-Windows users:
-
-As in the previous section, you have to install the SDL_Config header files (sdl_config_lib.h and sdl_config_cfg.h) in the "SDL" subdirectory of your compiler's include directory, and the SDL_Config.lib file in your compiler's lib directory. The SDL_Config.dll file is not required since we want to make a static link.
-
-Linux / Mac OS X users:
-
-No compiled version for other systems than Windows are provided with the SDL_Config package, so we have to compile it ourselves. First, install the SDL_Config header files (sdl_config_lib.h and sdl_config_cfg.h) in an "SDL" subdirectory of your include directory (for example /usr/include/SDL). Then, create the static library (usually SDL_Config.a) from the .h and .c files located in the src directory of SDL_Config. If you are using Linux 32-bit, you can just take my SDL_Config.a in the SubVersion repository. Otherwise you must compile it yourself. Once the static library is compiled, install it in the lib directory (for example /usr/lib).
 
 --------------------
 FMOD Ex installation

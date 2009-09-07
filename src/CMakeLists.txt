@@ -1,4 +1,4 @@
-include_directories (${ZSDX_SOURCE_DIR}/include ${ZSDX_SOURCE_DIR}/include/snes_spc)
+include_directories (${ZSDX_SOURCE_DIR}/include ${ZSDX_SOURCE_DIR}/include/snes_spc ${ZSDX_SOURCE_DIR}/include/SDL_Config)
 
 add_executable (zsdx
 
@@ -154,6 +154,7 @@ add_executable (zsdx
   snes_spc/spc.cpp
   snes_spc/SPC_DSP.cpp
   snes_spc/SPC_Filter.cpp
+  SDL_Config/SDL_config.cpp
 )
 
 if (NOT WIN32)
@@ -166,7 +167,6 @@ target_link_libraries (zsdx
 		      SDLmain
 		      SDL_image
 		      SDL_ttf
-		      SDL_Config
 		      fmodex
 		      lua5.1
 		      physfs
@@ -176,3 +176,4 @@ target_link_libraries (zsdx
 INSTALL(TARGETS	zsdx
 	RUNTIME DESTINATION bin
 )
+

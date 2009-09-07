@@ -154,7 +154,6 @@ void ZSDX::main(void) {
     }
     else {
 
-      // display everything each time frame
       now = SDL_GetTicks();
       delay = next_frame_date - now;
       // delay is the time remaining before the next display
@@ -208,12 +207,6 @@ void ZSDX::handle_event(const SDL_Event &event) {
   case SDL_KEYDOWN:
     switch (event.key.keysym.sym) {
 
-      // TODO temporary (escape: quit)
- /*
-   case SDLK_ESCAPE:
-      exiting = true;
-      break;
-*/
       // F5: change the video mode
     case SDLK_F5:
       video_manager->switch_video_mode();

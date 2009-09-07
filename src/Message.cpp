@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <SDL/SDL_config_lib.h>
+#include <SDL_Config/SDL_config_lib.h>
 #include "Message.h"
 #include "DialogBox.h"
 #include "FileTools.h"

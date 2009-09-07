@@ -18,7 +18,7 @@ Feature requests :
 - Mettre une icône sur l'exécutable
 - transition intérieur / extérieur : ovale
 - transition des téléporteurs ?
-- son des marches d'escalier
+- son et animation des marches d'escalier
 - essayer OpenAL ?
 - rendre les pierres et les buissons dépendants du tileset
 - changer la licence
@@ -46,7 +46,10 @@ Bugs :
 - effets sonores soulever et lancer un vase : on entend un bruit de fond
 - Caverne de Billy
 - séparer mode release de mode debug (on peut vouloir les messages d'erreur sans les touches de triche, par exemple pour les testeurs)
+- bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ?
+- boomerang : rubis pas toujours verts
 
+Voir dernières remarques sur le forum
 
 Remarques de Linksupersayen :
 
@@ -63,6 +66,12 @@ Remarques de @PyroNet :
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - La porte (avec un coeur dedans) fermée à clé dénote un peu avec la montagne.
 - Les prix des marchandises dans les magasins ne sont pas très lisibles. -> utiliser les chiffres attachés aux pickable items comme les flèches, bombes (1, 5 et 10) ?
+- Les carrés à la fin des dialogues donnent bien, mais il y en a parfois au milieu de dialogues (avec le singe par exemple).
+- Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
+- Lorsqu'on achète un objet, l'image de l'objet que Link porte au-dessus de sa tête et de celui qui est sur le tapis se superposent. Il faudrait peut-être faire disparaître l'objet se trouvant sur le tapis pendant que Link porte celui qu'il a acheté.
+- Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
+- Le noir des bords de l'image de l'épée plus profond que celui du boomerang (entre autres).
+
 
 
 A venir :

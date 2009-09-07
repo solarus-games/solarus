@@ -38,7 +38,7 @@
 #define MIN(x,y) (((x) > (y)) ? (y) : (x))
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
-#define RELEASE_MODE // uncomment this line to compile in release mode and remove the error messages, the debugging keys, etc.
+//#define RELEASE_MODE // uncomment this line to compile in release mode and remove the error messages, the debugging keys, etc.
 
 /**
  * This macro should be used to exit the program properly on an error message.

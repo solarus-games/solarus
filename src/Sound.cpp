@@ -17,15 +17,16 @@
 #include "Sound.h"
 #include "Music.h"
 #include "FileTools.h"
-#include <fmodex/fmod_errors.h>
+#include <AL/alut.h>
 
-FMOD_SYSTEM *Sound::system = NULL;
+ALCdevice * Sound::device = NULL;
+ALCcontext * Sound::context = NULL;
 
 /**
  * Constructor used by the Music subclass.
  */
 Sound::Sound(void):
-  sound(NULL), channel(NULL) {
+  buffer(AL_NONE) {
 
 }
 
@@ -34,86 +35,96 @@ Sound::Sound(void):
  * @param sound_id id of the sound (a file name)
  */
 Sound::Sound(const SoundId &sound_id):
-  sound(NULL), channel(NULL) {
+  buffer(AL_NONE) {
 
-  file_name = (std::string) "sounds/" + sound_id + ".wav";
-}
+    if (is_initialized()) {
+      file_name = (std::string) "sounds/" + sound_id + ".wav";
+
+      // load the wav file
+      size_t wav_size;
+      char *wav_data;
+      FileTools::data_file_open_buffer(file_name, &wav_data, &wav_size);
+
+      // create an OpenAL buffer with the sound decoded by ALUT
+      buffer = alutCreateBufferFromFileImage((ALvoid*) wav_data, wav_size);
+      FileTools::data_file_close_buffer(wav_data);
+
+      if (buffer == AL_NONE) {
+	std::cerr << "Cannot decode WAV data for sound '" << file_name << "': " << alutGetErrorString(alutGetError()) << std::endl;
+      }
+    }
+  }
 
 /**
  * Destroys the sound.
  */
 Sound::~Sound(void) {
-  if (sound != NULL) {
-    FMOD_Sound_Release(sound);
+
+  if (is_initialized()) {
+
+    std::list<ALuint>::iterator it;
+    for (it = sources.begin(); it != sources.end(); it++) {
+      ALuint source = *it;
+      alSourcei(source, AL_BUFFER, 0);
+      alDeleteSources(1, &source);
+    }
+    alDeleteBuffers(1, &buffer);
   }
 }
 
 /**
- * Initializes the music and sound system.
+ * Initializes the audio (music and sound) system.
  * This method should be called when the application starts.
  */
 void Sound::initialize(void) {
 
-  FMOD_RESULT result;
-
-  FMOD_System_Create(&system);
-
-  /* not working
-  // initialize the default sample rate we want
-  int sample_rate, num_output_channels, max_input_channels, bits;
-  FMOD_SOUND_FORMAT sound_format;
-  FMOD_DSP_RESAMPLER resampler_method;
-  FMOD_System_GetSoftwareFormat(system, &sample_rate, &sound_format, &num_output_channels, &max_input_channels, &resampler_method, &bits);
-  result = FMOD_System_SetSoftwareFormat(system, 32000, sound_format, num_output_channels, max_input_channels, resampler_method);
-  if (result != FMOD_OK) {
-    std::cout << "Warning: failed to set the default sample rate to 32 KHz: " << FMOD_ErrorString(result) << std::endl;
+  // initialize OpenAL
+  if (!alutInitWithoutContext(NULL, NULL)) {
+    std::cout << "Cannot initialize alut: " << alutGetErrorString(alutGetError()) << std::endl;
+    return;
   }
 
-  //  FMOD_System_GetSoftwareFormat(system, &sample_rate, &sound_format, &num_output_channels, &max_input_channels, &resampler_method, &bits);
-  //  std::cout << "sample rate: " << sample_rate << ", sound format: " << sound_format << ", num output channels: " << num_output_channels
-  //  << ", max input channels: " << max_input_channels << ", resampler method: " << resampler_method << ", bits: " << bits << std::endl;
-  */
-
-  // first we try to initialize FMOD with WinMM instead of DirectSound
-  // because we have problems with DirectSound
-  FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_WINMM);
-  result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
-
-  if (result != FMOD_OK) {
-
-    // if it didn't work, we try to auto-detect the output type
-    FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_AUTODETECT);
-    result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
-
-    if (result != FMOD_OK) {
-
-      // it didn't work either: try Linux sound
-      FMOD_System_SetOutput(system, FMOD_OUTPUTTYPE_ALSA);
-      result = FMOD_System_Init(system, 16, FMOD_INIT_NORMAL, NULL);
-
-      if (result != FMOD_OK) {
-	std::cerr << "Unable to initialize FMOD: " << FMOD_ErrorString(result)
-		  << "No music or sound will be played." << std::endl;
-	FMOD_System_Release(system);
-	system = NULL;
-      }
-    }
+  device = alcOpenDevice(NULL);
+  if (!device) {
+    std::cout << "Cannot open audio device" << std::endl;
+    return;
   }
 
-  if (result == FMOD_OK) {
-    Music::initialize();
+  const int attr[2] = {ALC_FREQUENCY, 32000};
+  context = alcCreateContext(device, attr);
+  if (!context) {
+    std::cout << "Cannot create audio context" << std::endl;
+    alcCloseDevice(device);
+    return;
   }
+  if (!alcMakeContextCurrent(context)) {
+    std::cout << "Cannot activate audio context" << std::endl;
+    alcDestroyContext(context);
+    alcCloseDevice(device);
+    return;
+  }
+
+  Music::initialize();
 }
 
 /**
- * Closes the music and sound system.
+ * Closes the audio (music and sound) system.
  * This method should be called when exiting the application.
  */
 void Sound::quit(void) {
-  Music::quit();
+
   if (is_initialized()) {
-    FMOD_System_Release(system);
-    system = NULL;
+
+    // uninitialize the music subsystem
+    Music::quit();
+
+    // uninitialize OpenAL
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(context);
+    context = NULL;
+    alcCloseDevice(device);
+    device = NULL;
+    alutExit();
   }
 }
 
@@ -122,17 +133,16 @@ void Sound::quit(void) {
  * @return true if the audio system is initilialized
  */
 bool Sound::is_initialized(void) {
-  return system != NULL;
+  return context != NULL;
 }
 
 /**
- * Updates the sound system.
+ * Updates the audio (music and sound) system.
  * This function is called repeatedly by the game.
  */
 void Sound::update(void) {
-  if (is_initialized()) {
-    FMOD_System_Update(system);
-  }
+  // nothing to do for the class Sound itself, but the Music class may need to do something
+  Music::update();
 }
 
 /**
@@ -142,38 +152,31 @@ void Sound::update(void) {
 bool Sound::play(void) {
 
   bool success = false;
-  FMOD_RESULT result;
 
   if (is_initialized()) {
 
-    if (sound == NULL) {
+    // TODO before playing the sound, see whether previous sources of the same sound can be deleted 
 
-      size_t size;
-      char *buffer;
-      FileTools::data_file_open_buffer(file_name, &buffer, &size);
-      FMOD_CREATESOUNDEXINFO ex = {0};
-      ex.cbsize = sizeof(ex);
-      ex.length = size;
-      result = FMOD_System_CreateSound(system, buffer, FMOD_LOOP_OFF | FMOD_OPENMEMORY, &ex, &sound);
-      FileTools::data_file_close_buffer(buffer);
-
-      if (result != FMOD_OK) {
-	std::cerr << "Unable to create sound '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
-      }
+    // play the sound
+    ALuint source;
+    alGenSources(1, &source);
+    sources.push_back(source);
+    alSourcei(source, AL_BUFFER, buffer);
+    int error = alGetError();
+    if (error != AL_NO_ERROR) {
+      std::cerr << "Cannot attach the buffer to the source to play sound '" << file_name << "': error " << error << std::endl;
     }
-
-    if (sound != NULL) {
-      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, false, &channel);
-
-      if (result != FMOD_OK) {
-	std::cerr << "Unable to play sound '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
+    else {
+      alSourcePlay(source);
+      int error = alGetError();
+      if (error != AL_NO_ERROR) {
+	std::cerr << "Cannot play sound '" << file_name << "': error " << error << std::endl;
       }
       else {
 	success = true;
       }
     }
   }
-
   return success;
 }
 

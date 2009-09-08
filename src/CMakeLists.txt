@@ -167,7 +167,8 @@ target_link_libraries (zsdx
 		      SDLmain
 		      SDL_image
 		      SDL_ttf
-		      fmodex
+		      openal
+		      alut
 		      lua5.1
 		      physfs
 		      stdc++

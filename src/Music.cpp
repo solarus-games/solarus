@@ -16,7 +16,6 @@
  */
 #include "Music.h"
 #include "FileTools.h"
-#include <fmodex/fmod_errors.h>
 
 SNES_SPC *Music::snes_spc;
 SPC_Filter *Music::filter;
@@ -56,11 +55,12 @@ Music::Music(const MusicId &music_id) {
   else {
     DIE("Unrecognized music file format: " << music_id);
   }
-
+/*
   // play musics with the highest priority to avoid being interrupted by sound effects
   FMOD_System_GetChannel(system, 15, &channel);
   FMOD_Channel_SetPriority(channel, 15);
   //  FMOD_Channel_SetFrequency(channel, 32000);
+  */
 }
 
 /**
@@ -90,6 +90,13 @@ void Music::quit(void) {
     spc_filter_delete(filter);
     spc_delete(snes_spc);
   }
+}
+
+/**
+ * Updates the music system.
+ */
+void Music::update(void) {
+  
 }
 
 /**
@@ -127,7 +134,7 @@ bool Music::isEqualId(const MusicId &music_id, const MusicId &other_music_id) {
 bool Music::play(void) {
 
   bool success = false;
-
+/*
   if (is_initialized()) {
 
     // load the music into memory
@@ -176,7 +183,7 @@ bool Music::play(void) {
     }
     FileTools::data_file_close_buffer(sound_data);
   }
-
+*/
   return success;
 }
 
@@ -185,7 +192,7 @@ bool Music::play(void) {
  * @param sound the sound to decode
  * @param data buffer to write with the 32 KHz 16-bit stereo raw sound decoded by the SPC library
  * @param datalen number of bytes to write into the buffer
- */
+ *//*
 FMOD_RESULT F_CALLBACK Music::spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen) {
 
   int words = datalen / 2; // the SPC library wants the number of 16-bit words
@@ -193,7 +200,7 @@ FMOD_RESULT F_CALLBACK Music::spc_callback(FMOD_SOUND *sound, void *data, unsign
   spc_filter_run(filter, (short int*) data, words);
 
   return FMOD_OK;
-}
+}*/
 
 /**
  * Stops playing the music.
@@ -201,7 +208,7 @@ FMOD_RESULT F_CALLBACK Music::spc_callback(FMOD_SOUND *sound, void *data, unsign
 void Music::stop(void) {
 
   if (is_initialized()) {
-
+/*
     FMOD_RESULT result = FMOD_Channel_Stop(channel);
 
     if (result != FMOD_OK) {
@@ -209,7 +216,7 @@ void Music::stop(void) {
     }
 
     FMOD_Sound_Release(sound);
-    sound = NULL;
+    sound = NULL;*/
   }
 }
 
@@ -219,14 +226,15 @@ void Music::stop(void) {
  */
 bool Music::is_paused(void) {
 
-  if (!is_initialized()) {
+//  if (!is_initialized()) {
     return false;
-  }
+/*  }
 
   FMOD_BOOL pause;
   FMOD_Channel_GetPaused(channel, &pause);
 
   return pause != 0;
+  */
 }
 
 /**
@@ -235,7 +243,7 @@ bool Music::is_paused(void) {
  */
 void Music::set_paused(bool pause) {
   if (is_initialized()) {
-    FMOD_Channel_SetPaused(channel, pause);
+//    FMOD_Channel_SetPaused(channel, pause);
   }
 }
 

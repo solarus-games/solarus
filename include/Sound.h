@@ -18,7 +18,9 @@
 #define ZSDX_SOUND_H
 
 #include "Common.h"
-#include <fmodex/fmod.h>
+#include <AL/al.h>
+#include <AL/alc.h>
+#include <list>
 
 /**
  * This class represents a sound effet that can be played in ZSDX.
@@ -28,26 +30,28 @@
  */
 class Sound {
 
- protected:
+  protected:
 
-  static FMOD_SYSTEM *system;
+    static ALCdevice *device;
+    static ALCcontext *context;
 
-  FMOD_SOUND *sound;     /**< the sound object */
-  FMOD_CHANNEL *channel;
- 
-  Sound(void); // used by subclass
-  std::string file_name;
+    std::string file_name;
 
- public:
+    ALuint buffer;
+    std::list<ALuint> sources;
 
-  Sound(const SoundId &sound_id);
-  virtual ~Sound(void);
-  virtual bool play(void);
+    Sound(void); // used by subclass
 
-  static void initialize(void);
-  static void quit(void);
-  static bool is_initialized(void);
-  static void update(void);
+  public:
+
+    Sound(const SoundId &sound_id);
+    virtual ~Sound(void);
+    virtual bool play(void);
+
+    static void initialize(void);
+    static void quit(void);
+    static bool is_initialized(void);
+    static void update(void);
 
 };
 

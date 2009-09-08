@@ -23,7 +23,7 @@
 
 /**
  * This class represents a music that can be played.
- * A music should be in format .spc (Snes) .it (Impulse Tracker Module).
+ * A music should be in format .spc (Snes) or .it (Impulse Tracker Module).
  * Only one music can be played at the same time.
  * Before using this class, the audio system should have been
  * initialized, by calling Sound::initialize().
@@ -47,7 +47,7 @@ class Music: public Sound {
     static SNES_SPC *snes_spc; /**< the snes_spc object */
     static SPC_Filter *filter;
 
-    static FMOD_RESULT F_CALLBACK spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen);
+//    static FMOD_RESULT F_CALLBACK spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen);
 
   public:
 
@@ -59,6 +59,7 @@ class Music: public Sound {
 
     static void initialize(void);
     static void quit(void);
+    static void update(void);
 
     bool play(void);
     void stop(void);

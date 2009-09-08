@@ -44,6 +44,7 @@ Bugs :
 - Caverne de Billy
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ?
 - item carte du monde : essayer la version de pyro
+- son du curseur : bruit de fond
 
 
 Remarques de Linksupersayen :

@@ -30,23 +30,19 @@
  */
 class Sound {
 
-  protected:
+  private:
 
-    static ALCdevice *device;
-    static ALCcontext *context;
+    ALuint buffer;             /**< the OpenAL buffer containing the PCM decoded data */
+    std::list<ALuint> sources; /**< the sources currently playing this sound */
 
-    std::string file_name;
-
-    ALuint buffer;
-    std::list<ALuint> sources;
-
-    Sound(void); // used by subclass
-
+    static ALCcontext *context; /**< the OpenAL context */
+    static ALCdevice *device;   /**< the OpenAL device */
+ 
   public:
 
     Sound(const SoundId &sound_id);
-    virtual ~Sound(void);
-    virtual bool play(void);
+    ~Sound(void);
+    bool play(void);
 
     static void initialize(void);
     static void quit(void);

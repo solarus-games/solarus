@@ -17,24 +17,24 @@
 #include "Music.h"
 #include "FileTools.h"
 
-SNES_SPC *Music::snes_spc;
-SPC_Filter *Music::filter;
+SNES_SPC * Music::spc_manager = NULL;
+SPC_Filter * Music::spc_filter = NULL;
 
-/**
- * Special id indicating that there is no music.
- */
+Music * Music::current_music = NULL;
+
 const MusicId Music::none = "none";
-
-/**
- * Special id indicating that the music is the same as before.
- */
 const MusicId Music::unchanged = "same";
+
 
 /**
  * Creates a new music.
  * @param music_id id of the music (a file name)
  */
 Music::Music(const MusicId &music_id) {
+
+  if (!is_initialized()) {
+    return;
+  }
 
   // compute the file name
   file_name = (std::string) "musics/" + music_id;
@@ -49,18 +49,18 @@ Music::Music(const MusicId &music_id) {
   if (extension == "spc") {
     format = SPC;
   }
+/* not yet implemented
   else if (extension == "it") {
     format = IT;
   }
+  */
   else {
     DIE("Unrecognized music file format: " << music_id);
   }
-/*
-  // play musics with the highest priority to avoid being interrupted by sound effects
-  FMOD_System_GetChannel(system, 15, &channel);
-  FMOD_Channel_SetPriority(channel, 15);
-  //  FMOD_Channel_SetFrequency(channel, 32000);
-  */
+
+  buffers[0] = AL_NONE;
+  buffers[1] = AL_NONE;
+  source = AL_NONE;
 }
 
 /**
@@ -68,6 +68,13 @@ Music::Music(const MusicId &music_id) {
  */
 Music::~Music(void) {
 
+  if (!is_initialized()) {
+    return;
+  }
+
+  if (current_music == this) {
+    stop();
+  }
 }
 
 /**
@@ -75,11 +82,9 @@ Music::~Music(void) {
  */
 void Music::initialize(void) {
 
-  if (is_initialized()) {
-    // initialize the SPC library
-    snes_spc = spc_new();
-    filter = spc_filter_new();
-  }
+  // initialize the SPC library
+  spc_manager = spc_new();
+  spc_filter = spc_filter_new();
 }
 
 /**
@@ -87,16 +92,198 @@ void Music::initialize(void) {
  */
 void Music::quit(void) {
   if (is_initialized()) {
-    spc_filter_delete(filter);
-    spc_delete(snes_spc);
+    spc_filter_delete(spc_filter);
+    spc_delete(spc_manager);
   }
 }
 
 /**
+ * Returns whether the music system is initialized.
+ * @return true if the music system is initilialized
+ */
+bool Music::is_initialized(void) {
+  return spc_manager != NULL;
+}
+
+/**
  * Updates the music system.
+ * When a music is playing, this function makes it update.
  */
 void Music::update(void) {
   
+  if (!is_initialized()) {
+    return;
+  }
+
+  if (current_music != NULL) {
+    current_music->update_playing();
+  }
+}
+
+/**
+ * Updates this music when it is playing.
+ * This function handles the double buffering.
+ */
+void Music::update_playing(void) {
+  ALint status, nb_empty;
+
+  // get the empty buffers
+  alGetSourcei(source, AL_BUFFERS_PROCESSED, &nb_empty);
+
+  // refill them (note that when everything is fine, only one may be empty) 
+  for (int i = 0; i < nb_empty; i++) {
+    ALuint buffer;
+    alSourceUnqueueBuffers(source, 1, &buffer); // unqueue the buffer
+    decode_spc(buffer, 10000);                  // fill it by decoding more SPC data
+    alSourceQueueBuffers(source, 1, &buffer);   // queue it again
+  }
+
+  // see if the music is finished
+  alGetSourcei(source, AL_SOURCE_STATE, &status);
+  if (status != AL_PLAYING) {
+    stop(); // the end was reached or there was an error
+  }
+}
+
+/**
+ * Decodes a chunk of SPC data into PCM data for the current music.
+ * @param destination_buffer the destination buffer to write
+ * @param nb_samples number of samples to writes
+ */
+void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
+
+  // decode the SPC data
+  ALushort *raw_data = new ALushort[nb_samples];
+  spc_play(spc_manager, nb_samples, (short int*) raw_data);
+  spc_filter_run(spc_filter, (short int*) raw_data, nb_samples);
+
+  // put this decoded data into the buffer
+  alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data, nb_samples * 2, 32000);
+
+  delete[] raw_data;
+}
+
+/**
+ * Loads the file and plays the music.
+ * @return true if the music was loaded successfully
+ */
+bool Music::play(void) {
+
+  if (!is_initialized()) {
+    return false;
+  }
+
+  if (format != SPC) {
+    DIE("Cannot play music file '" << file_name << "': unknown music format");
+  }
+
+  if (current_music != NULL) {
+    DIE("Cannot play music file '" << file_name << "': a music is already playing");
+  }
+
+  bool success = true;
+
+  // load the music into memory
+  size_t sound_size;
+  char *sound_data;
+  FileTools::data_file_open_buffer(file_name, &sound_data, &sound_size);
+
+  // load the SPC data into the SPC decoding library
+  spc_load_spc(spc_manager, (short int*) sound_data, sound_size);
+  spc_clear_echo(spc_manager);
+  spc_filter_clear(spc_filter);
+  FileTools::data_file_close_buffer(sound_data);
+
+  // create the two buffers and the source
+  alGenBuffers(2, buffers);
+  alGenSources(1, &source);
+
+  decode_spc(buffers[0], 10000);
+  decode_spc(buffers[1], 10000);
+
+  // start the streaming
+  alSourceQueueBuffers(source, 2, buffers);;
+  int error = alGetError();
+  if (error != AL_NO_ERROR) {
+    std::cerr << "Cannot initialize buffers for music '" << file_name << "': error " << error << std::endl;
+    success = false;
+  }
+  else {
+    alSourcePlay(source);
+    int error = alGetError();
+    if (error != AL_NO_ERROR) {
+      std::cerr << "Cannot play music '" << file_name << "': error " << error << std::endl;
+      success = false;
+    }
+  }
+  
+  // now the update() function will take care of filling the buffers
+  current_music = this;
+  return success;
+}
+
+/**
+ * Stops playing the music.
+ */
+void Music::stop(void) {
+
+  if (!is_initialized()) {
+    return;
+  }
+
+  if (this != current_music) {
+    DIE("This music is not currently playing");
+  }
+
+  // empty the source
+  ALint nb_queued;
+  ALuint buffer;
+  alGetSourcei(source, AL_BUFFERS_QUEUED, &nb_queued);
+  for (int i = 0; i < nb_queued; i++) {
+    alSourceUnqueueBuffers(source, 1, &buffer);
+  }
+  alSourcei(source, AL_BUFFER, 0);
+
+  // delete the source
+  alDeleteSources(1, &source);
+
+  // delete the buffers
+  alDeleteBuffers(2, buffers);
+
+  current_music = NULL;
+}
+
+/**
+ * Returns whether the music is paused.
+ * @return true if the music is paused, false otherwise
+ */
+bool Music::is_paused(void) {
+
+  if (!is_initialized()) {
+    return false;
+  }
+
+  ALint status;
+  alGetSourcei(source, AL_SOURCE_STATE, &status);
+  return status == AL_PAUSED;
+}
+
+/**
+ * Pauses or resumes the music.
+ * @param pause true to pause the music, false to resume it
+ */
+void Music::set_paused(bool pause) {
+
+  if (!is_initialized()) {
+    return;
+  }
+
+  if (pause) {
+    alSourcePause(source);
+  }
+  else {
+    alSourcePlay(source);
+  }
 }
 
 /**
@@ -125,125 +312,5 @@ bool Music::isUnchangedId(const MusicId &music_id) {
  */
 bool Music::isEqualId(const MusicId &music_id, const MusicId &other_music_id) {
   return music_id == other_music_id;
-}
-
-/**
- * Loads the file and plays the music.
- * @return true if the music was loaded successfully
- */
-bool Music::play(void) {
-
-  bool success = false;
-/*
-  if (is_initialized()) {
-
-    // load the music into memory
-    size_t sound_size;
-    char *sound_data;
-    FileTools::data_file_open_buffer(file_name, &sound_data, &sound_size);
-
-    // tell FMOD the music properties
-    FMOD_CREATESOUNDEXINFO ex = {0};
-    ex.cbsize = sizeof(ex);
-    ex.length = sound_size;
-
-    FMOD_RESULT result;
-    if (format != SPC) {
-      // the music has a format recognized by FMOD (e.g. Impulse Tracker)
-      result = FMOD_System_CreateStream(system, sound_data, FMOD_LOOP_NORMAL | FMOD_OPENMEMORY, &ex, &sound);
-    }
-    else {
-      // SPC format: we need to give FMOD the format properties and the decoding function
-
-      ex.numchannels = 2;                  // stereo
-      ex.defaultfrequency = 32000;         // 32 KHz (note: IT files converted with OpenSPC Lite seem to have a wrong sample rate of 32768)
-      ex.format = FMOD_SOUND_FORMAT_PCM16; // PCM 16 bits
-      ex.pcmreadcallback = spc_callback;
-      ex.decodebuffersize = 4096;          // problems without this line
-
-      spc_load_spc(snes_spc, (short int*) sound_data, sound_size);
-      spc_clear_echo(snes_spc);
-      spc_filter_clear(filter);
-
-      result = FMOD_System_CreateStream(system, sound_data, FMOD_OPENUSER | FMOD_LOOP_NORMAL | FMOD_OPENMEMORY, &ex, &sound);
-    }
-
-    if (result != FMOD_OK) {
-      std::cerr << "Unable to create music '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
-    }
-    else {
-      result = FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, false, &channel);
-
-      if (result != FMOD_OK) {
-	std::cerr << "Unable to play music '" << file_name << "': " << FMOD_ErrorString(result) << std::endl;
-      }
-      else {
-	success = true;
-      }
-    }
-    FileTools::data_file_close_buffer(sound_data);
-  }
-*/
-  return success;
-}
-
-/**
- * Custom music function called by the sound library to play SPC files.
- * @param sound the sound to decode
- * @param data buffer to write with the 32 KHz 16-bit stereo raw sound decoded by the SPC library
- * @param datalen number of bytes to write into the buffer
- *//*
-FMOD_RESULT F_CALLBACK Music::spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen) {
-
-  int words = datalen / 2; // the SPC library wants the number of 16-bit words
-  spc_play(snes_spc, words, (short int*) data);
-  spc_filter_run(filter, (short int*) data, words);
-
-  return FMOD_OK;
-}*/
-
-/**
- * Stops playing the music.
- */
-void Music::stop(void) {
-
-  if (is_initialized()) {
-/*
-    FMOD_RESULT result = FMOD_Channel_Stop(channel);
-
-    if (result != FMOD_OK) {
-      std::cerr << "Cannot stop the music: " << FMOD_ErrorString(result) << std::endl;
-    }
-
-    FMOD_Sound_Release(sound);
-    sound = NULL;*/
-  }
-}
-
-/**
- * Returns whether the music is paused.
- * @return true if the music is paused, false otherwise
- */
-bool Music::is_paused(void) {
-
-//  if (!is_initialized()) {
-    return false;
-/*  }
-
-  FMOD_BOOL pause;
-  FMOD_Channel_GetPaused(channel, &pause);
-
-  return pause != 0;
-  */
-}
-
-/**
- * Pauses or resumes the music.
- * @param pause true to pause the music, false to resume it
- */
-void Music::set_paused(bool pause) {
-  if (is_initialized()) {
-//    FMOD_Channel_SetPaused(channel, pause);
-  }
 }
 

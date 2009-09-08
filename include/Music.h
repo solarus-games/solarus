@@ -29,7 +29,7 @@
  * initialized, by calling Sound::initialize().
  * Music and Sound should be the only modules that depends on an audio library.
  */
-class Music: public Sound {
+class Music {
 
   private:
 
@@ -38,33 +38,41 @@ class Music: public Sound {
      */
     enum Format {
       SPC, /**< Snes */
-      IT,  /**< Impulse Tracker module */
+      IT,  /**< Impulse Tracker module (TODO implement with the modplug lib) */
     };
 
-    Format format;             /**< format of the music, detected from the file name */
+    std::string file_name;          /**< name of the file to play */
+    Format format;                  /**< format of the music, detected from the file name */
+
+    ALuint buffers[2];              /**< double buffer used to play the music continuously */
+    ALuint source;                  /**< the OpenAL source streaming the buffers */
 
     // SPC specific data
-    static SNES_SPC *snes_spc; /**< the snes_spc object */
-    static SPC_Filter *filter;
+    static SNES_SPC *spc_manager;   /**< the snes_spc object */
+    static SPC_Filter *spc_filter;  /**< the snes_spc filter object */
 
-//    static FMOD_RESULT F_CALLBACK spc_callback(FMOD_SOUND *sound, void *data, unsigned int datalen);
+    static Music *current_music;    /**< the music currently played (if any) */
 
   public:
 
-    static const MusicId none;
-    static const MusicId unchanged;
+    static const MusicId none;      /**< special id indicating that there is no music */
+    static const MusicId unchanged; /**< special id indicating that the music is the same as before */
 
     Music(const MusicId &music_id);
     ~Music(void);
 
     static void initialize(void);
     static void quit(void);
+    static bool is_initialized(void);
     static void update(void);
 
     bool play(void);
     void stop(void);
+    void update_playing(void);
     bool is_paused(void);
     void set_paused(bool pause);
+
+    static void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
 
     static bool isNoneId(const MusicId &music_id);
     static bool isUnchangedId(const MusicId &music_id);

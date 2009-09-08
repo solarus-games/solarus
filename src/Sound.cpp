@@ -23,37 +23,30 @@ ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
 
 /**
- * Constructor used by the Music subclass.
- */
-Sound::Sound(void):
-  buffer(AL_NONE) {
-
-}
-
-/**
  * Creates a new sound.
  * @param sound_id id of the sound (a file name)
  */
 Sound::Sound(const SoundId &sound_id):
   buffer(AL_NONE) {
 
-    if (is_initialized()) {
-      file_name = (std::string) "sounds/" + sound_id + ".wav";
+  if (is_initialized()) {
+    
+    std::string file_name = (std::string) "sounds/" + sound_id + ".wav";
 
-      // load the wav file
-      size_t wav_size;
-      char *wav_data;
-      FileTools::data_file_open_buffer(file_name, &wav_data, &wav_size);
+    // load the wav file
+    size_t wav_size;
+    char *wav_data;
+    FileTools::data_file_open_buffer(file_name, &wav_data, &wav_size);
 
-      // create an OpenAL buffer with the sound decoded by ALUT
-      buffer = alutCreateBufferFromFileImage((ALvoid*) wav_data, wav_size);
-      FileTools::data_file_close_buffer(wav_data);
+    // create an OpenAL buffer with the sound decoded by ALUT
+    buffer = alutCreateBufferFromFileImage((ALvoid*) wav_data, wav_size);
+    FileTools::data_file_close_buffer(wav_data);
 
-      if (buffer == AL_NONE) {
-	std::cerr << "Cannot decode WAV data for sound '" << file_name << "': " << alutGetErrorString(alutGetError()) << std::endl;
-      }
+    if (buffer == AL_NONE) {
+      std::cerr << "Cannot decode WAV data for sound '" << file_name << "': " << alutGetErrorString(alutGetError()) << std::endl;
     }
   }
+}
 
 /**
  * Destroys the sound.
@@ -90,7 +83,7 @@ void Sound::initialize(void) {
     return;
   }
 
-  const int attr[2] = {ALC_FREQUENCY, 32000};
+  const int attr[2] = {ALC_FREQUENCY, 32000}; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
     std::cout << "Cannot create audio context" << std::endl;
@@ -104,6 +97,7 @@ void Sound::initialize(void) {
     return;
   }
 
+  // initialize the music system
   Music::initialize();
 }
 
@@ -129,8 +123,8 @@ void Sound::quit(void) {
 }
 
 /**
- * Returns whether the music and sound system is initialized.
- * @return true if the audio system is initilialized
+ * Returns whether the audio (music and sound) system is initialized.
+ * @return true if the audio (music and sound) system is initilialized
  */
 bool Sound::is_initialized(void) {
   return context != NULL;
@@ -164,13 +158,13 @@ bool Sound::play(void) {
     alSourcei(source, AL_BUFFER, buffer);
     int error = alGetError();
     if (error != AL_NO_ERROR) {
-      std::cerr << "Cannot attach the buffer to the source to play sound '" << file_name << "': error " << error << std::endl;
+      std::cerr << "Cannot attach the buffer to the source to play sound: error " << error << std::endl;
     }
     else {
       alSourcePlay(source);
-      int error = alGetError();
+      error = alGetError();
       if (error != AL_NO_ERROR) {
-	std::cerr << "Cannot play sound '" << file_name << "': error " << error << std::endl;
+	std::cerr << "Cannot play sound: error " << error << std::endl;
       }
       else {
 	success = true;

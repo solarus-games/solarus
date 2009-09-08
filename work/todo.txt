@@ -20,8 +20,8 @@ Feature requests :
 - transition des téléporteurs ?
 - son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
-- mieux protéger le zip
-- essayer OpenAL ?
+- mieux protéger le zip, compiler les scripts Lua
+- utiliser OpenSPC si disponible (charger dynamiquement la bibliothèque)
 
 
 Bugs :

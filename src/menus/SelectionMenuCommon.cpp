@@ -203,7 +203,7 @@ void SelectionMenuCommon::read_savegames(void) {
   for (int i = 0; i < 3; i++) {
 
     std::ostringstream oss;
-    oss << "save" << (i + 11) << ".zsd";
+    oss << "save" << (i + 1) << ".zsd";
     file_name = oss.str();
 
     if (savegames[i] != NULL) {

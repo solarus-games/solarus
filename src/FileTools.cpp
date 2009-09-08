@@ -29,10 +29,28 @@
  */
 void FileTools::initialize(int argc, char **argv) {
   PHYSFS_init(argv[0]);
+
+  // we set the write directory to a ".zsdx" subdirectory of the user home
+
+  // first, create the ".zsdx" directory
+   if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
+    DIE("Cannot write in user directory:" << PHYSFS_getLastError());
+  }
+  std::string app_dir = ".zsdx";
+  PHYSFS_mkdir(app_dir.c_str());
+
+  // then set this directory as the write directory
+  std::string write_dir = (std::string) PHYSFS_getUserDir() + app_dir;
+  if (!PHYSFS_setWriteDir(write_dir.c_str())) {
+    DIE("Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
+  }
+ 
+  // set the search path
+  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);
 #if ZSDX_DEBUG_LEVEL >= 1
-  PHYSFS_addToSearchPath("./data", 1);
+  PHYSFS_addToSearchPath("data", 1);
 #endif
-  PHYSFS_addToSearchPath("./data.zip", 1);
+  PHYSFS_addToSearchPath("data.zip", 1);
 }
 
 /**
@@ -40,6 +58,15 @@ void FileTools::initialize(int argc, char **argv) {
  */
 void FileTools::quit(void) {
   PHYSFS_deinit();
+}
+
+/**
+ * Returns whether a file exists in the search path.
+ * @param file_name a file name relative to a directory from the search path
+ * @return true if this file exists
+ */
+bool FileTools::data_file_exists(const std::string &file_name) {
+  return PHYSFS_exists(file_name.c_str());
 }
 
 /**
@@ -52,7 +79,6 @@ SDL_RWops * FileTools::data_file_open_rw(const std::string &file_name) {
   char *buffer;
   data_file_open_buffer(file_name, &buffer, &size);
   SDL_RWops *rw = SDL_RWFromMem(buffer, size);
-//  SDL_RWops *rw = SDL_RWFromZZIP(full_file_name.c_str(), mode.c_str());
 
   if (rw == NULL) {
     DIE("Cannot open data file " << file_name);
@@ -61,7 +87,42 @@ SDL_RWops * FileTools::data_file_open_rw(const std::string &file_name) {
 }
 
 /**
- * Frees an SDL_RWops object previously create with data_file_open_rw().
+ * Returns an SDL_RWops object corresponding to an empty buffer
+ * that yon can then use for writing a new data file.
+ * @param size size of the buffer to create
+ */
+SDL_RWops * FileTools::data_file_new_rw(size_t size) {
+
+  char *buffer = new char[size];
+  memset(buffer, 0, size);
+  SDL_RWops *rw = SDL_RWFromMem(buffer, size);
+  return rw;
+}
+
+/**
+ * Writes the data from an SDL_RWops source into a file.
+ * @param rw the SDL_RWops source, created with data_file_open_rw() or data_file_new_rw().
+ * @param file_name name of the file to write, relative to the write directory
+ */
+void FileTools::data_file_save_rw(SDL_RWops *rw, const std::string &file_name) {
+
+  // open the file to write
+  PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
+  if (file == NULL) {
+    DIE("Cannot open file '" << file_name << "' for writing: " << PHYSFS_getLastError());
+  }
+ 
+  // read the memory buffer created by data_file_open_rw() or data_file_new_rw()
+  size_t size = rw->hidden.mem.here - rw->hidden.mem.base;
+  if (PHYSFS_write(file, rw->hidden.mem.base, size, 1) == -1) {
+    DIE("Cannot write file '" << file_name << "': " << PHYSFS_getLastError());
+  }
+  PHYSFS_close(file);
+}
+
+/**
+ * Frees an SDL_RWops object previously created with data_file_open_rw()
+ * or data_file_new_rw().
  * @param rw the object to free
  */
 void FileTools::data_file_close_rw(SDL_RWops *rw) {

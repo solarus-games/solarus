@@ -42,7 +42,7 @@ ZSDX::ZSDX(int argc, char **argv) {
   FileTools::initialize(argc, argv);
 
   // initialize SDL
-  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK);
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
 
   root_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_ShowCursor(SDL_ENABLE);

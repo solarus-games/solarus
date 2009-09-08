@@ -256,7 +256,7 @@ int CFG_Internal_OpenFile( SDL_RWops * source, CFG_File * file, CFG_String_Arg f
 
     if (line_length < length)
      {      
-      delete(line);
+      delete[] line;
 
        line = new CFG_Char[length];
      }
@@ -267,7 +267,7 @@ int CFG_Internal_OpenFile( SDL_RWops * source, CFG_File * file, CFG_String_Arg f
 
     if ((read < 0) )
      {
-      delete line;
+      delete[] line;
 
       CFG_SetError("Error reading from stream.");
       return CFG_CRITICAL_ERROR;
@@ -281,7 +281,7 @@ int CFG_Internal_OpenFile( SDL_RWops * source, CFG_File * file, CFG_String_Arg f
    }
     while ( last_line_length > 0 );
 
-  delete line;
+  delete[] line;
 
 /* -------------------------------------------------------  */
 

@@ -17,6 +17,7 @@
 #include "SDL_Config/SDL_config_lib.h"
 #include "VideoManager.h"
 #include "Color.h"
+#include "FileTools.h"
 
 SDL_Rect VideoManager::video_mode_sizes[] = {
   {0, 0, 640, 480},         // WINDOWED_STRETCHED
@@ -104,7 +105,7 @@ void VideoManager::switch_video_mode(void) {
   VideoMode mode = video_mode;
   do {
     mode = (VideoMode) ((mode + 1) % NB_MODES);
-  } while (!is_mode_supported(mode));
+  } while (!is_mode_supported(mode) || is_fullscreen(mode));
   set_video_mode(mode);
 }
 
@@ -115,26 +116,35 @@ void VideoManager::switch_video_mode(void) {
  */
 void VideoManager::set_initial_video_mode(void) {
 
-  // parse the ini file
-  CFG_File ini;
-
-  if (CFG_OpenFile("config.ini", &ini) != CFG_OK) {
+  const std::string file_name = "config.ini";
+  if (!FileTools::data_file_exists(file_name)) {
     // configuration file not found: pick the default video mode
     set_default_video_mode();
   }
   else {
+    // parse the ini file
+    CFG_File ini;
+    SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
+
+    if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
+      DIE("Cannot parse configuration file");
+    }
+
     if (CFG_SelectGroup("configuration", 0) != CFG_OK) {
       set_default_video_mode();
     }
 
     int value = CFG_ReadInt("video_mode", -1);
+
+    FileTools::data_file_close_rw(rw);
+    CFG_CloseFile(&ini);
+
     if (value == -1 || value < 0 || value >= NB_MODES) {
       set_default_video_mode();
     }
     else {
       set_video_mode((VideoMode) value);
     }
-    CFG_CloseFile(&ini);
   }
 }
 
@@ -190,14 +200,21 @@ void VideoManager::set_video_mode(VideoMode mode) {
 
   // write the ini file
   CFG_File ini;
-  if (CFG_OpenFile("config.ini", &ini) != CFG_OK) {
-    CFG_OpenFile(NULL, &ini);
+  if (CFG_OpenFile(NULL, &ini) != CFG_OK) {
+    DIE("Cannot create ini object for configuration file");
   }
 
   CFG_SelectGroup("configuration", 1);
   CFG_WriteInt("video_mode", mode);
-  CFG_SaveFile("config.ini");
+
+  SDL_RWops *rw = FileTools::data_file_new_rw(64000);
+  if (CFG_SaveFile_RW(rw) != CFG_OK) {
+    DIE("Cannot build the new configuration information");
+  }
   CFG_CloseFile(&ini);
+
+  FileTools::data_file_save_rw(rw, "config.ini");
+  FileTools::data_file_close_rw(rw);
 }
 
 /**

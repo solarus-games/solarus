@@ -17,18 +17,17 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
+#include <physfs.h>
 
 /**
  * Creates a savegame with a specified file name, existing or not.
- * @param file_name name of the savegame file (can be a new file)
+ * @param file_name name of the savegame file (can be a new file), relative to the savegames directory
  */
 Savegame::Savegame(const std::string &file_name) {
 
   this->file_name = file_name;
 
-  FILE *file = fopen(file_name.c_str(), "r");
-
-  if (file == NULL) {
+  if (!PHYSFS_exists(file_name.c_str())) {
     // this save slot is free
     empty = true;
     set_initial_values();
@@ -39,8 +38,15 @@ Savegame::Savegame(const std::string &file_name) {
   else {
     // a save already exists, let's load it
     empty = false;
-    fread(&saved_data, sizeof(SavedData), 1, file);
-    fclose(file);
+
+    PHYSFS_file *file = PHYSFS_openRead(file_name.c_str());
+
+    if (file == NULL) {
+      DIE("Cannot read savegame file '" << file_name << "'");
+    }
+
+    PHYSFS_read(file, &saved_data, sizeof(SavedData), 1);
+    PHYSFS_close(file);
 
     this->equipment = new Equipment(this);
     this->dungeon_equipment = new DungeonEquipment(this);
@@ -123,14 +129,14 @@ void Savegame::set_initial_values(void) {
  */
 void Savegame::save(void) {
 
-  FILE *file = fopen(file_name.c_str(), "w");
+  PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
 
   if (file == NULL) {
     DIE("Cannot write savegame file '" << file_name << "'");
   }
 
-  fwrite(&saved_data, sizeof(SavedData), 1, file);
-  fclose(file);
+  PHYSFS_write(file, &saved_data, sizeof(SavedData), 1);
+  PHYSFS_close(file);
 
   empty = false;
 }
@@ -176,7 +182,6 @@ const std::string Savegame::get_string(int index) {
  * @param value the string value to store at this index
  */
 void Savegame::set_string(int index, const std::string &value) {
-
   strncpy(saved_data.strings[index], value.c_str(), 63);
 }
 
@@ -212,9 +217,6 @@ void Savegame::set_integer(int index, Uint32 value) {
 bool Savegame::get_boolean(int index) {
 
   Uint32 word = saved_data.booleans[index / 32];
-
-  //  std::cout << "getting value at index " << index << ": " << (((word >> (index % 32)) & 0x0001) != 0x0000) << std::endl;
-
   return ((word >> (index % 32)) & 0x0001) != 0x0000;
 }
 
@@ -231,6 +233,5 @@ void Savegame::set_boolean(int index, bool value) {
   if (value) {
     saved_data.booleans[index / 32] |= mask;
   }
-
-  //  std::cout << "setting value " << value << " at index " << index << std::endl;
 }
+

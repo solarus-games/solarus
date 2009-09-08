@@ -36,12 +36,15 @@ class FileTools {
     static void initialize(int argc, char **argv);
     static void quit(void);
 
-    static SDL_RWops * data_file_open_rw(const std::string &file_name);
-    static void data_file_close_rw(SDL_RWops *rw);
+    static bool data_file_exists(const std::string &file_name);
     static std::istream & data_file_open(const std::string &file_name);
     static void data_file_close(const std::istream &data_file);
     static void data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size);
     static void data_file_close_buffer(char *buffer);
+    static SDL_RWops * data_file_open_rw(const std::string &file_name);
+    static SDL_RWops * data_file_new_rw(size_t size);
+    static void data_file_save_rw(SDL_RWops *rw, const std::string &file_name);
+    static void data_file_close_rw(SDL_RWops *rw);
 
     static SDL_Surface *open_image(const std::string &file_name);
 

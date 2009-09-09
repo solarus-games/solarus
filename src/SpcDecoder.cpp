@@ -40,8 +40,6 @@ SpcDecoder::SpcDecoder(void) {
   this->openspc_plugin = dlopen("libopenspc.so", RTLD_NOW);
   this->library = (openspc_plugin == NULL) ? LIB_SNES_SPC : LIB_OPENSPC;
 
-  this->library = LIB_SNES_SPC;
-
   // initialize the SPC library
   if (this->library == LIB_SNES_SPC) {
     snes_spc_manager = spc_new();

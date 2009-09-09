@@ -1,0 +1,5 @@
+#!/bin/sh
+
+find . -name '*~' -exec rm {} \;
+zip ../data.zsdx maps/*.zsd maps/*.luac maps/dungeons/* musics/* sounds/* sprites/*/* text/* tilesets/*
+

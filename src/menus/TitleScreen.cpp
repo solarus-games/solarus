@@ -17,6 +17,7 @@
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenuSelectFile.h"
 #include "Music.h"
+#include "Sound.h"
 #include "ResourceManager.h"
 #include "FileTools.h"
 #include "Color.h"

@@ -18,8 +18,7 @@
 #define ZSDX_MUSIC_H
 
 #include "Common.h"
-#include "Sound.h"
-#include "snes_spc/spc.h"
+#include <AL/al.h>
 
 /**
  * This class represents a music that can be played.
@@ -27,7 +26,7 @@
  * Only one music can be played at the same time.
  * Before using this class, the audio system should have been
  * initialized, by calling Sound::initialize().
- * Music and Sound should be the only modules that depends on an audio library.
+ * Sound and Music should be the only modules that depends on an audio mixer library.
  */
 class Music {
 
@@ -48,11 +47,8 @@ class Music {
     ALuint buffers[nb_buffers];     /**< multiple buffers used to stream the music */
     ALuint source;                  /**< the OpenAL source streaming the buffers */
 
-    // SPC specific data
-    static SNES_SPC *spc_manager;   /**< the snes_spc object */
-    static SPC_Filter *spc_filter;  /**< the snes_spc filter object */
-
     static Music *current_music;    /**< the music currently played (if any) */
+    static SpcDecoder *spc_decoder;  /**< the SPC decoder */
 
   public:
 

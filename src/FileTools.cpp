@@ -18,13 +18,6 @@
 #include <physfs.h>
 
 /**
- * @brief Converts the parameter as a <code>char*</code> constant string.
- * @param x the text to convert
- */
-#define STRING(x) STRING2(x)
-#define STRING2(x) #x
-
-/**
  * Initializes the file tools.
  */
 void FileTools::initialize(int argc, char **argv) {
@@ -50,7 +43,7 @@ void FileTools::initialize(int argc, char **argv) {
 #if ZSDX_DEBUG_LEVEL >= 1
   PHYSFS_addToSearchPath("data", 1);
 #endif
-  PHYSFS_addToSearchPath("data.zip", 1);
+  PHYSFS_addToSearchPath("data.zsdx", 1);
 }
 
 /**

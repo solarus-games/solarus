@@ -38,8 +38,8 @@
 
 /**
  * Debug level.
- * 0: no debug (release mode): no error messages; pick the data only from the archive file; no debug keys
- * >= 1: enable the error messages; pick the data also from the physical data directory
+ * 0: no debug (release mode): no error messages; pick the data only from the archive file; no debug keys; use clear text (.lua) scripts
+ * >= 1: enable the error messages; pick the data also from the physical data directory; use only compiled (.luac) scripts
  * >= 2: enable the debug keys
  */
 #define ZSDX_DEBUG_LEVEL 2
@@ -48,11 +48,11 @@
  * This macro should be used to exit the program properly on an error message.
  * The message parameter can contain several elements separated by the '<<' operator.
  */
-#if ZSDX_DEBUG_LEVEL == 0
-#define DIE(message) do { throw std::logic_error(""); } while (false)
-#else
+//#if ZSDX_DEBUG_LEVEL == 0
+//#define DIE(message) do { throw std::logic_error(""); } while (false)
+//#else
 #define DIE(message) do { std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)
-#endif
+//#endif
 
 #endif
 

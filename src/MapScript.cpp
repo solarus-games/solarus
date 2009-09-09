@@ -196,6 +196,10 @@ void MapScript::load(void) {
   std::ostringstream oss;
   oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".lua";
 
+#if ZSDX_DEBUG_LEVEL == 0
+  oss << "c"; // use the compiled version of the script (.luac)
+#endif
+
   size_t size;
   char *buffer;
   FileTools::data_file_open_buffer(oss.str(), &buffer, &size);

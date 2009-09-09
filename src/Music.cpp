@@ -15,11 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Music.h"
+#include "SpcDecoder.h"
 #include "FileTools.h"
 
-SNES_SPC * Music::spc_manager = NULL;
-SPC_Filter * Music::spc_filter = NULL;
-
+SpcDecoder * Music::spc_decoder = NULL;
 Music * Music::current_music = NULL;
 
 const MusicId Music::none = "none";
@@ -81,10 +80,7 @@ Music::~Music(void) {
  * Initializes the music system.
  */
 void Music::initialize(void) {
-
-  // initialize the SPC library
-  spc_manager = spc_new();
-  spc_filter = spc_filter_new();
+  spc_decoder = new SpcDecoder();
 }
 
 /**
@@ -92,8 +88,7 @@ void Music::initialize(void) {
  */
 void Music::quit(void) {
   if (is_initialized()) {
-    spc_filter_delete(spc_filter);
-    spc_delete(spc_manager);
+    delete spc_decoder;
   }
 }
 
@@ -102,7 +97,7 @@ void Music::quit(void) {
  * @return true if the music system is initilialized
  */
 bool Music::is_initialized(void) {
-  return spc_manager != NULL;
+  return spc_decoder != NULL;
 }
 
 /**
@@ -158,11 +153,7 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 
   // decode the SPC data
   ALushort *raw_data = new ALushort[nb_samples];
-  const char *err = spc_play(spc_manager, nb_samples, (short int*) raw_data);
-  if (err != NULL) {
-    DIE("Failed to decode SPC data for music file '" << file_name << ": " << err);
-  }
-  spc_filter_run(spc_filter, (short int*) raw_data, nb_samples);
+  spc_decoder->decode((Sint16*) raw_data, nb_samples);
 
   // put this decoded data into the buffer
   alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data, nb_samples * 2, 32000);
@@ -201,9 +192,7 @@ bool Music::play(void) {
   FileTools::data_file_open_buffer(file_name, &sound_data, &sound_size);
 
   // load the SPC data into the SPC decoding library
-  spc_load_spc(spc_manager, (short int*) sound_data, sound_size);
-  spc_clear_echo(spc_manager);
-  spc_filter_clear(spc_filter);
+  spc_decoder->load((Sint16*) sound_data, sound_size);
   FileTools::data_file_close_buffer(sound_data);
 
   // create the two buffers and the source

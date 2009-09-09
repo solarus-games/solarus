@@ -20,7 +20,6 @@ Feature requests :
 - transition des téléporteurs ?
 - son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
-- mieux protéger le zip, compiler les scripts Lua
 - utiliser OpenSPC si disponible (charger dynamiquement la bibliothèque)
 
 
@@ -44,7 +43,6 @@ Bugs :
 - Caverne de Billy
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ?
 - item carte du monde : essayer la version de pyro
-- son du curseur : bruit de fond
 
 
 Remarques de Linksupersayen :
@@ -140,6 +138,7 @@ Mode release :
 - Vérifier la présence du message GPL dans les fichiers source
 - Remettre l'écran-titre
 - Enlever les commentaires qui font références au mode 2
+- Compiler les scripts et enlever les versions en texte clair
 
 ----------------------
 Feature requests de l'éditeur :

@@ -1,12 +1,12 @@
-This file explains how to compile Zelda Solarus Deluxe.
-Only the developing team has to compile the project. To preserve the secrets of the game, the source code is not public.
+This file explains how to compile Zelda: Mystery Solarus DX.
+Only the developing team has to compile the project.
 The users download directly a compiled binary for Windows, Linux or Mac OS.
 
------------------
-Required packages
------------------
+---------------------
+External dependencies
+---------------------
 
-The following libraries are required to make ZSDX work:
+The following libraries are required to compile and to execute:
 
 SDL
 SDLmain
@@ -16,6 +16,12 @@ OpenAL
 alut
 lua5.1
 physfs
+
+The following dynamic library is recommanded to execute the game, but not required: openspc.
+If you have OpenSPC (which does not seem to be available for all systems),
+the program will try to load it dynamically as a plugin, and then use
+it to decode the SPC musics. Otherwise, to play SPC musis, it will use a slower library (Snes_SPC)
+whose source code is included in the project.
 
 ----------------
 SDL installation
@@ -48,33 +54,6 @@ Similarly, install the library files (the .lib files) in your compiler's lib dir
 This may be something like C:\Program Files\Microsoft Visual Studio 9.0\VC\lib.
 Install the dynamic library files (the .dll files) in your system32 directory
 (which may be C:\WINDOWS\system32).
-
---------------------
-FMOD Ex installation
---------------------
-
-Windows users:
-
-Download the latest FMOD Ex stable release on http://www.fmod.org/index.php/download.
-The installation program does everything for you. At the end of the installation, you should
-have an "fmodex" subdirectory of your compiler's include directory (for example
-C:\Program Files\Microsoft Visual Studio 9.0\VC\include\fmodex), an fmodex.lib file
-in your compiler's lib directory (for example
-C:\Program Files\Microsoft Visual Studio 9.0\VC\lib) and an fmodex.dll file in 
-your system32 directory (which may be C:\WINDOWS\system32).
-
-
-Linux users:
-
-There is no FMOD Ex package, so you have to install the library manually from the .tar.gz archive:
-- Download the latest FMOD Ex stable release on http://www.fmod.org/index.php/download
-- Uncompress the archive (example: tar xvzf fmodapi41400linux.tar.gz)
-- Go to the subdirectory created (example: cd fmodapi41400linux)
-- In the beginning of the Makefile, ensure the DESTLIBDIR and DESTHDRDIR variables are correct.
-Note that with Ubuntu, these variables should be:
-DESTLIBDIR = /usr/lib
-DESTHDRDIR = /usr/include/fmodex
-- Install the FMOD Ex librairies and headers with 'sudo make install'
 
 ------------------------
 Compilation instructions
@@ -136,11 +115,7 @@ Mac OS developers
 
 The same procedure should work.
 
-
-------------------
-Notes à traduire / vérifier / prendre en compte :
+Notes :
 
 - Si SDL et SDL_image sont installés avec fink, un export CPPFLAGS="-I/sw/include -L/sw/lib" est nécessaire avant de lancer le configure
-- utiliser sdl-config
-- lien statique avec /usr/lib/libfmod.a
 - option de compilation à l'édition de liens : -framework Carbon

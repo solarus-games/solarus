@@ -47,9 +47,10 @@ add_executable (zsdx
   GameoverSequence.cpp
   Camera.cpp
 
-  # music and sound
+  # audio
   Sound.cpp
   Music.cpp
+  SpcDecoder.cpp
 
   # graphics
   StringResource.cpp

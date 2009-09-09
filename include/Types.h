@@ -86,9 +86,10 @@ class GameoverSequence;
 class Camera;
 class InventoryItem;
 
-// music and sound
-class Music;
+// audio
 class Sound;
+class Music;
+class SpcDecoder;
 
 // graphics
 class Color;

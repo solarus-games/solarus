@@ -134,12 +134,13 @@ void Music::update_playing(void) {
   for (int i = 0; i < nb_empty; i++) {
     ALuint buffer;
     alSourceUnqueueBuffers(source, 1, &buffer); // unqueue the buffer
-    decode_spc(buffer, 10000);                  // fill it by decoding more SPC data
+    decode_spc(buffer, 32768);                  // fill it by decoding more SPC data
     alSourceQueueBuffers(source, 1, &buffer);   // queue it again
   }
 
   // see if the music is finished
   alGetSourcei(source, AL_SOURCE_STATE, &status);
+
   if (status != AL_PLAYING) {
     stop(); // the end was reached or there was an error
   }
@@ -154,13 +155,21 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 
   // decode the SPC data
   ALushort *raw_data = new ALushort[nb_samples];
-  spc_play(spc_manager, nb_samples, (short int*) raw_data);
+  const char *err = spc_play(spc_manager, nb_samples, (short int*) raw_data);
+  if (err != NULL) {
+    DIE("Failed to decode SPC data for music file '" << file_name << ": " << err);
+  }
   spc_filter_run(spc_filter, (short int*) raw_data, nb_samples);
 
   // put this decoded data into the buffer
   alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data, nb_samples * 2, 32000);
 
   delete[] raw_data;
+
+  int error = alGetError();
+  if (error != AL_NO_ERROR) {
+    DIE("Failed to fill the audio buffer with decoded SPC data for music file '" << file_name << ": error " << error);
+  }
 }
 
 /**
@@ -198,8 +207,8 @@ bool Music::play(void) {
   alGenBuffers(2, buffers);
   alGenSources(1, &source);
 
-  decode_spc(buffers[0], 10000);
-  decode_spc(buffers[1], 10000);
+  decode_spc(buffers[0], 32768);
+  decode_spc(buffers[1], 8192);
 
   // start the streaming
   alSourceQueueBuffers(source, 2, buffers);;
@@ -232,10 +241,11 @@ void Music::stop(void) {
   }
 
   if (this != current_music) {
-    DIE("This music is not currently playing");
+    return;
   }
 
   // empty the source
+  alSourceStop(source);
   ALint nb_queued;
   ALuint buffer;
   alGetSourcei(source, AL_BUFFERS_QUEUED, &nb_queued);

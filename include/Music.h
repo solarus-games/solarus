@@ -44,7 +44,7 @@ class Music {
     std::string file_name;          /**< name of the file to play */
     Format format;                  /**< format of the music, detected from the file name */
 
-    ALuint buffers[2];              /**< double buffer used to play the music continuously */
+    ALuint buffers[2];              /**< double buffer used to stream the music */
     ALuint source;                  /**< the OpenAL source streaming the buffers */
 
     // SPC specific data
@@ -72,7 +72,7 @@ class Music {
     bool is_paused(void);
     void set_paused(bool pause);
 
-    static void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
+    void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
 
     static bool isNoneId(const MusicId &music_id);
     static bool isUnchangedId(const MusicId &music_id);

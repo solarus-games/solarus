@@ -138,7 +138,7 @@ void ZSDX::main(void) {
     }
 
     // update the current screen
-    current_screen->update();
+    update();
 
     // go to another screen?
     if (current_screen->is_screen_finished()) {
@@ -223,7 +223,17 @@ void ZSDX::handle_event(const SDL_Event &event) {
 }
 
 /**
+ * Updates the current screen.
+ * This function is called repeatedly by the main loop.
+ */
+void ZSDX::update(void) {
+  current_screen->update();
+  Sound::update();
+}
+
+/**
  * Redraws the current screen.
+ * This function is called repeatedly by the main loop.
  */
 void ZSDX::display(void) {
 

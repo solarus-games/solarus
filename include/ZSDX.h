@@ -44,6 +44,7 @@ class ZSDX {
 
   void handle_event(const SDL_Event &event);
   void display(void);
+  void update(void);
 
  public:
 

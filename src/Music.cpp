@@ -25,7 +25,6 @@ Music * Music::current_music = NULL;
 const MusicId Music::none = "none";
 const MusicId Music::unchanged = "same";
 
-
 /**
  * Creates a new music.
  * @param music_id id of the music (a file name)
@@ -58,8 +57,9 @@ Music::Music(const MusicId &music_id) {
     DIE("Unrecognized music file format: " << music_id);
   }
 
-  buffers[0] = AL_NONE;
-  buffers[1] = AL_NONE;
+  for (int i = 0; i < nb_buffers; i++) {
+    buffers[i] = AL_NONE;
+  }
   source = AL_NONE;
 }
 
@@ -125,25 +125,28 @@ void Music::update(void) {
  * This function handles the double buffering.
  */
 void Music::update_playing(void) {
-  ALint status, nb_empty;
 
   // get the empty buffers
+  ALint nb_empty;
   alGetSourcei(source, AL_BUFFERS_PROCESSED, &nb_empty);
 
-  // refill them (note that when everything is fine, only one may be empty) 
+  // refill them
   for (int i = 0; i < nb_empty; i++) {
     ALuint buffer;
     alSourceUnqueueBuffers(source, 1, &buffer); // unqueue the buffer
-    decode_spc(buffer, 32768);                  // fill it by decoding more SPC data
+    decode_spc(buffer, 4096);                   // fill it by decoding more SPC data
     alSourceQueueBuffers(source, 1, &buffer);   // queue it again
   }
-
+/*
   // see if the music is finished
+  ALint status;
   alGetSourcei(source, AL_SOURCE_STATE, &status);
 
   if (status != AL_PLAYING) {
+    std::cout << "empty " << nb_empty << std::endl;
     stop(); // the end was reached or there was an error
   }
+  */
 }
 
 /**
@@ -204,14 +207,15 @@ bool Music::play(void) {
   FileTools::data_file_close_buffer(sound_data);
 
   // create the two buffers and the source
-  alGenBuffers(2, buffers);
+  alGenBuffers(nb_buffers, buffers);
   alGenSources(1, &source);
 
-  decode_spc(buffers[0], 32768);
-  decode_spc(buffers[1], 8192);
+  for (int i = 0; i < nb_buffers; i++) {
+    decode_spc(buffers[i], 4096);
+  }
 
   // start the streaming
-  alSourceQueueBuffers(source, 2, buffers);;
+  alSourceQueueBuffers(source, nb_buffers, buffers);
   int error = alGetError();
   if (error != AL_NO_ERROR) {
     std::cerr << "Cannot initialize buffers for music '" << file_name << "': error " << error << std::endl;
@@ -258,7 +262,7 @@ void Music::stop(void) {
   alDeleteSources(1, &source);
 
   // delete the buffers
-  alDeleteBuffers(2, buffers);
+  alDeleteBuffers(nb_buffers, buffers);
 
   current_music = NULL;
 }

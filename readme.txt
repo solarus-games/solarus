@@ -12,7 +12,8 @@ SDL
 SDLmain
 SDL_image
 SDL_ttf
-fmodex
+OpenAL
+alut
 lua5.1
 physfs
 

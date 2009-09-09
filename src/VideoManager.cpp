@@ -105,7 +105,7 @@ void VideoManager::switch_video_mode(void) {
   VideoMode mode = video_mode;
   do {
     mode = (VideoMode) ((mode + 1) % NB_MODES);
-  } while (!is_mode_supported(mode) || is_fullscreen(mode));
+  } while (!is_mode_supported(mode));
   set_video_mode(mode);
 }
 

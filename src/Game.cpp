@@ -268,9 +268,6 @@ void Game::update(void) {
   if (is_showing_gameover()) {
     update_gameover_sequence();
   }
-
-  // update the sound system
-  Sound::update();
 }
 
 /**

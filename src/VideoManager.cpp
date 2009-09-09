@@ -39,6 +39,7 @@ VideoManager::VideoManager(void) {
   // initialize the window
   SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
+  putenv((char*) "SDL_NOMOUSE");
 
   // detect what widescreen resolution is supported (768*480 or 720*480)
   int flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN;

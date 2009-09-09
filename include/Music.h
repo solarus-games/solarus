@@ -44,7 +44,7 @@ class Music {
     std::string file_name;          /**< name of the file to play */
     Format format;                  /**< format of the music, detected from the file name */
 
-    static const int nb_buffers = 8;
+    static const int nb_buffers = 16;
     ALuint buffers[nb_buffers];     /**< multiple buffers used to stream the music */
     ALuint source;                  /**< the OpenAL source streaming the buffers */
 

@@ -19,8 +19,7 @@
 #include "FileTools.h"
 #include <AL/alut.h>
 
-ALCdevice * Sound::device = NULL;
-ALCcontext * Sound::context = NULL;
+bool Sound::initialized = false;
 
 /**
  * Creates a new sound.
@@ -72,11 +71,11 @@ Sound::~Sound(void) {
 void Sound::initialize(void) {
 
   // initialize OpenAL
-  if (!alutInitWithoutContext(NULL, NULL)) {
+  if (!alutInit(NULL, NULL)) {
     std::cout << "Cannot initialize alut: " << alutGetErrorString(alutGetError()) << std::endl;
     return;
   }
-
+/*
   device = alcOpenDevice(NULL);
   if (!device) {
     std::cout << "Cannot open audio device" << std::endl;
@@ -96,6 +95,8 @@ void Sound::initialize(void) {
     alcCloseDevice(device);
     return;
   }
+*/
+  initialized = true;
 
   // initialize the music system
   Music::initialize();
@@ -113,12 +114,15 @@ void Sound::quit(void) {
     Music::quit();
 
     // uninitialize OpenAL
+    /*
     alcMakeContextCurrent(NULL);
     alcDestroyContext(context);
     context = NULL;
     alcCloseDevice(device);
     device = NULL;
+    */
     alutExit();
+    initialized = false;
   }
 }
 
@@ -127,7 +131,7 @@ void Sound::quit(void) {
  * @return true if the audio (music and sound) system is initilialized
  */
 bool Sound::is_initialized(void) {
-  return context != NULL;
+  return initialized;
 }
 
 /**

@@ -35,8 +35,7 @@ class Sound {
     ALuint buffer;             /**< the OpenAL buffer containing the PCM decoded data */
     std::list<ALuint> sources; /**< the sources currently playing this sound */
 
-    static ALCcontext *context; /**< the OpenAL context */
-    static ALCdevice *device;   /**< the OpenAL device */
+    static bool initialized;   /**< indicates that the audio system is initialized */
  
   public:
 

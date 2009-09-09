@@ -132,21 +132,21 @@ void Music::update_playing(void) {
 
   // refill them
   for (int i = 0; i < nb_empty; i++) {
+//    std::cout << SDL_GetTicks() << " refill buffer " << i << std::endl;
     ALuint buffer;
     alSourceUnqueueBuffers(source, 1, &buffer); // unqueue the buffer
     decode_spc(buffer, 4096);                   // fill it by decoding more SPC data
     alSourceQueueBuffers(source, 1, &buffer);   // queue it again
   }
-/*
+
   // see if the music is finished
   ALint status;
   alGetSourcei(source, AL_SOURCE_STATE, &status);
 
   if (status != AL_PLAYING) {
-    std::cout << "empty " << nb_empty << std::endl;
-    stop(); // the end was reached or there was an error
+//    std::cout << "music was not playing!\n";
+    alSourcePlay(source); // the music should not have been stopped
   }
-  */
 }
 
 /**
@@ -211,7 +211,7 @@ bool Music::play(void) {
   alGenSources(1, &source);
 
   for (int i = 0; i < nb_buffers; i++) {
-    decode_spc(buffers[i], 4096);
+    decode_spc(buffers[i], 1024);
   }
 
   // start the streaming

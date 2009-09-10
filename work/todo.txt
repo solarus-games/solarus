@@ -20,7 +20,6 @@ Feature requests :
 - transition des téléporteurs ?
 - son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
-- windows : se passer des DLL de visual C++
 
 
 Bugs :
@@ -43,6 +42,10 @@ Bugs :
 - Caverne de Billy
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ?
 - item carte du monde : essayer la version de pyro
+- windows : se passer des DLL de visual C++
+- windows : le son s'arrête au bout d'un moment (pas la musique) : eeepc, fixe
+- windows : le programme plante en revenant à l'écran-titre après avoir quitté
+- quand on enlève le SDL_Delay(1) de ZSDX.cpp, le boomerang part au ralenti
 
 
 Remarques de Linksupersayen :

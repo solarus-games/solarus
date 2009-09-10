@@ -114,7 +114,7 @@ static CFG_Char CFG_OPERATOR_ESCAPE_SEQ      = '\\';    /* syntax_escape_sequenc
 static CFG_Char CFG_MULTIPLE_VALUE_SEPARATOR = ',';     /* syntax_multiple_value_separator */
 
 
-static CFG_String CFG_KEYWORD_TRUE_1 = "true";   /* keyword_bool_true_1 */ 
+static CFG_String CFG_KEYWORD_TRUE_1 = "true";   /* keyword_bool_true_1 */
 static CFG_String CFG_KEYWORD_FALSE_1 = "false"; /* keyword_bool_false_1 */
 
 static CFG_String CFG_KEYWORD_TRUE_2 = "yes";    /* keyword_bool_true_2 */
@@ -172,7 +172,7 @@ const SDL_version * CFG_LinkedVersion( void )
 
 int CFG_Internal_OpenFile( SDL_RWops * source, CFG_File * file, CFG_String_Arg filename, const CFG_Settings * settings )
  {
-  /* Zero, so that calling delete will be ok */ 
+  /* Zero, so that calling delete will be ok */
   file->internal_file = 0;
   /* Check to make sure we can seek in this stream */
   int position = SDL_RWtell(source);
@@ -255,7 +255,7 @@ int CFG_Internal_OpenFile( SDL_RWops * source, CFG_File * file, CFG_String_Arg f
      }
 
     if (line_length < length)
-     {      
+     {
       delete[] line;
 
        line = new CFG_Char[length];
@@ -373,7 +373,7 @@ int CFG_OpenFile( CFG_String_Arg filename, CFG_File * file, const CFG_Settings *
 
   int result = CFG_Internal_OpenFile(src, file, filename, settings);
 
-  SDL_RWclose(src);  
+  SDL_RWclose(src);
 
   if (result != CFG_OK)
    delete file->internal_file;
@@ -403,7 +403,7 @@ int CFG_Internal_FindChar(const CFG_Char * buffer, char xxx)
      return (ptr - buffer);
 
     ++ptr;
-   } 
+   }
 
   return CFG_NPOS;
  }
@@ -447,7 +447,7 @@ size_t CFG_Internal_FindFirst(const CFG_String & _where, CFG_Char _what, size_t 
       return i;
    }
 
-  return -1;
+  return (size_t) -1;
  }
 
 /* ------------------------------------------------------- end CFG_Internal_FindFirst */
@@ -476,7 +476,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
   /* if it's 1, we're inside string: " ... " */
   int isString = 0;
 
-  /* position of last found ", it has to be int, */ 
+  /* position of last found ", it has to be int, */
   int lastDblQuote = CFG_NPOS;
 
   /* If we know that we're inside multiline C like comment, then there's nothing to remove from inside */
@@ -515,7 +515,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
            ((ptr - 1) >= buffer ))
 	   {
         if ( ( *(ptr - 1) != CFG_OPERATOR_ESCAPE_SEQ) )
-         {           
+         {
            /*
            we're not inside comment, and found quotation that isn't escape sequence - clearly, we've found
            end of string
@@ -524,11 +524,11 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
            skipSpaces = !isString;
 
            /* get position in line of this CFG_OPERATOR_DBL_QUOTE */
-           lastDblQuote = parsed.size();           
+           lastDblQuote = parsed.size();
 	     }
         else
           {
-          if ( ((ptr - 2) >= buffer ) && ( *(ptr - 2) == CFG_OPERATOR_ESCAPE_SEQ) )         
+          if ( ((ptr - 2) >= buffer ) && ( *(ptr - 2) == CFG_OPERATOR_ESCAPE_SEQ) )
             {
             /* this is \\" so we treat \\ as single \ and dbl quote normally */
             parsed.erase( parsed.size() - 2, 1);
@@ -537,7 +537,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
             skipSpaces = !isString;
 
             /* get position in line of this CFG_OPERATOR_DBL_QUOTE */
-            lastDblQuote = parsed.size();           
+            lastDblQuote = parsed.size();
 
             }
           else
@@ -693,7 +693,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
        }
 
       CFG_Internal_Group group_body;
-      group_body.order = ++internal_file->next_group_order;      
+      group_body.order = ++internal_file->next_group_order;
 
       int is_post_comment = CFG_Internal_IsComment(&parsed[secondBracePos + 1]);
 
@@ -752,7 +752,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
       internal_file->selected_group = &( (*iterator).second );
 
       internal_file->selected_group->multi_value_iterator = internal_file->selected_group->entries.end();
-      internal_file->selected_group->entry_iterator = internal_file->selected_group->entries.end();             
+      internal_file->selected_group->entry_iterator = internal_file->selected_group->entries.end();
      }
 	else  /* -------------------------------------------------------  */
 	 {
@@ -926,14 +926,14 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
        return;
       }
 */
-    
+
      CFG_Internal_Entry entry_body;
      entry_body.type = 0;
      size_t comma = 0;
      size_t prev_comma = 0;
-     CFG_String entry = parsed.substr(equalPos + 1, commentPos - equalPos - 1);  
-     
-     do     
+     CFG_String entry = parsed.substr(equalPos + 1, commentPos - equalPos - 1);
+
+     do
       {
        comma = CFG_Internal_FindFirst(entry, CFG_MULTIPLE_VALUE_SEPARATOR, prev_comma, entry.size());
        CFG_String single_entry = entry.substr(prev_comma, comma - prev_comma);
@@ -942,13 +942,13 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
        if (single_entry.size() == 0)
          continue;
 
-       int type = CFG_Internal_ParseEntry(single_entry);       
+       int type = CFG_Internal_ParseEntry(single_entry);
 
-       if (0 == type)         
+       if (0 == type)
          continue; /* couldn't interpret this value - ignore */
 
-       if ( entry_body.type == 0 )       
-        entry_body.type = type;       
+       if ( entry_body.type == 0 )
+        entry_body.type = type;
        else
         {
          if (entry_body.type != type)
@@ -956,8 +956,8 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
             CFG_DEBUG("! Error occured: one value found in multi value entry %s differs in type from first value.\n",
                       parsed.substr(0, equalPos).c_str());
             continue;
-           }                  
-        }            
+           }
+        }
 
     #ifdef CFG_DEBUG_LIB
 
@@ -985,13 +985,13 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
 
      fprintf(stderr, "   Key: %s\n   Value: %s\n", parsed.substr(0, equalPos).c_str(), single_entry.c_str());
     #endif
-    
+
        entry_body.value.push_back( single_entry);
       }
       while ( comma != CFG_NPOS);
 
      /* MMM
-     
+
      entry_body.value = parsed.substr(equalPos + string_avoid_quotes + 1,
                                       commentPos - equalPos - 1 - 2 * string_avoid_quotes);*/
 
@@ -1022,7 +1022,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
        fprintf(stderr, "\n");
 
      #endif
-     
+
      /*return;*/
     }
 
@@ -1044,7 +1044,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
 Returns type of entry.
 
 _entry looks like this: "kkk"
-                        1234 
+                        1234
 
 */
 
@@ -1061,7 +1061,7 @@ int CFG_Internal_ParseEntry( CFG_String & _entry )
 
 	    */
 
- int type = 0; 
+ int type = 0;
 
  /* --------------------------------------- 1. Text */
 
@@ -1071,7 +1071,7 @@ int CFG_Internal_ParseEntry( CFG_String & _entry )
    _entry = _entry.substr(1, _entry.size() - 2);
    return type;
   }
-    			  
+
  /* --------------------------------------- 2. Float */
 
  size_t dotPosition = _entry.find('.');
@@ -1081,7 +1081,7 @@ int CFG_Internal_ParseEntry( CFG_String & _entry )
   isMinus = true;
 
  if (dotPosition != CFG_NPOS )
-  {   
+  {
    size_t i = (isMinus) ? (1) : (0);
 
    for (; i < dotPosition; ++i)
@@ -1123,8 +1123,8 @@ int CFG_Internal_ParseEntry( CFG_String & _entry )
 #endif
 
       return CFG_BOOL;
-      }     
-   } 
+      }
+   }
 
     /* --------------------------------------- 4. Integer */
 
@@ -1160,7 +1160,7 @@ int CFG_Internal_ParseEntry( CFG_String & _entry )
      */
 
     if (type != -1)
-      {            
+      {
        if ( ( (_entry[0] == '-') && (_entry.size() <= 11) ) ||
             ( (_entry[0] != '-') && (_entry.size() <= 10) ) )
         {
@@ -1182,7 +1182,7 @@ int CFG_Internal_ParseEntry( CFG_String & _entry )
         }
       }
     else
-     type = CFG_TEXT;      
+     type = CFG_TEXT;
 
   return type;
  }
@@ -1203,7 +1203,7 @@ int CFG_Internal_ParseEntry( CFG_String & _entry )
 
  void CFG_Internal_PerformValueSubstitutionInGroup( CFG_Internal_Group * group_iterator, CFG_Bool recheck_types )
    {
-   
+
    for (CFG_Internal_EntryMapItor entry_iterator = group_iterator->entries.begin(); entry_iterator != group_iterator->entries.end(); ++entry_iterator)
      {
      if ( entry_iterator->second.type != CFG_TEXT )
@@ -1211,14 +1211,14 @@ int CFG_Internal_ParseEntry( CFG_String & _entry )
 
      CFG_Internal_EntryMapItor multi_value_iterator = entry_iterator;
 
-     
+
      for (multi_value_iterator->second.value_iterator = entry_iterator->second.value.begin();
           multi_value_iterator->second.value_iterator != entry_iterator->second.value.end();
           ++multi_value_iterator->second.value_iterator)
        {
 
 another_iteration:
-       
+
        size_t found_start = multi_value_iterator->second.value_iterator->find( CFG_OPERATOR_SUBST_START );
 
        if (found_start == CFG_NPOS)
@@ -1226,7 +1226,7 @@ another_iteration:
 
        size_t found_end;
 
-       do 
+       do
        {
         found_end = multi_value_iterator->second.value_iterator->find( CFG_OPERATOR_SUBST_END , found_start);
 
@@ -1259,7 +1259,7 @@ another_iteration:
          CFG_DEBUG("  after: %s\n", multi_value_iterator->second.value_iterator->c_str() );
          }
        else /* duplicate and fill, "cartesian product" */
-         {         
+         {
          const CFG_String duplicate = *multi_value_iterator->second.value_iterator;
 
          /* first one can be changed directly */
@@ -1278,12 +1278,12 @@ another_iteration:
          /* start from beggining since the iterator was rendererd useless */
          multi_value_iterator->second.value_iterator = multi_value_iterator->second.value.begin();
          CFG_DEBUG("  cartesian product\n", "");
-         }     
+         }
         }
        while( (found_start = multi_value_iterator->second.value_iterator->find( CFG_OPERATOR_SUBST_START, found_start + 1)) != CFG_NPOS );
-       
+
          /* another check have to be made so that the $(foo) that was built in first pass will be substituted */
-        goto another_iteration;        
+        goto another_iteration;
 
 end_this_iteration:
 
@@ -1317,7 +1317,7 @@ void CFG_PerformValueSubstitution(CFG_Bool recheck_types)
      {
      CFG_DEBUG("Substitutions in group: %s\n", group_iterator->first.c_str());
       CFG_Internal_PerformValueSubstitutionInGroup( & group_iterator->second, recheck_types );
-     }     
+     }
   }
 
 /* ------------------------------------------------------- end CFG_PerformValueSubstitution */
@@ -1346,7 +1346,7 @@ int CFG_CloseFile( CFG_File * file )
       CFG_SetError("No file currently selected, ignored request to close currently selected file.");
       return CFG_ERROR;
      }
-    
+
     delete CFG_Internal_selected_file->internal_file->original_groups;
     delete CFG_Internal_selected_file->internal_file;
     CFG_Internal_selected_file = 0;
@@ -1457,7 +1457,7 @@ int CFG_SelectGroup(CFG_String_Arg group, CFG_Bool create)
      {
       /* create and select new group */
       CFG_Internal_Group group_body;
-      group_body.order = ++internal_file->next_group_order;      
+      group_body.order = ++internal_file->next_group_order;
       group_body.next_entry_order = 0;
 
       #ifdef CFG_USE_MULTIMAP
@@ -1469,7 +1469,7 @@ int CFG_SelectGroup(CFG_String_Arg group, CFG_Bool create)
 
       /* we have to do this at this point since otherwise the iterators would be invalidiated during copy  */
       internal_file->selected_group->multi_value_iterator = internal_file->selected_group->entries.end();
-      internal_file->selected_group->entry_iterator = internal_file->selected_group->entries.end();             
+      internal_file->selected_group->entry_iterator = internal_file->selected_group->entries.end();
 
       /* This isn't error, but we have to do it */
       CFG_SetError("You tried to select group that doesn't exist - new group was created.");
@@ -1546,7 +1546,7 @@ int CFG_GetEntriesInSelectedGroup( int type )
      return CFG_Internal_selected_file->internal_file->selected_group->entries.size();
    else
      {
-     CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;  
+     CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
 
      int count = 0;
      for (CFG_Internal_EntryMapItor itor = selected_group->entries.begin();  itor != selected_group->entries.end(); ++itor)
@@ -1604,7 +1604,7 @@ int CFG_RemoveGroup(CFG_String_Arg group)
 
   iterator->second.entries.clear();
 
-  if ( &(iterator->second) == global_group) /* WTF */ 
+  if ( &(iterator->second) == global_group) /* WTF */
    {
     global_group->entries.clear();
     return CFG_OK;
@@ -1613,9 +1613,9 @@ int CFG_RemoveGroup(CFG_String_Arg group)
    {
     if (&(iterator->second) == internal_file->selected_group) /* is selected group the one to remove? */
      internal_file->selected_group = global_group;
-   
-    /* For explanation, see: http://www.gamedev.net/community/forums/topic.asp?topic_id=346196 
-    
+
+    /* For explanation, see: http://www.gamedev.net/community/forums/topic.asp?topic_id=346196
+
      Reverse iteration: obtain normal iterator
     */
     CFG_Internal_GroupMapReverseItor tmp = internal_file->reverse_group_iterator;
@@ -1623,8 +1623,8 @@ int CFG_RemoveGroup(CFG_String_Arg group)
     CFG_Internal_GroupMapItor normal_iterator = tmp.base();
 
     if ( internal_file->group_iterator == normal_iterator)
-     internal_file->reverse_group_iterator = internal_file->groups.rend();    
-   
+     internal_file->reverse_group_iterator = internal_file->groups.rend();
+
     /* just to play safe: forward iteration */
     if ( internal_file->group_iterator == iterator)
      internal_file->group_iterator = internal_file->groups.end();
@@ -1662,7 +1662,7 @@ int CFG_ClearGroup(CFG_String_Arg group)
     return CFG_ERROR;
    }
 
-  iterator->second.entries.clear(); 
+  iterator->second.entries.clear();
   return CFG_OK;
  }
 
@@ -1684,7 +1684,7 @@ int CFG_Internal_RemoveEntry(CFG_String_Arg entry, int type)
   if (iterator->second.type == type)
    {
     /* just to play safe, clear iterators that were iterating  */
-        
+
     if (iterator == selected_group->multi_value_iterator)
      selected_group->multi_value_iterator = selected_group->entries.end();
 
@@ -1833,7 +1833,7 @@ CFG_Bool CFG_GroupExists(CFG_String_Arg group)
   #if CFG_USE_BOOL == 2
 
   if ( CFG_Internal_selected_file->internal_file->groups.find(group) !=
-        CFG_Internal_selected_file->internal_file->groups.end() )   
+        CFG_Internal_selected_file->internal_file->groups.end() )
    return CFG_True;
   else
    return CFG_False;
@@ -1843,7 +1843,7 @@ CFG_Bool CFG_GroupExists(CFG_String_Arg group)
     return ( CFG_Internal_selected_file->internal_file->groups.find(group) !=
            CFG_Internal_selected_file->internal_file->groups.end() );
 
-  #endif  
+  #endif
  }
 
 /* ------------------------------------------------------- end CFG_GroupExists */
@@ -1852,22 +1852,22 @@ CFG_Bool CFG_GroupExists(CFG_String_Arg group)
 
 int CFG_GetEntryType( CFG_String_Arg entry )
  {
-  CFG_ASSERT_NULL    
-  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;  
+  CFG_ASSERT_NULL
+  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
 
   if (CFG_SELECTED == entry) /* type of currently selected entry (iterationg through entries) */
    {
-    if ( selected_group->entry_iterator != selected_group->entries.end() )                            
+    if ( selected_group->entry_iterator != selected_group->entries.end() )
       return selected_group->entry_iterator->second.type;
-    else                                                                                                    
-     return 0;                                                                                          
+    else
+     return 0;
    }
 
   CFG_Internal_EntryMapItor iterator = selected_group->entries.find(entry);
 
   if (iterator == selected_group->entries.end())
    return 0;
-  
+
   return iterator->second.type;
  }
 
@@ -1897,7 +1897,7 @@ void CFG_StartGroupIteration( int sorting_type )
     if ( internal_file->iteration_direction == CFG_ITERATE_NORMAL )
      {
       internal_file->group_iterator = internal_file->groups.begin();
-      
+
       if (internal_file->group_iterator == internal_file->groups.end())
         return;
 
@@ -1943,7 +1943,7 @@ void CFG_StartGroupIteration( int sorting_type )
       if (internal_file->original_reverse_group_iterator == internal_file->original_groups->rend())
         return;
 
-      internal_file->selected_group = internal_file->original_reverse_group_iterator->first;     
+      internal_file->selected_group = internal_file->original_reverse_group_iterator->first;
      }
     else
      {
@@ -2005,7 +2005,7 @@ void CFG_SelectNextGroup( void )
       ++internal_file->original_reverse_group_iterator;
 
       if ( internal_file->original_reverse_group_iterator != internal_file->original_groups->rend() )
-        internal_file->selected_group = internal_file->original_reverse_group_iterator->first;      
+        internal_file->selected_group = internal_file->original_reverse_group_iterator->first;
      }
    else
     {
@@ -2046,7 +2046,7 @@ CFG_Bool CFG_IsLastGroup( void )
      {
       CFG_LOG_CRITICAL_ERROR(004)
       return CFG_False;
-     }     
+     }
    }
   else if (internal_file->iteration_sort == CFG_SORT_ORIGINAL)
    {
@@ -2059,12 +2059,12 @@ CFG_Bool CFG_IsLastGroup( void )
         return CFG_False;
      }
     else if ( internal_file->iteration_direction == CFG_ITERATE_REVERSE )
-     {     
+     {
       if (CFG_Internal_selected_file->internal_file->original_reverse_group_iterator ==
         CFG_Internal_selected_file->internal_file->original_groups->rend() )
         return CFG_True;
       else
-        return CFG_False;     
+        return CFG_False;
      }
     else
      {
@@ -2093,8 +2093,8 @@ void CFG_RemoveSelectedGroup(void)
       ++next;
       internal_file->groups.erase( internal_file->group_iterator );
       internal_file->group_iterator = next;
-      
-      if (internal_file->group_iterator != internal_file->groups.end())        
+
+      if (internal_file->group_iterator != internal_file->groups.end())
        internal_file->selected_group = &internal_file->group_iterator->second;
      }
     else if ( internal_file->iteration_direction == CFG_ITERATE_REVERSE )
@@ -2102,11 +2102,11 @@ void CFG_RemoveSelectedGroup(void)
       /* For explanation, see: http://www.gamedev.net/community/forums/topic.asp?topic_id=346196 */
       CFG_Internal_GroupMapReverseItor tmp = internal_file->reverse_group_iterator++;
       CFG_Internal_GroupMapItor normal_iterator = internal_file->reverse_group_iterator.base();
-      
-      internal_file->groups.erase( normal_iterator ); 
+
+      internal_file->groups.erase( normal_iterator );
       internal_file->reverse_group_iterator = tmp;
-      
-      if (internal_file->reverse_group_iterator != internal_file->groups.rend())        
+
+      if (internal_file->reverse_group_iterator != internal_file->groups.rend())
        internal_file->selected_group = &internal_file->reverse_group_iterator->second;
      }
     else
@@ -2117,15 +2117,15 @@ void CFG_RemoveSelectedGroup(void)
   else if (internal_file->iteration_sort == CFG_SORT_ORIGINAL)
    {
     /*
-     Removing selected group during iteration in original group order is a bit different, since we 
+     Removing selected group during iteration in original group order is a bit different, since we
      have to remove group from two maps: groups and original_groups
 
-     Removing from the latter is straightforward since we have an iterator, but from the former it is not, and 
+     Removing from the latter is straightforward since we have an iterator, but from the former it is not, and
      we have to obtain that iterator using find().
     */
 
     if ( internal_file->iteration_direction == CFG_ITERATE_NORMAL )
-     {   
+     {
      /* remove from original map */
      CFG_String_Arg group_name = internal_file->original_group_iterator->second->c_str();
 
@@ -2139,7 +2139,7 @@ void CFG_RemoveSelectedGroup(void)
      ++next;
      internal_file->original_groups->erase( internal_file->original_group_iterator );
      internal_file->original_group_iterator = next;
-      
+
      if (internal_file->original_group_iterator != internal_file->original_groups->end())
        internal_file->selected_group = internal_file->original_group_iterator->first;
 
@@ -2154,15 +2154,15 @@ void CFG_RemoveSelectedGroup(void)
 
      if (iterator != internal_file->groups.end())
        internal_file->groups.erase(iterator);
-      
+
      /* remove from dynamically created map */
       CFG_Internal_OriginalFileGroupMapReverseItor tmp = internal_file->original_reverse_group_iterator++;
       CFG_Internal_OriginalFileGroupMapItor normal_iterator = internal_file->original_reverse_group_iterator.base();
-      
-      internal_file->original_groups->erase( normal_iterator ); 
+
+      internal_file->original_groups->erase( normal_iterator );
       internal_file->original_reverse_group_iterator = tmp;
-      
-      if (internal_file->original_reverse_group_iterator != internal_file->original_groups->rend())        
+
+      if (internal_file->original_reverse_group_iterator != internal_file->original_groups->rend())
        internal_file->selected_group = internal_file->original_reverse_group_iterator->first;
      }
     else
@@ -2207,8 +2207,8 @@ int CFG_SetGroupIterationDirection( int direction )
 
 void CFG_StartEntryIteration( void )
  {
-  CFG_ASSERT_NULL    
-  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;  
+  CFG_ASSERT_NULL
+  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
   selected_group->entry_iterator = selected_group->entries.begin();
  }
 
@@ -2219,11 +2219,11 @@ void CFG_StartEntryIteration( void )
 
 CFG_Bool CFG_IsLastEntry()
  {
-  CFG_ASSERT_NULL    
+  CFG_ASSERT_NULL
   CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
 
-  if ( selected_group->entry_iterator != selected_group->entries.end() )   
-   return CFG_False;      
+  if ( selected_group->entry_iterator != selected_group->entries.end() )
+   return CFG_False;
   else
    return CFG_True;
 
@@ -2235,8 +2235,8 @@ CFG_Bool CFG_IsLastEntry()
 
 void CFG_SelectNextEntry( void )
  {
-  CFG_ASSERT_NULL    
-  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;    
+  CFG_ASSERT_NULL
+  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
 
   if ( selected_group->entry_iterator != selected_group->entries.end() )
    {
@@ -2251,13 +2251,13 @@ void CFG_SelectNextEntry( void )
 
 CFG_String_Arg CFG_GetSelectedEntryName( void )
  {
-  CFG_ASSERT_NULL    
-  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;    
+  CFG_ASSERT_NULL
+  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
 
   if ( selected_group->entry_iterator != selected_group->entries.end() )
    {
     return selected_group->entry_iterator->first.c_str();
-   }  
+   }
   return 0;
  }
 
@@ -2296,7 +2296,7 @@ void CFG_RemoveSelectedEntry( void )
 /* ------------------------------------------------------- start CFG_GetDefaultSettings */
 
 void CFG_GetDefaultSettings( CFG_Settings * _settings )
- {  
+ {
   _settings->remove_group_spaces = true;
 
   _settings->syntax_group_start = '[';
@@ -2314,7 +2314,7 @@ void CFG_GetDefaultSettings( CFG_Settings * _settings )
   _settings->keyword_bool_false_2 = "no";
   _settings->keyword_bool_false_3 = "off";
 #endif
- 
+
   _settings->syntax_comment_1 = '/';
   _settings->syntax_comment_2 = '#';
   _settings->syntax_comment_3 = ';';
@@ -2325,7 +2325,7 @@ void CFG_GetDefaultSettings( CFG_Settings * _settings )
   _settings->substitution_start[0] = '$';
   _settings->substitution_start[1] = '(';
   _settings->substitution_end = ')';
- 
+
  }
 
 /* ------------------------------------------------------- end CFG_GetDefaultSettings */
@@ -2345,10 +2345,10 @@ void CFG_GetDefaultSettings( CFG_Settings * _settings )
 CFG_String_Arg CFG_GetEntryComment(CFG_String_Arg entry_name, int entry_type, int comment_pos)
  {
   CFG_ASSERT_NULL
-  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;        
+  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
 
   if (CFG_ENTRY_ITERATION == entry_name)
-   {    
+   {
     if ( selected_group->entry_iterator != selected_group->entries.end() )
      {
       if (CFG_COMMENT_PRE == comment_pos)
@@ -2356,8 +2356,8 @@ CFG_String_Arg CFG_GetEntryComment(CFG_String_Arg entry_name, int entry_type, in
       else
        return  (selected_group->entry_iterator->second.post_comment.c_str());
      }
-    else                                                                                                    
-     return 0;                                                                                          
+    else
+     return 0;
     }
 
   CFG_Internal_EntryMapItor iterator = selected_group->entries.find(entry_name);
@@ -2379,10 +2379,10 @@ CFG_String_Arg CFG_GetEntryComment(CFG_String_Arg entry_name, int entry_type, in
 void CFG_SetEntryComment(CFG_String_Arg entry_name, int entry_type, int comment_pos, CFG_String_Arg new_comment)
  {
   CFG_ASSERT_NULL
-  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;        
+  CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
 
   if (CFG_ENTRY_ITERATION == entry_name)
-   {    
+   {
     if ( selected_group->entry_iterator != selected_group->entries.end() )
      {
       if (CFG_COMMENT_PRE == comment_pos)
@@ -2390,7 +2390,7 @@ void CFG_SetEntryComment(CFG_String_Arg entry_name, int entry_type, int comment_
       else
        selected_group->entry_iterator->second.post_comment = new_comment;
      }
-   
+
     return;
    }
 
@@ -2412,7 +2412,7 @@ void CFG_SetEntryComment(CFG_String_Arg entry_name, int entry_type, int comment_
 CFG_String_Arg CFG_GetGroupComment(CFG_String_Arg group, int comment_pos)
  {
   CFG_ASSERT_NULL
-  
+
   if (0 == group)
    {
     CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
@@ -2427,7 +2427,7 @@ CFG_String_Arg CFG_GetGroupComment(CFG_String_Arg group, int comment_pos)
 
   if ( CFG_Internal_selected_file->internal_file->groups.end() == iterator )
    return 0;
-  
+
   if (CFG_COMMENT_PRE == comment_pos)
    return iterator->second.pre_comment.c_str();
   else
@@ -2441,7 +2441,7 @@ CFG_String_Arg CFG_GetGroupComment(CFG_String_Arg group, int comment_pos)
 void CFG_SetGroupComment(CFG_String_Arg group, int comment_pos, CFG_String_Arg new_comment)
  {
   CFG_ASSERT_NULL
-  
+
   if (0 == group)
    {
     CFG_Internal_Group * selected_group = CFG_Internal_selected_file->internal_file->selected_group;
@@ -2457,11 +2457,11 @@ void CFG_SetGroupComment(CFG_String_Arg group, int comment_pos, CFG_String_Arg n
 
   if ( CFG_Internal_selected_file->internal_file->groups.end() == iterator )
    return;
-  
+
   if (CFG_COMMENT_PRE == comment_pos)
    iterator->second.pre_comment = new_comment;
   else
-   iterator->second.post_comment = new_comment; 
+   iterator->second.post_comment = new_comment;
  }
 
 

@@ -16,7 +16,7 @@
  */
 #include "SpcDecoder.h"
 
-
+/*
 #ifdef WIN32 // there is probably a better way to determine whether dlopen() and dlsym() are available
 
 #define dlopen(filename, mode) NULL
@@ -29,7 +29,10 @@
 #include <dlfcn.h>
 
 #endif
-
+*/
+extern "C" {
+#include "openspc/openspc.h"
+}
 
 /**
  * Creates an SPC decoder.
@@ -37,8 +40,8 @@
 SpcDecoder::SpcDecoder(void) {
 
   // choose a library
-  this->openspc_plugin = dlopen("libopenspc.so", RTLD_NOW);
-  this->library = (openspc_plugin == NULL) ? LIB_SNES_SPC : LIB_OPENSPC;
+  //this->openspc_plugin = dlopen("libopenspc.so", RTLD_NOW);
+  this->library = /*(openspc_plugin == NULL) ? LIB_SNES_SPC :*/ LIB_OPENSPC;
 
   // initialize the SPC library
   if (this->library == LIB_SNES_SPC) {
@@ -61,7 +64,7 @@ SpcDecoder::~SpcDecoder(void) {
   switch (library) {
 
     case LIB_OPENSPC:
-      dlclose(openspc_plugin);
+      //dlclose(openspc_plugin);
       break;
 
     case LIB_SNES_SPC:
@@ -82,8 +85,8 @@ void SpcDecoder::load(Sint16 *sound_data, size_t sound_size) {
 
     case LIB_OPENSPC:
     {
-      void (*OSPC_Init)(void*, size_t);
-      OSPC_Init = (void (*)(void*, size_t)) dlsym(openspc_plugin, "OSPC_Init");
+      //void (*OSPC_Init)(void*, size_t);
+      //OSPC_Init = (void (*)(void*, size_t)) dlsym(openspc_plugin, "OSPC_Init");
       OSPC_Init(sound_data, sound_size);
       break;
     }
@@ -110,8 +113,8 @@ void SpcDecoder::decode(Sint16 *decoded_data, int nb_samples) {
 
     case LIB_OPENSPC:
     {
-      int (*OSPC_Run)(int, short*, int);
-      OSPC_Run = (int (*)(int, short*, int)) dlsym(openspc_plugin, "OSPC_Run");
+      //int (*OSPC_Run)(int, short*, int);
+      //OSPC_Run = (int (*)(int, short*, int)) dlsym(openspc_plugin, "OSPC_Run");
       OSPC_Run(-1, decoded_data, nb_samples * 2);
       break;
     }

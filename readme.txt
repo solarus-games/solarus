@@ -23,6 +23,8 @@ the program will try to load it dynamically as a plugin, and then use
 it to decode the SPC musics. Otherwise, to play SPC musis, it will use a slower library (Snes_SPC)
 whose source code is included in the project.
 
+If the sound played delayed: try reducing the "refresh" value in OpenAL configuration file (usually /etc/openal/alsoft.conf)
+
 ----------------
 SDL installation
 ----------------

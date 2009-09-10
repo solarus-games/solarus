@@ -1,5 +1,9 @@
 include_directories (${ZSDX_SOURCE_DIR}/include ${ZSDX_SOURCE_DIR}/include/snes_spc ${ZSDX_SOURCE_DIR}/include/SDL_Config)
 
+if(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
+
 add_executable (zsdx
 
   # main classes
@@ -170,6 +174,7 @@ target_link_libraries (zsdx
 		      SDL_ttf
 		      openal
 		      alut
+		      ${ZSDX_SOURCE_DIR}/libraries/linux32_lib/libopenspc.a
 		      lua5.1
 		      physfs
 		      stdc++

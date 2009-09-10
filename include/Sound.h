@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <AL/al.h>
+#include <AL/alc.h>
 #include <list>
 
 /**
@@ -31,8 +32,12 @@ class Sound {
 
   private:
 
+    static ALCdevice* device;
+    static ALCcontext* context;
+
     ALuint buffer;             /**< the OpenAL buffer containing the PCM decoded data */
     std::list<ALuint> sources; /**< the sources currently playing this sound */
+    ALuint next_source;
 
     static bool initialized;   /**< indicates that the audio system is initialized */
  

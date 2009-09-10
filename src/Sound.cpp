@@ -19,6 +19,9 @@
 #include "FileTools.h"
 #include <AL/alut.h>
 
+ALCdevice * Sound::device = NULL;
+ALCcontext * Sound::context = NULL;
+
 bool Sound::initialized = false;
 
 /**
@@ -44,6 +47,10 @@ Sound::Sound(const SoundId &sound_id):
     if (buffer == AL_NONE) {
       std::cerr << "Cannot decode WAV data for sound '" << file_name << "': " << alutGetErrorString(alutGetError()) << std::endl;
     }
+
+    // create a source
+    alGenSources(1, &next_source);
+    alSourcei(next_source, AL_BUFFER, buffer);
   }
 }
 
@@ -60,6 +67,7 @@ Sound::~Sound(void) {
       alSourcei(source, AL_BUFFER, 0);
       alDeleteSources(1, &source);
     }
+    alDeleteSources(1, &next_source);
     alDeleteBuffers(1, &buffer);
   }
 }
@@ -71,18 +79,29 @@ Sound::~Sound(void) {
 void Sound::initialize(void) {
 
   // initialize OpenAL
+  /*
   if (!alutInit(NULL, NULL)) {
     std::cout << "Cannot initialize alut: " << alutGetErrorString(alutGetError()) << std::endl;
     return;
   }
-/*
+  */
+
+  alutInitWithoutContext(NULL, NULL);
+
+  const ALCchar* devices = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
+  while (devices[0] != '\0') {
+    std::cout << "Audio device: " << devices << std::endl;
+    devices += strlen(devices) + 1;
+  }
+
   device = alcOpenDevice(NULL);
+//  device = alcOpenDevice("ALSA Software on ATI IXP");
   if (!device) {
     std::cout << "Cannot open audio device" << std::endl;
     return;
   }
 
-  const int attr[2] = {ALC_FREQUENCY, 32000}; // 32 KHz is the SPC output sampling rate
+  const int attr[2] = {ALC_FREQUENCY, 16000}; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
     std::cout << "Cannot create audio context" << std::endl;
@@ -95,7 +114,7 @@ void Sound::initialize(void) {
     alcCloseDevice(device);
     return;
   }
-*/
+
   initialized = true;
 
   // initialize the music system
@@ -114,13 +133,13 @@ void Sound::quit(void) {
     Music::quit();
 
     // uninitialize OpenAL
-    /*
+    
     alcMakeContextCurrent(NULL);
     alcDestroyContext(context);
     context = NULL;
     alcCloseDevice(device);
     device = NULL;
-    */
+    
     alutExit();
     initialized = false;
   }
@@ -156,16 +175,13 @@ bool Sound::play(void) {
     // TODO before playing the sound, see whether previous sources of the same sound can be deleted
 
     // play the sound
-    ALuint source;
-    alGenSources(1, &source);
-    sources.push_back(source);
-    alSourcei(source, AL_BUFFER, buffer);
     int error = alGetError();
     if (error != AL_NO_ERROR) {
       std::cerr << "Cannot attach the buffer to the source to play sound: error " << error << std::endl;
     }
     else {
-      alSourcePlay(source);
+      sources.push_back(next_source);
+      alSourcePlay(next_source);
       error = alGetError();
       if (error != AL_NO_ERROR) {
 	std::cerr << "Cannot play sound: error " << error << std::endl;
@@ -173,6 +189,10 @@ bool Sound::play(void) {
       else {
 	success = true;
       }
+
+      // create a source for next time
+      alGenSources(1, &next_source);
+      alSourcei(next_source, AL_BUFFER, buffer);
     }
   }
   return success;

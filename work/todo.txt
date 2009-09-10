@@ -20,7 +20,7 @@ Feature requests :
 - transition des téléporteurs ?
 - son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
-- utiliser OpenSPC si disponible (charger dynamiquement la bibliothèque)
+- windows : se passer des DLL de visual C++
 
 
 Bugs :

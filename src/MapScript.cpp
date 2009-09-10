@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -409,7 +409,7 @@ bool MapScript::call_lua_function(const std::string &function_name, bool arg1) {
 void MapScript::set_suspended(bool suspended) {
 
   if (context != NULL) {
-  
+
     // suspend or resume the timers
     std::list<Timer*>::iterator it;
     for (it = timers.begin(); it != timers.end(); it++) {
@@ -417,7 +417,7 @@ void MapScript::set_suspended(bool suspended) {
     }
 
     // notify the script
-    call_lua_function("event_set_suspended", suspended);  
+    call_lua_function("event_set_suspended", suspended);
   }
 }
 
@@ -793,7 +793,7 @@ int MapScript::l_move_camera(lua_State *l) {
  * Moves the camera back to the hero.
  */
 int MapScript::l_restore_camera(lua_State *l) {
-  
+
   check_nb_arguments(l, 0);
 
   Map *map = zsdx->game->get_current_map();
@@ -1082,7 +1082,7 @@ int MapScript::l_chest_is_hidden(lua_State *l) {
 
   check_nb_arguments(l, 1);
   const std::string &name = lua_tostring(l, 1);
-  
+
   Map *map = zsdx->game->get_current_map();
   Chest *chest = (Chest*) map->get_entities()->get_entity(CHEST, name);
   lua_pushboolean(l, chest->is_hidden() ? 1 : 0);
@@ -1140,7 +1140,7 @@ int MapScript::l_inventory_item_set(lua_State *l) {
 
   InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
   int variant = lua_tointeger(l, 2);
-    
+
   zsdx->game->get_equipment()->give_inventory_item(item_id, variant);
 
   lua_pushinteger(l, variant);
@@ -1200,7 +1200,7 @@ int MapScript::l_tile_set_enabled(lua_State *l) {
   check_nb_arguments(l, 2);
   const std::string &name = lua_tostring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
-  
+
   Map *map = zsdx->game->get_current_map();
   DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, name);
   dynamic_tile->set_enabled(enable);
@@ -1217,7 +1217,7 @@ int MapScript::l_tiles_set_enabled(lua_State *l) {
   check_nb_arguments(l, 2);
   const std::string &prefix = lua_tostring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
-  
+
   Map *map = zsdx->game->get_current_map();
   std::list<MapEntity*> *dynamic_tiles = map->get_entities()->get_entities_with_prefix(DYNAMIC_TILE, prefix);
 
@@ -1240,7 +1240,7 @@ int MapScript::l_tile_is_enabled(lua_State *l) {
 
   check_nb_arguments(l, 1);
   const std::string &name = lua_tostring(l, 1);
-  
+
   Map *map = zsdx->game->get_current_map();
   DynamicTile *dynamic_tile = (DynamicTile*) map->get_entities()->get_entity(DYNAMIC_TILE, name);
   lua_pushboolean(l, dynamic_tile->is_enabled() ? 1 : 0);
@@ -1256,7 +1256,7 @@ int MapScript::l_reset_block(lua_State *l) {
 
   check_nb_arguments(l, 1);
   const std::string &block_name = lua_tostring(l, 1);
-  
+
   Map *map = zsdx->game->get_current_map();
   Block *block = (Block*) map->get_entities()->get_entity(BLOCK, block_name);
   block->reset();
@@ -1270,7 +1270,7 @@ int MapScript::l_reset_block(lua_State *l) {
 int MapScript::l_reset_blocks(lua_State *l) {
 
   check_nb_arguments(l, 0);
-  
+
   Map *map = zsdx->game->get_current_map();
   std::list<MapEntity*> *blocks = map->get_entities()->get_entities(BLOCK);
 
@@ -1728,7 +1728,7 @@ int MapScript::l_door_is_open(lua_State *l) {
 
   check_nb_arguments(l, 1);
   const std::string &name = lua_tostring(l, 1);
-  
+
   Map *map = zsdx->game->get_current_map();
   Door *door = (Door*) map->get_entities()->get_entity(DOOR, name);
   lua_pushboolean(l, door->is_open() ? 1 : 0);
@@ -1792,7 +1792,7 @@ void MapScript::event_message_started(const MessageId &message_id) {
  * Note that this event is not called if the dialog was cancelled.
  * @param first_message_id id of the first message in the message sequence
  * that has just finished
- * @param answer the answer selected by the player: 0 for the first one, 
+ * @param answer the answer selected by the player: 0 for the first one,
  * 1 for the second one, -1 if there was no question
  */
 void MapScript::event_message_sequence_finished(const MessageId &first_message_id, int answer) {
@@ -1890,7 +1890,7 @@ bool MapScript::event_open_empty_chest(const std::string &chest_name) {
 
 /**
  * Notifies the script that the player is obtaining a treasure.
- * The treasure source does not matter: it can come from a chest, 
+ * The treasure source does not matter: it can come from a chest,
  * a pickable item or the script.
  * @param content the content obtained
  * @param savegame_variable the boolean variable where this treasure is saved
@@ -1902,7 +1902,7 @@ void MapScript::event_obtaining_treasure(Treasure::Content content, int savegame
 
 /**
  * Notifies the script that the player has just finished obtaining a treasure.
- * The treasure source does not matter: it can come from a chest, 
+ * The treasure source does not matter: it can come from a chest,
  * a pickable item or the script.
  * @param content the content obtained
  * @param savegame_variable the boolean variable where this treasure is saved

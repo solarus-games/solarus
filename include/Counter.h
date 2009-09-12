@@ -25,13 +25,24 @@
  */
 class Counter {
 
+ public:
+
+   /**
+    * Style of digits to display.
+    */
+  enum Style {
+    BIG_DIGITS,   /**< 8*8 pixels (default)*/
+    SMALL_DIGITS, /**< 6*7 pixels */
+  };
+
  private:
 
+  Style style;
   unsigned int nb_digits;        /**< number of digits to use to display the value */
   bool fill_with_zeros;          /**< indicates to fill the counter with zeros when the number of digits is too low */
-  int maximum;                   /**< the counter is shown with a special color when this value is reached (-1 indicates that there is no maximum) */
-
+  unsigned int maximum;          /**< the counter is shown with a special color when this value is reached (-1 indicates that there is no maximum) */
   unsigned int value;
+
   SDL_Surface *surface_drawn;
   SDL_Rect destination_position;
   SDL_Surface *img_digits;
@@ -43,7 +54,8 @@ class Counter {
   Counter(unsigned int nb_digits, bool fill_with_zeros, int x, int y);
   ~Counter(void);
 
-  void set_maximum(int maximum);
+  void set_style(Style style);
+  void set_maximum(unsigned int maximum);
   unsigned int get_value(void);
   void set_value(unsigned int value);
   void increase(void);

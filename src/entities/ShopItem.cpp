@@ -31,7 +31,6 @@
 #include "Sound.h"
 #include "Savegame.h"
 #include "FileTools.h"
-#include <iomanip>
 
 /**
  * Creates a new shop item with the specified treasure and price.
@@ -247,9 +246,10 @@ void ShopItem::display_on_map(void) {
 
   // display the treasure
   const SDL_Rect &camera_position = map->get_camera_position();
-  treasure->display(map_surface, x + 8 - camera_position.x, y + 2 - camera_position.y);
+  treasure->display(map_surface, x + 8 - camera_position.x, y - camera_position.y);
 
   // also display the price
   price_digits->display(map_surface);
   rupee_icon_sprite->display(map_surface, x, y + 22);
 }
+

@@ -56,7 +56,6 @@ Remarques de @PyroNet :
 - bandit manchot : graphismes pas exceptionnels, tapis pas centré
 - Quand Link soulève un pot, l'ombre du pot passe pendant un moment au-dessus de Link.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
-- Les prix des marchandises dans les magasins ne sont pas très lisibles. -> utiliser les chiffres attachés aux pickable items comme les flèches, bombes (1, 5 et 10) ?
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
 - Lorsqu'on achète un objet, l'image de l'objet que Link porte au-dessus de sa tête et de celui qui est sur le tapis se superposent. Il faudrait peut-être faire disparaître l'objet se trouvant sur le tapis pendant que Link porte celui qu'il a acheté.
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.

@@ -575,7 +575,7 @@ void Treasure::display(SDL_Surface *destination, int x, int y) {
 
   // display the counter
   if (counter != NULL) {
-    counter->display(destination, x - 4, y + 12);
+    counter->display(destination, x - 3, y + 12);
   }
 }
 

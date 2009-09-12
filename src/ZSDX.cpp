@@ -39,6 +39,7 @@ ZSDX *zsdx = NULL;
  */
 ZSDX::ZSDX(int argc, char **argv) {
 
+  // initialize the file manager
   FileTools::initialize(argc, argv);
 
   // initialize SDL

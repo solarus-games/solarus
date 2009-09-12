@@ -174,7 +174,7 @@ target_link_libraries (zsdx
 		      SDL_ttf
 		      openal
 		      alut
-		      libopenspc.a
+		      openspc
 		      lua5.1
 		      physfs
 		      stdc++

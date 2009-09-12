@@ -127,20 +127,17 @@ void Music::update_playing(void) {
 
   // refill them
   for (int i = 0; i < nb_empty; i++) {
-//    std::cout << SDL_GetTicks() << " refill buffer " << i << std::endl;
     ALuint buffer;
     alSourceUnqueueBuffers(source, 1, &buffer); // unqueue the buffer
     decode_spc(buffer, 4096);                   // fill it by decoding more SPC data
     alSourceQueueBuffers(source, 1, &buffer);   // queue it again
   }
 
-  // see if the music is finished
   ALint status;
   alGetSourcei(source, AL_SOURCE_STATE, &status);
 
   if (status != AL_PLAYING) {
-//    std::cout << "music was not playing!\n";
-    alSourcePlay(source); // the music should not have been stopped
+    alSourcePlay(source);
   }
 }
 
@@ -198,9 +195,8 @@ bool Music::play(void) {
   // create the two buffers and the source
   alGenBuffers(nb_buffers, buffers);
   alGenSources(1, &source);
-
   for (int i = 0; i < nb_buffers; i++) {
-    decode_spc(buffers[i], 1024);
+    decode_spc(buffers[i], 16384);
   }
 
   // start the streaming
@@ -210,14 +206,14 @@ bool Music::play(void) {
     std::cerr << "Cannot initialize buffers for music '" << file_name << "': error " << error << std::endl;
     success = false;
   }
-  else {
+/*  else {
     alSourcePlay(source);
     int error = alGetError();
     if (error != AL_NO_ERROR) {
       std::cerr << "Cannot play music '" << file_name << "': error " << error << std::endl;
       success = false;
     }
-  }
+  }*/
   
   // now the update() function will take care of filling the buffers
   current_music = this;

@@ -21,8 +21,8 @@
 
 ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
-
 bool Sound::initialized = false;
+std::list<ALuint> Sound::sources;
 
 /**
  * Creates a new sound.
@@ -47,10 +47,6 @@ Sound::Sound(const SoundId &sound_id):
     if (buffer == AL_NONE) {
       std::cerr << "Cannot decode WAV data for sound '" << file_name << "': " << alutGetErrorString(alutGetError()) << std::endl;
     }
-
-    // create a source
-    alGenSources(1, &next_source);
-    alSourcei(next_source, AL_BUFFER, buffer);
   }
 }
 
@@ -60,14 +56,6 @@ Sound::Sound(const SoundId &sound_id):
 Sound::~Sound(void) {
 
   if (is_initialized()) {
-
-    std::list<ALuint>::iterator it;
-    for (it = sources.begin(); it != sources.end(); it++) {
-      ALuint source = *it;
-      alSourcei(source, AL_BUFFER, 0);
-      alDeleteSources(1, &source);
-    }
-    alDeleteSources(1, &next_source);
     alDeleteBuffers(1, &buffer);
   }
 }
@@ -87,12 +75,13 @@ void Sound::initialize(void) {
   */
 
   alutInitWithoutContext(NULL, NULL);
-
+/*
   const ALCchar* devices = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
   while (devices[0] != '\0') {
     std::cout << "Audio device: " << devices << std::endl;
     devices += strlen(devices) + 1;
   }
+  */
 
   device = alcOpenDevice(NULL);
 //  device = alcOpenDevice("ALSA Software on ATI IXP");
@@ -101,7 +90,7 @@ void Sound::initialize(void) {
     return;
   }
 
-  const int attr[2] = {ALC_FREQUENCY, 16000}; // 32 KHz is the SPC output sampling rate
+  const int attr[2] = {ALC_FREQUENCY, 32000}; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
     std::cout << "Cannot create audio context" << std::endl;
@@ -119,6 +108,14 @@ void Sound::initialize(void) {
 
   // initialize the music system
   Music::initialize();
+
+  /* Let the audio thread enough time to get initialized well,
+   * otherwise the very first sound may be rendered badly.
+   * I have this problem with OpenAL and Ubuntu 9.04 (Jaunty).
+   * openal version: 1.4.272
+   * pulseaudio version: 0.9.14
+   */
+  //SDL_Delay(500); // not working when going directly to game phase
 }
 
 /**
@@ -128,12 +125,20 @@ void Sound::initialize(void) {
 void Sound::quit(void) {
 
   if (is_initialized()) {
+  
+    // stop the sound sources
+    ALuint source;
+    std::list<ALuint>::iterator it;
+    for (it = sources.begin(); it != sources.end(); it++) {
+      alSourcei(source, AL_BUFFER, 0);
+      alDeleteSources(1, &source);
+    }
 
     // uninitialize the music subsystem
     Music::quit();
 
     // uninitialize OpenAL
-    
+   
     alcMakeContextCurrent(NULL);
     alcDestroyContext(context);
     context = NULL;
@@ -158,7 +163,21 @@ bool Sound::is_initialized(void) {
  * This function is called repeatedly by the game.
  */
 void Sound::update(void) {
-  // nothing to do for the class Sound itself, but the Music class may need to do something
+ 
+  // see whether a sound source has finished playing
+  if (sources.size() > 0) {
+    ALuint source = *sources.begin();
+    ALint status;
+    alGetSourcei(source, AL_SOURCE_STATE, &status);
+
+    if (status != AL_PLAYING) {
+      alSourcei(source, AL_BUFFER, 0);
+      alDeleteSources(1, &source);
+      sources.pop_front();
+    }
+  }
+
+  // also update the music
   Music::update();
 }
 
@@ -172,16 +191,20 @@ bool Sound::play(void) {
 
   if (is_initialized()) {
 
-    // TODO before playing the sound, see whether previous sources of the same sound can be deleted
+    // create a source
+    ALuint source;
+    alGenSources(1, &source);
+    alSourcei(source, AL_BUFFER, buffer);
 
     // play the sound
     int error = alGetError();
     if (error != AL_NO_ERROR) {
       std::cerr << "Cannot attach the buffer to the source to play sound: error " << error << std::endl;
+      alDeleteSources(1, &source);
     }
     else {
-      sources.push_back(next_source);
-      alSourcePlay(next_source);
+      sources.push_back(source);
+      alSourcePlay(source);
       error = alGetError();
       if (error != AL_NO_ERROR) {
 	std::cerr << "Cannot play sound: error " << error << std::endl;
@@ -189,10 +212,6 @@ bool Sound::play(void) {
       else {
 	success = true;
       }
-
-      // create a source for next time
-      alGenSources(1, &next_source);
-      alSourcei(next_source, AL_BUFFER, buffer);
     }
   }
   return success;

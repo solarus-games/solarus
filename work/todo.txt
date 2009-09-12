@@ -43,9 +43,10 @@ Bugs :
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ?
 - item carte du monde : essayer la version de pyro
 - windows : se passer des DLL de visual C++
-- windows : le son s'arrête au bout d'un moment (pas la musique) : eeepc, fixe : normalement réglé en supprimant les sources terminées dans Sound.cpp
 - windows : le programme plante en revenant à l'écran-titre après avoir quitté
 - quand on enlève le SDL_Delay(1) de ZSDX.cpp, le boomerang part au ralenti
+- quand on quitte pendant qu'un son est joué, il n'est pas libéré
+- remettre Snes_SPC comme bibliothèque externe (facile à compiler), et l'utiliser uniquement pour les architectures incompatibles avec OpenSPC
 
 
 Remarques de Linksupersayen :

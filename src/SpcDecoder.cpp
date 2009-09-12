@@ -51,7 +51,7 @@ SpcDecoder::SpcDecoder(void) {
 
 #if ZSDX_DEBUG_LEVEL > 0
   static const std::string library_names[] = {"OpenSPC", "Snes_SPC"};
-  std::cout << "Using SPC library " << library_names[library] << std::endl;
+  std::cout << "SpcDecode: selecting SPC library " << library_names[library] << std::endl;
 #endif
 }
 

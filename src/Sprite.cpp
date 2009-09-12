@@ -30,7 +30,7 @@
  */
 Sprite::Sprite(const SpriteAnimationSetId &id):
   animation_set_id(id), current_direction(0), current_frame(-1),
-  suspended(false), paused(false), finished(false), blink_delay(0) {
+  suspended(false), ignore_suspend(false), paused(false), finished(false), blink_delay(0) {
   
   animation_set = ResourceManager::get_sprite_animation_set(id);
   set_current_animation(animation_set->get_default_animation());
@@ -247,7 +247,7 @@ bool Sprite::is_suspended(void) {
  */
 void Sprite::set_suspended(bool suspended) {
 
-  if (suspended != this->suspended) {
+  if (suspended != this->suspended && !ignore_suspend) {
     this->suspended = suspended;
 
     // compte next_frame_date if the animation is being resumed
@@ -260,6 +260,14 @@ void Sprite::set_suspended(bool suspended) {
       blink_is_sprite_visible = true;
     }
   }
+}
+
+/**
+ * Sets whether this sprite should keep playing its animation
+ * when the game is suspended
+ */
+void Sprite::set_ignore_suspend(bool ignore_suspend) {
+  this->ignore_suspend = ignore_suspend;
 }
 
 /**
@@ -423,3 +431,4 @@ void Sprite::display(SDL_Surface *destination, int x, int y) {
     current_animation->display(destination, x, y, current_direction, current_frame);
   }
 }
+

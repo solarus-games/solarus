@@ -42,7 +42,7 @@ Appel de fonctions C++ depuis un script LUA :
 - savegame_set_string(index)
 - savegame_set_integer(index)
 - savegame_set_boolean(index)
-- get_player_name()					retourne le nom du joueur (10 caractères maximum)
+- get_player_name()					retourne le nom du joueur (5 caractères maximum)
 - start_timer(duration, callback, with_sound)		démarre un timer qui appellera une fonction du script une fois terminé
 - stop_timer(callback)					arrête un timer en cours d'exécution
 - move_camera(x, y, speed)				suspend le jeu et déplace la caméra vers un point cible
@@ -50,7 +50,8 @@ Appel de fonctions C++ depuis un script LUA :
 - npc_set_position(npc, x, y)                           change la position d'un PNJ
 - npc_walk(npc, path, loop, with_collisions)		fait se déplacer un PNJ selon un chemin spécifié
 - npc_random_walk(npc)					fait se déplacer un PNJ de manière aléatoire
-- npc_set_animation(npc, animation_name)	        change l'animation d'un PNJ
+- npc_set_animation(npc, animation_name)		change l'animation d'un PNJ
+- npc_set_animation_ignore_suspend(npc, ignore)		indique si l'animation d'un sprite doit continuer même lorsque le jeu est suspendu
 - npc_jump(npc, direction, length, with_collisions)	fait sauter un PNJ dans une direction spécifiée
 - npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
 - npc_remove(npc)					supprime un PNJ de la map

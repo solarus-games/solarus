@@ -1018,6 +1018,17 @@ void MapEntity::set_suspended(bool suspended) {
 }
 
 /**
+ * Makes this entity's sprites play their animation even when the game is suspended.
+ */
+void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
+  
+  for (unsigned int i = 0; i < sprites.size(); i++) {
+    Sprite *sprite = sprites[i];
+    sprite->set_ignore_suspend(true);
+  }
+}
+
+/**
  * Updates the entity.
  * This function is called repeteadly by the map. By default, it updates the position
  * of the entity according to its movement (if any), and it updates the sprites frames

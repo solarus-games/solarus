@@ -73,6 +73,7 @@ class MapScript {
     l_npc_random_walk,
     l_npc_jump,
     l_npc_set_animation,
+    l_npc_set_animation_ignore_suspend,
     l_npc_set_direction,
     l_npc_remove,
     l_hero_set_direction,

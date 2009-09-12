@@ -187,6 +187,14 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
 void FileTools::data_file_close_buffer(char *buffer) {
   delete[] buffer;
 }
+ 
+/**
+ * Removes a file from the write directory.
+ * @param file_name name of the file to delete
+ */
+void FileTools::data_file_delete(const std::string &file_name) {
+  PHYSFS_delete(file_name.c_str());
+}
 
 /**
  * Reads an integer value from an input stream.

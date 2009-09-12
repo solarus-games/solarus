@@ -100,6 +100,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "npc_random_walk", l_npc_random_walk);
   lua_register(context, "npc_jump", l_npc_jump);
   lua_register(context, "npc_set_animation", l_npc_set_animation);
+  lua_register(context, "npc_set_animation_ignore_suspend", l_npc_set_animation_ignore_suspend);
   lua_register(context, "npc_set_direction", l_npc_set_direction);
   lua_register(context, "npc_remove", l_npc_remove);
   lua_register(context, "hero_set_direction", l_hero_set_direction);
@@ -918,6 +919,26 @@ int MapScript::l_npc_jump(lua_State *l) {
 int MapScript::l_npc_set_animation(lua_State *l) {
   return l_interactive_entity_set_animation(l);
 }
+
+/**
+ * Sets whether the animation of an NPC should continue even when the game is suspended.
+ * Argument 1 (string): name of the NPC
+ * Argument 2 (boolean): true to ignore when the game is suspended
+ */
+int MapScript::l_npc_set_animation_ignore_suspend(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  const std::string &name = lua_tostring(l, 1);
+  bool ignore_suspend = lua_toboolean(l, 2) != 0;
+
+  Map *map = zsdx->game->get_current_map();
+  MapEntity *npc = map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
+  npc->set_animation_ignore_suspend(ignore_suspend);
+
+  return 0;
+}
+
 
 /**
  * Sets the direction of an NPC's sprite.

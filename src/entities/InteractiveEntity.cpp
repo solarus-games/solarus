@@ -239,7 +239,6 @@ void InteractiveEntity::action_key_pressed(void) {
       if (subtype == NON_PLAYING_CHARACTER) {
 	int direction = (hero->get_animation_direction() + 2) % 4;
 	get_sprite()->set_current_direction(direction);
-
       }
 
       // start the message or call the script
@@ -251,7 +250,7 @@ void InteractiveEntity::action_key_pressed(void) {
 	call_script();
       }
     }
-  }
+  } 
 }
 
 /**

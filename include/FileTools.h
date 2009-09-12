@@ -22,12 +22,7 @@
 /**
  * This class provides some functions to open and analyse a data file.
  * It encapsulates how the access to data files is done.
- *
- * The most important function here is data_file_add_prefix, which
- * takes as paramater a relative data file path and returns its real path
- * depending on how the data files are stored: as normal files, in an archive,
- * in the memory itself... This class is the only one which knows how to access
- * a data file.
+ * This class is the only one that knows how to access a data file.
  */
 class FileTools {
 
@@ -45,6 +40,7 @@ class FileTools {
     static SDL_RWops * data_file_new_rw(size_t size);
     static void data_file_save_rw(SDL_RWops *rw, const std::string &file_name);
     static void data_file_close_rw(SDL_RWops *rw);
+    static void data_file_delete(const std::string &file_name);
 
     static void read(std::istream &is, int &value);
     static void read(std::istream &is, Uint32 &value);

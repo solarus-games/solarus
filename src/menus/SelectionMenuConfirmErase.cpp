@@ -20,6 +20,7 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 #include "Savegame.h"
+#include "FileTools.h"
 
 /**
  * Creates a selection menu with the phase where the
@@ -58,7 +59,7 @@ void SelectionMenuConfirmErase::handle_event(const SDL_Event &event) {
     case SDLK_RETURN:
       if (cursor_position == 5) {
 	// the user chose "Yes"
-	ResourceManager::get_sound("boss_dead")->play();
+	ResourceManager::get_sound("boss_killed")->play();
 	delete_save_file(save_number_to_erase);
 	set_cursor_position(save_number_to_erase + 1);
 	set_next_screen(new SelectionMenuSelectFile(this));
@@ -108,7 +109,7 @@ void SelectionMenuConfirmErase::display(SDL_Surface *screen_surface) {
 void SelectionMenuConfirmErase::delete_save_file(int save_number) {
 
   Savegame *savegame = get_savegame(save_number);
-  remove(savegame->get_file_name().c_str());
+  FileTools::data_file_delete(savegame->get_file_name().c_str());
   reload_savegames();
 }
 

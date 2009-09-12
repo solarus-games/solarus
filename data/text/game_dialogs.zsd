@@ -1464,3 +1464,7 @@ line1 = "Fais attention, ça a"
 line2 = "l'air sinistre à"
 line3 = "l'intérieur."
 
+[dungeon_1.solarus_child]
+#       |-----------------------|
+line1 = "$v... Merci."
+

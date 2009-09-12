@@ -219,7 +219,7 @@ bool SelectionMenuChooseName::select_letter(void) {
 
   if (letter_to_add != '\0') {
     // a letter was selected
-    if (length < 10) {
+    if (length < 5) {
       player_name[length] = letter_to_add;
       player_name[length + 1] = '\0';
       letter_sound->play();

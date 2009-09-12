@@ -54,6 +54,7 @@ class Sprite {
   Uint32 next_frame_date;                /**< date of the next frame */
 
   bool suspended;                        /**< true if the game is suspended */
+  bool ignore_suspend;                   /**< true to continue playing the animation even when the game is suspended */
   bool paused;                           /**< true if the animation is paused */
   bool finished;                         /**< true if the animation has been stopped because the last frame is finished */
 
@@ -98,6 +99,7 @@ class Sprite {
 
   bool is_suspended(void);
   void set_suspended(bool suspended);
+  void set_ignore_suspend(bool ignore_suspend);
   bool is_paused(void);
   void set_paused(bool suspended);
   bool is_animation_looping(void);

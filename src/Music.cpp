@@ -105,7 +105,7 @@ bool Music::is_initialized(void) {
  * When a music is playing, this function makes it update.
  */
 void Music::update(void) {
-  
+
   if (!is_initialized()) {
     return;
   }
@@ -196,7 +196,7 @@ bool Music::play(void) {
   alGenBuffers(nb_buffers, buffers);
   alGenSources(1, &source);
   for (int i = 0; i < nb_buffers; i++) {
-    decode_spc(buffers[i], 16384);
+    decode_spc(buffers[i], 4096);
   }
 
   // start the streaming
@@ -214,7 +214,7 @@ bool Music::play(void) {
       success = false;
     }
   }*/
-  
+
   // now the update() function will take care of filling the buffers
   current_music = this;
   return success;

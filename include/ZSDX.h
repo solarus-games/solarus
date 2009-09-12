@@ -48,7 +48,6 @@ class ZSDX {
 
  public:
 
-  TTF_Font *font;
   Game *game;
 
   ZSDX(int argc, char **argv);
@@ -64,3 +63,4 @@ class ZSDX {
 };
 
 #endif
+

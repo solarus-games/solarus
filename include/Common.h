@@ -28,13 +28,7 @@
 #include <cstdlib>
 #include <stdexcept>
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
-
 #include "Types.h"
-
-#define MIN(x,y) (((x) > (y)) ? (y) : (x))
-#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
 /**
  * Debug level.
@@ -53,6 +47,9 @@
 //#else
 #define DIE(message) do { std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)
 //#endif
+
+#define MIN(x,y) (((x) > (y)) ? (y) : (x))
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
 #endif
 

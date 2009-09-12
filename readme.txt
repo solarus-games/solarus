@@ -15,10 +15,11 @@ lua5.1
 physfs
 openal
 alut
-openspc
+openspc or snes_spc
 
 Note that OpenSPC (the library for playing SPC musics) is available only for i386 32-bit architectures.
-For architectures incompatible with OpenSPC, you can use an alternative (but slower) SPC library, snes_spc, but you should contact me first.
+For architectures incompatible with OpenSPC, you can use an alternative (but slower) SPC library, snes_spc.
+More details can be found in file include/SpcDecoder.h.
 
 
 Linux developers:
@@ -44,9 +45,7 @@ The directory win32/libraries contain all static and dynamic libraries that are 
 by their authors.
 For SDL, SDL_image and SDL_ttf, the header files must be placed in an "SDL" subdirectory of the include directory.
 For OpenAL and ALUT, the header files must be placed in an "AL" subdirectory of the include directory.
-For OpenSPC, you will probably not find a binary release (I did not). Pick the 32-bit version in the directory win32/libraries
-or contact me to compile with snes_spc instead.
-
+For OpenSPC, you will probably not find a binary release (I did not). Pick the 32-bit version in the directory win32/libraries.
 You may need to additionally link with libz.
 
 

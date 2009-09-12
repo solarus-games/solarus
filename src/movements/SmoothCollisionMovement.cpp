@@ -45,8 +45,6 @@ void SmoothCollisionMovement::update(void) {
     bool x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
     bool y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
 
-    // TODO should be 'while' instead of 'if', but with valgrind the game
-    // loops here when iterating over the obstacle dynamic entities
     while (x_move_now || y_move_now) {
 
       if (x_move_now) {

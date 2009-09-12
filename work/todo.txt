@@ -27,7 +27,7 @@ Bugs :
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - la barre de magie moyenne peut déborder (yoshi04)
 - écran-titres : textes du bas flous
-- quand ça rame (exemple Wink ou valgrind), les vases sont lancés moins loin
+- quand ça rame (exemple Wink ou valgrind), les vases et le boomerang sont lancés moins loin
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
@@ -39,12 +39,8 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - plein écran étiré non lisse (320*240 pur ?) non supporté sur eeepc
 - empêcher de mettre pause après le boss
-- Caverne de Billy
-- bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ?
-- item carte du monde : essayer la version de pyro
+- bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - windows : le programme plante en revenant à l'écran-titre après avoir quitté
-- quand on enlève le SDL_Delay(1) de ZSDX.cpp, le boomerang part au ralenti
-- quand on quitte pendant qu'un son est joué, il n'est pas libéré
 
 
 Remarques de Linksupersayen :

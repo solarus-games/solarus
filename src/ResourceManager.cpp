@@ -21,6 +21,7 @@
 #include "Sound.h"
 #include "SpriteAnimationSet.h"
 #include "FileTools.h"
+#include <SDL/SDL_image.h>
 
 using std::map;
 
@@ -135,11 +136,17 @@ SDL_Surface * ResourceManager::load_image(const ImageId &id) {
  */
 SDL_Surface * ResourceManager::load_image(const ImageId &id, bool relative_to_sprites_dir) {
 
-  if (relative_to_sprites_dir) {
-    return FileTools::open_image((std::string) "sprites/" + id);
+  std::string file_name = relative_to_sprites_dir ? ((std::string) "sprites/" + id) : id;
+
+  SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
+  SDL_Surface *image = IMG_Load_RW(rw, 0);
+  FileTools::data_file_close_rw(rw);
+
+  if (image == NULL) {
+    DIE("Cannot load image '" << file_name << "'");
   }
 
-  return FileTools::open_image(id);
+  return image;
 }
 
 /**

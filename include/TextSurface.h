@@ -18,6 +18,7 @@
 #define ZSDX_TEXT_SURFACE_H
 
 #include "Common.h"
+#include <SDL/SDL_ttf.h>
 
 /**
  * This class displays some text on a surface.

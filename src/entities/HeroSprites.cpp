@@ -120,7 +120,7 @@ const SoundId HeroSprites::ground_sound_ids[] = {
  */
 HeroSprites::HeroSprites(Hero *hero, Equipment *equipment):
   hero(hero), equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
-  sword_stars_sprite(NULL), shield_sprite(NULL), ground_sprite(NULL),
+  sword_stars_sprite(NULL), shield_sprite(NULL), shadow_sprite(NULL), ground_sprite(NULL),
   end_blink_date(0), walking(false) {
 
 }
@@ -159,8 +159,11 @@ void HeroSprites::rebuild_equipment(void) {
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
   tunic_sprite->get_animation_set()->enable_pixel_collisions();
 
-  shadow_sprite = new Sprite("entities/shadow");
-  shadow_sprite->set_current_animation("big");
+  // the hero's shadow
+  if (shadow_sprite == NULL) {
+    shadow_sprite = new Sprite("entities/shadow");
+    shadow_sprite->set_current_animation("big");
+  }
 
   // the hero's sword
   if (sword_sprite != NULL) {

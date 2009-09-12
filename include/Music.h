@@ -50,6 +50,8 @@ class Music {
     static Music *current_music;    /**< the music currently played (if any) */
     static SpcDecoder *spc_decoder;  /**< the SPC decoder */
 
+    void update_playing(void);
+
   public:
 
     static const MusicId none;      /**< special id indicating that there is no music */
@@ -65,7 +67,6 @@ class Music {
 
     bool play(void);
     void stop(void);
-    void update_playing(void);
     bool is_paused(void);
     void set_paused(bool pause);
 

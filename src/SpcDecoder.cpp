@@ -16,43 +16,25 @@
  */
 #include "SpcDecoder.h"
 
-/*
-#ifdef WIN32 // there is probably a better way to determine whether dlopen() and dlsym() are available
+#ifdef USE_OPENSPC
 
-#define dlopen(filename, mode) NULL
-#define dlclose(file)
-#define dlsym(dl, sym) NULL
-#define RTLD_NOW 0
-
-#else
-
-#include <dlfcn.h>
-
-#endif
-*/
 extern "C" {
 #include <openspc.h>
 }
+
+#endif
 
 /**
  * Creates an SPC decoder.
  */
 SpcDecoder::SpcDecoder(void) {
 
-  // choose a library
-  //this->openspc_plugin = dlopen("libopenspc.so", RTLD_NOW);
-  this->library = /*(openspc_plugin == NULL) ? LIB_SNES_SPC :*/ LIB_OPENSPC;
-
   // initialize the SPC library
-  if (this->library == LIB_SNES_SPC) {
-//    snes_spc_manager = spc_new();
-//    snes_spc_filter = spc_filter_new();
-  }
-
-#if ZSDX_DEBUG_LEVEL > 0
-  static const std::string library_names[] = {"OpenSPC", "Snes_SPC"};
-  std::cout << "SpcDecode: selecting SPC library " << library_names[library] << std::endl;
+#ifdef USE_SNES_SPC
+  snes_spc_manager = spc_new();
+  snes_spc_filter = spc_filter_new();
 #endif
+
 }
 
 /**
@@ -61,17 +43,11 @@ SpcDecoder::SpcDecoder(void) {
 SpcDecoder::~SpcDecoder(void) {
 
   // uninitialize the SPC library
-  switch (library) {
+#ifdef USE_SNES_SPC
+  spc_filter_delete(snes_spc_filter);
+  spc_delete(snes_spc_manager);
+#endif
 
-    case LIB_OPENSPC:
-      //dlclose(openspc_plugin);
-      break;
-
-    case LIB_SNES_SPC:
-//      spc_filter_delete(snes_spc_filter);
-//      spc_delete(snes_spc_manager);
-      break;
-  }
 }
 
 /**
@@ -81,24 +57,15 @@ SpcDecoder::~SpcDecoder(void) {
  */
 void SpcDecoder::load(Sint16 *sound_data, size_t sound_size) {
 
-  switch (library) {
+  // load the SPC data into the SPC library
+#ifdef USE_OPENSPC
+  OSPC_Init(sound_data, sound_size);
+#else
+  spc_load_spc(snes_spc_manager, (short int*) sound_data, sound_size);
+  spc_clear_echo(snes_spc_manager);
+  spc_filter_clear(snes_spc_filter);
+#endif
 
-    case LIB_OPENSPC:
-    {
-      //void (*OSPC_Init)(void*, size_t);
-      //OSPC_Init = (void (*)(void*, size_t)) dlsym(openspc_plugin, "OSPC_Init");
-      OSPC_Init(sound_data, sound_size);
-      break;
-    }
-
-    case LIB_SNES_SPC:
-    {
-//      spc_load_spc(snes_spc_manager, (short int*) sound_data, sound_size);
-//      spc_clear_echo(snes_spc_manager);
-//      spc_filter_clear(snes_spc_filter);
-      break;
-    }
-  }
 }
 
 
@@ -109,27 +76,20 @@ void SpcDecoder::load(Sint16 *sound_data, size_t sound_size) {
  */
 void SpcDecoder::decode(Sint16 *decoded_data, int nb_samples) {
 
-  switch (library) {
+  // decode from the SPC data the specified number of PCM samples
+#ifdef USE_OPENSPC
 
-    case LIB_OPENSPC:
-    {
-      //int (*OSPC_Run)(int, short*, int);
-      //OSPC_Run = (int (*)(int, short*, int)) dlsym(openspc_plugin, "OSPC_Run");
-      OSPC_Run(-1, decoded_data, nb_samples * 2);
-      break;
-    }
+  OSPC_Run(-1, decoded_data, nb_samples * 2);
 
-    case LIB_SNES_SPC:
-    {
-/*
-      const char *err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
-      if (err != NULL) {
-	DIE("Failed to decode SPC data: " << err);
-      }
-      spc_filter_run(snes_spc_filter, (short int*) decoded_data, nb_samples);
-      break;
-*/
-    }
+#else
+
+  const char *err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
+  if (err != NULL) {
+    DIE("Failed to decode SPC data: " << err);
   }
+  spc_filter_run(snes_spc_filter, (short int*) decoded_data, nb_samples);
+
+#endif
+
 }
 

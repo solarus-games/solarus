@@ -46,8 +46,6 @@ class FileTools {
     static void data_file_save_rw(SDL_RWops *rw, const std::string &file_name);
     static void data_file_close_rw(SDL_RWops *rw);
 
-    static SDL_Surface *open_image(const std::string &file_name);
-
     static void read(std::istream &is, int &value);
     static void read(std::istream &is, Uint32 &value);
     static void read(std::istream &is, std::string &value);

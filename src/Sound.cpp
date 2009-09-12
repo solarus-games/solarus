@@ -22,7 +22,7 @@
 ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
 bool Sound::initialized = false;
-std::list<ALuint> Sound::sources;
+std::list<Sound*> Sound::current_sounds;
 
 /**
  * Creates a new sound.
@@ -56,7 +56,17 @@ Sound::Sound(const SoundId &sound_id):
 Sound::~Sound(void) {
 
   if (is_initialized()) {
+
+    // stop the sources where this buffer is attached
+    std::list<ALuint>::iterator it;
+    for (it = sources.begin(); it != sources.end(); it++) {
+      ALuint source = (*it);
+      alSourceStop(source);
+      alSourcei(source, AL_BUFFER, 0);
+      alDeleteSources(1, &source);
+    }
     alDeleteBuffers(1, &buffer);
+    current_sounds.remove(this);
   }
 }
 
@@ -117,15 +127,16 @@ void Sound::initialize(void) {
 void Sound::quit(void) {
 
   if (is_initialized()) {
-
+/*
     // stop the sound sources
     ALuint source;
     std::list<ALuint>::iterator it;
-    for (it = sources.begin(); it != sources.end(); it++) {
+    for (it = all_sources.begin(); it != all_sources.end(); it++) {
+      source = (*it);
       alSourcei(source, AL_BUFFER, 0);
       alDeleteSources(1, &source);
     }
-
+*/
     // uninitialize the music subsystem
     Music::quit();
 
@@ -156,21 +167,44 @@ bool Sound::is_initialized(void) {
  */
 void Sound::update(void) {
 
-  // see whether a sound source has finished playing
-  if (sources.size() > 0) {
-    ALuint source = *sources.begin();
-    ALint status;
-    alGetSourcei(source, AL_SOURCE_STATE, &status);
-
-    if (status != AL_PLAYING) {
-      alSourcei(source, AL_BUFFER, 0);
-      alDeleteSources(1, &source);
-      sources.pop_front();
+  // update the playing sounds
+  Sound *sound;
+  std::list<Sound*> sounds_to_remove;
+  std::list<Sound*>::iterator it;
+  for (it = current_sounds.begin(); it != current_sounds.end(); it++) {
+    sound = *it;
+    if (!sound->update_playing()) {
+      sounds_to_remove.push_back(sound);
     }
+  }
+
+  for (it = sounds_to_remove.begin(); it != sounds_to_remove.end(); it++) {
+    sound = *it;
+    current_sounds.remove(sound);
   }
 
   // also update the music
   Music::update();
+}
+
+/**
+ * Updates this sound when it is playing.
+ * @return true if the sound is still playing, false if it is finished.
+ */
+bool Sound::update_playing() {
+
+  // see whether a source playing this sound has finished playing
+  ALuint source = *sources.begin();
+  ALint status;
+  alGetSourcei(source, AL_SOURCE_STATE, &status);
+
+  if (status != AL_PLAYING) {
+    sources.pop_front();
+    alSourcei(source, AL_BUFFER, 0);
+    alDeleteSources(1, &source);
+  }
+
+  return sources.size() != 0;
 }
 
 /**
@@ -196,6 +230,8 @@ bool Sound::play(void) {
     }
     else {
       sources.push_back(source);
+      current_sounds.remove(this); // to avoid duplicates
+      current_sounds.push_back(this);
       alSourcePlay(source);
       error = alGetError();
       if (error != AL_NO_ERROR) {

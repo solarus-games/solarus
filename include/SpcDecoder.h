@@ -19,35 +19,42 @@
 
 #include "Common.h"
 
+/*
+ * By default, to decode SPC music files, OpenSPC is used.
+ * OpenSPC is a fast library but is compatible only with i386 architectures.
+ * To compile with Snes_Spc instead (a slower but portable library),
+ * define the preprocessor symbol USE_SNES_SPC by uncommenting
+ * the following line, or set it in your compilation command line
+ * (for gcc, use the flag -DUSE_SNES_SPC).
+ * The SPC library you will need to link to the executable depends on this choice.
+ */
+//#define USE_SNES_SPC // just uncomment this to use Snes_SPC instead of OpenSPC
+
+#ifndef USE_SNES_SPC
+#ifndef USE_OPENSPC
+#define USE_OPENSPC // OpenSPC (faster) by default
+#endif
+#endif
+
+#ifdef USE_SNES_SPC
+#include <snes_spc/spc.h>
+#endif
+
 /**
  * This class encapsulates the SPC music decoding, thus allowing
- * the Music class to be independent of the SPC library.
- *
- * This class uses the OpenSPC library. However, this library
- * does not seem to be available under all platforms.
- * If OpenSPC cannot be used, you have to use Snes_Spc which is slower.
- * TODO: use a define to make the two choices at compile time
+ * the Music class to be independent of the SPC library choice.
  */
 class SpcDecoder {
 
   private:
 
-    // OpenSPC specific data
-    void *openspc_plugin;
+#ifdef USE_SNES_SPC
 
     // Snes_SPC specific data
-//    SNES_SPC *snes_spc_manager;   /**< the snes_spc object */
-//    SPC_Filter *snes_spc_filter;  /**< the snes_spc filter object */
+    SNES_SPC *snes_spc_manager;   /**< the snes_spc object */
+    SPC_Filter *snes_spc_filter;  /**< the snes_spc filter object */
 
-    /**
-     * The SPC decoding libraries supported.
-     */
-    enum SpcLibrary {
-      LIB_OPENSPC,           /**< OpenSPC, an old but fast library, only for i386 */
-      LIB_SNES_SPC,          /**< Snes_Spc, a newer but slower library, available on all platforms */
-    };
-
-    SpcLibrary library;      /**< the library used */
+#endif
 
   public:
 

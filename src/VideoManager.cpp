@@ -23,7 +23,7 @@ SDL_Rect VideoManager::video_mode_sizes[] = {
   {0, 0, 640, 480},         // WINDOWED_STRETCHED
   {0, 0, 640, 480},         // WINDOWED_SCALE2X
   {0, 0, 320, 240},         // WINDOWED_NORMAL
-  {0, 0, 320, 240},         // FULLSCREEN_NORMAL
+  {0, 0, 640, 480},         // FULLSCREEN_NORMAL
   {0, 0, 0, 0},             // FULLSCREEN_WIDE
   {0, 0, 640, 480},         // FULLSCREEN_SCALE2X
   {0, 0, 0, 0},             // FULLSCREEN_SCALE2X_WIDE
@@ -37,7 +37,7 @@ SDL_Rect VideoManager::video_mode_sizes[] = {
 VideoManager::VideoManager(void) {
 
   // initialize the window
-  SDL_WM_SetCaption("Zelda Solarus Deluxe", NULL);
+  SDL_WM_SetCaption("Zelda: Mystery of Solarus Deluxe", NULL);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 
@@ -59,6 +59,14 @@ VideoManager::VideoManager(void) {
     dst_position_wide.x = 40;
     dst_position_wide.y = 0;
   }
+
+  /* debug (see the fullscreen video modes supported)
+  SDL_Rect **rects = SDL_ListModes(NULL, flags);
+  while (*rects != NULL) {
+    std::cout << "mode " << (*rects)->w << " x " << (*rects)->h << std::endl;
+    rects++;
+  }
+  */
 }
 
 /**
@@ -235,11 +243,11 @@ void VideoManager::display(SDL_Surface *src_surface) {
   switch (video_mode) {
 
   case WINDOWED_NORMAL:
-  case FULLSCREEN_NORMAL:
     blit(src_surface, screen_surface);
     break;
 
   case WINDOWED_STRETCHED:
+  case FULLSCREEN_NORMAL:
   case FULLSCREEN_WIDE:
     blit_stretched(src_surface, screen_surface);
     break;
@@ -374,3 +382,4 @@ void VideoManager::blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surfa
   SDL_UnlockSurface(dst_surface);
   SDL_UnlockSurface(src_surface);
 }
+

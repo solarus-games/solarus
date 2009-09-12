@@ -189,26 +189,6 @@ void FileTools::data_file_close_buffer(char *buffer) {
 }
 
 /**
- * Loads an image file.
- * The file name is relative to the ZSDX data directory.
- * The program is stopped with an error message if the image cannot be loaded.
- * @param file_name name of the image file to open
- * @return the file
- */
-SDL_Surface *FileTools::open_image(const std::string &file_name) {
-
-  SDL_RWops *rw = data_file_open_rw(file_name);
-  SDL_Surface *image = IMG_Load_RW(rw, 0);
-  data_file_close_rw(rw);
-
-  if (image == NULL) {
-    DIE("Cannot load image '" << file_name << "'");
-  }
-
-  return image;
-}
-
-/**
  * Reads an integer value from an input stream.
  * Stops the program on an error message if the read fails.
  * @param is an input stream

@@ -108,14 +108,6 @@ void Sound::initialize(void) {
 
   // initialize the music system
   Music::initialize();
-
-  /* Let the audio thread enough time to get initialized well,
-   * otherwise the very first sound may be rendered badly.
-   * I have this problem with OpenAL and Ubuntu 9.04 (Jaunty).
-   * openal version: 1.4.272
-   * pulseaudio version: 0.9.14
-   */
-  //SDL_Delay(500); // not working when going directly to game phase
 }
 
 /**
@@ -125,7 +117,7 @@ void Sound::initialize(void) {
 void Sound::quit(void) {
 
   if (is_initialized()) {
-  
+
     // stop the sound sources
     ALuint source;
     std::list<ALuint>::iterator it;
@@ -138,13 +130,13 @@ void Sound::quit(void) {
     Music::quit();
 
     // uninitialize OpenAL
-   
+
     alcMakeContextCurrent(NULL);
     alcDestroyContext(context);
     context = NULL;
     alcCloseDevice(device);
     device = NULL;
-    
+
     alutExit();
     initialized = false;
   }
@@ -163,7 +155,7 @@ bool Sound::is_initialized(void) {
  * This function is called repeatedly by the game.
  */
 void Sound::update(void) {
- 
+
   // see whether a sound source has finished playing
   if (sources.size() > 0) {
     ALuint source = *sources.begin();

@@ -31,7 +31,7 @@
 #endif
 */
 extern "C" {
-#include "openspc/openspc.h"
+#include <openspc.h>
 }
 
 /**
@@ -45,8 +45,8 @@ SpcDecoder::SpcDecoder(void) {
 
   // initialize the SPC library
   if (this->library == LIB_SNES_SPC) {
-    snes_spc_manager = spc_new();
-    snes_spc_filter = spc_filter_new();
+//    snes_spc_manager = spc_new();
+//    snes_spc_filter = spc_filter_new();
   }
 
 #if ZSDX_DEBUG_LEVEL > 0
@@ -68,8 +68,8 @@ SpcDecoder::~SpcDecoder(void) {
       break;
 
     case LIB_SNES_SPC:
-      spc_filter_delete(snes_spc_filter);
-      spc_delete(snes_spc_manager);
+//      spc_filter_delete(snes_spc_filter);
+//      spc_delete(snes_spc_manager);
       break;
   }
 }
@@ -93,9 +93,9 @@ void SpcDecoder::load(Sint16 *sound_data, size_t sound_size) {
 
     case LIB_SNES_SPC:
     {
-      spc_load_spc(snes_spc_manager, (short int*) sound_data, sound_size);
-      spc_clear_echo(snes_spc_manager);
-      spc_filter_clear(snes_spc_filter);
+//      spc_load_spc(snes_spc_manager, (short int*) sound_data, sound_size);
+//      spc_clear_echo(snes_spc_manager);
+//      spc_filter_clear(snes_spc_filter);
       break;
     }
   }
@@ -121,12 +121,14 @@ void SpcDecoder::decode(Sint16 *decoded_data, int nb_samples) {
 
     case LIB_SNES_SPC:
     {
+/*
       const char *err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
       if (err != NULL) {
 	DIE("Failed to decode SPC data: " << err);
       }
       spc_filter_run(snes_spc_filter, (short int*) decoded_data, nb_samples);
       break;
+*/
     }
   }
 }

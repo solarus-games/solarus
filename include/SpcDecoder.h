@@ -18,15 +18,15 @@
 #define ZSDX_SPC_DECODER_H
 
 #include "Common.h"
-#include "snes_spc/spc.h"
 
 /**
  * This class encapsulates the SPC music decoding, thus allowing
  * the Music class to be independent of the SPC library.
  *
- * This class tries to use the OpenSPC library. However, this library
- * does not seem to be available under all platforms. If OpenSPC cannot be dynamically
- * loaded, we use Snes_Spc which is slower.
+ * This class uses the OpenSPC library. However, this library
+ * does not seem to be available under all platforms.
+ * If OpenSPC cannot be used, you have to use Snes_Spc which is slower.
+ * TODO: use a define to make the two choices at compile time
  */
 class SpcDecoder {
 
@@ -36,15 +36,15 @@ class SpcDecoder {
     void *openspc_plugin;
 
     // Snes_SPC specific data
-    SNES_SPC *snes_spc_manager;   /**< the snes_spc object */
-    SPC_Filter *snes_spc_filter;  /**< the snes_spc filter object */
+//    SNES_SPC *snes_spc_manager;   /**< the snes_spc object */
+//    SPC_Filter *snes_spc_filter;  /**< the snes_spc filter object */
 
     /**
      * The SPC decoding libraries supported.
      */
     enum SpcLibrary {
-      LIB_OPENSPC,           /**< OpenSPC, an old but fast library, loaded as a plugin if available */
-      LIB_SNES_SPC,          /**< Snes_Spc, a newer but slower library, directly included in the code */
+      LIB_OPENSPC,           /**< OpenSPC, an old but fast library, only for i386 */
+      LIB_SNES_SPC,          /**< Snes_Spc, a newer but slower library, available on all platforms */
     };
 
     SpcLibrary library;      /**< the library used */

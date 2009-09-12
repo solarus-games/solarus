@@ -47,6 +47,8 @@ For OpenAL and ALUT, the header files must be placed in an "AL" subdirectory of 
 For OpenSPC, you will probably not find a binary release (I did not). Pick the 32-bit version in the directory win32/libraries
 or contact me to compile with snes_spc instead.
 
+You may need to additionally link with libz.
+
 
 ------------------------
 Compilation instructions

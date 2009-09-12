@@ -1117,7 +1117,6 @@ line3 = "ton périple..."
 line1 = "Tu devrais aller jeter"
 line2 = "un coup d'oeil à la"
 line3 = "cave, j'y garde"
-cancel = all
 next = sahasrahla_house.quest_accepted.2
 
 [sahasrahla_house.quest_accepted.2]

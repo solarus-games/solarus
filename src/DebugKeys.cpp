@@ -89,9 +89,7 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
     case SDLK_t:
       equipment->give_inventory_item(INVENTORY_BOW);
       equipment->set_max_arrows(10);
-      equipment->set_item_assigned(0, INVENTORY_BOW);
       equipment->give_inventory_item(INVENTORY_BOTTLE_2, 6);
-      equipment->set_item_assigned(1, INVENTORY_BOTTLE_2);
       equipment->give_inventory_item(INVENTORY_BOMBS);
       equipment->set_max_bombs(10);
       equipment->set_bombs(10);
@@ -107,6 +105,8 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
       equipment->give_inventory_item(INVENTORY_RED_KEY);
       equipment->give_inventory_item(INVENTORY_CLAY_KEY);
       equipment->add_world_map();
+      equipment->set_item_assigned(0, INVENTORY_BOOMERANG);
+      equipment->set_item_assigned(1, INVENTORY_BOTTLE_2);
       break;
 
     case SDLK_g:
@@ -126,14 +126,13 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
       }
       break;
       */
-/*
-    case SDLK_SPACE:
-      if (game->get_keys_effect()->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE) {
-	Map *map = zsdx->game->get_current_map();
-	map->get_entities()->add_entity(new Explosion(zsdx->game->get_hero()->get_layer(), game->get_hero_xy(), true));
+
+    case SDLK_e:
+      {
+        Map *map = zsdx->game->get_current_map();
+        map->get_entities()->add_entity(new Explosion(zsdx->game->get_hero()->get_layer(), game->get_hero_xy(), true));
       }
       break;
-*/
 
     default:
       break;

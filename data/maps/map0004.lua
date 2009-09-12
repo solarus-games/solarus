@@ -24,7 +24,7 @@ end
 -- while facing an interactive entity
 function event_interaction(entity_name)
 
-   if entity_name == "village_cave_door" then
+   if entity_name == "tom_cave_door" then
 
       -- open the door if the player has the Clay Key
       if inventory_item_get(16) ~= 0 then
@@ -39,7 +39,7 @@ function event_interaction(entity_name)
 end
 
 function remove_village_cave_door()
-   interactive_entity_remove("village_cave_door")
-   tile_set_enabled("village_cave_hiding", false)
-   tile_set_enabled("village_cave_hiding_2", false)
+   interactive_entity_remove("tom_cave_door")
+   tile_set_enabled("tom_cave_door_tile", false)
 end
+

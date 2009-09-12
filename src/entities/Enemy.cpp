@@ -348,7 +348,7 @@ void Enemy::update(void) {
       next_explosion_date = now + 200;
       nb_explosions++;
 
-      if (nb_explosions >= 10) {
+      if (nb_explosions >= 15) {
         exploding = false;
       }
     }

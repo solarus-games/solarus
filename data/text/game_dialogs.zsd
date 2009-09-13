@@ -1482,7 +1482,7 @@ line3 = "l'intérieur."
 
 [dungeon_1.solarus_child]
 #       |-----------------------|
-line1 = "$v... Merci."
+line1 = "$2$v... Merci."
 line2 = "Tu m'as sauvé la vie."
 line3 = "Je suis l'un des "
 next = dungeon_1.solarus_child.2

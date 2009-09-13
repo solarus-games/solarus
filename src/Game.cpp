@@ -745,7 +745,7 @@ void Game::show_message(const MessageId &message_id, int position) {
     y = 144;
   }
 
-  dialog_box = new DialogBox(message_id, 51, y);
+  dialog_box = new DialogBox(message_id, 50, y);
 }
 
 /**

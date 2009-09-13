@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <SDL_Config/SDL_config_lib.h>
+#include "SDL_Config/SDL_config_lib.h"
 #include "Message.h"
 #include "DialogBox.h"
 #include "FileTools.h"
@@ -28,8 +28,8 @@
  * Delay between two chars, depending on the dialog speed.
  */
 static const Uint32 char_delays[3] = {
-  200, // slow
-  80,  // medium
+  100, // slow
+  60,  // medium
   30   // fast (default)
 };
 

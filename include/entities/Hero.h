@@ -66,6 +66,7 @@ class Hero: public MapEntity {
     FALLING,                     /**< the hero is falling into a hole */
     RETURNING_TO_SOLID_GROUND,   /**< the hero is returning towards solid ground (e.g. after he drowned
 				  * in deep water or falled into a hole) */
+    VICTORY,                     /**< the hero is make a victory sequence with his sword */
     USING_INVENTORY_ITEM,        /**< the hero is currently using an item from the inventory */
     FREEZED,                     /**< the hero cannot move for various possible reasons,
 				  * including an instruction from the script */
@@ -208,6 +209,7 @@ class Hero: public MapEntity {
   void start_falling(void);
   void update_falling(void);
 
+  void update_victory(void);
   void update_freezed(void);
 
   void start_returning_to_solid_ground(const SDL_Rect &target_xy, Layer target_layer);
@@ -279,6 +281,7 @@ class Hero: public MapEntity {
   void hurt(MapEntity *source, int life_points, int magic_points);
   void get_back_from_death(void);
   void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords, Layer layer);
+  void start_victory(void);
   void start_boomerang(void);
 
   // keys

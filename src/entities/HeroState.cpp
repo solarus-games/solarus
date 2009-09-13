@@ -31,6 +31,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
+#include "MapScript.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sound.h"
@@ -1442,6 +1443,29 @@ void Hero::update_returning_to_solid_ground(void) {
 }
 
 /**
+ * Makes the hero brandish his sword meaning a victory.
+ */
+void Hero::start_victory() {
+  set_state(VICTORY);
+  ResourceManager::get_sound("victory")->play();
+}
+
+/**
+ * Updates the VICTORY state.
+ */
+void Hero::update_victory() {
+  
+  start_free();
+  map->get_script()->event_hero_victory_sequence_finished();
+}
+
+/**
+ * Updates the FREEZED state.
+ */
+void Hero::update_freezed(void) {
+}
+
+/**
  * Returns whether the hero can use an item from
  * the inventory now.
  * @param item_id id of the item to check
@@ -1479,12 +1503,6 @@ void Hero::update_inventory_item(void) {
       start_free();
     }
   }
-}
-
-/**
- * Updates the FREEZED state.
- */
-void Hero::update_freezed(void) {
 }
 
 /**

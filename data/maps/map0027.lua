@@ -19,3 +19,15 @@ function dialog()
   set_message_variable("dungeon_1.solarus_child", get_player_name());
 end
 
+function event_message_sequence_finished(first_message_id, answer)
+
+  if first_message_id == "dungeon_1.solarus_child" then
+    hero_start_victory_sequence()
+  end
+
+end
+
+function event_hero_victory_sequence_finished()
+  hero_set_map(6, "from_dungeon_1_1F", 1)
+end
+

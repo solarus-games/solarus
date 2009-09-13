@@ -107,6 +107,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "hero_align_on_sensor", l_hero_align_on_sensor);
   lua_register(context, "hero_set_map", l_hero_set_map);
   lua_register(context, "hero_walk", l_hero_walk);
+  lua_register(context, "hero_start_victory_sequence", l_hero_start_victory_sequence);
   lua_register(context, "chest_set_open", l_chest_set_open);
   lua_register(context, "chest_set_hidden", l_chest_set_hidden);
   lua_register(context, "chest_is_hidden", l_chest_is_hidden);
@@ -1053,6 +1054,16 @@ int MapScript::l_hero_walk(lua_State *l) {
   return 0;
 }
 
+/**
+ * Makes the hero brandish his sword meaning a victory
+ * and plays the corresponding sound.
+ */
+int MapScript::l_hero_start_victory_sequence(lua_State *l) {
+  
+  check_nb_arguments(l, 0);
+  zsdx->game->get_hero()->start_victory();
+  return 0;
+}
 
 /**
  * Sets the chest open or closed.
@@ -1954,5 +1965,12 @@ void MapScript::event_enemy_dead(const std::string &enemy_name) {
  */
 void MapScript::event_dungeon_ending_sequence(void) {
   call_lua_function("event_dungeon_ending_sequence");
+}
+
+/**
+ * Notifies the script that the victory sequence of the hero has just finished.
+ */
+void MapScript::event_hero_victory_sequence_finished(void) {
+  call_lua_function("event_hero_victory_sequence_finished");
 }
 

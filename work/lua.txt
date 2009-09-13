@@ -24,6 +24,7 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 - event_obtained_treasure(content, savegame_variable)	appelé lorsque le joueur a fini d'obtenir un trésor
 - event_shop_item_bought(shop_item_name)                appelé lorsque le joueur achète un article dans un magasin
 - event_enemy_dead(enemy_name)				appelé à la mort d'un ennemi
+- event_hero_victory_sequence_finished()		appelé lorsque l'animation de victoire du héros se termine
 
 
 Appel de fonctions C++ depuis un script LUA :
@@ -59,6 +60,7 @@ Appel de fonctions C++ depuis un script LUA :
 - hero_align_on_sensor(sensor_name)                     place le héros exactement sur le rectangle d'un capteur
 - hero_set_map(map_id, destination_point, transition)	envoie le héros sur une map (différente ou non de l'actuelle)
 - hero_walk(path, loop, with_collisions)		fait se déplacer le héro selon un chemin spécifié
+- hero_start_victory_sequence()				démarre l'animation dans laquelle le héro brandit son épée en signe de victoire
 - chest_set_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
 - chest_set_hidden(chest_name, bool hidden)             cache ou fait apparaître un coffre
 - chest_is_hidden(chest_name)                           indique si un coffre est caché

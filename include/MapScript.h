@@ -80,6 +80,7 @@ class MapScript {
     l_hero_align_on_sensor,
     l_hero_set_map,
     l_hero_walk,
+    l_hero_start_victory_sequence,
     l_chest_set_open,
     l_chest_set_hidden,
     l_chest_is_hidden,
@@ -148,6 +149,7 @@ class MapScript {
   void event_switch_enabled(const std::string &switch_name);
   void event_switch_disabled(const std::string &switch_name);
   void event_hero_on_sensor(const std::string &sensor_name);
+  void event_hero_victory_sequence_finished(void);
   void event_camera_reached_target(void);
   void event_interaction(const std::string &entity_name);
   bool event_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant);

@@ -473,6 +473,10 @@ void Hero::update(void) {
       update_falling();
       break;
 
+    case VICTORY:
+      update_victory();
+      break;
+
     case USING_INVENTORY_ITEM:
       update_inventory_item();
       break;

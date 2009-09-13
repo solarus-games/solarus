@@ -1026,8 +1026,16 @@ next = sahasrahla_house.beginning.4
 #       |-----------------------|
 line1 = "Je crains que la"
 line2 = "Triforce soit en grand"
-line3 = "danger."
+line3 = "danger. Quelqu'un veut"
 next = sahasrahla_house.beginning.5
+
+[sahasrahla_house.beginning.5]
+#       |-----------------------|
+line1 = "profiter de la mort du"
+line2 = "Roi pour convoiter la"
+line3 = "Triforce."
+next = sahasrahla_house.beginning.6
+
 
 [sahasrahla_house.beginning.5]
 #       |-----------------------|
@@ -1054,12 +1062,12 @@ next = sahasrahla_house.beginning.8
 #       |-----------------------|
 line1 = "son Monde des Ténèbres."
 line2 = "Il ne faut pas le"
-line3 = "laisser s'emparer de"
+line3 = "laisser s'emparer d'un"
 next = sahasrahla_house.beginning.9
 
 [sahasrahla_house.beginning.9]
 #       |-----------------------|
-line1 = "la Triforce !"
+line1 = "tel pouvoir !"
 line2 = "Je sens le courage en"
 line3 = "toi, $v."
 next = sahasrahla_house.beginning.10
@@ -1402,6 +1410,14 @@ line3 = "mon aide."
 # fini la grotte) mais qu'on ne lui a pas encore rendu son boomerang,
 # que ce soit en lui parlant directement ou en tentant de quitter la grotte
 #       |-----------------------|
+[sahasrahla_house.beginning.4]
+#       |-----------------------|
+line1 = "Je crains que la"
+line2 = "Triforce soit en grand"
+line3 = "danger."
+next = sahasrahla_house.beginning.5
+
+
 line1 = "Tu as réussi à déjouer"
 line2 = "les énigmes de cette"
 line3 = "caverne ?"
@@ -1467,4 +1483,90 @@ line3 = "l'intérieur."
 [dungeon_1.solarus_child]
 #       |-----------------------|
 line1 = "$v... Merci."
+line2 = "Tu m'as sauvé la vie."
+line3 = "Je suis l'un des "
+next = dungeon_1.solarus_child.2
+
+[dungeon_1.solarus_child.2]
+#       |-----------------------|
+line1 = "8 protecteurs appelés"
+line2 = "par la Princess Zelda."
+line3 = "Nous sommes dévoués à"
+next = dungeon_1.solarus_child.3
+
+[dungeon_1.solarus_child.3]
+#       |-----------------------|
+line1 = "veiller sur les restes"
+line2 = "de la sainte relique,"
+line3 = "la Triforce, symbole"
+next = dungeon_1.solarus_child.4
+
+[dungeon_1.solarus_child.4]
+#       |-----------------------|
+line1 = "laissé par les trois"
+line2 = "déesses après leur"
+line3 = "action sur votre monde."
+next = dungeon_1.solarus_child.5
+
+[dungeon_1.solarus_child.5]
+#       |-----------------------|
+line1 = "Durant des millénaires,"
+line2 = "source de vie et de"
+line3 = "prospérité, la Triforce"
+next = dungeon_1.solarus_child.6
+
+[dungeon_1.solarus_child.6]
+#       |-----------------------|
+line1 = "fut aussi source de"
+line2 = "grande convoitise et de"
+line3 = "luttes incessantes"
+next = dungeon_1.solarus_child.7
+
+[dungeon_1.solarus_child.7]
+#       |-----------------------|
+line1 = "entre les forces du"
+line2 = "bien et les forces"
+line3 = "maléfiques."
+next = dungeon_1.solarus_child.8
+
+[dungeon_1.solarus_child.8]
+#       |-----------------------|
+line1 = "Aujourd'hui encore, la"
+line2 = "sainte relique est"
+line3 = "menacée."
+next = dungeon_1.solarus_child.9
+
+[dungeon_1.solarus_child.9]
+#       |-----------------------|
+line1 = "Mais l'histoire se"
+line2 = "répète : à chaque fois"
+line3 = "qu'un danger apparut,"
+next = dungeon_1.solarus_child.10
+
+[dungeon_1.solarus_child.10]
+#       |-----------------------|
+line1 = "un héros émergea et son"
+line2 = "courage permit de"
+line3 = "repousser les Ténèbres."
+next = dungeon_1.solarus_child.11
+
+[dungeon_1.solarus_child.11]
+#       |-----------------------|
+line1 = "Retrouve mes frères et"
+line2 = "découvre qui est"
+line3 = "derrière tout cela,"
+next = dungeon_1.solarus_child.12
+
+[dungeon_1.solarus_child.12]
+#       |-----------------------|
+line1 = "avant que les forces"
+line2 = "des ténèbres plongent"
+line3 = "Hyrule dans le chaos..."
+next = dungeon_1.solarus_child.13
+
+[dungeon_1.solarus_child.13]
+#       |-----------------------|
+line1 = "Puisse le héros mener"
+line2 = "le Royaume à la paix et"
+line3 = "à la prospérité !"
 

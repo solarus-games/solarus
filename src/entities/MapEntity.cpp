@@ -1024,7 +1024,7 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
   
   for (unsigned int i = 0; i < sprites.size(); i++) {
     Sprite *sprite = sprites[i];
-    sprite->set_ignore_suspend(true);
+    sprite->set_ignore_suspend(ignore_suspend);
   }
 }
 

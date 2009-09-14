@@ -16,7 +16,7 @@ end
 
 function dialog()
   start_message("dungeon_1.solarus_child")
-  set_message_variable("dungeon_1.solarus_child", get_player_name());
+  set_message_variable("dungeon_1.solarus_child", player_get_name());
 end
 
 function event_message_sequence_finished(first_message_id, answer)
@@ -29,5 +29,6 @@ end
 
 function event_hero_victory_sequence_finished()
   hero_set_map(6, "from_dungeon_1_1F", 1)
+  player_set_pause_enabled(true);
 end
 

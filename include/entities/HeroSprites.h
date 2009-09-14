@@ -102,6 +102,7 @@ class HeroSprites {
     void set_animation_falling(void);
     void set_animation_boomerang(void);
     void set_animation_brandish(void);
+    void set_animation_victory(void);
 
     bool is_visible(void);
     bool is_sword_visible(void);

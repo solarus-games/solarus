@@ -1447,6 +1447,7 @@ void Hero::update_returning_to_solid_ground(void) {
  */
 void Hero::start_victory() {
   set_state(VICTORY);
+  sprites->set_animation_victory();
   ResourceManager::get_sound("victory")->play();
 }
 
@@ -1454,7 +1455,6 @@ void Hero::start_victory() {
  * Updates the VICTORY state.
  */
 void Hero::update_victory() {
-  
   start_free();
   map->get_script()->event_hero_victory_sequence_finished();
 }

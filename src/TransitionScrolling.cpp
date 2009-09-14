@@ -157,3 +157,4 @@ void TransitionScrolling::scroll(void) {
   current_scrolling_position.x += dx;
   current_scrolling_position.y += dy;
 }
+

@@ -43,7 +43,8 @@ Appel de fonctions C++ depuis un script LUA :
 - savegame_set_string(index)
 - savegame_set_integer(index)
 - savegame_set_boolean(index)
-- get_player_name()					retourne le nom du joueur (5 caractères maximum)
+- player_get_name()					retourne le nom du joueur (5 caractères maximum)
+- player_set_pause_enabled(bool enabled)		autorise ou interdit de mettre le jeu en pause (et donc notamment de sauvegarder)
 - start_timer(duration, callback, with_sound)		démarre un timer qui appellera une fonction du script une fois terminé
 - stop_timer(callback)					arrête un timer en cours d'exécution
 - move_camera(x, y, speed)				suspend le jeu et déplace la caméra vers un point cible

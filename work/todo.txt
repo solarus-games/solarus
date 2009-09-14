@@ -39,11 +39,6 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - windows : le programme plante en revenant à l'écran-titre après avoir quitté
-- classe Savegame : passer par FileTools et pas directement par PhysFS
-- classe TitleScreen : utiliser une touche de débug pour lancer directement la sauvegarde 1
-- empêcher de mettre pause et surtout de sauvegarder pendant la séquence après le boss
-- boîte de dialogue mal centrée (1 pixel trop à droite)
-- vitesse du texte dans les dialogues : $2 trop lent
 
 
 Remarques de Linksupersayen :

@@ -10,8 +10,7 @@ function event_npc_dialog(npc_name)
     if not has_obtained_world_map() then
       -- first visit
       start_message("sahasrahla_house.beginning")
-      set_message_variable("sahasrahla_house.beginning", get_player_name())
-      set_message_variable("sahasrahla_house.beginning", get_player_name())
+      set_message_variable("sahasrahla_house.beginning", player_get_name())
 
     elseif has_seen_frozen_door() and not has_open_frozen_door() then
       -- the player has seen the frozen door but was not able to unfreeze it

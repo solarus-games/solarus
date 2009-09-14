@@ -855,6 +855,23 @@ void HeroSprites::set_animation_brandish(void) {
 }
 
 /**
+ * Starts the "victory" animation of the hero's sprites.
+ * The hero's state should be VICTORY.
+ */
+void HeroSprites::set_animation_victory(void) {
+  tunic_sprite->set_current_animation("victory");
+  tunic_sprite->set_current_direction(0);
+  sword_sprite->set_current_animation("spin_attack");
+  sword_sprite->set_current_direction(0);
+  sword_stars_sprite->stop_animation();
+
+  // the shield is not visible
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+}
+
+/**
  * Creates the ground sprite corresponding to the specified ground.
  */
 void HeroSprites::create_ground(Ground ground) {

@@ -17,7 +17,7 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
-#include <physfs.h>
+#include "FileTools.h"
 
 /**
  * Creates a savegame with a specified file name, existing or not.
@@ -27,7 +27,7 @@ Savegame::Savegame(const std::string &file_name) {
 
   this->file_name = file_name;
 
-  if (!PHYSFS_exists(file_name.c_str())) {
+  if (!FileTools::data_file_exists(file_name.c_str())) {
     // this save slot is free
     empty = true;
     set_initial_values();
@@ -39,14 +39,9 @@ Savegame::Savegame(const std::string &file_name) {
     // a save already exists, let's load it
     empty = false;
 
-    PHYSFS_file *file = PHYSFS_openRead(file_name.c_str());
-
-    if (file == NULL) {
-      DIE("Cannot read savegame file '" << file_name << "'");
-    }
-
-    PHYSFS_read(file, &saved_data, sizeof(SavedData), 1);
-    PHYSFS_close(file);
+    SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
+    SDL_RWread(rw, &saved_data, sizeof(SavedData), 1);
+    FileTools::data_file_close_rw(rw);
 
     this->equipment = new Equipment(this);
     this->dungeon_equipment = new DungeonEquipment(this);
@@ -129,14 +124,10 @@ void Savegame::set_initial_values(void) {
  */
 void Savegame::save(void) {
 
-  PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
-
-  if (file == NULL) {
-    DIE("Cannot write savegame file '" << file_name << "'");
-  }
-
-  PHYSFS_write(file, &saved_data, sizeof(SavedData), 1);
-  PHYSFS_close(file);
+  SDL_RWops *rw = FileTools::data_file_new_rw(sizeof(SavedData));
+  SDL_RWwrite(rw, &saved_data, sizeof(SavedData), 1);
+  FileTools::data_file_save_rw(rw, file_name);
+  FileTools::data_file_close_rw(rw);
 
   empty = false;
 }

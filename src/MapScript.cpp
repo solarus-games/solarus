@@ -89,7 +89,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "savegame_set_string", l_savegame_set_string);
   lua_register(context, "savegame_set_integer", l_savegame_set_integer);
   lua_register(context, "savegame_set_boolean", l_savegame_set_boolean);
-  lua_register(context, "get_player_name", l_get_player_name);
+  lua_register(context, "player_get_name", l_player_get_name);
+  lua_register(context, "player_set_pause_enabled", l_player_set_pause_enabled);
   lua_register(context, "start_timer", l_start_timer);
   lua_register(context, "stop_timer", l_stop_timer);
   lua_register(context, "move_camera", l_move_camera);
@@ -725,7 +726,7 @@ int MapScript::l_savegame_set_boolean(lua_State *l) {
  * Returns a string representing the name of the player.
  * Return value (string): the player's name
  */
-int MapScript::l_get_player_name(lua_State *l) {
+int MapScript::l_player_get_name(lua_State *l) {
 
   check_nb_arguments(l, 0);
 
@@ -733,6 +734,20 @@ int MapScript::l_get_player_name(lua_State *l) {
   lua_pushstring(l, name.c_str());
 
   return 1;
+}
+
+/**
+ * Sets whether the player can pause the game.
+ * Argument 1 (boolean): true to enable the pause key
+ */
+int MapScript::l_player_set_pause_enabled(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  bool enabled = lua_toboolean(l, 1) != 0;
+
+  zsdx->game->set_pause_enabled(enabled);
+
+  return 0;
 }
 
 /**

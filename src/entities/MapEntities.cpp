@@ -708,6 +708,7 @@ void MapEntities::end_boss_battle(void) {
     case Enemy::RANK_BOSS:
       {
         zsdx->game->play_music("victory.spc");
+	zsdx->game->set_pause_enabled(false);
 	Hero *hero = zsdx->game->get_hero();
 	hero->set_animation_direction(3);
         hero->freeze();

@@ -37,7 +37,7 @@
 #include "entities/Tileset.h"
 #include "entities/Detector.h"
 
-const SDL_Rect Game::outside_world_size = {0, 0, 2080, 3584}; // TODO
+const SDL_Rect Game::outside_world_size = {0, 0, 2080, 3584}; // TODO load from external file
 
 /**
  * Creates a game.
@@ -45,12 +45,13 @@ const SDL_Rect Game::outside_world_size = {0, 0, 2080, 3584}; // TODO
  */
 Game::Game(Savegame *savegame):
   savegame(savegame),
-  pause_menu(NULL), dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
+  pause_enabled(true), pause_menu(NULL), 
+  dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
   reseting(false), restarting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL),
-  dungeon(NULL), crystal_switch_state(false),
-  hud(NULL), current_music_id(Music::none), current_music(NULL), previous_music_id(Music::none) {
+  dungeon(NULL), crystal_switch_state(false), hud(NULL),
+  current_music_id(Music::none), current_music(NULL), previous_music_id(Music::none) {
 
   zsdx->set_game(this);
   controls = new Controls(this);
@@ -191,11 +192,13 @@ void Game::key_pressed(Controls::GameKey key) {
 
   if (!is_suspended()) {    
 
-    // if the game is not suspended, most of the keys apply to the hero
     if (key == Controls::PAUSE) {
-      set_paused(true);
+      if (is_pause_enabled()) {
+        set_paused(true);
+      }
     }
     else {
+      // when the game is not suspended, most of the keys apply to the hero
       hero->key_pressed(key);
     }
   }
@@ -796,6 +799,23 @@ bool Game::is_giving_treasure(void) {
 }
 
 /**
+ * Returns whether the player can pause the game.
+ * @param true if the player is currently allowed to pause the game
+ */
+bool Game::is_pause_enabled(void) {
+  return pause_enabled;
+}
+
+/**
+ * Sets whether the player can pause the game.
+ * @param pause_enabled true to allow the player to pause the game
+ */
+void Game::set_pause_enabled(bool pause_enabled) {
+  this->pause_enabled = pause_enabled;
+  keys_effect->set_pause_key_enabled(pause_enabled);
+}
+
+/**
  * Pauses or resumes the game.
  * @param paused true to pause the game, false to resume it.
  */
@@ -881,3 +901,4 @@ bool Game::is_showing_gameover(void) {
 void Game::get_back_from_death(void) {
   hero->get_back_from_death();
 }
+

@@ -38,6 +38,7 @@ class Game: public Screen {
   Hero *hero;
 
   // current game state (elements currently shown)
+  bool pause_enabled;        /**< indicates that the player is allowed to pause the game */
   PauseMenu *pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
   DialogBox *dialog_box;     /**< the dialog box currently shown, or NULL if no message is being shown */
   int dialog_last_answer;    /**< the answer selected in the last dialog box: 0 for the first one, 1 for the second one,
@@ -137,6 +138,8 @@ class Game: public Screen {
   void restart(void);
 
   // pause
+  bool is_pause_enabled(void);
+  void set_pause_enabled(bool pause_enabled);
   void set_paused(bool paused);
   PauseMenu *get_pause_menu(void);
 

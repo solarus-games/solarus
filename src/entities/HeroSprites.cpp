@@ -861,7 +861,7 @@ void HeroSprites::set_animation_brandish(void) {
 void HeroSprites::set_animation_victory(void) {
   tunic_sprite->set_current_animation("victory");
   tunic_sprite->set_current_direction(0);
-  sword_sprite->set_current_animation("spin_attack");
+  sword_sprite->set_current_animation("victory");
   sword_sprite->set_current_direction(0);
   sword_stars_sprite->stop_animation();
 

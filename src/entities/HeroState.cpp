@@ -1455,8 +1455,11 @@ void Hero::start_victory() {
  * Updates the VICTORY state.
  */
 void Hero::update_victory() {
-  start_free();
-  map->get_script()->event_hero_victory_sequence_finished();
+
+  if (sprites->is_animation_finished()) {
+    start_free();
+    map->get_script()->event_hero_victory_sequence_finished();
+  }
 }
 
 /**

@@ -46,7 +46,7 @@ sword_tapping hero/sword_tapping.tunic.png 4 40 1
 0	64	40	24	28	21	7	7
 0	88	24	40	12	21	7	7	
 
-spin_attack hero/spin_attack.tunic0.png 4 30 -1
+spin_attack hero/spin_attack.tunic0.png 4 300 -1
 0	0	24	24	12	21	22	22
 0	24	24	24	12	21	22	22
 0	48	24	24	12	21	22	22

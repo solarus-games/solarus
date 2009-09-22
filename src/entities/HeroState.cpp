@@ -40,7 +40,6 @@
 #include "Treasure.h"
 #include "Controls.h"
 #include "InventoryItem.h"
-using namespace std;
 
 /**
  * Returns the hero's state.
@@ -737,7 +736,7 @@ void Hero::update_pushing(void) {
 
 	if (facing_entity->moved_by_hero()) {
 
-	  string path = "  ";
+	  std::string path = "  ";
 	  int direction = sprites->get_animation_direction();
 	  path[0] = path[1] = '0' + direction * 2;
 
@@ -825,7 +824,7 @@ void Hero::update_grabbing_pulling(void) {
 
       if (facing_entity->moved_by_hero()) {
 
-	string path = "  ";
+	std::string path = "  ";
 	int opposite_direction = (sprites->get_animation_direction() + 2) % 4;
 	path[0] = path[1] = '0' + opposite_direction * 2;
 
@@ -1449,6 +1448,7 @@ void Hero::start_victory() {
   set_state(VICTORY);
   sprites->set_animation_victory();
   ResourceManager::get_sound("victory")->play();
+  end_victory_date = SDL_GetTicks() + 1500;
 }
 
 /**
@@ -1456,8 +1456,7 @@ void Hero::start_victory() {
  */
 void Hero::update_victory() {
 
-  if (sprites->is_animation_finished()) {
-    start_free();
+  if (SDL_GetTicks() >= end_victory_date) {
     map->get_script()->event_hero_victory_sequence_finished();
   }
 }

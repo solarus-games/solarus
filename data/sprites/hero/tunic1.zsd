@@ -52,7 +52,7 @@ spin_attack hero/spin_attack.tunic1.png 4 30 -1
 0	48	24	24	12	21	22	22
 0	72	24	24	12	21	22	22
 
-victory hero/victory.tunic0.png 1 100 -1
+victory hero/victory.tunic.png 1 50 17
 0	24	24	24	12	21	18	18
 
 grabbing hero/grabbing.png 4 0 -1

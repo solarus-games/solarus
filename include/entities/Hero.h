@@ -120,6 +120,9 @@ class Hero: public MapEntity {
   // brandish a treasure
   Treasure *treasure;            /**< the treasure being brandished (if any) */
 
+  // victory 
+  Uint32 end_victory_date;       /**< date when the victory animation should stop */
+
   // jump
   int jump_y;                    /**< height of the hero's sprite when jumping, relative to its shadow on the ground */
   Layer layer_after_jump;        /**< the layer to set when the jump movement is finished */

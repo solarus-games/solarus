@@ -1486,8 +1486,6 @@ line1 = "$2$v... Merci."
 line2 = "Tu m'as sauvé la vie."
 line3 = "Je suis l'un des "
 next = dungeon_1.solarus_child.2
-# TODO remove
-cancel = current
 
 [dungeon_1.solarus_child.2]
 #       |-----------------------|

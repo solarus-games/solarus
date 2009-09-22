@@ -41,7 +41,6 @@ Bugs :
 - windows : le programme plante en revenant à l'écran-titre après avoir quitté
 - attaque tournoyante : épée >= 2 mal raccordée avec la tunique
 - l'étage s'affiche en arrivant dans la salle de l'enfant solarus
-- enlever les raccourcis menant à la séquence de fin de donjon : téléporteur depuis 2ème étage + dialogue accéléré
 - gérer le cas où on revient dans la salle du boss après l'avoir tué, en ayant pris le réceptacle de coeur ou non
 
 

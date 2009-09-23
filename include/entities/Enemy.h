@@ -161,7 +161,7 @@ class Enemy: public Detector {
   virtual ~Enemy(void);
 
   static CreationFunction parse;
-  static Enemy * create(Subtype type, Rank rank, int savegame_variable,
+  static MapEntity * create(Subtype type, Rank rank, int savegame_variable,
       const std::string &name, Layer layer, int x, int y, int direction,
       PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable);
 

@@ -49,7 +49,7 @@ booleans:
 56	dungeon 1: chest with big key
 57	dungeon 1: chest with boss key
 58	dungeon 1 1F: door with small key lock in south-west room
-59	dungeon 1 1F: small key in a pot in north-east room
+59	dungeon 1 1F: small key from an enemy pot in north-east room
 60	dungeon 1 B1: door with big key lock
 61	dungeon 1 2F: boss key door
 62	dungeon 1: mini boss

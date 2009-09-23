@@ -32,7 +32,7 @@ using std::list;
  * Constructor.
  */
 MapEntities::MapEntities(Map *map):
-  map(map), hero_on_raised_blocks(false), battle_rank(Enemy::RANK_NORMAL) {
+  map(map), hero_on_raised_blocks(false) {
 
   Hero *hero = zsdx->game->get_hero();
   Layer layer = hero->get_layer();
@@ -682,42 +682,31 @@ void MapEntities::remove_boomerang(void) {
 }
 
 /**
- * Starts the battle against a boss or a mini-boss.
- * Calling this function enables the boss or mini-boss and plays the appropriate music.
- * @param boss the boss or mini-boss
+ * Starts the battle against a boss.
+ * Calling this function enables the boss if he is alive and plays the appropriate music.
+ * If the boss was already killed, nothing happens.
+ * @param boss the boss, or NULL if it is already dead.
  */
 void MapEntities::start_boss_battle(Enemy *boss) {
 
-  battle_rank = boss->get_rank();
-  boss->set_enabled(true);
-  zsdx->game->play_music("boss.spc");
+  if (boss != NULL) {
+    boss->set_enabled(true);
+    zsdx->game->play_music("boss.spc");
+  }
 }
 
 /**
- * Indicates that the battle corresponding to the last call to start_boss_battle() is finished
- * because the player has killed the boss or mini-boss.
+ * Indicates that the battle corresponding to the last call to start_boss_battle() is finished.
+ * This function stops the previous music (usually, the boss music), plays the victory music
+ * and freezes the hero.
+ * This function is called typically when the player has just picked the heart container.
  */
 void MapEntities::end_boss_battle(void) {
 
-  switch (battle_rank) {
-
-    case Enemy::RANK_MINIBOSS:
-      zsdx->game->restore_music();
-      break;
-
-    case Enemy::RANK_BOSS:
-      {
-        zsdx->game->play_music("victory.spc");
-	zsdx->game->set_pause_enabled(false);
-	Hero *hero = zsdx->game->get_hero();
-	hero->set_animation_direction(3);
-        hero->freeze();
-      }
-      break;
-
-    default:
-      DIE("Invalid boss or miniboss rank: " << battle_rank);
-      break;
-  }
+  zsdx->game->play_music("victory.spc");
+  zsdx->game->set_pause_enabled(false);
+  Hero *hero = zsdx->game->get_hero();
+  hero->set_animation_direction(3);
+  hero->freeze();
 }
 

@@ -1669,9 +1669,10 @@ int MapScript::l_enemy_set_enabled(lua_State *l) {
 }
 
 /**
- * Starts the battle against a boss or a mini-boss.
- * Calling this function enables the boss or mini-boss and plays the appropriate music.
- * Argument 1 (string): name of the boss or mini-boss
+ * Starts the battle against a boss.
+ * Calling this function enables the boss if he is alive and plays the appropriate music.
+ * If the boss was already killed, nothing happens.
+ * Argument 1 (string): name of the boss
  */
 int MapScript::l_boss_start_battle(lua_State *l) {
 
@@ -1680,15 +1681,16 @@ int MapScript::l_boss_start_battle(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
 
   Map *map = zsdx->game->get_current_map();
-  Enemy *enemy = (Enemy*) map->get_entities()->get_entity(ENEMY, name); 
+  Enemy *enemy = (Enemy*) map->get_entities()->find_entity(ENEMY, name); 
   map->get_entities()->start_boss_battle(enemy);
 
   return 0;
 }
 
 /**
- * Ends the battle against a boss or a mini-boss.
- * Calling this function plays the appropriate music.
+ * Ends the battle against a boss.
+ * Calling this function plays the appropriate music and freezes the hero.
+ * The next step is usually to start the dungeon end sequence.
  */
 int MapScript::l_boss_end_battle(lua_State *l) {
 

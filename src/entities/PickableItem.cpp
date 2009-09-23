@@ -40,27 +40,27 @@
  */
 const PickableItem::Features PickableItem::features[] = {
 
-  {"", "", false, "", false}, // none
+  {"", "", false, "", false, false, false}, // none
 
-  {"entities/rupee", "green", false, "picked_rupee", true},        // 1 rupee
-  {"entities/rupee", "blue", false, "picked_rupee", true},         // 5 rupees
-  {"entities/rupee", "red", false, "picked_rupee", true},          // 20 rupees
-  {"entities/heart", "small_stopped", false, "picked_item", true}, // heart
-  {"entities/magic", "small", false, "picked_item", true},         // small magic
-  {"entities/magic", "big", false, "picked_item", true},           // big magic
-  {"entities/fairy", "normal", true, "picked_item", true},         // fairy
-  {"entities/bomb", "1", true, "picked_item", true},               // 1 bomb
-  {"entities/bomb", "5", true, "picked_item", true},               // 5 bombs
-  {"entities/bomb", "10", true, "picked_item", true},              // 10 bombs
-  {"entities/arrow", "1", false, "picked_item", true},             // 1 arrow
-  {"entities/arrow", "5", false, "picked_item", true},             // 5 arrows
-  {"entities/arrow", "10", false, "picked_item", true},            // 10 arrows
+  {"entities/rupee", "green", false, "picked_rupee", true, false, false},        // 1 rupee
+  {"entities/rupee", "blue", false, "picked_rupee", true, false, false},         // 5 rupees
+  {"entities/rupee", "red", false, "picked_rupee", true, false, false},          // 20 rupees
+  {"entities/heart", "small_stopped", false, "picked_item", true, false, false}, // heart
+  {"entities/magic", "small", false, "picked_item", true, false, false},         // small magic
+  {"entities/magic", "big", false, "picked_item", true, false, false},           // big magic
+  {"entities/fairy", "normal", true, "picked_item", true, false, false},         // fairy
+  {"entities/bomb", "1", true, "picked_item", true, false, false},               // 1 bomb
+  {"entities/bomb", "5", true, "picked_item", true, false, false},               // 5 bombs
+  {"entities/bomb", "10", true, "picked_item", true, false, false},              // 10 bombs
+  {"entities/arrow", "1", false, "picked_item", true, false, false},             // 1 arrow
+  {"entities/arrow", "5", false, "picked_item", true, false, false},             // 5 arrows
+  {"entities/arrow", "10", false, "picked_item", true, false, false},            // 10 arrows
 
-  {"entities/key", "small_key", false, "picked_small_key", false}, // small key
-  {"entities/key", "big_key", true, "", false},                    // big key
-  {"entities/key", "boss_key", true, "", false},                   // boss key
-  {"entities/heart", "piece_of_heart", true, "", false},           // piece of heart
-  {"entities/heart", "heart_container", true, "", false},          // heart container
+  {"entities/key", "small_key", false, "picked_small_key", false, true, false}, // small key
+  {"entities/key", "big_key", true, "", false, true, true},                     // big key
+  {"entities/key", "boss_key", true, "", false, true, true},                    // boss key
+  {"entities/heart", "piece_of_heart", true, "", false, true, false},           // piece of heart
+  {"entities/heart", "heart_container", true, "", false, true, false},          // heart container
 };
 
 /**
@@ -163,7 +163,7 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
     DIE("Invalid savegame variable: " << savegame_variable);
   }
 
-  if (subtype >= SMALL_KEY && savegame_variable == -1) {
+  if (must_be_saved(subtype) && savegame_variable == -1) {
     DIE("This subtype of pickable item must be saved: " << subtype);
   }
 
@@ -305,6 +305,19 @@ bool PickableItem::can_disappear(Subtype subtype) {
 }
 
 /**
+ * Returns whether this subtype of pickable item must be saved.
+ * @return true if this subtype of pickable item must be saved
+ */
+bool PickableItem::must_be_saved(Subtype subtype) {
+
+  if (subtype == RANDOM) {
+    return false;
+  }
+
+  return features[subtype].must_be_saved;
+}
+
+/**
  * Creates the sprite of this pickable item,
  * depending on its subtype.
  * The pickable items are represented with two sprites:
@@ -400,7 +413,7 @@ void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode
 void PickableItem::give_item_to_player(void) {
 
   // some items can exist only in a dungeon
-  if (subtype >= SMALL_KEY && subtype <= BOSS_KEY && !zsdx->game->get_current_map()->is_in_dungeon()) {
+  if (features[subtype].must_be_in_dungeon && !zsdx->game->get_current_map()->is_in_dungeon()) {
     DIE("Illegal pickable item subtype " << subtype << " in a dungeon");
   }
 

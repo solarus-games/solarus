@@ -88,6 +88,10 @@ MapEntity * Enemy::parse(std::istream &is, Layer layer, int x, int y) {
  * Creates an enemy with the specified type.
  * This method acts like a constructor, except that it can return NULL if the enemy
  * is already dead and cannot be killed again (e.g. a boss).
+ * It some very special cases, it can even return an entity that is not an enemy:
+ * for example, imagine that the player killed a dungeon's end boss
+ * but then killed himself (or just left the game) without picking the heart container: in this case,
+ * this function returns an instance of PickableItem (the heart container).
  * @param type type of enemy to create
  * @param name a name identifying the enemy
  * @param rank rank of the enemy: normal, miniboss or boss
@@ -100,13 +104,26 @@ MapEntity * Enemy::parse(std::istream &is, Layer layer, int x, int y) {
  * @param pickable_item_subtype subtype of pickable item the enemy drops
  * @param pickable_item_savegame_variable index of the boolean variable
  */
-Enemy * Enemy::create(Subtype type, Rank rank, int savegame_variable,
-		      const std::string &name, Layer layer, int x, int y, int direction,
-		      PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable) {
+MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
+    const std::string &name, Layer layer, int x, int y, int direction,
+    PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable) {
 
   // see if the enemy is alive
-  if (savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
-    return NULL;
+  if (savegame_variable != -1) {
+    
+    Savegame *savegame = zsdx->game->get_savegame();
+    if (savegame->get_boolean(savegame_variable)) {
+
+      // the enemy is dead: see whether it releases a pickable item saved
+      if (pickable_item_savegame_variable != -1) {
+	// return the pickable item that the player has possibly forgotten after he killed the enemy
+        return PickableItem::create(layer, x, y, pickable_item_subtype, pickable_item_savegame_variable, FALLING_NONE, false);
+      }
+      else {
+	// the enemy is already killed and released no pickable item saved
+        return NULL;
+      }
+    }
   }
 
   // create the enemy

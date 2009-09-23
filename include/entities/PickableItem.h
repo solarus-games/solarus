@@ -71,6 +71,8 @@ class PickableItem: public Detector {
     bool big_shadow;                       /**< true if the pickable item has a big shadow, false for a small shadow */
     SoundId sound;                         /**< the sound played when the player gets the item */
     bool can_disappear;                    /**< indicates that the item can disappear after a delay */
+    bool must_be_saved;                    /**< indicates that the item must be saved */
+    bool must_be_in_dungeon;               /**< indicates that the item can exist only in a dungeon */
   };
 
   static const Features features[];
@@ -122,6 +124,7 @@ class PickableItem: public Detector {
 
   // item state
   static bool can_disappear(Subtype subtype);
+  static bool must_be_saved(Subtype subtype);
   virtual void set_suspended(bool suspended);
   void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   virtual void update(void);
@@ -129,3 +132,4 @@ class PickableItem: public Detector {
 };
 
 #endif
+

@@ -76,7 +76,6 @@ class MapEntities {
   Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */
 
   bool hero_on_raised_blocks;                             /**< indicates that the hero is currently on raised crystal switch blocks */
-  Enemy::Rank battle_rank;                                  /**< rank of the big enemy the player is fighting (boss or mini-boss) */
 
   void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
   void remove_marked_entities(void);

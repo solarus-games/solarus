@@ -5,7 +5,30 @@
 function event_map_started(destination_point_name)
 
   if destination_point_name == "from_1F_hole" then
-    boss_start_battle("boss")
+    -- we are in the boss room
+
+    if savegame_get_boolean(63) and savegame_get_boolean(64) then
+      -- the boss was already killed and the heart container was also picked:
+      -- make the hero leave the dungeon since the room is closed
+      freeze()
+      start_timer(1000, "boss_already_killed", false)
+    else
+      -- normal case
+      boss_start_battle("boss")
+    end
+  end
+end
+
+function boss_already_killed()
+  -- leave the dungeon
+  play_sound("warp")
+  hero_set_map(6, "from_dungeon_1_1F", 1)
+end
+
+function event_obtained_treasure(content, savegame_variable)
+  if content == 80 then
+    boss_end_battle()
+    start_timer(9000, "start_final_room", false);
   end
 end
 
@@ -30,13 +53,6 @@ function open_se_door()
   door_open("se_door")
   switch_set_enabled("se_switch", true)
   switch_set_enabled("ne_switch", true)
-end
-
-function event_obtained_treasure(content, savegame_variable)
-  if content == 80 then
-    boss_end_battle()
-    start_timer(9000, "start_final_room", false);
-  end
 end
 
 function start_final_room()

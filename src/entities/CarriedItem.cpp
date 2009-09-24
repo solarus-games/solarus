@@ -65,6 +65,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
   // create the lift movement and the sprite
   PixelMovement *movement = new PixelMovement(lifting_translations[direction], 6, 100, false, false);
   create_sprite(destructible_item->get_animation_set_id());
+  get_sprite()->set_current_animation("stopped");
   set_movement(movement);
 
   // create the breaking sound

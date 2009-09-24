@@ -39,7 +39,7 @@ const DestructibleItem::Features DestructibleItem::features[] = {
   {"entities/stone_small_white", "stone", true,  false, false, 1, 2, GROUND_NORMAL},
   {"entities/stone_small_black", "stone", true,  false, false, 2, 4, GROUND_NORMAL},
   {"entities/grass",             "bush",  false, true,  false, 0, 0, GROUND_GRASS},
-  {"entities/bomb_flower",       "bush",  true,  false, true,  1, 0, GROUND_NORMAL},
+  {"entities/bomb_flower",       "bush",  true,  false, true,  1, 1, GROUND_NORMAL},
 };
 
 /**
@@ -214,9 +214,9 @@ void DestructibleItem::notify_collision(MapEntity *entity, Sprite *sprite_overla
     Hero *hero = (Hero*) entity;
     if (hero->is_stroke_by_sword(this)) {
 
+      is_being_cut = true;
       get_destruction_sound()->play();
       get_sprite()->set_current_animation("destroy");
-      is_being_cut = true;
       map->get_entities()->bring_to_front(this); // show animation destroy to front
 
       hero->just_moved(); // to update the ground under the hero
@@ -264,7 +264,17 @@ void DestructibleItem::action_key_pressed(void) {
       }
 
       // remove the item from the map
-      map->get_entities()->remove_entity(this);
+      if (!features[subtype].can_explode) {
+	map->get_entities()->remove_entity(this);
+      }
+      else {
+	// special case of a bomb flower: play the animation of a bush cut
+	// TODO: a bomb flower can actually regenerate
+	is_being_cut = true;
+        get_destruction_sound()->play();
+        get_sprite()->set_current_animation("destroy");
+        map->get_entities()->bring_to_front(this); // show animation destroy to front
+      }
     }
     else {
       zsdx->game->show_message("_too_heavy");

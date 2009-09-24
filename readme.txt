@@ -122,7 +122,7 @@ Known sound issues
 ------------------
 
 With linux, you may have sound issues, which I experienced under Ubuntu 9.04 (Jaunty) and was able to fix as explained below.
-Edit the OpenAL configuration file (normally /etc/openal/alsoft.conf) and try settings the following values:
+Edit the OpenAL configuration file (normally /etc/openal/alsoft.conf) and try the following settings:
 
 - If the sounds play always with a delay (typically, a fraction of second), try reducing the "refresh" value to 2048 (the default value is 8192 with old versions of OpenAL).
 - If the sound plays scratched in the first few seconds or longer, try forcing the driver to OSS, by setting the "driver" list value to "oss" (without the quotes).

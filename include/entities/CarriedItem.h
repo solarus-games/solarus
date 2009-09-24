@@ -45,6 +45,9 @@ class CarriedItem: public MapEntity {
   int item_height;          /**< current height where the item is displayed above its shadow */
   int y_increment;          /**< next y change for item_height */
 
+  // explosion of the item
+  // TODO
+
  public:
 
   CarriedItem(Hero *hero, DestructibleItem *destructible_item);

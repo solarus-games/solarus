@@ -1,3 +1,6 @@
+on_ground entities/destructible_items.png 1 0 -1
+144	0	16	24	8	13	1	1
+
 stopped entities/destructible_items.png 1 0 -1
 144	0	16	24	8	13	1	1
 

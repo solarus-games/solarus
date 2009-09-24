@@ -54,9 +54,10 @@ void FloorView::update(void) {
   // detect when the players enters a new map
   if (game->get_current_map() != current_map) {
 
+    int old_floor = (current_map != NULL) ? current_map->get_floor() : -100;
     current_map = game->get_current_map();
 
-    if (current_map->has_floor()) {
+    if (current_map->has_floor() && old_floor != current_map->get_floor()) {
       is_floor_displayed = true;
       hide_floor_date = SDL_GetTicks() + 3000;
     }

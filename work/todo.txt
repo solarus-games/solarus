@@ -39,9 +39,6 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - windows : le programme plante en revenant à l'écran-titre après avoir quitté
-- attaque tournoyante : épée >= 2 mal raccordée avec la tunique
-- l'étage s'affiche en arrivant dans la salle de l'enfant solarus
-- gérer le cas où on revient dans la salle du boss après l'avoir tué, en ayant pris le réceptacle de coeur ou non
 
 
 Remarques de Linksupersayen :

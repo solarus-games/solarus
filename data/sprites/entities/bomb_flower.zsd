@@ -5,7 +5,7 @@ stopped entities/destructible_items.png 1 0 -1
 272	0	16	24	8	21	1	1
 
 walking entities/destructible_items.png 1 100 0
-272	0	16	24	8	21	3	3
+272	0	16	32	8	21	3	3
 
 destroy entities/destructible_items.png 1 100 -1
 0	96	40	48	24	32	8	8

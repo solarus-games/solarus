@@ -18,6 +18,8 @@
 #include "entities/DestructibleItem.h"
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
+#include "entities/Explosion.h"
+#include "entities/MapEntities.h"
 #include "movements/PixelMovement.h"
 #include "movements/FollowMovement.h"
 #include "movements/CollisionMovement.h"
@@ -44,7 +46,7 @@ static const SDL_Rect lifting_translations[4][6] = {
  * @param destructible_item a destructible item
  */
 CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
-  MapEntity(), hero(hero), is_lifting(true), is_throwing(false), is_breaking(false) {
+  MapEntity(), hero(hero), is_lifting(true), is_throwing(false), is_breaking(false), explosion_date(0) {
 
   // put the item on the hero's layer
   set_layer(hero->get_layer());
@@ -77,6 +79,11 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
 
   // damage on enemies
   damage_on_enemies = destructible_item->get_damage_on_enemies();
+
+  // explosion
+  if (destructible_item->can_explode()) {
+    explosion_date = SDL_GetTicks() + 3000;
+  }
 }
 
 /**
@@ -170,19 +177,21 @@ bool CarriedItem::is_being_thrown(void) {
  */
 void CarriedItem::break_item(void) {
 
-  if (!is_throwing) {
-    DIE("This item was not being thrown");
+  if (is_throwing && throwing_direction != 3) {
+    // destroy the item where it is actually displayed
+    set_y(get_y() - item_height);
   }
 
   is_throwing = false;
   is_breaking = true;
-  destruction_sound->play();
-  get_sprite()->set_current_animation("destroy");
   movement->stop();
 
-  if (throwing_direction != 3) {
-    // destroy the item where it is actually displayed
-    set_y(get_y() - item_height);
+  if (explosion_date == 0) {
+    destruction_sound->play();
+    get_sprite()->set_current_animation("destroy");
+  }
+  else {
+    map->get_entities()->add_entity(new Explosion(get_layer(), get_xy(), true));
   }
 }
 
@@ -191,7 +200,7 @@ void CarriedItem::break_item(void) {
  * @return true if the item is broken
  */
 bool CarriedItem::is_broken(void) {
-  return is_breaking && get_sprite()->is_animation_finished();
+  return is_breaking && (get_sprite()->is_animation_finished() || explosion_date != 0);
 }
 
 /**
@@ -207,13 +216,15 @@ void CarriedItem::set_suspended(bool suspended) {
   if (is_throwing) {
     // suspend the shadow
     shadow_sprite->set_suspended(suspended);
+  }
 
-    if (!suspended) {
-      // recalculate next_down_date
-      if (when_suspended != 0) {
-	Uint32 now = SDL_GetTicks();
-	next_down_date = now + (next_down_date - when_suspended);
-      }
+  if (!suspended && when_suspended != 0) {
+    // recalculate the timers
+    if (is_throwing) {
+      next_down_date += SDL_GetTicks() - when_suspended;
+    }
+    if (explosion_date != 0) {
+      explosion_date += SDL_GetTicks() - when_suspended;
     }
   }
 }
@@ -226,6 +237,10 @@ void CarriedItem::update(void) {
 
   // update the sprite and the position
   MapEntity::update();
+
+  if (suspended) {
+    return;
+  }
 
   // when the hero finishes lifting the item, start carrying it
   if (is_lifting && get_movement()->is_finished()) {
@@ -240,6 +255,11 @@ void CarriedItem::update(void) {
   }
 
   // when the item has finished flying, destroy it
+  else if (explosion_date != 0 && SDL_GetTicks() >= explosion_date) {
+    break_item();
+    explosion_date = 0;
+  }
+
   else if (is_throwing) {
     shadow_sprite->update();
 

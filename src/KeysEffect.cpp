@@ -19,18 +19,12 @@
 /**
  * Constructor.
  */
-KeysEffect::KeysEffect(void) {
-  
-  action_key_effect = ACTION_KEY_NONE;
-  action_key_enabled = true;
+KeysEffect::KeysEffect(void):
+  action_key_effect(ACTION_KEY_NONE), action_key_enabled(true),
+  sword_key_effect(SWORD_KEY_NONE), sword_key_enabled(true),
+  pause_key_effect(PAUSE_KEY_PAUSE), pause_key_enabled(true),
+  item_keys_enabled(true) {
 
-  sword_key_effect = SWORD_KEY_NONE;
-  sword_key_enabled = true;
-
-  pause_key_effect = PAUSE_KEY_PAUSE;
-  pause_key_enabled = true;
-
-  item_keys_enabled = true;
 }
 
 /**
@@ -49,7 +43,6 @@ KeysEffect::~KeysEffect(void) {
 KeysEffect::ActionKeyEffect KeysEffect::get_action_key_effect(void) {
   return action_key_effect;
 }
-
 /**
  * Sets the current effect of the action key.
  * @param action_key_effect the current effect of the action key

@@ -32,14 +32,14 @@
  * Features of each type of destructible item.
  */
 const DestructibleItem::Features DestructibleItem::features[] = {
-  // animation set, sound, can be lifted, can be cut, can_explode, weight, damage, special ground
-  {"entities/pot",               "stone", true,  false, false, 0, 2, GROUND_NORMAL},
-  {"entities/skull",             "stone", true,  false, false, 0, 2, GROUND_NORMAL},
-  {"entities/bush",              "bush",  true,  true,  false, 1, 1, GROUND_NORMAL},
-  {"entities/stone_small_white", "stone", true,  false, false, 1, 2, GROUND_NORMAL},
-  {"entities/stone_small_black", "stone", true,  false, false, 2, 4, GROUND_NORMAL},
-  {"entities/grass",             "bush",  false, true,  false, 0, 0, GROUND_GRASS},
-  {"entities/bomb_flower",       "bush",  true,  false, true,  1, 1, GROUND_NORMAL},
+  // animation set, sound, can be lifted, can be cut, can_explode, can_regenerate, weight, damage, special ground
+  {"entities/pot",               "stone", true,  false, false, false, 0, 2, GROUND_NORMAL},
+  {"entities/skull",             "stone", true,  false, false, false, 0, 2, GROUND_NORMAL},
+  {"entities/bush",              "bush",  true,  true,  false, false, 1, 1, GROUND_NORMAL},
+  {"entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_NORMAL},
+  {"entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_NORMAL},
+  {"entities/grass",             "bush",  false, true,  false, false, 0, 0, GROUND_GRASS},
+  {"entities/bomb_flower",       "bush",  true,  false, true,  true,  1, 1, GROUND_NORMAL},
 };
 
 /**
@@ -58,7 +58,8 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
 				   PickableItem::Subtype pickable_item, int pickable_item_savegame_variable):
   Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
   subtype(subtype), pickable_item(pickable_item),
-  pickable_item_savegame_variable(pickable_item_savegame_variable), is_being_cut(false) {
+  pickable_item_savegame_variable(pickable_item_savegame_variable),
+  is_being_cut(false), regeneration_date(0) {
 
   set_origin(8, 13);
   create_sprite(get_animation_set_id());
@@ -114,6 +115,17 @@ EntityType DestructibleItem::get_type() {
 }
 
 /**
+ * Returns whether an entity of this type should be displayed above
+ * the hero and other entities when it is in front of them.
+ * @return true if this entity is displayed at the same level as the hero
+ */
+bool DestructibleItem::is_displayed_in_y_order(void) {
+  const SDL_Rect& size = get_sprite()->get_size();
+  return size.h > 16;
+}
+
+
+/**
  * Returns the damage this destructible item can cause to enemies
  * @return the damage on enemies
  */
@@ -161,7 +173,7 @@ bool DestructibleItem::has_special_ground(void) {
  * @return true if this entity is an obstacle for others
  */
 bool DestructibleItem::is_obstacle_for(MapEntity *other) {
-  return features[subtype].can_be_lifted && !is_being_cut;
+  return features[subtype].can_be_lifted && !is_being_cut && !is_disabled();
 }
 
 /**
@@ -208,16 +220,14 @@ void DestructibleItem::notify_collision(MapEntity *entity, Sprite *sprite_overla
 
   if (features[subtype].can_be_cut
       && !is_being_cut
+      && !is_disabled()
       && entity->is_hero()
       && sprite_overlapping->get_animation_set_id().find("sword") != std::string::npos) {
 
     Hero *hero = (Hero*) entity;
     if (hero->is_stroke_by_sword(this)) {
 
-      is_being_cut = true;
-      get_destruction_sound()->play();
-      get_sprite()->set_current_animation("destroy");
-      map->get_entities()->bring_to_front(this); // show animation destroy to front
+      play_destroy_animation();
 
       hero->just_moved(); // to update the ground under the hero
 
@@ -244,7 +254,8 @@ void DestructibleItem::action_key_pressed(void) {
 
   if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
       && features[subtype].can_be_lifted
-      && !is_being_cut) {
+      && !is_being_cut
+      && !is_disabled()) {
 
     int weight = features[subtype].weight;
     Equipment *equipment = zsdx->game->get_equipment();
@@ -259,21 +270,16 @@ void DestructibleItem::action_key_pressed(void) {
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = PickableItem::can_disappear(pickable_item);
 	map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item,
-							     pickable_item_savegame_variable,
-							     FALLING_MEDIUM, will_disappear));
+	      pickable_item_savegame_variable, FALLING_MEDIUM, will_disappear));
       }
 
       // remove the item from the map
-      if (!features[subtype].can_explode) {
+      if (!features[subtype].can_regenerate) {
 	map->get_entities()->remove_entity(this);
       }
       else {
-	// special case of a bomb flower: play the animation of a bush cut
-	// TODO: a bomb flower can actually regenerate
-	is_being_cut = true;
-        get_destruction_sound()->play();
-        get_sprite()->set_current_animation("destroy");
-        map->get_entities()->bring_to_front(this); // show animation destroy to front
+	// the item can actually regenerate
+	play_destroy_animation();
       }
     }
     else {
@@ -283,15 +289,75 @@ void DestructibleItem::action_key_pressed(void) {
 }
 
 /**
+ * Plays the animation destroy of this item.
+ */
+void DestructibleItem::play_destroy_animation(void) {
+
+  is_being_cut = true;
+  get_destruction_sound()->play();
+  get_sprite()->set_current_animation("destroy");
+  if (!is_displayed_in_y_order()) {
+    map->get_entities()->bring_to_front(this); // show animation destroy to front
+  }
+}
+
+/**
+ * Returns whether the item is disabled, i.e. if it was lifted
+ * and is about to regenerate.
+ */
+bool DestructibleItem::is_disabled(void) {
+  return regeneration_date != 0;
+}
+
+/**
+ * Returns whether the item can explode.
+ * @return true if the item will explode
+ */
+bool DestructibleItem::can_explode(void) {
+  return features[subtype].can_explode;
+}
+
+/**
+ * This function is called by the map when the game is suspended or resumed.
+ * @param suspended true to suspend the entity, false to resume it
+ */
+void DestructibleItem::set_suspended(bool suspended) {
+
+  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+
+  if (!suspended && regeneration_date != 0) {
+    // recalculate the timer
+    regeneration_date += SDL_GetTicks() - when_suspended;
+  }
+}
+
+
+/**
  * Updates the item.
  */
 void DestructibleItem::update(void) {
 
   MapEntity::update();
 
+  if (suspended) {
+    return;
+  }
+
   if (is_being_cut && get_sprite()->is_animation_finished()) {
 
-    // remove the item from the map
-    map->get_entities()->remove_entity(this);
+    if (!features[subtype].can_regenerate) {
+      // remove the item from the map
+      map->get_entities()->remove_entity(this);
+    }
+    else {
+      is_being_cut = false;
+      regeneration_date = SDL_GetTicks() + 2000;
+    }
+  }
+
+  if (is_disabled() && SDL_GetTicks() >= regeneration_date && !overlaps(zsdx->game->get_hero())) {
+    get_sprite()->set_current_animation("on_ground");
+    regeneration_date = 0;
   }
 }
+

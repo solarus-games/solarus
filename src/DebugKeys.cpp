@@ -20,13 +20,6 @@
 #include "entities/Hero.h"
 #include "movements/PlayerMovement.h"
 
-// TODO remove (used only for the explosion test)
-#include "ZSDX.h"
-#include "Map.h"
-#include "KeysEffect.h"
-#include "entities/MapEntities.h"
-#include "entities/Explosion.h"
-
 /**
  * Constructor.
  * @param game the game
@@ -126,13 +119,6 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
       }
       break;
       */
-
-    case SDLK_e:
-      {
-        Map *map = zsdx->game->get_current_map();
-        map->get_entities()->add_entity(new Explosion(zsdx->game->get_hero()->get_layer(), game->get_hero_xy(), true));
-      }
-      break;
 
     default:
       break;

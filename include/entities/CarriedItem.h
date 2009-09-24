@@ -46,7 +46,7 @@ class CarriedItem: public MapEntity {
   int y_increment;          /**< next y change for item_height */
 
   // explosion of the item
-  // TODO
+  Uint32 explosion_date;    /**< date when the item will explode (0 if there is no explosion) */
 
  public:
 

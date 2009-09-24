@@ -67,7 +67,7 @@ public class DestructibleItem extends MapEntity {
       new Point(8, 13),
       new Point(8, 13),
       new Point(8, 13),
-      new Point(8, 19),
+      new Point(8, 21),
     };
 
     /**

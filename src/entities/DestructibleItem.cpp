@@ -55,7 +55,7 @@ const DestructibleItem::Features DestructibleItem::features[] = {
  * for certain kinds of pickable items only (a key, a piece of heart...)
  */
 DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::Subtype subtype,
-				   PickableItem::Subtype pickable_item, int pickable_item_savegame_variable):
+    PickableItem::Subtype pickable_item, int pickable_item_savegame_variable):
   Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
   subtype(subtype), pickable_item(pickable_item),
   pickable_item_savegame_variable(pickable_item_savegame_variable),
@@ -173,7 +173,7 @@ bool DestructibleItem::has_special_ground(void) {
  * @return true if this entity is an obstacle for others
  */
 bool DestructibleItem::is_obstacle_for(MapEntity *other) {
-  return features[subtype].can_be_lifted && !is_being_cut && !is_disabled();
+  return features[subtype].can_be_lifted && !is_being_cut && !is_disabled() && other->is_destructible_item_obstacle(this);
 }
 
 /**

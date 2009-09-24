@@ -34,7 +34,8 @@ class PapillosaurKing: public Enemy {
 
   PapillosaurKing(const ConstructionParameters &params);
   ~PapillosaurKing(void);
-
+  
+  bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
 };
 
 #endif

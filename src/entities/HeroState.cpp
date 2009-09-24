@@ -554,14 +554,16 @@ void Hero::start_throwing(void) {
   // the hero starts lifting the item
   if (state == CARRYING) {
 
-    lifted_item->throw_item(map, get_animation_direction());
+    if (!lifted_item->is_broken()) {
+      lifted_item->throw_item(map, get_animation_direction());
 
-    if (thrown_item != NULL) {
-      delete thrown_item;
+      if (thrown_item != NULL) {
+	delete thrown_item;
+      }
+
+      thrown_item = lifted_item;
+      lifted_item = NULL;
     }
-
-    thrown_item = lifted_item;
-    lifted_item = NULL;
     start_free();
   }
 }
@@ -592,6 +594,7 @@ void Hero::update_carried_items(void) {
     if (lifted_item->is_broken()) {
       delete lifted_item;
       lifted_item = NULL;
+      start_free();
     }
   }
   else { // no more lifted item: remove the "throw" icon if it is still here

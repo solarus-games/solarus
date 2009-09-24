@@ -197,6 +197,7 @@ void CarriedItem::break_item(void) {
 
 /**
  * Returns whether the item is broken.
+ * When this function returns true, the item can be deleted from memory.
  * @return true if the item is broken
  */
 bool CarriedItem::is_broken(void) {
@@ -255,9 +256,8 @@ void CarriedItem::update(void) {
   }
 
   // when the item has finished flying, destroy it
-  else if (explosion_date != 0 && SDL_GetTicks() >= explosion_date) {
+  else if (explosion_date != 0 && !is_breaking && SDL_GetTicks() >= explosion_date) {
     break_item();
-    explosion_date = 0;
   }
 
   else if (is_throwing) {
@@ -301,7 +301,7 @@ void CarriedItem::display_on_map(void) {
  */
 void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
 
-  if (is_throwing) {
+  if (is_throwing && explosion_date == 0) {
     enemy->try_hurt(ATTACK_THROWN_ITEM, this);
   }
 }

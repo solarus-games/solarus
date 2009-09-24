@@ -74,3 +74,12 @@ void PapillosaurKing::restart(void) {
 
 }
 
+/**
+ * Returns whether a destructible item is currently considered as an obstacle for this entity.
+ * @param destructible_item a destructible item
+ * @return true if the destructible item is currently an obstacle for this entity
+ */
+bool PapillosaurKing::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
+  return false;
+}
+

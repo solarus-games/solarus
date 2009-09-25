@@ -124,6 +124,15 @@ bool Block::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * Returns whether an enemy character is considered as an obstacle for this entity.
+ * @param enemy an enemy
+ * @return true if this enemy is considered as an obstacle for this entity.
+ */
+bool Block::is_enemy_obstacle(Enemy *enemy) {
+  return true;
+}
+
+/**
  * This function is called by the engine when there is a collision with another entity.
  * This is a redefinition of Detector::notify_collision().
  * If the entity is the hero and this block can be pulled, we show the grab icon.

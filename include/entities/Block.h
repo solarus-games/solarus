@@ -60,6 +60,7 @@ class Block: public Detector {
   bool is_displayed_in_y_order(void);
 
   bool is_obstacle_for(MapEntity *other);
+  bool is_enemy_obstacle(Enemy *enemy);
   void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
   bool moved_by_hero(void);
   void just_moved(void);

@@ -48,6 +48,8 @@ class CarriedItem: public MapEntity {
   // explosion of the item
   Uint32 explosion_date;    /**< date when the item will explode (0 if there is no explosion) */
 
+  bool will_explode_soon(void);
+
  public:
 
   CarriedItem(Hero *hero, DestructibleItem *destructible_item);
@@ -76,6 +78,7 @@ class CarriedItem: public MapEntity {
   bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
   bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
   bool is_npc_obstacle(InteractiveEntity *npc);
+  bool is_enemy_obstacle(Enemy *enemy);
   void notify_collision_with_enemy(Enemy *enemy);
   void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };

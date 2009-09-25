@@ -59,7 +59,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
   Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
   subtype(subtype), pickable_item(pickable_item),
   pickable_item_savegame_variable(pickable_item_savegame_variable),
-  is_being_cut(false), regeneration_date(0) {
+  is_being_cut(false), regeneration_date(0), is_regenerating(false) {
 
   set_origin(8, 13);
   create_sprite(get_animation_set_id());
@@ -120,8 +120,9 @@ EntityType DestructibleItem::get_type() {
  * @return true if this entity is displayed at the same level as the hero
  */
 bool DestructibleItem::is_displayed_in_y_order(void) {
-  const SDL_Rect& size = get_sprite()->get_size();
-  return size.h > 16;
+//  const SDL_Rect& size = get_sprite()->get_size();
+//  return size.h > 16;
+ return false;
 }
 
 
@@ -191,6 +192,7 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
 
     if (features[subtype].can_be_lifted
 	&& !is_being_cut
+	&& !is_disabled()
 	&& keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE) {
 
@@ -306,7 +308,7 @@ void DestructibleItem::play_destroy_animation(void) {
  * and is about to regenerate.
  */
 bool DestructibleItem::is_disabled(void) {
-  return regeneration_date != 0;
+  return regeneration_date != 0 && !is_regenerating;
 }
 
 /**
@@ -351,13 +353,18 @@ void DestructibleItem::update(void) {
     }
     else {
       is_being_cut = false;
-      regeneration_date = SDL_GetTicks() + 2000;
+      regeneration_date = SDL_GetTicks() + 8000;
     }
   }
 
-  if (is_disabled() && SDL_GetTicks() >= regeneration_date && !overlaps(zsdx->game->get_hero())) {
-    get_sprite()->set_current_animation("on_ground");
+  else if (is_disabled() && SDL_GetTicks() >= regeneration_date && !overlaps(zsdx->game->get_hero())) {
+    get_sprite()->set_current_animation("regenerating");
+    is_regenerating = true;
     regeneration_date = 0;
+  }
+  else if (is_regenerating && get_sprite()->is_animation_finished()) {
+    get_sprite()->set_current_animation("on_ground");
+    is_regenerating = false;
   }
 }
 

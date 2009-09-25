@@ -186,6 +186,15 @@ bool InteractiveEntity::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
+ * Returns whether an enemy character is considered as an obstacle for this entity.
+ * @param enemy an enemy
+ * @return true if this enemy is considered as an obstacle for this entity.
+ */
+bool InteractiveEntity::is_enemy_obstacle(Enemy *enemy) {
+  return true;
+}
+
+/**
  * Returns true if this entity does not react to the sword.
  * If true is returned, nothing will happen when the hero hits this entity with the sword.
  * @return true if the sword is ignored

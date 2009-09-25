@@ -116,8 +116,8 @@ int CarriedItem::get_damage_on_enemies(void) {
 void CarriedItem::set_animation_stopped(void) {
 
   if (!is_lifting && !is_throwing) {
-    Sprite *sprite = get_sprite();
-    sprite->set_current_animation("stopped");
+    std::string animation = will_explode_soon() ? "stopped_explosion_soon" : "stopped";
+    get_sprite()->set_current_animation(animation);
   }
 }
 
@@ -127,8 +127,8 @@ void CarriedItem::set_animation_stopped(void) {
  */
 void CarriedItem::set_animation_walking(void) {
   if (!is_lifting && !is_throwing) {
-    Sprite *sprite = get_sprite();
-    sprite->set_current_animation("walking");
+    std::string animation = will_explode_soon() ? "walking_explosion_soon" : "walking";
+    get_sprite()->set_current_animation(animation);
   }
 }
 
@@ -170,6 +170,14 @@ void CarriedItem::throw_item(Map *map, int direction) {
  */
 bool CarriedItem::is_being_thrown(void) {
   return is_throwing;
+}
+ 
+/**
+ * Returns whether the item is about to explode.
+ * @return true if the item is about to explode 
+ */
+bool CarriedItem::will_explode_soon(void) {
+  return explosion_date != 0 && SDL_GetTicks() >= explosion_date - 1500;
 }
 
 /**
@@ -256,11 +264,26 @@ void CarriedItem::update(void) {
   }
 
   // when the item has finished flying, destroy it
-  else if (explosion_date != 0 && !is_breaking && SDL_GetTicks() >= explosion_date) {
-    break_item();
+  else if (explosion_date != 0 && !is_breaking) {
+    
+    Uint32 now = SDL_GetTicks();
+    
+    if (now >= explosion_date) {
+      break_item();
+    }
+    else if (will_explode_soon()) {
+
+      std::string animation = get_sprite()->get_current_animation();
+      if (animation == "stopped") {
+	get_sprite()->set_current_animation("stopped_explosion_soon");
+      }
+      else if (animation == "walking") {
+	get_sprite()->set_current_animation("walking_explosion_soon");
+      }
+    }
   }
 
-  else if (is_throwing) {
+  if (is_throwing) {
     shadow_sprite->update();
 
     if (movement->is_stopped() || y_increment >= 7) {
@@ -391,5 +414,14 @@ bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
  */
 bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
   return false;
+}
+
+/**
+ * Returns whether an enemy character is considered as an obstacle for this entity.
+ * @param enemy an enemy
+ * @return true if this enemy is considered as an obstacle for this entity.
+ */
+bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
+  return true;
 }
 

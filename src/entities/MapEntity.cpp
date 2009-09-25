@@ -763,6 +763,16 @@ bool MapEntity::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
+ * Returns whether an enemy is currently considered as an obstacle for this entity.
+ * This function returns false by default.
+ * @param enemy an enemy
+ * @return true if the enemy is currently an obstacle for this entity
+ */
+bool MapEntity::is_enemy_obstacle(Enemy *enemy) {
+  return false;
+}
+
+/**
  * Returns whether a jump sensor is currently considered as an obstacle for this entity.
  * This function returns true by default.
  * @param jump_sensor a jump sensor

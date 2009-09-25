@@ -225,6 +225,7 @@ class MapEntity {
   virtual bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
   virtual bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
   virtual bool is_npc_obstacle(InteractiveEntity *npc);
+  virtual bool is_enemy_obstacle(Enemy *enemy);
   virtual bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
   virtual bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
   virtual bool is_sword_ignored(void);

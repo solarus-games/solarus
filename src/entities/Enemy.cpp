@@ -210,7 +210,8 @@ Enemy::Rank Enemy::get_rank(void) {
  */
 bool Enemy::is_obstacle_for(MapEntity *other) {
 
-  return is_enabled() && (other->get_type() == BLOCK || other->get_type() == INTERACTIVE_ENTITY);
+  return is_enabled() && other->is_enemy_obstacle(this);
+ // (other->get_type() == BLOCK || other->get_type() == INTERACTIVE_ENTITY);
 }
 
 /**

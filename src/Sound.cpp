@@ -100,7 +100,7 @@ void Sound::initialize(void) {
     return;
   }
 
-  const int attr[2] = {ALC_FREQUENCY, 32000}; // 32 KHz is the SPC output sampling rate
+  ALCint attr[2] = {ALC_FREQUENCY, 32000}; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
     std::cout << "Cannot create audio context" << std::endl;

@@ -489,6 +489,27 @@ bool MapEntity::is_aligned_to_grid(void) {
 }
 
 /**
+ * Make the entity's rectangle aligned with the 8*8 grid of the map.
+ * This function does not check the collisions with obstacles.
+ */
+void MapEntity::set_aligned_to_grid(void) {
+
+  int x = get_top_left_x() + 4;
+  int y = get_top_left_y() + 4;
+
+  x -= x % 8;
+  y -= y % 8;
+
+  set_top_left_xy(x, y);
+
+  // TODO remove (debug)
+  if (!is_aligned_to_grid()) {
+    DIE("Failed to align the entity on the grid");
+  }
+}
+
+
+/**
  * Returns the coordinates of the point the entity is looking at.
  * You should redefine this method to define a facing point.
  * @return the coordinates of the point the entity is looking at

@@ -55,7 +55,7 @@ void SimpleGreenSoldier::initialize(void) {
 }
 
 /**
- * This function is called when the enemy need to restart its movement
+ * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */

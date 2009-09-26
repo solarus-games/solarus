@@ -36,6 +36,7 @@
 #include "enemies/SimpleGreenSoldier.h"
 #include "enemies/Bubble.h"
 #include "enemies/Tentacle.h"
+#include "enemies/Minillosaur.h"
 #include "enemies/PapillosaurKing.h"
 
 /**
@@ -135,6 +136,7 @@ MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
   case SIMPLE_GREEN_SOLDIER: enemy = new SimpleGreenSoldier(params); break;
   case BUBBLE:               enemy = new Bubble(params);             break;
   case TENTACLE:             enemy = new Tentacle(params);           break;
+  case MINILLOSAUR:          enemy = new Minillosaur(params);        break;
   case PAPILLOSAUR_KING:     enemy = new PapillosaurKing(params);    break;
 
   default:
@@ -158,11 +160,7 @@ MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
   enemy->push_back_hero_on_sword = false;
   enemy->minimum_shield_needed = 0;
 
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    enemy->vulnerabilities[i] = 1;
-  }
-  enemy->vulnerabilities[ATTACK_HOOKSHOT] = -2;
-  enemy->vulnerabilities[ATTACK_BOOMERANG] = -2;
+  enemy->set_default_vulnerabilities();
 
   return enemy;
 }
@@ -250,6 +248,14 @@ void Enemy::set_life(int life) {
 }
 
 /**
+ * Returns the number of health points of the enemy.
+ * @return number of health points of the enemy
+ */
+int Enemy::get_life(void) {
+  return life;
+}
+
+/**
  * Sets some features of this type of enemy.
  * @param damage_on_hero number of heart quarters the player loses
  * @param life number of health points of the enemy
@@ -295,6 +301,28 @@ void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound
  */
 void Enemy::set_vulnerability(EnemyAttack attack, int reaction) {
   vulnerabilities[attack] = reaction;
+}
+
+/**
+ * Sets the enemy insensible to all attacks.
+ */
+void Enemy::set_no_vulnerabilities(void) {
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    set_vulnerability(EnemyAttack(i), 0);
+  }
+}
+
+/**
+ * Set some default values for the vulnerabilities.
+ */
+void Enemy::set_default_vulnerabilities(void) {
+
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    set_vulnerability(EnemyAttack(i), 1);
+  }
+  set_vulnerability(ATTACK_EXPLOSION, 2);
+  set_vulnerability(ATTACK_HOOKSHOT, -2);
+  set_vulnerability(ATTACK_BOOMERANG, -2);
 }
 
 /**
@@ -374,7 +402,6 @@ void Enemy::update(void) {
 
   if (is_killed() && is_dying_animation_finished()) {
 
-
     // create the pickable item
     if (pickable_item_subtype != PickableItem::NONE) {
       bool will_disappear = PickableItem::can_disappear(pickable_item_subtype);
@@ -435,16 +462,16 @@ bool Enemy::is_enabled(void) {
 
 /**
  * Returns whether this enemy is in a normal state, i.e.
- * it is not being hurt and not immobilized.
+ * it is not disabled, dying, being hurt or immobilized.
  * When this method returns false, the subclasses of Enemy
  * should not change the enemy properties.
  */
 bool Enemy::is_in_normal_state(void) {
-  return is_enabled() && !is_being_hurt() && !is_killed() && !is_immobilized();
+  return is_enabled() && !is_being_hurt() && get_life() > 0 && !is_immobilized();
 }
 
 /**
- * This function is called when the enemy need to restart its movement
+ * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
@@ -579,6 +606,9 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
     immobilize();
     result = -2;
   }
+  else if (vulnerabilities[attack] == -3) {
+    result = custom_attack(attack);
+  }
   else {
     // hurt the enemy
 
@@ -637,9 +667,8 @@ void Enemy::hurt(MapEntity *source) {
   get_sprite()->set_current_animation("hurt");
   play_hurt_sound();
 
-  if (get_movement() != NULL) {
-    normal_movement = get_movement();
-  }
+  // save the movement
+  normal_movement = get_movement();
 
   // push the enemy back
   if (pushed_back_when_hurt) {
@@ -753,6 +782,16 @@ void Enemy::stop_immobilized(void) {
  */
 bool Enemy::is_immobilized(void) {
   return immobilized;
+}
+
+/**
+ * This function is called when the enemy is attacked by a custom effect attack.
+ * Redefine this function to handle the attack.
+ * @param attack the attack
+ * @return the number of health points lost (can be 0)
+ */
+int Enemy::custom_attack(EnemyAttack attack) {
+  return 0;
 }
 
 /**

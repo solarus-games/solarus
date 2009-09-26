@@ -175,6 +175,7 @@ class MapEntity {
   const SDL_Rect get_center_point(void);
 
   bool is_aligned_to_grid(void);
+  void set_aligned_to_grid(void);
 
   // properties
   virtual void set_map(Map *map);

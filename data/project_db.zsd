@@ -101,10 +101,10 @@
 3	entities/slot_machine	Casino slot machine
 3	entities/frozen_door	Frozen door
 3	entities/outside_door	Outside closed door
-4	agahnim_blue_ball	agahnim_blue_ball
-4	agahnim_orange_ball	agahnim_orange_ball
 4	bomb	bomb
+4	boss_charge	boss_charge
 4	boss_dead	boss_dead
+4	boss_fireball	boss_fireball
 4	boss_hurt	boss_hurt
 4	bounce	bounce
 4	bow	bow

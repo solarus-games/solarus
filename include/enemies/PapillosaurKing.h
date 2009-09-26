@@ -25,17 +25,25 @@
  */
 class PapillosaurKing: public Enemy {
 
- protected:
+  private:
 
-  void initialize(void);
-  void restart(void);
+    Uint32 next_egg_phase_date;  /**< date of the next egg creation phase */
+    Uint32 next_egg_date;        /**< during an egg phase, date when a minillosaur egg is created */
+    int nb_eggs_to_create;       /**< number of eggs to create in the current egg phase */
 
- public:
+  protected:
 
-  PapillosaurKing(const ConstructionParameters &params);
-  ~PapillosaurKing(void);
-  
-  bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
+    void initialize(void);
+    void restart(void);
+
+  public:
+
+    PapillosaurKing(const ConstructionParameters &params);
+    ~PapillosaurKing(void);
+
+    bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
+    void set_suspended(bool suspended);
+    void update(void);
 };
 
 #endif

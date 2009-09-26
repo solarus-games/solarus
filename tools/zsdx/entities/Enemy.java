@@ -31,6 +31,7 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("enemies.png", 0, 4, 16, 16),
 	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
 	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
+	new EntityImageDescription("enemies.png", 56, 0, 16, 16),
 
 	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
     };
@@ -42,6 +43,7 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("enemies.png", 0, 0, 16, 32),
 	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
 	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
+	new EntityImageDescription("enemies.png", 48, 0, 32, 24),
 	
 	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
     };
@@ -53,6 +55,7 @@ public class Enemy extends MapEntity {
 	new Point(8, 29),
 	new Point(8, 8),
 	new Point(8, 13),
+	new Point(16, 12),
 	
 	new Point(88, 64),
     };
@@ -64,6 +67,7 @@ public class Enemy extends MapEntity {
 	new Dimension(16, 32),
 	new Dimension(16, 16),
 	new Dimension(16, 16),
+	new Dimension(32, 24),
 	
 	new Dimension(176, 96),
     };
@@ -75,6 +79,7 @@ public class Enemy extends MapEntity {
 	SIMPLE_GREEN_SOLDIER,
 	BUBBLE,
 	TENTACLE,
+	MINILLOSAUR,
 	
 	PAPILLAUSOR_KING;
 
@@ -82,6 +87,7 @@ public class Enemy extends MapEntity {
 	    "Simple green soldier",
 	    "Bubble",
 	    "Tentacle",
+	    "Minillosaur",
 	    
 	    "Papillausor King",
 	};

@@ -34,8 +34,18 @@ StraightMovement::StraightMovement(int speed, int direction, Uint32 time) {
  * @param time duration of the movement in milliseconds
  */
 StraightMovement::StraightMovement(int speed, double direction, Uint32 time) {
-
   start(speed, direction, time);
+}
+
+/**
+ * Creates a straight movement.
+ * @param speed the speed
+ * @param target_xy the movement will go into this point's direction
+ * @param time duration of the movement in milliseconds
+ */
+StraightMovement::StraightMovement(int speed, const SDL_Rect &source_xy, const SDL_Rect &target_xy, Uint32 time) {
+  double angle = Geometry::get_angle(source_xy.x, source_xy.y, target_xy.x, target_xy.y);
+  start(speed, angle, time);
 }
 
 /**

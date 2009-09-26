@@ -17,7 +17,6 @@
 #include "enemies/Tentacle.h"
 #include "entities/Hero.h"
 #include "movements/PathFindingMovement.h"
-#include "Random.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"

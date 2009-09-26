@@ -19,7 +19,7 @@
 #include "Geometry.h"
 
 /**
- * Creates a new target movement.
+ * Creates a new target movement towards a fixed point.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point
  * @param speed speed of the movement
@@ -31,7 +31,8 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
 }
 
 /**
- * Creates a new target movement.
+ * Creates a new target movement toward an entity.
+ * The movement will update its trajectory if the entity's position is changed.
  * @param target_entity the target entity
  * @param speed speed of the movement
  */

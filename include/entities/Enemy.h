@@ -43,6 +43,7 @@ class Enemy: public Detector {
     SIMPLE_GREEN_SOLDIER = 0,
     BUBBLE,
     TENTACLE,
+    MINILLOSAUR,
 
     PAPILLOSAUR_KING = 1000,
   };
@@ -98,7 +99,8 @@ class Enemy: public Detector {
 				       * for some special enemies like Octorok's stones),
 				       * - a value of -1 means that the enemy is protected against this attack (the shield
 				       * sound is played),
-				       * - a value of -2 means that this attack immobilizes the enemy */
+				       * - a value of -2 means that this attack immobilizes the enemy
+				       * - a value of -3 means a custom effect for the attack (the custom_attack() fonction is called) */
 
   // enemy characteristics
   Rank rank;                          /**< is this enemy a normal enemy, a miniboss or a boss? */
@@ -136,11 +138,14 @@ class Enemy: public Detector {
   void set_damage(int damage_on_hero);
   void set_damage(int damage_on_hero, int magic_damage_on_hero);
   void set_life(int life);
+  int get_life(void);
   void set_features(int damage_on_hero, int life);
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
 		    bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
   void set_vulnerability(EnemyAttack attack, int reaction);
+  void set_no_vulnerabilities(void);
+  void set_default_vulnerabilities(void);
 
   // hurt the enemy
   void play_hurt_sound(void);
@@ -153,6 +158,8 @@ class Enemy: public Detector {
   bool is_sprite_finished_or_looping(void);
   void immobilize(void);
   void stop_immobilized(void);
+  virtual int custom_attack(EnemyAttack attack);
+
   PickableItem::Subtype get_random_rupee(void);
 
  public:

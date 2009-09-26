@@ -55,10 +55,7 @@ public class AddEntitiesMenu extends JMenu {
 	),
 	new ItemDefinition(EntityType.CHEST, KeyEvent.VK_C),
 	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E,
-		Enemy.Subtype.SIMPLE_GREEN_SOLDIER,
-		Enemy.Subtype.BUBBLE,
-		Enemy.Subtype.TENTACLE,
-		Enemy.Subtype.PAPILLAUSOR_KING
+	        Enemy.Subtype.values()
 	),
 	new ItemDefinition(EntityType.INTERACTIVE, KeyEvent.VK_I,
 		InteractiveEntity.Subtype.CUSTOM,

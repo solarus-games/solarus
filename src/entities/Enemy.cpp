@@ -38,6 +38,7 @@
 #include "enemies/Tentacle.h"
 #include "enemies/Minillosaur.h"
 #include "enemies/PapillosaurKing.h"
+#include "enemies/Khorneth.h"
 
 /**
  * Creates an enemy.
@@ -138,6 +139,7 @@ MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
   case TENTACLE:             enemy = new Tentacle(params);           break;
   case MINILLOSAUR:          enemy = new Minillosaur(params);        break;
   case PAPILLOSAUR_KING:     enemy = new PapillosaurKing(params);    break;
+  case KHORNETH:             enemy = new Khorneth(params);    break;
 
   default:
     DIE("Unknown enemy type '" << type << "'");

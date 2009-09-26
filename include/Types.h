@@ -181,8 +181,9 @@ class PathFinding;
 class SimpleGreenSoldier;
 class Bubble;
 class Tentacle;
-class PapillosaurKing;
 class Minillosaur;
+class PapillosaurKing;
+class Khorneth;
 
 #endif
 

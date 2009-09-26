@@ -149,8 +149,9 @@ add_executable (zsdx
   enemies/SimpleGreenSoldier.cpp
   enemies/Bubble.cpp
   enemies/Tentacle.cpp
-  enemies/PapillosaurKing.cpp
   enemies/Minillosaur.cpp
+  enemies/PapillosaurKing.cpp
+  enemies/Khorneth.cpp
 
   # external source files
   SDL_Config/SDL_config.cpp

@@ -34,6 +34,7 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("enemies.png", 56, 0, 16, 16),
 
 	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
+	new EntityImageDescription("bosses.png", 176, 0, 48, 72),
     };
 
     /**
@@ -46,6 +47,7 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("enemies.png", 48, 0, 32, 24),
 	
 	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
+	new EntityImageDescription("bosses.png", 176, 0, 48, 72),
     };
 
     /**
@@ -58,6 +60,7 @@ public class Enemy extends MapEntity {
 	new Point(16, 12),
 	
 	new Point(88, 64),
+	new Point(24, 69),
     };
 
     /**
@@ -70,6 +73,7 @@ public class Enemy extends MapEntity {
 	new Dimension(32, 24),
 	
 	new Dimension(176, 96),
+	new Dimension(48, 72),
     };
 
     /**
@@ -81,7 +85,8 @@ public class Enemy extends MapEntity {
 	TENTACLE,
 	MINILLOSAUR,
 	
-	PAPILLAUSOR_KING;
+	PAPILLAUSOR_KING,
+	KHORNETH;
 
 	public static final String[] humanNames = {
 	    "Simple green soldier",
@@ -90,6 +95,7 @@ public class Enemy extends MapEntity {
 	    "Minillosaur",
 	    
 	    "Papillausor King",
+	    "Khorneth",
 	};
 
 	public int getId() {

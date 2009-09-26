@@ -52,3 +52,10 @@ y = 64
 save = 57
 big = 0
 
+[dungeon_1.map_25.boss_0]
+floor = 1
+x = 912
+y = 141
+save = 62
+big = 0
+

@@ -46,6 +46,7 @@ class Enemy: public Detector {
     MINILLOSAUR,
 
     PAPILLOSAUR_KING = 1000,
+    KHORNETH
   };
 
   /**

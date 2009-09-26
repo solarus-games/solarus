@@ -193,6 +193,8 @@ class Enemy: public Detector {
   void attack_stopped_by_hero_shield(void);
   void try_hurt(EnemyAttack attack, MapEntity *source);
   void kill(void);
+  virtual void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
+  virtual void just_dead(void);
 };
 
 #endif

@@ -410,12 +410,22 @@ void Enemy::update(void) {
 	    will_disappear));
     }
 
+    // notify the enemy
+    just_dead();
+
     // remove the enemy
     map->get_entities()->remove_entity(this);
 
     // notify the script
     map->get_script()->event_enemy_dead(get_name());
   }
+}
+
+/**
+ * This function is called when the enemy has just finished dying.
+ */
+void Enemy::just_dead(void) {
+
 }
 
 /**
@@ -636,6 +646,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
     life -= life_lost;
 
     hurt(source);
+    just_hurt(source, attack, life_lost);
 
     result = life_lost;
   }
@@ -675,6 +686,16 @@ void Enemy::hurt(MapEntity *source) {
     double angle = source->get_vector_angle(this);
     set_movement(new StraightMovement(12, angle, 200));
   }
+}
+
+/**
+ * This function is called when the enemy has just been hurt.
+ * @param source the source of the attack
+ * @param attack the attack that was just successful
+ * @param life_points the number of life points lost by this enemy
+ */
+void Enemy::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
+
 }
 
 /**

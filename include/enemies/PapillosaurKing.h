@@ -44,6 +44,7 @@ class PapillosaurKing: public Enemy {
     bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
     void set_suspended(bool suspended);
     void update(void);
+    void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
 };
 
 #endif

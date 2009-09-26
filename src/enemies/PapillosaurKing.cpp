@@ -136,7 +136,7 @@ void PapillosaurKing::update(void) {
       }
       else if (now >= next_egg_date) {
 
-	MapEntity *egg = create(MINILLOSAUR, RANK_NORMAL, -1, "",
+	MapEntity *egg = create(MINILLOSAUR, RANK_NORMAL, -1, get_name() + "_minillosaur",
 	    get_layer(), get_x(), get_y() + 16, 0, PickableItem::NONE, -1);
 	map->get_entities()->add_entity(egg);
 	ResourceManager::get_sound("boss_fireball")->play();
@@ -150,6 +150,24 @@ void PapillosaurKing::update(void) {
 	  set_movement(new RandomWalkMovement(5));
 	}
       }
+    }
+  }
+}
+
+/**
+ * This function is called when the enemy has just been hurt.
+ * @param source the source of the attack
+ * @param attack the attack that was just successful
+ * @param life_points the number of life points lost by this enemy
+ */
+void PapillosaurKing::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
+
+  if (get_life() <= 0) {
+    // the papillosaur is dying: remove the minillosaur eggs
+    std::list<MapEntity*> *sons = map->get_entities()->get_entities_with_prefix(ENEMY, get_name() + "_minillosaur");
+
+    for (std::list<MapEntity*>::iterator it = sons->begin(); it != sons->end(); it++) {
+      map->get_entities()->remove_entity(*it);
     }
   }
 }

@@ -37,3 +37,4 @@ class SmoothCollisionMovement: public CollisionMovement {
 };
 
 #endif
+

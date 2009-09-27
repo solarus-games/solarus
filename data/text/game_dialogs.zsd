@@ -1410,14 +1410,6 @@ line3 = "mon aide."
 # fini la grotte) mais qu'on ne lui a pas encore rendu son boomerang,
 # que ce soit en lui parlant directement ou en tentant de quitter la grotte
 #       |-----------------------|
-[sahasrahla_house.beginning.4]
-#       |-----------------------|
-line1 = "Je crains que la"
-line2 = "Triforce soit en grand"
-line3 = "danger."
-next = sahasrahla_house.beginning.5
-
-
 line1 = "Tu as réussi à déjouer"
 line2 = "les énigmes de cette"
 line3 = "caverne ?"

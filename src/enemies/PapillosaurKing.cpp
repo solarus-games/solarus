@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -116,6 +116,10 @@ void PapillosaurKing::update(void) {
 
   Enemy::update();
 
+  if (suspended) {
+    return;
+  }
+
   // create minillosaur eggs
   Uint32 now = SDL_GetTicks();
   if (is_in_normal_state() && now >= next_egg_phase_date - 500) {
@@ -126,7 +130,7 @@ void PapillosaurKing::update(void) {
       clear_movement();
     }
     else if (now >= next_egg_phase_date) {
-      
+
       if (get_sprite()->get_current_animation() != "preparing_egg") {
 	// after a delay, start the fast animation and play a sound
 	ResourceManager::get_sound("boss_charge")->play();

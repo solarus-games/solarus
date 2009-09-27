@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
+ *
  * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@
  */
 Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
 			 int x, int y):
-  style(BIG_DIGITS), nb_digits(nb_digits), fill_with_zeros(fill_with_zeros), maximum(-1) {
+  style(BIG_DIGITS), nb_digits(nb_digits), fill_with_zeros(fill_with_zeros), maximum(0) {
 
   surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, 8 * nb_digits, 8, 32, 0, 0, 0, 0);
   SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
@@ -65,7 +65,7 @@ void Counter::set_style(Style style) {
  * Changes the counter's maximum value.
  * The surface is redrawn if necessary.
  * Nothing is done if the maximum value is unchanged.
- * @param maximum the new maximum value to set (-1 to set no maximum)
+ * @param maximum the new maximum value to set (0 to set no maximum)
  */
 void Counter::set_maximum(unsigned int maximum) {
 
@@ -118,7 +118,7 @@ void Counter::rebuild_with_value(unsigned int value) {
     width = 5;
   }
 
-  if (value == maximum) {
+  if (value != 0 && value == maximum) {
     y += 8;
   }
 
@@ -186,4 +186,3 @@ void Counter::display(SDL_Surface *destination, int x, int y) {
   destination_position.y = y;
   SDL_BlitSurface(surface_drawn, NULL, destination, &destination_position);
 }
-

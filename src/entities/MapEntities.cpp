@@ -26,13 +26,14 @@
 #include "MapScript.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "Music.h"
 using std::list;
 
 /**
  * Constructor.
  */
 MapEntities::MapEntities(Map *map):
-  map(map), hero_on_raised_blocks(false) {
+  map(map), hero_on_raised_blocks(false), music_before_miniboss(Music::none) {
 
   Hero *hero = zsdx->game->get_hero();
   Layer layer = hero->get_layer();
@@ -708,5 +709,29 @@ void MapEntities::end_boss_battle(void) {
   Hero *hero = zsdx->game->get_hero();
   hero->set_animation_direction(3);
   hero->freeze();
+}
+
+/**
+ * Starts the battle against a miniboss.
+ * Calling this function enables the miniboss if he is alive and plays the appropriate music.
+ * If the miniboss was already killed, nothing happens.
+ * @param miniboss the miniboss, or NULL if it is already dead.
+ */
+void MapEntities::start_miniboss_battle(Enemy *miniboss) {
+
+  if (miniboss != NULL) {
+    miniboss->set_enabled(true);
+    music_before_miniboss = zsdx->game->get_current_music_id();
+    zsdx->game->play_music("boss.spc");
+  }
+}
+
+/**
+ * Indicates that the battle corresponding to the last call to start_miniboss_battle() is finished.
+ * This function stops the previous music (usually, the boss music) and restores the dungeon music.
+ * This function is called typically when the player has just killed the miniboss.
+ */
+void MapEntities::end_miniboss_battle(void) {
+  zsdx->game->play_music(music_before_miniboss);
 }
 

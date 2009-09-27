@@ -7,14 +7,34 @@ function event_map_started(destination_point_name)
     chest_set_hidden("boss_key_chest", true)
   end
 
-  -- temporary
-  if savegame_get_boolean(62) then
-    switch_set_enabled("switch", true)
+  if destination_point_name == "from_1F" then
+    door_set_open("stairs_door", true)
+    door_set_open("miniboss_door", true)
   end
-  door_set_open("stairs_door", true)
+end
+
+function event_opening_transition_finished()
+
+  if not savegame_get_boolean(62) then
+    -- the miniboss is alive
+    door_close("miniboss_door")
+    freeze()
+    start_timer(1000, "miniboss_timer", false)
+  end
+end
+
+function miniboss_timer()
+  miniboss_start_battle("khorneth")
+  unfreeze()
 end
 
 function event_enemy_dead(enemy_name)
+
+  if enemy_name == "khorneth" then
+    miniboss_end_battle()
+    door_open("miniboss_door")
+  end
+
   if enemies_are_dead("boss_key_battle") and chest_is_hidden("boss_key_chest") then
     move_camera(104, 72, 15)
   end
@@ -28,10 +48,5 @@ function boss_key_timer()
   play_sound("chest_appears")
   chest_set_hidden("boss_key_chest", false)
   start_timer(1000, "restore_camera", false)
-end
-
--- temporary
-function event_switch_enabled(switch_name)
-  door_open("miniboss_door")
 end
 

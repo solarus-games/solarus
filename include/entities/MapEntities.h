@@ -69,13 +69,11 @@ class MapEntities {
 							   * entities on this map, including the hero */
 
   std::vector<DestinationPoint*> destination_points;      /**< all destination points of the map */
-
   std::list<CrystalSwitchBlock*>
     crystal_switch_blocks[LAYER_NB];                      /**< all crystal switch blocks of the map */
-
   Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */
-
   bool hero_on_raised_blocks;                             /**< indicates that the hero is currently on raised crystal switch blocks */
+  MusicId music_before_miniboss;                          /**< the music that was played before starting a miniboss fight */
 
   void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
   void remove_marked_entities(void);
@@ -116,6 +114,8 @@ class MapEntities {
   void remove_boomerang(void);
   void start_boss_battle(Enemy *boss);
   void end_boss_battle(void);
+  void start_miniboss_battle(Enemy *miniboss);
+  void end_miniboss_battle(void);
 
   // update and display
   void set_suspended(bool suspended);

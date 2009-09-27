@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/Khorneth.h"
+#include "movements/RandomWalkMovement.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
@@ -47,7 +48,7 @@ void Khorneth::initialize(void) {
   // sprite
   create_sprite("enemies/khorneth");
   get_sprite()->get_animation_set()->enable_pixel_collisions();
-  set_size(88, 64);
+  set_size(88, 72);
   set_origin(44, 69);
   set_collision_modes(COLLISION_SPRITE);
 
@@ -56,6 +57,9 @@ void Khorneth::initialize(void) {
     vulnerabilities[i] = 0; // insensible to most attacks
   }
   vulnerabilities[ATTACK_SWORD] = 1;    // TODO temporary
+
+  // movement
+  set_movement(new RandomWalkMovement(3));
 }
 
 /**

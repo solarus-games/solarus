@@ -145,6 +145,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "enemy_set_enabled", l_enemy_set_enabled);
   lua_register(context, "boss_start_battle", l_boss_start_battle);
   lua_register(context, "boss_end_battle", l_boss_end_battle);
+  lua_register(context, "miniboss_start_battle", l_miniboss_start_battle);
+  lua_register(context, "miniboss_end_battle", l_miniboss_end_battle);
   lua_register(context, "sensor_remove", l_sensor_remove);
   lua_register(context, "door_open", l_door_open);
   lua_register(context, "door_close", l_door_close);
@@ -1698,6 +1700,39 @@ int MapScript::l_boss_end_battle(lua_State *l) {
 
   Map *map = zsdx->game->get_current_map();
   map->get_entities()->end_boss_battle();
+
+  return 0;
+}
+
+/**
+ * Starts the battle against a miniboss.
+ * Calling this function enables the miniboss if he is alive and plays the appropriate music.
+ * If the miniboss was already killed, nothing happens.
+ * Argument 1 (string): name of the miniboss
+ */
+int MapScript::l_miniboss_start_battle(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+
+  const std::string &name = lua_tostring(l, 1);
+
+  Map *map = zsdx->game->get_current_map();
+  Enemy *enemy = (Enemy*) map->get_entities()->find_entity(ENEMY, name); 
+  map->get_entities()->start_miniboss_battle(enemy);
+
+  return 0;
+}
+
+/**
+ * Ends the battle against a miniboss.
+ * Calling this function plays the appropriate music.
+ */
+int MapScript::l_miniboss_end_battle(lua_State *l) {
+
+  check_nb_arguments(l, 0);
+
+  Map *map = zsdx->game->get_current_map();
+  map->get_entities()->end_miniboss_battle();
 
   return 0;
 }

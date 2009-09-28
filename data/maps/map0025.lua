@@ -7,10 +7,8 @@ function event_map_started(destination_point_name)
     chest_set_hidden("boss_key_chest", true)
   end
 
-  if destination_point_name == "from_1F" then
-    door_set_open("stairs_door", true)
-    door_set_open("miniboss_door", true)
-  end
+  door_set_open("stairs_door", true)
+  door_set_open("miniboss_door", true)
 end
 
 function event_opening_transition_finished()

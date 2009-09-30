@@ -48,8 +48,8 @@ void Khorneth::initialize(void) {
   // sprite
   create_sprite("enemies/khorneth");
   get_sprite()->get_animation_set()->enable_pixel_collisions();
-  set_size(88, 72);
-  set_origin(44, 69);
+  set_size(40, 48);
+  set_origin(20, 45);
   set_collision_modes(COLLISION_SPRITE);
 
   // vulnerabilities

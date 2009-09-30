@@ -57,14 +57,24 @@ Remarques de @PyroNet :
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 
 
+Cinématiques :
+
+Plusieurs approches possibles :
+
+1) Faire un booléen dans Game, puis se contenter des entités normales (PNJ, InteractiveEntity...) pour afficher des images, animer et déplacer des sprites.
+2) Faire une classe CutScene avec des fonctions Lua pour afficher un sprite animé ou directement une image.
+3) (oui) Juste se contenter de freeze() et set_pause_enabled() (pas besoin que le jeu soit suspendu)
+
+Faire l'intro sur une map séparée, le fond étant simplement un tile animé. Permettre aux dialogues de s'afficher sans la boîte.
+
+
+
 A venir :
 
 - Intro
-- Boss
+- Mini-boss
 - Prochains types d'entités :
-  - choux-péteurs
   - blocs violets
-- Cryptage
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

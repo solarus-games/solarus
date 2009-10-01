@@ -29,6 +29,323 @@ cancel = current
 line1 = "        Niveau 1       "
 line2 = "   Donjon de la Forêt  "
 
+[intro0]
+# Intro : écran noir
+#       |-----------------------|
+line1 = "$2D'anciennes légendes"
+line2 = "racontent qu'il y a"
+line3 = "bien longtemps,"
+next = intro0.2
+
+[intro0.2]
+#       |-----------------------|
+line1 = "existait un magnifique"
+line2 = "royaume du nom"
+line3 = "d'Hyrule."
+next = intro0.3
+
+[intro0.3]
+#       |-----------------------|
+line1 = "Ce royaume prospérait"
+line2 = "sous la bénédiction des"
+line3 = "trois déesses"
+next = intro0.4
+
+[intro0.4]
+#       |-----------------------|
+line1 = "qui l'avaient créé en"
+line2 = "des temps ancestraux."
+next = intro0.5
+
+[intro0.5]
+#       |-----------------------|
+line1 = "Les trois déesses"
+line2 = "étaient représentées"
+line3 = "sous la forme de"
+next = intro0.6
+
+[intro0.6]
+#       |-----------------------|
+line1 = "la Triforce, symbole de"
+line2 = "pouvoir infini qui"
+line3 = "attirait la convoitise."
+next = intro0.7
+
+[intro0.7]
+#       |-----------------------|
+line1 = "Sept Sages furent"
+line2 = "choisis pour sceller la"
+line3 = "Triforce dans la"
+next = intro0.8
+
+[intro0.8]
+#       |-----------------------|
+line1 = "Terre d'Or, reflet"
+line2 = "utopique du monde. Puis"
+line3 = "les siècles passèrent..."
+
+[intro1]
+# Intro : fresque 1
+#       |-----------------------|
+line1 = "$2Bien des générations"
+line2 = "plus tard, un maléfice"
+line3 = "sembla menacer Hyrule."
+next = intro1.2
+
+[intro1.2]
+#       |-----------------------|
+line1 = "Alors que les ténèbres"
+line2 = "commençaient à envahir"
+line3 = "le royaume,"
+next = intro1.3
+
+[intro1.3]
+#       |-----------------------|
+line1 = "un mystérieux sorcier"
+line2 = "nommé Agahnim se"
+line3 = "présenta et résolut les"
+next = intro1.4
+
+[intro1.4]
+#       |-----------------------|
+line1 = "problèmes grâce à ses"
+line2 = "pouvoirs."
+line3 = "Acclamé par le peuple,"
+next = intro1.5
+
+[intro1.5]
+#       |-----------------------|
+line1 = "le Roi le nomma à un"
+line2 = "poste haut placé. Il"
+line3 = "s'avéra qu'en réalité,"
+next = intro1.6
+
+[intro1.6]
+#       |-----------------------|
+line1 = "le sorcier complotait"
+line2 = "contre la famille"
+line3 = "royale. Il tentait de"
+next = intro1.7
+
+[intro1.7]
+#       |-----------------------|
+line1 = "faire revenir Ganondorf,"
+line2 = "roi des bandits d'un"
+line3 = "temps oublié."
+
+[intro2]
+# Intro : fresque 2
+#       |-----------------------|
+line1 = "$2On raconte qu'un jeune"
+line2 = "homme vêtu de vert se"
+line3 = "lança dans une quête"
+next = intro2.2
+
+[intro2.2]
+#       |-----------------------|
+line1 = "à travers le royaume,"
+line2 = "explorant des temples"
+line3 = "perdus, gravissant les"
+next = intro2.3
+
+[intro2.3]
+#       |-----------------------|
+line1 = "montagnes, traversant"
+line2 = "les vallées brumeuses"
+line3 = "et terrassant le mal."
+
+[intro3]
+# Intro : fresque 3
+#       |-----------------------|
+line1 = "$2Finalement, celui qui"
+line2 = "fut nommé le Héros put"
+line3 = "repousser le maléfice."
+next = intro3.2
+
+[intro3.2]
+#       |-----------------------|
+line1 = "Grâce à son courage, il"
+line2 = "triompha de Ganon, qui"
+line3 = "avait établi son siège"
+next = intro3.3
+
+[intro3.3]
+#       |-----------------------|
+line1 = "dans une imposante"
+line2 = "pyramide au sein de la"
+line3 = "Terre d'Or, transformée"
+next = intro3.4
+
+[intro3.4]
+#       |-----------------------|
+line1 = "en Royaume des"
+line2 = "Ténèbres."
+
+[intro4]
+# Intro : fresque 4
+#       |-----------------------|
+line1 = "$2Le jeune Héros formula"
+line2 = "alors le voeu"
+line3 = "d'emprisonner Ganondorf"
+next = intro4.2
+
+[intro4.2]
+#       |-----------------------|
+line1 = "éternellement dans le"
+line2 = "Royaume des Ténèbres."
+line3 = "Le Roi d'Hyrule, de la"
+next = intro4.3
+
+[intro4.3]
+#       |-----------------------|
+line1 = "lignée des Sept Sages,"
+line2 = "invoqua la magie du"
+line3 = "sceau pour l'enfermer."
+next = intro4.4
+
+[intro4.4]
+#       |-----------------------|
+line1 = "Il en était fini du vil"
+line2 = "Ganondorf. Il devint"
+line3 = "ainsi prisonnier de"
+next = intro4.5
+
+[intro4.5]
+#       |-----------------------|
+line1 = "la vision maléfique du"
+line2 = "monde qu'il avait lui-"
+line3 = "même créée."
+
+[intro5]
+# Intro : fresque 5
+#       |-----------------------|
+line1 = "$2Mais quelques années"
+line2 = "plus tard, le Roi"
+line3 = "d'Hyrule fut victime"
+next = intro5.2
+
+[intro5.2]
+#       |-----------------------|
+line1 = "d'un étrange mal. Les"
+line2 = "médecins de tout le"
+line3 = "royaume tentèrent de"
+next = intro5.3
+
+[intro5.3]
+#       |-----------------------|
+line1 = "mettre à profit toutes"
+line2 = "leurs connaissances,"
+line3 = "mais en vain..."
+next = intro5.4
+
+[intro5.4]
+#       |-----------------------|
+line1 = "La mort du Roi fut"
+line2 = "lourde de conséquences."
+line3 = "Outre le deuil qui"
+next = intro5.5
+
+[intro5.5]
+#       |-----------------------|
+line1 = "s'abattit sur Hyrule,"
+line2 = "le Roi emportait son"
+line3 = "pouvoir dans sa mort"
+next = intro5.6
+
+[intro5.6]
+#       |-----------------------|
+line1 = "prématurée. Le sceau"
+line2 = "des Sept Sages était à"
+line3 = "nouveau fragilisé."
+
+[intro6]
+# Intro : fresque 6
+#       |-----------------------|
+line1 = "$2Le Héros, d'après les"
+line2 = "conseils de son maître"
+line3 = "à penser Sahasrahla,"
+next = intro6.2
+
+[intro6.2]
+#       |-----------------------|
+line1 = "renonça à la Triforce"
+line2 = "et décida d'empêcher"
+line3 = "quiconque de s'en"
+next = intro6.3
+
+[intro6.3]
+#       |-----------------------|
+line1 = "emparer à l'avenir."
+line2 = "Il la confia à"
+line3 = "la Princesse Zelda,"
+next = intro6.4
+
+[intro6.4]
+#       |-----------------------|
+line1 = "héritière des pouvoirs"
+line2 = "de la famille royale."
+next = intro6.5
+
+[intro6.5]
+#       |-----------------------|
+line1 = "Zelda associa ses"
+line2 = "pouvoirs à ceux de huit"
+line3 = "mystérieux enfants pour"
+next = intro6.6
+
+[intro6.6]
+#       |-----------------------|
+line1 = "séparer la Triforce en"
+line2 = "huit fragments. Les"
+line3 = "enfants se chargèrent"
+next = intro6.7
+
+[intro6.7]
+#       |-----------------------|
+line1 = "de dissimuler les"
+line2 = "fragments aux quatre"
+line3 = "coins du royaume."
+next = intro6.8
+
+[intro6.8]
+#       |-----------------------|
+line1 = "Mais avant cela, ils"
+line2 = "prirent soin de créer"
+line3 = "une ultime protection :"
+next = intro6.9
+
+[intro6.9]
+#       |-----------------------|
+line1 = "l'Amulette du Solarus."
+line2 = "C'était un pendentif"
+line3 = "quit permettait à son"
+next = intro6.10
+
+[intro6.10]
+#       |-----------------------|
+line1 = "possesseur d'assembler"
+line2 = "la Triforce. Depuis ces"
+line3 = "événements, le Héros et"
+next = intro6.11
+
+[intro6.11]
+#       |-----------------------|
+line1 = "les autres habitants"
+line2 = "vécurent paisiblement,"
+line3 = "sans se douter du"
+next = intro6.12
+
+[intro6.12]
+#       |-----------------------|
+line1 = "danger qui planait"
+line2 = "au-dessus de leur tête."
+next = intro6.13
+
+[intro6.13]
+#       |-----------------------|
+line1 = "C'est ici que débute"
+line2 = "notre épopée..."
+
 [outside_world.village.welcome_sign]
 # Pancarte du village
 #       |-----------------------|

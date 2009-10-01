@@ -157,29 +157,29 @@ line3 = "et terrassant le mal."
 [intro3]
 # Intro : fresque 3
 #       |-----------------------|
-line1 = "$2Finalement, celui qui"
-line2 = "fut nommé le Héros put"
+line1 = "$2Finalement, celui que"
+line2 = "l'on nomma le Héros put"
 line3 = "repousser le maléfice."
 next = intro3.2
 
 [intro3.2]
 #       |-----------------------|
 line1 = "Grâce à son courage, il"
-line2 = "triompha de Ganon, qui"
-line3 = "avait établi son siège"
+line2 = "triompha de Ganondorf,"
+line3 = "qui avait établi son"
 next = intro3.3
 
 [intro3.3]
 #       |-----------------------|
-line1 = "dans une imposante"
-line2 = "pyramide au sein de la"
-line3 = "Terre d'Or, transformée"
+line1 = "siège dans une"
+line2 = "imposante pyramide au"
+line3 = "sein de la Terre d'Or,"
 next = intro3.4
 
 [intro3.4]
 #       |-----------------------|
-line1 = "en Royaume des"
-line2 = "Ténèbres."
+line1 = "transformée en Royaume"
+line2 = "des Ténèbres."
 
 [intro4]
 # Intro : fresque 4
@@ -261,7 +261,7 @@ line3 = "nouveau fragilisé."
 [intro6]
 # Intro : fresque 6
 #       |-----------------------|
-line1 = "$2Le Héros, d'après les"
+line1 = "$2Le Héros, suivant les"
 line2 = "conseils de son maître"
 line3 = "à penser Sahasrahla,"
 next = intro6.2
@@ -302,7 +302,7 @@ next = intro6.7
 
 [intro6.7]
 #       |-----------------------|
-line1 = "de dissimuler les"
+line1 = "de dissimuler les huit"
 line2 = "fragments aux quatre"
 line3 = "coins du royaume."
 next = intro6.8
@@ -332,7 +332,7 @@ next = intro6.11
 #       |-----------------------|
 line1 = "les autres habitants"
 line2 = "vécurent paisiblement,"
-line3 = "sans se douter du"
+line3 = "sans se douter d'un"
 next = intro6.12
 
 [intro6.12]
@@ -343,8 +343,8 @@ next = intro6.13
 
 [intro6.13]
 #       |-----------------------|
-line1 = "C'est ici que débute"
-line2 = "notre épopée..."
+line1 = "C'est à ce moment que"
+line2 = "débute notre épopée..."
 
 [outside_world.village.welcome_sign]
 # Pancarte du village

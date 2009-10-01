@@ -1,4 +1,4 @@
-320	240	0	-100	0	0	-1	6	legend.spc
+320	240	0	-100	0	0	-1	6	none
 1	0	8	13	_start_position	3	0
 0	2	0	0	320	240	2
 8	2	16	21	fresco	3	0	entities/fresco	_none

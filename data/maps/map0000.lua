@@ -14,6 +14,7 @@ function event_message_sequence_finished(first_message_id)
 
   if fresco == 0 then
     tile_set_enabled("black_screen", false)
+    play_music("legend.spc")
   end
 
   if fresco < 6 then
@@ -22,7 +23,6 @@ function event_message_sequence_finished(first_message_id)
     start_message("intro"..fresco)
   else
     dialog_set_style(0)
-    hud_set_enabled(true)
     hero_set_map(28, "from_intro", 1)
   end
 end

@@ -44,7 +44,7 @@ int AnimatedTilePattern::current_frames[3] = {0, 0, 0};
 /**
  * Date of the next frame change.
  */
-Uint32 AnimatedTilePattern::next_frame_date;
+Uint32 AnimatedTilePattern::next_frame_date = 0;
 
 /**
  * Constructor.
@@ -117,3 +117,4 @@ void AnimatedTilePattern::display(SDL_Surface *destination, const SDL_Rect &dst_
   SDL_BlitSurface(tileset_image, &position_in_tileset[current_frames[sequence]],
 		  destination, &dst);
 }
+

@@ -19,6 +19,8 @@ Feature requests :
 - transition des téléporteurs ?
 - son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
+- scrolling tiles : permettre de choisir la direction du décalage
+- dialog box : renommer cancel en skip
 
 
 Bugs :
@@ -65,7 +67,9 @@ Plusieurs approches possibles :
 2) Faire une classe CutScene avec des fonctions Lua pour afficher un sprite animé ou directement une image.
 3) (oui) Juste se contenter de freeze() et set_pause_enabled() (pas besoin que le jeu soit suspendu)
 
-Faire l'intro sur une map séparée, le fond étant simplement un tile animé. Permettre aux dialogues de s'afficher sans la boîte.
+Faire l'intro sur une map séparée, le fond étant simplement un tile animé. Créer une animation de tile qui défile dans une des 8 directions.
+Permettre aux dialogues de s'afficher sans la boîte.
+Permettre de désactiver l'affichage du hud.
 
 
 

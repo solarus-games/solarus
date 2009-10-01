@@ -127,6 +127,7 @@ add_executable (zsdx
   entities/SimpleTilePattern.cpp
   entities/AnimatedTilePattern.cpp
   entities/ParallaxTilePattern.cpp
+  entities/ScrollingTilePattern.cpp
 
   # movements
   movements/Movement.cpp

@@ -54,6 +54,8 @@ class MapScript {
     l_play_music,
     l_start_message,
     l_set_message_variable,
+    l_dialog_set_style,
+    l_hud_set_enabled,
     l_give_treasure,
     l_give_treasure_with_amount,
     l_savegame_get_string,

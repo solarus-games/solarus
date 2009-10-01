@@ -69,6 +69,7 @@ class Game: public Screen {
 
   // graphics
   HUD *hud;                  /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
+  bool hud_enabled;          /**< true if the HUD is currently displayed */
 
   // music
   MusicId current_music_id;  /**< id of the music currently played (a valid music,
@@ -136,6 +137,9 @@ class Game: public Screen {
   bool is_suspended(void); // true if at least one of the three functions above returns true
   void reset(void);
   void restart(void);
+
+  // HUD
+  void set_hud_enabled(bool hud_enabled);
 
   // pause
   bool is_pause_enabled(void);

@@ -33,7 +33,6 @@
 #include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
-#include "entities/AnimatedTilePattern.h"
 #include "entities/Tileset.h"
 #include "entities/Detector.h"
 
@@ -50,7 +49,7 @@ Game::Game(Savegame *savegame):
   reseting(false), restarting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL),
-  dungeon(NULL), crystal_switch_state(false), hud(NULL),
+  dungeon(NULL), crystal_switch_state(false), hud(NULL), hud_enabled(true),
   current_music_id(Music::none), current_music(NULL), previous_music_id(Music::none) {
 
   zsdx->set_game(this);
@@ -243,8 +242,7 @@ void Game::update(void) {
     return; // the game may have just been reset
   }
 
-  // update the entity's positions and animations
-  AnimatedTilePattern::update();
+  // update the map
   current_map->update();
 
   // update the equipment and HUD
@@ -507,7 +505,9 @@ void Game::display(SDL_Surface *screen_surface) {
   }
 
   // display the hud
-  hud->display(screen_surface);
+  if (hud_enabled) {
+    hud->display(screen_surface);
+  }
 
   // display the dialog box if any
   if (is_showing_message()) {
@@ -796,6 +796,14 @@ void Game::give_treasure(Treasure *treasure) {
  */
 bool Game::is_giving_treasure(void) {
   return treasure != NULL && is_showing_message();
+}
+
+/**
+ * Sets whether the HUD is currently displayed.
+ * @param hud_enabled true to make the HUD displayed
+ */
+void Game::set_hud_enabled(bool hud_enabled) {
+  this->hud_enabled = hud_enabled;
 }
 
 /**

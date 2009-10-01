@@ -37,7 +37,7 @@ SDL_Rect VideoManager::video_mode_sizes[] = {
 VideoManager::VideoManager(void) {
 
   // initialize the window
-  SDL_WM_SetCaption("Zelda: Mystery of Solarus Deluxe", NULL);
+  SDL_WM_SetCaption("Zelda: Mystery of Solarus DX", NULL);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 

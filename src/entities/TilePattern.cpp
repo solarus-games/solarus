@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/TilePattern.h"
+#include "entities/AnimatedTilePattern.h"
+#include "entities/ScrollingTilePattern.h"
 #include "entities/Tileset.h"
 #include "Map.h"
 
@@ -74,6 +76,15 @@ Obstacle TilePattern::get_obstacle(void) const {
 }
 
 /**
+ * Updates the current frame of all tile patterns.
+ * This function is called repeatedly by the map.
+ */
+void TilePattern::update(void) {
+  AnimatedTilePattern::update();
+  ScrollingTilePattern::update();
+}
+
+/**
  * Displays the tile pattern on the map, repeating it to fit the specified size.
  * @param map the map
  * @param position_in_map location and size of the tile on the map
@@ -105,3 +116,4 @@ void TilePattern::display_on_map(Map *map, SDL_Rect &position_in_map) {
     }
   }
 }
+

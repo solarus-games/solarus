@@ -26,6 +26,7 @@
 #include "Color.h"
 #include "MapScript.h"
 
+DialogBox::Style DialogBox::style = DialogBox::WITH_FRAME;
 static SDL_Rect box_src_position = {0, 0, 220, 60};
 static SDL_Rect question_src_position = {96, 60, 8, 8};
 
@@ -49,6 +50,15 @@ DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
 
   this->x = x;
   this->y = y;
+  if (style == WITHOUT_FRAME) {
+    if (this->y < 120) {
+      this->y -= 24;
+    }
+    else {
+      this->y += 24;
+    }
+  }
+
   box_dst_position.x = x;
   box_dst_position.y = y;
   question_dst_position.x = x + 18;
@@ -93,6 +103,15 @@ DialogBox::~DialogBox(void) {
   SDL_FreeSurface(img_icons);
   delete end_message_sprite;
   delete current_message;
+}
+    
+/**
+ * Sets the dialog box style for all subsequent dialogs.
+ * The default style is DialogBox::WITH_FRAME.
+ * @param style the new style to set
+ */
+void DialogBox::set_style(Style style) {
+  DialogBox::style = style;
 }
 
 /**
@@ -372,8 +391,10 @@ void DialogBox::display(SDL_Surface *destination_surface) {
 
   SDL_FillRect(dialog_surface, NULL, Color::black);
 
-  // display the dialog box
-  SDL_BlitSurface(img_box, &box_src_position, dialog_surface, &box_dst_position);
+  if (style != WITHOUT_FRAME) {
+    // display the dialog box
+    SDL_BlitSurface(img_box, &box_src_position, dialog_surface, &box_dst_position);
+  }
 
   // display the message
   current_message->display(dialog_surface);

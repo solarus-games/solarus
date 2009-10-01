@@ -81,6 +81,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "play_music", l_play_music);
   lua_register(context, "start_message", l_start_message);
   lua_register(context, "set_message_variable", l_set_message_variable);
+  lua_register(context, "dialog_set_style", l_dialog_set_style);
+  lua_register(context, "hud_set_enabled", l_hud_set_enabled);
   lua_register(context, "give_treasure", l_give_treasure);
   lua_register(context, "give_treasure_with_amount", l_give_treasure_with_amount);
   lua_register(context, "savegame_get_string", l_savegame_get_string);
@@ -529,7 +531,7 @@ int MapScript::l_start_message(lua_State *l) {
 }
 
 /**
- * Set the value of the variable in a diabog box message.
+ * Sets the value of the variable in a diabog box message.
  * The function has to be called after the dialog box is created,
  * i.e. after calling show_message.
  * Argument 1 (string): id of the message containing the variable
@@ -543,6 +545,33 @@ int MapScript::l_set_message_variable(lua_State *l) {
 
   zsdx->game->get_dialog_box()->set_variable(message_id, value);
 
+  return 0;
+}
+
+/**
+ * Changes the style of the future dialog boxes.
+ * Argument 1 (integer): the style to set (see the DialogBox::Style enum)
+ */
+int MapScript::l_dialog_set_style(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  int style = lua_tointeger(l, 1);
+
+  DialogBox::set_style(DialogBox::Style(style));
+
+  return 0;
+}
+
+/**
+ * Enables or disables the head up display.
+ * Argument 1 (boolean): true to enable it, false to disable it
+ */
+int MapScript::l_hud_set_enabled(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  bool enabled = lua_toboolean(l, 1) != 0;
+
+  zsdx->game->set_hud_enabled(enabled);
   return 0;
 }
 

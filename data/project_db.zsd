@@ -1,7 +1,3 @@
-0	0	Link's House
-0	1	Link's House - Secret room
-0	11	Grandma house
-0	2	Rupee House
 0	8	Outside world A1
 0	10	Outside world A2
 0	9	Outside world B1
@@ -10,6 +6,11 @@
 0	4	Outside world C2
 0	6	Outside world D1
 0	5	Outside world D2
+0	0	Intro
+0	28	Link House
+0	1	Link's House - Secret room
+0	11	Grandma house
+0	2	Rupee House
 0	12	Sahasrahla house
 0	13	Sahasrahla house B1
 0	14	Sahasrahla house B2
@@ -32,6 +33,7 @@
 1	3	Cave
 1	4	Blue dungeon
 1	5	Green dungeon
+1	6	Intro
 2	agahnim.spc	Agahnim theme
 2	beginning.spc	Beginning
 2	boss.spc	Boss
@@ -101,6 +103,7 @@
 3	entities/slot_machine	Casino slot machine
 3	entities/frozen_door	Frozen door
 3	entities/outside_door	Outside closed door
+3	entities/fresco	Intro fresco
 4	bomb	bomb
 4	boss_charge	boss_charge
 4	boss_dead	boss_dead

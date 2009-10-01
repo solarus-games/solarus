@@ -24,6 +24,7 @@
 #include "Camera.h"
 #include "entities/Ground.h"
 #include "entities/Tileset.h"
+#include "entities/TilePattern.h"
 #include "entities/MapEntities.h"
 #include "entities/DestinationPoint.h"
 #include "entities/Detector.h"
@@ -343,6 +344,7 @@ void Map::update(void) {
   }
 
   // update the elements
+  TilePattern::update();
   entities->update();
   script->update();
   camera->update(); /* update the camera after the entities since this might 

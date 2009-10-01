@@ -326,3 +326,4 @@ void Message::display(SDL_Surface *destination_surface) {
     text_surfaces[i]->display(destination_surface);
   }
 }
+

@@ -18,6 +18,7 @@
 #include "entities/SimpleTilePattern.h"
 #include "entities/AnimatedTilePattern.h"
 #include "entities/ParallaxTilePattern.h"
+#include "entities/ScrollingTilePattern.h"
 #include "FileTools.h"
 #include "ResourceManager.h"
 #include <iomanip>
@@ -100,7 +101,7 @@ void Tileset::load(void) {
 
     int width, height;
 
-    if (animation == 0 || animation == 2) { // simple tile pattern or tile pattern with parallax
+    if (animation != 1) { // simple tile pattern, parallax scrolling or scrolling
 
       int x, y;
 
@@ -113,8 +114,14 @@ void Tileset::load(void) {
       if (animation == 0) {
 	pattern = new SimpleTilePattern(Obstacle(obstacle), x, y, width, height);
       }
-      else {
+      else if (animation == 2) {
 	pattern = new ParallaxTilePattern(Obstacle(obstacle), x, y, width, height);
+      }
+      else if (animation == 3) {
+        pattern = new ScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
+      }
+      else {
+        DIE("Unknown tile pattern animation: " << animation);
       }
       add_tile_pattern(tile_pattern_id, pattern);
     }

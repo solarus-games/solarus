@@ -14,17 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/ParallaxTilePattern.h"
+#include "entities/ScrollingTilePattern.h"
+
+int ScrollingTilePattern::shift = 0;
+Uint32 ScrollingTilePattern::next_shift_date = 0;
 
 /**
- * Creates a tile pattern with parallax scrolling.
+ * Creates a tile pattern with scrolling.
  * @param obstacle is the tile pattern an obstacle?
  * @param x x position of the tile pattern in the tileset
  * @param y y position of the tile pattern in the tileset
  * @param width width of the tile pattern in the tileset
  * @param height height of the tile pattern in the tileset
  */
-ParallaxTilePattern::ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height):
+ScrollingTilePattern::ScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height):
 SimpleTilePattern(obstacle, x, y, width, height) {
 
 }
@@ -32,9 +35,24 @@ SimpleTilePattern(obstacle, x, y, width, height) {
 /**
  * Destructor.
  */
-ParallaxTilePattern::~ParallaxTilePattern(void) {
+ScrollingTilePattern::~ScrollingTilePattern(void) {
 
 }
+
+/**
+ * Updates all scrolling tiles patterns.
+ * This function is called repeatedly by the map.
+ */
+void ScrollingTilePattern::update(void) {
+
+  Uint32 now = SDL_GetTicks();
+
+  while (now >= next_shift_date) {
+    shift++;
+    next_shift_date += 50;
+  }
+}
+
 
 /**
  * Displays the tile image on a surface.
@@ -42,30 +60,15 @@ ParallaxTilePattern::~ParallaxTilePattern(void) {
  * @param dst_position position of the tile pattern on the destination surface
  * @param tileset_image the tileset image of this tile
  */
-void ParallaxTilePattern::display(SDL_Surface *destination, const SDL_Rect &dst_position, SDL_Surface *tileset_image) {
+void ScrollingTilePattern::display(SDL_Surface *destination, const SDL_Rect &dst_position, SDL_Surface *tileset_image) {
 
   SDL_Rect src = position_in_tileset;
   SDL_Rect dst = dst_position;
 
-  int offset_x, offset_y; // display the tile with an offset that depends on its position modulo its size
+  int offset_x, offset_y; // display the tile with an offset that depends on the time
 
-  if (dst.x >= 0) {
-    offset_x = dst.x % src.w;
-  }
-  else { // the modulo operation does not like negative numbers
-    offset_x = src.w - (-dst.x % src.w);
-  }
-
-  if (dst.y >= 0) {
-    offset_y = dst.y % src.h;
-  }
-  else {
-    offset_y = src.h - (-dst.y % src.h);
-  }
-
-  // apply a scrolling ratio
-  offset_x /= 2;
-  offset_y /= 2;
+  offset_x = src.w - (shift % src.w);
+  offset_y = shift % src.h;
 
   src.x += offset_x;
   src.w -= offset_x;
@@ -96,6 +99,5 @@ void ParallaxTilePattern::display(SDL_Surface *destination, const SDL_Rect &dst_
   dst.y += src.h - offset_y;
   src.h = offset_y;
   SDL_BlitSurface(tileset_image, &src, destination, &dst);
-
 }
 

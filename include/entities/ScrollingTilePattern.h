@@ -14,23 +14,29 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_PARALLAX_TILE_PATTERN_H
-#define ZSDX_PARALLAX_TILE_PATTERN_H
+#ifndef ZSDX_SCROLLING_TILE_PATTERN_H
+#define ZSDX_SCROLLING_TILE_PATTERN_H
 
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
 /**
- * Tile pattern with a parallax scrolling effect.
+ * Tile pattern with a scrolling effect.
  */
-class ParallaxTilePattern: public SimpleTilePattern {
+class ScrollingTilePattern: public SimpleTilePattern {
 
- public:
+  private:
 
-  ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height);
-  ~ParallaxTilePattern(void);
+    static int shift;              /**< number of pixels to shift, increased with the time */
+    static Uint32 next_shift_date; /**< when the shift variable is incremented */
 
-  void display(SDL_Surface *destination, const SDL_Rect &destination_position, SDL_Surface *tileset_image);
+  public:
+
+    ScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    ~ScrollingTilePattern(void);
+
+    static void update(void);
+    void display(SDL_Surface *destination, const SDL_Rect &destination_position, SDL_Surface *tileset_image);
 };
 
 #endif

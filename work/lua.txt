@@ -33,6 +33,8 @@ Appel de fonctions C++ depuis un script LUA :
 - unfreeze()						restaure le contrôle au joueur
 - start_message(message_id)				affiche un message
 - set_message_variable(first_message_id, value)		spécifie la valeur d'une variable dans une séquence de messages
+- dialog_set_style(style)                               spécifie le style de la boîte de dialogue pour les futurs messages
+- hud_set_enabled(enabled)				active ou désactive l'affichage du HUD
 - play_sound(sound_id)					joue un son
 - play_music(music_id)					joue une musique
 - give_treasure(treasure_id, savegame_variable)		donne un trésor au joueur (sans coffre)

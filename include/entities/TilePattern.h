@@ -46,8 +46,10 @@ class TilePattern {
   int get_height(void) const;
   Obstacle get_obstacle(void) const;
 
+  static void update(void);
   void display_on_map(Map *map, SDL_Rect &position_in_map);
   virtual void display(SDL_Surface *surface, const SDL_Rect &position_in_surface, SDL_Surface *tileset_image) = 0;
 };
 
 #endif
+

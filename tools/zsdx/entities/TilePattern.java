@@ -35,13 +35,15 @@ public class TilePattern extends Observable {
 	NONE,
 	SEQUENCE_012,
 	SEQUENCE_0121,
-	PARALLAX;
+	PARALLAX,
+	SCROLLING;
 
 	public static final String[] humanNames = {
 	    "None",
 	    "1-2-3-1",
 	    "1-2-3-2-1",
-	    "Parallax scrolling"
+	    "Parallax scrolling",
+	    "Scrolling with time",
 	};
 
 	public static Animation get(int id) {
@@ -183,10 +185,11 @@ public class TilePattern extends Observable {
 	    this.defaultLayer = Layer.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.images = new BufferedImage[4];
 
-	    if (tilePatternType == 0 || tilePatternType == 2) {
+	    if (tilePatternType == 0 || tilePatternType == 2 || tilePatternType == 3) {
 
 		// simple tile pattern: "0 obstacle defaultLayer x y width height"
 		// or parallax tile pattern: "2 obstacle defaultLayer x y width height"
+		// or scrolling tile pattern: "3 obstacle defaultLayer x y width height"
 		int x = Integer.parseInt(tokenizer.nextToken());
 		int y = Integer.parseInt(tokenizer.nextToken());
 		int width = Integer.parseInt(tokenizer.nextToken());
@@ -238,12 +241,16 @@ public class TilePattern extends Observable {
 
 	StringBuffer description = new StringBuffer();
 
-	if (animation == Animation.NONE || animation == Animation.PARALLAX) {
+	if (!isAnimated()) {
 	    // simple tile pattern: "0 obstacle defaultLayer x y width height"
 	    // or parallax tile pattern: "2 obstacle defaultLayer x y width height"
+	    // or scrolling tile pattern: "3 obstacle defaultLayer x y width height
 
 	    if (animation == Animation.PARALLAX) {
 		description.append('2');
+	    }
+	    else if (animation == Animation.SCROLLING) {
+	        description.append('3');
 	    }
 	    else {
 		description.append('0');

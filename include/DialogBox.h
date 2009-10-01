@@ -21,7 +21,6 @@
 #include "KeysEffect.h"
 #include "Controls.h"
 #include <map>
-#include <vector>
 
 /**
  * A dialog box where a succession of messages can be displayed.
@@ -30,95 +29,106 @@
  */
 class DialogBox {
 
- public:
+  public:
 
-  /**
-   * The possible speeds of a dialog's text.
-   */
-  enum Speed {
-    SPEED_SLOW,
-    SPEED_MEDIUM,
-    SPEED_FAST
-  };
+    /**
+     * The possible styles of the dialog box
+     */
+    enum Style {
+      WITH_FRAME,    /**< the usual dialog box with a frame and a semi-transparent dark blue background */
+      WITHOUT_FRAME, /**< no dialog box is shown, only the text is displayed */
+    };
 
-  /**
-   * Indicates what happens when the user tries to cancel
-   * the current message.
-   */
-  enum CancelMode {
-    CANCEL_NONE,
-    CANCEL_CURRENT,
-    CANCEL_ALL
-  };
+    /**
+     * The possible speeds of a dialog's text.
+     */
+    enum Speed {
+      SPEED_SLOW,
+      SPEED_MEDIUM,
+      SPEED_FAST     // default
+    };
 
- private:
-  
-  // current message
-  Message *current_message;
-  MessageId current_message_id;
-  std::map<MessageId, std::string> variables;
+    /**
+     * Indicates what happens when the user tries to skip
+     * the current message.
+     */
+    enum CancelMode {
+      CANCEL_NONE,    /**< the current message cannot be skipped */
+      CANCEL_CURRENT, /**< the player can display the current message to its end immediately */
+      CANCEL_ALL      /**< the current message and the next ones can be totally skipped */
+    };
 
-  MessageId first_message_id;
+  private:
 
-  // dialog properties
-  Speed speed;
-  CancelMode cancel_mode;
-  bool cancelled;              // true if the user has cancelled the dialog
-  int icon_number;             // index of the 16*16 icon displayed, or -1 if there is no icon
+    // current message
+    Message *current_message;
+    MessageId current_message_id;
+    std::map<MessageId, std::string> variables;
 
-  KeysEffect::ActionKeyEffect action_key_effect_saved;
-  KeysEffect::SwordKeyEffect sword_key_effect_saved;
+    MessageId first_message_id;
 
-  // graphics
-  SDL_Surface *dialog_surface;
-  SDL_Surface *img_box;
-  SDL_Surface *img_icons;
-  Sprite *end_message_sprite;
+    // dialog properties
+    static Style style;
+    Speed speed;
+    CancelMode cancel_mode;
+    bool cancelled;              // true if the user has cancelled the dialog
+    int icon_number;             // index of the 16*16 icon displayed, or -1 if there is no icon
 
-  // sounds
-  Sound *end_message_sound;
-  Sound *switch_answer_sound;
+    KeysEffect::ActionKeyEffect action_key_effect_saved;
+    KeysEffect::SwordKeyEffect sword_key_effect_saved;
 
-  // position of the images
-  int x;
-  int y;
-  SDL_Rect box_dst_position;
-  SDL_Rect question_dst_position;
-  SDL_Rect icon_dst_position;
+    // graphics
+    SDL_Surface *dialog_surface;
+    SDL_Surface *img_box;
+    SDL_Surface *img_icons;
+    Sprite *end_message_sprite;
 
-  void show_message(const MessageId &messageId);
+    // sounds
+    Sound *end_message_sound;
+    Sound *switch_answer_sound;
 
-  void action_key_pressed(void);
-  void sword_key_pressed(void);
-  void up_or_down_key_pressed(void);
+    // position of the images
+    int x;
+    int y;
+    SDL_Rect box_dst_position;
+    SDL_Rect question_dst_position;
+    SDL_Rect icon_dst_position;
 
- public:
+    void show_message(const MessageId &messageId);
 
-  // creation and destruction
-  DialogBox(const MessageId &first_message_id, int x, int y);
-  ~DialogBox(void);
+    void action_key_pressed(void);
+    void sword_key_pressed(void);
+    void up_or_down_key_pressed(void);
 
-  // dialog properties
-  Speed get_speed(void);
-  void set_speed(Speed speed);
-  CancelMode get_cancel_mode(void);
-  void set_cancel_mode(CancelMode cancel_mode);
-  int get_icon_number(void);
-  void set_icon_number(int icon_number);
+  public:
 
-  void set_variable(const MessageId &first_message_id, const std::string &value);
-  void set_variable(const MessageId &first_message_id, int value);
-  const std::string& get_variable(void);
-  
-  // current message
-  void key_pressed(Controls::GameKey key);
-  MessageId get_first_message_id(void);
-  bool is_finished(void);
-  bool was_cancelled(void);
+    // creation and destruction
+    DialogBox(const MessageId &first_message_id, int x, int y);
+    ~DialogBox(void);
 
-  // update and display
-  void update(void);
-  void display(SDL_Surface *destination_surface);
+    // dialog properties
+    static void set_style(Style style);
+    Speed get_speed(void);
+    void set_speed(Speed speed);
+    CancelMode get_cancel_mode(void);
+    void set_cancel_mode(CancelMode cancel_mode);
+    int get_icon_number(void);
+    void set_icon_number(int icon_number);
+
+    void set_variable(const MessageId &first_message_id, const std::string &value);
+    void set_variable(const MessageId &first_message_id, int value);
+    const std::string& get_variable(void);
+
+    // current message
+    void key_pressed(Controls::GameKey key);
+    MessageId get_first_message_id(void);
+    bool is_finished(void);
+    bool was_cancelled(void);
+
+    // update and display
+    void update(void);
+    void display(SDL_Surface *destination_surface);
 };
 
 #endif
+

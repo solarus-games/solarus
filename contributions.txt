@@ -23,6 +23,7 @@ Mymy (edelweiss, maps)
 Neovyze (artworks : Link, amulette ; fonds d'écran, notice, fresques de l'intro)
 Newlink (sprites)
 Binbin (version Mac)
+HunoPPC (version AmigaOS)
 
 
 Traduction :
@@ -32,6 +33,7 @@ Elrick (sb06390@hotmail.fr) : Italien (proposition par mail) - s'est désisté
 Vivig + Maxi-kapichu (maxime.callico@gmail.com) : Espagnol
 Kennou (forum) : Portugais
 @PyroNet + antevre : Néerlandais
+
 
 Trouvé sur internet :
 

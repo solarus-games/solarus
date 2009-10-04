@@ -105,6 +105,7 @@ bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
   }
 
   // if the block is raised, only some specific entities may overlap it
+  // TODO: remove type test
   if (!other->is_hero()) {
     return other->is_raised_block_obstacle(this);
   }

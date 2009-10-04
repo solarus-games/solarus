@@ -324,7 +324,7 @@ next = intro6.10
 [intro6.10]
 #       |-----------------------|
 line1 = "possesseur d'assembler"
-line2 = "la Triforce. Depuis ces"
+line2 = "la Triforce. Après ces"
 line3 = "événements, le Héros et"
 next = intro6.11
 
@@ -1799,7 +1799,7 @@ next = dungeon_1.solarus_child.2
 [dungeon_1.solarus_child.2]
 #       |-----------------------|
 line1 = "8 protecteurs appelés"
-line2 = "par la Princess Zelda."
+line2 = "par la Princesse Zelda."
 line3 = "Nous sommes dévoués à"
 next = dungeon_1.solarus_child.3
 

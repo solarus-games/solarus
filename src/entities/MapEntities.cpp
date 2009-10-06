@@ -102,6 +102,20 @@ unsigned int MapEntities::get_nb_destination_points(void) {
  */
 Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
+#if ZSDX_DEBUG_LEVEL > 0
+  if (layer < 0 || layer >= LAYER_NB) {
+    DIE("get_obstacle_tile(): invalid layer number '" << layer << "'");
+  }
+  
+  if (x < 0 || x >= map->get_width()) {
+    DIE("get_obstacle_tile(): invalid x coordinate '" << x << "'");
+  }
+
+  if (y < 0 || y >= map->get_height()) {
+    DIE("get_obstacle_tile(): invalid y coordinate '" << y << "'");
+  }
+#endif
+
   // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
   return obstacle_tiles[layer][(y >> 3) * map_width8 + (x >> 3)];
 }

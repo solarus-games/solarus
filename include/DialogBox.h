@@ -114,6 +114,7 @@ class DialogBox {
     void set_cancel_mode(CancelMode cancel_mode);
     int get_icon_number(void);
     void set_icon_number(int icon_number);
+    bool is_letter_sound_enabled(void);
 
     void set_variable(const MessageId &first_message_id, const std::string &value);
     void set_variable(const MessageId &first_message_id, int value);

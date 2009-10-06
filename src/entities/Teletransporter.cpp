@@ -214,6 +214,8 @@ void Teletransporter::transport_hero(Hero *hero) {
   }
 
   std::string name = destination_point_name;
+  int hero_x = hero->get_x();
+  int hero_y = hero->get_y();
 
   if (destination_point_name == "_side") {
 
@@ -225,22 +227,22 @@ void Teletransporter::transport_hero(Hero *hero) {
 
     case 0:
       name += '0'; // scroll to the west
-      hero->set_x(0);
+      hero_x = 0;
       break;
 
     case 1:
       name += '1'; // scroll to the south
-      hero->set_y(map->get_height() + 5);
+      hero_y = map->get_height() + 5;
       break;
 
     case 2:
       name += '2'; // scroll to the east
-      hero->set_x(map->get_width());
+      hero_x = map->get_width();
       break;
 
     case 3:
       name += '3'; // scroll to the north
-      hero->set_y(5);
+      hero_y = 5;
       break;
 
     default:
@@ -249,5 +251,6 @@ void Teletransporter::transport_hero(Hero *hero) {
   }
 
   zsdx->game->set_current_map(destination_map_id, name, transition_style);
+  hero->set_xy(hero_x, hero_y);
 }
 

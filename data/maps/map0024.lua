@@ -33,7 +33,6 @@ function event_obtained_treasure(content, savegame_variable)
 end
 
 function event_switch_enabled(switch_name)
-
   if switch_name == "se_switch" or switch_name == "ne_switch" then
     move_camera(960, 496, 15)
   end

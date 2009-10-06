@@ -82,7 +82,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
 
   // explosion
   if (destructible_item->can_explode()) {
-    explosion_date = SDL_GetTicks() + 3000;
+    explosion_date = SDL_GetTicks() + 6000;
   }
 }
 

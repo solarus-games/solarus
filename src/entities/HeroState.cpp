@@ -1212,10 +1212,19 @@ void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping)
 
   std::string id = sprite_overlapping->get_animation_set_id();
   if (id.find("sword") != std::string::npos) {
+    // the hero's sword overlaps the enemy
     enemy->try_hurt(ATTACK_SWORD, this);
   }
   else if (id.find("tunic") != std::string::npos) {
-    enemy->attack_hero(this);
+    // the hero's body overlaps the enemy: ensure that the 16*16 rectangle of the hero also overlaps the enemy
+    SDL_Rect enemy_sprite_rectangle = enemy->get_sprite()->get_size();
+    const SDL_Rect &enemy_sprite_origin = enemy->get_sprite()->get_origin();
+    enemy_sprite_rectangle.x = enemy->get_x() - enemy_sprite_origin.x;
+    enemy_sprite_rectangle.y = enemy->get_y() - enemy_sprite_origin.y;
+
+    if (overlaps(enemy_sprite_rectangle)) {
+      enemy->attack_hero(this);
+    }
   }
 }
 

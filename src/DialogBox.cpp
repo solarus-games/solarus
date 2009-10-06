@@ -164,6 +164,14 @@ void DialogBox::set_icon_number(int icon_number) {
 }
 
 /**
+ * Returns whether a sound should be played when displaying the letters.
+ * @return true if a sound should be played when displaying the letters
+ */
+bool DialogBox::is_letter_sound_enabled(void) {
+  return style != WITHOUT_FRAME;
+}
+
+/**
  * Specifies the value of a variable that will occur
  * in the specified sequence of messages (with the '$v' sequence).
  * You can specify only one variable at the same time per message sequence.

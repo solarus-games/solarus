@@ -29,7 +29,7 @@
  * @param params name and position of the enemy to create
  */
 PapillosaurKing::PapillosaurKing(const ConstructionParameters &params):
-  Enemy(params) {
+  Enemy(params), nb_eggs_to_create(0) {
 
 }
 
@@ -124,12 +124,19 @@ void PapillosaurKing::update(void) {
   Uint32 now = SDL_GetTicks();
   if (is_in_normal_state() && now >= next_egg_phase_date - 500) {
 
-    // time to start an egg phase
-    if (get_movement() != NULL) {
+    // count the number of sons
+    std::list<MapEntity*> *sons = map->get_entities()->get_entities_with_prefix(ENEMY, get_name() + "_minillosaur");
+    int nb_sons = sons->size();
+    if (nb_sons >= 5 && nb_eggs_to_create == 0) {
+      // delay the egg phase if there are already too much sons
+      next_egg_phase_date += 5000;
+    }
+    else if (get_movement() != NULL) {
       // stop the movement
       clear_movement();
     }
     else if (now >= next_egg_phase_date) {
+      // time to start an egg phase
 
       if (get_sprite()->get_current_animation() != "preparing_egg") {
 	// after a delay, start the fast animation and play a sound
@@ -169,7 +176,6 @@ void PapillosaurKing::just_hurt(MapEntity *source, EnemyAttack attack, int life_
   if (get_life() <= 0) {
     // the papillosaur is dying: remove the minillosaur eggs
     std::list<MapEntity*> *sons = map->get_entities()->get_entities_with_prefix(ENEMY, get_name() + "_minillosaur");
-
     for (std::list<MapEntity*>::iterator it = sons->begin(); it != sons->end(); it++) {
       map->get_entities()->remove_entity(*it);
     }

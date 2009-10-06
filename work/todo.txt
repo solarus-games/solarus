@@ -42,6 +42,15 @@ Bugs :
 - ennemis immobilisés : peuvent quand même blesser link
 
 
+Remarques de Thyb, Geomaster et Newlink :
+
+- Les passages entre les différentes fresques me paraissent assez brutaux, peut on avoir une disparition progressive de la "diapo" et une apparition progressive de la suivant pour que ce soit plus fluide ? -> faire une fonction de fondu sur les entités
+
+- Au niveau remarques sur l'intro donc, je dirais qu'elle devrait être plus animée d'une part. Pourquoi ne pas mettre les différentes fresques bout-à-bout et les faire défiler comme un ensemble, comme dans WW en réalité ? A ce titre, il faudrait qu'en même temps le texte ne soit pas soumis "à la touche ESPACE" de la part du joueur et qu'il n'y ait pas le petit "bidibidip" permanent, contrairement aux dialogues normaux.
+- Sinon, je pense que ça serait bien d'apporter quelques modifications aux textes. Certaines tournures ne font pas très bien. Si jamais j'ai le droit de proposer certaines corrections...
+- Ca serait un petit plus d'avoir un vrai curseur lorsqu'on doit faire un choix dans les dialogues. (au lieu de la petite flèche)
+
+
 Remarques de Linksupersayen :
 
 - Écran titre un peu figé, on aimerait bien un petit peu d'animation.
@@ -52,7 +61,6 @@ Remarques de Linksupersayen :
 Remarques de @PyroNet :
 
 - bandit manchot : graphismes pas exceptionnels, tapis pas centré
-- Quand Link soulève un pot, l'ombre du pot passe pendant un moment au-dessus de Link.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
 - Lorsqu'on achète un objet, l'image de l'objet que Link porte au-dessus de sa tête et de celui qui est sur le tapis se superposent. Il faudrait peut-être faire disparaître l'objet se trouvant sur le tapis pendant que Link porte celui qu'il a acheté.

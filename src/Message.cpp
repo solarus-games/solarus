@@ -280,7 +280,7 @@ void Message::add_character(void) {
     }
 
     Uint32 now = SDL_GetTicks();
-    if (now >= next_sound_date) {
+    if (now >= next_sound_date && dialog_box->is_letter_sound_enabled()) {
       ResourceManager::get_sound("message_letter")->play();
       next_sound_date = now + 125;
     }

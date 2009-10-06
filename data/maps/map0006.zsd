@@ -1449,7 +1449,7 @@
 4	0	312	245	4	-1	-1
 6	0	376	152	80	8	jump_sensor_4	6	56
 8	0	-24	109	tom	3	1	npc/tom	_none
-13	0	336	221	16	16	tom_appears_sensor	0
+13	0	336	213	16	32	tom_appears_sensor	0
 12	0	400	192	8	96	custom_obstacle	0	1	0	0
 2	0	328	136	16	16	to_dungeon_1_1F	0	1	23	from_outside
 1	0	336	165	from_dungeon_1_1F	3	0

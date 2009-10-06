@@ -318,7 +318,7 @@ next = intro6.9
 #       |-----------------------|
 line1 = "l'Amulette du Solarus."
 line2 = "C'était un pendentif"
-line3 = "quit permettait à son"
+line3 = "qui permettait à son"
 next = intro6.10
 
 [intro6.10]

@@ -99,3 +99,4 @@ void TransitionFade::display(SDL_Surface *surface) {
 
   SDL_SetAlpha(surface, SDL_SRCALPHA, alpha_impl);
 }
+

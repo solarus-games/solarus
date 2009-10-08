@@ -1060,12 +1060,26 @@ void MapEntity::set_suspended(bool suspended) {
 
 /**
  * Makes this entity's sprites play their animation even when the game is suspended.
+ * @param ignore_suspend true to keep playing the sprites when the game is suspended
  */
 void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
   
   for (unsigned int i = 0; i < sprites.size(); i++) {
     Sprite *sprite = sprites[i];
     sprite->set_ignore_suspend(ignore_suspend);
+  }
+}
+
+/**
+ * Displays a fade-in or fade-out effect on the entity's sprites.
+ * @param direction fade direction (0: in, 1: out)
+ */
+void MapEntity::start_fading(int direction) {
+
+  // update the sprites
+  for (unsigned int i = 0; i < sprites.size(); i++) {
+    Sprite *sprite = sprites[i];
+    sprite->start_fading(direction);
   }
 }
 

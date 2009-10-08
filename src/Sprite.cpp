@@ -23,6 +23,9 @@
 #include "Game.h"
 #include "Map.h"
 #include "PixelBits.h"
+#include "Color.h"
+
+SDL_Surface *Sprite::alpha_surface = NULL;
 
 /**
  * Creates a sprite with the specified animation set.
@@ -30,10 +33,16 @@
  */
 Sprite::Sprite(const SpriteAnimationSetId &id):
   animation_set_id(id), current_direction(0), current_frame(-1),
-  suspended(false), ignore_suspend(false), paused(false), finished(false), blink_delay(0) {
+  suspended(false), ignore_suspend(false), paused(false), finished(false),
+  blink_delay(0), alpha(255), alpha_next_change_date(0) {
   
   animation_set = ResourceManager::get_sprite_animation_set(id);
   set_current_animation(animation_set->get_default_animation());
+
+  if (alpha_surface == NULL) {
+    alpha_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+    SDL_SetColorKey(alpha_surface, SDL_SRCCOLORKEY, Color::black);
+  }
 }
 
 /**
@@ -263,10 +272,13 @@ void Sprite::set_suspended(bool suspended) {
 }
 
 /**
- * Sets whether this sprite should keep playing its animation
+ * Sets whether this sprite should keep playing its animation when the game is suspended.
+ * This will ignore subsequent calls to set_suspended(). 
+ * @param ignore_suspend true to make the sprite continue its animation even
  * when the game is suspended
  */
 void Sprite::set_ignore_suspend(bool ignore_suspend) {
+  set_suspended(false);
   this->ignore_suspend = ignore_suspend;
 }
 
@@ -352,6 +364,25 @@ void Sprite::set_blinking(Uint32 blink_delay) {
 }
 
 /**
+ * Returns whether the entity's sprites are currently displaying a fade-in or fade-out effect.
+ * @return true if there is currently a fade effect
+ */
+bool Sprite::is_fading(void) {
+  return alpha_next_change_date != 0;
+}
+
+/**
+ * Starts a fade-in effect on this sprite.
+ * @param direction direction of the effect (0: fade-in, 1: fade-out)
+ */
+void Sprite::start_fading(int direction) {
+  alpha_next_change_date = SDL_GetTicks();
+  alpha_increment = (direction == 0) ? 20 : -20;
+  alpha = (direction == 0) ? 0 : 255;
+  SDL_SetAlpha(alpha_surface, SDL_SRCALPHA, alpha);
+}
+
+/**
  * Tests whether this sprite's pixels are overlapping another sprite.
  * @param other another sprite
  * @param x1 x coordinate of this sprite's origin point
@@ -407,13 +438,28 @@ void Sprite::update(void) {
     }
   }
 
-  // update the blink
+  // update the special effects
   if (is_blinking()) {
+    // the sprite is blinking
 
-    while (now > blink_next_change_date) {
+    while (now >= blink_next_change_date) {
       blink_is_sprite_visible = !blink_is_sprite_visible;
       blink_next_change_date += blink_delay;
     }
+  }
+
+  if (is_fading() && now >= alpha_next_change_date) {
+    // the sprite is fading
+
+    alpha += alpha_increment;
+    alpha = MAX(0, MIN(255, alpha));
+    if (alpha == 0 || alpha == 255) { // fade finished
+      alpha_next_change_date = 0;
+    }
+    else {
+      alpha_next_change_date += 40;
+    }
+    SDL_SetAlpha(alpha_surface, SDL_SRCALPHA, alpha);
   }
 }
 
@@ -428,7 +474,17 @@ void Sprite::update(void) {
 void Sprite::display(SDL_Surface *destination, int x, int y) {
 
   if (!is_animation_finished() && (blink_delay == 0 || blink_is_sprite_visible)) {
-    current_animation->display(destination, x, y, current_direction, current_frame);
+
+    if (alpha >= 255) {
+      // opaque
+      current_animation->display(destination, x, y, current_direction, current_frame);
+    }
+    else {
+      // semi transparent
+      SDL_FillRect(alpha_surface, NULL, Color::black);
+      current_animation->display(alpha_surface, x, y, current_direction, current_frame);
+      SDL_BlitSurface(alpha_surface, NULL, destination, NULL);
+    }
   }
 }
 

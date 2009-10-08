@@ -109,6 +109,8 @@ class MapScript {
     l_interactive_entity_set_animation_frame,
     l_interactive_entity_set_direction,
     l_interactive_entity_set_animation_paused,
+    l_interactive_entity_set_animation_ignore_suspend,
+    l_interactive_entity_fade,
     l_interactive_entity_remove,
     l_equipment_get_tunic,
     l_equipment_get_sword,

@@ -58,11 +58,16 @@ class Sprite {
   bool paused;                           /**< true if the animation is paused */
   bool finished;                         /**< true if the animation has been stopped because the last frame is finished */
 
-  // blink
+  // effects
 
   Uint32 blink_delay;                    /**< blink delay of the sprite, or zero if the sprite is not blinking */
   bool blink_is_sprite_visible;          /**< when blinking, true if the sprite is visible or false if it is invisible */
   Uint32 blink_next_change_date;         /**< date of the next change when blinking: visible or not */
+
+  int alpha;                             /**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
+  Uint32 alpha_next_change_date;         /**< date of the next alpha change when applying a fade-in or fade-out effect */
+  int alpha_increment;                   /**< increment of the alpha value while fading */
+  static SDL_Surface *alpha_surface;     /**< an intermediary surface used when blitting with transparency */
 
   int get_next_frame(void);
 
@@ -107,9 +112,11 @@ class Sprite {
   bool is_last_frame_reached(void);
   bool has_frame_changed(void);
 
-  // blink
+  // effects
   bool is_blinking(void);
   void set_blinking(Uint32 blink_delay);
+  bool is_fading(void);
+  void start_fading(int direction);
 
   // collisions
   bool test_collision(Sprite *other, int x1, int y1, int x2, int y2);

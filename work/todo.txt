@@ -40,6 +40,7 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - ennemis immobilisés : peuvent quand même blesser link
+- empêcher de passer les messages de l'intro
 
 
 Remarques de Thyb, Geomaster et Newlink :
@@ -140,6 +141,7 @@ Mode release :
 - Remettre l'écran-titre
 - Enlever les commentaires qui font références au mode 2
 - Compiler les scripts et enlever les versions en texte clair
+- Vérifier les TODO du code et de data
 
 ----------------------
 Feature requests de l'éditeur :

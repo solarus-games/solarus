@@ -36,6 +36,8 @@ line1 = "$2D'anciennes légendes"
 line2 = "racontent qu'il y a"
 line3 = "bien longtemps,"
 next = intro0.2
+cancel = current
+# TODO remove
 
 [intro0.2]
 #       |-----------------------|
@@ -91,6 +93,8 @@ line1 = "$2Bien des générations"
 line2 = "plus tard, un maléfice"
 line3 = "sembla menacer Hyrule."
 next = intro1.2
+cancel = current
+# TODO remove
 
 [intro1.2]
 #       |-----------------------|
@@ -140,6 +144,8 @@ line1 = "$2On raconte qu'un jeune"
 line2 = "homme vêtu de vert se"
 line3 = "lança dans une quête"
 next = intro2.2
+cancel = current
+# TODO remove
 
 [intro2.2]
 #       |-----------------------|
@@ -161,6 +167,8 @@ line1 = "$2Finalement, celui que"
 line2 = "l'on nomma le Héros put"
 line3 = "repousser le maléfice."
 next = intro3.2
+cancel = current
+# TODO remove
 
 [intro3.2]
 #       |-----------------------|
@@ -188,6 +196,8 @@ line1 = "$2Le jeune Héros formula"
 line2 = "alors le voeu"
 line3 = "d'emprisonner Ganondorf"
 next = intro4.2
+cancel = current
+# TODO remove
 
 [intro4.2]
 #       |-----------------------|
@@ -223,6 +233,8 @@ line1 = "$2Mais quelques années"
 line2 = "plus tard, le Roi"
 line3 = "d'Hyrule fut victime"
 next = intro5.2
+cancel = current
+# TODO remove
 
 [intro5.2]
 #       |-----------------------|
@@ -265,6 +277,8 @@ line1 = "$2Le Héros, suivant les"
 line2 = "conseils de son maître"
 line3 = "à penser Sahasrahla,"
 next = intro6.2
+cancel = current
+# TODO remove
 
 [intro6.2]
 #       |-----------------------|

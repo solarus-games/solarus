@@ -136,6 +136,8 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame);
   lua_register(context, "interactive_entity_set_direction", l_interactive_entity_set_direction);
   lua_register(context, "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused);
+  lua_register(context, "interactive_entity_set_animation_ignore_suspend", l_interactive_entity_set_animation_ignore_suspend);
+  lua_register(context, "interactive_entity_fade", l_interactive_entity_fade);
   lua_register(context, "interactive_entity_remove", l_interactive_entity_remove);
   lua_register(context, "equipment_get_tunic", l_equipment_get_tunic);
   lua_register(context, "equipment_get_sword", l_equipment_get_sword);
@@ -986,7 +988,6 @@ int MapScript::l_npc_set_animation_ignore_suspend(lua_State *l) {
   return 0;
 }
 
-
 /**
  * Sets the direction of an NPC's sprite.
  * Argument 1 (string): name of the NPC
@@ -1547,6 +1548,34 @@ int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
   entity->get_sprite()->set_paused(paused);
 
   return 0;
+}
+
+/**
+ * Starts a fade-in or a fade-out effect on an interactive entity
+ * Argument 1 (string): name of the interactive entity
+ * Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
+ */
+int MapScript::l_interactive_entity_fade(lua_State *l) {
+
+  check_nb_arguments(l, 2);
+
+  const std::string &name = lua_tostring(l, 1);
+  int direction = lua_tointeger(l, 2);
+
+  Map *map = zsdx->game->get_current_map();
+  InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
+  entity->start_fading(direction);
+
+  return 0;
+}
+
+/**
+ * Sets whether the animation of an interactive entity should continue even when the game is suspended.
+ * Argument 1 (string): name of the interactive entity
+ * Argument 2 (boolean): true to ignore when the game is suspended
+ */
+int MapScript::l_interactive_entity_set_animation_ignore_suspend(lua_State *l) {
+  return l_npc_set_animation_ignore_suspend(l);
 }
 
 /**

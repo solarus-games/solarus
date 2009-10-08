@@ -90,3 +90,4 @@ void Transition::set_previous_surface(SDL_Surface *previous_surface) {
 bool Transition::needs_previous_surface(void) {
   return false;
 }
+

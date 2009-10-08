@@ -39,8 +39,8 @@ class Transition {
    * Direction of the transition.
    */
   enum Direction {
-    IN,
-    OUT,
+    IN  = 0,
+    OUT = 1,
   };
 
  protected:
@@ -66,3 +66,4 @@ class Transition {
 };
 
 #endif
+

@@ -130,6 +130,7 @@ class MapEntity {
   void set_origin(const SDL_Rect &origin);
   void set_rectangle_from_sprite(void);
   void create_sprite(const SpriteAnimationSetId &id);
+
   void set_movement(Movement *movement);
   void clear_movement(void);
 
@@ -189,6 +190,7 @@ class MapEntity {
   Sprite * get_sprite(void);
   bool has_sprite(void);
   void set_animation_ignore_suspend(bool ignore_suspend);
+  void start_fading(int direction);
 
   // movement
   Movement * get_movement(void);

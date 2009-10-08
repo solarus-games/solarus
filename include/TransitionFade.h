@@ -26,6 +26,7 @@
 class TransitionFade: public Transition {
 
  private:
+
   int alpha_start;
   int alpha_limit;
   int alpha_increment;
@@ -35,6 +36,7 @@ class TransitionFade: public Transition {
   Uint32 delay;
   
  public:
+
   TransitionFade(Direction direction);
   ~TransitionFade(void);
 
@@ -48,3 +50,4 @@ class TransitionFade: public Transition {
 };
 
 #endif
+

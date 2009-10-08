@@ -87,3 +87,4 @@ class InteractiveEntity: public Detector {
 };
 
 #endif
+

@@ -48,8 +48,5 @@
 #define DIE(message) do { std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)
 //#endif
 
-#define MIN(x,y) (((x) > (y)) ? (y) : (x))
-#define MAX(x,y) (((x) > (y)) ? (x) : (y))
-
 #endif
 

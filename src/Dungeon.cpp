@@ -196,11 +196,11 @@ const SDL_Rect & Dungeon::get_floor_size(int floor) {
 /**
  * Returns the number of floors that can be displayed for this dungeon.
  * No more that 7 floors can be displayed simultaneously.
- * This function is equivalent to MIN(7, get_nb_floors()).
+ * This function is equivalent to std::min(7, get_nb_floors()).
  * @return the number of floors that can be displayed for this dungeon
  */
 int Dungeon::get_nb_floors_displayed(void) {
-  return MIN(7, get_nb_floors());
+  return std::min(7, get_nb_floors());
 }
 
 /**

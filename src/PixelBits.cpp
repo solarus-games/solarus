@@ -111,10 +111,10 @@ bool PixelBits::test_collision(PixelBits *other, const SDL_Rect &location1, cons
 
   // compute the intersection between the two rectangles
   SDL_Rect intersection;
-  intersection.x = MAX(bounding_box1.x, bounding_box2.x);
-  intersection.y = MAX(bounding_box1.y, bounding_box2.y);
-  intersection.w = MIN(bounding_box1.x + bounding_box1.w, bounding_box2.x + bounding_box2.w) - intersection.x;
-  intersection.h = MIN(bounding_box1.y + bounding_box1.h, bounding_box2.y + bounding_box2.h) - intersection.y;
+  intersection.x = std::max(bounding_box1.x, bounding_box2.x);
+  intersection.y = std::max(bounding_box1.y, bounding_box2.y);
+  intersection.w = std::min(bounding_box1.x + bounding_box1.w, bounding_box2.x + bounding_box2.w) - intersection.x;
+  intersection.h = std::min(bounding_box1.y + bounding_box1.h, bounding_box2.y + bounding_box2.h) - intersection.y;
 
   /* debug
   std::cout << "intersection: " << intersection.x << "," << intersection.y << " x " << intersection.w << "," << intersection.h << "\n";

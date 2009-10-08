@@ -90,7 +90,7 @@ void TransitionFade::display(SDL_Surface *surface) {
   }
 
   // display the transition effect on the surface
-  int alpha_impl = MIN(alpha, 255);
+  int alpha_impl = std::min(alpha, 255);
 
   // SDL has a special handling of the alpha value 128, but it does not work correctly with my computer
   if (alpha_impl == 128) {

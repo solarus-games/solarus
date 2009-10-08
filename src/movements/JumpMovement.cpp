@@ -45,7 +45,7 @@ JumpMovement::JumpMovement(int direction, int length, bool with_collisions):
     translation_vectors[i] = basic_translations[direction];
   }
   set_translation_vectors(translation_vectors);
-  set_delay(MAX(4, 14 - length / 10));
+  set_delay(std::max(4, 14 - length / 10));
 }
 
 /**

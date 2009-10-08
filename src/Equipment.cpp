@@ -267,7 +267,7 @@ void Equipment::add_rupees(int rupees_to_add) {
   int max_rupees = get_max_rupees();
   int total = get_rupees() + rupees_to_add;
 
-  set_rupees(MIN(total, max_rupees));
+  set_rupees(std::min(total, max_rupees));
 }
 
 /**
@@ -279,7 +279,7 @@ void Equipment::remove_rupees(int rupees_to_remove) {
 
   int total = get_rupees() - rupees_to_remove;
 
-  set_rupees(MAX(total, 0));
+  set_rupees(std::max(total, 0));
 }
 
 // hearts
@@ -352,7 +352,7 @@ void Equipment::add_hearts(int hearts_to_add) {
   int max_hearts = get_max_hearts() * 4;
   int total = get_hearts() + hearts_to_add;
 
-  set_hearts(MIN(total, max_hearts));
+  set_hearts(std::min(total, max_hearts));
 }
 
 /**
@@ -364,7 +364,7 @@ void Equipment::remove_hearts(int hearts_to_remove) {
 
   int total = get_hearts() - hearts_to_remove;
 
-  set_hearts(MAX(total, 0));
+  set_hearts(std::max(total, 0));
 }
 
 /**
@@ -535,7 +535,7 @@ void Equipment::add_magic(int magic_to_add) {
   int max_magic = get_max_magic();
   int total = get_magic() + magic_to_add;
 
-  set_magic(MIN(total, max_magic));
+  set_magic(std::min(total, max_magic));
 }
 
 /**
@@ -548,7 +548,7 @@ void Equipment::remove_magic(int magic_to_remove) {
 
   int total = get_magic() - magic_to_remove;
 
-  set_magic(MAX(total, 0));
+  set_magic(std::max(total, 0));
 }
 
 /**
@@ -657,7 +657,7 @@ void Equipment::add_bombs(int bombs_to_add) {
   int max_bombs = get_max_bombs();
   int total = get_bombs() + bombs_to_add;
 
-  set_bombs(MIN(total, max_bombs));
+  set_bombs(std::min(total, max_bombs));
 }
 
 /**
@@ -668,7 +668,7 @@ void Equipment::remove_bomb(void) {
 
   int total = get_bombs() - 1;
 
-  set_bombs(MAX(total, 0));
+  set_bombs(std::max(total, 0));
 }
 
 /**
@@ -747,7 +747,7 @@ void Equipment::add_arrows(int arrows_to_add) {
   int max_arrows = get_max_arrows();
   int total = get_arrows() + arrows_to_add;
 
-  set_arrows(MIN(total, max_arrows));
+  set_arrows(std::min(total, max_arrows));
 }
 
 /**
@@ -758,7 +758,7 @@ void Equipment::remove_arrow(void) {
 
   int total = get_arrows() - 1;
 
-  set_arrows(MAX(total, 0));
+  set_arrows(std::max(total, 0));
 }
 
 /**
@@ -1054,7 +1054,7 @@ void Equipment::add_inventory_item_amount(InventoryItemId item_id, int amount_to
       DIE("Only one fire stone can be added");
     }
 
-    set_inventory_item_amount(item_id, MIN(total, 10));
+    set_inventory_item_amount(item_id, std::min(total, 10));
   }
 }
 
@@ -1071,7 +1071,7 @@ void Equipment::remove_inventory_item_amount(InventoryItemId item_id, int amount
   }
   else {
     int total = get_inventory_item_amount(item_id) - amount_to_remove;
-    set_inventory_item_amount(item_id, MAX(total, 0));
+    set_inventory_item_amount(item_id, std::max(total, 0));
   }
 }
 

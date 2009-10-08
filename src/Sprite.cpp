@@ -452,7 +452,7 @@ void Sprite::update(void) {
     // the sprite is fading
 
     alpha += alpha_increment;
-    alpha = MAX(0, MIN(255, alpha));
+    alpha = std::max(0, std::min(255, alpha));
     if (alpha == 0 || alpha == 255) { // fade finished
       alpha_next_change_date = 0;
     }

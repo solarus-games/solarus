@@ -56,7 +56,7 @@ void Tileset::add_tile_pattern(int id, TilePattern *tile) {
   tile_patterns[id - 1] = tile;
   nb_tile_patterns++;
 
-  max_tile_id = MAX(id, max_tile_id);
+  max_tile_id = std::max(id, max_tile_id);
 }
 
 /**

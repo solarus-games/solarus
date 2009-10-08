@@ -54,8 +54,8 @@ void Camera::update(void) {
     const SDL_Rect &hero_xy = zsdx->game->get_hero_xy();
     x = hero_xy.x;
     y = hero_xy.y;
-    x = MIN(MAX(x - 160, 0), map_location.w - 320);
-    y = MIN(MAX(y - 120, 0), map_location.h - 240);
+    x = std::min(std::max(x - 160, 0), map_location.w - 320);
+    y = std::min(std::max(y - 120, 0), map_location.h - 240);
   }
   else if (movement != NULL) {
     movement->update();
@@ -121,8 +121,8 @@ void Camera::move(int target_x, int target_y) {
   }
 
   const SDL_Rect &map_location = map->get_location();
-  target_x = MIN(MAX(target_x, 160), map_location.w - 160);
-  target_y = MIN(MAX(target_y, 120), map_location.h - 120);
+  target_x = std::min(std::max(target_x, 160), map_location.w - 160);
+  target_y = std::min(std::max(target_y, 120), map_location.h - 120);
 
   movement = new TargetMovement(target_x, target_y, speed);
   movement->set_position(position.x + 160, position.y + 120);

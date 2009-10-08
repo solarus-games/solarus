@@ -138,32 +138,32 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
       break;
 
     case SDLK_KP1:
-      equipment->set_tunic(MAX(equipment->get_tunic() - 1, 0));
+      equipment->set_tunic(std::max(equipment->get_tunic() - 1, 0));
       game->get_hero()->rebuild_equipment();
       break;
 
     case SDLK_KP4:
-      equipment->set_tunic(MIN(equipment->get_tunic() + 1, 2));
+      equipment->set_tunic(std::min(equipment->get_tunic() + 1, 2));
       game->get_hero()->rebuild_equipment();
       break;
 
     case SDLK_KP2:
-      equipment->set_sword(MAX(equipment->get_sword() - 1, 0));
+      equipment->set_sword(std::max(equipment->get_sword() - 1, 0));
       game->get_hero()->rebuild_equipment();
       break;
 
     case SDLK_KP5:
-      equipment->set_sword(MIN(equipment->get_sword() + 1, 4));
+      equipment->set_sword(std::min(equipment->get_sword() + 1, 4));
       game->get_hero()->rebuild_equipment();
       break;
 
     case SDLK_KP3:
-      equipment->set_shield(MAX(equipment->get_shield() - 1, 0));
+      equipment->set_shield(std::max(equipment->get_shield() - 1, 0));
       game->get_hero()->rebuild_equipment();
       break;
 
     case SDLK_KP6:
-      equipment->set_shield(MIN(equipment->get_shield() + 1, 3));
+      equipment->set_shield(std::min(equipment->get_shield() + 1, 3));
       game->get_hero()->rebuild_equipment();
       break;
 

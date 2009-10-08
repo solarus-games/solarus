@@ -63,7 +63,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
 
     if (equipment->has_world_map()) {
       world_map_img = ResourceManager::load_image("menus/outside_world_map.png");
-      world_minimap_visible_y = MIN(388 - 133, MAX(0, hero_position.y - 66));
+      world_minimap_visible_y = std::min(388 - 133, std::max(0, hero_position.y - 66));
     }
     else {
       world_map_img = ResourceManager::load_image("menus/outside_world_clouds.png");

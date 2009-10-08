@@ -531,7 +531,7 @@ void Enemy::notify_collision_with_explosion(Explosion *explosion) {
  */
 void Enemy::attack_hero(Hero *hero) {
 
-  if (is_enabled() && can_attack) {
+  if (is_enabled() && !is_immobilized() && can_attack) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0 &&

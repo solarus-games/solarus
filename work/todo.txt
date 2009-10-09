@@ -39,6 +39,7 @@ Bugs :
 - mur fissuré qui explose : animation ?
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
+- recompiler Snes_SPC sous windows en version fastdsp
 
 
 Remarques de Thyb, Geomaster et Newlink :
@@ -64,7 +65,6 @@ Remarques de @PyroNet :
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
 - Lorsqu'on achète un objet, l'image de l'objet que Link porte au-dessus de sa tête et de celui qui est sur le tapis se superposent. Il faudrait peut-être faire disparaître l'objet se trouvant sur le tapis pendant que Link porte celui qu'il a acheté.
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
-
 
 
 A venir :

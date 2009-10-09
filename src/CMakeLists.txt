@@ -170,7 +170,7 @@ target_link_libraries (zsdx
 		      SDL_ttf
 		      openal
 		      alut
-		      openspc
+		      snes_spc
 		      lua5.1
 		      physfs
 		      stdc++

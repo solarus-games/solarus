@@ -111,11 +111,11 @@
 5	0	200	136	Chest1	0	63	1	10
 5	0	320	160	Chest2	0	87	50	11
 4	0	312	173	3	0	-1
-1	0	200	53	from_intro	2	0
 1	0	128	213	from_outside	1	0
 18	0	344	104	weak_wall	0	6	65
 1	0	336	125	from_secret_room	2	0
 8	0	200	53	bed	3	0	entities/bed	_none
+1	0	200	53	from_intro	2	0
 0	2	80	216	96	8	148
 0	2	232	56	8	96	143
 0	2	272	56	8	96	142

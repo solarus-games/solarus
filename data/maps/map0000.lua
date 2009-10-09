@@ -10,10 +10,7 @@ function event_map_started(destination_point_name)
   player_set_pause_enabled(false)
   dialog_set_style(1)
   interactive_entity_set_animation_ignore_suspend("fresco", true)
---  start_message("intro0")
-  
-  -- TODO remove and uncomment above
-  start_timer(500, "next_map", false)
+  start_message("intro0")
 end
 
 function event_message_sequence_finished(first_message_id)

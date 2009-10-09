@@ -770,7 +770,7 @@ line2 = "journée."
 [link_house.dream]
 # Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
 #       |-----------------------|
-line1 = "$1... $v..."
+line1 = "... $v..."
 line2 = "C'est moi..."
 line3 = "... Sahasrahla..."
 next = link_house.dream.2

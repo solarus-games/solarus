@@ -422,6 +422,7 @@ bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
  * @return true if this enemy is considered as an obstacle for this entity.
  */
 bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
-  return true;
+  // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
+  return explosion_date != 0;
 }
 

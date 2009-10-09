@@ -38,7 +38,11 @@ function wake_up()
 end
 
 function jump_from_bed()
+  hero_set_visible(true)
   hero_jump(4, 24, false)
+  interactive_entity_set_animation("bed", "empty_open")
   player_set_pause_enabled(true)
+  play_sound("hero_lands");
 end
+
 

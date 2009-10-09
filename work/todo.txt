@@ -40,7 +40,6 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - recompiler Snes_SPC sous windows en version fastdsp
-- empêcher de passer l'intro
 
 
 Remarques de Thyb, Geomaster et Newlink :

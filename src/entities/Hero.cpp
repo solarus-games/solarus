@@ -520,7 +520,7 @@ void Hero::update(void) {
 void Hero::display_on_map(void) {
 
   if (!sprites->is_visible()) {
-    return; // the hero is directly displayed by the game over sequence
+    return; // the hero or the game is in a special state where he is not displayed
   }
 
   sprites->display_on_map();

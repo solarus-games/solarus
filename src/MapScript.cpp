@@ -110,7 +110,9 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "hero_align_on_sensor", l_hero_align_on_sensor);
   lua_register(context, "hero_set_map", l_hero_set_map);
   lua_register(context, "hero_walk", l_hero_walk);
+  lua_register(context, "hero_jump", l_hero_jump);
   lua_register(context, "hero_start_victory_sequence", l_hero_start_victory_sequence);
+  lua_register(context, "hero_set_visible", l_hero_set_visible);
   lua_register(context, "chest_set_open", l_chest_set_open);
   lua_register(context, "chest_set_hidden", l_chest_set_hidden);
   lua_register(context, "chest_is_hidden", l_chest_is_hidden);
@@ -1102,6 +1104,25 @@ int MapScript::l_hero_walk(lua_State *l) {
 }
 
 /**
+ * Makes the hero jump into a direction.
+ * Argument 1 (integer): the jump direction, between 0 and 7
+ * Argument 2 (integer): the jump length in pixels
+ * Argument 3 (boolean): true to enable the collisions
+ */
+int MapScript::l_hero_jump(lua_State *l) {
+
+  check_nb_arguments(l, 3);
+
+  int direction = lua_tointeger(l, 1);
+  int length = lua_tointeger(l, 2);
+  bool with_collisions = lua_toboolean(l, 3) != 0;
+
+  zsdx->game->get_hero()->start_jumping(direction, length, with_collisions, false);
+
+  return 0;
+}
+
+/**
  * Makes the hero brandish his sword meaning a victory
  * and plays the corresponding sound.
  */
@@ -1111,6 +1132,22 @@ int MapScript::l_hero_start_victory_sequence(lua_State *l) {
   zsdx->game->get_hero()->start_victory();
   return 0;
 }
+
+/**
+ * Hides or shows the hero.
+ * Hiding the hero does not disable its movements, so when using this function
+ * you will usually also need to freeze the hero.
+ * Argument 1 (boolean): true to make the hero visible
+ */
+int MapScript::l_hero_set_visible(lua_State *l) {
+
+  check_nb_arguments(l, 1);
+  bool visible = lua_toboolean(l, 1) != 0;
+  zsdx->game->get_hero()->set_visible(visible);
+
+  return 0;
+}
+
 
 /**
  * Sets the chest open or closed.

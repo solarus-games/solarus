@@ -767,6 +767,19 @@ next = outside_world.beaumont_hill_sign.2
 line1 = "passera une bonne"
 line2 = "journée."
 
+[link_house.dream]
+# Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
+#       |-----------------------|
+line1 = "$1... $v..."
+line2 = "C'est moi..."
+line3 = "... Sahasrahla..."
+next = link_house.dream.2
+
+[link_house.dream.2]
+#       |-----------------------|
+line1 = "Je dois... te parler..."
+line2 = "Viens vite, $v..."
+
 [rupee_house.game_1.intro]
 # Jeu du coffre-mystère dans la maison des rubis
 #       |-----------------------|

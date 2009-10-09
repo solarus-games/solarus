@@ -54,16 +54,18 @@ Appel de fonctions C++ depuis un script LUA :
 - npc_set_position(npc, x, y)                           change la position d'un PNJ
 - npc_walk(npc, path, loop, with_collisions)		fait se déplacer un PNJ selon un chemin spécifié
 - npc_random_walk(npc)					fait se déplacer un PNJ de manière aléatoire
+- npc_jump(npc, direction, length, with_collisions)	fait sauter un PNJ dans une direction spécifiée
 - npc_set_animation(npc, animation_name)		change l'animation d'un PNJ
 - npc_set_animation_ignore_suspend(npc, ignore)		indique si l'animation d'un sprite doit continuer même lorsque le jeu est suspendu
-- npc_jump(npc, direction, length, with_collisions)	fait sauter un PNJ dans une direction spécifiée
 - npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
 - npc_remove(npc)					supprime un PNJ de la map
 - hero_set_direction(direction)				change la direction du sprite du héros
 - hero_align_on_sensor(sensor_name)                     place le héros exactement sur le rectangle d'un capteur
 - hero_set_map(map_id, destination_point, transition)	envoie le héros sur une map (différente ou non de l'actuelle)
-- hero_walk(path, loop, with_collisions)		fait se déplacer le héro selon un chemin spécifié
+- hero_walk(path, loop, with_collisions)		fait se déplacer le héros selon un chemin spécifié
+- hero_jump(direction, length, with_collisions)	        fait sauter le héros dans une direction spécifiée
 - hero_start_victory_sequence()				démarre l'animation dans laquelle le héro brandit son épée en signe de victoire
+- hero_set_visible(visible)				cache ou fait réapparaître le héros
 - chest_set_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
 - chest_set_hidden(chest_name, bool hidden)             cache ou fait apparaître un coffre
 - chest_is_hidden(chest_name)                           indique si un coffre est caché

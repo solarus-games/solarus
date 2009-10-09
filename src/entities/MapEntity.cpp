@@ -92,7 +92,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
  * Creates a map entity without specifying its properties yet.
  */
 MapEntity::MapEntity(void):
-  map(NULL), layer(LAYER_LOW), name(""), direction(0), movement(NULL),
+  map(NULL), layer(LAYER_LOW), name(""), direction(0), visible(true), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
   rectangle.x = 0;
@@ -114,7 +114,7 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  map(NULL), layer(layer), name(""), direction(0), movement(NULL),
+  map(NULL), layer(layer), name(""), direction(0), visible(true), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
   rectangle.x = x;
@@ -138,7 +138,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
-  map(NULL), layer(layer), name(name), direction(direction), movement(NULL),
+  map(NULL), layer(layer), name(name), direction(direction), visible(true), movement(NULL),
   suspended(false), when_suspended(0), being_removed(false) {
 
   rectangle.x = x;
@@ -635,6 +635,22 @@ void MapEntity::create_sprite(const SpriteAnimationSetId &id) {
 }
 
 /**
+ * Returns whether this entity is currently visible.
+ * @return true if this entity is currently visible
+ */
+bool MapEntity::is_visible(void) {
+  return visible;
+}
+
+/**
+ * Sets whether this entity is visible
+ * @param visible true to make it visible
+ */
+void MapEntity::set_visible(bool visible) {
+  this->visible = visible;
+}
+
+/**
  * Returns the current movement of the entity.
  * @return the entity's movement, or NULL if there is no movement
  */
@@ -1117,9 +1133,11 @@ void MapEntity::update(void) {
  */
 void MapEntity::display_on_map(void) {
 
-  // display the sprites
-  for (unsigned int i = 0; i < sprites.size(); i++) {
-    map->display_sprite(sprites[i], get_x(), get_y());
+  if (is_visible()) {
+    // display the sprites
+    for (unsigned int i = 0; i < sprites.size(); i++) {
+      map->display_sprite(sprites[i], get_x(), get_y());
+    }
   }
 }
 

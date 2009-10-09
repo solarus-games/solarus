@@ -7,9 +7,13 @@ fresco = 0
 function event_map_started(destination_point_name)
   freeze()
   hud_set_enabled(false)
+  player_set_pause_enabled(false)
   dialog_set_style(1)
   interactive_entity_set_animation_ignore_suspend("fresco", true)
-  start_message("intro0")
+--  start_message("intro0")
+  
+  -- TODO remove and uncomment above
+  start_timer(500, "next_map", false)
 end
 
 function event_message_sequence_finished(first_message_id)
@@ -33,7 +37,12 @@ function next_fresco()
     interactive_entity_fade("fresco", 0)
   else
     dialog_set_style(0)
-    hero_set_map(28, "from_intro", 1)
+    next_map()
   end
+end
+
+
+function next_map()
+  hero_set_map(28, "from_intro", 1)
 end
 

@@ -208,10 +208,12 @@ void HeroSprites::rebuild_equipment(void) {
 
 /**
  * Returns whether the hero is currently visible.
+ * Note that this function is used only for specific purposes of class HeroSprites and has
+ * nothing to do with MapEntity::is_visible().
  * @return true if the hero is currently visible
  */
 bool HeroSprites::is_visible(void) {
-  return !zsdx->game->is_showing_gameover() && hero->get_state() != Hero::RETURNING_TO_SOLID_GROUND;
+  return hero->is_visible() && !zsdx->game->is_showing_gameover() && hero->get_state() != Hero::RETURNING_TO_SOLID_GROUND;
 }
 
 /**

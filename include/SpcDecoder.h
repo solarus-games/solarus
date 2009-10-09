@@ -34,7 +34,7 @@
  * (for gcc, use the flag -DUSE_OPENSPC). 
  * The SPC library you will need to link to the executable depends on this choice.
  */
-#define USE_OPENSPC // just uncomment this to use OpenSPC instead of Snes_SPC
+//#define USE_OPENSPC // just uncomment this to use OpenSPC instead of Snes_SPC
 
 #ifndef USE_SNES_SPC
 #ifndef USE_OPENSPC

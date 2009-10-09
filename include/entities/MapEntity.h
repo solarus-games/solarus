@@ -108,6 +108,7 @@ class MapEntity {
 
   std::vector<Sprite*> sprites; /**< sprite(s) representing the entity, not used for all kinds of entities because
 				 * some of them are invisible, and some of them handle their sprites themselves */
+  bool visible;            /**< indicates that this entity's sprites are currently displayed */
   Movement *movement;      /**< movement of the entity, not used for all kinds of entities;
 			    * NULL indicates that the entity has no movement */
 
@@ -189,6 +190,8 @@ class MapEntity {
   Sprite * get_sprite(int index);
   Sprite * get_sprite(void);
   bool has_sprite(void);
+  bool is_visible(void);
+  void set_visible(bool visible);
   void set_animation_ignore_suspend(bool ignore_suspend);
   void start_fading(int direction);
 

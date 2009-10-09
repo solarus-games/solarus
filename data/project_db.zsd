@@ -7,7 +7,7 @@
 0	6	Outside world D1
 0	5	Outside world D2
 0	0	Intro
-0	28	Link House
+0	28	Link's House
 0	1	Link's House - Secret room
 0	11	Grandma house
 0	2	Rupee House
@@ -104,6 +104,8 @@
 3	entities/frozen_door	Frozen door
 3	entities/outside_door	Outside closed door
 3	entities/fresco	Intro fresco
+3	entities/bed	Hero's bed
+3	entities/snores	Snoring (zzz)
 4	bomb	bomb
 4	boss_charge	boss_charge
 4	boss_dead	boss_dead

@@ -55,7 +55,7 @@ function event_message_sequence_finished(first_message_id, answer)
     first_message_id == "sahasrahla_house.give_world_map" then
     -- give the world map to the player
     give_treasure(50, 33)
-  elseif first_message_id == "sahasrahla_house.quest_accepted" then
+  elseif first_message_id == "sahasrahla_house.quest_accepted" and not door_is_open("door") then
     door_open("door")
   end
 end

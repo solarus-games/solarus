@@ -155,14 +155,16 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
 
     Hero *hero = (Hero*) entity;
     if (destination_point_name == "_side") {
-
+      // scrolling towards an adjacent map
       SDL_Rect facing_point = hero->get_facing_point(transition_direction);
       collision = hero->is_moving_towards(transition_direction)
 	&& overlaps(facing_point.x, facing_point.y);
       normal_case = false;
     }
 
-    else if (map->get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
+    else if (!map->test_collision_with_border(get_center_point()) &&
+	map->get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
+      // falling into a hole
       collision = test_collision_origin_point(hero);
       normal_case = false;
     }

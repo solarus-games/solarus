@@ -6,7 +6,7 @@ function event_map_started()
   freeze()
 end
 
-function event_opening_transition_finished()
+function event_opening_transition_finished(destination_point_name)
   play_music("dungeon_finished.spc")
   npc_set_position("solarus_child", 160, 165)
   npc_set_animation("solarus_child", "stopped")

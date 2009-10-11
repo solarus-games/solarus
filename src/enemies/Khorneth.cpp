@@ -56,7 +56,7 @@ void Khorneth::initialize(void) {
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     vulnerabilities[i] = 0; // insensible to most attacks
   }
-  vulnerabilities[ATTACK_SWORD] = 1;    // TODO temporary
+  vulnerabilities[ATTACK_SWORD] = -1;
 
   // movement
   set_movement(new RandomWalkMovement(3));

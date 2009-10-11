@@ -11,9 +11,9 @@ function event_map_started(destination_point_name)
   door_set_open("miniboss_door", true)
 end
 
-function event_opening_transition_finished()
+function event_opening_transition_finished(destination_point_name)
 
-  if not savegame_get_boolean(62) then
+  if destination_point_name == "from_1F" and not savegame_get_boolean(62) then
     -- the miniboss is alive
     door_close("miniboss_door")
     freeze()

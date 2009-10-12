@@ -118,18 +118,19 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
 }
 
 /**
- * This function is called by the engine when a sprite overlaps the crystal switch.
- * If the entity is the hero, we allow him to lift the item.
- * @param entity an entity
- * @param sprite_overlapping the sprite of this entity that is overlapping the detector
+ * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ * @param other_entity the entity overlapping this detector
+ * @param other_sprite the sprite of other_entity that is overlapping this detector
+ * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void CrystalSwitch::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
+void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
 
-  if (entity->is_hero() &&
-      sprite_overlapping->get_animation_set_id().find("sword") != std::string::npos) {
+  if (other_entity->is_hero() &&
+      other_sprite->contains("sword")) {
     // the hero's sword is overlapping the crystal switch
 
-    Hero *hero = (Hero*) entity;
+    Hero *hero = (Hero*) other_entity;
     if (hero->get_state() != Hero::SWORD_LOADING && get_distance(hero) < 32) {
       activate();
     }

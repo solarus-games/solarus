@@ -78,6 +78,8 @@ class Enemy: public Detector {
     int x, y;
   };
 
+ private:
+
   // attack/defense features of this type of enemy
   int damage_on_hero;                 /**< number of heart quarters the player loses when he gets hurt by this enemy;
 				       * this number is divided depending on the hero's tunic number (default: 1) */
@@ -92,7 +94,7 @@ class Enemy: public Detector {
   int minimum_shield_needed;          /**< shield number needed by the hero to avoid the attack of this enemy,
 				       * or 0 to make the attack unavoidable (default: 0) */
 
-  int vulnerabilities[ATTACK_NUMBER]; /**< indicates how the enemy reacts to each attack (default: depends on the attacks):
+  int attack_consequences[ATTACK_NUMBER]; /**< indicates how the enemy reacts to each attack (by default, it depends on the attacks):
 				       * - a number greater than 0 represents the number of health points lost when
 				       * he is subject to this attack (for a sword attack, this number will be multiplied
 				       * depending on the sword and the presence of a spin attack),
@@ -130,6 +132,8 @@ class Enemy: public Detector {
   int nb_explosions;                  /**< number of explosions already played */
   Uint32 next_explosion_date;         /**< date of the next explosion */
 
+ protected:
+
   // creation
   Enemy(const ConstructionParameters &params);
   virtual void initialize(void) = 0; // to initialize the features, the sprites and the movement
@@ -144,9 +148,9 @@ class Enemy: public Detector {
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
 		    bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
-  void set_vulnerability(EnemyAttack attack, int reaction);
-  void set_no_vulnerabilities(void);
-  void set_default_vulnerabilities(void);
+  void set_attack_consequence(EnemyAttack attack, int consequence);
+  void set_no_attack_consequences(void);
+  void set_default_attack_consequences(void);
 
   // hurt the enemy
   void play_hurt_sound(void);
@@ -159,7 +163,7 @@ class Enemy: public Detector {
   bool is_sprite_finished_or_looping(void);
   void immobilize(void);
   void stop_immobilized(void);
-  virtual int custom_attack(EnemyAttack attack);
+  virtual int custom_attack(EnemyAttack attack, Sprite *this_sprite);
 
   PickableItem::Subtype get_random_rupee(void);
 
@@ -187,12 +191,17 @@ class Enemy: public Detector {
   bool is_enabled(void);
   void set_enabled(bool enabled);
   void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
-  void notify_collision_with_explosion(Explosion *explosion);
+  void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
+  void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
 
-  void attack_hero(Hero *hero);
+  // attack the hero
+  void attack_hero(Hero *hero, Sprite *this_sprite);
   void attack_stopped_by_hero_shield(void);
-  void try_hurt(EnemyAttack attack, MapEntity *source);
+
+  // be subject to an attack
+  int get_attack_consequence(EnemyAttack attack);
+  virtual int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
+  void try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite);
   void kill(void);
   virtual void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
   virtual void just_dead(void);

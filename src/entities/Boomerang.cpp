@@ -285,7 +285,7 @@ void Boomerang::update(void) {
 void Boomerang::notify_collision_with_enemy(Enemy *enemy) {
 
   if (!overlaps(hero)) {
-    enemy->try_hurt(ATTACK_BOOMERANG, this);
+    enemy->try_hurt(ATTACK_BOOMERANG, this, NULL);
   }
 }
 

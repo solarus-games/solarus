@@ -213,24 +213,24 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
 }
 
 /**
- * This function is called by the engine when a sprite overlaps the destructible item.
- * If the sprite is the sword and this item can be cut, then the item may be cut.
- * @param entity an entity
- * @param sprite_overlapping the sprite of this entity that is overlapping the detector
+ * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ * @param other_entity the entity overlapping this detector
+ * @param other_sprite the sprite of other_entity that is overlapping this detector
+ * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void DestructibleItem::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
+void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
 
   if (features[subtype].can_be_cut
       && !is_being_cut
       && !is_disabled()
-      && entity->is_hero()
-      && sprite_overlapping->get_animation_set_id().find("sword") != std::string::npos) {
+      && other_entity->is_hero()
+      && other_sprite->contains("sword")) {
 
-    Hero *hero = (Hero*) entity;
+    Hero *hero = (Hero*) other_entity;
     if (hero->is_stroke_by_sword(this)) {
 
       play_destroy_animation();
-
       hero->just_moved(); // to update the ground under the hero
 
       if (pickable_item != PickableItem::NONE) {

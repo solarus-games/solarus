@@ -162,7 +162,7 @@ MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
   enemy->push_back_hero_on_sword = false;
   enemy->minimum_shield_needed = 0;
 
-  enemy->set_default_vulnerabilities();
+  enemy->set_default_attack_consequences();
 
   return enemy;
 }
@@ -301,30 +301,31 @@ void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound
  * @param attack an attack
  * @param reaction how the enemy will react
  */
-void Enemy::set_vulnerability(EnemyAttack attack, int reaction) {
-  vulnerabilities[attack] = reaction;
+void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
+  attack_consequences[attack] = consequence;
 }
 
 /**
  * Sets the enemy insensible to all attacks.
  */
-void Enemy::set_no_vulnerabilities(void) {
+void Enemy::set_no_attack_consequences(void) {
   for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_vulnerability(EnemyAttack(i), 0);
+    set_attack_consequence(EnemyAttack(i), 0);
   }
 }
 
 /**
- * Set some default values for the vulnerabilities.
+ * Set some default values for the consequences of the attacks
+ * this enemy can be subject to.
  */
-void Enemy::set_default_vulnerabilities(void) {
+void Enemy::set_default_attack_consequences(void) {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_vulnerability(EnemyAttack(i), 1);
+    set_attack_consequence(EnemyAttack(i), 1);
   }
-  set_vulnerability(ATTACK_EXPLOSION, 2);
-  set_vulnerability(ATTACK_HOOKSHOT, -2);
-  set_vulnerability(ATTACK_BOOMERANG, -2);
+  set_attack_consequence(ATTACK_EXPLOSION, 2);
+  set_attack_consequence(ATTACK_HOOKSHOT, -2);
+  set_attack_consequence(ATTACK_BOOMERANG, -2);
 }
 
 /**
@@ -504,32 +505,36 @@ void Enemy::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
 }
 
 /**
- * This function is called when the enemy's sprite collides with another
- * entity's sprite.
- * @param entity the other entity
- * @param sprite_overlapping the sprite of this entity that is overlapping the enemy
+ * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ * @param other_entity the entity overlapping this detector
+ * @param other_sprite the sprite of other_entity that is overlapping this detector
+ * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Enemy::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
+void Enemy::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
 
   if (is_enabled()) {
-    entity->notify_collision_with_enemy(this, sprite_overlapping);
+    other_entity->notify_collision_with_enemy(this, this_sprite, other_sprite);
   }
 }
 
 /**
- * This function is called when an explosion's sprite detects a collision with this entity's sprite.
+ * This function is called when an explosion's sprite detects a collision with a sprite of this enemy.
  * @param explosion the explosion
+ * @param sprite_overlapping the sprite of this enemy that collides with the explosion
  */
-void Enemy::notify_collision_with_explosion(Explosion *explosion) {
-  explosion->try_attack_enemy(this);
+void Enemy::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
+  explosion->try_attack_enemy(this, sprite_overlapping);
 }
 
 /**
  * Attacks the hero if possible.
  * This function is called when there is a collision between the enemy and the hero.
  * @param hero the hero
+ * @param this_sprite the sprite of this enemy that detected the collision with the hero,
+ * or NULL if it was not a pixel-perfect collision.
  */
-void Enemy::attack_hero(Hero *hero) {
+void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
 
   if (is_enabled() && !is_immobilized() && can_attack) {
 
@@ -566,6 +571,29 @@ void Enemy::attack_stopped_by_hero_shield(void) {
 }
 
 /**
+ * Returns the consequence corresponding to the specified attack.
+ * @param attack an attack this enemy is subject to
+ * @return the corresponding consequence
+ */
+int Enemy::get_attack_consequence(EnemyAttack attack) {
+  return attack_consequences[attack];
+}
+
+/**
+ * Returns the consequence corresponding to the specified attack on the specified sprite of this enemy.
+ * By default, this function does not take the sprite into account and just calls 
+ * get_attack_consequence(EnemyAttack). Redefine it in subclasses of enemies that have to react differently
+ * depending on their sprite attacked.
+ * @param attack an attack this enemy is subject to
+ * @param this_sprite the sprite attacked, or NULL if the attack does not come from
+ * a pixel-perfect collision test
+ * @return the corresponding attack.
+ */
+int Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
+  return get_attack_consequence(attack);
+}
+
+/**
  * Plays the appropriate sounds the enemy is hurt.
  */
 void Enemy::play_hurt_sound(void) {
@@ -593,33 +621,39 @@ void Enemy::play_hurt_sound(void) {
  * Makes the enemy subject to an attack.
  * @param attack type of attack
  * @param source the entity attacking the enemy (often the hero)
+ * @param this_sprite the sprite of this enemy that received the attack, or NULL
+ * if the attack comes from a non pixel-perfect collision test.
  */
-void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
+void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite) {
 
   if (!is_enabled()) {
     return;
   }
 
   int result;
-  if (invulnerable || vulnerabilities[attack] == 0) {
+
+  int consequence = get_attack_consequence(attack, this_sprite);
+  if (invulnerable || consequence == 0) {
     // ignore the attack
     result = 0;
   }
 
-  else if (vulnerabilities[attack] == -1) {
+  else if (consequence == -1) {
     // shield sound
     ResourceManager::get_sound("shield")->play();
     invulnerable = true; // to avoid playing the sound several times
     vulnerable_again_date = SDL_GetTicks() + 500;
     result = -1;
   }
-  else if (vulnerabilities[attack] == -2) {
+  else if (consequence == -2) {
+    // get immobilized
     hurt(source);
     immobilize();
     result = -2;
   }
-  else if (vulnerabilities[attack] == -3) {
-    result = custom_attack(attack);
+  else if (consequence == -3) {
+    // custom attack (defined in the subclass)
+    result = custom_attack(attack, this_sprite);
   }
   else {
     // hurt the enemy
@@ -629,7 +663,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source) {
     }
 
     // compute the number of health points lost by the enemy
-    int life_lost = vulnerabilities[attack];
+    int life_lost = consequence;
 
     if (attack == ATTACK_SWORD) {
 
@@ -811,9 +845,11 @@ bool Enemy::is_immobilized(void) {
  * This function is called when the enemy is attacked by a custom effect attack.
  * Redefine this function to handle the attack.
  * @param attack the attack
+ * @param this_sprite the sprite of this enemy subject to the attack, or NULL
+ * if the attack does not come from a pixel-perfect collision test.
  * @return the number of health points lost (can be 0)
  */
-int Enemy::custom_attack(EnemyAttack attack) {
+int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
   return 0;
 }
 

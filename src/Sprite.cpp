@@ -61,6 +61,16 @@ const SpriteAnimationSetId& Sprite::get_animation_set_id(void) {
 }
 
 /**
+ * Returns wether the id of the animation set of this sprite
+ * contains the specified string.
+ * @param s the string to check
+ * @return true if the animation set id contains this string
+ */
+bool Sprite::contains(const std::string s) {
+  return animation_set_id.find(s) != std::string::npos;
+}
+
+/**
  * Returns the animation set of this sprite.
  * If several sprites have the same animation set, they share the same instance of animation set
  * and the same pointer is returned here.

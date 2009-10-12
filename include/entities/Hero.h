@@ -294,14 +294,14 @@ class Hero: public MapEntity {
   // enemies and collisions
   bool is_obstacle_for(MapEntity *other);
   void notify_collision_with_enemy(Enemy *enemy);
-  void notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
+  void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
   void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
   bool is_stroke_by_sword(Detector *detector);
 
   void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
   void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
   void notify_collision_with_sensor(Sensor *sensor);
-  void notify_collision_with_explosion(Explosion *explosion);
+  void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
   void avoid_chest_collision(Chest *chest);
   bool is_on_raised_blocks(void);
 

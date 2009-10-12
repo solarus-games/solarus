@@ -49,9 +49,9 @@ class Explosion: public Detector {
     void update(void);
 
     // collisions
-    void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
-    void notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping);
-    void try_attack_enemy(Enemy *enemy);
+    void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
+    void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
+    void try_attack_enemy(Enemy *enemy, Sprite *enemy_sprite);
     void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };
 

@@ -78,7 +78,7 @@ class Detector: public MapEntity {
 
   // functions called when a collision is detected
   virtual void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  virtual void notify_collision(MapEntity *entity, Sprite *sprite_overlapping);
+  virtual void notify_collision(MapEntity *entity, Sprite *this_sprite, Sprite *other_sprite);
 
  public:
 

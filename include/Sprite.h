@@ -79,6 +79,7 @@ class Sprite {
 
   // animation set
   const SpriteAnimationSetId& get_animation_set_id(void);
+  bool contains(const std::string s);
   SpriteAnimationSet *get_animation_set(void);
 
   // size and origin point

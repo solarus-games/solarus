@@ -111,30 +111,33 @@ void Explosion::update(void) {
 }
 
 /**
- * This function is called when this entity's sprite detects a collision with another
- * entity's sprite.
- * @param entity the other entity
- * @param sprite_overlapping the sprite of the other entity that is overlapping this entity
+ * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ * @param other_entity the entity overlapping this detector
+ * @param other_sprite the sprite of other_entity that is overlapping this detector
+ * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Explosion::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
-  entity->notify_collision_with_explosion(this);
+void Explosion::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
+  other_entity->notify_collision_with_explosion(this, other_sprite);
 }
 
 /**
- * This function is called when an enemy's sprite detects a collision with a sprite of this entity.
+ * This function is called when an enemy's sprite collides with a sprite of this entity
  * @param enemy the enemy
- * @param sprite_overlapping this entity's sprite that collides with the enemy
+ * @param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
+ * @param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
-void Explosion::notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
-  try_attack_enemy(enemy);
+void Explosion::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite) {
+  try_attack_enemy(enemy, enemy_sprite);
 }
 
 /**
  * Attacks the specified enemy if possible.
  * This function is called by this explosion when it detects an enemy, or by an enemy who detects this explosion.
  * @param enemy the enemy to attack
+ * @param enemy_sprite the enemy's sprite detected by the explosion
  */
-void Explosion::try_attack_enemy(Enemy *enemy) {
+void Explosion::try_attack_enemy(Enemy *enemy, Sprite *enemy_sprite) {
   
   // see if the enemy was already hurt by this explosion
   bool found = false;
@@ -144,7 +147,7 @@ void Explosion::try_attack_enemy(Enemy *enemy) {
   }
 
   if (!found) {
-    enemy->try_hurt(ATTACK_EXPLOSION, this);
+    enemy->try_hurt(ATTACK_EXPLOSION, this, enemy_sprite);
   }
 }
 

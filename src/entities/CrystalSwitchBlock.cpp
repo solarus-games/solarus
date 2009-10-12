@@ -105,13 +105,7 @@ bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
   }
 
   // if the block is raised, only some specific entities may overlap it
-  // TODO: remove type test
-  if (!other->is_hero()) {
-    return other->is_raised_block_obstacle(this);
-  }
-
-  // the hero can walk on raised blocks only if he is already on them
-  return !map->get_entities()->is_hero_on_raised_blocks();
+  return other->is_raised_block_obstacle(this);
 }
 
 /**
@@ -125,7 +119,7 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
 
     // see if we have to make fim fall
 
-    Hero *hero = zsdx->game->get_hero();
+    Hero *hero = (Hero*) entity_overlapping;
     if (hero->get_normal_movement()->is_moving_enabled()) {
 
       SDL_Rect collision_box = hero->get_rectangle();

@@ -43,7 +43,6 @@ void Khorneth::initialize(void) {
   // attack/defense features
   set_damage(2, 0);
   set_life(4);
-  minimum_shield_needed = 0;
 
   // sprite
   create_sprite("enemies/khorneth");
@@ -52,11 +51,9 @@ void Khorneth::initialize(void) {
   set_origin(20, 45);
   set_collision_modes(COLLISION_SPRITE);
 
-  // vulnerabilities
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    vulnerabilities[i] = 0; // insensible to most attacks
-  }
-  vulnerabilities[ATTACK_SWORD] = -1;
+  // reactions to attacks
+  set_no_attack_consequences();
+  set_attack_consequence(ATTACK_SWORD, -1);
 
   // movement
   set_movement(new RandomWalkMovement(3));

@@ -325,7 +325,7 @@ void CarriedItem::display_on_map(void) {
 void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
 
   if (is_throwing && explosion_date == 0) {
-    enemy->try_hurt(ATTACK_THROWN_ITEM, this);
+    enemy->try_hurt(ATTACK_THROWN_ITEM, this, NULL);
   }
 }
 

@@ -165,13 +165,6 @@ bool Block::moved_by_hero(void) {
 
   if (get_movement() != NULL || maximum_moves == 0 || SDL_GetTicks() < when_can_move ||
       (direction != -1 && hero->get_animation_direction() != direction)) {
-    /* TODO remove
-    if (maximum_moves == 0)
-      std::cout << "not moving because cannot move any more\n";
-    else if (get_movement() != NULL) 
-      std::cout << "not moving because already moving\n";
-    else if...
-    */
     return false;
   }
 

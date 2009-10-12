@@ -48,7 +48,6 @@ void Minillosaur::initialize(void) {
   // attack/defense features
   set_damage(2);
   set_life(2);
-  minimum_shield_needed = 0;
 
   // sprite
   create_sprite("enemies/minillosaur");
@@ -62,9 +61,9 @@ void Minillosaur::initialize(void) {
   Hero *hero = zsdx->game->get_hero();
   set_movement(new StraightMovement(12, get_xy(), hero->get_xy(), 1500));
 
-  // vulnerabilities
-  set_no_vulnerabilities();
-  set_vulnerability(ATTACK_SWORD, -3); // custom effect when striking the egg
+  // reactions to attacks
+  set_no_attack_consequences();
+  set_attack_consequence(ATTACK_SWORD, -3); // custom effect when striking the egg
 
   // state
   in_egg = true;
@@ -120,7 +119,7 @@ void Minillosaur::update(void) {
     set_origin(8, 12);
     set_aligned_to_grid();
     set_movement(new PathFindingMovement(zsdx->game->get_hero(), 4));
-    set_default_vulnerabilities();
+    set_default_attack_consequences();
     in_egg = false;
   }
 

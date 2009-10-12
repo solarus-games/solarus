@@ -43,17 +43,14 @@ void Bubble::initialize(void) {
   // attack/defense features
   set_damage(2, 4);
   set_life(1);
-  minimum_shield_needed = 0;
 
   // sprite
   create_sprite("enemies/bubble");
   set_size(12, 12);
   set_origin(6, 6);
 
-  // vulnerabilities
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    vulnerabilities[i] = 0;
-  }
+  // reactions to attack
+  set_no_attack_consequences();
 
   // movement
   set_movement(new CollisionMovement());

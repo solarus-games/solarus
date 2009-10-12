@@ -142,13 +142,17 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
   if (has_collision_mode(COLLISION_SPRITE)
       && entity != this
       && (layer_ignored || get_layer() == entity->get_layer())
-      && sprite->get_animation_set()->are_pixel_collisions_enabled()
-      && has_sprite()
-      && get_sprite()->test_collision(sprite, get_x(), get_y(), entity->get_x(), entity->get_y())) {
+      && sprite->get_animation_set()->are_pixel_collisions_enabled()) {
 
-    // TODO allow a detector to have several pixel collision capable sprites (e.g. green soldier)
-
-    notify_collision(entity, sprite);
+    // we check the collision between the specified entity's sprite and all sprites of the current entity
+    std::vector<Sprite*>::iterator it;
+    for (it = sprites.begin(); it != sprites.end(); it++) {
+      Sprite *this_sprite = (*it);
+      if (this_sprite->get_animation_set()->are_pixel_collisions_enabled()
+	  && this_sprite->test_collision(sprite, get_x(), get_y(), entity->get_x(), entity->get_y())) {
+	notify_collision(entity, sprite, this_sprite);
+      }
+    }
   }
 }
 
@@ -226,14 +230,14 @@ void Detector::notify_collision(MapEntity *entity_overlapping, CollisionMode col
 }
 
 /**
- * This function is called by check_collision(MapEntity*, Sprite*)
- * when a sprite overlaps the detector.
- * By default, nothing happens.
- * Redefine this method in the subclasses to do the appropriate action.
- * @param entity the entity
- * @param sprite_overlapping the sprite of this entity overlapping the detector
+ * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ * By default, nothing happens. Redefine this method in the subclasses to do the appropriate action.
+ * @param other_entity the entity overlapping this detector
+ * @param other_sprite the sprite of other_entity that is overlapping this detector
+ * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Detector::notify_collision(MapEntity *entity, Sprite *sprite_overlapping) {
+void Detector::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
 
 }
 

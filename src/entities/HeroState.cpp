@@ -276,11 +276,15 @@ void Hero::notify_collision_with_sensor(Sensor *sensor) {
 }
 
 /**
- * This function is called when an explosion's sprite detects a collision with this entity's sprite.
+ * This function is called when an explosion's sprite detects a collision with a sprite of the hero.
  * @param explosion the explosion
+ * @param sprite_overlapping the sprite of the hero that collides with the explosion
  */
-void Hero::notify_collision_with_explosion(Explosion *explosion) {
-  hurt(explosion, 2, 0);
+void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
+
+  if (sprite_overlapping->contains("tunic")) {
+    hurt(explosion, 2, 0);
+  }
 }
 
 /**
@@ -1200,30 +1204,30 @@ void Hero::get_back_from_death(void) {
  * @param enemy the enemy
  */
 void Hero::notify_collision_with_enemy(Enemy *enemy) {
-  enemy->attack_hero(this);
+  enemy->attack_hero(this, NULL);
 }
 
 /**
  * This function is called when an enemy's sprite collides with a sprite of the hero.
  * @param enemy the enemy
- * @param sprite_overlapping the hero sprite that collides with the enemy
+ * @param enemy_sprite the enemy's sprite that overlaps a sprite of the hero
+ * @param this_sprite the hero's sprite that overlaps the enemy's sprite
  */
-void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *sprite_overlapping) {
+void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite) {
 
-  std::string id = sprite_overlapping->get_animation_set_id();
-  if (id.find("sword") != std::string::npos) {
+  if (this_sprite->contains("sword")) {
     // the hero's sword overlaps the enemy
-    enemy->try_hurt(ATTACK_SWORD, this);
+    enemy->try_hurt(ATTACK_SWORD, this, enemy_sprite);
   }
-  else if (id.find("tunic") != std::string::npos) {
+  else if (this_sprite->contains("tunic")) {
     // the hero's body overlaps the enemy: ensure that the 16*16 rectangle of the hero also overlaps the enemy
-    SDL_Rect enemy_sprite_rectangle = enemy->get_sprite()->get_size();
-    const SDL_Rect &enemy_sprite_origin = enemy->get_sprite()->get_origin();
+    SDL_Rect enemy_sprite_rectangle = enemy_sprite->get_size();
+    const SDL_Rect &enemy_sprite_origin = enemy_sprite->get_origin();
     enemy_sprite_rectangle.x = enemy->get_x() - enemy_sprite_origin.x;
     enemy_sprite_rectangle.y = enemy->get_y() - enemy_sprite_origin.y;
 
     if (overlaps(enemy_sprite_rectangle)) {
-      enemy->attack_hero(this);
+      enemy->attack_hero(this, enemy_sprite);
     }
   }
 }

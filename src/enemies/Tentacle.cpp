@@ -45,7 +45,6 @@ void Tentacle::initialize(void) {
   // attack/defense features
   set_damage(2);
   set_life(1);
-  minimum_shield_needed = 0;
 
   // sprite
   create_sprite("enemies/tentacle");

@@ -29,6 +29,8 @@ class Khorneth: public Enemy {
 
     void initialize(void);
     void restart(void);
+    int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
+    int custom_attack(EnemyAttack attack, Sprite *this_sprite);
 
   public:
 

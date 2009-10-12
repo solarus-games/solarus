@@ -131,6 +131,7 @@ class MapEntity {
   void set_origin(const SDL_Rect &origin);
   void set_rectangle_from_sprite(void);
   void create_sprite(const SpriteAnimationSetId &id);
+  void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions);
 
   void set_movement(Movement *movement);
   void clear_movement(void);

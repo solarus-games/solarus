@@ -45,15 +45,15 @@ void Khorneth::initialize(void) {
   set_life(4);
 
   // sprite
-  create_sprite("enemies/khorneth");
-  get_sprite()->get_animation_set()->enable_pixel_collisions();
+  create_sprite("enemies/khorneth", true);
+  create_sprite("enemies/khorneth_left_blade", true);
+  create_sprite("enemies/khorneth_right_blade", true);
   set_size(40, 48);
   set_origin(20, 45);
   set_collision_modes(COLLISION_SPRITE);
 
   // reactions to attacks
   set_no_attack_consequences();
-  set_attack_consequence(ATTACK_SWORD, -1);
 
   // movement
   set_movement(new RandomWalkMovement(3));
@@ -66,5 +66,49 @@ void Khorneth::initialize(void) {
  */
 void Khorneth::restart(void) {
   Enemy::restart();
+}
+
+/**
+ * Returns the consequence corresponding to the specified attack on the specified sprite of this enemy.
+ * @param attack an attack this enemy is subject to
+ * @param this_sprite the sprite attacked, or NULL if the attack does not come from
+ * a pixel-perfect collision test
+ * @return the corresponding attack.
+ */
+int Khorneth::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
+
+  int result;
+
+  if (attack != ATTACK_SWORD) {
+    result = Enemy::get_attack_consequence(attack);
+  }
+  else {
+    const SpriteAnimationSetId &id = this_sprite->get_animation_set_id();
+    if (id == "enemies/khorneth") {
+      // body: protected against the attacks
+      result = -1;
+    }
+    else {
+      // blades: sensible to the sword
+      result = -3;
+    }
+  }
+  return result;
+}
+
+/**
+ * This function is called when the enemy is attacked by a custom effect attack.
+ * @param attack the attack
+ * @param this_sprite the sprite of this enemy subject to the attack, or NULL
+ * if the attack does not come from a pixel-perfect collision test.
+ * @return the number of health points lost (can be 0)
+ */
+int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
+
+  if (this_sprite->contains("left_blade")) {
+    // TODO
+  }
+
+  return 0;
 }
 

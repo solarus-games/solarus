@@ -850,7 +850,7 @@ bool Enemy::is_immobilized(void) {
  * @return the number of health points lost (can be 0)
  */
 int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
-  return 0;
+  DIE("The custom attack for enemy '" << get_name() << "' is not defined");
 }
 
 /**

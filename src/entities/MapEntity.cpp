@@ -625,7 +625,22 @@ Sprite * MapEntity::get_sprite(void) {
  * @param id id of the sprite's animations to add
  */
 void MapEntity::create_sprite(const SpriteAnimationSetId &id) {
-  sprites.push_back(new Sprite(id));
+  create_sprite(id, false);
+}
+
+/**
+ * Adds a sprite to this entity.
+ * @param id id of the sprite's animations to add
+ * @param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
+ */
+void MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions) {
+
+  Sprite *sprite = new Sprite(id);
+
+  if (enable_pixel_collisions) {
+    sprite->get_animation_set()->enable_pixel_collisions();
+  }
+  sprites.push_back(sprite);
 }
 
 /**

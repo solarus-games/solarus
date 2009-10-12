@@ -84,9 +84,11 @@ void Minillosaur::restart(void) {
 /**
  * This function is called when the enemy is attacked by a custom effect attack.
  * @param attack the attack
+ * @param this_sprite the sprite of this enemy subject to the attack, or NULL
+ * if the attack does not come from a pixel-perfect collision test.
  * @return the number of health points lost (can be 0)
  */
-int Minillosaur::custom_attack(EnemyAttack attack) {
+int Minillosaur::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 
   if (attack == ATTACK_SWORD && get_sprite()->get_current_animation() == "egg") {
     ResourceManager::get_sound("monster_hurt")->play();

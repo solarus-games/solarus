@@ -187,7 +187,7 @@ void Enemy::set_map(Map *map) {
     // let the subclass initialize the enemy
     initialize();
 
-    for (unsigned int i = 0; i < sprites.size(); i++) {
+    for (int i = 0; i < get_nb_sprites(); i++) {
       get_sprite(i)->get_animation_set()->enable_pixel_collisions();
     }
 
@@ -352,11 +352,13 @@ void Enemy::update(void) {
 	}
 	else if (is_immobilized()) {
 	  clear_movement();
-	  get_sprite()->set_current_animation("immobilized");
+	  for (int i = 0; i < get_nb_sprites(); i++) {
+  	    get_sprite(i)->set_current_animation("immobilized");
+	  }
 	}
 	else {
 	  clear_movement();
-	  set_movement(normal_movement); // restore the previous movement
+	  restore_movement(); // restore the previous movement
 	  restart();
 	}
       }
@@ -381,7 +383,9 @@ void Enemy::update(void) {
       get_sprite()->get_current_animation() != "shaking") {
 
     end_shaking_date = now + 2000;
-    get_sprite()->set_current_animation("shaking");
+    for (int i = 0; i < get_nb_sprites(); i++) {
+      get_sprite()->set_current_animation("shaking");
+    }
   }
 
   if (exploding) {
@@ -489,7 +493,10 @@ bool Enemy::is_in_normal_state(void) {
  * or it was just hurt).
  */
 void Enemy::restart(void) {
-  get_sprite()->set_current_animation("walking");
+
+  for (int i = 0; i < get_nb_sprites(); i++) {
+    get_sprite(i)->set_current_animation("walking");
+  }
 }
 
 /**
@@ -525,6 +532,22 @@ void Enemy::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Spri
  */
 void Enemy::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
   explosion->try_attack_enemy(this, sprite_overlapping);
+}
+
+/**
+ * Stops the movement temporarily.
+ */
+void Enemy::stop_movement(void) {
+  normal_movement = get_movement();
+  set_movement(NULL);
+}
+
+/**
+ * Restores the movement previously stopped with stop_movement().
+ */
+void Enemy::restore_movement(void) {
+  set_movement(normal_movement);
+  normal_movement = NULL;
 }
 
 /**
@@ -638,57 +661,60 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     result = 0;
   }
 
-  else if (consequence == -1) {
-    // shield sound
-    ResourceManager::get_sound("shield")->play();
-    invulnerable = true; // to avoid playing the sound several times
-    vulnerable_again_date = SDL_GetTicks() + 500;
-    result = -1;
-  }
-  else if (consequence == -2) {
-    // get immobilized
-    hurt(source);
-    immobilize();
-    result = -2;
-  }
-  else if (consequence == -3) {
-    // custom attack (defined in the subclass)
-    result = custom_attack(attack, this_sprite);
-  }
   else {
-    // hurt the enemy
-
-    if (is_immobilized() && get_sprite()->get_current_animation() == "shaking") {
-      stop_immobilized();
+    invulnerable = true;
+    vulnerable_again_date = SDL_GetTicks() + 500;
+    
+    if (consequence == -1) {
+      // shield sound
+      ResourceManager::get_sound("shield")->play();
+      result = -1;
     }
+    else if (consequence == -2) {
+      // get immobilized
+      hurt(source);
+      immobilize();
+      result = -2;
+    }
+    else if (consequence == -3) {
+      // custom attack (defined in the subclass)
+      result = custom_attack(attack, this_sprite);
+    }
+    else {
+      // hurt the enemy
 
-    // compute the number of health points lost by the enemy
-    int life_lost = consequence;
-
-    if (attack == ATTACK_SWORD) {
-
-      // for a sword attack, the damage depends on the sword
-
-      static const int sword_factors[] = {0, 1, 2, 4, 8};
-      int sword = zsdx->game->get_equipment()->get_sword();
-      life_lost *= sword_factors[sword];
-      if (((Hero*) source)->get_state() == Hero::SPIN_ATTACK) {
-	life_lost *= 2; // muliply by 2 if this is a spin attack
+      if (is_immobilized() && get_sprite()->get_current_animation() == "shaking") {
+	stop_immobilized();
       }
-    }
-    else if (attack == ATTACK_THROWN_ITEM) {
-      life_lost *= ((CarriedItem*) source)->get_damage_on_enemies();
-    }
-    life -= life_lost;
 
-    hurt(source);
-    just_hurt(source, attack, life_lost);
+      // compute the number of health points lost by the enemy
+      int life_lost = consequence;
 
-    result = life_lost;
+      if (attack == ATTACK_SWORD) {
+
+	// for a sword attack, the damage depends on the sword
+
+	static const int sword_factors[] = {0, 1, 2, 4, 8};
+	int sword = zsdx->game->get_equipment()->get_sword();
+	life_lost *= sword_factors[sword];
+	if (((Hero*) source)->get_state() == Hero::SPIN_ATTACK) {
+	  life_lost *= 2; // muliply by 2 if this is a spin attack
+	}
+      }
+      else if (attack == ATTACK_THROWN_ITEM) {
+	life_lost *= ((CarriedItem*) source)->get_damage_on_enemies();
+      }
+      life -= life_lost;
+
+      hurt(source);
+      just_hurt(source, attack, life_lost);
+
+      result = life_lost;
+    }
+
+    // notify the source
+    source->just_attacked_enemy(attack, this, result);
   }
-
-  // notify the source
-  source->just_attacked_enemy(attack, this, result);
 }
 
 /**
@@ -704,18 +730,18 @@ void Enemy::hurt(MapEntity *source) {
 
   // update the enemy state
   being_hurt = true;
-  invulnerable = true;
-  vulnerable_again_date = SDL_GetTicks() + 500;
 
   //can_attack = false;
   //can_attack_again_date = vulnerable_again_date;
 
   // graphics and sounds
-  get_sprite()->set_current_animation("hurt");
+  for (int i = 0; i < get_nb_sprites(); i++) {
+    get_sprite(i)->set_current_animation("hurt");
+  }
   play_hurt_sound();
 
   // save the movement
-  normal_movement = get_movement();
+  stop_movement();
 
   // push the enemy back
   if (pushed_back_when_hurt) {
@@ -829,7 +855,7 @@ void Enemy::immobilize(void) {
 void Enemy::stop_immobilized(void) {
   immobilized = false;
   end_shaking_date = 0;
-  set_movement(normal_movement);
+  restore_movement();
   restart();
 }
 

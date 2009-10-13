@@ -25,6 +25,14 @@
  */
 class Khorneth: public Enemy {
 
+  private:
+
+    // blades
+    int left_blade_life;
+    Uint32 end_left_blade_hurt_date;
+    int right_blade_life;
+    Uint32 end_right_blade_hurt_date;
+
   protected:
 
     void initialize(void);
@@ -37,6 +45,7 @@ class Khorneth: public Enemy {
     Khorneth(const ConstructionParameters &params);
     ~Khorneth(void);
 
+    void update(void);
 };
 
 #endif

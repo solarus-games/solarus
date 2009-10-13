@@ -116,6 +116,8 @@ class Sprite {
   // effects
   bool is_blinking(void);
   void set_blinking(Uint32 blink_delay);
+  int get_alpha(void);
+  void set_alpha(int alpha);
   bool is_fading(void);
   void start_fading(int direction);
 

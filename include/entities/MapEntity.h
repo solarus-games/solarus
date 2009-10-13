@@ -190,6 +190,7 @@ class MapEntity {
   // sprites
   Sprite * get_sprite(int index);
   Sprite * get_sprite(void);
+  int get_nb_sprites(void);
   bool has_sprite(void);
   bool is_visible(void);
   void set_visible(bool visible);

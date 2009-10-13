@@ -372,6 +372,23 @@ void Sprite::set_blinking(Uint32 blink_delay) {
     blink_next_change_date = SDL_GetTicks();
   }
 }
+ 
+/**
+ * Returns the alpha value currently applied to the sprite.
+ * @return the transparency rate: 0 (tranparent) to 255 (opaque)
+ */
+int Sprite::get_alpha(void) {
+  return alpha;
+}
+
+/**
+ * Sets the alpha value applied to the sprite.
+ * @param alpha the transparency rate: 0 (tranparent) to 255 (opaque)
+ */
+void Sprite::set_alpha(int alpha) {
+  this->alpha = alpha;
+  SDL_SetAlpha(alpha_surface, SDL_SRCALPHA, alpha);
+}
 
 /**
  * Returns whether the entity's sprites are currently displaying a fade-in or fade-out effect.
@@ -388,8 +405,7 @@ bool Sprite::is_fading(void) {
 void Sprite::start_fading(int direction) {
   alpha_next_change_date = SDL_GetTicks();
   alpha_increment = (direction == 0) ? 20 : -20;
-  alpha = (direction == 0) ? 0 : 255;
-  SDL_SetAlpha(alpha_surface, SDL_SRCALPHA, alpha);
+  set_alpha((direction == 0) ? 0 : 255);
 }
 
 /**
@@ -461,15 +477,16 @@ void Sprite::update(void) {
   if (is_fading() && now >= alpha_next_change_date) {
     // the sprite is fading
 
-    alpha += alpha_increment;
-    alpha = std::max(0, std::min(255, alpha));
-    if (alpha == 0 || alpha == 255) { // fade finished
+    int rate = get_alpha();
+    rate += alpha_increment;
+    rate = std::max(0, std::min(255, rate));
+    if (rate == 0 || rate == 255) { // fade finished
       alpha_next_change_date = 0;
     }
     else {
       alpha_next_change_date += 40;
     }
-    SDL_SetAlpha(alpha_surface, SDL_SRCALPHA, alpha);
+    set_alpha(rate);
   }
 }
 
@@ -485,7 +502,7 @@ void Sprite::display(SDL_Surface *destination, int x, int y) {
 
   if (!is_animation_finished() && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    if (alpha >= 255) {
+    if (get_alpha() >= 255) {
       // opaque
       current_animation->display(destination, x, y, current_direction, current_frame);
     }

@@ -604,6 +604,14 @@ Sprite * MapEntity::get_sprite(int index) {
 }
 
 /**
+ * Returns the number of sprites of this entity.
+ * @return the number of sprites created
+ */
+int MapEntity::get_nb_sprites(void) {
+  return sprites.size();
+}
+
+/**
  * Returns whether the entity has at least one sprite.
  * @return true if the entity has at least one sprite.
  */
@@ -612,12 +620,12 @@ bool MapEntity::has_sprite(void) {
 }
 
 /**
- * Returns the sprite created with the last call to create_sprite()
+ * Returns the sprite created with the first call to create_sprite()
  * for this entity.
- * @return the last sprite created
+ * @return the first sprite created
  */
 Sprite * MapEntity::get_sprite(void) {
-  return sprites.back();
+  return sprites.front();
 }
 
 /**

@@ -138,6 +138,8 @@ class Enemy: public Detector {
   Enemy(const ConstructionParameters &params);
   virtual void initialize(void) = 0; // to initialize the features, the sprites and the movement
   virtual void restart(void);
+  void stop_movement(void);
+  void restore_movement(void);
 
   // functions available to the subclasses to define the enemy type properties (they can also change directly the fields)
   void set_damage(int damage_on_hero);

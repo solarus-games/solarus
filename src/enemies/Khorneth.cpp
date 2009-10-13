@@ -18,6 +18,8 @@
 #include "movements/RandomWalkMovement.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 
 /**
  * Constructor.
@@ -57,6 +59,12 @@ void Khorneth::initialize(void) {
 
   // movement
   set_movement(new RandomWalkMovement(3));
+
+  // blades
+  left_blade_life = 3;
+  end_left_blade_hurt_date = 0;
+  right_blade_life = 3;
+  end_right_blade_hurt_date = 0;
 }
 
 /**
@@ -105,10 +113,70 @@ int Khorneth::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
  */
 int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 
-  if (this_sprite->contains("left_blade")) {
-    // TODO
+  if (this_sprite->contains("left_blade") && this_sprite->get_current_animation() == "walking" && left_blade_life > 0) {
+    this_sprite->set_current_animation("hurt");
+    get_sprite(0)->set_current_animation("stopped");
+    get_sprite(2)->set_current_animation("stopped");
+    stop_movement();
+    ResourceManager::get_sound("boss_hurt")->play();
+    left_blade_life--;
+    end_left_blade_hurt_date = SDL_GetTicks() + 400;
+  }
+  else if (this_sprite->contains("right_blade") && this_sprite->get_current_animation() == "walking" && right_blade_life > 0) {
+    this_sprite->set_current_animation("hurt");
+    get_sprite(0)->set_current_animation("stopped");
+    get_sprite(1)->set_current_animation("stopped");
+    stop_movement();
+    ResourceManager::get_sound("boss_hurt")->play();
+    right_blade_life--;
+    end_right_blade_hurt_date = SDL_GetTicks() + 400;
   }
 
   return 0;
+}
+
+/**
+ * Updates this enemy.
+ */
+void Khorneth::update(void) {
+  
+  if (is_in_normal_state()) {
+
+    // stop animation hurt of the blades
+    Uint32 now = SDL_GetTicks();
+    if (end_left_blade_hurt_date != 0 && now >= end_left_blade_hurt_date) {
+      end_left_blade_hurt_date = 0;
+      restore_movement();
+      restart();
+
+      if (left_blade_life <= 0) {
+	ResourceManager::get_sound("stone")->play();
+        get_sprite(1)->set_alpha(0);
+      }
+    }
+    else if (end_right_blade_hurt_date != 0 && now >= end_right_blade_hurt_date) {
+      end_right_blade_hurt_date = 0;
+      restore_movement();
+      restart();
+
+      if (right_blade_life <= 0) {
+	ResourceManager::get_sound("stone")->play();
+        get_sprite(2)->set_alpha(0);
+      }
+    }
+
+    // synchronize the blade animations
+    if (get_sprite(0)->get_current_animation() == "walking") {
+      int frame = get_sprite(0)->get_current_frame();
+      if (get_sprite(1)->get_current_animation() == "walking") {
+	get_sprite(1)->set_current_frame(frame);
+      }
+      if (get_sprite(2)->get_current_animation() == "walking") {
+	get_sprite(2)->set_current_frame(frame);
+      }
+    }
+  }
+
+  Enemy::update();
 }
 

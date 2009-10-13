@@ -32,6 +32,9 @@ class Khorneth: public Enemy {
     Uint32 end_left_blade_hurt_date;
     int right_blade_life;
     Uint32 end_right_blade_hurt_date;
+    bool blades_destroyed;
+
+    void start_final_phase(void);
 
   protected:
 

@@ -44,7 +44,7 @@ void Khorneth::initialize(void) {
 
   // attack/defense features
   set_damage(2, 0);
-  set_life(4);
+  set_life(6);
 
   // sprite
   create_sprite("enemies/khorneth", true);
@@ -65,6 +65,7 @@ void Khorneth::initialize(void) {
   end_left_blade_hurt_date = 0;
   right_blade_life = 3;
   end_right_blade_hurt_date = 0;
+  blades_destroyed = false;
 }
 
 /**
@@ -87,14 +88,13 @@ int Khorneth::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
 
   int result;
 
-  if (attack != ATTACK_SWORD) {
+  if (attack != ATTACK_SWORD || blades_destroyed) {
     result = Enemy::get_attack_consequence(attack);
   }
   else {
-    const SpriteAnimationSetId &id = this_sprite->get_animation_set_id();
-    if (id == "enemies/khorneth") {
-      // body: protected against the attacks
-      result = -1;
+    if (!this_sprite->contains("blade")) {
+      // body: ignore the attack
+      result = 0;
     }
     else {
       // blades: sensible to the sword
@@ -152,6 +152,10 @@ void Khorneth::update(void) {
       if (left_blade_life <= 0) {
 	ResourceManager::get_sound("stone")->play();
         get_sprite(1)->set_alpha(0);
+
+	if (right_blade_life <= 0) {
+          start_final_phase();
+	}
       }
     }
     else if (end_right_blade_hurt_date != 0 && now >= end_right_blade_hurt_date) {
@@ -162,6 +166,10 @@ void Khorneth::update(void) {
       if (right_blade_life <= 0) {
 	ResourceManager::get_sound("stone")->play();
         get_sprite(2)->set_alpha(0);
+
+	if (left_blade_life <= 0) {
+          start_final_phase();
+	}
       }
     }
 
@@ -178,5 +186,14 @@ void Khorneth::update(void) {
   }
 
   Enemy::update();
+}
+
+/**
+ * Starts the last phase of Khorneth.
+ * This function is called when both blades are destroyed.
+ */
+void Khorneth::start_final_phase(void) {
+  blades_destroyed = true;
+  set_attack_consequence(ATTACK_SWORD, 1);
 }
 

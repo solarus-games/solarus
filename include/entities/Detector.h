@@ -67,6 +67,7 @@ class Detector: public MapEntity {
   void set_collision_modes(int collision_modes);
   void add_collision_mode(CollisionMode collision_mode);
   bool has_collision_mode(CollisionMode collision_mode);
+  void enable_pixel_collisions(void);
   void set_layer_ignored(bool layer_ignored);
 
   // specialized collision checking functions

@@ -76,7 +76,7 @@ class Hero: public MapEntity {
 
   // sprites
   Equipment *equipment;                                       /**< equipment of the player */
-  HeroSprites *sprites;                                       /**< the hero's sprites */
+  HeroSprites *sprites;                                       /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
   // movement
   PlayerMovement *normal_movement;

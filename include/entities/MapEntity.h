@@ -21,7 +21,7 @@
 #include "entities/EntityType.h"
 #include "entities/Layer.h"
 #include "entities/EnemyAttack.h"
-#include <vector>
+#include <map>
 
 /**
  * Abstract class for all objects placed on a map: tiles,
@@ -106,8 +106,9 @@ class MapEntity {
 
   int direction;           /**< direction of the entity, not used for all kinds of entities */
 
-  std::vector<Sprite*> sprites; /**< sprite(s) representing the entity, not used for all kinds of entities because
-				 * some of them are invisible, and some of them handle their sprites themselves */
+  std::map<std::string, Sprite*> sprites; /**< sprite(s) representing the entity, indexed by their animation set id */ 
+  Sprite *first_sprite;    /**< the first sprite that was created into the sprites map,
+                            * stored here because the map does not keep the order from which its elements are added */
   bool visible;            /**< indicates that this entity's sprites are currently displayed */
   Movement *movement;      /**< movement of the entity, not used for all kinds of entities;
 			    * NULL indicates that the entity has no movement */
@@ -188,10 +189,12 @@ class MapEntity {
   int get_direction(void);
 
   // sprites
-  Sprite * get_sprite(int index);
+  Sprite * get_sprite(const SpriteAnimationSetId &id);
   Sprite * get_sprite(void);
   int get_nb_sprites(void);
   bool has_sprite(void);
+  void remove_sprite(const SpriteAnimationSetId &id);
+  void remove_sprites(void);
   bool is_visible(void);
   void set_visible(bool visible);
   void set_animation_ignore_suspend(bool ignore_suspend);

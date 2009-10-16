@@ -92,8 +92,8 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
  * Creates a map entity without specifying its properties yet.
  */
 MapEntity::MapEntity(void):
-  map(NULL), layer(LAYER_LOW), name(""), direction(0), visible(true), movement(NULL),
-  suspended(false), when_suspended(0), being_removed(false) {
+  map(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
+  movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   rectangle.x = 0;
   rectangle.y = 0;
@@ -114,8 +114,8 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  map(NULL), layer(layer), name(""), direction(0), visible(true), movement(NULL),
-  suspended(false), when_suspended(0), being_removed(false) {
+  map(NULL), layer(layer), name(""), direction(0), first_sprite(NULL), visible(true),
+  movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   rectangle.x = x;
   rectangle.y = y;
@@ -138,8 +138,8 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
-  map(NULL), layer(layer), name(name), direction(direction), visible(true), movement(NULL),
-  suspended(false), when_suspended(0), being_removed(false) {
+  map(NULL), layer(layer), name(name), direction(direction), visible(true),
+  movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   rectangle.x = x;
   rectangle.y = y;
@@ -156,8 +156,9 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
  */
 MapEntity::~MapEntity(void) {
 
-  for (unsigned int i = 0; i < sprites.size(); i++) {
-    delete sprites[i];
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+    delete it->second;
   }
 
   if (movement != NULL) {
@@ -226,9 +227,9 @@ void MapEntity::set_map(Map *map) {
   this->map = map;
 
   // notify the sprites (useful for tileset dependent sprites such as doors and blocks)
-  std::vector<Sprite*>::iterator it;
+  std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
-    (*it)->get_animation_set()->set_map(map);
+    it->second->get_animation_set()->set_map(map);
   }
 }
 
@@ -471,7 +472,7 @@ void MapEntity::set_rectangle(const SDL_Rect &rectangle) {
  */
 void MapEntity::set_rectangle_from_sprite(void) {
 
-  Sprite *sprite = sprites[0];
+  Sprite *sprite = get_sprite();
   set_size(sprite->get_size());
   set_origin(sprite->get_origin());
 }
@@ -596,14 +597,6 @@ void MapEntity::set_origin(const SDL_Rect &origin) {
 }
 
 /**
- * Returns a sprite of the entity.
- * @return the sprite at this index
- */
-Sprite * MapEntity::get_sprite(int index) {
-  return sprites[index];
-}
-
-/**
  * Returns the number of sprites of this entity.
  * @return the number of sprites created
  */
@@ -620,12 +613,25 @@ bool MapEntity::has_sprite(void) {
 }
 
 /**
- * Returns the sprite created with the first call to create_sprite()
- * for this entity.
+ * Returns the sprite created with the first call to create_sprite() for this entity.
  * @return the first sprite created
  */
 Sprite * MapEntity::get_sprite(void) {
-  return sprites.front();
+  return first_sprite;
+}
+
+/**
+ * Returns a sprite of the entity, previously created with a call to create_sprite().
+ * @param id name of the animation set of the sprite to get
+ * @return the sprite with the specified animation set
+ */
+Sprite * MapEntity::get_sprite(const SpriteAnimationSetId &id) {
+
+  Sprite *sprite = sprites[id];
+  if (sprite == NULL) {
+    DIE("Cannot find sprite '" << id << "' for entity '" << get_name() << "'");
+  }
+  return sprite;
 }
 
 /**
@@ -648,7 +654,41 @@ void MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_
   if (enable_pixel_collisions) {
     sprite->get_animation_set()->enable_pixel_collisions();
   }
-  sprites.push_back(sprite);
+
+  if (!has_sprite()) {
+    // first sprite created
+    first_sprite = sprite;
+  }
+
+  sprites[id] = sprite;
+}
+
+/**
+ * Removes the specified sprite from this entity.
+ * The sprite is destroyed.
+ * @return id id of the sprite's animation set
+ */
+void MapEntity::remove_sprite(const SpriteAnimationSetId &id) {
+
+  Sprite *sprite = get_sprite(id);
+
+  if (sprite == first_sprite) {
+    first_sprite = NULL;
+  }
+  delete sprite;
+  sprites.erase(id);
+}
+
+/**
+ * Removes and destroys all sprites of this entity.
+ */
+void MapEntity::remove_sprites(void) {
+  
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+    delete it->second;
+  }
+  sprites.clear();
 }
 
 /**
@@ -1082,9 +1122,9 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the sprites animations
-  for (unsigned int i = 0; i < sprites.size(); i++) {
-    Sprite *sprite = sprites[i];
-    sprite->set_suspended(suspended);
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+    it->second->set_suspended(suspended);
   }
 
   // suspend/unsuspend the movement
@@ -1099,9 +1139,9 @@ void MapEntity::set_suspended(bool suspended) {
  */
 void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
   
-  for (unsigned int i = 0; i < sprites.size(); i++) {
-    Sprite *sprite = sprites[i];
-    sprite->set_ignore_suspend(ignore_suspend);
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+    it->second->set_ignore_suspend(ignore_suspend);
   }
 }
 
@@ -1112,9 +1152,9 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 void MapEntity::start_fading(int direction) {
 
   // update the sprites
-  for (unsigned int i = 0; i < sprites.size(); i++) {
-    Sprite *sprite = sprites[i];
-    sprite->start_fading(direction);
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+    it->second->start_fading(direction);
   }
 }
 
@@ -1130,9 +1170,10 @@ void MapEntity::start_fading(int direction) {
 void MapEntity::update(void) {
 
   // update the sprites
-  for (unsigned int i = 0; i < sprites.size(); i++) {
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
 
-    Sprite *sprite = sprites[i];
+    Sprite *sprite = it->second;
 
     sprite->update();
     if (sprite->has_frame_changed() && sprite->get_animation_set()->are_pixel_collisions_enabled()) {
@@ -1154,8 +1195,9 @@ void MapEntity::display_on_map(void) {
 
   if (is_visible()) {
     // display the sprites
-    for (unsigned int i = 0; i < sprites.size(); i++) {
-      map->display_sprite(sprites[i], get_x(), get_y());
+    std::map<std::string, Sprite*>::iterator it;
+    for (it = sprites.begin(); it != sprites.end(); it++) {
+      map->display_sprite(it->second, get_x(), get_y());
     }
   }
 }

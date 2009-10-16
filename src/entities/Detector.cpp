@@ -57,10 +57,7 @@ Detector::~Detector(void) {
 void Detector::set_collision_modes(int collision_modes) {
 
   if (collision_modes & COLLISION_SPRITE) {
-
-    for (unsigned int i = 0; i < sprites.size(); i++) {
-      get_sprite(i)->get_animation_set()->enable_pixel_collisions();
-    }
+    enable_pixel_collisions();
   }
   this->collision_modes = collision_modes;
 }
@@ -91,6 +88,18 @@ bool Detector::has_collision_mode(CollisionMode collision_mode) {
  */
 void Detector::set_layer_ignored(bool layer_ignored) {
   this->layer_ignored = layer_ignored;
+}
+
+/**
+ * Enables the pixel-perfect collision checks for all sprites
+ * of this detector.
+ */
+void Detector::enable_pixel_collisions(void) {
+
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+    it->second->get_animation_set()->enable_pixel_collisions();
+  }
 }
 
 /**
@@ -145,9 +154,9 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
       && sprite->get_animation_set()->are_pixel_collisions_enabled()) {
 
     // we check the collision between the specified entity's sprite and all sprites of the current entity
-    std::vector<Sprite*>::iterator it;
+    std::map<std::string, Sprite*>::iterator it;
     for (it = sprites.begin(); it != sprites.end(); it++) {
-      Sprite *this_sprite = (*it);
+      Sprite *this_sprite = it->second;
       if (this_sprite->get_animation_set()->are_pixel_collisions_enabled()
 	  && this_sprite->test_collision(sprite, get_x(), get_y(), entity->get_x(), entity->get_y())) {
 	notify_collision(entity, sprite, this_sprite);

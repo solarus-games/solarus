@@ -1237,15 +1237,12 @@ void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprit
  * (even if this attack was not successful).
  * @param attack the attack
  * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack:
- * - a number greater than 0 represents the number of health points the enemy has just lost
- * - a value of 0 means that the attack was just ignored 
- * - a value of -1 means that the enemy was protected against the attack
- * - a value of -2 means that the attack immobilized the enemy
+ * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
  */
 void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
 
   if (result == 0) {
+    // attack ignored
     return;
   }
 

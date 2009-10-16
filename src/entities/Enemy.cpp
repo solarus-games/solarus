@@ -47,7 +47,7 @@
  */
 Enemy::Enemy(const ConstructionParameters &params):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
-  being_hurt(false), normal_movement(NULL), invulnerable(false), vulnerable_again_date(0),
+  being_hurt(false), stop_hurt_date(0), normal_movement(NULL), invulnerable(false), vulnerable_again_date(0),
   can_attack(true), can_attack_again_date(0), immobilized(false),
   start_shaking_date(0), end_shaking_date(0), exploding(false), nb_explosions(0), next_explosion_date(0) {
 
@@ -186,11 +186,7 @@ void Enemy::set_map(Map *map) {
   if (is_enabled()) {
     // let the subclass initialize the enemy
     initialize();
-
-    for (int i = 0; i < get_nb_sprites(); i++) {
-      get_sprite(i)->get_animation_set()->enable_pixel_collisions();
-    }
-
+    enable_pixel_collisions();
     restart();
   }
 }
@@ -209,9 +205,7 @@ Enemy::Rank Enemy::get_rank(void) {
  * @return true if this entity is an obstacle for the other one
  */
 bool Enemy::is_obstacle_for(MapEntity *other) {
-
   return is_enabled() && other->is_enemy_obstacle(this);
- // (other->get_type() == BLOCK || other->get_type() == INTERACTIVE_ENTITY);
 }
 
 /**
@@ -255,6 +249,22 @@ void Enemy::set_life(int life) {
  */
 int Enemy::get_life(void) {
   return life;
+}
+ 
+/**
+ * Sets whether the enemy is pushed back when it gets hurt by the hero
+ * @param pushed_back_when_hurt true to make the enemy pushed back when it gets hury
+ */
+void Enemy::set_pushed_back_when_hurt(bool pushed_back_when_hurt) {
+  this->pushed_back_when_hurt = pushed_back_when_hurt;
+}
+
+/**
+ * Sets whether the hero is pushed when he hurts the enemy with his sword.
+ * @param push_back_hero_on_sword true to make the hero pushed back when he hurts the enemy with his sword
+ */
+void Enemy::set_push_back_hero_on_sword(bool push_back_hero_on_sword) {
+  this->push_back_hero_on_sword = push_back_hero_on_sword;
 }
 
 /**
@@ -329,6 +339,28 @@ void Enemy::set_default_attack_consequences(void) {
 }
 
 /**
+ * Returns the current animation of the first sprite of the enemy.
+ * This function is useful when the enemy has several sprites.
+ * @return name of the current animation of the first sprite
+ */
+const std::string & Enemy::get_animation(void) {
+  return get_sprite()->get_current_animation();
+}
+
+/**
+ * Changes the animation of this enemy's sprites.
+ * This function is useful when the enemy has several sprites.
+ * @param animation name of the animation to set
+ */
+void Enemy::set_animation(const std::string &animation) {
+  
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+    it->second->set_current_animation(animation);
+  }
+}
+
+/**
  * Updates the enemy.
  */
 void Enemy::update(void) {
@@ -342,25 +374,29 @@ void Enemy::update(void) {
 
   if (being_hurt) {
     
+    // see if we should stop the animation "hurt"
+    bool stop_hurt = false;
     if (pushed_back_when_hurt) {
-      if (get_movement()->is_finished() && is_sprite_finished_or_looping()) {
+      stop_hurt = get_movement()->is_finished() && is_sprite_finished_or_looping();
+    }
+    else {
+      stop_hurt = now >= stop_hurt_date;
+    }
 
-	being_hurt = false;
+    if (stop_hurt) {
+      being_hurt = false;
 
-	if (life <= 0) {
-	  kill();
-	}
-	else if (is_immobilized()) {
-	  clear_movement();
-	  for (int i = 0; i < get_nb_sprites(); i++) {
-  	    get_sprite(i)->set_current_animation("immobilized");
-	  }
-	}
-	else {
-	  clear_movement();
-	  restore_movement(); // restore the previous movement
-	  restart();
-	}
+      if (life <= 0) {
+	kill();
+      }
+      else if (is_immobilized()) {
+	clear_movement();
+	set_animation("immobilized");
+      }
+      else {
+	clear_movement();
+	restore_movement(); // restore the previous movement
+	restart();
       }
     }
   }
@@ -445,6 +481,7 @@ void Enemy::set_suspended(bool suspended) {
 
   if (!suspended) {
     Uint32 diff = SDL_GetTicks() - when_suspended;
+    stop_hurt_date += diff;
     vulnerable_again_date += diff;
     can_attack_again_date += diff;
     start_shaking_date += diff;
@@ -491,12 +528,10 @@ bool Enemy::is_in_normal_state(void) {
  * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
+ * By default, the "walking" animation is set on the enemy's sprites.
  */
 void Enemy::restart(void) {
-
-  for (int i = 0; i < get_nb_sprites(); i++) {
-    get_sprite(i)->set_current_animation("walking");
-  }
+  set_animation("walking");
 }
 
 /**
@@ -679,6 +714,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     else if (consequence == -3) {
       // custom attack (defined in the subclass)
       result = custom_attack(attack, this_sprite);
+      result = -3;
     }
     else {
       // hurt the enemy
@@ -735,9 +771,7 @@ void Enemy::hurt(MapEntity *source) {
   //can_attack_again_date = vulnerable_again_date;
 
   // graphics and sounds
-  for (int i = 0; i < get_nb_sprites(); i++) {
-    get_sprite(i)->set_current_animation("hurt");
-  }
+  set_animation("hurt");
   play_hurt_sound();
 
   // save the movement
@@ -747,6 +781,9 @@ void Enemy::hurt(MapEntity *source) {
   if (pushed_back_when_hurt) {
     double angle = source->get_vector_angle(this);
     set_movement(new StraightMovement(12, angle, 200));
+  }
+  else {
+    stop_hurt_date = SDL_GetTicks() + 300;
   }
 }
 
@@ -782,10 +819,7 @@ void Enemy::kill(void) {
 
   if (rank == RANK_NORMAL) {
     // replace the enemy sprite
-    for (unsigned int i = 0; i < sprites.size(); i++) {
-      delete sprites[i];
-    }
-    sprites.clear();
+    remove_sprites();
     create_sprite("enemies/enemy_killed");
     ResourceManager::get_sound("enemy_killed")->play();
   }

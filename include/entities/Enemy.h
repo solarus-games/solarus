@@ -113,6 +113,7 @@ class Enemy: public Detector {
   // enemy state
   bool enabled;                       /**< indicates that the enemy is enabled */
   bool being_hurt;                    /**< indicates that the enemy is being hurt */
+  Uint32 stop_hurt_date;              /**< date when the enemy stops being hurt */
   Movement *normal_movement;          /**< backup of the enemy's movement, which is replaced by
 				       * a straight movement while it is hurt */
   bool invulnerable;                  /**< indicates that the enemy cannot be hurt for now */
@@ -146,6 +147,8 @@ class Enemy: public Detector {
   void set_damage(int damage_on_hero, int magic_damage_on_hero);
   void set_life(int life);
   int get_life(void);
+  void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
+  void set_push_back_hero_on_sword(bool push_back_hero_on_sword);
   void set_features(int damage_on_hero, int life);
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
   void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
@@ -167,6 +170,9 @@ class Enemy: public Detector {
   void stop_immobilized(void);
   virtual int custom_attack(EnemyAttack attack, Sprite *this_sprite);
 
+  // utility functions
+  const std::string& get_animation(void);
+  void set_animation(const std::string &animation);
   PickableItem::Subtype get_random_rupee(void);
 
  public:

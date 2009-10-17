@@ -42,7 +42,7 @@ void RandomWalkMovement::update(void) {
 
   if (!is_suspended() && is_stopped()) {
     // there was a collision
-    set_speed(initial_speed);
+    set_speed(normal_speed);
     start_next_move();
   }
 }

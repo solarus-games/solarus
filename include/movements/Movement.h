@@ -166,7 +166,7 @@ class Movement {
 
   void set_x_speed(double x_speed);
   void set_y_speed(double y_speed);
-  void set_speed(double speed);
+  virtual void set_speed(double speed);
   void stop(void);
 
   bool is_suspended(void);

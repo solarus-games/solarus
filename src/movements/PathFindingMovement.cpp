@@ -42,14 +42,12 @@ PathFindingMovement::~PathFindingMovement(void) {
  */
 void PathFindingMovement::update(void) {
 
-  if (!is_suspended()) {
-    if (is_stopped()) {
-      // there was a collision
-      set_speed(initial_speed);
-      remaining_path = get_random_path();
-//      std::cout << "stopped, made random path: " << remaining_path << "\n";
-      start_next_move();
-    }
+  if (!is_suspended() && is_stopped()) {
+    // there was a collision
+    set_speed(normal_speed);
+    remaining_path = get_random_path();
+    //      std::cout << "stopped, made random path: " << remaining_path << "\n";
+    start_next_move();
   } 
 
   PathMovement::update();

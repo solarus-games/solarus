@@ -526,9 +526,7 @@ void PickableItem::set_blinking(bool blinking) {
 
   Uint32 blink_delay = blinking ? 75 : 0;
 
-  Sprite *item_sprite = get_sprite(0);
-
-  item_sprite->set_blinking(blink_delay);
+  get_sprite()->set_blinking(blink_delay);
   shadow_sprite->set_blinking(blink_delay);
 }
 
@@ -597,9 +595,7 @@ void PickableItem::update(void) {
       // make the item blink and then disappear
       if (will_disappear) {
 
-	Sprite *item_sprite = get_sprite(0);
-    
-	if (now >= blink_date && !item_sprite->is_blinking() && !is_following_boomerang) {
+	if (now >= blink_date && !get_sprite()->is_blinking() && !is_following_boomerang) {
 	  set_blinking(true);
 	}
     

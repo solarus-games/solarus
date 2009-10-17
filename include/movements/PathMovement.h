@@ -32,7 +32,7 @@ class PathMovement: public CollisionMovement {
 
   const std::string initial_path;  /**< the path: each character is a direction ('0' to '7') */
   std::string remaining_path;      /**< the remaining part of the path */
-  const int initial_speed;         /**< the movement speed */
+  int normal_speed;                /**< the movement speed */
 
  private:
 
@@ -56,6 +56,7 @@ class PathMovement: public CollisionMovement {
   static const std::string get_random_path(void);
   bool is_current_move_finished(void);
   void set_entity(MapEntity *entity);
+  void set_speed(int speed);
 
  public:
 

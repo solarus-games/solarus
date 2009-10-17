@@ -45,9 +45,9 @@ void Khorneth::initialize(void) {
 
   // attack/defense features
   set_damage(2, 0);
-  set_life(6);
+  set_life(5);
   set_pushed_back_when_hurt(false);
-  set_push_back_hero_on_sword(true);
+  //set_push_back_hero_on_sword(true); // not yet implemented
 
   // sprite
   create_sprite("enemies/khorneth", true);
@@ -64,9 +64,9 @@ void Khorneth::initialize(void) {
   set_movement(new RandomWalkMovement(3));
 
   // blades
-  left_blade_life = 3;
+  left_blade_life = 4;
   end_left_blade_hurt_date = 0;
-  right_blade_life = 3;
+  right_blade_life = 4;
   end_right_blade_hurt_date = 0;
   next_blade_attack_date = 0;
   blade_attack = false;
@@ -208,6 +208,8 @@ int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 void Khorneth::start_final_phase(void) {
   blades_destroyed = true;
   set_attack_consequence(ATTACK_SWORD, 1);
+  clear_movement();
+  set_movement(new RandomWalkMovement(4));
 }
 
 /**
@@ -219,7 +221,8 @@ void Khorneth::restart(void) {
   Enemy::restart();
 
   if (has_blade()) {
-    next_blade_attack_date = SDL_GetTicks() + 1000 * (4 + Random::get_number(5));
+    next_blade_attack_date = SDL_GetTicks() + 1000 * (2 + Random::get_number(4));
+    blade_attack = false;
   }
 }
 
@@ -277,8 +280,11 @@ void Khorneth::update(void) {
       }
       std::string animation = (side == 0) ? "left_blade_attack" : "right_blade_attack";
       set_animation(animation);
+      stop_movement();
     }
     else if (blade_attack && get_main_sprite()->is_animation_finished()) {
+      blade_attack = false;
+      restore_movement();
       restart();
     }
 

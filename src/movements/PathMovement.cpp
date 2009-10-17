@@ -33,7 +33,7 @@
 PathMovement::PathMovement(const std::string &path, int speed,
     bool loop, bool with_collisions, bool must_be_aligned):
   CollisionMovement(with_collisions),
-  initial_path(path), remaining_path(path), initial_speed(speed), current_direction(0), distance_covered(0),
+  initial_path(path), remaining_path(path), normal_speed(speed), current_direction(0), distance_covered(0),
   loop(loop), finished(false), must_be_aligned(must_be_aligned), snapping(false) {
 
 }
@@ -70,6 +70,15 @@ void PathMovement::set_position(int x, int y) {
     distance_covered++;
   }
   CollisionMovement::set_position(x, y);
+}
+
+/**
+ * Changes the speed of the movement.
+ * @param speed the new speed
+ */
+void PathMovement::set_speed(int speed) {
+  this->normal_speed = speed; // memorize the speed to allow restarting later
+  CollisionMovement::set_speed(speed);
 }
 
 /**
@@ -145,7 +154,7 @@ void PathMovement::start_next_move(void) {
       // if we haven't started to move the entity into the direction of the closest grid intersection, we do it
       snapping_angle = Geometry::get_angle(entity->get_top_left_x(), entity->get_top_left_y(), snapped_x, snapped_y);
 //      std::cout << "not aligned yet, going to direction " << snapping_angle << "\n";
-      set_speed(initial_speed);
+      set_speed(normal_speed);
       set_direction(snapping_angle);
       snapping = true;
       stop_snapping_date = SDL_GetTicks() + 500;
@@ -178,7 +187,7 @@ void PathMovement::start_next_move(void) {
 	// (typically a statue that is being moved)
 	snapping_angle += Geometry::PI;
 //	std::cout << "could not align: going back to direction " << (snapping_angle * 360 / Geometry::TWO_PI) << "\n";
-	set_speed(initial_speed);
+	set_speed(normal_speed);
 	set_direction(snapping_angle);
 	stop_snapping_date = now + 500;
       }
@@ -210,7 +219,7 @@ void PathMovement::start_next_move(void) {
 
 //      std::cout << "path: " << remaining_path << "\n";
       current_direction = remaining_path[0] - '0';
-      set_speed(initial_speed);
+      set_speed(normal_speed);
       set_direction(current_direction * 45);
       distance_covered = 0;
       snapping = false;

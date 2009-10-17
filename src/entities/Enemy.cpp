@@ -573,7 +573,10 @@ void Enemy::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite
  * Stops the movement temporarily.
  */
 void Enemy::stop_movement(void) {
-  normal_movement = get_movement();
+  
+  if (get_movement() != NULL) {
+    normal_movement = get_movement();
+  }
   set_movement(NULL);
 }
 
@@ -581,8 +584,11 @@ void Enemy::stop_movement(void) {
  * Restores the movement previously stopped with stop_movement().
  */
 void Enemy::restore_movement(void) {
-  set_movement(normal_movement);
-  normal_movement = NULL;
+
+  if (normal_movement != NULL) {
+    set_movement(normal_movement);
+    normal_movement = NULL;
+  }
 }
 
 /**

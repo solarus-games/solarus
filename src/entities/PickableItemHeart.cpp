@@ -58,7 +58,7 @@ void PickableItemHeart::initialize_sprites(void) {
 
   if (is_falling()) {
     // special animation of the heart when falling
-    get_sprite(0)->set_current_animation("small_falling");
+    get_sprite()->set_current_animation("small_falling");
   }
 }
 

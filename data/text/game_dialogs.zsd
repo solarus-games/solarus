@@ -80,7 +80,7 @@ next = intro0.8
 
 [intro0.8]
 #       |-----------------------|
-line1 = "Terre d'Or, reflet"
+line1 = "Terre d'Or, le reflet"
 line2 = "utopique du monde. Puis"
 line3 = "les siècles passèrent..."
 
@@ -109,7 +109,7 @@ next = intro1.4
 [intro1.4]
 #       |-----------------------|
 line1 = "problèmes grâce à ses"
-line2 = "pouvoirs."
+line2 = "sortilèges."
 line3 = "Acclamé par le peuple,"
 next = intro1.5
 
@@ -158,7 +158,7 @@ line3 = "et terrassant le mal."
 # Intro : fresque 3
 #       |-----------------------|
 line1 = "$2Finalement, celui que"
-line2 = "l'on nomma le Héros put"
+line2 = "l'on nomma le Héros sut"
 line3 = "repousser le maléfice."
 next = intro3.2
 
@@ -199,22 +199,22 @@ next = intro4.3
 [intro4.3]
 #       |-----------------------|
 line1 = "lignée des Sept Sages,"
-line2 = "invoqua la magie du"
-line3 = "sceau pour l'enfermer."
-next = intro4.4
+line2 = "l'enferma en invoquant"
+line3 = "la magie du sceau."
+#next = intro4.4
 
-[intro4.4]
-#       |-----------------------|
-line1 = "Il en était fini du vil"
-line2 = "Ganondorf. Il devint"
-line3 = "ainsi prisonnier de"
-next = intro4.5
+#[intro4.4]
+##       |-----------------------|
+#line1 = "Il en était fini du vil"
+#line2 = "Ganondorf. Il devint"
+#line3 = "ainsi prisonnier de"
+#next = intro4.5
 
-[intro4.5]
-#       |-----------------------|
-line1 = "la vision maléfique du"
-line2 = "monde qu'il avait lui-"
-line3 = "même créée."
+#[intro4.5]
+##       |-----------------------|
+#line1 = "la vision maléfique du"
+#line2 = "monde qu'il avait lui-"
+#line3 = "même créée."
 
 [intro5]
 # Intro : fresque 5
@@ -268,22 +268,16 @@ next = intro6.2
 
 [intro6.2]
 #       |-----------------------|
-line1 = "renonça à la Triforce"
-line2 = "et décida d'empêcher"
-line3 = "quiconque de s'en"
+line1 = "décida d'empêcher"
+line2 = "quiconque de s'emparer"
+line3 = "de la Triforce. Il la"
 next = intro6.3
 
 [intro6.3]
 #       |-----------------------|
-line1 = "emparer à l'avenir."
-line2 = "Il la confia à"
-line3 = "la Princesse Zelda,"
-next = intro6.4
-
-[intro6.4]
-#       |-----------------------|
-line1 = "héritière des pouvoirs"
-line2 = "de la famille royale."
+line1 = "confia à la Princesse"
+line2 = "Zelda, héritière des"
+line3 = "pouvoirs royaux."
 next = intro6.5
 
 [intro6.5]
@@ -331,17 +325,11 @@ next = intro6.11
 [intro6.11]
 #       |-----------------------|
 line1 = "les autres habitants"
-line2 = "vécurent paisiblement,"
-line3 = "sans se douter d'un"
+line2 = "continuèrent à vivre"
+line3 = "paisiblement."
 next = intro6.12
 
 [intro6.12]
-#       |-----------------------|
-line1 = "danger qui planait"
-line2 = "au-dessus de leur tête."
-next = intro6.13
-
-[intro6.13]
 #       |-----------------------|
 line1 = "C'est à ce moment que"
 line2 = "débute notre épopée..."

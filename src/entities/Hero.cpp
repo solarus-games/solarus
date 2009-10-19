@@ -178,7 +178,7 @@ bool Hero::is_ladder_obstacle(void) {
  * @return true if the teletransporter is currently an obstacle for the hero
  */
 bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return state > SWIMMING && state != JUMPING;
+  return state > SWIMMING && state != CONVEYOR_BELT && state != JUMPING;
 }
 
 /**

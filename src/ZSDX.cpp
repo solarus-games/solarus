@@ -41,6 +41,7 @@ ZSDX::ZSDX(int argc, char **argv) {
 
   // initialize the file manager
   FileTools::initialize(argc, argv);
+  StringResource::initialize();
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
@@ -63,7 +64,6 @@ ZSDX::ZSDX(int argc, char **argv) {
 
   // initialize the text displaying
   TextSurface::initialize();
-  StringResource::initialize();
 
   // initialize the audio system
   Sound::initialize();

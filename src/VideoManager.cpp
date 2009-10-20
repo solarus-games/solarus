@@ -18,6 +18,7 @@
 #include "VideoManager.h"
 #include "Color.h"
 #include "FileTools.h"
+#include "StringResource.h"
 
 SDL_Rect VideoManager::video_mode_sizes[] = {
   {0, 0, 640, 480},         // WINDOWED_STRETCHED
@@ -37,7 +38,8 @@ SDL_Rect VideoManager::video_mode_sizes[] = {
 VideoManager::VideoManager(void) {
 
   // initialize the window
-  SDL_WM_SetCaption("Zelda Mystery of Solarus DX", NULL);
+  const std::string &title_bar = StringResource::get_string("video_manager.title_bar");
+  SDL_WM_SetCaption(title_bar.c_str(), NULL);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 

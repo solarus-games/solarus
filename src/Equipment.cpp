@@ -806,8 +806,19 @@ void Equipment::give_inventory_item(InventoryItemId item_id) {
  */
 void Equipment::give_inventory_item(InventoryItemId item_id, int variant) {
 
+  // set the possession state in the savegame
   int index = Savegame::FIRST_INVENTORY_ITEM + item_id;
   savegame->set_integer(index, variant);
+
+  // if we are removing the item, unassign it
+  if (variant == 0) {
+    if (get_item_assigned(0) == item_id) {
+      set_item_assigned(0, INVENTORY_NONE);
+    }
+    else if (get_item_assigned(1) == item_id) {
+      set_item_assigned(1, INVENTORY_NONE);
+    }
+  }
 }
 
 /**
@@ -817,12 +828,6 @@ void Equipment::give_inventory_item(InventoryItemId item_id, int variant) {
  */
 void Equipment::remove_inventory_item(InventoryItemId item_id) {
   give_inventory_item(item_id, 0);
-  if (get_item_assigned(0) == item_id) {
-    set_item_assigned(0, INVENTORY_NONE);
-  }
-  else if (get_item_assigned(1) == item_id) {
-    set_item_assigned(1, INVENTORY_NONE);
-  }
 }
 
 /**

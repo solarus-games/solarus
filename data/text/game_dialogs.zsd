@@ -2,6 +2,43 @@
 # Les dialogues du moteur de jeu sont dans le fichier text/engine_dialogs.zsd,
 # ainsi que la spécification de la syntaxe de ces deux fichiers.
 
+[demo_finished]
+# Lorsqu'on vient de finir le donjon 1
+#       |-----------------------|
+line1 = "Félicitations : vous"
+line2 = "venez de terminer cette"
+line3 = "démo ! Nous espérons"
+next = demo_finished.2
+
+[demo_finished.2]
+#       |-----------------------|
+line1 = "que vous l'avez"
+line2 = "appréciée. En attendant"
+line3 = "le jeu complet, vous"
+next = demo_finished.3
+
+[demo_finished.3]
+#       |-----------------------|
+line1 = "pouvez visiter"
+line2 = "www.zelda-solarus.com"
+line3 = "pour connaître les"
+next = demo_finished.4
+
+[demo_finished.4]
+#       |-----------------------|
+line1 = "dernières informations"
+line2 = "sur le développement."
+line3 = "Merci d'avoir joué !"
+
+[demo_finished]
+# Lorsqu'on vient de finir le donjon 1
+#       |-----------------------|
+line1 = ""
+line2 = ""
+line3 = ""
+next = demo_finished.2
+
+
 [outside_world.not_in_demo]
 # Lorsqu'on tente d'entrer dans une grotte pas encore faite dans la démo
 #       |-----------------------|
@@ -1320,9 +1357,9 @@ line3 = "te donner..."
 [sahasrahla_house.beginning]
 # Chez Sahasrahla : première visite
 #       |-----------------------|
-line1 = "Oh, $v... Tu as"
-line2 = "entendu mon appel."
-line3 = "J'ai des choses"
+line1 = "Sahasrahla : Oh, $v,"
+line2 = "tu as entendu mon"
+line3 = "appel. J'ai des choses"
 next = sahasrahla_house.beginning.2
 
 [sahasrahla_house.beginning.2]

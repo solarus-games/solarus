@@ -394,3 +394,4 @@ void PauseSubmenuInventory::finish_assigning_item(void) {
   delete item_assigned_movement;
   item_assigned_movement = NULL;
 }
+

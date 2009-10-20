@@ -140,3 +140,6 @@ selection_menu.big_no		NON
 title_screen.website		www.zelda-solarus.com
 title_screen.press_space	Appuyez sur espace
 
+# Title bar of the program window
+video_manager.title_bar		Zelda Mystery of Solarus DX - démo
+

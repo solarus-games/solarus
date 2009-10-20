@@ -40,8 +40,7 @@ next = intro0.2
 [intro0.2]
 #       |-----------------------|
 line1 = "existait un magnifique"
-line2 = "royaume du nom"
-line3 = "d'Hyrule."
+line2 = "royaume du nom d'Hyrule."
 next = intro0.3
 
 [intro0.3]

@@ -39,13 +39,15 @@ Bugs :
 - mur fissuré qui explose : animation ?
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
-- recompiler Snes_SPC sous windows en version fastdsp
-- plantage en arrivant sur la map d'inferno
+- Alt+F4 ne marche pas sous windows-
+- mettre une pancarte indiquant que c'est la maison de Sahasrahla
+- téléportation entre les maps chez Sahasrahla : destination point mal placé(s)
+- mettre la mention "démo" dans la barre de titre
+- boomerang supprimé de X puis affectation de l'objet V vers X : plantage (http://zsdx.zelda-solarus.com/save_plantage_icone.zsd)
+- en sortant du donjon 1 une fois fini, mettre un message indiquant que la démo est terminée
 
 
 Remarques de Thyb, Geomaster et Newlink :
-
-- Les passages entre les différentes fresques me paraissent assez brutaux, peut on avoir une disparition progressive de la "diapo" et une apparition progressive de la suivant pour que ce soit plus fluide ? -> faire une fonction de fondu sur les entités
 
 - Au niveau remarques sur l'intro donc, je dirais qu'elle devrait être plus animée d'une part. Pourquoi ne pas mettre les différentes fresques bout-à-bout et les faire défiler comme un ensemble, comme dans WW en réalité ? A ce titre, il faudrait qu'en même temps le texte ne soit pas soumis "à la touche ESPACE" de la part du joueur et qu'il n'y ait pas le petit "bidibidip" permanent, contrairement aux dialogues normaux.
 - Sinon, je pense que ça serait bien d'apporter quelques modifications aux textes. Certaines tournures ne font pas très bien. Si jamais j'ai le droit de proposer certaines corrections...

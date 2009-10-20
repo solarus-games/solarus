@@ -78,7 +78,7 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 	equipment->stop_removing_magic();
       }
       break;
-
+/*
     case SDLK_t:
       equipment->give_inventory_item(INVENTORY_BOW);
       equipment->set_max_arrows(10);
@@ -101,6 +101,7 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
       equipment->set_item_assigned(0, INVENTORY_BOOMERANG);
       equipment->set_item_assigned(1, INVENTORY_BOTTLE_2);
       break;
+	  */
 
     case SDLK_g:
       equipment->add_arrows(7);

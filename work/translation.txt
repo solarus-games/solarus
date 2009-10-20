@@ -58,7 +58,7 @@ Certaines images du moteur de jeu contiennent du texte. En voici la liste exhaus
 
 2) Chaînes de caractères
 
-Le moteur de jeu affiche du texte dans les différents menus. Tous ces textes sont chargés depuis le fichier text/strings.zsd. Pour les traduire, il faut modifier ce fichier à ll'aide d'un éditeur de texte, en respectant les règles expliquées à l'intérieur.
+Le moteur de jeu affiche du texte dans les différents menus. Tous ces textes sont chargés depuis le fichier text/strings.zsd. Pour les traduire, il faut modifier ce fichier à l'aide d'un éditeur de texte, en respectant les règles expliquées à l'intérieur.
 
 3) Dialogues
 

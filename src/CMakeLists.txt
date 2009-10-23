@@ -160,7 +160,7 @@ add_executable (zsdx
 
 if (NOT WIN32)
    SET_TARGET_PROPERTIES(zsdx PROPERTIES
-			      COMPILE_FLAGS "-g -ansi -Wall -Werror")
+			      COMPILE_FLAGS "-O2 -ansi -Wall -Werror")
 endif (NOT WIN32)
 
 target_link_libraries (zsdx

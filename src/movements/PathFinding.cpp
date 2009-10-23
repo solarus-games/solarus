@@ -40,8 +40,6 @@ const SDL_Rect PathFinding::transition_collision_boxes[] = {
   {  0,  0, 24, 24 }
 };
 
-//const PathFinding::Node PathFinding::no_node = { {0,0,0,0} };
-
 /**
  * Constructor.
  * @param map the map
@@ -107,6 +105,7 @@ std::string PathFinding::compute_path(void) {
   starting_node.heuristic = total_mdistance;
   starting_node.total_cost = total_mdistance;
   starting_node.direction = ' ';
+  starting_node.parent_index = -1;
 
   open_list[index] = starting_node;
   open_list_indices.push_front(index);

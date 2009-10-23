@@ -52,7 +52,6 @@ class PathFinding {
 
     static const SDL_Rect neighbours_locations[];
     static const SDL_Rect transition_collision_boxes[];
-//    static const Node no_node;
 
     Map *map;                       /**< the map */
     MapEntity *source_entity;       /**< the entity to move */

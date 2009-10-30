@@ -39,6 +39,7 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - Alt+F4 ne marche pas sous windows
+- Ombre de Khorneth
 
 
 Remarques de Linksupersayen :

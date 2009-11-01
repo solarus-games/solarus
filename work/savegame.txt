@@ -58,3 +58,5 @@ booleans:
 65	link's house: weak wall
 66	Sahasrahla's house: first floor door
 67	after dungeon 1: message indicating that the demo is finished
+68	twin caves: chest with the rock key
+

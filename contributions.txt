@@ -28,6 +28,7 @@ HunoPPC (version AmigaOS)
 
 Traduction :
 
+Geomaster + Noxneo : Anglais
 Stella (soldenb@web.de) : Allemand - démo envoyée par mail
 Elrick (sb06390@hotmail.fr) : Italien (proposition par mail) - s'est désisté
 Vivig + Maxi-kapichu (maxime.callico@gmail.com) : Espagnol - démo envoyée par msn et mail respectivement
@@ -47,6 +48,8 @@ Thyb
 Yoshi04
 Stella : soldenb@web.de
 BenObiWan
+Sam101
+Noxneo
 
 
 Pas encore sûrs :

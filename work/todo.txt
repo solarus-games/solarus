@@ -1,8 +1,13 @@
 Prochaines mises à jour :
 
-- avancement
 - l'équipe
 - fausse boîte
+- mode d'emploi
+
+
+Démo :
+
+- Version alpha 1 (r1093) : envoyée aux testeurs, touches de test activées (DEBUG_LEVEL = 2)
 
 
 Feature requests :
@@ -39,7 +44,6 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - Alt+F4 ne marche pas sous windows
-- Ombre de Khorneth
 
 
 Remarques de Linksupersayen :
@@ -66,8 +70,6 @@ SPC :
 
 A venir :
 
-- Intro
-- Mini-boss
 - Prochains types d'entités :
   - blocs violets
 
@@ -137,6 +139,8 @@ Mode release :
 - Enlever les commentaires qui font références au mode 2
 - Compiler les scripts et enlever les versions en texte clair
 - Vérifier les TODO du code et de data
+- Windows : installeur avec InnoSetup
+
 
 ----------------------
 Feature requests de l'éditeur :

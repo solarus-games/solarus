@@ -42,7 +42,10 @@ DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
   // initialize the surface
   dialog_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
   SDL_SetColorKey(dialog_surface, SDL_SRCCOLORKEY, Color::black);
-  SDL_SetAlpha(dialog_surface, SDL_SRCALPHA, 216);
+
+  if (style != WITHOUT_FRAME) {
+    SDL_SetAlpha(dialog_surface, SDL_SRCALPHA, 216);
+  }
 
   // load the images
   img_box = ResourceManager::load_image("hud/dialog_box.png");
@@ -59,8 +62,10 @@ DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
     }
   }
 
-  box_dst_position.x = x;
-  box_dst_position.y = y;
+  box_dst_position.x = this->x;
+  box_dst_position.y = this->y;
+  box_dst_position.w = box_src_position.w;
+  box_dst_position.h = box_src_position.h;
   question_dst_position.x = x + 18;
   question_dst_position.y = y + 27;
   icon_dst_position.x = x + 18;
@@ -399,7 +404,11 @@ void DialogBox::display(SDL_Surface *destination_surface) {
 
   SDL_FillRect(dialog_surface, NULL, Color::black);
 
-  if (style != WITHOUT_FRAME) {
+  if (style == WITHOUT_FRAME) {
+    // display a dark rectangle
+    SDL_FillRect(destination_surface, &box_dst_position, Color::black);
+  }
+  else {
     // display the dialog box
     SDL_BlitSurface(img_box, &box_src_position, dialog_surface, &box_dst_position);
   }

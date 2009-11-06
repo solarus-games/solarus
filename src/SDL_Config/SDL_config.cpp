@@ -405,7 +405,7 @@ int CFG_Internal_FindChar(const CFG_Char * buffer, char xxx)
     ++ptr;
    }
 
-  return CFG_NPOS;
+  return (int) CFG_NPOS;
  }
 
 /* ------------------------------------------------------- end CFG_Internal_FindChar */
@@ -477,7 +477,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
   int isString = 0;
 
   /* position of last found ", it has to be int, */
-  int lastDblQuote = CFG_NPOS;
+  int lastDblQuote = (int) CFG_NPOS;
 
   /* If we know that we're inside multiline C like comment, then there's nothing to remove from inside */
   if (CFG_Internal_c_like_comment == 1)
@@ -797,7 +797,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
 	  if ( (commentPos1 != CFG_NPOS) && (parsed.size() > commentPos1) )
 	   {
         if (parsed[commentPos1 + 1] != CFG_COMMENT_1)
-         commentPos1 = CFG_NPOS;
+         commentPos1 = (unsigned int) CFG_NPOS;
        }
 	  else if (parsed.size() > commentPos1)
 	   {
@@ -808,7 +808,7 @@ void CFG_Internal_ParseLine(CFG_Internal_File * internal_file, const CFG_Char * 
 	  if ( (commentPos4 != CFG_NPOS) && (parsed.size() > commentPos4) )
 	   {
         if (parsed[commentPos4 + 1] != CFG_COMMENT_C2)
-         commentPos4 = CFG_NPOS;
+         commentPos4 = (unsigned int) CFG_NPOS;
        }
 	  else if (parsed.size() > commentPos4)
 	   {

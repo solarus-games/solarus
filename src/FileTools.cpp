@@ -19,6 +19,8 @@
 
 /**
  * Initializes the file tools.
+ * @param argc number of command line arguments
+ * @param argv command line arguments
  */
 void FileTools::initialize(int argc, char **argv) {
   PHYSFS_init(argv[0]);
@@ -39,11 +41,22 @@ void FileTools::initialize(int argc, char **argv) {
   }
  
   // set the search path
+  std::string data_path = ".";
+  const std::string flag = "-datapath=";
+  for (argv++; argc > 1; argv++, argc--) {
+    std::string arg = *argv;
+    if (arg.find(flag) == 0) {
+      data_path = arg.substr(flag.size());
+      argc = 0;
+    }
+  }
+  data_path = data_path + "/data.zsdx";
+
   PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);
 #if ZSDX_DEBUG_LEVEL >= 1
   PHYSFS_addToSearchPath("data", 1);
 #endif
-  PHYSFS_addToSearchPath("data.zsdx", 1);
+  PHYSFS_addToSearchPath(data_path.c_str(), 1);
 }
 
 /**

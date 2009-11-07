@@ -8,6 +8,7 @@ Prochaines mises à jour :
 Démo :
 
 - Version alpha 1 (r1093) : envoyée aux testeurs, touches de test activées (DEBUG_LEVEL = 2)
+- Version beta 1 (r1103) : même chose, la version alpha étant assez stable
 
 
 Feature requests :
@@ -91,7 +92,6 @@ Mode release :
 - Ne plus afficher les messages d'erreur (en modifiant le define RELEASE_MODE)
 - Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence (en modifiant le define RELEASE_MODE)
 - Enelever les touches de test (en modifiant le define RELEASE_MODE)
-- Cacher le mode Rêves de Solarus s'il n'est pas encore fait
 - Compiler en mode release (pas -g) et optimisé
 - Inclure le fichier de licence GPL
 - Vérifier la présence du message GPL dans les fichiers source
@@ -99,7 +99,7 @@ Mode release :
 - Compiler les scripts et enlever les versions en texte clair
 - Vérifier les TODO du code et de data
 - Windows : installeur avec InnoSetup
-
+- Enlever project_db.zsd
 
 ----------------------
 Feature requests de l'éditeur :

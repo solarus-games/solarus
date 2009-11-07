@@ -32,8 +32,8 @@
 
 /**
  * Debug level.
- * 0: no debug (release mode): no error messages; pick the data only from the archive file; no debug keys; use clear text (.lua) scripts
- * >= 1: enable the error messages; pick the data also from the physical data directory; use only compiled (.luac) scripts
+ * 0: no debug (release mode): no error messages; pick the data only from the archive file; no debug keys; use only compiled (.luac) scripts
+ * >= 1: enable the error messages; pick the data also from the physical data directory; use clear text (.lua) scripts
  * >= 2: enable the debug keys
  */
 #define ZSDX_DEBUG_LEVEL 2

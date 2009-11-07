@@ -26,7 +26,6 @@ Feature requests :
 - rendre les pierres et les buissons dépendants du tileset
 - scrolling tiles : permettre de choisir la direction du décalage
 - dialog box : renommer cancel en skip
-- nouvel écran-titre
 - mode d'emploi
 
 
@@ -49,7 +48,6 @@ Bugs :
 
 Remarques de Linksupersayen :
 
-- Écran titre un peu figé, on aimerait bien un petit peu d'animation.
 - Link semble disparaître un peu lors des phases à l'épée.
 - D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
 
@@ -62,13 +60,6 @@ Remarques de @PyroNet :
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 
 
-SPC :
-
-- snes_spc fast : 45%
-- snes_spc accurate : 55%
-- openspc : 35%
-
-
 A venir :
 
 - Prochains types d'entités :
@@ -77,10 +68,7 @@ A venir :
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 
-pour la démo :
 - GreenSoldier : garde vert normal (intelligent avec longue épée)
-
-ensuite (beaucoup faits dans MC) :
 - Octorok
 - serpent
 - stalfos
@@ -91,39 +79,10 @@ ensuite (beaucoup faits dans MC) :
 - garde bleu avec lance (monde des ténèbres)
 
 
-Testeurs :
-
-- Essayer des combinaisons d'objets compliqués (blocs, trous, ennemis, escaliers, eau, game over avec fée, changements de maps...)
-- Tester les animations avec les différentes épées, boucliers et tuniques
-
-
 Idées :
 
 - Passer à travers un tableau de Mario comme dans Mario 64
 
-----------------
-Ancien planning prévisionnel
-----------------
-
-[ok] Dimanche 5 octobre 2008 : animation tire + pierres trop lourdes
-[ok] Dimanche 12 octobre 2008 : menu de pause fini, touches configurables, sauvegarde depuis le menu
-[ok] Dimanche 19 octobre 2008 : collisions au pixel près, couper les buissons avec l'épée
-[ok] Dimanche 26 octobre 2008 : monde extérieur
-[ok] Dimanche 2 novembre 2008 : combats (un type d'ennemi)
-[ok] Dimanche 9 novembre 2008 : scripts et PNJ
-[ok] Dimanche 16 novembre 2008 : maison des rubis
-[ok] Dimanche 23 novembre 2008 : autres maisons et grottes
-[ok] Dimanche 30 novembre 2008 : donjon 1 commencé ; annonce de la démo si on est dans les temps
-[ok] Dimanche 7 décembre 2008 : combats (autres types d'ennemis), objets à finir (bombes, croissants, flacon...)
-[ok] Dimanche 14 décembre 2008 : donjon 1 fini, démo finie, début des tests
-[ok] Dimanche 21 décembre 2008 : cryptage des fichiers
-Mercredi 24 décembre 2008 : sortie de la démo jusqu'à la fin du donjon 1
-
-
-Pas de cryptage mais
-- nommer le fichier zip avec une autre extension (spécifiée à la bibliothèque avec les fonctions _ext_io)
-- éventuellement utiliser l'obfuscation style xor de la bibliothèque (très simple mais le but est juste d'empêcher de voir directement les fichiers)
-- éventuellement à l'ouverture du jeu, vérifier le checksum du fichier zip pour s'assurer qu'il n'a pas été modifié
 
 --------------
 Mode release :
@@ -137,7 +96,6 @@ Mode release :
 - Inclure le fichier de licence GPL
 - Vérifier la présence du message GPL dans les fichiers source
 - Remettre l'écran-titre
-- Enlever les commentaires qui font références au mode 2
 - Compiler les scripts et enlever les versions en texte clair
 - Vérifier les TODO du code et de data
 - Windows : installeur avec InnoSetup

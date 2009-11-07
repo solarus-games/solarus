@@ -26,11 +26,15 @@
  * @param previous the previous phase
  */
 SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous, "selection_menu.choose_mode"),
+//  SelectionMenuPhase(previous, "selection_menu.choose_mode"),
+  SelectionMenuPhase(previous, "selection_menu.select_file"),
   adventure_mode(true) {
 
   this->img_mode = ResourceManager::load_image("menus/selection_menu_mode.png");
   this->savegame_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+
+  transition = Transition::create(Transition::FADE, Transition::OUT);
+  transition->start();
 }
 
 /**
@@ -46,7 +50,7 @@ SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
  * @param event the event
  */
 void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
-
+/*
   if (transition == NULL && event.type == SDL_KEYDOWN) {
 
     bool finished = false;
@@ -55,16 +59,8 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
 
     case SDLK_SPACE:
     case SDLK_RETURN:
-      if (adventure_mode) {
-	// the user chose "Adventure"
-	play_ok_sound();
-	finished = true;
-      }
-      else {
-	// the user chose "Solarus Dreams"
-	play_ok_sound();
-	finished = true;
-      }
+      play_ok_sound();
+      finished = true;
       break;
 
     case SDLK_RIGHT:
@@ -82,6 +78,7 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
       transition->start();
     }
   }
+  */
 }
 
 /**
@@ -95,22 +92,7 @@ void SelectionMenuChooseMode::update(void) {
     Savegame *savegame_copy = new Savegame(savegame->get_file_name());
     // because the first one will be deleted
 
-    if (adventure_mode) {
-      set_next_screen(new Game(savegame_copy));
-    }
-    else {
-      set_next_screen(NULL);
-
-      /* TODO :)
-
-      Lorsqu'il lance ce mode, le jeu affiche les écrans suivants :
-      
-      1. Le joueur doit saisir son login et son mot de passe du forum.
-      2. Le jeu se connecte au serveur et en cas de réussite, télécharge les derniers niveaux éventuellement ajoutés.
-      3. Ecran de sélection des niveaux. La liste des niveaux s'affiche, avec pour chaque niveau : son nom, le nom de son créateur, la difficulté, les médailles obtenues par le joueur.
-      4. Une fois un niveau choisi, un écran plus détaillé affiche toutes les informations du niveau, avec une description textuelle, un screenshot, et le nombre de joueurs ayant déjà réussi chaque objectif. Le joueur doit choisir un des objectifs et peut ensuite lancer le jeu.
-      */
-    }
+    set_next_screen(new Game(savegame_copy));
   }
 
   SelectionMenuPhase::update();
@@ -135,14 +117,16 @@ void SelectionMenuChooseMode::display(SDL_Surface *screen_surface) {
   savegame_position.w = 208;
   savegame_position.h = 23;
 
-  SDL_Rect position = {57, 75};
+  SDL_Rect position = {57, 75 + i * 27};
+//  SDL_Rect position = {57, 75};
 
   SDL_BlitSurface(savegame_surface, &savegame_position, destination_surface, &position);
 
-  // the two boxes
+  /*
+  // options
   SDL_Rect box_position = {0, 0, 73, 54};
   if (adventure_mode) {
-    box_position.y = 54; // highlight the selected box
+    box_position.y = 54; // highlight the selection
   }
 
   position.x = 70;
@@ -150,10 +134,12 @@ void SelectionMenuChooseMode::display(SDL_Surface *screen_surface) {
   SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);
 
   box_position.x = 73;
-  box_position.y = adventure_mode ? 0 : 54; // highlight the selected box
+  box_position.y = adventure_mode ? 0 : 54; // highlight the selection
   position.x = 170;
   position.y = 115;
   SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);
+*/
 
   finish_display(screen_surface);
 }
+

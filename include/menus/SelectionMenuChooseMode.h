@@ -24,15 +24,15 @@
 /**
  * Phase of the selection menu where the user
  * chooses the game mode.
+ * Note that currently, this phase is automatically
+ * closed because there is only one game mode for now.
+ * This class may allow to create an alternative
+ * game mode later.
  */
 class SelectionMenuChooseMode: public SelectionMenuPhase {
 
  private:
 
-  /**
-   * True if the Adventure mode if selected,
-   * false if the Solarus Dreams mode is selected.
-   */
   bool adventure_mode;
 
   SDL_Surface *img_mode;
@@ -51,3 +51,4 @@ class SelectionMenuChooseMode: public SelectionMenuPhase {
 };
 
 #endif
+

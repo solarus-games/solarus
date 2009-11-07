@@ -21,7 +21,7 @@
  * The two fonts, created in the initialize() function.
  */
 SDL_RWops *TextSurface::rw[FONT_NB];
-TTF_Font *TextSurface::fonts[FONT_NB] = {NULL, NULL};
+TTF_Font *TextSurface::fonts[FONT_NB] = {NULL};
 
 /**
  * Initializes the font system.

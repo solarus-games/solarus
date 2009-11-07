@@ -196,7 +196,7 @@ void TitleScreen::init_phase_title(void) {
   static const std::string time_of_day_strings[] = { "daylight", "sunset", "night" };
   static const SDL_Color text_colors[] = { {0, 0, 92}, {0, 0, 92}, {255, 128, 0} };
   TimeOfDay time_of_day = get_time_of_day();
-//  time_of_day = TimeOfDay(1);
+//  time_of_day = TimeOfDay(2);
 
   current_phase = PHASE_TITLE;
 
@@ -214,7 +214,8 @@ void TitleScreen::init_phase_title(void) {
   star_img = ResourceManager::load_image("menus/title_star.png");
 
   website_img = new TextSurface(160, 220, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
-  website_img->set_font(TextSurface::FONT_STANDARD);
+  website_img->set_font(TextSurface::FONT_LA);
+  website_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
   website_img->set_text_color(text_colors[time_of_day]);
   website_img->set_text(StringResource::get_string("title_screen.website"));
   press_space_img = new TextSurface(160, 190, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);

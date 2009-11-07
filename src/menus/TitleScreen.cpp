@@ -24,6 +24,7 @@
 #include "TransitionFade.h"
 #include "TextSurface.h"
 #include "StringResource.h"
+#include <ctime>
 
 // TODO remove
 #include "Game.h"
@@ -192,28 +193,47 @@ void TitleScreen::init_phase_zs_presents(void) {
  */
 void TitleScreen::init_phase_title(void) {
 
+  static const std::string time_of_day_strings[] = { "daylight", "sunset", "night" };
+  static const SDL_Color text_colors[] = { {0, 0, 92}, {0, 0, 92}, {255, 128, 0} };
+  TimeOfDay time_of_day = get_time_of_day();
+//  time_of_day = TimeOfDay(1);
+
   current_phase = PHASE_TITLE;
 
   title_screen_music = ResourceManager::get_music("title_screen.spc");
   title_screen_music->play();
 
-  background_img = ResourceManager::load_image("menus/title_background.png");
+  const std::string &time_of_day_name = time_of_day_strings[time_of_day];
+  std::string background_img_name = (std::string) "menus/title_" + time_of_day_name + "_background.png";
+  std::string clouds_img_name = (std::string) "menus/title_" + time_of_day_name + "_clouds.png";
+
+  background_img = ResourceManager::load_image(background_img_name);
+  clouds_img = ResourceManager::load_image(clouds_img_name);
   logo_img = ResourceManager::load_image("menus/title_logo.png");
   dx_img = ResourceManager::load_image("menus/title_dx.png");
+  star_img = ResourceManager::load_image("menus/title_star.png");
+
   website_img = new TextSurface(160, 220, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   website_img->set_font(TextSurface::FONT_STANDARD);
+  website_img->set_text_color(text_colors[time_of_day]);
   website_img->set_text(StringResource::get_string("title_screen.website"));
   press_space_img = new TextSurface(160, 190, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   press_space_img->set_font(TextSurface::FONT_LA_BIG);
   press_space_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
+  press_space_img->set_text_color(text_colors[time_of_day]);
   press_space_img->set_text(StringResource::get_string("title_screen.press_space"));
   title_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+
+  clouds_position.x = 320;
+  clouds_position.y = 30;
+  Uint32 now = SDL_GetTicks();
+  next_clouds_move_date = now;
 
   counter = 0;
   next_image_date = SDL_GetTicks() + 5000;
 
   transition_in = new TransitionFade(Transition::IN);
-  transition_in->set_delay(60);
+  transition_in->set_delay(30);
   transition_in->start();
   transition_out = new TransitionFade(Transition::OUT);
 }
@@ -226,8 +246,10 @@ void TitleScreen::exit_phase_title(void) {
   delete transition_in;
   delete transition_out;
   SDL_FreeSurface(background_img);
+  SDL_FreeSurface(clouds_img);
   SDL_FreeSurface(logo_img);
   SDL_FreeSurface(dx_img);
+  SDL_FreeSurface(star_img);
   delete website_img;
   delete press_space_img;
   SDL_FreeSurface(title_surface);
@@ -258,6 +280,18 @@ void TitleScreen::update_phase_title(void) {
     }
   }
 
+  while (now >= next_clouds_move_date) {
+    clouds_position.x += 1;
+    clouds_position.y -= 1;
+    if (clouds_position.x >= 535) {
+      clouds_position.x -= 535;
+    }
+    if (clouds_position.y < 0) {
+      clouds_position.y += 299;
+    }
+    next_clouds_move_date = now + 50;
+  }
+
   if (transition_out->is_over()) {
     exit_phase_title();
     set_next_screen(new SelectionMenuSelectFile(NULL));
@@ -270,16 +304,36 @@ void TitleScreen::update_phase_title(void) {
  */
 void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
 
+  // fill with black
   SDL_FillRect(title_surface, NULL, Color::black);
 
+  // background
   SDL_BlitSurface(background_img, NULL, title_surface, NULL);
+
+  // clouds
+  SDL_Rect clouds_dst_position = clouds_position;
+  SDL_BlitSurface(clouds_img, NULL, title_surface, &clouds_dst_position);
+  clouds_dst_position.x = clouds_position.x - 535;
+  clouds_dst_position.y = clouds_position.y;
+  SDL_BlitSurface(clouds_img, NULL, title_surface, &clouds_dst_position);
+  clouds_dst_position.x = clouds_position.x;
+  clouds_dst_position.y = clouds_position.y - 299;
+  SDL_BlitSurface(clouds_img, NULL, title_surface, &clouds_dst_position);
+  clouds_dst_position.x = clouds_position.x - 535;
+  clouds_dst_position.y = clouds_position.y - 299;
+  SDL_BlitSurface(clouds_img, NULL, title_surface, &clouds_dst_position);
+
+  // website name
   website_img->display(title_surface);
 
+  SDL_BlitSurface(logo_img, NULL, title_surface, NULL);
+
+  // logo and other appearing stuff
   if (counter >= 1) {
-    SDL_BlitSurface(logo_img, NULL, title_surface, NULL);
+    SDL_BlitSurface(dx_img, NULL, title_surface, NULL);
 
     if (counter >= 2) {
-      SDL_BlitSurface(dx_img, NULL, title_surface, NULL);
+      SDL_BlitSurface(star_img, NULL, title_surface, NULL);
 
       if (counter >= 3) {
 	press_space_img->display(title_surface);
@@ -287,6 +341,7 @@ void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
     }
   }
 
+  // transitions
   if (transition_in->is_started()) {
     transition_in->display(title_surface);
   }
@@ -295,5 +350,28 @@ void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
   }
 
   SDL_BlitSurface(title_surface, NULL, destination_surface, NULL);
+}
+
+/**
+ * Returns a number describing the current time of the day.
+ * @return DAYLIGHT, SUNSET or NIGHT
+ */
+TitleScreen::TimeOfDay TitleScreen::get_time_of_day(void) {
+
+  time_t timestamp = time(NULL);
+  struct tm *local_time = localtime(&timestamp);
+  int hour = local_time->tm_hour;
+
+  TimeOfDay result;
+  if (hour >= 8 && hour <= 18) {
+    result = DAYLIGHT;
+  }
+  else if (hour > 18 && hour <= 20) {
+    result = SUNSET;
+  }
+  else {
+    result = NIGHT;
+  }
+  return result;
 }
 

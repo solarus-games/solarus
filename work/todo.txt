@@ -27,6 +27,7 @@ Feature requests :
 - scrolling tiles : permettre de choisir la direction du décalage
 - dialog box : renommer cancel en skip
 - nouvel écran-titre
+- mode d'emploi
 
 
 Bugs :

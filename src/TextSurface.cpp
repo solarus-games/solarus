@@ -153,9 +153,16 @@ void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) 
  * @param b blue component (0 to 255)
  */
 void TextSurface::set_text_color(int r, int g, int b) {
-  this->text_color.r = r;
-  this->text_color.g = g;
-  this->text_color.b = b;
+  SDL_Color color = {r, g, b};
+  set_text_color(color);
+}
+
+/**
+ * Sets the color of the text.
+ * @param color the color to set
+ */
+void TextSurface::set_text_color(const SDL_Color &color) {
+  this->text_color = color;
 
   rebuild();
 }
@@ -168,9 +175,17 @@ void TextSurface::set_text_color(int r, int g, int b) {
  * @param b blue component (0 to 255)
  */
 void TextSurface::set_background_color(int r, int g, int b) {
-  this->background_color.r = r;
-  this->background_color.g = g;
-  this->background_color.b = b;
+  SDL_Color color = {r, g, b};
+  set_background_color(color);
+}
+
+/**
+ * Sets the background color of the text.
+ * This is only useful for the TEXT_SHADED rendering.
+ * @param color the background color to set
+ */
+void TextSurface::set_background_color(const SDL_Color &color) {
+  this->background_color = color;
 
   rebuild();
 }

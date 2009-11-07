@@ -36,6 +36,16 @@ class TitleScreen: public Screen {
     PHASE_TITLE
   };
 
+  /**
+   * Possible times of the day, used
+   * to display different title screens.
+   */
+  enum TimeOfDay {
+    DAYLIGHT,
+    SUNSET,
+    NIGHT
+  };
+
   Phase current_phase;
   Uint32 next_phase_date;
   TransitionFade *transition_in;
@@ -54,18 +64,24 @@ class TitleScreen: public Screen {
   // phase 3
   Music *title_screen_music;
   SDL_Surface *background_img;
+  SDL_Surface *clouds_img;
   SDL_Surface *logo_img;
   SDL_Surface *dx_img;
+  SDL_Surface *star_img;
   TextSurface *website_img;
   TextSurface *press_space_img;
   SDL_Surface *title_surface;
   int counter;
   Uint32 next_image_date;
+  SDL_Rect clouds_position;
+  Uint32 next_clouds_move_date;
 
   void init_phase_title(void);
   void exit_phase_title(void);
   void update_phase_title(void);
   void display_phase_title(SDL_Surface *destination_surface);
+
+  TimeOfDay get_time_of_day(void);
 
  public:
 

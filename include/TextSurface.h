@@ -103,7 +103,9 @@ class TextSurface {
 		     VerticalAlignment vertical_alignment);
   void set_rendering_mode(RenderingMode rendering_mode);
   void set_text_color(int r, int g, int b);
+  void set_text_color(const SDL_Color &color);
   void set_background_color(int r, int g, int b);
+  void set_background_color(const SDL_Color &color);
   void set_position(int x, int y);
   void set_x(int x);
   void set_y(int y);

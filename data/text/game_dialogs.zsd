@@ -555,6 +555,9 @@ line3 = "tout en vous amusant !"
 
 [outside_world.village.waterfall_sign]
 # Pancarte près de la cascade du village
+# C'est un clin d'oeil à Majora's Mask
+# dans les Marais du Sud où on trouve
+# le même type de pancarte.
 #       |-----------------------|
 line1 = "Servez-vous de notre"
 line2 = "eau fraîche de la"

@@ -20,10 +20,13 @@ Newlink + Yoshi04 (boss brute initialement prévu pour Spherdon's Crystals)
 SaniOkh (testera et donnerait des idées, cf MP)
 Mooglwy (version Mac)
 Mymy (edelweiss, maps)
-Neovyze (artworks : Link, amulette ; fonds d'écran, notice, fresques de l'intro)
+Neovyse (artworks : Link, amulette ; fonds d'écran, notice, fresques de l'intro)
 Newlink (sprites)
 Binbin (version Mac)
 HunoPPC (version AmigaOS)
+Djipi (amélioration du logo)
+Daru13 (idées de boss (voir MP), graphismes non pixel-art sauf décors)
+Sam101 (paquets ArchLinux, Debian/Ubuntu)
 
 
 Traduction :
@@ -58,7 +61,6 @@ Julien Clément (éditeur de maps)
 Binbin (maps, donjon ou phase inédite, trailer)
 Bruno de C (affiche, dessins)
 Morwenn (une musique)
-daru13 : idées de boss (voir MP), graphismes non pixel-art sauf décors
 Joker : graphismes (tileset de forêt pour niveau 3)
 Tifredi : graphismes (intéressé par les boss)
 

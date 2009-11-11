@@ -27,7 +27,6 @@ Feature requests :
 - scrolling tiles : permettre de choisir la direction du décalage
 - dialog box : renommer cancel en skip
 - mode d'emploi
-- remettre snes_spc dans le code source finalement
 
 
 Bugs :
@@ -45,6 +44,7 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - Alt+F4 ne marche pas sous windows
+- ne compile plus en -O2 avec snes_spc
 
 
 Remarques de Linksupersayen :

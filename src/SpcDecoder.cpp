@@ -16,25 +16,14 @@
  */
 #include "SpcDecoder.h"
 
-#ifdef USE_OPENSPC
-
-extern "C" {
-#include <openspc.h>
-}
-
-#endif
-
 /**
  * Creates an SPC decoder.
  */
 SpcDecoder::SpcDecoder(void) {
 
   // initialize the SPC library
-#ifdef USE_SNES_SPC
   snes_spc_manager = spc_new();
   snes_spc_filter = spc_filter_new();
-#endif
-
 }
 
 /**
@@ -43,11 +32,8 @@ SpcDecoder::SpcDecoder(void) {
 SpcDecoder::~SpcDecoder(void) {
 
   // uninitialize the SPC library
-#ifdef USE_SNES_SPC
   spc_filter_delete(snes_spc_filter);
   spc_delete(snes_spc_manager);
-#endif
-
 }
 
 /**
@@ -58,14 +44,9 @@ SpcDecoder::~SpcDecoder(void) {
 void SpcDecoder::load(Sint16 *sound_data, size_t sound_size) {
 
   // load the SPC data into the SPC library
-#ifdef USE_OPENSPC
-  OSPC_Init(sound_data, sound_size);
-#else
   spc_load_spc(snes_spc_manager, (short int*) sound_data, sound_size);
   spc_clear_echo(snes_spc_manager);
   spc_filter_clear(snes_spc_filter);
-#endif
-
 }
 
 
@@ -77,19 +58,11 @@ void SpcDecoder::load(Sint16 *sound_data, size_t sound_size) {
 void SpcDecoder::decode(Sint16 *decoded_data, int nb_samples) {
 
   // decode from the SPC data the specified number of PCM samples
-#ifdef USE_OPENSPC
-
-  OSPC_Run(-1, decoded_data, nb_samples * 2);
-
-#else
 
   const char *err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
   if (err != NULL) {
     DIE("Failed to decode SPC data: " << err);
   }
   spc_filter_run(snes_spc_filter, (short int*) decoded_data, nb_samples);
-
-#endif
-
 }
 

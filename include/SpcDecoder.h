@@ -18,49 +18,26 @@
 #define ZSDX_SPC_DECODER_H
 
 #include "Common.h"
-
-/*
- * By default, to decode SPC music files, the Snes_SPC library is used.
- * Snes_SPC is a recent SPC decoding library and exists in two versions:
- * - a fast version, that renders music with a very nice quality (recommended);
- * - a highly accurate version, that renders music with a better accuracy, but three times slower.
- * I recommend the fast version since the sound generated is good enough.
- * 
- * OpenSPC is an older SPC decoding library, as fast as the fast version of Snes_SPC,
- * but compatible only with i386 architectures because of assembly code.
- * To compile with OpenSPC instead of Snes_SPC,
- * define the preprocessor symbol USE_OPENSPC by uncommenting
- * the following line, or set it in your compilation command line
- * (for gcc, use the flag -DUSE_OPENSPC). 
- * The SPC library you will need to link to the executable depends on this choice.
- */
-//#define USE_OPENSPC // just uncomment this to use OpenSPC instead of Snes_SPC
-
-#ifndef USE_SNES_SPC
-#ifndef USE_OPENSPC
-#define USE_SNES_SPC // Snes_SPC by default (Snes_SPC is more compatible and, with the fast version, is as fast as OpenSPC)
-#endif
-#endif
-
-#ifdef USE_SNES_SPC
-#include <snes_spc/spc.h>
-#endif
+#include "snes_spc/spc.h"
 
 /**
  * This class encapsulates the SPC music decoding, thus allowing
  * the Music class to be independent of the SPC library choice.
+ *
+ * To decode SPC music files, the Snes_SPC library code is used.
+ * Snes_SPC is a recent SPC decoding library and exists in two versions:
+ * - a fast version, that renders music with a very nice quality (recommended);
+ * - a highly accurate version, that renders music with a better accuracy, but three times slower.
+ * The source code of ZSDX include the fast version of Snes_SPC, which I recommend
+ * since the sound generated is good enough.
  */
 class SpcDecoder {
 
   private:
 
-#ifdef USE_SNES_SPC
-
     // Snes_SPC specific data
     SNES_SPC *snes_spc_manager;   /**< the snes_spc object */
     SPC_Filter *snes_spc_filter;  /**< the snes_spc filter object */
-
-#endif
 
   public:
 

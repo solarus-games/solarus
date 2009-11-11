@@ -1,4 +1,4 @@
-include_directories (${ZSDX_SOURCE_DIR}/include ${ZSDX_SOURCE_DIR}/include/SDL_Config)
+include_directories (${ZSDX_SOURCE_DIR}/include ${ZSDX_SOURCE_DIR}/include/SDL_Config ${ZSDX_SOURCE_DIR}/include/snes_spc)
 
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
@@ -156,11 +156,18 @@ add_executable (zsdx
 
   # external source files
   SDL_Config/SDL_config.cpp
+  snes_spc/dsp.cpp
+  snes_spc/SNES_SPC.cpp
+  snes_spc/SNES_SPC_misc.cpp
+  snes_spc/SNES_SPC_state.cpp
+  snes_spc/spc.cpp
+  snes_spc/SPC_DSP.cpp
+  snes_spc/SPC_Filter.cpp
 )
 
 if (NOT WIN32)
    SET_TARGET_PROPERTIES(zsdx PROPERTIES
-			      COMPILE_FLAGS "-O2 -ansi -Wall -Werror")
+			      COMPILE_FLAGS "-g -ansi -Wall -Werror")
 endif (NOT WIN32)
 
 target_link_libraries (zsdx
@@ -170,7 +177,6 @@ target_link_libraries (zsdx
 		      SDL_ttf
 		      openal
 		      alut
-		      snes_spc
 		      lua5.1
 		      physfs
 		      stdc++

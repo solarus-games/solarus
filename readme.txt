@@ -15,25 +15,16 @@ lua5.1
 physfs
 openal
 alut
-snes_spc (recommended) or openspc
 
-Note that Snes_SPC (the library for playing SPC musics) should be compiled in its fast version, otherwise
-it will decode the SPC data about three times slower. Alternatively, you can use the OpenSPC library
-but it is available only for i386 32-bit architectures because of assembly code. OpenSPC is not faster than
-the fast version of Snes_SPC and is not maintained anymore. For those reasons I recommend using Snes_SPC.
-OpenSPC may not be supported anymore in future versions of Zelda: Mystery of Solarus DX. 
-More details about this can be found in file include/SpcDecoder.h.
-The directory libraries contains the header and compiled versions of Snes_SPC (the fast version)
-and OpenSPC for Linux, Windows and Mac OS X.
+Note that two other libraries are directly included in the source code: SDL_Config
+(an ini parsing library, with some modifications to avoid compilation warning and 64-bit issues)
+and snes_spc (an SPC music decoding library).
 
 
 Linux developers:
 
 Install the corresponding packages. For example, with Ubuntu or Debian:
 libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev liblua5.1-0-dev libphysfs-dev libopenal-dev libalut-dev
-
-The directory libraries/linux-i386 contains a compiled version of Snes_SPC (static library)
-and OpenSPC (static and dynamic libraries) for the i386 architecture.
 
 
 Windows developers:
@@ -50,8 +41,6 @@ The directory win32/libraries contain all static and dynamic libraries that are 
 by their authors.
 For SDL, SDL_image and SDL_ttf, the header files must be placed in an "SDL" subdirectory of the include directory.
 For OpenAL and ALUT, the header files must be placed in an "AL" subdirectory of the include directory.
-For Snes_SPC, the header files must be placed in a "snes_spc" subdirectory of the include directory.
-For OpenSPC if you choose do use it, you will probably not find a binary release (I did not). Pick the 32-bit version in the directory win32/libraries.
 You may need to additionally link with libz.
 
 
@@ -133,5 +122,5 @@ Edit the OpenAL configuration file (normally /etc/openal/alsoft.conf) and try th
 - If the sounds play always with a delay (typically, a fraction of second), try reducing the "refresh" value to 2048 (the default value is 8192 with old versions of OpenAL).
 - If the sound plays scratched in the first few seconds or longer, try forcing the driver to OSS, by setting the "driver" list value to "oss" (without the quotes).
 
-Newer versions of OpenAL and PulseAudio seem to work better, such as those of Ubuntu 9.10 (Karmic).
+Newer versions of OpenAL and PulseAudio may work better.
 

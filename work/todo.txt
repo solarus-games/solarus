@@ -27,6 +27,7 @@ Feature requests :
 - scrolling tiles : permettre de choisir la direction du décalage
 - dialog box : renommer cancel en skip
 - mode d'emploi
+- remettre snes_spc dans le code source finalement
 
 
 Bugs :

@@ -206,9 +206,20 @@ void MapScript::load(void) {
   // compute the file name, depending on the id
   std::ostringstream oss;
   oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".lua";
+  std::string text_script_name = oss.str();
+  oss << "c";
+  std::string compiled_script_name = oss.str();
 
+  std::string file_name;
 #if ZSDX_DEBUG_LEVEL == 0
-  oss << "c"; // use the compiled version of the script (.luac)
+  file_name = compiled_script_name; // use the compiled version of the script (.luac)
+#else
+  if (FileTools::data_file_exists(text_script_name)) {
+    file_name = text_script_name; // in debug mode, we prefer using the clear text script
+  }
+  else {
+    file_name = compiled_script_name;
+  }
 #endif
 
   size_t size;

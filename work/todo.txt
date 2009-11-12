@@ -17,7 +17,6 @@ Feature requests :
 - Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
-- Permettre de couper voire régler la musique et/ou le son
 - Mettre des constantes dans les scripts
 - Mettre une icône sur l'exécutable
 - transition intérieur / extérieur : ovale
@@ -27,6 +26,7 @@ Feature requests :
 - scrolling tiles : permettre de choisir la direction du décalage
 - dialog box : renommer cancel en skip
 - mode d'emploi
+- écran d'options global permettant de régler la langue et le volume de la musique et du son
 
 
 Bugs :
@@ -37,7 +37,6 @@ Bugs :
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - trous et plates-formes dans la grotte de mymy
-- Tom trop vieux ? changer la couleur de ses cheveux
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - mur fissuré qui explose : animation ?

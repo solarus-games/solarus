@@ -224,7 +224,7 @@ void MapScript::load(void) {
 
   size_t size;
   char *buffer;
-  FileTools::data_file_open_buffer(oss.str(), &buffer, &size);
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
   luaL_loadbuffer(context, buffer, size, "map script");
   FileTools::data_file_close_buffer(buffer);
   lua_call(context, 0, 0);

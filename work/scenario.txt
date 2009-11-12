@@ -1,0 +1,76 @@
+-------------------------------------
+          Zelda Solarus DX
+Résumé du scénario et des personnages
+-------------------------------------
+
+
+Situtation finale :
+-------------------
+
+D'après la timeline, Ganon est mort et la Triforce est restaurée et repose au château d'Hyrule.
+Les 8 enfants se sacrifient pour tuer Ganon.
+
+
+Intro :
+-------
+
+L'histoire se passe après A Link to the Past. Link a obtenu la Triforce, a fait le voeu de renvoyer Ganondorf dans son Monde des Ténèbres, et le Roi d'Hyrule, descendant des Sept Sages, a scellé à jamais ce monde.
+
+Ganon fut enfermé dans le Monde des Ténèbres grâce à un sceau contrôlé par le Roi d'Hyrule, descendant des sept sages.
+Quelques mois plus tard, un drame se produisit : le Roi tomba subitement malade et perdut la vie. Link alla alors voir Sahasrahla, qui lui confia ses craintes : le sceau était fragilisé et Ganon risquait de s'échapper du Monde des Ténèbres. Il supplia Link de prendre garde à la Triforce, sans laquelle Ganon ne peut pas conquérir le Monde de la Lumière. Link décida alors de confier la Triforce à la Princesse Zelda, qui grâce à ses pouvoirs, saurait la protéger.
+
+Zelda associa ses pouvoirs à ceux de huit mystérieux enfants pour séparer la Triforce en huit fragments. Les huit enfants se chargèrent de dissimuler les fragments partout dans le Monde de la Lumière. Mais avant cela, ils prirent soin de créer une dernière protection : l'Amulette du Solarus. C'est un pendentif qui permet à son possesseur de réassembler la Triforce et de préserver son effet protecteur. Sans lui, la Triforce ne peut pas être reconstituée. La Triforce reposait donc en paix.
+
+Depuis ce temps-là, les habitants du Monde de la Lumière vivent paisiblement. Mais un danger énorme plane au-dessus de leur tête...
+
+
+Scénario résumé (sujet à modifications) :
+-----------------------------------------
+
+Link dort tranquillement dans son lit. Dans un rêve, il voit l'Ancien (Sahasrahla) qui lui dit de vite venir le voir car ils doivent parler. C'est là que le jeu commence. Link doit trouver une épée afin de se frayer un chemin jusque la maison de Sahasrahla. Sahasrahla révèle à Link que les forces du mal sont passées à l'attaque : les monstres ont envahi la plaine et 4 des 8 enfants ont été enlevés.
+
+Link se met alors à leur recherche. Dans une grotte, il rencontre Tom, un ancien garde royal, qui lui prête son Boomerang. Les quatre premiers donjons consistent à sauver les quatre enfants. Lors de son périple, il rencontre aussi Billy le Téméraire, un aventurier très prétentieux, qui se présente comme le plus grand héros de tous les temps, et qui lui échange un edelweiss contre des lingots d'or.
+
+A la fin du quatrième donjon, Link découvre que c'est le sorcier Agahnim qui se cachait derrière ces actes. Agahnim est en train d'envahir le Monde de la Lumière pour y semer les ténèbres. Un ancien château lui sert de repaire. Il a enlevé Sahasrahla et projette de capturer la Princesse Zelda pour s'emparer de la Triforce.
+
+Ce château est le cinquième donjon. A la fin, Link parvient à battre Agahnim. Avant de s'enfuir, le sorcier déclare que Sahasrahla va bientôt lui révéler où se cachent la princesse Zelda et les huit enfants.
+
+Dans le sixième donjon, Link sauve Tom, le garde qui l'avait aidé jadis. Ce dernier lui avoue une triste vérité à propos de la mort du roi. Il lui révèle où est enfermé Sahasrahla : dans une caverne glacée dans les montagnes. Link parvient à sauver Sahasrahla dans le septième donjon. L'Ancien lui en apprend un peu plus sur le pendentif du Solarus et le sceau de la Triforce. Il lui révèle que Zelda et les huit enfants ont trouvé refuge dans un palais à l'est des montagnes, qui constitue le huitième donjon.
+
+Sans plus tarder, Link se rend dans ce palais afin de protéger la princesse Zelda et les huit enfants. Link découvre que ce palais appartient à Billy le Téméraire, et que ce dernier est désormais à la solde du sorcer Agahnim. Après avoir vaincu Billy le Téméraire, Link doit affronter Agahnim pour la seconde fois. Cette fois-ci il en vient à bout, mais dans un dernier souffle, le sorcier libère son maître... Ganondorf. 
+
+Le dernier donjon est le repaire de Ganondorf. C'est là qu'on été emmenés Zelda, les huit enfants ainsi que Link lui-même. Après un rude combat, Link parvient à vaincre Ganondorf, à l'aide des 8 enfants qui se sacrifient pour tuer Ganondorf. Les huit enfants, qui étaient des êtres engendrés par le pouvoir du Solarus, disparaissent et le pendentif restera le seul souvenir de leur action. Le pouvoir du Solarus, protecteur de la Triforce, s'est éteint à jamais : c'était le prix à payer pour que Ganon soit tué. La Triforce peut reposer en paix au château.
+
+
+Idées pour les dialogues de fin de donjon :
+
+- explications sur pourquoi Link, origines du héros au bonnet vert
+- histoire de la triforce : indispensable à la prospérité d'Hyrule, ne doit pas rester longtemps désassemblée (disparition des Hyliens)
+- explications sur le retour d'Agahnim
+- tom et le roi
+- les 8 enfants sont l'incarnation de la triforce
+- ganondorf a déjà convoité la triforce jadis
+
+
+Personnages inédits :
+---------------------
+
+- Les 8 enfants du Solarus
+
+Ce sont huit êtres mystérieux engendrés par le pouvoir du Solarus. Il peut y avoir des filles et des garçons.
+
+- Tom
+
+C'est un ancien garde du château d'Hyrule. Agahnim lui a fait subir un lavage de cerveau afin qu'il empoisonne le roi. Par la suite, lorsque le sort a été brisé, il s'est exilé dans la grotte où il rencontre Link au début du jeu.
+Lors de l'invasion du Monde de la Lumière par Agahnim, Tom est fait prisonnier. Link le délivre dans le sixième donjon, c'est là qu'il apprend la vérité sur la mort du roi.
+
+- Billy le Téméraire
+
+Il se présente lui-même comme le plus grand aventurier de tous les temps. Il possède un palais dans les montagnes, relié à son repaire par un tunnel secret. On découvre à la fin du jeu que Billy travaille pour Agahnim et qu'il lui a livré Zelda et les huit enfants, venus se réfugier dans son palais.
+
+
+Donjons inédits :
+-----------------
+
+- Donjon de Binbin : sorte de grotte du héros avec comme récompense une nouvelle épée
+

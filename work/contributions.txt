@@ -1,0 +1,82 @@
+Ce fichier donne la liste de toutes les personnes qui ont contribué au projet,
+même pour des petites contributions.
+Il servira pour le générique de fin.
+
+Equipe officielle :
+
+Christopho
+Metallizer
+Geomaster
+George
+Linkdu83
+Vaatiking01
+Archangel
+Noxneo
+
+Contributions annexes :
+
+Newlink + Yoshi04 (boss brute initialement prévu pour Spherdon's Crystals)
+@PyroNet (Khorneth et autres boss, items des bourses, carquois et sacs de bombes)
+SaniOkh (testera et donnerait des idées, cf MP)
+Mooglwy (version Mac)
+Mymy (edelweiss, maps)
+Neovyse (artworks : Link, amulette ; fonds d'écran, notice, fresques de l'intro)
+Newlink (sprites)
+Binbin (version Mac)
+HunoPPC (version AmigaOS)
+Djipi (amélioration du logo)
+Daru13 (idées de boss (voir MP), graphismes non pixel-art sauf décors)
+Sam101 (paquets ArchLinux, Debian/Ubuntu)
+
+
+Traduction :
+
+Geomaster : Anglais - traduction en cours
+Stella (soldenb@web.de) : Allemand - traduction en cours
+Elrick (sb06390@hotmail.fr) : Italien (proposition par mail) - s'est désisté
+Vivig + Maxi-kapichu (maxime.callico@gmail.com) : Espagnol - démo envoyée par msn et mail respectivement
+Kennou (forum) : Portugais - contacté par MP
+@PyroNet + Antevre : Néerlandais - prêts, expliquer les instructions
+
+
+Trouvé sur internet :
+
+Algo Scale2X
+Quelques sons : http://noproblo.dayjo.org/ZeldaSounds/ (HelpTheWretched)
+
+
+Testeurs :
+
+Thyb
+Yoshi04
+Stella : soldenb@web.de
+BenObiWan
+Sam101
+Noxneo
+
+
+Pas encore sûrs :
+
+Julien Clément (éditeur de maps)
+Binbin (maps, donjon ou phase inédite, trailer)
+Bruno de C (affiche, dessins)
+Morwenn (une musique)
+Joker : graphismes (tileset de forêt pour niveau 3)
+Tifredi : graphismes (intéressé par les boss)
+
+Candidatures a priori refusées :
+
+sk8ordie (boss en MP)
+tietienne (traduction anglaise)
+Dark LinkGe (artworks officiels)
+Kuro (dessins)
+SkyJedi (version Mac, a fait celle de Zelda ROTH)
+Djipi (idées de boss)
+
+Demandes pour être testeur :
+
+
+
+Ancien ZS :
+
+Guillaume Fuss (scénario)

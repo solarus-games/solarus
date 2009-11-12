@@ -1,0 +1,114 @@
+Appel de fonctions LUA depuis le moteur C++ (événements) :
+
+- event_map_started(destination_point_name)		appelé dès que la map démarre, avant la transition d'ouverture
+- event_opening_transition_finished(destination_point_name)	appelé après la transition d'ouverture de la map
+- event_update()					appelé à chaque cycle (à éviter si possible)
+- event_set_suspended(suspended)			appelé lorsque le jeu est suspendu ou repris
+- event_message_started(message_id)			appelé au début de l'affichage de chaque message d'un dialogue
+- event_message_sequence_finished(message_id, answer)		appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
+- event_switch_enabled(switch_name)			appelé lorsqu'un interrupteur vient d'être activé
+- event_switch_disabled(switch_name)			appelé lorsqu'un interrupteur vient d'être désactivé
+- event_hero_on_sensor(sensor_name)			appelé lorsque le héros marche sur un capteur
+- event_camera_reached_target()				appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
+- event_interaction(entity_name)			appelé lorsque le joueur interagit une entité interactive
+                                                        (autre qu'un PNJ) avec la touche Action lorsqu'il n'y a
+                                                        pas de message prédéfini
+- event_interaction_item(entity_name, item_id, variant)	appelé lorsque le joueur interagit une entité interactive
+                                                        (autre qu'un PNJ) en utilisant un objet de l'inventaire ;
+                                                        retourne vrai si une interaction a pu avoir lieu
+
+- event_npc_dialog(npc_name)				appelé lorsque le joueur parle à un PNJ sans message prédéfini
+- event_npc_movement_finished(npc_name)			appelé lorsqu'un PNJ a terminé son mouvement de marche ou de saut
+- event_open_empty_chest(chest_name)			appelé lorsque le joueur ouvre un coffre vide (son comportement sera alors défini par le script, le héros étant bloqué jusqu'à ce que le script appelle unfreeze())
+- event_obtaining_treasure(content, savegame_variable)	appelé lorsque le joueur obtient un trésor, qu'il vienne d'un coffre ou non
+- event_obtained_treasure(content, savegame_variable)	appelé lorsque le joueur a fini d'obtenir un trésor
+- event_shop_item_bought(shop_item_name)                appelé lorsque le joueur achète un article dans un magasin
+- event_enemy_dead(enemy_name)				appelé à la mort d'un ennemi
+- event_hero_victory_sequence_finished()		appelé lorsque l'animation de victoire du héros se termine
+
+
+Appel de fonctions C++ depuis un script LUA :
+
+- freeze()						empêche le joueur de bouger jusqu'à un appel à unfreeze()
+- unfreeze()						restaure le contrôle au joueur
+- start_message(message_id)				affiche un message
+- set_message_variable(first_message_id, value)		spécifie la valeur d'une variable dans une séquence de messages
+- dialog_set_style(style)                               spécifie le style de la boîte de dialogue pour les futurs messages
+- hud_set_enabled(enabled)				active ou désactive l'affichage du HUD
+- play_sound(sound_id)					joue un son
+- play_music(music_id)					joue une musique
+- give_treasure(treasure_id, savegame_variable)		donne un trésor au joueur (sans coffre)
+- give_treasure_with_amount(treasure_id, amount, savegame_variable)		donne un trésor au joueur (sans coffre)
+- savegame_get_string(index)
+- savegame_get_integer(index)
+- savegame_get_boolean(index)
+- savegame_set_string(index)
+- savegame_set_integer(index)
+- savegame_set_boolean(index)
+- player_get_name()					retourne le nom du joueur (5 caractères maximum)
+- player_set_pause_enabled(bool enabled)		autorise ou interdit de mettre le jeu en pause (et donc notamment de sauvegarder)
+- start_timer(duration, callback, with_sound)		démarre un timer qui appellera une fonction du script une fois terminé
+- stop_timer(callback)					arrête un timer en cours d'exécution
+- move_camera(x, y, speed)				suspend le jeu et déplace la caméra vers un point cible
+- restore_camera()					renvoie la caméra vers le héros
+- npc_set_position(npc, x, y)                           change la position d'un PNJ
+- npc_walk(npc, path, loop, with_collisions)		fait se déplacer un PNJ selon un chemin spécifié
+- npc_random_walk(npc)					fait se déplacer un PNJ de manière aléatoire
+- npc_jump(npc, direction, length, with_collisions)	fait sauter un PNJ dans une direction spécifiée
+- npc_set_animation(npc, animation_name)		change l'animation d'un PNJ
+- npc_set_animation_ignore_suspend(npc, ignore)		indique si l'animation d'un sprite doit continuer même lorsque le jeu est suspendu
+- npc_set_direction(npc, direction)			change la direction du sprite d'un PNJ (0 à 3)
+- npc_remove(npc)					supprime un PNJ de la map
+- hero_set_direction(direction)				change la direction du sprite du héros
+- hero_align_on_sensor(sensor_name)                     place le héros exactement sur le rectangle d'un capteur
+- hero_set_map(map_id, destination_point, transition)	envoie le héros sur une map (différente ou non de l'actuelle)
+- hero_walk(path, loop, with_collisions)		fait se déplacer le héros selon un chemin spécifié
+- hero_jump(direction, length, with_collisions)	        fait sauter le héros dans une direction spécifiée
+- hero_start_victory_sequence()				démarre l'animation dans laquelle le héro brandit son épée en signe de victoire
+- hero_set_visible(visible)				cache ou fait réapparaître le héros
+- chest_set_open(chest_name, bool open)			modifie l'état d'un coffre (sans donner ni reprendre son contenu)
+- chest_set_hidden(chest_name, bool hidden)             cache ou fait apparaître un coffre
+- chest_is_hidden(chest_name)                           indique si un coffre est caché
+- get_rupees()						retourne le nombre de rubis
+- remove_rupees(rupees)					enlève des rubis au joueur
+- inventory_item_get(item_id)				retourne le numéro de variante possédée par le joueur d'un objet de l'inventaire
+- inventory_item_set(item_id, variant)			change l'état de possession d'un objet de l'inventaire
+- inventory_item_get_amount(item_id)			retourne la quantité d'un objet de l'inventaire
+- inventory_item_remove_amount(item_id, amount)		enlève une quantité d'un objet de l'inventaire (bombes, croissants, etc.)
+- inventory_item_is_bottle(item_id)			indique si un objet de l'inventaire est un flacon magique
+- tile_set_enabled(tile_name, enable)			active ou désactive un tile dynamique
+- tiles_set_enabled(tiles_prefix, enable)		active ou désactive un ensemble de tiles dynamiques
+- tile_is_enabled(tile_name)				indique si un tile dynamique est activé
+- reset_block(block_name)				replace un bloc comme il était au début de la map
+- reset_blocks()					réinitialise tous les blocs de la map
+- interactive_entity_get_animation(entity)			 	retourne l'animation d'une entité interactive
+- interactive_entity_get_animation_delay(entity)		 	retourne la vitesse de l'animation d'une entité interactive
+- interactive_entity_get_animation_frame(entity)		 	retourne l'image de l'animation d'une entité interactive
+- interactive_entity_get_direction(entity)			 	retourne la direction du sprite d'une entité interactive
+- interactive_entity_is_animation_paused(entity)		 	indique si l'animation d'une entité interactive est en pause
+- interactive_entity_set_animation(entity, animation_name)	 	change l'animation d'une entité interactive
+- interactive_entity_set_animation_delay(entity, delay)		 	change la vitesse de l'animation d'une entité interactive
+- interactive_entity_set_animation_frame(entity, frame)		 	change l'image de l'animation d'une entité interactive
+- interactive_entity_set_animation_direction(entity, direction)		change la direction du sprite d'une entité interactive
+- interactive_entity_set_animation_paused(entity, paused)		met en pause ou restore l'animation d'une entité interactive
+- interactive_entity_set_animation_ignore_suspend(npc, ignore)		indique si l'animation d'un sprite doit continuer même lorsque le jeu est suspendu
+- interactive_entity_fade(entity, direction)				affiche un fondu d'entrée (0) ou de sortie (1) sur une entité interactive
+- interactive_entity_remove(entity)					supprime une entité interactive
+- equipment_get_tunic()				  	retourne la tunique du joueur (0 à 2)
+- equipment_get_sword()					retourne l'épée du joueur (0 à 4)
+- equipment_get_shield()				retourne le bouclier du joueur (0 à 3)
+- shop_item_remove(shop_item_name)			supprime un article de magasin sur la map
+- switch_set_enabled(switch_name, enabled)              active ou désactive un interrupteur
+- enemy_is_dead(enemy_name)				vérifie si un ennemi est mort
+- enemies_are_dead(enemies_name_prefix)			vérifie si un ensemble d'ennemis sont morts
+- enemy_set_enabled(enemy_name)				active ou désactive un ennemi
+- boss_start_battle(enemy_name)				démarre le combat contre un boss s'il est en vie
+- boss_end_battle()					indique que le combat contre un boss est terminé (appelé en général
+							après avoir obtenu le Réceptacle de Coeur)
+- miniboss_start_battle(enemy_name)			démarre le combat contre un mini-boss s'il est en vie
+- miniboss_end_battle()					indique que le combat contre un mini-boss est terminé
+- sensor_remove(sensor_name)				supprime un capteur
+- door_open(door_name)					ouvre une ou plusieurs portes, avec animation et son
+- door_close(door_name)					ferme une ou plusieurs portes, avec animation et son
+- door_set_open(door_name, open)			change l'état d'une porte
+

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+find . -name '*~' -exec rm {} \;
+cd maps
+for f in *.lua
+do
+  luac -o ${f}c $f
+done
+cd ..
+zip ../data.zsdx maps/*.zsd maps/*.luac maps/dungeons/* musics/* sounds/* sprites/*/* text/* tilesets/*
+

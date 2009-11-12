@@ -1,0 +1,62 @@
+This file describes the usage of all savegame variables except the engine ones (see Savegame.h for them).
+
+integers:
+
+booleans:
+
+0 to 9  reserved for tests
+10	link house: chest with shield 1
+11	link house: chest with 50 rupees
+12	link house secret room: chest with a piece of heart
+13	outside world C1: chest with 50 rupees (diagonal jump)
+14	piece of heart near dungeon 1
+15	piece of heart near the south-west lake (reachable from dungeon #9) - temporarily switched with the 100 rupees chest 22
+16	rupee house: game 1: found 50 rupees (best reward)
+17	piece of heart in rupee house (game 3)
+18	chest with piece of heart after the hole above the cliff near the village
+19	chest with 20 rupees in outside world D2
+20	chest with piece of heart in outside world D2 (near the lake shop)
+21	piece of heart in oustide world D2 (near a cavern entrance)
+22	chest with 100 rupees in outside world D1 (near piece of heart from dungeon 9) - temporarily switched with the piece of heart 15
+23	chest with 20 rupees in outside world D1 (in the dungeon 1 forest)
+24	the monkey has allowed the hero to leave his house
+25	chest with 5 rupees in grandma's house
+26	chest with the bow in Sahasrahla's cave
+27	chest with piece of heart in Sahasrahla's cave
+28	chest with the clay key in Sahasrahla's icy cave
+29	empty chest in the smith cave
+30	the smith gave the sword to the player
+31	bomb bag in the shop
+32	the player obtained the bottle from the cake shop seller
+33	the player obtained the world map from Sahasrahla
+34	Sahasrahla's cave: the player has seen the frozen door
+35	Sahasrahla's cave: the player has open the frozen door
+36	outside world C2: the village cave door is open with the clay key
+37	lyriann cave: heart container picked
+38	lyriann cave: barrier disabled with the switch
+39      piece of heart in lyriann cave
+40	lyriann cave: chest with 20 rupees
+41	lyriann cave: the player has Tom's boomerang
+42	lyriann cave: the player gave the boomerang back to Tom
+43-45	smith cave: 3 blue rupees taken
+46	cake shop: the seller asked the player whether he had some apples
+47	lyriann cave: the player talked to Tom
+48-51   outside world: 5 pickable items under the trees near dungeon 1
+52	outside world: ladder of the dungeon entrance
+53	dungeon 1: big chest (iron glove)
+54	dungeon 1: chest with map
+55	dungeon 1: chest with compass
+56	dungeon 1: chest with big key
+57	dungeon 1: chest with boss key
+58	dungeon 1 1F: door with small key lock in south-west room
+59	dungeon 1 1F: small key from an enemy pot in north-east room
+60	dungeon 1 B1: door with big key lock
+61	dungeon 1 2F: boss key door
+62	dungeon 1: mini boss
+63	dungeon 1: boss
+64	dungeon 1: boss heart container
+65	link's house: weak wall
+66	Sahasrahla's house: first floor door
+67	after dungeon 1: message indicating that the demo is finished
+68	twin caves: chest with the rock key
+

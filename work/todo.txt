@@ -1,0 +1,122 @@
+Prochaines mises à jour :
+
+- fausse boîte
+- mode d'emploi
+
+
+Démo :
+
+- Version alpha 1 (r1093) : envoyée aux testeurs, touches de test activées (DEBUG_LEVEL = 2)
+- Version beta 1 (r1103) : même chose, la version alpha étant assez stable
+
+
+Feature requests :
+
+- Mettre de la couleur dans les messages
+- Ajouter des infos de statut quête dans l'écran de sélection des sauvegardes, en particulier quand une sauvegarde est choisie
+- Rendre les pancartes soulevables
+- Permettre aux ennemis de tomber dans les trous
+- Permettre aux objets portés de tomber dans les trous et dans l'eau
+- Mettre des constantes dans les scripts
+- Mettre une icône sur l'exécutable
+- transition intérieur / extérieur : ovale
+- transition des téléporteurs ?
+- son et animation des marches d'escalier
+- rendre les pierres et les buissons dépendants du tileset
+- scrolling tiles : permettre de choisir la direction du décalage
+- dialog box : renommer cancel en skip
+- mode d'emploi
+- écran d'options global permettant de régler la langue et le volume de la musique et du son
+
+
+Bugs :
+
+- plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+- quand ça rame (exemple Wink ou valgrind), les vases et le boomerang sont lancés moins loin
+- quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
+- pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
+- la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
+- trous et plates-formes dans la grotte de mymy
+- path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
+- PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
+- mur fissuré qui explose : animation ?
+- curseur visible sur eeepc linux en plein écran
+- bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
+- Alt+F4 ne marche pas sous windows
+- ne compile plus en -O2 avec snes_spc
+
+
+Remarques de Linksupersayen :
+
+- Link semble disparaître un peu lors des phases à l'épée.
+- D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
+
+  
+Remarques de @PyroNet :
+
+- Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
+- Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
+- Lorsqu'on achète un objet, l'image de l'objet que Link porte au-dessus de sa tête et de celui qui est sur le tapis se superposent. Il faudrait peut-être faire disparaître l'objet se trouvant sur le tapis pendant que Link porte celui qu'il a acheté.
+- Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
+
+
+A venir :
+
+- Prochains types d'entités :
+  - blocs violets
+
+
+Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
+
+- GreenSoldier : garde vert normal (intelligent avec longue épée)
+- Octorok
+- serpent
+- stalfos
+- méduse
+- crabe
+- Armos
+- fantôme
+- garde bleu avec lance (monde des ténèbres)
+
+
+Idées :
+
+- Passer à travers un tableau de Mario comme dans Mario 64
+
+
+--------------
+Mode release :
+--------------
+
+- Ne plus afficher les messages d'erreur (en modifiant le define RELEASE_MODE)
+- Forcer l'ouverture des fichiers de données depuis le fichier zip et interdire depuis l'arborescence (en modifiant le define RELEASE_MODE)
+- Enelever les touches de test (en modifiant le define RELEASE_MODE)
+- Compiler en mode release (pas -g) et optimisé
+- Inclure le fichier de licence GPL
+- Vérifier la présence du message GPL dans les fichiers source
+- Remettre l'écran-titre
+- Compiler les scripts et enlever les versions en texte clair
+- Vérifier les TODO du code et de data
+- Windows : installeur avec InnoSetup
+- Enlever project_db.zsd
+
+
+----------------------
+Feature requests de l'éditeur :
+
+- Compléter l'éditeur de maps et de tilesets :
+	- Dans l'éditeur de tileset, étudier le problème de permettre de modifier un tile sans avoir à le supprimer (pour conserver le même indice)
+	- vue arborescente de toutes les entités par type ?
+	- choisir les types d'entités affichés
+	- nouveau projet : créer le fichier resource_db.zsd automatiquement, le répertoire data et les sous-répertoires
+	- empêcher de mettre des entités au-delà de la partie extérieure d'une map
+	- ResourceDatabase: créer les objets de chaque ressource depuis là, pour les fournir aux autres, ça évitera que chacun les recrée quand il a besoin (réfléchir au fait que les maps par exemple ne seront pas rechargées)
+	- Editeur de tileset : ajouter le choix des animations dans le popup menu
+	- Quand on annule une suppression ou qu'on fait un copier-coller, les plans ne sont pas respectés
+	- Editeur de maps : sélectionner uniquement les objets visibles (non obstacles / obstacles cochés ou pas)
+	- Dézoomer avec Ctrl + molette
+	- Parser les fichiers de sprite dans l'éditeur (utile pour PNJ et entités avec skin)
+	- Eviter d'avoir à recharger la map pour voir les destinations mises à jour
+	- Affichage : dessiner les tiles une seule fois sur une surface intermédiaire au lieu de les redessiner un par un à chaque affichage (c'est possible dans l'éditeur mais pas facilement dans le jeu à cause des tiles animés)
+	- Permettre de modifier les textes "Direction", "Subtype", etc... depuis les sous-classes de EditEntityComponent afin de rendre certains plus explicites (exemple : mettre "Pushing direction" pour les blocs)
+	- Interface pour éditer les étages des donjons

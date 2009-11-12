@@ -1,0 +1,72 @@
+Ce fichier donne la liste de tous les éléments à traduire pour rendre le jeu disponible dans une autre langue.
+
+1) Images
+
+Certaines images du moteur de jeu contiennent du texte. En voici la liste exhaustive :
+
+- sprites/hud/action_icon.png : image contenant toutes les versions possibles de l'icône d'action (icône bleue) :
+  - Valider		valider un choix quand on sauvegarde le jeu
+  - Suite		passer au message suivant dans une boîte de dialogue
+  - Infos		dans l'écran d'inventaire, afficher les informations sur un objet
+  - Retour		revenir au jeu après la fin d'une boîte de dialogue
+  - Voir		regarder un élément interactif dans le jeu (une pancarte, un endroit énigmatique...)
+  - Ouvrir		ouvrir un coffre ou une porte
+  - Action		actionner un objet
+  - Soulever		soulever et porte un pot, un buisson, une pierre...
+  - Jeter		jeter un objet porté
+  - Saisir		saisir un bloc ou une statue
+  - Arrêter		arrêter ce qui est en cours (comme un objet qui consomme de l'énergie magique en continu)
+  - Parler		parler à un personnage
+  - Changer		changer la configuration d'une commande avec le clavier ou le joypad
+ 
+- sprites/hud/sword_icon.png : image contenant toutes les versions possibles de l'icône d'épée (icône verte) :
+  - Sauver		sauvegarder le jeu
+  - Retour		revenir au jeu après la fin d'une boîte de dialogue
+  - Valider		valider un choix quand on sauvegarde le jeu (identique à l'icône bleue)
+  - Passer		interrompre l'affichage d'un message dans la boîte de dialogue
+
+- sprites/hud/pause_icon.png : image contenant toutes les versions possibles de l'icône de pause (icône orange) :
+  - Pause		mettre le jeu en pause
+  - Retour		revenir au jeu
+
+- sprites/hud/floors.png : image contenant toutes les abbréviations des numéros d'étages possibles qui s'affichent dans les donjons
+  - RC
+  - 1er
+  - 2e
+    ...
+  - 15e
+  - -16
+  - -15
+    ...
+  - -1
+
+- sprites/hud/gameover_menu.png : image qui s'affiche lorsque le joueur a game over :
+  - GAME OVER
+  - Sauvegarde et suite
+  - Sauvegarde et fin	
+  - Continuer sans sauvegarder
+  - Quitter sans sauvegarder
+
+- sprites/menus/pause_submenu.png : image qui contient le squelette des 4 versions de l'écran de pause avec le titre de chacun :
+  - Inventaire		titre de l'écran d'inventaire, qui affiche les objets possédés par le joueur
+  - Carte		titre de l'écran carte, qui affiche selon le cas la carte du monde ou la carte du donjon avec les informations de celui-ci
+  - Statut Quête	titre de l'écran statut quête, qui affiche l'équipement, les fragments de coeur et les donjons terminés
+  - Options		titre de l'écran d'options, qui permet de configurer le mode vidéo et les touches du clavier et du joypad
+
+- sprites/menus/zelda_solarus_presents.png : image qui s'affiche au démarrage du programme, avant l'écran-titre
+  - Zelda Solarus présente
+
+2) Chaînes de caractères
+
+Le moteur de jeu affiche du texte dans les différents menus. Tous ces textes sont chargés depuis le fichier text/strings.zsd. Pour les traduire, il faut modifier ce fichier à l'aide d'un éditeur de texte, en respectant les règles expliquées à l'intérieur. Le fichier doit être encodé en utf-8.
+
+3) Dialogues
+
+Les dialogues sont la plus grosse partie à traduire. Ce sont tous les messages affichés au joueur dans la boîte de dialogue au cours du jeu. Ils sont séparés en deux catégories :
+  - les dialogues affichés par le moteur de jeu. Ce sont tous les dialogues prédéfinis qui sont affichés automatiquement selon ce que fait le joueur. Exemples : lorsqu'on ouvre un coffre, lorsqu'on obtient une fée, lorsqu'on consulte la description d'un objet de l'inventaire, lorsqu'on achète un objet dans un magasin...
+  - les dialogues affichés par l'aventure. Ce sont tous les dialogues du scénario et ils sont affichés par les scripts des différentes maps selon les événements de l'aventure. Exemples : lorsqu'on parle à un personnage ou lorsqu'on interagit avec une énigme ou un mini-jeu.
+
+Les dialogues du moteur sont définis dans le fichier text/engine_dialogs.zsd. Les dialogues du jeu sont définis dans le fichier text/game_dialogs.zsd. Ce sont tous les deux des fichiers ini encodés en utf-8 et ils obéissent à des règles très strictes pour que les dialogues puissent être affichés correctement et s'enchaîner comme il faut. Ces règles sont expliquées dans le fichier des dialogues du moteur (text/engine_dialogs.zsd). En particulier, il ne faut pas dépasser la longueur maximale des lignes, sous peine de voir le texte déborder de la boîte de dialogue pendant le jeu. Il faut aussi veiller à conserver les enchaînements prévus. Venez me poser des questions. Le plus important est de retester le jeu méticuleusement après avoir effectué la traduction, en vérifiant bien l'orthographe et la cohérence des dialogues.
+
+
+

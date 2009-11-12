@@ -1,0 +1,50 @@
+Ce fichier décrit le format des fichiers qui stockent les tilesets. L'éditeur de tileset (en java) édite ces fichiers alors que le moteur de jeu (en c++) les lit. A priori ce topic ne servira pas à grand monde à part moi, mais déjà ça me facilitera la vie car jusqu'à présent je n'avais noté ça nulle part sauf dans les commentaires du code ^^
+
+Un tileset est une image png qui contient toutes les briques pour créer une map avec un certain décor. C'est l'équivalent des chipsets de RPG Maker, sauf que les tiles sont gérés différemment.
+Un tile est un rectangle de l'image, de taille quelconque (mais multiple de 8*8 ), obstacle ou non.
+
+Il existe 6 propriétés possibles pour spécifier si c'est un obstacle :  OBSTACLE, OBSTACLE_NONE, OBSTACLE_TOP_RIGHT, OBSTACLE_TOP_LEFT, OBSTACLE_BOTTOM_LEFT, OBSTACLE_BOTTOM_RIGHT. Les 4 derniers correspondent à des obstacles obliques (en clair, un carré dont les pixels au-dessus d'une diagonale sont des obstacles, et les autres non).
+
+Un tile peut être animé ou non ; s'il est animé, il est alors composé de 3 rectangles qui s'affichent de manière répétée, selon la séquence 0-1-2-0 ou 0-1-2-1-0.
+Enfin, un tile possède une autre propriété : sa couche par défaut quand on le place sur une map : LAYER_HIGH (toujours au-dessus de Link), LAYER_INTERMEDIATE (Link peut être au-dessus ou en-dessous, c'est le cas des plate-formes) ou LAYER_BOTTOM (toujours en-dessous de Link). Quand on place un tile sur une map dans l'éditeur, il est mis sur sa couche par défaut, et ensuite libre au mappeur de le changer de couche.
+
+Un fichier de tileset est stocké en texte clair. Voici des bouts d'un fichier de tileset (extrait de data/tilesets/tileset0000.zsd) :
+
+88	72	72
+1	0	0	0	16	0	16	16
+2	0	0	0	32	0	16	16
+163	0	0	2	152	240	8	32
+164	0	0	2	160	240	8	32
+165	0	0	2	168	240	8	32
+166	0	1	0	200	240	32	24
+167	0	1	0	232	240	24	32
+168	0	1	0	200	264	24	32
+
+
+La première ligne indique la couleur de fond des maps utilisant ce tileset (en RVB).
+Toutes les autres lignes décrivent chacune un tile.
+
+Syntaxe d'un tile non animé :
+
+id   0   obstacle   default_layer   x   y   width   height
+
+On a ainsi son numéro, puis 0 pour indiquer que le tile n'est pas animé, un chiffre indiquant la propriété obstacle, un chiffre indiquant la couche par défaut, puis ses coordonnées dans l'image du tileset, et enfin sa largeur et sa hauteur.
+
+
+Syntaxe d'un tile animé :
+
+id   1   obstacle   default_layer   animation_sequence   width   height   x1   y1   x2   y2   x3   y3
+
+On a toujours son numéro, puis 1 pour indiquer que le tile est animé, la propriété obstacle, la couche par défaut, la séquence d'animation (0-1-2-0 ou 0-1-2-1-0), la longueur, la largeur, et la position des 3 rectangles de l'animation (la largeur et la hauteur est la même pour chacun des rectangles).
+
+
+Syntaxe d'un tile avec parallax scrolling :
+
+id   2   obstacle   default_layer   x   y   width   height
+
+
+Syntaxe d'un tile qui défile avec le temps :
+
+id   3   obstacle   default_layer   x   y   width   height
+
+

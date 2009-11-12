@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+for i in include/*.h include/*/*.h src/*.cpp src/*/*.cpp tools/zsdx/*.java tools/zsdx/*/*.java tools/zsdx/*/*/*.java;
+  do
+  cp $i $i~;
+  cat license_short > $i;
+  cat $i~ >> $i;
+  rm $i~;
+done

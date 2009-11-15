@@ -1129,7 +1129,6 @@
 8	0	760	405	surprise_wall_sign	3	2	entities/sign	outside_world.surprise_wall_sign
 3	0	376	61	17	21
 8	0	880	109	billy_cavern_sign	3	2	entities/sign	outside_world.billy_cavern_sign
-13	0	848	93	16	16	not_in_demo_sensor	0
 12	0	840	72	16	8	custom_obstacle	1	1	1	1
 0	2	568	320	48	40	511
 0	2	568	416	48	40	511

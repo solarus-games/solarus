@@ -54,7 +54,7 @@
 # C'est sur tous les messages autres que ceux finissant par
 # ".2", ".3", etc, qu'il faut bien se synchroniser.
 #
-# - La valeur cancel : définit ce qui se passe lorsque le joueur
+# - La valeur skip : définit ce qui se passe lorsque le joueur
 # tente d'interrompre le message en appuyant sur la touche C. Il y a
 # 3 valeurs possibles :
 #    - none (par défaut) : le message ne peut pas être passé.
@@ -64,7 +64,7 @@
 #    - all : si on appuie sur C, le message courant s'arrête
 #            et les messages suivants ne seront pas affichés. La
 #            boîte de dialogue se ferme immédiatement.
-# La valeur de cancel s'applique au message courant et à tous les
+# La valeur de skip s'applique au message courant et à tous les
 # messages suivants, jusqu'à ce que la valeur soit changée ou que
 # la boîte de dialogue se ferme.
 #
@@ -134,7 +134,7 @@ icon = 0
 line1 = "Utilise la Plume"
 line2 = "pour sauter et fran-"
 line3 = "chir des obstacles."
-cancel = all
+skip = all
 
 [_item_description_1_1]
 # Bombes / Bombs
@@ -143,7 +143,7 @@ icon = 1
 line1 = "Utilise les Bombes"
 line2 = "contre les ennemis"
 line3 = "ou pour faire"
-cancel = all
+skip = all
 next = _item_description_1_1.1
 
 [_item_description_1_1.1]
@@ -157,7 +157,7 @@ line2 = "obstacles."
 icon = 2
 line1 = "Tu n'as plus de"
 line2 = "Flèches !"
-cancel = all
+skip = all
 
 [_item_description_2_2]
 # Arc & Flèches / Bow & Arrows
@@ -166,7 +166,7 @@ icon = 3
 line1 = "Tire des Flèches"
 line2 = "pour vaincre des"
 line3 = "ennemis coriaces."
-cancel = all
+skip = all
 
 [_item_description_3_1]
 # Boomerang
@@ -175,7 +175,7 @@ icon = 4
 line1 = "Utilise le Boomerang"
 line2 = "pour immobiliser les"
 line3 = "ennemis ou attraper"
-cancel = all
+skip = all
 next = _item_description_3_1.1
 
 [_item_description_3_1.1]
@@ -190,7 +190,7 @@ icon = 5
 line1 = "Eclaire-toi dans le"
 line2 = "noir ou allume des"
 line3 = "braseros à l'aide"
-cancel = all
+skip = all
 next = _item_description_4_1.1
 
 [_item_description_4_1.1]
@@ -206,7 +206,7 @@ icon = 6
 line1 = "Hisse-toi à des"
 line2 = "endroits"
 line3 = "inaccessibles grâce"
-cancel = all
+skip = all
 next = _item_description_5_1.1
 
 [_item_description_5_1.1]
@@ -220,7 +220,7 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
-cancel = all
+skip = all
 
 [_item_description_6_2]
 # Eau dans Flacon / Water in Bottle
@@ -228,7 +228,7 @@ cancel = all
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
-cancel = all
+skip = all
 next = _item_description_6_2.1
 
 [_item_description_6_2.1]
@@ -243,7 +243,7 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
-cancel = all
+skip = all
 
 [_item_description_6_4]
 # Potion verte / Red potion
@@ -252,7 +252,7 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
-cancel = all
+skip = all
 
 [_item_description_6_5]
 # Potion bleue / Red potion
@@ -261,7 +261,7 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
-cancel = all
+skip = all
 
 [_item_description_6_6]
 # Fée dans Flacon / Fairy in Bottle
@@ -271,7 +271,7 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description_6_6.1
-cancel = all
+skip = all
 
 [_item_description_6_6.1]
 #       |--------------------|
@@ -292,7 +292,7 @@ icon = 13
 line1 = "Cours très vite et"
 line2 = "fracasse des"
 line3 = "obstacles grâce aux"
-cancel = all
+skip = all
 next = _item_description_7_1.1
 
 [_item_description_7_1.1]
@@ -306,7 +306,7 @@ icon = 14
 line1 = "Le Miroir Mystique"
 line2 = "aurait de mystérieux"
 line3 = "pouvoirs..."
-cancel = all
+skip = all
 
 [_item_description_9_1]
 # Canne de Somaria / Cane of Somaria
@@ -315,7 +315,7 @@ icon = 15
 line1 = "Crée des blocs et"
 line2 = "accroche-toi à"
 line3 = "l'aide du Grappin."
-cancel = all
+skip = all
 next = _warning_magic
 
 [_item_description_10_1]
@@ -325,7 +325,7 @@ icon = 16
 line1 = "Mange des Pommes"
 line2 = "pour récupérer des"
 line3 = "Coeurs."
-cancel = all
+skip = all
 
 [_item_description_11_1]
 # Pains au Chocolat / Pains au Chocolat
@@ -334,7 +334,7 @@ icon = 17
 line1 = "Mange un Pain au"
 line2 = "Chocolat pour"
 line3 = "récupéer 3 Coeurs."
-cancel = all
+skip = all
 
 [_item_description_12_1]
 # Croissant / Croissant
@@ -343,7 +343,7 @@ icon = 18
 line1 = "Mange un Croissant"
 line2 = "pour récupérer"
 line3 = "7 Coeurs."
-cancel = all
+skip = all
 
 [_item_description_14_1]
 # Clé de Roc / Rock Key
@@ -352,7 +352,7 @@ icon = 19
 line1 = "La Clé de Roc. Mais"
 line2 = "où est donc la bonne"
 line3 = "serrure ?"
-cancel = all
+skip = all
 
 [_item_description_15_1]
 # Clé Rouge / Red Key
@@ -360,7 +360,7 @@ cancel = all
 icon = 20
 line1 = "Cette étrange Clé"
 line2 = "est toute rouge."
-cancel = all
+skip = all
 
 [_item_description_16_1]
 # Clé de Terre / Clay Key
@@ -369,7 +369,7 @@ icon = 21
 line1 = "La Clé de Terre, qui"
 line2 = "permet d'ouvrir la"
 line3 = "grotte du village."
-cancel = all
+skip = all
 
 [_item_description_17_1]
 # Tarte aux Pommes / Apple Pie
@@ -378,7 +378,7 @@ icon = 22
 line1 = "Cette Tarte aux"
 line2 = "Pommes a un drôle"
 line3 = "d'aspect..."
-cancel = all
+skip = all
 
 [_item_description_17_2]
 # Lingots d'or / Golden bars
@@ -387,7 +387,7 @@ icon = 23
 line1 = "Ce sont trois"
 line2 = "authentiques"
 line3 = "lingots d'or !"
-cancel = all
+skip = all
 
 [_item_description_17_3]
 # Edelweiss / Edelweiss
@@ -396,7 +396,7 @@ icon = 24
 line1 = "L'Edelweiss est une"
 line2 = "fleur très rare dans"
 line3 = "le royaume d'Hyrule."
-cancel = all
+skip = all
 
 [_item_description_17_4]
 # Clé d'Os / Bone Key
@@ -404,7 +404,7 @@ cancel = all
 icon = 25
 line1 = "A quoi peut servir"
 line2 = "la Clé d'Os ?"
-cancel = all
+skip = all
 
 [_item_description_18_1]
 # Palmes / Flippers
@@ -413,7 +413,7 @@ icon = 26
 line1 = "Les Palmes te"
 line2 = "permettent de nager"
 line3 = "dans l'eau profonde."
-cancel = all
+skip = all
 
 [_item_description_19_1]
 # Cape magique / Magic Cape
@@ -422,7 +422,7 @@ icon = 27
 line1 = "La Cape Magique"
 line2 = "t'avertit si tu"
 line3 = "t'approches d'un"
-cancel = all
+skip = all
 next = _item_description_19_1.1
 
 [_item_description_19_1.1]
@@ -436,7 +436,7 @@ icon = 28
 line1 = "La Clé de Fer."
 line2 = "Mais ne te trompe"
 line3 = "pas de serrure !"
-cancel = all
+skip = all
 
 [_item_description_22_1]
 # Clé de Pierre / Stone Key
@@ -445,7 +445,7 @@ icon = 29
 line1 = "La Clé de Pierre."
 line2 = "Reste à trouver la"
 line3 = "bonne serrure !"
-cancel = all
+skip = all
 
 [_item_description_23_1]
 # Clé de Bois / Wooden Key
@@ -454,7 +454,7 @@ icon = 30
 line1 = "La Clé de Bois. Mais"
 line2 = "une seule serrure"
 line3 = "est la bonne..."
-cancel = all
+skip = all
 
 [_item_description_24_1]
 # Clé de Glace / Ice Key
@@ -463,13 +463,13 @@ icon = 31
 line1 = "La Clé de Glace."
 line2 = "A toi de trouver un"
 line3 = "lieu gelé pour la"
-cancel = all
+skip = all
 next = _item_description_24_1.1
 
 [_item_description_24_1.1]
 #       |--------------------|
 line1 = "faire fonctionner !"
-cancel = all
+skip = all
 
 [_item_description_25_1]
 # Poigne de Fer / Iron Glove
@@ -478,7 +478,7 @@ icon = 32
 line1 = "La Poigne de Fer te"
 line2 = "permet de soulever"
 line3 = "les pierres."
-cancel = all
+skip = all
 
 [_item_description_25_2]
 # Poigne d'Or / Golden Glove
@@ -487,7 +487,7 @@ icon = 33
 line1 = "Soulève les pierres"
 line2 = "noires grâce à la"
 line3 = "Poigne d'Or."
-cancel = all
+skip = all
 
 [_item_description_26_1]
 # Pierres de Feu / Fire Stones
@@ -496,7 +496,7 @@ icon = 34
 line1 = "Trouve les trois"
 line2 = "Pierres de Feu et"
 line3 = "apporte-les"
-cancel = all
+skip = all
 next = _item_description_26_1.1
 
 [_item_description_26_1.1]
@@ -677,7 +677,7 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure_12.1
-cancel = all
+skip = all
 
 [_treasure_12.1]
 #       |--------------------|
@@ -1560,7 +1560,7 @@ line2 = "Tant pis pour toi !"
 #       |--------------------|
 icon = 72
 line1 = "C'est fermé à Clé !"
-cancel = all
+skip = all
 
 [_big_key_required]
 # Lorsqu'on regarde le grand coffre ou une porte verrouillée nécessitant la Grande Clé
@@ -1570,7 +1570,7 @@ icon = 73
 line1 = "Il te faut la Grande"
 line2 = "Clé pour ouvrir"
 line3 = "cette serrure !"
-cancel = all
+skip = all
 
 [_boss_key_required]
 # Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître
@@ -1579,7 +1579,7 @@ icon = 74
 line1 = "C'est la porte du"
 line2 = "repère du maître du"
 line3 = "donjon !"
-cancel = all
+skip = all
 next = _boss_key_required.2
 
 [_boss_key_required.2]
@@ -1597,7 +1597,7 @@ line1 = "Tu as trouvé une"
 line2 = "Fée, elle est"
 line3 = "merveilleuse !"
 next = _found_fairy.1
-cancel = all
+skip = all
 
 [_found_fairy.1]
 #       |--------------------___|
@@ -1737,7 +1737,7 @@ question = true
 #       |-----------------------|
 line1 = "Oh là là, c'est"
 line2 = "bien trop lourd !"
-cancel = all
+skip = all
 next = _too_heavy.1
 
 [_too_heavy.1]
@@ -1761,7 +1761,7 @@ question = true
 #       |-----------------------|
 line1 = "Désolé, mais tu n'as"
 line2 = "pas assez d'argent !"
-cancel = all
+skip = all
 
 [_shop.amount_full]
 # Lorsqu'on veut acheter un objet dans un magasin
@@ -1776,5 +1776,5 @@ line1 = "Tu es déjà au maximum !"
 line1 = "C'est un interrupteur"
 line2 = "de cristal. Frappe-le"
 line3 = "avec quelque chose..."
-cancel = all
+skip = all
 

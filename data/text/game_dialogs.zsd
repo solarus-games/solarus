@@ -44,7 +44,7 @@ next = demo_finished.2
 #       |-----------------------|
 line1 = "Cet endroit n'est pas"
 line2 = "encore disponible !"
-cancel = current
+skip = current
 
 [outside_world.dungeon_2_entrance.monkey]
 # Dialogue avec le singe après avoir fini le donjon 1
@@ -58,7 +58,7 @@ line2 = "pas encore disponible !"
 line1 = "Désolé, cet trésor"
 line2 = "n'est pas encore"
 line3 = "disponible !"
-cancel = current
+skip = current
 
 [dungeon_1]
 # Lorsqu'on pénètre dans le donjon 1
@@ -425,7 +425,7 @@ line2 = "trop... Sois prudent !"
 line1 = "Si tu ne sais plus quoi"
 line2 = "faire à un moment de"
 line3 = "ton aventure, tu"
-cancel = all
+skip = all
 next = outside_world.village.grand_son_npc.2
 
 [outside_world.village.grand_son_npc.2]
@@ -458,7 +458,7 @@ line1 = "Quand l'icône bleue"
 line2 = "apparaît, elle indique"
 line3 = "ce que tu peux faire en"
 next = outside_world.village.chignon_woman_npc.2
-cancel = all
+skip = all
 
 [outside_world.village.chignon_woman_npc.2]
 #       |-----------------------|
@@ -511,7 +511,7 @@ line1 = "Sais-tu que tu peux"
 line2 = "sauter de certaines"
 line3 = "falaises ? Ca pourrait"
 next = outside_world.village.cliff_man_npc.2
-cancel = all
+skip = all
 
 [outside_world.village.cliff_man_npc.2]
 #       |-----------------------|
@@ -526,7 +526,7 @@ line1 = "Si tu manques d'argent,"
 line2 = "je ne te conseille pas"
 line3 = "d'aller à la Maison des"
 next = outside_world.village.hat_man_npc.2
-cancel = all
+skip = all
 
 [outside_world.village.hat_man_npc.2]
 #       |-----------------------|
@@ -589,7 +589,7 @@ line3 = ""
 line1 = "Ca ne se fait pas de"
 line2 = "fouiller dans la boîte"
 line3 = "aux lettres des gens !" 
-cancel = all
+skip = all
 
 [outside_world.village.tree_woman]
 # Long message de la femme près de l'arbre dans le village
@@ -597,7 +597,7 @@ cancel = all
 line1 = "Tu es perdu dans les"
 line2 = "commandes ? Laisse-moi"
 line3 = "t'expliquer. Les icônes"
-cancel = all
+skip = all
 next = outside_world.village.tree_woman.2
 
 [outside_world.village.tree_woman.2]
@@ -737,7 +737,7 @@ line1 = "Pour sauvegarder ta"
 line2 = "partie, appuie sur D"
 line3 = "pour mettre le jeu en"
 next = outside_world.how_to_save_npc.2
-cancel = all
+skip = all
 
 [outside_world.how_to_save_npc.2]
 #       |-----------------------|
@@ -1101,7 +1101,7 @@ line1 = "Les monstres envahis-"
 line2 = "sent la plaine. C'est"
 line3 = "mauvais signe : j'ai"
 next = grandma_house.sword.2
-cancel = all
+skip = all
 
 [grandma_house.sword.2]
 #       |-----------------------|
@@ -1135,7 +1135,7 @@ line1 = "Avec cette épée, tu"
 line2 = "peux franchir les"
 line3 = "buissons qui protègent"
 next = grandma_house.find_sahasrahla.2
-cancel = all
+skip = all
 
 [grandma_house.find_sahasrahla.2]
 #       |-----------------------|
@@ -1155,7 +1155,7 @@ line2 = "pâtisserie."
 line1 = "Avec cette clé, tu peux"
 line2 = "entrer dans la grotte"
 line3 = "au nord du village."
-cancel = all
+skip = all
 
 [grandma_house.go_dungeon_1]
 # Dialogue chez la grand-mère (après avoir fini la grotte de Tom)
@@ -1163,7 +1163,7 @@ cancel = all
 line1 = "Il paraît que l'un des"
 line2 = "quatre enfants enlevés"
 line3 = "est retenu dans un"
-cancel = all
+skip = all
 next = grandma_house.go_dungeon_1.2
 
 [grandma_house.go_dungeon_1.2]
@@ -1298,7 +1298,7 @@ line1 = "Hé, attends !"
 line2 = "Je cherche des pommes"
 line3 = "pour faire une bonne"
 next = cake_shop.dont_leave.2
-cancel = all
+skip = all
 
 [cake_shop.dont_leave.2]
 #       |-----------------------|
@@ -1321,7 +1321,7 @@ line1 = "Je cherche toujours six"
 line2 = "pommes pour faire une"
 line3 = "bonne tarte."
 next = cake_shop.seller.ask_apples_again.2
-cancel = all
+skip = all
 
 [cake_shop.seller.ask_apples_again.2]
 #       |-----------------------|
@@ -1442,7 +1442,7 @@ line1 = "protéger la Triforce ?"
 line2 = "C'est d'accord"
 line3 = "Pas question"
 question = true
-cancel = none
+skip = none
 next = sahasrahla_house.beginning.thanks
 next2 = sahasrahla_house.beginning.insisting
 
@@ -1523,7 +1523,7 @@ line2 = "trop long !"
 line1 = "La porte est gelée ?"
 line2 = "Essaie de faire fondre"
 line3 = "la glace avec de l'eau."
-cancel = all
+skip = all
 
 [sahasrahla_house.default]
 # Chez Sahasrahla : dialogue par défaut quand il n'a rien de spécial à dire pour guider le joueur
@@ -1531,7 +1531,7 @@ cancel = all
 line1 = "J'ai foi en toi."
 line2 = "Le courage et la"
 line3 = "sagesse te guideront."
-cancel = all
+skip = all
 
 [sahasrahla_house.frozen_door]
 # Cave de Sahasrahla : quand on regarde la porte gelée
@@ -1539,7 +1539,7 @@ cancel = all
 line1 = "Cette porte est gelée."
 line2 = "Il faudrait un moyen de"
 line3 = "faire fondre la glace !"
-cancel = all
+skip = all
 
 [lyriann_cave.tom.first_time]
 # Grotte de Tom : premier dialogue avec Tom

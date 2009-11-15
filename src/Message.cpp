@@ -126,21 +126,21 @@ void Message::parse(MessageId message_id) {
   next_message_id = CFG_ReadText("next", "");
   next_message_id_2 = CFG_ReadText("next2", "");
 
-  // cancel mode
-  const std::string &cancel_mode_text = CFG_ReadText("cancel", "");
+  // skip mode
+  const std::string &skip_mode_text = CFG_ReadText("skip", "");
 
-  if (cancel_mode_text != "") { // a cancel mode is specified
-    DialogBox::CancelMode cancel_mode;
-    if (cancel_mode_text == "current") {
-      cancel_mode = DialogBox::CANCEL_CURRENT;
+  if (skip_mode_text != "") { // a skip mode is specified
+    DialogBox::SkipMode skip_mode;
+    if (skip_mode_text == "current") {
+      skip_mode = DialogBox::SKIP_CURRENT;
     }
-    else if (cancel_mode_text == "all") {
-      cancel_mode = DialogBox::CANCEL_ALL;
+    else if (skip_mode_text == "all") {
+      skip_mode = DialogBox::SKIP_ALL;
     }
     else {
-      cancel_mode = DialogBox::CANCEL_NONE;
+      skip_mode = DialogBox::SKIP_NONE;
     }
-    dialog_box->set_cancel_mode(cancel_mode);
+    dialog_box->set_skip_mode(skip_mode);
   }
 
   // close the input

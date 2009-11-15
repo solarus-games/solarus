@@ -85,11 +85,11 @@ DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
 
   // initialize the current message
   speed = SPEED_FAST;
-  cancel_mode = CANCEL_NONE;
+  skip_mode = SKIP_NONE;
   icon_number = -1;
   this->first_message_id = first_message_id;
   show_message(first_message_id);
-  cancelled = false;
+  skipped = false;
 }
 
 /**
@@ -136,19 +136,19 @@ void DialogBox::set_speed(Speed speed) {
 }
 
 /**
- * Returns the cancel mode of the dialog box.
- * @return cancel_mode the cancel mode
+ * Returns the current skip mode of the dialog box.
+ * @return the skip mode
  */
-DialogBox::CancelMode DialogBox::get_cancel_mode(void) {
-  return cancel_mode;
+DialogBox::SkipMode DialogBox::get_skip_mode(void) {
+  return skip_mode;
 }
 
 /**
- * Sets the cancel mode of the dialog box.
- * @param cancel_mode the new cancel mode
+ * Sets the skip mode of the dialog box.
+ * @param skip_mode the new skip mode
  */
-void DialogBox::set_cancel_mode(CancelMode cancel_mode) {
-  this->cancel_mode = cancel_mode;
+void DialogBox::set_skip_mode(SkipMode skip_mode) {
+  this->skip_mode = skip_mode;
 }
 
 /**
@@ -240,7 +240,7 @@ void DialogBox::show_message(const MessageId &message_id) {
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
   keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-  if (get_cancel_mode() != CANCEL_NONE) {
+  if (get_skip_mode() != SKIP_NONE) {
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SKIP);
   }
   else {
@@ -304,13 +304,13 @@ void DialogBox::action_key_pressed(void) {
  */
 void DialogBox::sword_key_pressed(void) {
 
-  if (cancel_mode == CANCEL_ALL) {
-    cancelled = true;
+  if (skip_mode == SKIP_ALL) {
+    skipped = true;
   }
   else if (current_message->is_finished()) {
     action_key_pressed();
   }
-  else if (cancel_mode == CANCEL_CURRENT) {
+  else if (skip_mode == SKIP_CURRENT) {
     current_message->show_all_now();
   }
 }
@@ -341,20 +341,20 @@ MessageId DialogBox::get_first_message_id(void) {
 /**
  * Returns whether the dialog box has to be closed, i.e.
  * whether the last message was shown and the
- * user has pressed the key, or the dialog was cancelled.
+ * user has pressed the key, or the dialog was skipled.
  * @return true if the dialog is finished
  */
 bool DialogBox::is_finished(void) {
-  return current_message == NULL || cancelled;
+  return current_message == NULL || skipped;
 }
 
 /**
  * When the dialog box is finished, returns whether
- * it was cancelled.
- * @return true if the dialog was cancelled
+ * it was skipped.
+ * @return true if the dialog was skipped
  */
-bool DialogBox::was_cancelled(void) {
-  return cancelled;
+bool DialogBox::was_skipped(void) {
+  return skipped;
 }
 
 /**

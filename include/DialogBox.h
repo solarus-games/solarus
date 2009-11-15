@@ -52,10 +52,10 @@ class DialogBox {
      * Indicates what happens when the user tries to skip
      * the current message.
      */
-    enum CancelMode {
-      CANCEL_NONE,    /**< the current message cannot be skipped */
-      CANCEL_CURRENT, /**< the player can display the current message to its end immediately */
-      CANCEL_ALL      /**< the current message and the next ones can be totally skipped */
+    enum SkipMode {
+      SKIP_NONE,    /**< the current message cannot be skipped */
+      SKIP_CURRENT, /**< the player can display the current message to its end immediately */
+      SKIP_ALL      /**< the current message and the next ones can be totally skipped */
     };
 
   private:
@@ -70,9 +70,9 @@ class DialogBox {
     // dialog properties
     static Style style;
     Speed speed;
-    CancelMode cancel_mode;
-    bool cancelled;              // true if the user has cancelled the dialog
-    int icon_number;             // index of the 16*16 icon displayed, or -1 if there is no icon
+    SkipMode skip_mode;
+    bool skipped;              // true if the user has skipped the dialog
+    int icon_number;           // index of the 16*16 icon displayed, or -1 if there is no icon
 
     KeysEffect::ActionKeyEffect action_key_effect_saved;
     KeysEffect::SwordKeyEffect sword_key_effect_saved;
@@ -110,8 +110,8 @@ class DialogBox {
     static void set_style(Style style);
     Speed get_speed(void);
     void set_speed(Speed speed);
-    CancelMode get_cancel_mode(void);
-    void set_cancel_mode(CancelMode cancel_mode);
+    SkipMode get_skip_mode(void);
+    void set_skip_mode(SkipMode skip_mode);
     int get_icon_number(void);
     void set_icon_number(int icon_number);
     bool is_letter_sound_enabled(void);
@@ -124,7 +124,7 @@ class DialogBox {
     void key_pressed(Controls::GameKey key);
     MessageId get_first_message_id(void);
     bool is_finished(void);
-    bool was_cancelled(void);
+    bool was_skipped(void);
 
     // update and display
     void update(void);

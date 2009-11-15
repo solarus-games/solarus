@@ -1006,11 +1006,10 @@
 1	0	208	725	out_grandma_house	3	0
 2	0	200	696	16	16	to_grandma_house	0	1	11	entrance
 4	0	648	93	3	-1	-1
-2	0	272	400	16	16	to_binbin_dungeon	0	1	17	main_entrance
+2	0	272	432	16	16	to_binbin_dungeon	0	1	17	main_entrance
 1	0	280	461	from_binbin_dungeon	3	0
 1	0	72	477	out_lyriann_cave	3	0
 3	0	48	109	17	18
-13	0	280	445	16	16	not_in_demo_sensor	0
 12	0	272	424	16	8	custom_obstacle	1	1	1	1
 1	0	424	109	from_fairy_cave	3	0
 2	0	416	80	16	16	to_fairy_cave	0	1	26	from_outside

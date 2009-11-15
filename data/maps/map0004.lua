@@ -13,13 +13,6 @@ function event_map_started(destination_point_name)
    end
 end
 
-function event_hero_on_sensor(sensor_name)
-
-  if string.find(sensor_name, "not_in_demo_sensor") then
-    start_message("outside_world.not_in_demo")
-  end
-end
-
 -- Function called when the player presses the action key
 -- while facing an interactive entity
 function event_interaction(entity_name)

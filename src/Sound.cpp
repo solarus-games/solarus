@@ -17,10 +17,10 @@
 #include "Sound.h"
 #include "Music.h"
 #include "FileTools.h"
-#include <AL/alut.h>
 
 ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
+SF_VIRTUAL_IO Sound::sf_virtual;
 bool Sound::initialized = false;
 std::list<Sound*> Sound::current_sounds;
 
@@ -34,18 +34,11 @@ Sound::Sound(const SoundId &sound_id):
   if (is_initialized()) {
 
     std::string file_name = (std::string) "sounds/" + sound_id + ".wav";
-
-    // load the wav file
-    size_t wav_size;
-    char *wav_data;
-    FileTools::data_file_open_buffer(file_name, &wav_data, &wav_size);
-
-    // create an OpenAL buffer with the sound decoded by ALUT
-    buffer = alutCreateBufferFromFileImage((ALvoid*) wav_data, wav_size);
-    FileTools::data_file_close_buffer(wav_data);
+    // create an OpenAL buffer with the sound decoded by the library
+    buffer = decode_wav(file_name);
 
     if (buffer == AL_NONE) {
-      std::cerr << "Cannot decode WAV data for sound '" << file_name << "': " << alutGetErrorString(alutGetError()) << std::endl;
+      std::cerr << "Sound '" << file_name << "' will not be played" << std::endl;
     }
   }
 }
@@ -77,14 +70,7 @@ Sound::~Sound(void) {
 void Sound::initialize(void) {
 
   // initialize OpenAL
-  /*
-  if (!alutInit(NULL, NULL)) {
-    std::cout << "Cannot initialize alut: " << alutGetErrorString(alutGetError()) << std::endl;
-    return;
-  }
-  */
 
-  alutInitWithoutContext(NULL, NULL);
 /*
   const ALCchar* devices = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
   while (devices[0] != '\0') {
@@ -115,6 +101,13 @@ void Sound::initialize(void) {
   }
 
   initialized = true;
+
+  // initialize libsndfile
+  sf_virtual.get_filelen = sf_get_filelen;
+  sf_virtual.seek = sf_seek;
+  sf_virtual.read = sf_read;
+  sf_virtual.write = sf_write;
+  sf_virtual.tell = sf_tell;
 
   // initialize the music system
   Music::initialize();
@@ -148,7 +141,6 @@ void Sound::quit(void) {
     alcCloseDevice(device);
     device = NULL;
 
-    alutExit();
     initialized = false;
   }
 }
@@ -208,14 +200,14 @@ bool Sound::update_playing() {
 }
 
 /**
- * Loads the file and plays the sound.
+ * Plays the sound.
  * @return true if the sound was loaded successfully, false otherwise
  */
 bool Sound::play(void) {
 
   bool success = false;
 
-  if (is_initialized()) {
+  if (is_initialized() && buffer != AL_NONE) {
 
     // create a source
     ALuint source;
@@ -225,7 +217,7 @@ bool Sound::play(void) {
     // play the sound
     int error = alGetError();
     if (error != AL_NO_ERROR) {
-      std::cerr << "Cannot attach the buffer to the source to play sound: error " << error << std::endl;
+      std::cerr << "Cannot attach buffer " << buffer << " to the source to play sound: error " << error << std::endl;
       alDeleteSources(1, &source);
     }
     else {
@@ -243,5 +235,126 @@ bool Sound::play(void) {
     }
   }
   return success;
+}
+
+/**
+ * Loads the specified wav file and decodes its content into an OpenAL buffer.
+ * @param file_name name of the file to open
+ * @return the buffer created, or AL_NONE if the sound could not be loaded
+ */
+ALuint Sound::decode_wav(const std::string &file_name) {
+
+  ALuint buffer = AL_NONE;
+
+  // load the wav file
+  WavFromMemory wav;
+  wav.position = 0;
+  FileTools::data_file_open_buffer(file_name, &wav.data, &wav.size);
+  SF_INFO file_info;
+  SNDFILE *file = sf_open_virtual(&sf_virtual, SFM_READ, &file_info, &wav);
+
+  if (file == NULL) {
+    std::cout << "Cannot load wav file from memory\n";
+  }
+  else {
+
+    // read the wav properties
+    ALsizei nb_samples  = (ALsizei) (file_info.channels * file_info.frames);
+    ALsizei sample_rate = (ALsizei) file_info.samplerate;
+
+    // decode the sound with libsndfile
+    ALshort *samples = new ALshort[nb_samples];
+    if (sf_read_short(file, samples, nb_samples) < nb_samples) {
+      std::cout << "Unable to decode wav data\n";
+    }
+    else {
+
+      ALenum format = AL_NONE;
+      if (file_info.channels == 1) {
+	format = AL_FORMAT_MONO16;
+      }
+      else if (file_info.channels == 2) {
+	format = AL_FORMAT_STEREO16;
+      }
+
+      if (format == AL_NONE) {
+	std::cout << "Invalid audio format\n";
+      }
+      else {
+
+	// copy the samples into an OpenAL buffer
+	alGenBuffers(1, &buffer);
+        alBufferData(buffer, format, samples, nb_samples * sizeof(ALushort), sample_rate);
+	if (alGetError() != AL_NO_ERROR) {
+	  std::cout << "Cannot copy the sound sample into buffer " << buffer << "\n";
+          buffer = AL_NONE;
+        }
+      }
+    }
+    sf_close(file);
+  }
+
+  FileTools::data_file_close_buffer(wav.data);
+
+  return buffer;
+}
+
+
+// io functions to load wav from memory
+
+sf_count_t Sound::sf_get_filelen(void *user_data) {
+
+  WavFromMemory *wav = (WavFromMemory*) user_data;
+//  std::cout << "get_filelen: " << wav->size << std::endl;
+  return wav->size;
+}
+
+sf_count_t Sound::sf_seek(sf_count_t offset, int whence, void *user_data) {
+
+  WavFromMemory *wav = (WavFromMemory*) user_data;
+//  std::cout << "seek\n";
+  
+  switch (whence) {
+
+    case SEEK_SET:
+      wav->position = offset;
+      break;
+
+    case SEEK_CUR:
+      wav->position += offset;
+      break;
+
+    case SEEK_END:
+      wav->position = wav->size - offset;
+      break;
+  }
+
+  return 0;
+}
+
+sf_count_t Sound::sf_read(void *ptr, sf_count_t count, void *user_data) {
+  
+  WavFromMemory *wav = (WavFromMemory*) user_data;
+//  std::cout << "read: " << count << std::endl;
+  if (wav->position + count >= wav->size) {
+    count = wav->size - wav->position;
+  }
+  memcpy(ptr, wav->data + wav->position, count);
+  wav->position += count;
+
+//  std::cout << count << " bytes read\n";
+  return count;
+}
+
+sf_count_t Sound::sf_write(const void *ptr, sf_count_t count, void *user_data) {
+  // not implemented
+  return 0;
+}
+
+sf_count_t Sound::sf_tell(void *user_data) {
+
+  WavFromMemory *wav = (WavFromMemory*) user_data;
+//  std::cout << "tell: " << wav->position << std::endl;
+  return wav->position;
 }
 

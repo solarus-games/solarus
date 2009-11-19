@@ -21,6 +21,7 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <list>
+#include <sndfile.h>
 
 /**
  * This class represents a sound effet that can be played in ZSDX.
@@ -35,12 +36,28 @@ class Sound {
     static ALCdevice* device;
     static ALCcontext* context;
 
-    ALuint buffer;                          /**< the OpenAL buffer containing the PCM decoded data of this sound */
-    std::list<ALuint> sources;              /**< the sources currently playing this sound */
+    ALuint buffer;                           /**< the OpenAL buffer containing the PCM decoded data of this sound */
+    std::list<ALuint> sources;               /**< the sources currently playing this sound */
     static std::list<Sound*> current_sounds; /**< the sounds currently playing */
 
-    static bool initialized;                /**< indicates that the audio system is initialized */
+    static bool initialized;                 /**< indicates that the audio system is initialized */
  
+    struct WavFromMemory {                   /**< buffer containing a wav file */
+      char *data;
+      size_t size;
+      size_t position;
+    };
+
+    static SF_VIRTUAL_IO sf_virtual;         /**< libsndfile object used to load the wav from memory */
+
+    // functions to load wav from memory
+    static sf_count_t sf_get_filelen(void *user_data);
+    static sf_count_t sf_seek(sf_count_t offset, int whence, void *user_data);
+    static sf_count_t sf_read(void *ptr, sf_count_t count, void *user_data);
+    static sf_count_t sf_write(const void *ptr, sf_count_t count, void *user_data);
+    static sf_count_t sf_tell(void *user_data);
+
+    ALuint decode_wav(const std::string &file_name);
     bool update_playing(void);
 
   public:
@@ -53,7 +70,6 @@ class Sound {
     static void quit(void);
     static bool is_initialized(void);
     static void update(void);
-
 };
 
 #endif

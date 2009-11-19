@@ -176,7 +176,7 @@ target_link_libraries (zsdx
 		      SDL_image
 		      SDL_ttf
 		      openal
-		      alut
+		      sndfile
 		      lua5.1
 		      physfs
 		      stdc++

@@ -291,6 +291,7 @@ ALuint Sound::decode_wav(const std::string &file_name) {
         }
       }
     }
+    delete[] samples;
     sf_close(file);
   }
 

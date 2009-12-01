@@ -14,17 +14,19 @@ SDL_ttf
 lua5.1
 physfs
 openal
-alut
+libsndfile
 
 Note that two other libraries are directly included in the source code: SDL_Config
 (an ini parsing library, with some modifications to avoid compilation warning and 64-bit issues)
 and snes_spc (an SPC music decoding library).
 
+The compilation process also relies on zip and luac (the Lua compiler) to manage the data files.
+
 
 Linux developers:
 
 Install the corresponding packages. For example, with Ubuntu or Debian:
-libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev liblua5.1-0-dev libphysfs-dev libopenal-dev libalut-dev
+libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev liblua5.1-0-dev libphysfs-dev libopenal-dev libsndfile-dev lua5.1 zip
 
 
 Windows developers:
@@ -40,7 +42,7 @@ Install the dynamic library files (the .dll files) in your system32 directory
 The directory win32/libraries contain all static and dynamic libraries that are not provided as binaries
 by their authors.
 For SDL, SDL_image and SDL_ttf, the header files must be placed in an "SDL" subdirectory of the include directory.
-For OpenAL and ALUT, the header files must be placed in an "AL" subdirectory of the include directory.
+For OpenAL, the header files must be placed in an "AL" subdirectory of the include directory.
 You may need to additionally link with libz.
 
 
@@ -54,8 +56,12 @@ it can generate a project for most of the IDEs, including Visual C++, Code::Bloc
 You can also compile ZSDX without CMake, by creating a project from the sources with your IDE
 and link with the libraries listed above.
 
+Note that some Lua scripts need to be compiled to and that an archive of all data files has to be created.
+Those tasks are performed the script data/make_zip, which is called by cmake when you compile the project.
+To make this work you need sh, zip and luac (the Lua compiler).
 
-Linux users:
+
+Linux developers:
 
 Go to the zsdx directory and just type:
 
@@ -95,14 +101,17 @@ if /home/your_directory/bin is in your PATH. There is no need to be root.
 Note that for now, the current directory must be the one containing the progam itselft, otherwise the data will not be found. 
 
 
-Windows users:
+By default, the game looks for the data files into the current directory. To change this, you can use the -datapath option, for example:
+
+$ zsdx -datapath=/usr/share/games/zsdx
+
+
+Windows developers:
 
 I have managed to compile ZSDX with Code::Blocks, without using CMake.
 
 
-------------------
 Mac OS developers
-------------------
 
 I don't have Mac OS, so this readme is for now very incomplete in this section.
 

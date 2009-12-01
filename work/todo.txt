@@ -48,6 +48,8 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - Alt+F4 ne marche pas sous windows
+- le 8 n'est pas très lisible (ex : 80 rubis chez le forgeron)
+- engine_dialogs.zsd : deux fois _treasure_88_2 (le signaler aux traducteurs)
 
 
 Remarques de Linksupersayen :

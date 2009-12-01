@@ -38,7 +38,6 @@ line2 = ""
 line3 = ""
 next = demo_finished.2
 
-
 [outside_world.not_in_demo]
 # Lorsqu'on tente d'entrer dans une grotte pas encore faite dans la démo
 #       |-----------------------|

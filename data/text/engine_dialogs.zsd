@@ -1521,15 +1521,15 @@ line1 = "Tu as trouvé un"
 line2 = "Rubis rouge !"
 line3 = "Il vaut 20 Rubis !"
 
-[_treasure_88_2]
+[_treasure_89_2]
 # Plusieurs rubis bleus
 #       |--------------------|
 icon = 91
 line1 = "Tu as trouvé $v"
 line2 = "Rubis rouges."
-next = _treasure_88_2.1
+next = _treasure_89_2.1
 
-[_treasure_88_2.1]
+[_treasure_89_2.1]
 #       |--------------------|
 line1 = "Chacun d'entre eux"
 line2 = "vaut 20 Rubis !"

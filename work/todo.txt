@@ -88,6 +88,55 @@ Idées :
 - Passer à travers un tableau de Mario comme dans Mario 64
 
 
+--------------------
+Abstraction de SDL :
+
+Graphics :
+
+SDL_GetTicks
+SDL_Rect
+SDL_Surface
+SDL_CreateRGBSurface
+SDL_FreeSurface
+SDL_FillRect
+SDL_BlitSurface
+SDL_SetColorKey
+SDL_SetAlpha
+SDL_MapRGB
+SDL_PixelFormat
+SDL_Color
+SDL_WM_SetCaption
+putenv
+SDL_VideoModeOK
+SDL_SetVideoMode
+SDL_ListModes
+SDL_Flip
+SDL_LockSurface
+SDL_UnlockSurface
+SDL_ShowCursor
+
+Controls :
+SDL_Key
+SDL_keysym
+SDL_EnableUNICODE
+SDL_EnableKeyRepeat
+
+FileTools :
+SDL_RWops
+SDL_RWread
+SDL_RWwrite
+SDL_RWFromMem
+
+tous :
+SDL_Init
+SDL_Quit
+
+Events :
+SDL_Event
+SDL_PollEvent
+SDL_Delay
+
+
 --------------
 Mode release :
 --------------

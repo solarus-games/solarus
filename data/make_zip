@@ -1,6 +1,5 @@
 #!/bin/sh
 
-find . -name '*~' -exec rm {} \;
 cd maps
 for f in *.lua
 do

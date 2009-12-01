@@ -1,0 +1,106 @@
+Zelda Mystery of Solarus DX est un jeu amateur libre et gratuit, développé en C++ et indépendant de Nintendo.
+
+Cette démo vous présente le début du jeu complet en cours de développement afin de vous en donner un premier aperçu. L'aventure va jusqu'à la fin du premier donjon. Pour cela vous allez devoir traverser des embûches, résoudre les premières énigmes du jeu et vaincre des ennemis. Mais avant de vous lancer dans l'aventure, je vous recommande de lire ce mode d'emploi ne pour savoir comment jouer, mais aussi pour connaître les conseils indispensables.
+
+
+Configuration requise
+
+La démo Zelda Mystery of Solarus DX fonctionne sous Windows, Linux, Mac OS X, Amiga et étant libre, elle peut être facilement portée sur d'autres systèmes (contactez-nous). Nous avons fait de notre mieux pour optimiser la programmation, mais le jeu utilise tout de même un minimum de ressources, donc il risque de ne pas être jouable correctement sur des ordinateurs relativement peu puisssants. Les résultats diffèrent selon les machines et il est difficile de donner des chiffres précis. Nous vous conseillons quoi qu'il en soit de fermer toutes les autres applications actives quand vous jouez à Zelda Mystery of Solarus, même si votre ordinateur est puissant.
+
+
+Histoire
+
+
+D'anciennes légendes racontent qu'il y a bien longtemps, existait un magnifique royaume du nom d'Hyrule. Ce royaume prospérait sous la bénédiction des trois déesses qui l'avaient créé en des temps ancestraux. Les trois déesses étaient représentées sous la forme de la Triforce, symbole de pouvoir infini qui attirait la convoitise. Sept Sages furent choisis pour sceller la Triforce dans la Terre d'Or, le reflet utopique du monde. Puis les siècles passèrent...
+
+Bien des générations plus tard, un maléfice sembla menacer Hyrule. Alors que les ténèbres commençaient à envahir le royaume, un mystérieux sorcier nommé Agahnim se présenta et résolut les problèmes grâce à ses sortilèges. Acclamé par le peuple, le Roi le nomma à un poste haut placé. Il s'avéra qu'en réalité, le sorcier complotait contre la famille royale. Il tentait de faire revenir Ganondorf, roi des bandits d'un temps oublié.
+
+On raconte qu'un jeune homme vêtu de vert se lança dans une quête à travers le royaume, explorant des temples perdus, gravissant les montagnes, traversant les vallées brumeuses et terrassant le mal. Finalement, celui que l'on nomma le Héros sut repousser le maléfice. Grâce à son courage, il triompha de Ganondorf, qui avait établi son siège dans une imposante pyramide au sein de la Terre d'Or, transformée en Royaume des Ténèbres.
+
+Le jeune Héros formula alors le voeu d'emprisonner Ganondorf éternellement dans le Royaume des Ténèbres. Le Roi d'Hyrule, de la lignée des Sept Sages, l'enferma en invoquant la magie du sceau. Il en était fini du vil Ganondorf. Il devint ainsi prisonnier de la vision maléfique du monde qu'il avait lui-même créée.
+
+Mais quelques années plus tard, le Roi d'Hyrule fut victime d'un étrange mal. Les médecins de tout le royaume tentèrent de mettre à profit toutes leurs connaissances, mais en vain... La mort du Roi fut lourde de conséquences. Outre le deuil qui s'abattit sur Hyrule, le Roi emportait son pouvoir dans sa mort prématurée. Le sceau des Sept Sages était à nouveau fragilisé.
+
+Le Héros, suivant les conseils de son maître à penser Sahasrahla, décida d'empêcher quiconque de s'emparer de la Triforce. Il la confia à la Princesse Zelda, héritière des pouvoirs royaux. Zelda associa ses pouvoirs à ceux de huit mystérieux enfants pour séparer la Triforce en huit fragments. Les enfants se chargèrent de dissimuler les huit fragments aux quatre coins du royaume. Mais avant cela, ils prirent soin de créer une ultime protection : l'Amulette du Solarus. C'était un pendentif qui permettait à son possesseur d'assembler la Triforce. Après ces événements, le Héros et les autres habitants continuèrent à vivre paisiblement. C'est à ce moment que débute notre épopée...
+
+
+Le menu de sélection
+
+Une fois le jeu lancé, après l'écran-titre, vous arrivez au menu de sélection des sauvegardes.
+
+Choisissez une sauvegarde et appuyez sur Espace pour valider. Si la sauvegarde que vous avez choisie est vide, un écran vous invite à entrer votre nom de joueur. Sélectionnez les lettres avec les flèches de direction et appuyez sur C ou Espace pour valider chaque lettre.
+
+    * Pour valider votre nom, sélectionnez "ok" puis appuyez sur C ou Espace (ou bien appuyez directement sur Entrée).
+    * Pour effacer un caractère, sélectionnez la flèche vers la gauche (à gauche du "ok") puis appuyez sur C ou Espace.
+    * Pour annuler et revenir à l'écran du choix des sauvegardes, sélectionnez la flèche d'annulation (à droite du "ok") puis appuyez sur C ou Espace.
+
+Vous pouvez également effacer un fichier ou quitter le jeu en sélectionnant les options correspondantes et en appuyant sur Espace.
+
+
+Les commandes
+
+Les commandes sont configurables dans le menu des options et il est également possible de jouer avec une manette ou un joystick (voir la section "L'écran Options"). Voici les commandes par défaut pour jouer avec le clavier. Dans la suite de ce mode d'emploi, on supposera que vous utilisez ces commandes.
+
+    * Flèches de direction : déplacer Link, naviguer dans les menus. Lorsque vous êtes près d'un bloc, maintenez la flèche de direction pour le pousser (si c'est possible).
+    * Touche Espace (icône bleue) : action. La touche Espace peut servir à soulever des objets, à les lancer, à parler à des personnages, à lire des messages, à ouvrir des coffres, etc... A tout moment du jeu, l'icône bleue vous indique l'action associée à la touche Espace.
+    * Touche C (icône verte) : donner un coup d'épée. Au du début du jeu, une de vos premières tâches sera de trouver une épée. Utilisez la touche C pour donner un coup d'épée. Maintenez C quelques instants puis relâchez-le pour faire une attaque tournoyante, deux fois plus puissante qu'une attaque normale. La touche C sert également à sauvegarder lorsque le jeu est en pause.
+    * Touche D (icône orange) : mettre le jeu en pause. Le menu de pause est divisé en quatre écrans : Inventaire, Carte, Options et Statut quête. Ces quatre écrans sont détaillés plus loin. Pour passer d'un écran à l'autre, il suffit d'utiliser les flèches de direction droite et gauche. Appuyez à nouveau sur D pour revenir au jeu.
+    * Touches X et V (icônes grises) : utiliser un objet. Les objets de l'inventaire peuvent être associés à une de ces deux touches. Dans le jeu, utilisez la touche X et V pour utiliser l'objet que vous le souhaitez. Au début du jeu, vous n'avez pas d'objets dans l'inventaire : à vous de les découvrir !
+
+Si jamais vous vous perdez dans les commandes, regardez toujours l'icône bleue : elle vous indique l'action associée à la touche espace. Quant à l'icône verte, elle correspond à la touche C.
+
+
+L'écran de jeu
+
+Nous avons déjà parlé des icônes en haut à gauche de l'écran : l'icône bleue correspond à la touche action (Espace par défaut), l'icône verte à la touche épée (C par défaut), les deux icônes grises aux touches associées aux objets (X et V par défaut), et enfin l'icône orange à la touche pause (D par défaut).
+
+En haut à droite de l'écran, vous pouvez voir vos Coeurs. Les Coeurs indiquent votre énergie vitale : lorsque vous n'en avez plus, vous avez perdu (Game Over). Vous pouvez gagner des Coeurs en détruisant des buissons, en soulevant des vases ou en tuant des ennemis. Au début du jeu, vous avez trois Coeurs au maximum. Vous pouvez en obtenir d'autres dans l'aventure à la fin de certaines phases importantes. De plus, à chaque fois que vous trouvez quatre Quarts de Coeur, vous obtenez également un nouveau Coeur. La démo cache justement Quarts de Coeur !
+
+Juste en-dessous des Coeurs peut se trouver une barre verte, qui indique votre Energie Magique. Elle apparaîtra lorsque vous trouverez l'objet qui utilise de l'Energie Magique. Si votre barre d'Energie Magique est vide, vous ne pouvez plus utiliser cet objet. Vous pouvez récupérer de l'Energie Magique en trouvant des Fioles vertes. Sachez également que certains ennemis vous pompent de l'Energie Magique en plus de vous faire perdre des Coeurs... Cela dit, la démo ne vous permettra pas d'obtenir des objets magiques.
+
+Enfin, le compteur en bas à gauche de l'écran indique vos Rubis. Le Rubis est la monnaie de ce jeu, essayez donc d'en trouver un maximum ! Les Rubis verts valent 1 Rubis, les Rubis bleus en valent 5 et les Rubis rouges en valent 20. Au début du jeu, vous ne pouvez pas posséder plus de 100 Rubis.
+
+
+L'écran de pause
+
+Lorsque le jeu est en pause (touche D, icône orange), vous pouvez naviguer entre quatre menus à l'aide des flèches de direction droite et gauche. Dans ces menus, un texte d'aide s'affiche dans un cadre en bas en fonction des actions que vous effectuez. Les paragraphes suivants décrivent plus en détail chacun de ces écrans.
+
+Vous pouvez sauvegarder à tout moment votre progression en appuyant sur C (icône verte) dans l'écran de pause. Lorsque vous redémarrerez le jeu, il vous suffira de choisir votre fichier de sauvegarde pour reprendre votre aventure à la dernière entrée de maison, caverne ou donjon que vous avez empruntée. Lorsque vous avez Game Over, vous pouvez encore la possibilité de sauvegarder pour ne pas perdre ce que vous avez fait depuis votre dernière sauvegarde.
+
+
+L'écran Carte
+
+Si vous n'êtes pas dans un donjon, l'écran Carte vous indique simplement votre position sur la carte extérieure.
+
+Si vous êtes dans un donjon, cet écran vous affiche la Carte du donjon à condition que vous l'ayiez trouvée. Sur la Carte sont indiquées toutes les salles ainsi que les escaliers et les entrées du donjon. Si vous avez la Boussole, votre position est également indiquée sur la carte, de même que la position des coffres et du Boss du donjon.
+
+
+L'écran Inventaire
+
+L'écran Inventaire affiche l'ensemble des objets en votre possession. Vous pouvez sélectionner un objet en déplaçant le curseur et voir ses informations en appuyant sur la touche Action. Certains objets de l'inventaire peuvent être associés aux touches X et V en appuyant sur X ou V.
+
+
+L'écran Options
+
+L'écran des options permet de configurer le mode d'affichage et les commandes de jeu.
+
+    * Mode vidéo : la ligne supérieure vous permet de modifier le mode d'affichage. Lorsque le curseur est placé sur cette ligne, appuyez sur espace pour changer de mode vidéo. Divers modes sont disponible, en plein écran ou en fenêtré, en haute résolution ou basse résolution. Des modes sont adaptés aux écrans large en plein écran afin d'éviter que l'image soit trop étirée horizontalement. Un mode lissé est également proposé où l'image est agrandie avec les pixels moins visibles. Selon votre configuration matérielle, il se peut que certaines résolutions d'écran ne soient pas supportées sur votre machine. Un autre moyen de modifier le mode vidéo est d'appuyer sur la touche F5, ce qui est possible même en dehors du menu de pause et même dans l'écran-titre ou dans les menus. Le mode vidéo est enregistré de manière globale, indépendamment des sauvegardes de jeu. Ainsi, le mode vidéo que vous choisissez s'applique dès le lancement du programme, avant de choisir une sauvegarde de jeu.
+    * Commandes : pour configurer les touches du clavier, placez le curseur sur la ligne correspondant à la commande que vous voulez modifier (Action, Epée, Objet 1, Objet 2, Pause, Droite, Haut, Gauche, Bas). Puis appuyez sur la touche Action (l'icône bleue, par défaut Espace) pour la modifier. Ensuite, appuyez sur la touche du clavier ou le bouton du joypad que vous souhaiter dorénavant attribuer. Si la commande en cours de modification correspond à l'une des icônes en haut à gauche de l'écran, celle-ci se met à clignoter. La personnalisation des commandes est spécifique à chaque sauvegarde de jeu. Les commandes de l'écran-titre et du menu de sélection des sauvegardes ne peuvent pas être modifiées.
+
+
+L'écran Statut Quête
+
+L'écran Statut Quête indique des informations supplémentaires sur votre progression dans l'aventure. Les trois cases en bas à droite représentent votre équipement : Epée, Bouclier et Armure. Au centre sont indiqués Quarts de Coeur que vous avez trouvés. La case en haut à gauche indique votre Bourse de Rubis. Les emplacements libres sont inutilisés dans la démo. Ils serviront à afficher d'autres éléments d'équipement ainsi que votre progression dans l'aventure.
+
+
+Quelques conseils
+
+    * Observez l'icône bleue qui vous indique à tout moment l'action associée à la touche Espace.
+    * Sauvegardez souvent, à chaque fois que vous obtenez un objet ou que vous réussissez une énigme importante par exemple.
+    * Essayez de trouver les quatre Fragments de Coeur cachés dans la démo, ils vous permettront d'obtenir un nouveau Coeur.
+    * Explorez chaque lieu et chaque salle méthodiquement.
+    * Si vous butez sur une énigme ou un passage difficile, parlez aux personnages. Beaucoup sont là pour vous aider. Parfois, ils vous donneront de nouvelles informations si vous leur parlez une deuxième fois !
+    * Tuez toujours tous les ennemis : en effet il arrive que certains trésors n'apparaissent qu'une fois la salle nettoyée.
+    * Aidez-vous de la Carte et de la Boussole pour repérer les coffres que vous n'avez pas encore ouverts.
+    * Servez-vous un peu partout des objets que vous obtiendrez au cours de votre aventure.
+

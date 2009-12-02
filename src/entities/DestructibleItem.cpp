@@ -23,10 +23,10 @@
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "Map.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "ZSDX.h"
 #include "Sprite.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Features of each type of destructible item.

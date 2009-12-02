@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "TextSurface.h"
-#include "FileTools.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * The two fonts, created in the initialize() function.

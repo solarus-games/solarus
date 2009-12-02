@@ -18,7 +18,7 @@
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Constructor.

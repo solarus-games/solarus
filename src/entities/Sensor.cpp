@@ -21,7 +21,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Constructor.

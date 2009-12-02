@@ -20,7 +20,7 @@
 #include "Equipment.h"
 #include "ResourceManager.h"
 #include "Color.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "StringResource.h"
 using namespace std;

@@ -17,12 +17,12 @@
 #include "menus/SelectionMenuChooseName.h"
 #include "menus/SelectionMenuSelectFile.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
-#include "TextSurface.h"
+#include "lowlevel/TextSurface.h"
 #include "Savegame.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a selection menu with the phase where the

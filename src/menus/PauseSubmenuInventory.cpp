@@ -19,7 +19,7 @@
 #include "movements/TargetMovement.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Equipment.h"
 #include "Savegame.h"

@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "StringResource.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 std::map<std::string, std::string> StringResource::strings;
 

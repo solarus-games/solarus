@@ -17,7 +17,7 @@
 #include "menus/PauseSubmenuOptions.h"
 #include "menus/PauseMenu.h"
 #include "StringResource.h"
-#include "TextSurface.h"
+#include "lowlevel/TextSurface.h"
 #include "Controls.h"
 #include "Game.h"
 #include "Color.h"
@@ -25,7 +25,7 @@
 #include "ZSDX.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "VideoManager.h"
 
 /**

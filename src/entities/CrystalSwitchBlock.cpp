@@ -23,8 +23,8 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
-#include "Sound.h"
-#include "FileTools.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/FileTools.h"
 #include <list>
 
 /**

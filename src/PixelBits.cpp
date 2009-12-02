@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include <iostream>
 #include "PixelBits.h"
 
 /**
@@ -245,7 +246,7 @@ bool PixelBits::test_rectangle_collision(const SDL_Rect &rectangle1, const SDL_R
 }
 
 /**
- * Prints an ascii representation of the pixels (for debugging purposes).
+ * Prints an ascii representation of the pixels (for debugging purposes only).
  */
 void PixelBits::print(void) {
 

@@ -22,8 +22,9 @@
 
 /**
  * This class displays some text on a surface.
- * Basically, it encapsulates an SDL_Surface and handles horizontal
- * and vertical text alignment, color and other properties.
+ * Basically, it encapsulates a graphic surface and handles text rendering,
+ * horizontal and vertical text alignment, color and other properties.
+ * This is the only class related to a font library (SDL_ttf).
  */
 class TextSurface {
 

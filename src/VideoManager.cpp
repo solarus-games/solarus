@@ -17,7 +17,7 @@
 #include "SDL_Config/SDL_config_lib.h"
 #include "VideoManager.h"
 #include "Color.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "StringResource.h"
 
 SDL_Rect VideoManager::video_mode_sizes[] = {

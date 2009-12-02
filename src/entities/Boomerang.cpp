@@ -22,7 +22,7 @@
 #include "movements/PlayerMovement.h"
 #include "movements/TargetMovement.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Map.h"
 
 /**

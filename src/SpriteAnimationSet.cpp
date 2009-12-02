@@ -17,7 +17,7 @@
 #include "SpriteAnimationSet.h"
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Loads the animations of a sprite from a file.

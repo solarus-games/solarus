@@ -16,9 +16,9 @@
  */
 #include "menus/SelectionMenuCommon.h"
 #include "Sprite.h"
-#include "TextSurface.h"
-#include "Sound.h"
-#include "Music.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
 #include "hud/ActionIcon.h"
 #include "hud/SwordIcon.h"
 #include "KeysEffect.h"

@@ -34,7 +34,7 @@
 #include "MapScript.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Equipment.h"
 #include "Sprite.h"
 #include "Treasure.h"

@@ -17,7 +17,7 @@
 #include "MapLoader.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "ResourceManager.h"
 #include "Camera.h"
 #include "entities/Obstacle.h"

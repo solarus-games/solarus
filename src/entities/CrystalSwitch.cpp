@@ -23,9 +23,9 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "KeysEffect.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a new crystal switch.

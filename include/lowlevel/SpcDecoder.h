@@ -22,7 +22,7 @@
 
 /**
  * This class encapsulates the SPC music decoding, thus allowing
- * the Music class to be independent of the SPC library choice.
+ * the Music class to be independent of the SPC library.
  *
  * To decode SPC music files, the Snes_SPC library code is used.
  * Snes_SPC is a recent SPC decoding library and exists in two versions:

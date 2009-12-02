@@ -20,7 +20,7 @@
 #include "entities/Hero.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "Map.h"
 
 /**

@@ -23,9 +23,9 @@
 #include "Savegame.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Color.h"
-#include "TextSurface.h"
+#include "lowlevel/TextSurface.h"
 #include "StringResource.h"
 
 /**

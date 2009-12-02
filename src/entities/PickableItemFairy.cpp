@@ -20,7 +20,7 @@
 #include "Game.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
 
 /**

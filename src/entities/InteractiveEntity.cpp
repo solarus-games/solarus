@@ -26,7 +26,7 @@
 #include "Sprite.h"
 #include "Equipment.h"
 #include "InventoryItem.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Action icon depending on the type of interaction.

@@ -21,8 +21,8 @@
 #include "Sprite.h"
 #include "Map.h"
 #include "ResourceManager.h"
-#include "Sound.h"
-#include "FileTools.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Constructor.

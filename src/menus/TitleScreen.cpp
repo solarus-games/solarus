@@ -16,13 +16,13 @@
  */
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenuSelectFile.h"
-#include "Music.h"
-#include "Sound.h"
+#include "lowlevel/Music.h"
+#include "lowlevel/Sound.h"
 #include "ResourceManager.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "Color.h"
 #include "TransitionFade.h"
-#include "TextSurface.h"
+#include "lowlevel/TextSurface.h"
 #include "StringResource.h"
 #include <ctime>
 

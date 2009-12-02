@@ -18,7 +18,7 @@
 #include "Counter.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 
 /**
  * Position of the 3 rupee icons in the image.

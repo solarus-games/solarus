@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Music.h"
-#include "SpcDecoder.h"
-#include "FileTools.h"
+#include <iostream> // cerr
+#include "lowlevel/Music.h"
+#include "lowlevel/SpcDecoder.h"
+#include "lowlevel/FileTools.h"
 
 SpcDecoder * Music::spc_decoder = NULL;
 Music * Music::current_music = NULL;

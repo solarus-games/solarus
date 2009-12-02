@@ -17,7 +17,7 @@
 #include "entities/Tile.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "Map.h"
 
 /**

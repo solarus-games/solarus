@@ -25,10 +25,10 @@
 #include "DungeonEquipment.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Savegame.h"
 #include "Map.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include <list>
 
 const std::string Door::animations[] = {

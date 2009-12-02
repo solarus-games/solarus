@@ -22,7 +22,7 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 
 /**
  * Constructor.

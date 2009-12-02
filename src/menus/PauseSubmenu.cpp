@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "menus/PauseSubmenu.h"
-#include "TextSurface.h"
+#include "lowlevel/TextSurface.h"
 #include "Game.h"
 
 /**

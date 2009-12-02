@@ -22,7 +22,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 
 /**
  * Constructor.

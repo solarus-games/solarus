@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CustomObstacle.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Constructor.

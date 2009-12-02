@@ -26,7 +26,7 @@
 #include "MapScript.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "Music.h"
+#include "lowlevel/Music.h"
 using std::list;
 
 /**

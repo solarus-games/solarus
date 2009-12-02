@@ -22,12 +22,9 @@
 #define ZSDX_COMMON_H
 
 #include <string>
-#include <iostream>
-#include <fstream>
 #include <sstream>
-#include <cstdlib>
 #include <stdexcept>
-#include <SDL/SDL.h>
+#include <SDL/SDL.h> // TODO remove (SDL should be used in lowlevel classes only)
 #include "Types.h"
 
 /**

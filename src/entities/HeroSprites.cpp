@@ -24,7 +24,7 @@
 #include "ResourceManager.h"
 #include "ZSDX.h"
 #include "Game.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 
 /**
  * Indicates the direction of the hero's animation (from 0 to 3, or -1 for no change)

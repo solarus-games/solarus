@@ -16,13 +16,13 @@
  */
 #include "DialogBox.h"
 #include "Message.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Color.h"
 #include "MapScript.h"
 

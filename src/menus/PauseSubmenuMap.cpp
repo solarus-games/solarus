@@ -20,7 +20,7 @@
 #include "Dungeon.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Map.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"

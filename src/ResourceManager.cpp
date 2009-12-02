@@ -17,10 +17,10 @@
 #include "ResourceManager.h"
 #include "Map.h"
 #include "entities/Tileset.h"
-#include "Music.h"
-#include "Sound.h"
+#include "lowlevel/Music.h"
+#include "lowlevel/Sound.h"
 #include "SpriteAnimationSet.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include <SDL/SDL_image.h>
 
 using std::map;
@@ -138,6 +138,7 @@ SDL_Surface * ResourceManager::load_image(const ImageId &id, bool relative_to_sp
 
   std::string file_name = relative_to_sprites_dir ? ((std::string) "sprites/" + id) : id;
 
+  // TODO move this code into the lowlevel Surface class
   SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
   SDL_Surface *image = IMG_Load_RW(rw, 0);
   FileTools::data_file_close_rw(rw);

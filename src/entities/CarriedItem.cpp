@@ -25,7 +25,7 @@
 #include "movements/CollisionMovement.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Map.h"
 
 /**

@@ -16,7 +16,7 @@
  */
 #include "SDL_Config/SDL_config_lib.h"
 #include "Dungeon.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "StringResource.h"
 
 /**
@@ -70,8 +70,8 @@ void Dungeon::load(void) {
   // parse the dungeon file
   std::string file_name = "maps/dungeons/dungeons.zsd"; 
 
+  // TODO make a lowlevel ini parsing class
   SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
-
   CFG_File ini;
   if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
     DIE("Cannot load the dungeon file '" << file_name << "': " << CFG_GetError());

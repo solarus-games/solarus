@@ -19,7 +19,7 @@
 #include "entities/MapEntities.h"
 #include "Map.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 

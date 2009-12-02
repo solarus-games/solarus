@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Sound.h"
-#include "Music.h"
-#include "FileTools.h"
+#include <iostream> // std::cerr
+#include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
+#include "lowlevel/FileTools.h"
 
 ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
@@ -38,7 +39,7 @@ Sound::Sound(const SoundId &sound_id):
     buffer = decode_wav(file_name);
 
     if (buffer == AL_NONE) {
-      std::cerr << "Sound '" << file_name << "' will not be played" << std::endl;
+      std::cerr << "lowlevel/Sound '" << file_name << "' will not be played" << std::endl;
     }
   }
 }

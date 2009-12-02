@@ -18,9 +18,9 @@
 #include "menus/SelectionMenuSelectFile.h"
 #include "ZSDX.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Savegame.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a selection menu with the phase where the

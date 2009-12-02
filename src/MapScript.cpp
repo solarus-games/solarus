@@ -16,10 +16,10 @@
  */
 #include "MapScript.h"
 #include "Map.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "ResourceManager.h"
-#include "Sound.h"
-#include "Music.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Equipment.h"
@@ -49,7 +49,7 @@
  * @param map the map
  */
 MapScript::MapScript(Map *map):
-  map(map), context(NULL), just_freezed(false) {
+  map(map), context(NULL) {
 
 }
 
@@ -510,7 +510,6 @@ int MapScript::l_freeze(lua_State *l) {
   check_nb_arguments(l, 0);
 
   zsdx->game->get_hero()->freeze();
-  zsdx->game->get_current_script()->just_freezed = true;
 
   return 0;
 }

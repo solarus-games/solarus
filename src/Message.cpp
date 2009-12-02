@@ -17,12 +17,12 @@
 #include "SDL_Config/SDL_config_lib.h"
 #include "Message.h"
 #include "DialogBox.h"
-#include "FileTools.h"
-#include "TextSurface.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/TextSurface.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 
 /**
  * Delay between two chars, depending on the dialog speed.

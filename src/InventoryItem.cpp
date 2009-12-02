@@ -19,7 +19,7 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "DialogBox.h"
 #include "MapScript.h"
 #include "Map.h"

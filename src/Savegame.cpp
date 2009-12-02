@@ -17,7 +17,7 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a savegame with a specified file name, existing or not.

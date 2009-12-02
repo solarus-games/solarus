@@ -19,7 +19,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Sprite.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "MapScript.h"
 #include "Camera.h"
 #include "entities/Ground.h"

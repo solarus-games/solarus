@@ -16,7 +16,7 @@
  */
 #include "Timer.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "ZSDX.h"
 #include "Game.h"
 

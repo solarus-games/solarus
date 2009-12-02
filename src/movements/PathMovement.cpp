@@ -133,7 +133,7 @@ void PathMovement::start_next_move(void) {
 
   // don't move while the entity is unknown
   if (entity == NULL) {
-    std::cout << "NULL\n";
+//    std::cout << "NULL\n";
     return;
   }
 

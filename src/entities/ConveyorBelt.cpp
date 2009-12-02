@@ -17,7 +17,7 @@
 #include "entities/ConveyorBelt.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a new conveyor belt.

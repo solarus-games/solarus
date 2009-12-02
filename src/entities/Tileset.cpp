@@ -19,7 +19,7 @@
 #include "entities/AnimatedTilePattern.h"
 #include "entities/ParallaxTilePattern.h"
 #include "entities/ScrollingTilePattern.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "ResourceManager.h"
 #include <iomanip>
 using namespace std;

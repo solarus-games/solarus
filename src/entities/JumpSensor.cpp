@@ -19,7 +19,7 @@
 #include "entities/MapEntities.h"
 #include "movements/PlayerMovement.h"
 #include "Map.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a jump sensor.

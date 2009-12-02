@@ -23,12 +23,12 @@
 #include "Savegame.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "DungeonEquipment.h"
 #include "Savegame.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a new chest with the specified treasure.

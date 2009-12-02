@@ -22,9 +22,9 @@
 #include "Map.h"
 #include "ResourceManager.h"
 #include "KeysEffect.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a block.

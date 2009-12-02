@@ -18,9 +18,9 @@
 #include "menus/SelectionMenuCommon.h"
 #include "ZSDX.h"
 #include "Transition.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
-#include "TextSurface.h"
+#include "lowlevel/TextSurface.h"
 #include "StringResource.h"
 #include "hud/HeartsView.h"
 

@@ -22,11 +22,12 @@
 
 /**
  * This class represents a music that can be played.
- * A music should be in format .spc (Snes) or .it (Impulse Tracker Module).
+ * A music should be in format .spc (Snes).
+ * The .it format (Impulse Tracker Module) will be supported in a future version.
  * Only one music can be played at the same time.
  * Before using this class, the audio system should have been
  * initialized, by calling Sound::initialize().
- * Sound and Music should be the only modules that depends on an audio mixer library.
+ * Sound and Music are the only classes that depends on the audio mixer library (OpenAL).
  */
 class Music {
 

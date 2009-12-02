@@ -37,7 +37,6 @@ class MapScript {
   Map *map;                   /**< the map associated to this script */
   lua_State* context;         /**< the execution context of the Lua script */
   std::list<Timer*> timers;   /**< the timers currently running for this script */
-  bool just_freezed;          /**< indicates that this script has just freezed the hero */
 
   bool call_lua_function(const std::string &function_name);
   bool call_lua_function(const std::string &function_name, const std::string &arg1);

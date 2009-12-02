@@ -23,14 +23,14 @@
 #include "MapScript.h"
 #include "KeysEffect.h"
 #include "Treasure.h"
-#include "TextSurface.h"
+#include "lowlevel/TextSurface.h"
 #include "Sprite.h"
 #include "DialogBox.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Savegame.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 
 /**
  * Creates a new shop item with the specified treasure and price.

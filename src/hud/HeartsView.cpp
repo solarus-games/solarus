@@ -15,10 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hud/HeartsView.h"
-#include "FileTools.h"
+#include "lowlevel/FileTools.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "Sound.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 

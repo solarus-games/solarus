@@ -16,8 +16,8 @@
  */
 #include "movements/PathMovement.h"
 #include "entities/MapEntity.h"
-#include "Geometry.h"
-#include "Random.h"
+#include "lowlevel/Geometry.h"
+#include "lowlevel/Random.h"
 
 /**
  * Creates a path movement object.

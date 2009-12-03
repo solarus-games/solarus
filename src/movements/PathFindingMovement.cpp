@@ -17,7 +17,7 @@
 #include "movements/PathFindingMovement.h"
 #include "movements/PathFinding.h"
 #include "entities/MapEntity.h"
-#include "Random.h"
+#include "lowlevel/Random.h"
 
 /**
  * Creates a chase movement.

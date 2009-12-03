@@ -20,7 +20,7 @@
 #include "SpriteAnimationSet.h"
 #include "ResourceManager.h"
 #include "lowlevel/Sound.h"
-#include "Random.h"
+#include "lowlevel/Random.h"
 
 /**
  * Constructor.

@@ -16,7 +16,7 @@
  */
 #include "movements/SmoothCollisionMovement.h"
 #include "ZSDX.h"
-#include "Geometry.h"
+#include "lowlevel/Geometry.h"
 
 /**
  * Constructor.

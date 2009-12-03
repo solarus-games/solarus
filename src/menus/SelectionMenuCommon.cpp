@@ -25,7 +25,7 @@
 #include "ResourceManager.h"
 #include "hud/HeartsView.h"
 #include "Savegame.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 
 /**
  * Creates the common part of all selection menu phases.

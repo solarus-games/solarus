@@ -16,7 +16,7 @@
  */
 #include "SDL_Config/SDL_config_lib.h"
 #include "VideoManager.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "StringResource.h"
 

@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/FairyMovement.h"
-#include "Random.h"
+#include "lowlevel/Random.h"
 
 /**
  * Creates a fairy movement.

@@ -25,7 +25,7 @@
 #include "Equipment.h"
 #include "DungeonEquipment.h"
 #include "Counter.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "Controls.h"
 #include "Savegame.h"
 #include "StringResource.h"

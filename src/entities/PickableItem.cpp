@@ -23,7 +23,7 @@
 #include "movements/FallingOnFloorMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
-#include "Random.h"
+#include "lowlevel/Random.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"

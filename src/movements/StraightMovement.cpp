@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/StraightMovement.h"
-#include "Geometry.h"
+#include "lowlevel/Geometry.h"
 
 /**
  * Creates a straight movement.

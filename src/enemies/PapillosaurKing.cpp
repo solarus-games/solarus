@@ -18,7 +18,7 @@
 #include "entities/MapEntities.h"
 #include "movements/RandomWalkMovement.h"
 #include "Map.h"
-#include "Random.h"
+#include "lowlevel/Random.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "ResourceManager.h"

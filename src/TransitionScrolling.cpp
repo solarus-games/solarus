@@ -18,7 +18,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 
 /**
  * Position where the previous map is blitted on both_maps_surface,

@@ -26,7 +26,7 @@
 
 const std::string Controls::direction_names[] = {"right", "up", "left", "down"};
 
-const Uint16 Controls::arrows_masks[4] = {
+const uint16_t Controls::arrows_masks[4] = {
   0x0001,
   0x0002,
   0x0004,
@@ -39,7 +39,7 @@ const Uint16 Controls::arrows_masks[4] = {
  * that the movement is stopped.
  *
  * For example:
- *   Uint16 arrows_pressed = right_mask | up_mask;
+ *   uint16_t arrows_pressed = right_mask | up_mask;
  *   int angle = directions[arrows_pressed];
  * Here the angle is 45°.
 */
@@ -148,7 +148,7 @@ bool Controls::is_key_pressed(GameKey game_key) {
  */
 int Controls::get_arrows_direction(void) {
 
-  Uint16 arrows_mask = 0x0000;
+  uint16_t arrows_mask = 0x0000;
   if (is_key_pressed(RIGHT)) {
     arrows_mask |= 0x0001;
   }

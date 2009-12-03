@@ -29,7 +29,7 @@ class Boomerang: public MapEntity {
 
   Hero *hero;              /**< the hero */
 
-  Uint32 next_sound_date;  /**< date when the boomerang sound will be played next time */
+  uint32_t next_sound_date;  /**< date when the boomerang sound will be played next time */
 
   bool has_to_go_back;     /**< true if the boomerang is about to go back */
   bool going_back;         /**< indicates that the boomerang is going back towards the hero */

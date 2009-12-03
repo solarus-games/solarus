@@ -28,7 +28,7 @@ class ScrollingTilePattern: public SimpleTilePattern {
   private:
 
     static int shift;              /**< number of pixels to shift, increased with the time */
-    static Uint32 next_shift_date; /**< when the shift variable is incremented */
+    static uint32_t next_shift_date; /**< when the shift variable is incremented */
 
   public:
 

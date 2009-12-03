@@ -187,7 +187,7 @@ void Tileset::unload(void) {
  * Returns the background color of this tileset.
  * @return the background color
  */
-Uint32 Tileset::get_background_color(void) {
+uint32_t Tileset::get_background_color(void) {
   return background_color;
 }
 

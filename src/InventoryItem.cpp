@@ -194,7 +194,7 @@ void InventoryItem::update(void) {
   Equipment *equipment = game->get_equipment();
 
   if (item_sound != NULL) {
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     if (now >= next_sound_date) {
       item_sound->play();
       next_sound_date = now + sound_delay;

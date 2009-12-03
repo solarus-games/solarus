@@ -24,7 +24,7 @@
  * once finished
  * @param with_collisions true to make the movement sensitive to obstacles
  */
-PixelMovement::PixelMovement(int nb_vectors, Uint32 delay,
+PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
 			     bool loop, bool with_collisions):
   CollisionMovement(with_collisions),
   nb_vectors(nb_vectors), delay(delay), loop(loop),
@@ -45,7 +45,7 @@ PixelMovement::PixelMovement(int nb_vectors, Uint32 delay,
  * @param with_collisions true to make the movement sensitive to obstacles
  */
 PixelMovement::PixelMovement(const SDL_Rect *translation_vectors,
-			     int nb_vectors, Uint32 delay, bool loop, bool with_collisions):
+			     int nb_vectors, uint32_t delay, bool loop, bool with_collisions):
   CollisionMovement(with_collisions),
   translation_vectors(translation_vectors), nb_vectors(nb_vectors),
   delay(delay), loop(loop), vector_index(0), finished(false) {
@@ -71,7 +71,7 @@ void PixelMovement::set_translation_vectors(const SDL_Rect *translation_vectors)
  * Changes the delay between two moves.
  * @param delay the new delay
  */
-void PixelMovement::set_delay(Uint32 delay) {
+void PixelMovement::set_delay(uint32_t delay) {
   this->delay = delay;
 }
 
@@ -84,7 +84,7 @@ void PixelMovement::update(void) {
     return;
   }
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   while (now >= get_next_move_date_x() && !finished) {
     make_next_move();

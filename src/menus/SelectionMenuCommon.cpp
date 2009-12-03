@@ -247,7 +247,7 @@ void SelectionMenuCommon::read_savegames(void) {
 void SelectionMenuCommon::update(void) {
 
   // move the clouds
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   while (now >= next_cloud_move) {
     
     for (int i = 0; i < 16; i++) {

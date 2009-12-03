@@ -227,13 +227,13 @@ void FileTools::read(std::istream &is, int &value) {
  * @param is an input stream
  * @param value the value read
  */
-void FileTools::read(std::istream &is, Uint32 &value) {
+void FileTools::read(std::istream &is, uint32_t &value) {
   int v;
   read(is, v);
   if (v < 0) {
     DIE("Positive integer value expected from input stream");
   }
-  value = (Uint32) v;
+  value = (uint32_t) v;
 }
 
 /**

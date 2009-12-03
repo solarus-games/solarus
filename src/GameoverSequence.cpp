@@ -75,7 +75,7 @@ GameoverSequence::~GameoverSequence(void) {
  */
 void GameoverSequence::update(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   hero_dead_sprite->update();
 
   switch (state) {

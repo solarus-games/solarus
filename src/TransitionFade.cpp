@@ -48,7 +48,7 @@ TransitionFade::~TransitionFade(void) {
  * The default delay is 20 ms.
  * @param delay the new delay in milliseconds
  */
-void TransitionFade::set_delay(Uint32 delay) {
+void TransitionFade::set_delay(uint32_t delay) {
   this->delay = delay;
 }
 
@@ -81,7 +81,7 @@ bool TransitionFade::is_over(void) {
  */
 void TransitionFade::display(SDL_Surface *surface) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   // update the transition effect if needed
   while (now >= next_frame_date && alpha != alpha_limit) {

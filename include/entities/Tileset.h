@@ -33,7 +33,7 @@ class Tileset {
   TilePattern *tile_patterns[1024]; /**< tile patterns in this tileset (the maximum id is 1024) */
   int nb_tile_patterns;             /**< number of tile patterns in the tileset */
   int max_tile_id;                  /**< current maximum id of a tile pattern in this tileset */
-  Uint32 background_color;          /**< background color of the tileset */
+  uint32_t background_color;          /**< background color of the tileset */
   SDL_Surface *tiles_image;         /**< image from which the tile patterns are extracted */
   SDL_Surface *entities_image;      /**< image from which the skin-dependent entities are extracted */
 
@@ -47,7 +47,7 @@ class Tileset {
   void load(void);
   void unload(void);
 
-  Uint32 get_background_color(void);
+  uint32_t get_background_color(void);
   bool is_loaded(void);
   SDL_Surface *get_tiles_image(void);
   SDL_Surface *get_entities_image(void);

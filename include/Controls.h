@@ -59,7 +59,7 @@ class Controls {
   std::map<SDLKey, GameKey> keyboard_mapping;    /**< associates each game key to the keyboard key that triggers it */
   std::map<std::string, GameKey> joypad_mapping; /**< associates each game key to the joypad action that triggers it*/
   bool keys_pressed[9];                          /**< memorizes the state of each game key */
-  static const Uint16 arrows_masks[4];           /**< bit mask associated to each direction key: this allows to
+  static const uint16_t arrows_masks[4];           /**< bit mask associated to each direction key: this allows to
                                                   * store any combination of the 4 directions into a simple integer */
 
   bool customizing;                              /**< indicates that the next keyboard event will be considered as the new mapping for a game key */

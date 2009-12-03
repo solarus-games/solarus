@@ -39,7 +39,7 @@ class GameoverSequence {
   int hero_dead_y;                /**< y position of the hero dead sprite on the screen */
 
   Sprite *fade_sprite;            /**< sprite of the fade in / fade out effect */
-  Uint32 red_screen_color;        /**< exact color of the red screen */
+  uint32_t red_screen_color;        /**< exact color of the red screen */
 
   Sprite *fairy_sprite;           /**< sprite of the fairy (as rescuing fairy or cursor for the menu) */
   int fairy_x;                    /**< x position of the fairy on the screen */
@@ -61,7 +61,7 @@ class GameoverSequence {
    };
 
   State state;            /**< current state of the gameover sequence */
-  Uint32 next_state_date; /**< date when moving from a state to another one */
+  uint32_t next_state_date; /**< date when moving from a state to another one */
 
  public:
 

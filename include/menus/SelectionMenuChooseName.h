@@ -38,7 +38,7 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
 
   TextSurface *text_new_player_name;
 
-  Uint32 next_key_date; /**< date when a key other than the arrows can be pressed again */
+  uint32_t next_key_date; /**< date when a key other than the arrows can be pressed again */
 
   // player name
   bool select_letter(void);

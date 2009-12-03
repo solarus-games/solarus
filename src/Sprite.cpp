@@ -107,7 +107,7 @@ SDL_Rect& Sprite::get_origin(void) {
  * is_animation_finished() returns always false.
  * @return the delay between two frames for the current animation (in miliseconds)
  */
-Uint32 Sprite::get_frame_delay(void) {
+uint32_t Sprite::get_frame_delay(void) {
   return frame_delay;  
 }
 
@@ -117,7 +117,7 @@ Uint32 Sprite::get_frame_delay(void) {
  * animation will continue to be displayed.
  * @param frame_delay the delay between two frames for the current animation (in miliseconds)
  */
-void Sprite::set_frame_delay(Uint32 frame_delay) {
+void Sprite::set_frame_delay(uint32_t frame_delay) {
   this->frame_delay = frame_delay;  
 }
 
@@ -271,7 +271,7 @@ void Sprite::set_suspended(bool suspended) {
 
     // compte next_frame_date if the animation is being resumed
     if (!suspended) {
-      Uint32 now = SDL_GetTicks();
+      uint32_t now = SDL_GetTicks();
       next_frame_date = now + get_frame_delay();
       blink_next_change_date = now;
     }
@@ -312,7 +312,7 @@ void Sprite::set_paused(bool paused) {
  
     // compte next_frame_date if the animation is being resumed
     if (!paused) {
-      Uint32 now = SDL_GetTicks();
+      uint32_t now = SDL_GetTicks();
       next_frame_date = now + get_frame_delay();
       blink_next_change_date = now;
     }
@@ -364,7 +364,7 @@ bool Sprite::is_blinking(void) {
  * @param blink_delay blink delay of the sprite in milliseconds,
  * or zero to stop blinking.
  */
-void Sprite::set_blinking(Uint32 blink_delay) {
+void Sprite::set_blinking(uint32_t blink_delay) {
   this->blink_delay = blink_delay;
 
   if (blink_delay > 0) {
@@ -443,7 +443,7 @@ void Sprite::update(void) {
   }
 
   frame_changed = false;
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   // update the current frame
   int next_frame;

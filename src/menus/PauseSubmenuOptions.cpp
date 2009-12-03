@@ -17,16 +17,16 @@
 #include "menus/PauseSubmenuOptions.h"
 #include "menus/PauseMenu.h"
 #include "StringResource.h"
-#include "lowlevel/TextSurface.h"
 #include "Controls.h"
 #include "Game.h"
-#include "lowlevel/Color.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "lowlevel/Sound.h"
-#include "VideoManager.h"
+#include "lowlevel/VideoManager.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/Color.h"
 
 /**
  * Constructor.
@@ -232,7 +232,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
 
   ok_sound->play();
   if (cursor_position == 0) {
-    zsdx->get_video_manager()->switch_video_mode();
+    VideoManager::get_instance()->switch_video_mode();
   }
   else {
     set_caption_text(caption_strings[2]);
@@ -254,7 +254,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
  */
 void PauseSubmenuOptions::update(void) {
 
-  VideoManager::VideoMode video_mode = zsdx->get_video_manager()->get_video_mode();
+  VideoManager::VideoMode video_mode = VideoManager::get_instance()->get_video_mode();
   video_mode_text->set_text(video_mode_strings[video_mode]);
 
   cursor_sprite->update();

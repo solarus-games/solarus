@@ -341,7 +341,7 @@ void PickableItem::initialize_sprites(void) {
   // set the origin point and the size of the entity
   set_rectangle_from_sprite();
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   if (falling_height != FALLING_NONE) {
     allow_pick_date = now + 700;  // the player can take the item after 0.7s
@@ -524,7 +524,7 @@ void PickableItem::give_item_to_player(void) {
  */
 void PickableItem::set_blinking(bool blinking) {
 
-  Uint32 blink_delay = blinking ? 75 : 0;
+  uint32_t blink_delay = blinking ? 75 : 0;
 
   get_sprite()->set_blinking(blink_delay);
   shadow_sprite->set_blinking(blink_delay);
@@ -544,7 +544,7 @@ void PickableItem::set_suspended(bool suspended) {
   if (!suspended) {
     // suspend the timers
 
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
 
     if (!can_be_picked) {
       allow_pick_date = now + (allow_pick_date - when_suspended);
@@ -584,7 +584,7 @@ void PickableItem::update(void) {
   if (!is_suspended()) {
 
     // check the timer
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
 
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {

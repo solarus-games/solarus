@@ -31,7 +31,7 @@
  * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
 SpriteAnimation::SpriteAnimation(const std::string &image_file_name, int nb_directions,
-    SpriteAnimationDirection **directions, Uint32 frame_delay, int loop_on_frame):
+    SpriteAnimationDirection **directions, uint32_t frame_delay, int loop_on_frame):
 
   src_image(NULL), src_image_loaded(false), nb_directions(nb_directions), directions(directions),
   frame_delay(frame_delay), loop_on_frame(loop_on_frame) {
@@ -89,7 +89,7 @@ SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) {
  * Returns the delay between two frames for this sprite animation.
  * @return the frame delay in milliseconds
  */
-Uint32 SpriteAnimation::get_frame_delay(void) {
+uint32_t SpriteAnimation::get_frame_delay(void) {
   return frame_delay;
 }
 

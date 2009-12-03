@@ -50,11 +50,11 @@ class Message {
   
   unsigned int line_index;     // line currently displayed (0 to 2)
   unsigned int char_index;     // index of the next character to show
-  Uint32 delay;
-  Uint32 next_char_date;
+  uint32_t delay;
+  uint32_t next_char_date;
   bool show_all;
 
-  Uint32 next_sound_date;
+  uint32_t next_sound_date;
 
   void update_char_delay(void);
   void add_character(void);

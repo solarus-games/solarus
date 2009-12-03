@@ -27,7 +27,7 @@
 /**
  * Delay between two chars, depending on the dialog speed.
  */
-static const Uint32 char_delays[3] = {
+static const uint32_t char_delays[3] = {
   100, // slow
   60,  // medium
   30   // fast (default)
@@ -279,7 +279,7 @@ void Message::add_character(void) {
       next_char_date += delay;
     }
 
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     if (now >= next_sound_date && dialog_box->is_letter_sound_enabled()) {
       ResourceManager::get_sound("message_letter")->play();
       next_sound_date = now + 100;
@@ -301,7 +301,7 @@ void Message::set_variable(const std::string &value) {
  */
 void Message::update(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   while (!is_finished() && now >= next_char_date) {
 
     // check the end of the current line

@@ -32,8 +32,8 @@ class Savegame {
    */
   typedef struct SavedData {
     char strings[64][64];   /**< 64 NULL-terminated strings of 64 characters each (4 Ko) */
-    Uint32 integers[2048];  /**< 2048 integers (8 Ko) */
-    Uint32 booleans[1024];  /**< 32768 boolean values (4 Ko) */
+    uint32_t integers[2048];  /**< 2048 integers (8 Ko) */
+    uint32_t booleans[1024];  /**< 32768 boolean values (4 Ko) */
 
   } SavedData;
 
@@ -239,8 +239,8 @@ class Savegame {
   const std::string get_string(int index);
   void set_string(int index, const std::string &value);
 
-  Uint32 get_integer(int index);
-  void set_integer(int index, Uint32 value);
+  uint32_t get_integer(int index);
+  void set_integer(int index, uint32_t value);
   
   bool get_boolean(int index);
   void set_boolean(int index, bool value);

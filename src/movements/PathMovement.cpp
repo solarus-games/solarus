@@ -180,7 +180,7 @@ void PathMovement::start_next_move(void) {
 	}
       }
 
-      Uint32 now = SDL_GetTicks();
+      uint32_t now = SDL_GetTicks();
       if (now >= stop_snapping_date) {
         // we could not snap the entity after the timeout, so we just go back to the opposite direction:
 	// this is possible when there is collisions with 8*8 squares where only a part is an obstacle

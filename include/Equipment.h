@@ -34,8 +34,8 @@ class Equipment {
   Savegame *savegame;
 
   // magic bar decrease handling
-  Uint32 magic_decrease_delay;
-  Uint32 next_magic_decrease_date;
+  uint32_t magic_decrease_delay;
+  uint32_t next_magic_decrease_date;
 
   // giving some bottle content to the player
   bool giving_fairy;
@@ -99,7 +99,7 @@ class Equipment {
   bool needs_magic(void);
 
   bool is_magic_decreasing(void);
-  void start_removing_magic(Uint32 delay);
+  void start_removing_magic(uint32_t delay);
   void stop_removing_magic(void);
 
   // bombs

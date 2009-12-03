@@ -30,18 +30,6 @@ const double Geometry::THREE_PI_OVER_2 = 3 * PI_OVER_2;
 const double Geometry::SQRT_2 = 1.41421356237309504880;
 
 /**
- * Returns whether the specified point is inside a rectangle.
- * @param rectangle a rectangle
- * @param x x coordinate of the point
- * @param y y coordinate of the point
- * @return true if the point is in this rectangle
- */
-bool Geometry::is_point_in(const SDL_Rect &rectangle, int x, int y) {
-  return x >= rectangle.x && x < rectangle.x + rectangle.w
-    && y >= rectangle.y && y < rectangle.y + rectangle.h;
-}
-
-/**
  * Returns the distance between two points.
  * @param x1 x coordinate of the first point
  * @param y1 y coordinate of the first point
@@ -83,30 +71,4 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
 
   return angle;
 }
-
-/**
- * Returns whether or not a rectangle overlaps another one.
- * @param rect1 the first rectangle
- * @param rect2 the second rectangle
- * @return true if the two rectangles overlap
- */
-bool Geometry::overlaps(const SDL_Rect &rect1, const SDL_Rect &rect2) {
-
-  int x1 = rect1.x;
-  int x2 = x1 + rect1.w;
-  int x3 = rect2.x;
-  int x4 = x3 + rect2.w;
-
-  bool overlap_x = (x3 < x2 && x1 < x4);
-
-  int y1 = rect1.y;
-  int y2 = y1 + rect1.h;
-  int y3 = rect2.y;
-  int y4 = y3 + rect2.h;
-
-  bool overlap_y = (y3 < y2 && y1 < y4);
-
-  return overlap_x && overlap_y;
-}
-
 

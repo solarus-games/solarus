@@ -30,7 +30,7 @@ class FairyMovement: public Movement {
   /**
    * Date of the next direction change
    */
-  Uint32 next_direction_change;
+  uint32_t next_direction_change;
 
   void set_random_direction(void);
 

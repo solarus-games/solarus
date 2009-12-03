@@ -27,8 +27,8 @@ class PapillosaurKing: public Enemy {
 
   private:
 
-    Uint32 next_egg_phase_date;  /**< date of the next egg creation phase */
-    Uint32 next_egg_date;        /**< during an egg phase, date when a minillosaur egg is created */
+    uint32_t next_egg_phase_date;  /**< date of the next egg creation phase */
+    uint32_t next_egg_date;        /**< during an egg phase, date when a minillosaur egg is created */
     int nb_eggs_to_create;       /**< number of eggs to create in the current egg phase */
 
   protected:

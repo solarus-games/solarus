@@ -113,16 +113,16 @@ class Enemy: public Detector {
   // enemy state
   bool enabled;                       /**< indicates that the enemy is enabled */
   bool being_hurt;                    /**< indicates that the enemy is being hurt */
-  Uint32 stop_hurt_date;              /**< date when the enemy stops being hurt */
+  uint32_t stop_hurt_date;              /**< date when the enemy stops being hurt */
   Movement *normal_movement;          /**< backup of the enemy's movement, which is replaced by
 				       * a straight movement while it is hurt */
   bool invulnerable;                  /**< indicates that the enemy cannot be hurt for now */
-  Uint32 vulnerable_again_date;       /**< date when the enemy can be hurt again */
+  uint32_t vulnerable_again_date;       /**< date when the enemy can be hurt again */
   bool can_attack;                    /**< indicates that the enemy can currently attack the hero */
-  Uint32 can_attack_again_date;       /**< date when the enemy can attack again */
+  uint32_t can_attack_again_date;       /**< date when the enemy can attack again */
   bool immobilized;                   /**< indicates that the enemy is currently immobilized */
-  Uint32 start_shaking_date;          /**< date when the enemy shakes */ 
-  Uint32 end_shaking_date;            /**< date when the enemy stops shaking and walks again */ 
+  uint32_t start_shaking_date;          /**< date when the enemy shakes */ 
+  uint32_t end_shaking_date;            /**< date when the enemy stops shaking and walks again */ 
 
   // pickable item
   PickableItem::Subtype pickable_item_subtype;  /**< subtype of pickable item that appears when this enemy gets killed */
@@ -131,7 +131,7 @@ class Enemy: public Detector {
   // boss or mini-boss
   bool exploding;                     /**< indicates that the boss is dying and some explosions are triggered on him */
   int nb_explosions;                  /**< number of explosions already played */
-  Uint32 next_explosion_date;         /**< date of the next explosion */
+  uint32_t next_explosion_date;         /**< date of the next explosion */
 
  protected:
 

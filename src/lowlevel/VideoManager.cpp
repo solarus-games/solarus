@@ -14,13 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "SDL_Config/SDL_config_lib.h"
-#include "VideoManager.h"
+#include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
+#include "SDL_Config/SDL_config_lib.h" // ini parsing
 #include "StringResource.h"
 
-SDL_Rect VideoManager::video_mode_sizes[] = {
+VideoManager *VideoManager::instance = NULL;
+
+SDL_Rect VideoManager::default_mode_sizes[] = {
   {0, 0, 640, 480},         // WINDOWED_STRETCHED
   {0, 0, 640, 480},         // WINDOWED_SCALE2X
   {0, 0, 320, 240},         // WINDOWED_NORMAL
@@ -31,6 +33,28 @@ SDL_Rect VideoManager::video_mode_sizes[] = {
   {0, 0, 640, 480},         // FULLSCREEN_CENTERED
   {0, 0, 640, 400},         // FULLSCREEN_CENTERED_WIDE
 };
+
+/**
+ * Initializes the video system and creates the window.
+ */
+void VideoManager::initialize(void) {
+  instance = new VideoManager();
+}
+
+/**
+ * Closes the video system.
+ */
+void VideoManager::quit(void) {
+  delete instance;
+}
+
+/**
+ * Returns the video manager.
+ * @return the only video manager
+ */
+VideoManager * VideoManager::get_instance(void) {
+  return instance;
+}
 
 /**
  * Constructor.
@@ -44,20 +68,25 @@ VideoManager::VideoManager(void) {
   putenv((char*) "SDL_NOMOUSE");
 
   // detect what widescreen resolution is supported (768*480 or 720*480)
+  
+  for (int i = 0; i < NB_MODES; i++) {
+    mode_sizes[i] = default_mode_sizes[i];
+  }
+  
   int flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN;
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
-    video_mode_sizes[FULLSCREEN_WIDE].w = 768;
-    video_mode_sizes[FULLSCREEN_WIDE].h = 480;
-    video_mode_sizes[FULLSCREEN_SCALE2X_WIDE].w = 768;
-    video_mode_sizes[FULLSCREEN_SCALE2X_WIDE].h = 480;
+    mode_sizes[FULLSCREEN_WIDE].w = 768;
+    mode_sizes[FULLSCREEN_WIDE].h = 480;
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE].w = 768;
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE].h = 480;
     dst_position_wide.x = 64;
     dst_position_wide.y = 0;
   }
   else if (SDL_VideoModeOK(720, 480, 32, flags)) {
-    video_mode_sizes[FULLSCREEN_WIDE].w = 720;
-    video_mode_sizes[FULLSCREEN_WIDE].h = 480;
-    video_mode_sizes[FULLSCREEN_SCALE2X_WIDE].w = 720;
-    video_mode_sizes[FULLSCREEN_SCALE2X_WIDE].h = 480;
+    mode_sizes[FULLSCREEN_WIDE].w = 720;
+    mode_sizes[FULLSCREEN_WIDE].h = 480;
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE].w = 720;
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE].h = 480;
     dst_position_wide.x = 40;
     dst_position_wide.y = 0;
   }
@@ -69,6 +98,8 @@ VideoManager::VideoManager(void) {
     rects++;
   }
   */
+
+  set_initial_video_mode();
 }
 
 /**
@@ -85,7 +116,7 @@ VideoManager::~VideoManager(void) {
  */
 bool VideoManager::is_mode_supported(VideoMode mode) {
 
-  const SDL_Rect *size = &video_mode_sizes[mode];
+  const SDL_Rect *size = &mode_sizes[mode];
 
   if (size->w == 0) {
     return false;
@@ -173,7 +204,7 @@ void VideoManager::set_default_video_mode(void) {
  */
 void VideoManager::set_video_mode(VideoMode mode) {
 
-  const SDL_Rect *size = &video_mode_sizes[mode];
+  const SDL_Rect *size = &mode_sizes[mode];
 
   int flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
   int show_cursor;
@@ -302,8 +333,8 @@ void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_sur
   SDL_LockSurface(src_surface);
   SDL_LockSurface(dst_surface);
 
-  Uint32 *src = (Uint32*) src_surface->pixels;
-  Uint32 *dst = (Uint32*) dst_surface->pixels;
+  uint32_t *src = (uint32_t*) src_surface->pixels;
+  uint32_t *dst = (uint32_t*) dst_surface->pixels;
 
   int p = offset;
   for (int i = 0; i < 240; i++) {
@@ -333,8 +364,8 @@ void VideoManager::blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surfa
   SDL_LockSurface(src_surface);
   SDL_LockSurface(dst_surface);
 
-  Uint32 *src = (Uint32*) src_surface->pixels;
-  Uint32 *dst = (Uint32*) dst_surface->pixels;
+  uint32_t *src = (uint32_t*) src_surface->pixels;
+  uint32_t *dst = (uint32_t*) dst_surface->pixels;
 
   int a, b, c, d, e = 0, f, g, h, i;
   int e1 = offset, e2, e3, e4;

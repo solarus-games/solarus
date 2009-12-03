@@ -29,7 +29,7 @@ class TransitionScrolling: public Transition {
 
   SDL_Surface *both_maps_surface;      /**< an intermediate surface where the two map surfaces will be blitted */
   int scrolling_direction;             /**< direction of the scrolling (0 to 3) */
-  Uint32 next_scroll_date;             /**< date of the next scrolling step */
+  uint32_t next_scroll_date;             /**< date of the next scrolling step */
 
   int dx;                              /**< x change for each scrolling step */
   int dy;                              /**< y change for each scrolling step */

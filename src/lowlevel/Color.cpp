@@ -20,9 +20,9 @@
  */
 #include "lowlevel/Color.h"
 
-Uint32 Color::black;
-Uint32 Color::white;
-Uint32 Color::red;
+uint32_t Color::black;
+uint32_t Color::white;
+uint32_t Color::red;
 
 SDL_PixelFormat * Color::format;
 
@@ -38,11 +38,19 @@ void Color::initialize(void) {
 }
 
 /**
+ * Uninitializes the color system.
+ */
+void Color::quit(void) {
+  // nothing to do
+}
+
+/**
  * Returns a color given its RGB values.
  * @param r the red component (from 0 to 255)
  * @param g the green component (from 0 to 255)
  * @param b the blue component (from 0 to 255)
  */
-Uint32 Color::create(int r, int g, int b) {
+uint32_t Color::create(int r, int g, int b) {
   return SDL_MapRGB(format, r, g, b);
 }
+

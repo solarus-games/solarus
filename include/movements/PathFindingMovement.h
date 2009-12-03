@@ -30,7 +30,7 @@ class PathFindingMovement: public PathMovement {
  private:
 
   MapEntity *target;              /**< the entity targeted by this movement (usually the hero) */
-  Uint32 next_recomputation_date;
+  uint32_t next_recomputation_date;
 
  protected:
 

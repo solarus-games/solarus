@@ -41,7 +41,7 @@ SpcDecoder::~SpcDecoder(void) {
  * @param sound_data the memory area to read
  * @param sound_size size of the memory area in bytes
  */
-void SpcDecoder::load(Sint16 *sound_data, size_t sound_size) {
+void SpcDecoder::load(int16_t *sound_data, size_t sound_size) {
 
   // load the SPC data into the SPC library
   spc_load_spc(snes_spc_manager, (short int*) sound_data, sound_size);
@@ -55,7 +55,7 @@ void SpcDecoder::load(Sint16 *sound_data, size_t sound_size) {
  * @param decoded_data pointer to where you want the decoded data to be wrote
  * @param nb_samples number of samples to write
  */
-void SpcDecoder::decode(Sint16 *decoded_data, int nb_samples) {
+void SpcDecoder::decode(int16_t *decoded_data, int nb_samples) {
 
   // decode from the SPC data the specified number of PCM samples
 

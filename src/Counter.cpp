@@ -130,7 +130,7 @@ void Counter::rebuild_with_value(unsigned int value) {
   for (int i = nb_digits - 1; i >= 0; i--) {
 
     // compute each digit
-    Uint8 digit = value % 10;
+    uint8_t digit = value % 10;
     value /= 10;
 
     if (value != 0 || digit != 0 || fill_with_zeros || right_digit) {

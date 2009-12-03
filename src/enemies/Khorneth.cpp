@@ -233,7 +233,7 @@ void Khorneth::update(void) {
   
   if (is_in_normal_state()) {
 
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
 
     // stop animation hurt of the blades
     if (is_left_blade_being_hurt() && now >= end_left_blade_hurt_date) {

@@ -35,8 +35,6 @@ class Geometry {
     static const double THREE_PI_OVER_2;
     static const double SQRT_2;
 
-    static bool is_point_in(const SDL_Rect &rectangle, int x, int y);
-    static bool overlaps(const SDL_Rect &rect1, const SDL_Rect &rect2);
     static double get_distance(int x1, int y1, int x2, int y2);
     static double get_angle(int x1, int y1, int x2, int y2);
 };

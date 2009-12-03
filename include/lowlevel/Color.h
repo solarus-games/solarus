@@ -18,6 +18,9 @@
 #define ZSDX_COLOR_H
 
 #include "Common.h"
+#include "SDL/SDL.h"
+
+// TODO make a real class to encapsulate SDL colors
 
 /**
  * This module defines a type for the colors and provides some
@@ -31,22 +34,15 @@ class Color {
 
  public:
 
-  static Uint32 black;
-  static Uint32 white;
-  static Uint32 red;
+  static uint32_t black;
+  static uint32_t white;
+  static uint32_t red;
 
-  /**
-   * Initializes the global variables of colors.
-   */
   static void initialize(void);
+  static void quit(void);
 
-  /**
-   * Returns a color given its RGB values.
-   * @param r the red component (from 0 to 255)
-   * @param g the green component (from 0 to 255)
-   * @param b the blue component (from 0 to 255)
-   */
-  static Uint32 create(int r, int g, int b);
+  static uint32_t create(int r, int g, int b);
 };
 
 #endif
+

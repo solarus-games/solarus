@@ -330,7 +330,7 @@ int HeroSprites::get_animation_direction(void) {
  * @param direction_mask the OR-combination of arrows pressed
  * @return the direction of the sprites corresponding to these arrows (0 to 3)
  */
-int HeroSprites::get_animation_direction(Uint32 direction_mask) {
+int HeroSprites::get_animation_direction(uint32_t direction_mask) {
   return animation_directions[direction_mask];
 }
 
@@ -486,7 +486,7 @@ void HeroSprites::set_suspended(bool suspended) {
   }
 
   // timer
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   if (suspended) {
     when_suspended = now;
   }

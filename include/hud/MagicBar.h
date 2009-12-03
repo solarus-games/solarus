@@ -32,7 +32,7 @@ class MagicBar: public HudElement {
   
   // static image representing the current level of the magic bar
   int current_magic_displayed;
-  Uint32 next_magic_update_date;
+  uint32_t next_magic_update_date;
   bool is_magic_decreasing;
   SDL_Surface *img_magic_bar;
   Sound *sound_magic_bar;

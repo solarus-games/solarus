@@ -39,8 +39,8 @@ class HeartsView: public HudElement {
   int nb_max_hearts_displayed;
   int nb_current_hearts_displayed;
   
-  Uint32 next_heart_update_date;
-  Uint32 next_danger_sound_date;
+  uint32_t next_heart_update_date;
+  uint32_t next_danger_sound_date;
   
  public:
 

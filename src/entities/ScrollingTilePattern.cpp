@@ -17,7 +17,7 @@
 #include "entities/ScrollingTilePattern.h"
 
 int ScrollingTilePattern::shift = 0;
-Uint32 ScrollingTilePattern::next_shift_date = 0;
+uint32_t ScrollingTilePattern::next_shift_date = 0;
 
 /**
  * Creates a tile pattern with scrolling.
@@ -45,7 +45,7 @@ ScrollingTilePattern::~ScrollingTilePattern(void) {
  */
 void ScrollingTilePattern::update(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   while (now >= next_shift_date) {
     shift++;

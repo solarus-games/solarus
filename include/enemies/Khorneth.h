@@ -29,10 +29,10 @@ class Khorneth: public Enemy {
 
     // blades
     int left_blade_life;
-    Uint32 end_left_blade_hurt_date;
+    uint32_t end_left_blade_hurt_date;
     int right_blade_life;
-    Uint32 end_right_blade_hurt_date;
-    Uint32 next_blade_attack_date;
+    uint32_t end_right_blade_hurt_date;
+    uint32_t next_blade_attack_date;
     bool blade_attack;
     bool blades_destroyed;
 

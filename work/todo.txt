@@ -138,8 +138,6 @@ SDL_Event
 SDL_PollEvent
 SDL_Delay
 
-Uint32...
-
 --------------
 Mode release :
 --------------

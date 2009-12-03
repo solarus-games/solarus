@@ -16,7 +16,7 @@
  */
 #include "enemies/SimpleGreenSoldier.h"
 #include "movements/StraightMovement.h"
-#include "Random.h"
+#include "lowlevel/Random.h"
 #include "Sprite.h"
 
 /**

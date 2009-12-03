@@ -20,7 +20,7 @@
 #include "lowlevel/TextSurface.h"
 #include "Controls.h"
 #include "Game.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "KeysEffect.h"

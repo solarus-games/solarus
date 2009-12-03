@@ -23,7 +23,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "PixelBits.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 
 SDL_Surface *Sprite::alpha_surface = NULL;
 

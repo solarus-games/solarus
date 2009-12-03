@@ -19,7 +19,7 @@
 #include "Game.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "StringResource.h"

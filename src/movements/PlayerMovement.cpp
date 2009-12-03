@@ -20,7 +20,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Controls.h"
-#include "Geometry.h"
+#include "lowlevel/Geometry.h"
 
 // TODO use the code from Controls
 

@@ -16,15 +16,15 @@
  */
 #include "ZSDX.h"
 #include "lowlevel/FileTools.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/Random.h"
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
-#include "lowlevel/TextSurface.h"
 #include "StringResource.h"
-#include "Random.h"
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenuSelectFile.h"
 

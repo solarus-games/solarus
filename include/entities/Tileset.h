@@ -18,7 +18,7 @@
 #define ZSDX_TILESET_H
 
 #include "Common.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 
 /**
  * A tileset is an image with a set of elements (tile patterns)

@@ -24,7 +24,7 @@
 #include "ResourceManager.h"
 #include "Sprite.h"
 #include "lowlevel/Sound.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
 #include "StringResource.h"
 

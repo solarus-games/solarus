@@ -16,7 +16,7 @@
  */
 #include "movements/TargetMovement.h"
 #include "entities/MapEntity.h"
-#include "Geometry.h"
+#include "lowlevel/Geometry.h"
 
 /**
  * Creates a new target movement towards a fixed point.

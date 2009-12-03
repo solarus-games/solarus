@@ -21,7 +21,7 @@
 #include "MapScript.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "hud/HUD.h"
 #include "lowlevel/Sound.h"
 #include "KeysEffect.h"

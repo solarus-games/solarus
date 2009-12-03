@@ -16,7 +16,7 @@
  */
 #include "movements/Movement.h"
 #include "entities/MapEntity.h"
-#include "Geometry.h"
+#include "lowlevel/Geometry.h"
 #include <cmath>
 
 /**

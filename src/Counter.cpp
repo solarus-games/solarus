@@ -16,8 +16,7 @@
  */
 #include "Counter.h"
 #include "ResourceManager.h"
-#include "Color.h"
-#include "Counter.h"
+#include "lowlevel/Color.h"
 
 /**
  * Constructor.

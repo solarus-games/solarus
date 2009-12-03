@@ -40,7 +40,7 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
-#include "Geometry.h"
+#include "lowlevel/Geometry.h"
 
 const MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Tile::parse,

@@ -16,7 +16,7 @@
  */
 #include "enemies/Bubble.h"
 #include "movements/CollisionMovement.h"
-#include "Random.h"
+#include "lowlevel/Random.h"
 #include "Sprite.h"
 
 /**

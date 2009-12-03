@@ -47,9 +47,17 @@ class VideoManager;
 class Screen;
 class ResourceManager;
 class KeysEffect;
-class FileTools;
+
+// low level
+class System;
 class Random;
 class Geometry;
+class FileTools;
+class Sound;
+class Music;
+class SpcDecoder;
+class Color;
+class TextSurface;
 
 // menus
 class TitleScreen;
@@ -69,10 +77,10 @@ class StringResource;
 
 // game
 class Game;
+class Controls;
 class Savegame;
 class Equipment;
 class DungeonEquipment;
-class Controls;
 class DebugKeys;
 class Dungeon;
 class Treasure;
@@ -85,15 +93,6 @@ class Timer;
 class GameoverSequence;
 class Camera;
 class InventoryItem;
-
-// audio
-class Sound;
-class Music;
-class SpcDecoder;
-
-// graphics
-class Color;
-class TextSurface;
 
 // HUD
 class HUD;

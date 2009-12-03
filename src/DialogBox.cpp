@@ -23,7 +23,7 @@
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "lowlevel/Sound.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "MapScript.h"
 
 DialogBox::Style DialogBox::style = DialogBox::WITH_FRAME;

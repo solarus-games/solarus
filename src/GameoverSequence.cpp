@@ -19,7 +19,7 @@
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "Sprite.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "Map.h"
 #include "Equipment.h"
 #include "Treasure.h"

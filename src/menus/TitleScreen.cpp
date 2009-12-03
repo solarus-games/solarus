@@ -20,7 +20,7 @@
 #include "lowlevel/Sound.h"
 #include "ResourceManager.h"
 #include "lowlevel/FileTools.h"
-#include "Color.h"
+#include "lowlevel/Color.h"
 #include "TransitionFade.h"
 #include "lowlevel/TextSurface.h"
 #include "StringResource.h"

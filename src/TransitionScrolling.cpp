@@ -139,7 +139,7 @@ void TransitionScrolling::display(SDL_Surface *surface) {
   SDL_BlitSurface(surface, NULL, both_maps_surface, &current_map_dst_position);
 
   // blit both surfaces
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   while (now >= next_scroll_date && !is_over()) {
     scroll();
     next_scroll_date += 10;

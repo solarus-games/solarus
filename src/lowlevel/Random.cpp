@@ -15,12 +15,20 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Random.h"
+#include <ctime>
 
 /**
  * Initializes the random number generator.
  */
 void Random::initialize() {
   srand((int) time(NULL));
+}
+
+/**
+ * Uninitializes the random number generator.
+ */
+void Random::quit(void) {
+  // nothing to do
 }
 
 /**
@@ -34,7 +42,7 @@ int Random::get_number(unsigned int x) {
 
 /**
  * Returns a random integer number in [x, y[ with a uniform distribution.
- * This is equivalent to: x + get_number(y)
+ * This is equivalent to: x + Random::get_number(y)
  * @param x the inferior bound
  * @param y the superior bound
  * @return a random integer number in [x, y[

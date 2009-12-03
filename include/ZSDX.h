@@ -18,7 +18,6 @@
 #define ZSDX_ZSDX_H
 
 #include "Common.h"
-#include "VideoManager.h"
 
 /**
  * Only instance.
@@ -31,35 +30,31 @@ extern ZSDX *zsdx;
  */
 class ZSDX {
 
- private:
- 
-  Screen *current_screen;      /**< the screen currently displayed (the title screen,
-				* the selection menu, the game, etc. */
-  SDL_Surface *root_surface;   /**< the surface where everything is drawn (always 320*240) */
-  VideoManager *video_manager;
-  bool exiting;
+  private:
 
-  void launch_adventure_mode(Savegame *savegame);
-  void launch_solarus_dreams_mode(Savegame *savegame);
+    Screen *current_screen;      /**< the screen currently displayed (the title screen,
+				  * the selection menu, the game, etc. */
+    SDL_Surface *root_surface;   /**< the surface where everything is drawn (always 320*240) */
+    bool exiting;
 
-  void handle_event(const SDL_Event &event);
-  void display(void);
-  void update(void);
+    void launch_adventure_mode(Savegame *savegame);
 
- public:
+    void handle_event(const SDL_Event &event);
+    void display(void);
+    void update(void);
 
-  Game *game;
+  public:
 
-  ZSDX(int argc, char **argv);
-  ~ZSDX(void);
+    Game *game;
 
-  void main(void);
+    ZSDX(int argc, char **argv);
+    ~ZSDX(void);
 
-  VideoManager *get_video_manager(void);
+    void main(void);
 
-  void set_game(Game *game);
-  void set_exiting(void);
-  bool is_exiting(void);
+    void set_game(Game *game);
+    void set_exiting(void);
+    bool is_exiting(void);
 };
 
 #endif

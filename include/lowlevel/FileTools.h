@@ -45,7 +45,7 @@ class FileTools {
     static void data_file_delete(const std::string &file_name);
 
     static void read(std::istream &is, int &value);
-    static void read(std::istream &is, Uint32 &value);
+    static void read(std::istream &is, uint32_t &value);
     static void read(std::istream &is, std::string &value);
 };
 

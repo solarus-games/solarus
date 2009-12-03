@@ -266,7 +266,7 @@ void CarriedItem::update(void) {
   // when the item has finished flying, destroy it
   else if (explosion_date != 0 && !is_breaking) {
     
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     
     if (now >= explosion_date) {
       break_item();
@@ -290,7 +290,7 @@ void CarriedItem::update(void) {
       break_item();
     }
     else {
-      Uint32 now = SDL_GetTicks();
+      uint32_t now = SDL_GetTicks();
       while (now >= next_down_date) {
 	next_down_date += 40;
 	item_height -= y_increment;

@@ -28,7 +28,7 @@
  * Bit masks associated to each arrow on the keyboard or the joypad.
  * A combination of arrows is stored in a simple integer.
  */
-const Uint16 PlayerMovement::direction_masks[4] = {
+const uint16_t PlayerMovement::direction_masks[4] = {
   0x0001,
   0x0002,
   0x0004,
@@ -41,7 +41,7 @@ const Uint16 PlayerMovement::direction_masks[4] = {
  * that the movement is stopped.
  *
  * For example:
- *   Uint16 arrows_pressed = right_mask | up_mask;
+ *   uint16_t arrows_pressed = right_mask | up_mask;
  *   int angle = directions[arrows_pressed];
  * Here the angle is 45°.
  */
@@ -245,7 +245,7 @@ void PlayerMovement::remove_direction(int direction) {
  * pressed by the player.
  * @return the direction mask
  */
-Uint16 PlayerMovement::get_direction_mask(void) {
+uint16_t PlayerMovement::get_direction_mask(void) {
   return direction_mask;
 }
 
@@ -255,7 +255,7 @@ Uint16 PlayerMovement::get_direction_mask(void) {
  * pressed by the player.
  * @param direction_mask the direction mask to add
  */
-void PlayerMovement::add_direction_mask(Uint16 direction_mask) {
+void PlayerMovement::add_direction_mask(uint16_t direction_mask) {
   set_direction_mask(this->direction_mask | direction_mask);
 }
 
@@ -265,7 +265,7 @@ void PlayerMovement::add_direction_mask(Uint16 direction_mask) {
  * pressed by the player.
  * @param direction_mask the direction mask to remove
  */
-void PlayerMovement::remove_direction_mask(Uint16 direction_mask) {
+void PlayerMovement::remove_direction_mask(uint16_t direction_mask) {
   set_direction_mask(this->direction_mask & ~direction_mask);
 }
 
@@ -275,7 +275,7 @@ void PlayerMovement::remove_direction_mask(Uint16 direction_mask) {
  * pressed by the player.
  * @param direction_mask the direction mask
  */
-void PlayerMovement::set_direction_mask(Uint16 direction_mask) {
+void PlayerMovement::set_direction_mask(uint16_t direction_mask) {
   if (direction_mask != this->direction_mask) {
     this->direction_mask = direction_mask;
   }

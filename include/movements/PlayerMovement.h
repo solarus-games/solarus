@@ -58,13 +58,13 @@ class PlayerMovement: public SmoothCollisionMovement {
    * Indicates which ones of the 4 arrows are currently pressed by the player.
    * This bit field is an OR combination of right_mask, up_mask, left_mask and down_mask.
    */
-  Uint16 direction_mask;
+  uint16_t direction_mask;
 
-  static const Uint16 direction_masks[4];
+  static const uint16_t direction_masks[4];
 
-  void add_direction_mask(Uint16 direction_mask);
-  void remove_direction_mask(Uint16 direction_mask);
-  void set_direction_mask(Uint16 direction_mask);
+  void add_direction_mask(uint16_t direction_mask);
+  void remove_direction_mask(uint16_t direction_mask);
+  void set_direction_mask(uint16_t direction_mask);
 
  public:
 
@@ -74,7 +74,7 @@ class PlayerMovement: public SmoothCollisionMovement {
 
   // direction
   int get_direction(void);
-  Uint16 get_direction_mask(void);
+  uint16_t get_direction_mask(void);
 
   void add_direction(int direction);
   void remove_direction(int direction);

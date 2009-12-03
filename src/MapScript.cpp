@@ -805,7 +805,7 @@ int MapScript::l_player_set_pause_enabled(lua_State *l) {
 int MapScript::l_start_timer(lua_State *l) {
 
   check_nb_arguments(l, 3);
-  Uint32 duration = lua_tointeger(l, 1);
+  uint32_t duration = lua_tointeger(l, 1);
   const std::string &callback_name = lua_tostring(l, 2);
   bool with_sound = lua_toboolean(l, 3) != 0;
 
@@ -1443,7 +1443,7 @@ int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
-  Uint32 delay = entity->get_sprite()->get_frame_delay();
+  uint32_t delay = entity->get_sprite()->get_frame_delay();
 
   lua_pushinteger(l, delay);
 
@@ -1540,7 +1540,7 @@ int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
   check_nb_arguments(l, 2);
 
   const std::string &name = lua_tostring(l, 1);
-  Uint32 delay = lua_tointeger(l, 2);
+  uint32_t delay = lua_tointeger(l, 2);
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *entity = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);

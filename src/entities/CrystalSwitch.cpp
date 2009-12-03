@@ -159,7 +159,7 @@ void CrystalSwitch::action_key_pressed(void) {
  */
 void CrystalSwitch::activate(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   if (now >= next_possible_hit_date) {
     ResourceManager::get_sound("switch")->play();
     zsdx->game->change_crystal_switch_state();

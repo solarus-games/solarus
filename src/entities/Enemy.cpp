@@ -370,7 +370,7 @@ void Enemy::update(void) {
     return;
   }
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   if (being_hurt) {
     
@@ -425,7 +425,7 @@ void Enemy::update(void) {
   }
 
   if (exploding) {
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     if (now >= next_explosion_date) {
 
       // create an explosion
@@ -480,7 +480,7 @@ void Enemy::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended);
 
   if (!suspended) {
-    Uint32 diff = SDL_GetTicks() - when_suspended;
+    uint32_t diff = SDL_GetTicks() - when_suspended;
     stop_hurt_date += diff;
     vulnerable_again_date += diff;
     can_attack_again_date += diff;
@@ -629,7 +629,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
 void Enemy::attack_stopped_by_hero_shield(void) {
   ResourceManager::get_sound("shield")->play();
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   can_attack = false;
   can_attack_again_date = now + 1000;
 }

@@ -26,8 +26,8 @@
  * Types of the id of each resource.
  */
 typedef std::string ImageId;
-typedef Uint32 MapId;
-typedef Uint32 TilesetId;
+typedef uint32_t MapId;
+typedef uint32_t TilesetId;
 typedef std::string MusicId;
 typedef std::string SoundId;
 typedef std::string SpriteAnimationSetId;
@@ -43,21 +43,22 @@ typedef std::string MessageId;
 
 // main classes
 class ZSDX;
-class VideoManager;
 class Screen;
 class ResourceManager;
 class KeysEffect;
 
 // low level
 class System;
-class Random;
-class Geometry;
 class FileTools;
+class VideoManager;
+class Color;
+class TextSurface;
 class Sound;
 class Music;
 class SpcDecoder;
-class Color;
-class TextSurface;
+class Random;
+class Geometry;
+class Rectangle;
 
 // menus
 class TitleScreen;

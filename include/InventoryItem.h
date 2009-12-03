@@ -41,8 +41,8 @@ class InventoryItem {
 
   // additionnal state information used by certain items
   Sound *item_sound;       /**< sound played repeatedly while using this item */
-  Uint32 sound_delay;      /**< delay before playing the sound again */
-  Uint32 next_sound_date;  /**< when the sound is played again */
+  uint32_t sound_delay;      /**< delay before playing the sound again */
+  uint32_t next_sound_date;  /**< when the sound is played again */
   int direction_pressed;   /**< arrow keys pressed when starting using this item*/
 
   void start_bottle(void);

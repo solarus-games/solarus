@@ -407,7 +407,7 @@ void Hero::set_suspended(bool suspended) {
 
   // timers
   if (!suspended) {
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     next_counter_date += now - when_suspended;
   }
 }
@@ -590,7 +590,7 @@ void Hero::movement_just_changed(void) {
   int direction = get_movement_direction();
   if (direction != -1) {
 
-    Uint16 direction_mask = get_normal_movement()->get_direction_mask();
+    uint16_t direction_mask = get_normal_movement()->get_direction_mask();
     int old_animation_direction = sprites->get_animation_direction();
     int animation_direction = HeroSprites::get_animation_direction(direction_mask);
 

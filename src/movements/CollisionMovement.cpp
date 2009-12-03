@@ -91,7 +91,7 @@ bool CollisionMovement::test_collision_with_map(int dx, int dy) {
  */
 void CollisionMovement::update_x(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   int x_move = get_x_move();
   if (x_move != 0 && now >= get_next_move_date_x()) { // while it's time to try a move
 
@@ -114,7 +114,7 @@ void CollisionMovement::update_x(void) {
  */
 void CollisionMovement::update_y(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   int y_move = get_y_move();
   if (y_move != 0 && now >= get_next_move_date_y()) { // while it's time to try a move
 

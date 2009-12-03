@@ -44,7 +44,7 @@ class Block: public Detector {
   int maximum_moves;         /**< indicates whether the block can be pushed
 			      * (0: none, 1: once: 2: infinite) */
   bool sound_played;         /**< true if the block sound was played while pulling it */
-  Uint32 when_can_move;      /**< date when the hero can move the block again */
+  uint32_t when_can_move;      /**< date when the hero can move the block again */
 
   SDL_Rect initial_position; /**< position of the block when created */
   int initial_maximum_moves; /**< value of maximum_moves when the block was created */

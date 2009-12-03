@@ -28,8 +28,10 @@ class System {
 
     static void initialize(int argc, char **argv);
     static void quit(void);
+    static void update(void);
 
     static uint32_t now(void);
+    static void sleep(uint32_t duration);
 };
 
 #endif

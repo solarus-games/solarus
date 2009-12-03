@@ -55,8 +55,8 @@ class HeroSprites {
 
     int animation_direction_saved; /**< direction of the hero's sprites, saved before
 				    * showing a sprite animation having only one direction */
-    Uint32 when_suspended;         /**< date when the game was suspended */
-    Uint32 end_blink_date;         /**< when the hero's sprites stop blinking */
+    uint32_t when_suspended;         /**< date when the game was suspended */
+    uint32_t end_blink_date;         /**< when the hero's sprites stop blinking */
 
     bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
 
@@ -78,7 +78,7 @@ class HeroSprites {
     bool is_walking(void);
 
     int get_animation_direction(void);
-    static int get_animation_direction(Uint32 direction_mask);
+    static int get_animation_direction(uint32_t direction_mask);
     void set_animation_direction(int direction);
     void restart_animation(void);
     bool is_animation_finished(void);

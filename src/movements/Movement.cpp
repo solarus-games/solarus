@@ -151,15 +151,15 @@ int Movement::get_y_move(void) { return y_move; }
 void Movement::set_x_move(int x_move) { this->x_move = x_move; }
 void Movement::set_y_move(int y_move) { this->y_move = y_move; }
 
-Uint32 Movement::get_next_move_date_x(void) { return next_move_date_x; }
-Uint32 Movement::get_next_move_date_y(void) { return next_move_date_y; }
-void Movement::set_next_move_date_x(Uint32 next_move_date_x) { this->next_move_date_x = next_move_date_x; }
-void Movement::set_next_move_date_y(Uint32 next_move_date_y) { this->next_move_date_y = next_move_date_y; }
+uint32_t Movement::get_next_move_date_x(void) { return next_move_date_x; }
+uint32_t Movement::get_next_move_date_y(void) { return next_move_date_y; }
+void Movement::set_next_move_date_x(uint32_t next_move_date_x) { this->next_move_date_x = next_move_date_x; }
+void Movement::set_next_move_date_y(uint32_t next_move_date_y) { this->next_move_date_y = next_move_date_y; }
 
-Uint32 Movement::get_x_delay(void) { return x_delay; }
-Uint32 Movement::get_y_delay(void) { return y_delay; }
-void Movement::set_x_delay(Uint32 x_delay) { this->x_delay = x_delay; }
-void Movement::set_y_delay(Uint32 y_delay) { this->y_delay = y_delay; }
+uint32_t Movement::get_x_delay(void) { return x_delay; }
+uint32_t Movement::get_y_delay(void) { return y_delay; }
+void Movement::set_x_delay(uint32_t x_delay) { this->x_delay = x_delay; }
+void Movement::set_y_delay(uint32_t y_delay) { this->y_delay = y_delay; }
 
 /**
  * Returns the x speed of the entity.
@@ -196,7 +196,7 @@ void Movement::set_x_speed(double x_speed) {
   }
 
   this->x_speed = x_speed;
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   // compute x_delay, x_move and next_move_date_x
   if (x_speed == 0) {
@@ -204,11 +204,11 @@ void Movement::set_x_speed(double x_speed) {
   }
   else {
     if (x_speed > 0) {
-      set_x_delay((Uint32) (100 / x_speed));
+      set_x_delay((uint32_t) (100 / x_speed));
       set_x_move(1);
     }
     else {
-      set_x_delay((Uint32) (100 / (-x_speed)));
+      set_x_delay((uint32_t) (100 / (-x_speed)));
       set_x_move(-1);
     }
     set_next_move_date_x(now + x_delay);
@@ -226,7 +226,7 @@ void Movement::set_y_speed(double y_speed) {
   }
 
   this->y_speed = y_speed;
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   // compute y_delay, y_move and next_move_date_y
   if (y_speed == 0) {
@@ -234,11 +234,11 @@ void Movement::set_y_speed(double y_speed) {
   }
   else {
     if (y_speed > 0) {
-      set_y_delay((Uint32) (100 / y_speed));
+      set_y_delay((uint32_t) (100 / y_speed));
       set_y_move(1);
     }
     else {
-      set_y_delay((Uint32) (100 / (-y_speed)));
+      set_y_delay((uint32_t) (100 / (-y_speed)));
       set_y_move(-1);
     }
     set_next_move_date_y(now + y_delay);
@@ -342,7 +342,7 @@ void Movement::set_direction(double angle) {
  */
 bool Movement::has_to_move_now(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   return (x_move != 0 && now >= next_move_date_x)
     || (y_move != 0 && now >= next_move_date_y);
 }
@@ -364,7 +364,7 @@ void Movement::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   if (suspended) {
     // the movement is being suspended
@@ -387,7 +387,7 @@ void Movement::update_x(void) {
   if (x_move != 0) { // if we want to move on x
 
     // update the x position while next_move_date_x is past
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     while (now >= next_move_date_x) {
       translate_x(x_move);
       set_next_move_date_x(next_move_date_x + x_delay);
@@ -403,7 +403,7 @@ void Movement::update_y(void) {
   if (y_move != 0) { // if we want to move on y
 
     // update the x position while next_move_date_y is past
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     while (now >= next_move_date_y) {
       translate_y(y_move);
       set_next_move_date_y(next_move_date_y + y_delay);

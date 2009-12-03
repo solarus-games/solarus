@@ -71,7 +71,7 @@ void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
 
   if (event.type == SDL_KEYDOWN) {
 
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
 
     bool finished = false;
     switch (event.key.keysym.sym) {

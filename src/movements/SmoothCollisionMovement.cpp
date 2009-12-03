@@ -40,7 +40,7 @@ SmoothCollisionMovement::~SmoothCollisionMovement(void) {
 void SmoothCollisionMovement::update(void) {
 
   if (!is_suspended()) {
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
 
     bool x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
     bool y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
@@ -89,16 +89,16 @@ void SmoothCollisionMovement::update_x(void) {
 
   int x_move = get_x_move();
   int y_move = get_y_move();
-  Uint32 x_delay = get_x_delay();
+  uint32_t x_delay = get_x_delay();
  
   if (x_move != 0) { // the entity wants to move on x
 
     // by default, next_move_date_x will be incremented by x_delay,
     // unless we modify the movement in such a way that the
     // x speed needs to be fixed
-    Uint32 next_move_date_x_increment = x_delay;
+    uint32_t next_move_date_x_increment = x_delay;
 
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     if (now >= get_next_move_date_x()) { // it's time to try a move
 
       if (!test_collision_with_map(x_move, 0)) {
@@ -161,16 +161,16 @@ void SmoothCollisionMovement::update_y(void) {
 
   int x_move = get_x_move();
   int y_move = get_y_move();
-  Uint32 y_delay = get_y_delay();
+  uint32_t y_delay = get_y_delay();
 
   if (y_move != 0) { // the entity wants to move on y
 
     // by default, next_move_date_y will be incremented by y_delay,
     // unless we modify the movement in such a way that the
     // y speed needs to be fixed
-    Uint32 next_move_date_y_increment = y_delay;
+    uint32_t next_move_date_y_increment = y_delay;
 
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     if (now >= get_next_move_date_y()) { // it's time to try a move
 
       if (!test_collision_with_map(0, y_move)) {

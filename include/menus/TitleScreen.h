@@ -47,7 +47,7 @@ class TitleScreen: public Screen {
   };
 
   Phase current_phase;
-  Uint32 next_phase_date;
+  uint32_t next_phase_date;
   TransitionFade *transition_in;
   TransitionFade *transition_out;
 
@@ -72,9 +72,9 @@ class TitleScreen: public Screen {
   TextSurface *press_space_img;
   SDL_Surface *title_surface;
   int counter;
-  Uint32 next_image_date;
+  uint32_t next_image_date;
   SDL_Rect clouds_position;
-  Uint32 next_clouds_move_date;
+  uint32_t next_clouds_move_date;
 
   void init_phase_title(void);
   void exit_phase_title(void);

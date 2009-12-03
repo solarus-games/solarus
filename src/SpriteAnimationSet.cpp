@@ -39,7 +39,7 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
   std::string name, image_file_name;
   int nb_directions, nb_frames, x_origin, y_origin, loop_on_frame;
   int x, y, width, height, rows, columns;
-  Uint32 frame_delay;
+  uint32_t frame_delay;
 
   // read each animation
   while (std::getline(sprite_file, line)) {

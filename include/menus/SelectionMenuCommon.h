@@ -44,7 +44,7 @@ class SelectionMenuCommon {
   Sprite *cursor;
   int cursor_position; // 1 to 5
 
-  Uint32 background_color;
+  uint32_t background_color;
 
   // sounds
   Sound *cursor_sound;
@@ -70,7 +70,7 @@ class SelectionMenuCommon {
 
   // clouds data
   SDL_Rect cloud_positions[16];
-  Uint32 next_cloud_move;
+  uint32_t next_cloud_move;
   
   // initialization functions
   void initialize_clouds(void);

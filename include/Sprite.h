@@ -50,8 +50,8 @@ class Sprite {
   int current_frame;                     /**< current frame of the animation (the first one is number 0) */
   bool frame_changed;                    /**< indicates that the frame has just changed */
 
-  Uint32 frame_delay;                    /**< delay between two frames in milliseconds */
-  Uint32 next_frame_date;                /**< date of the next frame */
+  uint32_t frame_delay;                    /**< delay between two frames in milliseconds */
+  uint32_t next_frame_date;                /**< date of the next frame */
 
   bool suspended;                        /**< true if the game is suspended */
   bool ignore_suspend;                   /**< true to continue playing the animation even when the game is suspended */
@@ -60,12 +60,12 @@ class Sprite {
 
   // effects
 
-  Uint32 blink_delay;                    /**< blink delay of the sprite, or zero if the sprite is not blinking */
+  uint32_t blink_delay;                    /**< blink delay of the sprite, or zero if the sprite is not blinking */
   bool blink_is_sprite_visible;          /**< when blinking, true if the sprite is visible or false if it is invisible */
-  Uint32 blink_next_change_date;         /**< date of the next change when blinking: visible or not */
+  uint32_t blink_next_change_date;         /**< date of the next change when blinking: visible or not */
 
   int alpha;                             /**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
-  Uint32 alpha_next_change_date;         /**< date of the next alpha change when applying a fade-in or fade-out effect */
+  uint32_t alpha_next_change_date;         /**< date of the next alpha change when applying a fade-in or fade-out effect */
   int alpha_increment;                   /**< increment of the alpha value while fading */
   static SDL_Surface *alpha_surface;     /**< an intermediary surface used when blitting with transparency */
 
@@ -94,8 +94,8 @@ class Sprite {
   int get_current_frame(void);
   void set_current_frame(int current_frame);
 
-  Uint32 get_frame_delay(void);
-  void set_frame_delay(Uint32 frame_delay);
+  uint32_t get_frame_delay(void);
+  void set_frame_delay(uint32_t frame_delay);
 
   // animation state
   bool is_animation_started(void);
@@ -115,7 +115,7 @@ class Sprite {
 
   // effects
   bool is_blinking(void);
-  void set_blinking(Uint32 blink_delay);
+  void set_blinking(uint32_t blink_delay);
   int get_alpha(void);
   void set_alpha(int alpha);
   bool is_fading(void);

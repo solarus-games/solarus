@@ -96,7 +96,7 @@ void RupeesCounter::update(void) {
   }
 
   // current rupees
-  Uint32 nb_current_rupees = equipment->get_rupees();
+  uint32_t nb_current_rupees = equipment->get_rupees();
   unsigned int nb_current_rupees_displayed = counter->get_value();
 
   if (nb_current_rupees_displayed != nb_current_rupees && SDL_GetTicks() > next_rupee_update_date) {

@@ -55,7 +55,7 @@ void FairyMovement::update(void) {
 
   if (!is_suspended()) {
 
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     if (now >= next_direction_change) {
       set_random_direction();
     }

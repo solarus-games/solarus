@@ -38,7 +38,7 @@ class RupeesCounter: public HudElement {
   int icon_displayed;
   Counter *counter;
  
-  Uint32 next_rupee_update_date;
+  uint32_t next_rupee_update_date;
   
  public:
 

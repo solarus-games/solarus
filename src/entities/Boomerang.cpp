@@ -245,7 +245,7 @@ void Boomerang::update(void) {
     return;
   }
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   if (now >= next_sound_date) {
     ResourceManager::get_sound("boomerang")->play();
     next_sound_date = now + 150;

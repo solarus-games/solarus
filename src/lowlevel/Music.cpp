@@ -151,7 +151,7 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 
   // decode the SPC data
   ALushort *raw_data = new ALushort[nb_samples];
-  spc_decoder->decode((Sint16*) raw_data, nb_samples);
+  spc_decoder->decode((int16_t*) raw_data, nb_samples);
 
   // put this decoded data into the buffer
   alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data, nb_samples * 2, 32000);
@@ -190,7 +190,7 @@ bool Music::play(void) {
   FileTools::data_file_open_buffer(file_name, &sound_data, &sound_size);
 
   // load the SPC data into the SPC decoding library
-  spc_decoder->load((Sint16*) sound_data, sound_size);
+  spc_decoder->load((int16_t*) sound_data, sound_size);
   FileTools::data_file_close_buffer(sound_data);
 
   // create the two buffers and the source

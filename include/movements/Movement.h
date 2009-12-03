@@ -64,17 +64,17 @@ class Movement {
   /**
    * Date of the next x move in ticks.
    */
-  Uint32 next_move_date_x;
+  uint32_t next_move_date_x;
 
   /**
    * Date of the next y move in ticks.
    */
-  Uint32 next_move_date_y;
+  uint32_t next_move_date_y;
 
   /**
    * Date of the last x or y move.
    */
-  Uint32 last_move_date;
+  uint32_t last_move_date;
 
   // the following fields are redundant and can be computed
   // with x_speed and y_speed
@@ -83,13 +83,13 @@ class Movement {
    * Delay in ticks between an x move of 2 pixels.
    * x_delay = 200 / |x_speed|
    */
-  Uint32 x_delay;
+  uint32_t x_delay;
 
   /**
    * Delay in ticks between an y move of 2 pixels.
    * y_delay = 200 / |y_speed|
    */
-  Uint32 y_delay;
+  uint32_t y_delay;
 
   /**
    * Number of pixels of the next x move : 0, 1 or -1.
@@ -113,22 +113,22 @@ class Movement {
   /**
    * Indicates when the movement was suspended.
    */
-  Uint32 when_suspended;
+  uint32_t when_suspended;
 
   int get_x_move(void);
   int get_y_move(void);
   void set_x_move(int x_move);
   void set_y_move(int y_move);
 
-  Uint32 get_next_move_date_x(void);
-  Uint32 get_next_move_date_y(void);
-  void set_next_move_date_x(Uint32 next_move_date_x);
-  void set_next_move_date_y(Uint32 next_move_date_y);
+  uint32_t get_next_move_date_x(void);
+  uint32_t get_next_move_date_y(void);
+  void set_next_move_date_x(uint32_t next_move_date_x);
+  void set_next_move_date_y(uint32_t next_move_date_y);
 
-  Uint32 get_x_delay(void);
-  Uint32 get_y_delay(void);
-  void set_x_delay(Uint32 x_delay);
-  void set_y_delay(Uint32 y_delay);
+  uint32_t get_x_delay(void);
+  uint32_t get_y_delay(void);
+  void set_x_delay(uint32_t x_delay);
+  void set_y_delay(uint32_t y_delay);
 
   void translate_x(int dx);
   void translate_y(int dy);

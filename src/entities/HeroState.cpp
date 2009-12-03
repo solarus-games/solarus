@@ -130,7 +130,7 @@ void Hero::start_ground(void) {
       // display a special sprite below the hero
       sprites->create_ground(ground);
 
-      Uint32 now = SDL_GetTicks();
+      uint32_t now = SDL_GetTicks();
       next_ground_date = std::max(next_ground_date, now);
 
       get_normal_movement()->set_moving_speed(walking_speed * 4 / 5);
@@ -153,7 +153,7 @@ void Hero::start_ground(void) {
 void Hero::update_ground(void) {
 
   // see if it's time to do something (depending on the ground)
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   if (now >= next_ground_date) {
 
     if (is_ground_visible()) {
@@ -415,7 +415,7 @@ void Hero::start_sword_loading(void) {
  */
 void Hero::update_sword_loading(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   while (!sword_loaded && now >= next_counter_date) {
     counter++;
     next_counter_date += 100;
@@ -476,7 +476,7 @@ void Hero::update_sword_tapping(void) {
     }
   }
   else {
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     if (sprites->get_current_frame() == 3 && now >= next_hit_sound_date) {
 
       Detector *facing_entity = get_facing_entity();
@@ -669,7 +669,7 @@ void Hero::update_pushing(void) {
   }
 
   // get the direction of the arrows
-  Uint16 direction_mask = get_normal_movement()->get_direction_mask();
+  uint16_t direction_mask = get_normal_movement()->get_direction_mask();
 
   if (move_tried) {
     // the hero is trying to move
@@ -681,7 +681,7 @@ void Hero::update_pushing(void) {
 
       if (state == FREE) { // is state FREE: see when we can start animation "pushing"
 
-	Uint32 now = SDL_GetTicks();
+	uint32_t now = SDL_GetTicks();
 	if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
 	  counter = 0;
 	  next_counter_date = now;

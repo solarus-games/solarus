@@ -126,7 +126,7 @@ bool HudElement::is_blinking(void) {
  */
 void HudElement::update(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   if (blinking && now >= next_blink_date) {
     blinking_is_visible = !blinking_is_visible;
     next_blink_date = now + 250;

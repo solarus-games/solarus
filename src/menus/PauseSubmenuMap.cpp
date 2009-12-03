@@ -348,7 +348,7 @@ void PauseSubmenuMap::update(void) {
       }
     }
 
-    Uint32 now = SDL_GetTicks();
+    uint32_t now = SDL_GetTicks();
     if (moving_visible_y != 0 && now >= next_moving_visible_y_date) {
       world_minimap_visible_y += moving_visible_y;
       next_moving_visible_y_date += 10;

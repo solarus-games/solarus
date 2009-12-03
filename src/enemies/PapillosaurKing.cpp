@@ -100,7 +100,7 @@ void PapillosaurKing::set_suspended(bool suspended) {
   Enemy::set_suspended(suspended);
 
   if (!suspended) {
-    Uint32 diff = SDL_GetTicks() - when_suspended;
+    uint32_t diff = SDL_GetTicks() - when_suspended;
     next_egg_phase_date += diff;
     next_egg_date += diff;
   }
@@ -118,7 +118,7 @@ void PapillosaurKing::update(void) {
   }
 
   // create minillosaur eggs
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   if (is_in_normal_state() && now >= next_egg_phase_date - 500) {
 
     // count the number of sons

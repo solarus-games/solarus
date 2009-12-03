@@ -116,7 +116,7 @@ class MapEntity {
   // entity state
 
   bool suspended;          /**< indicates that the animation and movement of this entity are suspended */
-  Uint32 when_suspended;   /**< indicates when this entity was suspended */
+  uint32_t when_suspended;   /**< indicates when this entity was suspended */
   bool being_removed;      /**< indicates that the entity is not valid anymore because it is about to be removed */
 
   // creation

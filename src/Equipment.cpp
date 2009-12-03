@@ -580,7 +580,7 @@ bool Equipment::is_magic_decreasing(void) {
  * Starts removing magic continuously.
  * @param delay delay in miliseconds between two decreases
  */
-void Equipment::start_removing_magic(Uint32 delay) {
+void Equipment::start_removing_magic(uint32_t delay) {
 
   if (delay <= 0) {
     DIE("Illegal magic bar decrease delay: " << delay);

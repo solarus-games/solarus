@@ -70,7 +70,7 @@ void TitleScreen::update(void) {
 
   // TODO remove
   set_next_screen(new Game(new Savegame("save1.zsd")));
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   switch (current_phase) {
 
@@ -227,7 +227,7 @@ void TitleScreen::init_phase_title(void) {
 
   clouds_position.x = 320;
   clouds_position.y = 30;
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   next_clouds_move_date = now;
 
   counter = 0;
@@ -262,7 +262,7 @@ void TitleScreen::exit_phase_title(void) {
  */
 void TitleScreen::update_phase_title(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   if (now >= next_image_date) {
 

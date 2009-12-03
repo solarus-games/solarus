@@ -48,7 +48,7 @@ class PathMovement: public CollisionMovement {
   bool must_be_aligned;            /**< indicates that the entity must be snapped to the grid before moving */
   bool snapping;                   /**< indicates that the movement is currently snapping the entity on the grid */
   double snapping_angle;           /**< angle of the movement when snapping */
-  Uint32 stop_snapping_date;       /**< date when we stop trying to snap the entity when it is unsuccessful */
+  uint32_t stop_snapping_date;       /**< date when we stop trying to snap the entity when it is unsuccessful */
 
  protected:
 

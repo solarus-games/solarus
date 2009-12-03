@@ -45,7 +45,7 @@ class PauseSubmenuMap: public PauseSubmenu {
   SDL_Surface *world_map_img;
   int world_minimap_visible_y; /**< when the world map is displayed: y position of the minimap visible rectangle */
   int moving_visible_y;        /**< 0, -1 or 1 depending on the arrow pressed */
-  Uint32 next_moving_visible_y_date;
+  uint32_t next_moving_visible_y_date;
 
   // dungeon map
   SDL_Surface *dungeon_map_background;

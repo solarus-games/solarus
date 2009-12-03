@@ -41,12 +41,12 @@ class CarriedItem: public MapEntity {
   // throwing the item
   Sprite *shadow_sprite;    /**< sprite of the shadow when the item is being thrown */
   int throwing_direction;   /**< direction where the item is thrown (0 to 3) */
-  Uint32 next_down_date;    /**< when the item is thrown, date when it move one pixel downwards next time */
+  uint32_t next_down_date;    /**< when the item is thrown, date when it move one pixel downwards next time */
   int item_height;          /**< current height where the item is displayed above its shadow */
   int y_increment;          /**< next y change for item_height */
 
   // explosion of the item
-  Uint32 explosion_date;    /**< date when the item will explode (0 if there is no explosion) */
+  uint32_t explosion_date;    /**< date when the item will explode (0 if there is no explosion) */
 
   bool will_explode_soon(void);
 

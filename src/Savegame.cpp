@@ -94,8 +94,8 @@ void Savegame::set_initial_values(void) {
 
   set_integer(MAX_RUPEES, 100);
 
-  set_integer(ITEM_SLOT_0, (Uint32) -1);
-  set_integer(ITEM_SLOT_1, (Uint32) -1);
+  set_integer(ITEM_SLOT_0, (uint32_t) -1);
+  set_integer(ITEM_SLOT_1, (uint32_t) -1);
 
   // default game controls
   set_integer(KEYBOARD_ACTION_KEY, SDLK_SPACE);
@@ -184,7 +184,7 @@ void Savegame::set_string(int index, const std::string &value) {
  * (see enum IntegerIndex for their definition)
  * @return the integer value saved at this index
  */
-Uint32 Savegame::get_integer(int index) {
+uint32_t Savegame::get_integer(int index) {
   return saved_data.integers[index];
 }
 
@@ -196,7 +196,7 @@ Uint32 Savegame::get_integer(int index) {
  * (see enum IntegerIndex for their definition)
  * @param value the integer value to store at this index
  */
-void Savegame::set_integer(int index, Uint32 value) {
+void Savegame::set_integer(int index, uint32_t value) {
   saved_data.integers[index] = value;
 }
 
@@ -207,7 +207,7 @@ void Savegame::set_integer(int index, Uint32 value) {
  */
 bool Savegame::get_boolean(int index) {
 
-  Uint32 word = saved_data.booleans[index / 32];
+  uint32_t word = saved_data.booleans[index / 32];
   return ((word >> (index % 32)) & 0x0001) != 0x0000;
 }
 
@@ -218,7 +218,7 @@ bool Savegame::get_boolean(int index) {
  */
 void Savegame::set_boolean(int index, bool value) {
 
-  Uint32 mask = 0x0001 << (index % 32);
+  uint32_t mask = 0x0001 << (index % 32);
   saved_data.booleans[index / 32] &= ~mask;
 
   if (value) {

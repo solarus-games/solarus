@@ -26,10 +26,10 @@
  * @param callback_name name of the script function to call when the timer is finished
  * @param with_sound plays a sound until the timer expires
  */
-Timer::Timer(Uint32 duration, const std::string &callback_name, bool with_sound):
+Timer::Timer(uint32_t duration, const std::string &callback_name, bool with_sound):
   callback_name(callback_name), finished(false), suspended(false), when_suspended(0) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   expiration_date = SDL_GetTicks() + duration;
 
   if (with_sound) {
@@ -81,13 +81,13 @@ void Timer::update(void) {
   }
 
   // check the time
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   finished = (now >= expiration_date);
 
   // play the sound
   if (next_sound_date != 0 && now >= next_sound_date) {
 
-    Uint32 remaining_time = expiration_date - now;
+    uint32_t remaining_time = expiration_date - now;
     if (remaining_time > 6000) {
       countdown_sound->play();
       next_sound_date += 1000;
@@ -112,7 +112,7 @@ void Timer::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   if (suspended) {
     // the timer is being suspended

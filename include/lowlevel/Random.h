@@ -24,16 +24,18 @@
  */
 class Random {
 
- private:
+  private:
 
-  Random();
+    Random();
 
- public:
+  public:
 
-  static void initialize();
-  static int get_number(unsigned int x);
-  static int get_number(unsigned int x, unsigned int y);
+    static void initialize();
+    static void quit();
 
+    static int get_number(unsigned int x);
+    static int get_number(unsigned int x, unsigned int y);
 };
 
 #endif
+

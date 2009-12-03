@@ -35,7 +35,7 @@ class SpriteAnimation {
   const int nb_directions;     /**< number of directions of this animation */
   SpriteAnimationDirection **directions; /**< array of directions:
 					  * each direction is a sequence of images */
-  const Uint32 frame_delay;    /**< default interval in milliseconds between two frames
+  const uint32_t frame_delay;    /**< default interval in milliseconds between two frames
 			        * (this delay is the same for all directions) */
   const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
 
@@ -43,7 +43,7 @@ class SpriteAnimation {
 
   SpriteAnimation(const std::string &image_file_name, int nb_directions,
 		  SpriteAnimationDirection **directions,
-		  Uint32 frame_interval, int loop_on_frame);
+		  uint32_t frame_interval, int loop_on_frame);
   virtual ~SpriteAnimation(void);
 
   void set_map(Map *map);
@@ -54,7 +54,7 @@ class SpriteAnimation {
 
   int get_nb_directions(void);
   SpriteAnimationDirection *get_direction(int direction);
-  Uint32 get_frame_delay(void);
+  uint32_t get_frame_delay(void);
   bool is_looping(void);
 
   void enable_pixel_collisions(void);

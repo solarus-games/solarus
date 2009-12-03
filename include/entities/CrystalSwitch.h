@@ -30,7 +30,7 @@ class CrystalSwitch: public Detector {
 
   bool state;                    /**< false if the orange blocks are lowered,
 	                          * true if the blue blocks are lowered */
-  Uint32 next_possible_hit_date; /**< date when the crystal switch can be hit again */
+  uint32_t next_possible_hit_date; /**< date when the crystal switch can be hit again */
 
   void activate();
 

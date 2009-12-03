@@ -48,18 +48,24 @@ class VideoManager {
 
  private:
 
-  static SDL_Rect video_mode_sizes[NB_MODES]; /**< size of the surface for each video mode */
-  SDL_Rect dst_position_wide;                 /**< position of the 640*480 surface on the 768*480 or 720*480
-					       * video surface */
+  static VideoManager *instance;                /**< the only instance */
+  static SDL_Rect default_mode_sizes[NB_MODES]; /**< default size of the surface for each video mode */
 
-  VideoMode video_mode;                       /**< current video mode of the screen */
-  SDL_Surface *screen_surface;                /**< the screen surface */
+  SDL_Rect mode_sizes[NB_MODES];                /**< verified size of the surface for each video mode */
+  SDL_Rect dst_position_wide;                   /**< position of the 640*480 surface on the 768*480 or 720*480
+					         * video surface */
 
-  SDL_Rect dst_position_centered;             /**< position of the 320*240 game surface on the screen surface */
-  int width;                                  /**< width of the current screen surface */
-  int offset;                                 /**< width of a side bar when using a widescreen resolution */
-  int end_row_increment;                      /**< increment used by the stretching and scaling functions 
-					       * when changing the row */
+  VideoMode video_mode;                         /**< current video mode of the screen */
+  SDL_Surface *screen_surface;                  /**< the screen surface */
+
+  SDL_Rect dst_position_centered;               /**< position of the 320*240 game surface on the screen surface */
+  int width;                                    /**< width of the current screen surface */
+  int offset;                                   /**< width of a side bar when using a widescreen resolution */
+  int end_row_increment;                        /**< increment used by the stretching and scaling functions 
+					         * when changing the row */
+
+  VideoManager(void);
+  ~VideoManager(void);
 
   bool is_mode_supported(VideoMode mode);
   bool is_fullscreen(VideoMode mode);
@@ -71,8 +77,9 @@ class VideoManager {
 
  public:
 
-  VideoManager(void);
-  ~VideoManager(void);
+  static void initialize(void);
+  static void quit(void);
+  static VideoManager * get_instance(void);
 
   void switch_video_mode(void);
   void set_initial_video_mode(void);
@@ -84,3 +91,4 @@ class VideoManager {
 };
 
 #endif
+

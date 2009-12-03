@@ -90,11 +90,11 @@ class PickableItem: public Detector {
   int shadow_x;           /**< coordinates of the shadow (which does not move when the item does by falling) */
   int shadow_y;
 
-  Uint32 appear_date;     /**< date when the item is created */
-  Uint32 allow_pick_date; /**< date when the item can be picked */
+  uint32_t appear_date;     /**< date when the item is created */
+  uint32_t allow_pick_date; /**< date when the item can be picked */
   bool can_be_picked;     /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
-  Uint32 blink_date;      /**< date when the item starts blinking */
-  Uint32 disappear_date;  /**< date when the item disappears */
+  uint32_t blink_date;      /**< date when the item starts blinking */
+  uint32_t disappear_date;  /**< date when the item disappears */
   bool is_following_boomerang; /**< true if this item is attached to the boomerang */
 
   // creation and initialization

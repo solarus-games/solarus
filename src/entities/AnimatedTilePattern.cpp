@@ -20,7 +20,7 @@
 /**
  * Interval in millisecond between two frames of an animation.
  */
-static const Uint32 TILE_FRAME_INTERVAL = 250;
+static const uint32_t TILE_FRAME_INTERVAL = 250;
 
 /**
  * Array to associate the current frame (0, 1 or 2) depending on
@@ -44,7 +44,7 @@ int AnimatedTilePattern::current_frames[3] = {0, 0, 0};
 /**
  * Date of the next frame change.
  */
-Uint32 AnimatedTilePattern::next_frame_date = 0;
+uint32_t AnimatedTilePattern::next_frame_date = 0;
 
 /**
  * Constructor.
@@ -93,7 +93,7 @@ AnimatedTilePattern::~AnimatedTilePattern(void) {
  */
 void AnimatedTilePattern::update(void) {
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
 
   while (now >= next_frame_date) {
 

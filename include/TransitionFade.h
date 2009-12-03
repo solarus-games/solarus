@@ -32,15 +32,15 @@ class TransitionFade: public Transition {
   int alpha_increment;
   int alpha; // current alpha value of the surface
 
-  Uint32 next_frame_date;
-  Uint32 delay;
+  uint32_t next_frame_date;
+  uint32_t delay;
   
  public:
 
   TransitionFade(Direction direction);
   ~TransitionFade(void);
 
-  void set_delay(Uint32 delay);
+  void set_delay(uint32_t delay);
 
   void start(void);
   bool is_started(void);

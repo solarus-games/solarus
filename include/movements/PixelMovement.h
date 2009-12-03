@@ -46,7 +46,7 @@ class PixelMovement: public CollisionMovement {
   /**
    * Delay in milliseconds between two translations.
    */
-  Uint32 delay;
+  uint32_t delay;
 
   /**
    * Should the movement return to the beginning once finished?
@@ -68,7 +68,7 @@ class PixelMovement: public CollisionMovement {
 
  protected:
 
-  PixelMovement(int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
+  PixelMovement(int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
 
   void set_translation_vectors(const SDL_Rect *translation_vectors);
   virtual void make_next_move(void);
@@ -77,10 +77,10 @@ class PixelMovement: public CollisionMovement {
  public:
 
   PixelMovement(const SDL_Rect *translation_vectors,
-		int nb_vectors, Uint32 delay, bool loop, bool with_collisions);
+		int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
   virtual ~PixelMovement(void);
 
-  void set_delay(Uint32 delay);
+  void set_delay(uint32_t delay);
   virtual void update(void);
   bool is_finished(void);
   int get_length(void);

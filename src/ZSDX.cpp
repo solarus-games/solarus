@@ -15,12 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ZSDX.h"
-#include "lowlevel/FileTools.h"
+#include "lowlevel/System.h"
+#include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Music.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/TextSurface.h"
-#include "lowlevel/Random.h"
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
@@ -39,34 +36,11 @@ ZSDX *zsdx = NULL;
  */
 ZSDX::ZSDX(int argc, char **argv) {
 
-  // initialize the file manager
-  FileTools::initialize(argc, argv);
-  StringResource::initialize();
+  // initialize the lowlevel features (audio, video, files...)
+  System::initialize(argc, argv);
 
-  // initialize SDL
-  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
-
+  // create the surface where everything is drawn
   root_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
-  SDL_ShowCursor(SDL_ENABLE);
-  video_manager = new VideoManager();
-  video_manager->set_initial_video_mode();
-  SDL_EnableUNICODE(SDL_ENABLE);
-  SDL_EnableKeyRepeat(0, 0);
-
-  // initialize the color system
-  Color::initialize();
-
-  // initiliaze the resource manager
-  ResourceManager::initialize();
-
-  // initiliaze the random number generator
-  Random::initialize();
-
-  // initialize the text displaying
-  TextSurface::initialize();
-
-  // initialize the audio system
-  Sound::initialize();
 
   // create the first screen
   current_screen = new TitleScreen();
@@ -80,14 +54,7 @@ ZSDX::ZSDX(int argc, char **argv) {
 ZSDX::~ZSDX(void) {
   SDL_FreeSurface(root_surface);
   delete current_screen;
-  delete video_manager;
-  ResourceManager::quit();
-  TextSurface::quit();
-  StringResource::quit();
-  Sound::quit();
-  SDL_Quit();
-  FileTools::quit();
-}
+ }
 
 /**
  * Sets the current game.
@@ -123,9 +90,9 @@ void ZSDX::main(void) {
 
   // SDL main loop
   SDL_Event event = {};
-  Uint32 now;
-  Uint32 next_frame_date = SDL_GetTicks();
-  Uint32 frame_interval = 25; // time interval between to displays
+  uint32_t now;
+  uint32_t next_frame_date = SDL_GetTicks();
+  uint32_t frame_interval = 25; // time interval between to displays
   int delay;
   bool just_displayed = false; // to detect when the FPS number needs to be decreased
 
@@ -208,7 +175,7 @@ void ZSDX::handle_event(const SDL_Event &event) {
 
       // F5: change the video mode
     case SDLK_F5:
-      video_manager->switch_video_mode();
+      VideoManager::get_instance()->switch_video_mode();
       break;
 
     default:
@@ -227,7 +194,7 @@ void ZSDX::handle_event(const SDL_Event &event) {
  */
 void ZSDX::update(void) {
   current_screen->update();
-  Sound::update();
+  System::update();
 }
 
 /**
@@ -238,15 +205,7 @@ void ZSDX::display(void) {
 
   SDL_FillRect(root_surface, NULL, Color::black);
   current_screen->display(root_surface);
-  video_manager->display(root_surface);
-}
-
-/**
- * Returns the video system.
- * @return the video system
- */
-VideoManager * ZSDX::get_video_manager(void) {
-  return video_manager;
+  VideoManager::get_instance()->display(root_surface);
 }
 
 /**

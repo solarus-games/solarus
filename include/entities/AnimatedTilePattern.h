@@ -41,7 +41,7 @@ class AnimatedTilePattern: public TilePattern {
     // static variables to handle the animations of all tiles
     static int frame_counter;
     static int current_frames[3];
-    static Uint32 next_frame_date;
+    static uint32_t next_frame_date;
 
     /**
      * Animation sequence type of this tile pattern: 0-1-2-1 or 0-1-2.

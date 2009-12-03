@@ -23,7 +23,7 @@
  * @param direction angle of the movement (0 to 359)
  * @param time duration of the movement in milliseconds
  */
-StraightMovement::StraightMovement(int speed, int direction, Uint32 time) {
+StraightMovement::StraightMovement(int speed, int direction, uint32_t time) {
   start(speed, direction, time);
 }
 
@@ -33,7 +33,7 @@ StraightMovement::StraightMovement(int speed, int direction, Uint32 time) {
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
  */
-StraightMovement::StraightMovement(int speed, double direction, Uint32 time) {
+StraightMovement::StraightMovement(int speed, double direction, uint32_t time) {
   start(speed, direction, time);
 }
 
@@ -43,7 +43,7 @@ StraightMovement::StraightMovement(int speed, double direction, Uint32 time) {
  * @param target_xy the movement will go into this point's direction
  * @param time duration of the movement in milliseconds
  */
-StraightMovement::StraightMovement(int speed, const SDL_Rect &source_xy, const SDL_Rect &target_xy, Uint32 time) {
+StraightMovement::StraightMovement(int speed, const SDL_Rect &source_xy, const SDL_Rect &target_xy, uint32_t time) {
   double angle = Geometry::get_angle(source_xy.x, source_xy.y, target_xy.x, target_xy.y);
   start(speed, angle, time);
 }
@@ -61,7 +61,7 @@ StraightMovement::~StraightMovement(void) {
  * @param direction angle of the movement (0 to 359)
  * @param time duration of the movement in milliseconds
  */
-void StraightMovement::start(int speed, int direction, Uint32 time) {
+void StraightMovement::start(int speed, int direction, uint32_t time) {
 
   start(speed, direction * Geometry::TWO_PI / 360.0, time);
 }
@@ -72,7 +72,7 @@ void StraightMovement::start(int speed, int direction, Uint32 time) {
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
  */
-void StraightMovement::start(int speed, double direction, Uint32 time) {
+void StraightMovement::start(int speed, double direction, uint32_t time) {
 
   finished = false;
   end_movement_date = SDL_GetTicks() + time;
@@ -88,7 +88,7 @@ void StraightMovement::start(int speed, double direction, Uint32 time) {
 void StraightMovement::update(void) {
   Movement::update();
 
-  Uint32 now = SDL_GetTicks();
+  uint32_t now = SDL_GetTicks();
   if (now >= end_movement_date) {
     stop();
     finished = true;

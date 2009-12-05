@@ -87,3 +87,13 @@ bool Rectangle::overlaps(const Rectangle &other) const {
   return overlap_x && overlap_y;
 }
 
+/**
+ * Returns the SDL rectangle encapsulated by this object.
+ * This function must be used only by other low-level classes (typically Surface)
+ * as it is library dependent.
+ * @return the internal rectangle encapsulated
+ */
+SDL_Rect & Rectangle::get_internal_rect(void) {
+  return rect;
+}
+

@@ -14,39 +14,30 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_COLOR_H
-#define ZSDX_COLOR_H
-
-#include "Common.h"
-#include "SDL/SDL.h"
-
-// TODO make a real class to encapsulate SDL colors
+#include "lowlevel/Surface.h"
 
 /**
- * This module defines a type for the colors and provides some color related functions.
- * It encapsulates a library dependent color.
+ * Creates a surface with the specified size.
+ * @param width the width in pixels
+ * @param height the height in pixels
  */
-class Color {
+Surface::Surface(int width, int height) {
 
- private:
+}
 
-  static SDL_PixelFormat *format; /**< the pixel format used for all colors */
+Surface::~Surface(void) {
 
-  uint32_t internal_color;        /**< the SDL color encapsulated */
+}
 
- public:
+void Surface::fill_with_color(Color color) {
 
-  // some predefined colors
-  static Color * black;
-  static Color * white;
-  static Color * red;
+}
 
-  static void initialize(void);
-  static void quit(void);
+void Surface::blit(Surface *destination) {
 
-  Color(int r, int g, int b);
+}
 
-};
+void Surface::blit(const Rectangle & src_position, Surface *dst, const Rectangle & dst_position) {
 
-#endif
+}
 

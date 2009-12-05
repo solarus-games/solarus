@@ -20,37 +20,41 @@
  */
 #include "lowlevel/Color.h"
 
-uint32_t Color::black;
-uint32_t Color::white;
-uint32_t Color::red;
-
 SDL_PixelFormat * Color::format;
+
+Color * Color::black;
+Color * Color::white;
+Color * Color::red;
 
 /**
  * Initializes the color static fields.
  */
 void Color::initialize(void) {
+
   format = SDL_GetVideoSurface()->format;
 
-  black = SDL_MapRGB(format, 0, 0, 0);
-  white = SDL_MapRGB(format, 255, 255, 255);
-  red = SDL_MapRGB(format, 255, 0, 0);
+  black = new Color(0, 0, 0);
+  white = new Color(255, 255, 255);
+  red = new Color(255, 0, 0);
 }
 
 /**
  * Uninitializes the color system.
  */
 void Color::quit(void) {
-  // nothing to do
+  delete black;
+  delete white;
+  delete red;
 }
 
 /**
- * Returns a color given its RGB values.
+ * Creates a color with the specified RGB values.
  * @param r the red component (from 0 to 255)
  * @param g the green component (from 0 to 255)
  * @param b the blue component (from 0 to 255)
  */
-uint32_t Color::create(int r, int g, int b) {
-  return SDL_MapRGB(format, r, g, b);
+Color Color::create(int r, int g, int b):
+  internal_color(SDL_MapRGB(format, r, g, b)) {
+
 }
 

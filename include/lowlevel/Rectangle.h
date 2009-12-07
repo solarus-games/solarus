@@ -23,7 +23,7 @@
 /**
  * Represents a rectangle with its top-left corner, width and height.
  * This class can also be used to represent a single point
- * (then the width and the height are not used).
+ * (then the width and the height can be set to zero or event just left unused).
  * This class basically encapsulates a library-dependent rectangle object.
  */
 class Rectangle {
@@ -35,6 +35,7 @@ class Rectangle {
   public:
 
     Rectangle(void);
+    Rectangle(int x, int y);
     Rectangle(int x, int y, int width, int height);
     Rectangle(const Rectangle &other);
     ~Rectangle(void);
@@ -43,6 +44,14 @@ class Rectangle {
     inline int get_y(void) const      { return rect.y; }
     inline int get_width(void)  const { return rect.w; }
     inline int get_height(void) const { return rect.h; }
+
+    inline void set_x(int x)           { rect.x = x; }
+    inline void set_y(int y)           { rect.y = y; }
+    inline void set_width(int width)   { rect.w = width; }
+    inline void set_height(int height) { rect.h = height; }
+
+    inline void set_xy(int x, int y)            { set_x(x); set_y(y); }
+    inline void set_size(int width, int height) { set_width(width); set_height(height); }
 
     bool contains(int x, int y) const;
     bool overlaps(const Rectangle &other) const;

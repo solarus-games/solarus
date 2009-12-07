@@ -21,6 +21,7 @@
 #include "entities/EntityType.h"
 #include "entities/Layer.h"
 #include "entities/EnemyAttack.h"
+#include "lowlevel/Rectangle.h"
 #include <map>
 
 /**
@@ -82,23 +83,24 @@ class MapEntity {
 			     */
 
  protected:
-  SDL_Rect rectangle;       /**< This rectangle represents the position of the entity of the map and is
-			     * used for the collision tests. It can be different from the sprite's
-			     * rectangle of the entity.
-			     * For example, the hero's position is a 16*16 rectangle, but its sprite may be
+  Rectangle bounding_box;   /**< This rectangle represents the position of the entity of the map and is
+			     * used for the collision tests. It corresponds to the bounding box of the entity.
+			     * It can be different from the sprite's rectangle of the entity.
+			     * For example, the hero's bounding box is a 16*16 rectangle, but its sprite may be
 			     * a 24*32 rectangle.
 			     */
 
-  SDL_Rect origin;          /**< Coordinates of the origin point of the entity,
+  Rectangle origin;         /**< Coordinates of the origin point of the entity,
 			     * relative to the top-left corner of its rectangle.
 			     * Remember that when you call get_x() and get_y(), you get the coordinates
 			     * of the origin point on the map, not the coordinates of the rectangle's
 			     * top-left corner.
-			     * This is useful because the top-left corner of the entity's rectangle does
-			     * not represent the actual entity's coordinates.
+			     * This is useful because the top-left corner of the entity's bounding box does
+			     * not represent the actual entity's coordinates and does not match necessarily
+			     * the sprite's rectangle.
 			     */
 
-  // other data, used for some kinds of entities
+  // other data, used for some kinds of entities only
 
   std::string name;        /**< name of the entity, not used for all kinds of entities;
 		            * the name identifies the entity in the game (an empty string
@@ -116,7 +118,7 @@ class MapEntity {
   // entity state
 
   bool suspended;          /**< indicates that the animation and movement of this entity are suspended */
-  uint32_t when_suspended;   /**< indicates when this entity was suspended */
+  uint32_t when_suspended;  /**< indicates when this entity was suspended */
   bool being_removed;      /**< indicates that the entity is not valid anymore because it is about to be removed */
 
   // creation
@@ -127,10 +129,11 @@ class MapEntity {
   // method called by the subclasses to set their properties
   void set_direction(int direction);
   void set_size(int width, int height);
-  void set_size(SDL_Rect &size);
+  void set_size(const Rectangle &size);
   void set_origin(int x, int y);
-  void set_origin(const SDL_Rect &origin);
-  void set_rectangle_from_sprite(void);
+  void set_origin(const Rectangle &origin);
+  void set_bounding_box_from_sprite(void);
+  void set_bounding_box(const SDL_Rect &bounding_box);
   void create_sprite(const SpriteAnimationSetId &id);
   void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions);
 
@@ -159,14 +162,13 @@ class MapEntity {
   int get_y(void);
   void set_x(int x);
   void set_y(int y);
-  const SDL_Rect get_xy(void);
-  void set_xy(const SDL_Rect &xy);
+  const Rectangle get_xy(void);
+  void set_xy(const Rectangle &xy);
   void set_xy(int x, int y);
 
   int get_width(void);
   int get_height(void);
-  const SDL_Rect & get_rectangle(void);
-  void set_rectangle(const SDL_Rect &rectangle);
+  const Rectangle & get_bounding_box(void);
   const SDL_Rect & get_origin(void);
   int get_top_left_x(void);
   int get_top_left_y(void);
@@ -174,9 +176,9 @@ class MapEntity {
   void set_top_left_y(int y);
   void set_top_left_xy(int x, int y);
 
-  virtual const SDL_Rect get_facing_point(void);
-  virtual const SDL_Rect get_facing_point(int direction);
-  const SDL_Rect get_center_point(void);
+  virtual const Rectangle get_facing_point(void);
+  virtual const Rectangle get_facing_point(int direction);
+  const Rectangle get_center_point(void);
 
   bool is_aligned_to_grid(void);
   void set_aligned_to_grid(void);
@@ -208,12 +210,12 @@ class MapEntity {
 
   // collisions
   virtual bool is_obstacle_for(MapEntity *other);
-  bool overlaps(const SDL_Rect &rectangle);
+  bool overlaps(const Rectangle &rectangle);
   bool overlaps(int x, int y);
   bool overlaps(MapEntity *other);
-  bool is_origin_point_in(const SDL_Rect &rectangle);
-  bool is_facing_point_in(const SDL_Rect &rectangle);
-  bool is_center_in(const SDL_Rect &rectangle);
+  bool is_origin_point_in(const Rectangle &rectangle);
+  bool is_facing_point_in(const Rectangle &rectangle);
+  bool is_center_in(const Rectangle &rectangle);
 
   double get_vector_angle(MapEntity *other);
   int get_distance(MapEntity *other);

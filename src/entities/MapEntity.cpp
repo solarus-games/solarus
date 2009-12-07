@@ -37,10 +37,10 @@
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
 #include "movements/Movement.h"
+#include "lowlevel/Geometry.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
-#include "lowlevel/Geometry.h"
 
 const MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Tile::parse,
@@ -95,8 +95,8 @@ MapEntity::MapEntity(void):
   map(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
-  rectangle.x = 0;
-  rectangle.y = 0;
+  bounding_box.x = 0;
+  bounding_box.y = 0;
 
   origin.x = 0;
   origin.y = 0;
@@ -117,11 +117,8 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   map(NULL), layer(layer), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
-  rectangle.x = x;
-  rectangle.y = y;
-
-  origin.x = 0;
-  origin.y = 0;
+  bounding_box.set_xy(0, 0);
+  origin.set_xy(0, 0);
 
   set_size(width, height);
 }
@@ -141,11 +138,8 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
   map(NULL), layer(layer), name(name), direction(direction), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
-  rectangle.x = x;
-  rectangle.y = y;
-
-  origin.x = 0;
-  origin.y = 0;
+  bounding_box.set_xy(x, y);
+  origin.set_xy(0, 0);
 
   set_size(width, height);
 }
@@ -303,7 +297,7 @@ void MapEntity::set_direction(int direction) {
  * @return the x position of the entity
  */
 int MapEntity::get_x(void) {
-  return rectangle.x + origin.x;
+  return bounding_box.get_x() + origin.x;
 }
 
 /**
@@ -311,7 +305,7 @@ int MapEntity::get_x(void) {
  * @return the y position of the entity
  */
 int MapEntity::get_y(void) {
-  return rectangle.y + origin.y;
+  return bounding_box.get_y() + origin.y;
 }
 
 /**
@@ -321,7 +315,7 @@ int MapEntity::get_y(void) {
  * @param x the new x position
  */
 void MapEntity::set_x(int x) {
-  rectangle.x = x - origin.x;
+  bounding_box.set_x(x - origin.x);
 }
 
 /**
@@ -331,7 +325,7 @@ void MapEntity::set_x(int x) {
  * @param y the new y position
  */
 void MapEntity::set_y(int y) {
-  rectangle.y = y - origin.y;
+  bounding_box.set_y(y - origin.y);
 }
 
 /**
@@ -339,9 +333,8 @@ void MapEntity::set_y(int y) {
  * These are the coordinates of the point as returned by get_x() and get_y().
  * @return the coordinates of the entity on the map
  */
-const SDL_Rect MapEntity::get_xy(void) {
-  SDL_Rect coords = {get_x(), get_y()};
-  return coords;
+const Rectangle MapEntity::get_xy(void) {
+  return Rectangle(get_x(), get_y());
 }
 
 /**
@@ -360,8 +353,8 @@ void MapEntity::set_xy(int x, int y) {
  * This function sets the coordinates of the point as returned by get_x() and get_y().
  * @param coordinates the new coordinates of the entity on the map
  */
-void MapEntity::set_xy(const SDL_Rect &xy) {
-  set_xy(xy.x, xy.y);
+void MapEntity::set_xy(const Rectangle &xy) {
+  set_xy(xy.get_x(), xy.get_y());
 }
 
 /**
@@ -369,7 +362,7 @@ void MapEntity::set_xy(const SDL_Rect &xy) {
  * @return the x position of the entity's top-left corner
  */
 int MapEntity::get_top_left_x(void) {
-  return rectangle.x;
+  return bounding_box.get_x();
 }
 
 /**
@@ -377,7 +370,7 @@ int MapEntity::get_top_left_x(void) {
  * @return the y position of the entity's top-left corner
  */
 int MapEntity::get_top_left_y(void) {
-  return rectangle.y;
+  return bounding_box.get_y();
 }
 
 /**
@@ -385,7 +378,7 @@ int MapEntity::get_top_left_y(void) {
  * @param x the new top-left x position
  */
 void MapEntity::set_top_left_x(int x) {
-  rectangle.x = x;
+  bounding_box.set_x(x);
 }
 
 /**
@@ -393,7 +386,7 @@ void MapEntity::set_top_left_x(int x) {
  * @param y the new top-left y position
  */
 void MapEntity::set_top_left_y(int y) {
-  rectangle.y = y;
+  bounding_box.set_y(y);
 }
 
 /**
@@ -412,7 +405,7 @@ void MapEntity::set_top_left_xy(int x, int y) {
  * @return the width of the entity
  */
 int MapEntity::get_width(void) {
-  return rectangle.w;
+  return bounding_box.get_width();
 }
 
 /**
@@ -420,7 +413,7 @@ int MapEntity::get_width(void) {
  * @return the height of the entity
  */
 int MapEntity::get_height(void) {
-  return rectangle.h;
+  return bounding_box.get_height();
 }
 
 /**
@@ -429,43 +422,40 @@ int MapEntity::get_height(void) {
  * @param height the entity's height
  */
 void MapEntity::set_size(int width, int height) {
-  rectangle.w = width;
-  rectangle.h = height;
+  bounding_box.set_size(width, height);
 }
 
 /**
  * Sets the size of the entity.
- * @param size the width and the height
+ * @param size a rectangle having the width and height to set to the entity
  */
-void MapEntity::set_size(SDL_Rect &size) {
-  rectangle.w = size.w;
-  rectangle.h = size.h;
+void MapEntity::set_size(const Rectangle &size) {
+  set_size(size.get_width(), size.get_height());
 }
 
 /**
- * Returns the position of the entity.
+ * Returns the bounding box of the entity.
  * This function returns the rectangle defined by
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
- * @return the position of the entity
+ * @return the position and size of the entity
  */
-const SDL_Rect &MapEntity::get_rectangle(void) {
-  return rectangle;
+const Rectangle &MapEntity::get_bounding_box(void) {
+  return bounding_box;
 }
 
 /**
- * Sets the position and size of the entity.
+ * Sets the bounding box of the entity.
  * This function sets the rectangle defined by
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
- * @param rectangle the position of the entity
+ * @param bounding_box the new position and size of the entity
  */
-void MapEntity::set_rectangle(const SDL_Rect &rectangle) {
-  this->rectangle = rectangle;
+void MapEntity::set_rectangle(const Rectangle &bounding_box) {
+  this->bounding_box = bounding_box;
 }
 
 /**
- * Sets the origin point and the size of the entity
- * like its sprite.
- * You should call this function only if the entity's rectangle
+ * Sets the origin point and the size of the entity like its sprite.
+ * You should call this function only if the entity's bounding box
  * is the same as the sprite's rectangle.
  * Otherwise, you have to call set_size() and set_origin()
  * explicitely.
@@ -509,9 +499,8 @@ void MapEntity::set_aligned_to_grid(void) {
  * You should redefine this method to define a facing point.
  * @return the coordinates of the point the entity is looking at
  */
-const SDL_Rect MapEntity::get_facing_point(void) {
-  SDL_Rect point = {-1, -1};
-  return point;
+const Rectangle MapEntity::get_facing_point(void) {
+  return Rectangle(-1, -1);
 }
 
 /**
@@ -522,8 +511,7 @@ const SDL_Rect MapEntity::get_facing_point(void) {
  * @return the coordinates of the point the entity is looking at
  */
 const SDL_Rect MapEntity::get_facing_point(int direction) {
-  SDL_Rect point = {-1, -1};
-  return point;
+  return Rectangle(-1, -1);
 }
 
 /**
@@ -540,9 +528,9 @@ void MapEntity::set_facing_entity(Detector *detector) {
  * Returns the coordinates of the center point of the entity's rectangle.
  * @return the coordinates of the center point of the entity
  */
-const SDL_Rect MapEntity::get_center_point(void) {
-  SDL_Rect center = {get_top_left_x() + get_width() / 2, get_top_left_y() + get_height() / 2};
-  return center;
+const Rectangle MapEntity::get_center_point(void) {
+  return bounding_box.get_center();
+ //  {get_top_left_x() + get_width() / 2, get_top_left_y() + get_height() / 2};
 }
 
 /**

@@ -24,6 +24,19 @@ Rectangle::Rectangle(void) {
 }
 
 /**
+ * Creates a point (i.e. a rectangle with width and height set to zero).
+ * @param x x coordinate of the point
+ * @param y y coordinate of the point
+ */
+Rectangle::Rectangle(int x, int y) {
+  rect.x = x;
+  rect.y = y;
+  rect.w = 0;
+  rect.h = 0;
+}
+
+
+/**
  * Creates a rectangle, specifying its properties.
  * @param x x coordinate of the top-left corner
  * @param y y coordinate of the top-left corner

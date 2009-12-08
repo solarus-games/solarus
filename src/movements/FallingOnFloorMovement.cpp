@@ -19,7 +19,7 @@
 /**
  * Y move at each time frame.
  */
-const SDL_Rect FallingOnFloorMovement::moves[3][26] = {
+const Rectangle FallingOnFloorMovement::moves[3][26] = {
 
   // low
   {{0, -1},  {0, 1}},
@@ -55,3 +55,4 @@ FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
 FallingOnFloorMovement::~FallingOnFloorMovement(void) {
 
 }
+

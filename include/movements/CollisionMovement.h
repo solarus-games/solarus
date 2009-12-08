@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "movements/Movement.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Abstract movement class for all moving entities
@@ -26,26 +27,28 @@
  */
 class CollisionMovement: public Movement {
 
- private:
-  SDL_Rect last_collision_box_on_obstacle; /**< copy of the collision box of the last call
-					    * to test_collision_with_map() returning true */ 
-  int last_direction;                      /**< direction of the movement before a collision */
-  bool stop_on_obstacles;                  /**< indicates that this movement is currently sensible to collisions with obstacles */
+  private:
 
- public:
+    Rectangle last_collision_box_on_obstacle; /**< copy of the collision box of the last call
+					      * to test_collision_with_map() returning true */ 
+    int last_direction;                       /**< direction of the movement before a collision */
+    bool stop_on_obstacles;                   /**< indicates that this movement is currently sensible
+					       * to collisions with obstacles */
 
-  CollisionMovement(void);
-  CollisionMovement(bool stop_on_obstacles);
-  virtual ~CollisionMovement(void);
+  public:
 
-  bool test_collision_with_map(int dx, int dy);
-  virtual void update_x(void);
-  virtual void update_y(void);
+    CollisionMovement(void);
+    CollisionMovement(bool stop_on_obstacles);
+    virtual ~CollisionMovement(void);
 
-  const SDL_Rect& get_last_collision_box_on_obstacle(void);
-  int get_last_direction(void);
+    bool test_collision_with_map(int dx, int dy);
+    virtual void update_x(void);
+    virtual void update_y(void);
 
-  void set_stop_on_obstacles(bool stop_on_obstacles);
+    const Rectangle & get_last_collision_box_on_obstacle(void);
+    int get_last_direction(void);
+
+    void set_stop_on_obstacles(bool stop_on_obstacles);
 };
 
 #endif

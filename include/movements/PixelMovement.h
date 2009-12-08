@@ -30,53 +30,33 @@ class PixelMovement: public CollisionMovement {
 
   // movement properties
 
-  /**
-   * The succession of translations.
-   * Each element of the array represents a move
-   * in pixels (only the fields x and y of the SDL_Rect are used).
-   */
-  const SDL_Rect *translation_vectors;
+  const Rectangle *translation_vectors; /**< The succession of translations.
+					 * Each element of the array represents a move
+					 * in pixels (only the x and y fields of the Rectangle are used). */
+  const int nb_vectors;                 /**< Number of translation vectors: this is the size of the
+					 * translation_vectors array. */
 
-  /**
-   * Number of translation vectors: this is the size of the
-   * translation_vectors array.
-   */
-  const int nb_vectors;
+  uint32_t delay;                       /**< Delay in milliseconds between two translations. */
 
-  /**
-   * Delay in milliseconds between two translations.
-   */
-  uint32_t delay;
-
-  /**
-   * Should the movement return to the beginning once finished?
-   */
-  const bool loop;
+  const bool loop;                      /**< Should the movement return to the beginning once finished? */ 
 
   // current state
 
-  /**
-   * Current translation vector in the array.
-   */
-  int vector_index;
-
-  /**
-   * Indicates whether the entity has reached the end of the trajectory
-   * (only possible when loop is false).
-   */
-  bool finished;
+  int vector_index;                     /**< Current translation vector in the array. */
+  bool finished;                        /**< Indicates whether the entity has reached the end of the trajectory
+					 * (only possible when loop is false). */
 
  protected:
 
   PixelMovement(int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
 
-  void set_translation_vectors(const SDL_Rect *translation_vectors);
+  void set_translation_vectors(const Rectangle *translation_vectors);
   virtual void make_next_move(void);
   int get_vector_index(void);
 
  public:
 
-  PixelMovement(const SDL_Rect *translation_vectors,
+  PixelMovement(const Rectangle *translation_vectors,
 		int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
   virtual ~PixelMovement(void);
 

@@ -55,6 +55,7 @@ class Rectangle {
 
     bool contains(int x, int y) const;
     bool overlaps(const Rectangle &other) const;
+    Rectangle get_center(void);
 
     // for low-level classes use only
     SDL_Rect & get_internal_rect(void);

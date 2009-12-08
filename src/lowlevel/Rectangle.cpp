@@ -101,6 +101,14 @@ bool Rectangle::overlaps(const Rectangle &other) const {
 }
 
 /**
+ * Returns the center point of this rectangle
+ * @return the center point (represented as a zero-sized rectangle)
+ */
+Rectangle Rectangle::get_center(void) {
+  return Rectangle(get_x() + get_width() / 2, get_y() + get_height() / 2);
+}
+
+/**
  * Returns the SDL rectangle encapsulated by this object.
  * This function must be used only by other low-level classes (typically Surface)
  * as it is library dependent.

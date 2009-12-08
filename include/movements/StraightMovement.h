@@ -35,7 +35,7 @@ class StraightMovement: public CollisionMovement {
 
   StraightMovement(int speed, int direction, uint32_t time);
   StraightMovement(int speed, double direction, uint32_t time);
-  StraightMovement(int speed, const SDL_Rect &source_xy, const SDL_Rect &target_xy, uint32_t time);
+  StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time);
   ~StraightMovement(void);
 
   void update(void);

@@ -439,7 +439,7 @@ void MapEntity::set_size(const Rectangle &size) {
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
  * @return the position and size of the entity
  */
-const Rectangle &MapEntity::get_bounding_box(void) {
+const Rectangle & MapEntity::get_bounding_box(void) {
   return bounding_box;
 }
 
@@ -530,7 +530,6 @@ void MapEntity::set_facing_entity(Detector *detector) {
  */
 const Rectangle MapEntity::get_center_point(void) {
   return bounding_box.get_center();
- //  {get_top_left_x() + get_width() / 2, get_top_left_y() + get_height() / 2};
 }
 
 /**
@@ -555,7 +554,7 @@ bool MapEntity::has_prefix(const std::string &prefix) {
  * relative to the top-left corner of its rectangle.
  * @return the origin point
  */
-const SDL_Rect & MapEntity::get_origin(void) {
+const Rectangle & MapEntity::get_origin(void) {
   return origin;
 }
 
@@ -567,11 +566,9 @@ const SDL_Rect & MapEntity::get_origin(void) {
  */
 void MapEntity::set_origin(int x, int y) {
 
-  rectangle.x -= (x - origin.x);
-  rectangle.y -= (y - origin.y);
-
-  origin.x = x;
-  origin.y = y;
+  set_top_left_xy(x - origin.get_x(), y - origin.get_y());
+  origin.set_x(x);
+  origin.set_y(y);
 }
 
 /**
@@ -579,7 +576,7 @@ void MapEntity::set_origin(int x, int y) {
  * relative to the top-left corner of its rectangle.
  * @param origin x and y coordinates of the origin
  */
-void MapEntity::set_origin(const SDL_Rect &origin) {
+void MapEntity::set_origin(const Rectangle &origin) {
 
   set_origin(origin.x, origin.y);
 }
@@ -884,67 +881,67 @@ bool MapEntity::is_sword_ignored(void) {
 }
 
 /**
- * Returns whether or not this entity's rectangle overlaps
+ * Returns whether or not this entity's bounding box overlaps
  * a specified rectangle.
  * @param rectangle the rectangle to check
- * @return true if this entity's rectangle overlaps the rectangle specified, false otherwise
+ * @return true if this entity's bounding box overlaps the specified rectangle
  */
-bool MapEntity::overlaps(const SDL_Rect &rectangle) {
-  return Geometry::overlaps(get_rectangle(), rectangle);
+bool MapEntity::overlaps(const Rectangle &rectangle) {
+  return bounding_box.overlaps(rectangle);
 }
 
 /**
- * Returns whether or not a point overlaps this entity's rectangle.
+ * Returns whether or not a point overlaps this entity's bounding box.
  * @param x x coordinate of the point to check
  * @param y y coordinate of the point to check
- * @return true if the point is in this entity's rectangle
+ * @return true if the point is in this entity's bounding box
  */
 bool MapEntity::overlaps(int x, int y) {
-  return Geometry::is_point_in(get_rectangle(), x, y);
+  return bounding_box.contains(x, y);
 }
 
 /**
- * Returns whether or not this entity's rectangle overlaps
- * another entity's rectangle.
+ * Returns whether or not this entity's bounding box overlaps
+ * another entity's bounding box.
  * @param other another entity
- * @return true if this entity's rectangle overlaps the other entity's rectangle
+ * @return true if this entity's bounding box overlaps the other entity's bounding box
  */
 bool MapEntity::overlaps(MapEntity *other) {
-  return overlaps(other->get_rectangle());
+  return overlaps(other->get_bounding_box());
 }
 
 /**
  * Returns whether or not this entity's origin point is in
- * a specified rectangle.
+ * the specified rectangle.
  * @param rectangle the rectangle to check
- * @return true if this entity's origin point is in the rectangle specified, false otherwise
+ * @return true if this entity's origin point is in the specified rectangle
  */
-bool MapEntity::is_origin_point_in(const SDL_Rect &rectangle) {
-  return Geometry::is_point_in(rectangle, get_x(), get_y());
+bool MapEntity::is_origin_point_in(const Rectangle &rectangle) {
+  return rectangle.contains(get_x(), get_y()); 
 }
 
 /**
  * Returns whether or not this entity's facing point is in
- * a specified rectangle.
+ * the specified rectangle.
  * @param rectangle the rectangle to check
- * @return true if this entity's facing point is in the rectangle specified, false otherwise
+ * @return true if this entity's facing point is in the specified rectangle 
  */
-bool MapEntity::is_facing_point_in(const SDL_Rect &rectangle) {
+bool MapEntity::is_facing_point_in(const Rectangle &rectangle) {
 
-  SDL_Rect facing_point = get_facing_point();
-  return Geometry::is_point_in(rectangle, facing_point.x, facing_point.y);
+  const SDL_Rect &facing_point = get_facing_point();
+  return rectangle.contains(facing_point.get_x(), facing_point.get_y());
 }
 
 /**
  * Returns whether or not this entity's center is in
- * a specified rectangle.
+ * the specified rectangle.
  * @param rectangle the rectangle to check
- * @return true if this entity's center is in the rectangle specified, false otherwise
+ * @return true if this entity's center is in the specified rectangle
  */
-bool MapEntity::is_center_in(const SDL_Rect &rectangle) {
+bool MapEntity::is_center_in(const Rectangle &rectangle) {
 
-  const SDL_Rect &center = get_center_point();
-  return Geometry::is_point_in(rectangle, center.x, center.y);
+  const Rectangle &center = get_center_point();
+  return rectangle.contains(center.get_x(), center.get_y());
 }
 
 /**
@@ -984,9 +981,9 @@ int MapEntity::get_distance(MapEntity *other) {
  * the entity never overlaps an obstacle.
  * If the entity is on an obstacle, we try to move it in the eight possible direction up to 8 pixels away,
  * until an obstacle-free position is found.
- * If no free position is found, the entity is not moved.
+ * There is no guarantee of success: if no free position is found, the entity is not moved.
  */
-/*
+/* I think this function should never be used 
 void MapEntity::ensure_no_obstacles(void) {
 
   SDL_Rect collision_box = get_rectangle();

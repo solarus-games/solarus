@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "entities/MapEntity.h"
+#include "lowlevel/System.h"
 
 /**
  * Default constructor.
@@ -69,10 +70,8 @@ bool CollisionMovement::test_collision_with_map(int dx, int dy) {
   Map *map = entity->get_map();
 
   // place the collision box where we want to check the collisions
-  SDL_Rect collision_box = entity->get_rectangle();
-
-  collision_box.x += dx;
-  collision_box.y += dy;
+  Rectangle collision_box = entity->get_rectangle();
+  collision_box.set_xy(collision_box.get_x() + dx, collision_box.get_y() + dy);
 
   bool collision = map->test_collision_with_obstacles(entity->get_layer(), collision_box, entity);
 
@@ -91,7 +90,7 @@ bool CollisionMovement::test_collision_with_map(int dx, int dy) {
  */
 void CollisionMovement::update_x(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   int x_move = get_x_move();
   if (x_move != 0 && now >= get_next_move_date_x()) { // while it's time to try a move
 
@@ -114,7 +113,7 @@ void CollisionMovement::update_x(void) {
  */
 void CollisionMovement::update_y(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   int y_move = get_y_move();
   if (y_move != 0 && now >= get_next_move_date_y()) { // while it's time to try a move
 
@@ -134,7 +133,7 @@ void CollisionMovement::update_y(void) {
  * to test_collision_with_map() returning true.
  * @return the collision box of the last collision detected
  */
-const SDL_Rect& CollisionMovement::get_last_collision_box_on_obstacle(void) {
+const Rectangle & CollisionMovement::get_last_collision_box_on_obstacle(void) {
   return last_collision_box_on_obstacle;
 }
 

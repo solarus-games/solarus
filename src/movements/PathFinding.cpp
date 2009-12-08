@@ -18,26 +18,26 @@
 #include "entities/MapEntity.h"
 #include "Map.h"
 
-const SDL_Rect PathFinding::neighbours_locations[] = {
-  {  8,  0, 16, 16 },
-  {  8, -8, 16, 16 },
-  {  0, -8, 16, 16 },
-  { -8, -8, 16, 16 },
-  { -8,  0, 16, 16 },
-  { -8,  8, 16, 16 },
-  {  0,  8, 16, 16 },
-  {  8,  8, 16, 16 }
-};
+const Rectangle PathFinding::neighbours_locations[] = {
+  Rectangle( 8,  0, 16, 16 ),
+  Rectangle( 8, -8, 16, 16 ),
+  Rectangle( 0, -8, 16, 16 ),
+  Rectangle(-8, -8, 16, 16 ),
+  Rectangle(-8,  0, 16, 16 ),
+  Rectangle(-8,  8, 16, 16 ),
+  Rectangle( 0,  8, 16, 16 ),
+  Rectangle( 8,  8, 16, 16 )
+}
 
 const SDL_Rect PathFinding::transition_collision_boxes[] = {
-  { 16,  0,  8, 16 },
-  {  0, -8, 24, 24 },
-  {  0, -8, 16,  8 },
-  { -8, -8, 24, 24 },
-  { -8,  0,  8, 16 },
-  { -8,  0, 24, 24 },
-  {  0, 16, 16,  8 },
-  {  0,  0, 24, 24 }
+  Rectangle(16,  0,  8, 16 ),
+  Rectangle( 0, -8, 24, 24 ),
+  Rectangle( 0, -8, 16,  8 ),
+  Rectangle(-8, -8, 24, 24 ),
+  Rectangle(-8,  0,  8, 16 ),
+  Rectangle(-8,  0, 24, 24 ),
+  Rectangle( 0, 16, 16,  8 ),
+  Rectangle( 0,  0, 24, 24 )
 };
 
 /**
@@ -50,12 +50,12 @@ const SDL_Rect PathFinding::transition_collision_boxes[] = {
 PathFinding::PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_entity):
   map(map), source_entity(source_entity), target_entity(target_entity) {
 
-  const SDL_Rect &source = source_entity->get_rectangle();
-  const SDL_Rect &target = target_entity->get_rectangle();
+  const Rectangle &source = source_entity->get_bounding_box();
+  const Rectangle &target = target_entity->get_bounding_box();
 
-  if (source.x % 8 != 0 || source.y % 8 != 0 ||
-      source.w % 16 != 0 || source.h % 16 != 0 ||
-      target.w % 16 != 0 || target.h % 16 != 0) {
+  if (!source_entity->is_aligned_to_grid() ||
+      source.get_width() % 16 != 0 || source.get_height() % 16 != 0 ||
+      target.get_width() % 16 != 0 || target.get_height() % 16 != 0) {
     DIE("The source and the target must be 16*16 rectangles and the source must be aligned on the map grid");
   }
 }
@@ -76,16 +76,16 @@ std::string PathFinding::compute_path(void) {
 //  std::cout << "will compute a path from " << source_entity->get_top_left_x() << "," << source_entity->get_top_left_y()
 //    << " to " << target_entity->get_top_left_x() << "," << target_entity->get_top_left_y() << std::endl;
 
-  SDL_Rect source = source_entity->get_rectangle();
-  SDL_Rect target = target_entity->get_rectangle();
+  Rectangle source = source_entity->get_bounding_box();
+  Rectangle target = target_entity->get_bounding_box();
 
-  target.x += 4;
-  target.x -= target.x % 8;
-  target.y += 4;
-  target.y -= target.y % 8;
+  target.set_x(target.get_x() + 4);
+  target.set_x(target.get_x() - target.get_x() % 8);
+  target.set_y(target.get_y() + 4);
+  target.set_y(target.get_y() - target.get_y() % 8);
   int target_index = get_square_index(target);
 
-  if (target.x % 8 != 0 || target.y % 8 != 0) {
+  if (target.y() % 8 != 0 || target.get_y() % 8 != 0) {
     DIE("Could not snap the target to the map grid");
   }
 
@@ -121,7 +121,7 @@ std::string PathFinding::compute_path(void) {
     open_list.erase(index);
     current_node = &closed_list[index];
 
-    // std::cout << SDL_GetTicks() << " picking the lowest cost node in the open list (" << (open_list_indices.size() + 1) << " elements): "
+    // std::cout << System::now() << " picking the lowest cost node in the open list (" << (open_list_indices.size() + 1) << " elements): "
     //  << current_node->location.x << "," << current_node->location.y << ", cost = " << current_node->previous_cost << " + " << current_node->heuristic << "\n";
 
     if (index == target_index) {
@@ -132,7 +132,7 @@ std::string PathFinding::compute_path(void) {
     }
     else {
       // look at the accessible nodes from it
-      // std::cout << SDL_GetTicks() << " looking for accessible states\n";
+      // std::cout << System::now() << " looking for accessible states\n";
       for (int i = 0; i < 8; i++) {
 
 	Node new_node;
@@ -191,27 +191,16 @@ std::string PathFinding::compute_path(void) {
  * @param location location of a node on the map
  * @return index of the square corresponding to the top-left part of the location
  */
-int PathFinding::get_square_index(const SDL_Rect &location) {
+int PathFinding::get_square_index(const Rectangle &location) {
 
-  int x8 = location.x / 8;
-  int y8 = location.y / 8;
+  int x8 = location.get_x() / 8;
+  int y8 = location.get_y() / 8;
   return y8 * map->get_width8() + x8;
 }
 
 /**
- * Returns the Manhattan distance of two points, measured in number of 8*8 squares.
- * @param point1 a first point
- * @param point2 a second point
- * @return the Manhattan distance between these points
- */
-int PathFinding::get_manhattan_distance(const SDL_Rect &point1, const SDL_Rect &point2) {
-
-  int distance = abs(point2.x - point1.x) + abs(point2.y - point1.y);
-  return distance / 8;
-}
-
-/**
  * Compares two nodes according to their total estimated cost.
+ * @param other the other node
  */
 bool PathFinding::Node::operator<(const Node &other) {
   return total_cost < other.total_cost;
@@ -264,9 +253,9 @@ std::string PathFinding::rebuild_path(const Node *final_node) {
  */
 bool PathFinding::is_node_transition_valid(const Node &initial_node, int direction) {
 
-  SDL_Rect collision_box = transition_collision_boxes[direction];
-  collision_box.x += initial_node.location.x;
-  collision_box.y += initial_node.location.y;
+  Rectangle collision_box = transition_collision_boxes[direction];
+  collision_box.set_x(collision_box.get_x() + initial_node.location.get_x());
+  collision_box.set_y(collision_box.get_y() + initial_node.location.get_y());
 
   return !map->test_collision_with_obstacles(source_entity->get_layer(), collision_box, source_entity);
 }

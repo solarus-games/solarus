@@ -31,7 +31,7 @@ class FallingOnFloorMovement: public PixelMovement {
 
  private:
 
-  static const SDL_Rect moves[][26];
+  static const Rectangle moves[][26];
   static const int nb_moves[];
 
  public:
@@ -43,3 +43,4 @@ class FallingOnFloorMovement: public PixelMovement {
 };
 
 #endif
+

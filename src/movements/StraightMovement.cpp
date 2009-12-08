@@ -16,6 +16,7 @@
  */
 #include "movements/StraightMovement.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a straight movement.
@@ -40,10 +41,11 @@ StraightMovement::StraightMovement(int speed, double direction, uint32_t time) {
 /**
  * Creates a straight movement.
  * @param speed the speed
+ * @param source_xy the movement will start from this point
  * @param target_xy the movement will go into this point's direction
  * @param time duration of the movement in milliseconds
  */
-StraightMovement::StraightMovement(int speed, const SDL_Rect &source_xy, const SDL_Rect &target_xy, uint32_t time) {
+StraightMovement::StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time) {
   double angle = Geometry::get_angle(source_xy.x, source_xy.y, target_xy.x, target_xy.y);
   start(speed, angle, time);
 }
@@ -75,7 +77,7 @@ void StraightMovement::start(int speed, int direction, uint32_t time) {
 void StraightMovement::start(int speed, double direction, uint32_t time) {
 
   finished = false;
-  end_movement_date = SDL_GetTicks() + time;
+  end_movement_date = System::now() + time;
   set_speed(speed);
   if (speed != 0) {
     set_direction(direction);
@@ -88,7 +90,7 @@ void StraightMovement::start(int speed, double direction, uint32_t time) {
 void StraightMovement::update(void) {
   Movement::update();
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   if (now >= end_movement_date) {
     stop();
     finished = true;
@@ -103,7 +105,7 @@ void StraightMovement::set_suspended(bool suspended) {
   Movement::set_suspended(suspended);
 
   if (!suspended) {
-    end_movement_date += SDL_GetTicks() - when_suspended;
+    end_movement_date += System::now() - when_suspended;
   }
 }
 
@@ -116,3 +118,4 @@ void StraightMovement::set_suspended(bool suspended) {
 bool StraightMovement::is_finished(void) {
   return finished;
 }
+

@@ -35,6 +35,7 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Surface.h"
 
 const Rectangle Game::outside_world_size(0, 0, 2080, 3584); // TODO load from external file
 
@@ -115,7 +116,10 @@ Hero * Game::get_hero(void) {
  * @return the position of the hero
  */
 const Rectangle & Game::get_hero_xy(void) {
-  return hero->get_xy();
+
+  static Rectangle xy;
+  xy.set_xy(hero->get_xy());
+  return xy;
 }
 
 /**
@@ -344,9 +348,9 @@ void Game::update_transitions(void) {
 
 	// before closing the map, draw it on a backup surface for transition effects that display two maps
 	if (needs_previous_surface) {
-	  previous_map_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+	  previous_map_surface = new Surface(320, 240);
 	  current_map->display();
-	  SDL_BlitSurface(current_map->get_visible_surface(), NULL, previous_map_surface, NULL);
+	  current_map->get_visible_surface()->blit(previous_map_surface);
 	}
 
 	// unload the previous tileset if the new map uses another one

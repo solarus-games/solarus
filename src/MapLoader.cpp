@@ -17,9 +17,9 @@
 #include "MapLoader.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "lowlevel/FileTools.h"
 #include "ResourceManager.h"
 #include "Camera.h"
+#include "lowlevel/FileTools.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
 #include "entities/Tileset.h"
@@ -27,7 +27,6 @@
 #include "entities/EntityType.h"
 #include "entities/MapEntity.h"
 #include <iomanip>
-using namespace std;
 
 /**
  * Creates a map loader.
@@ -55,13 +54,13 @@ void MapLoader::load_map(Map *map) {
   // compute the file name, depending on the id
   std::ostringstream oss;
   oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".zsd";
-  const string &file_name = oss.str();
+  const std::string &file_name = oss.str();
 
   // open the map file
   std::istream &map_file = FileTools::data_file_open(file_name);
 
   // parse the map file
-  string line;
+  std::string line;
   TilesetId tileset_id;
   int x, y, width, height;
 
@@ -82,12 +81,10 @@ void MapLoader::load_map(Map *map) {
   FileTools::read(iss0, tileset_id);
   FileTools::read(iss0, map->music_id);
 
-  map->location.w = width;
-  map->location.h = height;
-  map->width8 = map->location.w / 8;
-  map->height8 = map->location.h / 8;
-  map->location.x = x;
-  map->location.y = y;
+  map->location.set_size(width, height);
+  map->width8 = width / 8;
+  map->height8 = height / 8;
+  map->location.set_xy(x, y);
 
   map->tileset = ResourceManager::get_tileset(tileset_id);
   if (!map->tileset->is_loaded()) {

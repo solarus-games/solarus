@@ -16,6 +16,7 @@
  */
 #include "SpriteAnimationDirection.h"
 #include "lowlevel/PixelBits.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -58,7 +59,7 @@ const Rectangle & SpriteAnimationDirection::get_size(void) {
  * Returns the origin point of a frame.
  * @return the origin point of a frame
  */
-const Rectngle & SpriteAnimationDirection::get_origin(void) {
+const Rectangle & SpriteAnimationDirection::get_origin(void) {
   return origin;
 }
 
@@ -96,10 +97,10 @@ void SpriteAnimationDirection::display(Surface *destination, int x, int y,
 
   const Rectangle &current_frame_rect = frames[current_frame];
 
-  position_top_left.set_xy(x - origin.x, y - origin.y);
+  position_top_left.set_xy(x - origin.get_x(), y - origin.get_y());
   position_top_left.set_size(current_frame_rect.get_width(), current_frame_rect.get_height());
 
-  src_image->blit(current_frame_rect, destination, &position_top_left);
+  src_image->blit(current_frame_rect, destination, position_top_left);
 }
 
 /**

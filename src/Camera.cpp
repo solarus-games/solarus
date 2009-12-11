@@ -29,8 +29,7 @@
 Camera::Camera(Map *map):
   map(map), fixed_on_hero(true), restoring(false), speed(12), movement(NULL) {
 
-  position.x = 0;
-  position.y = 0;
+  position.set_xy(0, 0);
 }
 
 /**
@@ -45,8 +44,8 @@ Camera::~Camera(void) {
  */
 void Camera::update(void) {
 
-  int x = position.x;
-  int y = position.y;
+  int x = position.get_x();
+  int y = position.get_y();
   const Rectangle &map_location = map->get_location();
 
   // if the camera is not moving, center it on the hero
@@ -145,7 +144,7 @@ void Camera::move(MapEntity *entity) {
  */
 void Camera::restore(void) {
   const Rectangle &hero_xy = zsdx->game->get_hero_xy();
-  move(hero_xy.x, hero_xy.y);
+  move(hero_xy.get_x(), hero_xy.get_y());
   restoring = true;
 }
 

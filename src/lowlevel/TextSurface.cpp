@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/TextSurface.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 
 /**
@@ -38,7 +40,7 @@ void TextSurface::initialize(void) {
     rw[i] = FileTools::data_file_open_rw(file_names[i]);
     fonts[i] = TTF_OpenFontRW(rw[i], 0, sizes[i]);
     if (fonts[i] == NULL) {
-      DIE("Cannot load font " << i << " '" << file_names[i] << "': " << SDL_GetError());
+      DIE("Cannot load font " << i << " '" << file_names[i] << "': " << System::now());
     }
   }
 }
@@ -156,6 +158,17 @@ void TextSurface::set_text_color(Color &color) {
 }
 
 /**
+ * Sets the color of the text.
+ * @param r red component (0 to 255)
+ * @param g green component (0 to 255)
+ * @param b blue component (0 to 255)
+ */
+void TextSurface::set_text_color(int r, int g, int b) {
+  this->text_color = Color(r, g, b);
+  rebuild();
+}
+
+/**
  * Sets the background color of the text.
  * This is only useful for the TEXT_SHADED rendering.
  * @param color the background color to set
@@ -248,16 +261,16 @@ void TextSurface::rebuild(void) {
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    internal_surface = TTF_RenderUTF8_Solid(fonts[font_id], text.c_str(), text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Solid(fonts[font_id], text.c_str(), *text_color.get_internal_color());
     break;
 
   case TEXT_SHADED:
-    internal_surface = TTF_RenderUTF8_Shaded(fonts[font_id], text.c_str(), text_color.get_intenal_color(),
-	background_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Shaded(fonts[font_id], text.c_str(), *text_color.get_internal_color(),
+	*background_color.get_internal_color());
     break;
 
   case TEXT_BLENDED:
-    internal_surface = TTF_RenderUTF8_Blended(fonts[font_id], text.c_str(), text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Blended(fonts[font_id], text.c_str(), *text_color.get_internal_color());
     break;
   }
 

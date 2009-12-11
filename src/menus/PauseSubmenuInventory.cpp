@@ -246,7 +246,7 @@ void PauseSubmenuInventory::update(void) {
  * Displays this submenu.
  * @param destination the destination surface
  */
-void PauseSubmenuInventory::display(SDL_Surface *destination) {
+void PauseSubmenuInventory::display(Surface *destination) {
 
   // display the common part
   PauseSubmenu::display(destination);
@@ -293,8 +293,8 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
   if (item_assigned_movement != NULL) {
     
     src_position.set_xy(16 * item_assigned_id, 16 * (item_assigned_variant - 1));
-    dst_position.set_xy(item_assigned_movement->get_xy(), item_assigned_movement->get_xy());
-    items_img-blit(src_position, destination, dst_position);
+    dst_position.set_xy(item_assigned_movement->get_x(), item_assigned_movement->get_y());
+    items_img->blit(src_position, destination, dst_position);
   }
 }
 

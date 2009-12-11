@@ -51,7 +51,7 @@ PauseSubmenu::~PauseSubmenu(void) {
  * The subclasses should call this function.
  * @param destination the surface to draw
  */
-void PauseSubmenu::display(SDL_Surface *destination) {
+void PauseSubmenu::display(Surface *destination) {
   caption_text_1->display(destination);
   caption_text_2->display(destination);
 }

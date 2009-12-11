@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
 #include "Controls.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * The Options submenu of the pause menu.

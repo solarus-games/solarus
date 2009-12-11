@@ -49,6 +49,7 @@ class Surface {
     void blit(const Rectangle &src_position, Surface *destination);
     void blit(const Rectangle &src_position, Surface *destination, const Rectangle &dst_position);
 
+    SDL_Surface * get_internal_surface(void);
 };
 
 #endif

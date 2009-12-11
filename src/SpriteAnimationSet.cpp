@@ -34,7 +34,7 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
   // read the file
   std::string line;
 
-  SDL_Rect *positions_in_src;
+  Rectangle *positions_in_src;
   SpriteAnimationDirection **directions;
   std::string name, image_file_name;
   int nb_directions, nb_frames, x_origin, y_origin, loop_on_frame;
@@ -85,22 +85,18 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 	rows = (nb_frames / columns) + 1;
       }
 
-      positions_in_src = new SDL_Rect[nb_frames];
+      positions_in_src = new Rectangle[nb_frames];
       int j = 0; // frame number
       for (int r = 0; r < rows && j < nb_frames; r++) {	
 	for (int c = 0; c < columns && j < nb_frames; c++) {
 
-	  positions_in_src[j].x = x + c * width;
-	  positions_in_src[j].y = y + r * height;
-	  positions_in_src[j].w = width;
-	  positions_in_src[j].h = height;
-
+	  positions_in_src[j].set_xy(x + c * width, y + r * height);
+	  positions_in_src[j].set_size(width, height);
 	  j++;
 	}
       }
 
-      directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src,
-						   x_origin, y_origin);
+      directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src, x_origin, y_origin);
     }
 
     if (animations.find(name) != animations.end()) {

@@ -16,14 +16,16 @@
  */
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenuSelectFile.h"
+#include "TransitionFade.h"
+#include "ResourceManager.h"
+#include "StringResource.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
-#include "TransitionFade.h"
-#include "ResourceManager.h"
-#include "StringResource.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/System.h"
 #include <ctime>
 
 // TODO remove
@@ -171,8 +173,8 @@ void TitleScreen::init_phase_zs_presents(void) {
 
   zs_presents_img = ResourceManager::load_image("menus/zelda_solarus_presents.png");
   ResourceManager::get_sound("intro")->play();
-  zs_presents_position.x = 160 - (zs_presents_img->w / 2);
-  zs_presents_position.y = 120 - (zs_presents_img->h / 2);
+  zs_presents_position.set_x(160 - (zs_presents_img->get_width() / 2));
+  zs_presents_position.set_y(120 - (zs_presents_img->get_height() / 2));
 
   next_phase_date = System::now() + 2000; // intro: 2 seconds
   transition_out = new TransitionFade(Transition::OUT);
@@ -182,9 +184,8 @@ void TitleScreen::init_phase_zs_presents(void) {
  * Exits phase 2 of the title screen.
  */
 void TitleScreen::exit_phase_zs_presents(void) {
-
-   delete zs_presents_img;
-   delete transition_out;
+  delete zs_presents_img;
+  delete transition_out;
 }
 
 /**
@@ -194,7 +195,7 @@ void TitleScreen::exit_phase_zs_presents(void) {
 void TitleScreen::init_phase_title(void) {
 
   static const std::string time_of_day_strings[] = { "daylight", "sunset", "night" };
-  static const Color text_colors[] = { Color(0, 0, 92), Color(0, 0, 92), Color(255, 128, 0) };
+  static Color text_colors[] = { Color(0, 0, 92), Color(0, 0, 92), Color(255, 128, 0) };
   TimeOfDay time_of_day = get_time_of_day();
 //  time_of_day = TimeOfDay(2);
 
@@ -225,8 +226,7 @@ void TitleScreen::init_phase_title(void) {
   press_space_img->set_text(StringResource::get_string("title_screen.press_space"));
   title_surface = new Surface(320, 240);
 
-  clouds_position.x = 320;
-  clouds_position.y = 30;
+  clouds_position.set_xy(320, 30);
   uint32_t now = System::now();
   next_clouds_move_date = now;
 
@@ -282,13 +282,13 @@ void TitleScreen::update_phase_title(void) {
   }
 
   while (now >= next_clouds_move_date) {
-    clouds_position.x += 1;
-    clouds_position.y -= 1;
-    if (clouds_position.x >= 535) {
-      clouds_position.x -= 535;
+    clouds_position.add_x(1);
+    clouds_position.add_y(-1);
+    if (clouds_position.get_x() >= 535) {
+      clouds_position.add_x(-535);
     }
-    if (clouds_position.y < 0) {
-      clouds_position.y += 299;
+    if (clouds_position.get_y() < 0) {
+      clouds_position.add_y(299);
     }
     next_clouds_move_date = now + 50;
   }
@@ -303,7 +303,7 @@ void TitleScreen::update_phase_title(void) {
  * Displays phase 3 of the title screen.
  * @param destination surface the surface to draw
  */
-void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
+void TitleScreen::display_phase_title(Surface *destination_surface) {
 
   // fill with black
   title_surface->fill_with_color(Color::get_black());

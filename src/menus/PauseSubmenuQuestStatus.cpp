@@ -43,7 +43,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   Surface *treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
   Surface *pieces_of_heart_img = ResourceManager::load_image("menus/quest_status_pieces_of_heart.png");
 
-  ostringstream oss;
+  std::ostringstream oss;
 
   // tunic
   {
@@ -60,7 +60,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   // sword
   if (equipment->has_sword()) {
     int sword = equipment->get_sword();
-    Rectangle src_positio(80 + sword * 16, 96, 16, 16);
+    Rectangle src_position(80 + sword * 16, 96, 16, 16);
     Rectangle dst_position(211, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
 
@@ -114,7 +114,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     int quiver = (max_arrows == 10) ? 1 : ((max_arrows == 30) ? 2 : 3);
     
     Rectangle src_position(96 + quiver * 16, 80, 16, 16);
-    Rectangle& dst_position(60, 130);
+    Rectangle dst_position(60, 130);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.quiver_" << quiver;
@@ -282,7 +282,7 @@ void PauseSubmenuQuestStatus::update(void) {
  * Displays this submenu.
  * @param destination the destination surface
  */
-void PauseSubmenuQuestStatus::display(SDL_Surface *destination) {
+void PauseSubmenuQuestStatus::display(Surface *destination) {
   PauseSubmenu::display(destination);
 
   // quest items

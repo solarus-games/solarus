@@ -198,6 +198,19 @@ int PathFinding::get_square_index(const Rectangle &location) {
 }
 
 /**
+ * Returns the Manhattan distance of two points, measured in number of 8*8 squares.
+ * @param point1 a first point
+ * @param point2 a second point
+ * @return the Manhattan distance between these points
+ */
+int PathFinding::get_manhattan_distance(const Rectangle &point1, const Rectangle &point2) {
+
+  int distance = abs(point2.get_x() - point1.get_x()) + abs(point2.get_y() - point1.get_y());
+  return distance / 8;
+}
+
+
+/**
  * Compares two nodes according to their total estimated cost.
  * @param other the other node
  */

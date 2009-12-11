@@ -16,10 +16,7 @@
  */
 #include "MapScript.h"
 #include "Map.h"
-#include "lowlevel/FileTools.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Music.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Equipment.h"
@@ -41,6 +38,10 @@
 #include "entities/Door.h"
 #include "entities/Sensor.h"
 #include "entities/Enemy.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
+#include "lowlevel/Rectangle.h"
 #include <iomanip>
 #include <lua5.1/lua.hpp>
 
@@ -878,10 +879,10 @@ int MapScript::l_npc_get_position(lua_State *l) {
 
   Map *map = zsdx->game->get_current_map();
   InteractiveEntity *npc = (InteractiveEntity*) map->get_entities()->get_entity(INTERACTIVE_ENTITY, name);
-  const SDL_Rect &coordinates = npc->get_xy();
+  const Rectangle &coordinates = npc->get_xy();
 
-  lua_pushinteger(l, coordinates.x);
-  lua_pushinteger(l, coordinates.y);
+  lua_pushinteger(l, coordinates.get_x());
+  lua_pushinteger(l, coordinates.get_y());
 
   return 2;
 }

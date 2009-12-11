@@ -16,6 +16,7 @@
  */
 #include "lowlevel/Random.h"
 #include <ctime>
+#include <cstdlib>
 
 /**
  * Initializes the random number generator.

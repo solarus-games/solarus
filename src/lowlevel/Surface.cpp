@@ -15,7 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Surface.h"
+#include "lowlevel/Color.h"
+#include "lowlevel/Rectangle.h"
 #include "lowlevel/FileTools.h"
+#include <SDL/SDL_image.h>
 
 /**
  * Creates a surface with the specified size.
@@ -37,7 +40,7 @@ Surface::Surface(std::string file_name) {
   this->internal_surface = IMG_Load_RW(rw, 0);
   FileTools::data_file_close_rw(rw);
 
-  if (image == NULL) {
+  if (internal_surface == NULL) {
     DIE("Cannot load image '" << file_name << "'");
   }
 }
@@ -80,7 +83,7 @@ int Surface::get_height(void) {
  * @param color the transparency color to set
  */
 void Surface::set_transparency_color(Color &color) {
-  SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_color());
+  SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_value());
 }
 
 /**
@@ -98,14 +101,12 @@ void Surface::set_opacity(int opacity) {
   SDL_SetAlpha(internal_surface, SDL_SRCALPHA, opacity);
 }
 
-}
-
 /**
  * Fills the entire surface with the specified color.
  * @param color a color
  */
 void Surface::fill_with_color(Color &color) {
-  SDL_FillRect(internal_surface, NULL, color.get_internal_color());
+  SDL_FillRect(internal_surface, NULL, color.get_internal_value());
 }
 
 /**
@@ -114,8 +115,8 @@ void Surface::fill_with_color(Color &color) {
  * @param where the rectangle to fill
  */
 void Surface::fill_with_color(Color &color, const Rectangle &where) {
-  SDL_Rect where2 = where.get_internal_rect();
-  SDL_FillRect(internal_surface, where2, color.get_internal_color());
+  Rectangle where2 = where;
+  SDL_FillRect(internal_surface, where2.get_internal_rect(), color.get_internal_value());
 }
 
 /**
@@ -124,7 +125,7 @@ void Surface::fill_with_color(Color &color, const Rectangle &where) {
  * @param destination the destination surface
  */
 void Surface::blit(Surface *destination) {
-  SDL_BlitSurface(internal_surface, NULL, destination, NULL);
+  SDL_BlitSurface(internal_surface, NULL, destination->internal_surface, NULL);
 }
 
 /**
@@ -134,8 +135,8 @@ void Surface::blit(Surface *destination) {
  */
 void Surface::blit(Surface *dst, const Rectangle &dst_position) {
 
-  SDL_Rect dst_position2 = dst_position.get_internal_rect();
-  SDL_BlitSurface(internal_surface, NULL, dst.get_internal_surface(), dst_position2);
+  Rectangle dst_position2 = dst_position;
+  SDL_BlitSurface(internal_surface, NULL, dst->internal_surface, dst_position2.get_internal_rect());
 }
 
 /**
@@ -146,8 +147,8 @@ void Surface::blit(Surface *dst, const Rectangle &dst_position) {
  */
 void Surface::blit(const Rectangle &src_position, Surface *dst) {
 
-  SDL_Rect src_position2 = src_position.get_internal_rect();
-  SDL_BlitSurface(internal_surface, src_position2, dst.get_internal_surface(), NULL);
+  Rectangle src_position2 = src_position;
+  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, NULL);
 }
 
 /**
@@ -158,8 +159,17 @@ void Surface::blit(const Rectangle &src_position, Surface *dst) {
  */
 void Surface::blit(const Rectangle &src_position, Surface *dst, const Rectangle &dst_position) {
 
-  SDL_Rect src_position2 = src_position.get_internal_rect();
-  SDL_Rect dst_position2 = dst_position.get_internal_rect();
-  SDL_BlitSurface(internal_surface, src_position2, dst.get_internal_surface(), dst_position2);
+  Rectangle src_position2 = src_position;
+  Rectangle dst_position2 = dst_position;
+  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, dst_position2.get_internal_rect());
+}
+
+/**
+ * Returns the SDL surface encapsulated by this object.
+ * This method should be used only by low-level classes.
+ * @return the SDL surface encapsulated:
+ */
+SDL_Surface * Surface::get_internal_surface(void) {
+  return internal_surface;
 }
 

@@ -20,11 +20,11 @@
  */
 #include "lowlevel/Color.h"
 
-SDL_PixelFormat * Color::format;
+SDL_PixelFormat * Color::format = NULL;
 
-Color * Color::black;
-Color * Color::white;
-Color * Color::red;
+Color Color::black;
+Color Color::white;
+Color Color::red;
 
 /**
  * Initializes the color static fields.
@@ -33,7 +33,7 @@ void Color::initialize(void) {
 
   format = SDL_GetVideoSurface()->format;
 
-  black = Color(0, 0, 0);
+  black = Color(0, 0, 0); 
   white = Color(255, 255, 255);
   red = Color(255, 0, 0);
 }
@@ -46,11 +46,13 @@ void Color::quit(void) {
 }
 
 /**
- * Creates a default color with an unspecified RGB values.
+ * Creates a default color with unspecified RGB values.
  */
-Color::Color(void):
-  internal_color(SDL_MapRGB(format, 0, 0, 0)) {
-
+Color::Color(void) {
+  internal_color.r = 0;
+  internal_color.g = 0;
+  internal_color.b = 0;
+  internal_value = 0;
 }
 
 /**
@@ -58,7 +60,7 @@ Color::Color(void):
  * @param other another color
  */
 Color::Color(const Color &other):
-  internal_color(other->internal_color) {
+  internal_value(other.internal_value), internal_color(other.internal_color) {
 
 }
 
@@ -68,12 +70,29 @@ Color::Color(const Color &other):
  * @param g the green component (from 0 to 255)
  * @param b the blue component (from 0 to 255)
  */
-Color Color(int r, int g, int b):
-  internal_color(SDL_MapRGB(format, r, g, b)) {
+Color::Color(int r, int g, int b) {
+  internal_color.r = r;
+  internal_color.g = g;
+  internal_color.b = b;
 
+  internal_value = SDL_MapRGB(format, r, g, b);
 }
 
-uint32_t Color::get_internal_color(void) {
-  return internal_color;
+/**
+ * Returns the 32-bit value representing this color.
+ * This function must be used only by low-level classes.
+ * @return the 32-bit value of this color
+ */
+uint32_t Color::get_internal_value(void) {
+  return internal_value;
+}
+
+/**
+ * Returns the internal color encapsulated by this object.
+ * This function must be used only by low-level classes.
+ * @return the SDL color encapsulated
+ */
+SDL_Color * Color::get_internal_color(void) {
+  return &internal_color;
 }
 

@@ -14,8 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <iostream>
 #include "lowlevel/PixelBits.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/Rectangle.h"
+#include <SDL/SDL.h>
+#include <iostream> // print functions
 
 /**
  * Creates a pixel bits object.
@@ -24,7 +27,7 @@
  */
 PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
 
-  SDL_PixelFormat *format = surface->format;
+  SDL_PixelFormat *format = surface->get_internal_surface()->format;
   if (format->BitsPerPixel != 8) {
     DIE("This surface should have an 8-bit pixel format");
   }
@@ -63,7 +66,7 @@ PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
       mask >>= 1;
       pixel_index++;
     }
-    pixel_index += surface->w - width;
+    pixel_index += surface->get_width() - width;
   }
 
 }
@@ -151,13 +154,13 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
   int nb_used_bits_row_b;    // number of bits used on the first used mask of row b
 
   // compute the number of masks on row a
-  nb_masks_per_row_a = intersection.w / 32;
-  if (intersection.w % 32 != 0) {
+  nb_masks_per_row_a = intersection.get_width() / 32;
+  if (intersection.get_width() % 32 != 0) {
     nb_masks_per_row_a++;
   }
 
   // make sure row a starts after row b
-  if (bounding_box1.x > bounding_box2.x) {
+  if (bounding_box1.get_x() > bounding_box2.get_x()) {
     rows_a = &this->bits[offset_y1];
     rows_b = &other->bits[offset_y2];
     nb_unused_masks_row_b = offset_x2 / 32;
@@ -175,7 +178,7 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
 
   // check the collisions each row of the intersection rectangle
   bool collision = false;
-  for (int i = 0; i < intersection.h && !collision; i++) {
+  for (int i = 0; i < intersection.get_height() && !collision; i++) {
 
     // current row
     bits_a = rows_a[i];

@@ -27,55 +27,55 @@
  */
 class Message {
 
- private:
+  private:
 
-  // the dialog box where this message is displayed
-  DialogBox *dialog_box;
+    // the dialog box where this message is displayed
+    DialogBox *dialog_box;
 
-  // properties of the message
+    // properties of the message
 
-  std::string lines[3];        // the 3 lines of the message
-  TextSurface *text_surfaces[3];
-  bool question;               // is this message a question?
-  MessageId next_message_id;   // id of the next message (or an empty string if this is the last message)
-  MessageId next_message_id_2;
+    std::string lines[3];        // the 3 lines of the message
+    TextSurface *text_surfaces[3];
+    bool question;               // is this message a question?
+    MessageId next_message_id;   // id of the next message (or an empty string if this is the last message)
+    MessageId next_message_id_2;
 
-  int x;
-  int y;
+    int x;
+    int y;
 
-  void parse(MessageId message_id);
-  void set_variable(const std::string &value);
+    void parse(MessageId message_id);
+    void set_variable(const std::string &value);
 
-  // current state of the display
-  
-  unsigned int line_index;     // line currently displayed (0 to 2)
-  unsigned int char_index;     // index of the next character to show
-  uint32_t delay;
-  uint32_t next_char_date;
-  bool show_all;
+    // current state of the display
 
-  uint32_t next_sound_date;
+    unsigned int line_index;     // line currently displayed (0 to 2)
+    unsigned int char_index;     // index of the next character to show
+    uint32_t delay;
+    uint32_t next_char_date;
+    bool show_all;
 
-  void update_char_delay(void);
-  void add_character(void);
+    uint32_t next_sound_date;
 
- public:
+    void update_char_delay(void);
+    void add_character(void);
 
-  // creation and destruction
-  Message(DialogBox *dialog_box, MessageId message_id, int x, int y);
-  ~Message(void);
+  public:
 
-  // message properties
-  bool is_question(void);
-  MessageId get_next_message_id(void);
+    // creation and destruction
+    Message(DialogBox *dialog_box, MessageId message_id, int x, int y);
+    ~Message(void);
 
-  // message current state
-  bool is_finished(void);
-  void show_all_now(void);
+    // message properties
+    bool is_question(void);
+    MessageId get_next_message_id(void);
 
-  // update and display
-  void update(void);
-  void display(Surface *destination_surface);
+    // message current state
+    bool is_finished(void);
+    void show_all_now(void);
+
+    // update and display
+    void update(void);
+    void display(Surface *destination_surface);
 
 };
 

@@ -17,6 +17,7 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Surface.h"
 #include "SDL_Config/SDL_config_lib.h" // ini parsing
 #include "StringResource.h"
 
@@ -210,7 +211,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
     show_cursor = SDL_ENABLE;
   }
 
-  if (size->w > 640) {
+  if (size.get_height() > 640) {
     dst_position_centered.set_xy(dst_position_wide.get_x() + 160, 0);
     width = size.get_width();
     offset = dst_position_wide.get_x();
@@ -293,7 +294,7 @@ void VideoManager::display(Surface *src_surface) {
       break;
   }
 
-  SDL_Flip(screen_surface.get_internal_surface());
+  SDL_Flip(screen_surface->get_internal_surface());
 }
 
 /**
@@ -322,8 +323,8 @@ void VideoManager::blit_centered(Surface *src_surface, Surface *dst_surface) {
  */
 void VideoManager::blit_stretched(Surface *src_surface, Surface *dst_surface) {
 
-  SDL_Surface src_internal_surface = src_surface->get_internal_surface();
-  SDL_Surface dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface *src_internal_surface = src_surface->get_internal_surface();
+  SDL_Surface *dst_internal_surface = dst_surface->get_internal_surface();
 
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);
@@ -356,8 +357,8 @@ void VideoManager::blit_stretched(Surface *src_surface, Surface *dst_surface) {
  */
 void VideoManager::blit_scale2x(Surface *src_surface, Surface *dst_surface) {
 
-  SDL_Surface src_internal_surface = src_surface->get_internal_surface();
-  SDL_Surface dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface *src_internal_surface = src_surface->get_internal_surface();
+  SDL_Surface *dst_internal_surface = dst_surface->get_internal_surface();
 
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);

@@ -16,16 +16,18 @@
  */
 #include "menus/SelectionMenuCommon.h"
 #include "Sprite.h"
-#include "lowlevel/TextSurface.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Music.h"
-#include "lowlevel/Color.h"
 #include "hud/ActionIcon.h"
 #include "hud/SwordIcon.h"
 #include "hud/HeartsView.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
+#include "lowlevel/Color.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates the common part of all selection menu phases.
@@ -55,7 +57,7 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   }
 
   cursor = new Sprite("menus/selection_menu_cursor");
-  background_color = Color::create(104, 144, 240);
+  background_color = Color(104, 144, 240);
 
   // texts
   text_option1 = new TextSurface(90, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
@@ -87,17 +89,17 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
  * Destructor.
  */
 SelectionMenuCommon::~SelectionMenuCommon(void) {
-  SDL_FreeSurface(img_cloud);
-  SDL_FreeSurface(img_background);
-  SDL_FreeSurface(img_save_container);
-  SDL_FreeSurface(img_option_container);
+  delete img_cloud;
+  delete img_background;
+  delete img_save_container;
+  delete img_option_container;
 
   delete text_option1;
   delete text_option2;
   delete text_title;
 
   for (int i = 0; i < 3; i++) {
-    SDL_FreeSurface(img_numbers[i]);
+    delete img_numbers[i];
     delete text_player_names[i];
     delete hearts_views[i];
     delete savegames[i];
@@ -122,75 +124,27 @@ void SelectionMenuCommon::initialize_clouds(void) {
   int i;
 
   for (i = 0; i < 16; i++) {
-    cloud_positions[i].w = 80;
-    cloud_positions[i].h = 44;
+    cloud_positions[i].set_size(80, 44);
   }
 
   i = 0;
 
-  cloud_positions[i].x = 20;
-  cloud_positions[i].y = 40;
-  i++;
-
-  cloud_positions[i].x = 50;
-  cloud_positions[i].y = 160;
-  i++;
-
-  cloud_positions[i].x = 160;
-  cloud_positions[i].y = 30;
-  i++;
-
-  cloud_positions[i].x = 270;
-  cloud_positions[i].y = 200;
-  i++;
-
-  cloud_positions[i].x = 200;
-  cloud_positions[i].y = 120;
-  i++;
-
-  cloud_positions[i].x = 90;
-  cloud_positions[i].y = 120;
-  i++;
-
-  cloud_positions[i].x = 300;
-  cloud_positions[i].y = 100;
-  i++;
-
-  cloud_positions[i].x = 240;
-  cloud_positions[i].y = 10;
-  i++;
-
-  cloud_positions[i].x = 60;
-  cloud_positions[i].y = 190;
-  i++;
-
-  cloud_positions[i].x = 150;
-  cloud_positions[i].y = 210;
-  i++;
-
-  cloud_positions[i].x = 310;
-  cloud_positions[i].y = 220;
-  i++;
-
-  cloud_positions[i].x = 70;
-  cloud_positions[i].y = 20;
-  i++;
-
-  cloud_positions[i].x = 130;
-  cloud_positions[i].y = 180;
-  i++;
-
-  cloud_positions[i].x = 200;
-  cloud_positions[i].y = 70;
-  i++;
-
-  cloud_positions[i].x = 20;
-  cloud_positions[i].y = 120;
-  i++;
-
-  cloud_positions[i].x = 170;
-  cloud_positions[i].y = 220;
-  i++;
+  cloud_positions[i++].set_xy(20, 40);
+  cloud_positions[i++].set_xy(50, 160);
+  cloud_positions[i++].set_xy(160, 30);
+  cloud_positions[i++].set_xy(270, 200);
+  cloud_positions[i++].set_xy(200, 120);
+  cloud_positions[i++].set_xy(90, 120);
+  cloud_positions[i++].set_xy(300, 100);
+  cloud_positions[i++].set_xy(240, 10);
+  cloud_positions[i++].set_xy(60, 190);
+  cloud_positions[i++].set_xy(150, 210);
+  cloud_positions[i++].set_xy(310, 220);
+  cloud_positions[i++].set_xy(70, 20);
+  cloud_positions[i++].set_xy(130, 180);
+  cloud_positions[i++].set_xy(200, 700);
+  cloud_positions[i++].set_xy(20, 120);
+  cloud_positions[i++].set_xy(170, 220);
 }
 
 /**
@@ -247,19 +201,19 @@ void SelectionMenuCommon::read_savegames(void) {
 void SelectionMenuCommon::update(void) {
 
   // move the clouds
-  uint32_t now = System::out();
+  uint32_t now = System::now();
   while (now >= next_cloud_move) {
     
     for (int i = 0; i < 16; i++) {
-      cloud_positions[i].x += 1;
-      cloud_positions[i].y -= 1;
+      cloud_positions[i].add_x(1);
+      cloud_positions[i].add_y(-1);
 
-      if (cloud_positions[i].x >= 320) {
-	cloud_positions[i].x = 0;
+      if (cloud_positions[i].get_x() >= 320) {
+	cloud_positions[i].set_x(0);
       }
 
-      if (cloud_positions[i].y <= -44) {
-	cloud_positions[i].y = 240 - 44;
+      if (cloud_positions[i].get_y() <= -44) {
+	cloud_positions[i].set_y(240 - 44);
       }
     }
 
@@ -280,10 +234,10 @@ void SelectionMenuCommon::update(void) {
  * the current selection menu phase.
  * @param destination_surface the surface where to display
  */
-void SelectionMenuCommon::display(SDL_Surface *destination_surface) {
+void SelectionMenuCommon::display(Surface *destination_surface) {
 
   // background color
-  SDL_FillRect(destination_surface, NULL, background_color);
+  destination_surface->fill_with_color(background_color);
 
   // display the clouds
   Rectangle position;
@@ -291,33 +245,28 @@ void SelectionMenuCommon::display(SDL_Surface *destination_surface) {
 
     position = cloud_positions[i];
 
-    SDL_BlitSurface(img_cloud, NULL, destination_surface, &position);
+    img_cloud->blit(destination_surface, position);
 
-    if (cloud_positions[i].x >= 320 - 80) {
-      position.x = cloud_positions[i].x - 320;
-      position.y = cloud_positions[i].y;
-      SDL_BlitSurface(img_cloud, NULL, destination_surface, &position);
+    if (cloud_positions[i].get_x() >= 320 - 80) {
+      position.set_xy(cloud_positions[i].get_x() - 320, cloud_positions[i].get_y());
+      img_cloud->blit(destination_surface, position);
 
-      if (cloud_positions[i].y <= 0) {
-	position.x = cloud_positions[i].x - 320;
-	position.y = cloud_positions[i].y + 240;
-	SDL_BlitSurface(img_cloud, NULL, destination_surface, &position);
+      if (cloud_positions[i].get_y() <= 0) {
+	position.set_xy(cloud_positions[i].get_x() - 320, cloud_positions[i].get_y() + 240);
+	img_cloud->blit(destination_surface, position);
       }
     }
 
-    if (cloud_positions[i].y <= 0) {
-      position.x = cloud_positions[i].x;
-      position.y = cloud_positions[i].y + 240;
-      SDL_BlitSurface(img_cloud, NULL, destination_surface, &position);
+    if (cloud_positions[i].get_y() <= 0) {
+      position.set_xy(cloud_positions[i].get_x(), cloud_positions[i].get_y() + 240);
+      img_cloud->blit(destination_surface, position);
     }
   }
 
   // display the background image
-  position.x = 37;
-  position.y = 38;
-  position.w = 246;
-  position.h = 165;
-  SDL_BlitSurface(img_background, NULL, destination_surface, &position);
+  position.set_xy(37, 38);
+  position.set_size(246, 165);
+  img_background->blit(destination_surface, position);
 
   /* no icons to simplify the keys
   // icons
@@ -326,3 +275,4 @@ void SelectionMenuCommon::display(SDL_Surface *destination_surface) {
   */
 
 }
+

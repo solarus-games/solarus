@@ -23,10 +23,11 @@
 #include "Savegame.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
+#include "StringResource.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
-#include "StringResource.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Opens a pause menu.

@@ -29,6 +29,8 @@
 #include "StringResource.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/System.h"
 
 const Rectangle PauseSubmenuMap::outside_world_minimap_size(0, 0, 225, 388);
 
@@ -103,7 +105,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
 
     // map
     dungeon_map_img = new Surface(123, 119);
-    dungeon_map_img->set_transparency_color(Color::black);
+    dungeon_map_img->set_transparency_color(Color::get_black());
     load_dungeon_map_image();
   }
 
@@ -159,7 +161,7 @@ void PauseSubmenuMap::to_dungeon_minimap_coordinates(const Rectangle &floor_coor
   }
   else {
     // the floor width does not use the entire horizontal space
-    minimap_rectangle.set_width(floor_size.get_width() * 119 / floor_size.get_height);
+    minimap_rectangle.set_width(floor_size.get_width() * 119 / floor_size.get_height());
     minimap_rectangle.set_x((123 - minimap_rectangle.get_width()) / 2);
   }
 
@@ -170,7 +172,7 @@ void PauseSubmenuMap::to_dungeon_minimap_coordinates(const Rectangle &floor_coor
   minimap_coords.set_x(minimap_rectangle.get_x() +
       floor_coords.get_x() * minimap_rectangle.get_width() / floor_size.get_width());
   minimap_coords.set_y(minimap_rectangle.get_y() +
-      floor_coords.get_y() * minimap_rectangle.height() / floor_size.get_height());
+      floor_coords.get_y() * minimap_rectangle.get_height() / floor_size.get_height());
 }
 
 /**
@@ -221,8 +223,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 	int dx = chests[i].big ? 16 : 8;  // TODO change chests origin point to avoid this
 	int dy = chests[i].big ? 21 : 13;
 
-	dst_position.set_x(chests[i].x + dx);
-	dst_position.set_y(chests[i].y + dy);
+	dst_position.set_xy(chests[i].x + dx, chests[i].y + dy);
 	to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
 	dst_position.add_x((chests[i].big) ? -2 : -1);
 	dst_position.add_y(-1);
@@ -231,7 +232,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 	  dungeon_map_icons->blit(small_chest_src_position, dungeon_map_img, dst_position);
 	}
 	else {
-	  dungeon_map_icons->blit(big_chest_src_position, dungeon_map_img,&dst_position);
+	  dungeon_map_icons->blit(big_chest_src_position, dungeon_map_img, dst_position);
 	}
       }
     }
@@ -245,13 +246,11 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
       // TODO also display minibosses?
       if (bosses[i].big && !savegame->get_boolean(bosses[i].savegame_variable)) {
 
-	dst_position.set_x(bosses[i].x);
-	dst_position.set_y(bosses[i].y);
+	dst_position.set_xy(bosses[i].x, bosses[i].y);
 	to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
-	dst_position.add_x(-2);
-	dst_position.add_y(-2);
+	dst_position.add_xy(-2, -2);
 
-	SDL_BlitSurface(dungeon_map_icons, &src_position, dungeon_map_img, &dst_position);
+	dungeon_map_icons->blit(src_position, dungeon_map_img, dst_position);
       }
     }
   }
@@ -361,7 +360,7 @@ void PauseSubmenuMap::update(void) {
  * Displays this submenu.
  * @param destination the destination surface
  */
-void PauseSubmenuMap::display(SDL_Surface *destination) {
+void PauseSubmenuMap::display(Surface *destination) {
 
   PauseSubmenu::display(destination);
 
@@ -377,21 +376,21 @@ void PauseSubmenuMap::display(SDL_Surface *destination) {
  * Displays the world map.
  * @param destination the destination surface
  */
-void PauseSubmenuMap::display_world_map(SDL_Surface *destination) {
+void PauseSubmenuMap::display_world_map(Surface *destination) {
 
   // display the surface
   Rectangle src_position(0, world_minimap_visible_y, 225, 133);
   static Rectangle dst_position(48, 59, 0, 0);
 
-  SDL_BlitSurface(world_map_img, &src_position, destination, &dst_position);
+  world_map_img->blit(src_position, destination, dst_position);
 
   // if the player has the map
   if (equipment->has_world_map()) {
 
     // display the hero's position
-    int hero_visible_y = hero_position.y - world_minimap_visible_y;
+    int hero_visible_y = hero_position.get_y() - world_minimap_visible_y;
     if (hero_visible_y >= 51 && hero_visible_y <= 184) {
-      hero_head_sprite->display(destination, hero_position.x, hero_position.y - world_minimap_visible_y);
+      hero_head_sprite->display(destination, hero_position.get_x(), hero_position.get_y() - world_minimap_visible_y);
     }
 
     // display the arrows
@@ -411,11 +410,11 @@ void PauseSubmenuMap::display_world_map(SDL_Surface *destination) {
  * Displays the dungeon map submenu.
  * @param destination the destination surface
  */
-void PauseSubmenuMap::display_dungeon_map(SDL_Surface *destination) {
+void PauseSubmenuMap::display_dungeon_map(Surface *destination) {
 
   // show the special background
   Rectangle dst_position(48, 59);
-  SDL_BlitSurface(dungeon_map_background, NULL, destination, &dst_position);
+  dungeon_map_background->blit(destination, dst_position);
 
   // show the dungeon items
   display_dungeon_items(destination);
@@ -425,10 +424,10 @@ void PauseSubmenuMap::display_dungeon_map(SDL_Surface *destination) {
 
   // show the map itself
   dst_position.set_xy(143, 66);
-  SDL_BlitSurface(dungeon_map_img, NULL, destination, &dst_position);
+  dungeon_map_img->blit(destination, dst_position);
 
   if (hero_point_sprite != NULL && selected_floor == hero_floor) {
-    hero_point_sprite->display(dungeon_map_img, hero_position.x, hero_position.y);
+    hero_point_sprite->display(dungeon_map_img, hero_position.get_x(), hero_position.get_y());
   }
 }
 
@@ -436,40 +435,40 @@ void PauseSubmenuMap::display_dungeon_map(SDL_Surface *destination) {
  * Displays the dungeon items.
  * @param destination the destination surface
  */
-void PauseSubmenuMap::display_dungeon_items(SDL_Surface *destination) {
+void PauseSubmenuMap::display_dungeon_items(Surface *destination) {
 
   // map
   if (dungeon_equipment->has_map()) {
     Rectangle src_position(0, 0, 17, 17);
-    Rectangle dst_position = (50, 168);
-    SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
+    Rectangle dst_position(50, 168);
+    dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // compass
   if (dungeon_equipment->has_compass()) {
     Rectangle src_position(17, 0, 17, 17);
     Rectangle dst_position(69, 168);
-    SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
+    dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // big key
   if (dungeon_equipment->has_big_key()) {
     Rectangle src_position(34, 0, 17, 17);
     Rectangle dst_position(88, 168);
-    SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
+    dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // boss key
   if (dungeon_equipment->has_boss_key()) {
     Rectangle src_position(51, 0, 17, 17);
     Rectangle dst_position(107, 168);
-    SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
+    dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // small keys
   Rectangle src_position(68, 0, 9, 17);
   Rectangle dst_position(126, 168);
-  SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
+  dungeon_map_icons->blit(src_position, destination, dst_position);
   small_keys_counter->display(destination);
 }
 
@@ -477,7 +476,7 @@ void PauseSubmenuMap::display_dungeon_items(SDL_Surface *destination) {
  * Displays the dungeon floors.
  * @param destination the destination surface
  */
-void PauseSubmenuMap::display_dungeon_floors(SDL_Surface *destination) {
+void PauseSubmenuMap::display_dungeon_floors(Surface *destination) {
 
   // display some floors
   int src_y = (15 - highest_floor_displayed) * 12;
@@ -487,14 +486,14 @@ void PauseSubmenuMap::display_dungeon_floors(SDL_Surface *destination) {
 
   Rectangle src_position(96, src_y, 32, src_height);
   Rectangle dst_position(79, dst_y);
-  SDL_BlitSurface(dungeon_floors_img, &src_position, destination, &dst_position);
+  dungeon_map_img->blit(src_position, destination, dst_position);
 
   // display the current floor with other colors
   src_position.set_xy(64, (15 - selected_floor) * 12);
   src_position.set_height(13);
 
   dst_position.set_y(dst_y + (highest_floor_displayed - selected_floor) * 12);
-  SDL_BlitSurface(dungeon_floors_img, &src_position, destination, &dst_position);
+  dungeon_floors_img->blit(src_position, destination, dst_position);
 
   // display the hero's icon
   int lowest_floor_displayed = highest_floor_displayed - nb_floors_displayed + 1;
@@ -512,7 +511,7 @@ void PauseSubmenuMap::display_dungeon_floors(SDL_Surface *destination) {
     Rectangle src_position(78, 0, 8, 8);
     Rectangle dst_position(113, boss_y);
 
-    SDL_BlitSurface(dungeon_map_icons, &src_position, destination, &dst_position);
+    dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // display the arrows

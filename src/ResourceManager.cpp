@@ -15,13 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ResourceManager.h"
+#include "SpriteAnimationSet.h"
 #include "Map.h"
 #include "entities/Tileset.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
-#include "SpriteAnimationSet.h"
+#include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
-#include <SDL/SDL_image.h>
 
 using std::map;
 
@@ -118,7 +118,7 @@ void ResourceManager::quit(void) {
  * @param id name of the image file to get (relative to the sprites directory)
  * @return the image loaded
  */
-SDL_Surface * ResourceManager::load_image(const ImageId &id) {
+Surface * ResourceManager::load_image(const ImageId &id) {
   return load_image(id, true);
 }
 
@@ -134,20 +134,10 @@ SDL_Surface * ResourceManager::load_image(const ImageId &id) {
  * false to let it relative to the data directory
  * @return the image loaded
  */
-SDL_Surface * ResourceManager::load_image(const ImageId &id, bool relative_to_sprites_dir) {
+Surface * ResourceManager::load_image(const ImageId &id, bool relative_to_sprites_dir) {
 
   std::string file_name = relative_to_sprites_dir ? ((std::string) "sprites/" + id) : id;
-
-  // TODO move this code into the lowlevel Surface class
-  SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
-  SDL_Surface *image = IMG_Load_RW(rw, 0);
-  FileTools::data_file_close_rw(rw);
-
-  if (image == NULL) {
-    DIE("Cannot load image '" << file_name << "'");
-  }
-
-  return image;
+  return new Surface(file_name);
 }
 
 /**

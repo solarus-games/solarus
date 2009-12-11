@@ -133,7 +133,7 @@ class MapEntity {
   void set_origin(int x, int y);
   void set_origin(const Rectangle &origin);
   void set_bounding_box_from_sprite(void);
-  void set_bounding_box(const SDL_Rect &bounding_box);
+  void set_bounding_box(const Rectangle &bounding_box);
   void create_sprite(const SpriteAnimationSetId &id);
   void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions);
 
@@ -169,7 +169,7 @@ class MapEntity {
   int get_width(void);
   int get_height(void);
   const Rectangle & get_bounding_box(void);
-  const SDL_Rect & get_origin(void);
+  const Rectangle & get_origin(void);
   int get_top_left_x(void);
   int get_top_left_y(void);
   void set_top_left_x(int x);

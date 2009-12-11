@@ -34,33 +34,33 @@
  */
 class ResourceManager {
 
- private:
+  private:
 
-  static ResourceManager *instance;
+    static ResourceManager *instance;
 
-  std::map<TilesetId, Tileset*> tilesets;
-  std::map<MapId, Map*> maps;
-  std::map<MusicId, Music*> musics;
-  std::map<SoundId, Sound*> sounds;
-  std::map<SpriteAnimationSetId, SpriteAnimationSet*> sprite_animations;
+    std::map<TilesetId, Tileset*> tilesets;
+    std::map<MapId, Map*> maps;
+    std::map<MusicId, Music*> musics;
+    std::map<SoundId, Sound*> sounds;
+    std::map<SpriteAnimationSetId, SpriteAnimationSet*> sprite_animations;
 
-  ResourceManager(void);
-  ~ResourceManager(void);
+    ResourceManager(void);
+    ~ResourceManager(void);
 
- public:
+  public:
 
-  static void initialize(void);
-  static void quit(void);
+    static void initialize(void);
+    static void quit(void);
 
-  static SDL_Surface* load_image(const ImageId &id);
-  static SDL_Surface* load_image(const ImageId &id, bool relative_to_sprites_dir);
-  // TODO flags for options relative_to_sprites_dir and language_specific
+    static Surface * load_image(const ImageId &id);
+    static Surface * load_image(const ImageId &id, bool relative_to_sprites_dir);
+    // TODO flags for options relative_to_sprites_dir and language_specific
 
-  static Tileset* get_tileset(TilesetId id);
-  static Map* get_map(MapId id);
-  static Music* get_music(const MusicId &id);
-  static Sound* get_sound(const SoundId &id);
-  static SpriteAnimationSet* get_sprite_animation_set(const SpriteAnimationSetId &id);
+    static Tileset* get_tileset(TilesetId id);
+    static Map* get_map(MapId id);
+    static Music* get_music(const MusicId &id);
+    static Sound* get_sound(const SoundId &id);
+    static SpriteAnimationSet* get_sprite_animation_set(const SpriteAnimationSetId &id);
 };
 
 #endif

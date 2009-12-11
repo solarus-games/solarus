@@ -19,17 +19,17 @@
 #include "entities/MapEntities.h"
 #include "Map.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
+#include "lowlevel/Sound.h"
 
 /**
  * Creates an explosion.
  * @param xy coordinates of the center of the explosion
  * @param with_damages true to hurt the hero and the enemies
  */
-Explosion::Explosion(Layer layer, const SDL_Rect &xy, bool with_damages):
-  Detector(COLLISION_SPRITE, "", layer, xy.x, xy.y, 48, 48) { 
+Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
+  Detector(COLLISION_SPRITE, "", layer, xy.get_x(), xy.get_y(), 48, 48) { 
 
   // initialize the entity
   create_sprite("entities/explosion");
@@ -37,7 +37,7 @@ Explosion::Explosion(Layer layer, const SDL_Rect &xy, bool with_damages):
 
   if (with_damages) {
     get_sprite()->get_animation_set()->enable_pixel_collisions();
-    set_rectangle_from_sprite();
+    set_bounding_box_from_sprite();
   }
 }
 

@@ -19,13 +19,13 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
+#include "lowlevel/Color.h"
 #include "hud/ActionIcon.h"
 #include "hud/SwordIcon.h"
+#include "hud/HeartsView.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
-#include "hud/HeartsView.h"
 #include "Savegame.h"
-#include "lowlevel/Color.h"
 
 /**
  * Creates the common part of all selection menu phases.
@@ -117,7 +117,7 @@ SelectionMenuCommon::~SelectionMenuCommon(void) {
  */
 void SelectionMenuCommon::initialize_clouds(void) {
 
-  next_cloud_move = SDL_GetTicks();
+  next_cloud_move = System::now();
 
   int i;
 
@@ -247,7 +247,7 @@ void SelectionMenuCommon::read_savegames(void) {
 void SelectionMenuCommon::update(void) {
 
   // move the clouds
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::out();
   while (now >= next_cloud_move) {
     
     for (int i = 0; i < 16; i++) {
@@ -286,7 +286,7 @@ void SelectionMenuCommon::display(SDL_Surface *destination_surface) {
   SDL_FillRect(destination_surface, NULL, background_color);
 
   // display the clouds
-  SDL_Rect position;
+  Rectangle position;
   for (int i = 0; i < 16; i++) {
 
     position = cloud_positions[i];

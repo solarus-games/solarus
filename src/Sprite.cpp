@@ -22,10 +22,12 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
-#include "PixelBits.h"
+#include "lowlevel/PixelBits.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Surface.h"
 
-SDL_Surface *Sprite::alpha_surface = NULL;
+Surface *Sprite::alpha_surface = NULL;
 
 /**
  * Creates a sprite with the specified animation set.
@@ -40,8 +42,8 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
   set_current_animation(animation_set->get_default_animation());
 
   if (alpha_surface == NULL) {
-    alpha_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
-    SDL_SetColorKey(alpha_surface, SDL_SRCCOLORKEY, Color::black);
+    alpha_surface = new Surface(320, 240);
+    alpha_surface->set_transparency_color(Color::get_black());
   }
 }
 
@@ -84,7 +86,7 @@ SpriteAnimationSet * Sprite::get_animation_set(void) {
  * Returns the size of a frame for the current animation and the current direction.
  * @return the size of a frame
  */
-SDL_Rect& Sprite::get_size(void) {
+const Rectangle & Sprite::get_size(void) {
 
   SpriteAnimation *animation = animation_set->get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_size();
@@ -94,7 +96,7 @@ SDL_Rect& Sprite::get_size(void) {
  * Returns the origin point of a frame for the current animation and the current direction.
  * @return the origin point of a frame
  */
-SDL_Rect& Sprite::get_origin(void) {
+const Rectangle & Sprite::get_origin(void) {
 
   SpriteAnimation *animation = animation_set->get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_origin();
@@ -133,7 +135,7 @@ int Sprite::get_next_frame(void) {
  * Returns the current animation of the sprite.
  * @return the name of the current animation of the sprite
  */
-const std::string& Sprite::get_current_animation(void) {
+const std::string & Sprite::get_current_animation(void) {
   return current_animation_name;
 }
 
@@ -204,7 +206,7 @@ int Sprite::get_current_frame(void) {
 void Sprite::set_current_frame(int current_frame) {
 
   finished = false;
-  next_frame_date = SDL_GetTicks() + get_frame_delay();
+  next_frame_date = System::now() + get_frame_delay();
 
   frame_changed = (current_frame != this->current_frame);
 
@@ -271,7 +273,7 @@ void Sprite::set_suspended(bool suspended) {
 
     // compte next_frame_date if the animation is being resumed
     if (!suspended) {
-      uint32_t now = SDL_GetTicks();
+      uint32_t now = System::now();
       next_frame_date = now + get_frame_delay();
       blink_next_change_date = now;
     }
@@ -312,7 +314,7 @@ void Sprite::set_paused(bool paused) {
  
     // compte next_frame_date if the animation is being resumed
     if (!paused) {
-      uint32_t now = SDL_GetTicks();
+      uint32_t now = System::now();
       next_frame_date = now + get_frame_delay();
       blink_next_change_date = now;
     }
@@ -369,7 +371,7 @@ void Sprite::set_blinking(uint32_t blink_delay) {
 
   if (blink_delay > 0) {
     blink_is_sprite_visible = false;
-    blink_next_change_date = SDL_GetTicks();
+    blink_next_change_date = System::now();
   }
 }
  
@@ -383,11 +385,11 @@ int Sprite::get_alpha(void) {
 
 /**
  * Sets the alpha value applied to the sprite.
- * @param alpha the transparency rate: 0 (tranparent) to 255 (opaque)
+ * @param alpha the opacity rate: 0 (tranparent) to 255 (opaque)
  */
 void Sprite::set_alpha(int alpha) {
   this->alpha = alpha;
-  SDL_SetAlpha(alpha_surface, SDL_SRCALPHA, alpha);
+  alpha_surface->set_opacity(alpha);
 }
 
 /**
@@ -403,7 +405,7 @@ bool Sprite::is_fading(void) {
  * @param direction direction of the effect (0: fade-in, 1: fade-out)
  */
 void Sprite::start_fading(int direction) {
-  alpha_next_change_date = SDL_GetTicks();
+  alpha_next_change_date = System::now();
   alpha_increment = (direction == 0) ? 20 : -20;
   set_alpha((direction == 0) ? 0 : 255);
 }
@@ -420,13 +422,13 @@ void Sprite::start_fading(int direction) {
 bool Sprite::test_collision(Sprite *other, int x1, int y1, int x2, int y2) {
 
   SpriteAnimationDirection *direction1 = current_animation->get_direction(current_direction);
-  SDL_Rect &origin1 = direction1->get_origin();
-  SDL_Rect location1 = {x1 - origin1.x, y1 - origin1.y};
+  const Rectangle &origin1 = direction1->get_origin();
+  Rectangle location1(x1 - origin1.get_x(), y1 - origin1.get_y());
   PixelBits *pixel_bits1 = direction1->get_pixel_bits(current_frame);
 
   SpriteAnimationDirection *direction2 = other->current_animation->get_direction(other->current_direction);
-  SDL_Rect &origin2 = direction2->get_origin();
-  SDL_Rect location2 = {x2 - origin2.x, y2 - origin2.y};
+  const Rectangle &origin2 = direction2->get_origin();
+  Rectangle location2(x2 - origin2.get_x(), y2 - origin2.get_y());
   PixelBits *pixel_bits2 = direction2->get_pixel_bits(other->current_frame);
 
   return pixel_bits1->test_collision(pixel_bits2, location1, location2);
@@ -443,7 +445,7 @@ void Sprite::update(void) {
   }
 
   frame_changed = false;
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   // update the current frame
   int next_frame;
@@ -498,7 +500,7 @@ void Sprite::update(void) {
  * @param y y coordinate of the sprite on this surface
  * (the origin will be placed at this position)
  */
-void Sprite::display(SDL_Surface *destination, int x, int y) {
+void Sprite::display(Surface *destination, int x, int y) {
 
   if (!is_animation_finished() && (blink_delay == 0 || blink_is_sprite_visible)) {
 
@@ -508,9 +510,9 @@ void Sprite::display(SDL_Surface *destination, int x, int y) {
     }
     else {
       // semi transparent
-      SDL_FillRect(alpha_surface, NULL, Color::black);
+      alpha_surface->fill_with_color(Color::get_black());
       current_animation->display(alpha_surface, x, y, current_direction, current_frame);
-      SDL_BlitSurface(alpha_surface, NULL, destination, NULL);
+      alpha_surface->blit(destination);
     }
   }
 }

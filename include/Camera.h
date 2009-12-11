@@ -29,7 +29,7 @@ class Camera {
   Map *map;                 /**< the map */
   bool fixed_on_hero;       /**< true if the camera is fixed on the hero */
   bool restoring;           /**< true if the camera is moving back to the hero */
-  SDL_Rect position;        /**< position of the camera on the map */
+  Rectangle position;       /**< position of the camera on the map */
   int speed;                /**< speed of the movement */
   TargetMovement *movement; /**< movement of the camera, or NULL for no movement */
 
@@ -39,7 +39,7 @@ class Camera {
   ~Camera(void);
 
   void update(void);
-  SDL_Rect & get_position(void);
+  Rectangle & get_position(void);
 
   bool is_fixed_on_hero(void);
   void set_speed(int speed);
@@ -49,3 +49,4 @@ class Camera {
 };
 
 #endif
+

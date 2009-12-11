@@ -22,16 +22,16 @@
 
 VideoManager *VideoManager::instance = NULL;
 
-SDL_Rect VideoManager::default_mode_sizes[] = {
-  {0, 0, 640, 480},         // WINDOWED_STRETCHED
-  {0, 0, 640, 480},         // WINDOWED_SCALE2X
-  {0, 0, 320, 240},         // WINDOWED_NORMAL
-  {0, 0, 640, 480},         // FULLSCREEN_NORMAL
-  {0, 0, 0, 0},             // FULLSCREEN_WIDE
-  {0, 0, 640, 480},         // FULLSCREEN_SCALE2X
-  {0, 0, 0, 0},             // FULLSCREEN_SCALE2X_WIDE
-  {0, 0, 640, 480},         // FULLSCREEN_CENTERED
-  {0, 0, 640, 400},         // FULLSCREEN_CENTERED_WIDE
+Rectangle VideoManager::default_mode_sizes[] = {
+  Rectangle(0, 0, 640, 480),         // WINDOWED_STRETCHED
+  Rectangle(0, 0, 640, 480),         // WINDOWED_SCALE2X
+  Rectangle(0, 0, 320, 240),         // WINDOWED_NORMAL
+  Rectangle(0, 0, 640, 480),         // FULLSCREEN_NORMAL
+  Rectangle(0, 0,     0, 0),         // FULLSCREEN_WIDE
+  Rectangle(0, 0, 640, 480),         // FULLSCREEN_SCALE2X
+  Rectangle(0, 0,     0, 0),         // FULLSCREEN_SCALE2X_WIDE
+  Rectangle(0, 0, 640, 480),         // FULLSCREEN_CENTERED
+  Rectangle(0, 0, 640, 400),         // FULLSCREEN_CENTERED_WIDE
 };
 
 /**
@@ -68,36 +68,30 @@ VideoManager::VideoManager(void) {
   putenv((char*) "SDL_NOMOUSE");
 
   // detect what widescreen resolution is supported (768*480 or 720*480)
-  
+
   for (int i = 0; i < NB_MODES; i++) {
     mode_sizes[i] = default_mode_sizes[i];
   }
-  
+
   int flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN;
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
-    mode_sizes[FULLSCREEN_WIDE].w = 768;
-    mode_sizes[FULLSCREEN_WIDE].h = 480;
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].w = 768;
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].h = 480;
-    dst_position_wide.x = 64;
-    dst_position_wide.y = 0;
+    mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
+    dst_position_wide.set_xy(64, 0);
   }
   else if (SDL_VideoModeOK(720, 480, 32, flags)) {
-    mode_sizes[FULLSCREEN_WIDE].w = 720;
-    mode_sizes[FULLSCREEN_WIDE].h = 480;
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].w = 720;
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].h = 480;
-    dst_position_wide.x = 40;
-    dst_position_wide.y = 0;
+    mode_sizes[FULLSCREEN_WIDE].set_size(720, 480);
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(720, 480);
+    dst_position_wide.set_xy(40, 0);
   }
 
   /* debug (see the fullscreen video modes supported)
-  SDL_Rect **rects = SDL_ListModes(NULL, flags);
-  while (*rects != NULL) {
-    std::cout << "mode " << (*rects)->w << " x " << (*rects)->h << std::endl;
-    rects++;
-  }
-  */
+     SDL_Rect **rects = SDL_ListModes(NULL, flags);
+     while (*rects != NULL) {
+     std::cout << "mode " << (*rects)->w << " x " << (*rects)->h << std::endl;
+     rects++;
+     }
+     */
 
   set_initial_video_mode();
 }
@@ -116,9 +110,9 @@ VideoManager::~VideoManager(void) {
  */
 bool VideoManager::is_mode_supported(VideoMode mode) {
 
-  const SDL_Rect *size = &mode_sizes[mode];
+  const Rectangle *size = &mode_sizes[mode];
 
-  if (size->w == 0) {
+  if (size->get_width() == 0) {
     return false;
   }
 
@@ -127,7 +121,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     flags |= SDL_FULLSCREEN;
   }
 
-  return SDL_VideoModeOK(size->w, size->h, 32, flags) != 0;
+  return SDL_VideoModeOK(size->get_width(), size->get_height(), 32, flags) != 0;
 }
 
 /**
@@ -204,7 +198,7 @@ void VideoManager::set_default_video_mode(void) {
  */
 void VideoManager::set_video_mode(VideoMode mode) {
 
-  const SDL_Rect *size = &mode_sizes[mode];
+  const Rectangle &size = mode_sizes[mode];
 
   int flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
   int show_cursor;
@@ -217,28 +211,26 @@ void VideoManager::set_video_mode(VideoMode mode) {
   }
 
   if (size->w > 640) {
-    dst_position_centered.x = dst_position_wide.x + 160;
-    dst_position_centered.y = 0;
-    width = size->w;
-    offset = dst_position_wide.x;
+    dst_position_centered.set_xy(dst_position_wide.get_x() + 160, 0);
+    width = size.get_width();
+    offset = dst_position_wide.get_x();
   }
   else {
-    dst_position_centered.x = 160;
-    dst_position_centered.y = (mode == FULLSCREEN_CENTERED_WIDE) ? 80 : 120;
+    dst_position_centered.set_xy(160, (mode == FULLSCREEN_CENTERED_WIDE) ? 80 : 120);
     width = 640;
     offset = 0;
   }
   end_row_increment = 2 * offset + width;
 
-  SDL_Surface *screen_surface = SDL_SetVideoMode(size->w, size->h, 32, flags);
+  SDL_Surface *screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), 32, flags);
 
-  if (screen_surface == NULL) {
+  if (screen_internal_surface == NULL) {
     DIE("Cannot create the video surface for mode " << mode);
   }
 
   SDL_ShowCursor(show_cursor);
   this->video_mode = mode;
-  this->screen_surface = screen_surface;
+  this->screen_surface = new Surface(screen_internal_surface);
 
   // write the ini file
   CFG_File ini;
@@ -271,37 +263,37 @@ VideoManager::VideoMode VideoManager::get_video_mode(void) {
  * Blits a surface on the screen with the current video mode.
  * @param src_surface the source surface
  */
-void VideoManager::display(SDL_Surface *src_surface) {
+void VideoManager::display(Surface *src_surface) {
 
   switch (video_mode) {
 
-  case WINDOWED_NORMAL:
-    blit(src_surface, screen_surface);
-    break;
+    case WINDOWED_NORMAL:
+      blit(src_surface, screen_surface);
+      break;
 
-  case WINDOWED_STRETCHED:
-  case FULLSCREEN_NORMAL:
-  case FULLSCREEN_WIDE:
-    blit_stretched(src_surface, screen_surface);
-    break;
+    case WINDOWED_STRETCHED:
+    case FULLSCREEN_NORMAL:
+    case FULLSCREEN_WIDE:
+      blit_stretched(src_surface, screen_surface);
+      break;
 
-  case WINDOWED_SCALE2X:
-  case FULLSCREEN_SCALE2X:
-  case FULLSCREEN_SCALE2X_WIDE:
-    blit_scale2x(src_surface, screen_surface);
-    break;
+    case WINDOWED_SCALE2X:
+    case FULLSCREEN_SCALE2X:
+    case FULLSCREEN_SCALE2X_WIDE:
+      blit_scale2x(src_surface, screen_surface);
+      break;
 
-  case FULLSCREEN_CENTERED:
-  case FULLSCREEN_CENTERED_WIDE:
-    blit_centered(src_surface, screen_surface);
-    break;
+    case FULLSCREEN_CENTERED:
+    case FULLSCREEN_CENTERED_WIDE:
+      blit_centered(src_surface, screen_surface);
+      break;
 
-  default:
-    DIE("Unknown video mode " << video_mode);
-    break;
+    default:
+      DIE("Unknown video mode " << video_mode);
+      break;
   }
 
-  SDL_Flip(screen_surface);
+  SDL_Flip(screen_surface.get_internal_surface());
 }
 
 /**
@@ -309,8 +301,8 @@ void VideoManager::display(SDL_Surface *src_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
-  SDL_BlitSurface(src_surface, NULL, dst_surface, NULL);
+void VideoManager::blit(Surface *src_surface, Surface *dst_surface) {
+  src_surface->blit(dst_surface);
 }
 
 /**
@@ -318,8 +310,8 @@ void VideoManager::blit(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_centered(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
-  SDL_BlitSurface(src_surface, NULL, dst_surface, &dst_position_centered);
+void VideoManager::blit_centered(Surface *src_surface, Surface *dst_surface) {
+  src_surface->blit(dst_surface, dst_position_centered);
 }
 
 /**
@@ -328,13 +320,16 @@ void VideoManager::blit_centered(SDL_Surface *src_surface, SDL_Surface *dst_surf
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
+void VideoManager::blit_stretched(Surface *src_surface, Surface *dst_surface) {
 
-  SDL_LockSurface(src_surface);
-  SDL_LockSurface(dst_surface);
+  SDL_Surface src_internal_surface = src_surface->get_internal_surface();
+  SDL_Surface dst_internal_surface = dst_surface->get_internal_surface();
 
-  uint32_t *src = (uint32_t*) src_surface->pixels;
-  uint32_t *dst = (uint32_t*) dst_surface->pixels;
+  SDL_LockSurface(src_internal_surface);
+  SDL_LockSurface(dst_internal_surface);
+
+  uint32_t *src = (uint32_t*) src_internal_surface->pixels;
+  uint32_t *dst = (uint32_t*) dst_internal_surface->pixels;
 
   int p = offset;
   for (int i = 0; i < 240; i++) {
@@ -348,8 +343,8 @@ void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_sur
     p += end_row_increment;
   }
 
-  SDL_UnlockSurface(dst_surface);
-  SDL_UnlockSurface(src_surface);
+  SDL_UnlockSurface(dst_internal_surface);
+  SDL_UnlockSurface(src_internal_surface);
 }
 
 /**
@@ -359,13 +354,16 @@ void VideoManager::blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_sur
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surface) {
+void VideoManager::blit_scale2x(Surface *src_surface, Surface *dst_surface) {
 
-  SDL_LockSurface(src_surface);
-  SDL_LockSurface(dst_surface);
+  SDL_Surface src_internal_surface = src_surface->get_internal_surface();
+  SDL_Surface dst_internal_surface = dst_surface->get_internal_surface();
 
-  uint32_t *src = (uint32_t*) src_surface->pixels;
-  uint32_t *dst = (uint32_t*) dst_surface->pixels;
+  SDL_LockSurface(src_internal_surface);
+  SDL_LockSurface(dst_internal_surface);
+
+  uint32_t *src = (uint32_t*) src_internal_surface->pixels;
+  uint32_t *dst = (uint32_t*) dst_internal_surface->pixels;
 
   int a, b, c, d, e = 0, f, g, h, i;
   int e1 = offset, e2, e3, e4;
@@ -412,7 +410,7 @@ void VideoManager::blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surfa
     e1 += end_row_increment;
   }
 
-  SDL_UnlockSurface(dst_surface);
-  SDL_UnlockSurface(src_surface);
+  SDL_UnlockSurface(dst_internal_surface);
+  SDL_UnlockSurface(src_internal_surface);
 }
 

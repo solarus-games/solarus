@@ -19,6 +19,7 @@
 #include "ResourceManager.h"
 #include "Map.h"
 #include "entities/Tileset.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -53,7 +54,7 @@ SpriteAnimation::~SpriteAnimation(void) {
   delete[] directions;
 
   if (src_image_loaded) {
-    SDL_FreeSurface(src_image);
+    delete src_image;
   }
 }
 
@@ -137,7 +138,7 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) {
  * @param current_direction the direction to show
  * @param current_frame the frame to show in this direction
  */
-void SpriteAnimation::display(SDL_Surface *destination, int x, int y,
+void SpriteAnimation::display(Surface *destination, int x, int y,
     int current_direction, int current_frame) {
 
   directions[current_direction]->display(destination, x, y, current_frame, src_image);
@@ -160,3 +161,4 @@ void SpriteAnimation::enable_pixel_collisions(void) {
 bool SpriteAnimation::are_pixel_collisions_enabled(void) {
   return directions[0]->are_pixel_collisions_enabled();
 }
+

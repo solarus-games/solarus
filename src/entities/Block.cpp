@@ -22,9 +22,10 @@
 #include "Map.h"
 #include "ResourceManager.h"
 #include "KeysEffect.h"
-#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a block.
@@ -42,7 +43,7 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
 	     int direction, Subtype subtype, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   subtype(subtype), maximum_moves(maximum_moves), sound_played(false),
-  when_can_move(SDL_GetTicks()) {
+  when_can_move(System::now()) {
 
   set_origin(8, 13);
   if (subtype == STATUE) {
@@ -58,8 +59,8 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
 
   set_direction(direction);
 
-  initial_position.x = last_position.x = x;
-  initial_position.y = last_position.y = y;
+  last_position.set_xy(x, y);
+  initial_position.set_xy(x, y);
   initial_maximum_moves = maximum_moves;
 }
 
@@ -163,7 +164,7 @@ bool Block::moved_by_hero(void) {
 
   Hero *hero = zsdx->game->get_hero();
 
-  if (get_movement() != NULL || maximum_moves == 0 || SDL_GetTicks() < when_can_move ||
+  if (get_movement() != NULL || maximum_moves == 0 || System::now() < when_can_move ||
       (direction != -1 && hero->get_animation_direction() != direction)) {
     return false;
   }
@@ -210,14 +211,13 @@ void Block::update(void) {
     if (finished) {
       // the movement is finished (note that the block may have not moved)
       clear_movement();
-      when_can_move = SDL_GetTicks() + 500;
+      when_can_move = System::now() + 500;
 
       // see if the block has moved
-      if (get_x() != last_position.x || get_y() != last_position.y) {
+      if (get_x() != last_position.get_x() || get_y() != last_position.get_y()) {
 
 	// the block has moved
-	last_position.x = get_x(); // save the new position for next time
-	last_position.y = get_y();
+	last_position.set_xy(get_x(), get_y()); // save the new position for next time
 
 	if (maximum_moves == 1) { // if the block could be moved only once
 	  maximum_moves = 0;      // it cannot move any more

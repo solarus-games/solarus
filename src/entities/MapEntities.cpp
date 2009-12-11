@@ -647,7 +647,7 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 void MapEntities::update_crystal_switch_blocks(void) {
 
   Hero *hero = zsdx->game->get_hero();
-  hero_on_raised_blocks = overlaps_raised_blocks(hero->get_layer(), hero->get_rectangle());
+  hero_on_raised_blocks = overlaps_raised_blocks(hero->get_layer(), hero->get_bounding_box());
 }
 
 /**
@@ -656,7 +656,7 @@ void MapEntities::update_crystal_switch_blocks(void) {
  * @param rectangle a rectangle
  * @return true if this rectangle overlaps a raised crystal switch block
  */
-bool MapEntities::overlaps_raised_blocks(Layer layer, const SDL_Rect &rectangle) {
+bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle &rectangle) {
 
   bool overlaps = false;
   std::list<CrystalSwitchBlock*> *blocks = get_crystal_switch_blocks(layer);

@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "SpriteAnimationDirection.h"
-#include "PixelBits.h"
+#include "lowlevel/PixelBits.h"
 
 /**
  * Constructor.
@@ -25,12 +25,11 @@
  * @param x_origin x coordinate of the sprite's origin
  * @param y_origin y coordinate of the sprite's origin
  */
-SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, SDL_Rect *frames,
+SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, Rectangle *frames,
 						   int x_origin, int y_origin):
   nb_frames(nb_frames), frames(frames), pixel_bits(NULL) {
 
-  origin.x = x_origin;
-  origin.y = y_origin;
+  origin.set_xy(x_origin, y_origin);
 }
 
 /**
@@ -51,8 +50,7 @@ SpriteAnimationDirection::~SpriteAnimationDirection(void) {
  * Returns the size of a frame.
  * @return the size of a frame
  */
-SDL_Rect& SpriteAnimationDirection::get_size(void) {
-
+const Rectangle & SpriteAnimationDirection::get_size(void) {
   return frames[0];
 }
 
@@ -60,8 +58,7 @@ SDL_Rect& SpriteAnimationDirection::get_size(void) {
  * Returns the origin point of a frame.
  * @return the origin point of a frame
  */
-SDL_Rect& SpriteAnimationDirection::get_origin(void) {
-
+const Rectngle & SpriteAnimationDirection::get_origin(void) {
   return origin;
 }
 
@@ -78,7 +75,7 @@ int SpriteAnimationDirection::get_nb_frames(void) {
  * @param frame a frame number
  * @return the rectangle of this frame
  */
-SDL_Rect& SpriteAnimationDirection::get_frame(int frame) {
+const Rectangle & SpriteAnimationDirection::get_frame(int frame) {
   return frames[frame];
 }
 
@@ -92,19 +89,17 @@ SDL_Rect& SpriteAnimationDirection::get_frame(int frame) {
  * @param current_frame the frame to show
  * @param src_image the image from wich the frame is extracted
  */
-void SpriteAnimationDirection::display(SDL_Surface *destination, int x, int y,
-				       int current_frame, SDL_Surface *src_image) {
+void SpriteAnimationDirection::display(Surface *destination, int x, int y,
+				       int current_frame, Surface *src_image) {
 
-  SDL_Rect position_top_left; // position of the sprite's upper left corner
+  Rectangle position_top_left; // position of the sprite's upper left corner
 
-  SDL_Rect *current_frame_rect = &frames[current_frame];
+  const Rectangle &current_frame_rect = frames[current_frame];
 
-  position_top_left.x = x - origin.x;
-  position_top_left.y = y - origin.y;
-  position_top_left.w = current_frame_rect->w;
-  position_top_left.h = current_frame_rect->h;
+  position_top_left.set_xy(x - origin.x, y - origin.y);
+  position_top_left.set_size(current_frame_rect.get_width(), current_frame_rect.get_height());
 
-  SDL_BlitSurface(src_image, current_frame_rect, destination, &position_top_left);
+  src_image->blit(current_frame_rect, destination, &position_top_left);
 }
 
 /**
@@ -114,7 +109,7 @@ void SpriteAnimationDirection::display(SDL_Surface *destination, int x, int y,
  * to be able to detect pixel-perfect collisions.
  * Nothing happens if the pixel-perfect collisions were already enabled.
  */
-void SpriteAnimationDirection::enable_pixel_collisions(SDL_Surface *src_image) {
+void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
 
   if (pixel_bits == NULL) {
     pixel_bits = new PixelBits*[nb_frames];
@@ -146,3 +141,4 @@ PixelBits * SpriteAnimationDirection::get_pixel_bits(int frame) {
 
   return pixel_bits[frame];
 }
+

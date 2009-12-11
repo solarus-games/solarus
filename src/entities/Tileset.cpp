@@ -19,10 +19,10 @@
 #include "entities/AnimatedTilePattern.h"
 #include "entities/ParallaxTilePattern.h"
 #include "entities/ScrollingTilePattern.h"
-#include "lowlevel/FileTools.h"
 #include "ResourceManager.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Surface.h"
 #include <iomanip>
-using namespace std;
 
 /**
  * Constructor.
@@ -73,7 +73,7 @@ void Tileset::load(void) {
   std::istream &tileset_file = FileTools::data_file_open(file_name);
 
   // parse the tileset file
-  string line;
+  std::string line;
 
   // first line: tileset general info
   if (!std::getline(tileset_file, line)) {
@@ -86,7 +86,7 @@ void Tileset::load(void) {
   FileTools::read(iss, r);
   FileTools::read(iss, g);
   FileTools::read(iss, b);
-  background_color = Color::create(r, g, b);
+  background_color = Color(r, g, b);
 
   // read the tile patterns
   int tile_pattern_id, animation, obstacle, default_layer;
@@ -176,10 +176,10 @@ void Tileset::unload(void) {
   }
   nb_tile_patterns = 0;
 
-  SDL_FreeSurface(tiles_image);
+  delete tiles_image;
   tiles_image = NULL;
 
-  SDL_FreeSurface(entities_image);
+  delete entities_image;
   entities_image = NULL;
 }
 
@@ -187,7 +187,7 @@ void Tileset::unload(void) {
  * Returns the background color of this tileset.
  * @return the background color
  */
-uint32_t Tileset::get_background_color(void) {
+Color & Tileset::get_background_color(void) {
   return background_color;
 }
 
@@ -203,7 +203,7 @@ bool Tileset::is_loaded(void) {
  * Returns the image containing the tiles of this tileset.
  * @return the tiles image
  */
-SDL_Surface * Tileset::get_tiles_image(void) {
+Surface * Tileset::get_tiles_image(void) {
   return tiles_image;
 }
 
@@ -211,7 +211,7 @@ SDL_Surface * Tileset::get_tiles_image(void) {
  * Returns the image containing the skin-dependent dynamic entities for this tileset.
  * @return the image containing the skin-dependent dynamic entities for this tileset
  */
-SDL_Surface * Tileset::get_entities_image(void) {
+Surface * Tileset::get_entities_image(void) {
   return entities_image;
 }
 
@@ -228,3 +228,4 @@ TilePattern * Tileset::get_tile_pattern(int id) {
   }
   return tile_pattern;
 }
+

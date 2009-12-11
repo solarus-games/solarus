@@ -89,27 +89,28 @@ void TilePattern::update(void) {
  * @param map the map
  * @param position_in_map location and size of the tile on the map
  */
-void TilePattern::display_on_map(Map *map, SDL_Rect &position_in_map) {
+void TilePattern::display_on_map(Map *map, const Rectangle &position_in_map) {
 
-  SDL_Surface *map_surface = map->get_visible_surface();
-  SDL_Surface *tileset_image = map->get_tileset()->get_tiles_image();
+  Surface *map_surface = map->get_visible_surface();
+  Surface *tileset_image = map->get_tileset()->get_tiles_image();
 
-  SDL_Rect dst;
-  const SDL_Rect &camera_position = map->get_camera_position();
+  Rectangle dst;
+  const Rectangle &camera_position = map->get_camera_position();
 
-  dst.w = get_width();
-  dst.h = get_height();
+  dst.set_size(get_width(), get_height());
 
-  int limit_x = position_in_map.x - camera_position.x + position_in_map.w;
-  int limit_y = position_in_map.y - camera_position.y + position_in_map.h;
+  int limit_x = position_in_map.get_x() - camera_position.get_x() + position_in_map.get_width();
+  int limit_y = position_in_map.get_y() - camera_position.get_y() + position_in_map.get_height();
 
-  for (dst.y = position_in_map.y - camera_position.y; dst.y < limit_y; dst.y += dst.h) {
+  for (int y = position_in_map.get_y() - camera_position.get_y(); y < limit_y; y += dst.get_height()) {
 
-    if (dst.y <= 240 && dst.y + dst.h > 0) {
+    if (y <= 240 && y + dst.get_height() > 0) {
+      dst.set_y(y);
 
-      for (dst.x = position_in_map.x - camera_position.x; dst.x < limit_x; dst.x += dst.w) {
+      for (int x = position_in_map.get_x() - camera_position.get_x(); x < limit_x; x += dst.get_width()) {
 
-	if (dst.x <= 320 && dst.x + dst.w > 0) {
+	if (x <= 320 && x + dst.get_width() > 0) {
+	  dst.set_x(x);
 	  display(map_surface, dst, tileset_image);
 	}
       }

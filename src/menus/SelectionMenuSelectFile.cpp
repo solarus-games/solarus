@@ -113,7 +113,7 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
 /**
  * Displays the selection menu in this phase.
  */
-void SelectionMenuSelectFile::display(SDL_Surface *screen_surface) {
+void SelectionMenuSelectFile::display(Surface *screen_surface) {
 
   start_display(screen_surface);
 

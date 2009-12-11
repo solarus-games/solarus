@@ -24,7 +24,7 @@
  * Abstract class for a tile pattern.
  * A tile pattern defines a rectangle image in a tileset and has 
  * an obstacle property.
- * There are two subclasses: SimpleTilePattern and AnimatedTilePattern.
+ * Examples of subclasses are SimpleTilePattern and AnimatedTilePattern.
  * The width and the height of a tile pattern are always multiples or 8.
  */
 class TilePattern {
@@ -47,8 +47,8 @@ class TilePattern {
   Obstacle get_obstacle(void) const;
 
   static void update(void);
-  void display_on_map(Map *map, SDL_Rect &position_in_map);
-  virtual void display(SDL_Surface *surface, const SDL_Rect &position_in_surface, SDL_Surface *tileset_image) = 0;
+  void display_on_map(Map *map, const Rectangle &position_in_map);
+  virtual void display(Surface *surface, const Rectangle &position_in_surface, Surface *tileset_image) = 0;
 };
 
 #endif

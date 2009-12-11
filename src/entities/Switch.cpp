@@ -16,11 +16,11 @@
  */
 #include "entities/Switch.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
 
 /**
  * Constructor.
@@ -112,11 +112,11 @@ void Switch::set_enabled(bool enabled) {
  */
 bool Switch::test_collision_custom(MapEntity *entity) {
 
-  const SDL_Rect &entity_rectangle = entity->get_rectangle();
-  int x1 = entity_rectangle.x + 4;
-  int x2 = x1 + entity_rectangle.w - 9;
-  int y1 = entity_rectangle.y + 4;
-  int y2 = y1 + entity_rectangle.h - 9;
+  const Rectangle &entity_rectangle = entity->get_bounding_box();
+  int x1 = entity_rectangle.get_x() + 4;
+  int x2 = x1 + entity_rectangle.get_width() - 9;
+  int y1 = entity_rectangle.get_y() + 4;
+  int y2 = y1 + entity_rectangle.get_height() - 9;
 
   return overlaps(x1, y1) && overlaps(x2, y1) &&
     overlaps(x1, y2) && overlaps(x2, y2);

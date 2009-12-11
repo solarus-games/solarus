@@ -17,11 +17,11 @@
 #include "SDL_Config/SDL_config_lib.h"
 #include "Message.h"
 #include "DialogBox.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/TextSurface.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "ResourceManager.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
 
 /**
@@ -63,7 +63,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y):
   // initialize the state
   this->line_index = 0;
   this->char_index = 0;
-  this->next_char_date = this->next_sound_date = SDL_GetTicks();
+  this->next_char_date = this->next_sound_date = System::now();
   this->show_all = false;
   update_char_delay();
 }
@@ -199,7 +199,7 @@ void Message::update_char_delay(void) {
   else {
     delay = 0;
   }
-  next_char_date = SDL_GetTicks() + delay;
+  next_char_date = System::now() + delay;
 }
 
 /**
@@ -279,7 +279,7 @@ void Message::add_character(void) {
       next_char_date += delay;
     }
 
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     if (now >= next_sound_date && dialog_box->is_letter_sound_enabled()) {
       ResourceManager::get_sound("message_letter")->play();
       next_sound_date = now + 100;
@@ -301,7 +301,7 @@ void Message::set_variable(const std::string &value) {
  */
 void Message::update(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   while (!is_finished() && now >= next_char_date) {
 
     // check the end of the current line
@@ -320,7 +320,7 @@ void Message::update(void) {
 /**
  * Displays the message on a surface.
  */
-void Message::display(SDL_Surface *destination_surface) {
+void Message::display(Surface *destination_surface) {
 
   for (int i = 0; i < 3; i++) {
     text_surfaces[i]->display(destination_surface);

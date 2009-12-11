@@ -47,15 +47,15 @@ void Camera::update(void) {
 
   int x = position.x;
   int y = position.y;
-  const SDL_Rect &map_location = map->get_location();
+  const Rectangle &map_location = map->get_location();
 
   // if the camera is not moving, center it on the hero
   if (is_fixed_on_hero()) {
-    const SDL_Rect &hero_xy = zsdx->game->get_hero_xy();
-    x = hero_xy.x;
-    y = hero_xy.y;
-    x = std::min(std::max(x - 160, 0), map_location.w - 320);
-    y = std::min(std::max(y - 120, 0), map_location.h - 240);
+    const Rectangle &hero_xy = zsdx->game->get_hero_xy();
+    x = hero_xy.get_x();
+    y = hero_xy.get_y();
+    x = std::min(std::max(x - 160, 0), map_location.get_width() - 320);
+    y = std::min(std::max(y - 120, 0), map_location.get_height() - 240);
   }
   else if (movement != NULL) {
     movement->update();
@@ -76,8 +76,7 @@ void Camera::update(void) {
     }
   }
 
-  position.x = x;
-  position.y = y;
+  position.set_xy(x, y);
 }
 
 /**
@@ -86,7 +85,7 @@ void Camera::update(void) {
  * Only x and y are indicated.
  * @return the visible area
  */
-SDL_Rect & Camera::get_position(void) {
+Rectangle & Camera::get_position(void) {
   return position;
 }
 
@@ -120,12 +119,12 @@ void Camera::move(int target_x, int target_y) {
     delete movement;
   }
 
-  const SDL_Rect &map_location = map->get_location();
-  target_x = std::min(std::max(target_x, 160), map_location.w - 160);
-  target_y = std::min(std::max(target_y, 120), map_location.h - 120);
+  const Rectangle &map_location = map->get_location();
+  target_x = std::min(std::max(target_x, 160), map_location.get_width() - 160);
+  target_y = std::min(std::max(target_y, 120), map_location.get_height() - 120);
 
   movement = new TargetMovement(target_x, target_y, speed);
-  movement->set_position(position.x + 160, position.y + 120);
+  movement->set_position(position.get_x() + 160, position.get_y() + 120);
 
   fixed_on_hero = false;
 }
@@ -145,7 +144,8 @@ void Camera::move(MapEntity *entity) {
  * When the movement finishes, the camera follows the hero again.
  */
 void Camera::restore(void) {
-  const SDL_Rect &hero_xy = zsdx->game->get_hero_xy();
+  const Rectangle &hero_xy = zsdx->game->get_hero_xy();
   move(hero_xy.x, hero_xy.y);
   restoring = true;
 }
+

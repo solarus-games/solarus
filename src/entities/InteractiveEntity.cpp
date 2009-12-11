@@ -44,7 +44,7 @@ const KeysEffect::ActionKeyEffect InteractiveEntity::action_key_effects[] = {
  * depending on the movement direction
  */
 const int InteractiveEntity::animation_directions[] = {
-  0,
+  0, // right
   0,
   1,
   2,
@@ -393,7 +393,7 @@ void InteractiveEntity::just_moved(void) {
     KeysEffect *keys_effect = zsdx->game->get_keys_effect();
     if (hero->get_facing_entity() == this &&
 	keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
-	!hero->is_facing_point_in(get_rectangle())) {
+	!hero->is_facing_point_in(get_bounding_box())) {
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
@@ -425,3 +425,4 @@ void InteractiveEntity::display_on_map(void) {
     MapEntity::display_on_map();
   }
 }
+

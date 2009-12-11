@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/FairyMovement.h"
+#include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 
 /**
@@ -40,7 +41,7 @@ void FairyMovement::set_random_direction(void) {
   int nb = Random::get_number(8);
   set_direction(nb * 45 + 22); // 8 possible directions but no "simple" direction
 
-  next_direction_change = SDL_GetTicks() + 2000; // change again in 2 seconds
+  next_direction_change = System::now() + 2000; // change again in 2 seconds
 }
 
 /**
@@ -55,7 +56,7 @@ void FairyMovement::update(void) {
 
   if (!is_suspended()) {
 
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     if (now >= next_direction_change) {
       set_random_direction();
     }

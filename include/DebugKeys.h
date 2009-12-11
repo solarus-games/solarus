@@ -18,6 +18,7 @@
 #define ZSDX_DEBUG_KEYS_H
 
 #include "Common.h"
+#include <SDL/SDL.h>
 
 /**
  * This class provides some special keys that make it easier to debug the game, including

@@ -18,6 +18,7 @@
 #define ZSDX_SCREEN_H
 
 #include "Common.h"
+#include <SDL/SDL.h>
 
 /**
  * A screen is an execution phase of the program, like the title
@@ -44,28 +45,29 @@
  */
 class Screen {
 
- private:
+  private:
 
-  bool screen_finished;
-  Screen *next_screen;
+    bool screen_finished;
+    Screen *next_screen;
 
- protected:
+  protected:
 
-  Screen(void);
+    Screen(void);
 
-  void set_next_screen(Screen *next_screen);
+    void set_next_screen(Screen *next_screen);
 
- public:
+  public:
 
-  virtual ~Screen(void);
+    virtual ~Screen(void);
 
-  bool is_screen_finished(void);
-  Screen *get_next_screen(void);
+    bool is_screen_finished(void);
+    Screen *get_next_screen(void);
 
-  // functions to define and which are called by the SDL main loop
-  virtual void update(void) = 0;
-  virtual void display(SDL_Surface *screen_surface) = 0;
-  virtual void handle_event(const SDL_Event &event) = 0;
+    // functions to define and which are called by the SDL main loop
+    virtual void update(void) = 0;
+    virtual void display(Surface *screen_surface) = 0;
+    virtual void handle_event(const SDL_Event &event) = 0;
 };
 
 #endif
+

@@ -19,25 +19,24 @@
 
 #include "Common.h"
 #include "entities/TilePattern.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Non-animated tile pattern.
  */
 class SimpleTilePattern: public TilePattern {
 
- protected:
+  protected:
 
-  /**
-   * Position of the tile pattern in the tileset image.
-   */
-  SDL_Rect position_in_tileset;
+    Rectangle position_in_tileset; /**< position of the tile pattern in the tileset image */
 
- public:
+  public:
 
-  SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height);
-  ~SimpleTilePattern(void);
+    SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    ~SimpleTilePattern(void);
 
-  virtual void display(SDL_Surface *destination, const SDL_Rect &destination_position, SDL_Surface *tileset_image);
+    virtual void display(Surface *destination, const Rectangle &destination_position, Surface *tileset_image);
 };
 
 #endif
+

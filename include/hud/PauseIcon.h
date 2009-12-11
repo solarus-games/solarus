@@ -26,27 +26,28 @@
  */
 class PauseIcon: public HudElement {
 
- private:
+  private:
 
-  // data object to observe
-  KeysEffect *keys_effect;
+    // data object to observe
+    KeysEffect *keys_effect;
 
-  // static icon
-  KeysEffect::PauseKeyEffect pause_key_effect_displayed;
-  SDL_Surface *img_pause_icon;
+    // static icon
+    KeysEffect::PauseKeyEffect pause_key_effect_displayed;
+    Surface *img_pause_icon;
 
-  // icon flipping
-  bool is_flipping;
-  Sprite *sprite_pause_icon;
+    // icon flipping
+    bool is_flipping;
+    Sprite *sprite_pause_icon;
 
- public:
+  public:
 
-  PauseIcon(KeysEffect *keys_effect, int x, int y);
-  ~PauseIcon(void);
-  
-  void update(void);
-  void rebuild(void);
+    PauseIcon(KeysEffect *keys_effect, int x, int y);
+    ~PauseIcon(void);
+
+    void update(void);
+    void rebuild(void);
 
 };
 
 #endif
+

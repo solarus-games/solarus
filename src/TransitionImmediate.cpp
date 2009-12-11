@@ -57,6 +57,7 @@ bool TransitionImmediate::is_over(void) {
 /**
  * Displays the transition effect on a surface.
  */
-void TransitionImmediate::display(SDL_Surface *surface) {
+void TransitionImmediate::display(Surface *surface) {
 
 }
+

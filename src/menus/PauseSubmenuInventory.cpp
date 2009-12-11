@@ -27,6 +27,7 @@
 #include "KeysEffect.h"
 #include "InventoryItem.h"
 #include "StringResource.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -95,7 +96,7 @@ PauseSubmenuInventory::~PauseSubmenuInventory(void) {
 
   // free the memory
   delete cursor_sprite;
-  SDL_FreeSurface(items_img);
+  delete items_img;
 
   for (int k = 0; k < 28; k++) {
     if (counters[k] != NULL) {
@@ -251,13 +252,13 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
   PauseSubmenu::display(destination);
 
   // display each inventory item
-  SDL_Rect src_position = {0, 0, 16, 16};
-  SDL_Rect dst_position = {0, 69, 0, 0};
+  Rectangle src_position(0, 0, 16, 16);
+  Rectangle dst_position(0, 69, 0, 0);
 
   int k = 0;
   for (int i = 0; i < 4; i++) {
 
-    dst_position.x = 56;
+    dst_position.set_x(56);
 
     for (int j = 0; j < 7; j++, k++) {
 
@@ -268,9 +269,8 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
       if (variant > 0) {
 
 	// the player has this item, display the variant he has
-	src_position.x = 16 * item_id;
-	src_position.y = 16 * (variant - 1);
-	SDL_BlitSurface(items_img, &src_position, destination, &dst_position);
+	src_position.set_xy(16 * item_id, 16 * (variant - 1));
+	items_img->blit(src_position, destination, dst_position);
 
 	// display the counter (if any)
 	if (counters[k] != NULL) {
@@ -278,9 +278,9 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
 	}
       }
 
-      dst_position.x += 32;
+      dst_position.add_x(32);
     }
-    dst_position.y += 32;
+    dst_position.add_y(32);
   }
 
   // display the cursor
@@ -292,13 +292,9 @@ void PauseSubmenuInventory::display(SDL_Surface *destination) {
   // display the item being assigned
   if (item_assigned_movement != NULL) {
     
-    src_position.x = 16 * item_assigned_id;
-    src_position.y = 16 * (item_assigned_variant - 1);
-
-    dst_position.x = item_assigned_movement->get_x();
-    dst_position.y = item_assigned_movement->get_y();
-
-    SDL_BlitSurface(items_img, &src_position, destination, &dst_position);
+    src_position.set_xy(16 * item_assigned_id, 16 * (item_assigned_variant - 1));
+    dst_position.set_xy(item_assigned_movement->get_xy(), item_assigned_movement->get_xy());
+    items_img-blit(src_position, destination, dst_position);
   }
 }
 

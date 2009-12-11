@@ -23,13 +23,13 @@
 #include "MapScript.h"
 #include "KeysEffect.h"
 #include "Treasure.h"
-#include "lowlevel/TextSurface.h"
 #include "Sprite.h"
 #include "DialogBox.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Savegame.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/TextSurface.h"
 #include "lowlevel/FileTools.h"
 
 /**
@@ -61,7 +61,6 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
  * Destructor.
  */
 ShopItem::~ShopItem(void) {
-
   delete treasure;
   delete rupee_icon_sprite;
 }
@@ -240,13 +239,13 @@ void ShopItem::update(void) {
  */
 void ShopItem::display_on_map(void) {
 
-  SDL_Surface *map_surface = map->get_visible_surface();
+  Surface *map_surface = map->get_visible_surface();
   int x = get_x();
   int y = get_y();
 
   // display the treasure
-  const SDL_Rect &camera_position = map->get_camera_position();
-  treasure->display(map_surface, x + 8 - camera_position.x, y - camera_position.y);
+  const Rectangle &camera_position = map->get_camera_position();
+  treasure->display(map_surface, x + 8 - camera_position.get_x(), y - camera_position.get_y());
 
   // also display the price
   price_digits->display(map_surface);

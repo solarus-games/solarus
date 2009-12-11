@@ -75,8 +75,9 @@ class Message {
 
   // update and display
   void update(void);
-  void display(SDL_Surface *destination_surface);
+  void display(Surface *destination_surface);
 
 };
 
 #endif
+

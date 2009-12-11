@@ -23,7 +23,6 @@
 #include "movements/FallingOnFloorMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
-#include "lowlevel/Random.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
@@ -31,8 +30,10 @@
 #include "DungeonEquipment.h"
 #include "Map.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Treasure.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Random.h"
+#include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 
 /**
@@ -56,11 +57,11 @@ const PickableItem::Features PickableItem::features[] = {
   {"entities/arrow", "5", false, "picked_item", true, false, false},             // 5 arrows
   {"entities/arrow", "10", false, "picked_item", true, false, false},            // 10 arrows
 
-  {"entities/key", "small_key", false, "picked_small_key", false, true, false}, // small key
-  {"entities/key", "big_key", true, "", false, true, true},                     // big key
-  {"entities/key", "boss_key", true, "", false, true, true},                    // boss key
-  {"entities/heart", "piece_of_heart", true, "", false, true, false},           // piece of heart
-  {"entities/heart", "heart_container", true, "", false, true, false},          // heart container
+  {"entities/key", "small_key", false, "picked_small_key", false, true, false},  // small key
+  {"entities/key", "big_key", true, "", false, true, true},                      // big key
+  {"entities/key", "boss_key", true, "", false, true, true},                     // boss key
+  {"entities/heart", "piece_of_heart", true, "", false, true, false},            // piece of heart
+  {"entities/heart", "heart_container", true, "", false, true, false},           // heart container
 };
 
 /**
@@ -77,7 +78,7 @@ const PickableItem::Features PickableItem::features[] = {
 PickableItem::PickableItem(Layer layer, int x, int y, PickableItem::Subtype subtype, int savegame_variable):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
   subtype(subtype), savegame_variable(savegame_variable),
-  shadow_x(x), shadow_y(y), appear_date(SDL_GetTicks()), is_following_boomerang(false) {
+  shadow_x(x), shadow_y(y), appear_date(System::now()), is_following_boomerang(false) {
 
 }
 
@@ -339,9 +340,9 @@ void PickableItem::initialize_sprites(void) {
   item_sprite->set_current_animation(features[subtype].animation_name);
 
   // set the origin point and the size of the entity
-  set_rectangle_from_sprite();
+  set_bounding_box_from_sprite();
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   if (falling_height != FALLING_NONE) {
     allow_pick_date = now + 700;  // the player can take the item after 0.7s
@@ -544,7 +545,7 @@ void PickableItem::set_suspended(bool suspended) {
   if (!suspended) {
     // suspend the timers
 
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
 
     if (!can_be_picked) {
       allow_pick_date = now + (allow_pick_date - when_suspended);
@@ -584,7 +585,7 @@ void PickableItem::update(void) {
   if (!is_suspended()) {
 
     // check the timer
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
 
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
@@ -620,3 +621,4 @@ void PickableItem::display_on_map(void) {
   // display the sprite
   MapEntity::display_on_map();
 }
+

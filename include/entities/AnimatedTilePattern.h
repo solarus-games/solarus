@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/TilePattern.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Animated tile pattern.
@@ -39,21 +40,15 @@ class AnimatedTilePattern: public TilePattern {
   private:
 
     // static variables to handle the animations of all tiles
-    static int frame_counter;
-    static int current_frames[3];
-    static uint32_t next_frame_date;
+    static int frame_counter;         /**< Frame counter (0 to 11), increased every 250 ms. */
+    static int current_frames[3];     /**< Current frame (0 to 2) for both sequences. */
+    static uint32_t next_frame_date;  /**< Date of the next frame change. */
 
-    /**
-     * Animation sequence type of this tile pattern: 0-1-2-1 or 0-1-2.
-     */
-    const AnimationSequence sequence;
+    const AnimationSequence sequence; /**< Animation sequence type of this tile pattern: 0-1-2-1 or 0-1-2. */
 
-    /**
-     * Array of 3 rectangles representing the 3 animation frames
-     * of this tile patterns in the tileset image.
-     * The 3 frames should have the same width and height.
-     */
-    SDL_Rect position_in_tileset[3];
+    Rectangle position_in_tileset[3]; /**< Array of 3 rectangles representing the 3 animation frames
+				       * of this tile pattern in the tileset image.
+				       * The 3 frames should have the same width and height. */
 
   public:
 
@@ -62,7 +57,7 @@ class AnimatedTilePattern: public TilePattern {
     ~AnimatedTilePattern(void);
 
     static void update(void);
-    void display(SDL_Surface *destination, const SDL_Rect &dst_position, SDL_Surface *tileset_image);
+    void display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image);
 
 };
 

@@ -16,6 +16,8 @@
  */
 #include "entities/AnimatedTilePattern.h"
 #include "ZSDX.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Interval in millisecond between two frames of an animation.
@@ -31,19 +33,10 @@ static const short frames[2][12] = {
   {0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1}, // sequence 0-1-2-1
 };
 
-/**
- * Frame counter (0 to 11), increased every 250 ms.
- */
 int AnimatedTilePattern::frame_counter = 0;
 
-/**
- * Current frame (0 to 2) for both sequences.
- */
 int AnimatedTilePattern::current_frames[3] = {0, 0, 0};
 
-/**
- * Date of the next frame change.
- */
 uint32_t AnimatedTilePattern::next_frame_date = 0;
 
 /**
@@ -67,16 +60,12 @@ AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
 					 int x3, int y3):
   TilePattern(obstacle, width, height), sequence(sequence) {
 
-  this->position_in_tileset[0].x = x1;
-  this->position_in_tileset[0].y = y1;
-  this->position_in_tileset[1].x = x2;
-  this->position_in_tileset[1].y = y2;
-  this->position_in_tileset[2].x = x3;
-  this->position_in_tileset[2].y = y3;
+  this->position_in_tileset[0] = Rectangle(x1, y1);
+  this->position_in_tileset[1] = Rectangle(x2, y2);
+  this->position_in_tileset[2] = Rectangle(x3, y3);
 
   for (int i = 0; i < 3; i++) {
-    this->position_in_tileset[i].w = width;
-    this->position_in_tileset[i].h = height;
+    this->position_in_tileset[i].set_size(width, height);
   }
 }
 
@@ -93,7 +82,7 @@ AnimatedTilePattern::~AnimatedTilePattern(void) {
  */
 void AnimatedTilePattern::update(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   while (now >= next_frame_date) {
 
@@ -111,10 +100,7 @@ void AnimatedTilePattern::update(void) {
  * @param dst_position position of the tile pattern on the destination surface
  * @param tileset_image the tileset image of this tile pattern
  */
-void AnimatedTilePattern::display(SDL_Surface *destination, const SDL_Rect &dst_position, SDL_Surface *tileset_image) {
-
-  SDL_Rect dst = dst_position; // make a copy because the rectangle might be modified
-  SDL_BlitSurface(tileset_image, &position_in_tileset[current_frames[sequence]],
-		  destination, &dst);
+void AnimatedTilePattern::display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image) {
+  tileset_image->blit(position_in_tileset[current_frames[sequence]], destination, dst_position);
 }
 

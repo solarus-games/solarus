@@ -19,11 +19,11 @@
 #include "Game.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "lowlevel/Color.h"
-#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "StringResource.h"
-using namespace std;
+#include "lowlevel/Color.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -36,21 +36,21 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   Equipment *equipment = game->get_equipment();
 
   // draw the items on a surface
-  quest_items_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
-  SDL_SetColorKey(quest_items_surface, SDL_SRCCOLORKEY, Color::black);
-  SDL_FillRect(quest_items_surface, NULL, Color::black);
+  quest_items_surface = new Surface(320, 240);
+  quest_items_surface->set_transparency_color(Color::get_black());
+  quest_items_surface->fill_with_color(Color::get_black());
 
-  SDL_Surface *treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
-  SDL_Surface *pieces_of_heart_img = ResourceManager::load_image("menus/quest_status_pieces_of_heart.png");
+  Surface *treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+  Surface *pieces_of_heart_img = ResourceManager::load_image("menus/quest_status_pieces_of_heart.png");
 
   ostringstream oss;
 
   // tunic
   {
     int tunic = equipment->get_tunic();
-    SDL_Rect src_position = {tunic * 16, 96, 16, 16};
-    SDL_Rect dst_position = {177, 164};
-    SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
+    Rectangle src_position(tunic * 16, 96, 16, 16);
+    Rectangle dst_position(177, 164);
+    treasures_img->blit(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.tunic_" << tunic;
     caption_texts[5] = StringResource::get_string(oss.str());
@@ -60,9 +60,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   // sword
   if (equipment->has_sword()) {
     int sword = equipment->get_sword();
-    SDL_Rect src_position = {80 + sword * 16, 96, 16, 16};
-    SDL_Rect dst_position = {211, 164};
-    SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
+    Rectangle src_positio(80 + sword * 16, 96, 16, 16);
+    Rectangle dst_position(211, 164);
+    treasures_img->blit(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.sword_" << sword;
     caption_texts[6] = StringResource::get_string(oss.str());
@@ -72,9 +72,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   // shield
   if (equipment->has_shield()) {
     int shield = equipment->get_shield();
-    SDL_Rect src_position = {32 + shield * 16, 96, 16, 16};
-    SDL_Rect dst_position = {245, 164};
-    SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
+    Rectangle src_position(32 + shield * 16, 96, 16, 16);
+    Rectangle dst_position(245, 164);
+    treasures_img->blit(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.shield_" << shield;
     caption_texts[7] = StringResource::get_string(oss.str());
@@ -86,9 +86,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
     int max_rupees = equipment->get_max_rupees();
     int rupee_bag = (max_rupees == 100) ? 1 : ((max_rupees == 300) ? 2 : 3);
     
-    SDL_Rect src_position = {rupee_bag * 16, 80, 16, 16};
-    SDL_Rect dst_position = {60, 71};
-    SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
+    Rectangle src_position(rupee_bag * 16, 80, 16, 16);
+    Rectangle dst_position(60, 71);
+    treasures_img->blit(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.rupee_bag_" << rupee_bag;
     caption_texts[0] = StringResource::get_string(oss.str());
@@ -99,9 +99,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   int max_bombs = equipment->get_max_bombs();
   if (max_bombs != 0) {
     int bomb_bag = (max_bombs == 10) ? 1 : ((max_bombs == 30) ? 2 : 3);
-    SDL_Rect src_position = {48 + bomb_bag * 16, 80, 16, 16};
-    SDL_Rect dst_position = {60, 100};
-    SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
+    Rectangle src_position(48 + bomb_bag * 16, 80, 16, 16);
+    Rectangle dst_position(60, 100);
+    treasures_img->blit(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.bomb_bag_" << bomb_bag;
     caption_texts[1] = StringResource::get_string(oss.str());
@@ -113,9 +113,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   if (max_arrows != 0) {
     int quiver = (max_arrows == 10) ? 1 : ((max_arrows == 30) ? 2 : 3);
     
-    SDL_Rect src_position = {96 + quiver * 16, 80, 16, 16};
-    SDL_Rect dst_position = {60, 130};
-    SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
+    Rectangle src_position(96 + quiver * 16, 80, 16, 16);
+    Rectangle& dst_position(60, 130);
+    treasures_img->blit(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.quiver_" << quiver;
     caption_texts[2] = StringResource::get_string(oss.str());
@@ -124,9 +124,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // world map
   if (equipment->has_world_map()) {
-    SDL_Rect src_position = {0, 80, 16, 16};
-    SDL_Rect dst_position = {60, 164};
-    SDL_BlitSurface(treasures_img, &src_position, quest_items_surface, &dst_position);
+    Rectangle src_position(0, 80, 16, 16);
+    Rectangle dst_position(60, 164);
+    treasures_img->blit(src_position, quest_items_surface, dst_position);
 
     caption_texts[3] = StringResource::get_string("quest_status.caption.world_map");
   }
@@ -134,9 +134,9 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   // heart pieces
   {
     int x = 51 * equipment->get_nb_pieces_of_heart();
-    SDL_Rect src_position = {x, 0, 51, 50};
-    SDL_Rect dst_position = {101, 82};
-    SDL_BlitSurface(pieces_of_heart_img, &src_position, quest_items_surface, &dst_position);
+    Rectangle src_position(x, 0, 51, 50);
+    Rectangle dst_position(101, 82);
+    pieces_of_heart_img->blit(src_position, quest_items_surface, dst_position);
 
     caption_texts[4] = StringResource::get_string("quest_status.caption.pieces_of_heart");
   }
@@ -149,8 +149,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   cursor_position = -1;
   set_cursor_position(0);
 
-  SDL_FreeSurface(treasures_img);
-  SDL_FreeSurface(pieces_of_heart_img);
+  delete treasures_img;
+  delete pieces_of_heart_img;
 }
 
 /**
@@ -159,7 +159,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 PauseSubmenuQuestStatus::~PauseSubmenuQuestStatus(void) {
 
   delete cursor_sprite;
-  SDL_FreeSurface(quest_items_surface);
+  delete quest_items_surface;
 }
 
 /**
@@ -172,35 +172,35 @@ void PauseSubmenuQuestStatus::set_cursor_position(int position) {
     this->cursor_position = position;
 
     if (position <= 3) {
-      cursor_sprite_position.x = 68;
+      cursor_sprite_position.set_x(68);
     }
     else if (position == 4) {
-      cursor_sprite_position.x = 126;
+      cursor_sprite_position.set_x(126);
     }
     else {
-      cursor_sprite_position.x = 19 + 34 * position - 4;
+      cursor_sprite_position.set_x(19 + 34 * position - 4);
     }
 
     switch (position) {
 
     case 0:
-      cursor_sprite_position.y = 79;
+      cursor_sprite_position.set_y(79);
       break;
 
     case 1:
-      cursor_sprite_position.y = 108;
+      cursor_sprite_position.set_y(108);
       break;
 
     case 2:
-      cursor_sprite_position.y = 138;
+      cursor_sprite_position.set_y(138);
       break;
 
     case 4:
-      cursor_sprite_position.y = 107;
+      cursor_sprite_position.set_y(107);
       break;
 
     default:
-      cursor_sprite_position.y = 172;
+      cursor_sprite_position.set_y(172);
       break;
     }
 
@@ -286,9 +286,9 @@ void PauseSubmenuQuestStatus::display(SDL_Surface *destination) {
   PauseSubmenu::display(destination);
 
   // quest items
-  SDL_BlitSurface(quest_items_surface, NULL, destination, NULL);
+  quest_items_surface->blit(destination);
 
   // cursor
-  cursor_sprite->display(destination, cursor_sprite_position.x, cursor_sprite_position.y);
+  cursor_sprite->display(destination, cursor_sprite_position.get_x(), cursor_sprite_position.get_y());
 }
 

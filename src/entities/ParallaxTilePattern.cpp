@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/ParallaxTilePattern.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Creates a tile pattern with parallax scrolling.
@@ -25,7 +26,7 @@
  * @param height height of the tile pattern in the tileset
  */
 ParallaxTilePattern::ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height):
-SimpleTilePattern(obstacle, x, y, width, height) {
+  SimpleTilePattern(obstacle, x, y, width, height) {
 
 }
 
@@ -42,60 +43,60 @@ ParallaxTilePattern::~ParallaxTilePattern(void) {
  * @param dst_position position of the tile pattern on the destination surface
  * @param tileset_image the tileset image of this tile
  */
-void ParallaxTilePattern::display(SDL_Surface *destination, const SDL_Rect &dst_position, SDL_Surface *tileset_image) {
+void ParallaxTilePattern::display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image) {
 
-  SDL_Rect src = position_in_tileset;
-  SDL_Rect dst = dst_position;
+  Rectangle src = position_in_tileset;
+  Rectangle dst = dst_position;
 
   int offset_x, offset_y; // display the tile with an offset that depends on its position modulo its size
 
-  if (dst.x >= 0) {
-    offset_x = dst.x % src.w;
+  if (dst.get_x() >= 0) {
+    offset_x = dst.get_x() % src.get_width();
   }
   else { // the modulo operation does not like negative numbers
-    offset_x = src.w - (-dst.x % src.w);
+    offset_x = src.get_width() - (-dst.get_x() % src.get_width());
   }
 
-  if (dst.y >= 0) {
-    offset_y = dst.y % src.h;
+  if (dst.get_y() >= 0) {
+    offset_y = dst.get_y() % src.get_height();
   }
   else {
-    offset_y = src.h - (-dst.y % src.h);
+    offset_y = src.get_height() - (-dst.get_y() % src.get_height());
   }
 
   // apply a scrolling ratio
   offset_x /= 2;
   offset_y /= 2;
 
-  src.x += offset_x;
-  src.w -= offset_x;
-  src.y += offset_y;
-  src.h -= offset_y;
-  SDL_BlitSurface(tileset_image, &src, destination, &dst);
+  src.add_x(offset_x);
+  src.add_width(-offset_x);
+  src.add_y(offset_y);
+  src.add_height(-offset_y);
+  tileset_image->blit(src, destination, dst);
 
   src = position_in_tileset;
   dst = dst_position;
-  src.y += offset_y;
-  src.h -= offset_y;
-  dst.x += src.w - offset_x;
-  src.w = offset_x;
-  SDL_BlitSurface(tileset_image, &src, destination, &dst);
+  src.add_y(offset_y);
+  src.add_height(-offset_y);
+  dst.add_x(src.get_width() - offset_x);
+  src.set_width(offset_x);
+  tileset_image->blit(src, destination, dst);
 
   src = position_in_tileset;
   dst = dst_position;
-  src.x += offset_x;
-  src.w -= offset_x;
-  dst.y += src.h - offset_y;
-  src.h = offset_y;
-  SDL_BlitSurface(tileset_image, &src, destination, &dst);
+  src.add_x(offset_x);
+  src.add_width(-offset_x);
+  dst.add_y(src.get_height() - offset_y);
+  src.set_height(offset_y);
+  tileset_image->blit(src, destination, dst);
 
   src = position_in_tileset;
   dst = dst_position;
-  dst.x += src.w - offset_x;
-  src.w = offset_x;
-  dst.y += src.h - offset_y;
-  src.h = offset_y;
-  SDL_BlitSurface(tileset_image, &src, destination, &dst);
+  dst.add_x(src.get_width() - offset_x);
+  src.set_width(offset_x);
+  dst.add_y(src.get_height() - offset_y);
+  src.set_height(offset_y);
+  tileset_image->blit(src, destination, dst);
 
 }
 

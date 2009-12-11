@@ -15,8 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Treasure.h"
-#include "ResourceManager.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Surface.h"
+#include "ResourceManager.h"
 #include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
@@ -26,6 +27,7 @@
 #include "Counter.h"
 #include "Map.h"
 #include "MapScript.h"
+#include "Treasure.h"
 
 /**
  * Creates a new treasure without amount.
@@ -64,7 +66,7 @@ Treasure::Treasure(Content content, int amount, int savegame_variable):
  */
 Treasure::~Treasure(void) {
 
-  SDL_FreeSurface(treasures_img);
+  delete treasures_img;
 
   if (counter != NULL) {
     delete counter;
@@ -562,16 +564,16 @@ void Treasure::add_item_to_equipment(void) {
  * @param x the treasure x position on this surface
  * @param y the treasure y position on this surface
  */
-void Treasure::display(SDL_Surface *destination, int x, int y) {
+void Treasure::display(Surface *destination, int x, int y) {
 
   // display the item
-  SDL_Rect src_position = {0, 0, 16, 16};
-  src_position.x = 16 * (content % 10);
-  src_position.y = 16 * (content / 10);
+  Rectangle src_position(0, 0, 16, 16);
+  src_position.set_x(16 * (content % 10));
+  src_position.set_y(16 * (content / 10));
 
-  SDL_Rect dst_position = {x, y, 0, 0};
+  Rectangle dst_position(x, y, 0, 0);
 
-  SDL_BlitSurface(treasures_img, &src_position, destination, &dst_position);
+  treasures_img->blit(src_position, destination, dst_position);
 
   // display the counter
   if (counter != NULL) {

@@ -27,32 +27,33 @@
  */
 class SelectionMenuChooseName: public SelectionMenuPhase {
 
- private:
+  private:
 
-  char player_name[11];
-  int x_letter_cursor;
-  int y_letter_cursor;
+    char player_name[11];
+    int x_letter_cursor;
+    int y_letter_cursor;
 
-  SDL_Surface *img_arrow;
-  SDL_Surface *img_letters;
+    Surface *img_arrow;
+    Surface *img_letters;
 
-  TextSurface *text_new_player_name;
+    TextSurface *text_new_player_name;
 
-  uint32_t next_key_date; /**< date when a key other than the arrows can be pressed again */
+    uint32_t next_key_date; /**< date when a key other than the arrows can be pressed again */
 
-  // player name
-  bool select_letter(void);
-  bool validate_player_name(void);
+    // player name
+    bool select_letter(void);
+    bool validate_player_name(void);
 
- public:
+  public:
 
-  // creation and destruction
-  SelectionMenuChooseName(SelectionMenuPhase *previous);
-  ~SelectionMenuChooseName(void);
+    // creation and destruction
+    SelectionMenuChooseName(SelectionMenuPhase *previous);
+    ~SelectionMenuChooseName(void);
 
-  // update and display
-  void handle_event(const SDL_Event &event);
-  void display(SDL_Surface *screen_surface);
+    // update and display
+    void handle_event(const SDL_Event &event);
+    void display(Surface *screen_surface);
 };
 
 #endif
+

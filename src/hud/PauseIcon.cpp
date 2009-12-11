@@ -18,6 +18,7 @@
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -45,7 +46,7 @@ PauseIcon::PauseIcon(KeysEffect *keys_effect, int x, int y):
  */
 PauseIcon::~PauseIcon(void) {
   delete sprite_pause_icon;
-  SDL_FreeSurface(img_pause_icon);
+  delete img_pause_icon;
 }
 
 /**
@@ -107,15 +108,16 @@ void PauseIcon::rebuild(void) {
     // draw the static image of the icon, with the current
     // pause key effect
 
-    SDL_Rect icon_position = {0, 0, 72, 24};
+    Rectangle icon_position(0, 0, 72, 24);
     
     // draw the pause icon with some text (Save, Return...)
-    icon_position.y = 24 * pause_key_effect_displayed;
+    icon_position.set_y(24 * pause_key_effect_displayed);
 
-    SDL_BlitSurface(img_pause_icon, &icon_position, surface_drawn, NULL);
+    img_pause_icon->blit(icon_position, surface_drawn);
   }
   else {
     // draw the flipping sprite
     sprite_pause_icon->display(surface_drawn, 24, 0);
   }
 }
+

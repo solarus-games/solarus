@@ -18,6 +18,7 @@
 #define ZSDX_HUD_ELEMENT_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Abstract class for displaying an element of the HUD.
@@ -30,17 +31,17 @@ class HudElement {
 
  protected:
 
-  SDL_Surface *surface_drawn;    /**< The surface on which the hud element is drawn when rebuild() is called.
-			          * When display() is called, this surface is blitted
-			          * on the destination surface (usually the screen). */
+  Surface *surface_drawn;     /**< The surface on which the hud element is drawn when rebuild() is called.
+			           * When display() is called, this surface is blitted
+			           * on the destination surface (usually the screen). */
 
-  SDL_Rect destination_position; /**< Position of this hud element on the destination surface. */
+  Rectangle destination_position; /**< Position of this hud element on the destination surface. */
 
-  bool visible;                  /**< Indicates that this hud element is currently visible. */
-  int opacity;                   /**< The current opacity (0 to 255) of this hud element. */
-  bool blinking;                 /**< Indicates that this hud element is blinking. */
-  bool blinking_is_visible;      /**< When blinking, indicates that this hud element is currently displayed. */
-  uint32_t next_blink_date;        /**< When blinkig, date when the element will appear or disappear next time */
+  bool visible;                   /**< Indicates that this hud element is currently visible. */
+  int opacity;                    /**< The current opacity (0 to 255) of this hud element. */
+  bool blinking;                  /**< Indicates that this hud element is blinking. */
+  bool blinking_is_visible;       /**< When blinking, indicates that this hud element is currently displayed. */
+  uint32_t next_blink_date;       /**< When blinkig, date when the element will appear or disappear next time */
 
   HudElement(int x, int y, int width, int height);
 
@@ -58,7 +59,8 @@ class HudElement {
 
   virtual void update(void);
   virtual void rebuild(void);
-  void display(SDL_Surface *destination);
+  void display(Surface *destination);
 };
 
 #endif
+

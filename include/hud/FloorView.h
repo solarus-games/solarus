@@ -25,22 +25,23 @@
  */
 class FloorView: public HudElement {
 
- private:
+  private:
 
-  Game *game;
-  Map *current_map;
-  SDL_Surface *img_floors;
+    Game *game;
+    Map *current_map;
+    Surface *img_floors;
 
-  bool is_floor_displayed;
-  uint32_t hide_floor_date;
+    bool is_floor_displayed;
+    uint32_t hide_floor_date;
 
- public:
+  public:
 
-  FloorView(Game *game, int x, int y);
-  ~FloorView(void);
+    FloorView(Game *game, int x, int y);
+    ~FloorView(void);
 
-  void update(void);
-  void rebuild(void);
+    void update(void);
+    void rebuild(void);
 };
 
 #endif
+

@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "KeysEffect.h"
 #include "Controls.h"
+#include "lowlevel/Rectangle.h"
 #include <map>
 
 /**
@@ -78,9 +79,9 @@ class DialogBox {
     KeysEffect::SwordKeyEffect sword_key_effect_saved;
 
     // graphics
-    SDL_Surface *dialog_surface;
-    SDL_Surface *img_box;
-    SDL_Surface *img_icons;
+    Surface *dialog_surface;
+    Surface *img_box;
+    Surface *img_icons;
     Sprite *end_message_sprite;
 
     // sounds
@@ -90,9 +91,9 @@ class DialogBox {
     // position of the images
     int x;
     int y;
-    SDL_Rect box_dst_position;
-    SDL_Rect question_dst_position;
-    SDL_Rect icon_dst_position;
+    Rectangle box_dst_position;
+    Rectangle question_dst_position;
+    Rectangle icon_dst_position;
 
     void show_message(const MessageId &messageId);
 
@@ -128,7 +129,7 @@ class DialogBox {
 
     // update and display
     void update(void);
-    void display(SDL_Surface *destination_surface);
+    void display(Surface *destination_surface);
 };
 
 #endif

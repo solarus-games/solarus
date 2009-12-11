@@ -17,11 +17,13 @@
 #include "menus/SelectionMenuChooseName.h"
 #include "menus/SelectionMenuSelectFile.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "lowlevel/TextSurface.h"
 #include "Savegame.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 
 /**
@@ -31,7 +33,7 @@
  */
 SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
   SelectionMenuPhase(previous, "selection_menu.choose_name"),
-  next_key_date(SDL_GetTicks()) {
+  next_key_date(System::now()) {
 
   SDL_EnableKeyRepeat(300, 50);
 
@@ -59,8 +61,8 @@ SelectionMenuChooseName::~SelectionMenuChooseName(void) {
   get_keys_effect()->set_sword_key_enabled(false);
 
   delete text_new_player_name;
-  SDL_FreeSurface(img_arrow);
-  SDL_FreeSurface(img_letters);
+  delete img_arrow;
+  delete img_letters;
 }
 
 /**
@@ -71,7 +73,7 @@ void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
 
   if (event.type == SDL_KEYDOWN) {
 
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
 
     bool finished = false;
     switch (event.key.keysym.sym) {
@@ -124,23 +126,23 @@ void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
 /**
  * Displays the selection menu in this phase.
  */
-void SelectionMenuChooseName::display(SDL_Surface *screen_surface) {
+void SelectionMenuChooseName::display(Surface *screen_surface) {
 
   start_display(screen_surface);
 
   // cursor
   get_cursor()->display(destination_surface,
-		       51 + 16 * x_letter_cursor,
-		       93 + 18 * y_letter_cursor);
+      51 + 16 * x_letter_cursor,
+      93 + 18 * y_letter_cursor);
  
   // current name
-  SDL_Rect position = {57, 76, 0, 0};
-  SDL_BlitSurface(img_arrow, NULL, destination_surface, &position);
+  Rectangle position(57, 76, 0, 0);
+  img_arrow->blit(destination_surface, position);
   text_new_player_name->display(destination_surface);
 
   // letters
-  position.y = 98;
-  SDL_BlitSurface(img_letters, NULL, destination_surface, &position);
+  position.set_y(98);
+  img_letters->blit(destination_surface, position);
 
   finish_display(screen_surface);
 }
@@ -254,3 +256,4 @@ bool SelectionMenuChooseName::validate_player_name(void) {
 
   return true;
 }
+

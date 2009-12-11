@@ -19,80 +19,81 @@
 
 #include "Common.h"
 #include "Screen.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * This class shows the title screen of the game.
  */
 class TitleScreen: public Screen {
 
- private:
+  private:
 
-  /**
-   * The phases of the title screen.
-   */
-  enum Phase {
-    PHASE_BLACK_SCREEN,
-    PHASE_ZS_PRESENTS,
-    PHASE_TITLE
-  };
+    /**
+     * The phases of the title screen.
+     */
+    enum Phase {
+      PHASE_BLACK_SCREEN,
+      PHASE_ZS_PRESENTS,
+      PHASE_TITLE
+    };
 
-  /**
-   * Possible times of the day, used
-   * to display different title screens.
-   */
-  enum TimeOfDay {
-    DAYLIGHT,
-    SUNSET,
-    NIGHT
-  };
+    /**
+     * Possible times of the day, used
+     * to display different title screens.
+     */
+    enum TimeOfDay {
+      DAYLIGHT,
+      SUNSET,
+      NIGHT
+    };
 
-  Phase current_phase;
-  uint32_t next_phase_date;
-  TransitionFade *transition_in;
-  TransitionFade *transition_out;
+    Phase current_phase;
+    uint32_t next_phase_date;
+    TransitionFade *transition_in;
+    TransitionFade *transition_out;
 
-  // phase 1
-  void init_phase_black_screen(void);
+    // phase 1
+    void init_phase_black_screen(void);
 
-  // phase 2
-  SDL_Surface *zs_presents_img;
-  SDL_Rect zs_presents_position;
+    // phase 2
+    Surface *zs_presents_img;
+    Rectangle zs_presents_position;
 
-  void init_phase_zs_presents(void);
-  void exit_phase_zs_presents(void);
+    void init_phase_zs_presents(void);
+    void exit_phase_zs_presents(void);
 
-  // phase 3
-  Music *title_screen_music;
-  SDL_Surface *background_img;
-  SDL_Surface *clouds_img;
-  SDL_Surface *logo_img;
-  SDL_Surface *dx_img;
-  SDL_Surface *star_img;
-  TextSurface *website_img;
-  TextSurface *press_space_img;
-  SDL_Surface *title_surface;
-  int counter;
-  uint32_t next_image_date;
-  SDL_Rect clouds_position;
-  uint32_t next_clouds_move_date;
+    // phase 3
+    Music *title_screen_music;
+    Surface *background_img;
+    Surface *clouds_img;
+    Surface *logo_img;
+    Surface *dx_img;
+    Surface *star_img;
+    TextSurface *website_img;
+    TextSurface *press_space_img;
+    Surface *title_surface;
+    int counter;
+    uint32_t next_image_date;
+    Rectangle clouds_position;
+    uint32_t next_clouds_move_date;
 
-  void init_phase_title(void);
-  void exit_phase_title(void);
-  void update_phase_title(void);
-  void display_phase_title(SDL_Surface *destination_surface);
+    void init_phase_title(void);
+    void exit_phase_title(void);
+    void update_phase_title(void);
+    void display_phase_title(SDL_Surface *destination_surface);
 
-  TimeOfDay get_time_of_day(void);
+    TimeOfDay get_time_of_day(void);
 
- public:
+  public:
 
-  // creation and destruction
-  TitleScreen(void);
-  ~TitleScreen(void);
+    // creation and destruction
+    TitleScreen(void);
+    ~TitleScreen(void);
 
-  // update and display
-  void handle_event(const SDL_Event &event);
-  void update(void);
-  void display(SDL_Surface *destination_surface);
+    // update and display
+    void handle_event(const SDL_Event &event);
+    void update(void);
+    void display(Surface *destination_surface);
 };
 
 #endif

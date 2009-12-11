@@ -28,48 +28,48 @@
  */
 class Teletransporter: public Detector {
 
- public:
+  public:
 
-  /**
-   * Subtypes of teletransporters.
-   */
-  enum Subtype {
-    INVISIBLE = 0, /**< an invisible detector, usually to move the hero to another map */
-    YELLOW    = 1, /**< a classical teletransporter */
-    BLUE      = 2, /**< a teletransporter with a different color and an immediate transition */
-  };
+    /**
+     * Subtypes of teletransporters.
+     */
+    enum Subtype {
+      INVISIBLE = 0, /**< an invisible detector, usually to move the hero to another map */
+      YELLOW    = 1, /**< a classical teletransporter */
+      BLUE      = 2, /**< a teletransporter with a different color and an immediate transition */
+    };
 
- private:
+  private:
 
-  Subtype subtype;                      /**< subtype of teletransporter */
-  Transition::Style transition_style;   /**< style of transition between the two maps */
-  Sound *sound;                         /**< the sound played when this teletransporter is taken (can be NULL) */
-  MapId destination_map_id;             /**< id of the destination map */
-  std::string destination_point_name;        /**< destination point on that map, or "_same" to keep the hero's coordinates,
-					 * or "_side" to place the hero on the appropriate side of the map */
-  int destination_side;                 /**< when the destination point is "_side", indicates which side
-					 * of the destination map this teletransporters leads to
-					 * (this depends on the teletransporter position on the map */
-  int transition_direction;             /**< when the destination point is "_side", indicates the direction 
-					 * of the transition between the two maps (this is the opposite
-					 * direction of destination_side) */
-  bool transporting_hero;               /**< true if the hero is currently being transported by this teletransporter */
+    Subtype subtype;                      /**< subtype of teletransporter */
+    Transition::Style transition_style;   /**< style of transition between the two maps */
+    Sound *sound;                         /**< the sound played when this teletransporter is taken (can be NULL) */
+    MapId destination_map_id;             /**< id of the destination map */
+    std::string destination_point_name;        /**< destination point on that map, or "_same" to keep the hero's coordinates,
+						* or "_side" to place the hero on the appropriate side of the map */
+    int destination_side;                 /**< when the destination point is "_side", indicates which side
+					   * of the destination map this teletransporters leads to
+					   * (this depends on the teletransporter position on the map */
+    int transition_direction;             /**< when the destination point is "_side", indicates the direction 
+					   * of the transition between the two maps (this is the opposite
+					   * direction of destination_side) */
+    bool transporting_hero;               /**< true if the hero is currently being transported by this teletransporter */
 
- public:
+  public:
 
-  Teletransporter(const std::string &name, Layer layer, int x, int y, int width, int height,
-		  Subtype subtype, Transition::Style transition_style,
-		  MapId destination_map_id, std::string destination_point_name);
-  ~Teletransporter(void);
-  static CreationFunction parse;
+    Teletransporter(const std::string &name, Layer layer, int x, int y, int width, int height,
+	Subtype subtype, Transition::Style transition_style,
+	MapId destination_map_id, std::string destination_point_name);
+    ~Teletransporter(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
-  void set_map(Map *map);
+    EntityType get_type(void);
+    void set_map(Map *map);
 
-  bool is_obstacle_for(MapEntity *other);
-  bool test_collision_custom(MapEntity *entity);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void transport_hero(Hero *hero);
+    bool is_obstacle_for(MapEntity *other);
+    bool test_collision_custom(MapEntity *entity);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void transport_hero(Hero *hero);
 };
 
 #endif

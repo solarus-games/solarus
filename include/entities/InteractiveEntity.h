@@ -31,59 +31,59 @@
  */
 class InteractiveEntity: public Detector {
 
- public:
+  public:
 
-  /**
-   * The different kinds of interactions.
-   * They indicate what happens when the player presses the action key in front of this entity.
-   */
-  enum Subtype {
+    /**
+     * The different kinds of interactions.
+     * They indicate what happens when the player presses the action key in front of this entity.
+     */
+    enum Subtype {
 
-    CUSTOM,                /**< no predetermined behavior: just displays the message specified or calls the script */
-    NON_PLAYING_CHARACTER, /**< same thing except that the script can make the engine move an NPC */
-    SIGN,                  /**< a sign with a message (TODO to make it destructible,
-			    * an instance of Sign is actually created) */
-    WATER_FOR_BOTTLE,      /**< a place where the hero can fill a bottle with water */
-  };
+      CUSTOM,                /**< no predetermined behavior: just displays the message specified or calls the script */
+      NON_PLAYING_CHARACTER, /**< same thing except that the script can make the engine move an NPC */
+      SIGN,                  /**< a sign with a message (TODO to make it destructible,
+			      * an instance of Sign is actually created) */
+      WATER_FOR_BOTTLE,      /**< a place where the hero can fill a bottle with water */
+    };
 
- private:
+  private:
 
-  Subtype subtype;
-  MessageId message_to_show;
+    Subtype subtype;
+    MessageId message_to_show;
 
-  static const KeysEffect::ActionKeyEffect action_key_effects[];
-  static const int animation_directions[];
+    static const KeysEffect::ActionKeyEffect action_key_effects[];
+    static const int animation_directions[];
 
-  void initialize_sprite(SpriteAnimationSetId sprite_name, int initial_direction);
-  void call_script(void);
+    void initialize_sprite(SpriteAnimationSetId sprite_name, int initial_direction);
+    void call_script(void);
 
- public:
+  public:
 
-  InteractiveEntity(const std::string &name, Layer layer, int x, int y, Subtype subtype,
-		    SpriteAnimationSetId sprite_name, int initial_direction, MessageId message_to_show);
-  ~InteractiveEntity(void);
-  static CreationFunction parse;
+    InteractiveEntity(const std::string &name, Layer layer, int x, int y, Subtype subtype,
+	SpriteAnimationSetId sprite_name, int initial_direction, MessageId message_to_show);
+    ~InteractiveEntity(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
-  bool is_displayed_in_y_order(void);
+    EntityType get_type(void);
+    bool is_displayed_in_y_order(void);
 
-  bool is_obstacle_for(MapEntity *other);
-  bool is_npc_obstacle(InteractiveEntity *npc);
-  bool is_enemy_obstacle(Enemy *enemy);
-  bool is_sword_ignored(void);
+    bool is_obstacle_for(MapEntity *other);
+    bool is_npc_obstacle(InteractiveEntity *npc);
+    bool is_enemy_obstacle(Enemy *enemy);
+    bool is_sword_ignored(void);
 
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void action_key_pressed(void);
-  bool interaction_with_inventory_item(InventoryItem *item);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void action_key_pressed(void);
+    bool interaction_with_inventory_item(InventoryItem *item);
 
-  void update(void);
-  void display_on_map(void);
+    void update(void);
+    void display_on_map(void);
 
-  void walk(std::string path, bool loop, bool with_collisions);
-  void walk_random(void);
-  void jump(int direction, int length, bool with_collisions);
-  void just_moved(void);
-  void set_sprite_direction(int direction);
+    void walk(std::string path, bool loop, bool with_collisions);
+    void walk_random(void);
+    void jump(int direction, int length, bool with_collisions);
+    void just_moved(void);
+    void set_sprite_direction(int direction);
 };
 
 #endif

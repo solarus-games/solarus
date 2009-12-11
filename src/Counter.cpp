@@ -17,6 +17,7 @@
 #include "Counter.h"
 #include "ResourceManager.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -30,12 +31,11 @@ Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
 			 int x, int y):
   style(BIG_DIGITS), nb_digits(nb_digits), fill_with_zeros(fill_with_zeros), maximum(0) {
 
-  surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, 8 * nb_digits, 8, 32, 0, 0, 0, 0);
-  SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
+  surface_drawn = new Surface(8 * nb_digits, 8);
+  surface_drawn->set_transparency_color(Color::get_black());
   img_digits = ResourceManager::load_image("hud/digits.png");
 
-  destination_position.x = x;
-  destination_position.y = y;
+  destination_position.set_xy(x, y);
 
   rebuild_with_value(0);
 }
@@ -44,8 +44,8 @@ Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
  * Destructor.
  */
 Counter::~Counter(void) {
-  SDL_FreeSurface(surface_drawn);
-  SDL_FreeSurface(img_digits);
+  delete surface_drawn;
+  delete img_digits;
 }
 
 /**
@@ -105,7 +105,7 @@ void Counter::rebuild_with_value(unsigned int value) {
   this->value = value;
 
   // fill with transparent color
-  SDL_FillRect(surface_drawn, NULL, Color::black);
+  surface_drawn->fill_with_color(Color::get_black());
 
   int y, width;
   if (style == BIG_DIGITS) {
@@ -121,8 +121,8 @@ void Counter::rebuild_with_value(unsigned int value) {
     y += 8;
   }
 
-  SDL_Rect digit_position_in_src = {0, y, 8, 8};
-  SDL_Rect digit_position_in_counter = {0, 0, 8, 8};
+  Rectangle digit_position_in_src(0, y, 8, 8);
+  Rectangle digit_position_in_counter(0, 0, 8, 8);
 
   bool right_digit = true;
 
@@ -136,11 +136,10 @@ void Counter::rebuild_with_value(unsigned int value) {
     if (value != 0 || digit != 0 || fill_with_zeros || right_digit) {
 
       // draw the surface
-      digit_position_in_src.x = digit * 8;
-      digit_position_in_counter.x = i * width;
+      digit_position_in_src.set_x(digit * 8);
+      digit_position_in_counter.set_x(i * width);
 
-      SDL_BlitSurface(img_digits, &digit_position_in_src,
-		      surface_drawn, &digit_position_in_counter);
+      img_digits->blit(digit_position_in_src, surface_drawn, digit_position_in_counter);
 
       right_digit = false;
     }
@@ -170,8 +169,8 @@ void Counter::decrease(void) {
  * when you called the constructor.
  * @param destination the destination surface
  */
-void Counter::display(SDL_Surface *destination) {
-  SDL_BlitSurface(surface_drawn, NULL, destination, &destination_position);
+void Counter::display(Surface *destination) {
+  surface_drawn->blit(destination, destination_position);
 }
 
 /**
@@ -180,8 +179,8 @@ void Counter::display(SDL_Surface *destination) {
  * @param x x coordinate of the top-left corner of the counter on the destination surface
  * @param y y coordinate of the top-left corner of the counter on the destination surface
  */
-void Counter::display(SDL_Surface *destination, int x, int y) {
-  destination_position.x = x;
-  destination_position.y = y;
-  SDL_BlitSurface(surface_drawn, NULL, destination, &destination_position);
+void Counter::display(Surface *destination, int x, int y) {
+  destination_position.set_xy(x, y);
+  surface_drawn->blit(destination, destination_position);
 }
+

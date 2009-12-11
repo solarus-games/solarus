@@ -83,7 +83,8 @@ class Enemy: public Detector {
   // attack/defense features of this type of enemy
   int damage_on_hero;                 /**< number of heart quarters the player loses when he gets hurt by this enemy;
 				       * this number is divided depending on the hero's tunic number (default: 1) */
-  int magic_damage_on_hero;           /**< number of magic points the player loses when he gets hurt by this enemy (default: 0) */
+  int magic_damage_on_hero;           /**< number of magic points the player loses when he gets hurt
+				       * by this enemy (default: 0) */
   int life;                           /**< number of health points of the enemy (default: 1) */
   HurtSoundStyle hurt_sound_style;    /**< the sound played when this kind of enemy gets hurt by the hero
 				       * (default: HURT_SOUND_NORMAL) */
@@ -94,16 +95,18 @@ class Enemy: public Detector {
   int minimum_shield_needed;          /**< shield number needed by the hero to avoid the attack of this enemy,
 				       * or 0 to make the attack unavoidable (default: 0) */
 
-  int attack_consequences[ATTACK_NUMBER]; /**< indicates how the enemy reacts to each attack (by default, it depends on the attacks):
+  int attack_consequences[ATTACK_NUMBER]; /**< indicates how the enemy reacts to each attack
+				       * (by default, it depends on the attacks):
 				       * - a number greater than 0 represents the number of health points lost when
-				       * he is subject to this attack (for a sword attack, this number will be multiplied
-				       * depending on the sword and the presence of a spin attack),
+				       *   he is subject to this attack (for a sword attack, this number will be multiplied
+				       *   depending on the sword and the presence of a spin attack),
 				       * - a value of 0 means that the attack is just ignored (this is the case
-				       * for some special enemies like Octorok's stones),
+				       *   for some special enemies like Octorok's stones),
 				       * - a value of -1 means that the enemy is protected against this attack (the shield
-				       * sound is played),
+				       *   sound is played),
 				       * - a value of -2 means that this attack immobilizes the enemy
-				       * - a value of -3 means a custom effect for the attack (the custom_attack() fonction is called) */
+				       * - a value of -3 means a custom effect for the attack
+				       *   (the custom_attack() fonction is called) */
 
   // enemy characteristics
   Rank rank;                          /**< is this enemy a normal enemy, a miniboss or a boss? */

@@ -22,8 +22,9 @@
 #include "movements/PlayerMovement.h"
 #include "movements/TargetMovement.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Map.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a boomerang.
@@ -36,8 +37,7 @@ Boomerang::Boomerang(Hero *hero, int boomerang_direction):
   // initialize the entity
   set_layer(hero->get_layer());
   create_sprite("entities/boomerang");
-  set_origin(8, 8);
-  set_rectangle_from_sprite();
+  set_bounding_box_from_sprite();
 
   int hero_x = hero->get_top_left_x();
   int hero_y = hero->get_top_left_y();
@@ -61,15 +61,14 @@ Boomerang::Boomerang(Hero *hero, int boomerang_direction):
 
   }
 
-  initial_coords.x = get_x();
-  initial_coords.y = get_y();
+  initial_coords.set_xy(get_xy());
 
   CollisionMovement *movement = new CollisionMovement();
   movement->set_speed(16);
   movement->set_direction(boomerang_direction);
   set_movement(movement);
 
-  next_sound_date = SDL_GetTicks();
+  next_sound_date = System::now();
 }
 
 /**
@@ -245,7 +244,7 @@ void Boomerang::update(void) {
     return;
   }
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   if (now >= next_sound_date) {
     ResourceManager::get_sound("boomerang")->play();
     next_sound_date = now + 150;
@@ -269,7 +268,7 @@ void Boomerang::update(void) {
       }
       go_back();
     }
-    else if (get_distance(initial_coords.x, initial_coords.y) >= 144) {
+    else if (get_distance(initial_coords.get_x(), initial_coords.get_y()) >= 144) {
       go_back();
     }
   }

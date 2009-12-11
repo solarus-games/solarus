@@ -27,9 +27,9 @@ const Rectangle PathFinding::neighbours_locations[] = {
   Rectangle(-8,  8, 16, 16 ),
   Rectangle( 0,  8, 16, 16 ),
   Rectangle( 8,  8, 16, 16 )
-}
+};
 
-const SDL_Rect PathFinding::transition_collision_boxes[] = {
+const Rectangle PathFinding::transition_collision_boxes[] = {
   Rectangle(16,  0,  8, 16 ),
   Rectangle( 0, -8, 24, 24 ),
   Rectangle( 0, -8, 16,  8 ),
@@ -79,13 +79,13 @@ std::string PathFinding::compute_path(void) {
   Rectangle source = source_entity->get_bounding_box();
   Rectangle target = target_entity->get_bounding_box();
 
-  target.set_x(target.get_x() + 4);
-  target.set_x(target.get_x() - target.get_x() % 8);
-  target.set_y(target.get_y() + 4);
-  target.set_y(target.get_y() - target.get_y() % 8);
+  target.add_x(4);
+  target.add_x(-target.get_x() % 8);
+  target.add_y(4);
+  target.add_y(-target.get_y() % 8);
   int target_index = get_square_index(target);
 
-  if (target.y() % 8 != 0 || target.get_y() % 8 != 0) {
+  if (target.get_x() % 8 != 0 || target.get_y() % 8 != 0) {
     DIE("Could not snap the target to the map grid");
   }
 
@@ -139,8 +139,7 @@ std::string PathFinding::compute_path(void) {
 	int immediate_cost = (i % 2 == 0) ? 10 : 14;
 	new_node.previous_cost = current_node->previous_cost + immediate_cost;
 	new_node.location = current_node->location;
-	new_node.location.x += neighbours_locations[i].x;
-	new_node.location.y += neighbours_locations[i].y;
+	new_node.location.add_xy(neighbours_locations[i].get_x(), neighbours_locations[i].get_y());
 	new_node.index = get_square_index(new_node.location);
 	// std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 

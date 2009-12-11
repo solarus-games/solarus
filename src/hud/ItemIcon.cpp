@@ -22,6 +22,7 @@
 #include "Game.h"
 #include "KeysEffect.h"
 #include "InventoryItem.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Name of the image file for each item slot.
@@ -59,8 +60,8 @@ ItemIcon::ItemIcon(int slot, Savegame *savegame, int x, int y):
  * Destructor.
  */
 ItemIcon::~ItemIcon(void) {
-  SDL_FreeSurface(background_img);
-  SDL_FreeSurface(items_img);  
+  delete background_img;
+  delete items_img;  
   delete counter;
 }
 
@@ -135,18 +136,18 @@ void ItemIcon::rebuild(void) {
   HudElement::rebuild();
 
   // background image
-  SDL_BlitSurface(background_img, NULL, surface_drawn, NULL);
+  background_img->blit(surface_drawn);
 
   // item
   if (item_displayed != INVENTORY_NONE) {
 
-    SDL_Rect dst_position = {4, 4, 0, 0};
-    SDL_Rect src_position = {0, 0, 16, 16};
+    Rectangle dst_position(4, 4, 0, 0);
+    Rectangle src_position(0, 0, 16, 16);
 
-    src_position.x = 16 * item_displayed;
-    src_position.y = 16 * (item_variant_displayed - 1);
+    src_position.set_x(16 * item_displayed);
+    src_position.set_y(16 * (item_variant_displayed - 1));
 
-    SDL_BlitSurface(items_img, &src_position, surface_drawn, &dst_position);
+    items_img->blit(src_position, surface_drawn, dst_position);
 
     // counter
     if (counter_value_displayed != -1) {
@@ -154,3 +155,4 @@ void ItemIcon::rebuild(void) {
     }
   }
 }
+

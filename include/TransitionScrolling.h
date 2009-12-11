@@ -19,39 +19,42 @@
 
 #include "Common.h"
 #include "Transition.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Scrolling transition between two maps.
  */
 class TransitionScrolling: public Transition {
 
- private:
+  private:
 
-  SDL_Surface *both_maps_surface;      /**< an intermediate surface where the two map surfaces will be blitted */
-  int scrolling_direction;             /**< direction of the scrolling (0 to 3) */
-  uint32_t next_scroll_date;             /**< date of the next scrolling step */
+    Surface *both_maps_surface;           /**< an intermediate surface where the two map surfaces will be blitted */
+    int scrolling_direction;              /**< direction of the scrolling (0 to 3) */
+    uint32_t next_scroll_date;            /**< date of the next scrolling step */
 
-  int dx;                              /**< x change for each scrolling step */
-  int dy;                              /**< y change for each scrolling step */
+    int dx;                               /**< x change for each scrolling step */
+    int dy;                               /**< y change for each scrolling step */
 
-  static const SDL_Rect previous_map_dst_positions[];
+    static const Rectangle previous_map_dst_positions[];
 
-  SDL_Rect previous_map_dst_position;  /**< position where the previous map is blitted on both_maps_surface */
-  SDL_Rect current_map_dst_position;   /**< position where the current map is blitted on both_maps_surface */
-  SDL_Rect current_scrolling_position; /**< the rectangle from both_maps_surface that is currently visible */
+    Rectangle previous_map_dst_position;  /**< position where the previous map is blitted on both_maps_surface */
+    Rectangle current_map_dst_position;   /**< position where the current map is blitted on both_maps_surface */
+    Rectangle current_scrolling_position; /**< the rectangle from both_maps_surface that is currently visible */
 
-  void scroll(void);
+    void scroll(void);
 
- public:
-  TransitionScrolling(Direction direction);
-  ~TransitionScrolling(void);
+  public:
 
-  bool needs_previous_surface(void);
+    TransitionScrolling(Direction direction);
+    ~TransitionScrolling(void);
 
-  void start(void);
-  bool is_started(void);
-  bool is_over(void);
-  void display(SDL_Surface *surface);
+    bool needs_previous_surface(void);
+
+    void start(void);
+    bool is_started(void);
+    bool is_over(void);
+    void display(Surface *surface);
 };
 
 #endif
+

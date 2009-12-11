@@ -69,7 +69,7 @@ class SelectionMenuCommon {
   HeartsView *hearts_views[3];
 
   // clouds data
-  SDL_Rect cloud_positions[16];
+  Rectangle cloud_positions[16];
   uint32_t next_cloud_move;
   
   // initialization functions

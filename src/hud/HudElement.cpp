@@ -16,6 +16,8 @@
  */
 #include "hud/HudElement.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/System.h"
 #include "Savegame.h"
 
 /**
@@ -28,8 +30,8 @@
 HudElement::HudElement(int x, int y, int width, int height):
   visible(true), opacity(255), blinking(false) {
 
-  surface_drawn = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
-  SDL_SetColorKey(surface_drawn, SDL_SRCCOLORKEY, Color::black);
+  surface_drawn = new Surface(width, height);
+  surface_drawn->set_transparency_color(Color::get_black());
 
   set_position(x, y);
 }
@@ -38,7 +40,7 @@ HudElement::HudElement(int x, int y, int width, int height):
  * Destructor.
  */
 HudElement::~HudElement(void) {
-  SDL_FreeSurface(surface_drawn);
+  delete surface_drawn;
 }
 
 /**
@@ -46,8 +48,8 @@ HudElement::~HudElement(void) {
  */
 void HudElement::set_position(int x, int y) {
   
-  destination_position.x = x;
-  destination_position.y = y;
+  destination_position.set_x(x);
+  destination_position.set_y(y);
 }
 
 /**
@@ -56,7 +58,7 @@ void HudElement::set_position(int x, int y) {
  * the surface with transparent color.
  */
 void HudElement::rebuild(void) {
-  SDL_FillRect(surface_drawn, NULL, Color::black);
+  surface_drawn->fill_with_color(Color::get_black());
 }
 
 /**
@@ -93,7 +95,7 @@ void HudElement::set_opacity(int opacity) {
 
   if (opacity != this->opacity) {
     this->opacity = opacity;
-    SDL_SetAlpha(surface_drawn, SDL_SRCALPHA, opacity);
+    surface_drawn->set_opacity(opacity);
     rebuild();
   }
 }
@@ -107,7 +109,7 @@ void HudElement::set_blinking(int blinking) {
 
     this->blinking = blinking;
     if (blinking) {
-      next_blink_date = SDL_GetTicks();
+      next_blink_date = System::now();
       blinking_is_visible = false;
     }
   }
@@ -126,7 +128,7 @@ bool HudElement::is_blinking(void) {
  */
 void HudElement::update(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   if (blinking && now >= next_blink_date) {
     blinking_is_visible = !blinking_is_visible;
     next_blink_date = now + 250;
@@ -138,12 +140,10 @@ void HudElement::update(void) {
  * If the savegame is empty, nothing is done.
  * @param destination the destination surface
  */
-void HudElement::display(SDL_Surface *destination) {
+void HudElement::display(Surface *destination) {
 
   if (is_visible() && (!blinking || blinking_is_visible)) {
-    // we don't want destination_position to be modified
-    SDL_Rect destination_position_unsafe = destination_position;
-    SDL_BlitSurface(surface_drawn, NULL, destination, &destination_position_unsafe);
+    surface_drawn->blit(destination, destination_position);
   }
 }
 

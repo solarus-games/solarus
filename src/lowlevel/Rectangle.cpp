@@ -17,10 +17,13 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Creates a rectangle without initializing its properties.
+ * Creates an empty rectangle located at (0,0).
  */
 Rectangle::Rectangle(void) {
-
+  rect.x = 0;
+  rect.y = 0;
+  rect.w = 0;
+  rect.h = 0;
 }
 
 /**
@@ -114,7 +117,7 @@ Rectangle Rectangle::get_center(void) {
  * as it is library dependent.
  * @return the internal rectangle encapsulated
  */
-SDL_Rect & Rectangle::get_internal_rect(void) {
+SDL_Rect * Rectangle::get_internal_rect(void) {
   return rect;
 }
 

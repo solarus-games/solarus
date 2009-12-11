@@ -22,17 +22,27 @@
 const Rectangle FallingOnFloorMovement::moves[3][26] = {
 
   // low
-  {{0, -1},  {0, 1}},
+  { 
+    Rectangle(0, -1),  Rectangle(0, 1),
+  },
 
   // medium
-  {{0, -1},  {0, -1},  {0, -1},  {0, -1},  {0,  1},  {0,  1},  {0,  1}, 
-   {0,  1},  {0, -1},  {0, -1},  {0,  1},  {0,  1}},
+  {
+    Rectangle(0, -1),  Rectangle(0, -1),  Rectangle(0, -1),  Rectangle(0, -1),
+    Rectangle(0,  1),  Rectangle(0,  1),  Rectangle(0,  1),  Rectangle(0,  1),
+    Rectangle(0, -1),  Rectangle(0, -1),  Rectangle(0,  1),  Rectangle(0,  1),
+  },
 
   // high
-  {{0, -4},  {0, -3},  {0, -3},  {0, -2},  {0, -2},  {0, -1},  {0,  1}, 
-   {0,  2},  {0,  2},  {0,  3},  {0,  3},  {0,  4},  {0, -2},  {0, -1}, 
-   {0, -1},  {0, -1},  {0, -1},  {0,  1},  {0,  1},  {0,  1},  {0,  1}, 
-   {0,  2},  {0, -1},  {0, -1},  {0,  1},  {0,  1}},
+  {
+    Rectangle(0, -4),  Rectangle(0, -3),  Rectangle(0, -3),  Rectangle(0, -2),
+    Rectangle(0, -2),  Rectangle(0, -1),  Rectangle(0,  1),  Rectangle(0,  2),
+    Rectangle(0,  2),  Rectangle(0,  3),  Rectangle(0,  3),  Rectangle(0,  4),
+    Rectangle(0, -2),  Rectangle(0, -1),  Rectangle(0, -1),  Rectangle(0, -1),  
+    Rectangle(0, -1),  Rectangle(0,  1),  Rectangle(0,  1),  Rectangle(0,  1),
+    Rectangle(0,  1),  Rectangle(0,  2),  Rectangle(0, -1),  Rectangle(0, -1),
+    Rectangle(0,  1),  Rectangle(0,  1),
+  }
 };
 
 /**

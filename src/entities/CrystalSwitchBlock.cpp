@@ -122,7 +122,7 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
     Hero *hero = (Hero*) entity_overlapping;
     if (hero->get_normal_movement()->is_moving_enabled()) {
 
-      SDL_Rect collision_box = hero->get_rectangle();
+      Rectangle collision_box = hero->get_bounding_box();
       int x1 = get_top_left_x();
       int x2 = x1 + get_width();
       int y1 = get_top_left_y();
@@ -131,34 +131,34 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
       int jump_length = 0;
       bool jumped = false;
 
-      const SDL_Rect &hero_center = hero->get_center_point();
+      const Rectangle &hero_center = hero->get_center_point();
 
-      if (hero_center.y < y1) {
+      if (hero_center.get_y() < y1) {
 	// fall to the north
-	collision_box.y = y1 - 16;
+	collision_box.set_y(y1 - 16);
 	jump_direction = 2;
 	jump_length = hero->get_top_left_y() + 16 - y1;
 	jumped = try_jump(hero, collision_box, jump_direction, jump_length);
       }
-      else if (hero_center.y >= y2) {
+      else if (hero_center.get_y() >= y2) {
 	// fall to the south
-	collision_box.y = y2;
+	collision_box.set_y(y2);
 	jump_direction = 6;
 	jump_length = y2 - hero->get_top_left_y();
 	jumped = try_jump(hero, collision_box, jump_direction, jump_length);
       }
 
       if (!jumped) {
-	if (hero_center.x >= x2) {
+	if (hero_center.get_x() >= x2) {
 	  // fall to the east
-	  collision_box.x = x2;
+	  collision_box.set_x(x2);
 	  jump_direction = 0;
 	  jump_length = x2 - hero->get_top_left_x();
 	  try_jump(hero, collision_box, jump_direction, jump_length);
 	}
-	else if (hero_center.x < x1) {
+	else if (hero_center.get_x() < x1) {
 	  // fall to the west
-	  collision_box.x = x1 - 16;
+	  collision_box.set_x(x1 - 16);
 	  jump_direction = 4;
 	  jump_length = hero->get_top_left_x() + 16 - x1;
 	  try_jump(hero, collision_box, jump_direction, jump_length);
@@ -177,7 +177,7 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
  * @return true if the jump was done, i.e. if the collision box was overlapping
  * no obstacle and no raised crystal switch block.
  */
-bool CrystalSwitchBlock::try_jump(Hero *hero, const SDL_Rect &collision_box,
+bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
 				  int jump_direction, int jump_length) {
 
   // jump if there is no collision and no other raised crystal switch blocks

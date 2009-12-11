@@ -97,8 +97,8 @@ void PixelMovement::update(void) {
  */
 void PixelMovement::make_next_move(void) {
 
-  int dx = translation_vectors[vector_index].x;
-  int dy = translation_vectors[vector_index].y;
+  int dx = translation_vectors[vector_index].get_x();
+  int dy = translation_vectors[vector_index].get_y();
 
   if (!test_collision_with_map(dx, dy)) {
     translate(dx, dy);

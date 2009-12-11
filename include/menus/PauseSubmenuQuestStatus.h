@@ -26,26 +26,26 @@
  */
 class PauseSubmenuQuestStatus: public PauseSubmenu {
 
- private:
+  private:
 
-  SDL_Surface *quest_items_surface;
+    Surface *quest_items_surface;
 
-  Sprite *cursor_sprite;
-  int cursor_position; /**< 0 to 7 */
-  SDL_Rect cursor_sprite_position;
+    Sprite *cursor_sprite;
+    int cursor_position; /**< 0 to 7 */
+    Rectangle cursor_sprite_position;
 
-  std::string caption_texts[8];
+    std::string caption_texts[8];
 
-  void set_cursor_position(int position);
+    void set_cursor_position(int position);
 
- public:
+  public:
 
-  PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game);
-  ~PauseSubmenuQuestStatus(void);
+    PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game);
+    ~PauseSubmenuQuestStatus(void);
 
-  void key_pressed(Controls::GameKey key);
-  void update(void);
-  void display(SDL_Surface *destination);
+    void key_pressed(Controls::GameKey key);
+    void update(void);
+    void display(Surface *destination);
 };
 
 #endif

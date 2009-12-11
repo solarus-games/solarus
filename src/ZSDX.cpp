@@ -172,6 +172,7 @@ void ZSDX::handle_event(const SDL_Event &event) {
 
     // a key is pressed
   case SDL_KEYDOWN:
+
     switch (event.key.keysym.sym) {
 
       // F5: change the video mode

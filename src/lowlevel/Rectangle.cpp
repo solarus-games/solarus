@@ -118,6 +118,6 @@ Rectangle Rectangle::get_center(void) {
  * @return the internal rectangle encapsulated
  */
 SDL_Rect * Rectangle::get_internal_rect(void) {
-  return rect;
+  return &rect;
 }
 

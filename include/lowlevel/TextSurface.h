@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Rectangle.h"
 #include <SDL/SDL_ttf.h>
 
 /**
@@ -105,6 +106,7 @@ class TextSurface {
 	VerticalAlignment vertical_alignment);
     void set_rendering_mode(RenderingMode rendering_mode);
     void set_text_color(Color &color);
+    void set_text_color(int r, int g, int b);
     void set_background_color(Color &color);
     void set_position(int x, int y);
     void set_x(int x);

@@ -80,7 +80,7 @@ class TitleScreen: public Screen {
     void init_phase_title(void);
     void exit_phase_title(void);
     void update_phase_title(void);
-    void display_phase_title(SDL_Surface *destination_surface);
+    void display_phase_title(Surface *destination_surface);
 
     TimeOfDay get_time_of_day(void);
 

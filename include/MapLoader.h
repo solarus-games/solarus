@@ -24,12 +24,14 @@
  */
 class MapLoader {
 
- public:
-  MapLoader(void);
-  ~MapLoader(void);
+  public:
 
-  void load_map(Map *map);
+    MapLoader(void);
+    ~MapLoader(void);
+
+    void load_map(Map *map);
 
 };
 
 #endif
+

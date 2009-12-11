@@ -30,8 +30,8 @@ Feature requests :
 - son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
 - scrolling tiles : permettre de choisir la direction du décalage
-- mode d'emploi
 - écran d'options global permettant de régler la langue et le volume de la musique et du son
+- Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
 
 
 Bugs :
@@ -123,6 +123,9 @@ SDL_Key
 SDL_keysym
 SDL_EnableUNICODE
 SDL_EnableKeyRepeat
+
+  Pour sauvegarder la configuration de chaque touche en enregistrant un entier indépendant de la SDL :
+  sauvegarder la valeur unicode du caractère appuyé au lieu de sauvegarder la SDLKey
 
 FileTools :
 SDL_RWops

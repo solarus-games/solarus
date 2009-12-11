@@ -165,8 +165,7 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
 
     if (position == 0) { // screen mode
       set_caption_text(caption_strings[0]);
-      cursor_sprite_position.x = 104;
-      cursor_sprite_position.y = 62;
+      cursor_sprite_position.set_xy(104, 62);
       cursor_sprite->set_current_animation("big");
     }
     else { // key customization
@@ -183,8 +182,8 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
 	controls_visible_y += 16;
       }
 
-      cursor_sprite_position.x = 55;
-      cursor_sprite_position.y = 104 + (position - highest_visible_key) * 16;
+      cursor_sprite_position.set_x(55);
+      cursor_sprite_position.set_y(104 + (position - highest_visible_key) * 16);
       cursor_sprite->set_current_animation("small");
     }
   }
@@ -312,6 +311,6 @@ void PauseSubmenuOptions::display(Surface *destination) {
  * @param destination the destination surface
  */
 void PauseSubmenuOptions::display_cursor(Surface *destination) {
-  cursor_sprite->display(destination, cursor_sprite_position.x, cursor_sprite_position.y);
+  cursor_sprite->display(destination, cursor_sprite_position.get_x(), cursor_sprite_position.get_y());
 }
 

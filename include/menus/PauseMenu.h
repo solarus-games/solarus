@@ -54,7 +54,7 @@ class PauseMenu {
 
     void key_pressed(Controls::GameKey key);
     void update(void);
-    void display(SDL_Surface *destination);
+    void display(Surface *destination);
 
     void show_left_submenu(void);
     void show_right_submenu(void);

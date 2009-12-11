@@ -23,6 +23,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Delay between two chars, depending on the dialog speed.

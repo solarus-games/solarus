@@ -29,7 +29,8 @@ class Color {
   private:
 
     static SDL_PixelFormat *format; /**< the pixel format used for all colors */
-    uint32_t       internal_color;  /**< the SDL color encapsulated */
+    uint32_t internal_value;        /**< the SDL 32-bit value representing this color */
+    SDL_Color internal_color;       /**< the SDL color encapsulated */
 
     // some predefined colors
     static Color black;
@@ -49,7 +50,8 @@ class Color {
     Color(const Color &other);
     Color(int r, int g, int b);
 
-    uint32_t get_internal_color(void);
+    uint32_t get_internal_value(void);
+    SDL_Color * get_internal_color(void);
 
 };
 

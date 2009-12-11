@@ -18,6 +18,8 @@
 #define ZSDX_SELECTION_MENU_COMMON_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
+#include "lowlevel/Color.h"
 
 /**
  * This class handles the elements common to
@@ -37,14 +39,14 @@ class SelectionMenuCommon {
   Savegame *savegames[3];
 
   // images
-  SDL_Surface *img_cloud, *img_background;
-  SDL_Surface *img_save_container, *img_option_container;
-  SDL_Surface *img_numbers[3];
+  Surface *img_cloud, *img_background;
+  Surface *img_save_container, *img_option_container;
+  Surface *img_numbers[3];
 
   Sprite *cursor;
   int cursor_position; // 1 to 5
 
-  uint32_t background_color;
+  Color background_color;
 
   // sounds
   Sound *cursor_sound;
@@ -84,7 +86,7 @@ class SelectionMenuCommon {
 
   // update and display
   void update(void);
-  void display(SDL_Surface *destination_surface);
+  void display(Surface *destination_surface);
 };
 
 #endif

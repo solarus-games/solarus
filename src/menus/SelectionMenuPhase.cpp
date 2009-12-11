@@ -22,6 +22,7 @@
 #include "StringResource.h"
 #include "hud/HeartsView.h"
 #include "lowlevel/TextSurface.h"
+#include "lowlevel/Surface.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Rectangle.h"
 
@@ -312,7 +313,7 @@ void SelectionMenuPhase::display_savegame_number(int save_number) {
  * @param destination_surface the surface where you want to display
  * the savegame (may be different from this->destination_surface)
  */
-void SelectionMenuPhase::display_savegame_number(int save_number, SDL_Surface *destination_surface) {
+void SelectionMenuPhase::display_savegame_number(int save_number, Surface *destination_surface) {
 
   Rectangle position(62, 80 + 27 * save_number);
   common_part->img_numbers[save_number]->blit(destination_surface, position);
@@ -327,7 +328,7 @@ void SelectionMenuPhase::display_bottom_options(void) {
 
   Rectangle position(57, 158);
   common_part->img_option_container->blit(destination_surface, position);
-  position.x = 165;
+  position.set_x(165);
   common_part->img_option_container->blit(destination_surface, position);
 
   common_part->text_option1->display(destination_surface);
@@ -340,7 +341,7 @@ void SelectionMenuPhase::display_bottom_options(void) {
  */
 void SelectionMenuPhase::display_normal_cursor(void) {
 
-  Rectagle position;
+  Rectangle position;
 
   if (common_part->cursor_position != 5) {
     position.set_x(58);

@@ -34,7 +34,6 @@ class Controls {
 
   /**
    * The game keys that can be customized.
-   * 
    */
   enum GameKey {
     NONE = 0,

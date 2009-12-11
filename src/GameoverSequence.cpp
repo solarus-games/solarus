@@ -19,11 +19,12 @@
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "Sprite.h"
-#include "lowlevel/Color.h"
 #include "Map.h"
 #include "Equipment.h"
 #include "Treasure.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Surface.h"
 #include "movements/TargetMovement.h"
 #include <sstream>
 
@@ -38,7 +39,7 @@ GameoverSequence::GameoverSequence(Game *game, int hero_direction):
   gameover_menu_img = ResourceManager::load_image("hud/gameover_menu.png");
   fade_sprite = new Sprite("hud/gameover_fade");
   fade_sprite->stop_animation();
-  red_screen_color = Color::create(224, 32, 32);
+  red_screen_color = Color(224, 32, 32);
 
   std::ostringstream oss;
   oss << "hero/tunic" << game->get_equipment()->get_tunic();
@@ -47,15 +48,15 @@ GameoverSequence::GameoverSequence(Game *game, int hero_direction):
   hero_dead_sprite->set_current_direction(hero_direction);
   hero_dead_sprite->set_suspended(true);
 
-  const SDL_Rect &camera_position = game->get_current_map()->get_camera_position();
-  const SDL_Rect &hero_xy = game->get_hero_xy();
-  hero_dead_x = hero_xy.x - camera_position.x;
-  hero_dead_y = hero_xy.y - camera_position.y;
+  const Rectangle &camera_position = game->get_current_map()->get_camera_position();
+  const Rectangle &hero_xy = game->get_hero_xy();
+  hero_dead_x = hero_xy.get_x() - camera_position.get_x();
+  hero_dead_y = hero_xy.get_y() - camera_position.get_y();
 
   fairy_sprite = new Sprite("entities/fairy");
   fairy_movement = NULL;
 
-  next_state_date = SDL_GetTicks() + 500;
+  next_state_date = System::now() + 500;
 }
 
 /**
@@ -63,7 +64,7 @@ GameoverSequence::GameoverSequence(Game *game, int hero_direction):
  */
 GameoverSequence::~GameoverSequence(void) {
 
-  SDL_FreeSurface(gameover_menu_img);
+  delete gameover_menu_img;
   delete fade_sprite;
   delete hero_dead_sprite;
   delete fairy_sprite;
@@ -75,7 +76,7 @@ GameoverSequence::~GameoverSequence(void) {
  */
 void GameoverSequence::update(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   hero_dead_sprite->update();
 
   switch (state) {
@@ -168,16 +169,16 @@ void GameoverSequence::update(void) {
 /**
  * Displays the gameover sequence.
  */
-void GameoverSequence::display(SDL_Surface *destination_surface) {
+void GameoverSequence::display(Surface *destination_surface) {
 
   if (state > CLOSING_GAME) {
-    SDL_FillRect(destination_surface, NULL, Color::black);
+    destination_surface->fill_with_color(Color::get_black());
   }
 
   if (state <= OPENING_MENU) {
 
     if (state == RED_SCREEN) {
-      SDL_FillRect(destination_surface, NULL, red_screen_color);
+      destination_surface->fill_with_color(red_screen_color);
     }
     else {
       fade_sprite->display(destination_surface, hero_dead_x, hero_dead_y);
@@ -192,7 +193,7 @@ void GameoverSequence::display(SDL_Surface *destination_surface) {
     }
   }
   else if (state == MENU) {
-    SDL_BlitSurface(gameover_menu_img, NULL, destination_surface, NULL);
+    gameover_menu_img->blit(destination_surface);
     fairy_sprite->display(destination_surface, fairy_x, fairy_y);
   }
 }
@@ -251,3 +252,4 @@ void GameoverSequence::key_pressed(Controls::GameKey key) {
 bool GameoverSequence::is_finished(void) {
   return state == RESUME_GAME;
 }
+

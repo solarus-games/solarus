@@ -145,9 +145,12 @@ class Savegame {
 
     /**
      * @name Keyboard customizable keys.
-     * Variables 35 to 43 indicate the SDL keyboard keys symbol
+     * Variables 35 to 43 indicate the keyboard key
      * associated to each game key: action, sword, item 1, item 2, pause,
      * right, up, left and down.
+     *
+     * Each integer corresponds to a value of the SDLKey enumeration.
+     * This makes the savegames SDL-dependent. TODO: make our own enumeration to replace SDLKey
      * @{
      */
     KEYBOARD_ACTION_KEY              = 35,

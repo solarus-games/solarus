@@ -25,27 +25,27 @@
  */
 class TransitionFade: public Transition {
 
- private:
+  private:
 
-  int alpha_start;
-  int alpha_limit;
-  int alpha_increment;
-  int alpha; // current alpha value of the surface
+    int alpha_start;
+    int alpha_limit;
+    int alpha_increment;
+    int alpha; // current alpha value of the surface
 
-  uint32_t next_frame_date;
-  uint32_t delay;
-  
- public:
+    uint32_t next_frame_date;
+    uint32_t delay;
 
-  TransitionFade(Direction direction);
-  ~TransitionFade(void);
+  public:
 
-  void set_delay(uint32_t delay);
+    TransitionFade(Direction direction);
+    ~TransitionFade(void);
 
-  void start(void);
-  bool is_started(void);
-  bool is_over(void);
-  void display(SDL_Surface *surface);
+    void set_delay(uint32_t delay);
+
+    void start(void);
+    bool is_started(void);
+    bool is_over(void);
+    void display(Surface *surface);
 
 };
 

@@ -18,6 +18,7 @@
 #define ZSDX_CONTROLS_H
 
 #include "Common.h"
+#include <SDL/SDL.h>
 #include <map>
 
 /**

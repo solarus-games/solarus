@@ -38,6 +38,7 @@
 #include "entities/Door.h"
 #include "movements/Movement.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/System.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
@@ -95,11 +96,8 @@ MapEntity::MapEntity(void):
   map(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
-  bounding_box.x = 0;
-  bounding_box.y = 0;
-
-  origin.x = 0;
-  origin.y = 0;
+  bounding_box.set_xy(0, 0);
+  origin.set_xy(0, 0);
 
   set_size(0, 0);
 }
@@ -297,7 +295,7 @@ void MapEntity::set_direction(int direction) {
  * @return the x position of the entity
  */
 int MapEntity::get_x(void) {
-  return bounding_box.get_x() + origin.x;
+  return bounding_box.get_x() + origin.get_x();
 }
 
 /**
@@ -305,7 +303,7 @@ int MapEntity::get_x(void) {
  * @return the y position of the entity
  */
 int MapEntity::get_y(void) {
-  return bounding_box.get_y() + origin.y;
+  return bounding_box.get_y() + origin.get_y();
 }
 
 /**
@@ -315,7 +313,7 @@ int MapEntity::get_y(void) {
  * @param x the new x position
  */
 void MapEntity::set_x(int x) {
-  bounding_box.set_x(x - origin.x);
+  bounding_box.set_x(x - origin.get_x());
 }
 
 /**
@@ -325,7 +323,7 @@ void MapEntity::set_x(int x) {
  * @param y the new y position
  */
 void MapEntity::set_y(int y) {
-  bounding_box.set_y(y - origin.y);
+  bounding_box.set_y(y - origin.get_y());
 }
 
 /**
@@ -430,7 +428,7 @@ void MapEntity::set_size(int width, int height) {
  * @param size a rectangle having the width and height to set to the entity
  */
 void MapEntity::set_size(const Rectangle &size) {
-  set_size(size.get_width(), size.get_height());
+  bounding_box.set_size(size);
 }
 
 /**
@@ -449,7 +447,7 @@ const Rectangle & MapEntity::get_bounding_box(void) {
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
  * @param bounding_box the new position and size of the entity
  */
-void MapEntity::set_rectangle(const Rectangle &bounding_box) {
+void MapEntity::set_bounding_box(const Rectangle &bounding_box) {
   this->bounding_box = bounding_box;
 }
 
@@ -460,7 +458,7 @@ void MapEntity::set_rectangle(const Rectangle &bounding_box) {
  * Otherwise, you have to call set_size() and set_origin()
  * explicitely.
  */
-void MapEntity::set_rectangle_from_sprite(void) {
+void MapEntity::set_bounding_box_from_sprite(void) {
 
   Sprite *sprite = get_sprite();
   set_size(sprite->get_size());
@@ -510,7 +508,7 @@ const Rectangle MapEntity::get_facing_point(void) {
  * @param direction a direction (0 to 3)
  * @return the coordinates of the point the entity is looking at
  */
-const SDL_Rect MapEntity::get_facing_point(int direction) {
+const Rectangle MapEntity::get_facing_point(int direction) {
   return Rectangle(-1, -1);
 }
 
@@ -567,8 +565,7 @@ const Rectangle & MapEntity::get_origin(void) {
 void MapEntity::set_origin(int x, int y) {
 
   set_top_left_xy(x - origin.get_x(), y - origin.get_y());
-  origin.set_x(x);
-  origin.set_y(y);
+  origin.set_xy(x, y);
 }
 
 /**
@@ -577,8 +574,7 @@ void MapEntity::set_origin(int x, int y) {
  * @param origin x and y coordinates of the origin
  */
 void MapEntity::set_origin(const Rectangle &origin) {
-
-  set_origin(origin.x, origin.y);
+  set_origin(origin.get_x(), origin.get_y());
 }
 
 /**
@@ -928,7 +924,7 @@ bool MapEntity::is_origin_point_in(const Rectangle &rectangle) {
  */
 bool MapEntity::is_facing_point_in(const Rectangle &rectangle) {
 
-  const SDL_Rect &facing_point = get_facing_point();
+  const Rectangle &facing_point = get_facing_point();
   return rectangle.contains(facing_point.get_x(), facing_point.get_y());
 }
 
@@ -986,7 +982,7 @@ int MapEntity::get_distance(MapEntity *other) {
 /* I think this function should never be used 
 void MapEntity::ensure_no_obstacles(void) {
 
-  SDL_Rect collision_box = get_rectangle();
+  Rectangle collision_box = get_rectangle();
 
   if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
     return;
@@ -999,8 +995,8 @@ void MapEntity::ensure_no_obstacles(void) {
 
   for (int i = 0; i < 12 && !found; i++) {
     for (int j = 0; j < 8 && !found; j++) {
-      collision_box.x += dx[j] * i;
-      collision_box.y += dy[j] * i;
+      collision_box.add_x(dx[j] * i);
+      collision_box.add_y(dy[j] * i);
 
       if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	found = true;
@@ -1008,8 +1004,8 @@ void MapEntity::ensure_no_obstacles(void) {
 	just_moved();
       }
 
-      collision_box.x -= dx[j] * i;
-      collision_box.y -= dy[j] * i;
+      collision_box.add_x(-dx[j] * i);
+      collision_box.add_y(-dy[j] * i);
     }
   }
 }
@@ -1103,7 +1099,7 @@ void MapEntity::set_suspended(bool suspended) {
 
   // remember the date if the movement is being suspended
   if (suspended) {
-    when_suspended = SDL_GetTicks();
+    when_suspended = System::now();
   }
 
   // suspend/unsuspend the sprites animations

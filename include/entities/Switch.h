@@ -28,36 +28,35 @@
  */
 class Switch: public Detector {
 
- public:
+  public:
 
-  /**
-   * Subtypes of teletransporters.
-   */
-  enum Subtype {
-    INVISIBLE = 0, /**< an invisible switch, usually to detect the hero position */
-    NORMAL    = 1, /**< a classical switch */
-  };
+    /**
+     * Subtypes of switches.
+     */
+    enum Subtype {
+      INVISIBLE = 0, /**< an invisible switch, usually to detect the hero position */
+      NORMAL    = 1, /**< a classical switch */
+    };
 
- private:
+  private:
 
-  Subtype subtype;           /**< subtype of teletransporter */
-  bool needs_block;          /**< indicates that a block or a statue is required to enable to switch */
-  bool disable_when_leaving; /**< indicates that the switch becomes disabled when the hero or the block leaves it */
+    Subtype subtype;           /**< subtype of switch */
+    bool needs_block;          /**< indicates that a block or a statue is required to enable to switch */
+    bool disable_when_leaving; /**< indicates that the switch becomes disabled when the hero or the block leaves it */
+    bool enabled;              /**< indicates that the switch is currently enabled */
 
-  bool enabled;              /**< indicates that the switch is currently enabled */
+  public:
 
- public:
+    Switch(const std::string &name, Layer layer, int x, int y,
+	Subtype subtype, bool needs_block, bool disabled_when_leaving);
+    ~Switch(void);
+    static CreationFunction parse;
 
-  Switch(const std::string &name, Layer layer, int x, int y,
-	 Subtype subtype, bool needs_block, bool disabled_when_leaving);
-  ~Switch(void);
-  static CreationFunction parse;
+    EntityType get_type(void);
 
-  EntityType get_type(void);
-
-  void set_enabled(bool enabled);
-  bool test_collision_custom(MapEntity *entity);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void set_enabled(bool enabled);
+    bool test_collision_custom(MapEntity *entity);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 };
 
 #endif

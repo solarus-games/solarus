@@ -15,14 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
-#include "PixelBits.h"
+#include "lowlevel/PixelBits.h"
 
 /**
  * Creates a pixel bits object.
  * @param surface the surface where the image is
  * @param image_position position of the image on this surface
  */
-PixelBits::PixelBits(SDL_Surface *surface, const SDL_Rect &image_position) {
+PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
 
   SDL_PixelFormat *format = surface->format;
   if (format->BitsPerPixel != 8) {
@@ -31,16 +31,16 @@ PixelBits::PixelBits(SDL_Surface *surface, const SDL_Rect &image_position) {
 
   uint8_t colorkey = (uint8_t) format->colorkey;
 
-  width = image_position.w;
-  height = image_position.h;
+  width = image_position.get_width();
+  height = image_position.get_height();
 
   nb_integers_per_row = width / 32;
   if (width % 32 != 0) {
     nb_integers_per_row++;
   }
 
-  uint8_t *pixels = (uint8_t*) surface->pixels;
-  int pixel_index = image_position.y * surface->w + image_position.x;
+  uint8_t *pixels = (uint8_t*) surface->get_internal_surface()->pixels;
+  int pixel_index = image_position.get_y() * surface->get_width() + image_position.get_x();
 
   bits = new uint32_t*[height];
   for (int i = 0; i < height; i++) {
@@ -86,19 +86,17 @@ PixelBits::~PixelBits(void) {
  * @param location2 position of the top-left corner of the other image on the map (only x and y must be specified)
  * @return true if there is a collision
  */
-bool PixelBits::test_collision(PixelBits *other, const SDL_Rect &location1, const SDL_Rect &location2) {
+bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, const Rectangle &location2) {
 
   // compute the two bounding boxes
-  SDL_Rect bounding_box1 = location1;
-  bounding_box1.w = width;
-  bounding_box1.h = height;
+  Rectangle bounding_box1 = location1;
+  bounding_box1.set_size(width, height);
 
-  SDL_Rect bounding_box2 = location2;
-  bounding_box2.w = other->width;
-  bounding_box2.h = other->height;
+  Rectangle bounding_box2 = location2;
+  bounding_box2.set_size(other->width, other->height);
 
   // check the collision between the two bounding boxes
-  if (!test_rectangle_collision(bounding_box1, bounding_box2)) {
+  if (!bounding_box1.overlaps(bounding_box2)) {
     return false;
   }
 
@@ -111,22 +109,24 @@ bool PixelBits::test_collision(PixelBits *other, const SDL_Rect &location1, cons
   */
 
   // compute the intersection between the two rectangles
-  SDL_Rect intersection;
-  intersection.x = std::max(bounding_box1.x, bounding_box2.x);
-  intersection.y = std::max(bounding_box1.y, bounding_box2.y);
-  intersection.w = std::min(bounding_box1.x + bounding_box1.w, bounding_box2.x + bounding_box2.w) - intersection.x;
-  intersection.h = std::min(bounding_box1.y + bounding_box1.h, bounding_box2.y + bounding_box2.h) - intersection.y;
+  Rectangle intersection;
+  intersection.set_x(std::max(bounding_box1.get_x(), bounding_box2.get_x()));
+  intersection.set_y(std::max(bounding_box1.get_y(), bounding_box2.get_y()));
+  intersection.set_width(std::min(bounding_box1.get_x() + bounding_box1.get_width(),
+      bounding_box2.get_x() + bounding_box2.get_width()) - intersection.get_x());
+  intersection.set_height(std::min(bounding_box1.get_y() + bounding_box1.get_height(),
+      bounding_box2.get_y() + bounding_box2.get_height()) - intersection.get_y());
 
   /* debug
   std::cout << "intersection: " << intersection.x << "," << intersection.y << " x " << intersection.w << "," << intersection.h << "\n";
   */
 
   // compute the relative position of the intersection rectangle for each bounding_box
-  int offset_x1 = intersection.x - bounding_box1.x;
-  int offset_y1 = intersection.y - bounding_box1.y;
+  int offset_x1 = intersection.get_x() - bounding_box1.get_x();
+  int offset_y1 = intersection.get_y() - bounding_box1.get_y();
 
-  int offset_x2 = intersection.x - bounding_box2.x;
-  int offset_y2 = intersection.y - bounding_box2.y;
+  int offset_x2 = intersection.get_x() - bounding_box2.get_x();
+  int offset_y2 = intersection.get_y() - bounding_box2.get_y();
 
   /* debug
   std::cout << "offset_x1 = " << offset_x1 << ", offset_y1 = " << offset_y1;
@@ -218,31 +218,6 @@ bool PixelBits::test_collision(PixelBits *other, const SDL_Rect &location1, cons
   }
  
   return collision;
-}
-
-/**
- * Tests whether two rectangles are overlapping.
- * @param rectangle1 first rectangle
- * @param rectangle2 second rectangle
- * @return true if there is a collision
- */
-bool PixelBits::test_rectangle_collision(const SDL_Rect &rectangle1, const SDL_Rect &rectangle2) {
-
-  int x1 = rectangle1.x;
-  int x2 = x1 + rectangle1.w;
-  int x3 = rectangle2.x;
-  int x4 = x3 + rectangle2.w;
-
-  bool overlap_x = (x3 < x2 && x1 < x4);
-
-  int y1 = rectangle1.y;
-  int y2 = y1 + rectangle1.h;
-  int y3 = rectangle2.y;
-  int y4 = y3 + rectangle2.h;
-
-  bool overlap_y = (y3 < y2 && y1 < y4);
-
-  return overlap_x && overlap_y;
 }
 
 /**

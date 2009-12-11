@@ -18,6 +18,7 @@
 #define ZSDX_ZSDX_H
 
 #include "Common.h"
+#include <SDL/SDL.h>
 
 /**
  * Only instance.
@@ -34,7 +35,7 @@ class ZSDX {
 
     Screen *current_screen;      /**< the screen currently displayed (the title screen,
 				  * the selection menu, the game, etc. */
-    SDL_Surface *root_surface;   /**< the surface where everything is drawn (always 320*240) */
+    Surface *root_surface;       /**< the surface where everything is drawn (always 320*240) */
     bool exiting;
 
     void launch_adventure_mode(Savegame *savegame);

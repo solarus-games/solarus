@@ -75,8 +75,8 @@ TextSurface::TextSurface(int x, int y):
   surface(NULL) {
 
   text = "";
-  set_text_color(255, 255, 255);
-  set_background_color(0, 0, 0);
+  set_text_color(Color::get_white());
+  set_background_color(Color::get_black());
   set_position(x, y);
 }
 
@@ -100,8 +100,8 @@ TextSurface::TextSurface(int x, int y,
   surface(NULL) {
 
   text = "";
-  set_text_color(255, 255, 255);
-  set_background_color(0, 0, 0);
+  set_text_color(Color::get_white());
+  set_background_color(Color::get_black());
   set_position(x, y);
 }
 
@@ -109,7 +109,7 @@ TextSurface::TextSurface(int x, int y,
  * Destructor.
  */
 TextSurface::~TextSurface(void) {
-  SDL_FreeSurface(surface);
+  delete surface;
 }
 
 /**
@@ -148,35 +148,11 @@ void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) 
 
 /**
  * Sets the color of the text.
- * @param r red component (0 to 255)
- * @param g green component (0 to 255)
- * @param b blue component (0 to 255)
- */
-void TextSurface::set_text_color(int r, int g, int b) {
-  SDL_Color color = {r, g, b};
-  set_text_color(color);
-}
-
-/**
- * Sets the color of the text.
  * @param color the color to set
  */
-void TextSurface::set_text_color(const SDL_Color &color) {
+void TextSurface::set_text_color(Color &color) {
   this->text_color = color;
-
   rebuild();
-}
-
-/**
- * Sets the background color of the text.
- * This is only useful for the TEXT_SHADED rendering.
- * @param r red component (0 to 255)
- * @param g green component (0 to 255)
- * @param b blue component (0 to 255)
- */
-void TextSurface::set_background_color(int r, int g, int b) {
-  SDL_Color color = {r, g, b};
-  set_background_color(color);
 }
 
 /**
@@ -184,9 +160,8 @@ void TextSurface::set_background_color(int r, int g, int b) {
  * This is only useful for the TEXT_SHADED rendering.
  * @param color the background color to set
  */
-void TextSurface::set_background_color(const SDL_Color &color) {
+void TextSurface::set_background_color(Color &color) {
   this->background_color = color;
-
   rebuild();
 }
 
@@ -198,7 +173,6 @@ void TextSurface::set_background_color(const SDL_Color &color) {
 void TextSurface::set_position(int x, int y) {
   this->x = x;
   this->y = y;
-
   rebuild();
 }
 
@@ -247,7 +221,7 @@ void TextSurface::add_char(char c) {
  * Returns the text currently displayed.
  * @return the text currently displayed, or NULL if there is no text
  */
-const std::string& TextSurface::get_text(void) {
+const std::string & TextSurface::get_text(void) {
   return text;
 }
 
@@ -259,7 +233,7 @@ void TextSurface::rebuild(void) {
 
   if (surface != NULL) {
     // another text was previously set: delete it
-    SDL_FreeSurface(surface);
+    delete surface;
     surface = NULL;
   }
 
@@ -270,24 +244,27 @@ void TextSurface::rebuild(void) {
 
   // create the text surface
 
+  SDL_Surface *internal_surface = NULL;
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    surface = TTF_RenderUTF8_Solid(fonts[font_id], text.c_str(), text_color);
+    internal_surface = TTF_RenderUTF8_Solid(fonts[font_id], text.c_str(), text_color.get_internal_color());
     break;
 
   case TEXT_SHADED:
-    surface = TTF_RenderUTF8_Shaded(fonts[font_id], text.c_str(), text_color, background_color);
+    internal_surface = TTF_RenderUTF8_Shaded(fonts[font_id], text.c_str(), text_color.get_intenal_color(),
+	background_color.get_internal_color());
     break;
 
   case TEXT_BLENDED:
-    surface = TTF_RenderUTF8_Blended(fonts[font_id], text.c_str(), text_color);
+    internal_surface = TTF_RenderUTF8_Blended(fonts[font_id], text.c_str(), text_color.get_internal_color());
     break;
   }
 
-  if (surface == NULL) {
+  if (internal_surface == NULL) {
     DIE("Cannot create the text surface for string '" << text << "': " << SDL_GetError());
   }
+  surface = new Surface(internal_surface);
 
   // calculate the coordinates of the top-left corner
   int x_left = 0, y_top = 0;
@@ -299,11 +276,11 @@ void TextSurface::rebuild(void) {
     break;
 
   case ALIGN_CENTER:
-    x_left = x - surface->w / 2;
+    x_left = x - surface->get_width() / 2;
     break;
 
   case ALIGN_RIGHT:
-    x_left = x - surface->w;
+    x_left = x - surface->get_width();
     break;
   }
 
@@ -314,16 +291,15 @@ void TextSurface::rebuild(void) {
     break;
 
   case ALIGN_MIDDLE:
-    y_top = y - surface->h / 2;
+    y_top = y - surface->get_height() / 2;
     break;
 
   case ALIGN_BOTTOM:
-    y_top = y - surface->h;
+    y_top = y - surface->get_height();
     break;
   }
 
-  text_position.x = x_left;
-  text_position.y = y_top;
+  text_position.set_xy(x_left, y_top);
 }
 
 /**
@@ -332,10 +308,10 @@ void TextSurface::rebuild(void) {
  * when you called set_text().
  * @param destination the destination surface
  */
-void TextSurface::display(SDL_Surface *destination) {
+void TextSurface::display(Surface *destination) {
 
   if (surface != NULL) {
-    SDL_BlitSurface(surface, NULL, destination, &text_position);
+    surface->blit(destination, text_position);
   }
 }
 

@@ -26,21 +26,22 @@
  */
 class SelectionMenuConfirmErase: public SelectionMenuPhase {
 
- private:
-  
-  int save_number_to_erase;
-  void delete_save_file(int save_number);
+  private:
 
- public:
+    int save_number_to_erase;
+    void delete_save_file(int save_number);
 
-  // creation and destruction
-  SelectionMenuConfirmErase(SelectionMenuPhase *previous,
-			    int save_number_to_erase);
-  ~SelectionMenuConfirmErase(void);
+  public:
 
-  // update and display
-  void handle_event(const SDL_Event &event);
-  void display(SDL_Surface *screen_surface);
+    // creation and destruction
+    SelectionMenuConfirmErase(SelectionMenuPhase *previous,
+	int save_number_to_erase);
+    ~SelectionMenuConfirmErase(void);
+
+    // update and display
+    void handle_event(const SDL_Event &event);
+    void display(Surface *screen_surface);
 };
 
 #endif
+

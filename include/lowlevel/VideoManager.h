@@ -18,6 +18,7 @@
 #define ZSDX_VIDEO_MANAGER_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
  
 /**
  * Displays the window and handles the resolution mode.
@@ -48,21 +49,21 @@ class VideoManager {
 
  private:
 
-  static VideoManager *instance;                /**< the only instance */
-  static SDL_Rect default_mode_sizes[NB_MODES]; /**< default size of the surface for each video mode */
+  static VideoManager *instance;                 /**< the only instance */
+  static Rectangle default_mode_sizes[NB_MODES]; /**< default size of the surface for each video mode */
 
-  SDL_Rect mode_sizes[NB_MODES];                /**< verified size of the surface for each video mode */
-  SDL_Rect dst_position_wide;                   /**< position of the 640*480 surface on the 768*480 or 720*480
-					         * video surface */
+  Rectangle mode_sizes[NB_MODES];                /**< verified size of the surface for each video mode */
+  Rectangle dst_position_wide;                   /**< position of the 640*480 surface on the 768*480 or 720*480
+					          * video surface */
 
-  VideoMode video_mode;                         /**< current video mode of the screen */
-  SDL_Surface *screen_surface;                  /**< the screen surface */
+  VideoMode video_mode;                          /**< current video mode of the screen */
+  Surface *screen_surface;                       /**< the screen surface */
 
-  SDL_Rect dst_position_centered;               /**< position of the 320*240 game surface on the screen surface */
-  int width;                                    /**< width of the current screen surface */
-  int offset;                                   /**< width of a side bar when using a widescreen resolution */
-  int end_row_increment;                        /**< increment used by the stretching and scaling functions 
-					         * when changing the row */
+  Rectangle dst_position_centered;               /**< position of the 320*240 game surface on the screen surface */
+  int width;                                     /**< width of the current screen surface */
+  int offset;                                    /**< width of a side bar when using a widescreen resolution */
+  int end_row_increment;                         /**< increment used by the stretching and scaling functions 
+					          * when changing the row */
 
   VideoManager(void);
   ~VideoManager(void);
@@ -70,10 +71,10 @@ class VideoManager {
   bool is_mode_supported(VideoMode mode);
   bool is_fullscreen(VideoMode mode);
 
-  void blit(SDL_Surface *src_surface, SDL_Surface *dst_surface);
-  void blit_stretched(SDL_Surface *src_surface, SDL_Surface *dst_surface);
-  void blit_scale2x(SDL_Surface *src_surface, SDL_Surface *dst_surface);
-  void blit_centered(SDL_Surface *src_surface, SDL_Surface *dst_surface);
+  void blit(Surface *src_surface, Surface *dst_surface);
+  void blit_stretched(Surface *src_surface, Surface *dst_surface);
+  void blit_scale2x(Surface *src_surface, Surface *dst_surface);
+  void blit_centered(Surface *src_surface, Surface *dst_surface);
 
  public:
 
@@ -87,7 +88,7 @@ class VideoManager {
   void set_video_mode(VideoMode mode);
   VideoMode get_video_mode(void);
 
-  void display(SDL_Surface *src_surface);
+  void display(Surface *src_surface);
 };
 
 #endif

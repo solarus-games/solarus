@@ -26,48 +26,48 @@
  */
 class Block: public Detector {
 
- public:
+  public:
 
-  /**
-   * The different kinds of blocks: normal block
-   * or statue.
-   */
-  enum Subtype {
-    NORMAL, /**< a usual block */
-    STATUE, /**< a statue */
-  };
+    /**
+     * The different kinds of blocks: normal block
+     * or statue.
+     */
+    enum Subtype {
+      NORMAL, /**< a usual block */
+      STATUE, /**< a statue */
+    };
 
- private:
+  private:
 
-  SDL_Rect last_position;    /**< last position of the block before moving */
-  Subtype subtype;           /**< normal block or statue */
-  int maximum_moves;         /**< indicates whether the block can be pushed
-			      * (0: none, 1: once: 2: infinite) */
-  bool sound_played;         /**< true if the block sound was played while pulling it */
-  uint32_t when_can_move;      /**< date when the hero can move the block again */
+    Rectangle last_position;    /**< last position of the block before moving */
+    Subtype subtype;            /**< normal block or statue */
+    int maximum_moves;          /**< indicates whether the block can be pushed
+				 * (0: none, 1: once: 2: infinite) */
+    bool sound_played;          /**< true if the block sound was played while pulling it */
+    uint32_t when_can_move;     /**< date when the hero can move the block again */
 
-  SDL_Rect initial_position; /**< position of the block when created */
-  int initial_maximum_moves; /**< value of maximum_moves when the block was created */
+    Rectangle initial_position; /**< position of the block when created */
+    int initial_maximum_moves;  /**< value of maximum_moves when the block was created */
 
- public:
+  public:
 
-  Block(const std::string &name, Layer layer, int x, int y,
+    Block(const std::string &name, Layer layer, int x, int y,
 	int direction, Subtype subtype, int maximum_push);
-  ~Block(void);
-  static CreationFunction parse;
+    ~Block(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
-  bool is_displayed_in_y_order(void);
+    EntityType get_type(void);
+    bool is_displayed_in_y_order(void);
 
-  bool is_obstacle_for(MapEntity *other);
-  bool is_enemy_obstacle(Enemy *enemy);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  bool moved_by_hero(void);
-  void just_moved(void);
+    bool is_obstacle_for(MapEntity *other);
+    bool is_enemy_obstacle(Enemy *enemy);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    bool moved_by_hero(void);
+    void just_moved(void);
 
-  void update(void);
+    void update(void);
 
-  void reset(void);
+    void reset(void);
 };
 
 #endif

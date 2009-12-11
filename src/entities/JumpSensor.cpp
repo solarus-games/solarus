@@ -141,11 +141,11 @@ bool JumpSensor::test_collision_custom(MapEntity *entity) {
     */
 
     bool even = (direction % 4 == 0);
-    const SDL_Rect &facing_point = hero->get_facing_point(direction / 2);
-    return overlaps(facing_point.x + (even ? 0 : -8),
-		    facing_point.y + (even ? -8 : 0))
-      && overlaps(facing_point.x + (even ? 0 : 7),
-		  facing_point.y + (even ? 7 : 0));
+    const Rectangle &facing_point = hero->get_facing_point(direction / 2);
+    return overlaps(facing_point.get_x() + (even ? 0 : -8),
+		    facing_point.get_y() + (even ? -8 : 0))
+      && overlaps(facing_point.get_x() + (even ? 0 : 7),
+		  facing_point.get_y() + (even ? 7 : 0));
   }
 
   // otherwise, the sensor's shape is a diagonal bar
@@ -160,15 +160,15 @@ bool JumpSensor::test_collision_custom(MapEntity *entity) {
  * @param point the point to check
  * @return true if this point is overlapping the jump sensor
  */
-bool JumpSensor::is_point_in_diagonal(const SDL_Rect &point) {
+bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
 
-  if (!overlaps(point.x, point.y)) {
+  if (!overlaps(point.get_x(), point.get_y())) {
     return false;
   }
 
   bool collision = false;
-  int x = point.x - this->get_x();
-  int y = point.y - this->get_y();
+  int x = point.get_x() - this->get_x();
+  int y = point.get_y() - this->get_y();
   int width = get_width();
   switch (direction) {
 

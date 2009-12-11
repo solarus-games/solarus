@@ -16,8 +16,9 @@
  */
 #include "SDL_Config/SDL_config_lib.h"
 #include "Dungeon.h"
-#include "lowlevel/FileTools.h"
 #include "StringResource.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Creates the specified dungeon.
@@ -96,9 +97,9 @@ void Dungeon::load(void) {
       std::istringstream iss(suffix);
       FileTools::read(iss, floor);
 
-      SDL_Rect size;
-      size.w = CFG_ReadInt("width", 0);
-      size.h = CFG_ReadInt("height", 0);
+      Rectangle size;
+      size.set_width(CFG_ReadInt("width", 0));
+      size.set_height(CFG_ReadInt("height", 0));
       floor_sizes.push_back(size);
 
       if (floor < lowest_floor) {
@@ -189,7 +190,7 @@ int Dungeon::get_highest_floor(void) {
  * @param floor a floor of this dungeon
  * @return the size of this floor
  */
-const SDL_Rect & Dungeon::get_floor_size(int floor) {
+const Rectangle & Dungeon::get_floor_size(int floor) {
   return floor_sizes[floor - get_lowest_floor()];
 }
 
@@ -258,3 +259,4 @@ const std::vector<Dungeon::DungeonElement> Dungeon::get_bosses(int floor) {
 const std::vector<Dungeon::DungeonElement> Dungeon::get_chests(int floor) {
   return chests[floor - get_lowest_floor()];
 }
+

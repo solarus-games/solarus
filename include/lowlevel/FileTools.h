@@ -18,6 +18,7 @@
 #define ZSDX_FILE_TOOLS_H
 
 #include "Common.h"
+#include "SDL/SDL.h"
 
 /**
  * This class provides some functions to open and analyze a data file.

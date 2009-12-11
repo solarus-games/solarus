@@ -156,9 +156,9 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
     Hero *hero = (Hero*) entity;
     if (destination_point_name == "_side") {
       // scrolling towards an adjacent map
-      SDL_Rect facing_point = hero->get_facing_point(transition_direction);
+      Rectangle facing_point = hero->get_facing_point(transition_direction);
       collision = hero->is_moving_towards(transition_direction)
-	&& overlaps(facing_point.x, facing_point.y);
+	&& overlaps(facing_point.get_x(), facing_point.get_y());
       normal_case = false;
     }
 
@@ -172,11 +172,11 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
 
   // normal case
   if (normal_case) {
-    const SDL_Rect &entity_rectangle = entity->get_rectangle();
-    int x1 = entity_rectangle.x + 4;
-    int x2 = x1 + entity_rectangle.w - 9;
-    int y1 = entity_rectangle.y + 4;
-    int y2 = y1 + entity_rectangle.h - 9;
+    const Rectangle &entity_rectangle = entity->get_bounding_box();
+    int x1 = entity_rectangle.get_x() + 4;
+    int x2 = x1 + entity_rectangle.get_width() - 9;
+    int y1 = entity_rectangle.get_y() + 4;
+    int y2 = y1 + entity_rectangle.get_height() - 9;
 
     collision = overlaps(x1, y1) && overlaps(x2, y1) &&
       overlaps(x1, y2) && overlaps(x2, y2);

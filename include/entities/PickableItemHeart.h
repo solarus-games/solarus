@@ -18,24 +18,25 @@
 #define ZSDX_PICKABLE_ITEM_HEART_H
 
 #include "Common.h"
-#include "PickableItem.h"
+#include "entities/PickableItem.h"
 
 /**
  * Represents a heart placed on the map, that the hero can take.
  */
 class PickableItemHeart: public PickableItem {
 
- protected:
-  
-  void initialize_sprites(void);
-  void initialize_movement(void);
+  protected:
 
- public:
+    void initialize_sprites(void);
+    void initialize_movement(void);
 
-  PickableItemHeart(Layer layer, int x, int y);
-  ~PickableItemHeart(void);
+  public:
 
-  void update(void);
+    PickableItemHeart(Layer layer, int x, int y);
+    ~PickableItemHeart(void);
+
+    void update(void);
 };
 
 #endif
+

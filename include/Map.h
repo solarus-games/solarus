@@ -21,6 +21,7 @@
 #include "Transition.h"
 #include "entities/Layer.h"
 #include "entities/Ground.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Represents a map.
@@ -62,7 +63,7 @@ class Map {
 				 * - -100 to indicate that there is no floor
 				 * - -99 for the unknown floor '?' */
 
-  SDL_Rect location;            /**< location of the map in its context: the width and height fields
+  Rectangle location;           /**< location of the map in its context: the width and height fields
 				 * indicate the map size in pixel, and the x and y field indicate the position:
 				 * - in the outside world: location of the map's top-left corner
 				 *   relative to the whole world map
@@ -75,7 +76,7 @@ class Map {
   // screen
 
   Camera *camera;               /**< determines the visible area of the map */
-  SDL_Surface *visible_surface; /**< surface where the map is displayed - this surface is only the visible part
+  Surface *visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
 				 * of the map, so the coordinates on this surface are relative to the screen,
 				 * not to the map */
 
@@ -109,7 +110,7 @@ class Map {
   bool is_in_outside_world(void);
   int get_floor(void);
   bool has_floor(void);
-  const SDL_Rect &get_location(void);
+  const Rectangle &get_location(void);
   int get_small_keys_variable(void);
   bool has_small_keys(void);
 
@@ -119,8 +120,8 @@ class Map {
   int get_height8(void);
 
   // camera
-  SDL_Surface *get_visible_surface(void);
-  const SDL_Rect &get_camera_position(void);
+  Surface *get_visible_surface(void);
+  const Rectangle &get_camera_position(void);
   void move_camera(int x, int y, int speed);
   void restore_camera(void);
   bool is_camera_fixed_on_hero(void);
@@ -148,13 +149,13 @@ class Map {
 
   // collisions with obstacles (checked before a move)
   bool test_collision_with_border(int x, int y);
-  bool test_collision_with_border(const SDL_Rect &collision_box);
+  bool test_collision_with_border(const Rectangle &collision_box);
   bool test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check);
-  bool test_collision_with_entities(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
-  bool test_collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check);
+  bool test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check);
+  bool test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check);
   bool test_collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check);
   Ground get_tile_ground(Layer layer, int x, int y);
-  Ground get_tile_ground(Layer layer, const SDL_Rect &coordinates);
+  Ground get_tile_ground(Layer layer, const Rectangle &coordinates);
 
   // collisions with detectors (checked after a move)
   void check_collision_with_detectors(MapEntity *entity);
@@ -167,3 +168,4 @@ class Map {
 };
 
 #endif
+

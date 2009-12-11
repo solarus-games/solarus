@@ -24,7 +24,6 @@
 #include <string>
 #include <sstream>
 #include <stdexcept>
-#include <SDL/SDL.h> // TODO remove (SDL should be used in lowlevel classes only)
 #include "Types.h"
 
 /**

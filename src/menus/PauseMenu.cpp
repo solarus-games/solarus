@@ -37,7 +37,7 @@ PauseMenu::PauseMenu(Game *game):
 
   this->current_submenu = NULL;
   this->backgrounds_surface = ResourceManager::load_image("menus/pause_submenus.png");
-  SDL_SetAlpha(backgrounds_surface, SDL_SRCALPHA, 216);
+  backgrounds_surface->set_opacity(216);
 
   this->save_dialog_sprite = new Sprite("menus/pause_save_dialog");
   this->save_dialog_state = 0;
@@ -67,7 +67,7 @@ PauseMenu::PauseMenu(Game *game):
  */
 PauseMenu::~PauseMenu(void) {
   delete current_submenu;
-  SDL_FreeSurface(backgrounds_surface);
+  delete backgrounds_surface;
   delete save_dialog_sprite;
 
   delete question_text[0];
@@ -176,12 +176,12 @@ void PauseMenu::update(void) {
 /**
  * Displays the pause menu.
  */
-void PauseMenu::display(SDL_Surface *destination) {
+void PauseMenu::display(Surface *destination) {
 
   // display the background for the current submenu
   int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
-  SDL_Rect src_position = {320 * submenu_index, 0, 320, 240};
-  SDL_BlitSurface(backgrounds_surface, &src_position, destination, NULL);
+  Rectangle src_position(320 * submenu_index, 0, 320, 240);
+  backgrounds_surface->blit(src_position, destination);
 
   // display the current submenu content
   current_submenu->display(destination);

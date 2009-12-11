@@ -25,40 +25,41 @@
  */
 class ShopItem: public Detector {
 
- private:
+  private:
 
-  // data
-  Treasure *treasure;               /**< the treasure the player can buy */
-  int price;                        /**< the treasure's price in rupees */
-  MessageId message_id;             /**< id of the message describing the shop item */
+    // data
+    Treasure *treasure;               /**< the treasure the player can buy */
+    int price;                        /**< the treasure's price in rupees */
+    MessageId message_id;             /**< id of the message describing the shop item */
 
-  // displaying
-  TextSurface *price_digits;        /**< the digits that show the price */
-  Sprite *rupee_icon_sprite;        /**< the rupee icon near the price */
+    // displaying
+    TextSurface *price_digits;        /**< the digits that show the price */
+    Sprite *rupee_icon_sprite;        /**< the rupee icon near the price */
 
-  // state
-  bool is_looking_item;             /**< indicates that the message describing the item is being shown */
-  bool is_asking_question;          /**< indicates that the buy question is being shown */
+    // state
+    bool is_looking_item;             /**< indicates that the message describing the item is being shown */
+    bool is_asking_question;          /**< indicates that the buy question is being shown */
 
-  ShopItem(const std::string &name, Layer layer, int x, int y,
-	   Treasure *treasure, int price, const MessageId &message_id);
+    ShopItem(const std::string &name, Layer layer, int x, int y,
+	Treasure *treasure, int price, const MessageId &message_id);
 
- public:
+  public:
 
-  ~ShopItem(void);
-  static ShopItem * create(const std::string &name, Layer layer, int x, int y,
-			   Treasure *treasure, int price, const MessageId &message_id);
-  static CreationFunction parse;
+    ~ShopItem(void);
+    static ShopItem * create(const std::string &name, Layer layer, int x, int y,
+	Treasure *treasure, int price, const MessageId &message_id);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
+    EntityType get_type(void);
 
-  bool is_sword_ignored(void);
-  bool is_obstacle_for(MapEntity *other);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void action_key_pressed(void);
+    bool is_sword_ignored(void);
+    bool is_obstacle_for(MapEntity *other);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void action_key_pressed(void);
 
-  void update(void);
-  void display_on_map(void);
+    void update(void);
+    void display_on_map(void);
 };
 
 #endif
+

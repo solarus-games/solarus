@@ -27,10 +27,6 @@
 CollisionMovement::CollisionMovement(void):
   stop_on_obstacles(true) {
 
-  last_collision_box_on_obstacle.x = 0;
-  last_collision_box_on_obstacle.y = 0;
-  last_collision_box_on_obstacle.w = 0;
-  last_collision_box_on_obstacle.h = 0;
 }
 
 /**
@@ -40,10 +36,6 @@ CollisionMovement::CollisionMovement(void):
 CollisionMovement::CollisionMovement(bool stop_on_obstacles):
   stop_on_obstacles(stop_on_obstacles) {
 
-  last_collision_box_on_obstacle.x = 0;
-  last_collision_box_on_obstacle.y = 0;
-  last_collision_box_on_obstacle.w = 0;
-  last_collision_box_on_obstacle.h = 0;
 }
 
 
@@ -70,8 +62,8 @@ bool CollisionMovement::test_collision_with_map(int dx, int dy) {
   Map *map = entity->get_map();
 
   // place the collision box where we want to check the collisions
-  Rectangle collision_box = entity->get_rectangle();
-  collision_box.set_xy(collision_box.get_x() + dx, collision_box.get_y() + dy);
+  Rectangle collision_box = entity->get_bounding_box();
+  collision_box.add_xy(dx, dy);
 
   bool collision = map->test_collision_with_obstacles(entity->get_layer(), collision_box, entity);
 

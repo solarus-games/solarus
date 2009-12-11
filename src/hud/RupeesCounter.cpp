@@ -18,15 +18,17 @@
 #include "Counter.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
+#include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Position of the 3 rupee icons in the image.
  */
-SDL_Rect RupeesCounter::rupee_icon_positions[3] = {
-  {0, 0, 12, 12},
-  {12, 0, 12, 12},
-  {24, 0, 12, 12}
+Rectangle RupeesCounter::rupee_icon_positions[3] = {
+  Rectangle( 0, 0, 12, 12),
+  Rectangle(12, 0, 12, 12),
+  Rectangle(24, 0, 12, 12),
 };
 
 /**
@@ -39,7 +41,7 @@ RupeesCounter::RupeesCounter(Equipment *equipment, int x, int y):
   HudElement(x, y, 48, 12),
   equipment(equipment),
   counter(new Counter(3, true, 16, 2)),
-  next_rupee_update_date(SDL_GetTicks()) {
+  next_rupee_update_date(System::now()) {
 
   img_rupee_icon = ResourceManager::load_image("hud/rupee_icon.png");
 
@@ -64,7 +66,7 @@ RupeesCounter::RupeesCounter(Equipment *equipment, int x, int y):
  * Destructor.
  */
 RupeesCounter::~RupeesCounter(void) {
-  SDL_FreeSurface(img_rupee_icon);
+  delete img_rupee_icon;
   delete counter;
 }
 
@@ -99,9 +101,9 @@ void RupeesCounter::update(void) {
   uint32_t nb_current_rupees = equipment->get_rupees();
   unsigned int nb_current_rupees_displayed = counter->get_value();
 
-  if (nb_current_rupees_displayed != nb_current_rupees && SDL_GetTicks() > next_rupee_update_date) {
+  if (nb_current_rupees_displayed != nb_current_rupees && System::now() > next_rupee_update_date) {
 
-    next_rupee_update_date = SDL_GetTicks() + 40;
+    next_rupee_update_date = System::now() + 40;
     
     // increment or decrement the counter until the right value is reached
     if (nb_current_rupees < nb_current_rupees_displayed) {
@@ -138,9 +140,10 @@ void RupeesCounter::rebuild(void) {
   HudElement::rebuild();
   
   // max rupees (icon)
-  SDL_BlitSurface(img_rupee_icon, &rupee_icon_positions[icon_displayed], surface_drawn, NULL);
+  img_rupee_icon->blit(rupee_icon_positions[icon_displayed], surface_drawn);
 
   // current rupees (counter)
   counter->set_maximum(nb_max_rupees_displayed);
   counter->display(surface_drawn);
 }
+

@@ -18,6 +18,7 @@
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -45,7 +46,7 @@ ActionIcon::ActionIcon(KeysEffect *keys_effect, int x, int y):
  */
 ActionIcon::~ActionIcon(void) {
   delete sprite_action_icon;
-  SDL_FreeSurface(img_action_icon);
+  delete img_action_icon;
 }
 
 /**
@@ -135,17 +136,16 @@ void ActionIcon::rebuild(void) {
       // draw the static image of the icon, with the current
       // action key effect
       
-      SDL_Rect icon_position = {0, 0, 72, 24};
+      Rectangle icon_position(0, 0, 72, 24);
     
       // draw the action icon with some text (Action, Throw...)
-      icon_position.y = 24 * action_key_effect_displayed;
-
-      SDL_BlitSurface(img_action_icon, &icon_position, surface_drawn, NULL);
+      icon_position.set_y(24 * action_key_effect_displayed);
+      img_action_icon->blit(icon_position, surface_drawn);
     }
     else {
-      
       // draw the flipping sprite
       sprite_action_icon->display(surface_drawn, 24, 0);
     }
   }
 }
+

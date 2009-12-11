@@ -21,10 +21,11 @@
 /**
  * Translation vectors constituing the movement of the falling heart.
  */
-static const SDL_Rect falling_moves[24] = {
-  { 0, 0}, { 0,-2}, { 0,-2}, { 0,-2}, { 0,-2}, { 0,-2}, { 0, 0}, { 0, 0},
-  { 1, 1}, { 1, 1}, { 1, 0}, { 1, 1}, { 1, 1}, { 0, 0}, {-1, 0}, {-1, 1},
-  {-1, 0}, {-1, 1}, {-1, 0}, {-1, 1}, { 0, 1}, { 1, 1}, { 1, 1}, {-1, 0}
+static const Rectangle falling_moves[24] = {
+  Rectangle( 0, 0), Rectangle( 0,-2), Rectangle( 0,-2), Rectangle( 0,-2), Rectangle( 0,-2), Rectangle( 0,-2),
+  Rectangle( 0, 0), Rectangle( 0, 0), Rectangle( 1, 1), Rectangle( 1, 1), Rectangle( 1, 0), Rectangle( 1, 1),
+  Rectangle( 1, 1), Rectangle( 0, 0), Rectangle(-1, 0), Rectangle(-1, 1), Rectangle(-1, 0), Rectangle(-1, 1),
+  Rectangle(-1, 0), Rectangle(-1, 1), Rectangle( 0, 1), Rectangle( 1, 1), Rectangle( 1, 1), Rectangle(-1, 0)
 };
 
 /**
@@ -89,3 +90,4 @@ void PickableItemHeart::update(void) {
     shadow_x = get_x();
   }
 }
+

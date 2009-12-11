@@ -20,31 +20,36 @@
 #include "Common.h"
 #include "SDL/SDL.h"
 
-// TODO make a real class to encapsulate SDL colors
-
 /**
  * This module defines a type for the colors and provides some color related functions.
  * It encapsulates a library dependent color.
  */
 class Color {
 
- private:
+  private:
 
-  static SDL_PixelFormat *format; /**< the pixel format used for all colors */
+    static SDL_PixelFormat *format; /**< the pixel format used for all colors */
+    uint32_t       internal_color;  /**< the SDL color encapsulated */
 
-  uint32_t internal_color;        /**< the SDL color encapsulated */
+    // some predefined colors
+    static Color black;
+    static Color white;
+    static Color red;
 
- public:
+  public:
 
-  // some predefined colors
-  static Color * black;
-  static Color * white;
-  static Color * red;
+    static void initialize(void);
+    static void quit(void);
 
-  static void initialize(void);
-  static void quit(void);
+    static inline Color & get_black(void) { return black; }
+    static inline Color & get_white(void) { return white; }
+    static inline Color & get_red(void)   { return red;   }
 
-  Color(int r, int g, int b);
+    Color(void);
+    Color(const Color &other);
+    Color(int r, int g, int b);
+
+    uint32_t get_internal_color(void);
 
 };
 

@@ -18,6 +18,7 @@
 #include "Counter.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -38,8 +39,8 @@ SmallKeysCounter::SmallKeysCounter(Equipment *equipment, int x, int y):
  * Destructor.
  */
 SmallKeysCounter::~SmallKeysCounter(void) {
-  SDL_FreeSurface(img_icon);
 
+  delete img_icon;
   if (counter != NULL) {
     delete counter;
   }
@@ -93,7 +94,7 @@ void SmallKeysCounter::rebuild(void) {
   if (counter != NULL) { // the small keys are enabled
 
     // small key icon
-    SDL_BlitSurface(img_icon, NULL, surface_drawn, NULL);
+    img_icon->blit(surface_drawn);
 
     // current number of small keys
     counter->display(surface_drawn);

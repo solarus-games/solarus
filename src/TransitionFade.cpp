@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "TransitionFade.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/System.h"
 
 /**
  * Constructor.
@@ -57,7 +59,7 @@ void TransitionFade::set_delay(uint32_t delay) {
  */
 void TransitionFade::start(void) {
   alpha = alpha_start;
-  next_frame_date = SDL_GetTicks();
+  next_frame_date = System::now();
 }
 
 /**
@@ -79,9 +81,9 @@ bool TransitionFade::is_over(void) {
 /**
  * Displays the transition effect on a surface.
  */
-void TransitionFade::display(SDL_Surface *surface) {
+void TransitionFade::display(Surface *surface) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   // update the transition effect if needed
   while (now >= next_frame_date && alpha != alpha_limit) {
@@ -92,11 +94,6 @@ void TransitionFade::display(SDL_Surface *surface) {
   // display the transition effect on the surface
   int alpha_impl = std::min(alpha, 255);
 
-  // SDL has a special handling of the alpha value 128, but it does not work correctly with my computer
-  if (alpha_impl == 128) {
-    alpha_impl = 127;
-  }
-
-  SDL_SetAlpha(surface, SDL_SRCALPHA, alpha_impl);
+  surface->set_opacity(alpha_impl);
 }
 

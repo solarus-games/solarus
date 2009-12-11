@@ -40,25 +40,33 @@ class Rectangle {
     Rectangle(const Rectangle &other);
     ~Rectangle(void);
 
-    inline int get_x(void) const      { return rect.x; }
-    inline int get_y(void) const      { return rect.y; }
-    inline int get_width(void)  const { return rect.w; }
-    inline int get_height(void) const { return rect.h; }
+    inline int get_x(void) const       { return rect.x; }
+    inline int get_y(void) const       { return rect.y; }
+    inline int get_width(void)  const  { return rect.w; }
+    inline int get_height(void) const  { return rect.h; }
 
-    inline void set_x(int x)           { rect.x = x; }
-    inline void set_y(int y)           { rect.y = y; }
-    inline void set_width(int width)   { rect.w = width; }
+    inline void set_x(int x)           { rect.x = x;      }
+    inline void set_y(int y)           { rect.y = y;      }
+    inline void set_width(int width)   { rect.w = width;  }
     inline void set_height(int height) { rect.h = height; }
 
-    inline void set_xy(int x, int y)            { set_x(x); set_y(y); }
-    inline void set_size(int width, int height) { set_width(width); set_height(height); }
+    inline void set_xy(int x, int y)             { set_x(x); set_y(y);                              }
+    inline void set_xy(const Rectangle &other)   { set_xy(other.get_x(), other.get_y());            }
+    inline void set_size(int width, int height)  { set_width(width); set_height(height);            }
+    inline void set_size(const Rectangle &other) { set_size(other.get_width(), other.get_height()); }
+
+    inline void add_x(int dx)          { set_x(get_x() + dx);           }
+    inline void add_y(int dy)          { set_y(get_y() + dy);           }
+    inline void add_width(int dw)      { set_width(get_width() + dw);   }
+    inline void add_height(int dh)     { set_height(get_height() + dh); }
+    inline void add_xy(int dx, int dy) { add_x(dx); add_y(dy);          }
 
     bool contains(int x, int y) const;
     bool overlaps(const Rectangle &other) const;
     Rectangle get_center(void);
 
     // for low-level classes use only
-    SDL_Rect & get_internal_rect(void);
+    SDL_Rect * get_internal_rect(void);
 };
 
 #endif

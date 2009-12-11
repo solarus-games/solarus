@@ -19,6 +19,7 @@
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -49,7 +50,7 @@ SwordIcon::SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y
  */
 SwordIcon::~SwordIcon(void) {
   delete sprite_sword_icon;
-  SDL_FreeSurface(img_sword_icon);
+  delete img_sword_icon;
 }
 
 /**
@@ -124,21 +125,22 @@ void SwordIcon::rebuild(void) {
     // draw the static image of the icon, with the current
     // sword key effect
 
-    SDL_Rect icon_position = {0, 0, 72, 24};
+    Rectangle icon_position(0, 0, 72, 24);
 
     if (sword_key_effect_displayed != KeysEffect::SWORD_KEY_SWORD) {
       // draw the sword icon with some text (Save, Return...)
-      icon_position.y = 24 * sword_key_effect_displayed;
+      icon_position.set_y(24 * sword_key_effect_displayed);
     }
     else {
       // draw the sword icon with the current sword
-      icon_position.y = 24 * (sword_key_effect_displayed + sword_number_displayed - 1);
+      icon_position.set_y(24 * (sword_key_effect_displayed + sword_number_displayed - 1));
     }
 
-    SDL_BlitSurface(img_sword_icon, &icon_position, surface_drawn, NULL);
+    img_sword_icon->blit(icon_position, surface_drawn);
   }
   else {
     // draw the flipping sprite
     sprite_sword_icon->display(surface_drawn, 24, 0);
   }
 }
+

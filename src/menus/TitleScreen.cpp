@@ -18,11 +18,11 @@
 #include "menus/SelectionMenuSelectFile.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
-#include "ResourceManager.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Color.h"
-#include "TransitionFade.h"
 #include "lowlevel/TextSurface.h"
+#include "TransitionFade.h"
+#include "ResourceManager.h"
 #include "StringResource.h"
 #include <ctime>
 
@@ -70,7 +70,7 @@ void TitleScreen::update(void) {
 
   // TODO remove
   set_next_screen(new Game(new Savegame("save1.zsd")));
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   switch (current_phase) {
 
@@ -112,7 +112,7 @@ void TitleScreen::update(void) {
  * Displays the title screen.
  * @param destination_surface the surface to draw
  */
-void TitleScreen::display(SDL_Surface *destination_surface) {
+void TitleScreen::display(Surface *destination_surface) {
 
   switch (current_phase) {
 
@@ -124,7 +124,7 @@ void TitleScreen::display(SDL_Surface *destination_surface) {
     if (transition_out->is_started()) { // out transition
       transition_out->display(zs_presents_img);
     }
-    SDL_BlitSurface(zs_presents_img, NULL, destination_surface, &zs_presents_position);
+    zs_presents_img->blit(destination_surface, zs_presents_position);
     break;
 
   case PHASE_TITLE:
@@ -158,7 +158,7 @@ void TitleScreen::init_phase_black_screen(void) {
 
   // black screen during 0.3 second
   current_phase = PHASE_BLACK_SCREEN;
-  next_phase_date = SDL_GetTicks() + 300;
+  next_phase_date = System::now() + 300;
 }
 
 /**
@@ -174,18 +174,18 @@ void TitleScreen::init_phase_zs_presents(void) {
   zs_presents_position.x = 160 - (zs_presents_img->w / 2);
   zs_presents_position.y = 120 - (zs_presents_img->h / 2);
 
-  next_phase_date = SDL_GetTicks() + 2000; // intro: 2 seconds
+  next_phase_date = System::now() + 2000; // intro: 2 seconds
   transition_out = new TransitionFade(Transition::OUT);
 }
 
 /**
  * Exits phase 2 of the title screen.
  */
- void TitleScreen::exit_phase_zs_presents(void) {
+void TitleScreen::exit_phase_zs_presents(void) {
 
-   SDL_FreeSurface(zs_presents_img);
+   delete zs_presents_img;
    delete transition_out;
- }
+}
 
 /**
  * Initializes phase 3 of the title screen.
@@ -194,7 +194,7 @@ void TitleScreen::init_phase_zs_presents(void) {
 void TitleScreen::init_phase_title(void) {
 
   static const std::string time_of_day_strings[] = { "daylight", "sunset", "night" };
-  static const SDL_Color text_colors[] = { {0, 0, 92}, {0, 0, 92}, {255, 128, 0} };
+  static const Color text_colors[] = { Color(0, 0, 92), Color(0, 0, 92), Color(255, 128, 0) };
   TimeOfDay time_of_day = get_time_of_day();
 //  time_of_day = TimeOfDay(2);
 
@@ -223,15 +223,15 @@ void TitleScreen::init_phase_title(void) {
   press_space_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
   press_space_img->set_text_color(text_colors[time_of_day]);
   press_space_img->set_text(StringResource::get_string("title_screen.press_space"));
-  title_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  title_surface = new Surface(320, 240);
 
   clouds_position.x = 320;
   clouds_position.y = 30;
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   next_clouds_move_date = now;
 
   counter = 0;
-  next_image_date = SDL_GetTicks() + 5000;
+  next_image_date = System::now() + 5000;
 
   transition_in = new TransitionFade(Transition::IN);
   transition_in->set_delay(30);
@@ -246,14 +246,14 @@ void TitleScreen::exit_phase_title(void) {
 
   delete transition_in;
   delete transition_out;
-  SDL_FreeSurface(background_img);
-  SDL_FreeSurface(clouds_img);
-  SDL_FreeSurface(logo_img);
-  SDL_FreeSurface(dx_img);
-  SDL_FreeSurface(star_img);
+  delete background_img;
+  delete clouds_img;
+  delete logo_img;
+  delete dx_img;
+  delete star_img;
   delete website_img;
   delete press_space_img;
-  SDL_FreeSurface(title_surface);
+  delete title_surface;
   title_screen_music->stop();
 }
 
@@ -262,7 +262,7 @@ void TitleScreen::exit_phase_title(void) {
  */
 void TitleScreen::update_phase_title(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   if (now >= next_image_date) {
 
@@ -306,35 +306,31 @@ void TitleScreen::update_phase_title(void) {
 void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
 
   // fill with black
-  SDL_FillRect(title_surface, NULL, Color::black);
+  title_surface->fill_with_color(Color::get_black());
 
   // background
-  SDL_BlitSurface(background_img, NULL, title_surface, NULL);
+  background_img->blit(title_surface);
 
   // clouds
-  SDL_Rect clouds_dst_position = clouds_position;
-  SDL_BlitSurface(clouds_img, NULL, title_surface, &clouds_dst_position);
-  clouds_dst_position.x = clouds_position.x - 535;
-  clouds_dst_position.y = clouds_position.y;
-  SDL_BlitSurface(clouds_img, NULL, title_surface, &clouds_dst_position);
-  clouds_dst_position.x = clouds_position.x;
-  clouds_dst_position.y = clouds_position.y - 299;
-  SDL_BlitSurface(clouds_img, NULL, title_surface, &clouds_dst_position);
-  clouds_dst_position.x = clouds_position.x - 535;
-  clouds_dst_position.y = clouds_position.y - 299;
-  SDL_BlitSurface(clouds_img, NULL, title_surface, &clouds_dst_position);
+  Rectangle clouds_dst_position = clouds_position;
+  clouds_img->blit(title_surface, clouds_dst_position);
+  clouds_dst_position.set_xy(clouds_position.get_x() - 535, clouds_position.get_y());
+  clouds_img->blit(title_surface, clouds_dst_position);
+  clouds_dst_position.set_xy(clouds_position.get_x(), clouds_position.get_y() - 299);
+  clouds_img->blit(title_surface, clouds_dst_position);
+  clouds_dst_position.set_xy(clouds_position.get_x() - 535, clouds_position.get_y() - 299);
+  clouds_img->blit(title_surface, clouds_dst_position);
 
-  // website name
+  // website name and logo
   website_img->display(title_surface);
-
-  SDL_BlitSurface(logo_img, NULL, title_surface, NULL);
+  logo_img->blit(title_surface);
 
   // logo and other appearing stuff
   if (counter >= 1) {
-    SDL_BlitSurface(dx_img, NULL, title_surface, NULL);
+    dx_img->blit(title_surface);
 
     if (counter >= 2) {
-      SDL_BlitSurface(star_img, NULL, title_surface, NULL);
+      star_img->blit(title_surface);
 
       if (counter >= 3) {
 	press_space_img->display(title_surface);
@@ -350,7 +346,7 @@ void TitleScreen::display_phase_title(SDL_Surface *destination_surface) {
     transition_out->display(title_surface);
   }
 
-  SDL_BlitSurface(title_surface, NULL, destination_surface, NULL);
+  title_surface->blit(destination_surface);
 }
 
 /**

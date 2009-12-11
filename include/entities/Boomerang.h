@@ -25,51 +25,51 @@
  */
 class Boomerang: public MapEntity {
 
- private:
+  private:
 
-  Hero *hero;              /**< the hero */
+    Hero *hero;               /**< the hero */
 
-  uint32_t next_sound_date;  /**< date when the boomerang sound will be played next time */
+    uint32_t next_sound_date; /**< date when the boomerang sound will be played next time */
 
-  bool has_to_go_back;     /**< true if the boomerang is about to go back */
-  bool going_back;         /**< indicates that the boomerang is going back towards the hero */
+    bool has_to_go_back;      /**< true if the boomerang is about to go back */
+    bool going_back;          /**< indicates that the boomerang is going back towards the hero */
 
-  SDL_Rect initial_coords; /**< coordinates of the boomerang's initial position */
+    Rectangle initial_coords; /**< coordinates of the boomerang's initial position */
 
- public:
+  public:
 
-  Boomerang(Hero *hero, int direction);
-  ~Boomerang(void);
+    Boomerang(Hero *hero, int direction);
+    ~Boomerang(void);
 
-  EntityType get_type(void);
+    EntityType get_type(void);
 
-  // features
-  bool can_be_obstacle(void);
-  bool can_detect_entities(void);
-  bool can_be_displayed(void);
-  bool is_displayed_in_y_order(void);
+    // features
+    bool can_be_obstacle(void);
+    bool can_detect_entities(void);
+    bool can_be_displayed(void);
+    bool is_displayed_in_y_order(void);
 
-  bool is_teletransporter_obstacle(Teletransporter *teletransporter);
-  bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
-  bool is_water_obstacle(void);
-  bool is_hole_obstacle(void);
-  bool is_ladder_obstacle(void);
-  bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
-  bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
-  bool is_npc_obstacle(InteractiveEntity *npc);
-  bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
+    bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
+    bool is_water_obstacle(void);
+    bool is_hole_obstacle(void);
+    bool is_ladder_obstacle(void);
+    bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
+    bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
+    bool is_npc_obstacle(InteractiveEntity *npc);
+    bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
 
-  // state
-  bool is_going_back(void);
-  void go_back(void);
+    // state
+    bool is_going_back(void);
+    void go_back(void);
 
-  void update(void);
+    void update(void);
 
-  // collisions
-  void notify_collision_with_enemy(Enemy *enemy);
-  void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
+    // collisions
+    void notify_collision_with_enemy(Enemy *enemy);
+    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };
 
 
 #endif
- 
+

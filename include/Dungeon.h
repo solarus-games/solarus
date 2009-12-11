@@ -28,55 +28,56 @@
  */
 class Dungeon {
 
- public:
-  
-  // elements of each floor: chests and bosses
-  struct DungeonElement {
-    int savegame_variable;
-    int floor;
-    int x;
-    int y;
-    bool big; // to distinguish big chests from normal chests and big bosses from minibosses
-  };
+  public:
 
- private:
+    // elements of each floor: chests and bosses
+    struct DungeonElement {
+      int savegame_variable;
+      int floor;
+      int x;
+      int y;
+      bool big; // to distinguish big chests from normal chests and big bosses from minibosses
+    };
 
-  int dungeon_number;                  /**< dungeon number, between 1 and 20 */
-  std::string name;                    /**< name of the dungeon in the current language */
+  private:
 
-  // floors
-  int lowest_floor;                    /**< lowest floor number, between -16 and 15 */
-  std::vector<SDL_Rect> floor_sizes;   /**< size of each floor */
+    int dungeon_number;                  /**< dungeon number, between 1 and 20 */
+    std::string name;                    /**< name of the dungeon in the current language */
 
-  std::vector<DungeonElement> *chests; /**< properties of each chest for each floor */
-  std::vector<DungeonElement> *bosses; /**< properties of each miniboss and boss for each floor */
-  int boss_floor;                      /**< floor of the boss (-100 if there is no boss) */
+    // floors
+    int lowest_floor;                    /**< lowest floor number, between -16 and 15 */
+    std::vector<Rectangle> floor_sizes;  /**< size of each floor */
 
-  void load(void);
+    std::vector<DungeonElement> *chests; /**< properties of each chest for each floor */
+    std::vector<DungeonElement> *bosses; /**< properties of each miniboss and boss for each floor */
+    int boss_floor;                      /**< floor of the boss (-100 if there is no boss) */
 
- public:
+    void load(void);
 
-  // creation and destruction
-  Dungeon(int dungeon_number);
-  ~Dungeon(void);
+  public:
 
-  int get_number(void);
-  const std::string &get_name(void);
+    // creation and destruction
+    Dungeon(int dungeon_number);
+    ~Dungeon(void);
 
-  // floors
-  int get_nb_floors(void);
-  int get_lowest_floor(void);
-  int get_highest_floor(void);
-  const SDL_Rect & get_floor_size(int floor);
+    int get_number(void);
+    const std::string &get_name(void);
 
-  // displaying floors (for the hud and the dungeon map submenu)
-  int get_nb_floors_displayed(void);
-  int get_highest_floor_displayed(int current_floor);
+    // floors
+    int get_nb_floors(void);
+    int get_lowest_floor(void);
+    int get_highest_floor(void);
+    const Rectangle & get_floor_size(int floor);
 
-  // dungeon elements
-  int get_boss_floor(void);
-  const std::vector<DungeonElement> get_bosses(int floor);
-  const std::vector<DungeonElement> get_chests(int floor);
+    // displaying floors (for the hud and the dungeon map submenu)
+    int get_nb_floors_displayed(void);
+    int get_highest_floor_displayed(int current_floor);
+
+    // dungeon elements
+    int get_boss_floor(void);
+    const std::vector<DungeonElement> get_bosses(int floor);
+    const std::vector<DungeonElement> get_chests(int floor);
 };
 
 #endif
+

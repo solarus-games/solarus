@@ -26,39 +26,39 @@
  */
 class SpriteAnimation {
 
- private:
+  private:
 
-  SDL_Surface *src_image;      /**< image from which the frames are extracted;
-				* this image is the same for
-				* all directions of the sprite's animation */
-  bool src_image_loaded;       /**< indicates that src_image was loaded from this class */
-  const int nb_directions;     /**< number of directions of this animation */
-  SpriteAnimationDirection **directions; /**< array of directions:
-					  * each direction is a sequence of images */
-  const uint32_t frame_delay;    /**< default interval in milliseconds between two frames
-			        * (this delay is the same for all directions) */
-  const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
+    Surface *src_image;          /**< image from which the frames are extracted;
+				  * this image is the same for
+				  * all directions of the sprite's animation */
+    bool src_image_loaded;       /**< indicates that src_image was loaded from this class */
+    const int nb_directions;     /**< number of directions of this animation */
+    SpriteAnimationDirection **directions; /**< array of directions:
+					    * each direction is a sequence of images */
+    const uint32_t frame_delay;  /**< default interval in milliseconds between two frames
+				  * (this delay is the same for all directions) */
+    const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
 
- public:
+  public:
 
-  SpriteAnimation(const std::string &image_file_name, int nb_directions,
-		  SpriteAnimationDirection **directions,
-		  uint32_t frame_interval, int loop_on_frame);
-  virtual ~SpriteAnimation(void);
+    SpriteAnimation(const std::string &image_file_name, int nb_directions,
+	SpriteAnimationDirection **directions, uint32_t frame_interval, int loop_on_frame);
+    virtual ~SpriteAnimation(void);
 
-  void set_map(Map *map);
+    void set_map(Map *map);
 
-  int get_next_frame(int current_direction, int current_frame);
-  void display(SDL_Surface *destination, int x, int y,
-	       int current_direction, int current_frame);
+    int get_next_frame(int current_direction, int current_frame);
+    void display(Surface *destination, int x, int y,
+	int current_direction, int current_frame);
 
-  int get_nb_directions(void);
-  SpriteAnimationDirection *get_direction(int direction);
-  uint32_t get_frame_delay(void);
-  bool is_looping(void);
+    int get_nb_directions(void);
+    SpriteAnimationDirection *get_direction(int direction);
+    uint32_t get_frame_delay(void);
+    bool is_looping(void);
 
-  void enable_pixel_collisions(void);
-  bool are_pixel_collisions_enabled(void);
+    void enable_pixel_collisions(void);
+    bool are_pixel_collisions_enabled(void);
 };
 
 #endif
+

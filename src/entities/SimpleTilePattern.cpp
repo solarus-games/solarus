@@ -16,6 +16,7 @@
  */
 #include "entities/SimpleTilePattern.h"
 #include "Map.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Creates a simple tile pattern.
@@ -26,12 +27,8 @@
  * @param height height of the tile pattern in the tileset
  */
 SimpleTilePattern::SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height):
-  TilePattern(obstacle, width, height) {
+  TilePattern(obstacle, width, height), position_in_tileset(x, y, width, height) {
 
-  position_in_tileset.x = x;
-  position_in_tileset.y = y;
-  position_in_tileset.w = width;
-  position_in_tileset.h = height;
 }
 
 /**
@@ -47,8 +44,7 @@ SimpleTilePattern::~SimpleTilePattern(void) {
  * @param dst_position position of the tile pattern on the destination surface
  * @param tileset_image the tileset image of this tile
  */
-void SimpleTilePattern::display(SDL_Surface *destination, const SDL_Rect &dst_position, SDL_Surface *tileset_image) {
-
-  SDL_Rect dst = dst_position;
-  SDL_BlitSurface(tileset_image, &position_in_tileset, destination, &dst);
+void SimpleTilePattern::display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image) {
+  tileset_image->blit(position_in_tileset, destination, dst_position);
 }
+

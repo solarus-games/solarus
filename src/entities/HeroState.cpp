@@ -34,12 +34,13 @@
 #include "MapScript.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Equipment.h"
 #include "Sprite.h"
 #include "Treasure.h"
 #include "Controls.h"
 #include "InventoryItem.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Returns the hero's state.
@@ -130,7 +131,7 @@ void Hero::start_ground(void) {
       // display a special sprite below the hero
       sprites->create_ground(ground);
 
-      uint32_t now = SDL_GetTicks();
+      uint32_t now = System::now();
       next_ground_date = std::max(next_ground_date, now);
 
       get_normal_movement()->set_moving_speed(walking_speed * 4 / 5);
@@ -153,7 +154,7 @@ void Hero::start_ground(void) {
 void Hero::update_ground(void) {
 
   // see if it's time to do something (depending on the ground)
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   if (now >= next_ground_date) {
 
     if (is_ground_visible()) {
@@ -168,18 +169,17 @@ void Hero::update_ground(void) {
     if (ground == GROUND_HOLE &&
 	state != FALLING && state != RETURNING_TO_SOLID_GROUND && state != JUMPING) {
 
-      if (get_distance(last_solid_ground_coords.x, last_solid_ground_coords.y) >= 8) {
+      if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
 	start_falling();
       }
       else {
 
 	// time to move the hero on a hole one more pixel away from the solid ground
-	SDL_Rect collision_box = get_rectangle();
-	collision_box.x += hole_dx;
-	collision_box.y += hole_dy;
+	Rectangle collision_box = get_bounding_box();
+	collision_box.add_xy(hole_dx, hole_dy);
 
 	if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
-	  set_rectangle(collision_box);
+	  set_bounding_box(collision_box);
 	  just_moved();
 	}
 	next_ground_date = now + 60;
@@ -230,18 +230,15 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
   if (state != JUMPING && state != CONVEYOR_BELT && state != PUSHING) {
 
     // check that a significant part of the hero is on the conveyor belt
-    SDL_Rect center = get_center_point();
-    center.x -= 1;
-    center.y -= 1;
-    center.w = 2;
-    center.h = 2;
+    Rectangle center = get_center_point();
+    center.add_xy(-1, -1);
+    center.set_size(2, 2);
 
     if (conveyor_belt->overlaps(center)) {
 
       // check that the movement is possible for at least one pixel
-      SDL_Rect collision_box = get_rectangle();
-      collision_box.x += dx;
-      collision_box.y += dy;
+      Rectangle collision_box = get_bounding_box();
+      collision_box.add_xy(dx, dy);
  
       if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 
@@ -397,7 +394,7 @@ void Hero::start_sword_loading(void) {
 
   // initialize the counter to detect when the sword is loaded
   counter = 0;
-  next_counter_date = SDL_GetTicks();
+  next_counter_date = System::now();
   sword_loaded = false;
 
   if (get_normal_movement()->is_started()) {
@@ -415,7 +412,7 @@ void Hero::start_sword_loading(void) {
  */
 void Hero::update_sword_loading(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   while (!sword_loaded && now >= next_counter_date) {
     counter++;
     next_counter_date += 100;
@@ -453,7 +450,7 @@ void Hero::update_sword_loading(void) {
 void Hero::start_sword_tapping(void) {
   set_state(SWORD_TAPPING);
   sprites->set_animation_sword_tapping();
-  next_hit_sound_date = SDL_GetTicks() + 100;
+  next_hit_sound_date = System::now() + 100;
 }
 
 /**
@@ -463,11 +460,11 @@ void Hero::start_sword_tapping(void) {
 void Hero::update_sword_tapping(void) {
 
   Controls *controls = zsdx->game->get_controls();
-  const SDL_Rect &facing_point = get_facing_point();
+  const Rectangle &facing_point = get_facing_point();
 
   if (!controls->is_key_pressed(Controls::SWORD)
       || get_movement_direction() != get_animation_direction() * 90
-      || !map->test_collision_with_obstacles(get_layer(), facing_point.x, facing_point.y, this)) {
+      || !map->test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), this)) {
     // the sword key has been released, the player has moved or the obstacle is gone
 
     if (sprites->get_current_frame() >= 5) {
@@ -476,7 +473,7 @@ void Hero::update_sword_tapping(void) {
     }
   }
   else {
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     if (sprites->get_current_frame() == 3 && now >= next_hit_sound_date) {
 
       Detector *facing_entity = get_facing_entity();
@@ -681,7 +678,7 @@ void Hero::update_pushing(void) {
 
       if (state == FREE) { // is state FREE: see when we can start animation "pushing"
 
-	uint32_t now = SDL_GetTicks();
+	uint32_t now = System::now();
 	if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
 	  counter = 0;
 	  next_counter_date = now;
@@ -1012,10 +1009,10 @@ void Hero::display_treasure(void) {
   int x = get_top_left_x();
   int y = get_top_left_y();
 
-  const SDL_Rect &camera_position = map->get_camera_position();
+  const Rectangle &camera_position = map->get_camera_position();
   treasure->display(map->get_visible_surface(),
-		    x - camera_position.x,
-		    y - 24 - camera_position.y);
+		    x - camera_position.get_x(),
+		    y - 24 - camera_position.get_y());
 }
 
 /**
@@ -1196,7 +1193,7 @@ bool Hero::can_start_gameover_sequence(void) {
 void Hero::get_back_from_death(void) {
   sprites->blink();
   start_free();
-  when_suspended = SDL_GetTicks();
+  when_suspended = System::now();
 }
 
 /**
@@ -1221,10 +1218,10 @@ void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprit
   }
   else if (this_sprite->contains("tunic")) {
     // the hero's body overlaps the enemy: ensure that the 16*16 rectangle of the hero also overlaps the enemy
-    SDL_Rect enemy_sprite_rectangle = enemy_sprite->get_size();
-    const SDL_Rect &enemy_sprite_origin = enemy_sprite->get_origin();
-    enemy_sprite_rectangle.x = enemy->get_x() - enemy_sprite_origin.x;
-    enemy_sprite_rectangle.y = enemy->get_y() - enemy_sprite_origin.y;
+    Rectangle enemy_sprite_rectangle = enemy_sprite->get_size();
+    const Rectangle &enemy_sprite_origin = enemy_sprite->get_origin();
+    enemy_sprite_rectangle.set_x(enemy->get_x() - enemy_sprite_origin.get_x());
+    enemy_sprite_rectangle.set_y(enemy->get_y() - enemy_sprite_origin.get_y());
 
     if (overlaps(enemy_sprite_rectangle)) {
       enemy->attack_hero(this, enemy_sprite);
@@ -1339,7 +1336,7 @@ void Hero::stop_swimming(void) {
  */
 void Hero::start_hole(void) {
 
-  next_ground_date = SDL_GetTicks();
+  next_ground_date = System::now();
   hole_teletransporter = NULL;
 
   // push the hero into a direction
@@ -1396,7 +1393,7 @@ void Hero::update_falling(void) {
     }
     else {
       // hole that hurts the hero
-      if (target_solid_ground_coords.x != -1) {
+      if (target_solid_ground_coords.get_x() != -1) {
 	// go back to a target point specified earlier
 	start_returning_to_solid_ground(target_solid_ground_coords, target_solid_ground_layer);
       }
@@ -1425,7 +1422,7 @@ void Hero::update_falling(void) {
  * the hero will go if he falls into a hole or some other bad ground
  * @param layer the layer
  */
-void Hero::set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords, Layer layer) {
+void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer) {
   this->target_solid_ground_coords = target_solid_ground_coords;
   this->target_solid_ground_layer = layer;
 }
@@ -1435,10 +1432,10 @@ void Hero::set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_co
  * @param target_xy coordinates of the solid ground location
  * @param target_layer the destination layer
  */
-void Hero::start_returning_to_solid_ground(const SDL_Rect &target_xy, Layer target_layer) {
+void Hero::start_returning_to_solid_ground(const Rectangle &target_xy, Layer target_layer) {
   map->get_entities()->remove_boomerang();
   set_state(RETURNING_TO_SOLID_GROUND);
-  set_movement(new TargetMovement(target_xy.x, target_xy.y, walking_speed));
+  set_movement(new TargetMovement(target_xy.get_x(), target_xy.get_y(), walking_speed));
   map->get_entities()->set_entity_layer(this, target_layer);
 }
 
@@ -1465,7 +1462,7 @@ void Hero::start_victory() {
   set_state(VICTORY);
   sprites->set_animation_victory();
   ResourceManager::get_sound("victory")->play();
-  end_victory_date = SDL_GetTicks() + 1500;
+  end_victory_date = System::now() + 1500;
 }
 
 /**
@@ -1473,7 +1470,7 @@ void Hero::start_victory() {
  */
 void Hero::update_victory() {
 
-  if (SDL_GetTicks() >= end_victory_date) {
+  if (System::now() >= end_victory_date) {
     map->get_script()->event_hero_victory_sequence_finished();
   }
 }
@@ -1490,9 +1487,10 @@ void Hero::update_freezed(void) {
  * @param item_id id of the item to check
  */
 bool Hero::can_start_inventory_item(InventoryItemId item_id) {
+
   return state == FREE && InventoryItem::can_be_assigned(item_id)
     && equipment->has_inventory_item(item_id)
-    && SDL_GetTicks() >= when_can_use_inventory_item;
+    && System::now() >= when_can_use_inventory_item;
 }
 
 /**
@@ -1502,7 +1500,7 @@ bool Hero::can_start_inventory_item(InventoryItemId item_id) {
 void Hero::start_inventory_item(InventoryItemId item_id) {
 
   this->current_inventory_item = new InventoryItem(item_id);
-  this->when_can_use_inventory_item = SDL_GetTicks() + 500;
+  this->when_can_use_inventory_item = System::now() + 500;
   set_state(USING_INVENTORY_ITEM);
   current_inventory_item->start(zsdx->game);
 }

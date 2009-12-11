@@ -19,9 +19,10 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "Sprite.h"
-#include "lowlevel/FileTools.h"
 #include "MapScript.h"
 #include "Camera.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Surface.h"
 #include "entities/Ground.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
@@ -129,7 +130,7 @@ bool Map::has_floor(void) {
  * - in a dungeon: location of the map's top-left corner relative to the whole floor
  * The width and height fields correspond to the map size.
  */
-const SDL_Rect & Map::get_location(void) {
+const Rectangle & Map::get_location(void) {
   return location;
 }
 
@@ -157,7 +158,7 @@ bool Map::has_small_keys(void) {
  * @return the map width
  */
 int Map::get_width(void) {
-  return location.w;
+  return location.get_width();
 }
 
 /**
@@ -165,7 +166,7 @@ int Map::get_width(void) {
  * @return the map height
  */
 int Map::get_height(void) {
-  return location.h;
+  return location.get_height();
 }
 
 /**
@@ -202,7 +203,7 @@ bool Map::is_loaded(void) {
  */
 void Map::unload(void) {
 
-  SDL_FreeSurface(visible_surface);
+  delete visible_surface;
   delete entities;
   entities = NULL;
 
@@ -216,7 +217,7 @@ void Map::unload(void) {
  */
 void Map::load() {
 
-  this->visible_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  this->visible_surface = new Surface(320, 240);
   entities = new MapEntities(this);
 
   // read the map file
@@ -279,7 +280,7 @@ void Map::set_welcome_message(MessageId welcome_message_id) {
  * not to the map.
  * @return the surface where the map is displayed
  */
-SDL_Surface * Map::get_visible_surface(void) {
+Surface * Map::get_visible_surface(void) {
   return visible_surface;
 }
 
@@ -288,7 +289,7 @@ SDL_Surface * Map::get_visible_surface(void) {
  * top-left corner.
  * @return the position of the visible area
  */
-const SDL_Rect & Map::get_camera_position(void) {
+const Rectangle & Map::get_camera_position(void) {
   return camera->get_position();
 }
 
@@ -357,7 +358,7 @@ void Map::update(void) {
 void Map::display() {
 
   // background color
-  SDL_FillRect(visible_surface, NULL, tileset->get_background_color());
+  visible_surface->fill_with_color(tileset->get_background_color());
 
   // display all entities (including the hero)
   entities->display();
@@ -373,8 +374,8 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  const SDL_Rect &camera_position = get_camera_position();
-  sprite->display(visible_surface, x - camera_position.x, y - camera_position.y);
+  const Rectangle &camera_position = get_camera_position();
+  sprite->display(visible_surface, x - camera_position.get_x(), y - camera_position.get_y());
 }
 
 /**
@@ -383,8 +384,7 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  */
 void Map::start(void) {
 
-  SDL_SetAlpha(visible_surface, SDL_SRCALPHA, 255);
-
+  visible_surface->set_opacity(255);
   zsdx->game->play_music(music_id);
   started = true;
   script->initialize(destination_point_name);
@@ -431,7 +431,7 @@ void Map::opening_transition_finished(void) {
  */
 bool Map::test_collision_with_border(int x, int y) {
 
-  return (x < 0 || y < 0 || x >= location.w || y >= location.h);
+  return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
 }
 
 /**
@@ -439,10 +439,10 @@ bool Map::test_collision_with_border(int x, int y) {
  * @param collision_box the rectangle to check
  * @return true if a point of the rectangle is outside the map area
  */
-bool Map::test_collision_with_border(const SDL_Rect &collision_box) {
+bool Map::test_collision_with_border(const Rectangle &collision_box) {
 
-  return collision_box.x < 0 || collision_box.x + collision_box.w >= get_width()
-    || collision_box.y < 0 || collision_box.y + collision_box.h >= get_height();
+  return collision_box.get_x() < 0 || collision_box.get_x() + collision_box.get_width() >= get_width()
+    || collision_box.get_y() < 0 || collision_box.get_y() + collision_box.get_height() >= get_height();
 }
 
 /**
@@ -533,7 +533,7 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if there is an obstacle entity at this point
  */
-bool Map::test_collision_with_entities(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
+bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check) {
 
   std::list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
 
@@ -559,15 +559,15 @@ bool Map::test_collision_with_entities(Layer layer, const SDL_Rect &collision_bo
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::test_collision_with_obstacles(Layer layer, const SDL_Rect &collision_box, MapEntity *entity_to_check) {
+bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check) {
   int x, y, x1, x2, y1, y2;
   bool collision = false;
 
   // collisions with tiles: we just check the borders of the collision box
-  y1 = collision_box.y;
-  y2 = y1 + collision_box.h - 1;
-  x1 = collision_box.x;
-  x2 = x1 + collision_box.w - 1;
+  y1 = collision_box.get_y();
+  y2 = y1 + collision_box.get_height() - 1;
+  x1 = collision_box.get_x();
+  x2 = x1 + collision_box.get_width() - 1;
 
   for (x = x1; x <= x2 && !collision; x++) {
     collision = test_collision_with_tiles(layer, x, y1, entity_to_check) ||
@@ -614,7 +614,7 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity *en
 
   // test the entities
   if (!collision) {
-    SDL_Rect collision_box = {x, y, 1, 1};
+    Rectangle collision_box(x, y, 1, 1);
     collision = test_collision_with_entities(layer, collision_box, entity_to_check);
   }
 
@@ -666,8 +666,8 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
  * @param coordinates coordinates of the point to check
  * @return the ground at this place
  */
-Ground Map::get_tile_ground(Layer layer, const SDL_Rect &coordinates) {
-  return get_tile_ground(layer, coordinates.x, coordinates.y);
+Ground Map::get_tile_ground(Layer layer, const Rectangle &coordinates) {
+  return get_tile_ground(layer, coordinates.get_x(), coordinates.get_y());
 }
 
 /**

@@ -19,6 +19,8 @@
 #include "ResourceManager.h"
 #include "Map.h"
 #include "Dungeon.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/System.h"
 
 /**
  * Constructor.
@@ -39,7 +41,7 @@ FloorView::FloorView(Game *game, int x, int y):
  * Destructor.
  */
 FloorView::~FloorView(void) {
-  SDL_FreeSurface(img_floors);
+  delete img_floors;
 }
 
 /**
@@ -59,14 +61,14 @@ void FloorView::update(void) {
 
     if (current_map->has_floor() && old_floor != current_map->get_floor()) {
       is_floor_displayed = true;
-      hide_floor_date = SDL_GetTicks() + 3000;
+      hide_floor_date = System::now() + 3000;
     }
     else {
       is_floor_displayed = false;
     }
     need_rebuild = true;
   }
-  else if (is_floor_displayed && SDL_GetTicks() >= hide_floor_date) {
+  else if (is_floor_displayed && System::now() >= hide_floor_date) {
     is_floor_displayed = false;
     need_rebuild = true;
   }
@@ -111,9 +113,9 @@ void FloorView::rebuild(void) {
       int src_y = (15 - highest_floor_displayed) * 12;
       int src_height = nb_floors_displayed * 12 + 1;
 
-      SDL_Rect src_position = {32, src_y, 32, src_height};
+      Rectangle src_position(32, src_y, 32, src_height);
 
-      SDL_BlitSurface(img_floors, &src_position, surface_drawn, NULL);
+      img_floors->blit(src_position, surface_drawn);
     }
     else {
       highest_floor = current_floor;
@@ -132,9 +134,10 @@ void FloorView::rebuild(void) {
       src_y = (15 - current_floor) * 12;
     }
 
-    SDL_Rect src_position = {0, src_y, 32, 13};
-    SDL_Rect dst_position = {0, dst_y, 0, 0};
+    Rectangle src_position(0, src_y, 32, 13);
+    Rectangle dst_position(0, dst_y, 0, 0);
 
-    SDL_BlitSurface(img_floors, &src_position, surface_drawn, &dst_position);
+    img_floors->blit(src_position, surface_drawn, dst_position);
   }
 }
+

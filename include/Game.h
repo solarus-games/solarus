@@ -29,138 +29,139 @@
  */
 class Game: public Screen {
 
- private:
+  private:
 
-  // savegame
-  Savegame *savegame;        /**< the game data saved */
+    // savegame
+    Savegame *savegame;        /**< the game data saved */
 
-  // the hero
-  Hero *hero;
+    // the hero
+    Hero *hero;
 
-  // current game state (elements currently shown)
-  bool pause_enabled;        /**< indicates that the player is allowed to pause the game */
-  PauseMenu *pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
-  DialogBox *dialog_box;     /**< the dialog box currently shown, or NULL if no message is being shown */
-  int dialog_last_answer;    /**< the answer selected in the last dialog box: 0 for the first one, 1 for the second one,
-                              * -1 if there was no question */ 
-  Treasure *treasure;        /**< the treasure currently being given to the player or NULL if it is not the case */
-  GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
-  bool reseting;             /**< true if the game will be reset */
-  bool restarting;           /**< true if the game will be restarted */
+    // current game state (elements currently shown)
+    bool pause_enabled;        /**< indicates that the player is allowed to pause the game */
+    PauseMenu *pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
+    DialogBox *dialog_box;     /**< the dialog box currently shown, or NULL if no message is being shown */
+    int dialog_last_answer;    /**< the answer selected in the last dialog box: 0 for the first one, 1 for the second one,
+				* -1 if there was no question */ 
+    Treasure *treasure;        /**< the treasure currently being given to the player or NULL if it is not the case */
+    GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
+    bool reseting;             /**< true if the game will be reset */
+    bool restarting;           /**< true if the game will be restarted */
 
-  // controls
-  Controls *controls;        /**< this object receives the SDL keyboard and joypad events */
-  KeysEffect *keys_effect;   /**< current effect associated to the main game keys
-			      * (represented on the HUD by the action icon, the objects icons, etc.) */
+    // controls
+    Controls *controls;        /**< this object receives the keyboard and joypad events */
+    KeysEffect *keys_effect;   /**< current effect associated to the main game keys
+				* (represented on the HUD by the action icon, the objects icons, etc.) */
 
-  // map
-  Map *current_map;          /**< the map currently displayed */
-  Map *next_map;             /**< the map where the hero is going to; if not NULL, it means that the hero 
-			      * is changing from current_map to next_map */
-  SDL_Surface *previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
+    // map
+    Map *current_map;          /**< the map currently displayed */
+    Map *next_map;             /**< the map where the hero is going to; if not NULL, it means that the hero 
+				* is changing from current_map to next_map */
+    Surface *previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 
-  Transition::Style transition_style; /**< the transition style between the current map and the next one */
-  Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */
+    Transition::Style transition_style; /**< the transition style between the current map and the next one */
+    Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */
 
-  // world (i.e. the current set of maps)
-  Dungeon *dungeon;          /**< the dungeon of the current map, of NULL if we are not in a dungeon */
-  bool crystal_switch_state; /**< indicates that a crystal switch has been enabled (i.e. the orange blocks are raised) */
-  static const SDL_Rect outside_world_size; /**< size of the outside world in pixels */
+    // world (i.e. the current set of maps)
+    Dungeon *dungeon;          /**< the dungeon of the current map, of NULL if we are not in a dungeon */
+    bool crystal_switch_state; /**< indicates that a crystal switch has been enabled (i.e. the orange blocks are raised) */
+    static const Rectangle outside_world_size; /**< size of the outside world in pixels */
 
-  // graphics
-  HUD *hud;                  /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
-  bool hud_enabled;          /**< true if the HUD is currently displayed */
+    // graphics
+    HUD *hud;                  /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
+    bool hud_enabled;          /**< true if the HUD is currently displayed */
 
-  // music
-  MusicId current_music_id;  /**< id of the music currently played (a valid music,
-			      * or MUSIC_NONE if no music is being played) */
-  Music *current_music;      /**< the music currently played, or NULL if no music is being played */
-  MusicId previous_music_id; /**< id of the previous music played (useful after a mini-boss) */
+    // music
+    MusicId current_music_id;  /**< id of the music currently played (a valid music,
+				* or MUSIC_NONE if no music is being played) */
+    Music *current_music;      /**< the music currently played, or NULL if no music is being played */
+    MusicId previous_music_id; /**< id of the previous music played (useful after a mini-boss) */
 
-  // update functions
-  void update_keys_effect(void);
-  void update_dialog_box(void);
-  void update_transitions(void);
-  void update_treasure(void);
-  void update_gameover_sequence(void);
+    // update functions
+    void update_keys_effect(void);
+    void update_dialog_box(void);
+    void update_transitions(void);
+    void update_treasure(void);
+    void update_gameover_sequence(void);
 
-  void load_dungeon(void);
+    void load_dungeon(void);
 
- public:
+  public:
 
-  // creation and destruction
-  Game(Savegame *savegame);
-  ~Game(void);
+    // creation and destruction
+    Game(Savegame *savegame);
+    ~Game(void);
 
-  // global objects
-  Hero *get_hero(void);
-  const SDL_Rect get_hero_xy(void);
-  Controls *get_controls(void);
-  KeysEffect *get_keys_effect(void);
-  Savegame *get_savegame(void);
-  Equipment *get_equipment(void);
-  DungeonEquipment *get_dungeon_equipment(void);
-  MapScript *get_current_script(void);
+    // global objects
+    Hero *get_hero(void);
+    const Rectangle & get_hero_xy(void);
+    Controls *get_controls(void);
+    KeysEffect *get_keys_effect(void);
+    Savegame *get_savegame(void);
+    Equipment *get_equipment(void);
+    DungeonEquipment *get_dungeon_equipment(void);
+    MapScript *get_current_script(void);
 
-  // functions called by the SDL loop
-  void handle_event(const SDL_Event &event);
-  void update(void);
-  void display(SDL_Surface *screen_surface);
-  
-  void key_pressed(Controls::GameKey key);
-  void key_released(Controls::GameKey key);
+    // functions called by the SDL loop
+    void handle_event(const SDL_Event &event);
+    void update(void);
+    void display(Surface *screen_surface);
 
-  // map
-  Map *get_current_map(void);
-  void set_current_map(MapId map_id, const std::string &destination_point_name,
-		       Transition::Style transition_style);
+    void key_pressed(Controls::GameKey key);
+    void key_released(Controls::GameKey key);
 
-  // world
-  const SDL_Rect *get_outside_world_size(void);
-  bool is_in_dungeon(void);
-  Dungeon *get_current_dungeon(void);
-  bool get_crystal_switch_state(void);
-  void change_crystal_switch_state(void);
+    // map
+    Map *get_current_map(void);
+    void set_current_map(MapId map_id, const std::string &destination_point_name,
+	Transition::Style transition_style);
 
-  // music
-  void play_music(MusicId new_music_id);
-  void pause_or_resume_music(void);
-  void stop_music(void);
-  void restore_music(void);
-  const MusicId& get_current_music_id(void);
+    // world
+    const Rectangle & get_outside_world_size(void);
+    bool is_in_dungeon(void);
+    Dungeon *get_current_dungeon(void);
+    bool get_crystal_switch_state(void);
+    void change_crystal_switch_state(void);
 
-  // current game state
-  bool is_paused(void);
-  bool is_showing_message(void);
-  bool is_playing_transition(void);
-  bool is_showing_gameover(void);
-  bool is_suspended(void); // true if at least one of the three functions above returns true
-  void reset(void);
-  void restart(void);
+    // music
+    void play_music(MusicId new_music_id);
+    void pause_or_resume_music(void);
+    void stop_music(void);
+    void restore_music(void);
+    const MusicId & get_current_music_id(void);
 
-  // HUD
-  void set_hud_enabled(bool hud_enabled);
+    // current game state
+    bool is_paused(void);
+    bool is_showing_message(void);
+    bool is_playing_transition(void);
+    bool is_showing_gameover(void);
+    bool is_suspended(void); // true if at least one of the three functions above returns true
+    void reset(void);
+    void restart(void);
 
-  // pause
-  bool is_pause_enabled(void);
-  void set_pause_enabled(bool pause_enabled);
-  void set_paused(bool paused);
-  PauseMenu *get_pause_menu(void);
+    // HUD
+    void set_hud_enabled(bool hud_enabled);
 
-  // dialog box
-  DialogBox *get_dialog_box(void);
-  void show_message(const MessageId &message_id);
-  void show_message(const MessageId &message_id, int position);
-  void set_dialog_last_answer(int answer);
-  int get_dialog_last_answer(void);
+    // pause
+    bool is_pause_enabled(void);
+    void set_pause_enabled(bool pause_enabled);
+    void set_paused(bool paused);
+    PauseMenu *get_pause_menu(void);
 
-  // treasure
-  void give_treasure(Treasure *treasure);
-  bool is_giving_treasure(void);
+    // dialog box
+    DialogBox *get_dialog_box(void);
+    void show_message(const MessageId &message_id);
+    void show_message(const MessageId &message_id, int position);
+    void set_dialog_last_answer(int answer);
+    int get_dialog_last_answer(void);
 
-  // game over
-  void start_gameover_sequence(void);
-  void get_back_from_death(void);
+    // treasure
+    void give_treasure(Treasure *treasure);
+    bool is_giving_treasure(void);
+
+    // game over
+    void start_gameover_sequence(void);
+    void get_back_from_death(void);
 };
 
 #endif
+

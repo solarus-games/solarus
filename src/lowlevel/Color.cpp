@@ -33,18 +33,33 @@ void Color::initialize(void) {
 
   format = SDL_GetVideoSurface()->format;
 
-  black = new Color(0, 0, 0);
-  white = new Color(255, 255, 255);
-  red = new Color(255, 0, 0);
+  black = Color(0, 0, 0);
+  white = Color(255, 255, 255);
+  red = Color(255, 0, 0);
 }
 
 /**
  * Uninitializes the color system.
  */
 void Color::quit(void) {
-  delete black;
-  delete white;
-  delete red;
+
+}
+
+/**
+ * Creates a default color with an unspecified RGB values.
+ */
+Color::Color(void):
+  internal_color(SDL_MapRGB(format, 0, 0, 0)) {
+
+}
+
+/**
+ * Copy constructor.
+ * @param other another color
+ */
+Color::Color(const Color &other):
+  internal_color(other->internal_color) {
+
 }
 
 /**
@@ -53,8 +68,12 @@ void Color::quit(void) {
  * @param g the green component (from 0 to 255)
  * @param b the blue component (from 0 to 255)
  */
-Color Color::create(int r, int g, int b):
+Color Color(int r, int g, int b):
   internal_color(SDL_MapRGB(format, r, g, b)) {
 
+}
+
+uint32_t Color::get_internal_color(void) {
+  return internal_color;
 }
 

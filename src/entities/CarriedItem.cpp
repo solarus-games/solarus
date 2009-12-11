@@ -25,17 +25,18 @@
 #include "movements/CollisionMovement.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Map.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Movement of the item when the hero is lifting it.
  */
-static const SDL_Rect lifting_translations[4][6] = {
-  {{0,0}, {0,0}, {-3,-3}, {-5,-3}, {-5,-2}},
-  {{0,0}, {0,0}, {0,-1}, {0,-1}, {0,0}},
-  {{0,0}, {0,0}, {3,-3}, {5,-3}, {5,-2}},
-  {{0,0}, {0,0}, {0,-10}, {0,-12}, {0, 0}},
+static const Rectangle lifting_translations[4][6] = {
+  { Rectangle(0, 0), Rectangle(0, 0), Rectangle(-3, -3), Rectangle(-5, -3), Rectangle(-5,-2) },
+  { Rectangle(0, 0), Rectangle(0, 0), Rectangle( 0, -1), Rectangle( 0, -1), Rectangle( 0, 0) },
+  { Rectangle(0, 0), Rectangle(0, 0), Rectangle( 3, -3), Rectangle( 5, -3), Rectangle( 5,-2) },
+  { Rectangle(0, 0), Rectangle(0, 0), Rectangle( 0,-10), Rectangle( 0,-12), Rectangle( 0, 0) },
 };
 
 /**
@@ -54,12 +55,10 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
   // align correctly the item with the hero
   int direction = hero->get_animation_direction();
   if (direction % 2 == 0) {
-    set_x(destructible_item->get_x());
-    set_y(hero->get_y());
+    set_xy(destructible_item->get_x(), hero->get_y());
   }
   else {
-    set_x(hero->get_x());
-    set_y(destructible_item->get_y());
+    set_xy(hero->get_x(), destructible_item->get_y());
   }
   set_origin(destructible_item->get_origin());
   set_size(destructible_item->get_width(), destructible_item->get_height());
@@ -82,7 +81,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
 
   // explosion
   if (destructible_item->can_explode()) {
-    explosion_date = SDL_GetTicks() + 6000;
+    explosion_date = System::now() + 6000;
   }
 }
 
@@ -160,7 +159,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
   set_movement(movement);
 
   this->y_increment = -2;
-  this->next_down_date = SDL_GetTicks() + 40;
+  this->next_down_date = System::now() + 40;
   this->item_height = 18;
 }
 
@@ -177,7 +176,7 @@ bool CarriedItem::is_being_thrown(void) {
  * @return true if the item is about to explode 
  */
 bool CarriedItem::will_explode_soon(void) {
-  return explosion_date != 0 && SDL_GetTicks() >= explosion_date - 1500;
+  return explosion_date != 0 && System::now() >= explosion_date - 1500;
 }
 
 /**
@@ -230,10 +229,10 @@ void CarriedItem::set_suspended(bool suspended) {
   if (!suspended && when_suspended != 0) {
     // recalculate the timers
     if (is_throwing) {
-      next_down_date += SDL_GetTicks() - when_suspended;
+      next_down_date += System::now() - when_suspended;
     }
     if (explosion_date != 0) {
-      explosion_date += SDL_GetTicks() - when_suspended;
+      explosion_date += System::now() - when_suspended;
     }
   }
 }
@@ -266,7 +265,7 @@ void CarriedItem::update(void) {
   // when the item has finished flying, destroy it
   else if (explosion_date != 0 && !is_breaking) {
     
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     
     if (now >= explosion_date) {
       break_item();
@@ -290,7 +289,7 @@ void CarriedItem::update(void) {
       break_item();
     }
     else {
-      uint32_t now = SDL_GetTicks();
+      uint32_t now = System::now();
       while (now >= next_down_date) {
 	next_down_date += 40;
 	item_height -= y_increment;

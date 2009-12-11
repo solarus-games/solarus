@@ -82,7 +82,7 @@ void Tile::set_map(Map *map) {
  * Displays the tile on the map.
  */
 void Tile::display_on_map(void) {
-  tile_pattern->display_on_map(map, rectangle);
+  tile_pattern->display_on_map(map, bounding_box);
 }
 
 /**

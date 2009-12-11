@@ -34,7 +34,7 @@ class Explosion: public Detector {
 
   public:
 
-    Explosion(Layer layer, const SDL_Rect &xy, bool with_damages);
+    Explosion(Layer layer, const Rectangle &xy, bool with_damages);
     ~Explosion(void);
 
     EntityType get_type(void);

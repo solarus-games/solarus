@@ -25,21 +25,22 @@
  */
 class JumpMovement: public PixelMovement {
 
- private:
+  private:
 
-  static const SDL_Rect basic_translations[8];
-  SDL_Rect *translation_vectors;
-  int jump_height;
+    static const Rectangle basic_translations[8];
+    Rectangle *translation_vectors;
+    int jump_height;
 
- protected:
-  void make_next_move(void);
+  protected:
 
- public:
+    void make_next_move(void);
 
-  JumpMovement(int direction, int length, bool with_collisions);
-  ~JumpMovement(void);
+  public:
 
-  int get_jump_height(void);
+    JumpMovement(int direction, int length, bool with_collisions);
+    ~JumpMovement(void);
+
+    int get_jump_height(void);
 };
 
 #endif

@@ -50,6 +50,7 @@ Bugs :
 - Alt+F4 ne marche pas sous windows
 - le 8 n'est pas très lisible (ex : 80 rubis chez le forgeron)
 - engine_dialogs.zsd : deux fois _treasure_88_2 (le signaler aux traducteurs)
+- quand un coffre apparaît sur le héros : seul y est corrigé
 
 
 Remarques de Linksupersayen :

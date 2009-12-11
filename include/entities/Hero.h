@@ -128,10 +128,10 @@ class Hero: public MapEntity {
   Layer layer_after_jump;        /**< the layer to set when the jump movement is finished */
 
   // return to solid ground
-  SDL_Rect last_solid_ground_coords;     /**< coordinates of the last hero position on a ground
+  Rectangle last_solid_ground_coords;    /**< coordinates of the last hero position on a ground
 				          * where he can walk (e.g. before jumping or falling into a hole) */
   Layer last_solid_ground_layer;         /**< layer of the last hero position a solid ground */
-  SDL_Rect target_solid_ground_coords;   /**< coordinates of the position where the hero will go if he falls
+  Rectangle target_solid_ground_coords;  /**< coordinates of the position where the hero will go if he falls
 					  * into a hole (or some other bad ground), or (-1,-1) to indicate
 					  * that the hero will just return to the last solid ground coordinates */
   Layer target_solid_ground_layer;       /**< layer of the place to go back when falling in some bad ground */
@@ -215,7 +215,7 @@ class Hero: public MapEntity {
   void update_victory(void);
   void update_freezed(void);
 
-  void start_returning_to_solid_ground(const SDL_Rect &target_xy, Layer target_layer);
+  void start_returning_to_solid_ground(const Rectangle &target_xy, Layer target_layer);
   void update_returning_to_solid_ground(void);
 
  public:
@@ -246,8 +246,8 @@ class Hero: public MapEntity {
   PlayerMovement * get_normal_movement(void);
   int get_movement_direction(void);
   bool is_moving_towards(int direction);
-  const SDL_Rect get_facing_point(void);
-  const SDL_Rect get_facing_point(int direction);
+  const Rectangle get_facing_point(void);
+  const Rectangle get_facing_point(int direction);
   Detector *get_facing_entity(void);
   void just_moved(void);
   void set_facing_entity(Detector *detector);
@@ -283,7 +283,7 @@ class Hero: public MapEntity {
   int get_jump_y(void);
   void hurt(MapEntity *source, int life_points, int magic_points);
   void get_back_from_death(void);
-  void set_target_solid_ground_coords(const SDL_Rect &target_solid_ground_coords, Layer layer);
+  void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
   void start_victory(void);
   void start_boomerang(void);
 

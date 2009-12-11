@@ -25,12 +25,12 @@
  */
 class ParallaxTilePattern: public SimpleTilePattern {
 
- public:
+  public:
 
-  ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height);
-  ~ParallaxTilePattern(void);
+    ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    ~ParallaxTilePattern(void);
 
-  void display(SDL_Surface *destination, const SDL_Rect &destination_position, SDL_Surface *tileset_image);
+    void display(Surface *destination, const Rectangle &destination_position, Surface *tileset_image);
 };
 
 #endif

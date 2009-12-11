@@ -25,31 +25,32 @@
  */
 class HeartsView: public HudElement {
 
- private:
+  private:
 
-  Equipment *equipment;
-  
-  // rectangles in the image
-  static SDL_Rect full_heart_position;
-  static SDL_Rect fraction_heart_positions[3];
+    Equipment *equipment;
 
-  Sprite *empty_heart_sprite;
+    // rectangles in the image
+    static Rectangle full_heart_position;
+    static Rectangle fraction_heart_positions[3];
 
-  SDL_Surface *img_hearts;
-  int nb_max_hearts_displayed;
-  int nb_current_hearts_displayed;
-  
-  uint32_t next_heart_update_date;
-  uint32_t next_danger_sound_date;
-  
- public:
+    Sprite *empty_heart_sprite;
 
-  HeartsView(Equipment *equipment, int x, int y);
-  ~HeartsView(void);
+    Surface *img_hearts;
+    int nb_max_hearts_displayed;
+    int nb_current_hearts_displayed;
 
-  void update(void);
-  void rebuild(void);
-  bool is_visible(void);
+    uint32_t next_heart_update_date;
+    uint32_t next_danger_sound_date;
+
+  public:
+
+    HeartsView(Equipment *equipment, int x, int y);
+    ~HeartsView(void);
+
+    void update(void);
+    void rebuild(void);
+    bool is_visible(void);
 };
 
 #endif
+

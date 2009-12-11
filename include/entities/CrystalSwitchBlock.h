@@ -41,7 +41,7 @@ class CrystalSwitchBlock: public Detector {
   bool orange_raised;                /**< true if the orange blocks are raised,
 	                              * false if the blue blocks are raised */
 
-  bool try_jump(Hero *hero, const SDL_Rect &collision_box,
+  bool try_jump(Hero *hero, const Rectangle &collision_box,
 		int jump_direction, int jump_length);
  public:
 

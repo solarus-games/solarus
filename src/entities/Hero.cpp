@@ -33,6 +33,7 @@
 #include "Equipment.h"
 #include "Map.h"
 #include "InventoryItem.h"
+#include "lowlevel/System.h"
 
 const int Hero::walking_speed = 9;
 
@@ -55,8 +56,7 @@ Hero::Hero(Equipment *equipment):
   sprites = new HeroSprites(this, equipment);
   rebuild_equipment();
 
-  last_solid_ground_coords.x = 0;
-  last_solid_ground_coords.y = 0;
+  last_solid_ground_coords.set_xy(0, 0);
   last_solid_ground_layer = LAYER_LOW;
 }
 
@@ -204,7 +204,8 @@ bool Hero::is_sensor_obstacle(Sensor *sensor) {
 
   if (state == JUMPING) {
     JumpMovement *movement = (JumpMovement*) get_movement();
-    return movement->get_length() > 8; // this allows small jumps (e.g. falling from a raised block) but not jumping with the feather
+    return movement->get_length() > 8; // this allows small jumps (e.g. falling from a raised block)
+                                       // but not jumping with the feather
   }
 
   return false;
@@ -275,21 +276,21 @@ bool Hero::is_moving_towards(int direction) {
  */
 void Hero::try_snap_to_facing_entity(void) {
 
-  SDL_Rect collision_box = get_rectangle();
+  Rectangle collision_box = get_bounding_box();
 
   if (get_animation_direction() % 2 == 0) {
-    if (abs(collision_box.y - facing_entity->get_top_left_y()) <= 5) {
-      collision_box.y = facing_entity->get_top_left_y();
+    if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {
+      collision_box.set_y(facing_entity->get_top_left_y());
     }
   }
   else {
-    if (abs(collision_box.x - facing_entity->get_top_left_x()) <= 5) {
-      collision_box.x = facing_entity->get_top_left_x();
+    if (abs(collision_box.get_x() - facing_entity->get_top_left_x()) <= 5) {
+      collision_box.set_x(facing_entity->get_top_left_x());
     }
   }
 
   if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
-    set_rectangle(collision_box);
+    set_bounding_box(collision_box);
     just_moved();
   }
 }
@@ -301,7 +302,7 @@ void Hero::try_snap_to_facing_entity(void) {
  * (a bush, a pot, a PNJ...)
  * @return the point the hero is facing
  */
-const SDL_Rect Hero::get_facing_point(void) {
+const Rectangle Hero::get_facing_point(void) {
 
   int direction = sprites->get_animation_direction();
   return get_facing_point(direction);
@@ -312,38 +313,34 @@ const SDL_Rect Hero::get_facing_point(void) {
  * in the specified direction.
  * @param direction a direction (0 to 3)
  */
-const SDL_Rect Hero::get_facing_point(int direction) {
+const Rectangle Hero::get_facing_point(int direction) {
 
-  SDL_Rect facing_point;
+  Rectangle facing_point;
 
   switch (direction) {
 
     // right
-  case 0:
-    facing_point.x = rectangle.x + 16;
-    facing_point.y = rectangle.y + 8;
-    break;
+    case 0:
+      facing_point.set_xy(bounding_box.get_x() + 16, bounding_box.get_y() + 8);
+      break;
 
-    // up
-  case 1:
-    facing_point.x = rectangle.x + 8;
-    facing_point.y = rectangle.y - 1;
-    break;
+      // up
+    case 1:
+      facing_point.set_xy(bounding_box.get_x() + 8, bounding_box.get_y() - 1);
+      break;
 
-    // left
-  case 2:
-    facing_point.x = rectangle.x - 1;
-    facing_point.y = rectangle.y + 8;
-    break;
+      // left
+    case 2:
+      facing_point.set_xy(bounding_box.get_x() - 1, bounding_box.get_y() + 8);
+      break;
 
-    // down
-  case 3:
-    facing_point.x = rectangle.x + 8;
-    facing_point.y = rectangle.y + 16;
-    break;
+      // down
+    case 3:
+      facing_point.set_xy(bounding_box.get_x() + 8, bounding_box.get_y() + 16);
+      break;
 
-  default:
-    DIE("Invalid direction for get_facing_point(): " << direction);
+    default:
+      DIE("Invalid direction for get_facing_point(): " << direction);
   }
 
   return facing_point;
@@ -358,8 +355,7 @@ void Hero::set_map(Map *map) {
 
   MapEntity::set_map(map);
 
-  target_solid_ground_coords.x = -1;
-  target_solid_ground_coords.y = -1;
+  target_solid_ground_coords.add_xy(-1, -1);
 
   if (lifted_item != NULL) {
     lifted_item->set_map(map);
@@ -407,7 +403,7 @@ void Hero::set_suspended(bool suspended) {
 
   // timers
   if (!suspended) {
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     next_counter_date += now - when_suspended;
   }
 }
@@ -420,7 +416,7 @@ void Hero::update(void) {
 
   if (!suspended) {
 
-    //std::cout << SDL_GetTicks() << " state " << state << std::endl;
+    //std::cout << System::now() << " state " << state << std::endl;
 
     // update the movement
     get_normal_movement()->set_moving_enabled(state < PUSHING, state <= CONVEYOR_BELT);
@@ -428,65 +424,65 @@ void Hero::update(void) {
     // specific updates in some states
     switch (state) {
 
-    case SWORD_SWINGING:
-      update_sword_swinging();
-      break;
+      case SWORD_SWINGING:
+	update_sword_swinging();
+	break;
 
-    case SWORD_LOADING:
-      update_sword_loading();
-      break;
+      case SWORD_LOADING:
+	update_sword_loading();
+	break;
 
-    case SWORD_TAPPING:
-      update_sword_tapping();
-      break;
+      case SWORD_TAPPING:
+	update_sword_tapping();
+	break;
 
-    case SPIN_ATTACK:
-      update_spin_attack();
-      break;
+      case SPIN_ATTACK:
+	update_spin_attack();
+	break;
 
-    case GRABBING:
-    case PULLING:
-      update_grabbing_pulling();
-      break;
+      case GRABBING:
+      case PULLING:
+	update_grabbing_pulling();
+	break;
 
-    case CONVEYOR_BELT:
-      update_conveyor_belt();
-      break;
+      case CONVEYOR_BELT:
+	update_conveyor_belt();
+	break;
 
-    case JUMPING:
-      update_jumping();
-      break;
+      case JUMPING:
+	update_jumping();
+	break;
 
-    case HURT:
-      update_hurt();
-      break;
+      case HURT:
+	update_hurt();
+	break;
 
-    case PLUNGING:
-      update_plunging();
-      break;
+      case PLUNGING:
+	update_plunging();
+	break;
 
-    case RETURNING_TO_SOLID_GROUND:
-      update_returning_to_solid_ground();
-      break;
+      case RETURNING_TO_SOLID_GROUND:
+	update_returning_to_solid_ground();
+	break;
 
-    case FALLING:
-      update_falling();
-      break;
+      case FALLING:
+	update_falling();
+	break;
 
-    case VICTORY:
-      update_victory();
-      break;
+      case VICTORY:
+	update_victory();
+	break;
 
-    case USING_INVENTORY_ITEM:
-      update_inventory_item();
-      break;
+      case USING_INVENTORY_ITEM:
+	update_inventory_item();
+	break;
 
-    case FREEZED:
-      update_freezed();
-      break;
+      case FREEZED:
+	update_freezed();
+	break;
 
-    default:
-      break;
+      default:
+	break;
     }
 
     update_position();
@@ -656,8 +652,8 @@ void Hero::just_moved(void) {
       && state != JUMPING
       && state != RETURNING_TO_SOLID_GROUND) {
     // save the hero's last valid position
- 
-    if (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y) {
+
+    if (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y()) {
       last_solid_ground_coords = get_xy();
       last_solid_ground_layer = get_layer();
     }
@@ -711,37 +707,37 @@ Detector * Hero::get_facing_entity(void) {
  */
 bool Hero::is_facing_obstacle(void) {
 
-  SDL_Rect collision_box = get_rectangle();
+  Rectangle collision_box = get_bounding_box();
   switch (sprites->get_animation_direction()) {
 
-  case 0:
-    collision_box.x++;
-    break;
+    case 0:
+      collision_box.add_x(1);
+      break;
 
-  case 1:
-    collision_box.y--;
-    break;
+    case 1:
+      collision_box.add_y(-1);
+      break;
 
-  case 2:
-    collision_box.x--;
-    break;
+    case 2:
+      collision_box.add_x(-1);
+      break;
 
-  case 3:
-    collision_box.y++;
-    break;
+    case 3:
+      collision_box.add_y(1);
+      break;
 
-  default:
-    DIE("Invalid animation direction '" << sprites->get_animation_direction() << "'");
-    break;
+    default:
+      DIE("Invalid animation direction '" << sprites->get_animation_direction() << "'");
+      break;
   }
 
   return map->test_collision_with_obstacles(get_layer(), collision_box, this);
 
   /* old version with only one point: problems when the hero
      cannot pass but the facing point can
-  SDL_Rect facing_point = get_facing_point();
-  return map->test_collision_with_obstacles(layer, facing_point.x, facing_point.y, this);
-  */
+     const Rectangle &facing_point = get_facing_point();
+     return map->test_collision_with_obstacles(layer, facing_point.get_x(), facing_point.get_y(), this);
+     */
 }
 
 /**
@@ -775,7 +771,7 @@ void Hero::update_position(void) {
 void Hero::place_on_destination_point(Map *map) {
 
   std::string destination_point_name = map->get_destination_point_name();
-  
+
   if (destination_point_name == "_same") {
 
     // the hero's coordinates are the same as on the previous map
@@ -786,7 +782,7 @@ void Hero::place_on_destination_point(Map *map) {
   }    
   else {
     int side = map->get_destination_side();
-    
+
     if (side != -1) {
 
       // only one coordinate is changed
@@ -848,24 +844,24 @@ void Hero::opening_transition_finished(void) {
 
     switch (side) {
 
-    case 0: // right side
-      set_x(map->get_width() - 8);
-      break;
+      case 0: // right side
+	set_x(map->get_width() - 8);
+	break;
 
-    case 1: // top side
-      set_y(13);
-      break;
+      case 1: // top side
+	set_y(13);
+	break;
 
-    case 2: // left side
-      set_x(8);
-      break;
+      case 2: // left side
+	set_x(8);
+	break;
 
-    case 3: // bottom side
-      set_y(map->get_height() - 3);
-      break;
+      case 3: // bottom side
+	set_y(map->get_height() - 3);
+	break;
 
-    default:
-      DIE("Invalid destination side: " << side);
+      default:
+	DIE("Invalid destination side: " << side);
     }
   }
 }
@@ -892,65 +888,65 @@ bool Hero::is_stroke_by_sword(Detector *detector) {
 
   switch (state) {
 
-  case SPIN_ATTACK:
-    // during a spin attack, any sprite collision is considered as a strike
-    result = true;
-    break;
+    case SPIN_ATTACK:
+      // during a spin attack, any sprite collision is considered as a strike
+      result = true;
+      break;
 
-  case SWORD_TAPPING:
-    // when the hero is tapping his sword against a wall, this wall should be detector
-    result = detector->is_obstacle_for(this)
-      && facing_entity == detector
-      && sprites->get_current_frame() >= 3;
-    break;
+    case SWORD_TAPPING:
+      // when the hero is tapping his sword against a wall, this wall should be detector
+      result = detector->is_obstacle_for(this)
+	&& facing_entity == detector
+	&& sprites->get_current_frame() >= 3;
+      break;
 
-  case SWORD_SWINGING:
-    // for a normal sword swing, check the distance to the detector
+    case SWORD_SWINGING:
+      // for a normal sword swing, check the distance to the detector
 
-    {
-      int distance = detector->is_obstacle_for(this) ? 14 : 4;
-      const SDL_Rect &facing_point = get_facing_point();
-      const SDL_Rect &detector_rectangle = detector->get_rectangle();
+      {
+	int distance = detector->is_obstacle_for(this) ? 14 : 4;
+	const Rectangle &facing_point = get_facing_point();
+	const Rectangle &detector_rectangle = detector->get_bounding_box();
 
-      switch (animation_direction) {
+	switch (animation_direction) {
 
-      case 0:
-	result = facing_point.y >= detector_rectangle.y
-	  && facing_point.y < detector_rectangle.y + detector_rectangle.h
-	  && facing_point.x >= detector_rectangle.x - distance
-	  && facing_point.x < detector_rectangle.x + detector_rectangle.w - distance;
-	break;
+	  case 0:
+	    result = facing_point.get_y() >= detector_rectangle.get_y()
+	      && facing_point.get_y() < detector_rectangle.get_y() + detector_rectangle.get_height()
+	      && facing_point.get_x() >= detector_rectangle.get_x() - distance
+	      && facing_point.get_x() < detector_rectangle.get_x() + detector_rectangle.get_width() - distance;
+	    break;
 
-      case 1:
-	result = facing_point.x >= detector_rectangle.x
-	  && facing_point.x < detector_rectangle.x + detector_rectangle.w
-	  && facing_point.y >= detector_rectangle.y + distance
-	  && facing_point.y < detector_rectangle.y + detector_rectangle.h + distance;
-	break;
+	  case 1:
+	    result = facing_point.get_x() >= detector_rectangle.get_x()
+	      && facing_point.get_x() < detector_rectangle.get_x() + detector_rectangle.get_width()
+	      && facing_point.get_y() >= detector_rectangle.get_y() + distance
+	      && facing_point.get_y() < detector_rectangle.get_y() + detector_rectangle.get_height() + distance;
+	    break;
 
-      case 2:
-	result = facing_point.y >= detector_rectangle.y
-	  && facing_point.y < detector_rectangle.y + detector_rectangle.h
-	  && facing_point.x >= detector_rectangle.x + distance
-	  && facing_point.x < detector_rectangle.x + detector_rectangle.w + distance;
-	break;
+	  case 2:
+	    result = facing_point.get_y() >= detector_rectangle.get_y()
+	      && facing_point.get_y() < detector_rectangle.get_y() + detector_rectangle.get_height()
+	      && facing_point.get_x() >= detector_rectangle.get_x() + distance
+	      && facing_point.get_x() < detector_rectangle.get_x() + detector_rectangle.get_width() + distance;
+	    break;
 
-      case 3:
-	result = facing_point.x >= detector_rectangle.x
-	  && facing_point.x < detector_rectangle.x + detector_rectangle.w
-	  && facing_point.y >= detector_rectangle.y - distance
-	  && facing_point.y < detector_rectangle.y + detector_rectangle.h - distance;
-	break;
+	  case 3:
+	    result = facing_point.get_x() >= detector_rectangle.get_x()
+	      && facing_point.get_x() < detector_rectangle.get_x() + detector_rectangle.get_width()
+	      && facing_point.get_y() >= detector_rectangle.get_y() - distance
+	      && facing_point.get_y() < detector_rectangle.get_y() + detector_rectangle.get_height() - distance;
+	    break;
 
-      default:
-	DIE("Invalid animation direction of the hero: " << animation_direction);
-	break;
+	  default:
+	    DIE("Invalid animation direction of the hero: " << animation_direction);
+	    break;
+	}
       }
-    }
-    break;
+      break;
 
-  default:
-    break;
+    default:
+      break;
   }
 
   return result;

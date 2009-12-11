@@ -19,6 +19,8 @@
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "Game.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Creates a selection menu with the phase where the
@@ -31,7 +33,7 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
   adventure_mode(true) {
 
   this->img_mode = ResourceManager::load_image("menus/selection_menu_mode.png");
-  this->savegame_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  this->savegame_surface = new Surface(220, 240);
 
   transition = Transition::create(Transition::FADE, Transition::OUT);
   transition->start();
@@ -41,12 +43,12 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
  * Destructor.
  */
 SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
-  SDL_FreeSurface(img_mode);
-  SDL_FreeSurface(savegame_surface);
+  delete img_mode;
+  delete savegame_surface;
 }
 
 /**
- * Handles an SDL event in this phase.
+ * Handles an event in this phase.
  * @param event the event
  */
 void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
@@ -101,7 +103,7 @@ void SelectionMenuChooseMode::update(void) {
 /**
  * Displays the selection menu in this phase.
  */
-void SelectionMenuChooseMode::display(SDL_Surface *screen_surface) {
+void SelectionMenuChooseMode::display(Surface *screen_surface) {
 
   start_display(screen_surface);
 
@@ -111,33 +113,25 @@ void SelectionMenuChooseMode::display(SDL_Surface *screen_surface) {
   display_savegame_number(i, savegame_surface);
 
   // move the savegame to the top
-  SDL_Rect savegame_position;
-  savegame_position.x = 57;
-  savegame_position.y = 75 + i * 27;
-  savegame_position.w = 208;
-  savegame_position.h = 23;
+  Rectangle savegame_position(57, 75 + i * 27, 208, 23);
+  Rectangle position(57, 75 + i * 27);
+//  Rectangle position = {57, 75};
 
-  SDL_Rect position = {57, 75 + i * 27};
-//  SDL_Rect position = {57, 75};
-
-  SDL_BlitSurface(savegame_surface, &savegame_position, destination_surface, &position);
+  savegame_surface->blit(savegame_position, destination_surface, position);
 
   /*
   // options
-  SDL_Rect box_position = {0, 0, 73, 54};
+  Rectangle box_position(0, 0, 73, 54);
   if (adventure_mode) {
-    box_position.y = 54; // highlight the selection
+    box_position.set_y(54); // highlight the selection
   }
 
-  position.x = 70;
-  position.y = 115;
-  SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);
+  position.set_xy(70, 115);
+  img_mode->blit(box_position, destination_surface, position);
 
-  box_position.x = 73;
-  box_position.y = adventure_mode ? 0 : 54; // highlight the selection
-  position.x = 170;
-  position.y = 115;
-  SDL_BlitSurface(img_mode, &box_position, destination_surface, &position);
+  box_position.set_xy(73, adventure_mode ? 0 : 54); // highlight the selection
+  position.set_xy(170, 115);
+  img_mode->blit(box_position, destination_surface, position);
 */
 
   finish_display(screen_surface);

@@ -16,27 +16,27 @@
  */
 #include "Game.h"
 #include "ZSDX.h"
-#include "lowlevel/Music.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
-#include "lowlevel/Color.h"
-#include "hud/HUD.h"
-#include "lowlevel/Sound.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "DialogBox.h"
 #include "Treasure.h"
 #include "Dungeon.h"
 #include "GameoverSequence.h"
+#include "hud/HUD.h"
 #include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 #include "entities/Tileset.h"
 #include "entities/Detector.h"
+#include "lowlevel/Music.h"
+#include "lowlevel/Color.h"
+#include "lowlevel/Sound.h"
 
-const SDL_Rect Game::outside_world_size = {0, 0, 2080, 3584}; // TODO load from external file
+const Rectangle Game::outside_world_size(0, 0, 2080, 3584); // TODO load from external file
 
 /**
  * Creates a game.
@@ -91,7 +91,7 @@ Game::~Game(void) {
   delete controls;
 
   if (previous_map_surface != NULL) {
-    SDL_FreeSurface(previous_map_surface);
+    delete previous_map_surface;
   }
 
   if (zsdx->game == this) {
@@ -114,7 +114,7 @@ Hero * Game::get_hero(void) {
  * The width and the height are not used.
  * @return the position of the hero
  */
-const SDL_Rect Game::get_hero_xy(void) {
+const Rectangle & Game::get_hero_xy(void) {
   return hero->get_xy();
 }
 
@@ -174,8 +174,8 @@ MapScript * Game::get_current_script(void) {
 }
 
 /**
- * This function is called by the SDL main loop
- * when an SDL event occurs during the game.
+ * This function is called by the main loop
+ * when an event occurs during the game.
  */
 void Game::handle_event(const SDL_Event &event) {
 
@@ -367,7 +367,7 @@ void Game::update_transitions(void) {
       current_map->opening_transition_finished();
 
       if (previous_map_surface != NULL) {
-	SDL_FreeSurface(previous_map_surface);
+	delete previous_map_surface;
 	previous_map_surface = NULL;
       }
     }
@@ -485,14 +485,14 @@ void Game::update_gameover_sequence(void) {
  * Displays the game.
  * @param screen_surface the surface where the game will be displayed
  */
-void Game::display(SDL_Surface *screen_surface) {
+void Game::display(Surface *screen_surface) {
 
   // display the map
   current_map->display();
   if (transition != NULL) {
     transition->display(current_map->get_visible_surface());
   }
-  SDL_BlitSurface(current_map->get_visible_surface(), NULL, screen_surface, NULL);
+  current_map->get_visible_surface()->blit(screen_surface);
 
   // display the pause screen if any
   if (is_paused()) {
@@ -556,8 +556,8 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
  * Returns the size of the oustide world in pixels.
  * @return the size of the oustide world
  */
-const SDL_Rect * Game::get_outside_world_size(void) {
-  return &outside_world_size;
+const Rectangle & Game::get_outside_world_size(void) {
+  return outside_world_size;
 }
 
 /**
@@ -721,9 +721,9 @@ DialogBox * Game::get_dialog_box(void) {
  */
 void Game::show_message(const MessageId &message_id) {
 
-  const SDL_Rect &camera_position = current_map->get_camera_position();
+  const Rectangle &camera_position = current_map->get_camera_position();
 
-  if (hero->get_y() < camera_position.y + 130) {
+  if (hero->get_y() < camera_position.get_y() + 130) {
     show_message(message_id, 1);
   }
   else {

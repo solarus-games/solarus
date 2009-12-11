@@ -16,20 +16,22 @@
  */
 #include "hud/HeartsView.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/System.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 
 /**
  * Position of the hearts in the PNG image.
  */
-SDL_Rect HeartsView::full_heart_position = {27, 0, 9, 9};
-SDL_Rect HeartsView::fraction_heart_positions[3] = {
-  {0, 0, 9, 9},
-  {9, 0, 9, 9},
-  {18, 0, 9, 9}
+Rectangle HeartsView::full_heart_position(27, 0, 9, 9);
+Rectangle HeartsView::fraction_heart_positions[3] = {
+  Rectangle(0, 0, 9, 9),
+  Rectangle(9, 0, 9, 9),
+  Rectangle(18, 0, 9, 9)
 };
 
 /**
@@ -42,8 +44,8 @@ SDL_Rect HeartsView::fraction_heart_positions[3] = {
 HeartsView::HeartsView(Equipment *equipment, int x, int y):
   HudElement(x, y, 90, 18),
   equipment(equipment),
-  next_heart_update_date(SDL_GetTicks()),
-  next_danger_sound_date(SDL_GetTicks()) {
+  next_heart_update_date(System::now()),
+  next_danger_sound_date(System::now()) {
 
   img_hearts = ResourceManager::load_image("hud/hearts.png");
   empty_heart_sprite = new Sprite("hud/empty_heart");
@@ -61,7 +63,7 @@ HeartsView::HeartsView(Equipment *equipment, int x, int y):
  * Destructor.
  */
 HeartsView::~HeartsView(void) {
-  SDL_FreeSurface(img_hearts);
+  delete img_hearts;
   delete empty_heart_sprite;
 }
 
@@ -83,9 +85,9 @@ void HeartsView::update(void) {
 
   // current hearts
   int nb_current_hearts = equipment->get_hearts();
-  if (nb_current_hearts != nb_current_hearts_displayed && SDL_GetTicks() > next_heart_update_date) {
+  if (nb_current_hearts != nb_current_hearts_displayed && System::now() > next_heart_update_date) {
 
-    next_heart_update_date = SDL_GetTicks() + 50;
+    next_heart_update_date = System::now() + 50;
 
     if (nb_current_hearts < nb_current_hearts_displayed) {
       nb_current_hearts_displayed--;
@@ -113,8 +115,8 @@ void HeartsView::update(void) {
       }
       empty_heart_sprite->update();
 
-      if (SDL_GetTicks() > next_danger_sound_date) {
-	next_danger_sound_date = SDL_GetTicks() + 750;
+      if (System::now() > next_danger_sound_date) {
+	next_danger_sound_date = System::now() + 750;
 	ResourceManager::get_sound("danger")->play();
       }
 
@@ -151,21 +153,20 @@ void HeartsView::rebuild(void) {
   }
   
   // current hearts
-  SDL_Rect heart_position = {0, 0, 9, 9};
+  Rectangle heart_position(0, 0, 9, 9);
   int i;
   for (i = 0; i < nb_current_hearts_displayed / 4; i++) {
-    heart_position.x = (i % 10) * 9;
-    heart_position.y = (i / 10) * 9;
-    SDL_BlitSurface(img_hearts, &full_heart_position, surface_drawn, &heart_position);
+    heart_position.set_x((i % 10) * 9);
+    heart_position.set_y((i / 10) * 9);
+    img_hearts->blit(full_heart_position, surface_drawn, heart_position);
   }
 
   // last heart: fraction of heart
   int remaining_fraction = nb_current_hearts_displayed % 4;
   if (remaining_fraction != 0) {
 
-    heart_position.x = (i % 10) * 9;
-    SDL_BlitSurface(img_hearts, &fraction_heart_positions[remaining_fraction - 1],
-		    surface_drawn, &heart_position);
+    heart_position.set_x((i % 10) * 9);
+    img_hearts->blit(fraction_heart_positions[remaining_fraction - 1], surface_drawn, heart_position);
   }
 }
 
@@ -179,3 +180,4 @@ void HeartsView::rebuild(void) {
 bool HeartsView::is_visible(void) {
   return equipment != NULL;
 }
+

@@ -17,6 +17,7 @@
 #include "DialogBox.h"
 #include "Message.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Surface.h"
 #include "Sprite.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -27,8 +28,8 @@
 #include "MapScript.h"
 
 DialogBox::Style DialogBox::style = DialogBox::WITH_FRAME;
-static SDL_Rect box_src_position = {0, 0, 220, 60};
-static SDL_Rect question_src_position = {96, 60, 8, 8};
+static Rectangle box_src_position(0, 0, 220, 60);
+static Rectangle question_src_position(96, 60, 8, 8);
 
 /**
  * Creates a new dialog box.
@@ -40,11 +41,11 @@ static SDL_Rect question_src_position = {96, 60, 8, 8};
 DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
 
   // initialize the surface
-  dialog_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
-  SDL_SetColorKey(dialog_surface, SDL_SRCCOLORKEY, Color::black);
+  dialog_surface = new Surface(320, 240);
+  dialog_surface->set_transparency_color(Color::get_black());
 
   if (style != WITHOUT_FRAME) {
-    SDL_SetAlpha(dialog_surface, SDL_SRCALPHA, 216);
+    dialog_surface->set_opacity(216);
   }
 
   // load the images
@@ -62,14 +63,10 @@ DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
     }
   }
 
-  box_dst_position.x = this->x;
-  box_dst_position.y = this->y;
-  box_dst_position.w = box_src_position.w;
-  box_dst_position.h = box_src_position.h;
-  question_dst_position.x = x + 18;
-  question_dst_position.y = y + 27;
-  icon_dst_position.x = x + 18;
-  icon_dst_position.y = y + 22;
+  box_dst_position.set_xy(this->x, this->y);
+  box_dst_position.set_size(box_src_position);
+  question_dst_position.set_xy(x + 18, y + 27);
+  icon_dst_position.set_xy(x + 18, y + 22);
 
   // load the sounds
   end_message_sound = ResourceManager::get_sound("message_end");
@@ -103,9 +100,9 @@ DialogBox::~DialogBox(void) {
   keys_effect->set_sword_key_effect(sword_key_effect_saved);
 
   // free the memory
-  SDL_FreeSurface(dialog_surface);
-  SDL_FreeSurface(img_box);
-  SDL_FreeSurface(img_icons);
+  delete dialog_surface;
+  delete img_box;
+  delete img_icons;
   delete end_message_sprite;
   delete current_message;
 }
@@ -234,7 +231,7 @@ void DialogBox::show_message(const MessageId &message_id) {
   else {
     zsdx->game->set_dialog_last_answer(-1);
   }
-  question_dst_position.y = y + 27;
+  question_dst_position.set_y(y + 27);
   
   // hide the action icon
   KeysEffect *keys_effect = zsdx->game->get_keys_effect();
@@ -325,7 +322,7 @@ void DialogBox::up_or_down_key_pressed(void) {
     // switch the answer
     int answer = zsdx->game->get_dialog_last_answer();
     zsdx->game->set_dialog_last_answer(1 - answer);
-    question_dst_position.y = y + ((answer == 1) ? 27 : 40);
+    question_dst_position.set_y(y + ((answer == 1) ? 27 : 40));
     switch_answer_sound->play();
   }
 }
@@ -400,17 +397,17 @@ void DialogBox::update(void) {
  * Displays the dialog box on a surface.
  * @param destination_surface the surface
  */
-void DialogBox::display(SDL_Surface *destination_surface) {
+void DialogBox::display(Surface *destination_surface) {
 
-  SDL_FillRect(dialog_surface, NULL, Color::black);
+  dialog_surface->fill_with_color(Color::get_black());
 
   if (style == WITHOUT_FRAME) {
     // display a dark rectangle
-    SDL_FillRect(destination_surface, &box_dst_position, Color::black);
+    destination_surface->fill_with_color(Color::get_black(), box_dst_position);
   }
   else {
     // display the dialog box
-    SDL_BlitSurface(img_box, &box_src_position, dialog_surface, &box_dst_position);
+    img_box->blit(box_src_position, dialog_surface, box_dst_position);
   }
 
   // display the message
@@ -418,20 +415,19 @@ void DialogBox::display(SDL_Surface *destination_surface) {
 
   // display the icon
   if (icon_number != -1) {
-    SDL_Rect src_position = {0, 0, 16, 16};
-    src_position.x = 16 * (icon_number % 10);
-    src_position.y = 16 * (icon_number / 10);
-    SDL_BlitSurface(img_icons, &src_position, dialog_surface, &icon_dst_position);
+    Rectangle src_position(0, 0, 16, 16);
+    src_position.set_xy(16 * (icon_number % 10), 16 * (icon_number / 10));
+    img_icons->blit(src_position, dialog_surface, icon_dst_position);
 
-    question_dst_position.x = x + 50;
+    question_dst_position.set_x(x + 50);
   }
   else {
-    question_dst_position.x = x + 18;
+    question_dst_position.set_x(x + 18);
   }
 
   // display the question arrow
   if (current_message->is_question() && current_message->is_finished()) {
-    SDL_BlitSurface(img_box, &question_src_position, dialog_surface, &question_dst_position);
+    img_box->blit(question_src_position, dialog_surface, question_dst_position);
   }
 
   // display the end message arrow
@@ -440,6 +436,6 @@ void DialogBox::display(SDL_Surface *destination_surface) {
   }
 
   // final blit
-  SDL_BlitSurface(dialog_surface, NULL, destination_surface, NULL);
+  dialog_surface->blit(destination_surface);
 }
 

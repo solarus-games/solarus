@@ -26,15 +26,16 @@
  */
 class SelectionMenuEraseFile: public SelectionMenuPhase {
 
- public:
+  public:
 
-  // creation and destruction
-  SelectionMenuEraseFile(SelectionMenuPhase *previous);
-  ~SelectionMenuEraseFile(void);
+    // creation and destruction
+    SelectionMenuEraseFile(SelectionMenuPhase *previous);
+    ~SelectionMenuEraseFile(void);
 
-  // update and display
-  void handle_event(const SDL_Event &event);
-  void display(SDL_Surface *screen_surface);
+    // update and display
+    void handle_event(const SDL_Event &event);
+    void display(Surface *screen_surface);
 };
 
 #endif
+

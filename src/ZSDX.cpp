@@ -18,6 +18,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Surface.h"
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
@@ -40,7 +41,7 @@ ZSDX::ZSDX(int argc, char **argv) {
   System::initialize(argc, argv);
 
   // create the surface where everything is drawn
-  root_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  root_surface = new Surface(320, 240);
 
   // create the first screen
   current_screen = new TitleScreen();
@@ -52,7 +53,7 @@ ZSDX::ZSDX(int argc, char **argv) {
  * Cleans everything.
  */
 ZSDX::~ZSDX(void) {
-  SDL_FreeSurface(root_surface);
+  delete root_surface;
   delete current_screen;
  }
 
@@ -120,7 +121,7 @@ void ZSDX::main(void) {
     }
     else {
 
-      now = SDL_GetTicks();
+      now = System::now();
       delay = next_frame_date - now;
       // delay is the time remaining before the next display
 
@@ -140,7 +141,7 @@ void ZSDX::main(void) {
 	just_displayed = false;
 
 	// if we have time, let's sleep to avoid using all the processor
-	SDL_Delay(1);
+	System::sleep(1);
 
 	if (delay >= 15) {
 	  // if we have much time, increase the FPS number
@@ -203,7 +204,7 @@ void ZSDX::update(void) {
  */
 void ZSDX::display(void) {
 
-  SDL_FillRect(root_surface, NULL, Color::black);
+  root_surface->fill_with_color(Color::get_black());
   current_screen->display(root_surface);
   VideoManager::get_instance()->display(root_surface);
 }

@@ -109,7 +109,7 @@ class MapEntities {
   // hero
   void set_entity_layer(MapEntity *entity, Layer layer);
   bool is_hero_on_raised_blocks(void);
-  bool overlaps_raised_blocks(Layer layer, const SDL_Rect &rectangle);
+  bool overlaps_raised_blocks(Layer layer, const Rectangle &rectangle);
   bool is_boomerang_present(void);
   void remove_boomerang(void);
   void start_boss_battle(Enemy *boss);

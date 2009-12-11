@@ -19,15 +19,15 @@
 /**
  * Basic movement vector of each direction.
  */
-const SDL_Rect JumpMovement::basic_translations[8] = {
-  { 1,  0}, // right
-  { 1, -1},
-  { 0, -1},
-  {-1, -1},
-  {-1,  0},
-  {-1,  1},
-  { 0,  1},
-  { 1,  1}
+const Rectangle JumpMovement::basic_translations[8] = {
+  Rectangle( 1,  0), // right
+  Rectangle( 1, -1),
+  Rectangle( 0, -1),
+  Rectangle(-1, -1),
+  Rectangle(-1,  0),
+  Rectangle(-1,  1),
+  Rectangle( 0,  1),
+  Rectangle( 1,  1)
 };
 
 /**
@@ -40,7 +40,7 @@ JumpMovement::JumpMovement(int direction, int length, bool with_collisions):
   PixelMovement(length, 10, false, with_collisions), jump_height(0) {
 
   // compute the path
-  translation_vectors = new SDL_Rect[length];
+  translation_vectors = new Rectangle[length];
   for (int i = 0; i < length; i++) {
     translation_vectors[i] = basic_translations[direction];
   }

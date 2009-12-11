@@ -74,7 +74,7 @@ Transition::Direction Transition::get_direction(void) {
  * that was played before this IN transition.
  * @param previous_surface the previous surface
  */
-void Transition::set_previous_surface(SDL_Surface *previous_surface) {
+void Transition::set_previous_surface(Surface *previous_surface) {
 
   if (get_direction() == OUT) {
     DIE("Cannot show a previous surface with an OUT transition effect");

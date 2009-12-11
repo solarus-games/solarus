@@ -27,6 +27,7 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -63,8 +64,8 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   joypad_text->set_font(TextSurface::FONT_STANDARD);
   joypad_text->set_text(StringResource::get_string("options.joypad_column"));
 
-  controls_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 215, 160, 32, 0, 0, 0, 0);
-  SDL_SetColorKey(controls_surface, SDL_SRCCOLORKEY, Color::black);
+  controls_surface = new Surface(215, 160);
+  controls_surface->set_transparency_color(Color::get_black());
   highest_visible_key = 1;
   controls_visible_y = 0;
 
@@ -122,8 +123,7 @@ PauseSubmenuOptions::~PauseSubmenuOptions(void) {
     delete joypad_control_texts[i];
   }
 
-  SDL_FreeSurface(controls_surface);
-
+  delete controls_surface;
   delete up_arrow_sprite;
   delete down_arrow_sprite;
   delete cursor_sprite;
@@ -134,10 +134,10 @@ PauseSubmenuOptions::~PauseSubmenuOptions(void) {
  * keyboard and the joypad.
  */
 void PauseSubmenuOptions::load_control_texts(void) {
-
-  SDL_FillRect(controls_surface, NULL, Color::black);
-
+  
   Controls *controls = game->get_controls();
+
+  controls_surface->fill_with_color(Color::get_black());
   for (int i = 0; i < 9; i++) {
 
     Controls::GameKey key = (Controls::GameKey) (i + 1);
@@ -278,7 +278,7 @@ void PauseSubmenuOptions::update(void) {
  * Displays this submenu.
  * @param destination the destination surface
  */
-void PauseSubmenuOptions::display(SDL_Surface *destination) {
+void PauseSubmenuOptions::display(Surface *destination) {
   PauseSubmenu::display(destination);
 
   // display the cursor
@@ -291,9 +291,9 @@ void PauseSubmenuOptions::display(SDL_Surface *destination) {
   keyboard_text->display(destination);
   joypad_text->display(destination);
 
-  SDL_Rect src_position = {0, controls_visible_y, 215, 84};
-  static SDL_Rect dst_position = {53, 102};
-  SDL_BlitSurface(controls_surface, &src_position, destination, &dst_position);
+  Rectangle src_position(0, controls_visible_y, 215, 84);
+  static Rectangle dst_position(53, 102);
+  controls_surface->blit(src_position, destination, dst_position);
 
   // display the arrows
   if (controls_visible_y > 0) {
@@ -311,8 +311,7 @@ void PauseSubmenuOptions::display(SDL_Surface *destination) {
  * Displays the cursor.
  * @param destination the destination surface
  */
-void PauseSubmenuOptions::display_cursor(SDL_Surface *destination) {
-
+void PauseSubmenuOptions::display_cursor(Surface *destination) {
   cursor_sprite->display(destination, cursor_sprite_position.x, cursor_sprite_position.y);
 }
 

@@ -26,20 +26,20 @@
  */
 class SmallKeysCounter: public HudElement {
 
- private:
+  private:
 
-  Equipment *equipment;
-  
-  SDL_Surface *img_icon;
-  Counter *counter;
-  
- public:
+    Equipment *equipment;
 
-  SmallKeysCounter(Equipment *equipment, int x, int y);
-  ~SmallKeysCounter(void);
-  
-  void update(void);
-  void rebuild(void);
+    Surface *img_icon;
+    Counter *counter;
+
+  public:
+
+    SmallKeysCounter(Equipment *equipment, int x, int y);
+    ~SmallKeysCounter(void);
+
+    void update(void);
+    void rebuild(void);
 };
 
 #endif

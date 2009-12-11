@@ -28,16 +28,26 @@ class Surface {
 
   private:
 
-    SDL_Surface *surface; /**< the SDL_Surface encapsulated */
+    SDL_Surface *internal_surface; /**< the SDL_Surface encapsulated */
 
   public:
 
     Surface(int width, int height);
+    Surface(std::string file_name);
+    Surface(SDL_Surface *internal_surface);
     ~Surface(void);
 
-    void fill_with_color(Color color);
+    int get_width(void);
+    int get_height(void);
+
+    void set_transparency_color(Color &color);
+    void set_opacity(int opacity);
+    void fill_with_color(Color &color);
+    void fill_with_color(Color &color, const Rectangle &where);
     void blit(Surface *destination);
-    void blit(const Rectangle & src_position, Surface *dst, const Rectangle & dst_position);
+    void blit(Surface *destination, const Rectangle &dst_position);
+    void blit(const Rectangle &src_position, Surface *destination);
+    void blit(const Rectangle &src_position, Surface *destination, const Rectangle &dst_position);
 
 };
 

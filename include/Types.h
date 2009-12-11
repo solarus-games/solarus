@@ -22,6 +22,8 @@
 #ifndef ZSDX_TYPES_H
 #define ZSDX_TYPES_H
 
+#include <stdint.h>
+
 /**
  * Types of the id of each resource.
  */
@@ -60,6 +62,7 @@ class SpcDecoder;
 class Random;
 class Geometry;
 class Rectangle;
+class PixelBits;
 
 // menus
 class TitleScreen;
@@ -115,7 +118,6 @@ class Sprite;
 class SpriteAnimationSet;
 class SpriteAnimation;
 class SpriteAnimationDirection;
-class PixelBits;
 
 // transition effects
 class Transition;

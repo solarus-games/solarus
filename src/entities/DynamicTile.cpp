@@ -103,7 +103,7 @@ bool DynamicTile::is_obstacle_for(MapEntity *other) {
  */
 void DynamicTile::display_on_map(void) {
   if (enabled) {
-    tile_pattern->display_on_map(map, rectangle);
+    tile_pattern->display_on_map(map, bounding_box);
   }
 }
 

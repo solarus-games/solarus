@@ -25,28 +25,29 @@
  */
 class RupeesCounter: public HudElement {
 
- private:
+  private:
 
-  Equipment *equipment;
-  
-  // rectangles of the rupee icons in the image
-  static SDL_Rect rupee_icon_positions[3];
+    Equipment *equipment;
 
-  SDL_Surface *img_rupee_icon;
+    // rectangles of the rupee icons in the image
+    static Rectangle rupee_icon_positions[3];
 
-  int nb_max_rupees_displayed;
-  int icon_displayed;
-  Counter *counter;
- 
-  uint32_t next_rupee_update_date;
-  
- public:
+    Surface *img_rupee_icon;
 
-  RupeesCounter(Equipment *equipment, int x, int y);
-  ~RupeesCounter(void);
-  
-  void update(void);
-  void rebuild(void);
+    int nb_max_rupees_displayed;
+    int icon_displayed;
+    Counter *counter;
+
+    uint32_t next_rupee_update_date;
+
+  public:
+
+    RupeesCounter(Equipment *equipment, int x, int y);
+    ~RupeesCounter(void);
+
+    void update(void);
+    void rebuild(void);
 };
 
 #endif
+

@@ -25,28 +25,28 @@
  */
 class PauseSubmenu {
 
- protected:
+  protected:
 
-  PauseMenu *pause_menu;
-  Game *game;
-  Savegame *savegame;
-  Equipment *equipment;
-  DungeonEquipment *dungeon_equipment;
+    PauseMenu *pause_menu;
+    Game *game;
+    Savegame *savegame;
+    Equipment *equipment;
+    DungeonEquipment *dungeon_equipment;
 
-  TextSurface *caption_text_1;
-  TextSurface *caption_text_2;
+    TextSurface *caption_text_1;
+    TextSurface *caption_text_2;
 
-  PauseSubmenu(PauseMenu *pause_menu, Game *game);
+    PauseSubmenu(PauseMenu *pause_menu, Game *game);
 
-  void set_caption_text(const std::string &text);
+    void set_caption_text(const std::string &text);
 
- public:
+  public:
 
-  virtual ~PauseSubmenu(void);
+    virtual ~PauseSubmenu(void);
 
-  virtual void key_pressed(Controls::GameKey key) = 0;
-  virtual void update(void) = 0;
-  virtual void display(SDL_Surface *destination);
+    virtual void key_pressed(Controls::GameKey key) = 0;
+    virtual void update(void) = 0;
+    virtual void display(Surface *destination);
 };
 
 #endif

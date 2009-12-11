@@ -62,3 +62,4 @@ Screen * Screen::get_next_screen(void) {
 bool Screen::is_screen_finished(void) {
   return screen_finished;
 }
+

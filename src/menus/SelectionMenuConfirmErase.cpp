@@ -18,9 +18,9 @@
 #include "menus/SelectionMenuSelectFile.h"
 #include "ZSDX.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Savegame.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
 
 /**
  * Creates a selection menu with the phase where the
@@ -85,7 +85,7 @@ void SelectionMenuConfirmErase::handle_event(const SDL_Event &event) {
 /**
  * Displays the selection menu in this phase.
  */
-void SelectionMenuConfirmErase::display(SDL_Surface *screen_surface) {
+void SelectionMenuConfirmErase::display(Surface *screen_surface) {
 
   start_display(screen_surface);
 

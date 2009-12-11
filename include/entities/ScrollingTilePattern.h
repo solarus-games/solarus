@@ -27,7 +27,7 @@ class ScrollingTilePattern: public SimpleTilePattern {
 
   private:
 
-    static int shift;              /**< number of pixels to shift, increased with the time */
+    static int shift;                /**< number of pixels to shift, increased with the time */
     static uint32_t next_shift_date; /**< when the shift variable is incremented */
 
   public:
@@ -36,7 +36,7 @@ class ScrollingTilePattern: public SimpleTilePattern {
     ~ScrollingTilePattern(void);
 
     static void update(void);
-    void display(SDL_Surface *destination, const SDL_Rect &destination_position, SDL_Surface *tileset_image);
+    void display(Surface *destination, const Rectangle &destination_position, Surface *tileset_image);
 };
 
 #endif

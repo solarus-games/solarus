@@ -31,23 +31,23 @@
  */
 class SelectionMenuChooseMode: public SelectionMenuPhase {
 
- private:
+  private:
 
-  bool adventure_mode;
+    bool adventure_mode;
 
-  SDL_Surface *img_mode;
-  SDL_Surface *savegame_surface;
-  
- public:
+    Surface *img_mode;
+    Surface *savegame_surface;
 
-  // creation and destruction
-  SelectionMenuChooseMode(SelectionMenuPhase *previous);
-  ~SelectionMenuChooseMode(void);
+  public:
 
-  // update and display
-  void handle_event(const SDL_Event &event);
-  void update(void);
-  void display(SDL_Surface *screen_surface);
+    // creation and destruction
+    SelectionMenuChooseMode(SelectionMenuPhase *previous);
+    ~SelectionMenuChooseMode(void);
+
+    // update and display
+    void handle_event(const SDL_Event &event);
+    void update(void);
+    void display(Surface *screen_surface);
 };
 
 #endif

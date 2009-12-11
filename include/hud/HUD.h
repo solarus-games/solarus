@@ -25,26 +25,27 @@
  */
 class HUD {
 
- private:
+  private:
 
-  Game *game;
-  Equipment *equipment;
+    Game *game;
+    Equipment *equipment;
 
-  int nb_elements;
-  HudElement *elements[16];
+    int nb_elements;
+    HudElement *elements[16];
 
-  bool showing_message;
+    bool showing_message;
 
-  void update_blinking(void);
+    void update_blinking(void);
 
- public:
+  public:
 
-  HUD(Game *game);
-  ~HUD(void);
+    HUD(Game *game);
+    ~HUD(void);
 
-  void update();
-  void display(SDL_Surface *destination);
+    void update();
+    void display(Surface *destination);
 
 };
 
 #endif
+

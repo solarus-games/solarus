@@ -18,11 +18,12 @@
 #include "menus/SelectionMenuCommon.h"
 #include "ZSDX.h"
 #include "Transition.h"
-#include "lowlevel/Sound.h"
 #include "Sprite.h"
-#include "lowlevel/TextSurface.h"
 #include "StringResource.h"
 #include "hud/HeartsView.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Creates a selection menu phase.
@@ -40,7 +41,7 @@ SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous, const std::
   }
 
   this->title_string = StringResource::get_string(title_string_key);
-  this->destination_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 320, 240, 32, 0, 0, 0, 0);
+  this->destination_surface = new Surface(320, 240);
   this->transition = NULL;
 }
 
@@ -50,11 +51,8 @@ SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous, const std::
  */
 SelectionMenuPhase::~SelectionMenuPhase(void) {
 
-  SDL_FreeSurface(destination_surface);
-
-  if (transition != NULL) {
-    delete transition;
-  }
+  delete destination_surface;
+  delete transition;
 
   if (zsdx->is_exiting() || zsdx->game != NULL) {
     delete common_part;
@@ -99,7 +97,7 @@ void SelectionMenuPhase::update(void) {
  * and finally call finish_display().
  * @param screen_surface surface where this screen has to be drawn
  */
-void SelectionMenuPhase::start_display(SDL_Surface *screen_surface) {
+void SelectionMenuPhase::start_display(Surface *screen_surface) {
 
   // display the elements common to all phases
   common_part->display(destination_surface);
@@ -116,14 +114,14 @@ void SelectionMenuPhase::start_display(SDL_Surface *screen_surface) {
  * and finally call finish_display().
  * @param screen_surface surface where this screen has to be drawn
  */
-void SelectionMenuPhase::finish_display(SDL_Surface *screen_surface) {
+void SelectionMenuPhase::finish_display(Surface *screen_surface) {
 
   // transition
   if (transition != NULL && transition->is_started()) {
     transition->display(destination_surface);
   }
 
-  SDL_BlitSurface(destination_surface, NULL, screen_surface, NULL);
+  destination_surface->blit(screen_surface);
 }
 
 /**
@@ -280,14 +278,11 @@ void SelectionMenuPhase::display_savegame(int save_number) {
  * @param destination_surface the surface where you want to display
  * the savegame (may be different from this->destination_surface)
  */
-void SelectionMenuPhase::display_savegame(int save_number, SDL_Surface *destination_surface) {
-
-  SDL_Rect position;
+void SelectionMenuPhase::display_savegame(int save_number, Surface *destination_surface) {
 
   // draw the container
-  position.x = 57;
-  position.y = 75 + save_number * 27;
-  SDL_BlitSurface(common_part->img_save_container, NULL, destination_surface, &position);
+  Rectangle position(57, 75 + save_number * 27);
+  common_part->img_save_container->blit(destination_surface, position);
 
   // draw the player's name
   common_part->text_player_names[save_number]->display(destination_surface);
@@ -319,11 +314,8 @@ void SelectionMenuPhase::display_savegame_number(int save_number) {
  */
 void SelectionMenuPhase::display_savegame_number(int save_number, SDL_Surface *destination_surface) {
 
-  SDL_Rect position;
-
-  position.x = 62;
-  position.y = 80 + 27 * save_number;
-  SDL_BlitSurface(common_part->img_numbers[save_number], NULL, destination_surface, &position);
+  Rectangle position(62, 80 + 27 * save_number);
+  common_part->img_numbers[save_number]->blit(destination_surface, position);
 }
 
 /**
@@ -333,13 +325,10 @@ void SelectionMenuPhase::display_savegame_number(int save_number, SDL_Surface *d
  */
 void SelectionMenuPhase::display_bottom_options(void) {
 
-  SDL_Rect position;
-
-  position.x = 57;
-  position.y = 158;
-  SDL_BlitSurface(common_part->img_option_container, NULL, destination_surface, &position);
+  Rectangle position(57, 158);
+  common_part->img_option_container->blit(destination_surface, position);
   position.x = 165;
-  SDL_BlitSurface(common_part->img_option_container, NULL, destination_surface, &position);
+  common_part->img_option_container->blit(destination_surface, position);
 
   common_part->text_option1->display(destination_surface);
   common_part->text_option2->display(destination_surface);
@@ -351,20 +340,21 @@ void SelectionMenuPhase::display_bottom_options(void) {
  */
 void SelectionMenuPhase::display_normal_cursor(void) {
 
-  SDL_Rect position;
+  Rectagle position;
 
   if (common_part->cursor_position != 5) {
-    position.x = 58;
+    position.set_x(58);
   }
   else {
-    position.x = 166;
+    position.set_x(166);
   }
 
   if (common_part->cursor_position < 4) {
-    position.y = 49 + common_part->cursor_position * 27;
+    position.set_y(49 + common_part->cursor_position * 27);
   }
   else {
-    position.y = 159;
+    position.set_y(159);
   }
-  common_part->cursor->display(destination_surface, position.x, position.y);
+  common_part->cursor->display(destination_surface, position.get_x(), position.get_y());
 }
+

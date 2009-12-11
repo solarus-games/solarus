@@ -15,13 +15,15 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hud/MagicBar.h"
-#include "lowlevel/FileTools.h"
 #include "Equipment.h"
 #include "Game.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "ZSDX.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Constructor.
@@ -32,7 +34,7 @@
 MagicBar::MagicBar(Equipment *equipment, int x, int y):
   HudElement(x, y, 88, 8),
   equipment(equipment),
-  next_magic_update_date(SDL_GetTicks()) {
+  next_magic_update_date(System::now()) {
 
   img_magic_bar = ResourceManager::load_image("hud/magic_bar.png");
   sprite_magic_bar_container = new Sprite("hud/magic_bar");
@@ -47,7 +49,7 @@ MagicBar::MagicBar(Equipment *equipment, int x, int y):
  * Destructor.
  */
 MagicBar::~MagicBar(void) {
-  SDL_FreeSurface(img_magic_bar);
+  delete img_magic_bar;
   delete sprite_magic_bar_container;
 }
 
@@ -118,9 +120,9 @@ void MagicBar::update(void) {
     need_rebuild = true;
   }
   else if (current_magic > current_magic_displayed
-	   && SDL_GetTicks() > next_magic_update_date) {
+	   && System::now() > next_magic_update_date) {
 
-    next_magic_update_date = SDL_GetTicks() + 20;
+    next_magic_update_date = System::now() + 20;
     current_magic_displayed++;
     need_rebuild = true;
 
@@ -151,7 +153,8 @@ void MagicBar::rebuild(void) {
   sprite_magic_bar_container->display(surface_drawn, 0, 0);
 
   // current magic
-  SDL_Rect current_magic_position = {46, 24, 0, 8};
-  current_magic_position.w = 2 + current_magic_displayed;
-  SDL_BlitSurface(img_magic_bar, &current_magic_position, surface_drawn, NULL);
+  Rectangle current_magic_position(46, 24, 0, 8);
+  current_magic_position.set_width(2 + current_magic_displayed);
+  img_magic_bar->blit(current_magic_position, surface_drawn);
 }
+

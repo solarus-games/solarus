@@ -19,16 +19,18 @@
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Position where the previous map is blitted on both_maps_surface,
  * for each possible scrolling direction.
  */
-const SDL_Rect TransitionScrolling::previous_map_dst_positions[] = {
-  {0, 0, 0, 0},   // scroll to the east
-  {0, 240, 0, 0}, // scroll to the north
-  {320, 0, 0, 0}, // scroll to the west
-  {0, 0, 0, 0},   // scroll to the south
+const Rectangle TransitionScrolling::previous_map_dst_positions[] = {
+  Rectangle(0,   0),  // scroll to the east
+  Rectangle(0, 240),  // scroll to the north
+  Rectangle(20,  0),  // scroll to the west
+  Rectangle(0 ,  0),  // scroll to the south
 };
 
 /**
@@ -45,7 +47,7 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
 TransitionScrolling::~TransitionScrolling(void) {
 
   if (direction == IN) {
-    SDL_FreeSurface(both_maps_surface);
+    delete both_maps_surface;
   }
 }
 
@@ -75,7 +77,7 @@ void TransitionScrolling::start(void) {
   }
 
   // create a surface with the two maps
-  both_maps_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
+  both_maps_surface = new Surface(width, height);
 
   // set the blitting rectangles
 
@@ -83,10 +85,9 @@ void TransitionScrolling::start(void) {
   current_map_dst_position = previous_map_dst_positions[(scrolling_direction + 2) % 4];
   current_scrolling_position = previous_map_dst_position;
 
-  current_scrolling_position.w = 320;
-  current_scrolling_position.h = 240;
+  current_scrolling_position.set_size(320, 240);
 
-  next_scroll_date = SDL_GetTicks();
+  next_scroll_date = System::now();
 }
 
 /**
@@ -115,14 +116,14 @@ bool TransitionScrolling::is_over(void) {
     return true;
   }
 
-  return current_scrolling_position.x == current_map_dst_position.x
-    && current_scrolling_position.y == current_map_dst_position.y;
+  return current_scrolling_position.get_x() == current_map_dst_position.get_x()
+    && current_scrolling_position.get_y() == current_map_dst_position.get_y();
 }
 
 /**
  * Displays the transition effect on a surface.
  */
-void TransitionScrolling::display(SDL_Surface *surface) {
+void TransitionScrolling::display(Surface *surface) {
 
   if (direction == OUT) {
     return;
@@ -133,20 +134,20 @@ void TransitionScrolling::display(SDL_Surface *surface) {
   }
 
   // draw the old map
-  SDL_BlitSurface(previous_surface, NULL, both_maps_surface, &previous_map_dst_position); 
+  previous_surface->blit(both_maps_surface, previous_map_dst_position); 
 
   // draw the new map
-  SDL_BlitSurface(surface, NULL, both_maps_surface, &current_map_dst_position);
+  surface->blit(both_maps_surface, current_map_dst_position);
 
   // blit both surfaces
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   while (now >= next_scroll_date && !is_over()) {
     scroll();
     next_scroll_date += 10;
   }
 
-  SDL_FillRect(surface, NULL, Color::black);
-  SDL_BlitSurface(both_maps_surface, &current_scrolling_position, surface, NULL);
+  surface->fill_with_color(Color::get_black());
+  both_maps_surface->blit(current_scrolling_position, surface);
 }
 
 
@@ -154,7 +155,6 @@ void TransitionScrolling::display(SDL_Surface *surface) {
  * Makes a scrolling step.
  */
 void TransitionScrolling::scroll(void) {
-  current_scrolling_position.x += dx;
-  current_scrolling_position.y += dy;
+  current_scrolling_position.add_xy(dx, dy);
 }
 

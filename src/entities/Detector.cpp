@@ -186,7 +186,7 @@ bool Detector::test_collision_rectangle(MapEntity *entity) {
  */
 bool Detector::test_collision_origin_point(MapEntity *entity) {
 
-  return entity->is_origin_point_in(get_rectangle());
+  return entity->is_origin_point_in(get_bounding_box());
 }
 
 /**
@@ -198,7 +198,7 @@ bool Detector::test_collision_origin_point(MapEntity *entity) {
  */
 bool Detector::test_collision_facing_point(MapEntity *entity) {
 
-  return entity->is_facing_point_in(get_rectangle());
+  return entity->is_facing_point_in(get_bounding_box());
 }
 
 /**
@@ -210,7 +210,7 @@ bool Detector::test_collision_facing_point(MapEntity *entity) {
  */
 bool Detector::test_collision_center(MapEntity *entity) {
 
-  return entity->is_center_in(get_rectangle());
+  return entity->is_center_in(get_bounding_box());
 }
 
 /**

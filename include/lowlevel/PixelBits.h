@@ -27,26 +27,25 @@
  */
 class PixelBits {
 
- private:
+  private:
 
-  int width;               /**< width of the image in pixels */
-  int height;              /**< height of the image in pixels */
-  int nb_integers_per_row; /**< number of uint32_t necessary to store
-			    * the bits of a row of the image */
+    int width;               /**< width of the image in pixels */
+    int height;              /**< height of the image in pixels */
+    int nb_integers_per_row; /**< number of uint32_t necessary to store
+			      * the bits of a row of the image */
 
-  uint32_t **bits;           /**< two-dimensional array representing the
-			    * transparency bit of each pixel in the image */
+    uint32_t **bits;         /**< a two-dimensional array representing the
+			      * transparency bit of each pixel in the image */
 
-  bool test_rectangle_collision(const SDL_Rect &bounding_box1, const SDL_Rect &bounding_box2);
-  void print(void);
-  void print_mask(uint32_t mask);
+    void print(void);
+    void print_mask(uint32_t mask);
 
- public:
+  public:
 
-  PixelBits(SDL_Surface *surface, const SDL_Rect &image_position);
-  ~PixelBits(void);
+    PixelBits(Surface *surface, const Rectangle &image_position);
+    ~PixelBits(void);
 
-  bool test_collision(PixelBits *other, const SDL_Rect &location1, const SDL_Rect &location2);
+    bool test_collision(PixelBits *other, const Rectangle &location1, const Rectangle &location2);
 };
 
 #endif

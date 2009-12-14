@@ -115,7 +115,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   map(NULL), layer(layer), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
-  bounding_box.set_xy(0, 0);
+  bounding_box.set_xy(x, y);
   origin.set_xy(0, 0);
 
   set_size(width, height);

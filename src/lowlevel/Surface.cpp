@@ -135,7 +135,7 @@ void Surface::blit(Surface *destination) {
  */
 void Surface::blit(Surface *dst, const Rectangle &dst_position) {
 
-  Rectangle dst_position2 = dst_position;
+  Rectangle dst_position2(dst_position);
   SDL_BlitSurface(internal_surface, NULL, dst->internal_surface, dst_position2.get_internal_rect());
 }
 
@@ -147,7 +147,7 @@ void Surface::blit(Surface *dst, const Rectangle &dst_position) {
  */
 void Surface::blit(const Rectangle &src_position, Surface *dst) {
 
-  Rectangle src_position2 = src_position;
+  Rectangle src_position2(src_position);
   SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, NULL);
 }
 
@@ -159,8 +159,8 @@ void Surface::blit(const Rectangle &src_position, Surface *dst) {
  */
 void Surface::blit(const Rectangle &src_position, Surface *dst, const Rectangle &dst_position) {
 
-  Rectangle src_position2 = src_position;
-  Rectangle dst_position2 = dst_position;
+  Rectangle src_position2(src_position);
+  Rectangle dst_position2(dst_position);
   SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, dst_position2.get_internal_rect());
 }
 

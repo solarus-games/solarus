@@ -1070,7 +1070,8 @@ line3 = "sauter !"
 #       |--------------------|
 icon = 55
 line1 = "Tu as trouvé le"
-line2 = "Grand Sac de Bombes !$0"
+line2 = "Grand Sac de"
+line3 = "Bombes !$0"
 next = _treasure_55.1
 
 [_treasure_55.1]

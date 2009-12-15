@@ -54,7 +54,7 @@ void StringResource::initialize(void) {
     }
  
     // get the key
-    std::string key = line.substr(0, line.find_first_of("\t"));
+    std::string key = line.substr(0, line.find_first_of(" \t"));
 
     // get the value
     size_t index = line.find_last_of("\t");

@@ -110,6 +110,14 @@
 #       |-----------------------| sans icône ni question (23)
 #       |--------------------|    avec icône ou question (20)
 #       |-----------------|       avec icône et question (17)
+#
+# Attention : dans ces commentaires, chaque tiret représente un caractère
+# (il y a bien 17, 20 ou 23 tirets) et les deux barres verticales sont exclues,
+# elles représentent les limites qu'il est interdit de toucher.
+# Si vous débordez, rien ne garantit que les caractères en trop vont s'afficher
+# correctement. Le moteur de jeu ne spécifie pas ce qui se passe si on ne respecte
+# pas cette règle : les caractères en trop peuvent par exemple être coupés ou au contraire
+# s'afficher au-dessus de la bordure de droite de la boîte de dialogue.
 ####################################################################################
 
 

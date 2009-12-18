@@ -47,7 +47,7 @@ Certaines images du moteur de jeu contiennent du texte. En voici la liste exhaus
   - Continuer sans sauvegarder
   - Quitter sans sauvegarder
 
-- sprites/menus/pause_submenu.png : image qui contient le squelette des 4 versions de l'écran de pause avec le titre de chacun :
+- sprites/menus/pause_submenus.png : image qui contient le squelette des 4 versions de l'écran de pause avec le titre de chacun :
   - Inventaire		titre de l'écran d'inventaire, qui affiche les objets possédés par le joueur
   - Carte		titre de l'écran carte, qui affiche selon le cas la carte du monde ou la carte du donjon avec les informations de celui-ci
   - Statut Quête	titre de l'écran statut quête, qui affiche l'équipement, les fragments de coeur et les donjons terminés
@@ -56,9 +56,11 @@ Certaines images du moteur de jeu contiennent du texte. En voici la liste exhaus
 - sprites/menus/zelda_solarus_presents.png : image qui s'affiche au démarrage du programme, avant l'écran-titre
   - Zelda Solarus présente
 
+
 2) Chaînes de caractères
 
 Le moteur de jeu affiche du texte dans les différents menus. Tous ces textes sont chargés depuis le fichier text/strings.zsd. Pour les traduire, il faut modifier ce fichier à l'aide d'un éditeur de texte, en respectant les règles expliquées à l'intérieur. Le fichier doit être encodé en utf-8.
+
 
 3) Dialogues
 
@@ -69,4 +71,27 @@ Les dialogues sont la plus grosse partie à traduire. Ce sont tous les messages 
 Les dialogues du moteur sont définis dans le fichier text/engine_dialogs.zsd. Les dialogues du jeu sont définis dans le fichier text/game_dialogs.zsd. Ce sont tous les deux des fichiers ini encodés en utf-8 et ils obéissent à des règles très strictes pour que les dialogues puissent être affichés correctement et s'enchaîner comme il faut. Ces règles sont expliquées dans le fichier des dialogues du moteur (text/engine_dialogs.zsd). En particulier, il ne faut pas dépasser la longueur maximale des lignes, sous peine de voir le texte déborder de la boîte de dialogue pendant le jeu. Il faut aussi veiller à conserver les enchaînements prévus. Venez me poser des questions. Le plus important est de retester le jeu méticuleusement après avoir effectué la traduction, en vérifiant bien l'orthographe et la cohérence des dialogues.
 
 
+4) Mode d'emploi
+
+Traduire les textes de http://www.zelda-solarus.com/zsdx/mode_emploi_demo.pdf et refaire les captures d'écran.
+
+
+5) Description succinte du jeu
+
+Description :
+
+français : Un jeu amateur Zelda libre et gratuit inspiré de Zelda en 2D - démo contenant le début du jeu.
+
+anglais : A free Zelda fan game similar to old Zelda games - demo version includes the beginning of the game.
+
+allemand : Ein freies und kostenloses Zelda Spiel, das den 2D Zeldas nachempfunden ist - Der Anfang des Abenteuers als Demoversion.
+
+
+Résumé :
+
+français : Zelda Mystery of Solarus DX est un jeu amateur gratuit et à but non lucratif inspiré de la série Zelda. La démo contient le début du jeu en attendant le développement du jeu complet. Les graphismes et les musiques sont essentiellement tirés de Zelda: A Link to the Past. Le jeu est réalisé en C++ et les sources sont sous licence GPL.
+
+anglais : Zelda Mystery of Solarus DX is a free, non-profit-making Zelda fan game. This demo version contains the beginning of the game and the rest of the game is not available yet. Graphics and musics come mostly from Zelda: A Link to the Past. This game is created in C++ and the source code is under the GPL.
+
+allemand : Zelda Mystery of Solarus DX ist ein kostenloses, nicht kommerzielles Spiel, das von Zelda-Fans entwickelt wurde. Es ist der Reihe der Zelda Spiele nachempfunden. Die Demo-Version enthält den Anfang des Spiels. Die Grafiken und die Musik orientieren sich hauptsächlich an Zelda: A Link to the Past. Das Spiel wurde unter C++ entwickelt, der Quellcode steht unter der GPL-Lizenz.
 

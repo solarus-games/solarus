@@ -158,7 +158,7 @@ std::istream & FileTools::data_file_open(const std::string &file_name) {
 
 /**
  * Closes a text file previously open with data_file_open().
- * @param data file the input stream to close
+ * @param data_file the input stream to close
  */
 void FileTools::data_file_close(const std::istream &data_file) {
   delete &data_file;

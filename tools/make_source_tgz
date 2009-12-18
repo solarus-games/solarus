@@ -1,0 +1,32 @@
+#!/bin/csh
+
+if ($#argv != 1) then
+  echo "Usage: ./make_source_tgz version"
+  exit 1
+endif
+
+if (! -x make_source_tgz) then
+  echo "This script should be launched from the tools directory"
+  exit 2
+endif
+
+cd ..
+
+if (-e zsdxdemo) then
+  echo "The zsdxdemo directory already exists"
+  exit 3
+endif
+
+svn export . zsdxdemo
+cd zsdxdemo
+if ($status != 0) then
+  echo "Could not export the svn copy into ta zsdxdemo directory"
+  exit 4
+endif
+
+rm -rf licence_cpp.txt licence_lua.txt valgrind.supp valgrind-zsdx work tools data/make_zip data/project_db.zsd .classpath .project
+cd ..
+rm -f zsdxdemo-src-$argv[1].tar.gz
+tar cvzf zsdxdemo-src-$argv[1].tar.gz zsdxdemo
+rm -rf zsdxdemo
+

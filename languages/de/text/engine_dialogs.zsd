@@ -1,0 +1,1825 @@
+# Ce fichier comporte l'ensemble des messages affichés
+# par le moteur de jeu en version française.
+# Les messages affichés par les maps sont quant à eux
+# définis dans le fichier text/game_dialogs.zsd.
+
+####################################################################################
+#             Syntaxe des fichiers text/engine_dialogs.zsd et text/game_dialogs.zsd
+#
+# La syntaxe est similaire à celle d'un fichier ini de Windows.
+# Les lignes commençant par le caractère '#' sont des commentaires
+# et sont ignorés par le jeu.
+# Un message est défini par les éléments suivants :
+#
+# - Un identificateur entre crochets.
+# Les messages du moteur de jeu (donc tous ceux dans ce fichier)
+# ont toujours un identificateur qui commence par le caractère '_'.
+# L'identificateur permet au jeu de faire référence au message qu'il
+# souhaite l'afficher. Les identificateurs ne doivent pas être traduits.
+#
+# - Les valeurs line1, line2 et line3 : définissent le contenu du
+# message, sur une à trois lignes. Le texte de chaque ligne
+# doit être mis entre guillemets. Une ligne ne doit pas
+# dépasser 23 caractères. Lors de la traduction, ce sont ces lignes
+# qu'il faut traduire.
+#
+# - La valeur next : donne l'identificateur du prochain message
+# à afficher. Si cette valeur n'est pas définie, cela signifie
+# que ce message était le dernier de la série et la boîte de 
+# dialogue va se fermer une fois qu'il sera terminé.
+# Si la valeur next existe, alors une flèche s'affiche en bas du message courant,
+# indiquant que ce message va être suivi d'un autre.
+# Si la valeur next n'existe pas, alors la flèche est remplacée par un carré
+# indiquant que c'était le dernier message de la série.
+# Un message contenant une question est toujours affiché avec une flèche.
+# Il peut arriver que bien qu'une série se termine, on souhaite afficher une flèche.
+# C'est le cas en particulier lorsqu'on sait qu'elle sera immédiatement suivie
+# par une nouvelle série mais qu'on ne sait pas encore laquelle (cela peut dépendre
+# de la quête). Dans ce cas, on utilise la valeur spéciale "_unknown"
+# afin d'indiquer que la série va être suivie d'une autre série, pour l'instant indéterminée.
+# Cela a pour seul effet d'afficher la flèche au lieu du carré,
+# mais ensuite tout se passe comme si aucune valeur next n'était définie. 
+#
+# - Par convention, lorsqu'un texte est trop long pour tenir
+# dans un seul message, la suite est dans un ou plusieurs messages
+# dont l'identificateur est le même auquel on ajoute ".2", puis
+# ".3", etc. Lors de la traduction, on peut ainsi faire tenir
+# le texte dans un nombre différent de messages sans avoir
+# de problèmes d'identificateurs. Seul le premier message
+# de la série doit avoir exactement le même identificateur que
+# dans la version française. Si le dernier message de la série
+# se termine par ".4" au
+# lieu de ".3" parce que la traduction ne tenait pas dans le même
+# nombre de messages, cela fonctionne sans problème.
+# C'est sur tous les messages autres que ceux finissant par
+# ".2", ".3", etc, qu'il faut bien se synchroniser.
+#
+# - La valeur cancel : définit ce qui se passe lorsque le joueur
+# tente d'interrompre le message en appuyant sur la touche C. Il y a
+# 3 valeurs possibles :
+#    - none (par défaut) : le message ne peut pas être passé.
+#    - current : si on appuie sur C, le message courant s'affiche
+#                immédiatement en entier (au lieu de défiler lettre par lettre).
+#                On peut ainsi passer plus vite au message suivant.
+#    - all : si on appuie sur C, le message courant s'arrête
+#            et les messages suivants ne seront pas affichés. La
+#            boîte de dialogue se ferme immédiatement.
+# La valeur de cancel s'applique au message courant et à tous les
+# messages suivants, jusqu'à ce que la valeur soit changée ou que
+# la boîte de dialogue se ferme.
+#
+# - La valeur icon : permet d'afficher une icône de 16*16 pixels dans le message.
+# La valeur est un numéro qui permet d'identifier l'icône dans
+# le fichier image des icônes. L'icône s'affiche à gauche du texte
+# et le texte ne doit pas dépasser 20 caractères (au lieu de 23 en
+# temps normal). Elle reste affichée dans les messages suivants,
+# jusqu'à ce que sa valeur soit changée ou que la boîte de dialogue
+# se ferme. Une valeur -1 signifie d'enlever l'icône.
+# Les icônes sont surtout utilisées dans les messages du moteur de
+# jeu, par exemple lorsque le joueur obtient un trésor.
+#
+# - La valeur question : permet d'afficher une question avec deux
+# réponses au choix. La première ligne est la question
+# et les deux dernières lignes sont les deux réponses possibles.
+# Ces deux lignes sont alors limitées à 20
+# caractères (au lieu de 23 en temps normal) car un curseur en
+# forme de flèche permet au joueur de choisir sa réponse. Il est
+# possible d'avoir à la fois une icône et une question, dans ce cas
+# le nombre de caractères des lignes de réponse se limite à 17.
+# S'il y a une question, il est possible de spécifier une valeur
+# next2. Si la première réponse est choisie, le prochain message
+# affiché est indiqué par next. Si la deuxième réponse est choisie,
+# il est alors indiqué par next2. Comme pour la valeur next,
+# si next2 n'est pas spécifié et que le joueur choisit la réponse 2,
+# la série de messages s'arrête et la boîte de dialogue se ferme.
+#
+# - Enfin, il existe des séquences particulières que l'on peut
+# insérer dans le texte d'un message :
+#    - $0 : fait une pause d'une seconde dans le défilement du message.
+#    - $1 : met une vitesse de défilement lente
+#    - $2 : met une vitesse de défilement moyenne
+#    - $3 : met une vitesse de déliement rapide (par défaut)
+#    - $v : permet d'insérer la valeur d'une variable dans le texte
+#           du message (la valeur est alors spécifiée dans
+#           le programme qui a demandé l'affichage du message)
+#
+#
+# - Les commentaires suivants permettent de vérifier le nombre
+# limite de caractères dans un message :
+#
+#       |-----------------------| sans icône ni question (23)
+#       |--------------------|    avec icône ou question (20)
+#       |-----------------|       avec icône et question (17)
+####################################################################################
+
+
+# -------------------------------------
+# Description des items de l'inventaire
+# -------------------------------------
+# 
+# Les messages ci-dessous sont affichés dans l'écran d'inventaire
+# lorsque le joueur souhaite afficher la description d'un item
+# qu'il possède. Ces messages peuvent être annulés en appuyant
+# sur C.
+# L'identificateur de chacun de ces messages est de la forme _item_description_i_x
+# où i est le numéro de l'item (de 0 à 27) et x est la variante de cet
+# item possédée par le joueur.
+# Exception : les items 13, 20 et 27 ne sont pas définis car il s'agit des Flacons 2, 3 et 4,
+# et ces derniers se contentent de faire appel aux messages définis pour le Flacon 1 (item n°6).
+
+[_item_description_0_1]
+# Plume / Feather / Feder
+#       |--------------------|
+icon = 0
+line1 = "Benutze die Feder,"
+line2 = "um zu springen und"
+line3 = "Hindernisse zu"
+cancel = all
+next = _item_description_0_1.1
+
+[_item_description_0_1.1]
+#       |--------------------|
+line1 = überwinden."
+
+[_item_description_1_1]
+# Bombes / Bombs / Bomben
+#       |--------------------|
+icon = 1
+line1 = "Setze Bomben gegen"
+line2 = "Gegner ein oder um"
+line3 = "Hindernisse zu"
+cancel = all
+next = _item_description_1_1.1
+
+[_item_description_1_1.1]
+#       |--------------------|
+line1 = "sprengen."
+
+[_item_description_2_1]
+# Arc / Bow / Bogen
+#       |--------------------|
+icon = 2
+line1 = "Du hast keine"
+line2 = "Pfeile mehr übrig!"
+cancel = all
+
+[_item_description_2_2]
+# Arc & Flèches / Bow & Arrows
+#       |--------------------|
+icon = 3
+line1 = "Benutze Pfeile, um"
+line2 = "zähe Gegner"
+line3 = "zu besiegen."
+cancel = all
+
+[_item_description_3_1]
+# Boomerang
+#       |--------------------|
+icon = 4
+line1 = "Mit dem Bumerang"
+line2 = "kannst Du Gegner"
+line3 = "lähmen und entfernte"
+cancel = all
+next = _item_description_3_1.1
+
+[_item_description_3_1.1]
+#       |--------------------|
+line1 = "Gegenstände"
+line2 = "aufsammeln."
+
+[_item_description_4_1]
+# Lanterne / Lamp / Lampe
+#       |--------------------|
+icon = 5
+line1 = "Bringe Licht ins"
+line2 = "Dunkel oder zünde"
+line3 = "mit der Lampe"
+cancel = all
+next = _item_description_4_1.1
+
+[_item_description_4_1.1]
+#       |--------------------|
+line1 = "Fackeln an. Aber"
+line2 = "achte auf Deinen"
+line3 = "Magieverbrauch!"
+
+[_item_description_5_1]
+# Grappin / Hook Shot / Enterhaken
+#       |--------------------|
+icon = 6
+line1 = "Mit dem Enterhaken"
+line2 = "kannst Du Dich an"
+line3 = "sonst unerreichbare"
+cancel = all
+next = _item_description_5_1.1
+
+[_item_description_5_1.1]
+#       |--------------------|
+line1 = "Orte ziehen."
+
+[_item_description_6_1]
+# Flacon Magique vide / Empty bottle / leere Flasche
+#       |--------------------|
+icon = 7
+line1 = "In einer Flasche"
+line2 = "kann man praktische"
+line3 = "Dinge aufbewahren..."
+cancel = all
+
+[_item_description_6_2]
+# Eau dans Flacon / Water in Bottle / Wasser in der Flasche
+#       |--------------------|
+icon = 8
+line1 = "Deine Flasche ist"
+line2 = "mit Wasser gefüllt."
+cancel = all
+next = _item_description_6_2.1
+
+[_item_description_6_2.1]
+#       |--------------------|
+line1 = "Leere sie an einem"
+line2 = "geeigneten Ort..."
+
+[_item_description_6_3]
+# Potion rouge / Red potion / Roter Trank
+#       |--------------------|
+icon = 9
+line1 = "Trinke den roten"
+line2 = "Trank, um Deine"
+line3 = "Herzleiste voll"
+cancel = all
+next = _item_description_6_3.1
+
+[_item_description_6_3.1]
+#       |--------------------|
+line1 = "aufzufüllen."
+
+[_item_description_6_4]
+# Potion verte / Red potion
+#       |--------------------|
+icon = 10
+line1 = "Trinke den grünen"
+line2 = "Trank, um Deine"
+line3 = "Magie aufzufüllen."
+cancel = all
+
+[_item_description_6_5]
+# Potion bleue / Red potion
+#       |--------------------|
+icon = 11
+line1 = "Trinke den blauen"
+line2 = "Trank, um Herzen und"
+line3 = "Magie aufzufüllen!"
+cancel = all
+
+[_item_description_6_6]
+# Fée dans Flacon / Fairy in Bottle / Fee in der Flasche
+#       |--------------------|
+icon = 12
+line1 = "Diese Fee wird Dir"
+line2 = "in der Not zur"
+line3 = "Hilfe kommen."
+next = _item_description_6_6.1
+cancel = all
+
+[_item_description_6_6.1]
+#       |--------------------|
+line1 = "Du kannst sie aber"
+line2 = "auch jederzeit"
+line3 = "benutzen, um"
+next = _item_description_6_6.2
+
+[_item_description_6_6.2]
+#       |--------------------|
+line1 = "einige Herzen"
+line2 = "aufzufüllen!"
+
+[_item_description_7_1]
+# Bottes de Pégase / Pegasus Shoes /Pegasus-Schuhe
+#       |--------------------|
+icon = 13
+line1 = "Renne wie der Blitz"
+line2 = "und zertrümmere die"
+line3 = "Hindernisse mit den"
+cancel = all
+next = _item_description_7_1.1
+
+[_item_description_7_1.1]
+#       |--------------------|
+line1 = "Pegasus-Schuhen!"
+
+[_item_description_8_1]
+# Miroir Mystique / Mystic Mirror / Zauberspiegel
+#       |--------------------|
+icon = 14
+line1 = "Es heißt, der"
+line2 = "Zauberspiegel habe"
+line3 = "geheimnisvolle"
+cancel = all
+next = _item_description_8_1.1
+
+[_item_description_8_1.1]
+#       |--------------------|
+line1 = "Kräfte..."
+
+[_item_description_9_1]
+# Canne de Somaria / Cane of Somaria /Somaria-Stab
+#       |--------------------|
+icon = 15
+line1 = "Erstelle Felsen als"
+line2 = "Ankerpunkt für"
+line3 = "Deinen Enterhaken."
+cancel = all
+next = _warning_magic
+
+[_item_description_10_1]
+# Pommes / Apples / Äpfel
+#       |--------------------|
+icon = 16
+line1 = "Iss einen Apfel, um"
+line2 = "eines Deiner Herzen"
+line3 = "aufzufüllen."
+cancel = all
+
+[_item_description_11_1]
+# Pains au Chocolat / Pains au Chocolat / Schokobrötchen
+#       |--------------------|
+icon = 17
+line1 = "Iss ein Schoko-"
+line2 = "bröchen, um 3"
+line3 = "Herzen aufzufüllen."
+cancel = all
+
+[_item_description_12_1]
+# Croissant / Croissant / Hörnchen
+#       |--------------------|
+icon = 18
+line1 = "Iss ein Hörnchen,"
+line2 = "um 7 Herzen wieder-"
+line3 = "herzustellen."
+cancel = all
+
+[_item_description_14_1]
+# Clé de Roc / Rock Key / Felsschlüssel
+#       |--------------------|
+icon = 19
+line1 = "Der Felsschlüssel."
+line2 = "Wo ist bloß das"
+line3 = "passende Schloss?"
+cancel = all
+
+[_item_description_15_1]
+# Clé Rouge / Red Key / Roter Schlüssel
+#       |--------------------|
+icon = 20
+line1 = "Dieser seltsame"
+line2 = "Schlüssel ist rot."
+cancel = all
+
+[_item_description_16_1]
+# Clé de Terre / Clay Key / Erdschlüssel
+#       |--------------------|
+icon = 21
+line1 = "Der Erdschlüssel. Er"
+line2 = "öffnet den Höhlen-"
+line3 = "eingang im Dorf."
+cancel = all
+
+[_item_description_17_1]
+# Tarte aux Pommes / Apple Pie / Apfelkuchen
+#       |--------------------|
+icon = 22
+line1 = "Dieser Apfelkuchen"
+line2 = "sieht seltsam aus..."
+cancel = all
+
+[_item_description_17_2]
+# Lingots d'or / Golden bars / Goldbarren
+#       |--------------------|
+icon = 23
+line1 = "Das sind drei"
+line2 = "wahrhaftige"
+line3 = "Goldbarren!"
+cancel = all
+
+[_item_description_17_3]
+# Edelweiss / Edelweiss / Edelweiß
+#       |--------------------|
+icon = 24
+line1 = "Das Edelweiß ist"
+line2 = "in Hyrule eine"
+line3 = "sehr seltene Blume."
+cancel = all
+
+[_item_description_17_4]
+# Clé d'Os / Bone Key / Knochenschlüssel
+#       |--------------------|
+icon = 25
+line1 = "Was kann man bloß"
+line2 = "mit diesem Knochen-"
+line3 = "schlüssel anfangen?"
+cancel = all
+
+[_item_description_18_1]
+# Palmes / Flippers / Flossen
+#       |--------------------|
+icon = 26
+line1 = "Mit den Flossen"
+line2 = "kannst Du in tiefen"
+line3 = "Gewässern schwimmen."
+cancel = all
+
+[_item_description_19_1]
+# Cape magique / Magic Cape / magischer Umhang
+#       |--------------------|
+icon = 27
+line1 = "Der magische Umhang"
+line2 = "warnt Dich, wenn Du"
+line3 = "Dich in der Nähe"
+cancel = all
+next = _item_description_19_1.1
+
+[_item_description_19_1.1]
+#       |--------------------|
+line1 = "einer brüchigen"
+line2 = "Wand befindest."
+
+[_item_description_21_1]
+# Clé de Fer / Iron Key / Eisenschlüssel
+#       |--------------------|
+icon = 28
+line1 = "Der Eisenschlüssel."
+line2 = "Nun bloß nicht das"
+line3 = "Schloss verwechseln!"
+cancel = all
+
+[_item_description_22_1]
+# Clé de Pierre / Stone Key / Steinschlüssel
+#       |--------------------|
+icon = 29
+line1 = "Der Steinschlüssel."
+line2 = "Jetzt fehlt noch das"
+line3 = "richtige Schloss!"
+cancel = all
+
+[_item_description_23_1]
+# Clé de Bois / Wooden Key / Holzschlüssel
+#       |--------------------|
+icon = 30
+line1 = "Der Holzschlüssel."
+line2 = "Er passt nur in ein"
+line3 = "einziges Schloss..."
+cancel = all
+
+[_item_description_24_1]
+# Clé de Glace / Ice Key / Eisschlüssel
+#       |--------------------|
+icon = 31
+line1 = "Der Eisschlüssel."
+line2 = "Finde einen eisigen"
+line3 = "Ort, um ihn zu"
+cancel = all
+next = _item_description_24_1.1
+
+[_item_description_24_1.1]
+#       |--------------------|
+line1 = "benutzen!"
+cancel = all
+
+[_item_description_25_1]
+# Poigne de Fer / Iron Glove / Krafthandschuhe
+#       |--------------------|
+icon = 32
+line1 = "Mit dem Krafthand-"
+line2 = "schuh kannst Du"
+line3 = "Steine heben."
+cancel = all
+
+[_item_description_25_2]
+# Poigne d'Or / Golden Glove / Titanenhandschuh
+#       |--------------------|
+icon = 33
+line1 = "Hebe mit dem"
+line2 = "Titanenhandschuh"
+line3 = "nun auch dunkle"
+cancel = all
+next=_item_description_25_2.1
+
+_item_description_25_2.1]
+#       |--------------------|
+line1 = "Steine."
+
+[_item_description_26_1]
+# Pierres de Feu / Fire Stones / Feuerstein
+#       |--------------------|
+icon = 34
+line1 = "Finde drei Feuer-"
+line2 = "steine und bringe"
+line3 = "sie Inferno."
+cancel = all
+
+# ---------------------
+# Obtention d'un trésor
+# ---------------------
+# 
+# Les messages ci-dessous sont affichés lorsque le joueur obtient
+# un trésor, généralement en ouvrant un coffre ou en l'achetant
+# dans un magasin.
+
+[_treasure_0]
+# Plume
+#       |--------------------|
+icon = 0
+line1 = "Du hast die Feder"
+line2 = "gefunden! $0Benutze"
+line3 = "sie, um zu springen"
+next = _treasure_0.1
+
+[_treasure_0.1]
+#       |--------------------|
+line1 = "und Hindernisse zu"
+line2 = "überwinden."
+
+[_treasure_2]
+# Arc seul
+#       |--------------------|
+icon = 2
+line1 = "Du hast den Bogen"
+line2 = "gefunden! $0Finde"
+line3 = "Pfeile und Du kannst"
+next = _treasure_2.1
+
+[_treasure_2.1]
+#       |--------------------|
+line1 = "Deine zähen Gegner"
+line2 = "aus der Ferne"
+line3 = "besiegen."
+
+[_treasure_3]
+# Arc & Flèches
+#       |--------------------|
+icon = 3
+line1 = "Du hast einen Bogen"
+line2 = "mit 10 Pfeilen"
+line3 = "gefunden! $0Du kannst"
+next = _treasure_2.1
+
+[_treasure_4]
+# Boomerang
+#       |--------------------|
+icon = 4
+line1 = "Du hast den Bumerang"
+line2 = "gefunden!$0 Du kannst"
+line3 = "damit Gegner lähmen"
+next = _treasure_4.1
+
+[_treasure_4.1]
+#       |--------------------|
+line1 = "und entfernte"
+line2 = "Gegenstände"
+line3 = "aufsammeln."
+next = _treasure_4.2
+
+[_treasure_4.2]
+#       |--------------------|
+line1 = "Seine richtige" 
+line2 = "Handhabung bietet"
+line3 = "viele Möglichkeiten."
+next = _treasure_4.3
+
+[_treasure_4.3]
+#       |--------------------|
+line1 = "Es liegt nun an Dir,"
+line2 = "sie zu entdecken."
+
+[_treasure_5]
+# Lanterne
+#       |--------------------|
+icon = 5
+line1 = "Du hast die Lampe"
+line2 = "gefunden!$0 Sie"
+line3 = "erhellt dunkle Orte."
+next = _treasure_5.1
+
+[_treasure_5.1]
+#       |--------------------|
+line1 = "Du kannst mit"
+line2 = "ihr auch Fackeln"
+line3 = "anzünden."
+next = _warning_magic
+
+[_treasure_6]
+# Grappin
+#       |--------------------|
+icon = 6
+line1 = "Du hast den"
+line2 = "Enterhaken gefunden!"
+line3 = "$0 Lähme die Gegner"
+next = _treasure_6.1
+
+[_treasure_6.1]
+#       |--------------------|
+line1 = "und ziehe Dich an"
+line2 = "unerreichbare Orte!"
+
+[_treasure_7]
+# Flacon vide
+#       |--------------------|
+icon = 7
+line1 = "Du hast eine Flasche"
+line2 = "gefunden!$0"
+next = _treasure_7.1
+
+[_treasure_7.1]
+#       |--------------------|
+line1 = "Du kannst sie mit"
+line2 = "verschiedenen Dingen"
+line3 = "füllen."
+
+[_treasure_8]
+# Eau
+#       |--------------------|
+icon = 8
+line1 = "Du hast Wasser in"
+line2 = "Deine Flasche"
+line3 = "gefüllt."
+
+[_treasure_9]
+# Potion rouge
+#       |--------------------|
+icon = 9
+line1 = "Du hast den roten"
+line2 = "Trank gefunden!$0"
+next = _treasure_9.1
+
+[_treasure_9.1]
+#       |--------------------|
+line1 = "Trinke ihn, um Deine"
+line2 = "Herzleiste voll"
+line3 = "aufzufüllen."
+
+[_treasure_10]
+# Potion verte
+#       |--------------------|
+icon = 10
+line1 = "Du hast den grünen"
+line2 = "Trank gefunden!$0"
+next = _treasure_10.1
+
+[_treasure_10.1]
+#       |--------------------|
+line1 = "Trinke ihn, um Deine"
+line2 = "magische Energie"
+line3 = "aufzufüllen."
+
+[_treasure_11]
+# Potion bleue
+#       |--------------------|
+icon = 11
+line1 = "Du hast den blauen"
+line2 = "Trank gefunden!$0"
+next = _treasure_11.1
+
+[_treasure_11.1]
+#       |--------------------|
+line1 = "Trinke ihn, um alle"
+line2 = "Herzen und Deine"
+line3 = "Magie aufzufüllen!"
+
+[_treasure_12]
+# Fée dans Flacon
+#       |--------------------|
+icon = 12
+line1 = "Du hast eine Fee"
+line2 = "gefangen! Sie wird"
+line3 = "Dir in der Not zur"
+next = _treasure_12.1
+cancel = all
+
+[_treasure_12.1]
+#       |--------------------|
+line1 = "Hilfe eilen. Du"
+line2 = "kannst sie aber auch"
+line3 = "jederzeit benutzen,"
+next = _treasure_12.2
+
+[_treasure_12.2]
+#       |--------------------|
+line1 = "um einige Herzen"
+line2 = "aufzufüllen."
+
+[_treasure_13]
+# Bottes de Pégase
+#       |--------------------|
+icon = 13
+line1 = "Du hast die Pegasus-"
+line2 = "schuhe gefunden!$0"
+next = _treasure_13.1
+
+[_treasure_13.1]
+#       |--------------------|
+line1 = "Renne wie der Blitz"
+line2 = "und zertrümmere die"
+line3 = "Hindernisse."
+
+[_treasure_14]
+# Miroir Mystique
+#       |--------------------|
+icon = 14
+line1 = "Du hast den Zauber-"
+line2 = "spiegel gefunden!$0"
+line3 = "Die geheimnisvollen"
+next = _treasure_14.1
+
+[_treasure_14.1]
+#       |--------------------|
+line1 = "Kräften des Spiegels"
+line2 = "werden sicherlich"
+line3 = "von Nutzen sein..."
+
+[_treasure_15]
+# Canne de Somaria
+#       |--------------------|
+icon = 15
+line1 = "Du hast den Somaria-"
+line2 = "Stab gefunden!$0"
+next = _treasure_15.1
+
+[_treasure_15.1]
+#       |--------------------|
+line1 = "Du kannst Felsblöcke"
+line2 = "erstellen und sie"
+line3 = "als Ankerpunkt für"
+next = _treasure_15.2
+
+[_treasure_15.2]
+#       |--------------------|
+line1 = "Deinen Enterhaken"
+line2 = "benutzen."
+next = _warning_magic
+
+[_treasure_16_1]
+# 1 Pomme
+#       |--------------------|
+icon = 16
+line1 = "Du hast einen Apfel"
+line2 = "gefunden!$0"
+next = _treasure_16_1.1
+
+[_treasure_16_1.1]
+#       |--------------------|
+line1 = "Iss ihn später, um"
+line2 = "ein Herz"
+line3 = "wiederherzustellen."
+
+[_treasure_16_2]
+# Plusieurs Pommes
+#       |--------------------|
+icon = 16
+line1 = "Du hast $v Äpfel"
+line2 = "gefunden!$0"
+next = _treasure_16_2.1
+
+[_treasure_16_2.1]
+#       |--------------------|
+line1 = "Iss sie später, um"
+line2 = "Herzen aufzufüllen."
+
+[_treasure_17_1]
+# 1 Pain au Chocolat
+#       |--------------------|
+icon = 17
+line1 = "Du hast ein Schoko-"
+line2 = "brötchen gefunden!$0"
+next = _treasure_17_1.1
+
+[_treasure_17_1.1]
+#       |--------------------|
+line1 = "Iss ein Brötchen, um"
+line2 = "3 Deiner Herzen"
+line3 = "wiederherzustellen."
+
+[_treasure_17_2]
+# Plusieurs Pains au Chocolat
+#       |--------------------|
+icon = 17
+line1 = "Du hast $v Schoko-"
+line2 = "brötchen gefunden!$0"
+next = _treasure_17_1.1
+
+[_treasure_18_1]
+# 1 Croissant
+#       |--------------------|
+icon = 18
+line1 = "Du hast ein Hörnchen"
+line2 = "gefunden!$0 Es ist"
+line3 = "schön knusprig."
+next = _treasure_18_1.1
+
+[_treasure_18_1.1]
+#       |--------------------|
+line1 = "Iss ein Hörnchen, um"
+line2 = "7 Deiner Herzen"
+line3 = "wiederherzustellen."
+
+[_treasure_18_2]
+# Plusieurs Croissants
+#       |--------------------|
+icon = 18
+line1 = "Du hast $v"
+line2 = "Hörnchen gefunden!$0"
+next = _treasure_18_1.1
+
+[_treasure_19]
+# Clé de Roc
+#       |--------------------|
+icon = 19
+line1 = "Du hast den"
+line2 = "Felsschlüssel"
+line3 = "gefunden!$0"
+
+[_treasure_20]
+# Clé Rouge
+#       |--------------------|
+icon = 20
+line1 = "Du hast den roten"
+line2 = "Schlüssel gefunden!$0"
+
+[_treasure_21]
+# Clé de Terre
+#       |--------------------|
+icon = 21
+line1 = "Du hast den"
+line2 = "Erdschlüssel"
+line3 = "gefunden!$0"
+next = _treasure_21.1
+
+[_treasure_21.1]
+#       |--------------------|
+line1 = "Du kannst nun den"
+line2 = "Höhleneingang im"
+line3 = "Dorf öffnen."
+
+[_treasure_22]
+# Tarte aux Pommes
+#       |--------------------|
+icon = 22
+line1 = "Du hast einen Apfel-"
+line2 = "kuchen gefunden!$0"
+line3 = "$1...$3 Hm, vielleicht"
+next = _treasure_22.1
+
+[_treasure_22.1]
+#       |--------------------|
+line1 = "solltest Du ihn"
+line2 = "nicht essen. Er"
+line3 = "sieht seltsam aus..."
+
+[_treasure_23]
+# Lingots d'or
+#       |--------------------|
+icon = 23
+line1 = "Du hast Goldbarren"
+line2 = "gefunden!$0"
+next = _treasure_23.1
+
+[_treasure_23.1]
+#       |--------------------|
+line1 = "Sie glänzen und"
+line2 = "haben einen"
+line3 = "unschätzbaren Wert!"
+
+[_treasure_24]
+# Edelweiss
+#       |--------------------|
+icon = 24
+line1 = "Du hast ein Edelweiß"
+line2 = "gefunden!$0"
+next = _treasure_24.1
+
+[_treasure_24.1]
+#       |--------------------|
+line1 = "Diese hübsche"
+line2 = "Bergblume ist sehr"
+line3 = "selten."
+
+[_treasure_25]
+# Clé d'os
+#       |--------------------|
+icon = 25
+line1 = "Du hast den"
+line2 = "Knochenschlüssel"
+line2 = "gefunden!$0"
+next = _treasure_25.1
+
+[_treasure_25.1]
+#       |--------------------|
+line1 = "Wozu der wohl dienen"
+line2 = "kann?"
+
+[_treasure_26]
+# Palmes
+#       |--------------------|
+icon = 26
+line1 = "Du hast die Flossen"
+line2 = "gefunden!$0"
+next = _treasure_26.1
+
+[_treasure_26.1]
+#       |--------------------|
+line1 = "Du kannst nun in"
+line2 = "tiefen Gewässern"
+line3 = "schwimmen."
+
+[_treasure_27]
+# Cape Magique
+#       |--------------------|
+icon = 27
+line1 = "Du hast den"
+line2 = "magischen Umhang"
+line3 = "gefunden!$0"
+next = _treasure_27.1
+
+[_treasure_27.1]
+#       |--------------------|
+line1 = "Er warnt Dich, wenn"
+line2 = "die Wand neben Dir"
+line3 = "brüchig ist."
+
+[_treasure_28]
+# Clé de Fer
+#       |--------------------|
+icon = 28
+line1 = "Du hast den"
+line2 = "Eisenschlüssel"
+line2 = "gefunden!$0"
+next = _treasure_28.1
+
+[_treasure_28.1]
+#       |--------------------|
+line1 = "Jetzt fehlt nur noch"
+line2 = "die passende Tür."
+
+[_treasure_29]
+# Clé de Pierre
+#       |--------------------|
+icon = 29
+line1 = "Du hast den"
+line2 = "Steinschlüssel"
+line3 = "gefunden!$0"
+next = _treasure_29.1
+
+[_treasure_29.1]
+#       |--------------------|
+line1 = "Wo ist bloß das"
+line2 = "Schloss, das zu ihm"
+line3 = "passt?"
+
+[_treasure_30]
+# Clé de Bois
+#       |--------------------|
+icon = 30
+line1 = "Du hast den"
+line2 = "Holzschlüssel"
+line3 = "gefunden!$0"
+next = _treasure_30.1
+
+[_treasure_30.1]
+#       |--------------------|
+line1 = "Jetzt musst Du"
+line2 = "herausfinden, wo Du"
+line3 = "ihn benutzen kannst."
+
+[_treasure_31]
+# Clé de Glace
+#       |--------------------|
+icon = 31
+line1 = "Du hast den"
+line2 = "Eisschlüssel"
+line3 = "gefunden!$0"
+next = _treasure_31.1
+
+[_treasure_31.1]
+#       |--------------------|
+line1 = "Er gehört ohne"
+line2 = "Zweifel an einen"
+line3 = "eisigen Ort..."
+
+[_treasure_32]
+# Poigne de Fer
+#       |--------------------|
+icon = 32
+line1 = "Du hast den"
+line2 = "Krafthandschuh"
+line3 = "gefunden!$0"
+next = _treasure_32.1
+
+[_treasure_32.1]
+#       |--------------------|
+line1 = "Mit ihm kannst Du"
+line2 = "Steine heben."
+
+[_treasure_33]
+# Poigne d'Or
+#       |--------------------|
+icon = 33
+line1 = "Du hast den Titanen-"
+line2 = "handschuh gefunden!$0"
+next = _treasure_33.1
+
+[_treasure_33.1]
+#       |--------------------|
+line1 = "Nun kannst Du auch"
+line2 = "die dunklen Steine"
+line3 = "heben."
+
+[_treasure_34]
+# Pierre de Feu
+#       |--------------------|
+icon = 34
+line1 = "Du hast einen"
+line2 = "Feuerstein gefunden!"
+
+[_treasure_50]
+# Carte du Monde
+#       |--------------------|
+icon = 50
+line1 = "Du hast die"
+line2 = "Weltkarte gefunden!$0"
+next = _treasure_50.1
+
+[_treasure_50.1]
+#       |--------------------|
+line1 = "Du kannst sie"
+line2 = "Dir im Kartenmenü"
+line3 = "anschauen."
+
+[_treasure_52]
+# Grand sac de rubis
+#       |--------------------|
+icon = 52
+line1 = "Du hast den großen"
+line2 = "Geldbeutel gefunden!$0"
+next = _treasure_52.1
+
+[_treasure_52.1]
+#       |--------------------|
+line1 = "Darin ist Platz für"
+line2 = "300 Rubine."
+
+[_treasure_53]
+# Sac de rubis géant
+#       |--------------------|
+icon = 53
+line1 = "Du hast den riesigen"
+line2 = "Geldbeutel gefunden!$0"
+next = _treasure_53.1
+
+[_treasure_53.1]
+#       |--------------------|
+line1 = "Darin ist Platz für"
+line2 = "999 Rubine."
+
+[_treasure_54]
+# Petit sac de bombes
+#       |--------------------|
+icon = 54
+line1 = "Du hast die Bomben-"
+line2 = "tasche gefunden!$0 Sie"
+line3 = "enthält 10 Bomben."
+next = _treasure_54.1
+
+[_treasure_54.1]
+#       |--------------------|
+line1 = "Weise sie einer"
+line2 = "Taste zu und sprenge"
+line3 = "alles in die Luft!"
+
+[_treasure_55]
+# Grand sac de bombes
+#       |--------------------|
+icon = 55
+line1 = "Du hast die große"
+line2 = "Bombentasche"
+line3 = "gefunden!$0"
+next = _treasure_55.1
+
+[_treasure_55.1]
+#       |--------------------|
+line1 = "Anstatt 10 kannst"
+line2 = "Du nun bis zu 30"
+line3 = "Bomben tragen."
+
+[_treasure_56]
+# Sac de bombes géant
+#       |--------------------|
+icon = 56
+line1 = "Du hast die riesige"
+line2 = "Bombentasche"
+line3 = "gefunden!$0"
+next = _treasure_56.1
+
+[_treasure_56.1]
+#       |--------------------|
+line1 = "Anstatt 30 kannst"
+line2 = "Du nun bis zu 100"
+line3 = "Bomben tragen."
+
+[_treasure_58]
+# Grand carquois 
+#       |--------------------|
+icon = 58
+line1 = "Du hast den großen"
+line2 = "Köcher gefunden!$0"
+next = _treasure_58.1
+
+[_treasure_58.1]
+#       |--------------------|
+line1 = "Anstatt 10 kannst"
+line2 = "Du nun bis zu 30"
+line3 = "Pfeile tragen."
+
+[_treasure_59]
+# Carquois géant
+#       |--------------------|
+icon = 59
+line1 = "Du hast den riesigen"
+line2 = "Köcher gefunden!$0"
+next = _treasure_59.1
+
+[_treasure_59.1]
+#       |--------------------|
+line1 = "Anstatt 30 kannst"
+line2 = "Du nun bis zu 100"
+line3 = "Pfeile tragen."
+
+[_treasure_61]
+# Cotte de mailles bleue
+#       |--------------------|
+icon = 61
+line1 = "Du hast das blaue"
+line2 = "Kettenhemd gefunden!$0"
+line3 = "Mit ihm kannst Du"
+next = _treasure_61.1
+
+[_treasure_61.1]
+#       |--------------------|
+line1 = "selbst den eisigsten"
+line2 = "Temperaturen"
+line3 = "trotzen."
+
+[_treasure_62]
+# Cotte de mailles rouge
+#       |--------------------|
+icon = 62
+line1 = "Du hast das rote"
+line2 = "Kettenhemd gefunden!$0"
+line3 = "Es bietet Dir einen"
+next = _treasure_62.1
+
+[_treasure_62.1]
+#       |--------------------|
+line1 = "besseren Schutz"
+line2 = "gegen gegnerische"
+line3 = "Angriffe."
+
+[_treasure_63]
+# Bouclier
+#       |--------------------|
+icon = 63
+line1 = "Du hast den Schild"
+line2 = "gefunden!$0"
+next = _treasure_63.1
+
+[_treasure_63.1]
+#       |--------------------|
+line1 = "Du kannst die"
+line2 = "Angriffe Deiner"
+line3 = "Gegner abwehren."
+
+[_treasure_64]
+# Bouclier de Feu
+#       |--------------------|
+icon = 64
+line1 = "Du hast den"
+line2 = "Feuerschild"
+line3 = "gefunden!$0"
+next = _treasure_64.1
+
+[_treasure_64.1]
+#       |--------------------|
+line1 = "Du bist nun vor"
+line2 = "Feuerangriffen"
+line3 = "geschützt."
+
+[_treasure_65]
+# Bouclier Miroir
+#       |--------------------|
+icon = 65
+line1 = "Du hast den"
+line2 = "Spiegelschild"
+line3 = "gefunden!$0"
+next = _treasure_65.1
+
+[_treasure_65.1]
+#       |--------------------|
+line1 = "Du kannst jetzt"
+line2 = "Laserstrahlen"
+line3 = "zurückwerfen."
+
+[_treasure_66]
+# Epée 1 (Epée du courage)
+#       |--------------------|
+icon = 66
+line1 = "Du hast das Schwert"
+line2 = "des Mutes erhalten!$0"
+next = _treasure_66.1
+
+[_treasure_66.1]
+#       |--------------------|
+line1 = "Du kannst nun Deinen"
+line2 = "Gegnern im Gefecht"
+line3 = "die Stirn bieten."
+
+[_treasure_67]
+# Epée 2 (Glaive Hylien)
+#       |--------------------|
+icon = 67
+line1 = "Du hast das"
+line2 = "hyrulische Schwert"
+line3 = "gefunden!$0"
+next = _treasure_67.1
+
+[_treasure_67.1]
+#       |--------------------|
+line1 = "Dieses neue Schwert"
+line2 = "ist doppelt so stark"
+line3 = "wie das alte."
+
+[_treasure_68]
+# Epée 3 (Sabre du Héros)
+#       |--------------------|
+icon = 68
+line1 = "Du hast den Heroen-"
+line2 = "säbel gefunden!$0"
+next = _treasure_67.1
+
+[_treasure_69]
+# Epée 4 (Lame Purificatrice)
+#       |--------------------|
+icon = 69
+line1 = "Du hast die Klinge"
+line2 = "des reinen Lichts"
+line3 = "gefunden!$0 Dieses"
+next = _treasure_69.1
+
+[_treasure_69.1]
+#       |--------------------|
+line1 = "Masterschwert hat"
+line2 = "eine unglaubliche"
+line3 = "Macht..."
+
+[_treasure_70]
+# Carte
+#       |--------------------|
+icon = 70
+line1 = "Du hast die Karte"
+line2 = "gefunden!"
+next = _treasure_70.1
+
+[_treasure_70.1]
+#       |--------------------|
+line1 = "Schau sie Dir an,"
+line2 = "um Dich im Dungeon"
+line3 = "zu orientieren."
+
+[_treasure_71]
+# Boussole
+#       |--------------------|
+icon = 71
+line1 = "Du hast den Kompass"
+line2 = "gefunden!"
+line3 = "Er markiert auf der"
+next = _treasure_71.1
+
+[_treasure_71.1]
+#       |--------------------|
+line1 = "Karte Deine"
+line2 = "Position, die des"
+line3 = "Bosses und die"
+next = _treasure_71.2
+
+[_treasure_71.2]
+# Remarque : clin d'oeil à Link's Awakening
+# quand on obtient la Boussole
+#       |--------------------|
+line1 = "Standorte der"
+line2 = "Truhen. Es lebe der"
+line3 = "Fortschritt!"
+
+[_treasure_72]
+# Petite clé
+#       |--------------------|
+icon = 72
+line1 = "Du hast einen"
+line2 = "kleinen Schlüssel"
+line3 = "gefunden!"
+next = _treasure_72.1
+
+[_treasure_72.1]
+#       |--------------------|
+line1 = "Du kannst nun eine"
+line2 = "abgesperrte Tür in"
+line3 = "der Umgebung öffnen."
+
+[_treasure_73]
+# Grande Clé
+#       |--------------------|
+icon = 73
+line1 = "Du hast den großen"
+line2 = "Schlüssel gefunden!"
+line3 = "Du kannst nun die"
+next = _treasure_73.1
+
+[_treasure_73.1]
+#       |--------------------|
+line1 = "besonderen Türen"
+line2 = "öffnen und neue"
+line3 = "Schätze entdecken!"
+
+[_treasure_74]
+# Clé du Maître
+#       |--------------------|
+icon = 74
+line1 = "Du hast den Master-"
+line2 = "schlüssel gefunden!"
+line3 = "Du kannst nun in das"
+next = _treasure_74.1
+
+[_treasure_74.1]
+#       |--------------------|
+line1 = "Versteck des Herrn"
+line2 = "dieses Dungeons"
+line3 = "vordringen."
+
+[_treasure_79_1]
+# 1er Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Du hast ein Herzteil"
+line2 = "gefunden!"
+next = _treasure_79_1.1
+
+[_treasure_79_1.1]
+#       |--------------------|
+icon = 75
+line1 = "Sammel 4 Herzteile,"
+line2 = "um ein Herz dazu-"
+line3 = "zugewinnen."
+
+[_treasure_79_2]
+# 2e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Du hast ein Herzteil"
+line2 = "gefunden!"
+next = _treasure_79_2.1
+
+[_treasure_79_2.1]
+#       |--------------------|
+icon = 76
+line1 = "Sammel noch zwei und"
+line2 = "Du bekommst ein"
+line3 = "zusätzliches Herz."
+
+[_treasure_79_3]
+# 3e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Du hast ein Herzteil"
+line2 = "gefunden!"
+next = _treasure_79_3.1
+
+[_treasure_79_3.1]
+#       |--------------------|
+icon = 77
+line1 = "Nur noch eins, um"
+line2 = "ein zusätzliches"
+line3 = "Herz zu bilden."
+
+[_treasure_79_4]
+# 4e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Du hast ein Herzteil"
+line2 = "gefunden!"
+next = _treasure_79_4.1
+
+[_treasure_79_4.1]
+#       |--------------------|
+icon = 78
+line1 = "Du hast vier"
+line2 = "Herzteile gefunden."
+next = _treasure_79_4.2
+
+[_treasure_79_4.2]
+#       |--------------------|
+line1 = "Du bekommst ein"
+line2 = "zusätzliches Herz!"
+
+[_treasure_80]
+# Réceptacle de Coeur
+#       |--------------------|
+icon = 80
+line1 = "Du hast einen"
+line2 = "Herzcontainer"
+line3 = "gefunden!"
+next = _treasure_80.2
+
+[_treasure_80.2]
+#       |--------------------|
+line1 = "Du bekommst ein"
+line2 = "zusätzliches Herz!"
+
+[_treasure_82_1]
+# 1 Bombe
+#       |--------------------|
+icon = 82
+line1 = "Du hast eine Bombe"
+line2 = "gefunden!$0"
+line3 = "Mit Bomben kannst"
+next = _treasure_82_1.1
+
+[_treasure_82_1.1]
+#       |--------------------|
+line1 = "Du Gegner oder"
+line2 = "Hindernisse"
+line3 = "sprengen."
+
+[_treasure_82_2]
+# Plusieurs Bombes
+#       |--------------------|
+icon = 82
+line1 = "Du hast $v"
+line2 = "Bomben gefunden!$0"
+line3 = "Mit Bomben kannst"
+next = _treasure_82_1.1
+
+[_treasure_83_1]
+# 1 Flèche
+#       |--------------------|
+icon = 83
+line1 = "Du hast einen Pfeil"
+line2 = "gefunden!$0"
+line3 = "Benutze Bogen und"
+next = _treasure_83_1.1
+
+[_treasure_83_1.1]
+#       |--------------------|
+line1 = "Pfeile, um zähe"
+line2 = "Gegner aus der Ferne"
+line3 = "zu bekämpfen."
+
+[_treasure_83_2]
+# Plusieurs Flèches
+#       |--------------------|
+icon = 83
+line1 = "Du hast $v Pfeile"
+line2 = "gefunden!$0"
+line3 = "Benutze Bogen und"
+next = _treasure_83_1.1
+
+[_treasure_84_1]
+# 1 Coeur
+#       |--------------------|
+icon = 84
+line1 = "Du hast ein Herz"
+line2 = "gefunden!"
+
+[_treasure_84_2]
+# Plusieurs Coeurs
+#       |--------------------|
+icon = 84
+line1 = "Du hast $v Herzen"
+line2 = "gefunden!"
+
+[_treasure_85]
+# Petite bouteille de magie
+#       |--------------------|
+icon = 85
+line1 = "Das ist eine kleine"
+line2 = "Flasche, gefüllt mit"
+line3 = "magischer Energie!"
+
+[_treasure_86]
+# Grande bouteille de magie
+#       |--------------------|
+icon = 86
+line1 = "Das ist eine große"
+line2 = "Flasche, gefüllt mit"
+line3 = "magischer Energie!"
+
+[_treasure_87_1]
+# 1 rubis vert
+#       |--------------------|
+icon = 90
+line1 = "Du hast einen Rubin"
+line2 = "gefunden!"
+
+[_treasure_87_2]
+# Plusieurs rubis verts
+#       |--------------------|
+icon = 90
+line1 = "Du hast $v Rubine"
+line2 = "gefunden!"
+
+[_treasure_88_1]
+# 1 rubis bleu
+#       |--------------------|
+icon = 91
+line1 = "Du hast einen blauen"
+line2 = "Rubin gefunden. Er"
+line3 = "ist 5 Rubine wert!"
+
+[_treasure_88_2]
+# Plusieurs rubis bleus
+#       |--------------------|
+icon = 91
+line1 = "Das sind $v blaue"
+line2 = "Rubine. Jeder"
+line3 = "ist 5 Rubine wert!"
+
+[_treasure_89_1]
+# 1 rubis rouge
+#       |--------------------|
+icon = 92
+line1 = "Du hast einen roten"
+line2 = "Rubin gefunden. Er"
+line3 = "ist 20 Rubine wert!"
+
+[_treasure_88_2]
+# Plusieurs rubis bleus
+#       |--------------------|
+icon = 91
+line1 = "Du hast $v rote"
+line2 = "Rubine gefunden."
+next = _treasure_88_2.1
+
+[_treasure_88_2.1]
+#       |--------------------|
+line1 = "Jeder ist 20 Rubine"
+line2 = "wert!"
+
+# ---------------
+# Autres messages
+# ---------------
+# 
+# Autres messages divers affichés par le moteur de jeu
+
+[_warning_magic]
+# Affiché à la fin des dialogues expliquant
+# que le joueur a obtenu un objet qui consomme
+# de l'énergie magique (même message que dans ALTTP)
+#       |--------------------|
+line1 = "Aber achte auf Deine"
+line2 = "Magieleiste."
+
+[_empty_chest]
+# Lorsqu'on ouvre un coffre vide
+#       |-----------------------|
+line1 = "Diese Truhe ist leer."
+line2 = "Pech gehabt."
+
+[_small_key_required]
+# Lorsqu'on regarde une porte verrouillé ou un bloc verrouillé
+# et qu'on ne possède pas de Petite Clé
+#       |--------------------|
+icon = 72
+line1 = "Das ist abgesperrt."
+cancel = all
+
+[_big_key_required]
+# Lorsqu'on regarde le grand coffre ou une porte verrouillée nécessitant la Grande Clé
+# et qu'on ne possède pas celle-ci
+#       |--------------------|
+icon = 73
+line1 = "Du brauchst den"
+line2 = "großen Schlüssel,"
+cancel = all
+next = _big_key_required.2
+
+[_big_key_required.2]
+#       |--------------------|
+icon = 73
+line1 = "um dieses Schloss"
+line2 = "zu öffnen."
+cancel = all
+
+[_boss_key_required]
+# Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître
+#       |--------------------|
+icon = 74
+line1 = "Das ist der Eingang"
+line2 = "zum Versteck des"
+line3 = "Bosses!"
+cancel = all
+next = _boss_key_required.2
+
+[_boss_key_required.2]
+#       |--------------------|
+icon = 74
+line1 = "Du brauchst den"
+line2 = "Masterschlüssel, um"
+line3 = "ihn zu öffnen."
+
+[_found_fairy]
+# Lorsqu'on trouve une Fée en ayant au moins un Flacon (même dialogue que dans ALTTP)
+#       |--------------------|
+icon = 81
+line1 = "Du hast eine Fee"
+line2 = "gefunden, sie ist"
+line3 = "wundervoll!"
+next = _found_fairy.1
+cancel = all
+
+[_found_fairy.1]
+#       |--------------------___|
+icon = -1
+line1 = "Was willst Du tun?"
+line2 = "Herzen zurückgewinnen"
+line3 = "Sie behalten"
+question = true
+
+[_found_fairy.no_empty_bottle]
+# Lorsqu'on veut conserver une Fée mais qu'on n'a pas de Flacon vide
+#       |-----------------------|
+line1 = "Du hast keine leere"
+line2 = "Flasche!"
+
+[_found_water]
+# Lorsqu'on trouve de l'eau et qu'on a un Flacon vide
+#       |--------------------|
+icon = 8
+line1 = "Willst Du Wasser"
+line2 = "in Deine Flasche"
+next = _found_water.2
+
+[_found_water.2]
+#       |--------------------|
+line1 = "füllen?"
+line2 = "Ja"
+line3 = "Nein"
+question = true
+
+[_found_water.no_bottle]
+# Lorsqu'on trouve de l'eau mais qu'on n'a aucun Flacon
+#       |--------------------|
+line1 = "Hier ist Wasser,"
+line2 = "aber Du hast keinen"
+line3 = "Behälter, um es"
+next = _found_water.no_bottle.2
+
+[_found_water.no_bottle.2]
+#       |--------------------|
+line1 = "mitzunehmen..."
+
+[_found_water.no_empty_bottle]
+# Lorsqu'on trouve de l'eau et qu'on a au moins un Flacon, mais pas de Flacon vide
+#       |--------------------|
+icon = 8
+line1 = "Hier ist Wasser,"
+line2 = "aber Du brauchst"
+line3 = "eine leere Flasche,"
+next = _found_water.no_empty_bottle.2
+
+[_found_water.no_empty_bottle.2]
+#       |--------------------|
+line1 = "um es zu schöpfen..."
+
+[_use_bottle_with_water]
+# Utiliser un Flacon contenant de l'eau
+#       |--------------------|
+icon = 8
+line1 = "Deine Flasche ist"
+line2 = "mit Wasser gefüllt."
+next = _use_bottle_with_water.2
+
+[_use_bottle_with_water.2]
+#       |--------------------|
+line1 = "Was willst Du tun?"
+line2 = "Flasche leeren"
+line3 = "Wasser behalten"
+question = true
+
+[_use_bottle_with_fairy]
+# Utiliser un Flacon contenant une Fée
+#       |--------------------|
+icon = 12
+line1 = "In Deiner Flasche"
+line2 = "ist eine Fee."
+next = _use_bottle_with_fairy.2
+
+[_use_bottle_with_fairy.2]
+#       |--------------------|
+line1 = "Was willst Du tun?"
+line2 = "Sie behalten"
+line3 = "Sie befreien"
+question = true
+
+[_use_apples]
+# Utiliser une Pomme
+#       |--------------------|
+icon = 16
+line1 = "Jeder Apfel füllt"
+line2 = "ein Herz auf."
+next = _use_apples.2
+
+[_use_apples.2]
+#       |--------------------|
+line1 = "Was willst Du tun?"
+line2 = "Einen Apfel essen"
+line3 = "Nichts"
+question = true
+
+[_use_pains_au_chocolat]
+# Utiliser un Pain au Chocolat
+#       |--------------------|
+icon = 17
+line1 = "Ein Schokobrötchen"
+line2 = "stellt 3 Herzen"
+line3 = "wieder her."
+next = _use_pains_au_chocolat.2
+
+[_use_pains_au_chocolat.2]
+#       |--------------------|
+line1 = "Was willst Du tun?"
+line2 = "Ein Brötchen essen"
+line3 = "Nichts"
+question = true
+
+[_use_croissants]
+# Utiliser un Croissant
+#       |--------------------|
+icon = 18
+line1 = "Mit einem Hörnchen"
+line2 = "kannst Du 7 Herzen"
+line3 = "auffüllen."
+next = _use_croissants.2
+
+[_use_croissants.2]
+#       |--------------------|
+line1 = "Was willst Du tun?"
+line2 = "Ein Hörnchen essen"
+line3 = "Nichts"
+question = true
+
+[_too_heavy]
+# Lorsqu'on tente de soulever une pierre ou un buisson
+# sans avoir l'objet nécessaire
+# (Clin d'oeil à Link's Awekening)
+#       |-----------------------|
+line1 = "Hui, das ist viel zu"
+line2 = "schwer!"
+cancel = all
+next = _too_heavy.1
+
+[_too_heavy.1]
+#       |-----------------------|
+line1 = "Das wirst Du nie"
+line2 = "aus eigener Kraft"
+line3 = "heben können."
+
+[_shop.question]
+# Lorsqu'on regarde un objet vendu dans un magasin
+# (message affiché après avoir lu la description de l'objet)
+#       |-----------------------|
+line1 = "Preis : $v Rubine."
+line2 = "Kaufen"
+line3 = "Nicht kaufen"
+question = true
+
+[_shop.not_enough_money]
+# Lorsqu'on veut acheter un objet dans un magasin
+# mais qu'on n'a pas assez de Rubis
+#       |-----------------------|
+line1 = "Tut mir Leid, aber Du"
+line2 = "hast nicht genug Geld."
+cancel = all
+
+[_shop.amount_full]
+# Lorsqu'on veut acheter un objet dans un magasin
+# mais qu'on a déjà le maximum de la quantité possible
+# (pour des Bombes, des Flèches, etc.)
+#       |-----------------------|
+line1 = "Du hast schon die"
+line2 = "maximale Anzahl"
+line3 = "erreicht!"
+
+[_crystal_switch]
+# Lorsqu'on regarde un interrupteur de cristal
+#       |-----------------------|
+line1 = "Das ist ein Kristall-"
+line2 = "schalter. Treffe ihn"
+line3 = "mit etwas..."
+cancel = all
+

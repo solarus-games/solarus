@@ -26,7 +26,8 @@ Binbin (version Mac)
 HunoPPC (version AmigaOS)
 Djipi (amélioration du logo)
 Daru13 (idées de boss (voir MP), graphismes non pixel-art sauf décors)
-Sam101 (paquets ArchLinux, Debian/Ubuntu)
+Sam101 (paquets ArchLinux, Debian/Ubuntu (BenObiWan ?))
+SkyJedi + Deather (version Mac)
 
 
 Traduction :
@@ -70,7 +71,6 @@ sk8ordie (boss en MP)
 tietienne (traduction anglaise)
 Dark LinkGe (artworks officiels)
 Kuro (dessins)
-SkyJedi (version Mac, a fait celle de Zelda ROTH)
 Djipi (idées de boss)
 
 Demandes pour être testeur :

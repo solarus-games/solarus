@@ -135,6 +135,7 @@ selection_menu.cancel		Annuler
 selection_menu.exit		Quitter
 selection_menu.big_yes		OUI
 selection_menu.big_no		NON
+selection_menu.empty		Vide
 
 # Title screen
 title_screen.website		www.zelda-solarus.com

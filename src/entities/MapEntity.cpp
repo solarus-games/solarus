@@ -349,7 +349,7 @@ void MapEntity::set_xy(int x, int y) {
 /**
  * Sets the coordinates of the origin point of the entity, relative to the map.
  * This function sets the coordinates of the point as returned by get_x() and get_y().
- * @param coordinates the new coordinates of the entity on the map
+ * @param xy the new coordinates of the entity on the map
  */
 void MapEntity::set_xy(const Rectangle &xy) {
   set_xy(xy.get_x(), xy.get_y());

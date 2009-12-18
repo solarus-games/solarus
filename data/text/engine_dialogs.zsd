@@ -74,7 +74,7 @@
 # et le texte ne doit pas dépasser 20 caractères (au lieu de 23 en
 # temps normal). Elle reste affichée dans les messages suivants,
 # jusqu'à ce que sa valeur soit changée ou que la boîte de dialogue
-# se ferme. Une valeur -1 signifie d'enlever l'icône.
+# se ferme. Une valeur de -1 signifie d'enlever l'icône.
 # Les icônes sont surtout utilisées dans les messages du moteur de
 # jeu, par exemple lorsque le joueur obtient un trésor.
 #

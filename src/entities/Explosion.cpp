@@ -25,6 +25,7 @@
 
 /**
  * Creates an explosion.
+ * @param layer layer of the explosion
  * @param xy coordinates of the center of the explosion
  * @param with_damages true to hurt the hero and the enemies
  */

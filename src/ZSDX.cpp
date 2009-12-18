@@ -180,6 +180,13 @@ void ZSDX::handle_event(const SDL_Event &event) {
       VideoManager::get_instance()->switch_video_mode();
       break;
 
+      // Alt + F4: quit the program
+    case SDLK_F4:
+      if (event.key.keysym.mod & KMOD_ALT) {
+	exiting = true;
+      }
+      break;
+
     default:
       break;
     }

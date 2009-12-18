@@ -121,8 +121,8 @@ void HUD::update(void) {
       elements[3]->set_visible(false); // item 0
       elements[4]->set_visible(false); // item 1
       elements[6]->set_visible(false); // pause icon
-      elements[5]->set_position(-18, 17); // sword icon
-      elements[7]->set_position(-5, 39); // action icon
+      elements[5]->set_position(-11, 17); // sword icon
+      elements[7]->set_position(-11, 43); // action icon
   }
   else if (!game->is_showing_message()) {
 

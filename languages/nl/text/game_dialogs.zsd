@@ -1,0 +1,1959 @@
+# Ce fichier contient l'ensemble des dialogues de l'aventure.N
+# Les dialogues du moteur de jeu sont dans le fichier text/engine_dialogs.zsd,
+# ainsi que la spécification de la syntaxe de ces deux fichiers.
+
+[demo_finished]
+# Lorsqu'on vient de finir le donjon 1
+#       |-----------------------|
+line1 = "Proficiat: u hebt die"
+line2 = "demo beïndigd! We hopen"
+line3 = "Dat u die geapprëcieed"
+next = demo_finished.2
+
+[demo_finished.2]
+#       |-----------------------|
+line1 = "hebt. Om op de"
+line2 = "volledig spel te"
+line3 = "wachten, kunt u"
+next = demo_finished.3
+
+[demo_finished.3]
+#       |-----------------------|
+line1 = "www.zelda-solarus.com"
+line2 = "bezoeken om de laatste"
+line3 = "informaties over de"
+next = demo_finished.4
+
+[demo_finished.4]
+#       |-----------------------|
+line1 = "ontwikkeling te"
+line2 = "krijgen. Dank u voor"
+line3 = "het spelen!"
+
+
+[demo_finished]
+# Lorsqu'on vient de finir le donjon 1
+#       |-----------------------|
+line1 = ""
+line2 = ""
+line3 = ""
+next = demo_finished.2
+
+
+[outside_world.not_in_demo]
+# Lorsqu'on tente d'entrer dans une grotte pas encore faite dans la démo
+#       |-----------------------|
+line1 = "Deze plaats is nog niet"
+line2 = "beschikbaar!"
+cancel = current
+
+[outside_world.dungeon_2_entrance.monkey]
+# Dialogue avec le singe après avoir fini le donjon 1
+#       |-----------------------|
+line1 = "Sorry, het vervolg is"
+line2 = "nog niet beschikbaar!"
+
+[chest.not_in_demo]
+# Lorsqu'on tente d'ouvrir le coffre qui contiendra l'arc, non disponible dans la démo
+#       |-----------------------|
+line1 = "Sorry, deze schat is"
+line2 = "nog niet beschikbaar!"
+cancel = current
+
+[dungeon_1]
+# Lorsqu'on pénètre dans le donjon 1
+#       |-----------------------|
+line1 = "     Eerste level      "
+line2 = "      Vorstkerker      "
+
+[intro0]
+# Intro : écran noir
+#       |-----------------------|
+line1 = "$2Oude legenden"
+line2 = "vertellen dat, lang"
+line3 = "geleden, bestond een"
+next = intro0.2
+
+[intro0.2]
+#       |-----------------------|
+line1 = "geweldig koninkrijk"
+line2 = "genaamd Hyrule."
+next = intro0.3
+
+[intro0.3]
+#       |-----------------------|
+line1 = "Dit koninkrijk bloeide"
+line2 = "onder de zegen van de"
+line3 = "drie godinnen wie het"
+next = intro0.4
+
+[intro0.4]
+#       |-----------------------|
+line1 = "in voorouderlijke"
+line2 = "tijden hadden"
+line3 = "geschapen."
+next = intro0.5
+
+[intro0.5]
+#       |-----------------------|
+line1 = "De drie godinnen"
+line2 = "waren afgebeeld in de"
+line3 = "vorm van de Triforce,"
+next = intro0.6
+
+[intro0.6]
+#       |-----------------------|
+line1 = "symbool van eindloze"
+line2 = "macht die de"
+line3 = "begerigheid aantrekte."
+next = intro0.7
+
+[intro0.7]
+#       |-----------------------|
+line1 = "Zeven Wijzen waren"
+line2 = "gekozen om de Triforce"
+line3 = "in het Gouden Land, de"
+next = intro0.8
+
+[intro0.8]
+#       |-----------------------|
+line1 = "utopische"
+line2 = "weerspiegeling van de"
+line3 = "wereld, te verbergen."
+next = intro0.9
+
+[intro0.9]
+#       |-----------------------|
+line1 = "Daarna gingen de eeuwen"
+line2 = "voorbij..."
+
+[intro1]
+# Intro : fresque 1
+#       |-----------------------|
+line1 = "$2Veel generaties later"
+line2 = "scheen een hekserij"
+line3 = "Hyrule te dreigen."
+next = intro1.2
+
+[intro1.2]
+#       |-----------------------|
+line1 = "Terwijl de duisternis"
+line2 = "het koninkrijk begon"
+line3 = "te overstromen,"
+next = intro1.3
+
+[intro1.3]
+#       |-----------------------|
+line1 = "verscheen en"
+line2 = "geheimzinnige tovenaar"
+line3 = "genaamd Agahnim, die"
+next = intro1.4
+
+[intro1.4]
+#       |-----------------------|
+line1 = "de problemen door zijn"
+line2 = "tovermiddelen oploste."
+line3 = "Door de volk"
+next = intro1.5
+
+[intro1.5]
+#       |-----------------------|
+line1 = "toegejuicht, benoemde"
+line2 = "de Koning hem op een"
+line3 = "hooggeplaatste post."
+next = intro1.6
+
+[intro1.6]
+#       |-----------------------|
+line1 = "Maar in werkelijkheid"
+line2 = "komplotteerde hij tegen"
+line3 = "de koninklijke familie."
+next = intro1.7
+
+[intro1.7]
+#       |-----------------------|
+line1 = "Hij was aan het"
+line2 = "proberen Ganondorf,"
+line3 = "koning van bandieten"
+next = intro1.8
+
+[intro1.8]
+#       |-----------------------|
+line1 = "van een vergeten tijd,"
+line2 = "terug te laten komen."
+
+[intro2]
+# Intro : fresque 2
+#       |-----------------------|
+line1 = "$2Men vertelt dat een"
+line2 = "jonge man van groen"
+line3 = "gekleed zich in een"
+next = intro2.2
+
+[intro2.2]
+#       |-----------------------|
+line1 = "avontuur stortte door"
+line2 = "het koninkrijk,"
+line3 = "verkennend verlorene"
+next = intro2.3
+
+[intro2.3]
+#       |-----------------------|
+line1 = "tempelen, beklimmend"
+line2 = "bergen, doorreizend"
+line3 = "mistige valleien en"
+next = intro2.4
+
+[intro2.4]
+#       |-----------------------|
+line1 = "overwinnend het kwaad."
+
+[intro3]
+# Intro : fresque 3
+#       |-----------------------|
+line1 = "$2Ten slotte kon"
+line2 = "degene, die men de Held"
+line3 = "noemde, de hekserij"
+next = intro3.2
+
+[intro3.2]
+#       |-----------------------|
+line1 = "terugdrijven. Door zijn"
+line2 = "moed won hij Ganondorf"
+line3 = "over, die zijn zetel"
+next = intro3.3
+
+[intro3.3]
+#       |-----------------------|
+line1 = "had gezegevierd in een"
+line2 = "indrukwekkende piramide"
+line3 = "in het midden van het"
+next = intro3.4
+
+[intro3.4]
+#       |-----------------------|
+line1 = "Gouden Land, in een"
+line2 = "Koninkrijk van de"
+line3 = "Duisternis veranderd."
+
+[intro4]
+# Intro : fresque 4
+#       |-----------------------|
+line1 = "$2Nou maakte de jonge"
+line2 = "Held de wens Ganondorf"
+line3 = "eeuwig op te sluiten"
+next = intro4.2
+
+[intro4.2]
+#       |-----------------------|
+line1 = "in het Koninkrijk van"
+line2 = "de Duisternis. De"
+line3 = "Koning van Hyrule,"
+next = intro4.3
+
+[intro4.3]
+#       |-----------------------|
+line1 = "die van de"
+line2 = "nakomelingschap van de"
+line3 = "de Zeven Wijzen was,"
+#next = intro4.4
+
+[intro4.4]
+##       |-----------------------|
+#line1 = "sloot hem op door de"
+#line2 = "toverij van het zegel."
+#line3 = "Het was het einde van"
+#next = intro4.5
+
+[intro4.5]
+##       |-----------------------|
+#line1 = "de gemene walgelijke"
+#line2 = "Ganondorf. Zo werd hij"
+#line3 = "gevangene van de"
+#next = intro4.6
+
+[intro4.6]
+##       |-----------------------|
+#line1 = "kwade visie van de 
+#line2 = "wereld die hij zichzelf"
+#line3 = "had geschapen."
+
+[intro5]
+# Intro : fresque 5
+#       |-----------------------|
+line1 = "$2Maar sommige jaren"
+line2 = "later, loop de Koning"
+line3 = "van Hyrule een vreemde"
+next = intro5.2
+
+[intro5.2]
+#       |-----------------------|
+line1 = "ziekte op. De artsen"
+line2 = "van het hele koninkrijk"
+line3 = "probeerden alles, maar"
+next = intro5.3
+
+[intro5.3]
+#       |-----------------------|
+line1 = "tevergeefs... De dood"
+line2 = "van de koning had"
+line3 = "verschrikkelijke"
+next = intro5.4
+
+[intro5.4]
+#       |-----------------------|
+line1 = "gevolgen. Behalve"
+line2 = "de rouw die op Hyrule"
+line3 = "neerdaalde, nam"
+next = intro5.5
+
+[intro5.5]
+#       |-----------------------|
+line1 = "de Koning zijn kracht"
+line2 = "mee in zijn voortijdige"
+line3 = "dood. Het zegel van de"
+next = intro5.6
+
+[intro5.6]
+#       |-----------------------|
+line1 = "Zeven Wijzen was"
+line2 = "opnieuw kwestbaar"
+line3 = "gemaakt."
+
+[intro6]
+# Intro : fresque 6
+#       |-----------------------|
+line1 = "$2De Held, volgende de"
+line2 = "raden van zijn meester"
+line3 = "Sahasrahla, besloot"
+next = intro6.2
+
+[intro6.2]
+#       |-----------------------|
+line1 = "wie dan ook te"
+line2 = "verhinderen de Triforce"
+line3 = "over te nemen."
+next = intro6.3
+
+[intro6.3]
+#       |-----------------------|
+line1 = "Hij vertrouwde die toe "
+line2 = "aan Zelda, erfgename"
+line3 = "van de koninklijke"
+next = intro6.5
+
+[intro6.5]
+#       |-----------------------|
+line1 = "krachten. Zelda"
+line2 = "associëerde zijn"
+line3 = "krachten aan die van"
+next = intro6.6
+
+[intro6.6]
+#       |-----------------------|
+line1 = "acht geheimzinnige"
+line2 = "kinderen om het"
+line3 = "Triforce in acht delen"
+next = intro6.7
+
+[intro6.7]
+#       |-----------------------|
+line1 = "te scheiden. De"
+line2 = "kinderen hadden op hen"
+line3 = "de acht brokstukken"
+next = intro6.8
+
+[intro6.8]
+#       |-----------------------|
+line1 = "overal in het"
+line2 = "koninkrijk te"
+line3 = "verbergen. Maar"
+next = intro6.9
+
+[intro6.9]
+#       |-----------------------|
+line1 = "daarvoor schiepen ze"
+line2 = "een laatste"
+line3 = "bescherming: de amulet"
+next = intro6.10
+
+[intro6.10]
+#       |-----------------------|
+line1 = "van Solarus. Het was"
+line2 = "een hanger die aan zijn"
+line3 = "bezitter mogelijk"
+next = intro6.11
+
+[intro6.11]
+#       |-----------------------|
+line1 = "maakte de Triforce in"
+line2 = "elkaar te zetten. Na"
+line3 = "deze gebeurtenissen"
+next = intro6.11b
+
+[intro6.11b]
+#       |-----------------------|
+line1 = "gingen de Held en de"
+line2 = "andere inwoners door"
+line3 = "vredig te leven. Dat is"
+next = intro6.12
+
+[intro6.12]
+#       |-----------------------|
+line1 = "aan dit moment dat"
+line2 = "ons avontuur begint..."
+
+
+[outside_world.village.welcome_sign]
+# Pancarte du village
+#       |-----------------------|
+line1 = "         Welkom"
+line2 = "       in Lyriann"
+
+[outside_world.village.monkey]
+# Dialogue avec le singe tout au début du jeu
+#       |-----------------------|
+line1 = "Help! Sinds gisteren"
+line2 = "nacht zijn alle"
+line3 = "inwoners bang! Het"
+next = outside_world.village.monkey.2
+
+[outside_world.village.monkey.2]
+#       |-----------------------|
+line1 = "dorp is door monsters"
+line2 = "ingesloten!"
+# _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
+# cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
+next = _unknown
+
+[outside_world.village.monkey.without_shield]
+# Suite du dialogue avec le singe, dans le cas où on n'a pas le bouclier
+#       |-----------------------|
+line1 = "Ik weet niet wat er"
+line2 = "gebeurt, maar als je"
+line3 = "een tip wil, zou je"
+next = outside_world.village.monkey.without_shield.2
+
+[outside_world.village.monkey.without_shield.2]
+#       |-----------------------|
+line1 = "niet zonder bescherming"
+line2 = "uitkomen."
+
+[outside_world.village.monkey.with_shield]
+# Suite du dialogue avec le singe, dans le cas où on a le bouclier
+#       |-----------------------|
+line1 = "Ik weet niet wat er "
+line2 = "gebeurt, maar als je"
+line3 = "een tip wil, zal je van"
+next = outside_world.village.monkey.with_shield.2
+
+[outside_world.village.monkey.with_shield.2]
+#       |-----------------------|
+line1 = "je Schild nodig"
+line2 = "hebben... Wees"
+line3 = "voorzichtig!"
+
+[outside_world.village.grand_son_npc]
+# Dialogue avec l'enfant
+#       |-----------------------|
+line1 = "Als je niet meer weet"
+line2 = "wat je aan een moment"
+line3 = "van je avontuur moet"
+cancel = all
+next = outside_world.village.grand_son_npc.2
+
+[outside_world.village.grand_son_npc.2]
+#       |-----------------------|
+line1 = "doen, zou je Oma gaan"
+line2 = "zien, ze houdt van"
+line3 = "avonturiers aanraden en"
+next = outside_world.village.grand_son_npc.3
+
+[outside_world.village.grand_son_npc.3]
+#       |-----------------------|
+line1 = "leiden. Ze leeft naast het"
+line2 = "Robijnenhuis."
+next = outside_world.village.grand_son_npc.4
+
+[outside_world.village.grand_son_npc.4]
+# Cette fin de dialogue est un clin d'oeil
+# à Link's Awakening tout au début du jeu
+# quand on parle aux enfants du village des mouettes.
+#       |-----------------------|
+line1 = "Maar ik weet er niet"
+line2 = "meer, ik ben alleen"
+line3 = "maar een kind!"
+
+[outside_world.village.chignon_woman_npc]
+# Dialogue avec la femme au chignon
+#       |-----------------------|
+line1 = "Als de blauwe icoon"
+line2 = "verschijnt, geeft ze aan"
+line3 = "wat je kan doen wanneer"
+next = outside_world.village.chignon_woman_npc.2
+cancel = all
+
+[outside_world.village.chignon_woman_npc.2]
+#       |-----------------------|
+line1 = "je op de Actie knop"
+line2 = "(spatiebalk) drukt."
+line3 = "Volgens wat je aan het"
+next = outside_world.village.chignon_woman_npc.3
+
+[outside_world.village.chignon_woman_npc.3]
+#       |-----------------------|
+line1 = "onderzoeken bent, kan"
+line2 = "je verschillende acties"
+line3 = "doen zoals kijken, met"
+next = outside_world.village.chignon_woman_npc.4
+
+[outside_world.village.chignon_woman_npc.4]
+#       |-----------------------|
+line1 = "iemand praten, een"
+line2 = "bordje lezen, een vaas"
+line3 = "optillen..."
+next = outside_world.village.chignon_woman_npc.5
+
+[outside_world.village.chignon_woman_npc.5]
+#       |-----------------------|
+line1 = "Kijk aandachtig naar de"
+line2 = "blauwe icoon om wanneer"
+line3 = "je met je omgeving kan"
+next = outside_world.village.chignon_woman_npc.6
+
+[outside_world.village.chignon_woman_npc.6]
+#       |-----------------------|
+line1 = "handelen te weten!"
+
+# TODO
+#       |-----------------------|
+#line1 = "Het gerucht gaat dat"
+#line2 = "elke kerker een Stukje"
+#line3 = "Hart verbergt..."
+#next = outside_world.village.chignon_woman_npc.2
+#cancel = all
+
+#[outside_world.village.chignon_woman_npc.2]
+#       |-----------------------|
+#line1 = "Intrigerend, nee?"
+
+[outside_world.village.cliff_man_npc]
+# Dialogue avec le vieux près de la grotte de Tom dans le village
+#       |-----------------------|
+line1 = "Weet je dat je van"
+line2 = "sommige kliffen kan"
+line3 = "springen? Dat zou je"
+next = outside_world.village.cliff_man_npc.2
+cancel = all
+
+[outside_world.village.cliff_man_npc.2]
+#       |-----------------------|
+line1 = "mogelijk maken"
+line2 = "verborgene plaatsen te"
+line3 = "bereiken."
+
+[outside_world.village.hat_man_npc]
+# Dialogue avec l'homme au chapeau vert dans le village
+#       |-----------------------|
+line1 = "Als je gebrek aan geld"
+line2 = "hebt, raad ik je niet"
+line3 = "naar het Robijnenhuis"
+next = outside_world.village.hat_man_npc.2
+cancel = all
+
+[outside_world.village.hat_man_npc.2]
+#       |-----------------------|
+line1 = "te gaan, want je"
+line2 = "riskeert al je"
+line3 = "spaargeld te "
+next = outside_world.village.hat_man_npc.3
+
+[outside_world.village.hat_man_npc.3]
+#       |-----------------------|
+line1 = "verspillen! Hoewel,"
+line2 = "schijn je begaafder dan"
+line3 = "mij. Misschien zal je"
+next = outside_world.village.hat_man_npc.4
+
+[outside_world.village.hat_man_npc.4]
+#       |-----------------------|
+line1 = "beter dan mij kunnen"
+line2 = "doen!"
+
+[outside_world.village.rupee_house_sign]
+# Pancarte à l'entrée de la maison des rubis
+#       |-----------------------|
+line1 = "   - Robijnenhuis -"
+line2 = "Win geld en vermaak je!"
+
+[outside_world.village.waterfall_sign]
+# Pancarte près de la cascade du village
+#       |-----------------------|
+line1 = "Bedien u van het verse"
+line2 = "water van de waterval!"
+next = outside_world.village.waterfall_sign.2
+
+[outside_world.village.waterfall_sign.2]
+#       |-----------------------|
+line1 = "      VVV-kantoor"
+line2 = "      van Lyriann"
+
+[outside_world.village.cake_shop_sign]
+# Pancarte à l'entrée de la pâtisserie
+#       |-----------------------|
+line1 = ""
+line2 = "        Bakkerij"
+line3 = ""
+
+[outside_world.village.shop_sign]
+# Pancarte à l'entrée de la boutique
+#       |-----------------------|
+line1 = ""
+line2 = "        Winkel"
+line3 = ""
+
+[outside_world.village.letter_box]
+# Message affiché quand on regarde une boîte aux lettres
+#       |-----------------------|
+line1 = "Dat mag niet in de"
+line2 = "brievenbus van de"
+line3 = "mensen te zoeken!" 
+cancel = all
+
+[outside_world.village.tree_woman]
+# Long message de la femme près de l'arbre dans le village
+#       |-----------------------|
+line1 = "Ben je verscholen in de"
+line2 = "toetsen? Laat je me dat"
+line3 = "uit te leggen."
+cancel = all
+next = outside_world.village.tree_woman.2
+
+[outside_world.village.tree_woman.2]
+#       |-----------------------|
+line1 = "De iconen boven links "
+line2 = "zijn als de toetsen van"
+line3 = "het klavier gezet."
+next = outside_world.village.tree_woman.3
+
+[outside_world.village.tree_woman.3]
+#       |-----------------------|
+line1 = "De C-toets komt met de"
+line2 = "groene icoon overeen,"
+line3 = "ze dient als een slag"
+next = outside_world.village.tree_woman.4
+
+[outside_world.village.tree_woman.4]
+#       |-----------------------|
+line1 = "van zwaard te geven."
+line2 = "Maar, wanneer het spel"
+line3 = "in pauze is, verandert"
+next = outside_world.village.tree_woman.5
+
+[outside_world.village.tree_woman.5]
+#       |-----------------------|
+line1 = "de icoon en wees je dat"
+line2 = "de C-toets laat je toe"
+line3 = "de spel op te slaan!"
+next = outside_world.village.tree_woman.6
+
+[outside_world.village.tree_woman.6]
+#       |-----------------------|
+line1 = "En, wanner je met"
+line2 = "iemand praat, laat ze"
+line3 = "toe het gesprek onder"
+next = outside_world.village.tree_woman.7
+
+[outside_world.village.tree_woman.7]
+#       |-----------------------|
+line1 = "te breken. Met weinig"
+line2 = "woorden, kijk"
+line3 = "aandachtig naar de"
+next = outside_world.village.tree_woman.7bis
+
+[outside_world.village.tree_woman.7bis]
+#       |-----------------------|
+line1 = "groene icoon om te"
+line2 = "weten wat de C-toets"
+line3 = "doet. De anderen iconen"
+next = outside_world.village.tree_woman.8
+
+[outside_world.village.tree_woman.8]
+#       |-----------------------|
+line1 = "zijn de toetsen ronds"
+line2 = "C: de oranje icoon (D "
+line3 = "toets) staat toe het"
+next = outside_world.village.tree_woman.9
+
+[outside_world.village.tree_woman.9]
+#       |-----------------------|
+line1 = "spel in pauze te"
+line2 = "zetten, de blauwe icoon"
+line3 = "(spatiebalk) is de"
+next = outside_world.village.tree_woman.10
+
+[outside_world.village.tree_woman.10]
+#       |-----------------------|
+line1 = "Actie toets, en de twee"
+line2 = "grijze iconen zijn de"
+line3 = "voorwerpen toegekend"
+next = outside_world.village.tree_woman.11
+
+[outside_world.village.tree_woman.11]
+#       |-----------------------|
+line1 = "aan de X en V toetsen."
+line2 = "Kijk dus altijd naar"
+line3 = "wat op de iconen"
+next = outside_world.village.tree_woman.12
+
+[outside_world.village.tree_woman.12]
+#       |-----------------------|
+line1 = "aangegeven is. Vergeet"
+line2 = "niet dat ook je de"
+line3 = "toetsen in het"
+next = outside_world.village.tree_woman.13
+
+[outside_world.village.tree_woman.13]
+#       |-----------------------|
+line1 = "keuzemenu kan"
+line2 = "personnaliseren, en je"
+line3 = "kan ook met een joypad" 
+next = outside_world.village.tree_woman.14
+
+[outside_world.village.tree_woman.14]
+#       |-----------------------|
+line1 = "spelen! Heb je alles"
+line2 = "begrepen?"
+next = outside_world.village.tree_woman.15
+
+[outside_world.village.tree_woman.15]
+#       |-----------------------|
+line1 = "Ja"
+line2 = "Nee, helemaal niet!"
+question = true
+next = outside_world.village.tree_woman.thank_you
+next2 = outside_world.village.tree_woman.15
+
+[outside_world.village.tree_woman.15]
+#       |-----------------------|
+line1 = "OK, ik leg opnieuws uit,"
+line2 = "maar luister aandachtig."
+next = outside_world.village.tree_woman.2
+
+[outside_world.village.tree_woman.thank_you]
+#       |-----------------------|
+line1 = "Dank je voor tot het"
+line2 = "uiterste te hebben "
+line3 = "luisteren! Ik ben heel"
+next = outside_world.village.tree_woman.thank_you.2
+
+[outside_world.village.tree_woman.thank_you.2]
+#       |-----------------------|
+line1 = "dankbaar! Hier heb ik"
+line2 = "een klein geschenk"
+line3 = "voor jou."
+
+[outside_world.village.clay_key_required]
+# Message affiché lorsqu'on tente d'ouvrir la grotte de Tom sans avoir la Clé de Terre
+#       |-----------------------|
+line1 = "Dat is op slot gedaan!"
+
+[outside_world.warning_holes_sign]
+# Pancarte en haut de la falaise du village
+#       |-----------------------|
+line1 = "Opgelet aan de gatten!"
+
+[outside_world.how_to_save_npc]
+# Dialogue avec l'homme qui explique comment sauvegarder
+#       |-----------------------|
+line1 = "Om het spel op te"
+line2 = "slaan, druk op D om het"
+line3 = "spel in pauze te"
+next = outside_world.how_to_save_npc.2
+cancel = all
+
+[outside_world.how_to_save_npc.2]
+#       |-----------------------|
+line1 = "zetten, dan druk op C."
+line2 = "Vergeet niet naar de"
+line3 = "groene icoon te kijken!"
+
+[outside_world.flower_hole_sign]
+# Pancarte dans la forêt à l'est du village
+#       |-----------------------|
+line1 = "Het gat dichtbij de"
+line2 = "bloem is niet even"
+line3 = "gevaarlijk dan hij"
+next = outside_world.flower_hole_sign.2
+
+[outside_world.flower_hole_sign.2]
+#       |-----------------------|
+line1 = "schijnt..."
+
+[outside_world.telepathic_booth_sign]
+# Pancarte à l'entrée de la cabine télépathique
+#       |-----------------------|
+line1 = "Telepathiecabine"
+
+[outside_world.surprise_wall_sign]
+# Pancarte à l'entrée du mur aux surprises
+#       |-----------------------|
+line1 = " - Muur van surprises -"
+line2 = "Kom een kansje te wagen"
+line3 = "en win de verborgen"
+next = outside_world.surprise_wall_sign.2
+
+[outside_world.surprise_wall_sign.2]
+#       |-----------------------|
+line1 = "schat!"
+
+[outside_world.billy_cavern_sign]
+# Pancarte à l'entrée de la caverne de Billy
+#       |-----------------------|
+line1 = "Grot van Billy de"
+line2 = "Stoutmoedig."
+line3 = "Bezoekers verboden!"
+
+[outside_world.beaumont_hill_sign]
+# Pancarte près de la Colline de Beaumont
+#       |-----------------------|
+line1 = "Degene die een"
+line2 = "edelweiss aan de top van"
+line3 = "de Heuvel van Beaumont"
+next = outside_world.beaumont_hill_sign.2
+
+[outside_world.beaumont_hill_sign.2]
+#       |-----------------------|
+line1 = "zal planten, zal een"
+line2 = "goede dag doorbrengen."
+
+[link_house.dream]
+# Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
+#       |-----------------------|
+line1 = "... $v..."
+line2 = "Dat is me..."
+line3 = "... Sahasrahla..."
+next = link_house.dream.2
+
+[link_house.dream.2]
+#       |-----------------------|
+line1 = "Ik moet... je praten..."
+line2 = "Kom vlug, $v..."
+
+[rupee_house.game_1.intro]
+# Jeu du coffre-mystère dans la maison des rubis
+#       |-----------------------|
+line1 = "Welkom aan het spel van"
+line2 = "de Geheimkist. Betaal 20"
+line3 = "robijnen om één van de"
+next = rupee_house.game_1.intro.2
+
+[rupee_house.game_1.intro.2]
+#       |-----------------------|
+line1 = "drie kisten te openen"
+line2 = "en veel robijnen"
+line3 = "proberen te winnen!"
+next = rupee_house.game_1.intro.3
+
+[rupee_house.game_1.intro.3]
+#       |-----------------------|
+line1 = "Zo, wil je spelen?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[rupee_house.game_1.choose_chest]
+# Coffre-mystère : quand on parle au vendeur après avoir déjà payé
+#       |-----------------------|
+line1 = "Kies één van de drie"
+line2 = "kisten!"
+next = rupee_house.game_1.choose_chest.2
+
+[rupee_house.game_1.choose_chest.2]
+#       |-----------------------|
+line1 = "Maar reken niet op mij"
+line2 = "om je te helpen!"
+
+[rupee_house.game_1.good_luck]
+# Coffre-mystère : quand on accepte de jouer
+#       |-----------------------|
+line1 = "Ga één kist kiezen en"
+line2 = "succes!"
+
+[rupee_house.game_1.not_allowed_to_play]
+# Coffre-mystère : quand on a déjà trop gagné pour avoir le droit de rejouer
+#       |-----------------------|
+line1 = "Heb je niet al genoeg"
+line2 = "gewonnen? We zijn door"
+line3 = "je geruïneerd!"
+
+[rupee_house.game_1.play_again_question]
+# Coffre-mystère : veut-on rejouer ?
+#       |-----------------------|
+line1 = "Wil je opnieuw"
+line2 = "proberen?"
+next = rupee_house.game_1.play_again_question.2
+
+[rupee_house.game_1.play_again_question.2]
+#       |-----------------------|
+line1 = "Dat kost 20 robijnen!"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[rupee_house.game_1.not_playing]
+# Coffre-mystère : quand on refuse de jouer
+# C'est un clin d'oeil à Link's Awakening, dans le stand
+# de pêche tout au début du jeu, quand on refuse de jouer ou de rejouer
+#       |-----------------------|
+line1 = "Leef zoals je wilt!"
+line2 = "Wees meer gemotiveerd!"
+
+[rupee_house.game_2.intro]
+# Jeu du bandit manchot dans la maison des rubis
+#       |-----------------------|
+line1 = "Welkom aan het nieuwe"
+line2 = "spel, de gokautomaat!"
+next = rupee_house.game_2.intro.2
+
+[rupee_house.game_2.intro.2]
+#       |-----------------------|
+line1 = "Zet 5 of 20 robijnen in"
+line2 = "en probeer op een rij"
+line3 = "drie identieke symbolen"
+next = rupee_house.game_2.intro.3
+
+[rupee_house.game_2.intro.3]
+#       |-----------------------|
+line1 = "te zetten om"
+line2 = "verscillende keren je"
+line3 = "inzet te winnen!"
+next = rupee_house.game_2.intro.4
+
+[rupee_house.game_2.intro.4]
+#       |-----------------------|
+line1 = "Zo, wil je spelen?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[rupee_house.game_2.not_playing]
+# Bandit manchot : quand on refuse de jouer
+#       |-----------------------|
+line1 = "Misschien een andere"
+line2 = "keer?"
+
+[rupee_house.game_2.choose_bet]
+# Bandit manchot : quand on accepte de jouer
+#       |-----------------------|
+line1 = "Hoeveel wil je zetten?"
+line2 = "5 robijnen"
+line3 = "20 robijnen"
+question = true
+
+[rupee_house.game_2.just_paid]
+# Bandit manchot : quand on a choisi une des deux sommes à miser
+# et qu'on a effectiement assez d'argent
+#       |-----------------------|
+line1 = "Dank je!"
+next = rupee_house.game_2.playing
+
+[rupee_house.game_2.playing]
+# Bandit manchot : quand on reparle au vendeur pendant que les roulettes tournent déjà
+#       |-----------------------|
+line1 = "Ga naar de rouletten"
+line2 = "en druk op de actie"
+line3 = "toets om hen te"
+next = rupee_house.game_2.playing.2
+
+[rupee_house.game_2.playing.2]
+#       |-----------------------|
+line1 = "stoppen. Succes!"
+
+[rupee_house.game_2.reward.same_any]
+# Bandit manchot : quand on obtient 3 symboles identiques qui ne rapportent rien d'exceptionnel
+#       |-----------------------|
+line1 = "Drie identieke"
+line2 = "symbolen, goed! Je wint"
+line3 = "4 keren je inzet."
+
+[rupee_house.game_2.reward.green_rupees]
+# Bandit manchot : quand on obtient 3 symboles de rubis verts
+#       |-----------------------|
+line1 = "Drie groene robijnen,"
+line2 = "leuk! Je wint 5 keren"
+line3 = "je inzet!"
+
+[rupee_house.game_2.reward.blue_rupees]
+# Bandit manchot : quand on obtient 3 symboles de rubis bleus
+#       |-----------------------|
+line1 = "Drie blauwe robijnen!"
+line2 = "Proficiat, je gaat"
+line3 = "terug met niet meer dan"
+next = rupee_house.game_2.reward.blue_rupees.2
+
+[rupee_house.game_2.reward.blue_rupees.2]
+#       |-----------------------|
+line1 = "7 keren je inzet!"
+
+[rupee_house.game_2.reward.red_rupees]
+# Bandit manchot : quand on obtient 3 symboles de rubis rouges
+#       |-----------------------|
+line1 = "Drie rode robijnen!!!"
+line2 = "Ik ben stomverbaasd!"
+next = rupee_house.game_2.reward.red_rupees.2
+
+[rupee_house.game_2.reward.red_rupees.2]
+#       |-----------------------|
+line1 = "Je gaat terug met 10"
+line2 = "keren je inzet. Bravo!"
+[rupee_house.game_2.reward.different_rupees]
+# Bandit manchot : quand on obtient 3 symboles de rubis différents
+#       |-----------------------|
+line1 = "Whaou!!! Je hebt drie"
+line2 = "robijnen van"
+line3 = "verschillende kleuren"
+next = rupee_house.game_2.reward.different_rupees.2
+
+[rupee_house.game_2.reward.different_rupees.2]
+#       |-----------------------|
+line1 = "gekregen, men ziet niet"
+line2 = "dat elke dag! Je wint"
+line3 = "15 keren je inzet."
+
+[rupee_house.game_2.reward.yoshi]
+# Bandit manchot : quand on obtient 3 symboles Yoshi (c'est la récompense maximale)
+#       |-----------------------|
+line1 = "$1...$3Drie Yoshi?! Dat"
+line2 = "is ongelooflijk! Dat is"
+line3 = "de beste mogelijke"
+next = rupee_house.game_2.reward.yoshi.2
+
+[rupee_house.game_2.reward.yoshi.2]
+#       |-----------------------|
+line1 = "verbinding... Je wint"
+line2 = "20 keren je inzet!"
+
+[rupee_house.game_2.reward.none]
+# Bandit manchot : quand on n'obtient rien
+#       |-----------------------|
+line1 = "Geen geluk, je hebt"
+line2 = "geen verbinding"
+line3 = "gevormd."
+next = rupee_house.game_2.reward.none.2
+
+[rupee_house.game_2.reward.none.2]
+# Bandit manchot : question pour rejouer
+#       |-----------------------|
+line1 = "Probeer je opnieuw?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[rupee_house.game_3.intro]
+# Jeu du labyrinthe dans la maison des rubis
+#       |-----------------------|
+line1 = "Het doel van het spel"
+line2 = "is de doolhof in een"
+line3 = "begrensde tijd over te"
+next = rupee_house.game_3.intro.2
+
+[rupee_house.game_3.intro.2]
+#       |-----------------------|
+line1 = "steken en de blokken te"
+line2 = "duwen om je een weg te"
+line3 = "banen. Dat zal je"
+next = rupee_house.game_3.intro.3
+
+[rupee_house.game_3.intro.3]
+#       |-----------------------|
+line1 = "alleen maar 10 robijnen"
+line2 = "te kosten en er is een"
+line3 = "Stukje Hart te winnen!"
+next = rupee_house.game_3.intro.4
+
+[rupee_house.game_3.intro.4]
+#       |-----------------------|
+line1 = "Zo, wil je proberen?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[rupee_house.game_3.go]
+# Jeu du labyrinthe : quand on accepte de jouer et qu'on a assez d'argent
+#       |-----------------------|
+line1 = "En... Dat begint!"
+line2 = "Succes!"
+
+[rupee_house.game_3.not_playing]
+# Jeu du labyrinthe : quand on refuse de jouer
+#       |-----------------------|
+line1 = "Dat is je keuze!"
+
+[rupee_house.game_3.not_allowed_to_play]
+# Jeu du labyrinthe : quand on parle au vendeur alors qu'on a déjà obtenu le fragment de coeur
+#       |-----------------------|
+line1 = "Diepbedroefd, je hebt "
+line2 = "al aan dit spel"
+line3 = "gewonnen!"
+
+[rupee_house.game_3.restart_question]
+# Jeu du labyrinthe : quand on parle au vendeur alors que le jeu est déjà commencé
+#       |-----------------------|
+line1 = "Wil je opnieuw van het"
+line2 = "begin proberen?"
+next = rupee_house.game_3.restart_question.2
+
+[rupee_house.game_3.restart_question.2]
+#       |-----------------------|
+line1 = "Dat kost 10 robijnen!"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[rupee_house.not_enough_money]
+# Maison des rubis : quand on n'a pas assez d'argent (quel que soit le jeu)
+#       |-----------------------|
+line1 = "Je hebt niet genoeg"
+line2 = "geld!"
+
+[rupee_house.pay_first]
+# Maison des rubis : quand on interagit avec le jeu sans avoir payé (coffre-mystère et bandit manchot)
+#       |-----------------------|
+line1 = "Hé! Hier moet je"
+line2 = "betalen om te spelen!"
+
+[grandma_house.sword]
+# Dialogue chez la grand-mère (au début du jeu)
+#       |-----------------------|
+line1 = "De monsters stromen de"
+line2 = "vlakte over. Dat is een"
+line3 = "slecht voorteken: ik"
+next = grandma_house.sword.2
+cancel = all
+
+[grandma_house.sword.2]
+#       |-----------------------|
+line1 = "ben bang dat iets"
+line2 = "ernstig is gebeurd."
+next = grandma_house.sword.3
+
+[grandma_house.sword.3]
+#       |-----------------------|
+line1 = "Zoek je een zwaard?"
+line2 = "Je zou de smid in de"
+line3 = "grot ten noordwesten van"
+next = grandma_house.sword.4
+
+[grandma_house.sword.4]
+#       |-----------------------|
+line1 = "het dorp gaan zien. Hij"
+line2 = "is veeleisend maar hij"
+line3 = "zal je zeker helpen."
+
+[grandma_house.find_sahasrahla]
+# Dialogue chez la grand-mère (après avoir obtenu l'épée)
+#       |-----------------------|
+line1 = "Met dit zwaard kan je"
+line2 = "de struiken die het"
+line3 = "dorp beschermen"
+next = grandma_house.find_sahasrahla.2
+cancel = all
+
+[grandma_house.find_sahasrahla.2]
+#       |-----------------------|
+line1 = "passeren. Zoek je naar"
+line2 = "Sahasrahla, de Oudste?"
+line3 = "Zijn huis zit ten"
+next = grandma_house.find_sahasrahla.3
+
+[grandma_house.find_sahasrahla.3]
+#       |-----------------------|
+line1 = "zuidwesten van hier,"
+line2 = "dichtbij van de"
+line3 = "bakkerij."
+
+[grandma_house.go_lyriann_cave]
+# Dialogue chez la grand-mère (après avoir obtenu la clé de terre)
+#       |-----------------------|
+line1 = "Met deze sleutel kan je"
+line2 = "de grot ten noorden van"
+line3 = "het dorp binnengaan."
+cancel = all
+
+[grandma_house.go_dungeon_1]
+# Dialogue chez la grand-mère (après avoir fini la grotte de Tom)
+#       |-----------------------|
+line1 = "Het gerucht gaat dat"
+line2 = "één of de vier"
+line3 = "ontvoerde kinderen"
+cancel = all
+next = grandma_house.go_dungeon_1.2
+
+[grandma_house.go_dungeon_1.2]
+#       |-----------------------|
+line1 = "gevangen is in een"
+line2 = "akelige kerker in het"
+line3 = "bos ten zuiden van het"
+next = grandma_house.go_dungeon_1.3
+
+[grandma_house.go_dungeon_1.3]
+#       |-----------------------|
+line1 = "dorp..."
+
+[smith_cave.without_sword]
+# Dialogue avec le forgeron
+#       |-----------------------|
+line1 = "Ik heb dit prachtige"
+line2 = "bronzen Zwaard mezelf"
+line3 = "gesmeed."
+next = smith_cave.without_sword.2
+
+[smith_cave.without_sword.2]
+#       |-----------------------|
+line1 = "Ik verkoop je het voor"
+line2 = "de bescheidene som van"
+line3 = "80 robijnen!"
+next = smith_cave.without_sword.3
+
+[smith_cave.without_sword.3]
+#       |-----------------------|
+line1 = "Met alleen dat armzalige"
+line2 = "Schild, zal je niet ver"
+line3 = "kunnen gaan."
+next = smith_cave.without_sword.4
+
+[smith_cave.without_sword.4]
+#       |-----------------------|
+line1 = "Zo, wil je het kopen?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[smith_cave.with_sword]
+# Dialogue avec le forgeron: quand on a déjà acheté l'épée
+#       |-----------------------|
+line1 = "Beschadig mijn zwaard"
+line2 = "niet, want ik zal je"
+line3 = "niet een andere smeden!"
+
+[smith_cave.not_buying]
+# Dialogue avec le forgeron: quand on refuse d'acheter l'épée
+#       |-----------------------|
+line1 = "Als je wilt, maar je"
+line2 = "riskeert problemen te"
+line3 = "krijgen, zonder wapen."
+
+[smith_cave.not_enough_money]
+# Dialogue avec le forgeron : quand on n'a pas assez d'argent
+#       |-----------------------|
+line1 = "Diepbedroefd, maar je"
+line2 = "hebt niet genoeg geld"
+line3 = "om het te kopen..."
+
+[smith_cave.thank_you]
+# Dialogue avec le forgeron : quand on achète l'épée
+#       |-----------------------|
+line1 = "Dank je wel. Om met het"
+line2 = "zwaard te slagen,"
+line3 = "druk op C. Of druk lang"
+next = smith_cave.thank_you.2
+
+[smith_cave.thank_you.2]
+#       |-----------------------|
+line1 = "op de knop om een"
+line2 = "tornado aanval te "
+line3 = "ontketenen!"
+
+[lyriann_shop.salesman]
+# Boutique : quand on parle au vendeur
+#       |-----------------------|
+line1 = "Welkom. Kies de"
+line2 = "koopwaar die je wens"
+line3 = "kopen."
+
+[lyriann_shop.apples]
+# Boutique : quand on regarde les pommes
+#       |-----------------------|
+line1 = "3 verse Appels van deze"
+line2 = "morgen! Elke appel"
+line3 = "geeft één Hart terug..."
+# _unknown car c'est le moteur qui se chargera de la suite pour gérer la vente
+# cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
+next = _unknown
+
+[lyriann_shop.bomb_bag]
+# Boutique : quand on regarde le sac de bombes
+#       |-----------------------|
+line1 = "Een Bommenzak."
+line2 = "Onontbeerlijk om hen te"
+line3 = "vervoeren!"
+next = _unknown
+
+[lyriann_shop.heart]
+# Boutique : quand on regarde le coeur
+#       |-----------------------|
+line1 = "Eén Hart om onmiddelijk"
+line2 = "te consumeren."
+next = _unknown
+
+[cake_shop.seller.choose_item]
+# Pâtisserie : quand on parle à la vendeuse
+#       |-----------------------|
+line1 = "Welkom. Kies het gebak"
+line2 = "dat je wens kopen."
+
+[cake_shop.pain_au_chocolat]
+# Pâtisserie : quand on regarde le pain au chocolat
+#       |-----------------------|
+line1 = "Een smakelijk chocolade"
+line2 = "broodje dat je drie"
+line3 = "Harten teruggeef."
+next = _unknown
+
+[cake_shop.croissant]
+# Pâtisserie : quand on regarde les croissants
+#       |-----------------------|
+line1 = "Eet deze knapperige"
+line2 = "croissant om 7 Harten"
+line3 = "terug te krijgen."
+next = _unknown
+
+[cake_shop.dont_leave]
+# Pâtisserie : quand on est sur le point de partir
+#       |-----------------------|
+line1 = "Hé, wacht een beetje!"
+line2 = "Ik zoek naar appels om"
+line3 = "een goede taart te"
+next = cake_shop.dont_leave.2
+cancel = all
+
+[cake_shop.dont_leave.2]
+#       |-----------------------|
+line1 = "koeken. Ik denk dat 6"
+line2 = "appels genoeg zouden"
+line3 = "zijn."
+next = cake_shop.dont_leave.3
+
+[cake_shop.dont_leave.3]
+#       |-----------------------|
+line1 = "Wil je me helpen?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[cake_shop.seller.ask_apples_again]
+# Pâtisserie : quand on parle à la vendeuse une fois qu'elle a déjà parlé des pommes
+#       |-----------------------|
+line1 = "Ik zoek nog naar 6"
+line2 = "appels om een goede"
+line3 = "taart te koeken."
+next = cake_shop.seller.ask_apples_again.2
+cancel = all
+
+[cake_shop.seller.ask_apples_again.2]
+#       |-----------------------|
+line1 = "Wil je me helpen?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[cake_shop.not_enough_apples]
+# Pâtisserie : quand on accepte d'aider la vendeuse en ayant des pommes mais pas assez
+#       |-----------------------|
+line1 = "Oh, je hebt niet genoeg"
+line2 = "appels... Kom dus later"
+line3 = "terug."
+
+[cake_shop.no_apples]
+# Pâtisserie : quand on accepte d'aider la vendeuse sans avoir de pommes
+#       |-----------------------|
+line1 = "Dank je... Kom terug"
+line2 = "als je er nog vindt!"
+
+[cake_shop.thank_you]
+# Pâtisserie : quand on accepte d'aider la vendeuse en ayant assez de pommes
+#       |-----------------------|
+line1 = "Oh, dank je, dat is"
+line2 = "heel aardig! Hoe zou"
+line3 = "ik je kunnen bedanken?"
+next = cake_shop.thank_you.2
+
+[cake_shop.thank_you.2]
+#       |-----------------------|
+line1 = "Ik heb alleen maar deze"
+line2 = "fles je te geven..."
+
+[sahasrahla_house.beginning]
+# Chez Sahasrahla : première visite
+#       |-----------------------|
+line1 = "Sahasrahla : Oh, $v,"
+line2 = "je hebt mijn oproep"
+line3 = "gehoord. Ik heb"
+next = sahasrahla_house.beginning.2
+
+[sahasrahla_house.beginning.2]
+#       |-----------------------|
+line1 = "belangrijke dingen je te"
+line2 = "openbaren. De toestand"
+line3 = "is ernstig."
+next = sahasrahla_house.beginning.3
+
+[sahasrahla_house.beginning.3]
+#       |-----------------------|
+line1 = "Vier van de negen"
+line2 = "kinderen van het Solarus"
+line3 = "zijn ontvoeren..."
+next = sahasrahla_house.beginning.4
+
+[sahasrahla_house.beginning.4]
+#       |-----------------------|
+line1 = "Ik ben bang dat de"
+line2 = "Triforce in groot"
+line3 = "gevaar is. Iemand wil"
+next = sahasrahla_house.beginning.5
+
+[sahasrahla_house.beginning.5]
+#       |-----------------------|
+line1 = "van de dood van de"
+line2 = "Koning profiteren om de"
+line3 = "Triforce te begeren."
+next = sahasrahla_house.beginning.5b
+
+
+[sahasrahla_house.beginning.5b]
+#       |-----------------------|
+line1 = "Wie heeft dat kunnen"
+line2 = "doen? Waarschijnlik"
+line3 = "Ganondorf en zijn"
+next = sahasrahla_house.beginning.6
+
+[sahasrahla_house.beginning.6]
+#       |-----------------------|
+line1 = "kornuiten... Het Zegel"
+line2 = "van de Zeven Wijzen is"
+line3 = "door de dood van onze"
+next = sahasrahla_house.beginning.7
+
+[sahasrahla_house.beginning.7]
+#       |-----------------------|
+line1 = "ongelukkige Koning"
+line2 = "beschadigd, en het is"
+line3 = "mogelijk dat Ganon uit"
+next = sahasrahla_house.beginning.8
+
+[sahasrahla_house.beginning.8]
+#       |-----------------------|
+line1 = "de Wereld van de"
+line2 = "Duisternis weg is"
+line3 = "slagen te lopen. We"
+next = sahasrahla_house.beginning.9
+
+[sahasrahla_house.beginning.9]
+#       |-----------------------|
+line1 = "moeten hem niet laten"
+line2 = "meester van een zo'n"
+line3 = "macht te maken! Ik voel"
+next = sahasrahla_house.beginning.10
+
+[sahasrahla_house.beginning.10]
+#       |-----------------------|
+line1 = "de moed in jou, $v."
+line2 = "Voel je je bekwaam om"
+line3 = "op zoek naar de 4"
+next = sahasrahla_house.beginning.11
+
+[sahasrahla_house.beginning.11]
+#       |-----------------------|
+line1 = "kinderen te vertrekken"
+line2 = "en het Triforce te"
+next = sahasrahla_house.beginning.12
+
+[sahasrahla_house.beginning.12]
+#       |-----------------------|
+line1 = "beschermen?"
+line2 = "Afgesproken"
+line3 = "Geen sprake van"
+question = true
+cancel = none
+next = sahasrahla_house.beginning.thanks
+next2 = sahasrahla_house.beginning.insisting
+
+[sahasrahla_house.beginning.insisting]
+#       |-----------------------|
+line1 = "$v, alsjeblieft,"
+line2 = "je bent de enige die ons"
+line3 = "koninkrijk kan"
+next = sahasrahla_house.beginning.insisting.2
+
+[sahasrahla_house.beginning.insisting.2]
+#       |-----------------------|
+line1 = "beschermen..."
+line2 = "Afgesproken"
+line3 = "Geen sprake van"
+question = true
+next = sahasrahla_house.beginning.thanks
+next2 = sahasrahla_house.beginning.insisting
+
+[sahasrahla_house.beginning.thanks]
+# Chez Sahasrahla : quand on accepte la demande
+#       |-----------------------|
+line1 = "Ik wist dat ik op je"
+line2 = "moed kon rekenen."
+next = sahasrahla_house.give_world_map
+
+[sahasrahla_house.give_world_map]
+#       |-----------------------|
+line1 = "Hier is een belangrijk"
+line2 = "voorwerp voor je"
+line3 = "rondreis..."
+
+[sahasrahla_house.quest_accepted]
+# Chez Sahasrahla : quand on lui reparle après avoir accepté
+#       |-----------------------|
+line1 = "Je zou een blik op mijn"
+line2 = "kelder werpen, ik houd"
+line3 = "daar sommige voorwerpen"
+next = sahasrahla_house.quest_accepted.2
+
+[sahasrahla_house.quest_accepted.2]
+#       |-----------------------|
+line1 = "die je zouden kunnen"
+line2 = "dienen. Maar ik beloof"
+line3 = "je niets, omdat er is"
+next = sahasrahla_house.quest_accepted.3
+
+[sahasrahla_house.quest_accepted.3]
+#       |-----------------------|
+line1 = "veel tijd dat ik hem"
+line2 = "niet heb onderhouden..."
+
+[sahasrahla_house.memories]
+# Chez Sahasrahla : quand on regarde sa bibliothèque
+#       |-----------------------|
+line1 = "De memoires van"
+line2 = "Sahasrahla."
+next = sahasrahla_house.memories.2
+
+[sahasrahla_house.memories.2]
+#       |-----------------------|
+line1 = "Wil je ze lezen?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+next = sahasrahla_house.memories.read
+
+[sahasrahla_house.memories.read]
+#       |-----------------------|
+line1 = "Oh, het is veel te veel"
+line2 = "lang!"
+
+sahasrahla_house.frozen_door_advice]
+# Chez Sahasrahla : quand on lui reparle après avoir vu la porte gelée dans la cave
+#       |-----------------------|
+line1 = "De deur is bevroren?"
+line2 = "Probeer de ijs met"
+line3 = "water te laten smelten."
+cancel = all
+
+[sahasrahla_house.default]
+# Chez Sahasrahla : dialogue par défaut quand il n'a rien de spécial à dire pour guider le joueur
+#       |-----------------------|
+line1 = "Ik heb geloof in jij."
+line2 = "Moed en wijssheid"
+line3 = "zullen je leden."
+cancel = all
+
+[sahasrahla_house.frozen_door]
+# Cave de Sahasrahla : quand on regarde la porte gelée
+#       |-----------------------|
+line1 = "Deze deur is bevroren."
+line2 = "Iets om de ijs te laten"
+line3 = "smelten zou nuttig"
+next = sahasrahla_house.frozen_door2
+
+[sahasrahla_house.frozen_door2]
+#       |-----------------------|
+line1 = "zijn!"
+cancel = all
+
+[lyriann_cave.tom.first_time]
+# Grotte de Tom : premier dialogue avec Tom
+#       |-----------------------|
+line1 = "Goeiedag, jonge"
+line2 = "avonturier. Ik ben Tom"
+line3 = "een oude wachter van"
+next = lyriann_cave.tom.first_time.2
+
+[lyriann_cave.tom.first_time.2]
+#       |-----------------------|
+line1 = "onze overleden Koning"
+line2 = "Ik dacht niet dat"
+line3 = "iedereen me hier zou"
+next = lyriann_cave.tom.first_time.3
+
+[lyriann_cave.tom.first_time.3]
+#       |-----------------------|
+line1 = "komen vinden. Wat doe"
+line2 = "je in deze sombere grot"
+line3 = "grot?"
+next = lyriann_cave.tom.first_time.4
+
+[lyriann_cave.tom.first_time.4]
+#       |-----------------------|
+line1 = "Hoezo? De Triforce is"
+line2 = "in gevraar? $0Al die"
+line3 = "zou niet gebeuren zijn"
+next = lyriann_cave.tom.first_time.5
+
+[lyriann_cave.tom.first_time.5]
+#       |-----------------------|
+line1 = "als onze Koning nog"
+line2 = "hier was om die te"
+line3 = "beschermen..."
+next = lyriann_cave.tom.first_time.6
+
+[lyriann_cave.tom.first_time.6]
+#       |-----------------------|
+line1 = "Je wilt achter de"
+line2 = "mysteries van deze grot"
+line3 = "te komen?"
+next = lyriann_cave.tom.first_time.7
+
+[lyriann_cave.tom.first_time.7]
+#       |-----------------------|
+line1 = "Dit plek is overvol van"
+line2 = "raadsels, schatten en"
+line3 = "gevaren."
+next = lyriann_cave.tom.first_time.8
+
+[lyriann_cave.tom.first_time.8]
+#       |-----------------------|
+line1 = "Het lijk me heel moedig"
+line2 = "van jou!"
+next = lyriann_cave.tom.first_time.9
+
+[lyriann_cave.tom.first_time.9]
+#       |-----------------------|
+line1 = "Alsjeblieft, aanvaard"
+line2 = "mijn hulp... Ik ben"
+line3 = "gezak, ik heb onze"
+next = lyriann_cave.tom.first_time.10
+
+[lyriann_cave.tom.first_time.10]
+#       |-----------------------|
+line1 = "Koning niet kunnen"
+line2 = "beschermen. Geef me een"
+line3 = "kans me goed te maken!"
+next = lyriann_cave.tom.first_time.11
+
+[lyriann_cave.tom.first_time.11]
+#       |-----------------------|
+line1 = "Aanvaard je mijn hulp?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+next2 = lyriann_cave.tom.refuse_help
+
+[lyriann_cave.tom.not_first_time]
+# Grotte de Tom : quand on lui reparle sans avoir son Boomerang,
+# car on a refusé son aide ou bien on lui a déjà rendu le Boomerang mais sans finir la grotte
+#       |-----------------------|
+line1 = "Jonge explorateur,"
+line2 = "aanvaard mijn hulp. Ik"
+line3 = "ben gezak, ik heb onze"
+next = lyriann_cave.tom.not_first_time.2
+
+[lyriann_cave.tom.not_first_time.2]
+#       |-----------------------|
+line1 = "Koning niet kunnen"
+line2 = "beschermen. Geef me een"
+line3 = "kans me goed te maken!"
+next = lyriann_cave.tom.not_first_time.3
+
+[lyriann_cave.tom.not_first_time.3]
+#       |-----------------------|
+line1 = "Aanvaard je mijn hulp?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+next2 = lyriann_cave.tom.refuse_help
+
+[lyriann_cave.tom.accept_help]
+# Grotte de Tom : quand on accepte son aide
+#       |-----------------------|
+line1 = "Dank je. Ik kan je dit" 
+line2 = "lenen, ik hoop dat het"
+line3 = "nuttig zal zijn."
+next = lyriann_cave.tom.accept_help.2
+
+[lyriann_cave.tom.accept_help.2]
+#       |-----------------------|
+line1 = "Vergeet die niet me"
+line2 = "terug te geven als je"
+line3 = "alles bezocht heb."
+next = lyriann_cave.tom.accept_help.3
+
+[lyriann_cave.tom.accept_help.3]
+#       |-----------------------|
+line1 = "Als je de Hartcontainer"
+line2 = "verkrijg, zal het heel"
+line3 = "indrukwekkend zijn!"
+
+[lyriann_cave.tom.refuse_help]
+# Grotte de Tom : quand on refuse son aide
+#       |-----------------------|
+line1 = "Goed, zoals je wilt."
+
+[lyriann_cave.tom.not_finished]
+# Grotte de Tom : quand on lui reparle en ayant son Boomerang et sans avoir fini la grotte
+#       |-----------------------|
+line1 = "Gaat het? Gebruik mijn"
+line2 = "boemerang om de"
+line3 = "obstakels te boven te"
+next = lyriann_cave.tom.not_finished.2
+
+[lyriann_cave.tom.not_finished.2]
+#       |-----------------------|
+line1 = "komen. Je zult" 
+line2 = "waarschijnlijk sommige"
+line3 = "meesterschap verwerven"
+next = lyriann_cave.tom.not_finished.3
+
+[lyriann_cave.tom.not_finished.3]
+#       |-----------------------|
+line1 = "van het werpen van de"
+line2 = "Boemerang om alle"
+line3 = "geheimen van deze grot"
+next = lyriann_cave.tom.not_finished.4
+
+[lyriann_cave.tom.not_finished.4]
+# Grotte de Tom : indication à propos de l'énigme où il faut modifier la trajectoire de retour du boomerang
+#       |-----------------------|
+line1 = "uit te lekken. Vergeet"
+line2 = "niet dat de Boemerang"
+line3 = "altijd naar jij."
+next = lyriann_cave.tom.not_finished.5
+
+[lyriann_cave.tom.not_finished.5]
+# Grotte de Tom : indication à propos de l'énigme où il faut lancer le boomerang en diagonale
+#       |-----------------------|
+line1 = "terugkomt, zelfs als je"
+line2 = "je verplaats. En neem"
+line3 = "de teken in de omgeving"
+next = lyriann_cave.tom.not_finished.6
+
+[lyriann_cave.tom.not_finished.6]
+#       |-----------------------|
+line1 = "wel waar om te weten"
+line2 = "hoe die te werpen."
+next = lyriann_cave.tom.not_finished.7
+
+[lyriann_cave.tom.not_finished.7]
+#       |--------------------|
+line1 = "Wat wil je doen?"
+line2 = "Verder gaan"
+line3 = "Boemerang teruggeven"
+question = true
+
+[lyriann_cave.tom.gave_boomerang_back]
+# Grotte de Tom : quand on vient de lui rendre son Boomerang sans avoir fini la grotte
+#       |-----------------------|
+line1 = "Dank je. Kom terug als"
+line2 = "je wens dat ik je mijn"
+line3 = "help opnieuw breng."
+
+[lyriann_cave.tom.leaving]
+# Grotte de Tom : quand on tente de quitter la grotte sans lui avoir rendu son Boomerang
+#       |-----------------------|
+line1 = "Hé! Wacht!"
+
+[lyriann_cave.tom.leaving.cavern_not_finished]
+# Grotte de Tom : quand on tente de quitter la grotte sans lui avoir rendu son Boomerang
+# et sans avoir trouvé le Réceptacle de Coeur
+#       |-----------------------|
+line1 = "Is jouw ontdekkingsreis"
+line2 = "al gedaan? Het lijkt me"
+line3 = "dat je niet alles heb"
+next = lyriann_cave.tom.leaving.cavern_not_finished.2
+
+[lyriann_cave.tom.leaving.cavern_not_finished.2]
+#       |-----------------------|
+line1 = "gevonden... Als dat"
+line2 = "verveel je niet, neem"
+line3 = "ik mijn Boemerang"
+next = lyriann_cave.tom.leaving.cavern_not_finished.3
+
+[lyriann_cave.tom.leaving.cavern_not_finished.3]
+#       |-----------------------|
+line1 = "terug. Zijn hantering"
+line2 = "eist sommige"
+line3 = "meesterschap! Kom terug"
+next = lyriann_cave.tom.leaving.cavern_not_finished.4
+
+[lyriann_cave.tom.leaving.cavern_not_finished.4]
+#       |-----------------------|
+line1 = "als je wens dat ik je"
+line2 = "mijn help opnieuw"
+line3 = "breng."
+
+[lyriann_cave.tom.cavern_finished]
+# Grotte de Tom : quand on a trouvé le Réceptacle de Coeur (et donc
+# fini la grotte) mais qu'on ne lui a pas encore rendu son boomerang,
+# que ce soit en lui parlant directement ou en tentant de quitter la grotte
+#       |-----------------------|
+line1 = "Je bent erin geslaagd"
+line2 = "al de raadsels van deze"
+line3 = "grot te verijdelen?"
+next = lyriann_cave.tom.cavern_finished.2
+
+[lyriann_cave.tom.cavern_finished.2]
+#       |-----------------------|
+line1 = "Dit is indrukwekkend!"
+line2 = "Je lijkt mij zo handig"
+line3 = "als moedig."
+next = lyriann_cave.tom.cavern_finished.3
+
+[lyriann_cave.tom.cavern_finished.3]
+#       |-----------------------|
+line1 = "Als dat verveel je"
+line2 = "niet, zal ik mijn"
+line3 = "Boemerang terugnemen."
+next = lyriann_cave.tom.see_you_later
+
+[lyriann_cave.tom.see_you_later]
+# Grotte de Tom : fin du dialogue ci-dessus
+# et également quand on vient le revoir à nouveau après
+# avoir fini la grotte et rendu le Boomerang
+#       |-----------------------|
+line1 = "Als je het wens,"
+line2 = "zal ik je desnoods een"
+line3 = "handje helpen"
+next = lyriann_cave.tom.see_you_later.2
+
+[lyriann_cave.tom.see_you_later.2]
+#       |-----------------------|
+line1 = "tijdens jouw avontuur."
+
+[outside_world.tom_dungeon_1_entrance.hey]
+# Entrée du donjon 1 : quand on s'approche
+# de la falaise en ayant fini la grotte de Tom
+#       |-----------------------|
+line1 = "Hé!"
+
+[outside_world.tom_dungeon_1_entrance.need_help]
+#       |-----------------------|
+line1 = "Heb jij hulp nodig?"
+
+[outside_world.tom_dungeon_1_entrance.let_me_see]
+#       |-----------------------|
+line1 = "Hmmm, ik wed dat een"
+line2 = "ladder daar verborgen"
+line3 = "is. Laten we zien..."
+
+[outside_world.tom_dungeon_1_entrance.open]
+#       |-----------------------|
+line1 = "Ik denk dat ik zal die"
+line2 = "kunnen deblokkeren."
+line3 = "$0Daar is het!"
+
+[outside_world.tom_dungeon_1_entrance.finished]
+#       |-----------------------|
+line1 = "Pas op, het lijkt"
+line2 = "akelig binnenin."
+
+[dungeon_1.solarus_child]
+#       |-----------------------|
+line1 = "$2$v... Dank je."
+line2 = "Je hebt mij gered."
+line3 = "Ik ben een van de"
+next = dungeon_1.solarus_child.2
+
+[dungeon_1.solarus_child.2]
+#       |-----------------------|
+line1 = "8 beschermers door"
+line2 = "Prinses Zelda geroepen."
+line3 = "Wij zijn toegewijd aan"
+next = dungeon_1.solarus_child.3
+
+[dungeon_1.solarus_child.3]
+#       |-----------------------|
+line1 = "om te bewaken de resten"
+line2 = "van de heilige relikwie"
+line3 = "de Triforce, symbool"
+next = dungeon_1.solarus_child.4
+
+[dungeon_1.solarus_child.4]
+#       |-----------------------|
+line1 = "gelaten door de drie"
+line2 = "godinnen na hun actie"
+line3 = "over jullie wereld."
+next = dungeon_1.solarus_child.5
+
+[dungeon_1.solarus_child.5]
+#       |-----------------------|
+line1 = "Tijdens duizenden"
+line2 = "jaren, oorsprong van"
+line3 = "leven en voorspoed,"
+next = dungeon_1.solarus_child.6
+
+[dungeon_1.solarus_child.6]
+#       |-----------------------|
+line1 = "de Triforce werd ook"
+line2 = "oorsprong van grote"
+line3 = "begerigheid en van"
+next = dungeon_1.solarus_child.7
+
+[dungeon_1.solarus_child.7]
+#       |-----------------------|
+line1 = "onophoudelijke strijden"
+line2 = "tussen goede en"
+line3 = "noodlottige krachten."
+next = dungeon_1.solarus_child.8
+
+[dungeon_1.solarus_child.8]
+#       |-----------------------|
+line1 = "Vandaag, is de"
+line2 = "heilige relikwie"
+line3 = "nog bedreigd."
+next = dungeon_1.solarus_child.9
+
+[dungeon_1.solarus_child.9]
+#       |-----------------------|
+line1 = "Maar het verhaal"
+line2 = "herhaaldelijk voorkomt:"
+line3 = "elk keer een gevaar"
+next = dungeon_1.solarus_child.10
+
+[dungeon_1.solarus_child.10]
+#       |-----------------------|
+line1 = "verscheen, opdook een"
+line2 = "held en zijn moed"
+line3 = "mogelijk maakte de"
+next = dungeon_1.solarus_child.11
+
+[dungeon_1.solarus_child.11]
+#       |-----------------------|
+line1 = "duisternis terug te"
+line2 = "stoten."
+next = dungeon_1.solarus_child.12
+
+[dungeon_1.solarus_child.12]
+#       |-----------------------|
+line1 = "Vind mijn broeren terug"
+line2 = "en ontdek wie achter"
+line3 = "al die staat,"
+next = dungeon_1.solarus_child.13
+
+[dungeon_1.solarus_child.13]
+#       |-----------------------|
+line1 = "voordat de krachten van"
+line2 = "duisternis Hyrule in de"
+line3 = "chaos duiken..."
+next = dungeon_1.solarus_child.14
+
+[dungeon_1.solarus_child.14]
+#       |-----------------------|
+line1 = "Mag de held de"
+line2 = "Koninkrijk tot vrede en"
+line3 = "voorspoed leiden!"

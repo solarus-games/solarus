@@ -310,7 +310,7 @@ void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound
 /**
  * Sets whether the enemy is vulnerable to a specified attack.
  * @param attack an attack
- * @param reaction how the enemy will react
+ * @param consequence how the enemy will react
  */
 void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
   attack_consequences[attack] = consequence;

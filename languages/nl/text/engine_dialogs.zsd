@@ -1,0 +1,1830 @@
+# Ce fichier comporte l'ensemble des messages affichés
+# par le moteur de jeu en version française.
+# Les messages affichés par les maps sont quant à eux
+# définis dans le fichier text/game_dialogs.zsd.
+
+####################################################################################
+#             Syntaxe des fichiers text/engine_dialogs.zsd et text/game_dialogs.zsd
+#
+# La syntaxe est similaire à celle d'un fichier ini de Windows.
+# Les lignes commençant par le caractère '#' sont des commentaires
+# et sont ignorés par le jeu.
+# Un message est défini par les éléments suivants :
+#
+# - Un identificateur entre crochets.
+# Les messages du moteur de jeu (donc tous ceux dans ce fichier)
+# ont toujours un identificateur qui commence par le caractère '_'.
+# L'identificateur permet au jeu de faire référence au message qu'il
+# souhaite l'afficher. Les identificateurs ne doivent pas être traduits.
+#
+# - Les valeurs line1, line2 et line3 : définissent le contenu du
+# message, sur une à trois lignes. Le texte de chaque ligne
+# doit être mis entre guillemets. Une ligne ne doit pas
+# dépasser 23 caractères. Lors de la traduction, ce sont ces lignes
+# qu'il faut traduire.
+#
+# - La valeur next : donne l'identificateur du prochain message
+# à afficher. Si cette valeur n'est pas définie, cela signifie
+# que ce message était le dernier de la série et la boîte de 
+# dialogue va se fermer une fois qu'il sera terminé.
+# Si la valeur next existe, alors une flèche s'affiche en bas du message courant,
+# indiquant que ce message va être suivi d'un autre.
+# Si la valeur next n'existe pas, alors la flèche est remplacée par un carré
+# indiquant que c'était le dernier message de la série.
+# Un message contenant une question est toujours affiché avec une flèche.
+# Il peut arriver que bien qu'une série se termine, on souhaite afficher une flèche.
+# C'est le cas en particulier lorsqu'on sait qu'elle sera immédiatement suivie
+# par une nouvelle série mais qu'on ne sait pas encore laquelle (cela peut dépendre
+# de la quête). Dans ce cas, on utilise la valeur spéciale "_unknown"
+# afin d'indiquer que la série va être suivie d'une autre série, pour l'instant indéterminée.
+# Cela a pour seul effet d'afficher la flèche au lieu du carré,
+# mais ensuite tout se passe comme si aucune valeur next n'était définie. 
+#
+# - Par convention, lorsqu'un texte est trop long pour tenir
+# dans un seul message, la suite est dans un ou plusieurs messages
+# dont l'identificateur est le même auquel on ajoute ".2", puis
+# ".3", etc. Lors de la traduction, on peut ainsi faire tenir
+# le texte dans un nombre différent de messages sans avoir
+# de problèmes d'identificateurs. Seul le premier message
+# de la série doit avoir exactement le même identificateur que
+# dans la version française. Si le dernier message de la série
+# se termine par ".4" au
+# lieu de ".3" parce que la traduction ne tenait pas dans le même
+# nombre de messages, cela fonctionne sans problème.
+# C'est sur tous les messages autres que ceux finissant par
+# ".2", ".3", etc, qu'il faut bien se synchroniser.
+#
+# - La valeur cancel : définit ce qui se passe lorsque le joueur
+# tente d'interrompre le message en appuyant sur la touche C. Il y a
+# 3 valeurs possibles :
+#    - none (par défaut) : le message ne peut pas être passé.
+#    - current : si on appuie sur C, le message courant s'affiche
+#                immédiatement en entier (au lieu de défiler lettre par lettre).
+#                On peut ainsi passer plus vite au message suivant.
+#    - all : si on appuie sur C, le message courant s'arrête
+#            et les messages suivants ne seront pas affichés. La
+#            boîte de dialogue se ferme immédiatement.
+# La valeur de cancel s'applique au message courant et à tous les
+# messages suivants, jusqu'à ce que la valeur soit changée ou que
+# la boîte de dialogue se ferme.
+#
+# - La valeur icon : permet d'afficher une icône de 16*16 pixels dans le message.
+# La valeur est un numéro qui permet d'identifier l'icône dans
+# le fichier image des icônes. L'icône s'affiche à gauche du texte
+# et le texte ne doit pas dépasser 20 caractères (au lieu de 23 en
+# temps normal). Elle reste affichée dans les messages suivants,
+# jusqu'à ce que sa valeur soit changée ou que la boîte de dialogue
+# se ferme. Une valeur -1 signifie d'enlever l'icône.
+# Les icônes sont surtout utilisées dans les messages du moteur de
+# jeu, par exemple lorsque le joueur obtient un trésor.
+#
+# - La valeur question : permet d'afficher une question avec deux
+# réponses au choix. La première ligne est la question
+# et les deux dernières lignes sont les deux réponses possibles.
+# Ces deux lignes sont alors limitées à 20
+# caractères (au lieu de 23 en temps normal) car un curseur en
+# forme de flèche permet au joueur de choisir sa réponse. Il est
+# possible d'avoir à la fois une icône et une question, dans ce cas
+# le nombre de caractères des lignes de réponse se limite à 17.
+# S'il y a une question, il est possible de spécifier une valeur
+# next2. Si la première réponse est choisie, le prochain message
+# affiché est indiqué par next. Si la deuxième réponse est choisie,
+# il est alors indiqué par next2. Comme pour la valeur next,
+# si next2 n'est pas spécifié et que le joueur choisit la réponse 2,
+# la série de messages s'arrête et la boîte de dialogue se ferme.
+#
+# - Enfin, il existe des séquences particulières que l'on peut
+# insérer dans le texte d'un message :
+#    - $0 : fait une pause d'une seconde dans le défilement du message.
+#    - $1 : met une vitesse de défilement lente
+#    - $2 : met une vitesse de défilement moyenne
+#    - $3 : met une vitesse de déliement rapide (par défaut)
+#    - $v : permet d'insérer la valeur d'une variable dans le texte
+#           du message (la valeur est alors spécifiée dans
+#           le programme qui a demandé l'affichage du message)
+#
+#
+# - Les commentaires suivants permettent de vérifier le nombre
+# limite de caractères dans un message :
+#
+#       |-----------------------| sans icône ni question (23)
+#       |--------------------|    avec icône ou question (20)
+#       |-----------------|       avec icône et question (17)
+####################################################################################
+
+
+# -------------------------------------
+# Description des items de l'inventaire
+# -------------------------------------
+# 
+# Les messages ci-dessous sont affichés dans l'écran d'inventaire
+# lorsque le joueur souhaite afficher la description d'un item
+# qu'il possède. Ces messages peuvent être annulés en appuyant
+# sur C.
+# L'identificateur de chacun de ces messages est de la forme _item_description_i_x
+# où i est le numéro de l'item (de 0 à 27) et x est la variante de cet
+# item possédée par le joueur.
+# Exception : les items 13, 20 et 27 ne sont pas définis car il s'agit des Flacons 2, 3 et 4,
+# et ces derniers se contentent de faire appel aux messages définis pour le Flacon 1 (item n°6).
+
+[_item_description_0_1]
+# Plume / Feather
+#       |--------------------|
+icon = 0
+line1 = "Gebruik de Veer om"
+line2 = "te springen en"
+line3 = "obstakels te"
+next = _item_description_0_1.1
+
+[_item_description_0_1.1]
+#       |--------------------|
+line1 = "overschrijden."
+
+[_item_description_1_1]
+# Bombes / Bombs
+#       |--------------------|
+icon = 1
+line1 = "Gebruik Bommen tegen"
+line2 = "vijanden of om"
+line3 = "obstakels te laten"
+cancel = all
+next = _item_description_1_1.1
+
+[_item_description_1_1.1]
+#       |--------------------|
+line1 = "ontploffen."
+
+[_item_description_2_1]
+# Arc / Bow
+#       |--------------------|
+icon = 2
+line1 = "Je hebt geen Pijlen"
+line2 = "meer!"
+cancel = all
+
+[_item_description_2_2]
+# Arc & Flèches / Bow & Arrows
+#       |--------------------|
+icon = 3
+line1 = "Schiet Pijlen om"
+line2 = "taaie vijanden te"
+line3 = "overwinnen."
+cancel = all
+
+[_item_description_3_1]
+# Boomerang
+#       |--------------------|
+icon = 4
+line1 = "Gebruik de Boemerang"
+line2 = "om vijanden"
+line3 = "onbeweeglijk te"
+cancel = all
+next = _item_description_3_1.1
+
+[_item_description_3_1.1]
+#       |--------------------|
+line1 = "maken of op afstand"
+line2 = "voorwerpen te" 
+line3 = "vangen."
+
+[_item_description_4_1]
+# Lanterne / Lamp
+#       |--------------------|
+icon = 5
+line1 = "Bijlicht je in de"
+line2 = "duisternis of steek"
+line3 = "vuurpotten aan met"
+cancel = all
+next = _item_description_4_1.1
+
+[_item_description_4_1.1]
+#       |--------------------|
+line1 = "de Lantaarn. Maar"
+line2 = "hou toezicht over je"
+line3 = "magiemeter!"
+
+[_item_description_5_1]
+# Grappin / Hook Shot
+#       |--------------------|
+icon = 6
+line1 = "Hijs je naar"
+line2 = "onbereikbare"
+line3 = "plaatsen dankzij de"
+cancel = all
+next = _item_description_5_1.1
+
+[_item_description_5_1.1]
+#       |--------------------|
+line1 = "Enterhaak."
+
+[_item_description_6_1]
+# Flacon Magique vide / Empty bottle
+#       |--------------------|
+icon = 7
+line1 = "De Magische Flacon"
+line2 = "kan diverse"
+line3 = "stoffen bevatten..."
+cancel = all
+
+[_item_description_6_2]
+# Eau dans Flacon / Water in Bottle
+#       |--------------------|
+icon = 8
+line1 = "Jouw Magische Flacon"
+line2 = "bevat water."
+cancel = all
+next = _item_description_6_2.1
+
+[_item_description_6_2.1]
+#       |--------------------|
+line1 = "Schenk die in een"
+line2 = "geschikte plaats..."
+
+[_item_description_6_3]
+# Potion rouge / Red potion
+#       |--------------------|
+icon = 9
+line1 = "Drink rood Drankje"
+line2 = "om al je Harten"
+line3 = "terug te vinden."
+cancel = all
+
+[_item_description_6_4]
+# Potion verte / Red potion
+#       |--------------------|
+icon = 10
+line1 = "Drink groen Drankje"
+line2 = "om al je magie"
+line3 = "terug te vinden."
+cancel = all
+
+[_item_description_6_5]
+# Potion bleue / Red potion
+#       |--------------------|
+icon = 11
+line1 = "Drink blauw Drankje"
+line2 = "om leven en magie"
+line3 = "terug te vinden!"
+cancel = all
+
+[_item_description_6_6]
+# Fée dans Flacon / Fairy in Bottle
+#       |--------------------|
+icon = 12
+line1 = "Die Elf zal je"
+line2 = "helpen als je"
+line3 = "moieilijkheden hebt."
+next = _item_description_6_6.1
+cancel = all
+
+[_item_description_6_6.1]
+#       |--------------------|
+line1 = "Je kan die ook op"
+line2 = "elk moment gebruiken"
+line3 = "om Harten terug te"
+next = _item_description_6_6.2
+
+[_item_description_6_6.2]
+#       |--------------------|
+line1 = "winnen."
+
+[_item_description_7_1]
+# Bottes de Pégase / Pegasus Shoes
+#       |--------------------|
+icon = 13
+line1 = "Ren heel snel en"
+line2 = "verbrijzel obstakels"
+line3 = "dankzij de Pegasus"
+cancel = all
+next = _item_description_7_1.1
+
+[_item_description_7_1.1]
+#       |--------------------|
+line1 = "Laarzen!"
+
+[_item_description_8_1]
+# Miroir Mystique / Mystic Mirror
+#       |--------------------|
+icon = 14
+line1 = "De Mystiek Spiegel"
+line2 = "zou geheimzinnige"
+line3 = "machten hebben..."
+cancel = all
+
+[_item_description_9_1]
+# Canne de Somaria / Cane of Somaria
+#       |--------------------|
+icon = 15
+line1 = "Schep blokjes en"
+line2 = "haak je eraan met"
+line3 = "de Enterhaak."
+cancel = all
+next = _warning_magic
+
+[_item_description_10_1]
+# Pommes / Apples
+#       |--------------------|
+icon = 16
+line1 = "Eet Appels om Harten"
+line2 = "terug te krijgen."
+cancel = all
+
+[_item_description_11_1]
+# Pains au Chocolat / Pains au Chocolat
+#       |--------------------|
+icon = 17
+line1 = "Eet een Chocolade"
+line2 = "Broodje om 3 Harten"
+line3 = "terug te krijgen."
+cancel = all
+
+[_item_description_12_1]
+# Croissant / Croissant
+#       |--------------------|
+icon = 18
+line1 = "Eet een Croissant om"
+line2 = "7 Harten terug te"
+line3 = "krijgen."
+cancel = all
+
+[_item_description_14_1]
+# Clé de Roc / Rock Key
+#       |--------------------|
+icon = 19
+line1 = "De Rotssleutel. Maar"
+line2 = "waar is toch de"
+line3 = "gepaste slot?"
+cancel = all
+
+[_item_description_15_1]
+# Clé Rouge / Red Key
+#       |--------------------|
+icon = 20
+line1 = "Die vreemde sleutel"
+line2 = "is heel rood."
+cancel = all
+
+[_item_description_16_1]
+# Clé de Terre / Clay Key
+#       |--------------------|
+icon = 21
+line1 = "De Aardesleutel, die"
+line2 = "opent de grot"
+line3 = "van de dorp."
+cancel = all
+
+[_item_description_17_1]
+# Tarte aux Pommes / Apple Pie
+#       |--------------------|
+icon = 22
+line1 = "Die Appeltaart heeft"
+line2 = "een vreemde"
+line3 = "aanblik..."
+cancel = all
+
+[_item_description_17_2]
+# Lingots d'or / Golden bars
+#       |--------------------|
+icon = 23
+line1 = "Het zijn drie"
+line2 = "authentieke"
+line3 = "goud lingots!"
+cancel = all
+
+[_item_description_17_3]
+# Edelweiss / Edelweiss
+#       |--------------------|
+icon = 24
+line1 = "Het Edelweiss is een"
+line2 = "heel zeldzame bloem" fleur très rare dans"
+line3 = "in de koninkrijk van" 
+next = _item_description_17_3.1
+
+[_item_description_17_3.1]
+line1 = "Hyrule."
+cancel = all
+
+[_item_description_17_4]
+# Clé d'Os / Bone Key
+#       |--------------------|
+icon = 25
+line1 = "Waaraan kan de"
+line2 = "Beensleutel besteed"
+line3 = "worden?" 
+cancel = all
+
+[_item_description_18_1]
+# Palmes / Flippers
+#       |--------------------|
+icon = 26
+line1 = "De Zwemvinnen staan"
+line2 = "je toe in diepe"
+line3 = "water te zwemmen."
+cancel = all
+
+[_item_description_19_1]
+# Cape magique / Magic Cape
+#       |--------------------|
+icon = 27
+line1 = "De Magische Cape"
+line2 = "waarschuw je als je"
+line3 = "dichterbij van een"
+cancel = all
+next = _item_description_19_1.1
+
+[_item_description_19_1.1]
+#       |--------------------|
+line1 = "breekbare muur"
+line2 = "kom..."
+
+[_item_description_21_1]
+# Clé de Fer / Iron Key
+#       |--------------------|
+icon = 28
+line1 = "De Ijzersleutel."
+line2 = "Maar vergis je niet"
+line3 = "in de slot!"
+cancel = all
+
+[_item_description_22_1]
+# Clé de Pierre / Stone Key
+#       |--------------------|
+icon = 29
+line1 = "De Steensleutel."
+line2 = "Blijft de goede slot"
+line3 = "te vinden!"
+cancel = all
+
+[_item_description_23_1]
+# Clé de Bois / Wooden Key
+#       |--------------------|
+icon = 30
+line1 = "De Houtsleutel. Maar"
+line2 = "een enige slot is de"
+line3 = "goede..."
+cancel = all
+
+[_item_description_24_1]
+# Clé de Glace / Ice Key
+#       |--------------------|
+icon = 31
+line1 = "De Ijssleutel. Je"
+line2 = "moet een bevroren"
+line3 = "plek vinden om die"
+cancel = all
+next = _item_description_24_1.1
+
+[_item_description_24_1.1]
+#       |--------------------|
+line1 = "te laten"
+line2 = "functionneren !"
+cancel = all
+
+[_item_description_25_1]
+# Poigne de Fer / Iron Glove
+#       |--------------------|
+icon = 32
+line1 = "De Ijzere Handschoen"
+line2 = "staat toe stenen te"
+line3 = "heffen."
+cancel = all
+
+[_item_description_25_2]
+# Poigne d'Or / Golden Glove
+#       |--------------------|
+icon = 33
+line1 = "Hef zwarte stenen"
+line2 = "dankzij de Goude"
+line3 = "Handschoen."
+cancel = all
+
+[_item_description_26_1]
+# Pierres de Feu / Fire Stones
+#       |--------------------|
+icon = 34
+line1 = "Vind de drie"
+line2 = "Vuurstenen en breng"
+line3 = "die aan Inferno."
+cancel = all
+
+# ---------------------
+# Obtention d'un trésor
+# ---------------------
+# 
+# Les messages ci-dessous sont affichés lorsque le joueur obtient
+# un trésor, généralement en ouvrant un coffre ou en l'achetant
+# dans un magasin.
+
+[_treasure_0]
+# Plume
+#       |--------------------|
+icon = 0
+line1 = "Je hebt de Veer"
+line2 = "gevonden!$0 Gebruik"
+line3 = "die om te springen"
+next = _treasure_0.1
+
+[_treasure_0.1]
+#       |--------------------|
+line1 = "en obstakels te"
+line2 = "overschrijden."
+
+[_treasure_2]
+# Arc seul
+#       |--------------------|
+icon = 2
+line1 = "Je hebt de Boog"
+line2 = "gevonden!$0 Vind"
+line3 = "Pijlen en je zal"
+next = _treasure_2.1
+
+[_treasure_2.1]
+#       |--------------------|
+line1 = "taaie vijanden op"
+line2 = "afstand kunnen"
+line3 = "overwinnen."
+
+[_treasure_3]
+# Arc & Flèches
+#       |--------------------|
+icon = 3
+line1 = "Je hebt de Boog"
+line2 = "gevonden!$0 Die is"
+line3 = "geequipeerd van 10"
+next = _treasure_3.1
+
+[_treasure_3.1]
+#       |--------------------|
+line1 = "Pijlen. Je kan taaie"
+line2 = "vijanden op afstand"
+line3 = "overwinnen."
+
+[_treasure_4]
+# Boomerang
+#       |--------------------|
+icon = 4
+line1 = "Je hebt de Boemerang"
+line2 = "gevonden!$0 Je kan"
+line3 = "vijanden"
+next = _treasure_4.1
+
+[_treasure_4.1]
+#       |--------------------|
+line1 = "onbeweeglijk maken"
+line2 = "of op afstand"
+line3 = "voorwerpen vangen."
+next = _treasure_4.2
+
+[_treasure_4.2]
+#       |--------------------|
+line1 = "Er zijn verscheidene" 
+line2 = "technieken om die te"
+line3 = "behandelen, je moet"
+next = _treasure_4.3
+
+[_treasure_4.3]
+#       |--------------------|
+line1 = "die ontdekken!"
+
+[_treasure_5]
+# Lanterne
+#       |--------------------|
+icon = 5
+line1 = "Je hebt de Lantaarn"
+line2 = "gevonden!$0 Die"
+line3 = "bijlicht je in de"
+next = _treasure_5.1
+
+[_treasure_5.1]
+#       |--------------------|
+line1 = "duisternis en laat"
+line2 = "je toe vuurpotten"
+line3 = "aan te steken."
+next = _warning_magic
+
+[_treasure_6]
+# Grappin
+#       |--------------------|
+icon = 6
+line1 = "Je hebt de Enterhaak"
+line2 = "gevonden!$0 Maak"
+line3 = "vijanden"
+next = _treasure_6.1
+
+[_treasure_6.1]
+#       |--------------------|
+line1 = "onbeweeglijk en"
+line2 = "vlieg naar"
+line3 = "onbereikbare"
+next = _treasure_6.2
+
+[_treasure_6.2]
+#       |--------------------|
+line1 = "plekken."
+
+[_treasure_7]
+# Flacon vide
+#       |--------------------|
+icon = 7
+line1 = "Je hebt een Magische"
+line2 = "Flacon gevonden!$0"
+next = _treasure_7.1
+
+[_treasure_7.1]
+#       |--------------------|
+line1 = "Vul die met"
+line2 = "diverses stoffen."
+
+[_treasure_8]
+# Eau
+#       |--------------------|
+icon = 8
+line1 = "Je hebt je Magische"
+line2 = "Flacon met water"
+line3 = "gevuld!"
+
+[_treasure_9]
+# Potion rouge
+#       |--------------------|
+icon = 9
+line1 = "Je hebt Rood Drankje"
+line2 = "gevonden!$0"
+next = _treasure_9.1
+
+[_treasure_9.1]
+#       |--------------------|
+line1 = "Drink het om al jouw"
+line2 = "levensenergie terug"
+line3 = "te vinden."
+
+[_treasure_10]
+# Potion verte
+#       |--------------------|
+icon = 10
+line1 = "Je hebt Groen"
+line2 = "Drankje gevonden!$0"
+next = _treasure_10.1
+
+[_treasure_10.1]
+#       |--------------------|
+line1 = "Drink het om al jouw"
+line2 = "magische energie"
+line3 = "terug te vinden."
+
+[_treasure_11]
+# Potion bleue
+#       |--------------------|
+icon = 11
+line1 = "Je hebt Blauw"
+line2 = "Drankje gevonden!$0"
+next = _treasure_11.1
+
+[_treasure_11.1]
+#       |--------------------|
+line1 = "Drink het om al jouw"
+line2 = "leven en magie terug"
+line3 = "te vinden."
+
+[_treasure_12]
+# Fée dans Flacon
+#       |--------------------|
+icon = 12
+line1 = "Je hebt een Elf"
+line2 = "gepakt! Die zal je"
+line3 = "helpen als je"
+next = _treasure_12.1
+cancel = all
+
+[_treasure_12.1]
+#       |--------------------|
+line1 = "moieilijkheden hebt."
+line2 = "Je kan die ook op"
+line3 = "elk moment gebruiken"
+next = _treasure_12.2
+
+[_treasure_12.2]
+#       |--------------------|
+line1 = "om Harten terug te"
+line2 = "winnen."
+
+[_treasure_13]
+# Bottes de Pégase
+#       |--------------------|
+icon = 13
+line1 = "Je hebt de Pegasus"
+line2 = "Laarzen gevonden!$0"
+next = _treasure_13.1
+
+[_treasure_13.1]
+#       |--------------------|
+line1 = "Ren, flits en"
+line2 = "verbrijzel de"
+line3 = "obstakels!"
+
+[_treasure_14]
+# Miroir Mystique
+#       |--------------------|
+icon = 14
+line1 = "Je hebt de Mystiek"
+line2 = "Spiegel gevonden!$0"
+line3 = "Zijn vreemde machten"
+next = _treasure_14.1
+
+[_treasure_14.1]
+#       |--------------------|
+line1 = "zullen je zeker in"
+line2 = "jouw avontuur"
+line3 = "helpen..."
+
+[_treasure_15]
+# Canne de Somaria
+#       |--------------------|
+icon = 15
+line1 = "Je hebt Somarias"
+line2 = "Cane gevonden!$0"
+line3 = "Je kan blokjes"
+next = _treasure_15.1
+
+[_treasure_15.1]
+#       |--------------------|
+line1 = "schepen en met de"
+line2 = "Enterhaak eraan"
+line3 = "haken."
+next = _warning_magic
+
+[_treasure_16_1]
+# 1 Pomme
+#       |--------------------|
+icon = 16
+line1 = "Je hebt een Appel"
+line2 = "gevonden!$0"
+next = _treasure_16_1.1
+
+[_treasure_16_1.1]
+#       |--------------------|
+line1 = "Consumeer die later"
+line2 = "om een Hart terug te"
+line3 = "krijgen!"
+
+[_treasure_16_2]
+# Plusieurs Pommes
+#       |--------------------|
+icon = 16
+line1 = "Je hebt $v Appels"
+line2 = "gevonden!$0"
+next = _treasure_16_2.1
+
+[_treasure_16_2.1]
+#       |--------------------|
+line1 = "Consumeer die later"
+line2 = "om  Harten terug te"
+line3 = "rijgen!"
+
+[_treasure_17_1]
+# 1 Pain au Chocolat
+#       |--------------------|
+icon = 17
+line1 = "Je hebt een"
+line2 = "Chocolade Broodje"
+line3 = "gevonden!$0"
+next = _treasure_17_1.1
+
+[_treasure_17_1.1]
+#       |--------------------|
+line1 = "Eet een Chocolade"
+line2 = "Broodje om 3 Harten"
+line3 = "terug te krijgen."
+
+[_treasure_17_2]
+# Plusieurs Pains au Chocolat
+#       |--------------------|
+icon = 17
+line1 = "Je hebt $v Chocolade"
+line2 = "Broodjes gevonden!$0"
+next = _treasure_17_1.1
+
+[_treasure_18_1]
+# 1 Croissant
+#       |--------------------|
+icon = 18
+line1 = "Je hebt een"
+line2 = "Croissant gevonden!$0"
+line3 = "Die is knaperig!"
+next = _treasure_18_1.1
+
+[_treasure_18_1.1]
+#       |--------------------|
+line1 = "Eet een Croissant"
+line2 = "om 7 Harten terug te"
+line3 = "krijgen."
+
+[_treasure_18_2]
+# Plusieurs Croissants
+#       |--------------------|
+icon = 18
+line1 = "Je hebt $v Croissants"
+line2 = "gevonden!$0"
+next = _treasure_18_1.1
+
+[_treasure_19]
+# Clé de Roc
+#       |--------------------|
+icon = 19
+line1 = "Je hebt de"
+line2 = "Rotssleutel" 
+line3 = "gevonden!$0"
+
+[_treasure_20]
+# Clé Rouge
+#       |--------------------|
+icon = 20
+line1 = "Je hebt de Rode"
+line2 = "Sleutel gevonden!$0"
+
+[_treasure_21]
+# Clé de Terre
+#       |--------------------|
+icon = 21
+line1 = "Je hebt de"
+line2 = "Aardesleutel" 
+line3 = "gevonden!$0"
+next = _treasure_21.1
+
+[_treasure_21.1]
+#       |--------------------|
+line1 = "Je kan nu de grot"
+line2 = "van de dorp openen!"
+
+[_treasure_22]
+# Tarte aux Pommes
+#       |--------------------|
+icon = 22
+line1 = "Je hebt een"
+line2 = "Appeltaart gevonden!$0"
+line3 = "$1...$3 Hmmm, in je"
+next = _treasure_22.1
+
+[_treasure_22.1]
+#       |--------------------|
+line1 = "plaats, zou ik die"
+line2 = "niet proeven, ze"
+line3 = "heeft een rare
+next = _treasure_22.2
+
+[_treasure_22.2]
+#       |--------------------|
+line1 = "aspect..."
+
+[_treasure_23]
+# Lingots d'or
+#       |--------------------|
+icon = 23
+line1 = "Je hebt goud Lingots"
+line2 = "gevonden!!!$0"
+next = _treasure_23.1
+
+[_treasure_23.1]
+#       |--------------------|
+line1 = "Ze schitteren en"
+line2 = "hebben een"
+line3 = "onschatbare waarde!"
+
+[_treasure_24]
+# Edelweiss
+#       |--------------------|
+icon = 24
+line1 = "Je hebt een"
+line2 = "Edelweiss gevonden!$0"
+next = _treasure_24.1
+
+[_treasure_24.1]
+#       |--------------------|
+line1 = "Die prettige bergen"
+line2 = "bloem is uiterst"
+line3 = "zeldzaam!"
+
+[_treasure_25]
+# Clé d'os
+#       |--------------------|
+icon = 25
+line1 = "Je hebt de"
+line2 = "Beensleutel"
+line3 = "gevonden!$0"
+next = _treasure_25.1
+
+[_treasure_25.1]
+#       |--------------------|
+line1 = "Maar waraan kan die"
+line2 = "toch toedienen ?"
+
+[_treasure_26]
+# Palmes
+#       |--------------------|
+icon = 26
+line1 = "Je hebt de"
+line2 = "Zwemvinnen gevonden!$0"
+next = _treasure_26.1
+
+[_treasure_26.1]
+#       |--------------------|
+line1 = "Je kan nu in diepe"
+line2 = "water zwemmen!"
+
+[_treasure_27]
+# Cape Magique
+#       |--------------------|
+icon = 27
+line1 = "Je hebt de Magische"
+line2 = "Cape gevonden!$0"
+next = _treasure_27.1
+
+[_treasure_27.1]
+#       |--------------------|
+line1 = "Die zal je"
+line2 = "waarschuwen als je"
+line3 = "dichterbij van een"
+next = _treasure_27.2
+
+[_treasure_27.2]
+#       |--------------------|
+line1 = "breekbare muur"
+line2 = "kom."
+
+[_treasure_28]
+# Clé de Fer
+#       |--------------------|
+icon = 28
+line1 = "Je hebt de"
+line2 = "Ijzersleutel"
+line3 = "gevonden!$0"
+next = _treasure_28.1
+
+[_treasure_28.1]
+#       |--------------------|
+line1 = "Er moet toch een"
+line2 = "een deur zijn die"
+line3 = "ermee gaat!"
+
+[_treasure_29]
+# Clé de Pierre
+#       |--------------------|
+icon = 29
+line1 = "Je hebt de"
+line2 = "Steensleutel"
+line3 = "gevonden!$0"
+next = _treasure_29.1
+
+[_treasure_29.1]
+#       |--------------------|
+line1 = "Maar waar is de slot"
+line2 = "die ermee"
+line3 = "overeenkomt?"
+
+[_treasure_30]
+# Clé de Bois
+#       |--------------------|
+icon = 30
+line1 = "Je hebt de"
+line2 = "Houtsleutel"
+line3 = "gevonden!$0"
+next = _treasure_30.1
+
+[_treasure_30.1]
+#       |--------------------|
+line1 = "Zoek naar waar je"
+line2 = "die kan gebruiken!"
+
+[_treasure_31]
+# Clé de Glace
+#       |--------------------|
+icon = 31
+line1 = "Je hebt de"
+line2 = "Ijssleutel gevonden!$0"
+next = _treasure_31.1
+
+[_treasure_31.1]
+#       |--------------------|
+line1 = "Ze beschermt zeker"
+line2 = "de ingang van een"
+line3 = "ijzige plek..."
+
+[_treasure_32]
+# Poigne de Fer
+#       |--------------------|
+icon = 32
+line1 = "Je hebt de Ijzere"
+line2 = "Handschoen gevonden!$0"
+next = _treasure_32.1
+
+[_treasure_32.1]
+#       |--------------------|
+line1 = "Ze staat je toe"
+line2 = "stenen te heffen."
+
+[_treasure_33]
+# Poigne d'Or
+#       |--------------------|
+icon = 33
+line1 = "Je hebt de Goude"
+line2 = "Handschoen gevonden!$0"
+next = _treasure_33.1
+
+[_treasure_33.1]
+#       |--------------------|
+line1 = "Je kan nu zwarte"
+line2 = "stenen heffen !"
+
+[_treasure_34]
+# Pierre de Feu
+#       |--------------------|
+icon = 34
+line1 = "Je hebt een"
+line2 = "Vuursteen gevonden!"
+
+[_treasure_50]
+# Carte du Monde
+#       |--------------------|
+icon = 50
+line1 = "Je hebt de Wereld"
+line2 = "Kaart gevonden!$0"
+next = _treasure_50.1
+
+[_treasure_50.1]
+#       |--------------------|
+line1 = "Je kan die ten toon"
+line2 = "spreiden in de"
+line3 = "Kaartscherm."
+
+[_treasure_52]
+# Grand sac de rubis
+#       |--------------------|
+icon = 52
+line1 = "Je hebt de Grote"
+line2 = "Robjinenzak"
+line3 = "gevonden!$0"
+next = _treasure_52.1
+
+[_treasure_52.1]
+#       |--------------------|
+line1 = "Die kan tot 300"
+line2 = "robijnen bevatten!"
+
+[_treasure_53]
+# Sac de rubis géant
+#       |--------------------|
+icon = 53
+line1 = "Je hebt de"
+line2 = "Reusachtige"
+line3 = "Robjinenzak"
+next = _treasure_53.1
+
+[_treasure_53.1]
+#       |--------------------|
+line1 = "gevonden!$0 Die kan"
+line2 = "tot 999 robijnen
+line3 = "bevatten!"
+
+[_treasure_54]
+# Petit sac de bombes
+#       |--------------------|
+icon = 54
+line1 = "Je hebt de Bommenzak"
+line2 = "gevonden!$0 Die"
+line3 = "bevat 10 Bommen."
+next = _treasure_54.1
+
+[_treasure_54.1]
+#       |--------------------|
+line1 = "Wijs die aan een"
+line2 = "knop en blaas alles"
+line3 = "op!"
+
+[_treasure_55]
+# Grand sac de bombes
+#       |--------------------|
+icon = 55
+line1 = "Je hebt de Grote"
+line2 = "Bommenzak gevonden!$0"
+next = _treasure_55.1
+
+[_treasure_55.1]
+#       |--------------------|
+line1 = "Die kan tot 30"
+line2 = "Bommen bevatten in"
+line3 = "plaats van 10!"
+
+[_treasure_56]
+# Sac de bombes géant
+#       |--------------------|
+icon = 56
+line1 = "Je hebt de"
+line2 = "Reusachtige"
+line3 = "Bommenzak gevonden!$0"
+next = _treasure_56.1
+
+[_treasure_56.1]
+#       |--------------------|
+line1 = "Die kan tot 100"
+line2 = "Bommen bevatten in"
+line3 = "plaats van 30!"
+
+[_treasure_58]
+# Grand carquois 
+#       |--------------------|
+icon = 58
+line1 = "Je hebt de Grote"
+line2 = "Koker gevonden!$0"
+next = _treasure_58.1
+
+[_treasure_58.1]
+#       |--------------------|
+line1 = "Die kan tot 30"
+line2 = "Pijlen bevatten in"
+line3 = "plaats van 10!"
+
+[_treasure_59]
+# Carquois géant
+#       |--------------------|
+icon = 59
+line1 = "Je hebt de"
+line2 = "Reusachtige Koker"
+line3 = "gevonden!$0"
+next = _treasure_59.1
+
+[_treasure_59.1]
+#       |--------------------|
+line1 = "Die kan tot 100"
+line2 = "Pijlen bevatten in"
+line3 = "plaats van 30!"
+
+[_treasure_61]
+# Cotte de mailles bleue
+#       |--------------------|
+icon = 61
+line1 = "Je hebt de blauwe"
+line2 = "Maliënkolder"
+line3 = "gevonden!$0 Die laat"
+next = _treasure_61.1
+
+[_treasure_61.1]
+#       |--------------------|
+icon = 61
+line1 = "je toe aan de"
+line2 = "ijzigste"
+line3 = "temperaturen te"
+next = _treasure_61.2
+
+[_treasure_61.2]
+#       |--------------------|
+line1 = "weerstaan..."
+
+
+
+[_treasure_62]
+# Cotte de mailles rouge
+#       |--------------------|
+icon = 62
+line1 = "Je hebt de rode"
+line2 = "Maliënkolder"
+line3 = "gevonden!$0 Die"
+next = _treasure_62.1
+
+[_treasure_62.1]
+#       |--------------------|
+line1 = "beschermt je"
+line2 = "efficiënter tegen"
+line3 = "vijanden!"
+
+[_treasure_63]
+# Bouclier
+#       |--------------------|
+icon = 63
+line1 = "Je hebt de Schild"
+line2 = "gevonden!$0"
+next = _treasure_63.1
+
+[_treasure_63.1]
+#       |--------------------|
+line1 = "Je kan de aanvallen"
+line2 = "van vijanden"
+line3 = "afweren!"
+
+[_treasure_64]
+# Bouclier de Feu
+#       |--------------------|
+icon = 64
+line1 = "Je hebt de"
+line2 = "Vuurschild gevonden!$0"
+line3 = "Je bent nu beschermd"
+next = _treasure_64.1
+
+[_treasure_64.1]
+#       |--------------------|
+line1 = "tegen vurige"
+line2 = "aanvallen!"
+
+[_treasure_65]
+# Bouclier Miroir
+#       |--------------------|
+icon = 65
+line1 = "Je hebt de"
+line2 = "Spiegelschild"
+line3 = "gevonden!$0"
+next = _treasure_65.1
+
+[_treasure_65.1]
+#       |--------------------|
+line1 = "Je kan nu lasers"
+line2 = "blokkeren!"
+
+[_treasure_66]
+# Epée 1 (Epée du courage)
+#       |--------------------|
+icon = 66
+line1 = "Je hebt het Zwaard"
+line2 = "van de Moed"
+line3 = "gevonden!$0"
+next = _treasure_66.1
+
+[_treasure_66.1]
+#       |--------------------|
+line1 = "Je kan duelleren"
+line2 = "en vijanden tegemoet"
+line3 = "gaan!"
+
+[_treasure_67]
+# Epée 2 (Glaive Hylien)
+#       |--------------------|
+icon = 67
+line1 = "Je hebt de Hyliaan"
+line2 = "Gladius gevonden!$0"
+line3 = "Dit nieuwe zwaard"
+next = _treasure_67.1
+
+[_treasure_67.1]
+#       |--------------------|
+line1 = "is tweemaal"
+line2 = "krachtiger dan de"
+line3 = "voormalige!"
+
+[_treasure_68]
+# Epée 3 (Sabre du Héros)
+#       |--------------------|
+icon = 68
+line1 = "Je hebt de Helds"
+line2 = "Sabel gevonden!$0 Dit"
+line3 = "nieuw blad is"
+next = _treasure_67.2
+
+[_treasure_67.2]
+#       |--------------------|
+line1 = "tweemaal krachtiger"
+line2 = "dan de voormalig!"
+
+[_treasure_69]
+# Epée 4 (Lame Purificatrice)
+#       |--------------------|
+icon = 69
+line1 = "Je hebt de Zuiverend"
+line2 = "Blad gevonden!$0 De"
+line3 = "kracht van dit"
+next = _treasure_69.1
+
+[_treasure_69.1]
+#       |--------------------|
+line1 = "ultieme zwaard"
+line2 = "overschrijdt het"
+line3 = "verstand..."
+
+[_treasure_70]
+# Carte
+#       |--------------------|
+icon = 70
+line1 = "Je hebt de Kaart"
+line2 = "gevonden!"
+next = _treasure_70.1
+
+[_treasure_70.1]
+#       |--------------------|
+line1 = "Gebruik die om de"
+line2 = "kaart van de kerker"
+line3 = "te bekennen."
+
+[_treasure_71]
+# Boussole
+#       |--------------------|
+icon = 71
+line1 = "Je hebt de Kompas"
+line2 = "gevonden! Die toont"
+line3 = "jouw positie op de"
+next = _treasure_71.1
+
+[_treasure_71.1]
+#       |--------------------|
+line1 = "Kaart, de ligging"
+line2 = "van schatkisten en"
+line3 = "van de Eindbaas."
+
+[_treasure_72]
+# Petite clé
+#       |--------------------|
+icon = 72
+line1 = "Je hebt een Kleine"
+line2 = "Sleutel gevonden!"
+next = _treasure_72.1
+
+[_treasure_72.1]
+#       |--------------------|
+line1 = "Je kan een gesloten"
+line2 = "deur van de omgeving"
+line3 = "openen.
+
+[_treasure_73]
+# Grande Clé
+#       |--------------------|
+icon = 73
+line1 = "Je hebt de Grote"
+line2 = "Sleutel gevonden! Je"
+line3 = "kan nu speciale"
+next = _treasure_73.1
+
+[_treasure_73.1]
+#       |--------------------|
+line1 = "deureun openen en"
+line2 = "nieuwe schatten"
+line3 = "ontdekken!"
+
+[_treasure_74]
+# Clé du Maître
+#       |--------------------|
+icon = 74
+line1 = "Je hebt de Sleutel"
+line2 = "naar de Meester"
+line3 = "gevonden! Je kan nu"
+next = _treasure_74.1
+
+[_treasure_74.1]
+#       |--------------------|
+line1 = "de schuilplaats van"
+line2 = "de meester"
+line3 = "binnenkomen!"
+
+[_treasure_79_1]
+# 1er Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Je hebt een Stukje"
+line2 = "Hart gevonden!"
+next = _treasure_79_1.1
+
+[_treasure_79_1.1]
+#       |--------------------|
+icon = 75
+line1 = "Verzamel er vier van"
+line2 = "om een nieuwe Hart"
+line3 = "te vormen."
+
+[_treasure_79_2]
+# 2e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Je hebt een Stukje"
+line2 = "Hart gevonden!"
+next = _treasure_79_2.1
+
+[_treasure_79_2.1]
+#       |--------------------|
+icon = 76
+line1 = "Nog twee om een"
+line2 = "nieuwe hart te"
+line3 = "krijgen."
+
+[_treasure_79_3]
+# 3e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Je hebt een Stukje"
+line2 = "Hart gevonden!"
+next = _treasure_79_3.1
+
+[_treasure_79_3.1]
+#       |--------------------|
+icon = 77
+line1 = "Nog één meer te"
+line2 = "vinden om een nieuwe"
+line3 = "Hart te vormen!"
+
+[_treasure_79_4]
+# 4e Fragment de Coeur
+#       |--------------------|
+icon = 79
+line1 = "Je hebt een Stukje"
+line2 = "Hart gevonden!"
+next = _treasure_79_4.1
+
+[_treasure_79_4.1]
+#       |--------------------|
+icon = 78
+line1 = "Je hebt vier Stukjes"
+line2 = "Hart gevonden."
+next = _treasure_79_4.2
+
+[_treasure_79_4.2]
+#       |--------------------|
+line1 = "Je krijg een extra"
+line2 = "Hart!"
+
+[_treasure_80]
+# Réceptacle de Coeur
+#       |--------------------|
+icon = 80
+line1 = "Je hebt een"
+line2 = "Hartcontainer"
+line3 = "gevonden."
+next = _treasure_80.2
+
+[_treasure_80.2]
+#       |--------------------|
+line1 = "Je krijg een extra"
+line2 = "Hart!"
+
+[_treasure_82_1]
+# 1 Bombe
+#       |--------------------|
+icon = 82
+line1 = "Je hebt een Bom"
+line2 = "gevonden!$0"
+line3 = "Gebruik een Bom om"
+next = _treasure_82_1.1
+
+[_treasure_82_1.1]
+#       |--------------------|
+line1 = "een vijand of een"
+line2 = "obstakel te laten"
+line3 = "ontploffen."
+
+[_treasure_82_2]
+# Plusieurs Bombes
+#       |--------------------|
+icon = 82
+line1 = "Je hebt $v Bommen"
+line2 = "gevonden!$0"
+line3 = "Gebruik een Bom om"
+next = _treasure_82_1.1
+
+[_treasure_83_1]
+# 1 Flèche
+#       |--------------------|
+icon = 83
+line1 = "Je hebt een Pijl"
+line2 = "gevonden!$0 Gebruik"
+line3 = "de Boog en de Pijlen"
+next = _treasure_83_1.1
+
+[_treasure_83_1.1]
+#       |--------------------|
+line1 = "om taaie vijanden op"
+line2 = "afstand te"
+line3 = "overwinnen."
+
+[_treasure_83_2]
+# Plusieurs Flèches
+#       |--------------------|
+icon = 83
+line1 = "Je hebt $v Pijlen"
+line2 = "Gevonden!$0 Gebruik"
+line3 = "de Boog en de Pijlen"
+next = _treasure_83_1.1
+
+[_treasure_84_1]
+# 1 Coeur
+#       |--------------------|
+icon = 84
+line1 = "Je Hebt een Hartje"
+line2 = "gevonden!"
+
+[_treasure_84_2]
+# Plusieurs Coeurs
+#       |--------------------|
+icon = 84
+line1 = "Je hebt $v Hartjes"
+line2 = "gevonden!"
+
+[_treasure_85]
+# Petite bouteille de magie
+#       |--------------------|
+icon = 85
+line1 = "Je hebt een klein"
+line2 = "magieflesje"
+line3 = "gevonden!"
+
+[_treasure_86]
+# Grande bouteille de magie
+#       |--------------------|
+icon = 86
+line1 = "Je hebt een groot"
+line2 = "magieflesje"
+line3 = "gevonden!"
+
+[_treasure_87_1]
+# 1 rubis vert
+#       |--------------------|
+icon = 90
+line1 = "Je hebt een Robijn"
+line2 = "gevonden!"
+
+[_treasure_87_2]
+# Plusieurs rubis verts
+#       |--------------------|
+icon = 90
+line1 = "Je hebt $v Robijnen"
+line2 = "gevonden!"
+
+[_treasure_88_1]
+# 1 rubis bleu
+#       |--------------------|
+icon = 91
+line1 = "Je hebt een blauwe"
+line2 = "Robijn gevonden. Die"
+line3 = "geldt 5 Robijnen !"
+
+[_treasure_88_2]
+# Plusieurs rubis bleus
+#       |--------------------|
+icon = 91
+line1 = "Je hebt $v blauwe"
+line2 = "Robijnen gevonden!"
+next = _treasure_88_2.2
+
+[_treasure_88_2.2]
+#       |--------------------|
+line1 = "Elk ervan geldt 5"
+line2 = "Robijnen."
+
+[_treasure_89_1]
+# 1 rubis rouge
+#       |--------------------|
+icon = 92
+line1 = "Je hebt een rode"
+line2 = "Robijn gevonden. Die"
+line3 = "geldt 20 Robijnen !"
+
+[_treasure_89_2]
+# Plusieurs rubis bleus
+#       |--------------------|
+icon = 91
+line1 = "Je hebt $v rode"
+line2 = "Robijnen gevonden!"
+next = _treasure_89_2.1
+
+[_treasure_89_2.1]
+#       |--------------------|
+line1 = "Elk ervan geldt 20"
+line2 = "Robijnen."
+
+# ---------------
+# Autres messages
+# ---------------
+# 
+# Autres messages divers affichés par le moteur de jeu
+
+[_warning_magic]
+# Affiché à la fin des dialogues expliquant
+# que le joueur a obtenu un objet qui consomme
+# de l'énergie magique (même message que dans ALTTP)
+#       |--------------------|
+line1 = "Maar hou toezicht"
+line2 = "over je magiemeter!"
+
+[_empty_chest]
+# Lorsqu'on ouvre un coffre vide
+#       |-----------------------|
+line1 = "Die kist is leeg!"
+line2 = "Jammer voor jou!"
+
+[_small_key_required]
+# Lorsqu'on regarde une porte verrouillé ou un bloc verrouillé
+# et qu'on ne possède pas de Petite Clé
+#       |--------------------|
+icon = 72
+line1 = "Het is gesloten!"
+cancel = all
+
+[_big_key_required]
+# Lorsqu'on regarde le grand coffre ou une porte verrouillée nécessitant la Grande Clé
+# et qu'on ne possède pas celle-ci
+#       |--------------------|
+icon = 73
+line1 = "Je hebt de Grote"
+line2 = "Sleutel nodig om dit"
+line3 = "slot te openen!"
+cancel = all
+
+[_boss_key_required]
+# Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître
+#       |--------------------|
+icon = 74
+line1 = "Dit is de deur van"
+line2 = "de meesters"
+line3 = "schuilplaats! Je"
+cancel = all
+next = _boss_key_required.2
+
+[_boss_key_required.2]
+#       |--------------------|
+icon = 74
+line1 = "hebt de Sleutel naar"
+line2 = "de Meester nodig om"
+line3 = "die te openen!"
+
+[_found_fairy]
+# Lorsqu'on trouve une Fée en ayant au moins un Flacon (même dialogue que dans ALTTP)
+#       |--------------------|
+icon = 81
+line1 = "Je hebt een Elf"
+line2 = "gevonden, die is"
+line3 = "wonderbaar!"
+next = _found_fairy.1
+cancel = all
+
+[_found_fairy.1]
+#       |--------------------___|
+icon = -1
+line1 = "Wat zal je ermee doen?"
+line2 = "Harten terugwinnen"
+line3 = "Bewaren"
+question = true
+
+[_found_fairy.no_empty_bottle]
+# Lorsqu'on veut conserver une Fée mais qu'on n'a pas de Flacon vide
+#       |-----------------------|
+line1 = "Je hebt geen lege "
+line2 = "flacon!"
+
+[_found_water]
+# Lorsqu'on trouve de l'eau et qu'on a un Flacon vide
+#       |--------------------|
+icon = 8
+line1 = "Wil je water stoppen"
+line2 = "in je Magische"
+next = _found_water.2
+
+[_found_water.2]
+#       |--------------------|
+line1 = "Flacon?"
+line2 = "Ja"
+line3 = "Nee"
+question = true
+
+[_found_water.no_bottle]
+# Lorsqu'on trouve de l'eau mais qu'on n'a aucun Flacon
+#       |--------------------|
+line1 = "Er is water hier,"
+line2 = "maar je hebt geen"
+line3 = "vat om die te"
+next = _found_water.no_bottle.2
+
+[_found_water.no_bottle.2]
+#       |--------------------|
+line1 = "stockeren..."
+
+[_found_water.no_empty_bottle]
+# Lorsqu'on trouve de l'eau et qu'on a au moins un Flacon, mais pas de Flacon vide
+#       |--------------------|
+icon = 8
+line1 = "Er is water hier,"
+line2 = "maar je hebt een"
+line3 = "lege Flacon nodig om"
+next = _found_water.no_empty_bottle.2
+
+[_found_water.no_empty_bottle.2]
+#       |--------------------|
+line1 = "die te stockeren..."
+
+[_use_bottle_with_water]
+# Utiliser un Flacon contenant de l'eau
+#       |--------------------|
+icon = 8
+line1 = "Je Magische Flacon"
+line2 = "bevat water."
+next = _use_bottle_with_water.2
+
+[_use_bottle_with_water.2]
+#       |--------------------|
+line1 = "Wat wil je doen?"
+line2 = "De water schenken"
+line3 = "De water bewaren"
+question = true
+
+[_use_bottle_with_fairy]
+# Utiliser un Flacon contenant une Fée
+#       |--------------------|
+icon = 12
+line1 = "Je Magische Flacon"
+line2 = "bevat een Elf."
+next = _use_bottle_with_fairy.2
+
+[_use_bottle_with_fairy.2]
+#       |--------------------|
+line1 = "Wat wil je doen?"
+line2 = "De elf bewaren"
+line3 = "De elf bevrijden"
+question = true
+
+[_use_apples]
+# Utiliser une Pomme
+#       |--------------------|
+icon = 16
+line1 = "Een appel eten laat"
+line2 = "je toe een Hart"
+line3 = "terug te winnen."
+next = _use_apples.2
+
+[_use_apples.2]
+#       |--------------------|
+line1 = "Wat wil je doen?"
+line2 = "Een appel eten"
+line3 = "Niets"
+question = true
+
+[_use_pains_au_chocolat]
+# Utiliser un Pain au Chocolat
+#       |--------------------|
+icon = 17
+line1 = "Een Chocolade"
+line2 = "Broodje geef je 3"
+line3 = "Harten terug."
+next = _use_pains_au_chocolat.2
+
+[_use_pains_au_chocolat.2]
+#       |--------------------|
+line1 = "Wat wil je doen?"
+line2 = "Een ervan eten"
+line3 = "Niets"
+question = true
+
+[_use_croissants]
+# Utiliser un Croissant
+#       |--------------------|
+icon = 18
+line1 = "Een Croissant laat"
+line2 = "je toe 7 Harten"
+line3 = "terug te winnen."
+next = _use_croissants.2
+
+[_use_croissants.2]
+#       |--------------------|
+line1 = "Wat wil je doen?"
+line2 = "Een ervan eten"
+line3 = "Niets"
+question = true
+
+[_too_heavy]
+# Lorsqu'on tente de soulever une pierre ou un buisson
+# sans avoir l'objet nécessaire
+# (Clin d'oeil à Link's Awekening)
+#       |-----------------------|
+line1 = "Ojee, het is heel te"
+line2 = "zwaar!"
+cancel = all
+next = _too_heavy.1
+
+[_too_heavy.1]
+#       |-----------------------|
+line1 = "Je zal erin nooit"
+line2 = "slagen alleen met de"
+line3 = "kracht van je armen!"
+
+[_shop.question]
+# Lorsqu'on regarde un objet vendu dans un magasin
+# (message affiché après avoir lu la description de l'objet)
+#       |-----------------------|
+line1 = "Prijs : $v robijnen."
+line2 = "Kopen"
+line3 = "Niet kopen"
+question = true
+
+[_shop.not_enough_money]
+# Lorsqu'on veut acheter un objet dans un magasin
+# mais qu'on n'a pas assez de Rubis
+#       |-----------------------|
+line1 = "Sorry, maar je hebt"
+line2 = "niet genoeg geld!"
+cancel = all
+
+[_shop.amount_full]
+# Lorsqu'on veut acheter un objet dans un magasin
+# mais qu'on a déjà le maximum de la quantité possible
+# (pour des Bombes, des Flèches, etc.)
+#       |-----------------------|
+line1 = "Je bent al aan het"
+line2 = "maximum !"
+
+[_crystal_switch]
+# Lorsqu'on regarde un interrupteur de cristal
+#       |-----------------------|
+line1 = "Dit is een kristal"
+line2 = "schakelaar. Vind iets"
+line3 = "om die te slagen..."
+cancel = all
+

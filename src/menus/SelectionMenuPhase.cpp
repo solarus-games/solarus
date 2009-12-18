@@ -321,8 +321,6 @@ void SelectionMenuPhase::display_savegame_number(int save_number, Surface *desti
 
 /**
  * Displays the two options in the bottom of the screen.
- * @param left_string text of the first option (on the left)
- * @param right_string text of the second option (on the right)
  */
 void SelectionMenuPhase::display_bottom_options(void) {
 

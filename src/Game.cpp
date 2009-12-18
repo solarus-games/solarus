@@ -812,7 +812,7 @@ void Game::set_hud_enabled(bool hud_enabled) {
 
 /**
  * Returns whether the player can pause the game.
- * @param true if the player is currently allowed to pause the game
+ * @return true if the player is currently allowed to pause the game
  */
 bool Game::is_pause_enabled(void) {
   return pause_enabled;

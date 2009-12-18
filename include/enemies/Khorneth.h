@@ -21,7 +21,7 @@
 #include "entities/Enemy.h"
 
 /**
- * The Khorneth boss from @PyroNet.
+ * The Khorneth boss.
  */
 class Khorneth: public Enemy {
 

@@ -1,0 +1,1902 @@
+# This file contains all the dialogs for the adventure.
+# The dialogs for the game engine are in text/engine_dialogs.zsd,
+# with the syntax specs for these 2 files.
+
+[demo_finished]
+# Dungeon 1 finished
+#       |-----------------------|
+line1 = "Congratulations: you've"
+line2 = "just finished this"
+line3 = "demo version ! We hope"
+next = demo_finished.2
+
+[demo_finished.2]
+#       |-----------------------|
+line1 = "that you've enjoyed"
+line2 = "it. While waiting"
+line3 = "for the full game, you"
+next = demo_finished.3
+
+[demo_finished.3]
+#       |-----------------------|
+line1 = "can browse to"
+line2 = "www.zelda-solarus.com"
+line3 = "to get the latest"
+next = demo_finished.4
+
+[demo_finished.4]
+#       |-----------------------|
+line1 = "info on the game's"
+line2 = "development."
+line3 = "Thanks for playing !"
+
+[outside_world.not_in_demo]
+# Lorsqu'on tente d'entrer dans une grotte pas encore faite dans la démo
+#       |-----------------------|
+line1 = "This area is not"
+line2 = "available yet!"
+cancel = current
+
+[outside_world.dungeon_2_entrance.monkey]
+# Dialogue avec le singe après avoir fini le donjon 1
+#       |-----------------------|
+line1 = "Sorry, things"
+line2 = "are under construction!"
+
+[chest.not_in_demo]
+# Lorsqu'on tente d'ouvrir le coffre qui contiendra l'arc, non disponible dans la démo
+#       |-----------------------|
+line1 = "Sorry, this treasure"
+line2 = "is not available"
+line3 = "yet !"
+cancel = current
+
+[dungeon_1]
+# Lorsqu'on pénètre dans le donjon 1
+#       |-----------------------|
+line1 = "        Level 1        "
+line2 = "     Forest Dungeon    "
+
+[intro0]
+# Intro : écran noir
+#       |-----------------------|
+line1 = "$2Ancient legends"
+line2 = "tell that a long time"
+line3 = "ago, there existed a"
+next = intro0.2
+
+[intro0.2]
+#       |-----------------------|
+line1 = "magnificent kingdom"
+line2 = "that went by the name"
+line3 = "of Hyrule."
+next = intro0.3
+
+[intro0.3]
+#       |-----------------------|
+line1 = "This kingdom flourished"
+line2 = "under the benediction"
+line3 = "of three goddesses, who"
+next = intro0.4
+
+[intro0.4]
+#       |-----------------------|
+line1 = "had created it in"
+line2 = "ancestral times."
+next = intro0.5
+
+[intro0.5]
+#       |-----------------------|
+line1 = "The three goddesses"
+line2 = "were now represented by"
+line3 = "the Triforce, symbol of"
+next = intro0.6
+
+[intro0.6]
+#       |-----------------------|
+line1 = "infinite power, covetted"
+line2 = "by many."
+next = intro0.7
+
+[intro0.7]
+#       |-----------------------|
+line1 = "Seven sages were chosen"
+line2 = "to seal the Triforce in"
+line3 = "the Golden Kingdom,"
+next = intro0.8
+
+[intro0.8]
+#       |-----------------------|
+line1 = "the utopic reflection"
+line2 = "of the world. And"
+line3 = "centuries went by..."
+
+[intro1]
+# Intro : fresque 1
+#       |-----------------------|
+line1 = "$2Many generations"
+line2 = "later, a curse seemed"
+line3 = "to threaten Hyrule."
+next = intro1.2
+
+[intro1.2]
+#       |-----------------------|
+line1 = "Just when darkness "
+line2 = "seemed to slowly engulf"
+line3 = "the kingdom,"
+next = intro1.3
+
+[intro1.3]
+#       |-----------------------|
+line1 = "a mysterious sorcerer"
+line2 = "named Agahnim"
+line3 = "appeared and solved the"
+next = intro1.4
+
+[intro1.4]
+#       |-----------------------|
+line1 = "problems with his"
+line2 = "spells. Acclaimed by"
+line3 = "the population,"
+next = intro1.5
+
+[intro1.5]
+#       |-----------------------|
+line1 = "the King named him to a"
+line2 = "high ranked position."
+line3 = "In reality, the"
+next = intro1.6
+
+[intro1.6]
+#       |-----------------------|
+line1 = "sorcerer was plotting"
+line2 = "against the royal"
+line3 = "family. He was trying"
+next = intro1.7
+
+[intro1.7]
+#       |-----------------------|
+line1 = "to revive Ganondorf,"
+line2 = "Evil King from"
+line3 = "forgotten times."
+
+[intro2]
+# Intro : fresque 2
+#       |-----------------------|
+line1 = "$2The legend says that"
+line2 = "a young man clad in"
+line3 = "green went in a quest"
+next = intro2.2
+
+[intro2.2]
+#       |-----------------------|
+line1 = "throughout the kingdom,"
+line2 = "exploring lost temples,"
+line3 = "climbing steep"
+next = intro2.3
+
+[intro2.3]
+#       |-----------------------|
+line1 = "mountains, crossing"
+line1 = "foggy valleys"
+line2 = "and slaying evil."
+
+[intro3]
+# Intro : fresque 3
+#       |-----------------------|
+line1 = "$2Finally, the one we"
+line2 = "named the Hero succeeded"
+line3 = "in defeating the curse."
+next = intro3.2
+
+[intro3.2]
+#       |-----------------------|
+line1 = "Armed with his courage,"
+line2 = "he triumphed from"
+line3 = "Ganondorf, who had"
+next = intro3.3
+
+[intro3.3]
+#       |-----------------------|
+line1 = "settled in an imposing"
+line2 = "pyramid, inside the"
+line3 = "Golden Land which he"
+next = intro3.4
+
+[intro3.4]
+#       |-----------------------|
+line1 = "had transformed into"
+line2 = "a Dark Kingdom for"
+line3 = "his evil purposes."
+
+[intro4]
+# Intro : fresque 4
+#       |-----------------------|
+line1 = "$2The young Hero"
+line2 = "expressed the desire to"
+line3 = "chain Ganondorf in the"
+next = intro4.2
+
+[intro4.2]
+#       |-----------------------|
+line1 = "Dark Kingdom for"
+line2 = "eternity. Hyrule's King,"
+line3 = "from the descendance of"
+next = intro4.3
+
+[intro4.3]
+#       |-----------------------|
+line1 = "the Seven Sages,"
+line2 = "locked him up"
+line3 = "using a magical seal."
+#next = intro4.4
+
+#[intro4.4]
+##       |-----------------------|
+#line1 = "And that was the end"
+#line2 = "of Ganondorf. Thus he"
+#line3 = "became a prisoner of"
+#next = intro4.5
+
+#[intro4.5]
+##       |-----------------------|
+#line1 = "the dark world he had"
+#line2 = "himself created."
+
+[intro5]
+# Intro : fresque 5
+#       |-----------------------|
+line1 = "$2A few years later,"
+line2 = "Hyrule's King became"
+line3 = "the victim of a strange"
+next = intro5.2
+
+[intro5.2]
+#       |-----------------------|
+line1 = "illness. Doctors from"
+line2 = "all over the kingdom"
+line3 = "tried to understand"
+next = intro5.3
+
+[intro5.3]
+#       |-----------------------|
+line1 = "the sickness and find"
+line2 = "a cure, but it was"
+line3 = "hopeless... The King's"
+next = intro5.4
+
+[intro5.4]
+#       |-----------------------|
+line1 = "death was fill with"
+line2 = "consequences. In"
+line3 = "addition to the mourning"
+next = intro5.5
+
+[intro5.5]
+#       |-----------------------|
+line1 = "that took over Hyrule,"
+line2 = "the King took his power"
+line3 = "to his early tomb."
+next = intro5.6
+
+[intro5.6]
+#       |-----------------------|
+line1 = "The seal of the Seven"
+line2 = "Sages was weakened"
+line3 = "once again."
+
+[intro6]
+# Intro : fresque 6
+#       |-----------------------|
+line1 = "$2The Hero, following"
+line2 = "his revered master"
+line3 = "Sahasrahla's advice,"
+next = intro6.2
+
+[intro6.2]
+#       |-----------------------|
+line1 = "decided to prevent"
+line2 = "anyone from acquiring"
+line3 = "the Triforce. He"
+next = intro6.3
+
+[intro6.3]
+#       |-----------------------|
+line1 = "trusted it to Princess"
+line2 = "Zelda, heiress to the"
+line3 = "royal line."
+next = intro6.5
+
+[intro6.5]
+#       |-----------------------|
+line1 = "Zelda combined her"
+line2 = "powers with those of"
+line3 = "eight mysterious"
+next = intro6.6
+
+[intro6.6]
+#       |-----------------------|
+line1 = "children to split the"
+line2 = "Triforce in eight"
+line3 = "fragments. The children"
+next = intro6.7
+
+[intro6.7]
+#       |-----------------------|
+line1 = "then hid the fragments"
+line2 = "all over the kingdom."
+next = intro6.8
+
+[intro6.8]
+#       |-----------------------|
+line1 = "However, beforehand,"
+line2 = "they cautiously deviced"
+line3 = "an ultimate protection:"
+next = intro6.9
+
+[intro6.9]
+#       |-----------------------|
+line1 = "Solarus' Amulet."
+line2 = "It was a necklace which"
+line3 = "allowed its wearer to"
+next = intro6.10
+
+[intro6.10]
+#       |-----------------------|
+line1 = "assemble the Triforce."
+line2 = "After these events,"
+line3 = "the Hero and Hyrule's"
+next = intro6.11
+
+[intro6.11]
+#       |-----------------------|
+line1 = "inhabitants continued"
+line2 = "to live peacefully."
+next = intro6.12
+
+[intro6.12]
+#       |-----------------------|
+line1 = "This is when our story"
+line2 = "begins..."
+
+[outside_world.village.welcome_sign]
+# Pancarte du village
+#       |-----------------------|
+line1 = "         Welcome"
+line2 = "       to Lyriann"
+
+[outside_world.village.monkey]
+# Dialogue avec le singe tout au début du jeu
+#       |-----------------------|
+line1 = "Help! Since last"
+line2 = "night, everyone's"
+line3 = "freaking out!"
+next = outside_world.village.monkey.2
+
+[outside_world.village.monkey.2]
+#       |-----------------------|
+line1 = "The village is"
+line2 = "surrounded by"
+line3 = "monsters!"
+# _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
+# cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
+next = _unknown
+
+[outside_world.village.monkey.without_shield]
+# Suite du dialogue avec le singe, dans le cas où on n'a pas le bouclier
+#       |-----------------------|
+line1 = "I don't know what's"
+line2 = "going on, but"
+line3 = "you really shouldn't"
+next = outside_world.village.monkey.without_shield.2
+
+[outside_world.village.monkey.without_shield.2]
+#       |-----------------------|
+line1 = "go out unprotected."
+line2 = "Just saying..."
+
+[outside_world.village.monkey.with_shield]
+# Suite du dialogue avec le singe, dans le cas où on a le bouclier
+#       |-----------------------|
+line1 = "I don't know what's"
+line2 = "going on, but if"
+line3 = "you ask me, this"
+next = outside_world.village.monkey.with_shield.2
+
+[outside_world.village.monkey.with_shield.2]
+#       |-----------------------|
+line1 = "Shield of yours will"
+line2 = "come in handy..."
+line3 = "be careful!"
+
+[outside_world.village.grand_son_npc]
+# Dialogue avec l'enfant
+#       |-----------------------|
+line1 = "If you don't know what"
+line2 = "to do anymore during"
+line3 = "your adventure, you"
+cancel = all
+next = outside_world.village.grand_son_npc.2
+
+[outside_world.village.grand_son_npc.2]
+#       |-----------------------|
+line1 = "should pay a visit to"
+line2 = "Grandma, she loves"
+line3 = "to help and guide"
+next = outside_world.village.grand_son_npc.3
+
+[outside_world.village.grand_son_npc.3]
+#       |-----------------------|
+line1 = "adventurers."
+line2 = "She lives right next"
+line3 = "to the Rupee House."
+next = outside_world.village.grand_son_npc.4
+
+[outside_world.village.grand_son_npc.4]
+# Cette fin de dialogue est un clin d'oeil
+# à Link's Awakening tout au début du jeu
+# quand on parle aux enfants du village des mouettes.
+#       |-----------------------|
+line1 = "Uhh... Don't ask me"
+line2 = "what that means,"
+line3 = "I'm just a kid!"
+
+[outside_world.village.chignon_woman_npc]
+# Dialogue avec la femme au chignon
+#       |-----------------------|
+line1 = "When the blue icon"
+line2 = "appears, it indicates"
+line3 = "what you can do by"
+next = outside_world.village.chignon_woman_npc.2
+cancel = all
+
+[outside_world.village.chignon_woman_npc.2]
+#       |-----------------------|
+line1 = "pressing on the Action"
+line2 = "Key (space bar)."
+line3 = "Depending on what"
+next = outside_world.village.chignon_woman_npc.3
+
+[outside_world.village.chignon_woman_npc.3]
+#       |-----------------------|
+line1 = "you're looking at, you"
+line2 = "can do different things"
+line3 = "such as examine an"
+next = outside_world.village.chignon_woman_npc.4
+
+[outside_world.village.chignon_woman_npc.4]
+#       |-----------------------|
+line1 = "object, talk to"
+line2 = "someone, read a sign,"
+line3 = "lift a jar..."
+next = outside_world.village.chignon_woman_npc.5
+
+[outside_world.village.chignon_woman_npc.5]
+#       |-----------------------|
+line1 = "Pay close attention to"
+line2 = "the blue icon to know"
+line3 = "when you can interact"
+next = outside_world.village.chignon_woman_npc.6
+
+[outside_world.village.chignon_woman_npc.6]
+#       |-----------------------|
+line1 = "with your environment!"
+
+# TODO
+#       |-----------------------|
+#line1 = "They say that each and every"
+#line2 = "one of our world's dungeons"
+#line3 = "hide a heart container within..."
+#next = outside_world.village.chignon_woman_npc.2
+#cancel = all
+
+#[outside_world.village.chignon_woman_npc.2]
+#       |-----------------------|
+#line1 = "Fascinating, right?"
+
+[outside_world.village.cliff_man_npc]
+# Dialogue avec le vieux près de la grotte de Tom dans le village
+#       |-----------------------|
+line1 = "Did you know that you"
+line2 = "could jump off certain"
+line3 = "cliffs? This could"
+next = outside_world.village.cliff_man_npc.2
+cancel = all
+
+[outside_world.village.cliff_man_npc.2]
+#       |-----------------------|
+line1 = "help you reach"
+line2 = "otherwise hard to reach"
+line3 = "areas."
+
+[outside_world.village.hat_man_npc]
+# Dialogue avec l'homme au chapeau vert dans le village
+#       |-----------------------|
+line1 = "If you need money,"
+line2 = "I wouldn't recommend"
+line3 = "going to the Rupee"
+next = outside_world.village.hat_man_npc.2
+cancel = all
+
+[outside_world.village.hat_man_npc.2]
+#       |-----------------------|
+line1 = "House, because you"
+line2 = "might lose all your"
+line3 = "savings!"
+next = outside_world.village.hat_man_npc.3
+
+[outside_world.village.hat_man_npc.3]
+#       |-----------------------|
+line1 = "Then again, you look"
+line2 = "wiser than I am."
+next = outside_world.village.hat_man_npc.4
+
+[outside_world.village.hat_man_npc.4]
+#       |-----------------------|
+line1 = "Maybe you'll do a"
+line2 = "better job!"
+
+[outside_world.village.rupee_house_sign]
+# Pancarte à l'entrée de la maison des rubis
+#       |-----------------------|
+line1 = "  - Rupee House -"
+line2 = "Earn some money"
+line3 = "while having fun!"
+
+[outside_world.village.waterfall_sign]
+# Pancarte près de la cascade du village
+# C'est un clin d'oeil à Majora's Mask
+# dans les Marais du Sud où on trouve
+# le même type de pancarte.
+#       |-----------------------|
+line1 = "Please feel free to"
+line2 = "take our fresh spring"
+line3 = "water home with you."
+next = outside_world.village.waterfall_sign.2
+
+[outside_world.village.waterfall_sign.2]
+#       |-----------------------|
+line1 = "         Lyriann"
+line2 = "     Visitor Center"
+
+[outside_world.village.cake_shop_sign]
+# Pancarte à l'entrée de la pâtisserie
+#       |-----------------------|
+line1 = ""
+line2 = "         Bakery"
+line3 = ""
+
+[outside_world.village.shop_sign]
+# Pancarte à l'entrée de la boutique
+#       |-----------------------|
+line1 = ""
+line2 = "          Shop"
+line3 = ""
+
+[outside_world.village.letter_box]
+# Message affiché quand on regarde une boîte aux lettres
+#       |-----------------------|
+line1 = "Gentleman don't read"
+line2 = "each other's mail."
+line3 = "You are a gentleman," 
+cancel = all
+next = outside_world.village.letter_box.2
+
+[outside_world.village.letter_box.2]
+#       |-----------------------|
+line1 = "aren't you?"
+
+[outside_world.village.tree_woman]
+# Long message de la femme près de l'arbre dans le village
+#       |-----------------------|
+line1 = "Are you lost with the"
+line2 = "controls? Let me"
+line3 = "explain. The icons in"
+cancel = all
+next = outside_world.village.tree_woman.2
+
+[outside_world.village.tree_woman.2]
+#       |-----------------------|
+line1 = "the upper left corner"
+line2 = "are layed out like"
+line3 = "your keyboard's keys."
+next = outside_world.village.tree_woman.3
+
+[outside_world.village.tree_woman.3]
+#       |-----------------------|
+line1 = "The C key corresponds"
+line2 = "to the green icon, it"
+line3 = "allows you to use your"
+next = outside_world.village.tree_woman.4
+
+[outside_world.village.tree_woman.4]
+#       |-----------------------|
+line1 = "sword. But when the"
+line2 = "game is paused, the"
+line3 = "icon changes and shows"
+next = outside_world.village.tree_woman.5
+
+[outside_world.village.tree_woman.5]
+#       |-----------------------|
+line1 = "you that the C key"
+line2 = "saves your game!"
+line3 = "And when you're"
+next = outside_world.village.tree_woman.6
+
+[outside_world.village.tree_woman.6]
+#       |-----------------------|
+line1 = "chatting with someone,"
+line2 = "it allows you to scroll"
+line3 = "through the"
+next = outside_world.village.tree_woman.7
+
+[outside_world.village.tree_woman.7]
+#       |-----------------------|
+line1 = "conversation. So pay"
+line2 = "close attention to the"
+line3 = "green icon to know what"
+next = outside_world.village.tree_woman.7bis
+
+[outside_world.village.tree_woman.7bis]
+#       |-----------------------|
+line1 = "the C key does. The"
+line2 = "other icons represent"
+line3 = "the keys around C:"
+next = outside_world.village.tree_woman.8
+
+[outside_world.village.tree_woman.8]
+#       |-----------------------|
+line1 = "the orange icon (D key)"
+line2 = "pauses the game, the"
+line3 = "blue icon (space bar)"
+next = outside_world.village.tree_woman.9
+
+[outside_world.village.tree_woman.9]
+#       |-----------------------|
+line1 = "is the action key, and"
+line2 = "the two grey icons"
+line3 = "represent the items"
+next = outside_world.village.tree_woman.10
+
+[outside_world.village.tree_woman.10]
+#       |-----------------------|
+line1 = "assigned to keys X"
+line2 = "and V. So always have"
+line3 = "an eye on what's"
+next = outside_world.village.tree_woman.11
+
+[outside_world.village.tree_woman.11]
+#       |-----------------------|
+line1 = "indicated by the icons."
+line2 = "Don't forget that you"
+line3 = "can customize the keys"
+next = outside_world.village.tree_woman.12
+
+[outside_world.village.tree_woman.12]
+#       |-----------------------|
+line1 = "in the options screen,"
+line2 = "and you can even play"
+line3 = "with a pad!"
+next = outside_world.village.tree_woman.13
+
+[outside_world.village.tree_woman.13]
+#       |-----------------------|
+line1 = "Did you get everything?"
+line2 = "Yup!"
+line3 = "Not a word!"
+question = true
+next = outside_world.village.tree_woman.thank_you
+next2 = outside_world.village.tree_woman.15
+
+[outside_world.village.tree_woman.15]
+#       |-----------------------|
+line1 = "Ok, here we go again..."
+line2 = "Pay close attention"
+line3 = "this time! The icons in"
+next = outside_world.village.tree_woman.2
+
+[outside_world.village.tree_woman.thank_you]
+#       |-----------------------|
+line1 = "Thanks for listening"
+line2 = "to me all along!"
+line3 = "I'm really grateful."
+next = outside_world.village.tree_woman.thank_you.2
+
+[outside_world.village.tree_woman.thank_you.2]
+#       |-----------------------|
+line1 = "Here, I think you"
+line2 = "deserve a little gift"
+line3 = "for my rambling..."
+
+[outside_world.village.clay_key_required]
+# Message affiché lorsqu'on tente d'ouvrir la grotte de Tom sans avoir la Clé de Terre
+#       |-----------------------|
+line1 = "It's locked!"
+
+[outside_world.warning_holes_sign]
+# Pancarte en haut de la falaise du village
+#       |-----------------------|
+line1 = "Mind the holes!"
+
+[outside_world.how_to_save_npc]
+# Dialogue avec l'homme qui explique comment sauvegarder
+#       |-----------------------|
+line1 = "To save your"
+line2 = "game, press D to pause"
+line3 = "the game, then"
+next = outside_world.how_to_save_npc.2
+cancel = all
+
+[outside_world.how_to_save_npc.2]
+#       |-----------------------|
+line1 = "press C."
+line2 = "Don't forget to look"
+line3 = "at the green icon!"
+
+[outside_world.flower_hole_sign]
+# Pancarte dans la forêt à l'est du village
+#       |-----------------------|
+line1 = "The hole near the"
+line2 = "flower is not as"
+line3 = "dangerous as one"
+next = outside_world.flower_hole_sign.2
+
+[outside_world.flower_hole_sign.2]
+#       |-----------------------|
+line1 = "might think..."
+
+[outside_world.telepathic_booth_sign]
+# Pancarte à l'entrée de la cabine télépathique
+#       |-----------------------|
+line1 = Telepathic Booth"
+
+[outside_world.surprise_wall_sign]
+# Pancarte à l'entrée du mur aux surprises
+#       |-----------------------|
+line1 = " - Wall of Surprises -"
+line2 = "Is luck with you?"
+line3 = "Have a try, and win"
+next = outside_world.surprise_wall_sign.2
+
+[outside_world.surprise_wall_sign.2]
+#       |-----------------------|
+line1 = "the hidden treasure!"
+
+[outside_world.billy_cavern_sign]
+# Pancarte à l'entrée de la caverne de Billy
+#       |-----------------------|
+line1 = "Cavern of"
+line2 = "Billy the Bold."
+line3 = "Entrance forbidden!"
+
+[outside_world.beaumont_hill_sign]
+# Pancarte près de la Colline de Beaumont
+#       |-----------------------|
+line1 = "He who plants an"
+line2 = "edelweiss at the top"
+line3 = "of Prettytop Hill"
+next = outside_world.beaumont_hill_sign.2
+
+[outside_world.beaumont_hill_sign.2]
+#       |-----------------------|
+line1 = "will have a nice"
+line2 = "day."
+
+[link_house.dream]
+# Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
+#       |-----------------------|
+line1 = "... $v..."
+line2 = "It's me..."
+line3 = "... Sahasrahla..."
+next = link_house.dream.2
+
+[link_house.dream.2]
+#       |-----------------------|
+line1 = "We need... to talk..."
+line2 = "Come quick, $v..."
+
+[rupee_house.game_1.intro]
+# Jeu du coffre-mystère dans la maison des rubis
+#       |-----------------------|
+line1 = "Welcome to the"
+line2 = "mystery-chest game."
+line3 = "Pay 20 rupees to open"
+next = rupee_house.game_1.intro.2
+
+[rupee_house.game_1.intro.2]
+#       |-----------------------|
+line1 = "one of the three chests"
+line2 = "and try to earn as much"
+line3 = "rupees as you can!"
+next = rupee_house.game_1.intro.3
+
+[rupee_house.game_1.intro.3]
+#       |-----------------------|
+line1 = "So, do you want to play?"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[rupee_house.game_1.choose_chest]
+# Coffre-mystère : quand on parle au vendeur après avoir déjà payé
+#       |-----------------------|
+line1 = "Choose one of the three"
+line2 = "chests!"
+next = rupee_house.game_1.choose_chest.2
+
+[rupee_house.game_1.choose_chest.2]
+#       |-----------------------|
+line1 = "But don't count on me"
+line2 = "to help you out!"
+
+[rupee_house.game_1.good_luck]
+# Coffre-mystère : quand on accepte de jouer
+#       |-----------------------|
+line1 = "Go choose a chest"
+line2 = "and good luck!"
+
+[rupee_house.game_1.not_allowed_to_play]
+# Coffre-mystère : quand on a déjà trop gagné pour avoir le droit de rejouer
+#       |-----------------------|
+line1 = "Haven't you won enough"
+line2 = "already? We're broke"
+line3 = "because of you!"
+
+[rupee_house.game_1.play_again_question]
+# Coffre-mystère : veut-on rejouer ?
+#       |-----------------------|
+line1 = "Do you want to try"
+line2 = "again?"
+next = rupee_house.game_1.play_again_question.2
+
+[rupee_house.game_1.play_again_question.2]
+#       |-----------------------|
+line1 = "It's 20 rupees!"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[rupee_house.game_1.not_playing]
+# Coffre-mystère : quand on refuse de jouer
+# C'est un clin d'oeil à Link's Awakening, dans le stand
+# de pêche tout au début du jeu, quand on refuse de jouer ou de rejouer
+#       |-----------------------|
+line1 = "It's your life, man! Be"
+line2 = "a bit more proactive!"
+
+[rupee_house.game_2.intro]
+# Jeu du bandit manchot dans la maison des rubis
+#       |-----------------------|
+line1 = "Welcome to our brand"
+line2 = "new slot machine!"
+next = rupee_house.game_2.intro.2
+
+[rupee_house.game_2.intro.2]
+#       |-----------------------|
+line1 = "Bet 5 or 20 rupees and"
+line2 = "try to get 3 identical"
+line3 = "symbols to earn"
+next = rupee_house.game_2.intro.3
+
+[rupee_house.game_2.intro.3]
+#       |-----------------------|
+line1 = "back your bet several"
+line2 = "times!"
+line3 = ""
+next = rupee_house.game_2.intro.4
+
+[rupee_house.game_2.intro.4]
+#       |-----------------------|
+line1 = "So, wanna play?"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[rupee_house.game_2.not_playing]
+# Bandit manchot : quand on refuse de jouer
+#       |-----------------------|
+line1 = "Another time maybe?"
+
+[rupee_house.game_2.choose_bet]
+# Bandit manchot : quand on accepte de jouer
+#       |-----------------------|
+line1 = "How much will you bet?"
+line2 = "5 rupees"
+line3 = "20 rupees"
+question = true
+
+[rupee_house.game_2.just_paid]
+# Bandit manchot : quand on a choisi une des deux sommes à miser
+# et qu'on a effectiement assez d'argent
+#       |-----------------------|
+line1 = "Thanks!"
+next = rupee_house.game_2.playing
+
+[rupee_house.game_2.playing]
+# Bandit manchot : quand on reparle au vendeur pendant que les roulettes tournent déjà
+#       |-----------------------|
+line1 = "Go near the slots"
+line2 = "and press the action"
+line3 = "key to stop them."
+next = rupee_house.game_2.playing.2
+
+[rupee_house.game_2.playing.2]
+#       |-----------------------|
+line1 = "Good luck!"
+
+[rupee_house.game_2.reward.same_any]
+# Bandit manchot : quand on obtient 3 symboles identiques qui ne rapportent rien d'exceptionnel
+#       |-----------------------|
+line1 = "Three identical symbols"
+line2 = "not bad! You get 4"
+line3 = "times the amount of"
+next = rupee_house.game_2.reward.same_any.2
+
+[rupee_house.game_2.reward.same_any.2]
+#       |-----------------------|
+line1 = "your bet."
+
+[rupee_house.game_2.reward.green_rupees]
+# Bandit manchot : quand on obtient 3 symboles de rubis verts
+#       |-----------------------|
+line1 = "Three green rupees,"
+line2 = "nice! You get 5 times"
+line3 = "the amount of your bet!"
+
+[rupee_house.game_2.reward.blue_rupees]
+# Bandit manchot : quand on obtient 3 symboles de rubis bleus
+#       |-----------------------|
+line1 = "Three blue rupees,"
+line2 = "neat! Congrats, you're"
+line3 = "getting 7 times the"
+next = rupee_house.game_2.reward.blue_rupees.2
+
+[rupee_house.game_2.reward.blue_rupees.2]
+#       |-----------------------|
+line1 = "amount of your bet!"
+
+[rupee_house.game_2.reward.red_rupees]
+# Bandit manchot : quand on obtient 3 symboles de rubis rouges
+#       |-----------------------|
+line1 = "Three red rupees!!!"
+line2 = "Now I'm very impressed!"
+line3 = "You're getting 10 times"
+next = rupee_house.game_2.reward.red_rupees.2
+
+[rupee_house.game_2.reward.red_rupees.2]
+#       |-----------------------|
+line1 = "the amount of your"
+line2 = "bet. Bravo!"
+
+[rupee_house.game_2.reward.different_rupees]
+# Bandit manchot : quand on obtient 3 symboles de rubis différents
+#       |-----------------------|
+line1 = "Dude!!! Three different"
+line2 = "rupees! That's not a"
+line3 = "common feat, you know!"
+next = rupee_house.game_2.reward.different_rupees.2
+
+[rupee_house.game_2.reward.different_rupees.2]
+#       |-----------------------|
+line1 = "You get 15 times the"
+line2 = "amount of your bet!"
+
+[rupee_house.game_2.reward.yoshi]
+# Bandit manchot : quand on obtient 3 symboles Yoshi (c'est la récompense maximale)
+#       |-----------------------|
+line1 = "$1...$3Three Yoshi ?!"
+line2 = "I can barely"
+line3 = "believe it! It's the"
+next = rupee_house.game_2.reward.yoshi.2
+
+[rupee_house.game_2.reward.yoshi.2]
+#       |-----------------------|
+line1 = "best combination there"
+line2 = "is... You win"
+line3 = "20 times your bet!"
+
+[rupee_house.game_2.reward.none]
+# Bandit manchot : quand on n'obtient rien
+#       |-----------------------|
+line1 = "Tough luck, you didn't"
+line2 = "get any winning"
+line3 = "combination."
+next = rupee_house.game_2.reward.none.2
+
+[rupee_house.game_2.reward.none.2]
+# Bandit manchot : question pour rejouer
+#       |-----------------------|
+line1 = "Wanna try again?"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[rupee_house.game_3.intro]
+# Jeu du labyrinthe dans la maison des rubis
+#       |-----------------------|
+line1 = "The goal of this game"
+line2 = "is to go through the"
+line3 = "maze in a limited time,"
+next = rupee_house.game_3.intro.2
+
+[rupee_house.game_3.intro.2]
+#       |-----------------------|
+line1 = "and to move the blocks"
+line2 = "to open up a path."
+line3 = "It'll only cost you"
+next = rupee_house.game_3.intro.3
+
+[rupee_house.game_3.intro.3]
+#       |-----------------------|
+line1 = "10 rupees, and there's"
+line2 = "a Piece of Heart to"
+line3 = "win!"
+next = rupee_house.game_3.intro.4
+
+[rupee_house.game_3.intro.4]
+#       |-----------------------|
+line1 = "So, do you want to play?"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[rupee_house.game_3.go]
+# Jeu du labyrinthe : quand on accepte de jouer et qu'on a assez d'argent
+#       |-----------------------|
+line1 = "And here we go!"
+line2 = "Good luck!"
+
+[rupee_house.game_3.not_playing]
+# Jeu du labyrinthe : quand on refuse de jouer
+#       |-----------------------|
+line1 = "It's up to you!"
+
+[rupee_house.game_3.not_allowed_to_play]
+# Jeu du labyrinthe : quand on parle au vendeur alors qu'on a déjà obtenu le fragment de coeur
+#       |-----------------------|
+line1 = "Sorry, but you've"
+line2 = "already won the prize!"
+
+[rupee_house.game_3.restart_question]
+# Jeu du labyrinthe : quand on parle au vendeur alors que le jeu est déjà commencé
+#       |-----------------------|
+line1 = "Do you want to start"
+line2 = "over?"
+next = rupee_house.game_3.restart_question.2
+
+[rupee_house.game_3.restart_question.2]
+#       |-----------------------|
+line1 = "It's 10 rupees!"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[rupee_house.not_enough_money]
+# Maison des rubis : quand on n'a pas assez d'argent (quel que soit le jeu)
+#       |-----------------------|
+line1 = "You don't have enough"
+line2 = "money!"
+
+[rupee_house.pay_first]
+# Maison des rubis : quand on interagit avec le jeu sans avoir payé (coffre-mystère et bandit manchot)
+#       |-----------------------|
+line1 = "Hey! You have to pay"
+line2 = "before you can play!"
+
+[grandma_house.sword]
+# Dialogue chez la grand-mère (au début du jeu)
+#       |-----------------------|
+line1 = "Monsters are invading"
+line2 = "the lands... It's"
+line3 = "a bad sign, I'm scared"
+next = grandma_house.sword.2
+cancel = all
+
+[grandma_house.sword.2]
+#       |-----------------------|
+line1 = "that something terrible"
+line2 = "has happened."
+next = grandma_house.sword.3
+
+[grandma_house.sword.3]
+#       |-----------------------|
+line1 = "You're looking for a"
+line2 = "sword? You should pay"
+line3 = "a visit to the"
+next = grandma_house.sword.4
+
+[grandma_house.sword.4]
+#       |-----------------------|
+line1 = "blacksmith northwest of"
+line2 = "town. He's a shady guy"
+line3 = "but he can surely"
+next = grandma_house.sword.5
+
+[grandma_house.sword.5]
+#       |-----------------------|
+line1 = "help you out with"
+line2 = "that."
+
+[grandma_house.find_sahasrahla]
+# Dialogue chez la grand-mère (après avoir obtenu l'épée)
+#       |-----------------------|
+line1 = "With this sword, you"
+line2 = "can go through the"
+line3 = "bushes that protect"
+next = grandma_house.find_sahasrahla.2
+cancel = all
+
+[grandma_house.find_sahasrahla.2]
+#       |-----------------------|
+line1 = "the town. You're"
+line2 = "looking for the wise"
+line3 = "Sahasrahla? He lives"
+next = grandma_house.find_sahasrahla.3
+
+[grandma_house.find_sahasrahla.3]
+#       |-----------------------|
+line1 = "southwest of town, near"
+line2 = "the bakery."
+
+[grandma_house.go_lyriann_cave]
+# Dialogue chez la grand-mère (après avoir obtenu la clé de terre)
+#       |-----------------------|
+line1 = "With this key, you can"
+line2 = "explore the cavern,"
+line3 = "north of the village."
+cancel = all
+
+[grandma_house.go_dungeon_1]
+# Dialogue chez la grand-mère (après avoir fini la grotte de Tom)
+#       |-----------------------|
+line1 = "They say one of the"
+line2 = "four kidnapped children"
+line3 = "is held captive in a"
+cancel = all
+next = grandma_house.go_dungeon_1.2
+
+[grandma_house.go_dungeon_1.2]
+#       |-----------------------|
+line1 = "gloomy dungeon in the"
+line2 = "forest, south of the"
+line3 = "village..."
+
+[smith_cave.without_sword]
+# Dialogue avec le forgeron
+#       |-----------------------|
+line1 = "I crafted this"
+line2 = "gorgeous bronze"
+line3 = "sword myself."
+next = smith_cave.without_sword.2
+
+[smith_cave.without_sword.2]
+#       |-----------------------|
+line1 = "I'll sell it to you"
+line2 = "for a mere 80 rupees!"
+next = smith_cave.without_sword.3
+
+[smith_cave.without_sword.3]
+#       |-----------------------|
+line1 = "You won't go very far"
+line2 = "with just this crammy"
+line3 = "shield."
+next = smith_cave.without_sword.4
+
+[smith_cave.without_sword.4]
+#       |-----------------------|
+line1 = "So, do we have a deal?"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[smith_cave.with_sword]
+# Dialogue avec le forgeron: quand on a déjà acheté l'épée
+#       |-----------------------|
+line1 = "Don't go breaking my"
+line2 = "sword, cause I won't"
+line3 = "make you another one!"
+
+[smith_cave.not_buying]
+# Dialogue avec le forgeron: quand on refuse d'acheter l'épée
+#       |-----------------------|
+line1 = "Up to you, but without"
+line2 = "a weapon, you'll get"
+line3 = "in trouble!"
+
+[smith_cave.not_enough_money]
+# Dialogue avec le forgeron : quand on n'a pas assez d'argent
+#       |-----------------------|
+line1 = "I'm sorry, but I don't"
+line2 = "think you can afford"
+line3 = "it..."
+
+[smith_cave.thank_you]
+# Dialogue avec le forgeron : quand on achète l'épée
+#       |-----------------------|
+line1 = "Thanks pal! To use"
+line2 = "your sword, press"
+line3 = "C. Or keep the key"
+next = smith_cave.thank_you.2
+
+[smith_cave.thank_you.2]
+#       |-----------------------|
+line1 = "pressed if you want to"
+line2 = "use the Whirling Blade"
+line3 = "Attack !"
+
+[lyriann_shop.salesman]
+# Boutique : quand on parle au vendeur
+#       |-----------------------|
+line1 = "Hello there! Choose"
+line2 = "the item you wish to"
+line3 = "purchase."
+
+[lyriann_shop.apples]
+# Boutique : quand on regarde les pommes
+#       |-----------------------|
+line1 = "3 apples, handpicked"
+line2 = "this morning! An apple"
+line3 = "gives you back a Heart."
+# _unknown car c'est le moteur qui se chargera de la suite pour gérer la vente
+# cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
+next = _unknown
+
+[lyriann_shop.bomb_bag]
+# Boutique : quand on regarde le sac de bombes
+#       |-----------------------|
+line1 = "A bag of bombs. A"
+line2 = "requirement if you want"
+line3 = "to carry some around!"
+next = _unknown
+
+[lyriann_shop.heart]
+# Boutique : quand on regarde le coeur
+#       |-----------------------|
+line1 = "A Heart- for immediate"
+line2 = "use."
+next = _unknown
+
+[cake_shop.seller.choose_item]
+# Pâtisserie : quand on parle à la vendeuse
+#       |-----------------------|
+line1 = "Hello there. Choose"
+line2 = "the pastry you wish"
+line3 = "to buy."
+
+[cake_shop.pain_au_chocolat]
+# Pâtisserie : quand on regarde le pain au chocolat
+#       |-----------------------|
+line1 = "A scrumptious"
+line2 = "chocolat bread that"
+line3 = "will fill up three of" 
+next = cake_shop.pain_au_chocolat.2
+
+[cake_shop.pain_au_chocolat.2]
+#       |-----------------------|
+line1 = "your Hearts."
+next = _unknown
+
+[cake_shop.croissant]
+# Pâtisserie : quand on regarde les croissants
+#       |-----------------------|
+line1 = "Eat this delicious"
+line2 = "croissant to fill up"
+line3 = "seven of your Hearts."
+next = _unknown
+
+[cake_shop.dont_leave]
+# Pâtisserie : quand on est sur le point de partir
+#       |-----------------------|
+line1 = "Hey, wait! I need"
+line2 = "apples to bake a tasty"
+line3 = "pie."
+next = cake_shop.dont_leave.2
+cancel = all
+
+[cake_shop.dont_leave.2]
+#       |-----------------------|
+line1 = "I think that 6 apples"
+line2 = "should be enough."
+line3 = "Would you like to"
+next = cake_shop.dont_leave.3
+
+[cake_shop.dont_leave.3]
+#       |-----------------------|
+line1 = "give me a hand?"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[cake_shop.seller.ask_apples_again]
+# Pâtisserie : quand on parle à la vendeuse une fois qu'elle a déjà parlé des pommes
+#       |-----------------------|
+line1 = "I still need six apples"
+line2 = "before I can bake my"
+line3 = "tasty pie."
+next = cake_shop.seller.ask_apples_again.2
+cancel = all
+
+[cake_shop.seller.ask_apples_again.2]
+#       |-----------------------|
+line1 = "Would you like to help ?"
+line2 = "Yes"
+line3 = "No"
+question = true
+
+[cake_shop.not_enough_apples]
+# Pâtisserie : quand on accepte d'aider la vendeuse en ayant des pommes mais pas assez
+#       |-----------------------|
+line1 = "Oh, you don't have"
+line2 = "enough apples...come"
+line3 = "back later then."
+
+[cake_shop.no_apples]
+# Pâtisserie : quand on accepte d'aider la vendeuse sans avoir de pommes
+#       |-----------------------|
+line1 = "Thanks...come back"
+line2 = "when you find some!"
+
+[cake_shop.thank_you]
+# Pâtisserie : quand on accepte d'aider la vendeuse en ayant assez de pommes
+#       |-----------------------|
+line1 = "Oh, thank you, that's"
+line2 = "very sweet! How could"
+line3 = "I thank you?"
+next = cake_shop.thank_you.2
+
+[cake_shop.thank_you.2]
+#       |-----------------------|
+line1 = "I only have this"
+line2 = "old empty jar to"
+line3 = "give you..."
+
+[sahasrahla_house.beginning]
+# Chez Sahasrahla : première visite
+#       |-----------------------|
+line1 = "Sahasrahla: Oh, $v,"
+line2 = "you heard my call."
+line3 = "I have important things"
+next = sahasrahla_house.beginning.2
+
+[sahasrahla_house.beginning.2]
+#       |-----------------------|
+line1 = "to reveal. The"
+line2 = "situation is getting"
+line3 = "out of hand."
+next = sahasrahla_house.beginning.3
+
+[sahasrahla_house.beginning.3]
+#       |-----------------------|
+line1 = "Four of the eight"
+line2 = "children of the Solarus"
+line3 = "were kidnapped..."
+next = sahasrahla_house.beginning.4
+
+[sahasrahla_house.beginning.4]
+#       |-----------------------|
+line1 = "I fear that the"
+line2 = "Triforce might be in"
+line3 = "great danger. Someone"
+next = sahasrahla_house.beginning.5
+
+[sahasrahla_house.beginning.5]
+#       |-----------------------|
+line1 = "wants to use the King's"
+line2 = "death as leverage"
+line3 = "to acquire the Triforce."
+next = sahasrahla_house.beginning.6
+
+[sahasrahla_house.beginning.6]
+#       |-----------------------|
+line1 = "Who could have done a"
+line2 = "such thing? Probably"
+line3 = "Ganondorf and his"
+next = sahasrahla_house.beginning.7
+
+[sahasrahla_house.beginning.7]
+#       |-----------------------|
+line1 = "minions... The Seal of"
+line2 = "the Seven Sages was"
+line3 = "weakened after the"
+next = sahasrahla_house.beginning.8
+
+[sahasrahla_house.beginning.8]
+#       |-----------------------|
+line1 = "death of our King, and"
+line2 = "it is possible that"
+line3 = "Ganon managed to escape"
+next = sahasrahla_house.beginning.9
+
+[sahasrahla_house.beginning.9]
+#       |-----------------------|
+line1 = "from his Dark World."
+line2 = "We must prevent him"
+line3 = "from gaining such great"
+next = sahasrahla_house.beginning.10
+
+[sahasrahla_house.beginning.10]
+#       |-----------------------|
+line1 = "power!"
+line2 = "I can feel courage in"
+line3 = "you, $v."
+next = sahasrahla_house.beginning.11
+
+[sahasrahla_house.beginning.11]
+#       |-----------------------|
+line1 = "Can you go looking for"
+line2 = "the 4 children and"
+next = sahasrahla_house.beginning.12
+
+[sahasrahla_house.beginning.12]
+#       |-----------------------|
+line1 = "protect the triforce?"
+line2 = "Definitely!"
+line3 = "No way"
+question = true
+cancel = none
+next = sahasrahla_house.beginning.thanks
+next2 = sahasrahla_house.beginning.insisting
+
+[sahasrahla_house.beginning.insisting]
+#       |-----------------------|
+line1 = "$v, I beg you"
+line2 = "you are the only"
+line3 = "one able to protect"
+next = sahasrahla_house.beginning.insisting.2
+
+[sahasrahla_house.beginning.insisting.2]
+#       |-----------------------|
+line1 = "our kingdom..."
+line2 = "Sure"
+line3 = "No way"
+question = true
+next = sahasrahla_house.beginning.thanks
+next2 = sahasrahla_house.beginning.insisting
+
+[sahasrahla_house.beginning.thanks]
+# Chez Sahasrahla : quand on accepte la demande
+#       |-----------------------|
+line1 = "I knew I could count on"
+line2 = "your immense bravery."
+next = sahasrahla_house.give_world_map
+
+[sahasrahla_house.give_world_map]
+#       |-----------------------|
+line1 = "Here's an item that"
+line2 = "will be of great use in"
+line3 = "your journey..."
+
+[sahasrahla_house.quest_accepted]
+# Chez Sahasrahla : quand on lui reparle après avoir accepté
+#       |-----------------------|
+line1 = "You should have a look"
+line2 = "at the basement, I keep"
+line3 = "a couple of things"
+next = sahasrahla_house.quest_accepted.2
+
+[sahasrahla_house.quest_accepted.2]
+#       |-----------------------|
+line1 = "there that you might"
+line2 = "find useful. But I"
+line3 = "can't guarantee"
+next = sahasrahla_house.quest_accepted.3
+
+[sahasrahla_house.quest_accepted.3]
+#       |-----------------------|
+line1 = "anything, I haven't"
+line2 = "been there in a long"
+line3 = "time..."
+
+[sahasrahla_house.memories]
+# Chez Sahasrahla : quand on regarde sa bibliothèque
+#       |-----------------------|
+line1 = "Sahasrahla's Memoirs"
+next = sahasrahla_house.memories.2
+
+[sahasrahla_house.memories.2]
+#       |-----------------------|
+line1 = "Read this book?"
+line2 = "Read"
+line3 = "Don't"
+question = true
+next = sahasrahla_house.memories.read
+
+[sahasrahla_house.memories.read]
+#       |-----------------------|
+line1 = "Oh, it's way too long!"
+
+[sahasrahla_house.frozen_door_advice]
+# Chez Sahasrahla : quand on lui reparle après avoir vu la porte gelée dans la cave
+#       |-----------------------|
+line1 = "The door is frozen?"
+line2 = "Try to melt the ice"
+line3 = "with some water."
+cancel = all
+
+[sahasrahla_house.default]
+# Chez Sahasrahla : dialogue par défaut quand il n'a rien de spécial à dire pour guider le joueur
+#       |-----------------------|
+line1 = "I have faith in you."
+line2 = "Courage and Wisdom"
+line3 = "will guide you."
+cancel = all
+
+[sahasrahla_house.frozen_door]
+# Cave de Sahasrahla : quand on regarde la porte gelée
+#       |-----------------------|
+line1 = "This door is frozen!"
+line2 = "You need to find a way"
+line3 = "to melt the ice!"
+cancel = all
+
+[lyriann_cave.tom.first_time]
+# Grotte de Tom : premier dialogue avec Tom
+#       |-----------------------|
+line1 = "Hello there, young"
+line2 = "man. I am Tom,"
+line3 = "a former guard of"
+next = lyriann_cave.tom.first_time.2
+
+[lyriann_cave.tom.first_time.2]
+#       |-----------------------|
+line1 = "our now defunct King."
+line2 = "I didn't think someone"
+line3 = "would ever come find"
+next = lyriann_cave.tom.first_time.3
+
+[lyriann_cave.tom.first_time.3]
+#       |-----------------------|
+line1 = "me here. What are you"
+line2 = "up to in this gloomy"
+line3 = "cave?"
+next = lyriann_cave.tom.first_time.4
+
+[lyriann_cave.tom.first_time.4]
+#       |-----------------------|
+line1 = "What? The Triforce"
+line2 = "is in danger? $0All of"
+line3 = "that wouldn't have"
+next = lyriann_cave.tom.first_time.5
+
+[lyriann_cave.tom.first_time.5]
+#       |-----------------------|
+line1 = "happened if our King"
+line2 = "was still here to"
+line3 = "protect it..."
+next = lyriann_cave.tom.first_time.6
+
+[lyriann_cave.tom.first_time.6]
+#       |-----------------------|
+line1 = "Are you looking to"
+line2 = "unveil the secrets of"
+line3 = "this cave?"
+next = lyriann_cave.tom.first_time.7
+
+[lyriann_cave.tom.first_time.7]
+#       |-----------------------|
+line1 = "This place is filled"
+line2 = "with puzzles,"
+line3 = "treasures and traps."
+next = lyriann_cave.tom.first_time.8
+
+[lyriann_cave.tom.first_time.8]
+#       |-----------------------|
+line1 = "You look like a"
+line2 = "fearless young man"
+line3 = "to me!"
+next = lyriann_cave.tom.first_time.9
+
+[lyriann_cave.tom.first_time.9]
+#       |-----------------------|
+line1 = "Please, accept"
+line2 = "my help... I have"
+line3 = "failed, I have not"
+next = lyriann_cave.tom.first_time.10
+
+[lyriann_cave.tom.first_time.10]
+#       |-----------------------|
+line1 = "protected our King."
+line2 = "Please give me a chance"
+line3 = "to make up for it!"
+next = lyriann_cave.tom.first_time.11
+
+[lyriann_cave.tom.first_time.11]
+#       |-----------------------|
+line1 = "Do you accept my help?"
+line2 = "Yes"
+line3 = "No"
+question = true
+next2 = lyriann_cave.tom.refuse_help
+
+[lyriann_cave.tom.not_first_time]
+# Grotte de Tom : quand on lui reparle sans avoir son Boomerang,
+# car on a refusé son aide ou bien on lui a déjà rendu le Boomerang mais sans finir la grotte
+#       |-----------------------|
+line1 = "Young explorer,"
+line2 = "accept my help. I"
+line3 = "have failed, I have not"
+next = lyriann_cave.tom.not_first_time.2
+
+[lyriann_cave.tom.not_first_time.2]
+#       |-----------------------|
+line1 = "protected our King."
+line2 = "Give me a chance to"
+line3 = "make up for it!"
+next = lyriann_cave.tom.not_first_time.3
+
+[lyriann_cave.tom.not_first_time.3]
+#       |-----------------------|
+line1 = "Do you accept my help?"
+line2 = "Yes"
+line3 = "No"
+question = true
+next2 = lyriann_cave.tom.refuse_help
+
+[lyriann_cave.tom.accept_help]
+# Grotte de Tom : quand on accepte son aide
+#       |-----------------------|
+line1 = "Thanks. I can lend"
+line2 = "you this, I hope"
+line3 = "you'll find it useful."
+next = lyriann_cave.tom.accept_help.2
+
+[lyriann_cave.tom.accept_help.2]
+#       |-----------------------|
+line1 = "Don't forget to"
+line2 = "give it back to me"
+line3 = "when you're done."
+next = lyriann_cave.tom.accept_help.3
+
+[lyriann_cave.tom.accept_help.3]
+#       |-----------------------|
+line1 = "If you manage to get"
+line2 = "the Heart Container,"
+line3 = "I'll be impressed!"
+
+[lyriann_cave.tom.refuse_help]
+# Grotte de Tom : quand on refuse son aide
+#       |-----------------------|
+line1 = "Fine, it's your"
+line2 = "decision."
+
+[lyriann_cave.tom.not_finished]
+# Grotte de Tom : quand on lui reparle en ayant son Boomerang et sans avoir fini la grotte
+#       |-----------------------|
+line1 = "How's it going? Use"
+line2 = "my boomerang to"
+line3 = "overcome obstacles."
+next = lyriann_cave.tom.not_finished.2
+
+[lyriann_cave.tom.not_finished.2]
+#       |-----------------------|
+line1 = "You'll probably need"
+line2 = "to acquire a certain"
+line3 = "expertise in throwing"
+next = lyriann_cave.tom.not_finished.3
+
+[lyriann_cave.tom.not_finished.3]
+#       |-----------------------|
+line1 = "the Boomerang if you"
+line2 = "want to see all this"
+line3 = "cave has to offer..."
+next = lyriann_cave.tom.not_finished.4
+
+[lyriann_cave.tom.not_finished.4]
+# Grotte de Tom : indication à propos de l'énigme où il faut modifier la trajectoire de retour du boomerang
+#       |-----------------------|
+line1 = "Don't forget that"
+line2 = "the Boomerang always"
+line3 = "comes back to you,"
+next = lyriann_cave.tom.not_finished.5
+
+[lyriann_cave.tom.not_finished.5]
+# Grotte de Tom : indication à propos de l'énigme où il faut lancer le boomerang en diagonale
+#       |-----------------------|
+line1 = "even if you move. And"
+line2 = "look carefully at hints"
+line3 = "in your environment"
+next = lyriann_cave.tom.not_finished.6
+
+[lyriann_cave.tom.not_finished.6]
+#       |-----------------------|
+line1 = "to know which way"
+line2 = "to throw it is"
+line3 = "more appropriate..."
+next = lyriann_cave.tom.not_finished.7
+
+[lyriann_cave.tom.not_finished.7]
+#       |-----------------------|
+line1 = "What do you want to do?"
+line2 = "Continue"
+line3 = "Return the Boomerang"
+question = true
+
+[lyriann_cave.tom.gave_boomerang_back]
+# Grotte de Tom : quand on vient de lui rendre son Boomerang sans avoir fini la grotte
+#       |-----------------------|
+line1 = "Thanks. Come back"
+line2 = "if you need any more"
+line3 = "help from me."
+
+[lyriann_cave.tom.leaving]
+# Grotte de Tom : quand on tente de quitter la grotte sans lui avoir rendu son Boomerang
+#       |-----------------------|
+line1 = "Hey! Wait up!"
+
+[lyriann_cave.tom.leaving.cavern_not_finished]
+# Grotte de Tom : quand on tente de quitter la grotte sans lui avoir rendu son Boomerang
+# et sans avoir trouvé le Réceptacle de Coeur
+#       |-----------------------|
+line1 = "Are you already done"
+line2 = "exploring? I don't"
+line3 = "think you have unveiled"
+next = lyriann_cave.tom.leaving.cavern_not_finished.2
+
+[lyriann_cave.tom.leaving.cavern_not_finished.2]
+#       |-----------------------|
+line1 = "everything... Anyway"
+line2 = "I'm taking back my"
+line3 = "Boomerang."
+next = lyriann_cave.tom.leaving.cavern_not_finished.3
+
+[lyriann_cave.tom.leaving.cavern_not_finished.3]
+#       |-----------------------|
+line1 = "Its handling requires"
+line2 = "a certain experience!"
+line3 = "Come see me if you"
+next = lyriann_cave.tom.leaving.cavern_not_finished.4
+
+[lyriann_cave.tom.leaving.cavern_not_finished.4]
+#       |-----------------------|
+line1 = "wish any more help"
+line2 = "from me."
+
+[lyriann_cave.tom.cavern_finished]
+# Grotte de Tom : quand on a trouvé le Réceptacle de Coeur (et donc
+# fini la grotte) mais qu'on ne lui a pas encore rendu son boomerang,
+# que ce soit en lui parlant directement ou en tentant de quitter la grotte
+#       |-----------------------|
+line1 = "You managed to solve"
+line2 = "all the mysteries this"
+line3 = "place had to offer?"
+next = lyriann_cave.tom.cavern_finished.2
+
+[lyriann_cave.tom.cavern_finished.2]
+#       |-----------------------|
+line1 = "Impressive! You"
+line2 = "certainly look brave"
+line3 = "and nimble!"
+next = lyriann_cave.tom.cavern_finished.3
+
+[lyriann_cave.tom.cavern_finished.3]
+#       |-----------------------|
+line1 = "Anyway, I'm taking back"
+line2 = "my Boomerang. It's a"
+line3 = "family heirloom!"
+next = lyriann_cave.tom.see_you_later
+
+[lyriann_cave.tom.see_you_later]
+# Grotte de Tom : fin du dialogue ci-dessus
+# et également quand on vient le revoir à nouveau après
+# avoir fini la grotte et rendu le Boomerang
+#       |-----------------------|
+line1 = "If you wish, I'll"
+line2 = "come give you a hand"
+line3 = "during your adventure."
+next = lyriann_cave.tom.see_you_later.2
+
+[lyriann_cave.tom.see_you_later.2]
+#       |-----------------------|
+line1 = "Four arms are always"
+line2 = "better than two!"
+
+[outside_world.tom_dungeon_1_entrance.hey]
+# Entrée du donjon 1 : quand on s'approche
+# de la falaise en ayant fini la grotte de Tom
+#       |-----------------------|
+line1 = "Hey!"
+
+[outside_world.tom_dungeon_1_entrance.need_help]
+#       |-----------------------|
+line1 = "Need any help?"
+
+[outside_world.tom_dungeon_1_entrance.let_me_see]
+#       |-----------------------|
+line1 = "Hmmm, I'd bet a ladder"
+line2 = "is hidden right there."
+line3 = "Let's see..."
+
+[outside_world.tom_dungeon_1_entrance.open]
+#       |-----------------------|
+line1 = "I think I might be able"
+line2 = "to unlock it..."
+line3 = "$0Here you go!"
+
+[outside_world.tom_dungeon_1_entrance.finished]
+#       |-----------------------|
+line1 = "Careful, looks quite"
+line2 = "sinister inside."
+
+[dungeon_1.solarus_child]
+#       |-----------------------|
+line1 = "$2$v... Thank you."
+line2 = "You saved my life."
+line3 = "I am one of the eight"
+next = dungeon_1.solarus_child.2
+
+[dungeon_1.solarus_child.2]
+#       |-----------------------|
+line1 = "protectors called"
+line2 = "by Princess Zelda."
+line3 = "We are devoted to"
+next = dungeon_1.solarus_child.3
+
+[dungeon_1.solarus_child.3]
+#       |-----------------------|
+line1 = "watch over the remains"
+line2 = "of the holy relic,"
+line3 = "the Triforce, symbol"
+next = dungeon_1.solarus_child.4
+
+[dungeon_1.solarus_child.4]
+#       |-----------------------|
+line1 = "left by the three"
+line2 = "goddesses after their"
+line3 = "action on your world."
+next = dungeon_1.solarus_child.5
+
+[dungeon_1.solarus_child.5]
+#       |-----------------------|
+line1 = "For centuries a source"
+line2 = "of life and prosperity,"
+line3 = "the Triforce was also"
+next = dungeon_1.solarus_child.6
+
+[dungeon_1.solarus_child.6]
+#       |-----------------------|
+line1 = "the source of desire"
+line2 = "and neverending battles"
+line3 = "between Good and Evil."
+next = dungeon_1.solarus_child.7
+
+[dungeon_1.solarus_child.7]
+#       |-----------------------|
+line1 = "Today, once again, the"
+line2 = "holy relic is"
+line3 = "threatened."
+next = dungeon_1.solarus_child.9
+
+[dungeon_1.solarus_child.9]
+#       |-----------------------|
+line1 = "But history repeats"
+line2 = "itself: each time a"
+line3 = "danger appeared,"
+next = dungeon_1.solarus_child.10
+
+[dungeon_1.solarus_child.10]
+#       |-----------------------|
+line1 = "a hero emerged and his"
+line2 = "courage allowed"
+line3 = "to push back Darkness."
+next = dungeon_1.solarus_child.11
+
+[dungeon_1.solarus_child.11]
+#       |-----------------------|
+line1 = "Find my brothers and"
+line2 = "sisters and discover"
+line3 = "who is behind all of"
+next = dungeon_1.solarus_child.12
+
+[dungeon_1.solarus_child.12]
+#       |-----------------------|
+line1 = "that, before the forces"
+line2 = "of darkness lead Hyrule"
+line3 = "into chaos..."
+next = dungeon_1.solarus_child.13
+
+[dungeon_1.solarus_child.13]
+#       |-----------------------|
+line1 = "May the Hero lead the"
+line2 = "Kingdom to peace and"
+line3 = "prosperity!"
+

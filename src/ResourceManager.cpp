@@ -130,7 +130,7 @@ Surface * ResourceManager::load_image(const ImageId &id) {
  * with the same image file name, the image will be reloaded
  * every time. You also have to free the image yourself.
  * @param id name of the image file to get
- * @param relative_to_sprite_dir true to make the path relative to the sprites directory,
+ * @param relative_to_sprites_dir true to make the path relative to the sprites directory,
  * false to let it relative to the data directory
  * @return the image loaded
  */

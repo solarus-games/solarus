@@ -28,6 +28,7 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/System.h"
+#include "StringResource.h"
 
 /**
  * Creates the common part of all selection menu phases.
@@ -173,7 +174,7 @@ void SelectionMenuCommon::read_savegames(void) {
       player_name = savegames[i]->get_string(Savegame::PLAYER_NAME);
     }
     else {
-      player_name = "- Vide -";
+      player_name = (std::string) "- " + StringResource::get_string("selection_menu.empty") + " -";
     }
 
     if (text_player_names[i] != NULL) {

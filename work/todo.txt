@@ -14,6 +14,10 @@ Démo :
 
 - Version alpha 1 (r1093) : envoyée aux testeurs, touches de test activées (DEBUG_LEVEL = 2)
 - Version beta 1 (r1103) : même chose, la version alpha étant assez stable
+- Version RC1 (r1128) : DEBUG_LEVEL = 0
+- Version RC2 : r1155
+- Version RC3 : r1174
+- Version finale 1.0 : r1176
 
 
 Feature requests :
@@ -47,10 +51,13 @@ Bugs :
 - mur fissuré qui explose : animation ?
 - curseur visible sur eeepc linux en plein écran
 - bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
-- Alt+F4 ne marche pas sous windows
 - le 8 n'est pas très lisible (ex : 80 rubis chez le forgeron)
 - engine_dialogs.zsd : deux fois _treasure_88_2 (le signaler aux traducteurs)
 - quand un coffre apparaît sur le héros : seul y est corrigé
+- empêcher de lancer le jeu en root, sinon le config.ini est créé avec root comme propriétaire
+- mode d'emploi : enlever le logo nintendo sur la dernière page
+- mode d'emploi : page 13 : "vous pouvez la possibilité"
+- maison des rubis jeu 3 : quand on rejoue après avoir raté dans les blocs, le compte à rebours continue même une fois la barrière franchie
 
 
 Remarques de Linksupersayen :

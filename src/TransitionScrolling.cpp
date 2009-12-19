@@ -29,7 +29,7 @@
 const Rectangle TransitionScrolling::previous_map_dst_positions[] = {
   Rectangle(0,   0),  // scroll to the east
   Rectangle(0, 240),  // scroll to the north
-  Rectangle(20,  0),  // scroll to the west
+  Rectangle(320,  0), // scroll to the west
   Rectangle(0 ,  0),  // scroll to the south
 };
 

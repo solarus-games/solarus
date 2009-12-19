@@ -23,12 +23,13 @@
 #include "Savegame.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "DungeonEquipment.h"
 #include "Savegame.h"
 #include "Map.h"
 #include "MapScript.h"
+#include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a new chest with the specified treasure.
@@ -238,7 +239,7 @@ void Chest::update(void) {
 
   if (is_open() && !suspended) {
 
-    if (!treasure_given && SDL_GetTicks() >= treasure_date) {
+    if (!treasure_given && System::now() >= treasure_date) {
 
       Hero *hero = zsdx->game->get_hero();
 
@@ -295,7 +296,7 @@ void Chest::action_key_pressed(void) {
     if (!big_chest || dungeon_equipment->has_big_key()) {
       ResourceManager::get_sound("chest_open")->play();
       set_open(true);
-      treasure_date = SDL_GetTicks() + 300;
+      treasure_date = System::now() + 300;
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
       hero->freeze();
@@ -328,6 +329,6 @@ void Chest::set_suspended(bool suspended) {
 
   if (!suspended) {
     // restore the timer
-    treasure_date = SDL_GetTicks() + (treasure_date - when_suspended);
+    treasure_date = System::now() + (treasure_date - when_suspended);
   }
 }

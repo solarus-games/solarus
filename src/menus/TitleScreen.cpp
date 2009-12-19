@@ -28,10 +28,6 @@
 #include "lowlevel/System.h"
 #include <ctime>
 
-// TODO remove
-#include "Game.h"
-#include "Savegame.h"
-
 /**
  * Creates a title screen.
  */
@@ -70,8 +66,6 @@ TitleScreen::~TitleScreen(void) {
  */
 void TitleScreen::update(void) {
 
-  // TODO remove
-  set_next_screen(new Game(new Savegame("save1.zsd")));
   uint32_t now = System::now();
 
   switch (current_phase) {

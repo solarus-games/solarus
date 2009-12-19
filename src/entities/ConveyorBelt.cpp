@@ -81,18 +81,18 @@ bool ConveyorBelt::is_obstacle_for(MapEntity *other) {
  */
 void ConveyorBelt::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  static const SDL_Rect moves[] = {
-    { 1, 0},
-    { 1,-1},
-    { 0,-1},
-    {-1,-1},
-    {-1, 0},
-    {-1, 1},
-    { 0, 1},
-    { 1, 1}
+  static const Rectangle moves[] = {
+    Rectangle( 1, 0),
+    Rectangle( 1,-1),
+    Rectangle( 0,-1),
+    Rectangle(-1,-1),
+    Rectangle(-1, 0),
+    Rectangle(-1, 1),
+    Rectangle( 0, 1),
+    Rectangle( 1, 1)
   };
 
   int direction = get_sprite()->get_current_direction();
-  entity_overlapping->notify_collision_with_conveyor_belt(this, moves[direction].x, moves[direction].y);
+  entity_overlapping->notify_collision_with_conveyor_belt(this, moves[direction].get_x(), moves[direction].get_y());
 }
 

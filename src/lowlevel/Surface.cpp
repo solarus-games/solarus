@@ -58,7 +58,7 @@ Surface::Surface(SDL_Surface *internal_surface) {
  * Destructor.
  */
 Surface::~Surface(void) {
-  delete internal_surface;
+  SDL_FreeSurface(internal_surface);
 }
 
 /**

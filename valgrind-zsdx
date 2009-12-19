@@ -1,2 +1,2 @@
 #!/bin/bash
-valgrind --suppressions=valgrind.supp --leak-check=full --show-reachable=yes --num-callers=20 zsdx 2>&1 | more
+valgrind --suppressions=valgrind.supp --leak-check=full --show-reachable=yes --num-callers=20 --track-origins=yes zsdx 2>&1 | more

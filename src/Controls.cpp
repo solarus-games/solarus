@@ -19,7 +19,6 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DialogBox.h"
-#include "DebugKeys.h"
 #include "StringResource.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
@@ -67,7 +66,7 @@ static const int arrows_angles[] = {
  * @param game the game
  */
 Controls::Controls(Game *game):
-  game(game), savegame(game->get_savegame()), debug_keys(new DebugKeys(game)), customizing(false) {
+  game(game), savegame(game->get_savegame()), customizing(false) {
 
   if (SDL_NumJoysticks() > 0) {
     joystick = SDL_JoystickOpen(0);
@@ -109,8 +108,6 @@ Controls::~Controls(void) {
   if (SDL_JoystickOpened(0)) {
     SDL_JoystickClose(joystick);
   }
-
-  delete debug_keys;
 }
 
 /**
@@ -217,11 +214,6 @@ void Controls::handle_event(const SDL_Event &event) {
  */
 void Controls::key_pressed(const SDL_keysym &keysym) {
 
-#if ZSDX_DEBUG_LEVEL >= 2
-  // don't consider the debug keys in release mode
-  debug_keys->key_pressed(keysym);
-#endif
-
   // retrieve the game key corresponding to this keyboard key
   GameKey game_key = keyboard_mapping[keysym.sym];
 
@@ -264,10 +256,6 @@ void Controls::key_pressed(const SDL_keysym &keysym) {
  * @param keysym the key released
  */
 void Controls::key_released(const SDL_keysym &keysym) {
-
-#if ZSDX_DEBUG_LEVEL >= 2
-  debug_keys->key_released(keysym);
-#endif
 
   // retrieve the game key corresponding to this keyboard key
   GameKey game_key = keyboard_mapping[keysym.sym];

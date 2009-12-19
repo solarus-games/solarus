@@ -25,6 +25,7 @@
 #include "ZSDX.h"
 #include "Game.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Indicates the direction of the hero's animation (from 0 to 3, or -1 for no change)
@@ -279,7 +280,7 @@ void HeroSprites::blink(void) {
     sword_sprite->set_blinking(50);
   }
 
-  end_blink_date = SDL_GetTicks() + 2000;
+  end_blink_date = System::now() + 2000;
 }
 
 /**
@@ -425,7 +426,7 @@ void HeroSprites::update(void) {
   }
 
   // blinking
-  if (tunic_sprite->is_blinking() && SDL_GetTicks() >= end_blink_date) {
+  if (tunic_sprite->is_blinking() && System::now() >= end_blink_date) {
     stop_blinking();
   }
 }
@@ -486,7 +487,7 @@ void HeroSprites::set_suspended(bool suspended) {
   }
 
   // timer
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   if (suspended) {
     when_suspended = now;
   }

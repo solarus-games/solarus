@@ -104,7 +104,7 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
   }
 
   /* debug
-  std::cout << SDL_GetTicks() << " bounding box collision\n";
+  std::cout << System::now() << " bounding box collision\n";
   std::cout << "rect1 = " << location1.x << "," << location1.y << " x " << bounding_box1.w << "," << bounding_box1.h << "\n";
   std::cout << "rect2 = " << location2.x << "," << location2.y << " x " << bounding_box2.w << "," << bounding_box2.h << "\n";
   print();

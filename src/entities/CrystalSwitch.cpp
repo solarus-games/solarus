@@ -23,9 +23,10 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "KeysEffect.h"
+#include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a new crystal switch.
@@ -36,7 +37,7 @@
 CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
   Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
 	   "", layer, x, y, 16, 16),
-  state(false), next_possible_hit_date(SDL_GetTicks()) {
+  state(false), next_possible_hit_date(System::now()) {
 
   set_origin(8, 13);
   create_sprite("entities/crystal_switch");
@@ -159,7 +160,7 @@ void CrystalSwitch::action_key_pressed(void) {
  */
 void CrystalSwitch::activate(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   if (now >= next_possible_hit_date) {
     ResourceManager::get_sound("switch")->play();
     zsdx->game->change_crystal_switch_state();
@@ -190,7 +191,7 @@ void CrystalSwitch::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended);
 
   if (!suspended) {
-    next_possible_hit_date += SDL_GetTicks() - when_suspended;
+    next_possible_hit_date += System::now() - when_suspended;
   }
 }
 

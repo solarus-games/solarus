@@ -18,6 +18,7 @@
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Random.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a path movement object.
@@ -157,7 +158,7 @@ void PathMovement::start_next_move(void) {
       set_speed(normal_speed);
       set_direction(snapping_angle);
       snapping = true;
-      stop_snapping_date = SDL_GetTicks() + 500;
+      stop_snapping_date = System::now() + 500;
     }
     else {
       // the entity is currently trying to move towards the closest grid intersection
@@ -180,7 +181,7 @@ void PathMovement::start_next_move(void) {
 	}
       }
 
-      uint32_t now = SDL_GetTicks();
+      uint32_t now = System::now();
       if (now >= stop_snapping_date) {
         // we could not snap the entity after the timeout, so we just go back to the opposite direction:
 	// this is possible when there is collisions with 8*8 squares where only a part is an obstacle

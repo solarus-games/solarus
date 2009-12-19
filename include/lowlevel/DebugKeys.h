@@ -27,9 +27,6 @@
  */
 class DebugKeys {
 
-  private:
-
-    bool is_escape_pressed;
 
   public:
 

@@ -82,3 +82,4 @@ MapEntity * DestinationPoint::parse(std::istream &is, Layer layer, int x, int y)
 EntityType DestinationPoint::get_type() {
   return DESTINATION_POINT;
 }
+

@@ -26,7 +26,8 @@
  * Constructor.
  * @param game the game
  */
-DebugKeys::DebugKeys() {
+DebugKeys::DebugKeys():
+  is_escape_pressed(false) {
 
 }
 
@@ -182,9 +183,7 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 	break;
 
       case SDLK_ESCAPE:
-        if (game->is_showing_message()) {
-          game->get_dialog_box()->show_all_now();
-	}
+	is_escape_pressed = true;
 	break;
 
       default:
@@ -193,6 +192,7 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
   }
   else if (keysym.sym == SDLK_ESCAPE) {
     zsdx->skip_menus();
+    is_escape_pressed = true;
   }
 #endif
 }
@@ -216,10 +216,25 @@ void DebugKeys::key_released(const SDL_keysym &keysym) {
 	game->get_hero()->get_normal_movement()->set_stop_on_obstacles(true);
 	break;
 
+      case SDLK_ESCAPE:
+	is_escape_pressed = false;
+	break;
+
       default:
 	break;
     }
   }
 #endif
+}
+
+/**
+ * This function is called repeatedly by the engine.
+ */
+void DebugKeys::update(void) {
+
+  Game *game = zsdx->game;
+  if (game != NULL && is_escape_pressed && game->is_showing_message()) {
+    game->get_dialog_box()->show_all_now();
+  }
 }
 

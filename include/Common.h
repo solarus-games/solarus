@@ -24,6 +24,7 @@
 #include <string>
 #include <sstream>
 #include <stdexcept>
+#include <iostream>
 #include "Types.h"
 
 /**

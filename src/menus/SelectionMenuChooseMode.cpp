@@ -33,7 +33,7 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
   adventure_mode(true) {
 
   this->img_mode = ResourceManager::load_image("menus/selection_menu_mode.png");
-  this->savegame_surface = new Surface(220, 240);
+  this->savegame_surface = new Surface(320, 240);
 
   transition = Transition::create(Transition::FADE, Transition::OUT);
   transition->start();

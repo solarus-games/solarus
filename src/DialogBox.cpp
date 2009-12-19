@@ -248,6 +248,22 @@ void DialogBox::show_message(const MessageId &message_id) {
   zsdx->game->get_current_script()->event_message_started(message_id);
 }
 
+/** 
+ * Shows the next message (if any).
+ */
+void DialogBox::show_next_message() {
+
+  MessageId next_message_id = current_message->get_next_message_id();
+  delete current_message;
+
+  if (next_message_id != "" && next_message_id != "_unknown") {
+    show_message(next_message_id);
+  }
+  else {
+    current_message = NULL;
+  }
+}
+
 /**
  * This function is called by the game when a key is pressed
  * while displaying a message.
@@ -282,17 +298,7 @@ void DialogBox::key_pressed(Controls::GameKey key) {
 void DialogBox::action_key_pressed(void) {
 
   if (current_message->is_finished()) { // the current message is over
-
-    // show the next message (if any)
-    MessageId next_message_id = current_message->get_next_message_id();
-    delete current_message;
-
-    if (next_message_id != "" && next_message_id != "_unknown") {
-      show_message(next_message_id);
-    }
-    else {
-      current_message = NULL;
-    }
+    show_next_message();
   }
 }
 
@@ -305,7 +311,7 @@ void DialogBox::sword_key_pressed(void) {
     skipped = true;
   }
   else if (current_message->is_finished()) {
-    action_key_pressed();
+    show_next_message();
   }
   else if (skip_mode == SKIP_CURRENT) {
     show_all_now();
@@ -329,9 +335,17 @@ void DialogBox::up_or_down_key_pressed(void) {
 
 /**
  * Shows immediately this message up to the end.
+ * If the message was already finished, the next message starts.
  */
 void DialogBox::show_all_now(void) {
-  current_message->show_all_now();
+
+  if (current_message->is_finished()) {
+    show_next_message();
+  }
+
+  if (current_message != NULL) {
+    current_message->show_all_now();
+  }
 }
 
 /**

@@ -96,6 +96,7 @@ class DialogBox {
     Rectangle icon_dst_position;
 
     void show_message(const MessageId &messageId);
+    void show_next_message(void);
 
     void action_key_pressed(void);
     void sword_key_pressed(void);

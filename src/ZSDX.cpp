@@ -19,6 +19,7 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/DebugKeys.h"
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
@@ -39,9 +40,8 @@ ZSDX::ZSDX(int argc, char **argv) {
 
   // initialize the lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
-
-  // create the surface where everything is drawn
   root_surface = new Surface(320, 240);
+  debug_keys = new DebugKeys();
 
   // create the first screen
   current_screen = new TitleScreen();
@@ -55,7 +55,9 @@ ZSDX::ZSDX(int argc, char **argv) {
 ZSDX::~ZSDX(void) {
   delete root_surface;
   delete current_screen;
- }
+  delete debug_keys;
+  System::quit();
+}
 
 /**
  * Sets the current game.
@@ -63,6 +65,17 @@ ZSDX::~ZSDX(void) {
  */
 void ZSDX::set_game(Game *game) {
   this->game = game;
+}
+
+/**
+ * This function can be called during the title screen or the selection menu to skip them
+ * and start the game immediately (for debugging purposes only!).
+ */
+void ZSDX::skip_menus(void) {
+  if (game == NULL) {
+    delete current_screen;
+    current_screen = new Game(new Savegame("save1.zsd"));
+  }
 }
 
 /**
@@ -92,7 +105,7 @@ void ZSDX::main(void) {
   // SDL main loop
   SDL_Event event = {};
   uint32_t now;
-  uint32_t next_frame_date = SDL_GetTicks();
+  uint32_t next_frame_date = System::now();
   uint32_t frame_interval = 25; // time interval between to displays
   int delay;
   bool just_displayed = false; // to detect when the FPS number needs to be decreased
@@ -188,9 +201,16 @@ void ZSDX::handle_event(const SDL_Event &event) {
       break;
 
     default:
+      debug_keys->key_pressed(event.key.keysym);
       break;
     }
     break;
+
+    // a key is pressed
+  case SDL_KEYUP:
+    debug_keys->key_released(event.key.keysym);
+    break;
+
   }
 
   // handle the specific events depending on the current screen

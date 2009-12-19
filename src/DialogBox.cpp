@@ -308,7 +308,7 @@ void DialogBox::sword_key_pressed(void) {
     action_key_pressed();
   }
   else if (skip_mode == SKIP_CURRENT) {
-    current_message->show_all_now();
+    show_all_now();
   }
 }
 
@@ -325,6 +325,13 @@ void DialogBox::up_or_down_key_pressed(void) {
     question_dst_position.set_y(y + ((answer == 1) ? 27 : 40));
     switch_answer_sound->play();
   }
+}
+
+/**
+ * Shows immediately this message up to the end.
+ */
+void DialogBox::show_all_now(void) {
+  current_message->show_all_now();
 }
 
 /**

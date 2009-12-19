@@ -53,7 +53,6 @@ class Controls {
   Game *game;             /**< the game */
   Savegame *savegame;     /**< the savegame, which stores the keyboard and joypad mappings of the game keys */
   SDL_Joystick *joystick; /**< the joystick object */
-  DebugKeys *debug_keys;  /**< special keys to debug the game, e.g. by traversing walls (disabled in release mode) */
 
   std::string game_key_names[9];                 /**< human name of each game key, in the current language */
   std::map<SDLKey, GameKey> keyboard_mapping;    /**< associates each game key to the keyboard key that triggers it */

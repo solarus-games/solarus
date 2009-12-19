@@ -18,11 +18,12 @@
 #include "entities/MapEntities.h"
 #include "movements/RandomWalkMovement.h"
 #include "Map.h"
-#include "lowlevel/Random.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "ResourceManager.h"
+#include "lowlevel/Random.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Constructor.
@@ -71,7 +72,7 @@ void PapillosaurKing::restart(void) {
   Enemy::restart();
 
   // state
-  next_egg_phase_date = SDL_GetTicks() + 3000;
+  next_egg_phase_date = System::now() + 3000;
   next_egg_date = 0;
   get_sprite()->set_current_animation("walking");
 
@@ -100,7 +101,7 @@ void PapillosaurKing::set_suspended(bool suspended) {
   Enemy::set_suspended(suspended);
 
   if (!suspended) {
-    uint32_t diff = SDL_GetTicks() - when_suspended;
+    uint32_t diff = System::now() - when_suspended;
     next_egg_phase_date += diff;
     next_egg_date += diff;
   }
@@ -118,7 +119,7 @@ void PapillosaurKing::update(void) {
   }
 
   // create minillosaur eggs
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   if (is_in_normal_state() && now >= next_egg_phase_date - 500) {
 
     // count the number of sons

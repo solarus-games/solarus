@@ -18,6 +18,7 @@
 #include "movements/PathFinding.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Random.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a chase movement.
@@ -26,7 +27,7 @@
  */
 PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
   PathMovement("", speed, false, true, true),
-  target(target), next_recomputation_date(SDL_GetTicks() + 100) {
+  target(target), next_recomputation_date(System::now() + 100) {
 
 }
 
@@ -59,12 +60,12 @@ void PathFindingMovement::update(void) {
  */
 void PathFindingMovement::recompute_movement(void) { 
 
-//  uint32_t start = SDL_GetTicks();
+//  uint32_t start = System::now();
 
   PathFinding path_finding = PathFinding(entity->get_map(), entity, target);
   remaining_path = path_finding.compute_path();
 
-//  uint32_t end = SDL_GetTicks();
+//  uint32_t end = System::now();
 //  std::cout << "path computed in " << (end - start) << " ms\n";
 
   uint32_t min_delay;
@@ -84,7 +85,7 @@ void PathFindingMovement::recompute_movement(void) {
   }
   // compute a new path every random delay to avoid
   // making all path-finding entities of the map compute a path at the same time
-  next_recomputation_date += SDL_GetTicks() + min_delay + Random::get_number(200);
+  next_recomputation_date += System::now() + min_delay + Random::get_number(200);
 }
 
 /**
@@ -94,7 +95,7 @@ void PathFindingMovement::recompute_movement(void) {
  */
 void PathFindingMovement::start_next_move(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   if (remaining_path.size() == 0 || now >= next_recomputation_date) {
     if (entity->is_aligned_to_grid()) {

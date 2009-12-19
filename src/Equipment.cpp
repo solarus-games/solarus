@@ -20,10 +20,11 @@
 #include "Savegame.h"
 #include "DialogBox.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Map.h"
 #include "Treasure.h"
 #include "InventoryItem.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Constructor.
@@ -54,7 +55,7 @@ void Equipment::update(void) {
 
     if (!zsdx->game->is_suspended()) {
 
-      if (SDL_GetTicks() > next_magic_decrease_date) {
+      if (System::now() > next_magic_decrease_date) {
 
 	remove_magic(1);
 
@@ -68,7 +69,7 @@ void Equipment::update(void) {
     }
     else {
       // delay the next decrease while the game is suspended
-      next_magic_decrease_date = SDL_GetTicks();
+      next_magic_decrease_date = System::now();
     }
   }
 
@@ -588,7 +589,7 @@ void Equipment::start_removing_magic(uint32_t delay) {
 
   if (get_magic() > 0) {
     this->magic_decrease_delay = delay;
-    this->next_magic_decrease_date = SDL_GetTicks();
+    this->next_magic_decrease_date = System::now();
 
     // the magic points will be removed by the update() function
   }

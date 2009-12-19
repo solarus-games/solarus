@@ -17,6 +17,7 @@
 #include "movements/TargetMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a new target movement towards a fixed point.
@@ -26,7 +27,7 @@
  */
 TargetMovement::TargetMovement(int target_x, int target_y, int speed):
   target_x(target_x), target_y(target_y), target_entity(NULL), sign_x(0), sign_y(0), speed(speed),
-  next_recomputation_date(SDL_GetTicks()) {
+  next_recomputation_date(System::now()) {
 
 }
 
@@ -38,7 +39,7 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
  */
 TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
   target_x(target_entity->get_x()), target_y(target_entity->get_y()), target_entity(target_entity),
-  sign_x(0), sign_y(0), speed(speed), next_recomputation_date(SDL_GetTicks()) {
+  sign_x(0), sign_y(0), speed(speed), next_recomputation_date(System::now()) {
 
 }
 
@@ -57,7 +58,7 @@ TargetMovement::~TargetMovement(void) {
 void TargetMovement::set_target(int target_x, int target_y) {
   this->target_x = target_x;
   this->target_y = target_y;
-  next_recomputation_date = SDL_GetTicks();
+  next_recomputation_date = System::now();
 }
 
 /**
@@ -68,7 +69,7 @@ void TargetMovement::set_target(MapEntity *target_entity) {
   this->target_entity = target_entity;
   this->target_x = target_entity->get_x();
   this->target_y = target_entity->get_y();
-  next_recomputation_date = SDL_GetTicks();
+  next_recomputation_date = System::now();
 }
 
 
@@ -80,7 +81,7 @@ void TargetMovement::update(void) {
   int dx = target_x - get_x();
   int dy = target_y - get_y();
 
-  if (SDL_GetTicks() >= next_recomputation_date) {
+  if (System::now() >= next_recomputation_date) {
     recompute_movement();
     next_recomputation_date += 100;
   }

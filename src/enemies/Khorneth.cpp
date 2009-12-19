@@ -21,6 +21,7 @@
 #include "ResourceManager.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Random.h"
+#include "lowlevel/System.h"
 
 /**
  * Constructor.
@@ -183,7 +184,7 @@ int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
     stop_movement();
     ResourceManager::get_sound("boss_hurt")->play();
     left_blade_life--;
-    end_left_blade_hurt_date = SDL_GetTicks() + 400;
+    end_left_blade_hurt_date = System::now() + 400;
   }
   else if (has_right_blade() && this_sprite == get_right_blade_sprite() && this_sprite->get_current_animation() != "stopped") {
 
@@ -195,7 +196,7 @@ int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
     stop_movement();
     ResourceManager::get_sound("boss_hurt")->play();
     right_blade_life--;
-    end_right_blade_hurt_date = SDL_GetTicks() + 400;
+    end_right_blade_hurt_date = System::now() + 400;
   }
 
   return 0;
@@ -221,7 +222,7 @@ void Khorneth::restart(void) {
   Enemy::restart();
 
   if (has_blade()) {
-    next_blade_attack_date = SDL_GetTicks() + 1000 * (2 + Random::get_number(4));
+    next_blade_attack_date = System::now() + 1000 * (2 + Random::get_number(4));
     blade_attack = false;
   }
 }
@@ -233,7 +234,7 @@ void Khorneth::update(void) {
   
   if (is_in_normal_state()) {
 
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
 
     // stop animation hurt of the blades
     if (is_left_blade_being_hurt() && now >= end_left_blade_hurt_date) {

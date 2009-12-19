@@ -17,6 +17,7 @@
 #include "movements/SmoothCollisionMovement.h"
 #include "ZSDX.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/System.h"
 
 /**
  * Constructor.
@@ -40,7 +41,7 @@ SmoothCollisionMovement::~SmoothCollisionMovement(void) {
 void SmoothCollisionMovement::update(void) {
 
   if (!is_suspended()) {
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
 
     bool x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
     bool y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
@@ -72,7 +73,7 @@ void SmoothCollisionMovement::update(void) {
 	update_y();
       }
 
-      now = SDL_GetTicks();
+      now = System::now();
       x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
       y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
     }
@@ -98,7 +99,7 @@ void SmoothCollisionMovement::update_x(void) {
     // x speed needs to be fixed
     uint32_t next_move_date_x_increment = x_delay;
 
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     if (now >= get_next_move_date_x()) { // it's time to try a move
 
       if (!test_collision_with_map(x_move, 0)) {
@@ -170,7 +171,7 @@ void SmoothCollisionMovement::update_y(void) {
     // y speed needs to be fixed
     uint32_t next_move_date_y_increment = y_delay;
 
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     if (now >= get_next_move_date_y()) { // it's time to try a move
 
       if (!test_collision_with_map(0, y_move)) {

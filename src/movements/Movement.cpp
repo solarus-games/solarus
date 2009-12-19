@@ -17,6 +17,7 @@
 #include "movements/Movement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/System.h"
 #include <cmath>
 
 /**
@@ -24,8 +25,8 @@
  */
 Movement::Movement(void):
   x_speed(0), y_speed(0),
-  next_move_date_x(SDL_GetTicks()),
-  next_move_date_y(SDL_GetTicks()),
+  next_move_date_x(System::now()),
+  next_move_date_y(System::now()),
   x_move(0), y_move(0),
   suspended(false), when_suspended(0) {
 
@@ -118,7 +119,7 @@ void Movement::set_position(int x, int y) {
     this->y = y;
   }
 
-  last_move_date = SDL_GetTicks();
+  last_move_date = System::now();
 }
 
 /**
@@ -196,7 +197,7 @@ void Movement::set_x_speed(double x_speed) {
   }
 
   this->x_speed = x_speed;
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   // compute x_delay, x_move and next_move_date_x
   if (x_speed == 0) {
@@ -226,7 +227,7 @@ void Movement::set_y_speed(double y_speed) {
   }
 
   this->y_speed = y_speed;
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   // compute y_delay, y_move and next_move_date_y
   if (y_speed == 0) {
@@ -342,7 +343,7 @@ void Movement::set_direction(double angle) {
  */
 bool Movement::has_to_move_now(void) {
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   return (x_move != 0 && now >= next_move_date_x)
     || (y_move != 0 && now >= next_move_date_y);
 }
@@ -364,7 +365,7 @@ void Movement::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   if (suspended) {
     // the movement is being suspended
@@ -387,7 +388,7 @@ void Movement::update_x(void) {
   if (x_move != 0) { // if we want to move on x
 
     // update the x position while next_move_date_x is past
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     while (now >= next_move_date_x) {
       translate_x(x_move);
       set_next_move_date_x(next_move_date_x + x_delay);
@@ -403,7 +404,7 @@ void Movement::update_y(void) {
   if (y_move != 0) { // if we want to move on y
 
     // update the x position while next_move_date_y is past
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     while (now >= next_move_date_y) {
       translate_y(y_move);
       set_next_move_date_y(next_move_date_y + y_delay);

@@ -19,7 +19,6 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "DialogBox.h"
 #include "MapScript.h"
 #include "Map.h"
@@ -30,6 +29,8 @@
 #include "entities/Boomerang.h"
 #include "entities/PickableItem.h"
 #include "movements/FallingHeight.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates a new inventory item.
@@ -194,7 +195,7 @@ void InventoryItem::update(void) {
   Equipment *equipment = game->get_equipment();
 
   if (item_sound != NULL) {
-    uint32_t now = SDL_GetTicks();
+    uint32_t now = System::now();
     if (now >= next_sound_date) {
       item_sound->play();
       next_sound_date = now + sound_delay;

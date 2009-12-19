@@ -23,17 +23,13 @@
 /**
  * This class provides some special keys that make it easier to debug the game, including
  * by allowing the player to traverse walls.
- * This class exists for debugging purposes only and should never be used in official releases!
+ * This class exists for debugging purposes only and does nothing in official releases (i.e. when DEBUG_LEVEL < 2)
  */
 class DebugKeys {
 
-  private:
-
-    Game *game;
-
   public:
 
-    DebugKeys(Game *game);
+    DebugKeys(void);
     ~DebugKeys(void);
 
     void key_pressed(const SDL_keysym &keysym);

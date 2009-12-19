@@ -23,10 +23,11 @@
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "Map.h"
-#include "lowlevel/Sound.h"
 #include "ZSDX.h"
 #include "Sprite.h"
+#include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/System.h"
 
 /**
  * Features of each type of destructible item.
@@ -120,9 +121,9 @@ EntityType DestructibleItem::get_type() {
  * @return true if this entity is displayed at the same level as the hero
  */
 bool DestructibleItem::is_displayed_in_y_order(void) {
-//  const SDL_Rect& size = get_sprite()->get_size();
-//  return size.h > 16;
- return false;
+//  const Rectangle& size = get_sprite()->get_size();
+//  return size.get_height() > 16;
+  return false;
 }
 
 
@@ -329,7 +330,7 @@ void DestructibleItem::set_suspended(bool suspended) {
 
   if (!suspended && regeneration_date != 0) {
     // recalculate the timer
-    regeneration_date += SDL_GetTicks() - when_suspended;
+    regeneration_date += System::now() - when_suspended;
   }
 }
 
@@ -353,11 +354,11 @@ void DestructibleItem::update(void) {
     }
     else {
       is_being_cut = false;
-      regeneration_date = SDL_GetTicks() + 8000;
+      regeneration_date = System::now() + 8000;
     }
   }
 
-  else if (is_disabled() && SDL_GetTicks() >= regeneration_date && !overlaps(zsdx->game->get_hero())) {
+  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(zsdx->game->get_hero())) {
     get_sprite()->set_current_animation("regenerating");
     is_regenerating = true;
     regeneration_date = 0;

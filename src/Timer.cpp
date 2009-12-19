@@ -16,9 +16,10 @@
  */
 #include "Timer.h"
 #include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 
 /**
  * Creates and starts a timer.
@@ -29,8 +30,8 @@
 Timer::Timer(uint32_t duration, const std::string &callback_name, bool with_sound):
   callback_name(callback_name), finished(false), suspended(false), when_suspended(0) {
 
-  uint32_t now = SDL_GetTicks();
-  expiration_date = SDL_GetTicks() + duration;
+  uint32_t now = System::now();
+  expiration_date = now + duration;
 
   if (with_sound) {
     next_sound_date = now;
@@ -81,7 +82,7 @@ void Timer::update(void) {
   }
 
   // check the time
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
   finished = (now >= expiration_date);
 
   // play the sound
@@ -112,7 +113,7 @@ void Timer::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  uint32_t now = SDL_GetTicks();
+  uint32_t now = System::now();
 
   if (suspended) {
     // the timer is being suspended

@@ -126,6 +126,7 @@ class DialogBox {
     MessageId get_first_message_id(void);
     bool is_finished(void);
     bool was_skipped(void);
+    void show_all_now(void);
 
     // update and display
     void update(void);

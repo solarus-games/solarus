@@ -36,6 +36,7 @@ class ZSDX {
     Screen *current_screen;      /**< the screen currently displayed (the title screen,
 				  * the selection menu, the game, etc. */
     Surface *root_surface;       /**< the surface where everything is drawn (always 320*240) */
+    DebugKeys *debug_keys;       /**< special keys to debug the game, e.g. by traversing walls (disabled in release mode) */
     bool exiting;
 
     void launch_adventure_mode(Savegame *savegame);
@@ -54,6 +55,8 @@ class ZSDX {
     void main(void);
 
     void set_game(Game *game);
+    void skip_menus(void);
+
     void set_exiting(void);
     bool is_exiting(void);
 };

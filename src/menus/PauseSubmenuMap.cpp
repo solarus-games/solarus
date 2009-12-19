@@ -280,7 +280,7 @@ void PauseSubmenuMap::key_pressed(Controls::GameKey key) {
       // move the world map
       if (equipment->has_world_map()) {
 	moving_visible_y = (key == Controls::UP) ? -1 : 1;
-	next_moving_visible_y_date = SDL_GetTicks();
+	next_moving_visible_y_date = System::now();
       }
     }
 

@@ -26,8 +26,7 @@
  * Constructor.
  * @param game the game
  */
-DebugKeys::DebugKeys():
-  is_escape_pressed(false) {
+DebugKeys::DebugKeys() {
 
 }
 
@@ -182,17 +181,12 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 	game->get_hero()->get_normal_movement()->set_stop_on_obstacles(false);
 	break;
 
-      case SDLK_ESCAPE:
-	is_escape_pressed = true;
-	break;
-
       default:
 	break;
     }
   }
   else if (keysym.sym == SDLK_ESCAPE) {
     zsdx->skip_menus();
-    is_escape_pressed = true;
   }
 #endif
 }
@@ -211,13 +205,7 @@ void DebugKeys::key_released(const SDL_keysym &keysym) {
 
       case SDLK_LCTRL:
       case SDLK_RCTRL:
-      case SDLK_LSHIFT:
-      case SDLK_RSHIFT:
 	game->get_hero()->get_normal_movement()->set_stop_on_obstacles(true);
-	break;
-
-      case SDLK_ESCAPE:
-	is_escape_pressed = false;
 	break;
 
       default:
@@ -232,9 +220,12 @@ void DebugKeys::key_released(const SDL_keysym &keysym) {
  */
 void DebugKeys::update(void) {
 
-  Game *game = zsdx->game;
-  if (game != NULL && is_escape_pressed && game->is_showing_message()) {
-    game->get_dialog_box()->show_all_now();
+  SDLMod mod = SDL_GetModState();
+  if (mod & (KMOD_LSHIFT | KMOD_RSHIFT)) {
+    Game *game = zsdx->game;
+    if (game != NULL && game->is_showing_message()) {
+      game->get_dialog_box()->show_all_now();
+    }
   }
 }
 

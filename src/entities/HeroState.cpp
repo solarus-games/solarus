@@ -592,7 +592,8 @@ void Hero::update_carried_items(void) {
 
   if (lifted_item != NULL) {
     lifted_item->update();
-    if (lifted_item->is_broken()) {
+
+    if (lifted_item != NULL && lifted_item->is_broken()) {
       delete lifted_item;
       lifted_item = NULL;
       start_free();

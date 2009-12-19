@@ -121,6 +121,7 @@ void Sound::initialize(void) {
 void Sound::quit(void) {
 
   if (is_initialized()) {
+
 /*
     // stop the sound sources
     ALuint source;

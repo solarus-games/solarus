@@ -27,6 +27,10 @@
  */
 class DebugKeys {
 
+  private:
+
+    bool is_escape_pressed;
+
   public:
 
     DebugKeys(void);
@@ -34,6 +38,7 @@ class DebugKeys {
 
     void key_pressed(const SDL_keysym &keysym);
     void key_released(const SDL_keysym &keysym);
+    void update(void);
 };
 
 #endif

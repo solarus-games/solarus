@@ -222,6 +222,8 @@ void ZSDX::handle_event(const SDL_Event &event) {
  * This function is called repeatedly by the main loop.
  */
 void ZSDX::update(void) {
+
+  debug_keys->update();
   current_screen->update();
   System::update();
 }

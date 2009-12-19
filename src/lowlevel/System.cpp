@@ -64,13 +64,13 @@ void System::initialize(int argc, char **argv) {
  */
 void System::quit(void) {
 
+  ResourceManager::quit();
   Random::quit();
   // TODO Input::quit();
   Sound::quit();
   TextSurface::quit();
   Color::quit();
   VideoManager::quit();
-  ResourceManager::quit();
   StringResource::quit();
   FileTools::quit();
 

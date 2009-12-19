@@ -112,10 +112,9 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  map(NULL), layer(layer), name(""), direction(0), first_sprite(NULL), visible(true),
+  map(NULL), layer(layer), bounding_box(x, y), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
-  bounding_box.set_xy(x, y);
   origin.set_xy(0, 0);
 
   set_size(width, height);
@@ -133,10 +132,9 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
-  map(NULL), layer(layer), name(name), direction(direction), visible(true),
+  map(NULL), layer(layer), bounding_box(x, y), name(name), direction(direction), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
-  bounding_box.set_xy(x, y);
   origin.set_xy(0, 0);
 
   set_size(width, height);
@@ -564,7 +562,7 @@ const Rectangle & MapEntity::get_origin(void) {
  */
 void MapEntity::set_origin(int x, int y) {
 
-  set_top_left_xy(x - origin.get_x(), y - origin.get_y());
+  bounding_box.add_xy(origin.get_x() - x, origin.get_y() - y);
   origin.set_xy(x, y);
 }
 

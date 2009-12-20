@@ -43,7 +43,6 @@ Bugs :
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
 - quand ça rame (exemple Wink ou valgrind), les vases et le boomerang sont lancés moins loin
 - quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
-- pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc
 - la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
 - trous et plates-formes dans la grotte de mymy
 - path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
@@ -58,6 +57,9 @@ Bugs :
 - mode d'emploi : enlever le logo nintendo sur la dernière page
 - mode d'emploi : page 13 : "vous pouvez la possibilité"
 - maison des rubis jeu 3 : quand on rejoue après avoir raté dans les blocs, le compte à rebours continue même une fois la barrière franchie
+- Pâtissière : quand on y retourne une deuxième fois sans avoir eu de pommes la première fois,
+  poser la question différemment (as-tu pu trouver des pommes ?) ou tout simplement ne rien dire quand Link quitte la pâtisserie
+- pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc... il faudrait au moins pouvoir donner un coup d'épée
 
 
 Remarques de Linksupersayen :

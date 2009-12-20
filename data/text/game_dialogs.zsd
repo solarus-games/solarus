@@ -666,13 +666,13 @@ next = outside_world.village.tree_woman.10
 #       |-----------------------|
 line1 = "grises représentent les"
 line2 = "objets attribués aux"
-line3 = "touches X et V."
+line3 = "touches X et V. Donc"
 next = outside_world.village.tree_woman.11
 
 [outside_world.village.tree_woman.11]
 #       |-----------------------|
-line1 = "Donc regarde toujours"
-line2 = "ce qui indiqué sur les"
+line1 = "regarde toujours ce qui"
+line2 = "est indiqué sur les"
 line3 = "icônes. N'oublie pas"
 next = outside_world.village.tree_woman.12
 

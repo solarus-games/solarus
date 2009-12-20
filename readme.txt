@@ -20,7 +20,7 @@ Note that two other libraries are directly included in the source code: SDL_Conf
 (an ini parsing library, with some modifications to avoid compilation warning and 64-bit issues)
 and snes_spc (an SPC music decoding library).
 
-The compilation process also relies on zip and luac (the Lua compiler) to manage the data files.
+The compilation process also relies on a C++ compiler, cmake, zip and luac (the Lua compiler).
 
 
 Linux developers:

@@ -1213,7 +1213,7 @@ next = _treasure_66.1
 [_treasure_66.1]
 #       |--------------------|
 line1 = "Tu peux croiser le"
-line2 = "fer et et affronter"
+line2 = "fer et affronter"
 line3 = "les ennemis !"
 
 [_treasure_67]

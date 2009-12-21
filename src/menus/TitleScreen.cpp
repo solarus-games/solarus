@@ -140,7 +140,8 @@ void TitleScreen::handle_event(const SDL_Event &event) {
       && event.type == SDL_KEYDOWN
       && (event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_RETURN)
       && counter >= 1
-      && !transition_out->is_started()) {
+      && !transition_out->is_started()
+      && !transition_out->is_over()) {
 
     transition_out->start();
   }

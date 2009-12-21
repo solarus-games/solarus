@@ -1297,7 +1297,6 @@ line1 = "Hé, attends !"
 line2 = "Je cherche des pommes"
 line3 = "pour faire une bonne"
 next = cake_shop.dont_leave.2
-skip = all
 
 [cake_shop.dont_leave.2]
 #       |-----------------------|

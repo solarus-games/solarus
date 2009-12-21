@@ -758,7 +758,7 @@ void Game::show_message(const MessageId &message_id, int position) {
 /**
  * Returns the answer selected by the player in the last dialog with a question.
  * @return the answer selected: 0 for the first one, 1 for the second one,
- * -1 if the last dialog was not a question or was cancelled by the user
+ * -1 if the last dialog was not a question
  */
 int Game::get_dialog_last_answer(void) {
   return dialog_last_answer;

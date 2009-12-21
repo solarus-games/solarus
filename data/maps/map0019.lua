@@ -2,13 +2,18 @@
 -- Cake shop script --
 ----------------------
 
-apples_question_asked = false
+function has_talked_about_apples()
+  return savegame_get_boolean(46)
+end
+
+function has_obtained_bottle()
+  return savegame_get_boolean(32)
+end
 
 function event_hero_on_sensor(sensor_name)
 
-   if not savegame_get_boolean(32) and not apples_question_asked then
+   if not has_obtained_bottle() and not has_talked_about_apples() then
       start_message("cake_shop.dont_leave")
-      apples_question_asked = true
    end
 end
 
@@ -49,7 +54,7 @@ function event_interaction(entity_name)
 end
 
 function talk_to_seller()
-  if not savegame_get_boolean(46) or savegame_get_boolean(32) then
+  if not has_talked_about_apples() or has_obtained_bottle() then
     start_message("cake_shop.seller.choose_item")
   else 
     start_message("cake_shop.seller.ask_apples_again")

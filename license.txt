@@ -1,3 +1,13 @@
+The source code is released under the GNU General Public License (see below).
+Most of the game data (graphics, sprites, sounds, musics, etc. located in the "data" directory) come directly
+from Zelda: A Link to the Past and cannot be released in a legal license.
+
+Thus, the GNU GPL only applies to the C++ source code of the game executable file,
+which represents the game engine. We are working on an alternative free data package in the future,
+but for now, only the game engine can be distributed under the GNU GPL.
+
+
+------------------------------------------------------------------------
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 

@@ -120,12 +120,12 @@ void Message::parse(MessageId message_id) {
     dialog_box->set_icon_number(icon_number);
   }
 
-  // question
-  question = CFG_ReadBool("question", false);
-
   // next message
   next_message_id = CFG_ReadText("next", "");
   next_message_id_2 = CFG_ReadText("next2", "");
+
+  // question
+  question = CFG_ReadBool("question", false);
 
   // skip mode
   const std::string &skip_mode_text = CFG_ReadText("skip", "");
@@ -136,7 +136,7 @@ void Message::parse(MessageId message_id) {
       skip_mode = DialogBox::SKIP_CURRENT;
     }
     else if (skip_mode_text == "all") {
-      skip_mode = DialogBox::SKIP_ALL;
+      skip_mode = question ? DialogBox::SKIP_CURRENT : DialogBox::SKIP_ALL;
     }
     else {
       skip_mode = DialogBox::SKIP_NONE;

@@ -1,5 +1,5 @@
 This file explains how to compile Zelda: Mystery Solarus DX.
-Only the developing team has to compile the project. The users download directly a compiled binary for Windows, Linux or Mac OS.
+Only the development team has to compile the project. The users can download directly a compiled binary for Windows, Linux or Mac OS.
 
 ---------------------
 External dependencies

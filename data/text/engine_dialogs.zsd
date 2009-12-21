@@ -63,7 +63,9 @@
 #                On peut ainsi passer plus vite au message suivant.
 #    - all : si on appuie sur C, le message courant s'arrête
 #            et les messages suivants ne seront pas affichés. La
-#            boîte de dialogue se ferme immédiatement.
+#            boîte de dialogue se ferme immédiatement. A n'utiliser
+#            que pour des dialogues peu importants et qu'il est possible
+#            de relire ensuite.
 # La valeur de skip s'applique au message courant et à tous les
 # messages suivants, jusqu'à ce que la valeur soit changée ou que
 # la boîte de dialogue se ferme.
@@ -92,6 +94,15 @@
 # il est alors indiqué par next2. Comme pour la valeur next,
 # si next2 n'est pas spécifié et que le joueur choisit la réponse 2,
 # la série de messages s'arrête et la boîte de dialogue se ferme.
+#
+# Un message contenant une question ne plus pas être passé.
+# si skip égal à "all" dans un message avec question, alors tout se passe
+# comme si c'était "current" au lieu de "all".
+# Remarque : si le message contenant la question fait partie d'une
+# série de messages, et que cette série pouvait être annulée (skip = "all")
+# alors il est possible d'annuler la série malgré la présence d'un message
+# avec question par la suite. C'est possible tant que le message contenant
+# la question n'est pas commencé.
 #
 # - Enfin, il existe des séquences particulières que l'on peut
 # insérer dans le texte d'un message :

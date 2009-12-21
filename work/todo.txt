@@ -57,8 +57,6 @@ Bugs :
 - mode d'emploi : enlever le logo nintendo sur la dernière page
 - mode d'emploi : page 13 : "vous pouvez la possibilité"
 - maison des rubis jeu 3 : quand on rejoue après avoir raté dans les blocs, le compte à rebours continue même une fois la barrière franchie
-- Pâtissière : quand on y retourne une deuxième fois sans avoir eu de pommes la première fois,
-  poser la question différemment (as-tu pu trouver des pommes ?) ou tout simplement ne rien dire quand Link quitte la pâtisserie
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc... il faudrait au moins pouvoir donner un coup d'épée
 
 

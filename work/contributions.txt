@@ -32,12 +32,13 @@ SkyJedi + Deather (version Mac)
 
 Traduction :
 
-Geomaster : Anglais - traduction en cours
-Stella (soldenb@web.de) : Allemand - traduction en cours
+Geomaster : Anglais - laisse sa place à Noxneo
+Noxneo : Anglais - démo ok
+Stella (soldenb@web.de) : Allemand - démo ok
 Elrick (sb06390@hotmail.fr) : Italien (proposition par mail) - s'est désisté
 Vivig + Maxi-kapichu (maxime.callico@gmail.com) : Espagnol - démo envoyée par msn et mail respectivement
 Kennou (forum) : Portugais - contacté par MP
-@PyroNet + Antevre : Néerlandais - prêts, expliquer les instructions
+@PyroNet + Antevre : Néerlandais - démo à corriger
 
 
 Trouvé sur internet :
@@ -54,6 +55,7 @@ Stella : soldenb@web.de
 BenObiWan
 Sam101
 Noxneo
+Morwenn 
 
 
 Pas encore sûrs :

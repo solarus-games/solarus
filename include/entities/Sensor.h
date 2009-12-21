@@ -27,36 +27,37 @@
  */
 class Sensor: public Detector {
 
- public:
+  public:
 
-  /**
-   * Subtypes of sensors.
-   */
-  enum Subtype {
-    CUSTOM                 = 0, /**< the map script is called when the hero walks on this sensor */
-    CHANGE_LAYER           = 1, /**< the hero's layer is changed when he comes on this sensor
-	                         * (the hero's layer becomes the sensor's layer) */
-    RETURN_FROM_BAD_GROUND = 2, /**< when falling in a hole or in other bad grounds, the hero
-	                         * comes back at the location of this sensor */
-  };
+    /**
+     * Subtypes of sensors.
+     */
+    enum Subtype {
+      CUSTOM                 = 0, /**< the map script is called when the hero walks on this sensor */
+      CHANGE_LAYER           = 1, /**< the hero's layer is changed when he comes on this sensor
+				   * (the hero's layer becomes the sensor's layer) */
+      RETURN_FROM_BAD_GROUND = 2, /**< when falling in a hole or in other bad grounds, the hero
+				   * comes back at the location of this sensor */
+    };
 
- private:
+  private:
 
-  Subtype subtype;            /**< subtype of teletransporter */
-  bool hero_already_overlaps; /**< true if the hero is currently on this sensor */
+    Subtype subtype;            /**< subtype of teletransporter */
+    bool hero_already_overlaps; /**< true if the hero is currently on this sensor */
 
- public:
+  public:
 
-  Sensor(const std::string &name, Layer layer, int x, int y, int width, int height, Subtype subtype);
-  ~Sensor(void);
-  static CreationFunction parse;
+    Sensor(const std::string &name, Layer layer, int x, int y, int width, int height, Subtype subtype);
+    ~Sensor(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
+    EntityType get_type(void);
 
-  bool is_obstacle_for(MapEntity *other);
-  bool test_collision_custom(MapEntity *entity);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void activate(Hero *hero);
+    Subtype get_subtype(void);
+    bool is_obstacle_for(MapEntity *other);
+    bool test_collision_custom(MapEntity *entity);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void activate(Hero *hero);
 };
 
 #endif

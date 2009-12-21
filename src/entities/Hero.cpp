@@ -588,7 +588,7 @@ void Hero::movement_just_changed(void) {
 
     uint16_t direction_mask = get_normal_movement()->get_direction_mask();
     int old_animation_direction = sprites->get_animation_direction();
-    int animation_direction = HeroSprites::get_animation_direction(direction_mask);
+    int animation_direction = sprites->get_animation_direction(direction_mask);
 
     if (animation_direction != old_animation_direction
 	&& animation_direction != -1

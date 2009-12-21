@@ -77,8 +77,10 @@ class CarriedItem: public MapEntity {
     bool is_ladder_obstacle(void);
     bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
     bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
+    bool is_sensor_obstacle(Sensor *sensor);
     bool is_npc_obstacle(InteractiveEntity *npc);
     bool is_enemy_obstacle(Enemy *enemy);
+    void notify_collision_with_sensor(Sensor *sensor);
     void notify_collision_with_enemy(Enemy *enemy);
     void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };

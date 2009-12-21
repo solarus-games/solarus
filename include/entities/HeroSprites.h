@@ -43,8 +43,8 @@ class HeroSprites {
     Sound *sword_sound;            /**< sound of the current sword */
     Sound *ground_sound;           /**< sound of the current ground displayed under the hero */
 
-    static const int animation_directions[][2];                 /**< allowed directions of the animation for each
-								 * directional key combination */
+    static const int direction_mask_to_direction[16];           /**< converts a combination of directional keys into a direction */
+    static const int animation_directions[8][2];                /**< possible directions of the animation for each movement direction */
     static const SpriteAnimationSetId tunic_sprite_ids[];       /**< name of each tunic sprite */
     static const SpriteAnimationSetId sword_sprite_ids[];       /**< name of each sword sprite */
     static const SpriteAnimationSetId sword_stars_sprite_ids[]; /**< name of each sword stars sprite */
@@ -53,10 +53,10 @@ class HeroSprites {
     static const SoundId sword_sound_ids[];                     /**< name of each sword sound */
     static const SoundId ground_sound_ids[];                    /**< name of each ground sound */
 
-    int animation_direction_saved;  /**< direction of the hero's sprites, saved before
-				     * showing a sprite animation having only one direction */
-    uint32_t when_suspended;         /**< date when the game was suspended */
-    uint32_t end_blink_date;         /**< when the hero's sprites stop blinking */
+    int animation_direction_saved; /**< direction of the hero's sprites, saved before
+				    * showing a sprite animation having only one direction */
+    uint32_t when_suspended;       /**< date when the game was suspended */
+    uint32_t end_blink_date;       /**< when the hero's sprites stop blinking */
 
     bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
 
@@ -80,6 +80,7 @@ class HeroSprites {
     int get_animation_direction(uint32_t direction_mask);
     int get_animation_direction(void);
     void set_animation_direction(int direction);
+    void set_animation_direction8(int direction);
     void restart_animation(void);
     bool is_animation_finished(void);
     int get_current_frame(void);

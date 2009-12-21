@@ -28,8 +28,32 @@
 #include "lowlevel/System.h"
 
 /**
+ * This tables converts a combination of directional keys pressed
+ * into a direction between 0 and 7.
+ * A value of -1 means that the combination is illegal.
+ */
+const int HeroSprites::direction_mask_to_direction[] = {
+  -1,  // none
+   0,  // right
+   2,  // up
+   1,  // right + up
+   4,  // left
+  -1,  // left + right
+   3,  // left + up
+  -1,  // left + right + up
+   6,  // down
+   7,  // down + right
+  -1,  // down + up
+  -1,  // down + right + up
+   5,  // down + left
+  -1,  // down + left + right
+  -1,  // down + left + up
+  -1,  // down + left + right + up  
+};
+
+/**
  * Indicates the possible directions of the hero's animation (from 0 to 3, or -1 for no change)
- * for each combination of directional keys pressed.
+ * for movement direction.
  * Each combination of directional keys can be associated to one or two directions.
  * When one direction is specified (i.e. the second one is set to -1), the hero's sprite takes
  * this direction.
@@ -38,22 +62,14 @@
  * (then it stays in the second one). This permits a natural behavior for diagonal directions.
  */
 const int HeroSprites::animation_directions[][2] = {
-  {-1, -1},  // none: no change
   { 0, -1},  // right
+  { 0,  1},  // right-up: right or up
   { 1, -1},  // up
-  { 0,  1},  // right + up: right or up
+  { 2,  1},  // left-up: left or up
   { 2, -1},  // left
-  {-1, -1},  // left + right: no change
-  { 2,  1},  // left + up: left or up
-  {-1, -1},  // left + right + up: no change
+  { 2,  3},  // left-down: left or down
   { 3, -1},  // down
-  { 0,  3},  // down + right: right or down
-  {-1, -1},  // down + up: no change
-  {-1, -1},  // down + right + up: no change
-  { 2,  3},  // down + left: left or down
-  {-1, -1},  // down + left + right: no change
-  {-1, -1},  // down + left + up: no change
-  {-1, -1},  // down + left + right + up: no change
+  { 0,  3},  // right-down: right or down
 };
 
 /**
@@ -337,17 +353,24 @@ int HeroSprites::get_animation_direction(void) {
  * For diagonal directions, the direction returned depends
  * on the current real direction of the hero's sprites.
  * @param direction_mask the OR-combination of directional keys pressed
- * @return the direction of the sprites corresponding to these arrows (0 to 3)
+ * @return the direction of the sprites corresponding to these arrows (0 to 3),
+ * or -1 if the directional keys combination is illegal
  */
 int HeroSprites::get_animation_direction(uint32_t direction_mask) {
 
-  // each direction mask can be associated to one or two sprite directions
-  // (see the detailed comment of the animation_directions field)
-  if (animation_directions[direction_mask][1] == get_animation_direction()) {
-    return animation_directions[direction_mask][1];
+  int movement_direction = direction_mask_to_direction[direction_mask];
+
+  if (movement_direction == -1) {
+    return -1;
   }
 
-  return animation_directions[direction_mask][0];
+  // each direction mask can be associated to one or two sprite directions
+  // (see the detailed comment of the animation_directions field)
+  if (animation_directions[movement_direction][1] == get_animation_direction()) {
+    return animation_directions[movement_direction][1];
+  }
+
+  return animation_directions[movement_direction][0];
 }
 
 /**
@@ -369,6 +392,22 @@ void HeroSprites::set_animation_direction(int direction) {
 
   if (is_shield_visible()) {
     shield_sprite->set_current_direction(direction);
+  }
+}
+
+/**
+ * Changes the direction of the hero's sprites,
+ * specifying one of the 8 possible movement directions
+ * of the hero.
+ * The hero's sprites only have four directions, so when 
+ * the specified direction is a diagonal one, 
+ * one of the two closest main directions is picked.
+ * @param direction the movement direction (0 to 7)
+ */
+void HeroSprites::set_animation_direction8(int direction) {
+
+  if (get_animation_direction() != animation_directions[direction][1]) {
+    set_animation_direction(animation_directions[direction][0]);
   }
 }
 

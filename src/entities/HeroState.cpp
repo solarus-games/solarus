@@ -1071,12 +1071,14 @@ void Hero::start_jumping(int direction, int length, bool with_collisions, bool w
     start_throwing();
   }
 
+  // update the sprites
   sprites->stop_displaying_sword();
+  sprites->set_animation_direction8(direction);
+  sprites->set_animation_jumping();
 
   // jump
   set_state(JUMPING);
   set_movement(new JumpMovement(direction, length, with_collisions));
-  sprites->set_animation_jumping();
 
   if (with_sound) {
     ResourceManager::get_sound("jump")->play();

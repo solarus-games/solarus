@@ -36,7 +36,8 @@ Feature requests :
 - scrolling tiles : permettre de choisir la direction du décalage
 - écran d'options global permettant de régler la langue et le volume de la musique et du son
 - Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
-
+- Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
+- Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
 
 Bugs :
 
@@ -58,20 +59,13 @@ Bugs :
 - mode d'emploi : page 13 : "vous pouvez la possibilité"
 - maison des rubis jeu 3 : quand on rejoue après avoir raté dans les blocs, le compte à rebours continue même une fois la barrière franchie
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc... il faudrait au moins pouvoir donner un coup d'épée
-
-
-Remarques de Linksupersayen :
-
 - Link semble disparaître un peu lors des phases à l'épée.
-- D'ailleurs, le bruitage d'arrêt de la roulette lors du Bingo ne colle pas à l'ambiance musicale.
-
-  
-Remarques de @PyroNet :
-
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
-- Lorsqu'on achète un objet, l'image de l'objet que Link porte au-dessus de sa tête et de celui qui est sur le tapis se superposent. Il faudrait peut-être faire disparaître l'objet se trouvant sur le tapis pendant que Link porte celui qu'il a acheté.
-- Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
+- Au moment où on frappe les gardes verts qui rôdent près du village, il se peut que ceux-ci ne reculent pas malgré l'impact s'ils changent de direction au même moment.
+- Dans ALTTP, quand on marche en diagonale, c'est la dernière direction des 2 qui s'affiche
+- Raccourcir l'intro
+- On ne peut pas lancer un pot au-dessus d'une falaise (même à l'intérieur d'un donjon)
 
 
 A venir :

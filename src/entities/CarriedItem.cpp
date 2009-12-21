@@ -19,6 +19,7 @@
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
 #include "entities/Explosion.h"
+#include "entities/Sensor.h"
 #include "entities/MapEntities.h"
 #include "movements/PixelMovement.h"
 #include "movements/FollowMovement.h"
@@ -416,6 +417,15 @@ bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
+ * Returns whether a sensor is currently considered as an obstacle for this entity.
+ * @param sensor a sensor
+ * @return true if this sensor is currently an obstacle for this entity.
+ */
+bool CarriedItem::is_sensor_obstacle(Sensor *sensor) {
+  return false;
+}
+
+/**
  * Returns whether an enemy character is considered as an obstacle for this entity.
  * @param enemy an enemy
  * @return true if this enemy is considered as an obstacle for this entity.
@@ -423,5 +433,16 @@ bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
 bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
   return explosion_date != 0;
+}
+
+/**
+ * This function is called when a sensor detects a collision with this entity.
+ * @param sensor a sensor
+ */
+void CarriedItem::notify_collision_with_sensor(Sensor *sensor) {
+
+  if (is_throwing && !is_breaking && sensor->get_subtype() == Sensor::CHANGE_LAYER) {
+    break_item();
+  }
 }
 

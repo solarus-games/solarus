@@ -86,6 +86,14 @@ MapEntity * Sensor::parse(std::istream &is, Layer layer, int x, int y) {
 EntityType Sensor::get_type() {
   return SENSOR;
 }
+    
+/**
+ * Returns the subtype of this sensor.
+ * @return the subtype
+ */
+Sensor::Subtype Sensor::get_subtype(void) {
+  return subtype;
+}
 
 /**
  * Returns whether this entity is an obstacle for another one.

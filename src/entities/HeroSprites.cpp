@@ -28,26 +28,32 @@
 #include "lowlevel/System.h"
 
 /**
- * Indicates the direction of the hero's animation (from 0 to 3, or -1 for no change)
- * depending on the arrows pressed on the keyboard.
+ * Indicates the possible directions of the hero's animation (from 0 to 3, or -1 for no change)
+ * for each combination of directional keys pressed.
+ * Each combination of directional keys can be associated to one or two directions.
+ * When one direction is specified (i.e. the second one is set to -1), the hero's sprite takes
+ * this direction.
+ * When two directions are specified,
+ * the hero sprite takes the first direction, unless it is already under the second one
+ * (then it stays in the second one). This permits a natural behavior for diagonal directions.
  */
-const int HeroSprites::animation_directions[] = {
-  -1,  // none: no change
-  0,   // right
-  1,   // up
-  0,   // right + up: right
-  2,   // left
-  -1,  // left + right: no change
-  2,   // left + up: left
-  -1,  // left + right + up: no change
-  3,   // down
-  0,   // down + right: right
-  -1,  // down + up: no change
-  -1,  // down + right + up: no change
-  2,   // down + left: left
-  -1,  // down + left + right: no change
-  -1,  // down + left + up: no change
-  -1,  // down + left + right + up: no change
+const int HeroSprites::animation_directions[][2] = {
+  {-1, -1},  // none: no change
+  { 0, -1},  // right
+  { 1, -1},  // up
+  { 0,  1},  // right + up: right or up
+  { 2, -1},  // left
+  {-1, -1},  // left + right: no change
+  { 2,  1},  // left + up: left or up
+  {-1, -1},  // left + right + up: no change
+  { 3, -1},  // down
+  { 0,  3},  // down + right: right or down
+  {-1, -1},  // down + up: no change
+  {-1, -1},  // down + right + up: no change
+  { 2,  3},  // down + left: left or down
+  {-1, -1},  // down + left + right: no change
+  {-1, -1},  // down + left + up: no change
+  {-1, -1},  // down + left + right + up: no change
 };
 
 /**
@@ -326,13 +332,22 @@ int HeroSprites::get_animation_direction(void) {
 }
 
 /**
- * Returns the direction of the hero's sprites
- * corresponding to the specified combination of arrows pressed.
- * @param direction_mask the OR-combination of arrows pressed
+ * Returns the direction the hero's sprite takes if
+ * the specified combination of arrows is pressed.
+ * For diagonal directions, the direction returned depends
+ * on the current real direction of the hero's sprites.
+ * @param direction_mask the OR-combination of directional keys pressed
  * @return the direction of the sprites corresponding to these arrows (0 to 3)
  */
 int HeroSprites::get_animation_direction(uint32_t direction_mask) {
-  return animation_directions[direction_mask];
+
+  // each direction mask can be associated to one or two sprite directions
+  // (see the detailed comment of the animation_directions field)
+  if (animation_directions[direction_mask][1] == get_animation_direction()) {
+    return animation_directions[direction_mask][1];
+  }
+
+  return animation_directions[direction_mask][0];
 }
 
 /**

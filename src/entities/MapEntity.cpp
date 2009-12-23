@@ -464,15 +464,27 @@ void MapEntity::set_bounding_box_from_sprite(void) {
 }
 
 /**
- * Returns whether the entity's rectangle is aligned with the 8*8 grid of the map.
- * @return true if the entity's rectangle is aligned
+ * Returns whether the entity's bounding box is aligned with the 8*8 grid of the map.
+ * @return true if the entity's bounding box is aligned
  */
 bool MapEntity::is_aligned_to_grid(void) {
+  return is_x_aligned_to_grid() && is_y_aligned_to_grid();
+}
 
-  int x = get_top_left_x();
-  int y = get_top_left_y();
+/**
+ * Returns whether the entity's bounding box is aligned horizontally with the 8*8 grid of the map.
+ * @return true if the entity's bounding box is aligned hotizontally
+ */
+bool MapEntity::is_x_aligned_to_grid(void) {
+  return get_top_left_x() % 8 == 0;
+}
 
-  return x % 8 == 0 && y % 8 == 0;
+/**
+ * Returns whether the entity's bounding box is aligned vertically with the 8*8 grid of the map.
+ * @return true if the entity's bounding box is aligned vertically
+ */
+bool MapEntity::is_y_aligned_to_grid(void) {
+  return get_top_left_y() % 8 == 0;
 }
 
 /**

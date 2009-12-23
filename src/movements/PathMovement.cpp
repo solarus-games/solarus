@@ -34,7 +34,8 @@
 PathMovement::PathMovement(const std::string &path, int speed,
     bool loop, bool with_collisions, bool must_be_aligned):
   CollisionMovement(with_collisions),
-  initial_path(path), remaining_path(path), normal_speed(speed), current_direction(0), distance_covered(0),
+  initial_path(path), remaining_path(path), normal_speed(speed), current_direction(0),
+  distance_covered(0), total_distance_covered(0),
   loop(loop), finished(false), must_be_aligned(must_be_aligned), snapping(false) {
 
 }
@@ -66,9 +67,10 @@ void PathMovement::set_position(int x, int y) {
 
   if (x != get_x()) {
     distance_covered++;
+    total_distance_covered++;
   }
   if (y != get_y()) {
-    distance_covered++;
+    total_distance_covered++;
   }
   CollisionMovement::set_position(x, y);
 }
@@ -251,5 +253,13 @@ const std::string PathMovement::get_random_path() {
   }
 
   return path;
+}
+
+/**
+ * Returns the distance covered by this movement since its beginning.
+ * @return the total distance covered in pixels
+ */
+int PathMovement::get_total_distance_covered(void) {
+  return total_distance_covered;
 }
 

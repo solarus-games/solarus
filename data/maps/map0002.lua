@@ -194,6 +194,7 @@ function event_message_sequence_finished(first_message_id, answer)
     end
   elseif first_message_id == "rupee_house.game_3.go" then 
     start_timer(8000, "game_3_timer", true);
+    switch_set_enabled("switch", false);
   end
 end
 

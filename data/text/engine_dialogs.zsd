@@ -1752,19 +1752,27 @@ question = true
 
 [_too_heavy]
 # Lorsqu'on tente de soulever une pierre ou un buisson
-# sans avoir l'objet nécessaire
+# sans avoir de bracelet de force
 # (Clin d'oeil à Link's Awekening)
 #       |-----------------------|
 line1 = "Oh là là, c'est"
 line2 = "bien trop lourd !"
 skip = all
-next = _too_heavy.1
+next = _too_heavy.2
 
-[_too_heavy.1]
+[_too_heavy.2]
 #       |-----------------------|
 line1 = "Tu n'y arriveras jamais"
 line2 = "rien que par la force"
 line3 = "de tes bras !"
+
+[_still_too_heavy]
+# Lorsqu'on tente de soulever une pierre vraiment lourde
+# en ayant seulement la poigne de fer
+#       |-----------------------|
+line1 = "Oh là là, c'est encore"
+line2 = "trop lourd pour toi !"
+skip = all
 
 [_shop.question]
 # Lorsqu'on regarde un objet vendu dans un magasin

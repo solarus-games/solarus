@@ -50,14 +50,12 @@ Bugs :
 - PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
 - mur fissuré qui explose : animation ?
 - curseur visible sur eeepc linux en plein écran
-- bloc contre monstre ou pnj : pousser le monstre au lieu d'arrêter le bloc ? ou réaligner le bloc sur la grille 8*8 à la poussée suivante ?
 - le 8 n'est pas très lisible (ex : 80 rubis chez le forgeron)
 - engine_dialogs.zsd : deux fois _treasure_88_2 (le signaler aux traducteurs)
 - quand un coffre apparaît sur le héros : seul y est corrigé
 - empêcher de lancer le jeu en root, sinon le config.ini est créé avec root comme propriétaire
 - mode d'emploi : enlever le logo nintendo sur la dernière page
 - mode d'emploi : page 13 : "vous pouvez la possibilité"
-- maison des rubis jeu 3 : quand on rejoue après avoir raté dans les blocs, le compte à rebours continue même une fois la barrière franchie
 - pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc... il faudrait au moins pouvoir donner un coup d'épée
 - Link semble disparaître un peu lors des phases à l'épée.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
@@ -66,6 +64,8 @@ Bugs :
 - Dans ALTTP, quand on marche en diagonale, c'est la dernière direction des 2 qui s'affiche
 - Raccourcir l'intro
 - On ne peut pas lancer un pot au-dessus d'une falaise (même à l'intérieur d'un donjon)
+- Les pots s'affichent en-dessous de la partie haute des petits escaliers
+- Quand on veut aller en diagonale et qu'on glisse contre un mur non diagonal, la direction d'animation de Link peut être la mauvaise (cf TODO ligne 371 de HeroSprites.cpp)
 
 
 A venir :

@@ -28,47 +28,49 @@
  */
 class PathMovement: public CollisionMovement {
 
- protected:
+  protected:
 
-  const std::string initial_path;  /**< the path: each character is a direction ('0' to '7') */
-  std::string remaining_path;      /**< the remaining part of the path */
-  int normal_speed;                /**< the movement speed */
+    const std::string initial_path;  /**< the path: each character is a direction ('0' to '7') */
+    std::string remaining_path;      /**< the remaining part of the path */
+    int normal_speed;                /**< the movement speed */
 
- private:
+  private:
 
-  static const std::string random_directions[];
+    static const std::string random_directions[];
 
-  int current_direction;           /**< direction of the current move (0 to 7) */
-  int distance_covered;            /**< counts the number of pixels covered during the current move */
+    int current_direction;           /**< direction of the current move (0 to 7) */
+    int distance_covered;            /**< counts the number of pixels covered during the current move */
+    int total_distance_covered;      /**< counts the total number of pixels covered since the beginning of this movement */
 
-  const bool loop;                 /**< should the movement return to the beginning once finished?  */
+    const bool loop;                 /**< should the movement return to the beginning once finished?  */
 
-  bool finished;                   /**< indicates that the path is finished
-			            * (possible if loop is false or when there is a collision) */
-  bool must_be_aligned;            /**< indicates that the entity must be snapped to the grid before moving */
-  bool snapping;                   /**< indicates that the movement is currently snapping the entity on the grid */
-  double snapping_angle;           /**< angle of the movement when snapping */
-  uint32_t stop_snapping_date;       /**< date when we stop trying to snap the entity when it is unsuccessful */
+    bool finished;                   /**< indicates that the path is finished
+				      * (possible if loop is false or when there is a collision) */
+    bool must_be_aligned;            /**< indicates that the entity must be snapped to the grid before moving */
+    bool snapping;                   /**< indicates that the movement is currently snapping the entity on the grid */
+    double snapping_angle;           /**< angle of the movement when snapping */
+    uint32_t stop_snapping_date;       /**< date when we stop trying to snap the entity when it is unsuccessful */
 
- protected:
+  protected:
 
-  virtual void start_next_move(void);
-  static const std::string get_random_path(void);
-  bool is_current_move_finished(void);
-  void set_entity(MapEntity *entity);
-  void set_speed(int speed);
+    virtual void start_next_move(void);
+    static const std::string get_random_path(void);
+    bool is_current_move_finished(void);
+    void set_entity(MapEntity *entity);
+    void set_speed(int speed);
 
- public:
+  public:
 
-  PathMovement(const std::string &path, int speed, bool loop, bool with_collisions, bool snap_to_grid);
-  ~PathMovement(void);
+    PathMovement(const std::string &path, int speed, bool loop, bool with_collisions, bool snap_to_grid);
+    ~PathMovement(void);
 
-  virtual bool is_finished(void);
+    virtual bool is_finished(void);
 
-  int get_current_direction(void);
-  void set_position(int x, int y);
+    int get_current_direction(void);
+    void set_position(int x, int y);
+    int get_total_distance_covered(void);
 
-  void update(void);
+    void update(void);
 };
 
 #endif

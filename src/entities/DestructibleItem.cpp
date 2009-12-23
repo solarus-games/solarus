@@ -286,7 +286,12 @@ void DestructibleItem::action_key_pressed(void) {
       }
     }
     else {
-      zsdx->game->show_message("_too_heavy");
+      if (!equipment->can_lift(1)) {
+	zsdx->game->show_message("_too_heavy");
+      }
+      else {
+	zsdx->game->show_message("_still_too_heavy");
+      }
     }
   }
 }

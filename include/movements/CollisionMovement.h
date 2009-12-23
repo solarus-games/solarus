@@ -31,7 +31,6 @@ class CollisionMovement: public Movement {
 
     Rectangle last_collision_box_on_obstacle; /**< copy of the collision box of the last call
 					      * to test_collision_with_map() returning true */ 
-    int last_direction;                       /**< direction of the movement before a collision */
     bool stop_on_obstacles;                   /**< indicates that this movement is currently sensible
 					       * to collisions with obstacles */
 
@@ -46,7 +45,6 @@ class CollisionMovement: public Movement {
     virtual void update_y(void);
 
     const Rectangle & get_last_collision_box_on_obstacle(void);
-    int get_last_direction(void);
 
     void set_stop_on_obstacles(bool stop_on_obstacles);
 };

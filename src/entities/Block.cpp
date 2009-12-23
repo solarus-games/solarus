@@ -219,8 +219,8 @@ void Block::update(void) {
 	// the block has moved
 	last_position.set_xy(get_x(), get_y()); // save the new position for next time
 
-	if (maximum_moves == 1) { // if the block could be moved only once
-	  maximum_moves = 0;      // it cannot move any more
+	if (maximum_moves == 1) { // if the block could be moved only once,
+	  maximum_moves = 0;      // then it cannot move anymore
 	}
       }
     }

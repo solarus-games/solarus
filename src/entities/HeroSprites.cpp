@@ -368,6 +368,8 @@ int HeroSprites::get_animation_direction(uint32_t direction_mask) {
   // (see the detailed comment of the animation_directions field)
   if (animation_directions[movement_direction][1] == get_animation_direction()) {
     return animation_directions[movement_direction][1];
+    // TODO choose the second one if it was already the sprite's direction AND 
+    // there is no collision in that direction one pixel after
   }
 
   return animation_directions[movement_direction][0];

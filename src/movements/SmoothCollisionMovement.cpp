@@ -223,3 +223,4 @@ void SmoothCollisionMovement::update_y(void) {
     }
   }
 }
+

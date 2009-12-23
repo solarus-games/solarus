@@ -181,6 +181,8 @@ class MapEntity {
     const Rectangle get_center_point(void);
 
     bool is_aligned_to_grid(void);
+    bool is_x_aligned_to_grid(void);
+    bool is_y_aligned_to_grid(void);
     void set_aligned_to_grid(void);
 
     // properties

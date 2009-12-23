@@ -851,9 +851,18 @@ void Hero::update_grabbing_pulling(void) {
 void Hero::update_moving_grabbed_entity(void) {
 
   // detect when the hero movement is finished
-  // because the hero has covered 16 pixels or has reached an obstacle
-  if (is_moving_grabbed_entity() && get_movement()->is_finished()) {
-    stop_moving_grabbed_entity();
+  // because the hero has covered 16 pixels, has reached an obstacle or has aligned the entity on the grid
+  if (is_moving_grabbed_entity()) {
+    
+    PathMovement *movement = (PathMovement*) get_movement();
+
+    bool horizontal = get_animation_direction() % 2 == 0;
+    bool has_reached_grid = movement->get_total_distance_covered() > 8
+      && ((horizontal && is_x_aligned_to_grid()) || (!horizontal && is_y_aligned_to_grid()));
+
+    if (movement->is_finished() || has_reached_grid) {
+      stop_moving_grabbed_entity();
+    }
   }
 }
 

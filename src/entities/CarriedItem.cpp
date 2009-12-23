@@ -441,7 +441,9 @@ bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
  */
 void CarriedItem::notify_collision_with_sensor(Sensor *sensor) {
 
-  if (is_throwing && !is_breaking && sensor->get_subtype() == Sensor::CHANGE_LAYER) {
+  if (is_throwing && !is_breaking &&
+      sensor->get_subtype() == Sensor::CHANGE_LAYER &&
+      get_layer() == LAYER_LOW) { // to avoid throwing a pot under small stairs
     break_item();
   }
 }

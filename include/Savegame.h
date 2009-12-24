@@ -37,7 +37,7 @@ class Savegame {
 
   } SavedData;
 
- public:
+  public:
 
   /**
    * Index of each string saved in the file.
@@ -150,7 +150,10 @@ class Savegame {
      * right, up, left and down.
      *
      * Each integer corresponds to a value of the SDLKey enumeration.
-     * This makes the savegames SDL-dependent. TODO: make our own enumeration to replace SDLKey
+     * This makes the savegames SDL-dependent.
+     * TODO: make our own enumeration to replace SDLKey.
+     * Add a saved integer to define the type of key saved (SDL: 0, ZSDX: 1).
+     * When loading the savegame, if this is SDL, replace by ZSDX and reset to default keys.
      * @{
      */
     KEYBOARD_ACTION_KEY              = 35,
@@ -215,7 +218,7 @@ class Savegame {
     // values above 1024 are available to the maps
   };
 
- private:
+  private:
 
   bool empty;
   std::string file_name;
@@ -226,7 +229,7 @@ class Savegame {
 
   void set_initial_values(void);
 
- public:
+  public:
 
   // creation and destruction
   Savegame(const std::string &file_name);
@@ -244,7 +247,7 @@ class Savegame {
 
   uint32_t get_integer(int index);
   void set_integer(int index, uint32_t value);
-  
+
   bool get_boolean(int index);
   void set_boolean(int index, bool value);
 

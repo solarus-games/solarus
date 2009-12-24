@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "SDL_Config/SDL_config_lib.h"
 #include "Message.h"
 #include "DialogBox.h"
 #include "ZSDX.h"
@@ -24,6 +23,7 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
+#include "lowlevel/IniFile.h"
 
 /**
  * Delay between two chars, depending on the dialog speed.
@@ -97,38 +97,31 @@ void Message::parse(MessageId message_id) {
   }
 
   // parse the message
-  CFG_File ini;
-  SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
+  IniFile ini_file(file_name, IniFile::READ);
 
-  if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
-    DIE("Cannot load the message file '" << file_name << "': " << CFG_GetError());
-  }
-
-  if (CFG_SelectGroup(message_id.c_str(), 0) != CFG_OK) {
-    DIE("Cannot find message '" << message_id << "'");
-  }
+  ini_file.set_group(message_id);
 
   // text
-  lines[0] = CFG_ReadText("line1", "");
-  lines[1] = CFG_ReadText("line2", "");
-  lines[2] = CFG_ReadText("line3", "");
+  lines[0] = ini_file.get_string_value("line1", "");
+  lines[1] = ini_file.get_string_value("line2", "");
+  lines[2] = ini_file.get_string_value("line3", "");
 
   // icon
-  int icon_number = CFG_ReadInt("icon", -2);
+  int icon_number = ini_file.get_integer_value("icon", -2);
   if (icon_number != -2) {
     // if an icon number is specified (even -1)
     dialog_box->set_icon_number(icon_number);
   }
 
   // next message
-  next_message_id = CFG_ReadText("next", "");
-  next_message_id_2 = CFG_ReadText("next2", "");
+  next_message_id = ini_file.get_string_value("next", "");
+  next_message_id_2 = ini_file.get_string_value("next2", "");
 
   // question
-  question = CFG_ReadBool("question", false);
+  question = ini_file.get_boolean_value("question", false);
 
   // skip mode
-  const std::string &skip_mode_text = CFG_ReadText("skip", "");
+  const std::string &skip_mode_text = ini_file.get_string_value("skip", "");
 
   if (skip_mode_text != "") { // a skip mode is specified
     DialogBox::SkipMode skip_mode;
@@ -143,10 +136,6 @@ void Message::parse(MessageId message_id) {
     }
     dialog_box->set_skip_mode(skip_mode);
   }
-
-  // close the input
-  FileTools::data_file_close_rw(rw);
-  CFG_CloseFile(&ini);
 }
 
 /**

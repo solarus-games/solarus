@@ -61,11 +61,9 @@ Bugs :
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
 - Au moment où on frappe les gardes verts qui rôdent près du village, il se peut que ceux-ci ne reculent pas malgré l'impact s'ils changent de direction au même moment.
-- Dans ALTTP, quand on marche en diagonale, c'est la dernière direction des 2 qui s'affiche
 - Raccourcir l'intro
 - On ne peut pas lancer un pot au-dessus d'une falaise (même à l'intérieur d'un donjon)
 - Les pots s'affichent en-dessous de la partie haute des petits escaliers
-- Quand on veut aller en diagonale et qu'on glisse contre un mur non diagonal, la direction d'animation de Link peut être la mauvaise (cf TODO ligne 371 de HeroSprites.cpp)
 
 
 A venir :
@@ -97,18 +95,7 @@ Abstraction de SDL :
 
 Graphics :
 
-SDL_GetTicks
-SDL_Rect
-SDL_Surface
-SDL_CreateRGBSurface
-SDL_FreeSurface
-SDL_FillRect
-SDL_BlitSurface
-SDL_SetColorKey
-SDL_SetAlpha
-SDL_MapRGB
 SDL_PixelFormat
-SDL_Color
 SDL_WM_SetCaption
 putenv
 SDL_VideoModeOK

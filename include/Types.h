@@ -63,6 +63,7 @@ class Random;
 class Geometry;
 class Rectangle;
 class PixelBits;
+class IniFile;
 
 // menus
 class TitleScreen;

@@ -486,7 +486,7 @@ void PauseSubmenuMap::display_dungeon_floors(Surface *destination) {
 
   Rectangle src_position(96, src_y, 32, src_height);
   Rectangle dst_position(79, dst_y);
-  dungeon_map_img->blit(src_position, destination, dst_position);
+  dungeon_floors_img->blit(src_position, destination, dst_position);
 
   // display the current floor with other colors
   src_position.set_xy(64, (15 - selected_floor) * 12);
@@ -504,7 +504,7 @@ void PauseSubmenuMap::display_dungeon_floors(Surface *destination) {
   }
 
   // display the boss icon
-  if (boss_floor >= lowest_floor_displayed && boss_floor <= highest_floor_displayed) {
+  if (dungeon_equipment->has_compass() && boss_floor >= lowest_floor_displayed && boss_floor <= highest_floor_displayed) {
 
     int boss_y = dst_y + (highest_floor_displayed - boss_floor) * 12 + 3;
 

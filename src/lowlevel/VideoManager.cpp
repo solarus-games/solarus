@@ -18,7 +18,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
-#include "SDL_Config/SDL_config_lib.h" // ini parsing
+#include "lowlevel/IniFile.h"
 #include "StringResource.h"
 
 VideoManager *VideoManager::instance = NULL;
@@ -153,35 +153,22 @@ void VideoManager::switch_video_mode(void) {
  */
 void VideoManager::set_initial_video_mode(void) {
 
+  int value = -1;
   const std::string file_name = "config.ini";
-  if (!FileTools::data_file_exists(file_name)) {
-    // configuration file not found: pick the default video mode
+  if (FileTools::data_file_exists(file_name)) {
+    // parse the ini file
+    IniFile ini(file_name, IniFile::READ);
+
+    if (ini.has_group("configuration")) {
+      value = ini.get_integer_value("video_mode", -1);
+    }
+  }
+
+  if (value < 0 || value >= NB_MODES) {
     set_default_video_mode();
   }
   else {
-    // parse the ini file
-    CFG_File ini;
-    SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
-
-    if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
-      DIE("Cannot parse configuration file");
-    }
-
-    if (CFG_SelectGroup("configuration", 0) != CFG_OK) {
-      set_default_video_mode();
-    }
-
-    int value = CFG_ReadInt("video_mode", -1);
-
-    FileTools::data_file_close_rw(rw);
-    CFG_CloseFile(&ini);
-
-    if (value == -1 || value < 0 || value >= NB_MODES) {
-      set_default_video_mode();
-    }
-    else {
-      set_video_mode((VideoMode) value);
-    }
+    set_video_mode((VideoMode) value);
   }
 }
 
@@ -211,7 +198,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
     show_cursor = SDL_ENABLE;
   }
 
-  if (size.get_height() > 640) {
+  if (size.get_width() > 640) {
     dst_position_centered.set_xy(dst_position_wide.get_x() + 160, 0);
     width = size.get_width();
     offset = dst_position_wide.get_x();
@@ -234,22 +221,10 @@ void VideoManager::set_video_mode(VideoMode mode) {
   this->screen_surface = new Surface(screen_internal_surface);
 
   // write the ini file
-  CFG_File ini;
-  if (CFG_OpenFile(NULL, &ini) != CFG_OK) {
-    DIE("Cannot create ini object for configuration file");
-  }
-
-  CFG_SelectGroup("configuration", 1);
-  CFG_WriteInt("video_mode", mode);
-
-  SDL_RWops *rw = FileTools::data_file_new_rw(64000);
-  if (CFG_SaveFile_RW(rw) != CFG_OK) {
-    DIE("Cannot build the new configuration information");
-  }
-  CFG_CloseFile(&ini);
-
-  FileTools::data_file_save_rw(rw, "config.ini");
-  FileTools::data_file_close_rw(rw);
+  IniFile ini("config.ini", IniFile::WRITE);
+  ini.set_group("configuration");
+  ini.set_integer_value("video_mode", mode);
+  ini.save();
 }
 
 /**

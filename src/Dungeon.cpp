@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "SDL_Config/SDL_config_lib.h"
 #include "Dungeon.h"
 #include "StringResource.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/IniFile.h"
 
 /**
  * Creates the specified dungeon.
@@ -69,23 +69,16 @@ void Dungeon::load(void) {
   this->name = StringResource::get_string(oss.str());
 
   // parse the dungeon file
-  std::string file_name = "maps/dungeons/dungeons.zsd"; 
-
-  // TODO make a lowlevel ini parsing class
-  SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
-  CFG_File ini;
-  if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
-    DIE("Cannot load the dungeon file '" << file_name << "': " << CFG_GetError());
-  }
+  IniFile ini("maps/dungeons/dungeons.zsd", IniFile::READ);
 
   // parse the floors (the floors must be before the chests and the bosses)
   oss.str("");
   oss << "dungeon_" << dungeon_number << ".floor_";
   const std::string &floor_prefix = oss.str();
   lowest_floor = 100;
-  for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
-    const std::string &group_name = CFG_GetSelectedGroupName();
+  for (ini.start_group_iteration(); ini.has_more_groups(); ini.next_group()) {
+    const std::string &group_name = ini.get_group();
 
     // parse the floors
     if (group_name.substr(0, floor_prefix.length()) == floor_prefix) {
@@ -98,8 +91,8 @@ void Dungeon::load(void) {
       FileTools::read(iss, floor);
 
       Rectangle size;
-      size.set_width(CFG_ReadInt("width", 0));
-      size.set_height(CFG_ReadInt("height", 0));
+      size.set_width(ini.get_integer_value("width", 0));
+      size.set_height(ini.get_integer_value("height", 0));
       floor_sizes.push_back(size);
 
       if (floor < lowest_floor) {
@@ -117,9 +110,9 @@ void Dungeon::load(void) {
   oss.str("");
   oss << "dungeon_" << dungeon_number << ".map_";
   const std::string &elements_prefix = oss.str();
-  for (CFG_StartGroupIteration(CFG_SORT_ORIGINAL); !CFG_IsLastGroup(); CFG_SelectNextGroup()) {
 
-    const std::string &group_name = CFG_GetSelectedGroupName();
+  for (ini.start_group_iteration(); ini.has_more_groups(); ini.next_group()) {
+    const std::string &group_name = ini.get_group();
 
     if (group_name.substr(0, elements_prefix.length()) == elements_prefix) {
       // we found a group describing an element in this dungeon
@@ -129,11 +122,11 @@ void Dungeon::load(void) {
       // is it a chest?
       if (suffix.find("chest") != std::string::npos) {
 	DungeonElement chest;
-	chest.floor = CFG_ReadInt("floor", 0);
-	chest.x = CFG_ReadInt("x", 0);
-	chest.y = CFG_ReadInt("y", 0);
-	chest.savegame_variable = CFG_ReadInt("save", 0);
-	chest.big = CFG_ReadInt("big", 0) != 0;
+	chest.floor = ini.get_integer_value("floor", 0);
+	chest.x = ini.get_integer_value("x", 0);
+	chest.y = ini.get_integer_value("y", 0);
+	chest.savegame_variable = ini.get_integer_value("save", 0);
+	chest.big = ini.get_integer_value("big", 0) != 0;
 
 	chests[chest.floor - lowest_floor].push_back(chest);
       }
@@ -141,11 +134,11 @@ void Dungeon::load(void) {
       // is it a boss or a miniboss?
       else if (suffix.find("boss") != std::string::npos) {
 	DungeonElement boss;
-	boss.floor = CFG_ReadInt("floor", 0);
-	boss.x = CFG_ReadInt("x", 0);
-	boss.y = CFG_ReadInt("y", 0);
-	boss.savegame_variable = CFG_ReadInt("save", 0);
-	boss.big = CFG_ReadInt("big", 0) != 0;
+	boss.floor = ini.get_integer_value("floor", 0);
+	boss.x = ini.get_integer_value("x", 0);
+	boss.y = ini.get_integer_value("y", 0);
+	boss.savegame_variable = ini.get_integer_value("save", 0);
+	boss.big = ini.get_integer_value("big", 0) != 0;
 
 	if (boss.big) {
 	  boss_floor = boss.floor;
@@ -155,10 +148,6 @@ void Dungeon::load(void) {
       }
     }
   }
-
-  // close the file
-  FileTools::data_file_close_rw(rw);
-  CFG_CloseFile(&ini);
 }
 
 /**

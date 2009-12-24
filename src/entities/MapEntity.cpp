@@ -89,6 +89,18 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true, false}, // door
 };
 
+const Rectangle MapEntity::directions_to_xy_moves[] = {
+  Rectangle( 1, 0),
+  Rectangle( 1,-1),
+  Rectangle( 0,-1),
+  Rectangle(-1,-1),
+  Rectangle(-1, 0),
+  Rectangle(-1, 1),
+  Rectangle( 0, 1),
+  Rectangle( 1, 1)
+};
+
+
 /**
  * Creates a map entity without specifying its properties yet.
  */
@@ -747,6 +759,15 @@ void MapEntity::movement_just_changed(void) {
  */
 void MapEntity::just_moved(void) {
   map->check_collision_with_detectors(this);
+}
+
+/**
+ * Converts a direction into the corresponding one-pixel move on x and y.
+ * @param direction8 a direction (0 to 7)
+ * @return a rectangle with x and y set to -1, 0 or 1 depending on the direction
+ */
+const Rectangle & MapEntity::direction_to_xy_move(int direction8) {
+  return directions_to_xy_moves[direction8];
 }
 
 /**

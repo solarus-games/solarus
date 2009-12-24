@@ -28,30 +28,6 @@
 #include "lowlevel/System.h"
 
 /**
- * This tables converts a combination of directional keys pressed
- * into a direction between 0 and 7.
- * A value of -1 means that the combination is illegal.
- */
-const int HeroSprites::direction_mask_to_direction[] = {
-  -1,  // none
-   0,  // right
-   2,  // up
-   1,  // right + up
-   4,  // left
-  -1,  // left + right
-   3,  // left + up
-  -1,  // left + right + up
-   6,  // down
-   7,  // down + right
-  -1,  // down + up
-  -1,  // down + right + up
-   5,  // down + left
-  -1,  // down + left + right
-  -1,  // down + left + up
-  -1,  // down + left + right + up  
-};
-
-/**
  * Indicates the possible directions of the hero's animation (from 0 to 3, or -1 for no change)
  * for movement direction.
  * Each combination of directional keys can be associated to one or two directions.
@@ -69,8 +45,9 @@ const int HeroSprites::animation_directions[][2] = {
   { 2, -1},  // left
   { 2,  3},  // left-down: left or down
   { 3, -1},  // down
-  { 0,  3},  // right-down: right or down
+  { 0,  3}   // right-down: right or down
 };
+
 
 /**
  * String constants corresponding to the sprites of the tunics.
@@ -348,31 +325,41 @@ int HeroSprites::get_animation_direction(void) {
 }
 
 /**
- * Returns the direction the hero's sprite takes if
- * the specified combination of arrows is pressed.
+ * Returns the direction the hero's sprite should take depending on the direction wanted
+ * by the player and the real movement direction.
  * For diagonal directions, the direction returned depends
  * on the current real direction of the hero's sprites.
- * @param direction_mask the OR-combination of directional keys pressed
+ * @param keys_direction the direction defined by the combination of directional keys pressed (0 to 7),
+ * or -1 if this is not a valid direction
+ * @param real_movement_direction the direction of the hero's actual movement (may be different from keys_direction)
  * @return the direction of the sprites corresponding to these arrows (0 to 3),
  * or -1 if the directional keys combination is illegal
  */
-int HeroSprites::get_animation_direction(uint32_t direction_mask) {
+int HeroSprites::get_animation_direction(int keys_direction, int real_movement_direction) {
 
-  int movement_direction = direction_mask_to_direction[direction_mask];
+  int result;
 
-  if (movement_direction == -1) {
-    return -1;
+  if (keys_direction == -1) {
+    // the player is not pressing a valid combination of directional keys: don't change the sprite's direction
+    result = -1;
+  }
+  else if (real_movement_direction % 2 == 0) {
+    // the player is moving in one of the four main directions
+    // (i.e. he is not making a diagonal move, even if the directional keys may want to):
+    // we just give the sprite this direction
+    result = real_movement_direction / 2;
+  }
+  // the movement is diagonal: we have to choose between two directions
+  else if (animation_directions[real_movement_direction][1] == get_animation_direction()) {
+    // we choose the second direction if it was already the sprite's direction 
+    result = animation_directions[real_movement_direction][1];
+  }
+  else {
+    // otherwise we choose the first direction
+    result = animation_directions[real_movement_direction][0];
   }
 
-  // each direction mask can be associated to one or two sprite directions
-  // (see the detailed comment of the animation_directions field)
-  if (animation_directions[movement_direction][1] == get_animation_direction()) {
-    return animation_directions[movement_direction][1];
-    // TODO choose the second one if it was already the sprite's direction AND 
-    // there is no collision in that direction one pixel after
-  }
-
-  return animation_directions[movement_direction][0];
+  return result;
 }
 
 /**
@@ -381,6 +368,10 @@ int HeroSprites::get_animation_direction(uint32_t direction_mask) {
  * @param direction the direction to set (0 to 3)
  */
 void HeroSprites::set_animation_direction(int direction) {
+
+  if (direction < 0 || direction >= 4) {
+    DIE("Invalid direction for set_animation_direction: " << direction);
+  }
 
   tunic_sprite->set_current_direction(direction);
 

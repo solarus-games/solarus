@@ -70,6 +70,7 @@ void PathMovement::set_position(int x, int y) {
     total_distance_covered++;
   }
   if (y != get_y()) {
+    distance_covered++;
     total_distance_covered++;
   }
   CollisionMovement::set_position(x, y);

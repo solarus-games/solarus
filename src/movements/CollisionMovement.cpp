@@ -69,6 +69,7 @@ bool CollisionMovement::test_collision_with_map(int dx, int dy) {
 
   if (collision) {
     last_collision_box_on_obstacle = collision_box;
+    entity->movement_just_changed();
   }
 
   return collision;

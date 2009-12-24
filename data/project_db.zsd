@@ -28,6 +28,7 @@
 0	26	Fairy Cave
 0	27	Dungeon 1 final room
 0	29	Twin caves
+0	30	Dungeon 2 1F
 1	0	House
 1	1	Light World
 1	2	Ice dungeon
@@ -35,6 +36,7 @@
 1	4	Blue dungeon
 1	5	Green dungeon
 1	6	Intro
+1	7	Brown dungeon
 2	agahnim.spc	Agahnim theme
 2	beginning.spc	Beginning
 2	boss.spc	Boss

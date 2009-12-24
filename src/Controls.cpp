@@ -125,8 +125,11 @@ const std::string& Controls::get_key_name(GameKey key) {
  * @param game_key a game key
  * @return a string representing the corresponding keyboard key
  */
-const std::string Controls::get_keyboard_string(GameKey game_key) {
-  return SDL_GetKeyName(get_keyboard_key(game_key));
+const std::string & Controls::get_keyboard_string(GameKey game_key) {
+
+  static std::string keyboard_string;
+  keyboard_string = SDL_GetKeyName(get_keyboard_key(game_key));
+  return keyboard_string;
 }
 
 /**

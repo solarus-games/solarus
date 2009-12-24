@@ -39,6 +39,7 @@ Feature requests :
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
 
+
 Bugs :
 
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
@@ -95,7 +96,6 @@ Abstraction de SDL :
 
 Graphics :
 
-SDL_PixelFormat
 SDL_WM_SetCaption
 putenv
 SDL_VideoModeOK
@@ -112,19 +112,6 @@ SDL_keysym
 SDL_EnableUNICODE
 SDL_EnableKeyRepeat
 
-  Pour sauvegarder la configuration de chaque touche en enregistrant un entier indépendant de la SDL :
-  sauvegarder la valeur unicode du caractère appuyé au lieu de sauvegarder la SDLKey
-
-FileTools :
-SDL_RWops
-SDL_RWread
-SDL_RWwrite
-SDL_RWFromMem
-
-tous :
-SDL_Init
-SDL_Quit
-
 Events :
 SDL_Event
 SDL_PollEvent
@@ -140,7 +127,6 @@ Mode release :
 - Compiler en mode release (pas -g) et optimisé
 - Inclure le fichier de licence GPL
 - Vérifier la présence du message GPL dans les fichiers source
-- Remettre l'écran-titre
 - Compiler les scripts et enlever les versions en texte clair
 - Vérifier les TODO du code et de data
 - Windows : installeur avec InnoSetup

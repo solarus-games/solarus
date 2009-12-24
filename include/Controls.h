@@ -30,75 +30,75 @@
  */
 class Controls {
 
- public:
+  public:
 
-  /**
-   * The game keys that can be customized.
-   */
-  enum GameKey {
-    NONE = 0,
-    ACTION,
-    SWORD,
-    ITEM_1,
-    ITEM_2,
-    PAUSE,
-    RIGHT,
-    UP,
-    LEFT,
-    DOWN
-  };
-  
- private:
+    /**
+     * The game keys that can be customized.
+     */
+    enum GameKey {
+      NONE = 0,
+      ACTION,
+      SWORD,
+      ITEM_1,
+      ITEM_2,
+      PAUSE,
+      RIGHT,
+      UP,
+      LEFT,
+      DOWN
+    };
 
-  Game *game;             /**< the game */
-  Savegame *savegame;     /**< the savegame, which stores the keyboard and joypad mappings of the game keys */
-  SDL_Joystick *joystick; /**< the joystick object */
+  private:
 
-  std::string game_key_names[9];                 /**< human name of each game key, in the current language */
-  std::map<SDLKey, GameKey> keyboard_mapping;    /**< associates each game key to the keyboard key that triggers it */
-  std::map<std::string, GameKey> joypad_mapping; /**< associates each game key to the joypad action that triggers it*/
-  bool keys_pressed[9];                          /**< memorizes the state of each game key */
-  static const uint16_t arrows_masks[4];           /**< bit mask associated to each direction key: this allows to
-                                                  * store any combination of the 4 directions into a simple integer */
+    Game *game;             /**< the game */
+    Savegame *savegame;     /**< the savegame, which stores the keyboard and joypad mappings of the game keys */
+    SDL_Joystick *joystick; /**< the joystick object */
 
-  bool customizing;                              /**< indicates that the next keyboard event will be considered as the new mapping for a game key */
-  GameKey key_to_customize;                      /**< the game key to customize when customizing is true */
+    std::string game_key_names[9];                 /**< human name of each game key, in the current language */
+    std::map<SDLKey, GameKey> keyboard_mapping;    /**< associates each game key to the keyboard key that triggers it */
+    std::map<std::string, GameKey> joypad_mapping; /**< associates each game key to the joypad action that triggers it */
+    bool keys_pressed[9];                          /**< memorizes the state of each game key */
+    static const uint16_t arrows_masks[4];         /**< bit mask associated to each directional key: this allows to
+						    * store any combination of the 4 directions into a simple integer */
 
-  static const std::string direction_names[4];   /**< English name of each arrow direction, used to represent a joypad action by a string */
+    bool customizing;                              /**< indicates that the next keyboard event will be considered as the new mapping for a game key */
+    GameKey key_to_customize;                      /**< the game key to customize when customizing is true */
 
-  void game_key_pressed(GameKey key);
-  void game_key_released(GameKey key);
+    static const std::string direction_names[4];   /**< English name of each arrow direction, used to represent a joypad action by a string */
 
-  // keyboard mapping
-  void key_pressed(const SDL_keysym &keysym);
-  void key_released(const SDL_keysym &keysym);
-  SDLKey get_keyboard_key(GameKey game_key);
+    void game_key_pressed(GameKey key);
+    void game_key_released(GameKey key);
 
-  // joypad mapping
-  void joypad_button_pressed(int button);
-  void joypad_button_released(int button);
-  void joypad_axis_moved(int axis, int state);
-  void joypad_hat_moved(int hat, int value);
+    // keyboard mapping
+    void key_pressed(const SDL_keysym &keysym);
+    void key_released(const SDL_keysym &keysym);
+    SDLKey get_keyboard_key(GameKey game_key);
 
- public:
+    // joypad mapping
+    void joypad_button_pressed(int button);
+    void joypad_button_released(int button);
+    void joypad_axis_moved(int axis, int state);
+    void joypad_hat_moved(int hat, int value);
 
-  // creation and destruction
-  Controls(Game *game);
-  ~Controls(void);
+  public:
 
-  // controls
-  const std::string& get_key_name(GameKey game_key);
-  const std::string get_keyboard_string(GameKey game_key);
-  const std::string& get_joypad_string(GameKey key);
-  void handle_event(const SDL_Event &event);
-  bool is_key_pressed(GameKey game_key);
-  int get_arrows_direction(void);
+    // creation and destruction
+    Controls(Game *game);
+    ~Controls(void);
 
-  // customization
-  void customize(GameKey key);
-  bool is_customizing(void);
-  GameKey get_key_to_customize(void);
-  bool is_customization_done(void);
+    // controls
+    const std::string & get_key_name(GameKey game_key);
+    const std::string & get_keyboard_string(GameKey game_key);
+    const std::string & get_joypad_string(GameKey game_key);
+    void handle_event(const SDL_Event &event);
+    bool is_key_pressed(GameKey game_key);
+    int get_arrows_direction(void);
+
+    // customization
+    void customize(GameKey key);
+    bool is_customizing(void);
+    GameKey get_key_to_customize(void);
+    bool is_customization_done(void);
 };
 
 #endif

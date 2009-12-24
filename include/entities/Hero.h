@@ -100,7 +100,7 @@ class Hero: public MapEntity {
     // pushing
     uint16_t pushing_direction_mask; /**< direction of the hero's movement when pushing
 				      * (0xFFFF indicates that he is currently not trying to push) */
-    Detector *grabbed_entity;      /**< the entity the hero is pushing or pulling */
+    Detector *grabbed_entity;        /**< the entity the hero is pushing or pulling */
 
     // conveyor belt
     bool on_conveyor_belt;         /**< indicates that the hero's rectangle is currently overlapping a conveyor belt,
@@ -111,7 +111,7 @@ class Hero: public MapEntity {
 
     // sword loading
     bool sword_loaded;             /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
-    uint32_t next_hit_sound_date;    /**< when the sword hit sound has to be played next time */
+    uint32_t next_hit_sound_date;  /**< when the sword hit sound has to be played next time */
 
     // lift and carry an object
     CarriedItem *lifted_item;      /**< item being lifted or carried */
@@ -121,7 +121,7 @@ class Hero: public MapEntity {
     Treasure *treasure;            /**< the treasure being brandished (if any) */
 
     // victory 
-    uint32_t end_victory_date;       /**< date when the victory animation should stop */
+    uint32_t end_victory_date;     /**< date when the victory animation should stop */
 
     // jump
     int jump_y;                    /**< height of the hero's sprite when jumping, relative to its shadow on the ground */
@@ -138,7 +138,7 @@ class Hero: public MapEntity {
 
     // special ground under the hero
     Ground ground;                         /**< kind of ground under the hero: grass, shallow water, etc. */
-    uint32_t next_ground_date;               /**< when something will happend with the ground sound next time */
+    uint32_t next_ground_date;             /**< when something will happend with the ground sound next time */
     int hole_dx;                           /**< x direction of the movement when the hero is being attracted by a hole */
     int hole_dy;                           /**< y direction of the movement when the hero is being attracted by a hole */
     Teletransporter *hole_teletransporter; /**< a teletransporter in the current hole */
@@ -146,7 +146,7 @@ class Hero: public MapEntity {
     // items
     InventoryItem *current_inventory_item; /**< the inventory item the player is currently using,
 					    * or NULL if he is not using an item */
-    uint32_t when_can_use_inventory_item;    /**< date when the player can use an inventory item next time */
+    uint32_t when_can_use_inventory_item;  /**< date when the player can use an inventory item next time */
 
     // update functions
     void update_position(void);
@@ -244,7 +244,10 @@ class Hero: public MapEntity {
 
     // movement
     PlayerMovement * get_normal_movement(void);
-    int get_movement_direction(void);
+    int get_wanted_movement_direction(void);
+    int get_wanted_movement_direction8(void);
+    int get_real_movement_direction(void);
+    int get_real_movement_direction8(void);
     bool is_moving_towards(int direction);
     const Rectangle get_facing_point(void);
     const Rectangle get_facing_point(int direction);

@@ -38,6 +38,7 @@ class MapEntity {
 
     typedef MapEntity* (CreationFunction)(std::istream &is, Layer layer, int x, int y); /**< a function to parse a certain type of entity */
     static const CreationFunction* creation_functions[];                                /**< the creation functions of all types of entities */
+    static const Rectangle directions_to_xy_moves[8];                                   /**< converts a direction (0 to 7) into a one-pixel move on x and y */
 
     /**
      * Describes the features of each dynamic entity type:
@@ -83,6 +84,7 @@ class MapEntity {
 			       */
 
   protected:
+
     Rectangle bounding_box;   /**< This rectangle represents the position of the entity of the map and is
 			       * used for the collision tests. It corresponds to the bounding box of the entity.
 			       * It can be different from the sprite's rectangle of the entity.
@@ -209,6 +211,7 @@ class MapEntity {
     virtual void movement_just_changed(void);
     virtual void just_moved(void);
     virtual void set_facing_entity(Detector *detector);
+    static const Rectangle & direction_to_xy_move(int direction8);
 
     // collisions
     virtual bool is_obstacle_for(MapEntity *other);

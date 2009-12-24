@@ -463,7 +463,7 @@ void Hero::update_sword_tapping(void) {
   const Rectangle &facing_point = get_facing_point();
 
   if (!controls->is_key_pressed(Controls::SWORD)
-      || get_movement_direction() != get_animation_direction() * 90
+      || get_wanted_movement_direction() != get_animation_direction() * 90
       || !map->test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), this)) {
     // the sword key has been released, the player has moved or the obstacle is gone
 
@@ -697,7 +697,7 @@ void Hero::update_pushing(void) {
 	}
       }
       else if (state == SWORD_LOADING
-	       && get_movement_direction() == get_animation_direction() * 90
+	       && get_wanted_movement_direction() == get_animation_direction() * 90
 	       && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {
 	// in state SWORD_LOADING: hit the wall with the sword
 	pushing_direction_mask = direction_mask;
@@ -732,7 +732,7 @@ void Hero::update_pushing(void) {
       }
 
       // stop pushing if the player changes his direction
-      if (get_movement_direction() != straight_direction * 90) {
+      if (get_wanted_movement_direction() != straight_direction * 90) {
 	start_grabbing();
       }
 
@@ -814,7 +814,7 @@ void Hero::update_grabbing_pulling(void) {
     int opposite_direction = (sprites->get_animation_direction() + 2) % 4;
 
     // stop pulling the obstacle if the player changes his direction
-    if (get_movement_direction() != opposite_direction * 90) {
+    if (get_wanted_movement_direction() != opposite_direction * 90) {
       start_grabbing();
     }
 
@@ -928,8 +928,11 @@ void Hero::grabbed_entity_collision(void) {
  * the hero's movement is finished.
  */
 void Hero::stop_moving_grabbed_entity(void) {
-  clear_movement();
-  set_movement(normal_movement);
+
+  if (get_movement() != normal_movement) {
+    clear_movement();
+    set_movement(normal_movement);
+  }
 
   Controls *controls = zsdx->game->get_controls();
   if (state == PUSHING && !controls->is_key_pressed(Controls::ACTION)) {
@@ -938,7 +941,7 @@ void Hero::stop_moving_grabbed_entity(void) {
 
     // stop the animation pushing if his direction changed
     int straight_direction = sprites->get_animation_direction();
-    if (get_movement_direction() != straight_direction * 90) {
+    if (get_wanted_movement_direction() != straight_direction * 90) {
       start_free();
     }
   }
@@ -1292,7 +1295,7 @@ void Hero::start_deep_water(void) {
       start_swimming();
     }
     else {
-      start_jumping(get_movement_direction() / 45, 32, true, true);
+      start_jumping(get_wanted_movement_direction8(), 32, true, true);
       ((JumpMovement*) get_movement())->set_delay(13);
     }
   }

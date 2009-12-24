@@ -35,6 +35,9 @@
 #include "InventoryItem.h"
 #include "lowlevel/System.h"
 
+/**
+ * Normal speed of the hero when walking.
+ */
 const int Hero::walking_speed = 9;
 
 /**
@@ -242,20 +245,104 @@ PlayerMovement * Hero::get_normal_movement(void) {
 }
 
 /**
- * Returns the direction of the hero's movement.
+ * Returns the direction of the hero's movement as defined by the directional keys pressed by the player.
  * If he is not moving, -1 is returned.
- * @return the hero's movement direction between 0 and 360, or -1 if he is stopped
+ * This direction may be different from the real movement direction because of obstacles.
+ * @return the hero's wanted direction between 0 and 360, or -1 if he is stopped
  */
-int Hero::get_movement_direction(void) {
+int Hero::get_wanted_movement_direction(void) {
   return get_normal_movement()->get_direction();
+}
+
+/**
+ * Returns the direction of the hero's movement as defined by the directional keys pressed by the player.
+ * If he is not moving, -1 is returned.
+ * This direction may be different from the real movement direction because of obstacles.
+ * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ */
+int Hero::get_wanted_movement_direction8(void) {
+  int wanted_direction = get_wanted_movement_direction();
+  return (wanted_direction != -1) ? (wanted_direction / 45) : -1;
+}
+
+/**
+ * Returns the actual direction of the hero's movement, which can be different from the one
+ * defined by the directional keys pressed by the player because we consider obstacles here.
+ * If he does not want to move, -1 is returned. If he is trying to move but cannot because of obstacles,
+ * the direction he is trying to move toward is returned.
+ * This function is not used to compute the hero's movement (PlayerMovement does that) but only
+ * to decide what direction to give to its sprites once the movement is already computed.
+ * @return the hero's actual direction between 0 and 360, or -1 if he is stopped
+ */
+int Hero::get_real_movement_direction(void) {
+
+  int real_movement_direction8 = get_real_movement_direction8();
+  return (real_movement_direction8 != -1) ? (real_movement_direction8 * 45) : -1;
+}
+
+/**
+ * Returns the actual direction of the hero's movement, which can be different from the one
+ * defined by the directional keys pressed by the player because we consider obstacles here.
+ * If he does not want to move, -1 is returned. If he is trying to move but cannot because of obstacles,
+ * the direction he is trying to move toward is returned.
+ * This function is not used to compute the hero's movement (PlayerMovement does that) but only
+ * to decide what direction to give to its sprites once the movement is already computed.
+ * @return the hero's actual direction between 0 and 7, or -1 if he is stopped
+ */
+int Hero::get_real_movement_direction8(void) {
+
+  int result;
+
+  int wanted_direction8 = get_wanted_movement_direction8();
+  if (wanted_direction8 == -1) {
+    // the hero does not want to move
+    result = -1;
+  }
+  else {
+    // the hero wants to move
+
+    Rectangle collision_box(get_bounding_box());
+
+    // if we can move towards the wanted direction, no problem
+    Rectangle xy_move = direction_to_xy_move(wanted_direction8);
+    collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+    if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+      result = wanted_direction8;
+    }
+    else {
+      // otherwise, see if he can move in one of the two closest directions (i.e. he is sliding)
+
+      int alternative_direction8 = (wanted_direction8 + 1) % 8;
+      collision_box = get_bounding_box();
+      xy_move = direction_to_xy_move(alternative_direction8);
+      collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+      if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	result = alternative_direction8;
+      }
+      else {
+        alternative_direction8 = (wanted_direction8 - 1) % 8;
+        collision_box = get_bounding_box();
+	xy_move = direction_to_xy_move(alternative_direction8);
+	collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+        if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	  result = alternative_direction8;
+        }
+	else {
+	  // he is not sliding, he wants to move but can't
+          result = wanted_direction8;
+	}
+      }
+    }
+  }
+
+  return result;
 }
 
 /**
  * Returns whether the hero is moving towards the specified direction.
  * If the hero is not moving, false is returned.
  * @param direction one of the four main directions (0 to 3)
- * @return true if the hero is moving in that direction,
- * even if he is actually doing a diagonal move
+ * @return true if the hero is moving in that direction, even if he is actually doing a diagonal move
  */
 bool Hero::is_moving_towards(int direction) {
 
@@ -264,7 +351,7 @@ bool Hero::is_moving_towards(int direction) {
   }
 
   int direction8 = direction * 2;
-  int movement_direction8 = get_movement_direction() / 45;
+  int movement_direction8 = get_wanted_movement_direction8();
   return movement_direction8 == direction8
     || (movement_direction8 + 1) % 8 == direction8
     || movement_direction8 - 1 == direction8;
@@ -576,19 +663,18 @@ void Hero::rebuild_equipment(void) {
 
 /**
  * Updates the hero depending on the arrows pressed.
- * This function is called when the hero's direction changes (typically, because the player
- * pressed or released an arrow). It updates the hero's animations and 
- * collisions according to the new movement.
+ * This function is called when the hero's movement direction changes (because the player
+ * pressed or released a directional key, or the hero just reached an obstacle).
+ * It updates the hero's animations and collisions according to the new movement.
  */
 void Hero::movement_just_changed(void) {
 
   // update the animation direction according to the movement direction
-  int direction = get_movement_direction();
+  int direction = get_wanted_movement_direction();
   if (direction != -1) {
 
-    uint16_t direction_mask = get_normal_movement()->get_direction_mask();
     int old_animation_direction = sprites->get_animation_direction();
-    int animation_direction = sprites->get_animation_direction(direction_mask);
+    int animation_direction = sprites->get_animation_direction(get_wanted_movement_direction8(), get_real_movement_direction8());
 
     if (animation_direction != old_animation_direction
 	&& animation_direction != -1

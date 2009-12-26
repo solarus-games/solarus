@@ -67,6 +67,11 @@ Bugs :
 - Les pots s'affichent en-dessous de la partie haute des petits escaliers
 
 
+Donjon 2 :
+
+- Pour remplacer la course de vitesse de la bombe, faire une course de vitesse avec un simple interrupteur (ou permettre de poser un chou-péteur sans l'exploser),
+  sachant que si on revient plus tard dans le donjon avec les bottes de pégase, on pourra réussir une étape supplémentaire de la course
+
 A venir :
 
 - Prochains types d'entités :

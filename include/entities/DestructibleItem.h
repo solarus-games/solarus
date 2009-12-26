@@ -100,6 +100,7 @@ class DestructibleItem: public Detector {
     bool can_explode(void);
 
     bool is_obstacle_for(MapEntity *other);
+    bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
     void action_key_pressed(void);

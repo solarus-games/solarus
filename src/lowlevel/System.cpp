@@ -15,15 +15,16 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/System.h"
-#include <SDL/SDL.h>
 #include "lowlevel/FileTools.h"
-#include "StringResource.h"
-#include "ResourceManager.h"
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Random.h"
+#include "StringResource.h"
+#include "ResourceManager.h"
+#include "Sprite.h"
+#include <SDL/SDL.h>
 
 
 /**
@@ -46,6 +47,7 @@ void System::initialize(int argc, char **argv) {
   VideoManager::initialize();
   Color::initialize();
   TextSurface::initialize();
+  Sprite::initialize();
 
   // audio
   Sound::initialize();
@@ -68,6 +70,7 @@ void System::quit(void) {
   Random::quit();
   // TODO Input::quit();
   Sound::quit();
+  Sprite::quit();
   TextSurface::quit();
   Color::quit();
   VideoManager::quit();

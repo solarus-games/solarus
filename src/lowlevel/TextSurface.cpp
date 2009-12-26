@@ -111,6 +111,10 @@ TextSurface::TextSurface(int x, int y,
  * Destructor.
  */
 TextSurface::~TextSurface(void) {
+
+  if (surface != NULL) {
+    SDL_FreeSurface(surface->get_internal_surface());
+  }
   delete surface;
 }
 
@@ -246,6 +250,7 @@ void TextSurface::rebuild(void) {
 
   if (surface != NULL) {
     // another text was previously set: delete it
+    SDL_FreeSurface(surface->get_internal_surface());
     delete surface;
     surface = NULL;
   }

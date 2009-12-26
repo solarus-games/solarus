@@ -72,9 +72,11 @@ void ZSDX::set_game(Game *game) {
  * and start the game immediately (for debugging purposes only!).
  */
 void ZSDX::skip_menus(void) {
+
   if (game == NULL) {
+    Game *game = new Game(new Savegame("save1.zsd"));
     delete current_screen;
-    current_screen = new Game(new Savegame("save1.zsd"));
+    current_screen = game;
   }
 }
 

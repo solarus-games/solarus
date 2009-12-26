@@ -67,6 +67,11 @@ Hero::Hero(Equipment *equipment):
  * Destructor.
  */
 Hero::~Hero(void) {
+
+  if (get_movement() != normal_movement) {
+    delete normal_movement;
+  }
+
   delete sprites;
   destroy_carried_items();
 }
@@ -442,7 +447,7 @@ void Hero::set_map(Map *map) {
 
   MapEntity::set_map(map);
 
-  target_solid_ground_coords.add_xy(-1, -1);
+  target_solid_ground_coords.set_xy(-1, -1);
 
   if (lifted_item != NULL) {
     lifted_item->set_map(map);
@@ -724,7 +729,7 @@ void Hero::just_moved(void) {
   Ground previous_ground = this->ground;
 
   // see the ground indicated by the tiles
-  Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y());
+  Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y() - 2);
   set_ground(tiles_ground);
 
   set_facing_entity(NULL);

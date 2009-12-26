@@ -30,6 +30,23 @@
 Surface *Sprite::alpha_surface = NULL;
 
 /**
+ * Initializes the sprites system.
+ */
+void Sprite::initialize(void) {
+
+  // create only once an intermediary surface that will be used by transparent sprites
+  alpha_surface = new Surface(320, 240);
+  alpha_surface->set_transparency_color(Color::get_black());
+}
+
+/**
+ * Uninitializes the sprites system.
+ */
+void Sprite::quit(void) {
+  delete alpha_surface;
+}
+
+/**
  * Creates a sprite with the specified animation set.
  * @param id name of an animation set
  */
@@ -40,11 +57,6 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
   
   animation_set = ResourceManager::get_sprite_animation_set(id);
   set_current_animation(animation_set->get_default_animation());
-
-  if (alpha_surface == NULL) {
-    alpha_surface = new Surface(320, 240);
-    alpha_surface->set_transparency_color(Color::get_black());
-  }
 }
 
 /**

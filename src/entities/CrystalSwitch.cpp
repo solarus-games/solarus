@@ -136,6 +136,9 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
       activate();
     }
   }
+  else if (other_entity->get_type() == EXPLOSION) {
+    activate();
+  }
 }
 
 /**
@@ -164,7 +167,7 @@ void CrystalSwitch::activate(void) {
   if (now >= next_possible_hit_date) {
     ResourceManager::get_sound("switch")->play();
     zsdx->game->change_crystal_switch_state();
-    next_possible_hit_date = now + 500;
+    next_possible_hit_date = now + 1000;
   }
 }
 

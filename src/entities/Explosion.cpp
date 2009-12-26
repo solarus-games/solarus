@@ -54,7 +54,7 @@ Explosion::~Explosion(void) {
  * @return the type of entity
  */
 EntityType Explosion::get_type() {
-  return BOOMERANG;
+  return EXPLOSION;
 }
 
 /**

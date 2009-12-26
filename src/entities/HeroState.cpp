@@ -182,6 +182,23 @@ void Hero::update_ground(void) {
 	  set_bounding_box(collision_box);
 	  just_moved();
 	}
+	else {
+          collision_box = get_bounding_box();
+	  collision_box.add_xy(hole_dx, 0);
+	  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	    set_bounding_box(collision_box);
+	    just_moved();
+	  }
+	  else {
+	    collision_box = get_bounding_box();
+	    collision_box.add_xy(0, hole_dy);
+	    if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	      set_bounding_box(collision_box);
+	      just_moved();
+	    }
+	  }
+	}
+
 	next_ground_date = now + 60;
       }
     }

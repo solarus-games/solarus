@@ -1,75 +1,157 @@
-# ERROR SUMMARY: suppressed: 1283 from 7
-# LEAK SUMMARY: suppressed: 80,485 bytes in 1,053 blocks.
+# suppressed: 92,772 bytes in 1,357 blocks
 
 {
-   X11_1
+   <insert_a_suppression_name_here>
    Memcheck:Leak
-   fun:*alloc
+   fun:malloc
+   fun:_XlcDefaultMapModifiers
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_XlcCreateLC
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
    obj:/usr/lib/libX11.so.6.2.0
+   fun:_XlcCreateLC
 }
 
 {
-   _X11TransWrite_1
-   Memcheck:Param
-   write(buf)
-   obj:/lib/ld-2.8.90.so
-   fun:_X11TransWrite
-}
-
-{
-   _XlcResolveLocaleName_1
+   <insert_a_suppression_name_here>
    Memcheck:Leak
-   fun:*alloc
+   fun:malloc
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XlcCreateLC
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:realloc
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XlcCreateLC
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XlcCreateLC
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:realloc
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XlcCreateLC
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_XlcResolveLocaleName
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:realloc
    fun:_XlcResolveLocaleName
 }
 
 {
-   _XlcCreateLC_1
-   Memcheck:Leak
-   fun:*alloc
-   fun:_XlcCreateLC
-}
-
-{
-   _XlcCreateLC_2
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:malloc
-   obj:/usr/lib/libX11.so.6.2.0
-   fun:_XlcCreateLC
-}
-
-{
-   _XlcCreateLC_3
-   Memcheck:Leak
-   fun:malloc
-   obj:/usr/lib/libX11.so.6.2.0
-   obj:/usr/lib/libX11.so.6.2.0
-   fun:_XlcCreateLC
-}
-
-{
-   _XimOpenIM_1
-   Memcheck:Leak
-   fun:*alloc
    fun:_XimOpenIM
 }
 
 {
-   _XOpenLC_1
+   <insert_a_suppression_name_here>
    Memcheck:Leak
-   fun:*alloc
+   fun:malloc
+   fun:_XrmDefaultInitParseInfo
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XlcOpenConverter
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XimEncodeLocalICAttr
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
    fun:_XOpenLC
 }
 
 {
-   _XlcCreateLocaleDataBase_1
+   <insert_a_suppression_name_here>
    Memcheck:Leak
-   fun:*alloc
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:/usr/lib/libSDL-1.2.so.0.11.2
+   obj:/usr/lib/libSDL-1.2.so.0.11.2
+   fun:SDL_VideoInit
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:XrmGetFileDatabase
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:XrmGetFileDatabase
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
    fun:_XlcCreateLocaleDataBase
 }
 
 {
-   _XlcCreateLocaleDataBase_2
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:malloc
    obj:/usr/lib/libX11.so.6.2.0
@@ -77,8 +159,19 @@
    fun:_XlcCreateLocaleDataBase
 }
 
+
 {
-   _XlcCreateLocaleDataBase_3
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:realloc
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XlcCreateLocaleDataBase
+}
+
+{
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:malloc
    obj:/usr/lib/libX11.so.6.2.0
@@ -88,42 +181,364 @@
 }
 
 {
-   _XlcAddCT_1
+   <insert_a_suppression_name_here>
    Memcheck:Leak
-   fun:malloc
-   fun:_XlcAddCT
+   fun:calloc
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
 }
 
 {
-   _XlcAddCharSet_1
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:malloc
-   fun:_XlcAddCharSet
+   fun:local_strdup
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
 }
 
 {
-   _XlcCreateDefaultCharSet_1
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:malloc
-   fun:_XlcCreateDefaultCharSet
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
 }
 
 {
-   _XlcSetConverter_1
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_dl_map_object_deps
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:local_strdup
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_error
+   fun:_dl_map_object_deps
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_error
+   fun:_dl_map_object_deps
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_error
+   fun:_dl_map_object_deps
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:_dl_check_map_versions
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   fun:SDL_LoadObject
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_dl_close_worker
+   fun:_dl_close
+   fun:dlclose_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlclose
+   fun:SDL_UnloadObject
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_dl_scope_free
+   fun:_dl_close_worker
+   fun:_dl_close
+   fun:dlclose_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlclose
+   fun:SDL_UnloadObject
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:local_strdup
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XNoticeCreateBitmap
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XNoticeCreateBitmap
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:local_strdup
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_error
+   fun:_dl_map_object_deps
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XNoticeCreateBitmap
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_error
+   fun:_dl_map_object_deps
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XNoticeCreateBitmap
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_error
+   fun:_dl_map_object_deps
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XNoticeCreateBitmap
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_dl_map_object_deps
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XNoticeCreateBitmap
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:_dl_check_map_versions
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XNoticeCreateBitmap
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker
+   fun:_dl_catch_error
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen@@GLIBC_2.1
+   obj:/usr/lib/libX11.so.6.2.0
+   fun:_XNoticeCreateBitmap
+}
+
+{
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:malloc
    fun:_XlcSetConverter
 }
 
 {
-   _XrmInternalStringToQuark_1
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_XlcAddCharSet
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_XlcAddCT
+}
+
+{
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:malloc
    fun:_XrmInternalStringToQuark
 }
 
 {
-   _XrmInternalStringToQuark_2
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:realloc
+   fun:_XrmInternalStringToQuark
+}
+
+{
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:malloc
    obj:/usr/lib/libX11.so.6.2.0
@@ -131,7 +546,14 @@
 }
 
 {
-   XrmGetStringDatabase_1
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:_XlcCreateDefaultCharSet
+}
+
+{
+   <insert_a_suppression_name_here>
    Memcheck:Leak
    fun:realloc
    obj:/usr/lib/libX11.so.6.2.0
@@ -139,224 +561,12 @@
    fun:XrmGetStringDatabase
 }
 
-{
-   SDL_Init_1
-   Memcheck:Leak
-   fun:malloc
-   obj:*
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoInit
-   fun:SDL_InitSubSystem
-   fun:SDL_Init
-}
 
-{
-   SDL_Init_2
-   Memcheck:Leak
-   fun:calloc
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlopen
-   fun:SDL_LoadObject
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoInit
-   fun:SDL_InitSubSystem
-   fun:SDL_Init
-}
 
-{
-   SDL_Init_3
-   Memcheck:Leak
-   fun:*alloc
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlopen
-   fun:SDL_LoadObject
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoInit
-   fun:SDL_InitSubSystem
-   fun:SDL_Init
-}
 
-{
-   SDL_Init_4
-   Memcheck:Leak
-   fun:*alloc
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlopen
-   fun:SDL_LoadObject
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoInit
-   fun:SDL_InitSubSystem
-   fun:SDL_Init
-}
 
-{
-   SDL_Init_5
-   Memcheck:Addr4
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlopen
-   fun:SDL_LoadObject
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoInit
-   fun:SDL_InitSubSystem
-   fun:SDL_Init
-}
 
-{
-   SDL_Init_6
-   Memcheck:Addr4
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlopen
-   fun:SDL_LoadObject
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoInit
-   fun:SDL_InitSubSystem
-   fun:SDL_Init
-}
 
-{
-   SDL_Init_7
-   Memcheck:Addr4
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libc-2.7.so
-   fun:_dl_sym
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlsym
-   fun:SDL_LoadFunction
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoInit
-   fun:SDL_InitSubSystem
-   fun:SDL_Init
-}
 
-{
-   SDL_Init_8
-   Memcheck:Cond
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libc-2.7.so
-   fun:_dl_sym
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlsym
-   fun:SDL_LoadFunction
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoInit
-   fun:SDL_InitSubSystem
-   fun:SDL_Init
-}
 
-{
-   SDL_Quit_1
-   Memcheck:Leak
-   fun:malloc
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlclose
-   fun:SDL_UnloadObject
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoQuit
-   fun:SDL_QuitSubSystem
-   fun:SDL_Quit
-}
 
-{
-   SDL_Quit_2
-   Memcheck:Leak
-   fun:malloc
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   obj:/lib/ld-2.8.90.so
-   obj:/lib/tls/i686/cmov/libdl-2.7.so
-   fun:dlclose
-   fun:SDL_UnloadObject
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_VideoQuit
-   fun:SDL_QuitSubSystem
-   fun:SDL_Quit
-}
-
-{
-   SDL_PumpEvents_1
-   Memcheck:Cond
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_PumpEvents
-   fun:SDL_PollEvent
-}
-
-{
-   SDL_SetVideoMode_1
-   Memcheck:Param
-   writev(vector[...])
-   obj:/lib/ld-2.8.90.so
-   obj:/usr/lib/libxcb.so.1.0.0
-   obj:/usr/lib/libxcb.so.1.0.0
-   obj:/usr/lib/libxcb.so.1.0.0
-   fun:xcb_wait_for_reply
-   fun:_XReply
-   fun:XSync
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   obj:/usr/lib/libSDL-1.2.so.0.11.1
-   fun:SDL_SetVideoMode
-   fun:_ZN4ZSDX14set_fullscreenEb
-   fun:_ZN4ZSDXC1Ev
-   fun:main
-}

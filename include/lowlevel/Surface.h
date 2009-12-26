@@ -29,6 +29,7 @@ class Surface {
   private:
 
     SDL_Surface *internal_surface; /**< the SDL_Surface encapsulated */
+    bool internal_surface_created; /**< indicates that internal_surface was allocated from this class */
 
   public:
 

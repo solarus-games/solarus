@@ -34,9 +34,7 @@ class Rectangle {
 
   public:
 
-    Rectangle(void);
-    Rectangle(int x, int y);
-    Rectangle(int x, int y, int width, int height);
+    Rectangle(int x = 0, int y = 0, int width = 0, int height = 0);
     Rectangle(const Rectangle &other);
     ~Rectangle(void);
 

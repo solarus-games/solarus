@@ -73,6 +73,10 @@ class Sprite {
 
   public:
 
+    // initialization
+    static void initialize(void);
+    static void quit(void);
+
     // creation and destruction
     Sprite(const SpriteAnimationSetId &id);
     ~Sprite(void);

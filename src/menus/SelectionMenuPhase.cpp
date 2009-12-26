@@ -31,8 +31,7 @@
  * @param previous the previous phase (if we were already in the selection menu), or NULL
  * @param title_string_key key of the title string to display in this phase
  */
-SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous, const std::string &title_string_key):
-  Screen() {
+SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous, const std::string &title_string_key) {
 
   if (previous != NULL) {
     this->common_part = previous->common_part;

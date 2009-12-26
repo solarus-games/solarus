@@ -101,7 +101,7 @@ VideoManager::VideoManager(void) {
  * Destructor.
  */
 VideoManager::~VideoManager(void) {
-
+  delete screen_surface;
 }
 
 /**

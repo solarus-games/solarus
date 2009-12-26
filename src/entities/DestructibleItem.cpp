@@ -75,7 +75,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
   }
 
   if (has_special_ground()) { // display a special ground under the hero
-    add_collision_mode(COLLISION_ORIGIN_POINT);
+    add_collision_mode(COLLISION_CUSTOM);
   }
 }
 
@@ -179,6 +179,16 @@ bool DestructibleItem::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * Tests whether an entity's collides with this entity.
+ * This custom collision test determines whether the entity's ground is defined by this item.
+ * @param entity an entity
+ * @return true if the entity's collides with this entity
+ */
+bool DestructibleItem::test_collision_custom(MapEntity *entity) {
+  return overlaps(entity->get_x(), entity->get_y() - 2);
+}
+
+/**
  * This function is called by the engine when an entity overlaps the destructible item.
  * If the entity is the hero, we allow him to lift the item.
  * @param entity_overlapping the entity overlapping the detector
@@ -207,7 +217,7 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
       }
     }
 
-    else if (collision_mode == COLLISION_ORIGIN_POINT && has_special_ground() && !is_being_cut) {
+    else if (collision_mode == COLLISION_CUSTOM && has_special_ground() && !is_being_cut) {
       hero->set_ground(get_special_ground());
     }
   }

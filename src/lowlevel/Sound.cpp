@@ -87,7 +87,7 @@ void Sound::initialize(void) {
     return;
   }
 
-  ALCint attr[2] = {ALC_FREQUENCY, 32000}; // 32 KHz is the SPC output sampling rate
+  ALCint attr[] = {ALC_FREQUENCY, 32000, 0}; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
     std::cout << "Cannot create audio context" << std::endl;
@@ -252,7 +252,7 @@ ALuint Sound::decode_wav(const std::string &file_name) {
   WavFromMemory wav;
   wav.position = 0;
   FileTools::data_file_open_buffer(file_name, &wav.data, &wav.size);
-  SF_INFO file_info;
+  SF_INFO file_info = {0};
   SNDFILE *file = sf_open_virtual(&sf_virtual, SFM_READ, &file_info, &wav);
 
   if (file == NULL) {

@@ -25,7 +25,8 @@
  * @param width the width in pixels
  * @param height the height in pixels
  */
-Surface::Surface(int width, int height) {
+Surface::Surface(int width, int height):
+  internal_surface_created(true) {
   this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
 }
     
@@ -34,7 +35,8 @@ Surface::Surface(int width, int height) {
  * @param file_name name of the image file to load, relative to the
  * data resource location.
  */
-Surface::Surface(std::string file_name) {
+Surface::Surface(std::string file_name):
+  internal_surface_created(true) {
 
   SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
   this->internal_surface = IMG_Load_RW(rw, 0);
@@ -49,16 +51,21 @@ Surface::Surface(std::string file_name) {
  * Creates a surface form the specified SDL surface.
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
+ * @param internal_surface the internal surface data (the destructor will not free it)
  */
-Surface::Surface(SDL_Surface *internal_surface) {
-  this->internal_surface = internal_surface;
+Surface::Surface(SDL_Surface *internal_surface):
+  internal_surface(internal_surface), internal_surface_created(false) {
+
 }
 
 /**
  * Destructor.
  */
 Surface::~Surface(void) {
-  SDL_FreeSurface(internal_surface);
+
+  if (internal_surface_created) {
+    SDL_FreeSurface(internal_surface);
+  }
 }
 
 /**

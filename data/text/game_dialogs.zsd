@@ -2,68 +2,17 @@
 # Les dialogues du moteur de jeu sont dans le fichier text/engine_dialogs.zsd,
 # ainsi que la spécification de la syntaxe de ces deux fichiers.
 
-[demo_finished]
-# Lorsqu'on vient de finir le donjon 1
-#       |-----------------------|
-line1 = "Félicitations : vous"
-line2 = "venez de terminer cette"
-line3 = "démo ! Nous espérons"
-next = demo_finished.2
-
-[demo_finished.2]
-#       |-----------------------|
-line1 = "que vous l'avez"
-line2 = "appréciée. En attendant"
-line3 = "le jeu complet, vous"
-next = demo_finished.3
-
-[demo_finished.3]
-#       |-----------------------|
-line1 = "pouvez visiter"
-line2 = "www.zelda-solarus.com"
-line3 = "pour connaître les"
-next = demo_finished.4
-
-[demo_finished.4]
-#       |-----------------------|
-line1 = "dernières informations"
-line2 = "sur le développement."
-line3 = "Merci d'avoir joué !"
-
-[demo_finished]
-# Lorsqu'on vient de finir le donjon 1
-#       |-----------------------|
-line1 = ""
-line2 = ""
-line3 = ""
-next = demo_finished.2
-
-[outside_world.not_in_demo]
-# Lorsqu'on tente d'entrer dans une grotte pas encore faite dans la démo
-#       |-----------------------|
-line1 = "Cet endroit n'est pas"
-line2 = "encore disponible !"
-skip = current
-
-[outside_world.dungeon_2_entrance.monkey]
-# Dialogue avec le singe après avoir fini le donjon 1
-#       |-----------------------|
-line1 = "Désolé, la suite n'est"
-line2 = "pas encore disponible !"
-
-[chest.not_in_demo]
-# Lorsqu'on tente d'ouvrir le coffre qui contiendra l'arc, non disponible dans la démo
-#       |-----------------------|
-line1 = "Désolé, cet trésor"
-line2 = "n'est pas encore"
-line3 = "disponible !"
-skip = current
-
 [dungeon_1]
 # Lorsqu'on pénètre dans le donjon 1
 #       |-----------------------|
 line1 = "        Niveau 1       "
 line2 = "   Donjon de la Forêt  "
+
+[dungeon_2]
+# Lorsqu'on pénètre dans le donjon 2
+#       |-----------------------|
+line1 = "        Niveau 2       "
+line2 = "     Caverne de Roc    "
 
 [intro0]
 # Intro : écran noir

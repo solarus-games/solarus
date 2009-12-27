@@ -59,3 +59,11 @@ y = 488
 save = 5
 big = 1
 
+[dungeon_2.floor_-1]
+width = 1152
+height = 768
+
+[dungeon_2.floor_0]
+width = 1152
+height = 768
+

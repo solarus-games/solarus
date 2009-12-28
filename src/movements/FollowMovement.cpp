@@ -39,38 +39,52 @@ FollowMovement::~FollowMovement(void) {
 
 /**
  * Returns whether the movement is finished.
- * @return true if there was a collision
+ * @return true if there was a collision or the entity followed disappeared
  */
 bool FollowMovement::is_finished(void) {
   return finished;
 }
+
 
 /**
  * Updates the position.
  */
 void FollowMovement::update(void) {
 
-  int next_x = entity_followed->get_x() + x;
-  int next_y = entity_followed->get_y() + y;
+  if (entity_followed == NULL) {
+    finished = true;
+    return;
+  }
 
-  int dx = next_x - get_x();
-  int dy = next_y - get_y();
-
-  if (with_collisions) {
-
-    if (!finished && (dx != 0 || dy != 0)) {
-
-      if (!test_collision_with_map(dx, dy)) {
-	set_x(next_x);
-	set_y(next_y);
-      }
-      else {
-	finished = true;
-      }
-    }
+  if (entity_followed->is_being_removed()) {
+    finished = true;
+    entity_followed = NULL;
   }
   else {
-    set_x(next_x);
-    set_y(next_y);
+
+    int next_x = entity_followed->get_x() + x;
+    int next_y = entity_followed->get_y() + y;
+
+    int dx = next_x - get_x();
+    int dy = next_y - get_y();
+
+    if (with_collisions) {
+
+      if (!finished && (dx != 0 || dy != 0)) {
+
+	if (!test_collision_with_map(dx, dy)) {
+	  set_x(next_x);
+	  set_y(next_y);
+	}
+	else {
+	  finished = true;
+	}
+      }
+    }
+    else {
+      set_x(next_x);
+      set_y(next_y);
+    }
   }
 }
+

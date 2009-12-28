@@ -17,6 +17,7 @@
 #include "entities/CrystalSwitch.h"
 #include "entities/CarriedItem.h"
 #include "entities/Boomerang.h"
+#include "entities/Arrow.h"
 #include "entities/Hero.h"
 #include "ZSDX.h"
 #include "Game.h"
@@ -102,6 +103,14 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
     activate();
     if (!boomerang->is_going_back()) {
       boomerang->go_back();
+    }
+  }
+  else if (entity_overlapping->get_type() == ARROW && collision_mode == COLLISION_RECTANGLE) {
+
+    Arrow *arrow = (Arrow*) entity_overlapping;
+    if (arrow->is_shot()) {
+      activate();
+      arrow->attach_to(this);
     }
   }
   else if (entity_overlapping->is_hero() && collision_mode == COLLISION_FACING_POINT) {

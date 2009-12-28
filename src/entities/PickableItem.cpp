@@ -50,12 +50,12 @@ const PickableItem::Features PickableItem::features[] = {
   {"entities/magic", "small", false, "picked_item", true, false, false},         // small magic
   {"entities/magic", "big", false, "picked_item", true, false, false},           // big magic
   {"entities/fairy", "normal", true, "picked_item", true, false, false},         // fairy
-  {"entities/bomb", "1", true, "picked_item", true, false, false},               // 1 bomb
-  {"entities/bomb", "5", true, "picked_item", true, false, false},               // 5 bombs
-  {"entities/bomb", "10", true, "picked_item", true, false, false},              // 10 bombs
-  {"entities/arrow", "1", false, "picked_item", true, false, false},             // 1 arrow
-  {"entities/arrow", "5", false, "picked_item", true, false, false},             // 5 arrows
-  {"entities/arrow", "10", false, "picked_item", true, false, false},            // 10 arrows
+  {"entities/pickable_bomb", "1", true, "picked_item", true, false, false},      // 1 bomb
+  {"entities/pickable_bomb", "5", true, "picked_item", true, false, false},      // 5 bombs
+  {"entities/pickable_bomb", "10", true, "picked_item", true, false, false},     // 10 bombs
+  {"entities/pickable_arrow", "1", false, "picked_item", true, false, false},    // 1 arrow
+  {"entities/pickable_arrow", "5", false, "picked_item", true, false, false},    // 5 arrows
+  {"entities/pickable_arrow", "10", false, "picked_item", true, false, false},   // 10 arrows
 
   {"entities/key", "small_key", false, "picked_small_key", false, true, false},  // small key
   {"entities/key", "big_key", true, "", false, true, true},                      // big key

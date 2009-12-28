@@ -14,28 +14,28 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_EXPLOSION_H
-#define ZSDX_EXPLOSION_H
+#ifndef ZSDX_ARROW_H
+#define ZSDX_ARROW_H
 
 #include "Common.h"
-#include "entities/Detector.h"
-#include <list>
+#include "entities/MapEntity.h"
 
 /**
- * Represents an explosion on the map.
- * An explosion can be caused by several entities such as bombs, bomb flowers and enemies.
- * An explosion can hurt the hero, the enemies and open weak walls.
+ * An arrow thrown by the bow on the map.
  */
-class Explosion: public Detector {
+class Arrow: public MapEntity {
 
   private:
 
-    std::list<Enemy*> victims; /**< list of enemies successfully hurt by this explosion */
+    Hero *hero;                /**< the hero */
+    uint32_t disappear_date;   /**< date when the arrow disappears */
+    bool stop_now;             /**< true to make the arrow stop now */
+    MapEntity *entity_reached; /**< an entity reached by the arrow */
 
   public:
 
-    Explosion(Layer layer, const Rectangle &xy, bool with_damages);
-    ~Explosion(void);
+    Arrow(Hero *hero);
+    ~Arrow(void);
 
     EntityType get_type(void);
 
@@ -45,15 +45,29 @@ class Explosion: public Detector {
     bool can_be_displayed(void);
     bool is_displayed_in_y_order(void);
 
+    bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
+    bool is_water_obstacle(void);
+    bool is_hole_obstacle(void);
+    bool is_ladder_obstacle(void);
+    bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
+    bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
+    bool is_npc_obstacle(InteractiveEntity *npc);
+    bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
+
     // state
     void update(void);
+    void set_suspended(bool suspended);
+    void stop(void);
+    bool is_stopped(void);
+    bool is_shot(void);
+    void attach_to(MapEntity *entity_reached);
 
     // collisions
-    void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
-    void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
-    void try_attack_enemy(Enemy *enemy, Sprite *enemy_sprite);
+    void notify_collision_with_enemy(Enemy *enemy);
     void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 };
+
 
 #endif
 

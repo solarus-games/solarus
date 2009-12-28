@@ -289,6 +289,7 @@ class Hero: public MapEntity {
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
     void start_victory(void);
     void start_boomerang(void);
+    void start_bow(void);
 
     // keys
     void key_pressed(Controls::GameKey key);
@@ -298,7 +299,7 @@ class Hero: public MapEntity {
     bool is_obstacle_for(MapEntity *other);
     void notify_collision_with_enemy(Enemy *enemy);
     void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
-    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
+    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
     bool is_stroke_by_sword(Detector *detector);
 
     void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);

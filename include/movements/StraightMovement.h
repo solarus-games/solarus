@@ -26,23 +26,23 @@
  */
 class StraightMovement: public CollisionMovement {
 
- private:
+  private:
 
-  uint32_t end_movement_date;
-  bool finished;
+    uint32_t end_movement_date;
+    bool finished;
 
- public:
+  public:
 
-  StraightMovement(int speed, int direction, uint32_t time);
-  StraightMovement(int speed, double direction, uint32_t time);
-  StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time);
-  ~StraightMovement(void);
+    StraightMovement(int speed, int direction, uint32_t time);
+    StraightMovement(int speed, double direction, uint32_t time);
+    StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time);
+    ~StraightMovement(void);
 
-  void update(void);
-  void set_suspended(bool suspended);
-  bool is_finished(void);
-  void start(int speed, int direction, uint32_t time);
-  void start(int speed, double direction, uint32_t time);
+    void update(void);
+    void set_suspended(bool suspended);
+    bool is_finished(void);
+    void start(int speed, int direction, uint32_t time);
+    void start(int speed, double direction, uint32_t time);
 };
 
 #endif

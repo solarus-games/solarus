@@ -756,7 +756,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     }
 
     // notify the source
-    source->just_attacked_enemy(attack, this, result);
+    source->just_attacked_enemy(attack, this, result, get_life() <= 0);
   }
 }
 

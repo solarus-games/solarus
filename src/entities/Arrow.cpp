@@ -14,29 +14,28 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Boomerang.h"
+#include "entities/Arrow.h"
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
 #include "entities/MapEntities.h"
-#include "movements/CollisionMovement.h"
-#include "movements/PlayerMovement.h"
-#include "movements/TargetMovement.h"
-#include "ResourceManager.h"
+#include "movements/PathMovement.h"
+#include "movements/FollowMovement.h"
+#include "Sprite.h"
 #include "Map.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
- * Creates a boomerang.
+ * Creates an arrow.
  * @param hero the hero
- * @param boomerang_direction the boomerang direction (0 to 360)
  */
-Boomerang::Boomerang(Hero *hero, int boomerang_direction):
-  MapEntity(), hero(hero), has_to_go_back(false), going_back(false) {
+Arrow::Arrow(Hero *hero):
+  hero(hero) {
 
   // initialize the entity
+  int direction = hero->get_animation_direction();
   set_layer(hero->get_layer());
-  create_sprite("entities/boomerang");
+  create_sprite("entities/arrow");
+  get_sprite()->set_current_direction(direction);
   set_bounding_box_from_sprite();
 
   int hero_x = hero->get_top_left_x();
@@ -61,20 +60,20 @@ Boomerang::Boomerang(Hero *hero, int boomerang_direction):
 
   }
 
-  initial_coords.set_xy(get_xy());
-
-  CollisionMovement *movement = new CollisionMovement();
-  movement->set_speed(16);
-  movement->set_direction(boomerang_direction);
+  std::string path = " ";
+  path[0] = '0' + (direction * 2);
+  Movement *movement = new PathMovement(path, 16, true, true, false);
   set_movement(movement);
 
-  next_sound_date = System::now();
+  disappear_date = System::now() + 1500;
+  stop_now = false;
+  entity_reached = NULL;
 }
 
 /**
  * Destructor.
  */
-Boomerang::~Boomerang(void) {
+Arrow::~Arrow(void) {
 
 }
 
@@ -82,8 +81,8 @@ Boomerang::~Boomerang(void) {
  * Returns the type of entity.
  * @return the type of entity
  */
-EntityType Boomerang::get_type() {
-  return BOOMERANG;
+EntityType Arrow::get_type() {
+  return ARROW;
 }
 
 /**
@@ -92,7 +91,7 @@ EntityType Boomerang::get_type() {
  * to determine whether this particular entity is an obstacle or not.
  * @return true if this type of entity can be obstacle for other entities
  */
-bool Boomerang::can_be_obstacle(void) {
+bool Arrow::can_be_obstacle(void) {
   return false; 
 }
 
@@ -103,7 +102,7 @@ bool Boomerang::can_be_obstacle(void) {
  * notify_collision() will be called when a collision is detected.
  * @return true if this type of entity can detect other entities
  */
-bool Boomerang::can_detect_entities(void) {
+bool Arrow::can_detect_entities(void) {
   return false;
 }
 
@@ -113,7 +112,7 @@ bool Boomerang::can_detect_entities(void) {
  * displayed (if any).
  * @return true if this type of entity can be displayed
  */
-bool Boomerang::can_be_displayed(void) {
+bool Arrow::can_be_displayed(void) {
   return true; 
 }
 
@@ -126,7 +125,7 @@ bool Boomerang::can_be_displayed(void) {
  * and before the entities with the feature.
  * @return true if this type of entity is displayed at the same level as the hero
  */
-bool Boomerang::is_displayed_in_y_order(void) {
+bool Arrow::is_displayed_in_y_order(void) {
   return false;
 }
 
@@ -135,7 +134,7 @@ bool Boomerang::is_displayed_in_y_order(void) {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool Boomerang::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool Arrow::is_teletransporter_obstacle(Teletransporter *teletransporter) {
   return false;
 }
 
@@ -144,7 +143,7 @@ bool Boomerang::is_teletransporter_obstacle(Teletransporter *teletransporter) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Boomerang::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
   return false;
 }
 
@@ -153,7 +152,7 @@ bool Boomerang::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * This function returns true by default.
  * @return true if the water tiles are currently an obstacle for this entity
  */
-bool Boomerang::is_water_obstacle(void) {
+bool Arrow::is_water_obstacle(void) {
   return false;
 }
 
@@ -162,7 +161,7 @@ bool Boomerang::is_water_obstacle(void) {
  * This function returns true by default.
  * @return true if the holes are currently an obstacle for this entity
  */
-bool Boomerang::is_hole_obstacle(void) {
+bool Arrow::is_hole_obstacle(void) {
   return false;
 }
 
@@ -171,7 +170,7 @@ bool Boomerang::is_hole_obstacle(void) {
  * This function returns true by default.
  * @return true if the ladders are currently an obstacle for this entity
  */
-bool Boomerang::is_ladder_obstacle(void) {
+bool Arrow::is_ladder_obstacle(void) {
   return false;
 }
 
@@ -180,8 +179,8 @@ bool Boomerang::is_ladder_obstacle(void) {
  * @param raised_block a crystal switch block raised
  * @return false 
  */
-bool Boomerang::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
-  // the boomerang can traverse the crystal switch blocks
+bool Arrow::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+  // arrows can traverse the crystal switch blocks
   return false;
 }
 
@@ -190,7 +189,7 @@ bool Boomerang::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool Boomerang::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
+bool Arrow::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
   return false;
 }
 
@@ -199,7 +198,7 @@ bool Boomerang::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool Boomerang::is_npc_obstacle(InteractiveEntity *npc) {
+bool Arrow::is_npc_obstacle(InteractiveEntity *npc) {
   return false;
 }
 
@@ -209,34 +208,14 @@ bool Boomerang::is_npc_obstacle(InteractiveEntity *npc) {
  * @param jump_sensor a jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool Boomerang::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+bool Arrow::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
   return false;
 }
 
 /**
- * Returns whether the boomerang is going back towards the hero, i.e. if go_back() has been called.
- * @return true if the boomerang is going back
+ * Updates this entity.
  */
-bool Boomerang::is_going_back(void) {
-  return has_to_go_back || going_back;
-}
-
-/**
- * Makes the boomerang go back towards the hero.
- */
-void Boomerang::go_back(void) {
-
-  if (is_going_back()) {
-    DIE("The boomerang is already going back");
-  }
-
-  has_to_go_back = true;
-}
-
-/**
- * Updates the boomerang.
- */
-void Boomerang::update(void) {
+void Arrow::update(void) {
 
   MapEntity::update();
 
@@ -245,46 +224,94 @@ void Boomerang::update(void) {
   }
 
   uint32_t now = System::now();
-  if (now >= next_sound_date) {
-    ResourceManager::get_sound("boomerang")->play();
-    next_sound_date = now + 150;
+  if (stop_now) {
+    clear_movement();
+
+    if (entity_reached != NULL) {
+
+      Rectangle dxy(get_x() - entity_reached->get_x(), get_y() - entity_reached->get_y());
+      set_movement(new FollowMovement(entity_reached, dxy.get_x(), dxy.get_y(), false));
+      disappear_date = now + 1500;
+      stop_now = false;
+    }
   }
 
-  if (!going_back) {
+  if (now >= disappear_date) {
+    map->get_entities()->remove_entity(this);
+  }
+  else if (is_stopped()) {
 
-    if (has_to_go_back) {
-      going_back = true;
-      clear_movement();
-      set_movement(new TargetMovement(hero, 16));
-      map->get_entities()->set_entity_layer(this, hero->get_layer()); // because the hero's layer may have changed
-    }
-    else if (get_movement()->is_stopped()) {
-      // collision with an obstacle
-      
-      CollisionMovement *movement = (CollisionMovement*) get_movement();
-      if (!map->test_collision_with_border(movement->get_last_collision_box_on_obstacle())) {
-        // play a sound unless we are on the map border
-	ResourceManager::get_sound("sword_tapping")->play();
+    if (entity_reached == NULL) {
+      if (disappear_date > now + 500) {
+        // an obstacle was reached
+        disappear_date = now + 500;
       }
-      go_back();
     }
-    else if (get_distance(initial_coords.get_x(), initial_coords.get_y()) >= 144) {
-      go_back();
+    else {
+      // the entity reached disappeared
+      disappear_date = now;
     }
   }
-  else if (get_movement()->is_finished()) {
-    get_map()->get_entities()->remove_entity(this);
+}
+
+/**
+ * This function is called by the map when the game is suspended or resumed.
+ * @param suspended true to suspend the entity, false to resume it
+ */
+void Arrow::set_suspended(bool suspended) {
+
+  MapEntity::set_suspended(suspended); // suspend the movement
+
+  if (!suspended) {
+    // recalculate the timer
+    disappear_date += System::now() - when_suspended;
   }
+}
+
+/**
+ * Stops the arrow movement.
+ */
+void Arrow::stop(void) {
+  stop_now = true;
+}
+
+/**
+ * Returns whether the arrow is stopped.
+ */
+bool Arrow::is_stopped(void) {
+  return get_movement() == NULL || get_movement()->is_finished();
+}
+
+/**
+ * Returns whether the arrow is currently shot.
+ * @return true if the arrow was shot and has not reached a target yet
+ */
+bool Arrow::is_shot(void) {
+  return !is_stopped() && entity_reached == NULL;
+}
+
+/**
+ * Stops the arrow movement and attaches the arrow to an entity that was just reached.
+ * @param entity_reached the entity that was reached
+ */
+void Arrow::attach_to(MapEntity *entity_reached) {
+
+  if (this->entity_reached != NULL) {
+    DIE("This arrow is already attached to an entity");
+  }
+
+  this->entity_reached = entity_reached;
+  stop_now = true;
 }
 
 /**
  * This function is called when an enemy collides with the entity.
  * @param enemy the enemy
  */
-void Boomerang::notify_collision_with_enemy(Enemy *enemy) {
+void Arrow::notify_collision_with_enemy(Enemy *enemy) {
 
-  if (!overlaps(hero)) {
-    enemy->try_hurt(ATTACK_BOOMERANG, this, NULL);
+  if (!overlaps(hero) && is_shot()) {
+    enemy->try_hurt(ATTACK_BOW, this, NULL);
   }
 }
 
@@ -300,10 +327,19 @@ void Boomerang::notify_collision_with_enemy(Enemy *enemy) {
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void Boomerang::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool dead) {
+void Arrow::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 
-  if (result != 0 && !is_going_back()) {
-    go_back();
+  if (result == -1) {
+    stop();
+  }
+  else if (result != 0) {
+    if (killed) {
+      stop();
+      disappear_date = System::now();
+    }
+    else {
+      attach_to(victim);
+    }
   }
 }
 

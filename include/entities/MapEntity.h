@@ -232,7 +232,7 @@ class MapEntity {
     virtual void notify_collision_with_sensor(Sensor *sensor);
     virtual void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
-    virtual void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
+    virtual void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 
     virtual bool is_water_obstacle(void);
     virtual bool is_hole_obstacle(void);

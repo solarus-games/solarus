@@ -156,6 +156,7 @@ class Boomerang;
 class ConveyorBelt;
 class Door;
 class Explosion;
+class Arrow;
 
 // tile patterns
 class Tileset;

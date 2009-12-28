@@ -1,8 +1,6 @@
-1 entities/pickable_items.png 1 0 -1
-0	16	16	16	8	16	1	1
+normal entities/arrow.png 4 0 -1
+0	0	16	8	8	4	1	1
+16	0	8	16	4	8	1	1
+0	8	16	8	8	4	1	1
+24	0	8	16	4	8	1	1
 
-5 entities/pickable_items.png 1 0 -1
-16	16	16	16	8	16	1	1
-
-10 entities/pickable_items.png 1 0 -1
-32	16	16	16	8	16	1	1

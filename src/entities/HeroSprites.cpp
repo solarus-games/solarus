@@ -889,11 +889,22 @@ void HeroSprites::set_animation_falling(void) {
 
 /**
  * Starts the "boomerang" animation of the hero's sprites.
- * The hero's state should be FREEZED.
+ * The hero's state should be USING_INVENTORY_ITEM.
  */
 void HeroSprites::set_animation_boomerang(void) {
   tunic_sprite->set_current_animation("boomerang");
+  shield_sprite->set_current_animation("boomerang");
 }
+
+/**
+ * Starts the "bow" animation of the hero's sprites.
+ * The hero's state should be USING_INVENTORY_ITEM.
+ */
+void HeroSprites::set_animation_bow(void) {
+  tunic_sprite->set_current_animation("bow");
+  shield_sprite->set_current_animation("bow");
+}
+
 
 /**
  * Starts the "brandish" animation of the hero's sprites.

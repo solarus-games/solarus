@@ -26,29 +26,29 @@
  */
 class CrystalSwitch: public Detector {
 
- private:
+  private:
 
-  bool state;                    /**< false if the orange blocks are lowered,
-	                          * true if the blue blocks are lowered */
-  uint32_t next_possible_hit_date; /**< date when the crystal switch can be hit again */
+    bool state;                      /**< false if the orange blocks are lowered,
+				      * true if the blue blocks are lowered */
+    uint32_t next_possible_hit_date; /**< date when the crystal switch can be hit again */
 
-  void activate();
+    void activate();
 
- public:
+  public:
 
-  CrystalSwitch(Layer layer, int x, int y);
-  ~CrystalSwitch(void);
-  static CreationFunction parse;
+    CrystalSwitch(Layer layer, int x, int y);
+    ~CrystalSwitch(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
+    EntityType get_type(void);
 
-  bool is_obstacle_for(MapEntity *other);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
-  void action_key_pressed(void);
+    bool is_obstacle_for(MapEntity *other);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
+    void action_key_pressed(void);
 
-  void update(void);
-  void set_suspended(bool suspended);
+    void update(void);
+    void set_suspended(bool suspended);
 };
 
 #endif

@@ -349,7 +349,6 @@ void DestructibleItem::set_suspended(bool suspended) {
   }
 }
 
-
 /**
  * Updates the item.
  */

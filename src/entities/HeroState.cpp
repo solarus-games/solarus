@@ -1267,8 +1267,9 @@ void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprit
  * @param attack the attack
  * @param victim the enemy just hurt
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
+void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 
   if (result == 0) {
     // attack ignored
@@ -1560,5 +1561,13 @@ void Hero::update_inventory_item(void) {
  */
 void Hero::start_boomerang(void) {
   sprites->set_animation_boomerang();
+}
+
+/**
+ * Starts the bow animation.
+ * The state should be USING_INVENTORY_ITEM.
+ */
+void Hero::start_bow(void) {
+  sprites->set_animation_bow();
 }
 

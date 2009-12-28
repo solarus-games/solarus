@@ -38,7 +38,7 @@ class Boomerang: public MapEntity {
 
   public:
 
-    Boomerang(Hero *hero, int direction);
+    Boomerang(Hero *hero, int boomerang_direction);
     ~Boomerang(void);
 
     EntityType get_type(void);
@@ -67,7 +67,7 @@ class Boomerang: public MapEntity {
 
     // collisions
     void notify_collision_with_enemy(Enemy *enemy);
-    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
+    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 };
 
 

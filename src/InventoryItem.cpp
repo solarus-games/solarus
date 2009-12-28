@@ -27,6 +27,7 @@
 #include "entities/Hero.h"
 #include "entities/Detector.h"
 #include "entities/Boomerang.h"
+#include "entities/Arrow.h"
 #include "entities/PickableItem.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Sound.h"
@@ -162,6 +163,18 @@ void InventoryItem::start(Game *game) {
 	}
 	break;
    
+      case INVENTORY_BOW:
+	if (equipment->get_arrows() == 0) {
+          ResourceManager::get_sound("wrong")->play();
+	  finished = true;
+	}
+        else {
+	  equipment->remove_arrow();
+          ResourceManager::get_sound("bow")->play();
+	  hero->start_bow();
+	}
+	break;
+
       case INVENTORY_APPLES:
       case INVENTORY_PAINS_AU_CHOCOLAT:
       case INVENTORY_CROISSANTS:
@@ -224,6 +237,14 @@ void InventoryItem::update(void) {
 	  game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction));
 	}
 	break;
+ 
+      case INVENTORY_BOW:
+	if (hero->is_animation_finished()) {
+	  finished = true;
+	  game->get_current_map()->get_entities()->add_entity(new Arrow(hero));
+	}
+	break;
+
 
       case INVENTORY_APPLES:
       case INVENTORY_PAINS_AU_CHOCOLAT:

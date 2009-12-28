@@ -68,6 +68,11 @@ Bugs :
 - MapEntity : "features" mal gérées au niveau du code (mélange tableau / héritage) : faire une sous-classe pour les entités qui peuvent être chargées avec la map ?
 - CrystalSwitch : permettre d'activer deux fois par deux entités différentes (flèches, explosions, héros...) en mémorisant les entités activatrices
   (le délai est trop long et trop spécifique aux explosions)
+- Les crystal switch blocks sont animés
+- Les crystal switch sont animés
+- Crystal switch : pas tout à fait le bon son
+- Flèche qui se plante : animation + son
+- Link qui tire avec l'arc : animation
 
 
 Donjon 2 :

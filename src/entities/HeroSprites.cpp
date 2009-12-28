@@ -901,8 +901,14 @@ void HeroSprites::set_animation_boomerang(void) {
  * The hero's state should be USING_INVENTORY_ITEM.
  */
 void HeroSprites::set_animation_bow(void) {
+
   tunic_sprite->set_current_animation("bow");
-  shield_sprite->set_current_animation("bow");
+
+  // the shield is not visible
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+  stop_displaying_sword();
 }
 
 

@@ -22,6 +22,8 @@
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
 #include "Map.h"
+#include "ResourceManager.h"
+#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
@@ -34,31 +36,10 @@ Arrow::Arrow(Hero *hero):
   // initialize the entity
   int direction = hero->get_animation_direction();
   set_layer(hero->get_layer());
-  create_sprite("entities/arrow");
+  create_sprite("entities/arrow", true);
   get_sprite()->set_current_direction(direction);
   set_bounding_box_from_sprite();
-
-  int hero_x = hero->get_top_left_x();
-  int hero_y = hero->get_top_left_y();
-  switch (hero->get_animation_direction()) {
-
-    case 0:
-      set_xy(hero_x + 24, hero_y + 8);
-      break;
-
-    case 1:
-      set_xy(hero_x + 8, hero_y - 8);
-      break;
-
-    case 2:
-      set_xy(hero_x - 8, hero_y + 8);
-      break;
-
-    case 3:
-      set_xy(hero_x + 8, hero_y + 24);
-      break;
-
-  }
+  set_xy(hero->get_center_point());
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
@@ -126,7 +107,7 @@ bool Arrow::can_be_displayed(void) {
  * @return true if this type of entity is displayed at the same level as the hero
  */
 bool Arrow::is_displayed_in_y_order(void) {
-  return false;
+  return true;
 }
 
 /**
@@ -224,33 +205,65 @@ void Arrow::update(void) {
   }
 
   uint32_t now = System::now();
+    
+  // stop the movement if necessary (i.e. stop() was called)
   if (stop_now) {
     clear_movement();
+    stop_now = false;
 
     if (entity_reached != NULL) {
-
+      // the arrow just hit an entity (typically an enemy) and this entity may have a movement
       Rectangle dxy(get_x() - entity_reached->get_x(), get_y() - entity_reached->get_y());
       set_movement(new FollowMovement(entity_reached, dxy.get_x(), dxy.get_y(), false));
-      disappear_date = now + 1500;
-      stop_now = false;
     }
   }
 
-  if (now >= disappear_date) {
-    map->get_entities()->remove_entity(this);
-  }
-  else if (is_stopped()) {
-
-    if (entity_reached == NULL) {
-      if (disappear_date > now + 500) {
-        // an obstacle was reached
-        disappear_date = now + 500;
-      }
-    }
-    else {
-      // the entity reached disappeared
+  if (entity_reached != NULL) {
+    
+    // see if the entity reached is still valid
+    if (is_stopped()) {
+      // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
+    else if (entity_reached->get_type() == ENEMY && ((Enemy*) entity_reached)->is_dying()) {
+      // the enemy is dying
+      disappear_date = now;
+    }
+  }
+
+  // see if the arrow just hit a wall or an entity
+  bool reached_obstacle = false;
+
+  if (get_sprite()->get_current_animation() != "reached_obstacle") {
+
+    if (entity_reached != NULL) {
+      // the arrow was just attached to an entity
+      reached_obstacle = true;
+    }
+    else if (is_stopped()) {
+      
+      if (has_reached_map_border()) {
+        // the map border was reached: destroy the arrow
+	disappear_date = now;
+      }
+      else {
+	// the arrow has just hit another obstacle
+	reached_obstacle = true;
+      }
+    }
+  }
+
+  if (reached_obstacle) {
+    // an obstacle or an entity was just reached
+    disappear_date = now + 1500;
+    get_sprite()->set_current_animation("reached_obstacle");
+    ResourceManager::get_sound("arrow_hit")->play();
+    clear_movement();
+  }
+
+  // destroy the arrow when disappear_date is reached
+  if (now >= disappear_date) {
+    map->get_entities()->remove_entity(this);
   }
 }
 
@@ -283,10 +296,10 @@ bool Arrow::is_stopped(void) {
 }
 
 /**
- * Returns whether the arrow is currently shot.
+ * Returns whether the arrow is currently flying.
  * @return true if the arrow was shot and has not reached a target yet
  */
-bool Arrow::is_shot(void) {
+bool Arrow::is_flying(void) {
   return !is_stopped() && entity_reached == NULL;
 }
 
@@ -305,12 +318,14 @@ void Arrow::attach_to(MapEntity *entity_reached) {
 }
 
 /**
- * This function is called when an enemy collides with the entity.
+ * This function is called when an enemy's sprite collides with a sprite of this entity.
  * @param enemy the enemy
+ * @param enemy_sprite the enemy's sprite that overlaps the hero
+ * @param this_sprite the arrow sprite
  */
-void Arrow::notify_collision_with_enemy(Enemy *enemy) {
+void Arrow::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite) {
 
-  if (!overlaps(hero) && is_shot()) {
+  if (!overlaps(hero) && is_flying()) {
     enemy->try_hurt(ATTACK_BOW, this, NULL);
   }
 }
@@ -334,12 +349,25 @@ void Arrow::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, b
   }
   else if (result != 0) {
     if (killed) {
-      stop();
-      disappear_date = System::now();
+      map->get_entities()->remove_entity(this);
     }
     else {
       attach_to(victim);
     }
   }
+}
+
+/**
+ * Returns whether the arrow has just hit the map border.
+ * @return true if the arrow has just hit the map border
+ */
+bool Arrow::has_reached_map_border(void) {
+
+  if (get_sprite()->get_current_animation() != "flying" || get_movement() == NULL) {
+    return false;
+  }
+
+  CollisionMovement *movement = (CollisionMovement*) get_movement();
+  return map->test_collision_with_border(movement->get_last_collision_box_on_obstacle());
 }
 

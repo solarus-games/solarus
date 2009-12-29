@@ -49,6 +49,6 @@ int Random::get_number(unsigned int x) {
  * @return a random integer number in [x, y[
  */
 int Random::get_number(unsigned int x, unsigned int y) {
-  return x + get_number(y);
+  return x + get_number(y - x);
 }
 

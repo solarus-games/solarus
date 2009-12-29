@@ -61,5 +61,19 @@ booleans:
 68	twin caves: chest with the rock key
 69	twin caves: barrier of eastern entrance
 70	twin caves: chest with 20 rupees
-71	dungeon 2: piece of heart
-72	dungeon 2: small key 1
+71	dungeon 2 1F: piece of heart
+72	dungeon 2 B1: chest with 5 arrows
+73	dungeon 2 1F: small key block A 
+74	dungeon 2: small key A (1F, enemy)
+75	dungeon 2: small key B (1F, pot)
+76	dungeon 2: small key C (1F, chest)
+77	dungeon 2 B1: chest with the map
+78	dungeon 2 1F: barrier open
+79	dungeon 2 1F: small key door B 
+80	dungeon 2 1F: small key door C
+81	dungeon 2 B1: chest with the boss key
+82	dungeon 2 B1: big key door
+83	dungeon 2 B1: boss key door
+84	dungeon 2 1F: chest with the big key
+84	dungeon 2 B1: chest with the compass
+

@@ -873,6 +873,14 @@ bool Enemy::is_dying_animation_finished(void) {
 }
 
 /**
+ * Returns whether the enemy is dying, i.e. his life has reached zero and the dying animation is playing.
+ * @return true if the enemy is dying
+ */
+bool Enemy::is_dying(void) {
+  return get_life() <= 0;
+}
+
+/**
  * Returns true if the current sprite animation is finished or is looping.
  * @return true if the current sprite animation is finished or is looping 
  */

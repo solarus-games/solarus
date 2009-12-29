@@ -51,8 +51,7 @@ void PapillosaurKing::initialize(void) {
   set_life(6);
 
   // sprite
-  create_sprite("enemies/boss_papillosaurking");
-  get_sprite()->get_animation_set()->enable_pixel_collisions();
+  create_sprite("enemies/boss_papillosaurking", true);
   set_size(176, 96);
   set_origin(88, 64);
   set_collision_modes(COLLISION_SPRITE);

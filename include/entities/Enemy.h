@@ -172,6 +172,8 @@ class Enemy: public Detector {
     void immobilize(void);
     void stop_immobilized(void);
     virtual int custom_attack(EnemyAttack attack, Sprite *this_sprite);
+    virtual void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
+    virtual void just_dead(void);
 
     // utility functions
     const std::string& get_animation(void);
@@ -214,8 +216,7 @@ class Enemy: public Detector {
     virtual int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
     void try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite);
     void kill(void);
-    virtual void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
-    virtual void just_dead(void);
+    bool is_dying(void);
 };
 
 #endif

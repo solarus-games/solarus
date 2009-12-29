@@ -170,7 +170,6 @@ void InventoryItem::start(Game *game) {
 	}
         else {
 	  equipment->remove_arrow();
-          ResourceManager::get_sound("bow")->play();
 	  hero->start_bow();
 	}
 	break;
@@ -242,6 +241,7 @@ void InventoryItem::update(void) {
 	if (hero->is_animation_finished()) {
 	  finished = true;
 	  game->get_current_map()->get_entities()->add_entity(new Arrow(hero));
+          ResourceManager::get_sound("bow")->play();
 	}
 	break;
 

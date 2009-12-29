@@ -95,6 +95,22 @@ SpriteAnimationSet * Sprite::get_animation_set(void) {
 }
 
 /**
+ * Enables the pixel-perfect collision detection for the animation set of this sprite.
+ * All sprites that use the same animation set as this one will be affected.
+ */
+void Sprite::enable_pixel_collisions(void) {
+  animation_set->enable_pixel_collisions();
+}
+
+/**
+ * Returns whether the pixel-perfect collisions are enabled for the animation set of this sprite.
+ * @return true if the pixel-perfect collisions are enabled
+ */
+bool Sprite::are_pixel_collisions_enabled(void) {
+  return animation_set->are_pixel_collisions_enabled();
+}
+
+/**
  * Returns the size of a frame for the current animation and the current direction.
  * @return the size of a frame
  */

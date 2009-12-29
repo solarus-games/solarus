@@ -1866,3 +1866,9 @@ line1 = "Puisse le héros mener"
 line2 = "le Royaume à la paix et"
 line3 = "à la prospérité !"
 
+[dungeon_2.eye_hint]
+#       |-----------------------|
+line1 = "Les deux yeux doivent"
+line2 = "être transpercés."
+skip = all
+

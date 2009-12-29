@@ -37,7 +37,7 @@ Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
   ResourceManager::get_sound("explosion")->play();
 
   if (with_damages) {
-    get_sprite()->get_animation_set()->enable_pixel_collisions();
+    get_sprite()->enable_pixel_collisions();
     set_bounding_box_from_sprite();
   }
 }

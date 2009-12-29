@@ -110,6 +110,7 @@
 3	entities/fresco	Intro fresco
 3	entities/bed	Hero's bed
 3	entities/snores	Snoring (zzz)
+3	entities/hint_stone	Hint stone
 4	bomb	bomb
 4	boss_charge	boss_charge
 4	boss_dead	boss_dead

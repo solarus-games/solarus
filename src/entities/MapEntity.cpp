@@ -656,7 +656,7 @@ void MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_
   Sprite *sprite = new Sprite(id);
 
   if (enable_pixel_collisions) {
-    sprite->get_animation_set()->enable_pixel_collisions();
+    sprite->enable_pixel_collisions();
   }
 
   if (!has_sprite()) {
@@ -756,10 +756,20 @@ void MapEntity::movement_just_changed(void) {
 
 /**
  * This function is called when the entity has just moved.
- * It just calls map->check_collision_with_detectors(this).
+ * It checks collisions with the detectors on the map.
  */
 void MapEntity::just_moved(void) {
+
   map->check_collision_with_detectors(this);
+
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+
+    Sprite *sprite = it->second;
+    if (sprite->are_pixel_collisions_enabled()) {
+      map->check_collision_with_detectors(this, sprite);
+    }
+  }
 }
 
 /**
@@ -1190,7 +1200,7 @@ void MapEntity::update(void) {
     Sprite *sprite = it->second;
 
     sprite->update();
-    if (sprite->has_frame_changed() && sprite->get_animation_set()->are_pixel_collisions_enabled()) {
+    if (sprite->has_frame_changed() && sprite->are_pixel_collisions_enabled()) {
       map->check_collision_with_detectors(this, sprite);
     }
   }

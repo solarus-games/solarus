@@ -25,39 +25,40 @@
  */
 class CrystalSwitchBlock: public Detector {
 
- public:
+  public:
 
-  /**
-   * Subtypes of raised blocks.
-   */
-  enum Subtype {
-    ORANGE = 0, /**< an orange block */
-    BLUE   = 1, /**< a blue block */
-  };
+    /**
+     * Subtypes of raised blocks.
+     */
+    enum Subtype {
+      ORANGE = 0, /**< an orange block */
+      BLUE   = 1, /**< a blue block */
+    };
 
- private:
+  private:
 
-  Subtype subtype;                   /**< indicates whether this is an orange or a blue block */
-  bool orange_raised;                /**< true if the orange blocks are raised,
-	                              * false if the blue blocks are raised */
+    Subtype subtype;                   /**< indicates whether this is an orange or a blue block */
+    bool orange_raised;                /**< true if the orange blocks are raised,
+					* false if the blue blocks are raised */
 
-  bool try_jump(Hero *hero, const Rectangle &collision_box,
-		int jump_direction, int jump_length);
- public:
+    bool try_jump(Hero *hero, const Rectangle &collision_box,
+	int jump_direction, int jump_length);
 
-  CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype);
-  ~CrystalSwitchBlock(void);
-  static CreationFunction parse;
+  public:
 
-  EntityType get_type(void);
+    CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype);
+    ~CrystalSwitchBlock(void);
+    static CreationFunction parse;
 
-  bool is_obstacle_for(MapEntity *other);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    EntityType get_type(void);
 
-  void update(void);
-  void display_on_map(void);
+    bool is_obstacle_for(MapEntity *other);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
-  bool is_raised(void);
+    void update(void);
+    void display_on_map(void);
+
+    bool is_raised(void);
 };
 
 #endif

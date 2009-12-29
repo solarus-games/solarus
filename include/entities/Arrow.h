@@ -60,14 +60,14 @@ class Arrow: public MapEntity {
     void set_suspended(bool suspended);
     void stop(void);
     bool is_stopped(void);
-    bool is_shot(void);
+    bool is_flying(void);
     void attach_to(MapEntity *entity_reached);
 
     // collisions
-    void notify_collision_with_enemy(Enemy *enemy);
+    void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
     void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
+    bool has_reached_map_border(void);
 };
-
 
 #endif
 

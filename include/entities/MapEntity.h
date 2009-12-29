@@ -110,7 +110,8 @@ class MapEntity {
 
     int direction;           /**< direction of the entity, not used for all kinds of entities */
 
-    std::map<std::string, Sprite*> sprites; /**< sprite(s) representing the entity, indexed by their animation set id */ 
+    std::map<std::string, Sprite*> sprites; /**< sprite(s) representing the entity, indexed by their animation set id;
+                                             * note that some entities manage their sprites themselves rather than using this field */
     Sprite *first_sprite;    /**< the first sprite that was created into the sprites map,
 			      * stored here because the map does not keep the order from which its elements are added */
     bool visible;            /**< indicates that this entity's sprites are currently displayed */

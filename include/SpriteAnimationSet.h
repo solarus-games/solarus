@@ -29,23 +29,23 @@
  */
 class SpriteAnimationSet {
 
- private:
+  private:
 
-  std::map<std::string, SpriteAnimation*> animations; /**< the animations */
-  std::string default_animation_name;                 /**< name of the default animation */
-  
- public:
+    std::map<std::string, SpriteAnimation*> animations; /**< the animations */
+    std::string default_animation_name;                 /**< name of the default animation */
 
-  SpriteAnimationSet(const SpriteAnimationSetId &id);
-  virtual ~SpriteAnimationSet(void);
+  public:
 
-  void set_map(Map *map);
+    SpriteAnimationSet(const SpriteAnimationSetId &id);
+    virtual ~SpriteAnimationSet(void);
 
-  SpriteAnimation *get_animation(const std::string &animation_name);
-  const std::string& get_default_animation(void);
+    void set_map(Map *map);
 
-  void enable_pixel_collisions(void);
-  bool are_pixel_collisions_enabled(void);
+    SpriteAnimation *get_animation(const std::string &animation_name);
+    const std::string& get_default_animation(void);
+
+    void enable_pixel_collisions(void);
+    bool are_pixel_collisions_enabled(void);
 };
 
 #endif

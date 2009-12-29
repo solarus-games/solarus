@@ -21,7 +21,6 @@
 #include "MapScript.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
-#include "SpriteAnimationSet.h"
 
 /**
  * Constructor.
@@ -98,7 +97,7 @@ void Detector::enable_pixel_collisions(void) {
 
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
-    it->second->get_animation_set()->enable_pixel_collisions();
+    it->second->enable_pixel_collisions();
   }
 }
 
@@ -151,13 +150,13 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
   if (has_collision_mode(COLLISION_SPRITE)
       && entity != this
       && (layer_ignored || get_layer() == entity->get_layer())
-      && sprite->get_animation_set()->are_pixel_collisions_enabled()) {
+      && sprite->are_pixel_collisions_enabled()) {
 
     // we check the collision between the specified entity's sprite and all sprites of the current entity
     std::map<std::string, Sprite*>::iterator it;
     for (it = sprites.begin(); it != sprites.end(); it++) {
       Sprite *this_sprite = it->second;
-      if (this_sprite->get_animation_set()->are_pixel_collisions_enabled()
+      if (this_sprite->are_pixel_collisions_enabled()
 	  && this_sprite->test_collision(sprite, get_x(), get_y(), entity->get_x(), entity->get_y())) {
 	notify_collision(entity, sprite, this_sprite);
       }

@@ -85,6 +85,8 @@ class Sprite {
     const SpriteAnimationSetId& get_animation_set_id(void);
     bool contains(const std::string s);
     SpriteAnimationSet *get_animation_set(void);
+    void enable_pixel_collisions(void);
+    bool are_pixel_collisions_enabled(void);
 
     // size and origin point
     const Rectangle & get_size(void);

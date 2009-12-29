@@ -38,13 +38,19 @@
  */
 CrystalSwitchBlock::CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, width, height),
-  subtype(subtype), orange_raised(false) {
+  subtype(subtype) {
 
   create_sprite("entities/crystal_switch_block");
 
-  if (subtype == BLUE) {
-    get_sprite()->set_current_animation("blue_raised");
+  this->orange_raised = zsdx->game->get_crystal_switch_state();
+
+  if (subtype == ORANGE) {
+    get_sprite()->set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
   }
+  else {
+    get_sprite()->set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+  }
+  get_sprite()->set_current_frame(3); // to avoid the animations at the map beginning
 }
 
 /**
@@ -210,6 +216,7 @@ void CrystalSwitchBlock::update(void) {
       get_sprite()->set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
     }
   }
+  get_sprite()->update();
 
   MapEntity::update();
 }

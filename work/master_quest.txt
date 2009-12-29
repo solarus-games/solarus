@@ -3,4 +3,5 @@ idées d'énigmes particulièrement compliquées :
 - manipuler une statue de manière compliquée, avec des morceaux de 8 pixels
 - lancer le boomerang à côté d'un interrupteur de cristal pour qu'il aille plus loin, puis l'active au retour => ainsi on a plus de temps pour se rendre sur les blocs jaunes et bleus
 - grottes jumelles : on pourrait activer l'interrupteur de cristal en lançant un vase dessus !
+- tomber dans un trou à un endroit précis pour arriver sur une plate-forme en hauteur et pas tout en bas, ou bien sur des planchers-interrupteurs
 

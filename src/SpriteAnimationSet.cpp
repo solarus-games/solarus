@@ -180,3 +180,4 @@ void SpriteAnimationSet::enable_pixel_collisions(void) {
 bool SpriteAnimationSet::are_pixel_collisions_enabled(void) {
   return animations.begin()->second->are_pixel_collisions_enabled();
 }
+

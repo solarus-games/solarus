@@ -31,8 +31,11 @@ class CrystalSwitch: public Detector {
     bool state;                      /**< false if the orange blocks are lowered,
 				      * true if the blue blocks are lowered */
     uint32_t next_possible_hit_date; /**< date when the crystal switch can be hit again */
+    Sprite *star_sprite;             /**< sprite of the star twinkling on the crystal switch */
+    Rectangle star_xy;               /**< position of the star */
 
     void activate();
+    void twinkle();
 
   public:
 
@@ -48,6 +51,7 @@ class CrystalSwitch: public Detector {
     void action_key_pressed(void);
 
     void update(void);
+    void display_on_map(void);
     void set_suspended(bool suspended);
 };
 

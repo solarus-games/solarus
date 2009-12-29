@@ -1,6 +1,12 @@
-normal entities/arrow.png 4 0 -1
+flying entities/arrow.png 4 0 -1
 0	4	16	8	8	4	1	1
 4	16	8	16	4	8	1	1
 0	36	16	8	8	4	1	1
 4	48	8	16	4	8	1	1
+
+reached_obstacle entities/arrow.png 4 50 7
+16	0	16	16	0	8	8	8
+16	16	16	16	8	16	8	8
+16	32	16	16	16	8	8	8
+16	48	16	16	8	0	8	8
 

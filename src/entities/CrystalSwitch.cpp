@@ -21,6 +21,7 @@
 #include "entities/Hero.h"
 #include "ZSDX.h"
 #include "Game.h"
+#include "Map.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "ResourceManager.h"
@@ -28,6 +29,7 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Random.h"
 
 /**
  * Creates a new crystal switch.
@@ -41,8 +43,9 @@ CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
   state(false), next_possible_hit_date(System::now()) {
 
   set_origin(8, 13);
-  create_sprite("entities/crystal_switch");
-  get_sprite()->get_animation_set()->enable_pixel_collisions();
+  create_sprite("entities/crystal_switch", true);
+  star_sprite = new Sprite("entities/star");
+  twinkle();
 }
 
 /**
@@ -108,7 +111,7 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
   else if (entity_overlapping->get_type() == ARROW && collision_mode == COLLISION_RECTANGLE) {
 
     Arrow *arrow = (Arrow*) entity_overlapping;
-    if (arrow->is_shot()) {
+    if (arrow->is_flying()) {
       activate();
       arrow->attach_to(this);
     }
@@ -152,7 +155,7 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
 
 /**
  * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * while the hero is facing this detector, and the action icon lets him do this.
  */
 void CrystalSwitch::action_key_pressed(void) {
 
@@ -181,6 +184,15 @@ void CrystalSwitch::activate(void) {
 }
 
 /**
+ * Makes a star twinkle on the crystal switch at a random position.
+ */
+void CrystalSwitch::twinkle(void) {
+
+  star_xy.set_xy(Random::get_number(3, 13), Random::get_number(3, 13));
+  star_sprite->restart_animation();
+}
+
+/**
  * Updates the entity.
  */
 void CrystalSwitch::update(void) {
@@ -191,7 +203,25 @@ void CrystalSwitch::update(void) {
     this->state = state;
     get_sprite()->set_current_animation(state ? "blue_lowered" : "orange_lowered");
   }
+
+  star_sprite->update();
+  if (star_sprite->is_animation_finished()) {
+    twinkle();
+  }
+
   MapEntity::update();
+}
+
+/**
+ * Displays the entity on the map.
+ * This is a redefinition of MapEntity::display_on_map to also display the twinkling star
+ * which has a special position.
+ */
+void CrystalSwitch::display_on_map(void) {
+
+  MapEntity::display_on_map();
+
+  map->display_sprite(star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
 }
 
 /**

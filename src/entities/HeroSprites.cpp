@@ -157,7 +157,7 @@ void HeroSprites::rebuild_equipment(void) {
   int tunic_number = equipment->get_tunic();
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
-  tunic_sprite->get_animation_set()->enable_pixel_collisions();
+  tunic_sprite->enable_pixel_collisions();
 
   // the hero's shadow
   if (shadow_sprite == NULL) {
@@ -179,7 +179,7 @@ void HeroSprites::rebuild_equipment(void) {
     // the hero has a sword: get the sprite and the sound
     sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
     sword_sprite->stop_animation();
-    sword_sprite->get_animation_set()->enable_pixel_collisions();
+    sword_sprite->enable_pixel_collisions();
 
     sword_sound = ResourceManager::get_sound(sword_sound_ids[sword_number - 1]);
 
@@ -343,11 +343,11 @@ int HeroSprites::get_animation_direction(int keys_direction, int real_movement_d
     // the player is not pressing a valid combination of directional keys: don't change the sprite's direction
     result = -1;
   }
-  else if (real_movement_direction % 2 == 0) {
-    // the player is moving in one of the four main directions
-    // (i.e. he is not making a diagonal move, even if the directional keys may want to):
+  else if (keys_direction % 2 == 0) {
+    // the player is pressing only one of the four main directions
+    // (i.e. he is not trying to make a diagonal move, even if the real movement is diagonal)
     // we just give the sprite this direction
-    result = real_movement_direction / 2;
+    result = keys_direction / 2;
   }
   // the movement is diagonal: we have to choose between two directions
   else if (animation_directions[real_movement_direction][1] == get_animation_direction()) {

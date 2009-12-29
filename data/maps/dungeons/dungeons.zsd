@@ -67,3 +67,45 @@ height = 768
 width = 1152
 height = 768
 
+[dungeon_2.map_30.chest_0]
+floor = 0
+x = 344
+y = 600
+save = 76
+big = 0
+
+[dungeon_2.map_30.chest_1]
+floor = 0
+x = 656
+y = 216
+save = 84
+big = 0
+
+[dungeon_2.map_31.chest_0]
+floor = 0
+x = 200
+y = 656
+save = 72
+big = 0
+
+[dungeon_2.map_31.chest_1]
+floor = 0
+x = 552
+y = 392
+save = 85
+big = 0
+
+[dungeon_2.map_31.chest_2]
+floor = 0
+x = 232
+y = 320
+save = 81
+big = 0
+
+[dungeon_2.map_31.chest_3]
+floor = 0
+x = 104
+y = 320
+save = 77
+big = 0
+

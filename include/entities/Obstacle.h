@@ -34,6 +34,7 @@ enum Obstacle {
   OBSTACLE_TOP_LEFT,           /**< the upper-left half of the entity is an obstacle */
   OBSTACLE_BOTTOM_LEFT,        /**< the lower-left half of the entity is an obstacle */
   OBSTACLE_BOTTOM_RIGHT,       /**< the lower-right half of the entity is an obstacle */
+  OBSTACLE_EMPTY,              /**< there is no ground */
 };
 
 #endif

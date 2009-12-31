@@ -428,7 +428,7 @@ void Treasure::add_item_to_equipment(void) {
     break;
 
   case LARGE_RUPEE_BAG:
-    equipment->set_max_rupees(199);
+    equipment->set_max_rupees(300);
     break;
 
   case HUGE_RUPEE_BAG:

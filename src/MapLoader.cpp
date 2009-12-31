@@ -100,7 +100,7 @@ void MapLoader::load_map(Map *map) {
 
     entities->obstacle_tiles[layer] = new Obstacle[entities->obstacle_tiles_size];
     for (int i = 0; i < entities->obstacle_tiles_size; i++) {
-      entities->obstacle_tiles[layer][i] = OBSTACLE_NONE;
+      entities->obstacle_tiles[layer][i] = OBSTACLE_EMPTY;
     }
   }
   entities->boomerang = NULL;

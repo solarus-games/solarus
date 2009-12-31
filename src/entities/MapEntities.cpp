@@ -374,6 +374,10 @@ void MapEntities::add_tile(Tile *tile) {
       }
     }
     break;
+
+  case OBSTACLE_EMPTY:
+    DIE("Illegal obstacle property for this tile");
+    break;
   }
 }
 

@@ -261,8 +261,7 @@ void Boomerang::update(void) {
     else if (get_movement()->is_stopped()) {
       // collision with an obstacle
       
-      CollisionMovement *movement = (CollisionMovement*) get_movement();
-      if (!map->test_collision_with_border(movement->get_last_collision_box_on_obstacle())) {
+      if (!map->test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle())) {
         // play a sound unless we are on the map border
 	ResourceManager::get_sound("sword_tapping")->play();
       }

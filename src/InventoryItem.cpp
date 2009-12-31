@@ -174,6 +174,10 @@ void InventoryItem::start(Game *game) {
 	}
 	break;
 
+      case INVENTORY_PEGASUS_SHOES:
+        hero->start_pegasus_shoes();
+	break;
+
       case INVENTORY_APPLES:
       case INVENTORY_PAINS_AU_CHOCOLAT:
       case INVENTORY_CROISSANTS:
@@ -244,7 +248,13 @@ void InventoryItem::update(void) {
           ResourceManager::get_sound("bow")->play();
 	}
 	break;
-
+ 
+      case INVENTORY_PEGASUS_SHOES:
+	hero->update_pegasus_shoes();
+        if (hero->are_pegasus_shoes_finished()) {
+	  finished = true;
+	}
+	break;
 
       case INVENTORY_APPLES:
       case INVENTORY_PAINS_AU_CHOCOLAT:

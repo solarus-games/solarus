@@ -425,3 +425,14 @@ void Movement::update(void) {
     update_y();
   }
 }
+
+/**
+ * Returns the collision box of the last collision check that detected an obstacle.
+ * This function is useful only for subclasses of Movement that handle collisions.
+ * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
+ */
+const Rectangle & Movement::get_last_collision_box_on_obstacle(void) {
+  static const Rectangle collision_box(-1, -1);
+  return collision_box;
+}
+

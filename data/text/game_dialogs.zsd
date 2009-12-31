@@ -1872,3 +1872,10 @@ line1 = "Les deux yeux doivent"
 line2 = "être transpercés."
 skip = all
 
+[dungeon_2.eye_2_hint]
+#       |-----------------------|
+line1 = "Les yeux doivent être"
+line2 = "transpercés avec"
+line3 = "persévérance."
+skip = all
+

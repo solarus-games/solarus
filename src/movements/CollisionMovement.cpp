@@ -34,7 +34,7 @@ CollisionMovement::CollisionMovement(void):
  * @param stop_on_obstacles true to make the movement sensible to the obstacles.
  */
 CollisionMovement::CollisionMovement(bool stop_on_obstacles):
-  stop_on_obstacles(stop_on_obstacles) {
+  last_collision_box_on_obstacle(-1, -1), stop_on_obstacles(stop_on_obstacles)  {
 
 }
 
@@ -124,7 +124,7 @@ void CollisionMovement::update_y(void) {
 /**
  * Returns the collision box of the last call
  * to test_collision_with_map() returning true.
- * @return the collision box of the last collision detected
+ * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
 const Rectangle & CollisionMovement::get_last_collision_box_on_obstacle(void) {
   return last_collision_box_on_obstacle;

@@ -33,7 +33,7 @@ class MapEntities {
 
   friend class MapLoader; /**< the map loader sets the private fields of MapEntities */
 
- private:
+  private:
 
   // map
   Map *map;                                               /**< the map */
@@ -46,12 +46,12 @@ class MapEntities {
   int obstacle_tiles_size;                                /**< number of elements in the array obstacle_tiles
 							   * (obstacle_tiles_size = map_width8 * map_height8) */
   Obstacle *obstacle_tiles[LAYER_NB];                     /**< array of Obstacle representing which
-					                   * tiles are obstacles and how */
+							   * tiles are obstacles and how */
   // dynamic entities
 
   std::list<MapEntity*> all_entities;                     /**< all map entities execept the tiles and the hero;
-				                           * this vector is used to delete the entities 
-				                           * when the map is unloaded */
+							   * this vector is used to delete the entities 
+							   * when the map is unloaded */
   std::list<MapEntity*> entities_to_remove;               /**< list of entities that need to be removed now */
 
   std::list<MapEntity*>
@@ -72,14 +72,15 @@ class MapEntities {
   std::list<CrystalSwitchBlock*>
     crystal_switch_blocks[LAYER_NB];                      /**< all crystal switch blocks of the map */
   Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */
-  bool hero_on_raised_blocks;                             /**< indicates that the hero is currently on raised crystal switch blocks */
+  bool hero_on_raised_blocks;                             /**< indicates that the hero is currently on
+							   * raised crystal switch blocks */
   MusicId music_before_miniboss;                          /**< the music that was played before starting a miniboss fight */
 
   void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
   void remove_marked_entities(void);
   void update_crystal_switch_blocks(void);
 
- public:
+  public:
 
   // creation and destruction
   MapEntities(Map *map);
@@ -105,9 +106,9 @@ class MapEntities {
   void bring_to_front(MapEntity *entity);
   void destroy_all_entities(void);
   static bool compare_y(MapEntity *first, MapEntity *second);
+  void set_entity_layer(MapEntity *entity, Layer layer);
 
   // hero
-  void set_entity_layer(MapEntity *entity, Layer layer);
   bool is_hero_on_raised_blocks(void);
   bool overlaps_raised_blocks(Layer layer, const Rectangle &rectangle);
   bool is_boomerang_present(void);

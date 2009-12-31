@@ -85,7 +85,8 @@ void CollisionMovement::update_x(void) {
 
   uint32_t now = System::now();
   int x_move = get_x_move();
-  if (x_move != 0 && now >= get_next_move_date_x()) { // while it's time to try a move
+  // if was changed to while because of problems when the game is slow²
+  while (x_move != 0 && now >= get_next_move_date_x()) { // while it's time to try a move
 
     // make the move only if there is no collision
     if (!test_collision_with_map(x_move, get_y_move())) {
@@ -108,7 +109,7 @@ void CollisionMovement::update_y(void) {
 
   uint32_t now = System::now();
   int y_move = get_y_move();
-  if (y_move != 0 && now >= get_next_move_date_y()) { // while it's time to try a move
+  while (y_move != 0 && now >= get_next_move_date_y()) { // while it's time to try a move
 
     // make the move only if there is no collision
     if (!test_collision_with_map(get_x_move(), y_move)) {

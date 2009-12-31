@@ -521,6 +521,9 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
     on_obstacle = entity_to_check->is_ladder_obstacle();
     break;
 
+  case OBSTACLE_EMPTY:
+    on_obstacle = false;
+    break;
   }
 
   return on_obstacle;

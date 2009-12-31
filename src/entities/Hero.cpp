@@ -237,7 +237,7 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @return true if the jump sensor is currently an obstacle for this entity
  */
 bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
-  return false;
+  return get_state() != USING_INVENTORY_ITEM; // stop when running with the Pegasus Shoes
 }
 
 /**
@@ -861,12 +861,21 @@ void Hero::update_position(void) {
  */
 void Hero::place_on_destination_point(Map *map) {
 
+  MapEntities *entities = map->get_entities();
+
   std::string destination_point_name = map->get_destination_point_name();
 
   if (destination_point_name == "_same") {
 
     // the hero's coordinates are the same as on the previous map
+    // but we may have to change the layer
+    
+    Layer layer = LAYER_INTERMEDIATE;
+    if (entities->get_obstacle_tile(LAYER_INTERMEDIATE, get_x(), get_y()) == OBSTACLE_EMPTY) {
+      layer = LAYER_LOW;
+    }
     set_map(map);
+    map->get_entities()->set_entity_layer(this, layer);
 
     destroy_carried_items();
     start_free();
@@ -904,8 +913,6 @@ void Hero::place_on_destination_point(Map *map) {
     else {
 
       // normal case: the location is specified by a destination point object
-
-      MapEntities *entities = map->get_entities();
 
       DestinationPoint *destination_point = (DestinationPoint*)
 	entities->get_entity(DESTINATION_POINT, destination_point_name);

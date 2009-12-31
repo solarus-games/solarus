@@ -75,5 +75,8 @@ booleans:
 82	dungeon 2 B1: big key door
 83	dungeon 2 B1: boss key door
 84	dungeon 2 1F: chest with the big key
-84	dungeon 2 B1: chest with the compass
+85	dungeon 2 B1: chest with the compass
+86	dungeon 2 1F: big chest with the pegasus shoes
+87	dungeon 2 1F: chest with 5 rupees
+
 

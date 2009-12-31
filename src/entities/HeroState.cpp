@@ -1571,3 +1571,32 @@ void Hero::start_bow(void) {
   sprites->set_animation_bow();
 }
 
+/**
+ * Starts running with the Pegasus Shoes.
+ * The state should be USING_INVENTORY_ITEM.
+ */
+void Hero::start_pegasus_shoes(void) {
+  set_movement(new StraightMovement(30, get_animation_direction() * 90, 2000));
+}
+
+/**
+ * This function is called repeatedly while the hero is running with the Pegasus Shoes.
+ * The state should be USING_INVENTORY_ITEM.
+ */
+void Hero::update_pegasus_shoes(void) {
+
+  if (get_movement()->is_finished() || map->test_collision_with_obstacles(get_layer(), get_movement()->get_last_collision_box_on_obstacle(), this)) {
+    clear_movement();
+    set_movement(normal_movement);
+  }
+}
+
+/**
+ * Returns whether the Pegasus Shoes run is finished.
+ * The state should be USING_INVENTORY_ITEM.
+ * @return true if the run is finished
+ */
+bool Hero::are_pegasus_shoes_finished(void) {
+  return get_movement() == get_normal_movement();
+}
+

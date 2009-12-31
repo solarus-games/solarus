@@ -22,14 +22,14 @@
 0	20	Lyriann Cave 1F
 0	21	Lyriann Cave B1
 0	22	Mymette grotte
-0	25	Dungeon 1 2F
-0	23	Dungeon 1 1F
-0	24	Dungeon 1 B1
 0	26	Fairy Cave
-0	27	Dungeon 1 final room
 0	29	Twin caves
 0	30	Dungeon 2 1F
 0	31	Dungeon 2 B1
+0	25	Dungeon 1 2F
+0	23	Dungeon 1 1F
+0	24	Dungeon 1 B1
+0	27	Dungeon 1 final room
 1	0	House
 1	1	Light World
 1	2	Ice dungeon

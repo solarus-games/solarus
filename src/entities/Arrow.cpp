@@ -367,7 +367,6 @@ bool Arrow::has_reached_map_border(void) {
     return false;
   }
 
-  CollisionMovement *movement = (CollisionMovement*) get_movement();
-  return map->test_collision_with_border(movement->get_last_collision_box_on_obstacle());
+  return map->test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle());
 }
 

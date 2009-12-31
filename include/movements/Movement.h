@@ -174,6 +174,9 @@ class Movement {
 
     void set_direction(int direction);
     void set_direction(double angle);
+
+    // collisions
+    virtual const Rectangle & get_last_collision_box_on_obstacle(void);
 };
 
 #endif

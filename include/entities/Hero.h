@@ -288,8 +288,13 @@ class Hero: public MapEntity {
     void get_back_from_death(void);
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
     void start_victory(void);
+
+    // using items (functions called by the InventoryItem class)
     void start_boomerang(void);
     void start_bow(void);
+    void start_pegasus_shoes(void);
+    void update_pegasus_shoes(void);
+    bool are_pegasus_shoes_finished(void);
 
     // keys
     void key_pressed(Controls::GameKey key);

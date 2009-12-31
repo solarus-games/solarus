@@ -214,8 +214,7 @@ class MapEntity {
     virtual void set_facing_entity(Detector *detector);
     static const Rectangle & direction_to_xy_move(int direction8);
 
-    // collisions
-    virtual bool is_obstacle_for(MapEntity *other);
+    // geometry
     bool overlaps(const Rectangle &rectangle);
     bool overlaps(int x, int y);
     bool overlaps(MapEntity *other);
@@ -227,6 +226,8 @@ class MapEntity {
     int get_distance(MapEntity *other);
     int get_distance(int x, int y);
 
+    // collisions
+    virtual bool is_obstacle_for(MapEntity *other);
     virtual void notify_collision_with_enemy(Enemy *enemy);
     virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);

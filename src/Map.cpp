@@ -472,6 +472,7 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
   switch (obstacle_type) {
 
   case OBSTACLE_NONE:
+  case OBSTACLE_EMPTY:
     // the square is not an obstacle
     on_obstacle = false;
     break;
@@ -519,10 +520,6 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
 
   case OBSTACLE_LADDER:
     on_obstacle = entity_to_check->is_ladder_obstacle();
-    break;
-
-  case OBSTACLE_EMPTY:
-    on_obstacle = false;
     break;
   }
 

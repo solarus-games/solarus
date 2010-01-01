@@ -141,8 +141,12 @@ void Door::set_open(bool door_open) {
   
   this->door_open = door_open;
 
-  if (!door_open) {
+  if (door_open) {
+    set_collision_modes(COLLISION_NONE); // to avoid being the hero's facing entity
+  }
+  else {
     get_sprite()->set_current_animation(animations[subtype]);
+    set_collision_modes(COLLISION_FACING_POINT);
   }
 
   if (map != NULL) {

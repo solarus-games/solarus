@@ -237,7 +237,7 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @return true if the jump sensor is currently an obstacle for this entity
  */
 bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
-  return get_state() != USING_INVENTORY_ITEM; // stop when running with the Pegasus Shoes
+  return get_state() == USING_INVENTORY_ITEM; // stop when running with the Pegasus Shoes
 }
 
 /**

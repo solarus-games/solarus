@@ -21,15 +21,13 @@ if (NOT WIN32)
 endif (NOT WIN32)
 
 target_link_libraries (zsdx
-		      SDL
-		      SDLmain
-		      SDL_image
-		      SDL_ttf
-		      openal
-		      sndfile
-		      lua5.1
-		      physfs
-		      stdc++
+	${SDL_LIBRARY}
+	${SDLIMAGE_LIBRARY}
+	${SDLTTF_LIBRARY}
+	${OPENAL_LIBRARY}
+	${LUA_LIBRARY}
+	${PHYSFS_LIBRARY}
+	${SNDFILE_LIBRARY}
 )
 
 INSTALL(TARGETS	zsdx

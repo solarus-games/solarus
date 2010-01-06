@@ -42,8 +42,8 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Rectangle.h"
+#include "lua.hpp"
 #include <iomanip>
-#include <lua5.1/lua.hpp>
 
 /**
  * Creates the script of a map.

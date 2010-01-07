@@ -1,4 +1,4 @@
-include_directories (${ZSDX_SOURCE_DIR}/include ${ZSDX_SOURCE_DIR}/include/SDL_Config ${ZSDX_SOURCE_DIR}/include/snes_spc)
+include_directories (${ZSDX_SOURCE_DIR}/include ${ZSDX_SOURCE_DIR}/include/SDL_Config ${ZSDX_SOURCE_DIR}/include/snes_spc ${LUA_INCLUDE_DIR})
 
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)

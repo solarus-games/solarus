@@ -42,7 +42,7 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Rectangle.h"
-#include "lua.hpp"
+#include <lua.hpp>
 #include <iomanip>
 
 /**

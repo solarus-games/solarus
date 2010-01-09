@@ -174,8 +174,6 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 
       case SDLK_LCTRL:
       case SDLK_RCTRL:
-      case SDLK_LSHIFT:
-      case SDLK_RSHIFT:
 	game->get_hero()->get_normal_movement()->set_stop_on_obstacles(false);
 	break;
 

@@ -22,16 +22,14 @@ function event_switch_enabled(switch_name)
     move_camera(176, 392, 15)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
-    move_camera(272, 288, 15)
-    current_room = "map_room"
+    play_sound("chest_appears")
+    chest_set_hidden("map_chest", false)
   end
 end
 
 function event_camera_reached_target()
   if current_room == "sw" then
     start_timer(1000, "sw_camera_timer", false)
-  elseif current_room == "map_room" then
-    start_timer(1000, "map_room_timer", false)
   elseif current_room == "compass_room" then
     start_timer(1000, "compass_room_timer", false)
   end
@@ -39,12 +37,6 @@ end
 
 function sw_camera_timer()
   open_sw_door()
-  start_timer(1000, "restore_camera", false)
-end
-
-function map_room_timer()
-  play_sound("chest_appears")
-  chest_set_hidden("map_chest", false)
   start_timer(1000, "restore_camera", false)
 end
 

@@ -1321,7 +1321,7 @@ next = sahasrahla_house.beginning.3
 
 [sahasrahla_house.beginning.3]
 #       |-----------------------|
-line1 = "Quatre des neuf enfants"
+line1 = "Quatre des huit enfants"
 line2 = "du Solarus ont été"
 line3 = "enlevés..."
 next = sahasrahla_house.beginning.4

@@ -1750,23 +1750,32 @@ line2 = "En manger un"
 line3 = "Ne rien faire"
 question = true
 
-[_too_heavy]
-# Lorsqu'on tente de soulever une pierre ou un buisson
+[_cannot_lift_should_cut]
+# Lorsqu'on tente de soulever un buisson
+# au lieu de le couper avec l'épée
+#       |-----------------------|
+line1 = "Il te faudrait quelque"
+line2 = "de tranchant pour"
+line3 = "couper ces buissons..."
+skip = all
+
+[_cannot_lift_too_heavy]
+# Lorsqu'on tente de soulever une pierre
 # sans avoir de bracelet de force
 # (Clin d'oeil à Link's Awekening)
 #       |-----------------------|
 line1 = "Oh là là, c'est"
 line2 = "bien trop lourd !"
 skip = all
-next = _too_heavy.2
+next = _cannot_lift_too_heavy.2
 
-[_too_heavy.2]
+[_cannot_lift_too_heavy.2]
 #       |-----------------------|
 line1 = "Tu n'y arriveras jamais"
 line2 = "rien que par la force"
 line3 = "de tes bras !"
 
-[_still_too_heavy]
+[_cannot_lift_still_too_heavy]
 # Lorsqu'on tente de soulever une pierre vraiment lourde
 # en ayant seulement la poigne de fer
 #       |-----------------------|

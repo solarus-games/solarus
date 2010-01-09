@@ -296,11 +296,14 @@ void DestructibleItem::action_key_pressed(void) {
       }
     }
     else {
-      if (!equipment->can_lift(1)) {
-	zsdx->game->show_message("_too_heavy");
+      if (features[subtype].can_be_cut) {
+        zsdx->game->show_message("_cannot_lift_should_cut");
+      }
+      else if (!equipment->can_lift(1)) {
+	zsdx->game->show_message("_cannot_lift_too_heavy");
       }
       else {
-	zsdx->game->show_message("_still_too_heavy");
+	zsdx->game->show_message("_cannot_lift_still_too_heavy");
       }
     }
   }

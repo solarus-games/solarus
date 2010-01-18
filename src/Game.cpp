@@ -543,7 +543,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   // load the next map
   next_map = ResourceManager::get_map(map_id);
   if (!next_map->is_loaded()) {
-    next_map->load();
+    next_map->load(this);
   }
 
   // initialize the destination point, from the specified name or from the savegame

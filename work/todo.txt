@@ -20,6 +20,11 @@ Démo :
 - Version finale 1.0 : r1176
 
 
+Version libre :
+
+- Zyra
+
+
 Feature requests :
 
 - Mettre de la couleur dans les messages
@@ -38,6 +43,12 @@ Feature requests :
 - Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
+- Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
+- se passer de l'attribut global game (il pourrait y avoir plusieurs objets Game)
+- les maps ne devraient pas être des ressources globales étant donné qu'elles changent dans le temps
+  (la même map devrait pouvoir être chargée deux fois en parallèle dans deux Game différents)
+- revoir le système de ressources
+- quant un script appelle une fonction c++, récupérer l'objet MapScript de manière non globale
 
 
 Bugs :
@@ -69,13 +80,15 @@ Bugs :
 - CrystalSwitch : permettre d'activer deux fois par deux entités différentes (flèches, explosions, héros...) en mémorisant les entités activatrices
   (le délai est trop long et trop spécifique aux explosions)
 - le lien entre le garde dans la grotte et l'accès du premier donjon : pas évident, je suis allé sur place pour voir s'il se passait quelque chose, sans qu'il n'y ait visuellement aucun changement. Il faut y penser, ça n'est pas intuitif.
-- buissons : mettre un dialogue autre que "c'est trop lourd"
+- boss donjon 1 trop facile, alonger le délai des choux-péteurs ? En mettre moins ?
+- saut de la falaise en diagonale : rendre plus évident
 
 
 Donjon 2 :
 
 - Pour remplacer la course de vitesse de la bombe, faire une course de vitesse avec un simple interrupteur (ou permettre de poser un chou-péteur sans l'exploser),
   sachant que si on revient plus tard dans le donjon avec les bottes de pégase, on pourra réussir une étape supplémentaire de la course
+
 
 A venir :
 
@@ -126,6 +139,7 @@ Events :
 SDL_Event
 SDL_PollEvent
 SDL_Delay
+
 
 --------------
 Mode release :

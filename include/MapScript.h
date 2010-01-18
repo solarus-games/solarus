@@ -34,7 +34,8 @@ class MapScript {
 
     typedef int (FunctionAvailableToScript) (lua_State *l); /**< functions that can be called by the Lua script */
 
-    Map *map;                   /**< the map associated to this script */
+    Game *game;                 /**< the game associated to this script */
+    Map *map;                   /**< the current map of the game */
     lua_State* context;         /**< the execution context of the Lua script */
     std::list<Timer*> timers;   /**< the timers currently running for this script */
 

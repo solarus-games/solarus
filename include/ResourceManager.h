@@ -22,7 +22,7 @@
 
 /**
  * This class provides access to all external resources:
- * images, sounds, maps...
+ * images, sounds, sprite animations...
  * Except for the images, all resources are stored into
  * memory when you get them for the first time and you
  * don't have to delete them. They are deleted when the application

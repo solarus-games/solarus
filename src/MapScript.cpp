@@ -50,7 +50,7 @@
  * @param map the map
  */
 MapScript::MapScript(Map *map):
-  map(map), context(NULL) {
+  game(map->get_game()), map(map), context(NULL) {
 
 }
 
@@ -183,6 +183,9 @@ void MapScript::initialize(const std::string &destination_point_name) {
   // create an execution context
   context = lua_open();
   luaL_openlibs(context);
+
+  // push a pointer to this MapScript object onto the (currently empty) stack
+  lua_pushlightuserdata(context, this);
 
   // register the C functions accessible to the script
   register_c_functions();

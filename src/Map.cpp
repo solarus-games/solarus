@@ -16,7 +16,6 @@
  */
 #include "Map.h"
 #include "MapLoader.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "MapScript.h"
@@ -39,7 +38,7 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-id(id), started(false), welcome_message_id(""), entities(NULL), suspended(false), script(NULL) {
+  game(NULL), id(id), started(false), welcome_message_id(""), entities(NULL), suspended(false), script(NULL) {
 
 }
 
@@ -214,9 +213,11 @@ void Map::unload(void) {
 /**
  * Loads the map.
  * Reads the description file of the map.
+ * @param game the game that wants to load this map
  */
-void Map::load() {
+void Map::load(Game *game) {
 
+  this->game = game;
   this->visible_surface = new Surface(320, 240);
   entities = new MapEntities(this);
 
@@ -227,7 +228,15 @@ void Map::load() {
 }
 
 /**
- * Return the entities on the map.
+ * Returns the game that loaded this map.
+ * @return the game, or NULL if the map is not loaded
+ */
+Game * Map::get_game(void) {
+  return game;
+}
+
+/**
+ * Returns the entities on the map.
  */
 MapEntities * Map::get_entities(void) {
   return entities;
@@ -339,7 +348,7 @@ void Map::set_suspended(bool suspended) {
 void Map::update(void) {
 
   // detect whether the game has just been suspended or resumed
-  bool game_suspended = zsdx->game->is_suspended();
+  bool game_suspended = game->is_suspended();
   if (suspended != game_suspended) {
     set_suspended(game_suspended);
   }
@@ -385,7 +394,7 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
 void Map::start(void) {
 
   visible_surface->set_opacity(255);
-  zsdx->game->play_music(music_id);
+  game->play_music(music_id);
   started = true;
   script->initialize(destination_point_name);
 }
@@ -413,9 +422,9 @@ bool Map::is_started(void) {
  */
 void Map::opening_transition_finished(void) {
 
-  zsdx->game->get_hero()->opening_transition_finished();
+  game->get_hero()->opening_transition_finished();
   if (welcome_message_id != "") {
-    zsdx->game->show_message(welcome_message_id);
+    game->show_message(welcome_message_id);
     welcome_message_id = "";
   }
   else {

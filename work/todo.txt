@@ -44,11 +44,11 @@ Feature requests :
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
+- Dialog::set_style static
+
 - se passer de l'attribut global game (il pourrait y avoir plusieurs objets Game)
-- les maps ne devraient pas être des ressources globales étant donné qu'elles changent dans le temps
-  (la même map devrait pouvoir être chargée deux fois en parallèle dans deux Game différents)
-- revoir le système de ressources
-- quant un script appelle une fonction c++, récupérer l'objet MapScript de manière non globale
+- faire une classe script plus générale indépendante des maps ? on pourrait avoir un script global, des scripts d'objets de l'inventaire,
+  des scripts d'ennemis, etc.
 
 
 Bugs :

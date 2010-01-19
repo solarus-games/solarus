@@ -213,11 +213,9 @@ void Map::unload(void) {
 /**
  * Loads the map.
  * Reads the description file of the map.
- * @param game the game that wants to load this map
  */
-void Map::load(Game *game) {
+void Map::load(void) {
 
-  this->game = game;
   this->visible_surface = new Surface(320, 240);
   entities = new MapEntities(this);
 
@@ -229,7 +227,7 @@ void Map::load(Game *game) {
 
 /**
  * Returns the game that loaded this map.
- * @return the game, or NULL if the map is not loaded
+ * @return the game, or NULL if the map is not started
  */
 Game * Map::get_game(void) {
   return game;
@@ -390,13 +388,15 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
 /**
  * Starts the map. The map must be loaded.
  * The background music starts and the map script is initialized.
+ * @param game the game containing this map
  */
-void Map::start(void) {
+void Map::start(Game *game) {
 
-  visible_surface->set_opacity(255);
-  game->play_music(music_id);
-  started = true;
-  script->initialize(destination_point_name);
+  this->game = game;
+  this->started = true;
+  this->visible_surface->set_opacity(255);
+  this->game->play_music(music_id);
+  this->script->start(destination_point_name);
 }
 
 /**
@@ -405,6 +405,7 @@ void Map::start(void) {
  */
 void Map::leave(void) {
   started = false;
+  game = NULL;
 }
 
 /**

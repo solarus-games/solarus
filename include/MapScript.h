@@ -34,20 +34,26 @@ class MapScript {
 
     typedef int (FunctionAvailableToScript) (lua_State *l); /**< functions that can be called by the Lua script */
 
+    // game objects
     Game *game;                 /**< the game associated to this script */
     Map *map;                   /**< the current map of the game */
+    Hero *hero;                 /**< the hero */
+
+    // script data
     lua_State* context;         /**< the execution context of the Lua script */
     std::list<Timer*> timers;   /**< the timers currently running for this script */
 
-    bool call_lua_function(const std::string &function_name);
-    bool call_lua_function(const std::string &function_name, const std::string &arg1);
-    bool call_lua_function(const std::string &function_name, const std::string &arg1, int arg2);
-    bool call_lua_function(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
-    bool call_lua_function(const std::string &function_name, int arg1);
-    bool call_lua_function(const std::string &function_name, int arg1, int arg2);
-    bool call_lua_function(const std::string &function_name, bool arg1);
+    // calling a script function from C++
+    bool call_script_function(const std::string &function_name);
+    bool call_script_function(const std::string &function_name, const std::string &arg1);
+    bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2);
+    bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
+    bool call_script_function(const std::string &function_name, int arg1);
+    bool call_script_function(const std::string &function_name, int arg1, int arg2);
+    bool call_script_function(const std::string &function_name, bool arg1);
 
-    // C++ functions that can be called by the script
+    // calling a C++ function from the script
+    static void called_by_script(lua_State *context, int nb_arguments, MapScript **script);
     static FunctionAvailableToScript l_freeze,
 				     l_unfreeze,
 				     l_play_sound,
@@ -132,10 +138,11 @@ class MapScript {
 				     l_door_is_open,
 				     l_door_set_open;
 
-    static void check_nb_arguments(lua_State *context, int nb_arguments);
-
+    // initialization
     void load(void);
     void register_c_functions(void);
+
+    // timers
     void add_timer(Timer *timer);
     void remove_timer(const std::string &callback_name);
 
@@ -144,7 +151,7 @@ class MapScript {
     // loading and closing a script
     MapScript(Map *map);
     ~MapScript(void);
-    void initialize(const std::string &destination_point_name);
+    void start(const std::string &destination_point_name);
 
     // update functions
     void update(void);

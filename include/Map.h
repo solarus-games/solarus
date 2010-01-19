@@ -42,7 +42,7 @@ class Map {
 
     // map properties
 
-    Game *game;                   /**< the game this map is loaded into */
+    Game *game;                   /**< the game this map was started in */
     MapId id;                     /**< id of the map */
 
     int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
@@ -129,7 +129,7 @@ class Map {
 
     // loading
     bool is_loaded(void);
-    void load(Game *game);
+    void load();
     void unload(void);
     Game * get_game(void);
     void opening_transition_finished(void);
@@ -139,7 +139,7 @@ class Map {
 
     // presence of the hero
     bool is_started(void);
-    void start(void);
+    void start(Game *game);
     void leave(void);
     void set_welcome_message(std::string welcome_message_id);
 

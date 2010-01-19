@@ -32,8 +32,8 @@
 #include "entities/Hero.h"
 #include "entities/Tileset.h"
 #include "entities/Detector.h"
-#include "lowlevel/Music.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
 
@@ -388,7 +388,7 @@ void Game::update_transitions(void) {
 
     hero->place_on_destination_point(current_map);
     transition->start();
-    current_map->start();
+    current_map->start(this);
   }
 }
 
@@ -543,7 +543,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   // load the next map
   next_map = ResourceManager::get_map(map_id);
   if (!next_map->is_loaded()) {
-    next_map->load(this);
+    next_map->load();
   }
 
   // initialize the destination point, from the specified name or from the savegame
@@ -595,6 +595,14 @@ bool Game::get_crystal_switch_state(void) {
  */
 void Game::change_crystal_switch_state(void) {
   crystal_switch_state = !crystal_switch_state;
+}
+
+/**
+ * Plays a sound.
+ * @param sound_id id of the sound to play
+ */
+void Game::play_sound(MusicId sound_id) {
+  ResourceManager::get_sound(sound_id)->play();
 }
 
 /**

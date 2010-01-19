@@ -122,7 +122,8 @@ class Game: public Screen {
     bool get_crystal_switch_state(void);
     void change_crystal_switch_state(void);
 
-    // music
+    // audio
+    void play_sound(SoundId sound_id);
     void play_music(MusicId new_music_id);
     void pause_or_resume_music(void);
     void stop_music(void);

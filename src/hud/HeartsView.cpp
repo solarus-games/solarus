@@ -71,15 +71,11 @@ void HeartsView::create(void) {
   this->img_hearts = ResourceManager::load_image("hud/hearts.png");
   this->empty_heart_sprite = new Sprite("hud/empty_heart");
 
-  if (game != NULL) {
-    
-    nb_max_hearts_displayed = equipment->get_max_hearts();
-    nb_current_hearts_displayed = equipment->get_hearts();
-    
-    rebuild();
-  }
-}
+  this->nb_max_hearts_displayed = equipment->get_max_hearts();
+  this->nb_current_hearts_displayed = equipment->get_hearts();
 
+  rebuild();
+}
 
 
 /**

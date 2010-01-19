@@ -94,7 +94,7 @@ void SelectionMenuChooseMode::update(void) {
     Savegame *savegame_copy = new Savegame(savegame->get_file_name());
     // because the first one will be deleted
 
-    set_next_screen(new Game(savegame_copy));
+    set_next_screen(new Game(zsdx, savegame_copy));
   }
 
   SelectionMenuPhase::update();

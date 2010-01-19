@@ -22,13 +22,12 @@
 
 /**
  * Constructor.
- * @param keys_effect current effect of the main keys
- * (here we are interested in the pause key)
+ * @param game the current game
  * @param x x coordinate of the top-left corner of the icon on the destination surface
  * @param y y coordinate of the top-left corner of the icon on the destination surface
  */
-PauseIcon::PauseIcon(KeysEffect *keys_effect, int x, int y):
-  HudElement(x, y, 72, 24), keys_effect(keys_effect) {
+PauseIcon::PauseIcon(Game *game, int x, int y):
+  HudElement(game, x, y, 72, 24) {
 
   // static icon
   this->pause_key_effect_displayed = keys_effect->get_pause_key_effect();

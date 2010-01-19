@@ -27,19 +27,30 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Creates a selection menu phase.
+ * Creates the first selection menu phase.
+ * @param zsdx the ZSDX object 
+ * @param title_string_key key of the title string to display in this phase
+ */
+SelectionMenuPhase::SelectionMenuPhase(ZSDX *zsdx, const std::string &title_string_key):
+  Screen(zsdx) {
+
+  this->common_part = new SelectionMenuCommon();
+
+  this->title_string = StringResource::get_string(title_string_key);
+  this->destination_surface = new Surface(320, 240);
+  this->transition = NULL;
+}
+
+
+/**
+ * Creates a selection menu phase that comes after another one.
  * @param previous the previous phase (if we were already in the selection menu), or NULL
  * @param title_string_key key of the title string to display in this phase
  */
-SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous, const std::string &title_string_key) {
+SelectionMenuPhase::SelectionMenuPhase(SelectionMenuPhase *previous, const std::string &title_string_key):
+  Screen(previous->zsdx) {
 
-  if (previous != NULL) {
-    this->common_part = previous->common_part;
-  }
-  else {
-    this->common_part = new SelectionMenuCommon();
-  }
-
+  this->common_part = previous->common_part;
   this->title_string = StringResource::get_string(title_string_key);
   this->destination_surface = new Surface(320, 240);
   this->transition = NULL;
@@ -54,7 +65,7 @@ SelectionMenuPhase::~SelectionMenuPhase(void) {
   delete destination_surface;
   delete transition;
 
-  if (zsdx->is_exiting() || zsdx->game != NULL) {
+  if (zsdx->is_exiting()) { // TODO also delete when exiting the selection menu (but SelectionMenuPhase shouldn't inherit Screen)
     delete common_part;
   }
 }

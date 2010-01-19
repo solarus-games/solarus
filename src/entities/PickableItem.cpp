@@ -23,7 +23,6 @@
 #include "movements/FallingOnFloorMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -66,7 +65,7 @@ const PickableItem::Features PickableItem::features[] = {
 
 /**
  * Creates a pickable item with the specified subtype.
- * The subtype must a normal one (not NONE or RANDOM).
+ * The subtype cannot be NONE.
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
@@ -121,17 +120,7 @@ MapEntity * PickableItem::parse(std::istream &is, Layer layer, int x, int y) {
 
 /**
  * Creates a pickable item with the specified subtype.
- * This method acts like a constructor, except that it can return NULL in four cases:
- * - if the specified subtype is NONE
- * or:
- * - if the specified subtype is RANDOM and the random subtype chosen is NONE
- * or:
- * - if the specified subtype corresponds to a saved item (that the player can obtain only once)
- *   and the player already has found the item
- * or:
- * - if the specified subtype corresponds to an item the player has not unlocked yet
- * (e.g. arrows without bow)
- *   and the player already has found the item
+ * This method acts like a constructor, except that it can return NULL if the specified subtype is NONE.
  * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
  * or one of its subclasses (for more complex items).
  * @param layer layer of the pickable item to create on the map (ignored for a fairy)
@@ -149,11 +138,6 @@ MapEntity * PickableItem::parse(std::istream &is, Layer layer, int x, int y) {
 PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Subtype subtype,
 				    int savegame_variable, FallingHeight falling_height, bool will_disappear) {
 
-  if (subtype == RANDOM) {
-    // pick a subtype at random
-    subtype = choose_random_subtype();
-  }
-
   // don't create anything if the subtype is NONE
   if (subtype == NONE) {
     return NULL;
@@ -166,23 +150,6 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
 
   if (must_be_saved(subtype) && savegame_variable == -1) {
     DIE("This subtype of pickable item must be saved: " << subtype);
-  }
-
-  // don't create anything if this is an item already found
-  if (savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
-    return NULL;
-  }
-
-  // don't create anything if this item is not unlocked yet
-  Equipment *equipment = zsdx->game->get_equipment();
-  bool has_bombs = equipment->has_inventory_item(INVENTORY_BOMBS);
-  bool has_bow = equipment->has_inventory_item(INVENTORY_BOW);
-  bool has_magic = equipment->get_max_magic() > 0;
-
-  if ((subtype >= BOMB_1 && subtype <= BOMB_10 && !has_bombs) ||
-      (subtype >= ARROW_1 && subtype <= ARROW_10 && !has_bow) ||
-      (subtype >= SMALL_MAGIC && subtype <= BIG_MAGIC && !has_magic)) {
-    return NULL;
   }
 
   PickableItem *item;
@@ -199,7 +166,7 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
     item = new PickableItemFairy(x, y);
     break;
 
-    // other items: no special class, but directly PickableItem
+    // other items: no special class, directly PickableItem
   default:
     item = new PickableItem(layer, x, y, subtype, savegame_variable);
     break;
@@ -218,7 +185,48 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
 }
 
 /**
- * Chooses a subtype of item randomly.
+ * Once the entity is created, this function is called to check whether
+ * the entity created can be added to the specified map and in the current game state.
+ * @param map the map where this entity is about to be added
+ * @return true if the entity can be added, false otherwise
+ */
+bool PickableItem::can_be_added(Map *map) {
+
+  Savegame *savegame = map->get_game()->get_savegame();
+
+  if (subtype == RANDOM) {
+    // now is the time to pick the random subtype
+    subtype = choose_random_subtype(savegame->get_equipment());
+  }
+
+  return
+    subtype != NONE &&                                                      // the item should exist
+    (savegame_variable == -1 || !savegame->get_boolean(savegame_variable)) && // don't add an item already found
+    !is_subtype_locked(savegame->get_equipment());                             // the item should be available for the player
+
+}
+
+/**
+ * Returns whether this item's subtype is locked,
+ * e.g. whether the player has not unlocked it yet in its equipment
+ * @param equipment the player's equipment
+ * @return true if the subtype is locked
+ */
+bool PickableItem::is_subtype_locked(Equipment *equipment) {
+
+  bool has_bombs = equipment->has_inventory_item(INVENTORY_BOMBS);
+  bool has_bow = equipment->has_inventory_item(INVENTORY_BOW);
+  bool has_magic = equipment->get_max_magic() > 0;
+
+  return
+    (subtype >= BOMB_1 && subtype <= BOMB_10 && !has_bombs) ||
+    (subtype >= ARROW_1 && subtype <= ARROW_10 && !has_bow) ||
+    (subtype >= SMALL_MAGIC && subtype <= BIG_MAGIC && !has_magic);
+}
+
+/**
+ * Chooses a subtype of item randomly among all subtypes
+ * (event the ones that the player cannot get yet).
  * This function is called when the subtype of item is RANDOM.
  *
  * Some items have a low probability (fairies, big bottles of magic...)
@@ -228,15 +236,14 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
  * If the player is running out of hearts, magic, bombs or arrows,
  * the probability of getting what he needs is increased.
  *
+ * @param equipment the player's equipment
  * @return a subtype of item (can be NONE or a normal item)
  */
-PickableItem::Subtype PickableItem::choose_random_subtype(void) {
+PickableItem::Subtype PickableItem::choose_random_subtype(Equipment *equipment) {
 
   PickableItem::Subtype subtype;
 
   int r = Random::get_number(1000);
-
-  Equipment *equipment = zsdx->game->get_equipment();
 
   if (r < 665) {
     // give the player nothing with probability 66.5%
@@ -414,7 +421,7 @@ void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode
 void PickableItem::give_item_to_player(void) {
 
   // some items can exist only in a dungeon
-  if (features[subtype].must_be_in_dungeon && !zsdx->game->get_current_map()->is_in_dungeon()) {
+  if (features[subtype].must_be_in_dungeon && !game->get_current_map()->is_in_dungeon()) {
     DIE("Illegal pickable item subtype " << subtype << " in a dungeon");
   }
 
@@ -425,7 +432,6 @@ void PickableItem::give_item_to_player(void) {
   }
 
   // give the item
-  Game *game = zsdx->game;
   Equipment *equipment = game->get_equipment();
   Treasure *treasure = NULL;
 
@@ -488,22 +494,22 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case BIG_KEY:
-    treasure = new Treasure(Treasure::BIG_KEY, savegame_variable);
+    treasure = new Treasure(game, Treasure::BIG_KEY, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case BOSS_KEY:
-    treasure = new Treasure(Treasure::BOSS_KEY, savegame_variable);
+    treasure = new Treasure(game, Treasure::BOSS_KEY, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case PIECE_OF_HEART:
-    treasure = new Treasure(Treasure::PIECE_OF_HEART, savegame_variable);
+    treasure = new Treasure(game, Treasure::PIECE_OF_HEART, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case HEART_CONTAINER:
-    treasure = new Treasure(Treasure::HEART_CONTAINER, savegame_variable);
+    treasure = new Treasure(game, Treasure::HEART_CONTAINER, savegame_variable);
     game->give_treasure(treasure);
     break;
 
@@ -590,7 +596,7 @@ void PickableItem::update(void) {
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
       can_be_picked = true;
-      map->check_collision_with_detectors(zsdx->game->get_hero());
+      map->check_collision_with_detectors(game->get_hero());
     }
     else {
       // make the item blink and then disappear

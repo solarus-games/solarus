@@ -24,7 +24,6 @@
 #include "entities/Boomerang.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "lowlevel/Music.h"
 using std::list;
@@ -35,7 +34,8 @@ using std::list;
 MapEntities::MapEntities(Map *map):
   map(map), hero_on_raised_blocks(false), music_before_miniboss(Music::none) {
 
-  Hero *hero = zsdx->game->get_hero();
+  this->game = map->get_game();
+  this->hero = game->get_hero();
   Layer layer = hero->get_layer();
   this->obstacle_entities[layer].push_back(hero);
   this->entities_displayed_y_order[layer].push_back(hero);
@@ -82,6 +82,14 @@ void MapEntities::destroy_all_entities(void) {
   destination_points.clear();
   detectors.clear();
   entities_to_remove.clear();
+}
+
+/**
+ * Returns the hero.
+ * @return the hero
+ */
+const Hero * get_hero(void) {
+  return hero;
 }
 
 /**
@@ -386,11 +394,19 @@ void MapEntities::add_tile(Tile *tile) {
  * This function is called when loading the map. If the entity
  * specified is NULL (because some entity creation function
  * sometimes return NULL), nothing is done.
+ * If the entity cannot be added to the map
+ * (because entity->can_be_added() returns false), it is destroyed.
  * @param entity the entity to add (can be NULL)
  */
 void MapEntities::add_entity(MapEntity *entity) {
 
   if (entity == NULL) {
+    return;
+  }
+
+  if (!entity->can_be_added(map)) {
+    // the entity cannot be added (e.g. it is a saved item the player already has picked)
+    delete entity;
     return;
   }
 
@@ -441,6 +457,7 @@ void MapEntities::add_entity(MapEntity *entity) {
     all_entities.push_back(entity);
   }
 
+  // notify the entity
   entity->set_map(map);
 }
 
@@ -520,7 +537,6 @@ void MapEntities::remove_marked_entities(void) {
 void MapEntities::set_suspended(bool suspended) {
 
   // the hero first
-  Hero *hero = zsdx->game->get_hero();
   hero->set_suspended(suspended);
 
   // other entities
@@ -541,8 +557,8 @@ void MapEntities::set_suspended(bool suspended) {
 void MapEntities::update(void) {
 
   // first update the hero
-  Hero *hero = zsdx->game->get_hero();
   hero->update();
+
   update_crystal_switch_blocks();
 
   // update the tiles and the dynamic entities
@@ -650,7 +666,6 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
  */
 void MapEntities::update_crystal_switch_blocks(void) {
 
-  Hero *hero = zsdx->game->get_hero();
   hero_on_raised_blocks = overlaps_raised_blocks(hero->get_layer(), hero->get_bounding_box());
 }
 
@@ -710,7 +725,7 @@ void MapEntities::start_boss_battle(Enemy *boss) {
 
   if (boss != NULL) {
     boss->set_enabled(true);
-    zsdx->game->play_music("boss.spc");
+    game->play_music("boss.spc");
   }
 }
 
@@ -722,9 +737,8 @@ void MapEntities::start_boss_battle(Enemy *boss) {
  */
 void MapEntities::end_boss_battle(void) {
 
-  zsdx->game->play_music("victory.spc");
-  zsdx->game->set_pause_enabled(false);
-  Hero *hero = zsdx->game->get_hero();
+  game->play_music("victory.spc");
+  game->set_pause_enabled(false);
   hero->set_animation_direction(3);
   hero->freeze();
 }
@@ -739,8 +753,8 @@ void MapEntities::start_miniboss_battle(Enemy *miniboss) {
 
   if (miniboss != NULL) {
     miniboss->set_enabled(true);
-    music_before_miniboss = zsdx->game->get_current_music_id();
-    zsdx->game->play_music("boss.spc");
+    music_before_miniboss = game->get_current_music_id();
+    game->play_music("boss.spc");
   }
 }
 
@@ -750,6 +764,6 @@ void MapEntities::start_miniboss_battle(Enemy *miniboss) {
  * This function is called typically when the player has just killed the miniboss.
  */
 void MapEntities::end_miniboss_battle(void) {
-  zsdx->game->play_music(music_before_miniboss);
+  game->play_music(music_before_miniboss);
 }
 

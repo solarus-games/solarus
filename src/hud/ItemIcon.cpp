@@ -18,7 +18,6 @@
 #include "Counter.h"
 #include "ResourceManager.h"
 #include "Equipment.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "InventoryItem.h"
@@ -34,16 +33,15 @@ const std::string ItemIcon::background_file_names[2] = {
 
 /**
  * Creates an item icon.
+ * @param game the current game
  * @param slot the slot of this icon (0 for the X icon, 1 for the Y icon)
- * @param savegame the savegame
  * @param x x position of the icon on the screen
  * @param y y position of the icon on the screen
  */
-ItemIcon::ItemIcon(int slot, Savegame *savegame, int x, int y):
-  HudElement(x, y, 32, 28) {
+ItemIcon::ItemIcon(Game *game, int slot, int x, int y):
+  HudElement(game, x, y, 32, 28) {
 
   this->slot = slot;
-  this->savegame = savegame;
   this->background_img = ResourceManager::load_image(background_file_names[slot]);
   this->items_img = ResourceManager::load_image("hud/inventory_items.png");
 
@@ -74,8 +72,7 @@ void ItemIcon::update(void) {
 
   bool need_rebuild = false;
 
-  Equipment *equipment = savegame->get_equipment();
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
 
   // item assigned
   InventoryItemId current_item = equipment->get_item_assigned(slot);

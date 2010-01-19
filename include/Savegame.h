@@ -31,7 +31,7 @@ class Savegame {
    * The engine uses strings and integers. The booleans are only used the maps.
    */
   typedef struct SavedData {
-    char strings[64][64];   /**< 64 NULL-terminated strings of 64 characters each (4 Ko) */
+    char strings[64][64];     /**< 64 NULL-terminated strings of 64 characters each (4 Ko) */
     uint32_t integers[2048];  /**< 2048 integers (8 Ko) */
     uint32_t booleans[1024];  /**< 32768 boolean values (4 Ko) */
 

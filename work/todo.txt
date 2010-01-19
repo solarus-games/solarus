@@ -44,7 +44,7 @@ Feature requests :
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
-- Dialog::set_style static
+- Dialog::set_style static + last_answer dans Game : DialogBox ne devrait pas être créé / détruit à chaque fois
 
 - se passer de l'attribut global game (il pourrait y avoir plusieurs objets Game)
 - faire une classe script plus générale indépendante des maps ? on pourrait avoir un script global, des scripts d'objets de l'inventaire,
@@ -82,6 +82,10 @@ Bugs :
 - le lien entre le garde dans la grotte et l'accès du premier donjon : pas évident, je suis allé sur place pour voir s'il se passait quelque chose, sans qu'il n'y ait visuellement aucun changement. Il faut y penser, ça n'est pas intuitif.
 - boss donjon 1 trop facile, alonger le délai des choux-péteurs ? En mettre moins ?
 - saut de la falaise en diagonale : rendre plus évident
+- renommer HeartsView en LifeView, RupeeView en MoneyView
+- menu des sauvegardes : faire une classe SelectionMenu qui hérite de Screen, et les différentes étapes qui héritent de SelectionMenuPhase 
+  (destructeur compliqué, TitleScreen ne devrait pas s'occuper des sous-phases du menu de sélection)
+- remplacer les map->get_entities()->remove_entity(this) par remove_from_map()
 
 
 Donjon 2 :

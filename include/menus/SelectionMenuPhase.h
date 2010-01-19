@@ -38,6 +38,7 @@ class SelectionMenuPhase: public Screen {
     SelectionMenuCommon *common_part; /**< the elements common to all phases */
 
     // creation and destruction
+    SelectionMenuPhase(ZSDX *zsdx, const std::string &title_string_key);
     SelectionMenuPhase(SelectionMenuPhase *previous, const std::string &title_string_key);
     virtual ~SelectionMenuPhase(void);
 

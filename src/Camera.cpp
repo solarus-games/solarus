@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Camera.h"
-#include "ZSDX.h"
-#include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "entities/MapEntity.h"
+#include "entities/MapEntities.h"
+#include "entities/Hero.h"
 #include "movements/TargetMovement.h"
 
 /**
@@ -50,9 +50,9 @@ void Camera::update(void) {
 
   // if the camera is not moving, center it on the hero
   if (is_fixed_on_hero()) {
-    const Rectangle &hero_xy = zsdx->game->get_hero_xy();
-    x = hero_xy.get_x();
-    y = hero_xy.get_y();
+    Hero *hero = map->get_entities()->get_hero();
+    x = hero->get_x();
+    y = hero->get_y();
     x = std::min(std::max(x - 160, 0), map_location.get_width() - 320);
     y = std::min(std::max(y - 120, 0), map_location.get_height() - 240);
   }
@@ -143,8 +143,8 @@ void Camera::move(MapEntity *entity) {
  * When the movement finishes, the camera follows the hero again.
  */
 void Camera::restore(void) {
-  const Rectangle &hero_xy = zsdx->game->get_hero_xy();
-  move(hero_xy.get_x(), hero_xy.get_y());
+  Hero *hero = map->get_entities()->get_hero();
+  move(hero->get_x(), hero->get_y());
   restoring = true;
 }
 

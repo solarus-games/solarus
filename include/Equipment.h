@@ -29,147 +29,152 @@
  */
 class Equipment {
 
- private:
+  private:
 
-  Savegame *savegame;
+    Savegame *savegame;                        /**< the savegame encapsulated by this equipment object */
+    Game *game;                                /**< the current game (may be NULL when the savegame is loaded outside a game) */
 
-  // magic bar decrease handling
-  uint32_t magic_decrease_delay;
-  uint32_t next_magic_decrease_date;
+    // magic bar decrease handling
+    uint32_t magic_decrease_delay;             /**< when the magic bar decreases with time,
+						* delay between two decreases of 1 magic point */
+    uint32_t next_magic_decrease_date;         /**< date of the next decrease of 1 magic point */
 
-  // giving some bottle content to the player
-  bool giving_fairy;
-  bool giving_water;
-  InventoryItemId destination_bottle_id;
+    // giving some bottle content to the player
+    bool giving_fairy;                         /**< indicates that the player is getting a fairy */
+    bool giving_water;                         /**< indicates that the player is getting water */
+    InventoryItemId destination_bottle_id;     /**< id of the bottle where the content the player is getting will go*/
 
- public:
+  public:
 
-  Equipment(Savegame *savegame);
-  ~Equipment(void);
+    // creation and destruction
+    Equipment(Savegame *savegame);
+    ~Equipment(void);
+    void set_game(Game *game);
 
-  void update(void);
+    void update(void);
 
-  // tunic
-  int get_tunic(void);
-  void set_tunic(int tunic);
+    // tunic
+    int get_tunic(void);
+    void set_tunic(int tunic);
 
-  // sword
-  bool has_sword(void);
-  int get_sword(void);
-  void set_sword(int sword);
+    // sword
+    bool has_sword(void);
+    int get_sword(void);
+    void set_sword(int sword);
 
-  // shield
-  bool has_shield(void);
-  int get_shield(void);
-  void set_shield(int shield);
+    // shield
+    bool has_shield(void);
+    int get_shield(void);
+    void set_shield(int shield);
 
-  // rupees
-  int get_max_rupees(void);
-  void set_max_rupees(int max_rupees);
+    // rupees
+    int get_max_rupees(void);
+    void set_max_rupees(int max_rupees);
 
-  int get_rupees(void);
-  void set_rupees(int rupees);
-  void add_rupees(int rupees_to_add);
-  void remove_rupees(int rupees_to_remove);
+    int get_rupees(void);
+    void set_rupees(int rupees);
+    void add_rupees(int rupees_to_add);
+    void remove_rupees(int rupees_to_remove);
 
-  // hearts
-  int get_max_hearts(void);
-  void set_max_hearts(int max_hearts);
-  void add_heart_container(void);
+    // hearts
+    int get_max_hearts(void);
+    void set_max_hearts(int max_hearts);
+    void add_heart_container(void);
 
-  int get_hearts(void);
-  void set_hearts(int hearts);
-  void add_hearts(int hearts_to_add);
-  void remove_hearts(int hearts_to_remove);
-  void restore_all_hearts(void);
-  bool needs_hearts(void);
+    int get_hearts(void);
+    void set_hearts(int hearts);
+    void add_hearts(int hearts_to_add);
+    void remove_hearts(int hearts_to_remove);
+    void restore_all_hearts(void);
+    bool needs_hearts(void);
 
-  int get_nb_pieces_of_heart(void);
-  void add_piece_of_heart(void);
+    int get_nb_pieces_of_heart(void);
+    void add_piece_of_heart(void);
 
-  // magic
-  int get_max_magic(void);
-  void set_max_magic(int max_magic);
+    // magic
+    int get_max_magic(void);
+    void set_max_magic(int max_magic);
 
-  int get_magic(void);
-  void set_magic(int magic);
-  void add_magic(int magic_to_add);
-  void remove_magic(int magic_to_remove);
-  void restore_all_magic(void);
-  bool needs_magic(void);
+    int get_magic(void);
+    void set_magic(int magic);
+    void add_magic(int magic_to_add);
+    void remove_magic(int magic_to_remove);
+    void restore_all_magic(void);
+    bool needs_magic(void);
 
-  bool is_magic_decreasing(void);
-  void start_removing_magic(uint32_t delay);
-  void stop_removing_magic(void);
+    bool is_magic_decreasing(void);
+    void start_removing_magic(uint32_t delay);
+    void stop_removing_magic(void);
 
-  // bombs
-  int get_max_bombs(void);
-  void set_max_bombs(int max_bombs);
+    // bombs
+    int get_max_bombs(void);
+    void set_max_bombs(int max_bombs);
 
-  int get_bombs(void);
-  void set_bombs(int bombs);
-  void add_bombs(int bombs_to_add);
-  void remove_bomb(void);
-  bool needs_bombs(void);
+    int get_bombs(void);
+    void set_bombs(int bombs);
+    void add_bombs(int bombs_to_add);
+    void remove_bomb(void);
+    bool needs_bombs(void);
 
-  // arrows
-  int get_max_arrows(void);
-  void set_max_arrows(int max_arrows);
+    // arrows
+    int get_max_arrows(void);
+    void set_max_arrows(int max_arrows);
 
-  int get_arrows(void);
-  void set_arrows(int arrows);
-  void add_arrows(int arrows_to_add);
-  void remove_arrow(void);
-  bool needs_arrows(void);
+    int get_arrows(void);
+    void set_arrows(int arrows);
+    void add_arrows(int arrows_to_add);
+    void remove_arrow(void);
+    bool needs_arrows(void);
 
-  // inventory items
-  int has_inventory_item(InventoryItemId item_id);
-  void give_inventory_item(InventoryItemId item_id);
-  void give_inventory_item(InventoryItemId item_id, int variant);
-  void remove_inventory_item(InventoryItemId item_id);
+    // inventory items
+    int has_inventory_item(InventoryItemId item_id);
+    void give_inventory_item(InventoryItemId item_id);
+    void give_inventory_item(InventoryItemId item_id, int variant);
+    void remove_inventory_item(InventoryItemId item_id);
 
-  int get_inventory_item_amount(InventoryItemId item_id);
-  void set_inventory_item_amount(InventoryItemId item_id, int amount);
-  void add_inventory_item_amount(InventoryItemId item_id, int amount_to_add);
-  void remove_inventory_item_amount(InventoryItemId item_id, int amount_to_remove);
+    int get_inventory_item_amount(InventoryItemId item_id);
+    void set_inventory_item_amount(InventoryItemId item_id, int amount);
+    void add_inventory_item_amount(InventoryItemId item_id, int amount_to_add);
+    void remove_inventory_item_amount(InventoryItemId item_id, int amount_to_remove);
 
-  int get_inventory_item_maximum(InventoryItemId item_id);
-  bool has_inventory_item_maximum(InventoryItemId item_id);
+    int get_inventory_item_maximum(InventoryItemId item_id);
+    bool has_inventory_item_maximum(InventoryItemId item_id);
 
-  // bottles
-  void add_bottle(void);
-  bool has_bottle(void);
-  bool has_empty_bottle(void);
-  InventoryItemId get_first_empty_bottle(void);
-  bool has_bottle_with(Treasure::Content content);
-  InventoryItemId get_first_bottle_with(Treasure::Content content);
-  InventoryItemId get_destination_bottle(void);
-  void set_bottle_content(InventoryItemId bottle_id, Treasure::Content content);
-  void set_bottle_empty(InventoryItemId bottle_id);
+    // bottles
+    void add_bottle(void);
+    bool has_bottle(void);
+    bool has_empty_bottle(void);
+    InventoryItemId get_first_empty_bottle(void);
+    bool has_bottle_with(Treasure::Content content);
+    InventoryItemId get_first_bottle_with(Treasure::Content content);
+    InventoryItemId get_destination_bottle(void);
+    void set_bottle_content(InventoryItemId bottle_id, Treasure::Content content);
+    void set_bottle_empty(InventoryItemId bottle_id);
 
-  void found_fairy(void);
-  void found_water(void);
-  void found_water(InventoryItemId bottle_id);
+    void found_fairy(void);
+    void found_water(void);
+    void found_water(InventoryItemId bottle_id);
 
-  // item assignments
-  InventoryItemId get_item_assigned(int slot);
-  void set_item_assigned(int slot, InventoryItemId item_id);
+    // item assignments
+    InventoryItemId get_item_assigned(int slot);
+    void set_item_assigned(int slot, InventoryItemId item_id);
 
-  // quest status
-  bool has_world_map(void);
-  void add_world_map(void);
+    // quest status
+    bool has_world_map(void);
+    void add_world_map(void);
 
-  // small keys
-  bool are_small_keys_enabled(void);
-  int get_small_keys_variable(void);
+    // small keys
+    bool are_small_keys_enabled(void);
+    int get_small_keys_variable(void);
 
-  bool has_small_key(void);
-  int get_small_keys(void);
-  void add_small_key(void);
-  void remove_small_key(void);
+    bool has_small_key(void);
+    int get_small_keys(void);
+    void add_small_key(void);
+    void remove_small_key(void);
 
-  // ability to lift items
-  bool can_lift(int weight);
+    // ability to lift items
+    bool can_lift(int weight);
 };
 
 #endif
+

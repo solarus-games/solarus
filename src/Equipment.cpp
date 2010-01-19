@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Equipment.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "DialogBox.h"
@@ -28,9 +27,10 @@
 
 /**
  * Constructor.
+ * @param savegame the savegame to encapsulate
  */
 Equipment::Equipment(Savegame *savegame):
-  savegame(savegame), magic_decrease_delay(0), 
+  savegame(savegame), game(NULL), magic_decrease_delay(0), 
   giving_fairy(false), giving_water(false) {
 }
 
@@ -42,18 +42,31 @@ Equipment::~Equipment(void) {
 }
 
 /**
+ * Sets the current game.
+ * @param game the game
+ */
+void Equipment::set_game(Game *game) {
+  this->game = game;
+}
+
+/**
  * This function is be called repeatedly by the game.
- * Most of the time, there is nothing to update in this
- * class. The only element updated here is the magic bar
- * when it decreases continuously.
+ * Most of the time, there is nothing to update in this class.
+ * The only elements updated here are some dynamic things
+ * such as equipment-related animations or dialogs.
  */
 void Equipment::update(void) {
+
+  if (game == NULL) {
+    // nothing dynamic when there is no game
+    return;
+  }
 
   // magic bar
   if (magic_decrease_delay != 0) {
     // the magic bar is decreasing
 
-    if (!zsdx->game->is_suspended()) {
+    if (!game->is_suspended()) {
 
       if (System::now() > next_magic_decrease_date) {
 
@@ -76,10 +89,10 @@ void Equipment::update(void) {
   // fairy
   if (giving_fairy) {
 
-    if (!zsdx->game->is_showing_message()) {
+    if (!game->is_showing_message()) {
 
       giving_fairy = false;
-      int answer = zsdx->game->get_dialog_last_answer();
+      int answer = game->get_dialog_last_answer();
 
       if (answer != 1) {
 	// restore the hearts
@@ -88,7 +101,7 @@ void Equipment::update(void) {
       else {
 	// keep the fairy in a bottle
 	if (!has_empty_bottle()) {
-	  zsdx->game->show_message("_found_fairy.no_empty_bottle");
+	  game->show_message("_found_fairy.no_empty_bottle");
 	  ResourceManager::get_sound("wrong")->play();
 	  add_hearts(7 * 4);
 	}
@@ -99,13 +112,13 @@ void Equipment::update(void) {
       }
     }
   }
-  else if (giving_water && !zsdx->game->is_showing_message()) {
+  else if (giving_water && !game->is_showing_message()) {
 
     giving_water = false;
-    int answer = zsdx->game->get_dialog_last_answer();
+    int answer = game->get_dialog_last_answer();
 
     if (answer == 0) {
-      zsdx->game->give_treasure(new Treasure(Treasure::WATER, -1));
+      game->give_treasure(new Treasure(game, Treasure::WATER, -1));
     }
   }
 }
@@ -425,7 +438,7 @@ void Equipment::add_piece_of_heart(void) {
 void Equipment::found_fairy(void) {
 
   if (has_bottle()) {
-    zsdx->game->show_message("_found_fairy");
+    game->show_message("_found_fairy");
     giving_fairy = true;
     // the next messages will be handled by the update() function
   }
@@ -446,11 +459,11 @@ void Equipment::found_water(void) {
       found_water(get_first_empty_bottle());
     }
     else {
-      zsdx->game->show_message("_found_water.no_empty_bottle");
+      game->show_message("_found_water.no_empty_bottle");
     }
   }
   else {
-    zsdx->game->show_message("_found_water.no_bottle");
+    game->show_message("_found_water.no_bottle");
   }  
 }
 
@@ -471,7 +484,7 @@ void Equipment::found_water(InventoryItemId bottle_id) {
 
   this->destination_bottle_id = bottle_id;
 
-  zsdx->game->show_message("_found_water");
+  game->show_message("_found_water");
   giving_water = true;
   // the next messages will be handled by the update() function
 }
@@ -1181,7 +1194,7 @@ void Equipment::add_world_map(void) {
  * @return true if the small keys are enabled in the current map
  */
 bool Equipment::are_small_keys_enabled(void) {
-  return zsdx->game->get_current_map()->has_small_keys();
+  return game->get_current_map()->has_small_keys();
 }
 
 /**
@@ -1195,7 +1208,7 @@ int Equipment::get_small_keys_variable(void) {
     DIE("The small keys are not enabled on this map");
   }
 
-  return zsdx->game->get_current_map()->get_small_keys_variable();
+  return game->get_current_map()->get_small_keys_variable();
 }
 
 /**

@@ -26,30 +26,27 @@
  */
 class SwordIcon: public HudElement {
 
- private:
+  private:
 
-  // data objects to observe
-  KeysEffect *keys_effect;
-  Equipment *equipment;
+    // static icon
+    KeysEffect::SwordKeyEffect sword_key_effect_displayed;
+    int sword_number_displayed;
+    Surface *img_sword_icon;
 
-  // static icon
-  KeysEffect::SwordKeyEffect sword_key_effect_displayed;
-  int sword_number_displayed;
-  Surface *img_sword_icon;
+    // icon flipping
+    bool is_flipping;
+    Sprite *sprite_sword_icon;
 
-  // icon flipping
-  bool is_flipping;
-  Sprite *sprite_sword_icon;
+  public:
 
- public:
+    SwordIcon(Game *game, int x, int y);
+    ~SwordIcon(void);
 
-  SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y);
-  ~SwordIcon(void);
-
-  bool is_visible(void);
-  void update(void);
-  void rebuild(void);
+    bool is_visible(void);
+    void update(void);
+    void rebuild(void);
 
 };
 
 #endif
+

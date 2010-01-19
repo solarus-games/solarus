@@ -69,6 +69,7 @@ class DialogBox {
     MessageId first_message_id;
 
     // dialog properties
+    Game *game;
     static Style style;
     Speed speed;
     SkipMode skip_mode;
@@ -105,10 +106,11 @@ class DialogBox {
   public:
 
     // creation and destruction
-    DialogBox(const MessageId &first_message_id, int x, int y);
+    DialogBox(Game *game, const MessageId &first_message_id, int x, int y);
     ~DialogBox(void);
 
     // dialog properties
+    Game * get_game(void);
     static void set_style(Style style);
     Speed get_speed(void);
     void set_speed(Speed speed);

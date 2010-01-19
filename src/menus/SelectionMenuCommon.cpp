@@ -66,12 +66,12 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   text_title = new TextSurface(160, 54, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   text_title->set_font(TextSurface::FONT_STANDARD);
 
-  // icons
+  // icons (actually not shown any more in the selection menu)
   keys_effect = new KeysEffect();
   keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_VALIDATE);
   keys_effect->set_sword_key_enabled(false);
-  action_icon = new ActionIcon(keys_effect, 13, 31);
-  sword_icon = new SwordIcon(keys_effect, NULL, 0, 9);
+  // action_icon = new ActionIcon(keys_effect, 13, 31);
+  // sword_icon = new SwordIcon(keys_effect, NULL, 0, 9);
 
   // sounds
   cursor_sound = ResourceManager::get_sound("cursor");

@@ -26,8 +26,8 @@
 /**
  * Creates a selection menu with the phase where the
  * player selects a file.
- * @param previous the previous phase (if we were already in
- * the selection menu), or NULL
+ * @param previous the previous phase (if we were already in the selection menu), or NULL
+ * TODO: remove this constructor!
  */
 SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenuPhase *previous):
   SelectionMenuPhase(previous, "selection_menu.select_file") {
@@ -36,14 +36,26 @@ SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenuPhase *previous):
 
   // initialize the cursor
   get_cursor()->set_current_animation("blue");
-
-  if (previous == NULL) {
-    // we don't come from another phase or the selection menu itself: make a transition
-    transition = Transition::create(Transition::FADE, Transition::IN);
-    transition->start();
-    set_cursor_position(1);
-  }
 }
+
+/**
+ * Creates a selection menu with the phase where the player selects a file.
+ * @param zsdx the ZSDX object
+ */
+SelectionMenuSelectFile::SelectionMenuSelectFile(ZSDX *zsdx):
+  SelectionMenuPhase(zsdx, "selection_menu.select_file") {
+
+  set_bottom_options("selection_menu.erase", "selection_menu.exit");
+
+  // initialize the cursor
+  get_cursor()->set_current_animation("blue");
+
+  // we don't come from another phase or the selection menu itself: make a transition
+  transition = Transition::create(Transition::FADE, Transition::IN);
+  transition->start();
+  set_cursor_position(1);
+}
+
 
 /**
  * Destructor.

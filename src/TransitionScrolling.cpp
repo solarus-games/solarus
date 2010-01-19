@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "TransitionScrolling.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/Color.h"
@@ -35,6 +34,7 @@ const Rectangle TransitionScrolling::previous_map_dst_positions[] = {
 
 /**
  * Constructor.
+ * @param direction direction of the transition
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
   Transition(direction), dx(0), dy(0) {
@@ -61,7 +61,7 @@ void TransitionScrolling::start(void) {
   }
 
   // get the scrolling direction
-  scrolling_direction = (zsdx->game->get_current_map()->get_destination_side() + 2) % 4;
+  scrolling_direction = (game->get_current_map()->get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
   int width = 320;

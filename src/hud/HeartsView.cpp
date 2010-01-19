@@ -27,30 +27,51 @@
 /**
  * Position of the hearts in the PNG image.
  */
-Rectangle HeartsView::full_heart_position(27, 0, 9, 9);
-Rectangle HeartsView::fraction_heart_positions[3] = {
+const Rectangle HeartsView::full_heart_position(27, 0, 9, 9);
+const Rectangle HeartsView::fraction_heart_positions[3] = {
   Rectangle(0, 0, 9, 9),
   Rectangle(9, 0, 9, 9),
   Rectangle(18, 0, 9, 9)
 };
 
 /**
- * Constructor.
- * @param equipment the player's equipment,
- * can be NULL (if the savegame doesn't exist yet)
- * @param x x coordinate of the top-left corner of the hearts on the destination surface
- * @param y y coordinate of the top-left corner of the hearts on the destination surface
+ * Creates a life view in a game.
+ * @param game the current game (cannot be NULL)
+ * @param x x coordinate of the top-left corner of this HUD element on the destination surface
+ * @param y y coordinate of the top-left corner of this HUD element on the destination surface
+ */
+HeartsView::HeartsView(Game *game, int x, int y):
+  HudElement(game, x, y, 90, 18) {
+
+  create();
+}
+
+/**
+ * Creates a life view without game.
+ * @param equipment the equipment object to represent
+ * @param x x coordinate of the top-left corner of this HUD element on the destination surface
+ * @param y y coordinate of the top-left corner of this HUD element on the destination surface
  */
 HeartsView::HeartsView(Equipment *equipment, int x, int y):
-  HudElement(x, y, 90, 18),
-  equipment(equipment),
-  next_heart_update_date(System::now()),
-  next_danger_sound_date(System::now()) {
+  HudElement(equipment, x, y, 90, 18) {
 
-  img_hearts = ResourceManager::load_image("hud/hearts.png");
-  empty_heart_sprite = new Sprite("hud/empty_heart");
+  create();
+}
+ 
+/**
+ * Initializes the fields.
+ * This function is called by the constructors.
+ */
+void HeartsView::create(void) {
 
-  if (equipment != NULL) {
+  uint32_t now = System::now();
+  this->next_heart_update_date = now;
+  this->next_danger_sound_date = now;
+
+  this->img_hearts = ResourceManager::load_image("hud/hearts.png");
+  this->empty_heart_sprite = new Sprite("hud/empty_heart");
+
+  if (game != NULL) {
     
     nb_max_hearts_displayed = equipment->get_max_hearts();
     nb_current_hearts_displayed = equipment->get_hearts();
@@ -58,6 +79,8 @@ HeartsView::HeartsView(Equipment *equipment, int x, int y):
     rebuild();
   }
 }
+
+
 
 /**
  * Destructor.
@@ -106,7 +129,7 @@ void HeartsView::update(void) {
   /* If we are in game and the player has less than 1/4 of his hearts left,
    * play the 'danger' sound and animate the empty hearts
    */
-  if (zsdx->game != NULL) {
+  if (game != NULL) {
 
     if (equipment->needs_hearts()) {
 
@@ -115,8 +138,9 @@ void HeartsView::update(void) {
       }
       empty_heart_sprite->update();
 
-      if (System::now() > next_danger_sound_date) {
-	next_danger_sound_date = System::now() + 750;
+      uint32_t now = System::now();
+      if (now > next_danger_sound_date) {
+	next_danger_sound_date = now + 750;
 	ResourceManager::get_sound("danger")->play();
       }
 
@@ -172,10 +196,8 @@ void HeartsView::rebuild(void) {
 
 /**
  * Returns whether this hud element is visible.
- * The display() function does nothing if this function
- * returns false.
- * @return true if this hud element is visible, i.e. if
- * equipment is not NULL
+ * The display() function does nothing if this function returns false.
+ * @return true if this hud element is visible, i.e. if equipment is not NULL
  */
 bool HeartsView::is_visible(void) {
   return equipment != NULL;

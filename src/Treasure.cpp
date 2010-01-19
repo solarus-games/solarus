@@ -15,10 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Treasure.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Surface.h"
 #include "ResourceManager.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -28,14 +25,17 @@
 #include "Map.h"
 #include "MapScript.h"
 #include "Treasure.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Surface.h"
 
 /**
  * Creates a new treasure without amount.
+ * @param game the current game
  * @param content content of the treasure
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Content content, int savegame_variable):
+Treasure::Treasure(Game *game, Content content, int savegame_variable):
   content(content), amount(1), savegame_variable(savegame_variable), counter(NULL) {
 
   treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
@@ -43,6 +43,7 @@ Treasure::Treasure(Content content, int savegame_variable):
 
 /**
  * Creates a new treasure.
+ * @param game the current game
  * @param content content of the treasure
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
  * green rupees, blue rupees and red rupees: indicates the amount;
@@ -50,7 +51,7 @@ Treasure::Treasure(Content content, int savegame_variable):
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Content content, int amount, int savegame_variable):
+Treasure::Treasure(Game *game, Content content, int amount, int savegame_variable):
   content(content), amount(amount), savegame_variable(savegame_variable), counter(NULL) {
 
   treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
@@ -67,10 +68,7 @@ Treasure::Treasure(Content content, int amount, int savegame_variable):
 Treasure::~Treasure(void) {
 
   delete treasures_img;
-
-  if (counter != NULL) {
-    delete counter;
-  }
+  delete counter;
 }
 
 /**
@@ -136,7 +134,7 @@ int Treasure::get_amount(void) {
 bool Treasure::is_amount_full(void) {
 
   bool full = false;
-  Equipment *equipment = zsdx->game->get_equipment();
+  Equipment *equipment = game->get_equipment();
 
   switch (content) {
 
@@ -173,7 +171,7 @@ bool Treasure::is_amount_full(void) {
  * @return true if the player has found this treasure
  */
 bool Treasure::is_found(void) {
-  return savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable);
+  return savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable);
 }
 
 /**
@@ -187,7 +185,7 @@ void Treasure::give_to_player(void) {
     play_treasure_sound();
     show_message();
     add_item_to_equipment();
-    zsdx->game->get_current_script()->event_obtaining_treasure(content, savegame_variable);
+    game->get_current_script()->event_obtaining_treasure(content, savegame_variable);
   }
 }
 
@@ -217,7 +215,6 @@ void Treasure::play_treasure_sound(void) {
  */
 void Treasure::show_message(void) {
 
-  Game *game = zsdx->game;
   Equipment *equipment = game->get_equipment();
 
   // the message id is _treasure_x where x is the treasure content
@@ -260,7 +257,6 @@ void Treasure::show_message(void) {
  */
 void Treasure::add_item_to_equipment(void) {
 
-  Game *game = zsdx->game;
   Savegame *savegame = game->get_savegame();
   Equipment *equipment = game->get_equipment();
   DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();

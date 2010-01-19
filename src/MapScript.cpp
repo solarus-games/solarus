@@ -475,7 +475,7 @@ void MapScript::update(void) {
 
     timer->update();
     if (timer->is_finished()) {
-      call_script_function(timer->get_callback_name());
+      call_script_function(timer->get_name());
       delete timer;
       timers.erase(it);
       it = timers.begin();
@@ -507,7 +507,7 @@ void MapScript::remove_timer(const std::string &callback_name) {
   for (it = timers.begin(); it != timers.end() && !found; it++) {
 
     timer = *it;
-    if (timer->get_callback_name() == callback_name) {
+    if (timer->get_name() == callback_name) {
       delete timer;
       found = true;
     }
@@ -659,7 +659,8 @@ int MapScript::l_give_treasure(lua_State *l) {
   Treasure::Content content = (Treasure::Content) lua_tointeger(l, 1);
   int savegame_variable = lua_tointeger(l, 2);
 
-  script->game->give_treasure(new Treasure(content, savegame_variable));
+  Game *game = script->game;
+  game->give_treasure(new Treasure(game, content, savegame_variable));
 
   return 0;
 }
@@ -683,7 +684,8 @@ int MapScript::l_give_treasure_with_amount(lua_State *l) {
   int amount = lua_tointeger(l, 2);
   int savegame_variable = lua_tointeger(l, 3);
 
-  script->game->give_treasure(new Treasure(content, amount, savegame_variable));
+  Game *game = script->game;
+  game->give_treasure(new Treasure(game, content, amount, savegame_variable));
 
   return 0;
 }
@@ -845,7 +847,7 @@ int MapScript::l_start_timer(lua_State *l) {
   const std::string &callback_name = lua_tostring(l, 2);
   bool with_sound = lua_toboolean(l, 3) != 0;
 
-  Timer *timer = new Timer(duration, callback_name, with_sound);
+  Timer *timer = new Timer(script->game, duration, callback_name, with_sound);
   script->add_timer(timer);
 
   return 0;

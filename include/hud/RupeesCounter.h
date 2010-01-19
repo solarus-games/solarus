@@ -27,8 +27,6 @@ class RupeesCounter: public HudElement {
 
   private:
 
-    Equipment *equipment;
-
     // rectangles of the rupee icons in the image
     static Rectangle rupee_icon_positions[3];
 
@@ -42,7 +40,7 @@ class RupeesCounter: public HudElement {
 
   public:
 
-    RupeesCounter(Equipment *equipment, int x, int y);
+    RupeesCounter(Game *game, int x, int y);
     ~RupeesCounter(void);
 
     void update(void);

@@ -26,28 +26,25 @@
  */
 class ActionIcon: public HudElement {
 
- private:
+  private:
 
-  // data object to observe
-  KeysEffect *keys_effect;
+    // static icon
+    KeysEffect::ActionKeyEffect action_key_effect_displayed;
+    Surface *img_action_icon;
 
-  // static icon
-  KeysEffect::ActionKeyEffect action_key_effect_displayed;
-  Surface *img_action_icon;
+    // icon flipping
+    bool is_flipping;
+    Sprite *sprite_action_icon;
 
-  // icon flipping
-  bool is_flipping;
-  Sprite *sprite_action_icon;
+    bool is_visible(void);
 
-  bool is_visible(void);
+  public:
 
- public:
+    ActionIcon(Game *game, int x, int y);
+    ~ActionIcon(void);
 
-  ActionIcon(KeysEffect *keys_effect, int x, int y);
-  ~ActionIcon(void);
-  
-  void update(void);
-  void rebuild(void);
+    void update(void);
+    void rebuild(void);
 
 };
 

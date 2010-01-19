@@ -29,23 +29,20 @@
 
 /**
  * Constructor.
+ * @param game the current game (cannot be NULL)
  */
 HUD::HUD(Game *game):
   game(game), nb_elements(0), showing_message(false) {
 
-  Savegame *savegame = game->get_savegame();
-  Equipment *equipment = game->get_equipment();
-  KeysEffect *keys_effect = game->get_keys_effect();
-
-  elements[nb_elements++] = new HeartsView(equipment, 216, 14);
-  elements[nb_elements++] = new RupeesCounter(equipment, 8, 216);
-  elements[nb_elements++] = new MagicBar(equipment, 216, 35);
-  elements[nb_elements++] = new ItemIcon(0, savegame, 8, 29);
-  elements[nb_elements++] = new ItemIcon(1, savegame, 60, 29);
-  elements[nb_elements++] = new SwordIcon(keys_effect, equipment, 10, 29);
-  elements[nb_elements++] = new PauseIcon(keys_effect, -3, 7);
-  elements[nb_elements++] = new ActionIcon(keys_effect, 23, 51);
-  elements[nb_elements++] = new SmallKeysCounter(equipment, 284, 218);
+  elements[nb_elements++] = new HeartsView(game, 216, 14);
+  elements[nb_elements++] = new RupeesCounter(game, 8, 216);
+  elements[nb_elements++] = new MagicBar(game, 216, 35);
+  elements[nb_elements++] = new ItemIcon(game, 0, 8, 29);
+  elements[nb_elements++] = new ItemIcon(game, 1, 60, 29);
+  elements[nb_elements++] = new SwordIcon(game, 10, 29);
+  elements[nb_elements++] = new PauseIcon(game, -3, 7);
+  elements[nb_elements++] = new ActionIcon(game, 23, 51);
+  elements[nb_elements++] = new SmallKeysCounter(game, 284, 218);
   elements[nb_elements++] = new FloorView(game, 5, 70);
 }
 

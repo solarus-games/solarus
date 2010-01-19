@@ -38,8 +38,9 @@ Transition::~Transition(void) {
  * Creates a transition effect with the specified type and direction.
  * @param style style of the transition: Transition::IMMEDIATE, Transition::FADE, etc.
  * @param direction Transition::IN or Transition::OUT
+ * @param game the current game if any (used by some kinds of transitions)
  */
-Transition * Transition::create(Transition::Style style, Transition::Direction direction) {
+Transition * Transition::create(Transition::Style style, Transition::Direction direction, Game *game) {
 
   Transition *transition = NULL;
 
@@ -57,6 +58,8 @@ Transition * Transition::create(Transition::Style style, Transition::Direction d
     transition = new TransitionScrolling(direction);
     break;
   }
+
+  transition->game = game;
 
   return transition;
 }

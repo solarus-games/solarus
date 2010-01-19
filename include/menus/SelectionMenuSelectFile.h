@@ -30,6 +30,7 @@ class SelectionMenuSelectFile: public SelectionMenuPhase {
 
     // creation and destruction
     SelectionMenuSelectFile(SelectionMenuPhase *previous);
+    SelectionMenuSelectFile(ZSDX *zsdx);
     ~SelectionMenuSelectFile(void);
 
     // update and display

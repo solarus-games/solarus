@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/Tentacle.h"
+#include "entities/MapEntities.h"
 #include "entities/Hero.h"
+#include "Map.h"
 #include "movements/PathFindingMovement.h"
 #include "Sprite.h"
-#include "ZSDX.h"
-#include "Game.h"
 
 /**
  * Constructor.
@@ -52,6 +52,6 @@ void Tentacle::initialize(void) {
   set_origin(8, 13);
 
   // movement
-  set_movement(new PathFindingMovement(zsdx->game->get_hero(), 3));
+  set_movement(new PathFindingMovement(map->get_entities()->get_hero(), 3));
 }
 

@@ -24,10 +24,10 @@
 
 /**
  * Constructor.
- * @param game the game
+ * @param zsdx the application object
  */
-DebugKeys::DebugKeys() {
-
+DebugKeys::DebugKeys(ZSDX *zsdx):
+  zsdx(zsdx) {
 }
 
 /**
@@ -35,6 +35,14 @@ DebugKeys::DebugKeys() {
  */
 DebugKeys::~DebugKeys(void) {
 
+}
+
+/**
+ * Sets the current game.
+ * @param game the current game
+ */
+void DebugKeys::set_game(Game *game) {
+  this->game = game;
 }
 
 /**
@@ -46,7 +54,6 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 #if ZSDX_DEBUG_LEVEL >= 2
   // don't consider the debug keys in release mode
 
-  Game *game = zsdx->game;
   if (game != NULL) {
     Equipment *equipment = game->get_equipment();
 
@@ -195,7 +202,6 @@ void DebugKeys::key_released(const SDL_keysym &keysym) {
 
 #if ZSDX_DEBUG_LEVEL >= 2
 
-  Game *game = zsdx->game;
   if (game != NULL) {
     switch (keysym.sym) {
 
@@ -218,7 +224,6 @@ void DebugKeys::update(void) {
 
   SDLMod mod = SDL_GetModState();
   if (mod & (KMOD_LSHIFT | KMOD_RSHIFT)) {
-    Game *game = zsdx->game;
     if (game != NULL && game->is_showing_message()) {
       game->get_dialog_box()->show_all_now();
     }

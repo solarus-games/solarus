@@ -134,8 +134,9 @@ class Treasure {
 
   private:
 
-    Surface *treasures_img;
+    Surface *treasures_img;  /**< image of all treasures */
 
+    Game *game;              /**< the current game */
     Content content;         /**< content of the treasure */
     int amount;              /**< amount of item (for some kinds of treasures only) */
     int savegame_variable;   /**< index of the savegame boolean variable corresponding to this treasure,
@@ -149,8 +150,8 @@ class Treasure {
 
   public:
 
-    Treasure(Content content, int savegame_variable);
-    Treasure(Content content, int amount, int savegame_variable);
+    Treasure(Game *game, Content content, int savegame_variable);
+    Treasure(Game *game, Content content, int amount, int savegame_variable);
     ~Treasure(void);
 
     Content get_content(void);

@@ -24,12 +24,12 @@
 
 /**
  * Constructor.
- * @param game the game
+ * @param game the current game
  * @param x x coordinate of the top-left corner of the element on the destination surface
  * @param y y coordinate of the top-left corner of the element on the destination surface
  */
 FloorView::FloorView(Game *game, int x, int y):
-  HudElement(x, y, 32, 85), game(game), current_map(NULL),
+  HudElement(game, x, y, 32, 85), current_map(NULL),
   is_floor_displayed(false) {
 
   img_floors = ResourceManager::load_image("hud/floors.png");
@@ -101,7 +101,7 @@ void FloorView::rebuild(void) {
       highest_floor_displayed = dungeon->get_highest_floor_displayed(current_floor);
 
       /*
-      cout << "lowest_floor: " << lowest_floor
+      std::cout << "lowest_floor: " << lowest_floor
 	   << ", highest_floor: " << highest_floor
 	   << ", nb_floors: " << nb_floors
 	   << ", current_floor: " << current_floor

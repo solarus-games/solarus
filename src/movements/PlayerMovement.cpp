@@ -17,7 +17,6 @@
 #include <cmath>
 #include "movements/PlayerMovement.h"
 #include "entities/MapEntity.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Controls.h"
 #include "lowlevel/Geometry.h"
@@ -133,7 +132,7 @@ void PlayerMovement::set_moving_enabled(bool moving_enabled, bool direction_enab
       // if the control is being restored, let's take
       // into account the possible arrows pressed
 
-      Controls *controls = zsdx->game->get_controls();
+      Controls *controls = entity->get_game()->get_controls();
 
       if (controls->is_key_pressed(Controls::RIGHT)) {
 	add_direction_mask(direction_masks[0]);

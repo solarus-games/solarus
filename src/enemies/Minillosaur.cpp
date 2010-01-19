@@ -15,13 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/Minillosaur.h"
+#include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "movements/StraightMovement.h"
 #include "movements/PathFindingMovement.h"
 #include "Sprite.h"
-#include "ZSDX.h"
-#include "Game.h"
 #include "ResourceManager.h"
+#include "Map.h"
 #include "lowlevel/Sound.h"
 
 /**
@@ -58,7 +58,7 @@ void Minillosaur::initialize(void) {
   set_origin(12, 20);
 
   // initial movement
-  Hero *hero = zsdx->game->get_hero();
+  Hero *hero = map->get_entities()->get_hero();
   set_movement(new StraightMovement(12, get_xy(), hero->get_xy(), 1500));
 
   // reactions to attacks
@@ -120,7 +120,7 @@ void Minillosaur::update(void) {
     set_size(16, 16);
     set_origin(8, 12);
     set_aligned_to_grid();
-    set_movement(new PathFindingMovement(zsdx->game->get_hero(), 4));
+    set_movement(new PathFindingMovement(map->get_entities()->get_hero(), 4));
     set_default_attack_consequences();
     in_egg = false;
   }

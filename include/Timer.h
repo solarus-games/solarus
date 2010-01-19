@@ -20,36 +20,37 @@
 #include "Common.h"
 
 /**
- * Represents a timer that a map script can start.
+ * Represents a timer that any class can start.
  */
 class Timer {
 
- private:
+  private:
 
-  // timer
-  const std::string callback_name; /**< name of the script function to call after the delay */
+    // timer
+    const std::string name;          /**< name of the timer (permits to identify it) */
 
-  uint32_t expiration_date;          /**< date when the timer is finished */
-  bool finished;                   /**< indicates that the timer is finished */
+    uint32_t expiration_date;        /**< date when the timer is finished */
+    bool finished;                   /**< indicates that the timer is finished */
 
-  bool suspended;                  /**< indicates whether the timer is suspended */
-  uint32_t when_suspended;           /**< indicates when the timer was suspended */
+    bool suspended;                  /**< indicates whether the timer is suspended */
+    uint32_t when_suspended;         /**< indicates when the timer was suspended */
 
-  // sound
-  uint32_t next_sound_date;          /**< date when the next countdown sound effect will be played */
-  Sound *countdown_sound;          /**< sound played every second while the timer is running */
-  Sound *countdown_hurry_sound;    /**< sound played when the timer is close to finish */
+    // sound
+    uint32_t next_sound_date;        /**< date when the next countdown sound effect will be played */
+    Sound *countdown_sound;          /**< sound played every second while the timer is running */
+    Sound *countdown_hurry_sound;    /**< sound played when the timer is close to finish */
 
- public:
+  public:
 
-  Timer(uint32_t duration, const std::string &callback_name, bool with_sound);
-  ~Timer(void);
+    Timer(Game *game, uint32_t duration, const std::string &name, bool with_sound);
+    ~Timer(void);
 
-  const std::string& get_callback_name(void);
-  bool is_finished(void);
+    const std::string& get_name(void);
+    bool is_finished(void);
 
-  void update(void);
-  void set_suspended(bool suspended);
+    void update(void);
+    void set_suspended(bool suspended);
 };
 
 #endif
+

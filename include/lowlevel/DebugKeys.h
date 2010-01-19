@@ -27,11 +27,17 @@
  */
 class DebugKeys {
 
+  private:
+
+    ZSDX *zsdx; /**< the ZSDX object */
+    Game *game; /**< the current game, or NULL if no game is started */
 
   public:
 
-    DebugKeys(void);
+    DebugKeys(ZSDX *zsdx);
     ~DebugKeys(void);
+
+    void set_game(Game *game);
 
     void key_pressed(const SDL_keysym &keysym);
     void key_released(const SDL_keysym &keysym);

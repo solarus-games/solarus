@@ -16,19 +16,19 @@
  */
 #include "Timer.h"
 #include "ResourceManager.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
  * Creates and starts a timer.
+ * @param game the current game (if any)
  * @param duration duration of the timer in milliseconds
- * @param callback_name name of the script function to call when the timer is finished
+ * @param name a name to identify this timer
  * @param with_sound plays a sound until the timer expires
  */
-Timer::Timer(uint32_t duration, const std::string &callback_name, bool with_sound):
-  callback_name(callback_name), finished(false), suspended(false), when_suspended(0) {
+Timer::Timer(Game *game, uint32_t duration, const std::string &name, bool with_sound):
+  name(name), finished(false), suspended(false), when_suspended(0) {
 
   uint32_t now = System::now();
   expiration_date = now + duration;
@@ -44,7 +44,7 @@ Timer::Timer(uint32_t duration, const std::string &callback_name, bool with_soun
 
   // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
   // except when it is suspended because of a dialog box
-  if (zsdx->game->is_showing_message()) {
+  if (game != NULL && game->is_showing_message()) {
     set_suspended(true);
   }
 }
@@ -57,11 +57,11 @@ Timer::~Timer(void) {
 }
 
 /**
- * Returns the name of the script function to call when the timer is finished.
- * @return the name of the script function to call when the timer is finished
+ * Returns the name identifying this timer.
+ * @return the name of this timer
  */
-const std::string& Timer::get_callback_name(void) {
-  return callback_name;
+const std::string& Timer::get_name(void) {
+  return name;
 }
 
 /**
@@ -129,3 +129,4 @@ void Timer::set_suspended(bool suspended) {
     }
   }
 }
+

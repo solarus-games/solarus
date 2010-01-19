@@ -15,19 +15,60 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hud/HudElement.h"
+#include "Game.h"
+#include "Savegame.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
-#include "Savegame.h"
 
 /**
- * Constructor.
+ * Creates a HUD element in a game.
+ * @param game the current game
  * @param x x coordinate of the top-left corner of the hud element surface on the destination surface
  * @param y y coordinate of the top-left corner of the hud element surface on the destination surface
  * @param width width of the hud element surface
  * @param height height of the hud element surface
  */
-HudElement::HudElement(int x, int y, int width, int height):
+HudElement::HudElement(Game *game, int x, int y, int width, int height):
+  game(game), equipment(game->get_equipment()), keys_effect(game->get_keys_effect()),
+  visible(true), opacity(255), blinking(false) {
+
+  surface_drawn = new Surface(width, height);
+  surface_drawn->set_transparency_color(Color::get_black());
+
+  set_position(x, y);
+}
+
+/**
+ * Creates a HUD element outside a game and representing some equipment-related data.
+ * The fields game and keys_effect will be NULL.
+ * @param equipment the equipment object to represent
+ * @param x x coordinate of the top-left corner of the hud element surface on the destination surface
+ * @param y y coordinate of the top-left corner of the hud element surface on the destination surface
+ * @param width width of the hud element surface
+ * @param height height of the hud element surface
+ */
+HudElement::HudElement(Equipment *equipment, int x, int y, int width, int height):
+  game(NULL), equipment(equipment), keys_effect(NULL),
+  visible(true), opacity(255), blinking(false) {
+
+  surface_drawn = new Surface(width, height);
+  surface_drawn->set_transparency_color(Color::get_black());
+
+  set_position(x, y);
+}
+
+/**
+ * Creates a HUD element outside a game and representing some keys effect related data.
+ * The fields game and equipment will be NULL.
+ * @param keys_effect the keys_effect object to represent
+ * @param x x coordinate of the top-left corner of the hud element surface on the destination surface
+ * @param y y coordinate of the top-left corner of the hud element surface on the destination surface
+ * @param width width of the hud element surface
+ * @param height height of the hud element surface
+ */
+HudElement::HudElement(KeysEffect *keys_effect, int x, int y, int width, int height):
+  game(NULL), equipment(NULL), keys_effect(keys_effect),
   visible(true), opacity(255), blinking(false) {
 
   surface_drawn = new Surface(width, height);

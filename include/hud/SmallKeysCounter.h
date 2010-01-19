@@ -28,14 +28,12 @@ class SmallKeysCounter: public HudElement {
 
   private:
 
-    Equipment *equipment;
-
     Surface *img_icon;
     Counter *counter;
 
   public:
 
-    SmallKeysCounter(Equipment *equipment, int x, int y);
+    SmallKeysCounter(Game *game, int x, int y);
     ~SmallKeysCounter(void);
 
     void update(void);

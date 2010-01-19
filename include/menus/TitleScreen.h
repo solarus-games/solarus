@@ -87,7 +87,7 @@ class TitleScreen: public Screen {
   public:
 
     // creation and destruction
-    TitleScreen(void);
+    TitleScreen(ZSDX *zsdx);
     ~TitleScreen(void);
 
     // update and display

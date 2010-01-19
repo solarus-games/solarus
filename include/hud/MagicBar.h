@@ -27,9 +27,6 @@ class MagicBar: public HudElement {
 
   private:
 
-    // the data object observed
-    Equipment *equipment;
-
     // static image representing the current level of the magic bar
     int current_magic_displayed;
     uint32_t next_magic_update_date;
@@ -43,7 +40,7 @@ class MagicBar: public HudElement {
 
   public:
 
-    MagicBar(Equipment *equipment, int x, int y);
+    MagicBar(Game *game, int x, int y);
     ~MagicBar(void);
 
     void update(void);

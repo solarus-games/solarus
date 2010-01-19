@@ -22,12 +22,12 @@
 
 /**
  * Constructor.
- * @param equipment the player's equipment
+ * @param game the current game
  * @param x x coordinate of the top-left corner of the key icon on the destination surface
  * @param y y coordinate of the top-left corner of the key icon on the destination surface
  */
-SmallKeysCounter::SmallKeysCounter(Equipment *equipment, int x, int y):
-  HudElement(x, y, 40, 8), equipment(equipment), counter(NULL) {
+SmallKeysCounter::SmallKeysCounter(Game *game, int x, int y):
+  HudElement(game, x, y, 40, 8), counter(NULL) {
 
   img_icon = ResourceManager::load_image("hud/small_key_icon.png");
   counter = NULL;

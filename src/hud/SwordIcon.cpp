@@ -23,15 +23,12 @@
 
 /**
  * Constructor.
- * @param keys_effect current effect of the main keys
- * (here we are interested in the sword key)
- * @param equipment the player's equipment (can be NULL, in the selection menu)
+ * @param game the current game
  * @param x x coordinate of the top-left corner of the icon on the destination surface
  * @param y y coordinate of the top-left corner of the icon on the destination surface
  */
-SwordIcon::SwordIcon(KeysEffect *keys_effect, Equipment *equipment, int x, int y):
-  HudElement(x, y, 72, 24),
-  keys_effect(keys_effect), equipment(equipment) {
+SwordIcon::SwordIcon(Game *game, int x, int y):
+  HudElement(game, x, y, 72, 24) {
 
   // static icon
   this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword() : 0;

@@ -28,9 +28,6 @@ class PauseIcon: public HudElement {
 
   private:
 
-    // data object to observe
-    KeysEffect *keys_effect;
-
     // static icon
     KeysEffect::PauseKeyEffect pause_key_effect_displayed;
     Surface *img_pause_icon;
@@ -41,7 +38,7 @@ class PauseIcon: public HudElement {
 
   public:
 
-    PauseIcon(KeysEffect *keys_effect, int x, int y);
+    PauseIcon(Game *game, int x, int y);
     ~PauseIcon(void);
 
     void update(void);

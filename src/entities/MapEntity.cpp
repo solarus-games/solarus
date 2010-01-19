@@ -170,6 +170,26 @@ MapEntity::~MapEntity(void) {
 }
 
 /**
+ * Once the entity is created, this function is called to check whether
+ * the entity created can be added to the specified map and in the current game state.
+ * This function returns true by default.
+ * @param map the map where this entity is about to be added
+ * @return true to validate the adding, false if you don't want this
+ * entity to be added to the map (then it will be destroyed)
+ */
+bool MapEntity::can_be_added(Map *map) {
+  return true;
+}
+
+/**
+ * Schedules this entity for removal.
+ * The entity will be removed from the map and destroyed.
+ */
+void MapEntity::remove_from_map(void) {
+  map->get_entities()->remove_entity(this);
+}
+
+/**
  * Returns whether this entity is the hero
  * controlled by the player.
  * @return true if this entity is the hero
@@ -228,6 +248,7 @@ bool MapEntity::is_displayed_in_y_order(void) {
  */
 void MapEntity::set_map(Map *map) {
   this->map = map;
+  this->game = map->get_game();
 
   // notify the sprites (useful for tileset dependent sprites such as doors and blocks)
   std::map<std::string, Sprite*>::iterator it;
@@ -243,6 +264,15 @@ void MapEntity::set_map(Map *map) {
 Map * MapEntity::get_map(void) {
   return map;
 }
+
+/**
+ * Returns the game that is running the map where this entity is.
+ * @return the game
+ */
+Game * MapEntity::get_game(void) {
+  return game;
+}
+
 
 /**
  * Sets a flag indicating that this entity has been added
@@ -342,8 +372,11 @@ void MapEntity::set_y(int y) {
  * These are the coordinates of the point as returned by get_x() and get_y().
  * @return the coordinates of the entity on the map
  */
-const Rectangle MapEntity::get_xy(void) {
-  return Rectangle(get_x(), get_y());
+const Rectangle & MapEntity::get_xy(void) {
+
+  static Rectangle xy;
+  xy = Rectangle(get_x(), get_y());
+  return xy;
 }
 
 /**

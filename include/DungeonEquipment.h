@@ -30,27 +30,30 @@
  */
 class DungeonEquipment {
 
- private:
+  private:
 
-  Savegame *savegame;
-  int get_current_dungeon(void);
+    Savegame *savegame;
+    Game *game;                                /**< the current game */
+    int get_current_dungeon(void);
 
- public:
+  public:
 
-  DungeonEquipment(Savegame *savegame);
-  ~DungeonEquipment(void);
+    DungeonEquipment(Savegame *savegame);
+    ~DungeonEquipment(void);
+    void set_game(Game *game);
 
-  bool has_map(void);
-  void add_map(void);
+    bool has_map(void);
+    void add_map(void);
 
-  bool has_compass(void);
-  void add_compass(void);
+    bool has_compass(void);
+    void add_compass(void);
 
-  bool has_big_key(void);
-  void add_big_key(void);
+    bool has_big_key(void);
+    void add_big_key(void);
 
-  bool has_boss_key(void);
-  void add_boss_key(void);
+    bool has_boss_key(void);
+    void add_boss_key(void);
 };
 
 #endif
+

@@ -38,7 +38,7 @@ class MapEntity {
 
     typedef MapEntity* (CreationFunction)(std::istream &is, Layer layer, int x, int y); /**< a function to parse a certain type of entity */
     static const CreationFunction* creation_functions[];                                /**< the creation functions of all types of entities */
-    static const Rectangle directions_to_xy_moves[8];                                   /**< converts a direction (0 to 7) into a one-pixel move on x and y */
+    static const Rectangle directions_to_xy_moves[8];                                   /**< converts a direction (0 to 7) into a one-pixel xy move */
 
     /**
      * Describes the features of each dynamic entity type:
@@ -65,23 +65,19 @@ class MapEntity {
 
   private:
 
-    /**
-     * The features of each entity type.
-     */
-    static const EntityTypeFeatures entity_types_features[];
+    static const EntityTypeFeatures entity_types_features[]; /**< The features of each entity type. */
 
   protected:
 
-    Map *map;                 /**< the map: this field is automatically set by class MapEntities after adding the entity to the map */
-
-    // position (mandatory for all kinds of entities)
+    // these fields are automatically set by class MapEntities after adding the entity to the map
+    Map *map;                 /**< the map where this entity is */
+    Game *game;               /**< the game running that map */
 
   private:
 
     Layer layer;              /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
 			       * The layer is constant for the tiles and can change for the hero and the dynamic entities.
-			       * The layer is private to make sure the set_layer() function is always called.
-			       */
+			       * The layer is private to make sure the set_layer() function is always called. */
 
   protected:
 
@@ -89,8 +85,7 @@ class MapEntity {
 			       * used for the collision tests. It corresponds to the bounding box of the entity.
 			       * It can be different from the sprite's rectangle of the entity.
 			       * For example, the hero's bounding box is a 16*16 rectangle, but its sprite may be
-			       * a 24*32 rectangle.
-			       */
+			       * a 24*32 rectangle. */
 
     Rectangle origin;         /**< Coordinates of the origin point of the entity,
 			       * relative to the top-left corner of its rectangle.
@@ -99,35 +94,36 @@ class MapEntity {
 			       * top-left corner.
 			       * This is useful because the top-left corner of the entity's bounding box does
 			       * not represent the actual entity's coordinates and does not match necessarily
-			       * the sprite's rectangle.
-			       */
+			       * the sprite's rectangle. */
 
     // other data, used for some kinds of entities only
 
-    std::string name;        /**< name of the entity, not used for all kinds of entities;
-			      * the name identifies the entity in the game (an empty string
-			      * indicates that the entity has no name) */
+    std::string name;         /**< name of the entity, not used for all kinds of entities;
+			       * the name identifies the entity in the game (an empty string
+			       * indicates that the entity has no name) */
 
-    int direction;           /**< direction of the entity, not used for all kinds of entities */
+    int direction;            /**< direction of the entity, not used for all kinds of entities */
 
     std::map<std::string, Sprite*> sprites; /**< sprite(s) representing the entity, indexed by their animation set id;
                                              * note that some entities manage their sprites themselves rather than using this field */
-    Sprite *first_sprite;    /**< the first sprite that was created into the sprites map,
-			      * stored here because the map does not keep the order from which its elements are added */
-    bool visible;            /**< indicates that this entity's sprites are currently displayed */
-    Movement *movement;      /**< movement of the entity, not used for all kinds of entities;
-			      * NULL indicates that the entity has no movement */
+    Sprite *first_sprite;     /**< the first sprite that was created into the sprites map,
+			       * stored here because the map does not keep the order from which its elements are added */
+    bool visible;             /**< indicates that this entity's sprites are currently displayed */
+    Movement *movement;       /**< movement of the entity, not used for all kinds of entities;
+			       * NULL indicates that the entity has no movement */
 
     // entity state
 
-    bool suspended;          /**< indicates that the animation and movement of this entity are suspended */
+    bool suspended;           /**< indicates that the animation and movement of this entity are suspended */
     uint32_t when_suspended;  /**< indicates when this entity was suspended */
-    bool being_removed;      /**< indicates that the entity is not valid anymore because it is about to be removed */
+    bool being_removed;       /**< indicates that the entity is not valid anymore because it is about to be removed */
 
     // creation
     MapEntity(void);
     MapEntity(Layer layer, int x, int y, int width, int height);
     MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
+    virtual bool can_be_added(Map *map);
+    void remove_from_map(void);
 
     // method called by the subclasses to set their properties
     void set_direction(int direction);
@@ -165,7 +161,7 @@ class MapEntity {
     int get_y(void);
     void set_x(int x);
     void set_y(int y);
-    const Rectangle get_xy(void);
+    const Rectangle & get_xy(void);
     void set_xy(const Rectangle &xy);
     void set_xy(int x, int y);
 
@@ -191,6 +187,7 @@ class MapEntity {
     // properties
     virtual void set_map(Map *map);
     Map * get_map(void);
+    Game * get_game(void);
     const std::string& get_name(void) const;
     bool has_prefix(const std::string &prefix);
     int get_direction(void);

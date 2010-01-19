@@ -16,16 +16,15 @@
  */
 #include "DialogBox.h"
 #include "Message.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Surface.h"
 #include "Sprite.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
+#include "MapScript.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Color.h"
-#include "MapScript.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Surface.h"
 
 DialogBox::Style DialogBox::style = DialogBox::WITH_FRAME;
 static Rectangle box_src_position(0, 0, 220, 60);
@@ -33,12 +32,14 @@ static Rectangle question_src_position(96, 60, 8, 8);
 
 /**
  * Creates a new dialog box.
+ * @param game the game this dialog box belongs to
  * @param first_message_id id of the message to show
  * (it can be followed by other messages)
  * @param x x coordinate of the top-left corner of the box
  * @param y y coordinate of the top-left corner of the box
  */
-DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
+DialogBox::DialogBox(Game *game, const MessageId &first_message_id, int x, int y):
+  game(game) {
 
   // initialize the surface
   dialog_surface = new Surface(320, 240);
@@ -76,7 +77,7 @@ DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
   end_message_sprite = new Sprite("hud/dialog_box_message_end");
 
   // save the action and sword keys
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
   action_key_effect_saved = keys_effect->get_action_key_effect();
   sword_key_effect_saved = keys_effect->get_sword_key_effect();
 
@@ -95,7 +96,7 @@ DialogBox::DialogBox(const MessageId &first_message_id, int x, int y) {
 DialogBox::~DialogBox(void) {
 
   // the dialog box is being closed: restore the action and sword keys
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
   keys_effect->set_action_key_effect(action_key_effect_saved);
   keys_effect->set_sword_key_effect(sword_key_effect_saved);
 
@@ -226,15 +227,15 @@ void DialogBox::show_message(const MessageId &message_id) {
   current_message_id = message_id;
 
   if (current_message->is_question()) {
-    zsdx->game->set_dialog_last_answer(0);
+    game->set_dialog_last_answer(0);
   }
   else {
-    zsdx->game->set_dialog_last_answer(-1);
+    game->set_dialog_last_answer(-1);
   }
   question_dst_position.set_y(y + 27);
   
   // hide the action icon
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
   keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   if (get_skip_mode() != SKIP_NONE) {
@@ -245,7 +246,7 @@ void DialogBox::show_message(const MessageId &message_id) {
   }
 
   // notify the script
-  zsdx->game->get_current_script()->event_message_started(message_id);
+  game->get_current_script()->event_message_started(message_id);
 }
 
 /** 
@@ -326,8 +327,8 @@ void DialogBox::up_or_down_key_pressed(void) {
   if (current_message->is_question() && current_message->is_finished()) {
     
     // switch the answer
-    int answer = zsdx->game->get_dialog_last_answer();
-    zsdx->game->set_dialog_last_answer(1 - answer);
+    int answer = game->get_dialog_last_answer();
+    game->set_dialog_last_answer(1 - answer);
     question_dst_position.set_y(y + ((answer == 1) ? 27 : 40));
     switch_answer_sound->play();
   }
@@ -392,7 +393,7 @@ void DialogBox::update(void) {
     end_message_sprite->update();
 
     // show the appropriate action icon
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    KeysEffect *keys_effect = game->get_keys_effect();
     KeysEffect::ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
     if (action_key_effect != KeysEffect::ACTION_KEY_NEXT
 	&& action_key_effect != KeysEffect::ACTION_KEY_RETURN) {

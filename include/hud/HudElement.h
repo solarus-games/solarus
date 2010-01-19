@@ -31,9 +31,19 @@ class HudElement {
 
   protected:
 
-    Surface *surface_drawn;     /**< The surface on which the hud element is drawn when rebuild() is called.
-				 * When display() is called, this surface is blitted
-				 * on the destination surface (usually the screen). */
+    // data
+    Game *game;                     /**< The game this HUD element is in. It may be NULL if no game is currently running,
+				     * which is possible for HUD elements displayed before the game starts
+				     * (such as the life view in the savegame menu) */
+    Equipment *equipment;           /**< The equipment object represented by this HUD element
+				     * (used by several HUD elements, NULL otherwise). */
+    KeysEffect *keys_effect;        /**< The keys effect object represented by this HUD element
+				     * (used by several HUD elements, NULL otherwise). */
+
+    // displaying 
+    Surface *surface_drawn;         /**< The surface on which the hud element is drawn when rebuild() is called.
+				     * When display() is called, this surface is blitted
+				     * on the destination surface (usually the screen). */
 
     Rectangle destination_position; /**< Position of this hud element on the destination surface. */
 
@@ -41,9 +51,11 @@ class HudElement {
     int opacity;                    /**< The current opacity (0 to 255) of this hud element. */
     bool blinking;                  /**< Indicates that this hud element is blinking. */
     bool blinking_is_visible;       /**< When blinking, indicates that this hud element is currently displayed. */
-    uint32_t next_blink_date;       /**< When blinkig, date when the element will appear or disappear next time */
+    uint32_t next_blink_date;       /**< When blinkig, date when the element will appear or disappear next time. */
 
-    HudElement(int x, int y, int width, int height);
+    HudElement(Game *game, int x, int y, int width, int height);
+    HudElement(Equipment *equipment, int x, int y, int width, int height);
+    HudElement(KeysEffect *keys_effect, int x, int y, int width, int height);
 
   public:
 

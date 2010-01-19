@@ -21,20 +21,15 @@
 #include <SDL/SDL.h>
 
 /**
- * Only instance.
- */
-extern ZSDX *zsdx;
-
-/**
  * Main class of the game engine. It contains objects to
- * initialize the game and handles the screen.
+ * initialize the program and handles the succession of its screens.
  */
 class ZSDX {
 
   private:
 
     Screen *current_screen;      /**< the screen currently displayed (the title screen,
-				  * the selection menu, the game, etc. */
+				  * the selection menu, the game, etc.) */
     Surface *root_surface;       /**< the surface where everything is drawn (always 320*240) */
     DebugKeys *debug_keys;       /**< special keys to debug the game, e.g. by traversing walls (disabled in release mode) */
     bool exiting;
@@ -47,15 +42,13 @@ class ZSDX {
 
   public:
 
-    Game *game;
-
     ZSDX(int argc, char **argv);
     ~ZSDX(void);
 
     void main(void);
 
-    void set_game(Game *game);
     void skip_menus(void);
+    DebugKeys * get_debug_keys(void);
 
     void set_exiting(void);
     bool is_exiting(void);

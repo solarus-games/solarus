@@ -47,6 +47,10 @@
  */
 class Screen {
 
+  protected:
+
+    ZSDX *zsdx;           /**< the main object of the program (it manages the screens) */
+
   private:
 
     bool screen_finished;
@@ -54,7 +58,7 @@ class Screen {
 
   protected:
 
-    Screen(void);
+    Screen(ZSDX *zsdx);
 
     void set_next_screen(Screen *next_screen);
 
@@ -65,7 +69,7 @@ class Screen {
     bool is_screen_finished(void);
     Screen *get_next_screen(void);
 
-    // functions to implement and that will be called by the main loop
+    // functions to implement in subclasses and that will be called by the main loop
     virtual void update(void) = 0;
     virtual void display(Surface *screen_surface) = 0;
     virtual void handle_event(const SDL_Event &event) = 0;

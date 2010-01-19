@@ -54,7 +54,7 @@ class ResourceManager {
 
     static Surface * load_image(const ImageId &id);
     static Surface * load_image(const ImageId &id, bool relative_to_sprites_dir);
-    // TODO flags for options relative_to_sprites_dir and language_specific
+    // TODO flags for options relative_to_sprites_dir and language_specific - but do this directly in Surface
 
     static Tileset* get_tileset(TilesetId id);
     static Map* get_map(MapId id);

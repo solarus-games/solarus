@@ -22,6 +22,7 @@
 #include "Savegame.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
+#include "DungeonEquipment.h"
 #include "DialogBox.h"
 #include "Treasure.h"
 #include "Dungeon.h"
@@ -36,16 +37,19 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/DebugKeys.h"
 
 const Rectangle Game::outside_world_size(0, 0, 2080, 3584); // TODO load from external file
 
 /**
  * Creates a game.
+ * @param zsdx the application object
  * @param savegame the saved data of this game
  */
-Game::Game(Savegame *savegame):
-  savegame(savegame),
-  pause_enabled(true), pause_menu(NULL), 
+Game::Game(ZSDX *zsdx, Savegame *savegame):
+  Screen(zsdx),
+
+  savegame(savegame), pause_enabled(true), pause_menu(NULL), 
   dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
   reseting(false), restarting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
@@ -53,7 +57,10 @@ Game::Game(Savegame *savegame):
   dungeon(NULL), crystal_switch_state(false), hud(NULL), hud_enabled(true),
   current_music_id(Music::none), current_music(NULL), previous_music_id(Music::none) {
 
-  zsdx->set_game(this);
+  // notify objects
+  get_equipment()->set_game(this);
+  get_dungeon_equipment()->set_game(this);
+  zsdx->get_debug_keys()->set_game(this);
   controls = new Controls(this);
 
   // initialize the hero
@@ -65,8 +72,7 @@ Game::Game(Savegame *savegame):
   hud = new HUD(this);
 
   // launch the starting map
-  set_current_map(savegame->get_integer(Savegame::STARTING_MAP),
-		  "", Transition::FADE);
+  set_current_map(savegame->get_integer(Savegame::STARTING_MAP), "", Transition::FADE);
 }
 
 /**
@@ -94,10 +100,6 @@ Game::~Game(void) {
   if (previous_map_surface != NULL) {
     delete previous_map_surface;
   }
-
-  if (zsdx->game == this) {
-    zsdx->set_game(NULL);
-  }
 }
 
 /**
@@ -110,16 +112,12 @@ Hero * Game::get_hero(void) {
 
 /**
  * Returns the coordinates of the hero on the current map.
- * The coordinates returned are the coordinates of the hero's origin point
- * on the map.
+ * The coordinates returned are the coordinates of the hero's origin point on the map.
  * The width and the height are not used.
  * @return the position of the hero
  */
 const Rectangle & Game::get_hero_xy(void) {
-
-  static Rectangle xy;
-  xy.set_xy(hero->get_xy());
-  return xy;
+  return hero->get_xy();
 }
 
 /**
@@ -293,7 +291,7 @@ void Game::update_transitions(void) {
       next_map = NULL;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
-      transition = Transition::create(transition_style, Transition::OUT);
+      transition = Transition::create(transition_style, Transition::OUT, this);
       transition->start();
     }
   }
@@ -308,17 +306,17 @@ void Game::update_transitions(void) {
 
     if (reseting) {
       current_map->unload();
-      set_next_screen(new TitleScreen());
+      set_next_screen(new TitleScreen(zsdx));
     }
     else if (restarting) {
       current_map->unload();
-      set_next_screen(new Game(new Savegame(savegame)));
+      set_next_screen(new Game(zsdx, new Savegame(savegame)));
     }
     else if (transition_direction == Transition::OUT) {
 
       if (next_map == current_map) {
 	hero->place_on_destination_point(current_map);
-	transition = Transition::create(transition_style, Transition::IN);
+	transition = Transition::create(transition_style, Transition::IN, this);
 	transition->start();
 	next_map = NULL;
       }
@@ -379,7 +377,7 @@ void Game::update_transitions(void) {
 
   // if a map has just been set as the current map, start it and play the in transition
   if (!current_map->is_started()) {
-    transition = Transition::create(transition_style, Transition::IN);
+    transition = Transition::create(transition_style, Transition::IN, this);
 
     if (previous_map_surface != NULL) {
       // some transition effects need to display both maps simultaneously
@@ -760,7 +758,7 @@ void Game::show_message(const MessageId &message_id, int position) {
     y = 144;
   }
 
-  dialog_box = new DialogBox(message_id, 50, y);
+  dialog_box = new DialogBox(this, message_id, 50, y);
 }
 
 /**
@@ -885,7 +883,7 @@ void Game::load_dungeon(void) {
  */
 void Game::reset(void) {
 
-  transition = Transition::create(Transition::FADE, Transition::OUT);
+  transition = Transition::create(Transition::FADE, Transition::OUT, this);
   transition->start();
   reseting = true;
 }
@@ -895,7 +893,7 @@ void Game::reset(void) {
  */
 void Game::restart(void) {
 
-  transition = Transition::create(Transition::FADE, Transition::OUT);
+  transition = Transition::create(Transition::FADE, Transition::OUT, this);
   transition->start();
   restarting = true;
 }

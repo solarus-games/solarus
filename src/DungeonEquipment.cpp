@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "DungeonEquipment.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "Savegame.h"
@@ -25,7 +24,7 @@
  * @param savegame the savegame
  */
 DungeonEquipment::DungeonEquipment(Savegame *savegame):
-  savegame(savegame) {
+  savegame(savegame), game(NULL) {
 
 }
 
@@ -37,6 +36,14 @@ DungeonEquipment::~DungeonEquipment(void) {
 }
 
 /**
+ * Sets the current game.
+ * @param game the game
+ */
+void DungeonEquipment::set_game(Game *game) {
+  this->game = game;
+}
+
+/**
  * Returns the current dungeon number.
  * The dungeon number returned is between 1 and 20.
  * The programs stops with an error message if the player is not in a dungeon.
@@ -44,7 +51,7 @@ DungeonEquipment::~DungeonEquipment(void) {
  */
 int DungeonEquipment::get_current_dungeon(void) {
 
-  Map *current_map = zsdx->game->get_current_map();
+  Map *current_map = game->get_current_map();
 
   if (!current_map->is_in_dungeon()) {
     DIE("The player is not in a dungeon");

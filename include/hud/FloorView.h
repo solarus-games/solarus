@@ -27,7 +27,6 @@ class FloorView: public HudElement {
 
   private:
 
-    Game *game;
     Map *current_map;
     Surface *img_floors;
 

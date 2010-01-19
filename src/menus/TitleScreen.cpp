@@ -30,9 +30,10 @@
 
 /**
  * Creates a title screen.
+ * @param zsdx the ZSDX object
  */
-TitleScreen::TitleScreen(void):
-  Screen() {
+TitleScreen::TitleScreen(ZSDX *zsdx):
+  Screen(zsdx) {
 
   // go to phase 1
   init_phase_black_screen();
@@ -290,7 +291,7 @@ void TitleScreen::update_phase_title(void) {
 
   if (transition_out->is_over()) {
     exit_phase_title();
-    set_next_screen(new SelectionMenuSelectFile(NULL));
+    set_next_screen(new SelectionMenuSelectFile(zsdx)); 
   }
 }
 

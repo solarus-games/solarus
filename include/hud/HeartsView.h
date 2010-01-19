@@ -27,11 +27,11 @@ class HeartsView: public HudElement {
 
   private:
 
-    Equipment *equipment;
+    Equipment *equipment;                         /**< the equipment object that handles the number of hearts */
 
     // rectangles in the image
-    static Rectangle full_heart_position;
-    static Rectangle fraction_heart_positions[3];
+    static const Rectangle full_heart_position;
+    static const Rectangle fraction_heart_positions[3];
 
     Sprite *empty_heart_sprite;
 
@@ -44,8 +44,10 @@ class HeartsView: public HudElement {
 
   public:
 
+    HeartsView(Game *game, int x, int y);
     HeartsView(Equipment *equipment, int x, int y);
     ~HeartsView(void);
+    void create(void);
 
     void update(void);
     void rebuild(void);

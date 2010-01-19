@@ -22,98 +22,58 @@
 /**
  * The movement of an entity on the map, visible or not.
  * A moving entity has an instance of Movement which modifies its coordinates.
- * An instance of Movement is attached to one and only one instance of MapEntity.
+ * An instance of Movement is attached to at most one instance of MapEntity.
  *
- * This class implements a simple speed vector: you can set the speed and the direction.
- * Subclassses can implement totally different movements, using or not what is
- * provided by the Movement class.
+ * This is the parent class of all kinds of movement.
+ * It implements a simple speed vector: you can set the speed and the direction.
+ * Subclassses can use this speed vector and extend it or implement totally different movements.
  */
 class Movement {
 
   protected:
 
-    /**
-     * The entity controlled by this movement.
-     * If it is NULL, the movement is applied to the internal x and y fields of the Movement class.
-     */
-    MapEntity *entity;
+    MapEntity *entity;         /**< The entity controlled by this movement.
+                                * If it is NULL, the movement is applied to the internal x and y fields of the Movement class. */
 
   private:
 
-    int x; /**< x coordinate of the object controlled by this movement */
-    int y; /**< y coordinate of the object controlled by this movement */
+    int x;                     /**< x coordinate of the object controlled by this movement */
+    int y;                     /**< y coordinate of the object controlled by this movement */
 
     // speed vector
 
-    /**
-     * X speed of the entity, between -100 and 100.
-     * 0: stopped
-     * positive value: moving to the right
-     * negative value: moving to the left
-     */
-    double x_speed;
+    double x_speed;            /**< X speed of the entity, between -100 and 100.
+				* 0: stopped
+				* positive value: moving to the right
+				* negative value: moving to the left */
 
-    /**
-     * Y speed of the entity, between -100 and 100.
-     * 0: stopped
-     * positive value: moving downwards
-     * negative value: moving upwards
-     */
-    double y_speed;
+    double y_speed;            /**< Y speed of the entity, between -100 and 100.
+				* 0: stopped
+				* positive value: moving downwards
+				* negative value: moving upwards */
 
-    /**
-     * Date of the next x move in ticks.
-     */
-    uint32_t next_move_date_x;
+    uint32_t next_move_date_x; /**< Date of the next x move in ticks. */
+    uint32_t next_move_date_y; /**< Date of the next y move in ticks. */
 
-    /**
-     * Date of the next y move in ticks.
-     */
-    uint32_t next_move_date_y;
-
-    /**
-     * Date of the last x or y move.
-     */
-    uint32_t last_move_date;
+    uint32_t last_move_date;   /**< Date of the last x or y move. */
 
     // the following fields are redundant and can be computed
     // with x_speed and y_speed
 
-    /**
-     * Delay in ticks between an x move of 2 pixels.
-     * x_delay = 200 / |x_speed|
-     */
-    uint32_t x_delay;
+    uint32_t x_delay;          /**< Delay in ticks between an x move of 1 pixel.
+				* x_delay = 200 / |x_speed|  */
+    uint32_t y_delay;          /**< Delay in ticks between an y move of 1 pixel.
+				* y_delay = 200 / |y_speed|
+				*/
 
-    /**
-     * Delay in ticks between an y move of 2 pixels.
-     * y_delay = 200 / |y_speed|
-     */
-    uint32_t y_delay;
+    int x_move;                /**< Number of pixels of the next x move : 0, 1 or -1. */
+    int y_move;                /**< Number of pixels of the next y move : 0, 1 or -1. */
 
-    /**
-     * Number of pixels of the next x move : 0, 1 or -1.
-     * The smallest move is two pixels because an entity
-     * doesn't need to make a move of only one pixel. 
-     */
-    int x_move;
-
-    /**
-     * Number of pixels of the next y move : 0, 1 or -1.
-     */
-    int y_move;
-
-    /**
-     * Indicates whether the movement is suspended.
-     */
-    bool suspended;
+    bool suspended;            /**< Indicates whether the movement is suspended. */
 
   protected:
 
-    /**
-     * Indicates when the movement was suspended.
-     */
-    uint32_t when_suspended;
+    uint32_t when_suspended;   /**< Indicates when the movement is currently suspended. */
 
     int get_x_move(void);
     int get_y_move(void);

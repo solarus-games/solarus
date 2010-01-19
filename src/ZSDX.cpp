@@ -28,12 +28,6 @@
 #include "menus/SelectionMenuSelectFile.h"
 
 /**
- * Global variable to get the ZSDX instance
- * from anywhere in the code.
- */
-ZSDX *zsdx = NULL;
-
-/**
  * Initializes the game engine.
  */
 ZSDX::ZSDX(int argc, char **argv) {
@@ -44,7 +38,7 @@ ZSDX::ZSDX(int argc, char **argv) {
   debug_keys = new DebugKeys();
 
   // create the first screen
-  current_screen = new TitleScreen();
+  current_screen = new TitleScreen(this);
   exiting = false;
   game = NULL;
 }
@@ -60,11 +54,11 @@ ZSDX::~ZSDX(void) {
 }
 
 /**
- * Sets the current game.
- * @param game the game
+ * Returns the debugging keys object.
+ * @return the debbuging keys object
  */
-void ZSDX::set_game(Game *game) {
-  this->game = game;
+DebugKeys * ZSDX::get_debug_keys(void) {
+  return debug_keys;
 }
 
 /**
@@ -74,7 +68,7 @@ void ZSDX::set_game(Game *game) {
 void ZSDX::skip_menus(void) {
 
   if (game == NULL) {
-    Game *game = new Game(new Savegame("save1.zsd"));
+    Game *game = new Game(this, new Savegame("save1.zsd"));
     delete current_screen;
     current_screen = game;
   }
@@ -131,7 +125,7 @@ void ZSDX::main(void) {
 	current_screen = next_screen;
       }
       else {
-	current_screen = new TitleScreen();
+	current_screen = new TitleScreen(this);
       }
     }
     else {
@@ -246,10 +240,8 @@ void ZSDX::display(void) {
  */
 int main(int argc, char **argv) {
 
-  zsdx = new ZSDX(argc, argv);
-  zsdx->main();
-
-  delete zsdx;
+  ZSDX zsdx = ZSDX(argc, argv);
+  zsdx.main();
 
   return 0;
 }

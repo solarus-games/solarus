@@ -19,7 +19,6 @@
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
-#include "ZSDX.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
@@ -27,13 +26,12 @@
 
 /**
  * Constructor.
- * @param equipment the player's equipment
+ * @param game the current game
  * @param x x coordinate of the top-left corner of the magic bar on the destination surface
  * @param y y coordinate of the top-left corner of the magic bar on the destination surface
  */
-MagicBar::MagicBar(Equipment *equipment, int x, int y):
-  HudElement(x, y, 88, 8),
-  equipment(equipment),
+MagicBar::MagicBar(Game *game, int x, int y):
+  HudElement(game, x, y, 88, 8),
   next_magic_update_date(System::now()) {
 
   img_magic_bar = ResourceManager::load_image("hud/magic_bar.png");
@@ -94,11 +92,11 @@ void MagicBar::update(void) {
     }
 
     // suspend the magic bar animation if the game is suspended
-    if (zsdx->game->is_suspended() && !sprite_magic_bar_container->is_suspended()) {
+    if (game->is_suspended() && !sprite_magic_bar_container->is_suspended()) {
       sprite_magic_bar_container->set_current_frame(1);
       sprite_magic_bar_container->set_suspended(true);
     }
-    else if (sprite_magic_bar_container->is_suspended() && !zsdx->game->is_suspended()) {
+    else if (sprite_magic_bar_container->is_suspended() && !game->is_suspended()) {
       sprite_magic_bar_container->set_suspended(false);
     }
 

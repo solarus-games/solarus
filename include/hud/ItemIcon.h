@@ -29,8 +29,6 @@ class ItemIcon: public HudElement {
 
   private:
 
-    Savegame *savegame;             /**< the savegame, used to know what item is currently assigned to this slot */
-
     int slot;                       /**< the slot of this icon (0 for the X icon, 1 for the Y icon) */
 
     Surface *background_img;        /**< background image of the icon (i.e. the empty icon) */
@@ -48,7 +46,7 @@ class ItemIcon: public HudElement {
 
   public:
 
-    ItemIcon(int slot, Savegame *savegame, int x, int y);
+    ItemIcon(Game *game, int slot, int x, int y);
     ~ItemIcon(void);
 
     void update(void);

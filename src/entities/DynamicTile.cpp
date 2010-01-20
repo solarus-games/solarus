@@ -18,7 +18,6 @@
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
 #include "entities/Hero.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "lowlevel/FileTools.h"
 #include "Map.h"
@@ -115,7 +114,7 @@ void DynamicTile::update(void) {
   MapEntity::update();
 
   if (waiting_enabled) {
-    Hero *hero = zsdx->game->get_hero();
+    Hero *hero = game->get_hero();
     if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(hero)) {
       this->enabled = true;
       this->waiting_enabled = false;

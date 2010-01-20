@@ -28,7 +28,6 @@
 #include "movements/JumpMovement.h"
 #include "movements/TargetMovement.h"
 #include "movements/PathMovement.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
@@ -59,7 +58,7 @@ void Hero::set_state(State state) {
   if (state != this->state) {
     this->state = state;
 
-    if (!zsdx->game->is_suspended()) {
+    if (!game->is_suspended()) {
       get_normal_movement()->set_moving_enabled(state < PUSHING, state <= CONVEYOR_BELT);
       just_moved();
     }
@@ -268,7 +267,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
 	this->current_conveyor_belt = conveyor_belt;
 	set_state(CONVEYOR_BELT);
 	sprites->set_animation_stopped();
-	zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+	game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
 	// set the movement
 	conveyor_belt_snapping = true;
@@ -376,9 +375,9 @@ void Hero::start_sword(void) {
  */
 bool Hero::can_start_sword(void) {
 
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
 
-  return !zsdx->game->is_suspended()
+  return !game->is_suspended()
     && (state <= CARRYING || state == SWORD_SWINGING)
     && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD;
 }
@@ -392,7 +391,7 @@ void Hero::update_sword_swinging(void) {
   if (sprites->is_animation_finished()) {
 
     // if the player is still pressing the sword key, start loading the sword
-    if (zsdx->game->get_controls()->is_key_pressed(Controls::SWORD)) {
+    if (game->get_controls()->is_key_pressed(Controls::SWORD)) {
       start_sword_loading();
     }
     else {
@@ -442,7 +441,7 @@ void Hero::update_sword_loading(void) {
       counter = 0;
   }
 
-  Controls *controls = zsdx->game->get_controls();
+  Controls *controls = game->get_controls();
 
   if (!controls->is_key_pressed(Controls::SWORD)) {
     // the player just released the sword key
@@ -476,7 +475,7 @@ void Hero::start_sword_tapping(void) {
  */
 void Hero::update_sword_tapping(void) {
 
-  Controls *controls = zsdx->game->get_controls();
+  Controls *controls = game->get_controls();
   const Rectangle &facing_point = get_facing_point();
 
   if (!controls->is_key_pressed(Controls::SWORD)
@@ -517,7 +516,7 @@ void Hero::start_lifting(DestructibleItem *item_to_lift) {
   this->lifted_item = new CarriedItem(this, item_to_lift);
   lifted_item->set_map(map);
 
-  zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   set_state(LIFTING);
   sprites->set_animation_lifting();
   set_facing_entity(NULL);
@@ -545,7 +544,7 @@ void Hero::start_carrying(void) {
   }
 
   // action icon "throw"
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
   keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
 }
 
@@ -556,7 +555,7 @@ void Hero::start_carrying(void) {
 void Hero::stop_carrying(void) {
   delete lifted_item;
   lifted_item = NULL;
-  zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 }
 
 /**
@@ -565,7 +564,7 @@ void Hero::stop_carrying(void) {
 void Hero::start_throwing(void) {
 
   // remove the "throw" icon
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
   keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   // we check the state because the "throw" icon is actually shown as soon as
@@ -617,7 +616,7 @@ void Hero::update_carried_items(void) {
     }
   }
   else { // no more lifted item: remove the "throw" icon if it is still here
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    KeysEffect *keys_effect = game->get_keys_effect();
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
@@ -679,7 +678,7 @@ void Hero::start_pushing(void) {
 void Hero::update_pushing(void) {
 
   // no change when the game is suspended
-  if (zsdx->game->is_suspended()) {
+  if (game->is_suspended()) {
     return;
   }
 
@@ -800,7 +799,7 @@ void Hero::start_pulling(void) {
  */
 void Hero::update_grabbing_pulling(void) {
 
-  Controls *controls = zsdx->game->get_controls();
+  Controls *controls = game->get_controls();
 
   // the hero is grabbing an obstacle
   if (state == GRABBING) {
@@ -951,7 +950,7 @@ void Hero::stop_moving_grabbed_entity(void) {
     set_movement(normal_movement);
   }
 
-  Controls *controls = zsdx->game->get_controls();
+  Controls *controls = game->get_controls();
   if (state == PUSHING && !controls->is_key_pressed(Controls::ACTION)) {
     // the hero was pushing an entity without grabbing it
     grabbed_entity = NULL;
@@ -975,7 +974,7 @@ void Hero::freeze(void) {
   get_normal_movement()->set_moving_enabled(false, false);
   sprites->set_animation_stopped();
   destroy_carried_items();
-  zsdx->game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   set_state(FREEZED);
 }
 
@@ -1014,7 +1013,7 @@ void Hero::give_treasure(Treasure *treasure) {
  */
 void Hero::update_treasure(void) {
 
-  if (!zsdx->game->is_giving_treasure()) {
+  if (!game->is_giving_treasure()) {
 
     /* The treasure message is over: if the treasure was a tunic,
      * a sword or a shield, then we must reload the hero's sprites now
@@ -1535,7 +1534,7 @@ void Hero::start_inventory_item(InventoryItemId item_id) {
   this->current_inventory_item = new InventoryItem(item_id);
   this->when_can_use_inventory_item = System::now() + 500;
   set_state(USING_INVENTORY_ITEM);
-  current_inventory_item->start(zsdx->game);
+  current_inventory_item->start(game);
 }
 
 /**

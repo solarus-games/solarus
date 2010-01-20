@@ -27,7 +27,7 @@
  * @param zsdx the application object
  */
 DebugKeys::DebugKeys(ZSDX *zsdx):
-  zsdx(zsdx) {
+  zsdx(zsdx), game(NULL) {
 }
 
 /**

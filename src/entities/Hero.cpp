@@ -27,7 +27,6 @@
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
-#include "ZSDX.h"
 #include "ResourceManager.h"
 #include "Game.h"
 #include "Equipment.h"
@@ -592,7 +591,7 @@ void Hero::update(void) {
 
     if (equipment->get_hearts() <= 0 && can_start_gameover_sequence()) {
       sprites->stop_blinking();
-      zsdx->game->start_gameover_sequence();
+      game->start_gameover_sequence();
     }
   }
 
@@ -607,7 +606,7 @@ void Hero::update(void) {
  */
 void Hero::display_on_map(void) {
 
-  if (!sprites->is_visible()) {
+  if (!sprites->is_visible() || game->is_showing_gameover()) {
     return; // the hero or the game is in a special state where he is not displayed
   }
 
@@ -709,7 +708,7 @@ void Hero::movement_just_changed(void) {
   }
 
   // check the collisions
-  if (map != NULL && !zsdx->game->is_suspended()) {
+  if (map != NULL && !game->is_suspended()) {
     just_moved();
   }
 }
@@ -769,7 +768,7 @@ void Hero::set_facing_entity(Detector *detector) {
 
   this->facing_entity = detector;
 
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
 
   // if the hero stops facing an entity that showed an action icon
   if (facing_entity == NULL &&
@@ -838,7 +837,7 @@ bool Hero::is_facing_obstacle(void) {
 void Hero::update_position(void) {
 
   // no position change when the game is suspended
-  if (zsdx->game->is_suspended()) {
+  if (game->is_suspended()) {
     return;
   }
 

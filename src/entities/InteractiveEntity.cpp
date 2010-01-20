@@ -19,7 +19,6 @@
 #include "movements/PathMovement.h"
 #include "movements/RandomWalkMovement.h"
 #include "movements/JumpMovement.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
@@ -214,7 +213,7 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
   if (entity_overlapping->is_hero()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE
@@ -232,15 +231,15 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
  */
 void InteractiveEntity::action_key_pressed(void) {
 
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  Hero *hero = zsdx->game->get_hero();
+  KeysEffect *keys_effect = game->get_keys_effect();
+  Hero *hero = game->get_hero();
 
   if (hero->get_state() == Hero::FREE) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // for a place with water: start the dialog
     if (subtype == WATER_FOR_BOTTLE) {
-      zsdx->game->get_equipment()->found_water();
+      game->get_equipment()->found_water();
     }
     else {
 
@@ -252,7 +251,7 @@ void InteractiveEntity::action_key_pressed(void) {
 
       // start the message or call the script
       if (message_to_show != "_none") {
-	zsdx->game->show_message(message_to_show);
+	game->show_message(message_to_show);
       }
       else {
 	// there is no message specified: we call the script
@@ -280,12 +279,12 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
       && item->is_bottle()
       && item->get_variant() == 1) {
 
-    zsdx->game->get_equipment()->found_water();
+    game->get_equipment()->found_water();
     interaction = true;
   }
   else {
     // in other cases, nothing is predefined in the engine: we call the script
-    interaction = zsdx->game->get_current_script()->
+    interaction = game->get_current_script()->
       event_interaction_item(get_name(), item->get_id(), item->get_variant());
   }
 
@@ -389,8 +388,8 @@ void InteractiveEntity::just_moved(void) {
       get_sprite()->set_current_direction(animation_directions[movement_direction]);
     }
 
-    Hero *hero = zsdx->game->get_hero();
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    Hero *hero = game->get_hero();
+    KeysEffect *keys_effect = game->get_keys_effect();
     if (hero->get_facing_entity() == this &&
 	keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
 	!hero->is_facing_point_in(get_bounding_box())) {

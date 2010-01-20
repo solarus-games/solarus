@@ -27,8 +27,6 @@ class HeartsView: public HudElement {
 
   private:
 
-    Equipment *equipment;                         /**< the equipment object that handles the number of hearts */
-
     // rectangles in the image
     static const Rectangle full_heart_position;
     static const Rectangle fraction_heart_positions[3];

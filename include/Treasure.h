@@ -153,6 +153,7 @@ class Treasure {
     Treasure(Game *game, Content content, int savegame_variable);
     Treasure(Game *game, Content content, int amount, int savegame_variable);
     ~Treasure(void);
+    void set_game(Game *game);
 
     Content get_content(void);
     bool has_amount(void);

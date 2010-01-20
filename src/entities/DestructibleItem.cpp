@@ -23,7 +23,6 @@
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "Map.h"
-#include "ZSDX.h"
 #include "Sprite.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
@@ -198,8 +197,8 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
 
   if (entity_overlapping->is_hero()) {
 
-    Hero *hero = zsdx->game->get_hero();
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    Hero *hero = game->get_hero();
+    KeysEffect *keys_effect = game->get_keys_effect();
 
     if (features[subtype].can_be_lifted
 	&& !is_being_cut
@@ -207,7 +206,7 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
 	&& keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE) {
 
-      Equipment *equipment = zsdx->game->get_equipment();
+      Equipment *equipment = game->get_equipment();
       int weight = features[subtype].weight;
       if (equipment->can_lift(weight)) {
 	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
@@ -261,8 +260,8 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
  */
 void DestructibleItem::action_key_pressed(void) {
 
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  Hero *hero = zsdx->game->get_hero();
+  KeysEffect *keys_effect = game->get_keys_effect();
+  Hero *hero = game->get_hero();
   KeysEffect::ActionKeyEffect effect = keys_effect->get_action_key_effect();
 
   if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
@@ -271,7 +270,7 @@ void DestructibleItem::action_key_pressed(void) {
       && !is_disabled()) {
 
     int weight = features[subtype].weight;
-    Equipment *equipment = zsdx->game->get_equipment();
+    Equipment *equipment = game->get_equipment();
 
     if (equipment->can_lift(weight)) {
       hero->start_lifting(this);
@@ -297,13 +296,13 @@ void DestructibleItem::action_key_pressed(void) {
     }
     else {
       if (features[subtype].can_be_cut) {
-        zsdx->game->show_message("_cannot_lift_should_cut");
+        game->show_message("_cannot_lift_should_cut");
       }
       else if (!equipment->can_lift(1)) {
-	zsdx->game->show_message("_cannot_lift_too_heavy");
+	game->show_message("_cannot_lift_too_heavy");
       }
       else {
-	zsdx->game->show_message("_cannot_lift_still_too_heavy");
+	game->show_message("_cannot_lift_still_too_heavy");
       }
     }
   }
@@ -375,7 +374,7 @@ void DestructibleItem::update(void) {
     }
   }
 
-  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(zsdx->game->get_hero())) {
+  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(game->get_hero())) {
     get_sprite()->set_current_animation("regenerating");
     is_regenerating = true;
     regeneration_date = 0;

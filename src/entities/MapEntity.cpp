@@ -170,7 +170,7 @@ MapEntity::~MapEntity(void) {
 }
 
 /**
- * Once the entity is created, this function is called to check whether
+ * Just after the entity is created, this function is called once to check whether
  * the entity created can be added to the specified map and in the current game state.
  * This function returns true by default.
  * @param map the map where this entity is about to be added

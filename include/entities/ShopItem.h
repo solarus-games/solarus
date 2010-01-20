@@ -51,6 +51,8 @@ class ShopItem: public Detector {
     static CreationFunction parse;
 
     EntityType get_type(void);
+    bool can_be_added(Map *map);
+    void set_map(Map *map);
 
     bool is_sword_ignored(void);
     bool is_obstacle_for(MapEntity *other);

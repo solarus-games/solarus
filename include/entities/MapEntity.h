@@ -122,7 +122,6 @@ class MapEntity {
     MapEntity(void);
     MapEntity(Layer layer, int x, int y, int width, int height);
     MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
-    virtual bool can_be_added(Map *map);
     void remove_from_map(void);
 
     // method called by the subclasses to set their properties
@@ -185,6 +184,7 @@ class MapEntity {
     void set_aligned_to_grid(void);
 
     // properties
+    virtual bool can_be_added(Map *map);
     virtual void set_map(Map *map);
     Map * get_map(void);
     Game * get_game(void);

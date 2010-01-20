@@ -26,39 +26,40 @@
  */
 class Chest: public Detector {
 
- private:
+  private:
 
-  bool big_chest;       /**< true for a big chest, false for normal chests */
-  Treasure *treasure;   /**< the treasure placed in this chest, or NULL if the chest contains nothing */
-  bool hidden;          /**< indicates that the chest is hidden (the script has to unhide it) */
-  bool open;            /**< true if the chest is open (but the treasure may not have
-		         * been given yet because there is a delay of 500 ms) */
-  bool treasure_given;  /**< true if the chest is open and the treasure has been given to the player */
-  uint32_t treasure_date; /**< date when the treasure will be given to the player */
+    bool big_chest;       /**< true for a big chest, false for normal chests */
+    Treasure *treasure;   /**< the treasure placed in this chest, or NULL if the chest contains nothing */
+    bool hidden;          /**< indicates that the chest is hidden (the script has to unhide it) */
+    bool open;            /**< true if the chest is open (but the treasure may not have
+			   * been given yet because there is a delay of 500 ms) */
+    bool treasure_given;  /**< true if the chest is open and the treasure has been given to the player */
+    uint32_t treasure_date; /**< date when the treasure will be given to the player */
 
-  void initialize_sprite(void);
+    void initialize_sprite(void);
 
- public:
+  public:
 
-  Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
-  ~Chest(void);
-  static CreationFunction parse;
+    Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
+    ~Chest(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
-  bool is_displayed_in_y_order(void);
+    EntityType get_type(void);
+    bool is_displayed_in_y_order(void);
+    void set_map(Map *map);
 
-  bool is_open(void);
-  void set_open(bool open);
+    bool is_open(void);
+    void set_open(bool open);
 
-  bool is_hidden(void);
-  void set_hidden(bool hidden);
+    bool is_hidden(void);
+    void set_hidden(bool hidden);
 
-  bool is_obstacle_for(MapEntity *other);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void update(void);
-  void display_on_map(void);
-  void action_key_pressed(void);
-  void set_suspended(bool suspended);
+    bool is_obstacle_for(MapEntity *other);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void update(void);
+    void display_on_map(void);
+    void action_key_pressed(void);
+    void set_suspended(bool suspended);
 };
 
 #endif

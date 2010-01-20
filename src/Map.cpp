@@ -216,6 +216,8 @@ void Map::unload(void) {
  */
 void Map::load(void) {
 
+  // TODO add parameter game
+
   this->visible_surface = new Surface(320, 240);
   entities = new MapEntities(this);
 

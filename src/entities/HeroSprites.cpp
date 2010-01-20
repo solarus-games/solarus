@@ -22,8 +22,6 @@
 #include "Equipment.h"
 #include "Map.h"
 #include "ResourceManager.h"
-#include "ZSDX.h"
-#include "Game.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
@@ -213,7 +211,7 @@ void HeroSprites::rebuild_equipment(void) {
  * @return true if the hero is currently visible
  */
 bool HeroSprites::is_visible(void) {
-  return hero->is_visible() && !zsdx->game->is_showing_gameover() && hero->get_state() != Hero::RETURNING_TO_SOLID_GROUND;
+  return hero->is_visible() && hero->get_state() != Hero::RETURNING_TO_SOLID_GROUND;
 }
 
 /**

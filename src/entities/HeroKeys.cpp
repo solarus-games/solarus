@@ -17,7 +17,6 @@
 #include "entities/Hero.h"
 #include "entities/Detector.h"
 #include "movements/PlayerMovement.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "InventoryItemId.h"
@@ -118,7 +117,7 @@ void Hero::action_key_pressed(void) {
   // this line causes a bug: the hero can interact with an entity with the wrong sprite direction
   //  set_animation_direction_from_movement(); 
 
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  KeysEffect *keys_effect = game->get_keys_effect();
 
   switch (keys_effect->get_action_key_effect()) {
 

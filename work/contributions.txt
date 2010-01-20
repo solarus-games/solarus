@@ -28,6 +28,7 @@ Djipi (amélioration du logo)
 Daru13 (idées de boss (voir MP), graphismes non pixel-art sauf décors)
 Sam101 (paquets ArchLinux, Debian/Ubuntu (BenObiWan ?))
 SkyJedi + Deather (version Mac)
+krytzz (aide pour cmake)
 
 
 Traduction :

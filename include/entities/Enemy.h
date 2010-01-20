@@ -109,21 +109,21 @@ class Enemy: public Detector {
 					     *   (the custom_attack() fonction is called) */
 
     // enemy characteristics
-    Rank rank;                          /**< is this enemy a normal enemy, a miniboss or a boss? */
-    int savegame_variable;              /**< index of the boolean variable indicating whether this enemy is killed,
-					 * or -1 if it is not saved */
+    Rank rank;                              /**< is this enemy a normal enemy, a miniboss or a boss? */
+    int savegame_variable;                  /**< index of the boolean variable indicating whether this enemy is killed,
+					     * or -1 if it is not saved */
 
     // enemy state
-    bool enabled;                       /**< indicates that the enemy is enabled */
-    bool being_hurt;                    /**< indicates that the enemy is being hurt */
-    uint32_t stop_hurt_date;              /**< date when the enemy stops being hurt */
-    Movement *normal_movement;          /**< backup of the enemy's movement, which is replaced by
-					 * a straight movement while it is hurt */
-    bool invulnerable;                  /**< indicates that the enemy cannot be hurt for now */
-    uint32_t vulnerable_again_date;       /**< date when the enemy can be hurt again */
-    bool can_attack;                    /**< indicates that the enemy can currently attack the hero */
-    uint32_t can_attack_again_date;       /**< date when the enemy can attack again */
-    bool immobilized;                   /**< indicates that the enemy is currently immobilized */
+    bool enabled;                           /**< indicates that the enemy is enabled */
+    bool being_hurt;                        /**< indicates that the enemy is being hurt */
+    uint32_t stop_hurt_date;                /**< date when the enemy stops being hurt */
+    Movement *normal_movement;              /**< backup of the enemy's movement, which is replaced by
+					     * a straight movement while it is hurt */
+    bool invulnerable;                      /**< indicates that the enemy cannot be hurt for now */
+    uint32_t vulnerable_again_date;         /**< date when the enemy can be hurt again */
+    bool can_attack;                        /**< indicates that the enemy can currently attack the hero */
+    uint32_t can_attack_again_date;         /**< date when the enemy can attack again */
+    bool immobilized;                       /**< indicates that the enemy is currently immobilized */
     uint32_t start_shaking_date;          /**< date when the enemy shakes */ 
     uint32_t end_shaking_date;            /**< date when the enemy stops shaking and walks again */ 
 
@@ -140,8 +140,10 @@ class Enemy: public Detector {
 
     // creation
     Enemy(const ConstructionParameters &params);
+    bool can_be_added(Map *map);
     virtual void initialize(void) = 0; // to initialize the features, the sprites and the movement
     virtual void restart(void);
+
     void stop_movement(void);
     void restore_movement(void);
 

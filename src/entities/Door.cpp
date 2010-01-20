@@ -19,7 +19,6 @@
 #include "entities/Hero.h"
 #include "entities/DynamicTile.h"
 #include "Sprite.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
@@ -71,7 +70,7 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
   }
 
   if (savegame_variable != -1) {
-    set_open(zsdx->game->get_savegame()->get_boolean(savegame_variable));
+    set_open(game->get_savegame()->get_boolean(savegame_variable));
   }
   else {
     set_open(false);
@@ -154,7 +153,7 @@ void Door::set_open(bool door_open) {
   }
 
   if (savegame_variable != -1) {
-    zsdx->game->get_savegame()->set_boolean(savegame_variable, door_open);
+    game->get_savegame()->set_boolean(savegame_variable, door_open);
   }
 }
 
@@ -190,7 +189,7 @@ void Door::notify_collision(MapEntity *entity_overlapping, CollisionMode collisi
   if (!is_open() && entity_overlapping->is_hero() && requires_key()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE) {
@@ -232,8 +231,8 @@ bool Door::requires_bomb(void) {
  */
 bool Door::can_open(void) {
 
-  Equipment *equipment = zsdx->game->get_equipment();
-  DungeonEquipment *dungeon_equipment = zsdx->game->get_dungeon_equipment();
+  Equipment *equipment = game->get_equipment();
+  DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();
 
   return (requires_small_key() && equipment->has_small_key())
     || (subtype == BIG_KEY && dungeon_equipment->has_big_key())
@@ -265,7 +264,7 @@ void Door::update(void) {
   }
 
   if (savegame_variable != -1) {
-    bool open_in_savegame = zsdx->game->get_savegame()->get_boolean(savegame_variable);
+    bool open_in_savegame = game->get_savegame()->get_boolean(savegame_variable);
     if (open_in_savegame && !is_open() && !changing) {
       set_opening();
     }
@@ -291,15 +290,15 @@ void Door::display_on_map(void) {
  */
 void Door::action_key_pressed(void) {
 
-  Hero *hero = zsdx->game->get_hero();
-  Equipment *equipment = zsdx->game->get_equipment();
+  Hero *hero = game->get_hero();
+  Equipment *equipment = game->get_equipment();
 
   if (hero->get_state() == Hero::FREE) {
     if (can_open()) {
       ResourceManager::get_sound("door_unlocked")->play();
       ResourceManager::get_sound("door_open")->play();
 
-      zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
+      game->get_savegame()->set_boolean(savegame_variable, true);
       if (subtype == SMALL_KEY_BLOCK) {
 	set_open(true);
       }
@@ -313,7 +312,7 @@ void Door::action_key_pressed(void) {
     }
     else {
       ResourceManager::get_sound("wrong")->play();
-      zsdx->game->show_message(key_required_message_ids[subtype]);
+      game->show_message(key_required_message_ids[subtype]);
     }
   }
 }
@@ -343,7 +342,7 @@ void Door::open(void) {
   set_opening();
 
   if (savegame_variable != -1) {
-    zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
+    game->get_savegame()->set_boolean(savegame_variable, true);
   }
 }
 
@@ -370,7 +369,7 @@ void Door::close(void) {
   set_closing();
 
   if (savegame_variable != -1) {
-    zsdx->game->get_savegame()->set_boolean(savegame_variable, false);
+    game->get_savegame()->set_boolean(savegame_variable, false);
   }
 }
 

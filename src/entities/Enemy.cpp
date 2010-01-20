@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"

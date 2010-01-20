@@ -17,7 +17,6 @@
 #include "entities/ShopItem.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
@@ -87,7 +86,7 @@ MapEntity * ShopItem::parse(std::istream &is, Layer layer, int x, int y) {
   FileTools::read(is, price);
   FileTools::read(is, message_id);
 
-  return create(name, Layer(layer), x, y, new Treasure(Treasure::Content(treasure), amount, savegame_variable),
+  return create(name, Layer(layer), x, y, new Treasure(NULL, Treasure::Content(treasure), amount, savegame_variable),
       price, message_id);
 }
 
@@ -104,12 +103,6 @@ MapEntity * ShopItem::parse(std::istream &is, Layer layer, int x, int y) {
 ShopItem * ShopItem::create(const std::string &name, Layer layer, int x, int y,
 			    Treasure *treasure, int price, const MessageId &message_id) {
 
-  // see if the item was not been already bought
-  int savegame_variable = treasure->get_savegame_variable();
-  if (savegame_variable != -1 && zsdx->game->get_savegame()->get_boolean(savegame_variable)) {
-    return NULL;
-  }
-
   return new ShopItem(name, layer, x, y, treasure, price, message_id);
 }
 
@@ -119,6 +112,33 @@ ShopItem * ShopItem::create(const std::string &name, Layer layer, int x, int y,
  */
 EntityType ShopItem::get_type() {
   return SHOP_ITEM;
+}
+
+/**
+ * Once the entity is created, this function is called to check whether
+ * the entity created can be added to the specified map and in the current game state.
+ * @param map the map where this entity is about to be added
+ * @return true if the entity can be added, false otherwise
+ */
+bool ShopItem::can_be_added(Map *map) {
+
+  Savegame *savegame = map->get_game()->get_savegame();
+
+  // see if the item was not been already bought
+  int savegame_variable = treasure->get_savegame_variable();
+  return savegame_variable == -1 || !savegame->get_boolean(savegame_variable);
+}
+
+/**
+ * Sets the current map of this entity.
+ * @param map the map
+ */
+void ShopItem::set_map(Map *map) {
+
+  Detector::set_map(map);
+
+  // notify the treasure
+  treasure->set_game(map->get_game());
 }
 
 /**
@@ -147,10 +167,10 @@ bool ShopItem::is_obstacle_for(MapEntity *other) {
  */
 void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero() && !zsdx->game->is_suspended()) {
+  if (entity_overlapping->is_hero() && !game->is_suspended()) {
 
-    Hero *hero = zsdx->game->get_hero();
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    Hero *hero = game->get_hero();
+    KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE) {
@@ -168,13 +188,13 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
  */
 void ShopItem::action_key_pressed(void) {
 
-  Hero *hero = zsdx->game->get_hero();
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+  Hero *hero = game->get_hero();
+  KeysEffect *keys_effect = game->get_keys_effect();
 
   if (hero->get_state() == Hero::FREE
       && keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
-    zsdx->game->show_message(message_id);
+    game->show_message(message_id);
     is_looking_item = true;
   }
 }
@@ -183,8 +203,6 @@ void ShopItem::action_key_pressed(void) {
  * Updates the entity.
  */
 void ShopItem::update(void) {
-
-  Game *game = zsdx->game;
 
   if (is_looking_item && !game->is_showing_message()) {
 
@@ -221,9 +239,8 @@ void ShopItem::update(void) {
 	equipment->remove_rupees(price);
 
 	int savegame_variable = treasure->get_savegame_variable();
-	game->give_treasure(new Treasure(treasure->get_content(),
-					 treasure->get_amount(),
-					 savegame_variable));
+	game->give_treasure(new Treasure(game, treasure->get_content(),
+	      treasure->get_amount(), savegame_variable));
 	if (savegame_variable != -1) {
 	  map->get_entities()->remove_entity(this);
 	  game->get_savegame()->set_boolean(savegame_variable, true);

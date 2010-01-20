@@ -17,7 +17,6 @@
 #include "entities/Block.h"
 #include "entities/Hero.h"
 #include "movements/FollowMovement.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "ResourceManager.h"
@@ -145,7 +144,7 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
   if (entity_overlapping->is_hero()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE) {
@@ -162,7 +161,7 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
  */
 bool Block::moved_by_hero(void) {
 
-  Hero *hero = zsdx->game->get_hero();
+  Hero *hero = game->get_hero();
 
   if (get_movement() != NULL || maximum_moves == 0 || System::now() < when_can_move ||
       (direction != -1 && hero->get_animation_direction() != direction)) {
@@ -189,7 +188,7 @@ void Block::update(void) {
 
   Detector::update();
 
-  Hero *hero = zsdx->game->get_hero();
+  Hero *hero = game->get_hero();
 
   if (movement != NULL) {
     // the block is being pushed or pulled by the hero

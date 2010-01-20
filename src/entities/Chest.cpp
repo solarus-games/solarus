@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "Treasure.h"
 #include "KeysEffect.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Sprite.h"
@@ -86,7 +85,7 @@ MapEntity * Chest::parse(std::istream &is, Layer layer, int x, int y) {
   FileTools::read(is, treasure_savegame_variable);
 
   return new Chest(name, Layer(layer), x, y, (big_chest != 0),
-      new Treasure(Treasure::Content(treasure_content), treasure_amount, treasure_savegame_variable));
+      new Treasure(NULL, Treasure::Content(treasure_content), treasure_amount, treasure_savegame_variable));
 }
 
 /**
@@ -95,6 +94,18 @@ MapEntity * Chest::parse(std::istream &is, Layer layer, int x, int y) {
  */
 EntityType Chest::get_type() {
   return CHEST;
+}
+
+/**
+ * Sets the current map of this entity.
+ * @param map the map
+ */
+void Chest::set_map(Map *map) {
+
+  Detector::set_map(map);
+
+  // notify the treasure
+  treasure->set_game(map->get_game());
 }
 
 /**
@@ -155,7 +166,7 @@ void Chest::set_hidden(bool hidden) {
   this->hidden = hidden;
 
   if (!hidden) {
-    Hero *hero = zsdx->game->get_hero();
+    Hero *hero = game->get_hero();
     if (overlaps(hero)) {
       hero->avoid_chest_collision(this);
     }
@@ -193,7 +204,7 @@ void Chest::set_open(bool open) {
       treasure_given = false;
 
       if (treasure == NULL) {
-	treasure = new Treasure(Treasure::NONE, -1);
+	treasure = new Treasure(game, Treasure::NONE, -1);
       }
     }
   }
@@ -216,7 +227,7 @@ void Chest::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
   if (entity_overlapping->is_hero() && !is_hidden()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE
@@ -241,14 +252,14 @@ void Chest::update(void) {
 
     if (!treasure_given && System::now() >= treasure_date) {
 
-      Hero *hero = zsdx->game->get_hero();
+      Hero *hero = game->get_hero();
 
       if (treasure->get_content() != Treasure::NONE) {
 	// give a treasure to the player
 
 	Treasure *t = treasure;
 	treasure = NULL;
-	zsdx->game->give_treasure(t); // from now the game handles the treasure
+	game->give_treasure(t); // from now the game handles the treasure
 	treasure_given = true;
       }
       else { // the chest is empty
@@ -256,7 +267,7 @@ void Chest::update(void) {
 	// mark the chest as found in the savegame
 	int savegame_variable = treasure->get_savegame_variable();
 	if (savegame_variable != -1) {
-	  zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
+	  game->get_savegame()->set_boolean(savegame_variable, true);
 	}
 
 	treasure_given = true;
@@ -270,7 +281,7 @@ void Chest::update(void) {
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty
 	  ResourceManager::get_sound("wrong")->play();
-	  zsdx->game->show_message("_empty_chest");
+	  game->show_message("_empty_chest");
 	  hero->unfreeze();
 	}
       }
@@ -287,9 +298,9 @@ void Chest::update(void) {
  */
 void Chest::action_key_pressed(void) {
 
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  Hero *hero = zsdx->game->get_hero();
-  DungeonEquipment *dungeon_equipment = zsdx->game->get_dungeon_equipment();
+  KeysEffect *keys_effect = game->get_keys_effect();
+  Hero *hero = game->get_hero();
+  DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();
 
   if (!is_hidden() && hero->get_state() == Hero::FREE) { // don't open a chest while pushing
 
@@ -303,7 +314,7 @@ void Chest::action_key_pressed(void) {
     }
     else {
       ResourceManager::get_sound("wrong")->play();
-      zsdx->game->show_message("_big_key_required");
+      game->show_message("_big_key_required");
     }
   }
 }

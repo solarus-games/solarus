@@ -188,9 +188,12 @@ void SelectionMenuCommon::read_savegames(void) {
     // hearts
     if (hearts_views[i] != NULL) {
       delete hearts_views[i];
+      hearts_views[i] = NULL;
     }
 
-    hearts_views[i] = new HeartsView(savegames[i]->get_equipment(), 168, 78 + i * 27);
+    if (!savegames[i]->is_empty()) {
+      hearts_views[i] = new HeartsView(savegames[i]->get_equipment(), 168, 78 + i * 27);
+    }
   }
 }
 

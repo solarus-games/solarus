@@ -107,6 +107,14 @@ DialogBox::~DialogBox(void) {
   delete end_message_sprite;
   delete current_message;
 }
+
+/**
+ * Returns the game where this dialog box is displayed.
+ * @return the current game
+ */
+Game * DialogBox::get_game(void) {
+  return game;
+}
     
 /**
  * Sets the dialog box style for all subsequent dialogs.

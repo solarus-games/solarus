@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "movements/PlayerMovement.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
@@ -42,7 +41,7 @@ CrystalSwitchBlock::CrystalSwitchBlock(Layer layer, int x, int y, int width, int
 
   create_sprite("entities/crystal_switch_block");
 
-  this->orange_raised = zsdx->game->get_crystal_switch_state();
+  this->orange_raised = game->get_crystal_switch_state();
 
   if (subtype == ORANGE) {
     get_sprite()->set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
@@ -204,7 +203,7 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
 void CrystalSwitchBlock::update(void) {
 
   // see if the state has to be changed
-  bool orange_raised = zsdx->game->get_crystal_switch_state();
+  bool orange_raised = game->get_crystal_switch_state();
   if (orange_raised != this->orange_raised) {
 
     this->orange_raised = orange_raised;

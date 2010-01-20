@@ -61,6 +61,14 @@ Enemy::~Enemy(void) {
 }
 
 /**
+ * Returns the type of entity.
+ * @return the type of entity
+ */
+EntityType Enemy::get_type() {
+  return ENEMY;
+}
+
+/**
  * Creates an instance from an input stream.
  * The input stream must respect the syntax of this entity type.
  * @param is an input stream
@@ -88,12 +96,8 @@ MapEntity * Enemy::parse(std::istream &is, Layer layer, int x, int y) {
 
 /**
  * Creates an enemy with the specified type.
- * This method acts like a constructor, except that it can return NULL if the enemy
- * is already dead and cannot be killed again (e.g. a boss).
- * It some very special cases, it can even return an entity that is not an enemy:
- * for example, imagine that the player killed a dungeon's end boss
- * but then killed himself (or just left the game) without picking the heart container: in this case,
- * this function returns an instance of PickableItem (the heart container).
+ * This method acts like a constructor, except that it returns an object from a
+ * subclass of Enemy.
  * @param type type of enemy to create
  * @param name a name identifying the enemy
  * @param rank rank of the enemy: normal, miniboss or boss
@@ -105,28 +109,11 @@ MapEntity * Enemy::parse(std::istream &is, Layer layer, int x, int y) {
  * this enemy is killed, or -1 if this enemy is not saved
  * @param pickable_item_subtype subtype of pickable item the enemy drops
  * @param pickable_item_savegame_variable index of the boolean variable
+ * @return the enemy created
  */
 MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
     const std::string &name, Layer layer, int x, int y, int direction,
     PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable) {
-
-  // see if the enemy is alive
-  if (savegame_variable != -1) {
-    
-    Savegame *savegame = zsdx->game->get_savegame();
-    if (savegame->get_boolean(savegame_variable)) {
-
-      // the enemy is dead: see whether it releases a pickable item saved
-      if (pickable_item_savegame_variable != -1) {
-	// return the pickable item that the player has possibly forgotten after he killed the enemy
-        return PickableItem::create(layer, x, y, pickable_item_subtype, pickable_item_savegame_variable, FALLING_NONE, false);
-      }
-      else {
-	// the enemy is already killed and released no pickable item saved
-        return NULL;
-      }
-    }
-  }
 
   // create the enemy
   Enemy *enemy;
@@ -168,11 +155,28 @@ MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
 }
 
 /**
- * Returns the type of entity.
- * @return the type of entity
+ * Just after the entity is created, this function is called once to check whether
+ * the entity created can be added to the specified map and in the current game state.
+ * @param map the map where this entity is about to be added
+ * @return true if the entity can be added, false otherwise
  */
-EntityType Enemy::get_type() {
-  return ENEMY;
+bool Enemy::can_be_added(Map *map) {
+
+  Savegame *savegame = map->get_game()->get_savegame();
+
+  // see if the enemy is dead
+  if (savegame_variable != -1 && savegame->get_boolean(savegame_variable)) {
+
+    // the enemy is dead and saved: checked whether it releases a pickable item saved
+    if (pickable_item_savegame_variable != -1) {
+      // create the pickable item that the player has forgotten after he killed the enemy
+      PickableItem *item = PickableItem::create(get_layer(), get_x(), get_y(), pickable_item_subtype, pickable_item_savegame_variable, FALLING_NONE, false);
+      map->get_entities()->add_entity(item);
+    }
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -604,7 +608,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0 &&
-	zsdx->game->get_equipment()->get_shield() >= minimum_shield_needed) {
+	game->get_equipment()->get_shield() >= minimum_shield_needed) {
 
       double angle = hero->get_vector_angle(this);
       int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
@@ -737,7 +741,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
 	// for a sword attack, the damage depends on the sword
 
 	static const int sword_factors[] = {0, 1, 2, 4, 8};
-	int sword = zsdx->game->get_equipment()->get_sword();
+	int sword = game->get_equipment()->get_sword();
 	life_lost *= sword_factors[sword];
 	if (((Hero*) source)->get_state() == Hero::SPIN_ATTACK) {
 	  life_lost *= 2; // muliply by 2 if this is a spin attack
@@ -838,7 +842,7 @@ void Enemy::kill(void) {
 
   // save the enemy state if required
   if (savegame_variable != -1) {
-    zsdx->game->get_savegame()->set_boolean(savegame_variable, true);
+    game->get_savegame()->set_boolean(savegame_variable, true);
   }
 }
 

@@ -16,7 +16,6 @@
  */
 #include "entities/Teletransporter.h"
 #include "entities/Hero.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "Map.h"
@@ -252,7 +251,7 @@ void Teletransporter::transport_hero(Hero *hero) {
     }
   }
 
-  zsdx->game->set_current_map(destination_map_id, name, transition_style);
+  game->set_current_map(destination_map_id, name, transition_style);
   hero->set_xy(hero_x, hero_y);
 }
 

@@ -35,12 +35,11 @@ ZSDX::ZSDX(int argc, char **argv) {
   // initialize the lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
   root_surface = new Surface(320, 240);
-  debug_keys = new DebugKeys();
+  debug_keys = new DebugKeys(this);
 
   // create the first screen
   current_screen = new TitleScreen(this);
   exiting = false;
-  game = NULL;
 }
 
 /**
@@ -67,11 +66,9 @@ DebugKeys * ZSDX::get_debug_keys(void) {
  */
 void ZSDX::skip_menus(void) {
 
-  if (game == NULL) {
-    Game *game = new Game(this, new Savegame("save1.zsd"));
-    delete current_screen;
-    current_screen = game;
-  }
+  Game *game = new Game(this, new Savegame("save1.zsd"));
+  delete current_screen;
+  current_screen = game;
 }
 
 /**

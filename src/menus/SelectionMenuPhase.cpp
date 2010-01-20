@@ -299,7 +299,9 @@ void SelectionMenuPhase::display_savegame(int save_number, Surface *destination_
   common_part->text_player_names[save_number]->display(destination_surface);
 
   // draw the hearts
-  common_part->hearts_views[save_number]->display(destination_surface);
+  if (common_part->hearts_views != NULL) {
+    common_part->hearts_views[save_number]->display(destination_surface);
+  }
 }
 
 /**

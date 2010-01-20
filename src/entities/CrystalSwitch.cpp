@@ -19,7 +19,6 @@
 #include "entities/Boomerang.h"
 #include "entities/Arrow.h"
 #include "entities/Hero.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
@@ -119,7 +118,7 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
   else if (entity_overlapping->is_hero() && collision_mode == COLLISION_FACING_POINT) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = zsdx->game->get_keys_effect();
+    KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->get_state() == Hero::FREE) {
@@ -159,14 +158,14 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
  */
 void CrystalSwitch::action_key_pressed(void) {
 
-  KeysEffect *keys_effect = zsdx->game->get_keys_effect();
-  Hero *hero = zsdx->game->get_hero();
+  KeysEffect *keys_effect = game->get_keys_effect();
+  Hero *hero = game->get_hero();
 
   if (hero->get_state() == Hero::FREE) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    zsdx->game->show_message("_crystal_switch");
+    game->show_message("_crystal_switch");
   }
 }
 
@@ -178,7 +177,7 @@ void CrystalSwitch::activate(void) {
   uint32_t now = System::now();
   if (now >= next_possible_hit_date) {
     ResourceManager::get_sound("switch")->play();
-    zsdx->game->change_crystal_switch_state();
+    game->change_crystal_switch_state();
     next_possible_hit_date = now + 1000;
   }
 }
@@ -197,7 +196,7 @@ void CrystalSwitch::twinkle(void) {
  */
 void CrystalSwitch::update(void) {
 
-  bool state = zsdx->game->get_crystal_switch_state();
+  bool state = game->get_crystal_switch_state();
   if (state != this->state) {
 
     this->state = state;

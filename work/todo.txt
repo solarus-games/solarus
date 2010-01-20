@@ -44,9 +44,7 @@ Feature requests :
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
-- Dialog::set_style static + last_answer dans Game : DialogBox ne devrait pas être créé / détruit à chaque fois
-
-- se passer de l'attribut global game (il pourrait y avoir plusieurs objets Game)
+- Dialog::set_style static + last_answer dans Game : DialogBox ne devrait pas être créé / détruit à chaque fois (DialogBox::get_game() inutile)
 - faire une classe script plus générale indépendante des maps ? on pourrait avoir un script global, des scripts d'objets de l'inventaire,
   des scripts d'ennemis, etc.
 
@@ -86,6 +84,11 @@ Bugs :
 - menu des sauvegardes : faire une classe SelectionMenu qui hérite de Screen, et les différentes étapes qui héritent de SelectionMenuPhase 
   (destructeur compliqué, TitleScreen ne devrait pas s'occuper des sous-phases du menu de sélection)
 - remplacer les map->get_entities()->remove_entity(this) par remove_from_map()
+- fonctions parse() des entités : ne pas encore avoir accès à la map complique le code de PickableItem, Enemy, Chest.
+  Si ça se confirme, fournir un pointeur sur la map (ou plutôt sur le Game car la map est incomplète ?)
+  ShopItem aussi...
+  pas si simple car dans Map, Game n'est connu que dans start()
+- SDL_RWops dans Savegame
 
 
 Donjon 2 :

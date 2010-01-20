@@ -88,7 +88,7 @@ void MapEntities::destroy_all_entities(void) {
  * Returns the hero.
  * @return the hero
  */
-const Hero * get_hero(void) {
+Hero * MapEntities::get_hero(void) {
   return hero;
 }
 

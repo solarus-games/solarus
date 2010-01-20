@@ -30,20 +30,20 @@
 
 /**
  * Creates a new treasure without amount.
- * @param game the current game
+ * @param game the current game (may be NULL for now, but you have to call set_game() before using the treasure)
  * @param content content of the treasure
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
 Treasure::Treasure(Game *game, Content content, int savegame_variable):
-  content(content), amount(1), savegame_variable(savegame_variable), counter(NULL) {
+  game(game), content(content), amount(1), savegame_variable(savegame_variable), counter(NULL) {
 
   treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
 }
 
 /**
  * Creates a new treasure.
- * @param game the current game
+ * @param game the current game (may be NULL for now, but you have to call set_game() before using the treasure)
  * @param content content of the treasure
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
  * green rupees, blue rupees and red rupees: indicates the amount;
@@ -52,7 +52,7 @@ Treasure::Treasure(Game *game, Content content, int savegame_variable):
  * or -1 if this treasure is not saved
  */
 Treasure::Treasure(Game *game, Content content, int amount, int savegame_variable):
-  content(content), amount(amount), savegame_variable(savegame_variable), counter(NULL) {
+  game(game), content(content), amount(amount), savegame_variable(savegame_variable), counter(NULL) {
 
   treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
 
@@ -69,6 +69,15 @@ Treasure::~Treasure(void) {
 
   delete treasures_img;
   delete counter;
+}
+
+/**
+ * Sets the current game.
+ * You have to call this function before using the treasure if you provided a NULL game in the constructor.
+ * @param game the game
+ */
+void Treasure::set_game(Game *game) {
+  this->game = game;
 }
 
 /**

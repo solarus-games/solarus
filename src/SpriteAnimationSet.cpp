@@ -26,7 +26,7 @@
 SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 
   // compute the file name
-  std::string file_name = (std::string) "sprites/" + id + ".zsd";
+  std::string file_name = (std::string) "sprites/" + id + ".dat";
 
   // open the file
   std::istream &sprite_file = FileTools::data_file_open(file_name);

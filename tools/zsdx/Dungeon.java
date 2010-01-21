@@ -25,7 +25,7 @@ import zsdx.entities.*;
 /**
  * Represents the properties of a dungeon, like the floors
  * and the chests it contains.
- * These properties are loaded and saved from file dungeons.zsd.
+ * These properties are loaded and saved from file dungeons.dat.
  */
 public class Dungeon {
 
@@ -38,7 +38,7 @@ public class Dungeon {
     private int nbBossesSaved;
 
     /**
-     * Creates a dungeon and loads it from file dungeons.zsd.
+     * Creates a dungeon and loads it from file dungeons.dat.
      * @param dungeon_number the number of the dungeon to load, between 1 and 20
      */
     public Dungeon(int dungeon_number) {
@@ -51,11 +51,11 @@ public class Dungeon {
      * @return the ini file name
      */
     private static String getFileName() {
-	return Project.getDataPath() + "/maps/dungeons/dungeons.zsd";
+	return Project.getDataPath() + "/maps/dungeons/dungeons.dat";
     }
 
     /**
-     * Loads the data of this dungeon from file dungeons.zsd.
+     * Loads the data of this dungeon from file dungeons.dat.
      */
     private void load() {
 
@@ -95,8 +95,8 @@ public class Dungeon {
     }
 
     /**
-     * Saves the data of a map of this dungeon in the file dungeons.zsd.
-     * This function is called when a map has just been saved. It updates the dungeons.zsd file
+     * Saves the data of a map of this dungeon in the file dungeons.dat.
+     * This function is called when a map has just been saved. It updates the dungeons.dat file
      * with the new information of that map.
      * @param map a map of this dungeon
      */
@@ -120,7 +120,7 @@ public class Dungeon {
     }
 
     /**
-     * Removes from file dungeons.zsd any element (chests, or bosses)
+     * Removes from file dungeons.dat any element (chests, or bosses)
      * referencing the specified map.
      * @param ini the ini file
      * @param map a map
@@ -180,7 +180,7 @@ public class Dungeon {
     }
 
     /**
-     * Saves into the dungeons.zsd file an element of a map (chest, miniboss or boss).
+     * Saves into the dungeons.dat file an element of a map (chest, miniboss or boss).
      * @param ini the ini file
      * @param map the map
      * @param name name of this element (ex: "chest_4", "miniboss_1" or "boss")

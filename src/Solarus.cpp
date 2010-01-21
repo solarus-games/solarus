@@ -65,7 +65,7 @@ DebugKeys * Solarus::get_debug_keys(void) {
  */
 void Solarus::skip_menus(void) {
 
-  Game *game = new Game(this, new Savegame("save1.zsd"));
+  Game *game = new Game(this, new Savegame("save1.dat"));
   delete current_screen;
   current_screen = game;
 }

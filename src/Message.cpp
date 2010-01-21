@@ -89,10 +89,10 @@ void Message::parse(MessageId message_id) {
   std::string file_name;
   if (message_id[0] == '_') {
     // message from the engine
-    file_name = "text/engine_dialogs.zsd";
+    file_name = "text/engine_dialogs.dat";
   }
   else {
-    file_name = "text/game_dialogs.zsd";
+    file_name = "text/game_dialogs.dat";
   }
 
   // parse the message

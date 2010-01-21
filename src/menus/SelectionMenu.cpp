@@ -161,7 +161,7 @@ void SelectionMenu::read_savegames(void) {
   for (int i = 0; i < 3; i++) {
 
     std::ostringstream oss;
-    oss << "save" << (i + 1) << ".zsd";
+    oss << "save" << (i + 1) << ".dat";
     file_name = oss.str();
 
     if (savegames[i] != NULL) {

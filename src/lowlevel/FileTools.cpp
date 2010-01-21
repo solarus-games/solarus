@@ -25,13 +25,13 @@
 void FileTools::initialize(int argc, char **argv) {
   PHYSFS_init(argv[0]);
 
-  // we set the write directory to a ".zsdx" subdirectory of the user home
+  // we set the write directory to a ".solarus" subdirectory of the user home
 
-  // first, create the ".zsdx" directory
+  // first, create the ".solarus" directory
    if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
     DIE("Cannot write in user directory:" << PHYSFS_getLastError());
   }
-  std::string app_dir = ".zsdx";
+  std::string app_dir = ".solarus";
   PHYSFS_mkdir(app_dir.c_str());
 
   // then set this directory as the write directory
@@ -50,7 +50,7 @@ void FileTools::initialize(int argc, char **argv) {
       argc = 0;
     }
   }
-  data_path = data_path + "/data.zsdx";
+  data_path = data_path + "/data.solarus";
 
   PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);
 #if SOLARUS_DEBUG_LEVEL >= 1

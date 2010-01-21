@@ -34,12 +34,12 @@ StringResource::~StringResource(void) {
 }
 
 /**
- * Initializes the text resource by loading all string of the file "text/strings.zsd"
+ * Initializes the text resource by loading all string of the file "text/strings.dat"
  * into memory for future access by get_string().
  */
 void StringResource::initialize(void) {
 
-  std::istream &file = FileTools::data_file_open("text/strings.zsd");
+  std::istream &file = FileTools::data_file_open("text/strings.dat");
   std::string line;
 
   // read each line
@@ -59,7 +59,7 @@ void StringResource::initialize(void) {
     // get the value
     size_t index = line.find_last_of("\t");
     if (index == std::string::npos || index + 1 >= line.size()) {
-      DIE("strings.zsd, line " << i << ": cannot read string value for key '" << key << "'");
+      DIE("strings.dat, line " << i << ": cannot read string value for key '" << key << "'");
     }
     strings[key] = line.substr(index + 1);
   }
@@ -75,7 +75,7 @@ void StringResource::quit(void) {
 }
 
 /**
- * Returns a string stored in the file "text/strings.zsd".
+ * Returns a string stored in the file "text/strings.dat".
  * @param key id of the string to retrieve
  */
 const std::string &StringResource::get_string(const std::string &key) {

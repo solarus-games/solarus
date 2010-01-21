@@ -59,7 +59,7 @@ const std::string& Dungeon::get_name(void) {
 }
 
 /**
- * Loads the dungeon properties from file dungeons.zsd.
+ * Loads the dungeon properties from file dungeons.dat.
  */
 void Dungeon::load(void) {
 
@@ -69,7 +69,7 @@ void Dungeon::load(void) {
   this->name = StringResource::get_string(oss.str());
 
   // parse the dungeon file
-  IniFile ini("maps/dungeons/dungeons.zsd", IniFile::READ);
+  IniFile ini("maps/dungeons/dungeons.dat", IniFile::READ);
 
   // parse the floors (the floors must be before the chests and the bosses)
   oss.str("");

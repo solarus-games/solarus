@@ -13,6 +13,6 @@ add_custom_target(
   ALL
   COMMENT "Building data archive"
   DEPENDS ${lua_bin_files}
-  COMMAND zip -q ../data.zsdx musics/*.spc sounds/*.wav sprites/*/*.png sprites/*/*.zsd text/*.zsd text/*.ttf text/*.fon tilesets/*.png tilesets/*.zsd maps/*.zsd maps/*.luac maps/dungeons/*.png maps/dungeons/*.zsd
+  COMMAND zip -q ../data.solarus musics/*.spc sounds/*.wav sprites/*/*.png sprites/*/*.data text/*.dat text/*.ttf text/*.fon tilesets/*.png tilesets/*.dat maps/*.dat maps/*.luac maps/dungeons/*.png maps/dungeons/*.dat
 )
 

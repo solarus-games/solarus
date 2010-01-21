@@ -30,7 +30,7 @@ TTF_Font *TextSurface::fonts[FONT_NB] = {NULL};
  */
 void TextSurface::initialize(void) {
 
-  static const std::string file_names[] = {"text/zsdx.ttf", "text/fixed8.fon", "text/zsdx.ttf"};
+  static const std::string file_names[] = {"text/la.ttf", "text/fixed8.fon", "text/la.ttf"};
   static const int sizes[] = {11, 11, 18};
 
   TTF_Init();

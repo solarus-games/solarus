@@ -133,7 +133,7 @@ public class Project {
     }
 
     /**
-     * Returns the file containing the database of the game resources (projet_db.zsd).
+     * Returns the file containing the database of the game resources (project_db.solarus).
      * This method can be called event if this project is not the current project.
      * @return the file containing the database of the game resources
      */
@@ -289,7 +289,7 @@ public class Project {
 	nf.setGroupingUsed(false);
 
 	return new File(getTilesetPath() + "/tileset"
-		+ nf.format(Integer.parseInt(tilesetId)) + ".zsd");
+		+ nf.format(Integer.parseInt(tilesetId)) + ".dat");
     }
 
     /**
@@ -355,7 +355,7 @@ public class Project {
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
-	return new File(getMapPath() + "/map" + nf.format(Integer.parseInt(mapId)) + ".zsd");
+	return new File(getMapPath() + "/map" + nf.format(Integer.parseInt(mapId)) + ".dat");
     }
 
     /**

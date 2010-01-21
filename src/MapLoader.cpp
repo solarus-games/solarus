@@ -56,7 +56,7 @@ void MapLoader::load_map(Game *game, Map *map) {
 
   // compute the file name, depending on the id
   std::ostringstream oss;
-  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".zsd";
+  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".dat";
   const std::string &file_name = oss.str();
 
   // open the map file

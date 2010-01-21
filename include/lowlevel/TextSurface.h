@@ -63,9 +63,9 @@ class TextSurface {
      * The fonts available.
      */
     enum FontId {
-      FONT_LA       = 0,   /**< Link's Awakening font (default) */
+      FONT_LA       = 0,   /**< italic font (default) */
       FONT_STANDARD = 1,   /**< a more common font, with fixed width too */
-      FONT_LA_BIG   = 2,   /**< Link's Awakening font with double size */
+      FONT_LA_BIG   = 2,   /**< italic font with double size */
       FONT_NB
     };
 

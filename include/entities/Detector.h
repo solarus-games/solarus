@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_DETECTOR_H
-#define ZSDX_DETECTOR_H
+#ifndef SOLARUS_DETECTOR_H
+#define SOLARUS_DETECTOR_H
 
 #include "Common.h"
 #include "entities/MapEntity.h"

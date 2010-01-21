@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_GROUND_H
-#define ZSDX_GROUND_H
+#ifndef SOLARUS_GROUND_H
+#define SOLARUS_GROUND_H
 
 /**
  * The possible kinds of ground on the map.

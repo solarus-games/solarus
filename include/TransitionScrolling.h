@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_TRANSITION_SCROLLING_H
-#define ZSDX_TRANSITION_SCROLLING_H
+#ifndef SOLARUS_TRANSITION_SCROLLING_H
+#define SOLARUS_TRANSITION_SCROLLING_H
 
 #include "Common.h"
 #include "Transition.h"

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_TREASURE_H
-#define ZSDX_TREASURE_H
+#ifndef SOLARUS_TREASURE_H
+#define SOLARUS_TREASURE_H
 
 #include "Common.h"
 

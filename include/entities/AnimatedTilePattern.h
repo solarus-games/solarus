@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_ANIMATED_TILE_PATTERN_H
-#define ZSDX_ANIMATED_TILE_PATTERN_H
+#ifndef SOLARUS_ANIMATED_TILE_PATTERN_H
+#define SOLARUS_ANIMATED_TILE_PATTERN_H
 
 #include "Common.h"
 #include "entities/TilePattern.h"

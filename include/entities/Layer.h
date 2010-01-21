@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_LAYER_H
-#define ZSDX_LAYER_H
+#ifndef SOLARUS_LAYER_H
+#define SOLARUS_LAYER_H
 
 /**
  * Layer of a tile or a dynamic entity.

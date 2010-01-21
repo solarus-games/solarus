@@ -112,7 +112,7 @@ unsigned int MapEntities::get_nb_destination_points(void) {
  */
 Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
-#if ZSDX_DEBUG_LEVEL > 0
+#if SOLARUS_DEBUG_LEVEL > 0
   if (layer < 0 || layer >= LAYER_NB) {
     DIE("get_obstacle_tile(): invalid layer number '" << layer << "'");
   }

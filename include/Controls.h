@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_CONTROLS_H
-#define ZSDX_CONTROLS_H
+#ifndef SOLARUS_CONTROLS_H
+#define SOLARUS_CONTROLS_H
 
 #include "Common.h"
 #include <SDL/SDL.h>

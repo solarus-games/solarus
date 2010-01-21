@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_TITLE_SCREEN_H
-#define ZSDX_TITLE_SCREEN_H
+#ifndef SOLARUS_TITLE_SCREEN_H
+#define SOLARUS_TITLE_SCREEN_H
 
 #include "Common.h"
 #include "Screen.h"

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_SURFACE_H
-#define ZSDX_SURFACE_H
+#ifndef SOLARUS_SURFACE_H
+#define SOLARUS_SURFACE_H
 
 #include "Common.h"
 #include <SDL/SDL.h>

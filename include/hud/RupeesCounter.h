@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_RUPEES_VIEW_H
-#define ZSDX_RUPEES_VIEW_H
+#ifndef SOLARUS_RUPEES_VIEW_H
+#define SOLARUS_RUPEES_VIEW_H
 
 #include "Common.h"
 #include "hud/HudElement.h"

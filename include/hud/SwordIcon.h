@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_SWORD_ICON_H
-#define ZSDX_SWORD_ICON_H
+#ifndef SOLARUS_SWORD_ICON_H
+#define SOLARUS_SWORD_ICON_H
 
 #include "Common.h"
 #include "hud/HudElement.h"

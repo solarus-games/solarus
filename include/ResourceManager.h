@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_RESOURCE_MANAGER_H
-#define ZSDX_RESOURCE_MANAGER_H
+#ifndef SOLARUS_RESOURCE_MANAGER_H
+#define SOLARUS_RESOURCE_MANAGER_H
 
 #include "Common.h"
 #include <map>

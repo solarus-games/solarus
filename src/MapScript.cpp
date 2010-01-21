@@ -229,7 +229,7 @@ void MapScript::load(void) {
   std::string compiled_script_name = oss.str();
 
   std::string file_name;
-#if ZSDX_DEBUG_LEVEL == 0
+#if SOLARUS_DEBUG_LEVEL == 0
   file_name = compiled_script_name; // use the compiled version of the script (.luac)
 #else
   if (FileTools::data_file_exists(text_script_name)) {

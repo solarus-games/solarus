@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_PIXEL_BITS_H
-#define ZSDX_PIXEL_BITS_H
+#ifndef SOLARUS_PIXEL_BITS_H
+#define SOLARUS_PIXEL_BITS_H
 
 #include "Common.h"
 

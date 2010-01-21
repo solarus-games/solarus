@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_ENTITY_TYPE_H
-#define ZSDX_ENTITY_TYPE_H
+#ifndef SOLARUS_ENTITY_TYPE_H
+#define SOLARUS_ENTITY_TYPE_H
 
 /**
  * Constants to identify each kind of map entity.

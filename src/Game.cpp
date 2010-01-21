@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Game.h"
-#include "ZSDX.h"
+#include "Solarus.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "ResourceManager.h"
@@ -43,11 +43,11 @@ const Rectangle Game::outside_world_size(0, 0, 2080, 3584); // TODO load from ex
 
 /**
  * Creates a game.
- * @param zsdx the application object
+ * @param solarus the application object
  * @param savegame the saved data of this game
  */
-Game::Game(ZSDX *zsdx, Savegame *savegame):
-  Screen(zsdx),
+Game::Game(Solarus *solarus, Savegame *savegame):
+  Screen(solarus),
 
   savegame(savegame), pause_enabled(true), pause_menu(NULL), 
   dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
@@ -60,7 +60,7 @@ Game::Game(ZSDX *zsdx, Savegame *savegame):
   // notify objects
   get_equipment()->set_game(this);
   get_dungeon_equipment()->set_game(this);
-  zsdx->get_debug_keys()->set_game(this);
+  solarus->get_debug_keys()->set_game(this);
   controls = new Controls(this);
 
   // initialize the hero
@@ -82,7 +82,7 @@ Game::~Game(void) {
 
   // quit the game
   current_map->leave(); // tell the map that the hero is not there anymore
-  zsdx->get_debug_keys()->set_game(NULL);
+  solarus->get_debug_keys()->set_game(NULL);
   stop_music();
 
   delete transition;
@@ -307,11 +307,11 @@ void Game::update_transitions(void) {
 
     if (reseting) {
       current_map->unload();
-      set_next_screen(new TitleScreen(zsdx));
+      set_next_screen(new TitleScreen(solarus));
     }
     else if (restarting) {
       current_map->unload();
-      set_next_screen(new Game(zsdx, new Savegame(savegame)));
+      set_next_screen(new Game(solarus, new Savegame(savegame)));
     }
     else if (transition_direction == Transition::OUT) {
 

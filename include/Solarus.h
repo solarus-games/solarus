@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_ZSDX_H
-#define ZSDX_ZSDX_H
+#ifndef ZSDX_SOLARUS_H
+#define ZSDX_SOLARUS_H
 
 #include "Common.h"
 #include <SDL/SDL.h>
@@ -24,7 +24,7 @@
  * Main class of the game engine. It contains objects to
  * initialize the program and handles the succession of its screens.
  */
-class ZSDX {
+class Solarus {
 
   private:
 
@@ -42,8 +42,8 @@ class ZSDX {
 
   public:
 
-    ZSDX(int argc, char **argv);
-    ~ZSDX(void);
+    Solarus(int argc, char **argv);
+    ~Solarus(void);
 
     void main(void);
 

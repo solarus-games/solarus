@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ZSDX.h"
+#include "Solarus.h"
 #include "lowlevel/System.h"
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
@@ -29,7 +29,7 @@
 /**
  * Initializes the game engine.
  */
-ZSDX::ZSDX(int argc, char **argv) {
+Solarus::Solarus(int argc, char **argv) {
 
   // initialize the lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
@@ -44,7 +44,7 @@ ZSDX::ZSDX(int argc, char **argv) {
 /**
  * Cleans everything.
  */
-ZSDX::~ZSDX(void) {
+Solarus::~Solarus(void) {
   delete root_surface;
   delete current_screen;
   delete debug_keys;
@@ -55,7 +55,7 @@ ZSDX::~ZSDX(void) {
  * Returns the debugging keys object.
  * @return the debbuging keys object
  */
-DebugKeys * ZSDX::get_debug_keys(void) {
+DebugKeys * Solarus::get_debug_keys(void) {
   return debug_keys;
 }
 
@@ -63,7 +63,7 @@ DebugKeys * ZSDX::get_debug_keys(void) {
  * This function can be called during the title screen or the selection menu to skip them
  * and start the game immediately (for debugging purposes only!).
  */
-void ZSDX::skip_menus(void) {
+void Solarus::skip_menus(void) {
 
   Game *game = new Game(this, new Savegame("save1.zsd"));
   delete current_screen;
@@ -76,14 +76,14 @@ void ZSDX::skip_menus(void) {
  * whatever you are doing, free your memory and let the program quit.
  * @return true if the user wants to exit the program
  */
-bool ZSDX::is_exiting(void) {
+bool Solarus::is_exiting(void) {
   return exiting;
 }
 
 /**
  * Sets whether the user wants to quit the program.
  */
-void ZSDX::set_exiting(void) {
+void Solarus::set_exiting(void) {
   exiting = true;
 }
 
@@ -92,7 +92,7 @@ void ZSDX::set_exiting(void) {
  * The SDL events are forwarded to the current screen.
  * The current screen is redrawn when necessary.
  */
-void ZSDX::main(void) {
+void Solarus::main(void) {
 
   // SDL main loop
   SDL_Event event = {};
@@ -165,7 +165,7 @@ void ZSDX::main(void) {
  * The handle_event() method of the current screen
  * is then called.
  */
-void ZSDX::handle_event(const SDL_Event &event) {
+void Solarus::handle_event(const SDL_Event &event) {
 
   // handle the common events
   switch (event.type) {
@@ -213,7 +213,7 @@ void ZSDX::handle_event(const SDL_Event &event) {
  * Updates the current screen.
  * This function is called repeatedly by the main loop.
  */
-void ZSDX::update(void) {
+void Solarus::update(void) {
 
   debug_keys->update();
   current_screen->update();
@@ -224,7 +224,7 @@ void ZSDX::update(void) {
  * Redraws the current screen.
  * This function is called repeatedly by the main loop.
  */
-void ZSDX::display(void) {
+void Solarus::display(void) {
 
   root_surface->fill_with_color(Color::get_black());
   current_screen->display(root_surface);
@@ -241,8 +241,8 @@ void ZSDX::display(void) {
  */
 int main(int argc, char **argv) {
 
-  ZSDX zsdx = ZSDX(argc, argv);
-  zsdx.main();
+  Solarus solarus = Solarus(argc, argv);
+  solarus.main();
 
   return 0;
 }

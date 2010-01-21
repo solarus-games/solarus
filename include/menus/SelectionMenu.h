@@ -77,10 +77,10 @@ class SelectionMenu: public Screen {
   public:
 
     // creation and destruction
-    SelectionMenu(ZSDX *zsdx);
+    SelectionMenu(Solarus *solarus);
     ~SelectionMenu(void);
 
-    // update and display (called by ZSDX)
+    // update and display (called by Solarus)
     void update(void);
     void display(Surface *screen_surface);
     void handle_event(const SDL_Event &event);

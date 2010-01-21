@@ -22,7 +22,7 @@
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "Game.h"
-#include "ZSDX.h"
+#include "Solarus.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Sound.h"
@@ -33,10 +33,10 @@
 
 /**
  * Creates the selection menu.
- * @param zsdx the ZSDX object
+ * @param solarus the Solarus object
  */
-SelectionMenu::SelectionMenu(ZSDX *zsdx):
-  Screen(zsdx) {
+SelectionMenu::SelectionMenu(Solarus *solarus):
+  Screen(solarus) {
 
   // phases
   next_phase = NULL;
@@ -213,14 +213,14 @@ void SelectionMenu::set_next_phase(SelectionMenuPhase *next_phase) {
  * @param savegame the savegame to play
  */
 void SelectionMenu::start_game(Savegame *savegame) {
-  set_next_screen(new Game(zsdx, savegame));
+  set_next_screen(new Game(solarus, savegame));
 }
 
 /**
  * Ends the program.
  */
 void SelectionMenu::set_exiting(void) {
-  zsdx->set_exiting();
+  solarus->set_exiting();
 }
 
 /**

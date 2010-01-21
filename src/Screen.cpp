@@ -18,10 +18,10 @@
 
 /**
  * Creates a screen.
- * @param zsdx the application object (some screens need it)
+ * @param solarus the application object (some screens need it)
  */
-Screen::Screen(ZSDX *zsdx):
-  zsdx(zsdx), screen_finished(false), next_screen(NULL) {
+Screen::Screen(Solarus *solarus):
+  solarus(solarus), screen_finished(false), next_screen(NULL) {
 
 }
 

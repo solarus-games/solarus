@@ -11,7 +11,7 @@
 
  Library for reading and writing configuration files in an easy, cross-platform way.
 
- - Author: Hubert "Koshmaar" Rutkowski - with minor adaptations for ZSDX due to compilation issues
+ - Author: Hubert "Koshmaar" Rutkowski - with minor adaptations for Solarus due to compilation issues
  - Contact: koshmaar@poczta.onet.pl
  - Version: 1.2
  - Homepage: http://sdl-cfg.sourceforge.net/

@@ -137,8 +137,8 @@ void FileTools::data_file_close_rw(SDL_RWops *rw) {
 }
 
 /**
- * Opens in reading a text file in the ZSDX data directory.
- * The file name is relative to the ZSDX data directory.
+ * Opens in reading a text file in the Solarus data directory.
+ * The file name is relative to the Solarus data directory.
  * The program is stopped with an error message if the file cannot be open.
  * Don't forget to close the stream with data_file_close().
  * @param file_name name of the file to open

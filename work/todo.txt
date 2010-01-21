@@ -81,6 +81,7 @@ Bugs :
 - boss donjon 1 trop facile, alonger le délai des choux-péteurs ? En mettre moins ?
 - saut de la falaise en diagonale : rendre plus évident
 - Renommer ZSDX en Solarus
+- Changer les extensions des fichiers de données et de data.zsdx
 - Transition : pas de fonction update -> des comportements dépendent donc des appels à display
 
 

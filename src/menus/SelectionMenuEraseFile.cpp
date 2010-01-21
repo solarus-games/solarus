@@ -17,21 +17,20 @@
 #include "menus/SelectionMenuEraseFile.h"
 #include "menus/SelectionMenuSelectFile.h"
 #include "menus/SelectionMenuConfirmErase.h"
+#include "menus/SelectionMenu.h"
 #include "Sprite.h"
-#include "ZSDX.h"
 #include "Savegame.h"
+#include "ZSDX.h"
 
 /**
- * Creates a selection menu with the phase where the
- * player chooses a file to erase.
- * @param previous the previous phase
+ * Creates a selection menu phase where the player chooses a file to erase.
+ * @param menu the selection menu this phase will belong to
  */
-SelectionMenuEraseFile::SelectionMenuEraseFile(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous, "selection_menu.erase_file") {
+SelectionMenuEraseFile::SelectionMenuEraseFile(SelectionMenu *menu):
+  SelectionMenuPhase(menu, "selection_menu.erase_file") {
 
-  set_bottom_options("selection_menu.cancel", "selection_menu.exit");
-
-  get_cursor()->set_current_animation("red");
+  menu->set_bottom_options("selection_menu.cancel", "selection_menu.exit");
+  menu->get_cursor_sprite()->set_current_animation("red");
 }
 
 /**
@@ -42,53 +41,53 @@ SelectionMenuEraseFile::~SelectionMenuEraseFile(void) {
 }
 
 /**
- * Handles an SDL event in this phase.
+ * Handles an event in this phase.
  * @param event the event
  */
 void SelectionMenuEraseFile::handle_event(const SDL_Event &event) {
 
   if (event.type == SDL_KEYDOWN) {
     
-    int cursor_position = get_cursor_position();
+    int cursor_position = menu->get_cursor_position();
     switch (event.key.keysym.sym) {
 
     case SDLK_SPACE:
     case SDLK_RETURN:
       if (cursor_position == 5) {
 	// the user chose "Quit"
-	zsdx->set_exiting();
+	menu->set_exiting();
       }
       else if (cursor_position == 4) {
 	// the user chose "Cancel"
-	play_ok_sound();
-	set_next_screen(new SelectionMenuSelectFile(this));
+	menu->play_ok_sound();
+	menu->set_next_phase(new SelectionMenuSelectFile(menu));
       }
       else {
 	
 	int save_number_to_erase = cursor_position - 1;
-	if (get_savegame(save_number_to_erase)->is_empty()) {
+	if (menu->get_savegame(save_number_to_erase)->is_empty()) {
 	  // the savegame doesn't exist: error sound
-	  play_error_sound();
+	  menu->play_error_sound();
 	}
 	else {
 	  // the savegame exists: confirm deleting it
-	  play_ok_sound();
-	  set_next_screen(new SelectionMenuConfirmErase(this, save_number_to_erase));
+	  menu->play_ok_sound();
+	  menu->set_next_phase(new SelectionMenuConfirmErase(menu, save_number_to_erase));
 	}
       }
       break;
       
     case SDLK_DOWN:
-      move_cursor_down();
+      menu->move_cursor_down();
       break;
       
     case SDLK_UP:
-      move_cursor_up();
+      menu->move_cursor_up();
       break;
       
     case SDLK_RIGHT:
     case SDLK_LEFT:
-      move_cursor_left_or_right();
+      menu->move_cursor_left_or_right();
       break;
       
     default:
@@ -98,28 +97,25 @@ void SelectionMenuEraseFile::handle_event(const SDL_Event &event) {
 }
 
 /**
- * Displays the selection menu in this phase.
+ * Displays this selection menu phase.
+ * @param destination_surface the surface to draw
  */
-void SelectionMenuEraseFile::display(Surface *screen_surface) {
-
-  start_display(screen_surface);
+void SelectionMenuEraseFile::display(Surface *destination_surface) {
 
   // savegames
   for (int i = 0; i < 3; i++) {
-    display_savegame(i);
+    menu->display_savegame(destination_surface, i);
   }
 
   // options
-  display_bottom_options();
+  menu->display_bottom_options(destination_surface);
 
   // cursor
-  display_normal_cursor();
+  menu->display_savegame_cursor(destination_surface);
  
   // save numbers
   for (int i = 0; i < 3; i++) {
-    display_savegame_number(i);
+    menu->display_savegame_number(destination_surface, i);
   }
-
-  finish_display(screen_surface);
 }
 

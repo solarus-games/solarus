@@ -298,7 +298,7 @@ void Game::update_transitions(void) {
   }
 
   // if a transition was playing and has just been finished
-  if (transition != NULL && transition->is_over()) {
+  if (transition != NULL && transition->is_finished()) {
 
     Transition::Direction transition_direction = transition->get_direction();
     bool needs_previous_surface = transition->needs_previous_surface();

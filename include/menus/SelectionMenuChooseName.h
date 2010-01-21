@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "menus/SelectionMenuChooseName.h"
 #include "menus/SelectionMenuPhase.h"
+#include "menus/SelectionMenu.h"
 
 /**
  * Phase of the selection menu where the user
@@ -29,16 +30,16 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
 
   private:
 
-    char player_name[11];
-    int x_letter_cursor;
-    int y_letter_cursor;
+    char player_name[11];                /**< the name the player is currently typing */
+    int letter_cursor_x;                 /**< x position of the letter cursor */
+    int letter_cursor_y;                 /**< y position of the letter cursor */
 
-    Surface *img_arrow;
-    Surface *img_letters;
+    Surface *arrow_img;                  /**< arrow image shown next to the name */
+    Surface *letters_img;                /**< image of all letters */
 
-    TextSurface *text_new_player_name;
+    TextSurface *player_name_text;       /**< text surface representing the current name */
 
-    uint32_t next_key_date; /**< date when a key other than the arrows can be pressed again */
+    uint32_t next_key_date;              /**< date when a key other than the arrows can be pressed again */
 
     // player name
     bool select_letter(void);
@@ -47,12 +48,12 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
   public:
 
     // creation and destruction
-    SelectionMenuChooseName(SelectionMenuPhase *previous);
+    SelectionMenuChooseName(SelectionMenu *menu);
     ~SelectionMenuChooseName(void);
 
     // update and display
+    void display(Surface *destination_surface);
     void handle_event(const SDL_Event &event);
-    void display(Surface *screen_surface);
 };
 
 #endif

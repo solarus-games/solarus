@@ -21,8 +21,8 @@
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * First phase of the selection menu,
- * where the user can select a file.
+ * Phase of the selection menu where the user
+ * has to confirm he really want to erase a savegame file.
  */
 class SelectionMenuConfirmErase: public SelectionMenuPhase {
 
@@ -34,13 +34,12 @@ class SelectionMenuConfirmErase: public SelectionMenuPhase {
   public:
 
     // creation and destruction
-    SelectionMenuConfirmErase(SelectionMenuPhase *previous,
-	int save_number_to_erase);
+    SelectionMenuConfirmErase(SelectionMenu *menu, int save_number_to_erase);
     ~SelectionMenuConfirmErase(void);
 
     // update and display
+    void display(Surface *destination_surface);
     void handle_event(const SDL_Event &event);
-    void display(Surface *screen_surface);
 };
 
 #endif

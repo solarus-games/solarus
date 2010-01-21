@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "menus/TitleScreen.h"
-#include "menus/SelectionMenuSelectFile.h"
+#include "menus/SelectionMenu.h"
 #include "TransitionFade.h"
 #include "ResourceManager.h"
 #include "StringResource.h"
@@ -84,7 +84,7 @@ void TitleScreen::update(void) {
 
     if (now >= next_phase_date) {
 
-      if (transition_out->is_over()) {
+      if (transition_out->is_finished()) {
 
 	// unload current phase
 	exit_phase_zs_presents();
@@ -142,7 +142,7 @@ void TitleScreen::handle_event(const SDL_Event &event) {
       && (event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_RETURN)
       && counter >= 1
       && !transition_out->is_started()
-      && !transition_out->is_over()) {
+      && !transition_out->is_finished()) {
 
     transition_out->start();
   }
@@ -289,9 +289,9 @@ void TitleScreen::update_phase_title(void) {
     next_clouds_move_date = now + 50;
   }
 
-  if (transition_out->is_over()) {
+  if (transition_out->is_finished()) {
     exit_phase_title();
-    set_next_screen(new SelectionMenuSelectFile(zsdx)); 
+    set_next_screen(new SelectionMenu(zsdx)); 
   }
 }
 

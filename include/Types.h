@@ -67,8 +67,8 @@ class IniFile;
 
 // menus
 class TitleScreen;
+class SelectionMenu;
 class SelectionMenuPhase;
-class SelectionMenuCommon;
 class SelectionMenuEraseFile;
 class SelectionMenuConfirmErase;
 class SelectionMenuChooseName;

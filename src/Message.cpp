@@ -16,7 +16,6 @@
  */
 #include "Message.h"
 #include "DialogBox.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "ResourceManager.h"
 #include "lowlevel/FileTools.h"

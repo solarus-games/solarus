@@ -20,7 +20,6 @@
 #include "Controls.h"
 #include "Game.h"
 #include "Sprite.h"
-#include "ZSDX.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "lowlevel/Sound.h"

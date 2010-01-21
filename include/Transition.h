@@ -53,6 +53,7 @@ class Transition {
     Transition(Direction direction);
 
   public:
+
     virtual ~Transition(void);
     static Transition *create(Style style, Direction direction, Game *game = NULL);
 
@@ -62,7 +63,7 @@ class Transition {
 
     virtual void start(void) = 0;
     virtual bool is_started(void) = 0;
-    virtual bool is_over(void) = 0;
+    virtual bool is_finished(void) = 0;
     virtual void display(Surface *surface) = 0;
 };
 

@@ -18,30 +18,25 @@
 #define ZSDX_SELECTION_MENU_CHOOSE_MODE_H
 
 #include "Common.h"
-#include "menus/SelectionMenuChooseMode.h"
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * Phase of the selection menu where the user
- * chooses the game mode.
- * Note that currently, this phase is automatically
- * closed because there is only one game mode for now.
- * This class may allow to create an alternative
- * game mode later.
+ * Phase of the selection menu where the user chooses the game mode.
+ * Note that currently, this phase is automatically closed because there is only one game mode for now.
+ * This class may allow to create an alternative game mode later.
  */
 class SelectionMenuChooseMode: public SelectionMenuPhase {
 
   private:
 
-    bool adventure_mode;
-
-    Surface *img_mode;
-    Surface *savegame_surface;
+    bool adventure_mode;         /**< the currently selected mode */
+    Surface *mode_img;           /**< image representing the mode choice */
+    Surface *savegame_surface;   /**< an intermediate surface used to draw the selected savegame */
 
   public:
 
     // creation and destruction
-    SelectionMenuChooseMode(SelectionMenuPhase *previous);
+    SelectionMenuChooseMode(SelectionMenu *menu);
     ~SelectionMenuChooseMode(void);
 
     // update and display

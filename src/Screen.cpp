@@ -37,7 +37,7 @@ Screen::~Screen(void) {
  * to indicates that it is finished and to specify
  * the next screen.
  * @param next_screen the next screen to show, or NULL
- * to restart the game.
+ * to restart the program.
  */
 void Screen::set_next_screen(Screen *next_screen) {
   this->screen_finished = true;

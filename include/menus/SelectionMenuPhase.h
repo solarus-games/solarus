@@ -22,59 +22,28 @@
 
 /**
  * Abstract class for a phase of the selection menu,
- * i.e. the menu to select the save file and the
- * game mode.
+ * i.e. the menu to select the savegame file.
  */
-class SelectionMenuPhase: public Screen {
-
-  private:
-
-    std::string title_string;         /**< title text of this phase */
+class SelectionMenuPhase {
 
   protected:
 
-    Surface *destination_surface;     /**< the surface where the menu is drawn */
-    Transition *transition;           /**< the transition currently displayed (may be NULL) */
-    SelectionMenuCommon *common_part; /**< the elements common to all phases */
+    SelectionMenu *menu;    /**< the selection menu this phase belongs to */
+
+  protected:
 
     // creation and destruction
-    SelectionMenuPhase(ZSDX *zsdx, const std::string &title_string_key);
-    SelectionMenuPhase(SelectionMenuPhase *previous, const std::string &title_string_key);
+    SelectionMenuPhase(SelectionMenu *menu, const std::string &title_string_key);
+
+  public:
+
     virtual ~SelectionMenuPhase(void);
 
-    void set_bottom_options(const std::string &left_string_key, const std::string &right_string_key);
-
-    // savegames
-    Savegame ** get_savegames(void);
-    Savegame * get_savegame(int save_number);
-    void reload_savegames(void);
-
-    // sounds
-    void play_cursor_sound(void);
-    void play_ok_sound(void);
-    void play_error_sound(void);
-
-    // cursor handling
-    Sprite *get_cursor(void);
-    int get_cursor_position(void);
-    void set_cursor_position(int position);
-    void move_cursor_up(void);
-    void move_cursor_down(void);
-    void move_cursor_left_or_right(void);
-
-    // displaying elements
-    void display_title_text(void);
-    void display_savegame(int save_number);
-    void display_savegame(int save_number, Surface *destination_surface);
-    void display_savegame_number(int save_number);
-    void display_savegame_number(int save_number, Surface *destination_surface);
-    void display_bottom_options(void);
-    void display_normal_cursor(void);
-
-    // update and display for the common part
+    // update and display
     virtual void update(void);
-    void start_display(Surface *screen_surface);
-    void finish_display(Surface *screen_surface);
+    virtual void display(Surface *destination_surface);
+    virtual void handle_event(const SDL_Event &event);
+
 };
 
 #endif

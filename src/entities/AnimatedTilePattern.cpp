@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/AnimatedTilePattern.h"
-#include "ZSDX.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 

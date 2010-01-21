@@ -68,14 +68,6 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
   if (subtype != WEAK_INVISIBLE) {
     create_sprite("entities/door");
   }
-
-  if (savegame_variable != -1) {
-    set_open(game->get_savegame()->get_boolean(savegame_variable));
-  }
-  else {
-    set_open(false);
-  }
-  get_sprite()->set_current_direction(direction);
 }
 
 /**
@@ -105,7 +97,18 @@ MapEntity * Door::parse(Game *game, std::istream &is, Layer layer, int x, int y)
   FileTools::read(is, subtype);
   FileTools::read(is, savegame_variable);
 
-  return new Door(name, Layer(layer), x, y, direction, Subtype(subtype), savegame_variable);
+  Door *door = new Door(name, Layer(layer), x, y, direction, Subtype(subtype), savegame_variable);
+
+  door->game = game;
+  if (savegame_variable != -1) {
+    door->set_open(game->get_savegame()->get_boolean(savegame_variable));
+  }
+  else {
+    door->set_open(false);
+  }
+  door->get_sprite()->set_current_direction(direction);
+
+  return door;
 }
 
 /**

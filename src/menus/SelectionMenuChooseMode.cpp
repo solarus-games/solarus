@@ -15,35 +15,35 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "menus/SelectionMenuChooseMode.h"
+#include "menus/SelectionMenu.h"
 #include "Transition.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
-#include "Game.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Rectangle.h"
 
 /**
- * Creates a selection menu with the phase where the
- * player has to choose the game mode.
- * @param previous the previous phase
+ * Creates a selection phase where the player has to choose the game mode.
+ * @param menu the selection menu
  */
-SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenuPhase *previous):
-//  SelectionMenuPhase(previous, "selection_menu.choose_mode"),
-  SelectionMenuPhase(previous, "selection_menu.select_file"),
+SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
+//  SelectionMenuPhase(menu, "selection_menu.choose_mode"),
+  SelectionMenuPhase(menu, "selection_menu.select_file"),
   adventure_mode(true) {
 
-  this->img_mode = ResourceManager::load_image("menus/selection_menu_mode.png");
+  this->mode_img = ResourceManager::load_image("menus/selection_menu_mode.png");
   this->savegame_surface = new Surface(320, 240);
 
-  transition = Transition::create(Transition::FADE, Transition::OUT);
+  Transition *transition = Transition::create(Transition::FADE, Transition::OUT);
   transition->start();
+  menu->set_transition(transition);
 }
 
 /**
  * Destructor.
  */
 SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
-  delete img_mode;
+  delete mode_img;
   delete savegame_surface;
 }
 
@@ -53,7 +53,7 @@ SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
  */
 void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
 /*
-  if (transition == NULL && event.type == SDL_KEYDOWN) {
+  if (!menu->has_transition() && event.type == SDL_KEYDOWN) {
 
     bool finished = false;
 
@@ -61,13 +61,13 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
 
     case SDLK_SPACE:
     case SDLK_RETURN:
-      play_ok_sound();
+      menu->play_ok_sound();
       finished = true;
       break;
 
     case SDLK_RIGHT:
     case SDLK_LEFT:
-      play_cursor_sound();
+      menu->play_cursor_sound();
       adventure_mode = !adventure_mode;
       break;
 
@@ -76,8 +76,9 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
     }
 
     if (finished) {
-      transition = Transition::create(Transition::FADE, Transition::OUT);
+      Transition *transition = Transition::create(Transition::FADE, Transition::OUT);
       transition->start();
+      menu->set_transition(transition);
     }
   }
   */
@@ -88,29 +89,26 @@ void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
  */
 void SelectionMenuChooseMode::update(void) {
 
-  if (transition != NULL && transition->is_over()) {
+  if (menu->is_transition_finished()) {
 
-    Savegame *savegame = get_savegame(get_cursor_position() - 1);
+    Savegame *savegame = menu->get_savegame(menu->get_cursor_position() - 1);
     Savegame *savegame_copy = new Savegame(savegame->get_file_name());
     // because the first one will be deleted
 
-    set_next_screen(new Game(zsdx, savegame_copy));
+    menu->start_game(savegame_copy);
   }
-
-  SelectionMenuPhase::update();
 }
 
 /**
- * Displays the selection menu in this phase.
+ * Displays this selection menu phase.
+ * @param destination_surface the surface to draw
  */
-void SelectionMenuChooseMode::display(Surface *screen_surface) {
-
-  start_display(screen_surface);
+void SelectionMenuChooseMode::display(Surface *destination_surface) {
 
   // the savegame
-  int i = get_cursor_position() - 1;
-  display_savegame(i, savegame_surface);
-  display_savegame_number(i, savegame_surface);
+  int i = menu->get_cursor_position() - 1;
+  menu->display_savegame(savegame_surface, i);
+  menu->display_savegame_number(savegame_surface, i);
 
   // move the savegame to the top
   Rectangle savegame_position(57, 75 + i * 27, 208, 23);
@@ -127,13 +125,11 @@ void SelectionMenuChooseMode::display(Surface *screen_surface) {
   }
 
   position.set_xy(70, 115);
-  img_mode->blit(box_position, destination_surface, position);
+  mode_img->blit(box_position, destination_surface, position);
 
   box_position.set_xy(73, adventure_mode ? 0 : 54); // highlight the selection
   position.set_xy(170, 115);
-  img_mode->blit(box_position, destination_surface, position);
+  mode_img->blit(box_position, destination_surface, position);
 */
-
-  finish_display(screen_surface);
 }
 

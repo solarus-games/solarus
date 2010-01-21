@@ -21,7 +21,7 @@
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * Phase of the selection menu, where the user
+ * Phase of the selection menu where the user
  * chooses a file to erase.
  */
 class SelectionMenuEraseFile: public SelectionMenuPhase {
@@ -29,12 +29,12 @@ class SelectionMenuEraseFile: public SelectionMenuPhase {
   public:
 
     // creation and destruction
-    SelectionMenuEraseFile(SelectionMenuPhase *previous);
+    SelectionMenuEraseFile(SelectionMenu *menu);
     ~SelectionMenuEraseFile(void);
 
     // update and display
+    void display(Surface *destination_surface);
     void handle_event(const SDL_Event &event);
-    void display(Surface *screen_surface);
 };
 
 #endif

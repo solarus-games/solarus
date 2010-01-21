@@ -103,14 +103,14 @@ bool TransitionScrolling::needs_previous_surface(void) {
  * @return false
  */
 bool TransitionScrolling::is_started(void) {
-  return !is_over();
+  return !is_finished();
 }
 
 /**
- * Returns whether the transition effect is over.
+ * Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionScrolling::is_over(void) {
+bool TransitionScrolling::is_finished(void) {
 
   if (direction == OUT) {
     return true;
@@ -141,7 +141,7 @@ void TransitionScrolling::display(Surface *surface) {
 
   // blit both surfaces
   uint32_t now = System::now();
-  while (now >= next_scroll_date && !is_over()) {
+  while (now >= next_scroll_date && !is_finished()) {
     scroll();
     next_scroll_date += 10;
   }

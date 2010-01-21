@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/CollisionMovement.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "entities/MapEntity.h"

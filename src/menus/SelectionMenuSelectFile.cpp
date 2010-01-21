@@ -24,36 +24,17 @@
 #include "ZSDX.h"
 
 /**
- * Creates a selection menu with the phase where the
- * player selects a file.
- * @param previous the previous phase (if we were already in the selection menu), or NULL
- * TODO: remove this constructor!
+ * Creates a selection menu phase where the player selects a file.
+ * @param selection_menu the selection menu this phase will belong to
  */
-SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous, "selection_menu.select_file") {
+SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenu *menu):
+  SelectionMenuPhase(menu, "selection_menu.select_file") {
 
-  set_bottom_options("selection_menu.erase", "selection_menu.exit");
+  menu->set_bottom_options("selection_menu.erase", "selection_menu.exit");
 
   // initialize the cursor
-  get_cursor()->set_current_animation("blue");
-}
-
-/**
- * Creates a selection menu with the phase where the player selects a file.
- * @param zsdx the ZSDX object
- */
-SelectionMenuSelectFile::SelectionMenuSelectFile(ZSDX *zsdx):
-  SelectionMenuPhase(zsdx, "selection_menu.select_file") {
-
-  set_bottom_options("selection_menu.erase", "selection_menu.exit");
-
-  // initialize the cursor
-  get_cursor()->set_current_animation("blue");
-
-  // we don't come from another phase or the selection menu itself: make a transition
-  transition = Transition::create(Transition::FADE, Transition::IN);
-  transition->start();
-  set_cursor_position(1);
+  menu->get_cursor_sprite()->set_current_animation("blue");
+  menu->set_cursor_position(1);
 }
 
 
@@ -65,14 +46,14 @@ SelectionMenuSelectFile::~SelectionMenuSelectFile(void) {
 }
 
 /**
- * Handles an SDL event in this phase.
+ * Handles an event in this phase.
  * @param event the event
  */
 void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
 
-  if (transition == NULL && event.type == SDL_KEYDOWN) {
+  if (!menu->has_transition() && event.type == SDL_KEYDOWN) {
 
-    int cursor_position = get_cursor_position();
+    int cursor_position = menu->get_cursor_position();
     
     switch (event.key.keysym.sym) {
 
@@ -80,42 +61,42 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
     case SDLK_RETURN:
       if (cursor_position == 5) {
 	// the user chose "Exit"
-	zsdx->set_exiting();
+	menu->set_exiting();
       }
       else if (cursor_position == 4) {
 	// the user chose "Erase"
-	play_ok_sound();
-	set_next_screen(new SelectionMenuEraseFile(this));
+	menu->play_ok_sound();
+	menu->set_next_phase(new SelectionMenuEraseFile(menu));
       }
       else {
 	// the user chose a save
-	play_ok_sound();
+	menu->play_ok_sound();
 	
-	Savegame **savegames = get_savegames();
+	Savegame **savegames = menu->get_savegames();
 	if (savegames[cursor_position - 1]->is_empty()) {
 	  // the savegame doesn't exist: ask the name
-	  set_next_screen(new SelectionMenuChooseName(this));
+	  menu->set_next_phase(new SelectionMenuChooseName(menu));
 	}
 	else {
 	  // the savegame exists: choose the mode and then start the game
-	  set_next_screen(new SelectionMenuChooseMode(this));
+	  menu->set_next_phase(new SelectionMenuChooseMode(menu));
 	}
       }
       break;
 
     case SDLK_DOWN:
-      move_cursor_down();
+      menu->move_cursor_down();
       break;
-      
+ 
     case SDLK_UP:
-      move_cursor_up();
+      menu->move_cursor_up();
       break;
 
     case SDLK_RIGHT:
     case SDLK_LEFT:
-      move_cursor_left_or_right();
+      menu->move_cursor_left_or_right();
       break;
-      
+ 
     default:
       break;
     }
@@ -123,28 +104,25 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
 }
 
 /**
- * Displays the selection menu in this phase.
+ * Displays this selection menu phase.
+ * @param destination_surface the surface to draw
  */
-void SelectionMenuSelectFile::display(Surface *screen_surface) {
-
-  start_display(screen_surface);
+void SelectionMenuSelectFile::display(Surface *destination_surface) {
 
   // savegames
   for (int i = 0; i < 3; i++) {
-    display_savegame(i);
+    menu->display_savegame(destination_surface, i);
   }
 
   // options
-  display_bottom_options();
+  menu->display_bottom_options(destination_surface);
 
   // cursor
-  display_normal_cursor();
+  menu->display_savegame_cursor(destination_surface);
   
   // save numbers
   for (int i = 0; i < 3; i++) {
-    display_savegame_number(i);
+    menu->display_savegame_number(destination_surface, i);
   }
-
-  finish_display(screen_surface);
 }
 

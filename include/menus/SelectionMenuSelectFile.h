@@ -21,21 +21,19 @@
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * First phase of the selection menun
- * where the user can select a file.
+ * First phase of the selection menu, where the user can select a file.
  */
 class SelectionMenuSelectFile: public SelectionMenuPhase {
 
   public:
 
     // creation and destruction
-    SelectionMenuSelectFile(SelectionMenuPhase *previous);
-    SelectionMenuSelectFile(ZSDX *zsdx);
+    SelectionMenuSelectFile(SelectionMenu *selection_menu);
     ~SelectionMenuSelectFile(void);
 
     // update and display
+    void display(Surface *destination_surface);
     void handle_event(const SDL_Event &event);
-    void display(Surface *screen_surface);
 };
 
 #endif

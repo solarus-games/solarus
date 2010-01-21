@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/SmoothCollisionMovement.h"
-#include "ZSDX.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 

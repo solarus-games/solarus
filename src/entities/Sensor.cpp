@@ -17,7 +17,6 @@
 #include "entities/Sensor.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "MapScript.h"

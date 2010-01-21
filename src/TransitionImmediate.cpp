@@ -47,10 +47,10 @@ bool TransitionImmediate::is_started(void) {
 }
 
 /**
- * Returns whether the transition effect is over.
+ * Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionImmediate::is_over(void) {
+bool TransitionImmediate::is_finished(void) {
   return true;
 }
 

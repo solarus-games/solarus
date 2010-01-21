@@ -67,14 +67,14 @@ void TransitionFade::start(void) {
  * @return true if the transition effect is started
  */
 bool TransitionFade::is_started(void) {
-  return alpha != -1 && !is_over();
+  return alpha != -1 && !is_finished();
 }
 
 /**
- * Returns whether the transition effect is over.
+ * Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionFade::is_over(void) {
+bool TransitionFade::is_finished(void) {
   return alpha == alpha_limit;
 }
 

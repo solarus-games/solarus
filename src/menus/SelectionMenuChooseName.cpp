@@ -16,39 +16,35 @@
  */
 #include "menus/SelectionMenuChooseName.h"
 #include "menus/SelectionMenuSelectFile.h"
-#include "ResourceManager.h"
-#include "KeysEffect.h"
 #include "Sprite.h"
-#include "lowlevel/TextSurface.h"
 #include "Savegame.h"
-#include "lowlevel/Sound.h"
+#include "ResourceManager.h"
+#include "lowlevel/TextSurface.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/FileTools.h"
 
 /**
  * Creates a selection menu with the phase where the
  * player has to choose his name.
  * @param previous the previous phase
  */
-SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
-  SelectionMenuPhase(previous, "selection_menu.choose_name"),
-  next_key_date(System::now()) {
+SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
+  SelectionMenuPhase(menu, "selection_menu.choose_name"), next_key_date(System::now()) {
 
   SDL_EnableKeyRepeat(300, 50);
 
-  get_cursor()->set_current_animation("letters");
+  menu->get_cursor_sprite()->set_current_animation("letters");
 
   player_name[0] = '\0';
 
-  text_new_player_name = new TextSurface(67, 85, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
-  text_new_player_name->set_text(player_name);
+  player_name_text = new TextSurface(67, 85, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
+  player_name_text->set_text(player_name);
 
-  x_letter_cursor = 0;
-  y_letter_cursor = 0;
+  letter_cursor_x = 0;
+  letter_cursor_y = 0;
 
-  img_arrow = ResourceManager::load_image("menus/selection_menu_arrow.png");
-  img_letters = ResourceManager::load_image("menus/selection_menu_letters.png");
+  arrow_img = ResourceManager::load_image("menus/selection_menu_arrow.png");
+  letters_img = ResourceManager::load_image("menus/selection_menu_letters.png");
 }
 
 /**
@@ -58,13 +54,13 @@ SelectionMenuChooseName::~SelectionMenuChooseName(void) {
 
   SDL_EnableKeyRepeat(0, 0);
 
-  delete text_new_player_name;
-  delete img_arrow;
-  delete img_letters;
+  delete player_name_text;
+  delete arrow_img;
+  delete letters_img;
 }
 
 /**
- * Handles an SDL event in this phase.
+ * Handles an event in this phase.
  * @param event the event
  */
 void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
@@ -86,29 +82,29 @@ void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
       if (now >= next_key_date) {
 	// choose a letter
 	finished = select_letter();
-	text_new_player_name->set_text(player_name);
+	player_name_text->set_text(player_name);
 	next_key_date = now + 500;
       }
       break;
 
     case SDLK_RIGHT:
-      play_cursor_sound();
-      x_letter_cursor = (x_letter_cursor + 14) % 13;
+      menu->play_cursor_sound();
+      letter_cursor_x = (letter_cursor_x + 14) % 13;
       break;
 	  
     case SDLK_UP:
-      play_cursor_sound();
-      y_letter_cursor = (y_letter_cursor + 4) % 5;
+      menu->play_cursor_sound();
+      letter_cursor_y = (letter_cursor_y + 4) % 5;
       break;
 	  
     case SDLK_LEFT:
-      play_cursor_sound();
-      x_letter_cursor = (x_letter_cursor + 12) % 13;
+      menu->play_cursor_sound();
+      letter_cursor_x = (letter_cursor_x + 12) % 13;
       break;
 	  
     case SDLK_DOWN:
-      play_cursor_sound();
-      y_letter_cursor = (y_letter_cursor + 6) % 5;
+      menu->play_cursor_sound();
+      letter_cursor_y = (letter_cursor_y + 6) % 5;
       break;
   
     default:
@@ -116,89 +112,82 @@ void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
     }
 
     if (finished) {
-      set_next_screen(new SelectionMenuSelectFile(this));
+      menu->set_next_phase(new SelectionMenuSelectFile(menu));
     }
   }
 }
 
 /**
- * Displays the selection menu in this phase.
+ * Displays the selection menu phase.
+ * @param destination_surface the surface to draw
  */
-void SelectionMenuChooseName::display(Surface *screen_surface) {
-
-  start_display(screen_surface);
+void SelectionMenuChooseName::display(Surface *destination_surface) {
 
   // cursor
-  get_cursor()->display(destination_surface,
-      51 + 16 * x_letter_cursor,
-      93 + 18 * y_letter_cursor);
+  menu->get_cursor_sprite()->display(destination_surface,
+      51 + 16 * letter_cursor_x, 93 + 18 * letter_cursor_y);
  
   // current name
   Rectangle position(57, 76, 0, 0);
-  img_arrow->blit(destination_surface, position);
-  text_new_player_name->display(destination_surface);
+  arrow_img->blit(destination_surface, position);
+  player_name_text->display(destination_surface);
 
   // letters
   position.set_y(98);
-  img_letters->blit(destination_surface, position);
-
-  finish_display(screen_surface);
+  letters_img->blit(destination_surface, position);
 }
 
 /**
- * This function is called when the player chooses a letter
- * when typing his name.
- * @return true if he finished typing the name (because he validated
- * or cancelled), false otherwise
+ * This function is called when the player chooses a letter when typing his name.
+ * @return true if he finished typing the name (because he validated or cancelled)
  */
 bool SelectionMenuChooseName::select_letter(void) {
 
   size_t length = strlen(player_name);
   char letter_to_add = '\0';
   bool finished = false;
-  Sound *letter_sound = ResourceManager::get_sound("danger");
 
-  switch (y_letter_cursor) {
+  switch (letter_cursor_y) {
     
   case 0:
     // upper case letter from A to M
-    letter_to_add = 'A' + x_letter_cursor;
+    letter_to_add = 'A' + letter_cursor_x;
     break;
     
   case 1:
     // upper case letter from N to Z
-    letter_to_add = 'N' + x_letter_cursor;
+    letter_to_add = 'N' + letter_cursor_x;
     break;
 
   case 2:
     // lower case letter from a to m
-    letter_to_add = 'a' + x_letter_cursor;
+    letter_to_add = 'a' + letter_cursor_x;
     break;
     
   case 3:
     // lower case letter from n to z
-    letter_to_add = 'n' + x_letter_cursor;
+    letter_to_add = 'n' + letter_cursor_x;
     break;
 
   case 4:
     // digit or special command
 
-    if (x_letter_cursor <= 9) {
+    if (letter_cursor_x <= 9) {
       // digit
-      letter_to_add = '0' + x_letter_cursor;
+      letter_to_add = '0' + letter_cursor_x;
     }
     else {
       // special command
-      switch (x_letter_cursor) {
+      switch (letter_cursor_x) {
 
       case 10:
 	// remove the last letter
 	if (length > 0) {
 	  player_name[length - 1] = '\0';
-	  letter_sound->play();
+	  menu->play_letter_sound();
 	}
 	else {
-	  play_error_sound();
+	  menu->play_error_sound();
 	}
 	break;
 
@@ -209,7 +198,7 @@ bool SelectionMenuChooseName::select_letter(void) {
 
       case 12:
 	// cancel
-	letter_sound->play();
+	menu->play_letter_sound();
 	finished = true;
 	break;
       }
@@ -222,10 +211,10 @@ bool SelectionMenuChooseName::select_letter(void) {
     if (length < 6) {
       player_name[length] = letter_to_add;
       player_name[length + 1] = '\0';
-      letter_sound->play();
+      menu->play_letter_sound();
     }
     else {
-      play_error_sound();
+      menu->play_error_sound();
     }
   }  
 
@@ -233,24 +222,23 @@ bool SelectionMenuChooseName::select_letter(void) {
 }
 
 /**
- * This function is called when the player wants to finish
- * typing his name.
+ * This function is called when the player wants to finish typing his name.
  * @return true if the new name is valid, false otherwise
  */
 bool SelectionMenuChooseName::validate_player_name(void) {
 
   if (strlen(player_name) == 0) {
-    play_error_sound();
+    menu->play_error_sound();
     return false;
   }
 
-  play_ok_sound();
+  menu->play_ok_sound();
 
   // create the savegame
-  Savegame *savegame = get_savegame(get_cursor_position() - 1);
+  Savegame *savegame = menu->get_savegame(menu->get_cursor_position() - 1);
   savegame->set_string(Savegame::PLAYER_NAME, player_name);
   savegame->save();
-  reload_savegames();
+  menu->reload_savegames();
 
   return true;
 }

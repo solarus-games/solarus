@@ -25,7 +25,6 @@
 #include "Savegame.h"
 #include "StringResource.h"
 #include "menus/TitleScreen.h"
-#include "menus/SelectionMenuSelectFile.h"
 
 /**
  * Initializes the game engine.

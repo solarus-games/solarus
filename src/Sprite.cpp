@@ -19,7 +19,6 @@
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "ResourceManager.h"
-#include "ZSDX.h"
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/PixelBits.h"

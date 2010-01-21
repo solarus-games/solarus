@@ -68,7 +68,7 @@ class Sound {
     ~Sound(void);
     bool play(void);
 
-    static void initialize(void);
+    static void initialize(int argc, char **argv);
     static void quit(void);
     static bool is_initialized(void);
     static void update(void);

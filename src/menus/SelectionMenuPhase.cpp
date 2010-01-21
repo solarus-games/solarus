@@ -157,14 +157,6 @@ void SelectionMenuPhase::play_error_sound(void) {
 }
 
 /**
- * Returns the keys effects.
- * @return the keys effects
- */
-KeysEffect * SelectionMenuPhase::get_keys_effect(void) {
-  return common_part->keys_effect;
-}
-
-/**
  * Returns the 3 savegames.
  * @return the 3 savegames
  */

@@ -54,9 +54,6 @@ class SelectionMenuPhase: public Screen {
     void play_ok_sound(void);
     void play_error_sound(void);
 
-    // keys
-    KeysEffect * get_keys_effect(void);
-
     // cursor handling
     Sprite *get_cursor(void);
     int get_cursor_position(void);

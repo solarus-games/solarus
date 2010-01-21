@@ -170,26 +170,6 @@ MapEntity::~MapEntity(void) {
 }
 
 /**
- * Just after the entity is created, this function is called once to check whether
- * the entity created can be added to the specified map and in the current game state.
- * This function returns true by default.
- * @param map the map where this entity is about to be added
- * @return true to validate the adding, false if you don't want this
- * entity to be added to the map (then it will be destroyed)
- */
-bool MapEntity::can_be_added(Map *map) {
-  return true;
-}
-
-/**
- * Schedules this entity for removal.
- * The entity will be removed from the map and destroyed.
- */
-void MapEntity::remove_from_map(void) {
-  map->get_entities()->remove_entity(this);
-}
-
-/**
  * Returns whether this entity is the hero
  * controlled by the player.
  * @return true if this entity is the hero
@@ -247,6 +227,7 @@ bool MapEntity::is_displayed_in_y_order(void) {
  * @param map the map
  */
 void MapEntity::set_map(Map *map) {
+
   this->map = map;
   this->game = map->get_game();
 
@@ -273,16 +254,22 @@ Game * MapEntity::get_game(void) {
   return game;
 }
 
+/**
+ * Schedules this entity for removal.
+ * The entity will be removed from the map and destroyed.
+ */
+void MapEntity::remove_from_map(void) {
+  map->get_entities()->remove_entity(this);
+}
 
 /**
- * Sets a flag indicating that this entity has been added
+ * Notifies this entity that is has been added
  * to the list of entities that will be removed from the map
  * and deleted from the memory as soon as possible.
- * When this flag is on, this entity is not considered
- * to be on the map anymore.
+ * When this flag is on, this entity is not considered to be on the map anymore.
  */
-void MapEntity::set_being_removed(void) {
-  being_removed = true;
+void MapEntity::notify_being_removed(void) {
+  this->being_removed = true;
 }
 
 /**

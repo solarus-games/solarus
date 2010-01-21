@@ -61,23 +61,16 @@ Enemy::~Enemy(void) {
 }
 
 /**
- * Returns the type of entity.
- * @return the type of entity
- */
-EntityType Enemy::get_type() {
-  return ENEMY;
-}
-
-/**
  * Creates an instance from an input stream.
  * The input stream must respect the syntax of this entity type.
+ * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
  * @param x x coordinate of the entity
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Enemy::parse(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Enemy::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype, rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
   std::string name;
@@ -90,14 +83,19 @@ MapEntity * Enemy::parse(std::istream &is, Layer layer, int x, int y) {
   FileTools::read(is, pickable_item_type);
   FileTools::read(is, pickable_item_savegame_variable);
 
-  return create(Subtype(subtype), Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction, 
+  return create(game, Subtype(subtype), Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction, 
       PickableItem::Subtype(pickable_item_type), pickable_item_savegame_variable);
 }
 
 /**
  * Creates an enemy with the specified type.
- * This method acts like a constructor, except that it returns an object from a
- * subclass of Enemy.
+ * This method acts like a constructor, except that it can return NULL if the enemy
+ * is already dead and cannot be killed again (e.g. a boss).
+ * It some very special cases, it can even return an entity that is not an enemy:
+ * for example, imagine that the player killed a dungeon's end boss
+ * but then killed himself (or just left the game) without picking the heart container: in this case,
+ * this function returns an instance of PickableItem (the heart container).
+ * @param game the current game
  * @param type type of enemy to create
  * @param name a name identifying the enemy
  * @param rank rank of the enemy: normal, miniboss or boss
@@ -109,11 +107,27 @@ MapEntity * Enemy::parse(std::istream &is, Layer layer, int x, int y) {
  * this enemy is killed, or -1 if this enemy is not saved
  * @param pickable_item_subtype subtype of pickable item the enemy drops
  * @param pickable_item_savegame_variable index of the boolean variable
- * @return the enemy created
  */
-MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
+MapEntity * Enemy::create(Game *game, Subtype type, Rank rank, int savegame_variable,
     const std::string &name, Layer layer, int x, int y, int direction,
     PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable) {
+
+  // see if the enemy is alive
+  if (savegame_variable != -1) {
+    
+    if (game->get_savegame()->get_boolean(savegame_variable)) {
+
+      // the enemy is dead: see whether it releases a pickable item saved
+      if (pickable_item_savegame_variable != -1) {
+	// return the pickable item that the player has possibly forgotten after he killed the enemy
+        return PickableItem::create(game, layer, x, y, pickable_item_subtype, pickable_item_savegame_variable, FALLING_NONE, false);
+      }
+      else {
+	// the enemy is already killed and released no pickable item saved
+        return NULL;
+      }
+    }
+  }
 
   // create the enemy
   Enemy *enemy;
@@ -155,28 +169,11 @@ MapEntity * Enemy::create(Subtype type, Rank rank, int savegame_variable,
 }
 
 /**
- * Just after the entity is created, this function is called once to check whether
- * the entity created can be added to the specified map and in the current game state.
- * @param map the map where this entity is about to be added
- * @return true if the entity can be added, false otherwise
+ * Returns the type of entity.
+ * @return the type of entity
  */
-bool Enemy::can_be_added(Map *map) {
-
-  Savegame *savegame = map->get_game()->get_savegame();
-
-  // see if the enemy is dead
-  if (savegame_variable != -1 && savegame->get_boolean(savegame_variable)) {
-
-    // the enemy is dead and saved: checked whether it releases a pickable item saved
-    if (pickable_item_savegame_variable != -1) {
-      // create the pickable item that the player has forgotten after he killed the enemy
-      PickableItem *item = PickableItem::create(get_layer(), get_x(), get_y(), pickable_item_subtype, pickable_item_savegame_variable, FALLING_NONE, false);
-      map->get_entities()->add_entity(item);
-    }
-    return false;
-  }
-
-  return true;
+EntityType Enemy::get_type() {
+  return ENEMY;
 }
 
 /**
@@ -452,16 +449,15 @@ void Enemy::update(void) {
     // create the pickable item
     if (pickable_item_subtype != PickableItem::NONE) {
       bool will_disappear = PickableItem::can_disappear(pickable_item_subtype);
-      map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item_subtype,
-	    pickable_item_savegame_variable, FALLING_HIGH,
-	    will_disappear));
+      map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(), pickable_item_subtype,
+	    pickable_item_savegame_variable, FALLING_HIGH, will_disappear));
     }
 
     // notify the enemy
     just_dead();
 
     // remove the enemy
-    map->get_entities()->remove_entity(this);
+    remove_from_map();
 
     // notify the script
     map->get_script()->event_enemy_dead(get_name());

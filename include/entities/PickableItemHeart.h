@@ -21,7 +21,7 @@
 #include "entities/PickableItem.h"
 
 /**
- * Represents a heart placed on the map, that the hero can take.
+ * Represents some life placed on the map, that the hero can pick.
  */
 class PickableItemHeart: public PickableItem {
 

@@ -28,6 +28,7 @@
 
 /**
  * Creates a new raised block.
+ * @param game the current game
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
@@ -35,7 +36,7 @@
  * @param height height of the block (the pattern can be repeated)
  * @param subtype subtype of raised block
  */
-CrystalSwitchBlock::CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype):
+CrystalSwitchBlock::CrystalSwitchBlock(Game *game, Layer layer, int x, int y, int width, int height, Subtype subtype):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, width, height),
   subtype(subtype) {
 
@@ -62,13 +63,14 @@ CrystalSwitchBlock::~CrystalSwitchBlock(void) {
 /**
  * Creates an instance from an input stream.
  * The input stream must respect the syntax of this entity type.
+ * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
  * @param x x coordinate of the entity
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * CrystalSwitchBlock::parse(std::istream &is, Layer layer, int x, int y) {
+MapEntity * CrystalSwitchBlock::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
   int width, height, subtype;
 
@@ -76,7 +78,7 @@ MapEntity * CrystalSwitchBlock::parse(std::istream &is, Layer layer, int x, int 
   FileTools::read(is, height);
   FileTools::read(is, subtype);
 
-  return new CrystalSwitchBlock(Layer(layer), x, y, width, height, Subtype(subtype));
+  return new CrystalSwitchBlock(game, Layer(layer), x, y, width, height, Subtype(subtype));
 }
 
 /**

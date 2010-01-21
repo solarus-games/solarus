@@ -85,7 +85,7 @@ class MapEntities {
   public:
 
     // creation and destruction
-    MapEntities(Map *map);
+    MapEntities(Game *game, Map *map);
     ~MapEntities(void);
 
     // information about the entities

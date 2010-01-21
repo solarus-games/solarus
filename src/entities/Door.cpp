@@ -88,13 +88,14 @@ Door::~Door(void) {
 /**
  * Creates an instance from an input stream.
  * The input stream must respect the syntax of this entity type.
+ * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
  * @param x x coordinate of the entity
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Door::parse(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Door::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int direction, subtype, savegame_variable;

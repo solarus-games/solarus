@@ -272,7 +272,7 @@ void Boomerang::update(void) {
     }
   }
   else if (get_movement()->is_finished()) {
-    get_map()->get_entities()->remove_entity(this);
+    remove_from_map();
   }
 }
 

@@ -82,6 +82,7 @@ Game::~Game(void) {
 
   // quit the game
   current_map->leave(); // tell the map that the hero is not there anymore
+  zsdx->get_debug_keys()->set_game(NULL);
   stop_music();
 
   delete transition;
@@ -541,7 +542,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   // load the next map
   next_map = ResourceManager::get_map(map_id);
   if (!next_map->is_loaded()) {
-    next_map->load();
+    next_map->load(this);
   }
 
   // initialize the destination point, from the specified name or from the savegame
@@ -618,7 +619,7 @@ void Game::play_music(MusicId new_music_id) {
     previous_music_id = current_music_id; // save the previous music
 
     if (Music::isNoneId(new_music_id) && current_music != NULL) {
-     
+ 
       current_music->stop();
       current_music_id = Music::none;
       current_music = NULL;

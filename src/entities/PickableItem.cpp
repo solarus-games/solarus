@@ -18,7 +18,6 @@
 #include "entities/PickableItemHeart.h"
 #include "entities/PickableItemFairy.h"
 #include "entities/Hero.h"
-#include "entities/MapEntities.h"
 #include "entities/Boomerang.h"
 #include "movements/FallingOnFloorMovement.h"
 #include "movements/FollowMovement.h"
@@ -102,27 +101,38 @@ EntityType PickableItem::get_type() {
 /**
  * Creates an instance from an input stream.
  * The input stream must respect the syntax of this entity type.
+ * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
  * @param x x coordinate of the entity
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * PickableItem::parse(std::istream &is, Layer layer, int x, int y) {
+MapEntity * PickableItem::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
   int subtype, savegame_variable;
 
   FileTools::read(is, subtype);
   FileTools::read(is, savegame_variable);
 
-  return create(Layer(layer), x, y, Subtype(subtype), savegame_variable, FALLING_NONE, false);
+  return create(game, Layer(layer), x, y, Subtype(subtype), savegame_variable, FALLING_NONE, false);
 }
 
 /**
  * Creates a pickable item with the specified subtype.
- * This method acts like a constructor, except that it can return NULL if the specified subtype is NONE.
+ * This method acts like a constructor, except that it can return NULL in several cases:
+ * - if the specified subtype is NONE,
+ * or:
+ * - if the specified subtype is RANDOM and the random subtype chosen is NONE,
+ * or:
+ * - if the specified subtype corresponds to a saved item (that the player can obtain only once)
+ *   and the player already has found the item,
+ * or:
+ * - if the specified subtype corresponds to an item the player has not unlocked yet
+ *   (e.g. arrows without bow).
  * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
  * or one of its subclasses (for more complex items).
+ * @param game the current game
  * @param layer layer of the pickable item to create on the map (ignored for a fairy)
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
@@ -135,8 +145,13 @@ MapEntity * PickableItem::parse(std::istream &is, Layer layer, int x, int y) {
  * @param will_disappear true to make the item disappear after an amout of time
  * @return the pickable item created, or NULL depending on the subtype
  */
-PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Subtype subtype,
-				    int savegame_variable, FallingHeight falling_height, bool will_disappear) {
+PickableItem * PickableItem::create(Game *game, Layer layer, int x, int y, PickableItem::Subtype subtype,
+                                    int savegame_variable, FallingHeight falling_height, bool will_disappear) {
+
+  if (subtype == RANDOM) {
+    // pick a subtype at random
+    subtype = choose_random_subtype(game->get_equipment());
+  }
 
   // don't create anything if the subtype is NONE
   if (subtype == NONE) {
@@ -150,6 +165,16 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
 
   if (must_be_saved(subtype) && savegame_variable == -1) {
     DIE("This subtype of pickable item must be saved: " << subtype);
+  }
+
+  // don't create anything if this is an item already found
+  if (savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable)) {
+    return NULL;
+  }
+
+  // don't create anything if this item is not unlocked yet
+  if (is_subtype_locked(subtype, game->get_equipment())) {
+    return NULL;
   }
 
   PickableItem *item;
@@ -185,34 +210,13 @@ PickableItem * PickableItem::create(Layer layer, int x, int y, PickableItem::Sub
 }
 
 /**
- * Once the entity is created, this function is called to check whether
- * the entity created can be added to the specified map and in the current game state.
- * @param map the map where this entity is about to be added
- * @return true if the entity can be added, false otherwise
- */
-bool PickableItem::can_be_added(Map *map) {
-
-  Savegame *savegame = map->get_game()->get_savegame();
-
-  if (subtype == RANDOM) {
-    // now is the time to pick the random subtype
-    subtype = choose_random_subtype(savegame->get_equipment());
-  }
-
-  return
-    subtype != NONE &&                                                      // the item should exist
-    (savegame_variable == -1 || !savegame->get_boolean(savegame_variable)) && // don't add an item already found
-    !is_subtype_locked(savegame->get_equipment());                             // the item should be available for the player
-
-}
-
-/**
- * Returns whether this item's subtype is locked,
- * e.g. whether the player has not unlocked it yet in its equipment
+ * Returns whether a subtype is locked,
+ * i.e. whether the player has not unlocked it yet in its equipment.
+ * @param subtype the subtype to check
  * @param equipment the player's equipment
  * @return true if the subtype is locked
  */
-bool PickableItem::is_subtype_locked(Equipment *equipment) {
+bool PickableItem::is_subtype_locked(Subtype subtype, Equipment *equipment) {
 
   bool has_bombs = equipment->has_inventory_item(INVENTORY_BOMBS);
   bool has_bow = equipment->has_inventory_item(INVENTORY_BOW);
@@ -225,8 +229,8 @@ bool PickableItem::is_subtype_locked(Equipment *equipment) {
 }
 
 /**
- * Chooses a subtype of item randomly among all subtypes
- * (event the ones that the player cannot get yet).
+ * Chooses a subtype of item randomly among all subtypes,
+ * including the ones the player cannot get yet.
  * This function is called when the subtype of item is RANDOM.
  *
  * Some items have a low probability (fairies, big bottles of magic...)
@@ -395,8 +399,7 @@ bool PickableItem::is_falling(void) {
 void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping->is_hero() && can_be_picked) {
-
-    map->get_entities()->remove_entity(this);
+    remove_from_map();
     give_item_to_player();
   }
   else if (entity_overlapping->get_type() == BOOMERANG && !is_following_boomerang) {
@@ -607,7 +610,7 @@ void PickableItem::update(void) {
 	}
     
 	if (now >= disappear_date) {
-	  map->get_entities()->remove_entity(this);
+	  remove_from_map();
 	}
       }
     }

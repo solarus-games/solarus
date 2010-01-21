@@ -129,7 +129,7 @@ class Map {
 
     // loading
     bool is_loaded(void);
-    void load();
+    void load(Game *game);
     void unload(void);
     Game * get_game(void);
     void opening_transition_finished(void);

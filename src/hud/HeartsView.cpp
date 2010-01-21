@@ -22,7 +22,6 @@
 #include "Equipment.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
-#include "ZSDX.h"
 
 /**
  * Position of the hearts in the PNG image.

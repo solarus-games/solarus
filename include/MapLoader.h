@@ -29,7 +29,7 @@ class MapLoader {
     MapLoader(void);
     ~MapLoader(void);
 
-    void load_map(Map *map);
+    void load_map(Game *game, Map *map);
 
 };
 

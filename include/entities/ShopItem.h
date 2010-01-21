@@ -46,13 +46,11 @@ class ShopItem: public Detector {
   public:
 
     ~ShopItem(void);
-    static ShopItem * create(const std::string &name, Layer layer, int x, int y,
+    static ShopItem * create(Game *game, const std::string &name, Layer layer, int x, int y,
 	Treasure *treasure, int price, const MessageId &message_id);
     static CreationFunction parse;
 
     EntityType get_type(void);
-    bool can_be_added(Map *map);
-    void set_map(Map *map);
 
     bool is_sword_ignored(void);
     bool is_obstacle_for(MapEntity *other);

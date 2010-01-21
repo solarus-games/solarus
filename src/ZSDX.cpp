@@ -234,6 +234,11 @@ void ZSDX::display(void) {
 
 /**
  * Entry point of the program.
+ * The following optional command-line arguments are supported:
+ *   -datapath=/some/path/to/datadir            loads the data files from the specified directory
+ *   -disable-audio                             disables sounds and musics
+ * @param argc number of command-line arguments
+ * @param argv command-line arguments
  */
 int main(int argc, char **argv) {
 

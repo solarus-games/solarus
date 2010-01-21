@@ -16,7 +16,6 @@
  */
 #include "entities/ShopItem.h"
 #include "entities/Hero.h"
-#include "entities/MapEntities.h"
 #include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
@@ -67,13 +66,14 @@ ShopItem::~ShopItem(void) {
 /**
  * Creates an instance from an input stream.
  * The input stream must respect the syntax of this entity type.
+ * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
  * @param x x coordinate of the entity
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * ShopItem::parse(std::istream &is, Layer layer, int x, int y) {
+MapEntity * ShopItem::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int treasure, amount, savegame_variable, price;
@@ -86,12 +86,13 @@ MapEntity * ShopItem::parse(std::istream &is, Layer layer, int x, int y) {
   FileTools::read(is, price);
   FileTools::read(is, message_id);
 
-  return create(name, Layer(layer), x, y, new Treasure(NULL, Treasure::Content(treasure), amount, savegame_variable),
+  return create(game, name, Layer(layer), x, y, new Treasure(game, Treasure::Content(treasure), amount, savegame_variable),
       price, message_id);
 }
 
 /**
  * Creates a new shop item with the specified treasure and price.
+ * @param game the current game
  * @param name the name identifying this entity
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
@@ -100,8 +101,15 @@ MapEntity * ShopItem::parse(std::istream &is, Layer layer, int x, int y) {
  * @param price the treasure's price in rupees
  * @param message_id id of the message describing the item when the player watches it
  */
-ShopItem * ShopItem::create(const std::string &name, Layer layer, int x, int y,
+ShopItem * ShopItem::create(Game *game, const std::string &name, Layer layer, int x, int y,
 			    Treasure *treasure, int price, const MessageId &message_id) {
+
+  // see if the item was not been already bought
+  int savegame_variable = treasure->get_savegame_variable();
+  if (savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable)) {
+    delete treasure;
+    return NULL;
+  }
 
   return new ShopItem(name, layer, x, y, treasure, price, message_id);
 }
@@ -112,33 +120,6 @@ ShopItem * ShopItem::create(const std::string &name, Layer layer, int x, int y,
  */
 EntityType ShopItem::get_type() {
   return SHOP_ITEM;
-}
-
-/**
- * Once the entity is created, this function is called to check whether
- * the entity created can be added to the specified map and in the current game state.
- * @param map the map where this entity is about to be added
- * @return true if the entity can be added, false otherwise
- */
-bool ShopItem::can_be_added(Map *map) {
-
-  Savegame *savegame = map->get_game()->get_savegame();
-
-  // see if the item was not been already bought
-  int savegame_variable = treasure->get_savegame_variable();
-  return savegame_variable == -1 || !savegame->get_boolean(savegame_variable);
-}
-
-/**
- * Sets the current map of this entity.
- * @param map the map
- */
-void ShopItem::set_map(Map *map) {
-
-  Detector::set_map(map);
-
-  // notify the treasure
-  treasure->set_game(map->get_game());
 }
 
 /**
@@ -242,7 +223,7 @@ void ShopItem::update(void) {
 	game->give_treasure(new Treasure(game, treasure->get_content(),
 	      treasure->get_amount(), savegame_variable));
 	if (savegame_variable != -1) {
-	  map->get_entities()->remove_entity(this);
+	  remove_from_map();
 	  game->get_savegame()->set_boolean(savegame_variable, true);
 	}
 	map->get_script()->event_shop_item_bought(get_name());

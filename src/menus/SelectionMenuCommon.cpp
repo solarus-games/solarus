@@ -66,13 +66,6 @@ SelectionMenuCommon::SelectionMenuCommon(void) {
   text_title = new TextSurface(160, 54, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   text_title->set_font(TextSurface::FONT_STANDARD);
 
-  // icons (actually not shown any more in the selection menu)
-  keys_effect = new KeysEffect();
-  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_VALIDATE);
-  keys_effect->set_sword_key_enabled(false);
-  // action_icon = new ActionIcon(keys_effect, 13, 31);
-  // sword_icon = new SwordIcon(keys_effect, NULL, 0, 9);
-
   // sounds
   cursor_sound = ResourceManager::get_sound("cursor");
   ok_sound = ResourceManager::get_sound("ok");
@@ -105,10 +98,6 @@ SelectionMenuCommon::~SelectionMenuCommon(void) {
     delete hearts_views[i];
     delete savegames[i];
   }
-
-  delete action_icon;
-  delete sword_icon;
-  delete keys_effect;
 
   delete cursor;
 
@@ -224,10 +213,6 @@ void SelectionMenuCommon::update(void) {
     next_cloud_move += 100;
   }
 
-  // update the icons
-  action_icon->update();
-  sword_icon->update();
-
   // update the animation of the cursor
   cursor->update();
 }
@@ -271,12 +256,5 @@ void SelectionMenuCommon::display(Surface *destination_surface) {
   position.set_xy(37, 38);
   position.set_size(246, 165);
   img_background->blit(destination_surface, position);
-
-  /* no icons to simplify the keys
-  // icons
-  action_icon->display(destination_surface);
-  sword_icon->display(destination_surface);
-  */
-
 }
 

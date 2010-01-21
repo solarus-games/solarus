@@ -19,8 +19,8 @@
  * This header is included by Common.h and every class header file should include Common.h.
  */
 
-#ifndef ZSDX_TYPES_H
-#define ZSDX_TYPES_H
+#ifndef SOLARUS_TYPES_H
+#define SOLARUS_TYPES_H
 
 #include <stdint.h>
 

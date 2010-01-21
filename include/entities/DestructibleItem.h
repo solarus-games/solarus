@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_DESTRUCTIBLE_ITEM_H
-#define ZSDX_DESTRUCTIBLE_ITEM_H
+#ifndef SOLARUS_DESTRUCTIBLE_ITEM_H
+#define SOLARUS_DESTRUCTIBLE_ITEM_H
 
 #include "Common.h"
 #include "Detector.h"

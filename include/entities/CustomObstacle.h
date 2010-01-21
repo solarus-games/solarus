@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_CUSTOM_OBSTACLE_H
-#define ZSDX_CUSTOM_OBSTACLE_H
+#ifndef SOLARUS_CUSTOM_OBSTACLE_H
+#define SOLARUS_CUSTOM_OBSTACLE_H
 
 #include "Common.h"
 #include "entities/MapEntity.h"

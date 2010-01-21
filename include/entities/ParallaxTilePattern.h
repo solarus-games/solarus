@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_PARALLAX_TILE_PATTERN_H
-#define ZSDX_PARALLAX_TILE_PATTERN_H
+#ifndef SOLARUS_PARALLAX_TILE_PATTERN_H
+#define SOLARUS_PARALLAX_TILE_PATTERN_H
 
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_PAPILLAUSOR_KING_H
-#define ZSDX_PAPILLAUSOR_KING_H
+#ifndef SOLARUS_PAPILLAUSOR_KING_H
+#define SOLARUS_PAPILLAUSOR_KING_H
 
 #include "Common.h"
 #include "entities/Enemy.h"

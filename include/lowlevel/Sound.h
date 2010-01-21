@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_SOUND_H
-#define ZSDX_SOUND_H
+#ifndef SOLARUS_SOUND_H
+#define SOLARUS_SOUND_H
 
 #include "Common.h"
 #include <AL/al.h>

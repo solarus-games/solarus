@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_GAMEOVER_SEQUENCE_H
-#define ZSDX_GAMEOVER_SEQUENCE_H
+#ifndef SOLARUS_GAMEOVER_SEQUENCE_H
+#define SOLARUS_GAMEOVER_SEQUENCE_H
 
 #include "Common.h"
 #include "Controls.h"

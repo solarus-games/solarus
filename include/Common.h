@@ -18,8 +18,8 @@
  * This header should be included by each class header file.
  */
 
-#ifndef ZSDX_COMMON_H
-#define ZSDX_COMMON_H
+#ifndef SOLARUS_COMMON_H
+#define SOLARUS_COMMON_H
 
 #include <string>
 #include <sstream>
@@ -33,13 +33,13 @@
  * >= 1: enable the error messages; pick the data also from the physical data directory; use clear text (.lua) scripts
  * >= 2: enable the debug keys
  */
-#define ZSDX_DEBUG_LEVEL 2
+#define SOLARUS_DEBUG_LEVEL 2
 
 /**
  * This macro should be used to exit the program properly on an error message.
  * The message parameter can contain several elements separated by the '<<' operator.
  */
-//#if ZSDX_DEBUG_LEVEL == 0
+//#if SOLARUS_DEBUG_LEVEL == 0
 //#define DIE(message) do { throw std::logic_error(""); } while (false)
 //#else
 #define DIE(message) do { std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)

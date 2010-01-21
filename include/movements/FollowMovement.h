@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_FOLLOW_MOVEMENT_H
-#define ZSDX_FOLLOW_MOVEMENT_H
+#ifndef SOLARUS_FOLLOW_MOVEMENT_H
+#define SOLARUS_FOLLOW_MOVEMENT_H
 
 #include "Common.h"
 #include "movements/CollisionMovement.h"

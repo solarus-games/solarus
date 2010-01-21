@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_SWITCH_H
-#define ZSDX_SWITCH_H
+#ifndef SOLARUS_SWITCH_H
+#define SOLARUS_SWITCH_H
 
 #include "Common.h"
 #include "entities/Detector.h"

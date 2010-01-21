@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_INI_FILE_H
-#define ZSDX_INI_FILE_H
+#ifndef SOLARUS_INI_FILE_H
+#define SOLARUS_INI_FILE_H
 
 #include "Common.h"
 #include "SDL_Config/SDL_config_lib.h"

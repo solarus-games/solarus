@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_PATH_FINDING_H
-#define ZSDX_PATH_FINDING_H
+#ifndef SOLARUS_PATH_FINDING_H
+#define SOLARUS_PATH_FINDING_H
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"

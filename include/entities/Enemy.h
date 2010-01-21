@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_ENEMY_H
-#define ZSDX_ENEMY_H
+#ifndef SOLARUS_ENEMY_H
+#define SOLARUS_ENEMY_H
 
 #include "Common.h"
 #include "entities/Detector.h"

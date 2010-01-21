@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_DIALOG_BOX_H
-#define ZSDX_DIALOG_BOX_H
+#ifndef SOLARUS_DIALOG_BOX_H
+#define SOLARUS_DIALOG_BOX_H
 
 #include "Common.h"
 #include "KeysEffect.h"

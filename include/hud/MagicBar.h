@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_MAGIC_BAR_H
-#define ZSDX_MAGIC_BAR_H
+#ifndef SOLARUS_MAGIC_BAR_H
+#define SOLARUS_MAGIC_BAR_H
 
 #include "Common.h"
 #include "hud/HudElement.h"

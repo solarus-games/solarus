@@ -53,7 +53,7 @@ void FileTools::initialize(int argc, char **argv) {
   data_path = data_path + "/data.zsdx";
 
   PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);
-#if ZSDX_DEBUG_LEVEL >= 1
+#if SOLARUS_DEBUG_LEVEL >= 1
   PHYSFS_addToSearchPath("data", 1);
 #endif
   PHYSFS_addToSearchPath(data_path.c_str(), 1);

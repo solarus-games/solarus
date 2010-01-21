@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_OBSTACLE_H
-#define ZSDX_OBSTACLE_H
+#ifndef SOLARUS_OBSTACLE_H
+#define SOLARUS_OBSTACLE_H
 
 /**
  * Obstacle property for the tiles or the dynamic entities.

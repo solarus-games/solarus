@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ZSDX_COLOR_H
-#define ZSDX_COLOR_H
+#ifndef SOLARUS_COLOR_H
+#define SOLARUS_COLOR_H
 
 #include "Common.h"
 #include "SDL/SDL.h"

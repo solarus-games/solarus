@@ -51,7 +51,7 @@ void DebugKeys::set_game(Game *game) {
  */
 void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 
-#if ZSDX_DEBUG_LEVEL >= 2
+#if SOLARUS_DEBUG_LEVEL >= 2
   // don't consider the debug keys in release mode
 
   if (game != NULL) {
@@ -200,7 +200,7 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
  */
 void DebugKeys::key_released(const SDL_keysym &keysym) {
 
-#if ZSDX_DEBUG_LEVEL >= 2
+#if SOLARUS_DEBUG_LEVEL >= 2
 
   if (game != NULL) {
     switch (keysym.sym) {

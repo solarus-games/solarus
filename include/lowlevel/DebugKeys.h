@@ -29,12 +29,12 @@ class DebugKeys {
 
   private:
 
-    ZSDX *zsdx; /**< the ZSDX object */
-    Game *game; /**< the current game, or NULL if no game is started */
+    Solarus *solarus;      /**< the Solarus object */
+    Game *game;            /**< the current game, or NULL if no game is started */
 
   public:
 
-    DebugKeys(ZSDX *zsdx);
+    DebugKeys(Solarus *solarus);
     ~DebugKeys(void);
 
     void set_game(Game *game);

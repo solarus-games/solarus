@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/DebugKeys.h"
-#include "ZSDX.h"
+#include "Solarus.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Equipment.h"
@@ -24,10 +24,10 @@
 
 /**
  * Constructor.
- * @param zsdx the application object
+ * @param solarus the application object
  */
-DebugKeys::DebugKeys(ZSDX *zsdx):
-  zsdx(zsdx), game(NULL) {
+DebugKeys::DebugKeys(Solarus *solarus):
+  solarus(solarus), game(NULL) {
 }
 
 /**
@@ -189,7 +189,7 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
     }
   }
   else if (keysym.sym == SDLK_ESCAPE) {
-    zsdx->skip_menus();
+    solarus->skip_menus();
   }
 #endif
 }

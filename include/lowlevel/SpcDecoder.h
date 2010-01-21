@@ -28,7 +28,7 @@
  * Snes_SPC is a recent SPC decoding library and exists in two versions:
  * - a fast version, that renders music with a very nice quality (recommended);
  * - a highly accurate version, that renders music with a better accuracy, but three times slower.
- * The source code of ZSDX include the fast version of Snes_SPC, which I recommend
+ * The source code of Solarus include the fast version of Snes_SPC, which I recommend
  * since the sound generated is good enough.
  */
 class SpcDecoder {

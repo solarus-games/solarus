@@ -154,8 +154,8 @@ class Savegame {
        * Each integer corresponds to a value of the SDLKey enumeration.
        * This makes the savegames SDL-dependent.
        * TODO: make our own enumeration to replace SDLKey.
-       * Add a saved integer to define the type of key saved (SDL: 0, ZSDX: 1).
-       * When loading the savegame, if this is SDL, replace by ZSDX and reset to default keys.
+       * Add a saved integer to define the type of key saved (SDL: 0, Solarus: 1).
+       * When loading the savegame, if this is SDL, replace by Solarus and reset to default keys.
        * @{
        */
       KEYBOARD_ACTION_KEY              = 35,

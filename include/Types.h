@@ -44,7 +44,7 @@ typedef std::string MessageId;
  */
 
 // main classes
-class ZSDX;
+class Solarus;
 class Screen;
 class ResourceManager;
 class KeysEffect;

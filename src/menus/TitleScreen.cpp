@@ -30,10 +30,10 @@
 
 /**
  * Creates a title screen.
- * @param zsdx the ZSDX object
+ * @param solarus the Solarus object
  */
-TitleScreen::TitleScreen(ZSDX *zsdx):
-  Screen(zsdx) {
+TitleScreen::TitleScreen(Solarus *solarus):
+  Screen(solarus) {
 
   // go to phase 1
   init_phase_black_screen();
@@ -291,7 +291,7 @@ void TitleScreen::update_phase_title(void) {
 
   if (transition_out->is_finished()) {
     exit_phase_title();
-    set_next_screen(new SelectionMenu(zsdx)); 
+    set_next_screen(new SelectionMenu(solarus)); 
   }
 }
 

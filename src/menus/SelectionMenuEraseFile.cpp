@@ -20,7 +20,7 @@
 #include "menus/SelectionMenu.h"
 #include "Sprite.h"
 #include "Savegame.h"
-#include "ZSDX.h"
+#include "Solarus.h"
 
 /**
  * Creates a selection menu phase where the player chooses a file to erase.

@@ -89,7 +89,7 @@ class Game: public Screen {
   public:
 
     // creation and destruction
-    Game(ZSDX *zsdx, Savegame *savegame);
+    Game(Solarus *solarus, Savegame *savegame);
     ~Game(void);
 
     // global objects

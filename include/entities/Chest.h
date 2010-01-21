@@ -46,7 +46,6 @@ class Chest: public Detector {
 
     EntityType get_type(void);
     bool is_displayed_in_y_order(void);
-    void set_map(Map *map);
 
     bool is_open(void);
     void set_open(bool open);

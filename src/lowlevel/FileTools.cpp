@@ -168,7 +168,8 @@ void FileTools::data_file_close(const std::istream &data_file) {
  * Opens a data file an loads its content into a buffer.
  * @param file_name name of the file to open
  * @param buffer the buffer to load
- * @param size number of bytes read
+ * @param size number of bytes to read
+ *
  */
 void FileTools::data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size) {
 

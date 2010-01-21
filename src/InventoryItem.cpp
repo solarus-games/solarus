@@ -401,7 +401,7 @@ void InventoryItem::update_bottle(void) {
 	// release the fairy
 	Map *map = game->get_current_map();
 	Hero *hero = game->get_hero();
-	map->get_entities()->add_entity(PickableItem::create(hero->get_layer(), hero->get_x(), hero->get_y(),
+	map->get_entities()->add_entity(PickableItem::create(game, hero->get_layer(), hero->get_x(), hero->get_y(),
 	      PickableItem::FAIRY, -1, FALLING_LOW, true));
 	game->get_equipment()->set_bottle_empty(item_id);
 

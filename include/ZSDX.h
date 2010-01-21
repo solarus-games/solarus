@@ -32,7 +32,7 @@ class ZSDX {
 				  * the selection menu, the game, etc.) */
     Surface *root_surface;       /**< the surface where everything is drawn (always 320*240) */
     DebugKeys *debug_keys;       /**< special keys to debug the game, e.g. by traversing walls (disabled in release mode) */
-    bool exiting;
+    bool exiting;                /**< indicates that the program is about to stop */
 
     void launch_adventure_mode(Savegame *savegame);
 

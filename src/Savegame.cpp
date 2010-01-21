@@ -39,9 +39,15 @@ Savegame::Savegame(const std::string &file_name) {
     // a save already exists, let's load it
     empty = false;
 
-    SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
-    SDL_RWread(rw, &saved_data, sizeof(SavedData), 1);
-    FileTools::data_file_close_rw(rw);
+    size_t size;
+    char *buffer;
+
+    FileTools::data_file_open_buffer(file_name, &buffer, &size);
+    if (size != sizeof(SavedData)) {
+      DIE("Cannot read savegame file '" << file_name << "': invalid file size");
+    }
+    memcpy(&saved_data, buffer, sizeof(SavedData));
+    FileTools::data_file_close_buffer(buffer);
 
     this->equipment = new Equipment(this);
     this->dungeon_equipment = new DungeonEquipment(this);

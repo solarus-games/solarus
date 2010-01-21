@@ -29,14 +29,11 @@
  */
 class SelectionMenuCommon {
 
-  friend class SelectionMenuPhase;
-
   private:
 
-    /**
-     * The savegames shown in the menu.
-     */
-    Savegame *savegames[3];
+    friend class SelectionMenuPhase;
+
+    Savegame *savegames[3];                              /**< the savegames shown in the menu */
 
     // images
     Surface *img_cloud, *img_background;
@@ -55,11 +52,6 @@ class SelectionMenuCommon {
 
     // music
     Music *music;
-
-    // icons
-    KeysEffect *keys_effect;
-    ActionIcon *action_icon;
-    SwordIcon *sword_icon;
 
     // text
     TextSurface *text_option1;

@@ -211,18 +211,17 @@ void Map::unload(void) {
 }
 
 /**
- * Loads the map.
+ * Loads the map into a game.
  * Reads the description file of the map.
+ * @param game the game
  */
-void Map::load(void) {
-
-  // TODO add parameter game
+void Map::load(Game *game) {
 
   this->visible_surface = new Surface(320, 240);
-  entities = new MapEntities(this);
+  entities = new MapEntities(game, this);
 
   // read the map file
-  map_loader.load_map(this);
+  map_loader.load_map(game, this);
 
   set_suspended(true);
 }

@@ -37,7 +37,6 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
 
   SDL_EnableKeyRepeat(300, 50);
 
-  get_keys_effect()->set_sword_key_enabled(true);
   get_cursor()->set_current_animation("letters");
 
   player_name[0] = '\0';
@@ -58,7 +57,6 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenuPhase *previous):
 SelectionMenuChooseName::~SelectionMenuChooseName(void) {
 
   SDL_EnableKeyRepeat(0, 0);
-  get_keys_effect()->set_sword_key_enabled(false);
 
   delete text_new_player_name;
   delete img_arrow;

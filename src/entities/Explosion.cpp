@@ -16,8 +16,6 @@
  */
 #include "entities/Explosion.h"
 #include "entities/Enemy.h"
-#include "entities/MapEntities.h"
-#include "Map.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -107,7 +105,7 @@ bool Explosion::is_displayed_in_y_order(void) {
 void Explosion::update(void) {
   Detector::update();
   if (get_sprite()->is_animation_finished()) {
-    map->get_entities()->remove_entity(this);
+    remove_from_map();
   }
 }
 

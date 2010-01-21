@@ -140,7 +140,6 @@ class Enemy: public Detector {
 
     // creation
     Enemy(const ConstructionParameters &params);
-    bool can_be_added(Map *map);
     virtual void initialize(void) = 0; // to initialize the features, the sprites and the movement
     virtual void restart(void);
 
@@ -188,7 +187,7 @@ class Enemy: public Detector {
     virtual ~Enemy(void);
 
     static CreationFunction parse;
-    static MapEntity * create(Subtype type, Rank rank, int savegame_variable,
+    static MapEntity * create(Game *game, Subtype type, Rank rank, int savegame_variable,
 	const std::string &name, Layer layer, int x, int y, int direction,
 	PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable);
 

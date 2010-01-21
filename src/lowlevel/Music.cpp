@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <iostream> // cerr
 #include "lowlevel/Music.h"
 #include "lowlevel/SpcDecoder.h"
 #include "lowlevel/FileTools.h"
@@ -166,9 +165,12 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 
 /**
  * Loads the file and plays the music.
+ * No other music should be playing.
  * @return true if the music was loaded successfully
  */
 bool Music::play(void) {
+
+//  std::cout << "playing music " << file_name << std::endl;
 
   if (!is_initialized()) {
     return false;
@@ -225,6 +227,8 @@ bool Music::play(void) {
  * Stops playing the music.
  */
 void Music::stop(void) {
+
+//  std::cout << "stopping music " << file_name << std::endl;
 
   if (!is_initialized()) {
     return;

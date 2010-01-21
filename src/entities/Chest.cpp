@@ -67,13 +67,14 @@ Chest::~Chest(void) {
 /**
  * Creates an instance from an input stream.
  * The input stream must respect the syntax of this entity type.
+ * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
  * @param x x coordinate of the entity
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Chest::parse(std::istream &is, Layer layer, int x, int y) {
+MapEntity * Chest::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int big_chest, treasure_content, treasure_amount, treasure_savegame_variable;
@@ -85,7 +86,7 @@ MapEntity * Chest::parse(std::istream &is, Layer layer, int x, int y) {
   FileTools::read(is, treasure_savegame_variable);
 
   return new Chest(name, Layer(layer), x, y, (big_chest != 0),
-      new Treasure(NULL, Treasure::Content(treasure_content), treasure_amount, treasure_savegame_variable));
+      new Treasure(game, Treasure::Content(treasure_content), treasure_amount, treasure_savegame_variable));
 }
 
 /**
@@ -94,18 +95,6 @@ MapEntity * Chest::parse(std::istream &is, Layer layer, int x, int y) {
  */
 EntityType Chest::get_type() {
   return CHEST;
-}
-
-/**
- * Sets the current map of this entity.
- * @param map the map
- */
-void Chest::set_map(Map *map) {
-
-  Detector::set_map(map);
-
-  // notify the treasure
-  treasure->set_game(map->get_game());
 }
 
 /**

@@ -43,10 +43,13 @@ MapLoader::~MapLoader(void) {
 }
 
 /**
- * Loads a map.
+ * Loads a map into the game.
+ * @param game the game
  * @param map the map to load
  */
-void MapLoader::load_map(Map *map) {
+void MapLoader::load_map(Game *game, Map *map) {
+
+  map->game = game;
 
   // get the id of the map
   int id = map->get_id();
@@ -116,7 +119,7 @@ void MapLoader::load_map(Map *map) {
     FileTools::read(iss, x);
     FileTools::read(iss, y);
 
-    MapEntity *entity = MapEntity::creation_functions[entity_type](iss, Layer(layer), x, y);
+    MapEntity *entity = MapEntity::creation_functions[entity_type](game, iss, Layer(layer), x, y);
     entities->add_entity(entity);
   }
 

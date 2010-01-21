@@ -36,7 +36,7 @@ class MapEntity {
 
   public:
 
-    typedef MapEntity* (CreationFunction)(std::istream &is, Layer layer, int x, int y); /**< a function to parse a certain type of entity */
+    typedef MapEntity* (CreationFunction)(Game *game, std::istream &is, Layer layer, int x, int y); /**< a function to parse a certain type of entity */
     static const CreationFunction* creation_functions[];                                /**< the creation functions of all types of entities */
     static const Rectangle directions_to_xy_moves[8];                                   /**< converts a direction (0 to 7) into a one-pixel xy move */
 
@@ -122,7 +122,6 @@ class MapEntity {
     MapEntity(void);
     MapEntity(Layer layer, int x, int y, int width, int height);
     MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
-    void remove_from_map(void);
 
     // method called by the subclasses to set their properties
     void set_direction(int direction);
@@ -142,7 +141,8 @@ class MapEntity {
 
     // destruction
     virtual ~MapEntity(void);
-    void set_being_removed(void);
+    void remove_from_map(void);
+    void notify_being_removed(void);
     bool is_being_removed(void);
 
     // entity type features
@@ -184,7 +184,6 @@ class MapEntity {
     void set_aligned_to_grid(void);
 
     // properties
-    virtual bool can_be_added(Map *map);
     virtual void set_map(Map *map);
     Map * get_map(void);
     Game * get_game(void);

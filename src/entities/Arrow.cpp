@@ -17,7 +17,6 @@
 #include "entities/Arrow.h"
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
-#include "entities/MapEntities.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
@@ -263,7 +262,7 @@ void Arrow::update(void) {
 
   // destroy the arrow when disappear_date is reached
   if (now >= disappear_date) {
-    map->get_entities()->remove_entity(this);
+    remove_from_map();
   }
 }
 
@@ -349,7 +348,7 @@ void Arrow::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, b
   }
   else if (result != 0) {
     if (killed) {
-      map->get_entities()->remove_entity(this);
+      remove_from_map();
     }
     else {
       attach_to(victim);

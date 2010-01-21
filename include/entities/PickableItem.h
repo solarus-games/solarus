@@ -99,10 +99,9 @@ class PickableItem: public Detector {
 
     // creation and initialization
     PickableItem(Layer layer, int x, int y, Subtype subtype, int savegame_variable);
-    bool can_be_added(Map *map);
 
     static Subtype choose_random_subtype(Equipment *equipment);
-    bool is_subtype_locked(Equipment *equipment);
+    static bool is_subtype_locked(Subtype subtype, Equipment *equipment);
     virtual void initialize_sprites(void);
     virtual void initialize_movement(void);
 
@@ -116,7 +115,7 @@ class PickableItem: public Detector {
   public:
 
     // creation and destruction
-    static PickableItem * create(Layer layer, int x, int y, Subtype subtype, int savegame_variable,
+    static PickableItem * create(Game *game, Layer layer, int x, int y, Subtype subtype, int savegame_variable,
 	FallingHeight falling_height, bool will_disappear);
 
     virtual ~PickableItem(void);

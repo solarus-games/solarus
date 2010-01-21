@@ -30,11 +30,13 @@ using std::list;
 
 /**
  * Constructor.
+ * @param game the game
+ * @param map the map
  */
-MapEntities::MapEntities(Map *map):
+MapEntities::MapEntities(Game *game, Map *map):
   map(map), hero_on_raised_blocks(false), music_before_miniboss(Music::none) {
 
-  this->game = map->get_game();
+  this->game = game;
   this->hero = game->get_hero();
   Layer layer = hero->get_layer();
   this->obstacle_entities[layer].push_back(hero);
@@ -394,19 +396,11 @@ void MapEntities::add_tile(Tile *tile) {
  * This function is called when loading the map. If the entity
  * specified is NULL (because some entity creation function
  * sometimes return NULL), nothing is done.
- * If the entity cannot be added to the map
- * (because entity->can_be_added() returns false), it is destroyed.
  * @param entity the entity to add (can be NULL)
  */
 void MapEntities::add_entity(MapEntity *entity) {
 
   if (entity == NULL) {
-    return;
-  }
-
-  if (!entity->can_be_added(map)) {
-    // the entity cannot be added (e.g. it is a saved item the player already has picked)
-    delete entity;
     return;
   }
 
@@ -468,7 +462,7 @@ void MapEntities::add_entity(MapEntity *entity) {
 void MapEntities::remove_entity(MapEntity *entity) {
 
   entities_to_remove.push_back(entity);
-  entity->set_being_removed();
+  entity->notify_being_removed();
 
   if (entity == (MapEntity*) this->boomerang) {
     this->boomerang = NULL;

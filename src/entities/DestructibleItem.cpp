@@ -88,13 +88,14 @@ DestructibleItem::~DestructibleItem(void) {
 /**
  * Creates an instance from an input stream.
  * The input stream must respect the syntax of this entity type.
+ * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
  * @param x x coordinate of the entity
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * DestructibleItem::parse(std::istream &is, Layer layer, int x, int y) {
+MapEntity * DestructibleItem::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
   int subtype, pickable_item_subtype, savegame_variable;
 
@@ -245,9 +246,8 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
 
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = PickableItem::can_disappear(pickable_item);
-	map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item,
-							     pickable_item_savegame_variable,
-							     FALLING_MEDIUM, will_disappear));
+	map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(),
+	      pickable_item, pickable_item_savegame_variable, FALLING_MEDIUM, will_disappear));
       }
     }
   }
@@ -281,13 +281,13 @@ void DestructibleItem::action_key_pressed(void) {
       // create the pickable item
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = PickableItem::can_disappear(pickable_item);
-	map->get_entities()->add_entity(PickableItem::create(get_layer(), get_x(), get_y(), pickable_item,
-	      pickable_item_savegame_variable, FALLING_MEDIUM, will_disappear));
+	map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(),
+	      pickable_item, pickable_item_savegame_variable, FALLING_MEDIUM, will_disappear));
       }
 
       // remove the item from the map
       if (!features[subtype].can_regenerate) {
-	map->get_entities()->remove_entity(this);
+	remove_from_map();
       }
       else {
 	// the item can actually regenerate
@@ -366,7 +366,7 @@ void DestructibleItem::update(void) {
 
     if (!features[subtype].can_regenerate) {
       // remove the item from the map
-      map->get_entities()->remove_entity(this);
+      remove_from_map();
     }
     else {
       is_being_cut = false;

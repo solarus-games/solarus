@@ -144,7 +144,7 @@ void PapillosaurKing::update(void) {
       }
       else if (now >= next_egg_date) {
 
-	MapEntity *egg = create(MINILLOSAUR, RANK_NORMAL, -1, get_name() + "_minillosaur",
+	MapEntity *egg = create(game, MINILLOSAUR, RANK_NORMAL, -1, get_name() + "_minillosaur",
 	    get_layer(), get_x(), get_y() + 16, 0, PickableItem::NONE, -1);
 	map->get_entities()->add_entity(egg);
 	ResourceManager::get_sound("boss_fireball")->play();
@@ -174,7 +174,7 @@ void PapillosaurKing::just_hurt(MapEntity *source, EnemyAttack attack, int life_
     // the papillosaur is dying: remove the minillosaur eggs
     std::list<MapEntity*> *sons = map->get_entities()->get_entities_with_prefix(ENEMY, get_name() + "_minillosaur");
     for (std::list<MapEntity*>::iterator it = sons->begin(); it != sons->end(); it++) {
-      map->get_entities()->remove_entity(*it);
+      (*it)->remove_from_map();
     }
   }
 }

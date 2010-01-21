@@ -46,7 +46,7 @@ class CrystalSwitchBlock: public Detector {
 
   public:
 
-    CrystalSwitchBlock(Layer layer, int x, int y, int width, int height, Subtype subtype);
+    CrystalSwitchBlock(Game *game, Layer layer, int x, int y, int width, int height, Subtype subtype);
     ~CrystalSwitchBlock(void);
     static CreationFunction parse;
 

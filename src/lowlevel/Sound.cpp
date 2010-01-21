@@ -67,8 +67,22 @@ Sound::~Sound(void) {
 /**
  * Initializes the audio (music and sound) system.
  * This method should be called when the application starts.
+ * If the argument -disable-audio is provided, this function has no effect and
+ * there will be no sound.
+ * @param argc command-line arguments number
+ * @param argv command-line arguments
  */
-void Sound::initialize(void) {
+void Sound::initialize(int argc, char **argv) {
+ 
+  // check the -disable-audio option
+  bool disable = false;
+  for (argv++; argc > 1 && !disable; argv++, argc--) {
+    const std::string arg = *argv;
+    disable = (arg.find("-disable-audio") == 0);
+  }
+  if (disable) {
+    return;
+  }
 
   // initialize OpenAL
 

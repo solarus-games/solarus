@@ -83,12 +83,6 @@ Bugs :
 - renommer HeartsView en LifeView, RupeeView en MoneyView
 - menu des sauvegardes : faire une classe SelectionMenu qui hérite de Screen, et les différentes étapes qui héritent de SelectionMenuPhase 
   (destructeur compliqué, TitleScreen ne devrait pas s'occuper des sous-phases du menu de sélection)
-- remplacer les map->get_entities()->remove_entity(this) par remove_from_map()
-- fonctions parse() des entités : ne pas encore avoir accès à la map complique le code de PickableItem, Enemy, Chest.
-  Si ça se confirme, fournir un pointeur sur la map (ou plutôt sur le Game car la map est incomplète ?)
-  ShopItem aussi...
-  pas si simple car dans Map, Game n'est connu que dans start()
-- SDL_RWops dans Savegame
 
 
 Donjon 2 :

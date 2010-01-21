@@ -50,7 +50,7 @@ void System::initialize(int argc, char **argv) {
   Sprite::initialize();
 
   // audio
-  Sound::initialize();
+  Sound::initialize(argc, argv);
 
   // input
   SDL_EnableUNICODE(SDL_ENABLE); // TODO move in an Input class

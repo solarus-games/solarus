@@ -1,12 +1,12 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
+ * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
  *
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
+ * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
@@ -49,7 +49,7 @@ TitleScreen::~TitleScreen(void) {
     switch (current_phase) {
 
     case PHASE_ZS_PRESENTS:
-      exit_phase_zs_presents();
+      exit_phase_introduction_message();
       break;
 
     case PHASE_TITLE:
@@ -75,7 +75,7 @@ void TitleScreen::update(void) {
 
     if (now >= next_phase_date) {
       // go to next phase after 0.3 second
-      init_phase_zs_presents();
+      init_phase_introduction_message();
     }
 
     break;
@@ -87,7 +87,7 @@ void TitleScreen::update(void) {
       if (transition_out->is_finished()) {
 
 	// unload current phase
-	exit_phase_zs_presents();
+	exit_phase_introduction_message();
 
 	// go to next phase
 	init_phase_title();
@@ -119,9 +119,9 @@ void TitleScreen::display(Surface *destination_surface) {
 
   case PHASE_ZS_PRESENTS:
     if (transition_out->is_started()) { // out transition
-      transition_out->display(zs_presents_img);
+      transition_out->display(introduction_message_img);
     }
-    zs_presents_img->blit(destination_surface, zs_presents_position);
+    introduction_message_img->blit(destination_surface, introduction_message_position);
     break;
 
   case PHASE_TITLE:
@@ -161,16 +161,16 @@ void TitleScreen::init_phase_black_screen(void) {
 
 /**
  * Initializes phase 2 of the title screen.
- * The message "Zelda Solarus presents" will be shown.
+ * A introduction message will be shown.
  */
-void TitleScreen::init_phase_zs_presents(void) {
+void TitleScreen::init_phase_introduction_message(void) {
 
   current_phase = PHASE_ZS_PRESENTS;
 
-  zs_presents_img = ResourceManager::load_image("menus/zelda_solarus_presents.png");
+  introduction_message_img = ResourceManager::load_image("menus/zelda_solarus_presents.png");
   ResourceManager::get_sound("intro")->play();
-  zs_presents_position.set_x(160 - (zs_presents_img->get_width() / 2));
-  zs_presents_position.set_y(120 - (zs_presents_img->get_height() / 2));
+  introduction_message_position.set_x(160 - (introduction_message_img->get_width() / 2));
+  introduction_message_position.set_y(120 - (introduction_message_img->get_height() / 2));
 
   next_phase_date = System::now() + 2000; // intro: 2 seconds
   transition_out = new TransitionFade(Transition::OUT);
@@ -179,8 +179,8 @@ void TitleScreen::init_phase_zs_presents(void) {
 /**
  * Exits phase 2 of the title screen.
  */
-void TitleScreen::exit_phase_zs_presents(void) {
-  delete zs_presents_img;
+void TitleScreen::exit_phase_introduction_message(void) {
+  delete introduction_message_img;
   delete transition_out;
 }
 

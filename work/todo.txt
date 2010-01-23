@@ -110,10 +110,6 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 - garde bleu avec lance (monde des ténèbres)
 
 
-Idées :
-
-- Passer à travers un tableau de Mario comme dans Mario 64
-
 
 --------------------
 Abstraction de SDL :

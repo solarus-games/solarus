@@ -1,2 +1,3 @@
-#!/bin/sh
-javac -cp .:ini4j.jar zsdx/*.java zsdx/*/*.java zsdx/*/*/*.java
+#!/bin/bash
+javac -cp .:ini4j.jar org/solarus/editor/*.java org/solarus/editor/*/*.java org/solarus/editor/*/*/*.java
+

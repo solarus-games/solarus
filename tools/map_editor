@@ -1,4 +1,3 @@
-#!/bin/sh
-
-java -cp .:ini4j.jar zsdx.MapEditor
+#!/bin/bash
+java -cp .:ini4j.jar org.solarus.editor.MapEditor
 

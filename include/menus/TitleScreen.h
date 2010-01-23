@@ -1,12 +1,12 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
+ * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
  * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
+ * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
@@ -56,11 +56,11 @@ class TitleScreen: public Screen {
     void init_phase_black_screen(void);
 
     // phase 2
-    Surface *zs_presents_img;
-    Rectangle zs_presents_position;
+    Surface *introduction_message_img;
+    Rectangle introduction_message_position;
 
-    void init_phase_zs_presents(void);
-    void exit_phase_zs_presents(void);
+    void init_phase_introduction_message(void);
+    void exit_phase_introduction_message(void);
 
     // phase 3
     Music *title_screen_music;

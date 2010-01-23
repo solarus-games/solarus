@@ -13,5 +13,5 @@ find_package(PhysFS)
 find_package(Sndfile)
 
 add_subdirectory(src)
-add_subdirectory(data)
+add_subdirectory(quests/zsdx)
 

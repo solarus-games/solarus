@@ -252,11 +252,9 @@ void SelectionMenu::update(void) {
   cursor_sprite->update();
 
   // update the transition (if any)
-  /* TODO
   if (transition != NULL) {
     transition->update();
   }
-  */
 
   // make the phase-specific update
   current_phase->update();

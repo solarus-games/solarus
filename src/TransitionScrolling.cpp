@@ -121,6 +121,30 @@ bool TransitionScrolling::is_finished(void) {
 }
 
 /**
+ * Makes a scrolling step.
+ */
+void TransitionScrolling::scroll(void) {
+  current_scrolling_position.add_xy(dx, dy);
+}
+
+/**
+ * Updates this transition effect.
+ * This function should be called repeatedly while the transition exists.
+ */
+void TransitionScrolling::update(void) {
+
+  if (!is_started()) {
+    return;
+  }
+
+  uint32_t now = System::now();
+  while (now >= next_scroll_date && !is_finished()) {
+    scroll();
+    next_scroll_date += 10;
+  }
+}
+
+/**
  * Displays the transition effect on a surface.
  */
 void TransitionScrolling::display(Surface *surface) {
@@ -140,21 +164,7 @@ void TransitionScrolling::display(Surface *surface) {
   surface->blit(both_maps_surface, current_map_dst_position);
 
   // blit both surfaces
-  uint32_t now = System::now();
-  while (now >= next_scroll_date && !is_finished()) {
-    scroll();
-    next_scroll_date += 10;
-  }
-
   surface->fill_with_color(Color::get_black());
   both_maps_surface->blit(current_scrolling_position, surface);
-}
-
-
-/**
- * Makes a scrolling step.
- */
-void TransitionScrolling::scroll(void) {
-  current_scrolling_position.add_xy(dx, dy);
 }
 

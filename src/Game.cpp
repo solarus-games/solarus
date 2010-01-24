@@ -283,6 +283,10 @@ void Game::update(void) {
  */
 void Game::update_transitions(void) {
 
+  if (transition != NULL) {
+    transition->update();
+  }
+
   // if the map has just changed, close the current map if any and play an out transition
   if (next_map != NULL && transition == NULL) { // the map has changed (i.e. set_current_map has been called)
 

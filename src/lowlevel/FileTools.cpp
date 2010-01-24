@@ -50,13 +50,14 @@ void FileTools::initialize(int argc, char **argv) {
       argc = 0;
     }
   }
-  data_path = data_path + "/data.solarus";
+  std::string release_data_path = data_path + "/data.solarus";
 
   PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);
 #if SOLARUS_DEBUG_LEVEL >= 1
-  PHYSFS_addToSearchPath("data", 1);
+  std::string debug_data_path = data_path + "/data";
+  PHYSFS_addToSearchPath(debug_data_path.c_str(), 1);
 #endif
-  PHYSFS_addToSearchPath(data_path.c_str(), 1);
+  PHYSFS_addToSearchPath(release_data_path.c_str(), 1);
 }
 
 /**

@@ -20,7 +20,7 @@
 #include "Common.h"
 
 /**
- * A transition effect between two screens (maps or not).
+ * Abstract class for a transition effect between two phases (maps or not).
  */
 class Transition {
 
@@ -64,6 +64,7 @@ class Transition {
     virtual void start(void) = 0;
     virtual bool is_started(void) = 0;
     virtual bool is_finished(void) = 0;
+    virtual void update(void) = 0;
     virtual void display(Surface *surface) = 0;
 };
 

@@ -419,7 +419,7 @@ bool Map::is_started(void) {
 }
 
 /**
- * This function is closed when the map is started and 
+ * This function is called when the map is started and 
  * the opening transition is finished.
  */
 void Map::opening_transition_finished(void) {

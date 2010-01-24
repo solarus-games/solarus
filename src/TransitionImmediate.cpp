@@ -55,6 +55,13 @@ bool TransitionImmediate::is_finished(void) {
 }
 
 /**
+ * Updates this transition effect.
+ */
+void TransitionImmediate::update(void) {
+
+}
+
+/**
  * Displays the transition effect on a surface.
  */
 void TransitionImmediate::display(Surface *surface) {

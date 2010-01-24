@@ -79,9 +79,14 @@ bool TransitionFade::is_finished(void) {
 }
 
 /**
- * Displays the transition effect on a surface.
+ * Updates this transition effect.
+ * This function should be called repeatedly while the transition exists.
  */
-void TransitionFade::display(Surface *surface) {
+void TransitionFade::update(void) {
+
+  if (!is_started()) {
+    return;
+  }
 
   uint32_t now = System::now();
 
@@ -90,10 +95,15 @@ void TransitionFade::display(Surface *surface) {
     alpha += alpha_increment;
     next_frame_date += delay; // 20 ms between two frame updates
   }
+}
+
+/**
+ * Displays the transition effect on a surface.
+ */
+void TransitionFade::display(Surface *surface) {
 
   // display the transition effect on the surface
   int alpha_impl = std::min(alpha, 255);
-
   surface->set_opacity(alpha_impl);
 }
 

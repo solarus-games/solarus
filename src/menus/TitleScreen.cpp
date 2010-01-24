@@ -84,6 +84,7 @@ void TitleScreen::update(void) {
 
     if (now >= next_phase_date) {
 
+      transition_out->update();
       if (transition_out->is_finished()) {
 
 	// unload current phase
@@ -193,7 +194,6 @@ void TitleScreen::init_phase_title(void) {
   static const std::string time_of_day_strings[] = { "daylight", "sunset", "night" };
   static Color text_colors[] = { Color(0, 0, 92), Color(0, 0, 92), Color(255, 128, 0) };
   TimeOfDay time_of_day = get_time_of_day();
-//  time_of_day = TimeOfDay(2);
 
   current_phase = PHASE_TITLE;
 
@@ -257,6 +257,9 @@ void TitleScreen::exit_phase_title(void) {
  * Updates phase 3 of the title screen.
  */
 void TitleScreen::update_phase_title(void) {
+
+  transition_in->update();
+  transition_out->update();
 
   uint32_t now = System::now();
 

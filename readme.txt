@@ -42,6 +42,8 @@ Note that the engine itself relies on some of these resources (for instance a sp
 
 For now, only one quest is available (zsdx), and this quest is not under GPL since it uses
 copyrighted elements from Nintendo.
+To compile and install the engine without any quest, remove the quests directory and
+follow the instructions normally.
 
 
 ------------------------
@@ -140,6 +142,9 @@ $ zsdx
 which is equivalent to:
 
 $ solarus -datapath=/usr/local/share/solarus/zsdx
+
+If you want to compile the engine without quests (i.e. you have no quests directory),
+cmake detects it and only builds and installs the solarus binary.
 
 
 3.2  Change the install directory

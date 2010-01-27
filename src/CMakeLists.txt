@@ -12,7 +12,12 @@ find_package(Lua51)
 find_package(PhysFS)
 find_package(Sndfile)
 
-include_directories (${SOLARUS_SOURCE_DIR}/include ${SOLARUS_SOURCE_DIR}/include/SDL_Config ${SOLARUS_SOURCE_DIR}/include/snes_spc ${LUA_INCLUDE_DIR})
+include_directories(
+  ${SOLARUS_SOURCE_DIR}/include
+  ${SOLARUS_SOURCE_DIR}/include/SDL_Config
+  ${SOLARUS_SOURCE_DIR}/include/snes_spc
+  ${LUA_INCLUDE_DIR}
+)
 
 file(
   GLOB_RECURSE
@@ -21,29 +26,29 @@ file(
   ../include/*.h
 )
 
-add_executable (solarus
+add_executable(solarus
   ${source_files}
 )
 
-if (NOT WIN32)
-  SET_TARGET_PROPERTIES(solarus PROPERTIES COMPILE_FLAGS "-g -ansi -Wall -Werror")
-endif (NOT WIN32)
+if(NOT WIN32)
+  set_target_properties(solarus PROPERTIES COMPILE_FLAGS "-g -ansi -Wall -Werror")
+endif(NOT WIN32)
 
 if (DEFINED DATAPATH)
   add_definitions(-DDATAPATH=\"${DATAPATH}\")
 endif (DEFINED DATAPATH)
 
-target_link_libraries (solarus
-	${SDL_LIBRARY}
-	${SDLIMAGE_LIBRARY}
-	${SDLTTF_LIBRARY}
-	${OPENAL_LIBRARY}
-	${LUA_LIBRARY}
-	${PHYSFS_LIBRARY}
-	${SNDFILE_LIBRARY}
+target_link_libraries(solarus
+  ${SDL_LIBRARY}
+  ${SDLIMAGE_LIBRARY}
+  ${SDLTTF_LIBRARY}
+  ${OPENAL_LIBRARY}
+  ${LUA_LIBRARY}
+  ${PHYSFS_LIBRARY}
+  ${SNDFILE_LIBRARY}
 )
 
-INSTALL(TARGETS	solarus
-	RUNTIME DESTINATION bin
+install(TARGETS	solarus
+  RUNTIME DESTINATION bin
 )
 

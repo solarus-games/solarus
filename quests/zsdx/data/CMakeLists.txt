@@ -2,8 +2,8 @@ set(quest_name "zsdx")
 
 # compile the Lua scripts
 file(GLOB lua_source_files 
-     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-     maps/*.lua)
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  maps/*.lua)
 set(lua_bin_files "")
 foreach(lua_source_file ${lua_source_files})
   add_custom_command(
@@ -15,8 +15,8 @@ endforeach(lua_source_file ${lua_source_files})
 
 # data files list
 file(GLOB_RECURSE data_files
-     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-     *.spc *.wav *.png *.dat *.ttf *.fon)
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  *.spc *.wav *.png *.dat *.ttf *.fon)
 set(data_files ${data_files} ${lua_bin_files})
 
 # build the data archive
@@ -25,7 +25,7 @@ add_custom_command(
   DEPENDS ${data_files}
   COMMAND zip -q data.solarus ${data_files}
 )
-add_custom_target(data_archive
+add_custom_target(${quest_name}_data
   ALL
   DEPENDS data.solarus
 )
@@ -35,18 +35,18 @@ add_custom_command(
   OUTPUT ${quest_name}
   COMMAND echo '\#!/bin/bash\\nsolarus -datapath=${CMAKE_INSTALL_PREFIX}/share/solarus/${quest_name} $*' > ${quest_name}
 )
-add_custom_target(game_script
+add_custom_target(${quest_name}_command
   ALL
   DEPENDS ${quest_name}
 )
 
 # install the data archive
-INSTALL(FILES data.solarus
+install(FILES data.solarus
   DESTINATION share/solarus/${quest_name}
 )
 
 # install the script
-INSTALL(PROGRAMS ${quest_name}
+install(PROGRAMS ${quest_name}
   DESTINATION bin
 )
 

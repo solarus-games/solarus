@@ -20,11 +20,6 @@ Démo :
 - Version finale 1.0 : r1176
 
 
-Version libre :
-
-- Zyra
-
-
 Feature requests :
 
 - Mettre de la couleur dans les messages
@@ -49,6 +44,7 @@ Feature requests :
   des scripts d'ennemis, etc.
 - Le moteur doit connaître le nom du jeu pour enregistrer les sauvegardes dans ~/.solarus/nom_jeu/. Connaître à partir du contenu d'un fichier ou du nom de l'archive de données
 - Rendre les polices indépendantes de Zelda
+- Sons : format flac ou ogg
 
 
 Bugs :

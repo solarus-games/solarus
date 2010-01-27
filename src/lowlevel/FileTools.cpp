@@ -19,7 +19,8 @@
 
 /**
  * Initializes the file tools.
- * @param argc number of command line arguments
+ * The command-line argument -datapath=some/path/to/data is recognized.
+ * @param argc number of command-line arguments
  * @param argv command line arguments
  */
 void FileTools::initialize(int argc, char **argv) {
@@ -40,24 +41,35 @@ void FileTools::initialize(int argc, char **argv) {
     DIE("Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
   }
  
-  // set the search path
-  std::string data_path = ".";
+  // set the search path for data files
+  std::string datapath = ".";
+
+#ifdef DATAPATH
+  // by default, use the datapath defined during the build process
+  datapath = std::string(DATAPATH);
+#endif
+
+  // if a command-line argument was specified, use it instead
   const std::string flag = "-datapath=";
   for (argv++; argc > 1; argv++, argc--) {
     std::string arg = *argv;
     if (arg.find(flag) == 0) {
-      data_path = arg.substr(flag.size());
+      datapath = arg.substr(flag.size());
       argc = 0;
     }
   }
-  std::string release_data_path = data_path + "/data.solarus";
+  // now, datapath may be the path defined as command-line argument,
+  // the path defined during the build process, or the current directory
+  // if nothing was defined
 
-  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);
+  std::string debug_datapath = datapath + "/data"; // in debug mode, read directly from the data directory
+  std::string release_datapath = datapath + "/data.solarus"; // in release mode, only read from the data.solarus archive
+
+  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);     // directory for writing files (savegames and configuration file)
 #if SOLARUS_DEBUG_LEVEL >= 1
-  std::string debug_data_path = data_path + "/data";
-  PHYSFS_addToSearchPath(debug_data_path.c_str(), 1);
+  PHYSFS_addToSearchPath(debug_datapath.c_str(), 1);   // data directory
 #endif
-  PHYSFS_addToSearchPath(release_data_path.c_str(), 1);
+  PHYSFS_addToSearchPath(release_datapath.c_str(), 1); // data.solarus archive
 }
 
 /**

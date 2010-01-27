@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 2.6)
-project(SOLARUS)
+project(SOLARUS CXX)
 
-add_subdirectory(src)              # the engine
-add_subdirectory(quests/zsdx/data) # a game
+# the engine
+add_subdirectory(src)
 
+# quests
+set (quests "zsdx") # put here your list of quests 
+
+foreach(quest_name ${quests})
+  if(EXISTS quests/${quest_name})
+    add_subdirectory (quests/${quest_name}/data)
+  endif(EXISTS quests/${quest_name})
+endforeach(quest_name ${quests})
+ 

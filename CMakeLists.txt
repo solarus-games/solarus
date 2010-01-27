@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
-project(SOLARUS CXX)
+project(SOLARUS)
 
 # the engine
 add_subdirectory(src)

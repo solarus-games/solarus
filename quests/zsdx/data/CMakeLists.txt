@@ -33,7 +33,8 @@ add_custom_target(${quest_name}_data
 # create a script that executes the game with this quest
 add_custom_command(
   OUTPUT ${quest_name}
-  COMMAND echo '\#!/bin/bash\\nsolarus -datapath=${CMAKE_INSTALL_PREFIX}/share/solarus/${quest_name} $*' > ${quest_name}
+  COMMAND echo '\#!/bin/bash' > ${quest_name}
+  COMMAND echo 'solarus -datapath=${CMAKE_INSTALL_PREFIX}/share/solarus/${quest_name} $*' >> ${quest_name}
 )
 add_custom_target(${quest_name}_command
   ALL

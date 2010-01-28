@@ -68,7 +68,7 @@ class Hero: public MapEntity {
 				    * in deep water or falled into a hole) */
       VICTORY,                     /**< the hero is make a victory sequence with his sword */
       USING_INVENTORY_ITEM,        /**< the hero is currently using an item from the inventory */
-      FREEZED,                     /**< the hero cannot move for various possible reasons,
+      FREEZED                      /**< the hero cannot move for various possible reasons,
 				    * including an instruction from the script */
     };
 

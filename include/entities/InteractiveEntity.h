@@ -43,7 +43,7 @@ class InteractiveEntity: public Detector {
       NON_PLAYING_CHARACTER, /**< same thing except that the script can make the engine move an NPC */
       SIGN,                  /**< a sign with a message (TODO to make it destructible,
 			      * an instance of Sign is actually created) */
-      WATER_FOR_BOTTLE,      /**< a place where the hero can fill a bottle with water */
+      WATER_FOR_BOTTLE       /**< a place where the hero can fill a bottle with water */
     };
 
   private:

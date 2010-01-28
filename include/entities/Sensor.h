@@ -36,7 +36,7 @@ class Sensor: public Detector {
       CUSTOM                 = 0, /**< the map script is called when the hero walks on this sensor */
       CHANGE_LAYER           = 1, /**< the hero's layer is changed when he comes on this sensor
 				   * (the hero's layer becomes the sensor's layer) */
-      RETURN_FROM_BAD_GROUND = 2, /**< when falling in a hole or in other bad grounds, the hero
+      RETURN_FROM_BAD_GROUND = 2  /**< when falling in a hole or in other bad grounds, the hero
 				   * comes back at the location of this sensor */
     };
 

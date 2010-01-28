@@ -68,7 +68,7 @@ class Savegame {
       JOYPAD_RIGHT_KEY               = 15,
       JOYPAD_UP_KEY                  = 16,
       JOYPAD_LEFT_KEY                = 17,
-      JOYPAD_DOWN_KEY                = 18,
+      JOYPAD_DOWN_KEY                = 18
       /**
        * @}
        */
@@ -215,7 +215,7 @@ class Savegame {
       FIRST_DUNGEON_UNUSED_3           = 208, /**< empty place for future new data in dungeon #1 */
       FIRST_DUNGEON_UNUSED_4           = 209, /**< empty place for future new data in dungeon #1 */
       // then, same thing for other dungeons
-      LAST_DUNGEON_UNUSED_4            = 399, /**< empty place for future new data in dungeon #20 */
+      LAST_DUNGEON_UNUSED_4            = 399  /**< empty place for future new data in dungeon #20 */
 
       // values above 1024 are available to the maps
     };

@@ -35,7 +35,7 @@ class Switch: public Detector {
      */
     enum Subtype {
       INVISIBLE = 0, /**< an invisible switch, usually to detect the hero position */
-      NORMAL    = 1, /**< a classical switch */
+      NORMAL    = 1  /**< a classical switch */
     };
 
   private:

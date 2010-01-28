@@ -58,7 +58,7 @@ class GameoverSequence {
       SAVED_BY_FAIRY, /**< the player is being saved by a fairy */
       WAITING_END,    /**< the game will be resumed soon */
       RESUME_GAME,    /**< the game can be resumed */
-      MENU,           /**< the player can choose an option in the game over menu */
+      MENU            /**< the player can choose an option in the game over menu */
     };
 
     State state;            /**< current state of the gameover sequence */

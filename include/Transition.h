@@ -32,7 +32,7 @@ class Transition {
     enum Style {
       IMMEDIATE = 0,  // no transition between the two screens
       FADE      = 1,  // fade in and fade out
-      SCROLLING = 2,  // scrolling between two maps
+      SCROLLING = 2   // scrolling between two maps
     };
 
     /**
@@ -40,7 +40,7 @@ class Transition {
      */
     enum Direction {
       IN  = 0,
-      OUT = 1,
+      OUT = 1
     };
 
   protected:

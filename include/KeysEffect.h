@@ -52,7 +52,7 @@ class KeysEffect {
     ACTION_KEY_GRAB,     /**< grab an object */
     ACTION_KEY_STOP,     /**< stop an action (for example: using an object which consumes magic) */
     ACTION_KEY_SPEAK,    /**< speak with an NPC */
-    ACTION_KEY_CHANGE,   /**< modify an option */
+    ACTION_KEY_CHANGE    /**< modify an option */
   };
 
   /**
@@ -65,7 +65,7 @@ class KeysEffect {
     SWORD_KEY_RETURN   = 2,    /**< exit a submenu */
     SWORD_KEY_VALIDATE = 3,    /**< validate a choice in the save game dialog */
     SWORD_KEY_SKIP     = 4,    /**< skip a message in a dialog */
-    SWORD_KEY_SWORD    = 5,    /**< swing the sword (this is the case most of the time) */
+    SWORD_KEY_SWORD    = 5     /**< swing the sword (this is the case most of the time) */
   };
 
   /**
@@ -74,7 +74,7 @@ class KeysEffect {
   enum PauseKeyEffect {
     PAUSE_KEY_NONE,      /**< nothing happens when the user presses the Pause key */
     PAUSE_KEY_PAUSE,     /**< open the pause menu */
-    PAUSE_KEY_RETURN,    /**< close the pause menu */
+    PAUSE_KEY_RETURN     /**< close the pause menu */
   };
 
  private:

@@ -34,7 +34,7 @@ class Block: public Detector {
      */
     enum Subtype {
       NORMAL, /**< a usual block */
-      STATUE, /**< a statue */
+      STATUE  /**< a statue */
     };
 
   private:

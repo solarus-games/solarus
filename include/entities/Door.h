@@ -25,65 +25,65 @@
  */
 class Door: public Detector {
 
- public:
+  public:
 
-  /**
-   * The different kinds of doors.
-   */
-  enum Subtype {
-    CLOSED,
-    SMALL_KEY,
-    SMALL_KEY_BLOCK,
-    BIG_KEY,
-    BOSS_KEY,
-    WEAK,
-    VERY_WEAK,
-    WEAK_INVISIBLE,
-  };
+    /**
+     * The different kinds of doors.
+     */
+    enum Subtype {
+      CLOSED,
+      SMALL_KEY,
+      SMALL_KEY_BLOCK,
+      BIG_KEY,
+      BOSS_KEY,
+      WEAK,
+      VERY_WEAK,
+      WEAK_INVISIBLE 
+    };
 
- private:
+  private:
 
-  static const std::string animations[]; /**< animation name of each subtype */
+    static const std::string animations[]; /**< animation name of each subtype */
 
-  // properties
-  Subtype subtype;           /**< subtype of door */
-  int savegame_variable;     /**< variable where the door state is saved */
+    // properties
+    Subtype subtype;           /**< subtype of door */
+    int savegame_variable;     /**< variable where the door state is saved */
 
-  // state
-  bool door_open;            /**< indicates that this door is open */
-  bool changing;             /**< indicates that the door is being open or closed */
-  bool initialized;          /**< true if update() was called at least once */
+    // state
+    bool door_open;            /**< indicates that this door is open */
+    bool changing;             /**< indicates that the door is being open or closed */
+    bool initialized;          /**< true if update() was called at least once */
 
-  void set_opening(void);
-  void set_closing(void);
+    void set_opening(void);
+    void set_closing(void);
 
-  bool requires_key(void);
-  bool requires_small_key(void);
-  bool requires_bomb(void);
-  bool can_open(void);
-  void update_dynamic_tiles(void);
+    bool requires_key(void);
+    bool requires_small_key(void);
+    bool requires_bomb(void);
+    bool can_open(void);
+    void update_dynamic_tiles(void);
 
- public:
+  public:
 
-  Door(const std::string &name, Layer layer, int x, int y,
-      int direction, Subtype subtype, int savegame_variable);
-  ~Door(void);
-  static CreationFunction parse;
+    Door(const std::string &name, Layer layer, int x, int y,
+	int direction, Subtype subtype, int savegame_variable);
+    ~Door(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
+    EntityType get_type(void);
 
-  bool is_obstacle_for(MapEntity *other);
-  void set_suspended(bool suspended);
-  void update(void);
-  void display_on_map(void);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-  void action_key_pressed(void);
-  SoundId get_sword_tapping_sound(void);
+    bool is_obstacle_for(MapEntity *other);
+    void set_suspended(bool suspended);
+    void update(void);
+    void display_on_map(void);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void action_key_pressed(void);
+    SoundId get_sword_tapping_sound(void);
 
-  bool is_open(void);
-  void open(void);
-  void close(void);
-  void set_open(bool open);
+    bool is_open(void);
+    void open(void);
+    void close(void);
+    void set_open(bool open);
 };
 
 #endif

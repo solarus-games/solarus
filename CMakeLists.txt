@@ -8,8 +8,8 @@ add_subdirectory(src)
 set (quests "zsdx") # put here your list of quests 
 
 foreach(quest_name ${quests})
-  if(EXISTS quests/${quest_name})
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/quests/${quest_name})
     add_subdirectory (quests/${quest_name}/data)
-  endif(EXISTS quests/${quest_name})
+  endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/quests/${quest_name})
 endforeach(quest_name ${quests})
  

@@ -36,7 +36,7 @@ class Teletransporter: public Detector {
     enum Subtype {
       INVISIBLE = 0, /**< an invisible detector, usually to move the hero to another map */
       YELLOW    = 1, /**< a classical teletransporter */
-      BLUE      = 2, /**< a teletransporter with a different color and an immediate transition */
+      BLUE      = 2  /**< a teletransporter with a different color and an immediate transition */
     };
 
   private:

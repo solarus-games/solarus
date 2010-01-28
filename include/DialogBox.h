@@ -37,7 +37,7 @@ class DialogBox {
      */
     enum Style {
       WITH_FRAME,    /**< the usual dialog box with a frame and a semi-transparent dark blue background */
-      WITHOUT_FRAME, /**< no dialog box is shown, only the text is displayed */
+      WITHOUT_FRAME  /**< no dialog box is shown, only the text is displayed */
     };
 
     /**

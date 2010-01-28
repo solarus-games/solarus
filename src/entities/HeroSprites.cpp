@@ -891,7 +891,10 @@ void HeroSprites::set_animation_falling(void) {
  */
 void HeroSprites::set_animation_boomerang(void) {
   tunic_sprite->set_current_animation("boomerang");
-  shield_sprite->set_current_animation("boomerang");
+
+  if (equipment->has_shield()) {
+    shield_sprite->set_current_animation("boomerang");
+  }
 }
 
 /**

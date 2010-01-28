@@ -46,7 +46,7 @@ class Detector: public MapEntity {
 					* is inside the detector's rectangle */
       COLLISION_SPRITE       = 0x0010, /**< collision if an entity's sprite has pixels
 					* overlapping pixels of the detector's sprite */
-      COLLISION_CUSTOM       = 0x0020, /**< custom collision function, defined by the subclass */
+      COLLISION_CUSTOM       = 0x0020  /**< custom collision function, defined by the subclass */
     };
 
   private:

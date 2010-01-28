@@ -37,7 +37,7 @@ class MapEntity {
   public:
 
     typedef MapEntity* (CreationFunction)(Game *game, std::istream &is, Layer layer, int x, int y); /**< a function to parse a certain type of entity */
-    static const CreationFunction* creation_functions[];                                /**< the creation functions of all types of entities */
+    static CreationFunction* creation_functions[];                                      /**< the creation functions of all types of entities */
     static const Rectangle directions_to_xy_moves[8];                                   /**< converts a direction (0 to 7) into a one-pixel xy move */
 
     /**

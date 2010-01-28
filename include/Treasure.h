@@ -129,7 +129,7 @@ class Treasure {
       BIG_MAGIC         = 86,
       GREEN_RUPEES      = 87,
       BLUE_RUPEES       = 88,
-      RED_RUPEES        = 89,
+      RED_RUPEES        = 89
     };
 
   private:

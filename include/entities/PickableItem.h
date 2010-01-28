@@ -57,7 +57,7 @@ class PickableItem: public Detector {
       BIG_KEY         = 15,
       BOSS_KEY        = 16,
       PIECE_OF_HEART  = 17,
-      HEART_CONTAINER = 18,
+      HEART_CONTAINER = 18
     };
 
   protected:

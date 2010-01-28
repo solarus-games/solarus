@@ -32,7 +32,7 @@ class CrystalSwitchBlock: public Detector {
      */
     enum Subtype {
       ORANGE = 0, /**< an orange block */
-      BLUE   = 1, /**< a blue block */
+      BLUE   = 1  /**< a blue block */
     };
 
   private:

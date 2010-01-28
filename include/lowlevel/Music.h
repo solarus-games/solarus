@@ -38,7 +38,7 @@ class Music {
      */
     enum Format {
       SPC, /**< Snes */
-      IT,  /**< Impulse Tracker module (TODO implement with the modplug lib) */
+      IT   /**< Impulse Tracker module (TODO implement with the modplug lib) */
     };
 
     std::string file_name;          /**< name of the file to play */

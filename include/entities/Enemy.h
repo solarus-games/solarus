@@ -66,7 +66,7 @@ class Enemy: public Detector {
     enum HurtSoundStyle {
       HURT_SOUND_NORMAL,  /**< "enemy_hurt" and if necessary "enemy_killed" are played */
       HURT_SOUND_MONSTER, /**< "monster_hurt" and if necessary "enemy_killed" are played */
-      HURT_SOUND_BOSS,    /**< "boss_hurt" or "boss_killed" is played */
+      HURT_SOUND_BOSS     /**< "boss_hurt" or "boss_killed" is played */
     };
 
     /**

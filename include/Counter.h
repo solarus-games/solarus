@@ -33,7 +33,7 @@ class Counter {
      */
     enum Style {
       BIG_DIGITS,   /**< 8*8 pixels (default) */
-      SMALL_DIGITS, /**< 6*7 pixels */
+      SMALL_DIGITS  /**< 6*7 pixels */
     };
 
   private:

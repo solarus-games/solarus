@@ -44,7 +44,7 @@
 #include "SpriteAnimationSet.h"
 #include "Map.h"
 
-const MapEntity::CreationFunction* MapEntity::creation_functions[] = {
+MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Tile::parse,
   DestinationPoint::parse,
   Teletransporter::parse,

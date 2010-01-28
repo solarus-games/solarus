@@ -42,7 +42,7 @@ void CFG_Internal_InsertPrefix(CFG_String & comment, int prefix_size)
     comment.insert(pos + 1, prefix);
     pos = comment.find('\n', pos + prefix.size());
     }
-  };
+  }
 
 /* ------------------------------------------------------- end CFG_Internal_insert_prefix */
 

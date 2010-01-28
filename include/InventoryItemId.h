@@ -56,7 +56,7 @@ enum InventoryItemId {
   INVENTORY_ICE_KEY                     = 24,
   INVENTORY_GLOVE                       = 25, /**< 1: iron glove, 2: golden glove */
   INVENTORY_FIRE_STONES                 = 26,
-  INVENTORY_BOTTLE_4                    = 27,
+  INVENTORY_BOTTLE_4                    = 27
 };
 
 #endif

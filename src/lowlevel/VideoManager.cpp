@@ -160,6 +160,7 @@ void VideoManager::set_initial_video_mode(void) {
     IniFile ini(file_name, IniFile::READ);
 
     if (ini.has_group("configuration")) {
+      ini.set_group("configuration");
       value = ini.get_integer_value("video_mode", -1);
     }
   }

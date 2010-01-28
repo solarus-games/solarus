@@ -38,10 +38,9 @@ class FileTools {
     static std::istream & data_file_open(const std::string &file_name);
     static void data_file_close(const std::istream &data_file);
     static void data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size);
+    static void data_file_save_buffer(const std::string &file_name, const char *buffer, size_t size);
     static void data_file_close_buffer(char *buffer);
     static SDL_RWops * data_file_open_rw(const std::string &file_name);
-    static SDL_RWops * data_file_new_rw(size_t size);
-    static void data_file_save_rw(SDL_RWops *rw, const std::string &file_name);
     static void data_file_close_rw(SDL_RWops *rw);
     static void data_file_delete(const std::string &file_name);
 

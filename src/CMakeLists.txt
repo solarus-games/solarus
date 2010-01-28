@@ -14,7 +14,6 @@ find_package(Sndfile)
 
 include_directories(
   ${SOLARUS_SOURCE_DIR}/include
-  ${SOLARUS_SOURCE_DIR}/include/SDL_Config
   ${SOLARUS_SOURCE_DIR}/include/snes_spc
   ${LUA_INCLUDE_DIR}
 )

@@ -130,11 +130,7 @@ void Savegame::set_initial_values(void) {
  */
 void Savegame::save(void) {
 
-  SDL_RWops *rw = FileTools::data_file_new_rw(sizeof(SavedData));
-  SDL_RWwrite(rw, &saved_data, sizeof(SavedData), 1);
-  FileTools::data_file_save_rw(rw, file_name);
-  FileTools::data_file_close_rw(rw);
-
+  FileTools::data_file_save_buffer(file_name, (char*) &saved_data, sizeof(SavedData));
   empty = false;
 }
 

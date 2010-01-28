@@ -104,6 +104,16 @@ void Message::parse(MessageId message_id) {
   lines[0] = ini_file.get_string_value("line1", "");
   lines[1] = ini_file.get_string_value("line2", "");
   lines[2] = ini_file.get_string_value("line3", "");
+  for (int i = 0; i < 3; i++) {
+    int size = lines[i].size();
+    if (lines[i][0] == '"') {
+      lines[i] = lines[i].substr(1);
+      size--;
+    }
+    if (lines[i][size - 1] == '"') {
+      lines[i] = lines[i].substr(0, size - 1);
+    }
+  }
 
   // icon
   int icon_number = ini_file.get_integer_value("icon", -2);

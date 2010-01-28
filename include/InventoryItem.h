@@ -30,46 +30,47 @@
  */
 class InventoryItem {
 
- private:
+  private:
 
-  InventoryItemId item_id; /**< id of this item */
+    InventoryItemId item_id;  /**< id of this item */
 
-  // state
-  int variant;             /**< the possession state of this item when it is used */
-  Game *game;              /**< the game this item is used in */
-  bool finished;           /**< true if we have finished using this item */
+    // state
+    int variant;              /**< the possession state of this item when it is used */
+    Game *game;               /**< the game this item is used in */
+    bool finished;            /**< true if we have finished using this item */
 
-  // additionnal state information used by certain items
-  Sound *item_sound;       /**< sound played repeatedly while using this item */
-  uint32_t sound_delay;      /**< delay before playing the sound again */
-  uint32_t next_sound_date;  /**< when the sound is played again */
-  int direction_pressed;   /**< arrow keys pressed when starting using this item*/
+    // additionnal state information used by certain items
+    Sound *item_sound;        /**< sound played repeatedly while using this item */
+    uint32_t sound_delay;     /**< delay before playing the sound again */
+    uint32_t next_sound_date; /**< when the sound is played again */
+    int direction_pressed;    /**< arrow keys pressed when starting using this item*/
 
-  void start_bottle(void);
-  void update_bottle(void);
+    void start_bottle(void);
+    void update_bottle(void);
 
- public:
+  public:
 
-  // creation and destruction
-  InventoryItem(InventoryItemId item_id);
-  ~InventoryItem(void);
+    // creation and destruction
+    InventoryItem(InventoryItemId item_id);
+    ~InventoryItem(void);
 
-  // static features
-  static bool can_be_assigned(InventoryItemId item_id);
-  static bool has_counter(InventoryItemId item_id);
-  static int get_counter_index(InventoryItemId item_id);
-  static bool is_bottle(InventoryItemId item_id);
+    // static features
+    static bool can_be_assigned(InventoryItemId item_id);
+    static bool has_counter(InventoryItemId item_id);
+    static int get_counter_index(InventoryItemId item_id);
+    static bool is_bottle(InventoryItemId item_id);
 
-  // properties
-  InventoryItemId get_id(void);
-  int get_variant(void);
-  bool is_bottle(void);
+    // properties
+    InventoryItemId get_id(void);
+    int get_variant(void);
+    bool is_bottle(void);
 
-  // state
-  void start(Game *game);
-  void update(void);
-  void set_map(Map *map);
-  bool is_finished(void);
+    // state
+    void start(Game *game);
+    void update(void);
+    void set_map(Map *map);
+    bool is_finished(void);
 };
 
 #endif
+

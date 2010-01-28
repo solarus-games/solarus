@@ -416,6 +416,6 @@ void InventoryItem::update_bottle(void) {
  * This function is called when the map is changed while the player is still using this item.
  */
 void InventoryItem::set_map(Map *map) {
-  // TODO boomerang: put the boomerang in the new map  
+  
 }
 

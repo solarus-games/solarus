@@ -266,7 +266,7 @@ ALuint Sound::decode_wav(const std::string &file_name) {
   WavFromMemory wav;
   wav.position = 0;
   FileTools::data_file_open_buffer(file_name, &wav.data, &wav.size);
-  SF_INFO file_info = {0};
+  SF_INFO file_info = {0, 0, 0, 0, 0, 0};
   SNDFILE *file = sf_open_virtual(&sf_virtual, SFM_READ, &file_info, &wav);
 
   if (file == NULL) {

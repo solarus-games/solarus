@@ -18,8 +18,7 @@
 #define SOLARUS_INI_FILE_H
 
 #include "Common.h"
-#include "SDL_Config/SDL_config_lib.h"
-#include "SDL/SDL.h"
+#include "simpleini/SimpleIni.h"
 
 /**
  * This class provides functions to read and write an ini-like file.
@@ -40,10 +39,13 @@ class IniFile {
   private:
 
     // file management
-    std::string file_name; /**< name of the ini file we are working on, relative to the data location */
-    Mode mode;             /**< the mode used to open the file */
-    CFG_File ini;          /**< the SDL_Config ini data encapsulated */
-    SDL_RWops *rw;         /**< the IO object containing the data */
+    std::string file_name;                        /**< name of the ini file we are working on, relative to the data location */
+    Mode mode;                                    /**< the mode used to open the file */
+    std::string group;                            /**< the group currently selected in the ini file */
+
+    CSimpleIniA ini;                              /**< the library-dependent object encapsulated */
+    CSimpleIniA::TNamesDepend groups;             /**< the groups currently traversed by a group iteration */
+    CSimpleIniA::TNamesDepend::iterator iterator; /**< the iteration */
 
   public:
 

@@ -16,7 +16,6 @@
  */
 #include "lowlevel/IniFile.h"
 #include "lowlevel/FileTools.h"
-#include <SDL/SDL.h>
 
 /**
  * Creates an object to read or write an ini file.
@@ -27,34 +26,26 @@
 IniFile::IniFile(const std::string &file_name, Mode mode):
   file_name(file_name), mode(mode) {
 
+  ini.SetUnicode();
   if (mode == READ) {
     // read the ini file
-    rw = FileTools::data_file_open_rw(file_name);
+    char *buffer;
+    size_t size;
+    FileTools::data_file_open_buffer(file_name, &buffer, &size);
 
-    if (CFG_OpenFile_RW(rw, &ini) != CFG_OK) {
-      DIE("Cannot load the ini file '" << file_name << "': " << CFG_GetError());
+    if (ini.Load(buffer, size) != SI_OK) {
+      DIE("Cannot load the ini file '" << file_name << "'");
     }
-  }
 
-  else {
-    // open an empty file
-    rw = NULL;
-    if (CFG_OpenFile(NULL, &ini) != CFG_OK) {
-      DIE("Cannot open empty ini object for writing: " << CFG_GetError());
-    }
+    FileTools::data_file_close_buffer(buffer);
   }
 }
 
 /**
- * Closes the ini file and destroys the object.
+ * Destroys the object.
  */
 IniFile::~IniFile(void) {
 
-  if (mode == READ) {
-    // close the file
-    FileTools::data_file_close_rw(rw);
-    CFG_CloseFile(&ini);
-  }
 }
 
 /**
@@ -66,16 +57,10 @@ void IniFile::save(void) {
     DIE("Cannot save ini file: the mode should be WRITE");
   }
 
-  // save the data into the rw stream
-  rw = FileTools::data_file_new_rw(64000);
-  if (CFG_SaveFile_RW(rw) != CFG_OK) {
-    DIE("Cannot save ini data: " << CFG_GetError());
-  }
-
-  // then save the rw stream into the real file
-  FileTools::data_file_save_rw(rw, file_name);
-  FileTools::data_file_close_rw(rw);
-  CFG_CloseFile(&ini);
+  // save the data into a buffer
+  std::string s;
+  ini.Save(s);
+  FileTools::data_file_save_buffer(file_name, s.c_str(), s.size());
 }
 
 /**
@@ -84,7 +69,7 @@ void IniFile::save(void) {
  * @return true if this group exists
  */
 bool IniFile::has_group(const std::string &group) {
-  return (CFG_SelectGroup(group.c_str(), 0) == CFG_OK);
+  return ini.GetSection(group.c_str()) != NULL;
 }
 
 /**
@@ -95,15 +80,22 @@ bool IniFile::has_group(const std::string &group) {
  */
 void IniFile::set_group(const std::string &group) {
 
-  const char *c_group = group.c_str();
-  if (c_group[0] == '\0') {
-    c_group = NULL; // global group
+  if (mode == READ && !has_group(group)) {
+    DIE("Cannot select group '" << group << "' in ini file: no such group");
   }
+  this->group = group;
 
-  bool create_group = (mode == WRITE);
-  if (CFG_SelectGroup(c_group, create_group ? 1 : 0) == CFG_ERROR) {
-    DIE("Cannot select group '" << group << "' in ini file: '" << file_name << "': " << CFG_GetError());
+  // debug
+  /*
+  std::cout << "keys in group '" << group << "':\n";
+
+  CSimpleIniA::TNamesDepend keys;
+  ini.GetAllKeys(group.c_str(), keys);
+  CSimpleIniA::TNamesDepend::iterator it = keys.begin();
+  for (it = keys.begin(); it != keys.end(); it++) {
+    std::cout << "key " << (*it).pItem << "\n";
   }
+  */
 }
 
 /**
@@ -113,8 +105,6 @@ void IniFile::set_group(const std::string &group) {
  */
 const std::string & IniFile::get_group(void) {
 
-  static std::string group;
-  group = CFG_GetSelectedGroupName();
   return group;
 }
 
@@ -124,7 +114,9 @@ const std::string & IniFile::get_group(void) {
  * @param default value a default value to return if the key does not exist
  */
 int IniFile::get_integer_value(const std::string &key, int default_value) {
-  return CFG_ReadInt(key.c_str(), default_value);
+
+  long value = ini.GetLongValue(group.c_str(), key.c_str(), default_value);
+  return (int) value;
 }
 
 /**
@@ -133,7 +125,8 @@ int IniFile::get_integer_value(const std::string &key, int default_value) {
  * @param default value a default value to return if the key does not exist
  */
 bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
-  return CFG_ReadBool(key.c_str(), default_value ? 1 : 0) != 0;
+
+  return ini.GetBoolValue(group.c_str(), key.c_str(), default_value);
 }
 /**
  * Returns the string value corresponding to the specified key in the current group.
@@ -141,7 +134,8 @@ bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
  * @param default value a default value to return if the key does not exist
  */
 std::string IniFile::get_string_value(const std::string &key, const std::string &default_value) {
- return CFG_ReadText(key.c_str(), default_value.c_str());
+
+ return ini.GetValue(group.c_str(), key.c_str(), default_value.c_str());
 }
 
 /**
@@ -150,7 +144,8 @@ std::string IniFile::get_string_value(const std::string &key, const std::string 
  * @param value the new value to set for that key
  */
 void IniFile::set_integer_value(const std::string &key, int value) {
-  CFG_WriteInt(key.c_str(), value);
+
+  ini.SetLongValue(group.c_str(), key.c_str(), value);
 }
 
 /**
@@ -159,7 +154,8 @@ void IniFile::set_integer_value(const std::string &key, int value) {
  * @param value the new value to set for that key
  */
 void IniFile::set_boolean_value(const std::string &key, bool value) {
-  CFG_WriteBool(key.c_str(), value ? 1 : 0);
+
+  ini.SetBoolValue(group.c_str(), key.c_str(), value);
 }
 
 /**
@@ -168,33 +164,39 @@ void IniFile::set_boolean_value(const std::string &key, bool value) {
  * @param value the new value to set for that key
  */
 void IniFile::set_string_value(const std::string &key, const std::string &value) {
-  CFG_WriteText(key.c_str(), value.c_str());
-}
 
+  ini.SetValue(group.c_str(), key.c_str(), value.c_str());
+}
 
 /**
  * Starts an iteration over the groups of this ini file.
  * While has_more_groups() returns true, call next_group() to get the next element of your iteration.
  */
 void IniFile::start_group_iteration(void) {
-  CFG_StartGroupIteration(CFG_SORT_ORIGINAL); 
+
+  CSimpleIniA::TNamesDepend groups;
+  ini.GetAllSections(groups);
+  iterator = groups.begin();
 }
 
 /**
  * During a group iteration, returns whether there are at least one group remaining.
- * @return true if the group iteration can continue (i.e. you can call next_group)
+ * @return true if the group iteration can continue (i.e. you can call next_group())
  */
 bool IniFile::has_more_groups(void) {
- return !CFG_IsLastGroup(); 
+
+  return iterator != groups.end();
 }
 
 /**
  * Selects the next group during a group iteration.
+ * This function should be called only when has_more_groups() returns true.
  * You don't have to call set_group() to select this group, it is already done by this function.
  * To know the group name, call get_group().
  */
 void IniFile::next_group(void) {
-  CFG_SelectNextGroup();
-}
 
+  CSimpleIniA::Entry entry = *iterator;
+  set_group(entry.pItem);
+}
 

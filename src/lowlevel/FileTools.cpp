@@ -106,40 +106,6 @@ SDL_RWops * FileTools::data_file_open_rw(const std::string &file_name) {
 }
 
 /**
- * Returns an SDL_RWops object corresponding to an empty buffer
- * that yon can then use for writing a new data file.
- * @param size size of the buffer to create
- */
-SDL_RWops * FileTools::data_file_new_rw(size_t size) {
-
-  char *buffer = new char[size];
-  memset(buffer, 0, size);
-  SDL_RWops *rw = SDL_RWFromMem(buffer, size);
-  return rw;
-}
-
-/**
- * Writes the data from an SDL_RWops source into a file.
- * @param rw the SDL_RWops source, created with data_file_open_rw() or data_file_new_rw().
- * @param file_name name of the file to write, relative to the write directory
- */
-void FileTools::data_file_save_rw(SDL_RWops *rw, const std::string &file_name) {
-
-  // open the file to write
-  PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
-  if (file == NULL) {
-    DIE("Cannot open file '" << file_name << "' for writing: " << PHYSFS_getLastError());
-  }
- 
-  // read the memory buffer created by data_file_open_rw() or data_file_new_rw()
-  size_t size = rw->hidden.mem.here - rw->hidden.mem.base;
-  if (PHYSFS_write(file, rw->hidden.mem.base, size, 1) == -1) {
-    DIE("Cannot write file '" << file_name << "': " << PHYSFS_getLastError());
-  }
-  PHYSFS_close(file);
-}
-
-/**
  * Frees an SDL_RWops object previously created with data_file_open_rw()
  * or data_file_new_rw().
  * @param rw the object to free
@@ -204,6 +170,28 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
   }
 
   PHYSFS_read(file, *buffer, 1, *size);
+  PHYSFS_close(file);
+}
+
+/**
+ * Saves a buffer into a data file.
+ * @param file_name name of the file to write
+ * @param buffer the buffer to save
+ * @param size number of bytes to write
+ *
+ */
+void FileTools::data_file_save_buffer(const std::string &file_name, const char *buffer, size_t size) {
+
+  // open the file to write
+  PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
+  if (file == NULL) {
+    DIE("Cannot open file '" << file_name << "' for writing: " << PHYSFS_getLastError());
+  }
+ 
+  // save the memory buffer 
+  if (PHYSFS_write(file, buffer, size, 1) == -1) {
+    DIE("Cannot write file '" << file_name << "': " << PHYSFS_getLastError());
+  }
   PHYSFS_close(file);
 }
 

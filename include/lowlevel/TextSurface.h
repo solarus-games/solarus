@@ -54,9 +54,9 @@ class TextSurface {
      * Rendering mode of the text.
      */
     enum RenderingMode {
-      TEXT_SOLID,  /**< the text is displayed without smooth effect */
-      TEXT_SHADED, /**< the text is displayed with a smooth effect for an unicolor background */
-      TEXT_BLENDED /**< the text is displayed with a smooth effect for any background */
+      TEXT_SOLID,          /**< the text is displayed without smooth effect */
+      TEXT_SHADED,         /**< the text is displayed with a smooth effect for an unicolor background */
+      TEXT_BLENDED         /**< the text is displayed with a smooth effect for any background */
     };
 
     /**
@@ -71,8 +71,18 @@ class TextSurface {
 
   private:
 
-    static SDL_RWops *rw[FONT_NB];
-    static TTF_Font *fonts[FONT_NB];
+    /**
+     * This structures stores the data of a font.
+     */
+    struct FontData {
+      std::string file_name;
+      int font_size;
+      char *buffer;
+      SDL_RWops *rw;
+      TTF_Font *font;
+    };
+
+    static FontData data[FONT_NB];
 
     FontId font_id;
     HorizontalAlignment horizontal_alignment;

@@ -18,6 +18,7 @@
 #include "Equipment.h"
 #include "DungeonEquipment.h"
 #include "lowlevel/FileTools.h"
+#include <SDL/SDL.h> // TODO remove
 
 /**
  * Creates a savegame with a specified file name, existing or not.

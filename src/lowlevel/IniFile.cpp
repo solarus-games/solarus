@@ -174,16 +174,8 @@ void IniFile::set_string_value(const std::string &key, const std::string &value)
  */
 void IniFile::start_group_iteration(void) {
 
-  CSimpleIniA::TNamesDepend groups;
   ini.GetAllSections(groups);
   iterator = groups.begin();
-
-  /*
-  for (iterator = groups.begin(); iterator != groups.end(); iterator++) {
-    CSimpleIniA::Entry entry = *iterator;
-    std::cout << "group: " << entry.pItem << std::endl;
-  }
-  */
 }
 
 /**

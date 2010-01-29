@@ -18,7 +18,6 @@
 #define SOLARUS_FILE_TOOLS_H
 
 #include "Common.h"
-#include "SDL/SDL.h"
 
 /**
  * This class provides some functions to open and analyze a data file.
@@ -40,8 +39,6 @@ class FileTools {
     static void data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size);
     static void data_file_save_buffer(const std::string &file_name, const char *buffer, size_t size);
     static void data_file_close_buffer(char *buffer);
-    static SDL_RWops * data_file_open_rw(const std::string &file_name);
-    static void data_file_close_rw(SDL_RWops *rw);
     static void data_file_delete(const std::string &file_name);
 
     static void read(std::istream &is, int &value);

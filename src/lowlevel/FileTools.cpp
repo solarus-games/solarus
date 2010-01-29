@@ -89,33 +89,6 @@ bool FileTools::data_file_exists(const std::string &file_name) {
 }
 
 /**
- * Returns the SDL_RWops object corresponding to the specified file name.
- * @param file_name a file name relative to the data directory
- */
-SDL_RWops * FileTools::data_file_open_rw(const std::string &file_name) {
-
-  size_t size;
-  char *buffer;
-  data_file_open_buffer(file_name, &buffer, &size);
-  SDL_RWops *rw = SDL_RWFromMem(buffer, size);
-
-  if (rw == NULL) {
-    DIE("Cannot open data file " << file_name);
-  }
-  return rw;
-}
-
-/**
- * Frees an SDL_RWops object previously created with data_file_open_rw()
- * or data_file_new_rw().
- * @param rw the object to free
- */
-void FileTools::data_file_close_rw(SDL_RWops *rw) {
-  delete[] rw->hidden.mem.base;
-  SDL_FreeRW(rw);
-}
-
-/**
  * Opens in reading a text file in the Solarus data directory.
  * The file name is relative to the Solarus data directory.
  * The program is stopped with an error message if the file cannot be open.

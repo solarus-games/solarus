@@ -20,27 +20,29 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * The two fonts, created in the initialize() function.
+ * The data of each fonts, created in the initialize() function.
  */
-SDL_RWops *TextSurface::rw[FONT_NB];
-TTF_Font *TextSurface::fonts[FONT_NB] = {NULL};
+TextSurface::FontData TextSurface::data[FONT_NB] = {
+  {"text/la.ttf", 11, NULL, NULL, NULL},
+  {"text/fixed8.fon", 11, NULL, NULL, NULL},
+  {"text/la.ttf", 18, NULL, NULL, NULL}
+};
 
 /**
  * Initializes the font system.
  */
 void TextSurface::initialize(void) {
 
-  static const std::string file_names[] = {"text/la.ttf", "text/fixed8.fon", "text/la.ttf"};
-  static const int sizes[] = {11, 11, 18};
-
   TTF_Init();
 
   for (int i = 0; i < FONT_NB; i++) {
 
-    rw[i] = FileTools::data_file_open_rw(file_names[i]);
-    fonts[i] = TTF_OpenFontRW(rw[i], 0, sizes[i]);
-    if (fonts[i] == NULL) {
-      DIE("Cannot load font " << i << " '" << file_names[i] << "': " << System::now());
+    size_t size;
+    FileTools::data_file_open_buffer(data[i].file_name, &data[i].buffer, &size);
+    data[i].rw = SDL_RWFromMem(data[i].buffer, size);
+    data[i].font = TTF_OpenFontRW(data[i].rw, 0, data[i].font_size);
+    if (data[i].font == NULL) {
+      DIE("Cannot load font " << i << " '" << data[i].file_name << "': " << TTF_GetError());
     }
   }
 }
@@ -51,8 +53,9 @@ void TextSurface::initialize(void) {
 void TextSurface::quit(void) {
 
   for (int i = 0; i < FONT_NB; i++) {
-    TTF_CloseFont(fonts[i]);
-    FileTools::data_file_close_rw(rw[i]);
+    TTF_CloseFont(data[i].font);
+    SDL_RWclose(data[i].rw);
+    FileTools::data_file_close_buffer(data[i].buffer);
   }
 
   TTF_Quit();
@@ -266,16 +269,16 @@ void TextSurface::rebuild(void) {
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    internal_surface = TTF_RenderUTF8_Solid(fonts[font_id], text.c_str(), *text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Solid(data[font_id].font, text.c_str(), *text_color.get_internal_color());
     break;
 
   case TEXT_SHADED:
-    internal_surface = TTF_RenderUTF8_Shaded(fonts[font_id], text.c_str(), *text_color.get_internal_color(),
+    internal_surface = TTF_RenderUTF8_Shaded(data[font_id].font, text.c_str(), *text_color.get_internal_color(),
 	*background_color.get_internal_color());
     break;
 
   case TEXT_BLENDED:
-    internal_surface = TTF_RenderUTF8_Blended(fonts[font_id], text.c_str(), *text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Blended(data[font_id].font, text.c_str(), *text_color.get_internal_color());
     break;
   }
 

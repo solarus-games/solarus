@@ -29,7 +29,7 @@ Surface::Surface(int width, int height):
   internal_surface_created(true) {
   this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
 }
-    
+
 /**
  * Creates a surface from the specified image file name.
  * @param file_name name of the image file to load, relative to the
@@ -38,9 +38,13 @@ Surface::Surface(int width, int height):
 Surface::Surface(std::string file_name):
   internal_surface_created(true) {
 
-  SDL_RWops *rw = FileTools::data_file_open_rw(file_name);
+  size_t size;
+  char *buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  SDL_RWops *rw = SDL_RWFromMem(buffer, size);
   this->internal_surface = IMG_Load_RW(rw, 0);
-  FileTools::data_file_close_rw(rw);
+  FileTools::data_file_close_buffer(buffer);
+  SDL_RWclose(rw);
 
   if (internal_surface == NULL) {
     DIE("Cannot load image '" << file_name << "'");

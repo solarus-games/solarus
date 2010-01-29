@@ -177,6 +177,13 @@ void IniFile::start_group_iteration(void) {
   CSimpleIniA::TNamesDepend groups;
   ini.GetAllSections(groups);
   iterator = groups.begin();
+
+  /*
+  for (iterator = groups.begin(); iterator != groups.end(); iterator++) {
+    CSimpleIniA::Entry entry = *iterator;
+    std::cout << "group: " << entry.pItem << std::endl;
+  }
+  */
 }
 
 /**
@@ -185,7 +192,13 @@ void IniFile::start_group_iteration(void) {
  */
 bool IniFile::has_more_groups(void) {
 
-  return iterator != groups.end();
+  if (iterator != groups.end()) {
+    CSimpleIniA::Entry entry = *iterator;
+    set_group(entry.pItem);
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -195,8 +208,6 @@ bool IniFile::has_more_groups(void) {
  * To know the group name, call get_group().
  */
 void IniFile::next_group(void) {
-
-  CSimpleIniA::Entry entry = *iterator;
-  set_group(entry.pItem);
+  iterator++;
 }
 

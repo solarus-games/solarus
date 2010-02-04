@@ -41,8 +41,8 @@ class SpriteAnimation {
 
   public:
 
-    SpriteAnimation(const std::string &image_file_name, int nb_directions,
-	SpriteAnimationDirection **directions, uint32_t frame_interval, int loop_on_frame);
+    SpriteAnimation(const std::string &image_file_name, 
+	int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_interval, int loop_on_frame);
     virtual ~SpriteAnimation(void);
 
     void set_map(Map *map);

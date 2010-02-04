@@ -17,6 +17,9 @@
 #include "lowlevel/FileTools.h"
 #include <physfs.h>
 
+std::string FileTools::language_code = "en";
+std::map<std::string, std::string> FileTools::languages;
+
 /**
  * Initializes the file tools.
  * The command-line argument -datapath=some/path/to/data is recognized.
@@ -70,6 +73,9 @@ void FileTools::initialize(int argc, char **argv) {
   PHYSFS_addToSearchPath(debug_datapath.c_str(), 1);   // data directory
 #endif
   PHYSFS_addToSearchPath(release_datapath.c_str(), 1); // data.solarus archive
+
+  // load the list of languages
+  initialize_languages();
 }
 
 /**
@@ -77,6 +83,27 @@ void FileTools::initialize(int argc, char **argv) {
  */
 void FileTools::quit(void) {
   PHYSFS_deinit();
+}
+
+/**
+ * Loads the list of available languages.
+ */
+void FileTools::initialize_languages(void) {
+  // TODO load this from some external file, allow setting the language from command-line parameter
+  languages["en"] = "English";
+  languages["fr"] = "Français";
+  languages["de"] = "Deutsch";
+  languages["nl"] = "Nederlands";
+  language_code =  "fr"; // default
+}
+
+/**
+ * Sets the current language.
+ * The language-specific data will be loaded from the directory of this language.
+ * @param language code of the language
+ */
+void FileTools::set_language(const std::string &language) {
+  FileTools::language_code = language;
 }
 
 /**
@@ -94,13 +121,14 @@ bool FileTools::data_file_exists(const std::string &file_name) {
  * The program is stopped with an error message if the file cannot be open.
  * Don't forget to close the stream with data_file_close().
  * @param file_name name of the file to open
+ * @param language_specific true if the file is specific to the current language
  * @return the input stream
  */
-std::istream & FileTools::data_file_open(const std::string &file_name) {
+std::istream & FileTools::data_file_open(const std::string &file_name, bool language_specific) {
 
   size_t size;
   char *buffer;
-  data_file_open_buffer(file_name, &buffer, &size);
+  data_file_open_buffer(file_name, &buffer, &size, language_specific);
 
   // create an input stream
   std::istringstream *is = new std::istringstream(std::string(buffer, size));
@@ -121,17 +149,25 @@ void FileTools::data_file_close(const std::istream &data_file) {
  * @param file_name name of the file to open
  * @param buffer the buffer to load
  * @param size number of bytes to read
- *
+ * @param language_specific true if the file is specific to the current language
  */
-void FileTools::data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size) {
+void FileTools::data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size, bool language_specific) {
+
+  std::string full_file_name;
+  if (language_specific) {
+    full_file_name = (std::string) "languages/" + language_code + "/" + file_name;
+  }
+  else {
+    full_file_name = file_name;
+  }
 
   // open the file
-  if (!PHYSFS_exists(file_name.c_str())) {
-    DIE("Data file " << file_name << " does not exist");
+  if (!PHYSFS_exists(full_file_name.c_str())) {
+    DIE("Data file " << full_file_name << " does not exist");
   }
-  PHYSFS_file* file = PHYSFS_openRead(file_name.c_str());
+  PHYSFS_file* file = PHYSFS_openRead(full_file_name.c_str());
   if (file == NULL) {
-    DIE("Cannot open data file " << file_name);
+    DIE("Cannot open data file " << full_file_name);
   }
 
   // load it into memory
@@ -139,7 +175,7 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
 
   *buffer = new char[*size];
   if (buffer == NULL) {
-    DIE("Cannot allocate memory to read file " << file_name);
+    DIE("Cannot allocate memory to read file " << full_file_name);
   }
 
   PHYSFS_read(file, *buffer, 1, *size);

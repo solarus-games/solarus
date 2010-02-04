@@ -34,12 +34,12 @@ StringResource::~StringResource(void) {
 }
 
 /**
- * Initializes the text resource by loading all string of the file "text/strings.dat"
+ * Initializes the text resource by loading all string of the language-specific file "text/strings.dat"
  * into memory for future access by get_string().
  */
 void StringResource::initialize(void) {
 
-  std::istream &file = FileTools::data_file_open("text/strings.dat");
+  std::istream &file = FileTools::data_file_open("text/strings.dat", true);
   std::string line;
 
   // read each line
@@ -75,7 +75,7 @@ void StringResource::quit(void) {
 }
 
 /**
- * Returns a string stored in the file "text/strings.dat".
+ * Returns a string stored in the language-specific file "text/strings.dat".
  * @param key id of the string to retrieve
  */
 const std::string &StringResource::get_string(const std::string &key) {

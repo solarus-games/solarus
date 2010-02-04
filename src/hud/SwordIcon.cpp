@@ -32,7 +32,7 @@ SwordIcon::SwordIcon(Game *game, int x, int y):
   // static icon
   this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword() : 0;
   this->sword_key_effect_displayed = keys_effect->get_sword_key_effect();
-  this->img_sword_icon = new Surface("hud/sword_icon.png");
+  this->img_sword_icon = new Surface("sword_icon.png", Surface::DIR_LANGUAGE);
 
   // flipping icon
   this->is_flipping = false;

@@ -18,6 +18,7 @@
 #define SOLARUS_FILE_TOOLS_H
 
 #include "Common.h"
+#include <map>
 
 /**
  * This class provides some functions to open and analyze a data file.
@@ -28,15 +29,25 @@
  */
 class FileTools {
 
+  private:
+
+    static std::map<std::string, std::string> languages; /**< the languages available (code -> language name) */
+    static std::string language_code;                    /**< code of the current language (e.g. "en", "fr", etc.) */
+
+    static void initialize_languages(void);
+
   public:
 
     static void initialize(int argc, char **argv);
     static void quit(void);
 
+    static void set_language(const std::string &language);
+
     static bool data_file_exists(const std::string &file_name);
-    static std::istream & data_file_open(const std::string &file_name);
+    static std::istream & data_file_open(const std::string &file_name, bool language_specific = false);
     static void data_file_close(const std::istream &data_file);
-    static void data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size);
+    static void data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size,
+	bool language_specific = false);
     static void data_file_save_buffer(const std::string &file_name, const char *buffer, size_t size);
     static void data_file_close_buffer(char *buffer);
     static void data_file_delete(const std::string &file_name);

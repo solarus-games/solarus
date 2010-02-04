@@ -23,15 +23,14 @@
 /**
  * Constructor.
  * @param image_file_name the image from which the frames are extracted
- * (can be empty and specified later with set_src_image())
  * @param nb_directions number of directions in this animation
  * @param directions the image sequence of each direction
  * @param frame_delay delay in millisecond between two frames for this sprite animation
  * (or 0 to make no animation, for example when you have only one frame)
  * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
-SpriteAnimation::SpriteAnimation(const std::string &image_file_name, int nb_directions,
-    SpriteAnimationDirection **directions, uint32_t frame_delay, int loop_on_frame):
+SpriteAnimation::SpriteAnimation(const std::string &image_file_name, 
+    int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_delay, int loop_on_frame):
 
   src_image(NULL), src_image_loaded(false), nb_directions(nb_directions), directions(directions),
   frame_delay(frame_delay), loop_on_frame(loop_on_frame) {

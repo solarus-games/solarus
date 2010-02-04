@@ -44,7 +44,7 @@ Surface::Surface(const std::string &file_name, ImageDirectory base_directory, co
     prefix = "sprites";
   }
   else if (base_directory == DIR_LANGUAGE) {
-    prefix = (std::string) "languages/" + language + "/";
+    prefix = (std::string) "languages/" + language + "/images";
   }
   std::string full_file_name = prefix + file_name;
 

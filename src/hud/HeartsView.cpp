@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hud/HeartsView.h"
-#include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"

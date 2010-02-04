@@ -21,7 +21,6 @@
 #include "StringResource.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
-#include "lowlevel/FileTools.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Surface.h"

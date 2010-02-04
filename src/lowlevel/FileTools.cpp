@@ -22,12 +22,29 @@ std::map<std::string, std::string> FileTools::languages;
 
 /**
  * Initializes the file tools.
- * The command-line argument -datapath=some/path/to/data is recognized.
+ * The command-line flags recognized are:
+ * -datapath=some/path/to/data specifies the data path to use (overides the one given at compilation time if any)
+ * -language=lg sets the language to use, where lg is the code of a language supported by the game
  * @param argc number of command-line arguments
  * @param argv command line arguments
  */
 void FileTools::initialize(int argc, char **argv) {
   PHYSFS_init(argv[0]);
+
+  // parse the flags
+  const std::string datapath_flag = "-datapath=";
+  std::string datapath_arg = "";
+  const std::string language_flag = "-language=";
+  std::string language_arg = "";
+  for (argv++; argc > 1; argv++, argc--) {
+    std::string arg = *argv;
+    if (arg.find(datapath_flag) == 0) {
+      datapath_arg = arg.substr(datapath_flag.size());
+    }
+    if (arg.find(language_flag) == 0) {
+      language_arg = arg.substr(language_flag.size());
+    }
+  }
 
   // we set the write directory to a ".solarus" subdirectory of the user home
 
@@ -51,15 +68,9 @@ void FileTools::initialize(int argc, char **argv) {
   // by default, use the datapath defined during the build process
   datapath = std::string(DATAPATH);
 #endif
-
   // if a command-line argument was specified, use it instead
-  const std::string flag = "-datapath=";
-  for (argv++; argc > 1; argv++, argc--) {
-    std::string arg = *argv;
-    if (arg.find(flag) == 0) {
-      datapath = arg.substr(flag.size());
-      argc = 0;
-    }
+  if (datapath_arg != "") {
+    datapath = datapath_arg;
   }
   // now, datapath may be the path defined as command-line argument,
   // the path defined during the build process, or the current directory
@@ -75,7 +86,7 @@ void FileTools::initialize(int argc, char **argv) {
   PHYSFS_addToSearchPath(release_datapath.c_str(), 1); // data.solarus archive
 
   // load the list of languages
-  initialize_languages();
+  initialize_languages(language_arg);
 }
 
 /**
@@ -87,14 +98,21 @@ void FileTools::quit(void) {
 
 /**
  * Loads the list of available languages.
+ * @param initial_language an initial language to set (empty to set the default one)
  */
-void FileTools::initialize_languages(void) {
-  // TODO load this from some external file, allow setting the language from command-line parameter
+void FileTools::initialize_languages(const std::string &initial_language) {
+  // TODO load this from some external file
   languages["en"] = "English";
   languages["fr"] = "Français";
   languages["de"] = "Deutsch";
   languages["nl"] = "Nederlands";
-  language_code =  "fr"; // default
+
+  if (initial_language != "") {
+    set_language(initial_language);
+  }
+  else {
+    set_language("fr"); // default
+  }
 }
 
 /**

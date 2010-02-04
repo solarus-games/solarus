@@ -34,7 +34,7 @@ class FileTools {
     static std::map<std::string, std::string> languages; /**< the languages available (code -> language name) */
     static std::string language_code;                    /**< code of the current language (e.g. "en", "fr", etc.) */
 
-    static void initialize_languages(void);
+    static void initialize_languages(const std::string &initial_language);
 
   public:
 

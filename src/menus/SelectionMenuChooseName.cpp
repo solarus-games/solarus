@@ -18,7 +18,6 @@
 #include "menus/SelectionMenuSelectFile.h"
 #include "Sprite.h"
 #include "Savegame.h"
-#include "ResourceManager.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
@@ -43,8 +42,8 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
   letter_cursor_x = 0;
   letter_cursor_y = 0;
 
-  arrow_img = ResourceManager::load_image("menus/selection_menu_arrow.png");
-  letters_img = ResourceManager::load_image("menus/selection_menu_letters.png");
+  arrow_img = new Surface("menus/selection_menu_arrow.png");
+  letters_img = new Surface("menus/selection_menu_letters.png");
 }
 
 /**

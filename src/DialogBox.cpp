@@ -40,8 +40,8 @@ DialogBox::DialogBox(Game *game):
   dialog_surface->set_transparency_color(Color::get_black());
 
   // load the images
-  box_img = ResourceManager::load_image("hud/dialog_box.png");
-  icons_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+  box_img = new Surface("hud/dialog_box.png");
+  icons_img = new Surface("hud/message_and_treasure_icons.png");
   box_src_position = Rectangle(0, 0, 220, 60);
   box_dst_position.set_size(box_src_position);
   question_src_position = Rectangle(96, 60, 8, 8);

@@ -42,7 +42,7 @@ RupeesCounter::RupeesCounter(Game *game, int x, int y):
   counter(new Counter(3, true, 16, 2)),
   next_rupee_update_date(System::now()) {
 
-  img_rupee_icon = ResourceManager::load_image("hud/rupee_icon.png");
+  img_rupee_icon = new Surface("hud/rupee_icon.png");
 
   nb_max_rupees_displayed = equipment->get_max_rupees();
 

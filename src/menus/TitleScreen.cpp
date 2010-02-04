@@ -168,7 +168,7 @@ void TitleScreen::init_phase_introduction_message(void) {
 
   current_phase = PHASE_ZS_PRESENTS;
 
-  introduction_message_img = ResourceManager::load_image("menus/zelda_solarus_presents.png");
+  introduction_message_img = new Surface("title_screen_initialization.png", Surface::DIR_LANGUAGE);
   ResourceManager::get_sound("intro")->play();
   introduction_message_position.set_x(160 - (introduction_message_img->get_width() / 2));
   introduction_message_position.set_y(120 - (introduction_message_img->get_height() / 2));
@@ -204,11 +204,11 @@ void TitleScreen::init_phase_title(void) {
   std::string background_img_name = (std::string) "menus/title_" + time_of_day_name + "_background.png";
   std::string clouds_img_name = (std::string) "menus/title_" + time_of_day_name + "_clouds.png";
 
-  background_img = ResourceManager::load_image(background_img_name);
-  clouds_img = ResourceManager::load_image(clouds_img_name);
-  logo_img = ResourceManager::load_image("menus/title_logo.png");
-  dx_img = ResourceManager::load_image("menus/title_dx.png");
-  star_img = ResourceManager::load_image("menus/title_star.png");
+  background_img = new Surface(background_img_name);
+  clouds_img = new Surface(clouds_img_name);
+  logo_img = new Surface("menus/title_logo.png");
+  dx_img = new Surface("menus/title_dx.png");
+  star_img = new Surface("menus/title_star.png");
 
   website_img = new TextSurface(160, 220, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   website_img->set_font(TextSurface::FONT_LA);

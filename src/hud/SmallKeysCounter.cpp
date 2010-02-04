@@ -17,7 +17,6 @@
 #include "hud/SmallKeysCounter.h"
 #include "Counter.h"
 #include "Equipment.h"
-#include "ResourceManager.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -29,7 +28,7 @@
 SmallKeysCounter::SmallKeysCounter(Game *game, int x, int y):
   HudElement(game, x, y, 40, 8), counter(NULL) {
 
-  img_icon = ResourceManager::load_image("hud/small_key_icon.png");
+  img_icon = new Surface("hud/small_key_icon.png");
   counter = NULL;
 
   rebuild();

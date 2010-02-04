@@ -18,7 +18,6 @@
 #include "Equipment.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
-#include "ResourceManager.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -33,7 +32,7 @@ SwordIcon::SwordIcon(Game *game, int x, int y):
   // static icon
   this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword() : 0;
   this->sword_key_effect_displayed = keys_effect->get_sword_key_effect();
-  this->img_sword_icon = ResourceManager::load_image("hud/sword_icon.png");
+  this->img_sword_icon = new Surface("hud/sword_icon.png");
 
   // flipping icon
   this->is_flipping = false;

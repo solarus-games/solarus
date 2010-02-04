@@ -20,7 +20,6 @@
 #include "entities/Tileset.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
-#include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 
 using std::map;
@@ -106,38 +105,6 @@ void ResourceManager::initialize(void) {
  */
 void ResourceManager::quit(void) {
   delete instance;
-}
-
-/**
- * Loads an image.
- * Note: unlike the other resource types, the resource manager
- * does not store the images previously loaded.
- * Consequently, if you call this function several times
- * with the same image file name, the image will be reloaded
- * every time. You also have to free the image yourself.
- * @param id name of the image file to get (relative to the sprites directory)
- * @return the image loaded
- */
-Surface * ResourceManager::load_image(const ImageId &id) {
-  return load_image(id, true);
-}
-
-/**
- * Loads an image.
- * Note: unlike the other resource types, the resource manager
- * does not store the images previously loaded.
- * Consequently, if you call this function several times
- * with the same image file name, the image will be reloaded
- * every time. You also have to free the image yourself.
- * @param id name of the image file to get
- * @param relative_to_sprites_dir true to make the path relative to the sprites directory,
- * false to let it relative to the data directory
- * @return the image loaded
- */
-Surface * ResourceManager::load_image(const ImageId &id, bool relative_to_sprites_dir) {
-
-  std::string file_name = relative_to_sprites_dir ? ((std::string) "sprites/" + id) : id;
-  return new Surface(file_name);
 }
 
 /**

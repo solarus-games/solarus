@@ -63,11 +63,11 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     hero_position.set_y(hero_position.get_y() * outside_world_minimap_size.get_height() / real_size.get_height());
 
     if (equipment->has_world_map()) {
-      world_map_img = ResourceManager::load_image("menus/outside_world_map.png");
+      world_map_img = new Surface("menus/outside_world_map.png");
       world_minimap_visible_y = std::min(388 - 133, std::max(0, hero_position.get_y() - 66));
     }
     else {
-      world_map_img = ResourceManager::load_image("menus/outside_world_clouds.png");
+      world_map_img = new Surface("menus/outside_world_clouds.png");
       world_minimap_visible_y = 0;
     }
     moving_visible_y = 0;
@@ -83,14 +83,14 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     set_caption_text(dungeon->get_name());
 
     // item icons
-    dungeon_map_background = ResourceManager::load_image("menus/dungeon_map_background.png");
-    dungeon_map_icons = ResourceManager::load_image("menus/dungeon_map_icons.png");
+    dungeon_map_background = new Surface("menus/dungeon_map_background.png");
+    dungeon_map_icons = new Surface("menus/dungeon_map_icons.png");
 
     small_keys_counter = new Counter(2, false, 124, 182);
     small_keys_counter->set_value(equipment->get_small_keys());
 
     // floors
-    dungeon_floors_img = ResourceManager::load_image("hud/floors.png");
+    dungeon_floors_img = new Surface("hud/floors.png");
 
     hero_floor = game->get_current_map()->get_floor();
     boss_floor = dungeon->get_boss_floor();
@@ -188,7 +188,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     // load the image of this floor
     std::ostringstream oss;
     oss << "maps/dungeons/map" << dungeon->get_number() << "_" << selected_floor << ".png";
-    Surface *floor_map_img = ResourceManager::load_image(oss.str(), false);
+    Surface *floor_map_img = new Surface(oss.str(), Surface::DIR_DATA);
     floor_map_img->blit(dungeon_map_img);
     delete floor_map_img;
   }

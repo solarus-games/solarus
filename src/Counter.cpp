@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Counter.h"
-#include "ResourceManager.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 
@@ -33,7 +32,7 @@ Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
 
   surface_drawn = new Surface(8 * nb_digits, 8);
   surface_drawn->set_transparency_color(Color::get_black());
-  img_digits = ResourceManager::load_image("hud/digits.png");
+  img_digits = new Surface("hud/digits.png");
 
   destination_position.set_xy(x, y);
 

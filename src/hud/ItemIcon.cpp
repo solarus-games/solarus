@@ -16,7 +16,6 @@
  */
 #include "hud/ItemIcon.h"
 #include "Counter.h"
-#include "ResourceManager.h"
 #include "Equipment.h"
 #include "Game.h"
 #include "KeysEffect.h"
@@ -42,8 +41,8 @@ ItemIcon::ItemIcon(Game *game, int slot, int x, int y):
   HudElement(game, x, y, 32, 28) {
 
   this->slot = slot;
-  this->background_img = ResourceManager::load_image(background_file_names[slot]);
-  this->items_img = ResourceManager::load_image("hud/inventory_items.png");
+  this->background_img = new Surface(background_file_names[slot]);
+  this->items_img = new Surface("hud/inventory_items.png");
 
   this->item_displayed = INVENTORY_NONE;
   this->item_variant_displayed = 0;

@@ -39,7 +39,7 @@
 Treasure::Treasure(Game *game, Content content, int savegame_variable):
   game(game), content(content), amount(1), savegame_variable(savegame_variable), counter(NULL) {
 
-  treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+  treasures_img = new Surface("hud/message_and_treasure_icons.png");
 }
 
 /**
@@ -55,7 +55,7 @@ Treasure::Treasure(Game *game, Content content, int savegame_variable):
 Treasure::Treasure(Game *game, Content content, int amount, int savegame_variable):
   game(game), content(content), amount(amount), savegame_variable(savegame_variable), counter(NULL) {
 
-  treasures_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+  treasures_img = new Surface("hud/message_and_treasure_icons.png");
 
   if (has_amount() && amount > 1) {
     counter = new Counter(3, false, 0, 0);

@@ -16,7 +16,6 @@
  */
 #include "hud/PauseIcon.h"
 #include "KeysEffect.h"
-#include "ResourceManager.h"
 #include "Sprite.h"
 #include "lowlevel/Surface.h"
 
@@ -31,7 +30,7 @@ PauseIcon::PauseIcon(Game *game, int x, int y):
 
   // static icon
   this->pause_key_effect_displayed = keys_effect->get_pause_key_effect();
-  this->img_pause_icon = ResourceManager::load_image("hud/pause_icon.png");
+  this->img_pause_icon = new Surface("hud/pause_icon.png");
 
   // flipping icon
   this->is_flipping = false;

@@ -34,7 +34,7 @@ MagicBar::MagicBar(Game *game, int x, int y):
   HudElement(game, x, y, 88, 8),
   next_magic_update_date(System::now()) {
 
-  img_magic_bar = ResourceManager::load_image("hud/magic_bar.png");
+  img_magic_bar = new Surface("hud/magic_bar.png");
   sprite_magic_bar_container = new Sprite("hud/magic_bar");
   sound_magic_bar = ResourceManager::get_sound("magic_bar");
 

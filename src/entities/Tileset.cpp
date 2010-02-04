@@ -19,7 +19,6 @@
 #include "entities/AnimatedTilePattern.h"
 #include "entities/ParallaxTilePattern.h"
 #include "entities/ScrollingTilePattern.h"
-#include "ResourceManager.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include <iomanip>
@@ -147,19 +146,11 @@ void Tileset::load(void) {
   // load the tileset images
   oss.str("");
   oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
-  tiles_image = ResourceManager::load_image(oss.str(), false);
-
-  if (tiles_image == NULL) {
-    DIE("Cannot load the image '" << file_name << "'");
-  }
+  tiles_image = new Surface(oss.str(), Surface::DIR_DATA);
 
   oss.str("");
   oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_entities.png";
-  entities_image = ResourceManager::load_image(oss.str(), false);
-
-  if (entities_image == NULL) {
-    DIE("Cannot load the image '" << file_name << "'");
-  }
+  entities_image = new Surface(oss.str(), Surface::DIR_DATA);
 }
 
 /**

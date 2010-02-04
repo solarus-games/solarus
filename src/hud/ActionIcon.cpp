@@ -16,7 +16,6 @@
  */
 #include "hud/ActionIcon.h"
 #include "KeysEffect.h"
-#include "ResourceManager.h"
 #include "Sprite.h"
 #include "lowlevel/Surface.h"
 
@@ -31,7 +30,7 @@ ActionIcon::ActionIcon(Game *game, int x, int y):
 
   // static icon
   this->action_key_effect_displayed = keys_effect->get_action_key_effect();
-  this->img_action_icon = ResourceManager::load_image("hud/action_icon.png");
+  this->img_action_icon = new Surface("hud/action_icon.png");
 
   // flipping icon
   this->is_flipping = false;

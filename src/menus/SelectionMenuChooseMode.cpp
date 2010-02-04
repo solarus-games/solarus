@@ -17,7 +17,6 @@
 #include "menus/SelectionMenuChooseMode.h"
 #include "menus/SelectionMenu.h"
 #include "Transition.h"
-#include "ResourceManager.h"
 #include "Savegame.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Rectangle.h"
@@ -31,7 +30,7 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
   SelectionMenuPhase(menu, "selection_menu.select_file"),
   adventure_mode(true) {
 
-  this->mode_img = ResourceManager::load_image("menus/selection_menu_mode.png");
+  this->mode_img = new Surface("menus/selection_menu_mode.png");
   this->savegame_surface = new Surface(320, 240);
 
   Transition *transition = Transition::create(Transition::FADE, Transition::OUT);

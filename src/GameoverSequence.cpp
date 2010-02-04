@@ -36,7 +36,7 @@
 GameoverSequence::GameoverSequence(Game *game, int hero_direction):
   game(game), music_id(game->get_current_music_id()), state(WAITING_START) {
 
-  gameover_menu_img = new Surface("hud/gameover_menu.png");
+  gameover_menu_img = new Surface("gameover_menu.png", Surface::DIR_LANGUAGE);
   fade_sprite = new Sprite("hud/gameover_fade");
   fade_sprite->stop_animation();
   red_screen_color = Color(224, 32, 32);

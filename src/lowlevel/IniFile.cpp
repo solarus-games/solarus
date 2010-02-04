@@ -21,17 +21,17 @@
  * Creates an object to read or write an ini file.
  * Opens the specified file.
  * @param file_name name of the file to write, relative to the data location
- * @param mode mode to open the file: READ or WRITE
+ * @param mode mode to open the file
  */
 IniFile::IniFile(const std::string &file_name, Mode mode):
   file_name(file_name), mode(mode) {
 
   ini.SetUnicode();
-  if (mode == READ) {
+  if (mode != WRITE) {
     // read the ini file
     char *buffer;
     size_t size;
-    FileTools::data_file_open_buffer(file_name, &buffer, &size);
+    FileTools::data_file_open_buffer(file_name, &buffer, &size, (mode == READ_LANGUAGE));
 
     if (ini.Load(buffer, size) != SI_OK) {
       DIE("Cannot load the ini file '" << file_name << "'");
@@ -80,7 +80,7 @@ bool IniFile::has_group(const std::string &group) {
  */
 void IniFile::set_group(const std::string &group) {
 
-  if (mode == READ && !has_group(group)) {
+  if (mode != WRITE && !has_group(group)) {
     DIE("Cannot select group '" << group << "' in ini file: no such group");
   }
   this->group = group;

@@ -96,7 +96,7 @@ void Message::parse(MessageId message_id) {
   }
 
   // parse the message
-  IniFile ini_file(file_name, IniFile::READ);
+  IniFile ini_file(file_name, IniFile::READ_LANGUAGE);
 
   ini_file.set_group(message_id);
 

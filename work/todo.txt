@@ -39,7 +39,6 @@ Feature requests :
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
-- Dialog::set_style static + last_answer dans Game : DialogBox ne devrait pas être créé / détruit à chaque fois (DialogBox::get_game() inutile)
 - faire une classe script plus générale indépendante des maps ? on pourrait avoir un script global, des scripts d'objets de l'inventaire,
   des scripts d'ennemis, etc.
 - Le moteur doit connaître le nom du jeu pour enregistrer les sauvegardes dans ~/.solarus/nom_jeu/. Connaître à partir du contenu d'un fichier ou du nom de l'archive de données
@@ -79,7 +78,6 @@ Bugs :
 - boss donjon 1 trop facile, alonger le délai des choux-péteurs ? En mettre moins ?
 - saut de la falaise en diagonale : rendre plus évident
 - TARDIS pas respecté chez Link et Sahasrahla
-- remplacer les ResourceManager::load_image par new Surface
 
 
 Donjon 2 :

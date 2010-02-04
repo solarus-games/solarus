@@ -30,7 +30,7 @@ PauseIcon::PauseIcon(Game *game, int x, int y):
 
   // static icon
   this->pause_key_effect_displayed = keys_effect->get_pause_key_effect();
-  this->img_pause_icon = new Surface("hud/pause_icon.png");
+  this->img_pause_icon = new Surface("pause_icon.png", Surface::DIR_LANGUAGE);
 
   // flipping icon
   this->is_flipping = false;

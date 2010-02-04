@@ -45,7 +45,7 @@ class Surface {
   public:
 
     Surface(int width, int height);
-    Surface(const std::string &file_name, ImageDirectory base_directory = DIR_SPRITES, const std::string &language = "");
+    Surface(const std::string &file_name, ImageDirectory base_directory = DIR_SPRITES);
     Surface(SDL_Surface *internal_surface);
     ~Surface(void);
 

@@ -30,7 +30,7 @@ ActionIcon::ActionIcon(Game *game, int x, int y):
 
   // static icon
   this->action_key_effect_displayed = keys_effect->get_action_key_effect();
-  this->img_action_icon = new Surface("hud/action_icon.png");
+  this->img_action_icon = new Surface("action_icon.png", Surface::DIR_LANGUAGE);
 
   // flipping icon
   this->is_flipping = false;

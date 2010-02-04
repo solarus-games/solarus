@@ -34,30 +34,32 @@ Surface::Surface(int width, int height):
  * Creates a surface from the specified image file name.
  * @param file_name name of the image file to load, relative to the base directory specified
  * @param directory the base directory to use
- * @param language the current language (only used when base_directory is DIR_LANGUAGE)
  */
-Surface::Surface(const std::string &file_name, ImageDirectory base_directory, const std::string &language):
+Surface::Surface(const std::string &file_name, ImageDirectory base_directory):
   internal_surface_created(true) {
 
   std::string prefix = "";
+  bool language_specific = false;
+
   if (base_directory == DIR_SPRITES) {
-    prefix = "sprites";
+    prefix = "sprites/";
   }
   else if (base_directory == DIR_LANGUAGE) {
-    prefix = (std::string) "languages/" + language + "/images";
+    language_specific = true;
+    prefix = "images/";
   }
-  std::string full_file_name = prefix + file_name;
+  std::string prefixed_file_name = prefix + file_name;
 
   size_t size;
   char *buffer;
-  FileTools::data_file_open_buffer(full_file_name, &buffer, &size);
+  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
   SDL_RWops *rw = SDL_RWFromMem(buffer, size);
   this->internal_surface = IMG_Load_RW(rw, 0);
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
 
   if (internal_surface == NULL) {
-    DIE("Cannot load image '" << file_name << "'");
+    DIE("Cannot load image '" << prefixed_file_name << "'");
   }
 }
 

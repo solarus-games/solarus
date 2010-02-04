@@ -108,9 +108,9 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
   if (vertical_position == POSITION_AUTO) {
     // determine the position
     const Rectangle &camera_position = game->get_current_map()->get_camera_position();
-    int vertical_position = POSITION_BOTTOM;
+    vertical_position = POSITION_BOTTOM;
 
-    if (game->get_hero()->get_y() < camera_position.get_y() + 130) {
+    if (game->get_hero()->get_y() >= camera_position.get_y() + 130) {
       vertical_position = POSITION_TOP;
     }
   }
@@ -120,7 +120,7 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
   int y = (vertical_position == POSITION_TOP) ? 32 : 144;
 
   if (style == STYLE_WITHOUT_FRAME) {
-    y += (vertical_position == POSITION_TOP) ? (24) : 24;
+    y += (vertical_position == POSITION_TOP) ? (-24) : 24;
   }
 
   box_dst_position.set_xy(x, y);

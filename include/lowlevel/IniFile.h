@@ -32,8 +32,9 @@ class IniFile {
      * Possible modes when opening ini files.
      */
     enum Mode {
-      READ,
-      WRITE
+      READ,             /**< read the ini file from the data directory */
+      READ_LANGUAGE,    /**< read the ini file from the language specific directory */
+      WRITE             /**< write the ini file */
     };
 
   private:

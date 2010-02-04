@@ -37,7 +37,7 @@ PauseMenu::PauseMenu(Game *game):
   game(game), savegame(game->get_savegame()), keys_effect(game->get_keys_effect()) {
 
   this->current_submenu = NULL;
-  this->backgrounds_surface = new Surface("menus/pause_submenus.png");
+  this->backgrounds_surface = new Surface("pause_submenus.png", Surface::DIR_LANGUAGE);
   backgrounds_surface->set_opacity(216);
 
   this->save_dialog_sprite = new Sprite("menus/pause_save_dialog");

@@ -18,56 +18,33 @@
 #include "Message.h"
 #include "Sprite.h"
 #include "Game.h"
+#include "Map.h"
 #include "KeysEffect.h"
 #include "ResourceManager.h"
 #include "MapScript.h"
+#include "entities/Hero.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 
-DialogBox::Style DialogBox::style = DialogBox::WITH_FRAME;
-static Rectangle box_src_position(0, 0, 220, 60);
-static Rectangle question_src_position(96, 60, 8, 8);
-
 /**
  * Creates a new dialog box.
  * @param game the game this dialog box belongs to
- * @param first_message_id id of the message to show
- * (it can be followed by other messages)
- * @param x x coordinate of the top-left corner of the box
- * @param y y coordinate of the top-left corner of the box
  */
-DialogBox::DialogBox(Game *game, const MessageId &first_message_id, int x, int y):
-  game(game) {
+DialogBox::DialogBox(Game *game):
+  game(game), current_message(NULL) {
 
   // initialize the surface
   dialog_surface = new Surface(320, 240);
   dialog_surface->set_transparency_color(Color::get_black());
 
-  if (style != WITHOUT_FRAME) {
-    dialog_surface->set_opacity(216);
-  }
-
   // load the images
-  img_box = ResourceManager::load_image("hud/dialog_box.png");
-  img_icons = ResourceManager::load_image("hud/message_and_treasure_icons.png");
-
-  this->x = x;
-  this->y = y;
-  if (style == WITHOUT_FRAME) {
-    if (this->y < 120) {
-      this->y -= 24;
-    }
-    else {
-      this->y += 24;
-    }
-  }
-
-  box_dst_position.set_xy(this->x, this->y);
+  box_img = ResourceManager::load_image("hud/dialog_box.png");
+  icons_img = ResourceManager::load_image("hud/message_and_treasure_icons.png");
+  box_src_position = Rectangle(0, 0, 220, 60);
   box_dst_position.set_size(box_src_position);
-  question_dst_position.set_xy(x + 18, y + 27);
-  icon_dst_position.set_xy(x + 18, y + 22);
+  question_src_position = Rectangle(96, 60, 8, 8);
 
   // load the sounds
   end_message_sound = ResourceManager::get_sound("message_end");
@@ -76,18 +53,7 @@ DialogBox::DialogBox(Game *game, const MessageId &first_message_id, int x, int y
   // create the sprites
   end_message_sprite = new Sprite("hud/dialog_box_message_end");
 
-  // save the action and sword keys
-  KeysEffect *keys_effect = game->get_keys_effect();
-  action_key_effect_saved = keys_effect->get_action_key_effect();
-  sword_key_effect_saved = keys_effect->get_sword_key_effect();
-
-  // initialize the current message
-  speed = SPEED_FAST;
-  skip_mode = SKIP_NONE;
-  icon_number = -1;
-  this->first_message_id = first_message_id;
-  show_message(first_message_id);
-  skipped = false;
+  set_style(STYLE_WITH_FRAME);
 }
 
 /**
@@ -95,15 +61,10 @@ DialogBox::DialogBox(Game *game, const MessageId &first_message_id, int x, int y
  */
 DialogBox::~DialogBox(void) {
 
-  // the dialog box is being closed: restore the action and sword keys
-  KeysEffect *keys_effect = game->get_keys_effect();
-  keys_effect->set_action_key_effect(action_key_effect_saved);
-  keys_effect->set_sword_key_effect(sword_key_effect_saved);
-
   // free the memory
   delete dialog_surface;
-  delete img_box;
-  delete img_icons;
+  delete box_img;
+  delete icons_img;
   delete end_message_sprite;
   delete current_message;
 }
@@ -115,14 +76,56 @@ DialogBox::~DialogBox(void) {
 Game * DialogBox::get_game(void) {
   return game;
 }
-    
+
+/**
+ * Returns whether the dialog box is currently active.
+ * @return true if the dialog box is enabled
+ */
+bool DialogBox::is_enabled(void) {
+  return current_message != NULL;
+}
+
 /**
  * Sets the dialog box style for all subsequent dialogs.
- * The default style is DialogBox::WITH_FRAME.
+ * The default style is DialogBox::STYLE_WITH_FRAME.
  * @param style the new style to set
  */
 void DialogBox::set_style(Style style) {
-  DialogBox::style = style;
+
+  this->style = style;
+
+  if (style != STYLE_WITHOUT_FRAME) {
+    dialog_surface->set_opacity(216);
+  }
+}
+
+/**
+ * Sets the vertical position of the dialog box.
+ * @param vertical_position the vertical position
+ */
+void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
+
+  if (vertical_position == POSITION_AUTO) {
+    // determine the position
+    const Rectangle &camera_position = game->get_current_map()->get_camera_position();
+    int vertical_position = POSITION_BOTTOM;
+
+    if (game->get_hero()->get_y() < camera_position.get_y() + 130) {
+      vertical_position = POSITION_TOP;
+    }
+  }
+
+  // set the coordinates of graphic objects
+  int x = 50;
+  int y = (vertical_position == POSITION_TOP) ? 32 : 144;
+
+  if (style == STYLE_WITHOUT_FRAME) {
+    y += (vertical_position == POSITION_TOP) ? (24) : 24;
+  }
+
+  box_dst_position.set_xy(x, y);
+  question_dst_position.set_xy(x + 18, y + 27);
+  icon_dst_position.set_xy(x + 18, y + 22);
 }
 
 /**
@@ -179,7 +182,7 @@ void DialogBox::set_icon_number(int icon_number) {
  * @return true if a sound should be played when displaying the letters
  */
 bool DialogBox::is_letter_sound_enabled(void) {
-  return style != WITHOUT_FRAME;
+  return style != STYLE_WITHOUT_FRAME;
 }
 
 /**
@@ -225,22 +228,72 @@ const std::string& DialogBox::get_variable(void) {
 }
 
 /**
+ * Returns the answer selected by the player in the last message with a question.
+ * @return the answer selected: 0 for the first one, 1 for the second one,
+ * -1 if the last dialog was not a question
+ */
+int DialogBox::get_last_answer(void) {
+  return last_answer;
+}
+
+/**
+ * Remembers the answer selected by the player in the last dialog with a question.
+ * @param answer the answer selected: 0 for the first one, 1 for the second one,
+ * -1 if the last dialog was not a question
+ */
+void DialogBox::set_last_answer(int answer) {
+
+  if (answer < -1 || answer > 1) {
+    DIE("Invalid value of answer: " << answer);
+  }
+  this->last_answer = answer;
+}
+
+/**
+ * Starts a sequence of messages.
+ * The dialog box should not be enabled already when you call this function.
+ * @param first_message_id id of the first message of the sequence
+ * @param vertical_position vertical position where to display the dialog box (default: auto)
+ */
+void DialogBox::start_message_sequence(const MessageId &first_message_id, VerticalPosition vertical_position) {
+
+  if (is_enabled()) {
+    DIE("Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");
+  }
+
+  // save the action and sword keys
+  KeysEffect *keys_effect = game->get_keys_effect();
+  action_key_effect_saved = keys_effect->get_action_key_effect();
+  sword_key_effect_saved = keys_effect->get_sword_key_effect();
+
+  // initialize the dialog box with the default parameters
+  set_vertical_position(vertical_position);
+  set_speed(SPEED_FAST);
+  set_skip_mode(SKIP_NONE);
+  set_icon_number(-1);
+  this->skipped = false;
+  this->first_message_id = first_message_id;
+  show_message(first_message_id);
+}
+
+/**
  * Shows a new message in the dialog box.
  * @param message_id id of the message to create (must be a valid id)
  */
 void DialogBox::show_message(const MessageId &message_id) {
 
   // create the message
-  current_message = new Message(this, message_id, x, y);
+  delete current_message;
+  current_message = new Message(this, message_id, box_dst_position.get_x(), box_dst_position.get_y());
   current_message_id = message_id;
 
   if (current_message->is_question()) {
-    game->set_dialog_last_answer(0);
+    set_last_answer(0);
   }
   else {
-    game->set_dialog_last_answer(-1);
+    set_last_answer(-1);
   }
-  question_dst_position.set_y(y + 27);
+  question_dst_position.set_y(box_dst_position.get_y() + 27);
   
   // hide the action icon
   KeysEffect *keys_effect = game->get_keys_effect();
@@ -263,13 +316,33 @@ void DialogBox::show_message(const MessageId &message_id) {
 void DialogBox::show_next_message() {
 
   MessageId next_message_id = current_message->get_next_message_id();
-  delete current_message;
 
   if (next_message_id != "" && next_message_id != "_unknown") {
     show_message(next_message_id);
   }
   else {
-    current_message = NULL;
+    close();
+  }
+}
+
+/**
+ * Closes the dialog box.
+ */
+void DialogBox::close(void) {
+
+  // the dialog box is being closed
+  delete current_message;
+  current_message = NULL;
+
+  // restore the action and sword keys
+  KeysEffect *keys_effect = game->get_keys_effect();
+  keys_effect->set_action_key_effect(action_key_effect_saved);
+  keys_effect->set_sword_key_effect(sword_key_effect_saved);
+
+  // notify the script if necessary
+  if (!skipped && first_message_id[0] != '_') {
+    // a dialog of the quest was just finished: notify the script
+    game->get_current_script()->event_message_sequence_finished(first_message_id, last_answer);
   }
 }
 
@@ -283,21 +356,21 @@ void DialogBox::key_pressed(Controls::GameKey key) {
   switch (key) {
 
     // action key
-  case Controls::ACTION:
-    action_key_pressed();
-    break;
+    case Controls::ACTION:
+      action_key_pressed();
+      break;
 
-    // sword key
-  case Controls::SWORD:
-    sword_key_pressed();
-    break;
+      // sword key
+    case Controls::SWORD:
+      sword_key_pressed();
+      break;
 
-  case Controls::UP:
-  case Controls::DOWN:
-    up_or_down_key_pressed();
+    case Controls::UP:
+    case Controls::DOWN:
+      up_or_down_key_pressed();
 
-  default:
-    break;
+    default:
+      break;
   }
 }
 
@@ -318,6 +391,7 @@ void DialogBox::sword_key_pressed(void) {
 
   if (skip_mode == SKIP_ALL) {
     skipped = true;
+    close();
   }
   else if (current_message->is_finished()) {
     show_next_message();
@@ -333,11 +407,11 @@ void DialogBox::sword_key_pressed(void) {
 void DialogBox::up_or_down_key_pressed(void) {
 
   if (current_message->is_question() && current_message->is_finished()) {
-    
+
     // switch the answer
-    int answer = game->get_dialog_last_answer();
-    game->set_dialog_last_answer(1 - answer);
-    question_dst_position.set_y(y + ((answer == 1) ? 27 : 40));
+    int answer = get_last_answer();
+    set_last_answer(1 - answer);
+    question_dst_position.set_y(box_dst_position.get_y() + ((answer == 1) ? 27 : 40));
     switch_answer_sound->play();
   }
 }
@@ -366,9 +440,9 @@ MessageId DialogBox::get_first_message_id(void) {
 }
 
 /**
- * Returns whether the dialog box has to be closed, i.e.
+ * Returns whether the dialog box has been closed, i.e.
  * whether the last message was shown and the
- * user has pressed the key, or the dialog was skipled.
+ * user has pressed the key, or the dialog was skiped.
  * @return true if the dialog is finished
  */
 bool DialogBox::is_finished(void) {
@@ -390,6 +464,10 @@ bool DialogBox::was_skipped(void) {
  * while the dialog box exists.
  */
 void DialogBox::update(void) {
+
+  if (current_message == NULL) {
+    return; // nothing to update
+  }
 
   // update the text displaying
   current_message->update();
@@ -429,15 +507,18 @@ void DialogBox::update(void) {
  */
 void DialogBox::display(Surface *destination_surface) {
 
+  int x = box_dst_position.get_x();
+  int y = box_dst_position.get_y();
+
   dialog_surface->fill_with_color(Color::get_black());
 
-  if (style == WITHOUT_FRAME) {
+  if (style == STYLE_WITHOUT_FRAME) {
     // display a dark rectangle
     destination_surface->fill_with_color(Color::get_black(), box_dst_position);
   }
   else {
     // display the dialog box
-    img_box->blit(box_src_position, dialog_surface, box_dst_position);
+    box_img->blit(box_src_position, dialog_surface, box_dst_position);
   }
 
   // display the message
@@ -447,7 +528,7 @@ void DialogBox::display(Surface *destination_surface) {
   if (icon_number != -1) {
     Rectangle src_position(0, 0, 16, 16);
     src_position.set_xy(16 * (icon_number % 10), 16 * (icon_number / 10));
-    img_icons->blit(src_position, dialog_surface, icon_dst_position);
+    icons_img->blit(src_position, dialog_surface, icon_dst_position);
 
     question_dst_position.set_x(x + 50);
   }
@@ -457,7 +538,7 @@ void DialogBox::display(Surface *destination_surface) {
 
   // display the question arrow
   if (current_message->is_question() && current_message->is_finished()) {
-    img_box->blit(question_src_position, dialog_surface, question_dst_position);
+    box_img->blit(question_src_position, dialog_surface, question_dst_position);
   }
 
   // display the end message arrow

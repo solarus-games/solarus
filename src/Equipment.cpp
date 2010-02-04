@@ -92,7 +92,7 @@ void Equipment::update(void) {
     if (!game->is_showing_message()) {
 
       giving_fairy = false;
-      int answer = game->get_dialog_last_answer();
+      int answer = game->get_dialog_box()->get_last_answer();
 
       if (answer != 1) {
 	// restore the hearts
@@ -101,7 +101,7 @@ void Equipment::update(void) {
       else {
 	// keep the fairy in a bottle
 	if (!has_empty_bottle()) {
-	  game->show_message("_found_fairy.no_empty_bottle");
+	  game->get_dialog_box()->start_message_sequence("_found_fairy.no_empty_bottle");
 	  ResourceManager::get_sound("wrong")->play();
 	  add_hearts(7 * 4);
 	}
@@ -115,7 +115,7 @@ void Equipment::update(void) {
   else if (giving_water && !game->is_showing_message()) {
 
     giving_water = false;
-    int answer = game->get_dialog_last_answer();
+    int answer = game->get_dialog_box()->get_last_answer();
 
     if (answer == 0) {
       game->give_treasure(new Treasure(game, Treasure::WATER, -1));
@@ -438,7 +438,7 @@ void Equipment::add_piece_of_heart(void) {
 void Equipment::found_fairy(void) {
 
   if (has_bottle()) {
-    game->show_message("_found_fairy");
+    game->get_dialog_box()->start_message_sequence("_found_fairy");
     giving_fairy = true;
     // the next messages will be handled by the update() function
   }
@@ -459,11 +459,11 @@ void Equipment::found_water(void) {
       found_water(get_first_empty_bottle());
     }
     else {
-      game->show_message("_found_water.no_empty_bottle");
+      game->get_dialog_box()->start_message_sequence("_found_water.no_empty_bottle");
     }
   }
   else {
-    game->show_message("_found_water.no_bottle");
+    game->get_dialog_box()->start_message_sequence("_found_water.no_bottle");
   }  
 }
 
@@ -484,7 +484,7 @@ void Equipment::found_water(InventoryItemId bottle_id) {
 
   this->destination_bottle_id = bottle_id;
 
-  game->show_message("_found_water");
+  game->get_dialog_box()->start_message_sequence("_found_water");
   giving_water = true;
   // the next messages will be handled by the update() function
 }

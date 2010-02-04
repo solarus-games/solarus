@@ -175,7 +175,7 @@ void ShopItem::action_key_pressed(void) {
   if (hero->get_state() == Hero::FREE
       && keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
-    game->show_message(message_id);
+    game->get_dialog_box()->start_message_sequence(message_id);
     is_looking_item = true;
   }
 }
@@ -189,7 +189,7 @@ void ShopItem::update(void) {
 
     // the description message has just finished
     std::string question_message_id = "_shop.question";
-    game->show_message(question_message_id);
+    game->get_dialog_box()->start_message_sequence(question_message_id);
     game->get_dialog_box()->set_variable(question_message_id, price);
     is_asking_question = true;
     is_looking_item = false;
@@ -198,7 +198,7 @@ void ShopItem::update(void) {
 
     // the question has just finished
     is_asking_question = false;
-    int answer = game->get_dialog_last_answer();
+    int answer = game->get_dialog_box()->get_last_answer();
 
     if (answer == 0) {
 
@@ -208,12 +208,12 @@ void ShopItem::update(void) {
       if (equipment->get_rupees() < price) {
 	// not enough rupees
 	ResourceManager::get_sound("wrong")->play();
-	game->show_message("_shop.not_enough_money");
+	game->get_dialog_box()->start_message_sequence("_shop.not_enough_money");
       }
       else if (treasure->is_amount_full()) {
 	// the player already has the maximum amount of this item
 	ResourceManager::get_sound("wrong")->play();
-	game->show_message("_shop.amount_full");
+	game->get_dialog_box()->start_message_sequence("_shop.amount_full");
       }
       else {
 	// give the treasure

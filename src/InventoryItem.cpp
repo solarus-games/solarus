@@ -190,7 +190,7 @@ void InventoryItem::start(Game *game) {
 	    (item_id == INVENTORY_APPLES) ? "_use_apples" :
 	    (item_id == INVENTORY_PAINS_AU_CHOCOLAT) ? "_use_pains_au_chocolat" : "_use_croissants";
 
-          game->show_message(message_id);
+          game->get_dialog_box()->start_message_sequence(message_id);
 	}
 	break;
 
@@ -262,7 +262,7 @@ void InventoryItem::update(void) {
 
         if (!game->is_showing_message()) {
 	  
-	  if (game->get_dialog_last_answer() == 0 &&
+	  if (game->get_dialog_box()->get_last_answer() == 0 &&
 	      equipment->get_inventory_item_amount(item_id) > 0) {
 
 	    equipment->remove_inventory_item_amount(item_id, 1);
@@ -334,7 +334,7 @@ void InventoryItem::start_bottle(void) {
     // water
   case 2:
     // ask the hero to pour away the water
-    game->show_message("_use_bottle_with_water");
+    game->get_dialog_box()->start_message_sequence("_use_bottle_with_water");
     break;
 
     // red potion
@@ -358,7 +358,7 @@ void InventoryItem::start_bottle(void) {
     // fairy
   case 6:
     // ask the hero to release the fairy
-    game->show_message("_use_bottle_with_fairy");
+    game->get_dialog_box()->start_message_sequence("_use_bottle_with_fairy");
     break;
 
   }
@@ -375,7 +375,7 @@ void InventoryItem::update_bottle(void) {
     // bottle with water
     if (variant == 2) {
 
-      int answer = game->get_dialog_last_answer();
+      int answer = game->get_dialog_box()->get_last_answer();
 
       if (answer == 0) {
 	// empty the water
@@ -395,7 +395,7 @@ void InventoryItem::update_bottle(void) {
     // bottle with a fairy
     else if (variant == 6) {
       
-      int answer = game->get_dialog_last_answer();
+      int answer = game->get_dialog_box()->get_last_answer();
 
       if (answer == 1) {
 	// release the fairy

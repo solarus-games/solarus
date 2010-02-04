@@ -20,6 +20,7 @@
 #include "movements/FallingHeight.h"
 #include "ResourceManager.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "Map.h"
@@ -296,13 +297,13 @@ void DestructibleItem::action_key_pressed(void) {
     }
     else {
       if (features[subtype].can_be_cut) {
-        game->show_message("_cannot_lift_should_cut");
+        game->get_dialog_box()->start_message_sequence("_cannot_lift_should_cut");
       }
       else if (!equipment->can_lift(1)) {
-	game->show_message("_cannot_lift_too_heavy");
+	game->get_dialog_box()->start_message_sequence("_cannot_lift_too_heavy");
       }
       else {
-	game->show_message("_cannot_lift_still_too_heavy");
+	game->get_dialog_box()->start_message_sequence("_cannot_lift_still_too_heavy");
       }
     }
   }

@@ -79,7 +79,7 @@ Bugs :
 - boss donjon 1 trop facile, alonger le délai des choux-péteurs ? En mettre moins ?
 - saut de la falaise en diagonale : rendre plus évident
 - TARDIS pas respecté chez Link et Sahasrahla
-- boomerang segfault
+- remplacer les ResourceManager::load_image par new Surface
 
 
 Donjon 2 :

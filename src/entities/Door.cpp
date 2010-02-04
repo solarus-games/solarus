@@ -20,6 +20,7 @@
 #include "entities/DynamicTile.h"
 #include "Sprite.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
 #include "KeysEffect.h"
@@ -316,7 +317,7 @@ void Door::action_key_pressed(void) {
     }
     else {
       ResourceManager::get_sound("wrong")->play();
-      game->show_message(key_required_message_ids[subtype]);
+      game->get_dialog_box()->start_message_sequence(key_required_message_ids[subtype]);
     }
   }
 }

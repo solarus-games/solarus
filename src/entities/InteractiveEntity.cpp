@@ -20,6 +20,7 @@
 #include "movements/RandomWalkMovement.h"
 #include "movements/JumpMovement.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "Sprite.h"
@@ -252,7 +253,7 @@ void InteractiveEntity::action_key_pressed(void) {
 
       // start the message or call the script
       if (message_to_show != "_none") {
-	game->show_message(message_to_show);
+	game->get_dialog_box()->start_message_sequence(message_to_show);
       }
       else {
 	// there is no message specified: we call the script

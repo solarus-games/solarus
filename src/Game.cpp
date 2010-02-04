@@ -50,11 +50,12 @@ Game::Game(Solarus *solarus, Savegame *savegame):
   Screen(solarus),
 
   savegame(savegame), pause_enabled(true), pause_menu(NULL), 
-  dialog_box(NULL), treasure(NULL), gameover_sequence(NULL),
+  treasure(NULL), gameover_sequence(NULL),
   reseting(false), restarting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL),
-  dungeon(NULL), crystal_switch_state(false), hud(NULL), hud_enabled(true),
+  dungeon(NULL), crystal_switch_state(false),
+  hud(NULL), hud_enabled(true), dialog_box(NULL),
   current_music_id(Music::none), current_music(NULL), previous_music_id(Music::none) {
 
   // notify objects
@@ -62,6 +63,7 @@ Game::Game(Solarus *solarus, Savegame *savegame):
   get_dungeon_equipment()->set_game(this);
   solarus->get_debug_keys()->set_game(this);
   controls = new Controls(this);
+  dialog_box = new DialogBox(this);
 
   // initialize the hero
   hero = new Hero(get_equipment());
@@ -252,6 +254,7 @@ void Game::update(void) {
   get_equipment()->update();
   update_keys_effect();
   hud->update();
+  dialog_box->update();
 
   // update the treasure (if any)
   if (treasure != NULL) {
@@ -261,11 +264,6 @@ void Game::update(void) {
   // update the pause menu (if the game is paused)
   if (is_paused()) {
     pause_menu->update();
-  }
-
-  // update the dialog box (if any)
-  if (is_showing_message()) {
-    update_dialog_box();
   }
 
   // update the game over sequence (if any)
@@ -425,30 +423,6 @@ void Game::update_keys_effect(void) {
 
   default:
     break;
-  }
-}
-
-/**
- * Updates the dialog box.
- * This function is called repeatedly while a dialog box is shown.
- */
-void Game::update_dialog_box(void) {
-
-  if (!dialog_box->is_finished()) {
-    dialog_box->update();
-  }
-  else {
-
-    std::string first_message_id = dialog_box->get_first_message_id();
-    bool skipped = dialog_box->was_skipped();
-
-    delete dialog_box;
-    dialog_box = NULL;
-
-    if (!skipped && first_message_id[0] != '_') {
-      // a dialog of the quest was just finished: notify the script
-      get_current_script()->event_message_sequence_finished(first_message_id, get_dialog_last_answer());
-    }
   }
 }
 
@@ -691,14 +665,6 @@ bool Game::is_paused(void) {
 }
 
 /**
- * Returns whether we are showing a message.
- * @return true if a message is being shown.
- */
-bool Game::is_showing_message(void) {
-  return dialog_box != NULL;
-}
-
-/**
  * Returns whether we are playing a transition between two maps.
  * @return true if there is a transition
  */
@@ -720,73 +686,19 @@ bool Game::is_suspended(void) {
 }
 
 /**
+ * Returns whether we are showing a message.
+ * @return true if a message is being shown.
+ */
+bool Game::is_showing_message(void) {
+  return dialog_box->is_enabled();
+}
+
+/**
  * Returns the dialog box currently displayed.
  * @return the dialog box, or NULL if no message is currently displayed
  */
 DialogBox * Game::get_dialog_box(void) {
   return dialog_box;
-}
-
-/**
- * Shows the specified message.
- * If this message is followed by other messages, they will
- * be displayed too.
- * The dialog box y position depends on the hero's position on the screen.
- * @param message_id id of the message to show
- */
-void Game::show_message(const MessageId &message_id) {
-
-  const Rectangle &camera_position = current_map->get_camera_position();
-
-  if (hero->get_y() < camera_position.get_y() + 130) {
-    show_message(message_id, 1);
-  }
-  else {
-    show_message(message_id, 0);
-  }
-}
-
-/**
- * Shows the specified message.
- * If this message is followed by other messages, they will
- * be displayed too.
- * @param message_id id of the message to show
- * @param position the dialog box position: 0 means on the top, 1 means on the bottom
- */
-void Game::show_message(const MessageId &message_id, int position) {
-
-  int y;
-  if (position == 0) {
-    y = 32;
-  }
-  else {
-    y = 144;
-  }
-
-  dialog_box = new DialogBox(this, message_id, 50, y);
-}
-
-/**
- * Returns the answer selected by the player in the last dialog with a question.
- * @return the answer selected: 0 for the first one, 1 for the second one,
- * -1 if the last dialog was not a question
- */
-int Game::get_dialog_last_answer(void) {
-  return dialog_last_answer;
-}
-
-/**
- * Remembers the answer selected by the player in the last dialog with a question.
- * @param answer the answer selected: 0 for the first one, 1 for the second one,
- * -1 if the last dialog was not a question
- */
-void Game::set_dialog_last_answer(int answer) {
-
-  if (answer < -1 || answer > 1) {
-    DIE("Invalid value of answer: " << answer);
-  }
-
-  this->dialog_last_answer = answer;
 }
 
 /**

@@ -19,6 +19,7 @@
 #include "Treasure.h"
 #include "KeysEffect.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "Savegame.h"
 #include "Sprite.h"
 #include "ResourceManager.h"
@@ -270,7 +271,7 @@ void Chest::update(void) {
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty
 	  ResourceManager::get_sound("wrong")->play();
-	  game->show_message("_empty_chest");
+	  game->get_dialog_box()->start_message_sequence("_empty_chest");
 	  hero->unfreeze();
 	}
       }
@@ -303,7 +304,7 @@ void Chest::action_key_pressed(void) {
     }
     else {
       ResourceManager::get_sound("wrong")->play();
-      game->show_message("_big_key_required");
+      game->get_dialog_box()->start_message_sequence("_big_key_required");
     }
   }
 }

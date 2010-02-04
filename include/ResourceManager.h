@@ -21,16 +21,14 @@
 #include <map>
 
 /**
- * This class provides access to all external resources:
- * images, sounds, sprite animations...
- * Except for the images, all resources are stored into
+ * This class provides storage and access to some external resources:
+ * maps, sounds, sprite animations...
+ * Those resources are stored into
  * memory when you get them for the first time and you
  * don't have to delete them. They are deleted when the application
  * ends. This does not consumes much memory because:
  * - the maps and tilesets have an unload() method you can call,
  * - the musics and sounds close their audio files when they stop.
- * The images are the only kind of resources that you have to
- * free yourself.
  */
 class ResourceManager {
 
@@ -51,10 +49,6 @@ class ResourceManager {
 
     static void initialize(void);
     static void quit(void);
-
-    static Surface * load_image(const ImageId &id);
-    static Surface * load_image(const ImageId &id, bool relative_to_sprites_dir);
-    // TODO flags for options relative_to_sprites_dir and language_specific - but do this directly in Surface
 
     static Tileset* get_tileset(TilesetId id);
     static Map* get_map(MapId id);

@@ -67,7 +67,7 @@ void HeartsView::create(void) {
   this->next_heart_update_date = now;
   this->next_danger_sound_date = now;
 
-  this->img_hearts = ResourceManager::load_image("hud/hearts.png");
+  this->img_hearts = new Surface("hud/hearts.png");
   this->empty_heart_sprite = new Sprite("hud/empty_heart");
 
   this->nb_max_hearts_displayed = equipment->get_max_hearts();

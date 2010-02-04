@@ -41,7 +41,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
   cursor_sprite = new Sprite("menus/pause_cursor");
   cursor_sound = ResourceManager::get_sound("cursor");
 
-  items_img = ResourceManager::load_image("hud/inventory_items.png");
+  items_img = new Surface("hud/inventory_items.png");
 
   // set the counters and the caption strings
   for (int k = 0; k < 28; k++) {

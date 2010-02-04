@@ -16,7 +16,6 @@
  */
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
-#include "ResourceManager.h"
 #include "Map.h"
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
@@ -38,7 +37,7 @@ SpriteAnimation::SpriteAnimation(const std::string &image_file_name, int nb_dire
   frame_delay(frame_delay), loop_on_frame(loop_on_frame) {
 
   if (image_file_name != "tileset") {
-    src_image = ResourceManager::load_image(image_file_name);
+    src_image = new Surface(image_file_name);
     src_image_loaded = true;
   }
 }

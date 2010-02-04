@@ -53,15 +53,15 @@ SelectionMenu::SelectionMenu(Solarus *solarus):
   read_savegames();
 
   // load the images
-  cloud_img = ResourceManager::load_image("menus/selection_menu_cloud.png");
-  background_img = ResourceManager::load_image("menus/selection_menu_background.png");
-  save_container_img = ResourceManager::load_image("menus/selection_menu_save_container.png");
-  option_container_img = ResourceManager::load_image("menus/selection_menu_option_container.png");
+  cloud_img = new Surface("menus/selection_menu_cloud.png");
+  background_img = new Surface("menus/selection_menu_background.png");
+  save_container_img = new Surface("menus/selection_menu_save_container.png");
+  option_container_img = new Surface("menus/selection_menu_option_container.png");
 
   for (int i = 0; i < 3; i++) {
     std::ostringstream oss;
     oss << "menus/selection_menu_save" << (i + 1) << ".png";
-    number_imgs[i] = ResourceManager::load_image(oss.str());
+    number_imgs[i] = new Surface(oss.str());
   }
 
   cursor_sprite = new Sprite("menus/selection_menu_cursor");

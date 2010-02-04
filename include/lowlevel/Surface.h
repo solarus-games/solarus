@@ -26,15 +26,26 @@
  */
 class Surface {
 
+  public:
+
+    /**
+     * Indicates the base directory to use when opening image files.
+     */
+    enum ImageDirectory {
+      DIR_DATA,        /**< the root directory of the data package */
+      DIR_SPRITES,     /**< the sprites subdirectory of the data package (default) */
+      DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
+    };
+
   private:
 
-    SDL_Surface *internal_surface; /**< the SDL_Surface encapsulated */
-    bool internal_surface_created; /**< indicates that internal_surface was allocated from this class */
+    SDL_Surface *internal_surface;               /**< the SDL_Surface encapsulated */
+    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
 
   public:
 
     Surface(int width, int height);
-    Surface(std::string file_name);
+    Surface(const std::string &file_name, ImageDirectory base_directory = DIR_SPRITES, const std::string &language = "");
     Surface(SDL_Surface *internal_surface);
     ~Surface(void);
 

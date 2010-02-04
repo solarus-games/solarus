@@ -16,7 +16,6 @@
  */
 #include "hud/FloorView.h"
 #include "Game.h"
-#include "ResourceManager.h"
 #include "Map.h"
 #include "Dungeon.h"
 #include "lowlevel/Surface.h"
@@ -32,7 +31,7 @@ FloorView::FloorView(Game *game, int x, int y):
   HudElement(game, x, y, 32, 85), current_map(NULL),
   is_floor_displayed(false) {
 
-  img_floors = ResourceManager::load_image("hud/floors.png");
+  img_floors = new Surface("hud/floors.png");
 
   rebuild();
 }

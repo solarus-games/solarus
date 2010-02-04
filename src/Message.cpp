@@ -162,7 +162,7 @@ bool Message::is_question(void) {
  */
 MessageId Message::get_next_message_id(void) {
 
-  if (question && dialog_box->get_game()->get_dialog_last_answer() == 1) {
+  if (question && dialog_box->get_last_answer() == 1) {
     return next_message_id_2;
   }
 

@@ -560,7 +560,7 @@ int MapScript::l_start_message(lua_State *l) {
   called_by_script(l, 1, &script);
   const std::string &message_id = lua_tostring(l, 1);
 
-  script->game->show_message(message_id);
+  script->game->get_dialog_box()->start_message_sequence(message_id);
 
   return 0;
 }
@@ -590,10 +590,11 @@ int MapScript::l_set_message_variable(lua_State *l) {
  */
 int MapScript::l_dialog_set_style(lua_State *l) {
 
-  called_by_script(l, 1, NULL);
+  MapScript *script;
+  called_by_script(l, 1, &script);
   int style = lua_tointeger(l, 1);
 
-  DialogBox::set_style(DialogBox::Style(style));
+  script->game->get_dialog_box()->set_style(DialogBox::Style(style));
 
   return 0;
 }

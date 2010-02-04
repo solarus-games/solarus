@@ -17,6 +17,7 @@
 #include "Map.h"
 #include "MapLoader.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "Sprite.h"
 #include "MapScript.h"
 #include "Camera.h"
@@ -426,7 +427,7 @@ void Map::opening_transition_finished(void) {
 
   game->get_hero()->opening_transition_finished();
   if (welcome_message_id != "") {
-    game->show_message(welcome_message_id);
+    game->get_dialog_box()->start_message_sequence(welcome_message_id);
     welcome_message_id = "";
   }
   else {

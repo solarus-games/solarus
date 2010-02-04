@@ -20,6 +20,7 @@
 #include "entities/Arrow.h"
 #include "entities/Hero.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -51,7 +52,7 @@ CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
  * Destructor.
  */
 CrystalSwitch::~CrystalSwitch(void) {
-
+  delete star_sprite;
 }
 
 /**
@@ -166,7 +167,7 @@ void CrystalSwitch::action_key_pressed(void) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    game->show_message("_crystal_switch");
+    game->get_dialog_box()->start_message_sequence("_crystal_switch");
   }
 }
 

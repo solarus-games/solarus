@@ -21,6 +21,7 @@
 
 /**
  * The data of each fonts, created in the initialize() function.
+ * TODO load this from some external file
  */
 TextSurface::FontData TextSurface::data[FONT_NB] = {
   {"text/la.ttf", 11, NULL, NULL, NULL},

@@ -21,6 +21,7 @@
 #include "ResourceManager.h"
 #include "lowlevel/Sound.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "Equipment.h"
 #include "Savegame.h"
 #include "Counter.h"
@@ -317,9 +318,9 @@ void PauseSubmenuInventory::show_info_message(void) {
   std::ostringstream oss;
   oss << "_item_description_" << item_id << '_' << variant;
 
-  int position = (cursor_row >= 2) ? 0 : 1;
+  DialogBox::VerticalPosition vertical_position = (cursor_row >= 2) ? DialogBox::POSITION_TOP : DialogBox::POSITION_BOTTOM;
 
-  game->show_message(oss.str(), position);
+  game->get_dialog_box()->start_message_sequence(oss.str(), vertical_position);
 }
 
 /**

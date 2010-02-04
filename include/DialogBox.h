@@ -33,11 +33,20 @@ class DialogBox {
   public:
 
     /**
-     * The possible styles of the dialog box
+     * The possible styles of the dialog box.
      */
     enum Style {
-      WITH_FRAME,    /**< the usual dialog box with a frame and a semi-transparent dark blue background */
-      WITHOUT_FRAME  /**< no dialog box is shown, only the text is displayed */
+      STYLE_WITH_FRAME,    /**< the usual dialog box with a frame and a semi-transparent dark blue background */
+      STYLE_WITHOUT_FRAME  /**< no dialog box is shown, only the text is displayed */
+    };
+
+    /**
+     * The possible vertical positions of the dialog box on the screen.
+     */
+    enum VerticalPosition {
+      POSITION_AUTO,       /**< displayed such that the hero is not hidden */
+      POSITION_TOP,        /**< displayed at the top */
+      POSITION_BOTTOM      /**< displayed at the bottom */
     };
 
     /**
@@ -61,43 +70,46 @@ class DialogBox {
 
   private:
 
-    // current message
-    Message *current_message;
-    MessageId current_message_id;
-    std::map<MessageId, std::string> variables;
-
-    MessageId first_message_id;
-
     // dialog properties
-    Game *game;
-    static Style style;
-    Speed speed;
-    SkipMode skip_mode;
-    bool skipped;              // true if the user has skipped the dialog
-    int icon_number;           // index of the 16*16 icon displayed, or -1 if there is no icon
+    Game *game;                                     /**< the game this dialog box belongs to */
+    Style style;                                    /**< style of the dialog box */
 
-    KeysEffect::ActionKeyEffect action_key_effect_saved;
-    KeysEffect::SwordKeyEffect sword_key_effect_saved;
+    // current message
+    KeysEffect::ActionKeyEffect action_key_effect_saved;  /**< effect of the action key before starting the message sequence */
+    KeysEffect::SwordKeyEffect sword_key_effect_saved;    /**< effect of the sword key before starting the message sequence */
+    MessageId first_message_id;                     /**< id of the first message of the current sequence */
+    Message *current_message;                       /**< the message currently shown (NULL if the dialog box is disabled) */
+    MessageId current_message_id;                   /**< id of the message currently shown */
+    std::map<MessageId, std::string> variables;     /**< variables to display if the next messages */
+
+    Speed speed;                                    /**< speed of the text */
+    SkipMode skip_mode;                             /**< indicates what happens when the user tries to skip the current message */
+    int icon_number;                                /* index of the 16*16 icon displayed, or -1 if there is no icon */
+    bool skipped;                                   /* true if the user has skipped the dialog */
+    int last_answer;                                /**< the answer selected in the last message sequence: 0 for the first one, 1 for the second one,
+						     * -1 if there was no question */ 
 
     // graphics
-    Surface *dialog_surface;
-    Surface *img_box;
-    Surface *img_icons;
-    Sprite *end_message_sprite;
+    Surface *dialog_surface;                        /**< surface where the dialog is drawn*/
+    Surface *box_img;                               /**< image of the dialog box frame */
+    Surface *icons_img;                             /**< image containing all possible icons used in messages */
+    Sprite *end_message_sprite;                     /**< sprite displayed when the current message is finished*/
 
     // sounds
-    Sound *end_message_sound;
-    Sound *switch_answer_sound;
+    Sound *end_message_sound;                       /**< sound played when the current message is finished */
+    Sound *switch_answer_sound;                     /**< sound played when the player selects an answer to a question */
 
     // position of the images
-    int x;
-    int y;
-    Rectangle box_dst_position;
-    Rectangle question_dst_position;
-    Rectangle icon_dst_position;
+    Rectangle box_src_position;                     /**< rectangle of the dialog box in its source image */
+    Rectangle box_dst_position;                     /**< destination rectangle of the dialog box image */
+    Rectangle question_src_position;                /**< rectangle of the question icon in the source image */
+    Rectangle question_dst_position;                /**< destination rectangle of the question image (depends on the answer currently selected) */
+    Rectangle icon_dst_position;                    /**< destination rectangle of the icon */
 
-    void show_message(const MessageId &messageId);
+    void set_vertical_position(VerticalPosition vertical_position);
+    void show_message(const MessageId &message_id);
     void show_next_message(void);
+    void close(void);
 
     void action_key_pressed(void);
     void sword_key_pressed(void);
@@ -106,12 +118,16 @@ class DialogBox {
   public:
 
     // creation and destruction
-    DialogBox(Game *game, const MessageId &first_message_id, int x, int y);
+    DialogBox(Game *game);
     ~DialogBox(void);
 
     // dialog properties
     Game * get_game(void);
-    static void set_style(Style style);
+    void set_style(Style style);
+    bool is_enabled(void);
+
+    // current message
+    void start_message_sequence(const MessageId &first_message_id, VerticalPosition vertical_position = POSITION_AUTO);
     Speed get_speed(void);
     void set_speed(Speed speed);
     SkipMode get_skip_mode(void);
@@ -119,12 +135,11 @@ class DialogBox {
     int get_icon_number(void);
     void set_icon_number(int icon_number);
     bool is_letter_sound_enabled(void);
-
     void set_variable(const MessageId &first_message_id, const std::string &value);
     void set_variable(const MessageId &first_message_id, int value);
     const std::string& get_variable(void);
-
-    // current message
+    int get_last_answer(void);
+    void set_last_answer(int answer);
     void key_pressed(Controls::GameKey key);
     MessageId get_first_message_id(void);
     bool is_finished(void);

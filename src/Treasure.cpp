@@ -17,6 +17,7 @@
 #include "Treasure.h"
 #include "ResourceManager.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DungeonEquipment.h"
@@ -245,7 +246,7 @@ void Treasure::show_message(void) {
   }
 
   std::string message_id = oss.str();
-  game->show_message(message_id);
+  game->get_dialog_box()->start_message_sequence(message_id);
 
   if (has_amount() && amount > 1) {
     game->get_dialog_box()->set_variable(message_id, amount);

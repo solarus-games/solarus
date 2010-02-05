@@ -27,7 +27,7 @@ IniFile::IniFile(const std::string &file_name, Mode mode):
   file_name(file_name), mode(mode) {
 
   ini.SetUnicode();
-  if (mode != WRITE) {
+  if (mode != WRITE || FileTools::data_file_exists(file_name)) {
     // read the ini file
     char *buffer;
     size_t size;

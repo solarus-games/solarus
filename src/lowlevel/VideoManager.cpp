@@ -18,7 +18,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/IniFile.h"
+#include "Configuration.h"
 #include "StringResource.h"
 
 VideoManager *VideoManager::instance = NULL;
@@ -28,9 +28,9 @@ Rectangle VideoManager::default_mode_sizes[] = {
   Rectangle(0, 0, 640, 480),         // WINDOWED_SCALE2X
   Rectangle(0, 0, 320, 240),         // WINDOWED_NORMAL
   Rectangle(0, 0, 640, 480),         // FULLSCREEN_NORMAL
-  Rectangle(0, 0,     0, 0),         // FULLSCREEN_WIDE
+  Rectangle(0, 0,   0,   0),         // FULLSCREEN_WIDE
   Rectangle(0, 0, 640, 480),         // FULLSCREEN_SCALE2X
-  Rectangle(0, 0,     0, 0),         // FULLSCREEN_SCALE2X_WIDE
+  Rectangle(0, 0,   0,   0),         // FULLSCREEN_SCALE2X_WIDE
   Rectangle(0, 0, 640, 480),         // FULLSCREEN_CENTERED
   Rectangle(0, 0, 640, 400),         // FULLSCREEN_CENTERED_WIDE
 };
@@ -153,17 +153,7 @@ void VideoManager::switch_video_mode(void) {
  */
 void VideoManager::set_initial_video_mode(void) {
 
-  int value = -1;
-  const std::string file_name = "config.ini";
-  if (FileTools::data_file_exists(file_name)) {
-    // parse the ini file
-    IniFile ini(file_name, IniFile::READ);
-
-    if (ini.has_group("configuration")) {
-      ini.set_group("configuration");
-      value = ini.get_integer_value("video_mode", -1);
-    }
-  }
+  int value = Configuration::get_value("video_mode", -1);
 
   if (value < 0 || value >= NB_MODES) {
     set_default_video_mode();
@@ -221,11 +211,8 @@ void VideoManager::set_video_mode(VideoMode mode) {
   this->video_mode = mode;
   this->screen_surface = new Surface(screen_internal_surface);
 
-  // write the ini file
-  IniFile ini("config.ini", IniFile::WRITE);
-  ini.set_group("configuration");
-  ini.set_integer_value("video_mode", mode);
-  ini.save();
+  // write the configuration file
+  Configuration::set_value("video_mode", mode);
 }
 
 /**
